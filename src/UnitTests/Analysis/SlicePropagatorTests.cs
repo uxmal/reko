@@ -222,5 +222,32 @@ SsaProcedureBuilder_exit:
             });
 
         }
+
+        [Test]
+        public void Slp_Call()
+        {
+            var sExp =
+            #region Expected
+@"// SsaProcedureBuilder
+// Return size: 0
+define SsaProcedureBuilder
+SsaProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	r3_5 = Mem2[0x123400<32>:byte]
+	Mem3[0x123404<32>:byte] = r3_5
+SsaProcedureBuilder_exit:
+";
+            #endregion
+            RunTest(sExp, m =>
+            {
+                var tmpHi = m.Temp(PrimitiveType.CreateWord(24), "tmp");
+                var r3 = m.Register(arch.GetRegister("r3"));
+
+                m.Assign(r3, m.Seq(tmpHi, m.Mem8(m.Word32(0x00123400))));
+                m.MStore(m.Word32(0x00123404), m.Slice(PrimitiveType.Byte, r3, 0));
+            });
+
+        }
     }
 }

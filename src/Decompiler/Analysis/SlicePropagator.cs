@@ -20,7 +20,6 @@
 
 using Reko.Core;
 using Reko.Core.Code;
-using Reko.Core.Dfa;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Operators;
@@ -30,7 +29,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace Reko.Analysis
 {
@@ -88,6 +86,8 @@ namespace Reko.Analysis
 
         private void GenerateNeededSlices()
         {
+            if (ssa.Procedure.Name == "INITCURSORCTL")
+                ssa.ToString(); //$DEBUG
             foreach (var needed in this.neededSlices)
             {
                 var sidOld = needed.Key;
@@ -116,13 +116,13 @@ namespace Reko.Analysis
                     // An appropriate variable doesn't exist, so we need to make a new slicing alias.
                     sidNew = MakeSlicedIdentifier(sidOld, brNeeded);
                     this.availableSlices[sidOld].Add(brNeeded, sidNew);
+                    this.availableSlices.Add(sidNew, new Dictionary<BitRange, SsaIdentifier> { { brNeeded, sidNew } });
                 }
 
                 // Now remmove the uses of the old identifier. New uses will be added
                 // by the SlicePusher.
                 sidOld.Uses.Clear();
                 this.replaceIds.Add(sidOld, sidNew);
-                this.availableSlices.Add(sidNew, new Dictionary<BitRange, SsaIdentifier> { { brNeeded, sidNew } });
                 trace.Verbose("Slp: Narrowing {0} down to {1} ({2})", sidOld.Identifier, sidNew.Identifier, brNeeded);
             }
         }
@@ -130,18 +130,26 @@ namespace Reko.Analysis
         private SsaIdentifier MakeSlicedIdentifier(SsaIdentifier sidOriginal, BitRange brNeeded)
         {
             var dt = PrimitiveType.CreateWord(brNeeded.Extent);
+            Identifier idSliced;
             switch (sidOriginal.Identifier.Storage)
             {
             case RegisterStorage reg:
                 var regSliced = ssa.Procedure.Architecture.GetRegister(reg.Domain, brNeeded);
-                var idSliced = ssa.Procedure.Frame.EnsureRegister(regSliced);
+                idSliced = ssa.Procedure.Frame.EnsureRegister(regSliced);
                 idSliced.DataType = dt;
-                var sidTo = ssa.Identifiers.Add(idSliced, sidOriginal.DefStatement, new Slice(dt, sidOriginal.Identifier, brNeeded.Lsb), false);
-                return sidTo;
-            default:
                 break;
+            case StackStorage stk:
+                var stkSliced = ssa.Procedure.Architecture.Endianness.SliceStackStorage(stk, brNeeded);
+                idSliced = ssa.Procedure.Frame.EnsureStackVariable(stkSliced.StackOffset, dt);
+                break;
+            case TemporaryStorage tmp:
+                idSliced = ssa.Procedure.Frame.CreateTemporary(dt);
+                break;
+            default:
+                throw new NotImplementedException();
             }
-            throw new NotImplementedException();
+            var sidTo = ssa.Identifiers.Add(idSliced, sidOriginal.DefStatement, new Slice(dt, sidOriginal.Identifier, brNeeded.Lsb), false);
+            return sidTo;
         }
 
         private void ReplaceSlices()
@@ -209,7 +217,11 @@ namespace Reko.Analysis
 
             public Instruction VisitCallInstruction(CallInstruction ci, BitRange ctx)
             {
-                throw new NotImplementedException();
+                foreach (var use in ci.Uses)
+                {
+                    use.Expression.Accept(this, use.BitRange);
+                }
+                return ci;
             }
 
             public Instruction VisitComment(CodeComment comment, BitRange ctx)
@@ -281,10 +293,15 @@ namespace Reko.Analysis
                 return addr;
             }
 
-public Expression VisitApplication(Core.Expressions.Application appl, BitRange ctx)
-{
-    throw new NotImplementedException();
-}
+            public Expression VisitApplication(Application appl, BitRange ctx)
+            {
+                appl.Procedure.Accept(this, Br(appl.Procedure));
+                foreach (var arg in appl.Arguments)
+                {
+                    arg.Accept(this, Br(arg));
+                }
+                return appl;
+            }
 
 public Expression VisitArrayAccess(ArrayAccess acc, BitRange ctx)
 {
@@ -310,6 +327,15 @@ public Expression VisitArrayAccess(ArrayAccess acc, BitRange ctx)
                     binExp.Left.Accept(this, ctx);
                     binExp.Right.Accept(this, Br(binExp.Right));
                     return binExp;
+                case IMulOperator _:
+                case SDivOperator _:
+                case UDivOperator _:
+                case FMulOperator _:
+                case FDivOperator _:
+                case IModOperator _:
+                    binExp.Left.Accept(this, Br(binExp.Left));
+                    binExp.Right.Accept(this, Br(binExp.Right));
+                    return binExp;
                 }
                 throw new NotImplementedException($"SliceFinder not implemented for {binExp.Operator.GetType().Name}.");
             }
@@ -323,8 +349,8 @@ public Expression VisitArrayAccess(ArrayAccess acc, BitRange ctx)
             public Expression VisitConditionalExpression(ConditionalExpression c, BitRange context)
             {
                 c.Condition.Accept(this, Br(c.Condition));
-                c.ThenExp.Accept(this, Br(c.ThenExp));
-                c.FalseExp.Accept(this, Br(c.FalseExp));
+                c.ThenExp.Accept(this, context);
+                c.FalseExp.Accept(this, context);
                 return c;
             }
 
@@ -399,10 +425,10 @@ public Expression VisitMemberPointerSelector(MemberPointerSelector mps, BitRange
                 return seq;
             }
 
-public Expression VisitOutArgument(OutArgument outArgument, BitRange ctx)
-{
-    throw new NotImplementedException();
-}
+            public Expression VisitOutArgument(OutArgument outArgument, BitRange ctx)
+            {
+                return outArgument;
+            }
 
 public Expression VisitPhiFunction(PhiFunction phi, BitRange ctx)
 {
@@ -414,10 +440,10 @@ public Expression VisitPointerAddition(PointerAddition pa, BitRange ctx)
     throw new NotImplementedException();
 }
 
-public Expression VisitProcedureConstant(ProcedureConstant pc, BitRange ctx)
-{
-    throw new NotImplementedException();
-}
+            public Expression VisitProcedureConstant(ProcedureConstant pc, BitRange ctx)
+            {
+                return pc;
+            }
 
 public Expression VisitScopeResolution(ScopeResolution scopeResolution, BitRange ctx)
 {
@@ -441,10 +467,22 @@ public Expression VisitTestCondition(TestCondition tc, BitRange ctx)
     throw new NotImplementedException();
 }
 
-public Expression VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
-{
-    throw new NotImplementedException();
-}
+            public Expression VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
+            {
+                switch (unary.Operator)
+                {
+                case NegateOperator _:
+                case FNegOperator _:
+                case ComplementOperator _:
+                    unary.Expression.Accept(this, ctx);
+                    return unary;
+                case NotOperator _:
+                case AddressOfOperator _:
+                    unary.Expression.Accept(this, Br(unary.Expression));
+                    return unary;
+                }
+                throw new NotImplementedException();
+            }
 
         }
 
@@ -492,7 +530,17 @@ public Expression VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
 
             public Instruction VisitCallInstruction(CallInstruction ci)
             {
-                throw new NotImplementedException();
+                var callee = ci.Callee.Accept(this, Br(ci.Callee));
+                var uses = new List<CallBinding>();
+                foreach (var use in ci.Uses)
+                {
+                    var e = use.Expression.Accept(this, use.BitRange);
+                    uses.Add(new CallBinding(use.Storage, e) { BitRange = use.BitRange });
+                }
+                var newCall= new CallInstruction(callee, ci.CallSite);
+                newCall.Uses.UnionWith(uses);
+                newCall.Definitions.UnionWith(ci.Definitions);
+                return newCall;
             }
 
             public Instruction VisitComment(CodeComment comment)
@@ -573,7 +621,8 @@ public Expression VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
 
             public Instruction VisitSideEffect(SideEffect side)
             {
-                throw new NotImplementedException();
+                var e = side.Expression.Accept(this, Br(side.Expression));
+                return new SideEffect(e);
             }
 
             public Instruction VisitStore(Store store)
@@ -586,7 +635,8 @@ public Expression VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
 
             public Instruction VisitSwitchInstruction(SwitchInstruction si)
             {
-                throw new NotImplementedException();
+                var c = si.Expression.Accept(this, Br(si.Expression));
+                return new SwitchInstruction(c, si.Targets);
             }
 
             public Instruction VisitUseInstruction(UseInstruction use)
@@ -596,12 +646,19 @@ public Expression VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
 
             public Expression VisitAddress(Address addr, BitRange ctx)
             {
-                throw new NotImplementedException();
+                return addr;
             }
 
-            public Expression VisitApplication(Core.Expressions.Application appl, BitRange ctx)
+            public Expression VisitApplication(Application appl, BitRange ctx)
             {
-                throw new NotImplementedException();
+                var callee = appl.Procedure.Accept(this, Br(appl.Procedure));
+                var args = new List<Expression>();
+                foreach (var arg in appl.Arguments)
+                {
+                    var argNew = arg.Accept(this, Br(arg));
+                    args.Add(argNew);
+                }
+                return new Application(callee, appl.DataType, args.ToArray());
             }
 
             public Expression VisitArrayAccess(ArrayAccess acc, BitRange ctx)
@@ -632,6 +689,14 @@ public Expression VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
                     left = binExp.Left.Accept(this, ctx);
                     dt = left.DataType;
                     break;
+                case IMulOperator _:
+                case FMulOperator _:
+                case SDivOperator _:
+                case UDivOperator _:
+                case FDivOperator _:
+                    left = binExp.Left.Accept(this, Br(binExp.Left));
+                    right = binExp.Right.Accept(this, Br(binExp.Right));
+                    break;
                 default:
                     throw new NotImplementedException();
                 }
@@ -661,9 +726,12 @@ public Expression VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
                 }
             }
 
-            public Expression VisitConditionalExpression(Core.Expressions.ConditionalExpression c, BitRange context)
+            public Expression VisitConditionalExpression(ConditionalExpression c, BitRange context)
             {
-                throw new NotImplementedException();
+                var cond = c.Condition.Accept(this, Br(c.Condition));
+                var t = c.ThenExp.Accept(this, context);
+                var f = c.FalseExp.Accept(this, context);
+                return new ConditionalExpression(t.DataType, cond, t, f);
             }
 
             public Expression VisitConditionOf(ConditionOf cof, BitRange ctx)
@@ -783,7 +851,7 @@ public Expression VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
 
             public Expression VisitOutArgument(OutArgument outArgument, BitRange ctx)
             {
-                throw new NotImplementedException();
+                return outArgument;
             }
 
             public Expression VisitPhiFunction(PhiFunction phi, BitRange ctx)
@@ -798,7 +866,7 @@ public Expression VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
 
             public Expression VisitProcedureConstant(ProcedureConstant pc, BitRange ctx)
             {
-                throw new NotImplementedException();
+                return pc;
             }
 
             public Expression VisitScopeResolution(ScopeResolution scopeResolution, BitRange ctx)
@@ -820,11 +888,25 @@ public Expression VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
 
             public Expression VisitTestCondition(TestCondition tc, BitRange ctx)
             {
-                throw new NotImplementedException();
+                var e = tc.Expression.Accept(this, Br(tc.Expression));
+                return new TestCondition(tc.ConditionCode, e);
             }
 
             public Expression VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
             {
+                switch (unary.Operator)
+                {
+                case NegateOperator _:
+                case FNegOperator _:
+                case ComplementOperator _:
+                    var e = unary.Expression.Accept(this, ctx);
+                    return new UnaryExpression(unary.Operator, e.DataType, e);
+
+                case NotOperator _:
+                case AddressOfOperator _:
+                    var ee = unary.Expression.Accept(this, Br(unary.Expression));
+                    return new UnaryExpression(unary.Operator, unary.DataType, ee);
+                }
                 throw new NotImplementedException();
             }
         }
