@@ -132,6 +132,13 @@ namespace Reko.Core
         /// <param name="size">Spacing between offsets</param>
         public abstract bool OffsetsAdjacent(long oLsb, long oMsb, long size);
 
+
+        /// <summary>
+        /// Given a stack storage, generate a slice of said storage.
+        /// </summary>
+        public abstract StackStorage SliceStackStorage(StackStorage stg, BitRange bitRange);
+
+
         /// <summary>
         /// Reads a value from memory, respecting the processor's endianness. Use this
         /// instead of ImageWriter when random access of memory is requored.
@@ -200,6 +207,16 @@ namespace Reko.Core
                 return oLsb + size == oMsb;
             }
 
+            public override StackStorage SliceStackStorage(StackStorage stg, BitRange bitRange)
+            {
+                var byteOffset = bitRange.Lsb / 8;
+                var dt = PrimitiveType.CreateWord(bitRange.Extent);
+                if (byteOffset < 0)
+                    return new StackLocalStorage(byteOffset, dt);
+                else
+                    return new StackArgumentStorage(byteOffset, dt);
+            }
+
             public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
             {
                 return mem.TryReadLe(addr, dt, out value);
@@ -265,6 +282,16 @@ namespace Reko.Core
             public override bool OffsetsAdjacent(long oLsb, long oMsb, long size)
             {
                 return oMsb + size == oLsb;
+            }
+
+            public override StackStorage SliceStackStorage(StackStorage stg, BitRange bitRange)
+            {
+                var byteOffset = (stg.DataType.BitSize - bitRange.Lsb) / 8;
+                var dt = PrimitiveType.CreateWord(bitRange.Extent);
+                if (byteOffset < 0)
+                    return new StackLocalStorage(byteOffset, dt);
+                else
+                    return new StackArgumentStorage(byteOffset, dt);
             }
 
             public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
