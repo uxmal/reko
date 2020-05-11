@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (4020C8 (str char) str4020C8) (4020D0 (str char) str4020D0) (4020DC (str char) str4020DC) (4020E0 (str char) str4020E0) (4020E4 (str char) str4020E4) (4020E8 (str char) str4020E8) (4020EC real32 r4020EC) (4020F0 real32 r4020F0) (4020F4 real32 r4020F4) (4020F8 real64 r4020F8) (402100 real64 r402100) (403018 cdecl_class_ptr gbl_c) (40301C nested_structs_type gbl_nested_structs) (403020 nested_struct t403020) (403024 int32 dw403024) (403028 int32 dw403028) (40302C uint32 dw40302C) (403030 uint32 dw403030) (403034 (ptr32 thiscall_class) gbl_thiscall))
+Eq_1: (struct "Globals" (4020C8 (str char) str4020C8) (4020D0 (str char) str4020D0) (4020DC (str char) str4020DC) (4020E0 (str char) str4020E0) (4020E4 (str char) str4020E4) (4020E8 (str char) str4020E8) (4020EC real32 r4020EC) (4020F0 real32 r4020F0) (4020F4 real32 r4020F4) (4020F8 real64 r4020F8) (402100 real64 r402100) (403018 cdecl_class_ptr gbl_c) (40301C nested_structs_type gbl_nested_structs) (40302C uint32 dw40302C) (403030 uint32 dw403030) (403034 (ptr32 thiscall_class) gbl_thiscall))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_5: (fn void ((ptr32 char), int32, (ptr32 char), real32))
 	T_5 (in test1 : ptr32)
@@ -1317,9 +1317,6 @@ typedef struct Globals {
 	real64 r402100;	// 402100
 	cdecl_class_ptr gbl_c;	// 403018
 	nested_structs_type gbl_nested_structs;	// 40301C
-	nested_struct t403020;	// 403020
-	int32 dw403024;	// 403024
-	int32 dw403028;	// 403028
 	uint32 dw40302C;	// 40302C
 	uint32 dw403030;	// 403030
 	thiscall_class * gbl_thiscall;	// 403034

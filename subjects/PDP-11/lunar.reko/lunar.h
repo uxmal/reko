@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (4 word16 w0004) (6 word16 w0006) (30 word16 w0030) (44 Eq_5 t0044) (46 ci16 w0046) (48 wchar_t w0048) (4A Eq_5 t004A) (4C Eq_5 t004C) (4E Eq_5 t004E) (50 Eq_5 t0050) (52 Eq_5 t0052) (54 ci16 w0054) (56 wchar_t w0056) (58 Eq_5 t0058) (5A wchar_t w005A) (5C word16 w005C) (5E word16 w005E) (60 wchar_t w0060) (62 wchar_t w0062) (64 Eq_5 t0064) (66 Eq_5 t0066) (68 wchar_t w0068) (6A word16 w006A) (6C Eq_5 t006C) (6E Eq_5 t006E) (70 cu16 w0070) (72 int16 w0072) (74 cui16 w0074) (78 int16 w0078) (7A word16 w007A) (7E ci16 w007E) (80 word16 w0080) (82 (ptr16 word16) ptr0082) (84 word16 w0084) (86 (ptr16 word16) ptr0086) (8A cui16 w008A) (8C cui16 w008C) (8E cui16 w008E) (90 cui16 w0090) (92 (ptr16 Eq_626) ptr0092) (9E word16 w009E) (A0 ci16 w00A0) (A2 ci16 w00A2) (A4 ci16 w00A4) (A6 cui16 w00A6) (A8 cui16 w00A8) (AA wchar_t w00AA) (AC int16 w00AC) (AE ci16 w00AE) (B0 (ptr16 Eq_1056) ptr00B0) (13E (arr (ptr16 word16)) a013E) (21C Eq_419 t021C) (3FF word16 w03FF) (400 word16 w0400) (7BA word16 w07BA) (C72 word16 w0C72) (F70 word16 w0F70) (168C (arr (ptr16 Eq_2687)) a168C) (1696 (arr (ptr16 Eq_2692)) a1696) (182A (arr word16) a182A) (182C word16 w182C) (182E word16 w182E) (1F96 Eq_1933 t1F96) (25AA word16 w25AA) (25B8 Eq_2712 t25B8) (25C0 word16 w25C0) (2610 word16 w2610) (2612 word16 w2612) (267A word16 w267A) (267C word16 w267C) (27A8 cui16 w27A8) (27B0 (arr Eq_2929) a27B0) (2814 byte b2814) (28F0 ci16 w28F0) (28F2 (arr word16) a28F2) (28F8 (arr Eq_2934) a28F8) (34B4 word16 w34B4) (34B6 word16 w34B6) (34BA word16 w34BA) (34C2 word16 w34C2) (34CA word16 w34CA) (34D2 word16 w34D2) (34DA word16 w34DA) (34E0 (arr word16) a34E0) (35CA cui16 w35CA) (35CC word16 w35CC) (35CE word16 w35CE) (35D0 word16 w35D0) (35D2 word16 w35D2) (3FFC (ptr16 Eq_836) ptr3FFC) (F400 word16 wF400) (F402 word16 wF402) (FB8C ci8 bFB8C) (FB8E word16 wFB8E) (FF66 word16 wFF66) (FFFE word16 wFFFE))
+Eq_1: (struct "Globals" (4 word16 w0004) (6 word16 w0006) (30 word16 w0030) (44 Eq_5 t0044) (46 ci16 w0046) (48 wchar_t w0048) (4A Eq_5 t004A) (4C Eq_5 t004C) (4E Eq_5 t004E) (50 Eq_5 t0050) (52 Eq_5 t0052) (54 ci16 w0054) (56 wchar_t w0056) (58 Eq_5 t0058) (5A wchar_t w005A) (5C word16 w005C) (5E word16 w005E) (60 wchar_t w0060) (62 wchar_t w0062) (64 Eq_5 t0064) (66 Eq_5 t0066) (68 wchar_t w0068) (6A word16 w006A) (6C Eq_5 t006C) (6E Eq_5 t006E) (70 cu16 w0070) (72 int16 w0072) (74 cui16 w0074) (78 int16 w0078) (7A word16 w007A) (7E ci16 w007E) (80 word16 w0080) (82 (ptr16 word16) ptr0082) (84 word16 w0084) (86 (ptr16 word16) ptr0086) (8A cui16 w008A) (8C cui16 w008C) (8E cui16 w008E) (90 cui16 w0090) (92 (ptr16 Eq_626) ptr0092) (9E word16 w009E) (A0 ci16 w00A0) (A2 ci16 w00A2) (A4 ci16 w00A4) (A6 cui16 w00A6) (A8 cui16 w00A8) (AA wchar_t w00AA) (AC int16 w00AC) (AE ci16 w00AE) (B0 (ptr16 Eq_1056) ptr00B0) (13E (arr (ptr16 word16)) a013E) (21C Eq_419 t021C) (7BA word16 w07BA) (C72 word16 w0C72) (F70 word16 w0F70) (168C (arr (ptr16 Eq_2687)) a168C) (1696 (arr (ptr16 Eq_2692)) a1696) (182A (arr word16) a182A) (182C word16 w182C) (182E word16 w182E) (1F96 Eq_1933 t1F96) (25AA word16 w25AA) (25B8 Eq_2712 t25B8) (25C0 word16 w25C0) (2610 word16 w2610) (2612 word16 w2612) (267A word16 w267A) (267C word16 w267C) (27A8 cui16 w27A8) (27B0 (arr Eq_2929) a27B0) (2814 byte b2814) (28F0 ci16 w28F0) (28F2 (arr word16) a28F2) (28F8 (arr Eq_2934) a28F8) (34B4 word16 w34B4) (34B6 word16 w34B6) (34BA word16 w34BA) (34C2 word16 w34C2) (34CA word16 w34CA) (34D2 word16 w34D2) (34DA word16 w34DA) (34E0 (arr word16) a34E0) (35CA cui16 w35CA) (35CC word16 w35CC) (35CE word16 w35CE) (35D0 word16 w35D0) (35D2 word16 w35D2) (3FFC (ptr16 Eq_836) ptr3FFC) (F400 word16 wF400) (F402 word16 wF402) (FB8C ci8 bFB8C) (FB8E word16 wFB8E) (FF66 word16 wFF66) (FFFE word16 wFFFE))
 	globals_t (in globals : (ptr16 (struct "Globals")))
 Eq_2: (fn void ())
 	T_2 (in __wait : ptr16)
@@ -6684,7 +6684,7 @@ T_1427: (in 0x400<16> : word16)
   Class: Eq_19
   DataType: (ptr16 word16)
   OrigDataType: cup16
-T_1428: (in r4 > &globals->w0400 : bool)
+T_1428: (in r4 > &(globals->t021C + 484<i32>) : bool)
   Class: Eq_1428
   DataType: bool
   OrigDataType: bool
@@ -6712,7 +6712,7 @@ T_1434: (in 0x3FF<16> : word16)
   Class: Eq_19
   DataType: (ptr16 word16)
   OrigDataType: word16
-T_1435: (in globals->ptr0082 == &globals->w03FF : bool)
+T_1435: (in globals->ptr0082 == &(globals->t021C + 483<i32>) : bool)
   Class: Eq_1435
   DataType: bool
   OrigDataType: bool
@@ -8288,7 +8288,7 @@ T_1828: (in 0x400<16> : word16)
   Class: Eq_19
   DataType: (ptr16 word16)
   OrigDataType: cup16
-T_1829: (in r4_129 > &globals->w0400 : bool)
+T_1829: (in r4_129 > &(globals->t021C + 484<i32>) : bool)
   Class: Eq_1829
   DataType: bool
   OrigDataType: bool
@@ -12794,8 +12794,6 @@ typedef struct Globals {
 	struct Eq_1056 * ptr00B0;	// B0
 	word16 * a013E[];	// 13E
 	Eq_419 t021C;	// 21C
-	word16 w03FF;	// 3FF
-	word16 w0400;	// 400
 	word16 w07BA;	// 7BA
 	word16 w0C72;	// C72
 	word16 w0F70;	// F70

@@ -4224,7 +4224,7 @@ void fn000167AA(word32 r0, struct Eq_n * r2, Eq_n r4, union Eq_n * fp, ptr32 * p
 			return;
 		sp_n->tFFFFFFFC = (char *) fp_n - 24;
 		sp_n->tFFFFFFF8 = (char *) fp_n - 0x0C;
-		sp_n->tFFFFFFF4.u0 = (word64) r2_n + 0x0100;
+		sp_n->tFFFFFFF4 = (word32) r2_n + 0x0100;
 		sp_n->tFFFFFFF0 = r2_n;
 		sp_n->tFFFFFFEC.u0 = 0x00;
 		sp_n->tFFFFFFE8.u0 = 0x40;
@@ -4860,7 +4860,7 @@ Eq_n fn00017DEE(struct Eq_n * r3, Eq_n ap, union Eq_n * fp, ptr32 & r2Out, struc
 				do
 				{
 					Eq_n ap_n = ap_n - 0x06;
-					Eq_n r2_n = *((word64) ap_n + 2);
+					Eq_n r2_n = *((word32) ap_n + 2);
 					sp_n->tFFFFFFFC = ap_n;
 					(globals->ptr192B0 + 2)();
 					ap_n = r2_n;
@@ -5112,7 +5112,7 @@ Eq_n fn00017F4E(Eq_n r0, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n ap, union Eq_n * fp, pt
 					do
 					{
 						Eq_n ap_n = ap_n - 0x06;
-						Eq_n r4_n = *((word64) ap_n + 2);
+						Eq_n r4_n = *((word32) ap_n + 2);
 						sp_n->tFFFFFFFC = ap_n;
 						word32 r7_n;
 						word32 r11_n;

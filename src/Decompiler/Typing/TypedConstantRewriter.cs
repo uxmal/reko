@@ -287,16 +287,14 @@ namespace Reko.Typing
                     PromoteToCString(c, charType);
                     return ReadNullTerminatedString(c, charType);
                 }
-                StructureField f = EnsureFieldAtOffset(GlobalVars, dt, c.ToInt32());
-                var ptrGlobals = new Pointer(GlobalVars, platform.PointerType.BitSize);
-                e = new FieldAccess(ptr.Pointee, new Dereference(ptrGlobals, globals), f);
+                e = RewriteGlobalFieldAccess(dt, c.ToInt32());
                 if (dereferenced)
                 {
                     e.DataType = ptr.Pointee;
                 }
                 else
                 {
-                    if (f.DataType is ArrayType array) // C language rules 'promote' arrays to pointers.
+                    if (e.DataType is ArrayType array) // C language rules 'promote' arrays to pointers.
                     {
                         e.DataType = program.TypeFactory.CreatePointer(
                             array.ElementType, 
@@ -363,6 +361,41 @@ namespace Reko.Typing
                 field.DataType = dt;
             }
             return dt;
+        }
+
+        private bool IsInsideField(int offset, StructureField field)
+        {
+            if (offset < field.Offset)
+                return false;
+            if (offset == field.Offset)
+                return true;
+            if (offset < field.Offset + field.DataType.Size)
+                return true;
+            var str = field.DataType.ResolveAs<StructureType>();
+            if (str != null && offset < field.Offset + str.GetInferredSize())
+                return true;
+            return false;
+        }
+
+        private Expression RewriteGlobalFieldAccess(
+            DataType dt,
+            int offset)
+        {
+            var f = GlobalVars.Fields.LowerBound(offset);
+            if (f == null || !IsInsideField(offset, f))
+            {
+                f = new StructureField(offset, dt);
+                GlobalVars.Fields.Add(f);
+            }
+            var ptrStr = new Pointer(GlobalVars, platform.PointerType.BitSize);
+            var fa = new FieldAccess(f.DataType, new Dereference(ptrStr, globals), f);
+            if (f.Offset != offset)
+            {
+                var ceb = new ComplexExpressionBuilder(
+                    null, null, fa, null, offset - f.Offset);
+                return ceb.BuildComplex(false);
+            }
+            return fa;
         }
 
         private StructureField EnsureFieldAtOffset(StructureType str, DataType dt, int offset)

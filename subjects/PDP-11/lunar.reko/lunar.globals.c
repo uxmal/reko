@@ -101,8 +101,6 @@ Eq_n g_t021C =
 			13536
 		},
 	};
-word16 g_w03FF = 0xC500;
-word16 g_w0400 = 0x15C5;
 word16 g_w07BA = 0x00;
 word16 g_w0C72 = 0x00;
 word16 g_w0F70 = 0x0A9F;

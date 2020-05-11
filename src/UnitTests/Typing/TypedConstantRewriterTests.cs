@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Typing
         private void Given_Global(uint address, DataType dt)
         {
             var str = globals.DataType.ResolveAs<Pointer>().Pointee.ResolveAs<StructureType>();
-            str.Fields.Add((int)(address - 0x00100000u), dt);
+            str.Fields.Add((int)address, dt);
         }
 
         private void Given_Segment(ushort selector, string name)
@@ -151,6 +151,27 @@ namespace Reko.UnitTests.Typing
             c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
             Expression e = tcr.Rewrite(c, false);
             Assert.AreEqual("(word32 *) 0xFFFFFFFF<32>", e.ToString());
+        }
+
+        [Test]
+        public void Tcr_RewritePointerToStructField()
+        {
+            Given_TypedConstantRewriter();
+            var str = new StructureType
+            {
+                Fields =
+                {
+                    { 0, PrimitiveType.Int32 },
+                    { 4, PrimitiveType.Real32 },
+                },
+            };
+            Given_Global(0x00100100, str);
+            var c = Constant.Word32(0x00100104);
+            store.EnsureExpressionTypeVariable(factory, c);
+            c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
+            c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
+            var e = tcr.Rewrite(c, false);
+            Assert.AreEqual("&globals->t100100.r0004", e.ToString());
         }
 
         private void Given_String(string str, uint addr)
@@ -239,8 +260,8 @@ namespace Reko.UnitTests.Typing
         public void Tcr_ArrayEnd()
         {
             Given_TypedConstantRewriter();
-            Given_Global(0x00100000, new ArrayType(PrimitiveType.Real32, 16));
-            Given_Global(0x00100040, PrimitiveType.Word16);
+            Given_Global(0x00000000, new ArrayType(PrimitiveType.Real32, 16));
+            Given_Global(0x00000040, PrimitiveType.Word16);
             var c = Constant.Word32(0x00100040);
             store.EnsureExpressionTypeVariable(factory, c);
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Real32, 32);

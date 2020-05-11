@@ -34,10 +34,6 @@ Eq_n g_tFFF04F23;
 Eq_n g_tFFF04FFF;
 struct Eq_n g_tFFFFFFFF;
 word32 g_dw0001 = 0x09200002;
-union Eq_n g_u0004 = 
-	{
-		0x09
-	};
 word32 g_dw0005 = 0x01000080;
 Eq_n g_t0008 = 
 	{
@@ -64,11 +60,6 @@ Eq_n g_t0008 =
 		0x6A6BDD16,
 		0xA3,
 		177,
-	};
-struct Eq_n g_t000C = 
-	{
-		0x8005,
-		~0x000F0FF8,
 	};
 word32 g_dw000D = 0x80;
 Eq_n g_t00FF = 

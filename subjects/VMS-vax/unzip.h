@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (9EFF72CD (ptr32 (ptr32 (ptr32 (ptr32 (ptr32 (ptr32 (ptr32 (ptr32 (ptr32 (ptr32 Eq_5081)))))))))) ptr9EFF72CD) (1 Eq_5082 t0001) (2 word16 w0002) (4 Eq_153 t0004) (974 (arr ui32) a0974) (A38 word32 dw0A38) (1001 byte b1001) (1601 byte b1601) (1801 byte b1801) (1A01 byte b1A01) (1C01 byte b1C01) (1E01 byte b1E01) (2001 byte b2001) (C701 (struct "Eq_18069" (10 word32 dw0010) (6C word32 dw006C) (90 word32 dw0090) (94 word32 dw0094) (5E7 (ptr32 (ptr32 (ptr32 (ptr32 (ptr32 (ptr32 (ptr32 (ptr32 (ptr32 (ptr32 (ptr32 Eq_5081))))))))))) ptr05E7) (C660 word16 wC660) (C662 word16 wC662) (C674 word16 wC674) (C688 word16 wC688)) tC701) (13206 (ptr32 ui32) ptr13206) (19248 ptr32 ptr19248) (1924C ptr32 ptr1924C) (19250 ptr32 ptr19250) (19258 word32 dw19258) (19260 ptr32 ptr19260) (19268 ptr32 ptr19268) (1926C ptr32 ptr1926C) (19270 ptr32 ptr19270) (1927C ptr32 ptr1927C) (19284 ptr32 ptr19284) (1928C ptr32 ptr1928C) (19290 ptr32 ptr19290) (19294 ptr32 ptr19294) (19298 ptr32 ptr19298) (1929C ptr32 ptr1929C) (192A0 ptr32 ptr192A0) (192A4 ptr32 ptr192A4) (192A8 ptr32 ptr192A8) (192B0 ptr32 ptr192B0) (192B4 ptr32 ptr192B4) (192BC ptr32 ptr192BC) (192C0 ptr32 ptr192C0) (192C4 ptr32 ptr192C4) (192CC ptr32 ptr192CC) (192D0 ptr32 ptr192D0) (192D4 ptr32 ptr192D4) (192D8 ptr32 ptr192D8) (192E0 ptr32 ptr192E0) (192E4 ptr32 ptr192E4) (192F0 word32 dw192F0) (192F4 word32 dw192F4) (192F8 word32 dw192F8) (192FC word32 dw192FC) (19300 word32 dw19300) (19304 word32 dw19304) (1930C word32 dw1930C) (1932C ptr32 ptr1932C) (1934C (ptr32 (arr ui32)) ptr1934C) (19354 (ptr32 byte) ptr19354) (19358 (ptr32 byte) ptr19358) (1935C (ptr32 byte) ptr1935C) (19360 (ptr32 byte) ptr19360) (19364 (ptr32 byte) ptr19364) (19368 (ptr32 byte) ptr19368) (1936C (ptr32 byte) ptr1936C) (19374 (ptr32 word32) ptr19374) (3C301267 ui32 dw3C301267))
+Eq_1: (struct "Globals" (1 Eq_5082 t0001) (2 word16 w0002) (4 Eq_153 t0004) (974 (arr ui32) a0974) (A38 word32 dw0A38) (1001 byte b1001) (1601 byte b1601) (1801 byte b1801) (1A01 byte b1A01) (1C01 byte b1C01) (1E01 byte b1E01) (2001 byte b2001) (13206 (ptr32 ui32) ptr13206) (19248 ptr32 ptr19248) (1924C ptr32 ptr1924C) (19250 ptr32 ptr19250) (19258 word32 dw19258) (19260 ptr32 ptr19260) (19268 ptr32 ptr19268) (1926C ptr32 ptr1926C) (19270 ptr32 ptr19270) (1927C ptr32 ptr1927C) (19284 ptr32 ptr19284) (1928C ptr32 ptr1928C) (19290 ptr32 ptr19290) (19294 ptr32 ptr19294) (19298 ptr32 ptr19298) (1929C ptr32 ptr1929C) (192A0 ptr32 ptr192A0) (192A4 ptr32 ptr192A4) (192A8 ptr32 ptr192A8) (192B0 ptr32 ptr192B0) (192B4 ptr32 ptr192B4) (192BC ptr32 ptr192BC) (192C0 ptr32 ptr192C0) (192C4 ptr32 ptr192C4) (192CC ptr32 ptr192CC) (192D0 ptr32 ptr192D0) (192D4 ptr32 ptr192D4) (192D8 ptr32 ptr192D8) (192E0 ptr32 ptr192E0) (192E4 ptr32 ptr192E4) (192F0 word32 dw192F0) (192F4 word32 dw192F4) (192F8 word32 dw192F8) (192FC word32 dw192FC) (19300 word32 dw19300) (19304 word32 dw19304) (1930C word32 dw1930C) (1932C ptr32 ptr1932C) (1934C (ptr32 (arr ui32)) ptr1934C) (19354 (ptr32 byte) ptr19354) (19358 (ptr32 byte) ptr19358) (1935C (ptr32 byte) ptr1935C) (19360 (ptr32 byte) ptr19360) (19364 (ptr32 byte) ptr19364) (19368 (ptr32 byte) ptr19368) (1936C (ptr32 byte) ptr1936C) (19374 (ptr32 word32) ptr19374) (3C301267 ui32 dw3C301267))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_6: (struct "Eq_6" (FFFFFFF8 word32 dwFFFFFFF8) (FFFFFFFC word32 dwFFFFFFFC))
 	T_6 (in sp_13 : (ptr32 Eq_6))
@@ -72175,7 +72175,7 @@ T_16943: (in sp_601 + -12<i32> : word32)
 T_16944: (in Mem619[sp_601 + -12<i32>:word32] : word32)
   Class: Eq_1234
   DataType: Eq_1234
-  OrigDataType: word64
+  OrigDataType: word32
 T_16945: (in -16<i32> : int32)
   Class: Eq_16945
   DataType: int32
@@ -89297,9 +89297,7 @@ T_21224:
   DataType: Eq_21224
   OrigDataType: 
 */
-typedef struct Eq_18069;
-struct Globals {
-	struct Eq_5081 ********** ptr9EFF72CD;	// 9EFF72CD
+typedef struct Globals {
 	Eq_5082 t0001;	// 1
 	word16 w0002;	// 2
 	Eq_153 t0004;	// 4
@@ -89312,7 +89310,6 @@ struct Globals {
 	byte b1C01;	// 1C01
 	byte b1E01;	// 1E01
 	byte b2001;	// 2001
-	struct Eq_18069 tC701;	// C701
 	ui32 * ptr13206;	// 13206
 	ptr32 ptr19248;	// 19248
 	ptr32 ptr1924C;	// 1924C

@@ -3516,7 +3516,7 @@ int32 fn0000A5D0(union Eq_n * r3)
 	union Eq_n * r4_n;
 	Eq_n r3_n;
 	Eq_n r4_n = *((char *) r3 + 40);
-	if (*((char *) r3 + 48) == &globals->t0001)
+	if (*((char *) r3 + 48) == &((word32) (globals->tFFFFFFFF).dw0000 + 2))
 	{
 		r3_n = *((char *) r3 + 44);
 		globals->t1349C = r4_n;
@@ -4004,13 +4004,13 @@ l0000B84C:
 			{
 				int32 r14_n;
 				Eq_n r2_n;
-				if (r2_n == &globals->dw0002)
+				if (r2_n == &((word32) (globals->tFFFFFFFF).dw0000 + 3))
 				{
 					r14_n = -3;
 					r2_n = globals->t13098;
 					goto l0000B590;
 				}
-				if (r2_n > &globals->dw0002)
+				if (r2_n > &((word32) (globals->tFFFFFFFF).dw0000 + 3))
 				{
 					if (r2_n != &globals->dw0003)
 					{
@@ -4039,7 +4039,7 @@ l0000B5FC:
 				}
 				else
 				{
-					if (r2_n == &globals->t0001)
+					if (r2_n == &((word32) (globals->tFFFFFFFF).dw0000 + 2))
 					{
 						r14_n = 0;
 						r2_n = globals->t1309C;
@@ -4225,9 +4225,9 @@ int32 fn0000BC28()
 // 0000BC38: Register word32 fn0000BC38(Register (ptr32 word32) r3)
 word32 fn0000BC38(word32 * r3)
 {
-	if (r3 > &globals->dw0021 || r3 < &globals->dw000E)
+	if (r3 > &globals->dw0021 || r3 < &((word32) globals->dw000B + 3))
 		return dwLoc0C;
-	<anonymous> * r3_n = *((char *) globals->a12BA4 + (r3 - &globals->dw000E) * 0x04);
+	<anonymous> * r3_n = *((char *) globals->a12BA4 + (r3 - &((word32) globals->dw000B + 3)) * 0x04);
 	word32 r2_n;
 	r3_n();
 	return r2_n;
