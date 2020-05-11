@@ -30,6 +30,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Reko.Analysis
 {
@@ -319,15 +320,19 @@ public Expression VisitArrayAccess(ArrayAccess acc, BitRange ctx)
                 return cast;
             }
 
-public Expression VisitConditionalExpression(ConditionalExpression c, BitRange context)
-{
-    throw new NotImplementedException();
-}
+            public Expression VisitConditionalExpression(ConditionalExpression c, BitRange context)
+            {
+                c.Condition.Accept(this, Br(c.Condition));
+                c.ThenExp.Accept(this, Br(c.ThenExp));
+                c.FalseExp.Accept(this, Br(c.FalseExp));
+                return c;
+            }
 
-public Expression VisitConditionOf(ConditionOf cof, BitRange ctx)
-{
-    throw new NotImplementedException();
-}
+            public Expression VisitConditionOf(ConditionOf cof, BitRange ctx)
+            {
+                cof.Expression.Accept(this, Br(cof.Expression));
+                return cof;
+            }
 
             public Expression VisitConstant(Constant c, BitRange ctx)
             {
@@ -376,10 +381,23 @@ public Expression VisitMemberPointerSelector(MemberPointerSelector mps, BitRange
                 return access;
             }
 
-public Expression VisitMkSequence(MkSequence seq, BitRange ctx)
-{
-    throw new NotImplementedException();
-}
+            public Expression VisitMkSequence(MkSequence seq, BitRange ctx)
+            {
+                int bitPos = 0;
+                for (int i = seq.Expressions.Length-1; i >=0; --i)
+                {
+                    var elem = seq.Expressions[i];
+                    var br = Br(elem);
+                    var ctxElem = ctx.Offset(-bitPos);
+                    var btIntersect = ctxElem & br;
+                    if (!btIntersect.IsEmpty)
+                    {
+                        elem.Accept(this, btIntersect);
+                    }
+                    bitPos += br.Extent;
+                }
+                return seq;
+            }
 
 public Expression VisitOutArgument(OutArgument outArgument, BitRange ctx)
 {
@@ -573,7 +591,7 @@ public Expression VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
 
             public Instruction VisitUseInstruction(UseInstruction use)
             {
-                throw new NotImplementedException();
+                return use;
             }
 
             public Expression VisitAddress(Address addr, BitRange ctx)
@@ -650,7 +668,8 @@ public Expression VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
 
             public Expression VisitConditionOf(ConditionOf cof, BitRange ctx)
             {
-                throw new NotImplementedException();
+                var c = cof.Expression.Accept(this, Br(cof.Expression));
+                return new ConditionOf(c);
             }
 
             public Expression VisitConstant(Constant c, BitRange ctx)
@@ -690,6 +709,11 @@ public Expression VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
                 // an available slice.
 
                 var sid = outer.ssa.Identifiers[id];
+                if (ctx.IsEmpty)
+                {
+                    sid.Uses.Remove(Statement);
+                    return id;
+                }
                 if (outer.replaceIds.TryGetValue(sid, out var sidNew))
                 {
                     sidNew.Uses.Add(Statement);
@@ -728,7 +752,33 @@ public Expression VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
 
             public Expression VisitMkSequence(MkSequence seq, BitRange ctx)
             {
-                throw new NotImplementedException();
+                var seqNew = new List<Expression>();
+                int bitPos = 0;
+                int totalBits = 0;
+                for (int i = seq.Expressions.Length - 1; i >= 0; --i)
+                {
+                    var elem = seq.Expressions[i];
+                    var br = Br(elem);
+                    var ctxElem = ctx.Offset(-bitPos);
+                    var btIntersect = ctxElem & br;
+                    var newElem = elem.Accept(this, btIntersect);
+                    if (!btIntersect.IsEmpty)
+                    {
+                        seqNew.Add(newElem);
+                        totalBits += newElem.DataType.BitSize;
+                    }
+                    bitPos += br.Extent;
+                }
+                Debug.Assert(seqNew.Count > 0, "What to do if 0 sequence elements are live?");
+                if (seqNew.Count == 1)
+                {
+                    return seqNew[0];
+                }
+                else
+                {
+                    var dtNew = PrimitiveType.CreateWord(totalBits);
+                    return new MkSequence(dtNew, seqNew.ToArray());
+                }
             }
 
             public Expression VisitOutArgument(OutArgument outArgument, BitRange ctx)
