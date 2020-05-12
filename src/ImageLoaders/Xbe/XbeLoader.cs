@@ -24,6 +24,7 @@ using Reko.Core.Pascal;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 using static Reko.ImageLoaders.Xbe.Structures;
 
@@ -166,28 +167,14 @@ namespace Reko.ImageLoaders.Xbe
             }
         }
 
-        public override Program Load(Address addrLoad)
-        {
-            var cfgSvc = Services.RequireService<IConfigurationService>();
-            var arch = cfgSvc.GetArchitecture("x86-protected-32");
-            var platform = cfgSvc.GetEnvironment("xbox").Load(Services, arch);
+        private XbeImage ctx;
+        private XbeImageHeader hdr;
 
-            XbeImageHeader hdr = rdr.ReadStruct<XbeImageHeader>();
-            if (hdr.Magic != XBE_MAGIC)
-            {
-                throw new BadImageFormatException("Invalid XBE Magic");
-            }
-            XbeImage ctx = new XbeImage(hdr);
-
-            long sectionHeadersOffset = ctx.SectionHeadersAddress - ctx.BaseAddress;
-            rdr.Seek(sectionHeadersOffset, System.IO.SeekOrigin.Begin);
-
-            List<ImageSegment> segments = new List<ImageSegment>((int)hdr.NumberOfSections + 1);
-
-            //// Load sections
+        private List<ImageSegment> LoadPrimarySections() {
+            List<ImageSegment> segments = new List<ImageSegment>((int) hdr.NumberOfSections + 1);
 
             int i;
-            for(i=0; i<hdr.NumberOfSections; i++)
+            for (i = 0; i < hdr.NumberOfSections; i++)
             {
                 XbeSectionHeader sectionHeader = rdr.ReadStruct<XbeSectionHeader>();
                 XbeSection section = new XbeSection(sectionHeader);
@@ -219,8 +206,11 @@ namespace Reko.ImageLoaders.Xbe
                 segments.Add(segment);
             }
 
-            //// Load TLS
+            return segments;
+        }
 
+        private ImageSegment LoadTlsSection()
+        {
             Address tlsDirectoryAddress = new Address32(hdr.TlsAddress);
             XbeTls tls = rdr.ReadAt<XbeTls>(tlsDirectoryAddress - ctx.BaseAddress, (rdr) =>
             {
@@ -235,29 +225,65 @@ namespace Reko.ImageLoaders.Xbe
                     new Address32(tls.DataStartAddress), tlsData
                 ), AccessMode.ReadWrite);
 
-                segments.Add(tlsSegment);
+                return tlsSegment;
             }
 
-            //// Load Imports
+            return null;
+        }
+
+        private Dictionary<Address32, ImportReference> LoadImports()
+        {
+            Dictionary<Address32, ImportReference> imports = new Dictionary<Address32, ImportReference>();
 
             XbeLibrary kernelLibrary = new XbeLibrary(rdr.ReadAt(ctx.KernelLibraryAddress - ctx.BaseAddress, (rdr) =>
             {
                 return rdr.ReadStruct<XbeLibraryVersion>();
             }));
 
-            Dictionary<Address32, ImportReference> imports = new Dictionary<Address32, ImportReference>();
             rdr.Seek(ctx.KernelThunkAddress - ctx.BaseAddress, System.IO.SeekOrigin.Begin);
 
-            for(i=0; ; i++)
+            for (uint i = 0; ; i++)
             {
-                Address32 ordinalAddress = (Address32)ctx.KernelThunkAddress.Add(i * 4);
+                Address32 ordinalAddress = (Address32) ctx.KernelThunkAddress.Add(i * 4);
                 uint dword = rdr.ReadUInt32();
                 if (dword == 0)
                     break;
 
-                int ordinalValue = (int)(dword & 0x7FFFFFFF);
+                int ordinalValue = (int) (dword & 0x7FFFFFFF);
                 imports.Add(ordinalAddress, new OrdinalImportReference(ordinalAddress, kernelLibrary.LibraryName, ordinalValue, SymbolType.ExternalProcedure));
             }
+
+            return imports;
+        }
+
+        public override Program Load(Address addrLoad)
+        {
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            var arch = cfgSvc.GetArchitecture("x86-protected-32");
+            var platform = cfgSvc.GetEnvironment("xbox").Load(Services, arch);
+
+            this.hdr = rdr.ReadStruct<XbeImageHeader>();
+            if (hdr.Magic != XBE_MAGIC)
+            {
+                throw new BadImageFormatException("Invalid XBE Magic");
+            }
+            this.ctx = new XbeImage(hdr);
+
+            long sectionHeadersOffset = ctx.SectionHeadersAddress - ctx.BaseAddress;
+            rdr.Seek(sectionHeadersOffset, System.IO.SeekOrigin.Begin);
+
+
+            var segments = LoadPrimarySections();
+
+            ImageSegment tlsSegment = LoadTlsSection();
+            if(tlsSegment != null)
+            {
+                segments.Add(tlsSegment);
+            }
+
+            var imports = LoadImports();
+
+            // build program
 
             SegmentMap segmentMap = new SegmentMap(ctx.EntryPointAddress, segments.ToArray());
             ImageSymbol entryPoint = ImageSymbol.Procedure(arch, ctx.EntryPointAddress);
