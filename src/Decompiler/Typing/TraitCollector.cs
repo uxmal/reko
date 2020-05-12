@@ -495,15 +495,6 @@ namespace Reko.Typing
             return handler.EqualTrait(decl.Identifier, decl.Expression);
         }
 
-        public DataType VisitDepositBits(DepositBits d)
-        {
-            d.Source.Accept(this);
-            d.InsertedBits.Accept(this);
-            var dt = handler.DataTypeTrait(d, d.DataType);
-            ivCur = null;
-            return dt;
-        }
-
 		public DataType VisitDereference(Dereference deref)
 		{
 			deref.Expression.Accept(this);

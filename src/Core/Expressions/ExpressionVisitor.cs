@@ -37,7 +37,6 @@ namespace Reko.Core.Expressions
         void VisitConditionalExpression(ConditionalExpression cond);
         void VisitConditionOf(ConditionOf cof);
 		void VisitConstant(Constant c);
-		void VisitDepositBits(DepositBits d);
 		void VisitDereference(Dereference deref);
 		void VisitFieldAccess(FieldAccess acc);
 		void VisitIdentifier(Identifier id);
@@ -66,7 +65,6 @@ namespace Reko.Core.Expressions
         T VisitConditionalExpression(ConditionalExpression cond);
         T VisitConditionOf(ConditionOf cof);
         T VisitConstant(Constant c);
-        T VisitDepositBits(DepositBits d);
         T VisitDereference(Dereference deref);
         T VisitFieldAccess(FieldAccess acc);
         T VisitIdentifier(Identifier id);
@@ -94,7 +92,6 @@ namespace Reko.Core.Expressions
         T VisitConditionalExpression(ConditionalExpression c, C context);
         T VisitConditionOf(ConditionOf cof, C ctx);
         T VisitConstant(Constant c, C ctx);
-        T VisitDepositBits(DepositBits d, C ctx);
         T VisitDereference(Dereference deref, C ctx);
         T VisitFieldAccess(FieldAccess acc, C ctx);
         T VisitIdentifier(Identifier id, C ctx);
@@ -160,12 +157,6 @@ namespace Reko.Core.Expressions
 
 		public void VisitConstant(Constant c)
 		{
-		}
-
-		public void VisitDepositBits(DepositBits d)
-		{
-			d.Source.Accept(this);
-			d.InsertedBits.Accept(this);
 		}
 
 		public void VisitDereference(Dereference deref)
@@ -295,11 +286,6 @@ namespace Reko.Core.Expressions
         public virtual T VisitConstant(Constant c)
         {
             return default(T);
-        }
-
-        public virtual T VisitDepositBits(DepositBits d)
-        {
-            throw new NotImplementedException();
         }
 
         public virtual T VisitDereference(Dereference deref)

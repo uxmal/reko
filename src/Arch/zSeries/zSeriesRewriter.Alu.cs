@@ -116,7 +116,7 @@ namespace Reko.Arch.zSeries
         private void RewriteLarl()
         {
             Expression src = Addr(instr.Operands[1]);
-            Expression dst = Reg(instr.Operands[0]);
+            Identifier dst = Reg(instr.Operands[0]);
             if (src.DataType.BitSize < dst.DataType.BitSize)
             {
                 src = m.Dpb(dst, src, 0);

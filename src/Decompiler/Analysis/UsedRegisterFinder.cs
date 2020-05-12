@@ -153,18 +153,6 @@ namespace Reko.Analysis
                     idCur = idOld;
                     return n;
                 }
-            case DepositBits dpb:
-                {
-                    // a = DPB(a', b) is also a copy, so we must chase the uses of a'.
-                    var idOld = idCur;
-                    idCur = ass.Dst;
-                    var n = Classify(ssa.Identifiers[ass.Dst]);
-                    idCur = idOld;
-                    n -= new BitRange(
-                        dpb.BitPosition,
-                        dpb.InsertedBits.DataType.BitSize + dpb.BitPosition);
-                    return n;
-                }
             case Slice slice:
                 {
                     // a = SLICE(a', b) is also a copy, so we must chase the uses of a'.
@@ -348,13 +336,6 @@ namespace Reko.Analysis
         public BitRange VisitConstant(Constant c)
         {
             return BitRange.Empty;
-        }
-
-        public BitRange VisitDepositBits(DepositBits d)
-        {
-            // The bits being inserted into, d.Source, are "inert" 
-            var br = d.InsertedBits.Accept(this);
-            return new BitRange(br.Lsb + d.BitPosition, br.Msb + d.BitPosition);
         }
 
         public BitRange VisitDereference(Dereference deref)

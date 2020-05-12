@@ -185,11 +185,6 @@ namespace Reko.Scanning
             return new ConcreteValueSet(c.DataType, c);
         }
 
-        public ValueSet VisitDepositBits(DepositBits d, BitRange bitRange)
-        {
-            throw new NotImplementedException();
-        }
-
         public ValueSet VisitDereference(Dereference deref, BitRange bitRange)
         {
             throw new NotImplementedException();

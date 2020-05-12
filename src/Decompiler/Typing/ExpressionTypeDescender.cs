@@ -465,14 +465,6 @@ namespace Reko.Typing
             return false;
         }
 
-        public bool VisitDepositBits(DepositBits d, TypeVariable tv)
-        {
-            MeetDataType(d, tv.DataType);
-            d.Source.Accept(this, d.Source.TypeVariable);
-            d.InsertedBits.Accept(this, d.InsertedBits.TypeVariable);
-            return false;
-        }
-
         public bool VisitDereference(Dereference deref, TypeVariable tv)
         {
             //$BUG: push (ptr (typeof(deref)

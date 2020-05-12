@@ -96,15 +96,22 @@ namespace Reko.Arch.PaRisc
             var pos = RewriteOp(instr.Operands[1]);
             var len = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
             var dst = RewriteOp(instr.Operands[3]);
-            Expression orig = instr.Zero
-                ? Constant.Zero(dst.DataType)
-                : dst;
                  
             if (pos is Constant cpos)
             {
                 var dt = PrimitiveType.CreateWord(len);
+                var dtHi = PrimitiveType.CreateWord(32 - len);
+                var ins = Constant.Create(dt, imm);
                 var lePos = 31 - cpos.ToInt32();
-                m.Assign(dst, m.Dpb(orig, Constant.Create(dt, imm), lePos));
+                if (instr.Zero)
+                {
+                    m.Assign(dst, m.Dpb(Constant.Zero(dst.DataType), ins, lePos));
+                }
+                else
+                {
+                    m.Assign(dst, m.Dpb((Identifier)dst, ins, lePos));
+                }
+                m.Assign(dst,  lePos);
                 return;
             }
             throw new NotImplementedException("depwi sar not implemented yet.");

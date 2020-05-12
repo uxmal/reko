@@ -483,15 +483,6 @@ namespace Reko.Core.Output
             writer.Write("0x{0:X})", c.ToUInt64());
         }
 
-        void IExpressionVisitor.VisitDepositBits(DepositBits d)
-        {
-            Method("Dpb");
-            d.Source.Accept(this);
-            writer.Write(", ");
-            d.InsertedBits.Accept(this);
-            writer.Write(", {0})", d.BitPosition);
-        }
-
         void IExpressionVisitor.VisitDereference(Dereference deref)
         {
             throw new NotImplementedException();

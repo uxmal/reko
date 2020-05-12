@@ -7,7 +7,7 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	d32_4 = DPB(d32, Mem0[a32:word16], 0)
-	d32_5 = DPB(d32, Mem0[a32 + 4<32>:word16], 0)
+	d32_4 = SEQ(SLICE(d32, word16, 16), Mem0[a32:word16])
+	d32_5 = SEQ(SLICE(d32, word16, 16), Mem0[a32 + 4<32>:word16])
 ProcedureBuilder_exit:
 

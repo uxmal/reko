@@ -183,7 +183,8 @@ namespace Reko.Core.NativeInterface
 
         public HExpr Dpb(HExpr dst, HExpr src, int pos)
         {
-            return MapToHandle(m.Dpb(GetExpression(dst), GetExpression(src), pos));
+            var eDst = GetExpression(dst);
+            return MapToHandle(m.Dpb((Identifier)eDst, GetExpression(src), pos));
         }
 
         public HExpr IAdc(HExpr a, HExpr b, HExpr c)

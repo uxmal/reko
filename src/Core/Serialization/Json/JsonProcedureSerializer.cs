@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -267,11 +267,6 @@ namespace Reko.Core.Serialization.Json
         }
 
         public void VisitDefInstruction(DefInstruction def)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void VisitDepositBits(DepositBits d)
         {
             throw new NotImplementedException();
         }

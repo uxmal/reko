@@ -111,15 +111,6 @@ namespace Reko.Core.Expressions
                 return c;
         }
 
-        public Expression VisitDepositBits(DepositBits d)
-        {
-            if (cmp.Equals(d, original))
-                return replacement;
-            var src = d.Source.Accept(this);
-            var bits = d.InsertedBits.Accept(this);
-            return new DepositBits(src, bits, d.BitPosition);
-        }
-
         public Expression VisitDereference(Dereference deref)
         {
             throw new NotImplementedException();

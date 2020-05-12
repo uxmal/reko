@@ -704,12 +704,13 @@ l00002DDC:
 	a6Out = a6
 	return 0<i32>
 l00002C4E:
-	word32 d0_274 = SEQ(SLICE(d0_64 + 3<32>, word16, 16), Mem99[0x00002C58<p32> + (int32) ((int16) (d0_64 + 3<32>)) * 2<i32>:word16])
+	word16 v24_272 = Mem99[0x00002C58<p32> + (int32) ((int16) (d0_64 + 3<32>)) * 2<i32>:word16]
+	word32 d0_274 = SEQ(SLICE(d0_64 + 3<32>, word16, 16), v24_272)
 	word32 a6_277
 	word32 d0_282
 	word32 a5_284
 	word32 a1_285
-	call 0x00002C58<p32> + (int32) ((int16) d0_274) (retsize: 0;)
+	call 0x00002C58<p32> + (int32) v24_272 (retsize: 0;)
 		uses: a1:a1_285,a2:dwArg04,a3:a3_91,a5:a5,a6:fp - 4<32>,d0:d0_274,Stack +001C:dwLoc08,Stack +0028:dwArg04,Stack +002C:dwArg08
 		defs: a1:a1_285,a5:a5_284,a6:a6_277,d0:d0_282
 	a5Out = a5_284

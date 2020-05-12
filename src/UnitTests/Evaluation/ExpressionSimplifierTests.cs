@@ -378,5 +378,19 @@ namespace Reko.UnitTests.Evaluation
             Assert.IsNotNull(addr);
             Assert.AreEqual("1234:5678", addr.ToString());
         }
+
+        [Test]
+        public void Exs_Sequence_Constants()
+        {
+            var a = m.Word16(0x1234);
+            var b = m.Byte(0x56);
+            var c = m.Byte(0x78);
+            var exp = m.Seq(a, b, c);
+
+            Given_ExpressionSimplifier();
+            var result = exp.Accept(simplifier);
+
+            Assert.AreEqual("0x12345678<32>", result.ToString());
+        }
     }
 }

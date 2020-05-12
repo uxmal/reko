@@ -349,9 +349,9 @@ byte fn000000014000164C(up32 ecx, ui64 r8, union Eq_n & r8Out)
 			uint64 rax_n = (uint64) ((word32) (uint64) (word32) rdx_n & 0x3F);
 			r8_n = __ror(r8 | ~0x00, (byte) (uint64) (0x40 - (word32) rax_n)) ^ rdx_n;
 			globals->t400035C0 = SEQ(r8_n, r8_n);
-			globals->t400035D0 = r8_n;
+			globals->r400035D0 = (real64) (uint128) (uint64) r8_n;
 			globals->ow400035D8 = SEQ(r8_n, r8_n);
-			globals->t400035E8 = r8_n;
+			globals->r400035E8 = (real64) (uint128) (uint64) r8_n;
 			rax_n = SEQ(SLICE(rax_n, word56, 8), 0x01);
 		}
 		r8Out = r8_n;

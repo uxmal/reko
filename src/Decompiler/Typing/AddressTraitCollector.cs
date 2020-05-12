@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -186,11 +186,6 @@ namespace Reko.Typing
             // C is a pointer to tvField: [[c]] = ptr(tvField)
             handler.MemAccessTrait(basePointer, c, c.DataType.Size, eField, 0);
         }
-
-		public void VisitDepositBits(DepositBits dpb)
-		{
-			handler.MemAccessTrait(basePointer, dpb, dpb.DataType.Size, eField, 0);
-		}
 
 		public void VisitDereference(Dereference deref)
 		{

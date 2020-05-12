@@ -324,13 +324,6 @@ namespace Reko.Core.Expressions
             return GetPossibleFieldType(global, PrimitiveType.Int32, c);
         }
 
-        public DataType VisitDepositBits(DepositBits d)
-        {
-            var dtSource = d.Source.Accept(this);
-            d.InsertedBits.Accept(this);
-            return EnsureDataType(dtSource, d);
-        }
-
         public DataType VisitDereference(Dereference deref)
         {
             //$TODO: if deref.Expression is of pointer type, this

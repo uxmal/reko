@@ -95,11 +95,11 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteBfi()
         {
-            var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var opSrc = this.Operand(Src1());
-            var tmp = binder.CreateTemporary(PrimitiveType.Word32);
+            var opDst = (Identifier) this.Operand(Dst(), PrimitiveType.Word32, true);
             var lsb = ((ImmediateOperand)instr.Operands[2]).Value.ToInt32();
             var bitsize = ((ImmediateOperand)instr.Operands[3]).Value.ToInt32();
+            var tmp = binder.CreateTemporary(PrimitiveType.CreateWord(bitsize));
             m.Assign(tmp, m.Slice(opSrc, 0, bitsize));
             m.Assign(opDst, m.Dpb(opDst, tmp, lsb));
         }
@@ -526,8 +526,8 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteMovt()
         {
-            var opDst = Operand(Dst(), PrimitiveType.Word32, true);
             var iSrc = ((ImmediateOperand)Src1()).Value;
+            var opDst = (Identifier) Operand(Dst(), PrimitiveType.Word32, true);
             Debug.Assert(iSrc.DataType.BitSize == 16);
             var opSrc = m.Dpb(opDst, iSrc, 16);
             m.Assign(opDst, opSrc);
@@ -535,8 +535,8 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteMovw()
         {
-            var dst = Operand(Dst(), PrimitiveType.Word32, true);
             var src = m.Word32(((ImmediateOperand)Src1()).Value.ToUInt32());
+            var dst = Operand(Dst(), PrimitiveType.Word32, true);
             m.Assign(dst, src);
         }
 

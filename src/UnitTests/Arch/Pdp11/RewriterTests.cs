@@ -390,7 +390,7 @@ namespace Reko.UnitTests.Arch.Pdp11
             Given_UInt16s(0x8A03);
             AssertCode(
               "0|L--|0200(2): 5 instructions",
-              "1|L--|r3 = DPB(r3, 0<8>, 0)",
+              "1|L--|r3 = SEQ(SLICE(r3, byte, 8), 0<8>)",
               "2|L--|C = false",
               "3|L--|V = false",
               "4|L--|N = false",

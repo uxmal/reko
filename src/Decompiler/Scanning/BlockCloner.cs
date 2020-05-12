@@ -229,14 +229,6 @@ namespace Reko.Scanning
             return c.CloneExpression();
         }
 
-        public Expression VisitDepositBits(DepositBits d)
-        {
-            return new DepositBits(
-                d.Source.Accept(this),
-                d.InsertedBits.Accept(this),
-                d.BitPosition);
-        }
-
         public Expression VisitDereference(Dereference deref)
         {
             throw new NotImplementedException();

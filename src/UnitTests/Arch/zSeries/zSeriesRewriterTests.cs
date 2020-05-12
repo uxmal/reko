@@ -31,6 +31,8 @@ using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.zSeries
 {
+#pragma warning disable IDE1006
+
     [TestFixture]
     public class zSeriesRewriterTests : RewriterTestBase
     {
@@ -73,7 +75,7 @@ namespace Reko.UnitTests.Arch.zSeries
             Given_HexString("C05000000140");
             AssertCode(     // larl	r5,00100280
                 "0|L--|00100000(6): 1 instructions",
-                "1|L--|r5 = DPB(r5, 0x00100280<p32>, 0)");
+                "1|L--|r5 = SEQ(SLICE(r5, word32, 32), 0x00100280<p32>)");
         }
 
         [Test]

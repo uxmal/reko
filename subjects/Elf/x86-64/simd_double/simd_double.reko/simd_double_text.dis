@@ -176,53 +176,51 @@ l0000000000000898:
 	word64 rax_15 = _mm_malloc(0x20<u64>, 0x2000<64>)
 	word64 rax_27 = _mm_malloc(0x20<u64>, 0x2000<64>)
 	word64 rax_39 = _mm_malloc(0x20<u64>, 0x2000<64>)
-	word64 qwLoc10_199 = 0<64>
+	word64 qwLoc10_198 = 0<64>
 l000000000000093F:
-	branch qwLoc10_199 <u 0x400<64> l00000000000008FD
+	branch qwLoc10_198 <u 0x400<64> l00000000000008FD
 l00000000000008FD:
-	word64 rcx_55 = qwLoc10_199 * 8<64> + rax_15
-	word32 eax_62 = SLICE(qwLoc10_199, word32, 0)
-	branch qwLoc10_199 < 0<64> l0000000000000921
+	word64 rcx_55 = qwLoc10_198 * 8<64> + rax_15
+	word32 eax_62 = SLICE(qwLoc10_198, word32, 0)
+	branch qwLoc10_198 < 0<64> l0000000000000921
 l0000000000000921:
-	real64 v26_67 = (real64) (qwLoc10_199 >>u 1<64> | (uint64) (eax_62 & 1<32>))
-	xmm0 = (uint128) (uint64) (v26_67 + v26_67)
+	xmm0 = (uint128) (uint64) ((real64) (qwLoc10_198 >>u 1<64> | (uint64) (eax_62 & 1<32>)) + (real64) (qwLoc10_198 >>u 1<64> | (uint64) (eax_62 & 1<32>)))
 l000000000000091A:
-	xmm0 = DPB(xmm0, (real64) qwLoc10_199, 0)
+	xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) qwLoc10_198)
 l0000000000000936:
 	Mem76[rcx_55:real64] = (real64) xmm0
-	qwLoc10_199 = qwLoc10_199 + 1<64>
+	qwLoc10_198 = qwLoc10_198 + 1<64>
 l0000000000000949:
-	word64 qwLoc18_205 = 0<64>
+	word64 qwLoc18_204 = 0<64>
 l0000000000000998:
-	branch qwLoc18_205 <u 0x400<64> l0000000000000953
+	branch qwLoc18_204 <u 0x400<64> l0000000000000953
 l0000000000000953:
-	word32 eax_98 = SLICE(qwLoc18_205 + 1<64>, word32, 0)
-	word64 rcx_92 = qwLoc18_205 * 8<64> + rax_27
-	branch qwLoc18_205 < 1<64> l000000000000097A
+	word32 eax_98 = SLICE(qwLoc18_204 + 1<64>, word32, 0)
+	word64 rcx_92 = qwLoc18_204 * 8<64> + rax_27
+	branch qwLoc18_204 < 1<64> l000000000000097A
 l000000000000097A:
-	real64 v19_103 = (real64) (qwLoc18_205 + 1<64> >>u 1<64> | (uint64) (eax_98 & 1<32>))
-	xmm0 = (uint128) (uint64) (v19_103 + v19_103)
+	xmm0 = (uint128) (uint64) ((real64) (qwLoc18_204 + 1<64> >>u 1<64> | (uint64) (eax_98 & 1<32>)) + (real64) (qwLoc18_204 + 1<64> >>u 1<64> | (uint64) (eax_98 & 1<32>)))
 l0000000000000973:
-	xmm0 = DPB(xmm0, (real64) (qwLoc18_205 + 1<64>), 0)
+	xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) (qwLoc18_204 + 1<64>))
 l000000000000098F:
 	Mem112[rcx_92:real64] = (real64) xmm0
-	qwLoc18_205 = qwLoc18_205 + 1<64>
+	qwLoc18_204 = qwLoc18_204 + 1<64>
 l00000000000009A2:
-	word64 qwLoc20_211 = 0<64>
+	word64 qwLoc20_210 = 0<64>
 l00000000000009CC:
-	branch qwLoc20_211 <u 0x400<64> l00000000000009AC
+	branch qwLoc20_210 <u 0x400<64> l00000000000009AC
 l00000000000009AC:
 	xmm0 = __xorpd(xmm0, xmm0)
-	Mem131[rax_39 + qwLoc20_211 * 8<64>:real64] = (real64) xmm0
-	qwLoc20_211 = qwLoc20_211 + 1<64>
+	Mem131[rax_39 + qwLoc20_210 * 8<64>:real64] = (real64) xmm0
+	qwLoc20_210 = qwLoc20_210 + 1<64>
 l00000000000009D6:
 	vec_add(0x400<64>)
-	word64 qwLoc28_220 = 0<64>
+	word64 qwLoc28_219 = 0<64>
 l0000000000000A2D:
-	branch qwLoc28_220 <u 0x400<64> l00000000000009F8
+	branch qwLoc28_219 <u 0x400<64> l00000000000009F8
 l00000000000009F8:
 	printf(0x0000000000000AF8<p64>, 0<32>)
-	qwLoc28_220 = qwLoc28_220 + 1<64>
+	qwLoc28_219 = qwLoc28_219 + 1<64>
 l0000000000000A37:
 	_mm_free(rax_15)
 	_mm_free(rax_27)

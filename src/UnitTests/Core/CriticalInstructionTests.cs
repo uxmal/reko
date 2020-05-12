@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -128,12 +128,6 @@ namespace Reko.UnitTests.Core
 		public void TestAssignFalse()
 		{
 			Assert.IsFalse(ci.IsCritical(new Assignment(Id32("ax"), Constant.Word32(0))));
-		}
-
-		[Test]
-		public void TestDbp()
-		{
-			Assert.IsFalse(ci.IsCritical(new DepositBits(Id32("eax"), Id16("ax"), 0)));
 		}
 
         private Identifier Id16(string name)

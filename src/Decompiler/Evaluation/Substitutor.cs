@@ -118,17 +118,6 @@ namespace Reko.Evaluation
             return c;
         }
 
-        public Expression VisitDepositBits(DepositBits d)
-        {
-            var source = d.Source.Accept(this);
-            if (source == Constant.Invalid)
-                return source;
-            var inserted = d.InsertedBits.Accept(this);
-            if (inserted == Constant.Invalid)
-                return inserted;
-            return new DepositBits(source, inserted, d.BitPosition);
-        }
-
         public Expression VisitDereference(Dereference deref)
         {
             throw new NotImplementedException();

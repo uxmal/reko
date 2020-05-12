@@ -881,31 +881,6 @@ namespace Reko.Scanning
             };
         }
 
-        public SlicerResult VisitDepositBits(DepositBits d, BackwardSlicerContext ctx)
-        {
-            var srSrc = d.Source.Accept(this, ctx);
-            var brBits = RangeOf(d.InsertedBits);
-            var srBits = d.InsertedBits.Accept(this, new BackwardSlicerContext(ctx.Type, brBits));
-            if (brBits == ctx.BitRange)
-            {
-                return new SlicerResult
-                {
-                    SrcExpr = d.InsertedBits,
-                    LiveExprs = srBits.LiveExprs
-                };
-            }
-            else
-            {
-                return new SlicerResult
-                {
-                    SrcExpr = new DepositBits(d.Source, d.InsertedBits, d.BitPosition),
-                    LiveExprs = srSrc.LiveExprs.Concat(srBits.LiveExprs)
-                        .GroupBy(e => e.Key)
-                        .ToDictionary(k => k.Key, v => v.Max(vv => vv.Value)),
-                };
-            }
-        }
-
         public SlicerResult VisitDereference(Dereference deref, BackwardSlicerContext ctx)
         {
             throw new NotImplementedException();
@@ -975,12 +950,25 @@ namespace Reko.Scanning
             var srExprs = seq.Expressions
                 .Select(e => e.Accept(this, ctx))
                 .ToArray();
-            return new SlicerResult
+            var srLast = srExprs[srExprs.Length - 1];
+            if (RangeOf(srLast.SrcExpr) == ctx.BitRange)
             {
-                LiveExprs = srExprs[1].LiveExprs,
-                SrcExpr = new MkSequence(seq.DataType, srExprs.Select(s => s.SrcExpr).ToArray()),
-                Stop = srExprs.Any(s => s.Stop)
-            };
+                return new SlicerResult
+                {
+                    LiveExprs = srLast.LiveExprs,
+                    SrcExpr = srLast.SrcExpr,
+                    Stop = srLast.Stop
+                };
+            }
+            else 
+            {
+                return new SlicerResult
+                {
+                    LiveExprs = srExprs[1].LiveExprs,
+                    SrcExpr = new MkSequence(seq.DataType, srExprs.Select(s => s.SrcExpr).ToArray()),
+                    Stop = srExprs.Any(s => s.Stop)
+                };
+            }
         }
 
         public SlicerResult VisitNop(RtlNop rtlNop)

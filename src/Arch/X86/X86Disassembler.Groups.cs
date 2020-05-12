@@ -129,7 +129,7 @@ namespace Reko.Arch.X86
             {
                 new Group7Decoder(
                     Instr(Mnemonic.sgdt, Ms),
-                    s_invalid,
+                    Instr(Mnemonic.monitor),
                     Instr(Mnemonic.vmcall),
                     Instr(Mnemonic.vmlaunch),
                     Instr(Mnemonic.vmresume),

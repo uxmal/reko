@@ -5581,7 +5581,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_UInt16s(0xF2C0, 0x0C40);  // movt        r12,#0x40
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|ip = DPB(ip, 0x40<16>, 16)");
+                "1|L--|ip = SEQ(0x40<16>, SLICE(ip, word16, 0))");
         }
 
         [Test]
@@ -7255,7 +7255,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v3 = SLICE(r3, ui16, 0)",
-                "2|L--|r3 = DPB(r3, v3, 16)");
+                "2|L--|r3 = SEQ(v3, SLICE(r3, word16, 0))");
         }
 
         [Test]

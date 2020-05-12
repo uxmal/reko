@@ -97,12 +97,9 @@ void main(Eq_n xmm0)
 		real64 * rcx_n = rax_n + qwLoc10_n;
 		ui32 eax_n = (word32) qwLoc10_n;
 		if (qwLoc10_n >= 0x00)
-			xmm0 = DPB(xmm0, (real64) qwLoc10_n, 0);
+			xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) qwLoc10_n);
 		else
-		{
-			real64 v26_n = (real64) (qwLoc10_n >> 0x01 | (uint64) (eax_n & 0x01));
-			xmm0.u0 = (uint128) (uint64) (v26_n + v26_n);
-		}
+			xmm0.u0 = (uint128) (uint64) ((real64) (qwLoc10_n >> 0x01 | (uint64) (eax_n & 0x01)) + (real64) (qwLoc10_n >> 0x01 | (uint64) (eax_n & 0x01)));
 		*rcx_n = (real64) xmm0;
 		qwLoc10_n = (word64) qwLoc10_n + 1;
 	}
@@ -112,12 +109,9 @@ void main(Eq_n xmm0)
 		ui32 eax_n = (word32) ((word64) qwLoc18_n + 1);
 		real64 * rcx_n = rax_n + qwLoc18_n;
 		if (qwLoc18_n >= 0x01)
-			xmm0 = DPB(xmm0, (real64) ((word64) qwLoc18_n + 1), 0);
+			xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) ((word64) qwLoc18_n + 1));
 		else
-		{
-			real64 v19_n = (real64) ((word64) qwLoc18_n + 1 >> 0x01 | (uint64) (eax_n & 0x01));
-			xmm0.u0 = (uint128) (uint64) (v19_n + v19_n);
-		}
+			xmm0.u0 = (uint128) (uint64) ((real64) ((word64) qwLoc18_n + 1 >> 0x01 | (uint64) (eax_n & 0x01)) + (real64) ((word64) qwLoc18_n + 1 >> 0x01 | (uint64) (eax_n & 0x01)));
 		*rcx_n = (real64) xmm0;
 		qwLoc18_n = (word64) qwLoc18_n + 1;
 	}

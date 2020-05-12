@@ -18,24 +18,21 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Analysis;
-using Reko.Evaluation;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Operators;
 using Reko.Core.Types;
-using Reko.Core.Machine;
-using Reko.UnitTests.Mocks;
-using NUnit.Framework;
-using System;
-using System.IO;
-using System.Linq;
-using Moq;
-using System.Diagnostics;
-using System.Collections.Generic;
+using Reko.Evaluation;
 using Reko.UnitTests.Fragments;
-using Reko.Core.Lib;
+using Reko.UnitTests.Mocks;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -658,13 +655,14 @@ Mem0:Mem
     uses: tmp_3 = Mem0[a2:byte]
 tmp_3: orig: tmp
     def:  tmp_3 = Mem0[a2:byte]
-    uses: d3_5 = DPB(d3, tmp_3, 0)
+    uses: d3_5 = SEQ(SLICE(d3, word24, 8), tmp_3)
           Mem6[a2 + 4<32>:byte] = tmp_3
 d3:d3
     def:  def d3
-    uses: d3_5 = DPB(d3, tmp_3, 0)
+    uses: d3_5 = SEQ(SLICE(d3, word24, 8), tmp_3)
 d3_5: orig: d3
-    def:  d3_5 = DPB(d3, tmp_3, 0)
+    def:  d3_5 = SEQ(SLICE(d3, word24, 8), tmp_3)
+    uses: Mem6[a2 + 4<32>:byte] = tmp_3
 Mem6: orig: Mem0
     def:  Mem6[a2 + 4<32>:byte] = tmp_3
 // ProcedureBuilder
@@ -677,7 +675,7 @@ ProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	tmp_3 = Mem0[a2:byte]
-	d3_5 = DPB(d3, tmp_3, 0)
+	d3_5 = SEQ(SLICE(d3, word24, 8), tmp_3)
 	Mem6[a2 + 4<32>:byte] = tmp_3
 ProcedureBuilder_exit:
 ";
@@ -712,13 +710,14 @@ Mem0:Mem
     uses: tmp_3 = Mem0[a2:word16]
 tmp_3: orig: tmp
     def:  tmp_3 = Mem0[a2:word16]
-    uses: d3_5 = DPB(d3, tmp_3, 0)
+    uses: d3_5 = SEQ(SLICE(d3, word16, 16), tmp_3)
           Mem6[a2 + 4<32>:byte] = (byte) tmp_3
 d3:d3
     def:  def d3
-    uses: d3_5 = DPB(d3, tmp_3, 0)
+    uses: d3_5 = SEQ(SLICE(d3, word16, 16), tmp_3)
 d3_5: orig: d3
-    def:  d3_5 = DPB(d3, tmp_3, 0)
+    def:  d3_5 = SEQ(SLICE(d3, word16, 16), tmp_3)
+    uses: Mem6[a2 + 4<32>:byte] = (byte) tmp_3
 Mem6: orig: Mem0
     def:  Mem6[a2 + 4<32>:byte] = (byte) tmp_3
 // ProcedureBuilder
@@ -731,7 +730,7 @@ ProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	tmp_3 = Mem0[a2:word16]
-	d3_5 = DPB(d3, tmp_3, 0)
+	d3_5 = SEQ(SLICE(d3, word16, 16), tmp_3)
 	Mem6[a2 + 4<32>:byte] = (byte) tmp_3
 ProcedureBuilder_exit:
 ";
@@ -1171,21 +1170,22 @@ SsaProcedureBuilder_exit:
             #region Expected
 @"d3: orig: d3
     uses: wLoc02_2 = (word16) d3
-          d3_3 = DPB(d3, 3<16>, 0)
-          d3_4 = DPB(d3, 4<16>, 0)
-          d3_6 = d3
+          d3_3 = SEQ(SLICE(d3, word16, 16), 3<16>)
+          d3_4 = SEQ(SLICE(d3, word16, 16), 4<16>)
 wLoc02_2: orig: wLoc04
     def:  wLoc02_2 = (word16) d3
+    uses: d3_6 = SEQ(SLICE(d3_5, word16, 16), wLoc02_2)
 d3_3: orig: d3_3
-    def:  d3_3 = DPB(d3, 3<16>, 0)
+    def:  d3_3 = SEQ(SLICE(d3, word16, 16), 3<16>)
     uses: d3_5 = PHI((d3_3, m1), (d3_4, m2))
 d3_4: orig: d3_4
-    def:  d3_4 = DPB(d3, 4<16>, 0)
+    def:  d3_4 = SEQ(SLICE(d3, word16, 16), 4<16>)
     uses: d3_5 = PHI((d3_3, m1), (d3_4, m2))
 d3_5: orig: d3_5
     def:  d3_5 = PHI((d3_3, m1), (d3_4, m2))
+    uses: d3_6 = SEQ(SLICE(d3_5, word16, 16), wLoc02_2)
 d3_6: orig: d3_6
-    def:  d3_6 = d3
+    def:  d3_6 = SEQ(SLICE(d3_5, word16, 16), wLoc02_2)
 // SsaProcedureBuilder
 // Return size: 0
 define SsaProcedureBuilder
@@ -1195,15 +1195,15 @@ l1:
 	wLoc02_2 = (word16) d3
 	// succ:  m1
 m1:
-	d3_3 = DPB(d3, 3<16>, 0)
+	d3_3 = SEQ(SLICE(d3, word16, 16), 3<16>)
 	goto m3
 	// succ:  m3
 m2:
-	d3_4 = DPB(d3, 4<16>, 0)
+	d3_4 = SEQ(SLICE(d3, word16, 16), 4<16>)
 	// succ:  m3
 m3:
 	d3_5 = PHI((d3_3, m1), (d3_4, m2))
-	d3_6 = d3
+	d3_6 = SEQ(SLICE(d3_5, word16, 16), wLoc02_2)
 SsaProcedureBuilder_exit:
 ";
             #endregion

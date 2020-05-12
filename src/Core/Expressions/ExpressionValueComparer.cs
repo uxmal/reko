@@ -157,19 +157,6 @@ namespace Reko.Core.Expressions
                     return ((Constant)obj).ToUInt64().GetHashCode();
                 });
 
-            Add(typeof(DepositBits),
-                (ea, eb) =>
-                {
-                    DepositBits a = (DepositBits) ea, b = (DepositBits) eb;
-                    return a.BitPosition == b.BitPosition &&
-                        EqualsImpl(a.Source, b.Source) && EqualsImpl(a.InsertedBits, b.InsertedBits);
-                },
-                obj =>
-                {
-                    DepositBits dpb = (DepositBits) obj;
-                    return GetHashCodeImpl(dpb.Source) * 67 ^ GetHashCodeImpl(dpb.InsertedBits) * 43 ^ dpb.BitPosition;
-                });
-
             Add(typeof(Dereference),
                 (ea, eb) =>
                 {

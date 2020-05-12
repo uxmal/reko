@@ -365,7 +365,7 @@ namespace Reko.UnitTests.Core.Output
                 "    Identifier b = Local(PrimitiveType.Word32, \"b\");" + nl +
                 "    " + nl +
                 "    Label(\"l1\");" + nl +
-                "    Assign(a, Dpb(a, Slice(PrimitiveType.Word16, b, 16), 0));" + nl +
+                "    Assign(a, Seq(Slice(PrimitiveType.Word16, a, 16), Slice(PrimitiveType.Word16, b, 16)));" + nl +
                 "}" + nl +
                 "" + nl);
         }

@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Reko.Core.Services;
 using System.Diagnostics;
+using System.Xml.Schema;
 
 namespace Reko.Evaluation 
 {
@@ -46,8 +47,6 @@ namespace Reko.Evaluation
         private Add_e_c_cRule addEcc;
         private Add_mul_id_c_id_Rule addMici;
         private ConstConstBin_Rule constConstBin;
-        private DpbConstantRule dpbConstantRule;
-        private DpbDpbRule dpbdpbRule;
         private IdConstant idConst;
         private IdCopyPropagationRule idCopyPropagation;
         private IdBinIdc_Rule idBinIdc;
@@ -62,7 +61,6 @@ namespace Reko.Evaluation
         private Mps_Constant_Rule mpsRule;
         private BinOpWithSelf_Rule binopWithSelf;
         private ConstDivisionImplementedByMultiplication constDiv;
-        private SelfDpbRule selfdpbRule;
         private IdProcConstRule idProcConstRule;
         private CastCastRule castCastRule;
         private DistributedCastRule distributedCast;
@@ -80,8 +78,6 @@ namespace Reko.Evaluation
             this.add2ids = new AddTwoIdsRule(ctx);
             this.addEcc = new Add_e_c_cRule(ctx);
             this.addMici = new Add_mul_id_c_id_Rule(ctx);
-            this.dpbConstantRule = new DpbConstantRule();
-            this.dpbdpbRule = new DpbDpbRule(ctx);
             this.idConst = new IdConstant(ctx, new Unifier(), listener);
             this.idCopyPropagation = new IdCopyPropagationRule(ctx);
             this.idBinIdc = new IdBinIdc_Rule(ctx);
@@ -97,7 +93,6 @@ namespace Reko.Evaluation
             this.sliceShift = new SliceShift(ctx);
             this.binopWithSelf = new BinOpWithSelf_Rule();
             this.constDiv = new ConstDivisionImplementedByMultiplication(ctx);
-            this.selfdpbRule = new SelfDpbRule(ctx);
             this.idProcConstRule = new IdProcConstRule(ctx);
             this.castCastRule = new CastCastRule(ctx);
             this.distributedCast = new DistributedCastRule();
@@ -460,24 +455,27 @@ namespace Reko.Evaluation
                     }
                 }
                 if (exp is Identifier id && 
-                    ctx.GetDefiningExpression(id) is DepositBits dpb && 
-                    dpb.BitPosition == 0)
+                    ctx.GetDefiningExpression(id) is MkSequence seq)
                 {
-                    // If we are casting the result of a DPB, and the deposited part is >= 
+                    // If we are casting a SEQ, and the corresponding element is >= 
                     // the size of the cast, then use deposited part directly.
-                    int sizeDiff = dpb.InsertedBits.DataType.Size - cast.DataType.Size;
+                    var lsbElem = seq.Expressions[seq.Expressions.Length - 1];
+                    int sizeDiff = lsbElem.DataType.Size - cast.DataType.Size;
                     if (sizeDiff >= 0)
                     {
-                        ctx.RemoveIdentifierUse(id);
-                        ctx.UseExpression(dpb.InsertedBits);
+                        foreach (var elem in seq.Expressions)
+                        {
+                            ctx.RemoveExpressionUse(elem);
+                        }
+                        ctx.UseExpression(lsbElem);
                         Changed = true;
                         if (sizeDiff > 0)
                         {
-                            return new Cast(cast.DataType, dpb.InsertedBits);
+                            return new Cast(cast.DataType, lsbElem);
                         }
                         else
                         {
-                            return dpb.InsertedBits;
+                            return lsbElem;
                         }
                     }
                 }
@@ -532,33 +530,6 @@ namespace Reko.Evaluation
         public virtual Expression VisitConstant(Constant c)
         {
             return c;
-        }
-
-        public virtual Expression VisitDepositBits(DepositBits d)
-        {
-            var src = d.Source.Accept(this);
-            var bits = d.InsertedBits.Accept(this);
-            if (src == Constant.Invalid || bits == Constant.Invalid)
-            {
-                return Constant.Invalid;
-            }
-            d = new DepositBits(src, bits, d.BitPosition);
-            while (dpbdpbRule.Match(d))
-            {
-                Changed = true;
-                d = dpbdpbRule.Transform();
-            }
-            if (dpbConstantRule.Match(d))
-            {
-                Changed = true;
-                return dpbConstantRule.Transform();
-            }
-            if (selfdpbRule.Match(d))
-            {
-                Changed = true;
-                return selfdpbRule.Transform();
-            }
-            return d;
         }
 
         public virtual Expression VisitDereference(Dereference deref)
@@ -653,6 +624,17 @@ namespace Reko.Evaluation
                         return Constant.Create(t, (c1.ToUInt64() << tHead.BitSize) | c2.ToUInt64());
                     }
                 }
+            }
+            else if (newSeq.All(e => e is Constant))
+            {
+                //$TODO: > 64 bit values?
+                ulong value = 0;
+                for (int i = 0; i < newSeq.Length; ++i)
+                {
+                    var c = (Constant) newSeq[i];
+                    value = (value << c.DataType.BitSize) | c.ToUInt64();
+                }
+                return Constant.Create(seq.DataType, value);
             }
             if (newSeq.Take(newSeq.Length - 1).All(e => e.IsZero))
             {

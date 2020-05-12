@@ -322,15 +322,6 @@ namespace Reko.Core.Output
             }
         }
 
-		public void VisitDepositBits(DepositBits d)
-		{
-			writer.Write("DPB(");
-			WriteExpression(d.Source);
-			writer.Write(", ");
-			WriteExpression(d.InsertedBits);
-			writer.Write(", {0})", d.BitPosition);
-		}
-
 		public void VisitMkSequence(MkSequence seq)
 		{
 			writer.Write("SEQ(");

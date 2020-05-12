@@ -243,13 +243,6 @@ namespace Reko.Typing
 		{
 		}
 
-		public override void VisitDepositBits(DepositBits d)
-		{
-			d.Source.Accept(this);
-			d.InsertedBits.Accept(this);
-			EnsureTypeVariable(d);
-		}
-
 		public override void VisitDereference(Dereference deref)
 		{
 			deref.Expression.Accept(this);

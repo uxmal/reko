@@ -271,7 +271,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_UInt32s(0xE34F4FFF);
             AssertCode(
                "0|L--|00100000(4): 1 instructions",
-               "1|L--|r4 = DPB(r4, 0xFFFF<16>, 16)");
+               "1|L--|r4 = SEQ(0xFFFF<16>, SLICE(r4, word16, 0))");
         }
 
         [Test]
@@ -343,7 +343,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                "0|L--|00100000(4): 2 instructions",
                "1|L--|v4 = SLICE(r2, ui9, 0)",
-               "2|L--|r1 = DPB(r1, v4, 5)");
+               "2|L--|r1 = SEQ(SLICE(r1, word18, 14), v4, SLICE(r1, word5, 0))");
         }
 
         /*

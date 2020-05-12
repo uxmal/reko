@@ -212,7 +212,7 @@ l0640:
 	r1_15 = __rol(r1_15, r1_15)
 	branch r1_15 <u 0<16> l0648
 l0648:
-	word16 r1_43 = __swab(DPB(r1_15, 0<8>, 0) | r2_28)
+	word16 r1_43 = __swab(SEQ(SLICE(r1_15, byte, 8), 0<8>) | r2_28)
 	wLoc02 = __ror(wLoc02, v17_26)
 	wArg00_68 = __ror(r1_43, r1_43)
 	wArg02 = SEQ(__ror(bArg03_89, bArg03_89), bArg02_91) (alias)
@@ -258,7 +258,7 @@ l069C:
 	branch r2_48 == 0<16> l06B2
 l06A0:
 	word16 r5_52 = r5_41 + (r2_48 <u 0<16>)
-	word16 r4_54 = DPB(r0_40, 0<8>, 0) + r2_48
+	word16 r4_54 = SEQ(SLICE(r0_40, byte, 8), 0<8>) + r2_48
 	branch r4_54 >=u 0<16> l06AE
 l06AE:
 	branch r4_54 < 0<16> l06B8
@@ -269,17 +269,17 @@ l06A8:
 	branch r4_54 > 0<16> l06BE
 l06BE:
 	__ror(r5_52, r5_52)
-	word16 r4_63 = DPB(r4_54, 0<8>, 0)
+	word16 r4_63 = SEQ(SLICE(r4_54, byte, 8), 0<8>)
 	word16 r4_67 = __ror(r4_63 + 0x7F01<16>, r4_63 + 0x7F01<16>)
 	word16 r2_72 = __ror(r2_48, r2_48)
 	word16 r3_75 = __swab(r3_19)
-	word16 r2_78 = DPB(__swab(r2_72), 0<8>, 0) | r3_75
-	word16 r3_79 = DPB(r3_75, 0<8>, 0)
+	word16 r2_78 = SEQ(SLICE(__swab(r2_72), byte, 8), 0<8>) | r3_75
+	word16 r3_79 = SEQ(SLICE(r3_75, byte, 8), 0<8>)
 	word16 r2_110 = __ror(r2_78, r2_78)
 	word16 r3_106 = __ror(r3_79, r3_79)
 	word16 r1_83 = __swab(r1_38)
-	word16 r0_102 = DPB(__swab(r0_40), 0<8>, 0) | r1_83
-	word16 r1_88 = DPB(r1_83, 0<8>, 0)
+	word16 r0_102 = SEQ(SLICE(__swab(r0_40), byte, 8), 0<8>) | r1_83
+	word16 r1_88 = SEQ(SLICE(r1_83, byte, 8), 0<8>)
 	word16 r4_113 = r2_110
 	word16 r5_107 = r3_106
 l06E8:
@@ -313,8 +313,8 @@ l06B0:
 l0720:
 	r4_133 = (r4_67 & 0x7F80<16>) - 0x80<16>
 l0724:
-	r3_167 = __swab(DPB(__rol(r3_106, r3_106), 0<8>, 0) | r2_110) + __rol(r1_88, r1_88)
-	r2_170 = __swab(DPB(r2_110, 0<8>, 0)) + r4_133 + (r3_167 <u 0<16>)
+	r3_167 = __swab(SEQ(SLICE(__rol(r3_106, r3_106), byte, 8), 0<8>) | r2_110) + __rol(r1_88, r1_88)
+	r2_170 = __swab(SEQ(SLICE(r2_110, byte, 8), 0<8>)) + r4_133 + (r3_167 <u 0<16>)
 l06F0:
 	r0_102 = __rol(r0_102, r0_102)
 	branch r0_102 >=u 0<16> l06E8
@@ -354,8 +354,8 @@ l076E:
 	branch wArg06 << 1<i16> == 0<16> l080A
 l0774:
 	word16 v23_34 = v21_28 + (wArg06 << 1<i16> <u 0<16>)
-	word16 r2_37 = DPB(wArg06 << 1<i16>, 0<8>, 0)
-	word16 r0_40 = DPB(wArg02 << 1<i16>, 0<8>, 0)
+	word16 r2_37 = SEQ(SLICE(wArg06 << 1<i16>, byte, 8), 0<8>)
+	word16 r0_40 = SEQ(SLICE(wArg02 << 1<i16>, byte, 8), 0<8>)
 	wArg02 = v23_34
 	word16 r4_38 = wArg06 << 1<i16> & ~r2_37
 	word16 r5_41 = wArg02 << 1<i16> & ~r0_40
@@ -474,7 +474,7 @@ l0AAE:
 l1040:
 	word16 r3_28 = __ror(0<16>, 0<16>)
 	word16 r0_29 = __ror(v11_9 << 1<i16>, v11_9 << 1<i16>)
-	word16 r2_31 = DPB(r0_29, 0<8>, 0)
+	word16 r2_31 = SEQ(SLICE(r0_29, byte, 8), 0<8>)
 	word16 r0_32 = r0_29 & ~r2_31
 	word16 r2_33 = __swab(r2_31)
 	branch r2_33 > 0<16> l1060
@@ -998,8 +998,8 @@ l0F74:
 	r0_25 = __rol(r0_25, r0_25)
 	branch r0_25 <u 0<16> l0F7E
 l0F7E:
-	word16 r1_56 = __swab(DPB(r1_24, 0<8>, 0) | r0_25)
-	word16 r0_60 = __swab(DPB(r0_25, 0<8>, 0) | r2_45)
+	word16 r1_56 = __swab(SEQ(SLICE(r1_24, byte, 8), 0<8>) | r0_25)
+	word16 r0_60 = __swab(SEQ(SLICE(r0_25, byte, 8), 0<8>) | r2_45)
 	__ror(r0_60, r0_60)
 	__ror(r1_56, r1_56)
 l0F9A:
@@ -1661,7 +1661,7 @@ l176C:
 	r2 = r2 << 1<i16>
 	r5_11 = __rol(r5_11, r5_11)
 l173E:
-	word16 r1_39 = __swab(DPB(r1_20, 0<8>, 0))
+	word16 r1_39 = __swab(SEQ(SLICE(r1_20, byte, 8), 0<8>))
 	word16 r4_40 = __swab(r4_10)
 	branch r4_40 == 0<16> l174C
 l174A:

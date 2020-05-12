@@ -101,7 +101,7 @@ namespace Reko.Arch.X86
         private void RewriteCvtToReal(PrimitiveType size)
         {
             var src = SrcOp(instrCur.Operands[instrCur.Operands.Length == 3 ? 2 : 1]);
-            var dst = SrcOp(instrCur.Operands[0]);
+            var dst = (Identifier) SrcOp(instrCur.Operands[0]);
             var tmp = binder.CreateTemporary(size);
             m.Assign(tmp, m.Cast(size, src));
             m.Assign(dst, m.Dpb(dst, tmp, 0));
@@ -202,7 +202,7 @@ namespace Reko.Arch.X86
         {
             var srcType = CreatePackedArrayType(elemType, instrCur.Operands[1].Width);
             var src = SrcOp(instrCur.Operands[1], srcType);
-            var dst = SrcOp(instrCur.Operands[0]);
+            var dst = (Identifier) SrcOp(instrCur.Operands[0]);
             var ret = binder.CreateTemporary(PrimitiveType.Byte);
             m.Assign(ret, host.PseudoProcedure(fnName, ret.DataType, src));
             m.Assign(dst, m.Dpb(dst, ret, 0));
@@ -431,7 +431,7 @@ namespace Reko.Arch.X86
         private void RewriteSqrtsd()
         {
             var src = SrcOp(instrCur.Operands[1]);
-            var dst = SrcOp(instrCur.Operands[0]);
+            var dst = (Identifier) SrcOp(instrCur.Operands[0]);
             var tmp = binder.CreateTemporary(PrimitiveType.Real64);
             m.Assign(tmp, host.PseudoProcedure("__sqrt", PrimitiveType.Real64, src));
             m.Assign(dst, m.Dpb(dst, tmp, 0));

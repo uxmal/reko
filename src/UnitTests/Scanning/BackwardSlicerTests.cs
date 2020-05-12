@@ -594,7 +594,8 @@ namespace Reko.UnitTests.Scanning
             while (bwslc.Step())
                 ;
             Assert.AreEqual(2, bwslc.Live.Count);
-            Assert.AreEqual("(int32) (int16) Mem0[(word32) (word16) (d0 * 2<32>) + 0x10EC32<32>:word16] + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
+            Console.WriteLine(bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("(int32) (int16) Mem0[(word32) (word16) (SEQ(d1, d0) * 2<32>) + 0x10EC32<32>:word16] + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("d0", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("(byte) d0", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
             Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());
@@ -679,7 +680,8 @@ namespace Reko.UnitTests.Scanning
             while (bwslc.Step())
                 ;
             Assert.AreEqual(2, bwslc.Live.Count);
-            Assert.AreEqual("(int32) Mem0[(word32) SLICE(d0 * 2<32>, word16, 0) + 0x10EC32<32>:word16] + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
+            Console.WriteLine(bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("(int32) Mem0[(word32) SLICE(SEQ(d1, d0) * 2<32>, word16, 0) + 0x10EC32<32>:word16] + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("d0", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("SLICE(d0, byte, 0)", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
             Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());

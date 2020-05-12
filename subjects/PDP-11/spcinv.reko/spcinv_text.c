@@ -873,7 +873,7 @@ Eq_n fn0A7C(Eq_n r0, byte * r4, Eq_n r5, ptr16 & r4Out, ptr16 & r5Out)
 // 0A94: Register ui16 fn0A94()
 ui16 fn0A94()
 {
-	ui16 r0_n = ((DPB(__swab(globals->w0AB2), 0x00, 0) << 1) + globals->w0AB2 << 2) + globals->w0AB2;
+	ui16 r0_n = ((SEQ(SLICE(__swab(globals->w0AB2), byte, 8), 0x00) << 1) + globals->w0AB2 << 2) + globals->w0AB2;
 	globals->w0AB4 = r0_n + 0x3619;
 	return r0_n + 0x3619;
 }

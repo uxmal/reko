@@ -328,21 +328,7 @@ namespace Reko.Analysis
         {
             var value = ass.Src.Accept(eval);
             DebugEx.Verbose(trace, "{0} = [{1}]", ass.Dst, value);
-
-            if (ass.Src is DepositBits dpb && 
-                dpb.Source is Identifier idDpb &&
-                ass.Dst.Storage == idDpb.Storage)
-            {
-                var oldRange = ctx.GetBitRange(idDpb);
-                var newRange = new BitRange(
-                    Math.Min(oldRange.Lsb, dpb.BitPosition),
-                    Math.Max(oldRange.Msb, dpb.BitPosition + dpb.InsertedBits.DataType.BitSize));
-                ctx.SetValue(ass.Dst, value, newRange);
-            }
-            else
-            {
-                ctx.SetValue(ass.Dst, value);
-            }
+            ctx.SetValue(ass.Dst, value);
             return true;
         }
 

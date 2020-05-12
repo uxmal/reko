@@ -340,7 +340,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteMovk()
         {
-            var dst = RewriteOp(instr.Operands[0]);
+            var dst = (Identifier)RewriteOp(instr.Operands[0]);
             var imm = ((ImmediateOperand)instr.Operands[1]).Value;
             var shift = ((ImmediateOperand)instr.shiftAmount).Value;
             m.Assign(dst, m.Dpb(dst, imm, shift.ToInt32()));

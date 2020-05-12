@@ -3446,7 +3446,7 @@ proc_exit:
 	def Mem0
 	def byteArg
 	def dwArg04
-	dwArg04_8 = DPB(dwArg04, byteArg, 0)
+	dwArg04_8 = SEQ(SLICE(dwArg04, word24, 8), byteArg)
 body:
 	a_3 = dwArg04_8
 	a_4 = a_3 & 0xFF<32>
@@ -4004,12 +4004,12 @@ SsaDoNotSearchImportedProcInFpuStack_exit:
 Mem2: orig: Mem0
 v3_3: orig: v3
     def:  v3_3 = bLoc04_7
-    uses: r0_5 = DPB(r0, v3_3, 0)
+    uses: r0_5 = SEQ(SLICE(r0, word24, 8), v3_3)
 r0:r0
     def:  def r0
-    uses: r0_5 = DPB(r0, v3_3, 0)
+    uses: r0_5 = SEQ(SLICE(r0, word24, 8), v3_3)
 r0_5: orig: r0
-    def:  r0_5 = DPB(r0, v3_3, 0)
+    def:  r0_5 = SEQ(SLICE(r0, word24, 8), v3_3)
     uses: use r0_5
 wLoc04_6: orig: wLoc04
     def:  wLoc04_6 = 1<16>
@@ -4028,7 +4028,7 @@ l1:
 	wLoc04_6 = 1<16>
 	bLoc04_7 = SLICE(wLoc04_6, byte, 0) (alias)
 	v3_3 = bLoc04_7
-	r0_5 = DPB(r0, v3_3, 0)
+	r0_5 = SEQ(SLICE(r0, word24, 8), v3_3)
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -4056,12 +4056,12 @@ proc1_exit:
 Mem2: orig: Mem0
 v3_3: orig: v3
     def:  v3_3 = bLoc04_7
-    uses: r0_5 = DPB(r0, v3_3, 0)
+    uses: r0_5 = SEQ(SLICE(r0, word24, 8), v3_3)
 r0:r0
     def:  def r0
-    uses: r0_5 = DPB(r0, v3_3, 0)
+    uses: r0_5 = SEQ(SLICE(r0, word24, 8), v3_3)
 r0_5: orig: r0
-    def:  r0_5 = DPB(r0, v3_3, 0)
+    def:  r0_5 = SEQ(SLICE(r0, word24, 8), v3_3)
     uses: use r0_5
 wLoc04_6: orig: wLoc04
     def:  wLoc04_6 = 1<16>
@@ -4080,7 +4080,7 @@ l1:
 	wLoc04_6 = 1<16>
 	bLoc04_7 = SLICE(wLoc04_6, byte, 8) (alias)
 	v3_3 = bLoc04_7
-	r0_5 = DPB(r0, v3_3, 0)
+	r0_5 = SEQ(SLICE(r0, word24, 8), v3_3)
 	return
 	// succ:  proc1_exit
 proc1_exit:

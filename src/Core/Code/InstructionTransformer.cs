@@ -189,13 +189,6 @@ namespace Reko.Core.Code
 			return c;
 		}
 
-		public virtual Expression VisitDepositBits(DepositBits d)
-		{
-			var src = d.Source.Accept(this);
-			var bits = d.InsertedBits.Accept(this);
-            return new DepositBits(src, bits, d.BitPosition);
-		}
-
 		public virtual Expression VisitDereference(Dereference deref)
 		{
 			deref.Expression = deref.Expression.Accept(this);

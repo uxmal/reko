@@ -2476,7 +2476,7 @@ l0800_nC24:
 				wArg08 = 0x08;
 				if (al_n != 0x78)
 				{
-					di_ax_n = (uint32) (uint16) ax_n;
+					di_ax_n = (uint32) (ss->*bp_n).w0004;
 					if (al_n != 88)
 					{
 l0800_nCCD:
@@ -2596,7 +2596,7 @@ l0800_nCA5:
 				sp_n = sp_n + 2;
 				if (al_n != 0x78 && al_n != 88)
 				{
-					di_ax_n = (uint32) (uint16) ax_n;
+					di_ax_n = (uint32) (ss->*bp_n).w0004;
 					goto l0800_nCCD;
 				}
 				goto l0800_nCA5;

@@ -697,9 +697,17 @@ namespace Reko.Arch.X86
             {
                 src = m.Cast(dt, src);
             }
-            if (dst is Identifier)
+            if (dst is Identifier idDst)
             {
-                m.Assign(dst, m.Dpb(dst, src, 0));
+                if (src is MemoryAccess mem)
+                {
+                    var dtHigh = PrimitiveType.CreateWord(idDst.DataType.BitSize - mem.DataType.BitSize);
+                    m.Assign(idDst, m.Seq(Constant.Zero(dtHigh), mem));
+                }
+                else
+                {
+                    m.Assign(idDst, m.Dpb(idDst, src, 0));
+                }
             }
             else
             {

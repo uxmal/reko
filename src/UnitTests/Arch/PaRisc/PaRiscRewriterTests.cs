@@ -254,8 +254,8 @@ namespace Reko.UnitTests.Arch.PaRisc
         {
             Given_HexString("d7c01c1d");  // depwi\t00,1F,00000003,r30
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r30 = DPB(r30, 0<3>, 0)");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r30 = SEQ(SLICE(r30, word61, 3), 0<3>)");
         }
 
         [Test]

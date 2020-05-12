@@ -3047,7 +3047,7 @@ l0800_1C89:
 	wArg08 = 8<16>
 	branch al_158 == 0x78<8> l0800_1CA0
 l0800_1C9C:
-	di_ax_768 = (uint32) (uint16) ax_150 (alias)
+	di_ax_768 = (uint32) Mem145[ss:bp_8 + 4<16>:word16] (alias)
 	branch al_158 != 0x58<8> l0800_1CCD
 l0800_1CA0:
 	wArg08 = 0x10<16>
@@ -3101,7 +3101,7 @@ l0800_1C53:
 	branch al_275 == 0x58<8> l0800_1CA5
 l0800_1CA5:
 l0800_1C57:
-	di_ax_768 = (uint32) (uint16) ax_268 (alias)
+	di_ax_768 = (uint32) Mem265[ss:bp_8 + 4<16>:word16] (alias)
 l0800_1CCD:
 	word16 ax_286 = SLICE(di_ax_768, word16, 0)
 	di_125 = SLICE(di_ax_768, word16, 16) (alias)

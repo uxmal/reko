@@ -89,14 +89,20 @@ namespace Reko.Analysis
                 case Slice slice: return ContainedApplication(slice.Expression);
                 case UnaryExpression u: return ContainedApplication(u.Expression);
                 case Dereference deref: return ContainedApplication(deref.Expression);
-                case DepositBits dpb:
-                    var s = ContainedApplication(dpb.Source);
-                    var b = ContainedApplication(dpb.InsertedBits);
-                    if (s != null && b == null)
-                        return s;
-                    if (s == null && b != null)
-                        return b;
-                    return null;
+                case MkSequence seq:
+                    Application appl = null;
+                    foreach (var elem in seq.Expressions)
+                    {
+                        var a = ContainedApplication(elem);
+                        if (a != null)
+                        {
+                            if (appl == null)
+                                appl = a;
+                            else
+                                return null;
+                        }
+                    }
+                    return appl;
                 default:
                     return null;
                 }

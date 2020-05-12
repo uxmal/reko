@@ -992,7 +992,7 @@ word16 fn0A94()
 // Preserved: sp
 fn0A94_entry:
 l0A94:
-	word16 r0_11 = ((DPB(__swab(Mem0[0x0AB2<p16>:word16]), 0<8>, 0) << 1<i16>) + Mem0[0x0AB2<p16>:word16] << 2<i16>) + Mem0[0x0AB2<p16>:word16]
+	word16 r0_11 = ((SEQ(SLICE(__swab(Mem0[0x0AB2<p16>:word16]), byte, 8), 0<8>) << 1<i16>) + Mem0[0x0AB2<p16>:word16] << 2<i16>) + Mem0[0x0AB2<p16>:word16]
 	Mem14[0x0AB4<p16>:word16] = r0_11 + 0x3619<16>
 	return r0_11 + 0x3619<16>
 fn0A94_exit:

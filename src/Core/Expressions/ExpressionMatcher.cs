@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -190,18 +190,6 @@ namespace Reko.Core.Expressions
             if (cP == null)
                 return false;
             return (c.ToInt64() == cP.ToInt64());
-        }
-
-        bool ExpressionVisitor<bool>.VisitDepositBits(DepositBits d)
-        {
-            var dP = p as DepositBits;
-            if (dP == null)
-                return false;
-            if (!Match(dP.Source, d.Source))
-                return false;
-            if (!Match(dP.InsertedBits, d.InsertedBits))
-                return false;
-            return (dP.BitPosition == d.BitPosition);
         }
 
         bool ExpressionVisitor<bool>.VisitDereference(Dereference deref)

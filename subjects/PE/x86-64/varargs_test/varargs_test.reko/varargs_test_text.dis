@@ -475,40 +475,40 @@ l0000000140001717_thunk_fn0000000140001718:
 	r8Out = r8_24
 	return SLICE(rax_25, byte, 0)
 l0000000140001664:
-	word64 rax_146
-	word64 r8_100
+	word64 rax_144
+	word64 r8_138
 	branch SLICE((uint64) (uint32) fn0000000140001DC4(), word32, 0) == 0<32> l0000000140001698
 l000000014000166D:
 	branch ebx_42 != 0<32> l0000000140001698
 l0000000140001698:
 	word64 rdx_47 = Mem7[0x0000000140003000<p64>:word64]
 	word64 rax_55 = (uint64) (SLICE((uint64) SLICE(rdx_47, word32, 0), word32, 0) & 0x3F<32>)
-	r8_100 = __ror(r8 | 0xFFFFFFFFFFFFFFFF<64>, SLICE((uint64) (0x40<32> - SLICE(rax_55, word32, 0)), byte, 0)) ^ rdx_47
-	Mem74[0x00000001400035C0<p64>:word128] = SEQ(r8_100, r8_100)
-	Mem79[0x00000001400035D0<p64>:real64] = r8_100
-	Mem81[0x00000001400035D8<p64>:word128] = SEQ(r8_100, r8_100)
-	Mem82[0x00000001400035E8<p64>:real64] = r8_100
-	rax_146 = SEQ(SLICE(rax_55, word56, 8), 1<8>) (alias)
+	r8_138 = __ror(r8 | 0xFFFFFFFFFFFFFFFF<64>, SLICE((uint64) (0x40<32> - SLICE(rax_55, word32, 0)), byte, 0)) ^ rdx_47
+	Mem72[0x00000001400035C0<p64>:word128] = SEQ(r8_138, r8_138)
+	Mem77[0x00000001400035D0<p64>:real64] = (real64) (uint128) (uint64) r8_138
+	Mem79[0x00000001400035D8<p64>:word128] = SEQ(r8_138, r8_138)
+	Mem80[0x00000001400035E8<p64>:real64] = (real64) (uint128) (uint64) r8_138
+	rax_144 = SEQ(SLICE(rax_55, word56, 8), 1<8>) (alias)
 l0000000140001671:
-	word64 rax_87
-	word64 r9_90
+	word64 rax_85
+	word64 r9_88
 	call initialize_onexit_table (retsize: 8;)
-		uses: r8:r8,r9:r9_90,rcx:0x00000001400035C0<p64>,Stack +0000:qwLoc50,Stack +0010:qwLoc40
-		defs: r8:r8_89,r9:r9_90,rax:rax_87
-	word56 rax_56_8_147 = SLICE(rax_87, word56, 8)
-	branch SLICE(rax_87, word32, 0) == 0<32> l0000000140001685
+		uses: r8:r8,r9:r9_88,rcx:0x00000001400035C0<p64>,Stack +0000:qwLoc50,Stack +0010:qwLoc40
+		defs: r8:r8_87,r9:r9_88,rax:rax_85
+	word56 rax_56_8_145 = SLICE(rax_85, word56, 8)
+	branch SLICE(rax_85, word32, 0) == 0<32> l0000000140001685
 l0000000140001685:
-	word64 rax_98
-	word64 r9_101
+	word64 rax_96
+	word64 r9_99
 	call initialize_onexit_table (retsize: 8;)
-		uses: r8:r8_89,r9:r9_101,rcx:0x00000001400035D8<p64>,Stack +0000:qwLoc50,Stack +0010:qwLoc40
-		defs: r8:r8_100,r9:r9_101,rax:rax_98
-	rax_146 = SEQ(SLICE(rax_98, word56, 8), SLICE(rax_98, word32, 0) == 0<32>) (alias)
+		uses: r8:r8_87,r9:r9_99,rcx:0x00000001400035D8<p64>,Stack +0000:qwLoc50,Stack +0010:qwLoc40
+		defs: r8:r8_98,r9:r9_99,rax:rax_96
+	rax_144 = SEQ(SLICE(rax_96, word56, 8), SLICE(rax_96, word32, 0) == 0<32>) (alias)
 l0000000140001681:
-	rax_146 = SEQ(rax_56_8_147, 0<8>) (alias)
+	rax_144 = SEQ(rax_56_8_145, 0<8>) (alias)
 l00000001400016FF:
-	r8Out = r8_100
-	return SLICE(rax_146, byte, 0)
+	r8Out = r8_138
+	return SLICE(rax_144, byte, 0)
 fn000000014000164C_exit:
 
 

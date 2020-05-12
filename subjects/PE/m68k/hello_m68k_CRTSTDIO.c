@@ -89,20 +89,17 @@ void fn000016D0(word32 d6, struct Eq_n * a5, byte * dwArg08)
 		{
 			int32 d0_n;
 			if ((byte) d6_n >= 0x20 && (byte) d6_n <= 0x78)
-			{
-				int32 d0_n = (int32) (int8) SEQ(SLICE(d0, word24, 8), (byte) d6_n);
-				d0_n = (int32) (int8) SEQ(SLICE(d0_n, word24, 8), a5->aFFFFF7E8[d0_n] & 0x0F);
-			}
+				d0_n = (int32) (a5->aFFFFF7E8[(int32) (byte) d6_n] & 0x0F);
 			else
 				d0_n = 0;
-			int32 d0_n = (word32) dwLoc0C_n.u0 + (d0_n << 0x03);
-			d0.u0 = (int32) (int8) SEQ(SLICE(d0_n, word24, 8), a5->aFFFFF808[d0_n] >> 0x04);
-			dwLoc0C_n = d0;
-			if (d0 <= 7)
+			word32 d0_n = (int32) ((a5 + -2040 + dwLoc0C_n)[d0_n * 0x08] >> 0x04);
+			dwLoc0C_n = d0_n;
+			if (d0_n <= 7)
 			{
-				uipr32 d0_n = SEQ(SLICE(d0, word16, 16), globals->a1758[(int32) (int16) d0 * 2]);
+				word16 v40_n = globals->a1758[(int32) (int16) d0_n * 2];
+				uipr32 d0_n = SEQ(SLICE(d0_n, word16, 16), v40_n);
 				word32 d2_n;
-				(0x1758 + (int32) ((int16) d0_n))();
+				(0x1758 + (int32) v40_n)();
 				return;
 			}
 			byte v42_n = *dwArg08_n;
@@ -187,7 +184,6 @@ void fn00001C84(struct Eq_n * a5, Eq_n dwArg04, int32 dwArg08, struct Eq_n * dwA
 void fn00001CC4(struct Eq_n * a5, Eq_n dwArg04, int32 dwArg08, struct Eq_n * dwArg0C, word32 dwArg10)
 {
 	ptr32 a7_n = fp - 0x14;
-	int32 d0_n = dwArg08;
 	if (dwArg08 > 0x00)
 	{
 		Eq_n d3_n = dwArg04;
@@ -197,13 +193,12 @@ void fn00001CC4(struct Eq_n * a5, Eq_n dwArg04, int32 dwArg08, struct Eq_n * dwA
 			struct Eq_n * a7_n = a7_n - 4;
 			a7_n->dw0000 = dwArg10;
 			a7_n->ptrFFFFFFFC = d4_n;
-			a7_n->tFFFFFFF8 = (int32) (int8) SEQ(SLICE(d0_n, word24, 8), *d3_n);
+			a7_n->tFFFFFFF8 = (int32) *d3_n;
 			struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
 			int32 d5_n;
 			word32 a6_n;
 			d3_n = fn00001C40(a5, a7_n->tFFFFFFF8, a7_n->ptrFFFFFFFC, out d4_n, out d5_n, out a5, out a6_n);
 			a7_n = &a7_n->ptr000C;
-			d0_n = d5_n;
 		} while (d5_n > 0x00);
 	}
 }
@@ -261,7 +256,7 @@ int32 fn00001D24(struct Eq_n * a5, struct Eq_n * dwArg04, ptr32 & d3Out, union E
 				a2Out = a2_n;
 				a5Out = a5_n;
 				a6Out = a6_n;
-				return (int32) (int8) SEQ(SLICE(d0_n, word24, 8), d0_n != 0x00 ? ~0x00 : 0x00);
+				return (int32) (d0_n != 0x00 ? ~0x00 : 0x00);
 			}
 		}
 		else

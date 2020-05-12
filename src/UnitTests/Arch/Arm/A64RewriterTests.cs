@@ -163,7 +163,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction("111 10010 100 1010 1010 1010 0100 00111"); // 87 54 95 F2");
             AssertCode(     // movk\tx7,#&AAA4
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|x7 = DPB(x7, 0xAAA4<16>, 0)");
+                "1|L--|x7 = SEQ(SLICE(x7, word48, 16), 0xAAA4<16>)");
         }
 
         [Test]

@@ -460,15 +460,18 @@ namespace Reko.UnitTests.Typing
             StringWriter sb = new StringWriter();
             handler.Traits.Write(sb);
             string exp =
-                "T_1 (in a : word32)" + nl +
-                "\ttrait_primitive(word32)" + nl +
-                "\ttrait_primitive(word32)" + nl +
-                "\ttrait_primitive(word32)" + nl +
-                "\ttrait_equal(T_3)" + nl +
-                "T_2 (in b : byte)" + nl +
-                "\ttrait_primitive(byte)" + nl +
-                "T_3 (in DPB(a, b, 0) : word32)" + nl +
-                "\ttrait_primitive(word32)" + nl;
+@"T_1 (in a : word32)
+	trait_primitive(word32)
+	trait_primitive(word32)
+	trait_primitive(word32)
+	trait_equal(T_4)
+T_2 (in SLICE(a, word24, 8) : word24)
+	trait_primitive(word24)
+T_3 (in b : byte)
+	trait_primitive(byte)
+T_4 (in SEQ(SLICE(a, word24, 8), b) : word32)
+	trait_primitive(word32)
+";
             Assert.AreEqual(exp, sb.ToString());
         }
 

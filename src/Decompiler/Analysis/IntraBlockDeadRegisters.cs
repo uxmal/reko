@@ -153,13 +153,6 @@ namespace Reko.Analysis
                 return true;
             }
 
-            public bool VisitDepositBits(DepositBits d)
-            {
-                var dead = d.InsertedBits.Accept(this);
-                dead &= d.Source.Accept(this);
-                return dead;
-            }
-
             public bool VisitDereference(Dereference deref)
             {
                 throw new NotImplementedException();
