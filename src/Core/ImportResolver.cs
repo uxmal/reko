@@ -236,6 +236,21 @@ namespace Reko.Core
             return platform.ResolveImportByName(moduleName, name);
         }
 
+        public SystemService ResolveService(string moduleName, int ordinal)
+        {
+            foreach (var program in project.Programs)
+            {
+                if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out var mod))
+                    continue;
+
+                if (mod.ServicesByOrdinal.TryGetValue(ordinal, out var svc))
+                {
+                    return svc;
+                }
+            }
+            return null;
+        }
+
         public Expression ResolveImport(string moduleName, int ordinal, IPlatform platform)
         {
             foreach (var program in project.Programs)

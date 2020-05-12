@@ -114,8 +114,8 @@ namespace Reko.UserInterfaces.WindowsForms
             var dec = services.RequireService<IDecompilerService>();
             var project = dec.Decompiler.Project;
             var dynLinker = new DynamicLinker(project, program, new NullDecompilerEventListener());
-            var e = dynLinker.ResolveImport(ord.ModuleName, ord.Ordinal, program.Platform);
-            string importName = e?.ToString();
+            var e = dynLinker.ResolveService(ord.ModuleName, ord.Ordinal);
+            string importName = e?.Name;
             return importName;
         }
 
