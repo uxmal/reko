@@ -2,7 +2,7 @@
 ; Synthesized by John Källén (uxmal@github) from wiki page at
 ; https://xboxdevwiki.net/Kernel
 
-LIBRARY xboxkrnl.exe
+LIBRARY xboxkrnl
 EXPORTS
     AvGetSavedDataAddress @ 1               ; stdcall  
     AvSendTVEncoderOption @ 2               ; stdcall  

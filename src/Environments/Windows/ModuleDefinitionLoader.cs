@@ -125,6 +125,7 @@ namespace Reko.Environments.Windows
             if (Peek().Type == TokenType.Id)
             {
                 moduleName = Get().Text.ToUpper();
+                lib.SetModuleName(moduleName);
             }
             if (PeekAndDiscard(TokenType.BASE))
             {

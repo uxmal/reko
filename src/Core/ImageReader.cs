@@ -124,7 +124,7 @@ namespace Reko.Core
         {
             long prevOffset = Offset;
             Offset = offset;
-                T result = action.Invoke(this);
+            T result = action.Invoke(this);
             Offset = prevOffset;
             return result;
         }
