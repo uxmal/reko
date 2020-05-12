@@ -85,7 +85,7 @@ namespace Reko.ImageLoaders.Xbe
                 kernelThunkXorKey = XBE_XORKEY_KERNELTHUNK_CHIHIRO;
                 break;
             default:
-                throw new BadImageFormatException("Cannot determine XBE build type");
+                throw new BadImageFormatException("Cannot determine XBE build type.");
             }
 
             return (entryXorKey, kernelThunkXorKey);
@@ -99,14 +99,14 @@ namespace Reko.ImageLoaders.Xbe
             UInt32 entryXorKey, kernelThunkXorKey;
             (entryXorKey, kernelThunkXorKey) = this.DetermineXorKeys();
 
-            EntryPointAddress = new Address32(hdr.EntryPoint ^ entryXorKey);
-            KernelThunkAddress = new Address32(hdr.KernelImageThunkAddress ^ kernelThunkXorKey);
-            SectionHeadersAddress = new Address32(hdr.SectionHeadersAddress);
-            BaseAddress = new Address32(hdr.BaseAddress);
+            EntryPointAddress = Address.Ptr32(hdr.EntryPoint ^ entryXorKey);
+            KernelThunkAddress = Address.Ptr32(hdr.KernelImageThunkAddress ^ kernelThunkXorKey);
+            SectionHeadersAddress = Address.Ptr32(hdr.SectionHeadersAddress);
+            BaseAddress = Address.Ptr32(hdr.BaseAddress);
 
-            LibraryVersionsAddress = new Address32(hdr.LibraryVersionsAddress);
-            KernelLibraryAddress = new Address32(hdr.KernelLibraryVersionAddress);
-            XapiLibraryAddress = new Address32(hdr.XapiLibraryVersionAddress);
+            LibraryVersionsAddress = Address.Ptr32(hdr.LibraryVersionsAddress);
+            KernelLibraryAddress = Address.Ptr32(hdr.KernelLibraryVersionAddress);
+            XapiLibraryAddress = Address.Ptr32(hdr.XapiLibraryVersionAddress);
         }
     }
 
@@ -120,8 +120,8 @@ namespace Reko.ImageLoaders.Xbe
         public XbeSection(XbeSectionHeader hdr)
         {
             SectionHeader = hdr;
-            Address = new Address32(SectionHeader.RawAddress);
-            NameAddress = new Address32(SectionHeader.SectionNameAddress);
+            Address = Address.Ptr32(SectionHeader.RawAddress);
+            NameAddress = Address.Ptr32(SectionHeader.SectionNameAddress);
         }
     }
 
@@ -211,7 +211,7 @@ namespace Reko.ImageLoaders.Xbe
 
         private ImageSegment LoadTlsSection()
         {
-            Address tlsDirectoryAddress = new Address32(hdr.TlsAddress);
+            Address tlsDirectoryAddress = Address.Ptr32(hdr.TlsAddress);
             XbeTls tls = rdr.ReadAt<XbeTls>(tlsDirectoryAddress - ctx.BaseAddress, (rdr) =>
             {
                 return rdr.ReadStruct<XbeTls>();
@@ -222,7 +222,7 @@ namespace Reko.ImageLoaders.Xbe
                 byte[] tlsData = new byte[tls.DataEndAddress - tls.DataStartAddress];
 
                 ImageSegment tlsSegment = new ImageSegment(".tls", new MemoryArea(
-                    new Address32(tls.DataStartAddress), tlsData
+                    Address.Ptr32(tls.DataStartAddress), tlsData
                 ), AccessMode.ReadWrite);
 
                 return tlsSegment;
@@ -245,10 +245,17 @@ namespace Reko.ImageLoaders.Xbe
             for (uint i = 0; ; i++)
             {
                 Address32 ordinalAddress = (Address32) ctx.KernelThunkAddress.Add(i * 4);
-                uint dword = rdr.ReadUInt32();
+                if(!rdr.TryReadUInt32(out uint dword))
+                {
+                    throw new BadImageFormatException("Unexpected EOF while reading import table.");
+                }
                 if (dword == 0)
+                {
                     break;
-
+                } else if((dword >> 31) == 0)
+                {
+                    throw new NotSupportedException("Named ordinals not expected in XBE files.");
+                }
                 int ordinalValue = (int) (dword & 0x7FFFFFFF);
                 imports.Add(ordinalAddress, new OrdinalImportReference(ordinalAddress, kernelLibrary.LibraryName, ordinalValue, SymbolType.ExternalProcedure));
             }
