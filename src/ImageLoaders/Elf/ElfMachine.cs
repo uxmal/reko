@@ -216,7 +216,7 @@ namespace Reko.ImageLoaders.Elf
 
         EM_NANOMIPS = 249,       //$REVIEW: a guess?
         EM_MORPHOS_PPC = 8692,    //$REVIEW: a guess?
-
+        EM_AVR32a = 0x18AD,      // Atmel AVR32, according to https://sites.uclouvain.be/SystInfo/usr/include/linux/elf-em.h.html
         EM_ALPHA = 0x9026,       // Alpha (written in the absence of an ABI) 
     }
 }

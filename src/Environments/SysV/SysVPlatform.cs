@@ -97,6 +97,8 @@ namespace Reko.Environments.SysV
                 return new M68kCallingConvention(Architecture);
             case "avr8":
                 return new Avr8CallingConvention(Architecture);
+            case "avr32":
+                return new Avr32CallingConvention(Architecture);
             case "msp430":
                 return new Msp430CallingConvention(Architecture);
             case "risc-v":

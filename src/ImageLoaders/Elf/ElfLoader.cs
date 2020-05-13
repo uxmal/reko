@@ -262,6 +262,10 @@ namespace Reko.ImageLoaders.Elf
                 arch = "paRisc";
                 options["WordSize"] = "32";
                 break;
+            case ElfMachine.EM_AVR32:
+            case ElfMachine.EM_AVR32a:
+                arch = "avr32";
+                break;
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machine));
             }
