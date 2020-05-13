@@ -38,12 +38,13 @@ namespace Reko.Arch.Avr
             this.FramePointerType = PrimitiveType.Ptr32;
             this.InstructionBitSize = 16;
             this.PointerType = PrimitiveType.Ptr32;
+            this.StackRegister = Registers.sp;
             this.WordWidth = PrimitiveType.Word32;
         }
 
-        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
-            return new Avr32.Avr32Disassembler(this);
+            return new Avr32Disassembler(this, rdr);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
@@ -68,7 +69,7 @@ namespace Reko.Arch.Avr
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new Avr32Rewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)

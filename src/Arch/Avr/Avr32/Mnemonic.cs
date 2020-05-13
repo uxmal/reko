@@ -26,5 +26,7 @@ namespace Reko.Arch.Avr.Avr32
 {
     public enum Mnemonic
     {
+        invalid,
+        mov
     }
 }

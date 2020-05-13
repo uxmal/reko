@@ -26,5 +26,16 @@ namespace Reko.Arch.Avr.Avr32
     {
         public Mnemonic Mnemonic { get; set; }
         public override int MnemonicAsInteger => (int) Mnemonic;
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteMnemonic(Mnemonic.ToString());
+            base.RenderOperands(writer, options);
+        }
+
+        protected override void RenderOperand(MachineOperand operand, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            base.RenderOperand(operand, writer, options);
+        }
     }
 }

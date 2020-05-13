@@ -36,7 +36,7 @@ namespace Reko.Core.Machine
     public abstract class Decoder<TDasm, TMnemonic, TInstr> 
         where TInstr : MachineInstruction
     {
-        private static readonly TraceSwitch trace = new TraceSwitch(nameof(Decoder), "Trace the progress of machine code decoders") { Level = TraceLevel.Warning };
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(Decoder), "Trace the progress of machine code decoders") { Level = TraceLevel.Verbose };
 
         public abstract TInstr Decode(uint wInstr, TDasm dasm);
 

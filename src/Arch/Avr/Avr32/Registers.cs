@@ -37,10 +37,13 @@ namespace Reko.Arch.Avr.Avr32
             regs[13] = new RegisterStorage("sp", regs[13].Number, 0, PrimitiveType.Word32);
             regs[14] = new RegisterStorage("lr", regs[14].Number, 0, PrimitiveType.Word32);
             regs[15] = new RegisterStorage("pc", regs[14].Number, 0, PrimitiveType.Word32);
-
+            GpRegisters = regs;
             RegistersByName = regs.ToDictionary(r => r.Name);
+            sp = regs[13];
         }
 
         public static Dictionary<string, RegisterStorage> RegistersByName { get; }
+        public static RegisterStorage[] GpRegisters { get; }
+        public static RegisterStorage sp { get; }
     }
 }
