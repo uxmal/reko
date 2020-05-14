@@ -27,6 +27,7 @@ namespace Reko.Arch.Avr.Avr32
     public enum Mnemonic
     {
         invalid,
+
         mov,
         eor,
         ld_w,
@@ -34,6 +35,26 @@ namespace Reko.Arch.Avr.Avr32
         lddpc,
         sub,
         rsub,
-        mcall
+        mcall,
+        pushm,
+        ld_ub,
+        breq,
+        brne,
+        brcc,
+        brcs,
+        brge,
+        brlt,
+        brmi,
+        brpl,
+        movh,
+        cp_b,
+        lddsp,
+        stdsp,
+        cp_w,
+        icall,
+        popm,
+        ld_sh,
+        ld_uh,
+        st_b,
     }
 }

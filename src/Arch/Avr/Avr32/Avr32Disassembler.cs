@@ -20,8 +20,10 @@
 
 using Reko.Core;
 using Reko.Core.CLanguage;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -35,7 +37,7 @@ namespace Reko.Arch.Avr.Avr32
 
     public class Avr32Disassembler : DisassemblerBase<Avr32Instruction, Mnemonic>
     {
-        private static Decoder rootDecoder;
+        private static readonly Decoder rootDecoder;
 
         private readonly Avr32Architecture arch;
         private readonly EndianImageReader rdr;
@@ -87,19 +89,9 @@ namespace Reko.Arch.Avr.Avr32
 
         public override Avr32Instruction NotYetImplemented(uint wInstr, string message)
         {
-#if DEBUG
-            var hexBytes = (wInstr >> 29) == 0b111
-                ? wInstr.ToString("X8")
-                : wInstr.ToString("X4");
-            EmitUnitTest(
-                "AVR32",
-                hexBytes,
-                message,
-                "Avr32Dis",
-                this.addr,
-                m => m.WriteLine("AssertCode(\"@@@\", \"{0}\");", hexBytes));
-#endif
-            return base.NotYetImplemented(wInstr, message);
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("Avr32Dis", this.addr, rdr, message);
+            return CreateInvalidInstruction();
         }
 
         #region Mutators
@@ -116,6 +108,7 @@ namespace Reko.Arch.Avr.Avr32
         }
         private static readonly Mutator<Avr32Disassembler> R0 = Register(0);
         private static readonly Mutator<Avr32Disassembler> R9 = Register(9);
+        private static readonly Mutator<Avr32Disassembler> R16 = Register(16);
         private static readonly Mutator<Avr32Disassembler> R25 = Register(25);
 
 
@@ -151,6 +144,11 @@ namespace Reko.Arch.Avr.Avr32
         }
 
         private static readonly Mutator<Avr32Disassembler> Mdisp_w0_16 = MunsignedDisplacement(PrimitiveType.Word32, 16, 0, 16);
+        private static readonly Mutator<Avr32Disassembler> Mdisp_w4_5 = MunsignedDisplacement(PrimitiveType.Word32, 9, 4, 5);
+        private static readonly Mutator<Avr32Disassembler> Mdisp_w4_4 = MunsignedDisplacement(PrimitiveType.Word32, 9, 4, 4);
+        private static readonly Mutator<Avr32Disassembler> Mdisp_ub4_3 = MunsignedDisplacement(PrimitiveType.Byte, 9, 4, 3);
+        private static readonly Mutator<Avr32Disassembler> Mdisp_sh4_3 = MunsignedDisplacement(PrimitiveType.Int16, 9, 4, 3);
+        private static readonly Mutator<Avr32Disassembler> Mdisp_uh4_3 =  MunsignedDisplacement(PrimitiveType.UInt16, 9, 4, 3);
 
         private static Mutator<Avr32Disassembler> MsignedDisplacement(PrimitiveType dt, int regPos, int bitpos, int length)
         {
@@ -211,6 +209,7 @@ namespace Reko.Arch.Avr.Avr32
         }
 
         private static readonly Mutator<Avr32Disassembler> Mpc4_7 = Mrelative(Registers.pc, 4, 7);
+        private static readonly Mutator<Avr32Disassembler> Msp4_7 = Mrelative(Registers.sp, 4, 7);
 
         private static Mutator<Avr32Disassembler> Imm_signed(int bitPos, int length)
         {
@@ -224,7 +223,90 @@ namespace Reko.Arch.Avr.Avr32
         }
 
         private static readonly Mutator<Avr32Disassembler> Is0_16 = Imm_signed(0, 16);
+        private static readonly Mutator<Avr32Disassembler> Is4_6 = Imm_signed(4, 6);
         private static readonly Mutator<Avr32Disassembler> Is4_8 = Imm_signed(4, 8);
+
+        private static Mutator<Avr32Disassembler> Imm_unsigned(PrimitiveType dt, int bitPos, int length)
+        {
+            var bitfield = new Bitfield(bitPos, length);
+            return (u, d) =>
+            {
+                var imm = bitfield.Read(u);
+                d.ops.Add(new ImmediateOperand(Constant.Create(dt, imm)));
+                return true;
+            };
+        }
+
+        private static readonly Mutator<Avr32Disassembler> Iu_h0_16 = Imm_unsigned(PrimitiveType.UInt16, 0, 16);
+
+
+        private static Mutator<Avr32Disassembler> multiRegisterList(bool pop, bool setr12)
+        {
+            return (uint uInstr, Avr32Disassembler dasm) =>
+            {
+                var regMask = Bits.ZeroExtend(uInstr >> 4, 8);
+                if (regMask == 0)
+                    return false;
+                var gp = Registers.GpRegisters;
+                if ((regMask & 1) != 0)
+                {
+                    dasm.ops.Add(new RegisterRange(gp, 0, 4));
+                }
+                if ((regMask & 2) != 0)
+                {
+                    dasm.ops.Add(new RegisterRange(gp, 4, 4));
+                }
+                if ((regMask & 4) != 0)
+                {
+                    dasm.ops.Add(new RegisterRange(gp, 8, 2));
+                }
+                if ((regMask & 8) != 0)
+                {
+                    dasm.ops.Add(new RegisterOperand(gp[10]));
+                }
+                if ((regMask & 16) != 0)
+                {
+                    dasm.ops.Add(new RegisterOperand(gp[11]));
+                }
+                if ((regMask & 32) != 0)
+                {
+                    dasm.ops.Add(new RegisterOperand(gp[12]));
+                }
+                if ((regMask & 64) != 0 && !(pop && setr12))
+                {
+                    dasm.ops.Add(new RegisterOperand(gp[14]));
+                }
+                if ((regMask & 128) != 0)
+                {
+                    if (pop)
+                        dasm.iclass = InstrClass.Transfer;
+                    dasm.ops.Add(new RegisterOperand(gp[15]));
+                    if (setr12)
+                    {
+                        switch (Bits.ZeroExtend(regMask >> 5, 2))
+                        {
+                        case 0: dasm.ops.Add(new AssignOperand(gp[12], 0)); break;
+                        case 1: dasm.ops.Add(new AssignOperand(gp[12], 1)); break;
+                        default: dasm.ops.Add(new AssignOperand(gp[12], -1)); break;
+                        }
+                    }
+                }
+                return true;
+            };
+        }
+
+        private static Mutator<Avr32Disassembler> PCRelative(Bitfield bfOffset)
+        {
+            return (u, d) =>
+            {
+                var offset = bfOffset.ReadSigned(u) << 1;
+                var addr = d.addr + offset;
+                d.ops.Add(AddressOperand.Create(addr));
+                return true;
+            };
+        }
+
+        private static readonly Mutator<Avr32Disassembler> Pcrel4_8 = PCRelative(new Bitfield(4,8));
 
         #endregion
 
@@ -257,11 +339,12 @@ namespace Reko.Arch.Avr.Avr32
 
         static Avr32Disassembler()
         {
+            var ld_ub = Instr(Mnemonic.ld_ub, Mdisp_ub4_3);
             var twoRegs = Mask(4, 5, "  twoRegs",
                 Nyi("0b00000"),
                 Nyi("0b00001"),
                 Instr(Mnemonic.rsub, Rw0, R9),
-                Nyi("0b00011"),
+                Instr(Mnemonic.cp_w, R0, R9),
                 Nyi("0b00100"),
                 Instr(Mnemonic.eor, Rw0, R9),
                 Nyi("0b00110"),
@@ -282,21 +365,40 @@ namespace Reko.Arch.Avr.Avr32
                 Nyi("0b10101"),
                 Nyi("0b10110"),
                 Nyi("0b10111"),
-                Nyi("0b11000"),
-                Nyi("0b11001"),
-                Nyi("0b11010"),
-                Nyi("0b11011"),
-                Nyi("0b11100"),
-                Nyi("0b11101"),
-                Nyi("0b11110"),
-                Nyi("0b11111"));
+
+                ld_ub,
+                ld_ub,
+                ld_ub,
+                ld_ub,
+
+                ld_ub,
+                ld_ub,
+                ld_ub,
+                ld_ub);
+
+            var dispLdStK3imm = Mask(7, 2, "  Displacement load / store with k3 immediate",
+                Instr(Mnemonic.ld_sh, Rw0, Mdisp_sh4_3),
+                Instr(Mnemonic.ld_uh, Rw0, Mdisp_uh4_3),
+                Instr(Mnemonic.st_w, Mdisp_w4_4, R0),
+                Instr(Mnemonic.st_w, Mdisp_w4_4, R0));
+
+            var singleReg = Sparse(4, 5, "Single register instructions", Nyi("Single register instructions"),
+                (0b10001, Instr(Mnemonic.icall, R0)));
 
             var spPcRelativeLdSt = Mask(11, 2, "  spPcRelativeLdSt",
-                Nyi("00"),
+                Instr(Mnemonic.lddsp, Rw0, Msp4_7),
                 Instr(Mnemonic.lddpc, Rw0, Mpc4_7),
-                Nyi("10"),
-                Nyi("11"));
+                Instr(Mnemonic.stdsp, Msp4_7, R0),
+                Mask(9, 2, "  11",
+                    Instr(Mnemonic.cp_w, R0, Is4_6),
+                    Instr(Mnemonic.cp_w, R0, Is4_6),
+                    singleReg,
+                    Nyi("return and test")));
+                    //Nyi("1")););
 
+            var wide00000 = Sparse(8, 8, "  wide00000", Nyi(""),
+                (0x18, Sparse(0, 8, "  0x18", Nyi(""),
+                    (0x00, Instr(Mnemonic.cp_b, R16, R25)))));
             var wide00001 = Mask(25, 4, "  00001",
                 Nyi("0b0000"),
                 Nyi("0b0001"),
@@ -312,11 +414,11 @@ namespace Reko.Arch.Avr.Avr32
                 Nyi("0b1011"),
                 Nyi("0b1100"),
                 Nyi("0b1101"),
-                Nyi("0b1110"),
+                Instr(Mnemonic.movh, Iu_h0_16),
                 Nyi("0b1111"));
 
             var wideInstr = new UInt32Decoder(Mask(20, 5, "  wide",
-                Nyi("0b00000"),
+                wide00000,
                 wide00001,
                 Nyi("0b00010"),
                 Nyi("0b00011"),
@@ -348,21 +450,39 @@ namespace Reko.Arch.Avr.Avr32
                 Nyi("0b11101"),
                 Nyi("0b11110"),
                 Nyi("0b11111")));
+
+            var shortBranch = Mask(0, 3, "  Short branch",
+                Instr(Mnemonic.breq, InstrClass.ConditionalTransfer, Pcrel4_8),
+                Instr(Mnemonic.brne, InstrClass.ConditionalTransfer, Pcrel4_8),
+                Instr(Mnemonic.brcc, InstrClass.ConditionalTransfer, Pcrel4_8),
+                Instr(Mnemonic.brcs, InstrClass.ConditionalTransfer, Pcrel4_8),
+
+                Instr(Mnemonic.brge, InstrClass.ConditionalTransfer, Pcrel4_8),
+                Instr(Mnemonic.brlt, InstrClass.ConditionalTransfer, Pcrel4_8),
+                Instr(Mnemonic.brmi, InstrClass.ConditionalTransfer, Pcrel4_8),
+                Instr(Mnemonic.brpl, InstrClass.ConditionalTransfer, Pcrel4_8));
+            
             rootDecoder = Mask(13, 3, "AVR32",
                 twoRegs,
                 Mask(12, 1, "  001",
                     Nyi("0"),
                     Instr(Mnemonic.mov, Rw0, Is4_8)),
                 spPcRelativeLdSt,
-                Nyi("0b011"),
-                Nyi("0b100"),
-                Nyi("0b101"),
-                Mask(12, 2, "  110",
-                    Nyi("0"),
+                Instr(Mnemonic.ld_w, Rw0, Mdisp_w4_5),
+                dispLdStK3imm,
+                Mask(7, 2, "  101",
+                    Nyi("0b00"),
+                    Instr(Mnemonic.st_b, Mdisp_ub4_3, R0),
+                    Nyi("0b10"),
+                    Nyi("0b11")),
+                Mask(12, 1, "  110",
+                    Mask(3, 1, "  0",
+                        shortBranch,
+                        Nyi("Relative jump and call")),
                     Mask(0, 4, "  1",
-                        Nyi("0b0000"),
-                        Nyi("0b0001"),
-                        Nyi("0b0010"),
+                        Nyi("acall"),
+                        Instr(Mnemonic.pushm, multiRegisterList(false, false)),
+                        Instr(Mnemonic.popm, multiRegisterList(true, false)),
                         Nyi("0b0011"),
                         Nyi("0b0100"),
                         Nyi("0b0101"),
@@ -370,7 +490,7 @@ namespace Reko.Arch.Avr.Avr32
                         Nyi("0b0111"),
                         Nyi("0b1000"),
                         Nyi("0b1001"),
-                        Nyi("0b1010"),
+                        Instr(Mnemonic.popm, multiRegisterList(true, true)),
                         Nyi("0b1011"),
                         Nyi("0b1100"),
                         Nyi("0b1101"),

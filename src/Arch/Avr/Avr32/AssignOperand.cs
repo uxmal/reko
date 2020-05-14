@@ -18,31 +18,27 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
-using System;
+using Reko.Core.Types;
 
 namespace Reko.Arch.Avr.Avr32
 {
-    public class Avr32Instruction : MachineInstruction
+    public class AssignOperand : MachineOperand
     {
-        public Mnemonic Mnemonic { get; set; }
-        public override int MnemonicAsInteger => (int) Mnemonic;
-        public override string MnemonicAsString => Mnemonic.ToString();
+        public RegisterStorage Register { get; }
+        public int Value { get; }
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        public AssignOperand(RegisterStorage registerStorage, int value)
+            : base(PrimitiveType.Word32)
         {
-            RenderMnemonic(writer, options);
-            base.RenderOperands(writer, options);
+            this.Register = registerStorage;
+            this.Value = value;
         }
 
-        private void RenderMnemonic(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteMnemonic(Mnemonic.ToString().Replace('_', '.'));
-        }
-
-        protected override void RenderOperand(MachineOperand operand, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            base.RenderOperand(operand, writer, options);
+            writer.WriteFormat("{0}={1}", Register.Name, Value);
         }
     }
 }

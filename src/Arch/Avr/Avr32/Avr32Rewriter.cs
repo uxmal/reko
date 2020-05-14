@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Reko.Arch.Avr.Avr32
 {
-    internal class Avr32Rewriter : IEnumerable<RtlInstructionCluster>
+    public class Avr32Rewriter : IEnumerable<RtlInstructionCluster>
     {
         private readonly Avr32Architecture arch;
         private readonly EndianImageReader rdr;

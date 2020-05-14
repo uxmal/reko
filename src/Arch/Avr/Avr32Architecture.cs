@@ -32,7 +32,7 @@ namespace Reko.Arch.Avr
 {
     public class Avr32Architecture : ProcessorArchitecture
     {
-        public Avr32Architecture(string archId) : base(archId)
+        public Avr32Architecture(IServiceProvider services, string archId) : base(services, archId)
         {
             this.Endianness = EndianServices.Big;
             this.FramePointerType = PrimitiveType.Ptr32;
@@ -132,7 +132,7 @@ namespace Reko.Arch.Avr
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse32(txtAddr, out addr);
         }
     }
 }

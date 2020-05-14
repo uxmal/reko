@@ -247,5 +247,5 @@ namespace Reko.Core.Machine
         protected virtual void Dispose(bool disposing)
         {
         }
-    }
+            }
 }

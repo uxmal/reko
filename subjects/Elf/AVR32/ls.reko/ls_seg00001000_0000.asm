@@ -369,47 +369,47 @@ _start proc
 	mov	r10,sp
 	st.w	--sp,r10
 	st.w	--sp,r12
-	lddpc	r6,pc[20]
+	lddpc	r6,sp[20]
 	rsub	r6,pc
 	sub	r9,pc,0000002C
 	ld.w	r8,r8[456]
 	sub	r12,pc,FFFFD140
 	mcall	r6[480]
 	invalid
-	invalid
-	lddpc	r6,pc[52]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[52]
 	rsub	r6,pc
 	ld.w	r8,r8[388]
-	invalid
+	ld.ub	r8[0]
 	mov	r8,00000000
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	000026DA
+	popm	r4-r7,pc
+	st.w	r10[0],r9
+	icall	r8
 	ld.w	r10,r10[1308]
-	invalid
+	ld.w	r8,r10[0]
 	sub	r9,r8,FFFFFFFC
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r8[0]
+	cp.w	r8,00000000
+	brne	000026D6
 	ld.w	r8,r8[388]
 	mov	r9,00000001
+	st.b	r8[0],r9
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[28]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[28]
 	rsub	r6,pc
 	ld.w	r12,r12[1312]
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r12[0]
+	cp.w	r8,00000000
+	breq	00002712
 	ld.w	r8,r8[400]
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	00002712
+	icall	r8
+	popm	r4-r7,pc
 	invalid
 	invalid
 	mov	r8,r11
@@ -424,18 +424,18 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	pushm	lr
 	mov	lr,r11
+	cp.w	lr,r9
+	brge	0000274E
+	popm	pc,r12=-1
+	invalid
+	cp.w	lr,r9
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[24]
+	popm	pc
+	pushm	r4-r7,lr
+	lddpc	r6,sp[24]
 	rsub	r6,pc
 	mov	r9,r11
 	invalid
@@ -443,521 +443,521 @@ _start proc
 	mov	r9,00000000
 	invalid
 	mov	r12,r10
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
+	pushm	lr
 	mov	lr,r11
 	invalid
 	invalid
+	cp.w	r10,r8
+	invalid
+	breq	00002792
+	popm	pc,r12=0
 	invalid
 	invalid
+	cp.w	r10,r8
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[20]
+	popm	pc
+	pushm	r4-r7,lr
+	lddpc	r6,sp[20]
 	rsub	r6,pc
+	ld.w	r9,r6[8]
+	ld.w	r8,r9[0]
+	cp.w	r8,00000000
+	brne	000027B4
+	st.w	r9[0],r12
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[24]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[24]
 	rsub	r6,pc
+	ld.w	r9,r6[8]
+	ld.w	r8,r9[0]
+	cp.w	r8,00000000
+	brne	000027D0
+	ld.w	r8,r9[4]
+	invalid
+	st.w	r9[4],r8
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[32]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[32]
 	rsub	r6,pc
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r6[8]
+	cp.w	r12,00000000
+	breq	000027EA
 	mov	r8,00000002
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r9[8],r8
+	popm	r4-r7,pc
+	ld.w	r8,r9[8]
+	cp.w	r8,00000000
+	brne	000027F4
 	mov	r8,00000001
+	st.w	r9[8],r8
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[36]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[36]
 	rsub	r6,pc
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r2,r11[-36]
+	ld.w	r3,r11[-40]
+	ld.w	r8,r12[-36]
+	ld.w	r9,r12[-40]
 	mov	r7,r11
 	mov	r4,r10
 	mov	r11,r3
 	mov	r10,r2
 	mov	r5,r12
 	invalid
+	brne	0000281E
+	ld.w	r11,r7[0]
+	ld.w	r12,r5[0]
+	icall	r4
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[36]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[36]
 	rsub	r6,pc
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r2,r11[-44]
+	ld.w	r3,r11[-48]
+	ld.w	r8,r12[-44]
+	ld.w	r9,r12[-48]
 	mov	r7,r11
 	mov	r4,r10
 	mov	r11,r3
 	mov	r10,r2
 	mov	r5,r12
 	invalid
+	brne	00002846
+	ld.w	r11,r7[0]
+	ld.w	r12,r5[0]
+	icall	r4
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[36]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[36]
 	rsub	r6,pc
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r2,r11[-52]
+	ld.w	r3,r11[-56]
+	ld.w	r8,r12[-52]
+	ld.w	r9,r12[-56]
 	mov	r7,r11
 	mov	r4,r10
 	mov	r11,r3
 	mov	r10,r2
 	mov	r5,r12
 	invalid
+	brne	0000286E
+	ld.w	r11,r7[0]
+	ld.w	r12,r5[0]
+	icall	r4
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	pushm	r4-r7,lr
 	invalid
 	mov	lr,r12
 	invalid
+	cp.w	r4,r8
+	invalid
+	brge	0000288A
+	popm	r4-r7,pc,r12=-1
+	cp.w	r4,r8
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[16]
+	cp.w	r12,00000000
+	brne	0000289C
+	ld.w	r11,r11[0]
+	ld.w	r12,lr[0]
+	icall	r10
+	popm	r4-r7,pc
+	pushm	lr
+	ld.w	r11,r11[0]
+	ld.w	r12,r12[0]
+	icall	r10
+	popm	pc
+	pushm	r4-r7,lr
+	lddpc	r6,sp[16]
 	rsub	r6,pc
 	sub	r10,pc,FFFFEEC2
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[12]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[12]
 	rsub	r6,pc
+	ld.w	r10,r6[24]
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[20]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[20]
 	rsub	r6,pc
 	mov	r8,r11
 	sub	r10,pc,FFFFEEE8
 	mov	r11,r12
 	mov	r12,r8
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[20]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[20]
 	rsub	r6,pc
 	mov	r8,r11
-	invalid
+	ld.w	r10,r6[24]
 	mov	r11,r12
 	mov	r12,r8
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[16]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[16]
 	rsub	r6,pc
 	sub	r10,pc,FFFFEF16
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[12]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[12]
 	rsub	r6,pc
+	ld.w	r10,r6[24]
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[20]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[20]
 	rsub	r6,pc
 	mov	r8,r11
 	sub	r10,pc,FFFFEF3C
 	mov	r11,r12
 	mov	r12,r8
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[20]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[20]
 	rsub	r6,pc
 	mov	r8,r11
-	invalid
+	ld.w	r10,r6[24]
 	mov	r11,r12
 	mov	r12,r8
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[16]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[16]
 	rsub	r6,pc
 	sub	r10,pc,FFFFEF6A
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[12]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[12]
 	rsub	r6,pc
+	ld.w	r10,r6[24]
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[20]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[20]
 	rsub	r6,pc
 	mov	r8,r11
 	sub	r10,pc,FFFFEF90
 	mov	r11,r12
 	mov	r12,r8
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[20]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[20]
 	rsub	r6,pc
 	mov	r8,r11
-	invalid
+	ld.w	r10,r6[24]
 	mov	r11,r12
 	mov	r12,r8
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[16]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[16]
 	rsub	r6,pc
 	sub	r10,pc,FFFFEFBE
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[12]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[12]
 	rsub	r6,pc
+	ld.w	r10,r6[24]
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[20]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[20]
 	rsub	r6,pc
 	mov	r8,r11
 	sub	r10,pc,FFFFEFE4
 	mov	r11,r12
 	mov	r12,r8
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[20]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[20]
 	rsub	r6,pc
 	mov	r8,r11
-	invalid
+	ld.w	r10,r6[24]
 	mov	r11,r12
 	mov	r12,r8
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[16]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[16]
 	rsub	r6,pc
 	sub	r10,pc,FFFFF012
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[12]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[12]
 	rsub	r6,pc
+	ld.w	r10,r6[24]
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[20]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[20]
 	rsub	r6,pc
 	mov	r8,r11
 	sub	r10,pc,FFFFF038
 	mov	r11,r12
 	mov	r12,r8
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[20]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[20]
 	rsub	r6,pc
 	mov	r8,r11
-	invalid
+	ld.w	r10,r6[24]
 	mov	r11,r12
 	mov	r12,r8
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[32]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[32]
 	rsub	r6,pc
-	invalid
+	ld.w	r8,r6[8]
 	mov	r10,00000000
+	ld.w	r9,r8[20]
+	ld.w	r11,r8[12]
+	ld.w	r8,r8[16]
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	r10,r11
+	brne	00002A5E
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[188]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[188]
 	rsub	r6,pc
-	invalid
-	invalid
+	cp.w	r12,00000000
+	breq	00002A88
 	mov	r8,r11
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	r10,00000005
 	invalid
+	cp.w	r8,00000000
+	breq	00002AA6
+	cp.w	r12,00000000
+	breq	00002B2A
+	ld.w	r8,r6[8]
+	ld.w	r8,r8[24]
+	cp.w	r8,00000003
+	brne	00002B2A
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	00002B2A
 	mov	r12,0000002A
-	invalid
-	invalid
-	invalid
+	popm	r4-r7,pc
+	cp.w	r12,00000000
+	breq	00002AB8
 	mov	r8,r11
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	r10,00000003
+	invalid
+	cp.w	r10,00000009
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r9,00000000
+	breq	00002ACA
 	mov	r12,0000002F
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	popm	r4-r7,pc
+	ld.w	r8,r6[8]
+	ld.w	r8,r8[24]
+	cp.w	r8,00000001
+	breq	00002B2A
+	cp.w	r12,00000000
+	breq	00002AE4
 	mov	r8,r11
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	r10,00000006
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	00002AF0
 	mov	r12,00000040
-	invalid
-	invalid
-	invalid
+	popm	r4-r7,pc
+	cp.w	r12,00000000
+	breq	00002B02
 	mov	r8,r11
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	r10,00000001
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	00002B0E
 	mov	r12,0000007C
+	popm	r4-r7,pc
+	cp.w	r12,00000000
+	breq	00002B1E
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	r10,00000007
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	00002B2A
 	mov	r12,0000003D
+	popm	r4-r7,pc
+	popm	r4-r7,pc,r12=0
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[36]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[36]
 	rsub	r6,pc
 	mov	r4,r12
 	ld.w	r7,r7[328]
-	invalid
-	invalid
+	cp.w	r12,00000000
+	breq	00002B58
 	ld.w	r8,r8[148]
 	ld.w	r11,r11[1304]
-	invalid
-	invalid
+	ld.w	r12,r8[0]
+	ld.w	r8,r7[0]
 	st.w	--sp,r8
 	mcall	r6[104]
 	invalid
 	invalid
 	ld.w	r12,r12[1300]
-	invalid
+	ld.w	r8,r7[0]
 	st.w	--sp,r8
 	mcall	r6[88]
-	invalid
+	ld.w	r5,r6[40]
 	ld.w	r12,r12[1296]
-	invalid
+	ld.w	r11,r5[0]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1292]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1288]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1284]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1280]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1276]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1272]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1268]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1264]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1260]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1256]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1252]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1248]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1244]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1240]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1236]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1232]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1228]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1224]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1220]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1216]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1212]
 	invalid
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1208]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1204]
 	mcall	r6[20]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1200]
 	mcall	r6[20]
-	invalid
+	ld.w	r12,r7[0]
 	invalid
 	ld.w	r8,r8[1196]
 	st.w	--sp,r8
@@ -970,15 +970,15 @@ _start proc
 	ld.w	r8,r8[384]
 	st.w	--sp,r8
 	mcall	r6[88]
-	invalid
+	ld.w	r11,r5[0]
 	ld.w	r12,r12[1180]
 	mcall	r6[20]
 	mov	r12,00000005
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	breq	00002CB4
+	ld.w	r12,r7[0]
 	invalid
 	st.w	--sp,r12
 	ld.w	r12,r12[1176]
@@ -987,165 +987,165 @@ _start proc
 	mov	r12,r4
 	mcall	r6[276]
 	invalid
-	invalid
-	lddpc	r6,pc[72]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[72]
 	rsub	r6,pc
 	mov	r7,00000000
 	invalid
+	ld.w	r8,r9[16]
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.w	r12,r5[0]
 	mcall	r6[12]
-	invalid
+	ld.w	r12,r5[4]
 	mcall	r6[12]
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r6[8]
+	ld.w	r8,r9[12]
+	cp.w	r7,r8
+	brcs	00002CC6
 	mov	r8,00000000
 	invalid
+	st.w	r9[12],r8
 	invalid
+	st.w	r9[-32],r8
+	st.w	r9[-28],r8
+	st.w	r9[-24],r8
+	st.w	r9[-20],r8
+	st.w	r9[-16],r8
+	st.w	r9[-12],r8
+	st.w	r9[-8],r8
+	st.w	r9[-4],r8
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[28]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[28]
 	rsub	r6,pc
 	mov	r5,r12
-	invalid
+	ld.w	r12,r12[0]
 	mcall	r6[12]
-	invalid
+	ld.w	r12,r5[4]
 	mcall	r6[12]
 	mov	r12,r5
 	mcall	r6[12]
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[12]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[12]
 	rsub	r6,pc
 	mcall	r6[12]
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[120]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[120]
 	rsub	r6,pc
 	mov	r7,r12
 	mov	r5,r11
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[8]
+	ld.w	r10,r8[-56]
+	cp.w	r10,00000000
+	breq	00002D8C
 	sub	r9,r7,FFFFFFFF
 	invalid
 	invalid
 	mov	r9,r8
+	cp.w	r10,r9
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[-64]
+	ld.w	r11,r8[0]
+	ld.w	r9,r11[16]
+	ld.w	r8,r11[28]
+	cp.w	r9,r8
+	brcc	00002D74
 	mov	r8,00000009
 	invalid
-	invalid
+	st.w	r11[16],r9
 	invalid
 	mov	r12,00000009
 	mcall	r6[52]
+	ld.w	r8,r6[8]
+	ld.w	r8,r8[-56]
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[-64]
+	ld.w	r11,r8[0]
+	ld.w	r9,r11[16]
+	ld.w	r8,r11[28]
+	cp.w	r9,r8
+	brcc	00002DA0
 	mov	r8,00000020
 	invalid
-	invalid
+	st.w	r11[16],r9
 	invalid
 	mov	r12,00000020
 	mcall	r6[52]
 	invalid
+	cp.w	r7,r5
+	brcs	00002D44
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[56]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[56]
 	rsub	r6,pc
 	invalid
 	invalid
+	breq	00002DE4
+	ld.w	r8,r6[-64]
+	ld.w	r11,r8[0]
+	ld.w	r9,r11[16]
+	ld.w	r8,r11[28]
+	cp.w	r9,r8
+	brcc	00002DD4
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r11[16],r9
 	invalid
 	mov	r12,r7
 	mcall	r6[52]
+	ld.w	r9,r6[8]
+	ld.w	r8,r9[-52]
 	invalid
 	invalid
+	cp.w	r7,00000000
+	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[132]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[132]
 	rsub	r6,pc
+	ld.w	r9,r11[12]
+	ld.w	r5,r11[8]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	00002E72
+	cp.w	r9,r5
+	brne	00002E12
+	ld.w	r8,r11[40]
 	mov	r9,00000001
 	invalid
+	st.w	r11[-24],r8
+	ld.w	r9,r11[12]
+	ld.w	r8,r11[24]
+	ld.w	lr,r11[16]
 	invalid
 	invalid
+	ld.w	r9,r11[4]
+	invalid
+	st.w	r11[12],r8
 	invalid
 	invalid
+	cp.w	r8,r9
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r11[12],lr
+	ld.w	r8,r11[12]
+	st.w	r11[8],r8
+	ld.w	r8,r6[40]
 	ld.w	r4,r4[1172]
-	invalid
+	ld.w	r11,r8[0]
 	mcall	r6[20]
 	mov	r7,00000000
 	invalid
@@ -1154,29 +1154,29 @@ _start proc
 	st.w	--sp,r8
 	mcall	r6[88]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r7,r3
+	brne	00002E44
+	ld.w	r8,r6[-64]
+	ld.w	r11,r8[0]
+	ld.w	r9,r11[16]
+	ld.w	r8,r11[28]
+	cp.w	r9,r8
+	brcc	00002E6C
 	mov	r8,0000000A
 	invalid
-	invalid
-	invalid
+	st.w	r11[16],r9
+	popm	r0-r3,r4-r7,pc
 	mov	r12,0000000A
 	mcall	r6[52]
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[348]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[348]
 	rsub	r6,pc
 	mov	r5,00000000
 	mov	r3,r11
-	invalid
-	invalid
+	ld.w	r7,r12[0]
+	ld.w	r11,r11[0]
 	mov	r4,r12
 	mov	r2,r10
 	mov	r1,r9
@@ -1184,30 +1184,30 @@ _start proc
 	mov	r12,r5
 	invalid
 	mov	r10,r9
-	invalid
+	cp.w	r12,00000004
 	invalid
 	sub	r8,pc,FFFFFFF6
+	ld.ub	r11[0]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	lr,00000000
 	invalid
 	mov	r8,0000003A
-	invalid
+	cp.b	lr,r8
 	invalid
 	mov	r8,0000003D
-	invalid
-	invalid
+	cp.b	lr,r8
+	breq	00002EEE
 	mov	r8,0000005C
-	invalid
-	invalid
+	cp.b	lr,r8
+	breq	00002EE2
 	mov	r8,0000005E
-	invalid
-	invalid
+	cp.b	lr,r8
+	brne	00002EF4
 	invalid
 	invalid
 	mov	r12,00000001
@@ -1215,57 +1215,57 @@ _start proc
 	invalid
 	mov	r12,00000004
 	invalid
-	invalid
+	cp.w	r2,00000000
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	mov	r9,lr
-	invalid
+	cp.w	lr,00000000
 	invalid
 	mov	r8,00000030
-	invalid
-	invalid
+	cp.b	lr,r8
+	brcs	00002FAC
 	mov	r8,00000037
-	invalid
+	cp.b	lr,r8
 	invalid
 	mov	r8,0000003F
-	invalid
-	invalid
+	cp.b	lr,r8
+	breq	00002FAA
 	mov	r8,00000058
-	invalid
-	invalid
+	cp.b	lr,r8
+	breq	00002F90
 	mov	r8,0000005F
-	invalid
+	cp.b	lr,r8
 	invalid
 	mov	r8,00000061
-	invalid
-	invalid
+	cp.b	lr,r8
+	breq	00002F80
 	mov	r8,00000062
-	invalid
-	invalid
+	cp.b	lr,r8
+	breq	00002F7C
 	mov	r8,00000065
-	invalid
+	cp.b	lr,r8
 	invalid
 	mov	r8,00000066
-	invalid
-	invalid
+	cp.b	lr,r8
+	breq	00002F96
 	mov	r8,0000006E
-	invalid
-	invalid
+	cp.b	lr,r8
+	breq	00002F9A
 	mov	r8,00000072
-	invalid
-	invalid
+	cp.b	lr,r8
+	breq	00002F9E
 	mov	r8,00000074
-	invalid
-	invalid
+	cp.b	lr,r8
+	breq	00002FA2
 	mov	r8,00000076
-	invalid
-	invalid
+	cp.b	lr,r8
+	breq	00002FA6
 	mov	r8,00000078
-	invalid
-	invalid
+	cp.b	lr,r8
+	brne	00002FAC
 	invalid
 	mov	r9,00000008
 	invalid
@@ -1289,37 +1289,37 @@ _start proc
 	mov	r9,0000000B
 	invalid
 	mov	r9,0000007F
-	invalid
-	invalid
+	cp.w	r12,00000001
+	brne	00002FB6
 	invalid
 	mov	r12,00000000
 	invalid
 	invalid
-	invalid
+	cp.w	r12,00000004
 	invalid
 	invalid
 	sub	r9,lr,00000030
 	mov	r8,00000007
-	invalid
+	cp.b	r9,r8
 	invalid
 	invalid
 	invalid
 	invalid
 	mov	r8,00000030
-	invalid
-	invalid
+	cp.b	lr,r8
+	brcs	00003036
 	mov	r8,00000039
-	invalid
+	cp.b	lr,r8
 	invalid
 	mov	r8,00000041
-	invalid
-	invalid
+	cp.b	lr,r8
+	brcs	00003036
 	mov	r8,00000046
-	invalid
+	cp.b	lr,r8
 	invalid
 	sub	r9,lr,00000061
 	mov	r8,00000005
-	invalid
+	cp.b	r9,r8
 	invalid
 	invalid
 	invalid
@@ -1342,7 +1342,7 @@ _start proc
 	invalid
 	sub	r9,lr,00000040
 	mov	r8,0000003E
-	invalid
+	cp.b	r9,r8
 	invalid
 	invalid
 	invalid
@@ -1350,8 +1350,8 @@ _start proc
 	mov	r12,00000000
 	invalid
 	mov	r8,0000003F
-	invalid
-	invalid
+	cp.b	lr,r8
+	breq	00003064
 	mov	r12,00000006
 	invalid
 	invalid
@@ -1371,68 +1371,68 @@ _start proc
 	invalid
 	mov	r9,0000001B
 	invalid
+	st.w	r4[0],r7
+	st.w	r3[0],r11
+	cp.w	r12,00000006
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[28]
+	st.w	r1[0],r5
+	popm	r0-r3,r4-r7,pc
+	pushm	r4-r7,lr
+	lddpc	r6,sp[28]
 	rsub	r6,pc
 	mov	r5,r12
 	mov	r12,00000008
 	invalid
+	ld.w	r8,r6[8]
+	ld.w	r9,r8[-48]
+	st.w	r12[0],r5
 	invalid
+	st.w	r12[4],r9
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[32]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[32]
 	rsub	r6,pc
 	mov	r9,FFFFFFFF
 	invalid
+	cp.w	r8,r12
+	brcc	000030C8
 	invalid
 	invalid
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[68]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[68]
 	rsub	r6,pc
+	ld.w	r8,r6[-56]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r12[4]
+	cp.w	r10,00000000
+	breq	00003114
+	cp.w	r10,00000001
+	brne	00003102
 	ld.w	r9,r9[1168]
+	ld.ub	r12[0]
+	ld.ub	r9[0]
+	cp.b	r8,r9
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000002
+	breq	0000310A
 	mov	r10,00000001
 	invalid
 	ld.w	r11,r11[1164]
 	mcall	r6[124]
 	invalid
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[68]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[68]
 	rsub	r6,pc
 	mov	r4,r12
 	mov	r7,r11
@@ -1440,29 +1440,29 @@ _start proc
 	mov	r3,r10
 	invalid
 	mov	r5,r12
-	invalid
-	invalid
+	cp.w	r7,00000000
+	brne	0000313C
 	mov	r12,r7
 	invalid
 	mov	r12,r7
 	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r5[4],r12
+	cp.w	r4,00000000
+	brne	0000314C
 	mov	r12,r4
 	invalid
 	mov	r12,r4
 	invalid
+	ld.w	r8,r6[8]
+	st.w	r5[0],r12
+	ld.w	r9,r8[-44]
 	invalid
 	invalid
+	st.w	r5[12],r9
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[44]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[44]
 	rsub	r6,pc
 	mov	r2,r12
 	mov	r12,r10
@@ -1472,26 +1472,26 @@ _start proc
 	mcall	r6[28]
 	st.w	--sp,r5
 	mov	r10,r3
-	invalid
+	ld.w	r11,r12[0]
 	mov	r12,00000000
 	mcall	r6[68]
 	mov	r12,r2
 	invalid
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[116]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[116]
 	rsub	r6,pc
 	mov	r5,r12
 	mov	r7,r10
-	invalid
-	invalid
+	cp.w	r12,00000000
+	breq	000031EE
 	mov	r11,00000000
 	invalid
+	ld.w	r8,r6[40]
 	invalid
-	invalid
-	invalid
+	ld.w	r11,r8[0]
 	mov	r8,00000000
 	invalid
 	mov	r12,r5
@@ -1500,21 +1500,21 @@ _start proc
 	mcall	r6[16]
 	mov	r5,r7
 	mov	r4,r12
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[-64]
+	ld.w	r11,r8[0]
+	ld.w	r9,r11[16]
+	ld.w	r8,r11[28]
+	cp.w	r9,r8
+	brcc	000031DC
 	mov	r8,00000020
 	invalid
-	invalid
+	st.w	r11[16],r9
 	invalid
 	mov	r12,00000020
 	mcall	r6[52]
 	invalid
-	invalid
-	invalid
+	cp.w	r7,FFFFFFFF
+	brne	000031C8
 	invalid
 	invalid
 	ld.w	r12,r12[1160]
@@ -1523,97 +1523,97 @@ _start proc
 	mcall	r6[88]
 	invalid
 	mov	r10,r7
+	ld.w	r9,r6[8]
+	ld.w	r8,r9[-52]
 	invalid
 	invalid
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[32]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[32]
 	rsub	r6,pc
 	mov	r9,FFFFFFFF
 	invalid
+	cp.w	r8,r11
+	brcc	00003224
 	invalid
 	invalid
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[68]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[68]
 	rsub	r6,pc
 	mov	r3,r12
-	invalid
+	ld.w	r12,r12[0]
 	mov	r7,r11
 	mov	r11,0000002E
 	mov	r4,r10
 	mcall	r6[196]
 	mov	r11,0000002E
 	mov	r5,r12
-	invalid
+	ld.w	r12,r7[0]
 	mcall	r6[196]
 	ld.w	r8,r8[224]
+	cp.w	r12,00000000
 	invalid
 	invalid
+	cp.w	r5,00000000
 	invalid
 	invalid
+	icall	r4
+	brne	00003274
+	ld.w	r11,r7[0]
+	ld.w	r12,r3[0]
+	icall	r4
+	popm	r0-r3,r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[20]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[20]
 	rsub	r6,pc
 	mov	r8,r11
-	invalid
+	ld.w	r10,r6[24]
 	mov	r11,r12
 	mov	r12,r8
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[20]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[20]
 	rsub	r6,pc
 	mov	r8,r11
 	sub	r10,pc,FFFFF8B0
 	mov	r11,r12
 	mov	r12,r8
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[12]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[12]
 	rsub	r6,pc
+	ld.w	r10,r6[24]
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[16]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[16]
 	rsub	r6,pc
 	sub	r10,pc,FFFFF8D6
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
+	pushm	r4-r7,lr
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[52]
+	lddpc	r6,sp[52]
 	rsub	r6,pc
 	mov	r8,r11
-	invalid
-	invalid
+	cp.w	r12,00000000
+	breq	000032EC
 	mov	r11,00000000
 	invalid
 	mov	r8,00000000
@@ -1628,29 +1628,29 @@ _start proc
 	mcall	r6[16]
 	invalid
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[36]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[36]
 	rsub	r6,pc
-	invalid
+	ld.w	r8,r6[8]
 	mov	r7,r12
 	invalid
 	mov	r8,00000000
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	00003326
 	mov	r12,00000000
 	invalid
 	invalid
 	mov	r11,r7
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
+	pushm	r0-r3,r4-r7,lr
 	mov	r7,sp
 	sub	sp,sp,000002B0
-	lddpc	r6,pc[304]
+	lddpc	r6,sp[304]
 	rsub	r6,pc
 	invalid
 	invalid
@@ -1658,34 +1658,34 @@ _start proc
 	mov	r5,r11
 	mov	r2,r8
 	mov	r3,r9
+	ld.w	r1,r7[36]
+	cp.w	r10,00000000
+	breq	00003370
+	cp.w	r2,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	00003370
 	sub	r9,pc,FFFFCDB0
 	ld.w	r11,r11[220]
 	ld.w	r12,r12[1152]
 	invalid
 	mcall	r6[60]
+	ld.w	r10,r6[8]
+	ld.w	r11,r10[12]
+	ld.w	r8,r10[-36]
+	cp.w	r11,r8
+	brne	0000338E
+	ld.w	r12,r10[20]
 	invalid
 	invalid
+	ld.w	r9,r6[8]
+	ld.w	r8,r9[-36]
+	st.w	r9[20],r12
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r10,r6[8]
 	mov	r11,00000000
-	invalid
-	invalid
+	ld.w	r8,r10[12]
+	ld.w	r10,r10[20]
 	invalid
 	invalid
 	invalid
@@ -1694,73 +1694,73 @@ _start proc
 	mcall	r6[44]
 	invalid
 	invalid
+	cp.w	r0,00000000
+	brne	0000344A
+	ld.w	r9,r6[8]
 	invalid
+	cp.b	r10,r0
+	brne	0000344A
+	cp.w	r5,00000003
+	brne	000033CE
 	invalid
+	cp.b	r8,r10
+	brne	0000344A
+	ld.w	r8,r6[8]
 	invalid
+	cp.w	r11,00000000
+	brne	000033E2
 	invalid
+	cp.b	r8,r10
+	breq	00003412
+	cp.w	r5,00000006
+	breq	000033EA
+	cp.w	r5,00000000
+	brne	00003408
+	ld.w	r9,r6[8]
+	ld.w	r8,r9[-28]
+	cp.w	r8,00000005
+	breq	0000344A
 	invalid
+	cp.b	r9,r10
+	brne	0000344A
+	ld.w	r10,r6[8]
 	invalid
+	cp.b	r8,r9
+	brne	0000344A
+	cp.w	r11,00000000
+	breq	00003412
+	cp.w	r2,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	0000344A
+	ld.w	r9,r6[8]
 	mov	r3,00000000
 	invalid
+	cp.b	r8,r3
 	invalid
+	cp.w	r5,00000000
+	breq	0000344A
+	cp.w	r5,00000005
 	invalid
+	ld.w	r8,r9[24]
+	cp.w	r8,00000003
+	breq	0000344A
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r8,r3
 	invalid
 	mov	r12,0000000E
 	invalid
-	invalid
+	cp.b	r12,r3
 	invalid
 	ld.w	r8,r8[-680]
-	invalid
+	ld.ub	r8[0]
 	mov	r8,0000002F
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	00003466
+	ld.ub	r1[0]
 	mov	r3,00000000
 	invalid
-	invalid
-	invalid
+	cp.b	r10,r3
+	brne	00003470
 	ld.w	r2,r2[-680]
 	invalid
 	invalid
@@ -1776,11 +1776,11 @@ _start proc
 	invalid
 	invalid
 	mov	r2,sp
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	000034AA
+	ld.ub	r1[1]
+	cp.b	r8,r3
+	brne	000034AA
 	mov	r10,sp
 	invalid
 	invalid
@@ -1788,70 +1788,70 @@ _start proc
 	invalid
 	mov	r10,r2
 	mov	r8,r1
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r8[0]
+	cp.w	r9,00000000
+	brne	000034A4
+	cp.w	r8,r1
 	invalid
 	invalid
 	mov	r9,0000002F
-	invalid
-	invalid
+	cp.b	r8,r9
+	breq	000034C8
 	invalid
 	ld.w	r9,r9[-680]
 	invalid
 	invalid
+	ld.ub	r9[0]
 	invalid
+	cp.w	r8,00000000
+	brne	000034CE
+	st.b	r10[0],r8
+	ld.w	r5,r6[8]
+	ld.w	r8,r5[-28]
+	cp.w	r8,00000003
+	brcs	0000352E
+	cp.w	r8,00000004
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000005
+	brne	0000352E
 	sub	r11,r4,FFFFFFF8
 	mov	r12,r2
 	mcall	r6[208]
 	invalid
-	invalid
-	invalid
+	cp.w	r0,00000000
+	breq	0000352E
 	sub	r11,r4,FFFFFFF8
 	mov	r12,r2
 	mcall	r6[208]
-	invalid
+	ld.w	r8,r5[-28]
 	mov	r1,r12
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000003
+	breq	0000353A
+	cp.w	r12,00000000
+	brge	0000351E
 	mcall	r6[28]
+	ld.w	r8,r12[0]
+	cp.w	r8,00000002
+	invalid
+	invalid
+	ld.w	r8,r4[24]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	0000353A
 	sub	r11,r4,FFFFFFF8
 	mov	r12,r2
 	mcall	r6[484]
 	mov	r1,r12
-	invalid
-	invalid
+	cp.w	r1,00000000
+	breq	00003566
 	ld.w	r11,r11[1148]
 	mov	r10,r2
 	mov	r12,r0
 	invalid
-	invalid
-	invalid
+	cp.w	r0,00000000
+	breq	00003554
 	mov	r0,00000000
 	mov	r1,00000000
 	invalid
@@ -1859,94 +1859,94 @@ _start proc
 	mov	r0,00000000
 	invalid
 	mov	r1,00000000
+	ld.w	r9,r6[8]
 	invalid
-	invalid
-	invalid
+	ld.w	r9,r6[8]
 	mov	r8,00000001
 	invalid
+	ld.w	r5,r9[-20]
+	cp.w	r5,00000000
+	breq	0000357E
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r1
+	breq	000035F2
 	mcall	r6[28]
 	mov	r8,0000005F
-	invalid
-	invalid
+	st.w	r12[0],r8
+	ld.w	r8,r6[48]
 	invalid
 	mcall	r6[28]
-	invalid
+	ld.w	r8,r12[0]
 	mov	r3,r12
 	invalid
+	breq	000035A2
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r5,00000000
+	brne	000035C0
 	sub	r11,r4,FFFFFFF8
 	mov	r12,r2
 	invalid
 	invalid
-	invalid
+	cp.w	r12,00000000
 	invalid
 	mov	r8,00000002
 	invalid
 	invalid
 	mov	r8,00000000
+	ld.w	r10,r6[8]
+	invalid
+	invalid
+	cp.w	r8,00000000
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r1,00000000
+	breq	000035F2
 	mov	r12,r2
 	invalid
 	ld.w	r10,r10[1144]
 	st.w	--sp,r12
-	invalid
+	ld.w	r11,r3[0]
 	mov	r12,00000000
 	mcall	r6[68]
 	invalid
+	ld.w	r8,r4[24]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	000036CE
+	ld.w	r9,r6[8]
+	ld.w	r8,r9[-20]
+	cp.w	r8,00000000
+	breq	00003612
 	invalid
 	mov	r8,00000000
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	000036CE
+	ld.w	r11,r4[56]
 	mov	r12,r2
 	invalid
-	invalid
-	invalid
+	st.w	r4[4],r12
+	brne	0000362C
 	ld.w	r11,r11[1140]
-	invalid
+	cp.w	r0,00000000
 	invalid
 	mov	r10,r2
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r1,r4[4]
+	cp.w	r1,00000000
+	brne	00003636
 	mov	r3,r1
 	invalid
-	invalid
+	ld.ub	r1[0]
 	mov	r8,0000002F
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	0000364A
 	mov	r11,0000002F
 	mov	r12,r2
 	mcall	r6[196]
-	invalid
+	brne	00003654
 	mov	r12,r1
 	invalid
 	mov	r3,r12
@@ -1965,75 +1965,75 @@ _start proc
 	mov	r11,r1
 	invalid
 	mcall	r6[128]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r3,00000000
+	breq	000036C8
+	ld.w	r5,r6[8]
+	ld.w	r8,r5[24]
+	cp.w	r8,00000001
 	invalid
 	invalid
 	mov	r8,00000000
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	000036C8
 	sub	r11,r7,000002A4
 	mov	r12,r3
 	mcall	r6[208]
-	invalid
+	brne	000036C8
 	mov	r8,00000001
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r0,00000000
+	breq	000036C0
+	ld.w	r8,r5[-20]
+	cp.w	r8,00000000
+	breq	000036C0
 	ld.w	r8,r8[-660]
 	invalid
 	invalid
-	invalid
+	breq	000036C8
 	ld.w	r8,r8[-660]
 	invalid
 	mov	r12,r3
 	mcall	r6[12]
+	ld.w	r8,r4[24]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	brne	000036EE
+	ld.w	r8,r6[8]
 	invalid
 	mov	r8,00000000
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	000036EE
 	mov	r8,00000001
 	invalid
+	ld.w	r8,r4[24]
 	invalid
 	invalid
-	invalid
-	invalid
+	brne	00003700
 	mov	r8,00000006
 	invalid
 	invalid
 	invalid
+	brne	0000371E
+	ld.w	r8,r6[8]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	breq	0000371A
 	mov	r8,00000009
 	invalid
 	mov	r8,00000003
 	invalid
 	mov	r8,00000005
+	ld.w	r5,r6[8]
 	invalid
+	ld.w	r8,r5[-20]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	0000373C
 	invalid
 	mov	r8,00000000
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	00003768
 	invalid
 	mov	r10,r0
 	invalid
@@ -2041,40 +2041,40 @@ _start proc
 	mov	r9,00000000
 	invalid
 	mov	r11,r1
-	invalid
+	ld.w	r9,r5[-12]
 	sub	r12,r7,000002A4
 	invalid
 	mov	r11,00000000
 	invalid
 	invalid
+	ld.w	r8,r5[36]
+	cp.w	r8,r12
+	brge	00003768
+	st.w	r5[-28],r12
+	ld.w	r5,r6[8]
+	ld.w	r8,r5[-20]
+	cp.w	r8,00000000
+	brne	000037DA
+	ld.w	r9,r6[48]
+	ld.ub	r9[2]
+	cp.b	r9,r8
+	breq	00003788
+	ld.w	r12,r4[32]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r5[44]
+	cp.w	r8,r12
+	brge	00003788
+	st.w	r5[-20],r12
+	ld.w	r8,r6[48]
 	mov	r9,00000000
+	ld.ub	r8[3]
+	cp.b	r8,r9
+	breq	000037BE
+	ld.w	r8,r6[8]
+	ld.w	r5,r4[36]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r8,r9
+	breq	000037A8
 	mov	r12,00000000
 	invalid
 	invalid
@@ -2082,52 +2082,52 @@ _start proc
 	invalid
 	mov	r11,r5
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r6[8]
+	ld.w	r8,r9[48]
+	cp.w	r8,r12
+	brge	000037BE
+	st.w	r9[-16],r12
+	ld.w	r5,r6[8]
 	mov	r8,00000000
 	invalid
+	cp.b	r9,r8
+	breq	000037DA
+	ld.w	r12,r4[32]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r5[52]
+	cp.w	r8,r12
+	brge	000037DA
+	st.w	r5[-12],r12
+	ld.w	r5,r6[8]
 	mov	r8,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	000037F6
+	ld.w	r12,r4[-16]
 	mcall	r6[16]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r5[56]
+	cp.w	r8,r12
+	brge	000037F6
+	st.w	r5[-8],r12
+	ld.w	r5,r6[8]
+	ld.w	r3,r5[-20]
+	cp.w	r3,00000000
+	brne	000038B4
+	ld.w	r10,r4[28]
 	mov	r11,r3
 	sub	r12,r7,00000018
 	invalid
 	mcall	r6[16]
+	ld.w	r8,r5[40]
+	cp.w	r8,r12
+	brge	00003816
+	st.w	r5[-24],r12
+	ld.w	r8,r4[24]
 	invalid
 	invalid
+	breq	00003828
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000387E
 	invalid
 	sub	r2,r7,000002A4
 	invalid
@@ -2136,10 +2136,10 @@ _start proc
 	mov	r12,r2
 	invalid
 	mcall	r6[16]
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r5[60]
+	cp.w	r8,r12
+	brge	0000384A
+	st.w	r5[-4],r12
 	invalid
 	invalid
 	mov	r11,r3
@@ -2147,20 +2147,20 @@ _start proc
 	mov	r12,r2
 	invalid
 	mcall	r6[16]
+	ld.w	r8,r5[-64]
+	cp.w	r8,r12
+	brge	0000386A
+	invalid
+	ld.w	r8,r5[60]
+	ld.w	r9,r5[-64]
+	ld.w	r10,r5[-60]
 	invalid
 	invalid
+	cp.w	r10,r8
+	brge	000038B4
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[48]
 	sub	r12,r7,000002A4
 	invalid
 	invalid
@@ -2168,39 +2168,39 @@ _start proc
 	mov	r9,00000000
 	invalid
 	invalid
-	invalid
+	ld.w	r9,r5[-12]
 	invalid
 	mov	r11,r3
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r5[-60]
+	cp.w	r8,r12
+	brge	000038B4
 	invalid
 	invalid
 	invalid
 	mov	r0,00000000
 	mov	r1,00000000
-	invalid
+	ld.w	r5,r6[8]
 	mov	r8,00000000
 	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	000038DA
 	invalid
 	sub	r12,r7,000002A4
 	invalid
 	mcall	r6[16]
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r5[32]
+	cp.w	r8,r12
+	brge	000038DA
+	st.w	r5[-32],r12
 	ld.w	r12,r12[-680]
 	invalid
+	ld.w	r9,r6[8]
+	st.w	r4[0],r12
+	ld.w	r8,r9[12]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r9[12],r8
 	invalid
 	mov	r1,00000001
 	invalid
@@ -2208,60 +2208,60 @@ _start proc
 	mov	r10,r0
 	mov	r11,r1
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[52]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[52]
 	rsub	r6,pc
 	mov	r5,r11
 	mov	r7,r12
-	invalid
-	invalid
+	cp.w	r10,00000000
+	brne	00003918
 	ld.w	r12,r12[140]
 	invalid
-	invalid
+	ld.w	r8,r6[8]
 	invalid
 	mov	r8,00000000
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	0000392A
 	mov	r12,00000000
 	invalid
 	invalid
 	mov	r10,r5
 	mov	r11,r7
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[172]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[172]
 	rsub	r6,pc
-	invalid
-	invalid
+	ld.w	r7,r6[8]
+	ld.w	r8,r7[12]
 	ld.w	r10,r10[132]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,r9
+	brcc	0000396E
+	ld.w	r12,r7[16]
 	mcall	r6[12]
-	invalid
+	ld.w	r12,r7[12]
 	mov	r11,0000000C
 	invalid
+	ld.w	r8,r7[12]
 	invalid
 	invalid
-	invalid
-	invalid
+	st.w	r7[16],r12
 	invalid
 	ld.w	r8,r8[136]
-	invalid
-	invalid
+	cp.w	r8,FFFFFFFF
+	breq	000039E4
 	sub	r12,r7,FFFFFF74
 	mcall	r6[420]
-	invalid
-	invalid
+	breq	000039AA
+	ld.w	r8,r6[8]
 	ld.w	r8,r8[136]
-	invalid
-	invalid
+	cp.w	r8,00000003
+	brne	000039A4
 	sub	r9,pc,FFFFD3E2
 	ld.w	r11,r11[220]
 	ld.w	r12,r12[1136]
@@ -2270,188 +2270,188 @@ _start proc
 	mcall	r6[60]
 	invalid
 	mov	r12,00000001
-	invalid
+	ld.w	r9,r6[8]
 	ld.w	r8,r8[136]
-	invalid
-	invalid
+	cp.w	r8,00000004
+	breq	000039B8
 	mov	r9,00000000
 	invalid
 	ld.w	r9,r9[316]
+	ld.w	r11,r6[8]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r9,r6[-16]
+	invalid
+	ld.w	r12,r11[16]
+	invalid
+	ld.w	r11,r11[12]
+	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[28]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[28]
 	rsub	r6,pc
 	mov	r3,r12
 	mov	r5,r11
 	mcall	r6[28]
 	mov	r8,00000000
-	invalid
+	st.w	r12[0],r8
 	mov	r11,r5
 	mov	r12,r3
 	mcall	r6[500]
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[16]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[16]
 	rsub	r6,pc
+	ld.w	r11,r11[0]
+	ld.w	r12,r12[0]
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[16]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[16]
 	rsub	r6,pc
 	mov	r8,r11
 	mov	r11,r12
 	mov	r12,r8
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[12]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[12]
 	rsub	r6,pc
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[228]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[228]
 	rsub	r6,pc
 	mov	r3,r12
 	mov	r1,r11
-	invalid
-	invalid
-	invalid
+	cp.w	r12,00000000
+	breq	00003A66
+	ld.w	r8,r6[8]
 	ld.w	r8,r8[324]
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	00003A66
 	mov	r10,00000000
 	mov	r11,r12
 	mov	r12,r10
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[8]
+	ld.w	r4,r8[12]
 	invalid
 	sub	r2,r8,00000004
 	invalid
+	ld.w	r8,r8[16]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r7[-24]
+	cp.w	r8,00000003
+	breq	00003A84
+	cp.w	r8,00000009
+	brne	00003AE8
+	cp.w	r3,00000000
+	breq	00003AB8
+	ld.w	r12,r7[0]
 	invalid
 	mov	r8,0000002E
+	ld.ub	r12[0]
+	cp.b	r9,r8
+	brne	00003B18
+	ld.ub	r12[1]
+	cp.b	r8,r9
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,00000000
+	breq	00003AE8
 	mov	r8,0000002F
+	cp.b	r12,r8
+	brne	00003B18
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r11,r7[4]
+	ld.w	r12,r7[0]
 	mov	r10,r1
 	invalid
 	invalid
 	mov	r10,00000000
 	mov	r12,r3
 	invalid
-	invalid
+	ld.w	r11,r7[4]
 	mov	r10,r1
 	mov	r5,r12
 	invalid
 	mov	r12,r5
 	mcall	r6[12]
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r7[-24]
+	cp.w	r8,00000009
+	brne	00003AE8
+	ld.w	r12,r7[0]
 	mcall	r6[12]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[8]
+	cp.w	r4,FFFFFFFF
+	brne	00003A74
 	mov	r10,00000000
-	invalid
-	invalid
+	ld.w	r11,r8[16]
+	ld.w	r12,r8[12]
 	mov	r9,r10
 	invalid
 	invalid
 	invalid
+	ld.w	r8,r8[-24]
+	invalid
+	cp.w	r8,00000009
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r9,r12
+	brne	00003AFC
+	ld.w	r8,r6[8]
+	st.w	r8[12],r10
+	popm	r0-r3,r4-r7,pc
+	ld.w	r11,r7[0]
 	mov	r8,0000002F
+	ld.ub	r11[0]
+	cp.b	r9,r8
+	brne	00003AC4
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[48]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[48]
 	rsub	r6,pc
-	invalid
+	ld.w	r10,r6[8]
 	mov	r8,00000000
 	invalid
 	mov	r7,r12
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	00003B4A
 	mov	r8,00000001
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[40]
+	ld.w	r12,r7[4]
+	ld.w	r9,r8[0]
+	ld.w	r11,r7[0]
 	mov	r10,00000001
 	mcall	r6[280]
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[40]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[40]
 	rsub	r6,pc
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r7,r6[-56]
+	ld.w	r8,r7[20]
+	cp.w	r8,00000000
+	breq	00003B74
 	sub	r12,r7,FFFFFFF0
 	invalid
 	mov	r12,r7
@@ -2460,715 +2460,715 @@ _start proc
 	invalid
 	sub	r12,r7,FFFFFFF8
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[20]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[20]
 	rsub	r6,pc
-	invalid
+	ld.w	r5,r6[-56]
 	mov	r12,r5
 	invalid
 	sub	r12,r5,FFFFFFF8
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[36]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[36]
 	rsub	r6,pc
 	mov	r5,r11
 	mov	r7,r12
 	invalid
+	ld.w	r12,r7[0]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	00003BBA
+	popm	r4-r7,r12,pc,r12=1
+	ld.w	r7,r7[4]
 	mov	r10,00000004
 	mov	r11,r5
-	invalid
-	invalid
+	cp.w	r7,00000000
+	brne	00003BB0
 	mov	r12,r7
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[52]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[52]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
+	invalid
+	cp.w	r8,00000003
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000003
+	breq	00003BE8
+	cp.w	r10,00000009
+	brne	00003BEE
+	cp.w	r8,00000000
+	brne	00003BF4
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00003BF4
+	popm	r4-r7,r12,pc,r12=1
 	sub	r10,pc,00000208
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[52]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[52]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000003
 	invalid
 	mov	lr,r11
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000003
+	breq	00003C22
+	cp.w	r10,00000009
+	brne	00003C28
+	cp.w	r8,00000000
+	brne	00003C2E
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00003C2E
+	popm	r4-r7,r12,pc,r12=1
 	mov	r11,r12
 	mov	r12,lr
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[44]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[44]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
+	invalid
+	cp.w	r8,00000003
 	invalid
 	invalid
+	cp.w	r10,00000003
+	breq	00003C58
+	cp.w	r10,00000009
+	brne	00003C5E
+	cp.w	r8,00000000
+	brne	00003C64
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00003C64
+	popm	r4-r7,r12,pc,r12=1
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[56]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[56]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000003
 	invalid
 	mov	lr,r11
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000003
+	breq	00003C8A
+	cp.w	r10,00000009
+	brne	00003C90
+	cp.w	r8,00000000
+	brne	00003C96
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00003C96
+	popm	r4-r7,r12,pc,r12=1
+	ld.w	r10,r6[24]
 	mov	r11,r12
 	mov	r12,lr
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[56]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[56]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000003
 	invalid
 	mov	lr,r11
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000003
+	breq	00003CC6
+	cp.w	r10,00000009
+	brne	00003CCC
+	cp.w	r8,00000000
+	brne	00003CD2
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00003CD2
+	popm	r4-r7,r12,pc,r12=1
 	sub	r10,pc,000002E6
 	mov	r11,r12
 	mov	r12,lr
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[48]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[48]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
+	invalid
+	cp.w	r8,00000003
 	invalid
 	invalid
+	cp.w	r10,00000003
+	breq	00003D00
+	cp.w	r10,00000009
+	brne	00003D06
+	cp.w	r8,00000000
+	brne	00003D0C
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00003D0C
+	popm	r4-r7,r12,pc,r12=1
+	ld.w	r10,r6[24]
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[52]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[52]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
+	invalid
+	cp.w	r8,00000003
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000003
+	breq	00003D34
+	cp.w	r10,00000009
+	brne	00003D3A
+	cp.w	r8,00000000
+	brne	00003D40
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00003D40
+	popm	r4-r7,r12,pc,r12=1
 	sub	r10,pc,00000354
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[56]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[56]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000003
 	invalid
 	mov	lr,r11
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000003
+	breq	00003D6E
+	cp.w	r10,00000009
+	brne	00003D74
+	cp.w	r8,00000000
+	brne	00003D7A
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00003D7A
+	popm	r4-r7,r12,pc,r12=1
+	ld.w	r10,r6[24]
 	mov	r11,r12
 	mov	r12,lr
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[56]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[56]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000003
 	invalid
 	mov	lr,r11
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000003
+	breq	00003DAA
+	cp.w	r10,00000009
+	brne	00003DB0
+	cp.w	r8,00000000
+	brne	00003DB6
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00003DB6
+	popm	r4-r7,r12,pc,r12=1
 	sub	r10,pc,000003CA
 	mov	r11,r12
 	mov	r12,lr
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[48]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[48]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
+	invalid
+	cp.w	r8,00000003
 	invalid
 	invalid
+	cp.w	r10,00000003
+	breq	00003DE4
+	cp.w	r10,00000009
+	brne	00003DEA
+	cp.w	r8,00000000
+	brne	00003DF0
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00003DF0
+	popm	r4-r7,r12,pc,r12=1
+	ld.w	r10,r6[24]
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[52]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[52]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
+	invalid
+	cp.w	r8,00000003
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000003
+	breq	00003E18
+	cp.w	r10,00000009
+	brne	00003E1E
+	cp.w	r8,00000000
+	brne	00003E24
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00003E24
+	popm	r4-r7,r12,pc,r12=1
 	sub	r10,pc,00000438
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[56]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[56]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000003
 	invalid
 	mov	lr,r11
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000003
+	breq	00003E52
+	cp.w	r10,00000009
+	brne	00003E58
+	cp.w	r8,00000000
+	brne	00003E5E
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00003E5E
+	popm	r4-r7,r12,pc,r12=1
+	ld.w	r10,r6[24]
 	mov	r11,r12
 	mov	r12,lr
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[56]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[56]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000003
 	invalid
 	mov	lr,r11
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000003
+	breq	00003E8E
+	cp.w	r10,00000009
+	brne	00003E94
+	cp.w	r8,00000000
+	brne	00003E9A
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00003E9A
+	popm	r4-r7,r12,pc,r12=1
 	sub	r10,pc,000004AE
 	mov	r11,r12
 	mov	r12,lr
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[48]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[48]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
+	invalid
+	cp.w	r8,00000003
 	invalid
 	invalid
+	cp.w	r10,00000003
+	breq	00003EC8
+	cp.w	r10,00000009
+	brne	00003ECE
+	cp.w	r8,00000000
+	brne	00003ED4
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00003ED4
+	popm	r4-r7,r12,pc,r12=1
+	ld.w	r10,r6[24]
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[52]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[52]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
+	invalid
+	cp.w	r8,00000003
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000003
+	breq	00003EFC
+	cp.w	r10,00000009
+	brne	00003F02
+	cp.w	r8,00000000
+	brne	00003F08
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00003F08
+	popm	r4-r7,r12,pc,r12=1
 	sub	r10,pc,0000051C
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[56]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[56]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000003
 	invalid
 	mov	lr,r11
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000003
+	breq	00003F36
+	cp.w	r10,00000009
+	brne	00003F3C
+	cp.w	r8,00000000
+	brne	00003F42
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00003F42
+	popm	r4-r7,r12,pc,r12=1
+	ld.w	r10,r6[24]
 	mov	r11,r12
 	mov	r12,lr
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[56]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[56]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000003
 	invalid
 	mov	lr,r11
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000003
+	breq	00003F72
+	cp.w	r10,00000009
+	brne	00003F78
+	cp.w	r8,00000000
+	brne	00003F7E
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00003F7E
+	popm	r4-r7,r12,pc,r12=1
 	sub	r10,pc,00000592
 	mov	r11,r12
 	mov	r12,lr
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[48]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[48]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
+	invalid
+	cp.w	r8,00000003
 	invalid
 	invalid
+	cp.w	r10,00000003
+	breq	00003FAC
+	cp.w	r10,00000009
+	brne	00003FB2
+	cp.w	r8,00000000
+	brne	00003FB8
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00003FB8
+	popm	r4-r7,r12,pc,r12=1
+	ld.w	r10,r6[24]
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[52]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[52]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
+	invalid
+	cp.w	r8,00000003
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000003
+	breq	00003FE0
+	cp.w	r10,00000009
+	brne	00003FE6
+	cp.w	r8,00000000
+	brne	00003FEC
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00003FEC
+	popm	r4-r7,r12,pc,r12=1
 	sub	r10,pc,00000600
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[56]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[56]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000003
 	invalid
 	mov	lr,r11
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000003
+	breq	0000401A
+	cp.w	r10,00000009
+	brne	00004020
+	cp.w	r8,00000000
+	brne	00004026
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00004026
+	popm	r4-r7,r12,pc,r12=1
+	ld.w	r10,r6[24]
 	mov	r11,r12
 	mov	r12,lr
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[56]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[56]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000003
 	invalid
 	mov	lr,r11
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000003
+	breq	00004056
+	cp.w	r10,00000009
+	brne	0000405C
+	cp.w	r8,00000000
+	brne	00004062
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00004062
+	popm	r4-r7,r12,pc,r12=1
 	sub	r10,pc,00000676
 	mov	r11,r12
 	mov	r12,lr
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[48]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[48]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
+	invalid
+	cp.w	r8,00000003
 	invalid
 	invalid
+	cp.w	r10,00000003
+	breq	00004090
+	cp.w	r10,00000009
+	brne	00004096
+	cp.w	r8,00000000
+	brne	0000409C
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	0000409C
+	popm	r4-r7,r12,pc,r12=1
+	ld.w	r10,r6[24]
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[52]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[52]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
+	invalid
+	cp.w	r8,00000003
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000003
+	breq	000040C4
+	cp.w	r10,00000009
+	brne	000040CA
+	cp.w	r8,00000000
+	brne	000040D0
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	000040D0
+	popm	r4-r7,r12,pc,r12=1
 	sub	r10,pc,000006E4
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[56]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[56]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000003
 	invalid
 	mov	lr,r11
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000003
+	breq	000040FE
+	cp.w	r10,00000009
+	brne	00004104
+	cp.w	r8,00000000
+	brne	0000410A
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	0000410A
+	popm	r4-r7,r12,pc,r12=1
+	ld.w	r10,r6[24]
 	mov	r11,r12
 	mov	r12,lr
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[56]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[56]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000003
 	invalid
 	mov	lr,r11
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000003
+	breq	0000413A
+	cp.w	r10,00000009
+	brne	00004140
+	cp.w	r8,00000000
+	brne	00004146
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00004146
+	popm	r4-r7,r12,pc,r12=1
 	sub	r10,pc,0000075A
 	mov	r11,r12
 	mov	r12,lr
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[48]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[48]
 	rsub	r6,pc
+	ld.w	r8,r11[-24]
+	ld.w	r10,r12[-24]
+	cp.w	r8,00000009
+	invalid
+	cp.w	r8,00000003
 	invalid
 	invalid
+	cp.w	r10,00000003
+	breq	00004174
+	cp.w	r10,00000009
+	brne	0000417A
+	cp.w	r8,00000000
+	brne	00004180
+	popm	r4-r7,pc,r12=-1
+	cp.w	r8,00000000
+	breq	00004180
+	popm	r4-r7,r12,pc,r12=1
+	ld.w	r10,r6[24]
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	pushm	r0-r3,r4-r7,lr
 	mov	r7,sp
 	sub	sp,sp,00001018
-	lddpc	r6,pc[344]
+	lddpc	r6,sp[344]
 	rsub	r6,pc
 	sub	r2,r7,0000100C
 	invalid
@@ -3195,41 +3195,41 @@ _start proc
 	mov	r12,sp
 	mov	r2,sp
 	invalid
-	invalid
+	ld.w	r8,r6[8]
 	invalid
 	mov	r8,00000000
-	invalid
+	cp.b	r9,r8
 	invalid
 	mcall	r6[172]
 	invalid
-	invalid
+	cp.w	r12,00000001
 	invalid
 	mov	r5,r2
 	mov	r4,r2
 	mov	r3,00000000
 	invalid
-	invalid
+	ld.ub	r5[0]
 	mov	r8,00000020
-	invalid
-	invalid
+	cp.b	r10,r8
+	brcs	00004254
 	mov	r8,00000023
-	invalid
+	cp.b	r10,r8
 	invalid
 	mov	r8,00000025
-	invalid
-	invalid
+	cp.b	r10,r8
+	brcs	00004254
 	mov	r8,0000003F
-	invalid
+	cp.b	r10,r8
 	invalid
 	mov	r8,00000041
-	invalid
-	invalid
+	cp.b	r10,r8
+	brcs	00004254
 	mov	r8,0000005F
-	invalid
+	cp.b	r10,r8
 	invalid
 	sub	r9,r10,00000061
 	mov	r8,0000001D
-	invalid
+	cp.b	r9,r8
 	invalid
 	invalid
 	invalid
@@ -3244,14 +3244,14 @@ _start proc
 	sub	r12,r7,00000004
 	mcall	r6[248]
 	invalid
-	invalid
-	invalid
+	cp.w	r12,FFFFFFFF
+	brne	0000427C
 	invalid
 	invalid
 	invalid
 	ld.w	r9,r9[-4120]
-	invalid
-	invalid
+	cp.w	r9,FFFFFFFE
+	brne	0000428E
 	invalid
 	mov	r5,r1
 	mov	r8,0000003F
@@ -3259,18 +3259,18 @@ _start proc
 	invalid
 	ld.w	r8,r8[-4120]
 	ld.w	r12,r12[-4]
+	cp.w	r8,00000000
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	brlt	000042C2
 	ld.w	r9,r9[-4120]
 	mov	r11,r5
 	mov	r10,r4
 	invalid
 	invalid
 	invalid
-	invalid
+	brne	000042AE
 	ld.w	r8,r8[-4120]
 	invalid
 	invalid
@@ -3283,31 +3283,31 @@ _start proc
 	invalid
 	sub	r12,r7,0000000C
 	mcall	r6[144]
-	invalid
-	invalid
-	invalid
+	breq	0000425C
+	cp.w	r5,r1
+	brcs	00004206
 	invalid
 	invalid
 	ld.w	r8,r8[156]
 	mov	r9,r2
+	ld.w	r10,r8[0]
 	invalid
 	invalid
+	ld.ub	r9[0]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	breq	00004300
 	mov	r8,0000003F
+	st.b	r9[0],r8
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r9,r1
+	brcs	000042F0
 	mov	r3,r5
 	invalid
-	invalid
-	invalid
+	cp.w	r0,00000000
+	breq	0000434E
 	mcall	r6[172]
-	invalid
+	cp.w	r12,00000001
 	invalid
 	mov	r10,00000000
 	mov	r11,r5
@@ -3317,67 +3317,67 @@ _start proc
 	invalid
 	ld.w	r8,r8[156]
 	mov	r9,r2
-	invalid
+	ld.w	r12,r8[0]
 	invalid
 	mov	r3,00000000
 	invalid
-	invalid
+	ld.ub	r9[0]
 	invalid
 	invalid
 	invalid
 	invalid
 	sub	r10,r3,FFFFFFFF
-	invalid
-	invalid
+	cp.w	r9,r11
+	brcs	00004336
 	ld.w	r8,r8[-4112]
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	00004362
 	mov	r9,r8
 	mov	r12,r2
 	mov	r10,r5
 	mov	r11,00000001
 	mcall	r6[280]
-	invalid
-	invalid
-	invalid
+	cp.w	r0,00000000
+	breq	00004368
+	st.w	r0[0],r3
 	ld.w	sp,sp[-4116]
 	mov	r12,r5
 	invalid
-	invalid
-	invalid
+	popm	r0-r3,r4-r7,pc
+	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,00000290
-	lddpc	r6,pc[220]
+	lddpc	r6,sp[220]
 	rsub	r6,pc
-	invalid
+	ld.w	r10,r6[8]
 	mov	r8,00000000
 	invalid
 	mov	r7,r12
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	00004392
 	mov	r4,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r10[-20]
+	cp.w	r8,00000004
+	brne	000043AC
 	invalid
 	mov	r12,sp
 	invalid
 	mcall	r6[16]
 	sub	r4,r12,FFFFFFFF
 	invalid
-	invalid
+	ld.w	r8,r10[32]
 	sub	r4,r8,FFFFFFFF
-	invalid
+	ld.w	r12,r6[8]
 	mov	r8,00000000
 	invalid
+	cp.b	r9,r8
+	breq	000043F2
+	ld.w	r8,r12[-20]
+	cp.w	r8,00000004
+	brne	000043EA
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r12[-12]
 	mov	r12,sp
 	invalid
 	invalid
@@ -3388,64 +3388,64 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	ld.w	r8,r12[36]
 	sub	r12,r8,FFFFFFFF
 	invalid
-	invalid
+	ld.w	r10,r6[8]
 	mov	r8,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	00004418
+	ld.w	r8,r10[-20]
+	cp.w	r8,00000004
+	brne	00004410
+	ld.w	r12,r7[-16]
 	mcall	r6[16]
 	invalid
 	invalid
-	invalid
+	ld.w	r8,r10[56]
 	sub	r12,r8,FFFFFFFF
 	invalid
-	invalid
-	invalid
+	ld.w	r5,r6[8]
+	ld.w	r11,r7[0]
 	ld.w	r10,r10[332]
 	sub	r9,sp,FFFFFD74
 	mov	r12,00000000
 	invalid
-	invalid
+	ld.w	r9,r5[24]
 	ld.w	r8,r8[652]
 	invalid
+	cp.w	r9,00000000
+	breq	0000444C
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r10,r7[-24]
+	ld.w	r11,r7[24]
 	invalid
 	mov	r8,00000000
-	invalid
+	cp.b	r12,r8
 	invalid
 	invalid
 	mov	r12,r5
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[288]
+	lddpc	r6,sp[288]
 	rsub	r6,pc
-	invalid
-	invalid
+	ld.w	r7,r6[8]
+	stdsp	sp[0],r12
 	ld.w	r11,r11[336]
-	invalid
+	ld.w	r8,r7[12]
 	ld.w	r9,r9[340]
+	cp.w	r11,r8
 	invalid
 	invalid
+	cp.w	r9,r3
+	brcc	0000450A
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r3,r8
+	brcc	00004496
 	ld.w	r12,r12[344]
 	mov	r10,00000018
 	mov	r11,r3
@@ -3457,17 +3457,17 @@ _start proc
 	invalid
 	ld.w	r5,r5[336]
 	invalid
-	invalid
+	ld.w	r7,r6[8]
 	ld.w	r9,r9[340]
 	sub	r8,r9,FFFFFFFF
 	invalid
+	cp.w	r10,r5
+	brcs	000044CA
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,r10
+	breq	000044CE
 	invalid
 	mov	r11,00000004
 	invalid
@@ -3480,16 +3480,16 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	st.w	r11[0],r12
 	invalid
 	sub	r12,r8,FFFFFFFC
 	invalid
 	invalid
+	cp.w	r10,r5
+	brcs	000044F0
+	ld.w	r8,r6[8]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[8]
 	mov	r5,00000000
 	ld.w	r10,r10[344]
 	mov	r12,00000003
@@ -3497,24 +3497,24 @@ _start proc
 	mov	r8,00000001
 	invalid
 	mov	r11,00000000
-	invalid
-	invalid
-	invalid
+	st.b	r10[0],r8
+	st.w	r10[4],r12
+	ld.w	r9,r10[8]
 	mov	r8,00000003
 	invalid
 	invalid
+	cp.w	r11,r5
+	brne	00004520
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r5,r3
+	brne	00004516
 	mov	r4,00000000
 	invalid
+	ld.w	r8,r7[16]
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.w	r1,r7[12]
 	ld.w	r2,r2[348]
 	ld.w	r8,r8[344]
 	mov	r0,r12
@@ -3523,12 +3523,12 @@ _start proc
 	invalid
 	invalid
 	mov	r8,00000000
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	000045B6
+	lddsp	r9,sp[0]
 	sub	r8,r12,FFFFFFFF
-	invalid
-	invalid
+	cp.w	r9,00000000
+	breq	00004580
 	invalid
 	invalid
 	invalid
@@ -3536,111 +3536,111 @@ _start proc
 	invalid
 	invalid
 	invalid
+	ld.w	r7,r10[4]
+	invalid
+	cp.w	r9,r12
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	r11,r9
+	brcc	000045B6
+	ld.w	r8,r10[0]
+	invalid
+	invalid
+	st.w	r10[0],r8
+	invalid
+	ld.w	r8,r10[0]
+	cp.w	r8,r2
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	r12,r3
+	brne	00004556
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r7,r6[8]
+	ld.w	r8,r7[12]
+	cp.w	r4,r8
+	brcs	0000453A
 	ld.w	r9,r9[344]
 	invalid
 	invalid
 	sub	r9,r8,0000000C
 	invalid
+	ld.ub	r9[0]
 	invalid
+	cp.w	r8,00000000
+	brne	000045EA
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r5,00000001
 	invalid
 	mov	r12,r5
 	invalid
-	invalid
-	invalid
+	popm	r0-r3,r4-r7,pc
+	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,00000080
-	lddpc	r6,pc[276]
+	lddpc	r6,sp[276]
 	rsub	r6,pc
-	invalid
+	ld.w	lr,r6[8]
 	sub	r5,sp,FFFFFF5C
 	invalid
 	mov	r7,r11
 	mov	r11,r8
 	mov	r8,00000000
-	invalid
-	invalid
+	ld.w	r0,r5[8]
+	ld.w	r4,r5[0]
 	mov	r1,r12
+	ld.w	r5,r5[4]
+	cp.b	lr,r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,FFFFFFFF
+	brne	0000462A
+	ld.w	r8,r6[-56]
+	ld.w	r8,r8[-28]
+	cp.w	r8,00000000
+	breq	0000462A
 	mov	r7,0000000C
 	invalid
-	invalid
-	invalid
+	cp.w	r9,00000000
+	breq	000046E2
 	mov	r8,r7
 	invalid
 	invalid
+	brne	00004674
 	invalid
-	invalid
-	invalid
+	brne	00004644
 	mov	r7,00000010
 	invalid
 	invalid
-	invalid
+	brne	0000464E
 	mov	r7,00000011
 	invalid
 	invalid
 	mov	r12,00000015
 	invalid
-	invalid
-	invalid
+	cp.w	r7,00000000
+	breq	00004660
 	mov	r7,0000000E
 	invalid
 	mov	r12,00000016
 	invalid
 	invalid
-	invalid
-	invalid
+	breq	000046F2
+	cp.w	r5,00000001
 	invalid
 	mov	r7,00000016
 	invalid
 	invalid
-	invalid
+	brne	000046A2
 	mov	r8,r7
 	invalid
 	invalid
-	invalid
+	brne	0000468A
 	mov	r7,00000014
 	invalid
 	invalid
-	invalid
+	brne	00004694
 	mov	r7,00000013
 	invalid
 	invalid
@@ -3648,25 +3648,25 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	000046B8
+	cp.w	r10,00000000
+	brne	000046B4
+	ld.w	r8,r6[-56]
+	ld.w	r8,r8[-20]
+	cp.w	r8,00000000
+	brne	000046DE
 	mov	r7,00000007
 	invalid
 	invalid
-	invalid
+	brne	000046C2
 	mov	r7,00000008
 	invalid
 	invalid
-	invalid
+	brne	000046CC
 	mov	r7,00000009
 	invalid
 	invalid
-	invalid
+	brne	000046D6
 	mov	r7,0000000A
 	invalid
 	invalid
@@ -3675,35 +3675,35 @@ _start proc
 	invalid
 	sub	r8,pc,FFFFE136
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r7,r8[24]
+	cp.w	r7,00000005
+	brne	00004728
 	invalid
 	mov	r7,00000005
 	mov	r12,r1
 	mcall	r6[16]
-	invalid
+	ld.w	r8,r6[8]
 	ld.w	r5,r5[352]
 	mov	r3,r12
 	invalid
 	invalid
 	invalid
+	ld.w	r10,r5[0]
+	cp.w	r10,r3
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r11,r5[4]
 	invalid
 	mcall	r6[124]
 	invalid
+	ld.w	r5,r5[16]
+	cp.w	r5,00000000
+	brne	0000470C
+	ld.w	r8,r6[-56]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r7[4]
+	cp.w	r8,00000000
+	breq	0000474E
+	ld.w	r5,r6[-56]
 	mov	r2,00000001
 	mov	r12,r5
 	invalid
@@ -3713,80 +3713,80 @@ _start proc
 	invalid
 	invalid
 	mov	r2,00000000
-	invalid
-	invalid
-	invalid
+	cp.w	r4,00000000
+	breq	00004782
+	ld.w	r7,r6[8]
 	mov	r8,00000000
 	invalid
+	cp.b	r9,r8
+	breq	00004782
+	ld.w	r8,r4[12]
+	ld.w	r9,r4[16]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,r9
 	invalid
 	mov	r11,00000004
 	mov	r12,r4
 	mcall	r6[152]
+	ld.w	r9,r4[12]
+	ld.w	r8,r7[-52]
+	st.w	r9[0],r8
+	ld.w	r8,r4[12]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r4[12],r8
+	ld.w	r7,r6[8]
+	ld.w	r8,r6[40]
 	ld.w	r10,r10[332]
-	invalid
+	ld.w	r12,r8[0]
 	mov	r11,r1
 	mov	r9,00000000
 	invalid
-	invalid
+	ld.w	r8,r7[-52]
 	invalid
 	invalid
 	mov	r3,r12
-	invalid
-	invalid
+	cp.w	r4,00000000
+	breq	000047D0
 	invalid
 	mov	r8,00000000
+	cp.b	r9,r8
+	breq	000047D0
+	ld.w	r8,r4[12]
+	ld.w	r9,r4[16]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,r9
 	invalid
 	mov	r11,00000004
 	mov	r12,r4
 	mcall	r6[152]
+	ld.w	r9,r4[12]
+	ld.w	r8,r7[-52]
+	st.w	r9[0],r8
+	ld.w	r8,r4[12]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r4[12],r8
+	cp.w	r2,00000000
+	brne	00004822
 	invalid
 	invalid
 	mov	r8,00000000
+	cp.b	r9,r8
+	breq	000047E6
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[40]
+	ld.w	r12,r8[0]
 	mcall	r6[284]
 	sub	r11,r5,FFFFFE98
 	mov	r10,sp
 	mov	r12,00000000
 	mcall	r6[272]
-	invalid
-	invalid
+	ld.w	r7,r5[0]
+	ld.w	r11,r5[4]
 	sub	r8,r11,00000001
-	invalid
-	invalid
+	cp.w	r11,00000000
+	breq	0000480C
 	mov	r7,00000013
-	invalid
+	st.w	r5[4],r8
 	invalid
 	mov	r12,r7
 	mcall	r6[312]
@@ -3796,11 +3796,11 @@ _start proc
 	mov	r11,sp
 	mov	r12,00000002
 	mcall	r6[272]
+	ld.w	r5,r6[8]
+	ld.w	r9,r5[0]
+	ld.w	r8,r5[4]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	000047D6
 	invalid
 	ld.w	r11,r11[348]
 	sub	r9,r0,00000001
@@ -3808,9 +3808,9 @@ _start proc
 	invalid
 	invalid
 	mov	r9,r8
-	invalid
-	invalid
-	invalid
+	cp.w	r10,r9
+	breq	0000485E
+	ld.w	r12,r6[-56]
 	sub	r12,r12,FFFFFF48
 	invalid
 	invalid
@@ -3820,89 +3820,89 @@ _start proc
 	invalid
 	mov	r12,r3
 	invalid
-	invalid
-	invalid
+	popm	r0-r3,r4-r7,pc
+	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,0000028C
-	lddpc	r6,pc[252]
+	lddpc	r6,sp[252]
 	rsub	r6,pc
-	invalid
+	ld.w	r5,r6[8]
 	mov	r8,00000000
 	invalid
 	mov	r7,r12
 	mov	r4,r11
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	000048A6
 	invalid
 	mov	r12,sp
 	invalid
-	invalid
+	ld.w	r8,r5[-20]
 	mov	r9,r12
-	invalid
-	invalid
+	cp.w	r8,00000004
+	brne	00004896
 	mov	r8,00000000
 	invalid
-	invalid
+	ld.w	r8,r5[32]
 	ld.w	r12,r12[184]
 	st.w	--sp,r9
 	st.w	--sp,r8
 	mcall	r6[88]
 	invalid
-	invalid
+	ld.w	r5,r6[8]
 	mov	r8,00000000
 	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	000048EC
 	invalid
 	mov	r12,sp
 	invalid
-	invalid
+	ld.w	r9,r5[-12]
 	invalid
 	invalid
 	mov	r3,00000000
 	invalid
 	invalid
 	invalid
-	invalid
+	ld.w	r8,r5[-20]
 	mov	r9,r12
-	invalid
-	invalid
+	cp.w	r8,00000004
+	brne	000048DC
 	mov	r8,00000000
 	invalid
-	invalid
+	ld.w	r8,r5[36]
 	ld.w	r12,r12[184]
 	st.w	--sp,r9
 	st.w	--sp,r8
 	mcall	r6[88]
 	invalid
-	invalid
+	ld.w	r10,r6[8]
 	mov	r8,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	00004916
+	ld.w	r8,r10[-20]
+	ld.w	r9,r7[-16]
+	cp.w	r8,00000004
+	brne	00004906
 	mov	r8,00000000
 	invalid
-	invalid
+	ld.w	r8,r10[56]
 	ld.w	r12,r12[184]
 	st.w	--sp,r9
 	st.w	--sp,r8
 	mcall	r6[88]
 	invalid
+	ld.w	r8,r6[8]
 	invalid
 	invalid
+	ld.w	r5,r7[28]
+	ld.w	lr,r7[-24]
 	invalid
 	invalid
+	breq	00004930
+	ld.w	r11,r7[-20]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r11,r7[24]
+	ld.w	r12,r7[0]
 	mov	r8,lr
 	mov	lr,00000000
 	st.w	--sp,r4
@@ -3910,31 +3910,31 @@ _start proc
 	st.w	--sp,lr
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[8]
+	ld.w	r8,r8[24]
 	mov	r3,r12
+	cp.w	r8,00000000
+	breq	0000495C
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r10,r7[-24]
+	ld.w	r11,r7[24]
 	invalid
 	invalid
 	invalid
 	mov	r12,r3
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
+	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,000014F4
-	lddpc	r6,pc[288]
+	lddpc	r6,sp[288]
 	rsub	r6,pc
-	invalid
+	ld.w	r8,r6[8]
 	mov	r10,00000000
 	mov	r11,00000000
+	ld.w	r9,r8[-20]
 	invalid
-	invalid
-	invalid
+	cp.w	r9,00000004
 	invalid
 	mov	r7,r8
 	sub	r8,pc,FFFFFFF6
@@ -3952,199 +3952,199 @@ _start proc
 	invalid
 	mov	r7,00000000
 	invalid
-	invalid
+	ld.w	r8,r9[16]
 	mov	r11,00000000
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[-64]
+	ld.w	r11,r8[0]
+	ld.w	r9,r11[16]
+	ld.w	r8,r11[28]
+	cp.w	r9,r8
+	brcc	000049D2
 	mov	r8,0000000A
 	invalid
-	invalid
+	st.w	r11[16],r9
 	invalid
 	mov	r12,0000000A
 	mcall	r6[52]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r6[8]
+	ld.w	r8,r9[12]
+	cp.w	r7,r8
+	brcs	000049B4
 	invalid
 	mov	r12,00000001
 	invalid
-	invalid
+	ld.w	r9,r7[12]
 	ld.w	r10,r10[344]
 	invalid
 	invalid
 	invalid
 	mov	r10,00000000
+	stdsp	sp[12],r10
+	invalid
+	stdsp	sp[16],r12
+	cp.w	r9,00000000
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r4,sp[12]
+	lddsp	r7,sp[12]
 	mov	r2,00000000
 	invalid
 	invalid
+	stdsp	sp[32],r9
+	stdsp	sp[36],r2
+	ld.w	r3,r6[8]
 	invalid
+	ld.w	r8,r3[16]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[32]
 	mov	r12,r5
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r11,sp[16]
+	lddsp	r10,sp[36]
+	stdsp	sp[8],r12
+	ld.w	r8,r11[8]
 	mov	r12,r5
 	invalid
 	mov	r11,r2
 	invalid
+	stdsp	sp[36],r10
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r3[12]
+	cp.w	r7,r8
+	brcc	00004A62
+	lddsp	r12,sp[8]
 	invalid
 	invalid
 	mov	r11,r5
 	invalid
 	mov	r2,r5
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[-64]
+	ld.w	r11,r8[0]
+	ld.w	r9,r11[16]
+	ld.w	r8,r11[28]
+	cp.w	r9,r8
+	brcc	00004A76
 	mov	r8,0000000A
 	invalid
-	invalid
+	st.w	r11[16],r9
 	invalid
 	mov	r12,0000000A
 	mcall	r6[52]
+	lddsp	r9,sp[12]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[12],r9
+	lddsp	r8,sp[12]
+	cp.w	r8,r0
+	brne	00004A10
 	invalid
 	invalid
 	mov	r12,00000000
 	invalid
 	mov	r0,00000001
-	invalid
+	ld.w	r8,r7[16]
 	ld.w	r9,r9[344]
-	invalid
+	ld.w	r5,r8[0]
 	invalid
 	invalid
 	invalid
 	mov	r1,r12
 	mov	r12,r5
+	stdsp	sp[24],r8
 	invalid
-	invalid
-	invalid
+	lddsp	r11,sp[24]
 	mov	r10,00000000
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r11[8]
+	stdsp	sp[28],r10
+	ld.w	r7,r8[0]
 	mov	r4,r12
 	mov	r11,r10
 	mov	r12,r5
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[20],r3
+	cp.w	r3,00000000
+	brne	00004AF2
+	ld.w	r8,r6[-64]
+	ld.w	r11,r8[0]
+	ld.w	r9,r11[16]
+	ld.w	r8,r11[28]
+	cp.w	r9,r8
+	brcc	00004AE8
+	stdsp	sp[28],r3
 	mov	r8,0000000A
 	invalid
-	invalid
+	st.w	r11[16],r9
 	invalid
 	mov	r12,0000000A
 	mcall	r6[52]
+	stdsp	sp[28],r3
 	invalid
-	invalid
-	invalid
+	lddsp	r9,sp[28]
 	invalid
 	invalid
 	mov	r11,r5
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[28],r5
+	ld.w	r8,r6[8]
+	lddsp	r11,sp[28]
+	ld.w	r8,r8[16]
 	invalid
 	invalid
 	mov	r12,r5
 	invalid
 	mov	r12,r5
 	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r11,sp[24]
+	lddsp	r10,sp[20]
+	ld.w	r8,r11[8]
 	mov	r4,r12
 	invalid
+	ld.w	r8,r6[8]
+	ld.w	r8,r8[12]
+	cp.w	r0,r8
+	brcs	00004AC8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r7[16]
 	invalid
 	mov	r12,r3
 	invalid
 	mov	r2,r12
+	cp.w	r4,00000000
+	breq	00004B8C
+	ld.w	r8,r6[-64]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r11,r8[0]
 	ld.w	r9,r9[348]
+	ld.w	r12,r11[16]
+	ld.w	r10,r11[28]
+	invalid
+	cp.w	r8,r9
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,r10
+	brcc	00004B6E
 	mov	r8,0000002C
 	invalid
-	invalid
+	st.w	r11[16],r12
 	invalid
 	mov	r12,0000002C
 	mcall	r6[52]
+	ld.w	r8,r6[-64]
+	ld.w	r11,r8[0]
+	ld.w	r9,r11[16]
+	ld.w	r8,r11[28]
+	cp.w	r9,r8
+	brcc	00004B86
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r11[16],r9
 	invalid
 	mov	r12,r7
 	mcall	r6[52]
@@ -4153,34 +4153,34 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r7,r6[8]
+	ld.w	r8,r7[12]
+	cp.w	r4,r8
+	brcs	00004B30
+	ld.w	r8,r6[-64]
+	ld.w	r11,r8[0]
+	ld.w	r9,r11[16]
+	ld.w	r8,r11[28]
+	cp.w	r9,r8
+	brcc	00004BB4
 	mov	r8,0000000A
 	invalid
-	invalid
+	st.w	r11[16],r9
 	invalid
 	mov	r12,0000000A
 	mcall	r6[52]
 	invalid
 	invalid
+	ld.w	r8,r9[16]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r5,00000000
+	breq	00004BDC
 	sub	r11,sp,FFFFEB24
 	sub	r12,r7,FFFFFFF8
 	invalid
 	invalid
-	invalid
+	ld.w	r8,r7[-24]
 	sub	r9,pc,FFFFE632
 	mov	r10,0000000A
 	invalid
@@ -4190,60 +4190,60 @@ _start proc
 	invalid
 	mcall	r6[44]
 	invalid
+	ld.w	r8,r6[8]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	00004C16
+	ld.w	r8,r7[-8]
+	cp.w	r8,00000001
+	brne	00004C10
 	mov	r8,0000002E
 	invalid
-	invalid
-	invalid
+	cp.w	r8,00000002
+	brne	00004C1A
 	mov	r8,0000002B
 	invalid
-	invalid
+	ld.w	r8,r6[8]
 	ld.w	r8,r8[316]
+	cp.w	r8,00000000
+	breq	00004C34
+	cp.w	r8,00000001
+	breq	00004C2E
+	cp.w	r8,00000002
+	brne	00004C40
 	invalid
+	ld.w	r9,r7[-40]
+	ld.w	r8,r7[-36]
 	invalid
+	ld.w	r9,r7[-48]
+	ld.w	r8,r7[-44]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r7[-56]
+	ld.w	r8,r7[-52]
 	invalid
 	mcall	r6[76]
 	invalid
-	invalid
+	ld.w	r8,r6[8]
 	invalid
 	invalid
 	mov	r8,00000000
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	00004C60
 	sub	r4,sp,FFFFFFD8
 	invalid
 	invalid
+	cp.w	r10,00000000
 	invalid
-	invalid
-	invalid
+	brne	00004C70
 	ld.w	r9,r9[140]
 	invalid
 	sub	r12,sp,FFFFF19C
 	invalid
 	mov	r9,r12
-	invalid
+	ld.w	r8,r6[8]
 	sub	r5,sp,FFFFFFD8
 	ld.w	r11,r11[184]
-	invalid
+	ld.w	r8,r8[32]
 	mov	r12,r5
 	st.w	--sp,r9
 	st.w	--sp,r8
@@ -4252,14 +4252,14 @@ _start proc
 	mcall	r6[16]
 	invalid
 	invalid
-	invalid
+	ld.w	lr,r6[8]
 	mov	r9,00000000
 	invalid
+	cp.b	r8,r9
+	breq	00004D02
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r8,r9
+	brne	00004CBA
 	ld.w	r12,r12[140]
 	invalid
 	invalid
@@ -4269,12 +4269,12 @@ _start proc
 	sub	r12,sp,FFFFEDA8
 	invalid
 	invalid
+	ld.w	r9,lr[-12]
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[8]
 	mov	r11,00000000
-	invalid
+	ld.w	r5,r8[36]
 	mov	r3,r12
 	invalid
 	invalid
@@ -4282,28 +4282,28 @@ _start proc
 	mov	r8,00000020
 	invalid
 	invalid
+	cp.w	r5,00000000
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
+	brne	00004CF4
 	mov	r8,00000020
 	invalid
 	invalid
 	mov	r8,00000000
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	00004D14
 	ld.w	r9,r9[140]
 	invalid
-	invalid
+	ld.w	r10,r7[28]
 	mov	r11,00000000
 	sub	r12,sp,FFFFF19C
 	invalid
 	mov	r9,r12
-	invalid
+	ld.w	r3,r6[8]
 	ld.w	r11,r11[1132]
-	invalid
+	ld.w	r8,r3[40]
 	mov	r12,r4
 	st.w	--sp,r9
 	st.w	--sp,r8
@@ -4316,53 +4316,53 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r8,r1
+	breq	00004D64
+	ld.w	r8,r6[40]
 	ld.w	r12,r12[268]
-	invalid
+	ld.w	r11,r8[0]
 	mcall	r6[20]
+	ld.w	r8,r3[-52]
+	invalid
+	invalid
+	ld.w	r2,r6[48]
+	invalid
+	ld.ub	r2[3]
+	ld.ub	r2[2]
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	00004E14
+	ld.w	r8,r6[40]
 	sub	r5,sp,FFFFFFD8
-	invalid
+	ld.w	r11,r8[0]
 	mov	r12,r5
 	mcall	r6[20]
 	invalid
+	ld.ub	r2[2]
+	ld.w	r8,r3[-52]
 	invalid
 	invalid
+	cp.b	r9,r1
+	breq	00004DA8
 	invalid
+	ld.w	r11,r3[44]
+	ld.w	r12,r7[32]
 	invalid
+	ld.ub	r2[3]
+	cp.b	r8,r1
+	breq	00004DE0
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r4,r3[48]
+	ld.w	r5,r7[36]
+	cp.b	r8,r1
+	brne	00004DC4
 	ld.w	r12,r12[140]
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.b	r8,r1
+	breq	00004DD2
 	mov	r12,00000000
 	invalid
 	mov	r12,r5
@@ -4370,42 +4370,42 @@ _start proc
 	mov	r10,r4
 	mov	r11,r5
 	invalid
-	invalid
+	ld.w	r3,r6[8]
 	mov	r4,00000000
 	invalid
+	cp.b	r8,r4
+	breq	00004DFA
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r11,r3[52]
+	ld.w	r12,r7[32]
 	invalid
 	invalid
 	sub	r5,sp,FFFFFFD8
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r8,r4
+	breq	00004E12
+	ld.w	r10,r3[56]
+	ld.w	r12,r7[-16]
 	mov	r11,00000000
 	invalid
 	mov	r4,r5
 	invalid
 	mov	r8,00000000
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	00004E28
 	ld.w	r12,r12[140]
 	invalid
 	invalid
+	ld.w	r8,r7[24]
 	invalid
 	invalid
+	breq	00004E3A
 	invalid
+	brne	00004E9E
+	ld.w	r3,r6[8]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r5,r3[-60]
+	ld.w	r9,r3[-64]
+	ld.w	r8,r3[60]
 	invalid
 	invalid
 	invalid
@@ -4414,7 +4414,7 @@ _start proc
 	mov	r10,r12
 	sub	r12,sp,FFFFEDB0
 	invalid
-	invalid
+	ld.w	r1,r3[-64]
 	invalid
 	mov	r2,r12
 	invalid
@@ -4422,7 +4422,7 @@ _start proc
 	mov	r10,r12
 	sub	r12,sp,FFFFF19C
 	invalid
-	invalid
+	ld.w	r9,r3[60]
 	mov	r8,00000000
 	invalid
 	ld.w	r11,r11[1128]
@@ -4434,25 +4434,25 @@ _start proc
 	st.w	--sp,r5
 	mcall	r6[100]
 	invalid
-	invalid
+	ld.w	r8,r3[-60]
 	invalid
 	sub	r4,r8,FFFFFFFF
 	invalid
-	invalid
+	ld.w	r8,r6[48]
 	invalid
 	invalid
 	mov	r8,00000001
 	mov	r9,00000000
 	sub	r12,sp,FFFFEDA8
 	invalid
+	ld.w	r8,r6[8]
+	invalid
+	ld.w	r9,r8[-12]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[8]
 	mov	r11,00000000
-	invalid
+	ld.w	r5,r8[-60]
 	mov	r3,r12
 	invalid
 	invalid
@@ -4460,44 +4460,44 @@ _start proc
 	mov	r8,00000020
 	invalid
 	invalid
+	cp.w	r5,00000000
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
+	brne	00004EDA
 	mov	r8,00000020
 	invalid
 	sub	r12,sp,FFFFEB18
 	invalid
 	mov	r8,00000001
-	invalid
+	st.b	r4[0],r8
 	invalid
 	mov	r8,00000000
 	mov	r1,r12
+	cp.b	r9,r8
+	breq	00004F80
+	cp.w	r12,00000000
+	breq	00004F80
+	ld.w	r5,r6[8]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brge	00004F1E
 	sub	r12,r5,FFFFFE18
 	invalid
-	lddpc	r8,pc[40]
+	lddpc	r8,sp[40]
 	ld.w	r9,r9[488]
 	invalid
 	invalid
-	invalid
+	stdsp	sp[0],r9
 	ld.w	r9,r9[492]
-	invalid
+	stdsp	sp[4],r9
 	invalid
 	mov	r8,r2
 	mov	r9,r3
 	invalid
-	invalid
+	brlt	00004F48
 	mov	r12,00000000
 	invalid
 	invalid
@@ -4508,7 +4508,7 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	ld.w	r8,r6[-56]
 	ld.w	lr,lr[5356]
 	invalid
 	ld.w	r10,r10[192]
@@ -4519,23 +4519,23 @@ _start proc
 	st.w	--sp,lr
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,00000000
+	brne	00004F8C
+	ld.ub	r4[0]
 	mov	r9,00000000
-	invalid
-	invalid
+	cp.b	r8,r9
+	brne	00004F9C
 	mov	r12,00000000
 	invalid
 	mov	r9,00000020
 	invalid
 	mov	r3,r8
 	mov	r8,00000000
+	st.b	r3[0],r8
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r8,r9
+	brne	00004FAC
 	ld.w	r1,r1[140]
 	invalid
 	ld.w	r8,r8[5352]
@@ -4544,16 +4544,16 @@ _start proc
 	invalid
 	invalid
 	mov	r1,r12
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r2,r6[48]
+	ld.w	r8,r2[12]
+	cp.w	r8,00000000
+	brge	0000500E
 	sub	r12,sp,FFFFEB0C
 	mov	r5,00000000
 	st.w	--r12,r5
 	invalid
-	invalid
-	invalid
+	breq	00005002
+	ld.w	r8,r6[-56]
 	sub	r3,sp,FFFFF19C
 	ld.w	r10,r10[192]
 	mov	r9,r12
@@ -4563,22 +4563,22 @@ _start proc
 	st.w	--sp,r5
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r12,00000000
+	breq	00005002
 	mov	r11,r12
 	mov	r10,r5
 	mov	r12,r3
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r2[12],r12
+	ld.w	r9,r6[48]
+	ld.w	r8,r9[12]
+	cp.w	r8,00000000
+	brge	0000500E
 	mov	r8,00000000
-	invalid
-	invalid
+	st.w	r9[12],r8
+	ld.w	r8,r6[48]
 	ld.w	r11,r11[184]
-	invalid
+	ld.w	r8,r8[12]
 	mov	r12,r4
 	st.w	--sp,r1
 	st.w	--sp,r8
@@ -4587,169 +4587,169 @@ _start proc
 	mcall	r6[16]
 	invalid
 	invalid
-	invalid
+	ld.w	r8,r6[40]
 	sub	r5,sp,FFFFFFD8
-	invalid
+	ld.w	r11,r8[0]
 	mov	r12,r5
 	mcall	r6[20]
 	invalid
+	ld.w	r9,r6[8]
+	ld.w	r8,r9[-52]
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r12,r7[28]
+	ld.w	r3,r7[-24]
 	invalid
 	invalid
+	breq	00005064
+	ld.w	r11,r7[-20]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r11,r7[24]
+	ld.w	r4,r6[8]
 	st.w	--sp,r5
 	sub	r8,r4,FFFFFE10
 	st.w	--sp,r12
 	st.w	--sp,r8
-	invalid
+	ld.w	r12,r7[0]
 	mov	r8,r3
 	mov	r10,lr
 	invalid
 	invalid
-	invalid
+	ld.w	r10,r7[-24]
 	mov	r3,r12
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000006
+	brne	000050D4
+	ld.w	r8,r7[4]
+	cp.w	r8,00000000
+	breq	000050E4
+	ld.w	r8,r6[40]
 	ld.w	r12,r12[1124]
-	invalid
+	ld.w	r11,r8[0]
 	mov	r2,00000000
 	mcall	r6[20]
-	invalid
+	ld.w	r8,r4[-52]
 	sub	r9,r5,FFFFFFFC
 	invalid
 	invalid
 	invalid
 	invalid
 	st.w	--sp,r9
-	invalid
+	ld.w	r8,r7[28]
 	st.w	--sp,r8
 	st.w	--sp,r2
 	invalid
+	ld.w	r8,r7[-24]
+	ld.w	r11,r7[-20]
+	ld.w	r12,r7[4]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r4[24]
+	cp.w	r8,00000000
+	breq	000050E4
+	ld.w	r11,r7[-20]
 	mov	r10,r2
 	mov	r12,00000001
 	invalid
+	ld.w	r8,r4[24]
+	cp.w	r8,00000000
+	breq	000050E4
 	invalid
+	ld.w	r11,r7[24]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[-64]
+	ld.w	r11,r8[0]
+	ld.w	r9,r11[16]
+	ld.w	r8,r11[28]
+	cp.w	r9,r8
+	brcc	000050F8
 	mov	r8,0000000A
 	invalid
-	invalid
+	st.w	r11[16],r9
 	invalid
 	mov	r12,0000000A
 	mcall	r6[52]
+	ld.w	r9,r6[8]
+	invalid
+	ld.w	r8,r9[-52]
 	invalid
 	invalid
+	ld.w	r9,r6[8]
+	ld.w	r8,r9[12]
+	cp.w	r0,r8
 	invalid
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,000002A0
-	lddpc	r6,pc[196]
+	lddpc	r6,sp[196]
 	rsub	r6,pc
-	invalid
-	invalid
-	invalid
+	stdsp	sp[4],r11
+	stdsp	sp[0],r10
+	stdsp	sp[8],r12
 	mcall	r6[28]
 	mov	r8,00000000
-	invalid
-	invalid
-	invalid
+	stdsp	sp[12],r12
+	st.w	r12[0],r8
+	lddsp	r12,sp[8]
 	mcall	r6[468]
-	invalid
-	invalid
+	stdsp	sp[16],r12
+	brne	00005150
 	ld.w	r11,r11[1120]
+	lddsp	r10,sp[8]
+	lddsp	r12,sp[0]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[8]
 	ld.w	r8,r8[324]
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	0000521E
 	mcall	r6[504]
 	sub	r11,sp,FFFFFFEC
-	invalid
-	invalid
+	cp.w	r12,00000000
+	brlt	0000516C
 	mcall	r6[524]
 	invalid
-	invalid
+	lddsp	r12,sp[8]
 	mcall	r6[208]
 	invalid
-	invalid
-	invalid
+	breq	0000518E
+	lddsp	r12,sp[0]
 	ld.w	r11,r11[1116]
+	lddsp	r10,sp[8]
 	invalid
-	invalid
-	invalid
+	lddsp	r12,sp[16]
 	mcall	r6[232]
 	invalid
 	mov	r12,00000010
 	invalid
 	invalid
 	invalid
-	invalid
+	ld.w	r7,r6[8]
 	mov	r5,r12
 	invalid
 	mov	r11,r5
 	invalid
 	ld.w	r12,r12[324]
 	invalid
+	brne	000051B8
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,r5
+	breq	000051E8
 	mov	r12,r5
 	mcall	r6[12]
-	invalid
+	lddsp	r12,sp[8]
 	invalid
 	ld.w	r10,r10[1112]
 	mov	r11,r4
 	st.w	--sp,r12
 	mov	r12,r4
 	mcall	r6[68]
-	invalid
+	lddsp	r12,sp[20]
 	mcall	r6[232]
 	invalid
 	invalid
@@ -4758,7 +4758,7 @@ _start proc
 	ld.w	r8,r8[556]
 	ld.w	r9,r9[552]
 	invalid
-	invalid
+	cp.w	r8,0000000F
 	invalid
 	mov	r11,00000010
 	sub	r12,r7,FFFFFDE4
@@ -4774,45 +4774,45 @@ _start proc
 	ld.w	r3,r3[1108]
 	mov	r0,00000000
 	mov	r1,00000000
-	invalid
-	invalid
+	lddsp	r12,sp[16]
+	lddsp	lr,sp[12]
 	mov	r4,00000000
-	invalid
+	st.w	lr[0],r4
 	mcall	r6[488]
 	mov	r7,r12
-	invalid
-	invalid
+	breq	000052EC
+	ld.w	r11,r6[8]
 	sub	r5,r12,FFFFFFED
 	ld.w	r9,r9[584]
-	invalid
-	invalid
-	invalid
+	cp.w	r9,00000002
+	breq	00005284
+	ld.ub	r5[0]
 	mov	r8,0000002E
+	cp.b	r10,r8
+	brne	00005272
+	cp.w	r9,00000000
+	breq	0000522A
+	invalid
+	cp.b	r8,r10
 	invalid
 	invalid
 	invalid
+	cp.b	r8,r4
+	breq	0000522A
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r9,00000000
+	brne	00005284
 	ld.w	r12,r12[588]
 	mov	r11,r5
 	invalid
 	invalid
-	invalid
-	invalid
+	brne	0000522A
+	ld.w	r8,r6[8]
 	mov	r11,r5
+	ld.w	r12,r8[-48]
 	invalid
 	invalid
-	invalid
-	invalid
+	brne	0000522A
 	invalid
 	mov	r11,00000000
 	invalid
@@ -4829,7 +4829,7 @@ _start proc
 	mov	r11,00000005
 	invalid
 	mov	r11,00000007
-	invalid
+	lddsp	lr,sp[8]
 	mov	r8,00000000
 	mov	r9,00000000
 	sub	r12,r7,FFFFFFED
@@ -4837,186 +4837,186 @@ _start proc
 	st.w	--sp,lr
 	invalid
 	invalid
+	ld.w	r9,r6[8]
+	ld.w	r8,r9[-20]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000001
+	brne	0000522A
 	ld.w	r8,r8[136]
+	cp.w	r8,FFFFFFFF
+	brne	0000522A
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r9,sp[12]
+	ld.w	r8,r9[0]
+	cp.w	r8,00000000
+	breq	00005308
+	lddsp	r10,sp[8]
+	lddsp	r12,sp[0]
 	mov	r11,r3
 	invalid
+	lddsp	lr,sp[12]
+	ld.w	r8,lr[0]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	0000522A
+	lddsp	r12,sp[16]
 	mcall	r6[232]
-	invalid
+	breq	0000531C
 	ld.w	r11,r11[1104]
+	lddsp	r10,sp[8]
+	lddsp	r12,sp[0]
+	invalid
+	invalid
+	ld.w	r5,r6[8]
+	invalid
+	cp.b	r8,r7
+	breq	00005334
+	lddsp	r11,sp[0]
+	lddsp	r12,sp[8]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r8,r6[48]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r8,r7
+	brne	00005374
+	ld.w	r8,r6[-64]
+	ld.w	r11,r8[0]
+	ld.w	r9,r11[16]
+	ld.w	r8,r11[28]
+	cp.w	r9,r8
+	brcc	00005364
 	mov	r8,0000000A
 	invalid
-	invalid
+	st.w	r11[16],r9
 	invalid
 	invalid
 	mov	r12,0000000A
 	mcall	r6[52]
+	ld.w	r9,r6[8]
+	ld.w	r8,r9[-52]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r5,r6[8]
+	ld.w	r8,r6[48]
 	invalid
 	mov	r3,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r3
+	breq	0000539C
+	ld.w	r8,r6[40]
 	ld.w	r12,r12[268]
-	invalid
+	ld.w	r11,r8[0]
 	mcall	r6[20]
+	ld.w	r8,r5[-52]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r8,r3
+	breq	000053D2
 	ld.w	r8,r8[608]
 	ld.w	r9,r9[612]
 	invalid
-	invalid
+	cp.w	r8,r9
 	invalid
 	mov	r11,00000004
 	sub	r12,r5,FFFFFDAC
 	mcall	r6[152]
 	ld.w	r9,r9[608]
-	invalid
-	invalid
+	ld.w	r8,r5[-52]
+	st.w	r9[0],r8
 	ld.w	r8,r8[608]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r3,r6[8]
+	ld.w	r8,r6[40]
+	lddsp	r9,sp[8]
+	lddsp	r11,sp[4]
+	ld.w	r12,r8[0]
 	ld.w	r10,r10[640]
-	invalid
+	cp.w	r11,00000000
 	invalid
 	mov	r9,00000000
-	invalid
+	ld.w	r5,r3[-52]
 	invalid
 	invalid
 	mov	r8,00000000
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	0000542C
 	ld.w	r8,r8[608]
 	ld.w	r9,r9[612]
 	invalid
-	invalid
+	cp.w	r8,r9
 	invalid
 	mov	r11,00000004
 	sub	r12,r3,FFFFFDAC
 	mcall	r6[152]
 	ld.w	r9,r9[608]
-	invalid
-	invalid
+	ld.w	r8,r3[-52]
+	st.w	r9[0],r8
 	ld.w	r8,r8[608]
 	invalid
 	invalid
-	invalid
+	ld.w	r8,r6[40]
 	ld.w	r12,r12[1100]
-	invalid
+	ld.w	r11,r8[0]
 	mcall	r6[20]
+	ld.w	r9,r6[8]
+	ld.w	r8,r9[-52]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	mov	r8,00000000
-	invalid
-	invalid
+	ld.w	r5,r6[8]
+	ld.w	r8,r5[-20]
+	cp.w	r8,00000000
+	breq	00005456
 	invalid
 	mov	r8,00000000
+	cp.b	r9,r8
+	breq	0000550A
 	invalid
-	invalid
-	invalid
+	mov	r8,00000000
+	cp.b	r9,r8
+	breq	00005476
+	ld.w	r8,r6[40]
 	ld.w	r12,r12[268]
-	invalid
+	ld.w	r11,r8[0]
 	mcall	r6[20]
+	ld.w	r8,r5[-52]
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[40]
 	ld.w	r12,r12[1096]
-	invalid
+	ld.w	r11,r8[0]
 	mcall	r6[20]
+	ld.w	r9,r6[-64]
+	ld.w	r8,r5[-52]
+	ld.w	r11,r9[0]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r10,r11[16]
+	ld.w	r8,r11[28]
+	cp.w	r10,r8
+	brcc	000054A0
 	invalid
 	mov	r8,00000020
 	invalid
-	invalid
+	st.w	r11[16],r10
 	invalid
 	mov	r12,00000020
 	mcall	r6[52]
-	invalid
+	ld.w	r5,r6[8]
 	sub	r12,sp,FFFFFFEC
+	ld.w	r8,r5[-52]
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.w	r9,r5[-12]
 	invalid
 	mov	r10,r0
 	invalid
@@ -5025,41 +5025,41 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[40]
+	ld.w	r11,r8[0]
 	mov	r3,r12
 	mcall	r6[20]
 	mov	r12,r3
 	mcall	r6[16]
 	invalid
+	ld.w	r8,r6[-64]
+	ld.w	r9,r5[-52]
+	ld.w	r11,r8[0]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r11[16]
+	ld.w	r8,r11[28]
+	cp.w	r9,r8
+	brcc	000054FA
 	mov	r8,0000000A
 	invalid
-	invalid
+	st.w	r11[16],r9
 	invalid
 	mov	r12,0000000A
 	mcall	r6[52]
+	ld.w	r9,r6[8]
+	ld.w	r8,r9[-52]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[8]
+	ld.w	r8,r8[12]
+	cp.w	r8,00000000
+	breq	0000556E
 	invalid
 	invalid
 	invalid
 	sub	r9,r8,00000001
-	invalid
+	cp.w	r9,0000000D
 	invalid
 	sub	r8,pc,FFFFFFF6
 	invalid
@@ -5081,42 +5081,42 @@ _start proc
 	mov	r11,00000008
 	invalid
 	invalid
-	invalid
-	invalid
+	popm	r0-r3,r4-r7,pc
+	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,00000098
-	lddpc	r6,pc[252]
+	lddpc	r6,sp[252]
 	rsub	r6,pc
-	invalid
+	stdsp	sp[0],r11
 	mov	r0,r12
-	invalid
+	ld.w	r12,r11[0]
 	mov	r7,00000002
 	invalid
-	invalid
+	ld.w	r3,r6[8]
 	ld.w	r11,r11[224]
 	mov	r12,00000006
 	mcall	r6[292]
 	ld.w	r8,r8[192]
 	sub	r12,pc,FFFFE62A
-	invalid
+	st.w	r8[0],r7
 	mcall	r6[452]
 	ld.w	r8,r8[336]
 	mov	r9,00000000
-	invalid
+	ld.w	r5,r8[0]
 	mov	r8,00000001
 	invalid
-	lddpc	r8,pc[200]
+	lddpc	r8,sp[200]
 	invalid
 	mov	r8,FFFFFFFF
 	invalid
+	st.w	r3[8],r9
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r5,00000001
+	breq	000055EE
+	cp.w	r5,r7
+	breq	000055D6
+	cp.w	r5,00000003
+	brne	0000560A
 	invalid
 	mov	r12,r9
 	mov	r11,00000005
@@ -5129,7 +5129,7 @@ _start proc
 	invalid
 	mov	r12,r5
 	mcall	r6[244]
-	invalid
+	breq	00005600
 	invalid
 	invalid
 	invalid
@@ -5137,7 +5137,7 @@ _start proc
 	invalid
 	invalid
 	mcall	r6[76]
-	invalid
+	ld.w	r8,r6[8]
 	ld.w	r12,r12[1092]
 	mov	r5,00000000
 	mov	r9,00000001
@@ -5148,7 +5148,7 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	st.w	r8[24],r5
 	invalid
 	invalid
 	invalid
@@ -5157,19 +5157,19 @@ _start proc
 	invalid
 	mcall	r6[56]
 	mov	r7,r12
-	invalid
+	breq	00005692
 	sub	r3,pc,FFFFAD0E
 	ld.w	r11,r11[236]
 	mov	r9,00000004
 	mov	r10,r3
 	invalid
-	invalid
+	brlt	0000567C
 	invalid
 	mov	r12,r5
 	invalid
 	invalid
 	invalid
-	invalid
+	ld.sh	r0,r0[0]
 	invalid
 	mov	r12,r7
 	invalid
@@ -5181,40 +5181,40 @@ _start proc
 	invalid
 	ld.w	r12,r12[1084]
 	mcall	r6[56]
-	invalid
+	ld.w	r11,r6[8]
 	sub	r7,r11,FFFFFF88
 	mov	r5,r12
 	invalid
 	mov	r10,r7
 	invalid
-	invalid
-	invalid
+	cp.w	r5,00000000
+	brne	000056B8
 	ld.w	r12,r12[1080]
 	mcall	r6[56]
+	breq	000056C2
 	invalid
+	ld.w	r10,r6[48]
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r7,r6[8]
 	ld.w	r12,r12[1076]
 	mov	r8,00000050
 	invalid
 	mcall	r6[56]
 	mov	r5,r12
-	invalid
-	invalid
+	breq	00005712
+	ld.ub	r12[0]
 	mov	r8,00000000
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	00005712
 	mov	r8,00000000
 	sub	r9,sp,FFFFFF70
 	mov	r10,r8
 	mov	r11,r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	000056FC
+	lddsp	r8,sp[144]
+	cp.w	r8,00000000
+	breq	000056FC
 	invalid
 	invalid
 	mov	r12,r5
@@ -5231,27 +5231,27 @@ _start proc
 	st.w	--sp,r8
 	mcall	r6[592]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,FFFFFFFF
+	breq	00005734
+	ld.uh	r9,sp[6]
+	cp.w	r9,00000000
+	breq	00005734
+	ld.w	r8,r6[8]
 	invalid
 	ld.w	r12,r12[1068]
-	invalid
+	ld.w	r5,r6[8]
 	mcall	r6[56]
 	mov	r8,00000008
 	invalid
 	mov	r7,r12
-	invalid
+	breq	00005776
 	mov	r8,00000000
 	sub	r9,sp,FFFFFF70
 	mov	r10,r8
 	mov	r11,r8
 	invalid
-	invalid
-	invalid
+	brne	00005760
+	lddsp	r8,sp[144]
 	invalid
 	invalid
 	mov	r12,r7
@@ -5266,17 +5266,20 @@ _start proc
 	ld.w	r2,r2[1060]
 	ld.w	r1,r1[1056]
 	mov	r3,r4
-	invalid
+	ld.w	r9,r6[-16]
 	ld.w	r10,r10[1052]
-	invalid
+	lddsp	r11,sp[0]
 	mov	lr,FFFFFFFF
 	sub	r9,r9,FFFFFF20
 	sub	r8,sp,FFFFFF70
 	mov	r12,r0
-	invalid
+	stdsp	sp[144],lr
 	mcall	r6[572]
+	cp.w	r12,FFFFFFFF
 	invalid
+	cp.w	r12,FFFFFFFD
 	invalid
+	cp.w	r12,FFFFFFFE
 	invalid
 	invalid
 	invalid
@@ -5367,6 +5370,7 @@ _start proc
 	invalid
 	invalid
 	invalid
+	breq	000059C4
 	invalid
 	invalid
 	invalid
@@ -5392,11 +5396,7 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[8]
 	mov	r9,00000002
 	invalid
 	invalid
@@ -5404,18 +5404,18 @@ _start proc
 	invalid
 	mov	r9,00000001
 	invalid
-	invalid
+	ld.w	r8,r6[8]
 	mov	r9,00000001
 	invalid
 	invalid
-	invalid
+	ld.w	r5,r6[8]
 	mov	r9,00000002
 	invalid
-	invalid
+	ld.w	r8,r5[-20]
 	mov	r9,FFFFFFFF
 	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
+	brne	000059B6
 	mov	r12,00000001
 	mcall	r6[244]
 	invalid
@@ -5428,55 +5428,55 @@ _start proc
 	invalid
 	mov	r9,00000002
 	invalid
-	invalid
+	ld.w	r9,r6[48]
 	mov	r8,00000000
+	st.b	r9[2],r8
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[48]
 	mov	r10,00000001
 	mov	r11,00000000
+	ld.w	r9,r6[8]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[8]
 	mov	r9,00000001
 	invalid
 	invalid
-	invalid
+	ld.w	r8,r6[48]
 	invalid
 	mov	r11,00000000
-	invalid
+	ld.w	r9,r6[8]
 	invalid
 	mov	r8,00000000
 	invalid
 	mov	r9,00000004
+	ld.w	r8,r6[8]
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[8]
 	mov	r9,00000000
 	invalid
 	mov	r9,00000001
 	invalid
 	invalid
-	invalid
+	ld.w	r9,r6[48]
 	mov	r8,00000000
-	invalid
-	invalid
-	invalid
-	invalid
-	mov	r9,00000001
-	invalid
+	st.b	r9[3],r8
+	ld.w	r9,r6[8]
 	invalid
 	invalid
 	mov	r9,00000001
-	invalid
+	ld.w	r8,r6[8]
+	st.w	r8[24],r9
 	invalid
 	mov	r9,00000001
 	invalid
+	ld.w	r8,r6[8]
+	mov	r9,00000001
 	invalid
 	invalid
+	ld.w	r8,r6[8]
 	mov	r9,00000001
 	invalid
 	invalid
@@ -5484,26 +5484,26 @@ _start proc
 	mov	r9,00000004
 	invalid
 	mov	r9,00000002
-	invalid
+	ld.w	r8,r6[8]
 	invalid
 	invalid
 	mov	r3,00000001
 	mov	r9,00000003
+	ld.w	r8,r6[8]
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.w	r7,r6[-44]
 	mov	r8,00000000
-	invalid
+	ld.w	r12,r7[0]
 	sub	r9,sp,FFFFFF6C
 	mov	r10,r8
 	mov	r11,r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	00005A82
+	lddsp	r8,sp[148]
+	cp.w	r8,00000000
+	brne	00005A98
+	ld.w	r12,r7[0]
 	invalid
 	ld.w	r10,r10[1048]
 	mov	r11,00000000
@@ -5511,15 +5511,15 @@ _start proc
 	mov	r12,00000002
 	mcall	r6[68]
 	invalid
-	invalid
-	invalid
+	lddsp	r9,sp[148]
+	ld.w	r8,r6[8]
 	invalid
 	invalid
 	mov	r9,00000003
 	invalid
-	invalid
+	ld.w	r9,r6[8]
 	ld.w	r8,r8[584]
-	invalid
+	cp.w	r8,00000000
 	invalid
 	mov	r8,00000001
 	invalid
@@ -5530,24 +5530,24 @@ _start proc
 	invalid
 	mov	r9,00000002
 	invalid
-	invalid
+	ld.w	r8,r6[8]
 	mov	r9,00000001
 	invalid
 	invalid
 	mov	r9,00000003
 	invalid
-	invalid
+	ld.w	r8,r6[48]
 	mov	r9,00000000
-	invalid
+	st.b	r8[3],r9
 	invalid
 	mov	r9,00000003
 	invalid
 	mov	r9,00000004
+	ld.w	r8,r6[8]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[-44]
+	ld.w	r12,r8[0]
 	invalid
 	invalid
 	mov	r9,00000005
@@ -5559,22 +5559,22 @@ _start proc
 	mov	r11,00000003
 	mov	r12,00000000
 	invalid
-	invalid
+	ld.w	r8,r6[8]
 	mov	r9,00000001
 	invalid
 	invalid
 	mov	r3,00000001
 	mov	r9,00000002
 	invalid
-	invalid
+	ld.w	r7,r6[-44]
 	mov	r8,00000000
-	invalid
+	ld.w	r12,r7[0]
 	sub	r9,sp,FFFFFF6C
 	mov	r10,r8
 	mov	r11,r8
 	invalid
-	invalid
-	invalid
+	breq	00005B56
+	ld.w	r12,r7[0]
 	invalid
 	ld.w	r10,r10[1036]
 	mov	r11,00000000
@@ -5582,8 +5582,8 @@ _start proc
 	mov	r12,00000002
 	mcall	r6[68]
 	invalid
-	invalid
-	invalid
+	lddsp	r9,sp[148]
+	ld.w	r8,r6[8]
 	invalid
 	invalid
 	invalid
@@ -5593,33 +5593,33 @@ _start proc
 	mov	r9,00000001
 	mov	r3,r9
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r6[8]
+	ld.w	r8,r9[-20]
+	cp.w	r8,00000000
 	invalid
 	mov	r8,00000001
 	invalid
-	invalid
+	ld.w	r8,r6[8]
 	mov	r9,00000001
 	invalid
 	invalid
 	mov	r12,00000008
 	invalid
-	invalid
-	invalid
+	ld.w	r9,r6[8]
+	ld.w	r8,r6[-44]
 	ld.w	r10,r10[588]
+	ld.w	r8,r8[0]
 	invalid
+	st.w	r12[0],r8
+	st.w	r12[4],r10
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[-44]
 	sub	r5,pc,FFFFF5FC
-	invalid
-	invalid
+	ld.w	r11,r8[0]
+	ld.w	r10,r6[-16]
 	ld.w	r8,r8[136]
 	ld.w	r12,r12[1032]
-	invalid
+	ld.w	lr,r8[0]
 	sub	r9,r5,FFFFFFB4
 	sub	r10,r10,FFFFFC80
 	mov	r8,00000004
@@ -5628,19 +5628,19 @@ _start proc
 	mov	r3,00000001
 	invalid
 	invalid
+	ld.w	r9,r12[-52]
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[8]
 	mov	r9,00000001
 	invalid
 	invalid
-	invalid
+	ld.w	r8,r6[-44]
 	sub	r5,pc,FFFFF638
-	invalid
-	invalid
+	ld.w	r11,r8[0]
+	ld.w	r10,r6[-16]
 	ld.w	r8,r8[136]
 	ld.w	r12,r12[1028]
-	invalid
+	ld.w	lr,r8[0]
 	sub	r9,r5,FFFFFFA0
 	sub	r10,r10,FFFFFC68
 	mov	r8,00000004
@@ -5648,15 +5648,15 @@ _start proc
 	invalid
 	invalid
 	invalid
+	ld.w	r9,r12[-32]
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[-44]
 	sub	r5,pc,FFFFF666
-	invalid
-	invalid
+	ld.w	r11,r8[0]
+	ld.w	r10,r6[-16]
 	ld.w	r8,r8[136]
 	sub	r9,r5,FFFFFF8C
-	invalid
+	ld.w	lr,r8[0]
 	sub	r10,r10,FFFFFC50
 	mov	r8,00000004
 	mov	r12,r1
@@ -5664,19 +5664,19 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	ld.w	r9,r12[-12]
 	invalid
 	ld.w	r4,r4[1024]
 	mov	r9,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[-44]
+	ld.w	r11,r8[0]
+	cp.w	r11,00000000
+	breq	00005C84
 	sub	r5,pc,FFFFF6A0
 	ld.w	r8,r8[136]
-	invalid
-	invalid
+	ld.w	r10,r6[-16]
+	ld.w	lr,r8[0]
 	sub	r10,r10,FFFFFC30
 	mov	r8,00000004
 	sub	r9,r5,FFFFFF70
@@ -5686,30 +5686,30 @@ _start proc
 	invalid
 	invalid
 	ld.w	r8,r8[144]
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000001
+	breq	00005C84
+	cp.w	r8,00000002
+	brne	00005C88
 	mov	r12,00000001
 	mcall	r6[244]
-	invalid
+	breq	00005C88
 	mov	r8,00000001
 	invalid
 	mov	r8,00000000
-	invalid
+	ld.w	r9,r6[8]
 	invalid
 	invalid
 	invalid
 	mov	r8,00000000
 	invalid
 	invalid
-	invalid
+	ld.w	r8,r6[-44]
 	sub	r5,pc,FFFFF6F6
-	invalid
-	invalid
+	ld.w	r11,r8[0]
+	ld.w	r10,r6[-16]
 	ld.w	r8,r8[136]
 	ld.w	r12,r12[1020]
-	invalid
+	ld.w	lr,r8[0]
 	sub	r9,r5,FFFFFF4C
 	sub	r10,r10,FFFFFC08
 	mov	r8,00000004
@@ -5719,13 +5719,13 @@ _start proc
 	invalid
 	ld.w	r9,r9[180]
 	invalid
-	invalid
+	ld.w	r8,r6[-44]
 	sub	r5,pc,FFFFB38C
-	invalid
+	ld.w	r11,r8[0]
 	ld.w	r8,r8[136]
 	ld.w	r10,r10[236]
 	ld.w	r12,r12[1016]
-	invalid
+	ld.w	lr,r8[0]
 	mov	r9,r5
 	mov	r8,00000004
 	st.w	--sp,lr
@@ -5735,62 +5735,62 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[-44]
+	ld.w	r4,r8[0]
 	invalid
 	mov	r9,00000000
+	ld.w	r8,r6[8]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r11,r6[8]
+	ld.w	r5,r6[-44]
 	sub	r7,r11,FFFFFF88
-	invalid
+	ld.w	r12,r5[0]
 	invalid
 	mov	r10,r7
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	00005D3A
+	ld.w	r9,r6[-16]
+	ld.w	r8,r5[0]
+	lddsp	r11,sp[144]
 	sub	r9,r9,FFFFFF20
 	mov	r10,00000000
 	invalid
 	invalid
+	ld.w	r10,r6[48]
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[48]
 	mov	r10,00000001
 	mov	r11,00000000
+	ld.w	r9,r6[8]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[8]
 	mov	r9,00000001
 	invalid
 	invalid
 	mov	r12,00000000
 	invalid
 	ld.w	r8,r8[336]
-	invalid
+	ld.w	r11,r8[0]
 	ld.w	r8,r8[448]
-	invalid
-	invalid
-	invalid
+	ld.w	lr,r8[0]
+	cp.w	r11,00000001
+	brne	00005D8A
 	ld.w	r11,r11[1012]
 	invalid
 	ld.w	r9,r9[1008]
 	ld.w	r8,r8[1004]
+	cp.w	r11,00000002
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[40]
 	mov	r5,00000000
-	invalid
+	ld.w	r12,r8[0]
 	ld.w	r10,r10[384]
 	ld.w	r8,r8[1000]
 	st.w	--sp,r5
@@ -5803,86 +5803,86 @@ _start proc
 	invalid
 	mov	r12,00000002
 	invalid
-	invalid
+	ld.w	r8,r6[8]
 	ld.w	r8,r8[348]
-	invalid
+	cp.w	r8,00000002
 	invalid
 	mov	r9,00000001
 	invalid
 	mov	r9,00000003
 	invalid
 	mov	r9,r8
-	invalid
+	ld.w	r7,r6[8]
 	mov	r12,00000000
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r12,00000005
+	brne	00005E02
 	ld.w	r12,r12[332]
 	mov	r10,00000001
 	mov	r11,00000020
 	invalid
-	invalid
-	invalid
+	ld.w	r9,r7[24]
+	cp.w	r9,00000001
 	invalid
 	ld.w	r8,r8[992]
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
+	ld.w	r8,r6[8]
 	mov	r10,00000001
 	ld.w	r12,r12[332]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r5[0]
+	cp.w	r11,00000000
+	brne	00005E18
 	mov	r12,00000000
 	invalid
-	invalid
+	ld.w	r5,r6[8]
 	mov	r10,00000001
 	mov	r11,0000003A
 	invalid
 	invalid
 	invalid
 	mov	r9,00000000
+	cp.b	r8,r9
+	breq	00005E56
+	ld.w	r8,r5[-20]
+	cp.w	r8,00000000
+	breq	00005E56
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r6[8]
 	ld.w	r8,r8[316]
 	invalid
+	cp.w	r8,00000001
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r3,00000000
+	brne	00005E74
+	ld.w	r8,r9[-20]
+	cp.w	r8,00000000
+	breq	00005E74
 	mov	r8,00000004
 	invalid
+	ld.w	r8,r6[8]
+	ld.w	r8,r8[-20]
+	cp.w	r8,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r4,00000000
+	brne	00005EA2
 	ld.w	r12,r12[988]
 	mcall	r6[56]
 	mov	r4,r12
-	invalid
+	brne	00005EA2
 	ld.w	r4,r4[984]
 	invalid
 	mov	r12,00000003
 	invalid
 	invalid
-	invalid
+	breq	00005F86
 	invalid
 	invalid
 	sub	r7,pc,FFFFF8F6
@@ -5891,24 +5891,24 @@ _start proc
 	mov	r11,r5
 	mov	r12,r4
 	mcall	r6[124]
-	invalid
-	invalid
+	breq	00005E94
+	ld.ub	r4[0]
 	mov	r8,0000002B
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	00005F08
 	sub	r7,r4,FFFFFFFF
 	mov	r11,0000000A
 	mov	r12,r7
 	mcall	r6[120]
 	mov	r5,r12
-	invalid
+	brne	00005ED4
 	mov	r3,r7
 	invalid
 	sub	r3,r12,FFFFFFFF
 	mov	r11,0000000A
 	mov	r12,r3
 	mcall	r6[120]
-	invalid
+	breq	00005EF8
 	mov	r12,r7
 	invalid
 	ld.w	r10,r10[980]
@@ -5918,15 +5918,15 @@ _start proc
 	mcall	r6[68]
 	invalid
 	mov	r8,00000000
-	invalid
-	invalid
+	st.b	r5[0],r8
+	ld.w	r8,r6[-56]
 	invalid
 	invalid
 	invalid
 	ld.w	r8,r8[136]
-	invalid
+	ld.w	r10,r6[-16]
 	ld.w	r12,r12[976]
-	invalid
+	ld.w	lr,r8[0]
 	sub	r9,r7,FFFFFF34
 	sub	r10,r10,FFFFFBF4
 	mov	r11,r4
@@ -5936,7 +5936,7 @@ _start proc
 	invalid
 	invalid
 	ld.w	r9,r9[204]
-	invalid
+	cp.w	r9,00000003
 	invalid
 	sub	r8,pc,FFFFFFF6
 	invalid
@@ -5945,15 +5945,15 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	ld.w	r9,r6[-56]
 	ld.w	r8,r8[972]
 	invalid
-	invalid
+	ld.w	r9,r6[-56]
 	ld.w	r8,r8[968]
 	invalid
 	invalid
 	invalid
-	invalid
+	ld.w	r8,r6[-56]
 	ld.w	r9,r9[964]
 	invalid
 	ld.w	r9,r9[960]
@@ -5962,117 +5962,117 @@ _start proc
 	mov	r12,00000003
 	invalid
 	invalid
-	invalid
+	brne	00005F58
 	ld.w	r8,r8[508]
-	invalid
-	invalid
+	ld.w	r5,r6[8]
+	ld.w	r1,r8[0]
 	invalid
 	mov	r7,00000000
-	invalid
+	cp.b	r8,r7
 	invalid
 	ld.w	r12,r12[956]
 	mcall	r6[56]
+	stdsp	sp[148],r12
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r12[0]
+	cp.b	r8,r7
 	invalid
 	ld.w	r11,r11[952]
 	sub	r12,sp,FFFFFFFC
 	mcall	r6[128]
 	mov	r4,00000000
+	lddsp	r12,sp[148]
 	invalid
 	invalid
-	invalid
-	invalid
+	stdsp	sp[144],r12
 	invalid
 	sub	r9,r10,00000001
-	invalid
+	cp.w	r9,00000003
 	invalid
 	sub	r8,pc,FFFFFFF6
+	lddsp	r10,sp[148]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r10,sp[148]
+	ld.ub	r10[0]
+	cp.w	r9,00000000
 	invalid
 	mov	r8,0000002A
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	00006018
 	mov	r8,0000003A
 	sub	r11,r10,FFFFFFFF
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	00006052
 	mov	r10,00000001
 	invalid
 	invalid
 	mov	r12,00000014
 	invalid
-	invalid
+	ld.w	r9,r6[8]
 	mov	r10,00000001
 	ld.w	r8,r8[352]
+	st.w	r12[16],r8
+	lddsp	r8,sp[148]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[148],r8
 	mov	r4,r12
 	mov	r9,r12
-	invalid
+	lddsp	r8,sp[144]
 	sub	r11,sp,FFFFFF6C
 	sub	r12,sp,FFFFFF70
-	invalid
+	st.w	r4[4],r8
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	mov	r10,00000002
+	st.b	sp[-4],r9
+	stdsp	sp[148],r11
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r10[0]
+	cp.w	r9,00000000
+	breq	00006106
 	sub	r8,r10,FFFFFFFF
 	mov	r10,00000003
-	invalid
-	invalid
+	st.b	sp[-3],r9
+	stdsp	sp[148],r8
 	invalid
 	invalid
 	mov	r8,0000003D
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[148],r10
+	cp.b	r9,r8
+	brne	00006106
+	ld.w	r8,r6[-16]
 	mov	r5,00000000
 	sub	r7,r8,FFFFFBE0
 	invalid
 	sub	r12,sp,FFFFFFFC
 	mcall	r6[24]
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,00000000
+	brne	000060B2
+	ld.w	r8,r6[-56]
 	mov	r10,r12
 	invalid
-	invalid
+	lddsp	lr,sp[144]
 	mov	r9,r8
 	sub	r11,sp,FFFFFF6C
 	sub	r12,sp,FFFFFF70
+	st.w	r8[4],lr
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r11,r7[0]
+	cp.w	r11,00000000
+	brne	00006082
 	sub	r12,sp,FFFFFFFC
 	invalid
 	ld.w	r10,r10[948]
@@ -6084,153 +6084,153 @@ _start proc
 	invalid
 	invalid
 	mov	r8,0000003D
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[148],r10
+	cp.b	r9,r8
+	brne	00006106
+	lddsp	r8,sp[144]
 	sub	r9,r4,FFFFFFF8
 	mov	r10,00000000
 	sub	r11,sp,FFFFFF6C
 	sub	r12,sp,FFFFFF70
+	st.w	r4[12],r8
 	invalid
 	invalid
+	breq	00006106
 	invalid
+	cp.w	r10,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	00006136
 	mov	r11,00000000
 	ld.w	r10,r10[944]
 	mov	r12,r11
 	mcall	r6[68]
-	invalid
+	ld.w	r5,r6[8]
 	ld.w	r12,r12[644]
 	mcall	r6[12]
 	ld.w	r12,r12[352]
 	invalid
 	invalid
-	invalid
+	ld.w	r5,r12[16]
 	mcall	r6[12]
 	mov	r12,r5
+	cp.w	r12,00000000
+	brne	00006124
+	ld.w	r8,r6[8]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[-56]
+	ld.w	r10,r8[56]
+	cp.w	r10,00000006
+	brne	00006152
+	ld.w	r12,r8[60]
 	ld.w	r11,r11[940]
 	mcall	r6[124]
-	invalid
-	invalid
+	brne	00006152
+	ld.w	r8,r6[8]
 	mov	r9,00000001
 	invalid
-	invalid
+	ld.w	r7,r6[8]
 	mov	r5,00000000
 	invalid
-	invalid
-	invalid
+	cp.b	r8,r5
+	breq	00006222
 	mov	r12,0000000D
 	invalid
 	invalid
-	invalid
+	brne	0000618E
 	mov	r12,0000000E
 	invalid
 	invalid
+	breq	0000617E
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r8,r5
+	brne	0000618E
 	mov	r12,0000000C
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	00006196
+	ld.w	r8,r7[-20]
+	cp.w	r8,00000000
+	brne	00006196
+	ld.w	r8,r6[8]
 	mov	r9,00000001
 	invalid
 	mov	r12,00000001
 	mcall	r6[428]
-	invalid
-	invalid
+	brlt	00006222
+	ld.w	r12,r6[8]
 	sub	r12,r12,FFFFFE98
 	mcall	r6[584]
 	sub	r8,pc,FFFFFBFC
 	sub	r2,r8,FFFFFF24
 	sub	r5,r8,FFFFFEF4
 	mov	r4,r2
-	invalid
+	ld.w	r7,r4[0]
 	sub	r10,sp,FFFFFFFC
 	mov	r11,00000000
 	mov	r12,r7
 	mcall	r6[304]
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[4]
+	cp.w	r8,00000001
+	breq	000061D6
+	ld.w	r12,r6[8]
 	mov	r11,r7
 	sub	r12,r12,FFFFFE98
 	mcall	r6[528]
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r4,r5
+	brne	000061B6
+	ld.w	r5,r6[8]
 	invalid
 	sub	r5,r5,FFFFFE98
 	mov	r11,r5
 	sub	r12,sp,FFFFFFF8
 	mcall	r6[36]
-	lddpc	r8,pc[88]
-	invalid
-	invalid
+	lddpc	r8,sp[88]
+	stdsp	sp[136],r8
+	ld.w	r3,r2[0]
 	mov	r12,r5
 	mov	r11,r3
 	mcall	r6[288]
-	invalid
+	breq	0000621C
 	sub	r9,pc,00003A5C
 	sub	r8,pc,00003A48
 	mov	r12,r3
-	invalid
+	cp.w	r3,00000014
 	invalid
 	mov	r10,00000000
 	sub	r11,sp,FFFFFFFC
-	invalid
+	stdsp	sp[4],r9
 	mcall	r6[304]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r2,r4
+	brne	000061F4
+	ld.w	r10,r6[8]
+	ld.w	r8,r10[-28]
+	cp.w	r8,00000001
+	brne	00006254
 	invalid
 	mov	r8,00000000
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000624C
+	ld.w	r8,r10[24]
+	cp.w	r8,00000003
+	breq	0000624C
+	ld.w	r8,r10[-20]
+	cp.w	r8,00000000
+	breq	0000624C
 	mov	r9,00000004
 	invalid
 	invalid
 	invalid
 	invalid
 	mov	r9,00000002
+	ld.w	r8,r6[8]
 	invalid
-	invalid
-	invalid
+	ld.w	r7,r6[8]
 	mov	r8,00000000
 	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	00006290
 	sub	r8,pc,0000353A
 	sub	r9,pc,00003AEA
 	sub	r10,pc,00003B0C
@@ -6238,64 +6238,64 @@ _start proc
 	mov	r12,0000001E
 	invalid
 	invalid
-	invalid
+	brne	00006280
 	invalid
 	mov	r10,00000000
-	invalid
-	invalid
+	ld.w	r8,r6[12]
+	ld.w	r9,r6[32]
 	sub	r12,r7,FFFFFDE4
 	mov	r11,r10
 	mcall	r6[240]
-	invalid
+	ld.w	r10,r6[8]
 	ld.w	r8,r8[136]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000004
+	breq	000062B6
+	cp.w	r8,00000002
+	breq	000062B6
+	ld.w	r8,r10[-20]
+	cp.w	r8,00000000
+	breq	000062B6
 	invalid
 	mov	r8,00000000
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	000062B6
 	invalid
 	invalid
 	mov	r8,00000001
-	invalid
+	ld.w	r9,r6[8]
 	invalid
 	invalid
 	mov	r10,r8
-	invalid
+	breq	000062C8
 	mov	r9,00000000
 	invalid
 	invalid
+	cp.b	r8,r10
+	brne	000062E8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r8,r10
+	brne	000062E8
+	ld.w	r8,r9[24]
+	cp.w	r8,00000000
+	brne	000062E8
 	invalid
 	invalid
 	mov	r9,00000001
-	invalid
+	ld.w	r5,r6[8]
 	mov	r3,00000000
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.b	r8,r3
+	breq	0000631C
 	mov	r10,00000000
-	invalid
-	invalid
+	ld.w	r8,r6[12]
+	ld.w	r9,r6[32]
 	mov	r11,r10
 	sub	r12,r5,FFFFFE10
 	mcall	r6[240]
-	invalid
+	ld.w	r8,r6[12]
 	mov	r10,00000000
-	invalid
+	ld.w	r9,r6[32]
 	mov	r11,r10
 	sub	r12,r5,FFFFFDAC
 	mcall	r6[240]
@@ -6306,14 +6306,14 @@ _start proc
 	invalid
 	invalid
 	mov	r7,00000000
+	st.w	r5[12],r7
+	st.w	r5[20],r12
+	invalid
+	cp.w	r4,00000000
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r8,r3
+	breq	00006362
 	ld.w	r12,r12[380]
 	ld.w	lr,lr[224]
 	mov	r10,00000001
@@ -6329,7 +6329,7 @@ _start proc
 	mov	r10,00000001
 	invalid
 	invalid
-	invalid
+	lddsp	r8,sp[0]
 	invalid
 	ld.w	r12,r7++
 	ld.w	lr,lr[224]
@@ -6341,67 +6341,67 @@ _start proc
 	st.w	--sp,lr
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r1,r0
+	brlt	00006376
+	ld.w	r7,r6[8]
+	ld.w	r8,r7[12]
+	cp.w	r8,00000000
+	breq	000063B2
 	invalid
 	invalid
 	mov	r8,00000000
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	000063B2
 	mov	r11,00000001
 	mov	r12,00000000
 	invalid
+	ld.w	r7,r6[8]
+	ld.w	r8,r7[12]
+	cp.w	r8,00000000
+	breq	000063EA
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r7[-44]
+	cp.w	r8,00000000
+	breq	000064B8
+	ld.w	r8,r6[-64]
+	ld.w	r11,r8[0]
+	ld.w	r9,r11[16]
+	ld.w	r8,r11[28]
+	cp.w	r9,r8
+	brcc	000063D8
 	mov	r8,0000000A
 	invalid
-	invalid
+	st.w	r11[16],r9
 	invalid
 	mov	r12,0000000A
 	mcall	r6[52]
+	ld.w	r9,r6[8]
+	ld.w	r8,r9[-52]
 	invalid
 	invalid
 	invalid
+	cp.w	r4,00000001
+	invalid
+	ld.w	r8,r7[-44]
+	cp.w	r8,00000000
+	breq	000064B8
+	ld.w	r8,r8[12]
+	cp.w	r8,00000000
+	brne	000064B8
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r5[12]
 	ld.w	r9,r9[324]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r9,00000000
+	breq	0000649C
+	ld.w	r8,r5[0]
+	cp.w	r8,00000000
+	brne	0000649C
 	ld.w	r8,r8[552]
 	ld.w	r9,r9[548]
 	invalid
-	invalid
+	cp.w	r8,0000000F
 	invalid
 	sub	r9,pc,FFFFFE7A
 	ld.w	r12,r12[936]
@@ -6412,8 +6412,8 @@ _start proc
 	ld.w	r8,r8[556]
 	ld.w	r9,r9[552]
 	invalid
-	invalid
-	invalid
+	cp.w	r8,FFFFFFF0
+	brge	00006454
 	mov	r11,FFFFFFF0
 	sub	r12,r3,FFFFFDE4
 	mcall	r6[152]
@@ -6427,7 +6427,7 @@ _start proc
 	invalid
 	invalid
 	mov	r7,r12
-	invalid
+	brne	0000648E
 	sub	r9,pc,FFFFFECC
 	ld.w	r12,r12[932]
 	invalid
@@ -6440,63 +6440,63 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.w	r11,r5[4]
+	ld.w	r12,r5[0]
 	invalid
 	mov	r12,r5
 	invalid
-	invalid
+	ld.w	r8,r6[8]
 	mov	r9,00000001
 	invalid
 	invalid
 	ld.w	r4,r4[220]
+	ld.w	r3,r6[8]
+	ld.w	r5,r3[-44]
+	cp.w	r5,00000000
+	brne	00006402
 	invalid
+	cp.b	r8,r5
+	breq	0000652C
 	invalid
+	cp.b	r8,r5
+	breq	000064DC
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[40]
 	mov	r4,r3
-	invalid
+	ld.w	r12,r8[0]
 	sub	r2,r3,FFFFFE98
 	mcall	r6[284]
 	sub	r8,pc,FFFFFF3E
 	sub	r3,r8,FFFFFEF4
 	sub	r7,r8,FFFFFF24
-	invalid
+	ld.w	r5,r7[0]
 	mov	r12,r2
 	mov	r11,r5
 	mcall	r6[288]
-	invalid
+	breq	0000650A
 	mov	r12,r5
 	mov	r11,00000000
 	mcall	r6[312]
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r7,r3
+	brne	000064F6
+	ld.w	r5,r4[4]
 	invalid
 	mov	r12,00000013
 	mcall	r6[228]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r5,00000000
+	brne	00006514
+	ld.w	r8,r6[8]
+	ld.w	r12,r8[0]
+	cp.w	r12,00000000
+	breq	0000652C
 	mcall	r6[228]
-	invalid
+	ld.w	r7,r6[8]
 	mov	r8,00000000
 	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	0000656E
 	ld.w	r12,r12[928]
 	sub	r11,r7,FFFFFE10
 	invalid
@@ -6512,10 +6512,10 @@ _start proc
 	mcall	r6[88]
 	invalid
 	ld.w	r12,r12[324]
+	cp.w	r12,00000000
+	breq	0000659C
 	invalid
-	invalid
-	invalid
-	invalid
+	breq	00006594
 	sub	r9,pc,FFFFFFD0
 	ld.w	r11,r11[220]
 	ld.w	r12,r12[916]
@@ -6524,23 +6524,23 @@ _start proc
 	mcall	r6[60]
 	ld.w	r12,r12[324]
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[8]
+	ld.w	r12,r8[8]
 	mcall	r6[276]
 	mov	r10,00000001
 	invalid
 	invalid
+	ld.w	pc,r3[-40]
+	ld.w	r2,r1[24]
+	ld.w	r5,r6[24]
 	invalid
+	ld.w	r12,r4[-40]
+	ld.w	r0,r2[-64]
+	ld.w	pc,r9[-40]
+	ld.w	r4,r9[28]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r4[-40]
+	ld.w	r3,r2[-36]
 	invalid
 	invalid
 	invalid
@@ -6563,6 +6563,10 @@ _start proc
 	invalid
 	invalid
 	mov	r0,FFFFFFF7
+	ld.w	r4,r1[-40]
+	ld.w	sp,r1[8]
+	ld.w	r3,r6[28]
+	ld.w	r4,r11[-40]
 	invalid
 	invalid
 	invalid
@@ -6623,6 +6627,9 @@ _start proc
 	invalid
 	invalid
 	invalid
+	ld.w	pc,r8[24]
+	ld.w	r9,r9[-40]
+	ld.w	sp,r12[8]
 	invalid
 	invalid
 	invalid
@@ -6656,109 +6663,102 @@ _start proc
 	invalid
 	invalid
 	invalid
+	ld.w	r5,r2[24]
+	ld.w	pc,r11[20]
+	ld.w	lr,r4[-40]
+	ld.w	pc,r7[-44]
+	ld.w	pc,r8[24]
+	ld.w	r0,r8[0]
+	ld.w	r1,r6[-40]
+	ld.w	lr,r4[-40]
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[136]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[136]
 	rsub	r6,pc
 	sub	r9,r11,FFFFFFFF
 	invalid
-	invalid
+	cp.w	r11,r8
 	invalid
 	invalid
 	mov	r0,r12
 	invalid
-	lddpc	r7,pc[112]
+	lddpc	r7,sp[112]
 	mov	r12,r7
 	mcall	r6[32]
 	mov	r4,r12
 	mov	r3,r12
-	invalid
+	breq	00006752
 	mov	r11,r12
 	mov	r10,r7
 	mov	r12,r0
 	mcall	r6[548]
 	mov	r5,r12
-	invalid
+	brge	00006722
 	mcall	r6[28]
-	invalid
+	ld.w	r2,r12[0]
 	mov	r1,r12
 	invalid
-	invalid
+	breq	00006722
 	mov	r12,r4
 	mcall	r6[12]
 	mov	r3,00000000
+	st.w	r1[0],r2
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r5,r7
+	brcc	0000672E
 	mov	r8,00000000
 	invalid
 	invalid
 	mov	r12,r4
 	mcall	r6[12]
-	lddpc	r8,pc[44]
+	lddpc	r8,sp[44]
+	cp.w	r7,r8
 	invalid
 	invalid
 	invalid
-	invalid
-	lddpc	r8,pc[36]
-	invalid
+	lddpc	r8,sp[36]
+	cp.w	r7,r8
 	invalid
 	mcall	r6[28]
 	mov	r3,00000000
 	mov	r8,0000000C
-	invalid
+	st.w	r12[0],r8
 	mov	r12,r3
+	popm	r0-r3,r4-r7,pc
+	invalid
+	invalid
+	ld.w	pc,pc[-4]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[112]
+	lddpc	r6,sp[112]
 	rsub	r6,pc
 	mov	r5,00000000
 	mov	r7,r12
 	mov	r4,r5
 	invalid
+	cp.w	r4,00000000
+	breq	00006794
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	000067C4
+	ld.w	r8,r7[0]
+	ld.ub	r8[0]
 	mov	r8,0000007E
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	000067C4
 	mov	r5,r12
 	mov	r4,r12
 	invalid
 	mov	r8,0000002E
-	invalid
-	invalid
+	cp.b	r12,r8
+	brne	000067AC
 	mov	r9,00000001
-	invalid
-	invalid
+	cp.w	r5,00000000
+	brne	000067A8
 	mov	r5,r10
 	mov	r4,r9
 	invalid
@@ -6766,164 +6766,164 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	brne	000067C6
+	ld.w	r8,r7[0]
+	ld.ub	r8[0]
 	mov	r8,0000007E
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	000067C6
 	mov	r5,r4
 	invalid
 	mov	r4,00000000
+	ld.w	r8,r7[0]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r7[0],r8
+	ld.w	r10,r7[0]
+	ld.ub	r10[0]
+	cp.w	r12,00000000
+	brne	00006776
 	mov	r12,r5
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[52]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[52]
 	rsub	r6,pc
 	mov	r7,r12
 	invalid
 	invalid
-	invalid
+	breq	000067F0
 	mov	r7,00000000
 	invalid
 	mov	r12,r7
 	invalid
 	invalid
-	invalid
+	brne	0000680C
 	sub	r9,r7,FFFFFF00
 	mov	r8,0000007E
-	invalid
+	cp.b	r8,r7
 	invalid
 	invalid
 	mov	r12,r7
+	popm	r4-r7,pc
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[276]
+	lddpc	r6,sp[276]
 	rsub	r6,pc
 	mov	r2,r12
 	mov	r4,r11
 	mcall	r6[24]
+	stdsp	sp[8],r12
+	brne	0000683C
+	invalid
+	ld.ub	r4[0]
 	invalid
 	invalid
+	cp.b	r9,r8
+	breq	0000683C
 	invalid
+	stdsp	sp[8],r9
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r2[0]
 	mov	r10,0000002E
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r10
+	breq	0000682A
+	ld.ub	r4[0]
+	cp.b	r8,r10
+	breq	0000682A
 	sub	r12,sp,FFFFFFF0
-	invalid
-	invalid
+	stdsp	sp[16],r2
+	stdsp	sp[12],r4
 	invalid
 	mov	r7,r12
 	sub	r12,sp,FFFFFFF4
 	invalid
-	invalid
-	invalid
+	cp.w	r7,00000000
+	breq	00006868
 	mov	r8,r7
 	invalid
+	lddsp	r8,sp[16]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[0],r8
+	cp.w	r12,00000000
+	breq	00006876
 	mov	r10,r12
 	invalid
+	lddsp	r10,sp[12]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[4],r10
+	breq	0000689E
+	lddsp	r9,sp[0]
+	cp.w	r9,r10
+	brne	0000689E
 	mov	r11,r4
 	mov	r12,r2
 	mcall	r6[124]
+	brne	0000689E
+	lddsp	r8,sp[16]
 	invalid
+	stdsp	sp[0],r8
+	lddsp	r8,sp[12]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[4],r8
 	mov	r0,00000000
 	mov	r1,r0
 	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[0]
+	cp.w	r0,r8
+	brne	000068AE
 	mov	r5,r12
 	invalid
+	ld.ub	r7[0]
 	invalid
-	invalid
-	invalid
+	lddsp	r9,sp[4]
 	mov	r5,r12
-	invalid
-	invalid
+	cp.w	r1,r9
+	brne	000068BE
 	mov	r12,00000000
 	invalid
+	ld.ub	r3[0]
 	invalid
 	invalid
 	invalid
+	cp.w	r5,r12
+	breq	000068D4
+	invalid
+	breq	00006990
+	stdsp	sp[8],r12
 	invalid
 	invalid
 	invalid
+	lddsp	r8,sp[0]
+	cp.w	r0,r8
+	brcc	000068E8
+	ld.ub	r7[0]
+	invalid
+	invalid
+	breq	000068AE
+	lddsp	r9,sp[4]
+	cp.w	r1,r9
+	brcs	000068F4
+	invalid
+	invalid
+	ld.ub	r3[0]
+	invalid
+	invalid
+	breq	000068A4
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	mov	r8,00000030
+	cp.b	r9,r8
+	breq	00006900
 	invalid
 	invalid
 	invalid
 	invalid
 	mov	r8,00000030
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	mov	r8,00000030
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	00006912
 	invalid
 	invalid
 	mov	r3,00000000
@@ -6932,88 +6932,88 @@ _start proc
 	invalid
 	invalid
 	invalid
+	cp.w	r3,00000000
+	brne	00006940
+	ld.ub	r7[0]
+	ld.ub	r5[0]
 	invalid
 	invalid
 	invalid
+	ld.ub	r7[0]
 	invalid
 	invalid
+	breq	00006958
+	ld.ub	r5[0]
 	invalid
 	invalid
+	brne	00006930
+	ld.ub	r7[0]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	00006966
 	mov	r3,00000001
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000698C
+	cp.w	r3,00000000
+	brne	0000698E
+	lddsp	r8,sp[0]
+	cp.w	r0,r8
+	brcs	00006982
+	lddsp	r9,sp[4]
+	cp.w	r1,r9
+	brcc	00006990
 	invalid
 	invalid
 	invalid
 	mov	r3,FFFFFFFF
+	stdsp	sp[8],r3
+	lddsp	r12,sp[8]
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[264]
+	lddpc	r6,sp[264]
 	rsub	r6,pc
 	mov	r7,r12
 	mov	r2,r10
 	invalid
 	mcall	r6[172]
-	invalid
+	cp.w	r12,00000001
 	invalid
 	mov	r5,r7
 	mov	r4,00000000
 	invalid
 	ld.w	r8,r8[156]
 	mov	r12,r7
-	invalid
+	ld.w	r10,r8[0]
 	mov	r4,00000000
 	invalid
-	invalid
+	ld.ub	r5[0]
 	mov	r8,00000020
-	invalid
-	invalid
+	cp.b	r9,r8
+	brcs	00006A08
 	mov	r8,00000023
-	invalid
+	cp.b	r9,r8
 	invalid
 	mov	r8,00000025
-	invalid
-	invalid
+	cp.b	r9,r8
+	brcs	00006A08
 	mov	r8,0000003F
-	invalid
+	cp.b	r9,r8
 	invalid
 	mov	r8,00000041
-	invalid
-	invalid
+	cp.b	r9,r8
+	brcs	00006A08
 	mov	r8,0000005F
-	invalid
+	cp.b	r9,r8
 	invalid
 	invalid
 	mov	r8,0000001D
-	invalid
+	cp.b	r9,r8
 	invalid
 	mov	r8,00000000
 	mov	r9,00000000
@@ -7024,62 +7024,62 @@ _start proc
 	sub	r12,sp,FFFFFFF8
 	mcall	r6[248]
 	mov	r7,r12
+	cp.w	r12,FFFFFFFF
+	brne	00006A32
+	invalid
+	breq	00006A9C
 	invalid
 	invalid
 	invalid
+	cp.w	r12,FFFFFFFE
+	brne	00006A42
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	00006A9C
 	invalid
 	mov	r5,r3
 	invalid
+	cp.w	r12,00000000
+	invalid
+	lddsp	r12,sp[8]
+	invalid
+	brlt	00006A54
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	00006A9C
+	lddsp	r12,sp[8]
 	mcall	r6[556]
 	invalid
 	invalid
 	mov	r12,sp
 	invalid
 	mcall	r6[144]
+	breq	00006A10
+	cp.w	r5,r3
+	brcs	000069C4
+	invalid
+	ld.ub	r12[0]
+	invalid
+	invalid
+	brne	00006A84
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	breq	00006A9C
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,r3
+	brcs	00006A74
 	invalid
 	mov	r4,FFFFFFFF
 	mov	r12,r4
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[24]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[24]
 	rsub	r6,pc
 	mov	r5,r11
 	mov	r3,r12
@@ -7088,40 +7088,40 @@ _start proc
 	mov	r11,r12
 	mov	r12,r3
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[88]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[88]
 	rsub	r6,pc
 	mov	r11,0000002F
 	mov	r5,r12
 	mcall	r6[196]
 	sub	r8,r12,FFFFFFFF
+	cp.w	r12,00000000
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r8,00000006
 	invalid
 	ld.w	r11,r11[912]
 	mov	r10,00000007
 	sub	r12,r7,00000007
 	mcall	r6[124]
-	invalid
+	brne	00006B14
 	ld.w	r11,r11[908]
 	mov	r10,00000003
 	mov	r12,r7
 	mcall	r6[124]
 	sub	r8,r7,FFFFFFFD
-	invalid
+	cp.w	r12,00000000
 	invalid
 	invalid
 	ld.w	r8,r8[328]
+	st.w	r8[0],r5
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[56]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[56]
 	rsub	r6,pc
 	ld.w	r12,r12[904]
 	ld.w	r8,r8[900]
@@ -7133,33 +7133,33 @@ _start proc
 	ld.w	r8,r8[888]
 	st.w	--sp,r8
 	mcall	r6[88]
-	invalid
+	ld.w	r8,r6[40]
 	ld.w	r12,r12[884]
-	invalid
+	ld.w	r11,r8[0]
 	mcall	r6[20]
 	invalid
+	popm	r4-r7,pc
 	invalid
+	pushm	r4-r7,lr
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[256]
+	lddpc	r6,sp[256]
 	rsub	r6,pc
 	mov	r7,r12
 	mov	r5,r11
 	mov	lr,r9
 	mov	r4,00000000
+	stdsp	sp[4],r8
+	stdsp	sp[0],r8
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[4]
 	sub	r9,r8,FFFFFFFC
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[4],r9
+	ld.w	r8,r8[0]
+	cp.w	r8,00000000
+	brne	00006B72
+	cp.w	r5,00000000
+	breq	00006B9A
 	ld.w	r11,r11[880]
 	mov	r12,r7
 	st.w	--sp,lr
@@ -7185,7 +7185,7 @@ _start proc
 	mov	r11,r7
 	mcall	r6[20]
 	invalid
-	invalid
+	cp.w	r4,00000009
 	invalid
 	sub	r8,pc,FFFFFFF6
 	invalid
@@ -7201,96 +7201,96 @@ _start proc
 	invalid
 	invalid
 	mcall	r6[76]
-	invalid
+	lddsp	r10,sp[0]
 	ld.w	r11,r11[864]
 	invalid
-	invalid
+	lddsp	r10,sp[0]
 	ld.w	r11,r11[860]
 	invalid
-	invalid
+	lddsp	r10,sp[0]
 	ld.w	r11,r11[856]
 	invalid
-	invalid
+	lddsp	r10,sp[0]
 	ld.w	r11,r11[852]
 	invalid
-	invalid
+	lddsp	r10,sp[0]
 	ld.w	r11,r11[848]
 	invalid
-	invalid
+	lddsp	r10,sp[0]
 	ld.w	r11,r11[844]
 	invalid
-	invalid
+	lddsp	r10,sp[0]
 	ld.w	r11,r11[840]
 	invalid
-	invalid
+	lddsp	r10,sp[0]
 	ld.w	r11,r11[836]
 	invalid
-	invalid
+	lddsp	r10,sp[0]
 	ld.w	r11,r11[832]
 	invalid
-	invalid
+	lddsp	r10,sp[0]
 	ld.w	r11,r11[828]
 	mov	r12,r7
 	invalid
 	invalid
+	popm	r4-r7,pc
 	invalid
+	pushm	r4-r7,lr
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[16]
+	lddpc	r6,sp[16]
 	rsub	r6,pc
 	sub	r8,sp,FFFFFFE8
+	stdsp	sp[0],r8
 	invalid
 	invalid
+	popm	r4-r7,pc
+	invalid
+	lddsp	pc,sp[216]
+	ld.w	r9,r8[28]
+	ld.w	r9,r9[24]
+	ld.w	r8,r3[-40]
+	ld.w	r0,r10[8]
 	invalid
 	invalid
+	ld.w	r0,r2[8]
+	lddsp	r2,sp[412]
+	ld.w	r5,r2[-40]
 	invalid
+	ld.w	r6,r7[-40]
+	ld.w	r7,r10[28]
+	ld.w	r2,r0[-36]
+	ld.w	r0,r2[-56]
+	lddsp	pc,sp[408]
+	ld.w	lr,r10[-40]
+	ld.w	r1,r2[24]
+	ld.w	r9,r10[24]
+	ld.w	lr,r7[-40]
 	invalid
+	lddpc	lr,sp[88]
+	ld.w	lr,r1[-56]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	lr,pc[88]
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[32]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[32]
 	rsub	r6,pc
 	ld.w	r8,r8[192]
 	ld.w	r10,r10[824]
-	invalid
+	ld.w	r12,r8[0]
 	mov	r11,00000000
 	ld.w	r8,r8[820]
 	st.w	--sp,r8
 	mcall	r6[68]
 	mcall	r6[76]
 	invalid
-	invalid
-	lddpc	r6,pc[16]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[16]
 	rsub	r6,pc
 	mov	r12,00000001
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[44]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[44]
 	rsub	r6,pc
 	mov	r2,r12
 	mov	r3,r9
@@ -7299,39 +7299,39 @@ _start proc
 	invalid
 	mcall	r6[168]
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,00000000
+	breq	00006D0C
+	ld.w	r4,r5[0]
 	mov	r11,r7
 	mov	r10,r3
 	mov	r12,r2
 	invalid
-	invalid
-	invalid
+	cp.w	r4,00000000
+	brne	00006CF4
 	mov	r12,r4
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[132]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[132]
 	rsub	r6,pc
 	ld.w	r8,r8[148]
 	mov	r5,r12
 	mov	r3,r11
 	ld.w	r12,r12[816]
-	invalid
+	ld.w	r11,r8[0]
 	mov	r2,r10
 	mcall	r6[404]
 	mov	r4,00000000
 	ld.w	r0,r0[812]
 	mov	r1,r4
 	invalid
-	invalid
-	invalid
+	cp.w	r4,00000000
+	breq	00006D42
 	mcall	r6[168]
-	invalid
+	breq	00006D58
 	ld.w	r8,r8[148]
 	ld.w	r11,r11[808]
-	invalid
+	ld.w	r12,r8[0]
 	st.w	--sp,r7
 	mcall	r6[104]
 	mov	r1,r3
@@ -7339,42 +7339,42 @@ _start proc
 	invalid
 	ld.w	r8,r8[148]
 	mov	r11,r0
-	invalid
+	ld.w	r12,r8[0]
 	st.w	--sp,r7
 	mcall	r6[104]
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
+	ld.w	r7,r5[0]
 	mov	r11,r3
 	mov	r10,r2
 	mov	r12,r1
-	invalid
-	invalid
+	cp.w	r7,00000000
+	brne	00006D38
 	ld.w	r8,r8[148]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r11,r8[0]
+	ld.w	r9,r11[16]
+	ld.w	r8,r11[28]
+	cp.w	r9,r8
+	brcc	00006D90
 	mov	r8,0000000A
 	invalid
-	invalid
-	invalid
+	st.w	r11[16],r9
+	popm	r0-r3,r4-r7,pc
 	mov	r12,0000000A
 	mcall	r6[52]
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[60]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[60]
 	rsub	r6,pc
 	ld.w	r8,r8[804]
 	ld.w	r5,r5[800]
 	mov	r2,r11
 	mov	r11,r12
 	mov	r12,00000001
-	invalid
+	cp.w	r10,FFFFFFFF
 	invalid
 	invalid
 	mov	r10,r2
@@ -7389,66 +7389,66 @@ _start proc
 	mov	r12,r11
 	mcall	r6[68]
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[120]
+	lddpc	r6,sp[120]
 	rsub	r6,pc
 	mov	r5,r11
 	mov	r1,r10
 	mov	r2,r9
-	invalid
+	stdsp	sp[0],r12
 	mcall	r6[16]
 	mov	r0,00000000
 	mov	r3,r5
 	mov	r4,r1
 	mov	r5,FFFFFFFF
-	invalid
-	invalid
+	stdsp	sp[8],r0
+	stdsp	sp[4],r12
 	invalid
 	mcall	r6[124]
-	invalid
+	brne	00006E36
 	mov	r12,r7
 	mcall	r6[16]
 	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r9,sp[4]
+	cp.w	r12,r9
+	brne	00006E18
 	mov	r5,r0
 	invalid
-	invalid
-	invalid
+	cp.w	r5,FFFFFFFF
+	brne	00006E20
 	mov	r5,r0
 	invalid
-	invalid
-	invalid
+	cp.w	r1,00000000
+	breq	00006E32
 	invalid
 	mov	r11,r4
 	mov	r10,r2
 	mcall	r6[168]
-	invalid
+	breq	00006E36
 	mov	r8,00000001
+	stdsp	sp[8],r8
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r7,r3[0]
+	lddsp	r10,sp[4]
+	lddsp	r11,sp[0]
 	mov	r12,r7
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r7,00000000
+	brne	00006DFE
+	lddsp	r9,sp[8]
+	cp.w	r9,00000000
 	invalid
 	mov	r12,r5
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[52]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[52]
 	rsub	r6,pc
 	mov	r7,r11
 	mov	r2,r10
@@ -7459,9 +7459,9 @@ _start proc
 	mov	r11,r2
 	mov	r12,r7
 	mov	r5,r8
+	lddsp	r1,sp[36]
 	invalid
-	invalid
-	invalid
+	brge	00006E8E
 	mov	r10,r12
 	mov	r11,r7
 	mov	r12,r3
@@ -7470,41 +7470,41 @@ _start proc
 	mov	r10,r5
 	mov	r11,r4
 	invalid
-	invalid
+	icall	r1
 	mov	r12,FFFFFFFF
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[60]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[60]
 	rsub	r6,pc
 	invalid
 	invalid
-	invalid
+	ld.ub	r12[0]
 	mov	r8,0000002F
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	00006E9C
 	mov	r9,r12
 	mov	r11,00000000
 	invalid
 	mov	r8,0000002F
-	invalid
-	invalid
+	cp.b	r10,r8
+	brne	00006EBA
 	mov	r11,00000001
 	invalid
 	mov	r10,00000000
-	invalid
-	invalid
+	cp.w	r11,00000000
+	breq	00006EC4
 	mov	r12,r9
 	mov	r11,r10
 	invalid
+	ld.ub	r9[0]
+	cp.w	r10,00000000
+	brne	00006EAE
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[40]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[40]
 	rsub	r6,pc
 	mov	r5,r12
 	mcall	r6[16]
@@ -7512,79 +7512,79 @@ _start proc
 	invalid
 	invalid
 	invalid
+	cp.w	r12,00000001
 	invalid
-	invalid
-	invalid
+	ld.ub	r5[0]
 	mov	r8,0000002F
 	invalid
+	cp.b	r9,r8
+	breq	00006EE6
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[68]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[68]
 	rsub	r6,pc
 	mov	r5,r12
 	invalid
 	mov	r8,00000000
-	invalid
+	ld.ub	r12[0]
 	mov	r7,r12
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	00006F24
 	mov	r12,r5
 	invalid
 	mov	r11,r12
 	mov	r12,r5
 	invalid
-	invalid
+	popm	r4-r7,pc
 	invalid
 	mov	r8,0000002F
 	invalid
 	sub	r9,r12,FFFFFFFF
 	mov	r11,r12
-	invalid
+	cp.b	r10,r8
 	invalid
 	mov	r12,r7
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[16]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[16]
 	rsub	r6,pc
 	ld.w	r8,r8[264]
+	st.w	r8[0],r12
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[16]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[16]
 	rsub	r6,pc
 	ld.w	r8,r8[264]
+	st.b	r8[-4],r12
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[132]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[132]
 	rsub	r6,pc
+	ld.w	r8,r6[40]
+	ld.w	r12,r8[0]
 	invalid
-	invalid
-	invalid
-	invalid
+	breq	00006FDA
 	ld.w	r5,r5[264]
 	mov	r8,00000000
-	invalid
-	invalid
-	invalid
+	ld.ub	r5[-4]
+	cp.b	r9,r8
+	breq	00006F9A
 	mcall	r6[28]
+	ld.w	r8,r12[0]
 	invalid
-	invalid
-	invalid
-	invalid
+	breq	00006FDA
+	ld.w	r5,r5[0]
 	ld.w	r7,r7[796]
-	invalid
-	invalid
+	cp.w	r5,00000000
+	breq	00006FC4
 	mov	r12,r5
 	invalid
 	mov	r5,r12
@@ -7592,7 +7592,7 @@ _start proc
 	st.w	--sp,r7
 	st.w	--sp,r5
 	ld.w	r10,r10[792]
-	invalid
+	ld.w	r11,r12[0]
 	mov	r12,00000000
 	mcall	r6[68]
 	invalid
@@ -7600,45 +7600,45 @@ _start proc
 	mcall	r6[28]
 	st.w	--sp,r7
 	ld.w	r10,r10[788]
-	invalid
+	ld.w	r11,r12[0]
 	mov	r12,r5
 	mcall	r6[68]
 	invalid
 	invalid
 	ld.w	r8,r8[148]
+	ld.w	r12,r8[0]
 	invalid
-	invalid
-	invalid
+	breq	00006FF0
 	ld.w	r8,r8[192]
-	invalid
+	ld.w	r12,r8[0]
 	mcall	r6[416]
-	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
 	mov	r8,r12
 	invalid
 	invalid
-	invalid
+	brne	00007008
 	mov	r10,0000002D
 	invalid
 	invalid
-	invalid
+	brne	00007012
 	mov	r10,00000064
 	invalid
 	invalid
-	invalid
+	brne	0000701C
 	mov	r10,00000062
 	invalid
 	invalid
-	invalid
+	brne	00007026
 	mov	r10,00000063
 	invalid
 	invalid
-	invalid
+	brne	00007030
 	mov	r10,0000006C
 	invalid
 	invalid
-	invalid
+	brne	0000703A
 	mov	r10,00000070
 	invalid
 	invalid
@@ -7652,9 +7652,23 @@ _start proc
 	invalid
 	invalid
 	invalid
+	st.b	r11[1],r8
+	mov	r8,r12
+	st.b	r11[2],r9
+	st.b	r11[0],r10
+	mov	r9,r12
+	invalid
+	invalid
+	cp.w	r8,00000000
+	breq	00007084
+	cp.w	r9,00000000
+	invalid
+	invalid
+	invalid
+	cp.w	r9,00000000
+	invalid
 	invalid
 	mov	r8,r12
-	invalid
 	invalid
 	mov	r9,r12
 	invalid
@@ -7662,57 +7676,43 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.b	r11[-4],r8
 	mov	r8,r12
-	invalid
+	st.b	r11[-3],r9
+	st.b	r11[3],r10
 	mov	r9,r12
 	invalid
 	invalid
+	cp.w	r8,00000000
+	breq	000070CC
+	cp.w	r9,00000000
 	invalid
 	invalid
 	invalid
-	invalid
-	mov	r8,r12
-	invalid
-	invalid
-	mov	r9,r12
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r9,00000000
 	invalid
 	invalid
 	mov	r8,r12
 	mov	r9,r12
 	invalid
 	invalid
+	cp.w	r8,00000000
+	invalid
+	invalid
+	cp.w	r9,00000000
+	invalid
+	invalid
+	st.b	r11[-1],r8
+	st.b	r11[-2],r10
 	invalid
 	invalid
 	invalid
+	brne	00007114
+	cp.w	r8,00000000
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
 	invalid
 	invalid
 	mov	r8,00000000
@@ -7721,41 +7721,41 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	lddpc	r6,pc[12]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[12]
 	rsub	r6,pc
+	ld.w	r12,r12[16]
 	invalid
+	popm	r4-r7,pc
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[140]
+	lddpc	r6,sp[140]
 	rsub	r6,pc
 	mov	r0,r11
-	invalid
+	stdsp	sp[0],r10
 	mov	r1,r12
 	invalid
 	mov	r7,r12
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r12,00000000
+	brne	00007164
 	mov	r4,r12
 	invalid
 	invalid
 	invalid
 	mov	r8,0000002F
-	invalid
+	cp.b	r9,r8
 	invalid
 	mov	r7,r0
 	invalid
 	invalid
-	invalid
+	ld.ub	r7[0]
 	mov	r5,0000002F
-	invalid
-	invalid
+	cp.b	r8,r5
+	breq	00007178
 	mov	r12,r7
 	mcall	r6[16]
 	mov	r3,r12
@@ -7763,188 +7763,188 @@ _start proc
 	invalid
 	invalid
 	mcall	r6[32]
-	invalid
+	brne	0000719C
 	mov	r2,r12
 	invalid
 	mov	r10,r2
 	mov	r11,r1
 	mov	r2,r12
 	mcall	r6[200]
+	st.b	r12[0],r5
+	lddsp	r10,sp[0]
+	invalid
+	cp.w	r10,00000000
+	breq	000071BE
+	ld.ub	r0[0]
+	cp.b	r8,r5
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r10[0],r9
 	mov	r10,r3
 	mov	r11,r7
 	mcall	r6[200]
 	mov	r8,00000000
-	invalid
+	st.b	r12[0],r8
 	mov	r12,r2
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[16]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[16]
 	rsub	r6,pc
 	invalid
+	brne	000071E2
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[168]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[168]
 	rsub	r6,pc
 	ld.w	r3,r3[164]
 	mov	r4,r12
 	mov	r7,r12
 	invalid
+	ld.w	r9,r7[0]
+	cp.w	r9,00000000
+	breq	0000728C
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	00007252
 	ld.w	r5,r5[132]
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r5[0]
+	cp.w	r8,00000000
+	brne	0000721E
 	mov	r12,r3
 	mcall	r6[56]
 	invalid
 	invalid
+	st.w	r5[0],r12
+	invalid
+	ld.w	r9,r7[0]
+	invalid
+	breq	00007234
+	ld.w	r8,r5[0]
+	cp.w	r8,00000000
+	brge	00007236
+	invalid
+	brne	00007236
+	invalid
+	ld.w	r8,r7[0]
+	invalid
+	brne	00007248
 	invalid
 	invalid
 	invalid
+	cp.w	r8,00000000
+	breq	0000728C
+	ld.w	r8,r7[0]
+	invalid
+	brne	00007242
 	invalid
 	invalid
+	breq	00007270
 	invalid
+	breq	00007270
 	invalid
+	breq	00007270
 	invalid
+	breq	00007270
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	00007282
+	ld.w	r8,r7[4]
 	sub	r12,r7,FFFFFFFC
 	invalid
-	invalid
+	brne	00007282
 	invalid
 	mov	r7,r12
 	invalid
 	invalid
-	invalid
+	brne	000071F6
 	sub	r4,r7,FFFFFFFC
 	mov	r12,r4
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[192]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[192]
 	rsub	r6,pc
 	ld.w	r3,r3[164]
 	mov	r4,r12
 	mov	r7,r12
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r7[0]
+	cp.w	r10,00000000
+	breq	00007350
 	mov	r8,0000005B
-	invalid
-	invalid
+	cp.b	r10,r8
+	brne	00007308
 	ld.w	r5,r5[132]
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r5[0]
+	cp.w	r8,00000000
+	brne	000072CC
 	mov	r12,r3
 	mcall	r6[56]
 	invalid
 	invalid
+	st.w	r5[0],r12
 	invalid
-	invalid
-	invalid
+	ld.ub	r7[0]
 	mov	r8,00000021
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	000072E6
+	ld.w	r8,r5[0]
+	cp.w	r8,00000000
+	brge	000072E8
 	mov	r8,0000005E
+	cp.b	r9,r8
+	brne	000072E8
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r7[0]
 	mov	r8,0000005D
+	cp.b	r9,r8
+	brne	000072FC
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r9,00000000
+	breq	00007350
+	ld.ub	r7[0]
 	mov	r8,0000005D
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	000072F6
 	invalid
 	mov	r8,0000003F
-	invalid
-	invalid
+	cp.b	r10,r8
+	breq	00007330
 	mov	r8,0000002A
-	invalid
-	invalid
+	cp.b	r10,r8
+	breq	00007330
 	mov	r8,0000002B
-	invalid
-	invalid
+	cp.b	r10,r8
+	breq	00007330
 	mov	r8,00000040
-	invalid
-	invalid
+	cp.b	r10,r8
+	breq	00007330
 	mov	r8,00000021
-	invalid
-	invalid
+	cp.b	r10,r8
+	brne	00007344
 	sub	r12,r7,FFFFFFFF
-	invalid
+	ld.ub	r12[0]
 	mov	r8,00000028
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	00007344
 	invalid
 	mov	r7,r12
 	invalid
 	mov	r8,00000029
-	invalid
-	invalid
+	cp.b	r10,r8
+	brne	000072A2
 	sub	r4,r7,FFFFFFFF
 	mov	r12,r4
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
+	pushm	r0-r3,r4-r7,lr
 	mov	r7,sp
 	invalid
-	lddpc	r6,pc[368]
+	lddpc	r6,sp[368]
 	rsub	r6,pc
 	invalid
 	mov	r2,r12
@@ -7959,73 +7959,73 @@ _start proc
 	invalid
 	invalid
 	mcall	r6[560]
+	ld.w	r3,r7[36]
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r9,r4[0]
+	cp.w	r9,00000000
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	000073F8
 	ld.w	r5,r5[132]
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r5[0]
+	cp.w	r8,00000000
+	brne	000073C2
 	ld.w	r12,r12[164]
 	mcall	r6[56]
 	invalid
 	invalid
+	st.w	r5[0],r12
+	invalid
+	ld.w	r9,r4[0]
+	invalid
+	breq	000073D8
+	ld.w	r8,r5[0]
+	cp.w	r8,00000000
+	brge	000073DA
+	invalid
+	brne	000073DA
+	invalid
+	ld.w	r8,r4[0]
+	invalid
+	brne	000073EE
 	invalid
 	invalid
 	invalid
+	cp.w	r8,00000000
+	invalid
+	ld.w	r8,r4[0]
+	invalid
+	brne	000073E6
 	invalid
 	invalid
+	breq	00007416
 	invalid
+	breq	00007416
 	invalid
+	breq	00007416
 	invalid
+	breq	00007416
 	invalid
+	brne	0000742A
+	ld.w	r8,r4[4]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000742A
 	ld.w	r9,r9[-16]
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
+	brne	000074AC
 	ld.w	r8,r8[-16]
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r8,FFFFFFFF
+	brne	00007534
 	sub	r8,r2,0000003F
-	invalid
+	cp.w	r8,00000001
 	invalid
 	ld.w	r12,r12[-8]
 	invalid
@@ -8033,12 +8033,12 @@ _start proc
 	invalid
 	invalid
 	sub	r12,r8,FFFFFFFF
-	lddpc	r8,pc[116]
+	lddpc	r8,sp[116]
 	invalid
 	sub	r9,r10,FFFFFFFC
+	cp.w	r12,r8
 	invalid
-	invalid
-	invalid
+	cp.w	r9,00000003
 	invalid
 	invalid
 	invalid
@@ -8052,21 +8052,21 @@ _start proc
 	mcall	r6[340]
 	mov	r5,sp
 	mov	r8,00000000
-	invalid
-	invalid
+	st.w	r12[0],r8
+	stdsp	sp[0],r8
 	ld.w	r8,r8[-12]
-	invalid
+	st.w	r8[0],sp
 	ld.w	r8,r8[-4]
+	cp.w	r8,00000000
+	brne	0000754C
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	brne	00007534
 	ld.w	lr,lr[-16]
-	invalid
-	invalid
+	cp.w	lr,00000000
+	brne	00007534
 	sub	r8,r2,0000003F
-	invalid
+	cp.w	r8,00000001
 	invalid
 	ld.w	r9,r9[-8]
 	invalid
@@ -8078,12 +8078,12 @@ _start proc
 	ld.w	r8,r0++
 	invalid
 	sub	r9,r8,FFFFFFFF
-	lddpc	r8,pc[332]
+	lddpc	r8,sp[332]
 	invalid
 	sub	r10,r11,FFFFFFFC
+	cp.w	r9,r8
 	invalid
-	invalid
-	invalid
+	cp.w	r10,00000003
 	invalid
 	invalid
 	invalid
@@ -8099,10 +8099,10 @@ _start proc
 	sub	lr,r4,FFFFFFFC
 	mov	r8,00000000
 	invalid
-	invalid
+	st.w	r12[0],r8
 	ld.w	r9,r9[-12]
-	invalid
-	invalid
+	stdsp	sp[0],r8
+	st.w	r9[0],sp
 	invalid
 	invalid
 	invalid
@@ -8113,20 +8113,20 @@ _start proc
 	mcall	r6[60]
 	ld.w	r8,r8[-4]
 	invalid
-	invalid
+	breq	0000756A
 	sub	r9,pc,FFFFEC1E
 	ld.w	r11,r11[160]
 	ld.w	r12,r12[784]
 	invalid
 	mcall	r6[60]
 	invalid
+	breq	0000758C
 	invalid
+	breq	00007590
 	invalid
+	breq	000075A2
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	00007662
 	invalid
 	invalid
 	invalid
@@ -8146,29 +8146,29 @@ _start proc
 	invalid
 	invalid
 	ld.w	r9,r9[-24]
-	invalid
+	cp.w	r2,00000000
 	invalid
 	invalid
 	mov	r10,r5
 	mov	r11,r1
 	invalid
 	invalid
-	invalid
+	brne	0000764A
 	mov	r8,r3
 	invalid
+	cp.w	r2,00000000
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r5,r1
+	breq	000075FA
 	ld.w	r8,r8[-4]
 	invalid
-	invalid
+	breq	000075EA
 	mov	r9,00000000
 	invalid
 	mov	r8,r3
 	invalid
-	invalid
+	cp.w	r8,00000005
 	invalid
 	invalid
 	invalid
@@ -8179,22 +8179,22 @@ _start proc
 	mov	r12,r4
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r5,r1
+	breq	0000764A
 	mov	r8,r3
 	ld.w	r9,r9[-4]
 	invalid
+	cp.w	r2,00000000
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	breq	00007630
 	mov	r9,00000000
 	invalid
 	mov	pc,FFFFFFFF
 	invalid
 	invalid
-	invalid
+	cp.w	r8,00000005
 	invalid
 	ld.w	r12,r12[-20]
 	mov	r8,r10
@@ -8202,14 +8202,14 @@ _start proc
 	mov	r10,r0
 	invalid
 	invalid
+	breq	0000773A
 	invalid
-	invalid
-	invalid
+	cp.w	r5,r0
 	invalid
 	ld.w	r8,r8[-4]
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r8[0]
+	cp.w	r8,00000000
+	breq	0000773E
 	invalid
 	invalid
 	ld.w	r9,r9[-24]
@@ -8218,7 +8218,7 @@ _start proc
 	mov	r11,r1
 	mov	r12,r4
 	invalid
-	invalid
+	breq	0000773A
 	mov	r8,r3
 	invalid
 	mov	r2,r3
@@ -8228,7 +8228,7 @@ _start proc
 	mov	r11,r4
 	invalid
 	invalid
-	invalid
+	cp.w	r5,00000000
 	invalid
 	invalid
 	mcall	r6[412]
@@ -8237,44 +8237,44 @@ _start proc
 	mov	r10,r0
 	mov	r11,r1
 	invalid
-	invalid
+	breq	0000773A
 	ld.w	r8,r8[-4]
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r8[0]
+	cp.w	r8,00000000
+	breq	0000773E
 	invalid
 	invalid
 	ld.w	r5,r5[-4]
 	invalid
 	invalid
-	invalid
-	invalid
+	breq	00007718
+	ld.w	r5,r5[0]
 	mov	r8,r3
 	invalid
 	invalid
-	invalid
+	cp.w	r9,00000000
 	invalid
 	sub	r12,r5,FFFFFFFC
 	ld.w	r9,r9[-24]
 	mov	r10,r2
 	mov	r11,r1
-	invalid
-	invalid
+	cp.w	r5,00000000
+	brne	000076BE
 	invalid
 	mov	r10,r3
 	invalid
-	invalid
-	invalid
+	cp.w	r2,r1
+	brne	000076F2
 	ld.w	r9,r9[-24]
 	invalid
 	ld.w	r8,r8[-4]
 	invalid
-	invalid
+	breq	00007700
 	mov	r9,00000000
 	invalid
 	mov	r8,r3
 	invalid
-	invalid
+	cp.w	r8,00000005
 	invalid
 	invalid
 	mov	r8,r10
@@ -8282,9 +8282,9 @@ _start proc
 	mov	r10,r0
 	mov	r12,r4
 	invalid
+	breq	0000773A
 	invalid
-	invalid
-	invalid
+	cp.w	r2,r0
 	invalid
 	invalid
 	sub	r9,pc,FFFFEDEA
@@ -8299,33 +8299,40 @@ _start proc
 	mov	r12,00000001
 	invalid
 	invalid
-	invalid
+	brne	000076E4
 	mov	r10,r3
 	invalid
 	ld.w	sp,sp[-28]
 	invalid
-	invalid
-	invalid
+	popm	r0-r3,r4-r7,pc
+	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,00000520
-	lddpc	r6,pc[344]
+	lddpc	r6,sp[344]
 	rsub	r6,pc
 	mov	r0,r9
 	mov	r1,r8
 	mov	r5,r12
 	mov	r4,r11
-	invalid
+	stdsp	sp[0],r10
 	invalid
 	mov	lr,r1
 	invalid
-	invalid
+	stdsp	sp[4],lr
 	mov	r7,r12
-	invalid
+	breq	0000777E
 	mcall	r6[116]
 	mov	r7,r12
 	invalid
 	invalid
 	invalid
 	invalid
+	breq	0000784E
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	breq	000077BE
 	invalid
 	invalid
 	invalid
@@ -8334,18 +8341,11 @@ _start proc
 	invalid
 	invalid
 	invalid
+	brne	000077E4
+	ld.w	r8,r5[0]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	000077E4
+	lddsp	r9,sp[0]
 	mov	r12,r7
 	mov	r8,r0
 	mov	r10,r4
@@ -8353,53 +8353,53 @@ _start proc
 	st.w	--sp,r1
 	invalid
 	invalid
+	cp.w	r12,FFFFFFFF
+	invalid
+	lddsp	r9,sp[0]
+	cp.w	r4,r9
+	invalid
+	ld.w	r8,r4[0]
+	invalid
+	brne	00007800
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	r0,00000000
 	invalid
 	invalid
 	invalid
+	breq	00007830
+	ld.w	r12,r5[0]
+	cp.w	r12,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[4]
 	mov	r7,r12
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	0000782E
 	mcall	r6[116]
 	mov	r7,r12
 	invalid
+	lddsp	lr,sp[0]
+	cp.w	r4,lr
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r9,sp[4]
+	ld.w	r12,r4[0]
+	cp.w	r9,00000000
+	breq	00007844
 	mcall	r6[116]
-	invalid
+	cp.w	r12,r7
 	invalid
 	invalid
 	mov	r8,r1
 	invalid
+	stdsp	sp[20],r8
+	breq	00007878
+	ld.w	r8,r5[0]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	00007878
+	lddsp	r9,sp[0]
 	mov	r12,r7
 	mov	r8,r0
 	mov	r10,r4
@@ -8407,97 +8407,97 @@ _start proc
 	st.w	--sp,r1
 	invalid
 	invalid
+	cp.w	r12,FFFFFFFF
 	invalid
+	lddsp	lr,sp[0]
+	cp.w	r4,lr
+	breq	0000788C
+	ld.w	r8,r4[0]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000788C
+	cp.w	r0,00000000
 	invalid
 	ld.w	r7,r5++
 	mov	r2,r5
 	invalid
+	ld.w	r8,r2[0]
 	invalid
+	brne	000078B4
 	invalid
-	invalid
-	invalid
-	invalid
+	brne	000078B4
 	mov	r12,r2
 	invalid
-	invalid
-	invalid
+	cp.w	r12,r2
+	breq	000078B4
 	mov	r2,r12
 	invalid
 	invalid
 	invalid
+	cp.w	r5,00000000
+	breq	000078D2
+	lddsp	r9,sp[0]
+	cp.w	r4,r9
 	invalid
+	ld.w	r8,r4[0]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	000078D0
 	invalid
 	invalid
 	invalid
 	ld.w	r7,r2++
 	invalid
 	invalid
+	cp.w	r5,00000000
+	brne	00007892
 	invalid
-	invalid
-	invalid
-	invalid
+	breq	00007892
 	mov	r5,r7
 	invalid
-	invalid
-	invalid
+	cp.w	r7,00000000
+	brne	00007912
 	mov	r12,r8
+	cp.w	r8,00000000
 	invalid
 	invalid
-	invalid
-	invalid
+	breq	00007902
 	mov	r12,r7
 	invalid
-	invalid
+	lddsp	r10,sp[0]
 	mov	r12,r4
 	invalid
 	invalid
 	mov	r11,0000002F
 	mcall	r6[324]
 	invalid
+	lddsp	r10,sp[0]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r3,00000000
 	invalid
 	invalid
 	mov	r12,r4
 	mcall	r6[324]
+	lddsp	r8,sp[0]
 	invalid
+	stdsp	sp[12],r8
 	invalid
+	breq	0000795A
+	lddsp	lr,sp[20]
+	cp.w	lr,00000000
+	breq	0000798E
 	invalid
+	breq	00007952
 	invalid
+	breq	00007952
 	invalid
+	brne	0000798E
+	ld.w	r8,r2[0]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000798E
 	mov	r8,r1
 	invalid
-	invalid
+	cp.w	r3,00000000
 	invalid
 	invalid
 	sub	r7,r2,00000004
@@ -8506,68 +8506,68 @@ _start proc
 	invalid
 	invalid
 	mov	r9,00000000
+	cp.w	r12,00000000
 	invalid
-	invalid
-	invalid
+	lddsp	lr,sp[12]
 	mov	r11,r4
 	mov	r8,r5
-	invalid
+	lddsp	r10,sp[0]
 	mov	r12,r7
+	cp.w	r4,lr
+	brcs	00007970
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	000079BE
+	cp.w	r3,00000000
+	breq	000079C6
+	lddsp	r9,sp[0]
+	cp.w	r4,r9
 	invalid
 	ld.w	r8,r4++
 	mov	r11,r4
 	invalid
-	invalid
+	brne	00007998
 	mov	r10,r9
 	mov	r8,r1
 	mov	r12,r2
 	invalid
 	invalid
+	cp.w	r12,00000000
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r3,00000000
+	breq	000079C6
+	stdsp	sp[16],r1
 	invalid
 	mov	r8,r1
 	invalid
+	stdsp	sp[16],r8
 	invalid
-	invalid
-	invalid
+	breq	000079D6
 	mov	r5,r7
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	000079DE
+	ld.w	r5,r2[0]
+	lddsp	lr,sp[4]
+	cp.w	lr,00000000
+	breq	000079EC
 	mov	r12,r5
 	mcall	r6[116]
 	mov	r5,r12
 	mov	r7,r0
 	sub	r3,r2,00000004
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r9,sp[4]
+	ld.w	r12,r4[0]
+	cp.w	r9,00000000
+	breq	00007A00
 	mcall	r6[116]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,r5
+	brne	00007A16
+	lddsp	r8,sp[16]
+	lddsp	r10,sp[0]
+	cp.w	r7,00000000
 	invalid
 	mov	r11,r4
 	mov	r12,r3
@@ -8575,95 +8575,95 @@ _start proc
 	invalid
 	invalid
 	mov	r7,00000000
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[12]
+	cp.w	r4,r8
+	brcs	000079F4
 	invalid
 	ld.w	r7,r7[132]
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r7[0]
+	cp.w	r8,00000000
+	brne	00007A3E
 	ld.w	r12,r12[164]
 	mcall	r6[56]
 	invalid
 	invalid
+	st.w	r7[0],r12
+	lddsp	lr,sp[0]
+	cp.w	r4,lr
+	invalid
+	ld.w	r12,r4[0]
+	invalid
+	brne	00007A54
+	cp.w	r0,00000000
+	breq	00007A62
 	invalid
 	invalid
+	brne	00007A62
 	invalid
 	invalid
+	ld.w	r9,r5[0]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	00007A6E
 	mov	r8,00000001
 	invalid
 	ld.w	r8,r8[132]
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r8[0]
+	cp.w	r8,00000000
+	brlt	00007A7C
 	mov	r8,00000000
 	invalid
 	invalid
 	invalid
-	invalid
+	lddsp	r9,sp[4]
 	invalid
 	sub	r8,r5,FFFFFFFC
+	cp.w	r2,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r9,00000000
+	breq	00007A9A
 	mcall	r6[116]
 	mov	r8,r1
 	mov	r7,r12
 	invalid
 	ld.w	r12,r5++
 	invalid
+	stdsp	sp[8],r0
+	cp.w	r0,00000000
+	breq	00007ACA
 	invalid
+	brne	00007ACA
+	ld.w	r12,r5[0]
+	cp.w	r12,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[4]
+	cp.w	r8,00000000
+	breq	00007AC6
 	mcall	r6[116]
 	invalid
 	invalid
 	invalid
+	brne	00007B94
+	ld.w	r8,r5[0]
 	invalid
-	invalid
-	invalid
-	invalid
+	brne	00007B9A
 	sub	lr,sp,FFFFFFE8
 	mov	r3,r5
 	mov	r10,00000000
 	invalid
-	invalid
+	ld.w	r9,r3[0]
 	sub	r11,r9,00000061
 	invalid
+	brne	00007B6C
+	ld.w	r8,r3[4]
 	invalid
-	invalid
-	invalid
-	invalid
+	brne	00007B6C
 	sub	lr,sp,FFFFFAE0
 	invalid
 	mov	r8,00000000
 	sub	r10,sp,FFFFFFE8
 	sub	r11,sp,FFFFFBE4
 	invalid
-	invalid
+	ld.w	r9,r10[0]
 	invalid
 	invalid
 	invalid
@@ -8677,158 +8677,158 @@ _start proc
 	sub	r8,r9,00000061
 	invalid
 	invalid
-	invalid
+	cp.w	r8,0000001D
 	invalid
 	sub	r8,sp,FFFFFBE8
+	cp.w	r10,r8
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r10[0]
+	cp.w	r8,00000000
+	brne	00007B0C
 	sub	r12,sp,FFFFFBE4
-	invalid
+	st.b	r11[0],r8
 	mcall	r6[300]
 	mov	r11,r12
+	brne	00007B80
+	invalid
+	invalid
+	cp.w	r11,00000018
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r4[0]
 	sub	r5,r3,FFFFFFF8
 	mcall	r6[308]
-	invalid
-	invalid
+	brne	00007C06
+	ld.w	r8,r5[0]
 	sub	r5,r3,FFFFFFF4
 	invalid
+	cp.w	r12,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r9,sp[4]
+	cp.w	r9,00000000
+	breq	00007BA4
 	mcall	r6[116]
+	ld.w	r9,r5[0]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	mov	r8,r9
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r5[4]
+	cp.w	r8,00000000
 	invalid
 	invalid
 	invalid
 	mov	r8,r9
 	invalid
 	invalid
+	brne	00007BF4
+	ld.w	r9,r5[0]
 	invalid
+	breq	00007BFA
+	mov	r8,r9
 	invalid
+	cp.w	r0,00000000
+	breq	00007BE0
+	invalid
+	brne	00007BE0
+	ld.w	r8,r5++
+	cp.w	r8,00000000
+	invalid
+	cp.w	r12,r7
+	invalid
+	cp.w	r7,r8
 	invalid
 	ld.w	r8,r5++
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	ld.w	r8,r5++
-	invalid
-	invalid
+	breq	00007BFE
 	mov	r12,r8
 	invalid
+	cp.w	r2,00000000
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r5[0]
 	mov	r12,r5
+	cp.w	r8,00000000
 	invalid
-	invalid
-	invalid
+	lddsp	lr,sp[8]
 	invalid
 	mov	r10,r8
+	cp.w	lr,00000000
+	breq	00007C2C
+	invalid
+	brne	00007C2C
+	ld.w	r8,r5[0]
+	cp.w	r8,00000000
 	invalid
 	invalid
 	invalid
 	invalid
+	brne	00007CB8
+	ld.w	r8,r5[0]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	00007C6A
 	mov	r9,r5
 	invalid
 	sub	r8,r12,FFFFFBFC
-	invalid
-	invalid
-	invalid
+	ld.w	r10,r9[0]
+	cp.w	r9,r8
+	breq	00007D40
 	sub	r11,r10,00000061
 	invalid
+	brne	00007C5A
+	ld.w	r8,r9[4]
+	invalid
+	breq	00007C62
+	cp.w	r11,00000018
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r10,r9[8]
 	sub	r5,r9,FFFFFFF4
 	invalid
 	invalid
-	invalid
-	invalid
+	brne	00007C92
+	ld.w	r8,r5[4]
 	sub	r9,r5,FFFFFFFC
+	cp.w	r8,00000000
+	breq	00007D40
+	invalid
+	ld.w	r8,r9[0]
+	invalid
+	brne	00007D40
+	ld.w	r8,r9[4]
+	invalid
+	brne	00007D40
+	ld.w	r10,r5[16]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	00007C06
 	sub	r12,r5,FFFFFFFC
 	invalid
+	ld.w	r8,r12[0]
+	cp.w	r8,00000000
+	breq	00007D40
 	invalid
+	brne	00007C9C
+	ld.w	r8,r12[4]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	00007C9C
+	ld.w	r10,r12[8]
 	sub	r5,r12,FFFFFFF4
 	invalid
+	brne	00007C06
+	cp.w	r2,00000000
+	breq	00007D1C
 	invalid
 	invalid
+	brne	00007D06
+	ld.w	r8,r5[0]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	00007D06
+	lddsp	r9,sp[0]
 	mov	r8,r0
 	mov	r10,r4
 	mov	r11,r5
@@ -8836,43 +8836,43 @@ _start proc
 	st.w	--sp,r1
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r12,FFFFFFFF
+	breq	00007D06
 	invalid
 	mov	r8,r1
 	invalid
+	cp.w	r8,00000005
+	brne	00007D06
+	lddsp	r9,sp[0]
+	cp.w	r4,r9
+	breq	00007D40
+	ld.w	r8,r4[0]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	00007D40
 	mov	r9,00000001
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[0]
+	cp.w	r4,r8
+	breq	00007D40
+	lddsp	lr,sp[4]
+	ld.w	r12,r4[0]
+	cp.w	lr,00000000
+	breq	00007D18
 	mcall	r6[116]
-	invalid
-	invalid
+	cp.w	r7,r12
+	brne	00007D40
 	mov	r9,00000000
 	invalid
 	mov	r0,r9
+	ld.w	r12,r5[0]
+	cp.w	r12,00000000
 	invalid
+	lddsp	r9,sp[0]
+	cp.w	r4,r9
+	breq	00007D44
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	00007D40
+	ld.w	r8,r4[0]
 	invalid
 	invalid
 	invalid
@@ -8880,15 +8880,15 @@ _start proc
 	invalid
 	mov	r12,00000000
 	invalid
+	cp.w	r12,r7
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	popm	r0-r3,r4-r7,pc
+	pushm	r0-r3,r4-r7,lr
 	mov	r7,sp
 	invalid
-	lddpc	r6,pc[368]
+	lddpc	r6,sp[368]
 	rsub	r6,pc
 	invalid
 	mov	r2,r12
@@ -8903,85 +8903,85 @@ _start proc
 	invalid
 	invalid
 	mcall	r6[16]
+	ld.w	r3,r7[36]
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r4[0]
+	cp.w	r10,00000000
 	invalid
 	mov	r8,0000005B
-	invalid
-	invalid
+	cp.b	r10,r8
+	brne	00007E00
 	ld.w	r5,r5[132]
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r5[0]
+	cp.w	r8,00000000
+	brne	00007DC2
 	ld.w	r12,r12[164]
 	mcall	r6[56]
 	invalid
 	invalid
+	st.w	r5[0],r12
 	invalid
-	invalid
-	invalid
+	ld.ub	r4[0]
 	mov	r8,00000021
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	00007DDC
+	ld.w	r8,r5[0]
+	cp.w	r8,00000000
+	brge	00007DDE
 	mov	r8,0000005E
+	cp.b	r9,r8
+	brne	00007DDE
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r4[0]
 	mov	r8,0000005D
+	cp.b	r9,r8
+	brne	00007DF4
 	invalid
 	invalid
 	invalid
+	cp.w	r9,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r4[0]
 	mov	r8,0000005D
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	00007DEC
 	invalid
 	mov	r8,0000003F
-	invalid
-	invalid
+	cp.b	r10,r8
+	breq	00007E28
 	mov	r8,0000002A
-	invalid
-	invalid
+	cp.b	r10,r8
+	breq	00007E28
 	mov	r8,0000002B
-	invalid
-	invalid
+	cp.b	r10,r8
+	breq	00007E28
 	mov	r8,00000040
-	invalid
-	invalid
+	cp.b	r10,r8
+	breq	00007E28
 	mov	r8,00000021
-	invalid
-	invalid
-	invalid
+	cp.b	r10,r8
+	brne	00007E3E
+	ld.ub	r4[1]
 	mov	r8,00000028
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	00007E3E
 	ld.w	r9,r9[-16]
 	invalid
 	invalid
 	invalid
 	mov	r8,00000029
-	invalid
-	invalid
+	cp.b	r10,r8
+	brne	00007EAC
 	ld.w	r8,r8[-16]
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r8,FFFFFFFF
+	brne	00007F16
 	sub	r8,r2,0000003F
-	invalid
+	cp.w	r8,00000001
 	invalid
 	ld.w	r12,r12[-8]
 	invalid
@@ -8999,23 +8999,23 @@ _start proc
 	mcall	r6[200]
 	mov	r5,sp
 	mov	r8,00000000
-	invalid
+	st.b	r12[0],r8
 	mov	r8,00000000
 	ld.w	r9,r9[-12]
-	invalid
-	invalid
+	stdsp	sp[0],r8
+	st.w	r9[0],sp
 	ld.w	r8,r8[-4]
-	invalid
-	invalid
+	cp.w	r8,00000000
+	brne	00007F30
 	invalid
 	mov	r8,0000007C
-	invalid
-	invalid
+	cp.b	r10,r8
+	brne	00007F16
 	ld.w	r8,r8[-16]
-	invalid
-	invalid
+	cp.w	r8,00000000
+	brne	00007F16
 	sub	r8,r2,0000003F
-	invalid
+	cp.w	r8,00000001
 	invalid
 	ld.w	r8,r8[-8]
 	invalid
@@ -9036,11 +9036,11 @@ _start proc
 	sub	r9,r4,FFFFFFFF
 	invalid
 	mov	r8,00000000
-	invalid
+	st.b	r12[0],r8
 	mov	r8,00000000
-	invalid
+	stdsp	sp[0],r8
 	ld.w	r8,r8[-12]
-	invalid
+	st.w	r8[0],sp
 	invalid
 	invalid
 	invalid
@@ -9052,8 +9052,8 @@ _start proc
 	mcall	r6[60]
 	invalid
 	mov	r8,00000029
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	00007F52
 	sub	r9,pc,FFFFF604
 	ld.w	r11,r11[160]
 	ld.w	r12,r12[780]
@@ -9061,13 +9061,13 @@ _start proc
 	invalid
 	mcall	r6[60]
 	invalid
+	breq	00007F74
 	invalid
+	breq	00007F78
 	invalid
+	breq	00007F8A
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	0000804C
 	invalid
 	invalid
 	invalid
@@ -9087,30 +9087,30 @@ _start proc
 	invalid
 	invalid
 	ld.w	r9,r9[-24]
-	invalid
+	cp.w	r2,00000000
 	invalid
 	invalid
 	mov	r10,r5
 	mov	r11,r1
 	invalid
 	invalid
-	invalid
+	brne	00008032
 	mov	r8,r3
 	invalid
+	cp.w	r2,00000000
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r5,r1
+	breq	00007FE4
 	invalid
 	mov	r8,0000002F
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	00007FD4
 	mov	r9,00000000
 	invalid
 	mov	r8,r3
 	invalid
-	invalid
+	cp.w	r8,00000005
 	invalid
 	invalid
 	invalid
@@ -9121,22 +9121,22 @@ _start proc
 	mov	r12,r4
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r5,r1
+	breq	00008032
 	mov	r9,r3
 	invalid
 	invalid
-	invalid
+	cp.w	r2,00000000
 	invalid
 	invalid
 	mov	r9,0000002F
-	invalid
-	invalid
+	cp.b	r8,r9
+	breq	00008018
 	mov	r9,00000000
 	invalid
 	mov	r8,r3
 	invalid
-	invalid
+	cp.w	r8,00000005
 	invalid
 	ld.w	r12,r12[-20]
 	mov	r8,r10
@@ -9144,14 +9144,14 @@ _start proc
 	mov	r10,r0
 	invalid
 	invalid
+	breq	00008128
 	invalid
-	invalid
-	invalid
+	cp.w	r5,r0
 	invalid
 	ld.w	r8,r8[-4]
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r8[0]
+	cp.w	r8,00000000
+	breq	0000812C
 	invalid
 	invalid
 	invalid
@@ -9161,7 +9161,7 @@ _start proc
 	mov	r11,r1
 	mov	r12,r4
 	invalid
-	invalid
+	breq	00008128
 	mov	lr,r3
 	invalid
 	mov	r2,r3
@@ -9171,7 +9171,7 @@ _start proc
 	mov	r11,r4
 	invalid
 	invalid
-	invalid
+	cp.w	r5,00000000
 	invalid
 	invalid
 	mcall	r6[512]
@@ -9180,45 +9180,45 @@ _start proc
 	mov	r10,r0
 	mov	r11,r1
 	invalid
-	invalid
+	breq	00008128
 	ld.w	r8,r8[-4]
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r8[0]
+	cp.w	r8,00000000
+	breq	0000812C
 	invalid
 	invalid
 	ld.w	r5,r5[-4]
 	invalid
 	invalid
-	invalid
-	invalid
+	breq	00008104
+	ld.w	r5,r5[0]
 	mov	r8,r3
 	invalid
 	invalid
-	invalid
+	cp.w	r9,00000000
 	invalid
 	sub	r12,r5,FFFFFFFC
 	ld.w	r9,r9[-24]
 	mov	r10,r2
 	mov	r11,r1
-	invalid
-	invalid
+	cp.w	r5,00000000
+	brne	000080A8
 	invalid
 	mov	r10,r3
 	invalid
-	invalid
-	invalid
+	cp.w	r2,r1
+	brne	000080DC
 	ld.w	r9,r9[-24]
 	invalid
 	invalid
 	mov	r8,0000002F
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	000080EC
 	mov	r9,00000000
 	invalid
 	mov	r8,r3
 	invalid
-	invalid
+	cp.w	r8,00000005
 	invalid
 	invalid
 	mov	r8,r10
@@ -9226,9 +9226,9 @@ _start proc
 	mov	r10,r0
 	mov	r12,r4
 	invalid
+	breq	00008128
 	invalid
-	invalid
-	invalid
+	cp.w	r2,r0
 	invalid
 	invalid
 	sub	r9,pc,FFFFF7D6
@@ -9244,64 +9244,64 @@ _start proc
 	mov	r12,00000001
 	invalid
 	invalid
-	invalid
+	brne	000080CE
 	mov	r10,r3
 	invalid
 	ld.w	sp,sp[-28]
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
+	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,0000011C
-	lddpc	r6,pc[352]
+	lddpc	r6,sp[352]
 	rsub	r6,pc
 	mov	r0,r9
 	mov	r1,r8
 	mov	r5,r12
 	mov	r4,r11
-	invalid
+	stdsp	sp[4],r10
 	invalid
 	mov	lr,r1
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[8],lr
+	breq	00008172
+	ld.w	r8,r6[-32]
+	ld.w	r8,r8[0]
 	invalid
 	invalid
 	mov	r8,00000021
 	invalid
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000002A
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000825E
 	mov	r8,0000002B
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r3,0000002F
-	invalid
+	cp.b	r7,r3
 	invalid
 	mov	r8,0000003F
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	000081C2
 	mov	r8,00000040
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000005B
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000005C
+	cp.b	r7,r8
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	brne	000081EA
+	ld.ub	r5[0]
 	mov	r8,00000028
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	000081EA
+	lddsp	r9,sp[4]
 	mov	r12,r7
 	mov	r8,r0
 	mov	r10,r4
@@ -9309,59 +9309,59 @@ _start proc
 	st.w	--sp,r1
 	invalid
 	invalid
+	cp.w	r12,FFFFFFFF
 	invalid
+	lddsp	r8,sp[4]
+	cp.w	r4,r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r4[0]
 	mov	r8,0000002F
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	00008208
 	invalid
 	invalid
 	invalid
 	mov	r8,0000002E
+	cp.b	r9,r8
 	invalid
 	invalid
 	invalid
+	breq	00008238
+	ld.ub	r5[0]
+	cp.w	r7,00000000
+	invalid
+	lddsp	lr,sp[8]
+	cp.w	lr,00000000
+	breq	00008236
+	ld.w	r8,r6[-32]
+	ld.w	r8,r8[0]
 	invalid
 	invalid
 	invalid
+	lddsp	r8,sp[4]
+	cp.w	r4,r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	lr,sp[8]
+	ld.ub	r4[0]
+	cp.w	lr,00000000
+	breq	00008252
+	ld.w	r8,r6[-32]
+	ld.w	r8,r8[0]
 	invalid
 	invalid
 	mov	r8,r10
-	invalid
+	cp.w	r8,r7
 	invalid
 	invalid
 	mov	r8,r1
 	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[20],r8
+	breq	0000828A
+	ld.ub	r5[0]
 	mov	r8,00000028
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000828A
+	lddsp	r9,sp[4]
 	mov	r12,r7
 	mov	r8,r0
 	mov	r10,r4
@@ -9369,105 +9369,105 @@ _start proc
 	st.w	--sp,r1
 	invalid
 	invalid
+	cp.w	r12,FFFFFFFF
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	lr,sp[4]
+	cp.w	r4,lr
+	breq	000082A0
+	ld.ub	r4[0]
 	mov	r8,0000002E
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	000082A0
+	cp.w	r0,00000000
 	invalid
 	invalid
 	mov	r3,r5
 	invalid
 	invalid
 	invalid
-	invalid
+	ld.ub	r3[0]
 	mov	r8,00000028
+	cp.b	r9,r8
+	brne	000082CA
 	invalid
-	invalid
-	invalid
-	invalid
+	brne	000082CA
 	mov	r12,r3
 	invalid
-	invalid
-	invalid
+	cp.w	r12,r3
+	breq	000082CA
 	mov	r3,r12
 	invalid
+	cp.w	r5,00000000
+	breq	000082EA
+	lddsp	r8,sp[4]
+	cp.w	r4,r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r4[0]
 	mov	r8,0000002F
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	000082E8
 	invalid
 	invalid
 	invalid
 	invalid
 	mov	r8,0000003F
+	cp.b	r7,r8
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r5,00000000
+	brne	000082AC
 	mov	r8,0000002A
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	000082AC
 	mov	r5,r7
 	invalid
-	invalid
-	invalid
+	cp.w	r7,00000000
+	brne	0000832C
 	mov	r12,r8
+	cp.w	r8,00000000
 	invalid
 	invalid
-	invalid
-	invalid
+	breq	0000831E
 	mov	r12,r7
 	invalid
-	invalid
+	lddsp	r10,sp[4]
 	mov	r12,r4
 	invalid
 	mov	r11,0000002F
 	mcall	r6[316]
 	invalid
+	lddsp	r10,sp[4]
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r2,00000000
 	invalid
 	invalid
 	mov	r12,r4
 	mcall	r6[316]
-	invalid
+	lddsp	lr,sp[4]
 	mov	r8,0000005B
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[16],lr
+	cp.b	r7,r8
+	breq	0000837C
+	lddsp	r8,sp[20]
+	cp.w	r8,00000000
+	breq	000083B0
 	mov	r8,00000040
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	00008372
 	mov	r8,0000002B
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	00008372
 	mov	r8,00000021
-	invalid
-	invalid
-	invalid
+	cp.b	r7,r8
+	brne	000083B0
+	ld.ub	r3[0]
 	mov	r8,00000028
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	000083B0
 	mov	r8,r1
 	invalid
-	invalid
+	cp.w	r2,00000000
 	invalid
 	invalid
 	sub	r7,r3,00000001
@@ -9476,74 +9476,74 @@ _start proc
 	invalid
 	invalid
 	mov	r9,00000000
+	cp.w	r12,00000000
 	invalid
-	invalid
-	invalid
+	lddsp	lr,sp[16]
 	mov	r11,r4
 	mov	r8,r5
-	invalid
+	lddsp	r10,sp[4]
 	mov	r12,r7
-	invalid
-	invalid
+	cp.w	r4,lr
+	brcs	00008392
 	invalid
 	mov	r8,0000002F
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r7,r8
+	brne	000083E4
+	cp.w	r2,00000000
+	breq	000083EC
+	lddsp	r8,sp[4]
+	cp.w	r4,r8
 	invalid
 	invalid
 	mov	r8,0000002F
 	mov	r11,r4
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	000083BC
+	lddsp	r10,sp[4]
 	mov	r8,r1
 	mov	r12,r3
 	invalid
 	invalid
+	cp.w	r12,00000000
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r2,00000000
+	breq	000083EC
 	mov	r2,r1
 	invalid
 	mov	r2,r1
 	invalid
 	mov	r8,0000005C
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	000083FC
 	mov	r5,r7
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	00008404
+	ld.ub	r3[0]
+	lddsp	lr,sp[8]
+	cp.w	lr,00000000
+	breq	00008416
+	ld.w	r8,r6[-32]
+	ld.w	r8,r8[0]
 	invalid
 	invalid
 	mov	r9,r0
 	sub	r7,r3,00000001
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[8]
+	ld.ub	r4[0]
+	cp.w	r8,00000000
+	breq	00008430
+	ld.w	r8,r6[-32]
+	ld.w	r8,r8[0]
 	invalid
 	invalid
 	mov	r8,r10
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,r5
+	brne	00008448
+	lddsp	r10,sp[4]
+	cp.w	r9,00000000
 	invalid
 	mov	r11,r4
 	mov	r8,r2
@@ -9552,109 +9552,109 @@ _start proc
 	invalid
 	invalid
 	mov	r9,00000000
-	invalid
-	invalid
-	invalid
+	lddsp	lr,sp[16]
+	cp.w	r4,lr
+	brcs	0000841E
 	invalid
 	ld.w	r7,r7[132]
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r7[0]
+	cp.w	r8,00000000
+	brne	00008470
 	ld.w	r12,r12[164]
 	mcall	r6[56]
 	invalid
 	invalid
+	st.w	r7[0],r12
+	lddsp	r8,sp[4]
+	cp.w	r4,r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r4[0]
 	mov	r8,0000002E
+	cp.b	r10,r8
+	brne	00008488
+	cp.w	r0,00000000
+	breq	00008496
+	invalid
+	cp.b	r10,r3
+	brne	00008496
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r5[0]
 	mov	r8,00000021
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	000084A4
 	mov	r8,00000001
 	invalid
 	ld.w	r8,r8[132]
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r8[0]
+	cp.w	r8,00000000
+	brlt	000084B2
 	mov	r8,00000000
 	invalid
 	mov	r8,0000005E
+	cp.b	r9,r8
 	invalid
-	invalid
-	invalid
+	lddsp	lr,sp[8]
 	invalid
 	sub	r8,r5,FFFFFFFF
+	cp.w	r0,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	lr,00000000
+	brne	000084D2
 	mov	r2,r10
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[-32]
+	ld.w	r8,r8[0]
 	invalid
 	invalid
 	invalid
 	mov	r8,r1
 	invalid
 	invalid
-	invalid
+	stdsp	sp[0],r8
 	invalid
 	mov	r11,0000002D
-	invalid
-	invalid
+	lddsp	r8,sp[0]
+	stdsp	sp[12],r8
 	mov	r7,r5
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	00008524
 	mov	r8,0000005C
+	cp.b	r11,r8
+	brne	00008524
+	ld.ub	r5[0]
+	cp.w	r9,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	lr,sp[8]
+	cp.w	lr,00000000
+	brne	00008514
 	mov	r11,r9
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[-32]
+	ld.w	r8,r8[0]
 	invalid
 	invalid
 	invalid
 	invalid
 	mov	r8,0000005B
-	invalid
-	invalid
-	invalid
+	cp.b	r11,r8
+	brne	000085A6
+	ld.ub	r7[0]
 	mov	r8,0000003A
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	000085A6
 	mov	r3,r7
 	mov	r12,00000000
 	invalid
-	invalid
+	ld.ub	r3[0]
 	mov	r8,0000003A
 	sub	lr,r10,00000061
-	invalid
-	invalid
-	invalid
+	cp.b	r10,r8
+	brne	0000856E
+	ld.ub	r3[1]
 	mov	r8,0000005D
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000856E
 	sub	r9,sp,FFFFFEE4
 	invalid
 	mov	r8,00000000
@@ -9662,10 +9662,10 @@ _start proc
 	invalid
 	mcall	r6[300]
 	mov	r5,r12
-	invalid
+	brne	0000858C
 	invalid
 	mov	r8,00000018
-	invalid
+	cp.b	lr,r8
 	invalid
 	invalid
 	invalid
@@ -9673,162 +9673,162 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	ld.ub	r4[0]
 	sub	r7,r3,FFFFFFFE
 	mcall	r6[544]
 	mov	r11,r5
 	mcall	r6[308]
-	invalid
-	invalid
+	brne	0000863E
+	ld.ub	r7[0]
 	sub	r5,r3,FFFFFFFD
 	invalid
+	cp.w	r11,00000000
+	invalid
+	lddsp	r8,sp[8]
+	cp.w	r8,00000000
+	breq	000085BE
+	ld.w	r8,r6[-32]
+	ld.w	r8,r8[0]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r7[0]
 	mov	r8,0000002D
+	cp.b	r10,r8
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r7[1]
+	cp.w	r9,00000000
 	invalid
 	mov	r8,0000005D
-	invalid
+	cp.b	r9,r8
 	invalid
 	mov	r8,0000002D
 	sub	r5,r7,FFFFFFFF
-	invalid
-	invalid
+	cp.b	r10,r8
+	breq	000085EC
 	mov	r11,r10
 	invalid
-	invalid
+	ld.ub	r5[0]
 	mov	r8,0000005D
+	cp.b	r9,r8
 	invalid
-	invalid
-	invalid
+	lddsp	lr,sp[0]
 	sub	r7,r5,FFFFFFFF
-	invalid
-	invalid
+	cp.w	lr,00000000
+	breq	0000860A
 	mov	r8,0000005C
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	0000860E
 	mov	r8,r9
 	invalid
 	invalid
+	cp.w	r8,00000000
 	invalid
+	cp.b	r11,r2
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r2,r8
 	invalid
 	invalid
 	mov	r5,r7
 	mov	r8,0000005D
+	cp.b	r11,r8
 	invalid
-	invalid
-	invalid
+	cp.w	r0,00000000
 	invalid
 	invalid
 	mov	r7,r5
+	ld.ub	r7[0]
+	cp.w	r11,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[12]
 	sub	r5,r7,FFFFFFFF
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	00008668
 	mov	r8,0000005C
-	invalid
-	invalid
-	invalid
+	cp.b	r11,r8
+	brne	00008668
+	ld.ub	r5[0]
 	mov	r8,00000000
-	invalid
+	cp.b	r9,r8
 	invalid
 	invalid
 	invalid
 	mov	r8,0000005B
-	invalid
-	invalid
-	invalid
+	cp.b	r11,r8
+	brne	00008712
+	ld.ub	r5[0]
 	mov	r8,0000003A
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	000086B4
 	mov	r10,r5
 	invalid
 	sub	r8,r7,FFFFFEFF
-	invalid
-	invalid
+	ld.ub	r10[0]
+	cp.w	r10,r8
 	invalid
 	mov	r8,0000003A
 	sub	r11,r9,00000061
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	000086A0
+	ld.ub	r10[1]
 	mov	r8,0000005D
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	000086AC
 	mov	r8,00000018
+	cp.b	r11,r8
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.ub	r10[2]
 	sub	r5,r10,FFFFFFFD
 	invalid
 	mov	r11,0000003D
-	invalid
-	invalid
+	cp.b	r9,r11
+	brne	000086E6
 	sub	r10,r5,FFFFFFFF
-	invalid
+	ld.ub	r10[0]
 	mov	r8,00000000
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	000087A8
 	sub	r9,r10,FFFFFFFF
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r9[0]
+	cp.b	r8,r11
+	brne	000087A8
+	ld.ub	r9[1]
 	mov	r8,0000005D
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	000087A8
+	ld.ub	r5[-4]
 	invalid
 	invalid
 	mov	r8,0000002E
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000863C
 	sub	r12,r5,FFFFFFFF
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r12[0]
+	cp.w	r9,00000000
+	breq	000087A8
 	mov	r8,0000002E
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	000086F2
+	ld.ub	r12[1]
 	mov	r8,0000005D
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	000086F2
+	ld.ub	r12[2]
 	sub	r5,r12,FFFFFFFD
 	mov	r8,0000005D
+	cp.b	r11,r8
+	brne	0000863C
+	cp.w	r0,00000000
+	breq	00008782
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	00008764
+	ld.ub	r5[0]
 	mov	r8,00000028
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	00008764
+	lddsp	r9,sp[4]
 	mov	r8,r0
 	mov	r10,r4
 	mov	r11,r5
@@ -9836,72 +9836,72 @@ _start proc
 	st.w	--sp,r1
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r12,FFFFFFFF
+	breq	00008764
 	invalid
 	mov	r8,r1
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000005
+	brne	00008764
+	lddsp	lr,sp[4]
+	cp.w	r4,lr
+	breq	000087A8
+	ld.ub	r4[0]
+	cp.b	r8,r3
+	brne	000087A8
 	mov	r9,00000001
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[4]
+	cp.w	r4,r8
+	breq	000087A8
+	lddsp	lr,sp[8]
+	ld.ub	r4[0]
+	cp.w	lr,00000000
+	breq	0000877C
+	ld.w	r8,r6[-32]
+	ld.w	r8,r8[0]
 	invalid
 	invalid
 	mov	r8,r10
-	invalid
-	invalid
+	cp.w	r7,r8
+	brne	000087A8
 	mov	r9,00000000
 	invalid
 	mov	r0,r9
+	ld.ub	r5[0]
+	cp.w	r7,00000000
 	invalid
+	lddsp	r8,sp[4]
+	cp.w	r4,r8
+	breq	000087AC
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	000087A8
+	ld.ub	r4[0]
 	mov	r8,0000002F
-	invalid
+	cp.b	r9,r8
 	invalid
 	invalid
 	mov	r12,00000001
 	invalid
 	mov	r12,00000000
 	invalid
+	cp.b	r11,r2
 	invalid
 	invalid
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
+	pushm	r0-r3,r4-r7,lr
 	mov	r7,sp
 	invalid
-	lddpc	r6,pc[320]
+	lddpc	r6,sp[320]
 	rsub	r6,pc
 	invalid
 	invalid
 	mov	r1,r10
 	mcall	r6[172]
 	mov	r0,sp
-	invalid
+	cp.w	r12,00000001
 	invalid
 	sub	r4,r7,00000008
 	mov	r10,00000000
@@ -9916,7 +9916,7 @@ _start proc
 	invalid
 	mov	r12,r4
 	mcall	r6[144]
-	invalid
+	brne	00008820
 	sub	r9,pc,FFFFFED2
 	ld.w	r11,r11[260]
 	ld.w	r12,r12[256]
@@ -9929,10 +9929,10 @@ _start proc
 	mov	r12,r10
 	mcall	r6[188]
 	sub	r2,r12,FFFFFFFF
-	invalid
+	breq	0000890C
 	mov	r12,r4
 	mcall	r6[144]
-	invalid
+	brne	00008852
 	sub	r9,pc,FFFFFF04
 	ld.w	r11,r11[260]
 	ld.w	r12,r12[256]
@@ -9941,10 +9941,10 @@ _start proc
 	mcall	r6[60]
 	invalid
 	invalid
+	cp.w	r5,r9
 	invalid
-	invalid
-	lddpc	r8,pc[168]
-	invalid
+	lddpc	r8,sp[168]
+	cp.w	r9,r8
 	invalid
 	ld.w	r12,r12[-20]
 	ld.w	r8,r8[-20]
@@ -9956,11 +9956,11 @@ _start proc
 	mov	r3,sp
 	invalid
 	mcall	r6[32]
-	invalid
+	brne	00008896
 	mcall	r6[28]
 	mov	r5,FFFFFFFF
 	mov	r8,0000000C
-	invalid
+	st.w	r12[0],r8
 	invalid
 	mov	r3,r12
 	sub	r4,r7,00000008
@@ -9972,7 +9972,7 @@ _start proc
 	invalid
 	mov	r12,r4
 	mcall	r6[144]
-	invalid
+	brne	000088CC
 	sub	r9,pc,FFFFFF7E
 	ld.w	r11,r11[260]
 	ld.w	r12,r12[256]
@@ -10002,7 +10002,7 @@ _start proc
 	mov	pc,FFFFFFFF
 	invalid
 	invalid
-	invalid
+	brne	0000891A
 	mov	r12,r5
 	mcall	r6[16]
 	mov	r11,r5
@@ -10015,54 +10015,54 @@ _start proc
 	mov	r12,r5
 	mov	sp,r0
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
+	ld.w	r8,r2[-36]
+	ld.w	pc,r10[20]
+	ld.w	sp,r11[-40]
+	ld.w	r4,r0[-36]
+	ld.w	r8,r1[-40]
 	invalid
+	ld.w	r8,r2[-36]
+	ld.w	pc,r10[20]
+	ld.w	r1,r6[-40]
+	ld.w	r3,r10[24]
+	ld.w	r0,r4[0]
 	invalid
+	ld.w	lr,r3[-40]
+	ld.w	pc,r10[-44]
+	ld.w	lr,r3[24]
+	ld.w	r1,r6[-40]
+	ld.w	r3,r10[24]
+	ld.w	r0,r4[0]
+	pushm	r4-r7,lr
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[40]
+	lddpc	r6,sp[40]
 	rsub	r6,pc
 	mov	r7,r12
 	mov	r11,r12
 	mov	r12,00000000
 	mcall	r6[596]
-	invalid
+	breq	00008984
 	mov	r11,00000000
 	mov	r12,sp
 	invalid
+	lddsp	r8,sp[4]
 	invalid
 	invalid
+	lddsp	r9,sp[0]
+	st.w	r7[0],r9
+	st.w	r7[4],r8
 	invalid
+	popm	r4-r7,pc
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[88]
+	lddpc	r6,sp[88]
 	rsub	r6,pc
 	ld.w	r5,r5[216]
 	sub	r4,sp,FFFFFFF0
-	invalid
+	ld.w	r10,r5[0]
 	mov	r7,sp
 	mov	r8,r10
 	invalid
@@ -10071,29 +10071,29 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r10[40]
+	stdsp	sp[40],r8
 	mcall	r6[476]
 	invalid
-	invalid
+	ld.w	r10,r5[0]
 	invalid
 	sub	r8,r10,FFFFFFF0
 	invalid
 	invalid
 	invalid
 	invalid
+	lddsp	r8,sp[40]
+	st.w	r10[-24],r8
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[88]
+	lddpc	r6,sp[88]
 	rsub	r6,pc
 	ld.w	r5,r5[216]
 	sub	r4,sp,FFFFFFF0
-	invalid
+	ld.w	r10,r5[0]
 	mov	r7,sp
 	mov	r8,r10
 	invalid
@@ -10102,556 +10102,556 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r10[40]
+	stdsp	sp[40],r8
 	mcall	r6[396]
 	invalid
-	invalid
+	ld.w	r10,r5[0]
 	invalid
 	sub	r8,r10,FFFFFFF0
 	invalid
 	invalid
 	invalid
 	invalid
+	lddsp	r8,sp[40]
+	st.w	r10[-24],r8
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[28]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[28]
 	rsub	r6,pc
 	mcall	r6[408]
 	ld.w	r11,r11[216]
 	ld.w	r8,r8[368]
+	ld.w	r9,r11[0]
+	cp.w	r9,r8
+	brne	00008A66
+	st.w	r11[0],r12
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[28]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[28]
 	rsub	r6,pc
 	mcall	r6[472]
 	ld.w	r11,r11[216]
 	ld.w	r8,r8[368]
+	ld.w	r9,r11[0]
+	cp.w	r9,r8
+	brne	00008A86
+	st.w	r11[0],r12
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[44]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[44]
 	rsub	r6,pc
 	mov	r11,00000000
 	mcall	r6[292]
 	mov	r7,r12
-	invalid
-	invalid
+	brne	00008A9E
+	popm	r4-r7,r12,pc,r12=1
 	ld.w	r11,r11[776]
 	mcall	r6[24]
-	invalid
+	breq	00008AB4
 	ld.w	r11,r11[772]
 	mov	r12,r7
 	mcall	r6[24]
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
+	ld.w	r12,r12[8]
 	invalid
+	ld.w	r12,r12[12]
 	invalid
+	ld.w	r12,r12[16]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[52]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[52]
 	rsub	r6,pc
-	invalid
-	invalid
+	ld.w	r11,r12[4]
+	ld.w	r12,r12[0]
 	mov	r10,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r12[0]
+	cp.w	r8,00000000
+	breq	00008AF0
 	mov	r8,r12
 	mov	r9,00000001
 	invalid
 	invalid
+	ld.w	r8,r8[4]
+	cp.w	r8,00000000
+	brne	00008AE2
+	cp.w	r10,r9
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,r11
+	brcs	00008AD6
 	mov	r12,r10
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
+	pushm	lr
 	mov	r10,00000000
-	invalid
-	invalid
+	ld.w	r9,r12[0]
+	ld.w	lr,r12[4]
 	mov	r11,r10
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r9[0]
+	cp.w	r8,00000000
+	breq	00008B22
 	invalid
 	mov	r8,r9
 	invalid
 	invalid
+	ld.w	r8,r8[4]
+	cp.w	r8,00000000
+	brne	00008B18
 	invalid
 	invalid
+	cp.w	r9,lr
+	brcs	00008B0C
+	ld.w	r8,r12[12]
+	cp.w	r11,r8
+	breq	00008B30
+	popm	pc,r12=0
+	ld.w	r8,r12[16]
+	cp.w	r10,r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	popm	pc
+	pushm	r4-r7,lr
 	mov	lr,r12
-	invalid
+	ld.w	r12,r12[0]
 	mov	r7,r10
 	mov	r5,r11
 	mov	r10,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r12[0]
+	cp.w	r8,00000000
+	breq	00008B64
 	invalid
 	mov	r9,r12
 	invalid
+	cp.w	r10,r7
+	brcc	00008B6C
+	ld.w	r8,r9[0]
 	invalid
+	ld.w	r9,r9[4]
 	invalid
+	cp.w	r9,00000000
+	brne	00008B54
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,lr[4]
+	cp.w	r12,r8
+	brcs	00008B46
 	mov	r12,r10
-	invalid
-	invalid
-	invalid
+	popm	r4-r7,pc
+	pushm	r0-r3,r4-r7,lr
+	ld.w	r5,r12[0]
 	mov	r3,r12
 	mov	r1,r11
 	mov	r2,r10
 	mov	r4,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r5[0]
+	cp.w	r8,00000000
+	breq	00008B9A
 	mov	r7,r5
 	invalid
+	ld.w	r12,r7[0]
+	icall	r1
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	00008BA2
+	ld.w	r7,r7[4]
 	invalid
 	mov	r11,r2
+	cp.w	r7,00000000
+	brne	00008B88
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r3[4]
+	cp.w	r5,r8
+	brcs	00008B7E
 	mov	r12,r4
-	invalid
+	popm	r0-r3,r4-r7,pc
 	mov	r10,00000000
 	invalid
 	invalid
 	mov	r10,r9
+	ld.ub	r12[0]
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	r9,00000000
+	brne	00008BAA
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[24]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[24]
 	rsub	r6,pc
 	sub	r8,pc,FFFFF994
 	invalid
 	invalid
+	ld.w	r8,r8[16]
+	st.w	r12[16],r8
+	popm	r0-r3,r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[108]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[108]
 	rsub	r6,pc
-	invalid
+	ld.w	r5,r12[20]
 	mov	r2,r12
-	invalid
-	lddpc	r12,pc[100]
+	ld.w	r4,r5[8]
+	lddpc	r12,sp[100]
 	mov	r11,r4
 	invalid
-	invalid
-	lddpc	r11,pc[96]
+	breq	00008C40
+	lddpc	r11,sp[96]
 	mov	r12,r4
 	invalid
+	breq	00008C40
+	ld.w	r11,r5[12]
+	lddpc	r12,sp[88]
 	invalid
-	invalid
-	lddpc	r12,pc[88]
-	invalid
-	invalid
-	invalid
+	breq	00008C40
+	ld.w	r7,r5[0]
 	mov	r11,00000000
 	mov	r12,r7
 	invalid
-	invalid
-	lddpc	r11,pc[60]
+	breq	00008C40
+	lddpc	r11,sp[60]
 	mov	r12,r7
 	invalid
-	invalid
+	ld.w	r7,r5[4]
 	mov	r11,r7
 	mov	r3,r12
 	invalid
-	invalid
-	lddpc	r12,pc[52]
+	breq	00008C40
+	lddpc	r12,sp[52]
 	mov	r11,r7
 	invalid
-	invalid
+	breq	00008C40
 	mov	r11,r4
 	mov	r12,r3
 	invalid
-	invalid
-	invalid
+	breq	00008C40
+	popm	r0-r3,r4-r7,r12,pc,r12=1
 	sub	r8,pc,FFFFFA0C
 	mov	r12,00000000
-	invalid
-	invalid
+	st.w	r2[20],r8
+	popm	r0-r3,r4-r7,pc
 	invalid
 	invalid
 	mov	r12,FFFFFFDC
 	invalid
 	mov	r6,FFFFFFF6
-	invalid
+	ld.w	r6,r3[24]
 	mov	r12,FFFFFFF8
 	invalid
 	mov	r0,FFFFFFF8
 	invalid
-	invalid
-	invalid
+	pushm	r4-r7,lr
+	ld.w	r5,r12[0]
 	mov	r4,r12
 	invalid
+	ld.w	r8,r5[0]
+	cp.w	r8,00000000
+	breq	00008C9A
+	ld.w	r7,r5[4]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	00008C7A
+	ld.w	r12,r7[0]
+	icall	r8
 	mov	r8,00000000
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r7[0],r8
+	ld.w	r9,r7[4]
+	ld.w	r8,r4[36]
+	st.w	r7[4],r8
+	st.w	r4[-28],r7
 	mov	r7,r9
+	ld.w	r8,r4[32]
+	cp.w	r7,00000000
+	brne	00008C72
+	cp.w	r8,00000000
+	breq	00008C96
+	ld.w	r12,r5[0]
+	icall	r8
+	st.w	r5[4],r7
+	st.w	r5[0],r7
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r4[4]
+	cp.w	r5,r8
+	brcs	00008C68
 	mov	r8,00000000
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[124]
+	st.w	r4[16],r8
+	st.w	r4[12],r8
+	popm	r4-r7,pc
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[124]
 	rsub	r6,pc
-	invalid
+	ld.w	r8,r12[24]
 	mov	r3,r11
-	invalid
+	ld.w	r11,r12[8]
 	mov	r7,r12
 	mov	r12,r3
-	invalid
+	ld.w	r5,r7[0]
 	mov	r4,r10
 	mov	r2,r9
+	icall	r8
+	ld.w	r8,r7[4]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r5,r8
+	brcs	00008CD0
 	mcall	r6[76]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r4[0],r5
+	ld.w	r11,r5[0]
+	cp.w	r11,00000000
+	breq	00008D24
+	ld.w	r8,r7[28]
 	mov	r12,r3
+	icall	r8
 	invalid
+	breq	00008D1E
+	ld.w	r12,r5[0]
+	cp.w	r2,00000000
+	breq	00008D26
+	ld.w	r9,r5[4]
+	cp.w	r9,00000000
+	breq	00008CF4
+	ld.w	r8,r9[0]
+	st.w	r5[0],r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r5[0],r9
+	popm	r0-r3,r4-r7,pc
+	ld.w	r11,r11[0]
+	ld.w	r8,r7[28]
 	mov	r12,r3
+	icall	r8
+	ld.w	r9,r5[4]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	00008D1C
+	ld.w	r12,r9[0]
+	cp.w	r2,00000000
+	breq	00008D26
+	ld.w	r8,r9[4]
+	st.w	r5[4],r8
 	mov	r8,00000000
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r9[0],r8
+	ld.w	r8,r7[36]
+	st.w	r9[4],r8
+	st.w	r7[-28],r9
+	popm	r0-r3,r4-r7,pc
 	mov	r5,r9
-	invalid
-	invalid
-	invalid
+	ld.w	r11,r5[4]
+	cp.w	r11,00000000
+	brne	00008CF8
 	mov	r12,00000000
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[80]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[80]
 	rsub	r6,pc
 	mov	r7,r11
-	invalid
-	invalid
+	ld.w	r8,r12[24]
+	ld.w	r11,r12[8]
 	mov	r5,r12
 	mov	r12,r7
+	ld.w	r3,r5[0]
+	icall	r8
+	ld.w	r11,r5[4]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,r11
+	brcc	00008D4E
 	mov	r9,r10
 	invalid
 	mcall	r6[76]
+	ld.w	r8,r9[0]
+	cp.w	r8,r7
+	brne	00008D62
+	ld.w	r12,r9[4]
+	cp.w	r12,00000000
+	breq	00008D62
+	ld.w	r12,r12[0]
+	popm	r0-r3,r4-r7,pc
+	ld.w	r9,r9[4]
+	cp.w	r9,00000000
+	brne	00008D52
 	invalid
+	ld.w	r12,r10[0]
+	cp.w	r12,00000000
+	brne	00008D78
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,r11
+	brcs	00008D6A
 	mov	r12,00000000
+	popm	r0-r3,r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[40]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[40]
 	rsub	r6,pc
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r12[16]
+	cp.w	r8,00000000
+	breq	00008DA2
+	ld.w	r9,r12[4]
+	ld.w	r8,r12[0]
+	cp.w	r8,r9
+	brcs	00008D98
 	mcall	r6[76]
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r8[0]
+	cp.w	r12,00000000
+	brne	00008DA4
 	invalid
 	invalid
 	mov	r12,r8
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[68]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[68]
 	rsub	r6,pc
-	invalid
+	ld.w	r8,r12[24]
 	mov	r4,r11
-	invalid
+	ld.w	r11,r12[8]
 	mov	r7,r12
 	mov	r12,r4
+	ld.w	r5,r7[0]
+	icall	r8
+	ld.w	r8,r7[4]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,r8
+	brcs	00008DCE
 	mcall	r6[76]
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r11[0]
+	cp.w	r8,00000000
+	breq	00008DEE
 	mov	r5,r11
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r7[28]
+	ld.w	r11,r5[0]
 	mov	r12,r4
+	icall	r8
 	invalid
+	breq	00008DE8
+	ld.w	r12,r5[0]
+	popm	r4-r7,pc
+	ld.w	r5,r5[4]
+	cp.w	r5,00000000
+	brne	00008DD8
+	popm	r4-r7,pc,r12=0
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[28]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[28]
 	rsub	r6,pc
 	mov	r9,r12
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r12[36]
+	cp.w	r12,00000000
+	breq	00008E08
+	ld.w	r8,r12[4]
+	st.w	r9[-28],r8
+	popm	r4-r7,pc
 	mov	r12,00000008
 	mcall	r6[32]
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[112]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[112]
 	rsub	r6,pc
-	invalid
+	ld.w	r8,r12[32]
 	mov	r7,r12
+	cp.w	r8,00000000
+	breq	00008E4A
+	ld.w	r8,r12[16]
+	cp.w	r8,00000000
+	breq	00008E4A
+	ld.w	r4,r12[0]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r4[0]
+	cp.w	r8,00000000
+	breq	00008E42
 	mov	r5,r4
 	invalid
+	ld.w	r12,r5[0]
+	ld.w	r8,r7[32]
+	icall	r8
+	ld.w	r5,r5[4]
+	cp.w	r5,00000000
+	brne	00008E36
 	invalid
+	ld.w	r8,r7[4]
+	cp.w	r4,r8
+	brcs	00008E2C
+	ld.w	r4,r7[0]
 	invalid
+	ld.w	r5,r4[4]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r5,r5[4]
 	mcall	r6[12]
 	mov	r12,r5
+	cp.w	r5,00000000
+	brne	00008E52
 	invalid
+	ld.w	r8,r7[4]
+	cp.w	r4,r8
+	brcs	00008E4E
+	ld.w	r5,r7[36]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r5,r5[4]
 	mcall	r6[12]
 	mov	r12,r5
-	invalid
-	invalid
-	invalid
+	cp.w	r5,00000000
+	brne	00008E6A
+	ld.w	r12,r7[0]
 	mcall	r6[12]
 	mov	r12,r7
 	mcall	r6[12]
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[212]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[212]
 	rsub	r6,pc
 	mov	r1,r10
 	mov	r4,r12
 	mov	r5,r11
 	mov	r2,r9
 	mov	r0,r8
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000000
+	breq	00008F56
+	cp.w	r9,00000000
+	breq	00008F56
 	mov	r12,00000028
 	mcall	r6[32]
 	mov	r7,r12
-	invalid
+	breq	00008F56
 	sub	r8,pc,FFFFFC76
 	mov	r3,r12
+	cp.w	r5,00000000
+	invalid
+	st.w	r12[20],r5
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	00008F50
 	invalid
 	mov	r8,00000000
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	00008EE8
 	mov	r12,r4
 	invalid
+	ld.w	r11,r5[8]
 	invalid
-	invalid
-	lddpc	r11,pc[140]
+	lddpc	r11,sp[140]
 	mov	r5,r12
 	invalid
-	invalid
+	brne	00008F50
 	mov	r12,r5
 	invalid
 	mov	r4,r12
-	lddpc	r8,pc[124]
+	lddpc	r8,sp[124]
+	cp.w	r4,r8
 	invalid
-	invalid
-	invalid
+	cp.w	r4,00000009
 	invalid
 	invalid
 	invalid
@@ -10662,186 +10662,186 @@ _start proc
 	invalid
 	invalid
 	sub	r11,r10,FFFFFFFF
+	cp.w	lr,r12
+	brcc	00008F1C
 	invalid
 	invalid
+	cp.w	r9,00000000
+	brne	00008F06
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r8,pc[64]
-	invalid
-	invalid
+	cp.w	r9,00000000
+	breq	00008EFE
+	lddpc	r8,sp[64]
+	st.w	r7[8],r12
+	cp.w	r12,r8
 	invalid
 	mov	r11,00000008
 	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r7[0],r12
+	breq	00008F50
+	ld.w	r8,r7[8]
 	mov	r9,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r7[-28],r9
+	st.w	r7[4],r8
+	st.w	r7[24],r1
+	st.w	r7[28],r2
+	st.w	r7[-32],r0
+	st.w	r7[12],r9
+	st.w	r7[16],r9
 	invalid
 	mov	r12,r7
 	mcall	r6[12]
 	mov	r3,00000000
 	mov	r12,r3
+	popm	r0-r3,r4-r7,pc
 	invalid
+	lddpc	r0,sp[480]
 	invalid
-	lddpc	r0,pc[480]
+	ld.ub	pc[-1]
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[176]
+	lddpc	r6,sp[176]
 	rsub	r6,pc
 	mov	r3,r12
-	invalid
+	ld.w	r8,r3[32]
 	mov	r12,r11
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r3[28]
+	ld.w	r10,r3[24]
+	ld.w	r11,r3[20]
 	invalid
 	mov	r4,r12
+	breq	00009014
+	ld.w	r8,r3[36]
+	ld.w	r2,r3[0]
+	st.w	r12[-28],r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r2[0]
+	cp.w	r8,00000000
+	breq	00008FEA
 	mov	r7,r2
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r1,r7[0]
+	ld.w	r8,r4[24]
+	ld.w	r11,r4[8]
 	mov	r12,r1
+	ld.w	r5,r4[0]
+	icall	r8
+	ld.w	r8,r4[4]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r5,r8
+	brcs	00008FAC
 	mcall	r6[76]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r5[0]
+	ld.w	r0,r7[4]
+	cp.w	r9,00000000
+	breq	00008FD0
+	cp.w	r7,r2
+	brne	00008FC8
 	mov	r12,r4
 	invalid
+	breq	00009014
+	ld.w	r8,r5[4]
+	st.w	r12[4],r8
+	st.w	r5[4],r12
+	st.w	r12[0],r1
 	invalid
+	ld.w	r8,r5[4]
+	st.w	r7[4],r8
+	st.w	r5[4],r7
 	invalid
+	st.w	r5[0],r1
+	ld.w	r8,r4[12]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r4[12],r8
+	cp.w	r7,r2
+	breq	00008FE4
+	st.w	r7[0],r9
+	ld.w	r8,r4[36]
+	st.w	r7[4],r8
+	st.w	r4[-28],r7
 	mov	r7,r0
+	cp.w	r7,00000000
+	brne	00008F92
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r3[4]
+	cp.w	r2,r8
+	brcs	00008F88
+	ld.w	r12,r3[0]
 	mcall	r6[12]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r4[0]
+	ld.w	r10,r4[4]
+	ld.w	r11,r4[8]
+	ld.w	lr,r4[12]
+	ld.w	r8,r4[36]
 	mov	r12,r4
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r3[-28],r8
+	st.w	r3[0],r9
+	st.w	r3[4],r10
+	st.w	r3[8],r11
+	st.w	r3[12],lr
 	mcall	r6[12]
+	popm	r0-r3,r4-r7,r12,pc,r12=1
+	popm	r0-r3,r4-r7,pc,r12=0
 	invalid
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[156]
+	lddpc	r6,sp[156]
 	rsub	r6,pc
 	mov	r9,00000001
 	mov	r10,sp
 	mov	r7,r12
 	invalid
 	mov	r1,r12
+	breq	000090B6
+	ld.w	r8,r7[16]
+	lddsp	r9,sp[0]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r7[16],r8
+	ld.w	r2,r9[0]
+	cp.w	r2,00000000
+	brne	000090B6
+	ld.w	r8,r7[12]
 	invalid
 	mov	r12,r8
+	st.w	r7[12],r8
 	invalid
-	invalid
-	invalid
+	ld.w	r5,r7[20]
 	mov	r3,r12
+	ld.w	r12,r7[8]
 	invalid
-	invalid
-	invalid
+	ld.w	r11,r5[0]
 	invalid
 	mov	r11,r12
 	mov	r12,r3
 	invalid
-	invalid
+	breq	000090B6
 	mov	r12,r7
 	invalid
-	invalid
-	invalid
+	ld.w	r3,r7[20]
+	ld.w	r12,r7[8]
 	invalid
 	mov	r4,r12
+	ld.w	r12,r7[12]
 	invalid
-	invalid
-	invalid
+	ld.w	r11,r3[0]
 	mov	r5,r12
 	mov	r12,r4
 	invalid
 	mov	r11,r12
 	mov	r12,r5
 	invalid
+	breq	000090B6
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r2
+	breq	0000909E
+	ld.w	r11,r3[4]
 	mov	r12,r4
 	invalid
-	invalid
+	ld.w	r11,r3[4]
 	mov	r12,r4
 	invalid
-	invalid
+	ld.w	r11,r3[8]
 	invalid
 	invalid
 	mov	r11,r12
@@ -10849,66 +10849,66 @@ _start proc
 	invalid
 	mov	r12,r1
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[216]
+	lddpc	r6,sp[216]
 	rsub	r6,pc
 	mov	r2,r11
 	mov	r7,r12
-	invalid
-	invalid
+	cp.w	r11,00000000
+	brne	000090D4
 	mcall	r6[76]
 	mov	r9,00000000
 	mov	r10,sp
 	invalid
 	mov	r1,r12
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	00009196
+	lddsp	r9,sp[0]
+	ld.w	r8,r9[0]
+	cp.w	r8,00000000
+	breq	00009104
 	mov	r12,r7
 	invalid
-	invalid
-	invalid
-	invalid
+	breq	00009196
+	st.w	r12[0],r2
+	lddsp	r8,sp[0]
 	mov	r1,r2
+	ld.w	r8,r8[4]
+	st.w	r12[4],r8
+	lddsp	r8,sp[0]
+	st.w	r8[4],r12
+	ld.w	r8,r7[16]
 	invalid
+	st.w	r7[16],r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r9[0],r2
+	ld.w	r9,r7[12]
+	ld.w	r8,r7[16]
 	invalid
 	invalid
 	mov	r12,r9
+	st.w	r7[16],r8
+	st.w	r7[12],r9
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r5,r7[20]
 	mov	r3,r12
+	ld.w	r12,r7[8]
 	invalid
-	invalid
-	invalid
+	ld.w	r11,r5[8]
 	invalid
 	mov	r11,r3
 	invalid
-	invalid
+	breq	00009194
 	mov	r12,r7
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r3,r7[20]
+	ld.w	r0,r3[8]
+	ld.w	r12,r7[8]
 	invalid
 	mov	r4,r12
-	invalid
+	ld.w	r12,r7[12]
 	invalid
 	mov	r11,r4
 	mov	r5,r12
@@ -10916,22 +10916,22 @@ _start proc
 	invalid
 	mov	r11,r5
 	invalid
+	breq	00009194
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r1
+	breq	0000916A
+	ld.w	r11,r3[12]
 	mov	r12,r4
 	invalid
-	invalid
+	ld.w	r11,r3[12]
 	mov	r12,r4
 	invalid
 	mov	r11,r0
 	invalid
-	lddpc	r11,pc[40]
+	lddpc	r11,sp[40]
 	mov	r5,r12
 	invalid
-	invalid
+	brne	00009196
 	mov	r12,r5
 	invalid
 	mov	r11,r12
@@ -10942,12 +10942,12 @@ _start proc
 	mov	r1,r2
 	mov	r12,r1
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
+	lddpc	r0,sp[480]
 	invalid
-	lddpc	r0,pc[480]
-	invalid
-	invalid
-	lddpc	r6,pc[132]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[132]
 	rsub	r6,pc
 	mov	r1,r11
 	mov	r5,r12
@@ -10993,10 +10993,10 @@ _start proc
 	mov	r12,r1
 	mcall	r6[104]
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
+	lddsp	r9,sp[20]
 	invalid
 	invalid
 	invalid
@@ -11009,24 +11009,24 @@ _start proc
 	mov	r4,FFFFFFFB
 	invalid
 	invalid
-	invalid
-	lddpc	r6,pc[96]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[96]
 	rsub	r6,pc
 	mov	r7,r12
 	mov	r4,r10
 	mov	r5,r11
+	cp.w	r12,00000001
+	breq	000092A2
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	breq	000092A2
 	mov	r10,r4
 	mov	r11,r5
 	invalid
 	mov	r2,r10
 	mov	r3,r11
-	invalid
-	invalid
+	cp.w	r7,00000000
+	breq	00009276
 	mov	r8,00000000
 	invalid
 	mov	r11,r3
@@ -11036,7 +11036,7 @@ _start proc
 	invalid
 	mov	r5,r7
 	invalid
-	invalid
+	cp.b	r5,r7
 	invalid
 	mov	r10,r8
 	mov	r11,00000000
@@ -11047,42 +11047,42 @@ _start proc
 	mov	r5,r11
 	mov	r10,r4
 	mov	r11,r5
+	popm	r0-r3,r4-r7,pc
+	invalid
+	lddsp	r0,sp[252]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[32]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[32]
 	rsub	r6,pc
 	ld.w	r12,r12[748]
 	mcall	r6[56]
-	invalid
-	invalid
-	mov	r11,00000000
-	invalid
+	breq	000092CC
 	invalid
 	mov	r11,00000000
+	popm	r4-r7,pc
 	invalid
+	mov	r11,00000000
+	popm	r4-r7,pc
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	lddpc	r6,pc[216]
+	lddpc	r6,sp[216]
 	rsub	r6,pc
 	mov	r7,r12
 	mov	r2,r11
 	mov	r3,r10
-	invalid
-	invalid
+	cp.w	r12,00000000
+	brne	0000930C
 	ld.w	r12,r12[744]
 	mcall	r6[56]
 	mov	r7,r12
-	invalid
+	brne	0000930C
 	ld.w	r12,r12[740]
 	mcall	r6[56]
 	mov	r7,r12
-	invalid
+	brne	0000930C
 	invalid
 	mov	r5,r7
 	invalid
@@ -11093,8 +11093,8 @@ _start proc
 	mov	r11,00000004
 	mov	r10,r8
 	mov	r8,00000027
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	00009322
 	mov	r5,r12
 	invalid
 	mov	r7,r10
@@ -11105,7 +11105,7 @@ _start proc
 	mov	r10,r4
 	mov	r12,r7
 	invalid
-	invalid
+	brlt	0000934A
 	invalid
 	mov	r9,00000000
 	invalid
@@ -11118,137 +11118,137 @@ _start proc
 	mov	r11,sp
 	mov	r12,r7
 	invalid
-	invalid
-	invalid
+	brne	00009360
+	lddsp	r10,sp[0]
 	invalid
 	mov	r8,00000000
+	st.w	r2[0],r8
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r7,r10
+	brne	0000938A
 	invalid
 	mov	r8,00000042
 	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	00009386
 	invalid
 	mov	r8,00000069
 	invalid
+	cp.b	r9,r8
+	brne	0000939A
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r7[0]
 	mov	r9,00000009
 	invalid
-	invalid
+	cp.b	r8,r9
 	invalid
 	mov	r12,00000000
+	st.w	r2[0],r5
 	invalid
+	cp.w	r8,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	brne	000093B0
 	invalid
 	mov	r12,00000004
 	invalid
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[344]
+	lddpc	r6,sp[344]
 	rsub	r6,pc
 	sub	lr,sp,FFFFFF64
+	stdsp	sp[20],r9
+	invalid
+	stdsp	sp[32],r9
 	invalid
 	invalid
 	invalid
 	invalid
+	lddsp	r7,sp[32]
 	invalid
+	cp.w	r7,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r10,sp[20]
+	stdsp	sp[40],r9
 	invalid
 	invalid
 	mov	r7,r12
-	invalid
+	stdsp	sp[36],r10
 	invalid
 	mcall	r6[436]
-	invalid
+	lddsp	r11,sp[20]
 	sub	r8,r7,FFFFFD78
-	invalid
+	ld.w	r3,r12[0]
 	invalid
 	mov	r5,r12
 	mov	r12,r3
-	invalid
-	invalid
+	stdsp	sp[0],r11
+	stdsp	sp[56],r8
 	mcall	r6[16]
-	invalid
+	ld.w	r2,r5[4]
 	ld.w	r8,r8[732]
 	sub	r9,r12,00000001
+	cp.w	r9,00000010
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[64],r9
+	stdsp	sp[60],r3
 	mov	r12,r2
-	invalid
-	invalid
+	ld.w	r5,r5[8]
+	stdsp	sp[68],r5
 	mcall	r6[16]
 	invalid
 	ld.w	r8,r8[728]
+	cp.w	r12,00000010
 	invalid
 	invalid
 	invalid
+	stdsp	sp[72],r12
+	cp.w	r8,r10
 	invalid
 	invalid
 	invalid
+	cp.w	r10,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	mov	r8,r10
-	invalid
-	mov	r9,r11
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	00009546
 	invalid
 	invalid
 	invalid
 	mov	r8,r10
+	lddsp	r10,sp[28]
 	mov	r9,r11
 	invalid
 	invalid
+	lddsp	r11,sp[28]
+	invalid
+	lddsp	r11,sp[24]
+	invalid
+	lddsp	r11,sp[44]
+	invalid
+	stdsp	sp[44],r11
 	invalid
 	invalid
 	invalid
+	cp.w	r10,r8
+	invalid
+	brne	00009546
+	invalid
+	invalid
+	cp.w	r10,00000000
+	invalid
+	breq	00009546
+	mov	r8,r10
+	mov	r9,r11
+	invalid
+	invalid
+	cp.w	r10,00000000
+	invalid
+	brne	00009546
 	invalid
 	invalid
 	invalid
@@ -11268,15 +11268,15 @@ _start proc
 	invalid
 	invalid
 	invalid
+	cp.w	r10,r0
+	invalid
+	brcc	00009518
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r0,r10
 	invalid
 	invalid
 	invalid
@@ -11313,17 +11313,17 @@ _start proc
 	mov	r11,r1
 	invalid
 	mov	r0,r10
-	invalid
+	lddsp	r10,sp[0]
 	mov	r1,r11
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000000
+	brne	000095AA
+	lddsp	r12,sp[36]
 	mov	r10,r0
 	mov	r11,r1
 	invalid
-	invalid
+	lddsp	r4,sp[0]
 	mov	r9,FFFFFFFF
-	invalid
+	stdsp	sp[52],r9
 	invalid
 	mov	r12,r7
 	ld.w	r11,r11[364]
@@ -11333,8 +11333,8 @@ _start proc
 	invalid
 	invalid
 	mov	r8,00000000
-	invalid
-	invalid
+	stdsp	sp[52],r8
+	lddsp	r12,sp[40]
 	invalid
 	mov	r3,r11
 	mov	r8,r10
@@ -11345,10 +11345,10 @@ _start proc
 	invalid
 	mov	r8,r2
 	mov	r5,r11
-	invalid
+	lddsp	r11,sp[52]
 	mov	r9,r3
 	invalid
-	invalid
+	stdsp	sp[52],r11
 	mov	r11,r5
 	mov	r4,r10
 	invalid
@@ -11357,21 +11357,21 @@ _start proc
 	mov	r10,r0
 	mov	r11,r1
 	invalid
-	invalid
-	invalid
-	invalid
+	breq	000095F2
+	lddsp	r10,sp[52]
+	cp.w	r10,00000007
 	invalid
 	mov	r8,r4
 	mov	r9,r5
 	mov	r10,r0
 	mov	r11,r1
 	invalid
-	invalid
+	lddsp	r12,sp[36]
 	mov	r3,r11
 	mov	r11,r3
 	mov	r2,r10
 	invalid
-	invalid
+	lddsp	r4,sp[64]
 	invalid
 	mov	r12,r7
 	invalid
@@ -11379,29 +11379,29 @@ _start proc
 	mcall	r6[100]
 	mov	r12,r7
 	mcall	r6[16]
+	lddsp	r9,sp[40]
 	invalid
-	invalid
-	invalid
+	cp.w	r9,00000000
 	invalid
 	invalid
 	invalid
 	mov	r5,r12
+	cp.w	r8,r12
+	brcs	0000964C
+	lddsp	r8,sp[20]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000967E
 	invalid
 	invalid
 	mov	r8,00000030
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000967E
 	invalid
 	mov	r10,r2
 	mov	r11,r3
 	invalid
 	mov	r4,00000000
-	invalid
+	lddsp	r12,sp[36]
 	invalid
 	invalid
 	invalid
@@ -11413,7 +11413,7 @@ _start proc
 	mcall	r6[16]
 	mov	r5,r12
 	invalid
-	invalid
+	lddsp	r1,sp[56]
 	mov	r11,r7
 	invalid
 	mov	r10,r5
@@ -11424,32 +11424,32 @@ _start proc
 	invalid
 	mov	r3,00000000
 	mov	r4,r3
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[0]
+	cp.w	r8,00000000
+	brne	000096A8
+	lddsp	r5,sp[56]
 	mov	r7,FFFFFFFF
-	invalid
+	stdsp	sp[52],r7
 	invalid
 	invalid
 	mov	r1,00000000
+	lddsp	r0,sp[40]
+	cp.w	r0,r10
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r5,sp[56]
+	stdsp	sp[52],r1
 	invalid
 	mov	r0,FFFFFFFF
 	invalid
 	invalid
 	invalid
-	invalid
+	lddsp	r4,sp[8]
 	invalid
 	invalid
 	invalid
 	mov	r9,00000000
-	invalid
+	stdsp	sp[52],r9
 	invalid
 	mov	r8,r0
 	mov	r9,r1
@@ -11460,55 +11460,55 @@ _start proc
 	invalid
 	mov	r9,r1
 	invalid
-	invalid
+	lddsp	r8,sp[40]
 	invalid
 	mov	r8,r0
 	invalid
-	invalid
+	lddsp	r7,sp[40]
 	invalid
 	invalid
 	invalid
 	mov	r3,r2
+	cp.w	r7,r8
 	invalid
 	invalid
+	cp.w	r5,r7
+	brcc	00009720
+	cp.w	r8,00000000
+	invalid
+	lddsp	r11,sp[52]
 	invalid
 	invalid
+	stdsp	sp[52],r11
+	cp.w	r0,r8
 	invalid
 	invalid
+	cp.w	r11,00000007
 	invalid
 	invalid
+	cp.w	r10,00000009
 	invalid
 	invalid
+	lddsp	r5,sp[56]
+	invalid
+	lddsp	r10,sp[36]
+	cp.w	r10,00000001
+	brne	0000975C
 	invalid
 	invalid
+	cp.w	r8,00000002
 	invalid
 	invalid
+	lddsp	r9,sp[36]
+	cp.w	r4,00000000
+	invalid
+	cp.w	r9,00000000
 	invalid
 	invalid
+	cp.w	r9,00000000
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r3,0000000A
 	invalid
 	invalid
 	mov	r8,00000001
@@ -11516,34 +11516,34 @@ _start proc
 	invalid
 	invalid
 	invalid
+	cp.w	r10,0000000A
 	invalid
-	invalid
-	invalid
-	invalid
+	brne	00009794
+	lddsp	r5,sp[56]
 	mov	r3,00000000
 	invalid
 	mov	r3,00000000
 	mov	r4,r3
+	lddsp	r8,sp[20]
 	invalid
-	invalid
-	invalid
-	invalid
+	brne	000097A6
+	lddsp	r5,sp[56]
 	mov	r3,00000000
 	invalid
+	lddsp	r8,sp[56]
+	lddsp	r10,sp[64]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r11,sp[60]
 	sub	r9,r3,FFFFFFD0
 	mov	r12,r5
-	invalid
+	st.b	r8[0],r9
 	mcall	r6[36]
 	mov	r3,00000000
 	mov	r4,r3
-	invalid
-	invalid
-	invalid
+	lddsp	r9,sp[36]
+	cp.w	r9,00000001
+	brne	000097EA
 	invalid
 	mov	r8,00000001
 	mov	r9,00000000
@@ -11556,52 +11556,52 @@ _start proc
 	invalid
 	invalid
 	invalid
+	cp.w	r8,00000005
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[36]
+	cp.w	r8,00000000
+	breq	000097F4
 	mov	r8,00000000
 	invalid
 	invalid
+	cp.w	r8,00000000
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	0000985E
 	invalid
 	mov	r2,00000001
 	mov	r3,00000000
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r10,sp[0]
+	cp.w	r10,00000000
+	breq	0000985E
 	invalid
 	mov	r9,00000000
+	lddsp	r8,sp[40]
+	cp.w	r10,r8
+	invalid
+	brne	0000985E
+	lddsp	r10,sp[52]
+	cp.w	r10,00000007
+	invalid
+	lddsp	r8,sp[20]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[52],r10
+	brne	0000985A
+	lddsp	r8,sp[64]
 	sub	r9,r5,00000001
 	invalid
-	invalid
+	lddsp	r11,sp[60]
 	mov	r10,r8
 	mov	r12,r5
 	mov	r8,00000030
-	invalid
+	st.b	r9[0],r8
 	mcall	r6[36]
 	invalid
 	mov	r1,r5
@@ -11616,15 +11616,15 @@ _start proc
 	invalid
 	invalid
 	invalid
+	cp.w	r10,00000000
 	invalid
-	invalid
-	invalid
+	brne	00009860
 	mov	r12,r5
+	lddsp	r8,sp[20]
 	invalid
+	brne	000098F4
 	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r12,sp[72]
 	invalid
 	mcall	r6[16]
 	mov	r4,FFFFFFFF
@@ -11633,17 +11633,17 @@ _start proc
 	mov	r11,r1
 	sub	r12,sp,FFFFFFB4
 	mcall	r6[36]
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r11,sp[68]
+	ld.ub	r11[0]
+	cp.w	r9,00000000
+	breq	000098CA
 	mov	r8,FFFFFFFF
 	invalid
+	cp.b	r9,r8
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[68],r11
+	cp.w	r4,r5
 	invalid
 	invalid
 	invalid
@@ -11653,139 +11653,139 @@ _start proc
 	mov	r12,r1
 	invalid
 	mcall	r6[36]
-	invalid
-	invalid
-	invalid
+	cp.w	r5,00000000
+	breq	000098F4
+	lddsp	r11,sp[72]
 	mov	r10,r7
 	mov	r12,r3
 	invalid
+	lddsp	r8,sp[20]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	000099A6
+	lddsp	r10,sp[52]
+	cp.w	r10,00000000
+	brge	00009936
 	mov	r9,00000000
 	mov	r2,00000001
 	mov	r3,00000000
+	stdsp	sp[52],r9
 	invalid
+	lddsp	r8,sp[52]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[52],r8
+	cp.w	r8,00000008
+	breq	00009936
+	lddsp	r10,sp[40]
 	mov	r11,00000000
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	r2,r8
+	invalid
+	brcs	0000990C
+	lddsp	r9,sp[20]
+	lddsp	r8,sp[52]
 	invalid
 	invalid
+	breq	00009952
+	lddsp	r8,sp[20]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	00009952
+	lddsp	r7,sp[56]
 	mov	r8,00000020
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[56],r7
+	lddsp	r11,sp[52]
+	cp.w	r11,00000000
+	breq	0000997A
+	lddsp	r10,sp[32]
+	cp.w	r10,00000000
+	brne	00009966
+	cp.w	r11,00000001
+	brne	00009966
 	mov	r8,0000006B
 	invalid
 	sub	r8,pc,FFFFFFB2
+	lddsp	r7,sp[52]
 	invalid
 	invalid
+	lddsp	r11,sp[56]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[56],r11
+	cp.w	r9,00000000
+	breq	000099A6
+	lddsp	r10,sp[32]
+	cp.w	r10,00000000
+	breq	00009992
+	lddsp	r9,sp[52]
+	cp.w	r9,00000000
+	breq	00009992
+	lddsp	r7,sp[56]
 	mov	r8,00000069
 	invalid
-	invalid
-	invalid
+	stdsp	sp[56],r7
+	lddsp	r11,sp[56]
 	mov	r8,00000042
 	invalid
-	invalid
+	stdsp	sp[56],r11
 	invalid
 	mov	r4,00000000
+	cp.w	r3,00000000
 	invalid
 	invalid
-	invalid
-	invalid
+	lddsp	r10,sp[56]
 	mov	r8,00000000
 	mov	r12,r1
+	st.b	r10[0],r8
 	invalid
-	invalid
-	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
 	invalid
 	invalid
 	invalid
 	mov	r0,r0
 	invalid
-	lddpc	r7,pc[336]
+	lddpc	r7,sp[336]
+	stdsp	sp[276],r0
+	lddsp	r10,sp[340]
+	cp.w	r0,00000010
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[144]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[144]
 	rsub	r6,pc
-	invalid
+	ld.w	r8,r6[-20]
 	mov	r5,r12
+	ld.w	r7,r8[0]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r5[0]
+	cp.b	r9,r8
+	brne	000099F2
 	sub	r12,r7,FFFFFFF8
 	mov	r11,r5
 	mcall	r6[24]
-	invalid
+	brne	000099F2
 	mov	r12,r7
+	popm	r4-r7,pc
+	ld.w	r7,r7[4]
+	cp.w	r7,00000000
+	brne	000099D6
+	ld.w	r8,r6[-20]
+	ld.w	r7,r8[4]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r5[0]
+	cp.b	r9,r8
+	brne	00009A16
 	sub	r12,r7,FFFFFFF8
 	mov	r11,r5
 	mcall	r6[24]
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	00009A56
+	ld.w	r7,r7[4]
+	cp.w	r7,00000000
+	brne	000099FE
 	mov	r12,r5
 	mcall	r6[424]
 	mov	r4,r12
@@ -11797,100 +11797,100 @@ _start proc
 	mov	r7,r12
 	invalid
 	mcall	r6[128]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r10,r6[-20]
+	cp.w	r4,00000000
+	breq	00009A4E
+	ld.w	r8,r4[8]
+	ld.w	r9,r10[0]
 	mov	r12,r7
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r7[0],r8
+	st.w	r7[4],r9
+	st.w	r10[0],r7
+	popm	r4-r7,pc
+	ld.w	r8,r10[4]
 	mov	r12,r4
+	st.w	r10[4],r7
+	st.w	r7[4],r8
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[104]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[104]
 	rsub	r6,pc
-	invalid
+	ld.w	r8,r6[-20]
 	mov	r4,r12
+	ld.w	r12,r8[0]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r12[0]
+	cp.w	r8,r4
+	brne	00009A74
 	mov	r7,r12
 	invalid
+	ld.w	r12,r12[4]
+	cp.w	r12,00000000
+	brne	00009A6A
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r5,r12[0]
 	mov	r12,r5
 	mcall	r6[16]
 	invalid
 	invalid
 	mov	r11,r5
 	mov	r7,r12
-	invalid
+	st.w	r12[0],r4
 	invalid
 	mcall	r6[128]
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r6[-20]
+	ld.w	r8,r9[0]
+	st.w	r7[4],r8
+	st.w	r9[0],r7
 	invalid
 	mov	r12,r4
 	mcall	r6[564]
-	invalid
+	brne	00009A7C
 	ld.w	r5,r5[360]
 	invalid
 	invalid
 	sub	r12,r7,FFFFFFF8
 	mov	r9,00000000
+	cp.b	r8,r9
+	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[144]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[144]
 	rsub	r6,pc
-	invalid
+	ld.w	r8,r6[-20]
 	mov	r5,r12
+	ld.w	r7,r8[8]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r5[0]
+	cp.b	r9,r8
+	brne	00009AF2
 	sub	r12,r7,FFFFFFF8
 	mov	r11,r5
 	mcall	r6[24]
-	invalid
+	brne	00009AF2
 	mov	r12,r7
+	popm	r4-r7,pc
+	ld.w	r7,r7[4]
+	cp.w	r7,00000000
+	brne	00009AD6
+	ld.w	r8,r6[-20]
+	ld.w	r7,r8[12]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r5[0]
+	cp.b	r9,r8
+	brne	00009B16
 	sub	r12,r7,FFFFFFF8
 	mov	r11,r5
 	mcall	r6[24]
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	00009B56
+	ld.w	r7,r7[4]
+	cp.w	r7,00000000
+	brne	00009AFE
 	mov	r12,r5
 	mcall	r6[460]
 	mov	r4,r12
@@ -11902,77 +11902,77 @@ _start proc
 	mov	r7,r12
 	invalid
 	mcall	r6[128]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r10,r6[-20]
+	cp.w	r4,00000000
+	breq	00009B4E
+	ld.w	r8,r4[8]
+	ld.w	r9,r10[8]
 	mov	r12,r7
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r7[0],r8
+	st.w	r7[4],r9
+	st.w	r10[8],r7
+	popm	r4-r7,pc
+	ld.w	r8,r10[12]
 	mov	r12,r4
+	st.w	r10[12],r7
+	st.w	r7[4],r8
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[104]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[104]
 	rsub	r6,pc
-	invalid
+	ld.w	r8,r6[-20]
 	mov	r4,r12
+	ld.w	r12,r8[8]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r12[0]
+	cp.w	r8,r4
+	brne	00009B74
 	mov	r7,r12
 	invalid
+	ld.w	r12,r12[4]
+	cp.w	r12,00000000
+	brne	00009B6A
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r5,r12[0]
 	mov	r12,r5
 	mcall	r6[16]
 	invalid
 	invalid
 	mov	r11,r5
 	mov	r7,r12
-	invalid
+	st.w	r12[0],r4
 	invalid
 	mcall	r6[128]
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r6[-20]
+	ld.w	r8,r9[8]
+	st.w	r7[4],r8
+	st.w	r9[8],r7
 	invalid
 	mov	r12,r4
 	mcall	r6[464]
-	invalid
+	brne	00009B7C
 	ld.w	r5,r5[360]
 	invalid
 	invalid
 	sub	r12,r7,FFFFFFF8
 	mov	r9,00000000
+	cp.b	r8,r9
+	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[116]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[116]
 	rsub	r6,pc
 	sub	r7,r12,FFFFFFEC
 	mov	r8,00000000
-	invalid
+	st.b	r7[0],r8
 	mov	r4,r10
 	mov	r5,r11
+	cp.w	r4,00000000
 	invalid
-	invalid
-	invalid
+	brge	00009C0E
 	mov	r8,0000000A
 	mov	r9,00000000
 	mov	r10,r4
@@ -11987,9 +11987,9 @@ _start proc
 	invalid
 	mov	r4,r10
 	mov	r5,r11
+	cp.w	r4,00000000
 	invalid
-	invalid
-	invalid
+	brne	00009BE0
 	mov	r8,0000002D
 	invalid
 	invalid
@@ -12007,86 +12007,86 @@ _start proc
 	invalid
 	mov	r4,r10
 	mov	r5,r11
+	cp.w	r4,00000000
 	invalid
-	invalid
-	invalid
+	brne	00009C0E
 	mov	r12,r7
+	popm	r4-r7,pc
 	invalid
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[292]
+	lddpc	r6,sp[292]
 	rsub	r6,pc
-	invalid
-	invalid
-	invalid
+	stdsp	sp[12],r11
+	stdsp	sp[8],r10
+	stdsp	sp[4],r9
 	mov	r3,r12
-	invalid
+	cp.w	r11,00000002
 	invalid
 	invalid
 	mov	r5,r12
 	ld.w	r4,r5++
-	invalid
+	ld.w	r7,r5[0]
 	mov	r12,r4
 	mov	r11,r7
+	icall	r9
 	invalid
+	st.w	r3[0],r7
+	st.w	r5[0],r4
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r0,sp[12]
+	lddsp	r11,sp[12]
 	invalid
 	invalid
 	invalid
 	mov	r12,r8
+	stdsp	sp[16],r8
+	invalid
+	cp.w	r0,00000001
+	brne	00009C8E
+	ld.w	r8,r3[0]
+	lddsp	r9,sp[8]
+	st.w	r9[0],r8
+	invalid
+	lddsp	r4,sp[12]
+	lddsp	r9,sp[4]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r10,sp[8]
 	mov	r12,r5
 	invalid
 	invalid
-	invalid
-	invalid
+	lddsp	r9,sp[4]
+	lddsp	r10,sp[8]
 	mov	r11,r4
 	mov	r12,r3
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r1,r5[0]
+	lddsp	r5,sp[8]
+	ld.w	r2,r3[0]
 	invalid
 	mov	r7,r4
 	mov	r8,00000000
 	invalid
 	invalid
-	invalid
+	lddsp	r9,sp[4]
 	mov	r11,r1
 	mov	r12,r2
+	stdsp	sp[0],r8
+	icall	r9
+	lddsp	r8,sp[0]
+	invalid
+	invalid
+	invalid
+	cp.w	r8,r4
+	breq	00009CF0
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r7,r0
+	brne	00009CEA
 	mov	r7,r8
 	invalid
 	invalid
@@ -12097,39 +12097,39 @@ _start proc
 	invalid
 	mov	r12,r5
 	mcall	r6[36]
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[16]
+	lddsp	r9,sp[8]
+	ld.w	r2,r8[0]
+	ld.w	r4,r9[0]
 	mov	r8,00000001
 	mov	r5,r3
 	mov	r7,r0
 	mov	r1,00000000
+	stdsp	sp[20],r8
+	invalid
+	lddsp	r9,sp[20]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[20],r9
+	lddsp	r8,sp[4]
 	mov	r11,r2
 	mov	r12,r4
+	icall	r8
+	invalid
+	st.w	r5[0],r4
+	invalid
+	cp.w	r1,r0
+	breq	00009D62
+	lddsp	r9,sp[8]
 	invalid
 	invalid
+	st.w	r5[0],r2
+	lddsp	r8,sp[12]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r7,r8
+	brne	00009D5C
+	lddsp	r9,sp[8]
+	lddsp	r8,sp[20]
 	invalid
 	invalid
 	invalid
@@ -12139,97 +12139,97 @@ _start proc
 	invalid
 	invalid
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[16]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[16]
 	rsub	r6,pc
 	mov	r9,r10
 	invalid
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[16]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[16]
 	rsub	r6,pc
 	mov	r10,r11
 	mov	r11,00000006
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[16]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[16]
 	rsub	r6,pc
 	mov	r11,r12
 	mov	r12,00000000
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[20]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[20]
 	rsub	r6,pc
+	ld.w	r8,r6[-36]
+	cp.w	r12,00000000
+	invalid
+	ld.w	r12,r12[0]
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[20]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[20]
 	rsub	r6,pc
+	ld.w	r8,r6[-36]
+	cp.w	r12,00000000
+	invalid
+	st.w	r12[0],r11
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[56]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[56]
 	rsub	r6,pc
+	ld.w	r8,r6[-36]
+	invalid
+	cp.w	r12,00000000
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r8[8]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	eor	r10,r9
+	st.w	r8[8],r10
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[24]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[24]
 	rsub	r6,pc
+	ld.w	r8,r6[-36]
+	cp.w	r12,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r12[4]
+	st.w	r12[4],r11
 	mov	r12,r8
+	popm	r4-r7,pc
 	invalid
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[64]
+	lddpc	r6,sp[64]
 	rsub	r6,pc
 	mov	r8,00000000
 	mov	r5,r12
-	invalid
+	stdsp	sp[0],r11
 	mov	r10,00000020
 	mov	r11,r8
 	sub	r12,sp,FFFFFFF8
-	invalid
+	stdsp	sp[4],r8
 	mcall	r6[44]
 	invalid
 	invalid
@@ -12241,72 +12241,72 @@ _start proc
 	mov	r12,r5
 	invalid
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[96]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[96]
 	rsub	r6,pc
 	ld.w	r8,r8[212]
 	mov	r4,00000001
-	invalid
+	ld.w	r5,r8[0]
 	sub	r7,r5,FFFFFFF4
 	invalid
-	invalid
+	ld.w	r12,r7[0]
 	invalid
 	mcall	r6[12]
 	invalid
 	ld.w	r3,r3[356]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r3[0]
+	cp.w	r4,r8
+	brcs	00009E8C
+	ld.w	r8,r6[-36]
+	ld.w	r12,r5[4]
 	sub	r7,r8,FFFFFFD8
-	invalid
-	invalid
+	cp.w	r12,r7
+	breq	00009EBC
 	mcall	r6[12]
 	ld.w	r9,r9[212]
 	invalid
-	invalid
-	invalid
+	st.w	r9[8],r7
+	st.w	r9[4],r8
 	ld.w	r4,r4[212]
 	sub	r7,r4,FFFFFFFC
-	invalid
-	invalid
+	cp.w	r5,r7
+	breq	00009ED0
 	mov	r12,r5
 	mcall	r6[12]
-	invalid
+	st.w	r4[0],r7
 	mov	r8,00000001
+	st.w	r3[0],r8
+	popm	r0-r3,r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[12]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[12]
 	rsub	r6,pc
 	invalid
+	popm	r4-r7,pc
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[288]
+	lddpc	r6,sp[288]
 	rsub	r6,pc
-	invalid
+	lddsp	r7,sp[96]
 	sub	lr,sp,FFFFFFA0
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	lr,lr[4]
+	stdsp	sp[0],lr
+	stdsp	sp[4],r7
+	stdsp	sp[8],r8
+	stdsp	sp[20],r12
 	mov	r0,r11
-	invalid
-	invalid
+	stdsp	sp[16],r10
+	stdsp	sp[12],r9
 	mcall	r6[172]
 	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	lr,sp[8]
+	stdsp	sp[24],r12
+	cp.w	lr,00000007
 	invalid
 	sub	r8,pc,FFFFFFF4
 	invalid
@@ -12325,243 +12325,243 @@ _start proc
 	mov	r3,00000000
 	mov	r9,00000002
 	mov	r2,r11
+	stdsp	sp[36],r11
+	stdsp	sp[32],r10
+	stdsp	sp[40],r3
+	stdsp	sp[8],r9
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r2,00000000
+	breq	00009F72
 	ld.w	r7,r7[176]
 	mov	r8,00000001
 	mov	r3,00000000
+	stdsp	sp[40],r8
+	stdsp	sp[32],r7
+	stdsp	sp[36],r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r0,00000000
+	brne	00009F82
 	ld.w	lr,lr[176]
 	mov	r3,00000001
-	invalid
-	invalid
+	stdsp	sp[32],lr
+	stdsp	sp[36],r3
 	invalid
 	mov	r3,00000001
 	ld.w	r11,r11[176]
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r10,sp[20]
+	stdsp	sp[32],r11
+	stdsp	sp[36],r3
+	stdsp	sp[40],r3
 	mov	r8,00000022
-	invalid
+	st.b	r10[0],r8
 	invalid
 	mov	r3,00000000
 	mov	r9,00000001
-	invalid
-	invalid
-	invalid
+	stdsp	sp[32],r3
+	stdsp	sp[36],r3
+	stdsp	sp[40],r9
 	invalid
 	ld.w	r8,r8[176]
 	ld.w	r9,r9[180]
-	invalid
-	invalid
+	lddsp	r7,sp[8]
+	cp.w	r7,00000007
 	invalid
 	invalid
 	ld.w	r9,r9[720]
+	cp.w	r7,00000007
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r2,00000000
+	breq	00009FC8
 	mov	r3,00000000
 	invalid
 	mov	r3,r2
 	invalid
+	cp.w	r3,r0
+	brcc	00009FD6
+	lddsp	lr,sp[20]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
+	brne	00009FCC
 	mov	r10,00000001
+	stdsp	sp[40],r10
+	stdsp	sp[32],r11
+	stdsp	sp[36],r10
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r2,00000000
+	breq	00009FFE
 	ld.w	r9,r9[180]
 	mov	r8,00000001
 	mov	r3,00000000
+	stdsp	sp[32],r9
+	stdsp	sp[36],r8
+	stdsp	sp[40],r3
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r0,00000000
+	brne	0000A014
 	ld.w	r7,r7[180]
 	mov	r3,00000001
-	invalid
-	invalid
-	invalid
+	stdsp	sp[32],r7
+	stdsp	sp[36],r3
+	stdsp	sp[40],r2
 	invalid
 	invalid
 	mov	r3,00000001
 	ld.w	lr,lr[180]
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r11,sp[20]
+	stdsp	sp[32],lr
+	stdsp	sp[36],r3
+	stdsp	sp[40],r2
 	mov	r8,00000027
-	invalid
+	st.b	r11[0],r8
 	invalid
 	mcall	r6[76]
 	mov	r3,00000000
-	invalid
-	invalid
-	invalid
+	stdsp	sp[32],r3
+	stdsp	sp[36],r3
+	stdsp	sp[40],r3
 	mov	r2,r3
 	mov	r10,00000000
+	stdsp	sp[28],r10
 	invalid
 	invalid
+	lddsp	r9,sp[40]
+	cp.w	r9,00000000
+	breq	0000A07E
+	lddsp	r8,sp[36]
+	cp.w	r8,00000000
+	breq	0000A07E
+	lddsp	r8,sp[28]
+	lddsp	r7,sp[36]
+	lddsp	lr,sp[12]
 	invalid
+	cp.w	r8,lr
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r12,sp[16]
+	lddsp	r9,sp[28]
+	lddsp	r11,sp[32]
 	mov	r10,r7
 	invalid
 	mcall	r6[168]
+	brne	0000A07E
+	cp.w	r2,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r3,r0
+	brcc	0000A07C
+	lddsp	r7,sp[20]
 	mov	r8,0000005C
 	invalid
 	invalid
+	lddsp	lr,sp[16]
+	lddsp	r11,sp[28]
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r7,00000000
 	invalid
 	mov	r8,00000007
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,00000008
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,00000009
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000000A
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000000B
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000000C
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000000D
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,00000020
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,00000022
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,00000023
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,00000024
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,00000025
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,00000026
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,00000027
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,00000028
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000002A
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000002B
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000003A
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000003B
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000003E
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000003F
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,00000041
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000005A
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000005B
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000005C
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000005D
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000005E
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000005F
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,00000060
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,00000061
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000007A
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000007B
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000007C
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000007D
-	invalid
+	cp.b	r7,r8
 	invalid
 	mov	r8,0000007E
-	invalid
+	cp.b	r7,r8
 	invalid
 	invalid
 	mov	r8,00000066
@@ -12572,105 +12572,105 @@ _start proc
 	invalid
 	mov	r8,00000074
 	invalid
+	lddsp	r10,sp[40]
+	cp.w	r10,00000000
+	breq	0000A260
+	cp.w	r2,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r3,r0
+	brcc	0000A214
+	lddsp	r9,sp[20]
 	mov	r8,0000005C
 	invalid
+	lddsp	r8,sp[28]
+	lddsp	r7,sp[12]
 	invalid
 	invalid
+	cp.w	r8,r7
 	invalid
+	lddsp	r8,sp[28]
+	lddsp	lr,sp[16]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r8[1]
 	mov	r8,0000002F
-	invalid
+	cp.b	r9,r8
 	invalid
 	mov	r8,00000039
+	cp.b	r9,r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r3,r0
+	brcc	0000A24A
+	lddsp	r11,sp[20]
 	mov	r8,00000030
 	invalid
 	sub	r12,r3,FFFFFFFF
-	invalid
-	invalid
-	invalid
+	cp.w	r12,r0
+	brcc	0000A25A
+	lddsp	r10,sp[20]
 	mov	r8,00000030
 	invalid
 	sub	r3,r12,FFFFFFFF
 	invalid
+	lddsp	r9,sp[4]
 	invalid
 	invalid
 	invalid
+	lddsp	r8,sp[8]
+	cp.w	r8,00000002
+	breq	0000A36A
+	cp.w	r8,00000003
+	invalid
+	lddsp	r8,sp[4]
 	invalid
 	invalid
+	lddsp	lr,sp[28]
+	lddsp	r11,sp[12]
 	invalid
+	cp.w	lr,r11
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r10,sp[16]
+	lddsp	r9,sp[28]
 	mov	r8,0000003F
 	invalid
+	ld.ub	r10[1]
+	cp.b	r11,r8
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r10[2]
 	mov	r8,0000001D
 	sub	r9,r10,00000021
-	invalid
+	cp.b	r9,r8
 	invalid
 	mov	r8,00000001
 	invalid
-	lddpc	r9,pc[276]
+	lddpc	r9,sp[276]
 	invalid
 	invalid
+	cp.w	r2,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r3,r0
+	brcc	0000A2CE
+	lddsp	r8,sp[20]
 	invalid
 	sub	r12,r3,FFFFFFFF
-	invalid
-	invalid
-	invalid
+	cp.w	r12,r0
+	brcc	0000A2DE
+	lddsp	r7,sp[20]
 	mov	r8,00000022
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,r0
+	brcc	0000A2EC
+	lddsp	r9,sp[20]
 	mov	r8,00000022
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,r0
+	brcc	0000A2F8
+	lddsp	r8,sp[20]
 	invalid
 	sub	r3,r12,FFFFFFFF
 	mov	r7,r10
-	invalid
+	stdsp	sp[28],lr
 	invalid
 	mov	r8,00000061
 	invalid
@@ -12678,99 +12678,99 @@ _start proc
 	invalid
 	mov	r8,0000006E
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	lr,sp[40]
+	cp.w	lr,00000000
+	breq	0000A320
+	cp.w	r2,00000000
+	breq	0000A320
+	lddsp	r11,sp[36]
+	cp.w	r11,00000000
 	invalid
 	mov	r8,0000005C
+	lddsp	r10,sp[8]
+	cp.w	r10,00000002
+	brne	0000A32E
+	cp.w	r2,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r9,sp[40]
+	cp.w	r9,00000000
 	invalid
 	mov	r7,r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[12]
+	cp.w	r8,FFFFFFFF
+	brne	0000A34E
+	lddsp	lr,sp[16]
 	mov	r8,00000000
+	ld.ub	lr[1]
+	cp.b	r9,r8
 	invalid
 	invalid
+	lddsp	r11,sp[12]
+	cp.w	r11,00000001
+	invalid
+	cp.w	r8,00000000
+	invalid
+	lddsp	r10,sp[28]
+	cp.w	r10,00000000
+	invalid
+	lddsp	r9,sp[8]
+	cp.w	r9,00000002
+	invalid
+	cp.w	r2,00000000
 	invalid
 	invalid
+	lddsp	r8,sp[8]
+	cp.w	r8,00000002
 	invalid
+	cp.w	r2,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r3,r0
+	brcc	0000A38A
+	lddsp	lr,sp[20]
 	invalid
 	sub	r12,r3,FFFFFFFF
-	invalid
-	invalid
-	invalid
+	cp.w	r12,r0
+	brcc	0000A39A
+	lddsp	r11,sp[20]
 	mov	r8,0000005C
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,r0
+	brcc	0000A3A8
+	lddsp	r10,sp[20]
 	mov	r8,00000027
 	invalid
 	sub	r3,r12,FFFFFFFF
 	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r9,sp[24]
+	cp.w	r9,00000001
+	brne	0000A3CC
 	ld.w	r8,r8[156]
 	mov	r1,r9
+	ld.w	r8,r8[0]
 	invalid
 	invalid
-	invalid
-	invalid
+	stdsp	sp[44],r8
 	invalid
 	mov	r0,FFFFFF80
-	invalid
+	stdsp	sp[112],r1
 	mov	r8,00000000
 	mov	r9,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[12]
+	cp.w	r8,FFFFFFFF
+	brne	0000A3E2
+	lddsp	r12,sp[16]
 	mcall	r6[16]
-	invalid
+	stdsp	sp[12],r12
 	mov	lr,00000001
 	mov	r1,00000000
+	stdsp	sp[44],lr
+	lddsp	r11,sp[28]
+	lddsp	r4,sp[16]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r10,sp[12]
 	invalid
 	invalid
 	sub	r9,sp,FFFFFFD0
@@ -12778,209 +12778,209 @@ _start proc
 	sub	r12,sp,FFFFFFC8
 	mcall	r6[248]
 	mov	r10,r12
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	0000A494
+	cp.w	r12,FFFFFFFF
+	breq	0000A490
+	cp.w	r12,FFFFFFFE
+	brne	0000A428
 	mov	r9,r5
 	mov	r11,r4
 	invalid
 	invalid
+	lddsp	r10,sp[12]
+	cp.w	r9,r10
+	brcc	0000A490
 	invalid
 	invalid
+	cp.w	r8,00000000
+	brne	0000A416
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r2,00000000
+	breq	0000A474
+	lddsp	r9,sp[8]
+	cp.w	r9,00000002
+	brne	0000A474
 	sub	r11,r4,FFFFFFFF
 	mov	r12,00000001
 	invalid
-	invalid
+	ld.ub	r11[0]
 	mov	r8,0000005B
-	invalid
-	invalid
+	cp.b	r9,r8
+	brcs	0000A46C
 	mov	r8,0000005C
-	invalid
+	cp.b	r9,r8
 	invalid
 	mov	r8,0000005E
-	invalid
+	cp.b	r9,r8
 	invalid
 	mov	r8,00000060
-	invalid
+	cp.b	r9,r8
 	invalid
 	mov	r8,0000007C
+	cp.b	r9,r8
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,r10
+	brne	0000A43A
+	lddsp	r12,sp[56]
 	invalid
 	mcall	r6[520]
-	invalid
+	lddsp	r8,sp[44]
 	invalid
 	sub	r12,sp,FFFFFFD0
-	invalid
+	stdsp	sp[44],r8
 	mcall	r6[144]
-	invalid
+	brne	0000A494
 	invalid
 	mov	lr,00000000
+	stdsp	sp[44],lr
+	cp.w	r1,00000001
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r11,sp[40]
+	cp.w	r11,00000000
+	breq	0000A526
+	lddsp	r10,sp[44]
+	cp.w	r10,00000000
+	brne	0000A52E
+	lddsp	r9,sp[28]
+	lddsp	r8,sp[16]
 	invalid
 	invalid
 	sub	r9,r8,FFFFFFFF
+	lddsp	r8,sp[40]
+	cp.w	r8,00000000
+	breq	0000A504
+	lddsp	lr,sp[44]
+	cp.w	lr,00000000
+	brne	0000A504
+	cp.w	r2,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r3,r0
+	brcc	0000A4D2
+	lddsp	r11,sp[20]
 	mov	r8,0000005C
 	invalid
 	sub	r12,r3,FFFFFFFF
+	cp.w	r12,r0
+	brcc	0000A4E6
+	invalid
+	lddsp	lr,sp[20]
 	invalid
 	invalid
 	invalid
+	cp.w	r12,r0
+	brcc	0000A4F8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r11,sp[20]
 	invalid
 	invalid
 	invalid
 	sub	r3,r12,FFFFFFFF
 	sub	r7,r8,FFFFFFD0
+	lddsp	r8,sp[28]
+	invalid
+	cp.w	r10,r8
+	invalid
+	cp.w	r3,r0
+	brcc	0000A518
+	lddsp	lr,sp[20]
 	invalid
 	invalid
 	invalid
+	stdsp	sp[28],r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r11,sp[40]
+	cp.w	r11,00000000
+	brne	0000A52E
+	cp.w	r2,00000000
+	breq	0000A558
 	invalid
 	mov	r7,00000030
-	invalid
-	invalid
-	invalid
+	lddsp	r10,sp[0]
+	cp.w	r10,00000000
+	breq	0000A558
 	invalid
 	invalid
 	mov	r8,00000001
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	0000A558
+	cp.w	r2,00000000
+	brne	0000A5D4
+	cp.w	r3,r0
+	brcc	0000A556
+	lddsp	r9,sp[20]
 	mov	r8,0000005C
 	invalid
 	invalid
+	cp.w	r3,r0
+	brcc	0000A562
+	lddsp	r8,sp[20]
+	invalid
+	invalid
+	lddsp	r7,sp[28]
+	invalid
+	stdsp	sp[28],r7
+	lddsp	lr,sp[12]
+	cp.w	lr,FFFFFFFF
+	brne	0000A582
+	lddsp	r11,sp[16]
+	lddsp	r10,sp[28]
+	mov	r8,00000000
+	invalid
+	cp.b	r9,r8
+	invalid
+	invalid
+	lddsp	r9,sp[28]
+	lddsp	r8,sp[12]
+	cp.w	r9,r8
+	invalid
+	cp.w	r8,00000000
+	invalid
+	cp.w	r3,00000000
+	brne	0000A59E
+	lddsp	r7,sp[8]
+	cp.w	r7,00000002
+	brne	0000A59E
+	cp.w	r2,00000000
+	brne	0000A5D4
+	lddsp	lr,sp[32]
+	cp.w	lr,00000000
+	breq	0000A5C6
+	cp.w	r2,00000000
+	brne	0000A5C6
+	lddsp	r8,sp[20]
+	invalid
+	invalid
+	cp.w	r3,r0
+	brcc	0000A5B4
+	st.b	r8[0],r9
+	lddsp	r11,sp[32]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[32],r11
+	lddsp	r10,sp[32]
+	ld.ub	r10[0]
+	cp.w	r9,00000000
+	brne	0000A5AE
+	cp.w	r3,r0
+	brcc	0000A60E
+	lddsp	r9,sp[20]
 	mov	r8,00000000
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	mov	r8,00000000
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[4]
 	mov	lr,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[4],r8
+	lddsp	r9,sp[12]
+	lddsp	r8,sp[8]
+	lddsp	r10,sp[16]
+	lddsp	r12,sp[20]
 	st.w	--sp,lr
-	invalid
+	lddsp	r7,sp[8]
 	mov	r11,r0
 	st.w	--sp,r7
 	invalid
@@ -12992,70 +12992,70 @@ _start proc
 	mov	r10,00000003
 	mov	r3,00000000
 	mov	r2,lr
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[40],lr
+	stdsp	sp[32],r11
+	stdsp	sp[36],lr
+	stdsp	sp[8],r10
 	invalid
 	mov	r12,r3
 	invalid
+	popm	r0-r3,r4-r7,pc
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[232]
+	lddpc	r6,sp[232]
 	rsub	r6,pc
-	invalid
+	stdsp	sp[4],r10
 	mov	r3,r12
-	invalid
+	stdsp	sp[8],r11
 	mov	r1,r9
 	mcall	r6[28]
 	ld.w	r2,r2[212]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r7,r2[0]
+	stdsp	sp[12],r12
+	ld.w	r10,r12[0]
+	stdsp	sp[16],r10
+	cp.w	r3,00000000
+	brge	0000A63C
 	mcall	r6[76]
 	ld.w	r0,r0[356]
+	ld.w	r8,r0[0]
+	cp.w	r8,r3
 	invalid
-	invalid
-	invalid
-	lddpc	r8,pc[188]
+	lddpc	r8,sp[188]
 	sub	r4,r3,FFFFFFFF
-	invalid
+	cp.w	r4,r8
 	invalid
 	invalid
 	sub	r9,r2,FFFFFFFC
+	cp.w	r7,r9
+	invalid
+	cp.w	r5,00000000
 	invalid
 	invalid
 	invalid
+	stdsp	sp[0],r9
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r2[0],r12
 	mov	r7,r12
+	cp.w	r5,00000000
+	breq	0000A686
+	lddsp	r10,sp[0]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r0[0]
 	mov	r11,00000000
 	invalid
 	invalid
 	invalid
 	mcall	r6[44]
+	st.w	r0[0],r4
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r5,r2[0]
+	ld.w	r4,r2[4]
+	ld.w	r3,r1[4]
+	lddsp	r9,sp[4]
+	lddsp	r10,sp[8]
+	ld.w	r8,r1[0]
 	invalid
 	sub	r0,r1,FFFFFFF8
 	mov	r11,r5
@@ -13064,41 +13064,41 @@ _start proc
 	st.w	--sp,r3
 	invalid
 	invalid
+	cp.w	r5,r12
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r6[-36]
 	sub	r7,r12,FFFFFFFF
+	st.w	r2[0],r7
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r4,r8
+	breq	0000A6D8
 	mov	r12,r4
 	mcall	r6[12]
 	mov	r12,r7
 	invalid
 	mov	r11,r7
-	invalid
+	st.w	r2[4],r12
 	st.w	--sp,r0
 	st.w	--sp,r3
-	invalid
-	invalid
-	invalid
+	lddsp	r9,sp[12]
+	lddsp	r10,sp[16]
+	ld.w	r8,r1[0]
 	mov	r4,r12
 	invalid
 	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[16]
+	lddsp	r9,sp[12]
 	mov	r12,r4
+	st.w	r9[0],r8
+	invalid
+	popm	r0-r3,r4-r7,pc
+	invalid
+	ld.ub	pc[-1]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[68]
+	lddpc	r6,sp[68]
 	rsub	r6,pc
-	invalid
+	ld.w	r9,r6[-36]
 	mov	r7,r11
 	invalid
 	mov	r8,r9
@@ -13120,35 +13120,35 @@ _start proc
 	mov	r12,00000000
 	invalid
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[12]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[12]
 	rsub	r6,pc
 	mov	r10,0000003A
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[16]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[16]
 	rsub	r6,pc
 	mov	r10,r11
 	mov	r11,FFFFFFFF
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[12]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[12]
 	rsub	r6,pc
 	mov	r11,0000003A
 	invalid
+	popm	r4-r7,pc
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[32]
+	lddpc	r6,sp[32]
 	rsub	r6,pc
 	mov	r1,r12
 	mov	r12,sp
@@ -13162,22 +13162,22 @@ _start proc
 	mov	r12,r1
 	invalid
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[20]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[20]
 	rsub	r6,pc
 	mov	r9,r10
 	mov	r10,r11
 	mov	r11,r12
 	mov	r12,00000000
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[32]
+	lddpc	r6,sp[32]
 	rsub	r6,pc
 	mov	r2,r12
 	mov	r12,sp
@@ -13190,77 +13190,77 @@ _start proc
 	mov	r10,FFFFFFFF
 	invalid
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[16]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[16]
 	rsub	r6,pc
 	mov	r10,r11
 	mov	r11,r12
 	mov	r12,00000000
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[12]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[12]
 	rsub	r6,pc
+	ld.w	r9,r6[-36]
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[16]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[16]
 	rsub	r6,pc
 	mov	r10,r11
 	mov	r11,r12
 	mov	r12,00000000
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[16]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[16]
 	rsub	r6,pc
-	invalid
+	ld.w	r9,r6[-36]
 	mov	r10,FFFFFFFF
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[16]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[16]
 	rsub	r6,pc
 	mov	r11,r12
 	mov	r12,00000000
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[112]
+	lddpc	r6,sp[112]
 	rsub	r6,pc
-	invalid
+	ld.w	r8,r6[-36]
 	mov	r7,r10
-	invalid
-	invalid
+	stdsp	sp[0],r11
+	cp.w	r9,00000000
 	invalid
 	invalid
 	mov	r0,r12
 	mcall	r6[28]
-	invalid
+	cp.w	r7,00000000
 	invalid
 	sub	r1,r3,FFFFFFF8
 	mov	r11,00000000
+	stdsp	sp[4],r12
+	ld.w	r8,r3[4]
+	ld.w	r9,r12[0]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[8],r9
 	st.w	--sp,r1
 	st.w	--sp,r5
-	invalid
-	invalid
+	lddsp	r9,sp[8]
+	ld.w	r8,r3[0]
 	mov	r10,r0
 	mov	r12,r11
 	invalid
@@ -13269,51 +13269,51 @@ _start proc
 	mov	r12,r2
 	invalid
 	mov	r10,r0
-	invalid
+	stdsp	sp[20],r12
 	st.w	--sp,r1
 	st.w	--sp,r5
-	invalid
-	invalid
+	lddsp	r9,sp[16]
+	ld.w	r8,r3[0]
 	mov	r11,r2
 	invalid
+	lddsp	r8,sp[20]
+	lddsp	r9,sp[24]
+	st.w	r8[0],r9
 	invalid
+	cp.w	r7,00000000
+	breq	0000A8BE
+	st.w	r7[0],r4
+	lddsp	r12,sp[12]
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[16]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[16]
 	rsub	r6,pc
 	mov	r9,r10
 	mov	r10,00000000
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[64]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[64]
 	rsub	r6,pc
 	mov	r4,r12
-	invalid
+	ld.w	r12,r6[-36]
 	mov	r7,r11
-	invalid
+	cp.w	r8,00000000
 	invalid
 	invalid
 	mov	r0,r10
 	mov	r2,r9
 	mcall	r6[28]
 	sub	r8,r5,FFFFFFF8
-	invalid
+	ld.w	r1,r12[0]
 	st.w	--sp,r8
-	invalid
+	ld.w	r8,r5[4]
 	st.w	--sp,r8
-	invalid
+	ld.w	r8,r5[0]
 	mov	r3,r12
 	mov	r9,r2
 	mov	r10,r0
@@ -13321,17 +13321,23 @@ _start proc
 	mov	r12,r4
 	invalid
 	invalid
+	st.w	r3[0],r1
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[36]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[36]
 	rsub	r6,pc
 	mov	r5,r12
 	mcall	r6[28]
 	mov	r11,00000028
-	invalid
+	ld.w	r2,r12[0]
 	mov	r3,r12
+	ld.w	r12,r6[-36]
+	cp.w	r5,00000000
+	invalid
+	invalid
+	st.w	r3[0],r2
+	popm	r0-r3,r4-r7,pc
 	invalid
 	invalid
 	invalid
@@ -13350,51 +13356,45 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[44]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[44]
 	rsub	r6,pc
 	mov	lr,r12
 	invalid
 	invalid
 	invalid
+	ld.w	r8,r6[-32]
+	ld.ub	r12[0]
+	ld.w	r8,r8[0]
+	invalid
+	st.b	r11[0],r8
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,FFFFFFFF
+	brne	0000A97A
 	mov	r12,lr
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[48]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[48]
 	rsub	r6,pc
 	mov	lr,r12
 	invalid
 	invalid
 	invalid
 	ld.w	r8,r8[532]
+	ld.ub	r12[0]
+	ld.w	r8,r8[0]
+	invalid
+	st.b	r11[0],r8
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,FFFFFFFF
+	brne	0000A9AA
 	mov	r12,lr
-	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
 	sub	r9,r12,FFFFFE82
@@ -13404,149 +13404,149 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,00000484
-	lddpc	r6,pc[300]
+	lddpc	r6,sp[300]
 	rsub	r6,pc
-	invalid
-	invalid
+	stdsp	sp[24],r8
+	ld.w	lr,r8[8]
 	sub	r8,sp,FFFFFB58
-	invalid
-	invalid
-	invalid
+	stdsp	sp[28],r10
+	lddsp	r10,sp[24]
+	stdsp	sp[32],r12
 	mov	r12,r11
+	ld.w	r11,r8[4]
+	ld.w	r8,r8[0]
+	stdsp	sp[36],lr
+	stdsp	sp[16],r11
+	stdsp	sp[20],r8
+	ld.w	r10,r10[40]
+	stdsp	sp[40],r10
+	cp.w	lr,0000000C
 	invalid
 	invalid
+	stdsp	sp[36],lr
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[36]
 	mov	r5,r8
+	cp.w	r8,00000000
 	invalid
-	invalid
-	invalid
+	stdsp	sp[36],r8
 	mov	r4,00000000
 	mov	r7,r12
-	invalid
-	invalid
+	stdsp	sp[48],r9
+	stdsp	sp[44],r4
 	invalid
 	mov	r8,00000025
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000AA3E
 	mov	r3,00000000
-	invalid
+	lddsp	r2,sp[32]
 	mov	r10,r3
+	stdsp	sp[52],r3
+	stdsp	sp[60],r2
 	invalid
+	lddsp	r8,sp[28]
+	lddsp	lr,sp[44]
 	invalid
+	cp.w	r8,00000001
 	invalid
+	cp.w	r7,00000000
+	breq	0000AA50
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r12,sp[44]
 	invalid
 	invalid
 	mov	r10,00000001
-	invalid
+	lddsp	r11,sp[48]
 	mov	r8,00000023
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[48],r11
+	ld.ub	r11[0]
+	cp.b	r9,r8
+	breq	0000AA58
 	mov	r8,0000002D
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	0000AA92
 	mov	r8,00000030
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	0000AA92
 	mov	r8,0000005E
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	0000AA8C
 	mov	r8,0000005F
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000AA96
 	invalid
 	mov	r9,00000001
+	stdsp	sp[60],r9
 	invalid
-	invalid
-	invalid
+	stdsp	sp[52],r9
 	invalid
 	sub	r8,r9,00000030
-	invalid
+	cp.w	r8,00000009
 	invalid
 	mov	r8,FFFFFFFF
-	invalid
+	stdsp	sp[56],r8
 	invalid
 	mov	r5,00000000
+	stdsp	sp[56],r5
 	invalid
+	lddpc	r8,sp[104]
+	lddsp	r4,sp[56]
+	cp.w	r4,r8
 	invalid
-	lddpc	r8,pc[104]
+	lddpc	r3,sp[100]
+	stdsp	sp[56],r3
 	invalid
+	lddpc	r8,sp[88]
+	lddsp	r2,sp[56]
+	cp.w	r2,r8
+	brne	0000AAD6
+	lddsp	lr,sp[48]
+	ld.ub	lr[0]
 	invalid
+	cp.w	r8,00000007
 	invalid
-	lddpc	r3,pc[100]
+	lddpc	r12,sp[72]
+	stdsp	sp[56],r12
 	invalid
+	lddsp	r11,sp[56]
+	lddsp	r5,sp[48]
 	invalid
-	lddpc	r8,pc[88]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r12,pc[72]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r5[0]
 	invalid
 	invalid
 	invalid
+	stdsp	sp[56],r8
+	lddsp	r4,sp[48]
 	invalid
+	stdsp	sp[48],r4
+	ld.ub	r4[0]
 	invalid
+	cp.w	r8,00000009
 	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r3,sp[48]
 	mov	r8,00000045
-	invalid
-	invalid
-	invalid
+	ld.ub	r3[0]
+	cp.b	r9,r8
+	breq	0000AB1C
 	mov	r8,0000004F
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	0000AB1C
 	mov	r4,00000000
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
+	ld.w	pc,pc[-4]
 	invalid
 	mov	r4,r9
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[48],r2
+	lddsp	lr,sp[48]
+	ld.ub	lr[0]
+	stdsp	sp[64],r0
 	invalid
 	invalid
 	sub	r8,pc,FFFFFFF6
@@ -13681,68 +13681,68 @@ _start proc
 	invalid
 	mov	r1,00000000
 	invalid
-	invalid
+	lddsp	r9,sp[48]
 	mov	r5,00000001
 	invalid
 	invalid
+	cp.w	r4,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r10,sp[56]
+	lddsp	r12,sp[44]
 	invalid
 	invalid
 	sub	r4,r8,FFFFFFFF
+	lddsp	r8,sp[28]
+	invalid
+	cp.w	r4,r8
+	invalid
+	cp.w	r7,00000000
+	breq	0000AD8C
+	cp.w	r10,00000000
+	invalid
+	lddsp	r11,sp[52]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000AD7C
 	mov	r12,r7
 	invalid
 	mov	r12,r7
 	mov	r11,00000020
 	mcall	r6[44]
 	mov	r7,r5
+	lddsp	r10,sp[48]
+	ld.ub	r10[0]
+	invalid
+	lddsp	r9,sp[44]
+	invalid
+	stdsp	sp[44],r9
+	invalid
+	lddsp	r8,sp[60]
+	cp.w	r10,00000000
+	invalid
+	stdsp	sp[60],r8
+	cp.w	r4,00000000
 	invalid
 	invalid
+	cp.w	r4,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000000
+	brne	0000AE34
 	invalid
 	ld.w	r3,r3[712]
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[24]
+	lddsp	r5,sp[16]
+	lddsp	r12,sp[60]
 	mov	r10,FFFFFFFF
 	st.w	--sp,r5
 	mov	r9,r3
-	invalid
+	lddsp	r4,sp[24]
 	mov	r11,00000000
 	st.w	--sp,r4
 	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r2,sp[36]
+	lddsp	r10,sp[64]
+	lddsp	lr,sp[52]
 	invalid
 	mov	r8,00000000
 	invalid
@@ -13750,43 +13750,43 @@ _start proc
 	invalid
 	mov	r5,r12
 	invalid
+	cp.w	r1,r2
+	invalid
+	cp.w	r7,00000000
+	breq	0000AE2A
+	cp.w	r10,00000000
+	invalid
+	lddsp	r12,sp[52]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000AE06
+	lddsp	r11,sp[52]
 	mov	r12,r7
 	invalid
 	mov	r12,r7
 	mov	r11,00000020
 	mcall	r6[44]
 	mov	r7,r4
-	invalid
-	invalid
+	lddsp	r12,sp[60]
+	lddsp	r8,sp[24]
 	mov	r11,r7
 	invalid
-	invalid
+	lddsp	r5,sp[16]
 	st.w	--sp,r5
 	mov	r9,r3
-	invalid
+	lddsp	r4,sp[24]
 	mov	r10,r2
 	st.w	--sp,r4
 	invalid
 	invalid
+	lddsp	r3,sp[44]
 	invalid
-	invalid
-	invalid
+	stdsp	sp[44],r3
 	invalid
 	mov	r3,00000000
 	mov	r2,00000001
 	mov	r1,r3
-	invalid
+	stdsp	sp[60],r2
 	invalid
 	mov	r3,00000000
 	mov	r1,r3
@@ -13794,43 +13794,43 @@ _start proc
 	invalid
 	mov	r8,00000025
 	invalid
-	invalid
-	invalid
+	cp.w	r4,00000000
+	brne	0000AE58
 	sub	lr,sp,FFFFFBB6
 	invalid
 	sub	lr,sp,FFFFFBB5
 	invalid
 	mov	r8,00000000
-	invalid
-	invalid
-	invalid
+	lddsp	r9,sp[24]
+	st.b	lr[1],r8
+	lddsp	r8,sp[64]
 	sub	r10,sp,FFFFFBB8
 	invalid
 	sub	r12,sp,FFFFFFB8
-	invalid
+	st.b	lr[0],r8
 	mcall	r6[440]
 	invalid
-	invalid
+	lddsp	r10,sp[56]
 	sub	r5,r12,00000001
 	invalid
 	mov	r8,00000000
 	invalid
 	invalid
+	lddsp	r4,sp[44]
+	lddsp	r8,sp[28]
+	invalid
+	cp.w	r2,r8
+	invalid
+	cp.w	r7,00000000
+	breq	0000AEF6
+	cp.w	r3,00000000
+	brne	0000AEC6
+	cp.w	r10,00000000
+	invalid
+	lddsp	r3,sp[52]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000AEBC
 	mov	r12,r7
 	mov	r11,r3
 	invalid
@@ -13838,17 +13838,17 @@ _start proc
 	mov	r11,00000020
 	mcall	r6[44]
 	mov	r7,r4
-	invalid
-	invalid
+	cp.w	r1,00000000
+	breq	0000AED8
 	mov	r10,r5
 	sub	r11,sp,FFFFFFB7
 	mov	r12,r7
 	invalid
 	invalid
-	invalid
+	lddsp	lr,sp[60]
 	sub	r11,sp,FFFFFFB7
-	invalid
-	invalid
+	cp.w	lr,00000000
+	breq	0000AEEC
 	mov	r10,r5
 	mov	r12,r7
 	invalid
@@ -13857,64 +13857,64 @@ _start proc
 	mov	r12,r7
 	mcall	r6[36]
 	invalid
+	lddsp	r12,sp[44]
+	invalid
+	stdsp	sp[44],r12
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	0000AE3E
+	lddsp	r11,sp[24]
 	mov	r3,00000002
-	invalid
+	ld.w	r8,r11[20]
 	mov	r11,00000064
 	invalid
 	invalid
 	invalid
 	sub	r9,r10,FFFFFFED
+	cp.w	r9,00000000
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r4,00000000
 	invalid
 	ld.w	r3,r3[708]
 	invalid
 	invalid
 	invalid
+	lddsp	r10,sp[24]
+	ld.w	r12,r10[12]
 	invalid
 	invalid
 	invalid
+	lddsp	r9,sp[24]
+	ld.w	r12,r9[12]
+	lddsp	r8,sp[52]
 	invalid
+	breq	0000AF6C
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	0000AF6C
 	mov	r5,0000005F
-	invalid
+	stdsp	sp[52],r5
 	mov	r3,00000002
 	mov	lr,00000000
 	mov	r11,r12
 	invalid
 	mov	r12,lr
 	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000AF86
+	cp.w	r5,00000000
+	brne	0000AF8A
 	mov	r1,r5
 	invalid
-	invalid
-	invalid
+	cp.w	r5,00000000
+	breq	0000AF8C
 	invalid
 	sub	r0,sp,FFFFFB7E
 	invalid
-	invalid
+	brne	0000AF9A
 	mov	r8,0000003A
 	invalid
 	mov	r9,0000000A
@@ -13923,39 +13923,39 @@ _start proc
 	sub	r10,r9,FFFFFFD0
 	invalid
 	mov	r11,r8
+	cp.w	r8,00000000
+	brne	0000AF90
+	cp.w	lr,00000000
+	brne	0000AF90
+	lddsp	r2,sp[56]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r5,00000000
+	breq	0000AFC0
 	mov	r2,0000002D
 	invalid
+	cp.w	r12,00000000
 	invalid
 	invalid
+	lddsp	lr,sp[52]
 	invalid
+	brne	0000B018
+	cp.w	r2,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r3,sp[56]
 	mov	r8,00000000
 	invalid
 	invalid
 	sub	r5,r8,FFFFFFFF
+	lddsp	r12,sp[44]
+	lddsp	r8,sp[28]
 	invalid
+	cp.w	r5,r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r7,00000000
+	breq	0000B00E
+	cp.w	r4,00000000
+	brne	0000B00C
+	cp.w	r3,00000000
 	invalid
 	mov	r12,r7
 	mov	r10,r3
@@ -13963,61 +13963,61 @@ _start proc
 	mcall	r6[44]
 	invalid
 	invalid
+	lddsp	r11,sp[44]
 	invalid
-	invalid
-	invalid
+	stdsp	sp[44],r11
 	invalid
 	invalid
 	sub	r8,sp,FFFFFB7E
 	invalid
 	mov	r9,00000000
+	cp.b	r2,r9
 	invalid
 	invalid
 	invalid
+	cp.w	r3,00000000
+	invalid
+	lddsp	r9,sp[28]
+	lddsp	r10,sp[44]
+	lddsp	r8,sp[52]
 	invalid
 	invalid
+	brne	0000B0AE
+	cp.w	r3,r9
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r7,00000000
+	breq	0000B058
 	mov	r12,r7
 	mov	r10,r3
 	mov	r11,00000020
 	mcall	r6[44]
 	invalid
+	lddsp	r8,sp[56]
+	lddsp	r5,sp[56]
+	lddsp	lr,sp[44]
+	invalid
+	cp.w	r5,r3
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[56],r5
+	stdsp	sp[44],lr
+	cp.w	r2,00000000
+	breq	0000B168
 	mov	r3,r5
 	invalid
 	mov	r8,00000000
 	invalid
 	sub	r5,r8,FFFFFFFF
+	lddsp	r8,sp[28]
 	invalid
+	cp.w	r5,r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r7,00000000
+	breq	0000B0A8
+	cp.w	r4,00000000
+	brne	0000B0A6
+	cp.w	r3,00000000
 	invalid
 	mov	r12,r7
 	mov	r10,r3
@@ -14025,30 +14025,30 @@ _start proc
 	mcall	r6[44]
 	invalid
 	invalid
+	lddsp	r12,sp[44]
 	invalid
 	invalid
+	cp.w	r4,r9
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r2,00000000
+	breq	0000B0FC
+	lddsp	r10,sp[56]
 	mov	r8,00000000
 	invalid
 	invalid
 	sub	r1,r8,FFFFFFFF
+	cp.w	r1,r9
+	invalid
+	cp.w	r7,00000000
+	breq	0000B0F6
+	cp.w	r4,00000000
+	brne	0000B0F4
+	cp.w	r10,00000000
+	invalid
+	lddsp	r11,sp[52]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000B0EA
 	mov	r12,r7
 	invalid
 	mov	r12,r7
@@ -14056,44 +14056,44 @@ _start proc
 	mcall	r6[44]
 	mov	r7,r5
 	invalid
+	lddsp	r10,sp[44]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[44],r10
+	cp.w	r7,00000000
+	breq	0000B10C
 	mov	r12,r7
 	mov	r10,r3
 	mov	r11,00000030
 	mcall	r6[44]
 	invalid
-	invalid
+	lddsp	r9,sp[44]
 	mov	r8,00000000
 	invalid
+	stdsp	sp[44],r9
+	stdsp	sp[56],r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r2,00000000
+	breq	0000B168
+	lddsp	r10,sp[56]
 	mov	r8,00000000
 	invalid
 	invalid
 	sub	r3,r8,FFFFFFFF
+	lddsp	r5,sp[44]
+	lddsp	r8,sp[28]
+	invalid
+	cp.w	r3,r8
+	invalid
+	cp.w	r7,00000000
+	breq	0000B162
+	cp.w	r4,00000000
+	brne	0000B160
+	cp.w	r10,00000000
+	invalid
+	lddsp	lr,sp[52]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000B156
 	mov	r12,r7
 	mov	r11,lr
 	invalid
@@ -14102,31 +14102,31 @@ _start proc
 	mcall	r6[44]
 	mov	r7,r5
 	invalid
+	lddsp	r12,sp[44]
 	invalid
-	invalid
-	invalid
+	stdsp	sp[44],r12
 	sub	r8,sp,FFFFFB7E
-	invalid
+	lddsp	r10,sp[56]
 	invalid
 	invalid
 	mov	r8,00000000
 	invalid
 	invalid
+	lddsp	r11,sp[44]
+	lddsp	r8,sp[28]
+	invalid
+	cp.w	r3,r8
+	invalid
+	cp.w	r7,00000000
+	breq	0000B1D2
+	cp.w	r4,00000000
+	brne	0000B1B4
+	cp.w	r10,00000000
+	invalid
+	lddsp	r9,sp[52]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000B1AA
 	mov	r12,r7
 	mov	r11,r9
 	invalid
@@ -14134,9 +14134,9 @@ _start proc
 	mov	r11,00000020
 	mcall	r6[44]
 	mov	r7,r4
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[60]
+	cp.w	r8,00000000
+	breq	0000B1C6
 	mov	r11,r0
 	mov	r10,r5
 	mov	r12,r7
@@ -14147,95 +14147,95 @@ _start proc
 	mov	r12,r7
 	mcall	r6[36]
 	invalid
+	lddsp	r5,sp[44]
 	invalid
+	stdsp	sp[44],r5
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r4,00000000
 	invalid
 	ld.w	r3,r3[704]
 	invalid
 	invalid
 	invalid
+	lddsp	r3,sp[24]
+	ld.w	r12,r3[8]
 	invalid
 	invalid
 	invalid
+	lddsp	r12,sp[36]
 	invalid
 	invalid
 	invalid
+	lddsp	r2,sp[24]
+	ld.w	r12,r2[8]
 	invalid
 	invalid
 	invalid
+	lddsp	r12,sp[36]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	lr,sp[24]
 	mov	r3,00000003
-	invalid
+	ld.w	r8,lr[28]
 	mov	lr,00000000
-	invalid
+	cp.w	r8,FFFFFFFF
 	invalid
 	sub	r11,r8,FFFFFFFF
 	invalid
 	invalid
 	invalid
+	lddsp	r11,sp[24]
+	ld.w	r12,r11[4]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r10,sp[24]
 	mov	lr,00000000
-	invalid
+	ld.w	r8,r10[16]
 	mov	r3,00000002
-	invalid
+	cp.w	r8,FFFFFFFF
 	invalid
 	sub	r11,r8,FFFFFFFF
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r9,sp[56]
+	cp.w	r9,FFFFFFFF
+	brne	0000B276
+	lddsp	r12,sp[16]
 	mov	r8,00000009
+	stdsp	sp[56],r8
 	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r10,sp[56]
+	lddsp	r12,sp[16]
 	invalid
 	mov	r9,0000000A
 	invalid
 	invalid
 	mov	r12,r8
+	cp.w	r10,00000008
 	invalid
+	lddsp	r3,sp[56]
 	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r10,sp[56]
 	mov	r8,00000000
 	invalid
 	invalid
 	sub	r4,r8,FFFFFFFF
+	lddsp	r5,sp[44]
+	lddsp	r8,sp[28]
+	invalid
+	cp.w	r4,r8
+	invalid
+	cp.w	r7,00000000
+	breq	0000B2D4
+	cp.w	r10,00000000
+	invalid
+	lddsp	r3,sp[52]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000B2C6
 	mov	r12,r7
 	mov	r11,r3
 	invalid
@@ -14245,35 +14245,35 @@ _start proc
 	mov	r7,r5
 	mov	r8,0000000A
 	invalid
+	lddsp	r2,sp[44]
 	invalid
-	invalid
-	invalid
+	stdsp	sp[44],r2
 	invalid
 	mov	lr,00000070
 	mov	r1,00000001
-	invalid
-	invalid
-	invalid
+	stdsp	sp[64],lr
+	lddsp	r12,sp[60]
+	cp.w	r10,00000000
 	invalid
 	invalid
 	mov	r3,00000000
+	stdsp	sp[60],r12
 	invalid
 	invalid
 	invalid
+	lddsp	r11,sp[24]
+	ld.w	r12,r11[0]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[24]
 	sub	r9,sp,FFFFFBB8
 	invalid
 	invalid
 	invalid
 	sub	r8,sp,FFFFFBA8
-	invalid
+	lddsp	r4,sp[24]
 	mov	r12,r9
 	invalid
-	invalid
+	ld.w	lr,r4[40]
 	invalid
 	invalid
 	sub	r0,sp,FFFFFB7E
@@ -14286,38 +14286,38 @@ _start proc
 	invalid
 	invalid
 	mov	r12,r8
-	invalid
-	invalid
+	cp.w	r5,00000000
+	breq	0000B35C
 	invalid
 	invalid
 	sub	r8,r9,FFFFFFD0
 	invalid
-	invalid
-	invalid
-	invalid
+	st.b	r0[0],r9
+	cp.w	r12,00000000
+	brne	0000B348
 	mov	r3,00000001
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
+	lddsp	r10,sp[56]
 	mov	r8,00000000
 	invalid
 	invalid
 	sub	r4,r8,FFFFFFFF
+	lddsp	r3,sp[44]
+	lddsp	r8,sp[28]
+	invalid
+	cp.w	r4,r8
+	invalid
+	cp.w	r7,00000000
+	breq	0000B3C0
+	cp.w	r10,00000000
+	invalid
+	lddsp	r2,sp[52]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000B3B2
 	mov	r12,r7
 	mov	r11,r2
 	invalid
@@ -14327,13 +14327,13 @@ _start proc
 	mov	r7,r5
 	mov	r8,00000009
 	invalid
+	lddsp	lr,sp[44]
 	invalid
+	stdsp	sp[44],lr
 	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r12,sp[24]
 	mov	r10,00000007
-	invalid
+	ld.w	r9,r12[24]
 	mov	r3,00000001
 	invalid
 	invalid
@@ -14341,10 +14341,10 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	lddsp	r11,sp[24]
 	mov	r3,00000002
-	invalid
-	invalid
+	ld.w	r9,r11[28]
+	ld.w	r10,r11[24]
 	invalid
 	invalid
 	mov	r10,00000007
@@ -14353,90 +14353,90 @@ _start proc
 	invalid
 	invalid
 	invalid
+	lddsp	r10,sp[24]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r10[24]
+	ld.w	r1,r10[20]
+	stdsp	sp[68],r9
+	ld.w	r2,r10[28]
+	cp.w	r1,00000000
 	invalid
 	mov	r11,r9
 	mov	r12,r2
 	invalid
 	invalid
 	mov	r5,r12
-	invalid
+	brge	0000B466
 	sub	r10,r3,00000001
 	invalid
-	invalid
+	breq	0000B43A
 	mov	r8,00000000
 	invalid
 	mov	r9,00000064
 	invalid
-	invalid
-	invalid
+	cp.w	r9,00000000
+	breq	0000B448
 	mov	r8,00000001
 	invalid
 	invalid
 	invalid
-	invalid
+	cp.w	r9,00000000
 	invalid
 	sub	r12,r2,FFFFFE93
-	invalid
+	lddsp	r11,sp[68]
 	invalid
 	invalid
 	mov	r5,r12
 	mov	r12,FFFFFFFF
 	invalid
 	invalid
-	invalid
+	breq	0000B470
 	mov	r8,00000000
 	invalid
 	mov	r9,00000064
 	invalid
-	invalid
-	invalid
+	cp.w	r9,00000000
+	breq	0000B47E
 	mov	r8,00000001
 	invalid
 	invalid
 	invalid
-	invalid
+	cp.w	r9,00000000
 	invalid
 	sub	r12,r2,0000016D
-	invalid
+	lddsp	r11,sp[68]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	mov	r8,00000047
-	invalid
-	invalid
+	cp.b	r0,r8
+	breq	0000B4E6
 	mov	r8,00000067
-	invalid
-	invalid
+	cp.b	r0,r8
+	brne	0000B500
 	mov	r10,00000064
 	invalid
 	invalid
 	invalid
 	mov	r8,r11
-	invalid
-	invalid
+	cp.w	r11,00000000
+	brlt	0000B4CC
 	mov	r12,r11
 	invalid
 	invalid
 	sub	r9,r8,FFFFFF9C
 	invalid
 	invalid
-	invalid
+	cp.w	r1,r10
 	invalid
 	invalid
 	invalid
 	invalid
 	sub	r9,r1,FFFFF894
 	invalid
-	invalid
+	cp.w	r1,r8
 	invalid
 	mov	lr,00000000
 	invalid
@@ -14449,13 +14449,13 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	lddsp	r8,sp[24]
 	mov	r12,00000007
+	ld.w	r9,r8[24]
+	lddsp	r5,sp[24]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r11,r5[28]
 	mov	r3,00000002
 	invalid
 	invalid
@@ -14464,29 +14464,29 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	lddsp	r3,sp[24]
+	ld.w	r12,r3[24]
 	mov	r3,00000001
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
+	lddsp	r2,sp[24]
 	mov	r3,00000004
-	invalid
+	ld.w	r8,r2[20]
 	invalid
 	invalid
 	sub	r11,r8,FFFFF894
 	invalid
 	invalid
 	invalid
-	invalid
+	lddsp	lr,sp[24]
 	mov	r9,00000064
-	invalid
+	ld.w	r10,lr[20]
 	invalid
 	mov	r12,r9
-	invalid
+	cp.w	r9,00000000
 	invalid
 	sub	r9,r12,FFFFFF9C
 	invalid
@@ -14495,38 +14495,38 @@ _start proc
 	invalid
 	invalid
 	ld.w	r8,r8[700]
+	lddsp	r12,sp[60]
+	lddsp	r11,sp[40]
+	cp.w	r10,00000000
 	invalid
+	cp.w	r11,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[60],r12
 	mov	r12,r11
+	cp.w	r10,00000000
 	invalid
 	invalid
-	invalid
-	invalid
+	stdsp	sp[40],r11
 	mcall	r6[16]
-	invalid
-	invalid
+	lddsp	r4,sp[44]
+	lddsp	r10,sp[56]
 	mov	r8,00000000
 	invalid
 	invalid
 	invalid
-	invalid
+	lddsp	r8,sp[28]
 	mov	r5,r12
 	invalid
+	cp.w	r3,r8
+	invalid
+	cp.w	r7,00000000
+	breq	0000B636
+	cp.w	r10,00000000
+	invalid
+	lddsp	lr,sp[52]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000B5FE
 	mov	r12,r7
 	mov	r11,lr
 	invalid
@@ -14534,44 +14534,44 @@ _start proc
 	mov	r11,00000020
 	mcall	r6[44]
 	mov	r7,r4
-	invalid
-	invalid
-	invalid
+	cp.w	r2,00000000
+	breq	0000B618
+	lddsp	r11,sp[40]
 	mov	r10,r5
 	mov	r12,r7
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r12,sp[60]
+	cp.w	r12,00000000
+	breq	0000B62A
+	lddsp	r11,sp[40]
 	mov	r10,r5
 	mov	r12,r7
 	invalid
 	invalid
-	invalid
+	lddsp	r11,sp[40]
 	mov	r10,r5
 	mov	r12,r7
 	mcall	r6[36]
 	invalid
-	invalid
+	lddsp	r11,sp[44]
 	invalid
 	invalid
 	invalid
 	mov	r11,r9
 	invalid
 	mov	r8,0000003A
-	invalid
-	invalid
+	cp.b	r10,r8
+	breq	0000B63C
 	mov	r8,0000007A
+	cp.b	r10,r8
+	brne	0000B706
+	stdsp	sp[48],r11
+	lddsp	r10,sp[24]
+	ld.w	r8,r10[32]
+	cp.w	r8,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r10[36]
 	mov	r9,0000003C
 	invalid
 	invalid
@@ -14579,7 +14579,7 @@ _start proc
 	mov	lr,r3
 	invalid
 	mov	r3,r10
-	invalid
+	cp.w	r5,00000003
 	invalid
 	sub	r8,pc,FFFFFFF0
 	invalid
@@ -14614,47 +14614,47 @@ _start proc
 	mov	r12,00000001
 	mov	lr,00000014
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	lr,00000000
+	brne	0000B6C8
+	cp.w	r9,00000000
+	brne	0000B6B2
 	invalid
 	mov	r11,r10
 	mov	lr,r9
 	mov	r3,00000003
 	mov	r12,00000001
 	invalid
+	lddsp	r9,sp[48]
 	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[48],r9
+	lddsp	r10,sp[48]
 	mov	r3,00000001
 	invalid
 	invalid
-	invalid
+	ld.ub	r10[0]
 	mov	r8,00000025
 	mov	r5,r10
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000B70C
+	lddsp	r10,sp[56]
 	mov	r8,00000000
 	invalid
 	invalid
 	invalid
+	lddsp	r4,sp[44]
+	lddsp	r8,sp[28]
+	invalid
+	cp.w	r2,r8
+	brcc	0000B79C
+	cp.w	r7,00000000
+	breq	0000B778
+	cp.w	r10,00000000
+	invalid
+	lddsp	lr,sp[52]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000B750
 	mov	r12,r7
 	mov	r11,lr
 	invalid
@@ -14662,9 +14662,9 @@ _start proc
 	mov	r11,00000020
 	mcall	r6[44]
 	mov	r7,r4
-	invalid
-	invalid
-	invalid
+	lddsp	r12,sp[60]
+	cp.w	r12,00000000
+	breq	0000B76C
 	mov	r11,r5
 	mov	r10,r3
 	mov	r12,r7
@@ -14675,36 +14675,36 @@ _start proc
 	mov	r12,r7
 	mcall	r6[36]
 	invalid
+	lddsp	r11,sp[44]
 	invalid
+	stdsp	sp[44],r11
+	lddsp	r10,sp[48]
 	invalid
+	stdsp	sp[48],r10
+	lddsp	r8,sp[48]
+	ld.ub	r8[0]
+	cp.w	r9,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r7,00000000
+	breq	0000B7AA
+	lddsp	r5,sp[28]
+	cp.w	r5,00000000
+	breq	0000B7AA
+	st.b	r7[0],r9
 	invalid
 	mov	r4,00000000
-	invalid
+	stdsp	sp[44],r4
 	invalid
 	mov	lr,00000000
 	mov	r12,lr
 	invalid
+	lddsp	r12,sp[44]
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[28]
+	popm	r0-r3,r4-r7,pc
+	pushm	r4-r7,lr
+	lddpc	r6,sp[28]
 	rsub	r6,pc
-	invalid
+	lddsp	lr,sp[20]
 	st.w	--sp,lr
 	st.w	--sp,r8
 	mov	r8,r9
@@ -14714,16 +14714,16 @@ _start proc
 	mov	r12,00000000
 	invalid
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[64]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[64]
 	rsub	r6,pc
 	sub	r7,r12,FFFFFFEC
 	mov	r8,00000000
 	mov	r4,r10
 	mov	r5,r11
-	invalid
+	st.b	r7[0],r8
 	mov	r8,0000000A
 	mov	r9,00000000
 	mov	r10,r4
@@ -14738,16 +14738,16 @@ _start proc
 	invalid
 	mov	r4,r10
 	mov	r5,r11
+	cp.w	r4,00000000
 	invalid
-	invalid
-	invalid
+	brne	0000B7E6
 	mov	r12,r7
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
+	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,000007D4
-	lddpc	r6,pc[108]
+	lddpc	r6,sp[108]
 	rsub	r6,pc
 	sub	lr,sp,FFFFF82C
 	invalid
@@ -14761,133 +14761,133 @@ _start proc
 	mov	r4,sp
 	ld.w	r5,r5[2000]
 	mov	r7,r12
-	invalid
+	breq	0000B876
 	mov	r9,r3
 	mov	r10,r5
 	mov	r11,00000001
 	mcall	r6[432]
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,r5
+	brcc	0000B86A
+	cp.w	r7,sp
+	breq	0000B87C
 	mcall	r6[28]
-	invalid
+	ld.w	r3,r12[0]
 	mov	r5,r12
 	mov	r12,r7
 	mcall	r6[12]
-	invalid
+	st.w	r5[0],r3
 	mov	r12,FFFFFFFF
 	invalid
-	invalid
-	invalid
+	cp.w	r5,00000000
+	brge	0000B880
 	mcall	r6[28]
 	mov	r8,0000004B
-	invalid
+	st.w	r12[0],r8
 	mov	r12,r3
 	invalid
 	mov	r12,FFFFFFFF
 	invalid
 	mov	r12,r5
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[92]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[92]
 	rsub	r6,pc
 	mov	r7,r12
 	invalid
 	mov	r8,00000055
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r12[0]
+	cp.b	r9,r8
+	brne	0000B8DE
+	ld.ub	r12[1]
 	mov	r8,00000054
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000B8DE
+	ld.ub	r12[2]
 	mov	r8,00000046
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000B8DE
+	ld.ub	r12[3]
 	mov	r8,0000002D
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000B8DE
+	ld.ub	r12[-4]
 	mov	r8,00000038
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000B8DE
+	ld.ub	r12[-3]
 	mov	r8,00000000
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000B8DE
 	mov	r11,r12
 	mov	r12,r7
 	invalid
-	invalid
+	popm	r4-r7,pc
 	mov	r12,r7
 	mcall	r6[492]
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[20]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[20]
 	rsub	r6,pc
 	invalid
+	brne	0000B8FC
+	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[24]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[24]
 	rsub	r6,pc
 	mov	r7,r11
 	mcall	r6[80]
+	brne	0000B91A
+	cp.w	r7,00000000
+	breq	0000B91A
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[52]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[52]
 	rsub	r6,pc
 	mov	r10,r11
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r11[0]
+	cp.w	r12,00000000
+	brne	0000B936
+	cp.w	r9,00000000
+	brne	0000B94A
 	mov	r9,00000040
 	invalid
-	lddpc	r8,pc[36]
-	invalid
+	lddpc	r8,sp[36]
+	cp.w	r9,r8
 	invalid
 	invalid
 	sub	r8,r9,FFFFFFFF
 	invalid
 	invalid
 	mov	r11,r9
+	st.w	r10[0],r9
+	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[24]
+	st.b	r5[2],r10
+	st.b	r5[2],r9
+	pushm	r4-r7,lr
+	lddpc	r6,sp[24]
 	rsub	r6,pc
 	mov	r7,r12
 	mcall	r6[32]
+	brne	0000B972
+	cp.w	r7,00000000
+	breq	0000B972
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[24]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[24]
 	rsub	r6,pc
 	mov	r3,r12
 	mov	r12,r11
@@ -14896,39 +14896,39 @@ _start proc
 	mov	r10,r5
 	mov	r11,r3
 	mcall	r6[36]
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[24]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[24]
 	rsub	r6,pc
 	mov	r5,r12
 	mcall	r6[16]
 	sub	r11,r12,FFFFFFFF
 	mov	r12,r5
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[20]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[20]
 	rsub	r6,pc
 	mov	r5,r12
 	invalid
 	mov	r10,r5
 	mov	r11,00000000
 	mcall	r6[44]
+	popm	r4-r7,pc
 	invalid
+	pushm	r4-r7,lr
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[116]
+	lddpc	r6,sp[116]
 	rsub	r6,pc
 	sub	lr,r12,00000001
 	ld.w	r12,r12[192]
 	mov	r7,r8
-	invalid
+	ld.w	r5,r12[0]
 	mov	r12,r10
-	invalid
+	cp.w	lr,00000003
 	invalid
 	sub	r8,pc,FFFFFFF8
 	invalid
@@ -14941,14 +14941,14 @@ _start proc
 	ld.w	r10,r10[692]
 	invalid
 	ld.w	r10,r10[688]
-	invalid
-	invalid
+	cp.w	r11,00000000
+	brge	0000BA20
 	ld.w	lr,lr[352]
 	mov	r8,00000000
 	invalid
 	mov	r9,sp
-	invalid
-	invalid
+	st.b	sp[0],r12
+	st.b	sp[1],r8
 	invalid
 	invalid
 	invalid
@@ -14962,23 +14962,23 @@ _start proc
 	mcall	r6[76]
 	invalid
 	invalid
-	invalid
+	pushm	lr
 	mov	lr,FFFFFFFF
 	invalid
 	mov	r10,r11
-	invalid
-	invalid
-	invalid
+	ld.w	r11,r12[0]
+	cp.w	r8,r11
+	brcc	0000BA5A
 	mov	r9,00000001
-	invalid
+	st.w	r12[0],lr
 	invalid
 	invalid
 	mov	r9,00000000
-	invalid
+	st.w	r12[0],r8
 	mov	r12,r9
-	invalid
-	invalid
-	lddpc	r6,pc[32]
+	popm	pc
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[32]
 	rsub	r6,pc
 	mov	r3,r12
 	mov	r4,r11
@@ -14990,14 +14990,14 @@ _start proc
 	invalid
 	mov	r11,r4
 	mov	r12,r3
-	invalid
-	invalid
+	cp.w	r7,FFFFFFFF
+	brne	0000BA76
 	mov	r12,r5
+	popm	r0-r3,r4-r7,pc
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[260]
+	lddpc	r6,sp[260]
 	rsub	r6,pc
 	mov	r2,r10
 	mov	r5,r12
@@ -15012,59 +15012,59 @@ _start proc
 	mov	r10,00000053
 	mcall	r6[60]
 	ld.w	r8,r8[156]
-	invalid
-	invalid
+	ld.ub	r5[0]
+	ld.w	r10,r8[0]
 	sub	r8,sp,FFFFFFFC
-	invalid
+	cp.w	r7,00000000
 	invalid
 	invalid
 	mov	r8,r5
 	invalid
+	ld.ub	r8[0]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	brne	0000BAD2
 	mov	r8,0000002D
-	invalid
+	cp.b	r9,r8
 	invalid
 	mcall	r6[28]
 	mov	r11,r1
-	invalid
+	st.w	r12[0],r7
 	mov	r4,r12
 	mov	r10,r2
 	mov	r12,r5
 	mcall	r6[536]
-	invalid
-	invalid
+	stdsp	sp[0],r12
+	ld.w	r11,r1[0]
 	mov	r8,r12
+	cp.w	r11,r5
+	brne	0000BB26
+	cp.w	r3,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r11[0]
+	cp.w	r11,00000000
 	invalid
 	mov	r12,r3
 	mcall	r6[120]
 	invalid
 	mov	r8,00000001
 	mov	r4,r7
+	stdsp	sp[0],r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r4[0]
+	cp.w	r12,00000000
+	brne	0000BB30
 	mov	r4,r12
 	invalid
 	invalid
 	invalid
 	mov	r4,00000001
+	cp.w	r3,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r5,r1[0]
+	ld.ub	r5[0]
+	cp.w	r7,00000000
 	invalid
 	mov	r11,r7
 	mov	r12,r3
@@ -15073,24 +15073,24 @@ _start proc
 	mov	r12,r3
 	mov	r11,00000030
 	mcall	r6[120]
-	invalid
-	invalid
+	breq	0000BB98
+	ld.ub	r5[1]
 	mov	r10,00000042
-	invalid
-	invalid
+	cp.b	r9,r10
+	breq	0000BB7C
 	mov	r8,00000044
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	0000BB7C
 	mov	r8,00000069
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000BB98
 	invalid
 	invalid
 	mov	r5,00000002
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r5[2]
+	cp.b	r8,r10
+	brne	0000BB98
 	invalid
 	mov	r5,00000003
 	invalid
@@ -15098,53 +15098,53 @@ _start proc
 	invalid
 	mov	r5,00000001
 	mov	r8,00000042
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000BC26
 	mov	r8,00000045
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000BC30
 	mov	r8,00000047
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000BC34
 	mov	r8,0000004B
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000BC38
 	mov	r8,0000004D
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000BC3C
 	mov	r8,00000050
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000BC40
 	mov	r8,00000054
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000BC44
 	mov	r8,00000059
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000BC4C
 	mov	r8,0000005A
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000BC50
 	mov	r8,00000062
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000BC20
 	mov	r8,00000063
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000BC5C
 	mov	r8,00000067
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000BC34
 	mov	r8,0000006B
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000BC38
 	mov	r8,0000006D
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000BC3C
 	mov	r8,00000074
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000BC44
 	mov	r8,00000077
-	invalid
-	invalid
+	cp.b	r7,r8
+	brne	0000BC58
 	invalid
 	invalid
 	invalid
@@ -15175,47 +15175,47 @@ _start proc
 	invalid
 	invalid
 	mov	r12,00000000
+	ld.w	r8,r1[0]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r1[0],r8
+	ld.ub	r8[0]
 	mov	r9,r4
 	invalid
 	mov	r8,00000000
+	cp.b	r10,r8
 	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[0]
+	st.w	r0[0],r8
 	invalid
 	mov	r4,00000004
 	mov	r12,r4
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	popm	r0-r3,r4-r7,pc
+	ld.w	r3,r12[28]
+	ld.w	r2,r10[28]
+	ld.w	pc,r10[24]
+	ld.w	r12,r10[-40]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	sub	r8,r12,00000030
-	invalid
+	cp.w	r8,00000009
 	invalid
 	invalid
 	invalid
 	sub	r8,r12,00000041
+	cp.w	r8,00000019
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	r12,00000019
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,00000009
 	invalid
 	invalid
 	invalid
@@ -15229,11 +15229,11 @@ _start proc
 	invalid
 	invalid
 	invalid
+	cp.w	r12,00000009
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r12,00000019
 	invalid
 	invalid
 	invalid
@@ -15248,102 +15248,102 @@ _start proc
 	invalid
 	invalid
 	sub	r8,r12,00000030
-	invalid
+	cp.w	r8,00000009
 	invalid
 	invalid
 	sub	r8,r12,00000041
+	cp.w	r8,00000019
+	invalid
+	invalid
+	invalid
+	invalid
+	breq	0000BD44
+	cp.w	r12,00000009
+	breq	0000BD44
+	cp.w	r12,0000000A
+	breq	0000BD44
+	cp.w	r12,0000000B
+	breq	0000BD44
+	cp.w	r12,0000000D
+	invalid
+	cp.w	r12,0000000C
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,00000019
 	invalid
 	invalid
 	sub	r8,r12,00000030
-	invalid
+	cp.w	r8,00000009
 	invalid
 	invalid
 	invalid
 	sub	r8,r12,00000041
-	invalid
+	cp.w	r8,00000005
 	invalid
 	invalid
 	sub	r9,r12,00000041
 	sub	r8,r12,FFFFFFE0
-	invalid
+	cp.w	r9,00000019
 	invalid
 	invalid
 	sub	r9,r12,00000061
 	sub	r8,r12,00000020
+	cp.w	r9,00000019
+	invalid
+	invalid
+	ld.sh	r8,r12[0]
 	invalid
 	invalid
 	invalid
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[264]
+	lddpc	r6,sp[264]
 	rsub	r6,pc
 	mov	r12,0000000A
 	mcall	r6[320]
 	ld.w	r8,r8[348]
-	invalid
+	ld.w	r5,r8[0]
 	ld.w	r8,r8[252]
+	cp.w	r12,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[0],r12
+	cp.w	r5,00000000
 	invalid
 	ld.w	r12,r12[676]
 	mcall	r6[56]
 	mov	r3,r12
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	0000BDC6
+	ld.ub	r12[0]
+	cp.b	r9,r5
+	brne	0000BDCA
 	ld.w	r3,r3[672]
 	mov	r12,r3
 	mcall	r6[16]
 	mov	r5,r12
-	invalid
+	brne	0000BDD8
 	mov	r7,r12
 	invalid
 	invalid
 	invalid
 	mov	r8,0000002F
-	invalid
+	cp.b	r9,r8
 	invalid
 	sub	r12,r5,FFFFFFF2
 	invalid
 	mcall	r6[32]
 	mov	r0,r12
-	invalid
+	brne	0000BDFC
 	ld.w	r5,r5[252]
 	invalid
 	mov	r11,r3
 	mov	r10,r5
 	mcall	r6[36]
-	invalid
-	invalid
+	cp.w	r7,00000000
+	breq	0000BE0E
 	mov	r8,0000002F
 	invalid
 	ld.w	r9,r9[668]
@@ -15352,55 +15352,55 @@ _start proc
 	invalid
 	ld.w	r11,r11[664]
 	invalid
-	invalid
-	invalid
+	ld.w	r10,r9[0]
+	ld.w	lr,r9[4]
 	mov	r12,r0
+	ld.w	r9,r9[8]
+	st.w	r8[8],r9
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r8[0],r10
+	st.w	r8[4],lr
 	invalid
 	mcall	r6[392]
 	mov	r7,r12
-	invalid
+	breq	0000BF3C
 	mov	r10,00000000
 	mov	r4,r10
+	stdsp	sp[4],r10
+	ld.w	r9,r7[16]
+	ld.w	r8,r7[24]
+	cp.w	r9,r8
+	brcc	0000BE56
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	mov	r12,r7
-	mcall	r6[332]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r7[16],r9
 	invalid
 	mov	r12,r7
 	mcall	r6[332]
+	cp.w	r12,FFFFFFFF
+	breq	0000BF32
+	cp.w	r12,0000000A
+	breq	0000BE48
 	invalid
+	breq	0000BE48
+	cp.w	r12,00000009
+	breq	0000BE48
 	invalid
+	brne	0000BE9C
+	ld.w	r9,r7[16]
+	ld.w	r8,r7[24]
+	cp.w	r9,r8
+	brcc	0000BE82
 	invalid
+	st.w	r7[16],r9
 	invalid
-	invalid
-	invalid
+	mov	r12,r7
+	mcall	r6[332]
+	cp.w	r12,FFFFFFFF
+	breq	0000BE90
+	cp.w	r12,0000000A
+	brne	0000BE74
+	cp.w	r12,FFFFFFFF
+	brne	0000BE48
 	invalid
 	invalid
 	invalid
@@ -15414,7 +15414,7 @@ _start proc
 	mov	r12,r7
 	mcall	r6[552]
 	invalid
-	invalid
+	cp.w	r12,00000001
 	invalid
 	mov	r12,r5
 	mcall	r6[16]
@@ -15423,27 +15423,27 @@ _start proc
 	mcall	r6[16]
 	mov	r2,r12
 	invalid
-	invalid
-	invalid
+	cp.w	r4,00000000
+	brne	0000BEE6
 	sub	r12,r8,FFFFFFFD
 	sub	r4,r8,FFFFFFFE
 	mcall	r6[32]
 	invalid
 	invalid
 	invalid
-	invalid
+	lddsp	r12,sp[4]
 	sub	r11,r4,FFFFFFFF
 	mcall	r6[80]
 	mov	r3,r12
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,00000000
+	brne	0000BF0C
+	lddsp	r9,sp[4]
+	cp.w	r9,00000000
+	breq	0000BF30
 	mov	r12,r9
 	mcall	r6[12]
 	mov	r4,r3
-	invalid
+	stdsp	sp[4],r3
 	invalid
 	invalid
 	invalid
@@ -15451,131 +15451,131 @@ _start proc
 	sub	r11,sp,FFFFFFC4
 	invalid
 	mcall	r6[128]
-	invalid
+	stdsp	sp[4],r3
 	sub	r12,r5,00000001
 	sub	r11,sp,FFFFFFF8
 	mcall	r6[128]
 	invalid
-	invalid
+	lddsp	r4,sp[4]
 	mov	r12,r7
 	mcall	r6[296]
-	invalid
-	invalid
+	cp.w	r4,00000000
+	brne	0000BF42
 	ld.w	r5,r5[252]
 	invalid
-	invalid
+	lddsp	r5,sp[4]
 	mov	r8,00000000
 	invalid
 	mov	r12,r0
 	mcall	r6[12]
 	ld.w	r8,r8[348]
-	invalid
+	st.w	r8[0],r5
 	invalid
 	mcall	r6[24]
-	invalid
+	breq	0000BF72
 	mov	r8,0000002A
 	mov	r12,r5
-	invalid
-	invalid
-	invalid
+	cp.b	r7,r8
+	brne	0000BF82
+	ld.ub	r5[1]
 	mov	r8,00000000
+	cp.b	r9,r8
+	brne	0000BF82
+	mov	r12,r5
+	mcall	r6[16]
+	invalid
+	invalid
+	stdsp	sp[0],r12
+	invalid
+	mcall	r6[16]
 	invalid
 	invalid
 	mov	r12,r5
 	mcall	r6[16]
 	invalid
 	invalid
-	invalid
-	invalid
-	mcall	r6[16]
-	invalid
-	invalid
-	mov	r12,r5
-	mcall	r6[16]
-	invalid
-	invalid
-	invalid
+	ld.ub	r5[0]
 	mov	r11,r5
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r12,sp[0]
+	cp.w	r7,00000000
+	brne	0000BF58
+	lddsp	r8,sp[0]
+	lddsp	r10,sp[0]
+	ld.ub	r8[0]
 	ld.w	r12,r12[656]
 	mov	r8,00000000
+	cp.b	r9,r8
 	invalid
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[156]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[156]
 	rsub	r6,pc
-	invalid
+	ld.ub	r12[0]
 	mov	lr,r12
 	sub	r12,sp,FFFFFFDC
 	mov	r1,r11
+	ld.w	r2,r12[20]
+	ld.w	r11,r12[0]
+	ld.w	r5,r12[4]
+	ld.w	r4,r12[8]
+	ld.w	r3,r12[12]
+	ld.w	r12,r12[16]
+	cp.b	r7,r10
+	brne	0000C03C
+	cp.w	r7,00000000
+	breq	0000C042
+	ld.ub	lr[1]
+	cp.b	r10,r9
+	brne	0000C03C
+	cp.w	r10,00000000
+	breq	0000C042
+	ld.ub	lr[2]
+	cp.b	r9,r8
+	brne	0000C03C
+	cp.w	r9,00000000
+	breq	0000C042
+	ld.ub	lr[3]
+	cp.b	r8,r11
+	brne	0000C03C
+	cp.w	r8,00000000
+	breq	0000C042
+	ld.ub	lr[-4]
+	cp.b	r8,r5
+	brne	0000C03C
+	cp.w	r8,00000000
+	breq	0000C042
+	ld.ub	lr[-3]
+	cp.b	r8,r4
+	brne	0000C03C
+	cp.w	r8,00000000
+	breq	0000C042
+	ld.ub	lr[-2]
+	cp.b	r8,r3
+	brne	0000C03C
+	cp.w	r8,00000000
+	breq	0000C042
+	ld.ub	lr[-1]
+	cp.b	r8,r12
+	brne	0000C03C
+	cp.w	r8,00000000
+	breq	0000C042
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r8,r2
+	breq	0000C03E
+	popm	r0-r3,r4-r7,pc,r12=0
+	cp.w	r8,00000000
+	brne	0000C044
+	popm	r0-r3,r4-r7,r12,pc,r12=1
 	sub	r11,r1,FFFFFFF7
 	sub	r12,lr,FFFFFFF7
 	mcall	r6[24]
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[116]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[116]
 	rsub	r6,pc
 	invalid
 	mov	r5,r11
@@ -15583,6 +15583,8 @@ _start proc
 	invalid
 	sub	r9,pc,FFFFFD8C
 	invalid
+	cp.w	r8,00000000
+	brlt	0000C0DC
 	invalid
 	invalid
 	invalid
@@ -15591,12 +15593,13 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000C0DC
 	sub	r8,r12,00000001
 	invalid
 	invalid
+	popm	r0-r3,r4-r7,pc,r12=-1
+	invalid
+	brne	0000C0DC
 	invalid
 	invalid
 	invalid
@@ -15611,23 +15614,20 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	sub	r8,r12,00002329
-	invalid
+	cp.w	r8,00000001
 	invalid
 	sub	r8,r12,00002E80
 	invalid
 	invalid
 	invalid
-	invalid
+	breq	0000C114
 	sub	r8,r12,00004DC0
 	invalid
 	invalid
@@ -15641,6 +15641,7 @@ _start proc
 	invalid
 	invalid
 	invalid
+	cp.w	r8,0000000F
 	invalid
 	invalid
 	invalid
@@ -15652,8 +15653,7 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r8,00000006
 	invalid
 	invalid
 	invalid
@@ -15686,7 +15686,7 @@ _start proc
 	invalid
 	invalid
 	mov	r7,r12
-	invalid
+	cp.w	r12,00000000
 	invalid
 	mov	lr,00000032
 	st.w	--sp,r7
@@ -15705,8 +15705,8 @@ _start proc
 	invalid
 	invalid
 	mov	lr,r12
-	invalid
-	invalid
+	cp.w	r12,00000000
+	brne	0000C2DA
 	ld.w	r11,r11[644]
 	mov	r8,0000004B
 	mov	r9,00000042
@@ -15721,8 +15721,8 @@ _start proc
 	invalid
 	invalid
 	mov	lr,r12
-	invalid
-	invalid
+	cp.w	r12,00000000
+	brne	0000C2DA
 	st.w	--sp,lr
 	ld.w	r11,r11[640]
 	st.w	--sp,lr
@@ -15739,8 +15739,8 @@ _start proc
 	invalid
 	invalid
 	mov	lr,r12
-	invalid
-	invalid
+	cp.w	r12,00000000
+	brne	0000C2DA
 	ld.w	r11,r11[636]
 	st.w	--sp,lr
 	mov	r8,00000047
@@ -15756,8 +15756,8 @@ _start proc
 	invalid
 	invalid
 	mov	lr,r12
-	invalid
-	invalid
+	cp.w	r12,00000000
+	brne	0000C2DA
 	st.w	--sp,lr
 	ld.w	r11,r11[632]
 	st.w	--sp,lr
@@ -15774,8 +15774,8 @@ _start proc
 	invalid
 	invalid
 	mov	r7,r12
-	invalid
-	invalid
+	cp.w	r12,00000000
+	brne	0000C2DA
 	mov	lr,00000039
 	ld.w	r11,r11[628]
 	st.w	--sp,r7
@@ -15792,8 +15792,8 @@ _start proc
 	invalid
 	invalid
 	mov	lr,r12
-	invalid
-	invalid
+	cp.w	r12,00000000
+	brne	0000C2DA
 	st.w	--sp,lr
 	ld.w	r11,r11[624]
 	st.w	--sp,lr
@@ -15809,24 +15809,24 @@ _start proc
 	st.w	--sp,lr
 	invalid
 	invalid
+	cp.w	r12,00000000
 	invalid
+	brne	0000C2DA
 	invalid
-	invalid
-	invalid
-	invalid
+	popm	r0-r3,r4-r7,pc,r12=0
 	mov	r12,00000002
+	popm	r0-r3,r4-r7,pc
+	popm	r0-r3,r4-r7,r12,pc,r12=1
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.ub	r6[-1]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r7[-1]
 	invalid
 	invalid
 	invalid
@@ -15980,7 +15980,7 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	st.w	pc[12],sp
 	invalid
 	invalid
 	invalid
@@ -16032,7 +16032,7 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	ld.sh	r9,r3[6]
 	invalid
 	invalid
 	invalid
@@ -16049,6 +16049,7 @@ _start proc
 	invalid
 	mov	r0,r0
 	rsub	r0,pc
+	lddsp	r0,sp[0]
 	invalid
 	invalid
 	invalid
@@ -16064,15 +16065,14 @@ _start proc
 	invalid
 	invalid
 	invalid
+	ld.w	r0,r0[0]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r0,r0
 	invalid
 	invalid
 	invalid
@@ -16126,6 +16126,7 @@ _start proc
 	invalid
 	ld.w	r0,r0++
 	invalid
+	ld.w	r0,r2[8]
 	invalid
 	invalid
 	invalid
@@ -16209,9 +16210,11 @@ _start proc
 	invalid
 	invalid
 	invalid
+	lddsp	lr,sp[60]
 	invalid
 	invalid
 	invalid
+	cp.w	r8,r0
 	invalid
 	invalid
 	invalid
@@ -16229,6 +16232,7 @@ _start proc
 	invalid
 	invalid
 	invalid
+	st.w	r3[0],r1
 	invalid
 	invalid
 	invalid
@@ -16243,11 +16247,7 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.sh	r1,r0[0]
 	invalid
 	invalid
 	invalid
@@ -16281,6 +16281,7 @@ _start proc
 	invalid
 	invalid
 	invalid
+	breq	0000C6F6
 	invalid
 	invalid
 	invalid
@@ -16306,6 +16307,7 @@ _start proc
 	invalid
 	invalid
 	invalid
+	ld.w	r0,pc[-64]
 	invalid
 	invalid
 	invalid
@@ -16313,9 +16315,7 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	pc[-1]
 	invalid
 	invalid
 	invalid
@@ -16435,6 +16435,9 @@ _start proc
 	invalid
 	invalid
 	invalid
+	lddsp	r8,sp[256]
+	invalid
+	ld.w	r0,r0[0]
 	invalid
 	invalid
 	invalid
@@ -16452,10 +16455,7 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.uh	pc,r0[-2]
 	ld.w	r0,r1++
 	invalid
 	invalid
@@ -16470,6 +16470,7 @@ _start proc
 	invalid
 	invalid
 	invalid
+	ld.w	r0,r3[0]
 	invalid
 	invalid
 	invalid
@@ -16531,8 +16532,7 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.w	r0,pc[-64]
 	invalid
 	invalid
 	invalid
@@ -16594,6 +16594,7 @@ _start proc
 	invalid
 	invalid
 	rsub	r0,r0
+	ld.w	r0,r7[60]
 	invalid
 	invalid
 	invalid
@@ -16647,8 +16648,10 @@ _start proc
 	invalid
 	invalid
 	invalid
+	ld.sh	r3,r0[0]
 	invalid
 	invalid
+	cp.w	r12,r0
 	invalid
 	invalid
 	invalid
@@ -16686,20 +16689,17 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[20]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[20]
 	rsub	r6,pc
 	mcall	r6[580]
+	brne	0000CA60
+	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[76]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[76]
 	rsub	r6,pc
 	invalid
 	mov	r4,r11
@@ -16710,25 +16710,25 @@ _start proc
 	mov	r11,FFFFFFFF
 	invalid
 	invalid
+	cp.w	r10,r2
 	invalid
-	invalid
-	invalid
+	brcc	0000CA9A
 	mov	r8,FFFFFFFF
 	mov	r9,FFFFFFFF
 	mov	r12,00000001
 	invalid
-	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
 	mov	r12,00000000
 	invalid
 	invalid
 	invalid
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[36]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[36]
 	rsub	r6,pc
 	mov	r3,r12
 	mov	r4,r11
@@ -16740,15 +16740,15 @@ _start proc
 	invalid
 	mov	r11,r4
 	mov	r12,r3
-	invalid
-	invalid
+	cp.w	r7,FFFFFFFF
+	brne	0000CAC8
 	mov	r12,r5
+	popm	r0-r3,r4-r7,pc
 	invalid
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[268]
+	lddpc	r6,sp[268]
 	rsub	r6,pc
 	mov	r2,r10
 	mov	r5,r12
@@ -16763,37 +16763,37 @@ _start proc
 	mov	r10,00000053
 	mcall	r6[60]
 	ld.w	r8,r8[156]
-	invalid
-	invalid
+	ld.ub	r5[0]
+	ld.w	r10,r8[0]
 	sub	r8,sp,FFFFFFF8
-	invalid
+	cp.w	r7,00000000
 	invalid
 	invalid
 	mov	r8,r5
 	invalid
+	ld.ub	r8[0]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	brne	0000CB26
 	mov	r8,0000002D
-	invalid
+	cp.b	r9,r8
 	invalid
 	mcall	r6[28]
 	mov	r10,r2
-	invalid
+	st.w	r12[0],r7
 	mov	r4,r12
 	mov	r11,r1
 	mov	r12,r5
 	mcall	r6[540]
 	invalid
+	ld.w	r8,r1[0]
+	cp.w	r8,r5
+	brne	0000CB7E
+	cp.w	r3,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r8[0]
+	cp.w	r11,00000000
 	invalid
 	mov	r12,r3
 	mcall	r6[120]
@@ -16803,21 +16803,21 @@ _start proc
 	mov	r4,r7
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r4[0]
+	cp.w	r12,00000000
+	brne	0000CB88
 	mov	r4,r12
 	invalid
 	invalid
 	invalid
 	mov	r4,00000001
+	cp.w	r3,00000000
+	brne	0000CB9C
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r5,r1[0]
+	ld.ub	r5[0]
+	cp.w	r7,00000000
 	invalid
 	mov	r11,r7
 	mov	r12,r3
@@ -16826,24 +16826,24 @@ _start proc
 	mov	r12,r3
 	mov	r11,00000030
 	mcall	r6[120]
-	invalid
-	invalid
+	breq	0000CBF4
+	ld.ub	r5[1]
 	mov	r10,00000042
-	invalid
-	invalid
+	cp.b	r9,r10
+	breq	0000CBD8
 	mov	r8,00000044
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	0000CBD8
 	mov	r8,00000069
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000CBF4
 	invalid
 	invalid
 	mov	r5,00000002
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r5[2]
+	cp.b	r8,r10
+	brne	0000CBF4
 	invalid
 	mov	r5,00000003
 	invalid
@@ -16851,53 +16851,53 @@ _start proc
 	invalid
 	mov	r5,00000001
 	mov	r8,00000042
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000CC82
 	mov	r8,00000045
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000CC8C
 	mov	r8,00000047
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000CC90
 	mov	r8,0000004B
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000CC94
 	mov	r8,0000004D
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000CC98
 	mov	r8,00000050
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000CC9C
 	mov	r8,00000054
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000CCA0
 	mov	r8,00000059
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000CCA8
 	mov	r8,0000005A
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000CCAC
 	mov	r8,00000062
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000CC7C
 	mov	r8,00000063
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000CCB8
 	mov	r8,00000067
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000CC90
 	mov	r8,0000006B
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000CC94
 	mov	r8,0000006D
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000CC98
 	mov	r8,00000074
-	invalid
-	invalid
+	cp.b	r7,r8
+	breq	0000CCA0
 	mov	r8,00000077
-	invalid
-	invalid
+	cp.b	r7,r8
+	brne	0000CCB4
 	invalid
 	invalid
 	invalid
@@ -16928,15 +16928,15 @@ _start proc
 	invalid
 	invalid
 	mov	r12,00000000
+	ld.w	r8,r1[0]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r1[0],r8
+	ld.ub	r8[0]
 	mov	r9,r4
 	invalid
 	mov	r8,00000000
-	invalid
+	cp.b	r10,r8
 	invalid
 	invalid
 	invalid
@@ -16944,73 +16944,73 @@ _start proc
 	mov	r4,00000004
 	mov	r12,r4
 	invalid
+	popm	r0-r3,r4-r7,pc
+	ld.w	r3,r12[28]
+	ld.w	r2,r10[28]
+	ld.w	pc,r10[24]
+	ld.w	sp,r10[-40]
+	ld.w	r8,r0[-36]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[52]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[52]
 	rsub	r6,pc
+	cp.w	r12,00000000
+	breq	0000CD16
+	cp.w	r11,00000000
+	breq	0000CD16
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,r12
+	breq	0000CD1A
 	mcall	r6[28]
 	mov	r8,0000000C
 	mov	r9,00000000
-	invalid
+	st.w	r12[0],r8
 	invalid
 	mov	r12,00000001
 	mov	r11,r12
 	mcall	r6[516]
 	mov	r9,r12
 	mov	r12,r9
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[76]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[76]
 	rsub	r6,pc
 	mov	r3,r12
 	mcall	r6[568]
-	invalid
+	ld.uh	r5,r3[0]
 	invalid
 	mov	r7,r12
 	mov	r12,r3
 	mcall	r6[296]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r5,00000000
+	brne	0000CD5C
+	cp.w	r3,00000000
+	breq	0000CD6A
+	cp.w	r7,00000000
+	brne	0000CD6E
 	mcall	r6[28]
+	ld.w	r8,r12[0]
+	cp.w	r8,00000009
+	breq	0000CD6A
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r3,00000000
+	brne	0000CD6E
 	mcall	r6[28]
 	mov	r8,FFFFFFFF
-	invalid
+	st.w	r12[0],r3
 	invalid
 	mov	r8,00000000
 	invalid
 	mov	r8,FFFFFFFF
 	mov	r12,r8
+	popm	r0-r3,r4-r7,pc
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r1,sp[44]
 	invalid
 	invalid
 	invalid
@@ -17028,6 +17028,17 @@ _start proc
 	invalid
 	invalid
 	invalid
+	ld.w	r11,r7[8]
+	lddsp	r1,sp[0]
+	invalid
+	ld.w	r11,r7[16]
+	invalid
+	invalid
+	lddsp	r11,sp[4]
+	ld.w	r5,r7[12]
+	invalid
+	invalid
+	ld.w	r4,r7[4]
 	invalid
 	invalid
 	invalid
@@ -17050,69 +17061,58 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[100]
+	popm	r0-r3,r4-r7,pc
+	pushm	r4-r7,lr
+	lddpc	r6,sp[100]
 	rsub	r6,pc
 	sub	lr,sp,FFFFFFEC
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r7,lr[4]
+	ld.w	r5,lr[0]
+	cp.w	r7,00000000
+	breq	0000CE4A
+	ld.w	lr,r7[0]
+	st.w	--sp,lr
+	ld.w	lr,r7[4]
+	st.w	--sp,lr
+	ld.w	lr,r7[8]
+	st.w	--sp,lr
+	ld.w	lr,r7[28]
+	st.w	--sp,lr
+	ld.w	lr,r7[20]
 	st.w	--sp,lr
 	invalid
-	st.w	--sp,lr
 	invalid
-	st.w	--sp,lr
+	ld.w	r8,r5[0]
 	invalid
-	st.w	--sp,lr
-	invalid
-	st.w	--sp,lr
+	cp.w	lr,r8
 	invalid
 	invalid
+	brne	0000CE6E
+	ld.w	lr,r5[0]
+	cp.w	lr,00000000
+	brge	0000CE60
+	lddpc	r8,sp[40]
+	cp.w	lr,r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r8,pc[40]
-	invalid
-	invalid
-	lddpc	lr,pc[36]
+	lddpc	lr,sp[36]
 	invalid
 	invalid
 	invalid
-	lddpc	r8,pc[32]
+	lddpc	r8,sp[32]
+	cp.w	lr,r8
 	invalid
-	invalid
-	lddpc	lr,pc[28]
+	lddpc	lr,sp[28]
 	invalid
 	invalid
 	mov	r12,lr
+	popm	r4-r7,pc
 	invalid
 	invalid
+	ld.sh	r0,r0[0]
 	invalid
+	ld.sh	r0,r0[0]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	pc,pc[-4]
 	invalid
 	invalid
 	mov	r3,r11
@@ -17120,33 +17120,15 @@ _start proc
 	mov	r11,r10
 	mov	r12,r3
 	mov	r2,r10
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	icall	r1
+	brne	0000CEEC
+	ld.w	r7,r3[0]
+	cp.w	r7,00000000
+	breq	0000CEEC
 	mov	r4,r12
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	mov	r11,r2
-	mov	r12,r3
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r7,00000000
+	brge	0000CEB2
 	invalid
 	invalid
 	invalid
@@ -17154,51 +17136,69 @@ _start proc
 	invalid
 	mov	r11,r2
 	mov	r12,r3
+	st.w	r3[0],r5
+	icall	r1
+	invalid
+	invalid
+	cp.w	r7,00000000
 	invalid
 	invalid
 	invalid
 	invalid
+	invalid
+	cp.w	r7,r8
+	brne	0000CEA2
+	cp.w	r12,00000000
+	brne	0000CEEC
+	cp.w	r4,00000000
+	breq	0000CEEC
+	mov	r11,r2
+	mov	r12,r3
+	st.w	r3[0],r4
+	icall	r1
+	popm	r0-r3,r4-r7,pc
+	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,000000B0
-	lddpc	r6,pc[312]
+	lddpc	r6,sp[312]
 	rsub	r6,pc
-	invalid
-	invalid
+	stdsp	sp[40],r12
+	ld.w	r3,r12[16]
 	mov	r8,0000000C
 	invalid
+	ld.w	r8,r12[32]
+	ld.w	r4,r12[20]
+	cp.w	r8,00000000
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[36],r11
+	stdsp	sp[56],r9
+	stdsp	sp[32],r10
+	ld.w	lr,r12[0]
+	stdsp	sp[72],lr
+	ld.w	r11,r12[4]
+	stdsp	sp[48],r11
+	ld.w	r10,r12[8]
+	stdsp	sp[52],r10
+	ld.w	r5,r12[12]
 	mov	r12,r3
 	invalid
 	invalid
 	invalid
+	stdsp	sp[60],r8
 	invalid
-	invalid
-	invalid
+	breq	0000CF3A
 	mov	r10,00000000
 	invalid
-	invalid
+	lddsp	r3,sp[60]
 	mov	r8,00000064
 	invalid
-	invalid
-	invalid
+	cp.w	r9,00000000
+	breq	0000CF4A
 	mov	r10,00000001
 	invalid
 	invalid
-	invalid
+	cp.w	r8,00000001
 	invalid
 	invalid
 	invalid
@@ -17209,28 +17209,28 @@ _start proc
 	sub	r9,pc,FFFFFD96
 	invalid
 	invalid
-	invalid
+	lddsp	r2,sp[32]
 	sub	r8,r5,00000001
+	ld.w	r2,r2[0]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	lr,sp[72]
+	stdsp	sp[68],r2
+	stdsp	sp[64],r8
+	cp.w	lr,00000000
+	brge	0000CF8A
 	mov	r11,00000000
+	stdsp	sp[44],r11
 	invalid
-	invalid
-	invalid
+	lddsp	r10,sp[72]
 	mov	r8,0000003B
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[44],r8
+	lddsp	lr,sp[68]
+	lddsp	r8,sp[44]
+	lddsp	r9,sp[48]
+	lddsp	r10,sp[52]
+	lddsp	r11,sp[64]
+	lddsp	r12,sp[60]
 	invalid
 	st.w	--sp,lr
 	mov	r7,00000000
@@ -17244,179 +17244,179 @@ _start proc
 	invalid
 	invalid
 	invalid
+	lddsp	r9,sp[52]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	lddsp	r9,sp[48]
 	mov	r3,r12
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	r8,00000015
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	r8,00000015
 	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r9,sp[68]
 	invalid
 	invalid
 	mov	r3,r10
-	invalid
+	stdsp	sp[68],r9
 	mov	r2,r7
 	mov	r4,00000006
 	mov	r7,r3
+	stdsp	sp[168],r3
+	stdsp	sp[172],r3
+	invalid
+	cp.w	r10,r7
+	brne	0000D03E
+	lddsp	r8,sp[168]
+	cp.w	r10,r8
+	breq	0000D03E
+	lddsp	r8,sp[152]
+	cp.w	r8,00000000
+	brlt	0000D0EC
+	lddsp	r5,sp[56]
+	cp.w	r5,00000000
+	brge	0000D030
+	cp.w	r8,00000000
+	invalid
+	cp.w	r2,r8
 	invalid
 	invalid
 	invalid
 	invalid
+	lddsp	r2,sp[56]
+	cp.w	r8,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r2,00000000
 	invalid
 	eor	r8,r9
+	brne	0000D0EC
+	cp.w	r4,00000000
 	invalid
+	lddsp	r8,sp[152]
+	lddsp	r7,sp[168]
+	cp.w	r8,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[172],r12
+	stdsp	sp[168],r10
 	sub	r5,sp,FFFFFF54
-	invalid
+	lddsp	r12,sp[36]
 	sub	r10,sp,FFFFFF88
 	mov	r11,r5
 	invalid
 	invalid
-	invalid
+	lddsp	r8,sp[44]
 	st.w	--sp,r12
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r10,sp[56]
+	lddsp	r9,sp[52]
+	lddsp	r11,sp[68]
+	lddsp	r12,sp[64]
 	st.w	--sp,r5
 	invalid
 	invalid
+	lddsp	r10,sp[172]
+	cp.w	r10,r12
+	brne	0000D008
+	lddsp	r8,sp[152]
+	lddsp	lr,sp[56]
+	cp.w	lr,r8
+	breq	0000D0EC
+	cp.w	lr,00000000
+	brlt	0000D0EC
+	cp.w	r8,00000000
 	invalid
 	invalid
+	lddsp	r8,sp[172]
+	invalid
+	cp.w	r9,r8
 	invalid
 	invalid
+	stdsp	sp[164],r9
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	0000D0DC
 	sub	r2,sp,FFFFFFB4
 	sub	r1,sp,FFFFFF5C
-	invalid
+	lddsp	r12,sp[36]
 	mov	r11,r1
 	mov	r10,r2
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[108]
+	lddsp	r11,sp[56]
+	cp.w	r8,r11
+	brne	0000D0DC
+	lddsp	r10,sp[52]
+	lddsp	r11,sp[64]
+	lddsp	r9,sp[48]
+	lddsp	r8,sp[44]
+	lddsp	r12,sp[60]
 	st.w	--sp,r2
 	st.w	--sp,r1
 	invalid
 	invalid
 	sub	r10,sp,FFFFFF88
-	invalid
-	invalid
+	stdsp	sp[172],r12
+	lddsp	r12,sp[36]
 	sub	r11,sp,FFFFFF54
 	invalid
 	invalid
 	invalid
+	cp.w	r5,00000003
+	brne	0000D08C
+	lddpc	r8,sp[212]
+	invalid
+	cp.w	r7,r8
+	brne	0000D1A4
+	lddsp	r8,sp[172]
+	lddsp	r10,sp[68]
+	lddsp	r5,sp[32]
 	invalid
 	invalid
-	lddpc	r8,pc[212]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r9,sp[120]
+	st.w	r5[0],r4
+	lddsp	r3,sp[72]
+	cp.w	r3,r9
+	breq	0000D152
+	lddsp	r2,sp[44]
+	cp.w	r2,00000000
+	breq	0000D10E
 	mov	r1,00000000
 	invalid
 	invalid
 	invalid
+	lddsp	r2,sp[172]
+	lddsp	r11,sp[72]
+	lddsp	lr,sp[44]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r10,sp[36]
 	invalid
 	sub	r11,sp,FFFFFF88
 	sub	r12,sp,FFFFFF58
+	stdsp	sp[168],r3
+	icall	r10
+	cp.w	r5,r2
+	invalid
+	cp.w	r3,r5
+	invalid
+	lddsp	r5,sp[72]
 	invalid
 	invalid
 	invalid
+	cp.w	r12,00000000
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000D19C
+	lddsp	r8,sp[168]
+	stdsp	sp[172],r8
 	sub	r8,sp,FFFFFF88
 	invalid
 	sub	r8,sp,FFFFFF78
@@ -17426,17 +17426,17 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	lddsp	lr,sp[40]
 	invalid
 	sub	r4,sp,FFFFFFF0
 	mov	r8,lr
 	invalid
 	invalid
 	invalid
+	lddsp	r9,sp[160]
+	lddsp	r12,sp[172]
 	invalid
-	invalid
-	invalid
-	invalid
+	st.w	lr[-24],r9
 	invalid
 	invalid
 	mov	r12,FFFFFFFF
@@ -17447,21 +17447,21 @@ _start proc
 	mov	r5,FFFFFFFF
 	invalid
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[20]
+	breq	0000D236
+	pushm	r4-r7,lr
+	lddpc	r6,sp[20]
 	rsub	r6,pc
 	ld.w	r10,r10[612]
 	ld.w	r11,r11[444]
 	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r11,r0
 	eor	r10,r0
 	invalid
 	mov	r7,r0
@@ -17474,7 +17474,7 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	cp.w	r12,r0
 	eor	r11,r0
 	invalid
 	mov	r8,r0
@@ -17485,20 +17485,20 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	lddpc	r6,pc[24]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[24]
 	rsub	r6,pc
 	invalid
 	mcall	r6[320]
+	ld.ub	r12[0]
+	cp.w	r12,00000000
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	pushm	r0-r3,r4-r7,lr
 	mov	r7,sp
 	sub	sp,sp,00000338
-	lddpc	r6,pc[360]
+	lddpc	r6,sp[360]
 	rsub	r6,pc
 	mov	r4,r10
 	sub	r3,r7,0000000C
@@ -17510,19 +17510,19 @@ _start proc
 	mov	r5,r9
 	invalid
 	invalid
-	invalid
+	brge	0000D258
 	mov	r12,00000000
 	invalid
 	invalid
 	mov	r11,r3
 	mov	r12,r5
 	invalid
-	invalid
+	brge	0000D284
 	ld.w	r12,r12[-24]
 	mcall	r6[12]
 	ld.w	r12,r12[-8]
-	invalid
-	invalid
+	cp.w	r12,00000000
+	breq	0000D276
 	mcall	r6[12]
 	mcall	r6[28]
 	mov	r11,00000000
@@ -17531,13 +17531,13 @@ _start proc
 	ld.w	r8,r8[-20]
 	ld.w	r9,r9[-16]
 	invalid
+	cp.w	r8,00000006
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r9,r8
 	invalid
 	sub	r12,r9,FFFFFFFA
-	invalid
+	cp.w	r12,r9
 	invalid
 	invalid
 	invalid
@@ -17548,21 +17548,21 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	cp.w	r12,FFFFFFFF
 	invalid
 	mcall	r6[32]
 	invalid
 	invalid
 	invalid
 	ld.w	r9,r9[-804]
-	invalid
-	invalid
+	cp.w	r9,00000000
+	brne	0000D2EE
 	invalid
 	invalid
 	invalid
 	ld.w	r8,r8[-808]
 	ld.w	r12,r12[-804]
-	invalid
+	ld.w	r8,r8[0]
 	invalid
 	invalid
 	ld.w	r8,r8[-24]
@@ -17575,39 +17575,39 @@ _start proc
 	invalid
 	ld.w	r9,r9[-744]
 	ld.w	r10,r10[-40]
-	invalid
-	invalid
+	cp.w	r4,r10
+	breq	0000D3D8
 	ld.w	r8,r8[-784]
 	invalid
 	invalid
 	ld.w	r12,r12[-736]
+	cp.w	r1,r8
 	invalid
+	cp.w	r1,r12
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,00000000
+	brne	0000D34C
 	mov	r12,0000000C
 	invalid
 	ld.w	r8,r8[-736]
 	ld.w	r11,r11[-736]
 	invalid
+	cp.w	r11,00000000
 	invalid
 	invalid
+	cp.w	r12,r1
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,FFFFFFFF
 	invalid
 	ld.w	r10,r10[-788]
 	ld.w	r9,r9[-804]
+	cp.w	r10,r9
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r3,00000000
+	brne	0000D384
+	cp.w	r10,00000000
+	brne	0000D394
 	ld.w	r12,r12[-736]
 	mcall	r6[32]
 	invalid
@@ -17617,13 +17617,13 @@ _start proc
 	ld.w	r12,r12[-788]
 	mcall	r6[80]
 	mov	r5,r12
+	cp.w	r12,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r3,00000000
+	breq	0000D3BE
 	ld.w	r8,r8[-784]
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	0000D3BE
 	ld.w	r11,r11[-788]
 	mov	r10,r8
 	mcall	r6[36]
@@ -17637,47 +17637,47 @@ _start proc
 	invalid
 	ld.w	r8,r8[-28]
 	ld.w	r10,r10[-792]
-	invalid
+	cp.w	r10,r8
 	invalid
 	ld.w	r8,r8[-740]
 	ld.w	r10,r10[-744]
-	invalid
+	ld.ub	r8[0]
 	mov	r11,00000025
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r10[0]
+	cp.b	r9,r11
+	brne	0000D4A4
+	cp.w	r12,FFFFFFFF
 	invalid
 	ld.w	r4,r4[-784]
 	ld.w	r9,r9[-784]
 	invalid
 	ld.w	r8,r8[-736]
+	cp.w	r4,r9
 	invalid
+	cp.w	r4,r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
+	brne	0000D422
 	mov	r12,0000000C
 	invalid
 	ld.w	r8,r8[-736]
 	ld.w	r11,r11[-736]
 	invalid
+	cp.w	r11,00000000
+	invalid
+	cp.w	r12,r4
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,FFFFFFFF
 	invalid
 	ld.w	r10,r10[-788]
 	ld.w	r9,r9[-804]
+	cp.w	r10,r9
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r3,00000000
+	brne	0000D456
+	cp.w	r10,00000000
+	brne	0000D460
 	ld.w	r12,r12[-736]
 	mcall	r6[32]
 	invalid
@@ -17685,13 +17685,13 @@ _start proc
 	ld.w	r12,r12[-788]
 	mcall	r6[80]
 	mov	r5,r12
+	cp.w	r12,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r3,00000000
+	breq	0000D48A
 	ld.w	r8,r8[-784]
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	0000D48A
 	ld.w	r11,r11[-788]
 	mov	r10,r8
 	mcall	r6[36]
@@ -17702,17 +17702,17 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	cp.w	r12,FFFFFFFF
 	invalid
 	mov	r8,0000006E
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000D528
 	ld.w	r9,r9[-8]
 	invalid
 	invalid
-	invalid
+	ld.w	r8,r12[0]
 	sub	r9,r8,00000012
-	invalid
+	cp.w	r9,00000004
 	invalid
 	sub	r8,pc,FFFFFFF6
 	invalid
@@ -17722,33 +17722,33 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	ld.w	r8,r12[4]
 	ld.w	r10,r10[-784]
+	st.b	r8[0],r10
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r12[4]
 	ld.w	r9,r9[-784]
 	invalid
 	invalid
-	invalid
+	ld.w	r8,r12[4]
 	ld.w	r12,r12[-784]
+	st.w	r8[0],r12
 	invalid
-	invalid
-	invalid
+	ld.w	r8,r12[4]
 	ld.w	r11,r11[-784]
+	st.w	r8[0],r11
 	invalid
-	invalid
-	invalid
+	ld.w	r9,r12[4]
 	mov	r8,00000000
-	invalid
+	st.w	r9[0],r8
 	ld.w	r10,r10[-784]
-	invalid
+	st.w	r9[4],r10
 	invalid
 	mov	r8,00000061
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	0000D53A
 	mov	r8,00000041
-	invalid
+	cp.b	r9,r8
 	invalid
 	ld.w	r9,r9[-744]
 	ld.w	lr,lr[-8]
@@ -17758,24 +17758,24 @@ _start proc
 	ld.w	r4,r4[-24]
 	ld.w	r8,r8[-32]
 	invalid
-	invalid
-	invalid
+	cp.w	r10,r4
+	brne	0000D56A
 	mov	r12,00000000
 	invalid
 	invalid
 	invalid
 	ld.w	r11,r11[-744]
 	ld.w	r8,r8[-20]
+	cp.w	r8,FFFFFFFF
+	breq	0000D5B0
 	invalid
 	invalid
+	ld.w	r8,r9[0]
+	cp.w	r8,00000005
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r9[4]
+	cp.w	r8,00000000
+	brge	0000D5A4
 	ld.w	r10,r10[-780]
 	invalid
 	invalid
@@ -17790,10 +17790,10 @@ _start proc
 	invalid
 	mov	r12,00000000
 	invalid
-	lddpc	r8,pc[132]
+	lddpc	r8,sp[132]
 	ld.w	r9,r9[-772]
 	invalid
-	invalid
+	cp.w	r9,r8
 	invalid
 	mov	r9,FFFFFFFF
 	invalid
@@ -17802,52 +17802,52 @@ _start proc
 	invalid
 	sub	r8,r11,00000030
 	invalid
+	cp.w	r8,r9
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,r4
+	brne	0000D5B6
 	mov	r11,00000001
 	invalid
 	ld.w	r10,r10[-744]
 	ld.w	r9,r9[-16]
 	ld.w	r12,r12[-12]
-	invalid
-	invalid
+	cp.w	r9,r12
+	breq	0000D666
 	ld.w	r8,r8[-8]
+	cp.w	r8,FFFFFFFF
+	breq	0000D622
 	invalid
 	invalid
+	ld.w	r8,r9[0]
+	cp.w	r8,00000005
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r9[4]
+	cp.w	r8,00000000
+	brlt	0000D666
 	mov	r1,r8
 	invalid
 	sub	r10,r9,FFFFFFFF
 	mov	r1,00000000
 	invalid
-	lddpc	r8,pc[16]
-	invalid
-	invalid
+	lddpc	r8,sp[16]
+	ld.ub	r10[0]
+	cp.w	r1,r8
 	invalid
 	mov	r9,FFFFFFFF
 	invalid
-	invalid
-	invalid
+	ld.ub	r12[1]
+	st.w	r12[-28],r9
 	invalid
 	invalid
 	sub	r8,r11,00000030
 	invalid
+	cp.w	r1,r9
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,r12
+	brne	0000D62A
+	cp.w	r1,0000000F
 	invalid
 	invalid
 	mov	r3,00000001
@@ -17856,16 +17856,16 @@ _start proc
 	mov	r9,0000000E
 	mov	r3,r1
 	sub	r8,r9,FFFFFFF4
-	invalid
-	invalid
+	cp.w	r8,r9
+	brcc	0000D678
 	mov	r8,FFFFFFFF
 	invalid
 	ld.w	r9,r9[-772]
-	invalid
+	cp.w	r8,r9
 	invalid
 	sub	r12,r8,FFFFFFFF
 	invalid
-	invalid
+	cp.w	r12,r8
 	invalid
 	invalid
 	invalid
@@ -17873,7 +17873,7 @@ _start proc
 	invalid
 	invalid
 	ld.w	r10,r10[-732]
-	invalid
+	cp.w	r10,FFFFFFFF
 	invalid
 	mov	r12,r10
 	mcall	r6[32]
@@ -17881,8 +17881,8 @@ _start proc
 	invalid
 	ld.w	r9,r9[-744]
 	ld.w	r11,r11[-8]
-	invalid
-	invalid
+	ld.w	r12,r9[0]
+	cp.w	r5,0000000C
 	invalid
 	invalid
 	invalid
@@ -17892,27 +17892,27 @@ _start proc
 	mov	r10,r4
 	mov	r11,r5
 	invalid
-	invalid
+	breq	0000D70C
 	ld.w	r8,r8[-740]
 	ld.w	r10,r10[-768]
-	invalid
+	ld.ub	r8[0]
 	mov	r8,00000041
 	invalid
-	invalid
-	invalid
+	cp.b	r11,r8
+	brne	0000D702
 	ld.w	r12,r12[-768]
 	mov	r9,0000004E
-	invalid
+	st.b	r12[0],r9
 	invalid
 	ld.w	r11,r11[-768]
 	mov	r9,0000006E
-	invalid
+	st.b	r11[0],r9
 	invalid
 	mov	r10,r4
 	mov	r11,r5
 	invalid
-	invalid
-	lddpc	r10,pc[324]
+	breq	0000D72C
+	lddpc	r10,sp[324]
 	mov	r8,0000002D
 	invalid
 	ld.w	r10,r10[-768]
@@ -17922,7 +17922,7 @@ _start proc
 	invalid
 	ld.w	r8,r8[-780]
 	invalid
-	invalid
+	brne	0000D744
 	ld.w	r9,r9[-768]
 	mov	r8,0000002B
 	invalid
@@ -17930,7 +17930,7 @@ _start proc
 	invalid
 	ld.w	r8,r8[-780]
 	invalid
-	invalid
+	breq	0000D758
 	ld.w	r8,r8[-768]
 	invalid
 	invalid
@@ -17943,7 +17943,7 @@ _start proc
 	mov	r10,00000000
 	mov	r11,00000000
 	invalid
-	invalid
+	breq	0000D79C
 	mov	r8,r4
 	mov	r9,r5
 	mov	r10,r4
@@ -17963,9 +17963,9 @@ _start proc
 	mov	r11,00000000
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r3,00000000
+	breq	0000D8A2
+	cp.w	r1,0000000D
 	invalid
 	invalid
 	mov	r0,r1
@@ -17981,11 +17981,11 @@ _start proc
 	invalid
 	mov	r2,r10
 	mov	r3,r11
-	invalid
-	invalid
+	cp.w	r0,00000000
+	brne	0000D832
 	ld.w	r10,r10[-812]
 	invalid
-	invalid
+	brne	0000D7FE
 	invalid
 	mov	r10,r2
 	mov	r11,r3
@@ -18001,8 +18001,8 @@ _start proc
 	mov	r8,r0
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	0000D828
 	invalid
 	mov	r8,r2
 	mov	r9,r3
@@ -18010,7 +18010,7 @@ _start proc
 	mov	r4,r10
 	mov	r5,r11
 	invalid
-	lddpc	r8,pc[48]
+	lddpc	r8,sp[48]
 	mov	r4,r2
 	invalid
 	invalid
@@ -18026,11 +18026,11 @@ _start proc
 	mov	r10,r4
 	mov	r11,r5
 	invalid
-	invalid
+	brne	0000D892
 	mov	r3,r1
 	invalid
 	invalid
-	invalid
+	ld.sh	r0,r0[0]
 	invalid
 	mov	r0,FFFFFFFE
 	invalid
@@ -18044,7 +18044,7 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	lddsp	r0,sp[12]
 	invalid
 	invalid
 	invalid
@@ -18055,8 +18055,8 @@ _start proc
 	invalid
 	mov	r4,r10
 	mov	r5,r11
-	invalid
-	invalid
+	cp.w	r3,00000000
+	brne	0000D87C
 	invalid
 	mov	r8,r4
 	mov	r9,r5
@@ -18067,7 +18067,7 @@ _start proc
 	invalid
 	ld.w	r12,r12[-740]
 	invalid
-	invalid
+	ld.ub	r12[0]
 	invalid
 	invalid
 	invalid
@@ -18086,15 +18086,15 @@ _start proc
 	mov	r2,r10
 	mov	r3,r11
 	invalid
-	invalid
+	breq	0000D8FA
 	mov	r8,r10
 	mov	r9,r3
 	mov	r10,00000000
 	mov	r11,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000D8FA
+	cp.w	r1,00000000
+	breq	0000D976
 	invalid
 	invalid
 	mov	r5,r4
@@ -18107,18 +18107,18 @@ _start proc
 	mov	r11,r3
 	mov	r2,r10
 	invalid
-	invalid
+	cp.w	r12,00000009
 	invalid
 	mov	r9,00000030
 	invalid
 	ld.w	r11,r11[-740]
-	invalid
+	ld.ub	r11[0]
 	invalid
 	invalid
 	invalid
 	sub	r8,r1,00000001
-	invalid
-	invalid
+	st.b	r5[0],r9
+	cp.w	r1,00000000
 	invalid
 	invalid
 	invalid
@@ -18134,19 +18134,19 @@ _start proc
 	mov	r10,00000000
 	mov	r11,00000000
 	invalid
-	invalid
+	brne	0000D904
 	mov	r10,r1
 	mov	r9,r5
 	invalid
 	mov	r8,00000030
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r1,00000000
+	brne	0000D968
 	invalid
 	ld.w	r10,r10[-740]
 	ld.w	r11,r11[344]
-	invalid
+	ld.ub	r10[0]
 	invalid
 	invalid
 	ld.w	r8,r8[-4]
@@ -18157,10 +18157,10 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	ld.ub	r5[0]
 	mov	r8,00000000
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000D996
 	invalid
 	invalid
 	invalid
@@ -18170,17 +18170,17 @@ _start proc
 	mov	r10,r4
 	mov	r11,r5
 	invalid
-	invalid
+	breq	0000D9F6
 	ld.w	r9,r9[-740]
 	ld.w	r10,r10[-768]
-	invalid
+	ld.ub	r9[0]
 	mov	r8,00000041
 	invalid
-	invalid
-	invalid
+	cp.b	r11,r8
+	brne	0000D9E8
 	ld.w	r8,r8[-768]
 	mov	r9,0000004E
-	invalid
+	st.b	r8[0],r9
 	invalid
 	mov	r8,r10
 	invalid
@@ -18189,15 +18189,15 @@ _start proc
 	invalid
 	ld.w	r12,r12[-768]
 	mov	r9,0000006E
-	invalid
+	st.b	r12[0],r9
 	mov	r8,00000061
 	invalid
 	invalid
 	mov	r10,r4
 	mov	r11,r5
 	invalid
-	invalid
-	lddpc	r10,pc[196]
+	breq	0000DA16
+	lddpc	r10,sp[196]
 	ld.w	r11,r11[-768]
 	invalid
 	mov	r8,0000002D
@@ -18207,7 +18207,7 @@ _start proc
 	invalid
 	ld.w	r8,r8[-780]
 	invalid
-	invalid
+	brne	0000DA2E
 	ld.w	r10,r10[-768]
 	mov	r8,0000002B
 	invalid
@@ -18215,7 +18215,7 @@ _start proc
 	invalid
 	ld.w	r8,r8[-780]
 	invalid
-	invalid
+	breq	0000DA42
 	ld.w	r9,r9[-768]
 	invalid
 	invalid
@@ -18230,7 +18230,7 @@ _start proc
 	mov	r10,00000000
 	mov	r11,00000000
 	invalid
-	invalid
+	breq	0000DAD8
 	mov	r8,r4
 	mov	r9,r5
 	mov	r10,r4
@@ -18239,17 +18239,17 @@ _start proc
 	mov	r8,r4
 	mov	r9,r5
 	invalid
-	invalid
+	breq	0000DAB2
 	ld.w	r11,r11[-740]
 	ld.w	r10,r10[-824]
-	invalid
+	ld.ub	r11[0]
 	mov	r8,00000041
 	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000DAA0
 	ld.w	r9,r9[-824]
 	mov	r8,00000049
-	invalid
+	st.b	r9[0],r8
 	mov	r8,0000004E
 	invalid
 	mov	r9,00000046
@@ -18257,7 +18257,7 @@ _start proc
 	invalid
 	ld.w	r12,r12[-824]
 	mov	r8,00000069
-	invalid
+	st.b	r12[0],r8
 	mov	r8,0000006E
 	invalid
 	mov	r9,00000066
@@ -18269,7 +18269,7 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	ld.sh	r0,r0[0]
 	invalid
 	mov	r0,FFFFFFFE
 	invalid
@@ -18283,9 +18283,9 @@ _start proc
 	mov	r11,00000000
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r3,00000000
+	breq	0000DBB8
+	cp.w	r1,0000000D
 	invalid
 	invalid
 	mov	r0,r1
@@ -18301,11 +18301,11 @@ _start proc
 	invalid
 	mov	r2,r10
 	mov	r3,r11
-	invalid
-	invalid
+	cp.w	r0,00000000
+	brne	0000DB6E
 	ld.w	r10,r10[-816]
 	invalid
-	invalid
+	brne	0000DB3A
 	invalid
 	mov	r10,r2
 	mov	r11,r3
@@ -18321,8 +18321,8 @@ _start proc
 	mov	r8,r0
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	0000DB64
 	invalid
 	mov	r8,r2
 	mov	r9,r3
@@ -18330,7 +18330,7 @@ _start proc
 	mov	r4,r10
 	mov	r5,r11
 	invalid
-	lddpc	r8,pc[328]
+	lddpc	r8,sp[328]
 	mov	r4,r2
 	invalid
 	invalid
@@ -18346,7 +18346,7 @@ _start proc
 	mov	r10,r4
 	mov	r11,r5
 	invalid
-	invalid
+	brne	0000DBA8
 	mov	r3,r1
 	invalid
 	invalid
@@ -18356,8 +18356,8 @@ _start proc
 	invalid
 	mov	r4,r10
 	mov	r5,r11
-	invalid
-	invalid
+	cp.w	r3,00000000
+	brne	0000DB92
 	invalid
 	mov	r8,r4
 	mov	r9,r5
@@ -18368,7 +18368,7 @@ _start proc
 	invalid
 	ld.w	r12,r12[-740]
 	invalid
-	invalid
+	ld.ub	r12[0]
 	invalid
 	invalid
 	invalid
@@ -18387,15 +18387,15 @@ _start proc
 	mov	r2,r10
 	mov	r3,r11
 	invalid
-	invalid
+	breq	0000DC10
 	mov	r8,r10
 	mov	r9,r3
 	mov	r10,00000000
 	mov	r11,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000DC10
+	cp.w	r1,00000000
+	breq	0000DC8C
 	invalid
 	invalid
 	mov	r5,r4
@@ -18408,18 +18408,18 @@ _start proc
 	mov	r11,r3
 	mov	r2,r10
 	invalid
-	invalid
+	cp.w	r12,00000009
 	invalid
 	mov	r9,00000030
 	invalid
 	ld.w	r11,r11[-740]
-	invalid
+	ld.ub	r11[0]
 	invalid
 	invalid
 	invalid
 	sub	r8,r1,00000001
-	invalid
-	invalid
+	st.b	r5[0],r9
+	cp.w	r1,00000000
 	invalid
 	invalid
 	invalid
@@ -18435,19 +18435,19 @@ _start proc
 	mov	r10,00000000
 	mov	r11,00000000
 	invalid
-	invalid
+	brne	0000DC1A
 	mov	r10,r1
 	mov	r9,r5
 	invalid
 	mov	r8,00000030
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r1,00000000
+	brne	0000DC7E
 	invalid
 	ld.w	r10,r10[-740]
 	ld.w	r11,r11[344]
-	invalid
+	ld.ub	r10[0]
 	invalid
 	invalid
 	ld.w	r8,r8[-4]
@@ -18457,9 +18457,9 @@ _start proc
 	mov	r5,r4
 	invalid
 	invalid
+	ld.sh	r0,r0[0]
 	invalid
-	invalid
-	invalid
+	lddsp	r0,sp[12]
 	invalid
 	invalid
 	invalid
@@ -18468,103 +18468,103 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	ld.ub	r5[0]
 	mov	r8,00000000
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000DCC0
 	mov	r9,r0
 	ld.w	r8,r8[-776]
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	0000DD50
 	ld.w	r12,r12[-768]
 	ld.w	r11,r11[-772]
 	invalid
-	invalid
-	invalid
+	cp.w	r8,r11
+	brcc	0000DD50
 	mov	r10,r11
 	invalid
 	ld.w	r8,r8[-780]
 	invalid
 	invalid
-	invalid
+	brne	0000DD00
 	invalid
 	mov	r8,00000020
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r10,00000000
+	brne	0000DCFA
 	invalid
 	ld.w	r8,r8[-780]
 	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000DD14
+	cp.w	r9,00000000
+	brne	0000DD18
 	mov	r9,r12
 	invalid
 	mov	r11,r12
 	invalid
 	invalid
 	invalid
-	invalid
+	cp.w	r5,r9
 	invalid
 	invalid
 	mov	r8,00000030
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r10,00000000
+	brne	0000DD28
 	invalid
 	invalid
 	invalid
 	ld.w	r11,r11[-768]
-	invalid
+	cp.w	r5,r11
 	invalid
 	invalid
 	mov	r8,00000020
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r10,00000000
+	brne	0000DD44
 	mov	r5,r12
 	ld.w	r10,r10[-768]
 	ld.w	r9,r9[-732]
 	invalid
-	invalid
+	cp.w	r4,r9
 	invalid
 	ld.w	r8,r8[-736]
 	ld.w	r12,r12[-784]
 	invalid
-	invalid
-	invalid
+	cp.w	r4,r8
+	brcs	0000DDFE
 	invalid
 	ld.w	r11,r11[-736]
+	cp.w	r10,r12
 	invalid
+	cp.w	r10,r11
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,00000000
+	brne	0000DD8C
 	mov	r12,0000000C
 	invalid
 	ld.w	r8,r8[-736]
 	ld.w	r9,r9[-736]
 	invalid
+	cp.w	r9,00000000
 	invalid
 	invalid
+	cp.w	r12,r10
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,FFFFFFFF
 	invalid
 	ld.w	r8,r8[-788]
 	ld.w	r12,r12[-804]
+	cp.w	r8,r12
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r3,00000000
+	brne	0000DDC4
+	cp.w	r8,00000000
+	brne	0000DDCE
 	ld.w	r12,r12[-736]
 	mcall	r6[32]
 	invalid
@@ -18572,13 +18572,13 @@ _start proc
 	ld.w	r12,r12[-788]
 	mcall	r6[80]
 	mov	r5,r12
+	cp.w	r12,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r3,00000000
+	breq	0000DDFA
 	ld.w	r11,r11[-784]
-	invalid
-	invalid
+	cp.w	r11,00000000
+	breq	0000DDFA
 	ld.w	r11,r11[-788]
 	ld.w	r10,r10[-784]
 	mcall	r6[36]
@@ -18591,8 +18591,8 @@ _start proc
 	mcall	r6[36]
 	ld.w	r12,r12[-768]
 	sub	r8,r7,000002D8
-	invalid
-	invalid
+	cp.w	r12,r8
+	breq	0000DE22
 	mcall	r6[12]
 	ld.w	r11,r11[-784]
 	invalid
@@ -18607,34 +18607,34 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	brne	0000DE58
 	mov	r8,00000027
 	invalid
 	invalid
-	invalid
+	brne	0000DE62
 	mov	r8,0000002D
 	invalid
 	invalid
-	invalid
+	brne	0000DE6C
 	mov	r8,0000002B
 	invalid
 	invalid
-	invalid
+	brne	0000DE76
 	mov	r8,00000020
 	invalid
 	invalid
-	invalid
+	brne	0000DE80
 	mov	r8,00000023
 	invalid
 	invalid
-	invalid
+	brne	0000DE8A
 	mov	r8,00000030
 	invalid
 	ld.w	r8,r8[-744]
 	ld.w	r11,r11[-28]
 	ld.w	r5,r5[-24]
-	invalid
-	invalid
+	cp.w	r11,r5
+	breq	0000DEA6
 	invalid
 	mov	r12,r4
 	mov	r10,r5
@@ -18643,27 +18643,27 @@ _start proc
 	ld.w	r12,r12[-744]
 	ld.w	r11,r11[-16]
 	ld.w	r5,r5[-12]
-	invalid
-	invalid
+	cp.w	r11,r5
+	breq	0000DEC2
 	invalid
 	mov	r12,r4
 	mov	r10,r5
 	mcall	r6[36]
 	invalid
 	ld.w	r11,r11[-748]
-	invalid
+	cp.w	r11,00000010
 	invalid
 	mov	r8,00000001
 	invalid
 	mov	r8,r9
 	invalid
 	invalid
+	brne	0000DEF0
 	invalid
-	invalid
-	invalid
+	breq	0000DEF4
 	mov	r8,r9
 	invalid
-	invalid
+	breq	0000DEF8
 	mov	r8,0000006C
 	invalid
 	mov	r8,0000006C
@@ -18672,85 +18672,85 @@ _start proc
 	invalid
 	ld.w	r10,r10[-740]
 	mov	r0,r4
-	invalid
+	ld.ub	r10[0]
 	invalid
 	mov	r8,00000025
-	invalid
+	st.b	r0[0],r8
 	mov	r8,00000000
-	invalid
+	st.b	r4[3],r8
 	mov	r8,0000006E
-	invalid
+	st.b	r4[2],r8
 	ld.w	r9,r9[-744]
 	ld.w	r8,r8[-20]
-	invalid
-	invalid
+	cp.w	r8,FFFFFFFF
+	brne	0000DF1E
 	mov	r2,00000000
 	invalid
 	ld.w	r9,r9[-8]
 	invalid
 	invalid
+	ld.w	r8,r9[0]
+	cp.w	r8,00000005
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r9[4]
 	mov	r2,00000001
 	invalid
 	ld.w	r12,r12[-744]
 	ld.w	r8,r8[-8]
-	invalid
-	invalid
+	cp.w	r8,FFFFFFFF
+	breq	0000DF66
 	ld.w	r9,r9[-8]
 	invalid
 	invalid
+	ld.w	r8,r9[0]
+	cp.w	r8,00000005
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r9[4]
 	invalid
 	invalid
 	ld.w	r9,r9[-784]
 	ld.w	r11,r11[-784]
 	invalid
 	ld.w	r10,r10[-736]
+	cp.w	r9,r11
 	invalid
 	invalid
+	cp.w	r8,r10
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000000
+	brne	0000DF90
 	mov	r8,0000000C
 	invalid
 	invalid
 	ld.w	r8,r8[-736]
 	ld.w	r12,r12[-736]
 	invalid
-	invalid
+	cp.w	r12,00000000
 	invalid
 	invalid
 	invalid
 	ld.w	r11,r11[-784]
 	ld.w	r10,r10[-736]
+	cp.w	r9,r11
 	invalid
 	invalid
+	cp.w	r8,r10
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r9,r11
 	invalid
 	invalid
 	ld.w	r9,r9[-736]
-	invalid
+	cp.w	r9,FFFFFFFF
 	invalid
 	ld.w	r8,r8[-788]
 	ld.w	r12,r12[-804]
+	cp.w	r8,r12
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r4,00000000
+	brne	0000DFE8
+	cp.w	r8,00000000
+	brne	0000DFF2
 	ld.w	r12,r12[-736]
 	mcall	r6[32]
 	invalid
@@ -18758,13 +18758,13 @@ _start proc
 	ld.w	r12,r12[-788]
 	mcall	r6[80]
 	mov	r5,r12
+	cp.w	r12,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r4,00000000
+	breq	0000E01E
 	ld.w	r11,r11[-784]
-	invalid
-	invalid
+	cp.w	r11,00000000
+	breq	0000E01E
 	ld.w	r11,r11[-788]
 	ld.w	r10,r10[-784]
 	mcall	r6[36]
@@ -18781,16 +18781,17 @@ _start proc
 	ld.w	r8,r8[-736]
 	invalid
 	invalid
-	invalid
-	lddpc	r11,pc[364]
+	brpl	0000E054
+	lddpc	r11,sp[364]
 	invalid
 	ld.w	r9,r9[-748]
 	invalid
-	invalid
+	cp.w	r9,00000010
 	invalid
 	ld.w	r10,r10[-744]
 	sub	r8,pc,FFFFFFF0
 	ld.w	r11,r11[-8]
+	ld.w	r12,r10[0]
 	invalid
 	invalid
 	invalid
@@ -18816,25 +18817,24 @@ _start proc
 	invalid
 	invalid
 	invalid
+	ld.ub	r8[-4]
+	invalid
+	invalid
+	invalid
+	ld.sh	r9,r8[4]
+	invalid
+	invalid
+	invalid
+	ld.uh	r9,r8[4]
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r2,00000000
+	breq	0000E106
+	cp.w	r2,00000001
+	breq	0000E128
+	cp.w	r2,00000002
 	invalid
 	invalid
 	ld.w	r12,r12[-788]
@@ -18863,11 +18863,11 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r2,00000000
+	breq	0000E16C
+	cp.w	r2,00000001
+	breq	0000E180
+	cp.w	r2,00000002
 	invalid
 	invalid
 	ld.w	r12,r12[-788]
@@ -18894,16 +18894,16 @@ _start proc
 	st.w	--sp,r8
 	invalid
 	invalid
+	ld.w	pc,pc[-4]
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r2,00000000
+	breq	0000E1D8
+	cp.w	r2,00000001
+	breq	0000E1EC
+	cp.w	r2,00000002
 	invalid
 	invalid
 	ld.w	r12,r12[-788]
@@ -18927,11 +18927,11 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r2,00000000
+	breq	0000E230
+	cp.w	r2,00000001
+	breq	0000E24C
+	cp.w	r2,00000002
 	invalid
 	invalid
 	ld.w	r12,r12[-788]
@@ -18967,13 +18967,13 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r8[4]
+	cp.w	r2,00000000
+	breq	0000E2A6
+	cp.w	r2,00000001
+	breq	0000E2C8
+	cp.w	r2,00000002
+	brne	0000E330
 	invalid
 	ld.w	r8,r8[-784]
 	ld.w	r12,r12[-788]
@@ -19009,74 +19009,74 @@ _start proc
 	mcall	r6[204]
 	invalid
 	ld.w	r10,r10[-4]
-	invalid
-	invalid
+	cp.w	r10,00000000
+	brlt	0000E33C
 	ld.w	r11,r11[-824]
-	invalid
-	invalid
+	cp.w	r10,r11
+	brcc	0000E334
 	ld.w	r9,r9[-788]
 	ld.w	r8,r8[-784]
 	invalid
 	invalid
 	mov	r8,00000000
-	invalid
-	invalid
+	cp.b	r9,r8
+	breq	0000E334
 	mcall	r6[76]
+	cp.w	r12,r10
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.ub	r0[0]
 	mov	r9,00000000
+	cp.b	r8,r9
+	breq	0000E34A
+	st.b	r0[0],r9
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,00000000
+	brge	0000E392
 	ld.w	r8,r8[-736]
 	ld.w	r12,r12[-736]
 	invalid
-	invalid
+	cp.w	r12,00000000
 	invalid
 	sub	r10,r8,FFFFFFF4
+	cp.w	r10,r8
 	invalid
+	cp.w	r10,r12
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,00000000
+	brne	0000E376
 	mov	r12,0000000C
 	invalid
 	ld.w	r8,r8[-736]
 	ld.w	r11,r11[-736]
 	invalid
+	cp.w	r11,00000000
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r12,r10
 	invalid
 	invalid
 	invalid
 	ld.w	r9,r9[-4]
-	invalid
-	invalid
+	cp.w	r9,00000000
+	brge	0000E3E2
 	ld.w	r12,r12[-788]
 	ld.w	r11,r11[-804]
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,r11
+	breq	0000E3B2
+	cp.w	r12,00000000
+	breq	0000E3B2
 	mcall	r6[12]
 	ld.w	r10,r10[-796]
-	invalid
-	invalid
+	cp.w	r10,00000000
+	breq	0000E3C0
 	mov	r12,r10
 	mcall	r6[12]
 	ld.w	r12,r12[-24]
 	mcall	r6[12]
 	ld.w	r12,r12[-8]
-	invalid
-	invalid
+	cp.w	r12,00000000
+	breq	0000E3D4
 	mcall	r6[12]
 	mcall	r6[28]
 	mov	r9,00000000
@@ -19085,10 +19085,10 @@ _start proc
 	invalid
 	ld.w	r12,r12[-824]
 	sub	r8,r9,FFFFFFFF
-	invalid
-	invalid
-	lddpc	r8,pc[364]
-	invalid
+	cp.w	r8,r12
+	brcs	0000E49E
+	lddpc	r8,sp[364]
+	cp.w	r12,r8
 	invalid
 	sub	r8,r9,FFFFFFFE
 	ld.w	r11,r11[-784]
@@ -19096,37 +19096,37 @@ _start proc
 	ld.w	r10,r10[-736]
 	invalid
 	invalid
+	cp.w	r10,00000000
 	invalid
+	cp.w	r8,r11
 	invalid
+	cp.w	r8,r9
 	invalid
+	cp.w	r9,r10
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000000
+	brne	0000E42A
 	mov	r12,0000000C
 	invalid
 	ld.w	r8,r8[-736]
 	ld.w	r11,r11[-736]
 	invalid
+	cp.w	r11,00000000
 	invalid
 	invalid
+	cp.w	r12,r9
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,FFFFFFFF
 	invalid
 	ld.w	r10,r10[-788]
 	ld.w	r9,r9[-804]
+	cp.w	r10,r9
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r4,00000000
+	brne	0000E462
+	cp.w	r10,00000000
+	brne	0000E46C
 	ld.w	r12,r12[-736]
 	mcall	r6[32]
 	invalid
@@ -19134,13 +19134,13 @@ _start proc
 	ld.w	r12,r12[-788]
 	mcall	r6[80]
 	mov	r5,r12
+	cp.w	r12,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r4,00000000
+	breq	0000E496
 	ld.w	r8,r8[-784]
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	0000E496
 	ld.w	r11,r11[-788]
 	mov	r10,r8
 	mcall	r6[36]
@@ -19164,60 +19164,60 @@ _start proc
 	ld.w	r12,r12[-784]
 	invalid
 	ld.w	r11,r11[-736]
+	cp.w	r3,r12
 	invalid
 	invalid
+	cp.w	r8,r11
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,00000000
+	brne	0000E4F8
 	mov	r10,0000000C
 	invalid
 	invalid
 	ld.w	r8,r8[-736]
 	ld.w	r9,r9[-736]
 	invalid
-	invalid
+	cp.w	r9,00000000
 	invalid
 	invalid
 	invalid
 	ld.w	r12,r12[-784]
 	ld.w	r11,r11[-736]
+	cp.w	r3,r12
 	invalid
 	invalid
+	cp.w	r8,r11
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r3,r12
 	invalid
 	invalid
 	ld.w	r10,r10[-736]
-	invalid
-	invalid
+	cp.w	r10,FFFFFFFF
+	breq	0000E630
 	ld.w	r9,r9[-788]
 	ld.w	r8,r8[-804]
+	cp.w	r9,r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r4,00000000
+	brne	0000E54E
+	cp.w	r9,00000000
+	brne	0000E55C
 	ld.w	r12,r12[-736]
 	mcall	r6[32]
 	invalid
-	invalid
+	ld.w	pc,pc[-4]
 	invalid
 	invalid
 	invalid
 	invalid
 	mov	r5,r12
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,00000000
+	breq	0000E630
+	cp.w	r4,00000000
+	breq	0000E586
 	ld.w	r12,r12[-784]
-	invalid
-	invalid
+	cp.w	r12,00000000
+	breq	0000E586
 	ld.w	r11,r11[-788]
 	mov	r10,r12
 	mov	r12,r5
@@ -19228,11 +19228,11 @@ _start proc
 	mov	r8,00000000
 	invalid
 	ld.w	r9,r9[-804]
-	invalid
-	invalid
+	cp.w	r11,r9
+	breq	0000E5BE
 	ld.w	r8,r8[-736]
-	invalid
-	invalid
+	cp.w	r3,r8
+	brcc	0000E5BE
 	ld.w	r12,r12[-788]
 	mov	r11,r3
 	mcall	r6[80]
@@ -19240,37 +19240,37 @@ _start proc
 	invalid
 	invalid
 	ld.w	r10,r10[-796]
-	invalid
-	invalid
+	cp.w	r10,00000000
+	breq	0000E5CC
 	mov	r12,r10
 	mcall	r6[12]
 	ld.w	r12,r12[-24]
 	mcall	r6[12]
 	ld.w	r12,r12[-8]
-	invalid
-	invalid
+	cp.w	r12,00000000
+	breq	0000E5E0
 	mcall	r6[12]
 	ld.w	r8,r8[-784]
 	ld.w	r9,r9[-808]
-	invalid
+	st.w	r9[0],r8
 	invalid
 	ld.w	r12,r12[-788]
 	ld.w	r11,r11[-804]
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r12,r11
+	breq	0000E600
+	cp.w	r12,00000000
+	breq	0000E600
 	mcall	r6[12]
 	ld.w	r10,r10[-796]
-	invalid
-	invalid
+	cp.w	r10,00000000
+	breq	0000E60E
 	mov	r12,r10
 	mcall	r6[12]
 	ld.w	r12,r12[-24]
 	mcall	r6[12]
 	ld.w	r12,r12[-8]
-	invalid
-	invalid
+	cp.w	r12,00000000
+	breq	0000E622
 	mcall	r6[12]
 	mcall	r6[28]
 	mov	r9,00000000
@@ -19279,44 +19279,44 @@ _start proc
 	invalid
 	ld.w	r8,r8[-788]
 	ld.w	r12,r12[-804]
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,r12
+	breq	0000E646
+	cp.w	r8,00000000
+	breq	0000E646
 	mov	r12,r8
 	mcall	r6[12]
 	ld.w	r11,r11[-796]
-	invalid
-	invalid
+	cp.w	r11,00000000
+	breq	0000E654
 	mov	r12,r11
 	mcall	r6[12]
 	ld.w	r12,r12[-24]
 	mcall	r6[12]
 	ld.w	r12,r12[-8]
-	invalid
-	invalid
+	cp.w	r12,00000000
+	breq	0000E668
 	mcall	r6[12]
 	mcall	r6[28]
 	mov	r10,00000000
 	mov	r8,0000000C
 	invalid
-	invalid
+	st.w	r12[0],r8
 	ld.w	r12,r12[-788]
 	ld.w	sp,sp[-820]
 	invalid
-	invalid
-	invalid
+	popm	r0-r3,r4-r7,pc
+	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,0000041C
-	lddpc	r6,pc[384]
+	lddpc	r6,sp[384]
 	rsub	r6,pc
 	invalid
 	mov	r4,r10
 	mov	r5,r11
+	stdsp	sp[8],r12
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	breq	0000E718
 	mov	r1,00000000
 	mov	r2,r8
 	mov	r3,r9
@@ -19332,7 +19332,7 @@ _start proc
 	mov	r11,r5
 	mov	r8,r2
 	mov	r9,r3
-	invalid
+	cp.w	r12,00000000
 	invalid
 	invalid
 	invalid
@@ -19369,7 +19369,7 @@ _start proc
 	mov	r11,r5
 	invalid
 	invalid
-	invalid
+	brlt	0000E794
 	invalid
 	invalid
 	mov	r5,r11
@@ -19380,8 +19380,8 @@ _start proc
 	invalid
 	mov	r10,r8
 	mov	r11,r9
-	invalid
-	invalid
+	cp.w	r12,00000000
+	brne	0000E796
 	invalid
 	sub	r12,sp,FFFFFFE4
 	invalid
@@ -19403,7 +19403,7 @@ _start proc
 	mov	r10,r4
 	mov	r11,r5
 	invalid
-	invalid
+	breq	0000E7EE
 	sub	r2,sp,FFFFFBE4
 	invalid
 	sub	r7,r8,00000208
@@ -19414,7 +19414,7 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	brlt	0000E7E0
 	invalid
 	invalid
 	invalid
@@ -19423,11 +19423,11 @@ _start proc
 	mov	r4,r10
 	invalid
 	mov	r9,r0
-	invalid
+	brne	0000E7EE
 	invalid
 	mov	r10,r4
 	mov	r11,r5
-	invalid
+	cp.w	r1,00000000
 	invalid
 	mov	r0,r9
 	sub	r8,r1,00000001
@@ -19443,7 +19443,7 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	lddsp	r0,sp[0]
 	invalid
 	invalid
 	invalid
@@ -19459,8 +19459,8 @@ _start proc
 	invalid
 	mov	r10,r4
 	mov	r11,r5
-	invalid
-	invalid
+	cp.w	r12,00000000
+	breq	0000E84C
 	invalid
 	invalid
 	invalid
@@ -19469,27 +19469,27 @@ _start proc
 	invalid
 	mov	r10,r4
 	mov	r11,r5
+	cp.w	r1,00000000
 	invalid
-	invalid
-	invalid
+	lddsp	r11,sp[8]
 	mov	r10,r4
-	invalid
+	st.w	r11[0],r0
 	mov	r11,r5
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
+	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,0000041C
-	lddpc	r6,pc[384]
+	lddpc	r6,sp[384]
 	rsub	r6,pc
 	invalid
 	mov	r4,r10
 	mov	r5,r11
+	stdsp	sp[8],r12
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	breq	0000E8FC
 	mov	r1,00000000
 	mov	r2,r8
 	mov	r3,r9
@@ -19505,7 +19505,7 @@ _start proc
 	mov	r11,r5
 	mov	r8,r2
 	mov	r9,r3
-	invalid
+	cp.w	r12,00000000
 	invalid
 	invalid
 	invalid
@@ -19542,7 +19542,7 @@ _start proc
 	mov	r11,r5
 	invalid
 	invalid
-	invalid
+	brlt	0000E978
 	invalid
 	invalid
 	mov	r5,r11
@@ -19553,8 +19553,8 @@ _start proc
 	invalid
 	mov	r10,r8
 	mov	r11,r9
-	invalid
-	invalid
+	cp.w	r12,00000000
+	brne	0000E97A
 	invalid
 	sub	r12,sp,FFFFFFE4
 	invalid
@@ -19576,7 +19576,7 @@ _start proc
 	mov	r10,r4
 	mov	r11,r5
 	invalid
-	invalid
+	breq	0000E9D2
 	sub	r2,sp,FFFFFBE4
 	invalid
 	sub	r7,r8,00000208
@@ -19587,7 +19587,7 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	brlt	0000E9C4
 	invalid
 	invalid
 	invalid
@@ -19596,11 +19596,11 @@ _start proc
 	mov	r4,r10
 	invalid
 	mov	r9,r0
-	invalid
+	brne	0000E9D2
 	invalid
 	mov	r10,r4
 	mov	r11,r5
-	invalid
+	cp.w	r1,00000000
 	invalid
 	mov	r0,r9
 	sub	r8,r1,00000001
@@ -19616,7 +19616,7 @@ _start proc
 	invalid
 	invalid
 	invalid
-	invalid
+	lddsp	r0,sp[0]
 	invalid
 	invalid
 	invalid
@@ -19632,8 +19632,8 @@ _start proc
 	invalid
 	mov	r10,r4
 	mov	r11,r5
-	invalid
-	invalid
+	cp.w	r12,00000000
+	breq	0000EA30
 	invalid
 	invalid
 	invalid
@@ -19642,26 +19642,26 @@ _start proc
 	invalid
 	mov	r10,r4
 	mov	r11,r5
+	cp.w	r1,00000000
 	invalid
-	invalid
-	invalid
+	lddsp	r11,sp[8]
 	mov	r10,r4
-	invalid
+	st.w	r11[0],r0
 	mov	r11,r5
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[220]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[220]
 	rsub	r6,pc
-	invalid
+	ld.w	r8,r11[4]
 	mov	lr,r11
 	sub	r10,r8,FFFFFFFC
 	mov	r11,00000000
 	invalid
 	ld.w	r8,r8[-4]
 	sub	r9,r8,00000001
-	invalid
+	cp.w	r9,00000015
 	invalid
 	sub	r8,pc,FFFFFFF8
 	invalid
@@ -19687,6 +19687,12 @@ _start proc
 	invalid
 	invalid
 	invalid
+	popm	r4-r7,pc,r12=-1
+	ld.w	r8,r12[0]
+	invalid
+	st.b	r10[0],r8
+	invalid
+	ld.w	r8,r12[0]
 	invalid
 	invalid
 	invalid
@@ -19698,35 +19704,29 @@ _start proc
 	invalid
 	invalid
 	invalid
+	ld.w	r8,r12[0]
+	st.w	r10[0],r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
+	brne	0000EB1C
 	ld.w	r8,r8[608]
 	invalid
+	ld.w	r8,r12[0]
+	st.w	r10[0],r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
+	brne	0000EB1C
 	sub	r8,pc,FFFFFFE4
 	invalid
+	ld.w	r8,r12[0]
+	invalid
+	st.w	r10[0],r8
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,lr[0]
+	cp.w	r11,r8
+	brcs	0000EA5E
+	popm	r4-r7,pc,r12=0
 	invalid
 	invalid
 	rsub	r8,r0
@@ -19742,498 +19742,498 @@ _start proc
 	rsub	r9,r0
 	invalid
 	invalid
+	pushm	r0-r3,r4-r7,lr
 	invalid
-	invalid
-	lddpc	r6,pc[320]
+	lddpc	r6,sp[320]
 	rsub	r6,pc
 	mov	r7,r12
 	mov	r5,00000000
 	mov	r12,0000002C
 	mov	r0,r11
 	mov	r1,r10
-	invalid
+	st.w	r11[0],r5
 	mcall	r6[32]
-	invalid
+	st.w	r0[4],r12
 	invalid
 	mov	r10,00000001
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[0],r5
+	stdsp	sp[8],r5
+	stdsp	sp[4],r10
+	stdsp	sp[12],r5
 	mov	r2,r5
-	invalid
-	invalid
+	st.w	r1[0],r5
+	st.w	r1[4],r5
 	invalid
 	mov	r8,00000025
 	invalid
+	cp.b	r12,r8
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r0[0]
+	ld.w	r10,r0[4]
 	invalid
 	mov	r9,00000000
 	invalid
 	mov	r10,FFFFFFFF
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r3[28],r9
+	st.w	r3[8],r9
+	st.w	r3[12],r9
+	st.w	r3[16],r9
+	st.w	r3[24],r9
+	st.w	r3[0],r8
+	st.w	r3[-24],r10
+	st.w	r3[20],r10
+	st.w	r3[-32],r10
+	ld.ub	r7[0]
 	mov	r9,00000009
 	invalid
-	invalid
+	cp.b	r8,r9
 	invalid
 	mov	r10,r7
-	invalid
+	ld.ub	r10[0]
 	mov	r8,00000009
 	invalid
 	sub	r9,r11,00000030
-	invalid
+	cp.b	r9,r8
 	invalid
 	mov	r8,00000024
-	invalid
-	invalid
+	cp.b	r11,r8
+	brne	0000EC24
 	mov	r12,r7
 	mov	r10,00000000
 	invalid
-	lddpc	r8,pc[180]
-	invalid
+	lddpc	r8,sp[180]
+	cp.w	r10,r8
 	invalid
 	invalid
 	sub	r8,lr,00000030
 	invalid
+	cp.w	r10,r11
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.ub	r12[0]
 	mov	r8,00000009
 	invalid
 	sub	r9,lr,00000030
 	mov	r11,FFFFFFFF
+	cp.b	r9,r8
 	invalid
+	cp.w	r10,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,r11
 	invalid
 	invalid
 	sub	r7,r12,FFFFFFFF
-	invalid
+	stdsp	sp[16],r10
 	invalid
 	mov	r9,FFFFFFFF
-	invalid
+	stdsp	sp[16],r9
 	sub	r12,r7,FFFFFFFF
 	invalid
 	invalid
-	invalid
+	st.w	r3[8],r8
 	sub	r7,r12,00000001
-	invalid
+	ld.ub	r7[0]
 	mov	r8,00000027
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000EC46
+	ld.w	r8,r3[8]
 	invalid
 	invalid
 	mov	r8,0000002D
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000EC54
+	ld.w	r8,r3[8]
 	invalid
 	invalid
 	mov	r8,0000002B
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000EC62
+	ld.w	r8,r3[8]
 	invalid
 	invalid
 	mov	r8,00000020
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000EC70
+	ld.w	r8,r3[8]
 	invalid
 	invalid
 	mov	r8,00000023
-	invalid
-	invalid
-	invalid
+	cp.b	r9,r8
+	brne	0000EC7E
+	ld.w	r8,r3[8]
 	invalid
 	invalid
 	mov	r8,00000030
+	cp.b	r9,r8
+	brne	0000EC94
+	ld.w	r8,r3[8]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r12[1]
+	st.w	r12[-28],r9
 	mov	r8,0000002A
+	cp.b	r9,r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r3[12],r7
+	st.w	r3[16],r12
+	ld.ub	r12[0]
+	lddsp	r10,sp[8]
 	mov	r9,00000009
+	cp.w	r10,00000000
 	invalid
-	invalid
-	invalid
+	stdsp	sp[8],r10
 	invalid
 	mov	r7,r12
-	invalid
+	cp.b	r8,r9
 	invalid
 	mov	r10,r12
-	invalid
+	ld.ub	r10[0]
 	mov	r8,00000009
 	invalid
 	sub	r9,r11,00000030
-	invalid
+	cp.b	r9,r8
 	invalid
 	mov	r8,00000024
-	invalid
-	invalid
+	cp.b	r11,r8
+	brne	0000ED24
 	mov	r10,00000000
 	invalid
-	lddpc	r8,pc[372]
-	invalid
+	lddpc	r8,sp[372]
+	cp.w	r10,r8
 	invalid
 	invalid
 	sub	r8,lr,00000030
 	invalid
+	cp.w	r10,r11
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.ub	r12[0]
 	mov	r8,00000009
 	invalid
 	sub	r9,lr,00000030
 	mov	r11,FFFFFFFF
+	cp.b	r9,r8
 	invalid
+	cp.w	r10,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,r11
 	invalid
 	invalid
 	sub	r7,r12,FFFFFFFF
+	st.w	r3[20],r8
+	ld.w	r8,r3[20]
+	cp.w	r8,FFFFFFFF
+	brne	0000ED38
+	lddsp	r8,sp[0]
+	st.w	r3[20],r8
+	cp.w	r8,FFFFFFFF
 	invalid
 	invalid
+	stdsp	sp[0],r8
+	ld.w	r5,r3[20]
+	cp.w	r5,r2
+	brcs	0000ED92
+	invalid
+	cp.w	r2,00000000
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r2,r5
 	invalid
 	sub	r2,r5,FFFFFFFF
+	cp.w	r2,r5
+	invalid
+	lddpc	r8,sp[248]
+	cp.w	r2,r8
+	invalid
+	ld.w	r9,r1[4]
 	invalid
 	invalid
-	lddpc	r8,pc[248]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r9,00000000
+	breq	0000ED7C
 	mov	r11,r12
 	mov	r12,r9
 	mcall	r6[80]
 	invalid
 	mcall	r6[32]
+	cp.w	r12,00000000
 	invalid
-	invalid
-	invalid
+	st.w	r1[4],r12
 	invalid
 	mov	r8,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r1[0],r11
+	ld.w	r8,r1[0]
+	ld.w	r9,r1[4]
 	invalid
 	sub	r11,r8,FFFFFFFF
+	cp.w	r8,r5
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r9[0]
+	cp.w	r8,00000000
+	brne	0000EDB8
 	mov	r8,00000005
+	st.w	r9[0],r8
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000005
+	breq	0000EDF2
 	invalid
 	invalid
 	mov	r8,00000009
+	cp.b	r9,r8
+	invalid
+	st.w	r3[12],r7
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r7[0]
 	mov	r9,00000009
 	invalid
+	cp.b	r8,r9
 	invalid
+	ld.w	r8,r3[12]
+	st.w	r3[16],r7
+	lddsp	r10,sp[8]
 	invalid
+	cp.w	r10,r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[8],r10
+	ld.ub	r7[0]
 	mov	r8,0000002E
+	cp.b	r9,r8
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.ub	r7[0]
 	mov	r8,0000002A
 	sub	r10,r7,00000001
+	cp.b	r9,r8
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r3[24],r10
+	st.w	r3[28],r7
+	ld.ub	r7[0]
+	lddsp	r10,sp[12]
 	mov	r9,00000009
+	cp.w	r10,00000001
 	invalid
+	stdsp	sp[12],r10
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.b	r8,r9
 	invalid
 	mov	r10,r7
-	invalid
+	ld.ub	r10[0]
 	mov	r8,00000009
 	invalid
 	sub	r9,r11,00000030
-	invalid
+	cp.b	r9,r8
 	invalid
 	mov	r8,00000024
-	invalid
-	invalid
+	cp.b	r11,r8
+	brne	0000EEA0
 	mov	r12,r7
 	mov	r10,00000000
 	invalid
+	ld.ub	r12[1]
+	st.w	r12[-28],r9
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r8,pc[340]
-	invalid
+	stdsp	sp[340],r5
+	lddpc	r8,sp[340]
+	cp.w	r10,r8
 	invalid
 	invalid
 	sub	r8,lr,00000030
 	invalid
+	cp.w	r10,r11
 	invalid
 	invalid
-	invalid
-	invalid
+	ld.ub	r12[0]
 	mov	r8,00000009
 	invalid
 	sub	r9,lr,00000030
 	mov	r11,FFFFFFFF
+	cp.b	r9,r8
 	invalid
+	cp.w	r10,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,r11
 	invalid
 	invalid
 	sub	r7,r12,FFFFFFFF
+	st.w	r3[-32],r8
+	ld.w	r8,r3[32]
+	cp.w	r8,FFFFFFFF
+	brne	0000EEB4
+	lddsp	r8,sp[0]
+	st.w	r3[-32],r8
+	cp.w	r8,FFFFFFFF
 	invalid
 	invalid
+	stdsp	sp[0],r8
+	ld.w	r5,r3[32]
+	cp.w	r5,r2
+	brcs	0000EF0E
+	invalid
+	cp.w	r2,00000000
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r2,r5
 	invalid
 	sub	r2,r5,FFFFFFFF
+	cp.w	r2,r5
+	invalid
+	lddpc	r8,sp[216]
+	cp.w	r2,r8
+	invalid
+	ld.w	r9,r1[4]
 	invalid
 	invalid
-	lddpc	r8,pc[216]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r9,00000000
+	breq	0000EEF8
 	mov	r11,r12
 	mov	r12,r9
 	mcall	r6[80]
 	invalid
 	mcall	r6[32]
+	cp.w	r12,00000000
 	invalid
-	invalid
-	invalid
+	st.w	r1[4],r12
 	invalid
 	mov	r8,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r1[0],r11
+	ld.w	r8,r1[0]
+	ld.w	r9,r1[4]
 	invalid
 	sub	r11,r8,FFFFFFFF
+	cp.w	r8,r5
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r9[0]
+	cp.w	r8,00000000
+	brne	0000EF34
 	mov	r8,00000005
+	st.w	r9[0],r8
+	invalid
+	cp.w	r8,00000005
+	breq	0000EF60
+	invalid
+	st.w	r3[24],r10
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.ub	r7[0]
 	mov	r9,00000009
 	invalid
+	cp.b	r8,r9
 	invalid
+	ld.w	r8,r3[24]
+	st.w	r3[28],r7
+	lddsp	r10,sp[12]
 	invalid
+	cp.w	r10,r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[12],r10
 	sub	r12,r7,FFFFFFFF
 	mov	r10,00000000
 	invalid
 	invalid
 	sub	r8,r12,00000001
-	invalid
-	invalid
+	stdsp	sp[20],r8
+	ld.ub	r8[0]
 	mov	r8,00000068
-	invalid
-	invalid
+	cp.b	r5,r8
+	brne	0000EF88
 	invalid
 	mov	r8,00000001
 	invalid
 	invalid
 	invalid
 	mov	r8,0000004C
-	invalid
-	invalid
+	cp.b	r5,r8
+	brne	0000EF94
 	invalid
 	invalid
 	mov	r8,0000006C
-	invalid
-	invalid
+	cp.b	r5,r8
+	brne	0000EFA0
 	invalid
 	invalid
 	mov	r8,0000006A
+	cp.b	r5,r8
+	brne	0000EFB4
 	invalid
 	invalid
+	ld.ub	r12[1]
+	st.w	r12[-28],r9
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[340],r5
 	mov	r8,0000007A
-	invalid
-	invalid
+	cp.b	r5,r8
+	breq	0000EF68
 	mov	r8,0000005A
-	invalid
-	invalid
+	cp.b	r5,r8
+	breq	0000EF68
 	mov	r8,00000074
-	invalid
-	invalid
+	cp.b	r5,r8
+	breq	0000EF68
 	mov	r8,00000025
-	invalid
+	cp.b	r5,r8
 	invalid
 	mov	r8,00000041
-	invalid
-	invalid
+	cp.b	r5,r8
+	breq	0000F0DA
 	mov	r8,00000043
-	invalid
+	cp.b	r5,r8
 	invalid
 	mov	r8,00000045
-	invalid
+	cp.b	r5,r8
 	invalid
 	mov	r8,00000047
-	invalid
+	cp.b	r5,r8
 	invalid
 	mov	r8,00000053
-	invalid
-	invalid
+	cp.b	r5,r8
+	breq	0000F074
 	mov	r8,00000058
-	invalid
-	invalid
+	cp.b	r5,r8
+	breq	0000F0AC
 	mov	r8,00000061
-	invalid
-	invalid
+	cp.b	r5,r8
+	breq	0000F0DA
 	mov	r8,00000063
-	invalid
-	invalid
+	cp.b	r5,r8
+	breq	0000F0EA
 	mov	r8,00000064
-	invalid
-	invalid
+	cp.b	r5,r8
+	breq	0000F07E
 	mov	r8,00000065
-	invalid
+	cp.b	r5,r8
 	invalid
 	mov	r8,00000067
-	invalid
+	cp.b	r5,r8
 	invalid
 	mov	r8,00000069
-	invalid
-	invalid
+	cp.b	r5,r8
+	breq	0000F07E
 	mov	r8,0000006E
-	invalid
-	invalid
+	cp.b	r5,r8
+	breq	0000F108
 	mov	r8,0000006F
-	invalid
-	invalid
+	cp.b	r5,r8
+	breq	0000F0AC
 	mov	r8,00000070
-	invalid
-	invalid
+	cp.b	r5,r8
+	breq	0000F07A
 	mov	r8,00000073
-	invalid
-	invalid
+	cp.b	r5,r8
+	breq	0000F0FC
 	mov	r8,00000075
-	invalid
-	invalid
+	cp.b	r5,r8
+	breq	0000F0AC
 	mov	r8,00000078
-	invalid
+	cp.b	r5,r8
 	invalid
 	invalid
 	mov	r5,00000073
@@ -20241,65 +20241,65 @@ _start proc
 	invalid
 	mov	r4,00000011
 	invalid
+	cp.w	r10,0000000F
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	breq	0000F136
+	cp.w	r10,00000007
 	invalid
 	mov	r4,00000007
 	invalid
 	invalid
-	invalid
+	brne	0000F09E
 	mov	r4,00000001
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	r10,0000000F
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	breq	0000F142
+	cp.w	r10,00000007
 	invalid
 	mov	r4,00000008
 	invalid
 	invalid
-	invalid
+	brne	0000F0CC
 	mov	r4,00000002
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	r10,0000000F
 	invalid
 	invalid
-	invalid
-	invalid
+	breq	0000F13E
 	mov	r4,0000000B
 	invalid
-	invalid
+	cp.w	r10,00000008
 	invalid
 	invalid
 	invalid
 	mov	r5,00000063
 	mov	r4,0000000E
 	invalid
+	cp.w	r10,00000008
 	invalid
 	invalid
 	invalid
+	cp.w	r10,0000000F
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	0000F13A
+	cp.w	r10,00000007
 	invalid
 	mov	r4,00000015
 	invalid
 	invalid
-	invalid
+	brne	0000F128
 	mov	r4,00000012
 	invalid
 	invalid
@@ -20313,146 +20313,146 @@ _start proc
 	mov	r4,0000000C
 	invalid
 	mov	r4,0000000A
+	lddsp	r10,sp[16]
+	st.w	r3[-24],r10
+	cp.w	r10,FFFFFFFF
+	brne	0000F158
+	lddsp	r9,sp[0]
+	st.w	r3[-24],r9
+	cp.w	r9,FFFFFFFF
+	breq	0000F22C
+	invalid
+	stdsp	sp[0],r9
+	ld.w	r7,r3[40]
+	cp.w	r7,r2
+	brcs	0000F1B0
+	invalid
+	cp.w	r2,00000000
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r2,r7
 	invalid
 	sub	r2,r7,FFFFFFFF
+	cp.w	r2,r7
+	invalid
+	lddpc	r8,sp[244]
+	cp.w	r2,r8
+	invalid
+	ld.w	r9,r1[4]
 	invalid
 	invalid
-	lddpc	r8,pc[244]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r9,00000000
+	breq	0000F19C
 	mov	r11,r12
 	mov	r12,r9
 	mcall	r6[80]
 	invalid
 	mcall	r6[32]
-	invalid
-	invalid
-	invalid
+	cp.w	r12,00000000
+	breq	0000F24A
+	st.w	r1[4],r12
 	invalid
 	mov	r8,00000000
 	invalid
-	invalid
-	invalid
-	invalid
+	st.w	r1[0],r11
+	ld.w	r8,r1[0]
+	ld.w	r9,r1[4]
 	invalid
 	sub	r11,r8,FFFFFFFF
+	cp.w	r8,r7
 	invalid
 	invalid
 	invalid
+	ld.w	r8,r9[0]
+	cp.w	r8,00000000
+	brne	0000F1D4
+	st.w	r9[0],r4
+	invalid
+	cp.w	r8,r4
+	brne	0000F22C
+	lddsp	r7,sp[20]
 	invalid
 	invalid
+	st.w	r3[4],r7
+	ld.w	r8,r0[0]
+	invalid
+	st.w	r0[0],r8
+	lddsp	r10,sp[4]
+	cp.w	r8,r10
+	brcs	0000F20C
+	cp.w	r10,00000000
+	brlt	0000F24A
+	invalid
+	lddpc	r8,sp[128]
+	stdsp	sp[4],r10
+	cp.w	r10,r8
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r8,pc[128]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r0[4]
 	mcall	r6[80]
+	breq	0000F24A
+	st.w	r0[4],r12
+	ld.ub	r7[0]
+	cp.w	r12,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r0[0]
+	ld.w	r9,r0[4]
 	invalid
 	mov	r10,r12
 	invalid
+	lddsp	r9,sp[12]
+	st.w	r0[12],r9
+	lddsp	r8,sp[8]
+	st.w	r0[8],r8
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r1[4]
+	cp.w	r12,00000000
+	breq	0000F236
 	mcall	r6[12]
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r0[4]
+	cp.w	r12,00000000
+	breq	0000F240
 	mcall	r6[12]
 	mcall	r6[28]
 	mov	r10,FFFFFFFF
 	mov	r8,00000016
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r1[4]
+	cp.w	r12,00000000
+	breq	0000F254
 	mcall	r6[12]
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r0[4]
+	cp.w	r12,00000000
+	breq	0000F25E
 	mcall	r6[12]
 	mcall	r6[28]
 	mov	r10,FFFFFFFF
 	mov	r8,0000000C
-	invalid
+	st.w	r12[0],r8
 	mov	r12,r10
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
 	invalid
+	stdsp	sp[340],r5
+	ld.ub	r2[-3]
+	ld.w	sp,r10[20]
+	pushm	r4-r7,lr
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[80]
+	lddpc	r6,sp[80]
 	rsub	r6,pc
 	mov	r8,r10
 	mov	r9,r11
 	mov	r4,r10
 	mov	r5,r11
 	invalid
-	invalid
+	brne	0000F2C4
 	mov	r8,00000000
 	mov	r9,00000000
 	mov	r10,r4
 	mov	r11,r5
 	invalid
-	invalid
+	breq	0000F2A0
 	mov	r12,00000001
 	invalid
 	mov	r8,00000000
@@ -20460,7 +20460,7 @@ _start proc
 	mov	r10,r4
 	mov	r11,r5
 	invalid
-	invalid
+	breq	0000F2C4
 	sub	r11,sp,FFFFFFF8
 	invalid
 	mov	r11,sp
@@ -20471,7 +20471,7 @@ _start proc
 	invalid
 	mov	r12,00000000
 	invalid
-	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
 
@@ -20479,10 +20479,40 @@ _start proc
 __avr32_f64_mul proc
 	invalid
 	invalid
-	invalid
+	pushm	r4-r7,lr
 	invalid
 	invalid
 	mov	r5,00000001
+	breq	0000F36A
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	breq	0000F3AE
+	invalid
+	invalid
+	invalid
+	invalid
+	breq	0000F3F2
+	invalid
+	breq	0000F3F2
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	breq	0000F33A
+	invalid
+	invalid
+	invalid
+	invalid
+	cp.w	r12,00000000
 	invalid
 	invalid
 	invalid
@@ -20495,6 +20525,15 @@ __avr32_f64_mul proc
 	invalid
 	invalid
 	invalid
+	popm	r4-r7,pc
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	brge	0000F3A0
 	invalid
 	invalid
 	invalid
@@ -20504,46 +20543,7 @@ __avr32_f64_mul proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	0000F46C
 	mov	r10,00000000
 	invalid
 	invalid
@@ -20555,6 +20555,7 @@ __avr32_f64_mul proc
 	invalid
 	invalid
 	invalid
+	brge	0000F3E4
 	invalid
 	invalid
 	invalid
@@ -20564,8 +20565,7 @@ __avr32_f64_mul proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	breq	0000F46C
 	mov	r8,00000000
 	invalid
 	invalid
@@ -20575,6 +20575,22 @@ __avr32_f64_mul proc
 	invalid
 	invalid
 	invalid
+	brne	0000F414
+	cp.w	r11,00000000
+	brne	0000F476
+	invalid
+	brne	0000F47C
+	cp.w	r9,00000000
+	breq	0000F47C
+	invalid
+	cp.w	r9,00000000
+	breq	0000F47C
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	brge	0000F448
 	invalid
 	invalid
 	invalid
@@ -20587,23 +20603,7 @@ __avr32_f64_mul proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	0000F456
 	invalid
 	invalid
 	invalid
@@ -20615,16 +20615,16 @@ __avr32_f64_mul proc
 	mov	r11,lr
 	invalid
 	mov	r10,00000000
-	invalid
+	popm	r4-r7,pc
 	mov	r11,FFFFFFFF
 	mov	r10,FFFFFFFF
-	invalid
+	popm	r4-r7,pc
 	mov	r11,00000000
 	invalid
 	invalid
 	invalid
 	mov	r10,00000000
-	invalid
+	popm	r4-r7,pc
 	invalid
 	invalid
 	invalid
@@ -20648,9 +20648,9 @@ __avr32_f64_sub proc
 	invalid
 	invalid
 	invalid
+	cp.w	r10,r8
 	invalid
-	invalid
-	invalid
+	brcc	0000F4E2
 	mov	r7,r11
 	mov	r11,r9
 	mov	r9,r7
@@ -20664,31 +20664,31 @@ __avr32_f64_sub proc
 	invalid
 	invalid
 	invalid
+	breq	0000F57E
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	breq	0000F5A4
 	rsub	r6,r7
+	breq	0000F52C
+	invalid
+	invalid
+	brcc	0000F60C
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	lr,00000000
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	0000F552
+	brcs	0000F62A
 	invalid
 	invalid
 	invalid
@@ -20706,6 +20706,7 @@ __avr32_f64_sub proc
 	invalid
 	invalid
 	invalid
+	cp.w	r9,r7
 	invalid
 	invalid
 	invalid
@@ -20723,10 +20724,9 @@ __avr32_f64_sub proc
 	invalid
 	invalid
 	invalid
+	brne	0000F5BA
 	invalid
-	invalid
-	invalid
-	invalid
+	breq	0000F5BA
 	invalid
 	invalid
 	mov	r10,FFFFFFFF
@@ -20736,7 +20736,7 @@ __avr32_f64_sub proc
 	invalid
 	invalid
 	invalid
-	invalid
+	brge	0000F5F0
 	invalid
 	invalid
 	invalid
@@ -20759,12 +20759,12 @@ __avr32_f64_sub proc
 	invalid
 	invalid
 	invalid
-	invalid
+	breq	0000F61C
 	invalid
 	invalid
 	invalid
 	mov	r9,00000000
-	invalid
+	cp.w	lr,00000000
 	invalid
 	invalid
 	invalid
@@ -20789,8 +20789,8 @@ __avr32_f64_add proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r11,r9
+	brcc	0000F676
 	mov	r7,r11
 	mov	r11,r9
 	mov	r9,r7
@@ -20802,12 +20802,25 @@ __avr32_f64_add proc
 	invalid
 	invalid
 	invalid
+	breq	0000F744
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	breq	0000F6DC
 	rsub	r6,r7
+	breq	0000F6B4
+	invalid
+	invalid
+	brcc	0000F70A
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	breq	0000F726
 	invalid
 	invalid
 	invalid
@@ -20819,26 +20832,13 @@ __avr32_f64_add proc
 	invalid
 	invalid
 	invalid
+	brne	0000F702
+	invalid
+	breq	0000F6EE
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	0000F702
 	mov	r10,00000000
 	mov	r11,00000000
 	invalid
@@ -20848,9 +20848,9 @@ __avr32_f64_add proc
 	invalid
 	invalid
 	invalid
+	breq	0000F71E
 	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
 	invalid
 	invalid
 	invalid
@@ -20867,8 +20867,8 @@ __avr32_f64_add proc
 	invalid
 	invalid
 	mov	r6,00000001
-	invalid
-	invalid
+	cp.w	r7,00000000
+	brne	0000F68E
 	invalid
 	invalid
 	invalid
@@ -20880,7 +20880,7 @@ __avr32_f64_add proc
 
 ;; __avr32_f64_to_u32: 0000F760
 __avr32_f64_to_u32 proc
-	invalid
+	cp.w	r11,00000000
 	invalid
 
 ;; __avr32_f64_to_s32: 0000F764
@@ -20902,7 +20902,7 @@ __avr32_f64_to_s32 proc
 	invalid
 	invalid
 	invalid
-	invalid
+	cp.w	r11,00000000
 	invalid
 	invalid
 	invalid
@@ -20918,9 +20918,9 @@ __avr32_f64_to_s32 proc
 	invalid
 	invalid
 	invalid
+	breq	0000F7E6
 	invalid
-	invalid
-	invalid
+	brcc	0000F7E0
 	mov	r12,r11
 	invalid
 	invalid
@@ -20952,11 +20952,11 @@ __avr32_s32_to_f64 proc
 	invalid
 	mov	r10,00000000
 	invalid
+	pushm	lr
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	breq	0000F842
+	brcs	0000F82E
 	invalid
 	invalid
 	invalid
@@ -20970,19 +20970,19 @@ __avr32_s32_to_f64 proc
 	invalid
 	mov	r10,00000000
 	invalid
+	cp.w	r9,00000000
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	brcs	0000F858
 	mov	r11,00000000
 	mov	r10,00000000
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
+	brcc	0000F878
 	invalid
 	invalid
 	invalid
@@ -20995,6 +20995,17 @@ __avr32_s32_to_f64 proc
 	mov	r11,00000000
 	invalid
 	invalid
+	brcc	0000F89C
+	invalid
+	brne	0000F896
+	invalid
+	brcc	0000F89C
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	popm	pc
 	invalid
 	invalid
 	invalid
@@ -21002,18 +21013,7 @@ __avr32_s32_to_f64 proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brlt	0000F8C8
 	mov	r10,00000000
 	mov	r11,00000000
 	invalid
@@ -21027,16 +21027,16 @@ __avr32_s32_to_f64 proc
 	invalid
 	invalid
 	invalid
-	invalid
+	popm	pc
 	invalid
 	invalid
 	invalid
 
 ;; __avr32_f64_cmp_eq: 0000F8EC
 __avr32_f64_cmp_eq proc
+	cp.w	r10,r8
 	invalid
-	invalid
-	invalid
+	breq	0000F902
 	invalid
 	invalid
 	invalid
@@ -21047,7 +21047,7 @@ __avr32_f64_cmp_eq proc
 	invalid
 	mov	r12,00000000
 	invalid
-	invalid
+	cp.w	r10,00000000
 	invalid
 	invalid
 	invalid
@@ -21060,34 +21060,34 @@ __avr32_f64_cmp_ge proc
 	invalid
 	invalid
 	invalid
+	breq	0000F96A
 	invalid
 	invalid
-	invalid
-	invalid
+	pushm	lr
 	mov	lr,00000000
 	invalid
+	cp.w	r10,00000000
+	invalid
+	invalid
+	cp.w	r8,00000000
+	invalid
+	invalid
+	popm	lr
+	cp.w	r12,00000003
+	breq	0000F95E
+	cp.w	r12,00000001
+	brcs	0000F954
+	invalid
+	invalid
+	cp.w	r10,r8
 	invalid
 	invalid
 	invalid
+	cp.w	r8,r10
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	popm	pc,r12=0
 	invalid
 	invalid
 	invalid
@@ -21099,58 +21099,34 @@ __avr32_f64_cmp_lt proc
 	invalid
 	invalid
 	invalid
+	breq	0000F9C4
 	invalid
 	invalid
-	invalid
-	invalid
+	pushm	lr
 	mov	lr,00000000
 	invalid
+	cp.w	r10,00000000
+	invalid
+	invalid
+	cp.w	r8,00000000
+	invalid
+	invalid
+	popm	lr
+	cp.w	r12,00000003
+	breq	0000F9B8
+	cp.w	r12,00000001
+	brcs	0000F9AE
+	invalid
+	invalid
+	cp.w	r10,r8
 	invalid
 	invalid
 	invalid
+	cp.w	r8,r10
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	mov	r8,00000000
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	popm	pc,r12=0
 	invalid
 	invalid
 	invalid
@@ -21162,6 +21138,19 @@ __avr32_f64_cmp_lt proc
 	invalid
 	mov	r8,00000000
 	invalid
+	cp.w	r10,r8
+	invalid
+	cp.w	r9,r8
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	brcs	0000FA00
+	cp.w	r12,r11
+	invalid
+	invalid
+	cp.w	r11,r12
 	invalid
 	invalid
 	invalid
@@ -21171,10 +21160,21 @@ __avr32_f64_cmp_lt proc
 	invalid
 	invalid
 	invalid
+	mov	r8,00000000
+	invalid
+	cp.w	r10,r8
+	invalid
+	cp.w	r9,r8
 	invalid
 	invalid
 	invalid
 	invalid
+	invalid
+	brcs	0000FA3E
+	cp.w	r12,r11
+	invalid
+	invalid
+	cp.w	r11,r12
 	invalid
 	invalid
 	invalid
@@ -21270,6 +21270,30 @@ __avr32_f64_div proc
 	invalid
 	invalid
 	invalid
+	breq	0000FB80
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	cp.w	r7,00000000
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	cp.w	r4,00000000
 	invalid
 	invalid
 	invalid
@@ -21302,32 +21326,8 @@ __avr32_f64_div proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	0000FC4C
+	brcs	0000FC38
 	invalid
 	invalid
 	invalid
@@ -21349,10 +21349,10 @@ __avr32_f64_div proc
 	invalid
 	invalid
 	invalid
+	breq	0000FD40
 	invalid
-	invalid
-	invalid
-	invalid
+	breq	0000FC96
+	brcs	0000FC82
 	invalid
 	invalid
 	invalid
@@ -21374,7 +21374,7 @@ __avr32_f64_div proc
 	invalid
 	invalid
 	invalid
-	invalid
+	brge	0000FCD6
 	invalid
 	invalid
 	invalid
@@ -21390,7 +21390,7 @@ __avr32_f64_div proc
 	invalid
 	invalid
 	invalid
-	invalid
+	breq	0000FCEC
 	invalid
 	invalid
 	invalid
@@ -21410,7 +21410,7 @@ __avr32_f64_div proc
 	invalid
 	mov	r7,00000000
 	invalid
-	invalid
+	cp.w	r4,r0
 	invalid
 	invalid
 	mov	r11,lr
@@ -21426,6 +21426,12 @@ __avr32_f64_div proc
 	mov	r10,00000000
 	invalid
 	invalid
+	breq	0000FD38
+	invalid
+	invalid
+	brne	0000FD2C
+	invalid
+	breq	0000FD2C
 	invalid
 	invalid
 	invalid
@@ -21434,23 +21440,17 @@ __avr32_f64_div proc
 	invalid
 	invalid
 	invalid
+	breq	0000FE62
+	invalid
+	breq	0000FE6E
+	invalid
+	brcc	0000FE50
 	invalid
 	invalid
 	invalid
+	breq	0000FE7E
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brcc	0000FE5E
 	invalid
 	invalid
 	st.w	--sp,r5
@@ -21484,17 +21484,17 @@ __avr32_f64_div proc
 	invalid
 	invalid
 	invalid
+	breq	0000FE10
+	invalid
+	invalid
+	invalid
+	cp.w	r9,00000000
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000000
 	invalid
 	invalid
 	invalid
@@ -21512,8 +21512,8 @@ __avr32_f64_div proc
 	invalid
 	mov	r9,00000000
 	invalid
-	invalid
-	invalid
+	cp.w	r11,r9
+	brcs	0000FE4A
 	invalid
 	invalid
 	invalid
@@ -21544,35 +21544,35 @@ __avr32_f64_div proc
 	invalid
 	mov	r9,00000000
 	invalid
+	cp.w	r10,r6
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	brmi	0000FF98
 	mov	r8,r12
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	r10,r8
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	breq	0000FF68
 	invalid
 	invalid
 	invalid
 	st.w	--sp,r12
+	breq	0000FF56
 	invalid
-	invalid
-	invalid
+	breq	0000FF20
 	invalid
 	invalid
 	invalid
@@ -21593,6 +21593,13 @@ __avr32_f64_div proc
 	invalid
 	invalid
 	invalid
+	cp.w	r9,r10
+	invalid
+	invalid
+	invalid
+	invalid
+	cp.w	r10,00000000
+	brne	0000FF04
 	invalid
 	invalid
 	invalid
@@ -21614,14 +21621,7 @@ __avr32_f64_div proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brmi	0000FEC4
 	mov	r8,r12
 	invalid
 	invalid
@@ -21632,11 +21632,11 @@ __avr32_f64_div proc
 	invalid
 	invalid
 	invalid
+	breq	0001001C
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	breq	00010008
 	st.w	--sp,r12
 	rsub	r9,r10
 	invalid
@@ -21646,20 +21646,20 @@ __avr32_f64_div proc
 	invalid
 	invalid
 	ld.w	r12,sp++
-	invalid
+	brcs	00010036
 	invalid
 	invalid
 	mov	r10,00000000
 	invalid
 	invalid
 	invalid
+	cp.w	r11,r10
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000000
+	brne	0000FFCC
 	invalid
 	invalid
 	invalid
@@ -21686,6 +21686,48 @@ __avr32_f64_div proc
 	eor	r12,r11
 	invalid
 	invalid
+	breq	00010126
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	breq	000100EC
+	invalid
+	invalid
+	invalid
+	breq	000100C6
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	brge	000100C0
+	invalid
+	invalid
+	mov	r8,00000000
+	invalid
+	invalid
+	invalid
+	cp.w	r10,r8
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	brne	0001007E
 	invalid
 	invalid
 	invalid
@@ -21702,6 +21744,32 @@ __avr32_f64_div proc
 	invalid
 	invalid
 	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	cp.w	r12,00000000
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	cp.w	r10,00000000
+	invalid
+	mov	r9,0000007F
 	invalid
 	invalid
 	invalid
@@ -21714,56 +21782,9 @@ __avr32_f64_div proc
 	invalid
 	mov	r8,00000000
 	invalid
+	cp.w	r10,00000019
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brcc	000101A8
 	invalid
 	invalid
 	invalid
@@ -21780,7 +21801,7 @@ __avr32_f64_div proc
 	invalid
 	invalid
 	invalid
-	mov	r8,00000000
+	cp.w	r12,00000000
 	invalid
 	invalid
 	invalid
@@ -21790,29 +21811,8 @@ __avr32_f64_div proc
 	invalid
 	invalid
 	invalid
-	mov	r9,0000007F
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[48]
+	pushm	r0-r3,r4-r7,lr
+	lddpc	r6,sp[48]
 	rsub	r6,pc
 	mov	r12,r11
 	mov	r2,r10
@@ -21829,16 +21829,16 @@ __avr32_f64_div proc
 	mov	r10,r0
 	mov	r11,r1
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
-	invalid
-	invalid
+	lddsp	r0,sp[124]
 	invalid
 	invalid
 	invalid
 
 ;; __avr32_sdiv64: 00010208
 __avr32_sdiv64 proc
-	invalid
+	pushm	r0-r3,r4-r7,lr
 	mov	r7,sp
 	invalid
 	mov	r3,r11
@@ -21847,8 +21847,8 @@ __avr32_sdiv64 proc
 	mov	r1,r9
 	mov	r10,r8
 	mov	r11,r9
-	invalid
-	invalid
+	cp.w	r3,00000000
+	brlt	00010222
 	mov	r8,00000000
 	invalid
 	mov	r8,00000000
@@ -21857,8 +21857,8 @@ __avr32_sdiv64 proc
 	invalid
 	mov	r8,FFFFFFFF
 	invalid
-	invalid
-	invalid
+	cp.w	r1,00000000
+	brge	0001024E
 	mov	r8,00000000
 	mov	r9,00000000
 	invalid
@@ -21870,12 +21870,12 @@ __avr32_sdiv64 proc
 	mov	r0,r10
 	mov	r1,r10
 	mov	r5,r2
+	cp.w	r11,00000000
+	invalid
+	cp.w	r10,r3
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	00010280
 	invalid
 	invalid
 	invalid
@@ -21889,16 +21889,16 @@ __avr32_sdiv64 proc
 	invalid
 	invalid
 	mov	r3,r8
+	cp.w	r11,r12
+	brcc	000102B6
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,r1
+	brcs	000102B6
 	sub	r8,r3,00000001
 	invalid
-	invalid
-	invalid
+	cp.w	r11,r12
+	brcc	000102B6
 	mov	r3,r8
 	mov	r11,r9
 	invalid
@@ -21907,24 +21907,24 @@ __avr32_sdiv64 proc
 	invalid
 	invalid
 	mov	r12,r8
+	cp.w	r11,lr
+	brcc	000102E2
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,r1
+	brcs	000102E2
 	sub	r8,r12,00000001
+	cp.w	r11,lr
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,00000000
+	brne	000102F4
 	mov	r9,00000001
 	invalid
 	mov	r1,r8
 	invalid
-	invalid
+	brne	00010302
 	invalid
 	mov	r2,00000001
 	invalid
@@ -21941,16 +21941,16 @@ __avr32_sdiv64 proc
 	invalid
 	invalid
 	mov	lr,r8
+	cp.w	r10,r12
+	brcc	00010350
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,r1
+	brcs	00010350
 	sub	r8,lr,00000001
 	invalid
-	invalid
-	invalid
+	cp.w	r10,r12
+	brcc	00010350
 	mov	lr,r8
 	mov	r10,r9
 	invalid
@@ -21959,16 +21959,16 @@ __avr32_sdiv64 proc
 	invalid
 	invalid
 	mov	r12,r8
+	cp.w	r11,r3
+	brcc	00010382
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,r1
+	brcs	00010382
 	sub	r8,r12,00000001
 	invalid
-	invalid
-	invalid
+	cp.w	r11,r3
+	brcc	00010382
 	mov	r12,r8
 	mov	r11,r9
 	invalid
@@ -21981,16 +21981,16 @@ __avr32_sdiv64 proc
 	invalid
 	invalid
 	mov	r3,r8
+	cp.w	r11,r12
+	brcc	000103C2
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,r1
+	brcs	000103C2
 	sub	r8,r3,00000001
 	invalid
-	invalid
-	invalid
+	cp.w	r11,r12
+	brcc	000103C2
 	mov	r3,r8
 	mov	r11,r9
 	invalid
@@ -21999,25 +21999,25 @@ __avr32_sdiv64 proc
 	invalid
 	invalid
 	mov	r12,r8
+	cp.w	r11,lr
+	brcc	000103EE
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,r1
+	brcs	000103EE
 	sub	r8,r12,00000001
+	cp.w	r11,lr
 	invalid
 	invalid
 	invalid
+	cp.w	r11,r3
 	invalid
 	invalid
+	brne	00010410
+	cp.w	r3,r11
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r2,r10
+	brcs	000104CA
 	mov	r2,lr
 	mov	r12,00000001
 	invalid
@@ -22038,16 +22038,16 @@ __avr32_sdiv64 proc
 	invalid
 	invalid
 	mov	r1,r8
+	cp.w	r10,r12
+	brcc	0001046E
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,r3
+	brcs	0001046E
 	sub	r8,r1,00000001
 	invalid
-	invalid
-	invalid
+	cp.w	r10,r12
+	brcc	0001046E
 	mov	r1,r8
 	mov	r10,r9
 	invalid
@@ -22057,16 +22057,16 @@ __avr32_sdiv64 proc
 	invalid
 	invalid
 	mov	r12,r8
+	cp.w	r11,r2
+	brcc	000104A4
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,r3
+	brcs	000104A4
 	invalid
 	sub	r8,r12,00000001
-	invalid
-	invalid
+	cp.w	r11,r2
+	brcc	000104A4
 	mov	r12,r8
 	mov	r11,r9
 	invalid
@@ -22074,11 +22074,11 @@ __avr32_sdiv64 proc
 	invalid
 	mov	r3,r9
 	mov	r9,r8
+	cp.w	r3,r11
 	invalid
+	brne	000104C6
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r9,r8
 	invalid
 	invalid
 	mov	r2,00000000
@@ -22088,18 +22088,18 @@ __avr32_sdiv64 proc
 	ld.w	r8,r8[-8]
 	mov	r10,r12
 	mov	r11,r2
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	000104E6
 	mov	r8,00000000
 	mov	r9,00000000
 	invalid
 	invalid
 	invalid
-	invalid
+	popm	r0-r3,r4-r7,pc
 
 ;; __moddi3: 000104EA
 __moddi3 proc
-	invalid
+	pushm	r0-r3,r4-r7,lr
 	mov	r7,sp
 	invalid
 	mov	r0,r8
@@ -22109,8 +22109,8 @@ __moddi3 proc
 	invalid
 	mov	r2,r0
 	mov	r3,r1
-	invalid
-	invalid
+	cp.w	r11,00000000
+	brlt	0001050C
 	mov	r8,00000000
 	invalid
 	invalid
@@ -22120,8 +22120,8 @@ __moddi3 proc
 	invalid
 	mov	lr,FFFFFFFF
 	invalid
-	invalid
-	invalid
+	cp.w	r1,00000000
+	brge	0001052E
 	mov	r8,00000000
 	mov	r9,00000000
 	invalid
@@ -22135,6 +22135,12 @@ __moddi3 proc
 	mov	r5,r10
 	mov	r1,r11
 	mov	r8,r11
+	cp.w	r3,00000000
+	invalid
+	cp.w	r2,r11
+	invalid
+	invalid
+	breq	0001056C
 	invalid
 	invalid
 	invalid
@@ -22144,18 +22150,13 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r2,00000000
+	brne	00010582
 	mov	r9,00000001
 	invalid
 	mov	r12,r8
 	invalid
+	brne	0001058E
 	invalid
 	invalid
 	invalid
@@ -22170,16 +22171,26 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	cp.w	r9,r3
+	brcc	000105D2
 	invalid
+	cp.w	r9,r12
+	brcs	000105D2
 	invalid
+	cp.w	r9,r3
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	r11,r3
+	brcc	000105F8
 	invalid
+	cp.w	r11,r12
+	brcs	000105F8
 	invalid
+	cp.w	r11,r3
 	invalid
 	invalid
 	invalid
@@ -22189,37 +22200,26 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	cp.w	r11,r3
+	brcc	0001062A
 	invalid
+	cp.w	r11,r12
+	brcs	0001062A
 	invalid
+	cp.w	r11,r3
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	r11,r3
+	brcc	00010652
 	invalid
+	cp.w	r11,r12
+	brcs	00010652
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,r3
 	invalid
 	invalid
 	invalid
@@ -22230,17 +22230,17 @@ __moddi3 proc
 	ld.w	lr,lr[-24]
 	invalid
 	invalid
+	cp.w	r3,r11
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	brne	000106A2
+	cp.w	r11,r3
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,r0
+	brcs	00010698
 	invalid
 	invalid
 	invalid
@@ -22267,16 +22267,16 @@ __moddi3 proc
 	invalid
 	invalid
 	mov	r1,r8
+	cp.w	r10,r12
+	brcc	00010710
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,r3
+	brcs	00010710
 	sub	r8,r1,00000001
 	invalid
-	invalid
-	invalid
+	cp.w	r10,r12
+	brcc	00010710
 	mov	r1,r8
 	mov	r10,r9
 	invalid
@@ -22287,16 +22287,16 @@ __moddi3 proc
 	invalid
 	invalid
 	mov	r12,r8
+	cp.w	r11,lr
+	brcc	0001074A
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,r3
+	brcs	0001074A
 	sub	r8,r12,00000001
 	invalid
-	invalid
-	invalid
+	cp.w	r11,lr
+	brcc	0001074A
 	mov	r12,r8
 	mov	r11,r9
 	invalid
@@ -22304,10 +22304,10 @@ __moddi3 proc
 	invalid
 	mov	r12,r9
 	mov	r9,r8
+	cp.w	r12,r11
 	invalid
-	invalid
-	invalid
-	invalid
+	brne	00010770
+	cp.w	r8,r0
 	invalid
 	invalid
 	invalid
@@ -22325,8 +22325,8 @@ __moddi3 proc
 	ld.w	r9,r9[-24]
 	invalid
 	ld.w	r8,r8[-28]
-	invalid
-	invalid
+	cp.w	r8,00000000
+	breq	000107B8
 	invalid
 	mov	r8,00000000
 	mov	r9,00000000
@@ -22335,20 +22335,20 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
+	popm	r0-r3,r4-r7,pc
+	pushm	r0-r3,r4-r7,lr
 	mov	r7,sp
 	invalid
 	mov	r5,r11
 	mov	r3,r8
 	mov	lr,r8
 	mov	r1,r10
+	cp.w	r9,00000000
+	invalid
+	cp.w	r8,r11
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	000107F8
 	invalid
 	invalid
 	invalid
@@ -22362,16 +22362,16 @@ __moddi3 proc
 	invalid
 	invalid
 	mov	r5,r8
+	cp.w	r11,r12
+	brcc	0001082E
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,lr
+	brcs	0001082E
 	sub	r8,r5,00000001
 	invalid
-	invalid
-	invalid
+	cp.w	r11,r12
+	brcc	0001082E
 	mov	r5,r8
 	mov	r11,r9
 	invalid
@@ -22380,24 +22380,24 @@ __moddi3 proc
 	invalid
 	invalid
 	mov	r12,r8
+	cp.w	r11,r3
+	brcc	0001085A
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,lr
+	brcs	0001085A
 	sub	r8,r12,00000001
+	cp.w	r11,r3
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
+	brne	0001086C
 	mov	r9,00000001
 	invalid
 	mov	lr,r8
 	invalid
-	invalid
+	brne	0001087A
 	invalid
 	mov	r2,00000001
 	invalid
@@ -22414,16 +22414,16 @@ __moddi3 proc
 	invalid
 	invalid
 	mov	r3,r8
+	cp.w	r10,r12
+	brcc	000108C8
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,lr
+	brcs	000108C8
 	sub	r8,r3,00000001
 	invalid
-	invalid
-	invalid
+	cp.w	r10,r12
+	brcc	000108C8
 	mov	r3,r8
 	mov	r10,r9
 	invalid
@@ -22432,16 +22432,16 @@ __moddi3 proc
 	invalid
 	invalid
 	mov	r12,r8
+	cp.w	r11,r5
+	brcc	000108FA
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,lr
+	brcs	000108FA
 	sub	r8,r12,00000001
 	invalid
-	invalid
-	invalid
+	cp.w	r11,r5
+	brcc	000108FA
 	mov	r12,r8
 	mov	r11,r9
 	invalid
@@ -22454,16 +22454,16 @@ __moddi3 proc
 	invalid
 	invalid
 	mov	r5,r8
+	cp.w	r11,r12
+	brcc	0001093A
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,lr
+	brcs	0001093A
 	sub	r8,r5,00000001
 	invalid
-	invalid
-	invalid
+	cp.w	r11,r12
+	brcc	0001093A
 	mov	r5,r8
 	mov	r11,r9
 	invalid
@@ -22472,25 +22472,25 @@ __moddi3 proc
 	invalid
 	invalid
 	mov	r12,r8
+	cp.w	r11,r3
+	brcc	00010966
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,lr
+	brcs	00010966
 	sub	r8,r12,00000001
+	cp.w	r11,r3
 	invalid
 	invalid
 	invalid
+	cp.w	r9,r11
 	invalid
 	invalid
+	brne	00010986
+	cp.w	r11,r9
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,r8
+	brcs	00010A40
 	mov	r12,00000001
 	invalid
 	invalid
@@ -22510,16 +22510,16 @@ __moddi3 proc
 	invalid
 	invalid
 	mov	r3,r8
+	cp.w	r10,r12
+	brcc	000109E4
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,lr
+	brcs	000109E4
 	sub	r8,r3,00000001
 	invalid
-	invalid
-	invalid
+	cp.w	r10,r12
+	brcc	000109E4
 	mov	r3,r8
 	mov	r10,r9
 	invalid
@@ -22528,16 +22528,16 @@ __moddi3 proc
 	invalid
 	invalid
 	mov	r12,r8
+	cp.w	r11,r5
+	brcc	00010A16
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,lr
+	brcs	00010A16
 	invalid
 	sub	r8,r12,00000001
-	invalid
-	invalid
+	cp.w	r11,r5
+	brcc	00010A16
 	mov	r12,r8
 	mov	r11,r9
 	ld.w	r10,r10[-4]
@@ -22546,11 +22546,11 @@ __moddi3 proc
 	invalid
 	mov	lr,r9
 	mov	r9,r8
+	cp.w	lr,r11
 	invalid
+	brne	00010A3C
 	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r9,r8
 	invalid
 	invalid
 	mov	r2,00000000
@@ -22560,8 +22560,8 @@ __moddi3 proc
 	mov	r11,r2
 	mov	r10,r12
 	invalid
-	invalid
-	invalid
+	popm	r0-r3,r4-r7,pc
+	pushm	r0-r3,r4-r7,lr
 	mov	r7,sp
 	invalid
 	mov	r5,00000000
@@ -22574,12 +22574,12 @@ __moddi3 proc
 	mov	r2,r10
 	mov	r5,r11
 	mov	r1,r11
+	cp.w	r9,00000000
+	invalid
+	cp.w	r8,r11
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	breq	00010A98
 	invalid
 	invalid
 	invalid
@@ -22594,25 +22594,26 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	cp.w	r11,r12
+	brcc	00010AC6
 	invalid
+	cp.w	r11,lr
+	brcs	00010AC6
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,r12
 	invalid
 	invalid
 	invalid
 	ld.w	r4,r4[-8]
 	invalid
 	invalid
-	invalid
-	invalid
+	cp.w	r8,00000000
+	brne	00010AE4
 	mov	r9,00000001
 	invalid
 	mov	lr,r8
 	invalid
+	brne	00010AF0
 	invalid
 	invalid
 	invalid
@@ -22627,27 +22628,26 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	cp.w	r9,r12
+	brcc	00010B34
+	invalid
+	cp.w	r9,lr
+	brcs	00010B34
+	invalid
+	cp.w	r9,r12
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	r11,r12
+	brcc	00010B5A
 	invalid
+	cp.w	r11,lr
+	brcs	00010B5A
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,r12
 	invalid
 	invalid
 	ld.w	r12,r12[-8]
@@ -22660,13 +22660,13 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	cp.w	r11,r12
+	brcc	00010B96
 	invalid
+	cp.w	r11,lr
+	brcs	00010B96
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,r12
 	invalid
 	invalid
 	invalid
@@ -22674,30 +22674,30 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	cp.w	r11,r12
+	brcc	00010BC2
 	invalid
+	cp.w	r11,lr
+	brcs	00010BC2
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,r12
 	invalid
 	invalid
 	invalid
 	mov	r10,00000000
 	invalid
 	invalid
+	cp.w	r9,r11
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	brne	00010C0A
+	cp.w	r11,r9
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,r8
+	brcs	00010BFC
 	invalid
 	invalid
 	invalid
@@ -22725,16 +22725,16 @@ __moddi3 proc
 	invalid
 	invalid
 	mov	r3,r8
+	cp.w	r10,r12
+	brcc	00010C74
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r10,lr
+	brcs	00010C74
 	sub	r8,r3,00000001
 	invalid
-	invalid
-	invalid
+	cp.w	r10,r12
+	brcc	00010C74
 	mov	r3,r8
 	mov	r10,r9
 	ld.w	r4,r4[-12]
@@ -22744,16 +22744,16 @@ __moddi3 proc
 	invalid
 	invalid
 	mov	r12,r8
+	cp.w	r11,r5
+	brcc	00010CAA
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cp.w	r11,lr
+	brcs	00010CAA
 	sub	r8,r12,00000001
 	invalid
-	invalid
-	invalid
+	cp.w	r11,r5
+	brcc	00010CAA
 	mov	r12,r8
 	mov	r11,r9
 	invalid
@@ -22761,10 +22761,10 @@ __moddi3 proc
 	invalid
 	mov	r12,r9
 	mov	r9,r8
+	cp.w	r12,r11
 	invalid
-	invalid
-	invalid
-	invalid
+	brne	00010CD0
+	cp.w	r8,r2
 	invalid
 	invalid
 	invalid
@@ -22780,11 +22780,11 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	popm	r0-r3,r4-r7,pc
 	invalid
+	pushm	r4-r7,lr
 	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[52]
+	lddpc	r6,sp[52]
 	rsub	r6,pc
 	invalid
 	sub	r12,sp,FFFFFFD0
@@ -22794,18 +22794,18 @@ __moddi3 proc
 	mov	r11,sp
 	sub	r12,sp,FFFFFFD8
 	invalid
-	invalid
-	invalid
+	lddsp	r8,sp[20]
+	cp.w	r8,00000001
 	invalid
 	mov	r12,00000001
 	invalid
+	lddsp	r8,sp[0]
+	cp.w	r8,00000001
 	invalid
 	invalid
+	popm	r4-r7,pc
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	pushm	r0-r3,lr
 	invalid
 	mov	r12,r11
 	invalid
@@ -22813,54 +22813,54 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	st.w	r11[4],r10
 	invalid
 	invalid
+	cp.w	lr,00000000
+	brne	00010DA0
+	cp.w	r2,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	00010D68
 	mov	r8,00000002
 	invalid
 	invalid
 	invalid
-	invalid
+	st.w	r12[8],r8
 	invalid
 	mov	r8,00000003
 	invalid
+	st.w	r12[0],r8
+	invalid
+	ld.w	r8,r12[8]
 	invalid
 	invalid
 	invalid
+	st.w	r12[8],r8
+	invalid
+	cp.w	r10,r8
 	invalid
 	invalid
 	invalid
+	popm	r0-r3,pc
 	invalid
+	brne	00010DCC
+	cp.w	r2,00000000
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	brne	00010DB0
 	mov	r8,00000004
 	invalid
 	invalid
 	invalid
 	invalid
+	cp.w	r8,00000000
 	invalid
-	invalid
-	invalid
+	breq	00010DC2
 	mov	r8,00000001
 	invalid
 	mov	r8,00000000
+	st.w	r12[0],r8
 	invalid
-	invalid
-	invalid
+	popm	r0-r3,pc
 	invalid
 	invalid
 	invalid
@@ -22869,6 +22869,9 @@ __moddi3 proc
 	sub	r10,lr,000003FF
 	invalid
 	mov	r8,00000003
+	st.w	r12[8],r10
+	st.w	r12[0],r8
+	popm	r0-r3,pc
 	invalid
 	invalid
 	invalid
@@ -22882,116 +22885,175 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[28]
+	pushm	r4-r7,lr
+	lddpc	r6,sp[28]
 	rsub	r6,pc
 	ld.w	r8,r8[600]
 	sub	r7,r8,00000004
 	invalid
+	icall	r8
+	ld.w	r8,r7[0]
+	invalid
+	cp.w	r8,FFFFFFFF
+	brne	00010E20
+	popm	r4-r7,pc
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r6,pc[8]
+	lddpc	r6,sp[8]
 	rsub	r6,pc
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	stdsp	sp[284],r2
+	ld.w	r0,r12[-56]
+	ld.w	r5,r0[8]
+	ld.w	r0,r9[-56]
 	invalid
+	ld.w	r5,r4[24]
+	ld.w	r0,r6[28]
 	invalid
+	ld.w	pc,r3[24]
+	ld.w	r0,r9[8]
+	ld.w	pc,r6[-40]
+	ld.w	r5,r9[24]
 	invalid
+	ld.w	r6,r7[24]
+	ld.w	r2,r7[-36]
+	ld.w	r1,r6[-40]
+	ld.w	r9,r10[24]
+	ld.w	lr,r7[-40]
 	invalid
 	invalid
+	stdsp	sp[348],r3
+	ld.w	r7,r0[-40]
+	ld.w	r10,r2[-52]
 	invalid
+	ld.w	r0,r9[-56]
+	cp.w	pc,FFFFFFF4
+	stdsp	sp[20],r4
+	lddpc	pc,sp[80]
+	lddpc	sp,sp[404]
 	invalid
 	invalid
+	cp.w	r6,FFFFFFF4
+	lddpc	r12,sp[80]
+	lddsp	sp,sp[340]
 	invalid
 	invalid
 	invalid
 	invalid
+	lddpc	r9,sp[280]
+	ld.w	r4,r9[-36]
 	invalid
+	ld.w	r6,r7[24]
+	ld.w	r2,r7[-36]
+	ld.w	r1,r6[-40]
+	ld.w	r9,r10[24]
+	ld.w	lr,r7[-40]
 	invalid
+	ld.w	pc,r1[24]
+	ld.w	r4,r10[-36]
 	invalid
+	ld.w	r5,r4[24]
 	invalid
+	lddpc	r12,sp[80]
+	lddsp	r3,sp[348]
 	invalid
+	ld.w	r8,r10[24]
+	ld.w	r0,r2[-56]
+	ld.w	r5,r1[-36]
+	ld.w	r2,r9[28]
+	ld.w	lr,r2[-40]
+	ld.w	r0,r10[8]
+	ld.w	r9,r2[24]
+	ld.w	r5,r9[24]
+	ld.w	r4,r1[-36]
+	ld.w	r2,r7[-36]
+	ld.w	r0,r12[-56]
+	ld.w	r9,r1[28]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	pc,pc[80]
-	lddpc	sp,pc[404]
-	invalid
-	invalid
-	invalid
-	lddpc	r12,pc[80]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r9,pc[280]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r12,pc[80]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r6,r2[-40]
+	ld.w	r5,r0[-36]
+	ld.w	r4,r6[28]
 	invalid
 	eor	r3,r5
+	ld.w	r2,r7[-36]
+	ld.w	r0,r10[8]
+	ld.w	lr,r2[-40]
+	ld.w	r2,r10[28]
+	ld.w	r5,r4[-40]
+	ld.w	r0,r9[-56]
+	ld.w	r12,r0[-40]
+	ld.w	r8,r8[24]
+	ld.w	r2,r0[-40]
+	ld.w	r4,r2[-36]
+	ld.w	r3,r4[-40]
+	ld.w	r12,r0[-40]
+	ld.w	r9,r6[28]
 	invalid
+	ld.w	r0,r3[8]
+	ld.w	pc,r7[24]
+	ld.w	r5,r7[24]
 	invalid
+	ld.w	r0,r3[8]
 	invalid
+	ld.w	r4,r3[28]
+	ld.w	r6,r10[-36]
+	stdsp	sp[212],r5
+	cp.w	r0,00000002
+	ld.w	pc,r7[24]
+	ld.w	r0,r9[8]
 	invalid
+	ld.w	pc,r9[-40]
+	ld.w	r4,r9[28]
 	invalid
 	invalid
+	lddpc	r1,sp[344]
+	ld.w	r4,r7[24]
+	ld.w	r4,r0[-36]
+	ld.w	r2,r7[-36]
+	ld.w	r0,r12[-56]
+	ld.w	r2,r0[-36]
+	ld.w	r5,r3[-36]
+	ld.w	r5,r6[-40]
+	ld.w	r4,r7[28]
+	ld.w	r0,r9[-56]
+	ld.w	pc,r10[24]
 	invalid
+	ld.w	lr,r7[-40]
+	ld.w	r0,r3[-56]
+	ld.w	r0,r7[-36]
+	ld.w	r9,r10[24]
+	ld.w	lr,r7[-40]
+	ld.w	r0,r9[-56]
+	ld.w	r2,r0[-36]
+	ld.w	r0,r2[-56]
+	ld.w	r1,r6[-40]
+	ld.w	r4,r7[24]
+	ld.w	r4,r0[-36]
+	ld.w	r2,r7[-36]
+	ld.w	r0,r12[-56]
+	ld.w	pc,r3[24]
+	ld.w	r0,r9[8]
+	ld.w	r8,r9[-40]
+	ld.w	r2,r7[-36]
+	ld.w	r0,r10[8]
+	ld.w	r0,r7[-36]
+	ld.w	r9,r10[24]
+	ld.w	lr,r7[-40]
+	ld.w	r0,r9[-56]
+	ld.w	pc,r10[24]
+	ld.w	lr,r7[-56]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r12,r0[-40]
+	ld.w	r0,r6[8]
 	invalid
 	invalid
 	invalid
@@ -23001,91 +23063,61 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r0,r7[-56]
+	ld.w	pc,r7[24]
+	ld.w	r0,r10[8]
+	ld.w	r7,r4[-40]
+	ld.w	pc,r7[24]
+	ld.w	r5,r9[24]
 	invalid
+	ld.w	r4,r7[28]
+	ld.w	r9,r9[24]
+	ld.w	r3,r2[-36]
 	invalid
+	ld.w	r1,r10[24]
+	ld.w	r4,r9[28]
+	ld.w	lr,r4[-40]
+	ld.w	r0,r3[-56]
+	ld.w	r9,r11[-40]
+	ld.w	r8,r10[24]
 	invalid
+	rsub	r0,r5
 	invalid
+	lddsp	r12,sp[72]
 	invalid
 	invalid
+	ld.w	sp,r6[24]
+	ld.w	r3,r7[-36]
+	ld.w	sp,r10[8]
+	ld.w	r12,r0[-40]
+	ld.w	r0,r6[8]
 	invalid
 	invalid
 	invalid
-	lddpc	r1,pc[344]
 	invalid
 	invalid
+	ld.w	pc,r2[24]
 	invalid
+	ld.w	r4,r7[-36]
 	invalid
+	ld.w	r3,r4[-36]
+	ld.w	r0,r10[8]
+	ld.w	sp,r4[-40]
+	ld.w	r12,r8[24]
+	ld.w	r5,r4[-40]
+	ld.w	r0,r2[8]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	lr,r0[-40]
+	ld.w	r0,r2[8]
 	invalid
 	rsub	r0,r5
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r4,r10[-36]
+	ld.w	pc,r4[24]
+	ld.w	r0,r9[8]
 	invalid
 	invalid
 	invalid
@@ -23093,27 +23125,33 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r9,r11[-40]
+	ld.w	r8,r10[24]
 	invalid
+	ld.w	r12,r6[8]
 	invalid
+	ld.w	r9,r9[24]
+	ld.w	r4,r7[28]
 	invalid
+	ld.w	r5,r4[24]
 	invalid
+	ld.w	r4,r10[-36]
+	ld.w	pc,r4[24]
+	ld.w	r0,r9[8]
+	ld.w	r6,r7[-40]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r3,r0[-40]
+	ld.w	r0,r4[8]
+	ld.w	r9,r3[24]
+	ld.w	r5,r6[24]
 	rsub	r0,r5
 	invalid
+	ld.w	r12,r1[8]
 	invalid
 	invalid
+	ld.w	r3,r9[-40]
+	ld.w	r0,r0[-36]
+	ld.w	r0,r2[-56]
 	invalid
 	invalid
 	invalid
@@ -23121,131 +23159,94 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r2,r8[28]
+	ld.w	lr,r4[-40]
+	ld.w	r0,r10[8]
+	ld.w	r3,r7[-40]
+	ld.w	r1,r10[24]
+	ld.w	r0,r6[8]
+	ld.w	r3,r2[-36]
+	ld.w	r1,r1[-40]
+	ld.w	r5,r8[24]
+	ld.w	r0,r9[-56]
+	ld.w	pc,r3[24]
+	ld.w	r0,r9[8]
+	ld.w	pc,r7[24]
+	ld.w	r7,r7[24]
+	ld.w	r1,r9[24]
+	ld.w	r8,r8[24]
+	ld.w	r3,r4[-40]
 	invalid
+	ld.w	r1,r4[24]
+	ld.w	r1,r9[24]
+	ld.w	r4,r1[-36]
+	ld.w	r2,r2[-36]
+	ld.w	r10,r9[-64]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	rsub	r0,r5
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r1[24]
+	ld.w	r3,r7[-40]
+	ld.w	sp,r5[-56]
+	ld.w	r9,r9[-40]
+	ld.w	r5,sp[24]
 	mov	r3,FFFFFFD5
-	lddpc	r10,pc[84]
+	lddpc	r10,sp[84]
+	lddsp	r0,sp[328]
+	invalid
+	invalid
+	invalid
+	ld.w	r5,r9[-40]
+	invalid
+	lddpc	r10,sp[84]
+	lddsp	sp,sp[328]
+	ld.w	r9,r1[28]
+	ld.w	r5,r10[24]
+	invalid
+	ld.w	pc,r6[24]
+	ld.w	r11,r1[-40]
+	ld.w	r10,r9[-64]
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r7,r4[-40]
+	ld.w	pc,r7[24]
+	ld.w	r5,r9[24]
 	invalid
-	invalid
-	lddpc	r10,pc[84]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r3,r0[-40]
+	ld.w	r5,r5[-36]
+	ld.w	r3,r8[28]
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r0,r7[-56]
+	ld.w	pc,r7[24]
+	ld.w	r0,r10[8]
+	ld.w	r9,r6[24]
+	ld.w	r4,r9[-36]
 	invalid
+	ld.w	r0,r6[-36]
+	ld.w	r9,r6[24]
+	ld.w	r4,r2[-40]
 	invalid
+	ld.w	r4,r7[28]
+	ld.w	r9,r9[24]
+	ld.w	r3,r2[-36]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r4,r7[24]
+	ld.w	lr,r4[-40]
+	ld.w	r0,r3[-56]
+	ld.w	r9,r11[-40]
+	ld.w	r8,r10[24]
 	invalid
 	rsub	r0,r5
 	invalid
+	ld.w	r0,r1[-56]
 	invalid
 	invalid
 	invalid
@@ -23258,31 +23259,30 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r9,r11[-40]
+	ld.w	r8,r10[24]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r4,r6[28]
 	mov	r0,FFFFFFA2
+	ld.w	pc,r9[-40]
+	ld.w	r4,r9[28]
 	invalid
+	ld.w	r12,r12[-56]
 	invalid
+	ld.w	r4,r7[24]
 	invalid
+	ld.w	pc,r4[24]
+	ld.w	r12,r11[-56]
 	invalid
+	ld.w	r9,r10[24]
+	ld.w	r5,r6[-40]
 	invalid
+	ld.w	r9,r10[24]
+	ld.w	r5,r6[-40]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r0,r3[8]
+	ld.w	r1,r6[24]
+	ld.w	r4,r9[-36]
 	rsub	r0,r5
 	invalid
 	invalid
@@ -23299,26 +23299,26 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	pc,r6[-40]
+	ld.w	r9,r2[24]
+	ld.w	r9,r3[24]
+	ld.w	r1,r1[-40]
+	ld.w	r9,r10[24]
+	ld.w	lr,r7[-40]
 	invalid
+	ld.w	r0,r3[8]
+	ld.w	r9,r3[24]
+	ld.w	r5,r6[24]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r1,r10[24]
+	ld.w	r5,r10[28]
+	ld.w	r0,r9[-56]
+	ld.w	lr,r4[-40]
+	ld.w	pc,r3[24]
+	ld.w	sp,r9[24]
+	ld.w	r4,r0[-36]
+	ld.w	pc,r4[-40]
+	ld.w	r9,r7[8]
 	rsub	r0,r5
 	invalid
 	invalid
@@ -23335,24 +23335,24 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r9,r11[-40]
+	ld.w	r8,r10[24]
 	invalid
+	ld.w	r10,r6[12]
 	invalid
+	ld.w	pc,r4[24]
+	ld.w	r0,r11[-56]
+	ld.w	r4,r1[-36]
+	ld.w	sp,r4[-40]
+	ld.w	r0,r2[-56]
+	ld.w	lr,r0[-40]
+	ld.w	r0,r2[8]
+	ld.w	pc,r9[-40]
+	ld.w	r4,r9[28]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r0,r12[-56]
+	ld.w	r1,r7[24]
+	ld.w	r5,r6[-40]
 	rsub	r0,r5
 	invalid
 	invalid
@@ -23369,6 +23369,18 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r4,r7[-36]
+	ld.w	r5,r4[24]
+	ld.w	r7,r9[28]
+	ld.w	r3,r4[-36]
+	ld.w	r10,r2[-52]
+	invalid
+	ld.w	r2,r7[-36]
+	ld.w	r0,r10[8]
+	ld.w	r9,r1[28]
+	invalid
+	ld.w	r9,r10[24]
+	ld.w	r5,r6[-40]
 	invalid
 	invalid
 	invalid
@@ -23385,6 +23397,57 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r3,r4[-36]
+	ld.w	r0,r10[8]
+	ld.w	lr,r2[-40]
+	ld.w	r2,r10[28]
+	ld.w	r5,r4[-40]
+	ld.w	r0,r9[-56]
+	ld.w	r9,r1[28]
+	invalid
+	ld.w	r12,r7[-40]
+	ld.w	sp,r10[-40]
+	ld.w	r3,r7[28]
+	rsub	r0,r5
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	r12,r7[-40]
+	ld.w	r2,r7[-36]
+	cp.w	sp,FFFFFFF3
+	stdsp	sp[464],r8
+	lddsp	lr,sp[336]
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	pc,r1[-40]
+	ld.w	r4,r7[28]
+	ld.w	pc,r9[24]
+	ld.w	r0,r6[8]
+	ld.w	r8,r11[-40]
+	ld.w	r4,r2[-36]
+	ld.w	r5,r4[24]
+	ld.w	r0,r9[8]
+	ld.w	pc,r1[-40]
+	ld.w	pc,r6[24]
+	ld.w	r0,r9[8]
+	ld.w	r3,r4[-36]
+	invalid
+	ld.w	r5,r9[-40]
+	ld.w	r0,r2[8]
+	ld.w	pc,r10[24]
+	invalid
+	ld.w	r3,r4[-36]
+	ld.w	r9,r10[24]
+	ld.w	r7,r7[24]
+	ld.w	r9,r10[-40]
+	ld.w	r8,r9[-40]
+	invalid
+	ld.w	r12,r4[-40]
+	ld.w	r10,r2[-64]
 	invalid
 	invalid
 	invalid
@@ -23401,13 +23464,66 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r0,r12[-36]
+	ld.w	r3,r2[-36]
+	invalid
+	invalid
+	lddpc	r5,sp[16]
+	lddpc	r0,sp[392]
+	ld.w	r1,r6[-40]
+	ld.w	r0,r12[-56]
+	ld.w	r5,r1[24]
+	invalid
+	ld.w	r5,r7[24]
+	ld.w	r5,r11[24]
+	ld.w	r7,r9[8]
+	invalid
+	ld.w	r1,r0[24]
+	ld.w	r7,r6[28]
+	ld.w	r9,r0[-36]
+	ld.w	r7,r9[-56]
+	invalid
+	ld.w	r2,r7[-36]
+	invalid
+	ld.w	r5,r0[-36]
+	ld.w	pc,r10[24]
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	r9,r2[24]
+	ld.w	r5,r9[24]
+	ld.w	r4,r1[-36]
+	ld.w	r2,r7[-36]
+	ld.w	r0,r12[-56]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r3,r4[-36]
+	ld.w	r0,r10[8]
+	ld.w	r9,r2[24]
+	ld.w	r5,r9[24]
+	ld.w	r4,r1[-36]
+	ld.w	r2,r7[-36]
+	ld.w	r0,r12[-56]
+	ld.w	lr,r2[-40]
+	ld.w	r2,r10[28]
+	ld.w	r5,r4[-40]
+	ld.w	r0,r9[-56]
+	ld.w	lr,r4[-40]
+	ld.w	r4,r9[-36]
+	ld.w	r1,r2[-40]
+	ld.w	r0,r2[8]
+	ld.w	r6,r7[-40]
 	invalid
+	ld.w	lr,r7[-40]
+	ld.w	r5,r10[24]
+	ld.w	r4,r7[28]
+	ld.w	r12,r9[-56]
 	rsub	r0,r5
 	invalid
 	invalid
@@ -23424,13 +23540,32 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	lr,r0[-40]
+	ld.w	r0,r2[8]
+	ld.w	pc,r2[24]
 	invalid
+	ld.w	r4,r7[-36]
 	invalid
+	ld.w	r2,r2[-36]
+	ld.w	r6,r2[-40]
+	ld.w	r2,r2[-36]
+	ld.w	lr,r2[-40]
+	ld.w	r5,r1[-40]
 	invalid
+	ld.w	sp,r12[-40]
+	ld.w	pc,r1[24]
+	ld.w	r9,r6[24]
+	ld.w	r0,r1[-56]
+	ld.w	r9,r6[24]
+	ld.w	r11,r7[24]
+	ld.w	r10,r9[-64]
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r9,r2[24]
+	ld.w	r5,r9[24]
+	ld.w	r0,r2[8]
 	invalid
 	invalid
 	invalid
@@ -23439,9 +23574,29 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	lr,r2[-40]
+	ld.w	r2,r2[-36]
+	ld.w	r4,r0[-36]
+	ld.w	r0,r2[-56]
+	ld.w	r5,r7[-36]
+	ld.w	r0,r10[28]
+	ld.w	r4,r10[-36]
 	invalid
+	ld.w	r3,r2[-36]
+	ld.w	r7,r4[-40]
+	ld.w	r5,r7[24]
+	ld.w	r0,r2[8]
+	ld.w	pc,r3[24]
+	ld.w	r0,r9[8]
+	lddsp	sp,sp[344]
+	ld.w	r3,r0[-40]
+	ld.w	r7,r9[-56]
 	invalid
+	ld.w	r2,r4[-36]
+	ld.w	r4,r2[-40]
 	invalid
+	ld.w	r4,r7[-40]
+	ld.w	r10,r2[-64]
 	invalid
 	invalid
 	invalid
@@ -23458,217 +23613,94 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r0,r7[-56]
+	ld.w	pc,r7[24]
+	ld.w	r0,r10[8]
+	ld.w	pc,r9[-40]
+	ld.w	r4,r9[28]
 	invalid
+	ld.w	lr,r2[-40]
+	ld.w	r2,r0[-40]
+	ld.w	r5,r6[24]
 	invalid
+	ld.w	r5,r0[-44]
 	invalid
+	ld.w	r9,r2[24]
+	ld.w	r1,r9[-40]
+	ld.w	r12,r1[24]
+	ld.w	r0,r2[-56]
 	invalid
+	ld.w	r0,r9[-56]
 	invalid
+	ld.w	pc,r1[-40]
+	ld.w	pc,r6[24]
+	ld.w	r10,r9[0]
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r12,r1[-40]
+	ld.w	r3,r0[-36]
+	ld.w	r9,r9[-40]
+	ld.w	r9,r3[28]
 	invalid
-	lddpc	r5,pc[16]
-	lddpc	r0,pc[392]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r0,r8[28]
+	ld.w	lr,r2[-40]
+	ld.w	r0,r2[8]
+	ld.w	lr,r4[-40]
+	ld.w	r9,r2[24]
+	ld.w	r1,r1[-40]
+	ld.w	pc,r10[24]
+	ld.w	r0,r9[8]
 	invalid
+	ld.w	r5,r7[24]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	rsub	r0,r5
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r0,r3[8]
 	invalid
 	mov	lr,FFFFFFD3
+	lddsp	r12,sp[28]
+	invalid
+	ld.w	pc,r10[24]
+	invalid
+	ld.w	r4,r7[28]
+	ld.w	r9,r9[24]
+	ld.w	r3,r2[-36]
+	rsub	r0,r5
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	r12,r4[-40]
+	ld.w	sp,r2[-56]
+	ld.w	r9,r10[28]
+	ld.w	r5,r8[24]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	invalid
+	ld.w	r9,r6[24]
+	ld.w	r5,r5[-40]
+	ld.w	r9,r11[-40]
+	ld.w	r5,r9[-40]
+	invalid
+	ld.w	r8,r2[-36]
+	ld.w	r5,r1[-40]
+	ld.w	r4,r8[28]
+	invalid
+	ld.w	r0,r7[-56]
+	ld.w	pc,r7[24]
+	ld.w	r0,r10[8]
+	ld.w	r0,r0[-36]
+	ld.w	r5,r8[24]
+	ld.w	r4,r7[24]
 	invalid
 	invalid
 	rsub	r0,r5
@@ -23676,17 +23708,37 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r2,r7[-36]
+	ld.w	r1,r6[-40]
+	ld.w	sp,r10[12]
+	stdsp	sp[464],pc
+	stdsp	sp[144],r4
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r3,r0[-40]
+	ld.w	pc,r9[24]
+	ld.w	r3,r9[-36]
 	invalid
+	ld.w	r12,r12[8]
 	invalid
+	ld.w	sp,r7[-40]
+	ld.w	r1,r6[-40]
+	ld.w	r0,r9[-56]
 	invalid
 	invalid
+	ld.w	pc,r4[24]
+	ld.w	r9,r9[24]
+	ld.w	pc,sp[24]
+	ld.w	r4,r7[28]
+	ld.w	r12,r0[-40]
 	invalid
+	ld.w	r12,r12[8]
 	invalid
+	ld.w	lr,r7[-40]
+	ld.w	r0,r3[-56]
 	invalid
 	invalid
 	invalid
@@ -23703,106 +23755,58 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
-	rsub	r0,r5
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	lr,r4[-40]
+	ld.w	r12,r3[-40]
+	ld.w	sp,r2[-56]
+	ld.w	pc,r1[-40]
+	ld.w	r5,r6[28]
+	ld.w	lr,r6[-40]
 	invalid
 	mov	r12,00000012
 	invalid
+	ld.w	r2,r2[-36]
+	ld.w	pc,r1[24]
+	ld.w	r5,r9[-40]
 	invalid
+	ld.w	r12,r6[8]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r2,r2[-36]
+	ld.w	r9,r10[24]
+	ld.w	r1,r1[-40]
+	ld.w	r0,r6[8]
 	invalid
 	rsub	r0,r5
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r12,r10[-40]
+	ld.w	sp,r6[8]
+	ld.w	r9,r10[24]
+	ld.w	r5,r6[-40]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r9,r6[24]
+	ld.w	r5,r5[-40]
 	invalid
+	ld.w	r0,r6[8]
 	invalid
+	ld.w	r9,r10[24]
+	ld.w	r5,r6[-40]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r10[28]
+	ld.w	r5,r6[24]
 	mov	r6,FFFFFFD6
+	ld.w	r12,r10[-40]
+	ld.w	sp,r6[8]
+	ld.w	r3,r4[-36]
+	ld.w	r10,r7[-64]
 	invalid
 	invalid
 	invalid
@@ -23819,16 +23823,39 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r11,r4[-40]
+	ld.w	r0,r2[-56]
 	invalid
 	invalid
+	ld.w	r5,r1[28]
+	ld.w	r0,r10[8]
+	ld.w	pc,r2[24]
 	invalid
+	ld.w	r4,r7[-36]
 	invalid
+	ld.w	r3,r4[-36]
+	ld.w	r0,r10[8]
+	ld.w	r7,r7[-36]
+	ld.w	r5,r7[24]
+	ld.w	r10,r9[0]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r2,r3[-36]
+	ld.w	r5,r7[-36]
+	ld.w	sp,r8[8]
+	ld.w	r9,r2[24]
+	ld.w	r5,r9[24]
+	ld.w	r4,r1[-36]
+	ld.w	r2,r7[-36]
+	ld.w	r5,r4[-40]
+	ld.w	sp,r9[-56]
+	ld.w	r9,r3[24]
+	ld.w	r3,r9[28]
+	ld.w	r10,r10[0]
 	invalid
 	invalid
 	invalid
@@ -23844,48 +23871,21 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	pc,r9[24]
+	ld.w	r0,r10[-36]
 	invalid
+	ld.w	r2,r4[-36]
+	ld.w	r3,r2[-40]
+	ld.w	pc,r10[24]
+	ld.w	r9,r9[24]
+	ld.w	r3,r2[-36]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r6,r2[-40]
+	ld.w	r2,r7[-36]
+	ld.w	r0,r2[-56]
+	ld.w	r9,r3[24]
+	ld.w	r5,r6[24]
+	ld.w	lr,r9[-56]
 	rsub	r0,r5
 	invalid
 	invalid
@@ -23902,6 +23902,25 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r5,r0[-36]
+	ld.w	sp,r3[-40]
+	ld.w	lr,r2[-40]
+	ld.w	r0,r10[8]
+	ld.w	r9,r11[-40]
+	ld.w	r8,r10[24]
+	invalid
+	invalid
+	invalid
+	ld.w	r2,r7[-36]
+	ld.w	r0,r10[8]
+	ld.w	r0,r7[-36]
+	ld.w	r9,r10[24]
+	ld.w	lr,r7[-40]
+	invalid
+	ld.w	r5,r1[28]
+	ld.w	r0,r10[8]
+	ld.w	lr,r0[-40]
+	ld.w	r10,r12[-64]
 	invalid
 	invalid
 	invalid
@@ -23918,40 +23937,35 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r5,r9[-40]
 	invalid
+	ld.w	r0,r3[8]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	pc,r9[-40]
+	ld.w	r4,r9[28]
 	mov	lr,FFFFFFD6
+	ld.w	lr,r7[-40]
+	ld.w	r0,r2[-56]
 	invalid
+	stdsp	sp[328],r9
 	invalid
+	ld.w	r3,r4[-36]
+	ld.w	r2,r0[-40]
+	ld.w	r5,r6[24]
+	ld.w	r0,r9[-56]
+	ld.w	r2,r3[-36]
+	ld.w	r5,r7[-36]
+	ld.w	r9,r8[24]
+	ld.w	r7,r7[24]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	pc,r7[24]
 	invalid
+	ld.w	pc,r9[24]
+	ld.w	r0,r10[-36]
 	invalid
 	invalid
 	invalid
@@ -23959,78 +23973,64 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r0,r7[8]
+	ld.w	r0,r0[-56]
+	ld.w	pc,r6[24]
+	ld.w	r7,r7[24]
 	invalid
+	ld.w	r3,r4[-36]
+	ld.w	r9,r10[24]
+	ld.w	r7,r7[24]
 	invalid
+	ld.w	pc,r2[24]
+	ld.w	r7,r7[8]
+	ld.w	r0,r10[8]
+	ld.w	r2,r8[28]
+	ld.w	lr,r4[-40]
+	ld.w	r0,r10[8]
+	ld.w	r2,r3[-36]
+	ld.w	r5,r7[-36]
+	ld.w	r0,r8[8]
+	ld.w	r1,r7[24]
+	ld.w	r5,r6[-40]
+	ld.w	r10,r9[-64]
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r5,r4[28]
+	ld.w	r1,r6[-40]
+	ld.w	sp,r7[8]
+	ld.w	r5,r9[24]
+	ld.w	r4,r0[-40]
+	ld.w	r2,r0[-40]
+	ld.w	r5,r6[24]
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r4,r4[-36]
+	ld.w	r0,r4[8]
 	invalid
 	invalid
+	ld.w	r2,r8[28]
+	ld.w	lr,r4[-40]
+	ld.w	r0,r10[8]
+	ld.w	r9,r9[-40]
+	ld.w	r5,sp[24]
+	ld.w	r0,r9[-56]
+	ld.w	lr,r4[-40]
 	invalid
+	ld.w	sp,r10[-40]
+	ld.w	lr,r0[-40]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r1,r2[-40]
+	ld.w	r1,r2[24]
+	ld.w	r12,r1[24]
+	ld.w	r0,r2[-56]
+	ld.w	pc,r3[24]
+	ld.w	sp,r9[24]
+	ld.w	r4,r0[-36]
 	rsub	r0,r5
 	invalid
 	invalid
@@ -24051,16 +24051,17 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
-	lddpc	r0,pc[200]
+	lddpc	r0,sp[200]
 	mov	r3,00000023
 	mov	sp,00000044
 	invalid
-	invalid
+	lddsp	r9,sp[456]
 	rsub	r0,r5
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r0,r4[-56]
 	invalid
 	invalid
 	invalid
@@ -24070,25 +24071,24 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r9,r6[24]
+	ld.w	r5,r5[-40]
+	ld.w	r9,r11[-40]
+	ld.w	r5,r9[-40]
 	invalid
+	ld.w	r5,r1[28]
+	ld.w	r0,r10[8]
+	ld.w	r3,r10[-36]
+	ld.w	r0,r2[-56]
+	ld.w	pc,r8[24]
+	ld.w	r5,r11[-40]
+	ld.w	r3,r9[28]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r0,r3[8]
 	mov	r0,00000013
 	mov	r0,00000003
 	invalid
-	invalid
+	ld.w	r4,r7[-36]
 	invalid
 	mov	r2,00000003
 	mov	r10,00000040
@@ -24098,6 +24098,19 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r5,r2[24]
+	ld.w	r5,r9[24]
+	ld.w	r5,r3[24]
+	ld.w	r5,r9[24]
+	ld.w	r3,r7[24]
+	ld.w	sp,r2[-56]
+	ld.w	pc,r1[-40]
+	ld.w	sp,r6[-40]
+	ld.w	lr,r0[-40]
+	ld.w	sp,r2[8]
+	ld.w	r9,r6[24]
+	ld.w	r5,r7[24]
+	rsub	r0,r5
 	invalid
 	invalid
 	invalid
@@ -24110,6 +24123,158 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	invalid
+	invalid
+	ld.w	pc,r3[24]
+	ld.w	r12,r6[24]
+	ld.w	r7,r7[-36]
+	invalid
+	ld.w	sp,r12[-40]
+	ld.w	pc,r1[24]
+	ld.w	r9,r6[24]
+	ld.w	r0,r1[-56]
+	ld.w	r9,r6[24]
+	ld.w	r11,r7[24]
+	ld.w	r0,r9[-56]
+	ld.w	r9,r6[24]
+	ld.w	r4,r9[-36]
+	ld.w	r4,r2[-40]
+	invalid
+	ld.w	r0,r7[8]
+	ld.w	r8,r10[24]
+	ld.w	r0,r2[-56]
+	ld.w	pc,r1[-40]
+	ld.w	sp,r6[-40]
+	ld.w	lr,r0[-40]
+	ld.w	r0,r2[8]
+	ld.w	r9,r6[24]
+	ld.w	r5,r7[24]
+	rsub	r0,r5
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	r2,r2[-36]
+	ld.w	r6,r2[-40]
+	ld.w	r2,r2[-36]
+	ld.w	lr,r2[-40]
+	ld.w	r5,r1[-40]
+	invalid
+	ld.w	sp,r7[-40]
+	ld.w	r1,r6[-40]
+	ld.w	r4,r7[24]
+	invalid
+	ld.w	lr,r4[-40]
+	ld.w	sp,r2[-56]
+	ld.w	r9,r9[-36]
+	ld.w	r12,r6[-40]
+	ld.w	lr,r4[-40]
+	ld.w	sp,r5[-56]
+	ld.w	pc,r10[24]
+	invalid
+	ld.w	r2,r4[-36]
+	rsub	r0,r5
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	pc,r3[24]
+	ld.w	r12,r6[24]
+	ld.w	r7,r7[-36]
+	invalid
+	ld.w	r3,r0[-40]
+	ld.w	r0,r4[8]
+	ld.w	pc,r1[-40]
+	ld.w	sp,r6[-40]
+	ld.w	lr,r0[-40]
+	ld.w	r0,r2[8]
+	ld.w	r9,r6[24]
+	ld.w	r5,r7[24]
+	invalid
+	ld.w	sp,r12[-40]
+	ld.w	pc,r1[24]
+	ld.w	r9,r6[24]
+	ld.w	r0,r1[-56]
+	ld.w	r9,r6[24]
+	ld.w	r11,r7[24]
+	rsub	r0,r5
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	r8,r10[24]
+	ld.w	r4,r0[-36]
+	invalid
+	ld.w	r9,r7[-40]
+	ld.w	r4,r7[28]
+	ld.w	r0,r9[-56]
+	ld.w	pc,r10[24]
+	invalid
+	invalid
+	ld.w	r2,r4[-36]
+	ld.w	r3,r2[-40]
+	ld.w	pc,r10[24]
+	ld.w	r9,r9[28]
+	rsub	r0,r5
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	r4,r4[-40]
+	ld.w	sp,r2[-52]
+	stdsp	sp[16],r1
+	stdsp	sp[276],r4
+	lddsp	r2,sp[340]
+	lddpc	r0,sp[392]
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	pc,r2[24]
+	invalid
+	ld.w	r4,r7[-36]
+	invalid
+	ld.w	r3,r4[-36]
+	ld.w	r0,r10[8]
+	ld.w	sp,r4[-40]
+	ld.w	r12,r8[24]
+	ld.w	r5,r4[-40]
+	ld.w	r0,r2[8]
+	ld.w	lr,r2[-40]
+	ld.w	r2,r10[28]
+	ld.w	r5,r4[-40]
+	ld.w	r0,r9[-56]
+	ld.w	r1,r6[-40]
+	ld.w	r3,r10[24]
+	ld.w	r9,r4[24]
+	ld.w	r7,r7[24]
+	invalid
+	ld.w	r5,r4[24]
+	ld.w	r12,r6[24]
+	invalid
+	lddsp	r4,sp[84]
+	stdsp	sp[272],r5
+	stdsp	sp[144],lr
 	rsub	r0,r5
 	invalid
 	invalid
@@ -24127,28 +24292,57 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r5,r11[24]
+	ld.w	r2,r9[28]
+	ld.w	r4,r4[-40]
+	ld.w	r5,r2[24]
+	ld.w	r0,r7[8]
+	ld.w	r9,r1[28]
+	invalid
+	ld.w	r0,r0[-56]
+	ld.w	r2,r7[-36]
+	invalid
+	lddsp	r9,sp[72]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	lr,r4[-40]
+	ld.w	r9,r2[24]
+	ld.w	r1,r1[-40]
+	ld.w	pc,r10[24]
+	ld.w	sp,r9[8]
+	ld.w	r4,r9[-36]
+	ld.w	r12,r12[-40]
+	ld.w	sp,r2[-52]
+	stdsp	sp[464],pc
+	stdsp	sp[144],r4
 	invalid
+	ld.w	r0,r0[-36]
+	ld.w	r5,r8[24]
+	ld.w	r4,r7[24]
 	invalid
+	ld.w	r4,r7[24]
+	ld.w	r3,r4[-40]
+	ld.w	r4,r0[-36]
+	ld.w	r2,r7[-36]
 	invalid
+	ld.w	r4,r4[-36]
+	ld.w	r0,r4[8]
+	ld.w	r4,r9[-36]
+	ld.w	r12,r12[-40]
+	ld.w	r0,r2[-56]
+	stdsp	sp[464],pc
+	stdsp	sp[144],r4
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r0,r7[-56]
+	ld.w	lr,r2[-40]
+	ld.w	r2,r10[28]
+	ld.w	r0,r12[-56]
+	ld.w	r1,r7[24]
+	ld.w	r5,r6[-40]
+	ld.w	r10,r9[-52]
 	rsub	r0,r5
 	invalid
 	invalid
@@ -24165,6 +24359,19 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	pc,r7[24]
+	ld.w	r5,r7[24]
+	invalid
+	ld.w	r5,r2[24]
+	ld.w	r1,r3[24]
+	ld.w	r12,r10[-40]
+	ld.w	r9,r10[8]
+	invalid
+	ld.w	r12,r9[-40]
+	ld.w	r3,r0[-36]
+	ld.w	r0,r4[8]
+	invalid
+	ld.w	r9,r8[8]
 	invalid
 	invalid
 	invalid
@@ -24173,42 +24380,109 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	r12,r4[-40]
+	ld.w	sp,r2[-56]
+	ld.w	r9,r10[28]
+	ld.w	r5,r8[24]
+	invalid
+	invalid
+	ld.w	r9,r3[24]
+	ld.w	r5,r6[24]
+	invalid
+	ld.w	r0,r12[-36]
+	ld.w	r9,r2[-56]
+	invalid
+	ld.w	r12,r1[-40]
+	ld.w	r3,r0[-36]
+	ld.w	r9,r9[-40]
+	ld.w	r9,r3[28]
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	lr,r4[-40]
+	ld.w	r4,r7[-40]
+	ld.w	r0,r2[-56]
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	r9,r9[24]
+	ld.w	r4,r7[28]
+	invalid
+	ld.w	r5,r4[24]
+	invalid
+	ld.w	r4,r7[24]
+	ld.w	r8,r2[-36]
+	invalid
+	ld.w	sp,r10[-40]
+	ld.w	r5,r1[24]
+	ld.w	r0,r9[8]
+	ld.w	r6,r7[-40]
+	invalid
+	ld.w	r3,r0[-40]
+	ld.w	r0,r4[8]
+	ld.w	r9,r3[24]
+	ld.w	r5,r6[24]
 	rsub	r0,r5
 	invalid
+	lddpc	r12,sp[72]
+	invalid
+	invalid
+	ld.w	lr,r3[-40]
+	ld.w	r2,r7[-36]
+	ld.w	sp,r2[-52]
+	stdsp	sp[16],r1
+	stdsp	sp[276],r4
+	lddsp	r2,sp[340]
+	lddpc	r0,sp[392]
 	invalid
 	invalid
 	invalid
+	ld.w	pc,r2[24]
 	invalid
+	ld.w	r4,r7[-36]
 	invalid
+	ld.w	r3,r4[-36]
+	ld.w	r0,r10[8]
+	ld.w	sp,r4[-40]
+	ld.w	r12,r8[24]
+	ld.w	r5,r4[-40]
+	ld.w	r0,r2[8]
+	ld.w	lr,r2[-40]
+	ld.w	r2,r10[28]
+	ld.w	r5,r4[-40]
+	ld.w	r0,r9[-56]
+	ld.w	r1,r6[-40]
+	ld.w	r3,r10[24]
+	ld.w	r9,r4[24]
+	ld.w	r7,r7[24]
 	invalid
+	ld.w	r5,r4[24]
+	ld.w	r12,r6[24]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r4,sp[84]
+	stdsp	sp[272],r5
+	stdsp	sp[144],lr
 	rsub	r0,r5
 	invalid
+	ld.w	r0,r5[-56]
 	invalid
 	invalid
 	invalid
@@ -24221,289 +24495,15 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r9,r6[24]
+	ld.w	r5,r5[-40]
 	invalid
 	invalid
+	ld.w	pc,r6[24]
+	ld.w	r11,r1[-40]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	rsub	r0,r5
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r0,pc[392]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	rsub	r0,r5
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	rsub	r0,r5
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	rsub	r0,r5
-	invalid
-	lddpc	r12,pc[72]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r0,pc[392]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	rsub	r0,r5
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r10,r4[-36]
+	ld.w	sp,r2[-52]
 	mov	r11,00000014
 	invalid
 	invalid
@@ -24521,93 +24521,55 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r5,r9[-40]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	lr,r7[-40]
+	ld.w	r0,r3[-56]
+	ld.w	r9,r6[24]
+	ld.w	r4,r9[-36]
+	ld.w	lr,r4[-40]
+	ld.w	r0,r3[-56]
+	ld.w	pc,r3[24]
+	ld.w	sp,r9[24]
+	ld.w	r4,r0[-36]
 	rsub	r0,r5
 	invalid
-	lddpc	r12,pc[264]
+	lddpc	r12,sp[264]
 	invalid
 	invalid
+	ld.w	r2,r2[-36]
+	ld.w	r6,r2[-40]
+	ld.w	r2,r2[-36]
+	ld.w	lr,r2[-40]
+	ld.w	r5,r1[-40]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r8,r11[-40]
+	ld.w	lr,r2[-40]
 	invalid
+	ld.w	pc,r4[24]
+	ld.w	r9,r11[-40]
+	ld.w	r7,r7[24]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	rsub	r0,r5
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r4[-40]
+	ld.w	r0,r2[-56]
+	ld.w	lr,r4[-40]
+	ld.w	pc,r3[24]
+	ld.w	sp,r9[24]
+	ld.w	r4,r0[-36]
+	ld.w	pc,r4[-40]
+	ld.w	r0,r7[8]
+	ld.w	pc,r3[24]
+	ld.w	r0,r9[8]
+	ld.w	r0,r0[-56]
+	ld.w	r9,r9[-36]
+	ld.w	r2,r6[-40]
+	ld.w	r12,r7[-40]
+	ld.w	r3,r4[-40]
 	rsub	r0,r5
 	invalid
 	invalid
@@ -24624,27 +24586,28 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r9,r6[24]
+	ld.w	r11,r7[24]
 	invalid
+	ld.w	r8,r9[-40]
+	ld.w	r7,r7[-36]
 	invalid
+	ld.w	r6,r7[24]
+	ld.w	r2,r7[-36]
+	ld.w	r1,r6[-40]
+	ld.w	r9,r10[24]
+	ld.w	lr,r7[-40]
 	invalid
+	ld.w	r2,r7[-36]
 	invalid
+	ld.w	r5,r4[24]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r4[-40]
+	ld.w	r0,r2[-56]
+	ld.w	r8,r10[24]
+	ld.w	r0,r2[-56]
+	ld.w	r9,r6[24]
+	ld.w	r11,r7[24]
 	rsub	r0,r5
 	invalid
 	invalid
@@ -24661,11 +24624,30 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r5,r9[24]
+	ld.w	r5,r3[24]
+	ld.w	r5,r9[24]
+	ld.w	r3,r7[24]
+	ld.w	r3,r2[-36]
 	invalid
+	ld.w	r4,r0[-36]
+	ld.w	r5,r4[24]
+	ld.w	r0,r9[8]
+	ld.w	r8,r10[24]
+	ld.w	lr,r0[-40]
 	invalid
+	ld.w	r2,r7[-36]
 	invalid
+	ld.w	r5,r4[24]
 	invalid
+	ld.w	lr,r4[-40]
+	ld.w	r0,r5[-56]
+	ld.w	r4,r4[-36]
+	ld.w	r5,r9[-40]
+	ld.w	r6,r6[24]
+	rsub	r0,r5
 	invalid
+	ld.w	r0,r6[-56]
 	invalid
 	invalid
 	invalid
@@ -24678,25 +24660,77 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r9,r3[24]
+	ld.w	r12,r6[24]
 	invalid
+	ld.w	r4,r4[-40]
+	ld.w	r8,r10[24]
 	invalid
+	ld.w	r4,r4[-36]
+	ld.w	r0,r4[8]
+	ld.w	r0,r0[-56]
+	ld.w	pc,r1[-40]
+	ld.w	sp,r6[-40]
+	ld.w	r0,r0[-56]
+	ld.w	r5,r9[-40]
+	ld.w	r1,r8[24]
+	ld.w	r1,r9[24]
+	ld.w	r5,r10[24]
+	ld.w	r0,r2[8]
+	ld.w	r9,r6[24]
+	ld.w	r4,r9[-36]
 	invalid
+	ld.w	r0,r3[8]
+	ld.w	lr,r2[-40]
+	ld.w	r2,r10[28]
+	ld.w	r5,r4[-40]
+	ld.w	r10,r9[-64]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r5,r7[28]
+	ld.w	r5,r6[-40]
+	ld.w	r9,r9[24]
+	ld.w	sp,r1[-56]
+	ld.w	r9,r10[-40]
+	ld.w	sp,r2[8]
+	ld.w	r9,r3[-40]
+	ld.w	r0,r2[8]
 	invalid
 	invalid
 	invalid
+	ld.w	r11,r4[-40]
+	ld.w	r0,r2[-56]
 	invalid
 	invalid
+	ld.w	r5,r1[28]
+	ld.w	r0,r10[8]
+	ld.w	r9,r6[24]
+	ld.w	r4,r9[-36]
 	invalid
+	ld.w	sp,r10[-40]
+	ld.w	r2,r2[-36]
+	ld.w	r3,r4[-40]
 	invalid
+	ld.w	r5,r9[-40]
+	ld.w	r0,r9[8]
+	ld.w	lr,r0[-40]
+	ld.w	r0,r2[8]
+	ld.w	r2,r3[-36]
+	ld.w	r5,r7[-36]
+	ld.w	r0,r8[8]
+	lddpc	r4,sp[80]
+	ld.w	r10,r9[-64]
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r9,r6[24]
+	ld.w	r5,r10[24]
+	ld.w	r1,r9[24]
+	ld.w	r0,r6[8]
 	invalid
 	invalid
 	invalid
@@ -24704,63 +24738,29 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r9,r9[24]
+	ld.w	r4,r7[28]
 	invalid
+	ld.w	r7,r0[-36]
 	invalid
+	ld.w	r4,r7[28]
+	ld.w	r9,r9[28]
 	invalid
+	ld.w	sp,r0[-40]
+	ld.w	r3,r2[-36]
 	invalid
+	ld.w	pc,r2[24]
+	ld.w	r7,r7[8]
+	ld.w	r0,r10[8]
+	ld.w	r2,r10[28]
+	ld.w	r1,r2[-40]
+	ld.w	r0,r10[8]
+	ld.w	lr,r2[-56]
+	ld.w	lr,r3[-56]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r4,pc[80]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	lr,r7[-40]
+	ld.w	r2,r10[28]
+	ld.w	r12,r7[-40]
 	rsub	r0,r5
 	invalid
 	invalid
@@ -24777,7 +24777,16 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r8,r1[-40]
+	ld.w	r2,r0[-36]
+	ld.w	r3,r0[-40]
+	ld.w	r5,r10[24]
+	ld.w	r3,r9[28]
 	invalid
+	ld.w	r5,r8[24]
+	ld.w	r9,r1[-40]
+	ld.w	r12,r0[-40]
+	ld.w	r9,r6[28]
 	invalid
 	invalid
 	invalid
@@ -24794,14 +24803,42 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r11,r4[-40]
+	ld.w	r0,r2[-56]
 	invalid
 	invalid
+	ld.w	r5,r1[28]
+	ld.w	r0,r10[8]
+	ld.w	pc,r2[24]
 	invalid
+	ld.w	r4,r7[-36]
 	invalid
+	ld.w	r3,r4[-36]
+	ld.w	r0,r10[8]
+	ld.w	r2,r3[-36]
+	ld.w	r5,r7[-36]
+	ld.w	r0,r8[8]
+	ld.w	lr,r4[-40]
+	ld.w	pc,r3[24]
+	ld.w	sp,r9[24]
+	ld.w	r4,r0[-36]
+	ld.w	pc,r4[-40]
+	ld.w	r10,r7[0]
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	lr,r4[-40]
+	ld.w	r9,r2[24]
+	ld.w	r1,r1[-40]
+	ld.w	pc,r10[24]
+	ld.w	sp,r9[8]
+	ld.w	r4,r9[-36]
+	ld.w	r12,r12[-40]
+	ld.w	sp,r2[-52]
+	ld.w	r12,r9[-40]
+	ld.w	r3,r0[-36]
+	ld.w	r10,r4[0]
 	invalid
 	invalid
 	invalid
@@ -24817,96 +24854,95 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r0,r8[28]
+	ld.w	lr,r2[-40]
+	ld.w	r0,r2[8]
 	invalid
+	ld.w	lr,r4[-40]
+	ld.w	r9,r2[24]
+	ld.w	r1,r1[-40]
+	ld.w	pc,r10[24]
+	ld.w	r0,r9[8]
+	ld.w	pc,r10[24]
 	invalid
+	ld.w	r2,r4[-36]
+	ld.w	r3,r2[-40]
+	ld.w	pc,r10[24]
+	ld.w	r9,r9[24]
+	ld.w	r3,r2[-36]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r9,r4[24]
+	ld.w	r5,r2[24]
 	invalid
+	ld.w	lr,r7[-40]
+	ld.w	r2,r10[28]
+	ld.w	r12,r7[-40]
 	invalid
+	ld.w	r1,r4[24]
+	ld.w	r3,r9[28]
 	invalid
 	invalid
+	ld.w	r9,r9[24]
+	ld.w	r4,r7[28]
 	invalid
 	invalid
+	ld.w	r3,r7[28]
+	ld.w	r5,r10[24]
+	ld.w	r4,r0[-40]
 	invalid
+	ld.w	r0,r3[8]
+	ld.w	pc,r7[24]
+	ld.w	r0,r7[8]
+	ld.w	r2,r3[-36]
+	ld.w	r0,r0[-36]
+	ld.w	r9,r4[24]
+	ld.w	r0,r1[-56]
+	ld.w	r8,r1[-40]
+	ld.w	r2,r0[-36]
+	ld.w	r3,r0[-40]
+	ld.w	r5,r10[24]
+	ld.w	r3,r9[28]
+	rsub	r0,r5
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	pc,r4[24]
+	ld.w	sp,r11[-56]
+	ld.w	pc,r1[-40]
+	ld.w	r4,r7[28]
+	ld.w	pc,r9[24]
+	ld.w	sp,r6[8]
+	ld.w	r8,r1[-40]
+	ld.w	r2,r0[-36]
+	ld.w	r0,r9[-56]
 	invalid
+	ld.w	r8,r9[-40]
+	ld.w	r7,r7[-36]
 	invalid
+	ld.w	lr,r7[-40]
 	invalid
+	ld.w	r1,r9[24]
+	ld.w	r8,r8[24]
+	ld.w	r3,r4[-40]
 	invalid
+	ld.w	r1,r4[24]
+	ld.w	r1,r9[24]
+	ld.w	r4,r1[-36]
+	ld.w	r2,r2[-36]
+	ld.w	r0,r9[-56]
+	ld.w	r3,r0[-36]
 	invalid
+	ld.w	r0,r9[-56]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r6,r2[-40]
+	ld.w	r5,r0[-36]
+	ld.w	r4,r6[28]
 	rsub	r0,r5
 	invalid
 	invalid
@@ -24922,133 +24958,97 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	lr,r10[-40]
+	ld.w	r5,r6[24]
+	ld.w	r3,r9[-36]
+	invalid
+	ld.w	pc,r9[24]
+	ld.w	r2,r3[-36]
+	ld.w	sp,r0[-40]
+	invalid
+	ld.w	r0,r9[-56]
+	ld.w	r12,r0[24]
+	ld.w	r7,r9[-56]
+	invalid
+	ld.w	r4,r7[24]
+	invalid
+	ld.w	r4,r10[-36]
+	ld.w	r5,r8[28]
+	ld.w	r0,r10[8]
+	ld.w	r3,r4[-36]
+	invalid
+	invalid
+	ld.w	r2,r2[-36]
+	ld.w	r9,r6[-40]
+	ld.w	r1,r7[24]
+	ld.w	r9,r6[8]
+	rsub	r0,r5
+	invalid
+	stdsp	sp[72],r12
+	invalid
+	invalid
+	ld.w	pc,r10[-40]
+	ld.w	r5,r10[24]
+	invalid
+	ld.w	sp,r0[-40]
+	ld.w	r0,r2[-56]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	lr,r2[-40]
+	ld.w	r12,r1[-40]
+	ld.w	r3,r7[-36]
+	ld.w	r0,r2[-56]
+	ld.w	lr,r2[-40]
+	ld.w	r2,r10[28]
+	ld.w	r0,r12[-56]
+	ld.w	r1,r7[24]
+	ld.w	r5,r6[-40]
+	ld.w	r0,r9[-56]
+	ld.w	lr,r4[-40]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r5,r7[-36]
+	ld.w	r12,r1[24]
+	ld.w	r0,r2[-56]
+	ld.w	r5,r8[-36]
+	ld.w	r4,r7[-36]
+	ld.w	r3,r2[-36]
 	rsub	r0,r5
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	rsub	r0,r5
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	rsub	r0,r5
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	pc,r10[-40]
+	ld.w	r9,r10[24]
+	ld.w	r7,r7[24]
+	invalid
+	ld.w	r9,r10[28]
+	ld.w	r5,r6[24]
 	mov	r7,FFFFFFD5
-	lddpc	r2,pc[468]
+	lddpc	r2,sp[468]
+	lddsp	r0,sp[264]
 	invalid
+	ld.w	r3,r10[-36]
+	ld.w	r0,r2[-56]
+	ld.w	r5,r8[-36]
+	ld.w	r4,r7[-36]
+	ld.w	lr,r4[-40]
+	ld.w	r0,r3[-56]
+	ld.w	r4,r9[-36]
+	ld.w	r12,r12[-40]
+	ld.w	r0,r2[-56]
+	stdsp	sp[464],pc
+	stdsp	sp[144],r4
 	invalid
+	ld.w	r2,r7[-36]
 	invalid
+	ld.w	r4,r7[28]
+	ld.w	r9,r9[28]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	sp,r0[-40]
+	ld.w	r3,r2[-36]
 	mov	r10,FFFFFFA0
 	invalid
 	invalid
@@ -25066,6 +25066,128 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r4,r4[-36]
+	ld.w	r2,r2[-36]
+	ld.w	r12,r0[-40]
+	invalid
+	ld.w	pc,r6[24]
+	ld.w	r1,r1[-40]
+	ld.w	r5,r6[24]
+	invalid
+	ld.w	r8,r9[-40]
+	ld.w	r12,r2[-40]
+	ld.w	r12,r6[8]
+	invalid
+	ld.w	r5,r4[24]
+	ld.w	r12,r6[24]
+	invalid
+	ld.w	r7,r6[28]
+	ld.w	r9,r0[-36]
+	ld.w	r12,r9[-56]
+	invalid
+	invalid
+	ld.w	r3,r2[-36]
+	ld.w	r1,r1[-40]
+	ld.w	r5,r8[24]
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	r5,r9[24]
+	ld.w	r5,r11[24]
+	ld.w	r3,r9[28]
+	ld.w	r0,r2[-56]
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	r6,r2[-36]
+	ld.w	r2,r2[-36]
+	ld.w	r5,r9[-40]
+	invalid
+	ld.w	r4,r9[24]
+	ld.w	r2,r2[-36]
+	invalid
+	ld.w	r9,r4[24]
+	ld.w	r5,r6[24]
+	invalid
+	ld.w	r2,r7[-36]
+	ld.w	r9,r10[24]
+	ld.w	r7,r7[24]
+	rsub	r0,r5
+	invalid
+	stdsp	sp[136],r12
+	invalid
+	invalid
+	ld.w	r3,r2[-40]
+	ld.w	r2,r10[-36]
+	ld.w	r9,r9[-40]
+	ld.w	r5,r11[24]
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	r9,r6[24]
+	ld.w	r4,r9[-36]
+	invalid
+	ld.w	r2,r10[-40]
+	ld.w	r9,r2[24]
+	ld.w	r5,r9[24]
+	ld.w	r4,r1[-36]
+	ld.w	r2,r7[-36]
+	ld.w	r5,r4[-40]
+	ld.w	r0,r9[-56]
+	ld.w	r5,r9[24]
+	ld.w	r5,r1[-36]
+	ld.w	r3,r9[28]
+	ld.w	r6,r4[-36]
+	ld.w	r12,r2[-40]
+	ld.w	r10,r12[-64]
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	r9,r9[-40]
+	ld.w	r5,sp[24]
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	r9,r9[24]
+	ld.w	r4,r7[28]
+	invalid
+	ld.w	r5,r4[24]
+	invalid
+	ld.w	r12,r6[24]
+	ld.w	r3,r7[-40]
+	ld.w	r4,r0[-36]
+	ld.w	r4,r2[-40]
+	invalid
+	ld.w	r10,r4[-36]
+	ld.w	r0,r2[-56]
+	ld.w	r6,r7[-40]
+	invalid
+	ld.w	r3,r0[-40]
+	ld.w	r0,r4[8]
+	ld.w	r9,r3[24]
+	ld.w	r5,r6[24]
+	invalid
+	ld.w	lr,r4[-40]
+	invalid
+	ld.w	pc,r6[24]
+	ld.w	r11,r1[-40]
+	ld.w	r10,r9[-64]
 	invalid
 	invalid
 	invalid
@@ -25083,170 +25205,48 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r2,r7[-36]
+	ld.w	r0,r10[8]
+	ld.w	r9,r1[28]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r4[-40]
+	ld.w	r0,r2[-56]
+	ld.w	r9,r9[-40]
+	ld.w	r5,sp[24]
 	rsub	r0,r5
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r2,r7[-36]
+	ld.w	sp,r10[12]
+	stdsp	sp[464],pc
+	stdsp	sp[144],r4
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	pc,r9[-40]
+	ld.w	r4,r9[28]
 	invalid
+	ld.w	r0,r12[-56]
+	stdsp	sp[464],pc
+	stdsp	sp[144],r4
 	invalid
+	ld.w	r3,r7[28]
+	ld.w	r5,r10[24]
+	ld.w	r4,r0[-40]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	rsub	r0,r5
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r0,r3[8]
+	ld.w	r1,r7[24]
+	ld.w	r5,r6[-40]
 	mov	r0,FFFFFFA2
+	ld.w	pc,r7[24]
+	ld.w	r5,r7[24]
 	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[328],r12
 	rsub	r0,r5
 	invalid
 	invalid
@@ -25262,27 +25262,67 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r8,r2[-36]
+	ld.w	r5,r10[24]
+	ld.w	r3,r7[28]
+	ld.w	pc,r4[-40]
+	ld.w	r0,r7[8]
+	invalid
+	invalid
+	ld.w	r9,r9[-40]
+	ld.w	r5,sp[24]
+	invalid
+	stdsp	sp[200],r12
+	invalid
+	ld.w	sp,r4[-40]
+	ld.w	r0,r2[-56]
+	invalid
+	invalid
+	ld.w	r5,r11[24]
+	ld.w	r3,r9[28]
+	ld.w	pc,r4[-40]
+	ld.w	r0,r7[8]
+	invalid
+	rsub	r0,r5
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	sp,r4[-40]
+	ld.w	sp,r2[-52]
+	stdsp	sp[464],pc
+	stdsp	sp[144],r4
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r9,r11[-40]
+	ld.w	r8,r10[24]
 	invalid
+	ld.w	r12,r6[8]
 	invalid
+	ld.w	pc,r4[24]
+	ld.w	r0,r11[-56]
+	ld.w	r9,r10[24]
+	ld.w	r5,r6[-40]
 	invalid
+	ld.w	r0,r9[-56]
+	stdsp	sp[464],pc
+	stdsp	sp[144],r4
 	invalid
+	ld.w	r3,r7[28]
+	ld.w	r5,r10[24]
+	ld.w	r4,r0[-40]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r0,r3[8]
+	ld.w	pc,r6[-40]
+	ld.w	r9,r2[24]
+	ld.w	r9,r3[24]
+	ld.w	r1,r1[-40]
+	ld.w	r9,r10[24]
+	ld.w	lr,r7[-40]
 	rsub	r0,r5
 	invalid
 	invalid
@@ -25298,68 +25338,28 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	rsub	r0,r5
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r10[24]
+	ld.w	r5,r6[-40]
 	mov	r0,FFFFFFA2
+	ld.w	r4,r0[-36]
+	ld.w	sp,r4[-40]
+	ld.w	r0,r2[-56]
 	invalid
 	invalid
+	ld.w	r3,r0[-40]
+	ld.w	r5,r1[-40]
+	ld.w	r3,r9[-36]
 	invalid
+	ld.w	r12,r10[-56]
 	invalid
+	ld.w	r5,r9[-40]
 	invalid
+	ld.w	r12,r10[-56]
 	invalid
+	ld.w	r9,r10[24]
+	ld.w	r5,r6[-40]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r1[-56]
 	rsub	r0,r5
 	invalid
 	invalid
@@ -25375,28 +25375,28 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r2,r7[-36]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r1,r10[24]
+	ld.w	r5,r10[28]
+	ld.w	r0,r9[-56]
 	invalid
 	mov	r0,FFFFFFB2
+	ld.w	r3,r10[-36]
+	ld.w	r0,r2[-56]
+	ld.w	r0,r9[-36]
+	ld.w	r3,r2[-40]
+	ld.w	r6,r4[-40]
+	ld.w	r5,r4[-40]
+	ld.w	r0,r2[8]
+	ld.w	r9,r10[24]
+	ld.w	r5,r6[-40]
 	invalid
+	ld.w	r0,r9[-56]
+	ld.w	pc,r9[-40]
+	ld.w	r4,r9[28]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r2[-36]
 	rsub	r0,r5
 	invalid
 	invalid
@@ -25412,47 +25412,47 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r6,r4[-40]
+	invalid
+	invalid
+	ld.w	r2,r7[-36]
+	ld.w	sp,r10[12]
+	ld.w	r9,r10[24]
+	ld.w	r5,r6[-40]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r9,r10[24]
+	ld.w	r5,r6[-40]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r10[28]
+	ld.w	r5,r6[24]
 	mov	r3,FFFFFFD5
-	invalid
-	lddpc	r5,pc[272]
-	invalid
-	invalid
+	stdsp	sp[276],r9
+	lddpc	r5,sp[272]
 	invalid
 	invalid
 	invalid
+	ld.w	r4,r4[-36]
+	ld.w	r0,r4[8]
 	invalid
 	invalid
+	ld.w	r8,r9[-40]
+	ld.w	r7,r7[-36]
 	invalid
+	ld.w	sp,r4[-40]
+	ld.w	r3,r2[-36]
 	invalid
+	ld.w	r9,r9[-40]
+	ld.w	r7,r7[24]
 	invalid
+	ld.w	r9,r10[28]
+	ld.w	r5,r6[24]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r5,pc[272]
+	stdsp	sp[276],r9
+	lddpc	r5,sp[272]
 	mov	r10,FFFFFFA0
 	invalid
 	invalid
@@ -25469,26 +25469,26 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r12,r10[-40]
+	ld.w	sp,r6[8]
+	ld.w	r3,r4[-36]
+	ld.w	r12,r7[-56]
+	invalid
+	ld.w	lr,r7[-40]
+	ld.w	sp,r3[-56]
+	ld.w	r3,r4[-36]
+	ld.w	r12,r7[-56]
+	invalid
+	ld.w	pc,r9[-40]
+	invalid
+	ld.w	pc,r6[24]
+	ld.w	r1,r1[-40]
+	ld.w	r5,r6[24]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r2,pc[468]
-	lddpc	r1,pc[336]
-	invalid
+	lddpc	r2,sp[468]
+	lddpc	r1,sp[336]
+	stdsp	sp[264],lr
 	rsub	r0,r5
 	invalid
 	invalid
@@ -25504,6 +25504,30 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	lddsp	pc,sp[400]
+	stdsp	sp[144],sp
+	lddsp	r4,sp[84]
+	invalid
+	ld.w	r0,r9[-56]
+	ld.w	lr,r4[-40]
+	ld.w	r5,r10[24]
+	ld.w	r0,r9[28]
+	ld.w	r5,r9[24]
+	ld.w	r5,r10[24]
+	ld.w	r0,r2[8]
+	ld.w	r9,r6[24]
+	ld.w	r5,r5[-40]
+	invalid
+	ld.w	r1,r2[24]
+	ld.w	r5,r10[24]
+	invalid
+	invalid
+	ld.w	r0,r3[8]
+	lddsp	pc,sp[400]
+	stdsp	sp[144],sp
+	lddsp	r4,sp[84]
+	invalid
+	ld.w	r10,r9[-64]
 	invalid
 	invalid
 	invalid
@@ -25519,51 +25543,27 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r2,pc[468]
-	lddpc	r1,pc[336]
-	invalid
+	lddpc	r2,sp[468]
+	lddpc	r1,sp[336]
+	stdsp	sp[268],r1
 	mov	lr,FFFFFFC6
-	invalid
-	invalid
-	invalid
+	ld.w	r7,r2[-36]
+	ld.w	r9,r6[24]
+	ld.w	r5,r7[24]
 	mov	r6,FFFFFFE4
-	lddpc	r2,pc[468]
-	lddpc	r1,pc[336]
+	lddpc	r2,sp[468]
+	lddpc	r1,sp[336]
+	stdsp	sp[268],r2
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	pc,sp[400]
+	stdsp	sp[144],sp
+	lddsp	r4,sp[84]
 	mov	r0,00000012
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r0,r0[-36]
+	ld.w	r12,r8[24]
+	ld.w	r5,r4[-40]
+	ld.w	r0,r9[-56]
+	ld.w	pc,r10[24]
 	rsub	r0,r5
 	invalid
 	invalid
@@ -25579,28 +25579,28 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	pc,r7[24]
+	ld.w	sp,r7[8]
+	ld.w	r5,r9[24]
+	ld.w	r5,r1[-40]
+	ld.w	r4,r7[28]
 	invalid
+	ld.w	r12,r4[-40]
+	ld.w	r3,r2[-36]
 	invalid
+	ld.w	r4,r7[24]
 	invalid
+	lddpc	r2,sp[468]
+	lddpc	r1,sp[336]
+	stdsp	sp[268],r2
 	invalid
+	ld.w	r0,r7[-56]
+	ld.w	r5,r9[24]
+	ld.w	r5,r1[-40]
+	ld.w	r4,r7[28]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r2,pc[468]
-	lddpc	r1,pc[336]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r4[-40]
+	ld.w	r3,r2[-36]
 	mov	r10,FFFFFFB0
 	invalid
 	invalid
@@ -25617,26 +25617,26 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r0,r3[8]
+	stdsp	sp[212],r4
+	cp.w	r12,00000014
+	lddsp	r0,sp[328]
+	ld.w	r3,r4[-36]
+	invalid
+	ld.w	r5,r9[24]
+	ld.w	r9,r3[24]
+	ld.w	r5,r12[24]
+	ld.w	r0,r2[8]
+	ld.w	r9,r11[-40]
+	ld.w	r8,r10[24]
+	invalid
+	ld.w	pc,r8[24]
+	ld.w	r9,r9[-40]
+	ld.w	sp,r12[8]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r5,pc[272]
+	stdsp	sp[276],r9
+	lddpc	r5,sp[272]
 	rsub	r0,r5
 	invalid
 	invalid
@@ -25652,6 +25652,27 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r1,r10[24]
+	ld.w	r5,r5[-40]
+	ld.w	r0,r9[-56]
+	ld.w	r6,r2[-40]
+	ld.w	r5,r3[24]
+	ld.w	r4,r1[-36]
+	invalid
+	ld.w	r12,r7[24]
+	ld.w	r0,r12[-56]
+	ld.w	r5,r7[-36]
+	ld.w	r3,r10[28]
+	ld.w	r4,r4[-40]
+	ld.w	r0,r2[-56]
+	ld.w	r8,r10[24]
+	ld.w	r0,r2[-56]
+	stdsp	sp[16],pc
+	stdsp	sp[208],r9
+	cp.w	r0,00000002
+	ld.w	pc,r6[24]
+	ld.w	r1,r1[-40]
+	ld.w	r5,r6[24]
 	invalid
 	invalid
 	invalid
@@ -25668,57 +25689,53 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r2,r7[-36]
+	ld.w	r0,r10[8]
+	ld.w	r9,r1[28]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r4,r7[-40]
+	ld.w	r6,r4[-40]
+	ld.w	r3,r4[-40]
+	ld.w	r4,r0[-36]
+	ld.w	pc,r4[-40]
+	ld.w	r0,r7[8]
+	ld.w	r9,r10[24]
+	ld.w	r5,r6[-40]
 	rsub	r0,r5
 	invalid
+	stdsp	sp[264],r12
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r2,r0[-40]
+	ld.w	r9,r9[-40]
+	ld.w	r5,sp[24]
 	mov	r3,FFFFFFD4
-	lddpc	r12,pc[464]
+	lddpc	r12,sp[464]
+	stdsp	sp[200],r0
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r3,r0[-36]
+	ld.w	r5,r9[-36]
+	ld.w	r5,r6[-40]
 	invalid
+	ld.w	r2,r0[-40]
 	invalid
+	ld.w	pc,r10[24]
+	ld.w	r3,r8[28]
 	invalid
+	ld.w	r0,r10[8]
+	ld.w	r1,r2[-40]
+	ld.w	r8,r1[-40]
 	invalid
+	lddpc	r12,sp[464]
+	stdsp	sp[200],r0
+	ld.w	lr,r4[-40]
+	ld.w	r4,r9[-36]
+	ld.w	r1,r2[-40]
+	ld.w	r0,r2[8]
+	ld.w	r6,r7[-40]
 	invalid
 	invalid
 	invalid
@@ -25729,7 +25746,6 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
-	lddpc	r12,pc[464]
 	invalid
 	invalid
 	invalid
@@ -25737,11 +25753,26 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r4,r4[-36]
+	ld.w	r0,r4[8]
 	invalid
+	ld.w	r10,r10[12]
 	invalid
+	ld.w	r2,r7[-36]
+	ld.w	r0,r10[8]
+	ld.w	r9,r1[28]
 	invalid
+	ld.w	lr,r0[-40]
+	ld.w	r0,r2[8]
+	ld.w	r8,r9[-40]
+	ld.w	r7,r7[-36]
 	invalid
+	ld.w	r3,r0[-40]
+	ld.w	r5,r1[-40]
+	ld.w	r3,r9[-36]
 	invalid
+	ld.w	sp,r4[-40]
+	ld.w	r10,r2[-64]
 	invalid
 	invalid
 	invalid
@@ -25758,41 +25789,27 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r4,r4[-36]
+	ld.w	r0,r4[8]
 	invalid
 	mov	r0,FFFFFFA2
+	ld.w	r8,r9[-40]
+	ld.w	r7,r7[-36]
+	invalid
+	ld.w	r3,r1[-40]
+	ld.w	r3,r2[-36]
+	ld.w	r0,r9[-56]
+	ld.w	r9,r10[24]
+	ld.w	r5,r6[-40]
+	invalid
+	ld.w	r4,r7[24]
+	invalid
+	ld.w	r2,r7[-36]
+	ld.w	r0,r10[8]
+	ld.w	r9,r1[28]
+	invalid
+	ld.w	sp,r0[-40]
+	ld.w	r10,r2[-64]
 	invalid
 	invalid
 	invalid
@@ -25809,28 +25826,21 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r10[24]
+	ld.w	r2,r2[-36]
+	ld.w	r9,r11[-40]
+	ld.w	r5,r9[-40]
 	mov	r0,FFFFFFA2
+	ld.w	pc,r9[-40]
+	ld.w	r4,r9[28]
+	invalid
+	ld.w	r0,r12[-56]
+	ld.w	r3,r0[-40]
+	ld.w	r5,r1[-40]
+	ld.w	r3,r9[-36]
+	invalid
+	ld.w	sp,r4[-40]
+	ld.w	r10,r2[-64]
 	invalid
 	invalid
 	invalid
@@ -25846,24 +25856,28 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r0,r7[-56]
+	ld.w	pc,r7[24]
+	ld.w	r0,r10[8]
+	ld.w	pc,r9[-40]
+	ld.w	r4,r9[28]
 	mov	r0,FFFFFFB2
+	ld.w	r9,r6[24]
+	ld.w	r4,r9[-36]
 	invalid
+	ld.w	r4,r7[28]
+	ld.w	r9,r9[24]
+	ld.w	r3,r2[-36]
 	invalid
+	ld.w	r0,r7[8]
+	ld.w	r9,r2[24]
+	ld.w	r5,r9[24]
+	ld.w	r4,r1[-36]
+	ld.w	r2,r7[-36]
+	ld.w	r0,r12[-56]
+	ld.w	r2,r7[-36]
+	ld.w	r5,r2[24]
+	ld.w	r10,r9[0]
 	invalid
 	invalid
 	invalid
@@ -25879,22 +25893,52 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r2,r7[-36]
+	ld.w	r0,r10[8]
+	ld.w	r9,r1[28]
 	invalid
+	ld.w	r2,r2[-36]
+	ld.w	r9,r9[-40]
+	ld.w	lr,r7[-40]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r9,r11[-40]
+	ld.w	r4,r2[28]
+	ld.w	sp,r4[12]
+	lddsp	pc,sp[208]
+	lddpc	r3,sp[276]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r3,r9[-36]
+	ld.w	sp,r10[-40]
+	ld.w	r0,r2[-56]
+	ld.w	r3,r9[-40]
+	ld.w	r5,r9[24]
+	ld.w	lr,r2[-40]
 	invalid
+	ld.w	r4,r4[-40]
+	ld.w	r8,r10[24]
 	invalid
+	ld.w	r3,r7[28]
+	ld.w	r5,r10[24]
+	ld.w	r4,r0[-40]
 	invalid
+	ld.w	r0,r3[8]
+	ld.w	r5,r1[-36]
+	ld.w	r2,r9[28]
+	ld.w	lr,r2[-40]
+	ld.w	r0,r10[8]
+	ld.w	r1,r11[24]
+	ld.w	r5,r6[28]
+	ld.w	r10,r2[-64]
 	invalid
 	invalid
 	invalid
@@ -25910,73 +25954,30 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
-	lddpc	r3,pc[276]
+	ld.w	r3,r4[-36]
+	ld.w	r0,r10[8]
+	ld.w	lr,r2[-40]
+	ld.w	r2,r10[28]
+	ld.w	r5,r4[-40]
+	ld.w	r0,r9[-56]
+	ld.w	r9,r1[28]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	lr,r4[-40]
+	ld.w	r3,r2[-36]
+	invalid
+	ld.w	r3,r7[28]
+	ld.w	r5,r10[24]
+	ld.w	r4,r0[-40]
+	invalid
+	ld.w	r0,r3[8]
+	ld.w	r9,r1[28]
+	invalid
+	ld.w	r12,r7[-40]
+	ld.w	sp,r10[-40]
+	ld.w	r3,r7[28]
 	rsub	r0,r5
 	invalid
+	cp.w	r0,00000002
 	invalid
 	invalid
 	invalid
@@ -25989,30 +25990,33 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	pc,r9[-40]
+	ld.w	r4,r9[28]
 	invalid
+	ld.w	r0,r6[28]
+	ld.w	r1,r4[24]
+	ld.w	r5,r1[24]
+	ld.w	r9,r10[24]
+	ld.w	r1,r1[-40]
+	ld.w	r12,r6[24]
+	ld.w	r0,r12[-56]
+	ld.w	r9,r1[28]
 	invalid
+	ld.w	r4,r7[28]
+	ld.w	r9,r9[28]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r4,r12[28]
+	ld.w	lr,r2[-40]
+	ld.w	r9,r9[-40]
+	ld.w	lr,r7[-40]
 	rsub	r0,r5
 	invalid
+	cp.w	r12,FFFFFFE2
 	invalid
 	invalid
+	ld.w	lr,r7[-40]
+	ld.w	r5,r10[24]
+	ld.w	r4,r12[28]
 	invalid
 	invalid
 	invalid
@@ -26020,9 +26024,30 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r2,r8[28]
+	ld.w	lr,r4[-40]
+	ld.w	r0,r10[8]
+	ld.w	lr,r0[-40]
+	ld.w	r0,r12[-56]
+	stdsp	sp[208],r5
+	lddpc	r9,sp[280]
+	ld.w	r5,r7[28]
+	ld.w	r0,r12[8]
+	ld.w	r5,r9[-40]
+	ld.w	r5,r1[-36]
+	ld.w	r9,r9[24]
+	ld.w	r9,r10[28]
 	invalid
+	ld.w	lr,r7[-40]
+	ld.w	r5,r10[24]
+	ld.w	r4,r12[28]
 	invalid
+	ld.w	r0,r3[8]
+	ld.w	r1,r2[-40]
+	ld.w	r8,r1[-40]
 	invalid
+	ld.w	r12,r4[-40]
+	ld.w	r10,r2[-64]
 	invalid
 	invalid
 	invalid
@@ -26030,7 +26055,6 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
-	lddpc	r9,pc[280]
 	invalid
 	invalid
 	invalid
@@ -26039,655 +26063,647 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r3,r4[-36]
+	ld.w	r0,r10[8]
+	ld.w	lr,r7[-40]
+	ld.w	r0,r2[-56]
+	ld.w	r9,r3[24]
+	ld.w	r5,r6[24]
 	invalid
+	ld.w	r2,r2[-36]
 	invalid
+	ld.w	lr,r4[-40]
+	ld.w	r10,r2[-64]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r5,r4[24]
+	ld.w	r0,r6[28]
 	invalid
 	invalid
 	invalid
+	ld.w	r3,r4[-36]
+	ld.w	r12,r8[24]
+	ld.w	r9,r0[-36]
 	invalid
+	ld.w	r9,r4[24]
+	ld.w	r0,r9[-56]
+	ld.w	r5,r4[24]
+	ld.w	r0,r6[28]
 	invalid
+	ld.w	r4,r7[24]
 	invalid
+	ld.w	r9,r12[24]
+	ld.w	r10,r10[0]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r5,r11[24]
+	ld.w	r3,r9[28]
+	ld.w	pc,r4[-40]
+	ld.w	r0,r7[8]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r4,r10[-36]
+	ld.w	r5,r8[28]
+	ld.w	r0,r10[8]
+	ld.w	r5,r11[24]
+	ld.w	r3,r9[28]
+	ld.w	pc,r4[-40]
+	ld.w	r0,r7[8]
+	ld.w	lr,r4[-40]
+	ld.w	pc,r3[24]
+	ld.w	sp,r9[24]
+	ld.w	r4,r0[-36]
+	ld.w	pc,r4[-40]
+	ld.w	r0,r7[8]
+	ld.w	lr,r0[-40]
+	ld.w	r0,r2[8]
+	ld.w	r8,r2[-36]
+	ld.w	r4,r4[-36]
 	invalid
 	invalid
 	eor	r3,r5
-	lddpc	r10,pc[84]
+	lddpc	r10,sp[84]
+	lddsp	r0,sp[328]
+	ld.w	r1,r6[-40]
+	ld.w	r0,r12[-56]
+	ld.w	r5,r1[24]
 	invalid
+	ld.w	r2,r7[-36]
 	invalid
+	ld.w	r9,r0[-36]
 	invalid
+	ld.w	r0,r2[-56]
+	ld.w	lr,r0[-40]
 	invalid
+	ld.w	r4,r7[28]
+	ld.w	r7,r2[-40]
+	ld.w	r2,r2[-36]
 	invalid
+	ld.w	r4,r8[28]
+	ld.w	pc,r4[-40]
+	ld.w	r1,r7[24]
+	ld.w	r12,r6[24]
+	ld.w	r0,r12[-56]
+	ld.w	pc,r3[24]
+	ld.w	r12,r6[24]
+	ld.w	r7,r7[-36]
+	ld.w	r4,r2[-40]
 	invalid
+	ld.w	r9,r12[-56]
 	invalid
+	ld.w	r5,r7[24]
 	invalid
+	ld.w	r0,r3[8]
+	ld.w	pc,r3[24]
+	ld.w	r12,r6[24]
+	ld.w	r7,r7[-36]
+	ld.w	lr,r4[-40]
+	ld.w	r10,r3[-52]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r0,sp[136]
 	mov	r0,00000013
 	mov	r0,00000003
 	invalid
-	lddpc	r0,pc[200]
+	lddpc	r0,sp[200]
 	mov	r0,00000013
 	mov	r4,00000023
 	invalid
-	lddpc	r2,pc[336]
+	lddpc	r2,sp[336]
 	invalid
 	mov	r0,00000003
 	mov	r10,00000002
 	mov	r0,00000013
 	mov	r0,00000003
 	invalid
-	lddpc	r0,pc[328]
+	lddpc	r0,sp[328]
 	mov	r0,00000013
 	mov	r4,00000023
 	invalid
 	mov	r2,00000003
 	mov	r12,00000042
 	invalid
+	ld.w	r4,r7[24]
 	invalid
+	ld.w	r0,r7[-56]
+	ld.w	lr,r7[-40]
 	invalid
+	ld.w	r2,r7[-36]
 	invalid
 	invalid
+	stdsp	sp[264],r12
 	invalid
 	invalid
+	lddsp	r12,sp[328]
 	invalid
 	invalid
+	cp.w	lr,00000012
 	invalid
 	invalid
 	invalid
+	ld.w	r0,r12[-56]
+	ld.w	r5,r2[24]
+	ld.w	r1,r3[24]
+	ld.w	r12,r10[-40]
+	ld.w	r12,r10[8]
 	invalid
+	ld.w	r12,r7[-40]
+	ld.w	r2,r7[-36]
 	invalid
+	ld.w	r0,r9[-56]
+	ld.w	pc,r7[24]
+	ld.w	r0,r10[8]
+	ld.w	r3,r10[-36]
+	ld.w	r4,r2[-40]
 	invalid
+	ld.w	r0,r7[-56]
+	ld.w	r9,r2[24]
+	ld.w	r4,r9[-36]
+	ld.w	lr,r4[-40]
+	ld.w	r5,r3[-36]
+	ld.w	r3,r4[-36]
+	ld.w	r0,r4[8]
+	ld.w	r9,r10[28]
+	ld.w	r5,r8[24]
+	ld.w	r0,r9[-56]
+	ld.w	r6,r7[-40]
 	invalid
+	ld.w	r12,r4[-40]
+	ld.w	r3,r2[-36]
 	invalid
 	invalid
+	ld.w	r1,r4[24]
+	ld.w	r0,r10[8]
+	ld.w	r3,r4[-36]
 	invalid
+	ld.w	r5,r8[-36]
+	ld.w	r6,r4[-36]
+	ld.w	r12,r0[-40]
+	ld.w	lr,r2[-40]
+	ld.w	r0,r10[8]
+	ld.w	pc,r10[24]
 	invalid
+	ld.w	r9,r9[-40]
+	ld.w	r7,r7[24]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r7[-40]
+	ld.w	r2,r7[-36]
 	mov	lr,FFFFFFD6
+	ld.w	lr,r7[-40]
+	ld.w	lr,r2[-56]
+	invalid
+	stdsp	sp[348],r3
+	ld.w	lr,r4[-40]
+	ld.w	r0,r3[-56]
+	ld.w	r8,r10[24]
+	ld.w	r0,r2[-56]
+	invalid
+	ld.w	pc,r1[-40]
+	ld.w	pc,r6[24]
+	ld.w	r0,r9[8]
+	ld.w	r0,r7[-36]
+	ld.w	r9,r10[24]
+	ld.w	lr,r7[-40]
+	invalid
+	ld.w	r4,r4[-36]
+	ld.w	pc,r4[24]
+	ld.w	r4,r10[-36]
+	invalid
+	ld.w	r5,r4[24]
+	invalid
+	ld.w	r4,r8[28]
+	ld.w	pc,r4[-40]
+	ld.w	r1,r7[24]
+	ld.w	r0,r6[8]
+	stdsp	sp[464],r8
+	lddsp	lr,sp[336]
+	invalid
+	ld.w	r7,r9[24]
+	ld.w	sp,r10[-40]
+	ld.w	lr,r2[-40]
+	ld.w	r0,r10[8]
+	ld.w	r3,r4[-36]
+	invalid
+	ld.w	r5,r8[-36]
+	ld.w	r6,r4[-36]
+	ld.w	r12,r0[-40]
+	ld.w	lr,r2[-40]
+	ld.w	r0,r10[8]
+	ld.w	pc,r10[24]
+	invalid
+	ld.w	r9,r9[-40]
+	ld.w	r7,r7[24]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r7[-40]
+	ld.w	r2,r7[-36]
 	mov	r1,FFFFFFD6
+	ld.w	r7,r6[28]
+	ld.w	r9,r0[-36]
+	ld.w	lr,r9[-56]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[472],r9
+	ld.w	r8,r10[24]
 	rsub	sp,r5
 	invalid
-	invalid
-	invalid
+	ld.w	r12,r7[-40]
+	ld.w	r2,r7[-36]
 	mov	r1,FFFFFFD6
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r3,pc[276]
-	invalid
-	lddpc	r12,pc[464]
-	lddpc	r2,pc[468]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r4,r10[-36]
+	ld.w	r12,r7[-56]
+	invalid
+	ld.w	r12,r7[-40]
+	ld.w	r2,r7[-36]
+	invalid
+	ld.w	r4,r7[-40]
+	ld.w	r3,r2[-36]
+	invalid
+	ld.w	r5,r9[24]
+	invalid
+	ld.w	r4,r10[-36]
+	ld.w	r5,r8[28]
+	ld.w	r0,r10[8]
+	ld.w	lr,r7[-40]
+	ld.w	r9,r6[28]
+	invalid
+	ld.w	r0,r3[8]
+	ld.w	r4,r9[-36]
+	ld.w	lr,r0[-40]
+	ld.w	r1,r2[24]
+	ld.w	r4,r9[24]
+	invalid
+	ld.w	r4,r10[-36]
+	ld.w	r5,r8[28]
+	ld.w	r0,r10[8]
+	ld.w	r3,r4[-36]
+	invalid
+	ld.w	lr,r7[-40]
+	ld.w	r5,r7[24]
+	ld.w	r4,r1[-36]
+	ld.w	r4,r2[-40]
+	invalid
+	ld.w	r0,r7[-56]
+	ld.w	r0,r0[-56]
+	ld.w	r5,r10[24]
+	ld.w	sp,r9[24]
+	ld.w	lr,r4[-40]
+	ld.w	r12,r0[-40]
+	invalid
+	ld.w	r4,r10[28]
+	ld.w	r9,r12[-56]
+	invalid
+	invalid
+	ld.w	r5,r4[24]
+	invalid
+	ld.w	r6,r7[28]
+	ld.w	r2,r4[-36]
+	ld.w	lr,r7[-40]
+	ld.w	r5,r6[-40]
+	ld.w	r4,r7[28]
+	invalid
+	ld.w	r2,r0[-36]
+	ld.w	r1,r4[-40]
+	ld.w	r12,r1[24]
+	ld.w	r0,r2[-56]
+	lddpc	r3,sp[276]
+	invalid
+	lddpc	r12,sp[464]
+	lddpc	r2,sp[468]
+	stdsp	sp[200],r0
+	ld.w	r1,r1[-40]
+	ld.w	r0,r7[8]
+	ld.w	lr,r4[-40]
+	ld.w	r12,r3[24]
+	ld.w	r5,r10[-40]
+	ld.w	r3,r7[24]
+	ld.w	r0,r2[-56]
+	ld.w	r8,r10[24]
+	ld.w	r10,r2[-64]
+	ld.w	pc,r1[-40]
+	ld.w	pc,r6[24]
+	ld.w	r3,r9[28]
+	invalid
+	ld.w	lr,r0[-40]
+	ld.w	r0,r2[8]
+	ld.w	r1,r1[-40]
+	ld.w	r0,r7[8]
+	ld.w	r5,r1[24]
+	invalid
+	ld.w	r4,r2[-36]
+	invalid
+	ld.w	r3,r0[-36]
+	ld.w	r12,r4[-40]
+	ld.w	r0,r12[-56]
+	ld.w	r9,r1[28]
+	invalid
+	ld.w	r5,r4[24]
+	invalid
+	ld.w	r2,r4[-36]
+	ld.w	pc,r1[-40]
+	ld.w	pc,r6[24]
+	ld.w	r3,r9[28]
+	invalid
+	ld.w	sp,r7[-40]
+	ld.w	r1,r6[-40]
+	ld.w	r4,r7[24]
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	r9,r12[24]
+	ld.w	r0,r10[8]
+	ld.w	r4,r9[-36]
+	ld.w	r4,r0[-36]
+	ld.w	r3,r10[-36]
 	mov	r10,FFFFFFA0
 	invalid
 	invalid
+	ld.w	r6,r4[-40]
 	invalid
-	invalid
-	lddpc	r12,pc[200]
+	lddpc	r12,sp[200]
 	rsub	r0,r5
 	mov	r0,00000012
 	invalid
+	ld.w	r0,r3[8]
+	ld.w	r9,r6[-40]
+	ld.w	pc,r7[24]
+	ld.w	r0,r9[8]
+	ld.w	r2,r8[28]
+	ld.w	r2,r7[-40]
+	ld.w	r5,r6[24]
+	ld.w	r3,r6[-36]
 	invalid
+	ld.w	lr,r2[-56]
+	ld.w	lr,r3[-56]
 	invalid
+	ld.w	r1,r1[-40]
+	ld.w	lr,r7[24]
+	ld.w	r4,r7[-36]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r3,r1[-40]
+	ld.w	r3,r2[-36]
+	ld.w	r0,r9[-56]
+	ld.w	r5,r9[-36]
+	ld.w	r4,r1[24]
+	ld.w	r2,r4[-36]
+	ld.w	r3,r2[-40]
+	ld.w	pc,r10[24]
+	ld.w	r9,r9[28]
 	invalid
 	rsub	r0,r5
 	mov	r0,00000022
 	invalid
+	ld.w	r0,r3[8]
+	ld.w	r5,r9[-40]
+	ld.w	r9,r9[24]
+	ld.w	r5,r7[-36]
+	ld.w	r0,r9[-56]
+	ld.w	r2,r10[28]
+	ld.w	r5,r7[-36]
+	ld.w	r12,r1[24]
+	ld.w	r0,r2[-56]
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	lr,r0[-40]
+	ld.w	pc,r7[24]
+	ld.w	r0,r10[8]
+	ld.w	r3,r0[-40]
+	ld.w	r5,r1[-40]
+	ld.w	r3,r9[-36]
 	invalid
+	ld.w	sp,r7[-40]
+	ld.w	r1,r6[-40]
+	ld.w	r4,r7[24]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	lr,r4[-40]
+	ld.w	r0,r2[-56]
+	ld.w	r2,r0[-36]
+	ld.w	r5,r3[-36]
+	ld.w	r5,r6[-40]
+	ld.w	r4,r7[28]
 	invalid
 	invalid
 	eor	r2,r5
+	ld.w	r0,r2[-36]
+	ld.w	r2,r7[-36]
+	ld.w	r0,r10[8]
+	invalid
+	invalid
+	ld.w	r7,r10[-40]
+	ld.w	r0,r9[-56]
+	ld.w	pc,r10[24]
+	invalid
+	ld.w	r10,r9[-64]
+	invalid
+	ld.w	r5,r1[28]
+	ld.w	sp,r3[-56]
+	ld.w	pc,r1[-40]
+	ld.w	r5,r9[24]
+	ld.w	r4,r10[-36]
+	ld.w	r12,r4[-40]
+	ld.w	r0,r9[-48]
+	ld.w	lr,r3[-40]
+	ld.w	lr,r10[-56]
+	ld.w	r2,r7[-36]
+	ld.w	r0,r3[-64]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	sp,r7[-40]
+	ld.w	r0,r2[-56]
+	ld.w	r1,r8[24]
+	ld.w	r5,r3[-40]
 	mov	r0,FFFFFFA2
 	mov	r8,FFFFFFC6
+	ld.w	r4,r10[28]
+	ld.w	r10,r8[12]
 	invalid
+	ld.w	r7,r11[-36]
+	ld.w	lr,r11[-56]
+	ld.w	lr,r3[-40]
+	ld.w	lr,r10[-56]
+	ld.w	r2,r7[-36]
+	ld.w	pc,r3[-56]
+	ld.w	pc,r9[-40]
+	ld.w	r4,r3[28]
+	ld.w	r1,r11[-40]
+	ld.w	r5,r9[24]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	pc,r9[-56]
 	mov	r10,FFFFFFE0
 	invalid
 	invalid
+	lddsp	lr,sp[464]
+	stdsp	sp[328],r0
+	ld.w	pc,r1[-40]
+	ld.w	r5,r9[24]
+	ld.w	r4,r10[-36]
+	ld.w	r12,r4[-40]
+	ld.w	r0,r9[-64]
 	invalid
+	lddsp	r5,sp[472]
+	ld.w	r5,r7[24]
+	ld.w	r1,r9[24]
+	ld.w	r0,r6[8]
+	ld.w	r5,r4[24]
+	ld.w	r0,r6[28]
 	invalid
+	ld.w	r9,r9[-40]
+	ld.w	r7,r7[24]
 	invalid
+	lddpc	r5,sp[404]
 	invalid
+	ld.w	r6,r7[-40]
+	ld.w	r7,r10[28]
+	ld.w	r2,r0[-36]
+	ld.w	r10,r2[-52]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r5,pc[404]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r4,r4[28]
+	ld.w	r0,r10[28]
 	mov	pc,FFFFFFA2
 	invalid
+	ld.w	r7,r11[-36]
+	invalid
+	ld.w	r5,r7[28]
+	invalid
+	ld.w	r7,r9[24]
+	invalid
+	ld.w	r4,r2[-36]
+	ld.w	r5,r4[24]
+	ld.w	r0,r6[28]
 	invalid
 	invalid
+	stdsp	sp[152],r5
+	ld.w	pc,r8[24]
+	ld.w	r4,r9[28]
 	invalid
+	ld.w	r0,r9[-56]
+	ld.w	r2,r10[28]
+	ld.w	lr,r0[-40]
+	ld.w	r12,r9[-40]
+	ld.w	r4,r0[-36]
+	ld.w	pc,r4[-40]
+	ld.w	r0,r7[8]
+	ld.w	r5,r1[28]
+	ld.w	r3,r3[-36]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r0,r7[-56]
 	mov	r8,FFFFFFC6
+	ld.w	r4,r10[28]
+	ld.w	r10,r8[12]
 	invalid
+	ld.w	r2,r10[28]
+	ld.w	lr,r0[-40]
+	ld.w	r12,r9[-40]
+	ld.w	r4,r0[-36]
+	ld.w	pc,r4[-40]
+	ld.w	r0,r7[28]
+	ld.w	pc,r9[24]
+	ld.w	r5,r5[24]
+	ld.w	r4,r1[-36]
 	invalid
+	ld.w	r7,r9[24]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r1,r2[-40]
+	ld.w	pc,r6[-56]
 	mov	r10,FFFFFFE0
 	invalid
 	invalid
 	invalid
-	invalid
+	ld.w	r5,r6[28]
 	invalid
 	invalid
 	mov	r0,00000003
 	invalid
 	invalid
+	ld.w	r5,r6[28]
+	invalid
+	invalid
+	invalid
+	ld.w	r0,r10[-64]
+	ld.w	r3,r6[28]
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	pc,r1[-40]
+	ld.w	sp,r6[-40]
+	ld.w	lr,r0[-40]
+	ld.w	pc,r2[20]
+	ld.w	r9,r6[24]
+	ld.w	r5,r7[24]
 	invalid
+	ld.w	r7,r9[24]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r0,lr[8]
+	ld.w	lr,r4[-40]
+	ld.w	r4,r7[-40]
+	ld.w	r0,r2[-56]
 	mov	sp,FFFFFFD3
 	invalid
-	lddpc	r4,pc[468]
+	lddpc	r4,sp[468]
 	invalid
-	lddpc	pc,pc[404]
-	lddpc	lr,pc[80]
-	lddpc	r4,pc[464]
+	lddpc	pc,sp[404]
+	lddpc	lr,sp[80]
+	lddpc	r4,sp[464]
+	lddsp	pc,sp[340]
+	lddpc	r5,sp[404]
+	lddpc	r2,sp[336]
+	lddsp	r2,sp[340]
 	invalid
-	lddpc	r5,pc[404]
-	lddpc	r2,pc[336]
+	ld.w	r1,r1[-40]
+	ld.w	lr,r7[24]
+	ld.w	r4,r7[-36]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r3,r1[-40]
+	ld.w	r3,r2[-36]
+	ld.w	r0,r9[-56]
 	invalid
 	invalid
 	invalid
+	ld.w	r1,r1[-40]
+	ld.w	lr,r7[24]
+	ld.w	r4,r7[-36]
 	invalid
+	ld.w	r1,r2[-40]
+	ld.w	r0,r2[8]
+	ld.w	r9,r9[-36]
+	ld.w	r2,r6[-40]
+	ld.w	r12,r7[-40]
+	ld.w	r3,r4[-40]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	lr,r4[-40]
+	ld.w	r0,r5[-56]
 	invalid
 	invalid
 	invalid
 	mov	r0,FFFFFFF0
 	invalid
+	ld.w	pc,r9[-40]
+	ld.w	r4,r9[28]
+	invalid
+	ld.w	r0,r12[-36]
+	ld.w	r0,r2[-56]
+	invalid
+	invalid
+	ld.w	r2,r7[-36]
+	ld.w	pc,r10[20]
+	ld.w	r5,r11[24]
+	ld.w	r3,r9[28]
+	ld.w	pc,r4[-40]
+	ld.w	r0,r7[0]
+	invalid
+	invalid
+	ld.w	r0,r9[-56]
 	invalid
 	invalid
 	invalid
@@ -26697,23 +26713,7 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r9[-56]
 	invalid
 	invalid
 	invalid
@@ -26722,993 +26722,993 @@ __moddi3 proc
 	mov	r0,FFFFFFE2
 	invalid
 	invalid
+	ld.w	r1,r1[-40]
+	ld.w	lr,r7[24]
+	ld.w	r4,r7[-36]
+	invalid
+	ld.w	r5,r8[24]
+	ld.w	r0,r7[8]
+	ld.w	r9,r2[24]
+	ld.w	r5,r9[24]
+	ld.w	r4,r1[-36]
+	ld.w	r2,r7[-36]
+	ld.w	r0,r12[-56]
 	invalid
 	invalid
 	invalid
+	ld.w	r1,r1[-40]
+	ld.w	lr,r7[24]
+	ld.w	r4,r7[-36]
 	invalid
+	ld.w	r4,r2[-36]
+	ld.w	r2,r2[-36]
+	ld.w	r9,r6[-40]
+	ld.w	r5,r7[24]
 	invalid
+	ld.w	r6,r2[-36]
+	ld.w	r3,r4[-40]
+	ld.w	r0,r2[-56]
+	ld.w	lr,r0[-40]
+	ld.w	r0,r2[8]
+	ld.w	lr,r4[-40]
+	ld.w	r4,r7[-40]
+	ld.w	r0,r2[-56]
+	ld.w	r6,r7[-40]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r0,r9[-64]
 	invalid
 	mov	r0,FFFFFFA2
+	ld.w	pc,r7[24]
+	ld.w	r0,r10[8]
+	ld.w	r9,r6[24]
+	ld.w	r4,r9[-36]
+	ld.w	lr,r4[-40]
+	ld.w	r0,r3[-56]
+	ld.w	r12,r0[-40]
+	ld.w	r5,r9[24]
+	ld.w	r4,r0[-40]
+	ld.w	sp,r12[-56]
+	ld.w	r9,r6[24]
+	ld.w	r4,r9[-36]
+	ld.w	r4,r2[-40]
+	invalid
+	ld.w	r2,r4[-36]
+	ld.w	r3,r2[-40]
+	ld.w	pc,r10[24]
+	ld.w	r9,r9[28]
+	invalid
+	invalid
+	ld.w	r5,r9[24]
+	ld.w	r4,r0[-40]
+	ld.w	lr,r4[-40]
+	ld.w	r0,r3[-56]
+	ld.w	r9,r2[24]
+	ld.w	r5,r9[24]
+	ld.w	r4,r1[-36]
+	ld.w	r2,r7[-36]
+	ld.w	r0,r12[-56]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r1[-40]
+	ld.w	r3,r7[-36]
+	ld.w	lr,r4[-40]
+	ld.w	r0,r3[-56]
+	ld.w	r9,r2[24]
+	ld.w	r5,r9[24]
+	ld.w	r4,r1[-36]
+	ld.w	r2,r7[-36]
+	ld.w	r0,r12[-56]
 	invalid
 	invalid
 	invalid
 	mov	r10,FFFFFFA0
 	invalid
+	ld.w	pc,r10[24]
+	ld.w	r1,r10[24]
+	ld.w	r0,r6[0]
 	invalid
+	stdsp	sp[84],r5
+	lddpc	r4,sp[468]
+	lddpc	lr,sp[80]
+	lddsp	pc,sp[468]
+	stdsp	sp[212],r4
+	cp.w	r12,00000014
+	lddsp	r0,sp[320]
 	invalid
+	ld.w	r7,r4[-40]
+	ld.w	pc,r7[24]
+	ld.w	r9,r9[24]
+	ld.w	r7,r7[24]
 	invalid
+	ld.w	r6,r7[28]
+	ld.w	r12,r0[-40]
+	ld.w	r4,r4[-40]
 	invalid
+	ld.w	r12,r0[-40]
+	ld.w	r5,r10[-40]
 	invalid
-	lddpc	r4,pc[468]
-	lddpc	lr,pc[80]
+	ld.w	r0,r3[8]
+	ld.w	lr,r2[-40]
+	ld.w	r9,r11[24]
+	ld.w	pc,r9[24]
+	ld.w	sp,r7[24]
+	ld.w	lr,r2[-40]
+	ld.w	r0,r10[8]
+	ld.w	r1,r11[24]
+	ld.w	r9,r9[24]
+	ld.w	r2,r0[-40]
+	ld.w	r5,r6[24]
 	invalid
+	stdsp	sp[336],pc
+	stdsp	sp[272],r9
+	lddpc	r7,sp[400]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r7,pc[400]
-	invalid
-	invalid
-	lddpc	r5,pc[272]
+	stdsp	sp[276],r9
+	lddpc	r5,sp[272]
 	mov	r0,FFFFFFA2
 	invalid
 	invalid
 	invalid
-	lddpc	r3,pc[276]
+	lddpc	r3,sp[276]
 	invalid
-	lddpc	pc,pc[272]
+	lddpc	pc,sp[272]
+	lddsp	r11,sp[208]
 	invalid
+	lddpc	r10,sp[84]
+	lddsp	r0,sp[320]
 	invalid
-	lddpc	r10,pc[84]
+	lddsp	r12,sp[144]
+	lddpc	r3,sp[464]
+	lddpc	pc,sp[212]
+	stdsp	sp[208],r9
+	cp.w	r5,FFFFFFE4
 	invalid
+	lddsp	pc,sp[208]
+	lddpc	r5,sp[276]
+	lddpc	lr,sp[336]
+	stdsp	sp[192],r0
+	ld.w	r7,r4[-40]
+	ld.w	pc,r7[24]
+	ld.w	r9,r9[24]
+	ld.w	r7,r7[24]
 	invalid
+	ld.w	r6,r7[28]
+	ld.w	r12,r0[-40]
+	ld.w	r4,r4[-40]
 	invalid
-	lddpc	r3,pc[464]
-	lddpc	pc,pc[212]
+	ld.w	r4,r4[-40]
+	ld.w	r8,r10[24]
 	invalid
+	ld.w	r0,r7[8]
+	ld.w	lr,r2[-40]
+	ld.w	r9,r11[24]
+	ld.w	pc,r9[24]
+	ld.w	sp,r7[24]
+	ld.w	lr,r2[-40]
+	ld.w	r0,r10[8]
+	ld.w	r1,r11[24]
+	ld.w	r9,r9[24]
+	ld.w	r2,r0[-40]
+	ld.w	r5,r6[24]
 	invalid
-	invalid
-	invalid
-	lddpc	r5,pc[276]
-	lddpc	lr,pc[336]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r12,pc[464]
-	invalid
-	lddpc	r3,pc[404]
+	lddpc	r12,sp[464]
+	stdsp	sp[336],sp
+	lddpc	r3,sp[404]
 	mov	r0,FFFFFFA2
 	invalid
 	invalid
+	stdsp	sp[272],r1
+	lddsp	r3,sp[148]
+	lddpc	r10,sp[84]
+	lddsp	r0,sp[320]
+	ld.w	r7,r4[-40]
+	ld.w	pc,r7[24]
+	ld.w	r9,r9[24]
+	ld.w	r7,r7[24]
 	invalid
+	ld.w	r6,r7[28]
+	ld.w	r12,r0[-40]
+	ld.w	r4,r4[-40]
 	invalid
-	lddpc	r10,pc[84]
+	ld.w	r2,r0[-40]
 	invalid
+	ld.w	r10,r4[-36]
+	ld.w	r0,r2[-56]
+	ld.w	lr,r4[-40]
 	invalid
+	ld.w	r6,r7[28]
+	ld.w	r2,r4[-36]
+	ld.w	lr,r7[-40]
+	ld.w	r5,r6[-40]
+	ld.w	r4,r7[28]
 	invalid
+	ld.w	r2,r0[-36]
+	ld.w	r1,r4[-40]
+	ld.w	r12,r1[24]
+	ld.w	r0,r2[-56]
+	stdsp	sp[272],r1
+	lddsp	r3,sp[148]
+	lddpc	r10,sp[84]
+	lddsp	r10,sp[332]
 	invalid
+	ld.w	r0,r9[-64]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r10,pc[84]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r10,pc[76]
-	lddpc	lr,pc[272]
-	invalid
-	invalid
+	ld.w	r2,r0[-40]
+	ld.w	r4,r1[-40]
+	ld.w	r7,r3[24]
+	ld.w	r9,r4[24]
+	ld.w	r12,r5[-40]
+	ld.w	lr,r6[-40]
+	ld.w	r0,r7[-36]
+	ld.w	r2,r8[-36]
+	ld.w	r4,r9[-36]
+	ld.w	r6,r10[-36]
+	ld.w	r10,r11[-52]
+	ld.w	r1,r12[16]
+	lddsp	r3,sp[144]
+	lddsp	r6,sp[272]
+	lddsp	r8,sp[464]
+	lddpc	r10,sp[76]
+	lddpc	lr,sp[272]
+	stdsp	sp[84],r2
+	stdsp	sp[212],r4
 	mov	r5,FFFFFFA5
-	invalid
+	cp.w	r10,00000005
 	mov	r0,00000010
+	ld.w	lr,r4[-40]
+	ld.w	r1,r11[24]
+	ld.w	r9,r6[24]
+	ld.w	r0,r2[8]
+	ld.w	r9,r6[24]
+	ld.w	r5,r7[24]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r4,r4[-40]
+	ld.w	r8,r10[24]
 	mov	r0,FFFFFFA2
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r0,pc[0]
+	ld.w	lr,r4[-40]
+	ld.w	r1,r11[24]
+	ld.w	r9,r6[24]
+	ld.w	r0,r2[8]
+	ld.w	r1,r10[24]
+	ld.w	r0,r1[8]
+	ld.w	r9,r9[-40]
+	ld.w	r5,sp[24]
 	mov	r0,FFFFFFA2
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	pc,r9[-40]
+	ld.w	r4,r9[28]
+	invalid
+	invalid
+	ld.w	r9,r10[24]
+	ld.w	r5,r6[-40]
+	invalid
+	invalid
+	ld.w	pc,r3[24]
+	ld.w	sp,r9[24]
+	ld.w	r4,r0[-36]
+	invalid
+	invalid
+	ld.w	r5,r3[28]
+	ld.w	r12,r6[24]
+	invalid
+	ld.w	pc,r9[-40]
 	invalid
 	invalid
 	invalid
+	ld.w	pc,r1[-40]
+	ld.w	pc,r6[24]
+	ld.w	r0,r9[0]
+	invalid
+	ld.w	lr,r4[-40]
+	ld.w	r9,r2[24]
+	ld.w	r1,r1[-40]
+	ld.w	pc,r10[24]
+	ld.w	sp,r9[8]
+	ld.w	r4,r9[-36]
+	ld.w	r12,r12[-40]
+	ld.w	r0,r2[-64]
 	invalid
 	invalid
+	ld.w	r5,r8[-36]
+	ld.w	r4,r7[-36]
+	ld.w	lr,r4[-40]
+	ld.w	sp,r3[-56]
+	ld.w	r4,r9[-36]
+	ld.w	r12,r12[-40]
+	ld.w	r0,r2[-64]
+	ld.w	r3,r6[28]
+	invalid
+	ld.w	r4,r11[24]
+	ld.w	r2,r4[-36]
 	invalid
 	invalid
+	lddsp	r1,sp[280]
+	ld.w	r9,r11[24]
+	ld.w	r0,r2[8]
+	lddpc	r1,sp[344]
+	ld.w	r11,r1[-48]
+	ld.w	lr,r2[-40]
+	ld.w	r9,sp[24]
+	ld.w	r0,r2[-64]
+	stdsp	sp[152],r9
+	ld.w	r8,r1[-40]
+	ld.w	r2,r0[-36]
+	ld.w	r0,r2[8]
+	lddpc	lr,sp[328]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r1,pc[344]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	lr,pc[328]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r1,r10[24]
+	ld.w	r12,r6[24]
+	ld.w	r1,r6[-40]
+	ld.w	r0,r7[0]
 	invalid
 	mov	r0,FFFFFFE4
+	ld.w	r0,lr[0]
+	invalid
+	stdsp	sp[272],r9
+	lddpc	r5,sp[336]
+	invalid
+	stdsp	sp[276],r9
+	lddpc	r5,sp[272]
+	invalid
+	ld.w	pc,r6[24]
+	ld.w	r1,r1[-40]
+	ld.w	r5,r6[24]
+	invalid
+	ld.w	lr,r4[-40]
+	ld.w	r1,r11[24]
+	ld.w	r9,r6[24]
+	ld.w	r0,r2[8]
+	ld.w	r9,r10[24]
+	ld.w	r5,r6[-40]
+	invalid
+	ld.w	r9,r10[28]
+	ld.w	r5,r6[24]
+	invalid
+	ld.w	r2,r7[-36]
+	ld.w	r1,r6[-40]
+	ld.w	r0,r10[8]
 	invalid
 	invalid
 	invalid
-	lddpc	r5,pc[336]
+	ld.w	r9,r10[24]
+	ld.w	r5,r6[-40]
 	invalid
-	invalid
-	lddpc	r5,pc[272]
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r10[28]
+	ld.w	r5,r6[24]
 	invalid
 	invalid
 	invalid
+	ld.w	sp,r6[-56]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r10,pc[12]
-	invalid
-	mov	r5,FFFFFFA2
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r10,pc[12]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddpc	r10,sp[12]
 	invalid
 	mov	r5,FFFFFFA2
-	lddpc	r0,pc[320]
-	lddpc	r3,pc[276]
+	stdsp	sp[200],lr
 	invalid
-	lddpc	r12,pc[464]
-	lddpc	r2,pc[468]
 	invalid
+	ld.w	r0,sp[0]
+	invalid
+	invalid
+	ld.w	sp,r6[-56]
+	invalid
+	invalid
+	lddpc	r10,sp[12]
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	sp,r6[-56]
+	invalid
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	r0,r2[8]
+	invalid
+	mov	r5,FFFFFFA2
+	lddpc	r0,sp[320]
+	lddpc	r3,sp[276]
+	invalid
+	lddpc	r12,sp[464]
+	lddpc	r2,sp[468]
+	stdsp	sp[192],r0
 	invalid
 	mov	pc,FFFFFFF3
 	invalid
+	ld.w	lr,r10[-40]
+	ld.w	r5,r9[24]
+	ld.w	pc,r1[-40]
+	ld.w	lr,r3[-40]
+	ld.w	r10,r4[-36]
+	ld.w	r4,r2[-40]
+	invalid
+	ld.w	r5,r9[24]
+	ld.w	r9,r3[24]
+	ld.w	r10,r12[12]
+	invalid
+	ld.w	r0,r9[-64]
+	ld.w	lr,r10[-40]
+	ld.w	r1,r8[24]
+	ld.w	r3,r9[28]
+	ld.w	r2,r0[-40]
+	ld.w	r5,r6[24]
+	invalid
+	ld.w	r12,r0[-40]
+	ld.w	r5,r10[-40]
+	invalid
+	ld.w	r2,r7[-36]
+	invalid
+	stdsp	sp[212],pc
+	lddsp	pc,sp[208]
+	lddpc	pc,sp[272]
+	stdsp	sp[148],r3
+	invalid
+	ld.w	r6,r7[28]
+	ld.w	r2,r4[-36]
+	ld.w	lr,r7[-40]
+	ld.w	r5,r6[-40]
+	ld.w	r4,r7[28]
+	invalid
+	ld.w	r2,r0[-36]
+	ld.w	r1,r4[-40]
+	ld.w	r12,r1[24]
+	ld.w	r0,r2[-64]
+	ld.w	r1,r10[24]
+	ld.w	r7,r9[24]
+	ld.w	r4,r2[-36]
 	invalid
 	invalid
 	invalid
+	ld.w	r9,r9[-40]
+	ld.w	r5,sp[24]
+	ld.w	r6,r7[-40]
 	invalid
+	ld.w	r4,r9[-36]
+	ld.w	r5,r9[28]
+	ld.w	r4,r1[-36]
 	invalid
+	ld.w	r6,r2[-36]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	pc,pc[272]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	pc,r7[24]
 	invalid
 	mov	sp,FFFFFFC3
 	invalid
 	invalid
+	ld.w	r4,r12[28]
+	ld.w	lr,r2[-40]
+	ld.w	r9,r9[-40]
+	ld.w	lr,r7[-40]
 	invalid
 	invalid
+	ld.w	r0,sp[-56]
+	ld.w	r4,r9[-36]
+	ld.w	r5,r9[28]
+	ld.w	r4,r1[-36]
+	invalid
+	ld.w	r3,r1[28]
+	ld.w	r1,r10[24]
+	ld.w	r11,r1[-40]
+	invalid
+	ld.w	lr,r7[-40]
+	ld.w	r4,r9[-36]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r0,r7[-56]
 	mov	r0,FFFFFFD2
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r5,r2[24]
+	ld.w	pc,r11[20]
+	ld.w	lr,r4[-40]
+	ld.w	pc,r7[-44]
+	ld.w	r2,r7[-40]
+	ld.w	r4,r9[-36]
+	ld.w	r3,r0[-40]
+	ld.w	r9,r5[-56]
 	mov	r0,FFFFFFB2
 	invalid
+	ld.w	r3,r7[28]
+	ld.w	r7,r4[-40]
+	ld.w	r5,r7[24]
+	ld.w	r9,r2[8]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	sp,r7[-56]
 	mov	lr,FFFFFFE6
+	ld.w	r8,r2[-36]
+	ld.w	pc,r10[20]
+	ld.w	r2,r3[28]
+	ld.w	r5,r2[-40]
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r2,r7[-40]
+	ld.w	r5,r5[24]
+	ld.w	r4,r1[-36]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r3,r0[-36]
+	ld.w	r9,r2[-56]
 	mov	r0,FFFFFFB2
+	ld.w	r9,lr[-56]
+	invalid
+	ld.w	pc,r3[24]
+	ld.w	lr,r10[-40]
+	ld.w	r0,r2[0]
+	invalid
+	invalid
+	lddsp	r9,sp[272]
+	stdsp	sp[144],r5
+	lddsp	pc,sp[264]
+	invalid
+	invalid
+	invalid
+	stdsp	sp[212],r5
+	lddsp	r4,sp[144]
+	lddpc	r2,sp[84]
+	lddsp	r4,sp[336]
 	invalid
 	invalid
 	invalid
 	invalid
+	lddsp	r9,sp[272]
+	stdsp	sp[144],r5
+	lddsp	sp,sp[264]
+	lddpc	r0,sp[468]
+	stdsp	sp[272],r9
+	lddpc	lr,sp[464]
+	stdsp	sp[200],pc
+	invalid
+	invalid
+	ld.w	r5,r8[-36]
+	ld.w	r4,r7[-36]
+	ld.w	lr,r4[-40]
+	ld.w	sp,r3[-56]
+	ld.w	r4,r9[-36]
+	ld.w	r12,r12[-40]
+	ld.w	sp,r2[-52]
 	invalid
 	invalid
 	invalid
+	ld.w	r1,r4[24]
+	ld.w	r8,r9[-40]
+	invalid
+	ld.w	r4,r2[-36]
 	invalid
 	invalid
+	ld.w	r4,r7[28]
+	ld.w	r9,r9[24]
+	ld.w	r3,r2[-36]
 	invalid
+	ld.w	r3,r0[-40]
+	ld.w	r9,r10[24]
+	ld.w	r5,r11[24]
 	invalid
+	ld.w	r2,r4[-36]
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r2,pc[84]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r0,pc[468]
-	invalid
-	lddpc	lr,pc[464]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r4,r2[-36]
 	invalid
 	mov	sp,FFFFFFD3
 	invalid
 	invalid
 	invalid
+	ld.w	r12,r0[-40]
+	ld.w	r0,r6[0]
+	ld.w	r3,r2[-36]
+	ld.w	r1,r1[-40]
+	ld.w	r5,r8[24]
+	invalid
+	ld.w	r9,r2[24]
+	ld.w	r5,r9[24]
+	ld.w	r4,r1[-36]
+	ld.w	r2,r7[-36]
+	ld.w	r0,r12[-64]
+	invalid
+	ld.w	r9,r2[24]
+	ld.w	r5,r9[24]
+	ld.w	r0,r2[0]
+	invalid
+	ld.w	r5,r3[28]
+	ld.w	r12,r6[24]
+	invalid
+	ld.w	sp,r4[-40]
+	ld.w	r0,r2[-64]
+	invalid
+	ld.w	r2,r3[-36]
+	ld.w	r5,r7[-36]
+	ld.w	sp,r8[8]
+	ld.w	r9,r2[24]
+	ld.w	r5,r9[24]
+	ld.w	r4,r1[-36]
+	ld.w	r2,r7[-36]
+	ld.w	r5,r4[-40]
+	ld.w	sp,r9[-56]
+	ld.w	r9,r3[24]
+	ld.w	r3,r9[28]
+	ld.w	r0,r10[0]
+	ld.w	r5,r4[28]
+	ld.w	r1,r6[-40]
+	ld.w	sp,r7[8]
+	ld.w	r5,r9[24]
+	ld.w	r4,r0[-40]
+	ld.w	r2,r0[-40]
+	ld.w	r5,r6[24]
+	invalid
+	ld.w	lr,r4[-40]
+	ld.w	r4,r7[-40]
+	ld.w	r0,r2[-64]
+	invalid
+	ld.w	r5,r7[28]
+	ld.w	r5,r6[-40]
+	ld.w	r9,r9[24]
+	ld.w	sp,r1[-56]
+	ld.w	r9,r10[-40]
+	ld.w	sp,r2[8]
+	ld.w	r9,r3[-40]
+	ld.w	r0,r2[0]
+	ld.w	pc,r7[24]
+	invalid
+	ld.w	pc,r9[24]
+	ld.w	r0,r10[-36]
+	invalid
+	invalid
+	ld.w	r9,r4[24]
+	ld.w	r5,r2[24]
+	invalid
+	ld.w	lr,r7[-40]
+	ld.w	r2,r10[28]
+	ld.w	r12,r7[-40]
+	invalid
+	ld.w	r1,r4[24]
+	ld.w	r3,r9[28]
+	invalid
+	ld.w	r5,r9[24]
+	ld.w	r5,r11[24]
+	ld.w	r3,r9[28]
+	ld.w	r0,r2[-64]
+	ld.w	r9,r9[-40]
+	ld.w	r5,sp[24]
+	invalid
+	invalid
+	ld.w	r9,r11[-40]
+	ld.w	r4,r2[28]
+	ld.w	r0,r4[0]
+	invalid
+	ld.w	r12,r0[-40]
+	ld.w	pc,r6[-40]
+	ld.w	r4,r9[-36]
+	invalid
+	ld.w	r12,r6[24]
+	invalid
+	ld.w	r7,r4[-40]
+	ld.w	pc,r7[24]
+	ld.w	r5,r9[24]
+	invalid
+	ld.w	r3,r0[-40]
+	ld.w	r5,r5[-36]
+	ld.w	r3,r8[28]
+	invalid
+	ld.w	r12,r1[-40]
+	ld.w	r3,r0[-36]
+	ld.w	r9,r9[-40]
+	ld.w	r9,r3[28]
+	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r3[24]
+	ld.w	r5,r6[24]
+	invalid
+	ld.w	r0,r12[-36]
+	ld.w	r0,r2[-64]
+	invalid
+	ld.w	r9,r9[-40]
+	invalid
+	ld.w	r5,r2[24]
+	ld.w	r5,r9[24]
+	ld.w	r5,r3[24]
+	ld.w	r5,r9[24]
+	ld.w	r3,r7[24]
+	ld.w	sp,r2[-56]
+	ld.w	pc,r1[-40]
+	ld.w	sp,r6[-40]
+	ld.w	lr,r0[-40]
+	ld.w	sp,r2[8]
+	ld.w	r9,r6[24]
+	ld.w	r5,r7[24]
+	invalid
+	invalid
+	ld.w	r5,r2[24]
+	ld.w	r5,r9[24]
+	ld.w	r5,r3[24]
+	ld.w	r5,r9[24]
+	ld.w	r3,r7[24]
+	ld.w	sp,r2[-56]
+	ld.w	pc,r1[-40]
+	ld.w	sp,r6[-40]
+	ld.w	lr,r0[-40]
+	ld.w	sp,r2[8]
+	ld.w	r9,r6[24]
+	ld.w	r5,r7[24]
+	invalid
+	ld.w	sp,r12[-40]
+	ld.w	r9,r6[24]
+	ld.w	r11,r7[24]
+	invalid
+	ld.w	sp,r7[-56]
+	ld.w	r9,r2[24]
+	ld.w	r0,r9[0]
+	ld.w	r9,r4[24]
+	ld.w	r5,r2[24]
+	invalid
+	invalid
+	ld.w	r7,r4[-40]
+	ld.w	pc,r7[24]
+	ld.w	r5,r9[24]
+	invalid
+	ld.w	lr,r4[-40]
+	ld.w	r9,r2[24]
+	ld.w	r1,r1[-40]
+	ld.w	pc,r10[24]
+	ld.w	sp,r9[8]
+	ld.w	r4,r9[-36]
+	ld.w	r12,r12[-40]
+	ld.w	r0,r2[-64]
+	ld.w	r5,r2[24]
+	ld.w	r5,r9[24]
+	ld.w	r5,r3[24]
+	ld.w	r5,r9[24]
+	ld.w	r3,r7[24]
+	ld.w	r0,r2[-64]
+	ld.w	r9,r6[24]
+	ld.w	r5,r10[24]
+	ld.w	r1,r9[24]
+	ld.w	r0,r6[0]
+	ld.w	r5,r8[-36]
+	ld.w	r4,r7[-36]
+	ld.w	sp,r2[-56]
+	ld.w	r1,r7[24]
+	ld.w	r5,r6[-40]
+	invalid
+	ld.w	r5,r8[-36]
+	ld.w	r4,r7[-36]
+	ld.w	lr,r4[-40]
+	ld.w	sp,r3[-56]
+	ld.w	r4,r9[-36]
+	ld.w	r12,r12[-40]
+	ld.w	r0,r2[-64]
+	invalid
+	ld.w	r5,r9[24]
+	ld.w	r5,r1[-36]
+	ld.w	r3,r9[28]
+	ld.w	r6,r4[-36]
+	ld.w	r0,r2[-64]
+	invalid
+	ld.w	pc,r3[24]
+	ld.w	sp,r9[24]
+	ld.w	r4,r0[-36]
+	invalid
+	ld.w	r8,r9[-40]
+	ld.w	r7,r7[-36]
+	invalid
+	ld.w	lr,r7[-40]
+	ld.w	r2,r10[28]
+	ld.w	r12,r7[-40]
+	invalid
+	ld.w	r1,r4[24]
+	ld.w	r3,r9[28]
+	invalid
+	ld.w	pc,r9[-40]
+	ld.w	r4,r9[28]
+	invalid
+	invalid
+	ld.w	r1,r10[24]
+	ld.w	r3,r1[28]
+	ld.w	r10,r4[-36]
+	ld.w	r0,r2[-64]
+	ld.w	r9,r10[24]
+	ld.w	r5,r6[-40]
+	invalid
+	invalid
+	ld.w	r9,r10[24]
+	ld.w	r5,r6[-40]
+	invalid
+	ld.w	r9,r10[28]
+	ld.w	r5,r6[24]
+	invalid
+	ld.w	pc,r1[-40]
+	ld.w	pc,r6[24]
+	ld.w	r0,r9[0]
+	invalid
+	ld.w	r12,r1[24]
+	ld.w	r3,r7[-40]
+	ld.w	sp,r5[-56]
+	ld.w	r9,r9[-40]
+	ld.w	r5,sp[24]
+	invalid
+	ld.w	pc,r1[-40]
+	ld.w	r4,r7[28]
+	ld.w	r8,r2[-36]
+	ld.w	r0,r10[0]
+	ld.w	r5,r0[-36]
+	ld.w	r8,r10[24]
+	ld.w	r2,r7[-36]
+	invalid
+	ld.w	r5,r4[24]
+	ld.w	r0,r6[28]
+	invalid
+	invalid
+	ld.w	r5,r11[24]
+	ld.w	r3,r9[28]
+	ld.w	pc,r4[-40]
+	ld.w	r0,r7[0]
+	ld.w	pc,r7[24]
+	ld.w	r5,r7[24]
+	invalid
+	invalid
+	ld.w	r8,r2[-36]
+	ld.w	r5,r10[24]
+	ld.w	r3,r7[28]
+	ld.w	pc,r4[-40]
+	ld.w	r0,r7[0]
+	invalid
+	ld.w	r4,r0[-36]
+	ld.w	sp,r4[-40]
+	ld.w	r0,r2[-64]
+	invalid
+	ld.w	r3,r0[-40]
+	ld.w	r5,r1[-40]
+	ld.w	r3,r9[-36]
+	invalid
+	ld.w	r3,r10[-36]
+	ld.w	r0,r2[-64]
+	ld.w	r4,r1[-36]
+	ld.w	sp,r4[-40]
+	ld.w	r0,r2[-64]
+	invalid
+	ld.w	r4,r9[-36]
+	ld.w	r4,r0[-36]
+	ld.w	r3,r10[-36]
+	invalid
+	ld.w	r5,r11[24]
+	ld.w	r2,r9[24]
+	ld.w	r3,r7[-36]
+	ld.w	r0,r2[-64]
+	ld.w	pc,r6[24]
+	ld.w	r7,r7[24]
+	invalid
+	invalid
+	ld.w	pc,r1[-40]
+	ld.w	sp,r6[-40]
+	ld.w	r3,r0[-36]
+	invalid
+	ld.w	pc,r4[24]
+	ld.w	r9,r9[24]
+	ld.w	pc,sp[24]
+	ld.w	r4,r7[28]
+	ld.w	r12,r0[-40]
+	invalid
+	ld.w	r3,r0[-40]
+	ld.w	pc,r9[24]
+	ld.w	r3,r9[-36]
+	invalid
+	ld.w	r5,r11[24]
+	ld.w	r4,r9[28]
+	ld.w	r3,r4[-40]
+	ld.w	r12,r0[-40]
+	invalid
+	invalid
+	ld.w	r9,r9[-40]
+	ld.w	r7,r7[24]
+	ld.w	r5,r6[24]
+	invalid
+	ld.w	r12,r7[-40]
+	ld.w	sp,r10[-40]
+	ld.w	r0,r7[0]
+	invalid
+	ld.w	r12,r0[-40]
+	ld.w	r1,r11[-40]
+	ld.w	r3,r12[-36]
+	invalid
+	ld.w	r5,r12[-40]
+	ld.w	r0,r9[-64]
+	ld.w	pc,r3[24]
+	ld.w	r3,r9[24]
+	ld.w	r0,r2[-64]
+	invalid
+	ld.w	r5,r7[24]
+	ld.w	r5,r11[24]
+	ld.w	r0,r9[0]
+	invalid
+	ld.w	pc,r7[24]
+	invalid
+	ld.w	r5,r0[-36]
+	ld.w	pc,r10[24]
+	invalid
+	invalid
+	ld.w	r4,r10[28]
+	ld.w	r0,r12[-64]
+	ld.w	r6,r4[-40]
+	invalid
+	ld.w	r9,r10[28]
+	invalid
+	ld.w	r12,r9[-40]
+	ld.w	r3,r0[-36]
+	ld.w	r0,r4[0]
+	invalid
+	invalid
+	invalid
+	ld.w	r0,r2[-56]
+	invalid
+	cp.w	r0,00000010
+	invalid
+	invalid
+	invalid
+	ld.w	r0,r2[-56]
 	invalid
 	mov	r5,FFFFFFA2
-	lddpc	r0,pc[320]
+	lddpc	r0,sp[320]
+	ld.w	pc,r6[24]
+	ld.w	r7,r7[24]
+	invalid
+	ld.w	pc,r9[-40]
+	invalid
+	invalid
+	ld.w	r3,r4[-36]
+	ld.w	r0,r7[-64]
+	ld.w	r3,r6[24]
+	invalid
+	ld.w	r3,r9[24]
+	invalid
+	ld.w	r3,r2[-40]
+	invalid
+	ld.w	r9,r3[24]
+	invalid
+	ld.w	r9,r2[24]
+	invalid
+	ld.w	lr,r6[24]
+	invalid
+	ld.w	r9,r8[24]
+	invalid
+	ld.w	pc,r9[-40]
+	invalid
+	ld.w	r4,r1[24]
+	invalid
+	ld.w	r4,r1[-40]
+	invalid
+	ld.w	r9,r6[-40]
+	invalid
+	ld.w	r8,r2[-36]
+	invalid
+	ld.w	pc,r2[24]
+	invalid
+	ld.w	r5,r9[-36]
+	invalid
+	ld.w	r7,r9[-40]
+	invalid
+	ld.w	r4,r9[-36]
+	invalid
+	ld.w	r7,r7[-36]
+	invalid
+	ld.w	r7,r10[28]
+	invalid
+	ld.w	r1,r1[-40]
+	invalid
+	ld.w	r12,r4[24]
+	invalid
+	ld.w	r12,r1[-40]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r0,r6[-64]
 	invalid
 	mov	r1,00000003
 	mov	r3,FFFFFFB3
@@ -27761,74 +27761,83 @@ __moddi3 proc
 	mov	r0,00000070
 	invalid
 	invalid
-	lddpc	r0,pc[192]
+	lddpc	r0,sp[192]
 	mov	lr,00000072
 	mov	r0,00000020
 	invalid
+	ld.w	r9,r6[24]
+	ld.w	r3,r1[28]
 	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r4,r6[28]
 	invalid
 	eor	r2,r5
+	ld.w	r0,r2[-36]
+	ld.w	r2,r7[-36]
+	ld.w	r0,r10[8]
+	ld.w	r5,r1[28]
+	ld.w	r3,r3[-36]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r0,r7[-56]
 	mov	r5,FFFFFFC2
+	ld.w	lr,r9[-52]
 	invalid
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	sp,r7[-40]
+	ld.w	r0,r2[-56]
+	ld.w	r1,r8[24]
+	ld.w	r5,r3[-40]
 	mov	r0,FFFFFFA2
 	mov	r8,FFFFFFC6
+	ld.w	r4,r10[28]
+	ld.w	r10,r8[12]
 	invalid
+	ld.w	r7,r11[-36]
+	ld.w	lr,r11[-56]
+	ld.w	lr,r3[-40]
+	ld.w	lr,r10[-56]
+	ld.w	r2,r7[-36]
+	ld.w	pc,r3[-56]
+	ld.w	pc,r9[-40]
+	ld.w	r4,r3[28]
+	ld.w	r1,r11[-40]
+	ld.w	r5,r9[24]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	pc,r9[-56]
 	mov	lr,FFFFFFE2
 	invalid
 	invalid
+	lddsp	r5,sp[472]
+	ld.w	r5,r7[24]
+	ld.w	r1,r9[24]
+	ld.w	r0,r6[8]
+	ld.w	r5,r4[24]
+	ld.w	r0,r6[28]
 	invalid
+	ld.w	r9,r9[-40]
+	ld.w	r7,r7[24]
 	invalid
+	lddpc	r5,sp[404]
 	invalid
+	ld.w	r6,r7[-40]
+	ld.w	r7,r10[28]
+	ld.w	r2,r0[-36]
+	ld.w	r10,r2[-52]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r5,pc[404]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r4,r4[28]
+	ld.w	r0,r10[28]
 	mov	pc,FFFFFFA2
 	invalid
+	ld.w	r7,r11[-36]
+	invalid
+	ld.w	r5,r7[28]
+	invalid
+	ld.w	r7,r9[24]
+	invalid
+	ld.w	r4,r2[-36]
+	ld.w	r5,r4[24]
+	ld.w	r0,r6[28]
 	invalid
 	invalid
 	invalid
@@ -27841,331 +27850,322 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r10,r9[-64]
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r3,r4[-40]
+	ld.w	lr,r2[-40]
+	ld.w	r5,r9[-40]
+	invalid
+	stdsp	sp[16],r12
+	ld.w	r3,r11[12]
 	invalid
 	invalid
+	lddpc	r5,sp[404]
+	invalid
+	stdsp	sp[16],r12
+	invalid
+	ld.w	r2,r2[-36]
+	ld.w	r9,r9[-40]
+	ld.w	lr,r7[-40]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r5,pc[404]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r0,r9[8]
+	ld.w	r1,r6[24]
+	ld.w	r5,r10[24]
+	ld.w	r0,r9[8]
 	mov	r8,FFFFFFC6
+	ld.w	r4,r10[28]
+	ld.w	r10,r8[12]
 	invalid
+	ld.w	lr,r3[-40]
+	ld.w	lr,r10[-56]
+	ld.w	r2,r7[-36]
+	ld.w	pc,r3[-56]
+	ld.w	r9,r6[24]
+	ld.w	r5,r1[-40]
+	ld.w	r3,r7[28]
+	ld.w	r3,r2[-36]
 	invalid
+	ld.w	r12,r8[24]
 	invalid
+	ld.w	sp,r10[24]
+	ld.w	lr,r6[12]
 	invalid
+	stdsp	sp[280],r8
+	ld.w	r3,r4[-36]
 	invalid
+	ld.w	r0,r9[-56]
+	ld.w	r2,r3[28]
+	ld.w	r5,r2[-40]
 	invalid
+	ld.w	r6,r7[-40]
+	ld.w	r7,r10[28]
+	ld.w	r2,r0[-36]
+	ld.w	r10,r2[-52]
 	invalid
+	ld.w	r5,r7[-36]
 	invalid
+	ld.w	r5,r9[24]
 	invalid
+	ld.w	r5,r9[24]
+	ld.w	r0,r2[-56]
+	ld.w	pc,r10[24]
 	invalid
+	ld.w	r1,r4[24]
+	ld.w	r7,r7[24]
+	ld.w	r0,r2[-56]
+	ld.w	lr,r0[-40]
+	ld.w	r0,r2[8]
+	ld.w	r5,r9[24]
+	ld.w	r9,r2[24]
+	ld.w	r4,r9[-36]
+	ld.w	r9,r9[24]
+	ld.w	r5,r1[28]
+	ld.w	r5,r10[24]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	lr,r10[8]
 	eor	r4,r5
+	ld.w	r5,r4[24]
+	ld.w	r5,r9[24]
 	invalid
+	ld.w	r0,r9[-56]
+	lddpc	pc,sp[400]
 	invalid
+	lddsp	r2,sp[84]
+	stdsp	sp[144],r1
+	lddpc	r4,sp[404]
+	cp.w	r12,00000012
 	invalid
+	ld.w	r0,r7[-56]
+	ld.w	r8,r10[24]
+	ld.w	r0,r2[-56]
+	ld.w	r8,r2[-36]
+	ld.w	r5,r10[24]
+	ld.w	r4,r7[28]
 	invalid
-	lddpc	pc,pc[400]
+	ld.w	r2,r2[-36]
+	ld.w	r9,r6[-40]
+	ld.w	r4,r10[28]
+	ld.w	r4,r2[-40]
 	invalid
+	ld.w	r0,r12[-56]
+	ld.w	r1,r6[24]
+	ld.w	lr,r11[-56]
 	invalid
 	invalid
-	lddpc	r4,pc[404]
+	stdsp	sp[476],r2
+	ld.w	r4,r4[-36]
+	ld.w	r5,r10[24]
+	ld.w	r0,r7[8]
+	ld.w	r9,r1[28]
 	invalid
+	ld.w	lr,r9[-56]
 	invalid
+	stdsp	sp[476],r2
+	ld.w	r4,r4[-36]
+	ld.w	r5,r10[24]
+	ld.w	r0,r7[8]
+	ld.w	r9,r1[28]
 	invalid
+	ld.w	r0,r9[-56]
+	ld.w	lr,r0[-40]
+	ld.w	r0,r2[8]
 	invalid
 	invalid
 	invalid
+	stdsp	sp[476],r2
+	ld.w	r4,r4[-36]
+	ld.w	r5,r10[24]
+	ld.w	r0,r7[8]
+	ld.w	r9,r1[28]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r4,r7[24]
 	invalid
+	ld.w	lr,r9[-56]
 	invalid
+	stdsp	sp[476],r2
+	ld.w	r4,r4[-36]
+	ld.w	r5,r10[24]
+	ld.w	r0,r7[8]
+	ld.w	r9,r1[28]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r4,r7[24]
 	invalid
+	ld.w	lr,r9[-56]
 	invalid
+	stdsp	sp[476],r2
+	ld.w	r4,r4[-36]
+	ld.w	r5,r10[24]
+	ld.w	r0,r7[8]
+	ld.w	r9,r1[28]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r9[-56]
 	rsub	r5,r5
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r4,r7[24]
 	invalid
+	ld.w	lr,r9[-56]
 	invalid
+	stdsp	sp[476],r2
+	ld.w	r4,r4[-36]
+	ld.w	r5,r10[24]
+	ld.w	r0,r7[8]
+	ld.w	r9,r1[28]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r9[-56]
 	rsub	r5,r5
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r4,r7[24]
 	invalid
+	ld.w	lr,r9[-56]
 	invalid
+	stdsp	sp[476],r2
+	ld.w	r4,r4[-36]
+	ld.w	r5,r10[24]
+	ld.w	r0,r7[8]
+	ld.w	r9,r1[28]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r9[-56]
 	rsub	r5,r5
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r4,r7[24]
 	invalid
+	ld.w	lr,r9[-56]
 	invalid
+	stdsp	sp[476],r2
+	ld.w	r4,r4[-36]
+	ld.w	r5,r10[24]
+	ld.w	r0,r7[8]
+	ld.w	r9,r1[28]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r9[-56]
 	rsub	r5,r5
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r4,r7[24]
 	invalid
+	ld.w	lr,r9[-56]
 	invalid
+	stdsp	sp[476],r2
+	ld.w	r4,r4[-36]
+	ld.w	r5,r10[24]
+	ld.w	r0,r7[8]
+	ld.w	r9,r1[28]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r9[-56]
 	rsub	r5,r5
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r9[-56]
 	rsub	r5,r5
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r4,r7[24]
 	invalid
+	ld.w	lr,r9[-56]
 	invalid
+	stdsp	sp[476],r2
+	ld.w	r4,r4[-36]
+	ld.w	r5,r10[24]
+	ld.w	r0,r7[8]
+	ld.w	r9,r1[28]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r9[-56]
 	rsub	r5,r5
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
+	ld.w	r12,r9[-56]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r12,r9[-56]
 	rsub	r5,r5
+	ld.w	r12,r9[-56]
+	invalid
+	ld.w	r12,r9[-56]
+	invalid
+	ld.w	r4,r7[24]
+	invalid
+	ld.w	r8,r10[24]
+	ld.w	r2,r2[-36]
+	ld.w	lr,r9[-56]
+	invalid
+	ld.w	r5,r6[-40]
+	ld.w	pc,r6[-40]
+	ld.w	r9,r9[28]
+	invalid
+	ld.w	r8,r12[24]
+	ld.w	r5,r0[-36]
+	ld.w	r4,r9[-36]
+	ld.w	r4,r2[-40]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	stdsp	sp[408],r1
+	ld.w	r9,r6[24]
+	ld.w	r0,r2[8]
+	ld.w	r2,r0[-36]
+	ld.w	r5,r3[-36]
+	ld.w	r5,r6[-40]
+	ld.w	r4,r7[28]
+	ld.w	r0,r9[-56]
+	ld.w	r2,r0[-36]
+	ld.w	r10,r2[-52]
 	invalid
 	invalid
 	rsub	r0,r5
@@ -28175,36 +28175,36 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r5,r0[8]
+	ld.w	r7,r9[-56]
+	invalid
+	ld.w	lr,r4[-40]
+	ld.w	r1,r11[24]
+	ld.w	r9,r6[24]
+	ld.w	r0,r2[8]
+	ld.w	r2,r0[-36]
+	ld.w	r5,r3[-36]
+	ld.w	r5,r6[-40]
+	ld.w	r4,r7[28]
+	invalid
+	ld.w	r0,r9[-56]
+	ld.w	pc,r3[24]
+	ld.w	r0,r9[8]
 	invalid
 	invalid
+	ld.w	sp,r0[-40]
+	ld.w	r9,r1[24]
+	ld.w	r5,r3[-36]
+	ld.w	r5,r7[-36]
+	ld.w	r0,r9[-56]
+	ld.w	r2,r0[-36]
+	ld.w	r5,r3[-36]
+	ld.w	r5,r6[-40]
+	ld.w	r4,r7[28]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r0,r9[-56]
+	ld.w	pc,r3[24]
+	ld.w	r0,r9[8]
 	invalid
 	invalid
 	invalid
@@ -28212,67 +28212,39 @@ __moddi3 proc
 	mov	r0,FFFFFFA2
 	invalid
 	invalid
+	ld.w	r2,r11[-36]
+	ld.w	r4,r4[-36]
+	ld.w	r0,r2[-56]
+	ld.w	r2,r2[-36]
+	ld.w	pc,r9[24]
+	ld.w	r0,r9[0]
+	stdsp	sp[16],pc
+	stdsp	sp[208],r9
+	cp.w	r12,00000004
+	cp.w	pc,00000015
+	lddsp	pc,sp[208]
+	stdsp	sp[148],r2
+	lddsp	r3,sp[336]
+	stdsp	sp[256],r0
+	ld.w	lr,r3[24]
+	ld.w	r1,r6[-40]
+	ld.w	r3,r10[24]
+	ld.w	pc,r4[20]
+	ld.w	pc,r6[24]
+	ld.w	r0,r7[-36]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r9,r6[24]
+	ld.w	r4,r9[-36]
 	invalid
 	mov	r0,FFFFFFD2
 	invalid
+	ld.w	pc,r11[24]
+	ld.w	r4,r4[-40]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	mov	sp,FFFFFFD3
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r11,r8[20]
 	invalid
 	invalid
 	mov	sp,FFFFFFD3
@@ -28282,59 +28254,87 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r6,r7[28]
+	ld.w	r12,r0[-40]
+	ld.w	r4,r4[-40]
+	invalid
+	ld.w	r4,r12[28]
+	ld.w	lr,r2[-40]
+	ld.w	r5,r2[24]
+	ld.w	r0,r2[8]
+	ld.w	r1,r6[-40]
+	ld.w	r3,r10[24]
+	ld.w	r9,r4[24]
+	ld.w	r7,r7[24]
+	invalid
+	ld.w	r5,r8[24]
+	ld.w	r1,r9[24]
+	ld.w	pc,r10[24]
+	ld.w	r2,r9[8]
+	invalid
+	ld.w	r11,r8[20]
+	invalid
+	invalid
+	mov	sp,FFFFFFD3
+	invalid
+	invalid
+	invalid
+	invalid
+	ld.w	lr,r3[24]
+	ld.w	r1,r6[-40]
+	ld.w	r3,r10[24]
+	ld.w	lr,r4[8]
+	ld.w	r0,r1[-64]
+	invalid
+	ld.w	r2,r6[-40]
+	ld.w	r9,r9[-40]
+	ld.w	r9,r7[24]
+	ld.w	r0,r10[8]
+	invalid
+	ld.w	r3,r8[28]
+	invalid
+	invalid
+	lddsp	r0,sp[192]
+	invalid
+	stdsp	sp[16],pc
+	stdsp	sp[208],r9
+	cp.w	r0,00000000
+	invalid
+	invalid
+	ld.w	lr,r2[-40]
+	ld.w	r2,r10[28]
+	ld.w	r5,r4[-40]
+	ld.w	r10,r9[-52]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r5,r6[28]
+	invalid
+	invalid
+	ld.w	r5,r1[28]
+	ld.w	r11,r1[-40]
+	ld.w	r4,r2[-36]
+	ld.w	r10,r9[-52]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r5,r6[28]
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r5,r1[28]
+	ld.w	r11,r1[-40]
+	ld.w	r4,r2[-36]
+	ld.w	r0,r9[-56]
+	ld.w	r3,r10[-36]
+	ld.w	r4,r2[-40]
 	mov	r0,FFFFFFA2
 	invalid
 	invalid
-	invalid
+	ld.w	r5,r6[28]
 	invalid
 	invalid
 	mov	r6,00000026
@@ -28342,231 +28342,231 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
+	ld.w	r1,r6[-40]
+	ld.w	r0,r12[8]
+	ld.w	r5,r1[28]
+	ld.w	r11,r1[-40]
+	ld.w	r4,r2[-36]
 	invalid
+	ld.w	lr,r2[-40]
+	ld.w	r4,r3[-36]
+	ld.w	r10,r4[12]
 	invalid
+	ld.w	r5,r6[28]
 	invalid
+	lddsp	r12,sp[144]
+	lddpc	r3,sp[464]
+	lddpc	r3,sp[212]
+	lddpc	r10,sp[84]
+	lddsp	r0,sp[320]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r3,pc[464]
-	lddpc	r3,pc[212]
-	lddpc	r10,pc[84]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r5,r2[-48]
+	ld.w	r7,r3[-48]
+	ld.w	r11,r5[-48]
+	ld.w	sp,r6[-48]
+	ld.w	r0,r8[20]
+	ld.w	r4,r10[20]
+	ld.w	r9,r12[-44]
+	ld.w	r10,sp[20]
 	mov	r0,00000000
 	invalid
 	invalid
 	mov	r12,00000004
-	invalid
+	ld.w	r0,r3[0]
 	invalid
 	invalid
 	mov	r12,00000014
+	ld.w	r0,r3[0]
 	invalid
 	invalid
 	invalid
+	ld.w	r0,r0[0]
+	invalid
+	ld.w	r8,r9[-40]
+	ld.w	r12,r2[-40]
+	ld.w	r0,r6[0]
+	invalid
+	ld.w	r8,r9[-40]
+	ld.w	r12,r2[-40]
+	ld.w	sp,r6[8]
+	ld.w	r12,r0[-40]
+	ld.w	r1,r11[-40]
+	ld.w	r3,r12[-36]
 	invalid
 	invalid
+	ld.w	sp,r1[-56]
+	ld.w	r1,r6[-40]
+	ld.w	r2,r12[-40]
+	ld.w	r0,r2[-64]
+	ld.w	r12,r1[-40]
+	ld.w	r3,r7[-40]
+	ld.w	r12,r0[-40]
+	ld.w	r0,r2[-64]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	mov	r5,FFFFFFA2
+	lddpc	r0,sp[320]
 	invalid
 	invalid
 	mov	r5,FFFFFFA2
-	lddpc	r0,pc[320]
+	lddpc	r10,sp[332]
 	invalid
 	invalid
-	mov	r5,FFFFFFA2
-	lddpc	r10,pc[332]
 	invalid
 	invalid
 	invalid
+	ld.w	pc,r2[8]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	sp,r6[-56]
 	invalid
 	invalid
 	invalid
+	ld.w	lr,r4[-40]
+	ld.w	r1,r11[24]
+	ld.w	r9,r6[24]
+	ld.w	r0,r2[8]
+	ld.w	r5,r9[-36]
+	ld.w	r6,r3[24]
+	ld.w	r8,r4[-36]
 	invalid
+	ld.w	r0,r7[8]
 	invalid
 	invalid
 	invalid
+	ld.w	r7,r9[24]
+	ld.w	sp,r10[-40]
+	ld.w	lr,r2[-40]
+	ld.w	r0,r10[8]
+	ld.w	r5,r0[8]
+	ld.w	r7,r9[-56]
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
+	ld.w	r7,r9[24]
+	ld.w	sp,r10[-40]
+	ld.w	lr,r2[-40]
+	ld.w	r0,r10[8]
+	ld.w	r5,r0[8]
+	ld.w	r7,r9[-56]
 	invalid
+	ld.w	pc,r7[-40]
 	invalid
+	ld.w	r2,r0[-36]
+	ld.w	r5,r3[-40]
 	invalid
 	invalid
+	ld.w	lr,r4[-40]
+	ld.w	r1,r11[24]
+	ld.w	r9,r6[24]
+	ld.w	r0,r2[8]
 	invalid
 	invalid
 	invalid
+	ld.w	r7,r9[24]
+	ld.w	sp,r10[-40]
+	ld.w	lr,r2[-40]
+	ld.w	r0,r10[8]
+	ld.w	r5,r0[8]
+	ld.w	r7,r9[-56]
 	invalid
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r3,r12[28]
+	ld.w	r2,r10[28]
+	ld.w	pc,r10[24]
+	ld.w	lr,r6[8]
+	ld.w	r0,r1[-64]
 	invalid
 	mov	r0,00000002
 	mov	sp,FFFFFFC3
 	invalid
+	ld.w	r2,r10[28]
+	ld.w	pc,r10[24]
+	ld.w	pc,r6[20]
+	ld.w	r1,r1[24]
+	ld.w	r5,r9[-40]
 	invalid
 	invalid
+	ld.w	r4,r9[-36]
+	ld.w	r4,r9[28]
+	ld.w	r12,r7[-40]
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r3,r0[-36]
+	ld.w	r0,r2[-56]
 	mov	sp,FFFFFFC3
 	invalid
 	mov	r0,00000060
 	invalid
+	lddsp	r8,sp[208]
+	lddsp	r2,sp[84]
+	stdsp	sp[208],r5
+	stdsp	sp[272],r1
+	lddpc	r9,sp[272]
+	lddsp	r3,sp[84]
+	lddsp	r9,sp[272]
+	stdsp	sp[128],r0
+	invalid
+	ld.w	r2,r9[-36]
+	invalid
+	ld.w	r2,r4[-40]
 	invalid
 	invalid
-	invalid
-	invalid
-	lddpc	r9,pc[272]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ld.w	r8,r1[-40]
+	ld.w	r2,r0[-36]
+	ld.w	r5,r9[-40]
+	ld.w	lr,r10[8]
+	ld.w	r12,r0[-40]
+	ld.w	r1,r4[-40]
+	ld.w	r0,r9[-64]
 	invalid
 	invalid
 	mov	r3,00000007
 	invalid
 	mov	r0,00000053
+	ld.w	r0,r9[-64]
 	invalid
+	lddsp	r3,sp[84]
+	lddsp	r9,sp[208]
+	lddpc	r0,sp[64]
 	invalid
+	lddsp	r5,sp[340]
+	lddsp	sp,sp[200]
+	lddpc	r0,sp[148]
 	invalid
-	invalid
-	lddpc	r0,pc[64]
-	invalid
-	invalid
-	invalid
-	lddpc	r0,pc[148]
-	invalid
-	invalid
+	lddsp	r2,sp[464]
 	mov	r3,00000023
 	mov	r2,00000013
 	invalid
+	lddsp	r2,sp[464]
+	lddpc	r0,sp[192]
+	lddsp	r5,sp[340]
+	lddsp	sp,sp[200]
+	stdsp	sp[276],r7
 	invalid
-	lddpc	r0,pc[192]
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	lddsp	r9,sp[144]
+	lddsp	r5,sp[460]
 	invalid
 	invalid
-	lddpc	r2,pc[212]
+	lddsp	r5,sp[340]
+	lddsp	sp,sp[200]
+	lddpc	r2,sp[212]
 	invalid
-	invalid
+	lddsp	r0,sp[212]
 	mov	r4,FFFFFF93
 	mov	r0,FFFFFF90
 	invalid
-	lddpc	pc,pc[144]
-	lddpc	r1,pc[16]
+	lddpc	pc,sp[144]
+	lddpc	r1,sp[16]
+	lddsp	r0,sp[128]
 	invalid
 	invalid
+	ld.w	r0,r2[0]
 	invalid
-	invalid
-	invalid
-	invalid
-	lddpc	r9,pc[264]
+	stdsp	sp[336],r12
+	lddpc	r9,sp[264]
 	invalid
