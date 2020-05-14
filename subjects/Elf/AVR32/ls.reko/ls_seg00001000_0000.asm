@@ -369,7 +369,7 @@ _start proc
 	mov	r10,sp
 	st.w	--sp,r10
 	st.w	--sp,r12
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	sub	r9,pc,0000002C
 	ld.w	r8,r8[456]
@@ -377,7 +377,7 @@ _start proc
 	mcall	r6[480]
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[52]
+	lddpc	r6,pc[52]
 	rsub	r6,pc
 	ld.w	r8,r8[388]
 	ld.ub	r8[0]
@@ -399,7 +399,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[28]
+	lddpc	r6,pc[28]
 	rsub	r6,pc
 	ld.w	r12,r12[1312]
 	ld.w	r8,r12[0]
@@ -435,7 +435,7 @@ _start proc
 	invalid
 	popm	pc
 	pushm	r4-r7,lr
-	lddpc	r6,sp[24]
+	lddpc	r6,pc[24]
 	rsub	r6,pc
 	mov	r9,r11
 	invalid
@@ -461,7 +461,7 @@ _start proc
 	invalid
 	popm	pc
 	pushm	r4-r7,lr
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	ld.w	r9,r6[8]
 	ld.w	r8,r9[0]
@@ -472,7 +472,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[24]
+	lddpc	r6,pc[24]
 	rsub	r6,pc
 	ld.w	r9,r6[8]
 	ld.w	r8,r9[0]
@@ -485,7 +485,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[32]
+	lddpc	r6,pc[32]
 	rsub	r6,pc
 	ld.w	r9,r6[8]
 	cp.w	r12,00000000
@@ -502,7 +502,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[36]
+	lddpc	r6,pc[36]
 	rsub	r6,pc
 	ld.w	r2,r11[-36]
 	ld.w	r3,r11[-40]
@@ -521,7 +521,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[36]
+	lddpc	r6,pc[36]
 	rsub	r6,pc
 	ld.w	r2,r11[-44]
 	ld.w	r3,r11[-48]
@@ -540,7 +540,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[36]
+	lddpc	r6,pc[36]
 	rsub	r6,pc
 	ld.w	r2,r11[-52]
 	ld.w	r3,r11[-56]
@@ -581,7 +581,7 @@ _start proc
 	icall	r10
 	popm	pc
 	pushm	r4-r7,lr
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	sub	r10,pc,FFFFEEC2
 	invalid
@@ -589,14 +589,14 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[12]
+	lddpc	r6,pc[12]
 	rsub	r6,pc
 	ld.w	r10,r6[24]
 	invalid
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	mov	r8,r11
 	sub	r10,pc,FFFFEEE8
@@ -606,7 +606,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	mov	r8,r11
 	ld.w	r10,r6[24]
@@ -617,7 +617,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	sub	r10,pc,FFFFEF16
 	invalid
@@ -625,14 +625,14 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[12]
+	lddpc	r6,pc[12]
 	rsub	r6,pc
 	ld.w	r10,r6[24]
 	invalid
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	mov	r8,r11
 	sub	r10,pc,FFFFEF3C
@@ -642,7 +642,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	mov	r8,r11
 	ld.w	r10,r6[24]
@@ -653,7 +653,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	sub	r10,pc,FFFFEF6A
 	invalid
@@ -661,14 +661,14 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[12]
+	lddpc	r6,pc[12]
 	rsub	r6,pc
 	ld.w	r10,r6[24]
 	invalid
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	mov	r8,r11
 	sub	r10,pc,FFFFEF90
@@ -678,7 +678,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	mov	r8,r11
 	ld.w	r10,r6[24]
@@ -689,7 +689,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	sub	r10,pc,FFFFEFBE
 	invalid
@@ -697,14 +697,14 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[12]
+	lddpc	r6,pc[12]
 	rsub	r6,pc
 	ld.w	r10,r6[24]
 	invalid
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	mov	r8,r11
 	sub	r10,pc,FFFFEFE4
@@ -714,7 +714,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	mov	r8,r11
 	ld.w	r10,r6[24]
@@ -725,7 +725,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	sub	r10,pc,FFFFF012
 	invalid
@@ -733,14 +733,14 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[12]
+	lddpc	r6,pc[12]
 	rsub	r6,pc
 	ld.w	r10,r6[24]
 	invalid
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	mov	r8,r11
 	sub	r10,pc,FFFFF038
@@ -750,7 +750,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	mov	r8,r11
 	ld.w	r10,r6[24]
@@ -761,7 +761,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[32]
+	lddpc	r6,pc[32]
 	rsub	r6,pc
 	ld.w	r8,r6[8]
 	mov	r10,00000000
@@ -778,7 +778,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[188]
+	lddpc	r6,pc[188]
 	rsub	r6,pc
 	cp.w	r12,00000000
 	breq	00002A88
@@ -862,7 +862,7 @@ _start proc
 	popm	r4-r7,pc,r12=0
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[36]
+	lddpc	r6,pc[36]
 	rsub	r6,pc
 	mov	r4,r12
 	ld.w	r7,r7[328]
@@ -988,7 +988,7 @@ _start proc
 	mcall	r6[276]
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[72]
+	lddpc	r6,pc[72]
 	rsub	r6,pc
 	mov	r7,00000000
 	invalid
@@ -1019,7 +1019,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[28]
+	lddpc	r6,pc[28]
 	rsub	r6,pc
 	mov	r5,r12
 	ld.w	r12,r12[0]
@@ -1031,13 +1031,13 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[12]
+	lddpc	r6,pc[12]
 	rsub	r6,pc
 	mcall	r6[12]
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[120]
+	lddpc	r6,pc[120]
 	rsub	r6,pc
 	mov	r7,r12
 	mov	r5,r11
@@ -1089,7 +1089,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[56]
+	lddpc	r6,pc[56]
 	rsub	r6,pc
 	invalid
 	invalid
@@ -1115,7 +1115,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[132]
+	lddpc	r6,pc[132]
 	rsub	r6,pc
 	ld.w	r9,r11[12]
 	ld.w	r5,r11[8]
@@ -1171,7 +1171,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[348]
+	lddpc	r6,pc[348]
 	rsub	r6,pc
 	mov	r5,00000000
 	mov	r3,r11
@@ -1378,7 +1378,7 @@ _start proc
 	st.w	r1[0],r5
 	popm	r0-r3,r4-r7,pc
 	pushm	r4-r7,lr
-	lddpc	r6,sp[28]
+	lddpc	r6,pc[28]
 	rsub	r6,pc
 	mov	r5,r12
 	mov	r12,00000008
@@ -1391,7 +1391,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[32]
+	lddpc	r6,pc[32]
 	rsub	r6,pc
 	mov	r9,FFFFFFFF
 	invalid
@@ -1404,7 +1404,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[68]
+	lddpc	r6,pc[68]
 	rsub	r6,pc
 	ld.w	r8,r6[-56]
 	invalid
@@ -1432,7 +1432,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[68]
+	lddpc	r6,pc[68]
 	rsub	r6,pc
 	mov	r4,r12
 	mov	r7,r11
@@ -1462,7 +1462,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[44]
+	lddpc	r6,pc[44]
 	rsub	r6,pc
 	mov	r2,r12
 	mov	r12,r10
@@ -1481,7 +1481,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[116]
+	lddpc	r6,pc[116]
 	rsub	r6,pc
 	mov	r5,r12
 	mov	r7,r10
@@ -1531,7 +1531,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[32]
+	lddpc	r6,pc[32]
 	rsub	r6,pc
 	mov	r9,FFFFFFFF
 	invalid
@@ -1544,7 +1544,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[68]
+	lddpc	r6,pc[68]
 	rsub	r6,pc
 	mov	r3,r12
 	ld.w	r12,r12[0]
@@ -1572,7 +1572,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	mov	r8,r11
 	ld.w	r10,r6[24]
@@ -1583,7 +1583,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	mov	r8,r11
 	sub	r10,pc,FFFFF8B0
@@ -1593,14 +1593,14 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[12]
+	lddpc	r6,pc[12]
 	rsub	r6,pc
 	ld.w	r10,r6[24]
 	invalid
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	sub	r10,pc,FFFFF8D6
 	invalid
@@ -1609,7 +1609,7 @@ _start proc
 	invalid
 	pushm	r4-r7,lr
 	invalid
-	lddpc	r6,sp[52]
+	lddpc	r6,pc[52]
 	rsub	r6,pc
 	mov	r8,r11
 	cp.w	r12,00000000
@@ -1632,7 +1632,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[36]
+	lddpc	r6,pc[36]
 	rsub	r6,pc
 	ld.w	r8,r6[8]
 	mov	r7,r12
@@ -1650,7 +1650,7 @@ _start proc
 	pushm	r0-r3,r4-r7,lr
 	mov	r7,sp
 	sub	sp,sp,000002B0
-	lddpc	r6,sp[304]
+	lddpc	r6,pc[304]
 	rsub	r6,pc
 	invalid
 	invalid
@@ -2211,7 +2211,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[52]
+	lddpc	r6,pc[52]
 	rsub	r6,pc
 	mov	r5,r11
 	mov	r7,r12
@@ -2233,7 +2233,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[172]
+	lddpc	r6,pc[172]
 	rsub	r6,pc
 	ld.w	r7,r6[8]
 	ld.w	r8,r7[12]
@@ -2293,7 +2293,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[28]
+	lddpc	r6,pc[28]
 	rsub	r6,pc
 	mov	r3,r12
 	mov	r5,r11
@@ -2306,7 +2306,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	ld.w	r11,r11[0]
 	ld.w	r12,r12[0]
@@ -2314,7 +2314,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	mov	r8,r11
 	mov	r11,r12
@@ -2323,14 +2323,14 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[12]
+	lddpc	r6,pc[12]
 	rsub	r6,pc
 	invalid
 	popm	r4-r7,pc
 	invalid
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[228]
+	lddpc	r6,pc[228]
 	rsub	r6,pc
 	mov	r3,r12
 	mov	r1,r11
@@ -2425,7 +2425,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[48]
+	lddpc	r6,pc[48]
 	rsub	r6,pc
 	ld.w	r10,r6[8]
 	mov	r8,00000000
@@ -2446,7 +2446,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[40]
+	lddpc	r6,pc[40]
 	rsub	r6,pc
 	ld.w	r7,r6[-56]
 	ld.w	r8,r7[20]
@@ -2464,7 +2464,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	ld.w	r5,r6[-56]
 	mov	r12,r5
@@ -2474,7 +2474,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[36]
+	lddpc	r6,pc[36]
 	rsub	r6,pc
 	mov	r5,r11
 	mov	r7,r12
@@ -2492,7 +2492,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[52]
+	lddpc	r6,pc[52]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -2517,7 +2517,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[52]
+	lddpc	r6,pc[52]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -2544,7 +2544,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[44]
+	lddpc	r6,pc[44]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -2567,7 +2567,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[56]
+	lddpc	r6,pc[56]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -2595,7 +2595,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[56]
+	lddpc	r6,pc[56]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -2622,7 +2622,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[48]
+	lddpc	r6,pc[48]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -2646,7 +2646,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[52]
+	lddpc	r6,pc[52]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -2671,7 +2671,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[56]
+	lddpc	r6,pc[56]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -2699,7 +2699,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[56]
+	lddpc	r6,pc[56]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -2726,7 +2726,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[48]
+	lddpc	r6,pc[48]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -2750,7 +2750,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[52]
+	lddpc	r6,pc[52]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -2775,7 +2775,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[56]
+	lddpc	r6,pc[56]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -2803,7 +2803,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[56]
+	lddpc	r6,pc[56]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -2830,7 +2830,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[48]
+	lddpc	r6,pc[48]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -2854,7 +2854,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[52]
+	lddpc	r6,pc[52]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -2879,7 +2879,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[56]
+	lddpc	r6,pc[56]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -2907,7 +2907,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[56]
+	lddpc	r6,pc[56]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -2934,7 +2934,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[48]
+	lddpc	r6,pc[48]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -2958,7 +2958,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[52]
+	lddpc	r6,pc[52]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -2983,7 +2983,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[56]
+	lddpc	r6,pc[56]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -3011,7 +3011,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[56]
+	lddpc	r6,pc[56]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -3038,7 +3038,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[48]
+	lddpc	r6,pc[48]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -3062,7 +3062,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[52]
+	lddpc	r6,pc[52]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -3087,7 +3087,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[56]
+	lddpc	r6,pc[56]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -3115,7 +3115,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[56]
+	lddpc	r6,pc[56]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -3142,7 +3142,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[48]
+	lddpc	r6,pc[48]
 	rsub	r6,pc
 	ld.w	r8,r11[-24]
 	ld.w	r10,r12[-24]
@@ -3168,7 +3168,7 @@ _start proc
 	pushm	r0-r3,r4-r7,lr
 	mov	r7,sp
 	sub	sp,sp,00001018
-	lddpc	r6,sp[344]
+	lddpc	r6,pc[344]
 	rsub	r6,pc
 	sub	r2,r7,0000100C
 	invalid
@@ -3346,7 +3346,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,00000290
-	lddpc	r6,sp[220]
+	lddpc	r6,pc[220]
 	rsub	r6,pc
 	ld.w	r10,r6[8]
 	mov	r8,00000000
@@ -3431,7 +3431,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[288]
+	lddpc	r6,pc[288]
 	rsub	r6,pc
 	ld.w	r7,r6[8]
 	stdsp	sp[0],r12
@@ -3580,7 +3580,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,00000080
-	lddpc	r6,sp[276]
+	lddpc	r6,pc[276]
 	rsub	r6,pc
 	ld.w	lr,r6[8]
 	sub	r5,sp,FFFFFF5C
@@ -3823,7 +3823,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,0000028C
-	lddpc	r6,sp[252]
+	lddpc	r6,pc[252]
 	rsub	r6,pc
 	ld.w	r5,r6[8]
 	mov	r8,00000000
@@ -3927,7 +3927,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,000014F4
-	lddpc	r6,sp[288]
+	lddpc	r6,pc[288]
 	rsub	r6,pc
 	ld.w	r8,r6[8]
 	mov	r10,00000000
@@ -4486,7 +4486,7 @@ _start proc
 	brge	00004F1E
 	sub	r12,r5,FFFFFE18
 	invalid
-	lddpc	r8,sp[40]
+	lddpc	r8,pc[40]
 	ld.w	r9,r9[488]
 	invalid
 	invalid
@@ -4686,7 +4686,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,000002A0
-	lddpc	r6,sp[196]
+	lddpc	r6,pc[196]
 	rsub	r6,pc
 	stdsp	sp[4],r11
 	stdsp	sp[0],r10
@@ -5084,7 +5084,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,00000098
-	lddpc	r6,sp[252]
+	lddpc	r6,pc[252]
 	rsub	r6,pc
 	stdsp	sp[0],r11
 	mov	r0,r12
@@ -5104,7 +5104,7 @@ _start proc
 	ld.w	r5,r8[0]
 	mov	r8,00000001
 	invalid
-	lddpc	r8,sp[200]
+	lddpc	r8,pc[200]
 	invalid
 	mov	r8,FFFFFFFF
 	invalid
@@ -6185,7 +6185,7 @@ _start proc
 	mov	r11,r5
 	sub	r12,sp,FFFFFFF8
 	mcall	r6[36]
-	lddpc	r8,sp[88]
+	lddpc	r8,pc[88]
 	stdsp	sp[136],r8
 	ld.w	r3,r2[0]
 	mov	r12,r5
@@ -6676,7 +6676,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[136]
+	lddpc	r6,pc[136]
 	rsub	r6,pc
 	sub	r9,r11,FFFFFFFF
 	invalid
@@ -6685,7 +6685,7 @@ _start proc
 	invalid
 	mov	r0,r12
 	invalid
-	lddpc	r7,sp[112]
+	lddpc	r7,pc[112]
 	mov	r12,r7
 	mcall	r6[32]
 	mov	r4,r12
@@ -6714,12 +6714,12 @@ _start proc
 	invalid
 	mov	r12,r4
 	mcall	r6[12]
-	lddpc	r8,sp[44]
+	lddpc	r8,pc[44]
 	cp.w	r7,r8
 	invalid
 	invalid
 	invalid
-	lddpc	r8,sp[36]
+	lddpc	r8,pc[36]
 	cp.w	r7,r8
 	invalid
 	mcall	r6[28]
@@ -6734,7 +6734,7 @@ _start proc
 	invalid
 	invalid
 	invalid
-	lddpc	r6,sp[112]
+	lddpc	r6,pc[112]
 	rsub	r6,pc
 	mov	r5,00000000
 	mov	r7,r12
@@ -6786,7 +6786,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[52]
+	lddpc	r6,pc[52]
 	rsub	r6,pc
 	mov	r7,r12
 	invalid
@@ -6808,7 +6808,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[276]
+	lddpc	r6,pc[276]
 	rsub	r6,pc
 	mov	r2,r12
 	mov	r4,r11
@@ -6976,7 +6976,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[264]
+	lddpc	r6,pc[264]
 	rsub	r6,pc
 	mov	r7,r12
 	mov	r2,r10
@@ -7079,7 +7079,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[24]
+	lddpc	r6,pc[24]
 	rsub	r6,pc
 	mov	r5,r11
 	mov	r3,r12
@@ -7091,7 +7091,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[88]
+	lddpc	r6,pc[88]
 	rsub	r6,pc
 	mov	r11,0000002F
 	mov	r5,r12
@@ -7121,7 +7121,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[56]
+	lddpc	r6,pc[56]
 	rsub	r6,pc
 	ld.w	r12,r12[904]
 	ld.w	r8,r8[900]
@@ -7142,7 +7142,7 @@ _start proc
 	invalid
 	pushm	r4-r7,lr
 	invalid
-	lddpc	r6,sp[256]
+	lddpc	r6,pc[256]
 	rsub	r6,pc
 	mov	r7,r12
 	mov	r5,r11
@@ -7237,7 +7237,7 @@ _start proc
 	invalid
 	pushm	r4-r7,lr
 	invalid
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	sub	r8,sp,FFFFFFE8
 	stdsp	sp[0],r8
@@ -7266,11 +7266,11 @@ _start proc
 	ld.w	r9,r10[24]
 	ld.w	lr,r7[-40]
 	invalid
-	lddpc	lr,sp[88]
+	lddpc	lr,pc[88]
 	ld.w	lr,r1[-56]
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[32]
+	lddpc	r6,pc[32]
 	rsub	r6,pc
 	ld.w	r8,r8[192]
 	ld.w	r10,r10[824]
@@ -7282,7 +7282,7 @@ _start proc
 	mcall	r6[76]
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	mov	r12,00000001
 	invalid
@@ -7290,7 +7290,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[44]
+	lddpc	r6,pc[44]
 	rsub	r6,pc
 	mov	r2,r12
 	mov	r3,r9
@@ -7312,7 +7312,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[132]
+	lddpc	r6,pc[132]
 	rsub	r6,pc
 	ld.w	r8,r8[148]
 	mov	r5,r12
@@ -7367,7 +7367,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[60]
+	lddpc	r6,pc[60]
 	rsub	r6,pc
 	ld.w	r8,r8[804]
 	ld.w	r5,r5[800]
@@ -7393,7 +7393,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[120]
+	lddpc	r6,pc[120]
 	rsub	r6,pc
 	mov	r5,r11
 	mov	r1,r10
@@ -7448,7 +7448,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[52]
+	lddpc	r6,pc[52]
 	rsub	r6,pc
 	mov	r7,r11
 	mov	r2,r10
@@ -7475,7 +7475,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[60]
+	lddpc	r6,pc[60]
 	rsub	r6,pc
 	invalid
 	invalid
@@ -7504,7 +7504,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[40]
+	lddpc	r6,pc[40]
 	rsub	r6,pc
 	mov	r5,r12
 	mcall	r6[16]
@@ -7522,7 +7522,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[68]
+	lddpc	r6,pc[68]
 	rsub	r6,pc
 	mov	r5,r12
 	invalid
@@ -7550,7 +7550,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	ld.w	r8,r8[264]
 	st.w	r8[0],r12
@@ -7558,7 +7558,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	ld.w	r8,r8[264]
 	st.b	r8[-4],r12
@@ -7566,7 +7566,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[132]
+	lddpc	r6,pc[132]
 	rsub	r6,pc
 	ld.w	r8,r6[40]
 	ld.w	r12,r8[0]
@@ -7722,7 +7722,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[12]
+	lddpc	r6,pc[12]
 	rsub	r6,pc
 	ld.w	r12,r12[16]
 	invalid
@@ -7730,7 +7730,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[140]
+	lddpc	r6,pc[140]
 	rsub	r6,pc
 	mov	r0,r11
 	stdsp	sp[0],r10
@@ -7790,7 +7790,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	invalid
 	brne	000071E2
@@ -7798,7 +7798,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[168]
+	lddpc	r6,pc[168]
 	rsub	r6,pc
 	ld.w	r3,r3[164]
 	mov	r4,r12
@@ -7864,7 +7864,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[192]
+	lddpc	r6,pc[192]
 	rsub	r6,pc
 	ld.w	r3,r3[164]
 	mov	r4,r12
@@ -7944,7 +7944,7 @@ _start proc
 	pushm	r0-r3,r4-r7,lr
 	mov	r7,sp
 	invalid
-	lddpc	r6,sp[368]
+	lddpc	r6,pc[368]
 	rsub	r6,pc
 	invalid
 	mov	r2,r12
@@ -8033,7 +8033,7 @@ _start proc
 	invalid
 	invalid
 	sub	r12,r8,FFFFFFFF
-	lddpc	r8,sp[116]
+	lddpc	r8,pc[116]
 	invalid
 	sub	r9,r10,FFFFFFFC
 	cp.w	r12,r8
@@ -8078,7 +8078,7 @@ _start proc
 	ld.w	r8,r0++
 	invalid
 	sub	r9,r8,FFFFFFFF
-	lddpc	r8,sp[332]
+	lddpc	r8,pc[332]
 	invalid
 	sub	r10,r11,FFFFFFFC
 	cp.w	r9,r8
@@ -8307,7 +8307,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,00000520
-	lddpc	r6,sp[344]
+	lddpc	r6,pc[344]
 	rsub	r6,pc
 	mov	r0,r9
 	mov	r1,r8
@@ -8888,7 +8888,7 @@ _start proc
 	pushm	r0-r3,r4-r7,lr
 	mov	r7,sp
 	invalid
-	lddpc	r6,sp[368]
+	lddpc	r6,pc[368]
 	rsub	r6,pc
 	invalid
 	mov	r2,r12
@@ -9253,7 +9253,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,0000011C
-	lddpc	r6,sp[352]
+	lddpc	r6,pc[352]
 	rsub	r6,pc
 	mov	r0,r9
 	mov	r1,r8
@@ -9894,7 +9894,7 @@ _start proc
 	pushm	r0-r3,r4-r7,lr
 	mov	r7,sp
 	invalid
-	lddpc	r6,sp[320]
+	lddpc	r6,pc[320]
 	rsub	r6,pc
 	invalid
 	invalid
@@ -9943,7 +9943,7 @@ _start proc
 	invalid
 	cp.w	r5,r9
 	invalid
-	lddpc	r8,sp[168]
+	lddpc	r8,pc[168]
 	cp.w	r9,r8
 	invalid
 	ld.w	r12,r12[-20]
@@ -10037,7 +10037,7 @@ _start proc
 	ld.w	r0,r4[0]
 	pushm	r4-r7,lr
 	invalid
-	lddpc	r6,sp[40]
+	lddpc	r6,pc[40]
 	rsub	r6,pc
 	mov	r7,r12
 	mov	r11,r12
@@ -10058,7 +10058,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[88]
+	lddpc	r6,pc[88]
 	rsub	r6,pc
 	ld.w	r5,r5[216]
 	sub	r4,sp,FFFFFFF0
@@ -10089,7 +10089,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[88]
+	lddpc	r6,pc[88]
 	rsub	r6,pc
 	ld.w	r5,r5[216]
 	sub	r4,sp,FFFFFFF0
@@ -10119,7 +10119,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[28]
+	lddpc	r6,pc[28]
 	rsub	r6,pc
 	mcall	r6[408]
 	ld.w	r11,r11[216]
@@ -10131,7 +10131,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[28]
+	lddpc	r6,pc[28]
 	rsub	r6,pc
 	mcall	r6[472]
 	ld.w	r11,r11[216]
@@ -10143,7 +10143,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[44]
+	lddpc	r6,pc[44]
 	rsub	r6,pc
 	mov	r11,00000000
 	mcall	r6[292]
@@ -10167,7 +10167,7 @@ _start proc
 	ld.w	r12,r12[16]
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[52]
+	lddpc	r6,pc[52]
 	rsub	r6,pc
 	ld.w	r11,r12[4]
 	ld.w	r12,r12[0]
@@ -10287,7 +10287,7 @@ _start proc
 	brne	00008BAA
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[24]
+	lddpc	r6,pc[24]
 	rsub	r6,pc
 	sub	r8,pc,FFFFF994
 	invalid
@@ -10298,21 +10298,21 @@ _start proc
 	invalid
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[108]
+	lddpc	r6,pc[108]
 	rsub	r6,pc
 	ld.w	r5,r12[20]
 	mov	r2,r12
 	ld.w	r4,r5[8]
-	lddpc	r12,sp[100]
+	lddpc	r12,pc[100]
 	mov	r11,r4
 	invalid
 	breq	00008C40
-	lddpc	r11,sp[96]
+	lddpc	r11,pc[96]
 	mov	r12,r4
 	invalid
 	breq	00008C40
 	ld.w	r11,r5[12]
-	lddpc	r12,sp[88]
+	lddpc	r12,pc[88]
 	invalid
 	breq	00008C40
 	ld.w	r7,r5[0]
@@ -10320,7 +10320,7 @@ _start proc
 	mov	r12,r7
 	invalid
 	breq	00008C40
-	lddpc	r11,sp[60]
+	lddpc	r11,pc[60]
 	mov	r12,r7
 	invalid
 	ld.w	r7,r5[4]
@@ -10328,7 +10328,7 @@ _start proc
 	mov	r3,r12
 	invalid
 	breq	00008C40
-	lddpc	r12,sp[52]
+	lddpc	r12,pc[52]
 	mov	r11,r7
 	invalid
 	breq	00008C40
@@ -10389,7 +10389,7 @@ _start proc
 	st.w	r4[12],r8
 	popm	r4-r7,pc
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[124]
+	lddpc	r6,pc[124]
 	rsub	r6,pc
 	ld.w	r8,r12[24]
 	mov	r3,r11
@@ -10451,7 +10451,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[80]
+	lddpc	r6,pc[80]
 	rsub	r6,pc
 	mov	r7,r11
 	ld.w	r8,r12[24]
@@ -10490,7 +10490,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[40]
+	lddpc	r6,pc[40]
 	rsub	r6,pc
 	ld.w	r8,r12[16]
 	cp.w	r8,00000000
@@ -10510,7 +10510,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[68]
+	lddpc	r6,pc[68]
 	rsub	r6,pc
 	ld.w	r8,r12[24]
 	mov	r4,r11
@@ -10543,7 +10543,7 @@ _start proc
 	popm	r4-r7,pc,r12=0
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[28]
+	lddpc	r6,pc[28]
 	rsub	r6,pc
 	mov	r9,r12
 	ld.w	r12,r12[36]
@@ -10557,7 +10557,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[112]
+	lddpc	r6,pc[112]
 	rsub	r6,pc
 	ld.w	r8,r12[32]
 	mov	r7,r12
@@ -10610,7 +10610,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[212]
+	lddpc	r6,pc[212]
 	rsub	r6,pc
 	mov	r1,r10
 	mov	r4,r12
@@ -10641,14 +10641,14 @@ _start proc
 	invalid
 	ld.w	r11,r5[8]
 	invalid
-	lddpc	r11,sp[140]
+	lddpc	r11,pc[140]
 	mov	r5,r12
 	invalid
 	brne	00008F50
 	mov	r12,r5
 	invalid
 	mov	r4,r12
-	lddpc	r8,sp[124]
+	lddpc	r8,pc[124]
 	cp.w	r4,r8
 	invalid
 	cp.w	r4,00000009
@@ -10671,7 +10671,7 @@ _start proc
 	invalid
 	cp.w	r9,00000000
 	breq	00008EFE
-	lddpc	r8,sp[64]
+	lddpc	r8,pc[64]
 	st.w	r7[8],r12
 	cp.w	r12,r8
 	invalid
@@ -10696,11 +10696,11 @@ _start proc
 	mov	r12,r3
 	popm	r0-r3,r4-r7,pc
 	invalid
-	lddpc	r0,sp[480]
+	lddpc	r0,pc[480]
 	invalid
 	ld.ub	pc[-1]
 	invalid
-	lddpc	r6,sp[176]
+	lddpc	r6,pc[176]
 	rsub	r6,pc
 	mov	r3,r12
 	ld.w	r8,r3[32]
@@ -10786,7 +10786,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[156]
+	lddpc	r6,pc[156]
 	rsub	r6,pc
 	mov	r9,00000001
 	mov	r10,sp
@@ -10853,7 +10853,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[216]
+	lddpc	r6,pc[216]
 	rsub	r6,pc
 	mov	r2,r11
 	mov	r7,r12
@@ -10928,7 +10928,7 @@ _start proc
 	invalid
 	mov	r11,r0
 	invalid
-	lddpc	r11,sp[40]
+	lddpc	r11,pc[40]
 	mov	r5,r12
 	invalid
 	brne	00009196
@@ -10944,10 +10944,10 @@ _start proc
 	invalid
 	popm	r0-r3,r4-r7,pc
 	invalid
-	lddpc	r0,sp[480]
+	lddpc	r0,pc[480]
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[132]
+	lddpc	r6,pc[132]
 	rsub	r6,pc
 	mov	r1,r11
 	mov	r5,r12
@@ -11010,7 +11010,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[96]
+	lddpc	r6,pc[96]
 	rsub	r6,pc
 	mov	r7,r12
 	mov	r4,r10
@@ -11054,7 +11054,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[32]
+	lddpc	r6,pc[32]
 	rsub	r6,pc
 	ld.w	r12,r12[748]
 	mcall	r6[56]
@@ -11068,7 +11068,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[216]
+	lddpc	r6,pc[216]
 	rsub	r6,pc
 	mov	r7,r12
 	mov	r2,r11
@@ -11158,7 +11158,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[344]
+	lddpc	r6,pc[344]
 	rsub	r6,pc
 	sub	lr,sp,FFFFFF64
 	stdsp	sp[20],r9
@@ -11747,13 +11747,13 @@ _start proc
 	invalid
 	mov	r0,r0
 	invalid
-	lddpc	r7,sp[336]
+	lddpc	r7,pc[336]
 	stdsp	sp[276],r0
 	lddsp	r10,sp[340]
 	cp.w	r0,00000010
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[144]
+	lddpc	r6,pc[144]
 	rsub	r6,pc
 	ld.w	r8,r6[-20]
 	mov	r5,r12
@@ -11814,7 +11814,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[104]
+	lddpc	r6,pc[104]
 	rsub	r6,pc
 	ld.w	r8,r6[-20]
 	mov	r4,r12
@@ -11858,7 +11858,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[144]
+	lddpc	r6,pc[144]
 	rsub	r6,pc
 	ld.w	r8,r6[-20]
 	mov	r5,r12
@@ -11919,7 +11919,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[104]
+	lddpc	r6,pc[104]
 	rsub	r6,pc
 	ld.w	r8,r6[-20]
 	mov	r4,r12
@@ -11963,7 +11963,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[116]
+	lddpc	r6,pc[116]
 	rsub	r6,pc
 	sub	r7,r12,FFFFFFEC
 	mov	r8,00000000
@@ -12016,7 +12016,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[292]
+	lddpc	r6,pc[292]
 	rsub	r6,pc
 	stdsp	sp[12],r11
 	stdsp	sp[8],r10
@@ -12143,7 +12143,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	mov	r9,r10
 	invalid
@@ -12151,7 +12151,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	mov	r10,r11
 	mov	r11,00000006
@@ -12159,7 +12159,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	mov	r11,r12
 	mov	r12,00000000
@@ -12168,7 +12168,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	ld.w	r8,r6[-36]
 	cp.w	r12,00000000
@@ -12178,7 +12178,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	ld.w	r8,r6[-36]
 	cp.w	r12,00000000
@@ -12188,7 +12188,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[56]
+	lddpc	r6,pc[56]
 	rsub	r6,pc
 	ld.w	r8,r6[-36]
 	invalid
@@ -12208,7 +12208,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[24]
+	lddpc	r6,pc[24]
 	rsub	r6,pc
 	ld.w	r8,r6[-36]
 	cp.w	r12,00000000
@@ -12221,7 +12221,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[64]
+	lddpc	r6,pc[64]
 	rsub	r6,pc
 	mov	r8,00000000
 	mov	r5,r12
@@ -12245,7 +12245,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[96]
+	lddpc	r6,pc[96]
 	rsub	r6,pc
 	ld.w	r8,r8[212]
 	mov	r4,00000001
@@ -12283,14 +12283,14 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[12]
+	lddpc	r6,pc[12]
 	rsub	r6,pc
 	invalid
 	popm	r4-r7,pc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[288]
+	lddpc	r6,pc[288]
 	rsub	r6,pc
 	lddsp	r7,sp[96]
 	sub	lr,sp,FFFFFFA0
@@ -12642,7 +12642,7 @@ _start proc
 	invalid
 	mov	r8,00000001
 	invalid
-	lddpc	r9,sp[276]
+	lddpc	r9,pc[276]
 	invalid
 	invalid
 	cp.w	r2,00000000
@@ -13002,7 +13002,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[232]
+	lddpc	r6,pc[232]
 	rsub	r6,pc
 	stdsp	sp[4],r10
 	mov	r3,r12
@@ -13021,7 +13021,7 @@ _start proc
 	ld.w	r8,r0[0]
 	cp.w	r8,r3
 	invalid
-	lddpc	r8,sp[188]
+	lddpc	r8,pc[188]
 	sub	r4,r3,FFFFFFFF
 	cp.w	r4,r8
 	invalid
@@ -13096,7 +13096,7 @@ _start proc
 	ld.ub	pc[-1]
 	invalid
 	invalid
-	lddpc	r6,sp[68]
+	lddpc	r6,pc[68]
 	rsub	r6,pc
 	ld.w	r9,r6[-36]
 	mov	r7,r11
@@ -13124,14 +13124,14 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[12]
+	lddpc	r6,pc[12]
 	rsub	r6,pc
 	mov	r10,0000003A
 	invalid
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	mov	r10,r11
 	mov	r11,FFFFFFFF
@@ -13140,7 +13140,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[12]
+	lddpc	r6,pc[12]
 	rsub	r6,pc
 	mov	r11,0000003A
 	invalid
@@ -13148,7 +13148,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[32]
+	lddpc	r6,pc[32]
 	rsub	r6,pc
 	mov	r1,r12
 	mov	r12,sp
@@ -13165,7 +13165,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	mov	r9,r10
 	mov	r10,r11
@@ -13177,7 +13177,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[32]
+	lddpc	r6,pc[32]
 	rsub	r6,pc
 	mov	r2,r12
 	mov	r12,sp
@@ -13194,7 +13194,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	mov	r10,r11
 	mov	r11,r12
@@ -13203,14 +13203,14 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[12]
+	lddpc	r6,pc[12]
 	rsub	r6,pc
 	ld.w	r9,r6[-36]
 	invalid
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	mov	r10,r11
 	mov	r11,r12
@@ -13219,7 +13219,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	ld.w	r9,r6[-36]
 	mov	r10,FFFFFFFF
@@ -13228,7 +13228,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	mov	r11,r12
 	mov	r12,00000000
@@ -13238,7 +13238,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[112]
+	lddpc	r6,pc[112]
 	rsub	r6,pc
 	ld.w	r8,r6[-36]
 	mov	r7,r10
@@ -13288,7 +13288,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[16]
+	lddpc	r6,pc[16]
 	rsub	r6,pc
 	mov	r9,r10
 	mov	r10,00000000
@@ -13297,7 +13297,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[64]
+	lddpc	r6,pc[64]
 	rsub	r6,pc
 	mov	r4,r12
 	ld.w	r12,r6[-36]
@@ -13325,7 +13325,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[36]
+	lddpc	r6,pc[36]
 	rsub	r6,pc
 	mov	r5,r12
 	mcall	r6[28]
@@ -13357,7 +13357,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[44]
+	lddpc	r6,pc[44]
 	rsub	r6,pc
 	mov	lr,r12
 	invalid
@@ -13377,7 +13377,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[48]
+	lddpc	r6,pc[48]
 	rsub	r6,pc
 	mov	lr,r12
 	invalid
@@ -13406,7 +13406,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,00000484
-	lddpc	r6,sp[300]
+	lddpc	r6,pc[300]
 	rsub	r6,pc
 	stdsp	sp[24],r8
 	ld.w	lr,r8[8]
@@ -13492,14 +13492,14 @@ _start proc
 	mov	r5,00000000
 	stdsp	sp[56],r5
 	invalid
-	lddpc	r8,sp[104]
+	lddpc	r8,pc[104]
 	lddsp	r4,sp[56]
 	cp.w	r4,r8
 	invalid
-	lddpc	r3,sp[100]
+	lddpc	r3,pc[100]
 	stdsp	sp[56],r3
 	invalid
-	lddpc	r8,sp[88]
+	lddpc	r8,pc[88]
 	lddsp	r2,sp[56]
 	cp.w	r2,r8
 	brne	0000AAD6
@@ -13508,7 +13508,7 @@ _start proc
 	invalid
 	cp.w	r8,00000007
 	invalid
-	lddpc	r12,sp[72]
+	lddpc	r12,pc[72]
 	stdsp	sp[56],r12
 	invalid
 	lddsp	r11,sp[56]
@@ -14702,7 +14702,7 @@ _start proc
 	invalid
 	popm	r0-r3,r4-r7,pc
 	pushm	r4-r7,lr
-	lddpc	r6,sp[28]
+	lddpc	r6,pc[28]
 	rsub	r6,pc
 	lddsp	lr,sp[20]
 	st.w	--sp,lr
@@ -14717,7 +14717,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[64]
+	lddpc	r6,pc[64]
 	rsub	r6,pc
 	sub	r7,r12,FFFFFFEC
 	mov	r8,00000000
@@ -14747,7 +14747,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,000007D4
-	lddpc	r6,sp[108]
+	lddpc	r6,pc[108]
 	rsub	r6,pc
 	sub	lr,sp,FFFFF82C
 	invalid
@@ -14792,7 +14792,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[92]
+	lddpc	r6,pc[92]
 	rsub	r6,pc
 	mov	r7,r12
 	invalid
@@ -14830,7 +14830,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	invalid
 	brne	0000B8FC
@@ -14839,7 +14839,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[24]
+	lddpc	r6,pc[24]
 	rsub	r6,pc
 	mov	r7,r11
 	mcall	r6[80]
@@ -14850,7 +14850,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[52]
+	lddpc	r6,pc[52]
 	rsub	r6,pc
 	mov	r10,r11
 	ld.w	r9,r11[0]
@@ -14860,7 +14860,7 @@ _start proc
 	brne	0000B94A
 	mov	r9,00000040
 	invalid
-	lddpc	r8,sp[36]
+	lddpc	r8,pc[36]
 	cp.w	r9,r8
 	invalid
 	invalid
@@ -14876,7 +14876,7 @@ _start proc
 	st.b	r5[2],r10
 	st.b	r5[2],r9
 	pushm	r4-r7,lr
-	lddpc	r6,sp[24]
+	lddpc	r6,pc[24]
 	rsub	r6,pc
 	mov	r7,r12
 	mcall	r6[32]
@@ -14887,7 +14887,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[24]
+	lddpc	r6,pc[24]
 	rsub	r6,pc
 	mov	r3,r12
 	mov	r12,r11
@@ -14899,7 +14899,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[24]
+	lddpc	r6,pc[24]
 	rsub	r6,pc
 	mov	r5,r12
 	mcall	r6[16]
@@ -14910,7 +14910,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	mov	r5,r12
 	invalid
@@ -14921,7 +14921,7 @@ _start proc
 	invalid
 	pushm	r4-r7,lr
 	invalid
-	lddpc	r6,sp[116]
+	lddpc	r6,pc[116]
 	rsub	r6,pc
 	sub	lr,r12,00000001
 	ld.w	r12,r12[192]
@@ -14978,7 +14978,7 @@ _start proc
 	mov	r12,r9
 	popm	pc
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[32]
+	lddpc	r6,pc[32]
 	rsub	r6,pc
 	mov	r3,r12
 	mov	r4,r11
@@ -14997,7 +14997,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[260]
+	lddpc	r6,pc[260]
 	rsub	r6,pc
 	mov	r2,r10
 	mov	r5,r12
@@ -15301,7 +15301,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[264]
+	lddpc	r6,pc[264]
 	rsub	r6,pc
 	mov	r12,0000000A
 	mcall	r6[320]
@@ -15510,7 +15510,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[156]
+	lddpc	r6,pc[156]
 	rsub	r6,pc
 	ld.ub	r12[0]
 	mov	lr,r12
@@ -15575,7 +15575,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[116]
+	lddpc	r6,pc[116]
 	rsub	r6,pc
 	invalid
 	mov	r5,r11
@@ -16690,7 +16690,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	mcall	r6[580]
 	brne	0000CA60
@@ -16699,7 +16699,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[76]
+	lddpc	r6,pc[76]
 	rsub	r6,pc
 	invalid
 	mov	r4,r11
@@ -16728,7 +16728,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[36]
+	lddpc	r6,pc[36]
 	rsub	r6,pc
 	mov	r3,r12
 	mov	r4,r11
@@ -16748,7 +16748,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[268]
+	lddpc	r6,pc[268]
 	rsub	r6,pc
 	mov	r2,r10
 	mov	r5,r12
@@ -16952,7 +16952,7 @@ _start proc
 	ld.w	r8,r0[-36]
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[52]
+	lddpc	r6,pc[52]
 	rsub	r6,pc
 	cp.w	r12,00000000
 	breq	0000CD16
@@ -16975,7 +16975,7 @@ _start proc
 	popm	r4-r7,pc
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[76]
+	lddpc	r6,pc[76]
 	rsub	r6,pc
 	mov	r3,r12
 	mcall	r6[568]
@@ -17063,7 +17063,7 @@ _start proc
 	invalid
 	popm	r0-r3,r4-r7,pc
 	pushm	r4-r7,lr
-	lddpc	r6,sp[100]
+	lddpc	r6,pc[100]
 	rsub	r6,pc
 	sub	lr,sp,FFFFFFEC
 	ld.w	r7,lr[4]
@@ -17091,17 +17091,17 @@ _start proc
 	ld.w	lr,r5[0]
 	cp.w	lr,00000000
 	brge	0000CE60
-	lddpc	r8,sp[40]
+	lddpc	r8,pc[40]
 	cp.w	lr,r8
 	invalid
-	lddpc	lr,sp[36]
+	lddpc	lr,pc[36]
 	invalid
 	invalid
 	invalid
-	lddpc	r8,sp[32]
+	lddpc	r8,pc[32]
 	cp.w	lr,r8
 	invalid
-	lddpc	lr,sp[28]
+	lddpc	lr,pc[28]
 	invalid
 	invalid
 	mov	r12,lr
@@ -17159,7 +17159,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,000000B0
-	lddpc	r6,sp[312]
+	lddpc	r6,pc[312]
 	rsub	r6,pc
 	stdsp	sp[40],r12
 	ld.w	r3,r12[16]
@@ -17371,7 +17371,7 @@ _start proc
 	invalid
 	cp.w	r5,00000003
 	brne	0000D08C
-	lddpc	r8,sp[212]
+	lddpc	r8,pc[212]
 	invalid
 	cp.w	r7,r8
 	brne	0000D1A4
@@ -17451,7 +17451,7 @@ _start proc
 	invalid
 	breq	0000D236
 	pushm	r4-r7,lr
-	lddpc	r6,sp[20]
+	lddpc	r6,pc[20]
 	rsub	r6,pc
 	ld.w	r10,r10[612]
 	ld.w	r11,r11[444]
@@ -17486,7 +17486,7 @@ _start proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[24]
+	lddpc	r6,pc[24]
 	rsub	r6,pc
 	invalid
 	mcall	r6[320]
@@ -17498,7 +17498,7 @@ _start proc
 	pushm	r0-r3,r4-r7,lr
 	mov	r7,sp
 	sub	sp,sp,00000338
-	lddpc	r6,sp[360]
+	lddpc	r6,pc[360]
 	rsub	r6,pc
 	mov	r4,r10
 	sub	r3,r7,0000000C
@@ -17790,7 +17790,7 @@ _start proc
 	invalid
 	mov	r12,00000000
 	invalid
-	lddpc	r8,sp[132]
+	lddpc	r8,pc[132]
 	ld.w	r9,r9[-772]
 	invalid
 	cp.w	r9,r8
@@ -17830,7 +17830,7 @@ _start proc
 	sub	r10,r9,FFFFFFFF
 	mov	r1,00000000
 	invalid
-	lddpc	r8,sp[16]
+	lddpc	r8,pc[16]
 	ld.ub	r10[0]
 	cp.w	r1,r8
 	invalid
@@ -17912,7 +17912,7 @@ _start proc
 	mov	r11,r5
 	invalid
 	breq	0000D72C
-	lddpc	r10,sp[324]
+	lddpc	r10,pc[324]
 	mov	r8,0000002D
 	invalid
 	ld.w	r10,r10[-768]
@@ -18010,7 +18010,7 @@ _start proc
 	mov	r4,r10
 	mov	r5,r11
 	invalid
-	lddpc	r8,sp[48]
+	lddpc	r8,pc[48]
 	mov	r4,r2
 	invalid
 	invalid
@@ -18197,7 +18197,7 @@ _start proc
 	mov	r11,r5
 	invalid
 	breq	0000DA16
-	lddpc	r10,sp[196]
+	lddpc	r10,pc[196]
 	ld.w	r11,r11[-768]
 	invalid
 	mov	r8,0000002D
@@ -18330,7 +18330,7 @@ _start proc
 	mov	r4,r10
 	mov	r5,r11
 	invalid
-	lddpc	r8,sp[328]
+	lddpc	r8,pc[328]
 	mov	r4,r2
 	invalid
 	invalid
@@ -18782,7 +18782,7 @@ _start proc
 	invalid
 	invalid
 	brpl	0000E054
-	lddpc	r11,sp[364]
+	lddpc	r11,pc[364]
 	invalid
 	ld.w	r9,r9[-748]
 	invalid
@@ -19087,7 +19087,7 @@ _start proc
 	sub	r8,r9,FFFFFFFF
 	cp.w	r8,r12
 	brcs	0000E49E
-	lddpc	r8,sp[364]
+	lddpc	r8,pc[364]
 	cp.w	r12,r8
 	invalid
 	sub	r8,r9,FFFFFFFE
@@ -19307,7 +19307,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,0000041C
-	lddpc	r6,sp[384]
+	lddpc	r6,pc[384]
 	rsub	r6,pc
 	invalid
 	mov	r4,r10
@@ -19480,7 +19480,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	sub	sp,sp,0000041C
-	lddpc	r6,sp[384]
+	lddpc	r6,pc[384]
 	rsub	r6,pc
 	invalid
 	mov	r4,r10
@@ -19652,7 +19652,7 @@ _start proc
 	popm	r0-r3,r4-r7,pc
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[220]
+	lddpc	r6,pc[220]
 	rsub	r6,pc
 	ld.w	r8,r11[4]
 	mov	lr,r11
@@ -19744,7 +19744,7 @@ _start proc
 	invalid
 	pushm	r0-r3,r4-r7,lr
 	invalid
-	lddpc	r6,sp[320]
+	lddpc	r6,pc[320]
 	rsub	r6,pc
 	mov	r7,r12
 	mov	r5,00000000
@@ -19802,7 +19802,7 @@ _start proc
 	mov	r12,r7
 	mov	r10,00000000
 	invalid
-	lddpc	r8,sp[180]
+	lddpc	r8,pc[180]
 	cp.w	r10,r8
 	invalid
 	invalid
@@ -19900,7 +19900,7 @@ _start proc
 	brne	0000ED24
 	mov	r10,00000000
 	invalid
-	lddpc	r8,sp[372]
+	lddpc	r8,pc[372]
 	cp.w	r10,r8
 	invalid
 	invalid
@@ -19944,7 +19944,7 @@ _start proc
 	sub	r2,r5,FFFFFFFF
 	cp.w	r2,r5
 	invalid
-	lddpc	r8,sp[248]
+	lddpc	r8,pc[248]
 	cp.w	r2,r8
 	invalid
 	ld.w	r9,r1[4]
@@ -20039,7 +20039,7 @@ _start proc
 	st.w	r12[-28],r9
 	invalid
 	stdsp	sp[340],r5
-	lddpc	r8,sp[340]
+	lddpc	r8,pc[340]
 	cp.w	r10,r8
 	invalid
 	invalid
@@ -20083,7 +20083,7 @@ _start proc
 	sub	r2,r5,FFFFFFFF
 	cp.w	r2,r5
 	invalid
-	lddpc	r8,sp[216]
+	lddpc	r8,pc[216]
 	cp.w	r2,r8
 	invalid
 	ld.w	r9,r1[4]
@@ -20335,7 +20335,7 @@ _start proc
 	sub	r2,r7,FFFFFFFF
 	cp.w	r2,r7
 	invalid
-	lddpc	r8,sp[244]
+	lddpc	r8,pc[244]
 	cp.w	r2,r8
 	invalid
 	ld.w	r9,r1[4]
@@ -20383,7 +20383,7 @@ _start proc
 	cp.w	r10,00000000
 	brlt	0000F24A
 	invalid
-	lddpc	r8,sp[128]
+	lddpc	r8,pc[128]
 	stdsp	sp[4],r10
 	cp.w	r10,r8
 	invalid
@@ -20439,7 +20439,7 @@ _start proc
 	ld.w	sp,r10[20]
 	pushm	r4-r7,lr
 	invalid
-	lddpc	r6,sp[80]
+	lddpc	r6,pc[80]
 	rsub	r6,pc
 	mov	r8,r10
 	mov	r9,r11
@@ -21812,7 +21812,7 @@ __avr32_f64_div proc
 	invalid
 	invalid
 	pushm	r0-r3,r4-r7,lr
-	lddpc	r6,sp[48]
+	lddpc	r6,pc[48]
 	rsub	r6,pc
 	mov	r12,r11
 	mov	r2,r10
@@ -22784,7 +22784,7 @@ __moddi3 proc
 	invalid
 	pushm	r4-r7,lr
 	invalid
-	lddpc	r6,sp[52]
+	lddpc	r6,pc[52]
 	rsub	r6,pc
 	invalid
 	sub	r12,sp,FFFFFFD0
@@ -22886,7 +22886,7 @@ __moddi3 proc
 	invalid
 	invalid
 	pushm	r4-r7,lr
-	lddpc	r6,sp[28]
+	lddpc	r6,pc[28]
 	rsub	r6,pc
 	ld.w	r8,r8[600]
 	sub	r7,r8,00000004
@@ -22899,7 +22899,7 @@ __moddi3 proc
 	popm	r4-r7,pc
 	invalid
 	invalid
-	lddpc	r6,sp[8]
+	lddpc	r6,pc[8]
 	rsub	r6,pc
 	invalid
 	invalid
@@ -22933,18 +22933,18 @@ __moddi3 proc
 	ld.w	r0,r9[-56]
 	cp.w	pc,FFFFFFF4
 	stdsp	sp[20],r4
-	lddpc	pc,sp[80]
-	lddpc	sp,sp[404]
+	lddpc	pc,pc[80]
+	lddpc	sp,pc[404]
 	invalid
 	invalid
 	cp.w	r6,FFFFFFF4
-	lddpc	r12,sp[80]
+	lddpc	r12,pc[80]
 	lddsp	sp,sp[340]
 	invalid
 	invalid
 	invalid
 	invalid
-	lddpc	r9,sp[280]
+	lddpc	r9,pc[280]
 	ld.w	r4,r9[-36]
 	invalid
 	ld.w	r6,r7[24]
@@ -22958,7 +22958,7 @@ __moddi3 proc
 	invalid
 	ld.w	r5,r4[24]
 	invalid
-	lddpc	r12,sp[80]
+	lddpc	r12,pc[80]
 	lddsp	r3,sp[348]
 	invalid
 	ld.w	r8,r10[24]
@@ -23010,7 +23010,7 @@ __moddi3 proc
 	ld.w	r4,r9[28]
 	invalid
 	invalid
-	lddpc	r1,sp[344]
+	lddpc	r1,pc[344]
 	ld.w	r4,r7[24]
 	ld.w	r4,r0[-36]
 	ld.w	r2,r7[-36]
@@ -23194,14 +23194,14 @@ __moddi3 proc
 	ld.w	r9,r9[-40]
 	ld.w	r5,sp[24]
 	mov	r3,FFFFFFD5
-	lddpc	r10,sp[84]
+	lddpc	r10,pc[84]
 	lddsp	r0,sp[328]
 	invalid
 	invalid
 	invalid
 	ld.w	r5,r9[-40]
 	invalid
-	lddpc	r10,sp[84]
+	lddpc	r10,pc[84]
 	lddsp	sp,sp[328]
 	ld.w	r9,r1[28]
 	ld.w	r5,r10[24]
@@ -23468,8 +23468,8 @@ __moddi3 proc
 	ld.w	r3,r2[-36]
 	invalid
 	invalid
-	lddpc	r5,sp[16]
-	lddpc	r0,sp[392]
+	lddpc	r5,pc[16]
+	lddpc	r0,pc[392]
 	ld.w	r1,r6[-40]
 	ld.w	r0,r12[-56]
 	ld.w	r5,r1[24]
@@ -24051,7 +24051,7 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
-	lddpc	r0,sp[200]
+	lddpc	r0,pc[200]
 	mov	r3,00000023
 	mov	sp,00000044
 	invalid
@@ -24245,7 +24245,7 @@ __moddi3 proc
 	stdsp	sp[16],r1
 	stdsp	sp[276],r4
 	lddsp	r2,sp[340]
-	lddpc	r0,sp[392]
+	lddpc	r0,pc[392]
 	invalid
 	invalid
 	invalid
@@ -24442,7 +24442,7 @@ __moddi3 proc
 	ld.w	r5,r6[24]
 	rsub	r0,r5
 	invalid
-	lddpc	r12,sp[72]
+	lddpc	r12,pc[72]
 	invalid
 	invalid
 	ld.w	lr,r3[-40]
@@ -24451,7 +24451,7 @@ __moddi3 proc
 	stdsp	sp[16],r1
 	stdsp	sp[276],r4
 	lddsp	r2,sp[340]
-	lddpc	r0,sp[392]
+	lddpc	r0,pc[392]
 	invalid
 	invalid
 	invalid
@@ -24535,7 +24535,7 @@ __moddi3 proc
 	ld.w	r4,r0[-36]
 	rsub	r0,r5
 	invalid
-	lddpc	r12,sp[264]
+	lddpc	r12,pc[264]
 	invalid
 	invalid
 	ld.w	r2,r2[-36]
@@ -24721,7 +24721,7 @@ __moddi3 proc
 	ld.w	r2,r3[-36]
 	ld.w	r5,r7[-36]
 	ld.w	r0,r8[8]
-	lddpc	r4,sp[80]
+	lddpc	r4,pc[80]
 	ld.w	r10,r9[-64]
 	invalid
 	invalid
@@ -25027,7 +25027,7 @@ __moddi3 proc
 	ld.w	r9,r10[28]
 	ld.w	r5,r6[24]
 	mov	r7,FFFFFFD5
-	lddpc	r2,sp[468]
+	lddpc	r2,pc[468]
 	lddsp	r0,sp[264]
 	invalid
 	ld.w	r3,r10[-36]
@@ -25431,7 +25431,7 @@ __moddi3 proc
 	ld.w	r5,r6[24]
 	mov	r3,FFFFFFD5
 	stdsp	sp[276],r9
-	lddpc	r5,sp[272]
+	lddpc	r5,pc[272]
 	invalid
 	invalid
 	invalid
@@ -25452,7 +25452,7 @@ __moddi3 proc
 	ld.w	r5,r6[24]
 	invalid
 	stdsp	sp[276],r9
-	lddpc	r5,sp[272]
+	lddpc	r5,pc[272]
 	mov	r10,FFFFFFA0
 	invalid
 	invalid
@@ -25486,8 +25486,8 @@ __moddi3 proc
 	ld.w	r5,r6[24]
 	invalid
 	invalid
-	lddpc	r2,sp[468]
-	lddpc	r1,sp[336]
+	lddpc	r2,pc[468]
+	lddpc	r1,pc[336]
 	stdsp	sp[264],lr
 	rsub	r0,r5
 	invalid
@@ -25543,16 +25543,16 @@ __moddi3 proc
 	invalid
 	invalid
 	invalid
-	lddpc	r2,sp[468]
-	lddpc	r1,sp[336]
+	lddpc	r2,pc[468]
+	lddpc	r1,pc[336]
 	stdsp	sp[268],r1
 	mov	lr,FFFFFFC6
 	ld.w	r7,r2[-36]
 	ld.w	r9,r6[24]
 	ld.w	r5,r7[24]
 	mov	r6,FFFFFFE4
-	lddpc	r2,sp[468]
-	lddpc	r1,sp[336]
+	lddpc	r2,pc[468]
+	lddpc	r1,pc[336]
 	stdsp	sp[268],r2
 	invalid
 	lddsp	pc,sp[400]
@@ -25590,8 +25590,8 @@ __moddi3 proc
 	invalid
 	ld.w	r4,r7[24]
 	invalid
-	lddpc	r2,sp[468]
-	lddpc	r1,sp[336]
+	lddpc	r2,pc[468]
+	lddpc	r1,pc[336]
 	stdsp	sp[268],r2
 	invalid
 	ld.w	r0,r7[-56]
@@ -25636,7 +25636,7 @@ __moddi3 proc
 	invalid
 	invalid
 	stdsp	sp[276],r9
-	lddpc	r5,sp[272]
+	lddpc	r5,pc[272]
 	rsub	r0,r5
 	invalid
 	invalid
@@ -25710,7 +25710,7 @@ __moddi3 proc
 	ld.w	r9,r9[-40]
 	ld.w	r5,sp[24]
 	mov	r3,FFFFFFD4
-	lddpc	r12,sp[464]
+	lddpc	r12,pc[464]
 	stdsp	sp[200],r0
 	invalid
 	invalid
@@ -25729,7 +25729,7 @@ __moddi3 proc
 	ld.w	r1,r2[-40]
 	ld.w	r8,r1[-40]
 	invalid
-	lddpc	r12,sp[464]
+	lddpc	r12,pc[464]
 	stdsp	sp[200],r0
 	ld.w	lr,r4[-40]
 	ld.w	r4,r9[-36]
@@ -25910,7 +25910,7 @@ __moddi3 proc
 	ld.w	r4,r2[28]
 	ld.w	sp,r4[12]
 	lddsp	pc,sp[208]
-	lddpc	r3,sp[276]
+	lddpc	r3,pc[276]
 	invalid
 	invalid
 	invalid
@@ -26030,7 +26030,7 @@ __moddi3 proc
 	ld.w	lr,r0[-40]
 	ld.w	r0,r12[-56]
 	stdsp	sp[208],r5
-	lddpc	r9,sp[280]
+	lddpc	r9,pc[280]
 	ld.w	r5,r7[28]
 	ld.w	r0,r12[8]
 	ld.w	r5,r9[-40]
@@ -26129,7 +26129,7 @@ __moddi3 proc
 	invalid
 	invalid
 	eor	r3,r5
-	lddpc	r10,sp[84]
+	lddpc	r10,pc[84]
 	lddsp	r0,sp[328]
 	ld.w	r1,r6[-40]
 	ld.w	r0,r12[-56]
@@ -26171,18 +26171,18 @@ __moddi3 proc
 	mov	r0,00000013
 	mov	r0,00000003
 	invalid
-	lddpc	r0,sp[200]
+	lddpc	r0,pc[200]
 	mov	r0,00000013
 	mov	r4,00000023
 	invalid
-	lddpc	r2,sp[336]
+	lddpc	r2,pc[336]
 	invalid
 	mov	r0,00000003
 	mov	r10,00000002
 	mov	r0,00000013
 	mov	r0,00000003
 	invalid
-	lddpc	r0,sp[328]
+	lddpc	r0,pc[328]
 	mov	r0,00000013
 	mov	r4,00000023
 	invalid
@@ -26372,10 +26372,10 @@ __moddi3 proc
 	ld.w	r1,r4[-40]
 	ld.w	r12,r1[24]
 	ld.w	r0,r2[-56]
-	lddpc	r3,sp[276]
+	lddpc	r3,pc[276]
 	invalid
-	lddpc	r12,sp[464]
-	lddpc	r2,sp[468]
+	lddpc	r12,pc[464]
+	lddpc	r2,pc[468]
 	stdsp	sp[200],r0
 	ld.w	r1,r1[-40]
 	ld.w	r0,r7[8]
@@ -26427,7 +26427,7 @@ __moddi3 proc
 	invalid
 	ld.w	r6,r4[-40]
 	invalid
-	lddpc	r12,sp[200]
+	lddpc	r12,pc[200]
 	rsub	r0,r5
 	mov	r0,00000012
 	invalid
@@ -26560,7 +26560,7 @@ __moddi3 proc
 	ld.w	r9,r9[-40]
 	ld.w	r7,r7[24]
 	invalid
-	lddpc	r5,sp[404]
+	lddpc	r5,pc[404]
 	invalid
 	ld.w	r6,r7[-40]
 	ld.w	r7,r10[28]
@@ -26650,14 +26650,14 @@ __moddi3 proc
 	ld.w	r0,r2[-56]
 	mov	sp,FFFFFFD3
 	invalid
-	lddpc	r4,sp[468]
+	lddpc	r4,pc[468]
 	invalid
-	lddpc	pc,sp[404]
-	lddpc	lr,sp[80]
-	lddpc	r4,sp[464]
+	lddpc	pc,pc[404]
+	lddpc	lr,pc[80]
+	lddpc	r4,pc[464]
 	lddsp	pc,sp[340]
-	lddpc	r5,sp[404]
-	lddpc	r2,sp[336]
+	lddpc	r5,pc[404]
+	lddpc	r2,pc[336]
 	lddsp	r2,sp[340]
 	invalid
 	ld.w	r1,r1[-40]
@@ -26809,8 +26809,8 @@ __moddi3 proc
 	ld.w	r0,r6[0]
 	invalid
 	stdsp	sp[84],r5
-	lddpc	r4,sp[468]
-	lddpc	lr,sp[80]
+	lddpc	r4,pc[468]
+	lddpc	lr,pc[80]
 	lddsp	pc,sp[468]
 	stdsp	sp[212],r4
 	cp.w	r12,00000014
@@ -26842,31 +26842,31 @@ __moddi3 proc
 	invalid
 	stdsp	sp[336],pc
 	stdsp	sp[272],r9
-	lddpc	r7,sp[400]
+	lddpc	r7,pc[400]
 	invalid
 	stdsp	sp[276],r9
-	lddpc	r5,sp[272]
+	lddpc	r5,pc[272]
 	mov	r0,FFFFFFA2
 	invalid
 	invalid
 	invalid
-	lddpc	r3,sp[276]
+	lddpc	r3,pc[276]
 	invalid
-	lddpc	pc,sp[272]
+	lddpc	pc,pc[272]
 	lddsp	r11,sp[208]
 	invalid
-	lddpc	r10,sp[84]
+	lddpc	r10,pc[84]
 	lddsp	r0,sp[320]
 	invalid
 	lddsp	r12,sp[144]
-	lddpc	r3,sp[464]
-	lddpc	pc,sp[212]
+	lddpc	r3,pc[464]
+	lddpc	pc,pc[212]
 	stdsp	sp[208],r9
 	cp.w	r5,FFFFFFE4
 	invalid
 	lddsp	pc,sp[208]
-	lddpc	r5,sp[276]
-	lddpc	lr,sp[336]
+	lddpc	r5,pc[276]
+	lddpc	lr,pc[336]
 	stdsp	sp[192],r0
 	ld.w	r7,r4[-40]
 	ld.w	pc,r7[24]
@@ -26892,15 +26892,15 @@ __moddi3 proc
 	ld.w	r2,r0[-40]
 	ld.w	r5,r6[24]
 	invalid
-	lddpc	r12,sp[464]
+	lddpc	r12,pc[464]
 	stdsp	sp[336],sp
-	lddpc	r3,sp[404]
+	lddpc	r3,pc[404]
 	mov	r0,FFFFFFA2
 	invalid
 	invalid
 	stdsp	sp[272],r1
 	lddsp	r3,sp[148]
-	lddpc	r10,sp[84]
+	lddpc	r10,pc[84]
 	lddsp	r0,sp[320]
 	ld.w	r7,r4[-40]
 	ld.w	pc,r7[24]
@@ -26929,7 +26929,7 @@ __moddi3 proc
 	ld.w	r0,r2[-56]
 	stdsp	sp[272],r1
 	lddsp	r3,sp[148]
-	lddpc	r10,sp[84]
+	lddpc	r10,pc[84]
 	lddsp	r10,sp[332]
 	invalid
 	ld.w	r0,r9[-64]
@@ -26949,8 +26949,8 @@ __moddi3 proc
 	lddsp	r3,sp[144]
 	lddsp	r6,sp[272]
 	lddsp	r8,sp[464]
-	lddpc	r10,sp[76]
-	lddpc	lr,sp[272]
+	lddpc	r10,pc[76]
+	lddpc	lr,pc[272]
 	stdsp	sp[84],r2
 	stdsp	sp[212],r4
 	mov	r5,FFFFFFA5
@@ -27035,7 +27035,7 @@ __moddi3 proc
 	lddsp	r1,sp[280]
 	ld.w	r9,r11[24]
 	ld.w	r0,r2[8]
-	lddpc	r1,sp[344]
+	lddpc	r1,pc[344]
 	ld.w	r11,r1[-48]
 	ld.w	lr,r2[-40]
 	ld.w	r9,sp[24]
@@ -27044,7 +27044,7 @@ __moddi3 proc
 	ld.w	r8,r1[-40]
 	ld.w	r2,r0[-36]
 	ld.w	r0,r2[8]
-	lddpc	lr,sp[328]
+	lddpc	lr,pc[328]
 	invalid
 	ld.w	r1,r10[24]
 	ld.w	r12,r6[24]
@@ -27055,10 +27055,10 @@ __moddi3 proc
 	ld.w	r0,lr[0]
 	invalid
 	stdsp	sp[272],r9
-	lddpc	r5,sp[336]
+	lddpc	r5,pc[336]
 	invalid
 	stdsp	sp[276],r9
-	lddpc	r5,sp[272]
+	lddpc	r5,pc[272]
 	invalid
 	ld.w	pc,r6[24]
 	ld.w	r1,r1[-40]
@@ -27091,7 +27091,7 @@ __moddi3 proc
 	ld.w	sp,r6[-56]
 	invalid
 	invalid
-	lddpc	r10,sp[12]
+	lddpc	r10,pc[12]
 	invalid
 	mov	r5,FFFFFFA2
 	stdsp	sp[200],lr
@@ -27103,7 +27103,7 @@ __moddi3 proc
 	ld.w	sp,r6[-56]
 	invalid
 	invalid
-	lddpc	r10,sp[12]
+	lddpc	r10,pc[12]
 	invalid
 	invalid
 	invalid
@@ -27117,11 +27117,11 @@ __moddi3 proc
 	ld.w	r0,r2[8]
 	invalid
 	mov	r5,FFFFFFA2
-	lddpc	r0,sp[320]
-	lddpc	r3,sp[276]
+	lddpc	r0,pc[320]
+	lddpc	r3,pc[276]
 	invalid
-	lddpc	r12,sp[464]
-	lddpc	r2,sp[468]
+	lddpc	r12,pc[464]
+	lddpc	r2,pc[468]
 	stdsp	sp[192],r0
 	invalid
 	mov	pc,FFFFFFF3
@@ -27151,7 +27151,7 @@ __moddi3 proc
 	invalid
 	stdsp	sp[212],pc
 	lddsp	pc,sp[208]
-	lddpc	pc,sp[272]
+	lddpc	pc,pc[272]
 	stdsp	sp[148],r3
 	invalid
 	ld.w	r6,r7[28]
@@ -27255,7 +27255,7 @@ __moddi3 proc
 	invalid
 	stdsp	sp[212],r5
 	lddsp	r4,sp[144]
-	lddpc	r2,sp[84]
+	lddpc	r2,pc[84]
 	lddsp	r4,sp[336]
 	invalid
 	invalid
@@ -27264,9 +27264,9 @@ __moddi3 proc
 	lddsp	r9,sp[272]
 	stdsp	sp[144],r5
 	lddsp	sp,sp[264]
-	lddpc	r0,sp[468]
+	lddpc	r0,pc[468]
 	stdsp	sp[272],r9
-	lddpc	lr,sp[464]
+	lddpc	lr,pc[464]
 	stdsp	sp[200],pc
 	invalid
 	invalid
@@ -27655,7 +27655,7 @@ __moddi3 proc
 	ld.w	r0,r2[-56]
 	invalid
 	mov	r5,FFFFFFA2
-	lddpc	r0,sp[320]
+	lddpc	r0,pc[320]
 	ld.w	pc,r6[24]
 	ld.w	r7,r7[24]
 	invalid
@@ -27761,7 +27761,7 @@ __moddi3 proc
 	mov	r0,00000070
 	invalid
 	invalid
-	lddpc	r0,sp[192]
+	lddpc	r0,pc[192]
 	mov	lr,00000072
 	mov	r0,00000020
 	invalid
@@ -27818,7 +27818,7 @@ __moddi3 proc
 	ld.w	r9,r9[-40]
 	ld.w	r7,r7[24]
 	invalid
-	lddpc	r5,sp[404]
+	lddpc	r5,pc[404]
 	invalid
 	ld.w	r6,r7[-40]
 	ld.w	r7,r10[28]
@@ -27863,7 +27863,7 @@ __moddi3 proc
 	ld.w	r3,r11[12]
 	invalid
 	invalid
-	lddpc	r5,sp[404]
+	lddpc	r5,pc[404]
 	invalid
 	stdsp	sp[16],r12
 	invalid
@@ -27932,11 +27932,11 @@ __moddi3 proc
 	ld.w	r5,r9[24]
 	invalid
 	ld.w	r0,r9[-56]
-	lddpc	pc,sp[400]
+	lddpc	pc,pc[400]
 	invalid
 	lddsp	r2,sp[84]
 	stdsp	sp[144],r1
-	lddpc	r4,sp[404]
+	lddpc	r4,pc[404]
 	cp.w	r12,00000012
 	invalid
 	ld.w	r0,r7[-56]
@@ -28355,9 +28355,9 @@ __moddi3 proc
 	ld.w	r5,r6[28]
 	invalid
 	lddsp	r12,sp[144]
-	lddpc	r3,sp[464]
-	lddpc	r3,sp[212]
-	lddpc	r10,sp[84]
+	lddpc	r3,pc[464]
+	lddpc	r3,pc[212]
+	lddpc	r10,pc[84]
 	lddsp	r0,sp[320]
 	invalid
 	ld.w	r5,r2[-48]
@@ -28404,11 +28404,11 @@ __moddi3 proc
 	ld.w	r0,r2[-64]
 	invalid
 	mov	r5,FFFFFFA2
-	lddpc	r0,sp[320]
+	lddpc	r0,pc[320]
 	invalid
 	invalid
 	mov	r5,FFFFFFA2
-	lddpc	r10,sp[332]
+	lddpc	r10,pc[332]
 	invalid
 	invalid
 	invalid
@@ -28506,7 +28506,7 @@ __moddi3 proc
 	lddsp	r2,sp[84]
 	stdsp	sp[208],r5
 	stdsp	sp[272],r1
-	lddpc	r9,sp[272]
+	lddpc	r9,pc[272]
 	lddsp	r3,sp[84]
 	lddsp	r9,sp[272]
 	stdsp	sp[128],r0
@@ -28532,18 +28532,18 @@ __moddi3 proc
 	invalid
 	lddsp	r3,sp[84]
 	lddsp	r9,sp[208]
-	lddpc	r0,sp[64]
+	lddpc	r0,pc[64]
 	invalid
 	lddsp	r5,sp[340]
 	lddsp	sp,sp[200]
-	lddpc	r0,sp[148]
+	lddpc	r0,pc[148]
 	invalid
 	lddsp	r2,sp[464]
 	mov	r3,00000023
 	mov	r2,00000013
 	invalid
 	lddsp	r2,sp[464]
-	lddpc	r0,sp[192]
+	lddpc	r0,pc[192]
 	lddsp	r5,sp[340]
 	lddsp	sp,sp[200]
 	stdsp	sp[276],r7
@@ -28554,19 +28554,19 @@ __moddi3 proc
 	invalid
 	lddsp	r5,sp[340]
 	lddsp	sp,sp[200]
-	lddpc	r2,sp[212]
+	lddpc	r2,pc[212]
 	invalid
 	lddsp	r0,sp[212]
 	mov	r4,FFFFFF93
 	mov	r0,FFFFFF90
 	invalid
-	lddpc	pc,sp[144]
-	lddpc	r1,sp[16]
+	lddpc	pc,pc[144]
+	lddpc	r1,pc[16]
 	lddsp	r0,sp[128]
 	invalid
 	invalid
 	ld.w	r0,r2[0]
 	invalid
 	stdsp	sp[336],r12
-	lddpc	r9,sp[264]
+	lddpc	r9,pc[264]
 	invalid

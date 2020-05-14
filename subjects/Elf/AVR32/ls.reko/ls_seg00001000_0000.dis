@@ -5,6 +5,8 @@ _start_entry:
 	sp = fp
 	// succ:  l0000269C
 l0000269C:
+	r7 = 0<32>
+	lr = 0<32>
 _start_exit:
 
 
@@ -45,6 +47,7 @@ __avr32_f64_to_u32_entry:
 	sp = fp
 	// succ:  l0000F760
 l0000F760:
+	VNZC = cond(r11 - 0<32>)
 __avr32_f64_to_u32_exit:
 
 
@@ -75,6 +78,7 @@ __avr32_s32_to_f64_entry:
 	sp = fp
 	// succ:  l0000F802
 l0000F802:
+	r11 = r12
 __avr32_s32_to_f64_exit:
 
 
@@ -85,6 +89,7 @@ __avr32_f64_cmp_eq_entry:
 	sp = fp
 	// succ:  l0000F8EC
 l0000F8EC:
+	VNZC = cond(r10 - r8)
 __avr32_f64_cmp_eq_exit:
 
 
@@ -125,6 +130,25 @@ __avr32_sdiv64_entry:
 	sp = fp
 	// succ:  l00010208
 l00010208:
+	sp = sp - 4<i32>
+	Mem0[sp:word32] = r0
+	sp = sp - 4<i32>
+	Mem0[sp:word32] = r1
+	sp = sp - 4<i32>
+	Mem0[sp:word32] = r2
+	sp = sp - 4<i32>
+	Mem0[sp:word32] = r3
+	sp = sp - 4<i32>
+	Mem0[sp:word32] = r4
+	sp = sp - 4<i32>
+	Mem0[sp:word32] = r5
+	sp = sp - 4<i32>
+	Mem0[sp:word32] = r6
+	sp = sp - 4<i32>
+	Mem0[sp:word32] = r7
+	sp = sp - 4<i32>
+	Mem0[sp:word32] = lr
+	r7 = sp
 __avr32_sdiv64_exit:
 
 
@@ -135,6 +159,25 @@ __moddi3_entry:
 	sp = fp
 	// succ:  l000104EA
 l000104EA:
+	sp = sp - 4<i32>
+	Mem0[sp:word32] = r0
+	sp = sp - 4<i32>
+	Mem0[sp:word32] = r1
+	sp = sp - 4<i32>
+	Mem0[sp:word32] = r2
+	sp = sp - 4<i32>
+	Mem0[sp:word32] = r3
+	sp = sp - 4<i32>
+	Mem0[sp:word32] = r4
+	sp = sp - 4<i32>
+	Mem0[sp:word32] = r5
+	sp = sp - 4<i32>
+	Mem0[sp:word32] = r6
+	sp = sp - 4<i32>
+	Mem0[sp:word32] = r7
+	sp = sp - 4<i32>
+	Mem0[sp:word32] = lr
+	r7 = sp
 __moddi3_exit:
 
 
