@@ -20,30 +20,27 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
-using Reko.Core.Services;
-using System;
+using Reko.Core.Types;
 
-namespace Reko.UnitTests.Arch
+namespace Reko.Arch.Avr.Avr32
 {
-    public class UnitTestGenerationService : ITestGenerationService
+    public class RegisterPairOperand : MachineOperand
     {
-        private readonly IServiceProvider services;
-
-        public UnitTestGenerationService(IServiceProvider services)
+        public RegisterPairOperand(RegisterStorage hiRegister, RegisterStorage loRegister)
+            : base(PrimitiveType.Word64)
         {
-            this.services = services;
+            this.HiRegister = hiRegister;
+            this.LoRegister = loRegister;
         }
 
-        public void ReportMissingDecoder(string testPrefix, Address addrStart, EndianImageReader rdr, string message)
-        {
-            var test = TestGenerationService.GenerateDecoderUnitTest(testPrefix, addrStart, rdr, message);
-            Console.WriteLine(test);
-        }
+        public RegisterStorage HiRegister { get; }
+        public RegisterStorage LoRegister { get; }
 
-        public void ReportMissingRewriter(string testPrefix, MachineInstruction instr, EndianImageReader rdr, string message)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var test = TestGenerationService.GenerateRewriterUnitTest(testPrefix, instr, rdr, message);
-            Console.WriteLine(test);
+            writer.WriteString(HiRegister.Name);
+            writer.WriteString(":");
+            writer.WriteString(LoRegister.Name);
         }
     }
 }

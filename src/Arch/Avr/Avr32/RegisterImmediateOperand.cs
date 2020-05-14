@@ -1,0 +1,65 @@
+#region License
+/* 
+ * Copyright (C) 1999-2020 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Core.Types;
+using System.Collections.Generic;
+using System.Xml.Schema;
+
+namespace Reko.Arch.Avr.Avr32
+{
+    /// <summary>
+    /// Combines a register with an immedate using an operato
+    /// </summary>
+    public class RegisterImmediateOperand : MachineOperand
+    {
+        private static readonly Dictionary<Mnemonic, string> mpMnemonicToString = new Dictionary<Mnemonic, string>
+        {
+            { Mnemonic.mov, "=" },
+            { Mnemonic.lsl, "<<" },
+            { Mnemonic.lsr, ">>" }
+        };
+
+        public RegisterStorage Register { get; }
+        public Mnemonic Mnemonic { get; }
+        public int Value { get; }
+
+        public RegisterImmediateOperand(RegisterStorage registerStorage, Mnemonic mnemonic,  int value)
+            : base(PrimitiveType.Word32)
+        {
+            this.Register = registerStorage;
+            this.Mnemonic = mnemonic;
+            this.Value = value;
+        }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            if (Value == 0 && (Mnemonic == Mnemonic.lsl || Mnemonic == Mnemonic.lsr))
+            {
+                writer.WriteString(Register.Name);
+            }
+            else
+            {
+                writer.WriteFormat("{0}{1}{2}", Register.Name, mpMnemonicToString[Mnemonic], Value);
+            }
+        }
+    }
+}

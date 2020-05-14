@@ -36,6 +36,8 @@ namespace Reko.Arch.Avr.Avr32
 
         public RegisterStorage Base { get; private set; }
         public int Offset { get; private set; }
+        public RegisterStorage Index { get; private set; }
+        public int Shift { get; private set; }
         public bool PostIncrement { get; private set; }
         public bool PreDecrement { get; private set; }
 
@@ -69,6 +71,17 @@ namespace Reko.Arch.Avr.Avr32
             return mem;
         }
 
+        public static MachineOperand Indexed(PrimitiveType dt, RegisterStorage baseReg, RegisterStorage x, int shift)
+        {
+            var mem = new MemoryOperand(dt)
+            {
+                Base = baseReg,
+                Index = x,
+                Shift = shift
+            };
+            return mem;
+        }
+
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             if (this.PreDecrement)
@@ -84,7 +97,20 @@ namespace Reko.Arch.Avr.Avr32
                 return;
             }
             writer.WriteString(Base.Name);
-            writer.WriteFormat("[{0}]", Offset);
+            writer.WriteString("[");
+            if (Index != null)
+            {
+                writer.WriteString(Index.Name);
+                if (Shift > 0)
+                {
+                    writer.WriteFormat("<<{0}", Shift);
+                }
+            }
+            else
+            {
+                writer.WriteFormat("{0}", Offset);
+            }
+            writer.WriteString("]");
         }
     }
 }

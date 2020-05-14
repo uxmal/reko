@@ -14,41 +14,17 @@ public void X86Dis_C609F2()
 {
     AssertCode("@@@", "C609F2");
 }
-// Reko: a decoder for the instruction C609F2 at address 00000000004059BA has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C609F2()
-{
-    AssertCode("@@@", "C609F2");
-}
 // Reko: a decoder for the instruction C7E9B0F5FFFF at address 0000000000405A6A has not been implemented. (This could be invalid or it could be not yet implemented)
 [Test]
 public void X86Dis_C7E9B0F5FFFF()
 {
     AssertCode("@@@", "C7E9B0F5FFFF");
 }
-// Reko: a decoder for the instruction C609F2 at address 0000000000405B7A has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C609F2()
-{
-    AssertCode("@@@", "C609F2");
-}
 // Reko: a decoder for the instruction C609F0 at address 0000000000405BEA has not been implemented. (This could be invalid or it could be not yet implemented)
 [Test]
 public void X86Dis_C609F0()
 {
     AssertCode("@@@", "C609F0");
-}
-// Reko: a decoder for the instruction C609F2 at address 000000000040629A has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C609F2()
-{
-    AssertCode("@@@", "C609F2");
-}
-// Reko: a decoder for the instruction C609F2 at address 000000000040636E has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C609F2()
-{
-    AssertCode("@@@", "C609F2");
 }
 // Reko: a decoder for the instruction C64889D7 at address 00000000004063C8 has not been implemented. (This could be invalid or it could be not yet implemented)
 [Test]
@@ -98,42 +74,6 @@ public void X86Dis_C7E9C0AEFFFF()
 {
     AssertCode("@@@", "C7E9C0AEFFFF");
 }
-// Reko: a decoder for the instruction C609F2 at address 0000000000408D3A has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C609F2()
-{
-    AssertCode("@@@", "C609F2");
-}
-// Reko: a decoder for the instruction C609F2 at address 0000000000408E5A has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C609F2()
-{
-    AssertCode("@@@", "C609F2");
-}
-// Reko: a decoder for the instruction C609F2 at address 0000000000408F8A has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C609F2()
-{
-    AssertCode("@@@", "C609F2");
-}
-// Reko: a decoder for the instruction C64889D7 at address 00000000004091EE has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C64889D7()
-{
-    AssertCode("@@@", "C64889D7");
-}
-// Reko: a decoder for the instruction C64889D7 at address 000000000040925D has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C64889D7()
-{
-    AssertCode("@@@", "C64889D7");
-}
-// Reko: a decoder for the instruction C609F2 at address 00000000004092C1 has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C609F2()
-{
-    AssertCode("@@@", "C609F2");
-}
 // Reko: a decoder for the instruction 44C74D85E4490F45 at address 0000000000409308 has not been implemented. (This could be invalid or it could be not yet implemented)
 [Test]
 public void X86Dis_44C74D85E4490F45()
@@ -152,59 +92,17 @@ public void X86Dis_C6E807()
 {
     AssertCode("@@@", "C6E807");
 }
-// Reko: a decoder for the instruction C609F2 at address 0000000000409371 has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C609F2()
-{
-    AssertCode("@@@", "C609F2");
-}
-// Reko: a decoder for the instruction 44C74D85E4490F45 at address 00000000004093B8 has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_44C74D85E4490F45()
-{
-    AssertCode("@@@", "44C74D85E4490F45");
-}
-// Reko: a decoder for the instruction C74D85E4490F45 at address 00000000004093B9 has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C74D85E4490F45()
-{
-    AssertCode("@@@", "C74D85E4490F45");
-}
 // Reko: a decoder for the instruction C6E857 at address 00000000004093C3 has not been implemented. (This could be invalid or it could be not yet implemented)
 [Test]
 public void X86Dis_C6E857()
 {
     AssertCode("@@@", "C6E857");
 }
-// Reko: a decoder for the instruction C609F2 at address 000000000040941A has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C609F2()
-{
-    AssertCode("@@@", "C609F2");
-}
-// Reko: a decoder for the instruction C64889D7 at address 00000000004095F0 has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C64889D7()
-{
-    AssertCode("@@@", "C64889D7");
-}
-// Reko: a decoder for the instruction C64889D7 at address 0000000000409660 has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C64889D7()
-{
-    AssertCode("@@@", "C64889D7");
-}
 // Reko: a decoder for the instruction C709FA08C875 at address 00000000004096BE has not been implemented. (This could be invalid or it could be not yet implemented)
 [Test]
 public void X86Dis_C709FA08C875()
 {
     AssertCode("@@@", "C709FA08C875");
-}
-// Reko: a decoder for the instruction C64889D7 at address 0000000000409718 has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C64889D7()
-{
-    AssertCode("@@@", "C64889D7");
 }
 // Reko: a decoder for the instruction C7E87182FFFF at address 000000000040A349 has not been implemented. (This could be invalid or it could be not yet implemented)
 [Test]
@@ -314,18 +212,6 @@ public void X86Dis_C6760A48()
 {
     AssertCode("@@@", "C6760A48");
 }
-// Reko: a decoder for the instruction C6760A48 at address 000000000040DDEA has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C6760A48()
-{
-    AssertCode("@@@", "C6760A48");
-}
-// Reko: a decoder for the instruction C6760A48 at address 000000000040DDFD has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C6760A48()
-{
-    AssertCode("@@@", "C6760A48");
-}
 // Reko: a decoder for the instruction C6F9FF at address 000000000040E2F6 has not been implemented. (This could be invalid or it could be not yet implemented)
 [Test]
 public void X86Dis_C6F9FF()
@@ -421,30 +307,6 @@ public void X86Dis_C6BAFC374100BF()
 public void X86Dis_C75BE9EC18FFFF()
 {
     AssertCode("@@@", "C75BE9EC18FFFF");
-}
-// Reko: a decoder for the instruction C6FFFF at address 000000000041116D has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C6FFFF()
-{
-    AssertCode("@@@", "C6FFFF");
-}
-// Reko: a decoder for the instruction C6FFFF at address 00000000004111A0 has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C6FFFF()
-{
-    AssertCode("@@@", "C6FFFF");
-}
-// Reko: a decoder for the instruction C6FFFF at address 0000000000411645 has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C6FFFF()
-{
-    AssertCode("@@@", "C6FFFF");
-}
-// Reko: a decoder for the instruction C6FFFF at address 0000000000411678 has not been implemented. (This could be invalid or it could be not yet implemented)
-[Test]
-public void X86Dis_C6FFFF()
-{
-    AssertCode("@@@", "C6FFFF");
 }
 // Reko: a decoder for the instruction C75BE93CFFFFFF at address 000000000041186D has not been implemented. (This could be invalid or it could be not yet implemented)
 [Test]

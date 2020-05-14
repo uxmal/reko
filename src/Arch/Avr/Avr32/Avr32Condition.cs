@@ -18,27 +18,25 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Machine;
-using Reko.Core.Types;
-
 namespace Reko.Arch.Avr.Avr32
 {
-    public class AssignOperand : MachineOperand
+    public enum Avr32Condition
     {
-        public RegisterStorage Register { get; }
-        public int Value { get; }
-
-        public AssignOperand(RegisterStorage registerStorage, int value)
-            : base(PrimitiveType.Word32)
-        {
-            this.Register = registerStorage;
-            this.Value = value;
-        }
-
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            writer.WriteFormat("{0}={1}", Register.Name, Value);
-        }
+        eq,
+        ne,
+        cc,
+        cs,
+        ge,
+        lt,
+        mi,
+        pl,
+        ls,
+        gt,
+        le,
+        hi,
+        vs,
+        vc,
+        qs,
+        al,
     }
 }

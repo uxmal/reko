@@ -20,6 +20,7 @@
 
 using Reko.Core.Machine;
 using System;
+using System.Text;
 
 namespace Reko.Arch.Avr.Avr32
 {
@@ -28,6 +29,7 @@ namespace Reko.Arch.Avr.Avr32
         public Mnemonic Mnemonic { get; set; }
         public override int MnemonicAsInteger => (int) Mnemonic;
         public override string MnemonicAsString => Mnemonic.ToString();
+        public Avr32Condition Condition { get; set; }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -37,7 +39,12 @@ namespace Reko.Arch.Avr.Avr32
 
         private void RenderMnemonic(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteMnemonic(Mnemonic.ToString().Replace('_', '.'));
+            var sb = new StringBuilder(Mnemonic.ToString().Replace('_', '.'));
+            if (Condition != Avr32Condition.al)
+            {
+                sb.Append(Condition.ToString());
+            }
+            writer.WriteMnemonic(sb.ToString());
         }
 
         protected override void RenderOperand(MachineOperand operand, MachineInstructionWriter writer, MachineInstructionWriterOptions options)

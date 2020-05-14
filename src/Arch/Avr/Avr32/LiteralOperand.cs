@@ -18,32 +18,26 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Machine;
-using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Reko.UnitTests.Arch
+namespace Reko.Arch.Avr.Avr32
 {
-    public class UnitTestGenerationService : ITestGenerationService
+    public class LiteralOperand : MachineOperand
     {
-        private readonly IServiceProvider services;
-
-        public UnitTestGenerationService(IServiceProvider services)
+        public LiteralOperand(string literal) : base(PrimitiveType.Word32)
         {
-            this.services = services;
+            this.Value = literal;
         }
 
-        public void ReportMissingDecoder(string testPrefix, Address addrStart, EndianImageReader rdr, string message)
-        {
-            var test = TestGenerationService.GenerateDecoderUnitTest(testPrefix, addrStart, rdr, message);
-            Console.WriteLine(test);
-        }
+        public string Value { get; }
 
-        public void ReportMissingRewriter(string testPrefix, MachineInstruction instr, EndianImageReader rdr, string message)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var test = TestGenerationService.GenerateRewriterUnitTest(testPrefix, instr, rdr, message);
-            Console.WriteLine(test);
+            writer.WriteString(this.Value);
         }
     }
 }
