@@ -40,10 +40,12 @@ namespace Reko.Arch.Avr.Avr32
             GpRegisters = regs;
             RegistersByName = regs.ToDictionary(r => r.Name);
             sp = regs[13];
+            pc = regs[15];
         }
 
         public static Dictionary<string, RegisterStorage> RegistersByName { get; }
         public static RegisterStorage[] GpRegisters { get; }
         public static RegisterStorage sp { get; }
+        public static RegisterStorage pc { get; }
     }
 }

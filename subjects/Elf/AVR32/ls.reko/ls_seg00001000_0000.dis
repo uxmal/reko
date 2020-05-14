@@ -1,0 +1,140 @@
+// _start
+// Return size: 0
+define _start
+_start_entry:
+	sp = fp
+	// succ:  l0000269C
+l0000269C:
+_start_exit:
+
+
+// __avr32_f64_mul
+// Return size: 0
+define __avr32_f64_mul
+__avr32_f64_mul_entry:
+	sp = fp
+	// succ:  l0000F2D0
+l0000F2D0:
+__avr32_f64_mul_exit:
+
+
+// __avr32_f64_sub
+// Return size: 0
+define __avr32_f64_sub
+__avr32_f64_sub_entry:
+	sp = fp
+	// succ:  l0000F4B4
+l0000F4B4:
+__avr32_f64_sub_exit:
+
+
+// __avr32_f64_add
+// Return size: 0
+define __avr32_f64_add
+__avr32_f64_add_entry:
+	sp = fp
+	// succ:  l0000F650
+l0000F650:
+__avr32_f64_add_exit:
+
+
+// __avr32_f64_to_u32
+// Return size: 0
+define __avr32_f64_to_u32
+__avr32_f64_to_u32_entry:
+	sp = fp
+	// succ:  l0000F760
+l0000F760:
+__avr32_f64_to_u32_exit:
+
+
+// __avr32_f64_to_s32
+// Return size: 0
+define __avr32_f64_to_s32
+__avr32_f64_to_s32_entry:
+	sp = fp
+	// succ:  l0000F764
+l0000F764:
+__avr32_f64_to_s32_exit:
+
+
+// __avr32_u32_to_f64
+// Return size: 0
+define __avr32_u32_to_f64
+__avr32_u32_to_f64_entry:
+	sp = fp
+	// succ:  l0000F7FA
+l0000F7FA:
+__avr32_u32_to_f64_exit:
+
+
+// __avr32_s32_to_f64
+// Return size: 0
+define __avr32_s32_to_f64
+__avr32_s32_to_f64_entry:
+	sp = fp
+	// succ:  l0000F802
+l0000F802:
+__avr32_s32_to_f64_exit:
+
+
+// __avr32_f64_cmp_eq
+// Return size: 0
+define __avr32_f64_cmp_eq
+__avr32_f64_cmp_eq_entry:
+	sp = fp
+	// succ:  l0000F8EC
+l0000F8EC:
+__avr32_f64_cmp_eq_exit:
+
+
+// __avr32_f64_cmp_ge
+// Return size: 0
+define __avr32_f64_cmp_ge
+__avr32_f64_cmp_ge_entry:
+	sp = fp
+	// succ:  l0000F91C
+l0000F91C:
+__avr32_f64_cmp_ge_exit:
+
+
+// __avr32_f64_cmp_lt
+// Return size: 0
+define __avr32_f64_cmp_lt
+__avr32_f64_cmp_lt_entry:
+	sp = fp
+	// succ:  l0000F976
+l0000F976:
+__avr32_f64_cmp_lt_exit:
+
+
+// __avr32_f64_div
+// Return size: 0
+define __avr32_f64_div
+__avr32_f64_div_entry:
+	sp = fp
+	// succ:  l0000FA54
+l0000FA54:
+__avr32_f64_div_exit:
+
+
+// __avr32_sdiv64
+// Return size: 0
+define __avr32_sdiv64
+__avr32_sdiv64_entry:
+	sp = fp
+	// succ:  l00010208
+l00010208:
+__avr32_sdiv64_exit:
+
+
+// __moddi3
+// Return size: 0
+define __moddi3
+__moddi3_entry:
+	sp = fp
+	// succ:  l000104EA
+l000104EA:
+__moddi3_exit:
+
+

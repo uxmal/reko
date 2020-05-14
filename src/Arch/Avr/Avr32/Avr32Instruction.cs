@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Machine;
+using System;
 
 namespace Reko.Arch.Avr.Avr32
 {
@@ -29,8 +30,13 @@ namespace Reko.Arch.Avr.Avr32
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteMnemonic(Mnemonic.ToString());
+            RenderMnemonic(writer, options);
             base.RenderOperands(writer, options);
+        }
+
+        private void RenderMnemonic(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteMnemonic(Mnemonic.ToString().Replace('_', '.'));
         }
 
         protected override void RenderOperand(MachineOperand operand, MachineInstructionWriter writer, MachineInstructionWriterOptions options)

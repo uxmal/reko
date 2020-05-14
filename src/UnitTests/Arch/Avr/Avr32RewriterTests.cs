@@ -18,22 +18,22 @@
  */
 #endregion
 
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Arch.Avr.Avr32
+namespace Reko.UnitTests.Arch.Avr
 {
-    public enum Mnemonic
+    [TestFixture]
+    public class Avr32RewriterTests
     {
-        invalid,
-        mov,
-        eor,
-        ld_w,
-        st_w,
-        lddpc,
-        sub,
-        rsub,
-        mcall
+        [Test]
+        public void AvrRw_sum3_imm()
+        {
+            // aSSertCode("@@@", "FECCD140");
+        }
     }
 }
