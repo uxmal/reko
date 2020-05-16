@@ -382,10 +382,14 @@ namespace Reko.ImageLoaders.Elf
                 // create a pseudo-section from the segMap.
                 foreach (var segment in segMap)
                 {
+                    var elfSegment = this.GetSegmentByAddress(segment.Value.BaseAddress.ToLinear());
                     var imgSegment = new ImageSegment(
                         segment.Value.BaseAddress.GenerateName("seg", ""),
                         segment.Value,
-                        AccessMode.ReadExecute)        //$TODO: writeable segments.
+                        elfSegment != null
+                            ? elfSegment.GetAccessMode()
+                            : AccessMode.ReadExecute) 
+                    
                     {
                         Size = (uint) segment.Value.Length,
                     };

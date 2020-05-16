@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,11 @@ namespace Reko.ImageLoaders.Elf
         public ulong p_pmemsz;
         public ulong p_align;
 
+        public AccessMode GetAccessMode()
+        {
+            return (AccessMode) (p_flags & 7);
+        }
+
         public bool IsValidAddress(ulong uAddr)
         {
             return p_vaddr <= uAddr && uAddr < p_vaddr + p_pmemsz;
@@ -46,5 +52,7 @@ namespace Reko.ImageLoaders.Elf
         {
             return $"[{p_vaddr:X} - 0x{p_pmemsz:X}] - {p_type}";
         }
+
+
     }
 }
