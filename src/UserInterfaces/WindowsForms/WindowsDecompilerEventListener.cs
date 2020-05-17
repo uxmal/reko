@@ -291,7 +291,6 @@ namespace Reko.UserInterfaces.WindowsForms
             var percentDone = Math.Min(
                 100,
                 (int) ((position * 100L) / total));
-                        dlg.Worker.ReportProgress(percentDone);
             dlg.Worker.ReportProgress(percentDone);
         }
 
