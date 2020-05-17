@@ -44,6 +44,8 @@ namespace Reko.Core.Services
         string MakeRelativePath(string fromPath, string toPath);
         byte[] ReadAllBytes(string filePath);
         void WriteAllBytes(string path, byte[] bytes);
+        void WriteAllText(string filename, string header);
+        void AppendAllText(string filename, string v);
     }
 
     public class FileSystemServiceImpl : IFileSystemService
@@ -58,6 +60,11 @@ namespace Reko.Core.Services
         public FileSystemServiceImpl(char sepChar)
         {
             this.sepChar = sepChar;
+        }
+
+        public void AppendAllText(string path, string contents)
+        {
+            File.AppendAllText(path, contents);
         }
 
         public Stream CreateFileStream(string filename, FileMode mode)
@@ -147,6 +154,11 @@ namespace Reko.Core.Services
         public void WriteAllBytes(string filePath, byte[] bytes)
         {
             File.WriteAllBytes(filePath, bytes);
+        }
+
+        public void WriteAllText(string filePath, string contents)
+        {
+            File.WriteAllText(filePath, contents);
         }
     }
 }

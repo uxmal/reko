@@ -3,6 +3,7 @@ using Reko.Core.Rtl;
 using Reko.WindowsItp.Decoders;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,10 +13,12 @@ namespace Reko.WindowsItp
     public partial class DecoderPerformanceDialog : Form
     {
         private List<RtlInstructionCluster> rtls;
+        private ServiceContainer sc;
 
         public DecoderPerformanceDialog()
         {
             InitializeComponent();
+            this.sc = new ServiceContainer();
         }
 
         private async void btnDoit_Click(object sender, EventArgs e)
@@ -43,7 +46,7 @@ namespace Reko.WindowsItp
             Func<long> test;
             if (rdbRealDasm.Checked)
             {
-                var arch = new Reko.Arch.Arm.Arm32Architecture("arm32");
+                var arch = new Reko.Arch.Arm.Arm32Architecture(sc, "arm32");
                 //var arch = new Reko.Arch.X86.X86ArchitectureFlat32("x86-protected-32");
 
                 if (rewriter)

@@ -33,7 +33,7 @@ namespace Reko.Arch.Alpha
 {
     public class AlphaArchitecture : ProcessorArchitecture
     {
-        public AlphaArchitecture(string archId) : base(archId)
+        public AlphaArchitecture(IServiceProvider services, string archId) : base(services, archId)
         {
             this.Endianness = EndianServices.Little;
             this.WordWidth = PrimitiveType.Word64;

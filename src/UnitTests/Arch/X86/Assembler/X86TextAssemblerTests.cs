@@ -23,6 +23,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,7 +48,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
             var segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
-            var arch = (IProcessorArchitecture) new X86ArchitectureFlat32("x86-protected-32");
+            var arch = (IProcessorArchitecture) new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
             this.program = new Program(segmentMap, arch, null);
         }
 

@@ -47,8 +47,9 @@ namespace Reko.Arch.X86
 		}
 
         public override int MnemonicAsInteger => (int) Mnemonic;
+        public override string MnemonicAsString => Mnemonic.ToString();
 
-		private bool NeedsExplicitMemorySize()
+        private bool NeedsExplicitMemorySize()
 		{
 			if (Mnemonic == Mnemonic.movsx ||
                 Mnemonic == Mnemonic.movzx ||

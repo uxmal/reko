@@ -48,7 +48,7 @@ namespace Reko.Arch.Arm
 #endif
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public Arm32Architecture(string archId) : base(archId)
+        public Arm32Architecture(IServiceProvider services, string archId) : base(services, archId)
         {
             Endianness = EndianServices.Little;
             InstructionBitSize = 32;

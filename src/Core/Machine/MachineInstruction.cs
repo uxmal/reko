@@ -77,6 +77,12 @@ namespace Reko.Core.Machine
         /// </summary>
         public abstract int MnemonicAsInteger { get; }
 
+        /// <summary>
+        /// Generate a string for the mnemonic; this is only used for generation of unit tests, so use only
+        /// characters [a-z0-9_]
+        /// </summary>
+        public abstract string MnemonicAsString { get; }
+        
         public sealed override string ToString()
         {
             var renderer = new StringRenderer();

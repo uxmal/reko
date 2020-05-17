@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ using Reko.Core.Types;
 using Reko.Environments.SysV;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Core
 {
@@ -50,7 +51,8 @@ namespace Reko.UnitTests.Core
                     }
                 }
             };
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
+            var sc = new ServiceContainer();
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
             var platform = new SysVPlatform(null, arch);
             var tldser = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
             var lib = tldser.Load(slib);

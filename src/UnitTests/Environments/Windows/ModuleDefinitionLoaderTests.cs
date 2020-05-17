@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Environments.Windows
 {
@@ -39,8 +40,9 @@ namespace Reko.UnitTests.Environments.Windows
 
         private void CreateDefFileLoader(string absPath, string contents)
         {
-            this.platform = new Win32Platform(null, new X86ArchitectureFlat32("x86-protected-32"));
-            dfl = new ModuleDefinitionLoader(null, absPath, Encoding.ASCII.GetBytes(contents));
+            var sc = new ServiceContainer();
+            this.platform = new Win32Platform(sc, new X86ArchitectureFlat32(sc, "x86-protected-32"));
+            dfl = new ModuleDefinitionLoader(sc, absPath, Encoding.ASCII.GetBytes(contents));
         }
 
         [Test]

@@ -26,6 +26,7 @@ using Reko.Scanning;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -237,7 +238,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Vse_segmented_addrs()
         {
-            program.Architecture = new Reko.Arch.X86.X86ArchitectureReal("x86-real-16");
+            program.Architecture = new Reko.Arch.X86.X86ArchitectureReal(new ServiceContainer(), "x86-real-16");
             Given_UInt16Array(Address.SegPtr(0xC00, 4), new ushort[] {
                 0x1234,
                 0x0C00,

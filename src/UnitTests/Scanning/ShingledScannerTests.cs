@@ -33,6 +33,7 @@ using Reko.Environments.Windows;
 using Reko.Scanning;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -110,7 +111,7 @@ namespace Reko.UnitTests.Scanning
                 })
                 .SelectMany(w => w)
                 .ToArray());
-            var arch = new MipsLe32Architecture("mips-le-32");
+            var arch = new MipsLe32Architecture(new ServiceContainer(), "mips-le-32");
             CreateProgram(image, arch);
         }
 
@@ -120,19 +121,19 @@ namespace Reko.UnitTests.Scanning
                 Address.Ptr32(0x10000),
                 bytes);
             this.rd = image.Relocations;
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
+            var arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
             CreateProgram(image, arch);
         }
 
         private void Given_x86_Image(Action<X86Assembler> asm)
         {
             var addrBase = Address.Ptr32(0x100000);
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
+            var arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
             var entry = ImageSymbol.Procedure(arch, addrBase);
             var m = new X86Assembler(arch, addrBase, new List<ImageSymbol> { entry });
             asm(m);
             this.program = m.GetImage();
-            this.program.Platform = new Win32Platform(null, arch);
+            this.program.Platform = new Win32Platform(arch.Services, arch);
         }
 
         private void Given_x86_64_Image(params byte[] bytes)
@@ -140,7 +141,7 @@ namespace Reko.UnitTests.Scanning
             var image = new MemoryArea(
                 Address.Ptr64(0x0100000000000000),
                 bytes);
-            var arch = new X86ArchitectureFlat64("x86-protected-64");
+            var arch = new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64");
             CreateProgram(image, arch);
         }
 
@@ -155,7 +156,7 @@ namespace Reko.UnitTests.Scanning
                 Size = (uint)mem.Bytes.Length
             });
             seg.Access = AccessMode.ReadExecute;
-            var platform = new DefaultPlatform(null, arch);
+            var platform = new DefaultPlatform(arch.Services, arch);
             program = new Program(
                 segmentMap,
                 arch,

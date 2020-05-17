@@ -59,7 +59,7 @@ namespace Reko.Environments.C64
                     return program;
                 }
             }
-            var arch = new Mos6502Architecture("mos6502");
+            var arch = new Mos6502Architecture(Services, "mos6502");
             var mem = new MemoryArea(Address.Ptr16(0), RawImage);
             var segmentMap = new SegmentMap(mem.BaseAddress);
             segmentMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
@@ -91,7 +91,7 @@ namespace Reko.Environments.C64
             var lines = rdr.ToSortedList(line => (ushort) line.Address.ToLinear(), line => line);
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch6502 = cfgSvc.GetArchitecture("m6502");
-            var arch = new C64Basic(lines);
+            var arch = new C64Basic(Services, lines);
             var platform = cfgSvc.GetEnvironment("c64").Load(Services, arch);
             var segMap = platform.CreateAbsoluteMemoryMap();
             segMap.AddSegment(image, "code", AccessMode.ReadWriteExecute);

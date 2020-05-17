@@ -34,6 +34,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -106,7 +107,7 @@ namespace Reko.UnitTests.Analysis
         [Category(Categories.UnitTests)]
         public void Dfa2_Simple()
         {
-            var pb = new ProgramBuilder(new FakeArchitecture());
+            var pb = new ProgramBuilder(new FakeArchitecture(new ServiceContainer()));
             pb.Add("test", m =>
                 {
                 var r1 = m.Reg32("r1", 1);
@@ -137,7 +138,7 @@ test_exit:
         [Test]
         public void Dfa2_StackArgs()
         {
-            var pb = new ProgramBuilder(new FakeArchitecture());
+            var pb = new ProgramBuilder(new FakeArchitecture(new ServiceContainer()));
             pb.Add("test", m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);
@@ -224,7 +225,7 @@ test_exit:
         [Category(Categories.FailedTests)]
         public void Dfa2_UserDefinedStackArgs()
         {
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
+            var arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
             var pb = new ProgramBuilder(arch);
             var test = pb.Add(
                 new Procedure_v1

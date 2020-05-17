@@ -47,9 +47,10 @@ namespace Reko.UnitTests.Arch.X86
 
         public X86RewriterTests()
         {
-            arch16 = new X86ArchitectureReal("x86-real-16");
-            arch32 = new X86ArchitectureFlat32("x86-protected-32");
-            arch64 = new X86ArchitectureFlat64("x86-protected-64");
+            var sc = new ServiceContainer();
+            arch16 = new X86ArchitectureReal(sc, "x86-real-16");
+            arch32 = new X86ArchitectureFlat32(sc, "x86-protected-32");
+            arch64 = new X86ArchitectureFlat64(sc, "x86-protected-64");
             baseAddr16 = Address.SegPtr(0x0C00, 0x0000);
             baseAddr32 = Address.Ptr32(0x10000000);
             baseAddr64 = Address.Ptr64(0x140000000ul);

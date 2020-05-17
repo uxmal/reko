@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Text;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Environments.AmigaOS
 {
@@ -36,7 +37,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
 
         public FuncsFileParserTests()
         {
-            this.arch = new Reko.Arch.M68k.M68kArchitecture("m68k");
+            this.arch = new Reko.Arch.M68k.M68kArchitecture(new ServiceContainer(), "m68k");
         }
 
         private FuncsFileParser CreateParser(string file)

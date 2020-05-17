@@ -31,6 +31,7 @@ using Reko.UnitTests.Mocks;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Types;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -39,6 +40,7 @@ namespace Reko.UnitTests.Scanning
     {
         private StorageBinder binder;
         private IProcessorArchitecture arch;
+        private ServiceContainer sc;
         private FakeArchitecture fakeArch;
         private RtlBackwalkHost host;
         private Program program;
@@ -48,7 +50,8 @@ namespace Reko.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            fakeArch = new FakeArchitecture();
+            sc = new ServiceContainer();
+            fakeArch = new FakeArchitecture(sc);
             arch = fakeArch;
             program = new Program {
                 Architecture = arch,
@@ -283,7 +286,7 @@ namespace Reko.UnitTests.Scanning
         {
             // In old x86 binaries we see this mechanism
             // for zero extending a register.
-            arch = new Reko.Arch.X86.X86ArchitectureReal("x86-real-16");
+            arch = new Reko.Arch.X86.X86ArchitectureReal(sc, "x86-real-16");
             var bl = binder.EnsureRegister(arch.GetRegister("bl"));
             var bh = binder.EnsureRegister(arch.GetRegister("bh"));
             var bx = binder.EnsureRegister(arch.GetRegister("bx"));
@@ -349,7 +352,7 @@ namespace Reko.UnitTests.Scanning
             // rep movsd 
             // jmp dword ptr[007862E8 + edx * 4]
 
-            arch = new Reko.Arch.X86.X86ArchitectureReal("x86-real-16");
+            arch = new Reko.Arch.X86.X86ArchitectureReal(sc, "x86-real-16");
             var ecx = binder.EnsureRegister(arch.GetRegister("ecx"));
             var edx = binder.EnsureRegister(arch.GetRegister("edx"));
             var esi = binder.EnsureRegister(arch.GetRegister("esi"));
@@ -409,7 +412,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwslc_SegmentedLoad()
         {
-            arch = new Reko.Arch.X86.X86ArchitectureReal("x86-real-16");
+            arch = new Reko.Arch.X86.X86ArchitectureReal(sc, "x86-real-16");
             var cx = binder.EnsureRegister(arch.GetRegister("cx"));
             var bx = binder.EnsureRegister(arch.GetRegister("bx"));
             var ds = binder.EnsureRegister(arch.GetRegister("ds"));
@@ -445,7 +448,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwslc_ClearingBits()
         {
-            arch = new Reko.Arch.X86.X86ArchitectureReal("x86-real-16");
+            arch = new Reko.Arch.X86.X86ArchitectureReal(sc, "x86-real-16");
             var eax = binder.EnsureRegister(arch.GetRegister("eax"));
             var edx = binder.EnsureRegister(arch.GetRegister("edx"));
             var dl = binder.EnsureRegister(arch.GetRegister("dl"));
@@ -536,7 +539,7 @@ namespace Reko.UnitTests.Scanning
             var W32 = PrimitiveType.Word32;
             var I16 = PrimitiveType.Int16;
             var I32 = PrimitiveType.Int32;
-            arch = new Reko.Arch.M68k.M68kArchitecture("m68k");
+            arch = new Reko.Arch.M68k.M68kArchitecture(sc, "m68k");
             var d0 = Reg("d0");
             var d1 = Reg("d1");
             var v2 = binder.CreateTemporary("v2", W8);
@@ -622,7 +625,7 @@ namespace Reko.UnitTests.Scanning
             var W32 = PrimitiveType.Word32;
             var I16 = PrimitiveType.Int16;
             var I32 = PrimitiveType.Int32;
-            arch = new Reko.Arch.M68k.M68kArchitecture("m68k");
+            arch = new Reko.Arch.M68k.M68kArchitecture(sc, "m68k");
             var d0 = Reg("d0");
             var d1 = Reg("d1");
             var v2 = binder.CreateTemporary("v2", W8);
@@ -763,7 +766,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwslc_Issue_691()
         {
-            arch = new Reko.Arch.M68k.M68kArchitecture("m68k");
+            arch = new Reko.Arch.M68k.M68kArchitecture(sc, "m68k");
             var d0 = Reg("d0");
             var CVZN = Cc("CVZN");
             var C = Cc("C");

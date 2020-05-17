@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace Reko.UnitTests.Arch.M6800
 
         public M6812RewriterTests()
         {
-            this.arch = new Reko.Arch.M6800.M6812Architecture("m6812");
+            this.arch = new Reko.Arch.M6800.M6812Architecture(new ServiceContainer(), "m6812");
             this.addr = Address.Ptr16(0);
         }
 

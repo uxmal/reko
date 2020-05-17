@@ -30,9 +30,9 @@ namespace Reko.Arch.i8051
 {
     public class i8051Instruction : MachineInstruction
     {
-        public override int MnemonicAsInteger => (int)Mnemonic;
-
         public Mnemonic Mnemonic { get; set; }
+        public override int MnemonicAsInteger => (int)Mnemonic;
+        public override string MnemonicAsString => Mnemonic.ToString();
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

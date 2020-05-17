@@ -63,6 +63,7 @@ namespace Reko.Core.Configuration
 
     public class RekoConfigurationService : IConfigurationService
     {
+        private readonly IServiceProvider services;
         private readonly List<LoaderDefinition> loaders;
         private readonly List<SignatureFileDefinition> sigFiles;
         private readonly List<ArchitectureDefinition> architectures;
@@ -71,7 +72,7 @@ namespace Reko.Core.Configuration
         private readonly List<RawFileDefinition> rawFiles;
         private readonly UiPreferencesConfiguration uiPreferences;
 
-        public RekoConfigurationService(RekoConfiguration_v1 config)
+        public RekoConfigurationService(IServiceProvider services, RekoConfiguration_v1 config)
         {
             this.loaders = LoadCollection(config.Loaders, LoadLoaderConfiguration);
             this.sigFiles = LoadCollection(config.SignatureFiles, LoadSignatureFile);
@@ -260,12 +261,12 @@ namespace Reko.Core.Configuration
         /// Load the reko.config file.
         /// </summary>
         /// <returns></returns>
-        public static RekoConfigurationService Load()
+        public static RekoConfigurationService Load(IServiceProvider services)
         {
-            return Load("reko.config");
+            return Load(services, "reko.config");
         }
 
-        public static RekoConfigurationService Load(string configFileName)
+        public static RekoConfigurationService Load(IServiceProvider services, string configFileName)
         {
             var appDir = AppDomain.CurrentDomain.BaseDirectory;
             configFileName = Path.Combine(appDir, configFileName);
@@ -274,7 +275,7 @@ namespace Reko.Core.Configuration
             {
                 var ser = new XmlSerializer(typeof(RekoConfiguration_v1));
                 var sConfig = (RekoConfiguration_v1)ser.Deserialize(stm);
-                return new RekoConfigurationService(sConfig);
+                return new RekoConfigurationService(services, sConfig);
             }
         }
 
@@ -345,7 +346,7 @@ namespace Reko.Core.Configuration
             Type t = Type.GetType(elem.TypeName, true);
             if (t == null)
                 return null;
-            var arch = (IProcessorArchitecture)Activator.CreateInstance(t, elem.Name);
+            var arch = (IProcessorArchitecture)Activator.CreateInstance(t, this.services, elem.Name);
             arch.Description = elem.Description;
             return arch;
         }

@@ -29,6 +29,7 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -43,6 +44,7 @@ namespace Reko.UnitTests.Analysis
     [Category("UnitTests")]
     public class SsaTransformTests
     {
+        private IServiceContainer sc;
         private IProcessorArchitecture arch;
         private ProgramBuilder pb;
         private Dictionary<Address, ImportReference> importReferences;
@@ -61,6 +63,7 @@ namespace Reko.UnitTests.Analysis
         [SetUp]
         public void Setup()
         {
+            this.sc = new ServiceContainer();
             this.addUseInstructions = false;
             this.dynamicLinker = new Mock<IDynamicLinker>();
             this.r1 = new Identifier("r1", PrimitiveType.Word32, new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
@@ -68,7 +71,7 @@ namespace Reko.UnitTests.Analysis
             this.r3 = new Identifier("r3", PrimitiveType.Word32, new RegisterStorage("r3", 3, 0, PrimitiveType.Word32));
             this.r4 = new Identifier("r4", PrimitiveType.Word32, new RegisterStorage("r4", 4, 0, PrimitiveType.Word32));
 
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(sc);
             Given_Architecture(arch);
 
             this.fakeCc = new FakeCallingConvention(
@@ -115,7 +118,7 @@ namespace Reko.UnitTests.Analysis
                 Programs = { program }
             };
             var listener = new FakeDecompilerEventListener();
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(sc);
             var platform = new FakePlatform(null, arch);
             platform.Test_GetCallingConvention = s => fakeCc;
             platform.Test_CreateTrashedRegisters = () => trashedRegs;
@@ -1468,7 +1471,7 @@ proc1_exit:
 ";
             #endregion
 
-            Given_Architecture(new X86ArchitectureFlat32("x86-real-16"));
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16"));
             RunTest(sExp, m =>
             {
                 var ecx = m.Register(Registers.ecx);
@@ -1958,7 +1961,7 @@ proc1_exit:
 ";
             #endregion
 
-            Given_Architecture(new X86ArchitectureFlat32("x86-protected-32"));
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-protected-32"));
 
             RunTest_FrameAccesses(sExp, m =>
             {
@@ -2078,7 +2081,7 @@ proc1_exit:
 ======
 ";
             #endregion
-            Given_Architecture(new X86ArchitectureFlat32("x86-real-16"));
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16"));
             RunTest(sExp, m =>
             {
                 var bx = m.Frame.EnsureRegister(Registers.bx);
@@ -2151,7 +2154,7 @@ proc1_exit:
 ";
             #endregion
 
-            Given_Architecture(new X86ArchitectureFlat32("x86-real-16"));
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16"));
 
             RunTest_FrameAccesses(sExp, m =>
             {
@@ -2228,7 +2231,7 @@ proc1_exit:
 ";
             #endregion
 
-            Given_Architecture(new X86ArchitectureFlat32("x86-real-16"));
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16"));
             RunTest(sExp, m =>
             {
                 var bl = m.Register(Registers.bl);
@@ -2477,7 +2480,7 @@ proc1_exit:
 ";
             #endregion
 
-            Given_Architecture(new X86ArchitectureFlat32("x86-real-16"));
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16"));
             RunTest(sExp, m =>
             {
                 var al = m.Register(Registers.al);
@@ -3147,7 +3150,7 @@ proc1_exit:
 ======
 ";
             #endregion
-            Given_Architecture(new X86ArchitectureFlat32("x86-real-16"));
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16"));
 
             RunTest_FrameAccesses(sExp, m =>
             {
@@ -3492,7 +3495,7 @@ proc_exit:
         [Test]
         public void SsaFpuCallDefsShouldBeIds()
         {
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(sc);
             var topReg = arch.FpuStackRegister;
             var ST = arch.FpuStackBase;
             Given_Procedure("main", m =>
@@ -3717,7 +3720,7 @@ proc_exit:
         [Test]
         public void Ssa96BitStackLocal()
         {
-            Given_Architecture(new FakeArchitecture
+            Given_Architecture(new FakeArchitecture(sc)
             {
                 Test_Endianness = EndianServices.Big
             });
@@ -3769,7 +3772,7 @@ Ssa96BitStackLocal_exit:
         [Test]
         public void SsaDpb()
         {
-            Given_Architecture(new X86ArchitectureFlat32("x86-real-16"));
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16"));
             var proc = Given_Procedure(nameof(SsaDpb), m =>
             {
                 var bx = m.Register(Registers.bx);
@@ -3993,7 +3996,7 @@ SsaDoNotSearchImportedProcInFpuStack_exit:
         [Category(Categories.UnitTests)]
         public void SsaEndiannessCheck_LE()
         {
-            Given_Architecture(new FakeArchitecture
+            Given_Architecture(new FakeArchitecture(sc)
             {
                 Test_Endianness = EndianServices.Little
             });
@@ -4044,7 +4047,7 @@ proc1_exit:
         [Category(Categories.UnitTests)]
         public void SsaEndiannessCheck_BE()
         {
-            Given_Architecture(new FakeArchitecture
+            Given_Architecture(new FakeArchitecture(sc)
             {
                 Test_Endianness = EndianServices.Big
             });

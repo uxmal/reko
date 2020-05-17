@@ -29,6 +29,7 @@ using System.Linq;
 using System.Text;
 using Reko.UnitTests.Mocks;
 using Reko.Core;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Core.CLanguage
 {
@@ -43,8 +44,9 @@ namespace Reko.UnitTests.Core.CLanguage
         [SetUp]
         public void Setup()
         {
-            this.arch = new FakeArchitecture();
-            this.platform = new DefaultPlatform(null, arch);
+            var sc = new ServiceContainer();
+            this.arch = new FakeArchitecture(sc);
+            this.platform = new DefaultPlatform(sc, arch);
             symbolTable = new SymbolTable(platform);
         }
 

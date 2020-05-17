@@ -26,6 +26,7 @@ using Reko.Core.Types;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Mocks
 {
@@ -43,12 +44,12 @@ namespace Reko.UnitTests.Mocks
 
         public ProcedureBuilder()
         {
-            Init(new FakeArchitecture(), this.GetType().Name, Address.Ptr32(0x00123400), null);
+            Init(new FakeArchitecture(new ServiceContainer()), this.GetType().Name, Address.Ptr32(0x00123400), null);
         }
 
         public ProcedureBuilder(string name)
         {
-            Init(new FakeArchitecture(), name, Address.Ptr32(0x00123400), null);
+            Init(new FakeArchitecture(new ServiceContainer()), name, Address.Ptr32(0x00123400), null);
         }
 
         public ProcedureBuilder(IProcessorArchitecture arch)

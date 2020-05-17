@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using Reko.Core;
 using Reko.Arch.Tlcs;
 using NUnit.Framework;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.Tlcs
 {
@@ -34,7 +35,7 @@ namespace Reko.UnitTests.Arch.Tlcs
     {
         public Tlcs90DisassemblerTests()
         {
-            this.Architecture = new Tlcs90Architecture("tlcs90");
+            this.Architecture = new Tlcs90Architecture(new ServiceContainer(), "tlcs90");
             this.LoadAddress = Address.Ptr16(0x0000);
         }
 

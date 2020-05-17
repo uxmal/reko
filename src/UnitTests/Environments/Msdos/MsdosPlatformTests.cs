@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Environments.Msdos
 
         private void Given_MsdosPlatform()
         {
-            this.arch = new X86ArchitectureReal("x86-real-16");
+            this.arch = new X86ArchitectureReal(sc, "x86-real-16");
             this.platform = new MsdosPlatform(sc, arch);
         }
 

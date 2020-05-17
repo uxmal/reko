@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,7 +40,7 @@ namespace Reko.UnitTests.Arch.Arc
         [SetUp]
         public void Setup()
         {
-            this.arch = new ARCompactArchitecture("arCompact");
+            this.arch = new ARCompactArchitecture(new ServiceContainer(), "arCompact");
             arch.LoadUserOptions(new Dictionary<string, object>
             {
                 { "Endianness", "be" }

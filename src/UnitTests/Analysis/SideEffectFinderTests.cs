@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -60,7 +61,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void SefApplication()
 		{
-			var p = new Procedure(new FakeArchitecture(), "foo", Address.Ptr32(0x00123400), null);
+			var p = new Procedure(new FakeArchitecture(new ServiceContainer()), "foo", Address.Ptr32(0x00123400), null);
 			var a = new Application(
 				new ProcedureConstant(PrimitiveType.Ptr32, p), 
 				PrimitiveType.Word32,

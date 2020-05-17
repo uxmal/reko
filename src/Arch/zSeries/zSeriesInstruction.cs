@@ -27,9 +27,9 @@ namespace Reko.Arch.zSeries
 #pragma warning disable IDE1006 // Naming Styles
     public class zSeriesInstruction : MachineInstruction
     {
-        internal Mnemonic Mnemonic;
-
+        public Mnemonic Mnemonic { get; set; }
         public override int MnemonicAsInteger => (int) Mnemonic;
+        public override string MnemonicAsString => Mnemonic.ToString();
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

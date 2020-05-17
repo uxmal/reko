@@ -25,6 +25,7 @@ using Reko.Core;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,7 +35,7 @@ namespace Reko.UnitTests.Arch.Arm
     [TestFixture]
     public class A64RewriterTests : RewriterTestBase
     {
-        private Arm64Architecture arch = new Arm64Architecture("aarch64");
+        private Arm64Architecture arch = new Arm64Architecture(new ServiceContainer(), "aarch64");
         private Address baseAddress = Address.Ptr64(0x00100000);
 
         public override IProcessorArchitecture Architecture => arch;

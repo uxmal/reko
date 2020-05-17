@@ -34,6 +34,8 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         public override int MnemonicAsInteger => (int) Mnemonic;
 
+        public override string MnemonicAsString => Mnemonic.ToString();
+
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteMnemonic(Mnemonic.ToString());

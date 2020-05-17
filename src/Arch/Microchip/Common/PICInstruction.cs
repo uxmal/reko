@@ -113,6 +113,15 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </value>
         public override int MnemonicAsInteger => (int)Mnemonic;
 
+
+        /// <summary>
+        /// Mnemonic rendered as a string, for test generation purposes.
+        /// </summary>
+        /// <value>
+        /// String representation of the mnemonic.
+        /// </value>
+        public override string MnemonicAsString => Mnemonic.ToString();
+
         /// <summary>
         /// Gets the number of operands of this instruction.
         /// </summary>

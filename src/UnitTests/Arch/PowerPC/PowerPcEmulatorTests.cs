@@ -34,12 +34,13 @@ namespace Reko.UnitTests.Arch.PowerPC
     public class PowerPcEmulatorTests
     {
         private readonly ServiceContainer sc;
-        private readonly PowerPcArchitecture arch = new PowerPcBe64Architecture("ppc-be-64");
+        private readonly PowerPcArchitecture arch;
         private Reko.Arch.PowerPC.PowerPcEmulator emu;
 
         public PowerPcEmulatorTests()
         {
             this.sc = new ServiceContainer();
+            this.arch = new PowerPcBe64Architecture(sc, "ppc-be-64");
         }
 
         private void Given_Code(params uint [] uInstrs)

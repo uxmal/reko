@@ -25,6 +25,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ namespace Reko.UnitTests.Arch.zSeries
     {
         public zSeriesRewriterTests()
         {
-            this.Architecture = new zSeriesArchitecture("zSeries");
+            this.Architecture = new zSeriesArchitecture(new ServiceContainer(), "zSeries");
             this.LoadAddress = Address.Ptr32(0x00100000);
         }
 

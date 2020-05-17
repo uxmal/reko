@@ -51,13 +51,13 @@ namespace Reko.UnitTests.Environments.Windows
 
         private void Given_WineSpecLoader_16(string filename, string contents)
         {
-            this.platform = new Win16Platform(sc, new X86ArchitectureProtected16("x86-protected-16"));
+            this.platform = new Win16Platform(sc, new X86ArchitectureProtected16(sc, "x86-protected-16"));
             wsfl = new WineSpecFileLoader(sc, filename, Encoding.ASCII.GetBytes(contents));
         }
 
         private void Given_WineSpecLoader_32(string filename, string contents)
         {
-            this.platform = new Win32Platform(sc, new X86ArchitectureFlat32("x86-protected-32"));
+            this.platform = new Win32Platform(sc, new X86ArchitectureFlat32(sc, "x86-protected-32"));
             wsfl = new WineSpecFileLoader(sc, filename, Encoding.ASCII.GetBytes(contents));
         }
 

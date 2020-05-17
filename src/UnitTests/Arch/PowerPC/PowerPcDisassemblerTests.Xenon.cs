@@ -23,6 +23,7 @@ using Reko.Arch.PowerPC;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,7 +36,7 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         public PowerPcXenonDisassemblerTests()
         {
-            this.arch = new PowerPcBe32Architecture("ppc-be-32");
+            this.arch = new PowerPcBe32Architecture(new ServiceContainer(), "ppc-be-32");
             this.arch.LoadUserOptions(new Dictionary<string, object>
             {
                 { "Model", "Xenon" }

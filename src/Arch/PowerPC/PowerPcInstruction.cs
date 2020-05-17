@@ -29,7 +29,6 @@ namespace Reko.Arch.PowerPC
 {
     public class PowerPcInstruction : MachineInstruction
     {
-        public Mnemonic Mnemonic;
         public bool setsCR0;
 
         public PowerPcInstruction(Mnemonic mnemonic)
@@ -45,7 +44,11 @@ namespace Reko.Arch.PowerPC
             this.InstructionClass = InstrClass.Linear;
         }
 
+        public Mnemonic Mnemonic { get; set; }
+
         public override int MnemonicAsInteger => (int) Mnemonic;
+
+        public override string MnemonicAsString => Mnemonic.ToString();
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

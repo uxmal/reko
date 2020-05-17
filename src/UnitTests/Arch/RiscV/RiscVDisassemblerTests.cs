@@ -23,6 +23,7 @@ using Reko.Arch.RiscV;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -34,7 +35,7 @@ namespace Reko.UnitTests.Arch.RiscV
     {
         public RiscVDisassemblerTests()
         {
-            this.Architecture = new RiscVArchitecture("riscV");
+            this.Architecture = new RiscVArchitecture(new ServiceContainer(), "riscV");
             this.LoadAddress = Address.Ptr32(0x00100000);
         }
 

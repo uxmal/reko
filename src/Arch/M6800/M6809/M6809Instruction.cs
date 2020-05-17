@@ -33,6 +33,8 @@ namespace Reko.Arch.M6800.M6809
 
         public override int MnemonicAsInteger => (int) Mnemonic;
 
+        public override string MnemonicAsString => Mnemonic.ToString();
+
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteMnemonic(Mnemonic.ToString());

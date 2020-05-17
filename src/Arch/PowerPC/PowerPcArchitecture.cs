@@ -64,7 +64,7 @@ namespace Reko.Arch.PowerPC
         /// Creates an instance of PowerPcArchitecture.
         /// </summary>
         /// <param name="wordWidth">Supplies the word width of the PowerPC architecture.</param>
-        public PowerPcArchitecture(string archId, EndianServices endianness, PrimitiveType wordWidth, PrimitiveType signedWord) : base(archId)
+        public PowerPcArchitecture(IServiceProvider services, string archId, EndianServices endianness, PrimitiveType wordWidth, PrimitiveType signedWord) : base(services, archId)
         {
             Endianness = endianness;
             WordWidth = wordWidth;
@@ -394,7 +394,7 @@ namespace Reko.Arch.PowerPC
 
     public class PowerPcBe32Architecture : PowerPcArchitecture
     {
-        public PowerPcBe32Architecture(string archId) : base(archId, EndianServices.Big, PrimitiveType.Word32, PrimitiveType.Int32)
+        public PowerPcBe32Architecture(IServiceProvider services, string archId) : base(services, archId, EndianServices.Big, PrimitiveType.Word32, PrimitiveType.Int32)
         { }
 
         public override IEnumerable<Address> CreatePointerScanner(
@@ -426,7 +426,7 @@ namespace Reko.Arch.PowerPC
 
     public class PowerPcLe32Architecture : PowerPcArchitecture
     {
-        public PowerPcLe32Architecture(string archId) : base(archId, EndianServices.Little, PrimitiveType.Word32, PrimitiveType.Int32)
+        public PowerPcLe32Architecture(IServiceProvider services, string archId) : base(services, archId, EndianServices.Little, PrimitiveType.Word32, PrimitiveType.Int32)
         {
 
         }
@@ -452,8 +452,8 @@ namespace Reko.Arch.PowerPC
 
     public class PowerPcBe64Architecture : PowerPcArchitecture
     {
-        public PowerPcBe64Architecture(string archId)
-            : base(archId, EndianServices.Big, PrimitiveType.Word64, PrimitiveType.Int64)
+        public PowerPcBe64Architecture(IServiceProvider services, string archId)
+            : base(services, archId, EndianServices.Big, PrimitiveType.Word64, PrimitiveType.Int64)
         { }
 
         public override IEnumerable<Address> CreatePointerScanner(

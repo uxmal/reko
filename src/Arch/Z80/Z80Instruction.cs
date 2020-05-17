@@ -29,9 +29,9 @@ namespace Reko.Arch.Z80
 {
     public class Z80Instruction : MachineInstruction
     {
-        public Mnemonic Mnemonic;
-
+        public Mnemonic Mnemonic { get; set; }
         public override int MnemonicAsInteger => (int)Mnemonic;
+        public override string MnemonicAsString => Mnemonic.ToString();
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

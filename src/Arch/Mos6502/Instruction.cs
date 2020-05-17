@@ -29,9 +29,11 @@ namespace Reko.Arch.Mos6502
 {
     public class Instruction : MachineInstruction
     {
-        public Mnemonic Mnemonic;
+        public Mnemonic Mnemonic { get; set; }
 
         public override int MnemonicAsInteger => (int) Mnemonic;
+
+        public override string MnemonicAsString => Mnemonic.ToString();
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

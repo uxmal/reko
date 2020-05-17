@@ -23,6 +23,7 @@ using Reko.Arch.SuperH;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -33,7 +34,7 @@ namespace Reko.UnitTests.Arch.Tlcs
     {
         public SuperHDisassemblerTests()
         {
-            this.Architecture = new SuperHLeArchitecture("superH");
+            this.Architecture = new SuperHLeArchitecture(new ServiceContainer(), "superH");
             this.LoadAddress = Address.Ptr32(0x00010000);
         }
 

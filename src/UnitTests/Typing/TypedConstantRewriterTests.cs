@@ -24,6 +24,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.Typing;
 using Reko.UnitTests.Mocks;
+using System.ComponentModel.Design;
 using System.Text;
 
 namespace Reko.UnitTests.Typing
@@ -42,7 +43,7 @@ namespace Reko.UnitTests.Typing
 		public void Setup()
 		{
             mem = new MemoryArea(Address.Ptr32(0x00100000), new byte[1024]);
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(new ServiceContainer());
             this.program = new Program
             {
                 Architecture = arch,

@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Environments.MacOS.Classic;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,8 +48,9 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
 
         private void Given_Relocator()
         {
-            var arch = new M68kArchitecture("m68k");
-            var platform = new MacOSClassic(null, arch)
+            var sc = new ServiceContainer();
+            var arch = new M68kArchitecture(sc, "m68k");
+            var platform = new MacOSClassic(sc, arch)
             {
                 A5World = a5world,
                 A5Offset = 2048,

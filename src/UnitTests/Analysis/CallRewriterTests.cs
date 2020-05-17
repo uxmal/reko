@@ -32,6 +32,7 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -55,8 +56,9 @@ namespace Reko.UnitTests.Analysis
         public void Setup()
         {
             program = new Program();
-            program.Architecture = new X86ArchitectureFlat32("x86-protected-32");
-            program.Platform = new DefaultPlatform(null, program.Architecture);
+            var sc = new ServiceContainer();
+            program.Architecture = new X86ArchitectureFlat32(sc, "x86-protected-32");
+            program.Platform = new DefaultPlatform(sc, program.Architecture);
             crw = new CallRewriter(program.Platform, new ProgramDataFlow(), new FakeDecompilerEventListener());
             proc = new Procedure(program.Architecture, "foo", Address.Ptr32(0x00123400), program.Architecture.CreateFrame());
             flow = new ProcedureFlow(proc);
@@ -79,7 +81,7 @@ namespace Reko.UnitTests.Analysis
 
             public class MainFn : ProcedureBuilder
             {
-                private FakeArchitecture arch = new FakeArchitecture();
+                private FakeArchitecture arch = new FakeArchitecture(new ServiceContainer());
 
                 protected override void BuildBody()
                 {
@@ -571,7 +573,7 @@ CrwManyPredecessorsToExitBlock_exit:
         public void CrwFpuMultiplyAdd()
         {
             var dt = PrimitiveType.Real64;
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(new ServiceContainer());
             var ST = arch.FpuStackBase;
             var _top = arch.FpuStackRegister;
             var pb = new ProgramBuilder(arch);

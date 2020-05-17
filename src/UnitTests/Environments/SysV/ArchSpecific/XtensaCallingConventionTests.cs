@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using Reko.Environments.SysV.ArchSpecific;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
     {
         private void AssertSignature(string sExp, DataType dtRet, params DataType[] args)
         {
-            var arch = new XtensaArchitecture("xtensa");
+            var arch = new XtensaArchitecture(new ServiceContainer(), "xtensa");
             var cc = new XtensaCallingConvention(arch);
             var ccr = new CallingConventionEmitter();
             cc.Generate(ccr, dtRet, null, args.ToList());

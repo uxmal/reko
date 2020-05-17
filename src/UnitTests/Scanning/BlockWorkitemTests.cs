@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Scanning
                     ".text",
                     new MemoryArea(Address.Ptr32(0x00100000), new byte[0x20000]),
                     AccessMode.ReadExecute));
-            program.Platform = new DefaultPlatform(null, arch.Object);
+            program.Platform = new DefaultPlatform(sc, arch.Object);
             arch.Setup(a => a.StackRegister).Returns((RegisterStorage)sp.Storage);
             arch.Setup(s => s.PointerType).Returns(PrimitiveType.Ptr32);
             arch.Setup(s => s.CreateFrameApplicationBuilder(
@@ -394,8 +394,9 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwi_CallingAllocaWithConstant()
         {
-            program.Architecture = new X86ArchitectureFlat32("x86-protected-32");
-            program.Platform = new DefaultPlatform(null, program.Architecture);
+            var sc = new ServiceContainer();
+            program.Architecture = new X86ArchitectureFlat32(sc, "x86-protected-32");
+            program.Platform = new DefaultPlatform(sc, program.Architecture);
             var sig = CreateSignature(Registers.esp, Registers.eax);
             var alloca = new ExternalProcedure("alloca", sig)
             {
@@ -426,7 +427,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwi_CallingAllocaWithNonConstant()
         {
-            program.Platform = new DefaultPlatform(null, arch.Object);
+            program.Platform = new DefaultPlatform(new ServiceContainer(), arch.Object);
 
             var sig = CreateSignature(Registers.esp, Registers.eax);
             var alloca = new ExternalProcedure("alloca", sig, new ProcedureCharacteristics

@@ -50,7 +50,7 @@ namespace Reko.CmdLine
             {
                 Quiet = Console.IsOutputRedirected
             };
-            var config = RekoConfigurationService.Load();
+            var config = RekoConfigurationService.Load(services);
             var diagnosticSvc = new CmdLineDiagnosticsService(Console.Out);
             var fsSvc = new FileSystemServiceImpl();
             services.AddService<DecompilerEventListener>(listener);

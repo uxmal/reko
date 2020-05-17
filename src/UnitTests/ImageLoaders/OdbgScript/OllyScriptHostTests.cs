@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.ImageLoaders.OdbgScript;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,7 +45,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
 
         private void Given_X86Program()
         {
-            var arch = new Reko.Arch.X86.X86ArchitectureFlat32("x86-protected-32");
+            var arch = new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
             var addrBase = Address.Ptr32(0x00100000);
             var segmentMap = new SegmentMap(addrBase);
             segmentMap.AddSegment(new MemoryArea(addrBase, new byte[0xFF]), ".text", AccessMode.ReadWrite);

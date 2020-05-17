@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Structure
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
             var ldr = new Loader(sc);
-            var arch = new X86ArchitectureReal("x86-real-16");
+            var arch = new X86ArchitectureReal(sc, "x86-real-16");
 
             program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(sourceFilename),
@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Structure
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             var ldr = new Loader(sc);
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
             program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(sourceFilename),
                 new X86TextAssembler(arch),
@@ -85,9 +85,9 @@ namespace Reko.UnitTests.Structure
         {
             sc = new ServiceContainer();
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
-            var asm = new X86TextAssembler(new X86ArchitectureReal("x86-real-16"));
+            var asm = new X86TextAssembler(new X86ArchitectureReal(sc, "x86-real-16"));
             program = asm.AssembleFragment(addrBase, asmFragment);
-            program.Platform = new DefaultPlatform(null, program.Architecture);
+            program.Platform = new DefaultPlatform(sc, program.Architecture);
             program.EntryPoints.Add(
                 addrBase,
                 ImageSymbol.Procedure(program.Architecture,addrBase));
@@ -98,10 +98,10 @@ namespace Reko.UnitTests.Structure
         {
             sc = new ServiceContainer();
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
             var asm = new X86TextAssembler(arch);
             program = asm.AssembleFragment(addrBase, asmFragment);
-            program.Platform = new DefaultPlatform(null, program.Architecture);
+            program.Platform = new DefaultPlatform(sc, program.Architecture);
             program.EntryPoints.Add(
                 addrBase,
                 ImageSymbol.Procedure(arch, addrBase));

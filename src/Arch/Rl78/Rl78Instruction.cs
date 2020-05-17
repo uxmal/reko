@@ -34,6 +34,9 @@ namespace Reko.Arch.Rl78
 
         public override int MnemonicAsInteger => (int) Mnemonic;
 
+        public override string MnemonicAsString => Mnemonic.ToString();
+
+
         public RegisterStorage Prefix { get; internal set; }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)

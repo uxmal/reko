@@ -24,6 +24,7 @@ using Reko.Arch.Cray.Cray1;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,7 +40,7 @@ namespace Reko.UnitTests.Arch.Cray.Cray1
         [SetUp]
         public void Setup()
         {
-            this.arch = new Cray1Architecture("cray1");
+            this.arch = new Cray1Architecture(new ServiceContainer(), "cray1");
             this.addr = Address.Ptr32(0x00100000);
         }
 

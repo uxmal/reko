@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Types;
 using Reko.Environments.SysV.ArchSpecific;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Environments.SysV.ArchSpecific
 {
@@ -42,7 +43,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         [SetUp]
         public void Setup()
         {
-            arch = new X86ArchitectureFlat64("x86-protected-64");
+            arch = new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64");
         }
 
         private void Given_CallingConvention()

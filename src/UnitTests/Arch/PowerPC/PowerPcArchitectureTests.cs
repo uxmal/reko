@@ -25,6 +25,7 @@ using Reko.Core;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Text;
 
 namespace Reko.UnitTests.Arch.PowerPC
@@ -35,7 +36,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCArch_GetTrampoline()
         {
-            var arch = new PowerPcBe32Architecture("ppc-be-32");
+            var arch = new PowerPcBe32Architecture(new ServiceContainer(), "ppc-be-32");
             var m = new InstructionBuilder(arch, Address.Ptr32(0x10030000));
             m.Lis(m.r11, 0x1006);
             m.Lwz(m.r11, 0x1234, m.r11);

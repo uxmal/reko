@@ -31,6 +31,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
+using System.ComponentModel.Design;
 
 #if DEBUG || TRAVIS_RELEASE
 namespace Reko.Tools.C2Xml.UnitTests
@@ -40,7 +41,7 @@ namespace Reko.Tools.C2Xml.UnitTests
     {
         public class FakeArchitecture : ProcessorArchitecture
         {
-            public FakeArchitecture() : base("fake")
+            public FakeArchitecture(IServiceProvider services) : base(services, "fake")
             {
                 base.PointerType = PrimitiveType.Ptr32;
             }
@@ -154,7 +155,7 @@ namespace Reko.Tools.C2Xml.UnitTests
                 {
                     Formatting = Formatting.Indented
                 };
-                var arch = new FakeArchitecture();
+                var arch = new FakeArchitecture(new ServiceContainer());
                 var platform = new DefaultPlatform(null, arch);
                 var xc = new XmlConverter(reader, xWriter, platform);
                 xc.Convert();

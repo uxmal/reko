@@ -35,6 +35,8 @@ namespace Reko.Arch.M68k
 
         public override int MnemonicAsInteger => (int) Mnemonic;
 
+        public override string MnemonicAsString => Mnemonic.ToString();
+
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             if (Mnemonic == Mnemonic.illegal && Operands.Length > 0 && writer.Platform != null)

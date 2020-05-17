@@ -47,7 +47,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Instantiates a new PIC architecture for the specified PIC generic family.
         /// </summary>
-        public PICArchitecture(string archId) : base(archId)
+        public PICArchitecture(IServiceProvider services, string archId) : base(services, archId)
         {
             flagGroups = new Dictionary<uint, FlagGroupStorage>();
             Endianness = EndianServices.Little;
@@ -57,7 +57,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             WordWidth = PrimitiveType.Byte;
         }
 
-        public PICArchitecture() : this("pic") { }
+        public PICArchitecture(IServiceProvider services) : this(services, "pic") { }
 
         /// <summary>
         /// Gets or sets the PIC architecture options.

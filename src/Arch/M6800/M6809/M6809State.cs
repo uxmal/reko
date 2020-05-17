@@ -23,11 +23,11 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 
-namespace Reko.Arch.M6800
+namespace Reko.Arch.M6800.M6809
 {
     public class M6809State : ProcessorState
     {
-        private M6809Architecture arch;
+        private readonly M6809Architecture arch;
 
         public M6809State(M6809Architecture arch)
         {

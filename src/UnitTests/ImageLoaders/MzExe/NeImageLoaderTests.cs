@@ -120,7 +120,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                     { 2, "FN004B" },
                     { 3, "FN114B" }
                 },
-                new X86ArchitectureProtected16("x86-protected-16"));
+                new X86ArchitectureProtected16(services, "x86-protected-16"));
             Assert.AreEqual(3, syms.Count);
             Assert.AreEqual("FN0042 (0017:0042)", syms[0].ToString());
             Assert.AreEqual("FN004B (0017:004B)", syms[1].ToString());
@@ -156,7 +156,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                     { 5, "ORDINAL5" },
                     { 6, "ORDINAL6" },
                 },
-                new X86ArchitectureProtected16("x86-protected-16"));
+                new X86ArchitectureProtected16(services, "x86-protected-16"));
             Assert.AreEqual(6, syms.Count);
             Assert.AreEqual("ORDINAL1 (0017:0042)", syms[0].ToString());
             Assert.IsNull(syms[1]);
@@ -195,7 +195,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                     { 5, "ORDINAL5" },
                     { 6, "ORDINAL6" },
                 },
-                new X86ArchitectureProtected16("x86-protected-16"));
+                new X86ArchitectureProtected16(services, "x86-protected-16"));
             Assert.AreEqual(6, syms.Count);
             Assert.AreEqual("ORDINAL1 (0017:0042)", syms[0].ToString());
             Assert.IsNull(syms[1]);
@@ -233,7 +233,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                     { 9, "ORDINAL9" },
                     { 10, "ORDINAL10" },
                 },
-                new X86ArchitectureProtected16("x86-protected-16"));
+                new X86ArchitectureProtected16(services, "x86-protected-16"));
             Assert.AreEqual(10, syms.Count);
             Assert.AreEqual("ORDINAL1 (0017:0042)", syms[0].ToString());
             Assert.IsNull(syms[1]);

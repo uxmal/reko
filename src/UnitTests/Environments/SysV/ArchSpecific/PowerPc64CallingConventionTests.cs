@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using Reko.Environments.SysV.ArchSpecific;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,7 +34,6 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
 {
     class PowerPc64CallingConventionTests
     {
-
         private readonly PrimitiveType r64 = PrimitiveType.Real64;
         private readonly PrimitiveType r32 = PrimitiveType.Real32;
         private readonly PrimitiveType i32 = PrimitiveType.Int32;
@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
 
         private void AssertSignature(string sExp, DataType retType, params DataType[] args)
         {
-            var arch = new PowerPcBe64Architecture("ppc-be-64");
+            var arch = new PowerPcBe64Architecture(new ServiceContainer(), "ppc-be-64");
             var cc = new PowerPc64CallingConvention(arch);
             var ccr = new CallingConventionEmitter();
             cc.Generate(ccr, retType, null, args.ToList());

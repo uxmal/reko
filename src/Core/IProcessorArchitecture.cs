@@ -297,7 +297,8 @@ namespace Reko.Core
 
         string GrfToString(RegisterStorage flagRegister, string prefix, uint grf);                       // Converts a union of processor flag bits to its string representation
 
-        string Name { get; }                           // Short name used to refer to an architecture.
+        IServiceProvider Services { get; }                  // Access to services from the Reko process.
+        string Name { get; }                                // Short name used to refer to an architecture.
         string Description { get; set; }                    // Longer description used to refer to architecture. Typically loaded from app.config
         PrimitiveType FramePointerType { get; }             // Size of a pointer into the stack frame (near pointer in x86 real mode)
         PrimitiveType PointerType { get; }                  // Pointer size that reaches anywhere in the address space (far pointer in x86 real mode )
@@ -373,11 +374,13 @@ namespace Reko.Core
     {
         private RegisterStorage regStack;
 
-        public ProcessorArchitecture(string archId)
+        public ProcessorArchitecture(IServiceProvider services, string archId)
         {
+            this.Services = services;
             this.Name = archId;
         }
 
+        public IServiceProvider Services { get; }
         public string Name { get; }
         public string Description { get; set; }
         public EndianServices Endianness { get; protected set; }

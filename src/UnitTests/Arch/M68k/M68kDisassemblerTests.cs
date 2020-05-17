@@ -26,13 +26,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.M68k
 {
     [TestFixture]
     public class M68kDisassemblerTests : DisassemblerTestBase<M68kInstruction>
     {
-        private M68kArchitecture arch = new M68kArchitecture("m68k");
+        private M68kArchitecture arch = new M68kArchitecture(new ServiceContainer(), "m68k");
         private IEnumerator<M68kInstruction> dasm;
 
         private IEnumerator<M68kInstruction> CreateDasm(byte[] bytes, uint address)

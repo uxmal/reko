@@ -27,6 +27,7 @@ using Reko.Typing;
 using Reko.UnitTests.Mocks;
 using System;
 using NUnit.Framework;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Typing
 {
@@ -73,10 +74,11 @@ namespace Reko.UnitTests.Typing
 				fut.AssertFilesEqual();
 			}
 		}
+
 		[Test]
 		public void PprReplaceInts()
 		{
-            var arch = new FakeArchitecture(); 
+            var arch = new FakeArchitecture(new ServiceContainer()); 
             var program = new Program { Architecture = arch, Platform = new DefaultPlatform(null, arch) };
 
 			TypeFactory factory = new TypeFactory();

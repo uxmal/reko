@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,7 +43,7 @@ namespace Reko.UnitTests.Arch.Pdp11
             }
             var image = new MemoryArea(Address.Ptr16(0x200), bytes);
             var rdr = new LeImageReader(image, 0);
-            var arch = new Pdp11Architecture("pdp11");
+            var arch = new Pdp11Architecture(new ServiceContainer(), "pdp11");
             var dasm = new Pdp11Disassembler(rdr, arch);
             return dasm.ToArray();
         }

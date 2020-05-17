@@ -23,6 +23,7 @@ using Reko.Arch.Msp430;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -33,7 +34,7 @@ namespace Reko.UnitTests.Arch.Tlcs
     {
         public MSP430DisassemblerTests()
         {
-            this.Architecture = new Msp430Architecture("msp430");
+            this.Architecture = new Msp430Architecture(new ServiceContainer(), "msp430");
             this.LoadAddress = Address.Ptr16(0x0100);
         }
 

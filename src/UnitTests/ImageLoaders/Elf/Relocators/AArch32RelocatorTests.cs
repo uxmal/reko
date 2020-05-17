@@ -23,6 +23,7 @@ using Reko.ImageLoaders.Elf;
 using Reko.ImageLoaders.Elf.Relocators;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,7 +45,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
 
         protected override IProcessorArchitecture GetArchitecture()
         {
-            return new Reko.Arch.Arm.Arm32Architecture("arm32");
+            return new Reko.Arch.Arm.Arm32Architecture(new ServiceContainer(), "arm32");
         }
 
         protected override Address GetLoadAddress()

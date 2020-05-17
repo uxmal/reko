@@ -39,10 +39,10 @@ namespace Reko.Environments.Trs80.Basic
             this.InstructionClass = InstrClass.Linear;
         }
 
-        public override int MnemonicAsInteger
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public override int MnemonicAsInteger => throw new NotImplementedException();
+
+        public override string MnemonicAsString => throw new NotImplementedException();
+
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

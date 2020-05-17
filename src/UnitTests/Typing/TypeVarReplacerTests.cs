@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ using Reko.Typing;
 using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Typing
 {
@@ -51,7 +52,7 @@ namespace Reko.UnitTests.Typing
 			eqb.VisitAssignment(ass2);
 
             var program = new Program();
-            program.Architecture = new FakeArchitecture();
+            program.Architecture = new FakeArchitecture(new ServiceContainer());
             program.Platform = new DefaultPlatform(null, program.Architecture);
             trco = new TraitCollector(factory, store, dtb, program);
 			trco.VisitAssignment(ass1);
@@ -83,7 +84,7 @@ namespace Reko.UnitTests.Typing
 			factory = new TypeFactory();
 			store = new TypeStore();
 			eqb = new EquivalenceClassBuilder(factory, store, new FakeDecompilerEventListener());
-            var platform = new DefaultPlatform(null, new FakeArchitecture());
+            var platform = new DefaultPlatform(null, new FakeArchitecture(new ServiceContainer()));
 			dtb = new DataTypeBuilder(factory, store, platform);
 		}
 

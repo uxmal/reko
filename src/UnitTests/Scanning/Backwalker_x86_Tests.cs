@@ -43,6 +43,7 @@ namespace Reko.UnitTests.Scanning
 	[TestFixture]
 	public class Backwalker_x86_Tests
 	{
+        private IServiceContainer sc;
         private ProcedureBuilder m;
         private IProcessorArchitecture arch;
         private ProcessorState state;
@@ -149,7 +150,8 @@ namespace Reko.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            arch = new X86ArchitectureFlat32("x86-protected-32");
+            sc = new ServiceContainer();
+            arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
             m = new ProcedureBuilder();
             var map = new SegmentMap(Address.Ptr32(0x10000000));
             state = arch.CreateProcessorState();
@@ -166,7 +168,7 @@ namespace Reko.UnitTests.Scanning
             var el = new FakeDecompilerEventListener();
             sc.AddService<IFileSystemService>(fsSvc);
             sc.AddService<DecompilerEventListener>(el);
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
             var asm = new X86TextAssembler(arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
@@ -361,7 +363,7 @@ namespace Reko.UnitTests.Scanning
             //m.Label("dummy");
             //m.Dd(0);
 
-            RunTest(new X86ArchitectureFlat32("x86-protected-32"),
+            RunTest(new X86ArchitectureFlat32(sc, "x86-protected-32"),
                 new RtlGoto(m.Mem32(m.IAdd(m.IMul(edx, 4), 0x10010)), InstrClass.Transfer),
                 "Scanning/BwSwitch32.txt");
         }
@@ -390,7 +392,7 @@ namespace Reko.UnitTests.Scanning
             m.Assign(bx, m.IAdd(bx, bx));
             m.Assign(SCZO, new ConditionOf(bx));
 
-            RunTest(new X86ArchitectureReal("x86-real-16"),
+            RunTest(new X86ArchitectureReal(sc, "x86-real-16"),
                 new RtlGoto(m.Mem16(m.IAdd(bx, 0x1234)), InstrClass.Transfer),
                 "Scanning/BwSwitch16.txt");
         }

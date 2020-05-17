@@ -31,7 +31,7 @@ using static Reko.Arch.Arm.AArch32.ArmVectorData;
 
 namespace Reko.Arch.Arm.AArch32
 {
-    using Decoder = Reko.Core.Machine.Decoder<T32Disassembler, Mnemonic, AArch32Instruction>;
+    using Decoder = Decoder<T32Disassembler, Mnemonic, AArch32Instruction>;
 
 
     /// <summary>

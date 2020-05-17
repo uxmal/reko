@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.Design;
 
 namespace Reko.Assemblers.Pdp11
 {
@@ -49,7 +50,7 @@ namespace Reko.Assemblers.Pdp11
 
         public Program Assemble(Address addrBase, TextReader reader)
         {
-            arch = new Pdp11Architecture("pdp11");
+            arch = new Pdp11Architecture(new ServiceContainer(), "pdp11");
             Assembler = new Pdp11Assembler(arch, addrBase, emitter);
             lexer = new Lexer(reader);
 

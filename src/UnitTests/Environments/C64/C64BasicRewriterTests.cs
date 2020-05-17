@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using Moq;
 using Reko.Arch.Mos6502;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Environments.C64
 {
@@ -110,8 +111,9 @@ namespace Reko.UnitTests.Environments.C64
         public void Setup()
         {
             lines = new SortedList<ushort, C64BasicInstruction>();
-            arch = new C64Basic(lines);
-            arch6502 = new Mos6502Architecture("m6502");
+            var sc = new ServiceContainer();
+            arch = new C64Basic(sc, lines);
+            arch6502 = new Mos6502Architecture(sc, "m6502");
             m = new BasicProcessor(lines);
             host = new Mock<RewriterTestBase.RewriterHost>(arch) { CallBase = true };
             host.Setup(h => h.GetArchitecture("m6502"))

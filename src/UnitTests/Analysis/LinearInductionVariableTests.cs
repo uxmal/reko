@@ -31,6 +31,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -354,8 +355,9 @@ namespace Reko.UnitTests.Analysis
             sst.Transform();
 			this.ssa = sst.SsaState;
 
-            var arch = new FakeArchitecture();
-            var cce = new ConditionCodeEliminator(ssa, new DefaultPlatform(null, arch), listener);
+            var sc = new ServiceContainer();
+            var arch = new FakeArchitecture(sc);
+            var cce = new ConditionCodeEliminator(ssa, new DefaultPlatform(sc, arch), listener);
 			cce.Transform();
 
 			DeadCode.Eliminate(ssa);

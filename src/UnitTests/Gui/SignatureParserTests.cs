@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Gui
 {
@@ -35,7 +36,7 @@ namespace Reko.UnitTests.Gui
     class SignatureParserTests
     {
         private SignatureParser sp;
-        private IntelArchitecture arch = new X86ArchitectureFlat32("x86-protected-32");
+        private IntelArchitecture arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
 
         [SetUp]
         public void Setup()

@@ -28,6 +28,7 @@ using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -42,7 +43,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void SltLiveLoop()
 		{
-			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
+			Build(new LiveLoopMock().Procedure, new FakeArchitecture(new ServiceContainer()));
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/SltLiveLoop.txt"))
 			{
@@ -65,7 +66,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void SltSimple()
 		{
-			Build(new SimpleMock().Procedure, new FakeArchitecture());
+			Build(new SimpleMock().Procedure, new FakeArchitecture(new ServiceContainer()));
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/SltSimple.txt"))
 			{
@@ -106,7 +107,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void SltManyIncrements()
 		{
-			Build(new ManyIncrements().Procedure, new FakeArchitecture());
+			Build(new ManyIncrements().Procedure, new FakeArchitecture(new ServiceContainer()));
 			using (FileUnitTester fut = new FileUnitTester("Analysis/SltManyIncrements.txt"))
 			{
 				ssa.Write(fut.TextWriter);

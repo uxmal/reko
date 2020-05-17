@@ -27,6 +27,7 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Diagnostics;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Typing
 {
@@ -45,7 +46,7 @@ namespace Reko.UnitTests.Typing
             this.m = new ExpressionEmitter();
             this.store = new TypeStore();
             this.factory = new TypeFactory();
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(new ServiceContainer());
             var platform = new DefaultPlatform(null, arch);
             program = new Program { Architecture = arch, Platform = platform };
             this.exa = new ExpressionTypeAscender(program, store, factory);

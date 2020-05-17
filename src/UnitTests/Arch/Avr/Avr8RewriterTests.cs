@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -37,7 +38,7 @@ namespace Reko.UnitTests.Arch.Avr
 
         public Avr8RewriterTests()
         {
-            this.arch = new Avr8Architecture("avr8");
+            this.arch = new Avr8Architecture(new ServiceContainer(), "avr8");
         }
 
         public override IProcessorArchitecture Architecture => arch;

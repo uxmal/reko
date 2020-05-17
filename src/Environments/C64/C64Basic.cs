@@ -42,7 +42,7 @@ namespace Reko.Environments.C64
 
         private SortedList<ushort, C64BasicInstruction> program;
 
-        public C64Basic(string archId) : base(archId)
+        public C64Basic(IServiceProvider services, string archId) : base(services, archId)
         {
             this.Description = "Commodore 64 Basic";
             this.Endianness = EndianServices.Little;
@@ -52,7 +52,7 @@ namespace Reko.Environments.C64
             this.FramePointerType = PrimitiveType.Ptr16;
         }
 
-        public C64Basic(SortedList<ushort, C64BasicInstruction> program) : this("c64Basic")
+        public C64Basic(IServiceProvider services, SortedList<ushort, C64BasicInstruction> program) : this(services, "c64Basic")
         {
             this.program = program;
         }

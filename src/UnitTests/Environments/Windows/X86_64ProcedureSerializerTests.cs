@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -27,6 +27,7 @@ using Reko.Environments.Windows;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -41,7 +42,7 @@ namespace Reko.UnitTests.Environments.Windows
         [SetUp]
         public void Setup()
         {
-            this.arch = new X86ArchitectureFlat64("x86-protected-64");
+            this.arch = new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64");
             this.frame = arch.CreateFrame();
         }
         

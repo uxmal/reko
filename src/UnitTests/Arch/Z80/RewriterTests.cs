@@ -23,13 +23,14 @@ using Reko.Core;
 using Reko.Core.Rtl;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.Z80
 {
     [TestFixture]
     public class RewriterTests : RewriterTestBase
     {
-        private readonly Z80ProcessorArchitecture arch = new Z80ProcessorArchitecture("z80");
+        private readonly Z80ProcessorArchitecture arch = new Z80ProcessorArchitecture(new ServiceContainer(), "z80");
         private readonly Address baseAddr = Address.Ptr16(0x0100);
 
         public override IProcessorArchitecture Architecture => arch;

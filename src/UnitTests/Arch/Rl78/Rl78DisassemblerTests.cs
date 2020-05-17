@@ -23,6 +23,7 @@ using Reko.Arch.Rl78;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace Reko.UnitTests.Arch.Rl78
 
         public Rl78DisassemblerTests()
         {
-            this.arch = new Rl78Architecture("rl78");
+            this.arch = new Rl78Architecture(new ServiceContainer(), "rl78");
             this.addr = Address.Ptr32(0x1000);
         }
 

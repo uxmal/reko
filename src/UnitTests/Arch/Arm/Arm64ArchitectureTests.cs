@@ -24,6 +24,7 @@ using Reko.Arch.Arm.AArch64;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,7 +47,8 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void Arm64Arch_GetRegister()
         {
-            var arch = new Arm64Architecture("aarch64");
+            var sc = new ServiceContainer();
+            var arch = new Arm64Architecture(sc, "aarch64");
             Assert.AreSame(Registers.GpRegs32[3], arch.GetRegister((StorageDomain) 3, new BitRange(16, 32)));
         }
     }

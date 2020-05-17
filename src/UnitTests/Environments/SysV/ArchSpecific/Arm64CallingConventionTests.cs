@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using Reko.Environments.SysV.ArchSpecific;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,7 +43,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
 
         public Arm64CallingConventionTests()
         {
-            this.arch = new Arm64Architecture("aarch64");
+            this.arch = new Arm64Architecture(new ServiceContainer(), "aarch64");
         }
 
         [SetUp]

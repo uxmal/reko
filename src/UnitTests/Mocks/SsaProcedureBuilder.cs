@@ -25,6 +25,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 
 namespace Reko.UnitTests.Mocks
@@ -42,7 +43,7 @@ namespace Reko.UnitTests.Mocks
         public SsaState Ssa { get; private set; }
 
         public SsaProcedureBuilder(IProcessorArchitecture arch = null, string name = nameof(SsaProcedureBuilder)) 
-            : base(arch ?? new FakeArchitecture(), name)
+            : base(arch ?? new FakeArchitecture(new ServiceContainer()), name)
         {
             this.Ssa = new SsaState(Procedure);
         }

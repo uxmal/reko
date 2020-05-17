@@ -33,7 +33,7 @@ namespace Reko.Arch.Blackfin
 {
     public class BlackfinArchitecture : ProcessorArchitecture
     {
-        public BlackfinArchitecture(string archId) : base(archId)
+        public BlackfinArchitecture(IServiceProvider services, string archId) : base(services, archId)
         {
             Endianness = EndianServices.Little;
             PointerType = PrimitiveType.Ptr32;

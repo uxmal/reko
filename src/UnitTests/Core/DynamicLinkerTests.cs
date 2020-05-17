@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
-        public void Impres_ProcedureByName()
+        public void DynLink_ProcedureByName()
         {
             var proj = new Project
             {
@@ -90,7 +90,7 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
-        public void Impres_ProcedureByOrdinal()
+        public void DynLink_ProcedureByOrdinal()
         {
             var proj = new Project
             {
@@ -129,7 +129,7 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
-        public void Impres_ProcedureByName_NoModule()
+        public void DynLink_ProcedureByName_NoModule()
         {
             var proj = new Project
             {
@@ -189,7 +189,7 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
-        public void Impres_GlobalByName()
+        public void DynLink_GlobalByName()
         {
             var proj = new Project
             {
@@ -235,7 +235,7 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
-        public void Impres_VtblFromMsMangledName()
+        public void DynLink_VtblFromMsMangledName()
         {
             var proj = new Project();
             var impres = new DynamicLinker(proj, program, new FakeDecompilerEventListener());
@@ -258,14 +258,14 @@ namespace Reko.UnitTests.Core
         /// is 64-bit.
         /// </summary>
         [Test]
-        public void Impres_LP32_weirdness()
+        public void DynLink_LP32_weirdness()
         {
             var memText = new MemoryArea(Address.Ptr64(0x00123400), new byte[100]);
             var memGot = new MemoryArea(Address.Ptr64(0x00200000), new byte[100]);
             var wr = new LeImageWriter(memGot.Bytes);
             wr.WriteLeUInt32(0x00300000);
             wr.WriteLeUInt32(0x00300004);
-            var arch = new FakeArchitecture64();
+            var arch = new FakeArchitecture64(new ServiceContainer());
             //var arch = new Mock<IProcessorArchitecture>();
             //arch.Setup(a => a.Endianness).Returns(EndianServices.Little);
             //arch.Setup(a => a.Name).Returns("fakeArch");

@@ -26,6 +26,7 @@ using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Core
 {
@@ -37,7 +38,7 @@ namespace Reko.UnitTests.Core
         [SetUp]
         public void Setup()
         {
-            arch = new X86ArchitectureReal("x86-real-16");
+            arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16");
         }
 
 		[Test]
@@ -71,7 +72,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void FrGrfTest()
 		{
-			var arch = new X86ArchitectureReal("x86-real-16");
+			var arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16");
 			var f = new Frame(PrimitiveType.Word16);
 			f.EnsureFlagGroup(arch.GetFlagGroup("SZ"));
 			using (FileUnitTester fut = new FileUnitTester("Core/FrGrfTest.txt"))

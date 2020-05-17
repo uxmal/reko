@@ -27,6 +27,7 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -43,8 +44,9 @@ namespace Reko.UnitTests.Analysis
         [SetUp]
         public void Setup()
         {
-            var arch = new FakeArchitecture();
-            var platform = new FakePlatform(null, arch);
+            var sc = new ServiceContainer();
+            var arch = new FakeArchitecture(sc);
+            var platform = new FakePlatform(sc, arch);
             this.program = new Program
             {
                 Architecture = arch,

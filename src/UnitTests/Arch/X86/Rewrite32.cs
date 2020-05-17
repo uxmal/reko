@@ -68,8 +68,8 @@ namespace Reko.UnitTests.Arch.X86
             services.AddService(typeof(CancellationTokenSource), new CancellationTokenSource());
             services.AddService(typeof(IFileSystemService),new FileSystemServiceImpl());
             services.AddService(typeof(IDiagnosticsService),new FakeDiagnosticsService());
-            arch = new X86ArchitectureFlat32("x86-protected-32");
-            win32 = new Reko.Environments.Windows.Win32Platform(services, arch);
+            arch = new X86ArchitectureFlat32(services, "x86-protected-32");
+            win32 = new Win32Platform(services, arch);
         }
 
 		[Test]
@@ -157,7 +157,7 @@ namespace Reko.UnitTests.Arch.X86
         private void RunTest(string sourceFile, string outputFile)
 		{
 			Program program;
-            var asm = new X86TextAssembler(new X86ArchitectureFlat32("x86-protected-32"));
+            var asm = new X86TextAssembler(new X86ArchitectureFlat32(services, "x86-protected-32"));
             using (StreamReader rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
             {
                 program = asm.Assemble(Address.Ptr32(0x10000000), rdr);

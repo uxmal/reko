@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Gui
         {
             sc = new ServiceContainer();
             procs = new List<ProcedureSearchHit>();
-            program = new Program { Name = "Proggie", Architecture = new FakeArchitecture() };
+            program = new Program { Name = "Proggie", Architecture = new FakeArchitecture(sc) };
         }
 
         [Test]

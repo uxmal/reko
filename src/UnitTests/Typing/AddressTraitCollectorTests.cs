@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Typing
 {
@@ -156,7 +157,7 @@ namespace Reko.UnitTests.Typing
 		{
             var listener = new FakeDecompilerEventListener();
             program = new Program();
-            program.Architecture = new FakeArchitecture();
+            program.Architecture = new FakeArchitecture(new ServiceContainer());
             program.Platform = new DefaultPlatform(null, program.Architecture);
 			factory = program.TypeFactory;
 			store = program.TypeStore;

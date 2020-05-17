@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,7 +40,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
         [SetUp]
         public void Setup()
         {
-            this.arch = new MicroBlazeArchitecture("microBlaze");
+            this.arch = new MicroBlazeArchitecture(new ServiceContainer(), "microBlaze");
             this.addr = Address.Ptr32(0x00100000);
         }
 

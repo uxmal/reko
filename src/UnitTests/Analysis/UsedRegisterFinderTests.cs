@@ -28,6 +28,7 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -327,7 +328,7 @@ namespace Reko.UnitTests.Analysis
         public void UrfDpb2()
         {
             var sExp = "Used: [bx, [0..15]],[cl, [0..7]]";
-            RunTest(sExp, new X86ArchitectureFlat32(""), m =>
+            RunTest(sExp, new X86ArchitectureFlat32(new ServiceContainer(), ""), m =>
             {
                 var bx = m.Frame.EnsureRegister(Registers.bx);
                 var cx = m.Frame.EnsureRegister(Registers.cx);

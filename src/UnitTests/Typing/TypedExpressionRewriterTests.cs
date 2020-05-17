@@ -32,6 +32,7 @@ using System.Linq;
 using System.Diagnostics;
 using System.Collections.Generic;
 using Reko.Core.Serialization;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Typing
 {
@@ -212,7 +213,7 @@ namespace Reko.UnitTests.Typing
         {
             Program program = new Program();
             program.SegmentMap = new SegmentMap(Address.Ptr32(0x0010000));
-            program.Architecture = new FakeArchitecture();
+            program.Architecture = new FakeArchitecture(new ServiceContainer());
             program.Platform = new DefaultPlatform(null, program.Architecture);
             SetupPreStages(program);
             Identifier id = new Identifier("v0", PrimitiveType.Word32, null);
@@ -261,7 +262,7 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void TerConstants()
         {
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(new ServiceContainer());
             Program program = new Program(
                 new SegmentMap(Address.Ptr32(0x10000)),
                 arch,

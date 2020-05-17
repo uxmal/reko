@@ -30,6 +30,7 @@ using Reko.Scanning;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -45,12 +46,14 @@ namespace Reko.UnitTests.Scanning
         private ScannerInLinq siq;
         private Program program;
         private RelocationDictionary rd;
+        private ServiceContainer sc;
         private Mock<IRewriterHost> host;
         private FakeDecompilerEventListener eventListener;
 
         [SetUp]
         public void Setup()
         {
+            this.sc = new ServiceContainer();
             this.host = new Mock<IRewriterHost>();
             this.sr = new ScanResults
             {
@@ -68,7 +71,7 @@ namespace Reko.UnitTests.Scanning
                 Address.Ptr32(0x10000),
                 bytes);
             this.rd = image.Relocations;
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
             CreateProgram(image, arch);
         }
 
@@ -84,7 +87,7 @@ namespace Reko.UnitTests.Scanning
         private void Given_x86_Image(Action<X86Assembler> asm)
         {
             var addrBase = Address.Ptr32(0x100000);
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
             var entry = ImageSymbol.Procedure(arch, addrBase);
             var m = new X86Assembler(arch, addrBase, new List<ImageSymbol> { entry });
             asm(m);

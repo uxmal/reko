@@ -39,7 +39,7 @@ namespace Reko.Arch.SuperH
     {
         private readonly Dictionary<uint, FlagGroupStorage> grfs;
 
-        public SuperHArchitecture(string archId, EndianServices endianness) : base(archId)
+        public SuperHArchitecture(IServiceProvider services, string archId, EndianServices endianness) : base(services, archId)
         {
             this.Endianness = endianness;
             this.FramePointerType = PrimitiveType.Ptr32;
@@ -189,14 +189,14 @@ namespace Reko.Arch.SuperH
 
     public class SuperHLeArchitecture : SuperHArchitecture
     {
-        public SuperHLeArchitecture(string archId) : base(archId, EndianServices.Little)
+        public SuperHLeArchitecture(IServiceProvider services, string archId) : base(services, archId, EndianServices.Little)
         {
         }
     }
 
     public class SuperHBeArchitecture : SuperHArchitecture
     {
-        public SuperHBeArchitecture(string arch) : base(arch, EndianServices.Big)
+        public SuperHBeArchitecture(IServiceProvider services, string arch) : base(services, arch, EndianServices.Big)
         {
         }
     }

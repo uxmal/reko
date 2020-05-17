@@ -23,6 +23,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Mocks
 {
@@ -36,7 +37,7 @@ namespace Reko.UnitTests.Mocks
         public RtlStatementStream(uint address, IStorageBinder binder)
         {
             this.linAddress = address;
-            this.arch = new FakeArchitecture();
+            this.arch = new FakeArchitecture(new ServiceContainer());
             this.binder = binder;
             this.stms = new List<RtlInstructionCluster>();   
         }

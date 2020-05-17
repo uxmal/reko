@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work of:
@@ -25,6 +25,7 @@ using Reko.Arch.MicrochipPIC.Common;
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Libraries.Microchip;
+using System.ComponentModel.Design;
 using System.Linq;
 
 namespace Reko.UnitTests.Arch.Microchip.Common
@@ -63,7 +64,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 
         protected void SetPICModel(string picName, PICExecMode mode = PICExecMode.Traditional)
         {
-            arch = new PICArchitecture("pic") { Options = new PICArchitectureOptions(picName, mode) };
+            arch = new PICArchitecture(new ServiceContainer(), "pic") { Options = new PICArchitectureOptions(picName, mode) };
             picModel = arch.ProcessorModel;
             arch.CreatePICProcessorModel();
             PICMemoryDescriptor.ExecMode = mode;

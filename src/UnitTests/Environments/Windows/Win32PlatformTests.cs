@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void Setup()
         {
             sc = new ServiceContainer();
-            arch = new X86ArchitectureFlat32("x86-protected-32");
+            arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
         }
 
         private void When_Lookup_Procedure(string moduleName, string procName)

@@ -20,7 +20,7 @@ namespace Reko.Core.NativeInterface
 
 		private const string SYM_NAME = "gCPUProvider";
 
-		public NativeProcessorArchitecture(string archID, string libPath, ILibraryLoader ldr) : base(archID)
+		public NativeProcessorArchitecture(IServiceProvider services, string archID, string libPath, ILibraryLoader ldr) : base(services, archID)
 		{
 			loader = ldr;
 			handle = ldr.LoadLibrary(libPath);

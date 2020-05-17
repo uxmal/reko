@@ -67,13 +67,14 @@ namespace Reko.UnitTests.Core.Output
 
         private void Given_Globals(params StructureField[] fields)
         {
-            var arch = new Mocks.FakeArchitecture();
+            var sc = new ServiceContainer();
+            var arch = new Mocks.FakeArchitecture(sc);
             this.program = new Program(
                 new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 arch,
-                new DefaultPlatform(null, arch));
+                new DefaultPlatform(sc, arch));
             var globalStruct = new StructureType();
             globalStruct.Fields.AddRange(fields);
             program.Globals.TypeVariable = new TypeVariable("globals_t", 1) { DataType = globalStruct };

@@ -32,7 +32,7 @@ namespace Reko.Arch.Xtensa
 {
     public class XtensaArchitecture : ProcessorArchitecture
     {
-        public XtensaArchitecture(string archId)  : base(archId)
+        public XtensaArchitecture(IServiceProvider services, string archId) : base(services, archId)
         {
             //$TODO: Xtensa is bi-endian, but we're assuming little-endian here.
             // Fix this if encountering a big-endian binary.

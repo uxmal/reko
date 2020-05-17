@@ -32,6 +32,7 @@ using System.Collections.Generic;
 using System.Text;
 using Reko.Core.Serialization;
 using System.Linq;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Core
 {
@@ -47,7 +48,7 @@ namespace Reko.UnitTests.Core
         [SetUp]
         public void Setup()
         {
-            arch = new FakeArchitecture();
+            arch = new FakeArchitecture(new ServiceContainer());
             sp = new RegisterStorage("sp", 42, 0, PrimitiveType.Ptr32);
             arch.StackRegister = sp;
 
@@ -100,7 +101,7 @@ namespace Reko.UnitTests.Core
 
         public class FakeArchitecture : ProcessorArchitecture
         {
-            public FakeArchitecture() : base("fake")
+            public FakeArchitecture(IServiceProvider services) : base(services, "fake")
             {
                 this.Endianness = EndianServices.Little;
                 this.InstructionBitSize = 32;

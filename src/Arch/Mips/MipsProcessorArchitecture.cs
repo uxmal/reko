@@ -54,7 +54,7 @@ namespace Reko.Arch.Mips
         private Dictionary<string, object> options;
         private Decoder<MipsDisassembler, Mnemonic, MipsInstruction> rootDecoder;
 
-        public MipsProcessorArchitecture(string archId, EndianServices endianness, PrimitiveType wordSize, PrimitiveType ptrSize) : base(archId)
+        public MipsProcessorArchitecture(IServiceProvider services, string archId, EndianServices endianness, PrimitiveType wordSize, PrimitiveType ptrSize) : base(services, archId)
         {
             this.Endianness = endianness;
             this.WordWidth = wordSize;
@@ -317,7 +317,7 @@ namespace Reko.Arch.Mips
 
     public class MipsBe32Architecture : MipsProcessorArchitecture
     {
-        public MipsBe32Architecture(string archId) : base(archId, EndianServices.Big,  PrimitiveType.Word32, PrimitiveType.Ptr32) { }
+        public MipsBe32Architecture(IServiceProvider services, string archId) : base(services, archId, EndianServices.Big,  PrimitiveType.Word32, PrimitiveType.Ptr32) { }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
@@ -330,7 +330,7 @@ namespace Reko.Arch.Mips
 
     public class MipsLe32Architecture : MipsProcessorArchitecture
     {
-        public MipsLe32Architecture(string archId) : base(archId, EndianServices.Little, PrimitiveType.Word32, PrimitiveType.Ptr32) { }
+        public MipsLe32Architecture(IServiceProvider services, string archId) : base(services, archId, EndianServices.Little, PrimitiveType.Word32, PrimitiveType.Ptr32) { }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
@@ -343,7 +343,7 @@ namespace Reko.Arch.Mips
 
     public class MipsBe64Architecture : MipsProcessorArchitecture
     {
-        public MipsBe64Architecture(string archId) : base(archId, EndianServices.Big, PrimitiveType.Word64, PrimitiveType.Ptr64)
+        public MipsBe64Architecture(IServiceProvider services, string archId) : base(services, archId, EndianServices.Big, PrimitiveType.Word64, PrimitiveType.Ptr64)
         { }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
@@ -357,7 +357,7 @@ namespace Reko.Arch.Mips
 
     public class MipsLe64Architecture : MipsProcessorArchitecture
     {
-        public MipsLe64Architecture(string archId) : base(archId, EndianServices.Little, PrimitiveType.Word64, PrimitiveType.Ptr64)
+        public MipsLe64Architecture(IServiceProvider services, string archId) : base(services, archId, EndianServices.Little, PrimitiveType.Word64, PrimitiveType.Ptr64)
         {
         }
 

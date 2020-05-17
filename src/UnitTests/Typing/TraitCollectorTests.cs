@@ -33,6 +33,7 @@ using Reko.UnitTests.Fragments;
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Typing
 {
@@ -260,12 +261,12 @@ namespace Reko.UnitTests.Typing
 
         private static Program CreateProgram()
         {
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(new ServiceContainer());
 
             return new Program
             {
                 Architecture = arch,
-                Platform = new DefaultPlatform(null, arch),
+                Platform = new DefaultPlatform(arch.Services, arch),
             };
         }
 

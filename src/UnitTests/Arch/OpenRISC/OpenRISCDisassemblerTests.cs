@@ -23,6 +23,7 @@ using Reko.Arch.OpenRISC;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,7 +35,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
     {
         public OpenRISCDisassemblerTests()
         {
-            this.Architecture = new OpenRISCArchitecture("openRisc");
+            this.Architecture = new OpenRISCArchitecture(new ServiceContainer(), "openRisc");
             this.LoadAddress = Address.Ptr32(0x00100000);
         }
 

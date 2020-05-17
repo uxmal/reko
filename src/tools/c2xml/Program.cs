@@ -59,7 +59,7 @@ Options:
             TextReader input = Console.In;
             Stream output = Console.OpenStandardOutput();
             var sc = new ServiceContainer();
-            var rekoCfg = RekoConfigurationService.Load();
+            var rekoCfg = RekoConfigurationService.Load(sc);
             sc.AddService<IConfigurationService>(rekoCfg);
 
             var docopt = new Docopt();

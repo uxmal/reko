@@ -27,6 +27,7 @@ using Reko.Core;
 using Reko.Arch.Msp430;
 using NUnit.Framework;
 using Reko.Core.Rtl;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.Msp430
 {
@@ -36,7 +37,7 @@ namespace Reko.UnitTests.Arch.Msp430
 
         public Msp430RewriterTests()
         {
-            this.arch = new Msp430Architecture("msp430");
+            this.arch = new Msp430Architecture(new ServiceContainer(), "msp430");
         }
 
         public override IProcessorArchitecture Architecture => arch;

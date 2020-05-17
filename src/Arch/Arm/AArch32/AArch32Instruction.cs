@@ -90,6 +90,7 @@ namespace Reko.Arch.Arm.AArch32
         public ArmCondition Condition { get; set; }
 
         public override int MnemonicAsInteger => (int) Mnemonic;
+        public override string MnemonicAsString => Mnemonic.ToString();
 
         /// <summary>
         /// PC-relative addressing has an extra offset.This varies

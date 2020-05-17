@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.Avr;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -33,7 +34,7 @@ namespace Reko.UnitTests.Arch.Avr
         [Test]
         public void Avr8_arch_AliasZRegister()
         {
-            var arch = new Avr8Architecture("avr8");
+            var arch = new Avr8Architecture(new ServiceContainer(), "avr8");
             var r30 = arch.GetRegister(30);
             var r31 = arch.GetRegister(31);
             var z = Avr8Architecture.z;

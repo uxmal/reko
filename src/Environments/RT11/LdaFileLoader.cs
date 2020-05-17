@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -38,7 +38,7 @@ namespace Reko.Environments.RT11
 
         public override Program Load(Address addrLoad)
         {
-            var arch = new Pdp11Architecture("pdp11");
+            var arch = new Pdp11Architecture(Services, "pdp11");
 
             var rdr = new LeImageReader(RawImage);
 

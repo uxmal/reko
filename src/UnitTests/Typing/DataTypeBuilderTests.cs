@@ -30,6 +30,7 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Typing
 {
@@ -53,7 +54,7 @@ namespace Reko.UnitTests.Typing
             listener = new FakeDecompilerEventListener();
             aen = new ExpressionNormalizer(PrimitiveType.Ptr32);
             eqb = new EquivalenceClassBuilder(factory, store, listener);
-            arch = new FakeArchitecture();
+            arch = new FakeArchitecture(new ServiceContainer());
             program = new Program();
             program.Architecture = arch;
             program.Platform = new DefaultPlatform(null, arch);
@@ -349,7 +350,8 @@ namespace Reko.UnitTests.Typing
             Identifier ds = m.Local16("ds");
             Identifier bx = m.Local16("bx");
             Expression e = m.SegMem(bx.DataType, ds, m.IAdd(bx, 4));
-            var arch = new Reko.Arch.X86.X86ArchitectureReal("x86-real-16");
+            var sc = new ServiceContainer();
+            var arch = new Reko.Arch.X86.X86ArchitectureReal(sc, "x86-real-16");
             Program program = new Program
             {
                 Architecture = arch,
@@ -375,11 +377,12 @@ namespace Reko.UnitTests.Typing
         public void DtbSegmentedDirectAddress()
         {
             ProcedureBuilder m = new ProcedureBuilder();
-            var arch = new Reko.Arch.X86.X86ArchitectureReal("x86-real-16");
+            var sc = new ServiceContainer();
+            var arch = new Reko.Arch.X86.X86ArchitectureReal(sc, "x86-real-16");
             var program = new Program
             {
                 Architecture = arch,
-                Platform = new DefaultPlatform(null, arch)
+                Platform = new DefaultPlatform(sc, arch)
             };
             store.EnsureExpressionTypeVariable(factory, program.Globals);
 

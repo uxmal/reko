@@ -30,6 +30,7 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using Moq;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -53,7 +54,7 @@ namespace Reko.UnitTests.Analysis
 
         public LongAddRewriterTests()
         {
-            arch = new FakeArchitecture();
+            arch = new FakeArchitecture(new ServiceContainer());
             program = new Program()
             {
                 Architecture = arch,

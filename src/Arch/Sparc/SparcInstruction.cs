@@ -29,9 +29,11 @@ namespace Reko.Arch.Sparc
 {
     public class SparcInstruction : MachineInstruction
     {
-        public Mnemonic Mnemonic;
+        public Mnemonic Mnemonic { get; set; }
 
         public override int MnemonicAsInteger => (int)Mnemonic; 
+
+        public override string MnemonicAsString => Mnemonic.ToString();
 
         public bool Annul => (InstructionClass & InstrClass.Annul) != 0;
 

@@ -68,9 +68,9 @@ namespace Reko.UnitTests.Scanning
             cfg.Setup(c => c.GetEnvironment(It.IsAny<string>())).Returns(env.Object);
             env.Setup(e => e.Architectures).Returns(new List<PlatformArchitectureDefinition>());
             sc.AddService<IConfigurationService>(cfg.Object);
-            this.win32 = new Win32Platform(sc, new X86ArchitectureFlat32("x86-protected-32"));
-            this.win_x86_64 = new Win_x86_64_Platform(sc, new X86ArchitectureFlat64("x86-protected-64"));
-            this.sysV_ppc = new SysVPlatform(sc, new PowerPcBe32Architecture("ppc-be-32"));
+            this.win32 = new Win32Platform(sc, new X86ArchitectureFlat32(sc, "x86-protected-32"));
+            this.win_x86_64 = new Win_x86_64_Platform(sc, new X86ArchitectureFlat64(sc, "x86-protected-64"));
+            this.sysV_ppc = new SysVPlatform(sc, new PowerPcBe32Architecture(sc, "ppc-be-32"));
             this.m = new ProcedureBuilder();
             this.printfChr = new ProcedureCharacteristics()
             {

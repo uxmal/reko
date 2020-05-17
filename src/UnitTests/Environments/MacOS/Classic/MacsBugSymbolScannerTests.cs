@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Environments.MacOS.Classic;
+using System.ComponentModel.Design;
 using System.Text;
 
 namespace Reko.UnitTests.Environments.MacOS.Classic
@@ -35,7 +36,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
         public void Setup()
         {
             this.w = new BeImageWriter();
-            this.arch = new M68kArchitecture("m68k");
+            this.arch = new M68kArchitecture(new ServiceContainer(), "m68k");
         }
 
         private void Given_Link(int amount)

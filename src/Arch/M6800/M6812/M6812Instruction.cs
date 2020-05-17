@@ -26,9 +26,11 @@ namespace Reko.Arch.M6800.M6812
 {
     public class M6812Instruction : MachineInstruction
     {
+        public Mnemonic Mnemonic { get; set; }
+
         public override int MnemonicAsInteger => (int) Mnemonic;
 
-        public Mnemonic Mnemonic { get; set; }
+        public override string MnemonicAsString => Mnemonic.ToString();
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

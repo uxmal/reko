@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace Reko.UnitTests.Arch.PaRisc
 
         public PaRiscRewriterTests()
         {
-            this.arch = new PaRiscArchitecture("parisc");
+            this.arch = new PaRiscArchitecture(new ServiceContainer(), "parisc");
         }
 
         public override IProcessorArchitecture Architecture => arch;

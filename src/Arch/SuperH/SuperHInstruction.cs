@@ -31,6 +31,8 @@ namespace Reko.Arch.SuperH
 
         public override int MnemonicAsInteger => (int) Mnemonic;
 
+        public override string MnemonicAsString => Mnemonic.ToString();
+
         private static Dictionary<Mnemonic, string> mnemonics = new Dictionary<Mnemonic, string>
         {
             { Mnemonic.and_b, "and.b" },

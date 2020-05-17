@@ -16,7 +16,7 @@ namespace Reko.Arch.Tms7000
     {
         private Dictionary<uint, FlagGroupStorage> flagGroups = new Dictionary<uint, FlagGroupStorage>();
         
-        public Tms7000Architecture(string archId) : base(archId)
+        public Tms7000Architecture(IServiceProvider services, string archId) : base(services, archId)
         {
             this.Endianness = EndianServices.Big;
             this.GpRegs = Enumerable.Range(0, 256)

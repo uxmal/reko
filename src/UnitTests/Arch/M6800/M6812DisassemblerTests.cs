@@ -24,6 +24,7 @@ using Reko.Arch.M6800.M6812;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,7 +40,7 @@ namespace Reko.UnitTests.Arch.M6800
 
         public M6812DisassemblerTests()
         {
-            this.arch = new M6812Architecture("m6812");
+            this.arch = new M6812Architecture(new ServiceContainer(), "m6812");
             this.addrLoad = Address.Ptr16(0);
         }
 

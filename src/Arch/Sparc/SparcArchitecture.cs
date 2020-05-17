@@ -36,7 +36,7 @@ namespace Reko.Arch.Sparc
     {
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public SparcArchitecture(string archId, PrimitiveType wordWidth) : base(archId)
+        public SparcArchitecture(IServiceProvider services, string archId, PrimitiveType wordWidth) : base(services, archId)
         {
             this.Endianness = EndianServices.Big;
             this.WordWidth = wordWidth;
@@ -220,14 +220,14 @@ namespace Reko.Arch.Sparc
 
     public class SparcArchitecture32 : SparcArchitecture
     {
-        public SparcArchitecture32(string archId) : base(archId, PrimitiveType.Word32)
+        public SparcArchitecture32(IServiceProvider services, string archId) : base(services, archId, PrimitiveType.Word32)
         {
         }
     }
 
     public class SparcArchitecture64 : SparcArchitecture
     {
-        public SparcArchitecture64(string archId) : base(archId, PrimitiveType.Word64)
+        public SparcArchitecture64(IServiceProvider services, string archId) : base(services, archId, PrimitiveType.Word64)
         {
         }
     }

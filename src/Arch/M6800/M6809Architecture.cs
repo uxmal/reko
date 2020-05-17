@@ -38,7 +38,7 @@ namespace Reko.Arch.M6800
     {
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public M6809Architecture(string archId) : base(archId)
+        public M6809Architecture(IServiceProvider services, string archId) : base(services, archId)
         {
             this.Endianness = EndianServices.Big;
             this.FramePointerType = PrimitiveType.Ptr16;

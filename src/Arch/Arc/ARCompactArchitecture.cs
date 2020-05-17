@@ -34,7 +34,7 @@ namespace Reko.Arch.Arc
     {
         private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public ARCompactArchitecture(string archId) : base(archId)
+        public ARCompactArchitecture(IServiceProvider services, string archId) : base(services, archId)
         {
             base.Endianness = EndianServices.Little;
             base.FramePointerType = PrimitiveType.Ptr32;

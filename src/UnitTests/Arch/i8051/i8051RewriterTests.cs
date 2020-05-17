@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace Reko.UnitTests.Arch.i8051
 
         public i8051RewriterTests()
         {
-            this.arch = new i8051Architecture("8051");
+            this.arch = new i8051Architecture(new ServiceContainer(), "8051");
         }
 
         public override IProcessorArchitecture Architecture => arch;

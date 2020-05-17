@@ -29,6 +29,7 @@ using Reko.Environments.Windows;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,8 +50,9 @@ namespace Reko.UnitTests.Core.Serialization
         public void Setup()
         {
             mockFactory = new CommonMockFactory();
-            arch = new X86ArchitectureFlat32("x86-protected-32");
-            platform = new Win32Platform(null, arch);
+            var sc = new ServiceContainer();
+            arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
+            platform = new Win32Platform(sc, arch);
         }
 
         private void Verify(SerializedSignature ssig, string outputFilename)

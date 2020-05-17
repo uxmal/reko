@@ -31,6 +31,7 @@ using System.Linq;
 using System.Xml.Serialization;
 using System.Xml;
 using System.Text;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.X86
 {
@@ -41,17 +42,17 @@ namespace Reko.UnitTests.Arch.X86
 
 		public X86ArchitectureTests()
 		{
-			arch = new X86ArchitectureReal("x86-real-16");
+			arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16");
 		}
 
 		[Test]
 		public void IaCreate()
 		{
-			arch = new X86ArchitectureReal("x86-real-16");
+			arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16");
 			Assert.AreEqual(PrimitiveType.Word16, arch.WordWidth);
-			arch = new X86ArchitectureFlat32("x86-protected-32");
+			arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
 			Assert.AreEqual(PrimitiveType.Word32, arch.WordWidth);
-            arch = new X86ArchitectureProtected16("x86-protected-16");
+            arch = new X86ArchitectureProtected16(new ServiceContainer(), "x86-protected-16");
 			Assert.AreEqual(PrimitiveType.Word16, arch.WordWidth);
 		}
 
@@ -158,7 +159,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void ReadCodeAddress_RealMode_Offset()
         {
-            arch = new X86ArchitectureReal("x86-real-16");
+            arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16");
             var rdr = CreateImageReader(0x78, 0x56);
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1234));
@@ -172,7 +173,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void ReadCodeAddress_RealMode_SegOffset()
         {
-            arch = new X86ArchitectureReal("x86-real-16");
+            arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16");
             var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1111));
@@ -185,7 +186,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void ReadCodeAddress_ProtectedMode16_Offset()
         {
-            arch = new X86ArchitectureProtected16("x86-protected-16");
+            arch = new X86ArchitectureProtected16(new ServiceContainer(), "x86-protected-16");
             var rdr = CreateImageReader(0x78, 0x56);
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1234));
@@ -198,7 +199,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86arch_ReadCodeAddress_ProtectedMode16_SegOffset()
         {
-            arch = new X86ArchitectureProtected16("x86-protected-16");
+            arch = new X86ArchitectureProtected16(new ServiceContainer(), "x86-protected-16");
             var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1111));
@@ -211,7 +212,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86arch_ReadCodeAddress_ProtectedFlatMode32()
         {
-            arch = new X86ArchitectureFlat32("x86-protected-32");
+            arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
             var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1111));
@@ -224,7 +225,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86arch_SetAxAliasesTrue()
         {
-            arch = new X86ArchitectureFlat32("x86-protected-32");
+            arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
             var aliases = arch.GetAliases(Registers.ax).ToSet();
             Assert.IsTrue(aliases.Contains(Registers.ax), "Expected ax set");
             Assert.IsTrue(aliases.Contains(Registers.ah), "Expected ah set");
@@ -234,7 +235,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86arch_GetMnemonicNames()
         {
-            arch = new X86ArchitectureFlat32("x86-protected-32");
+            arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
             Assert.AreEqual(
                 "aaa,aad,aam,aas,adc,add",
                 string.Join(",", arch.GetMnemonicNames().Keys.Take(6)));
@@ -243,7 +244,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86arch_GetMnemonicNumber()
         {
-            arch = new X86ArchitectureFlat32("x86-protected-32");
+            arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
             Assert.AreEqual(
                 Mnemonic.mov,
                 (Mnemonic)arch.GetMnemonicNumber("mov"));
@@ -252,7 +253,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test(Description = "Inline calls to __x86.get_pc_thunk.bx")]
         public void X86Arch_Inline_x86get_pc_thunk_bx()
         {
-            arch = new X86ArchitectureFlat32("x86-protected-32");
+            arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
             var mem = new MemoryArea(Address.Ptr32(0x1000), new byte[]
             {
                0x8B, 0x1C, 0x24,        // mov ebx,[esp]
@@ -266,7 +267,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86Arch_GetDomain_Bitrange()
         {
-            arch = new X86ArchitectureFlat32("x86-protected-32");
+            arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
             var reg = arch.GetRegister(Registers.rbx.Domain, new BitRange(8, 16));
             Assert.AreEqual("bh", reg.Name);
         }

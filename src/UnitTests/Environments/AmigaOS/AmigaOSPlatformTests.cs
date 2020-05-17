@@ -55,7 +55,6 @@ namespace Reko.UnitTests.Environments.AmigaOS
             this.services = new ServiceContainer();
             var cfgSvc = new Mock<IConfigurationService>();
             var env = new Mock<PlatformDefinition>();
-            this.arch = new M68kArchitecture("m68k");
             this.rtls = new List<RtlInstruction>();
             this.m = new RtlEmitter(rtls);
             cfgSvc.Setup(c => c.GetEnvironment("amigaOS")).Returns(env.Object);
@@ -73,6 +72,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
             this.services.AddService(typeof(IConfigurationService), cfgSvc.Object);
             this.services.AddService(typeof(IFileSystemService), fsSvc.Object);
             this.services.AddService(typeof(ITypeLibraryLoaderService), tllSvc.Object);
+            this.arch = new M68kArchitecture(services, "m68k");
             this.binder = new Frame(arch.FramePointerType);
         }
 

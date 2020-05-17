@@ -37,7 +37,7 @@ namespace Reko.Arch.Msp430
         public readonly static PrimitiveType Word20 = PrimitiveType.CreateWord(20);
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public Msp430Architecture(string archName) : base(archName)
+        public Msp430Architecture(IServiceProvider services, string archName) : base(services, archName)
         {
             this.InstructionBitSize = 16;
             this.StackRegister = Registers.sp;

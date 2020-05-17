@@ -24,6 +24,8 @@ using Reko.Core.Rtl;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Threading;
 
 namespace Reko.UnitTests.Arch.PowerPC
 {
@@ -41,16 +43,17 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         public PowerPcRewriterTests()
         {
-            this.archBe32 = new PowerPcBe32Architecture("ppc-be-32");
-            this.archBe64 = new PowerPcBe64Architecture("ppc-be-64");
+            var sc = new ServiceContainer();
+            this.archBe32 = new PowerPcBe32Architecture(sc, "ppc-be-32");
+            this.archBe64 = new PowerPcBe64Architecture(sc, "ppc-be-64");
 
-            this.arch750 = new PowerPcBe32Architecture("ppc-be-32");
+            this.arch750 = new PowerPcBe32Architecture(sc, "ppc-be-32");
             this.arch750.LoadUserOptions(new Dictionary<string, object>
             {
                 { "Model", "750cl" }
             });
 
-            this.archXenon = new PowerPcBe32Architecture("ppc-be-32");
+            this.archXenon = new PowerPcBe32Architecture(sc, "ppc-be-32");
             archXenon.LoadUserOptions(new Dictionary<string, object>
             {
                 { "Model", "Xenon" }

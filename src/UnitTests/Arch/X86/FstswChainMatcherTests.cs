@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.Core.Expressions;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.X86
 {
@@ -46,8 +47,8 @@ namespace Reko.UnitTests.Arch.X86
         [SetUp]
         public void Fstsw_Setup()
         {
-            arch = new X86ArchitectureFlat32("x86-protected-32");
-            asm = new X86Assembler(new X86ArchitectureFlat32("x86-protected-32"), Address.Ptr32(0x10000), new List<ImageSymbol>());
+            arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
+            asm = new X86Assembler(arch, Address.Ptr32(0x10000), new List<ImageSymbol>());
             Procedure proc = new Procedure(arch, "test", Address.Ptr32(0x00123400), arch.CreateFrame());
             orw = new OperandRewriter32(arch, new ExpressionEmitter(), proc.Frame, null);
             emitter = new ProcedureBuilder();

@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -38,10 +39,15 @@ namespace Reko.UnitTests.Analysis
         private SsaState ssa;
 		private SsaIdentifierCollection ssaIds;
 
+        private IProcessorArchitecture MkArch()
+        {
+            return new FakeArchitecture(new ServiceContainer());
+        }
+
 		[Test]
 		public void LciFindCopyslots()
 		{
-			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
+			Build(new LiveLoopMock().Procedure, MkArch());
 			var lci = new LiveCopyInserter(ssa);
 			Assert.AreEqual(2, lci.IndexOfInsertedCopy(proc.ControlGraph.Blocks[0]));
             Assert.AreEqual(0, lci.IndexOfInsertedCopy(proc.ControlGraph.Blocks[2].Succ[0]));
@@ -51,7 +57,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void LciLiveAtLoop()
 		{
-			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
+			Build(new LiveLoopMock().Procedure, MkArch());
 			var lci = new LiveCopyInserter(ssa);
 
             ssa.Dump(true);
@@ -65,7 +71,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void LciLiveAtCopy()
 		{
-			Build(new LiveCopyMock().Procedure, new FakeArchitecture());
+			Build(new LiveCopyMock().Procedure, MkArch());
 			var lci = new LiveCopyInserter(ssa);
 
 			var reg   = ssaIds.Where(s => s.Identifier.Name == "reg").Single();
@@ -80,7 +86,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void LciInsertAssignmentCopy()
 		{
-			Build(new LiveCopyMock().Procedure, new FakeArchitecture());
+			Build(new LiveCopyMock().Procedure, MkArch());
 			var lci = new LiveCopyInserter(ssa);
 
 			int i = lci.IndexOfInsertedCopy(proc.ControlGraph.Blocks[2]);
@@ -93,7 +99,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void LciInsertAssignmentLiveLoop()
 		{
-			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
+			Build(new LiveLoopMock().Procedure, MkArch());
 			var lci = new LiveCopyInserter(ssa);
 
             var i_3 = ssaIds.Where(s => s.Identifier.Name == "i_3").Single();
@@ -105,7 +111,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void LciRenameDominatedIdentifiers()
 		{
-			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
+			Build(new LiveLoopMock().Procedure, MkArch());
 			var lci = new LiveCopyInserter(ssa);
 
             var i_3 = ssaIds.Where(s => s.Identifier.Name == "i_3").Single();
@@ -117,7 +123,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void LciLiveLoop()
 		{
-			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
+			Build(new LiveLoopMock().Procedure, MkArch());
 			LiveCopyInserter lci = new LiveCopyInserter(ssa);
 			lci.Transform();
 			using (FileUnitTester fut = new FileUnitTester("Analysis/LciLiveLoop.txt"))
@@ -130,7 +136,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void LciLiveCopy()
 		{
-			Build(new LiveCopyMock().Procedure, new FakeArchitecture());
+			Build(new LiveCopyMock().Procedure, MkArch());
 			LiveCopyInserter lci = new LiveCopyInserter(ssa);
 			lci.Transform();
 			using (FileUnitTester fut = new FileUnitTester("Analysis/LciLiveCopy.txt"))

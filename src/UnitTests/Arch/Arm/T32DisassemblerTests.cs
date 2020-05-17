@@ -23,6 +23,7 @@ using Reko.Arch.Arm;
 using Reko.Core;
 using Reko.Core.Machine;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.Arm
 {
@@ -34,7 +35,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected override IProcessorArchitecture CreateArchitecture()
         {
-            return new ThumbArchitecture("arm-thumb");
+            return new ThumbArchitecture(new ServiceContainer(), "arm-thumb");
         }
 
         protected MachineInstruction Disassemble16(params ushort[] instrs)

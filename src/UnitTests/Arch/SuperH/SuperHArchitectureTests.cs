@@ -23,6 +23,7 @@ using Reko.Arch.SuperH;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,7 +33,7 @@ namespace Reko.UnitTests.Arch.SuperH
     [TestFixture]
     public class SuperHArchitectureTests
     {
-        private SuperHArchitecture arch = new SuperHBeArchitecture("sh4");
+        private SuperHArchitecture arch = new SuperHBeArchitecture(new ServiceContainer(), "sh4");
         
         [Test]
         public void ShArch_GetRegister_Real32()

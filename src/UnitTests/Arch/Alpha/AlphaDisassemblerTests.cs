@@ -23,6 +23,7 @@ using Reko.Arch.Alpha;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -34,16 +35,19 @@ namespace Reko.UnitTests.Arch.Alpha
     public class AlphaDisassemblerTests : DisassemblerTestBase<AlphaInstruction>
     {
         private AlphaArchitecture arch;
+        private Address addrLoad;
 
         [SetUp]
         public void Setup()
         {
-            this.arch = new AlphaArchitecture("alpha");
+            this.arch = new AlphaArchitecture(new ServiceContainer(), "alpha");
+            this.addrLoad = Address.Ptr64(0x00100000);
+
         }
 
-        public override IProcessorArchitecture Architecture { get { return arch; } }
+        public override IProcessorArchitecture Architecture => arch;
 
-        public override Address LoadAddress { get { return Address.Ptr64(0x00100000); } }
+        public override Address LoadAddress => addrLoad;
 
         private void AssertCode(string sExp, string sActual)
         {

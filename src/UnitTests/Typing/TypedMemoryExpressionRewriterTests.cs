@@ -26,6 +26,7 @@ using NUnit.Framework;
 using System;
 using Reko.Core;
 using Reko.UnitTests.Mocks;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Typing
 {
@@ -42,7 +43,7 @@ namespace Reko.UnitTests.Typing
 		public void Setup()
 		{
             var mem = new MemoryArea(Address.Ptr32(0x00400000), new byte[1024]);
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(new ServiceContainer());
             program = new Program
             {
                 Architecture = arch,

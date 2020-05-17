@@ -26,6 +26,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -34,7 +35,7 @@ namespace Reko.UnitTests.Arch.Tlcs
     [TestFixture]
     public class Tlcs900RewriterTests : RewriterTestBase
     {
-        private Tlcs900Architecture arch = new Tlcs900Architecture("tlcs900");
+        private Tlcs900Architecture arch = new Tlcs900Architecture(new ServiceContainer(), "tlcs900");
         private Address baseAddr = Address.Ptr32(0x0010000);
 
         public override IProcessorArchitecture Architecture => arch;

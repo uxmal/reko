@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -32,7 +33,7 @@ namespace Reko.UnitTests.Arch.RiscV
     [TestFixture]
     public class RiscVRewriterTests : RewriterTestBase
     {
-        private readonly RiscVArchitecture arch = new RiscVArchitecture("riscV");
+        private readonly RiscVArchitecture arch = new RiscVArchitecture(new ServiceContainer(), "riscV");
         private readonly Address baseAddr = Address.Ptr64(0x0010000);
 
         public override IProcessorArchitecture Architecture => arch;

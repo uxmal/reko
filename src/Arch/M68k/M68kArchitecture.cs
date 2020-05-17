@@ -39,7 +39,7 @@ namespace Reko.Arch.M68k
     {
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public M68kArchitecture(string archId) : base(archId)
+        public M68kArchitecture(IServiceProvider services, string archId) : base(services, archId)
         {
             InstructionBitSize = 16;
             Endianness = EndianServices.Big;

@@ -34,7 +34,7 @@ namespace Reko.Arch.MicroBlaze
     {
         private Dictionary<uint, FlagGroupStorage> flagGroups = new Dictionary<uint, FlagGroupStorage>();
 
-        public MicroBlazeArchitecture(string archId) : base(archId)
+        public MicroBlazeArchitecture(IServiceProvider services, string archId) : base(services, archId)
         {
             this.Endianness = EndianServices.Big;
             this.FramePointerType = PrimitiveType.Ptr32;

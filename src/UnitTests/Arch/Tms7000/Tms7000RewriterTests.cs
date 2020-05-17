@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace Reko.UnitTests.Arch.Tms7000
 
         public Tms7000RewriterTests()
         {
-            this.arch = new Tms7000Architecture("tms7000");
+            this.arch = new Tms7000Architecture(new ServiceContainer(), "tms7000");
         }
 
         public override IProcessorArchitecture Architecture => arch;

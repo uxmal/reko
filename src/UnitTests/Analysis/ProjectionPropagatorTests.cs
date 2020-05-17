@@ -35,6 +35,7 @@ using System.Threading.Tasks;
 using Z80Registers = Reko.Arch.Z80.Registers;
 using X86Registers = Reko.Arch.X86.Registers;
 using Reko.Arch.X86;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -66,17 +67,17 @@ namespace Reko.UnitTests.Analysis
 
         private void Given_X86_16_Arch()
         {
-            this.arch = new Reko.Arch.X86.X86ArchitectureReal("x86-real-16");
+            this.arch = new Reko.Arch.X86.X86ArchitectureReal(new ServiceContainer(), "x86-real-16");
         }
 
         private void Given_X86_64_Arch()
         {
-            this.arch = new Reko.Arch.X86.X86ArchitectureFlat64("x86-protected-64");
+            this.arch = new Reko.Arch.X86.X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64");
         }
 
         private void Given_Z80_Arch()
         {
-            this.arch = new Z80ProcessorArchitecture("z80");
+            this.arch = new Z80ProcessorArchitecture(new ServiceContainer(), "z80");
         }
 
         /// <summary>

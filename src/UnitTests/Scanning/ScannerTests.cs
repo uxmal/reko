@@ -78,14 +78,14 @@ namespace Reko.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            fakeArch = new FakeArchitecture();
+            this.sc = new ServiceContainer();
+            fakeArch = new FakeArchitecture(sc);
             dynamicLinker = new Mock<IDynamicLinker>();
             callSigs = new Dictionary<Address, FunctionType>();
             this.eventListener = new FakeDecompilerEventListener();
             arch = fakeArch;
             var r1 = fakeArch.GetRegister(1);
             reg1 = new Identifier(r1.Name, PrimitiveType.Word32, r1);
-            this.sc = new ServiceContainer();
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Scanning
         private void BuildX86RealTest(Action<X86Assembler> test)
         {
             var addr = Address.SegPtr(0x0C00, 0);
-            var arch = new X86ArchitectureReal("x86-real-16");
+            var arch = new X86ArchitectureReal(sc, "x86-real-16");
             var m = new X86Assembler(arch, addr, new List<ImageSymbol>());
             test(m);
             this.program = m.GetImage();
@@ -180,8 +180,8 @@ namespace Reko.UnitTests.Scanning
             var segmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("proggie", mem, AccessMode.ReadExecute));
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
-            var platform = new FakePlatform(null, arch);
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
+            var platform = new FakePlatform(sc, arch);
             platform.Test_DefaultCallingConvention = "__cdecl";
             this.program = new Program
             {
@@ -317,7 +317,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Scanner_CallGraphTree()
         {
-            var arch = new X86ArchitectureReal("x86-real-16");
+            var arch = new X86ArchitectureReal(sc, "x86-real-16");
             program = new Program();
             program.Architecture = arch;
             var addr = Address.SegPtr(0xC00, 0);
@@ -404,7 +404,7 @@ fn0C00_0000_exit:
 
         private void Given_x86_Flat32()
         {
-            arch = new X86ArchitectureFlat32("x86-protected-32");
+            arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
         }
 
         [Test]

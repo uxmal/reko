@@ -33,7 +33,7 @@ namespace Reko.Arch.PaRisc
 {
     public class PaRiscArchitecture : ProcessorArchitecture
     {
-        public PaRiscArchitecture(string archId) : base(archId)
+        public PaRiscArchitecture(IServiceProvider services, string archId) : base(services, archId)
         {
             InstructionBitSize = 32;
             StackRegister = Registers.GpRegs[30];

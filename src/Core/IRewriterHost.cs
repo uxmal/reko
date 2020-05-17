@@ -25,7 +25,7 @@ using System;
 
 namespace Reko.Core
 {
-    public interface IRewriterHost 
+    public interface IRewriterHost
     {
         PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity);
         /// <summary>

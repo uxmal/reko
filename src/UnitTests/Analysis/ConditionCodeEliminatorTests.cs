@@ -30,6 +30,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -55,7 +56,7 @@ namespace Reko.UnitTests.Analysis
 
         private void Given_ConditionCodeEliminator()
         {
-            cce = new ConditionCodeEliminator(ssaState, new DefaultPlatform(null, new FakeArchitecture()), new FakeDecompilerEventListener());
+            cce = new ConditionCodeEliminator(ssaState, new DefaultPlatform(null, new FakeArchitecture(new ServiceContainer())), new FakeDecompilerEventListener());
         }
 
         protected Program CompileTest(Action<ProcedureBuilder> m)
@@ -412,7 +413,7 @@ done:
         [Category(Categories.IntegrationTests)]
         public void CceAddAdcPattern()
         {
-            var p = new ProgramBuilder(new FakeArchitecture());
+            var p = new ProgramBuilder(new FakeArchitecture(new ServiceContainer()));
             p.Add("main", (m) =>
             {
                 var r1 = m.Reg32("r1", 1);
@@ -437,7 +438,7 @@ done:
         [Category(Categories.IntegrationTests)]
         public void CceShrRcrPattern()
         {
-            var p = new ProgramBuilder(new FakeArchitecture());
+            var p = new ProgramBuilder(new FakeArchitecture(new ServiceContainer()));
             p.Add("main", (m) =>
             {
                 var C = m.Flags("C");

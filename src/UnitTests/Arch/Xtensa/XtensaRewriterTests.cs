@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -32,7 +33,7 @@ namespace Reko.UnitTests.Arch.Xtensa
     [TestFixture]
     public class XtensaRewriterTests : RewriterTestBase
     {
-        private readonly XtensaArchitecture arch = new XtensaArchitecture("xtensa");
+        private readonly XtensaArchitecture arch = new XtensaArchitecture(new ServiceContainer(), "xtensa");
         private readonly Address baseAddr = Address.Ptr32(0x0010000);
 
         public override IProcessorArchitecture Architecture => arch;

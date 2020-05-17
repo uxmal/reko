@@ -28,6 +28,7 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -187,7 +188,7 @@ foo_exit:
         [Test(Description = "")]
         public void Uvr_Forks()
         {
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(new ServiceContainer());
             var pb = new ProgramBuilder(arch);
             var _r1 = arch.GetRegister("r1");
             var _r2 = arch.GetRegister("r2");
@@ -251,7 +252,7 @@ foo_exit:
         [Test(Description = "Respect any provided procedure signature")]
         public void Uvr_Signature()
         {
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(new ServiceContainer());
             var pb = new ProgramBuilder(arch);
             var _r1 = arch.GetRegister("r1");
             var _r2 = arch.GetRegister("r2");
@@ -322,7 +323,7 @@ foo_exit:
         [Category(Categories.UnitTests)]
         public void Uvr_Chain()
         {
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(new ServiceContainer());
             var _r1 = arch.GetRegister("r1");
             var _r2 = arch.GetRegister("r2");
             var _r3 = arch.GetRegister("r3");

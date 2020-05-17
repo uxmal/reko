@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.M68k.Assembler
 {
@@ -39,7 +40,7 @@ namespace Reko.UnitTests.Arch.M68k.Assembler
         [SetUp]
         public void Setup()
         {
-            arch = new M68kArchitecture("m68k");
+            arch = new M68kArchitecture(new ServiceContainer(), "m68k");
             asm = new M68kAssembler(arch, Address.Ptr32(0x00010000), new List<ImageSymbol>());
         }
 

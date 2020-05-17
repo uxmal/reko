@@ -23,6 +23,7 @@ using Reko.Arch.Blackfin;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace Reko.UnitTests.Arch.Blackfin
 
         public BlackfinDisassemblerTests()
         {
-            this.arch = new BlackfinArchitecture("blackfin");
+            this.arch = new BlackfinArchitecture(new ServiceContainer(), "blackfin");
         }
 
         public override IProcessorArchitecture Architecture => arch;

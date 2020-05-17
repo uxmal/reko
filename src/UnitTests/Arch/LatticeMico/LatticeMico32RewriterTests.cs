@@ -25,6 +25,7 @@ using Reko.Core;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,7 +35,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
     [TestFixture]
     public class LatticeMico32RewriterTests : RewriterTestBase
     {
-        private readonly LatticeMico32Architecture arch = new LatticeMico32Architecture("latticeMico32");
+        private readonly LatticeMico32Architecture arch = new LatticeMico32Architecture(new ServiceContainer(), "latticeMico32");
         private readonly Address addrLoad = Address.Ptr32(0x00100000);
 
         public override IProcessorArchitecture Architecture => arch;

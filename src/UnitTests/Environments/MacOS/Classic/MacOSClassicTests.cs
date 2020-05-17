@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Environments.MacOS.Classic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Environments.MacOS.Classic
 {
@@ -33,7 +34,8 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
         [Test(Description="Resolves a call to the jumptable pointed to by A5 as a direct call.")]
         public void MacOS_ResolveIndirectCall()
         {
-            var macOS = new MacOSClassic(null, new M68kArchitecture("m68k"));
+            var sc = new ServiceContainer();
+            var macOS = new MacOSClassic(sc, new M68kArchitecture(sc, "m68k"));
             var a5 = new Identifier(Registers.a5.Name, Registers.a5.DataType, Registers.a5);
 
             var a5world = new MemoryArea(Address.Ptr32(0x00100000), new byte[0x0300]);

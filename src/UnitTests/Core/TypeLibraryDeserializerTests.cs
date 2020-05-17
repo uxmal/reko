@@ -29,6 +29,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core.Expressions;
 using Reko.UnitTests.Mocks;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Core
 {
@@ -312,7 +313,7 @@ namespace Reko.UnitTests.Core
             var typelib = new TypeLibrary();
             platform = new Mock<IPlatform>();
             platform.Setup(p => p.DefaultCallingConvention).Returns("__cdecl");
-            platform.Setup(p => p.Architecture).Returns(new FakeArchitecture());
+            platform.Setup(p => p.Architecture).Returns(new FakeArchitecture(new ServiceContainer()));
 
             var tlldr = new TypeLibraryDeserializer(platform.Object, true, typelib);
             tlldr.Load(new SerializedLibrary

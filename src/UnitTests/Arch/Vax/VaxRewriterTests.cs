@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -32,7 +33,7 @@ namespace Reko.UnitTests.Arch.Vax
     [TestFixture]
     public class VaxRewriterTests : RewriterTestBase
     {
-        private readonly VaxArchitecture arch = new VaxArchitecture("vax");
+        private readonly VaxArchitecture arch = new VaxArchitecture(new ServiceContainer(), "vax");
         private readonly Address baseAddr = Address.Ptr32(0x0010000);
         private VaxProcessorState state;
 
