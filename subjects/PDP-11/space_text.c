@@ -1518,7 +1518,7 @@ void fn1DAE()
 	if (r0_n != null)
 		r0_n();
 	struct Eq_n * sp_n = globals->ptr0022;
-	sp_n->ptrFFFFFFFE = &globals->t1DB2;
+	sp_n->ptrFFFFFFFE = (struct Eq_n *) &globals->t1DB2;
 	FnSubfn(&globals->b0592);
 	struct Eq_n * r5_n = globals->ptr0028;
 	sp_n->ptrFFFFFFFC = r5_n;

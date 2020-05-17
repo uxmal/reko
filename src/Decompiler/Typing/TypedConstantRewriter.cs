@@ -302,6 +302,7 @@ namespace Reko.Typing
                     }
                     else
                     {
+                        ptr = new Pointer(e.DataType, ptr.BitSize);
                         e = new UnaryExpression(Operator.AddrOf, ptr, e);
                     }
                 }

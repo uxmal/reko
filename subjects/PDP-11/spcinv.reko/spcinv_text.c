@@ -34,11 +34,11 @@ void fn0200(Eq_n r5, struct Eq_n * pc)
 			break;
 		}
 		r2_n = &globals->t0001;
-		r3_n = &globals->t0001;
+		r3_n = (struct Eq_n *) &globals->t0001;
 		if (r0_n == 0x49)
 			break;
 		r2_n = null;
-		r3_n = &globals->t0002;
+		r3_n = (struct Eq_n *) &globals->t0002;
 	} while (r0_n != 0x45);
 	globals->ptr0F06 = r2_n;
 	globals->ptr0F08 = r3_n;

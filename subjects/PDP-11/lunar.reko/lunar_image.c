@@ -383,7 +383,7 @@ l0964:
 			if (globals->w0046 <= ~0x0E && globals->w0046 >= 0x0F)
 			{
 				int16 r1_n = globals->w0078;
-				r0_n = globals->a28F2[r1_n * 0x02] - (&globals->w28F0)[r1_n];
+				r0_n = globals->a28F2[r1_n * 0x02] - (&globals->w28F0)[r1_n * 0x02];
 				ci16 r2_n = r0_n;
 				if (r0_n <= 0x00)
 					r2_n = -r0_n;
@@ -409,7 +409,7 @@ l097C:
 				sp_n->t0000.u1 = (word16) sp_n->t0000 + 1;
 			sp_n->wFFFFFFFE = r1_n;
 			fn0C90(sp_n->wFFFFFFFE, sp_n->t0000);
-			ui16 r2_n = globals->a28F2[r1_n * 0x02] - (&globals->w28F0)[r1_n];
+			ui16 r2_n = globals->a28F2[r1_n * 0x02] - (&globals->w28F0)[r1_n * 0x02];
 			ci16 r2_n = r2_n - (r2_n * 0x03 >> 2);
 			struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 			ci16 r2_n = r2_n + (r2_n >> 1);
@@ -663,7 +663,7 @@ cui16 * fn0D78(word16 * r4, cui16 * r5)
 	cui16 wLoc02_n = 0x0200;
 	if (r4 <= &(globals->t021C + 484))
 	{
-		r4 = &(globals->t021C + 483);
+		r4 = (word16 *) &(globals->t021C + 483);
 		if (globals->ptr0082 == &(globals->t021C + 483))
 			goto l0D9C;
 	}
@@ -823,7 +823,7 @@ void fn0F04(int16 r0)
 	if (r4_n <= null)
 		r4_n = null;
 	else if (r4_n <= &(globals->t021C + 484))
-		r4_n = &(globals->t021C + 483);
+		r4_n = (word16 *) &(globals->t021C + 483);
 	r5_n->ptr0000 = r4_n;
 	globals->ptr0082 = r4_n;
 	r5_n->w0002 = 0x8C50;

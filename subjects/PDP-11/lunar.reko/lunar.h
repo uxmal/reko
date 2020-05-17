@@ -4068,7 +4068,7 @@ T_773: (in 0x28F0<16>[r1_145 * 2<16>] : word16)
   Class: Eq_773
   DataType: word16
   OrigDataType: word16
-T_774: (in globals->a28F2[r1_145 * 2<16>] - (&globals->w28F0)[r1_145] : word16)
+T_774: (in globals->a28F2[r1_145 * 2<16>] - (&globals->w28F0)[r1_145 * 2<16>] : word16)
   Class: Eq_398
   DataType: ci16
   OrigDataType: word16
@@ -4288,7 +4288,7 @@ T_828: (in 0x28F0<16>[r1_177 * 2<16>] : word16)
   Class: Eq_828
   DataType: word16
   OrigDataType: word16
-T_829: (in globals->a28F2[r1_177 * 2<16>] - (&globals->w28F0)[r1_177] : word16)
+T_829: (in globals->a28F2[r1_177 * 2<16>] - (&globals->w28F0)[r1_177 * 2<16>] : word16)
   Class: Eq_820
   DataType: ui16
   OrigDataType: word16

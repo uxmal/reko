@@ -62,7 +62,7 @@ Eq_n fn03E6(Eq_n c)
 void fn0400()
 {
 	globals->w1640 = globals->w0006;
-	globals->ptr164E = &globals->b0080;
+	globals->ptr164E = (struct Eq_n *) &globals->b0080;
 }
 
 // 040D: void fn040D(Register byte b, Register Eq_n c, Register cu8 e, Stack word16 wArg02)

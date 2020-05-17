@@ -399,12 +399,12 @@ l00004640:
 		globals->t020A = r11_n;
 		if (r11_n >= 0x0208)
 		{
-			r14_n = &globals->t020A;
+			r14_n = (struct Eq_n *) &globals->t020A;
 			r15_n.u0 = 644;
 		}
 		else
 		{
-			r14_n = &globals->t020A;
+			r14_n = (struct Eq_n *) &globals->t020A;
 			r15_n.u0 = 0x0282;
 		}
 		vListInsert(r14_n, r15_n);
@@ -436,12 +436,12 @@ void vTaskDelay(struct Eq_n * pc, ui20 sr, word20 r15)
 		globals->t020A = r11_n;
 		if (r11_n >= 0x0208)
 		{
-			r14_n = &globals->t020A;
+			r14_n = (struct Eq_n *) &globals->t020A;
 			r15_n.u0 = 644;
 		}
 		else
 		{
-			r14_n = &globals->t020A;
+			r14_n = (struct Eq_n *) &globals->t020A;
 			r15_n.u0 = 0x0282;
 		}
 		vListInsert(r14_n, r15_n);
@@ -629,12 +629,12 @@ void vTaskPlaceOnEventList(Eq_n r14, Eq_n r15)
 	globals->t020A = r11_n;
 	if (r11_n >= 0x0208)
 	{
-		r14_n = &globals->t020A;
+		r14_n = (struct Eq_n *) &globals->t020A;
 		r15_n.u0 = 644;
 	}
 	else
 	{
-		r14_n = &globals->t020A;
+		r14_n = (struct Eq_n *) &globals->t020A;
 		r15_n.u0 = 0x0282;
 	}
 	vListInsert(r14_n, r15_n);

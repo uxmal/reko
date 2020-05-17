@@ -2493,7 +2493,7 @@ void fn00008834(int32 r4, word32 VR)
 			}
 			--r4_n;
 		}
-		(&globals->ptr137EC)[r2_n].dw0000 = -1;
+		*((char *) &globals->ptr137EC + r2_n * 0x08) = -1;
 	}
 }
 
@@ -3220,7 +3220,7 @@ l00009D10:
 	word32 r22_n;
 	word32 r28_n;
 	ui32 r11_n = fn0000D214(r14_n, (char *) &r1_n->dwFFFFFFF8 + 7, -1, VR, out r22_n, out r28_n) | fn0000D298(r14_n, (char *) (&r1_n->dwFFFFFFF8) + 6, -1, VR, out r22, out r24_n);
-	if ((word32) (&globals->b13017)[r3].b0000 != 0x00)
+	if ((word32) (&globals->b13017)[r3 * 0x08] != 0x00)
 	{
 		up32 r2_n;
 		up32 r2_n = (word32) r1_n[2];
@@ -4363,7 +4363,7 @@ l0000C12C:
 		}
 		if (r3_n == 0x03)
 		{
-			r2_n = &globals->t13098;
+			r2_n = (union Eq_n *) &globals->t13098;
 l0000C0A8:
 			r11_n = *r2_n;
 			goto l0000C12C;
@@ -4371,7 +4371,7 @@ l0000C0A8:
 		if (r3_n != 0x01)
 		{
 l0000C074:
-			r2_n = &globals->t1309C;
+			r2_n = (union Eq_n *) &globals->t1309C;
 			goto l0000C0A8;
 		}
 	}
@@ -6048,8 +6048,8 @@ union Eq_n * fn0000F250(word32 VR)
 	if (r2_n != null)
 	{
 		--globals->ptr13A04;
-		r2_n = (&globals->ptr13A04)[(char *) globals->ptr13A04 - 1];
-		(&globals->ptr13A04)[(char *) globals->ptr13A04 - 1] = 0;
+		r2_n = (union Eq_n *) *((char *) &globals->ptr13A04 + ((char *) globals->ptr13A04 - 1) * 0x04);
+		*((char *) &globals->ptr13A04 + ((char *) globals->ptr13A04 - 1) * 0x04) = 0;
 	}
 	fn0000E740(r11_n, VR);
 	if (fn0000F154(r2_n) != null)
@@ -6098,7 +6098,7 @@ word32 fn0000F368(union Eq_n * r3, word32 VR, ptr32 & r9Out, word32 & r14Out)
 			r2_n->dw0008 = 0;
 			r2_n->dw000C = 0;
 			r2_n->b0000 = ~0x00;
-			(&globals->ptr13A04)[(char *) globals->ptr13A04 - 1].b0000 = (byte) r2_n;
+			*((char *) &globals->ptr13A04 + ((char *) globals->ptr13A04 - 1) * 0x04) = (union Eq_n **) r2_n;
 			globals->ptr13A04 = (union Eq_n *) ((char *) globals->ptr13A04 - 1);
 		}
 		else
@@ -7171,7 +7171,7 @@ l00011734:
 									r1_n[36] = (struct Eq_n) (r1_n[36] | 0x00040000);
 									*r2_n = r1_n[36];
 								}
-								r2_n = &globals->dw134E4;
+								r2_n = (struct Eq_n *) &globals->dw134E4;
 							}
 							if ((r2_n->dw0180 & 0x05) != 0x00)
 							{

@@ -1017,7 +1017,7 @@ l0000000000403AE2:
 						if (rax_n == 0x00)
 							goto l00000000004043BB;
 						_obstack_begin(&globals->t61AF00, 0x00, 0x00, &globals->t402640, &globals->t4021F0);
-						r8_n = &globals->t4021F0;
+						r8_n = (int32 *) &globals->t4021F0;
 					}
 					byte al_n;
 					word32 eax_n = (word32) (uint64) globals->dw61B148;
@@ -1038,7 +1038,7 @@ l00000000004033A0:
 					{
 						_obstack_begin(&globals->t61AFC0, 0x00, 0x00, &globals->t402640, &globals->t4021F0);
 						_obstack_begin(&globals->t61AF60, 0x00, 0x00, &globals->t402640, &globals->t4021F0);
-						r8_n = &globals->t4021F0;
+						r8_n = (int32 *) &globals->t4021F0;
 					}
 					globals->t61B1B8.u0 = 100;
 					Eq_n rax_n = fn0000000000410C40(0x4B00);
@@ -1658,8 +1658,8 @@ uint64 fn0000000000404CD0(word32 edi)
 {
 	uint64 rdi_n = (uint64) edi;
 	uint64 rax_n = 0x00;
-	word64 rdx_n = (&globals->qw61A3E0)[rdi_n].qw0000;
-	byte * rsi_n = (&globals->t61A3E8)[rdi_n].ptr0000;
+	word64 rdx_n = (&globals->qw61A3E0)[rdi_n * 0x10];
+	byte * rsi_n = *((char *) &globals->t61A3E8 + rdi_n * 0x10);
 	if (rdx_n == 0x00)
 		return rax_n;
 	if (rdx_n == 0x01)
@@ -3230,7 +3230,7 @@ l0000000000406FBC:
 						edi_n = (word32) (uint64) ((word32) (uint64) ((word32) (uint64) ecx_n - r8d_n) >> 0x1F);
 				}
 l0000000000406F20:
-				Eq_n rax_n = fn0000000000406A80(rax_n, (&globals->t61A3D0)[(int64) edi_n].t0000, r13_n, fs);
+				Eq_n rax_n = fn0000000000406A80(rax_n, *((char *) &globals->t61A3D0 + (int64) edi_n * 0x08), r13_n, fs);
 				if (rax_n != 0x00 || *r13_n == 0x00)
 				{
 					word64 rax_n = rax_n + r13_n;
@@ -5070,7 +5070,7 @@ Eq_n fn000000000040B400(<anonymous> * rcx, <anonymous> * rdx, struct Eq_n * rsi,
 		goto l000000000040B52A;
 	}
 	if (rsi == null)
-		rbp_n = &globals->t415EE0;
+		rbp_n = (struct Eq_n *) &globals->t415EE0;
 	*((word32) rax_n + 40) = rbp_n;
 	if ((byte) (uint64) (uint8) fn000000000040ADB0((word32) rax_n + 40, out xmm0, out xmm1) == 0x00)
 	{
@@ -7566,7 +7566,7 @@ struct Eq_n * fn000000000040E650(word32 edx, int32 esi, ui32 rsi_32_n, struct Eq
 void fn000000000040E6B0(word64 rdx, word64 rsi, struct Eq_n * rdi)
 {
 	if (rdi == null)
-		rdi = &globals->t61B320;
+		rdi = (struct Eq_n *) &globals->t61B320;
 	rdi->dw0000 = 0x08;
 	if (rsi == 0x00 || rdx == 0x00)
 		abort();

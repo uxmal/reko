@@ -154,7 +154,7 @@ l10001384:
 		}
 		struct Eq_n * esp_n = esp_n - 4;
 		esp_n->t0000 = 0x00;
-		esp_n->ptrFFFFFFFC = &globals->t100033AC;
+		esp_n->ptrFFFFFFFC = (LONG *) &globals->t100033AC;
 		globals->dw100033A8 = 0x00;
 		InterlockedExchange(esp_n->ptrFFFFFFFC, esp_n->t0000);
 		esp_n = (ptr32 *) (&esp_n->t0000 + 1);
