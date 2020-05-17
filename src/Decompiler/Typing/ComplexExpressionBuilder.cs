@@ -92,7 +92,8 @@ namespace Reko.Typing
             var exp = this.dtComplex.Accept(this);
             if (!dereferenced && dereferenceGenerated)
             {
-                exp = new UnaryExpression(Operator.AddrOf, dtComplex, exp);
+                var ptr = new Pointer(exp.DataType, dtComplex.BitSize);
+                exp = new UnaryExpression(Operator.AddrOf, ptr, exp);
             }
             if (dereferenced && !dereferenceGenerated)
             {

@@ -1961,7 +1961,7 @@ void properties_load(Eq_n r4, Eq_n r5, word32 ra)
 								if ((word32) (r2_n < 1) == 0x00)
 								{
 									if (r2_n == 2)
-										globals->ptr10000A40->a0004->ptr0000.a0004[dwLoc014C_n * 0x14 - dwLoc014C_n + 0x0011].t0004 = (word32) (strchr("1yY", (word32) *r2_n) > null);
+										*((char *) &globals->ptr10000A40->a0004->ptr0000 + ((dwLoc014C_n * 0x14 - dwLoc014C_n) * 0x08 + 144)) = (word32) (strchr("1yY", (word32) *r2_n) > null);
 								}
 								else
 									strncpy((char *) &(globals->ptr10000A40->a0004 + 1)->ptr0000 + 1 + (dwLoc014C_n * 0x14 - dwLoc014C_n << 0x03), r2_n, 20);
@@ -1970,7 +1970,7 @@ void properties_load(Eq_n r4, Eq_n r5, word32 ra)
 							{
 								word32 r2_n;
 								globals->t4053F0();
-								globals->ptr10000A40->a0004->ptr0000.a0004[dwLoc014C_n * 0x14 - dwLoc014C_n + 0x0011].t0004 = r2_n;
+								*((char *) &globals->ptr10000A40->a0004->ptr0000 + ((dwLoc014C_n * 0x14 - dwLoc014C_n) * 0x08 + 144)) = r2_n;
 							}
 						}
 						++dwLoc014C_n;
@@ -2071,7 +2071,7 @@ Eq_n properties_parse_command_line(Eq_n r4, Eq_n r5[], word32 r16, word32 ra, un
 					word32 r6_n;
 					word32 r7_n;
 					(r25_n + 21488)();
-					globals->ptr10000A40->a0004->ptr0000.a0004[dwLoc24_n * 0x14 - dwLoc24_n + 0x0011].t0004 = r2_n;
+					*((char *) &globals->ptr10000A40->a0004->ptr0000 + ((dwLoc24_n * 0x14 - dwLoc24_n) * 0x08 + 144)) = r2_n;
 					r28_n = (struct Eq_n *) 0x10008860;
 				}
 l004061C8:

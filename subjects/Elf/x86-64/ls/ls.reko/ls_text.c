@@ -1219,7 +1219,7 @@ l00000000004035FF:
 												rax_n = globals->ptr61AF78;
 											}
 											rax_n->t0000 = globals->t61B018;
-											globals->ptr61AF78 = &globals->ptr61AF78->t0008;
+											globals->ptr61AF78 = (DIR *) &globals->ptr61AF78->t0008;
 										}
 									}
 									struct Eq_n * rdx_n = globals->ptr61B0E0;
@@ -1237,7 +1237,7 @@ l00000000004035FF:
 											rax_n = globals->ptr61AF78;
 										}
 										rax_n->t0000 = globals->t61B018;
-										globals->ptr61AF78 = &globals->ptr61AF78->t0008;
+										globals->ptr61AF78 = (DIR *) &globals->ptr61AF78->t0008;
 									}
 									fwrite_unlocked(4274491, 0x01, 0x02, globals->ptr61A610);
 									globals->t61B018 = (word32) globals->t61B018 + 2;
@@ -1267,7 +1267,7 @@ l00000000004036F0:
 												}
 											}
 										}
-										else if (eax_n == 0x00 || (&rax_n->t0014)[(uint64) ((uint8) (rax_n->t0014 == 0x2E)) / 24] == 0x00)
+										else if (eax_n == 0x00 || *((char *) (&rax_n->t0014) + (uint64) ((uint8) (rax_n->t0014 == 0x2E))) == 0x00)
 											goto l0000000000403770;
 									}
 									Eq_n r15_n = globals->t61B100;

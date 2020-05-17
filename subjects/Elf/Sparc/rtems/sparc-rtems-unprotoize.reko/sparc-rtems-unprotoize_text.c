@@ -784,7 +784,7 @@ l00012024:
 			word32 o3_n = (word32) o1_n->b0000;
 			if ((int32) o2_n->bFFFFFFFF == 0x2F)
 			{
-				o1_n = &o1_n->b0001;
+				o1_n = (struct Eq_n *) &o1_n->b0001;
 				goto l00012110;
 			}
 			Z_n = SLICE(cond(o3_n - 0x2E), bool, 2);
@@ -810,7 +810,7 @@ l00012024:
 		{
 			if (o0_n == 0x2F)
 			{
-				o1_n = &o1_n->b0002;
+				o1_n = (struct Eq_n *) &o1_n->b0002;
 				goto l00012110;
 			}
 			if (o0_n == 0x2E)
@@ -822,7 +822,7 @@ l00012024:
 					if (o0_n == 0x2F)
 						o0_n = o1_n + 1;
 					else
-						o0_n = &o1_n->b0002;
+						o0_n = (struct Eq_n *) &o1_n->b0002;
 					int8 * o2_n = (char *) o2_n - 2;
 					o1_n = o0_n;
 					while (true)
@@ -861,7 +861,7 @@ l00012110:
 				o0_n = (word32) o1_n->b0000;
 l00012104:
 			o2_n->b0000 = (byte) o0_n;
-			o1_n = &o1_n->b0001;
+			o1_n = (struct Eq_n *) &o1_n->b0001;
 			++o2_n;
 			goto l00012110;
 		}
@@ -870,7 +870,7 @@ l00012120:
 	if ((int32) o2_n->bFFFFFFFF == 0x2F)
 	{
 		o2_n->b0000 = 0x00;
-		o2_n = &o2_n->bFFFFFFFF;
+		o2_n = (struct Eq_n *) &o2_n->bFFFFFFFF;
 		o2_n->b0000 = 0x00;
 	}
 	else
@@ -1094,7 +1094,7 @@ word32 check_aux_info(word32 o0, ptr32 & i1Out)
 // 00012418: Register (ptr32 Eq_n) find_corresponding_lparen(Register (ptr32 Eq_n) o0)
 struct Eq_n * find_corresponding_lparen(struct Eq_n * o0)
 {
-	int8 * o0_n = &o0->bFFFFFFFF.bFFFFFFFF;
+	int8 * o0_n = &o0->bFFFFFFFF + -1;
 	word32 g3_n = 0x01;
 	int32 g2_n = (int32) o0->bFFFFFFFF;
 l00012424:
@@ -1245,7 +1245,7 @@ l00012688:
 						{
 							if (o0_n == 0x09)
 							{
-								i0_n = &i0_n->bFFFFFFFF;
+								i0_n = (struct Eq_n *) &i0_n->bFFFFFFFF;
 								continue;
 							}
 							else
@@ -1254,7 +1254,7 @@ l00012688:
 								goto l000127E4;
 							}
 						}
-						i0_n = &i0_n->bFFFFFFFF;
+						i0_n = (struct Eq_n *) &i0_n->bFFFFFFFF;
 					}
 					o0_n = (int32) i0_n->b0000;
 l000127E4:
@@ -4162,13 +4162,13 @@ word32 * __do_global_ctors_aux(word32 o3, word32 o4, word32 o5, word32 o7)
 	word32 o2_n = o1_n->dwFFFFFFFC;
 	if (o2_n != ~0x00)
 	{
-		l0_n = (word32 *) &o1_n->dwFFFFFFFC;
+		l0_n = &o1_n->dwFFFFFFFC;
 		do
 			fn00000014();
 		while (*l0_n != ~0x00);
 	}
 	else
-		l0_n = (word32 *) &o1_n->dwFFFFFFFC;
+		l0_n = &o1_n->dwFFFFFFFC;
 	return l0_n;
 }
 

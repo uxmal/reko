@@ -58,7 +58,7 @@ int32 fn00002510(struct Eq_n * a5, Eq_n dwArg04, union Eq_n & d3Out, ptr32 & d4O
 		a7_n->t0000 = d3_n;
 		word32 a0_n;
 		struct Eq_n * d0_n = fn000027B0(a5, a7_n->t0000, out a0_n);
-		a7_n = &a7_n->t0004;
+		a7_n = (struct Eq_n *) &a7_n->t0004;
 		a2_n = d0_n;
 		if (d0_n == null)
 		{
@@ -186,7 +186,7 @@ int32 fn0000275C(struct Eq_n * a0, struct Eq_n * a5, struct Eq_n & a0Out)
 			} while (&a0->dw0FF8 - d1_n > 0x00);
 		}
 		a0->dw0FF8 = 0;
-		a0Out = &a0->dw0FF8;
+		a0Out = (struct Eq_n *) &a0->dw0FF8;
 		return 1;
 	}
 	else

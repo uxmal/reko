@@ -1134,7 +1134,7 @@ int32 fn00001DF4(Eq_n dwArg04, struct Eq_n * dwArg08, ui32 & a0Out, ptr32 & a5Ou
 		if (d4_n - d0_n != 0x00)
 		{
 			dwArg08->dw0018 |= 16;
-			a0 = (ui32 *) &dwArg08->dw0018;
+			a0 = &dwArg08->dw0018;
 			d0_n = -1;
 l00001F02:
 			a0Out = a0;
@@ -1188,7 +1188,7 @@ int32 fn00001F08(struct Eq_n * dwArg04, ui32 & a0Out, ptr32 & a1Out, ptr32 & a5O
 		if (d4_n - d0_n != 0x00)
 		{
 			dwArg04->dw0018 |= 16;
-			a0 = (ui32 *) &dwArg04->dw0018;
+			a0 = &dwArg04->dw0018;
 			d0_n = -1;
 l00001F96:
 			a0Out = a0;
@@ -1200,7 +1200,7 @@ l00001F96:
 		dwArg04->dw0014 = dwArg04->dw001C;
 	}
 	dwArg04->dw0018 &= -4;
-	a0 = (ui32 *) &dwArg04->dw0018;
+	a0 = &dwArg04->dw0018;
 	d0_n = 0;
 	goto l00001F96;
 }

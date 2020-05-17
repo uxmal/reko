@@ -496,7 +496,7 @@ l00001F1C:
 				a6_n->bFFFFFFFF = a6_n->b000B;
 				struct Eq_n * a7_n = a7_n - 4;
 				a7_n->dw0000 = 1;
-				a7_n->ptrFFFFFFFC = (byte *) &a6_n->bFFFFFFFF;
+				a7_n->ptrFFFFFFFC = &a6_n->bFFFFFFFF;
 				a7_n->dwFFFFFFF8 = d3_n;
 				word32 a7_n;
 				int32 d0_n;

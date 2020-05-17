@@ -376,7 +376,7 @@ uint64 fn0000000140001718(<anonymous> ** rcx, <anonymous> & r8Out)
 			if (rcx_n->w0018 == 0x020B)
 			{
 				word32 eax_n = (word32) rcx_n->w0006;
-				struct Eq_n * rdx_n = &rcx_n->w0018 + (uint64) ((uint32) ((word32) rcx_n->w0014)) / 26;
+				struct Eq_n * rdx_n = &rcx_n->w0018 + (uint64) ((uint32) ((word32) rcx_n->w0014));
 				r8_n = rcx - 0x140000000;
 				struct Eq_n * r9_n = rdx_n + (uint64) ((uint32) eax_n);
 				uint56 rax_56_8_n = (uint56) (uint24) SLICE(eax_n, word24, 8);

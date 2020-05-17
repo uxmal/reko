@@ -8145,7 +8145,7 @@ T_1310: (in 105<i32> : int32)
 T_1311: (in a3_1222 : Eq_615)
   Class: Eq_615
   DataType: Eq_615
-  OrigDataType: (ptr32 Eq_1234)
+  OrigDataType: (ptr32 word32)
 T_1312: (in 76<i32> : int32)
   Class: Eq_1312
   DataType: int32
@@ -14973,7 +14973,7 @@ T_3017: (in d0 : Eq_622)
 T_3018: (in a1_102 : Eq_1276)
   Class: Eq_1276
   DataType: Eq_1276
-  OrigDataType: (ptr32 Eq_1220)
+  OrigDataType: (ptr32 (ptr32 ui32))
 T_3019: (in a0_101 : (ptr32 ui32))
   Class: Eq_1275
   DataType: (ptr32 ui32)
