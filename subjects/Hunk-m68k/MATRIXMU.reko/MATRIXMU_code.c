@@ -55,7 +55,7 @@ void fn00001000(int32 d0, byte * a0)
 			word32 a0_n;
 			d0_n->dw0000 = d0_n + 0x11;
 			d0_n->dw000C = d4_n - 0x01;
-			d0_n->ptr0008 = (byte *) (&d0_n->ptr0010 + d0_n / 20);
+			d0_n->ptr0008 = (char *) &d0_n->ptr0010 + d0_n;
 			null = null;
 			struct Eq_n * d0_n = d0_n->ptr00AC;
 			if (d0_n == null)

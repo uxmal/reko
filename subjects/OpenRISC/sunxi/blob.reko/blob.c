@@ -5850,12 +5850,12 @@ Eq_n fn0000EDF4(int32 r3, struct Eq_n * r4, Eq_n r15, word32 VR)
 			if (r4_n == 0x25)
 			{
 				int32 r18_n;
-				r16_n = &r16_n->bFFFFFFFF;
+				r16_n = (struct Eq_n *) &r16_n->bFFFFFFFF;
 				int32 r4_n = (int32) r16_n->b0000;
 				if ((r4_n - 49 & 0xFF) <= 0x08)
 				{
 					r18_n = r4_n - 48;
-					r16_n = &r16_n->bFFFFFFFF;
+					r16_n = (struct Eq_n *) &r16_n->bFFFFFFFF;
 					r4_n = (int32) r16_n->bFFFFFFFF;
 				}
 				else
@@ -5927,10 +5927,10 @@ l0000F00C:
 			else
 			{
 				r2_n->t0000 = (byte) r4_n;
-				r2_n = &r2_n->bFFFFFFFF;
+				r2_n = (struct Eq_n *) &r2_n->bFFFFFFFF;
 			}
 l0000F0B0:
-			r16_n = &r16_n->bFFFFFFFF;
+			r16_n = (struct Eq_n *) &r16_n->bFFFFFFFF;
 		}
 		if ((int32) r2_n->bFFFFFFFF == 0x0A)
 			globals->dw13154 = -1;

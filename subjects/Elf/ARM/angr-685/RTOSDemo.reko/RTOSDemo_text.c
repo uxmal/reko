@@ -179,9 +179,9 @@ void vListInitialise(struct Eq_n * r0)
 {
 	r0->dw0008 = ~0x00;
 	r0->dw0000 = 0x00;
-	r0->ptr0004 = (word32 *) &r0->dw0008;
-	r0->ptr000C = (word32 *) &r0->dw0008;
-	r0->ptr0010 = (word32 *) &r0->dw0008;
+	r0->ptr0004 = &r0->dw0008;
+	r0->ptr000C = &r0->dw0008;
+	r0->ptr0010 = &r0->dw0008;
 }
 
 // 000082E8: void vListInitialiseItem(Register (ptr32 Eq_n) r0)

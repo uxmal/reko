@@ -96,7 +96,7 @@ byte fn045B()
 		return 0x00;
 	--globals->b0080;
 	struct Eq_n * hl_n = globals->ptr164E;
-	globals->ptr164E = &hl_n->b0001;
+	globals->ptr164E = (struct Eq_n *) &hl_n->b0001;
 	return hl_n->b0001;
 }
 
@@ -1105,7 +1105,7 @@ word16 fn1346(struct Eq_n * bc, struct Eq_n * de)
 bool fn1348(struct Eq_n * de, struct Eq_n * hl, ui8 & deOut, union Eq_n & hlOut)
 {
 	Eq_n a_a_n = SEQ(de->b0001, de->b0000) - SEQ(hl->b0001, hl->b0000);
-	deOut = (ui8 *) &de->b0001;
+	deOut = &de->b0001;
 	hlOut = a_a_n;
 	return (bool) cond(SLICE(a_a_n, byte, 8));
 }

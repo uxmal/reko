@@ -24195,7 +24195,7 @@ T_5388: (in 105<i32> : int32)
 T_5389: (in a3_1222 : Eq_613)
   Class: Eq_613
   DataType: Eq_613
-  OrigDataType: (ptr32 Eq_5312)
+  OrigDataType: (ptr32 word32)
 T_5390: (in 76<i32> : int32)
   Class: Eq_5390
   DataType: int32
@@ -31023,7 +31023,7 @@ T_7095: (in d0 : Eq_5352)
 T_7096: (in a1_102 : Eq_5354)
   Class: Eq_5354
   DataType: Eq_5354
-  OrigDataType: (ptr32 Eq_5103)
+  OrigDataType: (ptr32 (ptr32 ui32))
 T_7097: (in a0_101 : (ptr32 ui32))
   Class: Eq_5159
   DataType: (ptr32 ui32)

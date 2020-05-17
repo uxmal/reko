@@ -18339,7 +18339,7 @@ T_4087: (in r2_52 != 0<32> : bool)
 T_4088: (in dwLoc48_539 : Eq_907)
   Class: Eq_907
   DataType: Eq_907
-  OrigDataType: (ptr32 Eq_4095)
+  OrigDataType: (ptr32 byte)
 T_4089: (in strcpy : ptr32)
   Class: Eq_4089
   DataType: (ptr32 Eq_4089)
@@ -19134,7 +19134,7 @@ T_4286: (in (dwLoc014C_568 * 0x14<32> - dwLoc014C_568) * 8<32> : word32)
   OrigDataType: ui32
 T_4287: (in (Mem367[0x10000A40<32>:word32] + 4<i32> + 144<i32>)[(dwLoc014C_568 * 0x14<32> - dwLoc014C_568) * 8<32>] : word32)
   Class: Eq_4274
-  DataType: Eq_4261
+  DataType: word32
   OrigDataType: word32
 T_4288: (in 1<i32> : int32)
   Class: Eq_4261
@@ -19302,7 +19302,7 @@ T_4328: (in (dwLoc014C_568 * 0x14<32> - dwLoc014C_568) * 8<32> : word32)
   OrigDataType: ui32
 T_4329: (in (Mem367[0x10000A40<32>:word32] + 4<i32> + 144<i32>)[(dwLoc014C_568 * 0x14<32> - dwLoc014C_568) * 8<32>] : word32)
   Class: Eq_4317
-  DataType: Eq_4261
+  DataType: word32
   OrigDataType: word32
 T_4330: (in r7_633 : word32)
   Class: Eq_4330
@@ -20230,7 +20230,7 @@ T_4560: (in (dwLoc24_383 * 0x14<32> - dwLoc24_383) * 8<32> : word32)
   OrigDataType: ui32
 T_4561: (in (Mem248[0x10000A40<32>:word32] + 4<i32> + 144<i32>)[(dwLoc24_383 * 0x14<32> - dwLoc24_383) * 8<32>] : word32)
   Class: Eq_4545
-  DataType: Eq_4261
+  DataType: word32
   OrigDataType: word32
 T_4562: (in 0x10008860<32> : word32)
   Class: Eq_4358

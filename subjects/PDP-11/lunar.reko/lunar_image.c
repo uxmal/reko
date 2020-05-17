@@ -509,7 +509,7 @@ void fn0A94(int16 r3, Eq_n r4, word16 * r5)
 			r5_n->w0000 = r0_n + 0x2040 & ~0xC000;
 			int16 v24_n = wLoc02_n - 0x01;
 			r4 = r4_n | 0x4000;
-			r5 = (word16 *) &r5_n->w0002;
+			r5 = &r5_n->w0002;
 			wLoc02_n = v24_n;
 		} while (v24_n > 0x00);
 		r5_n->w0002 = 0xF700;

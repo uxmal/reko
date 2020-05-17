@@ -482,7 +482,7 @@ void fn1483-1104(cup16 ax, byte dl, struct Eq_n Eq_n::* bx, struct Eq_n Eq_n::* 
 		(ss->*sp_n).ptr0000 = es;
 		word16 dx_n = SEQ(0x34, dl);
 		((char *) bp + 94)[si] = dx_n;
-		(&&(ds->*(ds->*(ds->*bx).a675E).w0000))[di / 26462] -= 0x7D;
+		ds->*((char *) (&(&(ds->*(ds->*(ds->*bx).a675E).w0000))) + di) -= 0x7D;
 		(ss->*sp_n).wFFFFFFFE = dx_n;
 		*((word32) Top_n + 1) *= lg2(*Top_n + 1.0);
 		Eq_n es_bx_n = ds->t9F59;

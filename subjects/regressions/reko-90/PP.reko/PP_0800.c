@@ -12153,7 +12153,7 @@ l0800_nFCB:
 		si_n = ϕ(si_n, si_n, si_n);
 		Mem53 = ϕ(Mem968, Mem847, Mem49);
 		al_n = (ds->*si_n).b0000;
-		si_n = &&(SLICE(ptrArg02, selector, 16)->*(SLICE(ptrArg02, selector, 16)->*si_n).b0001);
+		si_n = (struct Eq_n Eq_n::*) &&(SLICE(ptrArg02, selector, 16)->*(SLICE(ptrArg02, selector, 16)->*si_n).b0001);
 		al_n = al_n;
 		if (al_n == 0x00)
 		{
@@ -12174,7 +12174,7 @@ l0800_nFCB:
 				di_n = ϕ(di_n, di_n, di_n, di_n, di_n, di_n, di_n, di_n, di_n, di_n);
 				Mem80 = ϕ(Mem77, Mem800, Mem482, Mem113, Mem117, Mem86, Mem478, Mem474, Mem787, Mem797);
 				si_n = ϕ(si_n, si_n, si_n, si_n, si_n, si_n, si_n, si_n, si_n, si_n);
-				si_n = &&(SLICE(ptrArg02, selector, 16)->*(SLICE(ptrArg02, selector, 16)->*si_n).b0001);
+				si_n = (struct Eq_n Eq_n::*) &&(SLICE(ptrArg02, selector, 16)->*(SLICE(ptrArg02, selector, 16)->*si_n).b0001);
 				ax_n.u0 = (int16) (ds->*si_n).b0000;
 				dh_n = SLICE(dx_n, byte, 8);
 				wArg0A_n = si_n;
@@ -12321,7 +12321,7 @@ l0800_nFCB:
 					v48_n = bLoc03_n & ~0x10;
 					es_n = psegArg0C;
 					al_n = (ds->*si_n).b0000;
-					si_n = &&(SLICE(ptrArg02, selector, 16)->*(SLICE(ptrArg02, selector, 16)->*si_n).b0001);
+					si_n = (struct Eq_n Eq_n::*) &&(SLICE(ptrArg02, selector, 16)->*(SLICE(ptrArg02, selector, 16)->*si_n).b0001);
 					bLoc03_n = v48_n;
 					if (al_n == 0x5E)
 					{
@@ -12350,7 +12350,7 @@ l0800_nD2:
 						Mem207 = ϕ(Mem202, Mem207, Mem435);
 						si_n = ϕ(si_n, si_n, si_n);
 						al_n = (ds->*si_n).b0000;
-						si_n = &&(ss->*(ss->*si_n).b0001);
+						si_n = (struct Eq_n Eq_n::*) &&(ss->*(ss->*si_n).b0001);
 						dx_n = SEQ(dh_n, dl_n);
 						if (al_n == 0x00)
 							break;
@@ -12440,7 +12440,7 @@ l0800_nE:
 						}
 						if (al_n != 0x2D || (dl_n > (psegArg0C->*si_n).b0000 || (psegArg0C->*si_n).b0000 == 0x5D))
 							goto l0800_nD2;
-						si_n = &&(ss->*(ss->*si_n).b0001);
+						si_n = (struct Eq_n Eq_n::*) &&(ss->*(ss->*si_n).b0001);
 						al_n = (ds->*si_n).b0000 - dl_n;
 						if (al_n != 0x00)
 						{

@@ -16445,7 +16445,7 @@ T_2505: (in 0<8> : byte)
   Class: Eq_2504
   DataType: byte
   OrigDataType: byte
-T_2506: (in (&rax_2759->t0014)[(uint64) (uint8) (rax_2759->t0014 == 0x2E<8>) / 24<i32>] == 0<8> : bool)
+T_2506: (in *((char *) &rax_2759->t0014 + (uint64) ((uint8) (rax_2759->t0014 == 0x2E<8>))) == 0<8> : bool)
   Class: Eq_2506
   DataType: bool
   OrigDataType: bool
