@@ -326,7 +326,7 @@ namespace Reko.Arch.zSeries
             var len = ((MemoryOperand)instr.Operands[0]).Length;
             var dt = PrimitiveType.CreateWord(len);
             var eaSrc = EffectiveAddress(instr.Operands[1]);
-                var tmp = binder.CreateTemporary(dt);
+            var tmp = binder.CreateTemporary(dt);
             var eaDst = EffectiveAddress(instr.Operands[0]);
 
             if (cmp.Equals(eaSrc, eaDst))

@@ -28,6 +28,7 @@ using System;
 using Reko.Core.Types;
 using System.Diagnostics;
 using System.Linq;
+using Reko.Core.Services;
 
 namespace Reko.Arch.RiscV
 {
@@ -226,35 +227,14 @@ namespace Reko.Arch.RiscV
             return m.Shr(a, b);
         }
 
-        private static HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-
         /// <summary>
         /// Emits the text of a unit test that can be pasted into the unit tests 
         /// for this rewriter.
         /// </summary>
-        [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(instr.Mnemonic))
-                return;
-            seen.Add(dasm.Current.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var bytes = r2.ReadBytes(dasm.Current.Length);
-            Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void RiscV_rw_" + instr.Mnemonic + "()");
-            Debug.WriteLine("        {");
-            Debug.Write("            RewriteCode(\"");
-            Debug.Write(string.Join(
-                "",
-                bytes.Select(b => string.Format("{0:X2}", (int) b))));
-            Debug.WriteLine("\");\t// " + dasm.Current.ToString());
-            Debug.WriteLine("            AssertCode(");
-            Debug.WriteLine("                \"0|L--|0000000000010000({0}): 1 instructions\",", dasm.Current.Length);
-            Debug.WriteLine("                \"1|L--|@@@\");");
-            Debug.WriteLine("        }");
-            Debug.WriteLine("");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("RiscV_rw", instr, rdr, "");
         }
     }
 }

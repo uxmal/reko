@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Arch.zSeries
     {
         public zSeriesRewriterTests()
         {
-            this.Architecture = new zSeriesArchitecture(new ServiceContainer(), "zSeries");
+            this.Architecture = new zSeriesArchitecture(CreateServiceContainer(), "zSeries");
             this.LoadAddress = Address.Ptr32(0x00100000);
         }
 

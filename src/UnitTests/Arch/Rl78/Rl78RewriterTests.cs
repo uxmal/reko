@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Arch.Rl78
 
         public Rl78RewriterTests()
         {
-            this.arch = new Rl78Architecture(new ServiceContainer(), "rl78");
+            this.arch = new Rl78Architecture(CreateServiceContainer(), "rl78");
             this.addr = Address.Ptr32(0x01000);
         }
 

@@ -30,6 +30,7 @@ using System.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using Reko.Core.Services;
 
 namespace Reko.Arch.SuperH
 {
@@ -192,31 +193,10 @@ namespace Reko.Arch.SuperH
             m.Invalid();
         }
 
-        private static HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-
-        [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(dasm.Current.Mnemonic))
-                return;
-            seen.Add(dasm.Current.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var bytes = r2.ReadBytes(dasm.Current.Length);
-            Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void SHRw_" + dasm.Current.Mnemonic + "()");
-            Debug.WriteLine("        {");
-            Debug.Write("            Given_HexString(\"");
-            Debug.Write(string.Join(
-                "",
-                bytes.Select(b => string.Format("{0:X2}", (int)b))));
-            Debug.WriteLine("\");\t// " + dasm.Current.ToString());
-            Debug.WriteLine("            AssertCode(");
-            Debug.WriteLine("                \"0|L--|00100000(2): 1 instructions\",");
-            Debug.WriteLine("                \"1|L--|@@@\");");
-            Debug.WriteLine("        }");
-            Debug.WriteLine("");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("SHRw", instr, rdr, "");
         }
 
         private Expression SrcOp(MachineOperand op, Func<int, int> immediateFn=null)

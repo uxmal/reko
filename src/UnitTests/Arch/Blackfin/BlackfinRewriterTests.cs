@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Arch.Blackfin
         [SetUp]
         public void Setup()
         {
-            this.arch = new BlackfinArchitecture(new ServiceContainer(), "blackfin");
+            this.arch = new BlackfinArchitecture(CreateServiceContainer(), "blackfin");
         }
 
         public override IProcessorArchitecture Architecture => arch;

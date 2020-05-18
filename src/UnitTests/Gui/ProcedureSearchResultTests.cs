@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Text;
 using Reko.UnitTests.Mocks;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Gui
 {

@@ -45,19 +45,8 @@ namespace Reko.UnitTests.Arch.RiscV
 
         private void AssertCode(string sExp, uint uInstr)
         {
-            //DumpWord(uInstr);
             var i = DisassembleWord(uInstr);
             Assert.AreEqual(sExp, i.ToString());
-        }
-         
-        private void DumpWord(uint uInstr)
-        {
-            var sb = new StringBuilder();
-            for (uint m = 0x80000000; m != 0; m >>= 1)
-            {
-                sb.Append((uInstr & m) != 0 ? '1' : '0');
-            }
-            Debug.Print("AssertCode(\"@@@\", \"{0}\");", sb);
         }
 
         private void AssertCode(string sExp, string bits)

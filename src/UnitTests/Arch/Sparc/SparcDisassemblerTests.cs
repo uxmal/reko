@@ -33,12 +33,6 @@ namespace Reko.UnitTests.Arch.Sparc
     [TestFixture]
     public class SparcDisassemblerTests
     {
-        private static SparcInstruction DisassembleWord(byte[] a)
-        {
-            MemoryArea img = new MemoryArea(Address.Ptr32(0x00100000), a);
-            return Disassemble(img);
-        }
-
         private static SparcInstruction DisassembleWord(uint instr)
         {
             var bytes = new byte[4];

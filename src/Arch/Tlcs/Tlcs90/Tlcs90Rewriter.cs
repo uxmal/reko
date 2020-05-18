@@ -30,6 +30,7 @@ using System.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using Reko.Core.Services;
 
 namespace Reko.Arch.Tlcs.Tlcs90
 {
@@ -312,34 +313,10 @@ namespace Reko.Arch.Tlcs.Tlcs90
             throw new ArgumentException();
         }
 
-
-        [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            EmitUnitTest("Tlcs90_rw_");
-        }
-
-        [Conditional("DEBUG")]
-        private void EmitUnitTest(string prefix)
-        {
-            //if (seen.Contains(dasm.Current.Mnemonic))
-            //    return;
-            //seen.Add(dasm.Current.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var bytes = r2.ReadBytes(dasm.Current.Length);
-            Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void {0}{1}()", prefix, dasm.Current.Mnemonic);
-            Debug.WriteLine("        {");
-            Debug.Print("            RewriteCode(\"{0}\");  // {1}",
-                string.Join("", bytes.Select(b => string.Format("{0:X2}", (int)b))),
-                dasm.Current);
-            Debug.WriteLine("            AssertCode(");
-            Debug.WriteLine("                \"0|L--|{0}({1}): 1 instructions\",", instr.Address, bytes.Length);
-            Debug.WriteLine("                \"1|L--|@@@\");");
-            Debug.WriteLine("        }");
-            Debug.WriteLine("");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("Tlcs90_rw", instr, rdr, "");
         }
     }
 }

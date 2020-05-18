@@ -312,17 +312,17 @@ namespace Reko.Arch.Arm.AArch32
             message = (string.IsNullOrEmpty(message))
                 ? rev
                 : $"{rev} - {message}";
-            base.EmitUnitTest("T32", instrHexBytes, message, "ThumbDis", this.addr, Console =>
+            base.EmitUnitTest("T32", instrHexBytes, message, "ThumbDis", this.addr, w =>
             {
                 if (wInstr > 0xFFFF)
                 {
-                    Console.WriteLine($"    Given_Instructions(0x{wInstr >> 16:X4}, 0x{wInstr & 0xFFFF:X4});");
+                    w.WriteLine($"    Given_Instructions(0x{wInstr >> 16:X4}, 0x{wInstr & 0xFFFF:X4});");
                 }
                 else
                 {
-                    Console.WriteLine($"    Given_Instructions(0x{wInstr:X4});");
+                    w.WriteLine($"    Given_Instructions(0x{wInstr:X4});");
                 }
-                Console.WriteLine("    Expect_Code(\"@@@\");");
+                w.WriteLine("    Expect_Code(\"@@@\");");
             });
             return CreateInvalidInstruction();
         }
@@ -2634,7 +2634,7 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Mnemonic.vstmia, nyi("*")),
                         Instr(Mnemonic.fstmiax, nyi("*"))));
 
-            var vldmia = Mask(8, 2, "VLDMIA", 
+            var vldmia = Mask(8, 2, "VLDMIA",
                     invalid,
                     invalid,
                     Instr(Mnemonic.vldmia, w(21), R16, mrsimdS((0, 8))),

@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Arch.Xtensa
     [TestFixture]
     public class XtensaRewriterTests : RewriterTestBase
     {
-        private readonly XtensaArchitecture arch = new XtensaArchitecture(new ServiceContainer(), "xtensa");
+        private readonly XtensaArchitecture arch = new XtensaArchitecture(CreateServiceContainer(), "xtensa");
         private readonly Address baseAddr = Address.Ptr32(0x0010000);
 
         public override IProcessorArchitecture Architecture => arch;

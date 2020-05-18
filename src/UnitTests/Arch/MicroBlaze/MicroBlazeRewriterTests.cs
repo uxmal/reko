@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
         [SetUp]
         public void Setup()
         {
-            this.arch = new MicroBlazeArchitecture(new ServiceContainer(), "microBlaze");
+            this.arch = new MicroBlazeArchitecture(CreateServiceContainer(), "microBlaze");
             this.addr = Address.Ptr32(0x00100000);
         }
 

@@ -25,6 +25,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.Design;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Arch
 {
@@ -61,6 +63,11 @@ namespace Reko.UnitTests.Arch
 
         public TInstruction Disassemble(MemoryArea img)
         {
+            var sc = Architecture.Services.RequireService<IServiceContainer>();
+            if (sc.GetService<ITestGenerationService>() == null)
+            {
+                sc.AddService<ITestGenerationService>(new UnitTestGenerationService(Architecture.Services));
+            }
             var dasm = this.CreateDisassembler(Architecture.CreateImageReader(img, 0U));
             return (TInstruction) dasm.First();
         }

@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Reko.Gui
+namespace Reko.Core.Services
 {
     /// <summary>
     /// Provides access to the running instance of the decompiler.

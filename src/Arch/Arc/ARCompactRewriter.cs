@@ -355,12 +355,10 @@ namespace Reko.Arch.Arc
             return GetEnumerator();
         }
 
-        private static readonly HashSet<int> seenMnemonics = new HashSet<int>();
-
         private void EmitUnitTest(MachineInstruction instr, string message = "")
         {
             var testgenSvc = arch.Services.GetService<ITestGenerationService>();
-            testgenSvc?.ReportMissingRewriter("ARCompact", instr, rdr, message);
+            testgenSvc?.ReportMissingRewriter("ARCompactRw", instr, rdr, message);
         }
 
         private Expression Adc(Expression a, Expression b)

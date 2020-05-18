@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Tlcs
     [TestFixture]
     public class SuperHRewriterTests : RewriterTestBase
     {
-        private readonly SuperHArchitecture arch = new SuperHLeArchitecture(new ServiceContainer(), "superH");
+        private readonly SuperHArchitecture arch = new SuperHLeArchitecture(CreateServiceContainer(), "superH");
         private Address baseAddr = Address.Ptr32(0x00100000);
 
         public override IProcessorArchitecture Architecture => arch;

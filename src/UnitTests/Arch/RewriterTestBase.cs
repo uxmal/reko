@@ -18,21 +18,25 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Types;
-using Reko.Core.Rtl;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
+using Reko.Core;
+using Reko.Core.Rtl;
+using Reko.Core.Services;
+using System.ComponentModel.Design;
 using System.Linq;
-using System.Text;
-using Reko.Core.Assemblers;
 
 namespace Reko.UnitTests.Arch
 {
     public abstract class RewriterTestBase : ArchTestBase
     {
         private MemoryArea mem;
+
+        protected static ServiceContainer CreateServiceContainer()
+        {
+            var sc = new ServiceContainer();
+            sc.AddService<ITestGenerationService>(new UnitTestGenerationService(sc));
+            return sc;
+        }
 
         public void Given_MemoryArea(MemoryArea mem)
         {

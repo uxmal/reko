@@ -26,10 +26,13 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 
 namespace Reko.Arch.zSeries
 {
+#pragma warning disable IDE1006
+
     public partial class zSeriesRewriter : IEnumerable<RtlInstructionCluster>
     {
         private readonly zSeriesArchitecture arch;
@@ -124,32 +127,11 @@ namespace Reko.Arch.zSeries
             return this.GetEnumerator();
         }
 
-#if DEBUG
-        private static HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-
+        [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (rdr == null || seen.Contains(dasm.Current.Mnemonic))
-                return;
-            seen.Add(dasm.Current.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var bytes = r2.ReadBytes(dasm.Current.Length);
-
-            Debug.Print("        [Test]");
-            Debug.Print("        public void zSeriesRw_{0}()", dasm.Current.Mnemonic);
-            Debug.Print("        {");
-            Debug.Print("            Given_MachineCode(\"{0}\");", string.Join("", bytes.Select(b => b.ToString("X2"))));
-            Debug.Print("            AssertCode(     // {0}", dasm.Current);
-            Debug.Print("                \"0|L--|00100000({0}): 1 instructions\",", dasm.Current.Length);
-            Debug.Print("                \"1|L--|@@@\");");
-            Debug.Print("        }");
-            Debug.Print("");
+            arch.Services.GetService<ITestGenerationService>()?.ReportMissingRewriter("zSeriesRw", dasm.Current, rdr, "");
         }
-#else
-        private void EmitUnitTest() { }
-#endif
 
         private Address Addr(MachineOperand op)
         {

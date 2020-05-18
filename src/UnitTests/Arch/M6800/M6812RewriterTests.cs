@@ -19,7 +19,7 @@ namespace Reko.UnitTests.Arch.M6800
 
         public M6812RewriterTests()
         {
-            this.arch = new Reko.Arch.M6800.M6812Architecture(new ServiceContainer(), "m6812");
+            this.arch = new Reko.Arch.M6800.M6812Architecture(CreateServiceContainer(), "m6812");
             this.addr = Address.Ptr16(0);
         }
 

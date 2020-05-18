@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Arch.X86
 
         public X86RewriterTests()
         {
-            var sc = new ServiceContainer();
+            var sc = CreateServiceContainer();
             arch16 = new X86ArchitectureReal(sc, "x86-real-16");
             arch32 = new X86ArchitectureFlat32(sc, "x86-protected-32");
             arch64 = new X86ArchitectureFlat64(sc, "x86-protected-64");

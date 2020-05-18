@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Environments.C64
         public void Setup()
         {
             lines = new SortedList<ushort, C64BasicInstruction>();
-            var sc = new ServiceContainer();
+            var sc = CreateServiceContainer();
             arch = new C64Basic(sc, lines);
             arch6502 = new Mos6502Architecture(sc, "m6502");
             m = new BasicProcessor(lines);

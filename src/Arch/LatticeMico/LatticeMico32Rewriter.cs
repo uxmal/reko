@@ -28,6 +28,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 
 namespace Reko.Arch.LatticeMico
@@ -66,7 +67,7 @@ namespace Reko.Arch.LatticeMico
                 {
                 default:
                     EmitUnitTest();
-                    break;
+                    goto case Mnemonic.Invalid;
                 case Mnemonic.Invalid:
                 case Mnemonic.reserved:
                     m.Invalid(); break;
@@ -143,36 +144,10 @@ namespace Reko.Arch.LatticeMico
             return GetEnumerator();
         }
 
-        private static readonly HashSet<Mnemonic> seenMnemonic = new HashSet<Mnemonic>();
-
         private void EmitUnitTest()
         {
-            m.Invalid();
-            iclass = InstrClass.Invalid;
-
-            if (seenMnemonic.Contains(instr.Mnemonic))
-                return;
-            seenMnemonic.Add(instr.Mnemonic);
-            host.Warn(
-                instr.Address,
-                "LatticeMico32 instruction '{0}' is not supported yet.",
-                instr.Mnemonic.ToString());
-
-            var r2 = rdr.Clone();
-            r2.Offset -= instr.Length;
-            var hexBytes = string.Join("", r2.ReadBytes(instr.Length).Select(b => $"{b:X2}"));
-
-            var sb = new StringBuilder();
-            sb.AppendLine($"        [Test]");
-            sb.AppendLine($"        public void Lm32Rw_{instr.Mnemonic}()");
-            sb.AppendLine("        {");
-            sb.AppendLine($"            Given_HexString(\"{hexBytes}\"); // {instr}");
-            sb.AppendLine($"            AssertCode(");
-            sb.AppendLine($"                \"0|L--|00100000({instr.Length}): 1 instructions\",");
-            sb.AppendLine($"                \"1|L--|@@@\");");
-            sb.AppendLine("        }");
-            Debug.WriteLine(sb.ToString());
-            Console.WriteLine(sb.ToString());
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("Lm32Rw", this.instr, rdr, "");
         }
 
         private Expression Nor(Expression a, Expression b)

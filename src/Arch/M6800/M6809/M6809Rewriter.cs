@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections;
@@ -191,8 +192,6 @@ namespace Reko.Arch.M6800.M6809
             }
         }
 
-        private static readonly HashSet<Mnemonic> seenMnemonics = new HashSet<Mnemonic>();
-
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -200,32 +199,8 @@ namespace Reko.Arch.M6800.M6809
 
         private void EmitUnitTest()
         {
-            m.Invalid();
-            iclass = InstrClass.Invalid;
-
-            if (seenMnemonics.Contains(instr.Mnemonic))
-                return;
-            seenMnemonics.Add(instr.Mnemonic);
-            host.Warn(
-                instr.Address,
-                "M6809 instruction '{0}' is not supported yet.",
-                instr.Mnemonic.ToString());
-
-            var r2 = rdr.Clone();
-            r2.Offset -= instr.Length;
-            var hexBytes = string.Join("", r2.ReadBytes(instr.Length).Select(b => $"{b:X2}"));
-
-            var sb = new StringBuilder();
-            sb.AppendLine($"        [Test]");
-            sb.AppendLine($"        public void M6809Rw_{instr.Mnemonic}()");
-            sb.AppendLine("        {");
-            sb.AppendLine($"            RewriteCode(\"{hexBytes}\"); // {instr}");
-            sb.AppendLine($"            AssertCode(");
-            sb.AppendLine($"                \"0|L--|0100({instr.Length}): 1 instructions\",");
-            sb.AppendLine($"                \"1|L--|@@@\");");
-            sb.AppendLine("        }");
-            Debug.WriteLine(sb.ToString());
-            Console.WriteLine(sb.ToString());
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("M6809Rw", this.instr, rdr, "");
         }
 
         private Expression Clr(Expression e)

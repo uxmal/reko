@@ -28,6 +28,7 @@ using System;
 using Reko.Core.Types;
 using System.Diagnostics;
 using System.Linq;
+using Reko.Core.Services;
 
 namespace Reko.Arch.Xtensa
 {
@@ -343,32 +344,11 @@ namespace Reko.Arch.Xtensa
             }
         }
 
-#if DEBUG
-        private static readonly HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-
-        protected void EmitUnitTest()
+        private void EmitUnitTest()
         {
-            if (rdr == null || seen.Contains(dasm.Current.Mnemonic))
-                return;
-            seen.Add(dasm.Current.Mnemonic);
-
-            var r2 = rdr.Clone();
-            int cbInstr = dasm.Current.Length;
-            r2.Offset -= cbInstr;
-            var uInstr = string.Join("", r2.ReadBytes(cbInstr).Select(b => $"{b:X2}"));
-            Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void Xtrw_{0}()", dasm.Current.Mnemonic);
-            Debug.WriteLine("        {");
-            Debug.WriteLine("            Given_HexString(\"{0}\");    // {1}", uInstr, dasm.Current);
-            Debug.WriteLine("            AssertCode(");
-            Debug.WriteLine("                \"0|L--|00010000({0}): 1 instructions\",", cbInstr);
-            Debug.WriteLine("                \"1|L--|@@@\");");
-            Debug.WriteLine("        }");
-            Debug.WriteLine("");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("Xtrw", instr, rdr, "");
         }
-#else
-        private void EmitUnitTest() { }
-#endif
 
         IEnumerator IEnumerable.GetEnumerator()
         {

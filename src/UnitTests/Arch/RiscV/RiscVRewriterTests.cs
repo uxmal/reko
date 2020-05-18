@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Arch.RiscV
     [TestFixture]
     public class RiscVRewriterTests : RewriterTestBase
     {
-        private readonly RiscVArchitecture arch = new RiscVArchitecture(new ServiceContainer(), "riscV");
+        private readonly RiscVArchitecture arch = new RiscVArchitecture(CreateServiceContainer(), "riscV");
         private readonly Address baseAddr = Address.Ptr64(0x0010000);
 
         public override IProcessorArchitecture Architecture => arch;

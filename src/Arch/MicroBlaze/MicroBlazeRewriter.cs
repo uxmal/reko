@@ -26,6 +26,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 
 namespace Reko.Arch.MicroBlaze
@@ -65,7 +66,7 @@ namespace Reko.Arch.MicroBlaze
                 switch (instrCur.Mnemonic)
                 {
                 default:
-                    NotImplementedInstruction();
+                    EmitUnitTest();
                     goto case Mnemonic.Invalid;
                 case Mnemonic.Invalid:
                     this.iclass = InstrClass.Invalid;
@@ -139,44 +140,15 @@ namespace Reko.Arch.MicroBlaze
             }
         }
 
-        private void NotImplementedInstruction()
+        private void EmitUnitTest()
         {
             host.Warn(
                 instrCur.Address,
                 "MicroBlaze instruction '{0}' is not supported yet.",
                 instrCur.Mnemonic);
-            EmitUnitTest();
-
-
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("MicroBlazeRw", instrCur, rdr, "");
         }
-
-#if DEBUG
-        private static readonly HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-
-        private void EmitUnitTest()
-        {
-            if (rdr == null || seen.Contains(instrCur.Mnemonic))
-                return;
-            seen.Add(instrCur.Mnemonic);
-
-            var r2 = rdr.Clone();
-            int cbInstr = dasm.Current.Length;
-            r2.Offset -= cbInstr;
-            var uInstr = r2.ReadUInt32();
-            Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void MicroBlazeRw_{0}()", dasm.Current.Mnemonic);
-            Debug.WriteLine("        {");
-            Debug.WriteLine("            RewriteCode(\"{0:X8}\");   // {1}", uInstr, dasm.Current);
-            Debug.WriteLine("            AssertCode(");
-            Debug.WriteLine("                \"0|L--|00100000({0}): 1 instructions\",", cbInstr);
-            Debug.WriteLine("                \"1|L--|@@@\");");
-            Debug.WriteLine("        }");
-            Debug.WriteLine("");
-        }
-#else
-        [Conditional("DEBUG")]
-        private void EmitUnitTest() { }
-#endif
 
         IEnumerator IEnumerable.GetEnumerator()
         {

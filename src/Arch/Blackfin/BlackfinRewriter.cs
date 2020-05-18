@@ -26,14 +26,13 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 
 namespace Reko.Arch.Blackfin
 {
     public class BlackfinRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private static HashSet<Mnemonic> seenMnemonics = new HashSet<Mnemonic>();
-
         private readonly BlackfinArchitecture arch;
         private readonly EndianImageReader rdr;
         private readonly ProcessorState state;
@@ -93,33 +92,10 @@ namespace Reko.Arch.Blackfin
             return GetEnumerator();
         }
 
-        void EmitUnitTest(BlackfinInstruction instr)
+        private void EmitUnitTest(BlackfinInstruction instr)
         {
-            if (seenMnemonics.Contains(instr.Mnemonic))
-                return;
-            seenMnemonics.Add(instr.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= instr.Length;
-
-            Console.WriteLine("        [Test]");
-            Console.WriteLine("        public void BlackfinRw_{0}()", instr.Mnemonic);
-            Console.WriteLine("        {");
-
-            if (instr.Length > 2)
-            {
-                var wInstr = r2.ReadBeUInt32();
-                Console.WriteLine($"            RewriteCode(\"{wInstr:X8}\");  // {instr}");
-            }
-            else
-            {
-                var wInstr = r2.ReadBeUInt16();
-                Console.WriteLine($"            RewriteCode(\"{wInstr:X4}\");  // {instr}");
-            }
-            Console.WriteLine("            AssertCode(");
-            Console.WriteLine($"                \"0|L--|00100000({instr.Length}): 1 instructions\",");
-            Console.WriteLine($"                \"1|L--|@@@\");");
-            Console.WriteLine("        }");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("BlackfinRw", instr, rdr, "");
         }
 
         private Address Addr(int iOperand)

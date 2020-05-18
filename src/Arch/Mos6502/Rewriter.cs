@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -72,7 +73,7 @@ namespace Reko.Arch.Mos6502
                 switch (instrCur.Mnemonic)
                 {
                 default:
-                    EmitUnitTest();
+                    EmitUnitTest(instrCur);
                     iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
@@ -405,7 +406,6 @@ namespace Reko.Arch.Mos6502
 
         private Expression RewriteOperand(MachineOperand mop)
         {
-            Constant offset;
             Address addrZeroPage;
             var op = (Operand) mop;
             switch (op.Mode)
@@ -451,32 +451,11 @@ namespace Reko.Arch.Mos6502
             }
         }
 
-        private static HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-
         [Conditional("DEBUG")]
-        private void EmitUnitTest()
+        private void EmitUnitTest(Instruction instr)
         {
-            if (seen.Contains(dasm.Current.Mnemonic))
-                return;
-            seen.Add(dasm.Current.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var bytes = r2.ReadBytes(dasm.Current.Length);
-            Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void Rw6502_" + dasm.Current.Mnemonic + "()");
-            Debug.WriteLine("        {");
-            Debug.Write("            BuildTest(");
-            Debug.Write(string.Join(
-                ", ",
-                bytes.Select(b => string.Format("0x{0:X2}", (int) b))));
-            Debug.WriteLine(");\t// " + dasm.Current.ToString());
-            Debug.WriteLine("            AssertCode(");
-            Debug.WriteLine("                \"0|L--|{0}({1}): 1 instructions\",", dasm.Current.Address, dasm.Current.Length);
-            Debug.WriteLine("                \"1|L--|@@@\");");
-            Debug.WriteLine("        }");
-            Debug.WriteLine("");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("Rw6502", instr, rdr, "");
         }
-
     }
 }

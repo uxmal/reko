@@ -138,7 +138,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         {
             if (instr.Operands.Length > 0)
             {
-                EmitUnitTest("Tlcs900_rw_", "00010000");
+                EmitUnitTest();
                 Invalid();
                 return;
             }

@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Arch.Avr
 
         public Avr8RewriterTests()
         {
-            this.arch = new Avr8Architecture(new ServiceContainer(), "avr8");
+            this.arch = new Avr8Architecture(CreateServiceContainer(), "avr8");
         }
 
         public override IProcessorArchitecture Architecture => arch;

@@ -29,6 +29,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using Reko.Core.Output;
+using Reko.Core.Services;
 
 namespace Reko.UserInterfaces.WindowsForms
 {

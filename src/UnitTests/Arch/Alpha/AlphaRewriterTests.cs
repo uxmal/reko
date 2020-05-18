@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.Mips
     [TestFixture]
     public class AlphaRewriterTests : RewriterTestBase
     {
-        private static readonly AlphaArchitecture arch = new AlphaArchitecture(new ServiceContainer(), "alpha");
+        private static readonly AlphaArchitecture arch = new AlphaArchitecture(CreateServiceContainer(), "alpha");
         private static readonly Address addr = Address.Ptr32(0x00100000);
         
         public override IProcessorArchitecture Architecture => arch;

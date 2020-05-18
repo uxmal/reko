@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections;
@@ -149,31 +150,10 @@ namespace Reko.Arch.Rl78
             }
         }
 
-         private static HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-
-        [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(dasm.Current.Mnemonic))
-                return;
-            seen.Add(dasm.Current.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var bytes = r2.ReadBytes(dasm.Current.Length);
-            Console.WriteLine("        [Test]");
-            Console.WriteLine("        public void Rl78Rw_" + dasm.Current.Mnemonic + "()");
-            Console.WriteLine("        {");
-            Console.Write("            RunTest(\"");
-            Console.Write(string.Join(
-                " ",
-                bytes.Select(b => string.Format("{0:X2}", (int) b))));
-            Console.WriteLine("\");\t// " + dasm.Current.ToString());
-            Console.WriteLine("            AssertCode(");
-            Console.WriteLine("                \"0|L--|{0}({1}): 1 instructions\",", dasm.Current.Address, dasm.Current.Length);
-            Console.WriteLine("                \"1|L--|@@@\");");
-            Console.WriteLine("        }");
-            Console.WriteLine("");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("Rl78Rw", instr, rdr, "");
         }
 
         IEnumerator IEnumerable.GetEnumerator()

@@ -28,6 +28,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Reko.Core.Services;
 
 namespace Reko.Arch.M68k
 {
@@ -41,6 +42,7 @@ namespace Reko.Arch.M68k
 
         // These fields are internal so that the OperandRewriter can use them.
         private readonly M68kArchitecture arch;
+        private readonly EndianImageReader rdr;
         private readonly IStorageBinder binder;
         private readonly M68kState state;
         private readonly IRewriterHost host;
@@ -57,6 +59,7 @@ namespace Reko.Arch.M68k
             this.state = m68kState;
             this.binder = binder;
             this.host = host;
+            this.rdr = rdr;
             this.dasm = arch.CreateDisassemblerImpl(rdr).GetEnumerator();
         }
 
@@ -74,11 +77,13 @@ namespace Reko.Arch.M68k
                 switch (instr.Mnemonic)
                 {
                 default:
+                    EmitUnitTest();
                     host.Warn(
                         instr.Address,
                         "M68k instruction '{0}' is not supported yet.",
                         instr.Mnemonic);
                     m.Invalid();
+                    iclass = InstrClass.Invalid;
                     break;
                 case Mnemonic.illegal: RewriteIllegal(); break;
                 case Mnemonic.abcd: RewriteAbcd(); break;
@@ -282,6 +287,12 @@ VS Overflow Set 1001 V
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        private void EmitUnitTest()
+        {
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("M68krw", instr, rdr, "");
         }
 
         private RegisterStorage GetRegister(MachineOperand op)

@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Arch.Mips
         [SetUp]
         public void Setup()
         {
-            this.arch = new MipsBe32Architecture(new ServiceContainer(), "mips-be-32");
+            this.arch = new MipsBe32Architecture(CreateServiceContainer(), "mips-be-32");
             this.addr = Address.Ptr32(0x00100000);
             this.arch.LoadUserOptions(new Dictionary<string, object> { { "decoder", "mips16e" } });
         }

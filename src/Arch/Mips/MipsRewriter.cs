@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections;
@@ -71,7 +72,7 @@ namespace Reko.Arch.Mips
                     host.Error(
                         instr.Address,
                         string.Format("MIPS instruction '{0}' is not supported yet.", instr));
-                    EmitUnitTest();
+                    EmitUnitTest(instr);
                     goto case Mnemonic.illegal;
                 case Mnemonic.illegal:
                     iclass = InstrClass.Invalid; m.Invalid(); break;
@@ -328,32 +329,11 @@ namespace Reko.Arch.Mips
             return GetEnumerator();
         }
 
-#if DEBUG
-        private static readonly HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-
-        protected void EmitUnitTest()
+        protected void EmitUnitTest(MipsInstruction instr)
         {
-            if (rdr == null || seen.Contains(dasm.Current.Mnemonic))
-                return;
-            seen.Add(dasm.Current.Mnemonic);
-
-            var r2 = rdr.Clone();
-            int cbInstr = dasm.Current.Length;
-            r2.Offset -= cbInstr;
-            var uInstr = cbInstr == 2 ? r2.ReadUInt16() : r2.ReadUInt32();
-            Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void MipsRw_{0}()", dasm.Current.Mnemonic);
-            Debug.WriteLine("        {");
-            Debug.WriteLine("            AssertCode(0x{0:X8},   // {1}", uInstr, dasm.Current);
-            Debug.WriteLine("                \"0|L--|00100000({0}): 1 instructions\",", cbInstr);
-            Debug.WriteLine("                \"1|L--|@@@\");");
-            Debug.WriteLine("        }");
-            Debug.WriteLine("");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("MipsRw", instr, rdr, "");
         }
-#else
-        private void EmitUnitTest() { }
-#endif
-
 
         private Expression RewriteOperand(MachineOperand op)
         {

@@ -204,6 +204,9 @@ namespace Reko.Gui.Forms
 
             var selSvc = svcFactory.CreateSelectionService();
             sc.AddService<ISelectionService>(selSvc);
+
+            var testGenSvc = svcFactory.CreateTestGenerationService();
+            sc.AddService<ITestGenerationService>(testGenSvc);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)

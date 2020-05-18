@@ -17,13 +17,12 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Assemblers;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko
+namespace Reko.Core
 {
     /// <summary>
     /// Interface to a running instance of the Reko decompiler.

@@ -74,6 +74,7 @@ namespace Reko.Core.Configuration
 
         public RekoConfigurationService(IServiceProvider services, RekoConfiguration_v1 config)
         {
+            this.services = services;
             this.loaders = LoadCollection(config.Loaders, LoadLoaderConfiguration);
             this.sigFiles = LoadCollection(config.SignatureFiles, LoadSignatureFile);
             this.architectures = LoadCollection(config.Architectures, LoadArchitecture);

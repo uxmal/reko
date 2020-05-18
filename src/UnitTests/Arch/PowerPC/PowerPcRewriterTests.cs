@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         public PowerPcRewriterTests()
         {
-            var sc = new ServiceContainer();
+            var sc = CreateServiceContainer();
             this.archBe32 = new PowerPcBe32Architecture(sc, "ppc-be-32");
             this.archBe64 = new PowerPcBe64Architecture(sc, "ppc-be-64");
 

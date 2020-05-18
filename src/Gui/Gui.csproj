@@ -192,7 +192,6 @@
     <Compile Include="ICodeViewerService.cs" />
     <Compile Include="ICommandTarget.cs" />
     <Compile Include="IConsoleService.cs" />
-    <Compile Include="IDecompilerService.cs" />
     <Compile Include="IDecompilerShellUiService.cs" />
     <Compile Include="IDialog.cs" />
     <Compile Include="IDialogFactory.cs" />

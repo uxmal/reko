@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using Reko.Core.Services;
 
 namespace Reko.Arch.PowerPC
 {
@@ -505,30 +506,11 @@ namespace Reko.Arch.PowerPC
             return GetEnumerator();
         }
 
-#if DEBUG
-        private static readonly HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-        
         private void EmitUnitTest()
         {
-            if (rdr == null || seen.Contains(dasm.Current.Mnemonic))
-                return;
-            seen.Add(dasm.Current.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var uInstr = r2.ReadUInt32();
-            Console.WriteLine("        [Test]");
-            Console.WriteLine("        public void PPCRw_{0}()", dasm.Current.Mnemonic);
-            Console.WriteLine("        {");
-            Console.WriteLine("            AssertCode(0x{0:X8},   // {1}", uInstr, dasm.Current);
-            Console.WriteLine("                \"0|L--|00100000({0}): 1 instructions\",", dasm.Current.Length);
-            Console.WriteLine("                \"1|L--|@@@\");");
-            Console.WriteLine("        }");
-            Console.WriteLine("");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("PPCRw", instr, rdr, "");
         }
-#else
-        private void EmitUnitTest() { }
-#endif
 
         private Expression EffectiveAddress(MachineOperand operand, RtlEmitter emitter)
         {

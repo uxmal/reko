@@ -178,6 +178,7 @@
     <Compile Include="Arch\PowerPC\PowerPcDisassemblerTests.Xenon.cs" />
     <Compile Include="Arch\PowerPC\PowerPcEmulatorTests.cs" />
     <Compile Include="Arch\SuperH\SuperHArchitectureTests.cs" />
+    <Compile Include="Arch\UnitTestGenerationService.cs" />
     <Compile Include="Arch\X86\Assembler\AssembleFragmentTests.cs" />
     <Compile Include="Arch\X86\Assembler\AssemblerAdvanced.cs" />
     <Compile Include="Arch\X86\Assembler\AssemblerBasic.cs" />
