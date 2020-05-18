@@ -53,7 +53,7 @@ namespace Reko.Arch.SuperH
             this.state = state;
             this.binder = binder;
             this.host = host;
-            this.dasm = new SuperHDisassembler(rdr).GetEnumerator();
+            this.dasm = new SuperHDisassembler(arch, rdr).GetEnumerator();
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

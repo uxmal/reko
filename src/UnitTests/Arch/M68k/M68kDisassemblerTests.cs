@@ -33,14 +33,19 @@ namespace Reko.UnitTests.Arch.M68k
     [TestFixture]
     public class M68kDisassemblerTests : DisassemblerTestBase<M68kInstruction>
     {
-        private M68kArchitecture arch = new M68kArchitecture(new ServiceContainer(), "m68k");
+        private M68kArchitecture arch;
         private IEnumerator<M68kInstruction> dasm;
+
+        public M68kDisassemblerTests()
+        {
+            arch = new M68kArchitecture(CreateServiceContainer(), "m68k");
+        }
 
         private IEnumerator<M68kInstruction> CreateDasm(byte[] bytes, uint address)
         {
             Address addr = Address.Ptr32(address);
             MemoryArea img = new MemoryArea(addr, bytes);
-            return M68kDisassembler.Create68020(img.CreateBeReader(addr)).GetEnumerator();
+            return M68kDisassembler.Create68020(arch.Services, img.CreateBeReader(addr)).GetEnumerator();
         }
 
         public override IProcessorArchitecture Architecture

@@ -84,6 +84,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
             Program lr = asm.GetImage();
             var mem = lr.SegmentMap.Segments.Values.First().MemoryArea;
             X86Disassembler dasm = new X86Disassembler(
+                sc,
                 ProcessorMode.Real,
                 mem.CreateLeReader(mem.BaseAddress),
                 PrimitiveType.Word16,

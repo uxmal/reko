@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ namespace Reko.Arch.M6800.M6812
 
     public class M6812Disassembler : DisassemblerBase<M6812Instruction, Mnemonic>
     {
+        private readonly M6812Architecture arch;
         private readonly static Decoder[] decoders;
         private readonly static Decoder[] decodersSecondByte;
         private readonly static Decoder[] decodersLoops;
@@ -41,8 +43,9 @@ namespace Reko.Arch.M6800.M6812
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> operands;
 
-        public M6812Disassembler(EndianImageReader rdr)
+        public M6812Disassembler(M6812Architecture arch, EndianImageReader rdr)
         {
+            this.arch = arch;
             this.rdr = rdr;
             this.operands = new List<MachineOperand>();
         }
@@ -106,10 +109,9 @@ namespace Reko.Arch.M6800.M6812
             return new InstrDecoder<M6812Disassembler, Mnemonic, M6812Instruction>(iclass, mnemonic, mutators);
         }
 
-
         private static Decoder Nyi(string message)
         {
-            return new InstrDecoder<M6812Disassembler, Mnemonic, M6812Instruction>(InstrClass.Invalid, Mnemonic.invalid, NotYetImplemented);
+            return new NyiDecoder<M6812Disassembler, Mnemonic, M6812Instruction>(message);
         }
 
         private static bool A(uint bInstr, M6812Disassembler dasm)
@@ -332,15 +334,11 @@ namespace Reko.Arch.M6800.M6812
             return true;
         }
 
-        private static bool NotYetImplemented(uint bInstr, M6812Disassembler dasm)
+        public override M6812Instruction NotYetImplemented(uint wInstr, string message)
         {
-            var instrHex = $"{bInstr:X2}";
-            dasm.EmitUnitTest("M6812", instrHex, "", "M6812", dasm.addr, w =>
-            {
-                w.WriteLine("    Given_Code(\"{0:X2}\");", bInstr);
-                w.WriteLine("    Expect_Instruction(\"@@@\");");
-            });
-            return true;
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("M6812Dis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         static M6812Disassembler()

@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -94,12 +95,9 @@ namespace Reko.Arch.Mips
 
         public override MipsInstruction NotYetImplemented(uint wInstr, string message)
         {
-            var hex = $"{wInstr:X8}";
-            base.EmitUnitTest("nanoMips", hex, message, "NanoMipsDis", this.addr, w =>
-            {
-                w.WriteLine("           AssertCode(\"@@@\", \"{0}\");", hex);
-            });
-            return base.NotYetImplemented(wInstr, message);
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("NanoMipsDis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         #region Mutators

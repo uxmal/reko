@@ -49,7 +49,7 @@ namespace Reko.Arch.M6800
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new M6812.M6812Disassembler(imageReader);
+            return new M6812.M6812Disassembler(this, imageReader);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)

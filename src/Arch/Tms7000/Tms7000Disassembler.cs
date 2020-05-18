@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,12 +29,14 @@ using System.Threading.Tasks;
 namespace Reko.Arch.Tms7000
 {
     using Decoder = Decoder<Tms7000Disassembler, Mnemonic, Tms7000Instruction>;
+#pragma warning disable IDE1006
 
     public class Tms7000Disassembler : DisassemblerBase<Tms7000Instruction, Mnemonic>
     {
         private readonly Tms7000Architecture arch;
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
+        private Address addr;
 
         public Tms7000Disassembler(Tms7000Architecture arch, EndianImageReader rdr)
         {
@@ -44,7 +47,7 @@ namespace Reko.Arch.Tms7000
 
         public override Tms7000Instruction DisassembleInstruction()
         {
-            var addr = rdr.Address;
+            this.addr = rdr.Address;
             if (!rdr.TryReadByte(out byte b))
                 return null;
             Tms7000Instruction instr;
@@ -165,6 +168,13 @@ namespace Reko.Arch.Tms7000
             };
         }
 
+        public override Tms7000Instruction NotYetImplemented(uint wInstr, string message)
+        {
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("Tms7000_dis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
+        }
+
         private static Decoder Instr(Mnemonic mnemonic, params Mutator<Tms7000Disassembler> [] mutators)
         {
             return new InstrDecoder<Tms7000Disassembler, Mnemonic, Tms7000Instruction>(InstrClass.Linear, mnemonic, mutators);
@@ -222,7 +232,7 @@ namespace Reko.Arch.Tms7000
             private static readonly Mutator<Tms7000Disassembler>[]  F_B_Pn_offst = {B,P,j};
             private static readonly Mutator<Tms7000Disassembler>[]  F_iop_Pn_offst = {i,P,j};
 
-        static Dictionary<uint, Decoder> decoders = new Dictionary<uint, Decoder>
+        static readonly Dictionary<uint, Decoder> decoders = new Dictionary<uint, Decoder>
         {
             { 0x69, Instr(Mnemonic.adc, F_B_A) },
             { 0x19, Instr(Mnemonic.adc, F_Rn_A) },

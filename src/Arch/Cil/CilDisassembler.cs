@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,11 +31,13 @@ namespace Reko.Arch.Cil
 {
     public class CilDisassembler : DisassemblerBase<CilInstruction, OpCode>
     {
-        private EndianImageReader rdr;
+        private readonly CilArchitecture arch;
+        private readonly EndianImageReader rdr;
         private CilInstruction instr;
 
-        public CilDisassembler(EndianImageReader rdr)
+        public CilDisassembler(CilArchitecture arch, EndianImageReader rdr)
         {
+            this.arch = arch;
             this.rdr = rdr;
         }
 
@@ -902,6 +905,13 @@ namespace Reko.Arch.Cil
                 Opcode = default(OpCode),
                 Operands = MachineInstruction.NoOperands,
             };
+        }
+
+        public override CilInstruction NotYetImplemented(uint wInstr, string message)
+        {
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("Dis6502", this.instr.Address, this.rdr, message);
+            return CreateInvalidInstruction();
         }
     }
 }

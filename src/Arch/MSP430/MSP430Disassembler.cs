@@ -21,22 +21,22 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Msp430
 {
     using Decoder = Decoder<Msp430Disassembler, Mnemonics, Msp430Instruction>;
+#pragma warning disable IDE1006
 
     public class Msp430Disassembler : DisassemblerBase<Msp430Instruction, Mnemonics>
     {
         private readonly EndianImageReader rdr;
         private readonly Msp430Architecture arch;
         private readonly List<MachineOperand> ops;
+        private Address addr;
         private ushort uExtension;
         private PrimitiveType dataWidth;
 
@@ -49,7 +49,7 @@ namespace Reko.Arch.Msp430
 
         public override Msp430Instruction DisassembleInstruction()
         {
-            var addr = rdr.Address;
+            this.addr = rdr.Address;
             if (!rdr.TryReadLeUInt16(out ushort uInstr))
                 return null;
             uExtension = 0;
@@ -372,11 +372,8 @@ namespace Reko.Arch.Msp430
 
         public override Msp430Instruction NotYetImplemented(uint uInstr, string message)
         {
-            var hexBytes = $"{(byte) uInstr:X2}{uInstr >> 2:X2}";
-            EmitUnitTest("MSP430", hexBytes, message, "MSP430Dis", Address.Ptr16(0x4000), w =>
-            {
-                w.WriteLine($"    AssertCode(\"@@@\", \"{hexBytes}\");");
-            });
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("MSP430Dis", this.addr, this.rdr, message);
             return CreateInvalidInstruction();
         }
 

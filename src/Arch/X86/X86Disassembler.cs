@@ -26,6 +26,7 @@ using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
+using Reko.Core.Services;
 
 namespace Reko.Arch.X86
 {
@@ -264,6 +265,7 @@ namespace Reko.Arch.X86
             public bool VexLong { get; set; } // If true, use YMM or 256-bit memory access.
         }
 
+        private readonly IServiceProvider services;
         private readonly ProcessorMode mode;
 		private readonly PrimitiveType defaultDataWidth;
 		private readonly PrimitiveType defaultAddressWidth;
@@ -281,12 +283,14 @@ namespace Reko.Arch.X86
 		/// <param name="width">Default address and data widths. PrimitiveType.Word16 for 
         /// 16-bit operation, PrimitiveType.Word32 for 32-bit operation.</param>
 		public X86Disassembler(
+            IServiceProvider services,
             ProcessorMode mode,
             EndianImageReader rdr,
             PrimitiveType defaultWordSize,
             PrimitiveType defaultAddressSize,
             bool useRexPrefix)
 		{
+            this.services = services;
             this.mode = mode;
 			this.rdr = rdr;
 			this.defaultDataWidth = defaultWordSize;
@@ -336,20 +340,11 @@ namespace Reko.Arch.X86
             return new X86Instruction(Mnemonic.illegal, InstrClass.Invalid, decodingContext.dataWidth, decodingContext.addressWidth);
         }
 
-        private void NotYetImplemented(string message)
+        public override X86Instruction NotYetImplemented(uint wInstr, string message)
         {
-            // collect bytes from rdr.addr to this.addr 
-            var r2 = rdr.Clone();
-            int len = (int) (r2.Address - this.addr);
-            r2.Offset -= len;
-            var bytes = r2.ReadBytes(len);
-            var strBytes = string.Join("", bytes.Select(b => b.ToString("X2")));
-
-            base.EmitUnitTest("x86", strBytes, message, "X86Dis", this.addr, w =>
-            {
-                w.WriteLine("    AssertCode32(\"@@@\", {0});",
-                    string.Join(", ", bytes.Select(b => $"0x{b:X2}")));
-            });
+            var testGenSvc = services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("X86Dis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         private RegisterStorage RegFromBitsRexB(int bits, PrimitiveType dataWidth)

@@ -47,7 +47,7 @@ namespace Reko.Arch.Z80
             this.arch = arch;
             this.binder = binder;
             this.host = host;
-            this.dasm = new Z80Disassembler(rdr).GetEnumerator();
+            this.dasm = new Z80Disassembler(arch, rdr).GetEnumerator();
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

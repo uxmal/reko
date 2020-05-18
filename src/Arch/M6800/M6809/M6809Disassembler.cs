@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 
 namespace Reko.Arch.M6800.M6809
@@ -36,6 +37,7 @@ namespace Reko.Arch.M6800.M6809
         private readonly M6809Architecture arch;
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
+        private Address addr;
 
         public M6809Disassembler(M6809Architecture arch, EndianImageReader rdr)
         {
@@ -46,7 +48,7 @@ namespace Reko.Arch.M6800.M6809
 
         public override M6809Instruction DisassembleInstruction()
         {
-            var addr = rdr.Address;
+            this.addr = rdr.Address;
             if (!rdr.TryReadByte(out byte b))
                 return null;
             this.ops.Clear();
@@ -68,11 +70,8 @@ namespace Reko.Arch.M6800.M6809
 
         public override M6809Instruction NotYetImplemented(uint wInstr, string message)
         {
-            var hex = $"{wInstr:X4}";
-            EmitUnitTest("m6809", hex, message, "M6809Dis", Address.Ptr16(0x0100), w =>
-            {
-                w.WriteLine("AssertCode(\"@@@\", \"{0}\");", hex);
-            });
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("M6809Dis", this.addr, this.rdr, message);
             return CreateInvalidInstruction();
         }
 
@@ -402,11 +401,6 @@ namespace Reko.Arch.M6800.M6809
                     return dasm.CreateInvalidInstruction();
                 return subDecoders[opcode].Decode(opcode, dasm);
             }
-        }
-
-        private static Decoder Nyi(string message)
-        { 
-            return new NyiDecoder<M6809Disassembler, Mnemonic, M6809Instruction>(message);
         }
 
         #endregion

@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Arch.X86
         {
             MemoryArea img = new MemoryArea(Address.SegPtr(0xC00, 0), bytes);
             EndianImageReader rdr = img.CreateLeReader(img.BaseAddress);
-            var dasm =  ProcessorMode.Real.CreateDisassembler(rdr, options);
+            var dasm =  ProcessorMode.Real.CreateDisassembler(sc, rdr, options);
             if (options != null)
             {
                 dasm.Emulate8087 = options.Emulate8087;
@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Arch.X86
         {
             var img = new MemoryArea(Address.Ptr32(0x10000), bytes);
             var rdr = img.CreateLeReader(img.BaseAddress);
-            var dasm = new X86Disassembler(ProcessorMode.Protected32, rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
+            var dasm = new X86Disassembler(sc, ProcessorMode.Protected32, rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
             return dasm.First();
         }
 
@@ -73,6 +73,7 @@ namespace Reko.UnitTests.Arch.X86
             var img = new MemoryArea(Address.Ptr64(0x10000), bytes);
             var rdr = img.CreateLeReader(img.BaseAddress);
             var dasm = new X86Disassembler(
+                sc,
                 ProcessorMode.Protected64,
                 rdr,
                 PrimitiveType.Word32,
@@ -90,6 +91,7 @@ namespace Reko.UnitTests.Arch.X86
         private void CreateDisassembler16(MemoryArea mem)
         {
             dasm = new X86Disassembler(
+                sc,
                 ProcessorMode.Real,
                 mem.CreateLeReader(mem.BaseAddress),
                 PrimitiveType.Word16,
@@ -104,6 +106,7 @@ namespace Reko.UnitTests.Arch.X86
         private void CreateDisassembler32(MemoryArea image)
         {
             dasm = new X86Disassembler(
+                sc,
                 ProcessorMode.Protected32,
                 image.CreateLeReader(image.BaseAddress),
                 PrimitiveType.Word32,
@@ -114,6 +117,7 @@ namespace Reko.UnitTests.Arch.X86
         private void CreateDisassembler16(EndianImageReader rdr)
         {
             dasm = new X86Disassembler(
+                sc,
                 ProcessorMode.Real,
                 rdr,
                 PrimitiveType.Word16,
@@ -401,6 +405,7 @@ movzx	ax,byte ptr [bp+04]
             img.Relocations.AddPointerReference(0x00100001ul, 0x12345678);
             EndianImageReader rdr = img.CreateLeReader(img.BaseAddress);
             X86Disassembler dasm = new X86Disassembler(
+                sc,
                 ProcessorMode.Protected32,
                 rdr,
                 PrimitiveType.Word32,

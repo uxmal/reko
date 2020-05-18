@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ using System.Threading.Tasks;
 namespace Reko.Arch.Tlcs.Tlcs90
 {
     using Decoder = Decoder<Tlcs90Disassembler, Mnemonic, Tlcs90Instruction>;
+#pragma warning disable IDE1006
 
     public partial class Tlcs90Disassembler : DisassemblerBase<Tlcs90Instruction, Mnemonic>
     {
@@ -88,6 +90,13 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 InstructionClass = InstrClass.Invalid,
                 Operands = MachineInstruction.NoOperands
             };
+        }
+
+        public override Tlcs90Instruction NotYetImplemented(uint wInstr, string message)
+        {
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("Tlcs_90", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         #region Mutators
@@ -177,8 +186,8 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 return true;
             };
         }
-        private static Mutator<Tlcs90Disassembler> Jb = J(PrimitiveType.Byte);
-        private static Mutator<Tlcs90Disassembler> Jw = J(PrimitiveType.Word16);
+        private static readonly Mutator<Tlcs90Disassembler> Jb = J(PrimitiveType.Byte);
+        private static readonly Mutator<Tlcs90Disassembler> Jw = J(PrimitiveType.Word16);
 
         // relative jump
         private static bool jb(uint u, Tlcs90Disassembler dasm)
@@ -293,7 +302,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         private class DstDecoder : Decoder
         {
-            private string format;
+            private readonly string format;
 
             public DstDecoder(string format)
             {
@@ -402,7 +411,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         private class SrcDecoder : Decoder
         {
-            private string format;
+            private readonly string format;
 
             public SrcDecoder(string format)
             {
@@ -507,9 +516,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
             return new InstrDecoder<Tlcs90Disassembler, Mnemonic, Tlcs90Instruction>(iclass, mnemonic, mutators);
         }
 
-        private static Decoder invalid = Instr(Mnemonic.invalid, InstrClass.Invalid);
+        private static readonly Decoder invalid = Instr(Mnemonic.invalid, InstrClass.Invalid);
 
-        private static Decoder[] decoders = new Decoder[256]
+        private static readonly Decoder[] decoders = new Decoder[256]
         {
             // 00
             Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding|InstrClass.Zero),
@@ -854,11 +863,6 @@ namespace Reko.Arch.Tlcs.Tlcs90
             get
             {
                 return decoders;
-            }
-
-            set
-            {
-                decoders = value;
             }
         }
     }

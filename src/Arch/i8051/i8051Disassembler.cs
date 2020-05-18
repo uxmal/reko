@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 
 namespace Reko.Arch.i8051
@@ -78,6 +79,13 @@ namespace Reko.Arch.i8051
                 Mnemonic = Mnemonic.Invalid,
                 Operands = MachineInstruction.NoOperands
             };
+        }
+
+        public override i8051Instruction NotYetImplemented(uint wInstr, string message)
+        {
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("i8051_dis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         #region Mutators
@@ -233,18 +241,6 @@ namespace Reko.Arch.i8051
         {
             var reg = Registers.GetRegister(b & 0xF0);
             return new BitOperand(reg, b & 0x7, neg);
-        }
-
-        private void EmitUnitTest(Mnemonic mnemonic, byte uInstr)
-        {
-            Debug.Print(
-$@"    [Test]
-        public void I8051_dis_{mnemonic}()
-        {{
-            var instr = DisassembleBytes(0x{uInstr:X2});
-            Assert.AreEqual(""@@@"", instr.ToString());
-        }}
-");
         }
 
         private static Decoder Instr(Mnemonic mnemonic, params Mutator<i8051Disassembler>[] mutators)

@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,7 @@ using System.Text;
 namespace Reko.Arch.Sparc
 {
     using Decoder = Decoder<SparcDisassembler, Mnemonic, SparcInstruction>;
+#pragma warning disable IDE1006
 
     public class SparcDisassembler : DisassemblerBase<SparcInstruction, Mnemonic>
     {
@@ -40,24 +42,25 @@ namespace Reko.Arch.Sparc
 
         private static readonly Decoder rootDecoder;
         private static readonly Decoder[] branchOps;
-
-        private SparcInstruction instrCur;
-        private EndianImageReader imageReader;
+        private readonly SparcArchitecture arch;
+        private readonly EndianImageReader imageReader;
         private readonly List<MachineOperand> ops;
+        private Address addr;
+        private SparcInstruction instrCur;
 
         public SparcDisassembler(SparcArchitecture arch, EndianImageReader imageReader)
         {
+            this.arch = arch;
             this.imageReader = imageReader;
             this.ops = new List<MachineOperand>();
         }
 
         public override SparcInstruction DisassembleInstruction()
         {
-            if (!imageReader.IsValid)
+            this.addr = imageReader.Address;
+            if (!imageReader.TryReadBeUInt32(out uint wInstr))
                 return null;
             ops.Clear();
-            var addr = imageReader.Address;
-            uint wInstr = imageReader.ReadBeUInt32();
             instrCur = rootDecoder.Decode(wInstr, this);
             instrCur.Address = addr;
             instrCur.Length = 4;
@@ -78,6 +81,13 @@ namespace Reko.Arch.Sparc
         public override SparcInstruction CreateInvalidInstruction()
         {
             return invalid.Decode(0, this);
+        }
+
+        public override SparcInstruction NotYetImplemented(uint wInstr, string message)
+        {
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("SparcDasm", this.addr, this.imageReader, message);
+            return CreateInvalidInstruction();
         }
 
         #region Mutators
@@ -350,7 +360,7 @@ namespace Reko.Arch.Sparc
             return new InstrDecoder<SparcDisassembler, Mnemonic, SparcInstruction>(iclass, mnemonic, mutators);
         }
 
-        private static Decoder invalid = Instr(InstrClass.Invalid, Mnemonic.illegal);
+        private static readonly Decoder invalid = Instr(InstrClass.Invalid, Mnemonic.illegal);
 
         static SparcDisassembler()
         {

@@ -359,6 +359,7 @@ foo		endp
             var program = asm.AssembleFragment(addr, "mov [0x400],0x1234\n");
             var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
             var dasm = new X86Disassembler(
+                sc,
                 ProcessorMode.Real,
                 mem.CreateLeReader(addr),
                 PrimitiveType.Word16,

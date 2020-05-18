@@ -24,9 +24,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace Reko.Core.Services
 {
+    /// <summary>
+    /// Reko calls methods on this interface when it encounters errors. The methods generate unit tests
+    /// that can be incorporated into the UnitTest projct.
+    /// </summary>
     public interface ITestGenerationService
     {
         /// <summary>
@@ -57,38 +62,68 @@ namespace Reko.Core.Services
     public class TestGenerationService : ITestGenerationService
     {
         private readonly IServiceProvider services;
-        private readonly Dictionary<string, HashSet<int>> emittedTests;
+        private readonly HashSet<string> emittedDecoderTests;
+        private readonly Dictionary<string, HashSet<int>> emittedRewriterTests;
 
         public TestGenerationService(IServiceProvider services)
         {
             this.services = services;
-            this.emittedTests = new Dictionary<string, HashSet<int>>();
+            this.emittedRewriterTests = new Dictionary<string, HashSet<int>>();
+            this.emittedDecoderTests = new HashSet<string>();
         }
 
         public void ReportMissingDecoder(string testPrefix, Address addrStart, EndianImageReader rdr, string message)
         {
-            var outDir = GetOutputDirectory();
+            var fsSvc = services.RequireService<IFileSystemService>();
+            var outDir = GetOutputDirectory(fsSvc);
             if (outDir == null)
                 return;
-            var fsSvc = services.RequireService<IFileSystemService>();
             var filename = Path.Combine(outDir, Path.ChangeExtension(testPrefix, ".tests"));
-            EnsureFile(fsSvc, filename);
-            fsSvc.AppendAllText(filename, "");
+            EnsureDecoderFile(fsSvc, filename);
+            var test = GenerateDecoderUnitTest(testPrefix, addrStart, rdr, message);
+            fsSvc.AppendAllText(filename, test);
         }
 
         public void ReportMissingRewriter(string testPrefix, MachineInstruction instr, EndianImageReader rdr, string message)
         {
-            var outDir = GetOutputDirectory();
+            var fsSvc = services.RequireService<IFileSystemService>();
+            var outDir = GetOutputDirectory(fsSvc);
             if (outDir == null)
                 return;
-            var fsSvc = services.RequireService<IFileSystemService>();
             var filename = Path.Combine(outDir, Path.ChangeExtension(testPrefix, ".tests"));
-            EnsureFile(fsSvc, filename);
-            if (this.emittedTests[filename].Contains(instr.MnemonicAsInteger))
+            EnsureRewriterFile(fsSvc, filename);
+            if (this.emittedRewriterTests[filename].Contains(instr.MnemonicAsInteger))
                 return;
-            emittedTests[filename].Add(instr.MnemonicAsInteger);
+            emittedRewriterTests[filename].Add(instr.MnemonicAsInteger);
             var test = GenerateRewriterUnitTest(testPrefix, instr, rdr, message);
             fsSvc.AppendAllText(filename, test);
+        }
+
+        /// <summary>
+        /// Emits the text of a unit test that can be pasted into the unit tests 
+        /// for a disassembler.
+        /// </summary>
+        public static string GenerateDecoderUnitTest(string testPrefix, Address addrInstr, EndianImageReader rdr, string message)
+        {
+            var writer = new StringWriter();
+            var r2 = rdr.Clone();
+            int len = (int) (r2.Address - addrInstr);
+            r2.Offset -= len;
+            var bytes = r2.ReadBytes(len);
+            var instrHexBytes = string.Join("", bytes.Select(b => b.ToString("X2")));
+            writer.Write("// Reko: a decoder for the instruction {0} at address {1} has not been implemented.", instrHexBytes, addrInstr);
+            if (!string.IsNullOrEmpty(message))
+            {
+                writer.Write(" ({0})", message);
+            }
+            writer.WriteLine();
+            writer.WriteLine("[Test]");
+            writer.WriteLine("public void {0}_{1}()", testPrefix, instrHexBytes);
+            writer.WriteLine("{");
+            writer.WriteLine("    AssertCode(\"@@@\", \"{0}\");", instrHexBytes);
+            writer.WriteLine("}");
+
+            return writer.ToString();
         }
 
         public static string GenerateRewriterUnitTest(string testPrefix, MachineInstruction instr, EndianImageReader rdr, string message)
@@ -115,11 +150,11 @@ namespace Reko.Core.Services
             return sb.ToString();
         }
 
-        private void EnsureFile(IFileSystemService fsSvc, string filename)
+        private void EnsureDecoderFile(IFileSystemService fsSvc, string filename)
         {
-            if (!emittedTests.ContainsKey(filename))
+            if (!emittedDecoderTests.Contains(filename))
             {
-                emittedTests.Add(filename, new HashSet<int>());
+                emittedDecoderTests.Add(filename);
                 var header = string.Join(Environment.NewLine,
                     "// This file contains unit tests automatically generated by Reko decompiler.",
                     "// Please copy the contents of this file and report it on GitHub, using the ",
@@ -130,7 +165,22 @@ namespace Reko.Core.Services
             }
         }
 
-        private string GetOutputDirectory()
+        private void EnsureRewriterFile(IFileSystemService fsSvc, string filename)
+        {
+            if (!emittedRewriterTests.ContainsKey(filename))
+            {
+                emittedRewriterTests.Add(filename, new HashSet<int>());
+                var header = string.Join(Environment.NewLine,
+                    "// This file contains unit tests automatically generated by Reko decompiler.",
+                    "// Please copy the contents of this file and report it on GitHub, using the ",
+                    "// following URL: https://github.com/uxmal/reko/issues",
+                    "",
+                    "");
+                fsSvc.WriteAllText(filename, header);
+            }
+        }
+
+        private string GetOutputDirectory(IFileSystemService fsSvc)
         {
             var dcSvc = this.services.GetService<IDecompilerService>();
             if (dcSvc == null)
@@ -141,7 +191,18 @@ namespace Reko.Core.Services
                 return null;
             if (dcSvc.Decompiler.Project.Programs.Count == 0)
                 return null;
-            return dcSvc.Decompiler.Project.Programs[0].DisassemblyDirectory;
+            var outDir = dcSvc.Decompiler.Project.Programs[0].DisassemblyDirectory;
+            if (string.IsNullOrEmpty(outDir))
+                return null;
+            try
+            {
+                fsSvc.CreateDirectory(outDir);
+                return outDir;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

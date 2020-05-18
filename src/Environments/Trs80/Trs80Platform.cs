@@ -35,18 +35,12 @@ namespace Reko.Environments.Trs80
     // http://www.trs-80.com/trs80-zaps-internals.htm
     public class Trs80Platform : Platform
     {
-        public Trs80Platform(IServiceProvider services, IProcessorArchitecture arch) : base( services,  arch, "trs80")
+        public Trs80Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services,  arch, "trs80")
         {
         }
 
         // http://fjkraan.home.xs4all.nl/comp/trs80-4p/dmkeilImages/trstech.htm
-        public override string DefaultCallingConvention
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override string DefaultCallingConvention => "";
 
         public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
         {

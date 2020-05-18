@@ -28,6 +28,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using static Reko.Arch.Arm.AArch32.ArmVectorData;
 
@@ -275,15 +276,10 @@ namespace Reko.Arch.Arm.AArch32
             return imm32;
         }
 
-        private AArch32Instruction NotYetImplemented(string message, uint wInstr)
+        public override AArch32Instruction NotYetImplemented(uint wInstr, string message)
         {
-            var hexBytes = wInstr.ToString("X8");
-            base.EmitUnitTest("A32", hexBytes, message, "ArmDasm", this.addr,
-                w =>
-            {
-                w.WriteLine($"    Disassemble32(0x{hexBytes});");
-                w.WriteLine($"    Expect_Code(\"@@@\");");
-            });
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("ArmDasm", this.addr, this.rdr, message);
             return CreateInvalidInstruction();
         }
 
@@ -1404,7 +1400,7 @@ namespace Reko.Arch.Arm.AArch32
                     m = op;
                 else
                     m = $"{op} - {message}";
-                d.NotYetImplemented(m, u);
+                d.NotYetImplemented(u, m);
                 d.CreateInvalidInstruction();
                 return false;
             };

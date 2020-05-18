@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -88,12 +89,9 @@ namespace Reko.Arch.Mips
 
         public override MipsInstruction NotYetImplemented(uint wInstr, string message)
         {
-            var hex = $"{wInstr:X8}";
-            EmitUnitTest("uMips", hex, message, "uMipsDis", this.addr, w =>
-            {
-                w.WriteLine("           AssertCode(\"@@@\", \"{0}\");", hex);
-            });
-            return base.NotYetImplemented(wInstr, message);
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("uMipsDis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         // Factory methods for decoders

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -86,9 +87,11 @@ namespace Reko.Arch.Rl78
             };
         }
 
-        private void EmitUnitTest(string message)
+        public override Rl78Instruction NotYetImplemented(uint wInstr, string message)
         {
-
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("Rl78Dis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         #region Mutators
@@ -399,7 +402,7 @@ namespace Reko.Arch.Rl78
 
             public override Rl78Instruction Decode(uint uInstr, Rl78Disassembler dasm)
             {
-                dasm.EmitUnitTest(message);
+                return dasm.NotYetImplemented(uInstr, message);
                 return dasm.CreateInvalidInstruction();
             }
         }

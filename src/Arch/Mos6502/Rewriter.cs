@@ -51,7 +51,7 @@ namespace Reko.Arch.Mos6502
             this.binder = binder;
             this.host = host;
             this.rdr = rdr;
-            this.dasm = new Disassembler(rdr).GetEnumerator();
+            this.dasm = new Disassembler(arch, rdr).GetEnumerator();
         }
 
         private AddressCorrelatedException NYI()

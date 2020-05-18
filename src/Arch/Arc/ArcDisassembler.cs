@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System.Collections.Generic;
 
@@ -88,14 +89,8 @@ namespace Reko.Arch.Arc
 
         public override ArcInstruction NotYetImplemented(uint wInstr, string message)
         {
-            var len = rdr.Address - addr;
-            var hex = (len == 4)
-                ? $"{wInstr:X8}"
-                : $"{wInstr:X4}";
-            EmitUnitTest("ARCompact", hex, message, "ARCompactDis", this.addr, w =>
-            {
-                w.WriteLine("    AssertCode(\"@@@\", \"{0}\");", hex);
-            });
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("ARCompactDis", this.addr, this.rdr, message);
             return CreateInvalidInstruction();
         }
 

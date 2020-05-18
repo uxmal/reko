@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -75,16 +76,9 @@ namespace Reko.Arch.Mips
 
         public override MipsInstruction NotYetImplemented(uint wInstr, string message)
         {
-            var len = rdr.Address - this.addr;
-            var rdr2 = rdr.Clone();
-            rdr2.Offset -= len;
-            var hex = string.Join("", rdr2.ReadBytes((int) len).Select(b => b.ToString("X2")));
-            base.EmitUnitTest("Mips16e", hex, message, "Mips16eDis", this.addr, w =>
-            {
-                w.WriteLine("           AssertCode(\"@@@\", \"{0}\");", hex);
-            });
-
-            return base.NotYetImplemented(wInstr, message);
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("Mips16eDis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         public override MipsInstruction CreateInvalidInstruction()

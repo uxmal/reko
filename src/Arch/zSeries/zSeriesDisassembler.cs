@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -130,22 +131,12 @@ namespace Reko.Arch.zSeries
             };
         }
 
-        private void Nyi(ulong uInstr, string message)
+        public override zSeriesInstruction NotYetImplemented(uint wInstr, string message)
         {
-            var rdr2 = rdr.Clone();
-            int len = (int) (rdr.Address - this.addr);
-            rdr2.Offset -= len;
-            var bytes = rdr2.ReadBytes(len);
-            var leHexBytes = string.Join("", bytes
-                    .Select(b => b.ToString("X2")));
-            var instrHexBytes = $"{uInstr:X8}";
-            base.EmitUnitTest("zSeries", instrHexBytes, message, "zSerDasm", this.addr, w =>
-            {
-                w.WriteLine("    AssertCode(\"@@@\", \"{0}\");", leHexBytes);
-            });
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("zSerDasm", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
-
-
 
         #region Mutators
 
@@ -432,8 +423,7 @@ namespace Reko.Arch.zSeries
 
             public override zSeriesInstruction Decode(ulong uInstr, zSeriesDisassembler dasm)
             {
-                dasm.Nyi(uInstr, msg);
-                return dasm.CreateInvalidInstruction();
+                return dasm.NotYetImplemented(0, msg);
             }
         }
 

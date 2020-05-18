@@ -26,17 +26,29 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.Design;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Arch.Z80
 {
     [TestFixture]
     public class DisassemblerTests
     {
+        private ServiceContainer sc;
+        private Z80ProcessorArchitecture arch;
+
+        public DisassemblerTests()
+        {
+            this.sc = new ServiceContainer();
+            sc.AddService<ITestGenerationService>(new UnitTestGenerationService(sc));
+            this.arch = new Z80ProcessorArchitecture(sc, "z80");
+        }
+
         private MachineInstruction RunTest(params byte [] bytes)
         {
             var image = new MemoryArea(Address.Ptr16(0x0100), bytes);
             var rdr = new LeImageReader(image, 0);
-            var dasm = new Z80Disassembler(rdr);
+            var dasm = arch.CreateDisassembler(rdr);
             return dasm.First();
         }
 

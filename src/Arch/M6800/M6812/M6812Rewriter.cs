@@ -52,7 +52,7 @@ namespace Reko.Arch.M6800.M6812
             this.state = state;
             this.binder = binder;
             this.host = host;
-            this.dasm = new M6812Disassembler(rdr).GetEnumerator();
+            this.dasm = new M6812Disassembler(arch, rdr).GetEnumerator();
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

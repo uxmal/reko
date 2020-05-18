@@ -52,7 +52,7 @@ namespace Reko.Arch.SuperH
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
-            return new SuperHDisassembler(rdr);
+            return new SuperHDisassembler(this, rdr);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)

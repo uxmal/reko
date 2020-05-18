@@ -28,21 +28,25 @@ using System.Threading.Tasks;
 using Reko.Core.Types;
 using System.Diagnostics;
 using Reko.Core.Lib;
+using Reko.Core.Services;
 
 namespace Reko.Arch.SuperH
 {
     using Decoder = Decoder<SuperHDisassembler, Mnemonic, SuperHInstruction>;
+#pragma warning disable IDE1006
 
     // http://www.shared-ptr.com/sh_insns.html
 
     public class SuperHDisassembler : DisassemblerBase<SuperHInstruction, Mnemonic>
     {
+        private readonly SuperHArchitecture arch;
         private readonly EndianImageReader rdr;
         private readonly DasmState state;
         private Address addr;
 
-        public SuperHDisassembler(EndianImageReader rdr)
+        public SuperHDisassembler(SuperHArchitecture arch, EndianImageReader rdr)
         {
+            this.arch = arch;
             this.rdr = rdr;
             this.state = new DasmState();
         }
@@ -95,11 +99,8 @@ namespace Reko.Arch.SuperH
 
         public override SuperHInstruction NotYetImplemented(uint wInstr, string message)
         {
-            var instrHex = $"{wInstr & 0xFF:X2}{wInstr >> 8:X2}";
-            base.EmitUnitTest("SuperH", instrHex, "", "ShDis", this.addr, w =>
-            {
-                w.WriteLine($"    AssertCode(\"@@@\", \"{instrHex}\");");
-            });
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("SuperH", this.addr, this.rdr, message);
             return CreateInvalidInstruction();
         }
 

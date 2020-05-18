@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -469,7 +470,9 @@ namespace Reko.Arch.PowerPC
 
         public override PowerPcInstruction NotYetImplemented(uint wInstr, string message)
         {
-            return base.NotYetImplemented(wInstr, message);
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("PPCDis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
     }
 }

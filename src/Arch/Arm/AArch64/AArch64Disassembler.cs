@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -1255,7 +1256,7 @@ namespace Reko.Arch.Arm.AArch64
                     m = op;
                 else
                     m = $"{op} - {message}";
-                d.NotYetImplemented(m, u);
+                d.NotYetImplemented(u, m);
                 d.CreateInvalidInstruction();
                 return false;
             };
@@ -1523,15 +1524,10 @@ namespace Reko.Arch.Arm.AArch64
             return new NyiDecoder<AArch64Disassembler, Mnemonic, AArch64Instruction>(str);
         }
 
-        private AArch64Instruction NotYetImplemented(string message, uint wInstr)
+        public override AArch64Instruction NotYetImplemented(uint wInstr, string message)
         {
-            var instrHex = $"{wInstr:X8}";
-            base.EmitUnitTest("AArch64", instrHex, message, "AArch64Dis", this.addr, Console =>
-            {
-                Console.WriteLine($"    Given_Instruction(0x{wInstr:X8});");
-                Console.WriteLine($"    Expect_Code(\"@@@\");");
-                Console.WriteLine();
-            });
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("AArch64Dis", this.addr, this.rdr, message);
             return CreateInvalidInstruction();
         }
 

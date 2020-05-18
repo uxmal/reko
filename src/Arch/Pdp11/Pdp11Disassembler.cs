@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -40,6 +41,7 @@ namespace Reko.Arch.Pdp11
         private readonly Pdp11Architecture arch;
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
+        private Address addr;
         private Pdp11Instruction instrCur;
         private PrimitiveType dataWidth;
 
@@ -52,7 +54,7 @@ namespace Reko.Arch.Pdp11
 
         public override Pdp11Instruction DisassembleInstruction()
         {
-            var addr = rdr.Address;
+            this.addr = rdr.Address;
             if (!rdr.TryReadLeUInt16(out ushort opcode))
                 return null;
             ops.Clear();
@@ -84,6 +86,13 @@ namespace Reko.Arch.Pdp11
                 Mnemonic = Mnemonic.illegal,
                 Operands = MachineInstruction.NoOperands
             };
+        }
+
+        public override Pdp11Instruction NotYetImplemented(uint wInstr, string message)
+        {
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("Pdp11dis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         #region Mutators

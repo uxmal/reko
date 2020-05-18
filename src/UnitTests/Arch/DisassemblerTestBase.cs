@@ -27,12 +27,20 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel.Design;
 using Reko.Core.Services;
+using NUnit.Framework.Interfaces;
 
 namespace Reko.UnitTests.Arch
 {
     public abstract class DisassemblerTestBase<TInstruction> : ArchTestBase
         where TInstruction : MachineInstruction
     {
+        protected ServiceContainer CreateServiceContainer()
+        {
+            var sc = new ServiceContainer();
+            sc.AddService<ITestGenerationService>(new UnitTestGenerationService(sc));
+            return sc;
+        }
+
         public TInstruction DisassembleBytes(params byte[] a)
         {
             MemoryArea img = new MemoryArea(LoadAddress, a);
@@ -63,11 +71,6 @@ namespace Reko.UnitTests.Arch
 
         public TInstruction Disassemble(MemoryArea img)
         {
-            var sc = Architecture.Services.RequireService<IServiceContainer>();
-            if (sc.GetService<ITestGenerationService>() == null)
-            {
-                sc.AddService<ITestGenerationService>(new UnitTestGenerationService(Architecture.Services));
-            }
             var dasm = this.CreateDisassembler(Architecture.CreateImageReader(img, 0U));
             return (TInstruction) dasm.First();
         }

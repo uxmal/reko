@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -47,14 +48,14 @@ namespace Reko.Arch.Arm.AArch32
         private static readonly Decoder[] decoders;
         private static readonly Decoder invalid;
 
-        private readonly ImageReader rdr;
+        private readonly EndianImageReader rdr;
         private readonly ThumbArchitecture arch;
         private Address addr;
         private int itState;
         private ArmCondition itCondition;
         private DasmState state;
 
-        public T32Disassembler(ThumbArchitecture arch, ImageReader rdr)
+        public T32Disassembler(ThumbArchitecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;
@@ -297,33 +298,10 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        private AArch32Instruction NotYetImplemented(string message, uint wInstr)
+        public override AArch32Instruction NotYetImplemented(uint wInstr, string message)
         {
-            string instrHexBytes;
-            if (wInstr > 0xFFFF)
-            {
-                instrHexBytes = $"{wInstr >> 16:X4}{ wInstr & 0xFFFF:X4}";
-            }
-            else
-            {
-                instrHexBytes = $"{wInstr:X4}";
-            }
-            var rev = $"{Bits.Reverse(wInstr):X8}";
-            message = (string.IsNullOrEmpty(message))
-                ? rev
-                : $"{rev} - {message}";
-            base.EmitUnitTest("T32", instrHexBytes, message, "ThumbDis", this.addr, w =>
-            {
-                if (wInstr > 0xFFFF)
-                {
-                    w.WriteLine($"    Given_Instructions(0x{wInstr >> 16:X4}, 0x{wInstr & 0xFFFF:X4});");
-                }
-                else
-                {
-                    w.WriteLine($"    Given_Instructions(0x{wInstr:X4});");
-                }
-                w.WriteLine("    Expect_Code(\"@@@\");");
-            });
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("ThumbDis", this.addr, this.rdr, message);
             return CreateInvalidInstruction();
         }
 
@@ -1911,7 +1889,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             return (u, d) =>
             {
-                d.NotYetImplemented($"Unimplemented '{message}' when decoding {u:X4}", u);
+                d.NotYetImplemented(u, $"Unimplemented '{message}' when decoding {u:X4}");
                 return false;
             };
         }

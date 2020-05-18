@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Machine;
 using System.Diagnostics;
 using Reko.Core.Types;
+using Reko.Core.Services;
 
 namespace Reko.Arch.Alpha
 {
@@ -73,26 +74,10 @@ namespace Reko.Arch.Alpha
             };
         }
 
-        private AlphaInstruction Nyi(uint uInstr)
+        public override AlphaInstruction NotYetImplemented(uint wInstr, string message)
         {
-            return Nyi(uInstr, string.Format("{0:X2}", uInstr >> 26));
-
-        }
-        private AlphaInstruction Nyi(uint uInstr, int functionCode)
-        {
-            return Nyi(uInstr, string.Format("{0:X2}_{1:X2}", uInstr >> 26, functionCode));
-        }
-
-        // The correct decoder for this instruction has _n_ot _y_et been
-        // _i_mplemented, so fall back on generating an Invalid instruction.
-        private AlphaInstruction Nyi(uint uInstr, string message)
-        {
-            var instrHex = $"{0:X8}";
-            base.EmitUnitTest("Alpha", instrHex, message, "AlphaDis", this.addr, w =>
-            {
-                w.WriteLine("    var instr = DisassembleWord(0x{0:X8});", uInstr);
-                w.WriteLine("    AssertCode(\"AlphaDis_{1}\", 0x{0:X8}, \"@@@\", instr.ToString());", uInstr, instrHex);
-            });
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("AlphaDis", this.addr, this.rdr, message);
             return CreateInvalidInstruction();
         }
 
@@ -294,7 +279,7 @@ namespace Reko.Arch.Alpha
             {
                 var functionCode = ((int)uInstr >> 5) & 0x7FF;
                 if (!decoders.TryGetValue(functionCode, out var decoder))
-                    return dasm.Nyi(uInstr, functionCode);
+                    return dasm.NotYetImplemented(uInstr, "");
                 else
                     return decoder.Decode(uInstr, dasm);
             }

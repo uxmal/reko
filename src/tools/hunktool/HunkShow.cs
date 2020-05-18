@@ -1,8 +1,9 @@
-﻿using Reko.Arch.M68k;
+using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.ImageLoaders.Hunk;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -165,7 +166,7 @@ namespace hunktool
             }
             if (main.HunkType == HunkType.HUNK_CODE && this.disassemble && main.Data != null && main.Data.Length > 0)
             {
-                var dasm = M68kDisassembler.Create68000(new BeImageReader(main.Data, 0));
+                var dasm = M68kDisassembler.Create68000(new ServiceContainer(), new BeImageReader(main.Data, 0));
                 Console.WriteLine();
                 foreach (var instr in dasm)
                 {

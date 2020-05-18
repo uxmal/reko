@@ -81,7 +81,7 @@ namespace Reko.Arch.X86
 
         public X86Disassembler CreateDisassemblerImpl(EndianImageReader imageReader)
         {
-            return mode.CreateDisassembler(imageReader, Options);
+            return mode.CreateDisassembler(this.Services, imageReader, Options);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
@@ -295,7 +295,7 @@ namespace Reko.Arch.X86
 
         public override List<RtlInstruction> InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
         {
-            return this.mode.InlineCall(addrCallee, addrContinuation, rdr, binder);
+            return this.mode.InlineCall(this.Services, addrCallee, addrContinuation, rdr, binder);
         }
 
         public override void LoadUserOptions(Dictionary<string, object> options)

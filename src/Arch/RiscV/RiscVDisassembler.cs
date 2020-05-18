@@ -28,6 +28,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Types;
+using Reko.Core.Services;
 
 namespace Reko.Arch.RiscV
 {
@@ -259,18 +260,10 @@ namespace Reko.Arch.RiscV
             return ImmediateOperand.Int32(offset);
         }
 
-        private static HashSet<uint> seen = new HashSet<uint>();
-
-        private new RiscVInstruction NotYetImplemented(uint instr, string message)
+        public override RiscVInstruction NotYetImplemented(uint wInstr, string message)
         {
-            if (!seen.Contains(instr))
-            {
-                seen.Add(instr);
-                base.EmitUnitTest("RiscV", instr.ToString("X8"), message, "RiscV_dasm", Address.Ptr32(0x00100000), w =>
-                {
-                    w.WriteLine("    AssertCode(\"@@@\", 0x{0:X8});", instr);
-                });
-            }
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("RiscV_dasm", this.addrInstr, this.rdr, message);
             return CreateInvalidInstruction();
         }
 

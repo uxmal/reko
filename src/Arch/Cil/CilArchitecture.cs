@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -25,7 +25,8 @@ using System.Text;
 
 namespace Reko.Arch.Cil
 {
-    class CilArchitecture
+    public class CilArchitecture
     {
+        public IServiceProvider Services { get; set; }
     }
 }

@@ -27,6 +27,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 
 namespace Reko.Arch.Blackfin
@@ -81,6 +82,13 @@ namespace Reko.Arch.Blackfin
                 Mnemonic = Mnemonic.invalid,
                 Operands = new MachineOperand[0]
             };
+        }
+
+        public override BlackfinInstruction NotYetImplemented(uint wInstr, string message)
+        {
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("BlackfinDasm", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         private class Mask32Decoder : MaskDecoder
@@ -150,32 +158,7 @@ namespace Reko.Arch.Blackfin
 
             public override BlackfinInstruction Decode(uint uInstr, BlackfinDisassembler dasm)
             {
-                string instrHexBytes;
-                if (uInstr > 0xFFFF)
-                {
-                    instrHexBytes = $"{uInstr >> 16:X4}{ uInstr & 0xFFFF:X4}";
-                }
-                else
-                {
-                    instrHexBytes = $"{uInstr:X4}";
-                }
-                var rev = $"{Bits.Reverse(uInstr):X8}";
-                message = (string.IsNullOrEmpty(message))
-                    ? rev
-                    : $"{rev} - {message}";
-                dasm.EmitUnitTest("Blackfin", instrHexBytes, message, "BlackfinDasm", dasm.addr, w =>
-                {
-                    if (uInstr > 0xFFFF)
-                    {
-                        w.WriteLine($"    var instr = DisassembleHexBytes(\"{rev.Substring(4)}{rev.Substring(0,4)}\");");
-                    }
-                    else
-                    {
-                        w.WriteLine($"    var instr = DisassembleHexBytes(\"{rev.Substring(0, 4)}\");");
-                    }
-                    w.WriteLine("    Assert.AreEqual(\"@@@\", instr.ToString());");
-                });
-                return dasm.CreateInvalidInstruction();
+                return dasm.NotYetImplemented(uInstr, message);
             }
         }
 

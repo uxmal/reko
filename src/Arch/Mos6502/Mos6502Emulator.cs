@@ -75,7 +75,7 @@ namespace Reko.Arch.Mos6502
                 if (!map.TryFindSegment(value, out ImageSegment segment))
                     throw new AccessViolationException();
                 var rdr = arch.CreateImageReader(segment.MemoryArea, value);
-                dasm = new Disassembler(rdr).GetEnumerator();
+                dasm = new Disassembler(arch, rdr).GetEnumerator();
             }
         }
 

@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -42,24 +43,26 @@ namespace Reko.Arch.M68k
 
         private static readonly TraceSwitch trace = new TraceSwitch("m68dasm", "Detailed tracing of M68k disassembler");
 
-        private EndianImageReader rdr;          // program counter 
-        private List<MachineOperand> ops;       // Operand list being built
+        private readonly IServiceProvider services;
+        private readonly EndianImageReader rdr;          // program counter 
+        private readonly List<MachineOperand> ops;       // Operand list being built
         internal M68kInstruction instr;         // instruction being built
         private string g_dasm_str;              //string to hold disassembly: OBSOLETE
         private PrimitiveType dataWidth;        // width of data.
         private ushort bitSet;                  // Bit set.
         private uint g_cpu_type = 0;
 
-        private M68kDisassembler(EndianImageReader rdr, uint cpuType)
+        private M68kDisassembler(IServiceProvider services, EndianImageReader rdr, uint cpuType)
         {
+            this.services = services;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
             this.g_cpu_type = cpuType;
         }
 
-        public static M68kDisassembler Create68000(EndianImageReader rdr) { return new M68kDisassembler(rdr, TYPE_68000); }
-        public static M68kDisassembler Create68010(EndianImageReader rdr) { return new M68kDisassembler(rdr, TYPE_68010); }
-        public static M68kDisassembler Create68020(EndianImageReader rdr) { return new M68kDisassembler(rdr, TYPE_68020); }
+        public static M68kDisassembler Create68000(IServiceProvider services, EndianImageReader rdr) { return new M68kDisassembler(services, rdr, TYPE_68000); }
+        public static M68kDisassembler Create68010(IServiceProvider services, EndianImageReader rdr) { return new M68kDisassembler(services, rdr, TYPE_68010); }
+        public static M68kDisassembler Create68020(IServiceProvider services, EndianImageReader rdr) { return new M68kDisassembler(services, rdr, TYPE_68020); }
 
         static M68kDisassembler()
         {
@@ -196,6 +199,13 @@ namespace Reko.Arch.M68k
                 InstructionClass = InstrClass.Invalid,
                 Operands = MachineInstruction.NoOperands
             };
+        }
+
+        public override M68kInstruction NotYetImplemented(uint wInstr, string message)
+        {
+            var testGenSvc = this.services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("M68kdis", this.instr.Address, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         /// <summary>
