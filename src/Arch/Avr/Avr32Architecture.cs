@@ -21,6 +21,7 @@
 using Reko.Arch.Avr.Avr32;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -32,14 +33,18 @@ namespace Reko.Arch.Avr
 {
     public class Avr32Architecture : ProcessorArchitecture
     {
+        private Dictionary<uint, FlagGroupStorage> flagGroups;
+
         public Avr32Architecture(IServiceProvider services, string archId) : base(services, archId)
         {
+            this.CarryFlagMask = (uint) FlagM.CF;
             this.Endianness = EndianServices.Big;
             this.FramePointerType = PrimitiveType.Ptr32;
             this.InstructionBitSize = 16;
             this.PointerType = PrimitiveType.Ptr32;
             this.StackRegister = Registers.sp;
             this.WordWidth = PrimitiveType.Word32;
+            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
@@ -74,7 +79,13 @@ namespace Reko.Arch.Avr
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            throw new NotImplementedException();
+            if (flagGroups.TryGetValue(grf, out var grfStg))
+                return grfStg;
+
+            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            grfStg = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf), dt);
+            flagGroups.Add(grfStg.FlagGroupBits, grfStg);
+            return grfStg;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -102,7 +113,9 @@ namespace Reko.Arch.Avr
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            throw new NotImplementedException();
+            return Registers.RegistersByDomain.TryGetValue(domain, out var reg)
+                ? reg
+                : null;
         }
 
         public override RegisterStorage[] GetRegisters()
@@ -110,14 +123,28 @@ namespace Reko.Arch.Avr
             throw new NotImplementedException();
         }
 
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            uint grf = flags.FlagGroupBits;
+            if ((grf & (uint) FlagM.VF) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint) FlagM.VF);
+            if ((grf & (uint) FlagM.NF) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint) FlagM.NF);
+            if ((grf & (uint) FlagM.ZF) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint) FlagM.ZF);
+            if ((grf & (uint) FlagM.CF) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint) FlagM.CF);
+        }
+
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
-            throw new NotImplementedException();
+            StringBuilder s = new StringBuilder(prefix);
+            if ((grf & (uint) FlagM.VF) != 0) s.Append('V');
+            if ((grf & (uint) FlagM.NF) != 0) s.Append('N');
+            if ((grf & (uint) FlagM.ZF) != 0) s.Append('Z');
+            if ((grf & (uint) FlagM.CF) != 0) s.Append('C');
+            return s.ToString();
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            throw new NotImplementedException();
+            return Address.Ptr32(c.ToUInt32());
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
@@ -127,7 +154,7 @@ namespace Reko.Arch.Avr
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return Registers.RegistersByName.TryGetValue(name, out reg);
         }
 
         public override bool TryParseAddress(string txtAddr, out Address addr)

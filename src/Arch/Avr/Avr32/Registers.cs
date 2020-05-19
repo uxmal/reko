@@ -36,11 +36,12 @@ namespace Reko.Arch.Avr.Avr32
             var regs = factory.RangeOfReg32(16, "r{0}");
             regs[13] = new RegisterStorage("sp", regs[13].Number, 0, PrimitiveType.Word32);
             regs[14] = new RegisterStorage("lr", regs[14].Number, 0, PrimitiveType.Word32);
-            regs[15] = new RegisterStorage("pc", regs[14].Number, 0, PrimitiveType.Word32);
+            regs[15] = new RegisterStorage("pc", regs[15].Number, 0, PrimitiveType.Word32);
             GpRegisters = regs;
             RegistersByName = regs.ToDictionary(r => r.Name);
             sp = regs[13];
             pc = regs[15];
+            RegistersByDomain = regs.ToDictionary(r => r.Domain);
 
             factory = new StorageFactory(StorageDomain.Register + 0x100);
             sr = factory.Reg32(nameof(sr));
@@ -155,6 +156,7 @@ namespace Reko.Arch.Avr.Avr32
         }
 
         public static Dictionary<string, RegisterStorage> RegistersByName { get; }
+        public static Dictionary<StorageDomain, RegisterStorage> RegistersByDomain { get; }
         public static RegisterStorage[] GpRegisters { get; }
         public static RegisterStorage sp { get; }
         public static RegisterStorage pc { get; }
@@ -165,6 +167,7 @@ namespace Reko.Arch.Avr.Avr32
 
     public enum FlagM
     {
+        LF = 0x20,
         QF = 0x10,
         VF = 0x08,
         NF = 0x04,
