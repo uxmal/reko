@@ -9634,7 +9634,7 @@ l0800_6220:
 	Mem1020[ss:sp_989 - 2<i16>:word16] = Mem1017[ds_1008:0x29DF<16>:word16]
 	word16 dx_1024
 	word16 ax_1021 = fn0800_AD2F(ds_1008, Mem1020[ss:sp_989 - 2<i16>:segptr32], out dx_1024)
-	Mem1037[ss:bp_1036 - 0x1A<16>:word16] = dx_1024 + 0xFF<8> + (ax_1021 <u 0xFFE0<16>)
+	Mem1037[ss:bp_1036 - 0x1A<16>:word16] = dx_1024 + 0xFFFF<16> + (ax_1021 <u 0xFFE0<16>)
 	Mem1038[ss:bp_1036 - 0x1C<16>:word16] = ax_1021 + 0xFFE0<16>
 l0800_6266:
 	word16 ax_1042 = Mem1041[ss:bp_1036 - 0x1C<16>:word16]
@@ -10260,7 +10260,7 @@ l0800_6988:
 	Mem483[ss:sp_452 - 2<i16>:word16] = Mem480[ds_469:0x29DF<16>:word16]
 	word16 dx_487
 	word16 ax_484 = fn0800_AD2F(ds_469, Mem483[ss:sp_452 - 2<i16>:segptr32], out dx_487)
-	Mem498[ds_469:0x2A05<16>:word16] = dx_487 + 0xFF<8> + (ax_484 <u 0xFFE0<16>)
+	Mem498[ds_469:0x2A05<16>:word16] = dx_487 + 0xFFFF<16> + (ax_484 <u 0xFFE0<16>)
 	Mem499[ds_469:0x2A03<16>:word16] = ax_484 + 0xFFE0<16>
 	Mem504[ss:sp_452:word16] = 0<16>
 	Mem507[ss:sp_452 - 2<i16>:word16] = 0<16>

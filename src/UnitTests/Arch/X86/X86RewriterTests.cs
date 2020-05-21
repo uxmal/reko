@@ -3701,5 +3701,16 @@ namespace Reko.UnitTests.Arch.X86
                 "0|---|10000000(1): 1 instructions",
                 "1|---|<invalid>");
         }
+
+        [Test]
+        public void X86Rw_adc_imm8()
+        {
+            Run32bitTest("83 56 FE FF");
+            AssertCode(
+                "0|L--|10000000(4): 3 instructions",
+                "1|L--|v4 = Mem0[esi - 2<32>:word32] + 0xFFFFFFFF<32> + C",
+                "2|L--|Mem0[esi - 2<32>:word32] = v4",
+                "3|L--|SCZO = cond(v4)");
+        }
     }
 }

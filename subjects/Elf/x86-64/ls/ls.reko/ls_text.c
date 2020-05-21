@@ -6167,7 +6167,7 @@ l000000000040CB65:
 // 000000000040CCD0: Register (ptr64 Eq_n) fn000000000040CCD0(Register Eq_n rsi, Register int64 rdi)
 struct Eq_n * fn000000000040CCD0(Eq_n rsi, int64 rdi)
 {
-	((word32) rsi + 20)->u0 = 0x00;
+	*((word32) rsi + 20) = 0x00;
 	struct Eq_n * rcx_n = (word32) rsi + 20;
 	if (rdi < 0x00)
 	{
@@ -6197,7 +6197,7 @@ struct Eq_n * fn000000000040CCD0(Eq_n rsi, int64 rdi)
 // 000000000040CD70: Register (ptr64 byte) fn000000000040CD70(Register Eq_n rsi, Register Eq_n rdi)
 byte * fn000000000040CD70(Eq_n rsi, Eq_n rdi)
 {
-	((word32) rsi + 20)->u0 = 0x00;
+	*((word32) rsi + 20) = 0x00;
 	byte * rcx_n = (word32) rsi + 20;
 	do
 	{

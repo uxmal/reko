@@ -119,7 +119,7 @@ namespace Reko.Arch.X86
                 opr(
                     opr(
                         SrcOp(instrCur.Operands[0]),
-                        SrcOp(instrCur.Operands[1])),
+                        SrcOp(instrCur.Operands[1], instrCur.Operands[0].Width)),
                     c),
                 CopyFlags.EmitCc);
         }

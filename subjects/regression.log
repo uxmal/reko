@@ -125,7 +125,7 @@ Parameter name: index
 00000000004025B0: warning: Unable to resolve imported reference __gmon_start__.
 000000000040E250: warning: x86 instruction 'vpsubsw' is not supported yet.
 000000000040FEF4: warning: x86 instruction 'vminpd' is not supported yet.
-0000000000406229: error: An error occurred while processing the statement rdx_109 = (uint64) (SLICE((uint64) SLICE(rax_65 - 3<8> - (dl_94 * 2<8> <u 0<8>), word32, 0), word32, 0) - ebx_108).
+0000000000406229: error: An error occurred while processing the statement rdx_109 = (uint64) (SLICE((uint64) SLICE(rax_65 - 3<64> - (dl_94 * 2<8> <u 0<8>), word32, 0), word32, 0) - ebx_108).
     Pulling difference ptr64 and bool
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 276
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 109
@@ -144,7 +144,7 @@ Parameter name: index
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 54
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 0000000000406FC3: error: An error occurred while processing the statement word64 r13_1040 = r13_1008 - (fp - 0xE88<64>).
-    Pulling difference (ptr64 byte) and (union ((union (bool u0) (byte u1)) u2) ((ptr64 char) u1) (byte u3) ((ptr64 (struct 0004 (FFFFFFFF byte bFFFFFFFF) (0 (union (byte u1) (word32 u0) (T_6895 u2) (T_7008 u3)) u0000) (10 T_63 t0010) (18 T_6991 t0018) (30 T_55 t0030) (38 T_66 t0038))) u0) ((ptr64 (struct 0001 (FFFFFFFF byte bFFFFFFFF) (0 char b0000))) u4))
+    Pulling difference (ptr64 byte) and (union (bool u2) ((ptr64 char) u1) ((ptr64 (struct 0004 (FFFFFFFF byte bFFFFFFFF) (0 (union (byte u1) (word32 u0) (T_6895 u2) (T_7008 u3)) u0000) (10 T_63 t0010) (18 T_6991 t0018) (30 T_55 t0030) (38 T_66 t0038))) u0) ((ptr64 (struct 0001 (FFFFFFFF byte bFFFFFFFF) (0 char b0000))) u3))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 276
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 109
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -177,7 +177,7 @@ Parameter name: index
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 182
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
-0000000000411B41: error: An error occurred while processing the statement word64 rdx_230 = rdx_188 - 3<8> - (al_219 * 2<8> <u 0<8>) - (fp - 0xB8<64>).
+0000000000411B41: error: An error occurred while processing the statement word64 rdx_230 = rdx_188 - 3<64> - (al_219 * 2<8> <u 0<8>) - (fp - 0xB8<64>).
     Pulling difference ptr64 and bool
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 276
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 109
@@ -187,7 +187,7 @@ Parameter name: index
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 182
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
-0000000000411B7C: error: An error occurred while processing the statement word64 r10_274 = r10_206 - 3<8> - (al_260 * 2<8> <u 0<8>) - (fp - 0x78<64>).
+0000000000411B7C: error: An error occurred while processing the statement word64 r10_274 = r10_206 - 3<64> - (al_260 * 2<8> <u 0<8>) - (fp - 0x78<64>).
     Pulling difference ptr64 and bool
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 276
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 109
@@ -941,4 +941,4 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 62 binaries in 73.20 seconds ---
+Decompiled 62 binaries in 70.03 seconds ---
