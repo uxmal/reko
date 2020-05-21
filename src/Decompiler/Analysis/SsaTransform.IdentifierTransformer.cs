@@ -631,7 +631,7 @@ namespace Reko.Analysis
                     return sidAlias;
                 var e = outer.m.Slice(idSlice.DataType, sidSrc.Identifier, range.Lsb - (int)sidSrc.Identifier.Storage.BitAddress);
                 var ass = new AliasAssignment(idSlice, e);
-                sidAlias = outer.ssa.InsertAfterDefinition(sidSrc.DefStatement, ass);
+                sidAlias = outer.ssa.InsertAfterDefinition(sidSrc.DefStatement!, ass);
                 sidSrc.Uses.Add(sidAlias.DefStatement!);
                 outer.availableSlices.Add((sidSrc, range), sidAlias);
                 return sidAlias;
@@ -753,8 +753,8 @@ namespace Reko.Analysis
                 this.flagGroup = outer.arch.GetFlagGroup(grfFrom.FlagRegister, elem.mask)!;
                 var idSlice = outer.ssa.Procedure.Frame.EnsureFlagGroup(this.flagGroup);
                 var ass = new AliasAssignment(idSlice, e);
-                var sidSlice = outer.ssa.InsertAfterDefinition(elem.sid.DefStatement, ass);
-                elem.sid.Uses.Add(sidSlice.DefStatement);
+                var sidSlice = outer.ssa.InsertAfterDefinition(elem.sid.DefStatement!, ass);
+                elem.sid.Uses.Add(sidSlice.DefStatement!);
                 return sidSlice;
             }
 
@@ -929,8 +929,8 @@ namespace Reko.Analysis
 
                 //$TODO: perhaps this alias has already been computed?
                 var ass = new AliasAssignment(idSlice, e);
-                var sidAlias = outer.ssa.InsertAfterDefinition(sidFrom.DefStatement, ass);
-                sidUse.Uses.Add(sidAlias.DefStatement);
+                var sidAlias = outer.ssa.InsertAfterDefinition(sidFrom.DefStatement!, ass);
+                sidUse.Uses.Add(sidAlias.DefStatement!);
                 return sidAlias;
             }
 

@@ -204,6 +204,7 @@ namespace Reko.Analysis
                     return;
                 var vp = new ValuePropagator(program.SegmentMap, sst.SsaState, program.CallGraph, dynamicLinker, this.eventListener);
                 vp.Transform();
+                DumpWatchedProcedure("vp3", "After VP3", sst.SsaState.Procedure);
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
                 DumpWatchedProcedure("esv2", "After extra stack vars 2", sst.SsaState.Procedure);
@@ -516,6 +517,11 @@ namespace Reko.Analysis
                 // Propagate those newly created stack-based identifiers.
                 vp.Transform();
                 DumpWatchedProcedure("vp2", "After VP2", ssa.Procedure);
+
+                // Find as many slices as possible.
+                var sp = new SlicePropagator(ssa, eventListener);
+                sp.Transform();
+                DumpWatchedProcedure("slice", "After Slice propagation", ssa.Procedure);
 
                 return sst;
             }

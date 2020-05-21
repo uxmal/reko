@@ -39,13 +39,25 @@ namespace Reko.Analysis
     /// occurrences of slices and "pushing" them towards the roots
     /// of expressions.
     /// </summary>
+    /// <remarks>
+    /// The transformation consists of an analysis step followed by the 
+    /// actual transformation. The analysis starts by collecting all the 
+    /// available identifier slices, which is trivial. It then does a second
+    /// pass, discovering what slices of identifiers are actually needed.
+    /// This may require traversing "backwards" past copy statements (a = b)
+    /// or phi functions (a_3 = phi(a_1, a_2).
+    /// 
+    /// The transformation then determines which variables are too wide, and
+    /// injects slice expressions where appropriate to narrow them down.
+    /// 
+    /// </remarks>
     public class SlicePropagator
     {
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(SlicePropagator), "Trace progress of SlicePropagator") { Level = TraceLevel.Verbose }; private readonly SsaState ssa;
 
         private readonly DecompilerEventListener listener;
-        private readonly Dictionary<SsaIdentifier, HashSet<BitRange>> neededSlices;  // Slices we want, but don't have
-        private readonly Dictionary<SsaIdentifier, Dictionary<BitRange, SsaIdentifier>> availableSlices; // Slices we do have.
+        private readonly Dictionary<SsaIdentifier, HashSet<BitRange>> neededSlices;  // Sliced identifiers we want, but don't have
+        private readonly Dictionary<SsaIdentifier, Dictionary<BitRange, SsaIdentifier>> availableSlices; // Sliced identifiers we do have.
         private readonly Dictionary<SsaIdentifier, SsaIdentifier> replaceIds;   // Identifiers that can be replaced.
 
         public SlicePropagator(SsaState ssa, DecompilerEventListener listener)
@@ -57,7 +69,7 @@ namespace Reko.Analysis
             this.replaceIds = new Dictionary<SsaIdentifier, SsaIdentifier>();
             foreach (var sid in ssa.Identifiers)
             {
-                if (sid.Uses.Count == 0)
+                if (sid.Uses.Count == 0 || sid.Identifier.Storage is FlagGroupStorage)
                     continue;
                 var available = new Dictionary<BitRange, SsaIdentifier> { { Ctx(sid.Identifier).Bitrange, sid } };
                 this.availableSlices.Add(sid, available);
@@ -71,11 +83,12 @@ namespace Reko.Analysis
             DetermineNeededSlices();
             GenerateNeededSlices();
             ReplaceSlices();
+            ssa.Validate(e => { ssa.Procedure.Dump(true); });
         }
 
         private void DetermineNeededSlices()
         {
-            bool IsCopy(Instruction instr)
+            static bool IsCopy(Instruction instr)
             {
                 if (instr is PhiAssignment)
                     return true;
@@ -87,12 +100,16 @@ namespace Reko.Analysis
             }
 
             var wl = new WorkList<(SsaIdentifier, NarrowContext)>(ssa.Identifiers
-                .Where(s => s.DefStatement != null && !IsCopy(s.DefStatement.Instruction))
+                .Where(s => 
+                    s.DefStatement != null &&
+                    !(s.Identifier.Storage is FlagGroupStorage) &&
+                    !IsCopy(s.DefStatement.Instruction))
                 .Select(s => (s, Ctx(s.Identifier))));
             var sliceFinder = new SliceFinder(this, wl);
             while (wl.GetWorkItem(out var item))
             {
-                item.Item1.DefStatement.Instruction.Accept(sliceFinder, item.Item2);
+                sliceFinder.stm = item.Item1.DefStatement!;
+                item.Item1.DefStatement!.Instruction.Accept(sliceFinder, item.Item2);
             }
         }
 
@@ -107,19 +124,20 @@ namespace Reko.Analysis
                 var ctxOriginal = Ctx(sidOld.Identifier);
                 if (brNeeded.Covers(ctxOriginal.Bitrange))
                     continue;
-
+                if (sidOld.DefStatement?.Instruction is CallInstruction)
+                    continue;
                 // At this point, we've discovered that only one slice size 
                 // of the sidOld is ever used, and it is always smaller than 
                 // the original size of needed.Key. We can create a smaller 
                 // identifier, and replace all uses of the original wide variable
                 // with the new narrower identifier.
-
+                trace.Verbose("SLP: Id {0} is only used with bitrange {1}", sidOld.Identifier, brNeeded);
                 // We need a smaller slice. Does it already exist?
                 if (this.availableSlices[sidOld].TryGetValue(brNeeded, out var sidNew))
                 {
                     // Delete the existing alias statement, and rely on SlicePusher to 
                     // replace it.
-                    sidNew.DefStatement.Block.Statements.Remove(sidNew.DefStatement);
+                    sidNew.DefStatement!.Block.Statements.Remove(sidNew.DefStatement);
                 }
                 else
                 {
@@ -129,7 +147,7 @@ namespace Reko.Analysis
                     this.availableSlices.Add(sidNew, new Dictionary<BitRange, SsaIdentifier> { { brNeeded, sidNew } });
                 }
 
-                // Now remmove the uses of the old identifier. New uses will be added
+                // Now remove the uses of the old identifier. New uses will be added
                 // by the SlicePusher.
                 sidOld.Uses.Clear();
                 this.replaceIds.Add(sidOld, sidNew);
@@ -145,18 +163,18 @@ namespace Reko.Analysis
             {
             case RegisterStorage reg:
                 var regSliced = ssa.Procedure.Architecture.GetRegister(reg.Domain, brNeeded);
-                idSliced = ssa.Procedure.Frame.EnsureRegister(regSliced);
+                idSliced = ssa.Procedure.Frame.EnsureRegister(regSliced!);
                 idSliced.DataType = dt;
                 break;
             case StackStorage stk:
                 var stkSliced = ssa.Procedure.Architecture.Endianness.SliceStackStorage(stk, brNeeded);
                 idSliced = ssa.Procedure.Frame.EnsureStackVariable(stkSliced.StackOffset, dt);
                 break;
-            case TemporaryStorage tmp:
+            case TemporaryStorage _:
                 idSliced = ssa.Procedure.Frame.CreateTemporary(dt);
                 break;
             default:
-                throw new NotImplementedException($"Support for slicing {sidOriginal.Identifier.Storage.GetType().Name} not supported yet.");
+                throw new NotImplementedException($"Support for slicing {sidOriginal.Identifier.Storage.GetType().Name} not implemented yet.");
             }
             var sidTo = ssa.Identifiers.Add(idSliced, sidOriginal.DefStatement, new Slice(dt, sidOriginal.Identifier, brNeeded.Lsb), false);
             return sidTo;
@@ -164,11 +182,14 @@ namespace Reko.Analysis
 
         private void ReplaceSlices()
         {
-            var slicePusher = new SlicePusher(this);
+            var slicePusher = new SlicePusher(this, default!);
             foreach (var stm in ssa.Procedure.Statements)
             {
+                if (stm.Block.Name == "l00100073")
+                    stm.ToString(); //$DEBUG
                 slicePusher.Statement = stm;
-                stm.Instruction = stm.Instruction.Accept(slicePusher);
+                var instrNew = stm.Instruction.Accept(slicePusher);
+                stm.Instruction = instrNew;
             }
         }
 
@@ -188,14 +209,17 @@ namespace Reko.Analysis
         }
 
         /// <summary>
-        /// This visitor class discovers Slices and Casts in the program and propagates these 
-        /// to the leaves of the Expressions in the procedure. If an Identifier is encountered
-        /// it records the size of the slice at that point.
+        /// This visitor class discovers <see cref="Slice" />s, <see cref="Convert"/>s and 
+        /// <see cref="Cast"/>s in the program and propagates these 
+        /// to the leaves of the <see cref="Expression"/>s in the <see cref="Procedure"/>. 
+        /// If an <see cref="Identifier"/> is encountered it records the size of the slice
+        /// at that point.
         /// </summary>
         public class SliceFinder : InstructionVisitor<Instruction, NarrowContext>, ExpressionVisitor<Expression, NarrowContext>
         {
             private readonly SlicePropagator outer;
             private readonly WorkList<(SsaIdentifier, NarrowContext)> wl;
+            internal Statement? stm;
 
             public SliceFinder(SlicePropagator outer, WorkList<(SsaIdentifier, NarrowContext)> wl)
             {
@@ -329,8 +353,16 @@ namespace Reko.Analysis
                 case AndOperator _:
                 case OrOperator _:
                 case XorOperator _:
-                    binExp.Left.Accept(this, ctx);
-                    binExp.Right.Accept(this, ctx);
+                    if (ctx.Offset == 0)
+                    {
+                        binExp.Left.Accept(this, ctx);
+                        binExp.Right.Accept(this, ctx);
+                    }
+                    else
+                    {
+                        binExp.Left.Accept(this, Ctx(binExp.Left));
+                        binExp.Right.Accept(this, Ctx(binExp.Right));
+                    }
                     return binExp;
                 case ShlOperator _:
                 case ShrOperator _:
@@ -376,6 +408,12 @@ namespace Reko.Analysis
                 return cof;
             }
 
+            public Expression VisitConversion(Conversion cnv, NarrowContext ctx)
+            {
+                cnv.Expression.Accept(this, Ctx(cnv.Expression));
+                return cnv;
+            }
+
             public Expression VisitConstant(Constant c, NarrowContext ctx)
             {
                 return c;
@@ -397,7 +435,7 @@ namespace Reko.Analysis
                 var added = outer.neededSlices[sid].Add(ctx.Bitrange);
                 if (!ctx.Bitrange.Covers(Ctx(id).Bitrange))
                 {
-                    trace.Verbose("SLP: found a narrowed use of {0} ({1}", id, ctx);
+                    trace.Verbose("SLP: found a narrowed use of {0} ({1}) in {2}", id, ctx, stm!);
                     if (added)
                     {
                         trace.Verbose("SLP: Id {0} needs bitrange {1}", sid.Identifier.Name, ctx);
@@ -498,7 +536,6 @@ namespace Reko.Analysis
                 }
                 throw new NotImplementedException();
             }
-
         }
 
         /// <summary>
@@ -510,17 +547,18 @@ namespace Reko.Analysis
         {
             private readonly SlicePropagator outer;
 
-            public SlicePusher(SlicePropagator outer)
+            public SlicePusher(SlicePropagator outer, Statement stm)
             {
                 this.outer = outer;
+                this.Statement = stm;
             }
 
             public Statement Statement { get; set; }
 
             public Instruction VisitAssignment(Assignment ass)
             {
-                Assignment MkAlias(Identifier id, Expression e) => new AliasAssignment(id, e);
-                Assignment MkAssign(Identifier id, Expression e) => new Assignment(id, e);
+                static Assignment MkAlias(Identifier id, Expression e) => new AliasAssignment(id, e);
+                static Assignment MkAssign(Identifier id, Expression e) => new Assignment(id, e);
                 Func<Identifier, Expression, Assignment> mk = ass is AliasAssignment
                     ? new Func<Identifier, Expression, Assignment>(MkAlias)
                     : MkAssign;
@@ -553,7 +591,7 @@ namespace Reko.Analysis
             {
                 var callee = ci.Callee.Accept(this, Ctx(ci.Callee));
                 var uses = new List<CallBinding>();
-                foreach (var use in ci.Uses)
+                foreach (var use in ci.Uses) 
                 {
                     var e = use.Expression.Accept(this, Ctx(use.Expression));
                     uses.Add(new CallBinding(use.Storage, e) { BitRange = use.BitRange });
@@ -571,7 +609,7 @@ namespace Reko.Analysis
 
             public Instruction VisitDeclaration(Declaration decl)
             {
-                throw new NotImplementedException();
+                return decl;
             }
 
             public Instruction VisitDefInstruction(DefInstruction def)
@@ -580,6 +618,7 @@ namespace Reko.Analysis
                 var sidDst = outer.ssa.Identifiers[def.Identifier];
                 if (outer.replaceIds.TryGetValue(sidDst, out var sidDstNew))
                 {
+                    trace.Verbose("SLP: Replacing def {0} with {1}", sidDst.Identifier, sidDstNew.Identifier);
                     sidDstNew.DefStatement = Statement;
                     sidDst.DefStatement = null;
                     sidDst.DefExpression = null;
@@ -616,15 +655,18 @@ namespace Reko.Analysis
                 var sidDst = outer.ssa.Identifiers[phi.Dst];
                 if (outer.replaceIds.TryGetValue(sidDst, out var sidDstNew))
                 {
+
                     sidDstNew.DefStatement = this.Statement;
                     sidDstNew.DefExpression = phiFn;
                     sidDst.DefStatement = null;
                     sidDst.DefExpression = null;
+                    trace.Verbose("SLP: Replacing {0} with {1}={2}", phi, sidDstNew.Identifier, phiFn);
                     return new PhiAssignment(sidDstNew.Identifier, phiFn);
                 }
                 else
                 {
                     sidDst.DefExpression = phiFn;
+                    trace.Verbose("SLP: Replacing {0} with {1}={2}", phi, phi.Dst, phiFn);
                     return new PhiAssignment(phi.Dst, phiFn);
                 }
             }
@@ -690,13 +732,26 @@ namespace Reko.Analysis
 
             public Expression VisitBinaryExpression(BinaryExpression binExp, NarrowContext ctx)
             {
-                DataType dt = binExp.DataType;
-                Expression left = binExp.Left;
+                Expression left;
                 Expression right = binExp.Right;
+                DataType dt = binExp.DataType;
                 switch (binExp.Operator)
                 {
                 case IAddOperator _:
                 case ISubOperator _:
+                    if (ctx.Offset == 0)
+                    {
+                        left = binExp.Left.Accept(this, ctx);
+                        right = binExp.Right.Accept(this, ctx);
+                        dt = left.DataType;
+                    }
+                    else
+                    {
+                        left = binExp.Left.Accept(this, Ctx(binExp.Left));
+                        right = binExp.Right.Accept(this, Ctx(binExp.Right));
+                        return MaybeSlice(new BinaryExpression(binExp.Operator, dt, left, right), ctx);
+                    }
+                    break;
                 case USubOperator _:
                 case AndOperator _:
                 case OrOperator _:
@@ -784,6 +839,33 @@ namespace Reko.Analysis
                 }
             }
 
+            public Expression VisitConversion(Conversion cnv, NarrowContext ctx)
+            {
+                var e = cnv.Expression.Accept(this, Ctx(cnv.Expression));
+                var dtSrc = cnv.SourceDataType.ResolveAs<PrimitiveType>();
+                var dtDst = cnv.DataType.ResolveAs<PrimitiveType>();
+                if (dtSrc != null && dtDst != null)
+                {
+                    if ((dtDst.Domain & dtSrc.Domain & Domain.Integer) != 0)
+                    {
+                        // Slicing a sign- or zero-extension.
+                        var range = new BitRange(0, dtSrc.BitSize);
+                        if (range.Covers(ctx.Bitrange))
+                        {
+                            if (ctx.Bitrange.Covers(range))
+                            {
+                                return e;
+                            }
+                            else
+                            {
+                                return new Slice(ctx.DataType, e, ctx.Offset);
+                            }
+                        }
+                    }
+                }
+                return new Conversion(e, cnv.SourceDataType, cnv.DataType);
+            }
+
             public Expression VisitDereference(Dereference deref, NarrowContext ctx)
             {
                 throw new NotImplementedException();
@@ -796,10 +878,13 @@ namespace Reko.Analysis
 
             public Expression VisitIdentifier(Identifier id, NarrowContext ctx)
             {
+                var sid = outer.ssa.Identifiers[id];
+                if (!outer.availableSlices.TryGetValue(sid, out var available))
+                    return id;
+
                 // Buck stops here. Previous analysis pass has made sure there is 
                 // an available slice.
 
-                var sid = outer.ssa.Identifiers[id];
                 if (ctx.Bitrange.IsEmpty)
                 {
                     sid.Uses.Remove(Statement);
@@ -811,7 +896,7 @@ namespace Reko.Analysis
                     sid = sidNew;
                 }
 
-                if (outer.availableSlices[sid].TryGetValue(ctx.Bitrange, out var sidSlice) &&
+                if (available.TryGetValue(ctx.Bitrange, out var sidSlice) &&
                     sidSlice.DefStatement != Statement)
                 {
                     sid.Uses.Remove(Statement);
@@ -820,8 +905,6 @@ namespace Reko.Analysis
                 }
                 return MaybeSlice(sid.Identifier, ctx);
             }
-
-
 
             public Expression VisitMemberPointerSelector(MemberPointerSelector mps, NarrowContext ctx)
             {
@@ -832,16 +915,12 @@ namespace Reko.Analysis
             {
                 var ea = access.EffectiveAddress.Accept(this, Ctx(access.EffectiveAddress));
                 var brMem = Ctx(access);
-                DataType dt;
+                Expression result = new MemoryAccess(access.MemoryId, ea, access.DataType);
                 if (brMem.Bitrange.Covers(ctx.Bitrange) && !ctx.Bitrange.Covers(brMem.Bitrange))
                 {
-                    dt = ctx.DataType;
+                    result = new Slice(ctx.DataType, result, ctx.Offset);
                 }
-                else
-                {
-                    dt = access.DataType;
-                }
-                return new MemoryAccess(access.MemoryId, ea, dt);
+                return result;
             }
 
             public Expression VisitMkSequence(MkSequence seq, NarrowContext ctx)
@@ -909,24 +988,24 @@ namespace Reko.Analysis
             {
                 var b = access.BasePointer.Accept(this, Ctx(access.BasePointer));
                 var ea = access.EffectiveAddress.Accept(this, Ctx(access.EffectiveAddress));
-                DataType dt;
                 var brMem = Ctx(access);
+                Expression result = new SegmentedAccess(access.MemoryId, b, ea, access.DataType);
                 if (brMem.Bitrange.Covers(ctx.Bitrange) && !ctx.Bitrange.Covers(brMem.Bitrange))
                 {
-                    dt = ctx.DataType;
+                    result = new Slice(ctx.DataType, result, ctx.Offset);
                 }
-                else
-                {
-                    dt = access.DataType;
-                }
-                return new SegmentedAccess(access.MemoryId, b, ea, dt);
+                return result;
             }
 
             public Expression VisitSlice(Slice slice, NarrowContext ctx)
             {
                 var brSlice = Ctx(slice);
                 var e = slice.Expression.Accept(this, brSlice);
-                return e;
+                // If e has already been sliced, just pass it on.
+                if (e.DataType.BitSize == slice.DataType.BitSize)
+                    return e;
+                else 
+                    return new Slice(slice.DataType, e, slice.Offset);
             }
 
             public Expression VisitTestCondition(TestCondition tc, NarrowContext ctx)
@@ -1002,6 +1081,11 @@ namespace Reko.Analysis
             {
                 return obj is NarrowContext that &&
                     this.Bitrange.Equals(that.Bitrange);
+            }
+
+            public override string ToString()
+            {
+                return $"{DataType}: {this.Bitrange}";
             }
         }
     }

@@ -757,12 +757,10 @@ namespace Reko.Evaluation
 
         public virtual Expression VisitConditionOf(ConditionOf c)
         {
-            var e = c.Expression.Accept(this);
+            Expression e = c.Expression.Accept(this);
             //$REVIEW: if e == 0, then Z flags could be set to 1. But that's architecture specific, so
             // we leave that as an exercise to re reader
-            if (e != c.Expression)
-                c = new ConditionOf(e);
-            return c;
+            return new ConditionOf(e);
         }
 
         public virtual Expression VisitConstant(Constant c)

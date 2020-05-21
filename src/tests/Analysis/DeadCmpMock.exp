@@ -2,8 +2,8 @@ fp:fp
 r63_2: orig: r63
 r0:r0
     def:  def r0
-    uses: r0_6 = r0 + r1
-          branch r0 == 0<32> skip
+    uses: branch r0 == 0<32> skip
+          r0_6 = r0 + r1
           r0_7 = PHI((r0, l1), (r0_6, l2))
 Z_4: orig: Z
 r1:r1

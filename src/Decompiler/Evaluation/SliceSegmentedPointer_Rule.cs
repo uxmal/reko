@@ -115,7 +115,7 @@ namespace Reko.Evaluation
                 var bin = (BinaryExpression)segMem.EffectiveAddress;
                 if (bin.Left == idOff)
                 {
-                    ea = new BinaryExpression(bin.Operator, bin.DataType, segPtr!, bin.Right);
+                    ea = new BinaryExpression(bin.Operator, segPtr!.DataType, segPtr!, bin.Right);
                 }
                 else
                     throw new NotImplementedException();

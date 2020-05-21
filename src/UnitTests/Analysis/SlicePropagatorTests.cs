@@ -22,9 +22,11 @@ using Moq;
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -39,7 +41,7 @@ namespace Reko.UnitTests.Analysis
         [SetUp]
         public void Setup()
         {
-            this.arch = new FakeArchitecture();
+            this.arch = new FakeArchitecture(new ServiceContainer());
         }
 
         private void RunTest(string sExpected, Action<SsaProcedureBuilder> builder)
@@ -49,7 +51,7 @@ namespace Reko.UnitTests.Analysis
             var slp = new SlicePropagator(m.Ssa, new FakeDecompilerEventListener());
             slp.Transform();
             var sw = new StringWriter();
-            m.Ssa.Procedure.Write(false, sw);
+            m.Ssa.Procedure.WriteBody(true, sw);
             var sActual = sw.ToString();
             if (sActual != sExpected)
             {
@@ -68,10 +70,7 @@ namespace Reko.UnitTests.Analysis
         {
             var sExp =
             #region Expected 
-@"// SsaProcedureBuilder
-// Return size: 0
-define SsaProcedureBuilder
-SsaProcedureBuilder_entry:
+@"SsaProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	r1_4 = Mem1[0x123400<32>:byte]
@@ -82,7 +81,7 @@ SsaProcedureBuilder_exit:
             RunTest(sExp, m =>
             {
                 var r1 = m.Register(arch.GetRegister("r1"));
-                m.Assign(r1, m.Cast(PrimitiveType.UInt32, m.Mem8(m.Word32(0x00123400))));
+                m.Assign(r1, m.Convert(m.Mem8(m.Word32(0x00123400)), PrimitiveType.Byte, PrimitiveType.UInt32));
                 m.MStore(m.Word32(0x00123404), m.Slice(PrimitiveType.Byte, r1, 0));
             });
         }
@@ -92,10 +91,7 @@ SsaProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-@"// SsaProcedureBuilder
-// Return size: 0
-define SsaProcedureBuilder
-SsaProcedureBuilder_entry:
+@"SsaProcedureBuilder_entry:
 	def r1_3
 	// succ:  l1
 l1:
@@ -116,10 +112,7 @@ SsaProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-@"// SsaProcedureBuilder
-// Return size: 0
-define SsaProcedureBuilder
-SsaProcedureBuilder_entry:
+@"SsaProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	r1_4 = Mem1[0x123400<32>:word16]
@@ -130,8 +123,29 @@ SsaProcedureBuilder_exit:
             RunTest(sExp, m =>
             {
                 var r1 = m.Register(arch.GetRegister("r1"));
-                m.Assign(r1, m.Cast(PrimitiveType.Word32, m.Mem16(m.Word32(0x00123400))));
+                m.Assign(r1, m.Convert(m.Mem16(m.Word32(0x00123400)), PrimitiveType.Word16, PrimitiveType.Word32));
                 m.MStore(m.Word32(0x00123400), m.Slice(PrimitiveType.Word16, m.IAdd(r1, 4), 0));
+            });
+        }
+
+        [Test]
+        public void Slp_Sum_dont_propagate_highbits()
+        {
+            var sExp =
+            #region Expected
+@"SsaProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	id_1 = CONVERT(Mem1[0x123400<32>:word16], word16, word32)
+	Mem2[0x123400<32>:word16] = SLICE(id_1 + 4<32>, word16, 8)
+SsaProcedureBuilder_exit:
+";
+            #endregion
+            RunTest(sExp, m =>
+            {
+                var r1 = m.Register(arch.GetRegister("r1"));
+                m.Assign(r1, m.Convert(m.Mem16(m.Word32(0x00123400)), PrimitiveType.Word16, PrimitiveType.Word32));
+                m.MStore(m.Word32(0x00123400), m.Slice(PrimitiveType.Word16, m.IAdd(r1, 4), 8));
             });
         }
 
@@ -140,10 +154,7 @@ SsaProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-@"// SsaProcedureBuilder
-// Return size: 0
-define SsaProcedureBuilder
-SsaProcedureBuilder_entry:
+@"SsaProcedureBuilder_entry:
 	// succ:  m1
 m1:
 	branch Mem4[0x123400<32>:word32] >= 0<32> m3
@@ -196,10 +207,7 @@ SsaProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-@"// SsaProcedureBuilder
-// Return size: 0
-define SsaProcedureBuilder
-SsaProcedureBuilder_entry:
+@"SsaProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	r3_5 = Mem2[0x123400<32>:byte]
@@ -215,22 +223,17 @@ SsaProcedureBuilder_exit:
                 m.Assign(r3, m.Seq(tmpHi, m.Mem8(m.Word32(0x00123400))));
                 m.MStore(m.Word32(0x00123404), m.Slice(PrimitiveType.Byte, r3, 0));
             });
-
         }
-
 
         [Test]
         public void Slp_NecessarySlice()
         {
             var sExp =
             #region Expected
-                @"// SsaProcedureBuilder
-// Return size: 0
-define SsaProcedureBuilder
-SsaProcedureBuilder_entry:
+@"SsaProcedureBuilder_entry:
 	// succ:  l1
 l1:
-	id_1 = (word32) Mem1[0x123400<32>:byte]
+	id_1 = CONVERT(Mem1[0x123400<32>:byte], byte, word32)
 	Mem2[0x123408<32>:word16] = SLICE(id_1, word16, 0)
 	Mem3[0x12340C<32>:word32] = id_1
 SsaProcedureBuilder_exit:
@@ -240,9 +243,61 @@ SsaProcedureBuilder_exit:
             RunTest(sExp, m =>
             {
                 var r3 = m.Register(arch.GetRegister("r3"));
-                m.Assign(r3, m.Cast(PrimitiveType.Word32, m.Mem8(m.Word32(0x00123400))));
+                m.Assign(r3, m.Convert(m.Mem8(m.Word32(0x00123400)), PrimitiveType.Byte, PrimitiveType.Word32));
                 m.MStore(m.Word32(0x00123408), m.Slice(PrimitiveType.Word16, r3, 0));
                 m.MStore(m.Word32(0x0012340C), r3);
+            });
+        }
+
+        [Test]
+        public void Slp_Call()
+        {
+            var sExp =
+            #region Expected
+@"SsaProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	call <invalid> (retsize: 0;)
+		uses: r2:id_1
+		defs: r3:id_2
+	Mem2[0x123400<32>:byte] = SLICE(id_2, byte, 0)
+SsaProcedureBuilder_exit:
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var r2 = m.Register(arch.GetRegister("r2"));
+                var r3 = m.Register(arch.GetRegister("r3"));
+                var external = new ProcedureConstant(PrimitiveType.Ptr32, new ExternalProcedure("external", new FunctionType()));
+                m.Call("external", 0,
+                    new[] { (r2.Storage, (Expression)r2) },
+                    new[] { (r3.Storage, r3) });
+                m.MStore(m.Word32(0x00123400), m.Slice(PrimitiveType.Byte, r3, 0));
+            });
+        }
+
+        [Test]
+        public void Slp_Dont_slice_memory_loads()
+        {
+            var sExp =
+            #region Expected
+@"SsaProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	bb = SLICE(Mem2[0x123400<32>:word16], byte, 0)
+	Mem3[0x123408<32>:byte] = bb
+SsaProcedureBuilder_exit:
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var ww = m.Temp(PrimitiveType.Word16, "ww");
+                var bb = m.Temp(PrimitiveType.Byte, "bb");
+                m.Assign(ww, m.Mem16(m.Word32(0x00123400)));
+                m.Assign(bb, m.Slice(bb.DataType, ww, 0));
+                m.Store(m.Mem8(m.Word32(0x00123408)), bb);
             });
         }
     }

@@ -27,7 +27,7 @@ using System.IO;
 namespace Reko.Core.Expressions
 {
     /// <summary>
-    /// Models binary expresions like integer add, floating point divide etc.
+    /// Models binary expressions like integer add, floating point divide etc.
     /// </summary>
 	public class BinaryExpression : Expression
 	{

@@ -38,8 +38,8 @@ namespace Reko.UnitTests.Core
             var stk = new StackLocalStorage(-16, PrimitiveType.Word32);
             var leSlice = EndianServices.Little.SliceStackStorage(stk, new BitRange(0, 8));
             var beSlice = EndianServices.Big.SliceStackStorage(stk, new BitRange(0, 8));
-            Assert.AreEqual("@@@", leSlice.ToString());
-            Assert.AreEqual("@@@", beSlice.ToString());
+            Assert.AreEqual("Stack +FFFFFFF0", leSlice.ToString());
+            Assert.AreEqual("Stack +FFFFFFF3", beSlice.ToString());
         }
     }
 }

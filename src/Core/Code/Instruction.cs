@@ -55,7 +55,6 @@ namespace Reko.Core.Code
 			Accept(fmt);
 			return sw.ToString();
 		}
-
     }
 
     /// <summary>

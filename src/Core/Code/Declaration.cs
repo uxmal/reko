@@ -55,7 +55,6 @@ namespace Reko.Core.Code
             return visitor.VisitDeclaration(this, ctx);
         }
 
-		public override bool IsControlFlow
         public override bool IsControlFlow => false;
 
 		public Identifier Identifier { get; set; }

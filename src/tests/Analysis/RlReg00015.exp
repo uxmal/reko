@@ -31,8 +31,7 @@ l0C00_001E:
 	Mem51[ss:0x6B6<16>:word16] = ax_48
 	call fn0C00_0037 (retsize: 2;)
 		uses: ax:0<16>,ds:ds_24,dx:0xFF<16>
-	ax_54 = Mem51[ss:0x6B6<16>:word16]
-	al_57 = SLICE(ax_54, byte, 0) (alias)
+	al_57 = Mem51[ss:0x6B6<16>:byte]
 	msdos_terminate(al_57)
 fn0C00_0000_exit:
 // fn0C00_0037 /////////////////////

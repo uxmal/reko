@@ -56,6 +56,7 @@ namespace Reko.Core.Code
         {
             return visitor.VisitSwitchInstruction(this, ctx);
         }
+
         public override void Accept(InstructionVisitor v)
         {
             v.VisitSwitchInstruction(this);

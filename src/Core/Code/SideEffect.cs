@@ -50,6 +50,7 @@ namespace Reko.Core.Code
         {
             return visitor.VisitSideEffect(this, ctx);
         }
+
         public override void Accept(InstructionVisitor v)
 		{
 			v.VisitSideEffect(this);

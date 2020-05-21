@@ -39,17 +39,17 @@ sp_2: orig: sp
 Top_3: orig: Top
 al:al
     def:  def al
-    uses: al_19 = al - 0x30<8>
-          al_22 = al - 0x37<8>
-          al_25 = al - 0x57<8>
-          branch al <u 0x30<8> l0C00_0032
+    uses: branch al <u 0x30<8> l0C00_0032
           branch al <=u 0x39<8> l0C00_0022
+          al_19 = al - 0x30<8>
+          branch al <u 0x3A<8> l0C00_0030
           branch al <u 0x41<8> l0C00_0032
           branch al <=u 0x46<8> l0C00_0022
           branch al <u 0x61<8> l0C00_0032
           branch al >u 0x66<8> l0C00_0032
-          branch al <u 0x3A<8> l0C00_0030
+          al_22 = al - 0x37<8>
           branch al <u 0x47<8> l0C00_0030
+          al_25 = al - 0x57<8>
           alOut = al
 SCZO_5: orig: SCZO
 C_6: orig: C

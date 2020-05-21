@@ -16,8 +16,8 @@ Mem8: orig: Mem0
     uses: ax_9 = Mem8[ds:si_7:word16]
 ax_9: orig: ax
     def:  ax_9 = Mem8[ds:si_7:word16]
-    uses: Mem14[ds:di:word16] = ax_9
-          branch ax_9 != 0x20<16> l0C00_0005
+    uses: branch ax_9 != 0x20<16> l0C00_0005
+          Mem14[ds:di:word16] = ax_9
           branch ax_9 != 0<16> l0C00_0011
           branch ax_9 != 0xD<16> l0C00_001A
 si_10: orig: si
@@ -61,8 +61,8 @@ ds:ds
     def:  def ds
     uses: ax_9 = Mem8[ds:si_7:word16]
           Mem14[ds:di:word16] = ax_9
-          Mem22[ds:0x302<16>:word16] = Mem14[ds:0x302<16>:word16] + 1<16>
           Mem31[ds:0x300<16>:word16] = ax_29
+          Mem22[ds:0x302<16>:word16] = Mem14[ds:0x302<16>:word16] + 1<16>
           Mem22[ds:0x302<16>:word16] = Mem14[ds:0x302<16>:word16] + 1<16>
 Mem0:Mem
     def:  def Mem0
