@@ -43,43 +43,33 @@ namespace Reko.Core
 
 		protected ImageReader(MemoryArea img, Address addr)
         {
-            if (img == null)
-                throw new ArgumentNullException("img");
-            if (addr == null)
-                throw new ArgumentNullException("addr");
+            this.image = img ?? throw new ArgumentNullException(nameof(img));
+            this.addrStart = addr ?? throw new ArgumentNullException(nameof(addr));
             long o = addr - img.BaseAddress;
             if (o >= img.Length)
-                throw new ArgumentOutOfRangeException("addr", $"Address {addr} is outside of image.");
+                throw new ArgumentOutOfRangeException(nameof(addr), $"Address {addr} is outside of image.");
             this.offStart = o;
             this.offEnd = img.Bytes.Length;
             this.off = offStart;
-            this.image = img;
             this.bytes = img.Bytes;
-            this.addrStart = addr;
         }
 
         protected ImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
         {
-            if (img == null)
-                throw new ArgumentNullException("img");
-            if (addrBegin == null)
-                throw new ArgumentNullException("addrBegin");
+            this.image = img ?? throw new ArgumentNullException(nameof(img));
+            this.addrStart = addrBegin ?? throw new ArgumentNullException(nameof(addrBegin));
             if (addrEnd == null)
-                throw new ArgumentNullException("addrBegin");
+                throw new ArgumentNullException(nameof(addrEnd));
             this.offStart = addrBegin - img.BaseAddress;
             // Prevent walking off the end of the bytes.
             this.offEnd = Math.Min(addrEnd - img.BaseAddress, img.Bytes.Length);
             this.off = this.offStart;
-            this.image = img;
             this.bytes = img.Bytes;
-            this.addrStart = addrBegin;
         }
 
         protected ImageReader(MemoryArea img, ulong off)
         {
-            if (img == null)
-                throw new ArgumentNullException("img");
-            this.image = img;
+            this.image = img ?? throw new ArgumentNullException(nameof(img));
             this.bytes = img.Bytes;
             this.addrStart = img.BaseAddress + off;
             this.offStart = (long) off;
