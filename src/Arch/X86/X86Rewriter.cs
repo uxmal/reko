@@ -182,9 +182,11 @@ namespace Reko.Arch.X86
                 case Mnemonic.vdivsd: RewriteScalarBinop(m.FDiv, PrimitiveType.Real64, true); break;
                 case Mnemonic.divss: RewriteScalarBinop(m.FDiv, PrimitiveType.Real32, false); break;
                 case Mnemonic.vdivss: RewriteScalarBinop(m.FDiv, PrimitiveType.Real32, true); break;
-                case Mnemonic.f2xm1: RewriteF2xm1(); break;
                 case Mnemonic.emms: RewriteEmms(); break;
                 case Mnemonic.enter: RewriteEnter(); break;
+                case Mnemonic.endbr32:
+                case Mnemonic.endbr64: RewriteEndbr(); break;
+                case Mnemonic.f2xm1: RewriteF2xm1(); break;
                 case Mnemonic.fabs: RewriteFabs(); break;
                 case Mnemonic.fadd: EmitCommonFpuInstruction(m.FAdd, false, false); break;
                 case Mnemonic.faddp: EmitCommonFpuInstruction(m.FAdd, false, true); break;

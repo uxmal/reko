@@ -28,6 +28,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Reko.Arch.X86
@@ -144,6 +145,14 @@ namespace Reko.Arch.X86
         {
             iclass = InstrClass.ConditionalTransfer;
             m.Branch(CreateTestCondition(cc, instrCur.Mnemonic), OperandAsCodeAddress(op1), InstrClass.ConditionalTransfer);
+        }
+
+        private void RewriteEndbr()
+        {
+            // Endbr signals an indirect jump/call target, but is otherwise a NOP. We want to avoid fusing
+            // endbr's with other kinds of NOPs however, so we set the InstrClass to just linear.
+            m.Nop();
+            Debug.Assert(iclass == InstrClass.Linear);
         }
 
         private void RewriteInt()

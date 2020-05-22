@@ -133,6 +133,8 @@ namespace Reko.Arch.X86
         divps,
         divsd,
         divss,
+        endbr32,
+        endbr64,
         emms,
         enter,
         f2xm1,

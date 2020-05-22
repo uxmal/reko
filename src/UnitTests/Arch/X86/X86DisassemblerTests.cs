@@ -3129,5 +3129,12 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode64("push\tcx", "66 51");
         }
+
+        [Test]
+        public void X86Dis_endbr()
+        {
+            AssertCode32("endbr32", "F3 0F 1E FB");
+            AssertCode32("endbr64", "F3 0F 1E FA");
+        }
     }
 }

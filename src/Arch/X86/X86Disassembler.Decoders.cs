@@ -708,5 +708,39 @@ namespace Reko.Arch.X86
                 return true;
             }
         }
+
+        /// <summary>
+        /// Decodes an instruction encoded in the ModRM byte.
+        /// </summary>
+        public class ModRmOpcodeDecoder : Decoder
+        {
+            private readonly InstructionDecoder[] decoders;
+
+            public ModRmOpcodeDecoder(
+                InstructionDecoder defaultDecoder,
+                params (byte, InstructionDecoder) [] decoders)
+            {
+                this.decoders = new InstructionDecoder[256];
+                foreach (var (b, decoder) in decoders)
+                {
+                    Debug.Assert(this.decoders[b] == null, $"Decoder {b:X2} has already a value!");
+                    this.decoders[b] = decoder;
+                }
+                for (int i = 0; i < this.decoders.Length; ++i)
+                {
+                    if (this.decoders[i] == null)
+                    {
+                        this.decoders[i] = defaultDecoder;
+                    }
+                }
+            }
+
+            public override bool Decode(X86Disassembler disasm, byte op)
+            {
+                if (!disasm.TryEnsureModRM(out byte modRm))
+                    return false;
+                return this.decoders[modRm].Decode(disasm, op);
+            }
+        }
     }
 }

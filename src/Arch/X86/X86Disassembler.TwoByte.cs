@@ -31,6 +31,8 @@ namespace Reko.Arch.X86
     {
         private static Decoder[] CreateTwobyteDecoders()
         {
+            var reservedNop = Instr(Mnemonic.nop, InstrClass.Linear | InstrClass.Padding, Ev);
+
             return new Decoder[]
             {
 				// 0F 00
@@ -94,9 +96,19 @@ namespace Reko.Arch.X86
                 Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev),
                 Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev),
                 Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev),
+
                 Instr(Mnemonic.cldemote, Eb),
                 Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev),
-                Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev),
+                new PrefixedDecoder(
+                    dec: reservedNop,
+                    dec66: reservedNop,
+                    decF3: new ModRmOpcodeDecoder(
+                        reservedNop,
+                        (0xFA, Instr(Mnemonic.endbr64, InstrClass.Linear)),
+                        (0xFB, Instr(Mnemonic.endbr32, InstrClass.Linear))),
+                    decF2: reservedNop,
+                    decWide: reservedNop,
+                    dec66Wide: reservedNop),
                 Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev),
 
 				// 0F 20
