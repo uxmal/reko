@@ -13,6 +13,8 @@ void _start(void (* rdx)(), Eq_n qwArg00)
 }
 
 // 0000000000400D00: void deregister_tm_clones()
+// Called from:
+//      __do_global_dtors_aux
 void deregister_tm_clones()
 {
 	if (false || 0x00 == 0x00)
@@ -21,6 +23,8 @@ void deregister_tm_clones()
 }
 
 // 0000000000400D40: void register_tm_clones()
+// Called from:
+//      frame_dummy
 void register_tm_clones()
 {
 	if (0 == 0x00 || 0x00 == 0x00)
@@ -51,6 +55,8 @@ void frame_dummy()
 }
 
 // 0000000000400DC6: Register word32 component(Register Eq_n ecx, Register word32 edx, Register word32 esi, Register word64 rdi, Register int32 r8d)
+// Called from:
+//      print_pixel
 word32 component(Eq_n ecx, word32 edx, word32 esi, word64 rdi, int32 r8d)
 {
 	Eq_n ecx = (word32) rcx;
@@ -96,6 +102,8 @@ l0000000000400EC1:
 }
 
 // 0000000000400EE9: void print_pixel(Register word32 ecx, Register word64 rdx, Register word64 rsi, Register word64 rdi, Register (ptr32 Eq_n) fs)
+// Called from:
+//      main
 void print_pixel(word32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * fs)
 {
 	word64 rax_n = fs->qw0028;

@@ -1,6 +1,8 @@
 void fn0800_0150()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8B0D
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO ah bx dx es Top
@@ -15,6 +17,8 @@ fn0800_0150_exit:
 void fn0800_0163()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8B0D
 // MayUse: 
 // LiveOut:
 // Trashed: Top
@@ -28,6 +32,8 @@ fn0800_0163_exit:
 void fn0800_0164(byte bArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8B0D
 // MayUse:  Stack +0002:[0..7]
 // LiveOut:
 // Trashed:
@@ -68,6 +74,8 @@ fn0800_0176_exit:
 word16 fn0800_01B9(selector ds, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8B0D
 // MayUse:  ds:[0..15]
 // LiveOut: ax dx
 // Trashed: ax dx Top
@@ -87,6 +95,8 @@ fn0800_01B9_exit:
 void fn0800_01E6(word16 si, word16 di, selector es)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0150
 // MayUse:  di:[0..15] es:[0..15] si:[0..15]
 // LiveOut:
 // Trashed: SCZO ah bx dx Top
@@ -294,6 +304,8 @@ main_exit:
 void fn0800_0402(word16 cx, word16 dx, word16 bx, selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  bx:[0..15] cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15]
 // LiveOut:
 // Trashed: SCZDO ax bx cx dx es Top
@@ -434,6 +446,8 @@ fn0800_0402_exit:
 word16 fn0800_0541(word16 di, selector ds, ptr16 & bpOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  di:[0..15] ds:[0..15] ss:[0..15]
 // LiveOut: bp ds dx sp
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
@@ -865,6 +879,10 @@ fn0800_0541_exit:
 word16 fn0800_09A3(selector ds, ptr16 & bpOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0541
+//      fn0800_5E64
+//      fn0800_669C
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: bp ds dx sp
 // Trashed: SCZDO ax bp bx cx di ds dx es si sp Top
@@ -1001,6 +1019,12 @@ fn0800_09A3_exit:
 word16 fn0800_0ABC(selector ds, word32 dwArg04, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
+//      fn0800_112D
+//      fn0800_12E2
+//      fn0800_18D9
+//      fn0800_19EE
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0004:[0..31]
 // LiveOut: cx dx
 // Trashed: SCZDO ax bx cx di dx es Top
@@ -1042,6 +1066,9 @@ fn0800_0ABC_exit:
 word16 fn0800_0B79(word32 dwArg02, ui32 dwArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
+//      fn0800_0ABC
 // MayUse:  ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
 // LiveOut: ax
 // Trashed: SCZO ax bx cx dx Top
@@ -1124,6 +1151,9 @@ fn0800_0B79_exit:
 word16 fn0800_0C08(word16 wArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_831D
+//      fn0800_8407
 // MayUse:  Stack +0002:[0..15]
 // LiveOut: ax
 // Trashed: SCZO ax bx cx dx Top
@@ -1146,6 +1176,9 @@ fn0800_0C08_exit:
 word16 fn0800_0C29(selector ds, word32 dwArg02, byte bArg06, ptr16 & clOut, ptr16 & dxOut, ptr16 & bxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0402
+//      fn0800_0541
 // MayUse:  ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..7]
 // LiveOut: ax bx cl dx
 // Trashed: SCZO ax bx cl dx es Top
@@ -1177,6 +1210,10 @@ fn0800_0C29_exit:
 word16 fn0800_0C6C(selector ds, segptr32 ptrArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0402
+//      fn0800_0541
+//      fn0800_2DE2
 // MayUse:  ds:[0..15] Stack +0002:[0..31]
 // LiveOut: dx
 // Trashed: SCZO ax bx dx es Top
@@ -1198,6 +1235,12 @@ fn0800_0C6C_exit:
 word16 fn0800_0C93(selector ds, word32 dwArg02, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
+//      fn0800_112D
+//      fn0800_12E2
+//      fn0800_18D9
+//      fn0800_19EE
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: ax dx
 // Trashed: SCZDO ax bx cx dx es Top
@@ -1286,6 +1329,24 @@ l0800_0D06_2:
 word16 fn0800_0D24(selector ds, word16 wArg02, segptr32 ptrArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0402
+//      fn0800_0541
+//      fn0800_12E2
+//      fn0800_18D9
+//      fn0800_19EE
+//      fn0800_1CF6
+//      fn0800_24FE
+//      fn0800_3678
+//      fn0800_37DF
+//      fn0800_3C99
+//      fn0800_3DCF
+//      fn0800_3E9A
+//      fn0800_4047
+//      fn0800_4110
+//      fn0800_4152
+//      fn0800_4234
+//      fn0800_4311
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..31]
 // LiveOut: ax bx cx di ds dx si
 // Trashed: SCZDO ax bx cx di ds dx es si Top
@@ -1329,6 +1390,8 @@ fn0800_0D24_exit:
 word16 fn0800_0DA9(selector ds, word32 dwArg02, word32 dwArg06, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0D24
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
 // LiveOut: cx ds dx
 // Trashed: SCZO ax bx cx ds dx es Top
@@ -1351,6 +1414,9 @@ fn0800_0DA9_exit:
 word16 fn0800_0DCE(word16 cx, word16 dx, word16 bx, selector ds, ptr16 & diOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0402
+//      fn0800_0541
 // MayUse:  bx:[0..15] cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15]
 // LiveOut: di si
 // Trashed: SCZDO ax di dx si Top
@@ -1370,6 +1436,8 @@ fn0800_0DCE_exit:
 word16 fn0800_0DE8(word16 cx, word16 dx, selector ds, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15]
 // LiveOut: ds dx
 // Trashed: SCZDOP ax bx cx di ds dx es Top
@@ -1641,6 +1709,8 @@ l0800_0E86:
 word16 fn0800_112D(word16 cx, word16 dx, selector ds, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15]
 // LiveOut: ds dx
 // Trashed: SCZDOP bx cx di ds dx es Top
@@ -1786,6 +1856,8 @@ l0800_119C:
 word16 fn0800_12E2(word16 cx, word16 dx, selector ds, ptr16 & bpOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15]
 // LiveOut: bp ds dx sp
 // Trashed: SCZDOP ax bp bx cx di ds dx es si sp Top
@@ -2346,6 +2418,8 @@ fn0800_12E2_exit:
 word16 fn0800_18D9(word16 cx, word16 dx, selector ds, ptr16 & bpOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15]
 // LiveOut: bp ds dx sp
 // Trashed: SCZDOP ax bp bx cx di ds dx es si sp Top
@@ -2464,6 +2538,8 @@ l0800_19AD:
 word16 fn0800_19EE(word16 cx, word16 dx, selector ds, ptr16 & bpOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15]
 // LiveOut: bp ds dx sp
 // Trashed: SCZDOP ax bp bx cx di ds dx es si sp Top
@@ -2863,6 +2939,10 @@ l0800_1CA8:
 word16 fn0800_1CF6(selector ds, word16 wArg02, ptr16 & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_12E2
+//      fn0800_18D9
+//      fn0800_19EE
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15]
 // LiveOut: bp cx ds dx si sp
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
@@ -2989,6 +3069,9 @@ fn0800_1CF6_exit:
 word16 fn0800_1E5E(selector ds, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_12E2
+//      fn0800_18D9
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: bp ds
 // Trashed: SCZO ax bp bx cx di ds dx es Top
@@ -3040,6 +3123,8 @@ fn0800_1E5E_exit:
 word16 fn0800_1F5C(selector ds, segptr32 ptrArg02, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_12E2
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: ax ds dx
 // Trashed: SCZO ax bx cx di ds dx es si Top
@@ -3182,6 +3267,8 @@ l0800_203D_3:
 byte fn0800_2085(selector ds, segptr32 ptrArg02, segptr32 ptrArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_12E2
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
 // LiveOut: cx
 // Trashed: SCZDO ax bx cx es Top
@@ -3361,6 +3448,8 @@ l0800_2130_3:
 void fn0800_2201(selector ds, segptr32 ptrArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_18D9
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut:
 // Trashed: SCZDO ax bx cx dx es Top
@@ -3425,6 +3514,8 @@ fn0800_2201_exit:
 void fn0800_22FE(selector ds, segptr32 ptrArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_18D9
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut:
 // Trashed: SCZDO ax bx cx dx es Top
@@ -3490,6 +3581,9 @@ fn0800_22FE_exit:
 byte fn0800_23EC(selector ds, segptr32 ptrArg02, ptr16 & bpOut, ptr16 & siOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_12E2
+//      fn0800_18D9
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: bp cx ds si sp
 // Trashed: SCZDO ax bp bx cx di ds dx es si sp Top
@@ -3629,6 +3723,9 @@ fn0800_23EC_exit:
 selector fn0800_24FE(selector ds, segptr32 ptrArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_19EE
+//      fn0800_23EC
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: ds
 // Trashed: SCZO ax bx cx di ds dx es si Top
@@ -3792,6 +3889,12 @@ fn0800_24FE_exit:
 void fn0800_2688(selector ds, ui32 dwArg02, word16 wArg06, word16 wArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_1F5C
+//      fn0800_2085
+//      fn0800_2201
+//      fn0800_22FE
+//      fn0800_23EC
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15]
 // LiveOut:
 // Trashed: SCZO ax bx cl dx es Top
@@ -3877,6 +3980,8 @@ l0800_2779:
 word16 fn0800_283D(selector ds, segptr32 ptrArg02, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_12E2
 // MayUse:  ds:[0..15] Stack +0002:[0..31]
 // LiveOut: ax dx
 // Trashed: SCZO ax bx cx dx es Top
@@ -3998,6 +4103,8 @@ fn0800_283D_exit:
 word16 fn0800_2931(segptr32 ptrArg02, segptr32 ptrArg06, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_12E2
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..31]
 // LiveOut: ax dx
 // Trashed: SCZO ax bx cx dx es Top
@@ -4112,6 +4219,10 @@ fn0800_2931_exit:
 word16 fn0800_29C5(word16 cx, word16 dx, word16 si, selector ds, segptr32 ptrArg02, segptr32 ptrArg06, segptr32 ptrArg0A, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_18D9
+//      fn0800_19EE
+//      fn0800_29C5
 // MayUse:  cx:[0..15] ds:[0..15] dx:[0..15] si:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31] Stack +000A:[0..31]
 // LiveOut: ax ds
 // Trashed: SCZDOP ax bx cx ds dx es Top
@@ -4407,6 +4518,8 @@ fn0800_29C5_exit:
 word16 fn0800_2C9A(selector ds, ptr16 & dxOut, ptr16 & bxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  ds:[0..15]
 // LiveOut: bx cx dx
 // Trashed: SCZO ax bx cx dx Top
@@ -4445,6 +4558,11 @@ fn0800_2C9A_exit:
 word16 fn0800_2CCF(selector ds, segptr32 ptrArg02, word16 wArg06, word16 wArg08, ptr16 & clOut, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_12E2
+//      fn0800_1CF6
+//      fn0800_1E5E
+//      fn0800_2D0A
 // MayUse:  ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15]
 // LiveOut: ax cl dx
 // Trashed: SCZO ax bx cl dx es Top
@@ -4474,6 +4592,8 @@ fn0800_2CCF_exit:
 word16 fn0800_2D0A(selector ds, ptr16 & dxOut, ptr16 & bpOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_5374
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ax bp ds dx sp
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
@@ -4560,6 +4680,11 @@ fn0800_2D0A_exit:
 void fn0800_2DBF(selector ds, word16 wArg02, word16 wArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
+//      fn0800_12E2
+//      fn0800_18D9
+//      fn0800_19EE
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
 // LiveOut:
 // Trashed: ax Top
@@ -4578,6 +4703,12 @@ fn0800_2DBF_exit:
 word16 fn0800_2DE2(word16 cx, word16 dx, word16 si, selector ds, segptr32 ptrArg02, ptr16 & cxOut, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
+//      fn0800_112D
+//      fn0800_12E2
+//      fn0800_29C5
+//      fn0800_2DE2
 // MayUse:  cx:[0..15] ds:[0..15] dx:[0..15] si:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: ax cx ds dx
 // Trashed: SCZDOP ax bx cx ds dx es Top
@@ -4995,6 +5126,8 @@ l0800_3136_3:
 word16 fn0800_31B4(selector ds, word32 dwArg02, ptr16 & cxOut, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_2DE2
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: ax cx dx
 // Trashed: SCZDOP ax bx cx dx es Top
@@ -5078,6 +5211,8 @@ fn0800_31B4_exit:
 word16 fn0800_32CD(selector ds, word32 dwArg02, word16 wArg06, selector psegArg08, word16 wArg0A, ptr16 & cxOut, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_31B4
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000A:[0..15]
 // LiveOut: ax cx dx
 // Trashed: SCZDOP ax bx cx dx es Top
@@ -5157,6 +5292,8 @@ l0800_32F8_2:
 word16 fn0800_335C(selector ds, segptr32 ptrArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_2DE2
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: dx
 // Trashed: SCZDOP ax bx cx dx es Top
@@ -5231,6 +5368,11 @@ l0800_33C5_2:
 word16 fn0800_33CD(selector ds, segptr32 ptrArg02, word16 wArg06, word32 dwArg08, ptr16 & cxOut, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_2DE2
+//      fn0800_32CD
+//      fn0800_335C
+//      fn0800_3678
 // MayUse:  ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..31]
 // LiveOut: ax cx dx
 // Trashed: SCZDOP ax bx cx dx es Top
@@ -5342,6 +5484,10 @@ fn0800_33CD_exit:
 word16 fn0800_3479(selector ds, segptr32 ptrArg02, word16 wArg06, ptr16 & cxOut, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_2DE2
+//      fn0800_32CD
+//      fn0800_33CD
 // MayUse:  ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..15]
 // LiveOut: ax cx dx
 // Trashed: SCZDOP ax bx cx dx es Top
@@ -5447,6 +5593,17 @@ fn0800_3479_exit:
 word16 fn0800_3509(word16 wArg02, selector psegArg04, word32 dwArg06, ptr16 & bxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0C93
+//      fn0800_12E2
+//      fn0800_19EE
+//      fn0800_29C5
+//      fn0800_2DE2
+//      fn0800_31B4
+//      fn0800_3764
+//      fn0800_37DF
+//      fn0800_3992
+//      fn0800_3C99
 // MayUse:  ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..31]
 // LiveOut: bx dx
 // Trashed: SCZDO ax bx dx es Top
@@ -5522,6 +5679,15 @@ l0800_355C_2:
 word16 fn0800_35A3(word16 wArg02, selector psegArg04, word32 dwArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0ABC
+//      fn0800_12E2
+//      fn0800_19EE
+//      fn0800_29C5
+//      fn0800_31B4
+//      fn0800_335C
+//      fn0800_37DF
+//      fn0800_3992
 // MayUse:  ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..31]
 // LiveOut: dx
 // Trashed: SCZDO ax bx dx es Top
@@ -5596,6 +5762,9 @@ l0800_35F6_2:
 word16 fn0800_363D(selector ds, segptr32 ptrArg02, word32 dwArg06, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_388C
+//      fn0800_3992
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
 // LiveOut: cx dx
 // Trashed: SCZDOP ax bx cx dx es Top
@@ -5617,6 +5786,10 @@ fn0800_363D_exit:
 word16 fn0800_3678(selector ds, segptr32 ptrArg02, ptr16 & dxOut, ptr16 & siOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
+//      fn0800_112D
+//      fn0800_19EE
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: cx ds dx si
 // Trashed: SCZO ax bx cx ds dx es si Top
@@ -5723,6 +5896,9 @@ fn0800_3678_exit:
 word16 fn0800_3764(selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
+//      fn0800_112D
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: dx
 // Trashed: SCZO ax bx cx dx es Top
@@ -5792,6 +5968,11 @@ l0800_378D_2:
 word16 fn0800_37BE(word16 cx, word16 dx, selector ds, word32 dwArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
+//      fn0800_12E2
+//      fn0800_19EE
+//      fn0800_3BC3
 // MayUse:  cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: si
 // Trashed: SCZDO ax bx di es si Top
@@ -5806,6 +5987,9 @@ fn0800_37BE_exit:
 word16 fn0800_37DF(selector ds, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
+//      fn0800_112D
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ds si
 // Trashed: SCZDO ax bx cx ds dx es si Top
@@ -5872,6 +6056,9 @@ fn0800_37DF_exit:
 word16 fn0800_388C(word16 dx, selector ds, ptr16 & cxOut, ptr16 & dxOut, ptr16 & siOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
+//      fn0800_112D
 // MayUse:  ds:[0..15] dx:[0..15] ss:[0..15]
 // LiveOut: ax cx ds dx si
 // Trashed: SCZDOP ax bx cx di ds dx es si Top
@@ -5933,6 +6120,9 @@ fn0800_388C_exit:
 word16 fn0800_395B(segptr32 ptrArg02, segptr32 ptrArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_388C
+//      fn0800_3992
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..31]
 // LiveOut: ax
 // Trashed: SCZO ax bx es Top
@@ -5951,6 +6141,8 @@ fn0800_395B_exit:
 word16 fn0800_3992(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ax ds dx
 // Trashed: SCZO ax bx cx di ds dx es Top
@@ -6110,6 +6302,20 @@ fn0800_3992_exit:
 word16 fn0800_3B0A(selector ds, word16 wArg0A, word16 wArg0C, ptr16 & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
+//      fn0800_12E2
+//      fn0800_3BC3
+//      fn0800_3C99
+//      fn0800_46FE
+//      fn0800_4BB1
+//      fn0800_4F2C
+//      fn0800_51A9
+//      fn0800_5374
+//      fn0800_5E64
+//      fn0800_67BF
+//      fn0800_6F20
+//      fn0800_741D
 // MayUse:  ds:[0..15] ss:[0..15] Stack +000A:[0..15] Stack +000C:[0..15]
 // LiveOut: ax bp ds dx si sp
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
@@ -6199,6 +6405,8 @@ fn0800_3B0A_exit:
 word16 fn0800_3BC3(word16 cx, word16 dx, selector ds, word32 dwArg02, word32 dwArg06, ptr16 & siOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_1E5E
 // MayUse:  cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
 // LiveOut: bp ds si
 // Trashed: SCZDO ax bp bx cx di ds dx es si sp Top
@@ -6267,6 +6475,9 @@ fn0800_3BC3_exit:
 byte fn0800_3C99(selector ds, word32 dwArg02, word16 wArg06, word16 wArg08, ptr16 & bpOut, ptr16 & siOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_1E5E
+//      fn0800_23EC
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15]
 // LiveOut: bp cx ds si sp
 // Trashed: SCZDO ax bp bx cx di ds dx es si sp Top
@@ -6391,6 +6602,14 @@ l0800_3CC4_2:
 word16 fn0800_3DCF(selector ds, segptr32 ptrArg02, ptr16 & chOut, ptr16 & dxOut, ptr16 & diOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_3E27
+//      fn0800_3F0A
+//      fn0800_3FAD
+//      fn0800_46FE
+//      fn0800_51A9
+//      fn0800_741D
+//      fn0800_8359
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: ax cx di ds dx
 // Trashed: SCZO ax bx cx di ds dx es Top
@@ -6434,6 +6653,18 @@ fn0800_3DCF_exit:
 word16 fn0800_3E27(selector ds, word32 dwArg02, ptr16 & cxOut, ptr16 & dxOut, ptr16 & diOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_12E2
+//      fn0800_1CF6
+//      fn0800_1E5E
+//      fn0800_3E5D
+//      fn0800_3F58
+//      fn0800_4BB1
+//      fn0800_5374
+//      fn0800_5DCE
+//      fn0800_67BF
+//      fn0800_7A02
+//      fn0800_7C78
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: ax cx di ds dx
 // Trashed: SCZO ax bx cx di ds dx es Top
@@ -6461,6 +6692,18 @@ fn0800_3E27_exit:
 word16 fn0800_3E5D(selector ds, word32 dwArg02, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_1CF6
+//      fn0800_24FE
+//      fn0800_3992
+//      fn0800_4C55
+//      fn0800_4F2C
+//      fn0800_51A9
+//      fn0800_5374
+//      fn0800_67BF
+//      fn0800_6AD4
+//      fn0800_6F20
+//      fn0800_741D
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: ds dx
 // Trashed: SCZO bx cx di ds dx es Top
@@ -6484,6 +6727,9 @@ fn0800_3E5D_exit:
 word16 fn0800_3E9A(selector ds, segptr32 ptrArg02, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_51A9
+//      fn0800_741D
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: ax ds dx
 // Trashed: SCZO ax bx cx di ds dx es Top
@@ -6530,6 +6776,10 @@ fn0800_3E9A_exit:
 word16 fn0800_3F0A(selector ds, word32 dwArg02, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
+//      fn0800_112D
+//      fn0800_67BF
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: ax ds dx
 // Trashed: SCZO ax bx cx di ds dx es Top
@@ -6558,6 +6808,15 @@ fn0800_3F0A_exit:
 word16 fn0800_3F58(selector ds, word32 dwArg02, ptr16 & diOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
+//      fn0800_112D
+//      fn0800_12E2
+//      fn0800_46FE
+//      fn0800_4F2C
+//      fn0800_51A9
+//      fn0800_67BF
+//      fn0800_6F20
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: di ds dx
 // Trashed: SCZO bx cx di ds dx es Top
@@ -6586,6 +6845,11 @@ fn0800_3F58_exit:
 word16 fn0800_3FAD(selector ds, word32 dwArg02, ptr16 & diOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_46FE
+//      fn0800_51A9
+//      fn0800_5E64
+//      fn0800_741D
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: ax di ds
 // Trashed: SCZO ax bx cx di ds dx es Top
@@ -6610,6 +6874,14 @@ fn0800_3FAD_exit:
 word16 fn0800_401E(selector ds, byte bArg02, word32 dwArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_409C
+//      fn0800_46FE
+//      fn0800_4BB1
+//      fn0800_67BF
+//      fn0800_741D
+//      fn0800_75EA
+//      fn0800_831D
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..7] Stack +0004:[0..31]
 // LiveOut: ax bx cx ds dx
 // Trashed: SCZO ax bx cx di ds dx es Top
@@ -6640,6 +6912,17 @@ fn0800_401E_exit:
 word16 fn0800_4047(selector ds, byte bArg02, segptr32 ptrArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & diOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_401E
+//      fn0800_40BF
+//      fn0800_46FE
+//      fn0800_51A9
+//      fn0800_5E64
+//      fn0800_67BF
+//      fn0800_6F20
+//      fn0800_741D
+//      fn0800_75EA
+//      fn0800_8624
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..7] Stack +0004:[0..31]
 // LiveOut: ax bx cx di ds dx
 // Trashed: SCZO ax bx cx di ds dx es Top
@@ -6685,6 +6968,20 @@ fn0800_4047_exit:
 word16 fn0800_409C(selector ds, word16 wArg02, word16 wArg04, word32 dwArg06, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
+//      fn0800_12E2
+//      fn0800_46FE
+//      fn0800_4BB1
+//      fn0800_4C55
+//      fn0800_4F2C
+//      fn0800_51A9
+//      fn0800_67BF
+//      fn0800_6AD4
+//      fn0800_6F20
+//      fn0800_73AC
+//      fn0800_741D
+//      fn0800_75EA
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..31]
 // LiveOut: ax ds dx
 // Trashed: SCZO ax bx cx di ds dx es Top
@@ -6710,6 +7007,11 @@ fn0800_409C_exit:
 word16 fn0800_40BF(selector ds, byte bArg02, word32 dwArg04, ptr16 & dxOut, ptr16 & diOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_46FE
+//      fn0800_51A9
+//      fn0800_5E64
+//      fn0800_741D
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..7] Stack +0004:[0..31]
 // LiveOut: ax di ds dx
 // Trashed: SCZO ax bx cx di ds dx es Top
@@ -6739,6 +7041,12 @@ fn0800_40BF_exit:
 byte fn0800_4110(selector ds, word32 dwArg02, word16 wArg06, word16 wArg08, word32 dwArg0A, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_1CF6
+//      fn0800_2D0A
+//      fn0800_3B0A
+//      fn0800_5B15
+//      fn0800_7FDC
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000A:[0..31]
 // LiveOut: cx di ds si
 // Trashed: SCZO ax bx cx di ds dx es si Top
@@ -6772,6 +7080,18 @@ fn0800_4110_exit:
 byte fn0800_4152(selector ds, word32 dwArg02, word16 wArg06, word16 wArg08, word32 dwArg0A, ptr16 & siOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_12E2
+//      fn0800_1E5E
+//      fn0800_3B0A
+//      fn0800_55E8
+//      fn0800_579B
+//      fn0800_5D2F
+//      fn0800_5E64
+//      fn0800_669C
+//      fn0800_67BF
+//      fn0800_6AD4
+//      fn0800_73AC
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000A:[0..31]
 // LiveOut: ax ds si
 // Trashed: SCZO ax bx cx di ds dx es si Top
@@ -6803,6 +7123,19 @@ fn0800_4152_exit:
 void fn0800_4194(selector ds, word32 dwArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
+//      fn0800_112D
+//      fn0800_12E2
+//      fn0800_1CF6
+//      fn0800_3992
+//      fn0800_3BC3
+//      fn0800_3C99
+//      fn0800_46FE
+//      fn0800_4C55
+//      fn0800_51A9
+//      fn0800_5B15
+//      fn0800_5DCE
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut:
 // Trashed: SCZO bx cx es Top
@@ -6827,6 +7160,14 @@ fn0800_4194_exit:
 word16 fn0800_4234(selector ds, word32 dwArg02, word32 dwArg06, ptr16 & siOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
+//      fn0800_12E2
+//      fn0800_19EE
+//      fn0800_2DE2
+//      fn0800_388C
+//      fn0800_3BC3
+//      fn0800_3C99
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
 // LiveOut: cx ds si
 // Trashed: SCZO bx cx di ds es si Top
@@ -6852,6 +7193,12 @@ fn0800_4234_exit:
 void fn0800_4271(selector ds, word16 wArg02, word16 wArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_3DCF
+//      fn0800_3E9A
+//      fn0800_4047
+//      fn0800_4110
+//      fn0800_4152
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
 // LiveOut:
 // Trashed: SCZO ax dx Top
@@ -6901,6 +7248,14 @@ fn0800_4271_exit:
 word16 fn0800_4311(selector ds, word16 wArg02, word16 wArg04, ptr16 & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_09A3
+//      fn0800_1CF6
+//      fn0800_2D0A
+//      fn0800_3B0A
+//      fn0800_5374
+//      fn0800_5E64
+//      fn0800_75EA
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
 // LiveOut: ax bp ds dx si sp
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
@@ -6935,6 +7290,14 @@ fn0800_4311_exit:
 word16 fn0800_4346(selector ds, word16 wArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_09A3
+//      fn0800_1E5E
+//      fn0800_2D0A
+//      fn0800_3B0A
+//      fn0800_5374
+//      fn0800_5E64
+//      fn0800_75EA
 // MayUse:  ds:[0..15] Stack +0004:[0..15]
 // LiveOut: ax bx cx ds dx
 // Trashed: SCZO ax bx cx ds dx es Top
@@ -6957,6 +7320,8 @@ fn0800_4346_exit:
 word16 fn0800_4357(segptr32 ptrArg02, segptr32 ptrArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_29C5
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..31]
 // LiveOut: ax
 // Trashed: SCZO ax bx dl es Top
@@ -7020,6 +7385,9 @@ fn0800_4357_exit:
 void fn0800_43D4(word16 wArg02, selector psegArg04, word16 wArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_5A24
+//      fn0800_7A02
 // MayUse:  Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15]
 // LiveOut:
 // Trashed: SCZO ax cx dx es Top
@@ -7047,6 +7415,8 @@ fn0800_43D4_exit:
 void fn0800_441C(selector ds, segptr32 ptrArg02, word16 wArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_7A02
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15]
 // LiveOut:
 // Trashed: SCZO ax bx cx dx es Top
@@ -7133,6 +7503,9 @@ fn0800_441C_exit:
 void fn0800_4550(word16 wArg02, selector psegArg04, word16 wArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_441C
+//      fn0800_5A24
 // MayUse:  ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15]
 // LiveOut:
 // Trashed: SCZO ax bx cx di dx es si Top
@@ -7190,6 +7563,8 @@ fn0800_4550_exit:
 word16 fn0800_45E2(word16 wArg02, word16 wArg04, word16 wArg06, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_4550
 // MayUse:  Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15]
 // LiveOut: ax dx
 // Trashed: SCZO ax bx dx Top
@@ -7221,6 +7596,8 @@ fn0800_45E2_exit:
 word16 fn0800_463B(selector ds, word16 wArg02, selector psegArg04, word16 wArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_441C
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15]
 // LiveOut: ax
 // Trashed: SCZO ax cx dx Top
@@ -7283,6 +7660,8 @@ fn0800_463B_exit:
 word16 fn0800_46FE(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_112D
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ax ds dx sp
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
@@ -7697,6 +8076,8 @@ fn0800_46FE_exit:
 word16 fn0800_4B97(word16 ax, word16 dx, selector ds, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_112D
 // MayUse:  ax:[0..15] ds:[0..15] dx:[0..15] ss:[0..15]
 // LiveOut: ax ds dx
 // Trashed: SCZO ax bp bx cx di ds dx es si Top
@@ -7724,6 +8105,8 @@ fn0800_4B97_exit:
 word16 fn0800_4BB1(word16 ax, word16 dx, selector ds, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_112D
 // MayUse:  ax:[0..15] ds:[0..15] dx:[0..15] ss:[0..15]
 // LiveOut: ax ds dx
 // Trashed: SCZO ax bp bx cx di ds dx es si Top
@@ -7793,6 +8176,8 @@ fn0800_4BB1_exit:
 word16 fn0800_4C55(word16 ax, selector ds, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_112D
 // MayUse:  ax:[0..15] ds:[0..15] ss:[0..15]
 // LiveOut: ax ds dx
 // Trashed: SCZO ax bp bx cx di ds dx es Top
@@ -8161,6 +8546,8 @@ fn0800_4F2C_exit:
 word16 fn0800_518F(word16 ax, word16 dx, selector ds, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_112D
 // MayUse:  ax:[0..15] ds:[0..15] dx:[0..15] ss:[0..15]
 // LiveOut: ax ds dx
 // Trashed: SCZO ax bp bx cx di ds dx es si Top
@@ -8188,6 +8575,8 @@ fn0800_518F_exit:
 word16 fn0800_51A9(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_112D
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ax ds dx sp
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
@@ -8382,6 +8771,15 @@ l0800_52FF:
 word16 fn0800_5374(selector ds, ptr16 & dxOut, ptr16 & bpOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_112D
+//      fn0800_19EE
+//      fn0800_46FE
+//      fn0800_4B97
+//      fn0800_4BB1
+//      fn0800_4F2C
+//      fn0800_518F
+//      fn0800_51A9
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ax bp ds dx sp
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
@@ -8585,6 +8983,8 @@ fn0800_5374_exit:
 word16 fn0800_55E8(selector ds, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_5374
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ax ds
 // Trashed: SCZO ax bx cx di ds dx es si Top
@@ -8727,6 +9127,8 @@ l0800_5719:
 word16 fn0800_579B(selector ds, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_5374
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ax ds
 // Trashed: SCZO ax bx cx di ds dx es si Top
@@ -8852,6 +9254,8 @@ l0800_5863:
 selector fn0800_593F(selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_579B
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ds
 // Trashed: SCZO ax bx cx ds dx es Top
@@ -8872,6 +9276,8 @@ fn0800_593F_exit:
 selector fn0800_5975(selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_579B
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ds
 // Trashed: SCZO ax bx cx di ds dx es si Top
@@ -8907,6 +9313,8 @@ fn0800_5975_exit:
 selector fn0800_5A0F(selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_579B
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ds
 // Trashed: SCZO ax bx cx ds dx es Top
@@ -8922,6 +9330,8 @@ fn0800_5A0F_exit:
 selector fn0800_5A24(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_55E8
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15]
 // LiveOut: ds
 // Trashed: SCZO ax bx cx ds dx es Top
@@ -8956,6 +9366,8 @@ fn0800_5A24_exit:
 word16 fn0800_5A8D(selector ds, word16 wArg02, selector psegArg04, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_55E8
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
 // LiveOut: ax ds
 // Trashed: SCZO ax bx cx ds dx es Top
@@ -8998,6 +9410,12 @@ fn0800_5A8D_exit:
 word16 fn0800_5B15(selector ds, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_55E8
+//      fn0800_579B
+//      fn0800_5975
+//      fn0800_5C39
+//      fn0800_5CD9
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ax di ds si
 // Trashed: SCZO ax bx cx di ds dx es si Top
@@ -9076,6 +9494,8 @@ fn0800_5B15_exit:
 word16 fn0800_5C1A(selector ds, word16 wArg02, ptr16 & siOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_5374
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15]
 // LiveOut: ax ds si
 // Trashed: SCZO ax bx cx di ds dx es si Top
@@ -9103,6 +9523,11 @@ fn0800_5C1A_exit:
 word16 fn0800_5C39(selector ds, word16 wArg02, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_55E8
+//      fn0800_5A24
+//      fn0800_5A8D
+//      fn0800_5C1A
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15]
 // LiveOut: ax di ds si
 // Trashed: SCZO ax bx cx di ds dx es si Top
@@ -9157,6 +9582,12 @@ l0800_5CB0:
 word16 fn0800_5CD9(selector ds, word16 wArg02, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_579B
+//      fn0800_593F
+//      fn0800_5975
+//      fn0800_5A0F
+//      fn0800_5C1A
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15]
 // LiveOut: ax ds
 // Trashed: SCZO ax bx cx ds dx es Top
@@ -9195,6 +9626,9 @@ fn0800_5CD9_exit:
 selector fn0800_5D2F(selector ds, byte bArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_55E8
+//      fn0800_579B
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..7]
 // LiveOut: ds
 // Trashed: SCZO ax bx cx di ds dx es si Top
@@ -9224,6 +9658,10 @@ fn0800_5D2F_exit:
 word16 fn0800_5DCE(word16 ax, word16 dx, selector ds, word32 dwArg02, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_4B97
+//      fn0800_4BB1
+//      fn0800_518F
 // MayUse:  ax:[0..15] ds:[0..15] dx:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: ax ds dx
 // Trashed: SCZO ax bx cx di ds dx es Top
@@ -9274,6 +9712,8 @@ fn0800_5DCE_exit:
 word16 fn0800_5E64(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ax ds dx sp
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
@@ -10000,6 +10440,8 @@ l0800_5EA7_1:
 word16 fn0800_669C(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ax ds dx sp
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
@@ -10138,6 +10580,8 @@ fn0800_669C_exit:
 word16 fn0800_67BF(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ax ds dx sp
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
@@ -10363,6 +10807,8 @@ fn0800_67BF_exit:
 word16 fn0800_6AD4(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ax ds dx
 // Trashed: SCZO ax bp bx cx di ds dx es si Top
@@ -10935,6 +11381,8 @@ fn0800_6F20_exit:
 word16 fn0800_73AC(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ax ds dx
 // Trashed: SCZO ax bp bx cx di ds dx es si Top
@@ -10962,6 +11410,8 @@ fn0800_73AC_exit:
 word16 fn0800_741D(selector ds, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ax dx
 // Trashed: SCZO ax bx cx dx es si Top
@@ -11145,6 +11595,15 @@ l0800_758D:
 word16 fn0800_75EA(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, ptr16 & bpOut, ptr16 & siOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
+//      fn0800_12E2
+//      fn0800_5E64
+//      fn0800_669C
+//      fn0800_67BF
+//      fn0800_6F20
+//      fn0800_73AC
+//      fn0800_741D
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +0008:[0..15]
 // LiveOut: bp ds dx si sp
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
@@ -11511,6 +11970,8 @@ fn0800_75EA_exit:
 byte fn0800_7A02(selector ds, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_75EA
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ax ds
 // Trashed: SCZO ax bx cx di ds dx es Top
@@ -11658,6 +12119,8 @@ l0800_7BB2:
 byte fn0800_7C78(selector ds, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_75EA
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ax ds
 // Trashed: SCZO ax bx cx di ds dx es Top
@@ -11791,6 +12254,8 @@ l0800_7CD6:
 void fn0800_7EAF(selector ds, word16 wArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_7C78
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15]
 // LiveOut:
 // Trashed: SCZO Top
@@ -11875,6 +12340,9 @@ l0800_7EFA:
 selector fn0800_7FDC(selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_7A02
+//      fn0800_7C78
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ds
 // Trashed: SCZO ax bx cx di ds dx es si Top
@@ -12103,6 +12571,8 @@ l0800_8293:
 selector fn0800_831D(selector ds, word16 wArg02, segptr32 ptrArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_7FDC
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..31]
 // LiveOut: ds
 // Trashed: SCZO ax bx cx di ds dx es Top
@@ -12133,6 +12603,10 @@ fn0800_831D_exit:
 byte fn0800_8359(selector ds, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_7A02
+//      fn0800_7C78
+//      fn0800_7EAF
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut: ax ds
 // Trashed: SCZO ax bx cx di ds dx es Top
@@ -12157,6 +12631,8 @@ fn0800_8359_exit:
 void fn0800_83A1(selector ds, segptr32 ptrArg02, word16 wArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_7A02
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15]
 // LiveOut:
 // Trashed: SCZO ax bx dx es Top
@@ -12192,6 +12668,8 @@ fn0800_83A1_exit:
 void fn0800_8407(selector ds, word16 wArg02, segptr32 ptrArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_7A02
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..31]
 // LiveOut:
 // Trashed: SCZO ax bx cx dx es Top
@@ -12220,6 +12698,8 @@ fn0800_8407_exit:
 void fn0800_8465(selector ds, word16 wArg02, word16 wArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_75EA
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
 // LiveOut:
 // Trashed: SCZO ax cx dx Top
@@ -12239,6 +12719,11 @@ fn0800_8465_exit:
 void fn0800_8489(selector ds, word16 wArg02, word16 wArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_7A02
+//      fn0800_83A1
+//      fn0800_8407
+//      fn0800_8465
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
 // LiveOut:
 // Trashed: SCZO ax Top
@@ -12304,6 +12789,10 @@ l0800_84B2:
 void fn0800_854B(selector ds, word16 wArg02, word16 wArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_7C78
+//      fn0800_7EAF
+//      fn0800_8465
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
 // LiveOut:
 // Trashed: SCZO ax cx Top
@@ -12367,6 +12856,9 @@ l0800_85E7:
 word16 fn0800_8600(selector ds, byte bArg02, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_7C78
+//      fn0800_7EAF
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..7]
 // LiveOut: di ds
 // Trashed: SCZO ax bx cx di ds dx es Top
@@ -12391,6 +12883,13 @@ fn0800_8600_exit:
 byte fn0800_8624(selector ds, byte bArg02, ptr16 & diOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_75EA
+//      fn0800_7A02
+//      fn0800_7C78
+//      fn0800_8489
+//      fn0800_854B
+//      fn0800_8600
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..7]
 // LiveOut: ax di ds
 // Trashed: SCZO ax bx cx di ds dx es Top
@@ -12424,6 +12923,8 @@ fn0800_8624_exit:
 word16 fn0800_867A(word16 wArg04, selector psegArg06, word16 wArg08, selector psegArg0A, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_09A3
 // MayUse:  Stack +0004:[0..15] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000A:[0..15]
 // LiveOut: bp ds sp
 // Trashed: SCZDO bp bx cx di ds dx es si sp Top
@@ -12669,6 +13170,8 @@ l0800_8733_1:
 word16 fn0800_87EF(word32 ds_si)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_867A
 // MayUse:  Sequence ds:si:[0..31]
 // LiveOut: si
 // Trashed: ax bx si Top
@@ -12685,6 +13188,8 @@ fn0800_87EF_exit:
 word16 fn0800_87F4(word32 ds_si)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_87EF
 // MayUse:  Sequence ds:si:[0..31]
 // LiveOut: si
 // Trashed: ax si Top
@@ -12699,6 +13204,8 @@ fn0800_87F4_exit:
 void fn0800_87F8(selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_75EA
 // MayUse:  ds:[0..15]
 // LiveOut:
 // Trashed: SCZDO ax cx es Top
@@ -12760,6 +13267,8 @@ l0800_8804_1:
 void fn0800_8832(selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_7FDC
 // MayUse:  ds:[0..15]
 // LiveOut:
 // Trashed: SCZDO ax bx cx dx es Top
@@ -12799,6 +13308,8 @@ fn0800_8832_exit:
 void fn0800_889A(selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8832
 // MayUse:  ds:[0..15]
 // LiveOut:
 // Trashed: SCZDO ax bx cx dx es Top
@@ -12911,6 +13422,8 @@ fn0800_889A_exit:
 void fn0800_89A8(selector ds, word16 wArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_7FDC
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
 // LiveOut:
 // Trashed: SCZDO ax bx cx dx es Top
@@ -13023,6 +13536,9 @@ fn0800_8ACF_exit:
 word16 fn0800_8B0D(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8B5A
+//      fn0800_8B69
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15]
 // LiveOut: ax dx
 // Trashed: SCZO ax dx Top
@@ -13076,6 +13592,9 @@ l0800_8B4E:
 word16 fn0800_8B5A(selector ds, word16 wArg02, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0D24
+//      fn0800_0DCE
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15]
 // LiveOut: ax dx
 // Trashed: SCZO ax dx Top
@@ -13107,6 +13626,8 @@ fn0800_8B69_exit:
 void fn0800_8B95(segptr32 ptrArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9764
 // MayUse:  Stack +0002:[0..31]
 // LiveOut:
 // Trashed: ah bx cx dx es Top
@@ -13125,6 +13646,8 @@ fn0800_8B95_exit:
 void fn0800_8BA8(segptr32 ptrArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9764
 // MayUse:  Stack +0002:[0..31]
 // LiveOut:
 // Trashed: ah bx cx dx es Top
@@ -13144,6 +13667,10 @@ fn0800_8BA8_exit:
 word16 fn0800_8BBB(word32 dwArg02, word16 wArg06, word16 wArg08, ptr16 & cxOut, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
+//      fn0800_B6D6
+//      fn0800_C177
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15]
 // LiveOut: ax cx dx sp
 // Trashed: SCZO ax bx cx dx sp Top
@@ -13164,6 +13691,10 @@ fn0800_8BBB_exit:
 word16 fn0800_8BC2(word32 dwArg02, word16 wArg06, word16 wArg08, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0B79
+//      fn0800_4550
+//      fn0800_7FDC
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15]
 // LiveOut: ax bx cx dx sp
 // Trashed: SCZO ax bx cx dx sp Top
@@ -13185,6 +13716,9 @@ fn0800_8BC2_exit:
 word16 fn0800_8BCA(word32 dwArg02, word16 wArg06, word16 wArg08, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
+//      fn0800_C177
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15]
 // LiveOut: ax dx sp
 // Trashed: SCZO ax bx cx dx sp Top
@@ -13204,6 +13738,10 @@ fn0800_8BCA_exit:
 word16 fn0800_8BD8(word16 cx, word32 dwArg04, word16 wArg08, word16 wArg0A, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8BBB
+//      fn0800_8BC2
+//      fn0800_8BCA
 // MayUse:  cx:[0..15] Stack +0004:[0..31] Stack +0008:[0..15] Stack +000A:[0..15]
 // LiveOut: ax bx cx dx
 // Trashed: SCZO ax bx cx dx Top
@@ -13296,6 +13834,15 @@ fn0800_8BD8_exit:
 word16 fn0800_8C69(word16 ax, byte cl, word16 dx, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_46FE
+//      fn0800_4C55
+//      fn0800_4F2C
+//      fn0800_55E8
+//      fn0800_5C39
+//      fn0800_5E64
+//      fn0800_6F20
+//      fn0800_A215
 // MayUse:  ax:[0..15] cl:[0..7] dx:[0..15]
 // LiveOut: ax dx sp
 // Trashed: SCZO ax bx cl dx sp Top
@@ -13315,6 +13862,12 @@ fn0800_8C69_exit:
 word16 fn0800_8C8A(word16 ax, byte cl, word16 dx, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_12E2
+//      fn0800_1F5C
+//      fn0800_24FE
+//      fn0800_2688
+//      fn0800_46FE
 // MayUse:  ax:[0..15] cl:[0..7] dx:[0..15]
 // LiveOut: ax dx sp
 // Trashed: SCZO ax bx cl dx sp Top
@@ -13335,6 +13888,16 @@ fn0800_8C8A_exit:
 word16 fn0800_8CAA(word16 ax, byte cl, word16 dx, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
+//      fn0800_112D
+//      fn0800_12E2
+//      fn0800_3992
+//      fn0800_46FE
+//      fn0800_4F2C
+//      fn0800_51A9
+//      fn0800_5E64
+//      fn0800_6F20
 // MayUse:  ax:[0..15] cl:[0..7] dx:[0..15]
 // LiveOut: ax dx sp
 // Trashed: SCZO ax bx cl dx sp Top
@@ -13354,6 +13917,10 @@ fn0800_8CAA_exit:
 word16 fn0800_8CCB(word16 ax, word16 cx, word16 dx, word16 bx, ptr16 & chOut, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_A215
+//      fn0800_ABA3
+//      fn0800_AD85
 // MayUse:  ax:[0..15] bx:[0..15] cx:[0..15] dx:[0..15]
 // LiveOut: ax cx dx sp
 // Trashed: SCZO ax bx cx dx es sp Top
@@ -13394,6 +13961,28 @@ fn0800_8CCB_exit:
 word16 fn0800_8D2B(selector ds, word16 wArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8D64
+//      fn0800_8E29
+//      fn0800_8E52
+//      fn0800_8F50
+//      fn0800_8F7F
+//      fn0800_97F8
+//      fn0800_A2A3
+//      fn0800_A401
+//      fn0800_A53C
+//      fn0800_A559
+//      fn0800_A57F
+//      fn0800_A59D
+//      fn0800_A817
+//      fn0800_A84A
+//      fn0800_B113
+//      fn0800_B140
+//      fn0800_B2A0
+//      fn0800_B97F
+//      fn0800_BA4A
+//      fn0800_C632
+//      fn0800_C779
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
 // LiveOut: ax
 // Trashed: SCZO ax Top
@@ -13424,6 +14013,8 @@ fn0800_8D2B_exit:
 void fn0800_8D64(selector ds, word16 wArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8ACF
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
 // LiveOut:
 // Trashed: SCZO ax Top
@@ -13438,6 +14029,8 @@ fn0800_8D64_exit:
 word16 fn0800_8D76(word16 wArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_A96D
 // MayUse:  Stack +0002:[0..15]
 // LiveOut: ax
 // Trashed: SCZO ax bx dx Top
@@ -13453,6 +14046,9 @@ fn0800_8D76_exit:
 void fn0800_8D87(byte bArg02, byte bArg04, word16 wArg06, segptr32 ptrArg08, word16 wArg0C, word16 wArg0E)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8E09
+//      fn0800_9828
 // MayUse:  ss:[0..15] Stack +0002:[0..7] Stack +0004:[0..7] Stack +0006:[0..15] Stack +0008:[0..31] Stack +000C:[0..15] Stack +000E:[0..15]
 // LiveOut:
 // Trashed: SCZDO ax bx cx dx Top
@@ -13521,6 +14117,8 @@ l0800_8DCF:
 void fn0800_8E09(word32 dwArg02, word16 wArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8E6A
 // MayUse:  ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15]
 // LiveOut:
 // Trashed: SCZDO ax bx cx dx Top
@@ -13535,6 +14133,13 @@ fn0800_8E09_exit:
 word16 fn0800_8E29(selector ds, word16 wArg02, word32 dwArg04, byte bArg08, ptr16 & cxOut, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_97B6
+//      fn0800_ACB3
+//      fn0800_B324
+//      fn0800_B4BE
+//      fn0800_B97F
+//      fn0800_C632
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..31] Stack +0008:[0..7]
 // LiveOut: ax cx dx
 // Trashed: SCZO ax bx cx dx Top
@@ -13562,6 +14167,8 @@ fn0800_8E29_exit:
 word16 fn0800_8E52(byte al, selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_3678
 // MayUse:  al:[0..7] ds:[0..15]
 // LiveOut: ax
 // Trashed: SCZO ax dx Top
@@ -13584,6 +14191,8 @@ fn0800_8E52_exit:
 void fn0800_8E6A(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word32 dwArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_A614
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +0008:[0..31]
 // LiveOut:
 // Trashed: SCZDO ax bx cx dx es Top
@@ -13615,6 +14224,13 @@ fn0800_8E6A_exit:
 word16 fn0800_8F18(word16 ax, word16 cx, word16 dx, word16 bx, ptr16 & chOut, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0B79
+//      fn0800_7FDC
+//      fn0800_ABA3
+//      fn0800_AD85
+//      fn0800_C04F
+//      fn0800_C379
 // MayUse:  ax:[0..15] bx:[0..15] cx:[0..15] dx:[0..15]
 // LiveOut: ax cx dx
 // Trashed: SCZO ax cx dx Top
@@ -13640,6 +14256,10 @@ fn0800_8F18_exit:
 byte fn0800_8F2F(word16 ax, word16 cx, word16 dx, word16 bx, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_A1D6
+//      fn0800_A215
+//      fn0800_B0A1
 // MayUse:  ax:[0..15] bx:[0..15] cx:[0..15] dx:[0..15]
 // LiveOut: CZ bx cx dx
 // Trashed: SCZO ax bx cx dx Top
@@ -13663,6 +14283,9 @@ fn0800_8F2F_exit:
 word16 fn0800_8F50(selector ds, word16 wArg02, segptr32 ptrArg04, word16 wArg08, ptr16 & chOut, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_AAB3
+//      fn0800_B97F
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..31] Stack +0008:[0..15]
 // LiveOut: ax cx dx
 // Trashed: SCZO ax bx cx dx Top
@@ -13692,6 +14315,16 @@ fn0800_8F50_exit:
 word16 fn0800_8F7F(byte al, selector ds, segptr32 ptrArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DA9
+//      fn0800_0DE8
+//      fn0800_112D
+//      fn0800_12E2
+//      fn0800_19EE
+//      fn0800_37DF
+//      fn0800_388C
+//      fn0800_3BC3
+//      fn0800_3C99
 // MayUse:  al:[0..7] ds:[0..15] Stack +0002:[0..31]
 // LiveOut: dx
 // Trashed: SCZO ax dx Top
@@ -13712,6 +14345,8 @@ fn0800_8F7F_exit:
 word16 fn0800_8F97(word16 di, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, selector psegArg0C, ptr16 & diOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_BF18
 // MayUse:  di:[0..15] ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000A:[0..15] Stack +000C:[0..15]
 // LiveOut: di dx
 // Trashed: SCZDO ax bp bx cx di dx es si Top
@@ -14203,6 +14838,8 @@ fn0800_8F97_exit:
 word16 fn0800_8FAB(word32 ss_bp, selector ds, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8F97
 // MayUse:  ds:[0..15] Sequence ss:bp:[0..31]
 // LiveOut: di es
 // Trashed: SCZO di es Top
@@ -14228,6 +14865,8 @@ fn0800_8FAB_exit:
 word16 fn0800_912A(word32 ss_bp, selector ds, ptr16 & diOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8F97
 // MayUse:  ds:[0..15] Sequence ss:bp:[0..31]
 // LiveOut: bp di
 // Trashed: SCZO ax bp bx cx di es si Top
@@ -14275,6 +14914,8 @@ fn0800_9169_exit:
 word16 fn0800_920E(word32 ss_bp, selector ds, ptr16 & diOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8F97
 // MayUse:  ds:[0..15] Sequence ss:bp:[0..31]
 // LiveOut: bp di
 // Trashed: SCZO ax bp bx cx di es si Top
@@ -14292,6 +14933,10 @@ fn0800_920E_exit:
 word16 fn0800_93A6(word32 ss_bp, ptr16 & diOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8F97
+//      fn0800_912A
+//      fn0800_93EF
 // MayUse:  Sequence ss:bp:[0..31]
 // LiveOut: bp di
 // Trashed: SCZO ax bp di es si Top
@@ -14312,6 +14957,9 @@ fn0800_93A6_exit:
 word16 fn0800_93BE(word32 ss_bp, ptr16 & diOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8F97
+//      fn0800_93A6
 // MayUse:  Sequence ss:bp:[0..31]
 // LiveOut: bp di
 // Trashed: ax bp di es si sp Top
@@ -14328,6 +14976,9 @@ fn0800_93BE_exit:
 word16 fn0800_93C5(word32 ss_bp, selector ds, ptr16 & diOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_912A
+//      fn0800_920E
 // MayUse:  ds:[0..15] Sequence ss:bp:[0..31]
 // LiveOut: bp di
 // Trashed: SCZO ax bp bx cx di es si Top
@@ -14370,6 +15021,9 @@ fn0800_93C5_exit:
 void fn0800_93EF(word32 ss_bp)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9145
+//      fn0800_9169
 // MayUse:  Sequence ss:bp:[0..31]
 // LiveOut:
 // Trashed: SCZO ax bp cx di dx es si Top
@@ -14442,6 +15096,8 @@ l0800_9436:
 bool fn0800_9485(byte cl, byte bl, ptr16 & bxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_94B0
 // MayUse:  bx:[0..7] cl:[0..7]
 // LiveOut: C bx
 // Trashed: SCZO bx Top
@@ -14480,6 +15136,8 @@ fn0800_9485_exit:
 word16 fn0800_94B0(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg0C, segptr32 ptrArg0E, segptr32 ptrArg12, ptr16 & dxOut, ptr16 & diOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8F97
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000A:[0..15] Stack +000C:[0..15] Stack +000E:[0..31] Stack +0012:[0..31]
 // LiveOut: ax di dx
 // Trashed: SCZO ax bx cx di dx es si Top
@@ -14747,6 +15405,8 @@ fn0800_9667_exit:
 word16 fn0800_9764(selector ds, segptr32 ptrArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: cx
 // Trashed: SCZDO bx cx es Top
@@ -14774,6 +15434,8 @@ fn0800_9764_exit:
 void fn0800_97B6(selector ds, word16 wArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_AD2F
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
 // LiveOut:
 // Trashed: SCZO ax bx cx dx Top
@@ -14790,6 +15452,9 @@ fn0800_97B6_exit:
 byte fn0800_97CC(selector ds, word16 wArg02, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0C29
+//      fn0800_0C6C
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
 // LiveOut: ax dx
 // Trashed: SCZO ax bx dx Top
@@ -14816,6 +15481,8 @@ fn0800_97CC_exit:
 word16 fn0800_97F8(byte al, selector ds, segptr32 ptrArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_A614
 // MayUse:  al:[0..7] ds:[0..15] Stack +0002:[0..31]
 // LiveOut: dx
 // Trashed: SCZO ax dx Top
@@ -14836,6 +15503,8 @@ fn0800_97F8_exit:
 word16 fn0800_9810(word32 es_di, byte dh, byte dl)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9828
 // MayUse:  dh:[0..7] dl:[0..7] Sequence es:di:[0..31]
 // LiveOut: di sp
 // Trashed: SCZO ax di sp Top
@@ -14852,6 +15521,8 @@ fn0800_9810_exit:
 word16 fn0800_9817(word32 es_di, byte al)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9810
 // MayUse:  al:[0..7] Sequence es:di:[0..31]
 // LiveOut: di
 // Trashed: SCZO ax di Top
@@ -14870,6 +15541,8 @@ fn0800_9817_exit:
 word16 fn0800_9820(word32 es_di, byte al)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9817
 // MayUse:  al:[0..7] Sequence es:di:[0..31]
 // LiveOut: di
 // Trashed: SCZO al di Top
@@ -14887,6 +15560,9 @@ fn0800_9820_exit:
 word16 fn0800_9828(word16 cx, word16 dx, word16 bx, selector ds, word16 wArg02, word16 wArg04, ptr16 & siOut, ptr16 & diOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_B2EF
+//      fn0800_BEA2
 // MayUse:  bx:[0..15] cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
 // LiveOut: ax di si
 // Trashed: SCZDO ax di si Top
@@ -15399,6 +16075,8 @@ l0800_98AE:
 word16 fn0800_9842(word16 di, selector es)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9828
 // MayUse:  di:[0..15] es:[0..15]
 // LiveOut: cx
 // Trashed: SCZO al cx Top
@@ -15421,6 +16099,8 @@ fn0800_9842_exit:
 word16 fn0800_984F(word32 ss_bp, byte al, word16 cx, word16 dx, word16 bx, word16 di)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9828
 // MayUse:  al:[0..7] bx:[0..15] cx:[0..15] di:[0..15] dx:[0..15] Sequence ss:bp:[0..31]
 // LiveOut: di
 // Trashed: SZO di Top
@@ -15442,6 +16122,9 @@ fn0800_984F_exit:
 word16 fn0800_9858(word32 ss_bp, word16 cx, word16 dx, word16 bx, word16 di)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9828
+//      fn0800_984F
 // MayUse:  bx:[0..15] cx:[0..15] di:[0..15] dx:[0..15] Sequence ss:bp:[0..31]
 // LiveOut: di
 // Trashed: SCZO di Top
@@ -15468,6 +16151,8 @@ fn0800_9858_exit:
 void fn0800_9CE6(word32 dwArg02, word32 dwArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8E6A
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..31]
 // LiveOut:
 // Trashed: SCZDO ax cx dx es Top
@@ -15483,6 +16168,8 @@ fn0800_9CE6_exit:
 word16 fn0800_9D41(word16 dx, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9E75
 // MayUse:  dx:[0..15]
 // LiveOut: ax bx cx dx
 // Trashed: SCZO ax bx cx ds dx es Top
@@ -15528,6 +16215,8 @@ fn0800_9D41_exit:
 word16 fn0800_9DA4(word16 dx, ptr16 & bxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9E75
 // MayUse:  dx:[0..15]
 // LiveOut: ax bx
 // Trashed: SCZO ax bx ds es Top
@@ -15573,6 +16262,10 @@ fn0800_9DA4_exit:
 word16 fn0800_9E15(selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9D41
+//      fn0800_9DA4
+//      fn0800_9F89
 // MayUse:  ds:[0..15]
 // LiveOut: bx
 // Trashed: SCZO bx es Top
@@ -15596,6 +16289,8 @@ fn0800_9E15_exit:
 word16 fn0800_9E3E(selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9DA4
 // MayUse:  ds:[0..15]
 // LiveOut: bx
 // Trashed: SCZDOP bx es Top
@@ -15623,6 +16318,12 @@ fn0800_9E3E_exit:
 word16 fn0800_9E75(selector ds, word16 wArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_4346
+//      fn0800_A006
+//      fn0800_A080
+//      fn0800_A614
+//      fn0800_BA89
 // MayUse:  ds:[0..15] Stack +0004:[0..15]
 // LiveOut: ax bx cx ds dx
 // Trashed: SCZO ax bx cx ds dx es Top
@@ -15651,6 +16352,8 @@ fn0800_9E75_exit:
 word16 fn0800_9E9E(word16 ax, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9F89
 // MayUse:  ax:[0..15] ss:[0..15]
 // LiveOut: ax dx
 // Trashed: SCZO ax bx cx ds dx es Top
@@ -15682,6 +16385,8 @@ fn0800_9E9E_exit:
 word16 fn0800_9F02(word16 ax, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9F89
 // MayUse:  ax:[0..15] ss:[0..15]
 // LiveOut: ax dx
 // Trashed: SCZO ax bx cx ds dx es Top
@@ -15716,6 +16421,8 @@ fn0800_9F02_exit:
 word16 fn0800_9F5C(word16 ax, word16 dx, selector ds, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9F89
 // MayUse:  ax:[0..15] ds:[0..15] dx:[0..15]
 // LiveOut: ax dx
 // Trashed: SCZO ax bx ds dx Top
@@ -15735,6 +16442,8 @@ fn0800_9F5C_exit:
 word16 fn0800_9F7F(selector ds, word16 wArg02, ptr16 & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_BA89
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15]
 // LiveOut: ax bp di ds dx si
 // Trashed: SCZO ax bp bx cx di ds dx es si Top
@@ -15760,6 +16469,9 @@ fn0800_9F7F_exit:
 word16 fn0800_9F89(selector ds, word16 wArg02, word16 wArg04, ptr16 & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_4311
+//      fn0800_A006
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
 // LiveOut: ax bp ds dx si
 // Trashed: SCZO ax bp bx cx di ds dx es si Top
@@ -15784,6 +16496,9 @@ fn0800_9F89_exit:
 word16 fn0800_9F92(word16 ax, word16 dx, selector ds, ptr16 & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9F7F
+//      fn0800_9F89
 // MayUse:  ax:[0..15] ds:[0..15] dx:[0..15] ss:[0..15]
 // LiveOut: ax bp di ds dx si
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
@@ -15819,6 +16534,9 @@ fn0800_9F92_exit:
 word16 fn0800_9F9F(word16 ax, word16 dx, ptr16 & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9F89
+//      fn0800_9F92
 // MayUse:  ax:[0..15] dx:[0..15] ss:[0..15]
 // LiveOut: ax bp di ds dx si
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
@@ -15978,6 +16696,9 @@ fn0800_A080_exit:
 word16 fn0800_A162(selector ds, word16 wArg02, word16 wArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_A1D6
+//      fn0800_A215
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
 // LiveOut: ax bx cx dx
 // Trashed: SCZO ax bx cx dx es Top
@@ -16026,6 +16747,9 @@ fn0800_A162_exit:
 word16 fn0800_A1D6(selector ds, word16 wArg02, word16 wArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9D41
+//      fn0800_A080
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
 // LiveOut: ax bx cx dx
 // Trashed: SCZO ax bx cx dx es Top
@@ -16061,6 +16785,9 @@ fn0800_A1D6_exit:
 word16 fn0800_A215(selector ds, ui32 dwArg02, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9E9E
+//      fn0800_9F02
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: ax dx
 // Trashed: SCZO ax bx cx dx es Top
@@ -16124,6 +16851,8 @@ fn0800_A215_exit:
 word16 fn0800_A2A3(selector ds, word16 wArg04, ptr16 & cxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_B140
 // MayUse:  ds:[0..15] Stack +0004:[0..15]
 // LiveOut: ax cx
 // Trashed: SCZO ax bx cx dx Top
@@ -16151,6 +16880,8 @@ fn0800_A2A3_exit:
 void fn0800_A2CC(selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9828
 // MayUse:  ds:[0..15]
 // LiveOut:
 // Trashed: Top
@@ -16165,6 +16896,8 @@ fn0800_A2CC_exit:
 void fn0800_A2D0(selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8F97
 // MayUse:  ds:[0..15]
 // LiveOut:
 // Trashed: Top
@@ -16179,6 +16912,8 @@ fn0800_A2D0_exit:
 void fn0800_A2D4(selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8F97
 // MayUse:  ds:[0..15]
 // LiveOut:
 // Trashed: Top
@@ -16193,6 +16928,8 @@ fn0800_A2D4_exit:
 void fn0800_A2D8(selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8F97
 // MayUse:  ds:[0..15]
 // LiveOut:
 // Trashed: Top
@@ -16238,6 +16975,8 @@ fn0800_A36D_exit:
 word16 fn0800_A401(byte al, selector ds, selector psegArg02, word16 wArg04, ptr16 & bxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_A162
 // MayUse:  al:[0..7] ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
 // LiveOut: ax bx
 // Trashed: C ax bx es Top
@@ -16262,6 +17001,8 @@ fn0800_A401_exit:
 word16 fn0800_A471(selector ds, segptr32 ptrArg02, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_C379
 // MayUse:  ds:[0..15] Stack +0002:[0..31]
 // LiveOut: ax edx
 // Trashed: SCZDO ax bx cx dx edx Top
@@ -16332,6 +17073,9 @@ fn0800_A471_exit:
 void fn0800_A4F6(selector ds, word16 wArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_37DF
+//      fn0800_3C99
 // MayUse:  ds:[0..15] Stack +0006:[0..15]
 // LiveOut:
 // Trashed: SCZO ax cx dx Top
@@ -16356,6 +17100,9 @@ fn0800_A4F6_exit:
 word16 fn0800_A53C(selector ds, byte bArg06, ptr16 & cxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_A4F6
+//      fn0800_B140
 // MayUse:  ds:[0..15] Stack +0006:[0..7]
 // LiveOut: ax cx
 // Trashed: ax cx dx Top
@@ -16381,6 +17128,8 @@ fn0800_A53C_exit:
 byte fn0800_A559(byte al, selector ds, word16 wArg02, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_A614
 // MayUse:  al:[0..7] ds:[0..15] Stack +0002:[0..15]
 // LiveOut: ax dx
 // Trashed: SCZO ax bx cx dx Top
@@ -16403,6 +17152,9 @@ fn0800_A559_exit:
 byte fn0800_A57F(byte al, selector ds, word16 wArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_A559
+//      fn0800_B140
 // MayUse:  al:[0..7] ds:[0..15] Stack +0002:[0..15]
 // LiveOut: ax
 // Trashed: SCZO ax bx Top
@@ -16425,6 +17177,8 @@ fn0800_A57F_exit:
 word16 fn0800_A59D(selector ds, word16 wArg02, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_AED6
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
 // LiveOut: ax dx
 // Trashed: SCZO ax bx cx dx Top
@@ -16479,6 +17233,20 @@ fn0800_A59D_exit:
 byte fn0800_A614(selector ds, segptr32 ptrArg02, ptr16 & cxOut, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DA9
+//      fn0800_0DE8
+//      fn0800_112D
+//      fn0800_12E2
+//      fn0800_18D9
+//      fn0800_19EE
+//      fn0800_2DE2
+//      fn0800_37DF
+//      fn0800_388C
+//      fn0800_3992
+//      fn0800_3BC3
+//      fn0800_3C99
+//      fn0800_A96D
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: ax cx ds dx
 // Trashed: SCZO ax bx cx ds dx es Top
@@ -16535,6 +17303,13 @@ fn0800_A614_exit:
 word16 fn0800_A6B7(selector ds, segptr32 ptrArg02, ptr16 & dxOut, ptr16 & bxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_A614
+//      fn0800_A877
+//      fn0800_ACB3
+//      fn0800_AE10
+//      fn0800_B324
+//      fn0800_B4BE
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: ax bx dx
 // Trashed: SCZO ax bx cx dx es Top
@@ -16599,6 +17374,8 @@ fn0800_A6B7_exit:
 word16 fn0800_A77D(selector ds, word32 dwArg02, word16 wArg06, segptr32 ptrArg08, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_2DE2
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..31]
 // LiveOut: ax dx
 // Trashed: SCZO ax bx cx dx es Top
@@ -16668,6 +17445,9 @@ fn0800_A77D_exit:
 word16 fn0800_A817(byte al, selector ds, segptr32 ptrArg02, segptr32 ptrArg06, word16 wArg0A, ptr16 & cxOut, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_33CD
+//      fn0800_363D
 // MayUse:  al:[0..7] ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..31] Stack +000A:[0..15]
 // LiveOut: ax cx dx
 // Trashed: SCZDOP ax bx cx dx es Top
@@ -16696,6 +17476,8 @@ fn0800_A817_exit:
 word16 fn0800_A84A(byte al, selector ds, segptr32 ptrArg02, ptr16 & cxOut, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_3479
 // MayUse:  al:[0..7] ds:[0..15] Stack +0002:[0..31]
 // LiveOut: ax cx dx
 // Trashed: SCZDOP ax bx cx dx es Top
@@ -16724,6 +17506,8 @@ fn0800_A84A_exit:
 word16 fn0800_A877(selector ds, ptr16 & bxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_A6B7
 // MayUse:  ds:[0..15]
 // LiveOut: bx dx
 // Trashed: SCZO ax bx cx di es si Top
@@ -16754,6 +17538,8 @@ fn0800_A877_exit:
 word16 fn0800_A8B7(selector ds, segptr32 ptrArg02, segptr32 ptrArg06, segptr32 ptrArg0A, ptr16 & clOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_A96D
 // MayUse:  ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..31] Stack +000A:[0..31]
 // LiveOut: ax cl
 // Trashed: SCZO ax bx cl dx es Top
@@ -16831,6 +17617,8 @@ fn0800_A8B7_exit:
 word16 fn0800_A96D(selector ds, word16 wArg02, word32 dwArg04, word32 dwArg08, segptr32 ptrArg0C, ptr16 & cxOut, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_AA7E
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31]
 // LiveOut: ax cx ds dx
 // Trashed: SCZO ax bx cx ds dx es Top
@@ -16892,6 +17680,8 @@ fn0800_A96D_exit:
 void fn0800_AA34(selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_AA7E
 // MayUse:  ds:[0..15]
 // LiveOut:
 // Trashed: SCZO ax bx dx es Top
@@ -16918,6 +17708,13 @@ fn0800_AA34_exit:
 word16 fn0800_AA7E(selector ds, word32 dwArg02, word32 dwArg06, ptr16 & cxOut, ptr16 & dxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_12E2
+//      fn0800_18D9
+//      fn0800_19EE
+//      fn0800_37DF
+//      fn0800_3992
+//      fn0800_4234
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
 // LiveOut: ax cx ds dx
 // Trashed: SCZO ax bx cx ds dx es Top
@@ -16945,6 +17742,8 @@ fn0800_AA7E_exit:
 word16 fn0800_AAB3(word16 dx, selector ds, segptr32 ptrArg02, word16 wArg06, segptr32 ptrArg08, ptr16 & chOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_ABA3
 // MayUse:  ds:[0..15] dx:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..31]
 // LiveOut: ax cx
 // Trashed: SCZO ax bx cx dx es Top
@@ -17036,6 +17835,8 @@ fn0800_AAB3_exit:
 word16 fn0800_ABA3(selector ds, word32 dwArg02, word16 wArg06, word16 wArg08, word32 dwArg0A, ptr16 & chOut, ptr16 & siOut, ptr16 & diOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_4110
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000A:[0..31]
 // LiveOut: ax cx di si
 // Trashed: SCZO ax bx cx di dx es si Top
@@ -17100,6 +17901,9 @@ fn0800_ABA3_exit:
 word16 fn0800_AC31(segptr32 ptrArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_ACB3
+//      fn0800_AD2F
 // MayUse:  Stack +0002:[0..31]
 // LiveOut: ax
 // Trashed: SCZO ax bx cx dx es Top
@@ -17157,6 +17961,38 @@ fn0800_AC31_exit:
 word16 fn0800_ACB3(selector ds, segptr32 ptrArg02, ui32 dwArg06, word16 wArg0A, ptr16 & cxOut, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_12E2
+//      fn0800_19EE
+//      fn0800_1CF6
+//      fn0800_1E5E
+//      fn0800_24FE
+//      fn0800_2D0A
+//      fn0800_3BC3
+//      fn0800_3C99
+//      fn0800_3E9A
+//      fn0800_3F0A
+//      fn0800_3F58
+//      fn0800_4194
+//      fn0800_46FE
+//      fn0800_4BB1
+//      fn0800_4C55
+//      fn0800_4F2C
+//      fn0800_51A9
+//      fn0800_5374
+//      fn0800_5B15
+//      fn0800_5DCE
+//      fn0800_5E64
+//      fn0800_67BF
+//      fn0800_6F20
+//      fn0800_73AC
+//      fn0800_741D
+//      fn0800_75EA
+//      fn0800_7A02
+//      fn0800_7C78
+//      fn0800_7FDC
+//      fn0800_BA67
+//      fn0800_BA89
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31] Stack +000A:[0..15]
 // LiveOut: ax cx dx
 // Trashed: SCZO ax bx cx dx es Top
@@ -17201,6 +18037,24 @@ fn0800_ACB3_exit:
 word16 fn0800_AD2F(selector ds, segptr32 ptrArg02, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_12E2
+//      fn0800_2D0A
+//      fn0800_4194
+//      fn0800_46FE
+//      fn0800_4C55
+//      fn0800_4F2C
+//      fn0800_51A9
+//      fn0800_5374
+//      fn0800_5B15
+//      fn0800_5E64
+//      fn0800_67BF
+//      fn0800_6AD4
+//      fn0800_6F20
+//      fn0800_741D
+//      fn0800_75EA
+//      fn0800_7A02
+//      fn0800_7C78
 // MayUse:  ds:[0..15] Stack +0002:[0..31]
 // LiveOut: ax dx
 // Trashed: SCZO ax bx cx dx es Top
@@ -17235,6 +18089,8 @@ fn0800_AD2F_exit:
 word16 fn0800_AD85(selector ds, word32 dwArg02, word16 wArg06, word16 wArg08, word32 dwArg0A, ptr16 & siOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_4152
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000A:[0..31]
 // LiveOut: ax si
 // Trashed: SCZO ax bx cx di dx es si Top
@@ -17296,6 +18152,9 @@ fn0800_AD85_exit:
 void fn0800_AE10(selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_AE4C
+//      fn0800_AED6
 // MayUse:  ds:[0..15] ss:[0..15]
 // LiveOut:
 // Trashed: SCZO ax bx cx dx es Top
@@ -17325,6 +18184,8 @@ fn0800_AE10_exit:
 word16 fn0800_AE4C(selector ds, segptr32 ptrArg02, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_AED6
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: ax dx
 // Trashed: SCZDO ax bx cx dx es Top
@@ -17366,6 +18227,11 @@ fn0800_AE4C_exit:
 word16 fn0800_AEC2(selector ds, segptr32 ptrArg02, ptr16 & chOut, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_3DCF
+//      fn0800_3E9A
+//      fn0800_A77D
+//      fn0800_AAB3
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: ax cx dx
 // Trashed: SCZO ax bx cx dx es Top
@@ -17384,6 +18250,8 @@ fn0800_AEC2_exit:
 word16 fn0800_AED6(selector ds, segptr32 ptrArg02, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_AEC2
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: ax dx
 // Trashed: SCZO ax bx cx dx es Top
@@ -17447,6 +18315,8 @@ fn0800_AED6_exit:
 void fn0800_AFCB(selector ds, segptr32 ptrArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_C379
 // MayUse:  ds:[0..15] Stack +0002:[0..31]
 // LiveOut:
 // Trashed: SCZDO ax bx cx dx es Top
@@ -17517,6 +18387,9 @@ fn0800_AFCB_exit:
 void fn0800_B03B(segptr32 ptrArg02, segptr32 ptrArg06, word16 wArg0A)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9CE6
+//      fn0800_B4BE
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..31] Stack +000A:[0..15]
 // LiveOut:
 // Trashed: SCZDO ax cx dx es Top
@@ -17547,6 +18420,8 @@ l0800_B04E_1:
 void fn0800_B05F(segptr32 ptrArg02, word16 wArg06, byte bArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_B083
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..7]
 // LiveOut:
 // Trashed: SCZDO ax cx es Top
@@ -17586,6 +18461,8 @@ l0800_B07B_1:
 void fn0800_B083(word32 dwArg02, byte bArg06, word16 wArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_C379
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..7] Stack +0008:[0..15]
 // LiveOut:
 // Trashed: SCZDO ax cx dx es Top
@@ -17600,6 +18477,8 @@ fn0800_B083_exit:
 void fn0800_B0A1(segptr32 ptrArg02, segptr32 ptrArg06, word16 wArg0A)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_B0F3
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..31] Stack +000A:[0..15]
 // LiveOut:
 // Trashed: SCZDO ax bx cx dx es Top
@@ -17663,6 +18542,13 @@ l0800_B0E4_1:
 void fn0800_B0F3(word32 dwArg02, word32 dwArg06, word16 wArg0A)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_09A3
+//      fn0800_2085
+//      fn0800_2201
+//      fn0800_22FE
+//      fn0800_5D2F
+//      fn0800_7FDC
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..31] Stack +000A:[0..15]
 // LiveOut:
 // Trashed: SCZDO ax bx cx dx es Top
@@ -17677,6 +18563,8 @@ fn0800_B0F3_exit:
 word16 fn0800_B113(selector ds, word16 wArg02, segptr32 ptrArg04, ptr16 & cxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_B140
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..31]
 // LiveOut: ax cx
 // Trashed: C ax cx dx Top
@@ -17697,6 +18585,8 @@ fn0800_B113_exit:
 word16 fn0800_B12E(selector ds, word16 wArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_B140
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
 // LiveOut: cx
 // Trashed: SCZO ax bx cx dx Top
@@ -17712,6 +18602,8 @@ fn0800_B12E_exit:
 byte fn0800_B140(selector ds, word32 dwArg02, word16 wArg06, word16 wArg08, ptr16 & cxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_A96D
 // MayUse:  ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15]
 // LiveOut: ax cx
 // Trashed: SCZO ax bx cx dx Top
@@ -17826,6 +18718,8 @@ fn0800_B140_exit:
 word16 fn0800_B2A0(selector ds, segptr32 ptrArg02, word16 wArg06, ptr16 & cxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_B140
 // MayUse:  ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..15]
 // LiveOut: ax cx
 // Trashed: SCZO ax bx cx dx Top
@@ -17861,6 +18755,22 @@ fn0800_B2A0_exit:
 word16 fn0800_B2EF(word16 cx, word16 dx, word16 bx, selector ds, word32 dwArg02, ptr16 & siOut, ptr16 & diOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
+//      fn0800_0ABC
+//      fn0800_0C93
+//      fn0800_0D24
+//      fn0800_0DCE
+//      fn0800_0DE8
+//      fn0800_112D
+//      fn0800_12E2
+//      fn0800_18D9
+//      fn0800_19EE
+//      fn0800_2DE2
+//      fn0800_6EE6
+//      fn0800_6EFF
+//      fn0800_75EA
+//      fn0800_7FDC
 // MayUse:  bx:[0..15] cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut: ax di si
 // Trashed: SCZDO ax di si Top
@@ -17879,6 +18789,9 @@ fn0800_B2EF_exit:
 word16 fn0800_B30A(selector ds, byte bArg02, segptr32 ptrArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_4047
+//      fn0800_B4BE
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..7] Stack +0004:[0..31]
 // LiveOut: ax bx cx dx
 // Trashed: SCZO ax bx cx dx es Top
@@ -17900,6 +18813,9 @@ fn0800_B30A_exit:
 word16 fn0800_B324(selector ds, byte bArg02, segptr32 ptrArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_B30A
+//      fn0800_B4BE
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..7] Stack +0004:[0..31]
 // LiveOut: ax bx cx dx
 // Trashed: SCZO ax bx cx dx es Top
@@ -18008,6 +18924,8 @@ fn0800_B324_exit:
 word16 fn0800_B4BE(selector ds, segptr32 ptrArg02, word16 wArg06, segptr32 ptrArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_AD85
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..31]
 // LiveOut: ax
 // Trashed: SCZO ax bx cx dx es Top
@@ -18135,6 +19053,8 @@ fn0800_B4BE_exit:
 void fn0800_B6A8(selector ds, segptr32 ptrArg02, segptr32 ptrArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_B6D6
 // MayUse:  ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
 // LiveOut:
 // Trashed: SCZDO ax cx es Top
@@ -18171,6 +19091,9 @@ fn0800_B6A8_exit:
 void fn0800_B6D6(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_B6D6
+//      fn0800_B95E
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15]
 // LiveOut:
 // Trashed: SCZDO ax bx cx di dx es si Top
@@ -18440,6 +19363,8 @@ fn0800_B6D6_exit:
 void fn0800_B95E(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_5E64
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000A:[0..15]
 // LiveOut:
 // Trashed: SCZO ax bx cx di dx es si Top
@@ -18459,6 +19384,9 @@ fn0800_B95E_exit:
 word16 fn0800_B97F(selector ds, word16 wArg02, segptr32 ptrArg04, word16 wArg08, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_AE4C
+//      fn0800_AED6
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..31] Stack +0008:[0..15]
 // LiveOut: ax dx
 // Trashed: SCZDO ax bx cx dx es Top
@@ -18529,6 +19457,9 @@ fn0800_B97F_exit:
 word16 fn0800_BA4A(selector ds, segptr32 ptrArg02, segptr32 ptrArg06, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_37DF
+//      fn0800_3C99
 // MayUse:  ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
 // LiveOut: ax dx
 // Trashed: SCZO ax dx es Top
@@ -18552,6 +19483,10 @@ fn0800_BA4A_exit:
 void fn0800_BA67(selector ds, segptr32 ptrArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0DE8
+//      fn0800_12E2
+//      fn0800_3BC3
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31]
 // LiveOut:
 // Trashed: SCZO bx cx dx es Top
@@ -18571,6 +19506,8 @@ fn0800_BA67_exit:
 word16 fn0800_BA89(selector ds, segptr32 ptrArg02, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg0C, ptr16 & cxOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_A96D
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000A:[0..15] Stack +000C:[0..15]
 // LiveOut: ax cx ds
 // Trashed: SCZO ax bx cx ds dx es Top
@@ -18725,6 +19662,8 @@ fn0800_BBE9_exit:
 word16 fn0800_BC49(segptr32 ptrArg02, segptr32 ptrArg06, segptr32 ptrArg0A, segptr32 ptrArg0E, segptr32 ptrArg12)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_BE3B
 // MayUse:  ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31] Stack +000A:[0..31] Stack +000E:[0..31] Stack +0012:[0..31]
 // LiveOut: bx
 // Trashed: SCZDO ax bp bx cx di dx es si Top
@@ -18802,6 +19741,9 @@ l0800_BD02:
 word16 fn0800_BE3B(word32 dwArg02, word32 dwArg06, word32 dwArg0A, word32 dwArg0E, word32 dwArg12)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_3509
+//      fn0800_35A3
 // MayUse:  ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31] Stack +000A:[0..31] Stack +000E:[0..31] Stack +0012:[0..31]
 // LiveOut: bx
 // Trashed: SCZDO ax bx cx di dx es si Top
@@ -18815,6 +19757,10 @@ fn0800_BE3B_exit:
 word16 fn0800_BEA2(word16 cx, word16 dx, selector ds, segptr32 ptrArg02, word32 dwArg06, ptr16 & diOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0541
+//      fn0800_31B4
+//      fn0800_37BE
 // MayUse:  cx:[0..15] ds:[0..15] dx:[0..15] ss:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
 // LiveOut: di si
 // Trashed: SCZDO ax bx di es si Top
@@ -18833,6 +19779,8 @@ fn0800_BEA2_exit:
 word16 fn0800_BF18(word16 di, selector ds, word16 wArg06, word16 wArg08, ptr16 & diOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0541
 // MayUse:  di:[0..15] ds:[0..15] ss:[0..15] Stack +0006:[0..15] Stack +0008:[0..15]
 // LiveOut: di dx
 // Trashed: SCZDO ax bx cx di dx es si Top
@@ -18849,6 +19797,8 @@ fn0800_BF18_exit:
 void fn0800_BF5F(segptr32 ptrArg02, segptr32 ptrArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_8E6A
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..31]
 // LiveOut:
 // Trashed: SCZDO ax cx dx Top
@@ -18909,6 +19859,11 @@ l0800_BF91_1:
 void fn0800_BF9E(segptr32 ptrArg02, segptr32 ptrArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0402
+//      fn0800_2DE2
+//      fn0800_BB98
+//      fn0800_C379
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..31]
 // LiveOut:
 // Trashed: SCZDO ax cx dx es Top
@@ -18945,6 +19900,13 @@ l0800_BFBA_2:
 word16 fn0800_BFC7(segptr32 ptrArg02, ptr16 & cxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_0402
+//      fn0800_0541
+//      fn0800_9CE6
+//      fn0800_BB98
+//      fn0800_BC49
+//      fn0800_C379
 // MayUse:  Stack +0002:[0..31]
 // LiveOut: ax cx
 // Trashed: SCZDO ax cx es Top
@@ -18979,6 +19941,8 @@ fn0800_BFC7_exit:
 word16 fn0800_BFE6(segptr32 ptrArg02, segptr32 ptrArg06, word16 wArg0A)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_29C5
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..31] Stack +000A:[0..15]
 // LiveOut: ax
 // Trashed: SCZDO ax bx cx dx es Top
@@ -19022,6 +19986,10 @@ fn0800_BFE6_exit:
 void fn0800_C01E(segptr32 ptrArg02, segptr32 ptrArg06, word16 wArg0A)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_BB98
+//      fn0800_BC49
+//      fn0800_C379
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..31] Stack +000A:[0..15]
 // LiveOut:
 // Trashed: SCZDO ax bx cx dx es Top
@@ -19066,6 +20034,8 @@ l0800_C03E_2:
 word16 fn0800_C04F(selector ds, segptr32 ptrArg02, segptr32 ptrArg06, ptr16 & cxOut, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_9764
 // MayUse:  ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..31]
 // LiveOut: ax cx edx
 // Trashed: SCZDO ax bx cx edx es Top
@@ -19305,6 +20275,9 @@ fn0800_C177_exit:
 void fn0800_C379(selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_C04F
+//      fn0800_C177
 // MayUse:  ds:[0..15]
 // LiveOut:
 // Trashed: SCZDO ax bx cx edx es Top
@@ -19382,6 +20355,9 @@ fn0800_C379_exit:
 word16 fn0800_C553(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, byte bArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_C04F
+//      fn0800_C177
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +0008:[0..7]
 // LiveOut: ax
 // Trashed: SCZO ax bx cx dx Top
@@ -19461,6 +20437,9 @@ fn0800_C553_exit:
 word16 fn0800_C632(selector ds, word16 wArg02, word32 dwArg04, word16 wArg08, ptr16 & dxOut, ptr16 & bxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_A6B7
+//      fn0800_B4BE
 // MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..31] Stack +0008:[0..15]
 // LiveOut: ax bx dx
 // Trashed: SCZO ax bx cx dx es Top
@@ -19568,6 +20547,10 @@ fn0800_C632_exit:
 word16 fn0800_C779(selector ds, word16 wArg02, segptr32 ptrArg04, word16 wArg08, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0800_B324
+//      fn0800_B4BE
+//      fn0800_C632
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..31] Stack +0008:[0..15]
 // LiveOut: ax bx cx dx
 // Trashed: SCZO ax bx cx dx Top

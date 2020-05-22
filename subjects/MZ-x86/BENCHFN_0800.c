@@ -5,6 +5,10 @@
 #include "BENCHFN_n.h"
 
 // 0800:0121: void __exit()
+// Called from:
+//      _abort
+//      fn0800-01E9
+//      _exit
 void __exit()
 {
 	struct Eq_n * ds_n = seg0800->ptr01F8;
@@ -47,6 +51,8 @@ void fn0800-0162(struct Eq_n * ds)
 }
 
 // 0800:01A5: void __restorezero(Register (ptr16 Eq_n) ds)
+// Called from:
+//      __exit
 void __restorezero(struct Eq_n * ds)
 {
 	msdos_set_interrupt_vector(0x00, ds->ptr0074);
@@ -56,6 +62,10 @@ void __restorezero(struct Eq_n * ds)
 }
 
 // 0800:01DA: void fn0800-01DA(Sequence (ptr32 char) ds_dx, Register word16 cx)
+// Called from:
+//      __exit
+//      _abort
+//      fn0800-01E9
 void fn0800-01DA(char * ds_dx, word16 cx)
 {
 	word16 ax_n;
@@ -63,6 +73,9 @@ void fn0800-01DA(char * ds_dx, word16 cx)
 }
 
 // 0800:01E2: void _abort()
+// Called from:
+//      __setargv
+//      __setenvp
 void _abort()
 {
 	fn0800-01DA((char *) seg0800->ptr01F8 + 86, 0x1E);
@@ -77,11 +90,17 @@ void fn0800-01E9(word16 cx, word16 dx)
 }
 
 // 0800:01FA: void _f3()
+// Called from:
+//      _abort
+//      fn0800-01E9
+//      _f2
 void _f3()
 {
 }
 
 // 0800:01FF: void _f2()
+// Called from:
+//      f1_name_overridden
 void _f2()
 {
 	_f3();
@@ -97,6 +116,8 @@ void _f2()
 }
 
 // 0800:0222: void f1_name_overridden()
+// Called from:
+//      _f0
 void f1_name_overridden()
 {
 	_f2();
@@ -112,6 +133,8 @@ void f1_name_overridden()
 }
 
 // 0800:0245: void _f0()
+// Called from:
+//      _main
 void _f0()
 {
 	f1_name_overridden();
@@ -155,6 +178,11 @@ void _main(Eq_n cx, Eq_n dx, Eq_n bx, struct Eq_n * es, Eq_n ds)
 }
 
 // 0800:02C5: Register word16 __IOERROR(Register (ptr16 Eq_n) ds, Stack Eq_n wArg02)
+// Called from:
+//      __read
+//      __write
+//      _lseek
+//      _eof
 word16 __IOERROR(struct Eq_n * ds, Eq_n wArg02)
 {
 	Eq_n si_n;
@@ -315,6 +343,8 @@ l0800_nA3:
 }
 
 // 0800:03BF: FlagGroup Eq_n fn0800-03BF(Sequence (ptr32 Eq_n) ds_si, Sequence (ptr32 byte) es_di, Register word16 ax, Register Eq_n cx, Register out ptr16 axOut, Register out Eq_n cxOut, Register out ptr16 siOut)
+// Called from:
+//      __setargv
 Eq_n fn0800-03BF(struct Eq_n * ds_si, byte * es_di, word16 ax, Eq_n cx, ptr16 & axOut, union Eq_n & cxOut, ptr16 & siOut)
 {
 	ptr16 si = (word16) ds_si;
@@ -389,6 +419,10 @@ void __setenvp(struct Eq_n * ds)
 }
 
 // 0800:0491: void ___pull_free_block(Register (ptr16 Eq_n) ds, Stack Eq_n wArg02)
+// Called from:
+//      _malloc
+//      fn0800-15CF
+//      fn0800-1606
 void ___pull_free_block(struct Eq_n * ds, Eq_n wArg02)
 {
 	Eq_n ax_n = ds->*((word16) wArg02 + 6);
@@ -404,6 +438,8 @@ void ___pull_free_block(struct Eq_n * ds, Eq_n wArg02)
 }
 
 // 0800:04BF: Register (memptr (ptr16 Eq_n) Eq_n) fn0800-04BF(Register (ptr16 Eq_n) ds, Stack Eq_n wArg02, Stack Eq_n wArg04)
+// Called from:
+//      _malloc
 struct Eq_n Eq_n::* fn0800-04BF(struct Eq_n * ds, Eq_n wArg02, Eq_n wArg04)
 {
 	ds->*wArg02 -= wArg04;
@@ -418,6 +454,8 @@ struct Eq_n Eq_n::* fn0800-04BF(struct Eq_n * ds, Eq_n wArg02, Eq_n wArg04)
 }
 
 // 0800:04F9: Register word16 fn0800-04F9(Register (ptr16 Eq_n) ds, Stack Eq_n wArg02)
+// Called from:
+//      _malloc
 word16 fn0800-04F9(struct Eq_n * ds, Eq_n wArg02)
 {
 	word16 ax_n;
@@ -435,6 +473,8 @@ word16 fn0800-04F9(struct Eq_n * ds, Eq_n wArg02)
 }
 
 // 0800:0536: Register (memptr (ptr16 Eq_n) Eq_n) fn0800-0536(Register (ptr16 Eq_n) ds, Stack Eq_n wArg02)
+// Called from:
+//      _malloc
 union Eq_n Eq_n::* fn0800-0536(struct Eq_n * ds, Eq_n wArg02)
 {
 	union Eq_n Eq_n::* ax_n;
@@ -452,6 +492,9 @@ union Eq_n Eq_n::* fn0800-0536(struct Eq_n * ds, Eq_n wArg02)
 }
 
 // 0800:0570: Register (memptr (ptr16 Eq_n) Eq_n) _malloc(Register (ptr16 Eq_n) ds, Stack cu16 wArg02)
+// Called from:
+//      __setenvp
+//      _setvbuf
 struct Eq_n Eq_n::* _malloc(struct Eq_n * ds, cu16 wArg02)
 {
 	struct Eq_n Eq_n::* ax_n;
@@ -491,6 +534,8 @@ struct Eq_n Eq_n::* _malloc(struct Eq_n * ds, cu16 wArg02)
 }
 
 // 0800:05E3: void ___brk(Register (ptr16 Eq_n) ds, Stack Eq_n wArg02)
+// Called from:
+//      _brk
 void ___brk(struct Eq_n * ds, Eq_n wArg02)
 {
 	if (wArg02 < fp - 0x0102)
@@ -500,6 +545,9 @@ void ___brk(struct Eq_n * ds, Eq_n wArg02)
 }
 
 // 0800:0607: Register Eq_n ___sbrk(Register (ptr16 Eq_n) ds, Stack cui16 wArg02, Stack word16 wArg04)
+// Called from:
+//      fn0800-04F9
+//      fn0800-0536
 Eq_n ___sbrk(struct Eq_n * ds, cui16 wArg02, word16 wArg04)
 {
 	Eq_n ax_n;
@@ -519,12 +567,16 @@ Eq_n ___sbrk(struct Eq_n * ds, cui16 wArg02, word16 wArg04)
 }
 
 // 0800:063B: void _brk(Register (ptr16 Eq_n) ds, Stack Eq_n wArg02)
+// Called from:
+//      fn0800-1606
 void _brk(struct Eq_n * ds, Eq_n wArg02)
 {
 	___brk(ds, wArg02);
 }
 
 // 0800:065B: Register ci16 fn0800-065B(Register (ptr16 Eq_n) ds, Stack (memptr (ptr16 Eq_n) Eq_n) wArg02)
+// Called from:
+//      _fseek
 ci16 fn0800-065B(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02)
 {
 	ci16 ax_n;
@@ -551,6 +603,8 @@ ci16 fn0800-065B(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02)
 }
 
 // 0800:06A2: void _fseek(Register (ptr16 Eq_n) ds, Stack (memptr (ptr16 Eq_n) Eq_n) wArg02, Stack ui32 dwArg04, Stack word16 wArg08)
+// Called from:
+//      _setvbuf
 void _fseek(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02, ui32 dwArg04, word16 wArg08)
 {
 	if (_fflush(ds, wArg02) == 0x00)
@@ -568,6 +622,9 @@ void _fseek(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02, ui32 dwArg04, word16 w
 }
 
 // 0800:075B: void fn0800-075B(Register (ptr16 Eq_n) ds)
+// Called from:
+//      fn0800-0782
+//      _fgetc
 void fn0800-075B(struct Eq_n * ds)
 {
 	word16 di_n = 0x14;
@@ -584,6 +641,8 @@ void fn0800-075B(struct Eq_n * ds)
 }
 
 // 0800:0782: Register word16 fn0800-0782(Register (ptr16 Eq_n) ds, Stack (memptr (ptr16 Eq_n) Eq_n) wArg02)
+// Called from:
+//      _fgetc
 word16 fn0800-0782(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02)
 {
 	if (((ds->*wArg02).w0002 & 0x0200) != 0x00)
@@ -668,6 +727,8 @@ void _fgetc(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02)
 }
 
 // 0800:08F2: Register cui16 _isatty(Stack int16 wArg02)
+// Called from:
+//      _fgetc
 cui16 _isatty(int16 wArg02)
 {
 	cui16 dx_n;
@@ -676,6 +737,8 @@ cui16 _isatty(int16 wArg02)
 }
 
 // 0800:0904: void _setvbuf(Register (ptr16 Eq_n) ds, Stack (memptr (ptr16 Eq_n) Eq_n) wArg02, Stack Eq_n wArg04, Stack ci16 wArg06, Stack cu16 wArg08)
+// Called from:
+//      _fgetc
 void _setvbuf(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02, Eq_n wArg04, ci16 wArg06, cu16 wArg08)
 {
 	if ((ds->*wArg02).ptr000E != wArg02 || (wArg06 > 0x02 || wArg08 > 0x7FFF))
@@ -711,6 +774,8 @@ void _setvbuf(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02, Eq_n wArg04, ci16 wA
 }
 
 // 0800:09F7: Register Eq_n _read(Register (ptr16 Eq_n) ds, Stack int16 wArg02, Stack Eq_n wArg04, Stack cu16 wArg06)
+// Called from:
+//      fn0800-0782
 Eq_n _read(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, cu16 wArg06)
 {
 	Eq_n ax_n;
@@ -764,6 +829,9 @@ l0800_nAA7:
 }
 
 // 0800:0AB3: Register Eq_n __read(Register (ptr16 Eq_n) ds, Stack int16 wArg02, Stack Eq_n wArg04, Stack cu16 wArg06)
+// Called from:
+//      _fgetc
+//      _read
 Eq_n __read(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, cu16 wArg06)
 {
 	Eq_n ax_n;
@@ -773,6 +841,8 @@ Eq_n __read(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, cu16 wArg06)
 }
 
 // 0800:0ACF: Register Eq_n _write(Register (ptr16 Eq_n) ds, Stack int16 wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06)
+// Called from:
+//      _fflush
 Eq_n _write(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, Eq_n wArg06)
 {
 	Eq_n ax_n;
@@ -841,6 +911,9 @@ Eq_n _write(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, Eq_n wArg06)
 }
 
 // 0800:0BE2: Register Eq_n __write(Register (ptr16 Eq_n) ds, Stack int16 wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06)
+// Called from:
+//      _write
+//      _fputc
 Eq_n __write(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, Eq_n wArg06)
 {
 	if (((&(ds->*(ds->*ds).a0482))[wArg02 * 0x02] & 0x0800) != 0x00)
@@ -861,6 +934,11 @@ Eq_n __write(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, Eq_n wArg06)
 }
 
 // 0800:0C28: Register Eq_n _lseek(Register (ptr16 Eq_n) ds, Stack int16 wArg02, Stack ui32 dwArg04, Stack byte bArg08, Register out ptr16 dxOut)
+// Called from:
+//      _fseek
+//      _read
+//      __write
+//      _tell
 Eq_n _lseek(struct Eq_n * ds, int16 wArg02, ui32 dwArg04, byte bArg08, ptr16 & dxOut)
 {
 	ptr16 wArg04 = (word16) dwArg04;
@@ -878,6 +956,8 @@ Eq_n _lseek(struct Eq_n * ds, int16 wArg02, ui32 dwArg04, byte bArg08, ptr16 & d
 }
 
 // 0800:0C53: void __LONGTOA(Register Eq_n ds, Stack Eq_n bArg02, Stack Eq_n bArg04, Stack Eq_n wArg06, Stack (memptr Eq_n byte) wArg08, Stack Eq_n wArg0A, Stack Eq_n wArg0C)
+// Called from:
+//      __VPRINTER
 void __LONGTOA(Eq_n ds, Eq_n bArg02, Eq_n bArg04, Eq_n wArg06, byte Eq_n::* wArg08, Eq_n wArg0A, Eq_n wArg0C)
 {
 	byte Eq_n::* di_n = wArg08;
@@ -938,6 +1018,8 @@ l0800_nCA4:
 }
 
 // 0800:0D5F: Register Eq_n _eof(Register (ptr16 Eq_n) ds, Stack int16 wArg02)
+// Called from:
+//      _fgetc
 Eq_n _eof(struct Eq_n * ds, int16 wArg02)
 {
 	Eq_n ax_n;
@@ -981,6 +1063,10 @@ l0800_nDBF:
 }
 
 // 0800:0DCD: Register word16 _fflush(Register (ptr16 Eq_n) ds, Stack (memptr (ptr16 Eq_n) Eq_n) wArg02)
+// Called from:
+//      _fseek
+//      fn0800-075B
+//      _fputc
 word16 _fflush(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02)
 {
 	word16 ax_n;
@@ -1014,6 +1100,8 @@ word16 _fflush(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02)
 }
 
 // 0800:0E4B: Register word16 _printf(Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register Eq_n ds, Stack Eq_n wArg02)
+// Called from:
+//      _main
 word16 _printf(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds, Eq_n wArg02)
 {
 	word16 di_n = __VPRINTER(cx, dx, bx, ds, fp + 0x04, wArg02);
@@ -1028,6 +1116,8 @@ void __fputc(struct Eq_n * ds, byte bArg02, struct Eq_n Eq_n::* wArg04)
 }
 
 // 0800:0E7D: void _fputc(Register (ptr16 Eq_n) ds, Stack byte bArg02, Stack (memptr (ptr16 Eq_n) Eq_n) wArg04)
+// Called from:
+//      __fputc
 void _fputc(struct Eq_n * ds, byte bArg02, struct Eq_n Eq_n::* wArg04)
 {
 	while (true)
@@ -1064,12 +1154,16 @@ void _fputc(struct Eq_n * ds, byte bArg02, struct Eq_n Eq_n::* wArg04)
 }
 
 // 0800:1044: void __REALCVT(Register Eq_n ds)
+// Called from:
+//      __VPRINTER
 void __REALCVT(Eq_n ds)
 {
 	(*((word16) ds + 0x05E0))();
 }
 
 // 0800:1048: Register word16 fn0800-1048(Sequence (ptr32 Eq_n) es_di, Register Eq_n ds, Stack Eq_n wArg02)
+// Called from:
+//      __VPRINTER
 word16 fn0800-1048(struct Eq_n * es_di, Eq_n ds, Eq_n wArg02)
 {
 	word16 di = (word16) es_di;
@@ -1083,6 +1177,8 @@ word16 fn0800-1048(struct Eq_n * es_di, Eq_n ds, Eq_n wArg02)
 }
 
 // 0800:1073: Register word16 __VPRINTER(Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04)
+// Called from:
+//      _printf
 word16 __VPRINTER(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 {
 	ci8 bLoc57_n = 0x50;
@@ -1618,6 +1714,8 @@ l0800_n:
 }
 
 // 0800:108C: Register word16 fn0800-108C(Register (memptr (ptr16 Eq_n) byte) di, Register (ptr16 Eq_n) es)
+// Called from:
+//      __VPRINTER
 word16 fn0800-108C(byte Eq_n::* di, struct Eq_n * es)
 {
 	word16 cx_n = ~0x00;
@@ -1633,6 +1731,8 @@ word16 fn0800-108C(byte Eq_n::* di, struct Eq_n * es)
 }
 
 // 0800:1099: Register (memptr Eq_n byte) fn0800-1099(Sequence (ptr32 byte) ds_di, Sequence (ptr32 Eq_n) ss_bp, Register byte al, Register Eq_n cx, Register Eq_n dx, Register Eq_n bx)
+// Called from:
+//      __VPRINTER
 byte Eq_n::* fn0800-1099(byte * ds_di, struct Eq_n * ss_bp, byte al, Eq_n cx, Eq_n dx, Eq_n bx)
 {
 	byte Eq_n::* di = (word16) ds_di;
@@ -1645,6 +1745,9 @@ byte Eq_n::* fn0800-1099(byte * ds_di, struct Eq_n * ss_bp, byte al, Eq_n cx, Eq
 }
 
 // 0800:10A1: Register (memptr Eq_n byte) fn0800-10A1(Sequence (ptr32 Eq_n) ss_bp, Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register (memptr Eq_n byte) di)
+// Called from:
+//      __VPRINTER
+//      fn0800-1099
 byte Eq_n::* fn0800-10A1(struct Eq_n * ss_bp, Eq_n cx, Eq_n dx, Eq_n bx, byte Eq_n::* di)
 {
 	word16 bp = (word16) ss_bp;
@@ -1659,6 +1762,8 @@ byte Eq_n::* fn0800-10A1(struct Eq_n * ss_bp, Eq_n cx, Eq_n dx, Eq_n bx, byte Eq
 }
 
 // 0800:1596: void fn0800-1596(Register (ptr16 Eq_n) ds, Stack Eq_n wArg02)
+// Called from:
+//      fn0800-165F
 void fn0800-1596(struct Eq_n * ds, Eq_n wArg02)
 {
 	if (ds->t062A != 0x00)
@@ -1678,6 +1783,8 @@ void fn0800-1596(struct Eq_n * ds, Eq_n wArg02)
 }
 
 // 0800:15CF: void fn0800-15CF(Register (ptr16 Eq_n) ds, Stack Eq_n wArg02, Stack Eq_n wArg04)
+// Called from:
+//      fn0800-165F
 void fn0800-15CF(struct Eq_n * ds, Eq_n wArg02, Eq_n wArg04)
 {
 	ds->*wArg02 += ds->*wArg04;
@@ -1689,6 +1796,8 @@ void fn0800-15CF(struct Eq_n * ds, Eq_n wArg02, Eq_n wArg04)
 }
 
 // 0800:1606: void fn0800-1606(Register (ptr16 Eq_n) ds)
+// Called from:
+//      _free
 void fn0800-1606(struct Eq_n * ds)
 {
 	if (ds->t062C == ds->t0628)
@@ -1721,6 +1830,8 @@ void fn0800-1606(struct Eq_n * ds)
 }
 
 // 0800:165F: void fn0800-165F(Register (ptr16 Eq_n) ds, Stack Eq_n wArg02)
+// Called from:
+//      _free
 void fn0800-165F(struct Eq_n * ds, Eq_n wArg02)
 {
 	--ds->*wArg02;
@@ -1740,6 +1851,8 @@ void fn0800-165F(struct Eq_n * ds, Eq_n wArg02)
 }
 
 // 0800:16AD: void _free(Register (ptr16 Eq_n) ds, Stack Eq_n wArg02)
+// Called from:
+//      _setvbuf
 void _free(struct Eq_n * ds, Eq_n wArg02)
 {
 	if (wArg02 != 0x00)
@@ -1752,6 +1865,8 @@ void _free(struct Eq_n * ds, Eq_n wArg02)
 }
 
 // 0800:16D4: Register word16 _scanf(Register Eq_n di, Register (ptr16 Eq_n) es, Register Eq_n ds, Stack (memptr Eq_n Eq_n) wArg02, Register out ptr16 bxOut, Register out ptr16 bpOut)
+// Called from:
+//      _main
 word16 _scanf(Eq_n di, struct Eq_n * es, Eq_n ds, struct Eq_n Eq_n::* wArg02, ptr16 & bxOut, ptr16 & bpOut)
 {
 	ptr16 Eq_n::* bp_n;
@@ -1764,6 +1879,8 @@ word16 _scanf(Eq_n di, struct Eq_n * es, Eq_n ds, struct Eq_n Eq_n::* wArg02, pt
 }
 
 // 0800:16F3: Register word16 __scanner(Register Eq_n di, Register (ptr16 Eq_n) es, Register Eq_n ds, Stack (memptr (ptr16 Eq_n) code) wArg02, Stack (memptr (ptr16 Eq_n) code) wArg04, Stack Eq_n wArg06, Stack (memptr Eq_n Eq_n) wArg08, Register out Eq_n bxOut, Register out ptr16 bpOut)
+// Called from:
+//      _scanf
 word16 __scanner(Eq_n di, struct Eq_n * es, Eq_n ds, <anonymous> Eq_n::* wArg02, <anonymous> Eq_n::* wArg04, Eq_n wArg06, struct Eq_n Eq_n::* wArg08, union Eq_n & bxOut, ptr16 & bpOut)
 {
 	word16 wLoc28_n = 0x00;
@@ -2189,6 +2306,8 @@ l0800_n:
 }
 
 // 0800:1708: Register Eq_n fn0800-1708(Sequence (ptr32 Eq_n) ss_bp, Register Eq_n ds, Register out Eq_n esOut)
+// Called from:
+//      __scanner
 Eq_n fn0800-1708(struct Eq_n * ss_bp, Eq_n ds, union Eq_n & esOut)
 {
 	union Eq_n Eq_n::* di_n = ss_bp->ptr000C;
@@ -2209,6 +2328,8 @@ Eq_n fn0800-1708(struct Eq_n * ss_bp, Eq_n ds, union Eq_n & esOut)
 }
 
 // 0800:1898: Register word16 fn0800-1898(Sequence (ptr32 Eq_n) ss_bp, Register Eq_n ds, Register out ptr16 bpOut)
+// Called from:
+//      __scanner
 word16 fn0800-1898(struct Eq_n * ss_bp, Eq_n ds, ptr16 & bpOut)
 {
 	ptr16 bp_n;
@@ -2230,6 +2351,8 @@ void fn0800-18CF(struct Eq_n * ss_bp)
 }
 
 // 0800:196F: Register word16 fn0800-196F(Sequence (ptr32 Eq_n) ss_bp, Register Eq_n ds, Register out ptr16 bpOut)
+// Called from:
+//      __scanner
 word16 fn0800-196F(struct Eq_n * ss_bp, Eq_n ds, ptr16 & bpOut)
 {
 	ptr16 bp_n;
@@ -2239,6 +2362,10 @@ word16 fn0800-196F(struct Eq_n * ss_bp, Eq_n ds, ptr16 & bpOut)
 }
 
 // 0800:1AEB: Register ptr16 fn0800-1AEB(Sequence (ptr32 Eq_n) ss_bp)
+// Called from:
+//      __scanner
+//      fn0800-1898
+//      fn0800-1B2C
 ptr16 fn0800-1AEB(struct Eq_n * ss_bp)
 {
 	(seg0800->*ss_bp->ptr0006)();
@@ -2247,12 +2374,18 @@ ptr16 fn0800-1AEB(struct Eq_n * ss_bp)
 }
 
 // 0800:1AFF: Register word16 fn0800-1AFF(Sequence (ptr32 Eq_n) ss_bp)
+// Called from:
+//      __scanner
+//      fn0800-1AEB
 word16 fn0800-1AFF(struct Eq_n * ss_bp)
 {
 	return ss_bp->w0000;
 }
 
 // 0800:1B06: Register word16 fn0800-1B06(Sequence (ptr32 Eq_n) ss_bp, Register Eq_n ds, Register out ptr16 bpOut)
+// Called from:
+//      fn0800-1898
+//      fn0800-196F
 word16 fn0800-1B06(struct Eq_n * ss_bp, Eq_n ds, ptr16 & bpOut)
 {
 	struct Eq_n * ss = SLICE(ss_bp, selector, 16);
@@ -2282,6 +2415,9 @@ word16 fn0800-1B06(struct Eq_n * ss_bp, Eq_n ds, ptr16 & bpOut)
 }
 
 // 0800:1B2C: void fn0800-1B2C(Sequence (ptr32 Eq_n) ss_bp)
+// Called from:
+//      fn0800-18AF
+//      fn0800-18CF
 void fn0800-1B2C(struct Eq_n * ss_bp)
 {
 	struct Eq_n * ss = SLICE(ss_bp, selector, 16);
@@ -2338,24 +2474,32 @@ void fn0800-1B2C(struct Eq_n * ss_bp)
 }
 
 // 0800:1B92: void __scantod(Register Eq_n ds)
+// Called from:
+//      __scanner
 void __scantod(Eq_n ds)
 {
 	(*((word16) ds + 0x05E2))();
 }
 
 // 0800:1B96: void __scanrslt(Register Eq_n ds)
+// Called from:
+//      __scanner
 void __scanrslt(Eq_n ds)
 {
 	(*((word16) ds + 0x05E4))();
 }
 
 // 0800:1B9A: void __scanpop(Register Eq_n ds)
+// Called from:
+//      __scanner
 void __scanpop(Eq_n ds)
 {
 	(*((word16) ds + 1510))();
 }
 
 // 0800:1B9E: FlagGroup bool fn0800-1B9E(Register cu8 cl, Register Eq_n bl)
+// Called from:
+//      __scantol
 bool fn0800-1B9E(cu8 cl, Eq_n bl)
 {
 	cu8 bl_n = (byte) bx;
@@ -2386,6 +2530,8 @@ l0800_nBC7:
 }
 
 // 0800:1BCC: Register Eq_n __scantol(Register Eq_n ds, Stack (memptr (ptr16 Eq_n) code) wArg02, Stack (memptr (ptr16 Eq_n) code) wArg04, Stack Eq_n wArg06, Stack uint16 wArg08, Stack ci16 wArg0A, Stack (memptr Eq_n word16) wArg0C, Stack (memptr Eq_n Eq_n) wArg0E, Register out Eq_n dxOut, Register out Eq_n bxOut, Register out Eq_n diOut, Register out Eq_n esOut)
+// Called from:
+//      __scanner
 Eq_n __scantol(Eq_n ds, <anonymous> Eq_n::* wArg02, <anonymous> Eq_n::* wArg04, Eq_n wArg06, uint16 wArg08, ci16 wArg0A, word16 Eq_n::* wArg0C, union Eq_n Eq_n::* wArg0E, union Eq_n & dxOut, union Eq_n & bxOut, union Eq_n & diOut, union Eq_n & esOut)
 {
 	byte bLoc07_n = 0x00;

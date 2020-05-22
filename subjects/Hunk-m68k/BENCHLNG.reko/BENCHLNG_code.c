@@ -220,6 +220,8 @@ l00001202:
 }
 
 // 00001214: void fn00001214(Register (ptr32 Eq_n) a3)
+// Called from:
+//      fn00001000
 void fn00001214(struct Eq_n * a3)
 {
 	WaitPort((char *) &a3->dw003A + 0x0022);
@@ -227,6 +229,8 @@ void fn00001214(struct Eq_n * a3)
 }
 
 // 0000126C: void fn0000126C(Register (ptr32 Eq_n) a2)
+// Called from:
+//      fn00001000
 void fn0000126C(struct Eq_n * a2)
 {
 	Forbid();
@@ -234,6 +238,8 @@ void fn0000126C(struct Eq_n * a2)
 }
 
 // 00001278: Register word32 fn00001278(Stack ptr32 dwArg04, Register out ptr32 a1Out, Register out ptr32 a5Out)
+// Called from:
+//      fn000012D0
 word32 fn00001278(ptr32 dwArg04, ptr32 & a1Out, ptr32 & a5Out)
 {
 	ptr32 a1_n;
@@ -245,6 +251,9 @@ word32 fn00001278(ptr32 dwArg04, ptr32 & a1Out, ptr32 & a5Out)
 }
 
 // 0000127C: Register word32 fn0000127C(Register out (ptr32 Eq_n) a1Out, Register out (ptr32 Eq_n) a5Out)
+// Called from:
+//      fn00001000
+//      fn00001278
 word32 fn0000127C(struct Eq_n & a1Out, struct Eq_n & a5Out)
 {
 	struct Eq_n * a7_n = globals->ptr3E20;
@@ -263,6 +272,8 @@ word32 fn0000127C(struct Eq_n & a1Out, struct Eq_n & a5Out)
 }
 
 // 000012D0: Register word32 fn000012D0(Stack ptr32 dwArg04, Register out ptr32 a1Out, Register out ptr32 a5Out)
+// Called from:
+//      fn0000131C
 word32 fn000012D0(ptr32 dwArg04, ptr32 & a1Out, ptr32 & a5Out)
 {
 	if (16232 != 0x00)
@@ -290,6 +301,9 @@ word32 fn000012D0(ptr32 dwArg04, ptr32 & a1Out, ptr32 & a5Out)
 }
 
 // 0000131C: Register word32 fn0000131C(Stack ptr32 dwArg04, Register out ptr32 a1Out, Register out ptr32 a5Out)
+// Called from:
+//      fn00001354
+//      fn00002530
 word32 fn0000131C(ptr32 dwArg04, ptr32 & a1Out, ptr32 & a5Out)
 {
 	if (globals->dw3E50 == 0x00)
@@ -306,6 +320,8 @@ word32 fn0000131C(ptr32 dwArg04, ptr32 & a1Out, ptr32 & a5Out)
 }
 
 // 00001354: void fn00001354(Register Eq_n d1, Register (ptr32 Eq_n) a1, Stack int32 dwArg04, Stack (ptr32 Eq_n) dwArg08)
+// Called from:
+//      fn00001000
 void fn00001354(Eq_n d1, struct Eq_n * a1, int32 dwArg04, struct Eq_n * dwArg08)
 {
 	<anonymous> ** a3_n = (<anonymous> **) 0x3F60;
@@ -324,6 +340,8 @@ void fn00001354(Eq_n d1, struct Eq_n * a1, int32 dwArg04, struct Eq_n * dwArg08)
 }
 
 // 00001390: Register Eq_n fn00001390(Register Eq_n d0, Register Eq_n d1, Register (ptr32 Eq_n) a1)
+// Called from:
+//      fn00001354
 Eq_n fn00001390(Eq_n d0, Eq_n d1, struct Eq_n * a1)
 {
 	struct Eq_n * a1_n;
@@ -368,6 +386,8 @@ Eq_n fn00001390(Eq_n d0, Eq_n d1, struct Eq_n * a1)
 }
 
 // 000014AC: void fn000014AC(Register Eq_n d2, Stack Eq_n dwArg04, Stack Eq_n dwArg08)
+// Called from:
+//      fn00001390
 void fn000014AC(Eq_n d2, Eq_n dwArg04, Eq_n dwArg08)
 {
 	if (dwArg08 < 0x00)
@@ -397,6 +417,8 @@ void fn000014AC(Eq_n d2, Eq_n dwArg04, Eq_n dwArg08)
 }
 
 // 000014EC: Register Eq_n fn000014EC(Register Eq_n d2, Stack Eq_n dwArg04, Stack Eq_n dwArg08)
+// Called from:
+//      fn00002C3C
 Eq_n fn000014EC(Eq_n d2, Eq_n dwArg04, Eq_n dwArg08)
 {
 	if (dwArg04 > 0x00)
@@ -429,6 +451,10 @@ Eq_n fn000014EC(Eq_n d2, Eq_n dwArg04, Eq_n dwArg08)
 }
 
 // 0000151E: Register Eq_n fn0000151E(Register Eq_n d0, Register Eq_n d1, Register Eq_n d2, Register out Eq_n d1Out)
+// Called from:
+//      fn000014AC
+//      fn000014EC
+//      fn00002664
 Eq_n fn0000151E(Eq_n d0, Eq_n d1, Eq_n d2, union Eq_n & d1Out)
 {
 	Eq_n d1_n = __swap(d1);
@@ -497,6 +523,8 @@ Eq_n fn0000151E(Eq_n d0, Eq_n d1, Eq_n d2, union Eq_n & d1Out)
 }
 
 // 000015A4: Register Eq_n fn000015A4(Register Eq_n d0, Stack Eq_n dwArg04, Register out ptr32 d1Out, Register out ptr32 a1Out)
+// Called from:
+//      fn00001390
 Eq_n fn000015A4(Eq_n d0, Eq_n dwArg04, ptr32 & d1Out, ptr32 & a1Out)
 {
 	ptr32 a1_n;
@@ -508,6 +536,8 @@ Eq_n fn000015A4(Eq_n d0, Eq_n dwArg04, ptr32 & d1Out, ptr32 & a1Out)
 }
 
 // 000015C0: Register Eq_n fn000015C0(Register Eq_n d0, Stack (ptr32 Eq_n) dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Register out (ptr32 Eq_n) d1Out, Register out Eq_n a1Out)
+// Called from:
+//      fn000015A4
 Eq_n fn000015C0(Eq_n d0, struct Eq_n * dwArg04, Eq_n dwArg08, Eq_n dwArg0C, struct Eq_n & d1Out, union Eq_n & a1Out)
 {
 	Eq_n d0_n;
@@ -1222,6 +1252,8 @@ l00001F08:
 }
 
 // 00001F40: Register Eq_n fn00001F40(Stack Eq_n dwArg04, Stack (ptr32 Eq_n) dwArg08, Register out Eq_n d1Out, Register out (ptr32 ui32) a0Out, Register out Eq_n a1Out, Register out ptr32 a5Out)
+// Called from:
+//      fn000015C0
 Eq_n fn00001F40(Eq_n dwArg04, struct Eq_n * dwArg08, union Eq_n & d1Out, ui32 & a0Out, union Eq_n & a1Out, ptr32 & a5Out)
 {
 	Eq_n a1_n;
@@ -1248,6 +1280,8 @@ Eq_n fn00001F40(Eq_n dwArg04, struct Eq_n * dwArg08, union Eq_n & d1Out, ui32 & 
 }
 
 // 00001F9C: Register int32 fn00001F9C(Stack Eq_n dwArg04, Stack (ptr32 Eq_n) dwArg08, Register out (ptr32 ui32) a0Out, Register out ptr32 a1Out, Register out ptr32 a5Out)
+// Called from:
+//      fn00001F40
 int32 fn00001F9C(Eq_n dwArg04, struct Eq_n * dwArg08, ui32 & a0Out, ptr32 & a1Out, ptr32 & a5Out)
 {
 	int32 d0_n;
@@ -1333,6 +1367,10 @@ l000020AA:
 }
 
 // 000020B0: Register int32 fn000020B0(Stack (ptr32 Eq_n) dwArg04, Register out (ptr32 ui32) a0Out, Register out ptr32 a1Out, Register out ptr32 a5Out)
+// Called from:
+//      fn00001F9C
+//      fn00002BAC
+//      fn00003DDC
 int32 fn000020B0(struct Eq_n * dwArg04, ui32 & a0Out, ptr32 & a1Out, ptr32 & a5Out)
 {
 	int32 d0_n;
@@ -1387,6 +1425,9 @@ l0000213E:
 }
 
 // 0000215C: Register Eq_n fn0000215C(Stack int32 dwArg04, Register out ptr32 d1Out, Register out ptr32 a0Out, Register out (ptr32 int32) a1Out)
+// Called from:
+//      fn00001F9C
+//      fn00003CE0
 Eq_n fn0000215C(int32 dwArg04, ptr32 & d1Out, ptr32 & a0Out, int32 & a1Out)
 {
 	Eq_n d0_n;
@@ -1430,6 +1471,8 @@ void fn000021C8(struct Eq_n * dwArg04)
 }
 
 // 00002290: void fn00002290(Stack (ptr32 Eq_n) dwArg04, Stack up32 dwArg08, Stack up32 dwArg0C)
+// Called from:
+//      fn000021C8
 void fn00002290(struct Eq_n * dwArg04, up32 dwArg08, up32 dwArg0C)
 {
 	if (globals->ptr3E24->t0014 < 0x27)
@@ -1460,6 +1503,8 @@ void fn00002290(struct Eq_n * dwArg04, up32 dwArg08, up32 dwArg0C)
 }
 
 // 0000232C: Register (ptr32 Eq_n) fn0000232C(Stack (ptr32 Eq_n) dwArg04, Stack up32 dwArg08, Register out Eq_n d1Out, Register out (ptr32 Eq_n) a0Out)
+// Called from:
+//      fn0000215C
 struct Eq_n * fn0000232C(struct Eq_n * dwArg04, up32 dwArg08, union Eq_n & d1Out, struct Eq_n & a0Out)
 {
 	struct Eq_n * d0_n;
@@ -1546,6 +1591,8 @@ l000023FE:
 }
 
 // 00002450: Register (ptr32 Eq_n) fn00002450(Stack Eq_n dwArg04, Stack (ptr32 Eq_n) dwArg08, Stack (ptr32 Eq_n) dwArg0C, Register out (ptr32 Eq_n) d1Out, Register out (ptr32 Eq_n) a0Out, Register out (ptr32 Eq_n) a1Out)
+// Called from:
+//      fn0000215C
 struct Eq_n * fn00002450(Eq_n dwArg04, struct Eq_n * dwArg08, struct Eq_n * dwArg0C, struct Eq_n & d1Out, struct Eq_n & a0Out, struct Eq_n & a1Out)
 {
 	struct Eq_n * d0_n;
@@ -1607,6 +1654,10 @@ void fn000024C0(int32 d0, struct Eq_n * dwArg04)
 }
 
 // 00002530: Register word32 fn00002530(Register out ptr32 a1Out, Register out ptr32 a5Out)
+// Called from:
+//      fn00001F9C
+//      fn000020B0
+//      fn00003CE0
 word32 fn00002530(ptr32 & a1Out, ptr32 & a5Out)
 {
 	SetSignal(0, 0x1000);
@@ -1619,6 +1670,8 @@ word32 fn00002530(ptr32 & a1Out, ptr32 & a5Out)
 }
 
 // 00002560: Register Eq_n fn00002560(Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Register out Eq_n d1Out, Register out Eq_n a0Out)
+// Called from:
+//      fn000015C0
 Eq_n fn00002560(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, union Eq_n & d1Out, union Eq_n & a0Out)
 {
 	Eq_n d0_n;
@@ -1705,6 +1758,9 @@ l0000265C:
 }
 
 // 00002664: Register Eq_n fn00002664(Register Eq_n d0, Register Eq_n d1, Register Eq_n d2, Register out Eq_n d1Out, Register out Eq_n d2Out)
+// Called from:
+//      fn00002560
+//      fn000027B0
 Eq_n fn00002664(Eq_n d0, Eq_n d1, Eq_n d2, union Eq_n & d1Out, union Eq_n & d2Out)
 {
 	Eq_n d7_n = d2;
@@ -1825,6 +1881,8 @@ l000027AA:
 }
 
 // 000027B0: Register Eq_n fn000027B0(Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10)
+// Called from:
+//      fn000015C0
 Eq_n fn000027B0(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10)
 {
 	Eq_n d1_n = dwArg08;
@@ -1931,12 +1989,16 @@ void fn00002BAC(struct Eq_n * dwArg04)
 }
 
 // 00002BF0: Register Eq_n fn00002BF0(Register Eq_n d0, Register Eq_n d1, Register (ptr32 Eq_n) a1, Stack (ptr32 Eq_n) dwArg04)
+// Called from:
+//      fn00001390
 Eq_n fn00002BF0(Eq_n d0, Eq_n d1, struct Eq_n * a1, struct Eq_n * dwArg04)
 {
 	return fn00002C3C(d0, d1, a1, *(union Eq_n *) 16252, dwArg04, fp + 8);
 }
 
 // 00002C0C: Register Eq_n fn00002C0C(Stack byte bArg07, Stack Eq_n dwArg08)
+// Called from:
+//      fn00002C3C
 Eq_n fn00002C0C(byte bArg07, Eq_n dwArg08)
 {
 	Eq_n d0_n = dwArg08;
@@ -1952,6 +2014,8 @@ Eq_n fn00002C0C(byte bArg07, Eq_n dwArg08)
 }
 
 // 00002C3C: Register Eq_n fn00002C3C(Register Eq_n d0, Register Eq_n d1, Register (ptr32 Eq_n) a1, Stack Eq_n dwArg04, Stack (ptr32 Eq_n) dwArg08, Stack Eq_n dwArg0C)
+// Called from:
+//      fn00002BF0
 Eq_n fn00002C3C(Eq_n d0, Eq_n d1, struct Eq_n * a1, Eq_n dwArg04, struct Eq_n * dwArg08, Eq_n dwArg0C)
 {
 	struct Eq_n * a7_n = fp + -0x0078;
@@ -3187,6 +3251,8 @@ l00003942:
 }
 
 // 00003C60: Register uint32 fn00003C60(Register Eq_n d4, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Register out ptr32 d1Out)
+// Called from:
+//      fn00002C3C
 uint32 fn00003C60(Eq_n d4, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, ptr32 & d1Out)
 {
 	Eq_n d0_n = __swap(dwArg08);
@@ -3206,6 +3272,8 @@ uint32 fn00003C60(Eq_n d4, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg1
 }
 
 // 00003CE0: Register int32 fn00003CE0(Stack Eq_n dwArg04, Register out (ptr32 (ptr32 Eq_n)) d1Out, Register out (ptr32 word32) a1Out, Register out (ptr32 byte) a5Out)
+// Called from:
+//      fn00002C3C
 int32 fn00003CE0(Eq_n dwArg04, union Eq_n & d1Out, word32 & a1Out, byte & a5Out)
 {
 	int32 d0_n;
@@ -3285,6 +3353,8 @@ l00003DD6:
 }
 
 // 00003DDC: Register (ptr32 Eq_n) fn00003DDC(Register out ptr32 a1Out, Register out ptr32 a5Out)
+// Called from:
+//      fn00003CE0
 struct Eq_n * fn00003DDC(ptr32 & a1Out, ptr32 & a5Out)
 {
 	struct Eq_n * a2_n = *(struct Eq_n **) 0x3F88;

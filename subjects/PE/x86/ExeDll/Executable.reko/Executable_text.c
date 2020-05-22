@@ -5,6 +5,8 @@
 #include "Executable_text.h"
 
 // 00401000: Register word32 fn00401000()
+// Called from:
+//      Win32CrtStartup
 word32 fn00401000()
 {
 	InitializeCriticalSection(&exported_critical_section);
@@ -16,12 +18,17 @@ word32 fn00401000()
 }
 
 // 00401050: Register ptr32 fn00401050()
+// Called from:
+//      fn00401060
+//      fn0040173F
 ptr32 fn00401050()
 {
 	return 0x00403378;
 }
 
 // 00401060: void fn00401060(Stack word32 dwArg04)
+// Called from:
+//      fn00401000
 void fn00401060(word32 dwArg04)
 {
 	struct Eq_n * esp_n;
@@ -168,6 +175,8 @@ void fn004012D8(struct _EXCEPTION_POINTERS * dwArg04)
 }
 
 // 004013FB: Register (ptr32 Eq_n) fn004013FB(Stack (ptr32 Eq_n) dwArg04, Stack uint32 dwArg08, Register out (ptr32 Eq_n) edxOut)
+// Called from:
+//      fn00401544
 struct Eq_n * fn004013FB(struct Eq_n * dwArg04, uint32 dwArg08, struct Eq_n & edxOut)
 {
 	struct Eq_n * eax_n;
@@ -189,6 +198,8 @@ l00401438:
 }
 
 // 0040143F: Register byte fn0040143F(Register out ptr32 edxOut)
+// Called from:
+//      Win32CrtStartup
 byte fn0040143F(ptr32 & edxOut)
 {
 	word32 eax_n = fn00401B98();
@@ -217,6 +228,8 @@ byte fn0040143F(ptr32 & edxOut)
 }
 
 // 00401474: Register byte fn00401474(Register word32 edx, Stack word32 dwArg04)
+// Called from:
+//      Win32CrtStartup
 byte fn00401474(word32 edx, word32 dwArg04)
 {
 	if (dwArg04 == 0x00)
@@ -274,6 +287,9 @@ void fn004014AD(word32 ebx, Eq_n edi, Eq_n dwArg04)
 }
 
 // 00401544: Register byte fn00401544(Register word32 ebx, Register Eq_n esi, Register Eq_n edi, Register out ptr32 edxOut, Register out ptr32 ebxOut, Register out (ptr32 Eq_n) ebpOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
+// Called from:
+//      Win32CrtStartup
+//      fn004014AD
 byte fn00401544(word32 ebx, Eq_n esi, Eq_n edi, ptr32 & edxOut, ptr32 & ebxOut, struct Eq_n & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
 {
 	word32 eax_n;
@@ -316,6 +332,8 @@ l004015C8:
 }
 
 // 004015CE: void fn004015CE(Stack Eq_n bArg04)
+// Called from:
+//      Win32CrtStartup
 void fn004015CE(Eq_n bArg04)
 {
 	if (fn00401B98() != 0x00 && bArg04 == 0x00)
@@ -323,6 +341,8 @@ void fn004015CE(Eq_n bArg04)
 }
 
 // 004015EB: void fn004015EB(Stack Eq_n bArg08)
+// Called from:
+//      Win32CrtStartup
 void fn004015EB(Eq_n bArg08)
 {
 	if (globals->b403354 == 0x00 || bArg08 == 0x00)
@@ -333,6 +353,8 @@ void fn004015EB(Eq_n bArg08)
 }
 
 // 00401613: Register ui32 fn00401613(Stack ui32 dwArg04)
+// Called from:
+//      fn0040164E
 ui32 fn00401613(ui32 dwArg04)
 {
 	word32 eax_n;
@@ -351,6 +373,8 @@ void fn0040164E(ui32 dwArg04)
 }
 
 // 00401663: void fn00401663()
+// Called from:
+//      Win32CrtStartup
 void fn00401663()
 {
 	ui32 eax_n = globals->dw403004;
@@ -405,6 +429,9 @@ void fn00401718()
 }
 
 // 00401739: Register ptr32 fn00401739()
+// Called from:
+//      fn00401718
+//      fn0040173F
 ptr32 fn00401739()
 {
 	return 0x00403360;
@@ -429,18 +456,26 @@ void fn0040175C()
 }
 
 // 00401768: Register ptr32 fn00401768()
+// Called from:
+//      Win32CrtStartup
 ptr32 fn00401768()
 {
 	return 0x00403388;
 }
 
 // 0040176E: Register ptr32 fn0040176E()
+// Called from:
+//      Win32CrtStartup
 ptr32 fn0040176E()
 {
 	return 0x00403384;
 }
 
 // 00401774: void fn00401774(Stack word32 dwArg04)
+// Called from:
+//      Win32CrtStartup
+//      fn004014AD
+//      fn00401718
 void fn00401774(word32 dwArg04)
 {
 	if (IsProcessorFeaturePresent(0x17) == 0x00)
@@ -458,6 +493,8 @@ void fn00401774(word32 dwArg04)
 }
 
 // 0040188F: Register byte fn0040188F()
+// Called from:
+//      Win32CrtStartup
 byte fn0040188F()
 {
 	Eq_n eax_n = GetModuleHandleW(null);
@@ -496,12 +533,18 @@ void fn00401920()
 }
 
 // 00401976: void fn00401976()
+// Called from:
+//      Win32CrtStartup
+//      fn00401920
 void fn00401976()
 {
 	globals->ptr4020D0();
 }
 
 // 00401980: Register ptr32 fn00401980(Register word32 ebx, Register Eq_n esi, Register Eq_n edi, Stack Eq_n dwArg00, Stack ui32 dwArg08)
+// Called from:
+//      Win32CrtStartup
+//      fn00401544
 ptr32 fn00401980(word32 ebx, Eq_n esi, Eq_n edi, Eq_n dwArg00, ui32 dwArg08)
 {
 	struct Eq_n * esp_n = fp - 8 - dwArg08;
@@ -515,6 +558,9 @@ ptr32 fn00401980(word32 ebx, Eq_n esi, Eq_n edi, Eq_n dwArg00, ui32 dwArg08)
 }
 
 // 004019C6: Register word32 fn004019C6(Register (ptr32 Eq_n) ebp, Stack Eq_n dwArg00, Register out Eq_n ebpOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
+// Called from:
+//      Win32CrtStartup
+//      fn00401544
 word32 fn004019C6(struct Eq_n * ebp, Eq_n dwArg00, union Eq_n & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
 {
 	fs->dw0000 = ebp->dwFFFFFFF0;
@@ -527,6 +573,8 @@ word32 fn004019C6(struct Eq_n * ebp, Eq_n dwArg00, union Eq_n & ebpOut, ptr32 & 
 }
 
 // 004019FE: void fn004019FE(Register word32 edx)
+// Called from:
+//      fn00401474
 void fn004019FE(word32 edx)
 {
 	globals->dw40336C &= 0x00;
@@ -574,6 +622,10 @@ void fn004019FE(word32 edx)
 }
 
 // 00401B98: Register uint32 fn00401B98()
+// Called from:
+//      fn0040143F
+//      fn004014AD
+//      fn004015CE
 uint32 fn00401B98()
 {
 	return (uint32) (uint8) (globals->dw403014 != 0x00);
@@ -585,6 +637,9 @@ void fn00401BA4()
 }
 
 // 00401C48: Register byte fn00401C48()
+// Called from:
+//      fn00401474
+//      fn004015EB
 byte fn00401C48()
 {
 	return 0x01;

@@ -5,6 +5,11 @@
 #include "RTOSDemo_text_memcpy.h"
 
 // 0000A5C4: FlagGroup bool memcpy(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register Eq_n r7, Register Eq_n lr, Register out ptr32 r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 lrOut)
+// Called from:
+//      prvCopyDataToQueue
+//      prvCopyDataFromQueue
+//      xQueueCRReceive
+//      xQueueCRReceiveFromISR
 bool memcpy(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n lr, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & lrOut)
 {
 	Eq_n r5_n = r0;

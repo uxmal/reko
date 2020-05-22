@@ -11,6 +11,10 @@ void fn80000000()
 }
 
 // 80000132: Register real96 fn80000132(Stack real96 rArg04, Stack real96 rArg10)
+// Called from:
+//      fn800001F2
+//      fn800002AE
+//      fn800003CC
 real96 fn80000132(real96 rArg04, real96 rArg10)
 {
 	real96 fp0_n = *(real96 *) 0x800004FC;
@@ -27,6 +31,10 @@ real96 fn80000132(real96 rArg04, real96 rArg10)
 }
 
 // 8000018E: Register real96 fn8000018E(Stack real96 rArg04)
+// Called from:
+//      fn800001F2
+//      fn800002AE
+//      fn800003CC
 real96 fn8000018E(real96 rArg04)
 {
 	real96 fp0_n = *(real96 *) 0x80000508;
@@ -43,6 +51,9 @@ real96 fn8000018E(real96 rArg04)
 }
 
 // 800001F2: Register real96 fn800001F2(Stack real96 rArg04)
+// Called from:
+//      fn8000036C
+//      fn800003CC
 real96 fn800001F2(real96 rArg04)
 {
 	real96 rLoc1C_n = *(real96 *) 0x80000514;
@@ -63,6 +74,9 @@ real96 fn800001F2(real96 rArg04)
 }
 
 // 800002AE: Register real96 fn800002AE(Stack real96 rArg04)
+// Called from:
+//      fn8000036C
+//      fn800003CC
 real96 fn800002AE(real96 rArg04)
 {
 	real96 fp0_n = *(real96 *) 0x80000520;
@@ -82,6 +96,8 @@ real96 fn800002AE(real96 rArg04)
 }
 
 // 8000036C: void fn8000036C(Stack real96 rArg04)
+// Called from:
+//      fn800003CC
 void fn8000036C(real96 rArg04)
 {
 	fn800001F2(rArg04);
@@ -89,6 +105,8 @@ void fn8000036C(real96 rArg04)
 }
 
 // 800003CC: void fn800003CC()
+// Called from:
+//      fn80000000
 void fn800003CC()
 {
 	real96 fp0_n = *(real96 *) 0x80000538;

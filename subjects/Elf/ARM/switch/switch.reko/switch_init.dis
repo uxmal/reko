@@ -1,6 +1,8 @@
 word32 _init(ptr32 & r10Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __libc_csu_init
 // MayUse: 
 // LiveOut: r10 r4
 // Trashed: NZCV lr pc r0 r10 r2 r3 r4

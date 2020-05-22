@@ -5,6 +5,9 @@
 #include "RTOSDemo_privileged_functions.h"
 
 // 00000058: void prvUnlockQueue(Register Eq_n r0, Register ptr32 cpsr)
+// Called from:
+//      xQueueGenericSend
+//      xQueueGenericReceive
 void prvUnlockQueue(Eq_n r0, ptr32 cpsr)
 {
 	vPortEnterCritical(cpsr);
@@ -60,6 +63,11 @@ void prvUnlockQueue(Eq_n r0, ptr32 cpsr)
 }
 
 // 000000EC: FlagGroup bool prvCopyDataToQueue(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r7, Register Eq_n lr, Register out Eq_n r0Out, Register out Eq_n r7Out, Register out Eq_n lrOut)
+// Called from:
+//      xQueueGenericSend
+//      xQueueGenericSendFromISR
+//      xQueueCRSend
+//      xQueueCRSendFromISR
 bool prvCopyDataToQueue(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r7, Eq_n lr, union Eq_n & r0Out, union Eq_n & r7Out, union Eq_n & lrOut)
 {
 	bool Z_n;
@@ -142,6 +150,10 @@ bool prvCopyDataToQueue(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r7, Eq_n lr, union Eq_n 
 }
 
 // 0000016C: Register Eq_n prvCopyDataFromQueue(Register Eq_n r0, Register Eq_n r1, Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register Eq_n r7, Register Eq_n lr, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n lrOut)
+// Called from:
+//      xQueuePeekFromISR
+//      xQueueGenericReceive
+//      xQueueReceiveFromISR
 Eq_n prvCopyDataFromQueue(Eq_n r0, Eq_n r1, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n lr, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & lrOut)
 {
 	Eq_n r2_n = *((word32) r0 + 64);
@@ -176,6 +188,10 @@ Eq_n prvCopyDataFromQueue(Eq_n r0, Eq_n r1, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, 
 }
 
 // 00000190: Register Eq_n xQueueGenericSend(Register Eq_n r0, Register Eq_n r1, Register up32 r2, Register Eq_n r3, Register Eq_n lr, Register ptr32 cpsr)
+// Called from:
+//      xQueueGiveMutexRecursive
+//      xQueueCreateMutex
+//      MPU_xQueueGenericSend
 Eq_n xQueueGenericSend(Eq_n r0, Eq_n r1, up32 r2, Eq_n r3, Eq_n lr, ptr32 cpsr)
 {
 	word32 r5_n = 0x00;
@@ -247,6 +263,8 @@ l00000266:
 }
 
 // 000002A4: void xQueuePeekFromISR(Register Eq_n r0, Register Eq_n r1, Register Eq_n r7, Register Eq_n lr, Register ptr32 cpsr)
+// Called from:
+//      MPU_xQueuePeekFromISR
 void xQueuePeekFromISR(Eq_n r0, Eq_n r1, Eq_n r7, Eq_n lr, ptr32 cpsr)
 {
 	Eq_n r5_n = __mrs(cpsr);
@@ -267,6 +285,9 @@ void xQueuePeekFromISR(Eq_n r0, Eq_n r1, Eq_n r7, Eq_n lr, ptr32 cpsr)
 }
 
 // 000002D8: Register Eq_n xQueueGenericReceive(Register Eq_n r0, Register Eq_n r1, Register up32 r2, Register word32 r3, Register Eq_n lr, Register ptr32 cpsr, Register out Eq_n lrOut)
+// Called from:
+//      xQueueTakeMutexRecursive
+//      MPU_xQueueGenericReceive
 Eq_n xQueueGenericReceive(Eq_n r0, Eq_n r1, up32 r2, word32 r3, Eq_n lr, ptr32 cpsr, union Eq_n & lrOut)
 {
 	word32 r5_n = 0x00;
@@ -366,6 +387,8 @@ l000003CC:
 }
 
 // 00000428: void uxQueueMessagesWaiting(Register ptr32 cpsr)
+// Called from:
+//      MPU_uxQueueMessagesWaiting
 void uxQueueMessagesWaiting(ptr32 cpsr)
 {
 	vPortEnterCritical(cpsr);
@@ -373,6 +396,8 @@ void uxQueueMessagesWaiting(ptr32 cpsr)
 }
 
 // 0000043C: void uxQueueSpacesAvailable(Register ptr32 cpsr)
+// Called from:
+//      MPU_uxQueueSpacesAvailable
 void uxQueueSpacesAvailable(ptr32 cpsr)
 {
 	vPortEnterCritical(cpsr);
@@ -380,12 +405,16 @@ void uxQueueSpacesAvailable(ptr32 cpsr)
 }
 
 // 00000454: void vQueueDelete()
+// Called from:
+//      MPU_vQueueDelete
 void vQueueDelete()
 {
 	vPortFree();
 }
 
 // 00000458: void xQueueGenericSendFromISR(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n lr, Register ptr32 cpsr)
+// Called from:
+//      vUART_ISR
 void xQueueGenericSendFromISR(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n lr, ptr32 cpsr)
 {
 	Eq_n r6_n = __mrs(cpsr);
@@ -490,6 +519,8 @@ void uxQueueMessagesWaitingFromISR()
 }
 
 // 000005B4: void xQueueGetMutexHolder(Register (ptr32 word32) r0, Register ptr32 cpsr)
+// Called from:
+//      MPU_xQueueGetMutexHolder
 void xQueueGetMutexHolder(word32 * r0, ptr32 cpsr)
 {
 	vPortEnterCritical(cpsr);
@@ -500,6 +531,8 @@ void xQueueGetMutexHolder(word32 * r0, ptr32 cpsr)
 }
 
 // 000005D4: void xQueueTakeMutexRecursive(Register Eq_n r0, Register up32 r1, Register Eq_n lr, Register ptr32 cpsr)
+// Called from:
+//      MPU_xQueueTakeMutexRecursive
 void xQueueTakeMutexRecursive(Eq_n r0, up32 r1, Eq_n lr, ptr32 cpsr)
 {
 	if (*((word32) r0 + 4) == xTaskGetCurrentTaskHandle())
@@ -513,6 +546,8 @@ void xQueueTakeMutexRecursive(Eq_n r0, up32 r1, Eq_n lr, ptr32 cpsr)
 }
 
 // 00000604: void xQueueGiveMutexRecursive(Register Eq_n r0, Register Eq_n lr, Register ptr32 cpsr)
+// Called from:
+//      MPU_xQueueGiveMutexRecursive
 void xQueueGiveMutexRecursive(Eq_n r0, Eq_n lr, ptr32 cpsr)
 {
 	if (*((word32) r0 + 4) != xTaskGetCurrentTaskHandle())
@@ -525,6 +560,9 @@ void xQueueGiveMutexRecursive(Eq_n r0, Eq_n lr, ptr32 cpsr)
 }
 
 // 00000630: void xQueueGenericReset(Register (ptr32 Eq_n) r0, Register word32 r1, Register ptr32 cpsr)
+// Called from:
+//      xQueueGenericCreate
+//      MPU_xQueueGenericReset
 void xQueueGenericReset(struct Eq_n * r0, word32 r1, ptr32 cpsr)
 {
 	vPortEnterCritical(cpsr);
@@ -555,6 +593,9 @@ void xQueueGenericReset(struct Eq_n * r0, word32 r1, ptr32 cpsr)
 }
 
 // 000006AC: void xQueueGenericCreate(Register ui32 r0, Register ui32 r1, Register ptr32 cpsr)
+// Called from:
+//      xQueueCreateMutex
+//      MPU_xQueueGenericCreate
 void xQueueGenericCreate(ui32 r0, ui32 r1, ptr32 cpsr)
 {
 	struct Eq_n * r0_n = pvPortMalloc(r0 * r1 + 0x48, cpsr);
@@ -571,6 +612,8 @@ void xQueueGenericCreate(ui32 r0, ui32 r1, ptr32 cpsr)
 }
 
 // 000006DC: void xQueueCreateMutex(Register Eq_n lr, Register ptr32 cpsr)
+// Called from:
+//      MPU_xQueueCreateMutex
 void xQueueCreateMutex(Eq_n lr, ptr32 cpsr)
 {
 	xQueueGenericCreate(0x01, 0x00, cpsr);
@@ -584,6 +627,9 @@ void xQueueCreateMutex(Eq_n lr, ptr32 cpsr)
 }
 
 // 00000700: void prvInitialiseNewTask(Register ui32 r0, Register word32 r1, Register ui32 r2, Register word32 r3, Stack int32 dwArg00, Stack (ptr32 (ptr32 Eq_n)) dwArg04, Stack (ptr32 Eq_n) dwArg08, Stack (ptr32 Eq_n) dwArg0C)
+// Called from:
+//      xTaskCreate
+//      xTaskCreateRestricted
 void prvInitialiseNewTask(ui32 r0, word32 r1, ui32 r2, word32 r3, int32 dwArg00, struct Eq_n ** dwArg04, struct Eq_n * dwArg08, struct Eq_n * dwArg0C)
 {
 	byte * r3_n = r1 - 0x01 + 1;
@@ -617,6 +663,9 @@ void prvInitialiseNewTask(ui32 r0, word32 r1, ui32 r2, word32 r3, int32 dwArg00,
 }
 
 // 00000798: void prvAddNewTaskToReadyList(Register (ptr32 Eq_n) r0, Register ptr32 cpsr)
+// Called from:
+//      xTaskCreate
+//      xTaskCreateRestricted
 void prvAddNewTaskToReadyList(struct Eq_n * r0, ptr32 cpsr)
 {
 	uint32 r0_n;
@@ -664,6 +713,13 @@ l000007BA:
 }
 
 // 0000085C: void prvAddCurrentTaskToDelayedList.isra.0(Register up32 r0)
+// Called from:
+//      xTaskNotifyWait
+//      ulTaskNotifyTake
+//      vTaskDelay
+//      vTaskDelayUntil
+//      vTaskPlaceOnEventList
+//      vTaskPlaceOnUnorderedEventList
 void prvAddCurrentTaskToDelayedList.isra.0(up32 r0)
 {
 	struct Eq_n * r4_n = globals->ptr08B0;
@@ -687,6 +743,9 @@ void prvAddCurrentTaskToDelayedList.isra.0(up32 r0)
 }
 
 // 000008B4: Register ui32 xTaskCreate(Register ui32 r0, Register word32 r1, Register ui32 r2, Register word32 r3, Register ptr32 cpsr, Stack int32 dwArg00, Stack (ptr32 (ptr32 Eq_n)) dwArg04)
+// Called from:
+//      vTaskStartScheduler
+//      MPU_xTaskCreate
 ui32 xTaskCreate(ui32 r0, word32 r1, ui32 r2, word32 r3, ptr32 cpsr, int32 dwArg00, struct Eq_n ** dwArg04)
 {
 	struct Eq_n * r0_n = pvPortMalloc(r2 << 2, cpsr);
@@ -711,6 +770,8 @@ ui32 xTaskCreate(ui32 r0, word32 r1, ui32 r2, word32 r3, ptr32 cpsr, int32 dwArg
 }
 
 // 0000091C: void xTaskCreateRestricted(Register (ptr32 Eq_n) r0, Register (ptr32 (ptr32 Eq_n)) r1, Register ptr32 cpsr)
+// Called from:
+//      MPU_xTaskCreateRestricted
 void xTaskCreateRestricted(struct Eq_n * r0, struct Eq_n ** r1, ptr32 cpsr)
 {
 	if (r0->ptr0014 == null)
@@ -730,6 +791,8 @@ void xTaskCreateRestricted(struct Eq_n * r0, struct Eq_n ** r1, ptr32 cpsr)
 }
 
 // 00000970: void vTaskAllocateMPURegions(Register word32 r0, Register (ptr32 Eq_n) r1)
+// Called from:
+//      MPU_vTaskAllocateMPURegions
 void vTaskAllocateMPURegions(word32 r0, struct Eq_n * r1)
 {
 	if (r0 == 0x00)
@@ -742,6 +805,8 @@ void vTaskAllocateMPURegions(word32 r0, struct Eq_n * r1)
 }
 
 // 00000990: void vTaskStartScheduler(Register ptr32 cpsr)
+// Called from:
+//      ResetISR
 void vTaskStartScheduler(ptr32 cpsr)
 {
 	struct Eq_n * r4_n = globals->ptr09E0;
@@ -768,6 +833,15 @@ void vTaskEndScheduler(ptr32 cpsr)
 }
 
 // 00000A0C: FlagGroup bool vTaskSuspendAll()
+// Called from:
+//      xQueueGenericSend
+//      xQueueGenericReceive
+//      pvPortMalloc
+//      xEventGroupWaitBits
+//      xEventGroupSetBits
+//      xEventGroupSync
+//      vEventGroupDelete
+//      MPU_vTaskSuspendAll
 bool vTaskSuspendAll()
 {
 	struct Eq_n * r2_n = globals->ptr0A1C;
@@ -777,6 +851,8 @@ bool vTaskSuspendAll()
 }
 
 // 00000A20: void xTaskGetTickCount()
+// Called from:
+//      MPU_xTaskGetTickCount
 void xTaskGetTickCount()
 {
 }
@@ -787,11 +863,15 @@ void xTaskGetTickCountFromISR()
 }
 
 // 00000A38: void uxTaskGetNumberOfTasks()
+// Called from:
+//      MPU_uxTaskGetNumberOfTasks
 void uxTaskGetNumberOfTasks()
 {
 }
 
 // 00000A44: void pcTaskGetName(Register word32 r0)
+// Called from:
+//      MPU_pcTaskGetName
 void pcTaskGetName(word32 r0)
 {
 	if (r0 == 0x00)
@@ -799,6 +879,8 @@ void pcTaskGetName(word32 r0)
 }
 
 // 00000A58: void xTaskGenericNotify(Register (ptr32 Eq_n) r0, Register ui32 r1, Register up32 r2, Register (ptr32 ui32) r3, Register ptr32 cpsr)
+// Called from:
+//      MPU_xTaskGenericNotify
 void xTaskGenericNotify(struct Eq_n * r0, ui32 r1, up32 r2, ui32 * r3, ptr32 cpsr)
 {
 	vPortEnterCritical(cpsr);
@@ -917,6 +999,8 @@ l00000B4E:
 }
 
 // 00000BD4: void xTaskNotifyWait(Register word32 r0, Register word32 r1, Register (ptr32 ui32) r2, Register up32 r3, Register ptr32 cpsr)
+// Called from:
+//      MPU_xTaskNotifyWait
 void xTaskNotifyWait(word32 r0, word32 r1, ui32 * r2, up32 r3, ptr32 cpsr)
 {
 	struct Eq_n * r4_n = globals->ptr0C58;
@@ -985,6 +1069,8 @@ void vTaskNotifyGiveFromISR(struct Eq_n * r0, word32 * r1, ptr32 cpsr)
 }
 
 // 00000D00: void ulTaskNotifyTake(Register word32 r0, Register up32 r1, Register ptr32 cpsr)
+// Called from:
+//      MPU_ulTaskNotifyTake
 void ulTaskNotifyTake(word32 r0, up32 r1, ptr32 cpsr)
 {
 	struct Eq_n * r4_n = globals->ptr0D64;
@@ -1015,6 +1101,9 @@ void ulTaskNotifyTake(word32 r0, up32 r1, ptr32 cpsr)
 }
 
 // 00000D6C: Register word32 xTaskIncrementTick()
+// Called from:
+//      xTaskResumeAll
+//      xPortSysTickHandler
 word32 xTaskIncrementTick()
 {
 	word32 r6_n;
@@ -1078,6 +1167,17 @@ l00000E28:
 }
 
 // 00000E6C: Register word32 xTaskResumeAll(Register ptr32 cpsr)
+// Called from:
+//      xQueueGenericSend
+//      xQueueGenericReceive
+//      vTaskDelay
+//      vTaskDelayUntil
+//      pvPortMalloc
+//      xEventGroupWaitBits
+//      xEventGroupSetBits
+//      xEventGroupSync
+//      vEventGroupDelete
+//      MPU_xTaskResumeAll
 word32 xTaskResumeAll(ptr32 cpsr)
 {
 	struct Eq_n * r4_n = globals->ptr0F40;
@@ -1129,6 +1229,8 @@ word32 xTaskResumeAll(ptr32 cpsr)
 }
 
 // 00000F48: void vTaskDelay(Register up32 r0, Register ptr32 cpsr)
+// Called from:
+//      MPU_vTaskDelay
 void vTaskDelay(up32 r0, ptr32 cpsr)
 {
 	if (r0 != 0x00)
@@ -1145,6 +1247,8 @@ void vTaskDelay(up32 r0, ptr32 cpsr)
 }
 
 // 00000F80: void vTaskDelayUntil(Register (ptr32 up32) r0, Register word32 r1, Register ptr32 cpsr)
+// Called from:
+//      MPU_vTaskDelayUntil
 void vTaskDelayUntil(up32 * r0, word32 r1, ptr32 cpsr)
 {
 	struct Eq_n * r2_n = globals->ptr0FD4;
@@ -1179,6 +1283,9 @@ l00000FA6:
 }
 
 // 00000FDC: void vTaskPlaceOnEventList(Register (ptr32 Eq_n) r0, Register up32 r1)
+// Called from:
+//      xQueueGenericSend
+//      xQueueGenericReceive
 void vTaskPlaceOnEventList(struct Eq_n * r0, up32 r1)
 {
 	vListInsert(r0, globals->ptr0FF4->dw0004 + 0x38);
@@ -1186,6 +1293,9 @@ void vTaskPlaceOnEventList(struct Eq_n * r0, up32 r1)
 }
 
 // 00000FF8: void vTaskPlaceOnUnorderedEventList(Register (ptr32 Eq_n) r0, Register ui32 r1, Register up32 r2)
+// Called from:
+//      xEventGroupWaitBits
+//      xEventGroupSync
 void vTaskPlaceOnUnorderedEventList(struct Eq_n * r0, ui32 r1, up32 r2)
 {
 	struct Eq_n * r3_n = globals->ptr1018;
@@ -1196,6 +1306,14 @@ void vTaskPlaceOnUnorderedEventList(struct Eq_n * r0, ui32 r1, up32 r2)
 }
 
 // 0000101C: Register (ptr32 Eq_n) xTaskRemoveFromEventList(Register (ptr32 Eq_n) r0)
+// Called from:
+//      prvUnlockQueue
+//      xQueueGenericSend
+//      xQueueGenericReceive
+//      xQueueGenericSendFromISR
+//      xQueueGiveFromISR
+//      xQueueReceiveFromISR
+//      xQueueGenericReset
 struct Eq_n * xTaskRemoveFromEventList(struct Eq_n * r0)
 {
 	struct Eq_n * r0_n;
@@ -1222,6 +1340,9 @@ struct Eq_n * xTaskRemoveFromEventList(struct Eq_n * r0)
 }
 
 // 00001080: void xTaskRemoveFromUnorderedEventList(Register (ptr32 Eq_n) r0, Register ui32 r1)
+// Called from:
+//      xEventGroupSetBits
+//      vEventGroupDelete
 void xTaskRemoveFromUnorderedEventList(struct Eq_n * r0, ui32 r1)
 {
 	struct Eq_n * r6_n = r0->ptr000C;
@@ -1237,6 +1358,8 @@ void xTaskRemoveFromUnorderedEventList(struct Eq_n * r0, ui32 r1)
 }
 
 // 000010D8: void vTaskSwitchContext()
+// Called from:
+//      xPortPendSVHandler
 void vTaskSwitchContext()
 {
 	struct Eq_n * r2_n = globals->ptr111C;
@@ -1261,6 +1384,9 @@ void vTaskSwitchContext()
 }
 
 // 00001120: Register word32 uxTaskResetEventItemValue()
+// Called from:
+//      xEventGroupWaitBits
+//      xEventGroupSync
 word32 uxTaskResetEventItemValue()
 {
 	struct Eq_n * r3_n = globals->ptr1134;
@@ -1270,12 +1396,19 @@ word32 uxTaskResetEventItemValue()
 }
 
 // 00001138: Register word32 xTaskGetCurrentTaskHandle()
+// Called from:
+//      xQueueTakeMutexRecursive
+//      xQueueGiveMutexRecursive
 word32 xTaskGetCurrentTaskHandle()
 {
 	return globals->ptr1140->dw0004;
 }
 
 // 00001144: void vTaskSetTimeOutState(Register (ptr32 Eq_n) r0)
+// Called from:
+//      xQueueGenericSend
+//      xQueueGenericReceive
+//      MPU_vTaskSetTimeOutState
 void vTaskSetTimeOutState(struct Eq_n * r0)
 {
 	struct Eq_n * r3_n = globals->ptr1154;
@@ -1285,6 +1418,10 @@ void vTaskSetTimeOutState(struct Eq_n * r0)
 }
 
 // 00001158: Register (ptr32 Eq_n) xTaskCheckForTimeOut(Register (ptr32 Eq_n) r0, Register (ptr32 up32) r1, Register ptr32 cpsr)
+// Called from:
+//      xQueueGenericSend
+//      xQueueGenericReceive
+//      MPU_xTaskCheckForTimeOut
 struct Eq_n * xTaskCheckForTimeOut(struct Eq_n * r0, up32 * r1, ptr32 cpsr)
 {
 	vPortEnterCritical(cpsr);
@@ -1310,12 +1447,16 @@ struct Eq_n * xTaskCheckForTimeOut(struct Eq_n * r0, up32 * r1, ptr32 cpsr)
 }
 
 // 000011AC: void vTaskMissedYield()
+// Called from:
+//      prvUnlockQueue
 void vTaskMissedYield()
 {
 	globals->ptr11B8->dw0090 = 0x01;
 }
 
 // 000011BC: void vTaskPriorityInherit(Register Eq_n r0)
+// Called from:
+//      xQueueGenericReceive
 void vTaskPriorityInherit(Eq_n r0)
 {
 	if (r0 == 0x00)
@@ -1347,6 +1488,8 @@ void vTaskPriorityInherit(Eq_n r0)
 }
 
 // 00001250: Register Eq_n xTaskPriorityDisinherit(Register Eq_n r0, Register out Eq_n lrOut)
+// Called from:
+//      prvCopyDataToQueue
 Eq_n xTaskPriorityDisinherit(Eq_n r0, union Eq_n & lrOut)
 {
 	if (r0 == 0x00)
@@ -1391,6 +1534,8 @@ Eq_n xTaskPriorityDisinherit(Eq_n r0, union Eq_n & lrOut)
 }
 
 // 000012D4: Register (ptr32 Eq_n) pvTaskIncrementMutexHeldCount()
+// Called from:
+//      xQueueGenericReceive
 struct Eq_n * pvTaskIncrementMutexHeldCount()
 {
 	struct Eq_n * r3_n = globals->ptr12E8;
@@ -1403,6 +1548,8 @@ struct Eq_n * pvTaskIncrementMutexHeldCount()
 }
 
 // 000012F0: void prvRestoreContextOfFirstTask(Register ptr32 cpsr)
+// Called from:
+//      prvSVCHandler
 void prvRestoreContextOfFirstTask(ptr32 cpsr)
 {
 	__msr(cpsr, **globals->ptr1724);
@@ -1430,6 +1577,8 @@ void prvRestoreContextOfFirstTask(ptr32 cpsr)
 }
 
 // 00001334: void prvSVCHandler(Register Eq_n r0, Register ptr32 cpsr)
+// Called from:
+//      vPortSVCHandler
 void prvSVCHandler(Eq_n r0, ptr32 cpsr)
 {
 	up32 r3_n = (word32) *((word32) *((word32) r0 + 24) - 2);
@@ -1454,6 +1603,8 @@ void prvSVCHandler(Eq_n r0, ptr32 cpsr)
 }
 
 // 0000137C: Register (ptr32 Eq_n) pxPortInitialiseStack(Register (ptr32 Eq_n) r0, Register ui32 r1, Register word32 r2, Register int32 r3)
+// Called from:
+//      prvInitialiseNewTask
 struct Eq_n * pxPortInitialiseStack(struct Eq_n * r0, ui32 r1, word32 r2, int32 r3)
 {
 	int32 r3_n;
@@ -1471,6 +1622,8 @@ struct Eq_n * pxPortInitialiseStack(struct Eq_n * r0, ui32 r1, word32 r2, int32 
 }
 
 // 000013B0: void xPortStartScheduler(Register ptr32 cpsr)
+// Called from:
+//      vTaskStartScheduler
 void xPortStartScheduler(ptr32 cpsr)
 {
 	ui32 * r3_n = globals->ptr14E8;
@@ -1588,11 +1741,16 @@ l000014AE:
 }
 
 // 00001550: void vPortEndScheduler()
+// Called from:
+//      vTaskEndScheduler
 void vPortEndScheduler()
 {
 }
 
 // 00001554: void vPortStoreTaskMPUSettings(Register (ptr32 Eq_n) r0, Register (ptr32 Eq_n) r1, Register (ptr32 Eq_n) r2, Register ui32 r3)
+// Called from:
+//      prvInitialiseNewTask
+//      vTaskAllocateMPURegions
 void vPortStoreTaskMPUSettings(struct Eq_n * r0, struct Eq_n * r1, struct Eq_n * r2, ui32 r3)
 {
 	if (r1 == null)
@@ -1776,6 +1934,13 @@ void vPortSVCHandler(ui32 lr, ptr32 cpsr)
 }
 
 // 0000172C: Register ui32 pvPortMalloc(Register ui32 r0, Register ptr32 cpsr)
+// Called from:
+//      xQueueGenericCreate
+//      xTaskCreate
+//      xTaskCreateRestricted
+//      xEventGroupCreate
+//      MPU_pvPortMalloc
+//      xCoRoutineCreate
 ui32 pvPortMalloc(ui32 r0, ptr32 cpsr)
 {
 	ui32 r4_n = r0;
@@ -1803,22 +1968,33 @@ ui32 pvPortMalloc(ui32 r0, ptr32 cpsr)
 }
 
 // 00001780: void vPortFree()
+// Called from:
+//      vQueueDelete
+//      xTaskCreate
+//      vEventGroupDelete
+//      MPU_vPortFree
 void vPortFree()
 {
 }
 
 // 00001784: void vPortInitialiseBlocks()
+// Called from:
+//      MPU_vPortInitialiseBlocks
 void vPortInitialiseBlocks()
 {
 	globals->ptr1790->dw05C0 = 0x00;
 }
 
 // 00001794: void xPortGetFreeHeapSize()
+// Called from:
+//      MPU_xPortGetFreeHeapSize
 void xPortGetFreeHeapSize()
 {
 }
 
 // 000017A8: void xEventGroupCreate(Register ptr32 cpsr)
+// Called from:
+//      MPU_xEventGroupCreate
 void xEventGroupCreate(ptr32 cpsr)
 {
 	struct Eq_n * r0_n = pvPortMalloc(0x18, cpsr);
@@ -1830,6 +2006,8 @@ void xEventGroupCreate(ptr32 cpsr)
 }
 
 // 000017C4: void xEventGroupWaitBits(Register (ptr32 ui32) r0, Register ui32 r1, Register word32 r2, Register word32 r3, Register ptr32 cpsr, Stack up32 dwArg00)
+// Called from:
+//      MPU_xEventGroupWaitBits
 void xEventGroupWaitBits(ui32 * r0, ui32 r1, word32 r2, word32 r3, ptr32 cpsr, up32 dwArg00)
 {
 	Eq_n C_n = vTaskSuspendAll();
@@ -1881,6 +2059,8 @@ l0000185C:
 }
 
 // 00001874: void xEventGroupClearBits(Register (ptr32 ui32) r0, Register word32 r1, Register ptr32 cpsr)
+// Called from:
+//      MPU_xEventGroupClearBits
 void xEventGroupClearBits(ui32 * r0, word32 r1, ptr32 cpsr)
 {
 	vPortEnterCritical(cpsr);
@@ -1889,6 +2069,10 @@ void xEventGroupClearBits(ui32 * r0, word32 r1, ptr32 cpsr)
 }
 
 // 00001890: void xEventGroupSetBits(Register (ptr32 Eq_n) r0, Register ui32 r1, Register ptr32 cpsr)
+// Called from:
+//      xEventGroupSync
+//      vEventGroupSetBitsCallback
+//      MPU_xEventGroupSetBits
 void xEventGroupSetBits(struct Eq_n * r0, ui32 r1, ptr32 cpsr)
 {
 	ui32 r7_n;
@@ -1933,6 +2117,8 @@ l000018B2:
 }
 
 // 000018F8: void xEventGroupSync(Register (ptr32 Eq_n) r0, Register ui32 r1, Register ui32 r2, Register up32 r3, Register ptr32 cpsr)
+// Called from:
+//      MPU_xEventGroupSync
 void xEventGroupSync(struct Eq_n * r0, ui32 r1, ui32 r2, up32 r3, ptr32 cpsr)
 {
 	vTaskSuspendAll();
@@ -1978,6 +2164,8 @@ void xEventGroupGetBitsFromISR(ptr32 cpsr)
 }
 
 // 000019A4: void vEventGroupDelete(Register (ptr32 Eq_n) r0, Register ptr32 cpsr)
+// Called from:
+//      MPU_vEventGroupDelete
 void vEventGroupDelete(struct Eq_n * r0, ptr32 cpsr)
 {
 	vTaskSuspendAll();

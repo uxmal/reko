@@ -151,6 +151,8 @@ fn0000000000000E60_exit:
 void fn0000000000000E70()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000000001460
 // MayUse: 
 // LiveOut:
 // Trashed: x16 x17
@@ -211,6 +213,8 @@ fn0000000000000EA0_exit:
 void fn0000000000000EC0()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000000001460
 // MayUse: 
 // LiveOut:
 // Trashed: x16 x17

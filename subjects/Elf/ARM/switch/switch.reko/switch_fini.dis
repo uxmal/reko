@@ -1,6 +1,8 @@
 void _fini()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __libc_csu_fini
 // MayUse: 
 // LiveOut:
 // Trashed: NZCV lr pc r2 r3 r4 r5

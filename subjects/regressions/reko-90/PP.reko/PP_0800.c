@@ -5,17 +5,23 @@
 #include "PP_n.h"
 
 // 0800:0150: void fn0800-0150()
+// Called from:
+//      fn0800-8B0D
 void fn0800-0150()
 {
 	fn0800-01E6(&Eq_n::t2714, &Eq_n::t2714, seg0800->ptr025A);
 }
 
 // 0800:0163: void fn0800-0163()
+// Called from:
+//      fn0800-8B0D
 void fn0800-0163()
 {
 }
 
 // 0800:0164: void fn0800-0164(Stack Eq_n bArg02)
+// Called from:
+//      fn0800-8B0D
 void fn0800-0164(Eq_n bArg02)
 {
 	msdos_terminate(bArg02);
@@ -40,6 +46,8 @@ void fn0800-0176(struct Eq_n * ds)
 }
 
 // 0800:01B9: Register word16 fn0800-01B9(Register Eq_n ds, Register out ptr16 dxOut)
+// Called from:
+//      fn0800-8B0D
 word16 fn0800-01B9(Eq_n ds, ptr16 & dxOut)
 {
 	msdos_set_interrupt_vector(0x00, *((word32) ds + 91));
@@ -52,6 +60,8 @@ word16 fn0800-01B9(Eq_n ds, ptr16 & dxOut)
 }
 
 // 0800:01E6: void fn0800-01E6(Register (memptr (ptr16 Eq_n) Eq_n) si, Register (memptr (ptr16 Eq_n) Eq_n) di, Register (ptr16 Eq_n) es)
+// Called from:
+//      fn0800-0150
 void fn0800-01E6(struct Eq_n Eq_n::* si, struct Eq_n Eq_n::* di, struct Eq_n * es)
 {
 	while (true)
@@ -242,6 +252,8 @@ void main(Eq_n ds)
 }
 
 // 0800:0402: void fn0800-0402(Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register Eq_n ds)
+// Called from:
+//      main
 void fn0800-0402(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds)
 {
 	if (*((word32) ds + 0x00002A27) == *((word32) ds + 9882))
@@ -368,6 +380,8 @@ void fn0800-0402(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds)
 }
 
 // 0800:0541: Register Eq_n fn0800-0541(Register Eq_n di, Register Eq_n ds, Register out ptr16 bpOut, Register out Eq_n dsOut)
+// Called from:
+//      main
 Eq_n fn0800-0541(Eq_n di, Eq_n ds, ptr16 & bpOut, union Eq_n & dsOut)
 {
 	ptr16 Eq_n::* bp_n = fp - 2;
@@ -773,6 +787,10 @@ Eq_n fn0800-0541(Eq_n di, Eq_n ds, ptr16 & bpOut, union Eq_n & dsOut)
 }
 
 // 0800:09A3: Register word16 fn0800-09A3(Register Eq_n ds, Register out Eq_n bpOut, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800-0541
+//      fn0800-5E64
+//      fn0800-669C
 word16 fn0800-09A3(Eq_n ds, union Eq_n & bpOut, struct Eq_n & dsOut)
 {
 	uint16 ax_n = ((int16) *((word32) ds + 2676) << 0x08) + (uint16) ((uint8) (*((word32) ds + 2677)));
@@ -903,6 +921,12 @@ word16 fn0800-09A3(Eq_n ds, union Eq_n & bpOut, struct Eq_n & dsOut)
 }
 
 // 0800:0ABC: Register Eq_n fn0800-0ABC(Register Eq_n ds, Stack Eq_n dwArg04, Register out Eq_n dxOut)
+// Called from:
+//      fn0800-0DE8
+//      fn0800-112D
+//      fn0800-12E2
+//      fn0800-18D9
+//      fn0800-19EE
 Eq_n fn0800-0ABC(Eq_n ds, Eq_n dwArg04, union Eq_n & dxOut)
 {
 	fn0800-35A3(fp - 0x10, ss, dwArg04);
@@ -935,6 +959,9 @@ Eq_n fn0800-0ABC(Eq_n ds, Eq_n dwArg04, union Eq_n & dxOut)
 }
 
 // 0800:0B79: Register Eq_n fn0800-0B79(Stack Eq_n dwArg02, Stack Eq_n dwArg06)
+// Called from:
+//      main
+//      fn0800-0ABC
 Eq_n fn0800-0B79(Eq_n dwArg02, Eq_n dwArg06)
 {
 	cu16 wArg02 = (word16) dwArg02;
@@ -1005,6 +1032,9 @@ Eq_n fn0800-0B79(Eq_n dwArg02, Eq_n dwArg06)
 }
 
 // 0800:0C08: Register word16 fn0800-0C08(Stack Eq_n wArg02)
+// Called from:
+//      fn0800-831D
+//      fn0800-8407
 word16 fn0800-0C08(Eq_n wArg02)
 {
 	Eq_n si_n = wArg02;
@@ -1021,6 +1051,9 @@ word16 fn0800-0C08(Eq_n wArg02)
 }
 
 // 0800:0C29: Register cup16 fn0800-0C29(Register Eq_n ds, Stack (ptr32 Eq_n) dwArg02, Stack byte bArg06, Register out Eq_n clOut, Register out ptr16 dxOut, Register out ptr16 bxOut)
+// Called from:
+//      fn0800-0402
+//      fn0800-0541
 cup16 fn0800-0C29(Eq_n ds, union Eq_n * dwArg02, byte bArg06, union Eq_n & clOut, ptr16 & dxOut, ptr16 & bxOut)
 {
 	word16 wArg02 = (word16) dwArg02;
@@ -1044,6 +1077,10 @@ cup16 fn0800-0C29(Eq_n ds, union Eq_n * dwArg02, byte bArg06, union Eq_n & clOut
 }
 
 // 0800:0C6C: Register word16 fn0800-0C6C(Register Eq_n ds, Stack Eq_n ptrArg02)
+// Called from:
+//      fn0800-0402
+//      fn0800-0541
+//      fn0800-2DE2
 word16 fn0800-0C6C(Eq_n ds, Eq_n ptrArg02)
 {
 	while (true)
@@ -1059,6 +1096,12 @@ word16 fn0800-0C6C(Eq_n ds, Eq_n ptrArg02)
 }
 
 // 0800:0C93: Register word16 fn0800-0C93(Register Eq_n ds, Stack Eq_n dwArg02, Register out Eq_n dxOut)
+// Called from:
+//      fn0800-0DE8
+//      fn0800-112D
+//      fn0800-12E2
+//      fn0800-18D9
+//      fn0800-19EE
 word16 fn0800-0C93(Eq_n ds, Eq_n dwArg02, union Eq_n & dxOut)
 {
 	Eq_n bx_n;
@@ -1135,6 +1178,24 @@ word16 fn0800-0C93(Eq_n ds, Eq_n dwArg02, union Eq_n & dxOut)
 }
 
 // 0800:0D24: Register word16 fn0800-0D24(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n ptrArg04, Register out Eq_n cxOut, Register out ptr16 dxOut, Register out Eq_n bxOut, Register out Eq_n siOut, Register out Eq_n diOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-0402
+//      fn0800-0541
+//      fn0800-12E2
+//      fn0800-18D9
+//      fn0800-19EE
+//      fn0800-1CF6
+//      fn0800-24FE
+//      fn0800-3678
+//      fn0800-37DF
+//      fn0800-3C99
+//      fn0800-3DCF
+//      fn0800-3E9A
+//      fn0800-4047
+//      fn0800-4110
+//      fn0800-4152
+//      fn0800-4234
+//      fn0800-4311
 word16 fn0800-0D24(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04, union Eq_n & cxOut, ptr16 & dxOut, union Eq_n & bxOut, union Eq_n & siOut, union Eq_n & diOut, union Eq_n & dsOut)
 {
 	Eq_n ds_n;
@@ -1171,6 +1232,8 @@ word16 fn0800-0D24(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04, union Eq_n & cxOut, ptr1
 }
 
 // 0800:0DA9: Register word16 fn0800-0DA9(Register Eq_n ds, Stack Eq_n dwArg02, Stack Eq_n dwArg06, Register out Eq_n dxOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-0D24
 word16 fn0800-0DA9(Eq_n ds, Eq_n dwArg02, Eq_n dwArg06, union Eq_n & dxOut, union Eq_n & dsOut)
 {
 	cui16 wArg02 = (word16) dwArg02;
@@ -1186,6 +1249,9 @@ word16 fn0800-0DA9(Eq_n ds, Eq_n dwArg02, Eq_n dwArg06, union Eq_n & dxOut, unio
 }
 
 // 0800:0DCE: Register word16 fn0800-0DCE(Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register Eq_n ds, Register out Eq_n diOut)
+// Called from:
+//      fn0800-0402
+//      fn0800-0541
 word16 fn0800-0DCE(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds, union Eq_n & diOut)
 {
 	Eq_n di_n;
@@ -1198,6 +1264,8 @@ word16 fn0800-0DCE(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds, union Eq_n & diOut)
 }
 
 // 0800:0DE8: Register Eq_n fn0800-0DE8(Register Eq_n cx, Register Eq_n dx, Register Eq_n ds, Register out Eq_n dsOut)
+// Called from:
+//      main
 Eq_n fn0800-0DE8(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 {
 	Eq_n bx_n = *((word32) ds + 0x00002A25);
@@ -1443,6 +1511,8 @@ Eq_n fn0800-0DE8(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 }
 
 // 0800:112D: Register Eq_n fn0800-112D(Register Eq_n cx, Register Eq_n dx, Register Eq_n ds, Register out Eq_n dsOut)
+// Called from:
+//      main
 Eq_n fn0800-112D(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 {
 	Eq_n bx_n = *((word32) ds + 0x00002A25);
@@ -1584,6 +1654,8 @@ Eq_n fn0800-112D(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 }
 
 // 0800:12E2: Register Eq_n fn0800-12E2(Register Eq_n cx, Register Eq_n dx, Register Eq_n ds, Register out Eq_n bpOut, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      main
 Eq_n fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & bpOut, struct Eq_n & dsOut)
 {
 	Eq_n bx_n = *((word32) ds + 0x00002A25);
@@ -2123,6 +2195,8 @@ l0800_nA9:
 }
 
 // 0800:18D9: Register Eq_n fn0800-18D9(Register Eq_n cx, Register Eq_n dx, Register Eq_n ds, Register out Eq_n bpOut, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      main
 Eq_n fn0800-18D9(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & bpOut, struct Eq_n & dsOut)
 {
 	word16 si_n;
@@ -2233,6 +2307,8 @@ Eq_n fn0800-18D9(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & bpOut, struct Eq_n & ds
 }
 
 // 0800:19EE: Register Eq_n fn0800-19EE(Register Eq_n cx, Register Eq_n dx, Register Eq_n ds, Register out Eq_n bpOut, Register out Eq_n dsOut)
+// Called from:
+//      main
 Eq_n fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & bpOut, union Eq_n & dsOut)
 {
 	word16 di_n;
@@ -2621,6 +2697,10 @@ Eq_n fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & bpOut, union Eq_n & dsO
 }
 
 // 0800:1CF6: Register word16 fn0800-1CF6(Register Eq_n ds, Stack Eq_n wArg02, Register out ptr16 dxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-12E2
+//      fn0800-18D9
+//      fn0800-19EE
 word16 fn0800-1CF6(Eq_n ds, Eq_n wArg02, ptr16 & dxOut, ptr16 & bpOut, ptr16 & siOut, union Eq_n & dsOut)
 {
 	*((word32) ds + 0x000045A8) = 0x00;
@@ -2736,6 +2816,9 @@ word16 fn0800-1CF6(Eq_n ds, Eq_n wArg02, ptr16 & dxOut, ptr16 & bpOut, ptr16 & s
 }
 
 // 0800:1E5E: Register word16 fn0800-1E5E(Register Eq_n ds, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800-12E2
+//      fn0800-18D9
 word16 fn0800-1E5E(Eq_n ds, struct Eq_n & dsOut)
 {
 	Eq_n es_bx_n = *((word32) ds + 11857);
@@ -2776,6 +2859,8 @@ word16 fn0800-1E5E(Eq_n ds, struct Eq_n & dsOut)
 }
 
 // 0800:1F5C: Register (memptr Eq_n Eq_n) fn0800-1F5C(Register Eq_n ds, Stack Eq_n ptrArg02, Register out Eq_n dxOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-12E2
 <type-error> Eq_n::* fn0800-1F5C(Eq_n ds, Eq_n ptrArg02, union Eq_n & dxOut, union Eq_n & dsOut)
 {
 	struct Eq_n * es_n = SLICE(ptrArg02, selector, 16);
@@ -2910,6 +2995,8 @@ word16 fn0800-1E5E(Eq_n ds, struct Eq_n & dsOut)
 }
 
 // 0800:2085: Register byte fn0800-2085(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n ptrArg06)
+// Called from:
+//      fn0800-12E2
 byte fn0800-2085(Eq_n ds, Eq_n ptrArg02, Eq_n ptrArg06)
 {
 	struct Eq_n * psegArg04_n = SLICE(ptrArg02, selector, 16);
@@ -3081,6 +3168,8 @@ byte fn0800-2085(Eq_n ds, Eq_n ptrArg02, Eq_n ptrArg06)
 }
 
 // 0800:2201: void fn0800-2201(Register Eq_n ds, Stack Eq_n ptrArg02)
+// Called from:
+//      fn0800-18D9
 void fn0800-2201(Eq_n ds, Eq_n ptrArg02)
 {
 	Eq_n wArg02_n = (word16) ptrArg02;
@@ -3135,6 +3224,8 @@ void fn0800-2201(Eq_n ds, Eq_n ptrArg02)
 }
 
 // 0800:22FE: void fn0800-22FE(Register Eq_n ds, Stack Eq_n ptrArg02)
+// Called from:
+//      fn0800-18D9
 void fn0800-22FE(Eq_n ds, Eq_n ptrArg02)
 {
 	Eq_n wArg02_n = (word16) ptrArg02;
@@ -3190,6 +3281,9 @@ void fn0800-22FE(Eq_n ds, Eq_n ptrArg02)
 }
 
 // 0800:23EC: Register byte fn0800-23EC(Register Eq_n ds, Stack Eq_n ptrArg02, Register out Eq_n bpOut, Register out ptr16 siOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-12E2
+//      fn0800-18D9
 byte fn0800-23EC(Eq_n ds, Eq_n ptrArg02, union Eq_n & bpOut, ptr16 & siOut, union Eq_n & dsOut)
 {
 	struct Eq_n * wArg04 = SLICE(ptrArg02, word16, 16);
@@ -3322,6 +3416,9 @@ byte fn0800-23EC(Eq_n ds, Eq_n ptrArg02, union Eq_n & bpOut, ptr16 & siOut, unio
 }
 
 // 0800:24FE: Register Eq_n fn0800-24FE(Register Eq_n ds, Stack Eq_n ptrArg02)
+// Called from:
+//      fn0800-19EE
+//      fn0800-23EC
 Eq_n fn0800-24FE(Eq_n ds, Eq_n ptrArg02)
 {
 	struct Eq_n * es_n = SLICE(ptrArg02, selector, 16);
@@ -3478,6 +3575,12 @@ Eq_n fn0800-24FE(Eq_n ds, Eq_n ptrArg02)
 }
 
 // 0800:2688: void fn0800-2688(Register Eq_n ds, Stack Eq_n dwArg02, Stack Eq_n wArg06, Stack Eq_n wArg08)
+// Called from:
+//      fn0800-1F5C
+//      fn0800-2085
+//      fn0800-2201
+//      fn0800-22FE
+//      fn0800-23EC
 void fn0800-2688(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08)
 {
 	Eq_n es_bx_n = *((word32) ds + 11857);
@@ -3549,6 +3652,8 @@ void fn0800-2688(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08)
 }
 
 // 0800:283D: Register word16 fn0800-283D(Register Eq_n ds, Stack Eq_n ptrArg02, Register out (ptr16 Eq_n) dxOut)
+// Called from:
+//      fn0800-12E2
 word16 fn0800-283D(Eq_n ds, Eq_n ptrArg02, struct Eq_n & dxOut)
 {
 	struct Eq_n * es_n = SLICE(ptrArg02, selector, 16);
@@ -3662,6 +3767,8 @@ word16 fn0800-283D(Eq_n ds, Eq_n ptrArg02, struct Eq_n & dxOut)
 }
 
 // 0800:2931: Register word16 fn0800-2931(Stack Eq_n ptrArg02, Stack Eq_n ptrArg06, Register out ptr16 dxOut)
+// Called from:
+//      fn0800-12E2
 word16 fn0800-2931(Eq_n ptrArg02, Eq_n ptrArg06, ptr16 & dxOut)
 {
 	struct Eq_n * es_n = SLICE(ptrArg06, selector, 16);
@@ -3770,6 +3877,10 @@ word16 fn0800-2931(Eq_n ptrArg02, Eq_n ptrArg06, ptr16 & dxOut)
 }
 
 // 0800:29C5: Register word16 fn0800-29C5(Register Eq_n cx, Register Eq_n dx, Register Eq_n si, Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n ptrArg06, Stack Eq_n ptrArg0A, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-18D9
+//      fn0800-19EE
+//      fn0800-29C5
 word16 fn0800-29C5(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, Eq_n ptrArg06, Eq_n ptrArg0A, union Eq_n & dsOut)
 {
 	byte ch_n = SLICE(cx, byte, 8);
@@ -4043,6 +4154,8 @@ word16 fn0800-29C5(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, Eq_n ptrAr
 }
 
 // 0800:2C9A: Register Eq_n fn0800-2C9A(Register Eq_n ds, Register out Eq_n dxOut, Register out ptr16 bxOut)
+// Called from:
+//      main
 Eq_n fn0800-2C9A(Eq_n ds, union Eq_n & dxOut, ptr16 & bxOut)
 {
 	Eq_n cx_n = 0x00;
@@ -4070,6 +4183,11 @@ Eq_n fn0800-2C9A(Eq_n ds, union Eq_n & dxOut, ptr16 & bxOut)
 }
 
 // 0800:2CCF: Register Eq_n fn0800-2CCF(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg06, Stack Eq_n wArg08, Register out Eq_n clOut, Register out Eq_n dxOut)
+// Called from:
+//      fn0800-12E2
+//      fn0800-1CF6
+//      fn0800-1E5E
+//      fn0800-2D0A
 Eq_n fn0800-2CCF(Eq_n ds, Eq_n ptrArg02, Eq_n wArg06, Eq_n wArg08, union Eq_n & clOut, union Eq_n & dxOut)
 {
 	Eq_n si_n = wArg06;
@@ -4093,6 +4211,8 @@ Eq_n fn0800-2CCF(Eq_n ds, Eq_n ptrArg02, Eq_n wArg06, Eq_n wArg08, union Eq_n & 
 }
 
 // 0800:2D0A: Register cu16 fn0800-2D0A(Register Eq_n ds, Register out ptr16 dxOut, Register out ptr16 bpOut, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800-5374
 cu16 fn0800-2D0A(Eq_n ds, ptr16 & dxOut, ptr16 & bpOut, struct Eq_n & dsOut)
 {
 	struct Eq_n Eq_n::* bp_n;
@@ -4169,6 +4289,11 @@ cu16 fn0800-2D0A(Eq_n ds, ptr16 & dxOut, ptr16 & bpOut, struct Eq_n & dsOut)
 }
 
 // 0800:2DBF: void fn0800-2DBF(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04)
+// Called from:
+//      main
+//      fn0800-12E2
+//      fn0800-18D9
+//      fn0800-19EE
 void fn0800-2DBF(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 {
 	*((word32) ds + 0x00004656) = ~0x00;
@@ -4179,6 +4304,12 @@ void fn0800-2DBF(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 }
 
 // 0800:2DE2: Register word16 fn0800-2DE2(Register Eq_n cx, Register Eq_n dx, Register Eq_n si, Register Eq_n ds, Stack Eq_n ptrArg02, Register out Eq_n cxOut, Register out Eq_n dxOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-0DE8
+//      fn0800-112D
+//      fn0800-12E2
+//      fn0800-29C5
+//      fn0800-2DE2
 word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, union Eq_n & cxOut, union Eq_n & dxOut, union Eq_n & dsOut)
 {
 	Eq_n wArg04_n = SLICE(ptrArg02, word16, 16);
@@ -4563,6 +4694,8 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, union Eq_n
 }
 
 // 0800:31B4: Register word16 fn0800-31B4(Register Eq_n ds, Stack Eq_n dwArg02, Register out Eq_n cxOut, Register out Eq_n dxOut)
+// Called from:
+//      fn0800-2DE2
 word16 fn0800-31B4(Eq_n ds, Eq_n dwArg02, union Eq_n & cxOut, union Eq_n & dxOut)
 {
 	Eq_n wArg04 = SLICE(dwArg02, word16, 16);
@@ -4638,6 +4771,8 @@ word16 fn0800-31B4(Eq_n ds, Eq_n dwArg02, union Eq_n & cxOut, union Eq_n & dxOut
 }
 
 // 0800:32CD: Register word16 fn0800-32CD(Register Eq_n ds, Stack Eq_n dwArg02, Stack Eq_n wArg06, Stack Eq_n psegArg08, Stack word16 wArg0A, Register out ptr16 cxOut, Register out ptr16 dxOut)
+// Called from:
+//      fn0800-31B4
 word16 fn0800-32CD(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n psegArg08, word16 wArg0A, ptr16 & cxOut, ptr16 & dxOut)
 {
 	Eq_n di_n = wArg06;
@@ -4703,6 +4838,8 @@ word16 fn0800-32CD(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n psegArg08, word16 wA
 }
 
 // 0800:335C: Register Eq_n fn0800-335C(Register Eq_n ds, Stack Eq_n ptrArg02)
+// Called from:
+//      fn0800-2DE2
 Eq_n fn0800-335C(Eq_n ds, Eq_n ptrArg02)
 {
 	struct Eq_n * wArg04 = SLICE(ptrArg02, word16, 16);
@@ -4770,6 +4907,11 @@ Eq_n fn0800-335C(Eq_n ds, Eq_n ptrArg02)
 }
 
 // 0800:33CD: Register Eq_n fn0800-33CD(Register Eq_n ds, Stack Eq_n ptrArg02, Stack cui16 wArg06, Stack Eq_n dwArg08, Register out Eq_n cxOut, Register out ptr16 dxOut)
+// Called from:
+//      fn0800-2DE2
+//      fn0800-32CD
+//      fn0800-335C
+//      fn0800-3678
 Eq_n fn0800-33CD(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, Eq_n dwArg08, union Eq_n & cxOut, ptr16 & dxOut)
 {
 	Eq_n wArg02 = (word16) ptrArg02;
@@ -4867,6 +5009,10 @@ Eq_n fn0800-33CD(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, Eq_n dwArg08, union Eq_n 
 }
 
 // 0800:3479: Register word16 fn0800-3479(Register Eq_n ds, Stack Eq_n ptrArg02, Stack cui16 wArg06, Register out Eq_n cxOut, Register out Eq_n dxOut)
+// Called from:
+//      fn0800-2DE2
+//      fn0800-32CD
+//      fn0800-33CD
 word16 fn0800-3479(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, union Eq_n & cxOut, union Eq_n & dxOut)
 {
 	Eq_n wArg02 = (word16) ptrArg02;
@@ -4954,6 +5100,17 @@ word16 fn0800-3479(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, union Eq_n & cxOut, uni
 }
 
 // 0800:3509: Register Eq_n fn0800-3509(Stack Eq_n wArg02, Stack Eq_n psegArg04, Stack Eq_n dwArg06, Register out ptr16 bxOut)
+// Called from:
+//      fn0800-0C93
+//      fn0800-12E2
+//      fn0800-19EE
+//      fn0800-29C5
+//      fn0800-2DE2
+//      fn0800-31B4
+//      fn0800-3764
+//      fn0800-37DF
+//      fn0800-3992
+//      fn0800-3C99
 Eq_n fn0800-3509(Eq_n wArg02, Eq_n psegArg04, Eq_n dwArg06, ptr16 & bxOut)
 {
 	ptr16 bx_n = fn0800_BE3B(dwArg06, fp - 0x06, fp - 0x5A, fp - 0x10, fp - 22);
@@ -5016,6 +5173,15 @@ Eq_n fn0800-3509(Eq_n wArg02, Eq_n psegArg04, Eq_n dwArg06, ptr16 & bxOut)
 }
 
 // 0800:35A3: Register Eq_n fn0800-35A3(Stack Eq_n wArg02, Stack Eq_n psegArg04, Stack Eq_n dwArg06)
+// Called from:
+//      fn0800-0ABC
+//      fn0800-12E2
+//      fn0800-19EE
+//      fn0800-29C5
+//      fn0800-31B4
+//      fn0800-335C
+//      fn0800-37DF
+//      fn0800-3992
 Eq_n fn0800-35A3(Eq_n wArg02, Eq_n psegArg04, Eq_n dwArg06)
 {
 	fn0800_BE3B(dwArg06, fp - 0x06, fp - 0x5A, fp - 0x10, fp - 22);
@@ -5077,6 +5243,9 @@ Eq_n fn0800-35A3(Eq_n wArg02, Eq_n psegArg04, Eq_n dwArg06)
 }
 
 // 0800:363D: Register word16 fn0800-363D(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n dwArg06, Register out ptr16 dxOut)
+// Called from:
+//      fn0800-388C
+//      fn0800-3992
 word16 fn0800-363D(Eq_n ds, Eq_n ptrArg02, Eq_n dwArg06, ptr16 & dxOut)
 {
 	word16 cx_n;
@@ -5089,6 +5258,10 @@ word16 fn0800-363D(Eq_n ds, Eq_n ptrArg02, Eq_n dwArg06, ptr16 & dxOut)
 }
 
 // 0800:3678: Register word16 fn0800-3678(Register Eq_n ds, Stack Eq_n ptrArg02, Register out Eq_n dxOut, Register out ptr16 siOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-0DE8
+//      fn0800-112D
+//      fn0800-19EE
 word16 fn0800-3678(Eq_n ds, Eq_n ptrArg02, union Eq_n & dxOut, ptr16 & siOut, union Eq_n & dsOut)
 {
 	struct Eq_n * wArg04 = SLICE(ptrArg02, word16, 16);
@@ -5183,6 +5356,9 @@ word16 fn0800-3678(Eq_n ds, Eq_n ptrArg02, union Eq_n & dxOut, ptr16 & siOut, un
 }
 
 // 0800:3764: Register Eq_n fn0800-3764(Register Eq_n ds)
+// Called from:
+//      fn0800-0DE8
+//      fn0800-112D
 Eq_n fn0800-3764(Eq_n ds)
 {
 	if (*((word32) ds + 17022) != 0x00)
@@ -5241,6 +5417,11 @@ Eq_n fn0800-3764(Eq_n ds)
 }
 
 // 0800:37BE: Register word16 fn0800-37BE(Register Eq_n cx, Register Eq_n dx, Register Eq_n ds, Stack Eq_n dwArg02)
+// Called from:
+//      fn0800-0DE8
+//      fn0800-12E2
+//      fn0800-19EE
+//      fn0800-3BC3
 word16 fn0800-37BE(Eq_n cx, Eq_n dx, Eq_n ds, Eq_n dwArg02)
 {
 	word16 di_n;
@@ -5248,6 +5429,9 @@ word16 fn0800-37BE(Eq_n cx, Eq_n dx, Eq_n ds, Eq_n dwArg02)
 }
 
 // 0800:37DF: Register word16 fn0800-37DF(Register Eq_n ds, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-0DE8
+//      fn0800-112D
 word16 fn0800-37DF(Eq_n ds, union Eq_n & dsOut)
 {
 	word16 bx_n;
@@ -5307,6 +5491,9 @@ word16 fn0800-37DF(Eq_n ds, union Eq_n & dsOut)
 }
 
 // 0800:388C: Register word16 fn0800-388C(Register Eq_n dx, Register Eq_n ds, Register out ptr16 cxOut, Register out Eq_n dxOut, Register out Eq_n siOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-0DE8
+//      fn0800-112D
 word16 fn0800-388C(Eq_n dx, Eq_n ds, ptr16 & cxOut, union Eq_n & dxOut, union Eq_n & siOut, union Eq_n & dsOut)
 {
 	Eq_n ds_n;
@@ -5365,6 +5552,9 @@ word16 fn0800-388C(Eq_n dx, Eq_n ds, ptr16 & cxOut, union Eq_n & dxOut, union Eq
 }
 
 // 0800:395B: Register word16 fn0800-395B(Stack Eq_n ptrArg02, Stack Eq_n ptrArg06)
+// Called from:
+//      fn0800-388C
+//      fn0800-3992
 word16 fn0800-395B(Eq_n ptrArg02, Eq_n ptrArg06)
 {
 	Eq_n ax_n = *((word32) ptrArg02 + 2);
@@ -5374,6 +5564,8 @@ word16 fn0800-395B(Eq_n ptrArg02, Eq_n ptrArg06)
 }
 
 // 0800:3992: Register word16 fn0800-3992(Register Eq_n ds, Register out Eq_n dxOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-0DE8
 word16 fn0800-3992(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 {
 	if (*((word32) ds + 17022) == 0x00 || (*((word32) ds + 0x00002A23) != 0x01 || *((word32) ds + 10775) == 0x00))
@@ -5532,6 +5724,20 @@ word16 fn0800-3992(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 }
 
 // 0800:3B0A: Register cui16 fn0800-3B0A(Register Eq_n ds, Stack Eq_n wArg0A, Stack Eq_n wArg0C, Register out ptr16 dxOut, Register out Eq_n bpOut, Register out ptr16 siOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-0DE8
+//      fn0800-12E2
+//      fn0800-3BC3
+//      fn0800-3C99
+//      fn0800-46FE
+//      fn0800-4BB1
+//      fn0800-4F2C
+//      fn0800-51A9
+//      fn0800-5374
+//      fn0800-5E64
+//      fn0800-67BF
+//      fn0800-6F20
+//      fn0800-741D
 cui16 fn0800-3B0A(Eq_n ds, Eq_n wArg0A, Eq_n wArg0C, ptr16 & dxOut, union Eq_n & bpOut, ptr16 & siOut, union Eq_n & dsOut)
 {
 	struct Eq_n Eq_n::* bp_n = fp - 2;
@@ -5608,6 +5814,8 @@ cui16 fn0800-3B0A(Eq_n ds, Eq_n wArg0A, Eq_n wArg0C, ptr16 & dxOut, union Eq_n &
 }
 
 // 0800:3BC3: Register word16 fn0800-3BC3(Register Eq_n cx, Register Eq_n dx, Register Eq_n ds, Stack Eq_n dwArg02, Stack Eq_n dwArg06, Register out Eq_n siOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-1E5E
 word16 fn0800-3BC3(Eq_n cx, Eq_n dx, Eq_n ds, Eq_n dwArg02, Eq_n dwArg06, union Eq_n & siOut, union Eq_n & dsOut)
 {
 	word16 wArg06 = (word16) dwArg06;
@@ -5669,6 +5877,9 @@ word16 fn0800-3BC3(Eq_n cx, Eq_n dx, Eq_n ds, Eq_n dwArg02, Eq_n dwArg06, union 
 }
 
 // 0800:3C99: Register byte fn0800-3C99(Register Eq_n ds, Stack Eq_n dwArg02, Stack Eq_n wArg06, Stack Eq_n wArg08, Register out ptr16 bpOut, Register out Eq_n siOut, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800-1E5E
+//      fn0800-23EC
 byte fn0800-3C99(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, ptr16 & bpOut, union Eq_n & siOut, struct Eq_n & dsOut)
 {
 	word16 bx_n;
@@ -5784,6 +5995,14 @@ byte fn0800-3C99(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, ptr16 & bpOut,
 }
 
 // 0800:3DCF: Register word16 fn0800-3DCF(Register Eq_n ds, Stack Eq_n ptrArg02, Register out Eq_n chOut, Register out ptr16 dxOut, Register out ptr16 diOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-3E27
+//      fn0800-3F0A
+//      fn0800-3FAD
+//      fn0800-46FE
+//      fn0800-51A9
+//      fn0800-741D
+//      fn0800-8359
 word16 fn0800-3DCF(Eq_n ds, Eq_n ptrArg02, union Eq_n & chOut, ptr16 & dxOut, ptr16 & diOut, union Eq_n & dsOut)
 {
 	Eq_n wArg04_n = SLICE(ptrArg02, word16, 16);
@@ -5822,6 +6041,18 @@ word16 fn0800-3DCF(Eq_n ds, Eq_n ptrArg02, union Eq_n & chOut, ptr16 & dxOut, pt
 }
 
 // 0800:3E27: Register ui16 fn0800-3E27(Register Eq_n ds, Stack Eq_n dwArg02, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 diOut, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800-12E2
+//      fn0800-1CF6
+//      fn0800-1E5E
+//      fn0800-3E5D
+//      fn0800-3F58
+//      fn0800-4BB1
+//      fn0800-5374
+//      fn0800-5DCE
+//      fn0800-67BF
+//      fn0800-7A02
+//      fn0800-7C78
 ui16 fn0800-3E27(Eq_n ds, Eq_n dwArg02, ptr16 & cxOut, ptr16 & dxOut, ptr16 & diOut, struct Eq_n & dsOut)
 {
 	Eq_n cx_n = <invalid>;
@@ -5842,6 +6073,18 @@ ui16 fn0800-3E27(Eq_n ds, Eq_n dwArg02, ptr16 & cxOut, ptr16 & dxOut, ptr16 & di
 }
 
 // 0800:3E5D: Register word16 fn0800-3E5D(Register Eq_n ds, Stack Eq_n dwArg02, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800-1CF6
+//      fn0800-24FE
+//      fn0800-3992
+//      fn0800-4C55
+//      fn0800-4F2C
+//      fn0800-51A9
+//      fn0800-5374
+//      fn0800-67BF
+//      fn0800-6AD4
+//      fn0800-6F20
+//      fn0800-741D
 word16 fn0800-3E5D(Eq_n ds, Eq_n dwArg02, struct Eq_n & dsOut)
 {
 	Eq_n ds_n;
@@ -5858,6 +6101,9 @@ word16 fn0800-3E5D(Eq_n ds, Eq_n dwArg02, struct Eq_n & dsOut)
 }
 
 // 0800:3E9A: Register word16 fn0800-3E9A(Register Eq_n ds, Stack Eq_n ptrArg02, Register out ptr16 dxOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-51A9
+//      fn0800-741D
 word16 fn0800-3E9A(Eq_n ds, Eq_n ptrArg02, ptr16 & dxOut, union Eq_n & dsOut)
 {
 	Eq_n wArg04_n = SLICE(ptrArg02, word16, 16);
@@ -5899,6 +6145,10 @@ word16 fn0800-3E9A(Eq_n ds, Eq_n ptrArg02, ptr16 & dxOut, union Eq_n & dsOut)
 }
 
 // 0800:3F0A: Register ui16 fn0800-3F0A(Register Eq_n ds, Stack Eq_n dwArg02, Register out ptr16 dxOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-0DE8
+//      fn0800-112D
+//      fn0800-67BF
 ui16 fn0800-3F0A(Eq_n ds, Eq_n dwArg02, ptr16 & dxOut, union Eq_n & dsOut)
 {
 	Eq_n ds_n;
@@ -5920,6 +6170,15 @@ ui16 fn0800-3F0A(Eq_n ds, Eq_n dwArg02, ptr16 & dxOut, union Eq_n & dsOut)
 }
 
 // 0800:3F58: Register word16 fn0800-3F58(Register Eq_n ds, Stack Eq_n dwArg02, Register out ptr16 diOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-0DE8
+//      fn0800-112D
+//      fn0800-12E2
+//      fn0800-46FE
+//      fn0800-4F2C
+//      fn0800-51A9
+//      fn0800-67BF
+//      fn0800-6F20
 word16 fn0800-3F58(Eq_n ds, Eq_n dwArg02, ptr16 & diOut, union Eq_n & dsOut)
 {
 	Eq_n ds_n;
@@ -5941,6 +6200,11 @@ word16 fn0800-3F58(Eq_n ds, Eq_n dwArg02, ptr16 & diOut, union Eq_n & dsOut)
 }
 
 // 0800:3FAD: Register ui16 fn0800-3FAD(Register Eq_n ds, Stack Eq_n dwArg02, Register out ptr16 diOut, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800-46FE
+//      fn0800-51A9
+//      fn0800-5E64
+//      fn0800-741D
 ui16 fn0800-3FAD(Eq_n ds, Eq_n dwArg02, ptr16 & diOut, struct Eq_n & dsOut)
 {
 	Eq_n ds_n;
@@ -5958,6 +6222,14 @@ ui16 fn0800-3FAD(Eq_n ds, Eq_n dwArg02, ptr16 & diOut, struct Eq_n & dsOut)
 }
 
 // 0800:401E: Register word16 fn0800-401E(Register Eq_n ds, Stack Eq_n bArg02, Stack Eq_n dwArg04, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800-409C
+//      fn0800-46FE
+//      fn0800-4BB1
+//      fn0800-67BF
+//      fn0800-741D
+//      fn0800-75EA
+//      fn0800-831D
 word16 fn0800-401E(Eq_n ds, Eq_n bArg02, Eq_n dwArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, struct Eq_n & dsOut)
 {
 	Eq_n bArg02_n = (byte) wArg02;
@@ -5981,6 +6253,17 @@ word16 fn0800-401E(Eq_n ds, Eq_n bArg02, Eq_n dwArg04, ptr16 & cxOut, ptr16 & dx
 }
 
 // 0800:4047: Register Eq_n fn0800-4047(Register Eq_n ds, Stack Eq_n bArg02, Stack Eq_n ptrArg04, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out Eq_n diOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-401E
+//      fn0800-40BF
+//      fn0800-46FE
+//      fn0800-51A9
+//      fn0800-5E64
+//      fn0800-67BF
+//      fn0800-6F20
+//      fn0800-741D
+//      fn0800-75EA
+//      fn0800-8624
 Eq_n fn0800-4047(Eq_n ds, Eq_n bArg02, Eq_n ptrArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, union Eq_n & diOut, union Eq_n & dsOut)
 {
 	Eq_n wArg06_n = SLICE(ptrArg04, word16, 16);
@@ -6019,6 +6302,20 @@ Eq_n fn0800-4047(Eq_n ds, Eq_n bArg02, Eq_n ptrArg04, ptr16 & cxOut, ptr16 & dxO
 }
 
 // 0800:409C: Register word16 fn0800-409C(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n dwArg06, Register out ptr16 dxOut, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800-0DE8
+//      fn0800-12E2
+//      fn0800-46FE
+//      fn0800-4BB1
+//      fn0800-4C55
+//      fn0800-4F2C
+//      fn0800-51A9
+//      fn0800-67BF
+//      fn0800-6AD4
+//      fn0800-6F20
+//      fn0800-73AC
+//      fn0800-741D
+//      fn0800-75EA
 word16 fn0800-409C(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n dwArg06, ptr16 & dxOut, struct Eq_n & dsOut)
 {
 	Eq_n ds_n;
@@ -6037,6 +6334,11 @@ word16 fn0800-409C(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n dwArg06, ptr16 & dxOu
 }
 
 // 0800:40BF: Register word16 fn0800-40BF(Register Eq_n ds, Stack Eq_n bArg02, Stack Eq_n dwArg04, Register out ptr16 dxOut, Register out ptr16 diOut, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800-46FE
+//      fn0800-51A9
+//      fn0800-5E64
+//      fn0800-741D
 word16 fn0800-40BF(Eq_n ds, Eq_n bArg02, Eq_n dwArg04, ptr16 & dxOut, ptr16 & diOut, struct Eq_n & dsOut)
 {
 	Eq_n bArg02 = (byte) wArg02;
@@ -6059,6 +6361,12 @@ word16 fn0800-40BF(Eq_n ds, Eq_n bArg02, Eq_n dwArg04, ptr16 & dxOut, ptr16 & di
 }
 
 // 0800:4110: Register byte fn0800-4110(Register Eq_n ds, Stack Eq_n dwArg02, Stack Eq_n wArg06, Stack Eq_n wArg08, Stack Eq_n dwArg0A, Register out ptr16 siOut, Register out ptr16 diOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-1CF6
+//      fn0800-2D0A
+//      fn0800-3B0A
+//      fn0800-5B15
+//      fn0800-7FDC
 byte fn0800-4110(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, Eq_n dwArg0A, ptr16 & siOut, ptr16 & diOut, union Eq_n & dsOut)
 {
 	Eq_n wArg0C = SLICE(dwArg0A, word16, 16);
@@ -6083,6 +6391,18 @@ byte fn0800-4110(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, Eq_n dwArg0A, 
 }
 
 // 0800:4152: Register byte fn0800-4152(Register Eq_n ds, Stack Eq_n dwArg02, Stack Eq_n wArg06, Stack Eq_n wArg08, Stack Eq_n dwArg0A, Register out ptr16 siOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-12E2
+//      fn0800-1E5E
+//      fn0800-3B0A
+//      fn0800-55E8
+//      fn0800-579B
+//      fn0800-5D2F
+//      fn0800-5E64
+//      fn0800-669C
+//      fn0800-67BF
+//      fn0800-6AD4
+//      fn0800-73AC
 byte fn0800-4152(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, Eq_n dwArg0A, ptr16 & siOut, union Eq_n & dsOut)
 {
 	Eq_n wArg0C = SLICE(dwArg0A, word16, 16);
@@ -6105,6 +6425,19 @@ byte fn0800-4152(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, Eq_n dwArg0A, 
 }
 
 // 0800:4194: void fn0800-4194(Register Eq_n ds, Stack Eq_n dwArg02)
+// Called from:
+//      fn0800-0DE8
+//      fn0800-112D
+//      fn0800-12E2
+//      fn0800-1CF6
+//      fn0800-3992
+//      fn0800-3BC3
+//      fn0800-3C99
+//      fn0800-46FE
+//      fn0800-4C55
+//      fn0800-51A9
+//      fn0800-5B15
+//      fn0800-5DCE
 void fn0800-4194(Eq_n ds, Eq_n dwArg02)
 {
 	word16 dx_n;
@@ -6121,6 +6454,14 @@ void fn0800-4194(Eq_n ds, Eq_n dwArg02)
 }
 
 // 0800:4234: Register word16 fn0800-4234(Register Eq_n ds, Stack Eq_n dwArg02, Stack Eq_n dwArg06, Register out ptr16 siOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-0DE8
+//      fn0800-12E2
+//      fn0800-19EE
+//      fn0800-2DE2
+//      fn0800-388C
+//      fn0800-3BC3
+//      fn0800-3C99
 word16 fn0800-4234(Eq_n ds, Eq_n dwArg02, Eq_n dwArg06, ptr16 & siOut, union Eq_n & dsOut)
 {
 	cui16 dx_n;
@@ -6139,6 +6480,12 @@ word16 fn0800-4234(Eq_n ds, Eq_n dwArg02, Eq_n dwArg06, ptr16 & siOut, union Eq_
 }
 
 // 0800:4271: void fn0800-4271(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04)
+// Called from:
+//      fn0800-3DCF
+//      fn0800-3E9A
+//      fn0800-4047
+//      fn0800-4110
+//      fn0800-4152
 void fn0800-4271(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 {
 	if (wArg04 == *((word32) ds + 0x000029E5) && wArg02 == *((word32) ds + 0x000029E3))
@@ -6156,6 +6503,14 @@ void fn0800-4271(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 }
 
 // 0800:4311: Register cui16 fn0800-4311(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Register out Eq_n dxOut, Register out Eq_n bpOut, Register out ptr16 siOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-09A3
+//      fn0800-1CF6
+//      fn0800-2D0A
+//      fn0800-3B0A
+//      fn0800-5374
+//      fn0800-5E64
+//      fn0800-75EA
 cui16 fn0800-4311(Eq_n ds, Eq_n wArg02, Eq_n wArg04, union Eq_n & dxOut, union Eq_n & bpOut, ptr16 & siOut, union Eq_n & dsOut)
 {
 	struct Eq_n Eq_n::* bp_n;
@@ -6183,6 +6538,14 @@ cui16 fn0800-4311(Eq_n ds, Eq_n wArg02, Eq_n wArg04, union Eq_n & dxOut, union E
 }
 
 // 0800:4346: Register word16 fn0800-4346(Register Eq_n ds, Stack Eq_n wArg04, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800-09A3
+//      fn0800-1E5E
+//      fn0800-2D0A
+//      fn0800-3B0A
+//      fn0800-5374
+//      fn0800-5E64
+//      fn0800-75EA
 word16 fn0800-4346(Eq_n ds, Eq_n wArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, struct Eq_n & dsOut)
 {
 	struct Eq_n * ds_n;
@@ -6198,6 +6561,8 @@ word16 fn0800-4346(Eq_n ds, Eq_n wArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & b
 }
 
 // 0800:4357: Register word16 fn0800-4357(Stack (ptr32 byte) ptrArg02, Stack (ptr32 byte) ptrArg06)
+// Called from:
+//      fn0800-29C5
 word16 fn0800-4357(byte * ptrArg02, byte * ptrArg06)
 {
 	while (true)
@@ -6255,6 +6620,9 @@ l0800_nA7:
 }
 
 // 0800:43D4: void fn0800-43D4(Stack Eq_n wArg02, Stack Eq_n psegArg04, Stack Eq_n wArg06)
+// Called from:
+//      fn0800-5A24
+//      fn0800-7A02
 void fn0800-43D4(Eq_n wArg02, Eq_n psegArg04, Eq_n wArg06)
 {
 	Eq_n cx_n = wArg06;
@@ -6275,6 +6643,8 @@ void fn0800-43D4(Eq_n wArg02, Eq_n psegArg04, Eq_n wArg06)
 }
 
 // 0800:441C: void fn0800-441C(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg06)
+// Called from:
+//      fn0800-7A02
 void fn0800-441C(Eq_n ds, Eq_n ptrArg02, Eq_n wArg06)
 {
 	struct Eq_n Eq_n::* wArg02 = (word16) ptrArg02;
@@ -6356,6 +6726,9 @@ void fn0800-441C(Eq_n ds, Eq_n ptrArg02, Eq_n wArg06)
 }
 
 // 0800:4550: void fn0800-4550(Stack Eq_n wArg02, Stack Eq_n psegArg04, Stack Eq_n wArg06)
+// Called from:
+//      fn0800-441C
+//      fn0800-5A24
 void fn0800-4550(Eq_n wArg02, Eq_n psegArg04, Eq_n wArg06)
 {
 	struct Eq_n Eq_n::* sp_n = fp - 0x10;
@@ -6408,6 +6781,8 @@ void fn0800-4550(Eq_n wArg02, Eq_n psegArg04, Eq_n wArg06)
 }
 
 // 0800:45E2: Register ui16 fn0800-45E2(Stack Eq_n wArg02, Stack uint16 wArg04, Stack word16 wArg06, Register out Eq_n dxOut)
+// Called from:
+//      fn0800-4550
 ui16 fn0800-45E2(Eq_n wArg02, uint16 wArg04, word16 wArg06, union Eq_n & dxOut)
 {
 	word16 bx_n = wArg06;
@@ -6431,6 +6806,8 @@ ui16 fn0800-45E2(Eq_n wArg02, uint16 wArg04, word16 wArg06, union Eq_n & dxOut)
 }
 
 // 0800:463B: Register word16 fn0800-463B(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n psegArg04, Stack Eq_n wArg06)
+// Called from:
+//      fn0800-441C
 word16 fn0800-463B(Eq_n ds, Eq_n wArg02, Eq_n psegArg04, Eq_n wArg06)
 {
 	cu16 wLoc0C_n = ~0x00;
@@ -6473,6 +6850,8 @@ word16 fn0800-463B(Eq_n ds, Eq_n wArg02, Eq_n psegArg04, Eq_n wArg06)
 }
 
 // 0800:46FE: Register Eq_n fn0800-46FE(Register Eq_n ds, Register out Eq_n dxOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-112D
 Eq_n fn0800-46FE(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 {
 	if (*((word32) ds + 10757) > 0x00 || *((word32) ds + 10757) >= 0x00 && *((word32) ds + 10755) >= 0x2A)
@@ -6879,6 +7258,8 @@ Eq_n fn0800-46FE(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 }
 
 // 0800:4B97: Register Eq_n fn0800-4B97(Register Eq_n ax, Register Eq_n dx, Register Eq_n ds, Register out ptr16 dxOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-112D
 Eq_n fn0800-4B97(Eq_n ax, Eq_n dx, Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 {
 	Eq_n ds_n;
@@ -6902,6 +7283,8 @@ Eq_n fn0800-4B97(Eq_n ax, Eq_n dx, Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 }
 
 // 0800:4BB1: Register Eq_n fn0800-4BB1(Register Eq_n ax, Register Eq_n dx, Register Eq_n ds, Register out ptr16 dxOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-112D
 Eq_n fn0800-4BB1(Eq_n ax, Eq_n dx, Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 {
 	Eq_n ds_n;
@@ -6967,6 +7350,8 @@ Eq_n fn0800-4BB1(Eq_n ax, Eq_n dx, Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 }
 
 // 0800:4C55: Register Eq_n fn0800-4C55(Register Eq_n ax, Register Eq_n ds, Register out Eq_n dxOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-112D
 Eq_n fn0800-4C55(Eq_n ax, Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 {
 	Eq_n ds_n;
@@ -7309,6 +7694,8 @@ void fn0800-4F2C(Eq_n ax, Eq_n ds)
 }
 
 // 0800:518F: Register Eq_n fn0800-518F(Register Eq_n ax, Register Eq_n dx, Register Eq_n ds, Register out ptr16 dxOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-112D
 Eq_n fn0800-518F(Eq_n ax, Eq_n dx, Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 {
 	Eq_n ds_n;
@@ -7332,6 +7719,8 @@ Eq_n fn0800-518F(Eq_n ax, Eq_n dx, Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 }
 
 // 0800:51A9: Register Eq_n fn0800-51A9(Register Eq_n ds, Register out Eq_n dxOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-112D
 Eq_n fn0800-51A9(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 {
 	struct Eq_n Eq_n::* bp_n = fp - 2;
@@ -7517,6 +7906,15 @@ Eq_n fn0800-51A9(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 }
 
 // 0800:5374: Register word16 fn0800-5374(Register Eq_n ds, Register out Eq_n dxOut, Register out Eq_n bpOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-112D
+//      fn0800-19EE
+//      fn0800-46FE
+//      fn0800-4B97
+//      fn0800-4BB1
+//      fn0800-4F2C
+//      fn0800-518F
+//      fn0800-51A9
 word16 fn0800-5374(Eq_n ds, union Eq_n & dxOut, union Eq_n & bpOut, union Eq_n & dsOut)
 {
 	word16 dx_n;
@@ -7711,6 +8109,8 @@ word16 fn0800-5374(Eq_n ds, union Eq_n & dxOut, union Eq_n & bpOut, union Eq_n &
 }
 
 // 0800:55E8: Register word16 fn0800-55E8(Register Eq_n ds, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800-5374
 word16 fn0800-55E8(Eq_n ds, struct Eq_n & dsOut)
 {
 	Eq_n sp_n = fp - 0x06;
@@ -7842,6 +8242,8 @@ word16 fn0800-55E8(Eq_n ds, struct Eq_n & dsOut)
 }
 
 // 0800:579B: Register word16 fn0800-579B(Register Eq_n ds, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800-5374
 word16 fn0800-579B(Eq_n ds, struct Eq_n & dsOut)
 {
 	while (true)
@@ -7964,6 +8366,8 @@ l0800_n:
 }
 
 // 0800:593F: Register Eq_n fn0800-593F(Register Eq_n ds)
+// Called from:
+//      fn0800-579B
 Eq_n fn0800-593F(Eq_n ds)
 {
 	Eq_n ds_n;
@@ -7975,6 +8379,8 @@ Eq_n fn0800-593F(Eq_n ds)
 }
 
 // 0800:5975: Register Eq_n fn0800-5975(Register Eq_n ds)
+// Called from:
+//      fn0800-579B
 Eq_n fn0800-5975(Eq_n ds)
 {
 	((word32) ds + 11819)->u0 = 0x00;
@@ -8001,6 +8407,8 @@ Eq_n fn0800-5975(Eq_n ds)
 }
 
 // 0800:5A0F: Register Eq_n fn0800-5A0F(Register Eq_n ds)
+// Called from:
+//      fn0800-579B
 Eq_n fn0800-5A0F(Eq_n ds)
 {
 	Eq_n ds_n;
@@ -8009,6 +8417,8 @@ Eq_n fn0800-5A0F(Eq_n ds)
 }
 
 // 0800:5A24: Register Eq_n fn0800-5A24(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06)
+// Called from:
+//      fn0800-55E8
 Eq_n fn0800-5A24(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06)
 {
 	fn0800-43D4(wArg02, wArg04, wArg06);
@@ -8036,6 +8446,8 @@ Eq_n fn0800-5A24(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06)
 }
 
 // 0800:5A8D: Register Eq_n fn0800-5A8D(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n psegArg04, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-55E8
 Eq_n fn0800-5A8D(Eq_n ds, Eq_n wArg02, Eq_n psegArg04, union Eq_n & dsOut)
 {
 	Eq_n wLoc04_n = 0x00;
@@ -8075,6 +8487,12 @@ Eq_n fn0800-5A8D(Eq_n ds, Eq_n wArg02, Eq_n psegArg04, union Eq_n & dsOut)
 }
 
 // 0800:5B15: Register word16 fn0800-5B15(Register Eq_n ds, Register out Eq_n siOut, Register out ptr16 diOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-55E8
+//      fn0800-579B
+//      fn0800-5975
+//      fn0800-5C39
+//      fn0800-5CD9
 word16 fn0800-5B15(Eq_n ds, union Eq_n & siOut, ptr16 & diOut, union Eq_n & dsOut)
 {
 	uint16 ax_n = *((word32) ds + 11891);
@@ -8132,6 +8550,8 @@ word16 fn0800-5B15(Eq_n ds, union Eq_n & siOut, ptr16 & diOut, union Eq_n & dsOu
 }
 
 // 0800:5C1A: Register Eq_n fn0800-5C1A(Register Eq_n ds, Stack Eq_n wArg02, Register out ptr16 siOut, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800-5374
 Eq_n fn0800-5C1A(Eq_n ds, Eq_n wArg02, ptr16 & siOut, struct Eq_n & dsOut)
 {
 	if (*((word32) ds + 0x00002A21) != 0x02)
@@ -8155,6 +8575,11 @@ Eq_n fn0800-5C1A(Eq_n ds, Eq_n wArg02, ptr16 & siOut, struct Eq_n & dsOut)
 }
 
 // 0800:5C39: Register cui16 fn0800-5C39(Register Eq_n ds, Stack Eq_n wArg02, Register out ptr16 siOut, Register out ptr16 diOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-55E8
+//      fn0800-5A24
+//      fn0800-5A8D
+//      fn0800-5C1A
 cui16 fn0800-5C39(Eq_n ds, Eq_n wArg02, ptr16 & siOut, ptr16 & diOut, union Eq_n & dsOut)
 {
 	Eq_n sp_n = fp - 0x0C;
@@ -8200,6 +8625,12 @@ cui16 fn0800-5C39(Eq_n ds, Eq_n wArg02, ptr16 & siOut, ptr16 & diOut, union Eq_n
 }
 
 // 0800:5CD9: Register ui16 fn0800-5CD9(Register Eq_n ds, Stack Eq_n wArg02, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-579B
+//      fn0800-593F
+//      fn0800-5975
+//      fn0800-5A0F
+//      fn0800-5C1A
 ui16 fn0800-5CD9(Eq_n ds, Eq_n wArg02, union Eq_n & dsOut)
 {
 	Eq_n di_n = wArg02;
@@ -8230,6 +8661,9 @@ ui16 fn0800-5CD9(Eq_n ds, Eq_n wArg02, union Eq_n & dsOut)
 }
 
 // 0800:5D2F: Register Eq_n fn0800-5D2F(Register Eq_n ds, Stack Eq_n bArg02)
+// Called from:
+//      fn0800-55E8
+//      fn0800-579B
 Eq_n fn0800-5D2F(Eq_n ds, Eq_n bArg02)
 {
 	word16 dx_n = *((word32) ds + 11865);
@@ -8250,6 +8684,10 @@ Eq_n fn0800-5D2F(Eq_n ds, Eq_n bArg02)
 }
 
 // 0800:5DCE: Register Eq_n fn0800-5DCE(Register Eq_n ax, Register Eq_n dx, Register Eq_n ds, Stack Eq_n dwArg02, Register out Eq_n dxOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-4B97
+//      fn0800-4BB1
+//      fn0800-518F
 Eq_n fn0800-5DCE(Eq_n ax, Eq_n dx, Eq_n ds, Eq_n dwArg02, union Eq_n & dxOut, union Eq_n & dsOut)
 {
 	Eq_n ax_n;
@@ -8288,6 +8726,8 @@ Eq_n fn0800-5DCE(Eq_n ax, Eq_n dx, Eq_n ds, Eq_n dwArg02, union Eq_n & dxOut, un
 }
 
 // 0800:5E64: Register word16 fn0800-5E64(Register Eq_n ds, Register out Eq_n dxOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-0DE8
 word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 {
 	struct Eq_n Eq_n::* bp_n = fp - 2;
@@ -8965,6 +9405,8 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 }
 
 // 0800:669C: Register word16 fn0800-669C(Register Eq_n ds, Register out ptr16 dxOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-0DE8
 word16 fn0800-669C(Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 {
 	struct Eq_n Eq_n::* bp_n = fp - 2;
@@ -9087,6 +9529,8 @@ word16 fn0800-669C(Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 }
 
 // 0800:67BF: Register word16 fn0800-67BF(Register Eq_n ds, Register out ptr16 dxOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-0DE8
 word16 fn0800-67BF(Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 {
 	Eq_n ax_n = ((uint16) (uint8) *((word32) ds + 11893) << 0x08) + (uint16) ((uint8) (*((word32) ds + 11894)));
@@ -9301,6 +9745,8 @@ word16 fn0800-67BF(Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 }
 
 // 0800:6AD4: Register word16 fn0800-6AD4(Register Eq_n ds, Register out Eq_n dxOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-0DE8
 word16 fn0800-6AD4(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 {
 	Eq_n ax_n = ((uint16) (uint8) *((word32) ds + 11893) << 0x08) + (uint16) ((uint8) (*((word32) ds + 11894)));
@@ -9820,6 +10266,8 @@ void fn0800-6F20(Eq_n ax, Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 }
 
 // 0800:73AC: Register word16 fn0800-73AC(Register Eq_n ds, Register out ptr16 dxOut, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800-0DE8
 word16 fn0800-73AC(Eq_n ds, ptr16 & dxOut, struct Eq_n & dsOut)
 {
 	Eq_n ds_n;
@@ -9840,6 +10288,8 @@ word16 fn0800-73AC(Eq_n ds, ptr16 & dxOut, struct Eq_n & dsOut)
 }
 
 // 0800:741D: Register word16 fn0800-741D(Register Eq_n ds, Register out Eq_n dxOut)
+// Called from:
+//      fn0800-0DE8
 word16 fn0800-741D(Eq_n ds, union Eq_n & dxOut)
 {
 	struct Eq_n Eq_n::* bp_n = fp - 2;
@@ -10017,6 +10467,15 @@ word16 fn0800-741D(Eq_n ds, union Eq_n & dxOut)
 }
 
 // 0800:75EA: Register Eq_n fn0800-75EA(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08, Register out Eq_n bpOut, Register out Eq_n siOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-0DE8
+//      fn0800-12E2
+//      fn0800-5E64
+//      fn0800-669C
+//      fn0800-67BF
+//      fn0800-6F20
+//      fn0800-73AC
+//      fn0800-741D
 Eq_n fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, union Eq_n & bpOut, union Eq_n & siOut, union Eq_n & dsOut)
 {
 	*((word32) ds + 18048) = wArg04;
@@ -10357,6 +10816,8 @@ Eq_n fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, un
 }
 
 // 0800:7A02: Register byte fn0800-7A02(Register Eq_n ds, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-75EA
 byte fn0800-7A02(Eq_n ds, union Eq_n & dsOut)
 {
 	Eq_n dwLoc06_n = SEQ(*((word32) ds + 0x00004664), *((word32) ds + 0x00004662));
@@ -10501,6 +10962,8 @@ l0800_nC57:
 }
 
 // 0800:7C78: Register byte fn0800-7C78(Register Eq_n ds, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-75EA
 byte fn0800-7C78(Eq_n ds, union Eq_n & dsOut)
 {
 	Eq_n dwLoc06_n = SEQ(*((word32) ds + 0x00004664), *((word32) ds + 0x00004662));
@@ -10623,6 +11086,8 @@ l0800_nEAA:
 }
 
 // 0800:7EAF: void fn0800-7EAF(Register Eq_n ds, Stack Eq_n wArg02)
+// Called from:
+//      fn0800-7C78
 void fn0800-7EAF(Eq_n ds, Eq_n wArg02)
 {
 	Eq_n si_n = wArg02;
@@ -10699,6 +11164,9 @@ void fn0800-7EAF(Eq_n ds, Eq_n wArg02)
 }
 
 // 0800:7FDC: Register Eq_n fn0800-7FDC(Register Eq_n ds)
+// Called from:
+//      fn0800-7A02
+//      fn0800-7C78
 Eq_n fn0800-7FDC(Eq_n ds)
 {
 	*((word32) ds + 0x0000466C) = 0x00;
@@ -10890,6 +11358,8 @@ l0800_nF:
 }
 
 // 0800:831D: Register Eq_n fn0800-831D(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n ptrArg04)
+// Called from:
+//      fn0800-7FDC
 Eq_n fn0800-831D(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04)
 {
 	Eq_n ax_n;
@@ -10911,6 +11381,10 @@ Eq_n fn0800-831D(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04)
 }
 
 // 0800:8359: Register byte fn0800-8359(Register Eq_n ds, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800-7A02
+//      fn0800-7C78
+//      fn0800-7EAF
 byte fn0800-8359(Eq_n ds, struct Eq_n & dsOut)
 {
 	struct Eq_n * ds_n;
@@ -10928,6 +11402,8 @@ byte fn0800-8359(Eq_n ds, struct Eq_n & dsOut)
 }
 
 // 0800:83A1: void fn0800-83A1(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg06)
+// Called from:
+//      fn0800-7A02
 void fn0800-83A1(Eq_n ds, Eq_n ptrArg02, Eq_n wArg06)
 {
 	struct Eq_n * psegArg04_n = SLICE(ptrArg02, selector, 16);
@@ -10956,6 +11432,8 @@ void fn0800-83A1(Eq_n ds, Eq_n ptrArg02, Eq_n wArg06)
 }
 
 // 0800:8407: void fn0800-8407(Register Eq_n ds, Stack Eq_n wArg02, Stack segptr32 ptrArg04)
+// Called from:
+//      fn0800-7A02
 void fn0800-8407(Eq_n ds, Eq_n wArg02, segptr32 ptrArg04)
 {
 	Eq_n ax_n;
@@ -10972,6 +11450,8 @@ void fn0800-8407(Eq_n ds, Eq_n wArg02, segptr32 ptrArg04)
 }
 
 // 0800:8465: void fn0800-8465(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04)
+// Called from:
+//      fn0800-75EA
 void fn0800-8465(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 {
 	if (*((word32) ds + 0x00002A21) != 0x02)
@@ -10981,6 +11461,11 @@ void fn0800-8465(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 }
 
 // 0800:8489: void fn0800-8489(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04)
+// Called from:
+//      fn0800-7A02
+//      fn0800-83A1
+//      fn0800-8407
+//      fn0800-8465
 void fn0800-8489(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 {
 	Eq_n di_n = wArg02;
@@ -11028,6 +11513,10 @@ void fn0800-8489(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 }
 
 // 0800:854B: void fn0800-854B(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04)
+// Called from:
+//      fn0800-7C78
+//      fn0800-7EAF
+//      fn0800-8465
 void fn0800-854B(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 {
 	byte bArg04 = (byte) wArg04;
@@ -11074,6 +11563,9 @@ void fn0800-854B(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 }
 
 // 0800:8600: Register word16 fn0800-8600(Register Eq_n ds, Stack Eq_n bArg02, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-7C78
+//      fn0800-7EAF
 word16 fn0800-8600(Eq_n ds, Eq_n bArg02, union Eq_n & dsOut)
 {
 	if (*((word32) ds + 11845) == 0x00)
@@ -11094,6 +11586,13 @@ word16 fn0800-8600(Eq_n ds, Eq_n bArg02, union Eq_n & dsOut)
 }
 
 // 0800:8624: Register byte fn0800-8624(Register Eq_n ds, Stack Eq_n bArg02, Register out Eq_n diOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-75EA
+//      fn0800-7A02
+//      fn0800-7C78
+//      fn0800-8489
+//      fn0800-854B
+//      fn0800-8600
 byte fn0800-8624(Eq_n ds, Eq_n bArg02, union Eq_n & diOut, union Eq_n & dsOut)
 {
 	Eq_n ax_n = *((word32) ds + 10757);
@@ -11116,6 +11615,8 @@ byte fn0800-8624(Eq_n ds, Eq_n bArg02, union Eq_n & diOut, union Eq_n & dsOut)
 }
 
 // 0800:867A: Register word16 fn0800-867A(Stack word16 wArg04, Stack Eq_n psegArg06, Stack Eq_n wArg08, Stack Eq_n psegArg0A, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800-09A3
 word16 fn0800-867A(word16 wArg04, Eq_n psegArg06, Eq_n wArg08, Eq_n psegArg0A, struct Eq_n & dsOut)
 {
 	struct Eq_n Eq_n::* si_n = fn0800-87EF(SEQ(psegArg06, wArg04 + 0x04));
@@ -11356,6 +11857,8 @@ l0800_n:
 }
 
 // 0800:87EF: Register word16 fn0800-87EF(Sequence word32 ds_si)
+// Called from:
+//      fn0800-867A
 word16 fn0800-87EF(word32 ds_si)
 {
 	struct Eq_n * ds = SLICE(ds_si, selector, 16);
@@ -11364,6 +11867,8 @@ word16 fn0800-87EF(word32 ds_si)
 }
 
 // 0800:87F4: Register word16 fn0800-87F4(Sequence word32 ds_si)
+// Called from:
+//      fn0800-87EF
 word16 fn0800-87F4(word32 ds_si)
 {
 	word16 si = (word16) ds_si;
@@ -11371,6 +11876,8 @@ word16 fn0800-87F4(word32 ds_si)
 }
 
 // 0800:87F8: void fn0800-87F8(Register Eq_n ds)
+// Called from:
+//      fn0800-75EA
 void fn0800-87F8(Eq_n ds)
 {
 	Eq_n es_di_n = *((word32) ds + 11831);
@@ -11418,6 +11925,8 @@ void fn0800-87F8(Eq_n ds)
 }
 
 // 0800:8832: void fn0800-8832(Register Eq_n ds)
+// Called from:
+//      fn0800-7FDC
 void fn0800-8832(Eq_n ds)
 {
 	fn0800-889A(ds);
@@ -11448,6 +11957,8 @@ void fn0800-8832(Eq_n ds)
 }
 
 // 0800:889A: void fn0800-889A(Register Eq_n ds)
+// Called from:
+//      fn0800-8832
 void fn0800-889A(Eq_n ds)
 {
 	*((word32) ds + 11819) = 0x00;
@@ -11544,6 +12055,8 @@ void fn0800-889A(Eq_n ds)
 }
 
 // 0800:89A8: void fn0800-89A8(Register Eq_n ds, Stack Eq_n wArg02)
+// Called from:
+//      fn0800-7FDC
 void fn0800-89A8(Eq_n ds, Eq_n wArg02)
 {
 	uint16 dx_n = *((word32) ds + 11825);
@@ -11631,6 +12144,9 @@ void fn0800-8ACF(word16 cx, Eq_n ds, word16 * ptrArg06)
 }
 
 // 0800:8B0D: Register word16 fn0800-8B0D(Register Eq_n ds, Stack Eq_n wArg02, Stack word16 wArg04, Stack word16 wArg06, Register out ptr16 dxOut)
+// Called from:
+//      fn0800-8B5A
+//      fn0800-8B69
 word16 fn0800-8B0D(Eq_n ds, Eq_n wArg02, word16 wArg04, word16 wArg06, ptr16 & dxOut)
 {
 	if (wArg06 == 0x00)
@@ -11672,6 +12188,9 @@ word16 fn0800-8B0D(Eq_n ds, Eq_n wArg02, word16 wArg04, word16 wArg06, ptr16 & d
 }
 
 // 0800:8B5A: Register word16 fn0800-8B5A(Register Eq_n ds, Stack Eq_n wArg02, Register out ptr16 dxOut)
+// Called from:
+//      fn0800-0D24
+//      fn0800-0DCE
 word16 fn0800-8B5A(Eq_n ds, Eq_n wArg02, ptr16 & dxOut)
 {
 	ptr16 dx_n;
@@ -11688,6 +12207,8 @@ void fn0800-8B69(Eq_n ds, Eq_n wArg02)
 }
 
 // 0800:8B95: void fn0800-8B95(Stack (ptr32 Eq_n) ptrArg02)
+// Called from:
+//      fn0800-9764
 void fn0800-8B95(struct Eq_n * ptrArg02)
 {
 	byte dh_n;
@@ -11698,6 +12219,8 @@ void fn0800-8B95(struct Eq_n * ptrArg02)
 }
 
 // 0800:8BA8: void fn0800-8BA8(Stack (ptr32 Eq_n) ptrArg02)
+// Called from:
+//      fn0800-9764
 void fn0800-8BA8(struct Eq_n * ptrArg02)
 {
 	byte ch_n;
@@ -11709,6 +12232,10 @@ void fn0800-8BA8(struct Eq_n * ptrArg02)
 }
 
 // 0800:8BBB: Register word16 fn0800-8BBB(Stack Eq_n dwArg02, Stack Eq_n wArg06, Stack Eq_n wArg08, Register out ptr16 cxOut, Register out ptr16 dxOut)
+// Called from:
+//      main
+//      fn0800_B6D6
+//      fn0800_C177
 word16 fn0800-8BBB(Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, ptr16 & cxOut, ptr16 & dxOut)
 {
 	ptr16 cx_n;
@@ -11721,6 +12248,10 @@ word16 fn0800-8BBB(Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, ptr16 & cxOut, ptr16 
 }
 
 // 0800:8BC2: Register word16 fn0800-8BC2(Stack Eq_n dwArg02, Stack Eq_n wArg06, Stack Eq_n wArg08, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut)
+// Called from:
+//      fn0800-0B79
+//      fn0800-4550
+//      fn0800-7FDC
 word16 fn0800-8BC2(Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
 {
 	ptr16 bx_n;
@@ -11734,6 +12265,9 @@ word16 fn0800-8BC2(Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, ptr16 & cxOut, ptr16 
 }
 
 // 0800:8BCA: Register word16 fn0800-8BCA(Stack Eq_n dwArg02, Stack Eq_n wArg06, Stack Eq_n wArg08, Register out ptr16 dxOut)
+// Called from:
+//      main
+//      fn0800_C177
 word16 fn0800-8BCA(Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, ptr16 & dxOut)
 {
 	ptr16 dx_n;
@@ -11745,6 +12279,10 @@ word16 fn0800-8BCA(Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, ptr16 & dxOut)
 }
 
 // 0800:8BD8: Register Eq_n fn0800-8BD8(Register Eq_n cx, Stack Eq_n dwArg04, Stack Eq_n wArg08, Stack Eq_n wArg0A, Register out Eq_n cxOut, Register out Eq_n dxOut, Register out Eq_n bxOut)
+// Called from:
+//      fn0800-8BBB
+//      fn0800-8BC2
+//      fn0800-8BCA
 Eq_n fn0800-8BD8(Eq_n cx, Eq_n dwArg04, Eq_n wArg08, Eq_n wArg0A, union Eq_n & cxOut, union Eq_n & dxOut, union Eq_n & bxOut)
 {
 	Eq_n wArg04 = (word16) dwArg04;
@@ -11824,6 +12362,15 @@ Eq_n fn0800-8BD8(Eq_n cx, Eq_n dwArg04, Eq_n wArg08, Eq_n wArg0A, union Eq_n & c
 }
 
 // 0800:8C69: Register Eq_n fn0800-8C69(Register Eq_n ax, Register Eq_n cl, Register Eq_n dx, Register out Eq_n dxOut)
+// Called from:
+//      fn0800-46FE
+//      fn0800-4C55
+//      fn0800-4F2C
+//      fn0800-55E8
+//      fn0800-5C39
+//      fn0800-5E64
+//      fn0800-6F20
+//      fn0800_A215
 Eq_n fn0800-8C69(Eq_n ax, Eq_n cl, Eq_n dx, union Eq_n & dxOut)
 {
 	if (cl >= 0x10)
@@ -11839,6 +12386,12 @@ Eq_n fn0800-8C69(Eq_n ax, Eq_n cl, Eq_n dx, union Eq_n & dxOut)
 }
 
 // 0800:8C8A: Register Eq_n fn0800-8C8A(Register Eq_n ax, Register cu8 cl, Register Eq_n dx, Register out Eq_n dxOut)
+// Called from:
+//      fn0800-12E2
+//      fn0800-1F5C
+//      fn0800-24FE
+//      fn0800-2688
+//      fn0800-46FE
 Eq_n fn0800-8C8A(Eq_n ax, cu8 cl, Eq_n dx, union Eq_n & dxOut)
 {
 	if (cl >= 0x10)
@@ -11855,6 +12408,16 @@ Eq_n fn0800-8C8A(Eq_n ax, cu8 cl, Eq_n dx, union Eq_n & dxOut)
 }
 
 // 0800:8CAA: Register Eq_n fn0800-8CAA(Register Eq_n ax, Register cu8 cl, Register Eq_n dx, Register out Eq_n dxOut)
+// Called from:
+//      fn0800-0DE8
+//      fn0800-112D
+//      fn0800-12E2
+//      fn0800-3992
+//      fn0800-46FE
+//      fn0800-4F2C
+//      fn0800-51A9
+//      fn0800-5E64
+//      fn0800-6F20
 Eq_n fn0800-8CAA(Eq_n ax, cu8 cl, Eq_n dx, union Eq_n & dxOut)
 {
 	if (cl >= 0x10)
@@ -11870,6 +12433,10 @@ Eq_n fn0800-8CAA(Eq_n ax, cu8 cl, Eq_n dx, union Eq_n & dxOut)
 }
 
 // 0800:8CCB: Register Eq_n fn0800-8CCB(Register Eq_n ax, Register ci16 cx, Register Eq_n dx, Register Eq_n bx, Register out Eq_n chOut, Register out ptr16 dxOut)
+// Called from:
+//      fn0800_A215
+//      fn0800_ABA3
+//      fn0800_AD85
 Eq_n fn0800-8CCB(Eq_n ax, ci16 cx, Eq_n dx, Eq_n bx, union Eq_n & chOut, ptr16 & dxOut)
 {
 	byte dh_n = SLICE(dx, byte, 8);
@@ -11903,6 +12470,28 @@ Eq_n fn0800-8CCB(Eq_n ax, ci16 cx, Eq_n dx, Eq_n bx, union Eq_n & chOut, ptr16 &
 }
 
 // 0800:8D2B: Register word16 fn0800-8D2B(Register Eq_n ds, Stack Eq_n wArg02)
+// Called from:
+//      fn0800-8D64
+//      fn0800-8E29
+//      fn0800-8E52
+//      fn0800-8F50
+//      fn0800-8F7F
+//      fn0800-97F8
+//      fn0800_A2A3
+//      fn0800_A401
+//      fn0800_A53C
+//      fn0800_A559
+//      fn0800_A57F
+//      fn0800_A59D
+//      fn0800_A817
+//      fn0800_A84A
+//      fn0800_B113
+//      fn0800_B140
+//      fn0800_B2A0
+//      fn0800_B97F
+//      fn0800_BA4A
+//      fn0800_C632
+//      fn0800_C779
 word16 fn0800-8D2B(Eq_n ds, Eq_n wArg02)
 {
 	int16 si_n;
@@ -11931,12 +12520,16 @@ l0800_nD3E:
 }
 
 // 0800:8D64: void fn0800-8D64(Register Eq_n ds, Stack Eq_n wArg02)
+// Called from:
+//      fn0800-8ACF
 void fn0800-8D64(Eq_n ds, Eq_n wArg02)
 {
 	fn0800-8D2B(ds, wArg02);
 }
 
 // 0800:8D76: Register cui16 fn0800-8D76(Stack int16 wArg02)
+// Called from:
+//      fn0800_A96D
 cui16 fn0800-8D76(int16 wArg02)
 {
 	cui16 dx_n;
@@ -11945,6 +12538,9 @@ cui16 fn0800-8D76(int16 wArg02)
 }
 
 // 0800:8D87: void fn0800-8D87(Stack Eq_n bArg02, Stack Eq_n bArg04, Stack Eq_n wArg06, Stack Eq_n ptrArg08, Stack Eq_n wArg0C, Stack Eq_n wArg0E)
+// Called from:
+//      fn0800-8E09
+//      fn0800-9828
 void fn0800-8D87(Eq_n bArg02, Eq_n bArg04, Eq_n wArg06, Eq_n ptrArg08, Eq_n wArg0C, Eq_n wArg0E)
 {
 	struct Eq_n * es_n = SLICE(ptrArg08, selector, 16);
@@ -12006,12 +12602,21 @@ l0800_nDD9:
 }
 
 // 0800:8E09: void fn0800-8E09(Stack Eq_n dwArg02, Stack Eq_n wArg06)
+// Called from:
+//      fn0800-8E6A
 void fn0800-8E09(Eq_n dwArg02, Eq_n wArg06)
 {
 	fn0800-8D87(0x61, 0x00, 0x0A, dwArg02, wArg06, 0x00);
 }
 
 // 0800:8E29: Register Eq_n fn0800-8E29(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n dwArg04, Stack byte bArg08, Register out ptr16 cxOut, Register out ptr16 dxOut)
+// Called from:
+//      fn0800-97B6
+//      fn0800_ACB3
+//      fn0800_B324
+//      fn0800_B4BE
+//      fn0800_B97F
+//      fn0800_C632
 Eq_n fn0800-8E29(Eq_n ds, Eq_n wArg02, Eq_n dwArg04, byte bArg08, ptr16 & cxOut, ptr16 & dxOut)
 {
 	ptr16 wArg06 = SLICE(dwArg04, word16, 16);
@@ -12031,6 +12636,8 @@ Eq_n fn0800-8E29(Eq_n ds, Eq_n wArg02, Eq_n dwArg04, byte bArg08, ptr16 & cxOut,
 }
 
 // 0800:8E52: Register Eq_n fn0800-8E52(Register byte al, Register Eq_n ds)
+// Called from:
+//      fn0800-3678
 Eq_n fn0800-8E52(byte al, Eq_n ds)
 {
 	Eq_n ax_n;
@@ -12044,6 +12651,8 @@ Eq_n fn0800-8E52(byte al, Eq_n ds)
 }
 
 // 0800:8E6A: void fn0800-8E6A(Register Eq_n ds, Stack Eq_n wArg02, Stack cui16 wArg04, Stack cui16 wArg06, Stack Eq_n dwArg08)
+// Called from:
+//      fn0800_A614
 void fn0800-8E6A(Eq_n ds, Eq_n wArg02, cui16 wArg04, cui16 wArg06, Eq_n dwArg08)
 {
 	cui16 wArg08 = (word16) dwArg08;
@@ -12063,6 +12672,13 @@ void fn0800-8E6A(Eq_n ds, Eq_n wArg02, cui16 wArg04, cui16 wArg06, Eq_n dwArg08)
 }
 
 // 0800:8F18: Register Eq_n fn0800-8F18(Register Eq_n ax, Register uint16 cx, Register uint16 dx, Register Eq_n bx, Register out Eq_n chOut, Register out ptr16 dxOut)
+// Called from:
+//      fn0800-0B79
+//      fn0800-7FDC
+//      fn0800_ABA3
+//      fn0800_AD85
+//      fn0800_C04F
+//      fn0800_C379
 Eq_n fn0800-8F18(Eq_n ax, uint16 cx, uint16 dx, Eq_n bx, union Eq_n & chOut, ptr16 & dxOut)
 {
 	uint16 ax_n = dx;
@@ -12077,6 +12693,10 @@ Eq_n fn0800-8F18(Eq_n ax, uint16 cx, uint16 dx, Eq_n bx, union Eq_n & chOut, ptr
 }
 
 // 0800:8F2F: FlagGroup Eq_n fn0800-8F2F(Register Eq_n ax, Register (ptr16 Eq_n) cx, Register Eq_n dx, Register Eq_n bx, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out Eq_n bxOut)
+// Called from:
+//      fn0800_A1D6
+//      fn0800_A215
+//      fn0800_B0A1
 Eq_n fn0800-8F2F(Eq_n ax, struct Eq_n * cx, Eq_n dx, Eq_n bx, ptr16 & cxOut, ptr16 & dxOut, union Eq_n & bxOut)
 {
 	byte bl = (byte) bx;
@@ -12090,6 +12710,9 @@ Eq_n fn0800-8F2F(Eq_n ax, struct Eq_n * cx, Eq_n dx, Eq_n bx, ptr16 & cxOut, ptr
 }
 
 // 0800:8F50: Register Eq_n fn0800-8F50(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n ptrArg04, Stack Eq_n wArg08, Register out Eq_n chOut, Register out ptr16 dxOut)
+// Called from:
+//      fn0800_AAB3
+//      fn0800_B97F
 Eq_n fn0800-8F50(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04, Eq_n wArg08, union Eq_n & chOut, ptr16 & dxOut)
 {
 	Eq_n ax_n;
@@ -12111,6 +12734,16 @@ l0800_nF7D:
 }
 
 // 0800:8F7F: Register word16 fn0800-8F7F(Register byte al, Register Eq_n ds, Stack Eq_n ptrArg02)
+// Called from:
+//      fn0800-0DA9
+//      fn0800-0DE8
+//      fn0800-112D
+//      fn0800-12E2
+//      fn0800-19EE
+//      fn0800-37DF
+//      fn0800-388C
+//      fn0800-3BC3
+//      fn0800-3C99
 word16 fn0800-8F7F(byte al, Eq_n ds, Eq_n ptrArg02)
 {
 	word16 dx_n = (word16) ptrArg02;
@@ -12121,6 +12754,8 @@ word16 fn0800-8F7F(byte al, Eq_n ds, Eq_n ptrArg02)
 }
 
 // 0800:8F97: Register Eq_n fn0800-8F97(Register Eq_n di, Register Eq_n ds, Stack (memptr (ptr16 Eq_n) code) wArg02, Stack (memptr (ptr16 Eq_n) code) wArg04, Stack mp16 wArg06, Stack Eq_n wArg08, Stack (memptr Eq_n Eq_n) wArg0A, Stack Eq_n psegArg0C, Register out ptr16 diOut)
+// Called from:
+//      fn0800_BF18
 Eq_n fn0800-8F97(Eq_n di, Eq_n ds, <anonymous> Eq_n::* wArg02, <anonymous> Eq_n::* wArg04, mp16 wArg06, Eq_n wArg08, struct Eq_n Eq_n::* wArg0A, Eq_n psegArg0C, ptr16 & diOut)
 {
 	mp16 fp;
@@ -12592,6 +13227,8 @@ l0800_n:
 }
 
 // 0800:8FAB: Register word16 fn0800-8FAB(Sequence (ptr32 Eq_n) ss_bp, Register Eq_n ds, Register out Eq_n esOut)
+// Called from:
+//      fn0800-8F97
 word16 fn0800-8FAB(struct Eq_n * ss_bp, Eq_n ds, union Eq_n & esOut)
 {
 	Eq_n es_di_n = ss_bp->t0010;
@@ -12613,6 +13250,8 @@ word16 fn0800-8FAB(struct Eq_n * ss_bp, Eq_n ds, union Eq_n & esOut)
 }
 
 // 0800:912A: Register word16 fn0800-912A(Sequence (ptr32 Eq_n) ss_bp, Register Eq_n ds, Register out ptr16 diOut)
+// Called from:
+//      fn0800-8F97
 word16 fn0800-912A(struct Eq_n * ss_bp, Eq_n ds, ptr16 & diOut)
 {
 	ptr16 di_n;
@@ -12634,6 +13273,8 @@ void fn0800-9169(struct Eq_n * ss_bp)
 }
 
 // 0800:920E: Register word16 fn0800-920E(Sequence (ptr32 Eq_n) ss_bp, Register Eq_n ds, Register out ptr16 diOut)
+// Called from:
+//      fn0800-8F97
 word16 fn0800-920E(struct Eq_n * ss_bp, Eq_n ds, ptr16 & diOut)
 {
 	ptr16 di_n;
@@ -12643,6 +13284,10 @@ word16 fn0800-920E(struct Eq_n * ss_bp, Eq_n ds, ptr16 & diOut)
 }
 
 // 0800:93A6: Register word16 fn0800-93A6(Sequence (ptr32 Eq_n) ss_bp, Register out ptr16 diOut)
+// Called from:
+//      fn0800-8F97
+//      fn0800-912A
+//      fn0800-93EF
 word16 fn0800-93A6(struct Eq_n * ss_bp, ptr16 & diOut)
 {
 	(seg0800->*ss_bp->ptr0006)();
@@ -12654,6 +13299,9 @@ word16 fn0800-93A6(struct Eq_n * ss_bp, ptr16 & diOut)
 }
 
 // 0800:93BE: Register word16 fn0800-93BE(Sequence (ptr32 Eq_n) ss_bp, Register out ptr16 diOut)
+// Called from:
+//      fn0800-8F97
+//      fn0800-93A6
 word16 fn0800-93BE(struct Eq_n * ss_bp, ptr16 & diOut)
 {
 	word16 bp_n = ss_bp->w0000;
@@ -12662,6 +13310,9 @@ word16 fn0800-93BE(struct Eq_n * ss_bp, ptr16 & diOut)
 }
 
 // 0800:93C5: Register word16 fn0800-93C5(Sequence (ptr32 Eq_n) ss_bp, Register Eq_n ds, Register out ptr16 diOut)
+// Called from:
+//      fn0800-912A
+//      fn0800-920E
 word16 fn0800-93C5(struct Eq_n * ss_bp, Eq_n ds, ptr16 & diOut)
 {
 	struct Eq_n * ss = SLICE(ss_bp, selector, 16);
@@ -12693,6 +13344,9 @@ word16 fn0800-93C5(struct Eq_n * ss_bp, Eq_n ds, ptr16 & diOut)
 }
 
 // 0800:93EF: void fn0800-93EF(Sequence (ptr32 Eq_n) ss_bp)
+// Called from:
+//      fn0800-9145
+//      fn0800-9169
 void fn0800-93EF(struct Eq_n * ss_bp)
 {
 	struct Eq_n * ss = SLICE(ss_bp, selector, 16);
@@ -12753,6 +13407,8 @@ void fn0800-93EF(struct Eq_n * ss_bp)
 }
 
 // 0800:9485: FlagGroup bool fn0800-9485(Register cu8 cl, Register Eq_n bl, Register out Eq_n bxOut)
+// Called from:
+//      fn0800-94B0
 bool fn0800-9485(cu8 cl, Eq_n bl, union Eq_n & bxOut)
 {
 	cu8 bl_n = (byte) bx;
@@ -12788,6 +13444,8 @@ l0800_nAD:
 }
 
 // 0800:94B0: Register Eq_n fn0800-94B0(Register Eq_n ds, Stack (memptr (ptr16 Eq_n) code) wArg02, Stack (memptr (ptr16 Eq_n) code) wArg04, Stack mp16 wArg06, Stack Eq_n wArg08, Stack uint16 wArg0A, Stack ci16 wArg0C, Stack (ptr32 word16) ptrArg0E, Stack (ptr32 word16) ptrArg12, Register out Eq_n dxOut, Register out Eq_n diOut)
+// Called from:
+//      fn0800-8F97
 Eq_n fn0800-94B0(Eq_n ds, <anonymous> Eq_n::* wArg02, <anonymous> Eq_n::* wArg04, mp16 wArg06, Eq_n wArg08, uint16 wArg0A, ci16 wArg0C, word16 * ptrArg0E, word16 * ptrArg12, union Eq_n & dxOut, union Eq_n & diOut)
 {
 	union Eq_n Eq_n::* sp_n = fp - 0x0C;
@@ -13040,6 +13698,8 @@ void fn0800-9667()
 }
 
 // 0800:9764: Register word16 fn0800-9764(Register Eq_n ds, Stack Eq_n ptrArg02)
+// Called from:
+//      main
 word16 fn0800-9764(Eq_n ds, Eq_n ptrArg02)
 {
 	cui16 wArg02 = (word16) ptrArg02;
@@ -13060,6 +13720,8 @@ word16 fn0800-9764(Eq_n ds, Eq_n ptrArg02)
 }
 
 // 0800:97B6: void fn0800-97B6(Register Eq_n ds, Stack Eq_n wArg02)
+// Called from:
+//      fn0800_AD2F
 void fn0800-97B6(Eq_n ds, Eq_n wArg02)
 {
 	word16 dx_n;
@@ -13068,6 +13730,9 @@ void fn0800-97B6(Eq_n ds, Eq_n wArg02)
 }
 
 // 0800:97CC: Register byte fn0800-97CC(Register Eq_n ds, Stack Eq_n wArg02, Register out Eq_n dxOut)
+// Called from:
+//      fn0800-0C29
+//      fn0800-0C6C
 byte fn0800-97CC(Eq_n ds, Eq_n wArg02, union Eq_n & dxOut)
 {
 	uint16 ax_n;
@@ -13083,6 +13748,8 @@ byte fn0800-97CC(Eq_n ds, Eq_n wArg02, union Eq_n & dxOut)
 }
 
 // 0800:97F8: Register word16 fn0800-97F8(Register byte al, Register Eq_n ds, Stack Eq_n ptrArg02)
+// Called from:
+//      fn0800_A614
 word16 fn0800-97F8(byte al, Eq_n ds, Eq_n ptrArg02)
 {
 	word16 dx_n = (word16) ptrArg02;
@@ -13093,6 +13760,8 @@ word16 fn0800-97F8(byte al, Eq_n ds, Eq_n ptrArg02)
 }
 
 // 0800:9810: Register word16 fn0800-9810(Sequence (ptr32 byte) es_di, Register byte dh, Register byte dl)
+// Called from:
+//      fn0800-9828
 word16 fn0800-9810(byte * es_di, byte dh, byte dl)
 {
 	struct Eq_n * es = SLICE(es_di, selector, 16);
@@ -13101,6 +13770,8 @@ word16 fn0800-9810(byte * es_di, byte dh, byte dl)
 }
 
 // 0800:9817: Register word16 fn0800-9817(Sequence (ptr32 byte) es_di, Register byte al)
+// Called from:
+//      fn0800-9810
 word16 fn0800-9817(byte * es_di, byte al)
 {
 	struct Eq_n * es = SLICE(es_di, selector, 16);
@@ -13111,6 +13782,8 @@ word16 fn0800-9817(byte * es_di, byte al)
 }
 
 // 0800:9820: Register word16 fn0800-9820(Sequence (ptr32 byte) es_di, Register byte al)
+// Called from:
+//      fn0800-9817
 word16 fn0800-9820(byte * es_di, byte al)
 {
 	word16 di = (word16) es_di;
@@ -13121,6 +13794,9 @@ word16 fn0800-9820(byte * es_di, byte al)
 }
 
 // 0800:9828: Register word16 fn0800-9828(Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Register out ptr16 siOut, Register out ptr16 diOut)
+// Called from:
+//      fn0800_B2EF
+//      fn0800_BEA2
 word16 fn0800-9828(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds, Eq_n wArg02, Eq_n wArg04, ptr16 & siOut, ptr16 & diOut)
 {
 	ci8 bLoc16_n = 0x50;
@@ -13661,6 +14337,8 @@ l0800_nC96:
 }
 
 // 0800:9842: Register word16 fn0800-9842(Register (memptr (ptr16 Eq_n) byte) di, Register (ptr16 Eq_n) es)
+// Called from:
+//      fn0800-9828
 word16 fn0800-9842(byte Eq_n::* di, struct Eq_n * es)
 {
 	word16 cx_n = ~0x00;
@@ -13676,6 +14354,8 @@ word16 fn0800-9842(byte Eq_n::* di, struct Eq_n * es)
 }
 
 // 0800:984F: Register (memptr Eq_n byte) fn0800-984F(Sequence (ptr32 Eq_n) ss_bp, Register byte al, Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register (memptr Eq_n byte) di)
+// Called from:
+//      fn0800-9828
 byte Eq_n::* fn0800-984F(struct Eq_n * ss_bp, byte al, Eq_n cx, Eq_n dx, Eq_n bx, byte Eq_n::* di)
 {
 	Eq_n ss = SLICE(ss_bp, selector, 16);
@@ -13688,6 +14368,9 @@ byte Eq_n::* fn0800-984F(struct Eq_n * ss_bp, byte al, Eq_n cx, Eq_n dx, Eq_n bx
 }
 
 // 0800:9858: Register (memptr Eq_n byte) fn0800-9858(Sequence (ptr32 Eq_n) ss_bp, Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register (memptr Eq_n byte) di)
+// Called from:
+//      fn0800-9828
+//      fn0800-984F
 byte Eq_n::* fn0800-9858(struct Eq_n * ss_bp, Eq_n cx, Eq_n dx, Eq_n bx, byte Eq_n::* di)
 {
 	word16 bp = (word16) ss_bp;
@@ -13702,6 +14385,8 @@ byte Eq_n::* fn0800-9858(struct Eq_n * ss_bp, Eq_n cx, Eq_n dx, Eq_n bx, byte Eq
 }
 
 // 0800:9CE6: void fn0800-9CE6(Stack Eq_n dwArg02, Stack Eq_n dwArg06)
+// Called from:
+//      fn0800-8E6A
 void fn0800-9CE6(Eq_n dwArg02, Eq_n dwArg06)
 {
 	word16 cx_n;
@@ -13709,6 +14394,8 @@ void fn0800-9CE6(Eq_n dwArg02, Eq_n dwArg06)
 }
 
 // 0800:9D41: Register word16 fn0800-9D41(Register Eq_n dx, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut)
+// Called from:
+//      fn0800-9E75
 word16 fn0800-9D41(Eq_n dx, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
 {
 	Eq_n ds_n;
@@ -13749,6 +14436,8 @@ l0800_nD9D:
 }
 
 // 0800:9DA4: Register Eq_n fn0800-9DA4(Register Eq_n dx, Register out Eq_n bxOut)
+// Called from:
+//      fn0800-9E75
 Eq_n fn0800-9DA4(Eq_n dx, union Eq_n & bxOut)
 {
 	Eq_n bx_n;
@@ -13786,6 +14475,10 @@ Eq_n fn0800-9DA4(Eq_n dx, union Eq_n & bxOut)
 }
 
 // 0800:9E15: Register word16 fn0800-9E15(Register Eq_n ds)
+// Called from:
+//      fn0800-9D41
+//      fn0800-9DA4
+//      fn0800-9F89
 word16 fn0800-9E15(Eq_n ds)
 {
 	if (ds == *((word32) ds + 6))
@@ -13805,6 +14498,8 @@ word16 fn0800-9E15(Eq_n ds)
 }
 
 // 0800:9E3E: Register (ptr16 Eq_n) fn0800-9E3E(Register Eq_n ds)
+// Called from:
+//      fn0800-9DA4
 struct Eq_n * fn0800-9E3E(Eq_n ds)
 {
 	Eq_n ax_n = seg0800->wFFFF9D39;
@@ -13828,6 +14523,12 @@ struct Eq_n * fn0800-9E3E(Eq_n ds)
 }
 
 // 0800:9E75: Register word16 fn0800-9E75(Register Eq_n ds, Stack Eq_n wArg04, Register out ptr16 cxOut, Register out Eq_n dxOut, Register out ptr16 bxOut, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800-4346
+//      fn0800_A006
+//      fn0800_A080
+//      fn0800_A614
+//      fn0800_BA89
 word16 fn0800-9E75(Eq_n ds, Eq_n wArg04, ptr16 & cxOut, union Eq_n & dxOut, ptr16 & bxOut, struct Eq_n & dsOut)
 {
 	seg0800->tFFFF9D3B = (union Eq_n *) ds;
@@ -13848,6 +14549,8 @@ word16 fn0800-9E75(Eq_n ds, Eq_n wArg04, ptr16 & cxOut, union Eq_n & dxOut, ptr1
 }
 
 // 0800:9E9E: Register Eq_n fn0800-9E9E(Register Eq_n ax, Register out Eq_n dxOut)
+// Called from:
+//      fn0800-9F89
 Eq_n fn0800-9E9E(Eq_n ax, union Eq_n & dxOut)
 {
 	word16 dx_n;
@@ -13875,6 +14578,8 @@ Eq_n fn0800-9E9E(Eq_n ax, union Eq_n & dxOut)
 }
 
 // 0800:9F02: Register Eq_n fn0800-9F02(Register Eq_n ax, Register out (ptr16 Eq_n) dxOut)
+// Called from:
+//      fn0800-9F89
 Eq_n fn0800-9F02(Eq_n ax, struct Eq_n & dxOut)
 {
 	byte ah_n = SLICE(ax, byte, 8);
@@ -13905,6 +14610,8 @@ l0800_nF25:
 }
 
 // 0800:9F5C: Register Eq_n fn0800-9F5C(Register Eq_n ax, Register Eq_n dx, Register Eq_n ds, Register out (ptr16 Eq_n) dxOut)
+// Called from:
+//      fn0800-9F89
 Eq_n fn0800-9F5C(Eq_n ax, Eq_n dx, Eq_n ds, struct Eq_n & dxOut)
 {
 	*ds -= ax;
@@ -13917,6 +14624,8 @@ Eq_n fn0800-9F5C(Eq_n ax, Eq_n dx, Eq_n ds, struct Eq_n & dxOut)
 }
 
 // 0800:9F7F: Register word16 fn0800-9F7F(Register Eq_n ds, Stack Eq_n wArg02, Register out ptr16 dxOut, Register out Eq_n bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800_BA89
 word16 fn0800-9F7F(Eq_n ds, Eq_n wArg02, ptr16 & dxOut, union Eq_n & bpOut, ptr16 & siOut, ptr16 & diOut, struct Eq_n & dsOut)
 {
 	Eq_n bp_n;
@@ -13934,6 +14643,9 @@ word16 fn0800-9F7F(Eq_n ds, Eq_n wArg02, ptr16 & dxOut, union Eq_n & bpOut, ptr1
 }
 
 // 0800:9F89: Register word16 fn0800-9F89(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Register out ptr16 dxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800-4311
+//      fn0800_A006
 word16 fn0800-9F89(Eq_n ds, Eq_n wArg02, Eq_n wArg04, ptr16 & dxOut, ptr16 & bpOut, ptr16 & siOut, struct Eq_n & dsOut)
 {
 	ptr16 bp_n;
@@ -13950,6 +14662,9 @@ word16 fn0800-9F89(Eq_n ds, Eq_n wArg02, Eq_n wArg04, ptr16 & dxOut, ptr16 & bpO
 }
 
 // 0800:9F92: Register Eq_n fn0800-9F92(Register Eq_n ax, Register Eq_n dx, Register Eq_n ds, Register out Eq_n dxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800-9F7F
+//      fn0800-9F89
 Eq_n fn0800-9F92(Eq_n ax, Eq_n dx, Eq_n ds, union Eq_n & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, struct Eq_n & dsOut)
 {
 	seg0800->tFFFF9D3B = (union Eq_n *) ds;
@@ -13981,6 +14696,9 @@ Eq_n fn0800-9F92(Eq_n ax, Eq_n dx, Eq_n ds, union Eq_n & dxOut, ptr16 & bpOut, p
 }
 
 // 0800:9F9F: Register Eq_n fn0800-9F9F(Register Eq_n ax, Register Eq_n dx, Register out Eq_n dxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out (ptr16 Eq_n) dsOut)
+// Called from:
+//      fn0800-9F89
+//      fn0800-9F92
 Eq_n fn0800-9F9F(Eq_n ax, Eq_n dx, union Eq_n & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, struct Eq_n & dsOut)
 {
 	Eq_n dx_n;
@@ -14116,6 +14834,9 @@ void fn0800_A080(Eq_n ax, int16 cx, Eq_n bx, Eq_n ds)
 }
 
 // 0800:A162: Register word16 fn0800_A162(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Register out Eq_n cxOut, Register out Eq_n dxOut, Register out ptr16 bxOut)
+// Called from:
+//      fn0800_A1D6
+//      fn0800_A215
 word16 fn0800_A162(Eq_n ds, Eq_n wArg02, Eq_n wArg04, union Eq_n & cxOut, union Eq_n & dxOut, ptr16 & bxOut)
 {
 	Eq_n dx_n;
@@ -14156,6 +14877,9 @@ l0800_A1D1:
 }
 
 // 0800:A1D6: Register word16 fn0800_A1D6(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut)
+// Called from:
+//      fn0800-9D41
+//      fn0800_A080
 word16 fn0800_A1D6(Eq_n ds, Eq_n wArg02, Eq_n wArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
 {
 	word16 ax_n;
@@ -14184,6 +14908,9 @@ l0800_A213:
 }
 
 // 0800:A215: Register Eq_n fn0800_A215(Register Eq_n ds, Stack uint32 dwArg02, Register out Eq_n dxOut)
+// Called from:
+//      fn0800-9E9E
+//      fn0800-9F02
 Eq_n fn0800_A215(Eq_n ds, uint32 dwArg02, union Eq_n & dxOut)
 {
 	ci16 wArg04_n = SLICE(dwArg02, word16, 16);
@@ -14240,6 +14967,8 @@ l0800_A29F:
 }
 
 // 0800:A2A3: Register Eq_n fn0800_A2A3(Register Eq_n ds, Stack word16 wArg04, Register out ptr16 cxOut)
+// Called from:
+//      fn0800_B140
 Eq_n fn0800_A2A3(Eq_n ds, word16 wArg04, ptr16 & cxOut)
 {
 	byte bArg04 = (byte) wArg04;
@@ -14258,24 +14987,32 @@ Eq_n fn0800_A2A3(Eq_n ds, word16 wArg04, ptr16 & cxOut)
 }
 
 // 0800:A2CC: void fn0800_A2CC(Register Eq_n ds)
+// Called from:
+//      fn0800-9828
 void fn0800_A2CC(Eq_n ds)
 {
 	(*((word32) ds + 9972))();
 }
 
 // 0800:A2D0: void fn0800_A2D0(Register Eq_n ds)
+// Called from:
+//      fn0800-8F97
 void fn0800_A2D0(Eq_n ds)
 {
 	(*((word32) ds + 9974))();
 }
 
 // 0800:A2D4: void fn0800_A2D4(Register Eq_n ds)
+// Called from:
+//      fn0800-8F97
 void fn0800_A2D4(Eq_n ds)
 {
 	(*((word32) ds + 9976))();
 }
 
 // 0800:A2D8: void fn0800_A2D8(Register Eq_n ds)
+// Called from:
+//      fn0800-8F97
 void fn0800_A2D8(Eq_n ds)
 {
 	(*((word32) ds + 9978))();
@@ -14299,6 +15036,8 @@ void fn0800_A36D(struct Eq_n * ds_si, byte * es_di, word16 ax, word16 cx)
 }
 
 // 0800:A401: Register ptr16 fn0800_A401(Register byte al, Register Eq_n ds, Stack (ptr16 Eq_n) psegArg02, Stack Eq_n wArg04, Register out ptr16 bxOut)
+// Called from:
+//      fn0800_A162
 ptr16 fn0800_A401(byte al, Eq_n ds, struct Eq_n * psegArg02, Eq_n wArg04, ptr16 & bxOut)
 {
 	ptr16 ax_n;
@@ -14316,6 +15055,8 @@ ptr16 fn0800_A401(byte al, Eq_n ds, struct Eq_n * psegArg02, Eq_n wArg04, ptr16 
 }
 
 // 0800:A471: Register uint16 fn0800_A471(Register Eq_n ds, Stack segptr32 ptrArg02, Register out Eq_n dxOut)
+// Called from:
+//      fn0800_C379
 uint16 fn0800_A471(Eq_n ds, segptr32 ptrArg02, union Eq_n & dxOut)
 {
 	struct Eq_n * es_n = SLICE(ptrArg02, selector, 16);
@@ -14388,6 +15129,9 @@ l0800_A49E:
 }
 
 // 0800:A4F6: void fn0800_A4F6(Register Eq_n ds, Stack Eq_n wArg06)
+// Called from:
+//      fn0800-37DF
+//      fn0800-3C99
 void fn0800_A4F6(Eq_n ds, Eq_n wArg06)
 {
 	word16 cx_n;
@@ -14399,6 +15143,9 @@ void fn0800_A4F6(Eq_n ds, Eq_n wArg06)
 }
 
 // 0800:A53C: Register Eq_n fn0800_A53C(Register Eq_n ds, Stack byte bArg06, Register out Eq_n cxOut)
+// Called from:
+//      fn0800_A4F6
+//      fn0800_B140
 Eq_n fn0800_A53C(Eq_n ds, byte bArg06, union Eq_n & cxOut)
 {
 	Eq_n ax_n;
@@ -14417,6 +15164,8 @@ Eq_n fn0800_A53C(Eq_n ds, byte bArg06, union Eq_n & cxOut)
 }
 
 // 0800:A559: Register byte fn0800_A559(Register byte al, Register Eq_n ds, Stack Eq_n wArg02, Register out Eq_n dxOut)
+// Called from:
+//      fn0800_A614
 byte fn0800_A559(byte al, Eq_n ds, Eq_n wArg02, union Eq_n & dxOut)
 {
 	Eq_n ax_n;
@@ -14432,6 +15181,9 @@ byte fn0800_A559(byte al, Eq_n ds, Eq_n wArg02, union Eq_n & dxOut)
 }
 
 // 0800:A57F: Register byte fn0800_A57F(Register byte al, Register Eq_n ds, Stack Eq_n wArg02)
+// Called from:
+//      fn0800_A559
+//      fn0800_B140
 byte fn0800_A57F(byte al, Eq_n ds, Eq_n wArg02)
 {
 	Eq_n ax_n;
@@ -14447,6 +15199,8 @@ byte fn0800_A57F(byte al, Eq_n ds, Eq_n wArg02)
 }
 
 // 0800:A59D: Register Eq_n fn0800_A59D(Register Eq_n ds, Stack Eq_n wArg02, Register out ptr16 dxOut)
+// Called from:
+//      fn0800_AED6
 Eq_n fn0800_A59D(Eq_n ds, Eq_n wArg02, ptr16 & dxOut)
 {
 	Eq_n wLoc08_n;
@@ -14499,6 +15253,20 @@ l0800_A60D:
 }
 
 // 0800:A614: Register byte fn0800_A614(Register Eq_n ds, Stack Eq_n ptrArg02, Register out Eq_n cxOut, Register out ptr16 dxOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-0DA9
+//      fn0800-0DE8
+//      fn0800-112D
+//      fn0800-12E2
+//      fn0800-18D9
+//      fn0800-19EE
+//      fn0800-2DE2
+//      fn0800-37DF
+//      fn0800-388C
+//      fn0800-3992
+//      fn0800-3BC3
+//      fn0800-3C99
+//      fn0800_A96D
 byte fn0800_A614(Eq_n ds, Eq_n ptrArg02, union Eq_n & cxOut, ptr16 & dxOut, union Eq_n & dsOut)
 {
 	word16 wArg02_n = (word16) ptrArg02;
@@ -14551,6 +15319,13 @@ l0800_A6B2:
 }
 
 // 0800:A6B7: Register word16 fn0800_A6B7(Register Eq_n ds, Stack Eq_n ptrArg02, Register out Eq_n dxOut, Register out Eq_n bxOut)
+// Called from:
+//      fn0800_A614
+//      fn0800_A877
+//      fn0800_ACB3
+//      fn0800_AE10
+//      fn0800_B324
+//      fn0800_B4BE
 word16 fn0800_A6B7(Eq_n ds, Eq_n ptrArg02, union Eq_n & dxOut, union Eq_n & bxOut)
 {
 	Eq_n wArg02 = (word16) ptrArg02;
@@ -14615,6 +15390,8 @@ l0800_A778:
 }
 
 // 0800:A77D: Register word16 fn0800_A77D(Register Eq_n ds, Stack (ptr32 byte) dwArg02, Stack ci16 wArg06, Stack Eq_n ptrArg08, Register out ptr16 dxOut)
+// Called from:
+//      fn0800-2DE2
 word16 fn0800_A77D(Eq_n ds, byte * dwArg02, ci16 wArg06, Eq_n ptrArg08, ptr16 & dxOut)
 {
 	ptr16 wArg04 = SLICE(dwArg02, word16, 16);
@@ -14681,6 +15458,9 @@ word16 fn0800_A77D(Eq_n ds, byte * dwArg02, ci16 wArg06, Eq_n ptrArg08, ptr16 & 
 }
 
 // 0800:A817: Register Eq_n fn0800_A817(Register byte al, Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n ptrArg06, Stack cui16 wArg0A, Register out Eq_n cxOut, Register out ptr16 dxOut)
+// Called from:
+//      fn0800-33CD
+//      fn0800-363D
 Eq_n fn0800_A817(byte al, Eq_n ds, Eq_n ptrArg02, Eq_n ptrArg06, cui16 wArg0A, union Eq_n & cxOut, ptr16 & dxOut)
 {
 	Eq_n ax_n;
@@ -14700,6 +15480,8 @@ Eq_n fn0800_A817(byte al, Eq_n ds, Eq_n ptrArg02, Eq_n ptrArg06, cui16 wArg0A, u
 }
 
 // 0800:A84A: Register Eq_n fn0800_A84A(Register byte al, Register Eq_n ds, Stack segptr32 ptrArg02, Register out Eq_n cxOut, Register out ptr16 dxOut)
+// Called from:
+//      fn0800-3479
 Eq_n fn0800_A84A(byte al, Eq_n ds, segptr32 ptrArg02, union Eq_n & cxOut, ptr16 & dxOut)
 {
 	Eq_n ax_n;
@@ -14719,6 +15501,8 @@ Eq_n fn0800_A84A(byte al, Eq_n ds, segptr32 ptrArg02, union Eq_n & cxOut, ptr16 
 }
 
 // 0800:A877: Register Eq_n fn0800_A877(Register Eq_n ds, Register out Eq_n bxOut)
+// Called from:
+//      fn0800_A6B7
 Eq_n fn0800_A877(Eq_n ds, union Eq_n & bxOut)
 {
 	Eq_n si_n = *((word32) ds + 9448);
@@ -14743,6 +15527,8 @@ Eq_n fn0800_A877(Eq_n ds, union Eq_n & bxOut)
 }
 
 // 0800:A8B7: Register cui16 fn0800_A8B7(Register Eq_n ds, Stack (ptr32 word16) ptrArg02, Stack (ptr32 cui16) ptrArg06, Stack Eq_n ptrArg0A, Register out Eq_n clOut)
+// Called from:
+//      fn0800_A96D
 cui16 fn0800_A8B7(Eq_n ds, word16 * ptrArg02, cui16 * ptrArg06, Eq_n ptrArg0A, union Eq_n & clOut)
 {
 	word16 wArg0A_n = (word16) ptrArg0A;
@@ -14810,6 +15596,8 @@ l0800_A953:
 }
 
 // 0800:A96D: Register word16 fn0800_A96D(Register Eq_n ds, Stack cui16 wArg02, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n ptrArg0C, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800_AA7E
 word16 fn0800_A96D(Eq_n ds, cui16 wArg02, Eq_n dwArg04, Eq_n dwArg08, Eq_n ptrArg0C, ptr16 & cxOut, ptr16 & dxOut, union Eq_n & dsOut)
 {
 	ptr16 wArg0E_n = SLICE(ptrArg0C, word16, 16);
@@ -14867,6 +15655,8 @@ l0800_AA2E:
 }
 
 // 0800:AA34: void fn0800_AA34(Register Eq_n ds)
+// Called from:
+//      fn0800_AA7E
 void fn0800_AA34(Eq_n ds)
 {
 	struct Eq_n * ptrLoc06_n = SEQ(ds, 0x2358);
@@ -14882,6 +15672,13 @@ void fn0800_AA34(Eq_n ds)
 }
 
 // 0800:AA7E: Register word16 fn0800_AA7E(Register Eq_n ds, Stack Eq_n dwArg02, Stack Eq_n dwArg06, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800-12E2
+//      fn0800-18D9
+//      fn0800-19EE
+//      fn0800-37DF
+//      fn0800-3992
+//      fn0800-4234
 word16 fn0800_AA7E(Eq_n ds, Eq_n dwArg02, Eq_n dwArg06, ptr16 & cxOut, ptr16 & dxOut, union Eq_n & dsOut)
 {
 	ptr16 dx_n;
@@ -14902,6 +15699,8 @@ word16 fn0800_AA7E(Eq_n ds, Eq_n dwArg02, Eq_n dwArg06, ptr16 & cxOut, ptr16 & d
 }
 
 // 0800:AAB3: Register Eq_n fn0800_AAB3(Register Eq_n dx, Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg06, Stack Eq_n ptrArg08, Register out Eq_n chOut)
+// Called from:
+//      fn0800_ABA3
 Eq_n fn0800_AAB3(Eq_n dx, Eq_n ds, Eq_n ptrArg02, Eq_n wArg06, Eq_n ptrArg08, union Eq_n & chOut)
 {
 	Eq_n ptrArg08_n = ptrArg08;
@@ -14978,6 +15777,8 @@ l0800_AB9A:
 }
 
 // 0800:ABA3: Register uint16 fn0800_ABA3(Register Eq_n ds, Stack Eq_n dwArg02, Stack Eq_n wArg06, Stack Eq_n wArg08, Stack Eq_n dwArg0A, Register out Eq_n chOut, Register out ptr16 siOut, Register out Eq_n diOut)
+// Called from:
+//      fn0800-4110
 uint16 fn0800_ABA3(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, Eq_n dwArg0A, union Eq_n & chOut, ptr16 & siOut, union Eq_n & diOut)
 {
 	Eq_n wArg04 = SLICE(dwArg02, word16, 16);
@@ -15035,6 +15836,9 @@ uint16 fn0800_ABA3(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, Eq_n dwArg0A
 }
 
 // 0800:AC31: Register ui16 fn0800_AC31(Stack Eq_n ptrArg02)
+// Called from:
+//      fn0800_ACB3
+//      fn0800_AD2F
 ui16 fn0800_AC31(Eq_n ptrArg02)
 {
 	ui16 cx_n;
@@ -15092,6 +15896,38 @@ ui16 fn0800_AC31(Eq_n ptrArg02)
 }
 
 // 0800:ACB3: Register word16 fn0800_ACB3(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n dwArg06, Stack Eq_n wArg0A, Register out ptr16 cxOut, Register out ptr16 dxOut)
+// Called from:
+//      fn0800-12E2
+//      fn0800-19EE
+//      fn0800-1CF6
+//      fn0800-1E5E
+//      fn0800-24FE
+//      fn0800-2D0A
+//      fn0800-3BC3
+//      fn0800-3C99
+//      fn0800-3E9A
+//      fn0800-3F0A
+//      fn0800-3F58
+//      fn0800-4194
+//      fn0800-46FE
+//      fn0800-4BB1
+//      fn0800-4C55
+//      fn0800-4F2C
+//      fn0800-51A9
+//      fn0800-5374
+//      fn0800-5B15
+//      fn0800-5DCE
+//      fn0800-5E64
+//      fn0800-67BF
+//      fn0800-6F20
+//      fn0800-73AC
+//      fn0800-741D
+//      fn0800-75EA
+//      fn0800-7A02
+//      fn0800-7C78
+//      fn0800-7FDC
+//      fn0800_BA67
+//      fn0800_BA89
 word16 fn0800_ACB3(Eq_n ds, Eq_n ptrArg02, Eq_n dwArg06, Eq_n wArg0A, ptr16 & cxOut, ptr16 & dxOut)
 {
 	ptr16 wArg04 = SLICE(ptrArg02, word16, 16);
@@ -15122,6 +15958,24 @@ word16 fn0800_ACB3(Eq_n ds, Eq_n ptrArg02, Eq_n dwArg06, Eq_n wArg0A, ptr16 & cx
 }
 
 // 0800:AD2F: Register word16 fn0800_AD2F(Register Eq_n ds, Stack Eq_n ptrArg02, Register out ptr16 dxOut)
+// Called from:
+//      fn0800-12E2
+//      fn0800-2D0A
+//      fn0800-4194
+//      fn0800-46FE
+//      fn0800-4C55
+//      fn0800-4F2C
+//      fn0800-51A9
+//      fn0800-5374
+//      fn0800-5B15
+//      fn0800-5E64
+//      fn0800-67BF
+//      fn0800-6AD4
+//      fn0800-6F20
+//      fn0800-741D
+//      fn0800-75EA
+//      fn0800-7A02
+//      fn0800-7C78
 word16 fn0800_AD2F(Eq_n ds, Eq_n ptrArg02, ptr16 & dxOut)
 {
 	fn0800-97B6(ds, (int16) *((word32) ptrArg02 + 4));
@@ -15150,6 +16004,8 @@ word16 fn0800_AD2F(Eq_n ds, Eq_n ptrArg02, ptr16 & dxOut)
 }
 
 // 0800:AD85: Register Eq_n fn0800_AD85(Register Eq_n ds, Stack Eq_n dwArg02, Stack Eq_n wArg06, Stack Eq_n wArg08, Stack Eq_n dwArg0A, Register out ptr16 siOut)
+// Called from:
+//      fn0800-4152
 Eq_n fn0800_AD85(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, Eq_n dwArg0A, ptr16 & siOut)
 {
 	Eq_n wArg04 = SLICE(dwArg02, word16, 16);
@@ -15203,6 +16059,9 @@ l0800_AE0A:
 }
 
 // 0800:AE10: void fn0800_AE10(Register Eq_n ds)
+// Called from:
+//      fn0800_AE4C
+//      fn0800_AED6
 void fn0800_AE10(Eq_n ds)
 {
 	word16 si_n = 0x14;
@@ -15225,6 +16084,8 @@ void fn0800_AE10(Eq_n ds)
 }
 
 // 0800:AE4C: Register word16 fn0800_AE4C(Register Eq_n ds, Stack Eq_n ptrArg02, Register out ptr16 dxOut)
+// Called from:
+//      fn0800_AED6
 word16 fn0800_AE4C(Eq_n ds, Eq_n ptrArg02, ptr16 & dxOut)
 {
 	if ((*((word32) ptrArg02 + 2) & 0x0200) != 0x00)
@@ -15259,6 +16120,11 @@ word16 fn0800_AE4C(Eq_n ds, Eq_n ptrArg02, ptr16 & dxOut)
 }
 
 // 0800:AEC2: Register word16 fn0800_AEC2(Register Eq_n ds, Stack Eq_n ptrArg02, Register out Eq_n chOut, Register out ptr16 dxOut)
+// Called from:
+//      fn0800-3DCF
+//      fn0800-3E9A
+//      fn0800_A77D
+//      fn0800_AAB3
 word16 fn0800_AEC2(Eq_n ds, Eq_n ptrArg02, union Eq_n & chOut, ptr16 & dxOut)
 {
 	*ptrArg02 = (word32) *ptrArg02 + 1;
@@ -15270,6 +16136,8 @@ word16 fn0800_AEC2(Eq_n ds, Eq_n ptrArg02, union Eq_n & chOut, ptr16 & dxOut)
 }
 
 // 0800:AED6: Register uint16 fn0800_AED6(Register Eq_n ds, Stack Eq_n ptrArg02, Register out ptr16 dxOut)
+// Called from:
+//      fn0800_AEC2
 uint16 fn0800_AED6(Eq_n ds, Eq_n ptrArg02, ptr16 & dxOut)
 {
 	cui16 wArg02 = (word16) ptrArg02;
@@ -15325,6 +16193,8 @@ l0800_AFBD:
 }
 
 // 0800:AFCB: void fn0800_AFCB(Register Eq_n ds, Stack (ptr32 byte) ptrArg02)
+// Called from:
+//      fn0800_C379
 void fn0800_AFCB(Eq_n ds, byte * ptrArg02)
 {
 	struct Eq_n * es_n = SLICE(ptrArg02, selector, 16);
@@ -15392,6 +16262,9 @@ void fn0800_AFCB(Eq_n ds, byte * ptrArg02)
 }
 
 // 0800:B03B: void fn0800_B03B(Stack Eq_n ptrArg02, Stack Eq_n ptrArg06, Stack Eq_n wArg0A)
+// Called from:
+//      fn0800-9CE6
+//      fn0800_B4BE
 void fn0800_B03B(Eq_n ptrArg02, Eq_n ptrArg06, Eq_n wArg0A)
 {
 	struct Eq_n * es_n = SLICE(ptrArg02, selector, 16);
@@ -15410,6 +16283,8 @@ void fn0800_B03B(Eq_n ptrArg02, Eq_n ptrArg06, Eq_n wArg0A)
 }
 
 // 0800:B05F: void fn0800_B05F(Stack (ptr32 byte) ptrArg02, Stack cu16 wArg06, Stack byte bArg08)
+// Called from:
+//      fn0800_B083
 void fn0800_B05F(byte * ptrArg02, cu16 wArg06, byte bArg08)
 {
 	Eq_n di_n = (word16) ptrArg02;
@@ -15440,12 +16315,16 @@ void fn0800_B05F(byte * ptrArg02, cu16 wArg06, byte bArg08)
 }
 
 // 0800:B083: void fn0800_B083(Stack (ptr32 byte) dwArg02, Stack byte bArg06, Stack cu16 wArg08)
+// Called from:
+//      fn0800_C379
 void fn0800_B083(byte * dwArg02, byte bArg06, cu16 wArg08)
 {
 	fn0800_B05F(dwArg02, wArg08, bArg06);
 }
 
 // 0800:B0A1: void fn0800_B0A1(Stack Eq_n ptrArg02, Stack Eq_n ptrArg06, Stack Eq_n wArg0A)
+// Called from:
+//      fn0800_B0F3
 void fn0800_B0A1(Eq_n ptrArg02, Eq_n ptrArg06, Eq_n wArg0A)
 {
 	struct Eq_n * wArg08 = SLICE(ptrArg06, word16, 16);
@@ -15498,12 +16377,21 @@ void fn0800_B0A1(Eq_n ptrArg02, Eq_n ptrArg06, Eq_n wArg0A)
 }
 
 // 0800:B0F3: void fn0800_B0F3(Stack Eq_n dwArg02, Stack Eq_n dwArg06, Stack Eq_n wArg0A)
+// Called from:
+//      fn0800-09A3
+//      fn0800-2085
+//      fn0800-2201
+//      fn0800-22FE
+//      fn0800-5D2F
+//      fn0800-7FDC
 void fn0800_B0F3(Eq_n dwArg02, Eq_n dwArg06, Eq_n wArg0A)
 {
 	fn0800_B0A1(dwArg06, dwArg02, wArg0A);
 }
 
 // 0800:B113: Register Eq_n fn0800_B113(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n ptrArg04, Register out Eq_n cxOut)
+// Called from:
+//      fn0800_B140
 Eq_n fn0800_B113(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04, union Eq_n & cxOut)
 {
 	Eq_n ax_n;
@@ -15514,6 +16402,8 @@ Eq_n fn0800_B113(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04, union Eq_n & cxOut)
 }
 
 // 0800:B12E: Register word16 fn0800_B12E(Register Eq_n ds, Stack Eq_n wArg02)
+// Called from:
+//      fn0800_B140
 word16 fn0800_B12E(Eq_n ds, Eq_n wArg02)
 {
 	word16 ax_n;
@@ -15522,6 +16412,8 @@ word16 fn0800_B12E(Eq_n ds, Eq_n wArg02)
 }
 
 // 0800:B140: Register byte fn0800_B140(Register Eq_n ds, Stack Eq_n dwArg02, Stack cui16 wArg06, Stack cui16 wArg08, Register out ptr16 cxOut)
+// Called from:
+//      fn0800_A96D
 byte fn0800_B140(Eq_n ds, Eq_n dwArg02, cui16 wArg06, cui16 wArg08, ptr16 & cxOut)
 {
 	cui16 si_n = wArg06;
@@ -15617,6 +16509,8 @@ l0800_B29A:
 }
 
 // 0800:B2A0: Register Eq_n fn0800_B2A0(Register Eq_n ds, Stack Eq_n ptrArg02, Stack cui16 wArg06, Register out ptr16 cxOut)
+// Called from:
+//      fn0800_B140
 Eq_n fn0800_B2A0(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, ptr16 & cxOut)
 {
 	byte bArg06_n = (byte) wArg06;
@@ -15644,6 +16538,22 @@ Eq_n fn0800_B2A0(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, ptr16 & cxOut)
 }
 
 // 0800:B2EF: Register word16 fn0800_B2EF(Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register Eq_n ds, Stack Eq_n dwArg02, Register out ptr16 siOut, Register out ptr16 diOut)
+// Called from:
+//      main
+//      fn0800-0ABC
+//      fn0800-0C93
+//      fn0800-0D24
+//      fn0800-0DCE
+//      fn0800-0DE8
+//      fn0800-112D
+//      fn0800-12E2
+//      fn0800-18D9
+//      fn0800-19EE
+//      fn0800-2DE2
+//      fn0800-6EE6
+//      fn0800-6EFF
+//      fn0800-75EA
+//      fn0800-7FDC
 word16 fn0800_B2EF(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds, Eq_n dwArg02, ptr16 & siOut, ptr16 & diOut)
 {
 	ptr16 di_n;
@@ -15655,6 +16565,9 @@ word16 fn0800_B2EF(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds, Eq_n dwArg02, ptr16 & siO
 }
 
 // 0800:B30A: Register word16 fn0800_B30A(Register Eq_n ds, Stack Eq_n bArg02, Stack Eq_n ptrArg04, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut)
+// Called from:
+//      fn0800-4047
+//      fn0800_B4BE
 word16 fn0800_B30A(Eq_n ds, Eq_n bArg02, Eq_n ptrArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
 {
 	--*ptrArg04;
@@ -15669,6 +16582,9 @@ word16 fn0800_B30A(Eq_n ds, Eq_n bArg02, Eq_n ptrArg04, ptr16 & cxOut, ptr16 & d
 }
 
 // 0800:B324: Register uint16 fn0800_B324(Register Eq_n ds, Stack byte bArg02, Stack Eq_n ptrArg04, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut)
+// Called from:
+//      fn0800_B30A
+//      fn0800_B4BE
 uint16 fn0800_B324(Eq_n ds, byte bArg02, Eq_n ptrArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
 {
 	byte dh = SLICE(dx, byte, 8);
@@ -15766,6 +16682,8 @@ l0800_B495:
 }
 
 // 0800:B4BE: Register Eq_n fn0800_B4BE(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg06, Stack Eq_n ptrArg08)
+// Called from:
+//      fn0800_AD85
 Eq_n fn0800_B4BE(Eq_n ds, Eq_n ptrArg02, Eq_n wArg06, Eq_n ptrArg08)
 {
 	Eq_n ptrArg08_n;
@@ -15892,6 +16810,8 @@ l0800_B69D:
 }
 
 // 0800:B6A8: void fn0800_B6A8(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n ptrArg06)
+// Called from:
+//      fn0800_B6D6
 void fn0800_B6A8(Eq_n ds, Eq_n ptrArg02, Eq_n ptrArg06)
 {
 	Eq_n cx_n = *((word32) ds + 20200);
@@ -15922,6 +16842,9 @@ void fn0800_B6A8(Eq_n ds, Eq_n ptrArg02, Eq_n ptrArg06)
 }
 
 // 0800:B6D6: void fn0800_B6D6(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06)
+// Called from:
+//      fn0800_B6D6
+//      fn0800_B95E
 void fn0800_B6D6(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06)
 {
 	Eq_n sp_n = fp - 0x1A;
@@ -16173,6 +17096,8 @@ l0800_B720:
 }
 
 // 0800:B95E: void fn0800_B95E(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08, Stack Eq_n wArg0A)
+// Called from:
+//      fn0800-5E64
 void fn0800_B95E(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, Eq_n wArg0A)
 {
 	*((word32) ds + 20200) = wArg08;
@@ -16184,6 +17109,9 @@ void fn0800_B95E(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, Eq
 }
 
 // 0800:B97F: Register Eq_n fn0800_B97F(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n ptrArg04, Stack Eq_n wArg08, Register out ptr16 dxOut)
+// Called from:
+//      fn0800_AE4C
+//      fn0800_AED6
 Eq_n fn0800_B97F(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04, Eq_n wArg08, ptr16 & dxOut)
 {
 	struct Eq_n * wArg06 = SLICE(ptrArg04, word16, 16);
@@ -16245,6 +17173,9 @@ l0800_BA44:
 }
 
 // 0800:BA4A: Register Eq_n fn0800_BA4A(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n ptrArg06, Register out ptr16 dxOut)
+// Called from:
+//      fn0800-37DF
+//      fn0800-3C99
 Eq_n fn0800_BA4A(Eq_n ds, Eq_n ptrArg02, Eq_n ptrArg06, ptr16 & dxOut)
 {
 	Eq_n ax_n;
@@ -16259,6 +17190,10 @@ Eq_n fn0800_BA4A(Eq_n ds, Eq_n ptrArg02, Eq_n ptrArg06, ptr16 & dxOut)
 }
 
 // 0800:BA67: void fn0800_BA67(Register Eq_n ds, Stack Eq_n ptrArg02)
+// Called from:
+//      fn0800-0DE8
+//      fn0800-12E2
+//      fn0800-3BC3
 void fn0800_BA67(Eq_n ds, Eq_n ptrArg02)
 {
 	word16 dx_n;
@@ -16268,6 +17203,8 @@ void fn0800_BA67(Eq_n ds, Eq_n ptrArg02)
 }
 
 // 0800:BA89: Register word16 fn0800_BA89(Register Eq_n ds, Stack Eq_n ptrArg02, Stack cui16 wArg06, Stack cui16 wArg08, Stack ci16 wArg0A, Stack Eq_n wArg0C, Register out Eq_n cxOut, Register out Eq_n dsOut)
+// Called from:
+//      fn0800_A96D
 word16 fn0800_BA89(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, cui16 wArg08, ci16 wArg0A, Eq_n wArg0C, union Eq_n & cxOut, union Eq_n & dsOut)
 {
 	Eq_n wArg02_n = (word16) ptrArg02;
@@ -16387,6 +17324,8 @@ void fn0800_BBE9(struct Eq_n * ptrArg02)
 }
 
 // 0800:BC49: Register word16 fn0800_BC49(Stack Eq_n ptrArg02, Stack (ptr32 byte) ptrArg06, Stack (ptr32 byte) ptrArg0A, Stack (ptr32 byte) ptrArg0E, Stack (ptr32 byte) ptrArg12)
+// Called from:
+//      fn0800_BE3B
 word16 fn0800_BC49(Eq_n ptrArg02, byte * ptrArg06, byte * ptrArg0A, byte * ptrArg0E, byte * ptrArg12)
 {
 	cui16 wArg06 = (word16) ptrArg06;
@@ -16447,12 +17386,19 @@ word16 fn0800_BC49(Eq_n ptrArg02, byte * ptrArg06, byte * ptrArg0A, byte * ptrAr
 }
 
 // 0800:BE3B: Register word16 fn0800_BE3B(Stack Eq_n dwArg02, Stack (ptr32 byte) dwArg06, Stack (ptr32 byte) dwArg0A, Stack (ptr32 byte) dwArg0E, Stack (ptr32 byte) dwArg12)
+// Called from:
+//      fn0800-3509
+//      fn0800-35A3
 word16 fn0800_BE3B(Eq_n dwArg02, byte * dwArg06, byte * dwArg0A, byte * dwArg0E, byte * dwArg12)
 {
 	return fn0800_BC49(dwArg02, dwArg06, dwArg0A, dwArg0E, dwArg12);
 }
 
 // 0800:BEA2: Register word16 fn0800_BEA2(Register Eq_n cx, Register Eq_n dx, Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n dwArg06, Register out ptr16 diOut)
+// Called from:
+//      fn0800-0541
+//      fn0800-31B4
+//      fn0800-37BE
 word16 fn0800_BEA2(Eq_n cx, Eq_n dx, Eq_n ds, Eq_n ptrArg02, Eq_n dwArg06, ptr16 & diOut)
 {
 	*ptrArg02 = 0x00;
@@ -16464,6 +17410,8 @@ word16 fn0800_BEA2(Eq_n cx, Eq_n dx, Eq_n ds, Eq_n ptrArg02, Eq_n dwArg06, ptr16
 }
 
 // 0800:BF18: Register word16 fn0800_BF18(Register Eq_n di, Register Eq_n ds, Stack (memptr Eq_n Eq_n) wArg06, Stack Eq_n wArg08, Register out ptr16 diOut)
+// Called from:
+//      fn0800-0541
 word16 fn0800_BF18(Eq_n di, Eq_n ds, struct Eq_n Eq_n::* wArg06, Eq_n wArg08, ptr16 & diOut)
 {
 	ptr16 di_n;
@@ -16473,6 +17421,8 @@ word16 fn0800_BF18(Eq_n di, Eq_n ds, struct Eq_n Eq_n::* wArg06, Eq_n wArg08, pt
 }
 
 // 0800:BF5F: void fn0800_BF5F(Stack Eq_n ptrArg02, Stack segptr32 ptrArg06)
+// Called from:
+//      fn0800-8E6A
 void fn0800_BF5F(Eq_n ptrArg02, segptr32 ptrArg06)
 {
 	byte Eq_n::* di_n = (word16) ptrArg02;
@@ -16524,6 +17474,11 @@ void fn0800_BF5F(Eq_n ptrArg02, segptr32 ptrArg06)
 }
 
 // 0800:BF9E: void fn0800_BF9E(Stack Eq_n ptrArg02, Stack Eq_n ptrArg06)
+// Called from:
+//      fn0800-0402
+//      fn0800-2DE2
+//      fn0800_BB98
+//      fn0800_C379
 void fn0800_BF9E(Eq_n ptrArg02, Eq_n ptrArg06)
 {
 	byte Eq_n::* di_n = (word16) ptrArg06;
@@ -16550,6 +17505,13 @@ void fn0800_BF9E(Eq_n ptrArg02, Eq_n ptrArg06)
 }
 
 // 0800:BFC7: Register word16 fn0800_BFC7(Stack Eq_n ptrArg02, Register out Eq_n cxOut)
+// Called from:
+//      fn0800-0402
+//      fn0800-0541
+//      fn0800-9CE6
+//      fn0800_BB98
+//      fn0800_BC49
+//      fn0800_C379
 word16 fn0800_BFC7(Eq_n ptrArg02, union Eq_n & cxOut)
 {
 	word16 wArg04_n = SLICE(ptrArg02, word16, 16);
@@ -16575,6 +17537,8 @@ word16 fn0800_BFC7(Eq_n ptrArg02, union Eq_n & cxOut)
 }
 
 // 0800:BFE6: Register uint16 fn0800_BFE6(Stack segptr32 ptrArg02, Stack segptr32 ptrArg06, Stack uint16 wArg0A)
+// Called from:
+//      fn0800-29C5
 uint16 fn0800_BFE6(segptr32 ptrArg02, segptr32 ptrArg06, uint16 wArg0A)
 {
 	struct Eq_n Eq_n::* di_n = (word16) ptrArg06;
@@ -16611,6 +17575,10 @@ uint16 fn0800_BFE6(segptr32 ptrArg02, segptr32 ptrArg06, uint16 wArg0A)
 }
 
 // 0800:C01E: void fn0800_C01E(Stack Eq_n ptrArg02, Stack Eq_n ptrArg06, Stack Eq_n wArg0A)
+// Called from:
+//      fn0800_BB98
+//      fn0800_BC49
+//      fn0800_C379
 void fn0800_C01E(Eq_n ptrArg02, Eq_n ptrArg06, Eq_n wArg0A)
 {
 	byte Eq_n::* di_n = (word16) ptrArg06;
@@ -16643,6 +17611,8 @@ void fn0800_C01E(Eq_n ptrArg02, Eq_n ptrArg06, Eq_n wArg0A)
 }
 
 // 0800:C04F: Register word16 fn0800_C04F(Register Eq_n ds, Stack (ptr32 Eq_n) ptrArg02, Stack (ptr32 Eq_n) ptrArg06, Register out ptr16 cxOut, Register out Eq_n dxOut)
+// Called from:
+//      fn0800-9764
 word16 fn0800_C04F(Eq_n ds, struct Eq_n * ptrArg02, struct Eq_n * ptrArg06, ptr16 & cxOut, union Eq_n & dxOut)
 {
 	fn0800_C379(ds);
@@ -16849,6 +17819,9 @@ void fn0800_C177(Eq_n ds, ui32 dwArg02, struct Eq_n * ptrArg06, struct Eq_n * pt
 }
 
 // 0800:C379: void fn0800_C379(Register Eq_n ds)
+// Called from:
+//      fn0800_C04F
+//      fn0800_C177
 void fn0800_C379(Eq_n ds)
 {
 	fn0800_AFCB(ds, SEQ(ds, 9960));
@@ -16898,6 +17871,9 @@ void fn0800_C379(Eq_n ds)
 }
 
 // 0800:C553: Register word16 fn0800_C553(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack cu8 bArg08)
+// Called from:
+//      fn0800_C04F
+//      fn0800_C177
 word16 fn0800_C553(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, cu8 bArg08)
 {
 	if (wArg04 == 0x00)
@@ -16950,6 +17926,9 @@ l0800_C626:
 }
 
 // 0800:C632: Register Eq_n fn0800_C632(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n dwArg04, Stack Eq_n wArg08, Register out Eq_n dxOut, Register out Eq_n bxOut)
+// Called from:
+//      fn0800_A6B7
+//      fn0800_B4BE
 Eq_n fn0800_C632(Eq_n ds, Eq_n wArg02, Eq_n dwArg04, Eq_n wArg08, union Eq_n & dxOut, union Eq_n & bxOut)
 {
 	Eq_n ax_n;
@@ -17057,6 +18036,10 @@ l0800_C773:
 }
 
 // 0800:C779: Register Eq_n fn0800_C779(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n ptrArg04, Stack Eq_n wArg08, Register out Eq_n cxOut, Register out ptr16 dxOut, Register out Eq_n bxOut)
+// Called from:
+//      fn0800_B324
+//      fn0800_B4BE
+//      fn0800_C632
 Eq_n fn0800_C779(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04, Eq_n wArg08, union Eq_n & cxOut, ptr16 & dxOut, union Eq_n & bxOut)
 {
 	Eq_n ax_n;

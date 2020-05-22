@@ -140,6 +140,7 @@ namespace Reko
                     else
                         proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
                     output.WriteLine();
+                    WriteProcedureCallers(program, proc, output);
                     flow.Emit(program.Architecture, output);
                     foreach (Block block in new DfsIterator<Block>(proc.ControlGraph).PostOrder().Reverse())
                     {
@@ -426,9 +427,9 @@ namespace Reko
             var fmt = new AbsynCodeFormatter(new TextFormatter(w));
             foreach (var proc in procs)
             {
-                w.WriteLine("// {0}: {1}", proc.EntryAddress, proc);
                 try
                 {
+                    WriteProcedureHeader(program, proc, w);
                     fmt.Write(proc);
                     w.WriteLine();
                 }
@@ -436,6 +437,40 @@ namespace Reko
                 {
                     w.WriteLine();
                     w.WriteLine("// Exception {0} when writing procedure.", ex.Message);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Writes the high-level language procedure header for procedure <paramref name="proc"/>.
+        /// </summary>
+        /// <remarks>
+        /// //$REFACTOR: this is using C++-style comments. This should be in a HLL-specific class.
+        /// </remarks>
+        /// <param name="program"></param>
+        /// <param name="proc"></param>
+        /// <param name="w"></param>
+        private void WriteProcedureHeader(Program program, Procedure proc, TextWriter w)
+        {
+            w.WriteLine("// {0}: {1}", proc.EntryAddress, proc);
+            WriteProcedureCallers(program, proc, w);
+        }
+
+        /// <summary>
+        /// Writes the names of the procedures calling the procedure <paramref name="proc" />.
+        /// </summary>
+        private void WriteProcedureCallers(Program program, Procedure proc, TextWriter w)
+        {
+            var callers = program.CallGraph.CallerProcedures(proc)
+                .Distinct()
+                .OrderBy(p => p.EntryAddress)
+                .ToArray();
+            if (callers.Length > 0)
+            {
+                w.WriteLine("// Called from:");
+                foreach (var caller in callers)
+                {
+                    w.WriteLine("//      {0}", caller.Name);
                 }
             }
         }

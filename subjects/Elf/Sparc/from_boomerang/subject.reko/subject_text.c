@@ -66,6 +66,8 @@ void func8()
 }
 
 // 00010B0C: void main(Register int32 o0)
+// Called from:
+//      _start
 void main(int32 o0)
 {
 	word32 o0_n = 0x01;

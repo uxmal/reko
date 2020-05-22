@@ -116,6 +116,8 @@ l40EC:
 void main(word20 pc, word20 sr, word20 r8)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00004000
 // MayUse:  pc:[0..19] r8:[0..19] sr:[0..19]
 // LiveOut:
 // Trashed:
@@ -145,6 +147,8 @@ l5AD8:
 word20 msp430_compute_modulator_bits(word20 r12, word20 r13, word20 r14, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      init_uart_isr
 // MayUse:  r12:[0..19] r13:[0..19] r14:[0..19] r15:[0..19]
 // LiveOut: r15
 // Trashed: VNZC r12 r13 r14 r15
@@ -192,6 +196,8 @@ msp430_compute_modulator_bits_exit:
 word20 init_uart_isr(word20 pc, word20 sr, word20 r13, word20 r14, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00004000
 // MayUse:  pc:[0..19] r13:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: sr
 // Trashed: VNZC r12 r13 r14 r15 sr
@@ -251,6 +257,8 @@ getchar_exit:
 void uart_putchar_isr_mode(word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00004000
 // MayUse:  r15:[0..19]
 // LiveOut:
 // Trashed:
@@ -265,6 +273,11 @@ uart_putchar_isr_mode_exit:
 word20 putchar(word20 pc, word20 sr, word20 r15, ptr16 & r11Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      task_1
+//      task_2
+//      task_3
+//      putchar
 // MayUse:  pc:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: r11 sr
 // Trashed: VNZC r13 r14 r15 sr
@@ -298,6 +311,8 @@ putchar_exit:
 word20 x_getchar(word20 pc, word20 sr, word20 r14, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      getchar
 // MayUse:  pc:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: r15
 // Trashed: VNZC r12 r13 r14 r15 r4 r5 r6 r7 r8 sr
@@ -317,6 +332,8 @@ x_getchar_exit:
 word20 x_putchar(word20 pc, word20 sr, word20 r14, word20 r15, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      putchar
 // MayUse:  pc:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: r15 sr
 // Trashed: VNZC r13 r15 sr
@@ -396,6 +413,9 @@ vTxISR_exit:
 word20 xTaskCreate(word20 pc, word20 sr, word20 r12, word20 r13, word20 r14, word20 r15, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00004000
+//      vTaskStartScheduler
 // MayUse:  pc:[0..19] r12:[0..19] r13:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: r15 sr
 // Trashed: VNZC r12 r13 r14 r15 r4 sr
@@ -514,6 +534,10 @@ vTaskDelete_exit:
 word20 vTaskDelayUntil(word20 pc, word20 sr, word20 r14, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      task_1
+//      task_2
+//      task_3
 // MayUse:  pc:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: sr
 // Trashed: VNZC r12 r13 r14 r15 r4 r5 r6 r7 r8 sr
@@ -610,6 +634,8 @@ vTaskDelay_exit:
 void vTaskStartScheduler(word20 pc, word20 sr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00004000
 // MayUse:  pc:[0..19] sr:[0..19]
 // LiveOut:
 // Trashed: VNZC r10 r11 r12 r13 r14 r15 r4 r5 r6 r7 r8 r9 sr
@@ -648,6 +674,13 @@ vTaskEndScheduler_exit:
 word20 vTaskSuspendAll(word20 sr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vTaskDelayUntil
+//      vTaskDelay
+//      prvCheckTasksWaitingTermination
+//      xQueueSend
+//      xQueueReceive
+//      pvPortMalloc
 // MayUse:  sr:[0..19]
 // LiveOut: sr
 // Trashed: VNZC sr
@@ -671,6 +704,13 @@ vTaskSuspendAll_exit:
 word20 xTaskResumeAll(word20 pc, word20 sr, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vTaskDelayUntil
+//      vTaskDelay
+//      prvCheckTasksWaitingTermination
+//      xQueueSend
+//      xQueueReceive
+//      pvPortMalloc
 // MayUse:  pc:[0..19] sr:[0..19]
 // LiveOut: r15 sr
 // Trashed: VNZC r15 sr
@@ -743,6 +783,11 @@ l000047D4:
 word20 xTaskGetTickCount(word20 sr, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      task_idle
+//      task_1
+//      task_2
+//      task_3
 // MayUse:  sr:[0..19]
 // LiveOut: r15 sr
 // Trashed: VNZC r15 sr
@@ -787,6 +832,9 @@ uxTaskGetNumberOfTasks_exit:
 void vTaskIncrementTick()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xTaskResumeAll
+//      prvTickISR
 // MayUse: 
 // LiveOut:
 // Trashed: VNZC r12 r13 r14 r15
@@ -836,6 +884,9 @@ l000048AC:
 void vTaskPlaceOnEventList(word20 r14, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueSend
+//      xQueueReceive
 // MayUse:  r14:[0..19] r15:[0..19]
 // LiveOut:
 // Trashed: VNZC r12 r13 r14 r15
@@ -864,6 +915,10 @@ vTaskPlaceOnEventList_exit:
 word20 xTaskRemoveFromEventList(word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueSendFromISR
+//      xQueueReceiveFromISR
+//      prvUnlockQueue
 // MayUse:  r15:[0..19]
 // LiveOut: r15
 // Trashed: VNZC r12 r13 r14 r15
@@ -931,6 +986,8 @@ l49B6:
 void prvInitialiseTCBVariables(word20 r12, word20 r13, word20 r14, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xTaskCreate
 // MayUse:  r12:[0..19] r13:[0..19] r14:[0..19] r15:[0..19]
 // LiveOut:
 // Trashed: VNZC r12 r13 r14 r15
@@ -958,6 +1015,8 @@ prvInitialiseTCBVariables_exit:
 void prvInitialiseTaskLists()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xTaskCreate
 // MayUse: 
 // LiveOut:
 // Trashed: VNZC r15
@@ -983,6 +1042,8 @@ prvInitialiseTaskLists_exit:
 word20 prvCheckTasksWaitingTermination(word20 pc, word20 sr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvIdleTask
 // MayUse:  pc:[0..19] sr:[0..19]
 // LiveOut: sr
 // Trashed: VNZC r13 r14 r15 sr
@@ -1029,6 +1090,8 @@ prvCheckTasksWaitingTermination_exit:
 word20 prvAllocateTCBAndStack(word20 pc, word20 sr, word20 r15, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xTaskCreate
 // MayUse:  pc:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: r15 sr
 // Trashed: VNZC r12 r13 r14 r15 sr
@@ -1058,6 +1121,8 @@ prvAllocateTCBAndStack_exit:
 void prvDeleteTCB()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvCheckTasksWaitingTermination
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -1073,6 +1138,9 @@ prvDeleteTCB_exit:
 void vTaskSwitchContext()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vPortYield
+//      prvTickISR
 // MayUse: 
 // LiveOut:
 // Trashed: VNZC r13 r14 r15
@@ -1101,6 +1169,8 @@ vTaskSwitchContext_exit:
 void vListInitialise(word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvInitialiseTaskLists
 // MayUse:  r15:[0..19]
 // LiveOut:
 // Trashed: VNZC r15
@@ -1122,6 +1192,9 @@ vListInitialise_exit:
 void vListInitialiseItem(word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvInitialiseTCBVariables
+//      vListInitialise
 // MayUse:  r15:[0..19]
 // LiveOut:
 // Trashed:
@@ -1136,6 +1209,12 @@ vListInitialiseItem_exit:
 void vListInsertEnd(word20 r14, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xTaskCreate
+//      vTaskDelete
+//      xTaskResumeAll
+//      vTaskIncrementTick
+//      xTaskRemoveFromEventList
 // MayUse:  r14:[0..19] r15:[0..19]
 // LiveOut:
 // Trashed: VNZC r12 r13 r15
@@ -1157,6 +1236,10 @@ vListInsertEnd_exit:
 void vListInsert(word20 r14, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vTaskDelayUntil
+//      vTaskDelay
+//      vTaskPlaceOnEventList
 // MayUse:  r14:[0..19] r15:[0..19]
 // LiveOut:
 // Trashed: VNZC r12 r13 r15
@@ -1197,6 +1280,15 @@ vListInsert_exit:
 void vListRemove(word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vTaskDelete
+//      vTaskDelayUntil
+//      vTaskDelay
+//      xTaskResumeAll
+//      vTaskIncrementTick
+//      vTaskPlaceOnEventList
+//      xTaskRemoveFromEventList
+//      prvCheckTasksWaitingTermination
 // MayUse:  r15:[0..19]
 // LiveOut:
 // Trashed: VNZC r13 r14 r15
@@ -1221,6 +1313,8 @@ vListRemove_exit:
 word20 xQueueCreate(word20 pc, word20 sr, word20 r15, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      init_uart_isr
 // MayUse:  pc:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: r15 sr
 // Trashed: VNZC r14 r15 sr
@@ -1244,6 +1338,8 @@ xQueueCreate_exit:
 word20 xQueueSend(word20 pc, word20 sr, word20 r13, word20 r14, word20 r15, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      x_putchar
 // MayUse:  pc:[0..19] r13:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: r15 sr
 // Trashed: VNZC r12 r13 r14 r15 r4 r5 r6 r7 r8 sr
@@ -1348,6 +1444,8 @@ xQueueSend_exit:
 word20 xQueueSendFromISR(word20 sr, word20 r13, word20 r14, word20 r15, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vRxISR
 // MayUse:  r13:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: r15 sr
 // Trashed: VNZC r12 r13 r14 r15 sr
@@ -1388,6 +1486,9 @@ xQueueSendFromISR_exit:
 word20 xQueueReceive(word20 pc, word20 sr, word20 r13, word20 r14, word20 r15, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      x_getchar
+//      x_putchar
 // MayUse:  pc:[0..19] r13:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: r15 sr
 // Trashed: VNZC r12 r13 r14 r15 r4 r5 r6 r7 r8 sr
@@ -1494,6 +1595,8 @@ xQueueReceive_exit:
 word20 xQueueReceiveFromISR(word20 sr, word20 r13, word20 r14, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vTxISR
 // MayUse:  r13:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: r15
 // Trashed: VNZC r12 r13 r14 r15 sr
@@ -1572,6 +1675,9 @@ vQueueDelete_exit:
 word20 prvUnlockQueue(word20 sr, word20 r15, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueSend
+//      xQueueReceive
 // MayUse:  r15:[0..19] sr:[0..19]
 // LiveOut: r15 sr
 // Trashed: VNZC r15 sr
@@ -1627,6 +1733,8 @@ prvUnlockQueue_exit:
 word20 prvIsQueueEmpty(word20 sr, word20 r15, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueReceive
 // MayUse:  r15:[0..19] sr:[0..19]
 // LiveOut: r15 sr
 // Trashed: VNZC r14 r15 sr
@@ -1655,6 +1763,8 @@ prvIsQueueEmpty_exit:
 word20 prvIsQueueFull(word20 sr, word20 r15, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueSend
 // MayUse:  r15:[0..19] sr:[0..19]
 // LiveOut: r15 sr
 // Trashed: VNZC r14 r15 sr
@@ -1683,6 +1793,9 @@ prvIsQueueFull_exit:
 word20 pvPortMalloc(word20 pc, word20 sr, word20 r15, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvAllocateTCBAndStack
+//      xQueueCreate
 // MayUse:  pc:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: r15 sr
 // Trashed: VNZC r14 r15 sr
@@ -1715,6 +1828,10 @@ pvPortMalloc_exit:
 void vPortFree()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvAllocateTCBAndStack
+//      prvDeleteTCB
+//      vQueueDelete
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -1742,6 +1859,8 @@ vPortInitialiseBlocks_exit:
 word20 pxPortInitialiseStack(word20 r13, word20 r14, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xTaskCreate
 // MayUse:  r13:[0..19] r14:[0..19] r15:[0..19]
 // LiveOut: r15
 // Trashed: VNZC r15
@@ -1770,6 +1889,8 @@ pxPortInitialiseStack_exit:
 void xPortStartScheduler(word20 pc)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vTaskStartScheduler
 // MayUse:  pc:[0..19]
 // LiveOut:
 // Trashed: r10 r11 r12 r13 r14 r15 r4 r5 r6 r7 r8 r9 sp
@@ -1785,6 +1906,8 @@ xPortStartScheduler_exit:
 void vPortEndScheduler()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vTaskEndScheduler
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -1798,6 +1921,16 @@ vPortEndScheduler_exit:
 word20 vPortYield(word20 pc, word20 sr, ptr16 & r8Out, ptr16 & r9Out, ptr16 & r10Out, ptr16 & r11Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vRxISR
+//      xTaskCreate
+//      vTaskDelete
+//      vTaskDelayUntil
+//      vTaskDelay
+//      xTaskResumeAll
+//      prvIdleTask
+//      xQueueSend
+//      xQueueReceive
 // MayUse:  pc:[0..19] sr:[0..19]
 // LiveOut: r10 r11 r8 r9 sr
 // Trashed: VNZC r10 r11 r12 r13 r14 r15 r4 r5 r6 r7 r8 r9 sp sr
@@ -1822,6 +1955,8 @@ vPortYield_exit:
 void prvSetupTimerInterrupt()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xPortStartScheduler
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -1859,6 +1994,9 @@ prvTickISR_exit:
 void printf(word20 r8)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00004000
+//      task_idle
 // MayUse:  r8:[0..19]
 // LiveOut:
 // Trashed: VNZC r12 r13 r14 r15
@@ -1873,6 +2011,8 @@ printf_exit:
 word20 PRINT(word20 r14)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vuprintf
 // MayUse:  r14:[0..19]
 // LiveOut: r15
 // Trashed: VNZC r15
@@ -1892,6 +2032,8 @@ PRINT_exit:
 void __write_pad(word20 r14)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vuprintf
 // MayUse:  r14:[0..19]
 // LiveOut:
 // Trashed: VNZC
@@ -1911,6 +2053,8 @@ l0000535C:
 void vuprintf(word20 r8, word20 r13, word20 r14, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      printf
 // MayUse:  r13:[0..19] r14:[0..19] r15:[0..19] r8:[0..19]
 // LiveOut:
 // Trashed: VNZC r12 r13 r14 r15
@@ -2312,6 +2456,8 @@ vuprintf_exit:
 word20 memchr(word20 r13, word20 r14, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vuprintf
 // MayUse:  r13:[0..19] r14:[0..19] r15:[0..19]
 // LiveOut: r15
 // Trashed: VNZC r12 r13 r14 r15
@@ -2340,6 +2486,8 @@ memchr_exit:
 void strncpy(word20 r13, word20 r14, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvInitialiseTCBVariables
 // MayUse:  r13:[0..19] r14:[0..19] r15:[0..19]
 // LiveOut:
 // Trashed: VNZC r12 r13 r14
@@ -2374,6 +2522,11 @@ strncpy_exit:
 word20 memcpy(word20 sr, word20 r13, word20 r14, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueSend
+//      xQueueSendFromISR
+//      xQueueReceive
+//      xQueueReceiveFromISR
 // MayUse:  r13:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: sr
 // Trashed: VNZC r12 r13 r14 sr
@@ -2482,6 +2635,8 @@ memcpy_exit:
 word20 memset(word20 sr, word20 r13, word20 r14, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvAllocateTCBAndStack
 // MayUse:  r13:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: sr
 // Trashed: VNZC r12 r13 r14 sr
@@ -2540,6 +2695,8 @@ memset_exit:
 word20 fn00005ADC(word20 r10, word20 r11, word20 r12, word20 r13, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      msp430_compute_modulator_bits
 // MayUse:  r10:[0..19] r11:[0..19] r12:[0..19] r13:[0..19]
 // LiveOut: r14 r15
 // Trashed: r14 r15
@@ -2561,6 +2718,8 @@ fn00005ADC_exit:
 word20 fn00005B04(word20 r10, word20 r11, word20 r12, word20 r13)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      msp430_compute_modulator_bits
 // MayUse:  r10:[0..19] r11:[0..19] r12:[0..19] r13:[0..19]
 // LiveOut: r12
 // Trashed: VNZC r12 r13 r14 r15 r8 r9
@@ -2601,6 +2760,9 @@ fn00005B04_exit:
 bool fn00005B4E(word20 r8, word20 r10, word20 r11, word20 r12, word20 r13, ptr16 & r8Out, ptr16 & r12Out, ptr16 & r13Out, ptr16 & r14Out, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vuprintf
+//      fn00005B04
 // MayUse:  r10:[0..19] r11:[0..19] r12:[0..19] r13:[0..19] r8:[0..19]
 // LiveOut: C r12 r13 r14 r15 r8
 // Trashed: VNZC r12 r13 r14 r15 r8 r9

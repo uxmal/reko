@@ -214,6 +214,8 @@ l00001202:
 }
 
 // 00001214: void fn00001214(Register (ptr32 Eq_n) a3)
+// Called from:
+//      fn00001000
 void fn00001214(struct Eq_n * a3)
 {
 	WaitPort((char *) &a3->dw003A + 0x0022);
@@ -221,6 +223,8 @@ void fn00001214(struct Eq_n * a3)
 }
 
 // 0000126C: void fn0000126C(Register (ptr32 Eq_n) a2)
+// Called from:
+//      fn00001000
 void fn0000126C(struct Eq_n * a2)
 {
 	Forbid();
@@ -228,12 +232,17 @@ void fn0000126C(struct Eq_n * a2)
 }
 
 // 00001278: void fn00001278(Stack word32 dwArg04)
+// Called from:
+//      fn000012D0
 void fn00001278(word32 dwArg04)
 {
 	fn0000127C();
 }
 
 // 0000127C: void fn0000127C()
+// Called from:
+//      fn00001000
+//      fn00001278
 void fn0000127C()
 {
 	struct Eq_n * a7_n = globals->ptr1494;
@@ -248,6 +257,8 @@ void fn0000127C()
 }
 
 // 000012D0: void fn000012D0(Stack word32 dwArg04)
+// Called from:
+//      fn0000131C
 void fn000012D0(word32 dwArg04)
 {
 	if (0x14D0 != 0x00)
@@ -270,6 +281,8 @@ void fn000012D0(word32 dwArg04)
 }
 
 // 0000131C: void fn0000131C(Stack word32 dwArg04)
+// Called from:
+//      fn00001354
 void fn0000131C(word32 dwArg04)
 {
 	if (*(int32 *) 0x14C4 == 0x00)
@@ -283,6 +296,8 @@ void fn0000131C(word32 dwArg04)
 }
 
 // 00001354: void fn00001354(Stack int32 dwArg04, Stack (ptr32 Eq_n) dwArg08)
+// Called from:
+//      fn00001000
 void fn00001354(int32 dwArg04, struct Eq_n * dwArg08)
 {
 	<anonymous> ** a3_n = (<anonymous> **) 0x14CC;
@@ -298,6 +313,8 @@ void fn00001354(int32 dwArg04, struct Eq_n * dwArg08)
 }
 
 // 00001390: Register int32 fn00001390(Stack ptr32 dwArg04, Stack ptr32 dwArg08, Stack ptr32 dwArg0C)
+// Called from:
+//      fn00001468
 int32 fn00001390(ptr32 dwArg04, ptr32 dwArg08, ptr32 dwArg0C)
 {
 	Eq_n d4_n = 0;
@@ -328,6 +345,8 @@ int32 fn00001390(ptr32 dwArg04, ptr32 dwArg08, ptr32 dwArg0C)
 }
 
 // 00001468: Register word32 fn00001468()
+// Called from:
+//      fn00001354
 word32 fn00001468()
 {
 	return fn00001390(fp + -0x00F0, fp + -0x00A0, fp + -80);

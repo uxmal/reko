@@ -69,6 +69,8 @@ void vCheckTask(Eq_n lr, ptr32 cpsr)
 }
 
 // 000080A0: void Main(Register ptr32 cpsr)
+// Called from:
+//      ResetISR
 void Main(ptr32 cpsr)
 {
 	MPU_xQueueGenericCreate(0x03, 0x04, cpsr);
@@ -109,12 +111,16 @@ void vUART_ISR(Eq_n lr, ptr32 cpsr)
 }
 
 // 00008184: Register word32 vSetErrorLED(Register ptr32 cpsr)
+// Called from:
+//      prvSetAndCheckRegisters
 word32 vSetErrorLED(ptr32 cpsr)
 {
 	return vParTestSetLED(0x07, 0x01, cpsr);
 }
 
 // 0000818C: Register word32 prvSetAndCheckRegisters(Register ptr32 cpsr, Register out ptr32 r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r8Out)
+// Called from:
+//      vApplicationIdleHook
 word32 prvSetAndCheckRegisters(ptr32 cpsr, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out)
 {
 	if (false || (false || (false || (false || (false || (false || (false || (false || (false || (false || (false || (false || false))))))))))))
@@ -139,6 +145,8 @@ word32 prvSetAndCheckRegisters(ptr32 cpsr, ptr32 & r4Out, ptr32 & r5Out, ptr32 &
 }
 
 // 00008210: void vApplicationIdleHook(Register (ptr32 Eq_n) r0, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 lr, Register ptr32 cpsr)
+// Called from:
+//      prvIdleTask
 void vApplicationIdleHook(struct Eq_n * r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 lr, ptr32 cpsr)
 {
 	while (true)
@@ -149,6 +157,8 @@ void vApplicationIdleHook(struct Eq_n * r0, word32 r4, word32 r5, word32 r6, wor
 }
 
 // 00008220: void PDCInit()
+// Called from:
+//      vParTestInitialise
 void PDCInit()
 {
 	SysCtlPeripheralEnable(globals->dw828C);
@@ -164,6 +174,10 @@ void PDCInit()
 }
 
 // 0000829C: Register (ptr32 Eq_n) PDCWrite(Register (ptr32 Eq_n) r0, Register ui32 r1)
+// Called from:
+//      vParTestInitialise
+//      vParTestSetLED
+//      vParTestToggleLED
 struct Eq_n * PDCWrite(struct Eq_n * r0, ui32 r1)
 {
 	struct Eq_n * r4_n = globals->ptr82CC;
@@ -175,6 +189,11 @@ struct Eq_n * PDCWrite(struct Eq_n * r0, ui32 r1)
 }
 
 // 000082D0: void vListInitialise(Register (ptr32 Eq_n) r0)
+// Called from:
+//      xQueueGenericReset
+//      prvAddNewTaskToReadyList
+//      xEventGroupCreate
+//      xCoRoutineCreate
 void vListInitialise(struct Eq_n * r0)
 {
 	r0->dw0008 = ~0x00;
@@ -185,12 +204,30 @@ void vListInitialise(struct Eq_n * r0)
 }
 
 // 000082E8: void vListInitialiseItem(Register (ptr32 Eq_n) r0)
+// Called from:
+//      prvInitialiseNewTask
+//      xCoRoutineCreate
 void vListInitialiseItem(struct Eq_n * r0)
 {
 	r0->dw0010 = 0x00;
 }
 
 // 000082F0: void vListInsertEnd(Register (ptr32 Eq_n) r0, Register (ptr32 Eq_n) r1)
+// Called from:
+//      prvAddNewTaskToReadyList
+//      xTaskGenericNotify
+//      xTaskGenericNotifyFromISR
+//      vTaskNotifyGiveFromISR
+//      xTaskIncrementTick
+//      xTaskResumeAll
+//      vTaskPlaceOnUnorderedEventList
+//      xTaskRemoveFromEventList
+//      xTaskRemoveFromUnorderedEventList
+//      vTaskPriorityInherit
+//      xTaskPriorityDisinherit
+//      xCoRoutineCreate
+//      vCoRoutineSchedule
+//      xCoRoutineRemoveFromEventList
 void vListInsertEnd(struct Eq_n * r0, struct Eq_n * r1)
 {
 	struct Eq_n * r3_n = r0->ptr0004;
@@ -205,6 +242,10 @@ void vListInsertEnd(struct Eq_n * r0, struct Eq_n * r1)
 }
 
 // 0000830C: FlagGroup bool vListInsert(Register (ptr32 Eq_n) r0, Register (ptr32 Eq_n) r1)
+// Called from:
+//      prvAddCurrentTaskToDelayedList.isra.0
+//      vTaskPlaceOnEventList
+//      vCoRoutineAddToDelayedList
 bool vListInsert(struct Eq_n * r0, struct Eq_n * r1)
 {
 	struct Eq_n * r2_n;
@@ -237,6 +278,20 @@ bool vListInsert(struct Eq_n * r0, struct Eq_n * r1)
 }
 
 // 00008340: Register (ptr32 Eq_n) uxListRemove(Register (ptr32 Eq_n) r0)
+// Called from:
+//      prvAddCurrentTaskToDelayedList.isra.0
+//      xTaskGenericNotify
+//      xTaskGenericNotifyFromISR
+//      vTaskNotifyGiveFromISR
+//      xTaskIncrementTick
+//      xTaskResumeAll
+//      xTaskRemoveFromEventList
+//      xTaskRemoveFromUnorderedEventList
+//      vTaskPriorityInherit
+//      xTaskPriorityDisinherit
+//      vCoRoutineAddToDelayedList
+//      vCoRoutineSchedule
+//      xCoRoutineRemoveFromEventList
 struct Eq_n * uxListRemove(struct Eq_n * r0)
 {
 	struct Eq_n * r2_n = r0->ptr0010;
@@ -254,6 +309,8 @@ struct Eq_n * uxListRemove(struct Eq_n * r0)
 }
 
 // 00008364: FlagGroup bool xQueueCRSend(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r7, Register Eq_n lr, Register ptr32 cpsr, Register out Eq_n r0Out)
+// Called from:
+//      prvFixedDelayCoRoutine
 bool xQueueCRSend(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r7, Eq_n lr, ptr32 cpsr, union Eq_n & r0Out)
 {
 	__msr(cpsr, 191);
@@ -317,6 +374,8 @@ l000083AA:
 }
 
 // 00008400: FlagGroup bool xQueueCRReceive(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r6, Register Eq_n r7, Register Eq_n lr, Register ptr32 cpsr, Register out Eq_n r0Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n lrOut)
+// Called from:
+//      prvFlashCoRoutine
 bool xQueueCRReceive(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r6, Eq_n r7, Eq_n lr, ptr32 cpsr, union Eq_n & r0Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & lrOut)
 {
 	__msr(cpsr, 191);
@@ -456,6 +515,8 @@ void prvIdleTask(struct Eq_n * r0, word32 r4, word32 r5, word32 r6, word32 r7, w
 }
 
 // 00008534: void xTaskNotifyStateClear(Register (ptr32 Eq_n) r0, Register ptr32 cpsr)
+// Called from:
+//      MPU_xTaskNotifyStateClear
 void xTaskNotifyStateClear(struct Eq_n * r0, ptr32 cpsr)
 {
 	struct Eq_n * r4_n;
@@ -472,6 +533,47 @@ void xTaskNotifyStateClear(struct Eq_n * r0, ptr32 cpsr)
 }
 
 // 00008564: Register word32 xPortRaisePrivilege(Register ptr32 cpsr)
+// Called from:
+//      vPortEnterCritical
+//      vPortExitCritical
+//      MPU_xTaskCreateRestricted
+//      MPU_xTaskCreate
+//      MPU_vTaskAllocateMPURegions
+//      MPU_vTaskDelayUntil
+//      MPU_vTaskDelay
+//      MPU_vTaskSuspendAll
+//      MPU_xTaskResumeAll
+//      MPU_xTaskGetTickCount
+//      MPU_uxTaskGetNumberOfTasks
+//      MPU_pcTaskGetName
+//      MPU_vTaskSetTimeOutState
+//      MPU_xTaskCheckForTimeOut
+//      MPU_xTaskGenericNotify
+//      MPU_xTaskNotifyWait
+//      MPU_ulTaskNotifyTake
+//      MPU_xTaskNotifyStateClear
+//      MPU_xQueueGenericCreate
+//      MPU_xQueueGenericReset
+//      MPU_xQueueGenericSend
+//      MPU_uxQueueMessagesWaiting
+//      MPU_uxQueueSpacesAvailable
+//      MPU_xQueueGenericReceive
+//      MPU_xQueuePeekFromISR
+//      MPU_xQueueGetMutexHolder
+//      MPU_xQueueCreateMutex
+//      MPU_xQueueTakeMutexRecursive
+//      MPU_xQueueGiveMutexRecursive
+//      MPU_vQueueDelete
+//      MPU_pvPortMalloc
+//      MPU_vPortFree
+//      MPU_vPortInitialiseBlocks
+//      MPU_xPortGetFreeHeapSize
+//      MPU_xEventGroupCreate
+//      MPU_xEventGroupWaitBits
+//      MPU_xEventGroupClearBits
+//      MPU_xEventGroupSetBits
+//      MPU_xEventGroupSync
+//      MPU_vEventGroupDelete
 word32 xPortRaisePrivilege(ptr32 cpsr)
 {
 	(__mrs(cpsr) & 0x01) == 0x00;
@@ -480,6 +582,26 @@ word32 xPortRaisePrivilege(ptr32 cpsr)
 }
 
 // 00008578: FlagGroup bool vPortEnterCritical(Register ptr32 cpsr)
+// Called from:
+//      prvUnlockQueue
+//      xQueueGenericSend
+//      xQueueGenericReceive
+//      uxQueueMessagesWaiting
+//      uxQueueSpacesAvailable
+//      xQueueGetMutexHolder
+//      xQueueGenericReset
+//      prvAddNewTaskToReadyList
+//      xTaskGenericNotify
+//      xTaskNotifyWait
+//      ulTaskNotifyTake
+//      xTaskResumeAll
+//      xTaskCheckForTimeOut
+//      xEventGroupWaitBits
+//      xEventGroupClearBits
+//      xEventGroupSync
+//      vEventGroupClearBitsCallback
+//      xQueueCRSend
+//      xTaskNotifyStateClear
 bool vPortEnterCritical(ptr32 cpsr)
 {
 	ui32 r0_n = xPortRaisePrivilege(cpsr);
@@ -495,6 +617,26 @@ bool vPortEnterCritical(ptr32 cpsr)
 }
 
 // 000085B0: FlagGroup bool vPortExitCritical(Register ptr32 cpsr)
+// Called from:
+//      prvUnlockQueue
+//      xQueueGenericSend
+//      xQueueGenericReceive
+//      uxQueueMessagesWaiting
+//      uxQueueSpacesAvailable
+//      xQueueGetMutexHolder
+//      xQueueGenericReset
+//      prvAddNewTaskToReadyList
+//      xTaskGenericNotify
+//      xTaskNotifyWait
+//      ulTaskNotifyTake
+//      xTaskResumeAll
+//      xTaskCheckForTimeOut
+//      xEventGroupWaitBits
+//      xEventGroupClearBits
+//      xEventGroupSync
+//      vEventGroupClearBitsCallback
+//      xQueueCRSend
+//      xTaskNotifyStateClear
 bool vPortExitCritical(ptr32 cpsr)
 {
 	ui32 r0_n = xPortRaisePrivilege(cpsr);
@@ -518,6 +660,8 @@ void vParTestInitialise()
 }
 
 // 000085F4: Register up32 vParTestSetLED(Register up32 r0, Register word32 r1, Register ptr32 cpsr)
+// Called from:
+//      vSetErrorLED
 up32 vParTestSetLED(up32 r0, word32 r1, ptr32 cpsr)
 {
 	up32 r0_n = MPU_vTaskSuspendAll(cpsr);
@@ -537,6 +681,8 @@ up32 vParTestSetLED(up32 r0, word32 r1, ptr32 cpsr)
 }
 
 // 00008630: void vParTestToggleLED(Register up32 r0, Register ptr32 cpsr)
+// Called from:
+//      prvFlashCoRoutine
 void vParTestToggleLED(up32 r0, ptr32 cpsr)
 {
 	MPU_vTaskSuspendAll(cpsr);
@@ -693,6 +839,8 @@ void MPU_xTaskCreateRestricted(struct Eq_n * r0, struct Eq_n ** r1, ptr32 cpsr)
 }
 
 // 00008808: void MPU_xTaskCreate(Register ui32 r0, Register word32 r1, Register ui32 r2, Register word32 r3, Register ptr32 cpsr, Stack int32 dwArg00, Stack (ptr32 (ptr32 Eq_n)) dwArg04)
+// Called from:
+//      ResetISR
 void MPU_xTaskCreate(ui32 r0, word32 r1, ui32 r2, word32 r3, ptr32 cpsr, int32 dwArg00, struct Eq_n ** dwArg04)
 {
 	ui32 r0_n = xPortRaisePrivilege(cpsr);
@@ -711,6 +859,8 @@ void MPU_vTaskAllocateMPURegions(word32 r0, struct Eq_n * r1, ptr32 cpsr)
 }
 
 // 00008874: void MPU_vTaskDelayUntil(Register (ptr32 up32) r0, Register word32 r1, Register ptr32 cpsr)
+// Called from:
+//      vCheckTask
 void MPU_vTaskDelayUntil(up32 * r0, word32 r1, ptr32 cpsr)
 {
 	ui32 r0_n = xPortRaisePrivilege(cpsr);
@@ -729,6 +879,9 @@ void MPU_vTaskDelay(up32 r0, ptr32 cpsr)
 }
 
 // 000088C0: Register ui32 MPU_vTaskSuspendAll(Register ptr32 cpsr)
+// Called from:
+//      vParTestSetLED
+//      vParTestToggleLED
 ui32 MPU_vTaskSuspendAll(ptr32 cpsr)
 {
 	ui32 r0_n = xPortRaisePrivilege(cpsr);
@@ -743,6 +896,9 @@ ui32 MPU_vTaskSuspendAll(ptr32 cpsr)
 }
 
 // 000088E0: void MPU_xTaskResumeAll(Register ptr32 cpsr)
+// Called from:
+//      vParTestSetLED
+//      vParTestToggleLED
 void MPU_xTaskResumeAll(ptr32 cpsr)
 {
 	ui32 r0_n = xPortRaisePrivilege(cpsr);
@@ -752,6 +908,9 @@ void MPU_xTaskResumeAll(ptr32 cpsr)
 }
 
 // 00008904: void MPU_xTaskGetTickCount(Register ptr32 cpsr)
+// Called from:
+//      vCheckTask
+//      vCoRoutineSchedule
 void MPU_xTaskGetTickCount(ptr32 cpsr)
 {
 	ui32 r0_n = xPortRaisePrivilege(cpsr);
@@ -833,6 +992,9 @@ void MPU_xTaskNotifyStateClear(struct Eq_n * r0, ptr32 cpsr)
 }
 
 // 00008A88: void MPU_xQueueGenericCreate(Register ui32 r0, Register ui32 r1, Register ptr32 cpsr)
+// Called from:
+//      ResetISR
+//      vStartFlashCoRoutines
 void MPU_xQueueGenericCreate(ui32 r0, ui32 r1, ptr32 cpsr)
 {
 	ui32 r0_n = xPortRaisePrivilege(cpsr);
@@ -851,6 +1013,8 @@ void MPU_xQueueGenericReset(struct Eq_n * r0, word32 r1, ptr32 cpsr)
 }
 
 // 00008AE4: Register Eq_n MPU_xQueueGenericSend(Register Eq_n r0, Register Eq_n r1, Register up32 r2, Register Eq_n r3, Register Eq_n lr, Register ptr32 cpsr)
+// Called from:
+//      vCheckTask
 Eq_n MPU_xQueueGenericSend(Eq_n r0, Eq_n r1, up32 r2, Eq_n r3, Eq_n lr, ptr32 cpsr)
 {
 	ui32 r0_n = xPortRaisePrivilege(cpsr);
@@ -879,6 +1043,8 @@ void MPU_uxQueueSpacesAvailable(ptr32 cpsr)
 }
 
 // 00008B6C: Register Eq_n MPU_xQueueGenericReceive(Register Eq_n r0, Register Eq_n r1, Register up32 r2, Register word32 r3, Register Eq_n lr, Register ptr32 cpsr)
+// Called from:
+//      vPrintTask
 Eq_n MPU_xQueueGenericReceive(Eq_n r0, Eq_n r1, up32 r2, word32 r3, Eq_n lr, ptr32 cpsr)
 {
 	ui32 r0_n = xPortRaisePrivilege(cpsr);
@@ -1034,6 +1200,8 @@ void MPU_vEventGroupDelete(struct Eq_n * r0, ptr32 cpsr)
 }
 
 // 00008E40: void xCoRoutineCreate(Register (ptr32 Eq_n) r0, Register uint32 r1, Register (ptr32 Eq_n) r2, Register ptr32 cpsr)
+// Called from:
+//      vStartFlashCoRoutines
 void xCoRoutineCreate(struct Eq_n * r0, uint32 r1, struct Eq_n * r2, ptr32 cpsr)
 {
 	uint32 r5_n = r1;
@@ -1071,6 +1239,10 @@ void xCoRoutineCreate(struct Eq_n * r0, uint32 r1, struct Eq_n * r2, ptr32 cpsr)
 }
 
 // 00008EF0: FlagGroup bool vCoRoutineAddToDelayedList(Register Eq_n r0, Register (ptr32 Eq_n) r1)
+// Called from:
+//      xQueueCRSend
+//      xQueueCRReceive
+//      prvFixedDelayCoRoutine
 bool vCoRoutineAddToDelayedList(Eq_n r0, struct Eq_n * r1)
 {
 	struct Eq_n * r4_n = globals->ptr8F28;
@@ -1087,6 +1259,8 @@ bool vCoRoutineAddToDelayedList(Eq_n r0, struct Eq_n * r1)
 }
 
 // 00008F2C: Register word32 vCoRoutineSchedule(Register (ptr32 Eq_n) r0, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 lr, Register ptr32 cpsr, Register out ptr32 cpsrOut)
+// Called from:
+//      vApplicationIdleHook
 word32 vCoRoutineSchedule(struct Eq_n * r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 lr, ptr32 cpsr, ptr32 & cpsrOut)
 {
 	struct Eq_n * r5_n = globals->ptr9088;
@@ -1211,6 +1385,11 @@ l00009046:
 }
 
 // 00009094: FlagGroup bool xCoRoutineRemoveFromEventList(Register (ptr32 Eq_n) r0, Register out ptr32 r0Out)
+// Called from:
+//      xQueueCRSend
+//      xQueueCRReceive
+//      xQueueCRSendFromISR
+//      xQueueCRReceiveFromISR
 bool xCoRoutineRemoveFromEventList(struct Eq_n * r0, ptr32 & r0Out)
 {
 	struct Eq_n * r4_n = r0->ptr000C->ptr000C;
@@ -1248,6 +1427,8 @@ void GPIOGetIntNumber(up32 r0)
 }
 
 // 0000910C: void GPIODirModeSet(Register (ptr32 Eq_n) r0, Register ui32 r1, Register ui32 r2)
+// Called from:
+//      PDCInit
 void GPIODirModeSet(struct Eq_n * r0, ui32 r1, ui32 r2)
 {
 	ui32 r3_n = r0->dw0400;
@@ -1296,6 +1477,12 @@ void GPIOIntTypeGet(struct Eq_n * r0, word32 r1)
 }
 
 // 000091C8: void GPIOPadConfigSet(Register (ptr32 Eq_n) r0, Register ui32 r1, Register ui32 r2, Register ui32 r3)
+// Called from:
+//      PDCInit
+//      GPIOPinTypeComparator
+//      GPIOPinTypeI2C
+//      GPIOPinTypeQEI
+//      GPIOPinTypePWM
 void GPIOPadConfigSet(struct Eq_n * r0, ui32 r1, ui32 r2, ui32 r3)
 {
 	ui32 r4_n = r0->dw0500;
@@ -1482,6 +1669,8 @@ void GPIOPinRead()
 }
 
 // 00009454: void GPIOPinWrite(Register (arr word32) r0, Register ui32 r1, Register word32 r2)
+// Called from:
+//      PDCInit
 void GPIOPinWrite(word32 r0[], ui32 r1, word32 r2)
 {
 	r0[r1] = r2;
@@ -1497,6 +1686,8 @@ void GPIOPinTypeComparator(struct Eq_n * r0, ui32 r1)
 }
 
 // 00009480: void GPIOPinTypeI2C(Register (ptr32 Eq_n) r0, Register ui32 r1)
+// Called from:
+//      OSRAMInit
 void GPIOPinTypeI2C(struct Eq_n * r0, ui32 r1)
 {
 	r0->dw0400 &= ~r1;
@@ -1513,6 +1704,10 @@ void GPIOPinTypeQEI(struct Eq_n * r0, ui32 r1)
 }
 
 // 000094C8: void GPIOPinTypeUART(Register (ptr32 Eq_n) r0, Register ui32 r1)
+// Called from:
+//      GPIOPinTypeTimer
+//      GPIOPinTypeSSI
+//      GPIOPinTypePWM
 void GPIOPinTypeUART(struct Eq_n * r0, ui32 r1)
 {
 	r0->dw0400 &= ~r1;
@@ -1558,6 +1753,12 @@ void IntMasterDisable()
 }
 
 // 00009504: void IntRegister(Register ui32 r0, Register word32 r1)
+// Called from:
+//      GPIOPortIntRegister
+//      SSIIntRegister
+//      SysCtlIntRegister
+//      UARTIntRegister
+//      I2CIntRegister
 void IntRegister(ui32 r0, word32 r1)
 {
 	word32 r4_n[] = globals->ptr9534;
@@ -1575,6 +1776,12 @@ void IntRegister(ui32 r0, word32 r1)
 }
 
 // 00009538: void IntUnregister(Register ui32 r0)
+// Called from:
+//      GPIOPortIntUnregister
+//      SSIIntUnregister
+//      SysCtlIntUnregister
+//      UARTIntUnregister
+//      I2CIntUnregister
 void IntUnregister(ui32 r0)
 {
 	globals->ptr9544[r0] = globals->dw9548;
@@ -1617,6 +1824,12 @@ void IntPriorityGet()
 }
 
 // 000095DC: void IntEnable(Register up32 r0)
+// Called from:
+//      GPIOPortIntRegister
+//      SSIIntRegister
+//      SysCtlIntRegister
+//      UARTIntRegister
+//      I2CIntRegister
 void IntEnable(up32 r0)
 {
 	if (r0 == 0x04)
@@ -1644,6 +1857,12 @@ void IntEnable(up32 r0)
 }
 
 // 00009638: void IntDisable(Register up32 r0)
+// Called from:
+//      GPIOPortIntUnregister
+//      SSIIntUnregister
+//      SysCtlIntUnregister
+//      UARTIntUnregister
+//      I2CIntUnregister
 void IntDisable(up32 r0)
 {
 	if (r0 == 0x04)
@@ -1671,6 +1890,10 @@ void IntDisable(up32 r0)
 }
 
 // 00009694: void OSRAMDelay(Register word32 r0)
+// Called from:
+//      OSRAMWriteArray
+//      OSRAMWriteByte
+//      OSRAMWriteFinal
 void OSRAMDelay(word32 r0)
 {
 	do
@@ -1679,6 +1902,12 @@ void OSRAMDelay(word32 r0)
 }
 
 // 0000969C: void OSRAMWriteFirst(Register ui32 r0)
+// Called from:
+//      OSRAMStringDraw
+//      OSRAMImageDraw
+//      OSRAMInit
+//      OSRAMDisplayOn
+//      OSRAMDisplayOff
 void OSRAMWriteFirst(ui32 r0)
 {
 	struct Eq_n * r4_n = globals->ptr96C0;
@@ -1688,6 +1917,11 @@ void OSRAMWriteFirst(ui32 r0)
 }
 
 // 000096C4: void OSRAMWriteArray(Register (ptr32 Eq_n) r0, Register int32 r1)
+// Called from:
+//      OSRAMStringDraw
+//      OSRAMImageDraw
+//      OSRAMInit
+//      OSRAMDisplayOn
 void OSRAMWriteArray(struct Eq_n * r0, int32 r1)
 {
 	if (r1 == 0x00)
@@ -1709,6 +1943,11 @@ void OSRAMWriteArray(struct Eq_n * r0, int32 r1)
 }
 
 // 00009704: void OSRAMWriteByte(Register ui32 r0)
+// Called from:
+//      OSRAMStringDraw
+//      OSRAMImageDraw
+//      OSRAMInit
+//      OSRAMDisplayOff
 void OSRAMWriteByte(ui32 r0)
 {
 	do
@@ -1721,6 +1960,12 @@ void OSRAMWriteByte(ui32 r0)
 }
 
 // 00009738: void OSRAMWriteFinal(Register ui32 r0)
+// Called from:
+//      OSRAMStringDraw
+//      OSRAMImageDraw
+//      OSRAMInit
+//      OSRAMDisplayOn
+//      OSRAMDisplayOff
 void OSRAMWriteFinal(ui32 r0)
 {
 	struct Eq_n * r4_n = globals->ptr9778;
@@ -1740,6 +1985,9 @@ void OSRAMWriteFinal(ui32 r0)
 }
 
 // 00009780: void OSRAMClear()
+// Called from:
+//      vPrintTask
+//      OSRAMInit
 void OSRAMClear()
 {
 	OSRAMWriteFirst(0x80);
@@ -1757,6 +2005,9 @@ void OSRAMClear()
 }
 
 // 000097CC: void OSRAMStringDraw(Register (ptr32 byte) r0, Register uint32 r1, Register ui32 r2)
+// Called from:
+//      ResetISR
+//      vPrintTask
 void OSRAMStringDraw(byte * r0, uint32 r1, ui32 r2)
 {
 	OSRAMWriteFirst(0x80);
@@ -1828,6 +2079,8 @@ void OSRAMImageDraw(struct Eq_n * r0, word32 r1, word32 r2, word32 r3, word32 dw
 }
 
 // 000098F0: void OSRAMInit(Register word32 r0)
+// Called from:
+//      ResetISR
 void OSRAMInit(word32 r0)
 {
 	SysCtlPeripheralEnable(0x10001000);
@@ -1891,6 +2144,8 @@ void OSRAMDisplayOff()
 }
 
 // 000099E8: void SSIConfig(Register (ptr32 Eq_n) r0, Register ui32 r1, Register ui32 r2, Register uint32 r3, Stack ui32 dwArg00)
+// Called from:
+//      PDCInit
 void SSIConfig(struct Eq_n * r0, ui32 r1, ui32 r2, uint32 r3, ui32 dwArg00)
 {
 	ui32 r7_n = r2;
@@ -1915,6 +2170,8 @@ void SSIConfig(struct Eq_n * r0, ui32 r1, ui32 r2, uint32 r3, ui32 dwArg00)
 }
 
 // 00009A34: void SSIEnable(Register (ptr32 Eq_n) r0)
+// Called from:
+//      PDCInit
 void SSIEnable(struct Eq_n * r0)
 {
 	r0->dw0004 |= 0x02;
@@ -1966,6 +2223,8 @@ void SSIIntClear(struct Eq_n * r0, word32 r1)
 }
 
 // 00009A98: void SSIDataPut(Register (ptr32 Eq_n) r0, Register ui32 r1)
+// Called from:
+//      PDCWrite
 void SSIDataPut(struct Eq_n * r0, ui32 r1)
 {
 	do
@@ -1982,6 +2241,8 @@ void SSIDataNonBlockingPut(struct Eq_n * r0, word32 r1)
 }
 
 // 00009AB8: void SSIDataGet(Register (ptr32 Eq_n) r0, Register (ptr32 ui32) r1)
+// Called from:
+//      PDCWrite
 void SSIDataGet(struct Eq_n * r0, ui32 * r1)
 {
 	do
@@ -2038,6 +2299,9 @@ void SysCtlPeripheralReset(uint32 r0)
 }
 
 // 00009B7C: void SysCtlPeripheralEnable(Register uint32 r0)
+// Called from:
+//      PDCInit
+//      OSRAMInit
 void SysCtlPeripheralEnable(uint32 r0)
 {
 	ui32 * r3_n = (globals->ptr9B94 + ((r0 >> 28) << 0x02))->ptr001C;
@@ -2235,6 +2499,11 @@ void SysCtlClockSet(ui32 r0)
 }
 
 // 00009DF0: Register uint32 SysCtlClockGet()
+// Called from:
+//      SSIConfig
+//      UARTConfigSet
+//      UARTConfigGet
+//      I2CMasterInit
 uint32 SysCtlClockGet()
 {
 	uint32 r0_n;
@@ -2471,6 +2740,8 @@ void UARTIntDisable(struct Eq_n * r0, word32 r1)
 }
 
 // 0000A0CC: Register (ptr32 Eq_n) UARTIntStatus(Register (ptr32 Eq_n) r0, Register word32 r1)
+// Called from:
+//      vUART_ISR
 struct Eq_n * UARTIntStatus(struct Eq_n * r0, word32 r1)
 {
 	if (r1 != 0x00)
@@ -2479,30 +2750,41 @@ struct Eq_n * UARTIntStatus(struct Eq_n * r0, word32 r1)
 }
 
 // 0000A0D8: void UARTIntClear(Register (ptr32 Eq_n) r0, Register Eq_n r1)
+// Called from:
+//      vUART_ISR
 void UARTIntClear(struct Eq_n * r0, Eq_n r1)
 {
 	r0->t0044 = r1;
 }
 
 // 0000A0DC: void CPUcpsie()
+// Called from:
+//      IntMasterEnable
 void CPUcpsie()
 {
 	__cps();
 }
 
 // 0000A0E4: void CPUcpsid()
+// Called from:
+//      IntMasterDisable
 void CPUcpsid()
 {
 	__cps();
 }
 
 // 0000A0EC: void CPUwfi()
+// Called from:
+//      SysCtlSleep
+//      SysCtlDeepSleep
 void CPUwfi()
 {
 	__wait_for_interrupt();
 }
 
 // 0000A0F4: void I2CMasterInit(Register (ptr32 Eq_n) r0, Register word32 r1)
+// Called from:
+//      OSRAMInit
 void I2CMasterInit(struct Eq_n * r0, word32 r1)
 {
 	r0->dw0020 |= 0x10;
@@ -2587,6 +2869,10 @@ void I2CSlaveIntDisable(struct Eq_n * r0)
 }
 
 // 0000A1C8: Register (ptr32 Eq_n) I2CMasterIntStatus(Register (ptr32 Eq_n) r0, Register word32 r1)
+// Called from:
+//      OSRAMWriteArray
+//      OSRAMWriteByte
+//      OSRAMWriteFinal
 struct Eq_n * I2CMasterIntStatus(struct Eq_n * r0, word32 r1)
 {
 	if (r1 != 0x00)
@@ -2630,6 +2916,8 @@ void I2CSlaveIntClear(struct Eq_n * r0)
 }
 
 // 0000A208: void I2CMasterSlaveAddrSet(Register (ptr32 Eq_n) r0, Register ui32 r1, Register ui32 r2)
+// Called from:
+//      OSRAMWriteFirst
 void I2CMasterSlaveAddrSet(struct Eq_n * r0, ui32 r1, ui32 r2)
 {
 	r0->dw0000 = r2 | r1 << 0x01;
@@ -2646,6 +2934,11 @@ void I2CMasterBusBusy()
 }
 
 // 0000A220: void I2CMasterControl(Register (ptr32 Eq_n) r0, Register word32 r1)
+// Called from:
+//      OSRAMWriteFirst
+//      OSRAMWriteArray
+//      OSRAMWriteByte
+//      OSRAMWriteFinal
 void I2CMasterControl(struct Eq_n * r0, word32 r1)
 {
 	r0->dw0004 = r1;
@@ -2660,6 +2953,11 @@ void I2CMasterErr(struct Eq_n * r0)
 }
 
 // 0000A23C: void I2CMasterDataPut(Register (ptr32 Eq_n) r0, Register ui32 r1)
+// Called from:
+//      OSRAMWriteFirst
+//      OSRAMWriteArray
+//      OSRAMWriteByte
+//      OSRAMWriteFinal
 void I2CMasterDataPut(struct Eq_n * r0, ui32 r1)
 {
 	r0->dw0008 = r1;

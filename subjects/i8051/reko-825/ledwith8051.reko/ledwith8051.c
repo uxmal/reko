@@ -18,6 +18,8 @@ void fn0000(struct Eq_n * __data)
 }
 
 // 0003: void fn0003()
+// Called from:
+//      fn0000
 void fn0003()
 {
 	byte R7_n = 0x00;

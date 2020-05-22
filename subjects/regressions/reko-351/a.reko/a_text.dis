@@ -1,6 +1,8 @@
 word32 deregister_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __do_global_dtors_aux
 // MayUse: 
 // LiveOut: a6 a7
 // Trashed: CVZNX a0 a6 a7 d0 d1
@@ -24,6 +26,8 @@ deregister_tm_clones_exit:
 void register_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      frame_dummy
 // MayUse: 
 // LiveOut:
 // Trashed: CVZNX a0 a6 a7 d0
@@ -162,6 +166,8 @@ call_frame_dummy_exit:
 void sine_taylor(real64 rArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  Stack +0004:[0..63]
 // LiveOut:
 // Trashed:
@@ -175,6 +181,8 @@ _Z11sine_taylord_exit:
 void factorial(int32 dwArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      sine_taylor
 // MayUse:  Stack +0004:[0..31]
 // LiveOut:
 // Trashed:
@@ -194,6 +202,8 @@ l80000356:
 void pow_int(real64 rArg04, int32 dwArg0C)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      sine_taylor
 // MayUse:  Stack +0004:[0..63] Stack +000C:[0..31]
 // LiveOut:
 // Trashed:
@@ -257,6 +267,8 @@ main_exit:
 void _sin(real64 rArg04, real64 rArg0C, int32 & tArg14)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  Stack +0004:[0..63] Stack +000C:[0..63] Stack +0014:[0..31]
 // LiveOut:
 // Trashed:

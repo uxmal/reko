@@ -15,6 +15,8 @@ void _start(Eq_n r14)
 }
 
 // 00000648: Register word64 deregister_tm_clones(Register Eq_n r14)
+// Called from:
+//      __do_global_dtors_aux
 word64 deregister_tm_clones(Eq_n r14)
 {
 	word64 r2_n = SEQ(SLICE(r2, word32, 32), 0x2068);
@@ -46,6 +48,8 @@ word64 deregister_tm_clones(Eq_n r14)
 }
 
 // 00000680: void register_tm_clones(Register (ptr64 byte) r2, Register Eq_n r14)
+// Called from:
+//      frame_dummy
 void register_tm_clones(byte * r2, Eq_n r14)
 {
 	int64 r3_n = SEQ(SLICE(r3, word32, 32), 0x2068) - SEQ(SLICE(r1, word32, 32), 0x2068);
@@ -116,6 +120,9 @@ l00000740:
 }
 
 // 00000768: Register Eq_n fib(Register Eq_n r2, Register out Eq_n r10Out, Register out Eq_n r11Out)
+// Called from:
+//      fib
+//      main
 Eq_n fib(Eq_n r2, union Eq_n & r10Out, union Eq_n & r11Out)
 {
 	Eq_n r1_n;

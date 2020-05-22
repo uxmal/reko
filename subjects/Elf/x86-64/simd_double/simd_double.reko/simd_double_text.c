@@ -13,6 +13,8 @@ void _start(void (* rdx)(), Eq_n qwArg00)
 }
 
 // 0000000000000650: void deregister_tm_clones()
+// Called from:
+//      __do_global_dtors_aux
 void deregister_tm_clones()
 {
 	if (2101320 == 2101320 || _ITM_deregisterTMCloneTable == null)
@@ -21,6 +23,8 @@ void deregister_tm_clones()
 }
 
 // 0000000000000690: void register_tm_clones()
+// Called from:
+//      frame_dummy
 void register_tm_clones()
 {
 	int64 rsi_n = 2101320 - 2101320;
@@ -50,6 +54,8 @@ void frame_dummy()
 }
 
 // 000000000000072A: Register (ptr64 void) _mm_malloc(Register uint64 rsi, Register Eq_n rdi)
+// Called from:
+//      main
 void * _mm_malloc(uint64 rsi, Eq_n rdi)
 {
 	void * rax_n;
@@ -71,12 +77,16 @@ void * _mm_malloc(uint64 rsi, Eq_n rdi)
 }
 
 // 000000000000078D: void _mm_free(Register (ptr64 (arr real64)) rdi)
+// Called from:
+//      main
 void _mm_free(real64 (* rdi)[])
 {
 	free(rdi);
 }
 
 // 00000000000007A8: void vec_add(Register word64 rdi)
+// Called from:
+//      main
 void vec_add(word64 rdi)
 {
 	__align(fp);

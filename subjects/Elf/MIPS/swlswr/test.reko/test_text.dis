@@ -18,6 +18,8 @@ l00000664:
 void deregister_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __do_global_dtors_aux
 // MayUse: 
 // LiveOut:
 // Trashed: r2 r25 r28 r4
@@ -43,6 +45,8 @@ deregister_tm_clones_exit:
 void register_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      frame_dummy
 // MayUse: 
 // LiveOut:
 // Trashed: r2 r25 r28 r4 r5

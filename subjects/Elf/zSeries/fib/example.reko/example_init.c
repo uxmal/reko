@@ -5,6 +5,8 @@
 #include "example_init.h"
 
 // 00000560: FlagGroup byte _init(Register word64 r6, Register word64 r7, Register word64 r8, Register word64 r9, Register word64 r10, Register word64 r11, Register word64 r13, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r12Out, Register out Eq_n r13Out)
+// Called from:
+//      __libc_csu_init
 byte _init(word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11, word64 r13, union Eq_n & r6Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r12Out, union Eq_n & r13Out)
 {
 	Eq_n r15_n = fp - 320;

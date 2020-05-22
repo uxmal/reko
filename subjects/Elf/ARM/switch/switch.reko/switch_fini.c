@@ -5,6 +5,8 @@
 #include "switch_fini.h"
 
 // 0000874C: void _fini()
+// Called from:
+//      __libc_csu_fini
 void _fini()
 {
 	__do_global_dtors_aux();

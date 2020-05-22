@@ -531,6 +531,12 @@ void free(struct Eq_n * r28, word32 ra)
 }
 
 // 00400620: void __do_global_dtors_aux()
+// Called from:
+//      strcpy
+//      strerror
+//      vsnprintf
+//      read
+//      free
 void __do_global_dtors_aux()
 {
 	if (globals->ptr10000878->dw0008 == 0x00)
@@ -875,6 +881,8 @@ l00401AA4:
 }
 
 // 00401B70: void client_new(Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r5, Register int32 r6, Register int32 r7, Register word32 ra)
+// Called from:
+//      main
 void client_new(struct Eq_n * r4, struct Eq_n * r5, int32 r6, int32 r7, word32 ra)
 {
 	Eq_n r2_n = malloc(6100);
@@ -955,6 +963,8 @@ void client_new(struct Eq_n * r4, struct Eq_n * r5, int32 r6, int32 r7, word32 r
 }
 
 // 00402028: Register word32 client_prepare_connect(Register Eq_n r4, Register word32 ra, Register out ptr32 r6Out, Register out ptr32 r7Out)
+// Called from:
+//      client_new
 word32 client_prepare_connect(Eq_n r4, word32 ra, ptr32 & r6Out, ptr32 & r7Out)
 {
 	getsockopt();
@@ -1131,6 +1141,9 @@ void client_parse_request(Eq_n r4, word32 ra)
 }
 
 // 00402A60: Register (ptr32 void) add_to_request(Register Eq_n r4, Register (ptr32 void) r5, Register (ptr32 void) r6, Register Eq_n r7, Register word32 ra, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+// Called from:
+//      client_prepare_connect
+//      client_parse_request
 void * add_to_request(Eq_n r4, void * r5, void * r6, Eq_n r7, word32 ra, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
 	Eq_n r7_n;
@@ -1175,6 +1188,8 @@ void * add_to_request(Eq_n r4, void * r5, void * r6, Eq_n r7, word32 ra, union E
 }
 
 // 00402C1C: Register (ptr32 int8) get_a_line(Register (ptr32 byte) r4, Register (ptr32 int8) r5, Register (ptr32 int32) r6)
+// Called from:
+//      client_parse_request
 int8 * get_a_line(byte * r4, int8 * r5, int32 * r6)
 {
 	byte * dwArg00_n = r4;
@@ -1215,6 +1230,9 @@ void client_read_request(struct Eq_n * r4)
 }
 
 // 00402EF8: Register Eq_n client_send_request(Register Eq_n r4, Register word32 ra, Register out Eq_n r25Out)
+// Called from:
+//      main
+//      client_new
 Eq_n client_send_request(Eq_n r4, word32 ra, union Eq_n & r25Out)
 {
 	*((word32) r4 + 0x000017CC) = time(null);
@@ -1258,6 +1276,8 @@ void client_parse_reply(struct Eq_n * r4, word32 ra)
 }
 
 // 004031DC: void client_copy_reply(Register (ptr32 Eq_n) r4)
+// Called from:
+//      client_parse_reply
 void client_copy_reply(struct Eq_n * r4)
 {
 	if (r4->dw178C > 0x00)
@@ -1280,6 +1300,8 @@ void client_copy_reply(struct Eq_n * r4)
 }
 
 // 00403318: Register word32 client_check_reply_http(Register (ptr32 Eq_n) r4)
+// Called from:
+//      client_parse_reply
 word32 client_check_reply_http(struct Eq_n * r4)
 {
 	struct Eq_n * dwLoc18_n = r4->ptr1788;
@@ -1332,6 +1354,9 @@ word32 client_check_reply_http(struct Eq_n * r4)
 }
 
 // 004036BC: void client_close(Register Eq_n r4)
+// Called from:
+//      client_destroy
+//      clist_close_all
 void client_close(Eq_n r4)
 {
 	if (r4 != 0x00)
@@ -1350,6 +1375,9 @@ void client_close(Eq_n r4)
 }
 
 // 00403794: Register Eq_n client_destroy(Register Eq_n r4, Register word32 ra)
+// Called from:
+//      main
+//      clist_delete
 Eq_n client_destroy(Eq_n r4, word32 ra)
 {
 	client_close(r4);
@@ -1384,6 +1412,8 @@ void client_check_activ(struct Eq_n * r4, Eq_n r5, word32 ra)
 }
 
 // 00403A1C: Register Eq_n open_destination(Register (ptr32 Eq_n) r4, Register word32 ra, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+// Called from:
+//      client_new
 Eq_n open_destination(struct sockaddr * r4, word32 ra, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
 	Eq_n r7_n;
@@ -1422,6 +1452,8 @@ Eq_n open_destination(struct sockaddr * r4, word32 ra, union Eq_n & r5Out, union
 }
 
 // 00403C00: Register Eq_n clist_new(Register word32 ra, Register out Eq_n r4Out, Register out Eq_n r5Out)
+// Called from:
+//      main
 Eq_n clist_new(word32 ra, union Eq_n & r4Out, union Eq_n & r5Out)
 {
 	Eq_n r2_n;
@@ -1449,6 +1481,8 @@ Eq_n clist_new(word32 ra, union Eq_n & r4Out, union Eq_n & r5Out)
 }
 
 // 00403CBC: Register int32 clist_add(Register (ptr32 Eq_n) r4, Register Eq_n r5, Register out Eq_n r5Out)
+// Called from:
+//      main
 int32 clist_add(struct Eq_n * r4, Eq_n r5, union Eq_n & r5Out)
 {
 	if (r4->t0008 != 0x00)
@@ -1467,6 +1501,8 @@ int32 clist_add(struct Eq_n * r4, Eq_n r5, union Eq_n & r5Out)
 }
 
 // 00403DBC: Register Eq_n clist_remove(Register Eq_n r4, Register Eq_n r5)
+// Called from:
+//      clist_delete
 Eq_n clist_remove(Eq_n r4, Eq_n r5)
 {
 	if (r5 != 0x00)
@@ -1499,6 +1535,8 @@ void clist_find_fdout(struct Eq_n * r4, word32 r5)
 }
 
 // 00403FF8: void clist_delete(Register Eq_n r4, Register Eq_n r5, Register word32 ra)
+// Called from:
+//      clist_destroy_all
 void clist_delete(Eq_n r4, Eq_n r5, word32 ra)
 {
 	clist_remove(r4, r5);
@@ -1506,6 +1544,8 @@ void clist_delete(Eq_n r4, Eq_n r5, word32 ra)
 }
 
 // 00404070: void clist_close_all(Register Eq_n r4, Register word32 ra)
+// Called from:
+//      clist_destroy
 void clist_close_all(Eq_n r4, word32 ra)
 {
 	Eq_n dwLoc18_n = *((word32) r4 + 8);
@@ -1517,6 +1557,8 @@ void clist_close_all(Eq_n r4, word32 ra)
 }
 
 // 00404108: void clist_destroy_all(Register Eq_n r4, Register word32 ra)
+// Called from:
+//      clist_destroy
 void clist_destroy_all(Eq_n r4, word32 ra)
 {
 	while (*((word32) r4 + 8) != 0x00)
@@ -1532,6 +1574,8 @@ void clist_destroy(Eq_n r4, word32 ra)
 }
 
 // 00404240: Register Eq_n request_new(Register ptr32 r4, Register word32 ra)
+// Called from:
+//      client_parse_request
 Eq_n request_new(ptr32 r4, word32 ra)
 {
 	Eq_n r2_n;
@@ -1564,6 +1608,9 @@ Eq_n request_new(ptr32 r4, word32 ra)
 }
 
 // 00404378: Register int32 request_parse_line(Register Eq_n r4, Register ptr32 r5, Register word32 ra)
+// Called from:
+//      client_parse_request
+//      request_new
 int32 request_parse_line(Eq_n r4, ptr32 r5, word32 ra)
 {
 	int32 r2_n;
@@ -1580,6 +1627,8 @@ int32 request_parse_line(Eq_n r4, ptr32 r5, word32 ra)
 }
 
 // 00404458: void request_save_line(Register Eq_n r4, Register (ptr32 void) r5, Register Eq_n r6, Register word32 ra)
+// Called from:
+//      client_parse_request
 void request_save_line(Eq_n r4, void * r5, Eq_n r6, word32 ra)
 {
 	byte bArg0B_n = (byte) r6;
@@ -1621,6 +1670,8 @@ void request_save_line(Eq_n r4, void * r5, Eq_n r6, word32 ra)
 }
 
 // 004046C4: void request_make_url(Register Eq_n r4, Register word32 ra)
+// Called from:
+//      client_parse_request
 void request_make_url(Eq_n r4, word32 ra)
 {
 	if (r4 == 0x00)
@@ -1640,6 +1691,8 @@ void request_make_url(Eq_n r4, word32 ra)
 }
 
 // 004048DC: Register (ptr32 void) request_add_lines(Register Eq_n r4, Register Eq_n r5, Register (ptr32 void) r6)
+// Called from:
+//      client_parse_request
 void * request_add_lines(Eq_n r4, Eq_n r5, void * r6)
 {
 	struct Eq_n * r28_n = (struct Eq_n *) 0x10008860;
@@ -1679,6 +1732,8 @@ void * request_add_lines(Eq_n r4, Eq_n r5, void * r6)
 }
 
 // 00404B34: Register ptr32 get_method(Register Eq_n r4, Register ptr32 r5, Register out Eq_n r5Out)
+// Called from:
+//      request_parse_line
 ptr32 get_method(Eq_n r4, ptr32 r5, union Eq_n & r5Out)
 {
 	union Eq_n * r2_n;
@@ -1691,6 +1746,8 @@ ptr32 get_method(Eq_n r4, ptr32 r5, union Eq_n & r5Out)
 }
 
 // 00404BC8: Register word32 get_uri(Register Eq_n r4, Register word32 r5)
+// Called from:
+//      request_parse_line
 word32 get_uri(Eq_n r4, word32 r5)
 {
 	union Eq_n * r2_n;
@@ -1701,6 +1758,8 @@ word32 get_uri(Eq_n r4, word32 r5)
 }
 
 // 00404C5C: void get_version(Register Eq_n r4, Register word32 r5)
+// Called from:
+//      request_parse_line
 void get_version(Eq_n r4, word32 r5)
 {
 	union Eq_n * r2_n;
@@ -1710,6 +1769,8 @@ void get_version(Eq_n r4, word32 r5)
 }
 
 // 00404CF0: void request_get_host(Register Eq_n r4, Register (ptr32 Eq_n) r5, Register word32 ra)
+// Called from:
+//      client_parse_request
 void request_get_host(Eq_n r4, union Eq_n * r5, word32 ra)
 {
 	if (r4 == 0x00 || r4 == -20)
@@ -1766,6 +1827,8 @@ void request_get_host(Eq_n r4, union Eq_n * r5, word32 ra)
 }
 
 // 00404FC0: void request_get_content_length(Register Eq_n r4, Register (ptr32 Eq_n) r5, Register word32 ra)
+// Called from:
+//      client_parse_request
 void request_get_content_length(Eq_n r4, union Eq_n * r5, word32 ra)
 {
 	if (r4 == 0x00 || r4 == -20)
@@ -1819,6 +1882,8 @@ void request_get_content_length(Eq_n r4, union Eq_n * r5, word32 ra)
 }
 
 // 00405264: Register int32 is_a_method(Register Eq_n r4)
+// Called from:
+//      request_parse_line
 int32 is_a_method(Eq_n r4)
 {
 	ui32 dwLoc18_n = 0x00;
@@ -1837,6 +1902,9 @@ int32 is_a_method(Eq_n r4)
 }
 
 // 00405328: void request_destroy(Register Eq_n r4)
+// Called from:
+//      client_parse_request
+//      client_destroy
 void request_destroy(Eq_n r4)
 {
 	while (*((word32) r4 + 0x0558) >= 0x00)
@@ -1863,6 +1931,8 @@ void properties_parse_int(union Eq_n * r4, int8 * r5, word32 ra)
 }
 
 // 004054D0: void properties_load(Register Eq_n r4, Register Eq_n r5, Register word32 ra)
+// Called from:
+//      main
 void properties_load(Eq_n r4, Eq_n r5, word32 ra)
 {
 	Eq_n dwArg04_n = r5;
@@ -1991,6 +2061,8 @@ void properties_load(Eq_n r4, Eq_n r5, word32 ra)
 }
 
 // 00405CD0: Register Eq_n properties_parse_command_line(Register Eq_n r4, Register (arr Eq_n) r5, Register word32 r16, Register word32 ra, Register out Eq_n r5Out)
+// Called from:
+//      main
 Eq_n properties_parse_command_line(Eq_n r4, Eq_n r5[], word32 r16, word32 ra, union Eq_n & r5Out)
 {
 	struct Eq_n * r28_n = (struct Eq_n *) 0x10008860;
@@ -2092,6 +2164,8 @@ l004061C8:
 }
 
 // 0040628C: void properties_print_usage(Register Eq_n r4)
+// Called from:
+//      properties_parse_command_line
 void properties_print_usage(Eq_n r4)
 {
 	if (r4 != 0x00 && (word32) (*r4) != 0x00)
@@ -2125,6 +2199,30 @@ void properties_print_usage(Eq_n r4)
 }
 
 // 00406610: Register int32 print_log(Register int32 r4, Register ptr32 r5, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r25Out)
+// Called from:
+//      handle_stop
+//      handle_log_rotate
+//      main
+//      client_new
+//      client_parse_request
+//      add_to_request
+//      client_send_request
+//      client_check_activ
+//      open_destination
+//      clist_new
+//      request_new
+//      request_save_line
+//      request_make_url
+//      request_get_host
+//      request_get_content_length
+//      properties_parse_int
+//      properties_load
+//      open_log
+//      server_new
+//      server_open
+//      server_destroy
+//      slist_new
+//      slist_delete
 int32 print_log(int32 r4, ptr32 r5, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r25Out)
 {
 	ptr32 r25_n = 0x00406610;
@@ -2142,6 +2240,9 @@ int32 print_log(int32 r4, ptr32 r5, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out,
 }
 
 // 004066E8: Register Eq_n open_log(Register (ptr32 char) r4, Register word32 ra)
+// Called from:
+//      main
+//      log_rotate
 Eq_n open_log(char * r4, word32 ra)
 {
 	Eq_n r5_n;
@@ -2168,6 +2269,9 @@ Eq_n open_log(char * r4, word32 ra)
 }
 
 // 00406848: void log_rotate(Register word32 ra)
+// Called from:
+//      handle_log_rotate
+//      log_string
 void log_rotate(word32 ra)
 {
 	fclose(*globals->ptr10000A20);
@@ -2215,6 +2319,8 @@ void log_string(FILE * r4, word32 r5, word32 r7, word32 ra)
 }
 
 // 00406BF0: Register Eq_n server_new(Register word32 r4, Register word32 r5, Register Eq_n r6, Register int32 r7, Register word32 ra)
+// Called from:
+//      main
 Eq_n server_new(word32 r4, word32 r5, Eq_n r6, int32 r7, word32 ra)
 {
 	Eq_n r2_n;
@@ -2253,6 +2359,8 @@ Eq_n server_new(word32 r4, word32 r5, Eq_n r6, int32 r7, word32 ra)
 }
 
 // 00406D4C: Register int32 server_open(Register Eq_n r4, Register word32 ra, Register out ptr32 r5Out)
+// Called from:
+//      main
 int32 server_open(Eq_n r4, word32 ra, ptr32 & r5Out)
 {
 	ptr32 r5_n;
@@ -2304,6 +2412,9 @@ int32 server_open(Eq_n r4, word32 ra, ptr32 & r5Out)
 }
 
 // 00406FF8: void server_close(Register Eq_n r4)
+// Called from:
+//      server_destroy
+//      slist_close_all
 void server_close(Eq_n r4)
 {
 	if (r4 != 0x00 && *r4 > 0x00)
@@ -2314,6 +2425,8 @@ void server_close(Eq_n r4)
 }
 
 // 0040708C: void server_destroy(Register Eq_n r4, Register word32 ra)
+// Called from:
+//      slist_delete
 void server_destroy(Eq_n r4, word32 ra)
 {
 	word32 r5_n;
@@ -2326,6 +2439,8 @@ void server_destroy(Eq_n r4, word32 ra)
 }
 
 // 00407150: Register Eq_n slist_new(Register word32 ra)
+// Called from:
+//      main
 Eq_n slist_new(word32 ra)
 {
 	Eq_n r2_n;
@@ -2350,6 +2465,8 @@ Eq_n slist_new(word32 ra)
 }
 
 // 0040720C: void slist_add(Register Eq_n r4, Register Eq_n r5)
+// Called from:
+//      main
 void slist_add(Eq_n r4, Eq_n r5)
 {
 	if (*((word32) r4 + 8) != 0x00)
@@ -2365,6 +2482,8 @@ void slist_add(Eq_n r4, Eq_n r5)
 }
 
 // 0040730C: void slist_remove(Register Eq_n r4, Register Eq_n r5)
+// Called from:
+//      slist_delete
 void slist_remove(Eq_n r4, Eq_n r5)
 {
 	if (r5 != 0x00)
@@ -2388,6 +2507,8 @@ void slist_find_fd(struct Eq_n * r4, word32 r5)
 }
 
 // 004074AC: void slist_delete(Register Eq_n r4, Register Eq_n r5, Register word32 ra)
+// Called from:
+//      slist_destroy_all
 void slist_delete(Eq_n r4, Eq_n r5, word32 ra)
 {
 	slist_remove(r4, r5);
@@ -2400,6 +2521,8 @@ void slist_delete(Eq_n r4, Eq_n r5, word32 ra)
 }
 
 // 00407568: void slist_close_all(Register Eq_n r4, Register word32 ra)
+// Called from:
+//      slist_destroy
 void slist_close_all(Eq_n r4, word32 ra)
 {
 	Eq_n dwLoc18_n = *((word32) r4 + 8);
@@ -2411,6 +2534,8 @@ void slist_close_all(Eq_n r4, word32 ra)
 }
 
 // 00407600: void slist_destroy_all(Register Eq_n r4, Register word32 ra)
+// Called from:
+//      slist_destroy
 void slist_destroy_all(Eq_n r4, word32 ra)
 {
 	while (*((word32) r4 + 8) != 0x00)
@@ -2418,6 +2543,8 @@ void slist_destroy_all(Eq_n r4, word32 ra)
 }
 
 // 004076A8: void slist_destroy(Register Eq_n r4, Register word32 ra)
+// Called from:
+//      main
 void slist_destroy(Eq_n r4, word32 ra)
 {
 	slist_close_all(r4, ra);
@@ -3279,6 +3406,8 @@ void __negdf2(word32 ra, word32 f12, word32 f13)
 }
 
 // 004092D0: void __make_dp(Register word32 r5, Register word32 r6, Register word32 ra, Stack uint32 dwArg10, Stack ui32 dwArg14)
+// Called from:
+//      __extendsfdf2
 void __make_dp(word32 r5, word32 r6, word32 ra, uint32 dwArg10, ui32 dwArg14)
 {
 	__pack_d(fp + -32);
@@ -3292,6 +3421,13 @@ void __truncdfsf2(word32 ra, word32 f12, word32 f13)
 }
 
 // 004093E0: void __pack_f(Register (ptr32 Eq_n) r4)
+// Called from:
+//      __addsf3
+//      __subsf3
+//      __mulsf3
+//      __divsf3
+//      __floatsisf
+//      __make_fp
 void __pack_f(struct Eq_n * r4)
 {
 	Eq_n r3_n = r4->t0000;
@@ -3332,6 +3468,13 @@ void __pack_f(struct Eq_n * r4)
 }
 
 // 00409540: void __unpack_f(Register (ptr32 uint32) r4, Register (ptr32 Eq_n) r5)
+// Called from:
+//      __addsf3
+//      __subsf3
+//      __mulsf3
+//      __divsf3
+//      __fixsfsi
+//      __extendsfdf2
 void __unpack_f(uint32 * r4, struct Eq_n * r5)
 {
 	uint32 r3_n = *r4;
@@ -3383,12 +3526,22 @@ void __unpack_f(uint32 * r4, struct Eq_n * r5)
 }
 
 // 00409630: void __make_fp(Register word32 r5, Register word32 r6, Register word32 r7, Register word32 ra)
+// Called from:
+//      __truncdfsf2
 void __make_fp(word32 r5, word32 r6, word32 r7, word32 ra)
 {
 	__pack_f(fp + -24);
 }
 
 // 00409680: void __pack_d(Register (ptr32 Eq_n) r4)
+// Called from:
+//      __adddf3
+//      __subdf3
+//      __muldf3
+//      __divdf3
+//      __floatsidf
+//      __negdf2
+//      __make_dp
 void __pack_d(struct Eq_n * r4)
 {
 	Eq_n r3_n = r4->t0000;
@@ -3470,6 +3623,17 @@ void __pack_d(struct Eq_n * r4)
 }
 
 // 00409930: void __unpack_d(Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r5)
+// Called from:
+//      __adddf3
+//      __subdf3
+//      __muldf3
+//      __divdf3
+//      __eqdf2
+//      __nedf2
+//      __gedf2
+//      __ltdf2
+//      __negdf2
+//      __truncdfsf2
 void __unpack_d(struct Eq_n * r4, struct Eq_n * r5)
 {
 	uint32 r2_n = r4->dw0000;
@@ -3526,6 +3690,11 @@ void __unpack_d(struct Eq_n * r4, struct Eq_n * r5)
 }
 
 // 00409A90: void __fpcmp_parts_d(Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r5)
+// Called from:
+//      __eqdf2
+//      __nedf2
+//      __gedf2
+//      __ltdf2
 void __fpcmp_parts_d(struct Eq_n * r4, struct Eq_n * r5)
 {
 	Eq_n r6_n = r4->t0000;

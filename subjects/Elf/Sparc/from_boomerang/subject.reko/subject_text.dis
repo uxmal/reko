@@ -140,6 +140,8 @@ func8_exit:
 void main(word32 o0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      _start
 // MayUse:  o0:[0..31]
 // LiveOut:
 // Trashed: NZVC g0 g1 i0 i1 i2 i3 i4 i5 i6 i7 o0 o1

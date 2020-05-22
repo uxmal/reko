@@ -12,6 +12,8 @@ void _start(int32 dwArg00, void (* ptrArg08)(), void (* ptrArg0C)(), void * ptrA
 }
 
 // 0000836C: Register word32 call_gmon_start()
+// Called from:
+//      _init
 word32 call_gmon_start()
 {
 	ptr32 r10_n = 0x8380 + globals->dw8394;
@@ -25,6 +27,8 @@ word32 call_gmon_start()
 }
 
 // 0000839C: void __do_global_dtors_aux()
+// Called from:
+//      _fini
 void __do_global_dtors_aux()
 {
 	byte * r5_n = globals->ptr83F4;
@@ -50,6 +54,8 @@ void call___do_global_dtors_aux()
 }
 
 // 00008404: void frame_dummy()
+// Called from:
+//      _init
 void frame_dummy()
 {
 	if (*globals->ptr8424 == 0x00)
@@ -66,6 +72,9 @@ void call_frame_dummy()
 }
 
 // 00008434: Register Eq_n frobulate(Register Eq_n r0, Stack Eq_n dwArg00)
+// Called from:
+//      bazulate
+//      switcheroo
 Eq_n frobulate(Eq_n r0, Eq_n dwArg00)
 {
 	__divsi3(r0 * r0, 1337);
@@ -73,6 +82,8 @@ Eq_n frobulate(Eq_n r0, Eq_n dwArg00)
 }
 
 // 00008470: Register word32 bazulate(Register Eq_n r0, Register Eq_n r1)
+// Called from:
+//      switcheroo
 word32 bazulate(Eq_n r0, Eq_n r1)
 {
 	struct Eq_n * fp_n = frobulate(r0, r1);
@@ -85,6 +96,8 @@ word32 bazulate(Eq_n r0, Eq_n r1)
 }
 
 // 000084D4: Register word32 switcheroo(Register Eq_n r0)
+// Called from:
+//      main
 word32 switcheroo(Eq_n r0)
 {
 	struct Eq_n * fp_n;
@@ -120,6 +133,9 @@ void main(Eq_n r0)
 }
 
 // 00008588: Register Eq_n __divsi3(Register Eq_n r0, Register Eq_n r1)
+// Called from:
+//      frobulate
+//      bazulate
 Eq_n __divsi3(Eq_n r0, Eq_n r1)
 {
 	Eq_n r1_n;
@@ -202,6 +218,8 @@ Eq_n __divsi3(Eq_n r0, Eq_n r1)
 }
 
 // 00008638: void __div0(Register Eq_n r0)
+// Called from:
+//      __divsi3
 void __div0(Eq_n r0)
 {
 	__syscall(0x00900014);
@@ -236,6 +254,8 @@ void __libc_csu_fini()
 }
 
 // 0000870C: Register word32 __do_global_ctors_aux()
+// Called from:
+//      _init
 word32 __do_global_ctors_aux()
 {
 	struct Eq_n * r3_n = globals->ptr8740;

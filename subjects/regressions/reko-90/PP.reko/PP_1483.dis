@@ -31,6 +31,8 @@ fn1483_0ADC_exit:
 word16 fn1483_0C11(word32 ds_si, word32 es_di, byte al, word16 cx, word16 bx, word16 bp)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn1483_0C55
 // MayUse:  ax:[0..7] bp:[0..15] bx:[0..15] cs:[0..15] cx:[0..15] Sequence ds:si:[0..31] Sequence es:di:[0..31] ss:[0..15]
 // LiveOut: ax
 // Trashed: SCZDO bp di ds dx eax ebx ecx es si ss Top
@@ -92,6 +94,9 @@ l1483_0C24:
 word32 fn1483_0C55()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn1483_0C11
+//      fn1483_0C91
 // MayUse: 
 // LiveOut: eax
 // Trashed: SCZO ax di dx si sp Top
@@ -110,6 +115,10 @@ fn1483_0C55_exit:
 word16 fn1483_0C91(word32 ds_bx, word32 ss_bp, word16 ax, word16 cx, word16 si, word16 di, selector psegArg00, ptr16 & diOut, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn1483_0C11
+//      fn1483_0CFA
+//      fn1483_0CFC
 // MayUse:  ax:[0..15] cx:[0..15] di:[0..15] Sequence ds:bx:[0..31] Sequence ss:bp:[0..31] si:[0..15] Stack +0000:[0..15]
 // LiveOut: di eax es
 // Trashed: SCZO ax bp bx cx di dx es sp Top
@@ -150,6 +159,9 @@ fn1483_0C91_exit:
 word16 fn1483_0CA0(word32 es_di, word32 ss_bp, byte al, byte ah, word16 bx, word16 si, selector ds, ptr16 & diOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn1483_0C11
+//      fn1483_0C91
 // MayUse:  ah:[0..7] al:[0..7] bx:[0..15] ds:[0..15] Sequence es:di:[0..31] Sequence ss:bp:[0..31] si:[0..15]
 // LiveOut: ax di
 // Trashed: SCZO ax bp bx cx di dx Top
@@ -198,6 +210,8 @@ fn1483_0CA0_exit:
 word16 fn1483_0CED(word32 es_di, word32 ss_bp, word16 ax, word16 dx, word16 bx, word16 si, selector ds, selector fs, word16 wArg00, selector psegArg02, word16 wArg06, word16 wArg0A, word16 wArg10, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn1483_0D3F
 // MayUse:  ax:[0..15] bx:[0..15] ds:[0..15] dx:[0..15] fs:[0..15] Sequence es:di:[0..31] Sequence ss:bp:[0..31] si:[0..15] Stack +0000:[0..15] Stack +0002:[0..15] Stack +0006:[0..15] Stack +000A:[0..15] Stack +0010:[0..15]
 // LiveOut: di es
 // Trashed: SCZO ax bp bx cx di dx es si sp Top
@@ -233,6 +247,8 @@ fn1483_0CED_exit:
 word16 fn1483_0CFA(word32 ds_di, word32 ss_bp, byte al, byte ah, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector fs, selector psegArg00, word16 wArg04, word16 wArg0E, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn1483_0D3F
 // MayUse:  ah:[0..7] al:[0..7] bh:[0..7] bl:[0..7] cx:[0..15] dx:[0..15] fs:[0..15] Sequence ds:di:[0..31] Sequence ss:bp:[0..31] si:[0..15] Stack +0000:[0..15] Stack +0004:[0..15] Stack +000E:[0..15]
 // LiveOut: di es
 // Trashed: SCZO ax bp bx cx di dx es si Top
@@ -253,6 +269,9 @@ fn1483_0CFA_exit:
 word16 fn1483_0CFC(word32 ds_di, word32 ss_bp, byte al, byte ah, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector fs, selector psegArg00, word16 wArg04, word16 wArg0E, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn1483_0CED
+//      fn1483_0CFA
 // MayUse:  ah:[0..7] al:[0..7] bh:[0..7] bl:[0..7] cx:[0..15] dx:[0..15] fs:[0..15] Sequence ds:di:[0..31] Sequence ss:bp:[0..31] si:[0..15] Stack +0000:[0..15] Stack +0004:[0..15] Stack +000E:[0..15]
 // LiveOut: di es
 // Trashed: SCZO ax bp bx cx di dx es si Top
@@ -282,6 +301,9 @@ fn1483_0CFC_exit:
 word16 fn1483_0D06(word32 ds_bx, word16 dx, selector fs, word16 wArg00, word16 wArg04, word16 wArg0E)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn1483_0CFA
+//      fn1483_0CFC
 // MayUse:  dx:[0..15] fs:[0..15] Sequence ds:bx:[0..31] Stack +0000:[0..15] Stack +0004:[0..15] Stack +000E:[0..15]
 // LiveOut: di
 // Trashed: SCZO ax bp bx cx di dx si sp Top
@@ -304,6 +326,8 @@ fn1483_0D06_exit:
 void fn1483_0D3F(word32 ds_di, word32 ss_bp, word16 ax, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector es, selector fs, byte FPUF, word16 wArg02, word16 wArg06, word16 wArg0C, selector psegArg01A4, byte bArg02C1, byte bArg0FA0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn1483_0ADC
 // MayUse:  ax:[0..15] bh:[0..7] bl:[0..7] cs:[0..15] cx:[0..15] dx:[0..15] es:[0..15] FPUF:[0..7] fs:[0..15] Sequence ds:di:[0..31] Sequence ss:bp:[0..31] si:[0..15] Stack +0002:[0..15] Stack +0006:[0..15] Stack +000C:[0..15] Stack +01A4:[0..15] Stack +02C1:[0..7] Stack +0FA0:[0..7]
 // LiveOut: Top
 // Trashed: SCZDOP ax bp bx cx di ds dx es si sp Top
@@ -595,6 +619,8 @@ l1483_1777:
 byte fn1483_1B91(byte al, word16 cx, word16 bx, word16 di, selector ds, selector psegArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn1483_1BB9
 // MayUse:  al:[0..7] bx:[0..15] cx:[0..15] di:[0..15] ds:[0..15] Stack +0000:[0..15]
 // LiveOut: SCZO
 // Trashed: SCZO ax bx di ds dx ecx Top
@@ -628,6 +654,8 @@ fn1483_1B91_exit:
 word16 fn1483_1BB8(word32 ds_si, byte al, byte ah, word16 cx, word16 dx, word16 bx, word16 bp, word16 di, selector es, ptr16 & cxOut, ptr16 & dhOut, ptr16 & bxOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn1483_0C11
 // MayUse:  ah:[0..7] al:[0..7] bp:[0..15] bx:[0..15] cs:[0..15] cx:[0..15] di:[0..15] dx:[0..15] es:[0..15] Sequence ds:si:[0..31] ss:[0..15]
 // LiveOut: ax bx di ds dx ecx es si
 // Trashed: SCZO ax bp bx di ds dx ecx es si ss Top
@@ -661,6 +689,9 @@ fn1483_1BB8_exit:
 word16 fn1483_1BB9(word16 ax, word16 cx, word16 dx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, ptr16 & cxOut, ptr16 & dhOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn1483_1B91
+//      fn1483_1BB8
 // MayUse:  ax:[0..15] bp:[0..15] bx:[0..15] cs:[0..15] cx:[0..15] di:[0..15] ds:[0..15] dx:[0..15] es:[0..15] si:[0..15] ss:[0..15]
 // LiveOut: ax bp bx di ds dx ecx es si ss
 // Trashed: SCZO ax bp bx di ds dx ecx es si sp ss Top
@@ -817,6 +848,8 @@ fn1483_1C50_exit:
 void fn1483_467E(word32 ds_bx, byte al, word16 si)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn1483_1777
 // MayUse:  al:[0..7] Sequence ds:bx:[0..31] si:[0..15]
 // LiveOut:
 // Trashed:

@@ -5,6 +5,8 @@
 #include "test_text.h"
 
 // 00011000: Register word32 fn00011000()
+// Called from:
+//      fn000110E8
 word32 fn00011000()
 {
 	memset(fp + -20, 0x00, 5);
@@ -23,6 +25,8 @@ Eq_n Win32CrtStartup()
 }
 
 // 000110E8: Register Eq_n fn000110E8()
+// Called from:
+//      Win32CrtStartup
 Eq_n fn000110E8()
 {
 	fn000114E4();
@@ -43,6 +47,8 @@ void fn0001116C(struct Eq_n * r2, word32 ** r4, word32 dwArg00)
 }
 
 // 000111C4: void fn000111C4()
+// Called from:
+//      Win32CrtStartup
 void fn000111C4()
 {
 	ui32 r8_n = globals->dw13030;
@@ -62,12 +68,19 @@ void fn000111C4()
 }
 
 // 00011278: void fn00011278(Register Eq_n r4)
+// Called from:
+//      fn000110E8
 void fn00011278(Eq_n r4)
 {
 	fn000112A8(r4, 0x00, 0x00);
 }
 
 // 000112A8: void fn000112A8(Register Eq_n r4, Register int32 r5, Register int32 r6)
+// Called from:
+//      fn00011278
+//      fn000113D8
+//      fn00011408
+//      fn00011434
 void fn000112A8(Eq_n r4, int32 r5, int32 r6)
 {
 	globals->b13038 = (byte) (r6 << 0x18 >> 0x18);
@@ -120,12 +133,17 @@ void fn00011434()
 }
 
 // 00011460: Register int32 fn00011460()
+// Called from:
+//      fn000112A8
 int32 fn00011460()
 {
 	return 66;
 }
 
 // 0001147C: void fn0001147C(Register (ptr32 word32) r4, Register (ptr32 word32) r5)
+// Called from:
+//      fn000112A8
+//      fn000114E4
 void fn0001147C(word32 * r4, word32 * r5)
 {
 	word32 * dwArg00_n = r4;
@@ -138,6 +156,8 @@ void fn0001147C(word32 * r4, word32 * r5)
 }
 
 // 000114E4: void fn000114E4()
+// Called from:
+//      fn000110E8
 void fn000114E4()
 {
 	fn0001147C(&globals->dw12008, &globals->dw1200C);
@@ -145,6 +165,8 @@ void fn000114E4()
 }
 
 // 0001152C: Register word32 fn0001152C()
+// Called from:
+//      fn000116FC
 word32 fn0001152C()
 {
 	Eq_n r8_n = globals->t13040;

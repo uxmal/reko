@@ -14,6 +14,8 @@ void __start(word32 r2, word32 dwArg00)
 }
 
 // 00000670: void deregister_tm_clones()
+// Called from:
+//      __do_global_dtors_aux
 void deregister_tm_clones()
 {
 	if (globals->dw10AA4 == 68228)
@@ -25,6 +27,8 @@ void deregister_tm_clones()
 }
 
 // 000006A8: void register_tm_clones()
+// Called from:
+//      frame_dummy
 void register_tm_clones()
 {
 	Eq_n r5_n = globals->dw10AA4 - 68228 >> 0x02;

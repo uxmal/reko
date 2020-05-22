@@ -90,6 +90,8 @@ void task_n(struct Eq_n * pc, ui20 sr)
 }
 
 // 414C: void main(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r8)
+// Called from:
+//      fn00004000
 void main(struct Eq_n * pc, ui20 sr, Eq_n r8)
 {
 	__set_stackpointer(0x0A00);
@@ -112,6 +114,8 @@ void main(struct Eq_n * pc, ui20 sr, Eq_n r8)
 }
 
 // 420E: Register Eq_n msp430_compute_modulator_bits(Register Eq_n r12, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15)
+// Called from:
+//      init_uart_isr
 Eq_n msp430_compute_modulator_bits(Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r15)
 {
 	union Eq_n * v16_n = fp->ptr0002;
@@ -152,6 +156,8 @@ Eq_n msp430_compute_modulator_bits(Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r15)
 }
 
 // 42CC: Register ui20 init_uart_isr(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15)
+// Called from:
+//      fn00004000
 ui20 init_uart_isr(struct Eq_n * pc, ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15)
 {
 	Eq_n bLoc10 = (byte) wLoc10;
@@ -192,12 +198,19 @@ void getchar(struct Eq_n * pc, ui20 sr)
 }
 
 // 439C: void uart_putchar_isr_mode(Register Eq_n r15)
+// Called from:
+//      fn00004000
 void uart_putchar_isr_mode(Eq_n r15)
 {
 	globals->a0200 = r15;
 }
 
 // 43A2: Register ui20 putchar(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r15, Register out Eq_n r11Out)
+// Called from:
+//      task_n
+//      task_n
+//      task_n
+//      putchar
 ui20 putchar(struct Eq_n * pc, ui20 sr, Eq_n r15, union Eq_n & r11Out)
 {
 	Eq_n r11_n = r15;
@@ -219,6 +232,8 @@ ui20 putchar(struct Eq_n * pc, ui20 sr, Eq_n r15, union Eq_n & r11Out)
 }
 
 // 43E4: Register Eq_n x_getchar(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r14, Register Eq_n r15)
+// Called from:
+//      getchar
 Eq_n x_getchar(struct Eq_n * pc, ui20 sr, Eq_n r14, Eq_n r15)
 {
 	word20 r15_n;
@@ -229,6 +244,8 @@ Eq_n x_getchar(struct Eq_n * pc, ui20 sr, Eq_n r14, Eq_n r15)
 }
 
 // 43FC: Register ui20 x_putchar(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r14, Register Eq_n r15, Register out Eq_n r15Out)
+// Called from:
+//      putchar
 ui20 x_putchar(struct Eq_n * pc, ui20 sr, Eq_n r14, Eq_n r15, union Eq_n & r15Out)
 {
 	++globals->ptr0218;
@@ -282,6 +299,9 @@ void vTxISR(ui20 sr)
 }
 
 // 44B4: Register ui20 xTaskCreate(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r12, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15, Register out Eq_n r15Out)
+// Called from:
+//      fn00004000
+//      vTaskStartScheduler
 ui20 xTaskCreate(struct Eq_n * pc, ui20 sr, Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r15Out)
 {
 	Eq_n r10_n;
@@ -372,6 +392,10 @@ void vTaskDelete(struct Eq_n * pc, ui20 sr, Eq_n r15)
 }
 
 // 461A: Register ui20 vTaskDelayUntil(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r14, Register Eq_n r15)
+// Called from:
+//      task_n
+//      task_n
+//      task_n
 ui20 vTaskDelayUntil(struct Eq_n * pc, ui20 sr, Eq_n r14, Eq_n r15)
 {
 	ui20 sr_n = vTaskSuspendAll(sr);
@@ -458,6 +482,8 @@ void vTaskDelay(struct Eq_n * pc, ui20 sr, word20 r15)
 }
 
 // 4702: void vTaskStartScheduler(Register (ptr20 Eq_n) pc, Register ui20 sr)
+// Called from:
+//      fn00004000
 void vTaskStartScheduler(struct Eq_n * pc, ui20 sr)
 {
 	if (0x0202 != 0x00)
@@ -481,6 +507,13 @@ void vTaskEndScheduler()
 }
 
 // 4742: Register ui20 vTaskSuspendAll(Register ui20 sr)
+// Called from:
+//      vTaskDelayUntil
+//      vTaskDelay
+//      prvCheckTasksWaitingTermination
+//      xQueueSend
+//      xQueueReceive
+//      pvPortMalloc
 ui20 vTaskSuspendAll(ui20 sr)
 {
 	++globals->ptr0218;
@@ -496,6 +529,13 @@ ui20 vTaskSuspendAll(ui20 sr)
 }
 
 // 475C: Register ui20 xTaskResumeAll(Register (ptr20 Eq_n) pc, Register ui20 sr, Register out Eq_n r15Out)
+// Called from:
+//      vTaskDelayUntil
+//      vTaskDelay
+//      prvCheckTasksWaitingTermination
+//      xQueueSend
+//      xQueueReceive
+//      pvPortMalloc
 ui20 xTaskResumeAll(struct Eq_n * pc, ui20 sr, union Eq_n & r15Out)
 {
 	++globals->ptr0218;
@@ -556,6 +596,11 @@ ui20 xTaskResumeAll(struct Eq_n * pc, ui20 sr, union Eq_n & r15Out)
 }
 
 // 481E: Register ui20 xTaskGetTickCount(Register ui20 sr, Register out Eq_n r15Out)
+// Called from:
+//      task_idle
+//      task_n
+//      task_n
+//      task_n
 ui20 xTaskGetTickCount(ui20 sr, union Eq_n & r15Out)
 {
 	++globals->ptr0218;
@@ -583,6 +628,9 @@ void uxTaskGetNumberOfTasks()
 }
 
 // 484A: void vTaskIncrementTick()
+// Called from:
+//      xTaskResumeAll
+//      prvTickISR
 void vTaskIncrementTick()
 {
 	if (0x0210 == 0x00)
@@ -619,6 +667,9 @@ void vTaskIncrementTick()
 }
 
 // 48DA: void vTaskPlaceOnEventList(Register Eq_n r14, Register Eq_n r15)
+// Called from:
+//      xQueueSend
+//      xQueueReceive
 void vTaskPlaceOnEventList(Eq_n r14, Eq_n r15)
 {
 	struct Eq_n * r14_n;
@@ -641,6 +692,10 @@ void vTaskPlaceOnEventList(Eq_n r14, Eq_n r15)
 }
 
 // 4930: Register Eq_n xTaskRemoveFromEventList(Register Eq_n r15)
+// Called from:
+//      xQueueSendFromISR
+//      xQueueReceiveFromISR
+//      prvUnlockQueue
 Eq_n xTaskRemoveFromEventList(Eq_n r15)
 {
 	Eq_n r10_n;
@@ -693,6 +748,8 @@ void prvIdleTask(struct Eq_n * pc, ui20 sr)
 }
 
 // 49BE: void prvInitialiseTCBVariables(Register Eq_n r12, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15)
+// Called from:
+//      xTaskCreate
 void prvInitialiseTCBVariables(Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r15)
 {
 	*((word24) r15 + 36) = r14;
@@ -710,6 +767,8 @@ void prvInitialiseTCBVariables(Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r15)
 }
 
 // 4A12: void prvInitialiseTaskLists()
+// Called from:
+//      xTaskCreate
 void prvInitialiseTaskLists()
 {
 	Eq_n r11_n = 0x00;
@@ -727,6 +786,8 @@ void prvInitialiseTaskLists()
 }
 
 // 4A5E: Register ui20 prvCheckTasksWaitingTermination(Register (ptr20 Eq_n) pc, Register ui20 sr)
+// Called from:
+//      prvIdleTask
 ui20 prvCheckTasksWaitingTermination(struct Eq_n * pc, ui20 sr)
 {
 	if (0x0204 != 0x00)
@@ -762,6 +823,8 @@ ui20 prvCheckTasksWaitingTermination(struct Eq_n * pc, ui20 sr)
 }
 
 // 4AC2: Register ui20 prvAllocateTCBAndStack(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r15, Register out Eq_n r15Out)
+// Called from:
+//      xTaskCreate
 ui20 prvAllocateTCBAndStack(struct Eq_n * pc, ui20 sr, Eq_n r15, union Eq_n & r15Out)
 {
 	Eq_n r15_n;
@@ -785,6 +848,8 @@ ui20 prvAllocateTCBAndStack(struct Eq_n * pc, ui20 sr, Eq_n r15, union Eq_n & r1
 }
 
 // 4B02: void prvDeleteTCB()
+// Called from:
+//      prvCheckTasksWaitingTermination
 void prvDeleteTCB()
 {
 	vPortFree();
@@ -792,6 +857,9 @@ void prvDeleteTCB()
 }
 
 // 4B18: void vTaskSwitchContext()
+// Called from:
+//      vPortYield
+//      prvTickISR
 void vTaskSwitchContext()
 {
 	if (0x0210 == 0x00)
@@ -807,6 +875,8 @@ void vTaskSwitchContext()
 }
 
 // 4BD4: void vListInitialise(Register Eq_n r15)
+// Called from:
+//      prvInitialiseTaskLists
 void vListInitialise(Eq_n r15)
 {
 	*((word24) r15 + 2) = (word24) r15 + 6;
@@ -820,12 +890,21 @@ void vListInitialise(Eq_n r15)
 }
 
 // 4C00: void vListInitialiseItem(Register (ptr20 Eq_n) r15)
+// Called from:
+//      prvInitialiseTCBVariables
+//      vListInitialise
 void vListInitialiseItem(struct Eq_n * r15)
 {
 	r15->w0008 = 0x00;
 }
 
 // 4C06: void vListInsertEnd(Register Eq_n r14, Register Eq_n r15)
+// Called from:
+//      xTaskCreate
+//      vTaskDelete
+//      xTaskResumeAll
+//      vTaskIncrementTick
+//      xTaskRemoveFromEventList
 void vListInsertEnd(Eq_n r14, Eq_n r15)
 {
 	Eq_n v5_n = *((word24) r15 + 4);
@@ -839,6 +918,10 @@ void vListInsertEnd(Eq_n r14, Eq_n r15)
 }
 
 // 4C32: void vListInsert(Register (ptr24 Eq_n) r14, Register Eq_n r15)
+// Called from:
+//      vTaskDelayUntil
+//      vTaskDelay
+//      vTaskPlaceOnEventList
 void vListInsert(struct Eq_n * r14, Eq_n r15)
 {
 	struct Eq_n * r13_n;
@@ -878,6 +961,15 @@ void vListInsert(struct Eq_n * r14, Eq_n r15)
 }
 
 // 4C98: void vListRemove(Register Eq_n r15)
+// Called from:
+//      vTaskDelete
+//      vTaskDelayUntil
+//      vTaskDelay
+//      xTaskResumeAll
+//      vTaskIncrementTick
+//      vTaskPlaceOnEventList
+//      xTaskRemoveFromEventList
+//      prvCheckTasksWaitingTermination
 void vListRemove(Eq_n r15)
 {
 	Eq_n v5_n = *((word24) r15 + 2);
@@ -892,6 +984,8 @@ void vListRemove(Eq_n r15)
 }
 
 // 4CC4: Register ui20 xQueueCreate(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r15, Register out Eq_n r15Out)
+// Called from:
+//      init_uart_isr
 ui20 xQueueCreate(struct Eq_n * pc, ui20 sr, Eq_n r15, union Eq_n & r15Out)
 {
 	if (r15 != 0x00)
@@ -907,6 +1001,8 @@ ui20 xQueueCreate(struct Eq_n * pc, ui20 sr, Eq_n r15, union Eq_n & r15Out)
 }
 
 // 4D7E: Register ui20 xQueueSend(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15, Register out Eq_n r15Out)
+// Called from:
+//      x_putchar
 ui20 xQueueSend(struct Eq_n * pc, ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r15Out)
 {
 	ui20 sr_n = vTaskSuspendAll(sr) & ~0x08;
@@ -1000,6 +1096,8 @@ ui20 xQueueSend(struct Eq_n * pc, ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, union E
 }
 
 // 4E84: Register ui20 xQueueSendFromISR(Register ui20 sr, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15, Register out Eq_n r15Out)
+// Called from:
+//      vRxISR
 ui20 xQueueSendFromISR(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r15Out)
 {
 	Eq_n r13_n;
@@ -1027,6 +1125,9 @@ l4EE8:
 }
 
 // 4EF0: Register ui20 xQueueReceive(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15, Register out Eq_n r15Out)
+// Called from:
+//      x_getchar
+//      x_putchar
 ui20 xQueueReceive(struct Eq_n * pc, ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r15Out)
 {
 	ui20 sr_n = vTaskSuspendAll(sr) & ~0x08;
@@ -1122,6 +1223,8 @@ ui20 xQueueReceive(struct Eq_n * pc, ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, unio
 }
 
 // 4FF6: Register Eq_n xQueueReceiveFromISR(Register ui20 sr, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15)
+// Called from:
+//      vTxISR
 Eq_n xQueueReceiveFromISR(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15)
 {
 	Eq_n r15_n;
@@ -1166,6 +1269,9 @@ void vQueueDelete()
 }
 
 // 5092: Register ui20 prvUnlockQueue(Register ui20 sr, Register Eq_n r15, Register out Eq_n r15Out)
+// Called from:
+//      xQueueSend
+//      xQueueReceive
 ui20 prvUnlockQueue(ui20 sr, Eq_n r15, union Eq_n & r15Out)
 {
 	++globals->ptr0218;
@@ -1206,6 +1312,8 @@ ui20 prvUnlockQueue(ui20 sr, Eq_n r15, union Eq_n & r15Out)
 }
 
 // 510C: Register ui20 prvIsQueueEmpty(Register ui20 sr, Register Eq_n r15, Register out Eq_n r15Out)
+// Called from:
+//      xQueueReceive
 ui20 prvIsQueueEmpty(ui20 sr, Eq_n r15, union Eq_n & r15Out)
 {
 	++globals->ptr0218;
@@ -1224,6 +1332,8 @@ ui20 prvIsQueueEmpty(ui20 sr, Eq_n r15, union Eq_n & r15Out)
 }
 
 // 512E: Register ui20 prvIsQueueFull(Register ui20 sr, Register Eq_n r15, Register out Eq_n r15Out)
+// Called from:
+//      xQueueSend
 ui20 prvIsQueueFull(ui20 sr, Eq_n r15, union Eq_n & r15Out)
 {
 	++globals->ptr0218;
@@ -1242,6 +1352,9 @@ ui20 prvIsQueueFull(ui20 sr, Eq_n r15, union Eq_n & r15Out)
 }
 
 // 5156: Register ui20 pvPortMalloc(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r15, Register out Eq_n r15Out)
+// Called from:
+//      prvAllocateTCBAndStack
+//      xQueueCreate
 ui20 pvPortMalloc(struct Eq_n * pc, ui20 sr, Eq_n r15, union Eq_n & r15Out)
 {
 	Eq_n r11_n = r15;
@@ -1263,6 +1376,10 @@ ui20 pvPortMalloc(struct Eq_n * pc, ui20 sr, Eq_n r15, union Eq_n & r15Out)
 }
 
 // 5192: void vPortFree()
+// Called from:
+//      prvAllocateTCBAndStack
+//      prvDeleteTCB
+//      vQueueDelete
 void vPortFree()
 {
 }
@@ -1274,6 +1391,8 @@ void vPortInitialiseBlocks()
 }
 
 // 519A: Register (ptr20 Eq_n) pxPortInitialiseStack(Register Eq_n r13, Register Eq_n r14, Register (ptr20 Eq_n) r15)
+// Called from:
+//      xTaskCreate
 struct Eq_n * pxPortInitialiseStack(Eq_n r13, Eq_n r14, struct Eq_n * r15)
 {
 	r15->t0000 = r14;
@@ -1295,6 +1414,8 @@ struct Eq_n * pxPortInitialiseStack(Eq_n r13, Eq_n r14, struct Eq_n * r15)
 }
 
 // 520A: void xPortStartScheduler(Register (ptr20 Eq_n) pc)
+// Called from:
+//      vTaskStartScheduler
 void xPortStartScheduler(struct Eq_n * pc)
 {
 	prvSetupTimerInterrupt();
@@ -1302,11 +1423,23 @@ void xPortStartScheduler(struct Eq_n * pc)
 }
 
 // 5238: void vPortEndScheduler()
+// Called from:
+//      vTaskEndScheduler
 void vPortEndScheduler()
 {
 }
 
 // 523A: Register ui20 vPortYield(Register (ptr20 Eq_n) pc, Register ui20 sr, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out)
+// Called from:
+//      vRxISR
+//      xTaskCreate
+//      vTaskDelete
+//      vTaskDelayUntil
+//      vTaskDelay
+//      xTaskResumeAll
+//      prvIdleTask
+//      xQueueSend
+//      xQueueReceive
 ui20 vPortYield(struct Eq_n * pc, ui20 sr, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out)
 {
 	*pc->ptrFFFFAFA4 = fp - 28;
@@ -1324,6 +1457,8 @@ ui20 vPortYield(struct Eq_n * pc, ui20 sr, union Eq_n & r8Out, union Eq_n & r9Ou
 }
 
 // 528E: void prvSetupTimerInterrupt()
+// Called from:
+//      xPortStartScheduler
 void prvSetupTimerInterrupt()
 {
 	((union Eq_n *) 0x0160)->u0 = 0x00;
@@ -1345,12 +1480,17 @@ void prvTickISR(struct Eq_n * pc)
 }
 
 // 5308: void printf(Register Eq_n r8)
+// Called from:
+//      fn00004000
+//      task_idle
 void printf(Eq_n r8)
 {
 	vuprintf(r8, (char *) &fp->t0002 + 2, fp->t0002, 17314);
 }
 
 // 531A: Register Eq_n PRINT(Register Eq_n r14)
+// Called from:
+//      vuprintf
 Eq_n PRINT(Eq_n r14)
 {
 	if (r14 != 0x00)
@@ -1363,6 +1503,8 @@ Eq_n PRINT(Eq_n r14)
 }
 
 // 534A: void __write_pad(Register Eq_n r14)
+// Called from:
+//      vuprintf
 void __write_pad(Eq_n r14)
 {
 	if (r14 < 0x01)
@@ -1371,6 +1513,8 @@ void __write_pad(Eq_n r14)
 }
 
 // 537E: void vuprintf(Register Eq_n r8, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15)
+// Called from:
+//      printf
 void vuprintf(Eq_n r8, Eq_n r13, Eq_n r14, Eq_n r15)
 {
 	globals->ptr021A = 0x00;
@@ -1746,6 +1890,8 @@ l5576:
 }
 
 // 593E: Register Eq_n memchr(Register Eq_n r13, Register Eq_n r14, Register Eq_n r15)
+// Called from:
+//      vuprintf
 Eq_n memchr(Eq_n r13, Eq_n r14, Eq_n r15)
 {
 	Eq_n r15_n;
@@ -1768,6 +1914,8 @@ Eq_n memchr(Eq_n r13, Eq_n r14, Eq_n r15)
 }
 
 // 5962: void strncpy(Register Eq_n r13, Register Eq_n r14, Register (ptr24 byte) r15)
+// Called from:
+//      prvInitialiseTCBVariables
 void strncpy(Eq_n r13, Eq_n r14, byte * r15)
 {
 	if (r13 != 0x00)
@@ -1794,6 +1942,11 @@ void strncpy(Eq_n r13, Eq_n r14, byte * r15)
 }
 
 // 5994: Register ui20 memcpy(Register ui20 sr, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15)
+// Called from:
+//      xQueueSend
+//      xQueueSendFromISR
+//      xQueueReceive
+//      xQueueReceiveFromISR
 ui20 memcpy(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15)
 {
 	Eq_n r11_n = r13;
@@ -1884,6 +2037,8 @@ ui20 memcpy(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15)
 }
 
 // 5A68: Register ui20 memset(Register ui20 sr, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15)
+// Called from:
+//      prvAllocateTCBAndStack
 ui20 memset(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15)
 {
 	Eq_n r14_n = r15;
@@ -1935,6 +2090,8 @@ ui20 memset(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15)
 }
 
 // 00005ADC: Register Eq_n fn00005ADC(Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register Eq_n r13, Register out Eq_n r15Out)
+// Called from:
+//      msp430_compute_modulator_bits
 Eq_n fn00005ADC(Eq_n r10, Eq_n r11, Eq_n r12, Eq_n r13, union Eq_n & r15Out)
 {
 	*(union Eq_n *) 0x0130 = r12;
@@ -1949,6 +2106,8 @@ Eq_n fn00005ADC(Eq_n r10, Eq_n r11, Eq_n r12, Eq_n r13, union Eq_n & r15Out)
 }
 
 // 00005B04: Register Eq_n fn00005B04(Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register Eq_n r13)
+// Called from:
+//      msp430_compute_modulator_bits
 Eq_n fn00005B04(Eq_n r10, Eq_n r11, Eq_n r12, Eq_n r13)
 {
 	Eq_n r8_n = 0x00;
@@ -1978,6 +2137,9 @@ Eq_n fn00005B04(Eq_n r10, Eq_n r11, Eq_n r12, Eq_n r13)
 }
 
 // 00005B4E: FlagGroup bool fn00005B4E(Register Eq_n r8, Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register Eq_n r13, Register out Eq_n r8Out, Register out Eq_n r12Out, Register out Eq_n r13Out, Register out Eq_n r14Out, Register out Eq_n r15Out)
+// Called from:
+//      vuprintf
+//      fn00005B04
 bool fn00005B4E(Eq_n r8, Eq_n r10, Eq_n r11, Eq_n r12, Eq_n r13, union Eq_n & r8Out, union Eq_n & r12Out, union Eq_n & r13Out, union Eq_n & r14Out, union Eq_n & r15Out)
 {
 	Eq_n r15_n = 0x00;

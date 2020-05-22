@@ -1,6 +1,8 @@
 void _init()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __libc_csu_init
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax Top

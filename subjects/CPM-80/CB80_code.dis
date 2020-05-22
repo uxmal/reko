@@ -1,6 +1,12 @@
 void fn0387()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0483
+//      fn061B
+//      fn075C
+//      fn100A
+//      fn1229
 // MayUse: 
 // LiveOut:
 // Trashed: hl
@@ -17,6 +23,8 @@ fn0387_exit:
 void fn0390(byte b, byte c, byte e, byte bArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0990
 // MayUse:  b:[0..7] c:[0..7] e:[0..7] Stack +0002:[0..7]
 // LiveOut: sp
 // Trashed: SZPC a bc de hl sp
@@ -42,6 +50,9 @@ l03A9:
 bool fn03BB(byte c, ptr16 & aOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn03CB
+//      fn03E6
 // MayUse:  c:[0..7]
 // LiveOut: C a
 // Trashed: SZPC a c hl
@@ -58,6 +69,8 @@ fn03BB_exit:
 word16 fn03CB(byte c)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0990
 // MayUse:  c:[0..7]
 // LiveOut: af
 // Trashed: SZPC af bc hl
@@ -75,6 +88,8 @@ fn03CB_exit:
 byte fn03E6(byte c)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0990
 // MayUse:  c:[0..7]
 // LiveOut: a
 // Trashed: SZPC a c hl
@@ -109,6 +124,8 @@ fn0400_exit:
 void fn040D(byte b, byte c, byte e, word16 wArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0BE4
 // MayUse:  b:[0..7] c:[0..7] e:[0..7] Stack +0002:[0..15]
 // LiveOut: sp
 // Trashed: SZPC a bc de hl sp
@@ -140,6 +157,12 @@ l0457:
 byte fn045B()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn100A
+//      fn1229
+//      fn1262
+//      fn1279
+//      fn12D8
 // MayUse: 
 // LiveOut: a
 // Trashed: SZPC a hl
@@ -160,6 +183,9 @@ fn045B_exit:
 byte fn0473(byte c)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0483
+//      fn056B
 // MayUse:  c:[0..7]
 // LiveOut: c
 // Trashed: c de hl
@@ -175,6 +201,8 @@ fn0473_exit:
 word16 fn0483(byte b, byte c, byte d, byte e, word16 wArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0534
 // MayUse:  b:[0..7] c:[0..7] d:[0..7] e:[0..7] Stack +0002:[0..15]
 // LiveOut: bc
 // Trashed: SZPC a bc de hl sp
@@ -227,6 +255,8 @@ l0520:
 byte fn0524(byte c)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn056B
 // MayUse:  c:[0..7]
 // LiveOut: c
 // Trashed: c de hl
@@ -242,6 +272,8 @@ fn0524_exit:
 word16 fn0534(byte c)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn056B
 // MayUse:  bc:[0..7]
 // LiveOut: bc
 // Trashed: SZPC a bc de hl
@@ -267,6 +299,16 @@ fn0534_exit:
 bool fn056B(word16 bc, ptr16 & bcOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn05CE
+//      fn05EF
+//      fn0722
+//      fn0745
+//      fn075C
+//      fn07B3
+//      fn0814
+//      fn100A
+//      fn1229
 // MayUse:  bc:[0..15]
 // LiveOut: C bc
 // Trashed: SZPC a bc hl
@@ -317,6 +359,13 @@ fn056B_exit:
 byte fn05CE(word16 bc)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn061B
+//      fn075C
+//      fn07B3
+//      fn0BE4
+//      fn100A
+//      fn1229
 // MayUse:  bc:[0..15]
 // LiveOut: bc
 // Trashed: SZPC a bc hl
@@ -342,6 +391,10 @@ l05DD:
 bool fn05EF(word16 bc, ptr16 & bOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn061B
+//      fn06CE
+//      fn07B3
 // MayUse:  bc:[0..15]
 // LiveOut: C bc
 // Trashed: SZPC a bc de hl
@@ -372,6 +425,8 @@ fn05EF_exit:
 bool fn061B(byte b, byte c, byte d, byte e)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn082F
 // MayUse:  b:[0..7] c:[0..7] d:[0..7] e:[0..7]
 // LiveOut: C
 // Trashed: SZPC a bc de hl
@@ -394,6 +449,8 @@ fn061B_exit:
 void fn063E(byte b, byte c, byte d, byte e)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn06CE
 // MayUse:  b:[0..7] c:[0..7] d:[0..7] e:[0..7]
 // LiveOut:
 // Trashed: SZPC a bc de hl
@@ -447,6 +504,10 @@ l0678:
 byte fn06CE(byte b, byte c)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn075C
+//      fn07B3
+//      fn0BE4
 // MayUse:  b:[0..7] c:[0..7]
 // LiveOut: bc
 // Trashed: SZPC a bc de hl
@@ -489,6 +550,8 @@ fn0722_exit:
 void fn0745(word16 bc)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn07B3
 // MayUse:  bc:[0..15]
 // LiveOut:
 // Trashed: SZPC a bc hl
@@ -511,6 +574,9 @@ l0753:
 void fn075C(byte b, byte c, byte d, byte e)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0BE4
+//      fn0D84
 // MayUse:  b:[0..7] c:[0..7] d:[0..7] e:[0..7]
 // LiveOut:
 // Trashed: SZPC a bc de hl
@@ -550,6 +616,9 @@ fn075C_exit:
 void fn07B3(byte b)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0814
+//      fn100A
 // MayUse:  bc:[8..15]
 // LiveOut:
 // Trashed: C a bc de hl
@@ -594,6 +663,8 @@ l07C9:
 void fn0814(byte b)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0BE4
 // MayUse:  b:[0..7]
 // LiveOut:
 // Trashed: SZPC a bc de hl
@@ -617,6 +688,8 @@ fn0814_exit:
 word16 fn082F(byte f, byte b, byte c, byte e, word16 wArg02, word16 wArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0BE4
 // MayUse:  b:[0..7] c:[0..7] e:[0..7] f:[0..7] Stack +0002:[0..15] Stack +0004:[0..15]
 // LiveOut: af
 // Trashed: SZPC af bc de hl
@@ -711,6 +784,8 @@ fn082F_exit:
 byte fn08EC()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn082F
 // MayUse: 
 // LiveOut: a
 // Trashed: SZPC a bc de hl
@@ -726,6 +801,8 @@ fn08EC_exit:
 byte fn08FD()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn082F
 // MayUse: 
 // LiveOut: a
 // Trashed: SZPC a bc de hl
@@ -740,6 +817,8 @@ fn08FD_exit:
 byte fn0920()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn082F
 // MayUse: 
 // LiveOut: a
 // Trashed: SZPC a bc de hl
@@ -780,6 +859,8 @@ fn0920_exit:
 bool fn0990(byte f, byte b, byte c, byte d, byte e, ptr16 & afOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn082F
 // MayUse:  b:[0..7] c:[0..7] d:[0..7] e:[0..7] f:[0..7]
 // LiveOut: C af
 // Trashed: SZPC af bc de hl sp
@@ -926,6 +1007,8 @@ fn0990_exit:
 word16 fn0B74()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0990
 // MayUse: 
 // LiveOut: af
 // Trashed: SZPC af bc de hl
@@ -939,6 +1022,8 @@ fn0B74_exit:
 void fn0B91()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0990
 // MayUse: 
 // LiveOut:
 // Trashed: SZP hl
@@ -954,6 +1039,8 @@ fn0B91_exit:
 void fn0BE4(byte f)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn100A
 // MayUse:  f:[0..7]
 // LiveOut:
 // Trashed: SZPC af bc de hl sp
@@ -1016,6 +1103,8 @@ fn0BE4_exit:
 byte fn0C93()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0E63
 // MayUse: 
 // LiveOut: a
 // Trashed: SZPC a bc hl
@@ -1029,6 +1118,8 @@ fn0C93_exit:
 bool fn0D64(ptr16 & aOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0D84
 // MayUse: 
 // LiveOut: C a
 // Trashed: SZPC a bc hl
@@ -1143,6 +1234,8 @@ fn0E63_exit:
 bool fn0EAB(ptr16 & aOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0E63
 // MayUse: 
 // LiveOut: C a
 // Trashed: SZPC a bc de hl
@@ -1335,6 +1428,10 @@ l1002:
 void fn1229()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn100A
+//      fn1279
+//      fn12D8
 // MayUse: 
 // LiveOut:
 // Trashed: SZPC a bc hl
@@ -1364,6 +1461,10 @@ l124E:
 void fn1262()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn100A
+//      fn1279
+//      fn12D8
 // MayUse: 
 // LiveOut:
 // Trashed: SZPC a hl
@@ -1384,6 +1485,8 @@ l1275:
 word16 fn1279()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn100A
 // MayUse: 
 // LiveOut: af
 // Trashed: SZPC af bc hl
@@ -1419,6 +1522,8 @@ l12A1:
 word16 fn12D8()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn100A
 // MayUse: 
 // LiveOut: af
 // Trashed: SZPC af bc hl
@@ -1457,6 +1562,9 @@ fn1315_exit:
 byte fn1326(byte c, word16 hl, ptr16 & lOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0483
+//      fn0BE4
 // MayUse:  c:[0..7] hl:[0..15]
 // LiveOut: c hl
 // Trashed: SZPC a c h l
@@ -1478,6 +1586,8 @@ fn1326_exit:
 bool fn1335(word16 de, word16 hl)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0534
 // MayUse:  de:[0..15] hl:[0..15]
 // LiveOut: C
 // Trashed: SZPC a h l
@@ -1504,6 +1614,8 @@ fn133C_exit:
 word16 fn1346(word16 bc, word16 de)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0BE4
 // MayUse:  bc:[0..15] de:[0..15]
 // LiveOut: hl
 // Trashed: SZPC a b c de hl
@@ -1521,6 +1633,9 @@ fn1346_exit:
 bool fn1348(word16 de, word16 hl, ptr16 & deOut, ptr16 & hlOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn063E
+//      fn1346
 // MayUse:  de:[0..15] hl:[0..15]
 // LiveOut: C de hl
 // Trashed: SZPC a b c de hl
@@ -1537,6 +1652,9 @@ fn1348_exit:
 byte fn1353(byte a, word16 de, ptr16 & lOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn075C
+//      fn0E63
 // MayUse:  a:[0..7] de:[0..15]
 // LiveOut: a hl
 // Trashed: SZPC a de h l
@@ -1582,6 +1700,8 @@ l156E_thunk_fn156F:
 void fn156F()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn140B
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -1597,6 +1717,8 @@ l15AF_thunk_fn15B0:
 void fn15B0()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn156F
 // MayUse: 
 // LiveOut:
 // Trashed:

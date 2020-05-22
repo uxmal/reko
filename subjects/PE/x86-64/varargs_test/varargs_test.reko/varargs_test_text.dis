@@ -1,6 +1,8 @@
 word64 fn0000000140001000()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
 // MayUse: 
 // LiveOut: rax
 // Trashed: SCZO r8 r9 rax rcx rdx xmm0
@@ -17,6 +19,9 @@ fn0000000140001000_exit:
 word64 fn00000001400010C0()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000001400010D0
+//      fn000000014000193C
 // MayUse: 
 // LiveOut: rax
 // Trashed: rax
@@ -30,6 +35,8 @@ fn00000001400010C0_exit:
 void fn00000001400010D0(word64 rcx, word64 rdx, word64 r8, word64 r9)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000140001000
 // MayUse:  r8:[0..63] r9:[0..63] rcx:[0..63] rdx:[0..63]
 // LiveOut:
 // Trashed: SCZO r8 r9 rax rcx rdx
@@ -49,6 +56,9 @@ fn00000001400010D0_exit:
 word64 fn0000000140001130()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000140001140
+//      fn000000014000193C
 // MayUse: 
 // LiveOut: rax
 // Trashed: rax
@@ -62,6 +72,8 @@ fn0000000140001130_exit:
 void fn0000000140001140(word64 rcx, word64 rdx, word64 r8, word64 r9)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000140001000
 // MayUse:  r8:[0..63] r9:[0..63] rcx:[0..63] rdx:[0..63]
 // LiveOut:
 // Trashed: SCZO r8 r9 rax rcx rdx
@@ -81,6 +93,9 @@ fn0000000140001140_exit:
 word64 fn00000001400011B0(word64 rcx, word64 qwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000140001000
+//      fn0000000140001E9C
 // MayUse:  rcx:[0..63] Stack +0000:[0..63]
 // LiveOut: rax
 // Trashed: SCZO r8 rax rcx rdx
@@ -164,6 +179,8 @@ fn00000001400011D4_exit:
 void fn0000000140001290()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000001400011D4
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax
@@ -195,6 +212,8 @@ fn00000001400012A0_exit:
 word32 fn00000001400012BC(word64 rax)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
 // MayUse:  rax:[0..63]
 // LiveOut: rax
 // Trashed: SCZO r8 r9 rax rcx rdx xmm0
@@ -330,6 +349,8 @@ Win32CrtStartup_exit:
 void fn0000000140001448(word64 rcx)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000001400011B0
 // MayUse:  rcx:[0..63]
 // LiveOut:
 // Trashed: SCZO rax rcx rdx
@@ -346,6 +367,8 @@ fn0000000140001448_exit:
 word64 fn000000014000147C(word64 rcx, word64 qwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000001400011B0
 // MayUse:  rcx:[0..63] Stack +0000:[0..63]
 // LiveOut: rax
 // Trashed: SCZO r8 rax rcx rdx
@@ -373,6 +396,8 @@ l0000000140001493:
 void fn0000000140001550(word64 rcx, word64 qwArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000001400011B0
 // MayUse:  rcx:[0..63] Stack +0008:[0..63]
 // LiveOut:
 // Trashed: SCZO r8 rax rcx rdx
@@ -401,6 +426,8 @@ fn0000000140001550_exit:
 void fn00000001400015C4(selector gs)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
 // MayUse:  gs:[0..15]
 // LiveOut:
 // Trashed: SCZO rax rcx
@@ -426,6 +453,8 @@ fn00000001400015C4_exit:
 void fn0000000140001600(word32 ecx, word32 edx)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
 // MayUse:  ecx:[0..31] edx:[0..31]
 // LiveOut:
 // Trashed: SCZO r10 r8 r9 rax rcx rdx
@@ -454,6 +483,8 @@ fn0000000140001600_exit:
 byte fn000000014000164C(word32 ecx, word64 r8, ptr64 & r8Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000001400011D4
 // MayUse:  ecx:[0..31] r8:[0..63]
 // LiveOut: r8 rax
 // Trashed: SCZO r8 r9 rax rbp rbx rcx rdx rsp xmm0 xmm1
@@ -515,6 +546,9 @@ fn000000014000164C_exit:
 word64 fn0000000140001718(word64 rcx, ptr64 & r8Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
+//      fn000000014000164C
 // MayUse:  rcx:[0..63]
 // LiveOut: r8 rax
 // Trashed: SCZO r8 r9 rax rcx rdx
@@ -574,6 +608,8 @@ l0000000140001787:
 void fn00000001400017B4(byte cl)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
 // MayUse:  cl:[0..7]
 // LiveOut:
 // Trashed: SCZO rax rdx
@@ -593,6 +629,8 @@ fn00000001400017B4_exit:
 void fn00000001400017D8(byte dl)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
 // MayUse:  dl:[0..7]
 // LiveOut:
 // Trashed: SCZO al
@@ -613,6 +651,8 @@ fn00000001400017D8_exit:
 word64 fn0000000140001804(word64 rcx)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000140001854
 // MayUse:  rcx:[0..63]
 // LiveOut: rax
 // Trashed: SCZO rax rcx rdx
@@ -647,6 +687,8 @@ fn0000000140001804_exit:
 void fn0000000140001854(word64 rcx)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000001400011D4
 // MayUse:  rcx:[0..63]
 // LiveOut:
 // Trashed: SCZO rax rcx rdx
@@ -661,6 +703,8 @@ fn0000000140001854_exit:
 word64 fn000000014000186C(word64 qwArg10, word64 qwArg18)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
 // MayUse:  Stack +0010:[0..63] Stack +0018:[0..63]
 // LiveOut: rax
 // Trashed: SCZO rax rcx
@@ -691,6 +735,8 @@ fn000000014000186C_exit:
 word32 fn0000000140001918()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000001400011D4
 // MayUse: 
 // LiveOut: rax
 // Trashed: rax
@@ -704,6 +750,8 @@ fn0000000140001918_exit:
 word32 fn0000000140001920()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000001400011D4
 // MayUse: 
 // LiveOut: rax
 // Trashed: rax
@@ -717,6 +765,8 @@ fn0000000140001920_exit:
 void fn0000000140001928()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000001400011D4
 // MayUse: 
 // LiveOut:
 // Trashed: rcx
@@ -731,6 +781,10 @@ fn0000000140001928_exit:
 byte fn0000000140001938()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000001400011D4
+//      fn0000000140001600
+//      fn00000001400017D8
 // MayUse: 
 // LiveOut: al
 // Trashed: al
@@ -744,6 +798,8 @@ fn0000000140001938_exit:
 void fn000000014000193C()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000140001290
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax
@@ -761,6 +817,8 @@ fn000000014000193C_exit:
 word32 fn0000000140001958()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000001400011D4
 // MayUse: 
 // LiveOut: rax
 // Trashed: SCZO rax
@@ -774,6 +832,8 @@ fn0000000140001958_exit:
 void fn0000000140001964()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
 // MayUse: 
 // LiveOut:
 // Trashed: rax
@@ -787,6 +847,8 @@ fn0000000140001964_exit:
 void fn000000014000196C()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
 // MayUse: 
 // LiveOut:
 // Trashed: rax
@@ -800,6 +862,10 @@ fn000000014000196C_exit:
 word64 fn0000000140001974(word32 ecx, word64 qwArg00, word64 qwArg10, ptr64 & rcxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000001400011D4
+//      Win32CrtStartup
+//      fn000000014000164C
 // MayUse:  ecx:[0..31] Stack +0000:[0..63] Stack +0010:[0..63]
 // LiveOut: rax rcx
 // Trashed: SCZO r8 rax rcx rdx
@@ -838,6 +904,9 @@ l0000000140001999:
 word32 fn0000000140001ABC()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000001400011D4
+//      fn00000001400012A0
 // MayUse: 
 // LiveOut: rax
 // Trashed: SCZO rax
@@ -851,6 +920,8 @@ fn0000000140001ABC_exit:
 void fn0000000140001AC0()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax rcx
@@ -878,6 +949,8 @@ fn0000000140001AC0_exit:
 void fn0000000140001B14()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000001400012A0
 // MayUse: 
 // LiveOut:
 // Trashed: rax rcx
@@ -923,6 +996,9 @@ fn0000000140001B24_exit:
 void fn0000000140001B5C()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000001400011D4
+//      fn0000000140001B24
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rcx
@@ -979,6 +1055,10 @@ fn0000000140001BA8_exit:
 void fn0000000140001BF4()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
+//      fn0000000140001B5C
+//      fn0000000140001BA8
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -993,6 +1073,8 @@ fn0000000140001BF4_exit:
 void fn0000000140001BFC(word32 edx, word32 ebx)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000140001600
 // MayUse:  edx:[0..31] rbx:[0..31]
 // LiveOut:
 // Trashed: SCZO r10 r8 r9 rax rcx rdx
@@ -1076,6 +1158,10 @@ fn0000000140001BFC_exit:
 word32 fn0000000140001DC4()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000001400015C4
+//      fn000000014000164C
+//      fn00000001400017B4
 // MayUse: 
 // LiveOut: rax
 // Trashed: SCZO rax
@@ -1089,6 +1175,8 @@ fn0000000140001DC4_exit:
 void fn0000000140001DD0()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000001400011D4
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -1116,6 +1204,8 @@ fn0000000140001E7C_exit:
 void fn0000000140001E9C(word64 rcx, word64 rdx, word64 r8, word64 qwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000140001E7C
 // MayUse:  r8:[0..63] rcx:[0..63] rdx:[0..63] Stack +0000:[0..63]
 // LiveOut:
 // Trashed: SCZO r10 r8 r9 rax rcx rdx

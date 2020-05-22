@@ -1220,6 +1220,12 @@ free_exit:
 void __do_global_dtors_aux()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      strcpy
+//      strerror
+//      vsnprintf
+//      read
+//      free
 // MayUse: 
 // LiveOut:
 // Trashed: r1 r2 r25 r28 r3
@@ -1816,6 +1822,8 @@ l004009E4:
 void client_new(word32 r4, word32 r5, word32 r6, word32 r7, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
@@ -1906,6 +1914,8 @@ client_new_exit:
 word32 client_prepare_connect(word32 r4, word32 ra, ptr32 & r6Out, ptr32 & r7Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      client_new
 // MayUse:  r4:[0..31] ra:[0..31]
 // LiveOut: r5 r6 r7
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
@@ -2164,6 +2174,9 @@ client_parse_request_exit:
 word32 add_to_request(word32 r4, word32 r5, word32 r6, word32 r7, word32 ra, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      client_prepare_connect
+//      client_parse_request
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] ra:[0..31]
 // LiveOut: r2 r5 r6 r7
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
@@ -2221,6 +2234,8 @@ add_to_request_exit:
 word32 get_a_line(word32 r4, word32 r5, word32 r6)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      client_parse_request
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
 // LiveOut: r2
 // Trashed: r2 r25 r28 r3 r4 r5
@@ -2312,6 +2327,9 @@ client_read_request_exit:
 word32 client_send_request(word32 r4, word32 ra, ptr32 & r25Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
+//      client_new
 // MayUse:  r4:[0..31] ra:[0..31]
 // LiveOut: r25 r5
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
@@ -2393,6 +2411,8 @@ client_parse_reply_exit:
 void client_copy_reply(word32 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      client_parse_reply
 // MayUse:  r4:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r3
@@ -2428,6 +2448,8 @@ client_copy_reply_exit:
 word32 client_check_reply_http(word32 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      client_parse_reply
 // MayUse:  r4:[0..31]
 // LiveOut: r2
 // Trashed: r2 r25 r28 r3 r4 r5 r6
@@ -2556,6 +2578,9 @@ client_check_reply_http_exit:
 void client_close(word32 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      client_destroy
+//      clist_close_all
 // MayUse:  r4:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r3 r4
@@ -2587,6 +2612,9 @@ client_close_exit:
 word32 client_destroy(word32 r4, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
+//      clist_delete
 // MayUse:  r4:[0..31] ra:[0..31]
 // LiveOut: r5
 // Trashed: r2 r25 r28 r4
@@ -2648,6 +2676,8 @@ client_check_activ_exit:
 word32 open_destination(word32 r4, word32 ra, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      client_new
 // MayUse:  r4:[0..31] ra:[0..31]
 // LiveOut: r2 r5 r6 r7
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
@@ -2694,6 +2724,8 @@ open_destination_exit:
 word32 clist_new(word32 ra, ptr32 & r4Out, ptr32 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  ra:[0..31]
 // LiveOut: r2 r4 r5
 // Trashed: r2 r25 r28 r4 r5
@@ -2728,6 +2760,8 @@ clist_new_exit:
 word32 clist_add(word32 r4, word32 r5, ptr32 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  r4:[0..31] r5:[0..31]
 // LiveOut: r2 r5
 // Trashed: r2 r25 r28 r3 r4
@@ -2759,6 +2793,8 @@ clist_add_exit:
 word32 clist_remove(word32 r4, word32 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      clist_delete
 // MayUse:  r4:[0..31] r5:[0..31]
 // LiveOut: r5
 // Trashed: r2 r25 r28 r3
@@ -2844,6 +2880,8 @@ clist_find_fdout_exit:
 void clist_delete(word32 r4, word32 r5, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      clist_destroy_all
 // MayUse:  r4:[0..31] r5:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r25 r28 r4 r5
@@ -2859,6 +2897,8 @@ clist_delete_exit:
 void clist_close_all(word32 r4, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      clist_destroy
 // MayUse:  r4:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r4
@@ -2882,6 +2922,8 @@ clist_close_all_exit:
 void clist_destroy_all(word32 r4, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      clist_destroy
 // MayUse:  r4:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r4 r5
@@ -2919,6 +2961,8 @@ clist_destroy_exit:
 word32 request_new(word32 r4, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      client_parse_request
 // MayUse:  r4:[0..31] ra:[0..31]
 // LiveOut: r2
 // Trashed: r2 r25 r28 r3 r4 r5
@@ -2965,6 +3009,9 @@ request_new_exit:
 word32 request_parse_line(word32 r4, word32 r5, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      client_parse_request
+//      request_new
 // MayUse:  r4:[0..31] r5:[0..31] ra:[0..31]
 // LiveOut: r2
 // Trashed: r2 r25 r28 r4 r5
@@ -2990,6 +3037,8 @@ request_parse_line_exit:
 void request_save_line(word32 r4, word32 r5, word32 r6, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      client_parse_request
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
@@ -3040,6 +3089,8 @@ request_save_line_exit:
 void request_make_url(word32 r4, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      client_parse_request
 // MayUse:  r4:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
@@ -3077,6 +3128,8 @@ request_make_url_exit:
 word32 request_add_lines(word32 r4, word32 r5, word32 r6)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      client_parse_request
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
 // LiveOut: r2
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
@@ -3136,6 +3189,8 @@ request_add_lines_exit:
 word32 get_method(word32 r4, word32 r5, ptr32 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      request_parse_line
 // MayUse:  r4:[0..31] r5:[0..31]
 // LiveOut: r2 r5
 // Trashed: r2 r25 r28 r4 r5 r6
@@ -3157,6 +3212,8 @@ get_method_exit:
 word32 get_uri(word32 r4, word32 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      request_parse_line
 // MayUse:  r4:[0..31] r5:[0..31]
 // LiveOut: r2
 // Trashed: r2 r25 r28 r4 r5 r6
@@ -3176,6 +3233,8 @@ get_uri_exit:
 void get_version(word32 r4, word32 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      request_parse_line
 // MayUse:  r4:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r4 r5 r6
@@ -3195,6 +3254,8 @@ get_version_exit:
 void request_get_host(word32 r4, word32 r5, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      client_parse_request
 // MayUse:  r4:[0..31] r5:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
@@ -3274,6 +3335,8 @@ request_get_host_exit:
 void request_get_content_length(word32 r4, word32 r5, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      client_parse_request
 // MayUse:  r4:[0..31] r5:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
@@ -3352,6 +3415,8 @@ request_get_content_length_exit:
 word32 is_a_method(word32 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      request_parse_line
 // MayUse:  r4:[0..31]
 // LiveOut: r2
 // Trashed: r2 r25 r28 r3 r4 r5 r6
@@ -3382,6 +3447,9 @@ is_a_method_exit:
 void request_destroy(word32 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      client_parse_request
+//      client_destroy
 // MayUse:  r4:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r3 r4 r5 r6
@@ -3435,6 +3503,8 @@ properties_parse_int_exit:
 void properties_load(word32 r4, word32 r5, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  r4:[0..31] r5:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
@@ -3617,6 +3687,8 @@ properties_load_exit:
 word32 properties_parse_command_line(word32 r4, word32 r5, word32 r16, word32 ra, ptr32 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  r16:[0..31] r4:[0..31] r5:[0..31] ra:[0..31]
 // LiveOut: r4 r5
 // Trashed: r1 r2 r25 r28 r3
@@ -3765,6 +3837,8 @@ properties_parse_command_line_exit:
 void properties_print_usage(word32 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      properties_parse_command_line
 // MayUse:  r4:[0..31]
 // LiveOut:
 // Trashed: r1 r2 r25 r28 r3 r4 r5 r6
@@ -3824,6 +3898,30 @@ properties_print_usage_exit:
 word32 print_log(word32 r4, word32 r5, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r25Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      handle_stop
+//      handle_log_rotate
+//      main
+//      client_new
+//      client_parse_request
+//      add_to_request
+//      client_send_request
+//      client_check_activ
+//      open_destination
+//      clist_new
+//      request_new
+//      request_save_line
+//      request_make_url
+//      request_get_host
+//      request_get_content_length
+//      properties_parse_int
+//      properties_load
+//      open_log
+//      server_new
+//      server_open
+//      server_destroy
+//      slist_new
+//      slist_delete
 // MayUse:  r4:[0..31] r5:[0..31]
 // LiveOut: r25 r4 r5 r6 r7
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
@@ -3854,6 +3952,9 @@ print_log_exit:
 word32 open_log(word32 r4, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
+//      log_rotate
 // MayUse:  r4:[0..31] ra:[0..31]
 // LiveOut: r5
 // Trashed: r1 r2 r25 r28 r3 r4 r5 r6
@@ -3892,6 +3993,9 @@ open_log_exit:
 void log_rotate(word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      handle_log_rotate
+//      log_string
 // MayUse:  ra:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r3 r4 r5
@@ -3975,6 +4079,8 @@ log_string_exit:
 word32 server_new(word32 r4, word32 r5, word32 r6, word32 r7, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  r4:[0..31] r5:[0..15] r6:[0..31] r7:[0..31] ra:[0..31]
 // LiveOut: r2
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
@@ -4022,6 +4128,8 @@ server_new_exit:
 word32 server_open(word32 r4, word32 ra, ptr32 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  r4:[0..31] ra:[0..31]
 // LiveOut: r2 r5
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
@@ -4083,6 +4191,9 @@ server_open_exit:
 void server_close(word32 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      server_destroy
+//      slist_close_all
 // MayUse:  r4:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r3 r4
@@ -4107,6 +4218,8 @@ server_close_exit:
 void server_destroy(word32 r4, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      slist_delete
 // MayUse:  r4:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r4 r5 r6 r7
@@ -4127,6 +4240,8 @@ server_destroy_exit:
 word32 slist_new(word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  ra:[0..31]
 // LiveOut: r2
 // Trashed: r2 r25 r28 r4 r5
@@ -4158,6 +4273,8 @@ slist_new_exit:
 void slist_add(word32 r4, word32 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  r4:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r3 r4
@@ -4187,6 +4304,8 @@ slist_add_exit:
 void slist_remove(word32 r4, word32 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      slist_delete
 // MayUse:  r4:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r3
@@ -4246,6 +4365,8 @@ slist_find_fd_exit:
 void slist_delete(word32 r4, word32 r5, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      slist_destroy_all
 // MayUse:  r4:[0..31] r5:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r4 r5 r6 r7
@@ -4266,6 +4387,8 @@ slist_delete_exit:
 void slist_close_all(word32 r4, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      slist_destroy
 // MayUse:  r4:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r4
@@ -4289,6 +4412,8 @@ slist_close_all_exit:
 void slist_destroy_all(word32 r4, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      slist_destroy
 // MayUse:  r4:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r4 r5
@@ -4310,6 +4435,8 @@ slist_destroy_all_exit:
 void slist_destroy(word32 r4, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  r4:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r25 r28 r4
@@ -5597,6 +5724,8 @@ __negdf2_exit:
 void __make_dp(word32 r5, word32 r6, word32 ra, word32 dwArg10, word32 dwArg14)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __extendsfdf2
 // MayUse:  r5:[0..31] r6:[0..31] ra:[0..31] Stack +0010:[0..31] Stack +0014:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r3 r4 r5 r6
@@ -5631,6 +5760,13 @@ __truncdfsf2_exit:
 void __pack_f(word32 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __addsf3
+//      __subsf3
+//      __mulsf3
+//      __divsf3
+//      __floatsisf
+//      __make_fp
 // MayUse:  r4:[0..31]
 // LiveOut:
 // Trashed: f0 r2 r25 r3 r4 r5 r6 r7
@@ -5716,6 +5852,13 @@ __pack_f_exit:
 void __unpack_f(word32 r4, word32 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __addsf3
+//      __subsf3
+//      __mulsf3
+//      __divsf3
+//      __fixsfsi
+//      __extendsfdf2
 // MayUse:  r4:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r3 r4 r5 r6
@@ -5790,6 +5933,8 @@ __unpack_f_exit:
 void __make_fp(word32 r5, word32 r6, word32 r7, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __truncdfsf2
 // MayUse:  r5:[0..31] r6:[0..31] r7:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r25 r28 r4 r5 r6 r7
@@ -5804,6 +5949,14 @@ __make_fp_exit:
 void __pack_d(word32 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __adddf3
+//      __subdf3
+//      __muldf3
+//      __divdf3
+//      __floatsidf
+//      __negdf2
+//      __make_dp
 // MayUse:  r4:[0..31]
 // LiveOut:
 // Trashed: f0 f1 r10 r11 r12 r13 r14 r15 r2 r25 r28 r3 r4 r5 r6 r7 r8 r9
@@ -5936,6 +6089,17 @@ __pack_d_exit:
 void __unpack_d(word32 r4, word32 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __adddf3
+//      __subdf3
+//      __muldf3
+//      __divdf3
+//      __eqdf2
+//      __nedf2
+//      __gedf2
+//      __ltdf2
+//      __negdf2
+//      __truncdfsf2
 // MayUse:  r4:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: r10 r2 r25 r28 r3 r4 r5 r6 r7 r8 r9
@@ -6014,6 +6178,11 @@ __unpack_d_exit:
 void __fpcmp_parts_d(word32 r4, word32 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __eqdf2
+//      __nedf2
+//      __gedf2
+//      __ltdf2
 // MayUse:  r4:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r3 r6 r7 r8

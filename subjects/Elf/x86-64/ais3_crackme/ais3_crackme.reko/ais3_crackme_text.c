@@ -13,6 +13,8 @@ void _start(void (* rdx)(), Eq_n qwArg00)
 }
 
 // 000000000040043C: void call_gmon_start()
+// Called from:
+//      _init
 void call_gmon_start()
 {
 	if (__gmon_start__ != 0x00)
@@ -20,6 +22,8 @@ void call_gmon_start()
 }
 
 // 0000000000400460: void deregister_tm_clones()
+// Called from:
+//      __do_global_dtors_aux
 void deregister_tm_clones()
 {
 	if (true || 0x00 == 0x00)
@@ -28,6 +32,8 @@ void deregister_tm_clones()
 }
 
 // 0000000000400490: void register_tm_clones()
+// Called from:
+//      frame_dummy
 void register_tm_clones()
 {
 	if (true || 0x00 == 0x00)
@@ -58,6 +64,8 @@ void frame_dummy()
 }
 
 // 0000000000400520: Register word32 verify(Register (arr Eq_n) rdi)
+// Called from:
+//      main
 word32 verify(Eq_n rdi[])
 {
 	word32 dwLoc0C_n = 0x00;

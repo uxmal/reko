@@ -19,6 +19,8 @@ l00000600:
 word64 deregister_tm_clones(word64 r14)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __do_global_dtors_aux
 // MayUse:  r14:[0..63]
 // LiveOut: r1
 // Trashed: CC r1 r14 r2 r5
@@ -57,6 +59,8 @@ deregister_tm_clones_exit:
 void register_tm_clones(word64 r2, word64 r14)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      frame_dummy
 // MayUse:  r14:[0..63] r2:[0..63]
 // LiveOut:
 // Trashed: CC r1 r14 r2 r3
@@ -157,6 +161,9 @@ l00000760:
 word64 fib(word64 r2, ptr32 & r10Out, ptr32 & r11Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fib
+//      main
 // MayUse:  r2:[0..63]
 // LiveOut: r10 r11 r2
 // Trashed: CC r1 r10 r11 r12 r13 r14 r2 r4

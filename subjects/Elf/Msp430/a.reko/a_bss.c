@@ -5,6 +5,9 @@
 #include "a_bss.h"
 
 // 09B2: void __write_char()
+// Called from:
+//      PRINT
+//      __write_pad
 void __write_char()
 {
 }

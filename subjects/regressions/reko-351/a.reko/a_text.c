@@ -5,6 +5,8 @@
 #include "a_text.h"
 
 // 80000080: Register word32 deregister_tm_clones()
+// Called from:
+//      __do_global_dtors_aux
 word32 deregister_tm_clones()
 {
 	word32 * a6_n = fp - 0x04;
@@ -17,6 +19,8 @@ word32 deregister_tm_clones()
 }
 
 // 800000AE: void register_tm_clones()
+// Called from:
+//      frame_dummy
 void register_tm_clones()
 {
 	int32 d0_n = 0;
@@ -99,11 +103,15 @@ void call_frame_dummy()
 }
 
 // 800001AC: void sine_taylor(Stack real64 rArg04)
+// Called from:
+//      main
 void sine_taylor(real64 rArg04)
 {
 }
 
 // 8000033C: void factorial(Stack int32 dwArg04)
+// Called from:
+//      sine_taylor
 void factorial(int32 dwArg04)
 {
 	int32 dwLoc08_n = 2;
@@ -112,6 +120,8 @@ void factorial(int32 dwArg04)
 }
 
 // 80000372: void pow_int(Stack real64 rArg04, Stack int32 dwArg0C)
+// Called from:
+//      sine_taylor
 void pow_int(real64 rArg04, int32 dwArg0C)
 {
 	int32 dwLoc08_n = 0x00;
@@ -146,6 +156,8 @@ void main()
 }
 
 // 800004DE: void _sin(Stack real64 rArg04, Stack real64 rArg0C, Stack Eq_n tArg14)
+// Called from:
+//      main
 void _sin(real64 rArg04, real64 rArg0C, Eq_n tArg14)
 {
 	real64 rLoc0C_n = rArg04;

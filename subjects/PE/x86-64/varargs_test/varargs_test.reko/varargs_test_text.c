@@ -5,6 +5,8 @@
 #include "varargs_test_text.h"
 
 // 0000000140001000: Register word64 fn0000000140001000()
+// Called from:
+//      Win32CrtStartup
 word64 fn0000000140001000()
 {
 	ui64 rax_n = globals->qw40003000 ^ fp - 200;
@@ -14,12 +16,17 @@ word64 fn0000000140001000()
 }
 
 // 00000001400010C0: Register ptr64 fn00000001400010C0()
+// Called from:
+//      fn00000001400010D0
+//      fn000000014000193C
 ptr64 fn00000001400010C0()
 {
 	return 0x140003628;
 }
 
 // 00000001400010D0: void fn00000001400010D0(Register ptr64 rcx, Register ptr64 rdx, Register ptr64 r8, Register ptr64 r9)
+// Called from:
+//      fn0000000140001000
 void fn00000001400010D0(ptr64 rcx, ptr64 rdx, ptr64 r8, ptr64 r9)
 {
 	word64 rax_n;
@@ -28,12 +35,17 @@ void fn00000001400010D0(ptr64 rcx, ptr64 rdx, ptr64 r8, ptr64 r9)
 }
 
 // 0000000140001130: Register ptr64 fn0000000140001130()
+// Called from:
+//      fn0000000140001140
+//      fn000000014000193C
 ptr64 fn0000000140001130()
 {
 	return 0x140003620;
 }
 
 // 0000000140001140: void fn0000000140001140(Register ptr64 rcx, Register uint64 rdx, Register ptr64 r8, Register ptr64 r9)
+// Called from:
+//      fn0000000140001000
 void fn0000000140001140(ptr64 rcx, uint64 rdx, ptr64 r8, ptr64 r9)
 {
 	word64 rax_n;
@@ -42,6 +54,9 @@ void fn0000000140001140(ptr64 rcx, uint64 rdx, ptr64 r8, ptr64 r9)
 }
 
 // 00000001400011B0: Register word64 fn00000001400011B0(Register ui64 rcx, Stack word64 qwArg00)
+// Called from:
+//      fn0000000140001000
+//      fn0000000140001E9C
 word64 fn00000001400011B0(ui64 rcx, word64 qwArg00)
 {
 	if (rcx != globals->qw40003000)
@@ -98,6 +113,8 @@ void fn00000001400011D4(word64 rbx, ui64 r8, word64 qwArg08)
 }
 
 // 0000000140001290: void fn0000000140001290()
+// Called from:
+//      fn00000001400011D4
 void fn0000000140001290()
 {
 	fn000000014000193C();
@@ -112,6 +129,8 @@ void fn00000001400012A0()
 }
 
 // 00000001400012BC: Register word32 fn00000001400012BC(Register (ptr64 (ptr64 code)) rax)
+// Called from:
+//      Win32CrtStartup
 word32 fn00000001400012BC(<anonymous> ** rax)
 {
 	word56 rsi_56_8_n = SLICE(rsi, word56, 8);
@@ -224,6 +243,8 @@ Eq_n Win32CrtStartup()
 }
 
 // 0000000140001448: void fn0000000140001448(Register (ptr64 Eq_n) rcx)
+// Called from:
+//      fn00000001400011B0
 void fn0000000140001448(struct _EXCEPTION_POINTERS * rcx)
 {
 	word32 rax_32_32_n = SLICE(SetUnhandledExceptionFilter(null), word32, 32);
@@ -232,6 +253,8 @@ void fn0000000140001448(struct _EXCEPTION_POINTERS * rcx)
 }
 
 // 000000014000147C: Register word64 fn000000014000147C(Register ui64 rcx, Stack word64 qwArg00)
+// Called from:
+//      fn00000001400011B0
 word64 fn000000014000147C(ui64 rcx, word64 qwArg00)
 {
 	if (IsProcessorFeaturePresent(0x17) == 0x00)
@@ -253,6 +276,8 @@ word64 fn000000014000147C(ui64 rcx, word64 qwArg00)
 }
 
 // 0000000140001550: void fn0000000140001550(Register Eq_n rcx, Stack word64 qwArg08)
+// Called from:
+//      fn00000001400011B0
 void fn0000000140001550(Eq_n rcx, word64 qwArg08)
 {
 	RtlCaptureContext(rcx);
@@ -272,6 +297,8 @@ void fn0000000140001550(Eq_n rcx, word64 qwArg08)
 }
 
 // 00000001400015C4: void fn00000001400015C4(Register (ptr32 Eq_n) gs)
+// Called from:
+//      Win32CrtStartup
 void fn00000001400015C4(struct Eq_n * gs)
 {
 	if ((word32) (uint64) (uint32) fn0000000140001DC4() != 0x00)
@@ -292,6 +319,8 @@ l00000001400015F2:
 }
 
 // 0000000140001600: void fn0000000140001600(Register word32 ecx, Register word32 edx)
+// Called from:
+//      Win32CrtStartup
 void fn0000000140001600(word32 ecx, word32 edx)
 {
 	byte al_n = (byte) (word32) globals->b400035F0;
@@ -307,6 +336,8 @@ void fn0000000140001600(word32 ecx, word32 edx)
 }
 
 // 000000014000164C: Register byte fn000000014000164C(Register up32 ecx, Register ui64 r8, Register out Eq_n r8Out)
+// Called from:
+//      fn00000001400011D4
 byte fn000000014000164C(up32 ecx, ui64 r8, union Eq_n & r8Out)
 {
 	word32 ebx_n = (word32) (uint64) ecx;
@@ -360,6 +391,9 @@ byte fn000000014000164C(up32 ecx, ui64 r8, union Eq_n & r8Out)
 }
 
 // 0000000140001718: Register uint64 fn0000000140001718(Register (ptr64 (ptr64 code)) rcx, Register out (ptr64 (ptr64 code)) r8Out)
+// Called from:
+//      Win32CrtStartup
+//      fn000000014000164C
 uint64 fn0000000140001718(<anonymous> ** rcx, <anonymous> & r8Out)
 {
 	uint64 rax_n;
@@ -411,6 +445,8 @@ l00000001400017AC:
 }
 
 // 00000001400017B4: void fn00000001400017B4(Register byte cl)
+// Called from:
+//      Win32CrtStartup
 void fn00000001400017B4(byte cl)
 {
 	if ((word32) (uint64) (uint32) fn0000000140001DC4() != 0x00 && cl == 0x00)
@@ -418,6 +454,8 @@ void fn00000001400017B4(byte cl)
 }
 
 // 00000001400017D8: void fn00000001400017D8(Register byte dl)
+// Called from:
+//      Win32CrtStartup
 void fn00000001400017D8(byte dl)
 {
 	if (globals->b400035F0 == 0x00 || dl == 0x00)
@@ -428,6 +466,8 @@ void fn00000001400017D8(byte dl)
 }
 
 // 0000000140001804: Register Eq_n fn0000000140001804(Register Eq_n rcx)
+// Called from:
+//      fn0000000140001854
 Eq_n fn0000000140001804(Eq_n rcx)
 {
 	word32 eax_n;
@@ -451,12 +491,16 @@ Eq_n fn0000000140001804(Eq_n rcx)
 }
 
 // 0000000140001854: void fn0000000140001854(Register Eq_n rcx)
+// Called from:
+//      fn00000001400011D4
 void fn0000000140001854(Eq_n rcx)
 {
 	fn0000000140001804(rcx);
 }
 
 // 000000014000186C: Register word64 fn000000014000186C(Stack ui64 qwArg10, Stack word64 qwArg18)
+// Called from:
+//      Win32CrtStartup
 word64 fn000000014000186C(ui64 qwArg10, word64 qwArg18)
 {
 	word32 dwArg18 = (word32) qwArg18;
@@ -478,30 +522,42 @@ word64 fn000000014000186C(ui64 qwArg10, word64 qwArg18)
 }
 
 // 0000000140001918: Register word32 fn0000000140001918()
+// Called from:
+//      fn00000001400011D4
 word32 fn0000000140001918()
 {
 	return 0x01;
 }
 
 // 0000000140001920: Register word32 fn0000000140001920()
+// Called from:
+//      fn00000001400011D4
 word32 fn0000000140001920()
 {
 	return 0x4000;
 }
 
 // 0000000140001928: void fn0000000140001928()
+// Called from:
+//      fn00000001400011D4
 void fn0000000140001928()
 {
 	InitializeSListHead(&globals->u40003600);
 }
 
 // 0000000140001938: Register byte fn0000000140001938()
+// Called from:
+//      fn00000001400011D4
+//      fn0000000140001600
+//      fn00000001400017D8
 byte fn0000000140001938()
 {
 	return 0x01;
 }
 
 // 000000014000193C: void fn000000014000193C()
+// Called from:
+//      fn0000000140001290
 void fn000000014000193C()
 {
 	ui64 * rax_n = fn0000000140001130();
@@ -511,22 +567,32 @@ void fn000000014000193C()
 }
 
 // 0000000140001958: Register word32 fn0000000140001958()
+// Called from:
+//      fn00000001400011D4
 word32 fn0000000140001958()
 {
 	return (word32) (uint64) (uint8) (globals->dw40003014 == 0x00);
 }
 
 // 0000000140001964: void fn0000000140001964()
+// Called from:
+//      Win32CrtStartup
 void fn0000000140001964()
 {
 }
 
 // 000000014000196C: void fn000000014000196C()
+// Called from:
+//      Win32CrtStartup
 void fn000000014000196C()
 {
 }
 
 // 0000000140001974: Register uint64 fn0000000140001974(Register word32 ecx, Stack word64 qwArg00, Stack word64 qwArg10, Register out ptr64 rcxOut)
+// Called from:
+//      fn00000001400011D4
+//      Win32CrtStartup
+//      fn000000014000164C
 uint64 fn0000000140001974(word32 ecx, word64 qwArg00, word64 qwArg10, ptr64 & rcxOut)
 {
 	word32 ebx_n = (word32) (uint64) ecx;
@@ -556,12 +622,17 @@ uint64 fn0000000140001974(word32 ecx, word64 qwArg00, word64 qwArg10, ptr64 & rc
 }
 
 // 0000000140001ABC: Register word32 fn0000000140001ABC()
+// Called from:
+//      fn00000001400011D4
+//      fn00000001400012A0
 word32 fn0000000140001ABC()
 {
 	return 0x00;
 }
 
 // 0000000140001AC0: void fn0000000140001AC0()
+// Called from:
+//      Win32CrtStartup
 void fn0000000140001AC0()
 {
 	Eq_n rax_n = GetModuleHandleW(null);
@@ -573,6 +644,8 @@ void fn0000000140001AC0()
 }
 
 // 0000000140001B14: void fn0000000140001B14()
+// Called from:
+//      fn00000001400012A0
 void fn0000000140001B14()
 {
 	SetUnhandledExceptionFilter(&globals->t40001B24);
@@ -594,6 +667,9 @@ void fn0000000140001B24(struct Eq_n ** rcx)
 }
 
 // 0000000140001B5C: void fn0000000140001B5C()
+// Called from:
+//      fn00000001400011D4
+//      fn0000000140001B24
 void fn0000000140001B5C()
 {
 	word64 * rbx_n;
@@ -626,12 +702,18 @@ void fn0000000140001BA8()
 }
 
 // 0000000140001BF4: void fn0000000140001BF4()
+// Called from:
+//      Win32CrtStartup
+//      fn0000000140001B5C
+//      fn0000000140001BA8
 void fn0000000140001BF4()
 {
 	globals->ptr40002190();
 }
 
 // 0000000140001BFC: void fn0000000140001BFC(Register word32 edx, Register Eq_n ebx)
+// Called from:
+//      fn0000000140001600
 void fn0000000140001BFC(word32 edx, Eq_n ebx)
 {
 	word32 ebx_n = (word32) rbx;
@@ -709,12 +791,18 @@ l0000000140001CE9:
 }
 
 // 0000000140001DC4: Register word32 fn0000000140001DC4()
+// Called from:
+//      fn00000001400015C4
+//      fn000000014000164C
+//      fn00000001400017B4
 word32 fn0000000140001DC4()
 {
 	return (word32) (uint64) (uint8) (globals->dw40003030 != 0x00);
 }
 
 // 0000000140001DD0: void fn0000000140001DD0()
+// Called from:
+//      fn00000001400011D4
 void fn0000000140001DD0()
 {
 }
@@ -726,6 +814,8 @@ void fn0000000140001E7C(int64 rdx, struct Eq_n * r9)
 }
 
 // 0000000140001E9C: void fn0000000140001E9C(Register int64 rcx, Register (ptr64 Eq_n) rdx, Register (ptr64 Eq_n) r8, Stack word64 qwArg00)
+// Called from:
+//      fn0000000140001E7C
 void fn0000000140001E9C(int64 rcx, struct Eq_n * rdx, struct Eq_n * r8, word64 qwArg00)
 {
 	word32 r11d_n = (word32) (uint64) ((word32) (uint64) r8->dw0000 & ~0x07);

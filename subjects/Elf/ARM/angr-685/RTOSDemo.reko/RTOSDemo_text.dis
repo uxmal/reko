@@ -103,6 +103,8 @@ l0000807C:
 void Main(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      ResetISR
 // MayUse:  cpsr:[0..31]
 // LiveOut:
 // Trashed:
@@ -165,6 +167,8 @@ vUART_ISR_exit:
 word32 vSetErrorLED(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvSetAndCheckRegisters
 // MayUse:  cpsr:[0..31]
 // LiveOut: r0
 // Trashed: NZCV r0 r1 r2 r3
@@ -179,6 +183,8 @@ vSetErrorLED_exit:
 word32 prvSetAndCheckRegisters(word32 cpsr, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vApplicationIdleHook
 // MayUse:  cpsr:[0..31]
 // LiveOut: r0 r4 r5 r6 r7 r8
 // Trashed: NZCV fp ip r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
@@ -231,6 +237,8 @@ prvSetAndCheckRegisters_exit:
 void vApplicationIdleHook(word32 r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 lr, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvIdleTask
 // MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31]
 // LiveOut:
 // Trashed:
@@ -247,6 +255,8 @@ l00008212:
 void PDCInit()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vParTestInitialise
 // MayUse: 
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r3
@@ -271,6 +281,10 @@ PDCInit_exit:
 word32 PDCWrite(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vParTestInitialise
+//      vParTestSetLED
+//      vParTestToggleLED
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut: r0
 // Trashed: NZC r0 r1 r2 r3
@@ -289,6 +303,11 @@ PDCWrite_exit:
 void vListInitialise(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueGenericReset
+//      prvAddNewTaskToReadyList
+//      xEventGroupCreate
+//      xCoRoutineCreate
 // MayUse:  r0:[0..31]
 // LiveOut:
 // Trashed: r1 r2 r3
@@ -307,6 +326,9 @@ vListInitialise_exit:
 void vListInitialiseItem(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvInitialiseNewTask
+//      xCoRoutineCreate
 // MayUse:  r0:[0..31]
 // LiveOut:
 // Trashed: r3
@@ -321,6 +343,21 @@ vListInitialiseItem_exit:
 void vListInsertEnd(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvAddNewTaskToReadyList
+//      xTaskGenericNotify
+//      xTaskGenericNotifyFromISR
+//      vTaskNotifyGiveFromISR
+//      xTaskIncrementTick
+//      xTaskResumeAll
+//      vTaskPlaceOnUnorderedEventList
+//      xTaskRemoveFromEventList
+//      xTaskRemoveFromUnorderedEventList
+//      vTaskPriorityInherit
+//      xTaskPriorityDisinherit
+//      xCoRoutineCreate
+//      vCoRoutineSchedule
+//      xCoRoutineRemoveFromEventList
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed: NZCV r2 r3
@@ -343,6 +380,10 @@ vListInsertEnd_exit:
 bool vListInsert(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvAddCurrentTaskToDelayedList.isra.0
+//      vTaskPlaceOnEventList
+//      vCoRoutineAddToDelayedList
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut: Z
 // Trashed: NZCV r2 r3
@@ -378,6 +419,20 @@ vListInsert_exit:
 word32 uxListRemove(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvAddCurrentTaskToDelayedList.isra.0
+//      xTaskGenericNotify
+//      xTaskGenericNotifyFromISR
+//      vTaskNotifyGiveFromISR
+//      xTaskIncrementTick
+//      xTaskResumeAll
+//      xTaskRemoveFromEventList
+//      xTaskRemoveFromUnorderedEventList
+//      vTaskPriorityInherit
+//      xTaskPriorityDisinherit
+//      vCoRoutineAddToDelayedList
+//      vCoRoutineSchedule
+//      xCoRoutineRemoveFromEventList
 // MayUse:  r0:[0..31]
 // LiveOut: r0
 // Trashed: NZCV r0 r1 r2 r3
@@ -404,6 +459,8 @@ uxListRemove_exit:
 bool xQueueCRSend(word32 r0, word32 r1, word32 r2, word32 r7, word32 lr, word32 cpsr, ptr32 & r0Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvFixedDelayCoRoutine
 // MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r7:[0..31]
 // LiveOut: Z r0
 // Trashed: NZCV lr r0 r1 r2 r3 r7
@@ -465,6 +522,8 @@ xQueueCRSend_exit:
 bool xQueueCRReceive(word32 r0, word32 r1, word32 r2, word32 r6, word32 r7, word32 lr, word32 cpsr, ptr32 & r0Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & lrOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvFlashCoRoutine
 // MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r6:[0..31] r7:[0..31]
 // LiveOut: Z lr r0 r6 r7
 // Trashed: NZCV lr r0 r1 r2 r6 r7
@@ -645,6 +704,8 @@ l0000852E:
 void xTaskNotifyStateClear(word32 r0, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_xTaskNotifyStateClear
 // MayUse:  cpsr:[0..31] r0:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r2
@@ -673,6 +734,47 @@ xTaskNotifyStateClear_exit:
 word32 xPortRaisePrivilege(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vPortEnterCritical
+//      vPortExitCritical
+//      MPU_xTaskCreateRestricted
+//      MPU_xTaskCreate
+//      MPU_vTaskAllocateMPURegions
+//      MPU_vTaskDelayUntil
+//      MPU_vTaskDelay
+//      MPU_vTaskSuspendAll
+//      MPU_xTaskResumeAll
+//      MPU_xTaskGetTickCount
+//      MPU_uxTaskGetNumberOfTasks
+//      MPU_pcTaskGetName
+//      MPU_vTaskSetTimeOutState
+//      MPU_xTaskCheckForTimeOut
+//      MPU_xTaskGenericNotify
+//      MPU_xTaskNotifyWait
+//      MPU_ulTaskNotifyTake
+//      MPU_xTaskNotifyStateClear
+//      MPU_xQueueGenericCreate
+//      MPU_xQueueGenericReset
+//      MPU_xQueueGenericSend
+//      MPU_uxQueueMessagesWaiting
+//      MPU_uxQueueSpacesAvailable
+//      MPU_xQueueGenericReceive
+//      MPU_xQueuePeekFromISR
+//      MPU_xQueueGetMutexHolder
+//      MPU_xQueueCreateMutex
+//      MPU_xQueueTakeMutexRecursive
+//      MPU_xQueueGiveMutexRecursive
+//      MPU_vQueueDelete
+//      MPU_pvPortMalloc
+//      MPU_vPortFree
+//      MPU_vPortInitialiseBlocks
+//      MPU_xPortGetFreeHeapSize
+//      MPU_xEventGroupCreate
+//      MPU_xEventGroupWaitBits
+//      MPU_xEventGroupClearBits
+//      MPU_xEventGroupSetBits
+//      MPU_xEventGroupSync
+//      MPU_vEventGroupDelete
 // MayUse:  cpsr:[0..31]
 // LiveOut: r0
 // Trashed: NZC r0
@@ -690,6 +792,26 @@ xPortRaisePrivilege_exit:
 bool vPortEnterCritical(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvUnlockQueue
+//      xQueueGenericSend
+//      xQueueGenericReceive
+//      uxQueueMessagesWaiting
+//      uxQueueSpacesAvailable
+//      xQueueGetMutexHolder
+//      xQueueGenericReset
+//      prvAddNewTaskToReadyList
+//      xTaskGenericNotify
+//      xTaskNotifyWait
+//      ulTaskNotifyTake
+//      xTaskResumeAll
+//      xTaskCheckForTimeOut
+//      xEventGroupWaitBits
+//      xEventGroupClearBits
+//      xEventGroupSync
+//      vEventGroupClearBitsCallback
+//      xQueueCRSend
+//      xTaskNotifyStateClear
 // MayUse:  cpsr:[0..31]
 // LiveOut: C
 // Trashed: NZCV r0 r2
@@ -714,6 +836,26 @@ vPortEnterCritical_exit:
 bool vPortExitCritical(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvUnlockQueue
+//      xQueueGenericSend
+//      xQueueGenericReceive
+//      uxQueueMessagesWaiting
+//      uxQueueSpacesAvailable
+//      xQueueGetMutexHolder
+//      xQueueGenericReset
+//      prvAddNewTaskToReadyList
+//      xTaskGenericNotify
+//      xTaskNotifyWait
+//      ulTaskNotifyTake
+//      xTaskResumeAll
+//      xTaskCheckForTimeOut
+//      xEventGroupWaitBits
+//      xEventGroupClearBits
+//      xEventGroupSync
+//      vEventGroupClearBitsCallback
+//      xQueueCRSend
+//      xTaskNotifyStateClear
 // MayUse:  cpsr:[0..31]
 // LiveOut: Z
 // Trashed: NZCV r0 r2
@@ -757,6 +899,8 @@ vParTestInitialise_exit:
 word32 vParTestSetLED(word32 r0, word32 r1, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vSetErrorLED
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
 // LiveOut: r0
 // Trashed: NZCV r0 r1 r2 r3
@@ -786,6 +930,8 @@ vParTestSetLED_exit:
 void vParTestToggleLED(word32 r0, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvFlashCoRoutine
 // MayUse:  cpsr:[0..31] r0:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r3
@@ -984,6 +1130,8 @@ MPU_xTaskCreateRestricted_exit:
 void MPU_xTaskCreate(word32 r0, word32 r1, word32 r2, word32 r3, word32 cpsr, word32 dwArg00, word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      ResetISR
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31] Stack +0000:[0..31] Stack +0004:[0..31]
 // LiveOut:
 // Trashed: NZCV r1 r2 r3
@@ -1022,6 +1170,8 @@ MPU_vTaskAllocateMPURegions_exit:
 void MPU_vTaskDelayUntil(word32 r0, word32 r1, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vCheckTask
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r3
@@ -1060,6 +1210,9 @@ MPU_vTaskDelay_exit:
 word32 MPU_vTaskSuspendAll(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vParTestSetLED
+//      vParTestToggleLED
 // MayUse:  cpsr:[0..31]
 // LiveOut: r0
 // Trashed: NZCV r0 r2 r3
@@ -1081,6 +1234,9 @@ MPU_vTaskSuspendAll_exit:
 void MPU_xTaskResumeAll(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vParTestSetLED
+//      vParTestToggleLED
 // MayUse:  cpsr:[0..31]
 // LiveOut:
 // Trashed: NZCV r1 r2 r3
@@ -1100,6 +1256,9 @@ MPU_xTaskResumeAll_exit:
 void MPU_xTaskGetTickCount(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vCheckTask
+//      vCoRoutineSchedule
 // MayUse:  cpsr:[0..31]
 // LiveOut:
 // Trashed: NZCV r3
@@ -1271,6 +1430,9 @@ MPU_xTaskNotifyStateClear_exit:
 void MPU_xQueueGenericCreate(word32 r0, word32 r1, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      ResetISR
+//      vStartFlashCoRoutines
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed: NZCV r1 r2
@@ -1309,6 +1471,8 @@ MPU_xQueueGenericReset_exit:
 word32 MPU_xQueueGenericSend(word32 r0, word32 r1, word32 r2, word32 r3, word32 lr, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vCheckTask
 // MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31]
 // LiveOut: lr
 // Trashed: NZCV lr r1 r2 r3
@@ -1366,6 +1530,8 @@ MPU_uxQueueSpacesAvailable_exit:
 word32 MPU_xQueueGenericReceive(word32 r0, word32 r1, word32 r2, word32 r3, word32 lr, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vPrintTask
 // MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31]
 // LiveOut: lr
 // Trashed: NZCV lr r1 r2 r3
@@ -1690,6 +1856,8 @@ MPU_vEventGroupDelete_exit:
 void xCoRoutineCreate(word32 r0, word32 r1, word32 r2, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vStartFlashCoRoutines
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2
@@ -1742,6 +1910,10 @@ xCoRoutineCreate_exit:
 bool vCoRoutineAddToDelayedList(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueCRSend
+//      xQueueCRReceive
+//      prvFixedDelayCoRoutine
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut: Z
 // Trashed: NZCV r0 r1 r2 r3
@@ -1771,6 +1943,8 @@ vCoRoutineAddToDelayedList_exit:
 word32 vCoRoutineSchedule(word32 r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 lr, word32 cpsr, ptr32 & cpsrOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vApplicationIdleHook
 // MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] r8:[0..31]
 // LiveOut: cpsr lr
 // Trashed: NZCV cpsr lr pc r0 r1 r2 r3 r4 r5 r6 r7 r8
@@ -1914,6 +2088,11 @@ l00008FB6:
 bool xCoRoutineRemoveFromEventList(word32 r0, ptr32 & r0Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueCRSend
+//      xQueueCRReceive
+//      xQueueCRSendFromISR
+//      xQueueCRReceiveFromISR
 // MayUse:  r0:[0..31]
 // LiveOut: Z r0
 // Trashed: NZCV r0 r1 r2 r3
@@ -1975,6 +2154,8 @@ GPIOGetIntNumber_exit:
 void GPIODirModeSet(word32 r0, word32 r1, word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      PDCInit
 // MayUse:  r0:[0..31] r1:[0..31] r2:[0..31]
 // LiveOut:
 // Trashed: NZC r1 r2 r3
@@ -2080,6 +2261,12 @@ GPIOIntTypeGet_exit:
 void GPIOPadConfigSet(word32 r0, word32 r1, word32 r2, word32 r3)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      PDCInit
+//      GPIOPinTypeComparator
+//      GPIOPinTypeI2C
+//      GPIOPinTypeQEI
+//      GPIOPinTypePWM
 // MayUse:  r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31]
 // LiveOut:
 // Trashed: NZC r1 r2 r3
@@ -2381,6 +2568,8 @@ GPIOPinRead_exit:
 void GPIOPinWrite(word32 r0, word32 r1, word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      PDCInit
 // MayUse:  r0:[0..31] r1:[0..31] r2:[0..31]
 // LiveOut:
 // Trashed:
@@ -2413,6 +2602,8 @@ GPIOPinTypeComparator_exit:
 void GPIOPinTypeI2C(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      OSRAMInit
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed: NZC r1 r2 r3
@@ -2447,6 +2638,10 @@ GPIOPinTypeQEI_exit:
 void GPIOPinTypeUART(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      GPIOPinTypeTimer
+//      GPIOPinTypeSSI
+//      GPIOPinTypePWM
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed: NZC r1 r2 r3
@@ -2552,6 +2747,12 @@ IntMasterDisable_exit:
 void IntRegister(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      GPIOPortIntRegister
+//      SSIIntRegister
+//      SysCtlIntRegister
+//      UARTIntRegister
+//      I2CIntRegister
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed: NZCV r2 r3
@@ -2577,6 +2778,12 @@ IntRegister_exit:
 void IntUnregister(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      GPIOPortIntUnregister
+//      SSIIntUnregister
+//      SysCtlIntUnregister
+//      UARTIntUnregister
+//      I2CIntUnregister
 // MayUse:  r0:[0..31]
 // LiveOut:
 // Trashed: r2 r3
@@ -2660,6 +2867,12 @@ IntPriorityGet_exit:
 void IntEnable(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      GPIOPortIntRegister
+//      SSIIntRegister
+//      SysCtlIntRegister
+//      UARTIntRegister
+//      I2CIntRegister
 // MayUse:  r0:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r2 r3
@@ -2701,6 +2914,12 @@ IntEnable_exit:
 void IntDisable(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      GPIOPortIntUnregister
+//      SSIIntUnregister
+//      SysCtlIntUnregister
+//      UARTIntUnregister
+//      I2CIntUnregister
 // MayUse:  r0:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r2 r3
@@ -2742,6 +2961,10 @@ IntDisable_exit:
 void OSRAMDelay(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      OSRAMWriteArray
+//      OSRAMWriteByte
+//      OSRAMWriteFinal
 // MayUse:  r0:[0..31]
 // LiveOut:
 // Trashed: NZCV r0
@@ -2758,6 +2981,12 @@ OSRAMDelay_exit:
 void OSRAMWriteFirst(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      OSRAMStringDraw
+//      OSRAMImageDraw
+//      OSRAMInit
+//      OSRAMDisplayOn
+//      OSRAMDisplayOff
 // MayUse:  r0:[0..31]
 // LiveOut:
 // Trashed: r0 r1 r2
@@ -2776,6 +3005,11 @@ OSRAMWriteFirst_exit:
 void OSRAMWriteArray(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      OSRAMStringDraw
+//      OSRAMImageDraw
+//      OSRAMInit
+//      OSRAMDisplayOn
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1
@@ -2806,6 +3040,11 @@ OSRAMWriteArray_exit:
 void OSRAMWriteByte(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      OSRAMStringDraw
+//      OSRAMImageDraw
+//      OSRAMInit
+//      OSRAMDisplayOff
 // MayUse:  r0:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r3
@@ -2827,6 +3066,12 @@ OSRAMWriteByte_exit:
 void OSRAMWriteFinal(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      OSRAMStringDraw
+//      OSRAMImageDraw
+//      OSRAMInit
+//      OSRAMDisplayOn
+//      OSRAMDisplayOff
 // MayUse:  r0:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1
@@ -2855,6 +3100,9 @@ OSRAMWriteFinal_exit:
 void OSRAMClear()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vPrintTask
+//      OSRAMInit
 // MayUse: 
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r3
@@ -2887,6 +3135,9 @@ OSRAMClear_exit:
 void OSRAMStringDraw(word32 r0, word32 r1, word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      ResetISR
+//      vPrintTask
 // MayUse:  r0:[0..31] r1:[0..31] r2:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r3
@@ -2983,6 +3234,8 @@ OSRAMImageDraw_exit:
 void OSRAMInit(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      ResetISR
 // MayUse:  r0:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r3
@@ -3070,6 +3323,8 @@ OSRAMDisplayOff_exit:
 void SSIConfig(word32 r0, word32 r1, word32 r2, word32 r3, word32 dwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      PDCInit
 // MayUse:  r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31] Stack +0000:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r3
@@ -3103,6 +3358,8 @@ SSIConfig_exit:
 void SSIEnable(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      PDCInit
 // MayUse:  r0:[0..31]
 // LiveOut:
 // Trashed: r3
@@ -3222,6 +3479,8 @@ SSIIntClear_exit:
 void SSIDataPut(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      PDCWrite
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed: NZC r2 r3
@@ -3256,6 +3515,8 @@ SSIDataNonBlockingPut_exit:
 void SSIDataGet(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      PDCWrite
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed: NZC r2 r3
@@ -3373,6 +3634,9 @@ SysCtlPeripheralReset_exit:
 void SysCtlPeripheralEnable(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      PDCInit
+//      OSRAMInit
 // MayUse:  r0:[0..31]
 // LiveOut:
 // Trashed: NZC r0 r2 r3
@@ -3759,6 +4023,11 @@ SysCtlClockSet_exit:
 word32 SysCtlClockGet()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      SSIConfig
+//      UARTConfigSet
+//      UARTConfigGet
+//      I2CMasterInit
 // MayUse: 
 // LiveOut: r0
 // Trashed: NZCV r0 r1 r2 r3
@@ -4223,6 +4492,8 @@ UARTIntDisable_exit:
 word32 UARTIntStatus(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vUART_ISR
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut: r0
 // Trashed: r0
@@ -4240,6 +4511,8 @@ UARTIntStatus_exit:
 void UARTIntClear(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vUART_ISR
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed:
@@ -4254,6 +4527,8 @@ UARTIntClear_exit:
 void CPUcpsie()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      IntMasterEnable
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -4268,6 +4543,8 @@ CPUcpsie_exit:
 void CPUcpsid()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      IntMasterDisable
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -4282,6 +4559,9 @@ CPUcpsid_exit:
 void CPUwfi()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      SysCtlSleep
+//      SysCtlDeepSleep
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -4296,6 +4576,8 @@ CPUwfi_exit:
 void I2CMasterInit(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      OSRAMInit
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2
@@ -4480,6 +4762,10 @@ I2CSlaveIntDisable_exit:
 word32 I2CMasterIntStatus(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      OSRAMWriteArray
+//      OSRAMWriteByte
+//      OSRAMWriteFinal
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut: r0
 // Trashed: NZCV r0
@@ -4561,6 +4847,8 @@ I2CSlaveIntClear_exit:
 void I2CMasterSlaveAddrSet(word32 r0, word32 r1, word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      OSRAMWriteFirst
 // MayUse:  r0:[0..31] r1:[0..31] r2:[0..31]
 // LiveOut:
 // Trashed: r2
@@ -4601,6 +4889,11 @@ I2CMasterBusBusy_exit:
 void I2CMasterControl(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      OSRAMWriteFirst
+//      OSRAMWriteArray
+//      OSRAMWriteByte
+//      OSRAMWriteFinal
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed:
@@ -4636,6 +4929,11 @@ I2CMasterErr_exit:
 void I2CMasterDataPut(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      OSRAMWriteFirst
+//      OSRAMWriteArray
+//      OSRAMWriteByte
+//      OSRAMWriteFinal
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed:

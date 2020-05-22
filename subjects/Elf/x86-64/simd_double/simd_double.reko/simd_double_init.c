@@ -5,6 +5,8 @@
 #include "simd_double_init.h"
 
 // 00000000000005A0: void _init()
+// Called from:
+//      __libc_csu_init
 void _init()
 {
 	if (__gmon_start__ != 0x00)

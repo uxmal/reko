@@ -1,6 +1,9 @@
 void prvUnlockQueue(word32 r0, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueGenericSend
+//      xQueueGenericReceive
 // MayUse:  cpsr:[0..31] r0:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r2 r3
@@ -59,6 +62,11 @@ prvUnlockQueue_exit:
 bool prvCopyDataToQueue(word32 r0, word32 r1, word32 r2, word32 r7, word32 lr, ptr32 & r0Out, ptr32 & r7Out, ptr32 & lrOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueGenericSend
+//      xQueueGenericSendFromISR
+//      xQueueCRSend
+//      xQueueCRSendFromISR
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r7:[0..31]
 // LiveOut: Z lr r0 r7
 // Trashed: NZCV lr r0 r1 r2 r3 r7
@@ -144,6 +152,10 @@ prvCopyDataToQueue_exit:
 word32 prvCopyDataFromQueue(word32 r0, word32 r1, word32 r4, word32 r5, word32 r6, word32 r7, word32 lr, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & lrOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueuePeekFromISR
+//      xQueueGenericReceive
+//      xQueueReceiveFromISR
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
 // LiveOut: lr r4 r5 r6 r7
 // Trashed: lr r0 r1 r2 r3 r4 r5 r6 r7
@@ -185,6 +197,10 @@ prvCopyDataFromQueue_exit:
 word32 xQueueGenericSend(word32 r0, word32 r1, word32 r2, word32 r3, word32 lr, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueGiveMutexRecursive
+//      xQueueCreateMutex
+//      MPU_xQueueGenericSend
 // MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31]
 // LiveOut: lr
 // Trashed: NZCV lr r0 r1 r2 r3
@@ -267,6 +283,8 @@ l000001F6:
 void xQueuePeekFromISR(word32 r0, word32 r1, word32 r7, word32 lr, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_xQueuePeekFromISR
 // MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r1:[0..31] r7:[0..31]
 // LiveOut:
 // Trashed: lr r0 r1 r2 r3 r7
@@ -295,6 +313,9 @@ xQueuePeekFromISR_exit:
 word32 xQueueGenericReceive(word32 r0, word32 r1, word32 r2, word32 r3, word32 lr, word32 cpsr, ptr32 & lrOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueTakeMutexRecursive
+//      MPU_xQueueGenericReceive
 // MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31]
 // LiveOut: lr r0
 // Trashed: NZCV lr r0 r1 r2 r3
@@ -400,6 +421,8 @@ l00000308:
 void uxQueueMessagesWaiting(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_uxQueueMessagesWaiting
 // MayUse:  cpsr:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r2
@@ -415,6 +438,8 @@ uxQueueMessagesWaiting_exit:
 void uxQueueSpacesAvailable(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_uxQueueSpacesAvailable
 // MayUse:  cpsr:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r2
@@ -430,6 +455,8 @@ uxQueueSpacesAvailable_exit:
 void vQueueDelete()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_vQueueDelete
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -445,6 +472,8 @@ vQueueDelete_exit:
 void xQueueGenericSendFromISR(word32 r0, word32 r1, word32 r2, word32 r3, word32 lr, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vUART_ISR
 // MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31]
 // LiveOut:
 // Trashed: NZCV lr r0 r1 r2
@@ -609,6 +638,8 @@ uxQueueMessagesWaitingFromISR_exit:
 void xQueueGetMutexHolder(word32 r0, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_xQueueGetMutexHolder
 // MayUse:  cpsr:[0..31] r0:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r2 r3
@@ -629,6 +660,8 @@ xQueueGetMutexHolder_exit:
 void xQueueTakeMutexRecursive(word32 r0, word32 r1, word32 lr, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_xQueueTakeMutexRecursive
 // MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed: NZCV lr r0 r1 r2 r3
@@ -652,6 +685,8 @@ xQueueTakeMutexRecursive_exit:
 void xQueueGiveMutexRecursive(word32 r0, word32 lr, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_xQueueGiveMutexRecursive
 // MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31]
 // LiveOut:
 // Trashed: NZCV lr r0 r1 r2
@@ -676,6 +711,9 @@ xQueueGiveMutexRecursive_exit:
 void xQueueGenericReset(word32 r0, word32 r1, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueGenericCreate
+//      MPU_xQueueGenericReset
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r3
@@ -717,6 +755,9 @@ xQueueGenericReset_exit:
 void xQueueGenericCreate(word32 r0, word32 r1, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueCreateMutex
+//      MPU_xQueueGenericCreate
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed: NZCV r1 r2 r3
@@ -743,6 +784,8 @@ xQueueGenericCreate_exit:
 void xQueueCreateMutex(word32 lr, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_xQueueCreateMutex
 // MayUse:  cpsr:[0..31] lr:[0..31]
 // LiveOut:
 // Trashed: NZCV lr r0 r1 r2 r3
@@ -764,6 +807,9 @@ xQueueCreateMutex_exit:
 void prvInitialiseNewTask(word32 r0, word32 r1, word32 r2, word32 r3, word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xTaskCreate
+//      xTaskCreateRestricted
 // MayUse:  r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31] Stack +0000:[0..31] Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2
@@ -811,6 +857,9 @@ prvInitialiseNewTask_exit:
 void prvAddNewTaskToReadyList(word32 r0, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xTaskCreate
+//      xTaskCreateRestricted
 // MayUse:  cpsr:[0..31] r0:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r3
@@ -865,6 +914,13 @@ prvAddNewTaskToReadyList_exit:
 void prvAddCurrentTaskToDelayedList.isra.0(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xTaskNotifyWait
+//      ulTaskNotifyTake
+//      vTaskDelay
+//      vTaskDelayUntil
+//      vTaskPlaceOnEventList
+//      vTaskPlaceOnUnorderedEventList
 // MayUse:  r0:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r3
@@ -899,6 +955,9 @@ prvAddCurrentTaskToDelayedList.isra.0_exit:
 word32 xTaskCreate(word32 r0, word32 r1, word32 r2, word32 r3, word32 cpsr, word32 dwArg00, word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vTaskStartScheduler
+//      MPU_xTaskCreate
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31] Stack +0000:[0..31] Stack +0004:[0..31]
 // LiveOut: r0
 // Trashed: NZCV r0 r1 r2 r3
@@ -930,6 +989,8 @@ xTaskCreate_exit:
 void xTaskCreateRestricted(word32 r0, word32 r1, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_xTaskCreateRestricted
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed: lr r0 r1 r2 r3
@@ -960,6 +1021,8 @@ xTaskCreateRestricted_exit:
 void vTaskAllocateMPURegions(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_vTaskAllocateMPURegions
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r3
@@ -982,6 +1045,8 @@ vTaskAllocateMPURegions_exit:
 void vTaskStartScheduler(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      ResetISR
 // MayUse:  cpsr:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r3
@@ -1028,6 +1093,15 @@ vTaskEndScheduler_exit:
 bool vTaskSuspendAll()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueGenericSend
+//      xQueueGenericReceive
+//      pvPortMalloc
+//      xEventGroupWaitBits
+//      xEventGroupSetBits
+//      xEventGroupSync
+//      vEventGroupDelete
+//      MPU_vTaskSuspendAll
 // MayUse: 
 // LiveOut: C
 // Trashed: NZCV r2 r3
@@ -1044,6 +1118,8 @@ vTaskSuspendAll_exit:
 void xTaskGetTickCount()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_xTaskGetTickCount
 // MayUse: 
 // LiveOut:
 // Trashed: r0 r3
@@ -1070,6 +1146,8 @@ xTaskGetTickCountFromISR_exit:
 void uxTaskGetNumberOfTasks()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_uxTaskGetNumberOfTasks
 // MayUse: 
 // LiveOut:
 // Trashed: r0 r3
@@ -1083,6 +1161,8 @@ uxTaskGetNumberOfTasks_exit:
 void pcTaskGetName(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_pcTaskGetName
 // MayUse:  r0:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r3
@@ -1100,6 +1180,8 @@ pcTaskGetName_exit:
 void xTaskGenericNotify(word32 r0, word32 r1, word32 r2, word32 r3, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_xTaskGenericNotify
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31]
 // LiveOut:
 // Trashed: NZCV lr r0 r1 r2
@@ -1214,6 +1296,8 @@ xTaskGenericNotifyFromISR_exit:
 void xTaskNotifyWait(word32 r0, word32 r1, word32 r2, word32 r3, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_xTaskNotifyWait
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r3
@@ -1299,6 +1383,8 @@ vTaskNotifyGiveFromISR_exit:
 void ulTaskNotifyTake(word32 r0, word32 r1, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_ulTaskNotifyTake
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r2 r3
@@ -1337,6 +1423,9 @@ ulTaskNotifyTake_exit:
 word32 xTaskIncrementTick()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xTaskResumeAll
+//      xPortSysTickHandler
 // MayUse: 
 // LiveOut: r0
 // Trashed: NZCV r0 r3
@@ -1410,6 +1499,17 @@ xTaskIncrementTick_exit:
 word32 xTaskResumeAll(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueGenericSend
+//      xQueueGenericReceive
+//      vTaskDelay
+//      vTaskDelayUntil
+//      pvPortMalloc
+//      xEventGroupWaitBits
+//      xEventGroupSetBits
+//      xEventGroupSync
+//      vEventGroupDelete
+//      MPU_xTaskResumeAll
 // MayUse:  cpsr:[0..31]
 // LiveOut: r0
 // Trashed: NZCV r0 r1 r2 r3
@@ -1474,6 +1574,8 @@ xTaskResumeAll_exit:
 void vTaskDelay(word32 r0, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_vTaskDelay
 // MayUse:  cpsr:[0..31] r0:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2
@@ -1499,6 +1601,8 @@ vTaskDelay_exit:
 void vTaskDelayUntil(word32 r0, word32 r1, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_vTaskDelayUntil
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r3
@@ -1537,6 +1641,9 @@ vTaskDelayUntil_exit:
 void vTaskPlaceOnEventList(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueGenericSend
+//      xQueueGenericReceive
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r3
@@ -1553,6 +1660,9 @@ vTaskPlaceOnEventList_exit:
 void vTaskPlaceOnUnorderedEventList(word32 r0, word32 r1, word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xEventGroupWaitBits
+//      xEventGroupSync
 // MayUse:  r0:[0..31] r1:[0..31] r2:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r3
@@ -1572,6 +1682,14 @@ vTaskPlaceOnUnorderedEventList_exit:
 word32 xTaskRemoveFromEventList(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvUnlockQueue
+//      xQueueGenericSend
+//      xQueueGenericReceive
+//      xQueueGenericSendFromISR
+//      xQueueGiveFromISR
+//      xQueueReceiveFromISR
+//      xQueueGenericReset
 // MayUse:  r0:[0..31]
 // LiveOut: r0
 // Trashed: NZCV r0 r1 r2
@@ -1605,6 +1723,9 @@ xTaskRemoveFromEventList_exit:
 void xTaskRemoveFromUnorderedEventList(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xEventGroupSetBits
+//      vEventGroupDelete
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed: NZCV lr r0 r1 r2
@@ -1630,6 +1751,8 @@ xTaskRemoveFromUnorderedEventList_exit:
 void vTaskSwitchContext()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xPortPendSVHandler
 // MayUse: 
 // LiveOut:
 // Trashed: r2 r3
@@ -1666,6 +1789,9 @@ vTaskSwitchContext_exit:
 word32 uxTaskResetEventItemValue()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xEventGroupWaitBits
+//      xEventGroupSync
 // MayUse: 
 // LiveOut: r0
 // Trashed: r0 r1 r2 r3
@@ -1682,6 +1808,9 @@ uxTaskResetEventItemValue_exit:
 word32 xTaskGetCurrentTaskHandle()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueTakeMutexRecursive
+//      xQueueGiveMutexRecursive
 // MayUse: 
 // LiveOut: r0
 // Trashed: r0 r3
@@ -1695,6 +1824,10 @@ xTaskGetCurrentTaskHandle_exit:
 void vTaskSetTimeOutState(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueGenericSend
+//      xQueueGenericReceive
+//      MPU_vTaskSetTimeOutState
 // MayUse:  r0:[0..31]
 // LiveOut:
 // Trashed: r2 r3
@@ -1712,6 +1845,10 @@ vTaskSetTimeOutState_exit:
 word32 xTaskCheckForTimeOut(word32 r0, word32 r1, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueGenericSend
+//      xQueueGenericReceive
+//      MPU_xTaskCheckForTimeOut
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
 // LiveOut: r0
 // Trashed: NZCV r0 r1 r2 r3
@@ -1745,6 +1882,8 @@ xTaskCheckForTimeOut_exit:
 void vTaskMissedYield()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvUnlockQueue
 // MayUse: 
 // LiveOut:
 // Trashed: r2 r3
@@ -1759,6 +1898,8 @@ vTaskMissedYield_exit:
 void vTaskPriorityInherit(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueGenericReceive
 // MayUse:  r0:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r3
@@ -1805,6 +1946,8 @@ vTaskPriorityInherit_exit:
 word32 xTaskPriorityDisinherit(word32 r0, ptr32 & lrOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvCopyDataToQueue
 // MayUse:  r0:[0..31]
 // LiveOut: lr r0
 // Trashed: NZCV lr r0 r1 r2
@@ -1853,6 +1996,8 @@ xTaskPriorityDisinherit_exit:
 word32 pvTaskIncrementMutexHeldCount()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueGenericReceive
 // MayUse: 
 // LiveOut: r0
 // Trashed: NZCV r0 r1 r2 r3
@@ -1872,6 +2017,8 @@ pvTaskIncrementMutexHeldCount_exit:
 void prvRestoreContextOfFirstTask(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvSVCHandler
 // MayUse:  cpsr:[0..31]
 // LiveOut:
 // Trashed: fp lr r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
@@ -1907,6 +2054,8 @@ prvRestoreContextOfFirstTask_exit:
 void prvSVCHandler(word32 r0, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vPortSVCHandler
 // MayUse:  cpsr:[0..31] r0:[0..31]
 // LiveOut:
 // Trashed: NZCV fp lr r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
@@ -1941,6 +2090,8 @@ prvSVCHandler_exit:
 word32 pxPortInitialiseStack(word32 r0, word32 r1, word32 r2, word32 r3)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvInitialiseNewTask
 // MayUse:  r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31]
 // LiveOut: r0
 // Trashed: NZCV r0 r1 r2 r3
@@ -1969,6 +2120,8 @@ pxPortInitialiseStack_exit:
 void xPortStartScheduler(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vTaskStartScheduler
 // MayUse:  cpsr:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r3
@@ -2090,6 +2243,8 @@ xPortStartScheduler_exit:
 void vPortEndScheduler()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vTaskEndScheduler
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -2103,6 +2258,9 @@ vPortEndScheduler_exit:
 void vPortStoreTaskMPUSettings(word32 r0, word32 r1, word32 r2, word32 r3)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      prvInitialiseNewTask
+//      vTaskAllocateMPURegions
 // MayUse:  r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r3
@@ -2316,6 +2474,13 @@ vPortSVCHandler_exit:
 word32 pvPortMalloc(word32 r0, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xQueueGenericCreate
+//      xTaskCreate
+//      xTaskCreateRestricted
+//      xEventGroupCreate
+//      MPU_pvPortMalloc
+//      xCoRoutineCreate
 // MayUse:  cpsr:[0..31] r0:[0..31]
 // LiveOut: r0
 // Trashed: NZCV r0 r1 r2 r3
@@ -2353,6 +2518,11 @@ pvPortMalloc_exit:
 void vPortFree()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      vQueueDelete
+//      xTaskCreate
+//      vEventGroupDelete
+//      MPU_vPortFree
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -2366,6 +2536,8 @@ vPortFree_exit:
 void vPortInitialiseBlocks()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_vPortInitialiseBlocks
 // MayUse: 
 // LiveOut:
 // Trashed: r2 r3
@@ -2380,6 +2552,8 @@ vPortInitialiseBlocks_exit:
 void xPortGetFreeHeapSize()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_xPortGetFreeHeapSize
 // MayUse: 
 // LiveOut:
 // Trashed: NZCV r0 r3
@@ -2393,6 +2567,8 @@ xPortGetFreeHeapSize_exit:
 void xEventGroupCreate(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_xEventGroupCreate
 // MayUse:  cpsr:[0..31]
 // LiveOut:
 // Trashed: NZCV r1 r2 r3
@@ -2412,6 +2588,8 @@ xEventGroupCreate_exit:
 void xEventGroupWaitBits(word32 r0, word32 r1, word32 r2, word32 r3, word32 cpsr, word32 dwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_xEventGroupWaitBits
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31] Stack +0000:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r3
@@ -2478,6 +2656,8 @@ xEventGroupWaitBits_exit:
 void xEventGroupClearBits(word32 r0, word32 r1, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_xEventGroupClearBits
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r2
@@ -2494,6 +2674,10 @@ xEventGroupClearBits_exit:
 void xEventGroupSetBits(word32 r0, word32 r1, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xEventGroupSync
+//      vEventGroupSetBitsCallback
+//      MPU_xEventGroupSetBits
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31]
 // LiveOut:
 // Trashed: NZCV lr r0 r1 r2
@@ -2545,6 +2729,8 @@ xEventGroupSetBits_exit:
 void xEventGroupSync(word32 r0, word32 r1, word32 r2, word32 r3, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_xEventGroupSync
 // MayUse:  cpsr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31]
 // LiveOut:
 // Trashed: NZCV lr r0 r1 r2 r3
@@ -2609,6 +2795,8 @@ xEventGroupGetBitsFromISR_exit:
 void vEventGroupDelete(word32 r0, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      MPU_vEventGroupDelete
 // MayUse:  cpsr:[0..31] r0:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r3

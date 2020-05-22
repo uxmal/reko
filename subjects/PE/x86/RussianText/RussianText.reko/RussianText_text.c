@@ -31,6 +31,9 @@ void fn0040110B()
 }
 
 // 00401158: Register word32 fn00401158()
+// Called from:
+//      _GetExceptDLLinfo
+//      fn004011B0
 word32 fn00401158()
 {
 	return fs->ptr002C[globals->dw40208B];
@@ -67,6 +70,9 @@ void fn004011B0(void * dwArg04)
 }
 
 // 004011FC: void fn004011FC(Stack (ptr32 Eq_n) dwArg04)
+// Called from:
+//      _GetExceptDLLinfo
+//      fn004011B0
 void fn004011FC(struct Eq_n * dwArg04)
 {
 	globals->dw4020F8 = (char *) fn00401158() + 28;

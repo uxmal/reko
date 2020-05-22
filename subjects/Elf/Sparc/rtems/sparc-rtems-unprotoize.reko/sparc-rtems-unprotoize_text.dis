@@ -23,6 +23,9 @@ l000114B4:
 word32 fn0001150C(word32 o7, word32 l7)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __do_global_dtors_aux
+//      frame_dummy
 // MayUse:  l7:[0..31] o7:[0..31]
 // LiveOut: l7
 // Trashed: l7
@@ -36,6 +39,8 @@ fn0001150C_exit:
 void __do_global_dtors_aux(word32 o3, word32 o4, word32 o5, word32 o7)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      _fini
 // MayUse:  o3:[0..31] o4:[0..31] o5:[0..31] o7:[0..31]
 // LiveOut:
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l7
@@ -97,6 +102,8 @@ fini_dummy_exit:
 void frame_dummy(word32 o3, word32 o4, word32 o5, word32 o7)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      _init
 // MayUse:  o3:[0..31] o4:[0..31] o5:[0..31] o7:[0..31]
 // LiveOut:
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l7
@@ -131,6 +138,25 @@ init_dummy_exit:
 word32 notice(word32 o0, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      xmalloc
+//      xrealloc
+//      fancy_abort
+//      safe_write
+//      usage
+//      abspath
+//      find_file
+//      aux_info_corrupted
+//      save_def_or_dec
+//      gen_aux_info_file
+//      process_aux_info_file
+//      declare_source_confusing
+//      edit_fn_declaration
+//      edit_formals_lists
+//      edit_fn_definition
+//      scan_for_missed_items
+//      edit_file
+//      main
 // MayUse:  o0:[0..31]
 // LiveOut: i0 i1 i2 i6
 // Trashed: i0 i1 i2 i3 i4 i5 i6 i7
@@ -148,6 +174,13 @@ notice_exit:
 void xstrerror(word32 o0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      safe_write
+//      find_file
+//      gen_aux_info_file
+//      process_aux_info_file
+//      main
+//      pexecute
 // MayUse:  o0:[0..31]
 // LiveOut:
 // Trashed: i0 i1 i2 i3 i4 i5 i6 i7
@@ -162,6 +195,22 @@ xstrerror_exit:
 word32 xmalloc(word32 o0, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      savestring
+//      savestring2
+//      dupnstr
+//      string_list_cons
+//      lookup
+//      unexpand_if_needed
+//      shortpath
+//      find_file
+//      save_def_or_dec
+//      munge_compile_params
+//      process_aux_info_file
+//      main
+//      getpwd
+//      choose_temp_base
+//      make_temp_file
 // MayUse:  o0:[0..31]
 // LiveOut: i0 i1 i2 i6
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7
@@ -188,6 +237,9 @@ l0001168C:
 word32 xrealloc(word32 o0, word32 o1, ptr32 & i1Out, ptr32 & i2Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      unexpand_if_needed
+//      output_bytes
 // MayUse:  o0:[0..31] o1:[0..31]
 // LiveOut: i0 i1 i2
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7
@@ -222,6 +274,8 @@ l000116E4:
 word32 xfree(word32 o0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      free_def_dec
 // MayUse:  o0:[0..31]
 // LiveOut: i0
 // Trashed: NZVC i0 i1 i2 i3 i4 i5 i6 i7
@@ -241,6 +295,10 @@ l00011718:
 word32 savestring(word32 o0, word32 o1, ptr32 & l0Out, ptr32 & i0Out, ptr32 & i1Out, ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      add_symbol
+//      unexpand_if_needed
+//      abspath
 // MayUse:  o0:[0..31] o1:[0..31]
 // LiveOut: i0 i1 i6 l0 o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 o0 o1 o2 o3 o4 o5 o7 sp
@@ -263,6 +321,8 @@ savestring_exit:
 word32 savestring2(word32 o0, word32 o1, word32 o3)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      gen_aux_info_file
 // MayUse:  o0:[0..31] o1:[0..31] o3:[0..31]
 // LiveOut: o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 o0 o1 o2 o3 o4 o5 o7 sp
@@ -301,6 +361,10 @@ l00011780:
 word32 dupnstr(word32 o0, word32 o1, ptr32 & l0Out, ptr32 & i0Out, ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      save_def_or_dec
+//      munge_compile_params
+//      edit_formals_lists
 // MayUse:  o0:[0..31] o1:[0..31]
 // LiveOut: i0 i6 l0 o0 sp
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 o0 o1 o2 o3 o4 o5 o7 sp
@@ -323,6 +387,8 @@ dupnstr_exit:
 word32 substr(word32 o0, word32 o1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      other_variable_style_function
 // MayUse:  o0:[0..31] o1:[0..31]
 // LiveOut: o0
 // Trashed: NZVC g0 g2 g3 o0 o2 o3
@@ -365,6 +431,8 @@ substr_exit:
 word32 safe_read(word32 o0, word32 o1, word32 o2, ptr32 & l1Out, ptr32 & l2Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      process_aux_info_file
 // MayUse:  o0:[0..31] o1:[0..31] o2:[0..31]
 // LiveOut: l0 l1 l2
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 o1
@@ -458,6 +526,9 @@ safe_write_exit:
 void save_pointers()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      edit_fn_declaration
+//      edit_fn_definition
 // MayUse: 
 // LiveOut:
 // Trashed: g2 g3 o0 o1 o2
@@ -474,6 +545,9 @@ save_pointers_exit:
 void restore_pointers()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      edit_fn_declaration
+//      edit_fn_definition
 // MayUse: 
 // LiveOut:
 // Trashed: g2 g3 o0 o1 o2
@@ -490,6 +564,11 @@ restore_pointers_exit:
 word32 is_id_char(word32 o0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      unexpand_if_needed
+//      save_def_or_dec
+//      edit_formals_lists
+//      scan_for_missed_items
 // MayUse:  o0:[0..31]
 // LiveOut: o0
 // Trashed: NZVC g0 g2 g3 o0
@@ -520,6 +599,8 @@ is_id_char_exit:
 void usage()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -538,6 +619,8 @@ l00011998:
 word32 in_system_include_dir(word32 o0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      edit_file
 // MayUse:  o0:[0..31]
 // LiveOut: o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 o0
@@ -582,6 +665,8 @@ l000119D0:
 word32 needs_to_be_converted(word32 o0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      edit_file
 // MayUse:  o0:[0..31]
 // LiveOut: o0
 // Trashed: NZVC g0 g2 g3 o0
@@ -616,6 +701,8 @@ needs_to_be_converted_exit:
 word32 directory_specified_p(word32 o0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      edit_file
 // MayUse:  o0:[0..31]
 // LiveOut: o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 o0
@@ -674,6 +761,8 @@ directory_specified_p_exit:
 word32 file_excluded_p(word32 o0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      edit_file
 // MayUse:  o0:[0..31]
 // LiveOut: o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 o0
@@ -712,6 +801,8 @@ file_excluded_p_exit:
 word32 string_list_cons(ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse: 
 // LiveOut: i6 o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 o0 o1 o2 o3 o4 o5 o7 sp
@@ -731,6 +822,8 @@ string_list_cons_exit:
 word32 visit_each_hash_node(word32 o0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      do_processing
 // MayUse:  o0:[0..31]
 // LiveOut: l0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 o0
@@ -768,6 +861,8 @@ visit_each_hash_node_exit:
 word32 add_symbol(word32 o0, word32 o1, ptr32 & i1Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      lookup
 // MayUse:  o0:[0..31] o1:[0..31]
 // LiveOut: i1 o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 o0 o1 o2 o3 o4 o5 o7 sp
@@ -789,6 +884,9 @@ add_symbol_exit:
 word32 lookup(word32 o0, word32 o1, ptr32 & l1Out, ptr32 & i1Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      find_file
+//      save_def_or_dec
 // MayUse:  o0:[0..31] o1:[0..31]
 // LiveOut: i1 l1 o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 o0 o1 o2 o3 o4 o5 o7 sp
@@ -854,6 +952,8 @@ lookup_exit:
 void free_def_dec(word32 o0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      save_def_or_dec
 // MayUse:  o0:[0..31]
 // LiveOut:
 // Trashed: NZVC i0 i1 i2 i3 i4 i5 i6 i7 o0 o1 o2 o3 o4 o5 o7 sp
@@ -996,6 +1096,11 @@ unexpand_if_needed_exit:
 word32 abspath(word32 o0, word32 o1, ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      shortpath
+//      referenced_file_is_newer
+//      save_def_or_dec
+//      main
 // MayUse:  o0:[0..31] o1:[0..31]
 // LiveOut: i6 l0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 o1 o2 o3 o4 o5 o7 sp
@@ -1176,6 +1281,17 @@ abspath_exit:
 word32 shortpath(word32 o0, word32 o1, ptr32 & l0Out, ptr32 & l2Out, ptr32 & l3Out, ptr32 & l4Out, ptr32 & i0Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      safe_write
+//      find_file
+//      gen_aux_info_file
+//      process_aux_info_file
+//      declare_source_confusing
+//      edit_formals_lists
+//      edit_fn_definition
+//      scan_for_missed_items
+//      edit_file
+//      main
 // MayUse:  o0:[0..31] o1:[0..31]
 // LiveOut: i0 l0 l2 l3 l4 o0
 // Trashed: NZVC g0 i0 l0 l1 l2 l3 l4 o0 o1 o2 o3 o4 o5 o7 sp
@@ -1327,6 +1443,9 @@ shortpath_exit:
 word32 find_file(word32 o0, ptr32 & l2Out, ptr32 & l3Out, ptr32 & i0Out, ptr32 & i1Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      referenced_file_is_newer
+//      save_def_or_dec
 // MayUse:  o0:[0..31]
 // LiveOut: i0 i1 l2 l3 o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 o0 o1 o2 o3 o4 o5 o7 sp
@@ -1382,6 +1501,8 @@ find_file_exit:
 void aux_info_corrupted()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      check_aux_info
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -1400,6 +1521,9 @@ l000123D0:
 word32 check_aux_info(word32 o0, ptr32 & i1Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      referenced_file_is_newer
+//      save_def_or_dec
 // MayUse:  o0:[0..31]
 // LiveOut: i0 i1
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7
@@ -1420,6 +1544,8 @@ l00012408:
 word32 find_corresponding_lparen(word32 o0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      save_def_or_dec
 // MayUse:  o0:[0..31]
 // LiveOut: o0
 // Trashed: NZVC g0 g2 g3 o0
@@ -1785,6 +1911,9 @@ l000128F4:
 word32 munge_compile_params(word32 o0, ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      gen_aux_info_file
+//      main
 // MayUse:  o0:[0..31]
 // LiveOut: i0 i6
 // Trashed: NZVC g0 g2 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 o0 o1 o2 o3 o4 o5 o7 sp
@@ -1879,6 +2008,8 @@ munge_compile_params_exit:
 word32 gen_aux_info_file(word32 o0, ptr32 & l0Out, ptr32 & l1Out, ptr32 & l4Out, ptr32 & i0Out, ptr32 & i2Out, ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      process_aux_info_file
 // MayUse:  o0:[0..31]
 // LiveOut: i0 i2 i6 l0 l1 l4 o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 o0 o1 o2 o3 o4 o5 o7 sp
@@ -1953,6 +2084,8 @@ l00012EBC:
 word32 process_aux_info_file(word32 o0, word32 o2, ptr32 & l1Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      do_processing
 // MayUse:  o0:[0..31] o2:[0..31]
 // LiveOut: l0 l1
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o0 o1 o2 o3 o4 o5 o7 sp
@@ -2115,6 +2248,8 @@ l000131F0:
 void reverse_def_dec_list(word32 o0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      visit_each_hash_node
 // MayUse:  o0:[0..31]
 // LiveOut:
 // Trashed: NZVC g0 g3 o0 o1
@@ -2152,6 +2287,11 @@ reverse_def_dec_list_exit:
 word32 identify_lineno(word32 o0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      declare_source_confusing
+//      edit_formals_lists
+//      edit_fn_definition
+//      scan_for_missed_items
 // MayUse:  o0:[0..31]
 // LiveOut: o0
 // Trashed: NZVC g0 g2 g3 o0 o1
@@ -2184,6 +2324,8 @@ identify_lineno_exit:
 void declare_source_confusing(word32 o0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      check_source
 // MayUse:  o0:[0..31]
 // LiveOut:
 // Trashed:
@@ -2228,6 +2370,13 @@ l000136D4:
 word32 check_source(word32 o0, word32 o1, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      seek_to_line
+//      forward_to_next_token_char
+//      edit_formals_lists
+//      find_rightmost_formals_list
+//      careful_find_l_paren
+//      scan_for_missed_items
 // MayUse:  o0:[0..31] o1:[0..31]
 // LiveOut: i0 i1 i2 i6
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7
@@ -2308,6 +2457,8 @@ l00013718:
 word32 forward_to_next_token_char(word32 o0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      find_rightmost_formals_list
 // MayUse:  o0:[0..31]
 // LiveOut: o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 o0 o1 o2 o3 o4 o5 o7 sp
@@ -2337,6 +2488,9 @@ forward_to_next_token_char_exit:
 word32 output_bytes(word32 o0, word32 o1, ptr32 & l1Out, ptr32 & l2Out, ptr32 & i0Out, ptr32 & i1Out, ptr32 & i2Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      output_string
+//      output_up_to
 // MayUse:  o0:[0..31] o1:[0..31]
 // LiveOut: i0 i1 i2 l0 l1 l2
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 o0 o1 o2 o3 o4 o5 o7 sp
@@ -2375,6 +2529,8 @@ output_bytes_exit:
 word32 output_string(word32 o0, ptr32 & l2Out, ptr32 & i0Out, ptr32 & i1Out, ptr32 & i2Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      edit_formals_lists
 // MayUse:  o0:[0..31]
 // LiveOut: i0 i1 i2 l1 l2
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 o0 o1 o2 o3 o4 o5 o7 sp
@@ -2398,6 +2554,9 @@ output_string_exit:
 word32 output_up_to(word32 o0, ptr32 & l2Out, ptr32 & i0Out, ptr32 & i1Out, ptr32 & i2Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      edit_formals_lists
+//      edit_fn_definition
 // MayUse:  o0:[0..31]
 // LiveOut: i0 i1 i2 l1 l2
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 o0 o1 o2 o3 o4 o5 o7 sp
@@ -2427,6 +2586,8 @@ output_up_to_exit:
 word32 other_variable_style_function(word32 o0, ptr32 & i1Out, ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      edit_fn_definition
 // MayUse:  o0:[0..31]
 // LiveOut: i1 i6 o0
 // Trashed: NZVC g0 g2 g3 i0 i1 i2 i3 i4 i5 i6 i7 o0
@@ -2469,6 +2630,8 @@ edit_fn_declaration_exit:
 word32 edit_formals_lists(word32 o0, ptr32 & l1Out, ptr32 & l2Out, ptr32 & i1Out, ptr32 & i2Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      edit_formals_lists
 // MayUse:  o0:[0..31]
 // LiveOut: i1 i2 l1 l2 o0
 // Trashed: NZVC g0 g2 g3 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 o0 o1 o2 o3 o4 o5 o7 sp
@@ -2662,6 +2825,8 @@ edit_formals_lists_exit:
 word32 find_rightmost_formals_list(word32 o0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      edit_fn_definition
 // MayUse:  o0:[0..31]
 // LiveOut: i6
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 o0 o1 o2 o3 o4 o5 o7 sp
@@ -2815,6 +2980,8 @@ do_cleaning_exit:
 word32 careful_find_l_paren(word32 o0, ptr32 & l1Out, ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      scan_for_missed_items
 // MayUse:  o0:[0..31]
 // LiveOut: i6 l1 o0 sp
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 o0 o1 o2 o3 o4 o5 o7 sp
@@ -3089,6 +3256,8 @@ edit_file_exit:
 void do_processing()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse: 
 // LiveOut:
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o0 o1 o2 o3 o4 o5 o7 sp
@@ -3116,6 +3285,8 @@ do_processing_exit:
 word32 main(word32 o1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      _start
 // MayUse:  o1:[0..31]
 // LiveOut: o0
 // Trashed: NZVC g0 g2 g3 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o0 o1 o2 o3 o4 o5 o7
@@ -3254,6 +3425,8 @@ l00014F14:
 word32 getpwd()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse: 
 // LiveOut: o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 o0 o1 o2 o3 o4 o5 o7 sp
@@ -3831,6 +4004,9 @@ l000158B4:
 word32 try(word32 o0, word32 o1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      choose_temp_base
+//      make_temp_file
 // MayUse:  o0:[0..31] o1:[0..31]
 // LiveOut: o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 o0
@@ -3861,6 +4037,8 @@ try_exit:
 word32 choose_temp_base(ptr32 & l1Out, ptr32 & i0Out, ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      gen_aux_info_file
 // MayUse: 
 // LiveOut: i0 i6 l1 o0 sp
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 o0 o1 o2 o3 o4 o5 o7 sp
@@ -4004,6 +4182,8 @@ l00015BD4:
 word32 my_index(word32 o0, word32 o1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      _getopt_internal
 // MayUse:  o0:[0..31] o1:[0..31]
 // LiveOut: o0
 // Trashed: NZVC g0 g2 g3 o0
@@ -4033,6 +4213,8 @@ my_index_exit:
 word32 exchange(word32 o0, ptr32 & i2Out, ptr32 & i4Out, ptr32 & i5Out, ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      _getopt_internal
 // MayUse:  o0:[0..31]
 // LiveOut: i1 i2 i4 i5 i6
 // Trashed: NZVC g0 g1 g2 g3 g4 i0 i1 i2 i3 i4 i5 i6 i7 o0 o1 o4 o5
@@ -4135,6 +4317,8 @@ exchange_exit:
 word32 _getopt_initialize(word32 o2, ptr32 & i1Out, ptr32 & i4Out, ptr32 & i5Out, ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      _getopt_internal
 // MayUse:  o2:[0..31]
 // LiveOut: i1 i4 i5 i6 o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 o0
@@ -4182,6 +4366,10 @@ _getopt_initialize_exit:
 word32 _getopt_internal(word32 o1, word32 o2, word32 o4, word32 o5, ptr32 & l6Out, ptr32 & l7Out, ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      getopt
+//      getopt_long
+//      getopt_long_only
 // MayUse:  o1:[0..31] o2:[0..31] o4:[0..31] o5:[0..31]
 // LiveOut: i6 l0 l6 l7
 // Trashed: NZVC g0 g2 g3 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o0 o1 o2 o3 o4 o5 o7 sp
@@ -4911,6 +5099,8 @@ getopt_exit:
 word32 getopt_long(word32 o1, word32 o2, word32 o4, ptr32 & l6Out, ptr32 & l7Out, ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  o1:[0..31] o2:[0..31] o4:[0..31]
 // LiveOut: i6 l0 l6 l7
 // Trashed: NZVC g0 g2 g3 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o1 o2 o3 o4 o5 o7 sp
@@ -4948,6 +5138,8 @@ getopt_long_only_exit:
 word32 pexecute(word32 o0, word32 o1, word32 o3, word32 o4, word32 o5, word32 l1, word32 dwArg5C, ptr32 & l0Out, ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      gen_aux_info_file
 // MayUse:  l1:[0..31] o0:[0..31] o1:[0..31] o3:[0..31] o4:[0..31] o5:[0..31] Stack +005C:[0..31]
 // LiveOut: i6 l0 o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 o0
@@ -5081,6 +5273,8 @@ pexecute_exit:
 word32 pwait(word32 o1, ptr32 & i2Out, ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      gen_aux_info_file
 // MayUse:  o1:[0..31]
 // LiveOut: i0 i2 i6
 // Trashed: i0 i1 i2 i3 i4 i5 i6 i7
@@ -5097,6 +5291,8 @@ pwait_exit:
 word32 mkstemps(word32 o0, word32 o1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      make_temp_file
 // MayUse:  o0:[0..31] o1:[0..31]
 // LiveOut: o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 o0 o1
@@ -5267,6 +5463,8 @@ mkstemps_exit:
 word32 fn00016E64(word32 o7, word32 l7)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __do_global_ctors_aux
 // MayUse:  l7:[0..31] o7:[0..31]
 // LiveOut: l7
 // Trashed: l7
@@ -5280,6 +5478,8 @@ fn00016E64_exit:
 word32 __do_global_ctors_aux(word32 o3, word32 o4, word32 o5, word32 o7)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      _init
 // MayUse:  o3:[0..31] o4:[0..31] o5:[0..31] o7:[0..31]
 // LiveOut: l0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l7

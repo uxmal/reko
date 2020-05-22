@@ -54,6 +54,9 @@ fn0040110B_exit:
 word32 fn00401158()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      _GetExceptDLLinfo
+//      fn004011B0
 // MayUse:  fs:[0..15]
 // LiveOut: eax
 // Trashed: eax edx Top
@@ -130,6 +133,9 @@ fn004011B0_exit:
 void fn004011FC(word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      _GetExceptDLLinfo
+//      fn004011B0
 // MayUse:  fs:[0..15] Stack +0004:[0..31]
 // LiveOut:
 // Trashed: SCZO eax edx Top

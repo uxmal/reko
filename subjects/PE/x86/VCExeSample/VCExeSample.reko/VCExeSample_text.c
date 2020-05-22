@@ -12,6 +12,9 @@ int32 main(int32 argc, char ** argv)
 }
 
 // 00401030: void test1(Stack (ptr32 char) arg1, Stack int32 arg2, Stack (ptr32 char) arg3, Stack real32 arg4)
+// Called from:
+//      main
+//      test2
 void test1(char * arg1, int32 arg2, char * arg3, real32 arg4)
 {
 	printf("%s %d %s %f", arg1, arg2, arg3, (real64) arg4);
@@ -44,6 +47,8 @@ void test5()
 }
 
 // 00401120: void test6(Stack Eq_n c, Stack int32 a, Stack int32 b)
+// Called from:
+//      nested_if_blocks_test8
 void test6(Eq_n c, int32 a, int32 b)
 {
 	c->vtbl->method04(c, c->vtbl->sum(c, a, b));
@@ -58,6 +63,8 @@ void test7(real64 rArg04)
 }
 
 // 004011B0: void nested_if_blocks_test8(Stack real64 rArg04)
+// Called from:
+//      loop_test11
 void nested_if_blocks_test8(real64 rArg04)
 {
 	globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, ~0x00, rArg04);
@@ -67,6 +74,8 @@ void nested_if_blocks_test8(real64 rArg04)
 }
 
 // 00401230: void loop_test9(Stack real32 rArg04)
+// Called from:
+//      loop_test11
 void loop_test9(real32 rArg04)
 {
 	int32 dwLoc08_n;
@@ -105,6 +114,8 @@ void loop_test11(real64 rArg04)
 }
 
 // 00401330: void nested_structs_test12(Stack (ptr32 Eq_n) dwArg04)
+// Called from:
+//      nested_structs_test13
 void nested_structs_test12(nested_structs_type * dwArg04)
 {
 	dwArg04->a = 0x01;

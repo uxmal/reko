@@ -1,6 +1,8 @@
 word32 fn00401000()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
 // MayUse: 
 // LiveOut: eax
 // Trashed: SCZO eax ecx Top
@@ -19,6 +21,9 @@ fn00401000_exit:
 word32 fn00401050()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00401060
+//      fn0040173F
 // MayUse: 
 // LiveOut: eax
 // Trashed: eax Top
@@ -32,6 +37,8 @@ fn00401050_exit:
 void fn00401060(word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00401000
 // MayUse:  Stack +0004:[0..31]
 // LiveOut:
 // Trashed: SCZO eax ecx Top
@@ -211,6 +218,8 @@ fn004012D8_exit:
 word32 fn004013FB(word32 dwArg04, word32 dwArg08, ptr32 & edxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00401544
 // MayUse:  Stack +0004:[0..31] Stack +0008:[0..31]
 // LiveOut: eax edx
 // Trashed: SCZO eax ecx edx Top
@@ -243,6 +252,8 @@ fn004013FB_exit:
 byte fn0040143F(ptr32 & edxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
 // MayUse:  fs:[0..15]
 // LiveOut: eax edx
 // Trashed: SCZO eax ecx edx Top
@@ -275,6 +286,8 @@ fn0040143F_exit:
 byte fn00401474(word32 edx, word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
 // MayUse:  edx:[0..31] Stack +0004:[0..31]
 // LiveOut: eax
 // Trashed: SCZO eax ecx edx Top
@@ -357,6 +370,9 @@ fn004014AD_exit:
 byte fn00401544(word32 ebx, word32 esi, word32 edi, ptr32 & edxOut, ptr32 & ebxOut, ptr32 & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
+//      fn004014AD
 // MayUse:  ebx:[0..31] edi:[0..31] esi:[0..31] fs:[0..15]
 // LiveOut: eax ebp ebx edi edx esi
 // Trashed: SCZO eax ebp ebx ecx edi edx esi Top
@@ -407,6 +423,8 @@ fn00401544_exit:
 void fn004015CE(byte bArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
 // MayUse:  Stack +0004:[0..7]
 // LiveOut:
 // Trashed: SCZO eax ecx Top
@@ -426,6 +444,8 @@ fn004015CE_exit:
 void fn004015EB(byte bArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
 // MayUse:  Stack +0008:[0..7]
 // LiveOut:
 // Trashed: SCZO al ecx Top
@@ -446,6 +466,8 @@ fn004015EB_exit:
 word32 fn00401613(word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0040164E
 // MayUse:  Stack +0004:[0..31]
 // LiveOut: eax
 // Trashed: SCZO eax ecx Top
@@ -485,6 +507,8 @@ fn0040164E_exit:
 void fn00401663()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO eax ecx Top
@@ -598,6 +622,9 @@ fn00401718_exit:
 word32 fn00401739()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00401718
+//      fn0040173F
 // MayUse: 
 // LiveOut: eax
 // Trashed: eax Top
@@ -645,6 +672,8 @@ fn0040175C_exit:
 word32 fn00401768()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
 // MayUse: 
 // LiveOut: eax
 // Trashed: eax Top
@@ -658,6 +687,8 @@ fn00401768_exit:
 word32 fn0040176E()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
 // MayUse: 
 // LiveOut: eax
 // Trashed: eax Top
@@ -671,6 +702,10 @@ fn0040176E_exit:
 void fn00401774(word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
+//      fn004014AD
+//      fn00401718
 // MayUse:  Stack +0004:[0..31]
 // LiveOut:
 // Trashed: SCZDOP eax Top
@@ -697,6 +732,8 @@ l0040178A:
 byte fn0040188F()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
 // MayUse: 
 // LiveOut: eax
 // Trashed: SCZO eax ecx Top
@@ -768,6 +805,9 @@ fn00401920_exit:
 void fn00401976()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
+//      fn00401920
 // MayUse: 
 // LiveOut:
 // Trashed: Top
@@ -782,6 +822,9 @@ fn00401976_exit:
 word32 fn00401980(word32 ebx, word32 esi, word32 edi, word32 dwArg00, word32 dwArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
+//      fn00401544
 // MayUse:  ebx:[0..31] edi:[0..31] esi:[0..31] fs:[0..15] Stack +0000:[0..31] Stack +0008:[0..31]
 // LiveOut: ebp
 // Trashed: SCZO eax ebp Top
@@ -802,6 +845,9 @@ fn00401980_exit:
 word32 fn004019C6(word32 ebp, word32 dwArg00, ptr32 & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      Win32CrtStartup
+//      fn00401544
 // MayUse:  ebp:[0..31] fs:[0..15] Stack +0000:[0..31]
 // LiveOut: ebp ebx edi esi
 // Trashed: ebp ebx ecx edi esi esp Top
@@ -821,6 +867,8 @@ fn004019C6_exit:
 void fn004019FE(word32 edx)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00401474
 // MayUse:  edx:[0..31]
 // LiveOut:
 // Trashed: SCZO eax ecx edx Top
@@ -892,6 +940,10 @@ fn004019FE_exit:
 word32 fn00401B98()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0040143F
+//      fn004014AD
+//      fn004015CE
 // MayUse: 
 // LiveOut: eax
 // Trashed: SCZO eax Top
@@ -918,6 +970,9 @@ fn00401BA4_exit:
 byte fn00401C48()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00401474
+//      fn004015EB
 // MayUse: 
 // LiveOut: al
 // Trashed: al Top

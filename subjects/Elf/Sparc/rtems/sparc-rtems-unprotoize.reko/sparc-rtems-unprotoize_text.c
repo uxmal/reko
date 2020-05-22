@@ -18,12 +18,17 @@ void _start(void (* g1)(), word32 o3, word32 o4, word32 o5, word32 o7)
 }
 
 // 0001150C: Register word32 fn0001150C(Register word32 o7, Register word32 l7)
+// Called from:
+//      __do_global_dtors_aux
+//      frame_dummy
 word32 fn0001150C(word32 o7, word32 l7)
 {
 	return o7 + l7;
 }
 
 // 00011514: void __do_global_dtors_aux(Register word32 o3, Register word32 o4, Register word32 o5, Register word32 o7)
+// Called from:
+//      _fini
 void __do_global_dtors_aux(word32 o3, word32 o4, word32 o5, word32 o7)
 {
 	struct Eq_n * l7_n = fn0001150C(o7, 0x00016660);
@@ -59,6 +64,8 @@ void fini_dummy()
 }
 
 // 000115D8: void frame_dummy(Register word32 o3, Register word32 o4, Register word32 o5, Register word32 o7)
+// Called from:
+//      _init
 void frame_dummy(word32 o3, word32 o4, word32 o5, word32 o7)
 {
 	struct Eq_n * l7_n = fn0001150C(o7, 0x0001659C);
@@ -73,6 +80,25 @@ void init_dummy()
 }
 
 // 0001162C: Register Eq_n notice(Register Eq_n o0, Register out ptr32 i1Out, Register out (ptr32 Eq_n) i2Out, Register out (ptr32 Eq_n) i6Out)
+// Called from:
+//      xmalloc
+//      xrealloc
+//      fancy_abort
+//      safe_write
+//      usage
+//      abspath
+//      find_file
+//      aux_info_corrupted
+//      save_def_or_dec
+//      gen_aux_info_file
+//      process_aux_info_file
+//      declare_source_confusing
+//      edit_fn_declaration
+//      edit_formals_lists
+//      edit_fn_definition
+//      scan_for_missed_items
+//      edit_file
+//      main
 Eq_n notice(Eq_n o0, ptr32 & i1Out, struct Eq_n & i2Out, struct Eq_n & i6Out)
 {
 	vfprintf(&globals->t2B640, o0, &fp->dw0044 + 1);
@@ -83,12 +109,35 @@ Eq_n notice(Eq_n o0, ptr32 & i1Out, struct Eq_n & i2Out, struct Eq_n & i6Out)
 }
 
 // 00011660: void xstrerror(Register (ptr32 char) o0)
+// Called from:
+//      safe_write
+//      find_file
+//      gen_aux_info_file
+//      process_aux_info_file
+//      main
+//      pexecute
 void xstrerror(char * o0)
 {
 	strerror(o0);
 }
 
 // 00011674: Register Eq_n xmalloc(Register Eq_n o0, Register out ptr32 i1Out, Register out ptr32 i2Out, Register out ptr32 i6Out)
+// Called from:
+//      savestring
+//      savestring2
+//      dupnstr
+//      string_list_cons
+//      lookup
+//      unexpand_if_needed
+//      shortpath
+//      find_file
+//      save_def_or_dec
+//      munge_compile_params
+//      process_aux_info_file
+//      main
+//      getpwd
+//      choose_temp_base
+//      make_temp_file
 Eq_n xmalloc(Eq_n o0, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out)
 {
 	if (malloc(o0) != null)
@@ -109,6 +158,9 @@ Eq_n xmalloc(Eq_n o0, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out)
 }
 
 // 000116B0: Register Eq_n xrealloc(Register Eq_n o0, Register Eq_n o1, Register out Eq_n i1Out, Register out ptr32 i2Out)
+// Called from:
+//      unexpand_if_needed
+//      output_bytes
 Eq_n xrealloc(Eq_n o0, Eq_n o1, union Eq_n & i1Out, ptr32 & i2Out)
 {
 	bool Z_n;
@@ -133,6 +185,8 @@ Eq_n xrealloc(Eq_n o0, Eq_n o1, union Eq_n & i1Out, ptr32 & i2Out)
 }
 
 // 00011708: Register Eq_n xfree(Register Eq_n o0)
+// Called from:
+//      free_def_dec
 Eq_n xfree(Eq_n o0)
 {
 	if (o0 == 0x00)
@@ -141,6 +195,10 @@ Eq_n xfree(Eq_n o0)
 }
 
 // 00011728: Register Eq_n savestring(Register Eq_n o0, Register Eq_n o1, Register out Eq_n l0Out, Register out ptr32 i0Out, Register out ptr32 i1Out, Register out ptr32 i6Out)
+// Called from:
+//      add_symbol
+//      unexpand_if_needed
+//      abspath
 Eq_n savestring(Eq_n o0, Eq_n o1, union Eq_n & l0Out, ptr32 & i0Out, ptr32 & i1Out, ptr32 & i6Out)
 {
 	ptr32 i1_n;
@@ -156,6 +214,8 @@ Eq_n savestring(Eq_n o0, Eq_n o1, union Eq_n & l0Out, ptr32 & i0Out, ptr32 & i1O
 }
 
 // 0001174C: Register Eq_n savestring2(Register Eq_n o0, Register Eq_n o1, Register word32 o3)
+// Called from:
+//      gen_aux_info_file
 Eq_n savestring2(Eq_n o0, Eq_n o1, word32 o3)
 {
 	word32 o0_n = (word32) o1 + o3;
@@ -179,6 +239,10 @@ void fancy_abort()
 }
 
 // 000117A0: Register Eq_n dupnstr(Register Eq_n o0, Register (ptr32 Eq_n) o1, Register out Eq_n l0Out, Register out (ptr32 Eq_n) i0Out, Register out ptr32 i6Out)
+// Called from:
+//      save_def_or_dec
+//      munge_compile_params
+//      edit_formals_lists
 Eq_n dupnstr(Eq_n o0, struct Eq_n * o1, union Eq_n & l0Out, struct Eq_n & i0Out, ptr32 & i6Out)
 {
 	int32 i1_n;
@@ -194,6 +258,8 @@ Eq_n dupnstr(Eq_n o0, struct Eq_n * o1, union Eq_n & l0Out, struct Eq_n & i0Out,
 }
 
 // 000117CC: Register Eq_n substr(Register Eq_n o0, Register (ptr32 int8) o1)
+// Called from:
+//      other_variable_style_function
 Eq_n substr(Eq_n o0, int8 * o1)
 {
 	int32 g2_n = (int32) *o0;
@@ -224,6 +290,8 @@ Eq_n substr(Eq_n o0, int8 * o1)
 }
 
 // 00011828: Register Eq_n safe_read(Register Eq_n o0, Register Eq_n o1, Register Eq_n o2, Register out (ptr32 Eq_n) l1Out, Register out Eq_n l2Out)
+// Called from:
+//      process_aux_info_file
 Eq_n safe_read(Eq_n o0, Eq_n o1, Eq_n o2, struct stat & l1Out, union Eq_n & l2Out)
 {
 safe_read_entry:
@@ -310,6 +378,9 @@ void safe_write(int32 o0, void * o1, Eq_n o2, Eq_n o3)
 }
 
 // 00011914: void save_pointers()
+// Called from:
+//      edit_fn_declaration
+//      edit_fn_definition
 void save_pointers()
 {
 	up32 o1_n = globals->dw28210;
@@ -318,6 +389,9 @@ void save_pointers()
 }
 
 // 00011938: void restore_pointers()
+// Called from:
+//      edit_fn_declaration
+//      edit_fn_definition
 void restore_pointers()
 {
 	up32 o1_n = globals->dw2B290;
@@ -326,6 +400,11 @@ void restore_pointers()
 }
 
 // 0001195C: Register int32 is_id_char(Register int32 o0)
+// Called from:
+//      unexpand_if_needed
+//      save_def_or_dec
+//      edit_formals_lists
+//      scan_for_missed_items
 int32 is_id_char(int32 o0)
 {
 	int32 g2_n;
@@ -344,6 +423,8 @@ int32 is_id_char(int32 o0)
 }
 
 // 00011998: void usage()
+// Called from:
+//      main
 void usage()
 {
 	word32 i1_n;
@@ -354,6 +435,8 @@ void usage()
 }
 
 // 000119BC: Register Eq_n in_system_include_dir(Register Eq_n o0)
+// Called from:
+//      edit_file
 Eq_n in_system_include_dir(Eq_n o0)
 {
 	if ((int32) *o0 == 0x2F)
@@ -389,6 +472,8 @@ Eq_n in_system_include_dir(Eq_n o0)
 }
 
 // 00011A4C: Register (ptr32 Eq_n) needs_to_be_converted(Register (ptr32 Eq_n) o0)
+// Called from:
+//      edit_file
 struct Eq_n * needs_to_be_converted(struct Eq_n * o0)
 {
 	struct Eq_n * o0_n;
@@ -414,6 +499,8 @@ struct Eq_n * needs_to_be_converted(struct Eq_n * o0)
 }
 
 // 00011A88: Register Eq_n directory_specified_p(Register Eq_n o0)
+// Called from:
+//      edit_file
 Eq_n directory_specified_p(Eq_n o0)
 {
 	Eq_n i0_n;
@@ -467,6 +554,8 @@ l00011B1C:
 }
 
 // 00011B40: Register Eq_n file_excluded_p(Register Eq_n o0)
+// Called from:
+//      edit_file
 Eq_n file_excluded_p(Eq_n o0)
 {
 	Eq_n i0_n;
@@ -497,6 +586,8 @@ Eq_n file_excluded_p(Eq_n o0)
 }
 
 // 00011BC8: Register word32 string_list_cons(Register out ptr32 i6Out)
+// Called from:
+//      main
 word32 string_list_cons(ptr32 & i6Out)
 {
 	word32 i1_n;
@@ -509,6 +600,8 @@ word32 string_list_cons(ptr32 & i6Out)
 }
 
 // 00011BE4: Register (ptr32 Eq_n) visit_each_hash_node(Register (ptr32 Eq_n) o0)
+// Called from:
+//      do_processing
 struct Eq_n * visit_each_hash_node(struct Eq_n * o0)
 {
 	struct Eq_n * i0_n = o0;
@@ -538,6 +631,8 @@ struct Eq_n * visit_each_hash_node(struct Eq_n * o0)
 }
 
 // 00011C3C: Register Eq_n add_symbol(Register Eq_n o0, Register Eq_n o1, Register out ptr32 i1Out)
+// Called from:
+//      lookup
 Eq_n add_symbol(Eq_n o0, Eq_n o1, ptr32 & i1Out)
 {
 	(&(&(&(&(&o0.ptr0000->a0000[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000 = (struct Eq_n *) 0x00;
@@ -552,6 +647,9 @@ Eq_n add_symbol(Eq_n o0, Eq_n o1, ptr32 & i1Out)
 }
 
 // 00011C6C: Register Eq_n lookup(Register Eq_n o0, Register Eq_n o1, Register out Eq_n l1Out, Register out Eq_n i1Out)
+// Called from:
+//      find_file
+//      save_def_or_dec
 Eq_n lookup(Eq_n o0, Eq_n o1, struct Eq_n & l1Out, union Eq_n & i1Out)
 {
 	Eq_n i1_n = o1;
@@ -604,6 +702,8 @@ l00011D1C:
 }
 
 // 00011D3C: void free_def_dec(Register (ptr32 Eq_n) o0)
+// Called from:
+//      save_def_or_dec
 void free_def_dec(struct Eq_n * o0)
 {
 	xfree(xfree(o0->t000C));
@@ -726,6 +826,11 @@ l00011EC8:
 }
 
 // 00011F34: Register word32 abspath(Register Eq_n o0, Register Eq_n o1, Register out (ptr32 Eq_n) i6Out)
+// Called from:
+//      shortpath
+//      referenced_file_is_newer
+//      save_def_or_dec
+//      main
 word32 abspath(Eq_n o0, Eq_n o1, struct Eq_n & i6Out)
 {
 	Eq_n i0_n = o0;
@@ -885,6 +990,17 @@ l00012120:
 }
 
 // 0001214C: Register Eq_n shortpath(Register Eq_n o0, Register Eq_n o1, Register out Eq_n l0Out, Register out (ptr32 Eq_n) l2Out, Register out Eq_n l3Out, Register out Eq_n l4Out, Register out Eq_n i0Out)
+// Called from:
+//      safe_write
+//      find_file
+//      gen_aux_info_file
+//      process_aux_info_file
+//      declare_source_confusing
+//      edit_formals_lists
+//      edit_fn_definition
+//      scan_for_missed_items
+//      edit_file
+//      main
 Eq_n shortpath(Eq_n o0, Eq_n o1, union Eq_n & l0Out, struct Eq_n & l2Out, union Eq_n & l3Out, union Eq_n & l4Out, union Eq_n & i0Out)
 {
 	Eq_n o0_n = strlen(o1);
@@ -1021,6 +1137,9 @@ l000122FC:
 }
 
 // 00012304: Register Eq_n find_file(Register Eq_n o0, Register out (ptr32 char) l2Out, Register out ptr32 l3Out, Register out Eq_n i0Out, Register out ptr32 i1Out)
+// Called from:
+//      referenced_file_is_newer
+//      save_def_or_dec
 Eq_n find_file(Eq_n o0, char & l2Out, ptr32 & l3Out, union Eq_n & i0Out, ptr32 & i1Out)
 {
 	Eq_n l1_n;
@@ -1070,6 +1189,8 @@ l000123B4:
 }
 
 // 000123D0: void aux_info_corrupted()
+// Called from:
+//      check_aux_info
 void aux_info_corrupted()
 {
 	word32 i1_n;
@@ -1080,6 +1201,9 @@ void aux_info_corrupted()
 }
 
 // 000123F8: Register word32 check_aux_info(Register word32 o0, Register out ptr32 i1Out)
+// Called from:
+//      referenced_file_is_newer
+//      save_def_or_dec
 word32 check_aux_info(word32 o0, ptr32 & i1Out)
 {
 	if (o0 != 0x00)
@@ -1092,6 +1216,8 @@ word32 check_aux_info(word32 o0, ptr32 & i1Out)
 }
 
 // 00012418: Register (ptr32 Eq_n) find_corresponding_lparen(Register (ptr32 Eq_n) o0)
+// Called from:
+//      save_def_or_dec
 struct Eq_n * find_corresponding_lparen(struct Eq_n * o0)
 {
 	int8 * o0_n = &o0->bFFFFFFFF + -1;
@@ -1391,6 +1517,9 @@ l00012AB4:
 }
 
 // 00012B64: Register Eq_n munge_compile_params(Register Eq_n o0, Register out ptr32 i6Out)
+// Called from:
+//      gen_aux_info_file
+//      main
 Eq_n munge_compile_params(Eq_n o0, ptr32 & i6Out)
 {
 	struct Eq_n * sp_n = fp + ~0x6F - ((strlen(o0) << 0x02) + 0x27 & ~0x07);
@@ -1462,6 +1591,8 @@ l00012D00:
 }
 
 // 00012E2C: Register Eq_n gen_aux_info_file(Register Eq_n o0, Register out ptr32 l0Out, Register out (ptr32 Eq_n) l1Out, Register out (ptr32 char) l4Out, Register out Eq_n i0Out, Register out ptr32 i2Out, Register out ptr32 i6Out)
+// Called from:
+//      process_aux_info_file
 Eq_n gen_aux_info_file(Eq_n o0, ptr32 & l0Out, struct stat & l1Out, char & l4Out, union Eq_n & i0Out, ptr32 & i2Out, ptr32 & i6Out)
 {
 	Eq_n o1_n;
@@ -1529,6 +1660,8 @@ Eq_n gen_aux_info_file(Eq_n o0, ptr32 & l0Out, struct stat & l1Out, char & l4Out
 }
 
 // 00013034: Register Eq_n process_aux_info_file(Register Eq_n o0, Register word32 o2, Register out Eq_n l1Out)
+// Called from:
+//      do_processing
 Eq_n process_aux_info_file(Eq_n o0, word32 o2, union Eq_n & l1Out)
 {
 	word32 sp_n = fp + ~0xF7 - (strlen(o0) + 0x0A & ~0x07);
@@ -1664,6 +1797,8 @@ l000135B8:
 }
 
 // 000135C0: void reverse_def_dec_list(Register (ptr32 Eq_n) o0)
+// Called from:
+//      visit_each_hash_node
 void reverse_def_dec_list(struct Eq_n * o0)
 {
 	struct Eq_n * o1_n = o0->ptr0008;
@@ -1691,6 +1826,11 @@ void reverse_def_dec_list(struct Eq_n * o0)
 }
 
 // 0001360C: Register Eq_n identify_lineno(Register Eq_n o0)
+// Called from:
+//      declare_source_confusing
+//      edit_formals_lists
+//      edit_fn_definition
+//      scan_for_missed_items
 Eq_n identify_lineno(Eq_n o0)
 {
 	Eq_n o0_n;
@@ -1715,6 +1855,8 @@ Eq_n identify_lineno(Eq_n o0)
 }
 
 // 0001364C: void declare_source_confusing(Register Eq_n o0)
+// Called from:
+//      check_source
 void declare_source_confusing(Eq_n o0)
 {
 	if (globals->dw27F2C == 0x00)
@@ -1751,6 +1893,13 @@ void declare_source_confusing(Eq_n o0)
 }
 
 // 000136E0: Register Eq_n check_source(Register Eq_n o0, Register Eq_n o1, Register out Eq_n i1Out, Register out (ptr32 Eq_n) i2Out, Register out (ptr32 Eq_n) i6Out)
+// Called from:
+//      seek_to_line
+//      forward_to_next_token_char
+//      edit_formals_lists
+//      find_rightmost_formals_list
+//      careful_find_l_paren
+//      scan_for_missed_items
 Eq_n check_source(Eq_n o0, Eq_n o1, union Eq_n & i1Out, struct Eq_n & i2Out, struct Eq_n & i6Out)
 {
 	if (o0 != 0x00)
@@ -1812,6 +1961,8 @@ void seek_to_line(Eq_n o0)
 }
 
 // 000137AC: Register Eq_n forward_to_next_token_char(Register Eq_n o0)
+// Called from:
+//      find_rightmost_formals_list
 Eq_n forward_to_next_token_char(Eq_n o0)
 {
 	Eq_n i0_n = (word32) o0 + 1;
@@ -1833,6 +1984,9 @@ Eq_n forward_to_next_token_char(Eq_n o0)
 }
 
 // 00013808: Register up32 output_bytes(Register Eq_n o0, Register Eq_n o1, Register out ptr32 l1Out, Register out ptr32 l2Out, Register out Eq_n i0Out, Register out Eq_n i1Out, Register out ptr32 i2Out)
+// Called from:
+//      output_string
+//      output_up_to
 up32 output_bytes(Eq_n o0, Eq_n o1, ptr32 & l1Out, ptr32 & l2Out, union Eq_n & i0Out, union Eq_n & i1Out, ptr32 & i2Out)
 {
 	up32 l0_n = globals->dw28200;
@@ -1862,6 +2016,8 @@ up32 output_bytes(Eq_n o0, Eq_n o1, ptr32 & l1Out, ptr32 & l2Out, union Eq_n & i
 }
 
 // 0001388C: Register word32 output_string(Register Eq_n o0, Register out (ptr32 Eq_n) l2Out, Register out ptr32 i0Out, Register out ptr32 i1Out, Register out (ptr32 Eq_n) i2Out)
+// Called from:
+//      edit_formals_lists
 word32 output_string(Eq_n o0, struct Eq_n & l2Out, ptr32 & i0Out, ptr32 & i1Out, struct Eq_n & i2Out)
 {
 	ptr32 i0_n;
@@ -1878,6 +2034,9 @@ word32 output_string(Eq_n o0, struct Eq_n & l2Out, ptr32 & i0Out, ptr32 & i1Out,
 }
 
 // 000138AC: Register word32 output_up_to(Register Eq_n o0, Register out ptr32 l2Out, Register out Eq_n i0Out, Register out ptr32 i1Out, Register out ptr32 i2Out)
+// Called from:
+//      edit_formals_lists
+//      edit_fn_definition
 word32 output_up_to(Eq_n o0, ptr32 & l2Out, union Eq_n & i0Out, ptr32 & i1Out, ptr32 & i2Out)
 {
 	ui32 o2_n = globals->dw281E0;
@@ -1896,6 +2055,8 @@ word32 output_up_to(Eq_n o0, ptr32 & l2Out, union Eq_n & i0Out, ptr32 & i1Out, p
 }
 
 // 000138F0: Register Eq_n other_variable_style_function(Register Eq_n o0, Register out ptr32 i1Out, Register out ptr32 i6Out)
+// Called from:
+//      edit_fn_definition
 Eq_n other_variable_style_function(Eq_n o0, ptr32 & i1Out, ptr32 & i6Out)
 {
 	Eq_n o0_n = (bool) cond(0x00 - substr(o0, &globals->b17468));
@@ -1920,6 +2081,8 @@ void edit_fn_declaration(struct Eq_n * o0)
 }
 
 // 00013B68: Register Eq_n edit_formals_lists(Register Eq_n o0, Register out Eq_n l1Out, Register out Eq_n l2Out, Register out ptr32 i1Out, Register out (ptr32 Eq_n) i2Out)
+// Called from:
+//      edit_formals_lists
 Eq_n edit_formals_lists(Eq_n o0, union Eq_n & l1Out, union Eq_n & l2Out, ptr32 & i1Out, struct Eq_n & i2Out)
 {
 	int8 * l1_n = (word32) o0 - 1 + ~0x00;
@@ -2099,6 +2262,8 @@ l00013DFC:
 }
 
 // 00013E04: Register word32 find_rightmost_formals_list(Register (ptr32 int8) o0)
+// Called from:
+//      edit_fn_definition
 word32 find_rightmost_formals_list(int8 * o0)
 {
 	int8 * i0_n = o0 + -1;
@@ -2218,6 +2383,8 @@ void do_cleaning(byte * o0, up32 o1)
 }
 
 // 00014518: Register (ptr32 Eq_n) careful_find_l_paren(Register (ptr32 Eq_n) o0, Register out (ptr32 Eq_n) l1Out, Register out (ptr32 Eq_n) i6Out)
+// Called from:
+//      scan_for_missed_items
 struct Eq_n * careful_find_l_paren(struct Eq_n * o0, struct Eq_n & l1Out, struct Eq_n & i6Out)
 {
 	Eq_n i0_n = &o0->bFFFFFFFF;
@@ -2438,6 +2605,8 @@ void edit_file(struct Eq_n * o0)
 }
 
 // 00014E24: void do_processing()
+// Called from:
+//      main
 void do_processing()
 {
 	Eq_n o0_n = globals->t28160;
@@ -2457,6 +2626,8 @@ void do_processing()
 }
 
 // 00014EA4: Register ui32 main(Register (ptr32 (ptr32 char)) o1)
+// Called from:
+//      _start
 ui32 main(char ** o1)
 {
 	char * o0_n = strrchr(*o1, 0x2F);
@@ -2570,6 +2741,8 @@ ui32 main(char ** o1)
 }
 
 // 000152B8: Register Eq_n getpwd()
+// Called from:
+//      main
 Eq_n getpwd()
 {
 	Eq_n i0_n = globals->t2B2A0;
@@ -3022,6 +3195,9 @@ void print_and_abort()
 }
 
 // 000158D8: Register Eq_n try(Register Eq_n o0, Register Eq_n o1)
+// Called from:
+//      choose_temp_base
+//      make_temp_file
 Eq_n try(Eq_n o0, Eq_n o1)
 {
 	Eq_n i0_n = o0;
@@ -3033,6 +3209,8 @@ Eq_n try(Eq_n o0, Eq_n o1)
 }
 
 // 00015918: Register Eq_n choose_temp_base(Register out Eq_n l1Out, Register out Eq_n i0Out, Register out ptr32 i6Out)
+// Called from:
+//      gen_aux_info_file
 Eq_n choose_temp_base(union Eq_n & l1Out, size_t & i0Out, ptr32 & i6Out)
 {
 	Eq_n o0_n = try(0x00028038, try(0x00028040, try(0x00017900, try(getenv("TEMP"), try(getenv("TMP"), try(getenv("TMPDIR"), 0x00))))));
@@ -3141,6 +3319,8 @@ void make_temp_file(Eq_n o0)
 }
 
 // 00015C24: Register (ptr32 int8) my_index(Register (ptr32 int8) o0, Register Eq_n o1)
+// Called from:
+//      _getopt_internal
 int8 * my_index(int8 * o0, Eq_n o1)
 {
 	int32 g2_n = (int32) *o0;
@@ -3157,6 +3337,8 @@ int8 * my_index(int8 * o0, Eq_n o1)
 }
 
 // 00015C60: Register (ptr32 (arr Eq_n)) exchange(Register (arr Eq_n) o0, Register out (ptr32 int8) i2Out, Register out (ptr32 ptr32) i4Out, Register out (ptr32 ptr32) i5Out, Register out (ptr32 Eq_n) i6Out)
+// Called from:
+//      _getopt_internal
 Eq_n (* exchange)[](Eq_n o0[], int8 & i2Out, ptr32 & i4Out, ptr32 & i5Out, struct Eq_n & i6Out)
 {
 	ptr32 * g2_n;
@@ -3249,6 +3431,8 @@ l00015D30:
 }
 
 // 00015D64: Register (ptr32 int8) _getopt_initialize(Register (ptr32 int8) o2, Register out ptr32 i1Out, Register out ptr32 i4Out, Register out ptr32 i5Out, Register out ptr32 i6Out)
+// Called from:
+//      _getopt_internal
 int8 * _getopt_initialize(int8 * o2, ptr32 & i1Out, ptr32 & i4Out, ptr32 & i5Out, ptr32 & i6Out)
 {
 	ptr32 * o2_n = globals->ptr28068;
@@ -3281,6 +3465,10 @@ int8 * _getopt_initialize(int8 * o2, ptr32 & i1Out, ptr32 & i4Out, ptr32 & i5Out
 }
 
 // 00015E04: Register Eq_n _getopt_internal(Register (ptr32 (arr Eq_n)) o1, Register (ptr32 int8) o2, Register (ptr32 ptr32) o4, Register word32 o5, Register out ptr32 l6Out, Register out ptr32 l7Out, Register out (ptr32 Eq_n) i6Out)
+// Called from:
+//      getopt
+//      getopt_long
+//      getopt_long_only
 Eq_n _getopt_internal(Eq_n (* o1)[], int8 * o2, ptr32 * o4, word32 o5, ptr32 & l6Out, ptr32 & l7Out, struct Eq_n & i6Out)
 {
 	ptr32 * o2_n = globals->ptr28068;
@@ -3877,6 +4065,8 @@ void getopt(Eq_n (* o1)[], int8 * o2)
 }
 
 // 000169A8: Register word32 getopt_long(Register (ptr32 (arr Eq_n)) o1, Register (ptr32 int8) o2, Register (ptr32 ptr32) o4, Register out ptr32 l6Out, Register out ptr32 l7Out, Register out ptr32 i6Out)
+// Called from:
+//      main
 word32 getopt_long(Eq_n (* o1)[], int8 * o2, ptr32 * o4, ptr32 & l6Out, ptr32 & l7Out, ptr32 & i6Out)
 {
 	ptr32 i6_n;
@@ -3899,6 +4089,8 @@ void getopt_long_only(Eq_n (* o1)[], int8 * o2, ptr32 * o4)
 }
 
 // 000169F8: Register Eq_n pexecute(Register Eq_n o0, Register (ptr32 Eq_n) o1, Register word32 o3, Register (ptr32 word32) o4, Register (ptr32 word32) o5, Register Eq_n l1, Stack ui32 dwArg5C, Register out ptr32 l0Out, Register out ptr32 i6Out)
+// Called from:
+//      gen_aux_info_file
 Eq_n pexecute(Eq_n o0, pid_t * o1, word32 o3, word32 * o4, word32 * o5, Eq_n l1, ui32 dwArg5C, ptr32 & l0Out, ptr32 & i6Out)
 {
 	word32 o0_n;
@@ -4000,6 +4192,8 @@ l00016B10:
 }
 
 // 00016C2C: Register word32 pwait(Register (ptr32 int32) o1, Register out ptr32 i2Out, Register out ptr32 i6Out)
+// Called from:
+//      gen_aux_info_file
 word32 pwait(int32 * o1, ptr32 & i2Out, ptr32 & i6Out)
 {
 	wait(o1);
@@ -4009,6 +4203,8 @@ word32 pwait(int32 * o1, ptr32 & i2Out, ptr32 & i6Out)
 }
 
 // 00016C40: Register Eq_n mkstemps(Register Eq_n o0, Register Eq_n o1)
+// Called from:
+//      make_temp_file
 Eq_n mkstemps(Eq_n o0, Eq_n o1)
 {
 	Eq_n i0_n;
@@ -4149,12 +4345,16 @@ l00016E58:
 }
 
 // 00016E64: Register word32 fn00016E64(Register word32 o7, Register word32 l7)
+// Called from:
+//      __do_global_ctors_aux
 word32 fn00016E64(word32 o7, word32 l7)
 {
 	return o7 + l7;
 }
 
 // 00016E6C: Register (ptr32 word32) __do_global_ctors_aux(Register word32 o3, Register word32 o4, Register word32 o5, Register word32 o7)
+// Called from:
+//      _init
 word32 * __do_global_ctors_aux(word32 o3, word32 o4, word32 o5, word32 o7)
 {
 	word32 * l0_n;

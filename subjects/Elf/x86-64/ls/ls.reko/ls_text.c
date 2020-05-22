@@ -1459,6 +1459,8 @@ void fn00000000004048C0()
 }
 
 // 00000000004049E0: Register byte fn00000000004049E0(Register Eq_n rcx, Register byte dl, Register (ptr64 (ptr64 char)) rsi, Register Eq_n rdi, Register out Eq_n ebxOut, Register out Eq_n rbpOut, Register out (ptr64 Eq_n) r8Out, Register out Eq_n r12Out)
+// Called from:
+//      fn00000000004028C0
 byte fn00000000004049E0(Eq_n rcx, byte dl, char ** rsi, Eq_n rdi, union Eq_n & ebxOut, union Eq_n & rbpOut, union Eq_n & r8Out, union Eq_n & r12Out)
 {
 	word32 rcx_32_32_n = SLICE(rcx, word32, 32);
@@ -1654,6 +1656,11 @@ l0000000000404A38:
 }
 
 // 0000000000404CD0: Register uint64 fn0000000000404CD0(Register word32 edi)
+// Called from:
+//      fn00000000004028C0
+//      fn0000000000406540
+//      fn0000000000406A30
+//      fn0000000000407EA0
 uint64 fn0000000000404CD0(word32 edi)
 {
 	uint64 rdi_n = (uint64) edi;
@@ -1685,6 +1692,9 @@ uint64 fn0000000000404CD0(word32 edi)
 }
 
 // 0000000000404D20: void fn0000000000404D20(Register Eq_n edx, Register Eq_n rsi, Register Eq_n rdi)
+// Called from:
+//      fn00000000004028C0
+//      fn0000000000405090
 void fn0000000000404D20(Eq_n edx, Eq_n rsi, Eq_n rdi)
 {
 	Eq_n edx = (word32) rdx;
@@ -1705,6 +1715,9 @@ void fn0000000000404D20(Eq_n edx, Eq_n rsi, Eq_n rdi)
 }
 
 // 0000000000404D90: void fn0000000000404D90(Register (ptr64 Eq_n) rdi)
+// Called from:
+//      fn0000000000404DD0
+//      fn0000000000405090
 void fn0000000000404D90(struct Eq_n * rdi)
 {
 	free(rdi->t0000);
@@ -1716,6 +1729,8 @@ void fn0000000000404D90(struct Eq_n * rdi)
 }
 
 // 0000000000404DD0: void fn0000000000404DD0()
+// Called from:
+//      fn00000000004028C0
 void fn0000000000404DD0()
 {
 	Eq_n rbx_n = 0x00;
@@ -1739,6 +1754,8 @@ void fn0000000000404DD0()
 }
 
 // 0000000000404E80: Register word64 fn0000000000404E80(Register (ptr64 int32) r8, Register out (ptr64 int32) r8Out)
+// Called from:
+//      fn00000000004028C0
 word64 fn0000000000404E80(int32 * r8, int32 & r8Out)
 {
 	word32 r8_32_n = SLICE(r8, word32, 32);
@@ -1815,6 +1832,8 @@ word64 fn0000000000404E80(int32 * r8, int32 & r8Out)
 }
 
 // 0000000000405090: void fn0000000000405090(Register Eq_n sil, Register Eq_n rdi)
+// Called from:
+//      fn00000000004028C0
 void fn0000000000405090(Eq_n sil, Eq_n rdi)
 {
 	Eq_n sil = (byte) rsi;
@@ -1882,6 +1901,8 @@ l0000000000405100:
 }
 
 // 0000000000405200: void fn0000000000405200(Register Eq_n rsi, Register Eq_n rdi)
+// Called from:
+//      fn00000000004079F0
 void fn0000000000405200(Eq_n rsi, Eq_n rdi)
 {
 	Eq_n rbx_n = rdi;
@@ -1932,6 +1953,10 @@ l0000000000405266:
 }
 
 // 00000000004052D0: Register (ptr64 Eq_n) fn00000000004052D0(Register (ptr64 Eq_n) rcx, Register (ptr64 Eq_n) rdx, Register Eq_n rsi, Register (ptr64 Eq_n) rdi, Register Eq_n r12, Register (ptr32 Eq_n) fs, Register out (ptr64 int32) r8Out)
+// Called from:
+//      fn00000000004028C0
+//      fn0000000000405D50
+//      fn0000000000406540
 FILE * fn00000000004052D0(FILE * rcx, struct Eq_n * rdx, Eq_n rsi, FILE * rdi, Eq_n r12, struct Eq_n * fs, int32 & r8Out)
 {
 	word64 rax_n = fs->qw0028;
@@ -2108,6 +2133,8 @@ l0000000000405502:
 }
 
 // 0000000000405630: void fn0000000000405630(Register (ptr64 Eq_n) rsi, Register Eq_n rdi)
+// Called from:
+//      fn00000000004028C0
 void fn0000000000405630(struct Eq_n * rsi, Eq_n rdi)
 {
 	int64 rax_n = rsi->qw0018;
@@ -2144,6 +2171,9 @@ void fn0000000000405630(struct Eq_n * rsi, Eq_n rdi)
 }
 
 // 0000000000405700: Register Eq_n fn0000000000405700(Register word32 rax_32_n, Register Eq_n edx, Register Eq_n rdi, Register (ptr32 Eq_n) fs)
+// Called from:
+//      fn00000000004057B0
+//      fn0000000000406B70
 Eq_n fn0000000000405700(word32 rax_32_n, Eq_n edx, Eq_n rdi, struct Eq_n * fs)
 {
 	Eq_n edx = (word32) rdx;
@@ -2183,6 +2213,8 @@ Eq_n fn0000000000405700(word32 rax_32_n, Eq_n edx, Eq_n rdi, struct Eq_n * fs)
 }
 
 // 00000000004057B0: Register word64 fn00000000004057B0(Register byte dl, Register word32 esi, Register Eq_n rdi, Register (ptr32 Eq_n) fs)
+// Called from:
+//      fn0000000000406B70
 word64 fn00000000004057B0(byte dl, word32 esi, Eq_n rdi, struct Eq_n * fs)
 {
 	Eq_n rax_n = 4274020;
@@ -2201,6 +2233,9 @@ word64 fn00000000004057B0(byte dl, word32 esi, Eq_n rdi, struct Eq_n * fs)
 }
 
 // 0000000000405810: Register uint64 fn0000000000405810(Register Eq_n rdx, Register Eq_n rsi, Register word32 edi, Register (ptr32 Eq_n) fs, Register out Eq_n r8Out)
+// Called from:
+//      fn00000000004028C0
+//      fn0000000000407EA0
 uint64 fn0000000000405810(Eq_n rdx, Eq_n rsi, word32 edi, struct Eq_n * fs, union Eq_n & r8Out)
 {
 	fn000000000040EAB0(rdx, fs);
@@ -2223,6 +2258,9 @@ uint64 fn0000000000405810(Eq_n rdx, Eq_n rsi, word32 edi, struct Eq_n * fs, unio
 }
 
 // 0000000000405C20: Register uint64 fn0000000000405C20(Register Eq_n ecx, Register Eq_n edx, Register Eq_n esi, Register byte dil, Register out Eq_n rsiOut)
+// Called from:
+//      fn0000000000405D00
+//      fn0000000000405D50
 uint64 fn0000000000405C20(Eq_n ecx, Eq_n edx, Eq_n esi, byte dil, union Eq_n & rsiOut)
 {
 	ui24 ecx_24_n = SLICE(rcx, word24, 8);
@@ -2304,6 +2342,9 @@ l0000000000405C3E:
 }
 
 // 0000000000405D00: Register word64 fn0000000000405D00(Register Eq_n rcx, Register Eq_n edx, Register Eq_n rsi, Register byte dil)
+// Called from:
+//      fn0000000000406B70
+//      fn0000000000407870
 word64 fn0000000000405D00(Eq_n rcx, Eq_n edx, Eq_n rsi, byte dil)
 {
 	Eq_n edx = (word32) rdx;
@@ -2331,6 +2372,9 @@ word64 fn0000000000405D00(Eq_n rcx, Eq_n edx, Eq_n rsi, byte dil)
 }
 
 // 0000000000405D50: Register Eq_n fn0000000000405D50(Register Eq_n rdi, Register Eq_n r12, Register (ptr32 Eq_n) fs, FpuStack Eq_n rLoc4, Register out ptr64 r8Out)
+// Called from:
+//      fn0000000000405ED0
+//      fn00000000004079F0
 Eq_n fn0000000000405D50(Eq_n rdi, Eq_n r12, struct Eq_n * fs, Eq_n rLoc4, ptr64 & r8Out)
 {
 	Eq_n rbx_n = 0x00;
@@ -2393,6 +2437,8 @@ Eq_n fn0000000000405D50(Eq_n rdi, Eq_n r12, struct Eq_n * fs, Eq_n rLoc4, ptr64 
 }
 
 // 0000000000405ED0: Register Eq_n fn0000000000405ED0(Register Eq_n edi, Register (ptr32 Eq_n) fs, FpuStack Eq_n rLoc4, Register out Eq_n r8Out)
+// Called from:
+//      fn00000000004079F0
 Eq_n fn0000000000405ED0(Eq_n edi, struct Eq_n * fs, Eq_n rLoc4, union Eq_n & r8Out)
 {
 	Eq_n edi = (word32) rdi;
@@ -2546,6 +2592,9 @@ l000000000040619D:
 }
 
 // 00000000004061B0: Register uint64 fn00000000004061B0(Register Eq_n rdi, Register (ptr32 Eq_n) fs)
+// Called from:
+//      fn0000000000405ED0
+//      fn0000000000407EA0
 uint64 fn00000000004061B0(Eq_n rdi, struct Eq_n * fs)
 {
 	uint64 rdx_n;
@@ -2588,6 +2637,9 @@ l000000000040622B:
 }
 
 // 0000000000406400: void fn0000000000406400()
+// Called from:
+//      fn0000000000406440
+//      fn0000000000406540
 void fn0000000000406400()
 {
 	if (globals->qw61A408 == 0x00)
@@ -2607,6 +2659,12 @@ void fn0000000000406400()
 }
 
 // 0000000000406440: Register Eq_n fn0000000000406440(Register (ptr64 Eq_n) rdi, Register out (ptr64 Eq_n) rcxOut)
+// Called from:
+//      fn00000000004028C0
+//      fn0000000000406400
+//      fn0000000000406490
+//      fn0000000000406540
+//      fn0000000000406A30
 Eq_n fn0000000000406440(struct Eq_n * rdi, FILE & rcxOut)
 {
 	if (globals->b61B128 == 0x00)
@@ -2621,6 +2679,9 @@ Eq_n fn0000000000406440(struct Eq_n * rdi, FILE & rcxOut)
 }
 
 // 0000000000406490: void fn0000000000406490()
+// Called from:
+//      fn00000000004028C0
+//      fn0000000000406540
 void fn0000000000406490()
 {
 	while ((word32) (uint64) globals->dw61B038 != 0x00 || (word32) ((uint64) globals->dw61B034) != 0x00)
@@ -2649,6 +2710,9 @@ void fn0000000000406490()
 }
 
 // 0000000000406540: Register (ptr64 Eq_n) fn0000000000406540(Register (ptr64 Eq_n) rax, Register Eq_n rcx, Register (ptr64 Eq_n) rdx, Register byte sil, Register Eq_n rdi, Register (ptr32 Eq_n) fs, Register out Eq_n rcxOut, Register out ptr64 r8Out)
+// Called from:
+//      fn0000000000406B70
+//      fn0000000000407870
 union Eq_n * fn0000000000406540(union Eq_n * rax, Eq_n rcx, struct obstack * rdx, byte sil, Eq_n rdi, struct Eq_n * fs, union Eq_n & rcxOut, ptr64 & r8Out)
 {
 	byte r14b_n;
@@ -2901,6 +2965,9 @@ l00000000004069F7:
 }
 
 // 0000000000406A30: Register (ptr64 Eq_n) fn0000000000406A30()
+// Called from:
+//      fn0000000000407870
+//      fn00000000004079F0
 union Eq_n * fn0000000000406A30()
 {
 	if (globals->b61B129 == 0x00)
@@ -2918,6 +2985,8 @@ union Eq_n * fn0000000000406A30()
 }
 
 // 0000000000406A80: Register word64 fn0000000000406A80(Register Eq_n rdx, Register Eq_n rsi, Register Eq_n rdi, Register (ptr32 Eq_n) fs)
+// Called from:
+//      fn0000000000406B70
 word64 fn0000000000406A80(Eq_n rdx, Eq_n rsi, Eq_n rdi, struct Eq_n * fs)
 {
 	Eq_n rbx_n = rsi;
@@ -2941,6 +3010,8 @@ word64 fn0000000000406A80(Eq_n rdx, Eq_n rsi, Eq_n rdi, struct Eq_n * fs)
 }
 
 // 0000000000406B70: Register word64 fn0000000000406B70(Register Eq_n rdi, Register (ptr32 Eq_n) fs, FpuStack Eq_n rLoc4)
+// Called from:
+//      fn00000000004079F0
 word64 fn0000000000406B70(Eq_n rdi, struct Eq_n * fs, Eq_n rLoc4)
 {
 	word32 rax_32_32_n;
@@ -3288,6 +3359,8 @@ l0000000000406E70:
 }
 
 // 0000000000407870: Register word64 fn0000000000407870(Register Eq_n rsi, Register Eq_n rdi, Register (ptr32 Eq_n) fs, FpuStack Eq_n rLoc4)
+// Called from:
+//      fn00000000004079F0
 word64 fn0000000000407870(Eq_n rsi, Eq_n rdi, struct Eq_n * fs, Eq_n rLoc4)
 {
 	word64 rax_n = fs->qw0028;
@@ -3329,6 +3402,8 @@ word64 fn0000000000407870(Eq_n rsi, Eq_n rdi, struct Eq_n * fs, Eq_n rLoc4)
 }
 
 // 00000000004079F0: Register word64 fn00000000004079F0(Register Eq_n r12, Register (ptr32 Eq_n) fs, FpuStack Eq_n rLoc4)
+// Called from:
+//      fn00000000004028C0
 word64 fn00000000004079F0(Eq_n r12, struct Eq_n * fs, Eq_n rLoc4)
 {
 	if (globals->dw61B150 <= 0x04)
@@ -3547,6 +3622,8 @@ l0000000000407A18:
 }
 
 // 0000000000407EA0: Register Eq_n fn0000000000407EA0(Register Eq_n rcx, Register word32 edx, Register word32 esi, Register Eq_n rdi, Register (ptr32 Eq_n) fs, FpuStack Eq_n rLoc4)
+// Called from:
+//      fn00000000004028C0
 Eq_n fn0000000000407EA0(Eq_n rcx, word32 edx, word32 esi, Eq_n rdi, struct Eq_n * fs, Eq_n rLoc4)
 {
 	word32 r13d_n = (word32) (uint64) esi;
@@ -4193,6 +4270,8 @@ l0000000000408280:
 }
 
 // 0000000000409750: void fn0000000000409750(Register word32 edi)
+// Called from:
+//      fn00000000004028C0
 void fn0000000000409750(word32 edi)
 {
 	word32 ebx_n = (word32) (uint64) edi;
@@ -4243,6 +4322,8 @@ void fn0000000000409750(word32 edi)
 }
 
 // 0000000000409CC0: Register word32 fn0000000000409CC0(Register (ptr64 Eq_n) rsi, Register Eq_n rdi)
+// Called from:
+//      fn0000000000407EA0
 word32 fn0000000000409CC0(struct stat * rsi, Eq_n rdi)
 {
 	uint64 rax_n = (uint64) ((word32) (uint64) rsi->dw0018 & 0xF000);
@@ -4261,6 +4342,8 @@ word32 fn0000000000409CC0(struct stat * rsi, Eq_n rdi)
 }
 
 // 0000000000409D20: Register Eq_n fn0000000000409D20(Register Eq_n rsi, Register Eq_n rdi)
+// Called from:
+//      fn0000000000407EA0
 Eq_n fn0000000000409D20(Eq_n rsi, Eq_n rdi)
 {
 	Eq_n rbx_n = 0x0401;
@@ -4310,6 +4393,10 @@ l0000000000409D60:
 }
 
 // 0000000000409E50: Register Eq_n fn0000000000409E50(Register word32 rax_32_n, Register Eq_n rcx, Register Eq_n rdx, Register (arr Eq_n) rsi, Register Eq_n rdi, Register out Eq_n ecxOut)
+// Called from:
+//      fn00000000004028C0
+//      fn000000000040A120
+//      fn000000000040C810
 Eq_n fn0000000000409E50(word32 rax_32_n, Eq_n rcx, Eq_n rdx, Eq_n rsi[], Eq_n rdi, union Eq_n & ecxOut)
 {
 	Eq_n ecx_n = (word32) rcx;
@@ -4376,6 +4463,9 @@ l0000000000409F3B:
 }
 
 // 0000000000409F80: void fn0000000000409F80(Register int64 rdx, Register Eq_n rsi, Register Eq_n rdi, Register (ptr32 Eq_n) fs)
+// Called from:
+//      fn00000000004028C0
+//      fn000000000040A120
 void fn0000000000409F80(int64 rdx, Eq_n rsi, Eq_n rdi, struct Eq_n * fs)
 {
 	Eq_n r12_n;
@@ -4389,6 +4479,8 @@ void fn0000000000409F80(int64 rdx, Eq_n rsi, Eq_n rdi, struct Eq_n * fs)
 }
 
 // 000000000040A000: Register (ptr64 byte) fn000000000040A000(Register Eq_n rdx, Register Eq_n rsi, Register (arr Eq_n) rdi, Register (ptr32 Eq_n) fs, Register out Eq_n rcxOut, Register out Eq_n rdxOut, Register out (ptr64 Eq_n) rsiOut, Register out Eq_n rdiOut, Register out Eq_n r8Out, Register out Eq_n r9Out)
+// Called from:
+//      fn000000000040A120
 byte * fn000000000040A000(Eq_n rdx, Eq_n rsi, Eq_n rdi[], struct Eq_n * fs, union Eq_n & rcxOut, union Eq_n & rdxOut, FILE & rsiOut, union Eq_n & rdiOut, union Eq_n & r8Out, union Eq_n & r9Out)
 {
 	FILE * rbx_n = globals->ptr61A650;
@@ -4456,6 +4548,8 @@ byte * fn000000000040A000(Eq_n rdx, Eq_n rsi, Eq_n rdi[], struct Eq_n * fs, unio
 }
 
 // 000000000040A120: Register int64 fn000000000040A120(Register word32 rax_32_n, Register Eq_n rcx, Register (ptr64 (arr Eq_n)) rdx, Register Eq_n rsi, Register Eq_n rdi, Register Eq_n r8, Register (ptr64 code) r9, Register (ptr32 Eq_n) fs, Register out (ptr64 code) r9Out)
+// Called from:
+//      fn00000000004028C0
 int64 fn000000000040A120(word32 rax_32_n, Eq_n rcx, Eq_n (* rdx)[], Eq_n rsi, Eq_n rdi, Eq_n r8, <anonymous> * r9, struct Eq_n * fs, <anonymous> & r9Out)
 {
 	word32 ecx_n;
@@ -4479,6 +4573,8 @@ int64 fn000000000040A120(word32 rax_32_n, Eq_n rcx, Eq_n (* rdx)[], Eq_n rsi, Eq
 }
 
 // 000000000040A2B0: Register Eq_n fn000000000040A2B0(Register Eq_n rdi)
+// Called from:
+//      fn0000000000407EA0
 Eq_n fn000000000040A2B0(Eq_n rdi)
 {
 	Eq_n rdx_n;
@@ -4506,6 +4602,11 @@ Eq_n fn000000000040A2B0(Eq_n rdi)
 }
 
 // 000000000040A390: Register Eq_n fn000000000040A390(Register Eq_n rdi)
+// Called from:
+//      fn0000000000405090
+//      fn0000000000409750
+//      fn000000000040A2B0
+//      fn000000000040A630
 Eq_n fn000000000040A390(Eq_n rdi)
 {
 	word32 edx_n = (word32) *rdi;
@@ -4541,6 +4642,8 @@ l000000000040A3C0:
 }
 
 // 000000000040A400: Register Eq_n fn000000000040A400(Register word32 rax_32_n, Register Eq_n rdi)
+// Called from:
+//      fn000000000040A630
 Eq_n fn000000000040A400(word32 rax_32_n, Eq_n rdi)
 {
 	Eq_n rax_n = SEQ(rax_32_n, strlen(rdi));
@@ -4557,6 +4660,8 @@ Eq_n fn000000000040A400(word32 rax_32_n, Eq_n rdi)
 }
 
 // 000000000040A600: void fn000000000040A600(Register (ptr64 Eq_n) rsi, Register (ptr64 Eq_n) rdi)
+// Called from:
+//      fn0000000000406B70
 void fn000000000040A600(struct Eq_n * rsi, struct Eq_n * rdi)
 {
 	ui32 edi_n = (word32) (uint64) rdi->dw0018;
@@ -4631,6 +4736,8 @@ void fn000000000040A600(struct Eq_n * rsi, struct Eq_n * rdi)
 }
 
 // 000000000040A610: Register word64 fn000000000040A610(Register (ptr64 ptr64) rdx, Register Eq_n rsi, Register Eq_n rdi)
+// Called from:
+//      fn0000000000405090
 word64 fn000000000040A610(ptr64 * rdx, Eq_n rsi, Eq_n rdi)
 {
 	word64 rax_n = fn000000000040A630(rdx, rsi, rdi);
@@ -4640,6 +4747,8 @@ word64 fn000000000040A610(ptr64 * rdx, Eq_n rsi, Eq_n rdi)
 }
 
 // 000000000040A630: Register Eq_n fn000000000040A630(Register (ptr64 ptr64) rdx, Register Eq_n rsi, Register Eq_n rdi)
+// Called from:
+//      fn000000000040A610
 Eq_n fn000000000040A630(ptr64 * rdx, Eq_n rsi, Eq_n rdi)
 {
 	Eq_n rax_n = fn000000000040A390(rdi);
@@ -4735,6 +4844,8 @@ l000000000040A768:
 }
 
 // 000000000040AB30: void fn000000000040AB30(Register (ptr64 Eq_n) rdi)
+// Called from:
+//      fn0000000000406B70
 void fn000000000040AB30(struct timespec * rdi)
 {
 	if (clock_gettime(0x00, rdi) != 0x00)
@@ -4746,6 +4857,8 @@ void fn000000000040AB30(struct timespec * rdi)
 }
 
 // 000000000040AB70: Register uint64 fn000000000040AB70(Register Eq_n rdi)
+// Called from:
+//      fn00000000004028C0
 uint64 fn000000000040AB70(Eq_n rdi)
 {
 	Eq_n rax_n = setlocale(rdi, null);
@@ -4777,6 +4890,9 @@ uint64 fn000000000040AB70(Eq_n rdi)
 }
 
 // 000000000040ABC0: Register uint64 fn000000000040ABC0(Register Eq_n rdi, Register out Eq_n r8Out)
+// Called from:
+//      fn000000000040B400
+//      fn000000000040B710
 uint64 fn000000000040ABC0(Eq_n rdi, union Eq_n & r8Out)
 {
 	uint64 rdi_n;
@@ -4824,6 +4940,9 @@ l000000000040AC44:
 }
 
 // 000000000040AC80: Register ui64 fn000000000040AC80(Register Eq_n rsi, Register Eq_n rdi)
+// Called from:
+//      fn000000000040ACB0
+//      fn000000000040AE40
 ui64 fn000000000040AC80(Eq_n rsi, Eq_n rdi)
 {
 	Eq_n rax_n;
@@ -4834,6 +4953,9 @@ ui64 fn000000000040AC80(Eq_n rsi, Eq_n rdi)
 }
 
 // 000000000040ACB0: Register Eq_n fn000000000040ACB0(Register Eq_n ecx, Register (ptr64 Eq_n) rdx, Register Eq_n rsi, Register Eq_n rdi, Register out Eq_n rsiOut)
+// Called from:
+//      fn000000000040B8F0
+//      fn000000000040BB90
 Eq_n fn000000000040ACB0(Eq_n ecx, union Eq_n * rdx, Eq_n rsi, Eq_n rdi, union Eq_n & rsiOut)
 {
 	Eq_n ecx = (word32) rcx;
@@ -4920,6 +5042,10 @@ l000000000040AD67:
 }
 
 // 000000000040ADB0: Register byte fn000000000040ADB0(Register (ptr64 word64) rdi, Register out Eq_n xmm0Out, Register out Eq_n xmm1Out)
+// Called from:
+//      fn000000000040B400
+//      fn000000000040B8F0
+//      fn000000000040BB90
 byte fn000000000040ADB0(word64 * rdi, union Eq_n & xmm0Out, union Eq_n & xmm1Out)
 {
 	struct Eq_n * rax_n = *rdi;
@@ -4960,6 +5086,8 @@ l000000000040AE35:
 }
 
 // 000000000040AE40: Register word32 fn000000000040AE40(Register Eq_n edx, Register Eq_n rsi, Register Eq_n rdi)
+// Called from:
+//      fn000000000040B710
 word32 fn000000000040AE40(Eq_n edx, Eq_n rsi, Eq_n rdi)
 {
 	Eq_n edx = (word32) rdx;
@@ -5044,12 +5172,16 @@ l000000000040AED0:
 }
 
 // 000000000040AFB0: Register Eq_n fn000000000040AFB0(Register Eq_n rdi)
+// Called from:
+//      fn00000000004028C0
 Eq_n fn000000000040AFB0(Eq_n rdi)
 {
 	return *((word32) rdi + 32);
 }
 
 // 000000000040B400: Register Eq_n fn000000000040B400(Register (ptr64 code) rcx, Register (ptr64 code) rdx, Register (ptr64 Eq_n) rsi, Register Eq_n rdi, Register uint64 r8, Register out Eq_n xmm0Out, Register out Eq_n xmm1Out)
+// Called from:
+//      fn00000000004028C0
 Eq_n fn000000000040B400(<anonymous> * rcx, <anonymous> * rdx, struct Eq_n * rsi, Eq_n rdi, uint64 r8, union Eq_n & xmm0Out, union Eq_n & xmm1Out)
 {
 	Eq_n r15_n = rdi;
@@ -5141,6 +5273,8 @@ l000000000040B52A:
 }
 
 // 000000000040B640: void fn000000000040B640(Register Eq_n rdi)
+// Called from:
+//      fn00000000004028C0
 void fn000000000040B640(Eq_n rdi)
 {
 	Eq_n rax_n;
@@ -5209,6 +5343,9 @@ l000000000040B693:
 }
 
 // 000000000040B710: Register word32 fn000000000040B710(Register Eq_n rsi, Register Eq_n rdi, Register out ptr64 r8Out, Register out Eq_n xmm0Out, Register out Eq_n xmm1Out)
+// Called from:
+//      fn000000000040B8F0
+//      fn000000000040BB90
 word32 fn000000000040B710(Eq_n rsi, Eq_n rdi, ptr64 & r8Out, union Eq_n & xmm0Out, union Eq_n & xmm1Out)
 {
 	ui32 esi_n = (word32) rsi;
@@ -5295,6 +5432,8 @@ l000000000040B870:
 }
 
 // 000000000040B8F0: Register word32 fn000000000040B8F0(Register (ptr64 uint64) rdx, Register Eq_n rsi, Register Eq_n rdi, Register Eq_n xmm1, Register out ptr64 r8Out, Register out Eq_n xmm0Out, Register out Eq_n xmm1Out)
+// Called from:
+//      fn000000000040BB50
 word32 fn000000000040B8F0(uint64 * rdx, Eq_n rsi, Eq_n rdi, Eq_n xmm1, ptr64 & r8Out, union Eq_n & xmm0Out, union Eq_n & xmm1Out)
 {
 	if (rsi != 0x00)
@@ -5409,6 +5548,8 @@ l000000000040BB2E:
 }
 
 // 000000000040BB50: Register Eq_n fn000000000040BB50(Register Eq_n rsi, Register Eq_n rdi, Register Eq_n xmm1, Register out (ptr64 int32) r8Out, Register out Eq_n xmm0Out, Register out Eq_n xmm1Out)
+// Called from:
+//      fn00000000004028C0
 Eq_n fn000000000040BB50(Eq_n rsi, Eq_n rdi, Eq_n xmm1, int32 & r8Out, union Eq_n & xmm0Out, union Eq_n & xmm1Out)
 {
 	Eq_n rax_n;
@@ -5431,6 +5572,8 @@ Eq_n fn000000000040BB50(Eq_n rsi, Eq_n rdi, Eq_n xmm1, int32 & r8Out, union Eq_n
 }
 
 // 000000000040BB90: Register uint64 fn000000000040BB90(Register Eq_n rsi, Register Eq_n rdi, Register Eq_n xmm0, Register out (ptr64 int32) r8Out, Register out Eq_n xmm0Out, Register out Eq_n xmm1Out)
+// Called from:
+//      fn00000000004028C0
 uint64 fn000000000040BB90(Eq_n rsi, Eq_n rdi, Eq_n xmm0, int32 & r8Out, union Eq_n & xmm0Out, union Eq_n & xmm1Out)
 {
 	word64 rsi_n;
@@ -5527,6 +5670,12 @@ l000000000040BBC6:
 }
 
 // 000000000040BD70: Register Eq_n fn000000000040BD70(Register Eq_n rcx, Register word32 edx, Register Eq_n rsi, Register Eq_n rdi, Register Eq_n r8, Register (ptr32 Eq_n) fs, FpuStack Eq_n rLoc4, Register out Eq_n r8Out)
+// Called from:
+//      fn00000000004028C0
+//      fn0000000000405D50
+//      fn0000000000406B70
+//      fn0000000000407870
+//      fn0000000000407EA0
 Eq_n fn000000000040BD70(Eq_n rcx, word32 edx, Eq_n rsi, Eq_n rdi, Eq_n r8, struct Eq_n * fs, Eq_n rLoc4, union Eq_n & r8Out)
 {
 	word64 rcx_n = fs->qw0028;
@@ -5993,6 +6142,8 @@ l000000000040BE7D:
 }
 
 // 000000000040C810: Register word32 fn000000000040C810(Register word32 rax_32_n, Register (ptr64 Eq_n) rdx, Register (ptr64 ui32) rsi, Register Eq_n rdi, Register ptr64 r9, Register out (ptr64 int32) r8Out, Register out ptr64 r9Out, Register out Eq_n r14bOut, Register out ptr64 r15Out)
+// Called from:
+//      fn00000000004028C0
 word32 fn000000000040C810(word32 rax_32_n, union Eq_n * rdx, ui32 * rsi, Eq_n rdi, ptr64 r9, int32 & r8Out, ptr64 & r9Out, union Eq_n & r14bOut, ptr64 & r15Out)
 {
 	word32 r9_32_n = SLICE(r9, word32, 32);
@@ -6093,6 +6244,9 @@ l000000000040C864:
 }
 
 // 000000000040C9B0: Register Eq_n fn000000000040C9B0(Register Eq_n edi)
+// Called from:
+//      fn00000000004057B0
+//      fn00000000004061B0
 Eq_n fn000000000040C9B0(Eq_n edi)
 {
 	Eq_n edi = (word32) rdi;
@@ -6129,6 +6283,9 @@ l000000000040C9D5:
 }
 
 // 000000000040CB40: Register Eq_n fn000000000040CB40(Register Eq_n edi)
+// Called from:
+//      fn0000000000406B70
+//      fn0000000000407EA0
 Eq_n fn000000000040CB40(Eq_n edi)
 {
 	Eq_n edi = (word32) rdi;
@@ -6165,6 +6322,8 @@ l000000000040CB65:
 }
 
 // 000000000040CCD0: Register (ptr64 Eq_n) fn000000000040CCD0(Register Eq_n rsi, Register int64 rdi)
+// Called from:
+//      fn0000000000406B70
 struct Eq_n * fn000000000040CCD0(Eq_n rsi, int64 rdi)
 {
 	*((word32) rsi + 20) = 0x00;
@@ -6195,6 +6354,11 @@ struct Eq_n * fn000000000040CCD0(Eq_n rsi, int64 rdi)
 }
 
 // 000000000040CD70: Register (ptr64 byte) fn000000000040CD70(Register Eq_n rsi, Register Eq_n rdi)
+// Called from:
+//      fn0000000000405D50
+//      fn0000000000406B70
+//      fn0000000000407870
+//      fn0000000000407EA0
 byte * fn000000000040CD70(Eq_n rsi, Eq_n rdi)
 {
 	*((word32) rsi + 20) = 0x00;
@@ -6210,6 +6374,8 @@ byte * fn000000000040CD70(Eq_n rsi, Eq_n rdi)
 }
 
 // 000000000040CDC0: Register uint64 fn000000000040CDC0(Register word32 rax_32_n, Register Eq_n rcx, Register uint64 rdx, Register Eq_n rsi, Register Eq_n rdi, Register word32 r8d, Register word32 r9d)
+// Called from:
+//      fn00000000004028C0
 uint64 fn000000000040CDC0(word32 rax_32_n, Eq_n rcx, uint64 rdx, Eq_n rsi, Eq_n rdi, word32 r8d, word32 r9d)
 {
 	uint64 r12_n;
@@ -6442,6 +6608,10 @@ l000000000040D064:
 }
 
 // 000000000040D240: Register uint64 fn000000000040D240(Register Eq_n edx, Register Eq_n rsi, Register Eq_n rdi, Register (ptr32 Eq_n) fs)
+// Called from:
+//      fn00000000004052D0
+//      fn0000000000406B70
+//      fn000000000040D420
 uint64 fn000000000040D240(Eq_n edx, Eq_n rsi, Eq_n rdi, struct Eq_n * fs)
 {
 	Eq_n edx = (word32) rdx;
@@ -6587,6 +6757,11 @@ l000000000040D3C5:
 }
 
 // 000000000040D420: Register word64 fn000000000040D420(Register word32 rax_32_n, Register word32 esi, Register Eq_n rdi, Register (ptr32 Eq_n) fs)
+// Called from:
+//      fn0000000000405700
+//      fn00000000004061B0
+//      fn0000000000406B70
+//      fn0000000000407EA0
 word64 fn000000000040D420(word32 rax_32_n, word32 esi, Eq_n rdi, struct Eq_n * fs)
 {
 	Eq_n rdx_n = (uint64) (word32) (uint64) esi;
@@ -6595,6 +6770,9 @@ word64 fn000000000040D420(word32 rax_32_n, word32 esi, Eq_n rdi, struct Eq_n * f
 }
 
 // 000000000040D450: Register Eq_n fn000000000040D450(Register Eq_n rcx, Register Eq_n rdx, Register Eq_n rbx, Register Eq_n rsi, Register Eq_n rdi, Register out Eq_n rdxOut, Register out Eq_n rsiOut)
+// Called from:
+//      fn000000000040D450
+//      fn000000000040D690
 Eq_n fn000000000040D450(Eq_n rcx, Eq_n rdx, Eq_n rbx, Eq_n rsi, Eq_n rdi, union Eq_n & rdxOut, union Eq_n & rsiOut)
 {
 	Eq_n qwLoc30_n = rbx;
@@ -6714,6 +6892,8 @@ l000000000040D479:
 }
 
 // 000000000040D690: Register Eq_n fn000000000040D690(Register Eq_n rdx, Register Eq_n rbx, Register Eq_n rsi, Register Eq_n rdi)
+// Called from:
+//      fn0000000000404E80
 Eq_n fn000000000040D690(Eq_n rdx, Eq_n rbx, Eq_n rsi, Eq_n rdi)
 {
 	Eq_n rax_n = (word32) rdi + rsi * 0x08;
@@ -6724,6 +6904,8 @@ Eq_n fn000000000040D690(Eq_n rdx, Eq_n rbx, Eq_n rsi, Eq_n rdi)
 }
 
 // 000000000040D6A0: void fn000000000040D6A0(Register Eq_n rdi)
+// Called from:
+//      fn00000000004028C0
 void fn000000000040D6A0(Eq_n rdi)
 {
 	Eq_n rbx_n = rdi;
@@ -6793,6 +6975,8 @@ void fn000000000040D6A0(Eq_n rdi)
 }
 
 // 000000000040D740: void fn000000000040D740(Register word32 esi, Register (ptr64 Eq_n) rdi)
+// Called from:
+//      fn000000000040E970
 void fn000000000040D740(word32 esi, struct Eq_n * rdi)
 {
 	uint64 rcx_n;
@@ -6817,6 +7001,8 @@ void fn000000000040D740(word32 esi, struct Eq_n * rdi)
 }
 
 // 000000000040D7B0: Register Eq_n fn000000000040D7B0(Register word32 esi, Register Eq_n rdi, Register (ptr32 Eq_n) fs, Register out ptr64 rcxOut, Register out Eq_n rdxOut)
+// Called from:
+//      fn000000000040D8A0
 Eq_n fn000000000040D7B0(word32 esi, Eq_n rdi, struct Eq_n * fs, ptr64 & rcxOut, union Eq_n & rdxOut)
 {
 	Eq_n rax_n = dcgettext(null, rdi, 0x05);
@@ -6873,6 +7059,10 @@ l000000000040D7D7:
 }
 
 // 000000000040D8A0: Register Eq_n fn000000000040D8A0(Register Eq_n rcx, Register Eq_n rdx, Register Eq_n rsi, Register Eq_n rdi, Register word32 r8d, Register word32 r9d, Register (ptr32 Eq_n) fs, Stack Eq_n qwArg08, Stack Eq_n qwArg10, Stack Eq_n qwArg18, Register out Eq_n rbxOut, Register out Eq_n rbpOut, Register out Eq_n rsiOut, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r12Out, Register out Eq_n r13Out, Register out Eq_n r14Out, Register out Eq_n r15Out)
+// Called from:
+//      fn000000000040D8A0
+//      fn000000000040E6F0
+//      fn000000000040E930
 Eq_n fn000000000040D8A0(Eq_n rcx, Eq_n rdx, Eq_n rsi, Eq_n rdi, word32 r8d, word32 r9d, struct Eq_n * fs, Eq_n qwArg08, Eq_n qwArg10, Eq_n qwArg18, union Eq_n & rbxOut, union Eq_n & rbpOut, union Eq_n & rsiOut, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r12Out, union Eq_n & r13Out, union Eq_n & r14Out, union Eq_n & r15Out)
 {
 	word64 rax_n = fs->qw0028;
@@ -7510,11 +7700,19 @@ l000000000040DB54:
 }
 
 // 000000000040E450: Register Eq_n fn000000000040E450(Register (ptr64 Eq_n) rcx, Register Eq_n rdx, Register Eq_n rsi, Register word32 edi, Register (ptr32 Eq_n) fs, Register out ptr64 r8Out, Register out ptr64 r9Out)
+// Called from:
+//      fn000000000040E930
+//      fn000000000040E970
+//      fn000000000040EAB0
+//      fn000000000040EBF0
+//      fn000000000040EC10
 Eq_n fn000000000040E450(struct Eq_n * rcx, Eq_n rdx, Eq_n rsi, word32 edi, struct Eq_n * fs, ptr64 & r8Out, ptr64 & r9Out)
 {
 }
 
 // 000000000040E600: Register word64 fn000000000040E600(Register Eq_n rdi, Register out ptr64 rsiOut)
+// Called from:
+//      fn00000000004028C0
 word64 fn000000000040E600(Eq_n rdi, ptr64 & rsiOut)
 {
 	Eq_n rax_n = __errno_location();
@@ -7530,6 +7728,8 @@ word64 fn000000000040E600(Eq_n rdi, ptr64 & rsiOut)
 }
 
 // 000000000040E630: Register word32 fn000000000040E630(Register (ptr64 Eq_n) rdi)
+// Called from:
+//      fn00000000004028C0
 word32 fn000000000040E630(struct Eq_n * rdi)
 {
 	struct Eq_n * rax_n = &globals->t61B320;
@@ -7539,6 +7739,8 @@ word32 fn000000000040E630(struct Eq_n * rdi)
 }
 
 // 000000000040E640: void fn000000000040E640(Register word32 esi, Register (ptr64 word32) rdi)
+// Called from:
+//      fn00000000004028C0
 void fn000000000040E640(word32 esi, word32 * rdi)
 {
 	word32 * rax_n = &globals->t61B320;
@@ -7548,6 +7750,8 @@ void fn000000000040E640(word32 esi, word32 * rdi)
 }
 
 // 000000000040E650: Register (ptr64 Eq_n) fn000000000040E650(Register word32 edx, Register int32 esi, Register ui32 rsi_32_n, Register (ptr64 Eq_n) rdi)
+// Called from:
+//      fn00000000004028C0
 struct Eq_n * fn000000000040E650(word32 edx, int32 esi, ui32 rsi_32_n, struct Eq_n * rdi)
 {
 	bcu8 sil_n = (byte) esi;
@@ -7578,6 +7782,8 @@ void fn000000000040E6B0(word64 rdx, word64 rsi, struct Eq_n * rdi)
 }
 
 // 000000000040E6F0: Register Eq_n fn000000000040E6F0(Register Eq_n rcx, Register Eq_n rdx, Register Eq_n rsi, Register Eq_n rdi, Register (ptr64 Eq_n) r8, Register (ptr32 Eq_n) fs, Register out ptr64 rsiOut, Register out ptr64 r8Out)
+// Called from:
+//      fn00000000004052D0
 Eq_n fn000000000040E6F0(Eq_n rcx, Eq_n rdx, Eq_n rsi, Eq_n rdi, struct Eq_n * r8, struct Eq_n * fs, ptr64 & rsiOut, ptr64 & r8Out)
 {
 	struct Eq_n * rbx_n = r8;
@@ -7601,6 +7807,8 @@ Eq_n fn000000000040E6F0(Eq_n rcx, Eq_n rdx, Eq_n rsi, Eq_n rdi, struct Eq_n * r8
 }
 
 // 000000000040E930: Register word64 fn000000000040E930(Register Eq_n rdi, Register (ptr32 Eq_n) fs, Register out ptr64 r9Out)
+// Called from:
+//      fn00000000004028C0
 word64 fn000000000040E930(Eq_n rdi, struct Eq_n * fs, ptr64 & r9Out)
 {
 	word64 r8_n;
@@ -7611,6 +7819,8 @@ word64 fn000000000040E930(Eq_n rdi, struct Eq_n * fs, ptr64 & r9Out)
 }
 
 // 000000000040E970: void fn000000000040E970(Register Eq_n rdx, Register word32 esi, Register word32 edi, Register (ptr32 Eq_n) fs)
+// Called from:
+//      fn0000000000409F80
 void fn000000000040E970(Eq_n rdx, word32 esi, word32 edi, struct Eq_n * fs)
 {
 	fn000000000040D740(esi, fp - 88);
@@ -7620,6 +7830,10 @@ void fn000000000040E970(Eq_n rdx, word32 esi, word32 edi, struct Eq_n * fs)
 }
 
 // 000000000040EAB0: Register word64 fn000000000040EAB0(Register Eq_n rdi, Register (ptr32 Eq_n) fs)
+// Called from:
+//      fn00000000004028C0
+//      fn0000000000405810
+//      fn0000000000407EA0
 word64 fn000000000040EAB0(Eq_n rdi, struct Eq_n * fs)
 {
 	word64 r8_n;
@@ -7629,6 +7843,8 @@ word64 fn000000000040EAB0(Eq_n rdi, struct Eq_n * fs)
 }
 
 // 000000000040EBF0: void fn000000000040EBF0(Register Eq_n rsi, Register word32 edi, Register (ptr32 Eq_n) fs)
+// Called from:
+//      fn0000000000409F80
 void fn000000000040EBF0(Eq_n rsi, word32 edi, struct Eq_n * fs)
 {
 	word64 r8_n;
@@ -7637,6 +7853,9 @@ void fn000000000040EBF0(Eq_n rsi, word32 edi, struct Eq_n * fs)
 }
 
 // 000000000040EC10: Register word64 fn000000000040EC10(Register Eq_n rdi, Register (ptr32 Eq_n) fs, Register out (ptr64 int32) r8Out, Register out ptr64 r9Out)
+// Called from:
+//      fn00000000004028C0
+//      fn000000000040A000
 word64 fn000000000040EC10(Eq_n rdi, struct Eq_n * fs, int32 & r8Out, ptr64 & r9Out)
 {
 	int32 * r8_n;
@@ -7664,6 +7883,8 @@ void fn000000000040EC30(word64 rcx, word64 rdx, word32 esi, Eq_n rdi[])
 }
 
 // 000000000040EC80: void fn000000000040EC80(Register Eq_n rcx, Register Eq_n rdx, Register Eq_n esi, Register Eq_n rdi)
+// Called from:
+//      fn000000000040ECD0
 void fn000000000040EC80(Eq_n rcx, Eq_n rdx, Eq_n esi, Eq_n rdi)
 {
 	ui32 rcx_32_n = SLICE(rcx, word32, 32);
@@ -7680,6 +7901,8 @@ void fn000000000040EC80(Eq_n rcx, Eq_n rdx, Eq_n esi, Eq_n rdi)
 }
 
 // 000000000040ECD0: Register uint64 fn000000000040ECD0(Register Eq_n rcx, Register uint64 rdx, Register Eq_n rsi, Register Eq_n dil, Register Eq_n r8, Register (ptr32 Eq_n) fs)
+// Called from:
+//      fn0000000000410600
 uint64 fn000000000040ECD0(Eq_n rcx, uint64 rdx, Eq_n rsi, Eq_n dil, Eq_n r8, struct Eq_n * fs)
 {
 	Eq_n dil = (byte) rdi;
@@ -7924,12 +8147,16 @@ l000000000040EE9A:
 }
 
 // 0000000000410600: Register word64 fn0000000000410600(Register Eq_n rcx, Register Eq_n rdx, Register uint64 rsi, Register Eq_n rdi, Register (ptr32 Eq_n) fs)
+// Called from:
+//      fn0000000000406A80
 word64 fn0000000000410600(Eq_n rcx, Eq_n rdx, uint64 rsi, Eq_n rdi, struct Eq_n * fs)
 {
 	return fn000000000040ECD0(rdx, rsi, rdi, 0x00, rcx, fs);
 }
 
 // 0000000000410630: void fn0000000000410630(Register uint64 rcx, Register uint64 rsi, Register (ptr64 Eq_n) rdi, Register uint64 r9)
+// Called from:
+//      fn0000000000410AC0
 void fn0000000000410630(uint64 rcx, uint64 rsi, FILE * rdi, uint64 r9)
 {
 	uint64 r9_n;
@@ -7954,6 +8181,8 @@ void fn0000000000410630(uint64 rcx, uint64 rsi, FILE * rdi, uint64 r9)
 }
 
 // 0000000000410AC0: void fn0000000000410AC0(Register uint64 rcx, Register uint64 rsi, Register (ptr64 Eq_n) rdi, Register (ptr64 Eq_n) r8)
+// Called from:
+//      fn0000000000410B30
 void fn0000000000410AC0(uint64 rcx, uint64 rsi, FILE * rdi, struct Eq_n * r8)
 {
 	uint64 r9_n;
@@ -7983,12 +8212,25 @@ void fn0000000000410AC0(uint64 rcx, uint64 rsi, FILE * rdi, struct Eq_n * r8)
 }
 
 // 0000000000410B30: void fn0000000000410B30(Register byte al, Register uint64 rcx, Register uint64 rsi, Register (ptr64 Eq_n) rdi)
+// Called from:
+//      fn00000000004028C0
 void fn0000000000410B30(byte al, uint64 rcx, uint64 rsi, FILE * rdi)
 {
 	fn0000000000410AC0(rcx, rsi, rdi, fp - 0xD0);
 }
 
 // 0000000000410C40: Register Eq_n fn0000000000410C40(Register Eq_n rdi)
+// Called from:
+//      fn00000000004028C0
+//      fn0000000000404D20
+//      fn0000000000404E80
+//      fn0000000000405ED0
+//      fn0000000000407EA0
+//      fn000000000040C9B0
+//      fn000000000040CB40
+//      fn000000000040E930
+//      fn0000000000410C90
+//      fn0000000000410E30
 Eq_n fn0000000000410C40(Eq_n rdi)
 {
 	Eq_n rax_n = malloc(rdi);
@@ -7998,6 +8240,10 @@ Eq_n fn0000000000410C40(Eq_n rdi)
 }
 
 // 0000000000410C90: Register Eq_n fn0000000000410C90(Register Eq_n rsi, Register Eq_n rdi)
+// Called from:
+//      fn0000000000405ED0
+//      fn0000000000407EA0
+//      fn000000000040E930
 Eq_n fn0000000000410C90(Eq_n rsi, Eq_n rdi)
 {
 	if (rsi == 0x00 && rdi != 0x00)
@@ -8015,6 +8261,9 @@ Eq_n fn0000000000410C90(Eq_n rsi, Eq_n rdi)
 }
 
 // 0000000000410E00: Register Eq_n fn0000000000410E00(Register Eq_n rsi, Register Eq_n rdi, Register out Eq_n rsiOut)
+// Called from:
+//      fn000000000040E600
+//      fn0000000000410E30
 Eq_n fn0000000000410E00(Eq_n rsi, Eq_n rdi, union Eq_n & rsiOut)
 {
 	Eq_n rax_n = memcpy(fn0000000000410C40(rsi), rdi, rsi);
@@ -8023,6 +8272,10 @@ Eq_n fn0000000000410E00(Eq_n rsi, Eq_n rdi, union Eq_n & rsiOut)
 }
 
 // 0000000000410E30: Register word64 fn0000000000410E30(Register word32 rax_32_n, Register Eq_n rdi)
+// Called from:
+//      fn00000000004028C0
+//      fn0000000000404D20
+//      fn0000000000407EA0
 word64 fn0000000000410E30(word32 rax_32_n, Eq_n rdi)
 {
 	word64 rax_n = SEQ(rax_32_n, strlen(rdi));
@@ -8031,6 +8284,14 @@ word64 fn0000000000410E30(word32 rax_32_n, Eq_n rdi)
 }
 
 // 0000000000410E50: void fn0000000000410E50()
+// Called from:
+//      fn00000000004028C0
+//      fn0000000000404E80
+//      fn0000000000405ED0
+//      fn0000000000407EA0
+//      fn000000000040A610
+//      fn0000000000410C40
+//      fn0000000000410C90
 void fn0000000000410E50()
 {
 	dcgettext(null, 4287439, 0x05);
@@ -8039,6 +8300,8 @@ void fn0000000000410E50()
 }
 
 // 0000000000410E90: Register word32 fn0000000000410E90(Register Eq_n rcx, Register up32 edx, Register (ptr64 (ptr64 char)) rsi, Register Eq_n rdi, Register Eq_n r8, Register word32 r9_32_n, Register out Eq_n ebxOut, Register out (ptr64 Eq_n) rbpOut, Register out Eq_n r9Out, Register out Eq_n r12Out, Register out Eq_n r13bOut)
+// Called from:
+//      fn00000000004028C0
 word32 fn0000000000410E90(Eq_n rcx, up32 edx, char ** rsi, Eq_n rdi, Eq_n r8, word32 r9_32_n, union Eq_n & ebxOut, union Eq_n & rbpOut, union Eq_n & r9Out, union Eq_n & r12Out, union Eq_n & r13bOut)
 {
 	word32 r14d_n = (word32) (uint64) edx;
@@ -8172,6 +8435,8 @@ l0000000000410FD5:
 }
 
 // 00000000004112D0: void fn00000000004112D0(Register word32 esi, Register up32 edi)
+// Called from:
+//      fn00000000004028C0
 void fn00000000004112D0(word32 esi, up32 edi)
 {
 	Eq_n rsi_n;
@@ -8200,6 +8465,8 @@ l000000000041132F:
 }
 
 // 0000000000411360: Register word32 fn0000000000411360(Register (ptr64 Eq_n) rcx, Register up32 edx, Register (ptr64 (ptr64 char)) rsi, Register Eq_n rdi, Register Eq_n r8, Register word32 r9_32_n, Register out Eq_n rbxOut, Register out Eq_n ebpOut, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r12Out, Register out (ptr64 Eq_n) r13Out, Register out Eq_n r14bOut, Register out (ptr64 (ptr64 char)) r15Out)
+// Called from:
+//      fn000000000040C810
 word32 fn0000000000411360(union Eq_n * rcx, up32 edx, char ** rsi, Eq_n rdi, Eq_n r8, word32 r9_32_n, union Eq_n & rbxOut, union Eq_n & ebpOut, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r12Out, union Eq_n & r13Out, union Eq_n & r14bOut, char & r15Out)
 {
 	word32 r14d_n = (word32) (uint64) edx;
@@ -8343,6 +8610,9 @@ l00000000004114AD:
 }
 
 // 00000000004117B0: Register word32 fn00000000004117B0(Register (ptr64 Eq_n) rsi, Register Eq_n edi)
+// Called from:
+//      fn0000000000411820
+//      fn0000000000411840
 word32 fn00000000004117B0(security_context_t * rsi, Eq_n edi)
 {
 	Eq_n edi = (word32) rdi;
@@ -8385,6 +8655,8 @@ word32 fn00000000004117B0(security_context_t * rsi, Eq_n edi)
 }
 
 // 0000000000411820: Register word32 fn0000000000411820(Register (ptr64 Eq_n) rsi, Register Eq_n rdi)
+// Called from:
+//      fn0000000000407EA0
 word32 fn0000000000411820(security_context_t * rsi, Eq_n rdi)
 {
 	Eq_n rdi_n = (uint64) getfilecon(rdi, rsi);
@@ -8392,6 +8664,8 @@ word32 fn0000000000411820(security_context_t * rsi, Eq_n rdi)
 }
 
 // 0000000000411840: Register word32 fn0000000000411840(Register (ptr64 Eq_n) rsi, Register Eq_n rdi)
+// Called from:
+//      fn0000000000407EA0
 word32 fn0000000000411840(security_context_t * rsi, Eq_n rdi)
 {
 	Eq_n rdi_n = (uint64) lgetfilecon(rdi, rsi);
@@ -8420,6 +8694,8 @@ void fn0000000000411880(word32 rax_32_n, FILE * rdi)
 }
 
 // 0000000000411900: Register ui64 fn0000000000411900(Register (ptr32 Eq_n) fs)
+// Called from:
+//      fn000000000040D7B0
 ui64 fn0000000000411900(struct Eq_n * fs)
 {
 	word64 rax_n = fs->qw0028;
@@ -8635,6 +8911,9 @@ l0000000000411C42:
 }
 
 // 0000000000411D30: Register uint64 fn0000000000411D30(Register word32 rax_32_n, Register (ptr64 Eq_n) rdi)
+// Called from:
+//      fn0000000000411880
+//      fn0000000000411900
 uint64 fn0000000000411D30(word32 rax_32_n, FILE * rdi)
 {
 	if (fileno(rdi) < 0x00)
@@ -8657,6 +8936,8 @@ uint64 fn0000000000411D30(word32 rax_32_n, FILE * rdi)
 }
 
 // 0000000000411DB0: Register word64 fn0000000000411DB0(Register (ptr64 Eq_n) rdi)
+// Called from:
+//      fn0000000000411D30
 word64 fn0000000000411DB0(FILE * rdi)
 {
 	if (rdi == null || (__freading(rdi) == 0x00 || (*rdi & 0x0100) == 0x00))
@@ -8665,6 +8946,8 @@ word64 fn0000000000411DB0(FILE * rdi)
 }
 
 // 0000000000411DF0: Register uint64 fn0000000000411DF0(Register Eq_n rdx, Register Eq_n rsi, Register (ptr64 Eq_n) rdi)
+// Called from:
+//      fn0000000000411DB0
 uint64 fn0000000000411DF0(Eq_n rdx, Eq_n rsi, FILE * rdi)
 {
 	word32 edx = (word32) rdx;
@@ -8687,6 +8970,8 @@ uint64 fn0000000000411DF0(Eq_n rdx, Eq_n rsi, FILE * rdi)
 }
 
 // 0000000000411EE0: void fn0000000000411EE0(Register (ptr64 Eq_n) rdi)
+// Called from:
+//      fn00000000004028C0
 void fn0000000000411EE0(void (* rdi)(void * rdi))
 {
 	void * rdx_n;

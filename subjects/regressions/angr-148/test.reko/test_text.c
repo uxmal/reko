@@ -13,6 +13,8 @@ void _start(void (* rdx)(), Eq_n qwArg00)
 }
 
 // 0000000000400470: void deregister_tm_clones()
+// Called from:
+//      __do_global_dtors_aux
 void deregister_tm_clones()
 {
 	if (true || 0x00 == 0x00)
@@ -21,6 +23,8 @@ void deregister_tm_clones()
 }
 
 // 00000000004004A0: void register_tm_clones()
+// Called from:
+//      frame_dummy
 void register_tm_clones()
 {
 	if (true || 0x00 == 0x00)
@@ -51,6 +55,8 @@ void frame_dummy()
 }
 
 // 000000000040052D: Register int32 f()
+// Called from:
+//      main
 int32 f()
 {
 	return putchar(0x78);

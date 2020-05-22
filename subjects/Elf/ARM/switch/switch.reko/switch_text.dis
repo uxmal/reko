@@ -16,6 +16,8 @@ l00008334:
 word32 call_gmon_start()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      _init
 // MayUse: 
 // LiveOut: r10
 // Trashed: NZCV lr pc r10 r3
@@ -40,6 +42,8 @@ call_gmon_start_exit:
 void __do_global_dtors_aux()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      _fini
 // MayUse: 
 // LiveOut:
 // Trashed: NZCV lr pc r2 r3 r4 r5
@@ -85,6 +89,8 @@ call___do_global_dtors_aux_exit:
 void frame_dummy()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      _init
 // MayUse: 
 // LiveOut:
 // Trashed: NZCV r0 r3
@@ -123,6 +129,9 @@ call_frame_dummy_exit:
 word32 frobulate(word32 r0, word32 dwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      bazulate
+//      switcheroo
 // MayUse:  r0:[0..31] Stack +0000:[0..31]
 // LiveOut: fp sp
 // Trashed: NZCV fp ip r1 r2 r3 sp
@@ -137,6 +146,8 @@ frobulate_exit:
 word32 bazulate(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      switcheroo
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut: fp
 // Trashed: NZCV fp ip r1 r2 r3 r4 sp
@@ -156,6 +167,8 @@ bazulate_exit:
 word32 switcheroo(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  r0:[0..31]
 // LiveOut: fp
 // Trashed: NZCV fp ip r0 r1 r2 r3 r4 sp
@@ -197,6 +210,9 @@ main_exit:
 word32 __divsi3(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      frobulate
+//      bazulate
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut: r0
 // Trashed: NZCV ip r0 r1 r2 r3
@@ -297,6 +313,8 @@ __divsi3_exit:
 void __div0(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __divsi3
 // MayUse:  r0:[0..31]
 // LiveOut:
 // Trashed: NZCV
@@ -364,6 +382,8 @@ __libc_csu_fini_exit:
 word32 __do_global_ctors_aux()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      _init
 // MayUse: 
 // LiveOut: r4
 // Trashed: NZCV lr pc r2 r3 r4

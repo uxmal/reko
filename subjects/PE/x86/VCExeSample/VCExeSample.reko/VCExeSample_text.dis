@@ -15,6 +15,9 @@ main_exit:
 void test1(char * arg1, int32 arg2, char * arg3, real32 arg4)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
+//      test2
 // MayUse:  Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31] Stack +0010:[0..31]
 // LiveOut:
 // Trashed:
@@ -89,6 +92,8 @@ test5_exit:
 void test6(cdecl_class * c, int32 a, int32 b)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      nested_if_blocks_test8
 // MayUse:  Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31]
 // LiveOut:
 // Trashed:
@@ -121,6 +126,8 @@ test7_exit:
 void nested_if_blocks_test8(real64 rArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      loop_test11
 // MayUse:  Stack +0004:[0..63]
 // LiveOut:
 // Trashed: SCZO eax ecx edx FPU -1 FPUF Top
@@ -142,6 +149,8 @@ nested_if_blocks_test8_exit:
 void loop_test9(real32 rArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      loop_test11
 // MayUse:  Stack +0004:[0..31]
 // LiveOut:
 // Trashed: SCZO eax ecx edx FPU -1 FPU -2 FPUF Top
@@ -215,6 +224,8 @@ l0040131E:
 void nested_structs_test12(word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      nested_structs_test13
 // MayUse:  Stack +0004:[0..31]
 // LiveOut:
 // Trashed: eax ecx edx Top

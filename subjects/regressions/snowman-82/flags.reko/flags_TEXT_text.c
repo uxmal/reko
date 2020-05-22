@@ -13,6 +13,8 @@ void foo(byte sil, word32 * rdi)
 }
 
 // 0000000000000FB4: void bar()
+// Called from:
+//      foo
 void bar()
 {
 }

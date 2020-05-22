@@ -5,12 +5,16 @@
 #include "main_text.h"
 
 // 00401000: Register ptr32 fn00401000()
+// Called from:
+//      fn00401010
 ptr32 fn00401000()
 {
 	return 0x00403378;
 }
 
 // 00401010: void fn00401010(Stack word32 dwArg04)
+// Called from:
+//      fn00401040
 void fn00401010(word32 dwArg04)
 {
 	struct Eq_n * esp_n;
@@ -27,6 +31,8 @@ void fn00401010(word32 dwArg04)
 }
 
 // 00401040: Register word32 fn00401040(Register word32 ecx)
+// Called from:
+//      Win32CrtStartup
 word32 fn00401040(word32 ecx)
 {
 	struct Eq_n * esp_n;
@@ -171,6 +177,8 @@ l004012C3:
 }
 
 // 004013F6: Register (ptr32 Eq_n) fn004013F6(Stack (ptr32 Eq_n) dwArg04, Stack uint32 dwArg08, Register out (ptr32 Eq_n) edxOut)
+// Called from:
+//      fn0040153F
 struct Eq_n * fn004013F6(struct Eq_n * dwArg04, uint32 dwArg08, struct Eq_n & edxOut)
 {
 	struct Eq_n * eax_n;
@@ -192,6 +200,8 @@ l00401433:
 }
 
 // 0040143A: Register byte fn0040143A(Register out ptr32 edxOut)
+// Called from:
+//      Win32CrtStartup
 byte fn0040143A(ptr32 & edxOut)
 {
 	word32 eax_n = fn00401B98();
@@ -220,6 +230,8 @@ byte fn0040143A(ptr32 & edxOut)
 }
 
 // 0040146F: Register byte fn0040146F(Register word32 edx, Stack word32 dwArg04)
+// Called from:
+//      Win32CrtStartup
 byte fn0040146F(word32 edx, word32 dwArg04)
 {
 	if (dwArg04 == 0x00)
@@ -234,6 +246,8 @@ byte fn0040146F(word32 edx, word32 dwArg04)
 }
 
 // 0040153F: Register byte fn0040153F(Register word32 ebx, Register Eq_n esi, Register Eq_n edi, Register out ptr32 edxOut, Register out ptr32 ebxOut, Register out (ptr32 Eq_n) ebpOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
+// Called from:
+//      Win32CrtStartup
 byte fn0040153F(word32 ebx, Eq_n esi, Eq_n edi, ptr32 & edxOut, ptr32 & ebxOut, struct Eq_n & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
 {
 	word32 eax_n;
@@ -276,6 +290,8 @@ l004015C3:
 }
 
 // 004015C9: void fn004015C9(Stack Eq_n bArg04)
+// Called from:
+//      Win32CrtStartup
 void fn004015C9(Eq_n bArg04)
 {
 	if (fn00401B98() != 0x00 && bArg04 == 0x00)
@@ -283,6 +299,8 @@ void fn004015C9(Eq_n bArg04)
 }
 
 // 004015E6: void fn004015E6(Stack Eq_n bArg08)
+// Called from:
+//      Win32CrtStartup
 void fn004015E6(Eq_n bArg08)
 {
 	if (globals->b403354 == 0x00 || bArg08 == 0x00)
@@ -293,6 +311,8 @@ void fn004015E6(Eq_n bArg08)
 }
 
 // 0040165E: void fn0040165E()
+// Called from:
+//      Win32CrtStartup
 void fn0040165E()
 {
 	ui32 eax_n = globals->dw403004;
@@ -314,18 +334,24 @@ void fn0040165E()
 }
 
 // 00401761: Register ptr32 fn00401761()
+// Called from:
+//      Win32CrtStartup
 ptr32 fn00401761()
 {
 	return 0x00403384;
 }
 
 // 00401767: Register ptr32 fn00401767()
+// Called from:
+//      Win32CrtStartup
 ptr32 fn00401767()
 {
 	return 0x00403380;
 }
 
 // 0040176D: void fn0040176D(Stack word32 dwArg04)
+// Called from:
+//      Win32CrtStartup
 void fn0040176D(word32 dwArg04)
 {
 	if (IsProcessorFeaturePresent(0x17) == 0x00)
@@ -343,6 +369,8 @@ void fn0040176D(word32 dwArg04)
 }
 
 // 0040188B: Register byte fn0040188B()
+// Called from:
+//      Win32CrtStartup
 byte fn0040188B()
 {
 	Eq_n eax_n = GetModuleHandleW(null);
@@ -356,12 +384,17 @@ byte fn0040188B()
 }
 
 // 00401972: void fn00401972()
+// Called from:
+//      Win32CrtStartup
 void fn00401972()
 {
 	globals->ptr4020D4();
 }
 
 // 00401980: Register ptr32 fn00401980(Register word32 ebx, Register Eq_n esi, Register Eq_n edi, Stack Eq_n dwArg00, Stack ui32 dwArg08)
+// Called from:
+//      Win32CrtStartup
+//      fn0040153F
 ptr32 fn00401980(word32 ebx, Eq_n esi, Eq_n edi, Eq_n dwArg00, ui32 dwArg08)
 {
 	struct Eq_n * esp_n = fp - 8 - dwArg08;
@@ -375,6 +408,9 @@ ptr32 fn00401980(word32 ebx, Eq_n esi, Eq_n edi, Eq_n dwArg00, ui32 dwArg08)
 }
 
 // 004019C6: Register word32 fn004019C6(Register (ptr32 Eq_n) ebp, Stack Eq_n dwArg00, Register out Eq_n ebpOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
+// Called from:
+//      Win32CrtStartup
+//      fn0040153F
 word32 fn004019C6(struct Eq_n * ebp, Eq_n dwArg00, union Eq_n & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
 {
 	fs->dw0000 = ebp->dwFFFFFFF0;
@@ -387,6 +423,8 @@ word32 fn004019C6(struct Eq_n * ebp, Eq_n dwArg00, union Eq_n & ebpOut, ptr32 & 
 }
 
 // 004019FE: void fn004019FE(Register word32 edx)
+// Called from:
+//      fn0040146F
 void fn004019FE(word32 edx)
 {
 	globals->dw40336C &= 0x00;
@@ -434,12 +472,18 @@ void fn004019FE(word32 edx)
 }
 
 // 00401B98: Register uint32 fn00401B98()
+// Called from:
+//      fn0040143A
+//      fn004015C9
 uint32 fn00401B98()
 {
 	return (uint32) (uint8) (globals->dw403014 != 0x00);
 }
 
 // 00401C46: Register byte fn00401C46()
+// Called from:
+//      fn0040146F
+//      fn004015E6
 byte fn00401C46()
 {
 	return 0x01;

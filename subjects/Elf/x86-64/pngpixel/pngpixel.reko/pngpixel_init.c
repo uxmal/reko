@@ -5,6 +5,8 @@
 #include "pngpixel_init.h"
 
 // 0000000000400AE8: void _init()
+// Called from:
+//      __libc_csu_init
 void _init()
 {
 	if (__gmon_start__ != 0x00)

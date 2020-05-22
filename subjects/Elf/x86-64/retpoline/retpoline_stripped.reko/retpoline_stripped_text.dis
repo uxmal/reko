@@ -68,6 +68,8 @@ l00000000004006F5:
 void fn0000000000400700()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000000004006F0
 // MayUse: 
 // LiveOut:
 // Trashed: Top

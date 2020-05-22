@@ -17,6 +17,8 @@ l0000000000000620:
 void deregister_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __do_global_dtors_aux
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax rdi Top
@@ -37,6 +39,8 @@ deregister_tm_clones_exit:
 void register_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      frame_dummy
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax rdi rsi Top
@@ -99,6 +103,8 @@ frame_dummy_exit:
 word64 _mm_malloc(word64 rsi, word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  rdi:[0..63] rsi:[0..63]
 // LiveOut: rax
 // Trashed: SCZO rax rdi Top
@@ -134,6 +140,8 @@ _mm_malloc_exit:
 void _mm_free(word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  rdi:[0..63]
 // LiveOut:
 // Trashed: SCZO rax Top
@@ -148,6 +156,8 @@ _mm_free_exit:
 void vec_add(word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  rdi:[0..63]
 // LiveOut:
 // Trashed: SCZO r10 rax rcx rdx Top

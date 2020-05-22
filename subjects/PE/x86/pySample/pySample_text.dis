@@ -87,6 +87,8 @@ initpySample_exit:
 word32 fn100011E9(word32 dwArg04, word32 dwArg08, word32 dwArg0C, ptr32 & ecxOut, ptr32 & edxOut, ptr32 & ebxOut, ptr32 & esiOut, ptr32 & ediOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn10001388
 // MayUse:  fs:[0..15] Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31]
 // LiveOut: eax ebx ecx edi edx esi
 // Trashed: SCZO eax ebx ecx edi edx esi Top
@@ -220,6 +222,8 @@ l10001264:
 word32 fn10001388(word32 ecx, word32 edx, word32 ebx, word32 esi, word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      DllMain
 // MayUse:  ebx:[0..31] ecx:[0..31] edi:[0..31] edx:[0..31] esi:[0..31] fs:[0..15]
 // LiveOut: eax
 // Trashed: SCZO eax ebp ebx ecx edi edx esi Top
@@ -342,6 +346,8 @@ fn10001388_exit:
 void fn10001493()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn10001388
 // MayUse: 
 // LiveOut:
 // Trashed: Top
@@ -373,6 +379,8 @@ DllMain_exit:
 word32 fn100015CF(word32 ebx, word32 esi, word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn1000166E
 // MayUse:  ebx:[0..31] edi:[0..31] esi:[0..31] fs:[0..15]
 // LiveOut: eax
 // Trashed: SCZO eax ebp ebx ecx edi esi Top
@@ -431,6 +439,8 @@ fn100015CF_exit:
 void fn10001665()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn100015CF
 // MayUse: 
 // LiveOut:
 // Trashed: ecx Top
@@ -483,6 +493,8 @@ fn10001680_exit:
 word32 fn100016D0(word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn10001742
 // MayUse:  Stack +0004:[0..31]
 // LiveOut: eax
 // Trashed: SCZO eax ecx Top
@@ -503,6 +515,8 @@ fn100016D0_exit:
 word32 fn10001700(word32 dwArg04, word32 dwArg08, ptr32 & edxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn10001742
 // MayUse:  Stack +0004:[0..31] Stack +0008:[0..31]
 // LiveOut: eax edx
 // Trashed: SCZO eax ecx edx Top
@@ -535,6 +549,8 @@ fn10001700_exit:
 word32 fn10001742(word32 ebx, word32 esi, word32 edi, ptr32 & edxOut, ptr32 & ediOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn100011E9
 // MayUse:  ebx:[0..31] edi:[0..31] esi:[0..31] fs:[0..15]
 // LiveOut: eax edi edx
 // Trashed: SCZO eax ebp ebx ecx edi edx esi Top
@@ -569,6 +585,8 @@ fn10001742_exit:
 word32 fn100017C6(word32 dwArg04, word32 dwArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn10001388
 // MayUse:  Stack +0004:[0..31] Stack +0008:[0..31]
 // LiveOut: eax
 // Trashed: SCZO eax Top
@@ -588,6 +606,10 @@ fn100017C6_exit:
 word32 fn100017E8(word32 ebx, word32 esi, word32 edi, word32 dwArg00, word32 dwArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn10001388
+//      fn100015CF
+//      fn10001742
 // MayUse:  ebx:[0..31] edi:[0..31] esi:[0..31] fs:[0..15] Stack +0000:[0..31] Stack +0008:[0..31]
 // LiveOut: ebp
 // Trashed: SCZO eax ebp Top
@@ -608,6 +630,10 @@ fn100017E8_exit:
 word32 fn1000182D(word32 ebp, word32 dwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn10001388
+//      fn100015CF
+//      fn10001742
 // MayUse:  ebp:[0..31] fs:[0..15] Stack +0000:[0..31]
 // LiveOut: edi
 // Trashed: ebp ebx ecx edi esi esp Top
@@ -623,6 +649,8 @@ fn1000182D_exit:
 void fn10001864()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      DllMain
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO eax Top

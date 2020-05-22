@@ -17,6 +17,8 @@ l0000000000400440:
 void deregister_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __do_global_dtors_aux
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax rdi Top
@@ -38,6 +40,8 @@ deregister_tm_clones_exit:
 void register_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      frame_dummy
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax rdi rdx rsi Top
@@ -102,6 +106,8 @@ frame_dummy_exit:
 word32 f()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse: 
 // LiveOut: eax
 // Trashed: eax rdi Top

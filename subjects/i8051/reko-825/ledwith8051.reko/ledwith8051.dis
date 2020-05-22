@@ -24,6 +24,8 @@ l0020:
 void fn0003()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000
 // MayUse: 
 // LiveOut:
 // Trashed: P A R4 R5 R6 R7

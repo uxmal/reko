@@ -516,6 +516,8 @@ fn0000000000015EB8_exit:
 void fn0000000000015EF0()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000000015F64
 // MayUse: 
 // LiveOut:
 // Trashed: a0 a4 a5 ra t1
@@ -540,6 +542,8 @@ fn0000000000015EF0_exit:
 void fn0000000000015F24()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000000015F94
 // MayUse: 
 // LiveOut:
 // Trashed: a0 a1 a5 t1
@@ -606,6 +610,8 @@ fn0000000000015F94_exit:
 void fn0000000000015FCC(word64 gp, word64 a0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000000015180
 // MayUse:  a0:[0..63] gp:[0..63]
 // LiveOut:
 // Trashed: a0 a1 a2 a3
@@ -665,6 +671,8 @@ fn0000000000015FCC_exit:
 word64 fn00000000000163B0(word64 gp)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000000000175BC
 // MayUse:  gp:[0..63]
 // LiveOut: a0
 // Trashed: a0 a1 a2 a3 a4 a5
@@ -711,6 +719,8 @@ fn00000000000163B0_exit:
 word64 fn00000000000164D0(word64 a0, word64 a1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000000015180
 // MayUse:  a0:[0..31] a1:[0..63]
 // LiveOut: a0
 // Trashed: a0 a1 a2
@@ -734,6 +744,8 @@ fn00000000000164D0_exit:
 word64 fn000000000001654C(word64 ra, word64 gp, word64 s0, word64 s1, word64 a0, word64 a1, word64 a3, word64 a4, word64 a5, word64 a6, word64 a7, word64 s2, word64 s3, ptr64 & a4Out, ptr64 & a5Out, ptr64 & a6Out, ptr64 & a7Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000000015180
 // MayUse:  a0:[0..63] a1:[0..63] a3:[0..63] a4:[0..63] a5:[0..63] a6:[0..63] a7:[0..63] gp:[0..63] ra:[0..63] s0:[0..63] s1:[0..63] s2:[0..63] s3:[0..63]
 // LiveOut: a4 a5 a6 a7 gp
 // Trashed: a0 a1 a2 a3 a4 a5 a6 a7 gp t1 t3
@@ -780,6 +792,8 @@ fn000000000001654C_exit:
 word64 fn0000000000016630(word64 gp, word64 a0, word64 a1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000000000166F4
 // MayUse:  a0:[0..63] a1:[0..63] gp:[0..63]
 // LiveOut: a0
 // Trashed: a0 a1 a2 a3 a4 a5
@@ -826,6 +840,8 @@ fn0000000000016630_exit:
 word64 fn00000000000166F4(word64 gp, word64 a0, word64 a1, word64 a2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000000015180
 // MayUse:  a0:[0..63] a1:[0..63] a2:[0..63] gp:[0..63]
 // LiveOut: a0
 // Trashed: a0 a1 a2 a3 a4 a5
@@ -904,6 +920,9 @@ fn00000000000166F4_exit:
 word64 fn0000000000016830(word64 gp, word64 a0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000000000168B8
+//      fn0000000000016D74
 // MayUse:  a0:[0..63] gp:[0..63]
 // LiveOut: a0
 // Trashed: a0 a4 a5
@@ -939,6 +958,9 @@ fn00000000000168B8_exit:
 word64 fn00000000000168E4(word64 gp, word64 a0, word64 a1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000000016D74
+//      fn00000000000175BC
 // MayUse:  a0:[0..63] a1:[0..63] gp:[0..63]
 // LiveOut: a0
 // Trashed: a0 a1 a2 a3 a5 a6 a7 t1 t3 t4 t5
@@ -974,6 +996,8 @@ fn00000000000168E4_exit:
 word64 fn00000000000169D8(word64 gp, word64 a1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000000015180
 // MayUse:  a1:[0..31] gp:[0..63]
 // LiveOut: a0
 // Trashed: a0 a1 a2 a3 a4 a5
@@ -1038,6 +1062,8 @@ fn0000000000016B38_exit:
 word64 fn0000000000016B68(word64 a0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000000016D74
 // MayUse:  a0:[0..63]
 // LiveOut: a0
 // Trashed: a0 a1 a2 a3 a4 a5 a6
@@ -1156,6 +1182,8 @@ fn0000000000016B68_exit:
 word64 fn0000000000016D74(word64 ra, word64 gp, word64 a0, word64 a1, word64 a2, word64 a3, ptr64 & a4Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000000015180
 // MayUse:  a0:[0..63] a1:[0..63] a2:[0..63] a3:[0..63] gp:[0..63] ra:[0..63]
 // LiveOut: a0 a4
 // Trashed: a0 a1 a2 a4 a5
@@ -1344,6 +1372,8 @@ fn0000000000016D74_exit:
 word64 fn000000000001730C(word64 gp, word64 a0, word64 a1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000000000175BC
 // MayUse:  a0:[0..63] a1:[0..63] gp:[0..63]
 // LiveOut: a0
 // Trashed: a0 a5
@@ -1385,6 +1415,8 @@ fn000000000001730C_exit:
 word64 fn00000000000173D4(word64 a0, word64 a1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000000000175BC
 // MayUse:  a0:[0..63] a1:[0..63]
 // LiveOut: a0
 // Trashed: a0 a1 a2 a3 a4 a5
@@ -1448,6 +1480,8 @@ fn00000000000173D4_exit:
 word64 fn00000000000175BC(word64 ra, word64 gp, word64 s1, word64 a0, word64 a1, word64 a2, word64 a3, ptr64 & a4Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000000015180
 // MayUse:  a0:[0..31] a1:[0..63] a2:[0..63] a3:[0..63] gp:[0..63] ra:[0..63] s1:[0..63]
 // LiveOut: a0 a4
 // Trashed: a0 a1 a2 a4 a5
@@ -1572,6 +1606,10 @@ fn00000000000175BC_exit:
 word64 fn0000000000017924(word64 gp, ptr64 & a1Out, ptr64 & a2Out, ptr64 & a3Out, ptr64 & a4Out, ptr64 & a6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000000015180
+//      fn0000000000017B40
+//      fn0000000000017D10
 // MayUse:  gp:[0..63]
 // LiveOut: a0 a1 a2 a3 a4 a6
 // Trashed: a0 a1 a2 a3 a4 a5 a6
@@ -1665,6 +1703,8 @@ fn0000000000017924_exit:
 word64 fn0000000000017B40(word64 ra, word64 gp, word64 a0, word64 a1, word64 a2, word64 a3, word64 a4, word64 s5, word64 s6, ptr64 & s6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000000016D74
 // MayUse:  a0:[0..63] a1:[0..63] a2:[0..63] a3:[0..63] a4:[0..63] gp:[0..63] ra:[0..63] s5:[0..63] s6:[0..63]
 // LiveOut: gp s6
 // Trashed: a0 a1 a2 a3 a4 a5 a6 fa3 fa4 fa5 gp ra s0 s1 s2 s3 s4 s5 s6 s7 t1
@@ -1890,6 +1930,8 @@ fn0000000000017B40_exit:
 word64 fn0000000000017D10(word64 ra, word64 gp, word64 s1, word64 a0, word64 a1, word64 a2, word64 a3, word64 a4, word64 s6, word64 s7, ptr64 & s0Out, ptr64 & s3Out, ptr64 & s6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000000000175BC
 // MayUse:  a0:[0..63] a1:[0..63] a2:[0..63] a3:[0..63] a4:[0..63] gp:[0..63] ra:[0..63] s1:[0..63] s6:[0..63] s7:[0..63]
 // LiveOut: gp s0 s3 s6
 // Trashed: a0 a1 a2 a3 a4 a5 a6 fa3 fa4 fa5 gp ra s0 s1 s2 s3 s4 s5 s6 s7 t1
@@ -2127,6 +2169,8 @@ fn0000000000017D10_exit:
 word64 fn0000000000017F04(word64 gp, word64 a0, word64 a1, word64 a2, word64 a3)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000000000016D74
 // MayUse:  a0:[0..63] a1:[0..63] a2:[0..63] a3:[0..63] gp:[0..63]
 // LiveOut: a0
 // Trashed: a0 a1 a2 a3 a4 a5 a6 t1 t3
@@ -2205,6 +2249,8 @@ fn0000000000017F04_exit:
 word64 fn0000000000018118(word64 gp, word64 a0, word64 a1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000000000175BC
 // MayUse:  a0:[0..63] a1:[0..63] gp:[0..63]
 // LiveOut: a0
 // Trashed: a0 a4 a5 t4
@@ -2271,6 +2317,12 @@ l00000000000181F4:
 word64 fn00000000000182B4(word64 a0, ptr64 & a3Out, ptr64 & a4Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000000000166F4
+//      fn0000000000016B68
+//      fn0000000000016D74
+//      fn0000000000017B40
+//      fn0000000000017F04
 // MayUse:  a0:[0..31]
 // LiveOut: a0 a3 a4
 // Trashed: a0 a3 a4 a5

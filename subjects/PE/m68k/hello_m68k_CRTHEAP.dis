@@ -15,6 +15,8 @@ fn000024B0_exit:
 word32 fn000024C4(word32 a5, word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn000024B0
 // MayUse:  a5:[0..31] Stack +0004:[0..31]
 // LiveOut: a6
 // Trashed: CVZN a0 a1 a2 a3 a5 a6 a7 d0 d1 d2 d3 d4 d5 d6 d7
@@ -50,6 +52,8 @@ fn000024C4_exit:
 word32 fn00002510(word32 a5, word32 dwArg04, ptr32 & d3Out, ptr32 & d4Out, ptr32 & a5Out, ptr32 & a6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn000024C4
 // MayUse:  a5:[0..31] Stack +0004:[0..31]
 // LiveOut: a5 a6 a7 d0 d3 d4
 // Trashed: CVZNX a0 a1 a2 a3 a5 a6 a7 d0 d1 d2 d3 d4 d5 d6 d7
@@ -116,6 +120,8 @@ fn00002510_exit:
 word32 fn000025B4(word32 a5, word32 dwArg04, word32 dwArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00002510
 // MayUse:  a5:[0..31] Stack +0004:[0..31] Stack +0008:[0..31]
 // LiveOut: d0
 // Trashed: CVZNX a0 a1 d0 d1 d2
@@ -160,6 +166,8 @@ fn00002610_exit:
 word32 fn00002644(word32 a5, word32 dwArg04, ptr32 & a5Out, ptr32 & a6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn000024C4
 // MayUse:  a5:[0..31] Stack +0004:[0..31]
 // LiveOut: a5 a6 a7 d0
 // Trashed: CVZN a0 a5 a6 a7 d0
@@ -191,6 +199,9 @@ fn00002644_exit:
 word32 fn0000273C(word32 a0, word32 a5, ptr32 & a0Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn000025B4
+//      fn00002BB4
 // MayUse:  a0:[0..31] a5:[0..31]
 // LiveOut: a0 d0
 // Trashed: CVZN a0 d0 d1 d2
@@ -216,6 +227,8 @@ fn0000273C_exit:
 word32 fn0000275C(word32 a0, word32 a5, ptr32 & a0Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0000273C
 // MayUse:  a0:[0..31] a5:[0..31]
 // LiveOut: a0 d0
 // Trashed: CVZNX a0 d0 d1 d2
@@ -248,6 +261,10 @@ fn0000275C_exit:
 word32 fn000027A0(word32 a5, word32 a6, ptr32 & a6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00002510
+//      fn00002A54
+//      fn00002B18
 // MayUse:  a5:[0..31] a6:[0..31]
 // LiveOut: a5 a6 a7
 // Trashed: CVZN a5 a6 a7 d2
@@ -267,6 +284,8 @@ fn000027A0_exit:
 word32 fn000027B0(word32 a5, word32 dwArg04, ptr32 & a0Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00002510
 // MayUse:  a5:[0..31] Stack +0004:[0..31]
 // LiveOut: a0 d0
 // Trashed: CVZNX a0 a1 d0 d1 d2
@@ -337,6 +356,8 @@ l000027FE:
 word32 fn000028A0(word32 a0, word32 a2, word32 a5, word32 dwArg04, ptr32 & d3Out, ptr32 & d4Out, ptr32 & a5Out, ptr32 & a6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00002510
 // MayUse:  a0:[0..31] a2:[16..31] a5:[0..31] Stack +0004:[0..31]
 // LiveOut: a5 a6 a7 d0 d3 d4
 // Trashed: CVZNX a0 a1 a2 a3 a5 a6 a7 d0 d1 d2 d3 d4 d5 d6 d7
@@ -460,6 +481,8 @@ fn000028A0_exit:
 word32 fn000029C8(word32 a0, word32 a5, word32 dwArg04, word32 dwArg08, ptr32 & a5Out, ptr32 & a6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn000028A0
 // MayUse:  a0:[0..31] a5:[0..31] Stack +0004:[0..31] Stack +0008:[0..31]
 // LiveOut: a5 a6 a7 d0
 // Trashed: CVZNX a0 a1 a2 a3 a5 a6 a7 d0 d1 d2 d3 d4 d5
@@ -511,6 +534,9 @@ fn000029C8_exit:
 word32 fn00002A54(word32 a5, word32 dwArg04, word32 dwArg08, ptr32 & d3Out, ptr32 & d4Out, ptr32 & d5Out, ptr32 & a2Out, ptr32 & a5Out, ptr32 & a6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn000028A0
+//      fn000029C8
 // MayUse:  a5:[0..31] Stack +0004:[0..31] Stack +0008:[0..31]
 // LiveOut: a2 a5 a6 a7 d0 d3 d4 d5
 // Trashed: CVZNX a0 a1 a2 a3 a5 a6 a7 d0 d1 d2 d3 d4 d5
@@ -569,6 +595,8 @@ fn00002A54_exit:
 void fn00002AE0(word32 a5, word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn000029C8
 // MayUse:  a5:[0..31] Stack +0004:[0..31]
 // LiveOut:
 // Trashed: CVZNX a0 d2
@@ -626,6 +654,8 @@ fn00002B18_exit:
 word32 fn00002BB4(word32 a5, word32 dwArg04, word32 dwArg08, ptr32 & a5Out, ptr32 & a6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00002A54
 // MayUse:  a5:[0..31] Stack +0004:[0..31] Stack +0008:[0..31]
 // LiveOut: a5 a6 d0
 // Trashed: CVZNX a0 a1 a2 a3 a5 a6 d0 d1 d2
@@ -722,6 +752,8 @@ fn00002BB4_exit:
 void fn00002E18(word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00002BB4
 // MayUse:  Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31] Stack +0010:[0..31]
 // LiveOut:
 // Trashed: CVZNX a0 a1 d0 d1 d2
@@ -768,6 +800,8 @@ fn00002E18_exit:
 word32 fn00002EA8(word32 a5, word32 dwArg04, word32 dwArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00002BB4
 // MayUse:  a5:[0..31] Stack +0004:[0..31] Stack +0008:[0..31]
 // LiveOut: d0
 // Trashed: CVZN a0 a1 d0 d1 d2

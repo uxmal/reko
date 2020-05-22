@@ -13,6 +13,8 @@ void _start(void (* rdx)(), Eq_n qwArg00)
 }
 
 // 00000000004004B0: void deregister_tm_clones()
+// Called from:
+//      __do_global_dtors_aux
 void deregister_tm_clones()
 {
 	if (0x00 == 0x00 || 0x00 == 0x00)
@@ -21,6 +23,8 @@ void deregister_tm_clones()
 }
 
 // 00000000004004E0: void register_tm_clones()
+// Called from:
+//      frame_dummy
 void register_tm_clones()
 {
 	if (0 == 0x00 || 0x00 == 0x00)
@@ -44,6 +48,8 @@ void frame_dummy()
 }
 
 // 0000000000400560: void my1(Register word32 esi, Register word32 edi)
+// Called from:
+//      branches
 void my1(word32 esi, word32 edi)
 {
 	calloc((int64) edi, (int64) esi);
@@ -77,6 +83,8 @@ void main()
 }
 
 // 00000000004006F0: void __llvm_retpoline_r11()
+// Called from:
+//      main
 void __llvm_retpoline_r11()
 {
 	fn0000000000400700();
@@ -85,6 +93,8 @@ void __llvm_retpoline_r11()
 }
 
 // 0000000000400700: void fn0000000000400700()
+// Called from:
+//      __llvm_retpoline_r11
 void fn0000000000400700()
 {
 }

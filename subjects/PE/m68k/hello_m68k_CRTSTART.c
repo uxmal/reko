@@ -96,6 +96,8 @@ void fn000022C4(word32 a2, ptr32 a5)
 }
 
 // 00002354: Register word32 fn00002354(Register (ptr32 Eq_n) a5, Stack int32 dwArg08, Stack byte bArg0F)
+// Called from:
+//      fn00002294
 word32 fn00002354(struct Eq_n * a5, int32 dwArg08, byte bArg0F)
 {
 	a5->bFFFFFA9C = bArg0F;
@@ -129,6 +131,9 @@ word32 fn00002354(struct Eq_n * a5, int32 dwArg08, byte bArg0F)
 }
 
 // 000023B4: Register word32 fn000023B4(Stack Eq_n dwArg04, Stack Eq_n dwArg08)
+// Called from:
+//      fn000022C4
+//      fn00002354
 word32 fn000023B4(Eq_n dwArg04, Eq_n dwArg08)
 {
 	word32 * a6_n = fp - 0x04;
@@ -167,6 +172,8 @@ void fn000023F8(Eq_n a5)
 }
 
 // 00002418: Register Eq_n fn00002418(Register Eq_n a5, Register out ptr32 a6Out)
+// Called from:
+//      fn000023F8
 Eq_n fn00002418(Eq_n a5, ptr32 & a6Out)
 {
 	struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
@@ -185,6 +192,9 @@ Eq_n fn00002418(Eq_n a5, ptr32 & a6Out)
 }
 
 // 0000243C: Register Eq_n fn0000243C(Register Eq_n a5, Stack ptr32 dwArg04, Register out ptr32 a6Out)
+// Called from:
+//      fn000023F8
+//      fn00002418
 Eq_n fn0000243C(Eq_n a5, ptr32 dwArg04, ptr32 & a6Out)
 {
 	ptr32 * a6_n = fp - 0x04;

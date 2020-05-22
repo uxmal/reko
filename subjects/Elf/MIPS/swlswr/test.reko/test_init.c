@@ -5,6 +5,8 @@
 #include "test_init.h"
 
 // 00000588: void _init()
+// Called from:
+//      __libc_csu_init
 void _init()
 {
 	if (__gmon_start__ == 0x00)

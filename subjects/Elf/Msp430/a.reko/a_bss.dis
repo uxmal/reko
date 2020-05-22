@@ -1,6 +1,9 @@
 void __write_char()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      PRINT
+//      __write_pad
 // MayUse: 
 // LiveOut:
 // Trashed:

@@ -17,6 +17,8 @@ l0000000000400CD0:
 void deregister_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __do_global_dtors_aux
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax rdi Top
@@ -38,6 +40,8 @@ deregister_tm_clones_exit:
 void register_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      frame_dummy
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax rdi rsi Top
@@ -101,6 +105,8 @@ frame_dummy_exit:
 word32 component(word32 ecx, word32 edx, word32 esi, word64 rdi, word32 r8d)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      print_pixel
 // MayUse:  edx:[0..31] esi:[0..31] r8d:[0..31] rcx:[0..31] rdi:[0..63]
 // LiveOut: rax
 // Trashed: SCZO rax rcx rdx Top
@@ -135,6 +141,8 @@ l0000000000400EC1:
 void print_pixel(word32 ecx, word64 rdx, word64 rsi, word64 rdi, selector fs)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  ecx:[0..31] fs:[0..15] rdi:[0..63] rdx:[0..63] rsi:[0..63]
 // LiveOut:
 // Trashed: SCZO r8 r9 rax rcx rdi rdx rsi Top

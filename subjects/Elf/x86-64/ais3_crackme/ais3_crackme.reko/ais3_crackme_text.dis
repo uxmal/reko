@@ -17,6 +17,8 @@ l0000000000400410:
 void call_gmon_start()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      _init
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax Top
@@ -34,6 +36,8 @@ call_gmon_start_exit:
 void deregister_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __do_global_dtors_aux
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax rdi Top
@@ -55,6 +59,8 @@ deregister_tm_clones_exit:
 void register_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      frame_dummy
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax rdi rdx rsi Top
@@ -119,6 +125,8 @@ frame_dummy_exit:
 word32 verify(word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  rdi:[0..63]
 // LiveOut: rax
 // Trashed: SCZO rax rcx rdx rsi Top

@@ -47,6 +47,8 @@ void initpySample()
 }
 
 // 100011E9: Register word32 fn100011E9(Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Register out Eq_n ecxOut, Register out ptr32 edxOut, Register out ptr32 ebxOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
+// Called from:
+//      fn10001388
 word32 fn100011E9(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, DWORD & ecxOut, ptr32 & edxOut, ptr32 & ebxOut, ptr32 & esiOut, ptr32 & ediOut)
 {
 	word32 eax_n;
@@ -164,6 +166,8 @@ l10001384:
 }
 
 // 10001388: Register Eq_n fn10001388(Register Eq_n ecx, Register Eq_n edx, Register (ptr32 Eq_n) ebx, Register ptr32 esi, Register word32 edi)
+// Called from:
+//      DllMain
 Eq_n fn10001388(Eq_n ecx, Eq_n edx, Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 {
 	struct Eq_n * ebp_n = fn100017E8(ebx, esi, edi, dwLoc0C, 0x10);
@@ -268,6 +272,8 @@ l1000147A:
 }
 
 // 10001493: void fn10001493()
+// Called from:
+//      fn10001388
 void fn10001493()
 {
 	globals->t10003008 = ~0x00;
@@ -282,6 +288,8 @@ Eq_n DllMain(Eq_n hModule, Eq_n dwReason, Eq_n lpReserved)
 }
 
 // 100015CF: Register Eq_n fn100015CF(Register (ptr32 Eq_n) ebx, Register ptr32 esi, Register word32 edi)
+// Called from:
+//      fn1000166E
 Eq_n fn100015CF(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 {
 	Eq_n eax_n;
@@ -329,6 +337,8 @@ Eq_n fn100015CF(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 }
 
 // 10001665: void fn10001665()
+// Called from:
+//      fn100015CF
 void fn10001665()
 {
 	unlock();
@@ -356,6 +366,8 @@ void fn10001680()
 }
 
 // 100016D0: Register uint32 fn100016D0(Stack (ptr32 Eq_n) dwArg04)
+// Called from:
+//      fn10001742
 uint32 fn100016D0(struct Eq_n * dwArg04)
 {
 	if (dwArg04->w0000 != 23117)
@@ -367,6 +379,8 @@ uint32 fn100016D0(struct Eq_n * dwArg04)
 }
 
 // 10001700: Register (ptr32 Eq_n) fn10001700(Stack (ptr32 Eq_n) dwArg04, Stack uint32 dwArg08, Register out ptr32 edxOut)
+// Called from:
+//      fn10001742
 struct Eq_n * fn10001700(struct Eq_n * dwArg04, uint32 dwArg08, ptr32 & edxOut)
 {
 	struct Eq_n * ecx_n = dwArg04 + dwArg04->dw003C / 64;
@@ -391,6 +405,8 @@ l1000173E:
 }
 
 // 10001742: Register ui32 fn10001742(Register (ptr32 Eq_n) ebx, Register ptr32 esi, Register word32 edi, Register out ptr32 edxOut, Register out ptr32 ediOut)
+// Called from:
+//      fn100011E9
 ui32 fn10001742(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi, ptr32 & edxOut, ptr32 & ediOut)
 {
 	ui32 eax_n;
@@ -420,6 +436,8 @@ l100017A8:
 }
 
 // 100017C6: Register word32 fn100017C6(Stack Eq_n dwArg04, Stack Eq_n dwArg08)
+// Called from:
+//      fn10001388
 word32 fn100017C6(Eq_n dwArg04, Eq_n dwArg08)
 {
 	if (dwArg08 == 0x01 && globals->dw100020CC == 0x00)
@@ -428,6 +446,10 @@ word32 fn100017C6(Eq_n dwArg04, Eq_n dwArg08)
 }
 
 // 100017E8: Register ptr32 fn100017E8(Register (ptr32 Eq_n) ebx, Register ptr32 esi, Register word32 edi, Stack Eq_n dwArg00, Stack ui32 dwArg08)
+// Called from:
+//      fn10001388
+//      fn100015CF
+//      fn10001742
 ptr32 fn100017E8(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi, Eq_n dwArg00, ui32 dwArg08)
 {
 	struct Eq_n * esp_n = fp - 8 - dwArg08;
@@ -441,6 +463,10 @@ ptr32 fn100017E8(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi, Eq_n d
 }
 
 // 1000182D: Register word32 fn1000182D(Register (ptr32 Eq_n) ebp, Stack Eq_n dwArg00)
+// Called from:
+//      fn10001388
+//      fn100015CF
+//      fn10001742
 word32 fn1000182D(struct Eq_n * ebp, Eq_n dwArg00)
 {
 	fs->dw0000 = ebp->dwFFFFFFF0;
@@ -449,6 +475,8 @@ word32 fn1000182D(struct Eq_n * ebp, Eq_n dwArg00)
 }
 
 // 10001864: void fn10001864()
+// Called from:
+//      DllMain
 void fn10001864()
 {
 	ui32 eax_n = globals->dw10003000;
