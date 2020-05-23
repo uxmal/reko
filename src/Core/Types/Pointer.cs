@@ -36,7 +36,9 @@ namespace Reko.Core.Types
 		{
             if (bitSize <= 0)
                 throw new ArgumentOutOfRangeException("bitSize", "Invalid pointer size.");
-			this.Pointee = pointee;
+            if (bitSize == 24)
+                bitSize.ToString(); //$DEBUG
+            this.Pointee = pointee;
 			this.bitSize = bitSize;
 		}
 

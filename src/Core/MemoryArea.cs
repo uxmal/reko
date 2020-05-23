@@ -225,6 +225,7 @@ namespace Reko.Core
             {
             case 1: return Constant.Create(type, abImage[imageOffset]);
             case 2: return Constant.Create(type, ReadLeUInt16(abImage, imageOffset));
+            case 3:
             case 4: return Constant.Create(type, ReadLeUInt32(abImage, imageOffset));
             case 5:
             case 8: return Constant.Create(type, ReadLeUInt64(abImage, imageOffset));

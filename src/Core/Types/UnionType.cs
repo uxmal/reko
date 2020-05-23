@@ -118,25 +118,30 @@ namespace Reko.Core.Types
 
         private static int nestoMatic;
 
-		public override int Size
+		public override int BitSize
 		{
 			get
 			{
 				int size = 0;
                 ++nestoMatic;
                 if (nestoMatic > 100)
-                    return 4; ;
+                    return 32;
 				foreach (UnionAlternative alt in Alternatives.Values)
 				{
-					size = Math.Max(size, alt.DataType.Size);
+					size = Math.Max(size, alt.DataType.BitSize);
 				}
                 --nestoMatic;
 				return size;
 			}
-			set { ThrowBadSize(); }
 		}
 
-		public DataType Simplify()
+        public override int Size
+        {
+            get { return (BitSize + (BitsPerByte - 1)) / BitsPerByte; }
+            set { ThrowBadSize(); }
+        }
+
+        public DataType Simplify()
 		{
 			if (Alternatives.Count == 1)
 			{

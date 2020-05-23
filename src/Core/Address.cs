@@ -92,9 +92,15 @@ namespace Reko.Core
 
         public static Address FromConstant(Constant value)
         {
-            switch (value.DataType.BitSize)
+            Address addr;
+            int bitSize = value.DataType.BitSize;
+            switch (bitSize)
             {
             case 16: return Ptr16(value.ToUInt16());
+            case 20: 
+                addr = Ptr32(value.ToUInt32());
+                addr.DataType = PrimitiveType.Create(Domain.Pointer, bitSize);
+                return addr;
             case 32: return Ptr32(value.ToUInt32());
             case 64: return Ptr64(value.ToUInt64());
             default: throw new NotImplementedException();

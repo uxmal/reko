@@ -208,7 +208,14 @@ namespace Reko.Core.Output
             }
             else
             {
-                rdr.Read(pt).Accept(codeFormatter);
+                if (rdr.TryRead(pt, out var cValue))
+                {
+                    cValue.Accept(codeFormatter);
+                }
+                else
+                {
+                    codeFormatter.InnerFormatter.WriteLine("?? /* Can't read address {0} */", rdr.Address);
+                }
             }
             return codeFormatter;
         }

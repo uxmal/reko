@@ -394,5 +394,18 @@ namespace Reko.UnitTests.Arch.Msp430
                 "0|T--|0100(2): 1 instructions",
                 "1|T--|return (2,0)");
         }
+
+        [Test]
+        public void MSP430Rw_add_two_abs()
+        {
+            Given_HexString("9252 9C57 7877");
+            AssertCode(         // add.w\t&579C,&7778
+                "0|L--|0100(6): 5 instructions",
+                "1|L--|v2 = Mem0[0x579C<p16>:word16]",
+                "2|L--|v3 = Mem0[0x7778<p16>:word16]",
+                "3|L--|v3 = v3 + v2",
+                "4|L--|Mem0[0x7778<p16>:word16] = v3",
+                "5|L--|VNZC = cond(v3)");
+        }
     }
 }

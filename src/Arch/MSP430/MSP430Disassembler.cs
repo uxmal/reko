@@ -348,16 +348,15 @@ namespace Reko.Arch.Msp430
                 return null;
             if (reg.Number == 2)
             {
-                return AddressOperand.Ptr16((ushort)offset);
+                // Absolute address will not use a base register.
+                reg = null;
+
             }
-            else
+            return new MemoryOperand(dataWidth ?? PrimitiveType.Word16)
             {
-                return new MemoryOperand(dataWidth ?? PrimitiveType.Word16)
-                {
-                    Base = reg,
-                    Offset = offset
-                };
-            }
+                Base = reg,
+                Offset = offset
+            };
         }
 
         public override Msp430Instruction CreateInvalidInstruction()

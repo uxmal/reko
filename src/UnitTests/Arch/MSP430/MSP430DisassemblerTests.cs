@@ -103,7 +103,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
-        public void MSP430Dis_sub_two_abs()
+        public void MSP430Dis_add_two_abs()
         {
             AssertCode("add.w\t&579C,&7778", "9252 9C57 7877");
         }

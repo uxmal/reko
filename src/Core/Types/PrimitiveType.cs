@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -76,6 +77,8 @@ namespace Reko.Core.Types
 		
 		private PrimitiveType(Domain dom, int bitSize, string name)
 		{
+            if (bitSize == 24)
+                bitSize.ToString(); //$DEBUG
             this.Domain = dom;
 			this.bitSize = bitSize;
             this.byteSize = (bitSize + (BitsPerByte-1)) / BitsPerByte;

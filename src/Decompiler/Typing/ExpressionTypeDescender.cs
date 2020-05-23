@@ -496,6 +496,8 @@ namespace Reko.Typing
         {
             MeetDataType(tvAccess, tvAccess.DataType);
             int eaBitSize = effectiveAddress.TypeVariable.DataType.BitSize;
+            if (eaBitSize == 24)
+                eaBitSize.ToString();   //$DEBUG
             Expression p;
             int offset;
             if (fieldAccessPattern.Match(effectiveAddress))
