@@ -24,11 +24,16 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using Reko.Core.Configuration;
 
 namespace Reko.ImageLoaders.MzExe
 {
     public class PharLapExtender : ImageLoader
     {
+        private IProcessorArchitecture arch;
+        private IPlatform platform;
+        private Program program;
+        private SegmentMap segmentMap;
 
         public PharLapExtender(IServiceProvider services, string filename, byte[] rawImage, uint headerOffset) 
             : base(services, filename, rawImage)
@@ -46,15 +51,22 @@ namespace Reko.ImageLoaders.MzExe
 
         public override Program Load(Address addrLoad)
         {
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            this.arch = cfgSvc.GetArchitecture("x86-protected-32");
+            this.platform = cfgSvc.GetEnvironment("ms-dos")
+                .Load(Services, arch);
+
             var rdr = new LeImageReader(RawImage, FileHeaderOffset);
             var fileHeader = rdr.ReadStruct<FileHeader>();
             var image = new MemoryArea(Address.Ptr32(fileHeader.base_load_offset), new byte[fileHeader.memory_requirements]);
             var w = new LeImageWriter(image.Bytes);
+
             if ((fileHeader.flags & 1) != 0)
             {
-                rdr = new LeImageReader(RawImage, fileHeader.offset_load_image);
-                while (rdr.TryReadUInt16(out ushort us))
+                rdr = new LeImageReader(RawImage, FileHeaderOffset + fileHeader.offset_load_image);
+                while ( w.Position < fileHeader.memory_requirements  )
                 {
+                    rdr.TryReadUInt16(out ushort us);
                     if ((us & 0x8000) == 0)
                     {
                         rdr.ReadBytes(w.Bytes, w.Position, us);
@@ -64,23 +76,50 @@ namespace Reko.ImageLoaders.MzExe
                     {
                         us &= 0x7FFF;
                         rdr.TryReadByte(out var b);
-                        for (int i = 0; i < us; ++i)
+                        if (b > us)
                         {
-                            w.WriteByte(b);
+                            throw new NotImplementedException();  // Corrupt file
+                        }
+                        if (b == 0)
+                        {
+                            for (int i = 0; i < us; ++i)
+                            {
+                                w.WriteByte(b);
+                            }
+                        }
+                        else
+                        {
+                            var repeatData = new byte [b];
+                            for (int i = 0; i < b; ++i)
+                            {
+                                rdr.TryReadByte(out var rb);
+                                repeatData[i] = rb;
+                            }
+                            for (int i = 0; i < us; i += b)
+                            {
+                                w.WriteBytes(repeatData);
+                            }
                         }
                     }
                 }
 
             }
-
-
-
-            throw new NotImplementedException();
+            
+            var loadseg = new ImageSegment("DOSX_PROG", image, AccessMode.ReadWriteExecute);
+            this.segmentMap = new SegmentMap(addrLoad);
+            var seg = this.segmentMap.AddSegment(loadseg);
+            this.program = new Program(this.segmentMap, this.arch, platform);
+            return program;
+            //throw new NotImplementedException();
+            
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            throw new NotImplementedException();
+            var entryPoints = new List<ImageSymbol>();
+            var symbols = new SortedList<Address, ImageSymbol>();
+            return new RelocationResults(entryPoints, symbols);
+            //throw new NotImplementedException();
         }
 
         [Endian(Endianness.LittleEndian)]
