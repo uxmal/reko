@@ -1150,7 +1150,7 @@ Eq_17: (union "Eq_17" (byte u0) (word16 u1) ((ptr64 char) u2) ((ptr64 wchar_t) u
 	T_6949 (in Mem788[rsp_328 + 0x10<64>:word64] : word64)
 	T_6959 (in rax_874 : Eq_17)
 	T_6966 (in 0x61A3D0<32>[(int64) edi_837 * 8<64>] : word64)
-	T_6967 (in fn0000000000406A80(rax_763, (&globals->t61A3D0)[(int64) edi_837].t0000, r13_656, fs) : word64)
+	T_6967 (in fn0000000000406A80(rax_763, *((char *) &globals->t61A3D0 + (int64) edi_837 * 8<64>), r13_656, fs) : word64)
 	T_6968 (in 0<64> : word64)
 	T_6984 (in 0<u64> : uint64)
 	T_6994 (in Mem466[rsp_328 + 0x10<64>:word32] : word32)
@@ -34109,7 +34109,7 @@ T_6966: (in 0x61A3D0<32>[(int64) edi_837 * 8<64>] : word64)
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: word64
-T_6967: (in fn0000000000406A80(rax_763, (&globals->t61A3D0)[(int64) edi_837].t0000, r13_656, fs) : word64)
+T_6967: (in fn0000000000406A80(rax_763, *((char *) &globals->t61A3D0 + (int64) edi_837 * 8<64>), r13_656, fs) : word64)
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: word64

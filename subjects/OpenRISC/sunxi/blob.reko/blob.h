@@ -35679,7 +35679,7 @@ T_7547: (in 0<32> : word32)
   Class: Eq_7546
   DataType: word32
   OrigDataType: word32
-T_7548: (in (word32) (&globals->b13017)[r3].b0000 == 0<32> : bool)
+T_7548: (in (word32) (&globals->b13017)[r3 * 8<32>] == 0<32> : bool)
   Class: Eq_7548
   DataType: bool
   OrigDataType: bool

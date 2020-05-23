@@ -334,7 +334,7 @@ l00011874_ds_t:
 	goto l0001183C
 l0001187C:
 l00011880:
-	l1Out = &globals->qw2B400
+	l1Out = (struct stat *) &globals->qw2B400
 	l2Out = o0
 	return l0_n
 safe_read_exit:
@@ -1642,7 +1642,7 @@ Eq_n gen_aux_info_file(Eq_n o0, ptr32 & l0Out, struct stat & l1Out, char & l4Out
 			ptr32 i6_n;
 			Eq_n i0_n = pwait(globals->str17270, out i2_n, out i6_n);
 			l0Out = 0x00017270;
-			l1Out = &globals->t2B640;
+			l1Out = (struct stat *) &globals->t2B640;
 			l4Out = l4_n;
 			i0Out = i0_n;
 			i2Out = i2_n;

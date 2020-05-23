@@ -571,7 +571,7 @@ void xQueueGenericReset(struct Eq_n * r0, word32 r1, ptr32 cpsr)
 	struct Eq_n * r0_n = r0->ptr0000;
 	r0->dw0038 = 0x00;
 	r0->dw0004 = r0_n + r2_n / 0x0066;
-	r0->ptr0044 = &globals->tFFFFFFFF;
+	r0->ptr0044 = (struct Eq_n *) &globals->tFFFFFFFF;
 	r0->dw000C = r0_n + (r2_n - r3_n) / 0x0066;
 	r0->ptr0008 = r0_n;
 	r0->b0045 = ~0x00;
@@ -1334,7 +1334,7 @@ struct Eq_n * xTaskRemoveFromEventList(struct Eq_n * r0)
 		r0_n = (struct Eq_n *) ((char *) &r4_n->ptr0004 + 84);
 	}
 	if (r5_n->dw004C > (r4_n->ptr0004)->dw004C)
-		r0_n = &globals->dw0001;
+		r0_n = (struct Eq_n *) &globals->dw0001;
 	r4_n->ptr0090 = r0_n;
 	return null;
 }

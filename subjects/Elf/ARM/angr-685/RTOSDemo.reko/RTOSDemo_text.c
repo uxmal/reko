@@ -2880,7 +2880,7 @@ struct Eq_n * I2CMasterIntStatus(struct Eq_n * r0, word32 r1)
 		struct Eq_n * r0_n = r0->ptr0018;
 		struct Eq_n * r0_n = r0_n;
 		if (r0_n != null)
-			r0_n = &globals->dw0001;
+			r0_n = (struct Eq_n *) &globals->dw0001;
 		return r0_n;
 	}
 	else
@@ -2888,7 +2888,7 @@ struct Eq_n * I2CMasterIntStatus(struct Eq_n * r0, word32 r1)
 		struct Eq_n * r0_n = r0->ptr0014;
 		struct Eq_n * r0_n = r0_n;
 		if (r0_n != null)
-			r0_n = &globals->dw0001;
+			r0_n = (struct Eq_n *) &globals->dw0001;
 		return r0_n;
 	}
 }
