@@ -143,6 +143,13 @@ namespace Reko.Arch.Msp430
                         m.Assign(ea, m.IAdd(ea, m.Int16((short) op.Width.Size)));
                         return tmp;
                     }
+                    else if (mop.Base == Registers.pc)
+                    {
+                        ea = instr.Address + mop.Offset;
+                        var tmp = binder.CreateTemporary(op.Width);
+                        m.Assign(tmp, m.Mem(op.Width, ea));
+                        return tmp;
+                    }
                     else if (mop.Offset != 0)
                     {
                         var tmp = binder.CreateTemporary(op.Width);
@@ -191,10 +198,17 @@ namespace Reko.Arch.Msp430
                 Expression ea;
                 if (mop.Base != null)
                 {
-                    ea = binder.EnsureRegister(mop.Base);
-                    if (mop.Offset != 0)
+                    if (mop.Base == Registers.pc)
                     {
-                        ea = m.IAdd(ea, m.Int16(mop.Offset));
+                        ea = instr.Address + mop.Offset;
+                    }
+                    else
+                    {
+                        ea = binder.EnsureRegister(mop.Base);
+                        if (mop.Offset != 0)
+                        {
+                            ea = m.IAdd(ea, m.Int16(mop.Offset));
+                        }
                     }
                 }
                 else

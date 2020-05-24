@@ -93,7 +93,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void MSP430Dis_symbolic()
         {
-            AssertCode("rrc.w\t1234(pc)", "1010 3412");
+            AssertCode("rrc.w\t1236(pc)", "1010 3412");
         }
 
         [Test]
@@ -188,5 +188,18 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("br.w\t414C", "30404C41");
         }
+
+        [Test]
+        public void MSP430Dis_add_b_pcrel_pcrel()
+        {
+            AssertCode("add.b\t4768(pc),-08BC(pc)", "D050 6647 40F7");
+        }
+
+        [Test]
+        public void MSP430Dis_mov_imm()
+        {
+            AssertCode("mov.w\t#EEA0,r12", "3C40 A0EE");
+        }
+
     }
 }
