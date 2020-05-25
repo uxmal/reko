@@ -729,9 +729,11 @@ namespace Reko.Arch.X86
 
         private void RewriteMovzx()
         {
-            m.Assign(
-                SrcOp(instrCur.Operands[0]),
-                m.Cast(instrCur.Operands[0].Width, SrcOp(instrCur.Operands[1])));
+            EmitCopy(
+                instrCur.Operands[0],
+                m.Cast(instrCur.Operands[0].Width, SrcOp(instrCur.Operands[1])),
+                0
+            );
         }
 
         private void RewritePush()
