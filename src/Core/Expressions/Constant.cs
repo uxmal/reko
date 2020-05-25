@@ -105,7 +105,7 @@ namespace Reko.Core.Expressions
                 switch (p.Domain)
                 {
                 case Domain.SignedInt: return new ConstantInt32(p, (int) value);
-                case Domain.Real: return new ConstantUInt32(p,  (uint) value);
+                case Domain.Real: return new ConstantReal32(p,  (uint) value);
                 default: return new ConstantUInt32(p, (uint) value);
                 }
             case 36:        // PDP-10 <3
@@ -117,7 +117,7 @@ namespace Reko.Core.Expressions
                 switch (p.Domain)
                 {
                 case Domain.SignedInt: return new ConstantInt64(p, (long) value);
-                case Domain.Real: return new ConstantUInt64(p, (ulong) value);
+                case Domain.Real: return new ConstantReal64(p, (ulong) value);
                 default: return new ConstantUInt64(p, (ulong) value);
                 }
             case 96:
@@ -127,6 +127,8 @@ namespace Reko.Core.Expressions
                 case Domain.SignedInt: return new ConstantInt128(p, (long)value);
                 default: return new ConstantUInt128(p, (ulong)value);
                 }
+            case 192:
+            case 224:
             case 256:
                 switch (p.Domain)
                 {
