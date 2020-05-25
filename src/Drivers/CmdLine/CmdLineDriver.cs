@@ -26,6 +26,7 @@ using Reko.Loading;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -88,6 +89,10 @@ namespace Reko.CmdLine
             var pArgs = ProcessArguments(Console.Out, args);
             if (pArgs == null)
                 return;
+
+            if(pArgs.TryGetValue("--locale", out var localeName)){
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo((string)localeName);
+            }
 
             if (pArgs.TryGetValue("--default-to", out var defaultTo))
             {
@@ -303,6 +308,11 @@ namespace Reko.CmdLine
                 {
                     ShowVersion(w);
                     return null;
+                }
+                else if (args[i] == "--locale")
+                {
+                    if (i < args.Length - 1)
+                        parsedArgs["--locale"] = args[++i];
                 }
                 else if (args[i] == "--arch")
                 {
