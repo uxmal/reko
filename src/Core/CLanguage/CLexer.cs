@@ -107,6 +107,7 @@ namespace Reko.Core.CLanguage
             Start,
             Zero,
             DecimalNumber,
+            OctalNumber,
             HexNumber,
             RealNumber,
             RealDecimalPoint,
@@ -243,15 +244,34 @@ namespace Reko.Core.CLanguage
                         sb.Append(ch);
                         state = State.RealDecimalPoint;
                         break;
+                    case '0': case '1': case '2': case '3':
+                    case '4': case '5': case '6': case '7':
+                        rdr.Read();
+                        sb.Append(ch);
+                        state = State.OctalNumber;
+                        break;
+                    case '8': case '9':
+                        rdr.Read();
+                        sb.Append(ch);
+                        state = State.DecimalNumber;
+                        break;
                     default:
-                        if (Char.IsDigit(ch))
-                        {
-                            rdr.Read();
-                            sb.Append(ch);
-                            state = State.DecimalNumber;
-                        }
                         //$BUG: L, u, F suffixes.
                         return Tok(CTokenType.NumericLiteral, Convert.ToInt32(sb.ToString()));
+                    }
+                    break;
+                case State.OctalNumber:
+                    if (c < 0)
+                        return Tok(CTokenType.NumericLiteral, Convert.ToInt32(sb.ToString(), 8));
+                    switch (c)
+                    {
+                    case '0': case '1': case '2': case '3': 
+                    case '4': case '5': case '6': case '7':
+                        rdr.Read();
+                        sb.Append(ch);
+                        break;
+                    default:
+                        return Tok(CTokenType.NumericLiteral, Convert.ToInt32(sb.ToString(), 8));
                     }
                     break;
                 case State.DecimalNumber:

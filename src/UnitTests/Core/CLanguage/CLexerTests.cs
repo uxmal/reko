@@ -443,5 +443,16 @@ namespace Reko.UnitTests.Core.CLanguage
             AssertToken(CTokenType.Id, "a");
             AssertToken(CTokenType.Id, "b");
         }
+
+        [Test]
+        public void CLexer_Octal()
+        {
+            Lex("0123, 0, 056");
+            AssertToken(CTokenType.NumericLiteral, 83);
+            AssertToken(CTokenType.Comma);
+            AssertToken(CTokenType.NumericLiteral, 0);
+            AssertToken(CTokenType.Comma);
+            AssertToken(CTokenType.NumericLiteral, 46);
+        }
     }
 }
