@@ -62,6 +62,21 @@ namespace Reko.ImageLoaders.MzExe
 
             if ((fileHeader.flags & 1) != 0)
             {
+                //
+                // Still looking for additional information on Pharlap file packing 
+                //
+                // Packing implemented is currently based on reviewing code and interpretation of data against loading program in debugger.
+                // Record is 16 bit word.
+                // If bit 15 is clear ie 0-7FFF, load the next record number of bytes into memory
+                //
+                // If bit 15 is set, ie 8000-FFFF use value lower 15 bits for size of repeat area
+                // Next byte (dataSize) defines size of item to be repeated
+                // If dataSize size is larger than size of repeat area, corrupt file
+                // if dataSize is 0, then is either fill with zero or skip, size of repeat area
+                // Read itemSize number of bytes for the repeatData
+                // copying repeatData until filled size of repeat area
+                // 
+
                 rdr = new LeImageReader(RawImage, FileHeaderOffset + fileHeader.offset_load_image);
                 while ( w.Position < fileHeader.memory_requirements  )
                 {
@@ -75,29 +90,29 @@ namespace Reko.ImageLoaders.MzExe
                     else
                     {
                         us &= 0x7FFF;
-                        if (!rdr.TryReadByte(out var b))
+                        if (!rdr.TryReadByte(out var dataSize))
                             throw new BadImageFormatException("Unexpected EOF while loading program.");
-                        if (b > us)
+                        if (dataSize > us)
                         {
                             throw new BadImageFormatException("Corrupt file");  // Corrupt file, Repeated data shouldn't be bigger than size of repeat block
                         }
-                        if (b == 0)
+                        if (dataSize == 0)
                         {
                             for (int i = 0; i < us; ++i)
                             {
-                                w.WriteByte(b);
+                                w.WriteByte(dataSize);
                             }
                         }
                         else
                         {
-                            var repeatData = new byte[b];
-                            for (int i = 0; i < b; ++i)
+                            var repeatData = new byte[dataSize];
+                            for (int i = 0; i < dataSize; ++i)
                             {
-                                if (!rdr.TryReadByte(out var rb))
+                                if (!rdr.TryReadByte(out var b))
                                     throw new BadImageFormatException("Unexpected EOF while loading program.");
-                                repeatData[i] = rb;
+                                repeatData[i] = b;
                             }
-                            for (int i = 0; i < us; i += b)
+                            for (int i = 0; i < us; i += dataSize)
                             {
                                 w.WriteBytes(repeatData);
                             }
