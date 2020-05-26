@@ -69,7 +69,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void Text_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            var eh = KeyDown;
+            var eh = KeyUp;
             if (eh != null)
             {
                 var ee = new Gui.Controls.KeyEventArgs((Gui.Controls.Keys)e.KeyData);
