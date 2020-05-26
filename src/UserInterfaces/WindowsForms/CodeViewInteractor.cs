@@ -41,7 +41,7 @@ namespace Reko.UserInterfaces.WindowsForms
         private Program program;
         private Procedure proc;
         private TextView codeView;
-        private NavigationInteractor<Address> navInteractor;
+        //private NavigationInteractor<Address> navInteractor;
 
         private SortedList<Address, MixedCodeDataModel.DataItemNode> nodeByAddress;
         private NestedTextModel nestedTextModel;
@@ -49,7 +49,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private DeclarationFormInteractor declarationFormInteractor;
 
-        private ImageSegment segment;
+        //private ImageSegment segment;
         private bool showProcedures;
 
         public CodeViewInteractor()
@@ -114,15 +114,16 @@ namespace Reko.UserInterfaces.WindowsForms
             if (!showProcedures && item.Proc != null)
                 return false;
 
-            if (segment != null && !segment.IsInRange(item.StartAddress))
-                return false;
+            //if (segment != null && !segment.IsInRange(item.StartAddress))
+            //    return false;
 
             return true;
         }
 
         private bool ShowAllItems()
         {
-            return (segment == null && showProcedures);
+            //return (segment == null && showProcedures);
+            return showProcedures;
         }
 
         public object CreateControl()
