@@ -28,6 +28,10 @@ using Reko.Core.Configuration;
 
 namespace Reko.ImageLoaders.MzExe
 {
+    /// <summary>
+    /// Loader that understands how to load PharLap extensions to the MS-DOS executable file
+    /// format.
+    /// </summary>
     public class PharLapExtender : ImageLoader
     {
         private const ushort FlagImagePacked = 1;
@@ -60,67 +64,9 @@ namespace Reko.ImageLoaders.MzExe
             var rdr = new LeImageReader(RawImage, FileHeaderOffset);
             var fileHeader = rdr.ReadStruct<FileHeader>();
             var image = new MemoryArea(Address.Ptr32(fileHeader.base_load_offset), new byte[fileHeader.memory_requirements]);
-            var w = new LeImageWriter(image.Bytes);
-
             if ((fileHeader.flags & FlagImagePacked) != 0)
             {
-                //
-                // Still looking for additional information on Pharlap file packing 
-                //
-                // Packing implemented is currently based on reviewing code and interpretation of data against loading program in debugger.
-                // Record is 16 bit word.
-                // If bit 15 is clear ie 0-7FFF, load the next record number of bytes into memory
-                //
-                // If bit 15 is set, ie 8000-FFFF use value lower 15 bits for size of repeat area
-                // Next byte (dataSize) defines size of item to be repeated
-                // If dataSize size is larger than size of repeat area, corrupt file
-                // if dataSize is 0, then is either fill with zero or skip, size of repeat area
-                // Read itemSize number of bytes for the repeatData
-                // copying repeatData until filled size of repeat area
-                // 
-
-                rdr = new LeImageReader(RawImage, FileHeaderOffset + fileHeader.offset_load_image);
-                while (w.Position < fileHeader.memory_requirements)
-                {
-                    if (!rdr.TryReadUInt16(out ushort us))
-                        throw new BadImageFormatException("Unexpected EOF while loading program.");
-                    if ((us & 0x8000) == 0)
-                    {
-                        rdr.ReadBytes(w.Bytes, w.Position, us);
-                        w.Position += us;
-                    }
-                    else
-                    {
-                        us &= 0x7FFF;
-                        if (!rdr.TryReadByte(out var dataSize))
-                            throw new BadImageFormatException("Unexpected EOF while loading program.");
-                        if (dataSize > us)
-                        {
-                            throw new BadImageFormatException("Corrupt file");  // Corrupt file, Repeated data shouldn't be bigger than size of repeat block
-                        }
-                        if (dataSize == 0)
-                        {
-                            for (int i = 0; i < us; ++i)
-                            {
-                                w.WriteByte(dataSize);
-                            }
-                        }
-                        else
-                        {
-                            var repeatData = new byte[dataSize];
-                            for (int i = 0; i < dataSize; ++i)
-                            {
-                                if (!rdr.TryReadByte(out var b))
-                                    throw new BadImageFormatException("Unexpected EOF while loading program.");
-                                repeatData[i] = b;
-                            }
-                            for (int i = 0; i < us; i += dataSize)
-                            {
-                                w.WriteBytes(repeatData);
-                            }
-                        }
-                    }
-                }
+                UnpackImage(fileHeader, image);
             }
             var loadseg = new ImageSegment("DOSX_PROG", image, AccessMode.ReadWriteExecute);
             this.segmentMap = new SegmentMap(addrLoad);
@@ -132,6 +78,71 @@ namespace Reko.ImageLoaders.MzExe
                 "_start");
             this.program.EntryPoints.Add(ep.Address, ep);
             return program;
+        }
+
+        /// <summary>
+        /// Unpacks the packed raw image into <paramref name="image" />.
+        /// </summary>
+        private void UnpackImage(FileHeader fileHeader, MemoryArea image)
+        {
+            var w = new LeImageWriter(image.Bytes);
+            //
+            // Still looking for additional information on Pharlap file packing 
+            //
+            // Packing implemented is currently based on reviewing code and interpretation of data against loading program in debugger.
+            // Record is 16 bit word.
+            // If bit 15 is clear ie 0-7FFF, load the next record number of bytes into memory
+            //
+            // If bit 15 is set, ie 8000-FFFF use value lower 15 bits for size of repeat area
+            // Next byte (dataSize) defines size of item to be repeated
+            // If dataSize size is larger than size of repeat area, corrupt file
+            // if dataSize is 0, then is either fill with zero or skip, size of repeat area
+            // Read itemSize number of bytes for the repeatData
+            // copying repeatData until filled size of repeat area
+            // 
+
+            var rdr = new LeImageReader(RawImage, FileHeaderOffset + fileHeader.offset_load_image);
+            while (w.Position < fileHeader.memory_requirements)
+            {
+                if (!rdr.TryReadUInt16(out ushort us))
+                    throw new BadImageFormatException("Unexpected EOF while loading program.");
+                if ((us & 0x8000) == 0)
+                {
+                    rdr.ReadBytes(w.Bytes, w.Position, us);
+                    w.Position += us;
+                }
+                else
+                {
+                    us &= 0x7FFF;
+                    if (!rdr.TryReadByte(out var dataSize))
+                        throw new BadImageFormatException("Unexpected EOF while loading program.");
+                    if (dataSize > us)
+                    {
+                        throw new BadImageFormatException("Corrupt file");  // Corrupt file, Repeated data shouldn't be bigger than size of repeat block
+                    }
+                    if (dataSize == 0)
+                    {
+                        for (int i = 0; i < us; ++i)
+                        {
+                            w.WriteByte(dataSize);
+                        }
+                    }
+                    else
+                    {
+                        var repeatData = new byte[dataSize];
+                        for (int i = 0; i < dataSize; ++i)
+                        {
+                            if (!rdr.TryReadByte(out var b))
+                                throw new BadImageFormatException("Unexpected EOF while loading program.");
+                            repeatData[i] = b;
+                        }
+                        for (int i = 0; i < us; i += dataSize)
+                        {
+                            w.WriteBytes(repeatData);
+                        }
+                    }
+                }
+            }
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
