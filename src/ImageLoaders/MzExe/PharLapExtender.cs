@@ -55,7 +55,6 @@ namespace Reko.ImageLoaders.MzExe
             this.arch = cfgSvc.GetArchitecture("x86-protected-32");
             this.platform = cfgSvc.GetEnvironment("ms-dos")
                 .Load(Services, arch);
-
             var rdr = new LeImageReader(RawImage, FileHeaderOffset);
             var fileHeader = rdr.ReadStruct<FileHeader>();
             var image = new MemoryArea(Address.Ptr32(fileHeader.base_load_offset), new byte[fileHeader.memory_requirements]);
@@ -66,7 +65,8 @@ namespace Reko.ImageLoaders.MzExe
                 rdr = new LeImageReader(RawImage, FileHeaderOffset + fileHeader.offset_load_image);
                 while ( w.Position < fileHeader.memory_requirements  )
                 {
-                    rdr.TryReadUInt16(out ushort us);
+                    if (!rdr.TryReadUInt16(out ushort us))
+                        throw new BadImageFormatException("Unexpected EOF while loading program.");
                     if ((us & 0x8000) == 0)
                     {
                         rdr.ReadBytes(w.Bytes, w.Position, us);
@@ -75,10 +75,11 @@ namespace Reko.ImageLoaders.MzExe
                     else
                     {
                         us &= 0x7FFF;
-                        rdr.TryReadByte(out var b);
+                        if (!rdr.TryReadByte(out var b))
+                            throw new BadImageFormatException("Unexpected EOF while loading program.");
                         if (b > us)
                         {
-                            throw new NotImplementedException();  // Corrupt file
+                            throw new BadImageFormatException("Corrupt file");  // Corrupt file, Repeated data shouldn't be bigger than size of repeat block
                         }
                         if (b == 0)
                         {
@@ -89,10 +90,11 @@ namespace Reko.ImageLoaders.MzExe
                         }
                         else
                         {
-                            var repeatData = new byte [b];
+                            var repeatData = new byte[b];
                             for (int i = 0; i < b; ++i)
                             {
-                                rdr.TryReadByte(out var rb);
+                                if (!rdr.TryReadByte(out var rb))
+                                    throw new BadImageFormatException("Unexpected EOF while loading program.");
                                 repeatData[i] = rb;
                             }
                             for (int i = 0; i < us; i += b)
@@ -104,14 +106,11 @@ namespace Reko.ImageLoaders.MzExe
                 }
 
             }
-            
             var loadseg = new ImageSegment("DOSX_PROG", image, AccessMode.ReadWriteExecute);
             this.segmentMap = new SegmentMap(addrLoad);
             var seg = this.segmentMap.AddSegment(loadseg);
             this.program = new Program(this.segmentMap, this.arch, platform);
             return program;
-            //throw new NotImplementedException();
-            
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
@@ -119,7 +118,6 @@ namespace Reko.ImageLoaders.MzExe
             var entryPoints = new List<ImageSymbol>();
             var symbols = new SortedList<Address, ImageSymbol>();
             return new RelocationResults(entryPoints, symbols);
-            //throw new NotImplementedException();
         }
 
         [Endian(Endianness.LittleEndian)]
