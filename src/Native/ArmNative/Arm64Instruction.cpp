@@ -63,7 +63,7 @@ void Arm64Instruction::Write(const cs_insn & instruction, const cs_arm64_op & op
 		writer.WriteString(Arm64Architecture::aRegs[op.reg].Name);
 		return;
 	case ARM64_OP_IMM:
-		snprintf(risky, sizeof(risky), "#&%X", op.imm);
+		snprintf(risky, sizeof(risky), "#&%llX", (unsigned long long int)op.imm);
 		writer.WriteString(risky);
 		return;
 	default: 
