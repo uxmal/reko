@@ -189,12 +189,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </summary>
         private void SetRegistersAtPOR()
         {
-            var rlist = program.User.RegisterValues;
-            if (rlist == null)
-            {
-                rlist = new SortedList<Address, List<UserRegisterValue>>();
-            }
-            rlist[PICProgAddress.Ptr(0)] = PICRegisters.GetPORRegistersList();
+            program.User.RegisterValues[PICProgAddress.Ptr(0)] = PICRegisters.GetPORRegistersList();
         }
 
     }
