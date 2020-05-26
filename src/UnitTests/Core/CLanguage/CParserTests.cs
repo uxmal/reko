@@ -1363,5 +1363,20 @@ int __far __pascal FS_FILELOCKS(struct sffsi __far * psffsi, struct sffsd __far 
 ");
             var decl = parser.Parse();
         }
+
+        [Test]
+        public void CParser_GccStyleAttributes()
+        {
+            Lex(@"
+extern char *tempnam (const char *__dir, const char *__pfx)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__malloc__));");
+            var decls = parser.Parse();
+            Assert.AreEqual(1, decls.Count);
+            var attrs = decls[0].attribute_list;
+            Assert.AreEqual(3, attrs.Count);
+            Assert.AreEqual("__nothrow__", attrs[0].Name.Components[0]);
+            Assert.AreEqual("__leaf__", attrs[1].Name.Components[0]);
+            Assert.AreEqual("__malloc__", attrs[2].Name.Components[0]);
+        }
     }
 }
