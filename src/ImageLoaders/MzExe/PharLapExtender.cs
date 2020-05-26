@@ -30,6 +30,8 @@ namespace Reko.ImageLoaders.MzExe
 {
     public class PharLapExtender : ImageLoader
     {
+        private const ushort FlagImagePacked = 1;
+
         private IProcessorArchitecture arch;
         private IPlatform platform;
         private Program program;
@@ -53,14 +55,14 @@ namespace Reko.ImageLoaders.MzExe
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             this.arch = cfgSvc.GetArchitecture("x86-protected-32");
-            this.platform = cfgSvc.GetEnvironment("ms-dos")
+            this.platform = cfgSvc.GetEnvironment("ms-dos-386")
                 .Load(Services, arch);
             var rdr = new LeImageReader(RawImage, FileHeaderOffset);
             var fileHeader = rdr.ReadStruct<FileHeader>();
             var image = new MemoryArea(Address.Ptr32(fileHeader.base_load_offset), new byte[fileHeader.memory_requirements]);
             var w = new LeImageWriter(image.Bytes);
 
-            if ((fileHeader.flags & 1) != 0)
+            if ((fileHeader.flags & FlagImagePacked) != 0)
             {
                 //
                 // Still looking for additional information on Pharlap file packing 
@@ -78,7 +80,7 @@ namespace Reko.ImageLoaders.MzExe
                 // 
 
                 rdr = new LeImageReader(RawImage, FileHeaderOffset + fileHeader.offset_load_image);
-                while ( w.Position < fileHeader.memory_requirements  )
+                while (w.Position < fileHeader.memory_requirements)
                 {
                     if (!rdr.TryReadUInt16(out ushort us))
                         throw new BadImageFormatException("Unexpected EOF while loading program.");
@@ -119,12 +121,16 @@ namespace Reko.ImageLoaders.MzExe
                         }
                     }
                 }
-
             }
             var loadseg = new ImageSegment("DOSX_PROG", image, AccessMode.ReadWriteExecute);
             this.segmentMap = new SegmentMap(addrLoad);
             var seg = this.segmentMap.AddSegment(loadseg);
             this.program = new Program(this.segmentMap, this.arch, platform);
+            var ep = ImageSymbol.Procedure(
+                this.arch,
+                Address.Ptr32(fileHeader.initial_EIP),
+                "_start");
+            this.program.EntryPoints.Add(ep.Address, ep);
             return program;
         }
 
