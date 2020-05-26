@@ -255,7 +255,7 @@ void NativeInstruction::Write(const cs_insn & insn, const cs_arm_op & op, INativ
 		snprintf(risky, sizeof(risky), "#%lf", op.fp);
 		if (strcspn(risky, nosuffixRequired) == strlen(risky))
 		{
-			strcat(risky, ".0");
+			strcat_s(risky, sizeof(risky), ".0");
 		}
 		writer.WriteString(risky);
 		break;

@@ -65,7 +65,7 @@ INativeInstruction * Arm32Disassembler::NextInstruction()
 	{
 		instr->id = ARM_INS_INVALID;
 		instr->detail->arm.op_count = 0;
-		strncpy(instr->mnemonic, "Invalid", sizeof(instr->mnemonic));
+		strncpy_s(instr->mnemonic, "Invalid", sizeof(instr->mnemonic));
 		auto info = NativeInstructionInfo{
 			uAddr, 4, static_cast<uint32_t>(InstrClass::Invalid), ARM_INS_INVALID
 		};
