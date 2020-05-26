@@ -7110,7 +7110,7 @@ Eq_n fn000000000040D8A0(Eq_n rcx, Eq_n rdx, Eq_n rsi, Eq_n rdi, word32 r8d, word
 		{
 			if (rsi != 0x00)
 			{
-				*rdi = 0x27;
+				rdi->u0 = 0x27;
 				bLocD8_n = 0x00;
 				r14_n.u0 = 0x01;
 				qwLoc98_n.u0 = 4287978;
@@ -7149,7 +7149,7 @@ Eq_n fn000000000040D8A0(Eq_n rcx, Eq_n rdx, Eq_n rsi, Eq_n rdi, word32 r8d, word
 		{
 			if (rsi != 0x00)
 			{
-				*rdi = 0x22;
+				rdi->u0 = 0x22;
 				bLocD8_n = 0x01;
 				r14_n.u0 = 0x01;
 				qwLoc98_n.u0 = 4284395;
@@ -7861,8 +7861,8 @@ word64 fn000000000040EC10(Eq_n rdi, struct Eq_n * fs, int32 & r8Out, ptr64 & r9O
 	return rax_n;
 }
 
-// 000000000040EC30: void fn000000000040EC30(Register word64 rcx, Register word64 rdx, Register word32 esi, Register (arr Eq_n) rdi)
-void fn000000000040EC30(word64 rcx, word64 rdx, word32 esi, Eq_n rdi[])
+// 000000000040EC30: void fn000000000040EC30(Register word64 rcx, Register word64 rdx, Register word32 esi, Register (arr byte) rdi)
+void fn000000000040EC30(word64 rcx, word64 rdx, word32 esi, byte rdi[])
 {
 	ui32 rcx_32_n = SLICE(rcx, word32, 32);
 	int64 rbx_n = rdx - 0x01;
@@ -7871,7 +7871,7 @@ void fn000000000040EC30(word64 rcx, word64 rdx, word32 esi, Eq_n rdi[])
 		int32_t ** rax_n = __ctype_tolower_loc();
 		do
 		{
-			(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&rdi[rbx_n].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0] = (byte) (uint64) *((char *) *rax_n + SEQ(rcx_32_n, (word32) (rsi + rbx_n)) * 0x04);
+			rdi[rbx_n] = (byte) (uint64) *((char *) *rax_n + SEQ(rcx_32_n, (word32) (rsi + rbx_n)) * 0x04);
 			--rbx_n;
 		} while (rbx_n != ~0x00);
 	}
@@ -7889,7 +7889,7 @@ void fn000000000040EC80(Eq_n rcx, Eq_n rdx, Eq_n esi, Eq_n rdi)
 		int32_t ** rax_n = __ctype_toupper_loc();
 		do
 		{
-			*((word32) rdi + rbx_n) = (byte) (uint64) *((char *) *rax_n + SEQ(rcx_32_n, (word32) (rsi + rbx_n)) * 0x04);
+			((word32) rdi + rbx_n)->u0 = (byte) (uint64) *((char *) *rax_n + SEQ(rcx_32_n, (word32) (rsi + rbx_n)) * 0x04);
 			--rbx_n;
 		} while (rbx_n != ~0x00);
 	}

@@ -91,5 +91,5 @@ namespace Reko.Core.Types
 			get { return 0; }
 			set { ThrowBadSize(); }
 		}
-    }
+	}
 }

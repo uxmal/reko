@@ -715,7 +715,7 @@ Eq_2138: (struct "Eq_2138" (FFFFFD34 (ptr32 code) ptrFFFFFD34))
 Eq_2157: (fn word32 ((ptr32 Eq_2099), Eq_682, Eq_682, ptr32, (ptr32 Eq_2099), (ptr32 word32)))
 	T_2157 (in fn00002510 : ptr32)
 	T_2158 (in signature of fn00002510 : void)
-Eq_2176: (union "Eq_2176" (word16 u0) ((ptr32 Eq_3858) u1) ((arr Eq_2176) u2) (Eq_3859 u3) (Eq_3860 u4))
+Eq_2176: (union "Eq_2176" (word16 u0) ((ptr32 Eq_3858) u1) ((arr Eq_2176) u2) (Eq_3859 u3))
 	T_2176 (in a0_22 : Eq_2176)
 	T_2224 (in a0 : Eq_2176)
 	T_2737 (in Mem103[a5 + -1316<i32>:word32] : word32)
@@ -766,7 +766,6 @@ Eq_2176: (union "Eq_2176" (word16 u0) ((ptr32 Eq_3858) u1) ((arr Eq_2176) u2) (E
 	T_3266 (in 0<i32> : int32)
 	T_3269 (in a0_25[dwArg04 * 0x10<32>] : word32)
 	T_3842
-	T_3843
 	T_3844
 	T_3845
 	T_3846
@@ -1065,10 +1064,8 @@ Eq_3857: (struct "Eq_3857" (FFFFFAF8 (ptr32 (ptr32 (ptr32 (ptr32 (ptr32 (ptr32 c
 	T_3857
 Eq_3858: (struct "Eq_3858" 0004 (0 (arr Eq_2176) a0000) (4 (arr Eq_3850) a0004))
 	T_3858
-Eq_3859: (struct "Eq_3859" 0001 (0 word32 dw0000))
+Eq_3859: (struct "Eq_3859" 0010 (0 Eq_2176 t0000))
 	T_3859
-Eq_3860: (struct "Eq_3860" 0010 (0 Eq_2176 t0000))
-	T_3860
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -16437,15 +16434,15 @@ T_3841:
 T_3842:
   Class: Eq_2176
   DataType: Eq_2176
-  OrigDataType: (struct 0001 (0 T_2742 t0000))
+  OrigDataType: (struct 0004 (0 T_2742 t0000))
 T_3843:
-  Class: Eq_2176
-  DataType: Eq_2176
-  OrigDataType: (arr Eq_2176)
+  Class: Eq_3843
+  DataType: (arr Eq_2176)
+  OrigDataType: (arr T_3842)
 T_3844:
   Class: Eq_2176
   DataType: Eq_2176
-  OrigDataType: (struct 0001 (0 T_2813 t0000))
+  OrigDataType: (struct 0004 (0 T_2813 t0000))
 T_3845:
   Class: Eq_2176
   DataType: Eq_2176
@@ -16505,10 +16502,6 @@ T_3858:
 T_3859:
   Class: Eq_3859
   DataType: Eq_3859
-  OrigDataType: 
-T_3860:
-  Class: Eq_3860
-  DataType: Eq_3860
   OrigDataType: 
 */
 typedef struct Globals {
@@ -16977,7 +16970,6 @@ typedef union Eq_2176 {
 	struct Eq_3858 * u1;
 	Eq_2176 u2[];
 	Eq_3859 u3;
-	Eq_3860 u4;
 } Eq_2176;
 
 typedef struct Eq_2177 {
@@ -17248,11 +17240,7 @@ typedef struct Eq_3858 {	// size: 4 4
 	Eq_3850 a0004[];	// 4
 } Eq_3858;
 
-typedef struct Eq_3859 {	// size: 1 1
-	word32 dw0000;	// 0
-} Eq_3859;
-
-typedef struct Eq_3860 {	// size: 16 10
+typedef struct Eq_3859 {	// size: 16 10
 	Eq_2176 t0000;	// 0
-} Eq_3860;
+} Eq_3859;
 

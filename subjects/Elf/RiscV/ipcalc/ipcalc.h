@@ -2229,10 +2229,6 @@ Eq_4087: (union "Eq_4087" (int64 u0) (uint64 u1))
 	T_4094 (in (int64) Mem54[a0 + ((a1_101 << 0<u32>) >>u 0<u32>):byte] : int64)
 Eq_4091: (union "Eq_4091" (int64 u0) (uint64 u1))
 	T_4091 (in a1_101 << 0<u32> >> 0<u32> : word64)
-Eq_4093: (struct "Eq_4093" 0001 (0 (arr Eq_4093) a0000))
-	T_4093 (in Mem54[a0 + ((a1_101 << 0<u32>) >>u 0<u32>):byte] : byte)
-	T_4241
-	T_4242
 Eq_4101: (union "Eq_4101" (int32 u0) (ui64 u1))
 	T_4101 (in 15<i32> : int32)
 Eq_4112: (union "Eq_4112" (int32 u0) (int64 u1))
@@ -2274,7 +2270,7 @@ Eq_4222: (union "Eq_4222" (int32 u0) (int64 u1))
 	T_4232 (in 0<i32> : int32)
 Eq_4238: (union "Eq_4238" (int32 u0) (word64 u1))
 	T_4238 (in 8<i32> : int32)
-Eq_4243: (union "Eq_4243" (byte u0) ((arr Eq_4093) u1))
+Eq_4243: (union "Eq_4243" (byte u0) ((arr byte) u1))
 	T_4243
 Eq_4244: (struct "Eq_4244" 0001 (0 Eq_4243 t0000) (1 byte b0001) (FFF byte b0FFF))
 	T_4244
@@ -2382,13 +2378,13 @@ Eq_4295: (struct "Eq_4295" 0001 (0 byte b0000) (FFF byte b0FFF))
 	T_4295
 Eq_4296: (struct "Eq_4296" 0001 (0 byte b0000) (FFF byte b0FFF))
 	T_4296
-Eq_4297: (union "Eq_4297" (byte u0) ((arr Eq_4093) u1))
+Eq_4297: (union "Eq_4297" (byte u0) ((arr byte) u1))
 	T_4297
 Eq_4298: (struct "Eq_4298" 0001 (0 Eq_4297 t0000) (1 byte b0001) (FFF byte b0FFF))
 	T_4298
 Eq_4299: (struct "Eq_4299" 0001 (0 byte b0000) (FFF byte b0FFF))
 	T_4299
-Eq_4300: (union "Eq_4300" (byte u0) ((arr Eq_4093) u1))
+Eq_4300: (union "Eq_4300" (byte u0) ((arr byte) u1))
 	T_4300
 Eq_4301: (struct "Eq_4301" 0001 (0 Eq_4300 t0000) (1 byte b0001) (FFF byte b0FFF))
 	T_4301
@@ -19477,11 +19473,11 @@ T_4091: (in a1_101 << 0<u32> >> 0<u32> : word64)
   OrigDataType: (union (int64 u1) (uint64 u0))
 T_4092: (in a0 + ((a1_101 << 0<u32>) >>u 0<u32>) : word64)
   Class: Eq_4092
-  DataType: (ptr64 Eq_4093)
+  DataType: (ptr64 byte)
   OrigDataType: (ptr64 (struct (0 T_4093 t0000)))
 T_4093: (in Mem54[a0 + ((a1_101 << 0<u32>) >>u 0<u32>):byte] : byte)
   Class: Eq_4093
-  DataType: Eq_4093
+  DataType: byte
   OrigDataType: byte
 T_4094: (in (int64) Mem54[a0 + ((a1_101 << 0<u32>) >>u 0<u32>):byte] : int64)
   Class: Eq_4087
@@ -20072,13 +20068,13 @@ T_4240: (in s2_23 != s1_30 : bool)
   DataType: bool
   OrigDataType: bool
 T_4241:
-  Class: Eq_4093
-  DataType: Eq_4093
+  Class: Eq_4241
+  DataType: byte
   OrigDataType: (struct 0001 (0 T_4093 t0000))
 T_4242:
-  Class: Eq_4093
-  DataType: Eq_4093
-  OrigDataType: (arr Eq_4093)
+  Class: Eq_4242
+  DataType: (arr byte)
+  OrigDataType: (arr T_4241)
 T_4243:
   Class: Eq_4243
   DataType: Eq_4243
@@ -23622,10 +23618,6 @@ typedef union Eq_4091 {
 	uint64 u1;
 } Eq_4091;
 
-typedef struct Eq_4093 {	// size: 1 1
-	Eq_4093 a0000[];	// 0
-} Eq_4093;
-
 typedef union Eq_4101 {
 	int32 u0;
 	ui64 u1;
@@ -23721,7 +23713,7 @@ typedef union Eq_4238 {
 
 typedef union Eq_4243 {
 	byte u0;
-	Eq_4093 u1[];
+	byte u1[];
 } Eq_4243;
 
 typedef struct Eq_4244 {	// size: 1 1
@@ -24092,7 +24084,7 @@ typedef struct Eq_4296 {	// size: 1 1
 
 typedef union Eq_4297 {
 	byte u0;
-	Eq_4093 u1[];
+	byte u1[];
 } Eq_4297;
 
 typedef struct Eq_4298 {	// size: 1 1
@@ -24108,7 +24100,7 @@ typedef struct Eq_4299 {	// size: 1 1
 
 typedef union Eq_4300 {
 	byte u0;
-	Eq_4093 u1[];
+	byte u1[];
 } Eq_4300;
 
 typedef struct Eq_4301 {	// size: 1 1

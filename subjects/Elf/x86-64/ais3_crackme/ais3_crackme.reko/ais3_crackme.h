@@ -40,15 +40,11 @@ Eq_65: (fn void ())
 	T_65 (in register_tm_clones : ptr64)
 	T_66 (in signature of register_tm_clones : void)
 	T_68 (in register_tm_clones : ptr64)
-Eq_96: (struct "Eq_96" 0001 (0 (arr Eq_96) a0000))
-	T_96 (in Mem12[rdi + (int64) SLICE((uint64) dwLoc0C_103, word32, 0):byte] : byte)
-	T_224
-	T_225
 Eq_105: (struct "Eq_105" (601020 byte b601020))
 	T_105 (in (int64) SLICE((uint64) dwLoc0C_103, word32, 0) : int64)
-Eq_169: (struct "Eq_169" (8 (ptr64 (arr Eq_96)) ptr0008))
+Eq_169: (struct "Eq_169" (8 (ptr64 (arr byte)) ptr0008))
 	T_169 (in rsi : (ptr64 Eq_169))
-Eq_173: (fn word32 ((ptr64 (arr Eq_96))))
+Eq_173: (fn word32 ((ptr64 (arr byte))))
 	T_173 (in verify : ptr64)
 	T_174 (in signature of verify : void)
 Eq_184: (fn int32 ((ptr64 char)))
@@ -349,9 +345,9 @@ T_70: (in eax : word32)
   Class: Eq_70
   DataType: word32
   OrigDataType: word32
-T_71: (in rdi : (arr Eq_96))
+T_71: (in rdi : (arr byte))
   Class: Eq_71
-  DataType: (ptr64 (arr Eq_96))
+  DataType: (ptr64 (arr byte))
   OrigDataType: (ptr64 (struct (0 (arr T_224) a0000)))
 T_72: (in dwLoc0C_103 : word32)
   Class: Eq_72
@@ -447,11 +443,11 @@ T_94: (in (int64) SLICE((uint64) dwLoc0C_103, word32, 0) : int64)
   OrigDataType: int64
 T_95: (in rdi + (int64) SLICE((uint64) dwLoc0C_103, word32, 0) : word64)
   Class: Eq_95
-  DataType: (ptr64 Eq_96)
+  DataType: (ptr64 byte)
   OrigDataType: (ptr64 (struct (0 T_96 t0000)))
 T_96: (in Mem12[rdi + (int64) SLICE((uint64) dwLoc0C_103, word32, 0):byte] : byte)
   Class: Eq_96
-  DataType: Eq_96
+  DataType: byte
   OrigDataType: byte
 T_97: (in (word32) Mem12[rdi + (int64) SLICE((uint64) dwLoc0C_103, word32, 0):byte] : word32)
   Class: Eq_97
@@ -465,7 +461,7 @@ T_99: (in SLICE((uint64) (word32) Mem12[rdi + (int64) SLICE((uint64) dwLoc0C_103
   Class: Eq_99
   DataType: word32
   OrigDataType: word32
-T_100: (in (word32) (uint64) dwLoc0C_103 ^ (word32) ((uint64) ((word32) (&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&(rdi)[(int64) ((word32) ((uint64) dwLoc0C_103))].a0000))[0<i32>].a0000))[0<i32>].a0000))[0<i32>].a0000))[0<i32>].a0000))[0<i32>].a0000))[0<i32>].a0000))[0<i32>].a0000))[0<i32>].a0000))[0<i32>].a0000))[0<i32>].a0000))[0<i32>].a0000))[0<i32>].a0000))[0<i32>].a0000))[0<i32>].a0000))[0<i32>].a0000))[0<i32>].a0000))[0<i32>].a0000))[0<i32>].a0000)[0<i32>])) : word32)
+T_100: (in (word32) (uint64) dwLoc0C_103 ^ (word32) ((uint64) ((word32) rdi[(int64) ((word32) ((uint64) dwLoc0C_103))])) : word32)
   Class: Eq_100
   DataType: ui32
   OrigDataType: ui32
@@ -775,7 +771,7 @@ T_176: (in rsi + 8<64> : word64)
   OrigDataType: word64
 T_177: (in Mem12[rsi + 8<64>:word64] : word64)
   Class: Eq_71
-  DataType: (ptr64 (arr Eq_96))
+  DataType: (ptr64 (arr byte))
   OrigDataType: word64
 T_178: (in verify(rsi->ptr0008) : word32)
   Class: Eq_178
@@ -962,13 +958,13 @@ T_223: (in rbx_36 != rbp_19 >> 3<64> : bool)
   DataType: bool
   OrigDataType: bool
 T_224:
-  Class: Eq_96
-  DataType: Eq_96
+  Class: Eq_224
+  DataType: byte
   OrigDataType: (struct 0001 (0 T_96 t0000))
 T_225:
-  Class: Eq_96
-  DataType: Eq_96
-  OrigDataType: (arr Eq_96)
+  Class: Eq_225
+  DataType: (arr byte)
+  OrigDataType: (arr T_224)
 T_226:
   Class: Eq_226
   DataType: (ptr64 code)
@@ -1011,19 +1007,15 @@ typedef void (Eq_50)();
 
 typedef void (Eq_65)();
 
-typedef struct Eq_96 {	// size: 1 1
-	Eq_96 a0000[];	// 0
-} Eq_96;
-
 typedef struct Eq_105 {
 	byte b601020;	// 601020
 } Eq_105;
 
 typedef struct Eq_169 {
-	Eq_96 (* ptr0008)[];	// 8
+	byte (* ptr0008)[];	// 8
 } Eq_169;
 
-typedef word32 (Eq_173)(Eq_96 *[]);
+typedef word32 (Eq_173)(byte *[]);
 
 typedef int32 (Eq_184)(char *);
 

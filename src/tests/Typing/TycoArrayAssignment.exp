@@ -1,0 +1,144 @@
+// Fn
+// Return size: 0
+define Fn
+Fn_entry:
+	// succ:  l000000000040EC30
+l000000000040EC30:
+	word64 rbx_18 = rdx - 1<64>
+	branch rdx == 0<64> l000000000040EC69
+	// succ:  l000000000040EC40 l000000000040EC69
+l000000000040EC40:
+	word64 rax_22 = 0x10000040<64>
+	// succ:  l000000000040EC50
+l000000000040EC50:
+	Mem0[rdi + rbx_18:byte] = (byte) Mem0[rax_22 + 0<64>:word64][(uint64) (word32) Mem0[rsi + rbx_18:byte] * 4<64>]
+	rbx_18 = rbx_18 - 1<64>
+	branch rbx_18 != 0xFFFFFFFFFFFFFFFF<64> l000000000040EC50
+	// succ:  l000000000040EC69 l000000000040EC50
+l000000000040EC69:
+	return
+	// succ:  Fn_exit
+Fn_exit:
+
+// Equivalence classes ////////////
+// Type Variables ////////////
+globals_t: (in globals : (ptr32 (struct "Globals")))
+  Class: Eq_1
+  DataType: (ptr32 (struct))
+  OrigDataType: (ptr32 (struct "Globals"))
+T_2: (in rbx_18 : word64)
+  Class: Eq_2
+  DataType: int64
+  OrigDataType: int64
+T_3: (in rdx : word64)
+  Class: Eq_3
+  DataType: word64
+  OrigDataType: word64
+T_4: (in 1<64> : word64)
+  Class: Eq_4
+  DataType: word64
+  OrigDataType: word64
+T_5: (in rdx - 1<64> : word64)
+  Class: Eq_2
+  DataType: word64
+  OrigDataType: word64
+T_6: (in 0<64> : word64)
+  Class: Eq_3
+  DataType: word64
+  OrigDataType: word64
+T_7: (in rdx == 0<64> : bool)
+  Class: Eq_7
+  DataType: bool
+  OrigDataType: bool
+T_8: (in rax_22 : word64)
+  Class: Eq_8
+  DataType: (ptr64 (struct (0 T_12 t0000)))
+  OrigDataType: (ptr64 (struct (0 T_12 t0000)))
+T_9: (in 0x10000040<64> : word64)
+  Class: Eq_8
+  DataType: word64
+  OrigDataType: word64
+T_10: (in 0<64> : word64)
+  Class: Eq_10
+  DataType: word64
+  OrigDataType: word64
+T_11: (in rax_22 + 0<64> : word64)
+  Class: Eq_11
+  DataType: word64
+  OrigDataType: word64
+T_12: (in Mem0[rax_22 + 0<64>:word64] : word64)
+  Class: Eq_12
+  DataType: (ptr64 (struct (0 (arr T_29) a0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_29) a0000)))
+T_13: (in rsi : word64)
+  Class: Eq_13
+  DataType: ptr64
+  OrigDataType: ptr64
+T_14: (in rsi + rbx_18 : word64)
+  Class: Eq_14
+  DataType: (ptr64 (struct (0 T_15 t0000)))
+  OrigDataType: (ptr64 (struct (0 T_15 t0000)))
+T_15: (in Mem0[rsi + rbx_18:byte] : byte)
+  Class: Eq_15
+  DataType: byte
+  OrigDataType: byte
+T_16: (in (word32) Mem0[rsi + rbx_18:byte] : word32)
+  Class: Eq_16
+  DataType: word32
+  OrigDataType: word32
+T_17: (in (uint64) (word32) Mem0[rsi + rbx_18:byte] : uint64)
+  Class: Eq_17
+  DataType: uint64
+  OrigDataType: uint64
+T_18: (in 4<64> : word64)
+  Class: Eq_18
+  DataType: ui64
+  OrigDataType: ui64
+T_19: (in (uint64) (word32) Mem0[rsi + rbx_18:byte] * 4<64> : uint64)
+  Class: Eq_19
+  DataType: ui64
+  OrigDataType: ui64
+T_20: (in Mem0[rax_22 + 0<64>:word64][(uint64) (word32) Mem0[rsi + rbx_18:byte] * 4<64>] : word32)
+  Class: Eq_20
+  DataType: word32
+  OrigDataType: word32
+T_21: (in (byte) Mem0[rax_22 + 0<64>:word64][(uint64) (word32) Mem0[rsi + rbx_18:byte] * 4<64>] : byte)
+  Class: Eq_21
+  DataType: byte
+  OrigDataType: byte
+T_22: (in rdi : word64)
+  Class: Eq_22
+  DataType: (ptr64 (struct (0 (arr T_30) a0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_30) a0000)))
+T_23: (in rdi + rbx_18 : word64)
+  Class: Eq_23
+  DataType: (ptr64 (struct (0 T_24 t0000)))
+  OrigDataType: (ptr64 (struct (0 T_24 t0000)))
+T_24: (in Mem0[rdi + rbx_18:byte] : byte)
+  Class: Eq_21
+  DataType: byte
+  OrigDataType: byte
+T_25: (in 1<64> : word64)
+  Class: Eq_25
+  DataType: int64
+  OrigDataType: int64
+T_26: (in rbx_18 - 1<64> : word64)
+  Class: Eq_2
+  DataType: int64
+  OrigDataType: int64
+T_27: (in 0xFFFFFFFFFFFFFFFF<64> : word64)
+  Class: Eq_2
+  DataType: word64
+  OrigDataType: word64
+T_28: (in rbx_18 != 0xFFFFFFFFFFFFFFFF<64> : bool)
+  Class: Eq_28
+  DataType: bool
+  OrigDataType: bool
+T_29:
+  Class: Eq_29
+  DataType: (struct 0004 (0 T_20 t0000))
+  OrigDataType: (struct 0004 (0 T_20 t0000))
+T_30:
+  Class: Eq_30
+  DataType: (struct 0001 (0 T_24 t0000))
+  OrigDataType: (struct 0001 (0 T_24 t0000))

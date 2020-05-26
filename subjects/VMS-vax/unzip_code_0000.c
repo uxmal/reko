@@ -2413,10 +2413,10 @@ uint32 fn0000E276(struct Eq_n * ap, union Eq_n * fp, union Eq_n & r2Out, ptr32 &
 	return r0_n;
 }
 
-// 0000E2A6: Register (ptr32 byte) fn0000E2A6(Register (arr Eq_n) r7, Register (ptr32 Eq_n) ap, Register (ptr32 Eq_n) fp, Register out ptr32 r2Out, Register out ptr32 apOut, Register out ptr32 fpOut)
+// 0000E2A6: Register (ptr32 byte) fn0000E2A6(Register (arr byte) r7, Register (ptr32 Eq_n) ap, Register (ptr32 Eq_n) fp, Register out ptr32 r2Out, Register out ptr32 apOut, Register out ptr32 fpOut)
 // Called from:
 //      fn000121EA
-byte * fn0000E2A6(Eq_n r7[], struct Eq_n * ap, struct Eq_n * fp, ptr32 & r2Out, ptr32 & apOut, ptr32 & fpOut)
+byte * fn0000E2A6(byte r7[], struct Eq_n * ap, struct Eq_n * fp, ptr32 & r2Out, ptr32 & apOut, ptr32 & fpOut)
 {
 	byte * r0_n = ap->ptr0008;
 	byte * r1_n = ap->ptr0004;
@@ -2428,7 +2428,7 @@ byte * fn0000E2A6(Eq_n r7[], struct Eq_n * ap, struct Eq_n * fp, ptr32 & r2Out, 
 		++r1_n;
 		uint32 r4_n = (uint32) v12_n;
 		if ((r4_n & 0x80) != 0x00)
-			r5 = SEQ(SLICE(r5, word24, 8), (&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&r7[r4_n & ~~0x7F].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0]);
+			r5 = SEQ(SLICE(r5, word24, 8), r7[r4_n & ~~0x7F]);
 		else
 			r5 = SEQ(SLICE(r5, word24, 8), v12_n);
 		*r1_n = (byte) r5;

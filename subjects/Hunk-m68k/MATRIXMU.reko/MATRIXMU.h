@@ -23,7 +23,7 @@ Eq_19: (struct "Eq_19" (8 byte b0008) (3A word32 dw003A) (9C Eq_132 t009C) (A0 E
 Eq_20: (fn (ptr32 Eq_19) (word32))
 	T_20 (in FindTask : ptr32)
 	T_21 (in signature of FindTask : void)
-Eq_25: (struct "Eq_25" (0 ui32 dw0000) (4 Eq_132 t0004) (8 (ptr32 byte) ptr0008) (C int32 dw000C) (10 (ptr32 (arr Eq_159)) ptr0010))
+Eq_25: (struct "Eq_25" (0 ui32 dw0000) (4 Eq_132 t0004) (8 (ptr32 byte) ptr0008) (C int32 dw000C) (10 (ptr32 (arr byte)) ptr0010))
 	T_25 (in d0_109 : (ptr32 Eq_25))
 	T_32 (in OpenLibrary(0x12BC<u32>, 0<i32>) : word32)
 	T_33 (in 0<32> : word32)
@@ -95,11 +95,6 @@ Eq_132: (union "Eq_132" (int32 u0) (uint32 u1))
 	T_384 (in Mem395[d0_34 + 224<i32>:word32] : word32)
 	T_386 (in Mem406[0x000014B0<p32>:word32] : word32)
 	T_387 (in 0<32> : word32)
-Eq_159: (struct "Eq_159" 0001 (0 (arr Eq_159) a0000))
-	T_159 (in 0<8> : byte)
-	T_161 (in Mem245[a0_242 + d0_244:byte] : byte)
-	T_715
-	T_716
 Eq_170: (struct "Eq_170" 0001 (0 cu8 b0000) (1 byte b0001))
 	T_170 (in a0_253 : (ptr32 Eq_170))
 	T_171 (in a0 + d2_260 : word32)
@@ -153,7 +148,7 @@ Eq_467: (fn void ((ptr32 Eq_443), word32))
 Eq_479: (fn void (word32))
 	T_479 (in fn00001278 : ptr32)
 	T_480 (in signature of fn00001278 : void)
-Eq_506: (struct "Eq_506" 0001 (0 (arr Eq_506) a0000))
+Eq_506: (struct "Eq_506" 0004 (0 (arr Eq_506) a0000))
 	T_506 (in Mem11[0x000014D0<p32> + d0_38:word32] : word32)
 	T_719
 	T_720
@@ -815,9 +810,9 @@ T_146: (in Mem172[d0_109 + 8<i32>:word32] : word32)
   Class: Eq_110
   DataType: (ptr32 byte)
   OrigDataType: word32
-T_147: (in a0_242 : (ptr32 (arr Eq_159)))
+T_147: (in a0_242 : (ptr32 (arr byte)))
   Class: Eq_147
-  DataType: (ptr32 (arr Eq_159))
+  DataType: (ptr32 (arr byte))
   OrigDataType: (ptr32 (struct (0 (arr T_715) a0000)))
 T_148: (in 2<32> : word32)
   Class: Eq_148
@@ -833,7 +828,7 @@ T_150: (in 1<i32> : int32)
   OrigDataType: int32
 T_151: (in (d0_234 << 2<32>) + 1<i32> : word32)
   Class: Eq_147
-  DataType: (ptr32 (arr Eq_159))
+  DataType: (ptr32 (arr byte))
   OrigDataType: ui32
 T_152: (in d0_244 : Eq_132)
   Class: Eq_132
@@ -865,15 +860,15 @@ T_158: (in (uint32) (uint8) 0<32>[d0_234 * 4<32>] : uint32)
   OrigDataType: uint32
 T_159: (in 0<8> : byte)
   Class: Eq_159
-  DataType: (struct "Eq_159" 0001 (0 (arr Eq_159) a0000))
+  DataType: byte
   OrigDataType: byte
 T_160: (in a0_242 + d0_244 : word32)
   Class: Eq_160
-  DataType: (ptr32 Eq_159)
+  DataType: (ptr32 byte)
   OrigDataType: (ptr32 (struct (0 T_161 t0000)))
 T_161: (in Mem245[a0_242 + d0_244:byte] : byte)
   Class: Eq_159
-  DataType: Eq_159
+  DataType: byte
   OrigDataType: byte
 T_162: (in 16<i32> : int32)
   Class: Eq_162
@@ -885,7 +880,7 @@ T_163: (in d0_109 + 16<i32> : word32)
   OrigDataType: ptr32
 T_164: (in Mem246[d0_109 + 16<i32>:word32] : word32)
   Class: Eq_147
-  DataType: (ptr32 (arr Eq_159))
+  DataType: (ptr32 (arr byte))
   OrigDataType: word32
 T_165: (in a6_247 : (ptr32 word32))
   Class: Eq_165
@@ -3088,13 +3083,13 @@ T_714:
   DataType: Eq_714
   OrigDataType: (struct 0004 (0 T_156 t0000))
 T_715:
-  Class: Eq_159
-  DataType: Eq_159
+  Class: Eq_715
+  DataType: byte
   OrigDataType: (struct 0001 (0 T_161 t0000))
 T_716:
-  Class: Eq_159
-  DataType: Eq_159
-  OrigDataType: (arr Eq_159)
+  Class: Eq_716
+  DataType: (arr byte)
+  OrigDataType: (arr T_715)
 T_717:
   Class: Eq_717
   DataType: word32
@@ -3106,7 +3101,7 @@ T_718:
 T_719:
   Class: Eq_506
   DataType: Eq_506
-  OrigDataType: (struct 0001 (0 T_506 t0000))
+  OrigDataType: (struct 0004 (0 T_506 t0000))
 T_720:
   Class: Eq_506
   DataType: Eq_506
@@ -3173,7 +3168,7 @@ typedef struct Eq_25 {
 	Eq_132 t0004;	// 4
 	byte * ptr0008;	// 8
 	int32 dw000C;	// C
-	Eq_159 (* ptr0010)[];	// 10
+	byte (* ptr0010)[];	// 10
 } Eq_25;
 
 typedef Eq_25 * (Eq_26)(ptr32, int32);
@@ -3199,10 +3194,6 @@ typedef union Eq_132 {
 	int32 u0;
 	uint32 u1;
 } Eq_132;
-
-typedef struct Eq_159 {	// size: 1 1
-	Eq_159 a0000[];	// 0
-} Eq_159;
 
 typedef struct Eq_170 {	// size: 1 1
 	cu8 b0000;	// 0
@@ -3242,7 +3233,7 @@ typedef void (Eq_467)(Eq_443 *, word32);
 
 typedef void (Eq_479)(word32);
 
-typedef struct Eq_506 {	// size: 1 1
+typedef struct Eq_506 {	// size: 4 4
 	Eq_506 a0000[];	// 0
 } Eq_506;
 

@@ -112,7 +112,10 @@ namespace Reko.UnitTests.Typing
             eqb.Build(program);
             var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program, eventListener);
             coll.CollectTypes();
+            program.TypeStore.Dump();
+
             program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory);
+                program.TypeStore.Dump();
             tvr.ReplaceTypeVariables();
             trans.Transform();
             ctn.RenameAllTypes(program.TypeStore);
@@ -1217,6 +1220,86 @@ test_exit:
                 var ax_1 = m.Reg16("ax_1", 0);
                 m.Assign(eax, m.Mem32(m.Word32(0x1200)));
                 m.Assign(ax_1, m.Slice(PrimitiveType.Word16, eax, 0));
+                m.Return();
+            }, sExp);
+        }
+
+        [Test]
+        public void TerArrayAssignment()
+        {
+            var sExp =
+            #region Expected
+@"// Before ///////
+// test
+// Return size: 0
+define test
+test_entry:
+	// succ:  l000000000040EC30
+l000000000040EC30:
+	word64 rbx_18 = rdx - 1<64>
+	branch rdx == 0<64> l000000000040EC69
+	// succ:  l000000000040EC40 l000000000040EC69
+l000000000040EC40:
+	word64 rax_22 = 0x10000040<64>
+	// succ:  l000000000040EC50
+l000000000040EC50:
+	Mem0[rdi + rbx_18:byte] = (byte) Mem0[Mem0[rax_22:word64] + (uint64) ((word32) Mem0[rsi + rbx_18:byte]) * 4<64>:word32]
+	rbx_18 = rbx_18 - 1<64>
+	branch rbx_18 != 0xFFFFFFFFFFFFFFFF<64> l000000000040EC50
+	// succ:  l000000000040EC69 l000000000040EC50
+l000000000040EC69:
+	return
+	// succ:  test_exit
+test_exit:
+
+// After ///////
+// test
+// Return size: 0
+define test
+test_entry:
+	// succ:  l000000000040EC30
+l000000000040EC30:
+	int64 rbx_18 = rdx - 1<64>
+	branch rdx == 0<64> l000000000040EC69
+	// succ:  l000000000040EC40 l000000000040EC69
+l000000000040EC40:
+	word32 (** rax_22)[] = (word32 (**)[]) 0x10000040<64>
+	// succ:  l000000000040EC50
+l000000000040EC50:
+	rdi[rbx_18] = (byte) *((char *) *rax_22 + (uint64) ((word32) (rsi + rbx_18)) * 4<64>)
+	rbx_18 = rbx_18 - 1<64>
+	branch rbx_18 != 0xFFFFFFFFFFFFFFFF<64> l000000000040EC50
+	// succ:  l000000000040EC69 l000000000040EC50
+l000000000040EC69:
+	return
+	// succ:  test_exit
+test_exit:
+
+";
+            #endregion
+
+            // fn000000000040EC30 //////////
+            RunStringTest(m =>
+            {
+                Identifier rbx_18 = m.Local(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), "rbx_18");
+                Identifier rdx = m.Local(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), "rdx");
+                Identifier rax_22 = m.Local(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), "rax_22");
+                Identifier rsi = m.Local(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), "rsi");
+                Identifier rdi = m.Local(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), "rdi");
+
+                m.Label("l000000000040EC30");
+                m.Declare(rbx_18, m.ISub(rdx, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x1)));
+                m.BranchIf(m.Eq(rdx, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x0)), "l000000000040EC69");
+
+                m.Label("l000000000040EC40");
+                m.Declare(rax_22, m.Word64(0x10000040));
+
+                m.Label("l000000000040EC50");
+                m.MStore(m.IAdd(rdi, rbx_18), m.Cast(PrimitiveType.Byte, m.Mem(PrimitiveType.Word32, m.IAdd(m.Mem(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), rax_22), m.IMul(m.Cast(PrimitiveType.Create(Domain.UnsignedInt, 64), m.Cast(PrimitiveType.Word32, m.Mem(PrimitiveType.Byte, m.IAdd(rsi, rbx_18)))), Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x4))))));
+                m.Assign(rbx_18, m.ISub(rbx_18, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x1)));
+                m.BranchIf(m.Ne(rbx_18, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0xFFFFFFFFFFFFFFFF)), "l000000000040EC50");
+
+                m.Label("l000000000040EC69");
                 m.Return();
             }, sExp);
         }

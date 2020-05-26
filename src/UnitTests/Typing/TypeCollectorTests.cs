@@ -109,8 +109,6 @@ namespace Reko.UnitTests.Typing
             fut.AssertFilesEqual();
         }
 
-        
-
         [Test]
         public void TycoMemStore()
         {

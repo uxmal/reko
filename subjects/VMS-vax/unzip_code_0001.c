@@ -443,7 +443,7 @@ void fn000121EA(struct Eq_n * r2, struct Eq_n * ap, word32 fp)
 	struct Eq_n * ap_n;
 	word32 r0_n;
 	struct Eq_n * fp_n;
-	Eq_n (* r7_n)[];
+	byte (* r7_n)[];
 	(g_ptr192B4 + 2)();
 	if (r0_n == 0x00)
 		return;
@@ -2652,7 +2652,7 @@ l000145DC:
 										uint32 r2_n = (uint32) sp_n->w0028;
 										if (r2_n != 0x00)
 										{
-											Eq_n (* r7_n)[];
+											byte (* r7_n)[];
 											word32 r11_n;
 											if (r2_n <= 0x18)
 											{
