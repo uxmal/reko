@@ -37,9 +37,8 @@ namespace Reko.Arch.IA64
             this.FramePointerType = PrimitiveType.Ptr64;
             this.InstructionBitSize = 128;
             this.PointerType = PrimitiveType.Ptr64;
-            //this.StackRegister = Registers.sp;
+            this.StackRegister = Registers.GpRegisters[11];
             this.WordWidth = PrimitiveType.Word64;
-
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)

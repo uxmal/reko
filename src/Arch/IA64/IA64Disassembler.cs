@@ -31,6 +31,8 @@ using System.Security.Cryptography;
 
 namespace Reko.Arch.IA64
 {
+#pragma warning disable IDE1006
+
     using WideDecoder = WideDecoder<IA64Disassembler, Mnemonic, IA64Instruction>;
     using WideMutator = WideMutator<IA64Disassembler>;
 
@@ -76,11 +78,17 @@ namespace Reko.Arch.IA64
             var uSlot1 = ((uBundleLo >> 46) & slot1MaskLo) | ((uBundleHi & slot1MaskHi) << 18);
             var uSlot2 = (uBundleHi >> 23) & slot2Mask;
 
-            var slot0 = templates[template].Slot0.Decode((uint)uSlot0, this);
+            var slot0 = templates[template].Slot0.Decode(uSlot0, this);
+            slot0.Address = addr;
+            slot0.Length = 6;
             Clear();
-            var slot1 = templates[template].Slot1.Decode((uint)uSlot1, this);
+            var slot1 = templates[template].Slot1.Decode(uSlot1, this);
+            slot1.Address = addr + 6;
+            slot1.Length = 6;
             Clear();
-            var slot2 = templates[template].Slot2.Decode((uint)uSlot2, this);
+            var slot2 = templates[template].Slot2.Decode(uSlot2, this);
+            slot2.Address = addr + 6;
+            slot2.Length = 6;
             Clear();
             yield return slot0;
             yield return slot1;
@@ -120,6 +128,23 @@ namespace Reko.Arch.IA64
         }
 
         #region Mutators
+
+        private static WideMutator GpReg(int bitpos, int length)
+        {
+            var field = new Bitfield(bitpos, length);
+            return (u, d) =>
+            {
+                var iReg = field.Read(u);
+                var reg = new RegisterOperand(Registers.GpRegisters[iReg]);
+                d.ops.Add(reg);
+                return true;
+            };
+        }
+        private static readonly WideMutator r1 = GpReg(6, 7);
+        private static readonly WideMutator r2 = GpReg(13, 7);
+        private static readonly WideMutator r3 = GpReg(20, 7);
+        private static readonly WideMutator r3_2 = GpReg(20, 2);
+
         private static WideMutator Imm(PrimitiveType dt, Bitfield[] fields)
         {
             return (u, d) =>
@@ -130,8 +155,21 @@ namespace Reko.Arch.IA64
                 return true;
             };
         }
-        private static readonly WideMutator I32_1_20 = Imm(PrimitiveType.Word32, Bf((36,1),(13, 20)));
+        private static readonly WideMutator I32_1_20 = Imm(PrimitiveType.Word32, Bf((36,1),(6, 20)));
 
+        private static WideMutator ImmS(PrimitiveType dt, Bitfield[] fields)
+        {
+            return (u, d) =>
+            {
+                var imm = Bitfield.ReadSignedFields(fields, u);
+                var op = new ImmediateOperand(Constant.Create(dt, imm));
+                d.ops.Add(op);
+                return true;
+            };
+        }
+
+        private static readonly WideMutator IsImm14 = ImmS(PrimitiveType.Int64, Bf((36, 1), (27, 6), (13, 7)));
+        private static readonly WideMutator IsImm22 = ImmS(PrimitiveType.Int64, Bf((36, 1), (22, 5), (27, 9), (13, 7)));
 
         /// <summary>
         /// Qualifying predicate.
@@ -252,7 +290,9 @@ namespace Reko.Arch.IA64
 
             var misc6bitExt = WideMask(31, 2, "  Misc I-Unit 6-bit Opcode Extensions",
                 WideSparse(27, 4, "  0", Nyi("0"),
-                    (0, Instr(Mnemonic.break_i, InstrClass.Terminates, I32_1_20, qp))),
+                    (0, Instr(Mnemonic.break_i, InstrClass.Terminates, I32_1_20, qp)),
+                    (1, Instr(Mnemonic.nop_i, InstrClass.Padding, I32_1_20, qp))
+                    ),
                 Nyi("1"),
                 Nyi("2"),
                 Nyi("3"));
@@ -262,8 +302,22 @@ namespace Reko.Arch.IA64
             var deposit = Nyi("deposit");
             var shiftTestBit = Nyi("shift/test bit");
             var mmMpyShift = Nyi("mm/mpy shift");
-            var aluMmAlu = Nyi("ALU/mm ALU");
-            var addImm22 = Nyi("add imm22");
+
+            var multimediaAlu1_2ext = Nyi("Multimedia ALU 1-bit+2-bit Ext");
+
+            var aluMmAlu = WideMask(33, 1, "  ALU/mm ALU",
+                WideMask(34, 2, "  0",
+                    Nyi("Integer ALU 4+2 ext"),
+                    multimediaAlu1_2ext,
+                    Instr(Mnemonic.adds, r1, IsImm14, r3, qp),
+                    Nyi("addp4 - imm14")),
+                WideMask(34, 2, "  1",
+                    invalid,
+                    multimediaAlu1_2ext,
+                    invalid,
+                    invalid));
+
+            var addImm22 = Instr(Mnemonic.addl, r1, IsImm22, r3_2, qp);
             var compare = Nyi("compare");
 
             var sysMemMgmt = Nyi("Sys/Mem Mgmt");

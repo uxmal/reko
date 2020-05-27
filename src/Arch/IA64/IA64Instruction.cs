@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Types;
 using System.Text;
 
 namespace Reko.Arch.IA64
@@ -67,7 +68,14 @@ namespace Reko.Arch.IA64
             switch (operand)
             {
             case ImmediateOperand imm:
-                renderer.WriteFormat("0x{0:X}", imm.Value.ToUInt64());
+                if (imm.Width.Domain == Domain.SignedInt)
+                {
+                    renderer.WriteFormat("{0}", imm.Value.ToInt64());
+                }
+                else
+                {
+                    renderer.WriteFormat("0x{0:X}", imm.Value.ToUInt64());
+                }
                 return;
             }
             base.RenderOperand(operand, renderer, options);

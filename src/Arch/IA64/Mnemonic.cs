@@ -30,5 +30,8 @@ namespace Reko.Arch.IA64
         nop,
         break_m,
         break_i,
+        adds,
+        addl,
+        nop_i,
     }
 }

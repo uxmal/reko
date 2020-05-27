@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
+using System;
 using System.Collections.Generic;
 
 namespace Reko.Arch.IA64
@@ -76,6 +77,9 @@ namespace Reko.Arch.IA64
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            var addrNew = instr.Address.Align(0x10);
+            instr.Address = addrNew;
+            instr.Length = 0x10;
             testGenSvc?.ReportMissingRewriter("Ia64Rw", this.instr, rdr, "");
         }
     }

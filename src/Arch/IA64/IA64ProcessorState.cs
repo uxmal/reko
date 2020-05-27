@@ -34,47 +34,37 @@ namespace Reko.Arch.IA64
             this.arch = arch;
         }
 
-        public override IProcessorArchitecture Architecture
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-        }
+        public override IProcessorArchitecture Architecture => arch;
 
         public override ProcessorState Clone()
         {
-            throw new System.NotImplementedException();
+            return new IA64ProcessorState(this.arch);
         }
 
         public override Constant GetRegister(RegisterStorage r)
         {
-            throw new System.NotImplementedException();
+            return Constant.Invalid;
         }
 
         public override void OnAfterCall(FunctionType sigCallee)
         {
-            throw new System.NotImplementedException();
         }
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            throw new System.NotImplementedException();
+            return new CallSite(0, 0);
         }
 
         public override void OnProcedureEntered()
         {
-            throw new System.NotImplementedException();
         }
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
         {
-            throw new System.NotImplementedException();
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)
         {
-            throw new System.NotImplementedException();
         }
     }
 }

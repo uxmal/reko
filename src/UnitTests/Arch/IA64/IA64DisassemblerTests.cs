@@ -66,5 +66,14 @@ namespace Reko.UnitTests.Arch.IA64
                 "break.i\t0x0",
                 "break.i\t0x0");
         }
+
+        [Test]
+        public void IA64Dis_mov_nop_i()
+        {
+            AssertCode("0B10001C0021E0A0F8594F0000000400",
+                "adds\tr2,0,r14", // ;
+                "addl\tr14,-10732,r2",
+                "nop.i\t0x0");
+        }
     }
 }
