@@ -64,7 +64,6 @@ namespace Reko.UnitTests.Arch
 
         protected TInstruction DisassembleHexBytes(string hexBytes)
         {
-            var img = new MemoryArea(LoadAddress, new byte[256]);
             byte[] instr = HexStringToBytes(hexBytes);
             return DisassembleBytes(instr);
         }
