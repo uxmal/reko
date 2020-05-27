@@ -91,11 +91,15 @@ namespace Reko.Gui.Design
                 switch (cmdId.ID)
                 {
                 case CmdIds.ViewGoToAddress:
-                case CmdIds.ViewFindWhatPointsHere:
                 case CmdIds.ActionEditSignature:
                 case CmdIds.EditRename:
-                case CmdIds.ShowProcedureCallHierarchy:
                     status.Status = MenuStatus.Visible | MenuStatus.Enabled;
+                    return true;
+                case CmdIds.ViewFindWhatPointsHere:
+                case CmdIds.ShowProcedureCallHierarchy:
+                    status.Status = MenuStatus.Visible;
+                    if (procedure != null)
+                        status.Status |= MenuStatus.Enabled;
                     return true;
                 case CmdIds.ActionAssumeRegisterValues:
                     status.Status = MenuStatus.Visible | MenuStatus.Enabled;
