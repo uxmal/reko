@@ -99,7 +99,9 @@ namespace Reko.ImageLoaders.Elf
                 archName = "paRisc";
                 options["WordSize"] = "64";
                 break;
-
+            case ElfMachine.EM_IA_64:
+                archName = "ia64";
+                break;
             default:
                 return base.CreateArchitecture(endianness);
             }
@@ -142,6 +144,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_S390: return new zSeriesRelocator(this, symbols);
             case ElfMachine.EM_PARISC: return new PaRiscRelocator(this, symbols);
             case ElfMachine.EM_SPARCV9: return new Sparc64Relocator(this, symbols);
+            case ElfMachine.EM_IA_64: return new Ia64Relocator(this, symbols);
             }
             return base.CreateRelocator(machine, symbols);
         }

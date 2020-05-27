@@ -64,7 +64,7 @@ namespace Reko.Arch.IA64
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new IA64ProcessorState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -94,7 +94,10 @@ namespace Reko.Arch.IA64
 
         public override RegisterStorage GetRegister(string name)
         {
-            throw new NotImplementedException();
+            if (Registers.RegistersByName.TryGetValue(name, out var reg))
+                return reg;
+            else
+                return null;
         }
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)

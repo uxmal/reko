@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Arch.IA64
@@ -33,9 +34,13 @@ namespace Reko.Arch.IA64
             var factory = new StorageFactory();
             GpRegisters = factory.RangeOfReg64(127, "r{0}");
             PredicateRegisters = factory.RangeOfReg(64, n => $"p{n:00}", PrimitiveType.Bool);
+            RegistersByName = GpRegisters
+                .Concat(PredicateRegisters)
+                .ToDictionary(r => r.Name);
         }
 
         public static RegisterStorage[] GpRegisters { get; }
         public static RegisterStorage[] PredicateRegisters { get; }
+        public static Dictionary<string, RegisterStorage> RegistersByName { get; }
     }
 }
