@@ -43,30 +43,16 @@ namespace Reko.UserInterfaces.WindowsForms
             this.text.KeyUp += Text_KeyUp;
         }
 
-
         public string Text { get { return text.Text; } set { text.Text = value;  } }
 
         public void SelectAll() {
             text.SelectAll();
         }
 
-        public void Focus()
-        {
-            text.Focus();
-        }
-
-
-
         public event EventHandler TextChanged
         {
             add { text.TextChanged += value; }
             remove { text.TextChanged -= value; }
-        }
-
-        public event EventHandler LostFocus
-        {
-            add { text.LostFocus += value; }
-            remove { text.LostFocus -= value; }
         }
 
         private void Text_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -83,7 +69,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void Text_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            var eh = KeyDown;
+            var eh = KeyUp;
             if (eh != null)
             {
                 var ee = new Gui.Controls.KeyEventArgs((Gui.Controls.Keys)e.KeyData);

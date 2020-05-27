@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Mocks
             return Reg(name, PrimitiveType.Word64);
         }
 
-        public Identifier Reg32(string name)
+        public override Identifier Reg32(string name)
         {
             return Reg(name, PrimitiveType.Word32);
         }

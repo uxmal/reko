@@ -122,6 +122,17 @@ all the necessary files into If you do want to build an MSI installer
 with the WiX toolchain, you can download it here:
 http://wixtoolset.org/releases/
 
+### Errors related to CMake in Visual Studio
+
+Depending on what you do Visual Studio might try to rebuild NativeProxy which
+depends on CMake. You can either install [CMake](https://cmake.org/download/)
+and make sure it's added to your PATH or disable the project in Visual Studio.
+
+Having CMake installed as part of Visual Studio is sufficient to run msbuild
+from the `Developer Command Prompt` but not when building from inside VS,
+unless you've added that to your global PATH. Installing CMake externally allows
+you to add it to PATH during the installation.
+
 ### How do I start Reko?
 
 The solution folder `Drivers` contains the executables that act
