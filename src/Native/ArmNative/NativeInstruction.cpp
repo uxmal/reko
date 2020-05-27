@@ -252,12 +252,11 @@ void NativeInstruction::Write(const cs_insn & insn, const cs_arm_op & op, INativ
 			writer.WriteString("le");
 		break;
 	case ARM_OP_FP:
-		snprintf(risky, sizeof(risky), "#%lf", op.fp);
-		if (strcspn(risky, nosuffixRequired) == strlen(risky))
 		{
-			strcat_s(risky, sizeof(risky), ".0");
+			auto suffix = (strcspn(risky, nosuffixRequired) == strlen(risky)) ? ".0" : "";
+			snprintf(risky, sizeof(risky), "#%lf%s", op.fp, suffix);
+			writer.WriteString(risky);
 		}
-		writer.WriteString(risky);
 		break;
 	default:
 		snprintf(risky, sizeof(risky), "$$ UNSUPPORTED operand type %d (%x)", op.type, op.type);
