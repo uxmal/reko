@@ -1408,5 +1408,15 @@ extern int myfunc() __asm__ ("""" ""__flub"");");
             var decl = parser.Parse()[0];
             Assert.AreEqual("(decl _Float32 ((init-decl x 42)))", decl.ToString());
         }
+
+        [Test]
+        public void CParser_GccFoo()
+        {
+            parserState.Typedefs.Add("_Float32");
+            Lex(@"extern _Float32 strtof32 (const char *__restrict __nptr,char **__restrict __endptr)__attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));");
+            var decl = parser.Parse()[0];
+            Console.Write(decl.ToString());
+            Assert.AreEqual("(decl (attr __nothrow__) (attr __leaf__) (attr __nonnull__ (NumericLiteral 1)) Extern _Float32 ((init-decl (func strtof32 ((Const Char (ptr Restrict __nptr)) (Char (ptr (ptr Restrict __endptr))))))))", decl.ToString());
+        }
     }
 }
