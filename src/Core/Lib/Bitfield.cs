@@ -74,6 +74,16 @@ namespace Reko.Core.Lib
             return n;
         }
 
+        public static ulong ReadFields(Bitfield[] bitfields, ulong u)
+        {
+            ulong n = 0;
+            foreach (var bitfield in bitfields)
+            {
+                n = n << bitfield.Length | ((u >> bitfield.Position) & bitfield.Mask);
+            }
+            return n;
+        }
+
         public static int ReadSignedFields(Bitfield[] fields, uint u)
         {
             int n = 0;

@@ -180,6 +180,7 @@
     <Compile Include="Arch\H8\H8RewriterTests.cs" />
     <Compile Include="Arch\i8051\i8051DisassemblerTests.cs" />
     <Compile Include="Arch\i8051\i8051RewriterTests.cs" />
+    <Compile Include="Arch\IA64\IA64DisassemblerTests.cs" />
     <Compile Include="Arch\M68k\Assembler\M68kAssemblerTests.cs" />
     <Compile Include="Arch\M68k\Assembler\M68kTextAssemblerTests.cs" />
     <Compile Include="Arch\Pdp11\Assembler\Pdp11TextAssemblerTests.cs" />
@@ -882,6 +883,10 @@
     <ProjectReference Include="..\Arch\i8051\i8051.csproj">
       <Project>{AB5DDEB2-87C0-42C7-8CD3-72CB2B1282FB}</Project>
       <Name>i8051</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\arch\IA64\IA64.csproj">
+      <Project>{54a54f6f-841a-4934-bfd1-65e8ad3e1d45}</Project>
+      <Name>IA64</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\LatticeMico\LatticeMico.csproj">
       <Project>{75d6bc51-64d8-4f1c-bffd-ee2debfd83ba}</Project>

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,32 +19,32 @@
 #endregion
 
 using Reko.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Reko.ImageLoaders.WebAssembly
+namespace Reko.Arch.IA64
 {
-    public class WasmArchitecture : ProcessorArchitecture
+    public class IA64Architecture : ProcessorArchitecture
     {
-        public WasmArchitecture(IServiceProvider services, string archName) : base(services, archName)
+        public IA64Architecture(IServiceProvider services, string archId) : base(services, archId)
         {
-            this.Endianness = EndianServices.Little;
-            this.PointerType = PrimitiveType.Ptr32;
-            this.FramePointerType = PrimitiveType.Ptr32;
-            this.StackRegister = new RegisterStorage("sp", 0, 0, PointerType);
-            this.InstructionBitSize = 8;
+            Endianness = EndianServices.Little;
+            this.FramePointerType = PrimitiveType.Ptr64;
+            this.InstructionBitSize = 128;
+            this.PointerType = PrimitiveType.Ptr64;
+            //this.StackRegister = Registers.sp;
+            this.WordWidth = PrimitiveType.Word64;
+
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new WasmDisassembler(this, imageReader);
+            return new IA64Disassembler(this, imageReader);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
@@ -69,20 +69,15 @@ namespace Reko.ImageLoaders.WebAssembly
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new WasmRewriter(this, rdr, binder);
+            throw new NotImplementedException();
         }
 
-        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             throw new NotImplementedException();
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             throw new NotImplementedException();
         }
@@ -122,7 +117,7 @@ namespace Reko.ImageLoaders.WebAssembly
             throw new NotImplementedException();
         }
 
-        public override Address? ReadCodeAddress(int size, EndianImageReader? rdr, ProcessorState? state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }
@@ -132,7 +127,7 @@ namespace Reko.ImageLoaders.WebAssembly
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string? txtAddr, out Address addr)
+        public override bool TryParseAddress(string txtAddr, out Address addr)
         {
             throw new NotImplementedException();
         }

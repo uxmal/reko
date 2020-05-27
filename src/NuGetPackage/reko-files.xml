@@ -20,6 +20,7 @@
         <var id="var.CompactRisc.TargetPath" >../Arch/CompactRisc/$TargetDir$/Reko.Arch.CompactRisc.dll</var>
         <var id="var.Cray.TargetPath" >../Arch/Cray/$TargetDir$/Reko.Arch.Cray.dll</var>
         <var id="var.H8.TargetPath" >../Arch/H8/$TargetDir$/Reko.Arch.H8.dll</var>
+        <var id="var.IA64.TargetPath" >../Arch/IA64/$TargetDir$/Reko.Arch.IA64.dll</var>
         <var id="var.LatticeMico.TargetPath" >../Arch/LatticeMico/$TargetDir$/Reko.Arch.LatticeMico.dll</var>
         <var id="var.M6800.TargetPath" >../Arch/M6800/$TargetDir$/Reko.Arch.M6800.dll</var>
         <var id="var.M68k.Design.TargetPath" >../Arch/M68k.Design/$TargetFwk472Dir$/Reko.Arch.M68k.Design.dll</var>
@@ -36,6 +37,7 @@
         <var id="var.Pdp11.TargetPath" >../Arch/Pdp11/$TargetDir$/Reko.Arch.Pdp11.dll</var>
         <var id="var.PowerPC.Design.TargetPath" >../Arch/PowerPC.Design/$TargetFwk472Dir$/Reko.Arch.PowerPC.Design.dll</var>
         <var id="var.PowerPC.TargetPath" >../Arch/PowerPC/$TargetDir$/Reko.Arch.PowerPC.dll</var>
+        <var id="var.Qualcomm.TargetPath" >../Arch/Qualcomm/$TargetDir$/Reko.Arch.Qualcomm.dll</var>
         <var id="var.RiscV.TargetPath" >../Arch/RiscV/$TargetDir$/Reko.Arch.RiscV.dll</var>
         <var id="var.Rl78.TargetPath" >../Arch/Rl78/$TargetDir$/Reko.Arch.Rl78.dll</var>
         <var id="var.Sparc.TargetPath" >../Arch/Sparc/$TargetDir$/Reko.Arch.Sparc.dll</var>

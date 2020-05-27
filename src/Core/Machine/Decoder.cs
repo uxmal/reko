@@ -43,6 +43,13 @@ namespace Reko.Core.Machine
         {
             DumpMaskedInstruction(32, wInstr, shMask, mnemonic!.ToString());
         }
+
+        [Conditional("DEBUG")]
+        public static void DumpMaskedInstruction64(uint wInstr, uint shMask, TMnemonic mnemonic)
+        {
+            DumpMaskedInstruction(64, wInstr, shMask, mnemonic!.ToString());
+        }
+
     }
 
 
@@ -63,12 +70,6 @@ namespace Reko.Core.Machine
         {
             Level = TraceLevel.Warning 
         };
-
-        [Conditional("DEBUG")]
-        public static void DumpMaskedInstruction64(uint wInstr, uint shMask, TMnemonic mnemonic)
-        {
-            DumpMaskedInstruction(64, wInstr, shMask, mnemonic!.ToString());
-        }
 
         [Conditional("DEBUG")]
         public static void DumpMaskedInstruction(int instrBitSize, uint wInstr, Bitfield[] bitfields, string tag)

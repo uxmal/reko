@@ -46,7 +46,7 @@ namespace Reko.ImageLoaders.WebAssembly
         public WasmRewriter(WasmArchitecture arch, EndianImageReader rdr, IStorageBinder binder)
         {
             this.arch = arch;
-            this.dasm = new WasmDisassembler(rdr).GetEnumerator();
+            this.dasm = new WasmDisassembler(arch, rdr).GetEnumerator();
             this.binder = binder;
         }
 

@@ -169,7 +169,7 @@ namespace Reko.Arch.Qualcomm
             this.extendedConstant = null;
         }
 
-        public override HexagonPacket NotYetImplemented(uint wInstr, string message)
+        public override HexagonPacket NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("Hexagon_dasm", this.addrInstr, this.rdr, message);
@@ -1086,7 +1086,7 @@ namespace Reko.Arch.Qualcomm
 
             public override HexagonInstruction Decode(uint uInstr, HexagonDisassembler dasm)
             {
-                Core.Machine.Decoder.DumpMaskedInstruction(uInstr, field.Mask << field.Position, tag);
+                Core.Machine.Decoder.DumpMaskedInstruction(32, uInstr, field.Mask << field.Position, tag);
                 var subfield = field.Read(uInstr);
                 return subdecoders[subfield].Decode(uInstr, dasm);
             }
@@ -1108,7 +1108,7 @@ namespace Reko.Arch.Qualcomm
 
             public override HexagonInstruction Decode(uint uInstr, HexagonDisassembler dasm)
             {
-                Core.Machine.Decoder.DumpMaskedInstruction(uInstr, bitfields, tag);
+                Core.Machine.Decoder.DumpMaskedInstruction(32, uInstr, bitfields, tag);
                 var subfield = Core.Lib.Bitfield.ReadFields(bitfields, uInstr);
                 return subdecoders[subfield].Decode(uInstr, dasm);
             }
@@ -1190,7 +1190,7 @@ namespace Reko.Arch.Qualcomm
 
             public override HexagonInstruction Decode(uint uInstr, HexagonDisassembler dasm)
             {
-                dasm.NotYetImplemented(uInstr, message);
+                dasm.NotYetImplemented(message);
                 return new HexagonInstruction(dasm.addrInstr, Mnemonic.Invalid, MachineInstruction.NoOperands)
                 {
                     InstructionClass = InstrClass.Invalid,

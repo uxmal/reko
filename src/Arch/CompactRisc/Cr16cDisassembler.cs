@@ -79,7 +79,7 @@ namespace Reko.Arch.CompactRisc
             };
         }
 
-        public override Cr16Instruction NotYetImplemented(uint wInstr, string message)
+        public override Cr16Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("Cr16Dasm", this.addr, this.rdr, message);
