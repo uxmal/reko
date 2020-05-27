@@ -1399,5 +1399,14 @@ extern int myfunc() __asm__ ("""" ""__flub"");");
             Assert.AreEqual("__asm__", attrs[0].Name.Components[0]);
             Assert.AreEqual("__flub", attrs[0].Tokens[0].Value);
         }
+
+        [Test]
+        public void CParser_GccParserState_Float32()
+        {
+            parserState.Typedefs.Add("_Float32");
+            Lex(@"_Float32 x = 42;");
+            var decl = parser.Parse()[0];
+            Assert.AreEqual("(decl _Float32 ((init-decl x 42)))", decl.ToString());
+        }
     }
 }
