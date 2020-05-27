@@ -342,7 +342,7 @@ namespace Reko.Arch.X86
             return new X86Instruction(Mnemonic.illegal, InstrClass.Invalid, decodingContext.dataWidth, decodingContext.addressWidth);
         }
 
-        public override X86Instruction NotYetImplemented(uint wInstr, string message)
+        public override X86Instruction NotYetImplemented(string message)
         {
             var testGenSvc = services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("X86Dis", this.addr, this.rdr, message);

@@ -201,7 +201,7 @@ namespace Reko.Arch.M68k
             };
         }
 
-        public override M68kInstruction NotYetImplemented(uint wInstr, string message)
+        public override M68kInstruction NotYetImplemented(string message)
         {
             var testGenSvc = this.services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("M68kdis", this.addr, this.rdr, message);

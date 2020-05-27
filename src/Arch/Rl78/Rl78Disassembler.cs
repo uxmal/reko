@@ -87,7 +87,7 @@ namespace Reko.Arch.Rl78
             };
         }
 
-        public override Rl78Instruction NotYetImplemented(uint wInstr, string message)
+        public override Rl78Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("Rl78Dis", this.addr, this.rdr, message);
@@ -402,7 +402,7 @@ namespace Reko.Arch.Rl78
 
             public override Rl78Instruction Decode(uint uInstr, Rl78Disassembler dasm)
             {
-                return dasm.NotYetImplemented(uInstr, message);
+                return dasm.NotYetImplemented(message);
             }
         }
 

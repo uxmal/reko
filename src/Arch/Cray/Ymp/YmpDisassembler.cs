@@ -81,7 +81,7 @@ namespace Reko.Arch.Cray.Ymp
             };
         }
 
-        public override CrayInstruction NotYetImplemented(uint wInstr, string message)
+        public override CrayInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("YmpDis", this.addr, this.rdr, message);

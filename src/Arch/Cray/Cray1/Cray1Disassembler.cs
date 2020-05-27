@@ -79,7 +79,7 @@ namespace Reko.Arch.Cray.Cray1
             };
         }
 
-        public override CrayInstruction NotYetImplemented(uint wInstr, string message)
+        public override CrayInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("Cray1dis", this.addr, this.rdr, message);

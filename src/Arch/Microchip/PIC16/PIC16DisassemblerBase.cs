@@ -88,7 +88,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
             return instrCur;
         }
 
-        public override PICInstruction NotYetImplemented(uint wInstr, string message)
+        public override PICInstruction NotYetImplemented(string message)
         {
             //$TODO: does this need a separate implementation for each pic model?
             return CreateInvalidInstruction();

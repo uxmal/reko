@@ -90,7 +90,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             };
         }
 
-        public override Tlcs900Instruction NotYetImplemented(uint wInstr, string message)
+        public override Tlcs900Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("RiscV_dasm", this.addr, this.rdr, message);

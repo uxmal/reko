@@ -168,7 +168,7 @@ namespace Reko.Arch.Tms7000
             };
         }
 
-        public override Tms7000Instruction NotYetImplemented(uint wInstr, string message)
+        public override Tms7000Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("Tms7000_dis", this.addr, this.rdr, message);

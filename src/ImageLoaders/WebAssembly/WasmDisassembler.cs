@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,10 +32,14 @@ namespace Reko.ImageLoaders.WebAssembly
 {
     public class WasmDisassembler : DisassemblerBase<WasmInstruction, Mnemonic>
     {
+        private readonly WasmArchitecture arch;
         private readonly WasmImageReader rdr;
+        private Address addr;
 
-        public WasmDisassembler(EndianImageReader rdr)
+        public WasmDisassembler(WasmArchitecture arch, EndianImageReader rdr)
         {
+            this.arch = arch;
+            this.addr = rdr.Address;
             this.rdr = new WasmImageReader(new MemoryArea(rdr.Address, rdr.Bytes))
             {
                 Offset = rdr.Offset
@@ -43,7 +48,7 @@ namespace Reko.ImageLoaders.WebAssembly
 
         public override WasmInstruction? DisassembleInstruction()
         {
-            var addr = rdr.Address;
+            this.addr = rdr.Address;
             if (!rdr.TryReadByte(out byte b))
             {
                 return null;
@@ -102,9 +107,11 @@ namespace Reko.ImageLoaders.WebAssembly
             return instr;
         }
 
-        public override WasmInstruction NotYetImplemented(uint wInstr, string message)
+        public override WasmInstruction NotYetImplemented(string message)
         {
-            throw new NotImplementedException();
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("WasmDis", this.addr, rdr, message);
+            return CreateInvalidInstruction();
         }
 
         private static readonly Dictionary<Mnemonic, string> decoders = new Dictionary<Mnemonic, string>

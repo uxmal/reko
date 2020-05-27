@@ -84,7 +84,7 @@ namespace Reko.Arch.Blackfin
             };
         }
 
-        public override BlackfinInstruction NotYetImplemented(uint wInstr, string message)
+        public override BlackfinInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("BlackfinDasm", this.addr, this.rdr, message);
@@ -158,7 +158,7 @@ namespace Reko.Arch.Blackfin
 
             public override BlackfinInstruction Decode(uint uInstr, BlackfinDisassembler dasm)
             {
-                return dasm.NotYetImplemented(uInstr, message);
+                return dasm.NotYetImplemented(message);
             }
         }
 

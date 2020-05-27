@@ -68,7 +68,7 @@ namespace Reko.Arch.M6800.M6809
             };
         }
 
-        public override M6809Instruction NotYetImplemented(uint wInstr, string message)
+        public override M6809Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("M6809Dis", this.addr, this.rdr, message);

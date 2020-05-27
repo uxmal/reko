@@ -87,7 +87,7 @@ namespace Reko.Arch.Arc
             };
         }
 
-        public override ArcInstruction NotYetImplemented(uint wInstr, string message)
+        public override ArcInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("ARCompactDis", this.addr, this.rdr, message);
@@ -860,7 +860,7 @@ namespace Reko.Arch.Arc
             {
                 if (Bits.IsBitSet(uInstr, 5))
                 {
-                    dasm.NotYetImplemented(uInstr, "Jcc u6");
+                    dasm.NotYetImplemented("Jcc u6");
                     return false;
                 }
                 var ireg = (int) Bits.ZeroExtend(uInstr >> 6, 6);

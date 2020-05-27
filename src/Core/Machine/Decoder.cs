@@ -41,7 +41,7 @@ namespace Reko.Core.Machine
         [Conditional("DEBUG")]
         public static void DumpMaskedInstruction(uint wInstr, uint shMask, TMnemonic mnemonic)
         {
-            DumpMaskedInstruction(wInstr, shMask, mnemonic!.ToString());
+            DumpMaskedInstruction(32, wInstr, shMask, mnemonic!.ToString());
         }
     }
 
@@ -65,20 +65,26 @@ namespace Reko.Core.Machine
         };
 
         [Conditional("DEBUG")]
-        public static void DumpMaskedInstruction(uint wInstr, Bitfield[] bitfields, string tag)
+        public static void DumpMaskedInstruction64(uint wInstr, uint shMask, TMnemonic mnemonic)
         {
-            var shMask = bitfields.Aggregate(0u, (mask, bf) => mask | bf.Mask << bf.Position);
-            DumpMaskedInstruction(wInstr, shMask, tag);
+            DumpMaskedInstruction(64, wInstr, shMask, mnemonic!.ToString());
         }
 
         [Conditional("DEBUG")]
-        public static void DumpMaskedInstruction(uint wInstr, uint shMask, string tag)
+        public static void DumpMaskedInstruction(int instrBitSize, uint wInstr, Bitfield[] bitfields, string tag)
+        {
+            var shMask = bitfields.Aggregate(0u, (mask, bf) => mask | bf.Mask << bf.Position);
+            DumpMaskedInstruction(instrBitSize, wInstr, shMask, tag);
+        }
+
+        [Conditional("DEBUG")]
+        public static void DumpMaskedInstruction(int instrBitSize, ulong wInstr, ulong shMask, string tag)
         {
             if (trace.Level != TraceLevel.Verbose)
                 return;
-            var hibit = 0x80000000u;
+            var hibit = 1ul << (instrBitSize - 1);
             var sb = new StringBuilder();
-            for (int i = 0; i < 32; ++i)
+            for (int i = 0; i < instrBitSize; ++i)
             {
                 if ((shMask & hibit) != 0)
                 {

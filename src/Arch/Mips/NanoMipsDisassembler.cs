@@ -93,7 +93,7 @@ namespace Reko.Arch.Mips
             };
         }
 
-        public override MipsInstruction NotYetImplemented(uint wInstr, string message)
+        public override MipsInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("NanoMipsDis", this.addr, this.rdr, message);

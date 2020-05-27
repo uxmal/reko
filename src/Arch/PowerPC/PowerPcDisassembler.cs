@@ -468,7 +468,7 @@ namespace Reko.Arch.PowerPC
             return CreateInvalidInstruction();
         }
 
-        public override PowerPcInstruction NotYetImplemented(uint wInstr, string message)
+        public override PowerPcInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("PPCDis", this.addr, this.rdr, message);

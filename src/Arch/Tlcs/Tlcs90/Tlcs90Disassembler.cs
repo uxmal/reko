@@ -92,7 +92,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             };
         }
 
-        public override Tlcs90Instruction NotYetImplemented(uint wInstr, string message)
+        public override Tlcs90Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("Tlcs_90", this.addr, this.rdr, message);

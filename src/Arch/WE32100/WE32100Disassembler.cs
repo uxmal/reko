@@ -77,7 +77,7 @@ namespace Reko.Arch.WE32100
             };
         }
 
-        public override WE32100Instruction NotYetImplemented(uint wInstr, string message)
+        public override WE32100Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("WE32100Dis", this.addr, this.rdr, message);
@@ -331,7 +331,7 @@ namespace Reko.Arch.WE32100
         {
             return (u, d) =>
             {
-                d.NotYetImplemented(u, msg);
+                d.NotYetImplemented(msg);
                 return false;
             };
         }

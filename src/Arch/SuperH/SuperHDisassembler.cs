@@ -97,7 +97,7 @@ namespace Reko.Arch.SuperH
             }
         }
 
-        public override SuperHInstruction NotYetImplemented(uint wInstr, string message)
+        public override SuperHInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("SuperH", this.addr, this.rdr, message);

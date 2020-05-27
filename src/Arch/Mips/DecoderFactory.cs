@@ -259,7 +259,7 @@ namespace Reko.Arch.Mips
             {
                 return (u, d) =>
                 {
-                    d.NotYetImplemented(u, message);
+                    d.NotYetImplemented(message);
                     return false;
                 };
             }

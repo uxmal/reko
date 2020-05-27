@@ -81,7 +81,7 @@ namespace Reko.Arch.i8051
             };
         }
 
-        public override i8051Instruction NotYetImplemented(uint wInstr, string message)
+        public override i8051Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("i8051_dis", this.addr, this.rdr, message);

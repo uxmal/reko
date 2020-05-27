@@ -91,7 +91,7 @@ namespace Reko.Arch.Avr.Avr32
             };
         }
 
-        public override Avr32Instruction NotYetImplemented(uint wInstr, string message)
+        public override Avr32Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("Avr32Dis", this.addr, rdr, message);

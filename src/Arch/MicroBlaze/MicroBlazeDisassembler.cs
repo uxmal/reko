@@ -97,7 +97,7 @@ namespace Reko.Arch.MicroBlaze
             };
         }
 
-        public override MicroBlazeInstruction NotYetImplemented(uint wInstr, string message)
+        public override MicroBlazeInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("MicroBlazeDis", this.addr, this.rdr, message);

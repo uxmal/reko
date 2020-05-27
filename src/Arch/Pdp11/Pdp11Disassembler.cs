@@ -88,7 +88,7 @@ namespace Reko.Arch.Pdp11
             };
         }
 
-        public override Pdp11Instruction NotYetImplemented(uint wInstr, string message)
+        public override Pdp11Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("Pdp11dis", this.addr, this.rdr, message);

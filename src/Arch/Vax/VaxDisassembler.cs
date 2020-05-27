@@ -91,7 +91,7 @@ namespace Reko.Arch.Vax
             };
         }
 
-        public override VaxInstruction NotYetImplemented(uint wInstr, string message)
+        public override VaxInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("VaxDis", this.addr, this.rdr, message);

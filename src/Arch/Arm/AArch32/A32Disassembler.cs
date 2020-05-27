@@ -276,7 +276,7 @@ namespace Reko.Arch.Arm.AArch32
             return imm32;
         }
 
-        public override AArch32Instruction NotYetImplemented(uint wInstr, string message)
+        public override AArch32Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("ArmDasm", this.addr, this.rdr, message);
@@ -1400,7 +1400,7 @@ namespace Reko.Arch.Arm.AArch32
                     m = op;
                 else
                     m = $"{op} - {message}";
-                d.NotYetImplemented(u, m);
+                d.NotYetImplemented(m);
                 d.CreateInvalidInstruction();
                 return false;
             };

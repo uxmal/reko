@@ -90,7 +90,7 @@ namespace Reko.Arch.H8
             };
         }
 
-        public override H8Instruction NotYetImplemented(uint wInstr, string message)
+        public override H8Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("H8Dis", this.addr, rdr, message);

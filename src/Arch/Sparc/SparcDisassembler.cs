@@ -88,7 +88,7 @@ namespace Reko.Arch.Sparc
             };
         }
 
-        public override SparcInstruction NotYetImplemented(uint wInstr, string message)
+        public override SparcInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("SparcDasm", this.addr, this.imageReader, message);
@@ -266,7 +266,7 @@ namespace Reko.Arch.Sparc
 
         internal static bool nyi(uint wInstr, SparcDisassembler dasm)
         {
-            dasm.NotYetImplemented(wInstr, "NYI");
+            dasm.NotYetImplemented("NYI");
             return false;
         }
 

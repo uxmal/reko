@@ -376,7 +376,7 @@ namespace Reko.Arch.Msp430
             };
         }
 
-        public override Msp430Instruction NotYetImplemented(uint uInstr, string message)
+        public override Msp430Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("MSP430Dis", this.addr, this.rdr, message);

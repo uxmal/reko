@@ -39,7 +39,25 @@ namespace Reko.Core.Machine
 
         public override TInstr Decode(uint wInstr, TDasm dasm)
         {
-            return dasm.NotYetImplemented(wInstr, message);
+            return dasm.NotYetImplemented(message);
         }
     }
+
+    public class WideNyiDecoder<TDasm, TMnemonic, TInstr> : WideDecoder<TDasm, TMnemonic, TInstr>
+        where TInstr : MachineInstruction
+        where TDasm : DisassemblerBase<TInstr, TMnemonic>
+    {
+        private readonly string message;
+
+        public WideNyiDecoder(string message)
+        {
+            this.message = message;
+        }
+
+        public override TInstr Decode(ulong wInstr, TDasm dasm)
+        {
+            return dasm.NotYetImplemented(message);
+        }
+    }
+
 }

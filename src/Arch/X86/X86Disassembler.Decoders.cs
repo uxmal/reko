@@ -290,7 +290,7 @@ namespace Reko.Arch.X86
             }
             public override bool Decode(X86Disassembler disasm, byte op)
             {
-                disasm.NotYetImplemented(op, message);
+                disasm.NotYetImplemented(message);
                 return false;
             }
         }

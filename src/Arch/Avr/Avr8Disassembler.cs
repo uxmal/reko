@@ -334,7 +334,7 @@ namespace Reko.Arch.Avr
             return (short)d;
         }
 
-        public override AvrInstruction NotYetImplemented(uint wInstr, string message)
+        public override AvrInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("Avr8_dis", this.addr, this.rdr, message);

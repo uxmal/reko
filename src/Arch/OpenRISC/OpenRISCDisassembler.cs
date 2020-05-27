@@ -86,7 +86,7 @@ namespace Reko.Arch.OpenRISC
             return instr;
         }
 
-        public override OpenRISCInstruction NotYetImplemented(uint wInstr, string message)
+        public override OpenRISCInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("OpenRiscDis", this.addr, this.rdr, message);
