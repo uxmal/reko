@@ -38,7 +38,6 @@ namespace Reko.Analysis
         public abstract class IdentifierTransformer
         {
             protected Identifier id;
-            private int depth;
             protected readonly Statement stm;
             protected readonly SsaTransform outer;
             protected readonly SsaIdentifierCollection ssaIds;
