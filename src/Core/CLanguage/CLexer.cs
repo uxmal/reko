@@ -71,6 +71,7 @@ namespace Reko.Core.CLanguage
             { "_far", CTokenType._Far },
             { "_near", CTokenType._Near },
             { "__asm", CTokenType.__Asm },
+            { "__asm__", CTokenType.__Asm },
             { "__attribute__", CTokenType.__Attribute },
             { "__cdecl", CTokenType.__Cdecl },
             { "__declspec", CTokenType.__Declspec },

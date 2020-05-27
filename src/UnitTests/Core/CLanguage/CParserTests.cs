@@ -1378,5 +1378,26 @@ extern char *tempnam (const char *__dir, const char *__pfx)
             Assert.AreEqual("__leaf__", attrs[1].Name.Components[0]);
             Assert.AreEqual("__malloc__", attrs[2].Name.Components[0]);
         }
+
+        [Test]
+        public void CParser_restrict()
+        {
+            Lex(@"
+extern struct __iob *fopen (const char *__restrict __filename,
+      const char *__restrict __modes) ;");
+            var decl = parser.Parse()[0];
+            Assert.AreEqual("(decl Extern (Struct __iob) ((init-decl (ptr (func fopen ((Const Char (ptr Restrict __filename)) (Const Char (ptr Restrict __modes))))))))", decl.ToString());
+        }
+
+        [Test]
+        public void CParser_GccAsm()
+        {
+            Lex(@"
+extern int myfunc() __asm__ ("""" ""__flub"");");
+            var attrs = parser.Parse()[0].attribute_list;
+            Assert.AreEqual(1, attrs.Count);
+            Assert.AreEqual("__asm__", attrs[0].Name.Components[0]);
+            Assert.AreEqual("__flub", attrs[0].Tokens[0].Value);
+        }
     }
 }

@@ -381,7 +381,7 @@ IGNORE tab + cr + lf
             if (PeekThenDiscard(CTokenType.Semicolon))
                 return grammar.Decl(attrs, decl_spec_list, inits);
             var declarator = Parse_Declarator();
-            var attrsGcc = Parse_GccAttributeSpecifierSeq();
+            var attrsGcc = Parse_GccExtensions();
             var token = PeekToken().Type;
             if (token == CTokenType.Assign ||
                 token == CTokenType.Comma ||
@@ -1181,19 +1181,24 @@ IGNORE tab + cr + lf
         }
 
         // May be null:
-        public List<CAttribute> Parse_GccAttributeSpecifierSeq()
+        public List<CAttribute> Parse_GccExtensions()
         {
             List<CAttribute> attrs = null;
-            while (PeekThenDiscard(CTokenType.__Attribute))
+            for (; ;)
             {
-                if (lexer.Peek(0).Type == CTokenType.LParen &&
-                    lexer.Peek(1).Type == CTokenType.LParen)
+                if (PeekThenDiscard(CTokenType.__Attribute))
                 {
                     attrs = attrs ?? new List<CAttribute>();
                     attrs.AddRange(Parse_GccAttributeSpecifier());
                 }
+                else if (PeekThenDiscard(CTokenType.__Asm))
+                {
+                    attrs = attrs ?? new List<CAttribute>();
+                    attrs.Add(Parse_GccAsm());
+                }
+                else
+                    return attrs;
             }
-            return attrs;
         }
 
         public CAttribute Parse_AttributeSpecifier()
@@ -1242,6 +1247,23 @@ IGNORE tab + cr + lf
             return attrs;
         }
 
+        private CAttribute Parse_GccAsm()
+        {
+            var names = new List<CToken>();
+            ExpectToken(CTokenType.LParen);
+            while (!PeekThenDiscard(CTokenType.RParen))
+            {
+                var name = lexer.Read();
+                if (name.Type != CTokenType.StringLiteral)
+                    Unexpected(CTokenType.StringLiteral, name.Type);
+                names.Add(name);
+            }
+            return new CAttribute
+            {
+                Name = new QualifiedName("__asm__"),
+                Tokens = names
+            };
+        }
 
         private QualifiedName Parse_AttributeToken()
         {
