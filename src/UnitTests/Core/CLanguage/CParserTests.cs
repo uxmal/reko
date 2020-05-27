@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Core.CLanguage
 
         private void Lex(string str)
         {
-            lexer = new CLexer(new StringReader(str));
+            lexer = new CLexer(new StringReader(str), CLexer.GccKeywords);
             parser = new CParser(parserState, lexer);
         }
 

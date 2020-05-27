@@ -141,7 +141,7 @@ namespace Reko.Analysis
         public ProcedureBase_v1 ParseFunctionDeclaration(string fnDecl)
         {
             try {
-                var lexer = new CLexer(new StringReader(fnDecl + ";"));
+                var lexer = new CLexer(new StringReader(fnDecl + ";"), CLexer.GccKeywords); //$REVIEW: what's the right thing here?
                 var symbols = program.CreateSymbolTable();
                 var oldProcs = symbols.Procedures.Count;
                 var cstate = new ParserState(symbols);
@@ -171,7 +171,7 @@ namespace Reko.Analysis
         {
             try
             {
-                var lexer = new CLexer(new StringReader(txtGlobal + ";"));
+                var lexer = new CLexer(new StringReader(txtGlobal + ";"), CLexer.GccKeywords);  //$REVIEW: what's the right thing?
                 var symbols = program.CreateSymbolTable();
                 var oldVars = symbols.Variables.Count;
                 var cstate = new ParserState(symbols);

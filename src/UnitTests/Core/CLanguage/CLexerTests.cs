@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Core.CLanguage
 
         private void Lex(string str)
         {
-            this.lex = new CLexer(new StringReader(str));
+            this.lex = new CLexer(new StringReader(str), CLexer.GccKeywords);
         }
 
         private void AssertToken(CTokenType exp)

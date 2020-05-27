@@ -54,7 +54,7 @@ namespace Reko.Tools.C2Xml
 
         public void Convert()
         {
-            var lexer = new CLexer(rdr);
+            var lexer = new CLexer(rdr, CLexer.GccKeywords);    //$TODO: allow user to select
             var parser = new CParser(parserState, lexer);
             var declarations = parser.Parse();
             var symbolTable = new SymbolTable(platform)

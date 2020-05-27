@@ -33,74 +33,14 @@ namespace Reko.Core.CLanguage
     {
         private TextReader rdr;
         private StringBuilder sb;
+        private Dictionary<string, CTokenType> keywordHash;
 
-        private static Dictionary<string, CTokenType> keywordHash = new Dictionary<string, CTokenType>
-        {
-            { "#line", CTokenType.LineDirective },
-            { "#pragma", CTokenType.PragmaDirective },
-            { "auto", CTokenType.Auto },
-            { "bool", CTokenType.Bool },
-            { "char", CTokenType.Char },
-            { "class", CTokenType.Class },
-            { "const", CTokenType.Const },
-            { "do", CTokenType.Do },
-            { "double", CTokenType.Double },
-            { "enum", CTokenType.Enum },
-            { "extern", CTokenType.Extern },
-            { "float", CTokenType.Float },
-            { "int", CTokenType.Int },
-            { "long", CTokenType.Long },
-            { "register", CTokenType.Register },
-            { "restrict", CTokenType.Restrict },
-            { "return", CTokenType.Return },
-            { "short", CTokenType.Short },
-            { "signed", CTokenType.Signed },
-            { "sizeof", CTokenType.Sizeof },
-            { "static", CTokenType.Static },
-            { "struct", CTokenType.Struct },
-            { "typedef", CTokenType.Typedef },
-            { "unsigned", CTokenType.Unsigned },
-            { "union", CTokenType.Union },
-            { "void", CTokenType.Void },
-            { "volatile", CTokenType.Volatile },
-            { "wchar_t", CTokenType.Wchar_t },
-            { "while", CTokenType.While },
-
-            { "_Bool", CTokenType._Bool },
-            { "_cdecl", CTokenType.__Cdecl },
-            { "_far", CTokenType._Far },
-            { "_near", CTokenType._Near },
-            { "__asm", CTokenType.__Asm },
-            { "__asm__", CTokenType.__Asm },
-            { "__attribute__", CTokenType.__Attribute },
-            { "__cdecl", CTokenType.__Cdecl },
-            { "__declspec", CTokenType.__Declspec },
-            { "__far", CTokenType._Far },
-            { "__fastcall", CTokenType.__Fastcall },
-            { "__forceinline", CTokenType.__ForceInline },
-            { "__in", CTokenType.__In },
-            { "__in_opt", CTokenType.__In_Opt },
-            { "__inline", CTokenType.__Inline },
-            { "__int64", CTokenType.__Int64 },
-            { "__loadds", CTokenType.__LoadDs },
-            { "__near", CTokenType._Near },
-            { "__out", CTokenType.__Out},
-            { "__out_bcount_opt", CTokenType.__Out_Bcount_Opt },
-            { "__pascal", CTokenType.__Pascal },
-            { "__pragma", CTokenType.__Pragma },
-            { "__restrict", CTokenType.Restrict },
-            { "__ptr64", CTokenType.__Ptr64 },
-            { "__stdcall", CTokenType.__Stdcall },
-            { "__success", CTokenType.__Success },
-            { "__thiscall", CTokenType.__Thiscall },
-            { "__w64", CTokenType.__W64 },
-        };
-
-        public CLexer(TextReader rdr)
+        public CLexer(TextReader rdr, Dictionary<string, CTokenType> keywords)
         {
             this.rdr = rdr;
             this.sb = new StringBuilder();
             this.LineNumber = 1;
+            this.keywordHash = keywords;
         }
 
         private enum State
@@ -145,6 +85,17 @@ namespace Reko.Core.CLanguage
 
         public int LineNumber { get; private set; }
 
+        /// <summary>
+        /// Keywords used by the standard C language.
+        /// </summary>
+        public static Dictionary<string, CTokenType> StdKeywords { get; }
+
+        /// <summary>
+        /// Keywords used by the GCC compiler.
+        /// </summary>
+        public static Dictionary<string, CTokenType> GccKeywords { get; }
+
+
         public CToken Peek()
         {
             throw new NotImplementedException();
@@ -153,7 +104,7 @@ namespace Reko.Core.CLanguage
         public CToken Read()
         {
             if (!EatWs())
-                return Tok( CTokenType.EOF);
+                return Tok(CTokenType.EOF);
 
             State state = State.Start;
             ClearBuffer();
@@ -401,7 +352,10 @@ namespace Reko.Core.CLanguage
                     }
                     else
                     {
-                        return LookupId();
+                        var tokenId = LookupId();
+                        if (tokenId.Type != CTokenType.__Extension)
+                            return tokenId;
+                        EatWs();
                     }
                     break;
                 case State.CharLiteral:
@@ -827,6 +781,76 @@ namespace Reko.Core.CLanguage
                 }
             }
         }
+
+        static CLexer()
+        {
+            StdKeywords = new Dictionary<string, CTokenType>
+            {
+                { "#line", CTokenType.LineDirective },
+                { "#pragma", CTokenType.PragmaDirective },
+                { "auto", CTokenType.Auto },
+                { "bool", CTokenType.Bool },
+                { "char", CTokenType.Char },
+                { "class", CTokenType.Class },
+                { "const", CTokenType.Const },
+                { "do", CTokenType.Do },
+                { "double", CTokenType.Double },
+                { "enum", CTokenType.Enum },
+                { "extern", CTokenType.Extern },
+                { "float", CTokenType.Float },
+                { "int", CTokenType.Int },
+                { "long", CTokenType.Long },
+                { "register", CTokenType.Register },
+                { "restrict", CTokenType.Restrict },
+                { "return", CTokenType.Return },
+                { "short", CTokenType.Short },
+                { "signed", CTokenType.Signed },
+                { "sizeof", CTokenType.Sizeof },
+                { "static", CTokenType.Static },
+                { "struct", CTokenType.Struct },
+                { "typedef", CTokenType.Typedef },
+                { "unsigned", CTokenType.Unsigned },
+                { "union", CTokenType.Union },
+                { "void", CTokenType.Void },
+                { "volatile", CTokenType.Volatile },
+                { "wchar_t", CTokenType.Wchar_t },
+                { "while", CTokenType.While },
+            };
+
+            GccKeywords = new Dictionary<string, CTokenType>
+            {
+                { "_Bool", CTokenType._Bool },
+                { "_cdecl", CTokenType.__Cdecl },
+                { "_far", CTokenType._Far },
+                { "_near", CTokenType._Near },
+                { "__asm", CTokenType.__Asm },
+                { "__asm__", CTokenType.__Asm },
+                { "__attribute__", CTokenType.__Attribute },
+                { "__cdecl", CTokenType.__Cdecl },
+                { "__declspec", CTokenType.__Declspec },
+                { "__extension__", CTokenType.__Extension },
+                { "__far", CTokenType._Far },
+                { "__fastcall", CTokenType.__Fastcall },
+                { "__forceinline", CTokenType.__ForceInline },
+                { "__in", CTokenType.__In },
+                { "__in_opt", CTokenType.__In_Opt },
+                { "__inline", CTokenType.__Inline },
+                { "__int64", CTokenType.__Int64 },
+                { "__loadds", CTokenType.__LoadDs },
+                { "__near", CTokenType._Near },
+                { "__out", CTokenType.__Out},
+                { "__out_bcount_opt", CTokenType.__Out_Bcount_Opt },
+                { "__pascal", CTokenType.__Pascal },
+                { "__pragma", CTokenType.__Pragma },
+                { "__restrict", CTokenType.Restrict },
+                { "__ptr64", CTokenType.__Ptr64 },
+                { "__stdcall", CTokenType.__Stdcall },
+                { "__success", CTokenType.__Success },
+                { "__thiscall", CTokenType.__Thiscall },
+                { "__w64", CTokenType.__W64 },
+            }.Concat(StdKeywords)
+            .ToDictionary(de => de.Key, de => de.Value);
+        }
     }
 
     public struct CToken
@@ -944,6 +968,7 @@ namespace Reko.Core.CLanguage
         __Attribute,
         __Cdecl,
         __Declspec,
+        __Extension,
         __Fastcall,
         __ForceInline,
         __In,
