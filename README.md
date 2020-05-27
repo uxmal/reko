@@ -126,11 +126,11 @@ http://wixtoolset.org/releases/
 
 Depending on what you do Visual Studio might try to rebuild NativeProxy which
 depends on CMake. You can either install [CMake](https://cmake.org/download/)
-and make sure it's added to your PATH or disable the project in Visual Studios.
+and make sure it's added to your PATH or disable the project in Visual Studio.
 
-Having CMake installed as part of Visual Studios is sufficient to run msbuild
+Having CMake installed as part of Visual Studio is sufficient to run msbuild
 from the `Developer Command Prompt` but not when building from inside VS,
-unless you've added that to your global PATH. Installing CMake externally allow
+unless you've added that to your global PATH. Installing CMake externally allows
 you to add it to PATH during the installation.
 
 ### How do I start Reko?
