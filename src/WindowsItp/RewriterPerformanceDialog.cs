@@ -150,10 +150,11 @@ namespace Reko.WindowsItp
         {
             var rw = CreateT32Rewriter(mem);
             int instrs = 0;
-            var addrEnd = mem.EndAddress;
+            var length = mem.Length;
+            var startAddress = mem.BaseAddress;
 
             var ei = rw.GetEnumerator();
-            while (SafeMoveNext(ei) && ei.Current.Address < addrEnd)
+            while (SafeMoveNext(ei) && (ei.Current.Address - startAddress) < length)
             {
                 var i = ei.Current;
                 ++instrs;
@@ -163,11 +164,12 @@ namespace Reko.WindowsItp
         private void RewriteA32Instructions(MemoryArea mem)
         {
             var rw = CreateA32Rewriter(mem);
-            var addrEnd = mem.EndAddress;
+            var length = mem.Length;
+            var startAddress = mem.BaseAddress;
 
             var rtl = new List<RtlInstructionCluster>();
             var ei = rw.GetEnumerator();
-            while (SafeMoveNext(ei) && ei.Current.Address < addrEnd)
+            while (SafeMoveNext(ei) && (ei.Current.Address - startAddress) < length)
             {
                 rtl.Add(ei.Current);
             }
@@ -176,7 +178,6 @@ namespace Reko.WindowsItp
         private void DasmInstructions(MemoryArea mem)
         {
             var dasm = CreateA32Disassembler(mem);
-            var addrEnd = mem.EndAddress;
             var ei = dasm.GetEnumerator();
             var mis = new List<MachineInstruction>();
             while (ei.MoveNext() && ei.Current != null)
