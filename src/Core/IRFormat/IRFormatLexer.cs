@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,7 +31,7 @@ namespace Reko.Core.IRFormat
 {
     public class IRFormatLexer
     {
-        private TextReader rdr;
+        private readonly TextReader rdr;
         private Token tok;
 
         public IRFormatLexer(TextReader rdr)
@@ -42,15 +44,15 @@ namespace Reko.Core.IRFormat
             throw new NotImplementedException();
         }
 
-        internal Token Get()
+        public Token Get()
         {
             if (tok.Type != IRTokenType.None)
             {
                 var t = this.tok;
                 tok = Token.None;
-                return tok;
+                return t;
             }
-            throw new NotImplementedException();
+            return Read();
         }
 
         private enum State

@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -78,6 +80,7 @@ namespace Reko.Core.Serialization
                     Calls = program.User.Calls
                         .Select(uc => SerializeUserCall(program, uc.Value))
                         .Where(uc => uc != null)
+                        .Select(uc => uc!)
                         .ToList(),
                     IndirectJumps = program.User.IndirectJumps.Select(SerializeIndirectJump).ToList(),
                     JumpTables = program.User.JumpTables.Select(SerializeJumpTable).ToList(),
@@ -133,15 +136,15 @@ namespace Reko.Core.Serialization
             {
                 name = string.Format("g_{0:X}", de.Key.ToLinear());
             }
-            return name;
+            return name!;
         }
 
-        private SerializedCall_v1 SerializeUserCall(Program program, UserCallData uc)
+        private SerializedCall_v1? SerializeUserCall(Program program, UserCallData uc)
         {
             if (uc == null || uc.Address == null)
                 return null;
             var procser = program.CreateProcedureSerializer();
-            SerializedSignature ssig = null;
+            SerializedSignature? ssig = null;
             if (uc.Signature != null)
             {
                 ssig = procser.Serialize(uc.Signature);
@@ -183,7 +186,7 @@ namespace Reko.Core.Serialization
             };
         }
 
-        private ProcessorOptions_v4 SerializeProcessorOptions(UserData user, IProcessorArchitecture architecture)
+        private ProcessorOptions_v4? SerializeProcessorOptions(UserData user, IProcessorArchitecture architecture)
         {
             if (architecture == null)
                 return null;
@@ -204,7 +207,7 @@ namespace Reko.Core.Serialization
             }
         }
 
-        private PlatformOptions_v4 SerializePlatformOptions(UserData user, IPlatform platform)
+        private PlatformOptions_v4? SerializePlatformOptions(UserData user, IPlatform platform)
         {
             if (platform == null)
                 return null;
@@ -223,28 +226,31 @@ namespace Reko.Core.Serialization
             return new PlatformOptions_v4
             {
                 Name = user.Environment,
-                Options = SerializeValue(dictionary, doc)
+                Options = SerializeValue(dictionary, doc)!
                     .ChildNodes
                     .OfType<XmlElement>()
                     .ToArray()
             };
         }
 
-        private XmlElement SerializeOptionValue(string key, object value, XmlDocument doc)
+        private XmlElement? SerializeOptionValue(string key, object value, XmlDocument doc)
         {
             var el = SerializeValue(value, doc);
-            el.SetAttribute("key", "", key);
+            if (el != null)
+            {
+                el.SetAttribute("key", "", key);
+            }
             return el;
         }
 
-        private XmlElement SerializeValue(object value, XmlDocument doc)
+        private XmlElement? SerializeValue(object value, XmlDocument doc)
         {
             if (value == null)
                 return null;
             if (value is string sValue)
             {
                 var el = doc.CreateElement("item", SerializedLibrary.Namespace_v5);
-                el.InnerXml = (string)value;
+                el.InnerXml = sValue;
                 return el;
             }
             if (value is IDictionary dict)
@@ -253,8 +259,11 @@ namespace Reko.Core.Serialization
                 foreach (DictionaryEntry de in dict)
                 {
                     var sub = SerializeValue(de.Value, doc);
-                    sub.SetAttribute("key", de.Key.ToString());
-                    el.AppendChild(sub);
+                    if (sub != null)
+                    {
+                        sub.SetAttribute("key", de.Key.ToString());
+                        el.AppendChild(sub);
+                    }
                 }
                 return el;
             }

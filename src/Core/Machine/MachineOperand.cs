@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
@@ -47,7 +49,7 @@ namespace Reko.Core.Machine
 
 		public string ToString(MachineInstructionWriterOptions options)
 		{
-            var sr = new StringRenderer();
+            var sr = new StringRenderer(Address.Ptr64(~0ul));
             Write(sr, options);
 			return sr.ToString();
 		}
@@ -98,7 +100,7 @@ namespace Reko.Core.Machine
                 var str = c.ToReal64().ToString("G", CultureInfo.InvariantCulture);
                 if (str.IndexOfAny(floatSpecials) < 0)
                 {
-                    str = str + ".0";
+                    return str + ".0";
                 }
                 return str;
             }

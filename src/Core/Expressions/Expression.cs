@@ -26,6 +26,8 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
+#nullable enable
+
 namespace Reko.Core.Expressions
 {
     /// <summary>
@@ -47,21 +49,20 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Data type of this expression.
         /// </summary>
-        public DataType DataType { get { return dt; } set { dt = value ?? throw new ArgumentNullException(); } }
-        private DataType dt;
+        public DataType DataType { get; set; }
 
         /// <summary>
         /// Type variable for the expression.
         /// </summary>
         /// <remarks>
-        ///$REVIEW: TypeVariable is only used during type inference. It might be better to store it in
+        ///$REVIEW: TypeVariable is nullable because it is only used during type inference. It might be better to store it in
         /// the TypeStore.
-        public TypeVariable TypeVariable { get; set; } 		// index to high-level type of this expression.
+        public TypeVariable? TypeVariable { get; set; } 		// index to high-level type of this expression.
 
         /// <summary>
         /// Returns true if the expression evaluates to a constant zero.
         /// </summary>
-        public virtual bool IsZero { get { return false; } }
+        public virtual bool IsZero => false;
 
         // Visitor methods that must be implemented by concrete derived classes.
         public abstract void Accept(IExpressionVisitor visitor);

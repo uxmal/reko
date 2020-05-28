@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core.Expressions;
 using Reko.Core.NativeInterface;
 using System;
@@ -38,7 +40,7 @@ namespace Reko.Core.Machine
         /// The current platform we're in. May be null, so make sure
         /// you test for that before dereferencing.
         /// </summary>
-        IPlatform Platform { get;  }
+        IPlatform? Platform { get;  }
 
         /// <summary>
         /// The address of the current instruction being written.
@@ -63,12 +65,22 @@ namespace Reko.Core.Machine
     /// </summary>
     public class StringRenderer : MachineInstructionWriter
     {
-        private StringBuilder sb;
+        private readonly StringBuilder sb;
 
-        public StringRenderer() { sb = new StringBuilder(); }
-        public StringRenderer(IPlatform platform) { sb = new StringBuilder(); this.Platform = platform; }
+        public StringRenderer(Address addr) 
+        {
+            this.Address = addr;
+            sb = new StringBuilder();
+        }
 
-        public IPlatform Platform { get; private set; }
+        public StringRenderer(IPlatform platform, Address addr)
+        {
+            this.Platform = platform;
+            this.Address = addr;
+            sb = new StringBuilder();
+        }
+
+        public IPlatform? Platform { get; private set; }
         public Address Address { get; set; }
 
         /// <summary>

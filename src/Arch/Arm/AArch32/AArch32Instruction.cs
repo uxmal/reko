@@ -343,7 +343,7 @@ namespace Reko.Arch.Arm.AArch32
                 writer.WriteAddress(addr.ToString(), addr);
                 writer.WriteChar(']');
 
-                var sr = new StringRenderer();
+                var sr = new StringRenderer(this.Address);
                 RenderMemoryOperand(mem, sr);
                 var str = sr.ToString();
                 writer.AddAnnotation(str);

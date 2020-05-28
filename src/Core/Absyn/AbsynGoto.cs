@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using System;
 
 namespace Reko.Core.Absyn

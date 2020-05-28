@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -33,7 +35,7 @@ namespace Reko.Core.Output
 	public class TypeFormatter : IDataTypeVisitor<Formatter>
 	{
         private Formatter writer;
-		private string name;
+		private string? name;
 		private Dictionary<DataType,object> visited;
 		private Mode mode;
 
@@ -70,14 +72,14 @@ namespace Reko.Core.Output
 			writer.Terminate(terminator);
 		}
 
-		public void EndLine(string terminator, string comment)
+		public void EndLine(string terminator, string? comment)
 		{
 			writer.Write(terminator);
 			LineEndComment(comment);
 			writer.Terminate();
 		}
 
-		public void LineEndComment(string comment)
+		public void LineEndComment(string? comment)
 		{
 			if (comment != null)
 			{
@@ -91,7 +93,7 @@ namespace Reko.Core.Output
 			OpenBrace(null);
 		}
 
-		public void OpenBrace(string trailingComment)
+		public void OpenBrace(string? trailingComment)
 		{
 			EndLine(" {", trailingComment);
             writer.Indentation += writer.TabSize;
@@ -108,7 +110,7 @@ namespace Reko.Core.Output
 
 		public Formatter VisitArray(ArrayType at)
 		{
-			string oldName = name;
+			string? oldName = name;
 			name = null;
             if (this.nesting > 90)
             {
@@ -286,9 +288,10 @@ namespace Reko.Core.Output
 
 		public Formatter VisitFunctionType(FunctionType ft)
 		{
-			string oldName = name;
+			string? oldName = name;
 			name = null;
-			ft.ReturnValue.DataType.Accept(this);
+            if (ft.ParametersValid)
+			    ft.ReturnValue!.DataType.Accept(this);
             if (mode == Mode.Writing)
             {
                 writer.Write(" (");
@@ -299,7 +302,7 @@ namespace Reko.Core.Output
             {
                 writer.Write(")(");
             }
-			if (ft.Parameters != null && ft.Parameters.Length > 0)
+			if (ft.ParametersValid && ft.Parameters != null && ft.Parameters.Length > 0)
 			{
                 name = ft.Parameters[0].Name;
 				ft.Parameters[0].DataType.Accept(this);
@@ -330,7 +333,7 @@ namespace Reko.Core.Output
 
 		public Formatter VisitStructure(StructureType str)
 		{
-			string n = name;
+			string? n = name;
 			if (mode == Mode.Writing)
 			{
                 if (visited.TryGetValue(str, out object v) && (v == Defined))
@@ -425,7 +428,7 @@ namespace Reko.Core.Output
                 baseType = memptr.BasePointer;
             }
 
-            string oldName = name;
+            string? oldName = name;
 			name = null;
 			memptr.Pointee.Accept(this);
             if (mode == Mode.Writing)
@@ -520,7 +523,7 @@ namespace Reko.Core.Output
 
         public Formatter VisitUnion(UnionType ut)
 		{
-			string n = name;
+			string? n = name;
 
 			writer.WriteKeyword("union");
             writer.Write(" ");
@@ -561,7 +564,7 @@ namespace Reko.Core.Output
         }
 		#endregion
 
-		public void Write(DataType dt, string name)
+		public void Write(DataType dt, string? name)
 		{
 			this.name = name;
 			dt.Accept(this);
@@ -583,7 +586,7 @@ namespace Reko.Core.Output
 			{
 				if (spacePrefix)
 					writer.Write(" ");
-				writer.Write(name);
+				writer.Write(name!);
 			}
 		}
 	}

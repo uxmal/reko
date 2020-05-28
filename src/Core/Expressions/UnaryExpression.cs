@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable enable
 
 using Reko.Core.Operators;
 using Reko.Core.Types;
@@ -36,7 +38,7 @@ namespace Reko.Core.Expressions
 			this.Operator = op; this.Expression = expr;
 		}
 
-        public UnaryOperator Operator { get; set; }
+        public UnaryOperator Operator { get; }
         public Expression Expression { get; set; }
 
         public override IEnumerable<Expression> Children

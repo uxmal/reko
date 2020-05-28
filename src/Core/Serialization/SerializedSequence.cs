@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -31,7 +33,7 @@ namespace Reko.Core.Serialization
 	public class SerializedSequence : SerializedKind
 	{
 		[XmlElement("reg")]
-		public Register_v1 [] Registers;
+		public Register_v1[]? Registers;
 
 		public SerializedSequence()
 		{
@@ -44,7 +46,7 @@ namespace Reko.Core.Serialization
                 .ToArray();
 		}
 
-		public override Identifier Deserialize(ArgumentDeserializer sser)
+		public override Identifier? Deserialize(ArgumentDeserializer sser)
 		{
 			return sser.Deserialize(this);
 		}

@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using System;
@@ -74,7 +76,7 @@ namespace Reko.Core.Types
             return new StructureType();
         }
 
-		public StructureType CreateStructureType(string name, int size)
+		public StructureType CreateStructureType(string? name, int size)
 		{
 			return new StructureType(name, size);
 		}
@@ -120,7 +122,7 @@ namespace Reko.Core.Types
 			return new UnionType(name, preferred);
 		}
 
-		public UnionType CreateUnionType(string name, DataType preferred, ICollection<DataType> alternatives)
+		public UnionType CreateUnionType(string? name, DataType? preferred, ICollection<DataType> alternatives)
 		{
 			return new UnionType(name, preferred, alternatives);
 		}

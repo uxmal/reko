@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable enable
 
 using System;
 using System.Collections.Generic;
@@ -38,11 +40,11 @@ namespace Reko.Core.Types
         {
         }
 
-		public StructureType(string name, int size) : this(name, size, false)
+		public StructureType(string? name, int size) : this(name, size, false)
 		{
 		}
 
-        public StructureType(string name, int size, bool userDefined) : base(name)
+        public StructureType(string? name, int size, bool userDefined) : base(name)
         {
             this.UserDefined = userDefined;
             this.Fields = new StructureFieldCollection();
@@ -59,7 +61,7 @@ namespace Reko.Core.Types
             return v.VisitStructure(this);
         }
 
-        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
+        public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
 		{
             if (clonedTypes == null)
                 clonedTypes = new Dictionary<DataType, DataType>();

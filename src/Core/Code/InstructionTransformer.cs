@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Expressions;
 using System;
@@ -180,8 +182,8 @@ namespace Reko.Core.Code
 
 		public Expression VisitConditionOf(ConditionOf cof)
 		{
-			cof.Expression = cof.Expression.Accept(this);
-			return cof;
+			var e = cof.Expression.Accept(this);
+			return new ConditionOf(e);
 		}
 
 		public virtual Expression VisitConstant(Constant c)
@@ -191,8 +193,8 @@ namespace Reko.Core.Code
 
 		public virtual Expression VisitDereference(Dereference deref)
 		{
-			deref.Expression = deref.Expression.Accept(this);
-			return deref;
+			var e = deref.Expression.Accept(this);
+            return new Dereference(deref.DataType, e);
 		}
 
 		public virtual Expression VisitFieldAccess(FieldAccess acc)
@@ -283,8 +285,8 @@ namespace Reko.Core.Code
 
 		public virtual Expression VisitUnaryExpression(UnaryExpression unary)
 		{
-			unary.Expression = unary.Expression.Accept(this);
-			return unary;
+			var e = unary.Expression.Accept(this);
+			return new UnaryExpression(unary.Operator, unary.DataType, e);
 		}
 
 		#endregion

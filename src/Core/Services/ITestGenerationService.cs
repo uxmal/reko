@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -143,7 +145,7 @@ namespace Reko.Core.Services
 
         public static string GenerateRewriterUnitTest(string testPrefix, MachineInstruction instr, EndianImageReader rdr, string message)
         {
-            byte[] bytes = ReadInstructionBytes(instr.Address, rdr);
+            byte[] bytes = ReadInstructionBytes(instr.Address!, rdr);
 
             var sb = new StringWriter();
 
@@ -193,7 +195,7 @@ namespace Reko.Core.Services
             }
         }
 
-        private string GetOutputDirectory(IFileSystemService fsSvc)
+        private string? GetOutputDirectory(IFileSystemService fsSvc)
         {
             var dcSvc = this.services.GetService<IDecompilerService>();
             if (dcSvc == null)

@@ -18,7 +18,9 @@
  */
 #endregion
 
- using System;
+#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;

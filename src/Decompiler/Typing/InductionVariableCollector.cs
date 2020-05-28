@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -41,6 +41,8 @@ namespace Reko.Typing
             this.program = program;
         }
 
+        public override LinearInductionVariable DefaultValue => null;
+        
         public override LinearInductionVariable VisitIdentifier(Identifier id)
         {
             LinearInductionVariable iv;

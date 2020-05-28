@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -30,7 +32,7 @@ namespace Reko.Core.Serialization
 {
     public class ArrayType_v1 : SerializedType
     {
-        public SerializedType ElementType;
+        public SerializedType? ElementType;
 
         [XmlAttribute("length")]
         [DefaultValue(0)]

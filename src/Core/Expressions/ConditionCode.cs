@@ -53,7 +53,7 @@ namespace Reko.Core.Expressions
 
     public static class ConditionCodeEx
     {
-        private static ConditionCode[] invertMap = new[]
+        private static readonly ConditionCode[] invertMap = new[]
         {
             ConditionCode.None,
             ConditionCode.ULE,

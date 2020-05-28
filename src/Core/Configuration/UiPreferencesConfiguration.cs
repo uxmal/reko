@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,6 +32,6 @@ namespace Reko.Core.Configuration
 {
     public class UiPreferencesConfiguration
     {
-        public List<UiStyleDefinition> Styles { get; internal set; }
+        public List<UiStyleDefinition> Styles { get; set; } = new List<UiStyleDefinition>();
     }
 }

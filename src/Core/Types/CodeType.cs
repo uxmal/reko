@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable enable
 
 using System;
 using System.Collections.Generic;
@@ -47,9 +49,13 @@ namespace Reko.Core.Types
             return v.VisitCode(this);
         }
 
-        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
+        public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
         {
-            return new CodeType { Size = this.Size, Qualifier = this.Qualifier } ;
+            return new CodeType
+            {
+                Size = this.Size,
+                Qualifier = this.Qualifier
+            };
         }
     }
 }

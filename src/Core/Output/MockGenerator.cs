@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
@@ -640,7 +642,7 @@ namespace Reko.Core.Output
             {
                 writeArg(ft.ReturnValue);
             }
-            WriteList(ft.Parameters, ", ", writeArg);
+            WriteList(ft.Parameters!, ", ", writeArg);
             writer.Write(")");
             return 0;
         }

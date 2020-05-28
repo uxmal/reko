@@ -18,6 +18,9 @@
  */
 #endregion
 
+#nullable enable
+#pragma warning disable IDE1006
+
 using System;
 
 namespace Reko.Core.Expressions
@@ -244,8 +247,10 @@ namespace Reko.Core.Expressions
 		#endregion
 	}
 
-    public class ExpressionVisitorBase<T> : ExpressionVisitor<T>
+    public abstract class ExpressionVisitorBase<T> : ExpressionVisitor<T>
     {
+        public abstract T DefaultValue { get; }
+
         public virtual T VisitAddress(Address addr)
         {
             throw new NotImplementedException();
@@ -265,7 +270,7 @@ namespace Reko.Core.Expressions
         {
             binExp.Left.Accept(this);
             binExp.Right.Accept(this);
-            return default(T);
+            return DefaultValue;
         }
 
         public virtual T VisitCast(Cast cast)
@@ -285,7 +290,7 @@ namespace Reko.Core.Expressions
 
         public virtual T VisitConstant(Constant c)
         {
-            return default(T);
+            return DefaultValue;
         }
 
         public virtual T VisitDereference(Dereference deref)
@@ -300,7 +305,7 @@ namespace Reko.Core.Expressions
 
         public virtual T VisitIdentifier(Identifier id)
         {
-            return default(T);
+            return DefaultValue;
         }
 
         public virtual T VisitMemberPointerSelector(MemberPointerSelector mps)

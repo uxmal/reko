@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,7 +55,7 @@ namespace Reko.Core.Types
             return new StringType(charType, lengthPrefixType, 0);
         }
 
-        public StringType(DataType charType, PrimitiveType lengthPrefixType, int prefixOffset)
+        public StringType(DataType charType, PrimitiveType? lengthPrefixType, int prefixOffset)
             : base(charType, 0)
         {
             this.LengthPrefixType = lengthPrefixType;
@@ -70,7 +72,7 @@ namespace Reko.Core.Types
             return v.VisitString(this);
         }
 
-        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
+        public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
         {
             return new StringType(this.ElementType, this.LengthPrefixType, this.PrefixOffset)
             {
@@ -78,11 +80,15 @@ namespace Reko.Core.Types
             };
         }
 
-        // The type of the length prefix, if any, otherwise null.
-        public PrimitiveType LengthPrefixType { get; private set; }
+        /// <summary>
+        /// The type of the length prefix, if any, otherwise null.
+        /// </summary>
+        public PrimitiveType? LengthPrefixType { get; }
 
-        // The offset from the start of the string where the length is stored.
-        // This field is not valid if the LengthPrefixType is null.
-        public int PrefixOffset { get; private set; }
+        /// <summary>
+        /// The offset from the start of the string where the length is stored.
+        /// This field is not valid if the LengthPrefixType is null.
+        /// </summary>
+        public int PrefixOffset { get;  }
     }
 }

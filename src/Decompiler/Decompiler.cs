@@ -481,8 +481,8 @@ namespace Reko
             WriteHeaderComment(filename, program, w);
             w.WriteLine("#include \"{0}\"", headerfile);
             w.WriteLine();
-            var gdw = new GlobalDataWriter(program, services);
-            gdw.WriteGlobals(new TextFormatter(w));
+            var gdw = new GlobalDataWriter(program, new TextFormatter(w), services);
+            gdw.Write();
             w.WriteLine();
         }
     

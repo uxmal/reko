@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable enable
 
 using Reko.Core.Expressions;
 using Reko.Core.Output;
@@ -60,6 +62,7 @@ namespace Reko.Core.Types
             return EnsureExpressionTypeVariable(factory, e, null);
         }
 
+        //$TODO: pass dt and dtOriginal
         public TypeVariable CreateTypeVariable(TypeFactory factory)
         {
             TypeVariable tv = factory.CreateTypeVariable();
@@ -69,13 +72,13 @@ namespace Reko.Core.Types
             return tv;
         }
 
-        public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Expression e, string name)
+        public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Expression e, string? name)
         {
             if (e != null && e.TypeVariable != null)
                 return e.TypeVariable;
 
             TypeVariable tv = name != null ? factory.CreateTypeVariable(name) : factory.CreateTypeVariable();
-            AddDebugSource(tv, e);
+            AddDebugSource(tv, e!);
             tv.Class = new EquivalenceClass(tv);
             if (e != null)
                 e.TypeVariable = tv;
@@ -105,13 +108,13 @@ namespace Reko.Core.Types
                 DataType dtOld = c.DataType;
                 if (dtOld != null)
                 {
-                    dt = u.Unify(dt, dtOld);
+                    dt = u.Unify(dt, dtOld)!;
                 }
                 else if (dt != null)
                 {
                     dt = dt.Clone();        // why clone???
                 }
-                c.DataType = dt;
+                c.DataType = dt!;
             }
         }
 
@@ -128,10 +131,9 @@ namespace Reko.Core.Types
             Debug.WriteLine(sw.ToString());
         }
 
-        public Expression ExpressionOf(TypeVariable tv)
+        public Expression? ExpressionOf(TypeVariable tv)
         {
-            Expression e;
-            if (tvSources.TryGetValue(tv, out e))
+            if (tvSources.TryGetValue(tv, out Expression e))
                 return e;
             else
                 return null;
@@ -238,12 +240,12 @@ namespace Reko.Core.Types
 
         public DataType GetDataTypeOf(Expression tField)
         {
-            return tField.TypeVariable.DataType;
+            return tField.TypeVariable!.DataType;
         }
 
         public void SetDataTypeOf(Expression expr, DataType dt)
         {
-            expr.TypeVariable.DataType = dt;
+            expr.TypeVariable!.DataType = dt;
             expr.TypeVariable.OriginalDataType = dt;
         }
 
@@ -252,8 +254,7 @@ namespace Reko.Core.Types
             foreach(var e in tvSources.Values)
             {
                 e.TypeVariable = null;
-                ProcedureConstant pc = e as ProcedureConstant;
-                if (pc != null)
+                if (e is ProcedureConstant pc)
                     pc.Procedure.Signature.TypeVariable = null;
             }
             TypeVariables.Clear();

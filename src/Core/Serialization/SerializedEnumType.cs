@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable enable
 
 using Reko.Core.Types;
 using System;
@@ -39,7 +41,7 @@ namespace Reko.Core.Serialization
         public Domain Domain;
 
         [XmlElement("member")]
-        public SerializedEnumValue[]  Values;
+        public SerializedEnumValue[]? Values;
 
         public SerializedEnumType()
         {
@@ -61,7 +63,7 @@ namespace Reko.Core.Serialization
     public class SerializedEnumValue
     {
         [XmlAttribute("name")]
-        public string Name;
+        public string? Name;
         [XmlAttribute("value")]
         public int Value;
     }

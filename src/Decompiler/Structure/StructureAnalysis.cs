@@ -929,11 +929,7 @@ doing future pattern matches.
                 {
                     from.Expression = from.Expression.Invert();
                 }
-                var ifStm = new AbsynIf
-                {
-                    Condition = from.Expression,
-                    Then = { stm }
-                };
+                var ifStm = new AbsynIf(from.Expression, new List<AbsynStatement> { stm });
                 from.Statements.Add(ifStm);
                 from.Expression = null;
                 Probe();

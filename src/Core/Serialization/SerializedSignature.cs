@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Lib;
 using System;
@@ -38,13 +40,13 @@ namespace Reko.Core.Serialization
         }
 
         [XmlElement("type")]
-        public SerializedType EnclosingType;
+        public SerializedType? EnclosingType;
 
 		[XmlElement("return")]
-		public Argument_v1 ReturnValue;
+		public Argument_v1? ReturnValue;
 
 		[XmlAttribute("convention")]
-		public string Convention;
+		public string? Convention;
 
         [XmlAttribute("isInstance")]
         [DefaultValue(false)]
@@ -64,7 +66,7 @@ namespace Reko.Core.Serialization
 		public int StackDelta;
 
 		[XmlElement("arg")]
-		public Argument_v1 [] Arguments;
+		public Argument_v1[]? Arguments;
 
         [XmlAttribute("fpuStackDelta")]
         [DefaultValue(0)]

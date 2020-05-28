@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable enable
 
 using System;
 using System.Diagnostics;
@@ -35,7 +37,7 @@ namespace Reko.Core.Lib
             var cmp = list.Comparer;
             int lo = 0;
             int hi = list.Count - 1;
-            value = default(V);
+            value = default!;
             bool set = false;
             while (lo <= hi)
             {
@@ -66,7 +68,7 @@ namespace Reko.Core.Lib
             var cmp = list.Comparer;
             int lo = 0;
             int hi = list.Count - 1;
-            value = default(V);
+            value = default!;
             bool set = false;
             while (lo <= hi)
             {
@@ -97,7 +99,7 @@ namespace Reko.Core.Lib
             var cmp = list.Comparer;
             int lo = 0;
             int hi = list.Count - 1;
-            closestKey = default(K);
+            closestKey = default!;
             bool set = false;
             while (lo <= hi)
             {
@@ -128,7 +130,7 @@ namespace Reko.Core.Lib
             var cmp = list.Comparer;
             int lo = 0;
             int hi = list.Count - 1;
-            closestKey = default(K);
+            closestKey = default!;
             bool set = false;
             while (lo <= hi)
             {

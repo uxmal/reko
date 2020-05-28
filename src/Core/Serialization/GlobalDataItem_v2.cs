@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,9 +32,9 @@ namespace Reko.Core.Serialization
     /// </summary>
     public class GlobalDataItem_v2
     {
-        public string Address;
-        public SerializedType DataType;
-        public string Name;
-        public string Comment;
+        public string? Address;
+        public SerializedType? DataType;
+        public string? Name;
+        public string? Comment;
     }
 }

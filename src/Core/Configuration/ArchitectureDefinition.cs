@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -30,21 +32,21 @@ namespace Reko.Core.Configuration
         /// <summary>
         /// Short abbreviation for the architecture.
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// Human-readable description of the processor architecture
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>
         /// .NET type name for the architecture.
         /// </summary>
-        public string TypeName { get; set; }
+        public string? TypeName { get; set; }
 
         /// <summary>
         /// Available property options.
         /// </summary>
-        public List<PropertyOption> Options{ get; set; }
+        public List<PropertyOption> Options { get; set; } = new List<PropertyOption>();
     }
 }

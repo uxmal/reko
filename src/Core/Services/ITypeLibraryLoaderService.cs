@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core.Configuration;
 using System;
 using System.Collections.Generic;
@@ -58,12 +60,14 @@ namespace Reko.Core.Services
             var diagSvc = services.RequireService<IDiagnosticsService>();
             try
             {
+                if (tlElement.Name == null)
+                    return libDst;
                 string libFileName = cfgSvc.GetInstallationRelativePath(tlElement.Name);
                 if (!fsSvc.FileExists(libFileName)) 
                     return libDst;
 
                 byte[] bytes = fsSvc.ReadAllBytes(libFileName);
-                MetadataLoader loader = CreateLoader(tlElement, libFileName, bytes);
+                MetadataLoader? loader = CreateLoader(tlElement, libFileName, bytes);
                 if (loader == null)
                     return libDst;
                 var lib = loader.Load(platform, tlElement.Module, libDst);
@@ -76,9 +80,9 @@ namespace Reko.Core.Services
             }
         }
 
-        public MetadataLoader CreateLoader(TypeLibraryDefinition tlElement, string filename, byte[] bytes)
+        public MetadataLoader? CreateLoader(TypeLibraryDefinition tlElement, string filename, byte[] bytes)
         {
-            Type loaderType = null;
+            Type? loaderType = null;
             if (string.IsNullOrEmpty(tlElement.Loader))
             {
                 // By default, assume TypeLibraryLoader is intended.
@@ -88,7 +92,7 @@ namespace Reko.Core.Services
             {
                 var cfgSvc = services.RequireService<IConfigurationService>();
                 var diagSvc = services.RequireService<IDiagnosticsService>();
-                var ldrElement = cfgSvc.GetImageLoader(tlElement.Loader);
+                var ldrElement = cfgSvc.GetImageLoader(tlElement.Loader!);
                 if (ldrElement != null && !string.IsNullOrEmpty(ldrElement.TypeName)) 
                 {
                     loaderType = Type.GetType(ldrElement.TypeName, false);
@@ -97,7 +101,7 @@ namespace Reko.Core.Services
                 {
                     diagSvc.Warn(
                         "Metadata loader type '{0}' is unknown.", 
-                        tlElement.Loader);
+                        tlElement.Loader!);
                     return null;
                 }
             }

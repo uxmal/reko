@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +29,7 @@ namespace Reko.Core.Serialization
 {
     public class ReferenceType_v1 : SerializedType
     {
-        public SerializedType Referent;
+        public SerializedType? Referent;
         public int Size;
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)

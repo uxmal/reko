@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -28,26 +30,26 @@ namespace Reko.Core.Configuration
 {
     public class UiStyleDefinition
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public string FontName { get; set; }
+        public string? FontName { get; set; }
 
-        public string ForeColor { get; set; }
+        public string? ForeColor { get; set; }
 
-        public string BackColor { get; set; }
+        public string? BackColor { get; set; }
 
-        public string Cursor { get; set; }
+        public string? Cursor { get; set; }
 
-        public string Width { get; set; }
+        public string? Width { get; set; }
 
-        public string TextAlign { get; set; }
+        public string? TextAlign { get; set; }
 
-        public string PaddingTop { get; set; }
+        public string? PaddingTop { get; set; }
 
-        public string PaddingLeft { get; set; }
+        public string? PaddingLeft { get; set; }
 
-        public string PaddingBottom { get; set; }
+        public string? PaddingBottom { get; set; }
 
-        public string PaddingRight { get; set; }
+        public string? PaddingRight { get; set; }
     }
 }

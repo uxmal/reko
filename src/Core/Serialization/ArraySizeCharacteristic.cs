@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
@@ -28,18 +30,18 @@ namespace Reko.Core.Serialization
     public class ArraySizeCharacteristic
     {
         [XmlAttribute("argument")]
-        public string Argument {get; set; }
+        public string? Argument {get; set; }
 
         [XmlElement("factor")]
-        public ArraySizeFactor [] Factors { get; set; }
+        public ArraySizeFactor[]? Factors { get; set; }
     }
 
     public class ArraySizeFactor
     {
         [XmlAttribute("argument")]
-        public string Argument { get; set; }
+        public string? Argument { get; set; }
 
         [XmlAttribute("constant")]
-        public string Constant { get; set; }
+        public string? Constant { get; set; }
     }
 }

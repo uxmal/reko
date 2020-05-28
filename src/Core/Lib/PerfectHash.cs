@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -49,7 +49,7 @@ namespace Reko.Core.Lib
         //static  int     NumVert;    /* c times NumEntry */
 
         //static  uint16_t    *T1base, *T2base;   /* Pointers to start of T1, T2 */
-        static ushort[] T1, T2;   /* Pointers to T1[i], T2[i] */
+        //static ushort[] T1, T2;   /* Pointers to T1[i], T2[i] */
 
         static int[] graphNode; /* The array of edges */
         static int[] graphNext; /* Linked list of edges */

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -26,7 +26,7 @@ using System.Text;
 namespace Reko.Core.Dfa
 {
     /// <summary>
-    /// Represents a DFA state. 
+    /// Represents a DFA state.
     /// </summary>
     public class State
     {

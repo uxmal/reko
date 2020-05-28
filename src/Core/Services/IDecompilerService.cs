@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using System;
 using System.Collections.Generic;
@@ -36,29 +38,26 @@ namespace Reko.Core.Services
         /// </summary>
         event EventHandler DecompilerChanged;
 
-        IDecompiler Decompiler { get; set; }
+        IDecompiler? Decompiler { get; set; }
 
         string ProjectName { get; }
     }
 
     public class DecompilerService : IDecompilerService
     {
-        private IDecompiler decompiler;
+        private IDecompiler? decompiler;
 
-        public event EventHandler DecompilerChanged;
+        public event EventHandler? DecompilerChanged;
 
         #region IDecompilerService Members
 
-        public IDecompiler Decompiler
+        public IDecompiler? Decompiler
         {
             get { return decompiler; }
             set
             {
                 decompiler = value;
-                if (DecompilerChanged != null)
-                {
-                    DecompilerChanged(this, EventArgs.Empty);
-                }
+                DecompilerChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 

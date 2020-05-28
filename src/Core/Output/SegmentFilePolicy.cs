@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
@@ -42,6 +44,7 @@ namespace Reko.Core.Output
         {
             this.segmentFilenames = new Dictionary<ImageSegment, string>();
             this.progname = Path.GetFileNameWithoutExtension(program.Name);
+            this.defaultFile = "";
         }
 
         public override Dictionary<string, List<Procedure>> GetProcedurePlacements(string fileExtension)
@@ -97,7 +100,7 @@ namespace Reko.Core.Output
             if (program.User.Procedures.TryGetValue(proc.EntryAddress, out var userProc) &&
                 !string.IsNullOrWhiteSpace(userProc.OutputFile))
             {
-                return userProc.OutputFile;
+                return userProc.OutputFile!;
             }
             if (program.User.ProcedureSourceFiles.TryGetValue(proc.EntryAddress, out var sourcefile))
             {

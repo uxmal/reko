@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable enable
 
 using Reko.Core.Types;
 using System;
@@ -42,7 +44,7 @@ namespace Reko.Core.Serialization
 		}
 
 		[XmlElement("field", typeof (StructField_v1))]
-		public StructField_v1[]  Fields;
+		public StructField_v1[]? Fields;
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
@@ -61,7 +63,7 @@ namespace Reko.Core.Serialization
             {
                 foreach (StructField_v1 f in Fields)
                 {
-                    sb.AppendFormat("({0}, {1}, {2})", f.Offset, f.Name != null ? f.Name : "?", f.Type);
+                    sb.AppendFormat("({0}, {1}, {2})", f.Offset, f.Name ?? "?", f.Type);
                 }
             }
             sb.Append(")");
@@ -75,11 +77,11 @@ namespace Reko.Core.Serialization
 		public int Offset;
 
 		[XmlAttribute("name")]
-		public string Name;
+		public string? Name;
 
 		[XmlElement("prim", typeof (PrimitiveType_v1))]
 		[XmlElement("ptr", typeof (PointerType_v1))]
-		public SerializedType Type;
+		public SerializedType? Type;
 
 		public StructField_v1()
 		{

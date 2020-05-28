@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,17 +30,17 @@ namespace Reko.Core.Types
 {
     public class DataTypeBuilderUnifier : Unifier
     {
-        private ITypeStore store;
+        private readonly ITypeStore store;
 
         public DataTypeBuilderUnifier(TypeFactory factory, ITypeStore store)
-            : base(factory, null)
+            : base(factory)
         {
             this.store = store;
         }
 
         public override DataType UnifyTypeVariables(TypeVariable tA, TypeVariable tB)
         {
-            var dt = Unify(tA.Class.DataType, tB.Class.DataType);
+            var dt = Unify(tA.Class.DataType, tB.Class.DataType)!;
             var eq = store.MergeClasses(tA, tB);
             eq.DataType = dt;
             return eq.Representative;

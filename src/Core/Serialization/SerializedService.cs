@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable enable
 
 using Reko.Core;
 using System;
@@ -35,14 +37,14 @@ namespace Reko.Core.Serialization
         /// If non-null, specifies the address of a dispatcher function.
         /// </summary>
         [XmlAttribute("address")]
-        public string Address;
+        public string? Address;
 
         /// <summary>
         /// Describes what registers must be set at what values to call this
         /// system call.
         /// </summary>
 		[XmlElement("syscallinfo")]
-		public SyscallInfo_v1 SyscallInfo;
+		public SyscallInfo_v1? SyscallInfo;
 
 		public SystemService Build(IPlatform platform, TypeLibrary library)
 		{
@@ -75,13 +77,13 @@ namespace Reko.Core.Serialization
 	public class SyscallInfo_v1
 	{
 		[XmlElement("vector")]
-		public string Vector;
+		public string? Vector;
 
 		[XmlElement("regvalue")]
-		public SerializedRegValue [] RegisterValues;
+		public SerializedRegValue[]? RegisterValues;
 
         [XmlElement("stackvalue")]
-        public StackValue_v1[] StackValues;
+        public StackValue_v1[]? StackValues;
 
         public SyscallInfo Build(IPlatform platform)
         {
@@ -115,10 +117,10 @@ namespace Reko.Core.Serialization
     public class SerializedRegValue
 	{
 		[XmlAttribute("reg")]
-		public string Register;
+		public string? Register;
 
 		[XmlText]
-		public string Value;
+		public string? Value;
 
 		public SerializedRegValue()
 		{
@@ -134,9 +136,9 @@ namespace Reko.Core.Serialization
     public class StackValue_v1
     {
         [XmlAttribute("offset")]
-        public string Offset;
+        public string? Offset;
 
         [XmlText]
-        public string Value;
+        public string? Value;
     }
 }

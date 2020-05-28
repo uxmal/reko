@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -34,12 +36,12 @@ namespace Reko.Core.Emulation
     /// </summary>
     public abstract class EmulatorBase : IProcessorEmulator
     {
-        public event EventHandler BeforeStart;
-        public event EventHandler<EmulatorExceptionEventArgs>  ExceptionRaised;
+        public event EventHandler? BeforeStart;
+        public event EventHandler<EmulatorExceptionEventArgs>? ExceptionRaised;
 
         private readonly SegmentMap map;
         private readonly Dictionary<ulong, Action> bpExecute;
-        private Action stepAction;
+        private Action? stepAction;
         private bool stepInto;
         private ulong stepOverAddress;
 
@@ -80,7 +82,7 @@ namespace Reko.Core.Emulation
         public void StepOver(Action callback)
         {
             var instr = CurrentInstruction;
-            stepOverAddress = instr.Address.ToLinear() + (uint)instr.Length;
+            stepOverAddress = instr.Address!.ToLinear() + (uint)instr.Length;
             stepAction = callback;
         }
 
@@ -133,14 +135,14 @@ namespace Reko.Core.Emulation
                 stepInto = false;
                 var s = stepAction;
                 stepAction = null;
-                s();
+                s?.Invoke();
             }
             else if (stepOverAddress == linAddrInstr)
             {
                 stepOverAddress = 0;
                 var s = stepAction;
                 stepAction = null;
-                s();
+                s?.Invoke();
             }
             return IsRunning;
         }

@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Configuration;
 using System;
@@ -42,13 +44,13 @@ namespace Reko.Core.Serialization
     /// </summary>
     public class ProjectLoader : ProjectPersister
     {
-        public event EventHandler<ProgramEventArgs> ProgramLoaded;
+        public event EventHandler<ProgramEventArgs>? ProgramLoaded;
 
         private readonly ILoader loader;
         private readonly Project project;
         private readonly DecompilerEventListener listener;
-        private IPlatform platform;
-        private IProcessorArchitecture arch;
+        private IPlatform? platform;
+        private IProcessorArchitecture? arch;
 
         public ProjectLoader(IServiceProvider services, ILoader loader, DecompilerEventListener listener)
             : this(services, loader, new Project(), listener)
@@ -73,7 +75,7 @@ namespace Reko.Core.Serialization
         /// <param name="image"></param>
         /// <param name="loader"></param>
         /// <returns></returns>
-        public Project LoadProject(string fileName, byte[] image)
+        public Project? LoadProject(string fileName, byte[] image)
         {
             if (!IsXmlFile(image))
                 return null;
@@ -103,13 +105,11 @@ namespace Reko.Core.Serialization
             return false;
         }
 
-        public Project LoadProject(string filename)
+        public Project? LoadProject(string filename)
         {
             var fsSvc = Services.RequireService<IFileSystemService>();
-            using (var stm = fsSvc.CreateFileStream(filename, FileMode.Open, FileAccess.Read))
-            {
-                return LoadProject(filename, stm);
-            }
+            using var stm = fsSvc.CreateFileStream(filename, FileMode.Open, FileAccess.Read);
+            return LoadProject(filename, stm);
         }
 
         private static readonly Tuple<Type, string>[] supportedProjectFileFormats =
@@ -127,7 +127,7 @@ namespace Reko.Core.Serialization
         /// <returns>
         /// The Project if the file format was recognized, otherwise null.
         /// </returns>
-        public Project LoadProject(string filename, Stream stm)
+        public Project? LoadProject(string filename, Stream stm)
         {
             var rdr = new XmlTextReader(stm);
             foreach (var fileFormat in supportedProjectFileFormats)
@@ -167,12 +167,17 @@ namespace Reko.Core.Serialization
         public Project LoadProject(string filename, Project_v5 sp)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            this.arch = cfgSvc.GetArchitecture(sp.ArchitectureName);
+            IProcessorArchitecture? arch = null;
+            if (sp.ArchitectureName != null)
+            {
+                arch = cfgSvc.GetArchitecture(sp.ArchitectureName);
+            }
             if (arch == null)
                 throw new ApplicationException(
                     string.Format("Unknown architecture '{0}' in project file.",
                         sp.ArchitectureName ?? "(null)"));
-            var env = cfgSvc.GetEnvironment(sp.PlatformName);
+            this.arch = arch;
+            var env = cfgSvc.GetEnvironment(sp.PlatformName!);
             if (env == null)
                 throw new ApplicationException(
                     string.Format("Unknown operating environment '{0}' in project file.",
@@ -197,12 +202,12 @@ namespace Reko.Core.Serialization
         public Project LoadProject(string filename, Project_v4 sp)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            this.arch = cfgSvc.GetArchitecture(sp.ArchitectureName);
+            this.arch = cfgSvc.GetArchitecture(sp.ArchitectureName!);
             if (arch == null)
                 throw new ApplicationException(
                     string.Format("Unknown architecture '{0}' in project file.",
                         sp.ArchitectureName ?? "(null)"));
-            var env = cfgSvc.GetEnvironment(sp.PlatformName);
+            var env = cfgSvc.GetEnvironment(sp.PlatformName!);
             if (env == null)
                 throw new ApplicationException(
                     string.Format("Unknown operating environment '{0}' in project file.",
@@ -228,7 +233,7 @@ namespace Reko.Core.Serialization
             var programs = sp.Inputs.OfType<DecompilerInput_v3>().Select(s => VisitInputFile(filename, s)).ToList();
             var typelibs = sp.Inputs.OfType<MetadataFile_v3>().Select(m => VisitMetadataFile(filename, m)).ToList();
             sp.Inputs.OfType<AssemblerFile_v3>().Select(s => VisitAssemblerFile(s));
-            this.project.LoadedMetadata = this.platform.CreateMetadata();
+            this.project.LoadedMetadata = this.platform?.CreateMetadata();
             foreach (var program in programs)
             {
                 program.EnvironmentMetadata = this.project.LoadedMetadata;
@@ -279,12 +284,12 @@ namespace Reko.Core.Serialization
             {
                 // The presence of an explicit loader name prompts us to
                 // use the LoadRawImage path.
-                var arch = sUser.Processor.Name;
+                var archName = sUser.Processor?.Name;
                 var platform = sUser.PlatformOptions?.Name;
                 program = loader.LoadRawImage(binAbsPath, bytes, address, new LoadDetails
                 {
                     LoaderName = sUser.Loader,
-                    ArchitectureName = arch,
+                    ArchitectureName = archName,
                     ArchitectureOptions = archOptions,
                     PlatformName = platform,
                     LoadAddress = sUser.LoadAddress,
@@ -323,12 +328,12 @@ namespace Reko.Core.Serialization
             {
                 // The presence of an explicit loader name prompts us to
                 // use the LoadRawImage path.
-                var arch = sUser.Processor.Name;
+                var archName = sUser.Processor?.Name;
                 var platform = sUser.PlatformOptions?.Name;
                 program = loader.LoadRawImage(binAbsPath, bytes, address, new LoadDetails
                 {
                     LoaderName = sUser.Loader,
-                    ArchitectureName = arch,
+                    ArchitectureName = archName,
                     ArchitectureOptions = archOptions,
                     PlatformName = platform,
                     LoadAddress = sUser.LoadAddress,
@@ -393,22 +398,25 @@ namespace Reko.Core.Serialization
             return program;
         }
 
-        private Address LoadAddress(UserData_v4 user, IProcessorArchitecture arch)
+        private Address? LoadAddress(UserData_v4 user, IProcessorArchitecture? arch)
         {
-            if (user == null || user.LoadAddress == null)
+            if (user == null || arch == null || user.LoadAddress == null)
                 return null;
             if (!arch.TryParseAddress(user.LoadAddress, out Address addr))
                 return null;
             return addr;
         }
 
-        private Address LoadAddress(UserData_v3 user)
+        private Address? LoadAddress(UserData_v3 user)
         {
-            if (user == null || user.LoadAddress == null || user.Processor == null)
+            if (user == null || user.LoadAddress == null || user.Processor == null ||
+                user.Processor.Name == null)
                 return null;
-            if (!Services.RequireService<IConfigurationService>()
-                .GetArchitecture(user.Processor.Name)
-                .TryParseAddress(user.LoadAddress, out Address addr))
+            var arch = Services.RequireService<IConfigurationService>()
+                .GetArchitecture(user.Processor.Name);
+            if (arch == null)
+                return null;
+            if (!arch.TryParseAddress(user.LoadAddress, out Address addr))
                 return null;
             return addr;
         }
@@ -429,9 +437,10 @@ namespace Reko.Core.Serialization
                 user.Processor = sUser.Processor.Name;
                 if (program.Architecture == null && !string.IsNullOrEmpty(user.Processor))
                 {
-                    program.Architecture = Services.RequireService<IConfigurationService>().GetArchitecture(user.Processor);
+                    program.Architecture = Services.RequireService<IConfigurationService>().GetArchitecture(user.Processor!);
                 }
-                program.Architecture.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.Processor.Options, StringComparer.OrdinalIgnoreCase));
+                //$BUG: what if architecture isn't supported? fail the whole thing?
+                program.Architecture!.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.Processor.Options, StringComparer.OrdinalIgnoreCase));
             }
             if (sUser.PlatformOptions != null)
             {
@@ -475,7 +484,7 @@ namespace Reko.Core.Serialization
             }
             if (sUser.TextEncoding != null)
             {
-                Encoding enc = null;
+                Encoding? enc = null;
                 try
                 {
                     enc = Encoding.GetEncoding(sUser.TextEncoding);
@@ -494,8 +503,8 @@ namespace Reko.Core.Serialization
             {
                 program.User.Calls = sUser.Calls
                     .Select(c => LoadUserCall(c, program))
-                    .Where(c => c != null)
-                    .ToSortedList(k => k.Address, v => v);
+                    .Where(c => c != null && c.Address != null)
+                    .ToSortedList(k => k!.Address, v => v);
             }
             if (sUser.RegisterValues != null)
             {
@@ -504,15 +513,15 @@ namespace Reko.Core.Serialization
             if (sUser.JumpTables != null)
             {
                 program.User.JumpTables = sUser.JumpTables.Select(LoadJumpTable_v4)
-                    .Where(t => t != null)
-                    .ToSortedList(k => k.Address, v => v);
+                    .Where(t => t != null && t.Address != null)
+                    .ToSortedList(k => k!.Address, v => v);
             }
             if (sUser.IndirectJumps != null)
             {
                 program.User.IndirectJumps = sUser.IndirectJumps
                     .Select(ij => LoadIndirectJump_v4(ij, program))
-                    .Where(ij => ij != null)
-                    .ToSortedList(k => k.Item1, v => v.Item2);
+                    .Where(ij => ij.Item1 != null)
+                    .ToSortedList(k => k!.Item1, v => v!.Item2);
             }
             if (sUser.Segments != null)
             {
@@ -530,7 +539,7 @@ namespace Reko.Core.Serialization
 
         private Annotation LoadAnnotation(Annotation_v3 annotation)
         {
-            arch.TryParseAddress(annotation.Address, out var address);
+            arch!.TryParseAddress(annotation.Address, out var address);
             return new Annotation(address, annotation.Text);
         }
 
@@ -540,7 +549,7 @@ namespace Reko.Core.Serialization
             var allLists = new SortedList<Address, List<UserRegisterValue>>();
             foreach (var sRegValue in sRegValues)
             {
-                if (sRegValue != null && platform.TryParseAddress(sRegValue.Address, out Address addr))
+                if (sRegValue != null && platform!.TryParseAddress(sRegValue.Address, out Address addr))
                 {
                     if (!allLists.TryGetValue(addr, out var list))
                     {
@@ -562,27 +571,30 @@ namespace Reko.Core.Serialization
             return allLists;
         }
 
-        private ImageMapVectorTable LoadJumpTable_v4(JumpTable_v4 sTable)
+        private ImageMapVectorTable? LoadJumpTable_v4(JumpTable_v4 sTable)
         {
-            if (!platform.TryParseAddress(sTable.TableAddress, out Address addr))
+            if (platform == null || !platform.TryParseAddress(sTable.TableAddress, out Address addr))
                 return null;
             var listAddrDst = new List<Address>();
-            foreach (var item in sTable.Destinations)
+            if (sTable.Destinations != null)
             {
-                if (!platform.TryParseAddress(item, out Address addrDst))
-                    break;
-                listAddrDst.Add(addrDst);
+                foreach (var item in sTable.Destinations)
+                {
+                    if (!platform.TryParseAddress(item, out Address addrDst))
+                        break;
+                    listAddrDst.Add(addrDst);
+                }
             }
             return new ImageMapVectorTable(addr, listAddrDst.ToArray(), 0);
         }
 
-        private UserCallData LoadUserCall(SerializedCall_v1 call, Program program)
+        private UserCallData? LoadUserCall(SerializedCall_v1 call, Program program)
         {
             if (!program.Platform.TryParseAddress(call.InstructionAddress, out Address addr))
                 return null;
 
             var procSer = program.CreateProcedureSerializer();
-            FunctionType sig = null;
+            FunctionType? sig = null;
             if (call.Signature != null)
             {
                 sig = procSer.Deserialize(
@@ -598,18 +610,18 @@ namespace Reko.Core.Serialization
             };
         }
 
-        private Tuple<Address, UserIndirectJump> LoadIndirectJump_v4(IndirectJump_v4 indirJump, Program program)
+        private (Address?, UserIndirectJump?) LoadIndirectJump_v4(IndirectJump_v4 indirJump, Program program)
         {
-            if (!platform.TryParseAddress(indirJump.InstructionAddress, out Address addrInstr))
-                return null;
+            if (!platform!.TryParseAddress(indirJump.InstructionAddress, out Address addrInstr))
+                return (null, null);
             if (!platform.TryParseAddress(indirJump.TableAddress, out Address addrTable))
-                return null;
+                return (null, null);
             if (!program.User.JumpTables.TryGetValue(addrTable, out var table))
-                return null;
+                return (null, null);
             var reg = program.Architecture.GetRegister(indirJump.IndexRegister);
             if (reg == null)
-                return null;
-            return Tuple.Create(addrInstr, new UserIndirectJump
+                return (null, null);
+            return (addrInstr, new UserIndirectJump
             {
                 Address = addrInstr,
                 Table = table,
@@ -617,9 +629,9 @@ namespace Reko.Core.Serialization
             });
         }
 
-        public UserSegment LoadUserSegment_v4(Segment_v4 sSegment)
+        public UserSegment? LoadUserSegment_v4(Segment_v4 sSegment)
         {
-            if (!platform.TryParseAddress(sSegment.Address, out Address addr))
+            if (!platform!.TryParseAddress(sSegment.Address, out Address addr))
                 return null;
             ulong offset;
             if (string.IsNullOrEmpty(sSegment.Offset))
@@ -636,7 +648,7 @@ namespace Reko.Core.Serialization
             if (!uint.TryParse(sSegment.Length, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uint length))
                 return null;
 
-            var arch = Services.RequireService<IConfigurationService>().GetArchitecture(sSegment.Architecture);
+            var arch = Services.RequireService<IConfigurationService>().GetArchitecture(sSegment.Architecture!);
 
             var access = LoadAccessMode(sSegment.Access);
 
@@ -651,12 +663,12 @@ namespace Reko.Core.Serialization
             };
         }
 
-        private AccessMode LoadAccessMode(string sMode)
+        private AccessMode LoadAccessMode(string? sMode)
         {
             if (string.IsNullOrWhiteSpace(sMode))
                 return AccessMode.ReadWriteExecute;
             AccessMode mode = 0;
-            foreach (char c in sMode)
+            foreach (char c in sMode!)
             {
                 switch (c)
                 {
@@ -678,7 +690,7 @@ namespace Reko.Core.Serialization
                 program.User.Processor = sUser.Processor.Name;
                 if (program.Architecture == null && !string.IsNullOrEmpty(program.User.Processor))
                 {
-                    program.Architecture = Services.RequireService<IConfigurationService>().GetArchitecture(program.User.Processor);
+                    program.Architecture = Services.RequireService<IConfigurationService>().GetArchitecture(program.User.Processor!);
                 }
                 //program.Architecture.LoadUserOptions();       //$TODO
             }
@@ -700,7 +712,7 @@ namespace Reko.Core.Serialization
                 user.Globals = sUser.GlobalData
                     .Select(sud =>
                     {
-                        program.Architecture.TryParseAddress(sud.Address, out Address addr);
+                        program.Architecture!.TryParseAddress(sud.Address, out Address addr);
                         return new KeyValuePair<Address, GlobalDataItem_v2>(
                             addr,
                             sud);
@@ -777,20 +789,22 @@ namespace Reko.Core.Serialization
                     listener.CreateAddressNavigator(program, addr),
                     "User procedure '{0}' has been marked 'no decompile' but its signature " +
                     "has not been specified.",
-                    sup.Name);
+                    sup.Name ?? "<unnamed>");
             }
             return new KeyValuePair<Address, Procedure_v1>(addr, sup);
         }
 
         public MetadataFile VisitMetadataFile(string projectFilePath, MetadataFile_v3 sMetadata)
         {
-            string filename = ConvertToAbsolutePath(projectFilePath, sMetadata.Filename);
+            //$BUG: what if sMetata.Filename is null?
+            string filename = ConvertToAbsolutePath(projectFilePath, sMetadata.Filename)!;
             return LoadMetadataFile(filename);
         }
 
         public MetadataFile VisitMetadataFile(MetadataFile_v2 sMetadata)
         {
-            string filename = sMetadata.Filename;
+            //$BUG what happens if sMetadata is null?
+            string filename = sMetadata.Filename!;
             return LoadMetadataFile(filename);
         }
 
@@ -806,7 +820,7 @@ namespace Reko.Core.Serialization
             };
         }
 
-        private IPlatform DeterminePlatform(string filename)
+        private IPlatform? DeterminePlatform(string filename)
         {
             // If a platform was defined for the whole project use that.
             if (this.platform != null)
@@ -817,7 +831,7 @@ namespace Reko.Core.Serialization
             var platformsInUse = project.Programs.Select(p => p.Platform).Distinct().ToArray();
             if (platformsInUse.Length == 1 && platformsInUse[0] != null)
                 return platformsInUse[0];
-            IPlatform platform = null;
+            IPlatform? platform = null;
             if (platformsInUse.Length == 0)
             {
                 var oSvc = Services.GetService<IOracleService>();

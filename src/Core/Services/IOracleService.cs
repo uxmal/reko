@@ -1,4 +1,5 @@
-﻿/* 
+#region License
+/* 
  * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using System;
 using System.Collections.Generic;

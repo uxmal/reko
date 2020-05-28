@@ -17,6 +17,9 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.IO;

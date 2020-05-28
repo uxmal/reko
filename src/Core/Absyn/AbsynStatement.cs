@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core.Code;
 using Reko.Core.Output;
 using System;
@@ -33,12 +35,6 @@ namespace Reko.Core.Absyn
         public abstract void Accept(IAbsynVisitor visitor);
 
         public abstract T Accept<T>(IAbsynVisitor<T> visitor);
-
-        public bool As<T>(out T t) where T : AbsynStatement
-        {
-            t = this as T;
-            return t != null;
-        }
 
 		public override sealed string ToString()
 		{
