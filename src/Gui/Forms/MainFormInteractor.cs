@@ -721,10 +721,11 @@ namespace Reko.Gui.Forms
             }
 
             var fsSvc = Services.RequireService<IFileSystemService>();
+            var saver = new ProjectSaver(sc);
+            var sProject = saver.Serialize(ProjectFileName, decompilerSvc.Decompiler.Project);
+
             using (var xw = fsSvc.CreateXmlWriter(ProjectFileName))
             {
-                var saver = new ProjectSaver(sc);
-                var sProject = saver.Serialize(ProjectFileName, decompilerSvc.Decompiler.Project);
                 saver.Save(sProject, xw);
             }
             return true;
