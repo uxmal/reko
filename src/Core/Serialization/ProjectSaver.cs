@@ -119,7 +119,7 @@ namespace Reko.Core.Serialization
                     {
                         Address = sAddr,
                         Register = rv.Register.Name,
-                        Value = rv.Value.ToString().Replace("0x", ""),
+                        Value = string.Format($"{{0:X{rv.Register.DataType.Size * 2}}}", rv.Value.ToUInt64()),
                     });
                 }
             }
