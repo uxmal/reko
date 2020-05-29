@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using Reko.Core;
@@ -196,7 +198,7 @@ namespace Reko.Structure
 
         public void Transform()
         {
-            for (int i = 0; i < proc.Body.Count; ++i)
+            for (int i = 0; i < proc.Body!.Count; ++i)
             {
                 proc.Body[i] = proc.Body[i].Accept(this);
             }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable enable
 
 using Reko.Core;
 using Reko.Core.Absyn;
@@ -45,7 +47,7 @@ namespace Reko.Structure
         public Block Block { get; private set; }
         public RegionType Type { get; set; }
         public List<AbsynStatement> Statements { get; set; }
-        public Expression Expression { get; set; }
+        public Expression? Expression { get; set; }
 
         /// <summary>
         /// Return true if region consists of a single AbsynReturn statement.

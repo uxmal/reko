@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Absyn;
 using Reko.Core.Code;
@@ -30,11 +32,11 @@ using System.Text;
 
 namespace Reko.Structure
 {
-    public class RegionFactory : InstructionVisitor<AbsynStatement>
+    public class RegionFactory : InstructionVisitor<AbsynStatement?>
     {
-        private List<AbsynStatement> stms;
+        private List<AbsynStatement>? stms;
         private RegionType regType;
-        private Expression exp;
+        private Expression? exp;
         
         public Region Create(Block b)
         {
@@ -60,7 +62,7 @@ namespace Reko.Structure
             return new AbsynAssignment(ass.Dst, ass.Src);
         }
 
-        public AbsynStatement VisitBranch(Branch branch)
+        public AbsynStatement? VisitBranch(Branch branch)
         {
             regType = RegionType.Condition;
             exp = branch.Condition;
@@ -106,7 +108,7 @@ namespace Reko.Structure
             var dst = phi.Dst;
             return new AbsynAssignment(dst,
                 new Application(
-                    new Identifier("\u03D5", new UnknownType(), null),
+                    new Identifier("\u03D5", new UnknownType(), null!),
                     args[0].DataType,
                     args));
         }
@@ -127,7 +129,7 @@ namespace Reko.Structure
             return new AbsynAssignment(store.Dst, store.Src);
         }
 
-        public AbsynStatement VisitSwitchInstruction(SwitchInstruction si)
+        public AbsynStatement? VisitSwitchInstruction(SwitchInstruction si)
         {
             regType = RegionType.IncSwitch; 
             exp = si.Expression;

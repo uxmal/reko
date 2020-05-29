@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable enable
 
 using Reko.Core;
 using Reko.Core.Absyn;
@@ -47,7 +49,7 @@ namespace Reko.Structure
             if (!proc.Signature.HasVoidReturn)
                 return;
             var stmts = proc.Body;
-            RemoveRedundantReturn(stmts);
+            RemoveRedundantReturn(stmts!);
         }
 
         public bool VisitAssignment(AbsynAssignment ass)

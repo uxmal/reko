@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable enable
 
 using Reko.Core;
 using Reko.Core.Code;
@@ -57,9 +59,9 @@ namespace Reko.Structure
 				foreach (var block in new DfsIterator<Block>(proc.ControlGraph).PostOrder())
 				{
 					if (block.Statements.Count > 0 && 
-						block.Statements.Last.Instruction is Branch)
+						block.Statements.Last!.Instruction is Branch)
 					{
-						fChanged |= MaybeCoalesce(block);	
+						fChanged |= MaybeCoalesce(block);
 					}
 				}
 			} while (fChanged);
@@ -72,8 +74,8 @@ namespace Reko.Structure
 			bool fInvertFirst, 
 			bool fInvertSecond)
 		{
-			Branch brFirst = (Branch) blockFirst.Statements.Last.Instruction;
-			Branch brSecond = (Branch) blockSecond.Statements.Last.Instruction;
+			Branch brFirst = (Branch) blockFirst.Statements.Last!.Instruction;
+			Branch brSecond = (Branch) blockSecond.Statements.Last!.Instruction;
 			if (fInvertFirst)
 			{
 				brFirst.Condition = brFirst.Condition.Invert();
@@ -170,7 +172,7 @@ namespace Reko.Structure
 				return false;
 			if (block.Pred.Count != 1)
 				return false;
-			return (block.Statements.Last.Instruction is Branch);
+			return (block.Statements.Last!.Instruction is Branch);
 		}
 
 		/// <summary>
