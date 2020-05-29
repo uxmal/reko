@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -60,12 +60,7 @@ namespace Reko.Gui.Commands
                     rdr,
                     addresses,
                     PointerScannerFlags.All)
-                    .Select(a => new AddressSearchHit
-                    {
-                        Program = program,
-                        Address = a,
-                        Length = 1
-                    });
+                    .Select(a => new AddressSearchHit(program, a, 1));
         }
     }
 }

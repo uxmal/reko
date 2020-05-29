@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -28,7 +28,7 @@ namespace Reko.Core.CLanguage
     public class ParseResult<T>
     {
         private T result;
-        private string error;
+        private string? error;
 
         public ParseResult(T result)
         {
@@ -37,9 +37,8 @@ namespace Reko.Core.CLanguage
 
         public ParseResult(string error)
         {
-            if (error == null)
-                throw new ArgumentNullException("error");
-            this.error = error;
+            this.error = error ?? throw new ArgumentNullException("error");
+            this.result = default!;
         }
 
         public T Result
@@ -48,7 +47,7 @@ namespace Reko.Core.CLanguage
             {
                 if (error != null)
                     throw new InvalidOperationException("Mustn't access the result if an error was encountered.");
-                return result;
+                return result!;
             }
         }
     }

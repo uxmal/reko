@@ -96,7 +96,7 @@ namespace Reko.Core.Serialization
                     Heuristics = program.User.Heuristics
                         .Select(h => new Heuristic_v3 { Name = h }).ToList(),
                     Annotations = program.User.Annotations.Select(SerializeAnnotation).ToList(),
-                    TextEncoding = program.User.TextEncoding != Encoding.ASCII ? program.User.TextEncoding.WebName : null,
+                    TextEncoding = program.User.TextEncoding != Encoding.ASCII ? program.User.TextEncoding?.WebName : null,
                     RegisterValues = SerializeRegisterValues(program.User.RegisterValues),
                     ShowAddressesInDisassembly = program.User.ShowAddressesInDisassembly,
                     ShowBytesInDisassembly = program.User.ShowBytesInDisassembly,
@@ -118,11 +118,15 @@ namespace Reko.Core.Serialization
                 var sAddr = de.Key.ToString();
                 foreach (var rv in de.Value)
                 {
+                    var reg = rv.Register;
+                    var regValue = rv.Value;
+                    if (reg is null || regValue is null)
+                        continue;
                     sRegValues.Add(new RegisterValue_v2
                     {
                         Address = sAddr,
-                        Register = rv.Register.Name,
-                        Value = string.Format($"{{0:X{rv.Register.DataType.Size * 2}}}", rv.Value.ToUInt64()),
+                        Register = reg.Name,
+                        Value = string.Format($"{{0:X{reg.DataType.Size * 2}}}", regValue.ToUInt64()),
                     });
                 }
             }
@@ -139,9 +143,9 @@ namespace Reko.Core.Serialization
             return name!;
         }
 
-        private SerializedCall_v1? SerializeUserCall(Program program, UserCallData uc)
+        private SerializedCall_v1? SerializeUserCall(Program program, UserCallData? uc)
         {
-            if (uc == null || uc.Address == null)
+            if (uc == null || uc.Address is null)
                 return null;
             var procser = program.CreateProcedureSerializer();
             SerializedSignature? ssig = null;
@@ -163,8 +167,8 @@ namespace Reko.Core.Serialization
             return new IndirectJump_v4
             {
                 InstructionAddress = de.Key.ToString(),
-                TableAddress = de.Value.Address.ToString(),
-                IndexRegister = de.Value.IndexRegister.Name,
+                TableAddress = de.Value.Address?.ToString(),
+                IndexRegister = de.Value.IndexRegister?.Name,
             };
         }
 
@@ -243,9 +247,9 @@ namespace Reko.Core.Serialization
             return el;
         }
 
-        private XmlElement? SerializeValue(object value, XmlDocument doc)
+        private XmlElement? SerializeValue(object? value, XmlDocument doc)
         {
-            if (value == null)
+            if (value is null)
                 return null;
             if (value is string sValue)
             {
@@ -283,7 +287,7 @@ namespace Reko.Core.Serialization
         {
             return new MetadataFile_v3
             {
-                 Filename = ConvertToProjectRelativePath(projectAbsPath, metadata.Filename),
+                 Filename = ConvertToProjectRelativePath(projectAbsPath, metadata.Filename!),
                   ModuleName = metadata.ModuleName,
             };
         }

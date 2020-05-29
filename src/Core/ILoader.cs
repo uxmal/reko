@@ -60,7 +60,7 @@ namespace Reko.Core
         /// Either a successfully loaded <see cref="Reko.Core.Program"/>, or null if 
         /// an appropriate image loader could not be determined or loaded.
         /// </returns>
-        Program LoadExecutable(string fileName, byte[] bytes, string loader, Address loadAddress);
+        Program LoadExecutable(string fileName, byte[] bytes, string? loader, Address? loadAddress);
 
         /// <summary>
         /// Given a sequence of raw bytes, loads it into memory and applies the 
@@ -73,7 +73,7 @@ namespace Reko.Core
         /// <param name="details">Details about the contents of the file.</param>
         /// <returns>A <see cref="Reko.Core.Program"/>.
         /// </returns>
-        Program LoadRawImage(string fileName, byte[] image, Address loadAddress, LoadDetails details);
+        Program LoadRawImage(string fileName, byte[] image, Address? loadAddress, LoadDetails details);
 
         Program AssembleExecutable(string fileName, IAssembler asm, IPlatform platform, Address loadAddress);
         Program AssembleExecutable(string fileName, byte[] bytes, IAssembler asm, IPlatform platform, Address loadAddress);
@@ -98,35 +98,35 @@ namespace Reko.Core
         /// <summary>
         /// Name of the loader to use. Loader names are found in the reko.config file.
         /// </summary>
-        public string LoaderName;
+        public string? LoaderName;
 
         /// <summary>
         /// Name of the processor architecture to use. Architecture names are found 
         /// in the reko.config file.
         /// </summary>
-        public string ArchitectureName;
+        public string? ArchitectureName;
         
         /// <summary>
         /// Architecture specific options. Each architecture defines its own
         /// set of options, like endianness, processor models etc.
         /// </summary>
-        public Dictionary<string,object> ArchitectureOptions;
+        public Dictionary<string,object>? ArchitectureOptions;
         
         /// <summary>
         /// Name of the platform to use. Platform names are found in the 
         /// reko.config file.
         /// </summary>
-        public string PlatformName;
+        public string? PlatformName;
         
         /// <summary>
         /// String representation of the address at which the binary file should
         /// be loaded. The address string is parsed by the architecture when loading.
         /// </summary>
-        public string LoadAddress;
+        public string? LoadAddress;
         
         /// <summary>
         /// Entry point of the program.
         /// </summary>
-        public EntryPointDefinition EntryPoint;
+        public EntryPointDefinition? EntryPoint;
     }
 }

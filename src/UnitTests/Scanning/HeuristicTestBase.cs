@@ -107,7 +107,7 @@ namespace Reko.UnitTests.Scanning
             w.WriteBytes(bytes);
             program.ImageMap.AddItemWithSize(
                 addr,
-                new ImageMapItem((uint)dt.Size)
+                new ImageMapItem(addr, (uint)dt.Size)
                 {
                     DataType = dt
                 });

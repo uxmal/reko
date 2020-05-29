@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Core
 
             var size = (uint)dt.Size;
 
-            var imageMapItem = new ImageMapItem(size) { Address = curAddr };
+            var imageMapItem = new ImageMapItem(curAddr, size);
             if (dt != null)
                 imageMapItem.DataType = dt;
             map.AddItemWithSize(curAddr, imageMapItem);
@@ -108,11 +108,10 @@ namespace Reko.UnitTests.Core
             var map = segmentMap.CreateImageMap();
             map.AddItemWithSize(
                 addrBase + 0x10,
-                new ImageMapItem(0x10) { DataType = new ArrayType(PrimitiveType.Byte, 10) });
+                new ImageMapItem(addrBase + 0x10, 0x10) { DataType = new ArrayType(PrimitiveType.Byte, 10) });
             map.Dump();
             Assert.AreEqual(3, map.Items.Count);
-            ImageMapItem item;
-            Assert.IsTrue(map.TryFindItemExact(addrBase, out item));
+            Assert.IsTrue(map.TryFindItemExact(addrBase, out ImageMapItem item));
             Assert.AreEqual(0x10, item.Size);
             Assert.IsInstanceOf<UnknownType>(item.DataType);
         }
@@ -125,7 +124,7 @@ namespace Reko.UnitTests.Core
             var map = segmentMap.CreateImageMap();
             map.AddItemWithSize(
                 addrBase,
-                new ImageMapItem(0x10) { DataType = new ArrayType(PrimitiveType.Byte, 0x10) });
+                new ImageMapItem(addrBase, 0x10) { DataType = new ArrayType(PrimitiveType.Byte, 0x10) });
             map.Dump();
             ImageMapItem item;
             Assert.IsTrue(map.TryFindItemExact(addrBase, out item));
@@ -234,7 +233,7 @@ namespace Reko.UnitTests.Core
             var map = new ImageMap(addrBase);
             var mapChangedFired = false;
             map.MapChanged += (sender, e) => { mapChangedFired = true; };
-            map.AddItem(addrBase, new ImageMapItem { DataType = new CodeType() });
+            map.AddItem(addrBase, new ImageMapItem(addrBase) { DataType = new CodeType() });
             Assert.IsTrue(mapChangedFired, "ImageMap should have fired MapChanged event");
         }
 	}

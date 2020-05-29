@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable disable
+
 using Reko.Core.Pascal;
 using Reko.Core.Serialization;
 using Reko.Core.Types;

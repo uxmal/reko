@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
+#nullable disable
+
 namespace Reko.Core.Lib
 {
     /** Perfect hashing function library. Contains functions to generate perfect

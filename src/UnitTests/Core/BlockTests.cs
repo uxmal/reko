@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Core
 		{
 			using (FileUnitTester fut = new FileUnitTester("Core/BlockCreateStatements.txt"))
 			{
-				Block bl = new Block(null, "block0");
+				Block bl = new Block(null, null, "block0");
 				bl.Statements.Add(0,
 					new Assignment(
 					new Identifier("id3", PrimitiveType.Word16, null),

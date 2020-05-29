@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -28,7 +28,7 @@ namespace Reko.Core
 {
     public class UserRegisterValue
     {
-        public RegisterStorage Register { get; set;  }
-        public Constant Value { get; set; }
+        public RegisterStorage? Register { get; set;  }
+        public Constant? Value { get; set; }
     }
 }

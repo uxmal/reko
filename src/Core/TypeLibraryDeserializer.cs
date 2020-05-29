@@ -18,15 +18,12 @@
  */
 #endregion
 
-using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Core
 {
@@ -41,8 +38,8 @@ namespace Reko.Core
         private readonly Dictionary<string, UnionType> unions;
         private readonly Dictionary<string, StructureType> structures;
         private readonly TypeLibrary library;
-        private string defaultConvention;
-        private string moduleName;
+        private string? defaultConvention;
+        private string? moduleName;
 
         public TypeLibraryDeserializer(IPlatform platform, bool caseInsensitive, TypeLibrary dstLib)
         {
@@ -64,9 +61,9 @@ namespace Reko.Core
             return library;
         }
 
-        private ModuleDescriptor EnsureModule(string moduleName, TypeLibrary dstLib)
+        private ModuleDescriptor EnsureModule(string? moduleName, TypeLibrary dstLib)
         {
-            moduleName = moduleName ?? "";
+            moduleName ??= "";
             if (!dstLib.Modules.TryGetValue(moduleName, out ModuleDescriptor mod))
             {
                 mod = new ModuleDescriptor(moduleName);
@@ -82,14 +79,16 @@ namespace Reko.Core
             {
                 foreach (var g in sLib.Globals.Where(gg => !string.IsNullOrEmpty(gg.Name) && gg.Type != null))
                 {
-                    var dt = this.LoadType(g.Type);
-                    var sym = ImageSymbol.Create(SymbolType.Data, platform.Architecture, null, g.Name);
-                    mod.GlobalsByName[g.Name] = sym;
+                    var globalType = g.Type!;
+                    var globalName = g.Name!;
+                    var dt = this.LoadType(globalType);
+                    var sym = ImageSymbol.Create(SymbolType.Data, platform.Architecture, null, globalName);
+                    mod.GlobalsByName[globalName] = sym;
                     if (g.Ordinal != GlobalVariable_v1.NoOrdinal)
                     {
                         mod.GlobalsByOrdinal[g.Ordinal] = sym;
                     }
-                    library.Globals[g.Name] = dt;       //$REVIEW: How to cope with colissions MODULE1!foo and MODULE2!foo?
+                    library.Globals[globalName] = dt;       //$REVIEW: How to cope with colissions MODULE1!foo and MODULE2!foo?
                 }
             }
         }
@@ -116,9 +115,11 @@ namespace Reko.Core
         {
             try
             {
-                var sser = new ProcedureSerializer(platform, this, this.defaultConvention);
+                var sser = new ProcedureSerializer(platform, this, this.defaultConvention ?? "");
                 var signature = sser.Deserialize(sp.Signature, platform.Architecture.CreateFrame());
-                library.Signatures[sp.Name] = signature;
+                if (sp.Name is null || signature is null)
+                    return;
+                library.Signatures[sp.Name!] = signature;
                 var mod = EnsureModule(this.moduleName, this.library);
                 var svc = new SystemService
                 {
@@ -145,7 +146,7 @@ namespace Reko.Core
         public SystemService LoadService(SerializedService ssvc)
         {
             var svc = ssvc.Build(platform, this.library);
-            LoadService(svc.SyscallInfo.Vector, svc);
+            LoadService(svc.SyscallInfo!.Vector, svc);
             return svc;
         }
 
@@ -196,18 +197,23 @@ namespace Reko.Core
             return sType.Accept(this);
         }
 
-        public ExternalProcedure LoadExternalProcedure(ProcedureBase_v1 sProc)
+        public ExternalProcedure? LoadExternalProcedure(ProcedureBase_v1 sProc)
         {
+            //$TODO: code below.
+            //if (sProc.Name is null)
+            //    return null;
             var sSig = sProc.Signature;
-            var sser = new ProcedureSerializer(platform, this, this.defaultConvention);
+            var sser = new ProcedureSerializer(platform, this, this.defaultConvention ?? "");
             var sig = sser.Deserialize(sSig, platform.Architecture.CreateFrame());    //$BUGBUG: catch dupes?
-            return new ExternalProcedure(sProc.Name, sig)
+            if (sig is null)
+                return null;
+            return new ExternalProcedure(sProc.Name!, sig)  //$TODO: remove "!"
             {
-                EnclosingType = sSig.EnclosingType
+                EnclosingType = sSig?.EnclosingType
             };
         }
 
-        public void ReadDefaults(SerializedLibraryDefaults defaults)
+        public void ReadDefaults(SerializedLibraryDefaults? defaults)
         {
             if (defaults != null && defaults.Signature != null)
             {
@@ -288,7 +294,7 @@ namespace Reko.Core
 
         public DataType VisitArray(ArrayType_v1 array)
         {
-            var dt = array.ElementType.Accept(this);
+            var dt = array.ElementType!.Accept(this);
             return new ArrayType(dt, array.Length);
         }
 
@@ -299,7 +305,7 @@ namespace Reko.Core
 
         public DataType VisitString(StringType_v2 str)
         {
-            var dt = str.CharType.Accept(this);
+            var dt = str.CharType!.Accept(this);
             if (str.Termination ==  StringType_v2.ZeroTermination)
                 return StringType.NullTerminated(dt);
             if (str.Termination == StringType_v2.MsbTermination)
@@ -309,8 +315,8 @@ namespace Reko.Core
 
         public DataType VisitSignature(SerializedSignature sSig)
         {
-            var sser = new ProcedureSerializer(platform, this, this.defaultConvention);
-            return sser.Deserialize(sSig, platform.Architecture.CreateFrame());
+            var sser = new ProcedureSerializer(platform, this, this.defaultConvention!);
+            return sser.Deserialize(sSig, platform.Architecture.CreateFrame())!;
         }
 
         public DataType VisitStructure(StructType_v1 structure)
@@ -325,7 +331,7 @@ namespace Reko.Core
                 }
                 if (structure.Fields != null)
                 {
-                    var fields = structure.Fields.Select(f => new StructureField(f.Offset, f.Type.Accept(this), f.Name));
+                    var fields = structure.Fields.Select(f => new StructureField(f.Offset, f.Type!.Accept(this), f.Name));
                     str.Fields.AddRange(fields);
                 }
                 // str.Size = str.GetInferredSize();
@@ -337,7 +343,7 @@ namespace Reko.Core
                 var fields = structure.Fields.Select(
                     f => new StructureField(
                         f.Offset,
-                        f.Type.Accept(this),
+                        f.Type!.Accept(this),
                         f.Name));
                 str.Fields.AddRange(fields);
                 str.Size = structure.ByteSize;
@@ -351,25 +357,26 @@ namespace Reko.Core
 
         public DataType VisitTypedef(SerializedTypedef typedef)
         {
-            var dt = typedef.DataType.Accept(this);
+            var dt = typedef.DataType!.Accept(this);
             //$BUGBUG: check for type equality if already exists.
-            if (types.TryGetValue(typedef.Name, out var dtOld) &&
+            if (types.TryGetValue(typedef.Name!, out var dtOld) &&
                 dtOld is TypeReference tr)
             {
                 tr.Referent = dt;
             }
             else
             {
-                types[typedef.Name] = dt;
+                types[typedef.Name!] = dt;
             }
             return dt;
         }
 
         public DataType VisitTypeReference(TypeReference_v1 typeReference)
         {
-            if (types.TryGetValue(typeReference.TypeName, out DataType type))
-                return new TypeReference(typeReference.TypeName, type);
-            return new TypeReference(typeReference.TypeName, new UnknownType());
+            var typeName = typeReference.TypeName!;
+            if (types.TryGetValue(typeName, out DataType type))
+                return new TypeReference(typeName, type);
+            return new TypeReference(typeName, new UnknownType());
         }
 
         public DataType VisitUnion(UnionType_v1 sUnion)
@@ -381,7 +388,7 @@ namespace Reko.Core
                     unions.Add(sUnion.Name, union);
                 if (sUnion.Alternatives != null)
                 {
-                    var alts = sUnion.Alternatives.Select((a, i) => new UnionAlternative(a.Name, a.Type.Accept(this), i));
+                    var alts = sUnion.Alternatives.Select((a, i) => new UnionAlternative(a.Name, a.Type!.Accept(this), i));
                     union.Alternatives.AddRange(alts);
                 }
                 return union;
@@ -389,7 +396,7 @@ namespace Reko.Core
             else if (union.Alternatives.Count == 0)
             {
                 // Resolve forward reference.
-                var alts = sUnion.Alternatives.Select((a, i) => new UnionAlternative(a.Name, a.Type.Accept(this), i));
+                var alts = sUnion.Alternatives.Select((a, i) => new UnionAlternative(a.Name, a.Type!.Accept(this), i));
                 union.Alternatives.AddRange(alts);
                 return union;
             }
@@ -402,11 +409,11 @@ namespace Reko.Core
         public DataType VisitEnum(SerializedEnumType enumType)
         {
             var members = enumType.Values != null
-                ? enumType.Values.ToSortedList(k => k.Name, v => (long)v.Value)
+                ? enumType.Values.ToSortedList(k => k.Name!, v => (long)v.Value)
                 : new SortedList<string, long>();
             return new EnumType
             {
-                Name = enumType.Name,
+                Name = enumType.Name!,
                 Size = enumType.Size,
                 Members = members
             };

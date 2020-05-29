@@ -203,15 +203,14 @@ namespace Reko.Scanning
             foreach (var block in hproc.Cfg.Nodes.Where(bb => bb.Instructions.Count > 0))
             {
                 var last = block.Instructions.Last();
-                var b = new Block(proc, "l" + block.Address);
+                var b = new Block(proc, block.Address, "l" + block.Address);
                 if (program.ImageMap.Items.ContainsKey(block.Address))
                     continue;
                 program.ImageMap.AddItemWithSize(
                     block.Address,
-                    new ImageMapBlock
+                    new ImageMapBlock(block.Address)
                     {
                         Block = b,
-                        Address = block.Address,
                         Size = (uint)(last.Address - block.Address) + (uint)last.Length
                     });
             }

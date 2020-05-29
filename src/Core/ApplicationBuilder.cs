@@ -47,7 +47,7 @@ namespace Reko.Core
 	{
         protected CallSite site;
         protected Expression callee;
-        protected FunctionType sigCallee;
+        protected FunctionType? sigCallee;
 
         /// <summary>
         /// Creates an application builder that creates references
@@ -63,8 +63,8 @@ namespace Reko.Core
         }
 
         public abstract OutArgument BindOutArg(Identifier id);
-        public abstract Expression BindReturnValue(Identifier id);
-        public abstract Expression Bind(Identifier id);
+        public abstract Expression? BindReturnValue(Identifier id);
+        public abstract Expression? Bind(Identifier id);
 
         /// <summary>
         /// Creates an instruction:
@@ -83,7 +83,7 @@ namespace Reko.Core
                 throw new InvalidOperationException("No signature available; application cannot be constructed.");
             this.sigCallee = sigCallee;
 
-            Expression expOut = null;
+            Expression? expOut = null;
             DataType dtOut = VoidType.Instance;
             if (!sigCallee.HasVoidReturn)
             {
@@ -130,7 +130,7 @@ namespace Reko.Core
         public virtual List<Expression> BindArguments(FunctionType sigCallee, ProcedureCharacteristics chr)
         {
             var actuals = new List<Expression>();
-            for (int i = 0; i < sigCallee.Parameters.Length; ++i)
+            for (int i = 0; i < sigCallee.Parameters!.Length; ++i)
             {
                 var formalArg = sigCallee.Parameters[i];
                 if (formalArg.Storage is OutArgumentStorage)
@@ -141,7 +141,7 @@ namespace Reko.Core
                 else
                 {
                     var actualArg = Bind(formalArg);
-                    actuals.Add(actualArg);
+                    actuals.Add(actualArg!);
                 }
             }
             if (sigCallee.IsVariadic)

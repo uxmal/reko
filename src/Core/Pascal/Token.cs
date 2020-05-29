@@ -29,11 +29,11 @@ namespace Reko.Core.Pascal
     public class Token
     {
         public TokenType Type;
-        public object Value;
+        public object? Value;
 
         public override string ToString()
         {
-            if (Value == null)
+            if (Value is null)
                 return string.Format("{0}", Type);
             else
                 return string.Format("{0}:{1}", Type, Value);

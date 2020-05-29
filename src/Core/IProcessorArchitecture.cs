@@ -189,14 +189,19 @@ namespace Reko.Core
         IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg);
 
         /// <summary>
+        /// Provide an architecture-defined CallingConvention.
+        /// </summary>
+        CallingConvention? GetCallingConvention(string? ccName);
+
+        /// <summary>
         /// Returns a list of all the available mnemonics as strings.
         /// </summary>
         /// <returns>
         /// A <see cref="Dictionary{TKey, TValue}"/> mapping mnemonic names to their 
         /// internal Reko numbers.
         /// </returns>
-        SortedList<string, int> GetMnemonicNames();         
-        
+        SortedList<string, int> GetMnemonicNames();
+
         /// <summary>
         /// Returns an internal Reko number for a given instruction mnemonic, or
         /// null if none is available.
@@ -237,7 +242,7 @@ namespace Reko.Core
         /// <param name="reg"></param>
         /// <param name="bits"></param>
         /// <returns></returns>
-        RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs);
+        RegisterStorage? GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs);
 
         /// <summary>
         /// Returns all registers of this architecture.
@@ -290,7 +295,7 @@ namespace Reko.Core
         /// </param>
         /// <returns>null if no inlining was performed, otherwise a list of the inlined
         /// instructions.</returns>
-        List<RtlInstruction> InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder);
+        List<RtlInstruction>? InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder);
 
         Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state);
         Address MakeSegmentedAddress(Constant seg, Constant offset);
@@ -299,7 +304,7 @@ namespace Reko.Core
 
         IServiceProvider Services { get; }                  // Access to services from the Reko process.
         string Name { get; }                                // Short name used to refer to an architecture.
-        string Description { get; set; }                    // Longer description used to refer to architecture. Typically loaded from app.config
+        string? Description { get; set; }                    // Longer description used to refer to architecture. Typically loaded from app.config
         PrimitiveType FramePointerType { get; }             // Size of a pointer into the stack frame (near pointer in x86 real mode)
         PrimitiveType PointerType { get; }                  // Pointer size that reaches anywhere in the address space (far pointer in x86 real mode )
         PrimitiveType WordWidth { get; }                    // Processor's native word size
@@ -320,7 +325,7 @@ namespace Reko.Core
         /// <param name="txtAddr"></param>
         /// <param name="addr"></param>
         /// <returns></returns>
-        bool TryParseAddress(string txtAddr, out Address addr);
+        bool TryParseAddress(string? txtAddr, out Address addr);
 
         /// <summary>
         /// Given a <see cref="Constant"/>, returns an Address of the correct size for this architecture.
@@ -345,12 +350,11 @@ namespace Reko.Core
         /// <param name="options"></param>
         void LoadUserOptions(Dictionary<string, object> options);
 
-        Dictionary<string, object> SaveUserOptions();
-
         /// <summary>
-        /// Provide an architecture-defined CallingConvention.
+        /// Retrieves any settings on the architecture that may need persisting.
         /// </summary>
-        CallingConvention GetCallingConvention(string ccName);
+        /// <returns></returns>
+        Dictionary<string, object>? SaveUserOptions();
     }
 
     /// <summary>
@@ -372,17 +376,19 @@ namespace Reko.Core
     [Designer("Reko.Gui.Design.ArchitectureDesigner,Reko.Gui")]
     public abstract class ProcessorArchitecture : IProcessorArchitecture
     {
-        private RegisterStorage regStack;
+        private RegisterStorage? regStack;
 
+#nullable disable
         public ProcessorArchitecture(IServiceProvider services, string archId)
         {
             this.Services = services;
             this.Name = archId;
         }
+#nullable enable
 
         public IServiceProvider Services { get; }
         public string Name { get; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public EndianServices Endianness { get; protected set; }
         public PrimitiveType FramePointerType { get; protected set; }
         public PrimitiveType PointerType { get; protected set; }
@@ -440,7 +446,7 @@ namespace Reko.Core
 
         public virtual IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg) { yield return reg; }
 
-        public virtual CallingConvention GetCallingConvention(string name)
+        public virtual CallingConvention? GetCallingConvention(string? name)
         {
             // By default, there is no calling convention defined for architectures. Some
             // manufacturers however, define calling conventions.
@@ -524,14 +530,14 @@ namespace Reko.Core
         }
 
 
-        public virtual RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs) { return (regs.Contains(reg)) ? reg : null; }
+        public virtual RegisterStorage? GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs) { return (regs.Contains(reg)) ? reg : null; }
         public virtual void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg) { ids.Remove(reg); }
 
         public abstract bool TryGetRegister(string name, out RegisterStorage reg);
         public abstract FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf);
         public abstract FlagGroupStorage GetFlagGroup(string name);
         public abstract string GrfToString(RegisterStorage flagRegister, string prefix, uint grf);
-        public virtual List<RtlInstruction> InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
+        public virtual List<RtlInstruction>? InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
         {
             return null;
         }
@@ -541,8 +547,8 @@ namespace Reko.Core
         public virtual Address MakeSegmentedAddress(Constant seg, Constant offset) { throw new NotSupportedException("This architecture doesn't support segmented addresses."); }
         public virtual void PostprocessProgram(Program program) { }
         public abstract Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state);
-        public virtual Dictionary<string, object> SaveUserOptions() { return null; }
+        public virtual Dictionary<string, object>? SaveUserOptions() { return null; }
 
-        public abstract bool TryParseAddress(string txtAddr, out Address addr);
+        public abstract bool TryParseAddress(string? txtAddr, out Address addr);
     }
 }

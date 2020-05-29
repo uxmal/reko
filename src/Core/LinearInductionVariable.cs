@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,9 +32,9 @@ namespace Reko.Core
 	public class LinearInductionVariable
 	{
 		public LinearInductionVariable(
-            Constant initial, 
+            Constant? initial, 
             Constant delta, 
-            Constant final,
+            Constant? final,
             bool isSigned)
 		{
 			this.Initial = initial;
@@ -43,9 +43,9 @@ namespace Reko.Core
             this.IsSigned = isSigned;
 		}
 
-        public Constant Initial { get; private set; }   // First value used by induction variable 
+        public Constant? Initial { get; private set; }   // First value used by induction variable 
         public Constant Delta { get; private set; }		// Amount incremented or decremented per interation
-        public Constant Final { get; private set; }     // Value not attained by loop since it terminated.
+        public Constant? Final { get; private set; }     // Value not attained by loop since it terminated.
         public bool IsSigned { get; private set; }      // True if signed compares are used for the induction variable.
 
 		public static int Gcd(int a, int b)
@@ -72,7 +72,7 @@ namespace Reko.Core
 			}
 		}
 
-		public static LinearInductionVariable Merge(LinearInductionVariable liv1, LinearInductionVariable liv2)
+		public static LinearInductionVariable? Merge(LinearInductionVariable liv1, LinearInductionVariable liv2)
 		{
 			if (liv1.Delta == null || liv2.Delta == null)
 				return null;
@@ -103,9 +103,9 @@ namespace Reko.Core
 
 		public LinearInductionVariable Scale(Constant c)
 		{
-			Constant initial = Initial;
+			Constant? initial = Initial;
 			Constant delta = Delta;
-			Constant final = Final;
+			Constant? final = Final;
 
 			if (initial != null)
 				initial = Operator.SMul.ApplyConstants(initial, c);

@@ -54,7 +54,7 @@ namespace Reko.Core
         Expression GetValue(MemoryAccess access, SegmentMap segmentMap);
         Expression GetValue(SegmentedAccess access, SegmentMap segmentMap);
         Expression GetValue(Application appl);
-        Expression GetDefiningExpression(Identifier id);
+        Expression? GetDefiningExpression(Identifier id);
 
         /// <summary>
         /// Given an identifier <paramref name="id"/>, finds all the reaching definitions

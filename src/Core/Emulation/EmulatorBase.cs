@@ -59,7 +59,7 @@ namespace Reko.Core.Emulation
         public void Start()
         {
             IsRunning = true;
-            BeforeStart.Fire(this);
+            BeforeStart?.Fire(this);
             try
             {
                 Run();

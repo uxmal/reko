@@ -59,10 +59,7 @@ namespace Reko.UnitTests.Core.Output
 
         private void Given_Item(uint uAddr, uint size)
         {
-            var item = new ImageMapItem(size)
-            {
-                Address = Address.Ptr32(uAddr),
-            };
+            var item = new ImageMapItem(Address.Ptr32(uAddr), size);
             program.ImageMap.AddItem(item.Address, item);
         }
 

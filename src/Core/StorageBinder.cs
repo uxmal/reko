@@ -32,11 +32,11 @@ namespace Reko.Core
     /// </summary>
     public class StorageBinder : IStorageBinder, StorageVisitor<Identifier>
     {
-        private Dictionary<RegisterStorage, Identifier> regs;
-        private Dictionary<RegisterStorage, Dictionary<uint, Identifier>> grfs;
-        private Dictionary<Storage[], Identifier> seqs;
-        private Dictionary<int, Identifier> fpus;
-        private List<Identifier> ids;
+        private readonly Dictionary<RegisterStorage, Identifier> regs;
+        private readonly Dictionary<RegisterStorage, Dictionary<uint, Identifier>> grfs;
+        private readonly Dictionary<Storage[], Identifier> seqs;
+        private readonly Dictionary<int, Identifier> fpus;
+        private readonly List<Identifier> ids;
 
         public StorageBinder()
         {
@@ -113,8 +113,6 @@ namespace Reko.Core
 
         public Identifier EnsureRegister(RegisterStorage reg)
         {
-            if (reg == null)
-                return null;
             if (regs.TryGetValue(reg, out var id))
                 return id;
             id = new Identifier(reg.Name, reg.DataType, reg);
@@ -141,7 +139,6 @@ namespace Reko.Core
 
         public Identifier EnsureSequence(DataType dataType, string name, params Storage [] elements)
         {
-            var stg = new SequenceStorage(elements);
             if (this.seqs.TryGetValue(elements, out var idSeq))
             {
                 return idSeq;

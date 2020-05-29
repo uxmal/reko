@@ -36,7 +36,7 @@ namespace Reko.Core
 	public class SignatureBuilder
 	{
 		private List<Identifier> args;
-		private Identifier ret = null;
+		private Identifier? ret = null;
 		private IStorageBinder binder;
 		private IProcessorArchitecture arch;
 
@@ -93,7 +93,7 @@ namespace Reko.Core
 
 		public FunctionType BuildSignature()
 		{
-			return new FunctionType(ret, args.ToArray());
+			return FunctionType.Create(ret, args.ToArray());
 		}
 
     }

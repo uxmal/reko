@@ -143,7 +143,7 @@ namespace Reko.Scanning
         /// <returns></returns>
         public Block AddBlock(Address addr, Procedure proc, string blockName)
         {
-            Block b = new Block(proc, blockName) { Address = addr };
+            Block b = new Block(proc, addr, blockName);
             if (!blocks.TryGetUpperBound(addr, out var br))
             {
                 var lastMem = segmentMap.Segments.Values.Last().MemoryArea;
@@ -156,7 +156,7 @@ namespace Reko.Scanning
             blockStarts.Add(b, addr);
             proc.ControlGraph.Blocks.Add(b);
 
-            imageMap.AddItem(addr, new ImageMapBlock { Block = b });
+            imageMap.AddItem(addr, new ImageMapBlock(addr) { Block = b });
             return b;
         }
 

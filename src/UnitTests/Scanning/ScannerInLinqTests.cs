@@ -117,9 +117,9 @@ namespace Reko.UnitTests.Scanning
         {
             var addr = Address.Ptr32(uAddr);
             var proc = Procedure.Create(arch, addr, new Frame(PrimitiveType.Ptr32));
-            var block = new Block(proc, $"l{addr}");
-            program.ImageMap.AddItem(addr, new ImageMapBlock {
-                Address = addr,
+            var block = new Block(proc, addr, $"l{addr}");
+            program.ImageMap.AddItem(addr, new ImageMapBlock(addr)
+            { 
                 Block = block,
                 Size = len
             });
@@ -128,17 +128,18 @@ namespace Reko.UnitTests.Scanning
         private void Given_UnknownBlock(uint uAddr, uint len)
         {
             var addr = Address.Ptr32(uAddr);
-            var item = new ImageMapItem { Address = addr, Size = len };
+            var item = new ImageMapItem(addr) { Size = len };
             program.ImageMap.AddItem(addr, item);
         }
 
         private void Given_DataBlock(uint uAddr, uint len)
         {
             var addr = Address.Ptr32(uAddr);
-            var item = new ImageMapItem {
-                Address = addr,
+            var item = new ImageMapItem(addr)
+            {
                 Size = len,
-                DataType = new ArrayType(PrimitiveType.Byte, 0) };
+                DataType = new ArrayType(PrimitiveType.Byte, 0)
+            };
             program.ImageMap.AddItem(addr, item);
 
         }

@@ -129,7 +129,7 @@ namespace Reko.Core.NativeInterface
 			throw new NotImplementedException();
 		}
 
-		public override bool TryParseAddress(string txtAddr, out Address addr)
+		public override bool TryParseAddress(string? txtAddr, out Address addr)
 		{
 			throw new NotImplementedException();
 		}

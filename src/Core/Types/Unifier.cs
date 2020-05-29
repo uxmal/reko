@@ -227,6 +227,7 @@ namespace Reko.Core.Types
 
         private int recDepth;
 
+        //$TODO: change the signature to disallow nulls.
 		public DataType? Unify(DataType? a, DataType? b)
 		{
             if (++recDepth > 100)

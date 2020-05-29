@@ -267,7 +267,9 @@ namespace Reko.Analysis
                         new BitRange(),
                         (br, sid) => br | sid.Identifier.Storage.GetBitRange());
                     var regWide = arch.GetRegister(sd, bits);
-                    idWide = ssa.Procedure.Frame.EnsureRegister(regWide);
+                    idWide = (regWide != null)
+                        ? ssa.Procedure.Frame.EnsureRegister(regWide)
+                        : null;
                 }
                 else if (sids.All(sid => sid.Identifier.Storage is StackStorage))
                 {

@@ -411,9 +411,8 @@ namespace Reko.UnitTests.Gui.Windows
         {
             this.program.ImageMap.AddItemWithSize(
                 Address.Ptr32(address),
-                new ImageMapItem
+                new ImageMapItem(Address.Ptr32(address))
                 {
-                    Address = Address.Ptr32(address),
                     Size = 4,
                     DataType = PrimitiveType.Int32,
                 });

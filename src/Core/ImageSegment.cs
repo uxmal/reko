@@ -108,7 +108,7 @@ namespace Reko.Core
         /// </summary>
 		public AccessMode Access { get; set; }
 
-        public ImageSegmentRenderer Designer { get; set; }
+        public ImageSegmentRenderer? Designer { get; set; }
 
 		public string Name { get; set; }
 
@@ -141,7 +141,7 @@ namespace Reko.Core
         /// Used primarily on architectures with segmented address spaces
         /// like x86.
         /// </remarks>
-        public Identifier Identifier { get; set; }
+        public Identifier? Identifier { get; set; }
 
         /// <summary>
         /// Creates an image reader that scans all available memory in the segment.

@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Gui
         public void NavigateToBlock()
         {
             var proc = new Procedure(program.Architecture, "foo", Address.Ptr32(0x00123400), null);
-            var block = new Block(proc, "foo_block");
+            var block = new Block(proc, proc.EntryAddress, "foo_block");
             var codeSvc = new Mock<ICodeViewerService>();
             codeSvc.Setup(x => x.DisplayProcedure(program, proc, true)).Verifiable();
 

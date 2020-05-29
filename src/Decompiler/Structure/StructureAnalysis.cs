@@ -176,7 +176,7 @@ namespace Reko.Structure
         private DominatorGraph<Region> BuildPostDoms()
         {
             var revGraph = new ReverseGraph(regionGraph);
-            var exitNode = new Region(new Block(proc, "DummyExitBlock")) { Type = RegionType.Tail };
+            var exitNode = new Region(new Block(proc, null, "DummyExitBlock")) { Type = RegionType.Tail };
             revGraph.Nodes.Add(exitNode);
             var tailRegions = regionGraph.Nodes.Where(n => n.Type == RegionType.Tail);
             foreach (var r in tailRegions)

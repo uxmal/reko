@@ -45,12 +45,12 @@ namespace Reko.Core.NativeInterface
     [ClassInterface(ClassInterfaceType.None)]
     public class NativeRtlEmitter : INativeRtlEmitter
     {
-        private RtlEmitter m;
-        private NativeTypeFactory ntf;
-        private IRewriterHost host;
-        private List<Expression> handles;
-        private List<Expression> args;
-        private Address address;
+        private readonly RtlEmitter m;
+        private readonly NativeTypeFactory ntf;
+        private readonly IRewriterHost host;
+        private readonly List<Expression> handles;
+        private readonly List<Expression> args;
+        private Address? address;
         private InstrClass rtlClass;
         private int instrLength;
 
@@ -96,7 +96,7 @@ namespace Reko.Core.NativeInterface
 
         public RtlInstructionCluster ExtractCluster()
         {
-            if (this.address == null || this.instrLength == 0)
+            if (this.address is null || this.instrLength == 0)
                 throw new InvalidOperationException();
 
             var cluster = m.MakeCluster(address, instrLength, this.rtlClass);

@@ -127,8 +127,6 @@ namespace Reko.Core
 
 		public bool IsValidAddress(Address addr)
 		{
-			if (addr == null)
-				return false;
             return IsValidLinearAddress(addr.ToLinear());
         }
 
@@ -140,7 +138,7 @@ namespace Reko.Core
 			return offset < (ulong) abImage.Length;
         }
 
-        public Constant ReadRelocation(long imageOffset)
+        public Constant? ReadRelocation(long imageOffset)
         {
             return Relocations[BaseAddress.ToLinear() + (ulong) imageOffset];
         }
@@ -178,11 +176,17 @@ namespace Reko.Core
 
         public bool TryReadLe(long imageOffset, PrimitiveType type, out Constant c)
         {
-            c = ReadRelocation(imageOffset);
-            if (c != null && c.DataType.Size == type.Size)
+            var rc = ReadRelocation(imageOffset);
+            if (rc != null && rc.DataType.Size == type.Size)
+            {
+                c = rc;
                 return true;
+            }
             if (type.Size + imageOffset > abImage.Length)
+            {
+                c = default!;
                 return false;
+            }
             c = ReadLe(abImage, imageOffset, type);
             return true;
         }
@@ -194,11 +198,17 @@ namespace Reko.Core
 
         public bool TryReadBe(long imageOffset, PrimitiveType type, out Constant c)
         {
-            c = ReadRelocation(imageOffset);
-            if (c != null && c.DataType.Size == type.Size)
+            var rc = ReadRelocation(imageOffset);
+            if (rc != null && rc.DataType.Size == type.Size)
+            {
+                c = rc;
                 return true;
+            }
             if (type.Size + imageOffset > abImage.Length)
+            {
+                c = default!;
                 return false;
+            }
             c = ReadBe(abImage, imageOffset, type);
             return true;
         }

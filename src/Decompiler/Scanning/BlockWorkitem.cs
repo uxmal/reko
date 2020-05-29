@@ -250,7 +250,7 @@ namespace Reko.Scanning
         {
             // We don't know the 'then' block yet, as the following statements may chop up the block
             // we're presently in. Back-patch in when the block target is obtained.
-            var branch = new Branch(b.Condition, new Block(blockCur.Procedure, "TMP!"));
+            var branch = new Branch(b.Condition, new Block(blockCur.Procedure, blockCur.Address, "TMP!"));
             Emit(branch, blockCur);
 
             // The following statements may chop up the blockCur, so hang on to the essentials.
@@ -270,7 +270,7 @@ namespace Reko.Scanning
             if (!program.SegmentMap.IsValidAddress((Address)b.Target))
             {
                 var label = program.NamingPolicy.BlockName(ric.Address) + "_then";
-                blockThen = proc.AddBlock(label);
+                blockThen = proc.AddBlock((Address)b.Target, label);
                 var jmpSite = state.OnBeforeCall(stackReg, arch.PointerType.Size);
                 GenerateCallToOutsideProcedure(jmpSite, (Address)b.Target);
                 Emit(new ReturnInstruction());
@@ -1024,9 +1024,8 @@ namespace Reko.Scanning
                 return false;
             foreach (var de in te.Accesses)
             {
-                var item = new ImageMapItem((uint)de.Value.Size)
+                var item = new ImageMapItem(de.Key, (uint)de.Value.Size)
                 {
-                    Address = de.Key,
                     DataType = de.Value
                 };
                 program.ImageMap.AddItemWithSize(de.Key, item);

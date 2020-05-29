@@ -31,7 +31,7 @@ namespace Reko.Core
     {
         Project Project { get; }
 
-        bool Load(string fileName, string loader = null);
+        bool Load(string fileName, string? loader = null);
         Program LoadRawImage(string file, LoadDetails raw);
         Program LoadRawImage(byte[] bytes, LoadDetails raw);
         void ScanPrograms();

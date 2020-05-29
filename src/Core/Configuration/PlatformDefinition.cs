@@ -73,12 +73,12 @@ namespace Reko.Core.Configuration
 
         public void LoadSettingsFromConfiguration(IServiceProvider services, Platform platform)
         {
-            platform.Name = this.Name;
+            platform.Name = this.Name!;
             if (!string.IsNullOrEmpty(MemoryMapFile))
             {
-                platform.MemoryMap = MemoryMap_v1.LoadMemoryMapFromFile(services, MemoryMapFile!, platform);
+                platform.MemoryMap = MemoryMap_v1.LoadMemoryMapFromFile(services, MemoryMapFile!, platform)!;
             }
-            platform.Description = this.Description;
+            platform.Description = this.Description!;
             platform.Heuristics = LoadHeuristics(this.Heuristics);
         }
 

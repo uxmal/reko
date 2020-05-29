@@ -32,11 +32,12 @@ namespace Reko.Core
 	/// </summary>
 	public class Block
 	{
-		public Block(Procedure proc, string name)
+		public Block(Procedure proc, Address addr, string name)
 		{
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("Blocks must have a valid name.", nameof(name));
 			this.Procedure = proc;
+            this.Address = addr;
 			this.Name = name;
 			this.Statements = new StatementList(this);
             // The great majority of blocks have at most two predecessors / successors.

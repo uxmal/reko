@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,9 +27,10 @@ namespace Reko.Core
 	/// </summary>
 	public class AddressRange
 	{
-		private Address addrBegin;
-		private Address addrEnd;
-        private static AddressRange e = new AddressRange(Address.Ptr32(0), Address.Ptr32(0));
+		private readonly Address addrBegin;
+		private readonly Address addrEnd;
+
+        private static readonly AddressRange e = new AddressRange(Address.Ptr32(0), Address.Ptr32(0));
 
 		public AddressRange(Address addrBegin, Address addrEnd)
 		{

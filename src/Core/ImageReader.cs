@@ -34,12 +34,12 @@ namespace Reko.Core
     /// </summary>
     public class ImageReader
     {
-        protected MemoryArea image;
+        protected MemoryArea? image;
         protected byte[] bytes;
 		protected long offStart;
 		protected long offEnd;
 		protected long off;
-		protected Address addrStart;
+		protected Address? addrStart;
 
 		protected ImageReader(MemoryArea img, Address addr)
         {
@@ -58,7 +58,7 @@ namespace Reko.Core
         {
             this.image = img ?? throw new ArgumentNullException(nameof(img));
             this.addrStart = addrBegin ?? throw new ArgumentNullException(nameof(addrBegin));
-            if (addrEnd == null)
+            if (addrEnd is null)
                 throw new ArgumentNullException(nameof(addrEnd));
             this.offStart = addrBegin - img.BaseAddress;
             // Prevent walking off the end of the bytes.
@@ -98,9 +98,9 @@ namespace Reko.Core
             };
         }
 
-        public Address Address { get { return addrStart + (off - offStart); } }
+        public Address Address { get { return addrStart! + (off - offStart); } }
         public byte[] Bytes { get { return bytes; } }
-        public MemoryArea Image { get { return image; } }
+        public MemoryArea Image { get { return image!; } }
         public long Offset { get { return off; } set { off = value; } }
         public bool IsValid { get { return IsValidOffset(Offset); } }
         public bool IsValidOffset(long offset) { return 0 <= offset && offset < offEnd; }
@@ -188,7 +188,7 @@ namespace Reko.Core
 
         public bool TryReadLe(PrimitiveType dataType, out Constant c)
         {
-            bool ret = image.TryReadLe(off, dataType, out c);
+            bool ret = image!.TryReadLe(off, dataType, out c);
             if (ret)
                 off += (uint)dataType.Size;
             return ret;
@@ -201,14 +201,14 @@ namespace Reko.Core
         /// <returns>The read value as a <see cref="Constant"/>.</returns>
         public Constant ReadBe(PrimitiveType type)
         {
-            Constant c = image.ReadBe(off, type);
+            Constant c = image!.ReadBe(off, type);
             off += (uint)type.Size;
             return c;
         }
 
         public bool TryReadBe(PrimitiveType dataType, out Constant c)
         {
-            bool ret = image.TryReadBe(off, dataType, out c);
+            bool ret = image!.TryReadBe(off, dataType, out c);
             if (ret)
                 off += (uint)dataType.Size;
             return ret;
@@ -224,21 +224,6 @@ namespace Reko.Core
                 case 2: return ReadLeInt16();
                 case 4: return ReadLeInt32();
                 case 8: return ReadLeInt64();
-                default: throw new ArgumentOutOfRangeException();
-                }
-            }
-            throw new ArgumentOutOfRangeException();
-        }
-
-        public uint ReadLeUnsigned(PrimitiveType w)
-        {
-            if (w.IsIntegral)
-            {
-                switch (w.Size)
-                {
-                case 1: return ReadByte();
-                case 2: return ReadLeUInt16();
-                case 4: return ReadLeUInt32();
                 default: throw new ArgumentOutOfRangeException();
                 }
             }

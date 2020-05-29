@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -30,7 +30,7 @@ namespace Reko.Core.CLanguage
             IEqualityComparer<SerializedType>,
             ISerializedTypeVisitor<bool>
     {
-        private SerializedType y;
+        private SerializedType? y;
 
         public bool Equals(SerializedType x, SerializedType y)
         {
@@ -40,23 +40,20 @@ namespace Reko.Core.CLanguage
             return x.Accept(this);
         }
 
-        public int GetHashCode(SerializedType obj)
+        public int GetHashCode(SerializedType? obj)
         {
+            if (obj is null)
+                return 0;
             int hash = obj.GetType().GetHashCode() * 11;
-            var prim = obj as PrimitiveType_v1;
-            if (prim != null)
+            if (obj is PrimitiveType_v1 prim)
                 return hash ^ ((int) prim.Domain << 8) ^ prim.ByteSize;
-            var ptr = obj as PointerType_v1;
-            if (ptr != null)
+            if (obj is PointerType_v1 ptr)
                 return hash ^ GetHashCode(ptr.DataType);
-            var arr = obj as ArrayType_v1;
-            if (arr != null)
+            if (obj is ArrayType_v1 arr)
                 return hash ^ GetHashCode(arr.ElementType);
-            var str = obj as StructType_v1;
-            if (str != null)
+            if (obj is StructType_v1 str)
                 return hash ^ (str.Name != null ? str.Name.GetHashCode() : 0);
-            var uni = obj as UnionType_v1;
-            if (uni != null)
+            if (obj is UnionType_v1 uni)
                 return hash ^ (uni.Name != null ? uni.Name.GetHashCode() : 0);
 
             throw new NotImplementedException();
@@ -69,46 +66,46 @@ namespace Reko.Core.CLanguage
 
         public bool VisitPrimitive(PrimitiveType_v1 pX)
         {
-            var pY = (PrimitiveType_v1) y;
+            var pY = (PrimitiveType_v1) y!;
             return pX.Domain == pY.Domain && pX.ByteSize == pY.ByteSize;
         }
 
         public bool VisitVoidType(VoidType_v1 vX)
         {
-            var vY = (VoidType_v1) y;
+            var vY = (VoidType_v1) y!;
             return vX == vY && vX != null;
         }
 
         public bool VisitPointer(PointerType_v1 pX)
         {
-            y = ((PointerType_v1) y).DataType;
-            return pX.DataType.Accept(this);
+            y = ((PointerType_v1) y!).DataType!;
+            return pX.DataType!.Accept(this);
         }
 
         public bool VisitReference(ReferenceType_v1 rX)
         {
-            y = ((ReferenceType_v1)y).Referent;
-            return rX.Referent.Accept(this);
+            y = ((ReferenceType_v1)y!).Referent!;
+            return rX.Referent!.Accept(this);
         }
 
         public bool VisitMemberPointer(MemberPointer_v1 mpX)
         {
-            var mpY = (MemberPointer_v1) y;
+            var mpY = (MemberPointer_v1) y!;
             
             y = mpY.DeclaringClass;
-            if (!mpX.DeclaringClass.Accept(this))
+            if (!mpX.DeclaringClass!.Accept(this))
                 return false;
             y = mpY.MemberType;
-            return mpX.MemberType.Accept(this);
+            return mpX.MemberType!.Accept(this);
         }
 
         public bool VisitArray(ArrayType_v1 aX)
         {
-            var aY = ((ArrayType_v1) y);
+            var aY = ((ArrayType_v1) y!);
             if (aX.Length != aY.Length)
                 return false;
             y = aY.ElementType;
-            return aX.ElementType.Accept(this);
+            return aX.ElementType!.Accept(this);
         }
 
         public bool VisitEnum(SerializedEnumType e)
@@ -123,7 +120,7 @@ namespace Reko.Core.CLanguage
 
         public bool VisitStructure(StructType_v1 sX)
         {
-            var sY = (StructType_v1) y;
+            var sY = (StructType_v1) y!;
             return sX.Name == sY.Name && sX.Name != null;
         }
 
@@ -149,7 +146,7 @@ namespace Reko.Core.CLanguage
 
         public bool VisitUnion(UnionType_v1 uX)
         {
-            var uY = (UnionType_v1) y;
+            var uY = (UnionType_v1) y!;
             return uX.Name == uY.Name && uX.Name != null;
         }
     }

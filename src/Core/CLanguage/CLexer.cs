@@ -856,20 +856,20 @@ namespace Reko.Core.CLanguage
     public struct CToken
     {
         private CTokenType type;
-        private object value;
+        private object? value;
 
         public CToken(CTokenType type) : this(type, null)
         {
         }
 
-        public CToken(CTokenType type, object value)
+        public CToken(CTokenType type, object? value)
         {
             this.type = type;
             this.value = value;
         }
 
         public CTokenType Type { get { return type; } }
-        public object Value { get { return value; } }
+        public object? Value { get { return value; } }
     }
 
     public enum CTokenType

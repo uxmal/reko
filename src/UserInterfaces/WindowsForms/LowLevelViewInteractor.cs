@@ -452,16 +452,14 @@ namespace Reko.UserInterfaces.WindowsForms
                 if (uiSvc.ShowModalDialog(dlg) == Gui.DialogResult.OK)
                 {
                     var re = Core.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
-                    var hits = 
+                    var hits =
                         //$BUG: wrong result
                         program.SegmentMap.Segments.Values
                         .SelectMany(s => re.GetMatches(s.MemoryArea.Bytes, 0))
-                        .Select(offset => new AddressSearchHit
-                        {
-                            Program = program,
-                            Address = program.ImageMap.BaseAddress + offset,
-                            Length = 1
-                        });
+                        .Select(offset => new AddressSearchHit(
+                            program,
+                            program.ImageMap.BaseAddress + offset,
+                            1));
                     srSvc.ShowAddressSearchResults(hits, new CodeSearchDetails());
                 }
             }

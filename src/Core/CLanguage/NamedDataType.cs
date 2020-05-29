@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -28,8 +28,8 @@ namespace Reko.Core.CLanguage
 {
     public class NamedDataType
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public int Size { get; set; } // in bytes.
-        public SerializedType DataType { get; set; }
+        public SerializedType? DataType { get; set; }
     }
 }

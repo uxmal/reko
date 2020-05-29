@@ -126,6 +126,8 @@ namespace Reko.Environments.C64
                 this.dirEntry = dirEntry;
                 this.PreferredBaseAddress = Address.Ptr16(2048);
             }
+
+            public override Address PreferredBaseAddress { get; set; }
         }
 
         public override Program Load(Address addrLoad)

@@ -48,10 +48,10 @@ namespace Reko.Evaluation
 					return true;
 				}
 			}
-            addr = binExp.Left as Address;
-            if (addr != null && cRight != null &&
+            if (binExp.Left is Address a && cRight != null &&
                 (op == Operator.IAdd || op == Operator.ISub))
             {
+                addr = a;
                 return true;
             }
 			return false;

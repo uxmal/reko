@@ -491,7 +491,9 @@ namespace Reko.Arch.Pdp11
                 m.Assign(dst, gen(dst, src));
                 return dst;
             case MemoryOperand memOp:
-                var r = binder.EnsureRegister(memOp.Register);
+                var r = memOp.Register != null
+                    ? binder.EnsureRegister(memOp.Register)
+                    : null;
                 var tmp = binder.CreateTemporary(dasm.Current.DataWidth);
                 switch (memOp.Mode)
                 {

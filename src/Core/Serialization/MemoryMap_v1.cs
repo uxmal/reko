@@ -84,6 +84,12 @@ namespace Reko.Core.Serialization
 
         public static ImageSegment? LoadSegment(MemorySegment_v1 segment, IPlatform platform, IDiagnosticsService diagSvc)
         {
+            if (segment.Name is null)
+            {
+                diagSvc.Warn("Memory map segments must have names.");
+                return null;
+            }
+
             if (!platform.TryParseAddress(segment.Address, out var addr))
             {
                 diagSvc.Warn(

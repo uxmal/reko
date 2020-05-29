@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,20 +51,17 @@ namespace Reko.Core
         {
             this.Bytes = mem.Bytes;
             this.Position = (int)(addr - mem.BaseAddress);
-            this.MemoryArea = mem;
         }
 
         public ImageWriter(MemoryArea mem, long offset)
         {
             this.Bytes = mem.Bytes;
             this.Position = (int)offset;
-            this.MemoryArea = mem;
         }
 
         public abstract ImageWriter Clone();
 
         public byte[] Bytes { get; private set; }
-        public MemoryArea MemoryArea { get; protected set; }
         public int Position { get; set; }
 
         public byte[] ToArray()
@@ -265,7 +262,6 @@ namespace Reko.Core
         public override ImageWriter Clone()
         {
             var w = new BeImageWriter(Bytes, (uint) Position);
-            w.MemoryArea = this.MemoryArea;
             return w;
         }
 
@@ -304,7 +300,6 @@ namespace Reko.Core
         public override ImageWriter Clone()
         {
             var w = new LeImageWriter(Bytes, (uint)Position);
-            w.MemoryArea = this.MemoryArea;
             return w;
         }
 

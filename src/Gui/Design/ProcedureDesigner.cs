@@ -158,12 +158,7 @@ namespace Reko.Gui.Design
                 },
                 PointerScannerFlags.All);
             resultSvc.ShowAddressSearchResults(
-                addrControl.Select(a => new AddressSearchHit
-                {
-                    Program = program,
-                    Address = a,
-                    Length = 1
-                }),
+                addrControl.Select(a => new AddressSearchHit(program, a, 1)),
                 new CodeSearchDetails());
         }
 

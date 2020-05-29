@@ -48,6 +48,8 @@ namespace Reko.Core.Types
     // a sibling class "LowLevelFunctionType".
     public class FunctionType : DataType
 	{
+        private Identifier? retValue;
+
         public FunctionType()
         {
             this.ParametersValid = false;
@@ -100,7 +102,7 @@ namespace Reko.Core.Types
         /// The 'Name' property of the <see cref="Identifier"/> is not applicable, and will typically
         /// be the empty string.
         /// </remarks>
-        public Identifier? ReturnValue { get; private set; }
+        public Identifier ReturnValue { get { return retValue!; } set { retValue = value; } }
         public Identifier[]? Parameters { get; private set; }
         public bool HasVoidReturn { get { return ReturnValue == null || ReturnValue.DataType is VoidType; } }
         public TypeVariable? TypeVariable { get; set; }  //$REVIEW: belongs on the Procedure itself!

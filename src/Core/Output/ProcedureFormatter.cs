@@ -67,7 +67,7 @@ namespace Reko.Core.Output
                     var succ = block.Succ;
                     if (succ.Count == 1)
                     {
-                        var ret = block.Statements.Count > 0 && (block.Statements.Last.Instruction is ReturnInstruction);
+                        var ret = block.Statements.Count > 0 && (block.Statements.Last!.Instruction is ReturnInstruction);
                         if (!ret && (i == blocks.Length - 1 || succ[0] != blocks[i + 1]))
                         {
                             WriteGoto(succ[0] != null ? succ[0].Name : "(null)");
@@ -75,7 +75,7 @@ namespace Reko.Core.Output
                     }
                     else if (succ.Count == 2 && block.Statements.Count > 0)
                     {
-                        var br = block.Statements.Last.Instruction is Branch;
+                        var br = block.Statements.Last!.Instruction is Branch;
                         if (br && (i == blocks.Length - 1 || succ[0] != blocks[i + 1]))
                         {
                             WriteGoto(succ[0].Name);

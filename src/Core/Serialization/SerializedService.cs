@@ -94,11 +94,15 @@ namespace Reko.Core.Serialization
                 syscallinfo.RegisterValues = new RegValue[this.RegisterValues.Length];
                 for (int i = 0; i < this.RegisterValues.Length; ++i)
                 {
-                    syscallinfo.RegisterValues[i] = new RegValue
+                    var regName = this.RegisterValues[i].Register;
+                    if (regName != null)
                     {
-                        Register = platform.Architecture.GetRegister(this.RegisterValues[i].Register),
-                        Value = Convert.ToInt32(this.RegisterValues[i].Value, 16),
-                    };
+                        syscallinfo.RegisterValues[i] = new RegValue
+                        {
+                            Register = platform.Architecture.GetRegister(regName),
+                            Value = Convert.ToInt32(this.RegisterValues[i].Value, 16),
+                        };
+                    }
                 }
             }
             if (this.StackValues != null)

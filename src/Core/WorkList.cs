@@ -28,8 +28,8 @@ namespace Reko.Core
 	/// </summary>
 	public class WorkList<T>
 	{
-		private HashSet<T> inQ;
-		private Queue<T> q;
+		private readonly HashSet<T> inQ;
+		private readonly Queue<T> q;
 
 		public WorkList()
 		{
@@ -89,7 +89,7 @@ namespace Reko.Core
 					return true;
 				}
 			}
-			item = default(T);
+			item = default!;
             return false;
 		}
 
@@ -105,8 +105,8 @@ namespace Reko.Core
     /// <typeparam name="T"></typeparam>
     public class WorkStack<T>
     {
-		private HashSet<T> inStack;
-		private Stack<T> s;
+		private readonly HashSet<T> inStack;
+		private readonly Stack<T> s;
 
 		public WorkStack()
 		{
@@ -161,7 +161,7 @@ namespace Reko.Core
 					return true;
 				}
 			}
-			item = default(T);
+			item = default!;
             return false;
 		}
 

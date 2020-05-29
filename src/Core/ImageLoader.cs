@@ -48,7 +48,7 @@ namespace Reko.Core
         /// <summary>
         /// Optional loader-specific argument specified in app.config.
         /// </summary>
-        public string Argument { get; set; }
+        public string? Argument { get; set; }
 
         /// <summary>
         /// The image as it appears on the storage medium before being loaded.
@@ -107,9 +107,9 @@ namespace Reko.Core
         /// This method only makes sense for image formats that support
         /// x86-style segments.
         /// </remarks>
-        public virtual ImageSegment AddSegmentReference(Address addr, ushort seg)
+        public virtual ImageSegment? AddSegmentReference(Address addr, ushort seg)
         {
             return null;
-    }
+        }
     }
 }

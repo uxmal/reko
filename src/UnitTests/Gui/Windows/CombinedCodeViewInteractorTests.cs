@@ -130,11 +130,10 @@ namespace Reko.UnitTests.Gui.Windows
             this.proc = m.Procedure;
             this.program.Procedures[address] = proc;
 
-            var item = new ImageMapBlock
+            var item = new ImageMapBlock(address)
             {
-                Address = address,
                 Size = size,
-                Block = new Block(proc, "fakeBlock")
+                Block = new Block(proc, address, "fakeBlock")
             };
             program.ImageMap.AddItemWithSize(address, item);
         }
@@ -142,9 +141,8 @@ namespace Reko.UnitTests.Gui.Windows
         private void Given_ImageMapItem(uint addr, DataType dataType, string name)
         {
             var address = Address.Ptr32(addr);
-            var item = new ImageMapItem
+            var item = new ImageMapItem(address)
             {
-                Address = address,
                 DataType = dataType,
                 Name = name,
                 Size = (uint)dataType.Size,
