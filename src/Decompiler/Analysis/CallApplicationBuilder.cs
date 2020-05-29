@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using System;
 using System.Collections.Generic;
@@ -32,7 +34,7 @@ namespace Reko.Analysis
     /// <summary>
     /// Builds an application from a call instruction.
     /// </summary>
-    public class CallApplicationBuilder : ApplicationBuilder, StorageVisitor<Expression>
+    public class CallApplicationBuilder : ApplicationBuilder, StorageVisitor<Expression?>
     {
         private readonly SsaState ssaCaller;
         private readonly Statement stmCall;
@@ -40,7 +42,7 @@ namespace Reko.Analysis
         private readonly int stackDepthOnEntry;
         private readonly Dictionary<Storage, CallBinding> defs;
         private readonly Dictionary<Storage, CallBinding> uses;
-        private Dictionary<Storage, CallBinding> map;
+        private Dictionary<Storage, CallBinding>? map;
         private bool bindUses;
 
         public CallApplicationBuilder(SsaState ssaCaller, Statement stmCall, CallInstruction call, Expression callee) : base(call.CallSite, callee)
@@ -53,7 +55,7 @@ namespace Reko.Analysis
             this.stackDepthOnEntry = site.StackDepthOnEntry;
         }
 
-        public override Expression Bind(Identifier id)
+        public override Expression? Bind(Identifier id)
         {
             return WithUses(id.Storage);
         }
@@ -61,27 +63,27 @@ namespace Reko.Analysis
         public override OutArgument BindOutArg(Identifier id)
         {
             var exp = WithDefinitions(id.Storage);
-            return new OutArgument(arch.FramePointerType, exp);
+            return new OutArgument(arch.FramePointerType, exp!);
         }
 
-        public override Expression BindReturnValue(Identifier id)
+        public override Expression? BindReturnValue(Identifier id)
         {
             return WithDefinitions(id.Storage);
         }
 
-        private Expression WithUses(Storage stg)
+        private Expression? WithUses(Storage stg)
         {
             this.bindUses = true;
             return With(uses, stg);
         }
 
-        private Expression WithDefinitions(Storage stg)
+        private Expression? WithDefinitions(Storage stg)
         {
             this.bindUses = false;
             return With(defs, stg);
         }
 
-        private Expression With(Dictionary<Storage, CallBinding> map, Storage stg)
+        private Expression? With(Dictionary<Storage, CallBinding> map, Storage stg)
         {
             this.map = map;
             var exp = stg.Accept(this);
@@ -89,15 +91,15 @@ namespace Reko.Analysis
             return exp;
         }
 
-        public Expression VisitFlagGroupStorage(FlagGroupStorage grf)
+        public Expression? VisitFlagGroupStorage(FlagGroupStorage grf)
         {
-            if (!map.TryGetValue(grf, out var cb))
+            if (!map!.TryGetValue(grf, out var cb))
                 return null;
             else
                 return cb.Expression;
         }
 
-        public Expression VisitFpuStackStorage(FpuStackStorage fpu)
+        public Expression? VisitFpuStackStorage(FpuStackStorage fpu)
         {
             foreach (var de in this.map
               .Where(d => d.Value.Storage is FpuStackStorage))
@@ -130,11 +132,11 @@ namespace Reko.Analysis
             }
         }
 
-        public Expression VisitRegisterStorage(RegisterStorage reg)
+        public Expression? VisitRegisterStorage(RegisterStorage reg)
         {
             // If the architecture has no subregisters, this test will
             // be true.
-            if (map.TryGetValue(reg, out CallBinding cb))
+            if (map!.TryGetValue(reg, out CallBinding cb))
                 return cb.Expression;
             // If the architecture has subregisters, we need a more
             // expensive test.
@@ -154,14 +156,14 @@ namespace Reko.Analysis
 
         public Expression VisitSequenceStorage(SequenceStorage seq)
         {
-            if (map.TryGetValue(seq, out var binding))
+            if (map!.TryGetValue(seq, out var binding))
             {
                 return binding.Expression;
             }
             var exps = seq.Elements
                 .Select(stg => stg.Accept(this))
                 .ToArray();
-            return new MkSequence(seq.DataType, exps);
+            return new MkSequence(seq.DataType, exps!);
         }
 
         public Expression VisitStackArgumentStorage(StackArgumentStorage stack)

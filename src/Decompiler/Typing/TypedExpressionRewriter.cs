@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -40,11 +42,10 @@ namespace Reko.Typing
         private readonly Identifier globals;
         private readonly DataTypeComparer compTypes;
         private readonly TypedConstantRewriter tcr;
-        private readonly ExpressionEmitter m;
         private readonly Unifier unifier;
         private bool dereferenced;
-        private Expression basePtr;
-        private DecompilerEventListener eventListener;
+        private Expression? basePtr;
+        private readonly DecompilerEventListener eventListener;
 
         public TypedExpressionRewriter(Program program, DecompilerEventListener eventListener)
         {
@@ -53,7 +54,6 @@ namespace Reko.Typing
             this.eventListener = eventListener;
             this.compTypes = new DataTypeComparer();
             this.tcr = new TypedConstantRewriter(program, eventListener);
-            this.m = new ExpressionEmitter();
             this.unifier = new Unifier();
         }
 
@@ -87,7 +87,7 @@ namespace Reko.Typing
         private void RewriteFormals(FunctionType sig)
         {
             if (!sig.HasVoidReturn)
-                sig.ReturnValue.DataType = sig.ReturnValue.TypeVariable.DataType;
+                sig.ReturnValue.DataType = sig.ReturnValue.TypeVariable!.DataType;
             if (sig.Parameters != null)
             {
                 foreach (Identifier formalArg in sig.Parameters)
@@ -106,14 +106,14 @@ namespace Reko.Typing
         private Instruction MakeAssignment(Expression dst, Expression src)
         {
             src = src.Accept(this);
-            var tvDst = dst.TypeVariable;
+            var tvDst = dst.TypeVariable!;
             dst = dst.Accept(this);
             var dtSrc = DataTypeOf(src);
             var dtDst = DataTypeOf(dst);
             if (!TypesAreCompatible(dtSrc, dtDst))
             {
-                UnionType uDst = dtDst.ResolveAs<UnionType>();
-                UnionType uSrc = dtSrc.ResolveAs<UnionType>();
+                UnionType? uDst = dtDst.ResolveAs<UnionType>();
+                UnionType? uSrc = dtSrc.ResolveAs<UnionType>();
                 if (uDst != null)
                 {
                     // ceb = new ComplexExpressionBuilder(dtDst, dtDst, dtSrc, null, dst, null, 0);
@@ -151,7 +151,7 @@ namespace Reko.Typing
         public override Instruction TransformDeclaration(Declaration decl)
         {
             base.TransformDeclaration(decl);
-            decl.Identifier.DataType = decl.Identifier.TypeVariable.DataType;
+            decl.Identifier.DataType = decl.Identifier.TypeVariable!.DataType;
             return decl;
         }
 
@@ -175,7 +175,7 @@ namespace Reko.Typing
             return exp;
         }
 
-        public Expression RewriteComplexExpression(Expression complex, Expression index, int offset, bool dereferenced)
+        public Expression RewriteComplexExpression(Expression complex, Expression? index, int offset, bool dereferenced)
         {
             if (index is Constant cOther)
             {
@@ -252,7 +252,7 @@ namespace Reko.Typing
             else if (binOp == Operator.Shr)
                 binOp = Operator.Sar;
             binExp = new BinaryExpression(binOp, binExp.DataType, left, right) { TypeVariable = binExp.TypeVariable };
-            program.TypeStore.SetTypeVariableExpression(binExp.TypeVariable, binExp);
+            program.TypeStore.SetTypeVariableExpression(binExp.TypeVariable!, binExp);
             return binExp;
         }
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,12 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Typing
 {
@@ -31,12 +32,16 @@ namespace Reko.Typing
     /// </summary>
     public class StructureFieldMerger
     {
-        private StructureType str;
+        private readonly StructureType str;
 
-        public StructureType Merge(StructureType str)
+        public StructureFieldMerger(StructureType str)
         {
             this.str = str;
-            StructureType strNew = new StructureType(str.Name, str.Size);
+        }
+
+        public StructureType Merge()
+        {
+            var strNew = new StructureType(str.Name, str.Size);
             strNew.IsSegment = str.IsSegment;
             foreach (List<StructureField> cluster in GetOverlappingClusters(str.Fields))
             {
@@ -57,11 +62,10 @@ namespace Reko.Typing
         {
             List<StructureType> types = new List<StructureType>();
             int commonOffset = CommonOffset(fields);
-            StructureField field;
             WorkList<StructureField> worklist = new WorkList<StructureField>(fields);
-            while (worklist.GetWorkItem(out field))
+            while (worklist.GetWorkItem(out StructureField field))
             {
-                StructureType s = FindStructureToFitIn(field, commonOffset, types);
+                StructureType? s = FindStructureToFitIn(field, commonOffset, types);
                 if (s == null)
                 {
                     s = new StructureType();
@@ -103,12 +107,12 @@ namespace Reko.Typing
             }
         }
 
-        private StructureType FindStructureToFitIn(StructureField field,int commonOffset, List<StructureType> types)
+        private StructureType? FindStructureToFitIn(StructureField field,int commonOffset, List<StructureType> types)
         {
             foreach (StructureType type in types)
             {
                 int offset = field.Offset - commonOffset;
-                StructureField low = type.Fields.LowerBound(offset);
+                StructureField? low = type.Fields.LowerBound(offset);
                 if (low == null)
                     return type;
                 if (low.DataType.Size + low.Offset <= offset)
@@ -147,14 +151,12 @@ namespace Reko.Typing
 
         private void AddFieldToCluster(StructureField field, List<StructureField> overlappingFields)
         {
-            EquivalenceClass eq = field.DataType as EquivalenceClass;
-            if (eq == null)
+            if (!(field.DataType is EquivalenceClass eq))
             {
                 overlappingFields.Add(field);
                 return;
             }
-            UnionType u = eq.DataType as UnionType;
-            if (u != null)
+            if (eq.DataType is UnionType u)
             {
                 foreach (UnionAlternative alt in u.Alternatives.Values)
                 {

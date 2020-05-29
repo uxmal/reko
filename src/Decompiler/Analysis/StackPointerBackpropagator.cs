@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -99,7 +101,7 @@ namespace Reko.Analysis
             }
             if (IsTrashed(spCur))
             {
-                ReplaceStackDefinition(spCur, null, offset);
+                ReplaceStackDefinition(spCur, null!, offset);   //$BUG: should not be null!
             }
         }
 
@@ -116,11 +118,11 @@ namespace Reko.Analysis
             }
         }
 
-        private (Identifier, int) MatchStackOffsetPattern(Identifier sp)
+        private (Identifier?, int) MatchStackOffsetPattern(Identifier sp)
         {
-            (Identifier, int) noMatch = (null, 0);
+            (Identifier?, int) noMatch = (null, 0);
             var sid = ssa.Identifiers[sp];
-            var def = sid.DefStatement;
+            var def = sid.DefStatement!;
             if (!(def.Instruction is Assignment ass))
                 return noMatch;
             if (!(ass.Src is BinaryExpression bin))
@@ -148,7 +150,7 @@ namespace Reko.Analysis
         /// <param name="frameOffset"></param>
         private void ReplaceStackDefinition(Identifier sp, Identifier spPrev, int frameOffset)
         {
-            var spDef = ssa.Identifiers[sp].DefStatement;
+            var spDef = ssa.Identifiers[sp].DefStatement!;
             if (spDef.Instruction is Assignment ass)
             {
                 var fp = ssa.Procedure.Frame.FramePointer;

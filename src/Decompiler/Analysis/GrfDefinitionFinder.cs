@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -33,11 +35,11 @@ namespace Reko.Analysis
 	/// </summary>
 	public class GrfDefinitionFinder : InstructionVisitorBase
 	{
-		private SsaIdentifierCollection ssaIds;
-		private SsaIdentifier sid;
+		private readonly SsaIdentifierCollection ssaIds;
+		private SsaIdentifier? sid;
 		private bool negated;
-		private Statement stm;
-		private Expression defExpr;
+		private Statement? stm;
+		private Expression? defExpr;
 
 		public GrfDefinitionFinder(SsaIdentifierCollection ssaIds)
 		{
@@ -54,21 +56,20 @@ namespace Reko.Analysis
 		{
 			this.sid = sid;
 			negated = false;
-			stm = sid.DefStatement;
+			stm = sid.DefStatement!;
 			if (stm != null)
 			{
-				Statement stmOld = null;
 				defExpr = null;
 				while (stm != null && defExpr == null)
 				{
-					stmOld = stm;
+					var stmOld = stm;
 					stm = null;
 					stmOld.Instruction.Accept(this);
 				}
 			}
 		}
 
-		public Expression DefiningExpression
+		public Expression? DefiningExpression
 		{
 			get { return defExpr; }
 		}
@@ -92,7 +93,7 @@ namespace Reko.Analysis
         {
             foreach (var di in ci.Definitions)
             {
-                if (di.Expression == sid.Identifier)
+                if (di.Expression == sid!.Identifier)
                 {
                     defExpr = new Application(ci.Callee, new UnknownType());
                     return;

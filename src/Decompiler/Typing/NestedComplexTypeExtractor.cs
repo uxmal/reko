@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
@@ -30,11 +32,11 @@ namespace Reko.Typing
 	/// </summary>
 	public class NestedComplexTypeExtractor : DataTypeTransformer
 	{
-		private TypeFactory factory;
-		private TypeStore store;
+		private readonly TypeFactory factory;
+		private readonly TypeStore store;
+        private readonly HashSet<DataType> visitedTypes;
 		private bool insideComplexType;
 		private bool changed;
-        private HashSet<DataType> visitedTypes;
         private int stackDepth; //$HACK until overly deep recursion is fixed.
  
 		public NestedComplexTypeExtractor(TypeFactory factory, TypeStore store)
@@ -105,7 +107,7 @@ namespace Reko.Typing
 			if (insideComplexType)
 			{
 				changed = true;
-				NestedComplexTypeExtractor nctr = new NestedComplexTypeExtractor(factory, store);
+				var nctr = new NestedComplexTypeExtractor(factory, store);
                 nctr.stackDepth = this.stackDepth;
 				str.Accept(nctr);
                 var dt = CreateEquivalenceClass(str);
@@ -135,7 +137,7 @@ namespace Reko.Typing
 			{
 
                 changed = true;
-				NestedComplexTypeExtractor nctr = new NestedComplexTypeExtractor(factory, store);
+				var nctr = new NestedComplexTypeExtractor(factory, store);
                 nctr.stackDepth = this.stackDepth;
 				ut.Accept(nctr);
 				var eq = CreateEquivalenceClass(ut);

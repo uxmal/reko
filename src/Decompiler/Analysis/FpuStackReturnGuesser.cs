@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -76,7 +78,7 @@ namespace Reko.Analysis
             {
                 if (listener.IsCanceled())
                     return;
-                if (!(sid.DefStatement.Instruction is CallInstruction ci))
+                if (!(sid.DefStatement!.Instruction is CallInstruction ci))
                     continue;
                 var callStm = sid.DefStatement;
                 // If FPU stack variable was not used after call then assume
@@ -157,7 +159,7 @@ namespace Reko.Analysis
 
         private class FpuStackUsesFinder : InstructionVisitorBase
         {
-            private Identifier id;
+            private Identifier? id;
             private bool wasUsed;
 
             public bool WasUsed(Instruction instr, Identifier id)

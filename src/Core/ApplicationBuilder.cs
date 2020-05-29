@@ -77,7 +77,7 @@ namespace Reko.Core
         /// <returns></returns>
         public Instruction CreateInstruction(
             FunctionType sigCallee,
-            ProcedureCharacteristics chr)
+            ProcedureCharacteristics? chr)
         {
             if (sigCallee == null || !sigCallee.ParametersValid)
                 throw new InvalidOperationException("No signature available; application cannot be constructed.");
@@ -127,7 +127,7 @@ namespace Reko.Core
         /// <param name="sigCallee"></param>
         /// <param name="chr"></param>
         /// <returns></returns>
-        public virtual List<Expression> BindArguments(FunctionType sigCallee, ProcedureCharacteristics chr)
+        public virtual List<Expression> BindArguments(FunctionType sigCallee, ProcedureCharacteristics? chr)
         {
             var actuals = new List<Expression>();
             for (int i = 0; i < sigCallee.Parameters!.Length; ++i)
@@ -154,7 +154,7 @@ namespace Reko.Core
             }
         }
 
-        public List<Expression> BindVariadicArguments(FunctionType sig, ProcedureCharacteristics chr, List<Expression> actuals)
+        public List<Expression> BindVariadicArguments(FunctionType sig, ProcedureCharacteristics? chr, List<Expression> actuals)
         {
             actuals.Add(Constant.Word32(0));
             Debug.Print($"{nameof(ApplicationBuilder)}: Varargs are not implemented yet.");

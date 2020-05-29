@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -105,7 +107,7 @@ namespace Reko.Analysis
             var defs = proc.EntryBlock.Statements
                 .Select(s => s.Instruction as DefInstruction)
                 .Where(s => s != null)
-                .Select(s => s.Identifier.Storage)
+                .Select(s => s!.Identifier.Storage)
                 .ToHashSet();
             var deadStgs = flow.BitsUsed.Keys.Except(defs).ToHashSet();
             bool changed = false;

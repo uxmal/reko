@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 Pavel Tomin.
  *
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable enable
 
 using Reko.Core;
 using Reko.Core.Code;
@@ -55,7 +57,7 @@ namespace Reko.Analysis
             base.VisitCallInstruction(ci);
             definitions.AddRange(ci.Definitions
                 .Select(d => d.Expression as Identifier)
-                .Where(i => i != null));
+                .Where(i => i != null)!);
         }
 
         public override void VisitDefInstruction(DefInstruction def)

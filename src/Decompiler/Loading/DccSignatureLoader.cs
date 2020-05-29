@@ -92,7 +92,7 @@ namespace Reko.Loading
 /* Structure of the prototypes table. Same as the struct in parsehdr.h,
     except here we don't need the "next" index (the elements are already
     sorted by function name) */
-class PH_FUNC_STRUCT
+        public class PH_FUNC_STRUCT
         {
             public string? name; // [SYMLEN]  /* Name of function or arg */
             public hlType typ;               /* Return type */

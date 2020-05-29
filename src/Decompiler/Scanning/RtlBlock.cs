@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,13 +18,11 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
-using Reko.Core.Machine;
 using Reko.Core.Rtl;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Scanning
 {

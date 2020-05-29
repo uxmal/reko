@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -51,9 +53,9 @@ namespace Reko.Scanning
 		private Expression EffectiveAddress(Identifier id)
 		{
 			Identifier fp = proc.Frame.FramePointer;
-			StackLocalStorage local = id.Storage as StackLocalStorage;
+			StackLocalStorage? local = id.Storage as StackLocalStorage;
 
-			int offset = local.StackOffset + proc.Frame.FrameOffset;
+			int offset = local!.StackOffset + proc.Frame.FrameOffset;
 			BinaryOperator op;
 			if (offset < 0)
 			{

@@ -81,7 +81,7 @@ namespace Reko.Core.Types
 			return new StructureType(name, size);
 		}
 
-		public StructureType CreateStructureType(string name, int size, StructureField field)
+		public StructureType CreateStructureType(string? name, int size, StructureField field)
 		{
             return new StructureType(name, size) { Fields = { field } };
 		}

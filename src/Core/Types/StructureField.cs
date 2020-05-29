@@ -65,7 +65,7 @@ namespace Reko.Core.Types
             return NamingPolicy.Instance.Types.StructureFieldName(this, this.name);
         }
 
-        public static int ToOffset(Constant offset)
+        public static int ToOffset(Constant? offset)
         {
             if (offset == null)
                 return 0;

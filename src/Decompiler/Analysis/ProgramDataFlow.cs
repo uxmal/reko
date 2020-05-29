@@ -18,9 +18,9 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
-using Reko.Evaluation;
-using System;
 using System.Collections.Generic;
 
 namespace Reko.Analysis
@@ -31,7 +31,7 @@ namespace Reko.Analysis
 	/// </summary>
 	public class ProgramDataFlow
 	{
-		private Dictionary<Procedure,ProcedureFlow> procFlow;
+		private readonly Dictionary<Procedure,ProcedureFlow> procFlow;
 
 		public ProgramDataFlow()
 		{

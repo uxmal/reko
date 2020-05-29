@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Code;
@@ -32,27 +34,26 @@ namespace Reko.Typing
     /// <summary>
     /// Collects induction variables, including derived induction variables.
     /// </summary>
-    public class InductionVariableCollector : ExpressionVisitorBase<LinearInductionVariable>
+    public class InductionVariableCollector : ExpressionVisitorBase<LinearInductionVariable?>
     {
-        private Program program;
+        private readonly Program program;
 
         public InductionVariableCollector(Program program)
         {
             this.program = program;
         }
 
-        public override LinearInductionVariable DefaultValue => null;
+        public override LinearInductionVariable? DefaultValue => null;
         
-        public override LinearInductionVariable VisitIdentifier(Identifier id)
+        public override LinearInductionVariable? VisitIdentifier(Identifier id)
         {
-            LinearInductionVariable iv;
-            if (!program.InductionVariables.TryGetValue(id, out iv))
+            if (!program.InductionVariables.TryGetValue(id, out var iv))
                 return null;
             else 
                 return iv;
         }
 
-        public override LinearInductionVariable VisitBinaryExpression(BinaryExpression binExp)
+        public override LinearInductionVariable? VisitBinaryExpression(BinaryExpression binExp)
         {
             var ivLeft = binExp.Left.Accept(this);
             var ivRight = binExp.Right.Accept(this);
@@ -67,23 +68,23 @@ namespace Reko.Typing
             return null;
         }
 
-        public override LinearInductionVariable VisitMemoryAccess(MemoryAccess access)
+        public override LinearInductionVariable? VisitMemoryAccess(MemoryAccess access)
         {
             return null;
         }
 
-        public override LinearInductionVariable VisitSegmentedAccess(SegmentedAccess access)
+        public override LinearInductionVariable? VisitSegmentedAccess(SegmentedAccess access)
         {
             return null;
         }
 
-        public LinearInductionVariable MergeInductionVariableConstant(LinearInductionVariable iv, Operator op, Constant c)
+        public LinearInductionVariable? MergeInductionVariableConstant(LinearInductionVariable? iv, Operator op, Constant? c)
         {
             if (iv == null || c == null)
                 return null;
-            Constant delta = op.ApplyConstants(iv.Delta, c);
-            Constant initial = (iv.Initial != null) ? op.ApplyConstants(iv.Initial, c) : null;
-            Constant final = (iv.Final != null) ? op.ApplyConstants(iv.Final, c) : null;
+            Constant delta = op.ApplyConstants(iv.Delta!, c);
+            Constant? initial = (iv.Initial != null) ? op.ApplyConstants(iv.Initial, c) : null;
+            Constant? final = (iv.Final != null) ? op.ApplyConstants(iv.Final, c) : null;
             return new LinearInductionVariable(initial, delta, final, false);
         }
     }

@@ -33,7 +33,7 @@ namespace Reko.Core
 	{
 		public LinearInductionVariable(
             Constant? initial, 
-            Constant delta, 
+            Constant? delta, 
             Constant? final,
             bool isSigned)
 		{
@@ -44,7 +44,7 @@ namespace Reko.Core
 		}
 
         public Constant? Initial { get; private set; }   // First value used by induction variable 
-        public Constant Delta { get; private set; }		// Amount incremented or decremented per interation
+        public Constant? Delta { get; private set; }		// Amount incremented or decremented per interation
         public Constant? Final { get; private set; }     // Value not attained by loop since it terminated.
         public bool IsSigned { get; private set; }      // True if signed compares are used for the induction variable.
 
@@ -66,7 +66,7 @@ namespace Reko.Core
 		{
 			get 
 			{
-				if (Initial == null || Final == null)
+				if (Initial == null || Final == null || Delta == null)
 					return 0;
 				return Math.Abs((Initial.ToInt32() - Final.ToInt32()) / Delta.ToInt32());
 			}
@@ -104,7 +104,7 @@ namespace Reko.Core
 		public LinearInductionVariable Scale(Constant c)
 		{
 			Constant? initial = Initial;
-			Constant delta = Delta;
+			Constant delta = Delta!;
 			Constant? final = Final;
 
 			if (initial != null)
@@ -128,7 +128,7 @@ namespace Reko.Core
 				sb.Append('?');
 			}
 			sb.Append(' ');
-			sb.Append(Delta.ToString());
+			sb.Append(Delta!.ToString());
 			sb.Append(' ');
 			if (Final != null)
 			{

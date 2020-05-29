@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -77,7 +79,7 @@ namespace Reko.Scanning
             return block.Statements.Count;
         }
 
-        public IEnumerable<RtlInstruction> GetBlockInstructions(RtlBlock rtlBlock)
+        public IEnumerable<RtlInstruction?> GetBlockInstructions(RtlBlock rtlBlock)
         {
             var block = invCache[rtlBlock];
             var last = block.Statements.Last;
@@ -103,7 +105,7 @@ namespace Reko.Scanning
                     //$TODO: this is also a workaround; some blocks have
                     // no addresses because they are synthesized from thin air
                     // after conversion from "raw" RTL.
-                    if (branch.Target.Address == null)
+                    if (branch.Target.Address is null)
                         yield break;
                     yield return new RtlBranch(branch.Condition, branch.Target.Address, InstrClass.ConditionalTransfer);
                     break;

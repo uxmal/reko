@@ -558,7 +558,7 @@ namespace Reko.Core
         /// <returns>
         /// The procedure, located at address <paramref name="addr"/>.
         /// </returns>
-        public Procedure EnsureProcedure(IProcessorArchitecture arch, Address addr, string procedureName)
+        public Procedure EnsureProcedure(IProcessorArchitecture arch, Address addr, string? procedureName)
         {
             if (this.Procedures.TryGetValue(addr, out Procedure proc))
                 return proc;
@@ -618,7 +618,7 @@ namespace Reko.Core
             return intrinsic;
         }
 
-        public Procedure_v1 EnsureUserProcedure(Address address, string name, bool decompile = true)
+        public Procedure_v1 EnsureUserProcedure(Address address, string? name, bool decompile = true)
         {
             if (!User.Procedures.TryGetValue(address, out var up))
             {

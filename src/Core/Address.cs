@@ -140,7 +140,7 @@ namespace Reko.Core
 
         public abstract string GenerateName(string prefix, string suffix);
 
-        public static bool operator ==(Address a, Address b)
+        public static bool operator ==(Address? a, Address? b)
         {
             if (a is null)
                 return (b is null);
@@ -149,7 +149,7 @@ namespace Reko.Core
             return a.ToLinear() == b.ToLinear();
         }
 
-        public static bool operator !=(Address a, Address b)
+        public static bool operator !=(Address? a, Address? b)
         {
             if (a is null)
                 return !(b is null);

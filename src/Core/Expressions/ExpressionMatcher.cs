@@ -327,7 +327,7 @@ namespace Reko.Core.Expressions
             return new WildOperator(label);
         }
 
-        public static DataType AnyDataType(string label)
+        public static DataType AnyDataType(string? label)
         {
             return new WildDataType(label);
         }
@@ -472,14 +472,14 @@ namespace Reko.Core.Expressions
 
         private class WildDataType : DataType
         {
-            public WildDataType(string label)
+            public WildDataType(string? label)
             {
                 this.Label = label;
             }
 
             public override int Size { get; set; }
 
-            public string Label { get; private set; }
+            public string? Label { get; private set; }
 
             public override T Accept<T>(IDataTypeVisitor<T> v)
             {

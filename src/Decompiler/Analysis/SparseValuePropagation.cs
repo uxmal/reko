@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -87,13 +89,12 @@ namespace Reko.Analysis
         private Expression Evaluate(SsaIdentifier sid)
         {
             Expression e;
-            switch (sid.DefStatement.Instruction)
+            switch (sid.DefStatement!.Instruction)
             {
             case Assignment ass:
                 e = ass.Src.Accept(eval);
                 return e;
             case PhiAssignment phi:
-                e = Constant.Unknown;
                 foreach (var phiArg in phi.Src.Arguments)
                 {
                     throw new NotImplementedException();

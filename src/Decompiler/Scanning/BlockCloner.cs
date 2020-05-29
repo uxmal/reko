@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -43,7 +45,7 @@ namespace Reko.Scanning
         private readonly CallGraph callGraph;
         private readonly Dictionary<Block, Block> mpBlocks;
         private readonly Dictionary<TemporaryStorage, Identifier> tmps;
-        private DataType dt;
+        private DataType? dt;
 
         public BlockCloner(Block blockToClone, Procedure procCalling, CallGraph callGraph)
         {
@@ -54,22 +56,21 @@ namespace Reko.Scanning
             this.tmps = new Dictionary<TemporaryStorage, Identifier>();
         }
 
-        public Statement Statement { get; set; }
-        public Statement StatementNew { get; set; }
-        public Identifier Identifier { get; set; }
+        public Statement? Statement { get; set; }
+        public Statement? StatementNew { get; set; }
+        public Identifier? Identifier { get; set; }
 
-        public Block Execute()
+        public Block? Execute()
         {
             return CloneBlock(blockToClone);
         }
 
-        public Block CloneBlock(Block blockOrig)
+        public Block? CloneBlock(Block blockOrig)
         {
             if (blockOrig == blockOrig.Procedure.ExitBlock)
                 return null;
 
-            Block blockNew;
-            if (mpBlocks.TryGetValue(blockOrig, out blockNew))
+            if (mpBlocks.TryGetValue(blockOrig, out Block blockNew))
             {
                 return blockNew;
             }
@@ -81,7 +82,7 @@ namespace Reko.Scanning
                 Statement = stm;
                 StatementNew = new Statement(
                     stm.LinearAddress,
-                    null,
+                    null!,
                     blockNew);
                 StatementNew.Instruction = stm.Instruction.Accept(this);
                 
@@ -111,13 +112,11 @@ namespace Reko.Scanning
         public Instruction VisitCallInstruction(CallInstruction ci)
         {
             var callee = ci.Callee.Accept(this);
-            var pc = callee as ProcedureConstant;
-            if (pc != null)
+            if (callee is ProcedureConstant pc)
             {
-                var calledProc = pc.Procedure as Procedure;
-                if (calledProc != null)
+                if (pc.Procedure is Procedure calledProc)
                 {
-                    callGraph.AddEdge(StatementNew, calledProc);
+                    callGraph.AddEdge(StatementNew!, calledProc);
                 }
             }
             var ciNew = new CallInstruction(ci.Callee, new CallSite(ci.CallSite.SizeOfReturnAddressOnStack, ci.CallSite.FpuStackDepthBefore));
@@ -353,7 +352,7 @@ namespace Reko.Scanning
 
         public Identifier VisitSequenceStorage(SequenceStorage seq)
         {
-            var dt = this.dt;
+            var dt = this.dt!;
             var clones = seq.Elements.Select(e => e.Accept(this).Storage);
             return procCalling.Frame.EnsureSequence(dt, clones.ToArray());
         }

@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Lib;
@@ -256,7 +258,7 @@ namespace Reko.Analysis
             {
                 if (!actualDefs.TryGetValue(sid.Identifier, out var actualDef))
                 {
-                    actualDef = null;
+                    actualDef = null!;
                 }
                 if (sid.DefStatement != actualDef)
                 {
@@ -319,7 +321,7 @@ namespace Reko.Analysis
         /// </summary>
         /// <param name="stmOld"></param>
         /// <param name="stmNew"></param>
-		public void ReplaceDefinitions(Statement stmOld, Statement stmNew)
+		public void ReplaceDefinitions(Statement stmOld, Statement? stmNew)
 		{
 			foreach (var sid in Identifiers)
 			{

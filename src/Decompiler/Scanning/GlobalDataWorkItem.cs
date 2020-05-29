@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Types;
 using Reko.Core.Serialization;
@@ -37,9 +39,9 @@ namespace Reko.Scanning
         private readonly Program program;
         private readonly DataType dt;
         private readonly EndianImageReader rdr;
-        private readonly string name;
+        private readonly string? name;
 
-        public GlobalDataWorkItem(IScannerQueue scanner, Program program, Address addr, DataType dt, string name) : base(addr)
+        public GlobalDataWorkItem(IScannerQueue scanner, Program program, Address addr, DataType dt, string? name) : base(addr)
         {
             this.scanner = scanner;
             this.program = program;

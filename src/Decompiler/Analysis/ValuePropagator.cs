@@ -18,15 +18,15 @@
  */
 #endregion
 
-using Reko.Evaluation;
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Operators;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using System;
+using Reko.Evaluation;
 using System.Diagnostics;
 using System.Linq;
 
@@ -53,7 +53,7 @@ namespace Reko.Analysis
         private readonly SsaEvaluationContext evalCtx;
         private readonly SsaMutator ssam;
         private readonly DecompilerEventListener eventListener;
-        private Statement stmCur;
+        private Statement? stmCur;      //$REFACTOR: try to make this a context paramter.
 
         public ValuePropagator(
             SegmentMap segmentMap,
@@ -115,6 +115,7 @@ namespace Reko.Analysis
 
         public Instruction VisitCallInstruction(CallInstruction ci)
         {
+            var stmCur = this.stmCur!;
             var oldCallee = ci.Callee;
             ci.Callee = ci.Callee.Accept(eval);
             if (ci.Callee is ProcedureConstant pc)
@@ -218,7 +219,7 @@ namespace Reko.Analysis
             Statement stm,
             CallInstruction ci,
             FunctionType sig,
-            ProcedureCharacteristics chr)
+            ProcedureCharacteristics? chr)
         {
             ssam.AdjustRegisterAfterCall(
                 stm,

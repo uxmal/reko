@@ -135,7 +135,7 @@ namespace Reko.Core
         /// language. This parameter allows the caller to select a dialect. Passing null
         /// uses the default, manufacturer dialect.</param>
         /// <returns></returns>
-        IAssembler CreateAssembler(string asmDialect);
+        IAssembler CreateAssembler(string? asmDialect);
 
         /// <summary>
         /// Reads a value from memory, respecting the processor's endianness. Use this
@@ -297,7 +297,7 @@ namespace Reko.Core
         /// instructions.</returns>
         List<RtlInstruction>? InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder);
 
-        Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state);
+        Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state);
         Address MakeSegmentedAddress(Constant seg, Constant offset);
 
         string GrfToString(RegisterStorage flagRegister, string prefix, uint grf);                       // Converts a union of processor flag bits to its string representation
@@ -428,7 +428,7 @@ namespace Reko.Core
         public RegisterStorage FpuStackRegister { get; protected set; }
         public uint CarryFlagMask { get; protected set; }
 
-        public virtual IAssembler CreateAssembler(string asmDialect) => throw new NotSupportedException("This architecture doesn't support assembly language.");
+        public virtual IAssembler CreateAssembler(string? asmDialect) => throw new NotSupportedException("This architecture doesn't support assembly language.");
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);
         public Frame CreateFrame() { return new Frame(FramePointerType); }
         public EndianImageReader CreateImageReader(MemoryArea img, Address addr) => this.Endianness.CreateImageReader(img, addr);
@@ -542,7 +542,7 @@ namespace Reko.Core
             return null;
         }
 
-        public virtual void LoadUserOptions(Dictionary<string, object> options) { }
+        public virtual void LoadUserOptions(Dictionary<string, object>? options) { }
         public abstract Address MakeAddressFromConstant(Constant c, bool codeAlign);
         public virtual Address MakeSegmentedAddress(Constant seg, Constant offset) { throw new NotSupportedException("This architecture doesn't support segmented addresses."); }
         public virtual void PostprocessProgram(Program program) { }

@@ -581,7 +581,7 @@ all other cases, together they constitute a Switch[].
             int incoming(Region r)
             {
                 return regionGraph.Predecessors(r)
-                    .Where(p => caseNodes.Contains(p))
+                    .Where(p => caseNodes!.Contains(p))
                     .Count();
             }
             var candidates = caseNodes.SelectMany(c => regionGraph.Successors(c))

@@ -18,25 +18,22 @@
  */
 #endregion
 
+#nullable enable 
+
+using Reko.Core;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Reko.Core;
-using Reko.Core.Rtl;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
-using Reko.Core.Services;
 
 namespace Reko.Scanning
 {
     public class DataScanner : ScannerBase, IScannerQueue
     {
-        private DecompilerEventListener listener;
-        private Queue<WorkItem> queue;
-        private ScanResults sr;
-        private Dictionary<Address, ImageSymbol> procedures;
+        private readonly DecompilerEventListener listener;
+        private readonly Queue<WorkItem> queue;
+        private readonly ScanResults sr;
+        private readonly Dictionary<Address, ImageSymbol> procedures;
 
         public DataScanner(Program program, ScanResults sr, DecompilerEventListener listener)
             :base(program, listener)
@@ -68,7 +65,7 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        public void EnqueueUserGlobalData(Address addr, DataType dt, string name)
+        public void EnqueueUserGlobalData(Address addr, DataType dt, string? name)
         {
             if (Program.SegmentMap.IsValidAddress(addr))
             {
@@ -77,7 +74,7 @@ namespace Reko.Scanning
             }
         }
 
-        public void EnqueueUserProcedure(IProcessorArchitecture arch, Address addr, FunctionType sig, string name)
+        public void EnqueueUserProcedure(IProcessorArchitecture arch, Address addr, FunctionType sig, string? name)
         {
             if (procedures.ContainsKey(addr))
                 return;

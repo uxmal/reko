@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,69 +29,23 @@ namespace Reko.Analysis
 {
     public class LinearInductionVariableContext
     {
-        private Statement stmInit;
-        private Statement stmInc;
-        private Statement stmPhi;
-        private Statement stmTest;
-        private Identifier idPhi;
-        private Constant valInit;
-        private Constant valDelta;
-        private Constant valTest;
-        private Operator testOperator;
+        public Constant? InitialValue { get; set; }
 
-        public Constant InitialValue
-        {
-            get { return valInit; }
-            set { valInit = value; }
-        }
+        public Statement? InitialStatement { get; set; }
 
-        public Statement InitialStatement
-        {
-            get { return stmInit; }
-            set { stmInit = value; }
-        }
+        public Constant? DeltaValue { get; set; }
 
-        public Constant DeltaValue
-        {
-            get { return valDelta; }
-            set { valDelta = value; }
-        }
+        public Statement? DeltaStatement { get; set; }
 
-        public Statement DeltaStatement
-        {
-            get { return stmInc; }
-            set { stmInc = value; }
-        }
+        public Statement? PhiStatement { get; set; }
 
-        public Statement PhiStatement
-        {
-            get { return stmPhi; }
-            set { stmPhi = value; }
-        }
+        public Identifier? PhiIdentifier { get; set; }
 
-        public Identifier PhiIdentifier
-        {
-            get { return idPhi; }
-            set { idPhi = value; }
-        }
+        public Operator? TestOperator { get; set; }
 
-        public Operator TestOperator
-        {
-            get { return testOperator; }
-            set { testOperator = value; }
-        }
+        public Statement? TestStatement { get; set; }
 
-        public Statement TestStatement
-        {
-            get { return stmTest; }
-            set { stmTest = value; }
-        }
-
-        public Constant TestValue
-        {
-            get { return valTest; }
-            set { valTest = value; }
-        }
+        public Constant? TestValue {get; set;}
 
 #if OSCAR_CAN_CODE
 3333333333333333385uk
@@ -102,8 +56,10 @@ namespace Reko.Analysis
             return new LinearInductionVariable(InitialValue, DeltaValue, TestValue, IsSignedOperator(TestOperator));
         }
 
-        private bool IsSignedOperator(Operator op)
+        private bool IsSignedOperator(Operator? op)
         {
+            if (op == null)
+                return false;
             return
                 op == Operator.Lt || op == Operator.Le ||
                 op == Operator.Gt || op == Operator.Ge;

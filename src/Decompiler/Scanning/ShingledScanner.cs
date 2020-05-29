@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -101,7 +103,7 @@ namespace Reko.Scanning
         /// <returns></returns>
         public ScanResults ScanNew()
         {
-            ICodeLocation location = null;
+            ICodeLocation? location = null;
             Exception error;
             try
             {
@@ -330,7 +332,6 @@ namespace Reko.Scanning
             // Find all places that are reachable from "bad" addresses.
             // By transitivity, they must also be be bad.
             var deadNodes = new HashSet<Address>();
-            throw new NotImplementedException();
             //foreach (var a in new DfsIterator<Address>(G).PreOrder(Bad))
             //{
             //    if (a != Bad)
@@ -512,12 +513,7 @@ namespace Reko.Scanning
                     endBlockNow = terminateDeferred;
                 }
             }
-            return new IcfgBuilder
-            {
-                Edges = edges,
-                AddrToBlock = mpBlocks,
-                Blocks = allBlocks,
-            };
+            return new IcfgBuilder(edges, mpBlocks, allBlocks);
         }
 
         private void BuildEdges(IcfgBuilder icb)
@@ -625,7 +621,7 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        private Address DestinationAddress(RtlInstructionCluster i)
+        private Address? DestinationAddress(RtlInstructionCluster i)
         {
             var rtl = i.Instructions[i.Instructions.Length - 1];
             for (;;)
@@ -647,7 +643,7 @@ namespace Reko.Scanning
         /// <param name="segment"></param>
         /// <param name="a"></param>
         /// <returns></returns>
-        private MachineInstruction Dasm(ImageSegment segment, int a)
+        private MachineInstruction? Dasm(ImageSegment segment, int a)
         {
             var addr = segment.Address + a;
             if (!segment.IsInRange(addr) || !segment.MemoryArea.IsValidAddress(addr))

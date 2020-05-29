@@ -62,7 +62,7 @@ namespace Reko.Evaluation
                     return false;
             }
             idDst = id;
-            this.dt = unifier.Unify(src.DataType, idDst.DataType);
+            this.dt = unifier.Unify(src!.DataType, idDst.DataType);
             this.pt = dt!.ResolveAs<PrimitiveType>();
             this.ptr = dt.ResolveAs<Pointer>();
             return pt != null || this.ptr != null;

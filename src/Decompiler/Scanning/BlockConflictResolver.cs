@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -213,7 +215,7 @@ namespace Reko.Scanning
             if ((i.Class & callTransfer) != callTransfer)
                 return;
             var addrDest = DestinationAddress(i);
-            if (addrDest == null)
+            if (addrDest is null)
                 return;
             if (!this.sr.DirectlyCalledAddresses.ContainsKey(addrDest))
                 return;
@@ -229,7 +231,7 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        private Address DestinationAddress(RtlInstructionCluster i)
+        private Address? DestinationAddress(RtlInstructionCluster i)
         {
             var rtl = i.Instructions[i.Instructions.Length - 1];
             for (;;)
