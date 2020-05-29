@@ -302,7 +302,9 @@ namespace Reko.Arch.Pdp11
             case AddressOperand addrOp:
                 return addrOp.Address;
             case MemoryOperand memOp:
-                var r = binder.EnsureRegister(memOp.Register);
+                var r = memOp.Register != null
+                    ? binder.EnsureRegister(memOp.Register)
+                    : null;
                 var tmp = binder.CreateTemporary(op.Width);
                 switch (memOp.Mode)
                 {
@@ -383,7 +385,9 @@ namespace Reko.Arch.Pdp11
                 m.Assign(dst, src);
                 return dst;
             case MemoryOperand memOp:
-                var r = binder.EnsureRegister(memOp.Register);
+                var r = memOp.Register != null
+                    ? binder.EnsureRegister(memOp.Register)
+                    : null;
                 Expression tmp = MaybeAssignTmp(gen(src));
                 switch (memOp.Mode)
                 {
