@@ -75,8 +75,8 @@ namespace Reko.Core
         /// </returns>
         Program LoadRawImage(string fileName, byte[] image, Address? loadAddress, LoadDetails details);
 
-        Program AssembleExecutable(string fileName, IAssembler asm, IPlatform platform, Address loadAddress);
-        Program AssembleExecutable(string fileName, byte[] bytes, IAssembler asm, IPlatform platform, Address loadAddress);
+        Program AssembleExecutable(string fileName, IAssembler asm, IPlatform platform, Address? loadAddress);
+        Program AssembleExecutable(string fileName, byte[] bytes, IAssembler asm, IPlatform platform, Address? loadAddress);
 
         /// <summary>
         /// Loads a file containing symbolic, type, or other metadata into a <see cref="Reko.Core.TypeLibrary>"/>.

@@ -453,7 +453,7 @@ namespace Reko.Core
             return Address.Create(Architecture.PointerType, uAddr);
         }
 
-        public virtual bool TryParseAddress(string sAddress, out Address addr)
+        public virtual bool TryParseAddress(string? sAddress, out Address addr)
         {
             return Architecture.TryParseAddress(sAddress, out addr);
         }
