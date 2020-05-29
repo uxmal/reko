@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Expressions;
 using System;
@@ -31,8 +33,8 @@ namespace Reko.Evaluation
     public class SliceSequence
     {
         private EvaluationContext ctx;
-        private Expression result;
-        private Expression eOld;
+        private Expression? result;
+        private Expression? eOld;
 
         public SliceSequence(EvaluationContext ctx)
         {
@@ -63,22 +65,24 @@ namespace Reko.Evaluation
 
         public Expression Transform()
         {
-            ctx.RemoveExpressionUse(eOld);
-            ctx.UseExpression(result);
-            return result;
+            ctx.RemoveExpressionUse(eOld!);
+            ctx.UseExpression(result!);
+            return result!;
         }
 
         private bool IsSequence(Expression e, out MkSequence sequence)
         {
+            MkSequence? s;
             if (e is Identifier id)
             {
-                sequence = ctx.GetDefiningExpression(id) as MkSequence;
+                s = ctx.GetDefiningExpression(id) as MkSequence;
             }
             else
             {
-                sequence = e as MkSequence;
+                s = e as MkSequence;
             }
-            return sequence != null;
+            sequence = s!;
+            return s != null;
         }
     }
 }

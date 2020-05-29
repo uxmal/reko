@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
@@ -33,10 +35,10 @@ namespace Reko.Evaluation
 	public class Add_e_c_cRule
 	{
 		private EvaluationContext ctx;
-		private BinaryExpression bin;
-		private BinaryExpression binLeft;
-		private Constant cLeftRight;
-		private Constant cRight;
+		private BinaryExpression? bin;
+		private BinaryExpression? binLeft;
+		private Constant? cLeftRight;
+		private Constant? cRight;
 
         public Add_e_c_cRule(EvaluationContext ctx)
 		{
@@ -67,13 +69,13 @@ namespace Reko.Evaluation
 
 		public Expression Transform(Statement stm)
 		{
-			if (binLeft.Operator == Operator.ISub)
-				cLeftRight = cLeftRight.Negate();
-			if (bin.Operator == Operator.ISub)
-				cRight = cRight.Negate();
+			if (binLeft!.Operator == Operator.ISub)
+				cLeftRight = cLeftRight!.Negate();
+			if (bin!.Operator == Operator.ISub)
+				cRight = cRight!.Negate();
 
 			BinaryOperator op = Operator.IAdd;
-			Constant c = ExpressionSimplifier.SimplifyTwoConstants(op, cLeftRight, cRight);
+			Constant c = ExpressionSimplifier.SimplifyTwoConstants(op, cLeftRight!, cRight!);
 			if (c.IsNegative)
 			{
 				c = c.Negate();

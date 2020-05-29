@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
@@ -27,7 +29,7 @@ namespace Reko.Evaluation
 {
 	public class NegSub_Rule
 	{
-		private BinaryExpression bin;
+		private BinaryExpression? bin;
 
 		public bool Match(UnaryExpression unary)
 		{
@@ -42,7 +44,7 @@ namespace Reko.Evaluation
 
 		public Expression Transform()
 		{
-			return new BinaryExpression(bin.Operator, bin.DataType, bin.Right, bin.Left);
+			return new BinaryExpression(bin!.Operator, bin.DataType, bin.Right, bin.Left);
 		}
 	}
 }

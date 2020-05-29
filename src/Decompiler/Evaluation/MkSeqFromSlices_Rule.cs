@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,10 +33,10 @@ namespace Reko.Evaluation
 {
     public class MkSeqFromSlices_Rule
     {
-        private EvaluationContext ctx;
-        private Identifier idHi;
-        private Identifier idLo;
-        private Identifier idOrig;
+        private readonly EvaluationContext ctx;
+        private Identifier? idHi;
+        private Identifier? idLo;
+        private Identifier? idOrig;
 
         public MkSeqFromSlices_Rule(EvaluationContext ctx)
         {
@@ -63,10 +65,10 @@ namespace Reko.Evaluation
 
         public Expression Transform()
         {
-            ctx.RemoveIdentifierUse(this.idHi);
-            ctx.RemoveIdentifierUse(this.idLo);
-            ctx.UseExpression(idOrig);
-            return idOrig;
+            ctx.RemoveIdentifierUse(this.idHi!);
+            ctx.RemoveIdentifierUse(this.idLo!);
+            ctx.UseExpression(idOrig!);
+            return idOrig!;
         }
     }
 }

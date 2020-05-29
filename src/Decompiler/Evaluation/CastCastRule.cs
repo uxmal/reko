@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
@@ -26,12 +28,12 @@ namespace Reko.Evaluation
 {
     public class CastCastRule
     {
-        private Cast c;
         private EvaluationContext ctx;
-        private Expression origExp;
-        private PrimitiveType ptC;
-        private PrimitiveType ptCc;
-        private PrimitiveType ptExp;
+        private Cast? c;
+        private Expression? origExp;
+        private PrimitiveType? ptC;
+        private PrimitiveType? ptCc;
+        private PrimitiveType? ptExp;
 
         public CastCastRule(EvaluationContext ctx)
         {
@@ -72,7 +74,7 @@ namespace Reko.Evaluation
 
         public Expression Transform()
         {
-            return origExp;
+            return origExp!;
         }
     }
 }

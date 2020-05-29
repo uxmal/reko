@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -31,8 +33,8 @@ namespace Reko.Evaluation
 	public class IdCopyPropagationRule
 	{
         private EvaluationContext ctx;
-        private Identifier idOld;
-		private Identifier idNew;
+        private Identifier? idOld;
+		private Identifier? idNew;
 
         public IdCopyPropagationRule(EvaluationContext ctx)
         {
@@ -48,9 +50,9 @@ namespace Reko.Evaluation
 
         public Expression Transform()
         {
-            ctx.RemoveIdentifierUse(idOld);
-            ctx.UseExpression(idNew);
-            return idNew;
+            ctx.RemoveIdentifierUse(idOld!);
+            ctx.UseExpression(idNew!);
+            return idNew!;
         }
 	}
 }

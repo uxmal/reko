@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Expressions;
 
@@ -25,9 +27,9 @@ namespace Reko.Evaluation
 {
     public class IdProcConstRule
     {
-        private EvaluationContext ctx;
-        private Identifier id;
-        private ProcedureConstant pc;
+        private readonly EvaluationContext ctx;
+        private Identifier? id;
+        private ProcedureConstant? pc;
 
         public IdProcConstRule(EvaluationContext ctx)
         {
@@ -43,8 +45,8 @@ namespace Reko.Evaluation
 
         public ProcedureConstant Transform()
         {
-            ctx.RemoveIdentifierUse(id);
-            return pc;
+            ctx.RemoveIdentifierUse(id!);
+            return pc!;
         }
     }
 }

@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
@@ -30,10 +32,10 @@ namespace Reko.Evaluation
 	/// </summary>
 	public class ConstConstBin_Rule
 	{
-		private Constant cLeft;
-		private Constant cRight;
-		private Operator op;
-        private Address addr;
+		private Constant? cLeft;
+		private Constant? cRight;
+		private Operator? op;
+        private Address? addr;
 
 		public bool Match(BinaryExpression binExp)
 		{
@@ -59,13 +61,13 @@ namespace Reko.Evaluation
 
 		public Expression Transform()
 		{
-            if (addr == null)
+            if (addr is null)
             {
-                return op.ApplyConstants(cLeft, cRight);
+                return op!.ApplyConstants(cLeft!, cRight!);
             }
             else
             {
-                return addr + cRight.ToInt32();
+                return addr + cRight!.ToInt32();
             }
 		}
 	}

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
@@ -27,8 +29,8 @@ namespace Reko.Evaluation
 {
     public class BinOpWithSelf_Rule
     {
-        private BinaryExpression binExp;
-        private Identifier id;
+        private BinaryExpression? binExp;
+        private Identifier? id;
 
         public bool Match(BinaryExpression binExp)
         {
@@ -44,16 +46,16 @@ namespace Reko.Evaluation
 
         public Expression Transform(EvaluationContext ctx)
         {
-            if (binExp.Operator == Operator.ISub || binExp.Operator == Operator.Xor)
+            if (binExp!.Operator == Operator.ISub || binExp.Operator == Operator.Xor)
             {
-                ctx.RemoveIdentifierUse(id);
-                ctx.RemoveIdentifierUse(id);
+                ctx.RemoveIdentifierUse(id!);
+                ctx.RemoveIdentifierUse(id!);
                 return Constant.Zero(binExp.DataType);
             }
             if (binExp.Operator == Operator.And || binExp.Operator == Operator.Or)
             {
-                ctx.RemoveIdentifierUse(id);
-                return id;
+                ctx.RemoveIdentifierUse(id!);
+                return id!;
             }
             throw new NotImplementedException();
          }

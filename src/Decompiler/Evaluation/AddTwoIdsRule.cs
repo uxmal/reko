@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
@@ -30,9 +32,9 @@ namespace Reko.Evaluation
 	/// </summary>
 	public class AddTwoIdsRule
 	{
-        private EvaluationContext ctx;
-		private Identifier idLeft;
-		private Identifier idRight;
+        private readonly EvaluationContext ctx;
+		private Identifier? idLeft;
+		private Identifier? idRight;
 
         public AddTwoIdsRule(EvaluationContext ctx)
         {
@@ -52,8 +54,8 @@ namespace Reko.Evaluation
 
         public Expression Transform()
         {
-            ctx.RemoveIdentifierUse(idLeft);
-            return new BinaryExpression(Operator.IMul, idLeft.DataType, idLeft, Constant.Create(idLeft.DataType, 2));
+            ctx.RemoveIdentifierUse(idLeft!);
+            return new BinaryExpression(Operator.IMul, idLeft!.DataType, idLeft, Constant.Create(idLeft.DataType, 2));
         }
 	}
 }

@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using System;
@@ -30,7 +32,7 @@ namespace Reko.Evaluation
 {
     public class ComparisonConstOnLeft
     {
-        private Expression bin;
+        private Expression? bin;
 
         public bool Match(BinaryExpression bin)
         {
@@ -50,7 +52,7 @@ namespace Reko.Evaluation
 
         public Expression Transform()
         {
-            return bin;
+            return bin!;
         }
     }
 }
