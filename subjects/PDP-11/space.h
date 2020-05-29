@@ -2136,7 +2136,7 @@ T_218: (in 0<16> : word16)
 T_219: (in r1_15 : Eq_5)
   Class: Eq_5
   DataType: Eq_5
-  OrigDataType: wchar_t
+  OrigDataType: word16
 T_220: (in 0<16> : word16)
   Class: Eq_5
   DataType: char
@@ -3840,7 +3840,7 @@ T_644: (in SEQ(SLICE(r0_29, byte, 8), 0<8>) : word16)
 T_645: (in r0_32 : Eq_5)
   Class: Eq_5
   DataType: Eq_5
-  OrigDataType: char
+  OrigDataType: word16
 T_646: (in ~r2_31 : word16)
   Class: Eq_646
   DataType: cui16

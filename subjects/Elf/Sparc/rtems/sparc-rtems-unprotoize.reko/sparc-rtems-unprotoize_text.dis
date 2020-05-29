@@ -5182,12 +5182,10 @@ l00016A98:
 	word32 dwLoc28_348 = 0<32>
 l00016AC8:
 	bool Z_100
-	word32 g0_80
 	branch dwLoc28_348 > 3<32> l00016AC8_ds_t
 l00016AC8_ds_t:
-	Z_100 = SLICE(cond(g0_80), bool, 2) (alias)
+	Z_100 = SLICE(cond(l1 - 0xFFFFFFFF<32>), bool, 2) (alias)
 l00016AC8_ds_f:
-	g0_80 = l1 - 0xFFFFFFFF<32>
 l00016AD8:
 	word32 o0_82 = vfork()
 	l1 = o0_82

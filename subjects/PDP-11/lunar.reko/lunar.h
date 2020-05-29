@@ -2727,7 +2727,7 @@ T_437: (in r0_30 - 0x2D0<16> : word16)
 T_438: (in r1_14 : Eq_5)
   Class: Eq_5
   DataType: Eq_5
-  OrigDataType: ci16
+  OrigDataType: word16
 T_439: (in 0050 : ptr16)
   Class: Eq_439
   DataType: (ptr16 Eq_5)
@@ -2863,7 +2863,7 @@ T_471: (in Mem44[0x0054<p16>:word16] : word16)
 T_472: (in r1_50 : Eq_5)
   Class: Eq_5
   DataType: Eq_5
-  OrigDataType: int16
+  OrigDataType: word16
 T_473: (in 0<16> : word16)
   Class: Eq_5
   DataType: int16
@@ -3003,7 +3003,7 @@ T_506: (in Mem96[0x0056<p16>:word16] : word16)
 T_507: (in r1_101 : Eq_5)
   Class: Eq_5
   DataType: Eq_5
-  OrigDataType: ci16
+  OrigDataType: word16
 T_508: (in 0052 : ptr16)
   Class: Eq_508
   DataType: (ptr16 Eq_5)
@@ -3143,7 +3143,7 @@ T_541: (in Mem137[0x0058<p16>:word16] : word16)
 T_542: (in r1_144 : Eq_5)
   Class: Eq_5
   DataType: Eq_5
-  OrigDataType: int16
+  OrigDataType: word16
 T_543: (in 0<16> : word16)
   Class: Eq_5
   DataType: int16
@@ -3335,7 +3335,7 @@ T_589: (in Mem5[0x006E<p16>:word16] : word16)
 T_590: (in r1_12 : Eq_5)
   Class: Eq_5
   DataType: Eq_5
-  OrigDataType: ci16
+  OrigDataType: word16
 T_591: (in 0<16> : word16)
   Class: Eq_5
   DataType: int16
@@ -4883,7 +4883,7 @@ T_976: (in Mem41[0x34D2<p16>:word16] : word16)
 T_977: (in r1_46 : Eq_5)
   Class: Eq_5
   DataType: Eq_5
-  OrigDataType: ci16
+  OrigDataType: word16
 T_978: (in 004A : ptr16)
   Class: Eq_978
   DataType: (ptr16 Eq_5)
@@ -9999,11 +9999,11 @@ T_2255: (in r2_46 >= 0<16> : bool)
 T_2256: (in r0 : Eq_5)
   Class: Eq_5
   DataType: Eq_5
-  OrigDataType: ci16
+  OrigDataType: word16
 T_2257: (in r1 : Eq_5)
   Class: Eq_5
   DataType: Eq_5
-  OrigDataType: ci16
+  OrigDataType: word16
 T_2258: (in r2Out : ptr16)
   Class: Eq_2258
   DataType: ptr16
@@ -10068,7 +10068,7 @@ T_2273: (in r2_28 + fn114A(r0, r1, out r2_28, out r3_29) : word16)
   Class: Eq_2273
   DataType: word16
   OrigDataType: word16
-T_2274: (in -((bool) fn114A(r0, r1, out r2_28, out r3_29) + r2_28) : word16)
+T_2274: (in -(r2_28 + fn114A(r0, r1, out r2_28, out r3_29)) : word16)
   Class: Eq_2258
   DataType: ptr16
   OrigDataType: word16

@@ -967,7 +967,7 @@ Eq_73: (union "Eq_73" (byte u0) (word16 u1) ((ptr32 Eq_1265) u2) ((ptr32 Eq_7974
 	T_6947 (in (d2_1050 + 3<32> >>u 2<32> << 2<32>) + 4<32> : word32)
 	T_6950 (in Mem3385[a7_3318 + 52<i32>:word32] : word32)
 	T_6956 (in Mem3410[Mem3385[d2_1050 + -4<i32>:word32] + 0<32>:word32] : word32)
-	T_6982 (in -v385_3195->dw0004 : word32)
+	T_6982 (in -Mem3171[v385_3195 + 4<i32>:word32] : word32)
 	T_6987 (in 0<32> : word32)
 	T_6989 (in -v385_3195->dw0000 - (d1 < 0<32>) : word32)
 	T_6998 (in Mem3221[a7_3211 + 0<32>:word32] : word32)
@@ -5872,7 +5872,7 @@ T_810: (in Mem233[a7_1886 + 44<i32>:word32] : word32)
   Class: Eq_810
   DataType: word32
   OrigDataType: word32
-T_811: (in -a7_1886[11<i32>] : word32)
+T_811: (in -Mem233[a7_1886 + 44<i32>:word32] : word32)
   Class: Eq_746
   DataType: (ptr32 word32)
   OrigDataType: word32
@@ -30556,7 +30556,7 @@ T_6981: (in Mem3171[v385_3195 + 4<i32>:word32] : word32)
   Class: Eq_6981
   DataType: word32
   OrigDataType: word32
-T_6982: (in -v385_3195->dw0004 : word32)
+T_6982: (in -Mem3171[v385_3195 + 4<i32>:word32] : word32)
   Class: Eq_73
   DataType: Eq_73
   OrigDataType: word32
@@ -30572,7 +30572,7 @@ T_6985: (in Mem3171[v385_3195 + 0<32>:word32] : word32)
   Class: Eq_6985
   DataType: int32
   OrigDataType: int32
-T_6986: (in -v385_3195->dw0000 : word32)
+T_6986: (in -Mem3171[v385_3195 + 0<32>:word32] : word32)
   Class: Eq_6986
   DataType: int32
   OrigDataType: int32

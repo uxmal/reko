@@ -12229,11 +12229,11 @@ T_2533: (in SLICE(es_di_138, selector, 16) | (word16) es_di_138 : word16)
   Class: Eq_2533
   DataType: cui16
   OrigDataType: cui16
-T_2534: (in cond(SLICE(es_di_138, selector, 16) | (word16) es_di_138) : byte)
+T_2534: (in cond(SLICE(es_di_138, selector, 16) | SLICE(es_di_138, word16, 0)) : byte)
   Class: Eq_2534
   DataType: byte
   OrigDataType: byte
-T_2535: (in SLICE(cond(SLICE(es_di_138, selector, 16) | (word16) es_di_138), bool, 2) : bool)
+T_2535: (in SLICE(cond(SLICE(es_di_138, selector, 16) | SLICE(es_di_138, word16, 0)), bool, 2) : bool)
   Class: Eq_2474
   DataType: bool
   OrigDataType: bool
@@ -19056,7 +19056,7 @@ T_4239: (in dx_388 : Eq_3619)
 T_4240: (in ax_479 : Eq_3303)
   Class: Eq_3303
   DataType: Eq_3303
-  OrigDataType: byte
+  OrigDataType: word16
 T_4241: (in ss : selector)
   Class: Eq_4241
   DataType: (ptr16 Eq_4241)
