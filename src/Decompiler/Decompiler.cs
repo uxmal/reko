@@ -238,7 +238,7 @@ namespace Reko
         public void Assemble(string fileName, IAssembler asm, IPlatform platform)
         {
             eventListener.ShowStatus("Assembling program.");
-            var program = loader.AssembleExecutable(fileName, asm, platform, null);
+            var program = loader.AssembleExecutable(fileName, asm, platform, null!);
             Project = AddProgramToProject(fileName, program);
             WriteEntryPoints(program);
             eventListener.ShowStatus("Assembled program.");

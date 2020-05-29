@@ -69,9 +69,10 @@ namespace Reko.Core
         /// <summary>
 		/// Loads the image into memory starting at the specified address
 		/// </summary>
-		/// <param name="addrLoad">Base address of program image</param>
+		/// <param name="addrLoad">Optional base address of program image. If not specified,
+        /// use the image format's default loading address.</param>
 		/// <returns></returns>
-        public abstract Program Load(Address addrLoad);
+        public abstract Program Load(Address? addrLoad);
 
         /// <summary>
         /// Loads the image into memory at the specified address, using the 

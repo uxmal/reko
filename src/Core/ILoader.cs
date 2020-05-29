@@ -34,7 +34,10 @@ namespace Reko.Core
     /// </summary>
     public interface ILoader
     {
-        string DefaultToFormat { get; set; }
+        /// <summary>
+        /// If no image type can be determined, assume the file is in this format.
+        /// </summary>
+        string? DefaultToFormat { get; set; }
 
         /// <summary>
         /// Opens the specified files and loads the contents of the file,
@@ -60,7 +63,7 @@ namespace Reko.Core
         /// Either a successfully loaded <see cref="Reko.Core.Program"/>, or null if 
         /// an appropriate image loader could not be determined or loaded.
         /// </returns>
-        Program LoadExecutable(string fileName, byte[] bytes, string? loader, Address? loadAddress);
+        Program? LoadExecutable(string fileName, byte[] bytes, string? loader, Address? loadAddress);
 
         /// <summary>
         /// Given a sequence of raw bytes, loads it into memory and applies the 
@@ -75,8 +78,8 @@ namespace Reko.Core
         /// </returns>
         Program LoadRawImage(string fileName, byte[] image, Address? loadAddress, LoadDetails details);
 
-        Program AssembleExecutable(string fileName, IAssembler asm, IPlatform platform, Address? loadAddress);
-        Program AssembleExecutable(string fileName, byte[] bytes, IAssembler asm, IPlatform platform, Address? loadAddress);
+        Program AssembleExecutable(string fileName, IAssembler asm, IPlatform platform, Address loadAddress);
+        Program AssembleExecutable(string fileName, byte[] bytes, IAssembler asm, IPlatform platform, Address loadAddress);
 
         /// <summary>
         /// Loads a file containing symbolic, type, or other metadata into a <see cref="Reko.Core.TypeLibrary>"/>.
@@ -84,9 +87,10 @@ namespace Reko.Core
         /// <param name="fileName">The name of the file.</param>
         /// <param name="platform">The operating environment for the file.</param>
         /// <param name="typeLib">A type library into which the metadata will be added.</param>
-        /// <returns>The updated <paramref name="typeLib"/>.
+        /// <returns>The updated <paramref name="typeLib"/> or null if no appropriate loader for the
+        /// metadata could be found.
         /// </returns>
-        TypeLibrary LoadMetadata(string fileName, IPlatform platform, TypeLibrary typeLib);
+        TypeLibrary? LoadMetadata(string fileName, IPlatform platform, TypeLibrary typeLib);
     }
 
     /// <summary>

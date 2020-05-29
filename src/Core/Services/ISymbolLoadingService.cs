@@ -31,7 +31,7 @@ namespace Reko.Core.Services
 {
     public interface ISymbolLoadingService
     {
-        ISymbolSource GetSymbolSource(string filename);
+        ISymbolSource? GetSymbolSource(string filename);
 
         List<SymbolSourceDefinition> GetSymbolSources();
     }

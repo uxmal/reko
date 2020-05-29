@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+ 
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,9 +29,9 @@ namespace Reko.Loading
 {
     public class ImageSignature
     {
-        public string Name;
-        public string Comments;
-        public string EntryPointPattern;
-        public string ImagePattern;
+        public string? Name;
+        public string? Comments;
+        public string? EntryPointPattern;
+        public string? ImagePattern;
     }
 }

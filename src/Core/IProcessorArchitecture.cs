@@ -348,7 +348,7 @@ namespace Reko.Core
         /// to customize the properties of the processor.
         /// </summary>
         /// <param name="options"></param>
-        void LoadUserOptions(Dictionary<string, object> options);
+        void LoadUserOptions(Dictionary<string, object>? options);
 
         /// <summary>
         /// Retrieves any settings on the architecture that may need persisting.

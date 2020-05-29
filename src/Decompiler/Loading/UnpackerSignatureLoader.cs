@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable enable
 
 using Reko.Core.Serialization;
 using System;
@@ -37,23 +39,16 @@ namespace Reko.Loading
     {
         public override IEnumerable<ImageSignature> Load(string filename)
         {
-            TextReader txtRdr = null;
-            try
+            using (TextReader txtRdr = CreateFileReader(filename))
             {
-                txtRdr = CreateFileReader(filename);
                 var serializer = new XmlSerializer(typeof(UnpackerSignatureFile_v1));
-                var sigs = (UnpackerSignatureFile_v1)serializer.Deserialize(txtRdr);
+                var sigs = (UnpackerSignatureFile_v1) serializer.Deserialize(txtRdr);
                 if (sigs != null && sigs.Signatures != null)
                 {
                     return sigs.Signatures.Select(s => CreateSignature(s));
                 }
                 else
                     return new ImageSignature[0];
-            }
-            finally
-            {
-                if (txtRdr != null)
-                    txtRdr.Dispose();
             }
         }
 
