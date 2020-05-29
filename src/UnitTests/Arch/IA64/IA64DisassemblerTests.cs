@@ -75,5 +75,13 @@ namespace Reko.UnitTests.Arch.IA64
                 "addl\tr14,-10732,r2",
                 "nop.i\t0x0");
         }
+
+        [Test]
+        public void IA64Dis_alloc_mlx()
+        {
+            AssertCode("04101C008045024C80090060F0131A60",
+                "alloc\tr2,ar.pfs,7,0,0",
+                "movl\tr3,0x......");
+        }
     }
 }
