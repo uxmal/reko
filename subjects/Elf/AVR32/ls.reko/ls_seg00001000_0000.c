@@ -13439,7 +13439,7 @@ Eq_n fn0000CEEE(Eq_n r0, ptr32 r1, word32 * r10, <anonymous> * r11, Eq_n r12)
 		r10_n = (word32) ((word2) (r8_n / 100) == 0x01);
 	Eq_n dwLocA8_n;
 	word32 r2_n = *r10;
-	word32 r8_n = r5_n - 0x01 + (word32) (&((word32) globals->dwD1CE + 2))[((word32) r3_n + (r10_n * 0x0D + (((r3_n >> 0x1F) << 0x01) + (r3_n >> 0x1F) << 0x02))) * 0x02];
+	word32 r8_n = r5_n - 0x01 + (word32) ((char *) (&globals->dwD1CE) + 2)[((word32) r3_n + (r10_n * 0x0D + (((r3_n >> 0x1F) << 0x01) + (r3_n >> 0x1F) << 0x02))) * 0x02];
 	word32 dwLoc90_n = r2_n;
 	if (lr_n < 0x00)
 		dwLocA8_n.u0 = 0x00;

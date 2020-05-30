@@ -167,7 +167,7 @@ ui20 init_uart_isr(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15)
 	++globals->w0218;
 	Eq_n r15_n;
 	ui20 sr_n = xQueueCreate(sr & ~0x08, v17_n, out r15_n);
-	globals->a021C = r15_n;
+	globals->a021C[0] = r15_n;
 	Eq_n r15_n;
 	ui20 sr_n = xQueueCreate(sr_n, v17_n, out r15_n);
 	globals->t021E = r15_n;
@@ -203,7 +203,7 @@ void getchar(ui20 sr)
 //      fn00004000
 void uart_putchar_isr_mode(Eq_n r15)
 {
-	globals->a0200 = r15;
+	globals->a0200[0] = r15;
 }
 
 // 43A2: Register ui20 putchar(Register ui20 sr, Register Eq_n r15, Register out Eq_n r11Out)
@@ -218,7 +218,7 @@ ui20 putchar(ui20 sr, Eq_n r15, union Eq_n & r11Out)
 	if (r15 == 0x0A)
 		putchar(sr, 0x0D, out r11_n);
 	Eq_n r15_n;
-	if (globals->a0200 == 0x00)
+	if (globals->a0200[0] == 0x00)
 	{
 		do
 			;
@@ -238,7 +238,7 @@ ui20 putchar(ui20 sr, Eq_n r15, union Eq_n & r11Out)
 Eq_n x_getchar(ui20 sr, Eq_n r14, Eq_n r15)
 {
 	word20 r15_n;
-	xQueueReceive(sr, r14, r15, globals->a021C, out r15_n);
+	xQueueReceive(sr, r14, r15, globals->a021C[0], out r15_n);
 	if (r15_n == 0x00)
 		return 0x00;
 	return 0x01;
@@ -280,7 +280,7 @@ l00004420:
 void vRxISR(ui20 sr)
 {
 	word20 r15_n;
-	ui20 sr_n = xQueueSendFromISR(sr, 0x00, fp - 0x0A, globals->a021C, out r15_n);
+	ui20 sr_n = xQueueSendFromISR(sr, 0x00, fp - 0x0A, globals->a021C[0], out r15_n);
 	if (r15_n != 0x00)
 	{
 		word20 r11_n;

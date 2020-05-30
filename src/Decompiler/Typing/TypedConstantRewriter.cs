@@ -288,24 +288,6 @@ namespace Reko.Typing
                     return ReadNullTerminatedString(c, charType);
                 }
                 e = RewriteGlobalFieldAccess(dt, c.ToInt32());
-                if (dereferenced)
-                {
-                    e.DataType = ptr.Pointee;
-                }
-                else
-                {
-                    if (e.DataType is ArrayType array) // C language rules 'promote' arrays to pointers.
-                    {
-                        e.DataType = program.TypeFactory.CreatePointer(
-                            array.ElementType, 
-                            platform.PointerType.BitSize);
-                    }
-                    else
-                    {
-                        ptr = new Pointer(e.DataType, ptr.BitSize);
-                        e = new UnaryExpression(Operator.AddrOf, ptr, e);
-                    }
-                }
             }
 			return e;
 		}
@@ -388,15 +370,36 @@ namespace Reko.Typing
                 f = new StructureField(offset, dt);
                 GlobalVars.Fields.Add(f);
             }
-            var ptrStr = new Pointer(GlobalVars, platform.PointerType.BitSize);
-            var fa = new FieldAccess(f.DataType, new Dereference(ptrStr, globals), f);
-            if (f.Offset != offset)
+            if (dereferenced || f.Offset != offset)
             {
                 var ceb = new ComplexExpressionBuilder(
-                    null, null, fa, null, offset - f.Offset);
-                return ceb.BuildComplex(false);
+                    null, null, globals, null, offset);
+                return ceb.BuildComplex(dereferenced);
             }
-            return fa;
+            //$REVIEW: We can't use ComplexExpresionBuilder to rewrite pointers to
+            // global variable. It's too aggressive now
+            // (e.g. &globals->var.ptr00.ptr00 instead of &globals->var)
+            var ptrStr = new Pointer(GlobalVars, platform.PointerType.BitSize);
+            var fa = new FieldAccess(f.DataType, new Dereference(ptrStr, globals), f);
+            return CreateAddrOf(fa, dt);
+        }
+
+        private Expression CreateAddrOf(Expression e, DataType dt)
+        {
+            if (dereferenced)
+            {
+                e.DataType = dt;
+                return e;
+            }
+            if (e.DataType is ArrayType array) // C language rules 'promote' arrays to pointers.
+            {
+                e.DataType = program.TypeFactory.CreatePointer(
+                    array.ElementType,
+                    platform.PointerType.BitSize);
+                return e;
+            }
+            var ptr = new Pointer(e.DataType, platform.PointerType.BitSize);
+            return new UnaryExpression(Operator.AddrOf, ptr, e);
         }
 
         private StructureField EnsureFieldAtOffset(StructureType str, DataType dt, int offset)

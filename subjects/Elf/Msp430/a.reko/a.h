@@ -3961,7 +3961,7 @@ T_461: (in 0<8> : byte)
   Class: Eq_178
   DataType: byte
   OrigDataType: byte
-T_462: (in globals->a0200 != 0<8> : bool)
+T_462: (in globals->a0200[0<i32>] != 0<8> : bool)
   Class: Eq_462
   DataType: bool
   OrigDataType: bool
@@ -4093,7 +4093,7 @@ T_494: (in out r15_12 : word16)
   Class: Eq_491
   DataType: Eq_491
   OrigDataType: (union (ptr16 u1) (word20 u0))
-T_495: (in xQueueReceive(sr, r14, r15, globals->a021C, out r15_12) : word20)
+T_495: (in xQueueReceive(sr, r14, r15, globals->a021C[0<i32>], out r15_12) : word20)
   Class: Eq_2
   DataType: ui20
   OrigDataType: word20
@@ -4437,7 +4437,7 @@ T_580: (in out r15_29 : word16)
   Class: Eq_570
   DataType: Eq_570
   OrigDataType: (union (ptr16 u1) (word20 u0))
-T_581: (in xQueueSendFromISR(sr, 0<16>, fp - 0xA<32>, globals->a021C, out r15_29) : word20)
+T_581: (in xQueueSendFromISR(sr, 0<16>, fp - 0xA<32>, globals->a021C[0<i32>], out r15_29) : word20)
   Class: Eq_2
   DataType: ui20
   OrigDataType: word20
