@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,13 +18,12 @@
  */
 #endregion
 
+#nullable enable
+
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Gui
 {
@@ -34,6 +33,9 @@ namespace Reko.Gui
     /// </summary>
     public class SelectionService : ISelectionService
     {
+        public event EventHandler? SelectionChanged;
+        public event EventHandler? SelectionChanging;
+
         private ICollection selection;
 
         public SelectionService()
@@ -46,9 +48,6 @@ namespace Reko.Gui
 
         public int SelectionCount =>
             selection.Count;
-
-        public event EventHandler SelectionChanged;
-        public event EventHandler SelectionChanging;
 
         public bool GetComponentSelected(object component)
         {

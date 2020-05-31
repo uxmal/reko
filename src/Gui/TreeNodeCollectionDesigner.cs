@@ -18,12 +18,9 @@
  */
 #endregion
 
-using System;
+#nullable enable
+
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Gui
 {
@@ -43,10 +40,10 @@ namespace Reko.Gui
 
         public override void Initialize(object obj)
         {
-            base.TreeNode.Text = name;
+            base.TreeNode!.Text = name;
             base.TreeNode.ImageName = icon;
             this.Component = this;
-            Host.AddComponents(this, collection);
+            Host?.AddComponents(this, collection);
         }
     }
 }

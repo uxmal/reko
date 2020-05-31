@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable enable
 
 using System;
 using Reko.Core;
@@ -40,14 +42,14 @@ namespace Reko.Gui.Design
 
         private void SetTreeNodeProperties(ImageSegment segment)
         {
-            this.TreeNode.Text = Resources.Node_GlobalVariables;
+            this.TreeNode!.Text = Resources.Node_GlobalVariables;
             this.TreeNode.ImageName = "Data.ico";
         }
 
         public override void DoDefaultAction()
         {
-            var program = Host.GetAncestorOfType<Program>(this);
-            Services.RequireService<ICodeViewerService>().DisplayGlobals(program, segment);
+            var program = Host!.GetAncestorOfType<Program>(this);
+            Services!.RequireService<ICodeViewerService>().DisplayGlobals(program, segment);
         }
     }
 }

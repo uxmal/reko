@@ -18,8 +18,9 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
-using Reko.Core.Machine;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
@@ -30,14 +31,22 @@ namespace Reko.Gui
 {
     public class SignatureParser
     {
-        private IProcessorArchitecture arch;
-        private string str;
+        private readonly IProcessorArchitecture arch;
+        private string? str;
         private int idx;
 
         public SignatureParser(IProcessorArchitecture arch)
         {
             this.arch = arch;
         }
+
+        public string? ProcedureName { get; private set; }
+
+        public SerializedSignature? Signature { get; private set; }
+
+        public bool IsValid { get; private set; }
+
+
 
         public void Parse(string signatureString)
         {
@@ -76,7 +85,7 @@ namespace Reko.Gui
             sb.Append(procName);
             sb.Append("(");
             string sep = "";
-            foreach (var arg in sig.Arguments)
+            foreach (var arg in sig.Arguments!)
             {
                 sb.Append(sep);
                 sep = ", ";
@@ -88,22 +97,16 @@ namespace Reko.Gui
             return sb.ToString();
         }
 
-        public string ProcedureName { get; private set;}
-
-        public SerializedSignature Signature { get; private set; }
-
-        public bool IsValid { get; private set; }
-
-        private Argument_v1 ParseReturn()
+        private Argument_v1? ParseReturn()
         {
-            string w = GetNextWord();
-            if (w == "void")
+            string? w = GetNextWord();
+            if (w is null || w == "void")
                 return null;
             if (arch.TryGetRegister(w, out RegisterStorage reg))
             {
                 return new Argument_v1(
                     reg.Name,
-                    null,
+                    null!,
                     new Register_v1(reg.Name),
                     true);
             }
@@ -114,7 +117,7 @@ namespace Reko.Gui
             throw new NotImplementedException();
         }
 
-        private Argument_v1 ParseRegisterSequenceWithUnderscore(string w)
+        private Argument_v1? ParseRegisterSequenceWithUnderscore(string w)
         {
             string[] subregs = w.Split('_');
             var regs = new List<Register_v1>();
@@ -128,19 +131,21 @@ namespace Reko.Gui
             seq.Registers = regs.ToArray();
             return new Argument_v1(
                 w,
-                null,
+                null!,
                 seq,
                 true);
         }
 
-        private string ParseProcedureName()
+        private string? ParseProcedureName()
         {
             return GetNextWord();
         }
 
-        private Argument_v1[] ParseProcedureArgs()
+        private Argument_v1[]? ParseProcedureArgs()
         {
             EatWhiteSpace();
+            if (str is null)
+                return null;
             if (idx >= str.Length || str[idx] != '(')
                 return null;
             ++idx;
@@ -165,13 +170,13 @@ namespace Reko.Gui
             }
         }
 
-        private Argument_v1 ParseArg()
+        private Argument_v1? ParseArg()
         {
             var w = GetNextWord();
             if (w == null)
                 return null;
 
-            string type = null;
+            string? type = null;
             if (!arch.TryGetRegister(w, out RegisterStorage reg))
             {
                 type = w;
@@ -192,7 +197,7 @@ namespace Reko.Gui
 
             if (PeekChar(':') || PeekChar('_'))
             {
-                return ParseRegisterSequence(reg, type);
+                return ParseRegisterSequence(reg, type!);
             }
 
             var arg = new Argument_v1()
@@ -205,10 +210,10 @@ namespace Reko.Gui
             return arg;
         }
 
-        private Argument_v1 ParseRegisterSequence(RegisterStorage reg, string type)
+        private Argument_v1? ParseRegisterSequence(RegisterStorage reg, string type)
         {
             ++idx;
-            string w2 = GetNextWord();
+            string? w2 = GetNextWord();
             if (w2 == null)
                 return null;
             if (!arch.TryGetRegister(w2, out RegisterStorage reg2))
@@ -225,7 +230,7 @@ namespace Reko.Gui
 
         private bool PeekChar(char cha)
         {
-            return idx < str.Length && str[idx] == cha;
+            return str != null && idx < str.Length && str[idx] == cha;
         }
 
 		private Argument_v1 ParseStackArgument(string typeName, string argName)
@@ -248,10 +253,10 @@ namespace Reko.Gui
 			return arg;
 		}
 
-        private string GetNextWord()
+        private string? GetNextWord()
         {
             EatWhiteSpace();
-            if (idx >= str.Length)
+            if (str == null || idx >= str.Length)
                 return null;
 
             int i = idx;
@@ -268,7 +273,7 @@ namespace Reko.Gui
 
         private void EatWhiteSpace()
         {
-            while (idx < str.Length && Char.IsWhiteSpace(str[idx]))
+            while (str != null && idx < str.Length && Char.IsWhiteSpace(str[idx]))
                 ++idx;
         }
     }

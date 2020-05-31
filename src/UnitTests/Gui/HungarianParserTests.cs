@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -36,132 +36,131 @@ namespace Reko.UnitTests.Gui
         [SetUp]
         public void Setup()
         {
-            parser = new HungarianParser();
         }
 
         [Test]
         public void ParseEmpty()
         {
-            DataType dt = parser.Parse("");
+            DataType dt = HungarianParser.Parse("");
             Assert.AreEqual("<unknown>", dt.ToString());
         }
 
         [Test]
         public void ParseI32()
         {
-            var dt = parser.Parse("i32");
+            var dt = HungarianParser.Parse("i32");
             Assert.AreEqual("int32", dt.ToString());
         }
 
         [Test]
         public void ParseBool()
         {
-            var dt = parser.Parse("f");     // 'f' for 'flag'.
+            var dt = HungarianParser.Parse("f");     // 'f' for 'flag'.
             Assert.AreEqual("bool", dt.ToString());
         }
 
         [Test]
         public void ParseArrayPrefix()
         {
-            var dt = parser.Parse("ab");        // 'array of bytes' of unspecified length.
+            var dt = HungarianParser.Parse("ab");        // 'array of bytes' of unspecified length.
             Assert.AreEqual("(arr byte)", dt.ToString());
         }
 
         [Test]
         public void IncompleteArray_Fail()
         {
-            var dt = parser.Parse("a");        // incomplete array, not a valid type
+            var dt = HungarianParser.Parse("a");        // incomplete array, not a valid type
             Assert.AreEqual("(arr <unknown>)", dt.ToString());
         }
 
         [Test]
         public void ParseChar()
         {
-            var dt = parser.Parse("ch");        // 8-bit character
+            var dt = HungarianParser.Parse("ch");        // 8-bit character
             Assert.AreEqual("char", dt.ToString());
         }
 
         [Test]
         public void ParseWideChar()
         {
-            var dt = parser.Parse("wch");       // 16-bit character
+            var dt = HungarianParser.Parse("wch");       // 16-bit character
             Assert.AreEqual("wchar_t", dt.ToString());
         }
 
         [Test]
         public void Parse8bit_c_string()
         {
-            var dt = parser.Parse("sz");       // zero-terminated string
+            var dt = HungarianParser.Parse("sz");       // zero-terminated string
             Assert.AreEqual("(str char)", dt.ToString());
         }
 
         [Test]
         public void Parse16bit_c_string()
         {
-            var dt = parser.Parse("sz");       // zero-terminated string
+            var dt = HungarianParser.Parse("sz");       // zero-terminated string
             Assert.AreEqual("(str char)", dt.ToString());
         }
 
         [Test]
         public void Parse_Pointer_To_Anything()
         {
-            var dt = parser.Parse("p");
+            var dt = HungarianParser.Parse("p");
             Assert.AreEqual("ptr32", dt.ToString());
         }
 
         [Test]
         public void Parse_Pointer_To_Integer()
         {
-            var dt = parser.Parse("pi16");
+            var dt = HungarianParser.Parse("pi16");
             Assert.AreEqual("(ptr32 int16)", dt.ToString());
         }
 
         [Test]
         public void Array_Pointers_To_Functions()
         {
-            var dt = parser.Parse("apfn");
+            var dt = HungarianParser.Parse("apfn");
             Assert.AreEqual("(arr (ptr32 code))", dt.ToString());
         }
 
         [Test]
         public void Wide_Zero_Terminated_string()
         {
-            var dt = parser.Parse("wsz");
+            var dt = HungarianParser.Parse("wsz");
             Assert.AreEqual("(str wchar_t)", dt.ToString());
         }
 
         [Test]
         public void Length_Prefixed_byte_string()
         {
-            var dt = parser.Parse("si8");
+            var dt = HungarianParser.Parse("si8");
             Assert.AreEqual("(struct (0 int8 length) (1 (arr char) chars))", dt.ToString());
         }
 
         [Test]
         public void ParseWord()
         {
-            var dt = parser.Parse("w");
+            var dt = HungarianParser.Parse("w");
             Assert.AreEqual("word32", dt.ToString());
         }
 
         [Test]
         public void Parse_ushort()
         {
-            var dt = parser.Parse("us");
+            var dt = HungarianParser.Parse("us");
             Assert.AreEqual("uint16", dt.ToString());
         }
 
         [Test]
         public void Parse_signed_word()
         {
-            var dt = parser.Parse("iw");
+            var dt = HungarianParser.Parse("iw");
             Assert.AreEqual("int32", dt.ToString());
         }
 
         [Test]
         public void Parse_single_precision_real()
         {
-            var dt = parser.Parse("r32");
+            var dt = HungarianParser.Parse("r32");
             Assert.AreEqual("real32", dt.ToString());
         }
     }

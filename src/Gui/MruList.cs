@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -31,8 +33,8 @@ namespace Reko.Gui
 	/// </summary>
 	public class MruList
 	{
-        private int itemsMax;
-        private List<string> items;
+        private readonly int itemsMax;
+        private readonly List<string> items;
 
 		public MruList(int itemsMax)
 		{

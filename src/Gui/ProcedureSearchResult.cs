@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using System;
 using System.Collections.Generic;
@@ -28,8 +30,8 @@ namespace Reko.Gui
 {
     public class ProcedureSearchResult : ISearchResult
     {
-        private IServiceProvider sp;
-        private List<ProcedureSearchHit> hits;
+        private readonly IServiceProvider sp;
+        private readonly List<ProcedureSearchHit> hits;
 
         public ProcedureSearchResult(IServiceProvider sp, List<ProcedureSearchHit> procs)
         {
@@ -37,7 +39,7 @@ namespace Reko.Gui
             this.hits = procs;
         }
 
-        public ISearchResultView View { get; set; }
+        public ISearchResultView? View { get; set; }
 
         public int Count
         {
@@ -48,9 +50,12 @@ namespace Reko.Gui
 
         public void CreateColumns()
         {
-            View.AddColumn("Program", 10);
-            View.AddColumn("Address", 8);
-            View.AddColumn("Procedure Name", 20);
+            if (View != null)
+            {
+                View.AddColumn("Program", 10);
+                View.AddColumn("Address", 8);
+                View.AddColumn("Procedure Name", 20);
+            }
         }
 
         public SearchResultItem GetItem(int i)

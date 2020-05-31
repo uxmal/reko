@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Output;
@@ -30,8 +32,8 @@ namespace Reko.Gui
 {
     public class HtmlCodeFormatter : CodeFormatter
     {
-        private HtmlFormatter formatter;
-        private IDictionary<Address, Procedure> procedureMap;
+        private readonly HtmlFormatter formatter;
+        private readonly IDictionary<Address, Procedure> procedureMap;
 
         public HtmlCodeFormatter(
             TextWriter writer, 

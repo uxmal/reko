@@ -80,7 +80,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             if (hasValue)
             {
                 dlg.SegmentList.DataSource = dlg.Program.SegmentMap.Segments.Values
-                    .Select(seg => new ListOption { Text = seg.Name, Value = seg.Address })
+                    .Select(seg => new ListOption(seg.Name, seg.Address))
                     .ToList();
             }
         }

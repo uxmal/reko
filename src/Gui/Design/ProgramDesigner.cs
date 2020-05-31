@@ -18,14 +18,13 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Services;
-using Reko.Gui;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -33,7 +32,7 @@ namespace Reko.Gui.Design
 {
     public class ProgramDesigner : TreeNodeDesigner
     {
-        private Program program;
+        private Program? program;
 
         public override void Initialize(object obj)
         {
@@ -43,7 +42,7 @@ namespace Reko.Gui.Design
                 "Architectures",
                 "",
                 ArchitectureCollection(program));
-            Host.AddComponent(program, archesDes);
+            Host!.AddComponent(program, archesDes);
             if (program.Platform != null)
                 Host.AddComponent(program, program.Platform);
             if (program.ImageMap != null)
@@ -68,13 +67,13 @@ namespace Reko.Gui.Design
 
         private ProcedureDesigner MakeProcedureDesigner(KeyValuePair<Address,Procedure> p)
         {
-            var des = new ProcedureDesigner(program, p.Value, null, p.Key, false);
+            var des = new ProcedureDesigner(program!, p.Value, null, p.Key, false);
             return des;
         }
 
         public void SetTreeNodeProperties(Program program)
         {
-            TreeNode.Text = program.Name;
+            TreeNode!.Text = program.Name;
             TreeNode.ImageName = "Binary.ico";
             var sb = new StringBuilder();
             sb.Append(program.Filename ?? "(No file name)");
@@ -108,9 +107,9 @@ namespace Reko.Gui.Design
                 switch (cmdId.ID)
                 {
                 case CmdIds.EditProperties:
-                    var dlgFactory = Services.RequireService<IDialogFactory>();
-                    var dlg = dlgFactory.CreateProgramPropertiesDialog((Program)this.Component);
-                    var uiSvc = Services.RequireService<IDecompilerShellUiService>();
+                    var dlgFactory = Services!.RequireService<IDialogFactory>();
+                    var dlg = dlgFactory.CreateProgramPropertiesDialog((Program)this.Component!);
+                    var uiSvc = Services!.RequireService<IDecompilerShellUiService>();
                     uiSvc.ShowModalDialog(dlg);
                     return true;
                 case CmdIds.LoadSymbols:
@@ -122,7 +121,7 @@ namespace Reko.Gui.Design
 
         private bool LoadSymbols()
         {
-            var uiSvc = Services.RequireService<IDecompilerShellUiService>();
+            var uiSvc = Services!.RequireService<IDecompilerShellUiService>();
             var filename = uiSvc.ShowOpenFileDialog("");
             if (filename == null)
             {
@@ -130,9 +129,9 @@ namespace Reko.Gui.Design
                 return true;
             }
 
-            var symService = Services.RequireService<ISymbolLoadingService>();
+            var symService = Services!.RequireService<ISymbolLoadingService>();
             var symSource = symService.GetSymbolSource(filename);
-            var symbols = symSource.GetAllSymbols();
+            var symbols = symSource?.GetAllSymbols();
 
             return true;
         }

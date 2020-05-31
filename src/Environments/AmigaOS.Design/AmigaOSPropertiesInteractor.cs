@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -55,11 +55,9 @@ namespace Reko.Environments.AmigaOS.Design
             {
                 this.Control.KickstartVersionList.DataSource =
                     mapKickstartToListOfLibraries
-                    .Select(kv => new ListOption
-                    {
-                        Text = string.Format("Kickstart {0}", kv.Key),
-                        Value = kv.Value
-                    })
+                    .Select(kv => new ListOption(
+                        string.Format("Kickstart {0}", kv.Key),
+                        kv.Value))
                     .ToList();
                 this.Control.KickstartVersionList.SelectedIndex = 0;
             }

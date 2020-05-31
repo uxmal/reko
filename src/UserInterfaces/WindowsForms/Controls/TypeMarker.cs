@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -124,8 +124,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             try
             {
-                var parser = new HungarianParser();
-                var dataType = parser.Parse(text);
+                var dataType = HungarianParser.Parse(text);
                 if (dataType == null)
                     return " - Null - ";
                 else

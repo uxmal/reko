@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
 * Copyright (C) 1999-2020 John Källén.
 *
@@ -35,9 +35,9 @@ namespace Reko.Gui.Forms
             dlg.EncodingList.AddItems(
                 Encoding.GetEncodings()
                 .OrderBy(e => e.DisplayName)
-                .Select(e => new ListOption {
-                    Text = string.Format("{0} - {1}", e.DisplayName, e.Name),
-                    Value = e.Name })) ;
+                .Select(e => new ListOption(
+                    string.Format("{0} - {1}", e.DisplayName, e.Name),
+                    e.Name)));
         }
 
         public Encoding GetSelectedTextEncoding()

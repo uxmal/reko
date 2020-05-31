@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using System;
 using System.Collections.Generic;
@@ -28,8 +30,8 @@ namespace Reko.Gui.Commands
 {
     public class Cmd_ViewWhatPointsHere : Command
     {
-        private Program program;
-        private IEnumerable<Address> addresses;
+        private readonly Program program;
+        private readonly IEnumerable<Address> addresses;
 
         public Cmd_ViewWhatPointsHere(IServiceProvider services, Program program, IEnumerable<Address> addresses)
            : base(services)
