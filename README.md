@@ -90,16 +90,16 @@ spare time, so adjust your response-time expectations accordingly.
 
 To build reko, start by cloning https://github.com/uxmal/reko. You
 can use an IDE or the command line to build the solution file
-`Reko-decompiler.sln`. If you are an IDE user, use Visual
-Studio 2017 or later, or MonoDevelop version 5.10 or later. If you
-wish to build using the command line, use the command
+`Reko-decompiler.sln`. Reko requires .NET Framework 4.7.2 and C# 8
+to compile. If you are an IDE user, use Visual Studio 2019.
+If you wish to build using the command line, use the command
 
 ```cmd
-msbuild Reko-decompiler.sln
+msbuild /p:Configuration={config} /p:Platform={platform} Reko-decompiler.sln
 ```
-
-(provided you have ```msbuild``` installed). All external dependencies
-needed to build Reko are included in the `external` directory.
+(provided you have ```msbuild``` installed). Replace `{config}` with either
+`Debug` or `Release`, and `{platform}` with `x64` or `x86`. All external
+dependencies needed to build Reko are included in the `external` directory.
 
 **Note**: please let us know if you still are not able to compile,
 so we can help you fix the issue.
