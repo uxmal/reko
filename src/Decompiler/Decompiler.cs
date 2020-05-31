@@ -17,8 +17,6 @@
  */
 #endregion
 
-#nullable enable
-
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Assemblers;

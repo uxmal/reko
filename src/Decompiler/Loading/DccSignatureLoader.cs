@@ -25,8 +25,6 @@
   */
 #endregion
 
-#nullable enable
-
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;

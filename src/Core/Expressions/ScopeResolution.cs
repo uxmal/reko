@@ -18,8 +18,6 @@
  */
 #endregion
 
-#nullable enable
-
 using System;
 using Reko.Core.Types;
 using System.Collections.Generic;

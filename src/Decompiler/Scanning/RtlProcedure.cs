@@ -18,8 +18,6 @@
  */
 #endregion
 
-#nullable enable
-
 using System.Collections.Generic;
 
 namespace Reko.Scanning

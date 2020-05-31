@@ -18,8 +18,6 @@
  */
 #endregion
 
-#nullable enable
-
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;

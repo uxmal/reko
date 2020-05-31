@@ -18,8 +18,6 @@
  */
 #endregion
 
-#nullable enable
-
 using Reko.Core.Expressions;
 using Reko.Core.Output;
 using Reko.Core.Serialization;

@@ -18,8 +18,6 @@
  */
 #endregion
 
-#nullable enable
-
 using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;

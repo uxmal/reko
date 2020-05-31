@@ -18,8 +18,6 @@
  */
 #endregion
 
-#nullable enable
-
 using Reko.Evaluation;
 using Reko.Core;
 using Reko.Analysis;
