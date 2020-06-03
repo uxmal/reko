@@ -144,7 +144,7 @@ namespace Reko.Core.Services
             return new NullCodeLocation(stm.LinearAddress.ToString());
         }
 
-        public ICodeLocation CreateJumpTableNavigator(Program _, IProcessorArchitecture arch, Address addrIndirectJump, Address addrVector, int stride)
+        public ICodeLocation CreateJumpTableNavigator(Program _, IProcessorArchitecture arch, Address addrIndirectJump, Address? addrVector, int stride)
         {
             return new NullCodeLocation(addrIndirectJump.ToString());
         }

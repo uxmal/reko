@@ -160,6 +160,11 @@ namespace Reko.UnitTests.Gui.Windows
                 return new FakeTreeNode { Text = text };
             }
 
+            public void PerformAfterExpand(Reko.Gui.Controls.TreeViewEventArgs e)
+            {
+                AfterExpand?.Invoke(this, e);
+            }
+
             public void PerformBeforeExpand(Reko.Gui.Controls.TreeViewEventArgs e)
             {
                 BeforeExpand(this, e);
