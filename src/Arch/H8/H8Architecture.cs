@@ -56,12 +56,12 @@ namespace Reko.Arch.H8
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new H8State(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new H8Rewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
