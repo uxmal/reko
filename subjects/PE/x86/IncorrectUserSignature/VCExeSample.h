@@ -129,7 +129,7 @@ typedef cdecl_class_vtbl Eq_8;
 
 typedef void (Eq_10)(cdecl_class * ptrArg04, int32 dwArg08, int32 dwArg0C);
 
-typedef void (Eq_11)(cdecl_class *, int32, int32);
+typedef void (Eq_11)(cdecl_class * ptrArg04, int32 dwArg08, int32 dwArg0C);
 
 typedef struct Eq_19 {
 	void (* ptr0004)(cdecl_class *, word32);	// 4

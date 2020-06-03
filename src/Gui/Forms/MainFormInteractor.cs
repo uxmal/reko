@@ -567,12 +567,11 @@ namespace Reko.Gui.Forms
                                         0,
                                         (int)seg.MemoryArea.Length)
                                     .Where(o => filter(o, program))
-                                    .Select(offset => new AddressSearchHit
-                                    {
-                                        Program = program,
-                                        Address = program.SegmentMap.MapLinearAddressToAddress(
-                                            linBaseAddr + (ulong)offset)
-                                    });
+                                    .Select(offset => new AddressSearchHit(
+                                        program,
+                                        program.SegmentMap.MapLinearAddressToAddress(
+                                            linBaseAddr + (ulong)offset),
+                                        0));
                             }));
                     srSvc.ShowAddressSearchResults(hits, new CodeSearchDetails());
                 }

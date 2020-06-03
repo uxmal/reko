@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Types;
 using System;
@@ -29,12 +31,12 @@ namespace Reko.Gui.Design
 {
     public class ImageMapSegmentNodeDesigner : TreeNodeDesigner
     {
-        private ImageSegment segment;
+        private ImageSegment? segment;
 
         public override void Initialize(object obj)
         {
             this.segment = (ImageSegment) obj;
-            base.TreeNode.Text = segment.Name;
+            base.TreeNode!.Text = segment.Name;
             base.TreeNode.ImageName = GetImageName();
             base.TreeNode.ToolTipText = GetTooltip();
             PopulateChildren();
@@ -42,7 +44,7 @@ namespace Reko.Gui.Design
 
         public string GetImageName()
         {
-            if (segment.IsDiscardable)
+            if (segment!.IsDiscardable)
                 return "DiscardableSection.ico";
             switch (segment.Access)
             {
@@ -60,7 +62,7 @@ namespace Reko.Gui.Design
         public string GetTooltip()
         {
             var sb = new StringBuilder();
-            sb.AppendLine(segment.Name);
+            sb.AppendLine(segment!.Name);
             sb.AppendFormat("Address: {0}", segment.Address);
             sb.AppendLine();
             sb.AppendFormat("Size: {0:X}", segment.Size);
@@ -80,10 +82,11 @@ namespace Reko.Gui.Design
 
         private void PopulateChildren()
         {
+            var segment = this.segment!;
             var program = GetProgram();
             if (program == null)
                 return;
-            var eps = program.EntryPoints.Keys.ToHashSet();
+            var eps = program.EntryPoints.Keys.ToSet();
             var globals = GetGlobalVariables(program.ImageMap, segment);
             var desDictionary =
                 globals.Concat(
@@ -97,7 +100,7 @@ namespace Reko.Gui.Design
                 from proc in ups.DefaultIfEmpty()
                 select new ProcedureDesigner(program, proc.Value, up.Value, up.Key, eps.Contains(up.Key))).
                 OrderBy(pd => pd.Address));
-            Host.AddComponents(Component, desDictionary);
+            Host!.AddComponents(Component!, desDictionary);
         }
 
         private TreeNodeDesigner[] GetGlobalVariables(ImageMap imageMap, ImageSegment segment)
@@ -118,7 +121,7 @@ namespace Reko.Gui.Design
             }
         }
 
-        private Program GetProgram()
+        private Program? GetProgram()
         {
             if (this.Parent == null)
                 return null;
@@ -127,14 +130,14 @@ namespace Reko.Gui.Design
 
         public override void DoDefaultAction()
         {
-            if (segment.Designer != null)
+            if (segment!.Designer != null)
             {
-                var segSvc = Services.RequireService<ImageSegmentService>();
+                var segSvc = Services!.RequireService<ImageSegmentService>();
                 segSvc.DisplayImageSegment(segment, GetProgram());
             }
             else
             {
-                var memSvc = Services.RequireService<ILowLevelViewService>();
+                var memSvc = Services!.RequireService<ILowLevelViewService>();
                 memSvc.ShowMemoryAtAddress(GetProgram(), segment.Address);
             }
         }

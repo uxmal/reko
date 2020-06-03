@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -38,7 +38,7 @@ namespace Reko.Core.IRFormat
     public struct Token
     {
         public IRTokenType Type;
-        public object Value;
+        public object? Value;
 
         public Token(IRTokenType type)
         {

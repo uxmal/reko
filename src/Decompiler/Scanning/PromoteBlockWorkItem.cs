@@ -21,12 +21,6 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
-using Reko.Core.Rtl;
-using Reko.Core.Operators;
-using Reko.Core.Types;
-using Reko.Evaluation;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -42,8 +36,17 @@ namespace Reko.Scanning
         public IScanner Scanner;
         public Program Program;
 
-        public PromoteBlockWorkItem(Address addr) : base(addr)
+        public PromoteBlockWorkItem(
+            Address addr,
+            IScanner scanner,
+            Program program,
+            Block  block,
+            Procedure procNew) : base(addr)
         {
+            Scanner = scanner;
+            Program = program;
+            Block = block;
+            ProcNew = procNew;
         }
 
         public override void Process()
@@ -124,7 +127,7 @@ namespace Reko.Scanning
                         new CallInstruction(
                             new ProcedureConstant(Program.Platform.PointerType, ProcNew),
                             new CallSite(0, 0)));
-                    Program.CallGraph.AddEdge(inb.Statements.Last, ProcNew);
+                    Program.CallGraph.AddEdge(inb.Statements.Last!, ProcNew);
                     inb.Statements.Add(inb.Address.ToLinear(), new ReturnInstruction());
                     inb.Procedure.ControlGraph.AddEdge(inb, inb.Procedure.ExitBlock);
                 }
@@ -140,8 +143,8 @@ namespace Reko.Scanning
             if (inboundBlock.Statements.Count == 0)
                 return Program.Platform.MakeAddressFromLinear(0, true);
             return inboundBlock.Address != null
-                ? inboundBlock.Address + (inboundBlock.Statements.Last.LinearAddress - inboundBlock.Statements[0].LinearAddress)
-                : Program.Platform.MakeAddressFromLinear(inboundBlock.Statements.Last.LinearAddress, true);
+                ? inboundBlock.Address + (inboundBlock.Statements.Last!.LinearAddress - inboundBlock.Statements[0].LinearAddress)
+                : Program.Platform.MakeAddressFromLinear(inboundBlock.Statements.Last!.LinearAddress, true);
         }
 
         public void FixOutboundEdges(Block block)

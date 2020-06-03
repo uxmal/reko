@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -73,7 +73,7 @@ namespace Reko.Core.Lib
         {
             EnsureNotEmpty();
             T item = storage[iFront];
-            storage[iFront] = default(T);
+            storage[iFront] = default!;
             iFront = BoundIndex(iFront + 1);
             return item;
         }
@@ -98,7 +98,7 @@ namespace Reko.Core.Lib
             EnsureNotEmpty();
             int iBackNew = BoundIndex(iBack - 1);
             T item = storage[iBackNew];
-            storage[iBackNew] = default(T);
+            storage[iBackNew] = default!;
             iBack = iBackNew;
             return item;
         }

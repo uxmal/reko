@@ -31,10 +31,12 @@ namespace Reko.Core.Machine
     {
         public static readonly MachineOperand[] NoOperands = new MachineOperand[0];
 
+        //$TODO: make MachineInstruction have a ctor with (Address, Length, Operands)
+        // when that happens, replace all "Address!" with "Address"
         /// <summary>
         /// The address at which the instruction begins.
         /// </summary>
-        public Address Address;
+        public Address? Address;
 
         /// <summary>
         /// The length of the entire instruction. Some architectures, e.g. M68k, x86, and most
@@ -50,7 +52,7 @@ namespace Reko.Core.Machine
         /// <summary>
         /// 0 or more operands of the instruction.
         /// </summary>
-        public MachineOperand[] Operands;
+        public MachineOperand[]? Operands;
 
         /// <summary>
         /// Returns true if the instruction is valid.
@@ -63,7 +65,7 @@ namespace Reko.Core.Machine
         /// </summary>
         public bool Contains(Address addr)
         {
-            ulong ulInstr = Address.ToLinear();
+            ulong ulInstr = Address!.ToLinear();
             ulong ulAddr = addr.ToLinear();
             return ulInstr <= ulAddr && ulAddr < ulInstr + (uint)Length;
         }
@@ -85,16 +87,14 @@ namespace Reko.Core.Machine
         
         public sealed override string ToString()
         {
-            var renderer = new StringRenderer();
-            renderer.Address = Address;
+            var renderer = new StringRenderer(Address!);
             this.Render(renderer, MachineInstructionWriterOptions.None);
             return renderer.ToString();
         }
 
         public string ToString(IPlatform platform)
         {
-            var renderer = new StringRenderer(platform);
-            renderer.Address = Address;
+            var renderer = new StringRenderer(platform, Address!);
             this.Render(renderer, MachineInstructionWriterOptions.None);
             return renderer.ToString();
         }
@@ -106,7 +106,7 @@ namespace Reko.Core.Machine
         /// <param name="options"></param>
         protected void RenderOperands(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (Operands.Length == 0)
+            if (Operands!.Length == 0)
                 return;
             writer.Tab();
             RenderOperand(Operands[0], writer, options);

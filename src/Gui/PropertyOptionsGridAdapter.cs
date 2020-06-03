@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Configuration;
 using System;
@@ -26,8 +28,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
@@ -93,7 +93,7 @@ namespace Reko.Gui
             return TypeDescriptor.GetEditor(this, editorBaseType, true);
         }
 
-        public PropertyDescriptor GetDefaultProperty()
+        public PropertyDescriptor? GetDefaultProperty()
         {
             return null;
         }
@@ -168,7 +168,7 @@ namespace Reko.Gui
                 get { return false; }
             }
 
-            public override Type ComponentType
+            public override Type? ComponentType
             {
                 get { return null; }
             }

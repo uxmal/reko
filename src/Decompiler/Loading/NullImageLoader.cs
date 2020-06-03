@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ namespace Reko.Loading
     public class NullImageLoader : ImageLoader
     {
         private Address baseAddr;
-        private byte[] imageBytes;
+        private readonly byte[] imageBytes;
 
         public NullImageLoader(IServiceProvider services, string filename, byte[] image) : base(services, filename, image)
         {
@@ -41,18 +41,20 @@ namespace Reko.Loading
             this.EntryPoints = new List<ImageSymbol>();
         }
 
-        public IProcessorArchitecture Architecture { get; set; }
+        public IProcessorArchitecture? Architecture { get; set; }
         public List<ImageSymbol> EntryPoints { get; private set; }
-        public IPlatform Platform { get; set; }
+        public IPlatform? Platform { get; set; }
         public override Address PreferredBaseAddress
         {
             get { return this.baseAddr; }
             set { this.baseAddr = value; }
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
-            if (addrLoad == null)
+            if (Architecture is null)
+                throw new InvalidOperationException("A processor architecture must be specified.");
+            if (addrLoad is null)
                 addrLoad = PreferredBaseAddress;
             var platform = Platform ?? new DefaultPlatform(Services, Architecture);
             return Load(addrLoad, Architecture, platform);

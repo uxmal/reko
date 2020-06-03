@@ -49,7 +49,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             var asms = dlg.Services.RequireService<IConfigurationService>()
                 .GetArchitectures()
-                .Select(elem => new ListOption { Text = elem.Description, Value = elem }).ToList();
+                .Select(elem => new ListOption(elem.Description, elem))
+                .ToList();
             dlg.ArchitectureList.DataSource = asms;
         }
 

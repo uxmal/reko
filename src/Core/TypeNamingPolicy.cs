@@ -150,10 +150,10 @@ namespace Reko.Core
             }
         }
 
-        public virtual string StructureFieldName(StructureField field, string userGivenName)
+        public virtual string StructureFieldName(StructureField field, string? userGivenName)
         {
             if (!string.IsNullOrEmpty(userGivenName))
-                return userGivenName;
+                return userGivenName!;
             var prefix = field.DataType.Accept(this.prefixPolicy);
             return $"{prefix}{field.Offset:X4}";
         }

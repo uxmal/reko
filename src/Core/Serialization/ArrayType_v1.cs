@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -30,7 +30,7 @@ namespace Reko.Core.Serialization
 {
     public class ArrayType_v1 : SerializedType
     {
-        public SerializedType ElementType;
+        public SerializedType? ElementType;
 
         [XmlAttribute("length")]
         [DefaultValue(0)]

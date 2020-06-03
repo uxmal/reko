@@ -32,11 +32,11 @@ namespace Reko.Core
 {
     public interface IDynamicLinker
     {
-        ExternalProcedure ResolveProcedure(string moduleName, string importName, IPlatform platform);
-        ExternalProcedure ResolveProcedure(string moduleName, int ordinal, IPlatform platform);
-        Expression ResolveImport(string moduleName, string globalName, IPlatform platform);
-        Expression ResolveImport(string moduleName, int ordinal, IPlatform platform);
-        Expression ResolveToImportedValue(Statement stm, Constant c);
+        ExternalProcedure? ResolveProcedure(string? moduleName, string importName, IPlatform platform);
+        ExternalProcedure? ResolveProcedure(string moduleName, int ordinal, IPlatform platform);
+        Expression? ResolveImport(string? moduleName, string globalName, IPlatform platform);
+        Expression? ResolveImport(string moduleName, int ordinal, IPlatform platform);
+        Expression? ResolveToImportedValue(Statement stm, Constant c);
     }
 
     /// <summary>
@@ -60,20 +60,20 @@ namespace Reko.Core
             this.localProcs = program.ImageSymbols.Values
                 .Where(sym => sym.Name != null && sym.Type == SymbolType.Procedure)
                 .GroupBy(sym => sym.Name)
-                .ToDictionary(g => g.Key, g => g.First());
+                .ToDictionary(g => g.Key!, g => g.First());
         }
 
         private void EnsureSignature(Program program, SystemService svc)
         {
             if (svc.Signature == null)
             {
-                if (program.EnvironmentMetadata.Signatures.TryGetValue(svc.Name, out var fnc)) {
+                if (program.EnvironmentMetadata.Signatures.TryGetValue(svc.Name!, out var fnc)) {
                     svc.Signature = fnc;
                 }
             }
         }
 
-        public ExternalProcedure ResolveProcedure(string moduleName, string importName, IPlatform platform)
+        public ExternalProcedure? ResolveProcedure(string? moduleName, string importName, IPlatform platform)
         {
             var ep = LookupProcedure(moduleName, importName, platform);
             if (ep != null)
@@ -84,6 +84,8 @@ namespace Reko.Core
             {
                 var loader = program.CreateTypeLibraryDeserializer();
                 ep = loader.LoadExternalProcedure(sProc);
+                if (ep is null)
+                    return null;
                 if (!ep.Signature.ParametersValid)
                 {
                     // We found a imported procedure but couldn't find its signature.
@@ -99,24 +101,23 @@ namespace Reko.Core
             return null;
         }
 
-        private ExternalProcedure LookupProcedure(string moduleName, string importName, IPlatform platform)
+        private ExternalProcedure? LookupProcedure(string? moduleName, string importName, IPlatform platform)
         {
             if (!string.IsNullOrEmpty(moduleName))
             {
                 foreach (var program in project.Programs)
                 {
-                    if (program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out var mod) &&
+                    if (program.EnvironmentMetadata.Modules.TryGetValue(moduleName!, out var mod) &&
                         mod.ServicesByName.TryGetValue(importName, out var svc))
                     {
-                        return new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
+                        return new ExternalProcedure(svc.Name!, svc.Signature!, svc.Characteristics);
                     }
                 }
-                if (project.LoadedMetadata.Modules.TryGetValue(moduleName, out var module) &&
+                if (project.LoadedMetadata.Modules.TryGetValue(moduleName!, out var module) &&
                     module.ServicesByName.TryGetValue(importName, out var service))
                 {
-                    return new ExternalProcedure(service.Name, service.Signature, service.Characteristics);
+                    return new ExternalProcedure(service.Name!, service.Signature!, service.Characteristics);
                 }
-
             }
 
             foreach (var program in project.Programs)
@@ -137,7 +138,7 @@ namespace Reko.Core
             return platform.LookupProcedureByName(moduleName, importName);
         }
 
-        public ExternalProcedure ResolveProcedure(string moduleName, int ordinal, IPlatform platform)
+        public ExternalProcedure? ResolveProcedure(string moduleName, int ordinal, IPlatform platform)
         {
             foreach (var program in project.Programs)
             {
@@ -149,7 +150,7 @@ namespace Reko.Core
                     EnsureSignature(program, svc);
                     if (svc.Signature != null)
                     {
-                        return new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
+                        return new ExternalProcedure(svc.Name!, svc.Signature, svc.Characteristics);
                     }
                     else
                     {
@@ -157,8 +158,8 @@ namespace Reko.Core
                         // So we make a "dumb" one. It's better than nothing.
                         eventListener.Warn(
                             new NullCodeLocation(moduleName),
-                            "Unable to resolve signature for {0}", svc.Name);
-                        return new ExternalProcedure(svc.Name, new FunctionType());
+                            "Unable to resolve signature for {0}", svc.Name!);
+                        return new ExternalProcedure(svc.Name!, new FunctionType());
                     }
                 }
             }
@@ -168,7 +169,7 @@ namespace Reko.Core
                 EnsureSignature(program, service);
                 if (service.Signature != null)
                 {
-                    return new ExternalProcedure(service.Name, service.Signature, service.Characteristics);
+                    return new ExternalProcedure(service.Name!, service.Signature, service.Characteristics);
                 }
                 else
                 {
@@ -176,14 +177,14 @@ namespace Reko.Core
                     // So we make a "dumb" one. It's better than nothing.
                     eventListener.Warn(
                         new NullCodeLocation(moduleName),
-                        "Unable to resolve signature for {0}", service.Name);
-                    return new ExternalProcedure(service.Name, new FunctionType());
+                        "Unable to resolve signature for {0}", service.Name!);
+                    return new ExternalProcedure(service.Name!, new FunctionType());
                 }
             }
             return platform.LookupProcedureByOrdinal(moduleName, ordinal);
         }
 
-        public Expression ResolveImport(string moduleName, string name, IPlatform platform)
+        public Expression? ResolveImport(string? moduleName, string name, IPlatform platform)
         {
             var global = LookupImport(moduleName, name, platform);
             if (global != null)
@@ -203,19 +204,19 @@ namespace Reko.Core
                 return null;
         }
 
-        private Expression LookupImport(string moduleName, string name, IPlatform platform)
+        private Expression? LookupImport(string? moduleName, string name, IPlatform platform)
         {
             if (!string.IsNullOrEmpty(moduleName))
             {
                 foreach (var program in project.Programs)
                 {
                     // Try to find the imported procedure based on module + name.
-                    if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out ModuleDescriptor mod))
+                    if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName!, out ModuleDescriptor mod))
                         continue;
 
                     if (mod.ServicesByName.TryGetValue(name, out SystemService svc))
                     {
-                        var ep = new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
+                        var ep = new ExternalProcedure(svc.Name!, svc.Signature!, svc.Characteristics);
                         return new ProcedureConstant(platform.PointerType, ep);
                     }
 
@@ -236,7 +237,7 @@ namespace Reko.Core
             return platform.ResolveImportByName(moduleName, name);
         }
 
-        public SystemService ResolveService(string moduleName, int ordinal)
+        public SystemService? ResolveService(string moduleName, int ordinal)
         {
             foreach (var program in project.Programs)
             {
@@ -251,7 +252,7 @@ namespace Reko.Core
             return null;
         }
 
-        public Expression ResolveImport(string moduleName, int ordinal, IPlatform platform)
+        public Expression? ResolveImport(string moduleName, int ordinal, IPlatform platform)
         {
             foreach (var program in project.Programs)
             {
@@ -261,7 +262,7 @@ namespace Reko.Core
                 if (mod.ServicesByOrdinal.TryGetValue(ordinal, out var svc))
                 {
                     EnsureSignature(program, svc);
-                    var ep = new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
+                    var ep = new ExternalProcedure(svc.Name!, svc.Signature!, svc.Characteristics);
                     return new ProcedureConstant(platform.PointerType, ep);
                 }
 
@@ -285,16 +286,16 @@ namespace Reko.Core
             }
             else
             {
-                var id = Identifier.Global(sym.Name, sym.DataType);
+                var id = Identifier.Global(sym.Name!, sym.DataType!);
                 return new UnaryExpression(Operator.AddrOf, program.Platform.PointerType, id);
             }
         }
 
-        public Expression ResolveToImportedValue(Statement stm, Constant c)
+        public Expression? ResolveToImportedValue(Statement stm, Constant c)
         {
             var addrInstruction = program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress);
             var addrImportThunk = program.Platform.MakeAddressFromConstant(c, true);
-            if (addrImportThunk == null)
+            if (addrImportThunk is null)
                 return null;
             if (!program.ImportReferences.TryGetValue(addrImportThunk, out var impref))
                 return null;
@@ -303,7 +304,7 @@ namespace Reko.Core
             {
                 if (!this.localProcs.TryGetValue(impref.EntryName, out var sym))
                     return null;
-                if (! program.Procedures.TryGetValue(sym.Address, out var proc))
+                if (! program.Procedures.TryGetValue(sym.Address!, out var proc))
                     return null;
                 return new ProcedureConstant(program.Platform.PointerType, proc);
             }

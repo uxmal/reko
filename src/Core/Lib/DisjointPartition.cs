@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ namespace Reko.Core.Lib
     /// </summary>
     public class DisjointPartition<T> where T : class
     {
-        private Dictionary<T, Set> items;
+        private readonly Dictionary<T, Set> items;
 
         public DisjointPartition()
         {
@@ -63,7 +63,7 @@ namespace Reko.Core.Lib
         public T Find(T item)
         {
             Set x = items[item];
-            return FindSet(items[item]).item;
+            return FindSet(x).item;
         }
 
         private Set FindSet(Set x)

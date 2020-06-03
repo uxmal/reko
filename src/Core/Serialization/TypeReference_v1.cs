@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -33,13 +33,13 @@ namespace Reko.Core.Serialization
     public class TypeReference_v1 : SerializedType
     {
         [XmlText]
-        public string TypeName;
+        public string? TypeName;
 
         [XmlElement]
-        public string[] Scope;
+        public string[]? Scope;
         
         [XmlElement("tyArg")]
-        public SerializedType[] TypeArguments;
+        public SerializedType[]? TypeArguments;
 
         public TypeReference_v1()
         {
@@ -66,7 +66,7 @@ namespace Reko.Core.Serialization
 
         public override string ToString()
         {
-            return TypeName;
+            return TypeName ?? "";
         }
     }
 }

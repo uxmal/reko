@@ -22,26 +22,20 @@ using Reko.Core;
 using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Analysis
 {
     public class ProcedureGraph : DirectedGraph<Procedure>
     {
-        private CallGraph cg;
-        private ICollection<Procedure> procs;
+        private readonly CallGraph cg;
 
         public ProcedureGraph(Program program)
         {
             this.cg = program.CallGraph;
-            this.procs = program.Procedures.Values;
+            this.Nodes = program.Procedures.Values;
         }
 
-        public ICollection<Procedure> Nodes
-        {
-            get { return procs; }
-        }
+        public ICollection<Procedure> Nodes { get; }
 
         public ICollection<Procedure> Predecessors(Procedure node)
         {

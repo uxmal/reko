@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -34,9 +34,9 @@ namespace Reko.Core.Serialization
     public class DispatchProcedure_v1 : ProcedureBase_v1
     {
         [XmlAttribute("address")]
-        public string Address;
+        public string? Address;
 
         [XmlElement("service")]
-        public SerializedService[] Services;
+        public SerializedService[]? Services;
     }
 }

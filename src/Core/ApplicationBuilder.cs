@@ -47,7 +47,7 @@ namespace Reko.Core
 	{
         protected CallSite site;
         protected Expression callee;
-        protected FunctionType sigCallee;
+        protected FunctionType? sigCallee;
 
         /// <summary>
         /// Creates an application builder that creates references
@@ -63,8 +63,8 @@ namespace Reko.Core
         }
 
         public abstract OutArgument BindOutArg(Identifier id);
-        public abstract Expression BindReturnValue(Identifier id);
-        public abstract Expression Bind(Identifier id);
+        public abstract Expression? BindReturnValue(Identifier id);
+        public abstract Expression? Bind(Identifier id);
 
         /// <summary>
         /// Creates an instruction:
@@ -77,20 +77,20 @@ namespace Reko.Core
         /// <returns></returns>
         public Instruction CreateInstruction(
             FunctionType sigCallee,
-            ProcedureCharacteristics chr)
+            ProcedureCharacteristics? chr)
         {
             if (sigCallee == null || !sigCallee.ParametersValid)
                 throw new InvalidOperationException("No signature available; application cannot be constructed.");
             this.sigCallee = sigCallee;
-
-            Expression expOut = null;
+            var parameters = sigCallee.Parameters!;     // Since we checked ParametersValid, we are guaranteed there are parameters.
+            Expression? expOut = null;
             DataType dtOut = VoidType.Instance;
             if (!sigCallee.HasVoidReturn)
             {
                 expOut = BindReturnValue(sigCallee.ReturnValue);
                 dtOut = sigCallee.ReturnValue.DataType;
             }
-            var actuals = BindArguments(sigCallee, chr);
+            var actuals = BindArguments(parameters, sigCallee.IsVariadic, chr);
             Expression appl = new Application(
                 callee,
                 dtOut,
@@ -127,12 +127,12 @@ namespace Reko.Core
         /// <param name="sigCallee"></param>
         /// <param name="chr"></param>
         /// <returns></returns>
-        public virtual List<Expression> BindArguments(FunctionType sigCallee, ProcedureCharacteristics chr)
+        public virtual List<Expression> BindArguments(Identifier[] parameters, bool isVariadic, ProcedureCharacteristics? chr)
         {
             var actuals = new List<Expression>();
-            for (int i = 0; i < sigCallee.Parameters.Length; ++i)
+            for (int i = 0; i < parameters.Length; ++i)
             {
-                var formalArg = sigCallee.Parameters[i];
+                var formalArg = parameters[i];
                 if (formalArg.Storage is OutArgumentStorage)
                 {
                     var outArg = BindOutArg(formalArg);
@@ -141,12 +141,15 @@ namespace Reko.Core
                 else
                 {
                     var actualArg = Bind(formalArg);
-                    actuals.Add(actualArg);
+                    //$REVIEW: what does null mean here? Forcing an error here generates
+                    // regressions in the unit tests.
+                    if (!(actualArg is null))
+                        actuals.Add(actualArg);
                 }
             }
-            if (sigCallee.IsVariadic)
+            if (isVariadic)
             {
-                return BindVariadicArguments(sigCallee, chr, actuals);
+                return BindVariadicArguments(chr, actuals);
             }
             else
             {
@@ -154,7 +157,7 @@ namespace Reko.Core
             }
         }
 
-        public List<Expression> BindVariadicArguments(FunctionType sig, ProcedureCharacteristics chr, List<Expression> actuals)
+        public List<Expression> BindVariadicArguments(ProcedureCharacteristics? chr, List<Expression> actuals)
         {
             actuals.Add(Constant.Word32(0));
             Debug.Print($"{nameof(ApplicationBuilder)}: Varargs are not implemented yet.");

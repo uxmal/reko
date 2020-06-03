@@ -27,12 +27,12 @@ namespace Reko.Core
 {
     public class PlatformHeuristics
     {
-        public MaskedPattern[] ProcedurePrologs;
+        public MaskedPattern[]? ProcedurePrologs;
     }
 
     public class MaskedPattern
     {
-        public byte[] Bytes;
-        public byte[] Mask;
+        public byte[]? Bytes;
+        public byte[]? Mask;
     }
 }

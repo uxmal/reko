@@ -34,7 +34,7 @@ namespace Reko.Analysis
 	public class LinearInductionVariableFinder : InstructionVisitorBase
 	{
         private SsaState ssa;
-		private ICollection<SsaIdentifier> operands;
+		private ICollection<SsaIdentifier>? operands;
         private List<LinearInductionVariable> ivs;
         private Dictionary<LinearInductionVariable, LinearInductionVariableContext> contexts;
         private LinearInductionVariableContext ctx;
@@ -62,13 +62,12 @@ namespace Reko.Analysis
             get { return ctx; }
         }
 
-		public LinearInductionVariable CreateInductionVariable()
+		public LinearInductionVariable? CreateInductionVariable()
 		{
 			if (ctx.PhiStatement == null) return null;
 			if (ctx.PhiIdentifier == null) return null;
 			if (ctx.DeltaValue == null) return null;
 
-			SsaIdentifier sidPhi = ssa.Identifiers[ctx.PhiIdentifier];
 			if (ctx.TestStatement == null && ctx.InitialValue == null)
 			{
 				return new LinearInductionVariable(null, ctx.DeltaValue, null, false);
@@ -87,7 +86,7 @@ namespace Reko.Analysis
             return ctx.CreateInductionVariable();
 		}
 
-        public Constant AdjustTestValue(Constant testValue)
+        public Constant? AdjustTestValue(Constant? testValue)
         {
             if (testValue == null)
                 return null; 
@@ -95,19 +94,19 @@ namespace Reko.Analysis
             // <= or >= operators imply an extra spin around the loop.
 
             if (RelEq(ctx.TestOperator) &&
-                DominatesAllUses(ctx.TestStatement, ctx.PhiIdentifier) &&
+                DominatesAllUses(ctx.TestStatement, ctx.PhiIdentifier!) &&
                 BranchTrueIntoLoop())
             {
-                testValue = Operator.IAdd.ApplyConstants(testValue, ctx.DeltaValue);
+                testValue = Operator.IAdd.ApplyConstants(testValue, ctx.DeltaValue!);
             }
-            Identifier idNew = (Identifier) ((Assignment) ctx.DeltaStatement.Instruction).Dst;
-            if (!IsSingleUsingStatement(ctx.TestStatement, idNew))
+            Identifier idNew = (Identifier) ((Assignment) ctx.DeltaStatement!.Instruction).Dst;
+            if (!IsSingleUsingStatement(ctx.TestStatement!, idNew))
             {
-                if (!(IsSingleUsingStatement(ctx.PhiStatement, idNew) &&
-                    DominatesAllUses(ctx.TestStatement, ctx.PhiIdentifier)))
+                if (!(IsSingleUsingStatement(ctx.PhiStatement!, idNew) &&
+                    DominatesAllUses(ctx.TestStatement, ctx.PhiIdentifier!)))
                 {
                     // A use is made of the variable between increment and test.
-                    testValue = Operator.IAdd.ApplyConstants(testValue, ctx.DeltaValue);
+                    testValue = Operator.IAdd.ApplyConstants(testValue, ctx.DeltaValue!);
                 }
             }
             return testValue;
@@ -116,8 +115,8 @@ namespace Reko.Analysis
         private bool BranchTrueIntoLoop()
         {
             return 
-                ctx.TestStatement.Block.ThenBlock ==
-                ctx.PhiStatement.Block;
+                ctx.TestStatement!.Block.ThenBlock ==
+                ctx.PhiStatement!.Block;
         }
 
         /// <summary>
@@ -125,20 +124,22 @@ namespace Reko.Analysis
         /// </summary>
         /// <param name="op"></param>
         /// <returns></returns>
-        private bool RelEq(Operator op)
+        private bool RelEq(Operator? op)
         {
+            if (op is null)
+                return false;
             return op == Operator.Le || op == Operator.Ge ||
                    op == Operator.Ule || op == Operator.Uge;
         }
 
-		public bool DominatesAllUses(Statement stm, Identifier id)
+		public bool DominatesAllUses(Statement? stm, Identifier id)
 		{
 			SsaIdentifier sid = ssa.Identifiers[id];
 			foreach (Statement u in sid.Uses)
 			{
 				if (u != stm)
 				{
-					if (!doms.DominatesStrictly(stm, u))
+					if (!doms.DominatesStrictly(stm!, u))
 						return false;
 				}
 			}
@@ -157,16 +158,15 @@ namespace Reko.Analysis
             }
         }
 
-		public Constant FindFinalValue(ICollection<SsaIdentifier> scc)
+		public Constant? FindFinalValue(ICollection<SsaIdentifier> scc)
 		{
 			foreach (SsaIdentifier sid in scc)
 			{
 				foreach (Statement u in sid.Uses)
 				{
-					Branch b = u.Instruction as Branch;
-                    if (b == null)
+                    if (!(u.Instruction is Branch b))
                         continue;
-					if (b.Condition is BinaryExpression bin && 
+                    if (b.Condition is BinaryExpression bin && 
                         bin.Left is Identifier && 
                         bin.Operator is ConditionalOperator)
 					{
@@ -180,7 +180,7 @@ namespace Reko.Analysis
 			return null;
 		}
 
-		public Constant FindInitialValue(PhiFunction phi)
+		public Constant? FindInitialValue(PhiFunction phi)
 		{
 			if (phi.Arguments.Length != 2)
 				return null;
@@ -190,11 +190,10 @@ namespace Reko.Analysis
                 return null;
             var sid = doms.DominatesStrictly(sid1.DefStatement, sid0.DefStatement)
                 ? sid1 : sid0;
-			Assignment ass = sid.DefStatement.Instruction as Assignment;
-			if (ass == null)
-				return null;
+            if (!(sid.DefStatement!.Instruction is Assignment ass))
+                return null;
 
-			if (ass.Dst != sid.Identifier)
+            if (ass.Dst != sid.Identifier)
 				return null;
 
             ctx.InitialStatement = sid.DefStatement;
@@ -202,14 +201,13 @@ namespace Reko.Analysis
 			return ctx.InitialValue;
 		}
 
-		public Constant FindLinearIncrement(ICollection<SsaIdentifier> sids)
+		public Constant? FindLinearIncrement(ICollection<SsaIdentifier> sids)
 		{
             foreach (SsaIdentifier sid in sids)
             {
                 if (sid.DefStatement == null)
                     continue;
-                Assignment ass = sid.DefStatement.Instruction as Assignment;
-                if (ass == null)
+                if (!(sid.DefStatement.Instruction is Assignment ass))
                     continue;
                 if (ass.Src is BinaryExpression bin && (bin.Operator == Operator.IAdd || bin.Operator == Operator.ISub))
                 {
@@ -229,7 +227,7 @@ namespace Reko.Analysis
 			return null;
 		}
 
-		public PhiFunction FindPhiFunction(ICollection<SsaIdentifier> sids)
+		public PhiFunction? FindPhiFunction(ICollection<SsaIdentifier> sids)
 		{
             foreach (SsaIdentifier sid in sids)
             {
@@ -257,7 +255,7 @@ namespace Reko.Analysis
 		}
 
 
-		public bool IsIdUsedOnlyBy(Identifier id, Statement stm1, Statement stm2)
+		public bool IsIdUsedOnlyBy(Identifier id, Statement? stm1, Statement? stm2)
 		{
 			SsaIdentifier sid = ssa.Identifiers[id];
 			foreach (Statement u in sid.Uses)
@@ -291,7 +289,7 @@ namespace Reko.Analysis
         public class SsaGraph : InstructionVisitorBase, DirectedGraph<SsaIdentifier>
         {
             private SsaIdentifierCollection ssaIds;
-            private ICollection<SsaIdentifier> operands;
+            private ICollection<SsaIdentifier>? operands;
 
             public SsaGraph(SsaIdentifierCollection ssaIds)
             {
@@ -346,7 +344,7 @@ namespace Reko.Analysis
 
             public override void VisitIdentifier(Identifier id)
             {
-                operands.Add(ssaIds[id]);
+                operands!.Add(ssaIds[id]);
             }
 
             public override void VisitSideEffect(SideEffect side)
@@ -373,7 +371,7 @@ namespace Reko.Analysis
 
 		public override void VisitIdentifier(Identifier id)
 		{
-			operands.Add(ssa.Identifiers[id]);
+			operands!.Add(ssa.Identifiers[id]);
 		}
 
 		public override void VisitSideEffect(SideEffect side)
@@ -394,7 +392,7 @@ namespace Reko.Analysis
 				return;
 
             ctx = new LinearInductionVariableContext();
-			PhiFunction phi = FindPhiFunction(scc);
+			PhiFunction? phi = FindPhiFunction(scc);
 			if (phi == null)
 				return;
 			ctx.DeltaValue = FindLinearIncrement(scc);
@@ -402,7 +400,7 @@ namespace Reko.Analysis
 				return;
 			ctx.InitialValue = FindInitialValue(phi);
 			ctx.TestValue = FindFinalValue(scc);
-			LinearInductionVariable iv = CreateInductionVariable();
+			LinearInductionVariable? iv = CreateInductionVariable();
 			if (iv != null)
 			{
 				foreach (SsaIdentifier sid in scc)

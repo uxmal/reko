@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -32,7 +32,7 @@ namespace Reko.Core.Lib
     /// <typeparam name="TNode"></typeparam>
     public class LTDominatorGraph<TNode> where TNode: class
     {
-        public static Dictionary<TNode,TNode> Create(DirectedGraph<TNode> graph, TNode root)
+        public static Dictionary<TNode,TNode?> Create(DirectedGraph<TNode> graph, TNode root)
         {
             return new Builder(graph, root).Dominators();
         }
@@ -43,14 +43,14 @@ namespace Reko.Core.Lib
             private TNode root;
             private Dictionary<TNode, int> dfnum;
             private int N;
-            private Dictionary<TNode, TNode> parent;
+            private Dictionary<TNode, TNode?> parent;
             private Dictionary<int, TNode> vertex;
             private Dictionary<TNode, HashSet<TNode>> bucket;
-            private Dictionary<TNode, TNode> semi;
-            private Dictionary<TNode, TNode> ancestor;
-            private Dictionary<TNode, TNode> idom;
-            private Dictionary<TNode, TNode> samedom;
-            private Dictionary<TNode, TNode> best;
+            private Dictionary<TNode, TNode?> semi;
+            private Dictionary<TNode, TNode?> ancestor;
+            private Dictionary<TNode, TNode?> idom;
+            private Dictionary<TNode, TNode?> samedom;
+            private Dictionary<TNode, TNode?> best;
 
             public Builder(DirectedGraph<TNode> graph, TNode root)
             {
@@ -83,14 +83,14 @@ namespace Reko.Core.Lib
                 }
             }
 
-            public Dictionary<TNode, TNode> Dominators()
+            public Dictionary<TNode, TNode?> Dominators()
             {
-                DFS(default(TNode), root);
+                DFS(default!, root);
                 for (int i = N - 1; i > 0; --i)   // skip over root node 0
                 {
                     var n = vertex[i];
                     var p = parent[n];
-                    var s = p;
+                    var s = p!;
                     foreach (var v in graph.Predecessors(n))
                     {
                         TNode ss;
@@ -100,15 +100,16 @@ namespace Reko.Core.Lib
                         }
                         else
                         {
-                            ss = semi[AncestorWithLowestSemi(v)];
+                            ss = semi[AncestorWithLowestSemi(v)!]!;
                         }
-                        if (dfnum[ss] < dfnum[s])
-                            s = ss;
+                        //$REVIEW s and ss could be null here?
+                        if (dfnum[ss!] < dfnum[s!])
+                            s = ss!;
                     }
                     semi[n] = s;
                     bucket[s].Add(n);
-                    Link(p, n);
-                    foreach (var v in bucket[p])
+                    Link(p!, n);
+                    foreach (var v in bucket[p!])
                     {
                         var y = AncestorWithLowestSemi(v);
                         if (semi[y] == semi[v])
@@ -120,14 +121,14 @@ namespace Reko.Core.Lib
                             samedom[v] = p;
                         }
                     }
-                    bucket[p].Clear();
+                    bucket[p!].Clear();
                 }
                 for (int i = 1; i < N; ++i)
                 {
                     var n = vertex[i];
                     if (samedom[n] != null)
                     {
-                        idom[n] = idom[samedom[n]];
+                        idom[n] = idom[samedom[n]!];
                     }
                 }
                 return idom;
@@ -135,15 +136,15 @@ namespace Reko.Core.Lib
 
             TNode AncestorWithLowestSemi(TNode v)
             {
-                var a = ancestor[v];
+                var a = ancestor[v]!;
                 if (ancestor[a] != null)
                 {
                     var b = AncestorWithLowestSemi(a);
                     ancestor[v] = ancestor[a];
-                    if (dfnum[semi[b]] < dfnum[semi[best[v]]])
+                    if (dfnum[semi[b]!] < dfnum[semi[best[v]!]!])
                         best[v] = b;
                 }
-                return best[v];
+                return best[v]!;
             }
 
             void Link(TNode p, TNode n)

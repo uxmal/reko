@@ -36,10 +36,11 @@ namespace Reko.Core
     /// </summary>
     public abstract class Storage
     {
-        public Storage(string storageKind, DataType dataType)
+        public Storage(string storageKind, string name, DataType dataType)
         {
             this.Kind = storageKind;
             this.DataType = dataType;
+            this.Name = name;
         }
 
         public string Kind { get; private set; }
@@ -47,7 +48,17 @@ namespace Reko.Core
         /// <summary>
         /// The storage domain for this storage. 
         /// </summary>
-        public StorageDomain Domain { get; set; }
+        public StorageDomain Domain
+        {
+            get { return dom; }
+            set
+            {
+                dom = value;
+                if ((int) dom == 0x00010002)
+                    value.ToString();   //$DEBUG
+            }
+        }
+        private StorageDomain dom;
 
         /// <summary>
         /// The starting bit position of this storage.
@@ -171,7 +182,8 @@ namespace Reko.Core
     /// </summary>
 	public class FlagGroupStorage : Storage
     {
-        public FlagGroupStorage(RegisterStorage freg, uint grfMask, string name, DataType dataType) : base("FlagGroup", dataType)
+        public FlagGroupStorage(RegisterStorage freg, uint grfMask, string name, DataType dataType) 
+            : base("FlagGroup", name, dataType)
         {
             this.Domain = freg.Domain;
             this.FlagRegister = freg;
@@ -204,8 +216,7 @@ namespace Reko.Core
 
         public override bool Covers(Storage sThat)
         {
-            var that = sThat as FlagGroupStorage;
-            if (that == null || this.FlagRegister != that.FlagRegister)
+            if (!(sThat is FlagGroupStorage that) || this.FlagRegister != that.FlagRegister)
                 return false;
             return (this.FlagGroupBits | that.FlagGroupBits) == this.FlagGroupBits;
         }
@@ -219,8 +230,7 @@ namespace Reko.Core
 
         public override bool Exceeds(Storage sThat)
         {
-            var that = sThat as FlagGroupStorage;
-            if (that == null || this.FlagRegister != that.FlagRegister)
+            if (!(sThat is FlagGroupStorage that) || this.FlagRegister != that.FlagRegister)
                 return false;
             return (this.FlagGroupBits & ~that.FlagGroupBits) != 0;
         }
@@ -250,8 +260,7 @@ namespace Reko.Core
 
         public override bool OverlapsWith(Storage sThat)
         {
-            var that = sThat as FlagGroupStorage;
-            if (that == null || this.FlagRegister != that.FlagRegister)
+            if (!(sThat is FlagGroupStorage that) || this.FlagRegister != that.FlagRegister)
                 return false;
             return (this.FlagGroupBits & that.FlagGroupBits) != 0;
         }
@@ -272,17 +281,23 @@ namespace Reko.Core
     /// </summary>
     public class FpuStackStorage : Storage
     {
-        public FpuStackStorage(int depth, DataType dataType) : base("FpuStack", dataType)
+        public FpuStackStorage(int depth, DataType dataType) 
+            : base("FpuStack", MakeName(depth), dataType)
         {
             this.FpuStackOffset = depth;
-            this.Domain = (StorageDomain)(StorageDomain.FpuStack + depth);
-            if (FpuStackOffset >= 0)
+            this.Domain = (StorageDomain) (StorageDomain.FpuStack + depth);
+            MakeName(depth);
+        }
+
+        private static string MakeName(int depth)
+        {
+            if (depth >= 0)
             {
-                Name = string.Format("FPU +{0}", FpuStackOffset);
+                return string.Format("FPU +{0}", depth);
             }
             else
             {
-                Name = string.Format("FPU -{0}", -FpuStackOffset);
+                return string.Format("FPU -{0}", -depth);
             }
         }
 
@@ -330,8 +345,7 @@ namespace Reko.Core
 
         public override bool OverlapsWith(Storage sThat)
         {
-            var that = sThat as FpuStackStorage;
-            return that != null &&
+            return sThat is FpuStackStorage that &&
                 this.FpuStackOffset == that.FpuStackOffset;
         }
 
@@ -353,7 +367,7 @@ namespace Reko.Core
     /// </summary>
     public class MemoryStorage : Storage
     {
-        public MemoryStorage(string name, StorageDomain domain) : base(name, null)
+        public MemoryStorage(string name, StorageDomain domain) : base(name, name, null!)
         {
             this.Name = name;
             this.Domain = domain;
@@ -409,7 +423,8 @@ namespace Reko.Core
     /// </summary>
     public class OutArgumentStorage : Storage
     {
-        public OutArgumentStorage(Identifier originalId) : base("out", originalId.DataType)
+        public OutArgumentStorage(Identifier originalId) 
+            : base("out", $"out_{originalId.Name}", originalId.DataType)
         {
             this.OriginalIdentifier = originalId;
         }
@@ -470,10 +485,13 @@ namespace Reko.Core
     /// </summary>
 	public class RegisterStorage : Storage, IComparable<RegisterStorage>
     {
-        public RegisterStorage(string regName, int number, uint bitAddress, PrimitiveType dataType) : base("Register", dataType)
+        public RegisterStorage(string regName, int number, uint bitAddress, PrimitiveType dataType) 
+            : base("Register", regName, dataType)
         {
             this.Name = regName;
             this.Number = number;
+            if (number == 0x00010002)
+                number.ToString();
             this.BitAddress = bitAddress;
             this.Domain = (StorageDomain)(number + (int)StorageDomain.Register);
             int bitSize = dataType.BitSize;
@@ -543,18 +561,16 @@ namespace Reko.Core
             return visitor.VisitRegisterStorage(this, context);
         }
 
-        public override bool Covers(Storage sThat)
+        public override bool Covers(Storage other)
         {
-            var that = sThat as RegisterStorage;
-            if (that == null || that.Domain != this.Domain)
+            if (!(other is RegisterStorage that) || that.Domain != this.Domain)
                 return false;
             return (this.BitMask | that.BitMask) == this.BitMask;
         }
 
         public override bool Exceeds(Storage sThat)
         {
-            var that = sThat as RegisterStorage;
-            if (that == null || that.Domain != this.Domain)
+            if (!(sThat is RegisterStorage that) || that.Domain != this.Domain)
                 return false;
             return (this.BitMask & ~that.BitMask) != 0;
         }
@@ -604,8 +620,7 @@ namespace Reko.Core
 
         public override bool OverlapsWith(Storage sThat)
         {
-            var that = sThat as RegisterStorage;
-            if (that == null || this.Domain != that.Domain)
+            if (!(sThat is RegisterStorage that) || this.Domain != that.Domain)
                 return false;
             var thisStart = this.BitAddress;
             var thisEnd = this.BitAddress + this.BitSize;
@@ -691,7 +706,7 @@ namespace Reko.Core
         }
 
         public SequenceStorage(string name, DataType dt, params Storage [] elements)
-            : base("Sequence", dt)
+            : base("Sequence", name, dt)
         {
             this.Elements = elements;
             this.BitSize = (ulong) dt.BitSize;
@@ -800,8 +815,8 @@ namespace Reko.Core
 
     public abstract class StackStorage : Storage
     {
-        public StackStorage(string kind, int cbOffset, DataType dt)
-            : base(kind, dt)
+        public StackStorage(string kind, string name, int cbOffset, DataType dt)
+            : base(kind, name, dt)
         {
             this.StackOffset = cbOffset;
             this.BitSize = (uint)dt.BitSize;
@@ -845,7 +860,8 @@ namespace Reko.Core
 
     public class StackArgumentStorage : StackStorage
     {
-        public StackArgumentStorage(int cbOffset, DataType dataType) : base("Stack", cbOffset, dataType)
+        public StackArgumentStorage(int cbOffset, DataType dataType) 
+            : base("Stack", "stack", cbOffset, dataType)
         {
         }
 
@@ -894,7 +910,7 @@ namespace Reko.Core
     public class StackLocalStorage : StackStorage
     {
         public StackLocalStorage(int cbOffset, DataType dataType)
-            : base("Local", cbOffset, dataType)
+            : base("Local", "local", cbOffset, dataType)
         {
         }
 
@@ -951,7 +967,7 @@ namespace Reko.Core
 	public class TemporaryStorage : Storage
     {
         protected TemporaryStorage(string name, StorageDomain domain, DataType dt)
-            : base("Temporary", dt)
+            : base("Temporary", name, dt)
         {
             Domain = domain;
             Name = name;

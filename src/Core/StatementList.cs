@@ -47,7 +47,7 @@ namespace Reko.Core
             return stm;
         }
 
-		public Statement Last
+		public Statement? Last
 		{
 			get 
 			{ 

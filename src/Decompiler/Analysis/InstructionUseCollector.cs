@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 Pavel Tomin.
  *
@@ -19,16 +19,14 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Code;
 using Reko.Core.Expressions;
-using System;
 using System.Collections.Generic;
 
 namespace Reko.Analysis
 {
     public class InstructionUseCollector : InstructionUseVisitorBase
     {
-        private IDictionary<Identifier, int> idMap;
+        private readonly IDictionary<Identifier, int> idMap;
 
         public InstructionUseCollector()
         {

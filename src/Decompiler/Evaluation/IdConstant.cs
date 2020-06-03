@@ -35,13 +35,13 @@ namespace Reko.Evaluation
     public class IdConstant
     {
         private EvaluationContext ctx;
-        private Unifier unifier;
-        private Expression src;
-        private Identifier idDst;
-        private DecompilerEventListener listener;
-        private DataType dt;
-        private PrimitiveType pt;
-        private Pointer ptr;
+        private readonly Unifier unifier;
+        private readonly DecompilerEventListener listener;
+        private Expression? src;
+        private Identifier? idDst;
+        private DataType? dt;
+        private PrimitiveType? pt;
+        private Pointer? ptr;
 
         public IdConstant(EvaluationContext ctx, Unifier u, DecompilerEventListener listener)
         {
@@ -60,8 +60,8 @@ namespace Reko.Evaluation
                     return false;
             }
             idDst = id;
-            this.dt = unifier.Unify(src.DataType, idDst.DataType);
-            this.pt = dt.ResolveAs<PrimitiveType>();
+            this.dt = unifier.Unify(src!.DataType, idDst.DataType);
+            this.pt = dt!.ResolveAs<PrimitiveType>();
             this.ptr = dt.ResolveAs<Pointer>();
             return pt != null || this.ptr != null;
         }
@@ -70,24 +70,23 @@ namespace Reko.Evaluation
         {
             if (this.pt != null)
             {
-                ctx.RemoveIdentifierUse(idDst);
-                var cNew = src.CloneExpression();
-                cNew.DataType = dt;
+                ctx.RemoveIdentifierUse(idDst!);
+                var cNew = src!.CloneExpression();
+                cNew.DataType = dt!;
                 return cNew;
             }
-            var cSrc = src as Constant;
             if (this.ptr != null)
             {
-                if (cSrc != null)
+                if (src is Constant cSrc)
                 {
-                    ctx.RemoveIdentifierUse(idDst);
+                    ctx.RemoveIdentifierUse(idDst!);
                     var addr = Address.Create(ptr, cSrc.ToUInt64());
                     addr.DataType = ptr;
                     return addr;
                 }
                 if (src is Address)
                 {
-                    ctx.RemoveIdentifierUse(idDst);
+                    ctx.RemoveIdentifierUse(idDst!);
                     var addr = src.CloneExpression();
                     addr.DataType = ptr;
                     return addr;
@@ -96,8 +95,8 @@ namespace Reko.Evaluation
             listener.Warn(
                 new NullCodeLocation(""),
                 "Constant propagation failed. Resulting type is {0}, which isn't supported yet.", 
-                dt);
-            return idDst;
+                dt!);
+            return idDst!;
         }
     }
 }

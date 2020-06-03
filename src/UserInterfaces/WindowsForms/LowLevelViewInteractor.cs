@@ -159,11 +159,11 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             //$REVIEW: load the visualizers from a config file?
             this.Control.VisualizerList.Items.Add(
-                new ListOption { Text = "ASCII strings", Value = new AsciiStringVisualizer() });
+                new ListOption("ASCII strings", new AsciiStringVisualizer()));
             this.control.VisualizerList.Items.Add(
-                new ListOption { Text = "Code and data", Value = new CodeDataVisualizer() });
+                new ListOption("Code and data", new CodeDataVisualizer()));
             this.Control.VisualizerList.Items.Add(
-                new ListOption { Text = "Heat map", Value = new HeatmapVisualizer() });
+                new ListOption("Heat map", new HeatmapVisualizer()));
         }
 
         private void UserNavigateToAddress(Address addrFrom, Address addrTo)
@@ -407,8 +407,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public ImageMapItem SetTypeAtAddressRange(Address address, string userText)
         {
-            var parser = new HungarianParser();
-            var dataType = parser.Parse(userText);
+            var dataType = HungarianParser.Parse(userText);
             if (dataType == null)
                 return null;
             if (dataType is ArrayType arr && arr.ElementType.Size != 0)
@@ -452,16 +451,14 @@ namespace Reko.UserInterfaces.WindowsForms
                 if (uiSvc.ShowModalDialog(dlg) == Gui.DialogResult.OK)
                 {
                     var re = Core.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
-                    var hits = 
+                    var hits =
                         //$BUG: wrong result
                         program.SegmentMap.Segments.Values
                         .SelectMany(s => re.GetMatches(s.MemoryArea.Bytes, 0))
-                        .Select(offset => new AddressSearchHit
-                        {
-                            Program = program,
-                            Address = program.ImageMap.BaseAddress + offset,
-                            Length = 1
-                        });
+                        .Select(offset => new AddressSearchHit(
+                            program,
+                            program.ImageMap.BaseAddress + offset,
+                            1));
                     srSvc.ShowAddressSearchResults(hits, new CodeSearchDetails());
                 }
             }

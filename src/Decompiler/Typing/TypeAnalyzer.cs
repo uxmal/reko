@@ -40,18 +40,18 @@ namespace Reko.Typing
 	{
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(TypeAnalyzer), "Traces the progress of the type analysis") { Level = TraceLevel.Verbose };
 
-        private DecompilerEventListener eventListener;
+        private readonly DecompilerEventListener eventListener;
 
-		private TypeFactory factory;
-		private TypeStore store;
-		private ExpressionNormalizer aen;
-		private EquivalenceClassBuilder eqb;
-        private TypeCollector tyco;
+		private TypeFactory? factory;
+		private TypeStore? store;
+		private ExpressionNormalizer? aen;
+		private EquivalenceClassBuilder? eqb;
+        private TypeCollector? tyco;
         //private DerivedPointerAnalysis dpa;
-        private TypeVariableReplacer tvr;
-		private TypeTransformer trans;
-		private ComplexTypeNamer ctn;
-		private TypedExpressionRewriter ter;
+        private TypeVariableReplacer? tvr;
+		private TypeTransformer? trans;
+		private ComplexTypeNamer? ctn;
+		private TypedExpressionRewriter? ter;
 
 		public TypeAnalyzer(DecompilerEventListener eventListener)
 		{
@@ -95,8 +95,8 @@ namespace Reko.Typing
             eventListener.ShowStatus("Transforming datatypes.");
             Time("Replace primitive types", () =>
             {
-                var ppr = new PtrPrimitiveReplacer(factory, store, program);
-                ppr.ReplaceAll(eventListener);
+                var ppr = new PtrPrimitiveReplacer(factory, store, program, eventListener);
+                ppr.ReplaceAll();
             });
 
 			Time("Transforming data types", trans.Transform);

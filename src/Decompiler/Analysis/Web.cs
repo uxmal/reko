@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,8 +29,6 @@ namespace Reko.Analysis
 {
 	public class Web
 	{
-		private LinearInductionVariable iv;
-
 		public Web()
 		{
 			this.Members = new HashSet<SsaIdentifier>();
@@ -39,7 +37,7 @@ namespace Reko.Analysis
             this.DefExprs = new List<Expression>();
 		}
 
-        public Identifier Identifier { get; private set; }
+        public Identifier? Identifier { get; private set; }
         public HashSet<SsaIdentifier> Members { get; private set; }
         public HashSet<Statement> Uses { get; private set; }
         public HashSet<Statement> Definitions { get; private set; }
@@ -62,38 +60,35 @@ namespace Reko.Analysis
 					this.Identifier = sid.Identifier;
 				}
 
-				if (iv == null)
+				if (InductionVariable == null)
 				{
-					iv = sid.InductionVariable;
+					InductionVariable = sid.InductionVariable;
 				}
 				else if (sid.InductionVariable == null)
 				{
-					sid.InductionVariable = iv;
+					sid.InductionVariable = InductionVariable ;
 				}
 				else 
 				{
-					iv = LinearInductionVariable.Merge(sid.InductionVariable, iv);
-					if (iv == null)
+					InductionVariable  = LinearInductionVariable.Merge(sid.InductionVariable, InductionVariable );
+					if (InductionVariable  == null)
 					{
 						// Warning(string.Format("{0} and {1} are conflicting induction variables: {2} {3}", 
 					}
-					sid.InductionVariable = iv;
+					sid.InductionVariable = InductionVariable ;
 				}
 			}
-			Definitions.Add(sid.DefStatement);
-            DefExprs.Add(sid.DefExpression);
+			Definitions.Add(sid.DefStatement!);
+            DefExprs.Add(sid.DefExpression!);
 			foreach (Statement u in sid.Uses)
 				Uses.Add(u);
 		}
         
-		public LinearInductionVariable InductionVariable
-		{
-			get { return iv; }
-		}
+		public LinearInductionVariable? InductionVariable { get; private set; }
 
 		public void Write(TextWriter writer)
 		{
-			writer.Write("{0}: {{ ", Identifier.Name);
+			writer.Write("{0}: {{ ", Identifier!.Name);
 			foreach (SsaIdentifier m in Members.OrderBy(mm => mm.Identifier.Name))
 			{
 				writer.Write("{0} ", m.Identifier.Name);

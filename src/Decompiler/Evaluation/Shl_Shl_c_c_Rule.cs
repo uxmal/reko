@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,10 +27,10 @@ namespace Reko.Evaluation
 {
 	public class ShiftShift_c_c_Rule
 	{
-		private Constant c1;
-		private Constant c2;
-		private Expression e;
-		private Operator op;
+		private Constant? c1;
+		private Constant? c2;
+		private Expression? e;
+		private Operator? op;
 
 		public ShiftShift_c_c_Rule(EvaluationContext ctx)
 		{
@@ -45,10 +45,9 @@ namespace Reko.Evaluation
 			c1 = b.Right as Constant;
 			if (c1 == null)
 				return false;
-			BinaryExpression b2 = b.Left as BinaryExpression;
-			if (b2 == null)
-				return false;
-			if (op != b2.Operator)
+            if (!(b.Left is BinaryExpression b2))
+                return false;
+            if (op != b2.Operator)
 				return false;
 			c2 = b2.Right as Constant;
 			if (c2 == null)
@@ -60,10 +59,10 @@ namespace Reko.Evaluation
 		public Expression Transform()
 		{
 			return new BinaryExpression(
-				op,
-				e.DataType,
-				e,
-				Operator.IAdd.ApplyConstants(c1, c2));
+				op!,
+				e!.DataType,
+				e!,
+				Operator.IAdd.ApplyConstants(c1!, c2!));
 		}
 	}
 }

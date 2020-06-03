@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
@@ -32,21 +34,20 @@ namespace Reko.Gui
     /// </summary>
     public class TreeNodeDesigner : ICommandTarget
     {
-        public IServiceProvider Services { get; set; }
-        public ITreeNode TreeNode { get; set; }
-        public ITreeNodeDesignerHost Host { get ; set; }
-        public object Component { get; set; }
+        public IServiceProvider? Services { get; set; }
+        public ITreeNode? TreeNode { get; set; }
+        public ITreeNodeDesignerHost? Host { get ; set; }
+        public object? Component { get; set; }
+        public TreeNodeDesigner? Parent { get; set; }
 
         public virtual void Initialize(object obj)
         {
-            TreeNode.Text = obj.ToString();
+            TreeNode!.Text = obj.ToString();
         }
 
         public virtual void DoDefaultAction()
         {
         }
-    
-        public TreeNodeDesigner Parent { get; set; }
 
         public virtual void OnExpanded()
         {
@@ -70,8 +71,8 @@ namespace Reko.Gui
         void AddComponent(object parent, object component);
         void AddComponents(object parent, System.Collections.IEnumerable components);
         void RemoveComponent(object component);
-        TreeNodeDesigner GetDesigner(object component);
-        TreeNodeDesigner GetSelectedDesigner();
+        TreeNodeDesigner? GetDesigner(object component);
+        TreeNodeDesigner? GetSelectedDesigner();
     }
 
     public static class TreeNodeDesignerEx
@@ -80,12 +81,12 @@ namespace Reko.Gui
         {
             var des = host.GetDesigner(component);
             if (des == null)
-                return default(T);
+                return default!;
             for (;;)
             {
                 des = des.Parent;
                 if (des == null)
-                    return default(T);
+                    return default!;
                 if (des.Component is T)
                     return (T) des.Component;
             }

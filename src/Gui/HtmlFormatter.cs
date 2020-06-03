@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable enable
 
 using Reko.Core.Output;
 using System;
@@ -99,7 +101,7 @@ namespace Reko.Gui
             if (!string.IsNullOrEmpty(dest))
             {
                 TextWriter.Write(" href=\"");
-                WriteEntityEscaped(dest);
+                WriteEntityEscaped(dest!);
                 TextWriter.Write("\"");
             }
             TextWriter.Write(">");

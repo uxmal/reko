@@ -62,7 +62,7 @@ namespace Reko.Core.Lib
         {
             ulong r;      // resulting sign-extended number
             ulong m = 1LU << (b - 1); // mask can be pre-computed if b is fixed
-            w = w & ((1LU << b) - 1);  // (Skip this if bits in x above position b are already zero.)
+            w &= ((1LU << b) - 1);  // (Skip this if bits in x above position b are already zero.)
             r = (w ^ m) - m;
             return r;
         }
@@ -71,7 +71,7 @@ namespace Reko.Core.Lib
         {
             uint r;      // resulting sign-extended number
             uint m = 1u << (b - 1); // mask can be pre-computed if b is fixed
-            w = w & ((1u << b) - 1);  // (Skip this if bits in x above position b are already zero.)
+            w &= ((1u << b) - 1);  // (Skip this if bits in x above position b are already zero.)
             r = (w ^ m) - m;
             return r;
         }
@@ -89,7 +89,7 @@ namespace Reko.Core.Lib
 
         public static int BitCount(ulong u)
         {
-            u = u - ((u >> 1) & 0x5555555555555555UL);
+            u -= ((u >> 1) & 0x5555555555555555UL);
             u = (u & 0x3333333333333333UL) + ((u >> 2) & 0x3333333333333333UL);
             u = (u & 0x0F0F0F0F0F0F0F0FUL) + ((u >> 4) & 0x0F0F0F0F0F0F0F0FUL);
             u = (u & 0x00FF00FF00FF00FFUL) + ((u >> 8) & 0x00FF00FF00FF00FFUL);
@@ -145,11 +145,11 @@ namespace Reko.Core.Lib
             int n = wordSize;
             ulong y;
 
-            y = x >> 32; if (y != 0) { n = n - 32; x = y; }
-            y = x >> 16; if (y != 0) { n = n - 16; x = y; }
-            y = x >> 8; if (y != 0) { n = n - 8; x = y; }
-            y = x >> 4; if (y != 0) { n = n - 4; x = y; }
-            y = x >> 2; if (y != 0) { n = n - 2; x = y; }
+            y = x >> 32; if (y != 0) { n -= 32; x = y; }
+            y = x >> 16; if (y != 0) { n -= 16; x = y; }
+            y = x >> 8; if (y != 0) { n -= 8; x = y; }
+            y = x >> 4; if (y != 0) { n -= 4; x = y; }
+            y = x >> 2; if (y != 0) { n -= 2; x = y; }
             y = x >> 1; if (y != 0) return n - 2;
             var leading = n - (int) x;
             return leading;

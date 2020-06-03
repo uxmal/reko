@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -129,14 +131,19 @@ Some examples:
         private string str;
         private int i;
 
-        public DataType Parse(string hungarianString)
+        private HungarianParser(string str)
+        {
+            //Debug.Print("Parsing " + hungarianString);
+            this.str = str;
+            this.i = 0;
+        }
+
+        public static DataType? Parse(string hungarianString)
         {
             if (hungarianString == null)
                 return null;
-            //Debug.Print("Parsing " + hungarianString);
-            this.str = hungarianString;
-            this.i = 0;
-            return Parse(PrimitiveType.Char);
+            var parser = new HungarianParser(hungarianString);
+            return parser.Parse(PrimitiveType.Char);
         }
 
         private DataType Parse(PrimitiveType charPrefix)

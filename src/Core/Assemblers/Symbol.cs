@@ -115,40 +115,37 @@ namespace Reko.Core.Assemblers
 	public class BackPatch
 	{
 		public int	offset;
-		private DataType size;
         public int UnitSize;
 
 		public BackPatch(int o, DataType s, int unitSize)
 		{
 			offset = o; 
-			size = s;
+			Size = s;
             this.UnitSize = unitSize;
 		}
 
-		public DataType Size { get { return size; } }
-	}
+        public DataType Size { get; }
+    }
 
 	public class SymbolTable 
 	{
-		private SortedList<string,Symbol> symbols;
-		private Dictionary<string,int> equates;
+        private readonly SortedList<string, Symbol> symbols;
 
-		public SymbolTable()
+        public SymbolTable()
 		{
 			symbols = new SortedList<string,Symbol>();
-			equates = new Dictionary<string,int>();
+			Equates = new Dictionary<string,int>();
 		}
 
 		public Symbol CreateSymbol(string s)
 		{
-			Symbol sym;
-            if (!symbols.TryGetValue(s, out sym))
-			{
-				// Forward reference to a symbol. 
-				sym = new Symbol(s);
-				symbols.Add(s, sym);
-			}
-			return sym;
+            if (!symbols.TryGetValue(s, out Symbol sym))
+            {
+                // Forward reference to a symbol. 
+                sym = new Symbol(s);
+                symbols.Add(s, sym);
+            }
+            return sym;
 		}
 
 		public Symbol DefineSymbol(string s, int off)
@@ -170,12 +167,9 @@ namespace Reko.Core.Assemblers
 			return sym;
 		}
 
-		public Dictionary<string,int> Equates
-		{
-			get { return equates; }
-		}
+        public Dictionary<string, int> Equates { get; }
 
-		public Symbol [] GetUndefinedSymbols()
+        public Symbol [] GetUndefinedSymbols()
 		{
             List<Symbol> undef = new List<Symbol>();
 			foreach (Symbol sym in symbols.Values)
@@ -195,8 +189,8 @@ namespace Reko.Core.Assemblers
 					de.Value.fResolved ? "resolved" : "unresolved",
 					de.Value.offset, 
                     de.Value.Patches.Count,
-					(de.Value.sym != null ? de.Value.sym : ""));
+					de.Value.sym ?? "");
 			}
 		}
-	}			
+	}
 }

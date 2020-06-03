@@ -37,6 +37,11 @@ namespace Reko.Core.Serialization.Json
         private TextWriter w;
         private JsonWriter js;
 
+        public JsonProcedureSerializer()
+        {
+            this.w = TextWriter.Null;
+            this.js = new JsonWriter(w);
+        }
         public string Serialize(Procedure proc)
         {
             var sw = new StringWriter();
@@ -45,7 +50,7 @@ namespace Reko.Core.Serialization.Json
             return sw.ToString();
         }
 
-        public void Serialize(Procedure proc, TextWriter w)
+        private void Serialize(Procedure proc, TextWriter w)
         {
             this.w = w;
             js.BeginObject();
@@ -114,7 +119,7 @@ namespace Reko.Core.Serialization.Json
                 js.WriteKeyValue("kind", "reg");
                 js.WriteKeyValue("name", reg.Name);
                 break;
-            case MemoryStorage mem:
+            case MemoryStorage _:
                 js.WriteKeyValue("kind", "mem");
                 break;
             case FlagGroupStorage flg:
@@ -123,7 +128,7 @@ namespace Reko.Core.Serialization.Json
                 js.WriteKeyValue("reg", flg.FlagRegister.Name);
                 break;
             default:
-                throw new NotImplementedException(string.Format("Unimplemented storage: {0}.", stg));
+                throw new NotImplementedException($"Unimplemented storage: {stg}.");
             }
             js.EndObject();
         }

@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Scanning
             arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("FakeArch");
             proc = new Procedure(arch.Object, "testProc", Address.Ptr32(0x00100000), new Frame(PrimitiveType.Word32));
-            block = proc.AddBlock("l00100000");
+            block = proc.AddBlock(proc.EntryAddress, "l00100000");
             grf = proc.Frame.EnsureFlagGroup(Registers.eflags, 3, "SCZ", PrimitiveType.Byte);
             program.Architecture = arch.Object;
             program.SegmentMap = new SegmentMap(
@@ -208,8 +208,9 @@ namespace Reko.UnitTests.Scanning
         }
 
 
-        private void Given_ExpectedBranchTarget(uint uAddrDst, Block block)
+        private void Given_ExpectedBranchTarget(uint uAddrDst, string blockName)
         {
+            var block = proc.AddBlock(Address.Ptr32(uAddrDst), blockName);
             scanner.Setup(x => x.EnqueueJumpTarget(
                 It.IsNotNull<Address>(),
                 It.Is<Address>(a => a.ToUInt32() == uAddrDst),
@@ -273,7 +274,7 @@ namespace Reko.UnitTests.Scanning
                 m.Goto(Address.Ptr32(0x104000));
             });
 
-            Block next = block.Procedure.AddBlock("next");
+            Block next = block.Procedure.AddBlock(Address.Ptr32(0x10004), "next");
             arch.Setup(x => x.PointerType).Returns(PrimitiveType.Ptr32);
             arch.Setup(x => x.CreateRewriter(
                 It.IsAny<EndianImageReader>(),
@@ -313,8 +314,8 @@ namespace Reko.UnitTests.Scanning
                 m.Branch(r1, Address.Ptr32(0x00104000), InstrClass.ConditionalTransfer));
             trace.Add(m =>
                 m.Assign(r1, r2));
-            var blockElse = new Block(proc, "else");
-            var blockThen = new Block(proc, "then");
+            var blockElse = new Block(proc, Address.Ptr32(0x00104010), "else");
+            var blockThen = new Block(proc, Address.Ptr32(0x00104020), "then");
             ProcessorState s1 = null;
             ProcessorState s2 = null;
                 arch.Setup(a => a.FramePointerType).Returns(PrimitiveType.Ptr32);
@@ -461,7 +462,7 @@ namespace Reko.UnitTests.Scanning
             terminator.Characteristics = new ProcedureCharacteristics {
                 Terminates = true,
             };
-            block = proc.AddBlock("the_block");
+            block = proc.AddBlock(proc.EntryAddress, "the_block");
             arch.Setup(a => a.PointerType).Returns(PrimitiveType.Word32);
             scanner.Setup(s => s.FindContainingBlock(It.IsAny<Address>())).Returns(block);
             Given_NoImportedProcedure();
@@ -496,8 +497,8 @@ namespace Reko.UnitTests.Scanning
                 proc2.Frame.EnsureRegister(new RegisterStorage("r2", 2, 0, PrimitiveType.Word32)),
                 proc2.Frame.EnsureRegister(new RegisterStorage("r3", 3, 0, PrimitiveType.Word32)));
             proc2.Signature = sig;
-            var block2 = new Block(proc, "l00100008");
-            var block3 = new Block(proc, "l00100004");
+            var block2 = new Block(proc, Address.Ptr32(0x0010008), "l00100008");
+            var block3 = new Block(proc, Address.Ptr32(0x0010004), "l00100004");
             arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
             scanner.Setup(s => s.FindContainingBlock(Address.Ptr32(0x00100000))).Returns(block);
             scanner.Setup(s => s.FindContainingBlock(Address.Ptr32(0x00100004))).Returns(block2);
@@ -598,8 +599,8 @@ testProc_exit:
         [Test]
         public void Bwi_Goto_DelaySlot()
         {
-            var l00100008 = new Block(proc, "l00100008");
-            var l00100100 = new Block(proc, "l00101000");
+            var l00100008 = new Block(proc, Address.Ptr32(0x00100008), "l00100008");
+            var l00100100 = new Block(proc, Address.Ptr32(0x00101000), "l00101000");
             Given_NoImportedProcedure();
             scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Returns(block);
             scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Returns(block);
@@ -630,8 +631,8 @@ testProc_exit:
         [Test]
         public void Bwi_Branch_DelaySlot()
         {
-            var l00100008 = new Block(proc, "l00100008");
-            var l00100100 = new Block(proc, "l00101000");
+            var l00100008 = new Block(proc, Address.Ptr32(0x00100008), "l00100008");
+            var l00100100 = new Block(proc, Address.Ptr32(0x00101000), "l00101000");
             scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Returns(block);
             scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Returns(block);
             scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100008))).Returns(l00100008);
@@ -674,8 +675,8 @@ testProc_exit:
         [Test]
         public void Bwi_Call_DelaySlot()
         {
-            var l00100008 = new Block(proc, "l00100008");
-            var l00100100 = new Block(proc, "l00101000");
+            var l00100008 = new Block(proc, Address.Ptr32(0x00100008), "l00100008");
+            var l00100100 = new Block(proc, Address.Ptr32(0x00101000), "l00101000");
             scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Returns(block);
             scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Returns(block);
             scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100008))).Returns(block);
@@ -713,8 +714,8 @@ testProc_exit:
         [Test]
         public void Bwi_Return_DelaySlot()
         {
-            var l00100008 = new Block(proc, "l00100008");
-            var l00100100 = new Block(proc, "l00101000");
+            var l00100008 = new Block(proc, Address.Ptr32(0x00100008), "l00100008");
+            var l00100100 = new Block(proc, Address.Ptr32(0x00101000), "l00101000");
             scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Returns(block);
             scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Returns(block);
             Given_SimpleTrace(trace);
@@ -740,8 +741,8 @@ testProc_exit:
         [Test(Description = "Test for when a delay slot is anulled (SPARC)")]
         public void Bwi_Branch_DelaySlotAnulled()
         {
-            var l00100008 = new Block(proc, "l00100008");
-            var l00100100 = new Block(proc, "l00101000");
+            var l00100008 = new Block(proc, Address.Ptr32(0x00100008), "l00100008");
+            var l00100100 = new Block(proc, Address.Ptr32(0x00101000), "l00101000");
             scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Returns(block);
             scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Returns(block);
             scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100008))).Returns(l00100008);
@@ -782,8 +783,8 @@ testProc_exit:
         [Test(Description = "Test for infinite loops with delay slots")]
         public void Bwi_Branch_InfiniteLoop_DelaySlot()
         {
-            var l00100000 = new Block(proc, "l0010000");
-            var l00100004 = new Block(proc, "l00100004");
+            var l00100000 = new Block(proc, Address.Ptr32(0x00100008), "l0010000");
+            var l00100004 = new Block(proc, Address.Ptr32(0x00101000), "l00100004");
             Given_NoImportedProcedure();
             Given_SimpleTrace(trace);
             scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Returns(l00100000);
@@ -813,7 +814,7 @@ testProc_exit:
         {
             var addrCall = Address.Ptr32(0x00100000);
             var addrCallee = Address.Ptr32(0x00102000);
-            var l00100000 = new Block(proc, "l00100000");
+            var l00100000 = new Block(proc, addrCall, "l00100000");
             var procCallee = new Procedure(program.Architecture, null, addrCallee, new Frame(PrimitiveType.Ptr32))
             {
                 Name = "testFn",
@@ -855,7 +856,7 @@ testProc_exit:
         {
             var addrStart = Address.Ptr32(0x00100000);
             var addrNext = Address.Ptr32(0x00100004);
-            var blockOther = new Block(proc, "other");
+            var blockOther = new Block(proc, addrNext, "other");
 
             scanner.Setup(s => s.FindContainingBlock(addrStart)).Returns(block);
             scanner.Setup(s => s.FindContainingBlock(addrNext)).Returns(blockOther);
@@ -912,7 +913,7 @@ testProc_exit:
         public void BwiFallIntoOtherProcedure()
         {
             var addrStart = Address.Ptr32(0x00100000);
-            var blockCallRet = new Block(proc, "callRetStub");
+            var blockCallRet = new Block(proc, addrStart, "callRetStub");
             trace.Add(m => { m.Assign(m.Mem32(m.Ptr32(0x00123400)), m.Word32(1)); });
             Given_SimpleTrace(trace);
             scanner.Setup(s => s.FindContainingBlock(It.IsAny<Address>())).Returns(block);
@@ -934,7 +935,7 @@ testProc_exit:
         public void BwiJumpExternalProcedure()
         {
             var addrStart = Address.Ptr32(0x00100000);
-            var blockCallRet = new Block(proc, "jmpOut");
+            var blockCallRet = new Block(proc, addrStart, "jmpOut");
             trace.Add(m => { m.Goto(Address.Ptr32(0x00123400)); });
             Given_NoImportedProcedure();
             //scanner.Setup(x => x.TerminateBlock(null, null)).IgnoreArguments();
@@ -958,7 +959,7 @@ testProc_exit:
         public void BwiReadConstants()
         {
             var addrStart = Address.Ptr32(0x00100000);
-            var blockCallRet = new Block(proc, "jmpOut");
+            var blockCallRet = new Block(proc, addrStart, "jmpOut");
             trace.Add(m =>
             {
                 m.Assign(r1, 4);
@@ -1048,10 +1049,10 @@ call r1 (retsize: 4;)
                 m.BranchInMiddleOfInstruction(m.Eq(r0, 3), Address.Ptr32(0x00100300), InstrClass.ConditionalTransfer);
                 m.Goto(Address.Ptr32(0x00100400));
             });
-            Given_ExpectedBranchTarget(0x00100100, proc.AddBlock("case1"));
-            Given_ExpectedBranchTarget(0x00100200, proc.AddBlock("case2"));
-            Given_ExpectedBranchTarget(0x00100300, proc.AddBlock("case3"));
-            Given_ExpectedBranchTarget(0x00100400, proc.AddBlock("default"));
+            Given_ExpectedBranchTarget(0x00100100, "case1");
+            Given_ExpectedBranchTarget(0x00100200, "case2");
+            Given_ExpectedBranchTarget(0x00100300, "case3");
+            Given_ExpectedBranchTarget(0x00100400, "default");
 
             scanner.Setup(s => s.FindContainingBlock(addrStart)).Returns(block);
             scanner.Setup(s => s.FindContainingBlock(addrStart + 4)).Returns(block);

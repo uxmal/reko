@@ -24,6 +24,8 @@
  * 
  */
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 
@@ -50,7 +52,7 @@ namespace Reko.Core.Lib
     public class FibonacciHeap<TKey, TValue> where TKey : IComparable<TKey>
     {
         /** Points to the minimum node in the heap. */
-        private Node min;
+        private Node? min;
         /** Number of nodes in the heap. If the type is ever widened,
          * (e.g. changed to long) then recalcuate the maximum degree
          * value used in the consolidate() method. */
@@ -88,11 +90,11 @@ namespace Reko.Core.Lib
             // The magic 45 comes from log base phi of Integer.MAX_VALUE,
             // which is the most elements we will ever hold, and log base
             // phi represents the largest degree of any root list node.
-            Node[] A = new Node[45];
+            Node?[] A = new Node[45];
 
             // For each root list node look for others of the same degree.
-            Node start = min;
-            Node w = min;
+            Node start = min!;
+            Node w = min!;
             do
             {
                 Node x = w;
@@ -102,7 +104,7 @@ namespace Reko.Core.Lib
                 while (A[d] != null)
                 {
                     // Make one of the nodes a child of the other.
-                    Node y = A[d];
+                    Node y = A[d]!;
                     if (x.getKey.CompareTo(y.getKey) > 0)
                     {
                         Node temp = y;
@@ -137,7 +139,7 @@ namespace Reko.Core.Lib
             // The node considered to be min may have been changed above.
             min = start;
             // Find the minimum key again.
-            foreach (Node a in A)
+            foreach (Node? a in A)
             {
                 if (a != null && a.getKey.CompareTo(min.getKey) < 0)
                 {
@@ -184,13 +186,13 @@ namespace Reko.Core.Lib
             }
             x.getKey = k;
             x.getData = newData;
-            Node y = x.parent;
+            Node? y = x.parent;
             if (y != null && (delete || k.CompareTo(y.getKey) < 0))
             {
-                y.cut(x, min);
-                y.cascadingCut(min);
+                y.cut(x, min!);
+                y.cascadingCut(min!);
             }
-            if (delete || k.CompareTo(min.getKey) < 0)
+            if (delete || k.CompareTo(min!.getKey) < 0)
             {
                 min = x;
             }
@@ -207,7 +209,7 @@ namespace Reko.Core.Lib
         public void delete(Node x)
         {
             // make x as small as possible
-            decreaseKey(x, x.getData, default(TKey), true);
+            decreaseKey(x, x.getData, default!, true);
             // remove the smallest, which decreases n also
             removeMin();
         }
@@ -268,7 +270,7 @@ namespace Reko.Core.Lib
          *
          * @return  heap node with the smallest key, or null if empty.
          */
-        public Node Minimum()
+        public Node? Minimum()
         {
             return min;
         }
@@ -283,7 +285,7 @@ namespace Reko.Core.Lib
          */
         public TValue removeMin()
         {
-            Node z = min;
+            Node? z = min;
             if (z == null)
                 throw new InvalidOperationException("Empty");
             if (z.child != null)
@@ -296,7 +298,7 @@ namespace Reko.Core.Lib
                     x.parent = null;
                 }
                 // merge the children into root list
-                Node minleft = min.left;
+                Node minleft = min!.left;
                 Node zchildleft = z.child.left;
                 min.left = zchildleft;
                 zchildleft.right = min;
@@ -344,7 +346,7 @@ namespace Reko.Core.Lib
                         H2.min.left.right = H.min.right;
                         H.min.right = H2.min;
                         H2.min.left = H.min;
-                        if (H2.min.getKey.CompareTo(H1.min.getKey) < 0)
+                        if (H2.min.getKey.CompareTo(H1.min!.getKey) < 0)
                         {
                             H.min = H2.min;
                         }
@@ -381,9 +383,9 @@ namespace Reko.Core.Lib
             /** Key value for this node. */
             public TKey getKey;
             /** Parent node. */
-            public Node parent;
+            public Node? parent;
             /** First child node. */
-            public Node child;
+            public Node? child;
             /** Right sibling node. */
             public Node right;
             /** Left sibling node. */
@@ -420,7 +422,7 @@ namespace Reko.Core.Lib
              */
             public void cascadingCut(Node min)
             {
-                Node z = parent;
+                Node? z = parent;
                 // if there's a parent...
                 if (z != null)
                 {

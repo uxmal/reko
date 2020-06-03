@@ -36,7 +36,7 @@ namespace Reko.Core.Output
         private readonly Program program;
         private readonly IServiceProvider services;
         private readonly DataTypeComparer cmp;
-        private EndianImageReader rdr;
+        private EndianImageReader? rdr;
         private CodeFormatter codeFormatter;
         private StructureType globals;
         private int recursionGuard;     //$REVIEW: remove this once deep recursion bugs have been flushed out.
@@ -44,26 +44,37 @@ namespace Reko.Core.Output
         private TypeReferenceFormatter tw;
         private Queue<StructureField> queue;
 
-        public GlobalDataWriter(Program program, IServiceProvider services)
+        public GlobalDataWriter(Program program, Formatter formatter, IServiceProvider services)
         {
             this.program = program;
+            this.formatter = formatter;
             this.services = services;
             this.cmp = new DataTypeComparer();
-        }
-
-        public void WriteGlobals(Formatter formatter)
-        {
-            this.formatter = formatter;
             this.codeFormatter = new AbsynCodeFormatter(formatter);
             this.tw = new TypeReferenceFormatter(formatter);
-            var eqGlobalStruct = program.Globals.TypeVariable.Class;
-            this.globals = eqGlobalStruct.ResolveAs<StructureType>();
-            if (this.globals == null)
+            var eqGlobalStruct = program.Globals.TypeVariable?.Class;
+            if (eqGlobalStruct != null)
+            {
+                var globals = eqGlobalStruct.ResolveAs<StructureType>();
+                if (globals != null)
+                    this.globals = globals;
+                else
+                    this.globals = new StructureType();
+            }
+            else
+            {
+                this.globals = new StructureType();
+            }
+            this.queue = new Queue<StructureField>(globals.Fields);
+        }
+
+        public void Write()
+        {
+            if (queue.Count == 0)
             {
                 Debug.Print("No global variables found.");
                 return;
             }
-            this.queue = new Queue<StructureField>(globals.Fields);
             while (queue.Count > 0)
             {
                 var field = queue.Dequeue();
@@ -96,11 +107,8 @@ namespace Reko.Core.Output
             formatter.Terminate(";");
         }
 
-        public void WriteGlobalVariable(Address address, DataType dataType, string name, Formatter formatter)
+        public void WriteGlobalVariable(Address address, DataType dataType, string name)
         {
-            this.formatter = formatter;
-            this.codeFormatter = new AbsynCodeFormatter(formatter);
-            this.tw = new TypeReferenceFormatter(formatter);
             this.globals = new StructureType();
             this.queue = new Queue<StructureField>(globals.Fields);
             try
@@ -131,7 +139,7 @@ namespace Reko.Core.Output
             {
                 var dc = services.RequireService<DecompilerEventListener>();
                 dc.Warn(
-                    dc.CreateAddressNavigator(program, rdr.Address),
+                    dc.CreateAddressNavigator(program, rdr!.Address),
                     "Expected sizes of arrays to have been determined by now");
             }
             var fmt = codeFormatter.InnerFormatter;
@@ -203,12 +211,12 @@ namespace Reko.Core.Output
         {
             if (pt.Size > 8)
             {
-                var bytes = rdr.ReadBytes(pt.Size);
+                var bytes = rdr!.ReadBytes(pt.Size);
                 FormatRawBytes(bytes);
             }
             else
             {
-                if (rdr.TryRead(pt, out var cValue))
+                if (rdr!.TryRead(pt, out var cValue))
                 {
                     cValue.Accept(codeFormatter);
                 }
@@ -229,7 +237,6 @@ namespace Reko.Core.Output
             fmt.Terminate();
             fmt.Indentation += fmt.TabSize;
 
-            var structOffset = rdr.Offset;
             for (int i = 0; i < bytes.Length;)
             {
                 fmt.Indent();
@@ -251,7 +258,7 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitPointer(Pointer ptr)
         {
-            var c = rdr.Read(PrimitiveType.Create(Domain.Pointer, ptr.BitSize));
+            var c = rdr!.Read(PrimitiveType.Create(Domain.Pointer, ptr.BitSize));
             var addr = Address.FromConstant(c);
             // Check if it is pointer to function
             if (program.Procedures.TryGetValue(addr, out Procedure proc))
@@ -280,9 +287,7 @@ namespace Reko.Core.Output
                     {
                         dt = StringType.NullTerminated(pt);
                     }
-                    globals.Fields.Add(offset, dt);
-                    // add field to queue.
-                    field = globals.Fields.AtOffset(offset);
+                    field = globals.Fields.Add(offset, dt);
                     queue.Enqueue(field);
                 }
                 codeFormatter.InnerFormatter.Write("&g_{0}", field.Name);
@@ -297,7 +302,7 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitString(StringType str)
         {
-            var offset = rdr.Offset;
+            var offset = rdr!.Offset;
             var s = rdr.ReadCString(str.ElementType, program.TextEncoding);
             //$TODO: appropriate prefix for UTF16-encoded strings.
             codeFormatter.VisitConstant(s);
@@ -317,7 +322,7 @@ namespace Reko.Core.Output
             fmt.Terminate();
             fmt.Indentation += fmt.TabSize;
 
-            var structOffset = rdr.Offset;
+            var structOffset = rdr!.Offset;
             for (int i = 0; i < str.Fields.Count; ++i)
             {
                 fmt.Indent();

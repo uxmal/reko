@@ -54,9 +54,9 @@ namespace Reko.Core
         /// <param name="addrThunk"></param>
         /// <param name="addrInstr"></param>
         /// <returns></returns>
-        Expression GetImport(Address addrThunk, Address addrInstr);
-        ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstr);
-        ExternalProcedure GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk);
+        Expression? GetImport(Address addrThunk, Address addrInstr);
+        ExternalProcedure? GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstr);
+        ExternalProcedure? GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk);
 
         void Error(Address address, string format, params object[] args);
         void Warn(Address address, string format, params object[] args);

@@ -1,9 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+#nullable enable
 
 namespace Reko.Core.Lib
 {
@@ -123,7 +125,7 @@ AS(
             public long second;
         }
 
-        public static void scc(Dictionary<long, Item> items, IEnumerable<Link> links)
+        public static void Scc(Dictionary<long, Item> items, IEnumerable<Link> links)
         {
             int iteration = 0;
             for (;;)

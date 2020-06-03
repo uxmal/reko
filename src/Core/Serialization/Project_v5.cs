@@ -49,10 +49,10 @@ namespace Reko.Core.Serialization
         }
 
         [XmlElement("arch")]
-        public string ArchitectureName;
+        public string? ArchitectureName;
 
         [XmlElement("platform")]
-        public string PlatformName;
+        public string? PlatformName;
 
         [XmlElement("input", typeof(DecompilerInput_v5))]
         [XmlElement("metadata", typeof(MetadataFile_v3))]
@@ -73,22 +73,22 @@ namespace Reko.Core.Serialization
         }
 
         [XmlElement("comment")]
-        public string Comment;
+        public string? Comment;
 
         [XmlElement("asmDir")]
-        public string DisassemblyDirectory;
+        public string? DisassemblyDirectory;
 
         [XmlElement("srcDir")]
-        public string SourceDirectory;
+        public string? SourceDirectory;
 
         [XmlElement("includeDir")]
-        public string IncludeDirectory;
+        public string? IncludeDirectory;
 
         [XmlElement("resources")]
-        public string ResourcesDirectory;
+        public string? ResourcesDirectory;
 
         [XmlElement("user")]
-        public UserData_v4 User;
+        public UserData_v4? User;
 
         public override T Accept<T>(IProjectFileVisitor_v3<T> visitor)
         {

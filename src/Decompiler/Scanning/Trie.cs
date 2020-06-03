@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,7 +73,7 @@ namespace Reko.Scanning
 			public IEqualityComparer<T> hasher;
 			public int Tally;
 
-			public TrieNode(IEqualityComparer<T> hasher) : this(default(T), hasher)
+			public TrieNode(IEqualityComparer<T> hasher) : this(default!, hasher)
 			{
 			}
 

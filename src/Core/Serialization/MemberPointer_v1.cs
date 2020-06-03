@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -28,8 +28,8 @@ namespace Reko.Core.Serialization
 {
     public class MemberPointer_v1 : SerializedType
     {
-        public TypeReference_v1 DeclaringClass;
-        public SerializedType MemberType;
+        public TypeReference_v1? DeclaringClass;
+        public SerializedType? MemberType;
         public int Size;
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)

@@ -440,8 +440,9 @@ fn0C00_0000_exit:
         public void Scanner_IsLinearReturning_EmptyBlock()
         {
             var scanner = CreateScanner(0x1000, 0x1000);
-            var proc = new Procedure(program.Architecture, "fn1000", Address.Ptr32(0x00001000), arch.CreateFrame());
-            var block = new Block(proc, "l1000");
+            var addr = Address.Ptr32(0x00001000);
+            var proc = new Procedure(program.Architecture, "fn1000", addr, arch.CreateFrame());
+            var block = new Block(proc, addr, "l1000");
             Assert.IsFalse(scanner.IsLinearReturning(block));
         }
 

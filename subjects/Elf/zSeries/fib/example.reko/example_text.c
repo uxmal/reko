@@ -113,7 +113,7 @@ l00000740:
 	}
 	Eq_n r1_n = *SEQ(SLICE(r1, word32, 32), 0x2048);
 	r1 = r1_n;
-	CC_n = cond(r1_n);
+	CC_n.u0 = cond(r1_n);
 	if (r1_n != 0x00)
 		r1_n();
 	goto l00000740;

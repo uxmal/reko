@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core.Types;
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -40,7 +39,7 @@ namespace Reko.Core.Serialization
         }
 
         [XmlElement("alt", typeof(UnionAlternative_v1))]
-        public UnionAlternative_v1[] Alternatives;
+        public UnionAlternative_v1[]? Alternatives;
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
@@ -66,9 +65,9 @@ namespace Reko.Core.Serialization
     public class UnionAlternative_v1
     {
         [XmlAttribute("name")]
-        public string Name;
+        public string? Name;
 
-        public SerializedType Type;
+        public SerializedType? Type;
 
         public UnionAlternative_v1()
         {

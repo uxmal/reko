@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,14 +28,15 @@ namespace Reko.Core
 	/// Interface used for backwalkers to get services from host.
 	/// </summary>
 	public interface IBackWalkHost<TBlock, TInstr>
+        where TInstr : class
 	{
         IProcessorArchitecture Architecture { get; }
         Program Program { get; }
         SegmentMap SegmentMap { get; }
 
-		AddressRange GetSinglePredecessorAddressRange(Address block);
+		AddressRange? GetSinglePredecessorAddressRange(Address block);
         int BlockInstructionCount(TBlock rtlBlock);
-        Address GetBlockStartAddress(Address addr);
+        Address? GetBlockStartAddress(Address addr);
         Address MakeAddressFromConstant(Constant c);
         Address MakeSegmentedAddress(Constant selector, Constant offset);
 
@@ -44,12 +45,12 @@ namespace Reko.Core
 
         bool IsValidAddress(Address addr);
         RegisterStorage GetSubregister(RegisterStorage rIdx, int v1, int v2);
-        IEnumerable<TInstr> GetBlockInstructions(TBlock block);
+        IEnumerable<TInstr?> GetBlockInstructions(TBlock block);
 
         // Return [dst,src] tuple if TInstr is an assignment, null otherwise.
-        Tuple<Expression,Expression> AsAssignment(TInstr instr);
+        Tuple<Expression,Expression>? AsAssignment(TInstr instr);
         // Return the branch condition if TINstr is a branch, null otherwise.
-        Expression AsBranch(TInstr instr);
+        Expression? AsBranch(TInstr instr);
 
         bool IsStackRegister(Storage storage);
         bool IsFallthrough(TInstr instr, TBlock block);

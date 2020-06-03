@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -35,6 +35,15 @@ namespace Reko.Core.Lib
         private Dictionary<T, T> parent;
         private HashSet<T> visited;
 
+        public ArticulationPointFinder(DirectedGraph<T> graph)
+        {
+            this.graph = graph;
+            this.visited = new HashSet<T>();
+            this.depth = new Dictionary<T, int>();
+            this.low = new Dictionary<T, int>();
+            this.parent = new Dictionary<T, T>();
+            this.aps = new HashSet<T>();
+        }
         private void GetArticulationPoints(T i, int d)
         {
             visited.Add(i);
@@ -53,7 +62,7 @@ namespace Reko.Core.Lib
                         isArticulation = true;
                     low[i] = Math.Min(low[i], low[ni]);
                 }
-                else if (!ni.Equals(parent[i]))
+                else if (!ni!.Equals(parent[i]))
                 {
                     low[i] = Math.Min(low[i], depth[ni]);
                 }
@@ -69,15 +78,8 @@ namespace Reko.Core.Lib
             }
         }
 
-        public HashSet<T> FindArticulationPoints(DirectedGraph<T> graph, IEnumerable<T> nodes)
+        public HashSet<T> FindArticulationPoints(IEnumerable<T> nodes)
         {
-            this.graph = graph;
-            this.visited = new HashSet<T>();
-            this.depth = new Dictionary<T, int>();
-            this.low = new Dictionary<T, int>();
-            this.parent = new Dictionary<T, T>();
-            this.aps = new HashSet<T>();
-
             // Call the recursive helper function to find articulation
             // points in DFS tree rooted with vertex 'i'
             foreach (var i in nodes)

@@ -67,7 +67,7 @@ namespace Reko.Core
         public bool UserSpecified { get; set; }
 
         public IProcessorArchitecture Architecture { get; }
-        public List<AbsynStatement> Body { get; set; }
+        public List<AbsynStatement>? Body { get; set; }
         public BlockGraph ControlGraph { get; }
         public Block EntryBlock { get; }
         public Block ExitBlock { get; }
@@ -227,7 +227,7 @@ namespace Reko.Core
 
         public Block AddBlock(Address addr, string name)
         {
-            Block block = new Block(this, name) { Address = addr };
+            Block block = new Block(this, addr, name);
             blocks.Add(block);
             return block;
         }
@@ -236,13 +236,6 @@ namespace Reko.Core
         {
             var block = AddBlock(addr, name);
             block.IsSynthesized = true;
-            return block;
-        }
-
-        public Block AddBlock(string name)
-        {
-            Block block = new Block(this, name);
-            blocks.Add(block);
             return block;
         }
 

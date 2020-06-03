@@ -47,8 +47,8 @@ namespace Reko.Analysis
 		private readonly DecompilerEventListener eventListener;
         private readonly IDynamicLinker dynamicLinker;
 		private readonly ProgramDataFlow flow;
-        private List<SsaTransform> ssts;
-        private HashSet<Procedure> sccProcs;
+        private List<SsaTransform>? ssts;
+        private HashSet<Procedure>? sccProcs;
 
         public DataFlowAnalysis(
             Program program,
@@ -180,7 +180,7 @@ namespace Reko.Analysis
             // Convert all procedures in the SCC to SSA form and perform
             // value propagation.
             var ssts = procs.Select(ConvertToSsa).ToArray();
-            this.ssts.AddRange(ssts);
+            this.ssts!.AddRange(ssts);
             DumpWatchedProcedure("After extra stack vars", ssts);
             if (eventListener.IsCanceled()) return;
 
@@ -357,7 +357,7 @@ namespace Reko.Analysis
         public void BuildExpressionTrees()
         {
             eventListener.ShowProgress("Building expressions.", 0, program.Procedures.Count);
-            foreach (var sst in this.ssts)
+            foreach (var sst in this.ssts!)
             {
                 var ssa = sst.SsaState;
                 try
@@ -429,7 +429,7 @@ namespace Reko.Analysis
                 // not been visited, or are computed destinations  (e.g. vtables)
                 // they will have no "ProcedureFlow" associated with them yet, in
                 // which case the the SSA treats the call as a "hell node".
-                var sst = new SsaTransform(program, proc, sccProcs, dynamicLinker, this.ProgramDataFlow);
+                var sst = new SsaTransform(program, proc, sccProcs!, dynamicLinker, this.ProgramDataFlow);
                 var ssa = sst.Transform();
                 DumpWatchedProcedure("After SSA", ssa.Procedure);
 
@@ -495,7 +495,7 @@ namespace Reko.Analysis
             else
             {
                 // We are assuming phi functions are already generated.
-                var sst = new SsaTransform(program, proc, sccProcs, dynamicLinker, this.ProgramDataFlow);
+                var sst = new SsaTransform(program, proc, sccProcs!, dynamicLinker, this.ProgramDataFlow);
                 return sst;
             }
         }

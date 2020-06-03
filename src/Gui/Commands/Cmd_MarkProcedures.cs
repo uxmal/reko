@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
@@ -38,8 +40,8 @@ namespace Reko.Gui.Commands
     /// </remarks>
     public class Cmd_MarkProcedures : Command
     {
-        private IDecompilerService decSvc;
-        private IEnumerable<ProgramAddress> addresses;
+        private readonly IDecompilerService decSvc;
+        private readonly IEnumerable<ProgramAddress> addresses;
 
         public Cmd_MarkProcedures(IServiceProvider services, IEnumerable<ProgramAddress> addresses)
             : base(services)
@@ -95,18 +97,18 @@ namespace Reko.Gui.Commands
 
             //$REVIEW: browser service should listen to changes in UserProcedures, no?
             brSvc.Reload();
-            procsSvc.Load(decSvc.Decompiler.Project);
+            procsSvc.Load(decSvc.Decompiler!.Project);
             procsSvc.Show();
         }
 
-        private ProcedureBase DoScanProcedure(ProgramAddress paddr, string sArch)
+        private ProcedureBase? DoScanProcedure(ProgramAddress paddr, string? sArch)
         {
             //$TODO: do this in a worker procedure.
             if (sArch == null)
                 return null;
             if (!paddr.Program.Architectures.TryGetValue(sArch, out var arch))
                 return null;
-            var proc = decSvc.Decompiler.ScanProcedure(paddr, arch);
+            var proc = decSvc.Decompiler!.ScanProcedure(paddr, arch);
             return proc;
         }
 
@@ -118,28 +120,26 @@ namespace Reko.Gui.Commands
         /// <returns>Null if no architecture could be determined,
         /// or the name of the chosen architecture.
         /// </returns>
-        private string DetermineArchitecture()
+        private string? DetermineArchitecture()
         {
             var archs = addresses.SelectMany(a => a.Program.Architectures.Values)
                 .GroupBy(a => a.Name)
                 .OrderBy(g => g.Key)
-                .Select(g => new ListOption
-                {
-                    Text = g.First().Description,
-                    Value = g.Key,
-                })
+                .Select(g => new ListOption(
+                    g.First().Description!,
+                    g.Key))
                 .ToArray();
             if (archs.Length == 0)
                 return null;
             if (archs.Length == 1)
-                return (string)archs[0].Value;
+                return (string?)archs[0].Value;
             var dlgFactory = Services.RequireService<IDialogFactory>();
             var uiSvc = Services.RequireService<IDecompilerShellUiService>();
             using (var dlg = dlgFactory.CreateSelectItemDialog("Select a processor architecture", archs, false))
             {
                 if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
                     return null;
-                return (string)(((ListOption) dlg.SelectedItem).Value);
+                return (string?)(((ListOption) dlg.SelectedItem).Value);
             }
         }
     }

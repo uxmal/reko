@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -90,12 +90,12 @@ namespace Reko.Gui.Forms
 
         private List<ListOption> GetWindowNames()
         {
-            return new ListOption[] { new ListOption { Text = "Any window", Value = "" } }
+            return new ListOption[] { new ListOption("Any window", "") }
                 .Concat(dlg.KeyBindings.Keys
                     .Where(windowName => !string.IsNullOrEmpty(windowName))
-                    .Select(windowName => new ListOption {
-                        Text = windowName,
-                        Value = windowName }))
+                    .Select(windowName => new ListOption(
+                        windowName,
+                        windowName)))
                     .ToList();
         }
 
@@ -109,7 +109,7 @@ namespace Reko.Gui.Forms
                     de.Value.IndexOf(
                         dlg.CommandName.Text,
                         StringComparison.InvariantCultureIgnoreCase) >= 0)
-                .Select(de => new ListOption { Text = de.Value, Value = de.Key }))
+                .Select(de => new ListOption(de.Value, de.Key)))
             {
                 dlg.Commands.Items.Add(cmdName);
             }
@@ -122,7 +122,7 @@ namespace Reko.Gui.Forms
                 return;
             foreach (var cmd in dlg.KeyBindings.Values.SelectMany(e => e)
                 .Where(e => e.Value.ID == SelectedCommand.ID)
-                .Select(e => new ListOption {  Text = dlg.RenderKey(e.Key), Value = e.Key }))
+                .Select(e => new ListOption(dlg.RenderKey(e.Key), e.Key)))
             {
                 dlg.CommandKeys.Items.Add(cmd);
             }

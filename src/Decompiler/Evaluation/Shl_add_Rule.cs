@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -31,11 +31,11 @@ namespace Reko.Evaluation
 {
     public class Shl_add_Rule
     {
-        private EvaluationContext ctx;
-        private DataType dt;
-        private Identifier id;
-        private Constant c;
-        private Operator op;
+        private readonly EvaluationContext ctx;
+        private DataType? dt;
+        private Identifier? id;
+        private Constant? c;
+        private Operator? op;
 
         public Shl_add_Rule(EvaluationContext ctx)
         {
@@ -64,9 +64,9 @@ namespace Reko.Evaluation
 
         public Expression Transform()
         {
-            ctx.RemoveIdentifierUse(id);
-            var cc = Constant.Create(id.DataType, (1 << c.ToInt32()) + 1);
-            return new BinaryExpression(Operator.IMul, dt, id, cc);
+            ctx.RemoveIdentifierUse(id!);
+            var cc = Constant.Create(id!.DataType, (1 << c!.ToInt32()) + 1);
+            return new BinaryExpression(Operator.IMul, dt!, id, cc);
         }
     }
 }

@@ -169,7 +169,7 @@ namespace Reko.Analysis
 			}
 
             var liveOut = allLiveOut
-                .Select(de => (Key:de.Key as RegisterStorage, Value:de.Value))
+                .Select(de => (Key:de.Key as RegisterStorage, de.Value))
                 .Where(de =>
                 {
                     return de.Key != null 
@@ -177,9 +177,9 @@ namespace Reko.Analysis
                 })
                 .ToDictionary(
                      de => platform.Architecture.GetSubregister(
-                        de.Key,
+                        de.Key!,
                         de.Value.Lsb,
-                        de.Value.Extent) ?? de.Key,
+                        de.Value.Extent)! ?? de.Key!,
                     de => de.Value);
 
             // Sort the names in a stable way to avoid regression tests failing.
@@ -223,27 +223,27 @@ namespace Reko.Analysis
 
             var seqs = uses.Select(u => u.Storage as SequenceStorage)
                 .Where(s => s != null)
-                .OrderBy(s => s.Name);
+                .OrderBy(s => s!.Name);
             foreach (var seq in seqs)
             {
-                sb.AddSequenceArgument(seq);
+                sb.AddSequenceArgument(seq!);
             }
 
             //$TODO: sort these by some ABI order?
             var regs = uses.Select(u => u.Storage as RegisterStorage)
                 .Where(r => r != null && !implicitRegs.Contains(r))
-                .OrderBy(r => r.Number);
+                .OrderBy(r => r!.Number);
             foreach (var reg in regs)
             {
-                sb.AddRegisterArgument(reg);
+                sb.AddRegisterArgument(reg!);
             }
 
             var stargs = uses.Select(u => u.Storage as StackStorage)
                 .Where(s => s != null)
-                .OrderBy(r => r.StackOffset);
+                .OrderBy(r => r!.StackOffset);
             foreach (var arg in stargs)
             {
-                var id = frame.EnsureIdentifier(arg);
+                var id = frame.EnsureIdentifier(arg!);
                 sb.AddInParam(id);
             }
 
@@ -300,11 +300,11 @@ namespace Reko.Analysis
             return mayuse
                 .Select(kv => (stg: kv.Key as StackStorage, range: kv.Value))
                 .Where(item => item.stg != null)
-                .OrderBy(item => item.stg.StackOffset)
+                .OrderBy(item => item.stg!.StackOffset)
                 .Select(item =>
                 {
                     var id = frame.EnsureStackArgument(
-                        item.stg.StackOffset,
+                        item.stg!.StackOffset,
                         PrimitiveType.CreateWord(item.range.Extent));
                     return (item.stg.StackOffset - frame.ReturnAddressSize, id);
                 });
@@ -478,7 +478,7 @@ namespace Reko.Analysis
                 {
                     if (idRet.DataType.BitSize < e.DataType.BitSize)
                     {
-                        int offset = idStg.Storage.OffsetOf(idRet.Storage);
+                        int offset = idStg!.Storage.OffsetOf(idRet.Storage);
                         e = new Slice(idRet.DataType, e, offset);
                     }
                     ret.Expression = e;

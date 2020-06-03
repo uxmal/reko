@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -29,7 +29,7 @@ namespace Reko.Core.Lib
 {
     public class UbjsonWriter
     {
-        private Stream stm;
+        private readonly Stream stm;
 
         public UbjsonWriter(Stream stm)
         {
@@ -38,48 +38,31 @@ namespace Reko.Core.Lib
 
         public void Write(object o)
         {
-            if (o == null)
+            switch (o)
             {
+            case null:
                 stm.WriteByte((byte)UbjsonMarker.Null);
                 return;
-            }
-            if (o is bool)
-            {
-                var f = (bool)o;
+            case bool f:
                 stm.WriteByte(f ? (byte)UbjsonMarker.True : (byte)UbjsonMarker.False);
                 return;
-            }
-            if (o is int)
-            {
-                WriteNumber((int)o);
+            case int i:
+                WriteNumber(i);
                 return;
-            }
-            if (o is long)
-            {
-                WriteNumber((long)o);
+            case long l:
+                WriteNumber(l);
                 return;
-            }
-            if (o is ulong)
-            {
-                WriteUnsignedNumber((ulong)o);
+            case ulong ul:
+                WriteUnsignedNumber(ul);
                 return;
-            }
-            var s = o as string;
-            if (s != null)
-            {
-                stm.WriteByte((byte)UbjsonMarker.String);
+            case string s:
+                stm.WriteByte((byte) UbjsonMarker.String);
                 WriteString(s);
                 return;
-            }
-            var d = o as IDictionary;
-            if (d != null)
-            {
+            case IDictionary d:
                 WriteObject(d);
                 return;
-            }
-            var e = o as IEnumerable;
-            if (e != null)
-            {
+            case IEnumerable e:
                 var itf = o.GetType().GetInterfaces().FirstOrDefault(x =>
                      x.IsGenericType &&
                      x.GetGenericTypeDefinition() == typeof(ICollection<>));
@@ -90,19 +73,18 @@ namespace Reko.Core.Lib
                     if (elementMarker != UbjsonMarker.None)
                     {
                         Action<object, Stream> renderer = GetRenderer(elementType);
-                        int c = (int)itf.GetProperty("Count").GetValue(o, null);
+                        int c = (int) itf.GetProperty("Count").GetValue(o, null);
                         WriteArray(e, c, elementMarker, renderer);
                         return;
                     }
                 }
                 WriteArray(e);
                 return;
-            }
-            if (o is ValueType)
-                throw new NotSupportedException(string.Format("Writing data type {0} is not supported.", o.GetType()));
-            else
-            {
+            default:
+                if (o is ValueType)
+                    throw new NotSupportedException($"Writing data type {o.GetType().FullName} is not supported.");
                 WriteClassAsObject(o);
+                return;
             }
         }
 
@@ -121,7 +103,7 @@ namespace Reko.Core.Lib
             Write(value);
         }
 
-        private static Dictionary<Type, UbjsonMarker> mpTypeMarker = new Dictionary<Type, UbjsonMarker>
+        private static readonly Dictionary<Type, UbjsonMarker> mpTypeMarker = new Dictionary<Type, UbjsonMarker>
         {
             { typeof(byte), UbjsonMarker.UInt8 },
             { typeof(sbyte), UbjsonMarker.Int8 },
@@ -132,13 +114,12 @@ namespace Reko.Core.Lib
 
         private UbjsonMarker GetMarker(Type type)
         {
-            UbjsonMarker marker;
-            if (!mpTypeMarker.TryGetValue(type, out marker))
+            if (!mpTypeMarker.TryGetValue(type, out UbjsonMarker marker))
                 marker = UbjsonMarker.None;
             return marker;
         }
 
-        private static Dictionary<Type, Action<object, Stream>> mpType = new Dictionary<Type, Action<object, Stream>>
+        private static readonly Dictionary<Type, Action<object, Stream>> mpType = new Dictionary<Type, Action<object, Stream>>
         {
             { typeof(byte), WriteByte },
             { typeof(sbyte), WriteSByte },
@@ -149,9 +130,9 @@ namespace Reko.Core.Lib
 
         private static Action<object,Stream> GetRenderer(Type type)
         {
-            Action<object, Stream> action;
-            if (!mpType.TryGetValue(type, out action))
-                action = null;
+            //$REVIEW: what if we can't find a renderer?
+            if (!mpType.TryGetValue(type, out var action))
+                action = null!;
             return action;
         }
 

@@ -42,8 +42,12 @@ namespace Reko.Core.Types
     /// -- like the FORTH language -- have multiple stacks.
     /// </para>
     /// </remarks>
+    //$TODO: consider breaking out a base class "CallableType" and have 
+    // a sibling class "LowLevelFunctionType".
     public class FunctionType : DataType
 	{
+        private Identifier? retValue;
+
         public FunctionType()
         {
             this.ParametersValid = false;
@@ -54,12 +58,22 @@ namespace Reko.Core.Types
             Identifier returnValue,
             params Identifier [] parameters)
         {
-            this.Parameters = parameters ?? throw new ArgumentNullException(nameof(parameters));
+            this.Parameters = parameters;
             this.ParametersValid = true;
             this.FpuStackArgumentMax = -1;
-            if (returnValue == null)
-                returnValue = new Identifier("", VoidType.Instance, null);
+            returnValue ??= VoidReturnValue();
             this.ReturnValue = returnValue;
+        }
+
+        private static Identifier VoidReturnValue()
+        {
+            return new Identifier("", VoidType.Instance, null!);
+        }
+
+        public static FunctionType Create(Identifier? returnId, params Identifier [] formals)
+        {
+            var ret = returnId ?? VoidReturnValue();
+            return new FunctionType(ret, formals);
         }
 
         public static FunctionType Func(Identifier returnId, params Identifier[] formals)
@@ -74,7 +88,7 @@ namespace Reko.Core.Types
         /// <returns>A function type.</returns>
         public static FunctionType Action(params Identifier [] parameters)
         {
-            return new FunctionType(new Identifier("", VoidType.Instance, null), parameters);
+            return new FunctionType(VoidReturnValue(), parameters);
         }
 
         public bool IsVariadic { get; set; }
@@ -86,10 +100,10 @@ namespace Reko.Core.Types
         /// The 'Name' property of the <see cref="Identifier"/> is not applicable, and will typically
         /// be the empty string.
         /// </remarks>
-        public Identifier ReturnValue { get; private set; }
-        public Identifier [] Parameters { get; private set; }
+        public Identifier ReturnValue { get { return retValue!; } set { retValue = value; } }
+        public Identifier[]? Parameters { get; private set; }
         public bool HasVoidReturn { get { return ReturnValue == null || ReturnValue.DataType is VoidType; } }
-        public TypeVariable TypeVariable { get; set; }  //$REVIEW: belongs on the Procedure itself!
+        public TypeVariable? TypeVariable { get; set; }  //$REVIEW: belongs on the Procedure itself!
 
         public override void Accept(IDataTypeVisitor v)
         {
@@ -101,13 +115,21 @@ namespace Reko.Core.Types
             return v.VisitFunctionType(this);
         }
 
-        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
+        public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
 		{
-            Identifier ret = new Identifier("", ReturnValue.DataType.Clone(clonedTypes), ReturnValue.Storage);
-            Identifier[] parameters = this.Parameters
-                .Select(p => new Identifier(p.Name, p.DataType.Clone(clonedTypes), p.Storage))
-                .ToArray();
-            var ft = new FunctionType(ret, parameters);
+            FunctionType ft;
+            if (ParametersValid)
+            {
+                Identifier ret = new Identifier("", ReturnValue!.DataType.Clone(clonedTypes), ReturnValue.Storage);
+                Identifier[] parameters = this.Parameters
+                    .Select(p => new Identifier(p.Name, p.DataType.Clone(clonedTypes), p.Storage))
+                    .ToArray();
+                ft = new FunctionType(ret, parameters);
+            }
+            else
+            {
+                ft = new FunctionType();
+            }
             ft.Qualifier = Qualifier;
             ft.ParametersValid = ParametersValid;
             ft.IsInstanceMetod = IsInstanceMetod;
@@ -212,7 +234,7 @@ namespace Reko.Core.Types
                     }
                     else
                     {
-                        w.WriteFormalArgumentType(ReturnValue, emitStorage);
+                        w.WriteFormalArgumentType(ReturnValue!, emitStorage);
                         fmt.Write(" ");
                     }
                     fmt.Write("{0}(", fnName);
@@ -225,7 +247,7 @@ namespace Reko.Core.Types
                     }
                     else
                     {
-                        t.WriteDeclaration(ReturnValue.DataType, fnName);           //$TODO: won't work with fn's that return pointers to functions or arrays.
+                        t.WriteDeclaration(ReturnValue!.DataType, fnName);           //$TODO: won't work with fn's that return pointers to functions or arrays.
                     }
                     fmt.Write("(");
                 }

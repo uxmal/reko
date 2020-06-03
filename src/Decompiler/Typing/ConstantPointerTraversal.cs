@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,11 +18,8 @@
  */
 #endregion
 
-using Reko.Analysis;
 using Reko.Core;
-using Reko.Core.Expressions;
 using Reko.Core.Types;
-using Reko.Typing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -34,15 +31,15 @@ namespace Reko.Typing
     /// This class follows constant pointers to discover structures in memory
     /// and possibly new pointers.
     /// </summary>
-    public class ConstantPointerTraversal : IDataTypeVisitor<IEnumerable<ConstantPointerTraversal.WorkItem>>
+    public class ConstantPointerTraversal : IDataTypeVisitor<IEnumerable<ConstantPointerTraversal.WorkItem>?>
     {
-        private IProcessorArchitecture arch;
-        private StructureType globalStr;
-        private SegmentMap segmentMap;
-        private HashSet<int> visited;
-        private Stack<IEnumerator<WorkItem>> stack;
+        private readonly IProcessorArchitecture arch;
+        private readonly StructureType globalStr;
+        private readonly SegmentMap segmentMap;
+        private readonly HashSet<int> visited;
+        private readonly Stack<IEnumerator<WorkItem>> stack;
+        private IEnumerator<WorkItem>? eCurrent;
         private int gOffset;
-        private IEnumerator<WorkItem> eCurrent;
 
         public struct WorkItem
         {
@@ -56,23 +53,25 @@ namespace Reko.Typing
             this.globalStr =  globalStr;
             this.segmentMap = segmentMap;
             this.Discoveries = new List<StructureField>();
+            this.visited = new HashSet<int>();
+            this.stack = new Stack<IEnumerator<WorkItem>>();
         }
 
         public ConstantPointerTraversal(Program program) 
         {
             this.arch = program.Architecture;
-            var ptr = (Pointer) program.Globals.TypeVariable.DataType;
+            var ptr = (Pointer) program.Globals.TypeVariable!.DataType;
             this.globalStr = (StructureType)((EquivalenceClass) ptr.Pointee).DataType;
             this.segmentMap = program.SegmentMap;
             this.Discoveries = new List<StructureField>();
+            this.visited = new HashSet<int>();
+            this.stack = new Stack<IEnumerator<WorkItem>>();
         }
 
         public List<StructureField> Discoveries { get; private set; }
 
         public void Traverse()
         {
-            this.stack = new Stack<IEnumerator<WorkItem>>();
-            this.visited = new HashSet<int>();
             stack.Push(Single(new WorkItem { GlobalOffset = 0, DataType = globalStr }).GetEnumerator());
             while (stack.Count > 0)
             {
@@ -115,14 +114,14 @@ namespace Reko.Typing
             throw new NotImplementedException();
         }
 
-        public IEnumerable<WorkItem> VisitEnum(EnumType e)
+        public IEnumerable<WorkItem>? VisitEnum(EnumType e)
         {
             return null;
         }
 
-        public IEnumerable<WorkItem> VisitEquivalenceClass(EquivalenceClass eq)
+        public IEnumerable<WorkItem>? VisitEquivalenceClass(EquivalenceClass eq)
         {
-            return eq.DataType.Accept(this);
+            return eq.DataType!.Accept(this);
         }
 
         public IEnumerable<WorkItem> VisitFunctionType(FunctionType ft)
@@ -130,7 +129,7 @@ namespace Reko.Typing
             throw new NotImplementedException();
         }
 
-        public IEnumerable<WorkItem> VisitPrimitive(PrimitiveType pt)
+        public IEnumerable<WorkItem>? VisitPrimitive(PrimitiveType pt)
         {
             return null;
         }
@@ -140,7 +139,7 @@ namespace Reko.Typing
             throw new NotImplementedException();
         }
 
-        public IEnumerable<WorkItem> VisitPointer(Pointer ptr)
+        public IEnumerable<WorkItem>? VisitPointer(Pointer ptr)
         {
             Debug.Print("Iterating pointer at {0:X}", gOffset);
             ImageSegment segment;

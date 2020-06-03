@@ -42,15 +42,13 @@ namespace Reko.Analysis
 	public class WebBuilder
 	{
         private readonly Program program;
-		private SsaState ssa;
-		private SsaIdentifierCollection ssaIds;
+		private readonly SsaState ssa;
+		private readonly SsaIdentifierCollection ssaIds;
         private readonly DecompilerEventListener listener;
-		private SsaLivenessAnalysis sla;
-		private BlockDominatorGraph doms;
-		private Dictionary<Identifier,LinearInductionVariable>ivs;
-		private Dictionary<Identifier, Web> webOf;
-		private List<Web> webs;
-		private Statement stmCur;
+		private readonly BlockDominatorGraph doms;
+		private readonly Dictionary<Identifier,LinearInductionVariable> ivs;
+		private readonly Dictionary<Identifier, Web> webOf;
+		private readonly List<Web> webs;
 
         public WebBuilder(Program program, SsaState ssa, Dictionary<Identifier,LinearInductionVariable> ivs,DecompilerEventListener listener)
         {
@@ -59,14 +57,13 @@ namespace Reko.Analysis
             this.ssaIds = ssa.Identifiers;
             this.ivs = ivs;
             this.listener = listener;
-            this.sla = new SsaLivenessAnalysis(ssa);
             this.doms = ssa.Procedure.CreateBlockDominatorGraph();
             this.webs = new List<Web>();
+            this.webOf = new Dictionary<Identifier, Web>();
         }
 
-		private void BuildWebOf()
+        private void BuildWebOf()
 		{
-            this.webOf = new Dictionary<Identifier, Web>();
 			foreach (SsaIdentifier sid in ssaIds)
 			{
 				Web w = new Web();
@@ -130,9 +127,9 @@ namespace Reko.Analysis
 
                 foreach (Web w in webs)
                 {
-                    if (w.InductionVariable != null)
+                    if (w.InductionVariable  != null)
                     {
-                        ivs.Add(w.Identifier, w.InductionVariable);
+                        ivs.Add(w.Identifier!, w.InductionVariable );
                     }
                 }
             }
@@ -175,20 +172,16 @@ namespace Reko.Analysis
 			PhiFunction phi = p.Src;
 			foreach (var de in phi.Arguments)
 			{
-                Identifier id = de.Value as Identifier;
-                Block pred = de.Block;
-				if (id != null && id != idDst)
-					Merge(webOf[idDst], webOf[id]);
-			}
+                if (de.Value is Identifier id && id != idDst)
+                    Merge(webOf[idDst], webOf[id]);
+            }
 		}
 
 		public void VisitStatement(Statement stm)
 		{
-			stmCur = stm;
-			PhiAssignment phi = stm.Instruction as PhiAssignment;
-			if (phi != null)
-				VisitPhiAssignment(phi);
-		}
+            if (stm.Instruction is PhiAssignment phi)
+                VisitPhiAssignment(phi);
+        }
 
 		public Web WebOf(Identifier id)
 		{
@@ -205,7 +198,7 @@ namespace Reko.Analysis
 
 		private class WebReplacer : InstructionTransformer
 		{
-			private WebBuilder bld;
+			private readonly WebBuilder bld;
 
 			public WebReplacer(WebBuilder bld)
 			{
@@ -216,20 +209,19 @@ namespace Reko.Analysis
 			{
                 if (id.Storage is OutArgumentStorage)
                     return id;
-				return bld.webOf[id].Identifier;
+				return bld.webOf[id].Identifier!;
 			}
 
 			public override Instruction TransformAssignment(Assignment a)
 			{
 				a.Dst = (Identifier) a.Dst.Accept(this);
 				a.Src = a.Src.Accept(this);
-				Identifier idDst = a.Dst as Identifier;
-                Identifier idSrc = a.Src as Identifier;
-				if (idDst != null && idSrc == idDst)
-                    return null;
+                Identifier idDst = a.Dst;
+                if (a.Src is Identifier idSrc && idSrc == idDst)
+                    return null!;
                 else
-					return a;
-			}
+                    return a;
+            }
 		}
 
         public class OutDefinitionFinder : InstructionVisitorBase

@@ -29,7 +29,6 @@ namespace Reko.Core.Types
 	/// </summary>
 	public class Pointer : DataType
 	{
-		private DataType pointee;
 		private readonly int bitSize;
 
 		public Pointer(DataType pointee, int bitSize)
@@ -41,8 +40,21 @@ namespace Reko.Core.Types
             this.Pointee = pointee;
 			this.bitSize = bitSize;
 		}
+        public override int BitSize => this.bitSize;
 
-        public override bool IsPointer {  get { return true; } }
+        public override bool IsComplex => true;
+
+        public override bool IsPointer => true;
+
+        public DataType Pointee { get; set; }
+
+
+        public override int Size
+        {
+            get { return (bitSize + (BitsPerByte - 1)) / BitsPerByte; }
+            set { ThrowBadSize(); }
+        }
+
 
         public override void Accept(IDataTypeVisitor v)
         {
@@ -54,37 +66,12 @@ namespace Reko.Core.Types
             return v.VisitPointer(this);
         }
 
-        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
+        public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
 		{
             return new Pointer(Pointee.Clone(clonedTypes), bitSize)
             {
                 Qualifier = this.Qualifier,
             };
-		}
-
-		public override bool IsComplex
-		{
-			get { return true; }
-		}
-
-		public DataType Pointee
-		{
-			get { return pointee; }
-			set 
-			{
-                pointee = value ?? throw new ArgumentNullException("Pointee mustn't be null."); 
-			}
-		}
-
-        public override int BitSize
-        {
-            get { return this.bitSize; }
-        }
-
-        public override int Size
-		{
-			get { return (bitSize + (BitsPerByte - 1)) / BitsPerByte; }
-			set { ThrowBadSize(); }
 		}
 	}
 }

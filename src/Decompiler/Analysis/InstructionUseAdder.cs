@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Code;
 using Reko.Core.Expressions;
 using System;
 
@@ -27,14 +26,13 @@ namespace Reko.Analysis
 {
     public class InstructionUseAdder : InstructionUseVisitorBase
     {
-        private Statement user;
-        private SsaIdentifierCollection ssaIds;
+        private readonly Statement user;
+        private readonly SsaIdentifierCollection ssaIds;
 
         public InstructionUseAdder(Statement user, SsaIdentifierCollection ssaIds)
         {
-            if (user == null)
-                throw new ArgumentNullException("user");
-            this.user = user; this.ssaIds = ssaIds;
+            this.user = user ?? throw new ArgumentNullException("user");
+            this.ssaIds = ssaIds;
         }
 
         protected override void UseIdentifier(Identifier id)

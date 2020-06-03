@@ -35,9 +35,9 @@ namespace Reko.Core.Expressions
     /// </summary>
     public class ExpressionMatcher : ExpressionVisitor<bool>
     {
-        private Expression p;
-        private Dictionary<string, Expression> capturedExpressions;
-        private Dictionary<string, Operator> capturedOperators;
+        private Expression? p;
+        private readonly Dictionary<string, Expression> capturedExpressions;
+        private readonly Dictionary<string, Operator> capturedOperators;
 
         public ExpressionMatcher(Expression pattern)
         {
@@ -46,18 +46,16 @@ namespace Reko.Core.Expressions
             this.capturedOperators = new Dictionary<string, Operator>();
         }
 
-        public Expression CapturedExpression(string label)
+        public Expression? CapturedExpression(string label)
         {
-            Expression value;
-            if (string.IsNullOrEmpty(label) || !capturedExpressions.TryGetValue(label, out value))
+            if (string.IsNullOrEmpty(label) || !capturedExpressions.TryGetValue(label, out Expression value))
                 return null;
             return value;
         }
 
-        public Operator CapturedOperators(string label)
+        public Operator? CapturedOperators(string label)
         {
-            Operator value;
-            if (string.IsNullOrEmpty(label) || !capturedOperators.TryGetValue(label, out value))
+            if (string.IsNullOrEmpty(label) || !capturedOperators.TryGetValue(label, out Operator value))
                 return null;
             return value;
         }
@@ -76,8 +74,7 @@ namespace Reko.Core.Expressions
         private bool Match(Expression pattern, Expression expr)
         {
             this.p = pattern;
-            var w = pattern as WildExpression;
-            if (w != null)
+            if (pattern is WildExpression w)
             {
                 capturedExpressions[w.Label] = expr;
                 return true;
@@ -87,8 +84,7 @@ namespace Reko.Core.Expressions
 
         private bool Match(Operator opPattern, Operator op)
         {
-            var wildOp = opPattern as WildOperator;
-            if (wildOp != null)
+            if (opPattern is WildOperator wildOp)
             {
                 capturedOperators[wildOp.Label] = op;
                 return true;
@@ -98,25 +94,20 @@ namespace Reko.Core.Expressions
 
         #region ExpressionVisitor<bool> Members
 
-        bool ExpressionVisitor<bool>.VisitAddress(Reko.Core.Address addr)
+        bool ExpressionVisitor<bool>.VisitAddress(Address addr)
         {
-            var anyC = p as WildConstant;
-            if (anyC != null)
+            if (p is WildConstant anyC)
             {
                 if (!string.IsNullOrEmpty(anyC.Label))
-                    capturedExpressions[anyC.Label] = addr;
+                    capturedExpressions[anyC.Label!] = addr;
                 return true;
             }
-            var cP = p as Address;
-            if (cP == null)
-                return false;
-            return addr.ToLinear() == cP.ToLinear();
+            return p is Address addrP && addr.ToLinear() == addrP.ToLinear();
         }
 
         bool ExpressionVisitor<bool>.VisitApplication(Application appl)
         {
-            var appP = p as Application;
-            if (appP == null)
+            if (!(p is Application appP))
                 return false;
             if (!Match(appP.Procedure, appl.Procedure))
                 return false;
@@ -132,16 +123,14 @@ namespace Reko.Core.Expressions
 
         bool ExpressionVisitor<bool>.VisitArrayAccess(ArrayAccess acc)
         {
-            var arrayP = p as ArrayAccess;
-            if (arrayP == null)
+            if (!(p is ArrayAccess))
                 return false;
             throw new NotImplementedException();
         }
 
         bool ExpressionVisitor<bool>.VisitBinaryExpression(BinaryExpression binExp)
         {
-            var bP = p as BinaryExpression;
-            if (bP == null)
+            if (!(p is BinaryExpression bP))
                 return false;
             if (!Match(bP.Operator, binExp.Operator))
                 return false;
@@ -151,16 +140,14 @@ namespace Reko.Core.Expressions
 
         bool ExpressionVisitor<bool>.VisitCast(Cast cast)
         {
-            var castP = p as Cast;
-            return 
-                castP != null &&
+            return
+                p is Cast castP &&
                 Match(castP.Expression, cast.Expression);
         }
 
         bool ExpressionVisitor<bool>.VisitConditionalExpression(ConditionalExpression cond)
         {
-            var condP = p as ConditionalExpression;
-            if (condP == null)
+            if (!(p is ConditionalExpression condP))
                 return false;
             if (!Match(condP.Condition, cond.Condition))
                 return false;
@@ -171,23 +158,20 @@ namespace Reko.Core.Expressions
 
         bool ExpressionVisitor<bool>.VisitConditionOf(ConditionOf cof)
         {
-            var condP = p as ConditionOf;
             return
-                condP != null &&
+                p is ConditionOf condP &&
                 Match(condP.Expression, cof.Expression);
         }
 
         bool ExpressionVisitor<bool>.VisitConstant(Constant c)
         {
-            var anyC = p as WildConstant;
-            if (anyC != null)
+            if (p is WildConstant anyC)
             {
                 if (!string.IsNullOrEmpty(anyC.Label))
-                    capturedExpressions[anyC.Label] = c;
+                    capturedExpressions[anyC.Label!] = c;
                 return true;
             }
-            var cP = p as Constant;
-            if (cP == null)
+            if (!(p is Constant cP))
                 return false;
             return (c.ToInt64() == cP.ToInt64());
         }
@@ -204,15 +188,13 @@ namespace Reko.Core.Expressions
 
         bool ExpressionVisitor<bool>.VisitIdentifier(Identifier id)
         {
-            var anyId = p as WildId;
-            if (anyId != null)
+            if (p is WildId anyId)
             {
                 if (!string.IsNullOrEmpty(anyId.Label))
-                    capturedExpressions.Add(anyId.Label, id);
+                    capturedExpressions.Add(anyId.Label!, id);
                 return true;
             }
-            var idP = p as Identifier;
-            if (idP == null)
+            if (!(p is Identifier idP))
                 return false;
             return (id.Name == idP.Name);
         }
@@ -224,8 +206,7 @@ namespace Reko.Core.Expressions
 
         bool ExpressionVisitor<bool>.VisitMemoryAccess(MemoryAccess access)
         {
-            var mp = p as MemoryAccess;
-            if (mp == null)
+            if (!(p is MemoryAccess mp))
                 return false;
             if (mp.DataType is WildDataType)
             {
@@ -237,8 +218,7 @@ namespace Reko.Core.Expressions
 
         bool ExpressionVisitor<bool>.VisitMkSequence(MkSequence seq)
         {
-            var m = p as MkSequence;
-            if (m == null)
+            if (!(p is MkSequence m))
                 return false;
             if (seq.Expressions.Length != m.Expressions.Length)
                 return false;
@@ -252,8 +232,7 @@ namespace Reko.Core.Expressions
 
         bool ExpressionVisitor<bool>.VisitOutArgument(OutArgument outArg)
         {
-            var op = p as OutArgument;
-            if (outArg.DataType.Size != op.DataType.Size)
+            if (!(p is OutArgument op) || outArg.DataType.Size != op.DataType.Size)
                 return false;
             return Match(op.Expression, outArg.Expression);
         }
@@ -269,8 +248,7 @@ namespace Reko.Core.Expressions
 
         bool ExpressionVisitor<bool>.VisitProcedureConstant(ProcedureConstant pc)
         {
-            var pcOther = p as ProcedureConstant;
-            if (pcOther == null)
+            if (!(p is ProcedureConstant pcOther))
                 return false;
             return pcOther.Procedure == pc.Procedure;
         }
@@ -282,8 +260,7 @@ namespace Reko.Core.Expressions
 
         bool ExpressionVisitor<bool>.VisitSegmentedAccess(SegmentedAccess access)
         {
-            var smp = p as SegmentedAccess;
-            if (smp == null)
+            if (!(p is SegmentedAccess smp))
                 return false;
             if (smp.DataType is WildDataType)
             {
@@ -298,16 +275,14 @@ namespace Reko.Core.Expressions
 
         bool ExpressionVisitor<bool>.VisitSlice(Slice slice)
         {
-            var slicePat = p as Slice;
-            if (slicePat == null)
+            if (!(p is Slice))
                 return false;
             throw new NotImplementedException();
         }
 
         bool ExpressionVisitor<bool>.VisitTestCondition(TestCondition tc)
         {
-            var tp = p as TestCondition;
-            if (tp == null)
+            if (!(p is TestCondition tp))
                 return false;
             return tp.ConditionCode == tc.ConditionCode &&
                 Match(tp.Expression, tc.Expression);
@@ -315,8 +290,7 @@ namespace Reko.Core.Expressions
 
         bool ExpressionVisitor<bool>.VisitUnaryExpression(UnaryExpression unary)
         {
-            var unaryPat = p as UnaryExpression;
-            if (unaryPat == null)
+            if (!(p is UnaryExpression unaryPat))
                 return false;
             if (!Match(unaryPat.Operator, unary.Operator))
                 return false;
@@ -341,7 +315,7 @@ namespace Reko.Core.Expressions
             return new WildExpression(label);
         }
 
-        public static Identifier AnyId(string label = null)
+        public static Identifier AnyId(string? label = null)
         {
             return new WildId(label);
         }
@@ -351,19 +325,19 @@ namespace Reko.Core.Expressions
             return new WildOperator(label);
         }
 
-        public static DataType AnyDataType(string label)
+        public static DataType AnyDataType(string? label)
         {
             return new WildDataType(label);
         }
 
         private interface IWildExpression
         {
-            string Label { get; }
+            string? Label { get; }
         }
 
         private class WildConstant : Constant, IWildExpression
         {
-            public WildConstant(string label) : base(PrimitiveType.UInt32)
+            public WildConstant(string? label) : base(PrimitiveType.UInt32)
             {
                 this.Label = label;
             }
@@ -373,7 +347,7 @@ namespace Reko.Core.Expressions
                 get { yield break; }
             }
 
-            public string Label { get; private set; }
+            public string? Label { get; private set; }
 
             public override Expression CloneExpression()
             {
@@ -469,12 +443,14 @@ namespace Reko.Core.Expressions
 
         private class WildId : Identifier
         {
-            public WildId(string label) : base(label, VoidType.Instance, null)
+            //$TODO: the MemoryStorage.INstance will never be used and is there because
+            // there is no `UnknownStorage` data type.
+            public WildId(string? label) : base(label ?? "", VoidType.Instance, MemoryStorage.Instance)
             {
                 this.Label = label;
             }
 
-            public string Label { get; private set; }
+            public string? Label { get; private set; }
         }
 
         private class WildOperator : Operator
@@ -494,14 +470,14 @@ namespace Reko.Core.Expressions
 
         private class WildDataType : DataType
         {
-            public WildDataType(string label)
+            public WildDataType(string? label)
             {
                 this.Label = label;
             }
 
             public override int Size { get; set; }
 
-            public string Label { get; private set; }
+            public string? Label { get; private set; }
 
             public override T Accept<T>(IDataTypeVisitor<T> v)
             {
@@ -513,7 +489,7 @@ namespace Reko.Core.Expressions
                 throw new NotImplementedException();
             }
 
-            public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
+            public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
             {
                 throw new NotImplementedException();
             }

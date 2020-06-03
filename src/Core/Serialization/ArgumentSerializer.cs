@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ namespace Reko.Core.Serialization
 			this.arch = arch;
         }
         
-        public Argument_v1 Serialize(Identifier arg)
+        public Argument_v1? Serialize(Identifier? arg)
         {
             if (arg == null)
                 return null;

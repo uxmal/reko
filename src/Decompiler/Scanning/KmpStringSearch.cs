@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -30,8 +30,8 @@ namespace Reko.Scanning
     /// <typeparam name="C"></typeparam>
     public class KmpStringSearch<C> : StringSearch<C> where C : IComparable<C>
     {
-        private int[] failureTable;
-        private C[] keyword;
+        private readonly int[] failureTable;
+        private readonly C[] keyword;
 
         public KmpStringSearch(C[] W, bool scannedMemory, bool unscannedMemory)
             : base(W,  scannedMemory,  unscannedMemory)

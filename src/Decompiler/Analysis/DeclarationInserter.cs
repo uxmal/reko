@@ -57,7 +57,7 @@ namespace Reko.Analysis
 				}
 			}
 
-			Block dominator = doms.CommonDominator(blocks);
+			Block? dominator = doms.CommonDominator(blocks);
 
 			if (dominator != null)
 			{
@@ -65,26 +65,26 @@ namespace Reko.Analysis
 				{
 					if (sid.DefStatement != null && sid.DefStatement.Block == dominator)
 					{
-						Assignment ass = sid.DefStatement.Instruction as Assignment;
-						if (ass != null && ass.Dst == sid.Identifier)
-						{
-							sid.DefStatement.Instruction = new Declaration(web.Identifier, ass.Src);
-						}
-						else
-						{
-							int idx = dominator.Statements.IndexOf(sid.DefStatement);
-							dominator.Statements.Insert(
+                        if (sid.DefStatement.Instruction is Assignment ass &&
+                            ass.Dst == sid.Identifier)
+                        {
+                            sid.DefStatement.Instruction = new Declaration(web.Identifier!, ass.Src);
+                        }
+                        else
+                        {
+                            int idx = dominator.Statements.IndexOf(sid.DefStatement);
+                            dominator.Statements.Insert(
                                 idx,
-                                sid.DefStatement.LinearAddress, 
-                                new Declaration(web.Identifier, null));
-						}
-						return;
+                                sid.DefStatement.LinearAddress,
+                                new Declaration(web.Identifier!, null));
+                        }
+                        return;
 					}
 				}
 				dominator.Statements.Insert(
                     0,
                     dominator.Address.ToLinear(),
-                    new Declaration(web.Identifier, null));
+                    new Declaration(web.Identifier!, null));
 			}
 		}
 	}

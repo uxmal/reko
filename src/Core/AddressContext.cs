@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -28,9 +28,9 @@ namespace Reko.Core
 {
     public class AddressContext
     {
-        private Program program;
-        private Address addr;
-        private DecompilerEventListener decompilerEventListener;
+        private readonly Program program;
+        private readonly Address addr;
+        private readonly DecompilerEventListener decompilerEventListener;
 
         public AddressContext(Program program, Address addr, DecompilerEventListener decompilerEventListener)
         {

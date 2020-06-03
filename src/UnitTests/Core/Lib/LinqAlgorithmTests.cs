@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Core.Lib
                     Enumerable.Range(9, 7)
                     .Select(n => new Link { first = n, second = n + 1 }));
 
-            LinqAlgorithms.scc(items, links);
+            LinqAlgorithms.Scc(items, links);
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Core.Lib
             };
 
 
-            LinqAlgorithms.scc(items, links);
+            LinqAlgorithms.Scc(items, links);
         }
     }
     /*

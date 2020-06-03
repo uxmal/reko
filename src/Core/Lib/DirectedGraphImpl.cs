@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,9 +32,9 @@ namespace Reko.Core.Lib
         where T : class
 	{
 		private Dictionary<T, int> mpobjectNode = new Dictionary<T,int>();		// Maps object to integer index into nodes array.
-		private Node [] nodes;
+		private Node[]? nodes;
 		private int cNodes;
-		private Edge [] edges;
+		private Edge[]? edges;
 		private int cEdges;
 		private NodeCollection nodeCollection;
 
@@ -99,7 +99,7 @@ namespace Reko.Core.Lib
 				edges = newEdges;
 			}
 
-			int iEdgePrev = nodes[iFrom].firstSucc;
+			int iEdgePrev = nodes![iFrom].firstSucc;
 			if (iEdgePrev == -1)			// This node has no successors.
 				nodes[iFrom].firstSucc = cEdges;
 			else
@@ -143,7 +143,7 @@ namespace Reko.Core.Lib
             if (iTo < 0)
                 return false;
 
-            int iEdge = nodes[iFrom].firstSucc;
+            int iEdge = nodes![iFrom].firstSucc;
             while (iEdge >= 0)
             {
                 if (edges[iEdge].to == iTo)
@@ -185,8 +185,8 @@ namespace Reko.Core.Lib
 		{
 			int iFrom = NodeIndex(from);
 			int iTo = NodeIndex(to);
-			if (nodes[iFrom].firstSucc == -1 || nodes[iTo].firstPred == -1)
-				throw new ArgumentException("No such edge");
+			if (nodes == null || edges == null || nodes[iFrom].firstSucc == -1 || nodes[iTo].firstPred == -1)
+				throw new ArgumentException("No such edge.");
 
 			// Remove the edge in the from and to list.
 
@@ -287,7 +287,7 @@ namespace Reko.Core.Lib
 
             private IEnumerator<T> GetSuccessorEnumerator()
             {
-                if (graph.nodes == null)
+                if (graph.nodes == null || graph.edges == null)
                     yield break;
                 int iEdge = graph.nodes[iNode].firstSucc;
                 while (iEdge >= 0)
@@ -299,7 +299,7 @@ namespace Reko.Core.Lib
 
             private IEnumerator<T> GetPredecessorEnumerator()
             {
-                if (graph.nodes == null || iNode == -1)
+                if (graph.nodes == null || graph.edges == null || iNode == -1)
                     yield break;
                 int iEdge = graph.nodes[iNode].firstPred;
                 while (iEdge >= 0)
@@ -409,6 +409,8 @@ namespace Reko.Core.Lib
 
 			public void CopyTo(T [] array, int index)
 			{
+                if (graph.nodes == null)
+                    return;
                 for (int i = 0; i + index < array.Length; ++i)
                 {
                     array[i + index] = graph.nodes[i].Item;
@@ -425,7 +427,7 @@ namespace Reko.Core.Lib
                 throw new NotImplementedException("Remove");
             }
 
-			public object SyncRoot
+			public object? SyncRoot
 			{
 				get { return null; }
 			}
@@ -468,7 +470,7 @@ namespace Reko.Core.Lib
 			{
 				get 
 				{
-					if (iNode == -1 || iNode >= graph.cNodes)
+					if (iNode == -1 || iNode >= graph.cNodes || graph.nodes == null)
 						throw new InvalidOperationException("Enumerator must be positioned at a valid location.");
 					return graph.nodes[iNode].Item;
 				}

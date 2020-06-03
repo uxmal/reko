@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ namespace Reko.Typing
 	/// </summary>
 	public class ComplexTypeNamer : IDataTypeVisitor<DataType>
 	{
-		private EquivalenceClass eq;
+		private EquivalenceClass? eq;
 
 		public ComplexTypeNamer()
 		{
@@ -92,7 +92,7 @@ namespace Reko.Typing
 
         public DataType VisitFunctionType(FunctionType ft)
         {
-            foreach (var param in ft.Parameters)
+            foreach (var param in ft.Parameters!)
             {
                 param.DataType.Accept(this);
             }

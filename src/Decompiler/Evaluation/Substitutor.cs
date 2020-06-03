@@ -130,7 +130,7 @@ namespace Reko.Evaluation
 
         public Expression VisitIdentifier(Identifier id)
         {
-            return ctx.GetValue(id);
+            return ctx.GetValue(id)!;
         }
 
         public Expression VisitMemberPointerSelector(MemberPointerSelector mps)

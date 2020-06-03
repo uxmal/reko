@@ -1336,7 +1336,7 @@ typedef cdecl_class_vtbl Eq_55;
 
 typedef void (Eq_57)(cdecl_class * ptrArg04, int32 dwArg08);
 
-typedef void (Eq_58)(cdecl_class *, int32);
+typedef void (Eq_58)(cdecl_class * ptrArg04, int32 dwArg08);
 
 typedef cdecl_class_ptr Eq_61;
 
@@ -1351,7 +1351,7 @@ typedef cdecl_class_vtbl Eq_65;
 
 typedef void (Eq_67)(cdecl_class * ptrArg04);
 
-typedef void (Eq_68)(cdecl_class *);
+typedef void (Eq_68)(cdecl_class * ptrArg04);
 
 typedef cdecl_class_ptr Eq_69;
 
@@ -1378,7 +1378,7 @@ typedef cdecl_class_vtbl Eq_92;
 
 typedef void (Eq_94)(cdecl_class * ptrArg04, int32 dwArg08);
 
-typedef void (Eq_95)(cdecl_class *, int32);
+typedef void (Eq_95)(cdecl_class * ptrArg04, int32 dwArg08);
 
 typedef cdecl_class_vtbl Eq_97;
 
@@ -1386,7 +1386,7 @@ typedef cdecl_class_vtbl Eq_98;
 
 typedef int32 (Eq_100)(cdecl_class * ptrArg04, int32 dwArg08, int32 dwArg0C);
 
-typedef int32 (Eq_101)(cdecl_class *, int32, int32);
+typedef int32 (Eq_101)(cdecl_class * ptrArg04, int32 dwArg08, int32 dwArg0C);
 
 typedef thiscall_class Eq_109;
 
@@ -1398,7 +1398,7 @@ typedef thiscall_class_vtbl Eq_113;
 
 typedef real64 (Eq_115)(thiscall_class * this, int32 dwArg04, real64 rArg08);
 
-typedef real64 (Eq_116)(thiscall_class *, int32, real64);
+typedef real64 (Eq_116)(thiscall_class * this, int32 dwArg04, real64 rArg08);
 
 typedef thiscall_class Eq_117;
 
@@ -1410,7 +1410,7 @@ typedef thiscall_class_vtbl Eq_125;
 
 typedef void (Eq_127)(thiscall_class * this, real64 rArg04);
 
-typedef void (Eq_128)(thiscall_class *, real64);
+typedef void (Eq_128)(thiscall_class * this, real64 rArg04);
 
 typedef thiscall_class Eq_129;
 
@@ -1422,7 +1422,7 @@ typedef thiscall_class_vtbl Eq_137;
 
 typedef real64 (Eq_139)(thiscall_class * this, int32 dwArg04, real64 rArg08);
 
-typedef real64 (Eq_140)(thiscall_class *, int32, real64);
+typedef real64 (Eq_140)(thiscall_class * this, int32 dwArg04, real64 rArg08);
 
 typedef thiscall_class Eq_141;
 
@@ -1438,7 +1438,7 @@ typedef thiscall_class_vtbl Eq_162;
 
 typedef void (Eq_164)(thiscall_class * this, real64 rArg04);
 
-typedef void (Eq_165)(thiscall_class *, real64);
+typedef void (Eq_165)(thiscall_class * this, real64 rArg04);
 
 typedef thiscall_class Eq_166;
 
@@ -1450,7 +1450,7 @@ typedef thiscall_class_vtbl Eq_176;
 
 typedef real64 (Eq_178)(thiscall_class * this, int32 dwArg04, real64 rArg08);
 
-typedef real64 (Eq_179)(thiscall_class *, int32, real64);
+typedef real64 (Eq_179)(thiscall_class * this, int32 dwArg04, real64 rArg08);
 
 typedef thiscall_class Eq_180;
 
@@ -1462,7 +1462,7 @@ typedef thiscall_class_vtbl Eq_190;
 
 typedef void (Eq_192)(thiscall_class * this, real64 rArg04);
 
-typedef void (Eq_193)(thiscall_class *, real64);
+typedef void (Eq_193)(thiscall_class * this, real64 rArg04);
 
 typedef thiscall_class Eq_194;
 

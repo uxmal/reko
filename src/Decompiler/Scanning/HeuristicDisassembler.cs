@@ -111,7 +111,7 @@ namespace Reko.Scanning
                     AddNode(current);
                     current.Instructions.Add(instr);
                     blockMap.Add(instr.Address, current);
-                    Address addrOp;
+                    Address? addrOp;
                     switch (instr.Class & ~(InstrClass.Padding|InstrClass.Zero))
                     {
                     case InstrClass.Invalid:
@@ -214,7 +214,7 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        private Address DestinationAddress(RtlInstructionCluster i)
+        private Address? DestinationAddress(RtlInstructionCluster i)
         {
             var last = i.Instructions[i.Instructions.Length - 1];
             var xfer = last as RtlTransfer;

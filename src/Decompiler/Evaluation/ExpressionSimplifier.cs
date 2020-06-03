@@ -217,8 +217,8 @@ namespace Reko.Evaluation
 
             var left = binExp.Left.Accept(this);
             var right = binExp.Right.Accept(this);
-            Constant cLeft = left as Constant;
-            Constant cRight = right as Constant;
+            Constant? cLeft = left as Constant;
+            Constant? cRight = right as Constant;
             if (cLeft != null && BinaryExpression.Commutes(binExp.Operator))
             {
                 cRight = cLeft; left = right; right = cLeft;
@@ -247,8 +247,8 @@ namespace Reko.Evaluation
                 Changed = true;
                 return constConstBin.Transform();
             }
-            Identifier idLeft = left as Identifier;
-            Identifier idRight = right as Identifier;
+            Identifier? idLeft = left as Identifier;
+            Identifier? idRight = right as Identifier;
 
             // (rel? id1 c) should just pass.
 
@@ -258,7 +258,7 @@ namespace Reko.Evaluation
             // Floating point expressions with "integer" constants 
             if (IsFloatComparison(binExp.Operator) && IsNonFloatConstant(cRight))
             {
-                cRight = ReinterpretAsIeeeFloat(cRight);
+                cRight = ReinterpretAsIeeeFloat(cRight!);
                 right = cRight;
                 binExp = new BinaryExpression(
                     binExp.Operator,
@@ -352,7 +352,7 @@ namespace Reko.Evaluation
                 else
                 {
                     Changed = true;
-                    ctx.RemoveIdentifierUse(idLeft);
+                    ctx.RemoveIdentifierUse(idLeft!);
                     var op = binLeft.Operator == Operator.IAdd ? Operator.ISub : Operator.IAdd;
                     var c = ExpressionSimplifier.SimplifyTwoConstants(op, cLeftRight, cRight);
                     return new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c);
@@ -409,12 +409,12 @@ namespace Reko.Evaluation
                 c.DataType.Size));
         }
 
-        private bool IsNonFloatConstant(Constant cRight)
+        private bool IsNonFloatConstant(Constant? cRight)
         {
-            if (cRight == null)
-                return false;
-            var pt = cRight.DataType as PrimitiveType;
-            return (pt.Domain != Domain.Real);
+            return 
+                cRight != null &&
+                cRight.DataType is PrimitiveType pt &&
+                pt.Domain != Domain.Real;
         }
 
         public static Constant SimplifyTwoConstants(Operator op, Constant l, Constant r)
@@ -655,7 +655,7 @@ namespace Reko.Evaluation
             bool changed = false;
             for (int i = 1; i < elems.Length; ++i)
             {
-                Slice slNext = AsSlice(elems[i]);
+                Slice? slNext = AsSlice(elems[i]);
                 if (fused[fused.Count - 1] is Slice slPrev && slNext != null &&
                     cmp.Equals(slPrev.Expression, slNext.Expression) &&
                     slPrev.Offset == slNext.Offset + slNext.DataType.BitSize)
@@ -690,22 +690,20 @@ namespace Reko.Evaluation
             }
         }
 
-        private Slice AsSlice(Expression e)
+        private Slice? AsSlice(Expression? e)
         {
             if (e is Identifier id)
             {
                 e = ctx.GetDefiningExpression(id);
             }
-            Slice slNext;
             if (e is Cast c)
             {
-                slNext = new Slice(c.DataType, c.Expression, 0);
+                return new Slice(c.DataType, c.Expression, 0);
             }
             else
             {
-                slNext = e as Slice;
+                return e as Slice;
             }
-            return slNext;
         }
 
         public virtual Expression VisitOutArgument(OutArgument outArg)
@@ -728,7 +726,7 @@ namespace Reko.Evaluation
                     ctx.RemoveExpressionUse(arg);
                     return arg;
                 })
-                .Where(a => ctx.GetValue(a as Identifier) != pc)
+                .Where(a => ctx.GetValue((a as Identifier)!) != pc)
                 .ToArray();
             Changed = oldChanged;
 

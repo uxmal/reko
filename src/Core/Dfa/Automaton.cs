@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -30,20 +30,22 @@ namespace Reko.Core.Dfa
     /// </summary>
     public class Automaton
     {
-        private int[,] transitions;
-        private State[] states;
+        private readonly int[,] transitions;
+        private readonly State[] states;
 
-        public static Automaton CreateFromPattern(string pattern)
+        public static Automaton? CreateFromPattern(string pattern)
         {
             try
             {
                 var parser = new PatternParser(pattern);
                 var tree = parser.Parse();
+                if (tree == null)
+                    return null;
                 var builder = new DfaBuilder(tree);
                 builder.ExtendWithEos();
                 builder.BuildNodeSets();
                 builder.BuildAutomaton(tree);
-                return new Automaton(builder.States, builder.Transitions);
+                return new Automaton(builder.States!, builder.Transitions!);
             }
             catch
             {

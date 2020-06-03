@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -32,6 +32,12 @@ namespace Reko.Core.Lib
         public Dictionary<T, double> dist;
         public Dictionary<T, T> prev;
 
+        private Dijkstra(Dictionary<T, double> dist)
+        {
+            this.dist = dist;
+            this.prev = new Dictionary<T, T>();
+        }
+
         /// <summary>
         /// Implementation of the Dijkstra's shortest-path algorithm. Given a <paramref name="graph"/>
         /// it computes the shortest paths that can be reached starting at <paramref name="source"/>.
@@ -44,9 +50,7 @@ namespace Reko.Core.Lib
         {
             var Q = new FibonacciHeap<double, T>();
             var q = new HashSet<T>(Graph.Nodes);
-            var self = new Dijkstra<T>();
-            self.dist = Graph.Nodes.ToDictionary(K => K, V => double.PositiveInfinity);
-            self.prev = new Dictionary<T, T>();
+            var self = new Dijkstra<T>(Graph.Nodes.ToDictionary(K => K, V => double.PositiveInfinity));
 
             self.dist[source] = 0;                        // Distance from source to source
 
@@ -78,8 +82,7 @@ namespace Reko.Core.Lib
         public List<T> GetPath(T destination)
         {
             var path = new List<T>();
-            T p;
-            while (prev.TryGetValue(destination, out p))
+            while (prev.TryGetValue(destination, out T p))
             {
                 path.Add(p);
                 destination = p;

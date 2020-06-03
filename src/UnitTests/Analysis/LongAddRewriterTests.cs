@@ -31,6 +31,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Moq;
 using System.ComponentModel.Design;
+using Reko.Core.Operators;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -212,7 +213,7 @@ namespace Reko.UnitTests.Analysis
             m.Procedure.Dump(true);
             var cm = rw.FindConditionOf(block.Statements, 0, GetId("ax_3"));
             //Assert.AreEqual("ax_3,0,SCZ_4,SCZ_4 = cond(ax_3),SCZ_4", string.Format("{0},{1},{2},{3}", cm.src, cm.StatementIndex, cm.Statement, cm.FlagGroup));
-            var asc = rw.FindUsingInstruction(cm.FlagGroup, new AddSubCandidate { Left=ax, Right=cx });
+            var asc = rw.FindUsingInstruction(cm.FlagGroup, new AddSubCandidate(Operator.IAdd, ax, cx));
             Assert.AreEqual("dx_8 = dx + bx + C_7", asc.Statement.ToString());
         }
 

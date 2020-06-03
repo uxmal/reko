@@ -40,11 +40,11 @@ namespace Reko.Core.Types
         {
         }
 
-        public UnionType(string name, DataType preferredType) : this(name, preferredType, false)
+        public UnionType(string? name, DataType? preferredType) : this(name, preferredType, false)
         {
         }
 
-		public UnionType(string name, DataType preferredType, ICollection<DataType> alternatives) : this(name, preferredType, false)
+		public UnionType(string? name, DataType? preferredType, ICollection<DataType> alternatives) : this(name, preferredType, false)
         {
             foreach (DataType dt in alternatives)
             {
@@ -52,11 +52,11 @@ namespace Reko.Core.Types
             }
         }
 
-        public UnionType(string name, DataType preferredType, params DataType [] alternatives) : this(name, preferredType, false, alternatives)
+        public UnionType(string? name, DataType? preferredType, params DataType [] alternatives) : this(name, preferredType, false, alternatives)
         {
         }
 
-        public UnionType(string name, DataType preferredType, bool userDefined, params DataType[] alternatives) : base(name)
+        public UnionType(string? name, DataType? preferredType, bool userDefined, params DataType[] alternatives) : base(name)
         {
             this.PreferredType = preferredType;
             this.UserDefined = userDefined;
@@ -68,7 +68,7 @@ namespace Reko.Core.Types
 
         public UnionAlternativeCollection Alternatives => alts;
         
-        public DataType PreferredType { get; set; }
+        public DataType? PreferredType { get; set; }
         public bool UserDefined { get; private set; }
 
         public override void Accept(IDataTypeVisitor v)
@@ -88,7 +88,7 @@ namespace Reko.Core.Types
             return alt;
         }
 
-        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
+        public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
 		{
 			var pre = PreferredType?.Clone(clonedTypes);
 			var u = new UnionType(Name, pre);
@@ -101,7 +101,7 @@ namespace Reko.Core.Types
 			return u;
 		}
 
-		public UnionAlternative FindAlternative(DataType dtOrig)
+		public UnionAlternative? FindAlternative(DataType dtOrig)
 		{
 			foreach (UnionAlternative alt in Alternatives.Values)
 			{
@@ -154,16 +154,16 @@ namespace Reko.Core.Types
 
 	public class UnionAlternative : Field
 	{
-        public UnionAlternative(DataType t, int index)
+        public UnionAlternative(DataType dt, int index) : base(dt)
 		{
-			this.DataType = t;
+			this.DataType = dt;
             this.Index = index;
 		}
 
-		public UnionAlternative(string name, DataType dt, int index)
+		public UnionAlternative(string? name, DataType dt, int index) : base(dt)
 		{
 			DataType = dt;
-			Name = name;
+			this.name = name;
             Index = index;
         }
 
@@ -171,7 +171,7 @@ namespace Reko.Core.Types
 
         public int Index { get; }
 
-        private string name;
+        private string? name;
 
         private string GenerateDefaultName()
         {

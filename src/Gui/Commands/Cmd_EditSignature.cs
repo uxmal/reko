@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,22 +18,20 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
-using Reko.Core.Services;
 using Reko.Core.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Reko.Gui.Forms;
+using System;
 
 namespace Reko.Gui.Commands
 {
     public class Cmd_EditSignature : Command
     {
-        private Program program;
-        private Procedure procedure;
-        private Address address;
+        private readonly Program program;
+        private readonly Procedure procedure;
+        private readonly Address address;
 
         public Cmd_EditSignature(IServiceProvider services, Program program, Procedure procedure, Address addr)
             : base(services)
@@ -47,8 +45,7 @@ namespace Reko.Gui.Commands
         {
             var dlgFactory = Services.RequireService<IDialogFactory>();
             var uiSvc = Services.RequireService<IDecompilerShellUiService>();
-            Procedure_v1 sProc;
-            if (!program.User.Procedures.TryGetValue(address, out sProc))
+            if (!program.User.Procedures.TryGetValue(address, out Procedure_v1 sProc))
                 sProc = new Procedure_v1
                 {
                     Name = procedure.Name
@@ -60,7 +57,7 @@ namespace Reko.Gui.Commands
                     dlg.ApplyChanges();
                     program.User.Procedures[address] = sProc;
                     if (procedure != null)
-                        procedure.Name = sProc.Name;
+                        procedure.Name = sProc.Name!;
                 }
             }
         }

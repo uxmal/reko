@@ -4124,10 +4124,8 @@ Eq_n pexecute(Eq_n o0, pid_t * o1, word32 o3, word32 * o4, word32 * o5, Eq_n l1,
 	while (true)
 	{
 		bool Z_n;
-		Eq_n g0_n;
 		if (dwLoc28_n > 0x03)
 			break;
-		g0_n = l1 - ~0x00;
 		Eq_n o0_n = vfork();
 		l1 = o0_n;
 		if (o0_n >= 0x00)
@@ -4139,7 +4137,7 @@ Eq_n pexecute(Eq_n o0, pid_t * o1, word32 o3, word32 * o4, word32 * o5, Eq_n l1,
 		dwLoc2C_n <<= 0x01;
 		++dwLoc28_n;
 	}
-	Z_n = SLICE(cond(g0_n), bool, 2);
+	Z_n = SLICE(cond(l1 - ~0x00), bool, 2);
 l00016AEC:
 	if (!Z_n)
 	{

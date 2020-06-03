@@ -75,14 +75,14 @@ namespace Reko.Core.Types
         private readonly int bitSize;
         private readonly int byteSize;
 		
-		private PrimitiveType(Domain dom, int bitSize, string name)
+		private PrimitiveType(Domain dom, int bitSize, string? name)
 		{
             if (bitSize == 24)
                 bitSize.ToString(); //$DEBUG
             this.Domain = dom;
 			this.bitSize = bitSize;
             this.byteSize = (bitSize + (BitsPerByte-1)) / BitsPerByte;
-			this.Name = name;
+			this.Name = name!;
 		}
 
         public Domain Domain { get; }
@@ -99,7 +99,7 @@ namespace Reko.Core.Types
             return v.VisitPrimitive(this);
         }
 
-        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
+        public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
 		{
 			return this;
 		}
@@ -130,7 +130,7 @@ namespace Reko.Core.Types
             return shared;
         }
 
-        private static PrimitiveType Create(Domain dom, int bitSize, string name)
+        private static PrimitiveType Create(Domain dom, int bitSize, string? name)
 		{
             if (mpBitWidthToAllowableDomain.TryGetValue(bitSize, out var domainMask))
             {

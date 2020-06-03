@@ -48,7 +48,7 @@ namespace Reko.Core
         /// <summary>
         /// Optional loader-specific argument specified in app.config.
         /// </summary>
-        public string Argument { get; set; }
+        public string? Argument { get; set; }
 
         /// <summary>
         /// The image as it appears on the storage medium before being loaded.
@@ -69,9 +69,10 @@ namespace Reko.Core
         /// <summary>
 		/// Loads the image into memory starting at the specified address
 		/// </summary>
-		/// <param name="addrLoad">Base address of program image</param>
+		/// <param name="addrLoad">Optional base address of program image. If not specified,
+        /// use the image format's default loading address.</param>
 		/// <returns></returns>
-        public abstract Program Load(Address addrLoad);
+        public abstract Program Load(Address? addrLoad);
 
         /// <summary>
         /// Loads the image into memory at the specified address, using the 
@@ -107,9 +108,9 @@ namespace Reko.Core
         /// This method only makes sense for image formats that support
         /// x86-style segments.
         /// </remarks>
-        public virtual ImageSegment AddSegmentReference(Address addr, ushort seg)
+        public virtual ImageSegment? AddSegmentReference(Address addr, ushort seg)
         {
             return null;
-    }
+        }
     }
 }

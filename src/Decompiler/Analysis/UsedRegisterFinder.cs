@@ -45,13 +45,13 @@ namespace Reko.Analysis
         InstructionVisitor<BitRange>,
         ExpressionVisitor<BitRange>
     {
-        private DecompilerEventListener eventListener;
-        private ProgramDataFlow flow;
-        private HashSet<Procedure> scc;
-        private Identifier idCur;
-        private ProcedureFlow procFlow;
-        private SsaState ssa;
-        private Dictionary<PhiAssignment, BitRange> visited;
+        private readonly ProgramDataFlow flow;
+        private readonly HashSet<Procedure> scc;
+        private readonly Dictionary<PhiAssignment, BitRange> visited;
+        private readonly DecompilerEventListener eventListener;
+        private Identifier? idCur;
+        private ProcedureFlow? procFlow;
+        private SsaState? ssa;
         private bool useLiveness;
 
         public UsedRegisterFinder(
@@ -141,6 +141,7 @@ namespace Reko.Analysis
 
         public BitRange VisitAssignment(Assignment ass)
         {
+            var ssa = this.ssa!;
             switch (ass.Src)
             {
             case Identifier id when id == idCur:
@@ -236,7 +237,7 @@ namespace Reko.Analysis
             if (!visited.TryGetValue(phi, out BitRange value))
             {
                 visited[phi] = BitRange.Empty;
-                value = Classify(ssa.Identifiers[phi.Dst]);
+                value = Classify(ssa!.Identifiers[phi.Dst]);
                 visited[phi] = value;
             }
             return value;
@@ -267,7 +268,7 @@ namespace Reko.Analysis
             if (useLiveness)
             {
                 var stg = ((Identifier)use.Expression).Storage;
-                var bitrange = procFlow.BitsLiveOut.Aggregate(
+                var bitrange = procFlow!.BitsLiveOut.Aggregate(
                     BitRange.Empty,
                     (br, entry) =>
                     {

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -43,7 +43,7 @@ namespace Reko.Core.Expressions
             this.Expression = id;
         }
 
-        public Expression Expression { get; private set; }
+        public Expression Expression { get; }
 
         public override IEnumerable<Expression> Children
         {

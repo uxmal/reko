@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,9 +41,9 @@ namespace Reko.Core.Serialization
         }
 
         [XmlAttribute("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public SerializedType Type; // Reference to a type
+        public SerializedType? Type; // Reference to a type
 
         [XmlElement("reg", typeof(Register_v1))]
         [XmlElement("stack", typeof(StackVariable_v1))]
@@ -51,7 +51,7 @@ namespace Reko.Core.Serialization
         [XmlElement("seq", typeof(SerializedSequence))]
         [XmlElement("flag", typeof(FlagGroup_v1))]
         [ReadOnly(true)]
-        public SerializedKind Kind { get; set; }
+        public SerializedKind? Kind { get; set; }
 
         [XmlAttribute("out")]
         [DefaultValue(false)]

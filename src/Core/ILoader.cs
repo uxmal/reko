@@ -34,7 +34,10 @@ namespace Reko.Core
     /// </summary>
     public interface ILoader
     {
-        string DefaultToFormat { get; set; }
+        /// <summary>
+        /// If no image type can be determined, assume the file is in this format.
+        /// </summary>
+        string? DefaultToFormat { get; set; }
 
         /// <summary>
         /// Opens the specified files and loads the contents of the file,
@@ -60,7 +63,7 @@ namespace Reko.Core
         /// Either a successfully loaded <see cref="Reko.Core.Program"/>, or null if 
         /// an appropriate image loader could not be determined or loaded.
         /// </returns>
-        Program LoadExecutable(string fileName, byte[] bytes, string loader, Address loadAddress);
+        Program? LoadExecutable(string fileName, byte[] bytes, string? loader, Address? loadAddress);
 
         /// <summary>
         /// Given a sequence of raw bytes, loads it into memory and applies the 
@@ -73,7 +76,7 @@ namespace Reko.Core
         /// <param name="details">Details about the contents of the file.</param>
         /// <returns>A <see cref="Reko.Core.Program"/>.
         /// </returns>
-        Program LoadRawImage(string fileName, byte[] image, Address loadAddress, LoadDetails details);
+        Program LoadRawImage(string fileName, byte[] image, Address? loadAddress, LoadDetails details);
 
         Program AssembleExecutable(string fileName, IAssembler asm, IPlatform platform, Address loadAddress);
         Program AssembleExecutable(string fileName, byte[] bytes, IAssembler asm, IPlatform platform, Address loadAddress);
@@ -84,9 +87,10 @@ namespace Reko.Core
         /// <param name="fileName">The name of the file.</param>
         /// <param name="platform">The operating environment for the file.</param>
         /// <param name="typeLib">A type library into which the metadata will be added.</param>
-        /// <returns>The updated <paramref name="typeLib"/>.
+        /// <returns>The updated <paramref name="typeLib"/> or null if no appropriate loader for the
+        /// metadata could be found.
         /// </returns>
-        TypeLibrary LoadMetadata(string fileName, IPlatform platform, TypeLibrary typeLib);
+        TypeLibrary? LoadMetadata(string fileName, IPlatform platform, TypeLibrary typeLib);
     }
 
     /// <summary>
@@ -98,35 +102,35 @@ namespace Reko.Core
         /// <summary>
         /// Name of the loader to use. Loader names are found in the reko.config file.
         /// </summary>
-        public string LoaderName;
+        public string? LoaderName;
 
         /// <summary>
         /// Name of the processor architecture to use. Architecture names are found 
         /// in the reko.config file.
         /// </summary>
-        public string ArchitectureName;
+        public string? ArchitectureName;
         
         /// <summary>
         /// Architecture specific options. Each architecture defines its own
         /// set of options, like endianness, processor models etc.
         /// </summary>
-        public Dictionary<string,object> ArchitectureOptions;
+        public Dictionary<string,object>? ArchitectureOptions;
         
         /// <summary>
         /// Name of the platform to use. Platform names are found in the 
         /// reko.config file.
         /// </summary>
-        public string PlatformName;
+        public string? PlatformName;
         
         /// <summary>
         /// String representation of the address at which the binary file should
         /// be loaded. The address string is parsed by the architecture when loading.
         /// </summary>
-        public string LoadAddress;
+        public string? LoadAddress;
         
         /// <summary>
         /// Entry point of the program.
         /// </summary>
-        public EntryPointDefinition EntryPoint;
+        public EntryPointDefinition? EntryPoint;
     }
 }

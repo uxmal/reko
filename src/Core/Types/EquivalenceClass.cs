@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,10 +37,10 @@ namespace Reko.Core.Types
 		{
 		}
 
-        public EquivalenceClass(TypeVariable rep, DataType dt)
+        public EquivalenceClass(TypeVariable rep, DataType? dt)
         {
             Representative = rep;
-            DataType = dt;
+            this.dt = dt;
             types.Add(rep);
         }
 
@@ -54,25 +54,23 @@ namespace Reko.Core.Types
             return v.VisitEquivalenceClass(this);
         }
 
-        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
+        public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
 		{
 			return this;
 		}
 
         public DataType DataType
         {
-            get { return dt; }
+            get { return dt!; }
             set
             {
                 dt = value;
             }
         }
-        private DataType dt;
+        private DataType? dt;
+        //$REVIEW Avoid making equivalence classes early to make this "nullable" unnecessary?
 
-		public override bool IsComplex
-		{
-			get { return true; }
-		}
+        public override bool IsComplex => true;
 
 		/// <summary>
 		/// Merges two equivalence classes.

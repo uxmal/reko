@@ -25,13 +25,14 @@ using System.Collections.Generic;
 namespace Reko.Typing
 {
 	/// <summary>
-	/// Given an array of structures and their corresponding TypeVars, merges them and adjusts equivalence classes accordingly.
+	/// Given an array of structures and their corresponding TypeVars, merges
+    /// them and adjusts equivalence classes accordingly.
 	/// </summary>
 	public class StructureMerger
 	{
-        private ICollection<StructureType> structures;
-        private ICollection<EquivalenceClass> eqClasses;
-		private EquivalenceClass eqMin;
+        private readonly ICollection<StructureType> structures;
+        private readonly ICollection<EquivalenceClass> eqClasses;
+		private readonly EquivalenceClass? eqMin;
 
         public StructureMerger(ICollection<StructureType> structures, ICollection<EquivalenceClass> eqClasses)
 		{
@@ -48,7 +49,7 @@ namespace Reko.Typing
 
         public EquivalenceClass MergedClass
         {
-            get { return eqMin; }
+            get { return eqMin!; }
         }
 
 		// T_1 --> C_1 --> S_1
@@ -60,14 +61,14 @@ namespace Reko.Typing
 		// T_3 --> C_1
         public void Merge()
         {
-            Unifier un = new Unifier(new TypeFactory(), null);
-            DataType dt = null;
+            Unifier un = new Unifier(new TypeFactory());
+            DataType? dt = null;
             foreach (StructureType str in structures)
             {
                 dt = un.Unify(dt, str);
             }
-            StructureType strNew = (StructureType) dt;
-            eqMin.DataType = strNew;
+            StructureType strNew = (StructureType) dt!;
+            eqMin!.DataType = strNew;
         }
 	}
 }

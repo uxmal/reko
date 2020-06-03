@@ -42,18 +42,20 @@ namespace Reko.Analysis
             public List<SsaIdentifier> LiveOut { get; private set; }
         }
 
-		private readonly SsaState ssa;
 		private readonly SsaIdentifierCollection ssaIds;
-        private HashSet<Block> visited;
-		private Dictionary<Statement, List<Identifier>> defined;		// maps statement to -> List of identifiers
-		private InterferenceGraph interference;
-        private Dictionary<Block, Record> records;
+        private readonly HashSet<Block> visited;
+		private readonly Dictionary<Statement, List<Identifier>> defined;		// maps statement to -> List of identifiers
+		private readonly InterferenceGraph interference;
+        private readonly Dictionary<Block, Record> records;
 
 		public SsaLivenessAnalysis(SsaState ssa)
 		{
-			this.ssa = ssa;
 			this.ssaIds = ssa.Identifiers;
             this.visited = new HashSet<Block>();
+            this.records = new Dictionary<Block, Record>();
+			this.defined = new Dictionary<Statement,List<Identifier>>();
+            this.interference = new InterferenceGraph();
+
             BuildRecords(ssa.Procedure.ControlGraph.Blocks);
 			BuildDefinedMap(ssaIds);
 			BuildInterferenceGraph(ssaIds);
@@ -61,7 +63,6 @@ namespace Reko.Analysis
 
 		private void BuildRecords(IEnumerable<Block> blocks)
 		{
-            records = new Dictionary<Block, Record>();
             foreach (Block b in blocks)
             {
                 records.Add(b, new Record());
@@ -70,7 +71,6 @@ namespace Reko.Analysis
 
 		public void BuildDefinedMap(SsaIdentifierCollection ssaIds)
 		{
-			defined = new Dictionary<Statement,List<Identifier>>();
 			foreach (SsaIdentifier ssa in ssaIds)
 			{
 				if (ssa.Uses.Count > 0 && ssa.DefStatement != null)
@@ -87,13 +87,12 @@ namespace Reko.Analysis
 
 		public void BuildInterferenceGraph(SsaIdentifierCollection ssaIds)
 		{
-			interference = new InterferenceGraph();
 			foreach (SsaIdentifier v in ssaIds)
 			{
-				visited = new HashSet<Block>();
+                visited.Clear();
 				foreach (Statement s in v.Uses)
 				{
-					PhiFunction phi = GetPhiFunction(s);
+					PhiFunction? phi = GetPhiFunction(s);
 					if (phi != null)
 					{
                         var p = phi.Arguments.First(e => e.Value == v.Identifier).Block;
@@ -110,13 +109,8 @@ namespace Reko.Analysis
 
 		public List<Identifier> IdentifiersDefinedAtStatement(Statement stm)
 		{
-			if (stm == null) return null;
+			if (stm == null) return new List<Identifier>();
 			return defined[stm];
-		}
-
-		public InterferenceGraph InterferenceGraph
-		{
-			get { return interference; }
 		}
 
 		public bool IsDefinedAtStatement(SsaIdentifier v, Statement stm)
@@ -176,7 +170,7 @@ namespace Reko.Analysis
 			if (!visited.Contains(b))
 			{
 				visited.Add(b);
-				Statement s = b.Statements.Last;
+				Statement s = b.Statements.Last!;
 				if (!IsDefinedAtStatement(v, s))
 					LiveInAtStatement(b, b.Statements.Count - 1, v);
 			}
@@ -227,25 +221,22 @@ namespace Reko.Analysis
             }
 		}
 
-		// Returns true if v is also live in before executing s.
+        // Returns true if v is also live in before executing s.
 
-		public bool LiveOutAtStatement(Statement s, SsaIdentifier v)
-		{
-			// v is live-out at s.
+        public bool LiveOutAtStatement(Statement s, SsaIdentifier v)
+        {
+            // v is live-out at s.
 
-			List<Identifier> ids = this.IdentifiersDefinedAtStatement(s);
-			if (ids != null)
-			{
-				foreach (Identifier id in ids)
-				{
-					if (id != v.Identifier)
-						interference.Add(id, v.Identifier);
-				}
-			}
-			return (v.DefStatement != s);
-		}
+            List<Identifier> ids = this.IdentifiersDefinedAtStatement(s);
+            foreach (Identifier id in ids)
+            {
+                if (id != v.Identifier)
+                    interference.Add(id, v.Identifier);
+            }
+            return (v.DefStatement != s);
+        }
 
-		public PhiFunction GetPhiFunction(Statement stm)
+		public PhiFunction? GetPhiFunction(Statement stm)
 		{
             return (stm.Instruction is PhiAssignment ass)
                 ? ass.Src
@@ -278,7 +269,7 @@ namespace Reko.Analysis
 			{
 				foreach (Statement use in sid.Uses)
 				{
-					Block p = PrecedingPhiBlock(sid.Identifier, use);
+					Block? p = PrecedingPhiBlock(sid.Identifier, use);
 					if (p != null)
 					{
 						LiveOutAtBlock(p, sid);
@@ -346,7 +337,7 @@ namespace Reko.Analysis
 			return W;
 		}
 
-		private Block PrecedingPhiBlock(Identifier u, Statement stm)
+		private Block? PrecedingPhiBlock(Identifier u, Statement stm)
 		{
             if (!(stm.Instruction is PhiAssignment phi))
                 return null;

@@ -89,12 +89,13 @@ namespace Reko.UnitTests.Core.Output
         private void RunTest(string sExp)
         {
             var sw = new StringWriter();
-            var gdw = new GlobalDataWriter(program, sc);
-            gdw.WriteGlobals(new TextFormatter(sw)
+            var formatter = new TextFormatter(sw)
             {
                 Indentation = 0,
                 UseTabs = false,
-            });
+            };
+            var gdw = new GlobalDataWriter(program, formatter, sc);
+            gdw.Write();
             Assert.AreEqual(sExp, sw.ToString());
         }
 

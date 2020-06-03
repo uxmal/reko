@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -52,7 +52,8 @@ namespace Reko.Core
             get { return dummySig; }
             set { throw new NotSupportedException(); }
         }
-        public ExternalProcedure FindService(ProcessorState state)
+
+        public ExternalProcedure? FindService(ProcessorState state)
         {
             foreach (var (si, proc) in services)
             {

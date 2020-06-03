@@ -59,6 +59,7 @@ namespace Reko.Core
             private PointerScanner<T> scanner;
             private EndianImageReader r;
 
+#nullable disable
             public Enumerator(PointerScanner<T> scanner, EndianImageReader rdr)
             {
                 this.scanner = scanner;
@@ -68,6 +69,7 @@ namespace Reko.Core
             public T Current { get; set; }
 
             object System.Collections.IEnumerator.Current { get { return Current; } }
+#nullable enable
 
             public bool MoveNext()
             {

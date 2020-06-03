@@ -33,7 +33,7 @@ namespace Reko.Core
     /// </summary>
     public class SegmentMap
     {
-        public event EventHandler MapChanged;
+        public event EventHandler? MapChanged;
 
         public SegmentMap(Address addrBase, params ImageSegment[] segments)
         {
@@ -98,7 +98,7 @@ namespace Reko.Core
                 EnsureSegmentSize(segNew);
                 Segments.Add(segNew.Address, segNew);
                 SegmentByLinAddress.Add(segNew.Address.ToLinear(), segNew);
-                MapChanged.Fire(this);
+                MapChanged?.Fire(this);
                 //DumpSections();
                 return segNew;
             }
@@ -117,7 +117,7 @@ namespace Reko.Core
 
                 // And split any items in the segment
 
-                MapChanged.Fire(this);
+                MapChanged?.Fire(this);
                 //DumpSections();
                 return segSplit;
             }
@@ -223,7 +223,7 @@ namespace Reko.Core
             var imageMap = new ImageMap(this.BaseAddress);
             foreach (var segment in Segments.Values)
             {
-                imageMap.AddItem(segment.Address, new ImageMapItem(segment.Size) { DataType = new UnknownType() });
+                imageMap.AddItem(segment.Address, new ImageMapItem(segment.Address, segment.Size) { DataType = new UnknownType() });
             }
             return imageMap;
         }

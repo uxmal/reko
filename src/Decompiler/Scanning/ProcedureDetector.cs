@@ -40,7 +40,6 @@ namespace Reko.Scanning
     /// </remarks>
     public class ProcedureDetector
     {
-        private readonly Program program;
         private readonly ScanResults sr;
         private readonly DecompilerEventListener listener;
         private readonly HashSet<Address> procedures;
@@ -48,7 +47,6 @@ namespace Reko.Scanning
 
         public ProcedureDetector(Program program, ScanResults sr, DecompilerEventListener listener)
         {
-            this.program = program;
             this.sr = sr;
             this.listener = listener;
             this.procedures = sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys).ToHashSet();
@@ -434,7 +432,7 @@ namespace Reko.Scanning
             // Create a fake node that will serve as the parent of all the 
             // existing entries. That node will be used to compute all
             // immediate dominators of all reachable blocks.
-            var auxNode = new RtlBlock(null, "<root>");
+            var auxNode = new RtlBlock(null!, "<root>");
             sr.ICFG.AddNode(auxNode);
             var allEntries =
                 cluster.Entries.Concat(
@@ -537,16 +535,6 @@ namespace Reko.Scanning
                     DumpDominatorTree(kid, tree, sIndent);
                 }
             }
-        }
-
-        /// <summary>
-        /// Starting at <paramref name="start"/> 
-        /// </summary>
-        /// <param name="start"></param>
-        /// <returns></returns>
-        public List<RtlBlock> LinearSequence(RtlBlock start)
-        {
-            return new List<RtlBlock>();
         }
 
         [Conditional("DEBUG")]

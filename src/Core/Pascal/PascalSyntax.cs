@@ -1,9 +1,28 @@
+#region License
+/* 
+ * Copyright (C) 1999-2020 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+#nullable disable
 
 namespace Reko.Core.Pascal
 {
@@ -41,6 +60,11 @@ namespace Reko.Core.Pascal
 
     public abstract class Declaration : PascalSyntax
     {
+        protected Declaration(string name)
+        {
+            this.Name = name;
+        }
+
         public string Name;
     }
 
@@ -48,7 +72,7 @@ namespace Reko.Core.Pascal
     {
         public Exp Exp;
 
-        public ConstantDeclaration(string name, Exp exp) { this.Name = name;  this.Exp = exp; }
+        public ConstantDeclaration(string name, Exp exp) : base(name) { this.Exp = exp; }
 
         public override T Accept<T>(IPascalSyntaxVisitor<T> visitor)
         {
@@ -69,7 +93,7 @@ namespace Reko.Core.Pascal
     {
         public PascalType Type;
 
-        public TypeDeclaration(string name, PascalType type) { this.Name = name;  this.Type = type; }
+        public TypeDeclaration(string name, PascalType type) : base(name) { this.Type = type; }
 
         public override T Accept<T>(IPascalSyntaxVisitor<T> visitor)
         {
@@ -91,10 +115,17 @@ namespace Reko.Core.Pascal
     /// </summary>
     public class CallableDeclaration : Declaration
     {
-        public PascalType ReturnType;
+        public PascalType ReturnType;  // Null means no return value.
         public List<ParameterDeclaration> Parameters;
 
-        public Block Body { get; internal set; }
+        public CallableDeclaration(string name, PascalType retType, List<ParameterDeclaration> parameters)
+            : base(name)
+        {
+            this.ReturnType = retType;
+            this.Parameters = parameters;
+        }
+
+        public Block Body { get; set; }
 
         public override T Accept<T>(IPascalSyntaxVisitor<T> visitor)
         {
@@ -290,7 +321,12 @@ namespace Reko.Core.Pascal
 
     public class Primitive : PascalType
     {
-        public Serialization.SerializedType Type;
+        public readonly Serialization.SerializedType Type;
+
+        public Primitive(Serialization.SerializedType type)
+        {
+            this.Type = type;
+        }
 
         public override T Accept<T>(IPascalSyntaxVisitor<T> visitor)
         {
@@ -310,12 +346,12 @@ namespace Reko.Core.Pascal
 
         public static Primitive Char()
         {
-            return new Primitive { Type = Serialization.PrimitiveType_v1.Char8() };
+            return new Primitive( Serialization.PrimitiveType_v1.Char8());
         }
 
         public static Primitive Integer()
         {
-            return new Primitive { Type = Serialization.PrimitiveType_v1.Int16() };
+            return new Primitive(Serialization.PrimitiveType_v1.Int16());
         }
     }
 
@@ -380,6 +416,12 @@ namespace Reko.Core.Pascal
         public PascalType ElementType { get; internal set; }
         public List<ArrayDimension> Dimensions { get; internal set; }
         public bool Packed;
+
+        public Array(PascalType elemType, List<ArrayDimension> dims)
+        {
+            this.ElementType = elemType;
+            this.Dimensions = dims;
+        }
 
         public override T Accept<T>(IPascalSyntaxVisitor<T> visitor)
         {

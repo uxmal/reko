@@ -35,7 +35,7 @@ namespace Reko.Core.Configuration
         /// <remarks>
         /// For instance, the 'MZ' signature of MS-DOS executables is expressed as the hexadecimal string 4D5A.
         /// </remarks>
-        public string MagicNumber { get; set; } 
+        public string? MagicNumber { get; set; } 
 
         /// <summary>
         /// The offset at which to look for the magic number. By default, a missing value means
@@ -47,26 +47,26 @@ namespace Reko.Core.Configuration
         /// The assembly-qualified name for the .NET type that is responsible for handling this
         /// format.
         /// </summary>
-        public string TypeName { get; set; }
+        public string? TypeName { get; set; }
 
         /// <summary>
         /// If the file being opened has this file extension, this loader will be used.
         /// </summary>
-        public string Extension { get; set; }
+        public string? Extension { get; set; }
 
         /// <summary>
         /// A string label used to refer to specific loaders.
         /// </summary>
-        public string Label { get; set; }
+        public string? Label { get; set; }
 
         /// <summary>
         /// A format string that can be used to pass parameters to a loader implemented as an executable.
         /// </summary>
-        public string Argument { get; set; }
+        public string? Argument { get; set; }
 
         /// <summary>
         /// Text to display in user interfaces when browsing loaders.
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
     }
 }

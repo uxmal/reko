@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -16,7 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
- // This code was translated from the DCC decompiler project:
+// This code was translated from the DCC decompiler project:
 /*
  * Code to check for library functions. If found, replaces procNNNN with the
  * library function name. Also checks startup code for correct DS, and the
@@ -51,13 +51,16 @@ namespace Reko.Loading
         const int PATLEN = 23;          /* Number of bytes in the pattern part */
 
         private Program program;
-        private ProcessorState state;
 
+        public DccSignatureLoader(Program program)
+        {
+            this.program = program;
+        }
         /* Hash table structure */
         public class HT
         {
-            public string htSym;
-            public byte[] htPat;
+            public string? htSym;
+            public byte[]? htPat;
         }
 
         //typedef struct HT_tag
@@ -87,9 +90,9 @@ namespace Reko.Loading
 /* Structure of the prototypes table. Same as the struct in parsehdr.h,
     except here we don't need the "next" index (the elements are already
     sorted by function name) */
-class PH_FUNC_STRUCT
+        public class PH_FUNC_STRUCT
         {
-            public string name; // [SYMLEN]  /* Name of function or arg */
+            public string? name; // [SYMLEN]  /* Name of function or arg */
             public hlType typ;               /* Return type */
             public int numArg;               /* Number of args */
             public int firstArg;             /* Index of first arg in chain */
@@ -106,13 +109,13 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         ushort numVert;                      /* Number of vertices in the graph (also size of g[]) */
         ushort PatLen;                       /* Size of the keys (pattern length) */
         ushort SymLen;                       /* Max size of the symbols, including null */
-        static string sSigName;              /* Full path name of .sig file */
+        static string? sSigName;              /* Full path name of .sig file */
                                              
-        static ushort[] T1base, T2base;      /* Pointers to start of T1, T2 */
-        static short[]  g;                   /* g[] */
-        static HT [] ht;                     /* The hash table */
-        static PH_FUNC_STRUCT [] pFunc;      /* Points to the array of func names */
-        static hlType [] pArg = null;        /* Points to the array of param types */
+        static ushort[]? T1base, T2base;      /* Pointers to start of T1, T2 */
+        static short[]?  g;                   /* g[] */
+        static HT []? ht;                     /* The hash table */
+        static PH_FUNC_STRUCT []? pFunc;      /* Points to the array of func names */
+        static hlType []? pArg = null;        /* Points to the array of param types */
         static int numFunc;                  /* Number of func names actually stored */
         static int numArg;                   /* Number of param names actually stored */
 //#define DCCLIBS "dcclibs.dat"              /* Name of the prototypes data file */
@@ -345,7 +348,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         {
             var diag = services.RequireService<IDiagnosticsService>();
             var cfgSvc = services.RequireService<IConfigurationService>();
-            string fpath = cfgSvc.GetInstallationRelativePath("msdos", sSigName);
+            string fpath = cfgSvc.GetInstallationRelativePath("msdos", sSigName!);
             var fsSvc = services.RequireService<IFileSystemService>();
             if (!fsSvc.FileExists(fpath))
             {
@@ -480,7 +483,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         /// Check this function to see if it is a library function. Return true if
         /// it is, and copy its name to pProc.Name
         /// </summary>
-        public bool LibCheck(IServiceProvider services, Program program, Procedure proc, Address addr)
+        public bool LibCheck(IServiceProvider services, Procedure proc, Address addr)
         {
             var diagSvc = services.RequireService<IDiagnosticsService>();
             long fileOffset;
@@ -488,18 +491,9 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             // i, j, arg;
             uint Idx;
 
-            if (false) //  && program.bSigs == false)
-            {
-                /* No signatures... can't rely on hash parameters to be initialised
-                so always return false */
-                return false;
-            }
-
-            ImageSegment segment;
-            if (!program.SegmentMap.TryFindSegment(addr, out segment))
+            if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment segment))
                 return false;
             
-
             fileOffset = addr - segment.MemoryArea.BaseAddress;              /* Offset into the image */
             //if (fileOffset == program.offMain)
             //{
@@ -515,7 +509,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             fixWildCards(pat);                                   /* Fix wild cards in the copy */
             h = g_pattern_hasher.hash(pat);                      /* Hash the found proc */
                                                                  /* We always have to compare keys, because the hash function will always return a valid index */
-            if (MemoryArea.CompareArrays(ht[h].htPat, 0, pat, PATLEN))
+            if (MemoryArea.CompareArrays(ht![h].htPat!, 0, pat, PATLEN))
             {
 #if NOT_YET
                 /* We have a match. Save the name, if not already set */
@@ -678,7 +672,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
 
         void STATE_checkStartup(Program program, ProcessorState state)
         {
-            Address addrEntry;
+            Address? addrEntry;
             /* This function checks the startup code for various compilers' way of
             loading DS. If found, it sets DS. This may not be needed in the future if
             pushing and popping of registers is implemented.
@@ -711,7 +705,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
                 init = (uint)(addrNew - image.BaseAddress);
                 if (locatePattern(image.Bytes, init, init + 26, pattBorl4Init, out i))
                 {
-                    setState("ds", image.ReadLeUInt16(i + 1));
+                    setState(state, "ds", image.ReadLeUInt16(i + 1));
                     Debug.Print("Borland Pascal v4 detected\n");
                     chVendor = 't';                     /* Trubo */
                     chModel = 'p';						/* Pascal */
@@ -722,7 +716,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
                 }
                 else if (locatePattern(image.Bytes, init, init + 26, pattBorl5Init, out i))
                 {
-                    setState("ds", image.ReadLeUInt16(i + 1));
+                    setState(state, "ds", image.ReadLeUInt16(i + 1));
                     Debug.Print("Borland Pascal v5.0 detected");
                     chVendor = 't';                     /* Trubo */
                     chModel = 'p';                      /* Pascal */
@@ -732,7 +726,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
                 }
                 else if (locatePattern(image.Bytes, init, init + 26, pattBorl7Init, out i))
                 {
-                    setState("ds", image.ReadLeUInt16(i + 1));
+                    setState(state, "ds", image.ReadLeUInt16(i + 1));
                     Debug.Print("Borland Pascal v7 detected");
                     chVendor = 't';                     /* Trubo */
                     chModel = 'p';                      /* Pascal */
@@ -805,7 +799,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             {
                 /* Yes, this is Microsoft startup code. The DS is sitting right here
                     in the next 2 bytes */
-                setState("ds", image.ReadLeUInt16((uint)(startOff + pattMsC5Start.Length)));
+                setState(state, "ds", image.ReadLeUInt16((uint)(startOff + pattMsC5Start.Length)));
                 chVendor = 'm';                     /* Microsoft compiler */
                 chVersion = '5';                    /* Version 5 */
                 Debug.Print("MSC 5 detected");
@@ -814,7 +808,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             /* The C8 startup pattern is different from C5's */
             else if (MemoryArea.CompareArrays(image.Bytes, (int)startOff, pattMsC8Start, pattMsC8Start.Length))
             {
-                setState("ds", image.ReadLeUInt16((uint)(startOff + pattMsC8Start.Length)));
+                setState(state, "ds", image.ReadLeUInt16((uint)(startOff + pattMsC8Start.Length)));
                 chVendor = 'm';                     /* Microsoft compiler */
                 chVersion = '8';                    /* Version 8 */
                 Debug.Print("MSC 8 detected");
@@ -836,7 +830,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
                                    out i))
             {
                 /* Borland startup. DS is at the second uint8_t (offset 1) */
-                setState("ds", image.ReadLeUInt16(i + 1));
+                setState(state, "ds", image.ReadLeUInt16(i + 1));
                 Debug.Print("Borland v2 detected\n");
                 chVendor = 'b';                     /* Borland compiler */
                 chVersion = '2';                    /* Version 2 */
@@ -846,7 +840,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
                                    out i))
             {
                 /* Borland startup. DS is at the second uint8_t (offset 1) */
-                setState("ds", image.ReadLeUInt16(i + 1));
+                setState(state, "ds", image.ReadLeUInt16(i + 1));
                 Debug.Print("Borland v3 detected\n");
                 chVendor = 'b';                     /* Borland compiler */
                 chVersion = '3';                    /* Version 3 */
@@ -957,7 +951,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             }
         }
 
-        void setState(string regName, ushort val)
+        void setState(ProcessorState state, string regName, ushort val)
         {
             state.SetRegister(
                 program.Architecture.GetRegister(regName),
@@ -978,7 +972,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             while (mn < mx)
             {
                 i = mn + (mx - mn) / 2;
-                res = pFunc[i].name.CompareTo(name);
+                res = pFunc![i].name!.CompareTo(name);
                 if (res == 0)
                 {
                     return i;            /* Found! */
@@ -997,7 +991,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             }
 
             /* Still could be the case that mn == mx == required record */
-            res = string.Compare(pFunc[mn].name, name);
+            res = string.Compare(pFunc![mn].name, name);
             if (res == 0)
             {
                 return mn;            /* Found! */

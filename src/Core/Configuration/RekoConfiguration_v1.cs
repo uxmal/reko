@@ -47,34 +47,34 @@ namespace Reko.Core.Configuration
     {
         [XmlArray(ElementName = "Loaders")]
         [XmlArrayItem(ElementName = "Loader")]
-        public RekoLoader[] Loaders;
+        public RekoLoader[]? Loaders;
 
         [XmlArray("RawFiles")]
         [XmlArrayItem("RawFile")]
-        public RawFile_v1[] RawFiles;
+        public RawFile_v1[]? RawFiles;
 
         [XmlArray("SignatureFiles")]
         [XmlArrayItem("SignatureFile")]
-        public SignatureFile_v1[] SignatureFiles;
+        public SignatureFile_v1[]? SignatureFiles;
 
         [XmlArray("Environments")]
         [XmlArrayItem("Environment")]
-        public Environment_v1[] Environments;
+        public Environment_v1[]? Environments;
 
         [XmlArray("Architectures")]
         [XmlArrayItem("Architecture")]
-        public Architecture_v1[] Architectures;
+        public Architecture_v1[]? Architectures;
 
         [XmlArray("Assemblers")]
         [XmlArrayItem("Assembler")]
-        public Assembler_v1[] Assemblers;
+        public Assembler_v1[]? Assemblers;
 
         [XmlArray("SymbolSources")]
         [XmlArrayItem("SymbolSource")]
-        public SymbolSource_v1[] SymbolSources;
+        public SymbolSource_v1[]? SymbolSources;
 
         [XmlElement("UiPreferences")]
-        public RekoUiPreferences UiPreferences;
+        public RekoUiPreferences? UiPreferences;
     }
 
     [Serializable]
@@ -82,53 +82,53 @@ namespace Reko.Core.Configuration
     public partial class Architecture_v1
     {
         [XmlAttribute("Name")]
-        public string Name;
+        public string? Name;
 
         [XmlAttribute("Description")]
-        public string Description;
+        public string? Description;
 
         [XmlAttribute("Type")]
-        public string Type;
+        public string? Type;
 
         [XmlArray("Options")]
         [XmlArrayItem("Option")]
-        public PropertyOption_v1[] Options;
+        public PropertyOption_v1[]? Options;
     }
 
     [Serializable]
     public partial class PropertyOption_v1
     {
         [XmlAttribute("Name")]
-        public string Name;
+        public string? Name;
 
         [XmlAttribute("Text")]
-        public string Text;
+        public string? Text;
 
         [XmlAttribute("Description")]
-        public string Description;
+        public string? Description;
 
         [XmlAttribute("Type")]
-        public string TypeName;
+        public string? TypeName;
 
         [XmlAttribute("Required")]
         [DefaultValue(false)]
         public bool Required;
 
         [XmlElement("Choice", typeof(ListOption_v1))]
-        public ListOption_v1 [] Choices;
+        public ListOption_v1[]? Choices;
     }
 
     public class ListOption_v1
     {
         [XmlAttribute("Text")]
-        public string Text;
+        public string? Text;
 
         [XmlAttribute("Value")]
-        public string Value;
+        public string? Value;
 
         public override string ToString()
         {
-            return Text;
+            return Text ?? "";
         }
     }
 
@@ -136,29 +136,29 @@ namespace Reko.Core.Configuration
     public partial class Assembler_v1
     {
         [XmlAttribute("Name")]
-        public string Name;
+        public string? Name;
 
         [XmlAttribute("Description")]
-        public string Description;
+        public string? Description;
 
         [XmlAttribute("Type")]
-        public string Type;
+        public string? Type;
     }
 
     [Serializable]
     public partial class Environment_v1
     {
         [XmlAttribute("Name")]
-        public string Name;
+        public string? Name;
 
         [XmlAttribute("Description")]
-        public string Description;
+        public string? Description;
 
         [XmlAttribute("Type")]
-        public string Type;
+        public string? Type;
 
         [XmlAttribute("MemoryMap")]
-        public string MemoryMap;
+        public string? MemoryMap;
 
         [XmlAttribute("CaseInsensitive")]
         [DefaultValue(false)]
@@ -166,83 +166,83 @@ namespace Reko.Core.Configuration
 
         [XmlArray("TypeLibraries")]
         [XmlArrayItem("TypeLibrary")]
-        public TypeLibraryReference_v1[] TypeLibraries;
+        public TypeLibraryReference_v1[]? TypeLibraries;
 
         [XmlArray("Characteristics")]
         [XmlArrayItem("TypeLibrary")]
-        public TypeLibraryReference_v1[] Characteristics;
+        public TypeLibraryReference_v1[]? Characteristics;
 
         [XmlElement("Heuristics")]
-        public PlatformHeuristics_v1 Heuristics;
+        public PlatformHeuristics_v1? Heuristics;
 
         [XmlArray("SignatureFiles")]
         [XmlArrayItem("SignatureFile")]
-        public SignatureFile_v1[] SignatureFiles;
+        public SignatureFile_v1[]? SignatureFiles;
 
         [XmlArray("Architectures")]
         [XmlArrayItem("Architecture")]
-        public PlatformArchitecture_v1[] Architectures;
+        public PlatformArchitecture_v1[]? Architectures;
 
         // Collect any other platform-specific elements in "Options"
         [XmlAnyElement]
-        public XmlElement[] Options;
+        public XmlElement[]? Options;
     }
 
     [Serializable]
     public partial class RekoLoader
     {
         [XmlAttribute("MagicNumber")]
-        public string MagicNumber;
+        public string? MagicNumber;
 
         [XmlAttribute("Type")]
-        public string Type;
+        public string? Type;
 
         [XmlAttribute("Offset")]
-        public string Offset;
+        public string? Offset;
 
         [XmlAttribute("Extension")]
-        public string Extension;
+        public string? Extension;
 
         [XmlAttribute("Label")]
-        public string Label;
+        public string? Label;
 
         [XmlAttribute("Argument")]
-        public string Argument;
+        public string? Argument;
     }
 
     [Serializable]
     public partial class RawFile_v1
     {
         [XmlElement("Entry")]
-        public EntryPoint_v1 Entry;
+        public EntryPoint_v1? Entry;
 
         [XmlAttribute("Name")]
-        public string Name;
+        public string? Name;
 
         [XmlAttribute("Description")]
-        public string Description;
+        public string? Description;
 
         [XmlAttribute("Arch")]
-        public string Architecture;
+        public string? Architecture;
 
         [XmlAttribute("Env")]
-        public string Environment;
+        public string? Environment;
 
         [XmlAttribute("Base")]
-        public string Base;
+        public string? Base;
 
         [XmlAttribute("Loader")]
-        public string LoaderType;
+        public string? LoaderType;
     }
 
     [Serializable]
     public partial class EntryPoint_v1
     {
         [XmlAttribute("Addr")]
-        public string Address;
+        public string? Address;
 
         [XmlAttribute("Name")]
-        public string Name;
+        public string? Name;
 
         [XmlAttribute("Follow")]
         [DefaultValue(false)]
@@ -253,72 +253,72 @@ namespace Reko.Core.Configuration
     public partial class SignatureFile_v1
     {
         [XmlAttribute("Filename")]
-        public string Filename;
+        public string? Filename;
 
         [XmlAttribute("Label")]
-        public string Label;
+        public string? Label;
 
         [XmlAttribute("Type")]
-        public string Type;
+        public string? Type;
     }
 
     public partial class RekoUiPreferences
     {
         [XmlElement("Style")]
-        public StyleDefinition_v1[] Styles;
+        public StyleDefinition_v1[]? Styles;
     }
 
     [Serializable]
     public partial class StyleDefinition_v1
     {
         [XmlAttribute("Name")]
-        public string Name;
+        public string? Name;
 
         [XmlAttribute("Font")]
-        public string Font;
+        public string? Font;
 
         [XmlAttribute("ForeColor")]
-        public string ForeColor;
+        public string? ForeColor;
 
         [XmlAttribute("BackColor")]
-        public string BackColor;
+        public string? BackColor;
 
         [XmlAttribute("Width")]
-        public string Width;
+        public string? Width;
 
         [XmlAttribute("Cursor")]
-        public string Cursor;
+        public string? Cursor;
 
         [XmlAttribute("TextAlign")]
-        public string TextAlign;
+        public string? TextAlign;
 
         [XmlAttribute("PaddingTop")]
-        public string PaddingTop;
+        public string? PaddingTop;
 
         [XmlAttribute("PaddingBottom")]
-        public string PaddingBottom;
+        public string? PaddingBottom;
 
         [XmlAttribute("PaddingLeft")]
-        public string PaddingLeft;
+        public string? PaddingLeft;
 
         [XmlAttribute("PaddingRight")]
-        public string PaddingRight;
+        public string? PaddingRight;
     }
 
     [Serializable]
     public partial class TypeLibraryReference_v1
     {
         [XmlAttribute("Name")]
-        public string Name;
+        public string? Name;
 
         [XmlAttribute("Arch")]
-        public string Arch;
+        public string? Arch;
 
         [XmlAttribute("Loader")]
-        public string Loader;
+        public string? Loader;
 
         [XmlAttribute("Module")]
-        public string Module;
+        public string? Module;
     }
 
     [Serializable]
@@ -326,45 +326,45 @@ namespace Reko.Core.Configuration
     {
         [XmlArray("ProcedurePrologs")]
         [XmlArrayItem("Pattern")]
-        public BytePattern_v1[] ProcedurePrologs;
+        public BytePattern_v1[]? ProcedurePrologs;
     }
 
     [Serializable]
     public class PlatformArchitecture_v1
     {
         [XmlAttribute("name")]
-        public string Name;
+        public string? Name;
 
         [XmlElement("TrashedRegisters")]
-        public string TrashedRegisters;
+        public string? TrashedRegisters;
 
         [XmlArray("TypeLibraries")]
         [XmlArrayItem("TypeLibrary")]
-        public TypeLibraryReference_v1[] TypeLibraries;
+        public TypeLibraryReference_v1[]? TypeLibraries;
     }
 
     public class BytePattern_v1
     {
         [XmlElement("Bytes")]
-        public string Bytes;
+        public string? Bytes;
 
         [XmlElement("Mask")]
-        public string Mask;
+        public string? Mask;
     }
 
     public class SymbolSource_v1
     {
         [XmlAttribute("Name")]
-        public string Name;
+        public string? Name;
 
         [XmlAttribute("Description")]
-        public string Description;
+        public string? Description;
 
         [XmlAttribute("Type")]
-        public string Type;
+        public string? Type;
 
         [XmlAttribute("Extension")]
-        public string Extension;
+        public string? Extension;
     }
 }
  

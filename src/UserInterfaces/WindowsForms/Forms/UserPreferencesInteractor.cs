@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -316,8 +316,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 image.BaseAddress,
                 new ImageSegment("code", image,  AccessMode.ReadWriteExecute));
             var imageMap = segmentMap.CreateImageMap();
-            imageMap.AddItemWithSize(addrCode, new ImageMapBlock { Address = addrCode, Size = 0x0E });
-            imageMap.AddItemWithSize(addrData, new ImageMapItem { Address = addrData, DataType = PrimitiveType.Byte, Size = 0x0E });
+            imageMap.AddItemWithSize(addrCode, new ImageMapBlock(addrCode) { Size = 0x0E });
+            imageMap.AddItemWithSize(addrData, new ImageMapItem(addrData) { DataType = PrimitiveType.Byte, Size = 0x0E });
             var arch = dlg.Services.RequireService<IConfigurationService>().GetArchitecture("x86-protected-32");
             this.program = new Program
             {

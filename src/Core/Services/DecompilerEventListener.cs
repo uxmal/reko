@@ -37,7 +37,7 @@ namespace Reko.Core.Services
         ICodeLocation CreateProcedureNavigator(Program program, Procedure proc);
         ICodeLocation CreateBlockNavigator(Program program, Block block);
         ICodeLocation CreateStatementNavigator(Program program, Statement stm);
-        ICodeLocation CreateJumpTableNavigator(Program program, IProcessorArchitecture arch, Address addrIndirectJump, Address addrVector, int stride);
+        ICodeLocation CreateJumpTableNavigator(Program program, IProcessorArchitecture arch, Address addrIndirectJump, Address? addrVector, int stride);
         void Info(ICodeLocation location, string message);
         void Info(ICodeLocation location, string message, params object[] args);
         void Warn(ICodeLocation location, string message);
@@ -55,9 +55,7 @@ namespace Reko.Core.Services
 
     public class NullDecompilerEventListener : DecompilerEventListener
     {
-        private static NullDecompilerEventListener e = new NullDecompilerEventListener();
-
-        public static DecompilerEventListener Instance { get { return e; } }
+        public static DecompilerEventListener Instance { get; } = new NullDecompilerEventListener();
 
         #region DecompilerEventListener Members
 
@@ -146,7 +144,7 @@ namespace Reko.Core.Services
             return new NullCodeLocation(stm.LinearAddress.ToString());
         }
 
-        public ICodeLocation CreateJumpTableNavigator(Program _, IProcessorArchitecture arch, Address addrIndirectJump, Address addrVector, int stride)
+        public ICodeLocation CreateJumpTableNavigator(Program _, IProcessorArchitecture arch, Address addrIndirectJump, Address? addrVector, int stride)
         {
             return new NullCodeLocation(addrIndirectJump.ToString());
         }

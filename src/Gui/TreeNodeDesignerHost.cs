@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Gui.Controls;
 using System;
 using System.Collections;
@@ -45,7 +47,7 @@ namespace Reko.Gui
             this.mpitemToDesigner = new Dictionary<object, TreeNodeDesigner>();
         }
 
-        public object SelectedObject
+        public object? SelectedObject
         {
             get { return GetSelectedObject(); }
             set { SetSelectedObject(value); }
@@ -59,7 +61,7 @@ namespace Reko.Gui
         {
             var nodes = components
                 .Cast<object>()
-                .Select(o => CreateTreeNode(o, CreateDesigner(o), null));
+                .Select(o => CreateTreeNode(o, CreateDesigner(o)!, null));
             tree.Nodes.AddRange(nodes);
         }
 
@@ -70,7 +72,7 @@ namespace Reko.Gui
 
         public void AddComponents(object parent, IEnumerable components)
         {
-            TreeNodeDesigner parentDes = GetDesigner(parent);
+            TreeNodeDesigner? parentDes = GetDesigner(parent);
             if (parentDes == null)
             {
                 Debug.Print("No designer for parent object {0}", parent ?? "(null)");
@@ -79,8 +81,8 @@ namespace Reko.Gui
             }
             var nodes = components
                 .Cast<object>()
-                .Select(o => CreateTreeNode(o, CreateDesigner(o), parentDes));
-            parentDes.TreeNode.Nodes.AddRange(nodes);
+                .Select(o => CreateTreeNode(o, CreateDesigner(o)!, parentDes));
+            parentDes.TreeNode!.Nodes.AddRange(nodes);
         }
 
         public virtual void Clear()
@@ -89,7 +91,7 @@ namespace Reko.Gui
             this.mpitemToDesigner = new Dictionary<object, TreeNodeDesigner>();
         }
 
-        public TreeNodeDesigner GetDesigner(object o)
+        public TreeNodeDesigner? GetDesigner(object o)
         {
             if (o == null)
                 return null;
@@ -105,23 +107,22 @@ namespace Reko.Gui
             var des = GetDesigner(component);
             if (des == null)
                 return;
-            mpitemToDesigner.Remove(des.Component);
-            des.TreeNode.Remove();
+            mpitemToDesigner.Remove(des.Component!);
+            des.TreeNode!.Remove();
         }
 
-        private TreeNodeDesigner CreateDesigner(object o)
+        private TreeNodeDesigner? CreateDesigner(object? o)
         {
             if (o == null)
                 return null;
-            TreeNodeDesigner des = o as TreeNodeDesigner;
-            if (des != null)
+            if (o is TreeNodeDesigner des)
             {
                 if (des.Component != null)
                 {
                     o = des.Component;
                 }
             }
-            if (des == null)
+            else
             {
                 var attr = o.GetType().GetCustomAttributes(typeof(DesignerAttribute), true);
                 if (attr.Length > 0)
@@ -143,7 +144,7 @@ namespace Reko.Gui
             return des;
         }
 
-        private ITreeNode CreateTreeNode(object o, TreeNodeDesigner des, TreeNodeDesigner parentDes)
+        private ITreeNode CreateTreeNode(object o, TreeNodeDesigner des, TreeNodeDesigner? parentDes)
         {
             var node = tree.CreateNode();
             node.Tag = des;
@@ -179,14 +180,14 @@ namespace Reko.Gui
             des?.OnExpanded();
         }
 
-        public TreeNodeDesigner GetSelectedDesigner()
+        public TreeNodeDesigner? GetSelectedDesigner()
         {
             if (tree.SelectedNode == null)
                 return null;
             return (TreeNodeDesigner) tree.SelectedNode.Tag;
         }
 
-        private object GetSelectedObject()
+        private object? GetSelectedObject()
         {
             var des = GetSelectedDesigner();
             if (des == null)
@@ -194,7 +195,7 @@ namespace Reko.Gui
             return des.Component;
         }
 
-        private void SetSelectedObject(object component)
+        private void SetSelectedObject(object? component)
         {
             if (component == null)
                 return;

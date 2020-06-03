@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -33,9 +33,9 @@ namespace Reko.Core.Serialization
         public const string MsbTermination =  "m";
 
         [XmlAttribute("term")]
-        public string Termination;
+        public string? Termination;
 
-        public SerializedType CharType;
+        public SerializedType? CharType;
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -109,8 +109,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public Block BlockOf(string label, bool defer)
         {
-            Block b;
-            if (deferredBlocks.TryGetValue(label, out b))
+            if (deferredBlocks.TryGetValue(label, out Block b))
             {
                 if (!defer)
                 {
@@ -121,7 +120,7 @@ namespace Reko.ImageLoaders.LLVM
             }
             if (!labelMap.TryGetValue(label, out b))
             {
-                b = proc.AddBlock("l" + label);
+                b = proc.AddBlock(null, "l" + label);
                 if (defer)
                     deferredBlocks.Add(label, b);
                 else
