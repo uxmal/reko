@@ -85,7 +85,7 @@ namespace Reko.Core.Types
             return tv;
         }
 
-        public void SetTypeVariableExpression(TypeVariable typeVariable, BinaryExpression binExp)
+        public void SetTypeVariableExpression(TypeVariable typeVariable, Expression binExp)
         {
             tvSources[typeVariable] = binExp;
         }

@@ -34,6 +34,10 @@ namespace Reko.Typing
     /// <summary>
     /// Rewrites all the expressions in the program based on the type information provided.
     /// </summary>
+    /// <remarks>
+    /// It's important that all Visit*(subclass-of-expression) methods preserve the 
+    /// <see cref="Expression.TypeVariable"/> property when new expressions are created.
+    /// </remarks>
     public class TypedExpressionRewriter : InstructionTransformer
     {
         private readonly Program program;
@@ -357,6 +361,14 @@ namespace Reko.Typing
             if (compTypes.Compare(dtSrc, dtDst) == 0)
                 return true;
             return unifier.AreCompatible(dtSrc, dtDst);
+        }
+
+        public override Expression VisitUnaryExpression(UnaryExpression unary)
+        {
+            var uNew = base.VisitUnaryExpression(unary);
+            uNew.TypeVariable = unary.TypeVariable;
+            program.TypeStore.SetTypeVariableExpression(unary.TypeVariable!, uNew);
+            return uNew;
         }
     }
 }
