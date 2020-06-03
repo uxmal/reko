@@ -64,7 +64,7 @@ namespace Reko.Core
 
         public abstract OutArgument BindOutArg(Identifier id);
         public abstract Expression? BindReturnValue(Identifier id);
-        public abstract Expression Bind(Identifier id);
+        public abstract Expression? Bind(Identifier id);
 
         /// <summary>
         /// Creates an instruction:
@@ -141,7 +141,10 @@ namespace Reko.Core
                 else
                 {
                     var actualArg = Bind(formalArg);
-                    actuals.Add(actualArg!);
+                    //$REVIEW: what does null mean here? Forcing an error here generates
+                    // regressions in the unit tests.
+                    if (!(actualArg is null))
+                        actuals.Add(actualArg);
                 }
             }
             if (isVariadic)

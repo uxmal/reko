@@ -32,7 +32,7 @@ namespace Reko.Analysis
     /// <summary>
     /// Builds an application from a call instruction.
     /// </summary>
-    public class CallApplicationBuilder : ApplicationBuilder, StorageVisitor<Expression>
+    public class CallApplicationBuilder : ApplicationBuilder, StorageVisitor<Expression?>
     {
         private readonly SsaState ssaCaller;
         private readonly Statement stmCall;
@@ -41,7 +41,7 @@ namespace Reko.Analysis
         private readonly Dictionary<Storage, CallBinding> defs;
         private readonly Dictionary<Storage, CallBinding> uses;
         private Dictionary<Storage, CallBinding>? map; //$TODO: to make this non-nullable, change
-                                    // to StorageVisitor<Expression, Dictionary<Storage, CallBinding>
+                                                       // to StorageVisitor<Expression, Dictionary<Storage, CallBinding>
         private bool bindUses;
 
         public CallApplicationBuilder(SsaState ssaCaller, Statement stmCall, CallInstruction call, Expression callee) : base(call.CallSite, callee)
@@ -54,7 +54,7 @@ namespace Reko.Analysis
             this.stackDepthOnEntry = site.StackDepthOnEntry;
         }
 
-        public override Expression Bind(Identifier id)
+        public override Expression? Bind(Identifier id)
         {
             return WithUses(id.Storage);
         }
@@ -70,19 +70,19 @@ namespace Reko.Analysis
             return WithDefinitions(id.Storage);
         }
 
-        private Expression WithUses(Storage stg)
+        private Expression? WithUses(Storage stg)
         {
             this.bindUses = true;
             return With(uses, stg);
         }
 
-        private Expression WithDefinitions(Storage stg)
+        private Expression? WithDefinitions(Storage stg)
         {
             this.bindUses = false;
             return With(defs, stg);
         }
 
-        private Expression With(Dictionary<Storage, CallBinding> map, Storage stg)
+        private Expression? With(Dictionary<Storage, CallBinding> map, Storage stg)
         {
             this.map = map;
             var exp = stg.Accept(this);
@@ -90,15 +90,15 @@ namespace Reko.Analysis
             return exp;
         }
 
-        public Expression VisitFlagGroupStorage(FlagGroupStorage grf)
+        public Expression? VisitFlagGroupStorage(FlagGroupStorage grf)
         {
             if (!map!.TryGetValue(grf, out var cb))
-                return FallbackArgument($"grf{grf.FlagGroupBits:X4}", grf.DataType);
+                return null;
             else
                 return cb.Expression;
         }
 
-        public Expression VisitFpuStackStorage(FpuStackStorage fpu)
+        public Expression? VisitFpuStackStorage(FpuStackStorage fpu)
         {
             foreach (var de in this.map
               .Where(d => d.Value.Storage is FpuStackStorage))
@@ -107,7 +107,7 @@ namespace Reko.Analysis
                     return de.Value.Expression;
             }
             if (!bindUses)
-                return FallbackArgument($"fpu{fpu.FpuStackOffset}", fpu.DataType);
+                return null;
             throw new NotImplementedException(string.Format("Offsets not matching? SP({0})", fpu.FpuStackOffset));
         }
 
@@ -131,7 +131,7 @@ namespace Reko.Analysis
             }
         }
 
-        public Expression VisitRegisterStorage(RegisterStorage reg)
+        public Expression? VisitRegisterStorage(RegisterStorage reg)
         {
             // If the architecture has no subregisters, this test will
             // be true.
@@ -150,7 +150,7 @@ namespace Reko.Analysis
             }
             if (bindUses)
                 return EnsureRegister(reg);
-            return FallbackArgument(reg.Name, reg.DataType);
+            return null;
         }
 
         public Expression VisitSequenceStorage(SequenceStorage seq)
