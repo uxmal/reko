@@ -58,10 +58,8 @@ namespace Reko.Core
             this.ensureVariables = ensureVariables;
         }
 
-        public override Expression? Bind(Identifier id)
+        public override Expression Bind(Identifier id)
         {
-            if (id == null)
-                return null;
             return id.Storage.Accept(this);
         }
 

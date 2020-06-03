@@ -251,9 +251,11 @@ namespace Reko.Core.CLanguage
                 if (attr.Tokens[0].Type == CTokenType.Register &&
                     attr.Tokens[1].Type == CTokenType.Comma)
                 {
-                    // We have a reko::arg(register, prefix; get the register.
-                    if (attr.Tokens.Count < 1 || attr.Tokens[2].Type != CTokenType.StringLiteral)
-                        throw new FormatException("[[reko::arg(register,<name>)]] attribute expects a register name.");
+                    // We have a reko::arg(register, value); get the register.
+                    if (attr.Tokens.Count < 1 ||
+                        attr.Tokens[2].Value is null ||
+                        attr.Tokens[2].Type != CTokenType.StringLiteral)
+                        throw new FormatException("[[reko::arg(register,<name>)]] attribute expects a register name and a value.");
                     kind = new Register_v1 { Name = (string)attr.Tokens[2].Value! };
                 } else if (attr.Tokens[0].Type == CTokenType.Id &&
                            (string)attr.Tokens[0].Value! == "fpu")
