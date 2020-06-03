@@ -100,6 +100,7 @@
         <File Source="$(var.MzExe.TargetPath)" />
         <File Source="$(var.Nro.TargetPath)" />
         <File Source="$(var.OdbgScript.TargetPath)" />
+        <File Source="$(var.Srec.TargetPath)" />
         <File Source="$(var.VmsExe.TargetPath)" />
         <File Source="$(var.Xbe.TargetPath)" />
         <File Source="$(var.Xex.TargetPath)" />
@@ -169,6 +170,7 @@
         <File Source="$(var.Avr.TargetPath)" />
         <File Source="$(var.Blackfin.TargetPath)" />
         <File Source="$(var.Cray.TargetPath)" />
+        <File Source="$(var.H8.TargetPath)" />
         <File Source="$(var.i8051.TargetPath)" />
         <File Source="$(var.LatticeMico.TargetPath)" />
         <File Source="$(var.M6800.TargetPath)" />
