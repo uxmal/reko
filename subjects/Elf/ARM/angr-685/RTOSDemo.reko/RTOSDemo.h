@@ -8469,7 +8469,7 @@ T_1498: (in 1<32> << (r4_12->ptr0004)->dw004C : word32)
   Class: Eq_1498
   DataType: ui32
   OrigDataType: ui32
-T_1499: (in ~(1<32> << Mem11[Mem11[r4_12 + 4<i32>:word32] + 76<i32>:word32]) : word32)
+T_1499: (in ~(1<32> << (r4_12->ptr0004)->dw004C) : word32)
   Class: Eq_1499
   DataType: ui32
   OrigDataType: ui32

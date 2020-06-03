@@ -4538,7 +4538,7 @@ T_1003: (in eax_43->dw0024 >> 0x1F<32> : word32)
   Class: Eq_1003
   DataType: uint32
   OrigDataType: uint32
-T_1004: (in ~(Mem42[eax_43 + 0x24<32>:word32] >>u 0x1F<32>) : word32)
+T_1004: (in ~(eax_43->dw0024 >> 0x1F<32>) : word32)
   Class: Eq_1004
   DataType: uint32
   OrigDataType: uint32

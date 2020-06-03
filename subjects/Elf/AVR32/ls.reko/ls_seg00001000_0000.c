@@ -16680,7 +16680,7 @@ l0000F300:
 			Eq_n r11_n;
 			if (r12_n <= 0x00)
 			{
-				Eq_n r12_n = __satu(-r12_n + 0x01, 6);
+				Eq_n r12_n = __satu((word32) -r12_n + 1, 6);
 				if (r12_n < 0x20)
 				{
 					word32 r8_n = 0x20 - r12_n;
@@ -16864,7 +16864,7 @@ Eq_n __avr32_f64_sub(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, Eq_n lr, struct Eq_n 
 		if (r7_n <= 0x00)
 		{
 l0000F5C2:
-			Eq_n r7_n = __satu(-r7_n + 0x01, 6);
+			Eq_n r7_n = __satu((word32) -r7_n + 1, 6);
 			if (r7_n < 0x20)
 			{
 				r8_n = 0x20 - r7_n;

@@ -1118,7 +1118,7 @@ T_42: (in c : Eq_8)
 T_43: (in aOut : Eq_43)
   Class: Eq_43
   DataType: Eq_43
-  OrigDataType: byte
+  OrigDataType: ptr16
 T_44: (in 0x1657<16> : word16)
   Class: Eq_44
   DataType: (ptr16 Eq_8)
@@ -1235,7 +1235,7 @@ T_72: (in 0<8> - (globals->t1658 > 0x5A<8> || globals->t1658 < 0x41<8>) : byte)
   Class: Eq_72
   DataType: byte
   OrigDataType: byte
-T_73: (in ~(0<8> - (Mem5[0x1658<16>:byte] >u 0x5A<8> || Mem5[0x1658<16>:byte] <u 0x41<8>)) : byte)
+T_73: (in ~(0<8> - (globals->t1658 > 0x5A<8> || globals->t1658 < 0x41<8>)) : byte)
   Class: Eq_62
   DataType: byte
   OrigDataType: byte
@@ -6155,7 +6155,7 @@ T_1302: (in 0<8> - (a_42 < 0x30<8>) : byte)
   Class: Eq_1302
   DataType: byte
   OrigDataType: byte
-T_1303: (in ~(0<8> - (a_42 <u 0x30<8>)) : byte)
+T_1303: (in ~(0<8> - (a_42 < 0x30<8>)) : byte)
   Class: Eq_1303
   DataType: byte
   OrigDataType: byte
@@ -7219,7 +7219,7 @@ T_1568: (in 0<8> - (globals->t1697 > 7<8>) : byte)
   Class: Eq_1568
   DataType: byte
   OrigDataType: byte
-T_1569: (in ~(0<8> - (Mem112[0x1697<16>:byte] >u 7<8>)) : byte)
+T_1569: (in ~(0<8> - (globals->t1697 > 7<8>)) : byte)
   Class: Eq_1569
   DataType: byte
   OrigDataType: byte

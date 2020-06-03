@@ -4461,7 +4461,7 @@ T_836: (in Mem233[a7_1886 + 44<i32>:word32] : word32)
   Class: Eq_836
   DataType: word32
   OrigDataType: word32
-T_837: (in -Mem233[a7_1886 + 44<i32>:word32] : word32)
+T_837: (in -a7_1886[11<i32>] : word32)
   Class: Eq_772
   DataType: (ptr32 word32)
   OrigDataType: word32

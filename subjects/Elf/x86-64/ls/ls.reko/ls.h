@@ -24925,7 +24925,7 @@ T_4670: (in SLICE((uint64) SLICE(rcx_31, word32, 0), word32, 0) : word32)
   Class: Eq_4670
   DataType: word32
   OrigDataType: word32
-T_4671: (in ~SLICE((uint64) SLICE(rcx_31, word32, 0), word32, 0) : word32)
+T_4671: (in ~(word32) (uint64) (word32) rcx_31 : word32)
   Class: Eq_4671
   DataType: word32
   OrigDataType: word32
@@ -25945,7 +25945,7 @@ T_4925: (in SLICE((uint64) (0<32> - SLICE(cond(SLICE(rsi_90, word32, 0) - 1<32>)
   Class: Eq_4925
   DataType: word32
   OrigDataType: word32
-T_4926: (in ~SLICE((uint64) (0<32> - SLICE(cond(SLICE(rsi_90, word32, 0) - 1<32>), bool, 1)), word32, 0) : word32)
+T_4926: (in ~(word32) (uint64) (0<32> - SLICE(cond((word32) rsi_90 - 1<32>), bool, 1)) : word32)
   Class: Eq_4926
   DataType: word32
   OrigDataType: word32
@@ -28433,7 +28433,7 @@ T_5547: (in SLICE(rcx_68, word32, 0) : word32)
   Class: Eq_5547
   DataType: word32
   OrigDataType: word32
-T_5548: (in ~SLICE(rcx_68, word32, 0) : word32)
+T_5548: (in ~(word32) rcx_68 : word32)
   Class: Eq_5548
   DataType: word32
   OrigDataType: word32
@@ -32725,7 +32725,7 @@ T_6620: (in SLICE(rcx_146, word32, 0) : word32)
   Class: Eq_6620
   DataType: word32
   OrigDataType: word32
-T_6621: (in ~SLICE(rcx_146, word32, 0) : word32)
+T_6621: (in ~(word32) rcx_146 : word32)
   Class: Eq_6621
   DataType: word32
   OrigDataType: word32
@@ -41753,7 +41753,7 @@ T_8877: (in SLICE(rcx_1611, word32, 0) : word32)
   Class: Eq_8877
   DataType: word32
   OrigDataType: word32
-T_8878: (in ~SLICE(rcx_1611, word32, 0) : word32)
+T_8878: (in ~(word32) rcx_1611 : word32)
   Class: Eq_8878
   DataType: word32
   OrigDataType: word32
@@ -55257,7 +55257,7 @@ T_12253: (in SLICE((uint64) (0<32> - C_135), word32, 0) : word32)
   Class: Eq_12253
   DataType: word32
   OrigDataType: word32
-T_12254: (in ~SLICE((uint64) (0<32> - C_135), word32, 0) : word32)
+T_12254: (in ~(word32) (uint64) (0<32> - C_135) : word32)
   Class: Eq_12254
   DataType: word32
   OrigDataType: word32
@@ -55633,7 +55633,7 @@ T_12347: (in SLICE((uint64) (0<32> - SLICE(cond(r12d_1398 - ecx_231), bool, 1)),
   Class: Eq_12347
   DataType: word32
   OrigDataType: word32
-T_12348: (in ~SLICE((uint64) (0<32> - SLICE(cond(r12d_1398 - ecx_231), bool, 1)), word32, 0) : word32)
+T_12348: (in ~(word32) (uint64) (0<32> - SLICE(cond(r12d_1398 - ecx_231), bool, 1)) : word32)
   Class: Eq_12348
   DataType: word32
   OrigDataType: word32
@@ -74697,7 +74697,7 @@ T_17113: (in SLICE(rcx_191, word32, 0) : word32)
   Class: Eq_17113
   DataType: word32
   OrigDataType: word32
-T_17114: (in ~SLICE(rcx_191, word32, 0) : word32)
+T_17114: (in ~(word32) rcx_191 : word32)
   Class: Eq_17114
   DataType: word32
   OrigDataType: word32
@@ -74945,7 +74945,7 @@ T_17175: (in SLICE(rcx_234, word32, 0) : word32)
   Class: Eq_17175
   DataType: word32
   OrigDataType: word32
-T_17176: (in ~SLICE(rcx_234, word32, 0) : word32)
+T_17176: (in ~(word32) rcx_234 : word32)
   Class: Eq_17176
   DataType: word32
   OrigDataType: word32

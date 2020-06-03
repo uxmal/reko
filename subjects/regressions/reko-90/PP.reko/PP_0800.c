@@ -556,7 +556,7 @@ Eq_n fn0800-0541(Eq_n di, Eq_n ds, ptr16 & bpOut, union Eq_n & dsOut)
 						if (ds->*di != 0x00)
 							break;
 					}
-					if (~cx_n + 17020 != 0x5C)
+					if ((ds->*~cx_n).b427C != 0x5C)
 					{
 						word16 di_n = 17022;
 						word16 si_n = 0x0859;
@@ -615,7 +615,7 @@ Eq_n fn0800-0541(Eq_n di, Eq_n ds, ptr16 & bpOut, union Eq_n & dsOut)
 						if (ds->*di != 0x00)
 							break;
 					}
-					if (~cx_n + 17121 != 0x5C)
+					if ((ds->*~cx_n).b42E1 != 0x5C)
 					{
 						word16 di_n = 17123;
 						word16 si_n = 0x0859;
@@ -8952,7 +8952,7 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 			(ss->*sp_n).tFFFFFFF8 = (ss->*bp_n).tFFFFFFF4;
 			fn0800_B95E(ds_n, (ss->*sp_n).tFFFFFFF8, (ss->*sp_n).tFFFFFFFA, (ss->*sp_n).tFFFFFFFC, (ss->*sp_n).tFFFFFFFE, (ss->*sp_n).t0000);
 			Eq_n di_n = (ss->*bp_n).tFFFFFFF4;
-			(ss->*bp_n).tFFFFFFC8.u1 = -false;
+			(ss->*bp_n).tFFFFFFC8 = -false;
 			struct Eq_n Eq_n::* sp_n = &(ss->*sp_n).t0002;
 			Eq_n si_n = 0x00;
 			while (si_n != (ss->*bp_n).tFFFFFFDC)
@@ -12338,7 +12338,7 @@ Eq_n fn0800-8BD8(Eq_n cx, Eq_n dwArg04, Eq_n wArg08, Eq_n wArg0A, union Eq_n & c
 				ui32 di_si_n = SEQ(di_n, si_n) - cx_bx_n;
 				si_n = (word16) di_si_n;
 				di_n = SLICE(di_si_n, word16, 16);
-				ax_n = (word16) ax_n + 1;
+				ax_n = (word16) ax_n.u2 + 1;
 			}
 			--cx_n;
 		} while (cx_n != 0x00);

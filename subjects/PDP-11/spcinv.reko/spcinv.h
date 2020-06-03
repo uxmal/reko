@@ -1419,7 +1419,7 @@ T_167: (in Mem118[0x0EF4<p16>:word16] : word16)
   Class: Eq_167
   DataType: cui16
   OrigDataType: word16
-T_168: (in ~Mem118[0x0EF4<p16>:word16] : word16)
+T_168: (in ~globals->w0EF4 : word16)
   Class: Eq_165
   DataType: word16
   OrigDataType: word16
@@ -1463,7 +1463,7 @@ T_178: (in Mem120[0x0EF6<p16>:word16] : word16)
   Class: Eq_165
   DataType: word16
   OrigDataType: word16
-T_179: (in ~Mem120[0x0EF6<p16>:word16] : word16)
+T_179: (in ~globals->w0EF6 : word16)
   Class: Eq_179
   DataType: word16
   OrigDataType: word16
@@ -6531,7 +6531,7 @@ T_1445: (in Mem183[0x0DA8<p16>:word16] : word16)
   Class: Eq_1445
   DataType: word16
   OrigDataType: word16
-T_1446: (in ~Mem183[0x0DA8<p16>:word16] : word16)
+T_1446: (in ~globals->w0DA8 : word16)
   Class: Eq_1446
   DataType: word16
   OrigDataType: word16
@@ -7043,7 +7043,7 @@ T_1573: (in Mem185[0x0F20<p16>:word16] : word16)
   Class: Eq_1422
   DataType: ci16
   OrigDataType: word16
-T_1574: (in -Mem185[0x0F20<p16>:word16] : word16)
+T_1574: (in -globals->w0F20 : word16)
   Class: Eq_1574
   DataType: word16
   OrigDataType: word16
@@ -7823,7 +7823,7 @@ T_1768: (in Mem54[0x0F10<p16>:word16] : word16)
   Class: Eq_1690
   DataType: ci16
   OrigDataType: word16
-T_1769: (in -Mem54[0x0F10<p16>:word16] : word16)
+T_1769: (in -globals->w0F10 : word16)
   Class: Eq_366
   DataType: ci16
   OrigDataType: word16

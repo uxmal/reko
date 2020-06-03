@@ -45,7 +45,7 @@ bool fn03BB(Eq_n c, union Eq_n & aOut)
 {
 	globals->t1657 = c;
 	byte a_n = 0x00 - (globals->t1657 - 0x61 > 0x1A);
-	aOut.u0 = ~a_n;
+	aOut = ~a_n;
 	return (bool) cond(a_n);
 }
 

@@ -19056,7 +19056,7 @@ T_4239: (in dx_388 : Eq_3619)
 T_4240: (in ax_479 : Eq_3303)
   Class: Eq_3303
   DataType: Eq_3303
-  OrigDataType: word16
+  OrigDataType: byte
 T_4241: (in ss : selector)
   Class: Eq_4241
   DataType: (ptr16 Eq_4241)

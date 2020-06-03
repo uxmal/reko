@@ -6184,7 +6184,7 @@ T_1432: (in SLICE((uint64) Mem5[r8 + 8<64>:word32], word32, 0) : word32)
   Class: Eq_1432
   DataType: word32
   OrigDataType: word32
-T_1433: (in -SLICE((uint64) Mem5[r8 + 8<64>:word32], word32, 0) : word32)
+T_1433: (in -(word32) (uint64) r8->dw0008 : word32)
   Class: Eq_1433
   DataType: word32
   OrigDataType: word32
