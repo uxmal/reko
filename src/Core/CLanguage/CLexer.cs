@@ -95,6 +95,11 @@ namespace Reko.Core.CLanguage
         /// </summary>
         public static Dictionary<string, CTokenType> GccKeywords { get; }
 
+        /// <summary>
+        /// Keywords used by the MSVC compiler.
+        /// </summary>
+        public static Dictionary<string, CTokenType> MsvcKeywords { get; }
+
 
         public CToken Peek()
         {
@@ -356,6 +361,8 @@ namespace Reko.Core.CLanguage
                         if (tokenId.Type != CTokenType.__Extension)
                             return tokenId;
                         EatWs();
+                        state = State.Start;
+                        sb.Clear();
                     }
                     break;
                 case State.CharLiteral:
@@ -832,13 +839,45 @@ namespace Reko.Core.CLanguage
                 { "__far", CTokenType._Far },
                 { "__fastcall", CTokenType.__Fastcall },
                 { "__forceinline", CTokenType.__ForceInline },
+                { "__in_opt", CTokenType.__In_Opt },
+                { "__inline", CTokenType.__Inline },
+                { "__int64", CTokenType.__Int64 },
+                { "__loadds", CTokenType.__LoadDs },
+                { "__near", CTokenType._Near },
+                { "__out_bcount_opt", CTokenType.__Out_Bcount_Opt },
+                { "__pascal", CTokenType.__Pascal },
+                { "__pragma", CTokenType.__Pragma },
+                { "__restrict", CTokenType.Restrict },
+                { "__ptr64", CTokenType.__Ptr64 },
+                { "__stdcall", CTokenType.__Stdcall },
+                { "__success", CTokenType.__Success },
+                { "__thiscall", CTokenType.__Thiscall },
+                { "__w64", CTokenType.__W64 },
+            }.Concat(StdKeywords)
+            .ToDictionary(de => de.Key, de => de.Value);
+
+            MsvcKeywords = new Dictionary<string, CTokenType>
+            {
+                { "_Bool", CTokenType._Bool },
+                { "_cdecl", CTokenType.__Cdecl },
+                { "_far", CTokenType._Far },
+                { "_near", CTokenType._Near },
+                { "__asm", CTokenType.__Asm },
+                { "__asm__", CTokenType.__Asm },
+                { "__attribute__", CTokenType.__Attribute },
+                { "__cdecl", CTokenType.__Cdecl },
+                { "__declspec", CTokenType.__Declspec },
+                { "__extension__", CTokenType.__Extension },
+                { "__far", CTokenType._Far },
+                { "__fastcall", CTokenType.__Fastcall },
+                { "__forceinline", CTokenType.__ForceInline },
                 { "__in", CTokenType.__In },
                 { "__in_opt", CTokenType.__In_Opt },
                 { "__inline", CTokenType.__Inline },
                 { "__int64", CTokenType.__Int64 },
                 { "__loadds", CTokenType.__LoadDs },
                 { "__near", CTokenType._Near },
-                { "__out", CTokenType.__Out},
+                { "__out", CTokenType.__Out },
                 { "__out_bcount_opt", CTokenType.__Out_Bcount_Opt },
                 { "__pascal", CTokenType.__Pascal },
                 { "__pragma", CTokenType.__Pragma },

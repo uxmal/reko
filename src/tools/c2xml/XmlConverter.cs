@@ -27,6 +27,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -41,28 +42,54 @@ namespace Reko.Tools.C2Xml
     {
         private readonly TextReader rdr;
         private readonly XmlWriter writer;
+        private readonly string dialect;
         private readonly ParserState parserState;
         private readonly IPlatform platform;
 
-        public XmlConverter(TextReader rdr, XmlWriter writer, IPlatform platform)
+        public XmlConverter(TextReader rdr, XmlWriter writer, IPlatform platform, string dialect)
         {
             this.rdr = rdr;
             this.writer = writer;
             this.platform = platform ?? throw new ArgumentNullException(nameof(platform));
-            this.parserState = new ParserState();
+            this.dialect = dialect;
+            this.parserState = CreateParserState(dialect);
+        }
+
+        private ParserState CreateParserState(string dialect)
+        {
+            var state = new ParserState();
+            switch (dialect)
+            {
+            case "gcc":
+                state.Typedefs.UnionWith(new[] {
+                    "_Float32", "_Float64", "_Float128", "_Float32x", "_Float64x"
+                    });
+                break;
+            }
+            return state;
+        }
+
+        private CLexer CreateLexer()
+        {
+            switch (dialect)
+            {
+            case "gcc": return new CLexer(rdr, CLexer.GccKeywords);
+            case "msvc": return new CLexer(rdr, CLexer.MsvcKeywords);
+            default: return new CLexer(rdr, CLexer.StdKeywords);
+            }
         }
 
         public void Convert()
         {
-            var lexer = new CLexer(rdr, CLexer.GccKeywords);    //$TODO: allow user to select
+            var lexer = CreateLexer();
             var parser = new CParser(parserState, lexer);
             var declarations = parser.Parse();
             var symbolTable = new SymbolTable(platform)
             {
                 NamedTypes = {
-                    { "off_t", new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = 4 } },          //$BUGBUG: arch-dependent!
-                    { "ssize_t", new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = 4 } },        //$BUGBUG: arch-dependent!
-                    { "size_t", new PrimitiveType_v1 { Domain = Domain.UnsignedInt, ByteSize = 4 } },       //$BUGBUG: arch-dependent!
+                    { "off_t", new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = platform.PointerType.Size } },
+                    { "ssize_t", new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = platform.PointerType.Size } },
+                    { "size_t", new PrimitiveType_v1 { Domain = Domain.UnsignedInt, ByteSize = platform.PointerType.Size } },
                     { "va_list", new PrimitiveType_v1 { Domain = Domain.Pointer, ByteSize = platform.PointerType.Size } }
                 }
             };

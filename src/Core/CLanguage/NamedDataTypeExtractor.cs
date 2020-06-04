@@ -324,13 +324,11 @@ namespace Reko.Core.CLanguage
                 if (domain != Domain.None)
                     throw new FormatException(string.Format("Can't have 'signed' after '{0}'.", domain));
                 domain = Domain.SignedInt;
-                basicType = CBasicType.Int;
                 return CreatePrimitive();
             case CTokenType.Unsigned:
                 if (domain != Domain.None)
                     throw new FormatException(string.Format("Can't have 'unsigned' after '{0}'.", domain));
                 domain = Domain.UnsignedInt;
-                basicType = CBasicType.Int;
                 return CreatePrimitive();
             case CTokenType.Bool:
             case CTokenType._Bool:
@@ -399,12 +397,15 @@ namespace Reko.Core.CLanguage
 
         private PrimitiveType_v1 CreatePrimitive()
         {
+            if (domain != Domain.None && basicType == CBasicType.None)
+                basicType = CBasicType.Int;
             byteSize = platform.GetByteSizeFromCBasicType(basicType);
-            if (domain == Domain.None)
-                domain = Domain.SignedInt;
+            var d = domain;
+            if (d == Domain.None)
+                d = Domain.SignedInt;
             return new PrimitiveType_v1
             {
-                Domain = domain,
+                Domain = d,
                 ByteSize = byteSize
             };
         }

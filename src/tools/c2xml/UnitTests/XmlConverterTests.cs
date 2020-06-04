@@ -143,7 +143,7 @@ namespace Reko.Tools.C2Xml.UnitTests
             }
         }
 
-        void RunTest(string c_code, string expectedXml)
+        void RunTest(string c_code, string expectedXml, string dialect)
         {
             StringReader reader = null;
             StringWriter writer = null;
@@ -157,7 +157,7 @@ namespace Reko.Tools.C2Xml.UnitTests
                 };
                 var arch = new FakeArchitecture(new ServiceContainer());
                 var platform = new DefaultPlatform(null, arch);
-                var xc = new XmlConverter(reader, xWriter, platform);
+                var xc = new XmlConverter(reader, xWriter, platform, dialect);
                 xc.Convert();
                 writer.Flush();
                 Assert.AreEqual(expectedXml, writer.ToString());
@@ -188,7 +188,7 @@ namespace Reko.Tools.C2Xml.UnitTests
     </typedef>
   </Types>
 </library>";
-            RunTest("typedef int INT;", sExp);
+            RunTest("typedef int INT;", sExp, "");
         }
 
         [Test]
@@ -208,7 +208,7 @@ namespace Reko.Tools.C2Xml.UnitTests
     </struct>
   </Types>
 </library>";
-            RunTest("struct tagPoint { int x; int y; };", sExp);
+            RunTest("struct tagPoint { int x; int y; };", sExp, "");
         }
 
         [Test]
@@ -227,7 +227,7 @@ namespace Reko.Tools.C2Xml.UnitTests
     </struct>
   </Types>
 </library>";
-            RunTest("struct link { struct link *next; }; ", sExp);
+            RunTest("struct link { struct link *next; }; ", sExp, "");
         }
 
         [Test]
@@ -250,7 +250,7 @@ namespace Reko.Tools.C2Xml.UnitTests
     </signature>
   </procedure>
 </library>";
-            RunTest("size_t __cdecl strlen(const char *);", sExp);
+            RunTest("size_t __cdecl strlen(const char *);", sExp, "msvc");
         }
 
         [Test]
@@ -265,7 +265,7 @@ namespace Reko.Tools.C2Xml.UnitTests
     </typedef>
   </Types>
 </library>";
-            RunTest("typedef struct foo FOO;", sExp);
+            RunTest("typedef struct foo FOO;", sExp, "");
         }
 
         [Test]
@@ -294,7 +294,7 @@ namespace Reko.Tools.C2Xml.UnitTests
             RunTest(
                 "typedef struct foo FOO;" +
                 "struct foo { int x, y, z; };"
-                , sExp);
+                , sExp, "");
         }
 
 
@@ -330,7 +330,7 @@ namespace Reko.Tools.C2Xml.UnitTests
             RunTest(
                 "typedef struct foo { int x; } FOO;" +
                 "int bar(FOO * pfoo);",
-                sExp);
+                sExp, "");
         }
 
         [Test]
@@ -375,7 +375,7 @@ namespace Reko.Tools.C2Xml.UnitTests
                         "float f;" +
                     "};" +
                 "} Variant;",
-                sExp);
+                sExp, "");
         }
 
         [Test]
@@ -394,7 +394,7 @@ namespace Reko.Tools.C2Xml.UnitTests
 </library>";
             RunTest(
                 "typedef char PunchCard[80];",
-                sExp);
+                sExp, "");
         }
 
         [Test]
@@ -413,7 +413,7 @@ namespace Reko.Tools.C2Xml.UnitTests
 </library>";
             RunTest(
                 "typedef char PunchCard[];",
-                sExp);
+                sExp, "");
         }
 
         [Test]
@@ -444,7 +444,7 @@ namespace Reko.Tools.C2Xml.UnitTests
                     "byte signature[16];" +
                     "int length;" +
                 "};",
-                sExp);
+                sExp, "");
         }
 
         [Test]
@@ -468,7 +468,7 @@ namespace Reko.Tools.C2Xml.UnitTests
                     "Bar = 1," +
                     "Fooie" +
                 "} Foo;",
-                sExp);
+                sExp, "");
         }
 
         [Test]
@@ -489,7 +489,7 @@ namespace Reko.Tools.C2Xml.UnitTests
                     "Bar = 1, " +
                     "Quux = Bar, " +
                 "};",
-                sExp);
+                sExp, "");
         }
 
         [Test]
@@ -517,7 +517,7 @@ namespace Reko.Tools.C2Xml.UnitTests
                         "int x;" +
                     "} a;" +
                 "};",
-                sExp);
+                sExp, "");
 
         }
 
@@ -544,7 +544,7 @@ namespace Reko.Tools.C2Xml.UnitTests
   </procedure>
 </library>";
             RunTest("int __stdcall foo(int bar, char * foo);",
-                sExp);
+                sExp, "msvc");
         }
 
         [Test]
@@ -566,7 +566,7 @@ namespace Reko.Tools.C2Xml.UnitTests
     </typedef>
   </Types>
 </library>";
-            RunTest("typedef enum _foo { Bar = 1 } Foo, *PFoo;", sExp);
+            RunTest("typedef enum _foo { Bar = 1 } Foo, *PFoo;", sExp, "");
         }
 
         [Test]
@@ -588,7 +588,7 @@ namespace Reko.Tools.C2Xml.UnitTests
     </typedef>
   </Types>
 </library>";
-            RunTest("typedef enum { Bar = 1 } Foo, *PFoo;", sExp);
+            RunTest("typedef enum { Bar = 1 } Foo, *PFoo;", sExp, "");
         }
 
         [Test]
@@ -612,7 +612,7 @@ namespace Reko.Tools.C2Xml.UnitTests
     </typedef>
   </Types>
 </library>";
-            RunTest("typedef struct { int bar; } Foo, *PFoo;", sExp);
+            RunTest("typedef struct { int bar; } Foo, *PFoo;", sExp, "");
         }
 
         [Test]
@@ -641,7 +641,7 @@ namespace Reko.Tools.C2Xml.UnitTests
             RunTest(
                 "typedef void * HANDLE;" +
                 "int foo(HANDLE bar);",
-                sExp);
+                sExp, "");
         }
 
         [Test]
@@ -673,7 +673,7 @@ namespace Reko.Tools.C2Xml.UnitTests
             RunTest(
                 "typedef short SHORT;" +
                 "SHORT foo(SHORT inp, SHORT * outp);",
-                sExp);
+                sExp, "");
         }
 
         [Test]
@@ -692,7 +692,7 @@ namespace Reko.Tools.C2Xml.UnitTests
 </library>";
             RunTest(
                 "void foo(void);",
-                sExp);
+                sExp, "");
 
         }
 
@@ -731,7 +731,7 @@ namespace Reko.Tools.C2Xml.UnitTests
     </signature>
   </procedure>
 </library>";
-            RunTest(cCode, sExp);
+            RunTest(cCode, sExp, "msvc");
         }
 
         [Test]
@@ -754,7 +754,7 @@ namespace Reko.Tools.C2Xml.UnitTests
     </signature>
   </procedure>
 </library>";
-            RunTest(cCode, sExp);
+            RunTest(cCode, sExp, "");
         }
 
         [Test]
@@ -773,7 +773,7 @@ namespace Reko.Tools.C2Xml.UnitTests
     </typedef>
   </Types>
 </library>";
-            RunTest(cCode, sExp);
+            RunTest(cCode, sExp, "");
         }
 
         [Test]
@@ -798,7 +798,7 @@ namespace Reko.Tools.C2Xml.UnitTests
     </signature>
   </procedure>
 </library>";
-            RunTest(cCode, sExp);
+            RunTest(cCode, sExp, "");
         }
 
         [Test]
@@ -830,7 +830,7 @@ namespace Reko.Tools.C2Xml.UnitTests
     </signature>
   </procedure>
 </library>";
-            RunTest(cCode, sExp);
+            RunTest(cCode, sExp, "");
         }
 
         [Test]
@@ -917,7 +917,7 @@ namespace Reko.Tools.C2Xml.UnitTests
     </signature>
   </procedure>
 </library>";
-            RunTest(cCode, sExp);
+            RunTest(cCode, sExp, "");
         }
 
         [Test]
@@ -940,7 +940,7 @@ namespace Reko.Tools.C2Xml.UnitTests
 </library>";
             RunTest(
                 "void foo([[reko::arg(register,\"D0\")]]int parm);",
-                sExp);
+                sExp, "");
 
         }
 
@@ -961,7 +961,7 @@ namespace Reko.Tools.C2Xml.UnitTests
 </library>";
             RunTest(
                 "[[reko::returns(register,\"D0\")]] char foo();",
-                sExp);
+                sExp, "");
         }
 
         [Test]
@@ -977,7 +977,7 @@ namespace Reko.Tools.C2Xml.UnitTests
     </typedef>
   </Types>
 </library>";
-            RunTest("typedef void _near * PVOID;", sExp);
+            RunTest("typedef void _near * PVOID;", sExp, "msvc");
         }
 
         [Test]
@@ -997,7 +997,7 @@ namespace Reko.Tools.C2Xml.UnitTests
     </typedef>
   </Types>
 </library>";
-            RunTest("typedef int (__pascal __far  *PFN)();", sExp);
+            RunTest("typedef int (__pascal __far  *PFN)();", sExp, "msvc");
         }
 
         [Test]
@@ -1014,8 +1014,7 @@ namespace Reko.Tools.C2Xml.UnitTests
     </signature>
   </procedure>
 </library>";
-            RunTest("int __pascal __loadds fn();", sExp);
-
+            RunTest("int __pascal __loadds fn();", sExp, "msvc");
         }
     }
 }

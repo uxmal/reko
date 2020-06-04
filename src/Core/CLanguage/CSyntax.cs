@@ -478,6 +478,7 @@ namespace Reko.Core.CLanguage
     {
         public List<DeclSpec> SpecQualifierList;
         public List<FieldDeclarator> FieldDeclarators;
+        public List<CAttribute> AttributeList;
 
         public override T Accept<T>(CSyntaxVisitor<T> visitor)
         {
@@ -502,6 +503,12 @@ namespace Reko.Core.CLanguage
                 sep = " ";
             }
             sb.Append(")");
+            if (AttributeList != null && AttributeList.Count > 0)
+            {
+                sb.Append(" (");
+                sb.Append(string.Join(" ", AttributeList));
+                sb.Append(")");
+            }
             return sb.ToString();
         }
     }

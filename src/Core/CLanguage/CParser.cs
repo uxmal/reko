@@ -769,8 +769,9 @@ IGNORE tab + cr + lf
             {
                 decls.Add(Parse_StructDeclarator());
             }
+            var gccAttr = Parse_GccExtensions();
             ExpectToken(CTokenType.Semicolon);
-            return grammar.StructDecl(sql, decls);
+            return grammar.StructDecl(sql, decls, gccAttr);
         }
 
         //StructDeclarator = Declarator [':' ConstExpr] | ':'  ConstExpr.

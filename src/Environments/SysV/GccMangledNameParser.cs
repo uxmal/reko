@@ -31,10 +31,10 @@ namespace Reko.Environments.SysV
     // https://mentorembedded.github.io/cxx-abi/abi.html#mangling-type
     public class GccMangledNameParser
     {
-        private string str;
+        private readonly string str;
+        private readonly int ptrSize;
+        private readonly Dictionary<string, object> substitutions;
         private int i;
-        private int ptrSize;
-        private Dictionary<string, object> substitutions;
 
         public GccMangledNameParser(string parse, int ptrSize)
         {
