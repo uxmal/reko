@@ -1209,8 +1209,9 @@ namespace Reko.UnitTests.Arch.X86
                 "1|L--|xmm0 = (word128) eax");
             Run32bitTest(0x66, 0x0f, 0x7e, 0x01);
             AssertCode(
-                "0|L--|10000000(4): 1 instructions",
-                "1|L--|Mem0[ecx:word32] = (word32) xmm0");
+                "0|L--|10000000(4): 2 instructions",
+                "1|L--|v4 = (word32) xmm0",
+                "2|L--|Mem0[ecx:word32] = v4");
             Run32bitTest(0x66, 0x0f, 0x60, 0xc0);
             AssertCode(
                 "0|L--|10000000(4): 1 instructions",
