@@ -19,6 +19,8 @@
 #endregion
 
 using Reko.Core.Machine;
+using Reko.Core.Types;
+using System.Text;
 
 namespace Reko.Arch.H8
 {
@@ -29,6 +31,8 @@ namespace Reko.Arch.H8
 
         public override string MnemonicAsString => Mnemonic.ToString();
 
+        public PrimitiveType? Size { get; set; }
+
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             RenderMnemonic(writer);
@@ -37,7 +41,33 @@ namespace Reko.Arch.H8
 
         private void RenderMnemonic(MachineInstructionWriter writer)
         {
-            writer.WriteMnemonic(MnemonicAsString);
+            var sb = new StringBuilder(MnemonicAsString);
+            string suffix = "";
+            if (Size != null)
+            {
+                switch (Size.Size)
+                {
+                case 1: suffix = ".b"; break;
+                case 2: suffix = ".w"; break;
+                case 4: suffix = ".l"; break;
+                default: break;
+                }
+            }
+            sb.Append(suffix);
+            writer.WriteMnemonic(sb.ToString());
+        }
+
+        protected override void RenderOperand(MachineOperand operand, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            if (operand is ImmediateOperand imm)
+            {
+                writer.WriteString("#0x");
+                imm.Write(writer, options);
+            }
+            else
+            {
+                base.RenderOperand(operand, writer, options);
+            }
         }
     }
 }

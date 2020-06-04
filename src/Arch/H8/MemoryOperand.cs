@@ -18,13 +18,102 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace Reko.Arch.H8
 {
-    class MemoryOperand
+    public class MemoryOperand : MachineOperand
     {
+        private MemoryOperand(PrimitiveType dt) : base(dt)
+        {
+        }
+
+        public RegisterStorage? Base { get; set; }
+
+        public int Offset { get; set; }
+        public bool PreDecrement { get; set; }
+        public bool PostIncrement { get; set; }
+        public PrimitiveType? AddressWidth { get; set; }
+        public bool Deferred { get; set; }
+
+        public static MemoryOperand Abs(PrimitiveType dt, uint uAddr, PrimitiveType addrSize)
+        {
+            return new MemoryOperand(dt)
+            {
+                Offset = (int) uAddr,
+                AddressWidth = addrSize,
+            };
+        }
+
+
+        public static MemoryOperand BaseOffset(PrimitiveType dt, short offset, PrimitiveType addrSize, RegisterStorage baseReg)
+        {
+            return new MemoryOperand(dt)
+            {
+                Base = baseReg,
+                Offset = offset,
+                AddressWidth = addrSize,
+            };
+        }
+
+        public static MemoryOperand Pre(PrimitiveType dt, RegisterStorage reg)
+        {
+            return new MemoryOperand(dt)
+            {
+                Base = reg,
+                PreDecrement = true,
+            };
+        }
+        public static MemoryOperand Post(PrimitiveType dt, RegisterStorage reg)
+        {
+            return new MemoryOperand(dt)
+            {
+                Base = reg,
+                PostIncrement = true,
+            };
+        }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteChar('@');
+            if (this.Deferred)
+                writer.WriteChar('@');
+            if (Base != null)
+            {
+                if (this.PreDecrement)
+                {
+                    writer.WriteChar('-');
+                    writer.WriteString(Base.Name);
+                }
+                else if (this.PostIncrement)
+                {
+                    writer.WriteString(Base.Name);
+                    writer.WriteChar('+');
+                }
+                else if (Offset != 0)
+                {
+                    writer.WriteChar('(');
+                    writer.WriteFormat("{0}:{1},", Offset, AddressWidth!.BitSize);
+                    writer.WriteString(Base.Name);
+                    writer.WriteChar(')');
+                }
+                else
+                {
+                    writer.WriteString(Base.Name);
+                }
+            }
+            else
+            {
+                //$REFACTOR: does it make sense to move absolute addresses to their own class?
+                writer.WriteAddress($"0x{(uint) Offset:X}:{AddressWidth.BitSize}", Address.Ptr32((uint)Offset));
+            }
+        }
+
     }
 }

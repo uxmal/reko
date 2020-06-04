@@ -39,7 +39,10 @@ namespace Reko.Arch.H8
             this.InstructionBitSize = 16;
             this.PointerType = PrimitiveType.Ptr16;
             this.WordWidth = PrimitiveType.Word16;
+            this.Ptr24 = PrimitiveType.Create(Domain.Pointer, 24);
         }
+
+        public PrimitiveType Ptr24 { get; }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
