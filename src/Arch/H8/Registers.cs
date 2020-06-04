@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Reko.Arch.H8
@@ -32,15 +33,25 @@ namespace Reko.Arch.H8
             var factory = new StorageFactory();
             GpRegisters = factory.RangeOfReg32(8, "er{0}");
             GpRegisters[7] = new RegisterStorage("sp", 7, 0, PrimitiveType.Ptr32);
-            RRegisters = GpRegisters.Select((r, i) => new RegisterStorage($"r{i}", r.Number, 0, PrimitiveType.Word32)).ToArray();
-            ERegisters = GpRegisters.Select((r, i) => new RegisterStorage($"e{i}", r.Number, 16, PrimitiveType.Word32)).ToArray();
-            RlRegisters = GpRegisters.Select((r, i) => new RegisterStorage($"r{i}l", r.Number, 0, PrimitiveType.Word32)).ToArray();
-            RhRegisters = GpRegisters.Select((r, i) => new RegisterStorage($"r{i}h", r.Number, 8, PrimitiveType.Word32)).ToArray();
+            RRegisters = GpRegisters.Select((r, i) => new RegisterStorage($"r{i}", r.Number, 0, PrimitiveType.Word16)).ToArray();
+            ERegisters = GpRegisters.Select((r, i) => new RegisterStorage($"e{i}", r.Number, 16, PrimitiveType.Word16)).ToArray();
+            RlRegisters = GpRegisters.Select((r, i) => new RegisterStorage($"r{i}l", r.Number, 0, PrimitiveType.Byte)).ToArray();
+            RhRegisters = GpRegisters.Select((r, i) => new RegisterStorage($"r{i}h", r.Number, 8, PrimitiveType.Byte)).ToArray();
             Gp16Registers = RRegisters.Concat(ERegisters).ToArray();
             Gp8Registers = RhRegisters.Concat(RlRegisters).ToArray();
 
             PcRegister = factory.Reg32("pc");
             CcRegister = factory.Reg("ccr", PrimitiveType.Byte);
+
+            ByName = GpRegisters
+                .Concat(Gp16Registers)
+                .Concat(Gp8Registers)
+                .Concat(new[]
+                {
+                    PcRegister,
+                    CcRegister
+                })
+                .ToDictionary(r => r.Name);
         }
 
         public static RegisterStorage[] GpRegisters { get; }
@@ -53,6 +64,7 @@ namespace Reko.Arch.H8
 
         public static RegisterStorage PcRegister { get; }
         public static RegisterStorage CcRegister { get; }
+        public static Dictionary<string, RegisterStorage> ByName { get; }
     }
 
     [Flags]

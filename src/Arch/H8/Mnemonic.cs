@@ -78,5 +78,8 @@ namespace Reko.Arch.H8
         rotxr,
         rotr,
         stc,
+        xorc,
+        andc,
+        orc,
     }
 }

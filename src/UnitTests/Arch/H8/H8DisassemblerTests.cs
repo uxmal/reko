@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Arch.H8
         [Test]
         public void H8Dis_addx_imm()
         {
-            AssertCode("addx\t#0xF8,r2l", "9AF8");
+            AssertCode("addx.b\t#0xF8,r2l", "9AF8");
         }
 
         [Test]
@@ -111,12 +111,10 @@ namespace Reko.UnitTests.Arch.H8
             AssertCode("bset\t#0x00,r4h", "7004");
         }
 
-
-
         [Test]
         public void H8Dis_btst()
         {
-            AssertCode("btst\t#0x00,er4", "7304");
+            AssertCode("btst\t#0x00,r4h", "7304");
         }
 
         [Test]
@@ -304,5 +302,12 @@ namespace Reko.UnitTests.Arch.H8
         {
             AssertCode("xor.w\tr2,e4", "652C");
         }
+
+        [Test]
+        public void H8Dis_xorc()
+        {
+            AssertCode("xorc\t#0xDC,ccr", "05DC");
+        }
+
     }
 }

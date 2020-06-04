@@ -413,8 +413,12 @@ namespace Reko.Arch.H8
                     (0x0, Nyi("mov")),
                     (0x4, Nyi("ldc/stc")),
                     (0x8, Nyi("sleep")),
-                    (0xC, Nyi("Table 2-6")),
-                    (0xD, Nyi("Table 2-6")),
+                    (0xC, Select((0, 4), u => u == 0, "  01 C0",
+                        Nyi("01 C0"),
+                        invalid)),
+                    (0xD, Select((0, 4), u => u == 0, "  01 D0",
+                        Nyi("01 D0"),
+                        invalid)),
                     (0xF, Nyi("Table 2-6"))),
                 Select((4, 4), u => u == 0,
                     Instr(Mnemonic.stc, b, ccr, rl),
@@ -423,9 +427,9 @@ namespace Reko.Arch.H8
                     Instr(Mnemonic.ldc, b, rl, ccr),
                     invalid),
 
-                Nyi("orc"),
-                Nyi("xorc"),
-                Nyi("andc"),
+                Instr(Mnemonic.orc, I8, ccr),
+                Instr(Mnemonic.xorc, I8, ccr),
+                Instr(Mnemonic.andc, I8, ccr),
                 Instr(Mnemonic.ldc, b, I8, ccr),
 
                 Instr(Mnemonic.add, b, rh,rl),
@@ -569,8 +573,8 @@ namespace Reko.Arch.H8
                 mov_b_aa8_st,
 
                 // 40
-                Instr(Mnemonic.bra, InstrClass.ConditionalTransfer, disp8),
-                Instr(Mnemonic.brn, InstrClass.ConditionalTransfer, disp8),
+                Instr(Mnemonic.bra, InstrClass.Transfer, disp8),
+                Instr(Mnemonic.brn, InstrClass.Linear|InstrClass.Padding, disp8),
                 Instr(Mnemonic.bhi, InstrClass.ConditionalTransfer, disp8),
                 Instr(Mnemonic.bls, InstrClass.ConditionalTransfer, disp8),
 
@@ -603,9 +607,9 @@ namespace Reko.Arch.H8
                 Nyi("trapa"),
 
                 Nyi("2-5"),
-                Nyi("jmp"),
-                Instr(Mnemonic.jmp, InstrClass.Transfer|InstrClass.Call, Mind),
-                Instr(Mnemonic.jmp, InstrClass.Transfer|InstrClass.Call, aa24_16),
+                Instr(Mnemonic.jmp, InstrClass.Transfer, Mind),
+                Instr(Mnemonic.jmp, InstrClass.Transfer, aa24_16),
+                Instr(Mnemonic.jmp, InstrClass.Transfer, Def_aa8),
 
                 Nyi("bsr"),
                 Instr(Mnemonic.jsr, InstrClass.Transfer|InstrClass.Call, Mind),
