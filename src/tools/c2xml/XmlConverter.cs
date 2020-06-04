@@ -61,8 +61,13 @@ namespace Reko.Tools.C2Xml
             switch (dialect)
             {
             case "gcc":
-                state.Typedefs.UnionWith(new[] {
-                    "_Float32", "_Float64", "_Float128", "_Float32x", "_Float64x"
+                state.Typedefs.UnionWith(
+                    new[] {
+                        "_Float32",
+                        "_Float64",
+                        "_Float128",
+                        "_Float32x",
+                        "_Float64x"
                     });
                 break;
             }
@@ -84,15 +89,7 @@ namespace Reko.Tools.C2Xml
             var lexer = CreateLexer();
             var parser = new CParser(parserState, lexer);
             var declarations = parser.Parse();
-            var symbolTable = new SymbolTable(platform)
-            {
-                NamedTypes = {
-                    { "off_t", new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = platform.PointerType.Size } },
-                    { "ssize_t", new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = platform.PointerType.Size } },
-                    { "size_t", new PrimitiveType_v1 { Domain = Domain.UnsignedInt, ByteSize = platform.PointerType.Size } },
-                    { "va_list", new PrimitiveType_v1 { Domain = Domain.Pointer, ByteSize = platform.PointerType.Size } }
-                }
-            };
+            var symbolTable = CreateSymbolTable();
 
             foreach (var decl in declarations)
             {
@@ -106,6 +103,31 @@ namespace Reko.Tools.C2Xml
             };
             var ser = SerializedLibrary.CreateSerializer();
             ser.Serialize(writer, lib);
+        }
+
+        private SymbolTable CreateSymbolTable()
+        {
+            var symtab = new SymbolTable(platform)
+            {
+                NamedTypes = {
+                    { "off_t", new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = platform.PointerType.Size } },
+                    { "ssize_t", new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = platform.PointerType.Size } },
+                    { "size_t", new PrimitiveType_v1 { Domain = Domain.UnsignedInt, ByteSize = platform.PointerType.Size } },
+                    { "va_list", new PrimitiveType_v1 { Domain = Domain.Pointer, ByteSize = platform.PointerType.Size } }
+                }
+            };
+            switch (dialect)
+            {
+            case "gcc":
+                symtab.NamedTypes.Add("__builtin_va_list", new PrimitiveType_v1 { Domain = Domain.Pointer, ByteSize = platform.PointerType.Size });
+                symtab.NamedTypes.Add("_Float32", new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 4 });
+                symtab.NamedTypes.Add("_Float64", new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 8 });
+                symtab.NamedTypes.Add("_Float128", new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 16 });
+                symtab.NamedTypes.Add("_Float32x", new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 4 });
+                symtab.NamedTypes.Add("_Float64x", new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 8 });
+                break;
+            }
+            return symtab;
         }
     }
 }

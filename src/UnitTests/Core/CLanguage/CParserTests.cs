@@ -1426,8 +1426,15 @@ extern int myfunc() __asm__ ("""" ""__flub"");");
     long long __max_align_ll __attribute__((__aligned__(__alignof__(long long))));
 } max_align_t;");
             var decl = parser.Parse()[0];
-            Console.WriteLine(decl.ToString());
             Assert.AreEqual("(decl Typedef (Struct  ((Long Long) ((__max_align_ll)) ((attr __aligned__ (Id __alignof__LParen Long Long RParen )))) ((init-decl max_align_t)))", decl.ToString());
+        }
+
+        [Test]
+        public void CParser_Atomic()
+        {
+            Lex("typedef _Atomic char atomic_char;");
+            var decl = parser.Parse()[0];
+            Assert.AreEqual("(decl Typedef _Atomic Char ((init-decl atomic_char)))", decl.ToString());
         }
     }
 }

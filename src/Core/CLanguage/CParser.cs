@@ -64,6 +64,7 @@ namespace Reko.Core.CLanguage
 
         static BitArray startOfTypeName = NewBitArray(
             CTokenType.Const, CTokenType.Volatile, CTokenType.Restrict,
+            CTokenType._Atomic,
             CTokenType.Void, CTokenType.Wchar_t,
             CTokenType.Char, CTokenType.Short, CTokenType.Int, CTokenType.__Int64, 
             CTokenType.Long, CTokenType.Double,CTokenType.Float, CTokenType.Signed, 
@@ -74,6 +75,7 @@ namespace Reko.Core.CLanguage
             CTokenType.Typedef, CTokenType.Extern, CTokenType.Static, CTokenType.Auto,
             CTokenType.Register,
             CTokenType.Const, CTokenType.Volatile, CTokenType.Restrict,
+            CTokenType._Atomic,
             CTokenType.Void,
             CTokenType.Char, CTokenType.Wchar_t, CTokenType.Short, CTokenType.Int, 
             CTokenType.__Int64, CTokenType.Long,CTokenType.Double, CTokenType.Float,
@@ -228,6 +230,7 @@ namespace Reko.Core.CLanguage
             CToken x = lexer.Peek(i);
             while (x.Type == CTokenType.Star || x.Type == CTokenType.Ampersand || x.Type == CTokenType.LParen || 
                    x.Type == CTokenType.Const || x.Type == CTokenType.Volatile || x.Type == CTokenType.Restrict || 
+                   x.Type == CTokenType._Atomic ||
                    x.Type == CTokenType.__Ptr64 ||
                    x.Type == CTokenType.__Fastcall || x.Type == CTokenType.__Stdcall ||
                    x.Type == CTokenType.__Thiscall || x.Type == CTokenType.__Cdecl ||
@@ -581,6 +584,7 @@ IGNORE tab + cr + lf
             case CTokenType.Volatile:
             case CTokenType.Restrict:
             case CTokenType.__Ptr64:
+            case CTokenType._Atomic:
             case CTokenType._Far:
             case CTokenType._Near:
                 return grammar.TypeQualifier(lexer.Read().Type);
@@ -750,6 +754,7 @@ IGNORE tab + cr + lf
             case CTokenType.Restrict:
             case CTokenType.Comma:
             case CTokenType.RBrace:
+            case CTokenType._Atomic:
             case CTokenType._Far:
             case CTokenType._Near:
                 return null;
@@ -834,6 +839,7 @@ IGNORE tab + cr + lf
             case CTokenType.Volatile:
             case CTokenType.Restrict:
             case CTokenType.__Ptr64:
+            case CTokenType._Atomic:
                 lexer.Read();
                 return grammar.TypeQualifier(token.Type);
             }

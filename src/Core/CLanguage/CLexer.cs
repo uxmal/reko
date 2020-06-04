@@ -822,6 +822,7 @@ namespace Reko.Core.CLanguage
                 { "volatile", CTokenType.Volatile },
                 { "wchar_t", CTokenType.Wchar_t },
                 { "while", CTokenType.While },
+                { "_Atomic", CTokenType._Atomic }
             };
 
             GccKeywords = new Dictionary<string, CTokenType>
@@ -836,6 +837,7 @@ namespace Reko.Core.CLanguage
                 { "__cdecl", CTokenType.__Cdecl },
                 { "__declspec", CTokenType.__Declspec },
                 { "__extension__", CTokenType.__Extension },
+                { "__extension__extern", CTokenType.Extern },
                 { "__far", CTokenType._Far },
                 { "__fastcall", CTokenType.__Fastcall },
                 { "__forceinline", CTokenType.__ForceInline },
@@ -849,6 +851,7 @@ namespace Reko.Core.CLanguage
                 { "__pragma", CTokenType.__Pragma },
                 { "__restrict", CTokenType.Restrict },
                 { "__ptr64", CTokenType.__Ptr64 },
+                { "__signed__", CTokenType.Signed },
                 { "__stdcall", CTokenType.__Stdcall },
                 { "__success", CTokenType.__Success },
                 { "__thiscall", CTokenType.__Thiscall },
@@ -1000,6 +1003,7 @@ namespace Reko.Core.CLanguage
         Volatile,
         Wchar_t,
         Xor,
+        _Atomic,
         _Bool,
         _Far,
         _Near,
