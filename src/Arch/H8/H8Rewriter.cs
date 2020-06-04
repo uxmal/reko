@@ -45,7 +45,7 @@ namespace Reko.Arch.H8
             this.state = state;
             this.binder = binder;
             this.host = host;
-            this.dasm = new H8Disassembler(rdr).GetEnumerator();
+            this.dasm = new H8Disassembler(arch, rdr).GetEnumerator();
             this.m = new RtlEmitter(new List<RtlInstruction>());
         }
 

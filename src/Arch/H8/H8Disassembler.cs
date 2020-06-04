@@ -20,9 +20,11 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using System.Collections.Generic;
 using System.ComponentModel.Design.Serialization;
 using System.IO;
+using System.Linq;
 
 namespace Reko.Arch.H8
 {
@@ -32,11 +34,13 @@ namespace Reko.Arch.H8
     {
         private static readonly Decoder rootDecoder;
 
+        private readonly H8Architecture arch;
         private readonly EndianImageReader rdr;
         private Address addr;
 
-        public H8Disassembler(EndianImageReader rdr)
+        public H8Disassembler(H8Architecture arch, EndianImageReader rdr)
         {
+            this.arch = arch;
             this.rdr = rdr;
             this.addr = rdr.Address;
         }
@@ -66,7 +70,9 @@ namespace Reko.Arch.H8
 
         public override H8Instruction NotYetImplemented(uint wInstr, string message)
         {
-            throw new System.NotImplementedException();
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("H8Dis", this.addr, rdr, message);
+            return CreateInvalidInstruction();
         }
 
         #region Decoders
@@ -82,8 +88,8 @@ namespace Reko.Arch.H8
             rootDecoder = Mask(8, 8, "H8", new Decoder<H8Disassembler, Mnemonic, H8Instruction>[256] {
                 Nyi("nop"),
                 Nyi("table 2-5"),
-           Nyi("stc"),
-            Nyi("ldc"),
+               Nyi("stc"),
+                Nyi("ldc"),
 
            Nyi("org"),
            Nyi("xorg"),

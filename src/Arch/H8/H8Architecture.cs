@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -32,11 +33,17 @@ namespace Reko.Arch.H8
     {
         public H8Architecture(IServiceProvider services, string archId) : base(services, archId)
         {
+            this.CarryFlagMask = 0; //$TODO
+            this.Endianness = EndianServices.Big;
+            this.FramePointerType = PrimitiveType.Ptr16;
+            this.InstructionBitSize = 16;
+            this.PointerType = PrimitiveType.Ptr16;
+            this.WordWidth = PrimitiveType.Word16;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
-            return new H8Disassembler(rdr);
+            return new H8Disassembler(this, rdr);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
@@ -121,7 +128,7 @@ namespace Reko.Arch.H8
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse32(txtAddr, out addr);
         }
     }
 }
