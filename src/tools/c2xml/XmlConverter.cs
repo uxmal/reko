@@ -67,7 +67,8 @@ namespace Reko.Tools.C2Xml
                         "_Float64",
                         "_Float128",
                         "_Float32x",
-                        "_Float64x"
+                        "_Float64x",
+                        "__int128_t"
                     });
                 break;
             }
@@ -125,6 +126,7 @@ namespace Reko.Tools.C2Xml
                 symtab.NamedTypes.Add("_Float128", new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 16 });
                 symtab.NamedTypes.Add("_Float32x", new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 4 });
                 symtab.NamedTypes.Add("_Float64x", new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 8 });
+                symtab.NamedTypes.Add("__int128_t", new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 16 });
                 break;
             }
             return symtab;
