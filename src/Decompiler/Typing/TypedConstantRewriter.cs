@@ -34,12 +34,12 @@ namespace Reko.Typing
 	/// </summary>
 	public class TypedConstantRewriter : IDataTypeVisitor<Expression>
 	{
-        private Program program;
-        private IPlatform platform;
-		private TypeStore store;
-		private Identifier globals;
-		private Constant c;
-		private PrimitiveType pOrig;
+        private readonly Program program;
+        private readonly IPlatform platform;
+		private readonly TypeStore store;
+		private readonly Identifier globals;
+		private Constant? c;
+		private PrimitiveType? pOrig;
 		private bool dereferenced;
         private Dictionary<ushort, Identifier> mpSelectorToSegId;
         private DecompilerEventListener eventListener;
@@ -55,7 +55,7 @@ namespace Reko.Typing
             {
                 this.mpSelectorToSegId = program.SegmentMap.Segments.Values
                     .Where(s => s.Identifier != null && s.Address.Selector.HasValue)
-                    .ToDictionary(s => s.Address.Selector.Value, s => s.Identifier);
+                    .ToDictionary(s => s.Address.Selector!.Value, s => s.Identifier)!;
             }
             else
             {
@@ -76,19 +76,19 @@ namespace Reko.Typing
             if (dtInferred == null)
             {
                 eventListener.Warn(new NullCodeLocation(""),
-                    $"The equivalence class {c.TypeVariable.Name} has a null data type");
+                    $"The equivalence class {c.TypeVariable!.Name} has a null data type");
                 dtInferred = c.TypeVariable.DataType;
             }
             else
             {
-                this.pOrig = c.DataType as PrimitiveType;
+                this.pOrig = (c.DataType as PrimitiveType)!;
                 if (c.TypeVariable != null)
                 {
                     dtInferred = c.TypeVariable.DataType;
-                    this.pOrig = c.TypeVariable.OriginalDataType as PrimitiveType;
+                    this.pOrig = (c.TypeVariable.OriginalDataType as PrimitiveType)!;
                 }
             }
-            var dt = dtInferred.ResolveAs<DataType>();
+            var dt = dtInferred.ResolveAs<DataType>()!;
             this.dereferenced = dereferenced;
             return dt.Accept(this);
         }
@@ -105,7 +105,7 @@ namespace Reko.Typing
                         addr.Selector.Value);
                     return addr;
                 }
-                var ptrSeg = segId.TypeVariable.DataType.ResolveAs<Pointer>();
+                var ptrSeg = segId.TypeVariable!.DataType.ResolveAs<Pointer>();
                 if (ptrSeg == null)
                 {
                     //$TODO: what should the warning be?
@@ -118,8 +118,8 @@ namespace Reko.Typing
                     }
                     return x;
                 }
-                var baseType = ptrSeg.Pointee.ResolveAs<StructureType>();
-                var dt = addr.TypeVariable.DataType.ResolveAs<Pointer>();
+                var baseType = ptrSeg.Pointee.ResolveAs<StructureType>()!;
+                var dt = addr.TypeVariable!.DataType.ResolveAs<Pointer>()!;
                 this.c = Constant.Create(
                     PrimitiveType.CreateWord(addr.DataType.BitSize - ptrSeg.BitSize),
                     addr.Offset);
@@ -140,14 +140,14 @@ namespace Reko.Typing
             {
                 this.c = addr.ToConstant();
                 this.c.TypeVariable = addr.TypeVariable;
-                var dtInferred = addr.TypeVariable.DataType.ResolveAs<DataType>();
+                var dtInferred = addr.TypeVariable!.DataType.ResolveAs<DataType>()!;
                 this.pOrig = addr.TypeVariable.OriginalDataType as PrimitiveType;
                 this.dereferenced = dereferenced;
                 return dtInferred.Accept(this);
             }
         }
 
-		private StructureType GlobalVars
+		private StructureType? GlobalVars
 		{
             get
             {
@@ -157,10 +157,9 @@ namespace Reko.Typing
                     {
                         return pGlob.Pointee.ResolveAs<StructureType>();
                     }
-                    pGlob = globals.DataType as Pointer;
-                    if (pGlob != null)
+                    if (globals.DataType is Pointer pGlob2)
                     {
-                        return pGlob.Pointee as StructureType;
+                        return pGlob2.Pointee as StructureType;
                     }
                 }
                 return null;
@@ -170,13 +169,12 @@ namespace Reko.Typing
         //$REVIEW: special cased code; we need to handle segments appropriately and remove this function.
         private bool IsSegmentPointer(Pointer ptr)
         {
-            EquivalenceClass eq = ptr.Pointee as EquivalenceClass;
-            if (eq == null)
+            if (!(ptr.Pointee is EquivalenceClass eq))
                 return false;
-            StructureType str = eq.DataType as StructureType;
-            if (str == null)
+            if (eq.DataType is StructureType str)
+                return str.IsSegment;
+            else
                 return false;
-            return str.IsSegment;
         }
         
         public Expression VisitArray(ArrayType at)
@@ -196,10 +194,10 @@ namespace Reko.Typing
 
         public Expression VisitEnum(EnumType e)
         {
-            var item = e.Members.FirstOrDefault(de => de.Value == c.ToInt64());
+            var item = e.Members.FirstOrDefault(de => de.Value == c!.ToInt64());
             if (item.Key != null)
                 return new Identifier(item.Key, e, RegisterStorage.None);
-            return new Cast(e, c);
+            return new Cast(e, c!);
         }
 
         public Expression VisitEquivalenceClass(EquivalenceClass eq)
@@ -221,8 +219,8 @@ namespace Reko.Typing
 			StructureType baseType = (StructureType) eq.DataType;
 			Expression baseExpr = new ScopeResolution(baseType);
 
-            var dt = memptr.Pointee.ResolveAs<DataType>();
-            var f = EnsureFieldAtOffset(baseType, dt, c.ToInt32());
+            var dt = memptr.Pointee.ResolveAs<DataType>()!;
+            var f = EnsureFieldAtOffset(baseType, dt, c!.ToInt32());
             Expression ex = new FieldAccess(memptr.Pointee, baseExpr, f);
 			if (dereferenced)
 			{
@@ -230,8 +228,7 @@ namespace Reko.Typing
 			}
 			else
 			{
-                var array = f.DataType as ArrayType;
-                if (array != null)
+                if (f.DataType is ArrayType array)
                 {
                     ex.DataType = new MemberPointer(p, array.ElementType, platform.PointerType.Size);
                 }
@@ -239,24 +236,23 @@ namespace Reko.Typing
                 {
                     ex = new UnaryExpression(Operator.AddrOf, memptr, ex);
                 }
-			}
+            }
             return ex;
 		}
 
 		public Expression VisitPointer(Pointer ptr)
 		{
-			Expression e = c;
+			Expression e = c!;
             if (IsSegmentPointer(ptr))
             {
-                Identifier segID;
-                if (mpSelectorToSegId.TryGetValue(c.ToUInt16(), out segID))
+                if (mpSelectorToSegId.TryGetValue(c!.ToUInt16(), out Identifier segID))
                     return segID;
                 return e;
             } 
             else if (GlobalVars != null)
             {
                 // Null pointer.
-                if (c.IsZero)
+                if (c!.IsZero)
                 {
                     var np = Address.Create(ptr, 0);
                     np.TypeVariable = c.TypeVariable;
@@ -280,32 +276,14 @@ namespace Reko.Typing
                     return e;
                 }
                 
-                var dt = ptr.Pointee.ResolveAs<DataType>();
+                var dt = ptr.Pointee.ResolveAs<DataType>()!;
                 var charType = MaybeCharType(dt);
-                if (charType != null && IsPtrToReadonlySection(c, dt))
+                if (charType != null && IsPtrToReadonlySection(c))
                 {
                     PromoteToCString(c, charType);
                     return ReadNullTerminatedString(c, charType);
                 }
                 e = RewriteGlobalFieldAccess(dt, c.ToInt32());
-                if (dereferenced)
-                {
-                    e.DataType = ptr.Pointee;
-                }
-                else
-                {
-                    if (e.DataType is ArrayType array) // C language rules 'promote' arrays to pointers.
-                    {
-                        e.DataType = program.TypeFactory.CreatePointer(
-                            array.ElementType, 
-                            platform.PointerType.BitSize);
-                    }
-                    else
-                    {
-                        ptr = new Pointer(e.DataType, ptr.BitSize);
-                        e = new UnaryExpression(Operator.AddrOf, ptr, e);
-                    }
-                }
             }
 			return e;
 		}
@@ -313,7 +291,7 @@ namespace Reko.Typing
         /// <summary>
         /// Drill into dt to see if it could be the beginning of a character string.
         /// </summary>
-        private PrimitiveType MaybeCharType(DataType dt)
+        private PrimitiveType? MaybeCharType(DataType dt)
         {
             var pr = dt as PrimitiveType;
             if (pr == null)
@@ -334,10 +312,10 @@ namespace Reko.Typing
             throw new NotImplementedException();
         }
 
-        private bool IsPtrToReadonlySection(Constant c, DataType dt)
+        private bool IsPtrToReadonlySection(Constant c)
         {
-            var addr = platform.MakeAddressFromConstant(c, false);
-            if (addr == null)
+            Address addr = platform.MakeAddressFromConstant(c, false);
+            if (addr == null!)
                 return false;
             if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment seg))
                 return false;
@@ -356,7 +334,7 @@ namespace Reko.Typing
             // It means that the string will be emitted "inline" in the code and not
             // as a separate global character array.
             var dt = StringType.NullTerminated(charType);
-            var field = GlobalVars.Fields.AtOffset(c.ToInt32());
+            var field = GlobalVars!.Fields.AtOffset(c.ToInt32());
             if (field != null)
             {
                 field.DataType = dt;
@@ -382,26 +360,47 @@ namespace Reko.Typing
             DataType dt,
             int offset)
         {
-            var f = GlobalVars.Fields.LowerBound(offset);
+            var f = GlobalVars!.Fields.LowerBound(offset);
             if (f == null || !IsInsideField(offset, f))
             {
                 f = new StructureField(offset, dt);
                 GlobalVars.Fields.Add(f);
             }
-            var ptrStr = new Pointer(GlobalVars, platform.PointerType.BitSize);
-            var fa = new FieldAccess(f.DataType, new Dereference(ptrStr, globals), f);
-            if (f.Offset != offset)
+            if (dereferenced || f.Offset != offset)
             {
                 var ceb = new ComplexExpressionBuilder(
-                    null, null, fa, null, offset - f.Offset);
-                return ceb.BuildComplex(false);
+                    null, null, globals, null, offset);
+                return ceb.BuildComplex(dereferenced);
             }
-            return fa;
+            //$REVIEW: We can't use ComplexExpresionBuilder to rewrite pointers to
+            // global variable. It's too aggressive now
+            // (e.g. &globals->var.ptr00.ptr00 instead of &globals->var)
+            var ptrStr = new Pointer(GlobalVars, platform.PointerType.BitSize);
+            var fa = new FieldAccess(f.DataType, new Dereference(ptrStr, globals), f);
+            return CreateAddrOf(fa, dt);
+        }
+
+        private Expression CreateAddrOf(Expression e, DataType dt)
+        {
+            if (dereferenced)
+            {
+                e.DataType = dt;
+                return e;
+            }
+            if (e.DataType is ArrayType array) // C language rules 'promote' arrays to pointers.
+            {
+                e.DataType = program.TypeFactory.CreatePointer(
+                    array.ElementType,
+                    platform.PointerType.BitSize);
+                return e;
+            }
+            var ptr = new Pointer(e.DataType, platform.PointerType.BitSize);
+            return new UnaryExpression(Operator.AddrOf, ptr, e);
         }
 
         private StructureField EnsureFieldAtOffset(StructureType str, DataType dt, int offset)
         {
-            StructureField f = str.Fields.AtOffset(offset);
+            StructureField? f = str.Fields.AtOffset(offset);
             if (f == null)
             {
                 //$TODO: overlaps and conflicts.
@@ -439,13 +438,13 @@ namespace Reko.Typing
 
 		public Expression VisitPrimitive(PrimitiveType pt)
 		{
-			if (pt.Domain == Domain.Real && (pOrig.Domain & Domain.Integer) != 0)
+			if (pt.Domain == Domain.Real && (pOrig!.Domain & Domain.Integer) != 0)
 			{
-				return(Constant.RealFromBitpattern(pt, c.ToInt64()));
+				return(Constant.RealFromBitpattern(pt, c!.ToInt64()));
 			}
 			else
 			{
-                return c;
+                return c!;
 			}
 		}
 
@@ -456,14 +455,14 @@ namespace Reko.Typing
 
 		public Expression VisitStructure(StructureType str)
 		{
-            c.TypeVariable.DataType = str;
+            c!.TypeVariable!.DataType = str;
             return c;
 		}
 
 		public Expression VisitUnion(UnionType ut)
 		{
 			// A constant can't have a union value, so we coerce it to the appropriate type.
-			UnionAlternative a = ut.FindAlternative(pOrig);
+			UnionAlternative? a = ut.FindAlternative(pOrig!);
             if (a == null)
             {
                 // This is encountered when the original type is a [[word]] but
@@ -472,7 +471,7 @@ namespace Reko.Typing
                 //$REVIEW: should emit a warning.
                 a = ut.Alternatives.Values[0];
             }
-			c.TypeVariable.DataType = a.DataType;
+			c!.TypeVariable!.DataType = a.DataType;
             return c;
 		}
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,10 +28,10 @@ namespace Reko.Evaluation
 {
 	public class Shl_mul_e_Rule
 	{
-		private Constant cShift;
-		private Constant cMul;
-		private Operator op;
-		private Expression e;
+		private Constant? cShift;
+		private Constant? cMul;
+		private Operator? op;
+		private Expression? e;
 
 		public Shl_mul_e_Rule(EvaluationContext ctx)
 		{
@@ -45,24 +45,23 @@ namespace Reko.Evaluation
 			if (cShift == null)
 				return false;
 
-			b = b.Left as BinaryExpression;
-			if (b == null)
-				return false;
+            if (!(b.Left is BinaryExpression bLeft))
+                return false;
 
-			if (b.Operator != Operator.SMul && b.Operator != Operator.UMul && b.Operator != Operator.IMul)
+            if (bLeft.Operator != Operator.SMul && bLeft.Operator != Operator.UMul && bLeft.Operator != Operator.IMul)
 				return false;
-			op = b.Operator;
-			cMul = b.Right as Constant;
+			op = bLeft.Operator;
+			cMul = bLeft.Right as Constant;
 			if (cMul == null)
 				return false;
 
-			e = b.Left;
+			e = bLeft.Left;
 			return true;
 		}
 
 		public Expression Transform()
 		{
-			return new BinaryExpression(op, e.DataType, e, Operator.Shl.ApplyConstants(cMul, cShift));
+			return new BinaryExpression(op!, e!.DataType, e, Operator.Shl.ApplyConstants(cMul!, cShift!));
 		}
 	}
 }

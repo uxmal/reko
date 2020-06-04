@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,9 +32,9 @@ namespace Reko.Evaluation
 	public class Add_mul_id_c_id_Rule
 	{
 		private EvaluationContext ctx;
-		private BinaryExpression bin;
-		private Identifier id;
-		private Constant cInner;
+		private BinaryExpression? bin;
+		private Identifier? id;
+		private Constant? cInner;
 
 		public Add_mul_id_c_id_Rule(EvaluationContext ctx)
 		{
@@ -59,9 +59,8 @@ namespace Reko.Evaluation
 			if (bin.Operator != Operator.SMul && bin.Operator != Operator.UMul && bin.Operator != Operator.IMul)
 				return false;
 
-			Identifier idInner = bin.Left as Identifier;
-			cInner = bin.Right as Constant;
-			if (idInner == null ||cInner == null)
+            cInner = bin.Right as Constant;
+            if (!(bin.Left is Identifier idInner) || cInner == null)
 				return false;
 
 			if (idInner != id)
@@ -72,8 +71,8 @@ namespace Reko.Evaluation
 
 		public Expression Transform()
 		{
-            ctx.RemoveIdentifierUse(id);
-			return new BinaryExpression(bin.Operator, id.DataType, id, Operator.IAdd.ApplyConstants(cInner, Constant.Create(cInner.DataType, 1)));
+            ctx.RemoveIdentifierUse(id!);
+			return new BinaryExpression(bin!.Operator, id!.DataType, id, Operator.IAdd.ApplyConstants(cInner!, Constant.Create(cInner!.DataType, 1)));
 		}
 	}
 }

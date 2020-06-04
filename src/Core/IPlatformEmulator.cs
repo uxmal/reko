@@ -46,8 +46,8 @@ namespace Reko.Core
         /// False otherwise.</returns>
         bool InterceptCall(IProcessorEmulator emulator, TWord calledAddress);
 
-        ImageSegment InitializeStack(IProcessorEmulator emulator, ProcessorState state);
+        ImageSegment? InitializeStack(IProcessorEmulator emulator, ProcessorState state);
 
-        void TearDownStack(ImageSegment stackSeg);
+        void TearDownStack(ImageSegment? stackSeg);
     }
 }

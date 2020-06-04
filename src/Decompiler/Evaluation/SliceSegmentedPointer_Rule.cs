@@ -42,10 +42,10 @@ namespace Reko.Evaluation
     public class SliceSegmentedPointer_Rule
     {
         private EvaluationContext ctx;
-        private SegmentedAccess segMem;
-        private Identifier seg;
-        private Identifier idOff;
-        private Identifier segPtr;
+        private SegmentedAccess? segMem;
+        private Identifier? seg;
+        private Identifier? idOff;
+        private Identifier? segPtr;
 
         public SliceSegmentedPointer_Rule(EvaluationContext ctx)
         {
@@ -89,7 +89,7 @@ namespace Reko.Evaluation
         /// <param name="seg"></param>
         /// <param name="off"></param>
         /// <returns></returns>
-        private Identifier SlicedSegPointer(Identifier seg, Identifier off)
+        private Identifier? SlicedSegPointer(Identifier seg, Identifier off)
         {
             var defSeg = ctx.GetDefiningExpression(seg) as Slice;
             var defOff = ctx.GetDefiningExpression(off) as Slice;
@@ -103,24 +103,24 @@ namespace Reko.Evaluation
 
         public Expression Transform()
         {
-            ctx.RemoveIdentifierUse(seg);
-            ctx.RemoveIdentifierUse(idOff);
+            ctx.RemoveIdentifierUse(seg!);
+            ctx.RemoveIdentifierUse(idOff!);
             Expression ea;
-            if (segMem.EffectiveAddress == idOff)
+            if (segMem!.EffectiveAddress == idOff)
             {
-                ea = segPtr;
+                ea = segPtr!;
             }
             else
             {
                 var bin = (BinaryExpression)segMem.EffectiveAddress;
                 if (bin.Left == idOff)
                 {
-                    ea = new BinaryExpression(bin.Operator, bin.DataType, segPtr, bin.Right);
+                    ea = new BinaryExpression(bin.Operator, bin.DataType, segPtr!, bin.Right);
                 }
                 else
                     throw new NotImplementedException();
             }
-            ctx.UseExpression(segPtr);
+            ctx.UseExpression(segPtr!);
             return new MemoryAccess(segMem.MemoryId, ea, segMem.DataType);
         }
     }

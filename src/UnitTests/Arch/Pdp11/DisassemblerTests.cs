@@ -46,8 +46,7 @@ namespace Reko.UnitTests.Arch.Pdp11
         private void RunTest(string expected, params ushort[] words)
         {
             var instr = RunTest(words);
-            var r = new StringRenderer();
-            r.Address = instr.Address;
+            var r = new StringRenderer(instr.Address);
             instr.Render(r, options);
             Assert.AreEqual(expected, r.ToString());
         }

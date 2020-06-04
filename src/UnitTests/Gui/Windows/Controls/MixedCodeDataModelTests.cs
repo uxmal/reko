@@ -91,10 +91,9 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
         private void Given_CodeBlock(Address addr, int size)
         {
-            imageMap.AddItem(addr, new ImageMapBlock
+            imageMap.AddItem(addr, new ImageMapBlock(addr)
             {
-                Address = addr,
-                Block = new Block(proc, NamingPolicy.Instance.BlockName(addr)),
+                Block = new Block(proc, addr, NamingPolicy.Instance.BlockName(addr)),
                 DataType = new CodeType(),
                 Size = (uint)size,
             });

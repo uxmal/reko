@@ -20,8 +20,6 @@
 
 using Reko.Core;
 using Reko.Core.Lib;
-using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -65,13 +63,13 @@ namespace Reko.Scanning
             this.host = host;
             this.storageBinder = program.Architecture.CreateFrame();
             this.eventListener = eventListener;
-            this.invalidBlock = new RtlBlock(null, "<invalid>");
+            this.invalidBlock = new RtlBlock(null!, "<invalid>");
             this.binder = program.Architecture.CreateFrame();
         }
 
         public IServiceProvider Services { get; private set; }
 
-        public ScanResults ScanImage(ScanResults sr)
+        public ScanResults? ScanImage(ScanResults sr)
         {
             // At this point, we have some entries in the image map
             // that are data, and unscanned ranges in betweeen. We
@@ -158,14 +156,14 @@ namespace Reko.Scanning
                 .Concat(program.EntryPoints
                     .Select(e => e.Key))
                 // ...and all user-specified metadata
-                .Concat(program.User.Procedures.Keys));
+                .Concat(program.User.Procedures.Keys)!);
             return procs;
         }
 
         private void RemoveInvalidBlocks(ScanResults sr)
         {
             var revGraph = new DiGraph<RtlBlock>();
-            var invalid = new RtlBlock(null, "<invalid>");
+            var invalid = new RtlBlock(null!, "<invalid>");
             revGraph.AddNode(invalid);
             foreach (var b in sr.ICFG.Nodes)
             {
@@ -203,15 +201,14 @@ namespace Reko.Scanning
             foreach (var block in hproc.Cfg.Nodes.Where(bb => bb.Instructions.Count > 0))
             {
                 var last = block.Instructions.Last();
-                var b = new Block(proc, "l" + block.Address);
+                var b = new Block(proc, block.Address, "l" + block.Address);
                 if (program.ImageMap.Items.ContainsKey(block.Address))
                     continue;
                 program.ImageMap.AddItemWithSize(
                     block.Address,
-                    new ImageMapBlock
+                    new ImageMapBlock(block.Address)
                     {
                         Block = b,
-                        Address = block.Address,
                         Size = (uint)(last.Address - block.Address) + (uint)last.Length
                     });
             }
@@ -227,10 +224,10 @@ namespace Reko.Scanning
             return this.program.ImageMap.Items
                 .Where(de => de.Value.DataType is UnknownType)
                 .Select(de => CreateUnscannedArea(de))
-                .Where(tup => tup != null);
+                .Where(tup => tup != null)!;
         }
 
-        private Tuple<MemoryArea, Address, uint> CreateUnscannedArea(KeyValuePair<Address, ImageMapItem> de)
+        private Tuple<MemoryArea, Address, uint>? CreateUnscannedArea(KeyValuePair<Address, ImageMapItem> de)
         {
             if (!this.program.SegmentMap.TryFindSegment(de.Key, out var seg))
                 return null;
@@ -254,10 +251,17 @@ namespace Reko.Scanning
             if (h.ProcedurePrologs == null || h.ProcedurePrologs.Length == 0)
                 return new Address[0];
 
-            byte[] pattern = h.ProcedurePrologs[0].Bytes;
-            var search = new AhoCorasickSearch<byte>(new[] { pattern }, true, true);
-            return search.GetMatchPositions(mem.Bytes)
-                .Select(i => mem.BaseAddress + i);
+            byte[]? pattern = h.ProcedurePrologs[0].Bytes;
+            if (pattern != null)
+            {
+                var search = new AhoCorasickSearch<byte>(new[] { pattern }, true, true);
+                return search.GetMatchPositions(mem.Bytes)
+                    .Select(i => mem.BaseAddress + i);
+            }
+            else
+            {
+                return new Address[0];
+            }
         }
 
         /// <summary>
@@ -292,7 +296,7 @@ namespace Reko.Scanning
                     .Concat(program.EntryPoints.Keys)
                     .Concat(program.ImageSymbols.Values
                         .Where(s => s.Type == SymbolType.Procedure)
-                        .Select(s => s.Address))
+                        .Select(s => s.Address!))
                     .ToSortedSet();
                 var e = possibleEntries.GetEnumerator();
                 Address aEnd = range.Item2;
@@ -319,12 +323,10 @@ namespace Reko.Scanning
         /// <returns></returns>
         public HeuristicProcedure DisassembleProcedure(Address addrStart, Address addrEnd)
         {
-            var proc = new HeuristicProcedure
-            {
-                BeginAddress = addrStart,
-                EndAddress = addrEnd,
-                Frame = program.Architecture.CreateFrame()
-            };
+            var proc = new HeuristicProcedure(
+                addrStart,
+                addrEnd,
+                program.Architecture.CreateFrame());
             var sr = new ScanResults
             {
                 ICFG = proc.Cfg,

@@ -30,7 +30,7 @@ namespace Reko.Evaluation
 	/// </summary>
 	public class SliceMem_Rule
 	{
-		private Expression b;
+		private Expression? b;
 
 		public SliceMem_Rule()
 		{
@@ -38,28 +38,25 @@ namespace Reko.Evaluation
 
 		public bool Match(Slice slice)
 		{
-			MemoryAccess acc = slice.Expression as MemoryAccess;
-			if (acc == null)
-				return false;
+            if (!(slice.Expression is MemoryAccess acc))
+                return false;
 
-			b = acc.EffectiveAddress;
+            b = acc.EffectiveAddress;
 			Constant offset = Constant.Create(b.DataType, 0);
 			BinaryOperator op = Operator.IAdd;
-			BinaryExpression ea = b as BinaryExpression;
-			if (ea != null)
-			{
-				Constant c= ea.Right as Constant;
-				if (c != null)
-				{
-					offset = c; 
-					b = ea.Left;
-				}
-			}
-			else
-			{
-				b = acc.EffectiveAddress;
-			}
-			int bitBegin = slice.Offset;
+            if (b is BinaryExpression ea)
+            {
+                if (ea.Right is Constant c)
+                {
+                    offset = c;
+                    b = ea.Left;
+                }
+            }
+            else
+            {
+                b = acc.EffectiveAddress;
+            }
+            int bitBegin = slice.Offset;
 			int bitEnd = bitBegin + slice.DataType.BitSize;
 			if (0 <= bitBegin && bitEnd <= acc.DataType.BitSize)
 			{
@@ -80,7 +77,7 @@ namespace Reko.Evaluation
 
 		public Expression Transform()
 		{
-			return b;
+			return b!;
 		}
 	}
 }

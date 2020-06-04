@@ -35,17 +35,17 @@ namespace Reko.Core.Configuration
         /// <summary>
         /// Technical name for the option.
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// Display name of the option.
         /// </summary>
-        public string Text { get; set; }
+        public string? Text { get; set; }
 
         /// <summary>
         /// Help text for the option.
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>
         /// Set to true if a non-blank value must be provided.
@@ -57,17 +57,17 @@ namespace Reko.Core.Configuration
         /// this option. This makes it possble to show custom user interfaces
         /// for options.
         /// </summary>
-        public string TypeName { get; set; }
+        public string? TypeName { get; set; }
 
         /// <summary>
         /// If non-empty, provides a fixed list of available values for the option.
         /// This list is typically displayed in a drop down list.
         /// </summary>
-        public ListOption_v1[] Choices { get; set; }
+        public ListOption_v1[] Choices { get; set; } = new ListOption_v1[0];
 
         public override string ToString()
         {
-            return Text;
+            return Text ?? "";
         }
     }
 }

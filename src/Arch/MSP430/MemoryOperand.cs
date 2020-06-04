@@ -35,6 +35,11 @@ namespace Reko.Arch.Msp430
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
+            if (Base == null)
+            {
+                writer.WriteFormat("&{0:X4}", (ushort) this.Offset);
+                return;
+            }
             if (Offset > 0)
             {
                 if (Base == Registers.pc && (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)

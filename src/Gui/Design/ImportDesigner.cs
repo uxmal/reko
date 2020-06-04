@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable enable
 
 using Reko.Core;
 using System;
@@ -39,12 +41,12 @@ namespace Reko.Gui.Design
         public override void Initialize(object obj)
         {
             base.Initialize(obj);
-            this.TreeNode.Text = Resources.Node_Imports; 
+            this.TreeNode!.Text = Resources.Node_Imports; 
         }
 
         public override void DoDefaultAction()
         {
-            Services.RequireService<IViewImportsService>().ShowImports(program);
+            Services!.RequireService<IViewImportsService>().ShowImports(program);
         }
     }
 }

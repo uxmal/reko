@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -26,20 +26,18 @@ using System.Text;
 namespace Reko.Core.Lib
 {
     /// <summary>
-    /// An extension of IEnumerator&lt;T&gt; that wraps an IEnumerator and 
+    /// An extension of <see cref="IEnumerator{T}" /> that wraps an IEnumerator and 
     /// which lets the caller peek ahead in the underlying enumeration.
     /// </summary>
     public class LookaheadEnumerator<T> : IEnumerator<T>
     {
-        private IEnumerator<T> e;
-        private List<T> peeked;
+        private readonly IEnumerator<T> e;
+        private readonly List<T> peeked;
         private int iCur;
 
         public LookaheadEnumerator(IEnumerator<T> innerEnumerator)
         {
-            if (innerEnumerator == null)
-                throw new ArgumentNullException("innerEnumerator");
-            this.e = innerEnumerator;
+            this.e = innerEnumerator ?? throw new ArgumentNullException(nameof(innerEnumerator));
             this.peeked = new List<T>();
             this.iCur = 0;
         }
@@ -50,13 +48,7 @@ namespace Reko.Core.Lib
 
         #region IEnumerator<T> Members
 
-        public T Current
-        {
-            get
-            {
-                return Peek(0);
-            }
-        }
+        public T Current => Peek(0);
 
         public void Dispose()
         {
@@ -65,7 +57,7 @@ namespace Reko.Core.Lib
 
         object System.Collections.IEnumerator.Current
         {
-            get { return Current; }
+            get { return Current!; }
         }
 
         public bool MoveNext()

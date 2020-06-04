@@ -329,7 +329,7 @@ namespace Reko.Arch.Msp430
             {
                 if (!rdr.TryReadLeInt16(out short offset))
                     return null;
-                return ImmediateOperand.Word16((ushort)offset);
+                return ImmediateOperand.Word16((ushort) offset);
             }
             else
             { 
@@ -344,20 +344,26 @@ namespace Reko.Arch.Msp430
 
         private MachineOperand Indexed(RegisterStorage reg, PrimitiveType dataWidth)
         {
+            var delta = (rdr.Address - this.addr);
             if (!rdr.TryReadLeInt16(out short offset))
                 return null;
             if (reg.Number == 2)
             {
-                return AddressOperand.Ptr16((ushort)offset);
-            }
-            else
+                // Absolute address will not use a base register.
+                reg = null;
+            } 
+            else if (reg == Registers.pc)
             {
-                return new MemoryOperand(dataWidth ?? PrimitiveType.Word16)
-                {
-                    Base = reg,
-                    Offset = offset
-                };
+                // We need to adjust the offset because we want it to be relative
+                // to the beginning of the current instruction, not to the address
+                // of the offset. 
+                offset = (short) (offset + delta);
             }
+            return new MemoryOperand(dataWidth ?? PrimitiveType.Word16)
+            {
+                Base = reg,
+                Offset = offset
+            };
         }
 
         public override Msp430Instruction CreateInvalidInstruction()

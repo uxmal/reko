@@ -147,7 +147,7 @@ Eq_233: (union "Eq_233" (int64 u0) (ui32 u1))
 	T_233 (in 320<i64> : int64)
 Eq_235: (union "Eq_235" (byte u0) (Eq_417 u1))
 	T_235 (in CC_15 : Eq_235)
-	T_243 (in cond(*r13_11 - *r2_14) : byte)
+	T_243 (in cond(Mem10[r13_11 + 0<64>:byte] - Mem10[r2_14 + 0<64>:byte]) : byte)
 	T_259 (in cond(r1_36) : byte)
 Eq_251: (union "Eq_251" (word64 u0) ((ptr32 code) u1))
 	T_251 (in r1_36 : Eq_251)
@@ -1215,7 +1215,7 @@ T_234: (in fp - 320<i64> : word64)
 T_235: (in CC_15 : Eq_235)
   Class: Eq_235
   DataType: Eq_235
-  OrigDataType: (union (bool u1) (byte u0))
+  OrigDataType: byte
 T_236: (in 0<64> : word64)
   Class: Eq_236
   DataType: word64
@@ -1244,7 +1244,7 @@ T_242: (in *r13_11 - *r2_14 : byte)
   Class: Eq_242
   DataType: byte
   OrigDataType: byte
-T_243: (in cond(*r13_11 - *r2_14) : byte)
+T_243: (in cond(Mem10[r13_11 + 0<64>:byte] - Mem10[r2_14 + 0<64>:byte]) : byte)
   Class: Eq_235
   DataType: Eq_235
   OrigDataType: byte

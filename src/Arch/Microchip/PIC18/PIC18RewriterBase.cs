@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work from:
@@ -534,7 +534,9 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
             Address retaddr = instrCurr.Address + instrCurr.Length;
             Identifier tos = binder.EnsureRegister(PIC18Registers.TOS);
-            Identifier statuss = binder.EnsureRegister(PIC18Registers.STATUS_CSHAD);
+            Identifier statuss = PIC18Registers.STATUS_CSHAD != null
+                ? binder.EnsureRegister(PIC18Registers.STATUS_CSHAD)
+                : null;
 
             var dst = PushToHWStackAccess();
             m.Assign(dst, retaddr);
@@ -983,8 +985,9 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             iclass = InstrClass.Transfer;
 
             Identifier tos = binder.EnsureRegister(PIC18Registers.TOS);
-            Identifier statuss = binder.EnsureRegister(PIC18Registers.STATUS_CSHAD);
-
+            Identifier statuss = PIC18Registers.STATUS_CSHAD != null
+                ? binder.EnsureRegister(PIC18Registers.STATUS_CSHAD)
+                : null;
             var src = PopFromHWStackAccess();
             m.Assign(tos, src);
             if (fast.IsFast && (statuss != null) && (statuss.Storage.Domain != StorageDomain.None))

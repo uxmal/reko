@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Core.CLanguage
         {
             parserState = new ParserState();
 
-            lexer = new CLexer(new StringReader(text));
+            lexer = new CLexer(new StringReader(text), CLexer.GccKeywords);
         }
 
         [Test]

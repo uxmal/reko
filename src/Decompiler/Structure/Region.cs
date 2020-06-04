@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -45,7 +45,7 @@ namespace Reko.Structure
         public Block Block { get; private set; }
         public RegionType Type { get; set; }
         public List<AbsynStatement> Statements { get; set; }
-        public Expression Expression { get; set; }
+        public Expression? Expression { get; set; }
 
         /// <summary>
         /// Return true if region consists of a single AbsynReturn statement.

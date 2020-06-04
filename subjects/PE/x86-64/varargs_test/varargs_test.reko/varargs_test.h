@@ -6188,15 +6188,15 @@ T_1433: (in -(word32) (uint64) r8->dw0008 : word32)
   Class: Eq_1433
   DataType: word32
   OrigDataType: word32
-T_1434: (in (uint64) -(word32) (uint64) r8->dw0008 : uint64)
+T_1434: (in (uint64) -SLICE((uint64) Mem5[r8 + 8<64>:word32], word32, 0) : uint64)
   Class: Eq_1434
   DataType: uint64
   OrigDataType: uint64
-T_1435: (in SLICE((uint64) -(word32) (uint64) r8->dw0008, word32, 0) : word32)
+T_1435: (in SLICE((uint64) -SLICE((uint64) Mem5[r8 + 8<64>:word32], word32, 0), word32, 0) : word32)
   Class: Eq_1435
   DataType: word32
   OrigDataType: word32
-T_1436: (in (int64) SLICE((uint64) -(word32) (uint64) r8->dw0008, word32, 0) : int64)
+T_1436: (in (int64) SLICE((uint64) -SLICE((uint64) Mem5[r8 + 8<64>:word32], word32, 0), word32, 0) : int64)
   Class: Eq_1436
   DataType: int64
   OrigDataType: int64

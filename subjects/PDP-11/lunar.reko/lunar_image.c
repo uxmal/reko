@@ -701,7 +701,7 @@ word16 fn0D3C(int16 r0, <anonymous> * ptrArg00)
 	globals->w00A0 = 225;
 	globals->w34DA = 0x00;
 	globals->w07BA = 0x00;
-	globals->a182A = 38996;
+	globals->a182A[0] = 38996;
 	globals->w182C = 0xF0A0;
 	globals->w182E = 0x00;
 	ptrArg00();
@@ -720,10 +720,10 @@ void fn0D66()
 cui16 * fn0D78(word16 * r4, cui16 * r5)
 {
 	cui16 wLoc02_n = 0x0200;
-	if (r4 <= &(globals->t021C + 484))
+	if (r4 <= (char *) (&globals->t021C) + 484)
 	{
-		r4 = (word16 *) &(globals->t021C + 483);
-		if (globals->ptr0082 == &(globals->t021C + 483))
+		r4 = (word16 *) ((char *) &globals->t021C + 483);
+		if (globals->ptr0082 == (char *) (&globals->t021C) + 483)
 			goto l0D9C;
 	}
 	if (r4 <= null)
@@ -892,8 +892,8 @@ void fn0F04(int16 r0)
 	word16 * r4_n = fn100C(*r0_n);
 	if (r4_n <= null)
 		r4_n = null;
-	else if (r4_n <= &(globals->t021C + 484))
-		r4_n = (word16 *) &(globals->t021C + 483);
+	else if (r4_n <= (char *) (&globals->t021C) + 484)
+		r4_n = (word16 *) ((char *) &globals->t021C + 483);
 	r5_n->ptr0000 = r4_n;
 	globals->ptr0082 = r4_n;
 	r5_n->w0002 = 0x8C50;

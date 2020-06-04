@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -32,22 +32,22 @@ namespace Reko.Core.Serialization
     public partial class UnpackerSignatureFile_v1
     {
         [XmlElement("ENTRY", Form = XmlSchemaForm.Unqualified)]
-        public UnpackerSignature_v1[] Signatures;
+        public UnpackerSignature_v1[]? Signatures;
     }
 
     [Serializable]
     public partial class UnpackerSignature_v1
     {
         [XmlElement(ElementName = "NAME", Form = XmlSchemaForm.Unqualified)]
-        public string Name;
+        public string? Name;
 
         [XmlElement(ElementName = "COMMENTS", Form = XmlSchemaForm.Unqualified)]
-        public string Comments;
+        public string? Comments;
 
         [XmlElement(ElementName = "ENTRYPOINT", Form = XmlSchemaForm.Unqualified)]
-        public string EntryPoint;
+        public string? EntryPoint;
 
         [XmlElement(ElementName = "ENTIREPE", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string EntirePE;
+        public string? EntirePE;
     }
 }

@@ -34,12 +34,12 @@ namespace Reko.Core.Lib
 	/// </remarks>
 	public class SccFinder<TNode>
 	{
-        private DirectedGraph<TNode> graph;
-        private Action<IList<TNode>> processScc;
-        private Action<TNode> firstVisit;
+        private readonly DirectedGraph<TNode> graph;
+        private readonly Action<IList<TNode>> processScc;
+        private readonly Action<TNode> firstVisit;
         private int nextDfs = 0;
-		private Stack<Node> stack = new Stack<Node>();
-		private Dictionary<TNode,Node> map = new Dictionary<TNode,Node>();
+		private readonly Stack<Node> stack = new Stack<Node>();
+		private readonly Dictionary<TNode,Node> map = new Dictionary<TNode,Node>();
 
         public SccFinder(DirectedGraph<TNode> graph, Action<IList<TNode>> processScc) :
             this(graph, x => { }, processScc) 
@@ -56,8 +56,7 @@ namespace Reko.Core.Lib
 
 		private Node AddNode(TNode o)
 		{
-			Node node;
-            if (!map.TryGetValue(o, out node))
+            if (!map.TryGetValue(o, out Node node))
 			{
 				node = new Node(o);
 				map[o] = node;

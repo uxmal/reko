@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -53,7 +53,7 @@ namespace Reko.Structure
 
             // Find all nodes that can be reached from the back-edge
             // predecessors by reversed edges and paint them gray.
-            foreach (var p in graph.Predecessors(entry))
+            foreach (var p in graph.Predecessors(entry!))
             {
                 if (doms.DominatesStrictly(entry, p))
                 {
@@ -74,11 +74,10 @@ namespace Reko.Structure
             // Find all gray nodes that can be visited from the suspected
             // loop entry and color them black. Black nodes belong
             // to the loop.
-            NodeColor color;
-            if (nodeColor.TryGetValue(entry, out color) &&
+            if (nodeColor.TryGetValue(entry!, out NodeColor color) &&
                 color == NodeColor.Gray)
             {
-                ForwardVisit(entry);
+                ForwardVisit(entry!);
             }
         }
 
@@ -92,7 +91,6 @@ namespace Reko.Structure
         /// <param name="node">Reference to an unvisited node.</param>
         void BackwardVisit(T node)
         {
-            Debug.Assert(node != null);
             Debug.Assert(!nodeColor.ContainsKey(node));
 
             nodeColor[node] = NodeColor.Gray;
@@ -102,7 +100,7 @@ namespace Reko.Structure
                 return;
             }
 
-            foreach (var  p in graph.Predecessors(node))
+            foreach (var p in graph.Predecessors(node))
             {
                 if (!nodeColor.ContainsKey(p))
                 {
@@ -118,7 +116,6 @@ namespace Reko.Structure
         /// <param name="node">Reference to a Gray node.</param> 
         void ForwardVisit(T node)
         {
-            Debug.Assert(node != null);
             Debug.Assert(nodeColor[node] == NodeColor.Gray);
 
             nodeColor[node] = NodeColor.Black;
@@ -126,8 +123,7 @@ namespace Reko.Structure
 
             foreach (var s in graph.Successors(node))
             {
-                NodeColor color;
-                if (nodeColor.TryGetValue(s, out color) &&
+                if (nodeColor.TryGetValue(s, out NodeColor color) &&
                     color == NodeColor.Gray)
                 {
                     ForwardVisit(s);

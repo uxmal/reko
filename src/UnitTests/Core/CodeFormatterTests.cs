@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Core
 			formatter.UseTabs = true;
             formatter.TabSize = 4;
             formatter.Indentation = 6;
-            var b = new Branch(Constant.Word32(0), new Block(null, "target"));
+            var b = new Branch(Constant.Word32(0), new Block(null, null, "target"));
 			b.Accept(cf);
 			Assert.AreEqual("\t  branch 0<32> target" + nl, sw.ToString());
 		}
@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Core
             formatter.UseTabs = false;
             formatter.TabSize = 4;
             formatter.Indentation = 6;
-            Instruction b = new Branch(Constant.Word32(0), new Block(null, "Test"));
+            Instruction b = new Branch(Constant.Word32(0), new Block(null, null, "Test"));
 			b.Accept(cf);
 			Assert.AreEqual("      branch 0<32> Test" + nl, sw.ToString());
 		}

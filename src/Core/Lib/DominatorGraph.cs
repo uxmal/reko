@@ -32,15 +32,14 @@ namespace Reko.Core.Lib
     /// </summary>
     public class DominatorGraph<T> where T : class
     {
-        private Dictionary<T, T> idoms;             // immediate dominators for each vertex.
-        private Dictionary<T, List<T>> domFrontier;
+        private readonly Dictionary<T, T?> idoms;             // immediate dominators for each vertex.
+        private readonly Dictionary<T, List<T>> domFrontier;
         private Dictionary<T, int> reversePostOrder;
-
-        private const int Undefined = -1;
 
         public DominatorGraph(DirectedGraph<T> graph, T entryNode)
         {
-            this.idoms = new Dictionary<T, T>();
+            this.idoms = new Dictionary<T, T?>();
+            this.reversePostOrder = new Dictionary<T, int>();
             this.idoms = Build(graph, entryNode);
             this.idoms[entryNode] = null;		// No-one dominates the root node.
             this.domFrontier = BuildDominanceFrontiers(graph, idoms);
@@ -73,12 +72,12 @@ namespace Reko.Core.Lib
         /// </summary>
         /// <param name="blocks"></param>
         /// <returns></returns>
-        public T CommonDominator(IEnumerable<T> blocks)
+        public T? CommonDominator(IEnumerable<T> blocks)
         {
             if (blocks == null)
                 return null;
 
-            T dominator = null;
+            T? dominator = null;
             foreach (T b in blocks)
             {
                 if (b == null)
@@ -97,7 +96,7 @@ namespace Reko.Core.Lib
                     {
                         do
                         {
-                            dominator = ImmediateDominator(dominator);
+                            dominator = ImmediateDominator(dominator!);
                         } while (!DominatesStrictly(dominator, b));
                     }
                 }
@@ -110,10 +109,9 @@ namespace Reko.Core.Lib
             return domFrontier[node];
         }
 
-        public bool DominatesStrictly(T dominator, T d)
+        public bool DominatesStrictly(T? dominator, T d)
         {
-            T iDom;
-            while (idoms.TryGetValue(d, out iDom) && iDom != null)
+            while (idoms.TryGetValue(d, out T? iDom) && iDom != null)
             {
                 if (iDom == dominator)
                     return true;
@@ -122,19 +120,18 @@ namespace Reko.Core.Lib
             return false;
         }
 
-        public T ImmediateDominator(T node)
+        public T? ImmediateDominator(T node)
         {
-            T idom;
-            if (idoms.TryGetValue(node, out idom))
+            if (idoms.TryGetValue(node, out T? idom))
                 return idom;
-            return default(T);
+            return default;
         }
 
         // Postdominators:
         // Providing Static Timing Anlaysis Support for an ARM7 Processor Platform
         // http://www.lib.ncsu.edu/theses/available/etd-05022008-163037/unrestricted/etd.pdf
 
-        private Dictionary<T, T> Build(DirectedGraph<T> graph, T entryNode)
+        private Dictionary<T, T?> Build(DirectedGraph<T> graph, T entryNode)
         {
             idoms[entryNode] = entryNode;
             reversePostOrder = ReversePostorderNumbering(graph);
@@ -152,7 +149,7 @@ namespace Reko.Core.Lib
                 {
                     if (b == entryNode)
                         continue;
-                    T newIdom = null;
+                    T? newIdom = null;
                     foreach (T p in graph.Predecessors(b))
                     {
                         if (idoms.ContainsKey(p))
@@ -166,8 +163,7 @@ namespace Reko.Core.Lib
                         }
                     }
 
-                    T oldIdom;
-                    if ((!idoms.TryGetValue(b, out oldIdom) || oldIdom != newIdom) && newIdom != null)
+                    if ((!idoms.TryGetValue(b, out T? oldIdom) || oldIdom != newIdom) && newIdom != null)
                     {
                         idoms[b] = newIdom;
                         changed = true;
@@ -177,7 +173,7 @@ namespace Reko.Core.Lib
             return idoms;
         }
 
-        private Dictionary<T, List<T>> BuildDominanceFrontiers(DirectedGraph<T> graph, Dictionary<T,T> idoms)
+        private Dictionary<T, List<T>> BuildDominanceFrontiers(DirectedGraph<T> graph, Dictionary<T,T?> idoms)
         {
             Dictionary<T, List<T>> fronts = new Dictionary<T, List<T>>();
             foreach (T node in graph.Nodes)
@@ -192,7 +188,7 @@ namespace Reko.Core.Lib
                     continue;
                 foreach (T p in pred)
                 {
-                    T r = p;
+                    T? r = p;
                     while (r != null && r != idoms[bb])
                     {
                         // Add b to the dominance frontier of r.
@@ -216,26 +212,26 @@ namespace Reko.Core.Lib
             Debug.Write(sw.ToString());
         }
 
-        private T Intersect(Dictionary<T, T> postdoms, T b1, T b2)
+        private T? Intersect(Dictionary<T, T?> postdoms, T b1, T b2)
         {
-            T i1 = b1;
-            T i2 = b2;
+            T? i1 = b1;
+            T? i2 = b2;
             int c = 0;
             while (i1 != i2)
             {
-                while (reversePostOrder[i1] > reversePostOrder[i2])
+                while (reversePostOrder[i1!] > reversePostOrder[i2!])
                 {
                     ++c;
                     if (c > 100000)
                         throw new ApplicationException("Dominator graph calculation timed out.");
-                    i1 = postdoms[i1];
+                    i1 = postdoms[i1!];
                 }
-                while (reversePostOrder[i2] > reversePostOrder[i1])
+                while (reversePostOrder[i2!] > reversePostOrder[i1!])
                 {
                     ++c;
                     if (c > 100000)
                         throw new ApplicationException("Dominator graph calculation timed out.");
-                    i2 = postdoms[i2];
+                    i2 = postdoms[i2!];
                 }
             }
             return i1;
@@ -243,13 +239,13 @@ namespace Reko.Core.Lib
 
         public void Write(TextWriter writer)
         {
-            var blocks = new SortedDictionary<string, T>();
-            foreach (KeyValuePair<T,T> node in idoms)
+            var blocks = new SortedDictionary<string, T?>();
+            foreach (KeyValuePair<T,T?> node in idoms)
             {
                 blocks.Add(node.Key.ToString(), node.Value);
             }
 
-            foreach (KeyValuePair<string,T> b in blocks)
+            foreach (KeyValuePair<string,T?> b in blocks)
             {
                 writer.WriteLine("{0}: idom {1}", b.Key, b.Value);
             }

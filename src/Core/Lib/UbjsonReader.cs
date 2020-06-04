@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -29,7 +29,7 @@ namespace Reko.Core.Lib
 {
     public class UbjsonReader
     {
-        private Stream stm;
+        private readonly Stream stm;
 
         /// <summary>
         /// Convenience constructor. Wraps the byte array into a stream
@@ -44,7 +44,7 @@ namespace Reko.Core.Lib
             this.stm = stm;
         }
 
-        public object Read()
+        public object? Read()
         {
             int n = stm.ReadByte();
             if (n < 0)
@@ -53,7 +53,7 @@ namespace Reko.Core.Lib
             return Read((UbjsonMarker)n);
         }
 
-        private object Read(UbjsonMarker m)
+        private object? Read(UbjsonMarker m)
         {
             for (;;)
             {
@@ -113,15 +113,15 @@ namespace Reko.Core.Lib
         }
 
         private uint ReadLength(UbjsonMarker m)
-        { 
-            switch(m)
+        {
+            return m switch
             {
-            case UbjsonMarker.Int8: return (byte)ReadInteger(stm, 1);
-            case UbjsonMarker.UInt8: return (byte)ReadInteger(stm, 1);
-            case UbjsonMarker.Int16: return (ushort)ReadInteger(stm, 2);
-            case UbjsonMarker.Int32: return (uint)ReadInteger(stm, 4);
-            }
-            throw new NotSupportedException();
+                UbjsonMarker.Int8 => (byte) ReadInteger(stm, 1),
+                UbjsonMarker.UInt8 => (byte) ReadInteger(stm, 1),
+                UbjsonMarker.Int16 => (ushort) ReadInteger(stm, 2),
+                UbjsonMarker.Int32 => (uint) ReadInteger(stm, 4),
+                _ => throw new NotSupportedException(),
+            };
         }
 
         private string ReadString()
@@ -162,7 +162,7 @@ namespace Reko.Core.Lib
             else
             {
                 // Unoptimized array == ArrayList.
-                var array = new List<object>();
+                var array = new List<object?>();
                 while (m != UbjsonMarker.ArrayEnd)
                 {
                     array.Add(Read(m));
@@ -175,7 +175,7 @@ namespace Reko.Core.Lib
             }
         }
 
-        private static Dictionary<UbjsonMarker, Func<Stream, int, object>> mpTypeArrayReader =
+        private static readonly Dictionary<UbjsonMarker, Func<Stream, int, object>> mpTypeArrayReader =
             new Dictionary<UbjsonMarker, Func<Stream, int, object>>
         {
             { UbjsonMarker.UInt8, ReadByteArray },
@@ -199,10 +199,10 @@ namespace Reko.Core.Lib
             return arr;
         }
 
-        private object ReadObject()
+        private object? ReadObject()
         {
             // Unoptimized object
-            var dict = new Dictionary<string, object>();
+            var dict = new Dictionary<string, object?>();
             for (;;)
             {
                 var n = stm.ReadByte();

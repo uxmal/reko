@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -29,6 +29,16 @@ namespace Reko.Scanning
 {
     public class HeuristicProcedure
     {
+        public HeuristicProcedure(
+            Address addrBegin,
+            Address addrEnd,
+            Frame frame)
+        {
+            this.BeginAddress = addrBegin;
+            this.EndAddress = addrEnd;
+            this.Frame = frame;
+        }
+        
         public DiGraph<RtlBlock> Cfg = new DiGraph<RtlBlock>();
         public Frame Frame;
 

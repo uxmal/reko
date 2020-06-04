@@ -405,7 +405,7 @@ namespace Reko.UnitTests.Scanning
             var di = new Identifier("di", Registers.di.DataType, Registers.di);
             var bw = new Backwalker<Block, Instruction>(host, new RtlGoto(new MemoryAccess(di, di.DataType), InstrClass.Transfer),
                 new ExpressionSimplifier(map, state, new FakeDecompilerEventListener()));
-            var instrs = new StatementList(new Block(null, "foo"));
+            var instrs = new StatementList(new Block(null, null, "foo"));
             bw.BackwalkInstructions(Registers.di, new Instruction[] {
                 new Assignment(di, new BinaryExpression(Operator.IAdd, di.DataType, di, Constant.Word16(1)))
                 });

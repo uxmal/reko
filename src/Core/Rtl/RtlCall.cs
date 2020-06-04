@@ -49,7 +49,7 @@ namespace Reko.Core.Rtl
             Expression target,
             byte stackPushedReturnAddressSize,
             InstrClass rtlClass,
-            IProcessorArchitecture arch = null) : base(target, rtlClass)
+            IProcessorArchitecture? arch = null) : base(target, rtlClass)
         {
             Debug.Assert((rtlClass & (InstrClass.Call | InstrClass.Transfer)) != 0);
             this.ReturnAddressSize = stackPushedReturnAddressSize;
@@ -59,7 +59,7 @@ namespace Reko.Core.Rtl
         /// <summary>
         /// If set, indicates the processor architecture to switch to.
         /// </summary>
-        public IProcessorArchitecture Architecture { get; }
+        public IProcessorArchitecture? Architecture { get; }
 
         /// <summary>
         /// The size in bytes of the return address. Some architectures don't 

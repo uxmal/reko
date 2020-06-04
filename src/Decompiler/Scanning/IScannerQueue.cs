@@ -27,8 +27,8 @@ namespace Reko.Scanning
     {
         void EnqueueImageSymbol(ImageSymbol sym, bool isEntryPoint);
         void EnqueueProcedure(IProcessorArchitecture arch, Address addr);
-        void EnqueueUserProcedure(IProcessorArchitecture arch, Address addr, FunctionType sig, string name);
-        void EnqueueUserGlobalData(Address addr, DataType dt, string name);
+        void EnqueueUserProcedure(IProcessorArchitecture arch, Address addr, FunctionType sig, string? name);
+        void EnqueueUserGlobalData(Address addr, DataType dt, string? name);
 
         //$REVIEW: these methods don't belong here. 
         // Callers should use DecompilerEventListener or IRewriterHost.

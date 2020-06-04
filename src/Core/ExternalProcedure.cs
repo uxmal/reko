@@ -38,7 +38,7 @@ namespace Reko.Core
             this.Signature = signature ?? throw new ArgumentNullException(nameof(signature), $"External procedure {name} must have a signature.");
         }
 
-        public ExternalProcedure(string name, FunctionType signature, ProcedureCharacteristics chars) : base(name)
+        public ExternalProcedure(string name, FunctionType signature, ProcedureCharacteristics? chars) : base(name)
         {
             this.Signature = signature ?? throw new ArgumentNullException(nameof(signature));
             this.Characteristics = chars;

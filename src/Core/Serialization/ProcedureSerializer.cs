@@ -34,7 +34,7 @@ namespace Reko.Core.Serialization
     public sealed class ProcedureSerializer
 	{
         private readonly IPlatform platform;
-        private ArgumentDeserializer argDeser;
+        private ArgumentDeserializer? argDeser;
 
         public ProcedureSerializer(
             IPlatform platform, 
@@ -85,7 +85,7 @@ namespace Reko.Core.Serialization
         /// <param name="ss"></param>
         /// <param name="frame"></param>
         /// <returns></returns>
-        public FunctionType Deserialize(SerializedSignature ss, Frame frame)
+        public FunctionType? Deserialize(SerializedSignature? ss, Frame frame)
         {
             if (ss == null)
                 return null;
@@ -106,7 +106,7 @@ namespace Reko.Core.Serialization
 
             var parameters = new List<Identifier>();
 
-            Identifier ret = null;
+            Identifier? ret = null;
             if (UseUserSpecifiedStorages(ss))
             {
                 this.argDeser = new ArgumentDeserializer(
@@ -120,7 +120,7 @@ namespace Reko.Core.Serialization
                 FpuStackOffset = 0;
                 if (ss.ReturnValue != null)
                 {
-                    ret = DeserializeArgument(ss.ReturnValue, -1, "");
+                    ret = DeserializeArgument(ss.ReturnValue, "");
                     fpuDelta += FpuStackOffset;
                 }
 
@@ -130,7 +130,7 @@ namespace Reko.Core.Serialization
                     for (int iArg = 0; iArg < ss.Arguments.Length; ++iArg)
                     {
                         var sArg = ss.Arguments[iArg];
-                        var arg = DeserializeArgument(sArg, iArg, ss.Convention);
+                        var arg = DeserializeArgument(sArg, ss.Convention);
                         if (arg != null)
                         {
                             parameters.Add(arg);
@@ -139,11 +139,9 @@ namespace Reko.Core.Serialization
                 }
                 fpuDelta -= FpuStackOffset;
                 FpuStackOffset = fpuDelta;
-                var sig = new FunctionType(ret, parameters.ToArray())
-                {
-                    IsVariadic = this.IsVariadic,
-                    IsInstanceMetod = ss.IsInstanceMethod,
-                };
+                var sig = FunctionType.Create(ret, parameters.ToArray());
+                sig.IsVariadic = this.IsVariadic;
+                sig.IsInstanceMetod = ss.IsInstanceMethod;
                 ApplyConvention(ss, sig);
                 return sig;
             }
@@ -158,7 +156,7 @@ namespace Reko.Core.Serialization
                 var dtParameters = ss.Arguments != null
                     ? ss.Arguments
                         .TakeWhile(p => p.Name != "...")
-                        .Select(p => p.Type.Accept(TypeLoader))
+                        .Select(p => p.Type!.Accept(TypeLoader))
                         .ToList()
                     : new List<DataType>();
 
@@ -180,12 +178,14 @@ namespace Reko.Core.Serialization
                 cc.Generate(res, dtRet, dtThis, dtParameters);
                 if (res.Return != null)
                 {
-                    var retReg = res.Return as RegisterStorage;
-                    ret = new Identifier(retReg != null ? retReg.Name : "", dtRet, res.Return);
+                    ret = new Identifier(
+                        res.Return is RegisterStorage retReg ? retReg.Name : "",
+                        dtRet ?? VoidType.Instance,
+                        res.Return);
                 }
                 if (res.ImplicitThis != null)
                 {
-                    var param = new Identifier("this", dtThis, res.ImplicitThis);
+                    var param = new Identifier("this", dtThis!, res.ImplicitThis);
                     parameters.Add(param);
                 }
                 bool isVariadic = false;
@@ -205,16 +205,14 @@ namespace Reko.Core.Serialization
                         }
                     }
                 }
-                var ft = new FunctionType(ret, parameters.ToArray())
-                {
-                    IsInstanceMetod = ss.IsInstanceMethod,
-                    StackDelta = ss.StackDelta != 0
+                var ft = FunctionType.Create(ret, parameters.ToArray());
+                ft.IsInstanceMetod = ss.IsInstanceMethod;
+                ft.StackDelta = ss.StackDelta != 0
                         ? ss.StackDelta
-                        : res.StackDelta,
-                    FpuStackDelta = res.FpuStackDelta,
-                    ReturnAddressOnStack = retAddrSize,
-                    IsVariadic = isVariadic,
-                };
+                        : res.StackDelta;
+                ft.FpuStackDelta = res.FpuStackDelta;
+                ft.ReturnAddressOnStack = retAddrSize;
+                ft.IsVariadic = isVariadic;
                 return ft;
             }
         }
@@ -237,10 +235,10 @@ namespace Reko.Core.Serialization
             return true;
         }
 
-        private string GenerateParameterName(string name, DataType dataType, Storage storage)
+        private string GenerateParameterName(string? name, DataType dataType, Storage storage)
         {
             if (!string.IsNullOrEmpty(name))
-                return name;
+                return name!;
             switch (storage)
             {
             case RegisterStorage reg:
@@ -262,13 +260,14 @@ namespace Reko.Core.Serialization
                 ssig.ParametersValid = false;
                 return ssig;
             }
+            var parameters = sig.Parameters!;
             var argSer = new ArgumentSerializer(Architecture);
             ssig.ReturnValue = argSer.Serialize(sig.ReturnValue);
-            ssig.Arguments = new Argument_v1[sig.Parameters.Length];
-            for (int i = 0; i < sig.Parameters.Length; ++i)
+            ssig.Arguments = new Argument_v1[parameters.Length];
+            for (int i = 0; i < parameters.Length; ++i)
             {
-                Identifier formal = sig.Parameters[i];
-                ssig.Arguments[i] = argSer.Serialize(formal);
+                Identifier formal = parameters[i];
+                ssig.Arguments[i] = argSer!.Serialize(formal)!;
             }
             ssig.StackDelta = sig.StackDelta;
             ssig.FpuStackDelta = sig.FpuStackDelta;
@@ -294,14 +293,14 @@ namespace Reko.Core.Serialization
         /// <param name="idx"></param>
         /// <param name="convention"></param>
         /// <returns></returns>
-        public Identifier DeserializeArgument(Argument_v1 arg, int idx, string convention)
+        public Identifier? DeserializeArgument(Argument_v1 arg, string? convention)
         {
             var kind = arg.Kind;
             if (kind == null)
             {
                 kind = new StackVariable_v1();
             }
-            return argDeser.Deserialize(arg, kind);
+            return argDeser!.Deserialize(arg, kind);
         }
     }
 }

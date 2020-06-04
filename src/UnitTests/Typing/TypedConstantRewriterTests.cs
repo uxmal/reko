@@ -63,8 +63,10 @@ namespace Reko.UnitTests.Typing
 			TypeVariable tvGlobals = store.EnsureExpressionTypeVariable(factory, globals);
 			EquivalenceClass eqGlobals = new EquivalenceClass(tvGlobals);
 			eqGlobals.DataType = s;
-			globals.TypeVariable.DataType = new Pointer(eqGlobals, 32);
-			globals.DataType = globals.TypeVariable.DataType;
+            var globalsPtr = new Pointer(eqGlobals, 32);
+            globals.TypeVariable.DataType = globalsPtr;
+            globals.TypeVariable.OriginalDataType = globalsPtr;
+            globals.DataType = globalsPtr;
 		}
 
         private void Given_TypedConstantRewriter()
@@ -173,6 +175,27 @@ namespace Reko.UnitTests.Typing
             c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
             var e = tcr.Rewrite(c, false);
             Assert.AreEqual("&globals->t100100.r0004", e.ToString());
+        }
+
+        [Test]
+        public void Tcr_RewriteDereferecedFirstStructField()
+        {
+            Given_TypedConstantRewriter();
+            var str = new StructureType
+            {
+                Fields =
+                {
+                    { 0, PrimitiveType.Int32 },
+                    { 4, PrimitiveType.Real32 },
+                },
+            };
+            Given_Global(0x00100100, str);
+            var c = Constant.Word32(0x00100100);
+            store.EnsureExpressionTypeVariable(factory, c);
+            c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
+            c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
+            var e = tcr.Rewrite(c, true);
+            Assert.AreEqual("globals->t100100.dw0000", e.ToString());
         }
 
         private void Given_String(string str, uint addr)

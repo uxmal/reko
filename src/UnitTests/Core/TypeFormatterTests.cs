@@ -302,21 +302,18 @@ struct a {
         [Test]
         public void TyfoClass_Simple()
         {
-            var ct = new ClassType();
-            ct.Name = "TestClass";
-            ct.Fields.Add(new ClassField
+            var ct = new ClassType("TestClass");
+            ct.Fields.Add(new ClassField(PrimitiveType.Int32)
             {
                 Protection = ClassProtection.Private,
                 Offset = 4,
                 Name = "m_n0004",
-                DataType = PrimitiveType.Int32
             });
-            ct.Fields.Add(new ClassField
+            ct.Fields.Add(new ClassField(new Pointer(ct, 32))
             {
                 Protection = ClassProtection.Private,
                 Offset = 8,
                 Name = "m_ptr0008",
-                DataType = new Pointer(ct, 32),
             });
 
             ct.Methods.Add(new ClassMethod

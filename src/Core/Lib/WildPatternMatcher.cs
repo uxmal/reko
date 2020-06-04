@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -46,7 +46,7 @@ namespace Reko.Core.Lib
         {
             var sa = new SuffixArray<char>(T.ToCharArray());
             int[] permitted = new int[T.Length];
-            Tuple<string[], int[]> pat = splitPattern(P);
+            Tuple<string[], int[]> pat = SplitPattern(P);
             var l = pat.Item1.Length;
             var Val = new int[l];
             Val[0] = 0;
@@ -74,7 +74,7 @@ namespace Reko.Core.Lib
         public IEnumerable<int> FindIdcp(string T, string P)
         {
             var sa = new SuffixArray<char>(T.ToCharArray());
-            Tuple<string[], int[]> pat = splitPattern(P);
+            Tuple<string[], int[]> pat = SplitPattern(P);
             var l = pat.Item1.Length;
             var Val = new int[l];
             Val[0] = 0;
@@ -93,8 +93,7 @@ namespace Reko.Core.Lib
                 foreach (var r in occ_Pi)
                 {
                     int r_val = r - Val[i];
-                    int c;
-                    if (permitted.TryGetValue(r_val, out c))
+                    if (permitted.TryGetValue(r_val, out int c))
                     {
                         ++c;
                         permitted[r_val] = c;
@@ -106,7 +105,7 @@ namespace Reko.Core.Lib
             return occ_P;
         }
 
-        private Tuple<string[], int[]> splitPattern(string P)
+        private Tuple<string[], int[]> SplitPattern(string P)
         {
             var Ps = new List<string>();
             var Pi = new StringBuilder();

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,8 +29,8 @@ namespace Reko.Typing
 	/// </summary>
 	public class UnionPointersStructuresMatcher
 	{
-		private List<EquivalenceClass> eqClasses;
-		private List<StructureType> strs;
+		private readonly List<EquivalenceClass> eqClasses;
+		private readonly List<StructureType> strs;
         private int pointerBitSize;
 
 
@@ -45,22 +45,19 @@ namespace Reko.Typing
             int structureSize = 0;
 			foreach (UnionAlternative a in ut.Alternatives.Values)
 			{
-				Pointer p = a.DataType as Pointer;
-				if (p == null)
-					return false;
+                if (!(a.DataType is Pointer p))
+                    return false;
 
                 if (pointerBitSize == 0)
                     pointerBitSize = p.BitSize;
                 else if (pointerBitSize != p.BitSize)
                     return false;
 
-				EquivalenceClass eq = p.Pointee as EquivalenceClass;
-				if (eq == null)
-					return false;
+                if (!(p.Pointee is EquivalenceClass eq))
+                    return false;
 
-				StructureType s = eq.DataType as StructureType;
-				if (s == null)
-					return false;
+                if (!(eq.DataType is StructureType s))
+                    return false;
 
                 if (structureSize == 0)
                     structureSize = s.Size;

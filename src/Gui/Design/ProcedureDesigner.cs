@@ -18,14 +18,13 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
-using Reko.Core.Expressions;
-using Reko.Gui;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
-using System.Text;
 using Procedure_v1 = Reko.Core.Serialization.Procedure_v1;
 
 namespace Reko.Gui.Design
@@ -34,14 +33,14 @@ namespace Reko.Gui.Design
     {
         private Program program;
         private Procedure procedure;
-        private string name;
-        private Procedure_v1 userProc;
+        private string? name;
+        private Procedure_v1? userProc;
         private bool isEntryPoint;
 
         public ProcedureDesigner(
             Program program,
             Procedure procedure,
-            Procedure_v1 userProc,
+            Procedure_v1? userProc,
             Address address,
             bool isEntryPoint)
         {
@@ -52,7 +51,7 @@ namespace Reko.Gui.Design
             this.Address = address;
             this.isEntryPoint = isEntryPoint;
             if (userProc != null && !string.IsNullOrEmpty(userProc.Name))
-                this.name = userProc.Name;
+                this.name = userProc.Name!;
             else if (procedure != null)
                 this.name = procedure.Name;
             if (procedure != null)
@@ -81,7 +80,7 @@ namespace Reko.Gui.Design
 
         public override void DoDefaultAction()
         {
-            Services.RequireService<ICodeViewerService>().DisplayProcedure(program, procedure, program.NeedsScanning);
+            Services!.RequireService<ICodeViewerService>().DisplayProcedure(program, procedure, program.NeedsScanning);
         }
 
         public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
@@ -91,11 +90,15 @@ namespace Reko.Gui.Design
                 switch (cmdId.ID)
                 {
                 case CmdIds.ViewGoToAddress:
-                case CmdIds.ViewFindWhatPointsHere:
                 case CmdIds.ActionEditSignature:
                 case CmdIds.EditRename:
-                case CmdIds.ShowProcedureCallHierarchy:
                     status.Status = MenuStatus.Visible | MenuStatus.Enabled;
+                    return true;
+                case CmdIds.ViewFindWhatPointsHere:
+                case CmdIds.ShowProcedureCallHierarchy:
+                    status.Status = MenuStatus.Visible;
+                    if (procedure != null)
+                        status.Status |= MenuStatus.Enabled;
                     return true;
                 case CmdIds.ActionAssumeRegisterValues:
                     status.Status = MenuStatus.Visible | MenuStatus.Enabled;
@@ -112,13 +115,13 @@ namespace Reko.Gui.Design
                 switch (cmdId.ID)
                 {
                 case CmdIds.ViewGoToAddress:
-                    Services.RequireService<ILowLevelViewService>().ShowMemoryAtAddress(program, Address);
+                    Services!.RequireService<ILowLevelViewService>().ShowMemoryAtAddress(program, Address);
                     return true;
                 case CmdIds.ActionEditSignature:
                     EditSignature();
                     return true;
                 case CmdIds.ShowProcedureCallHierarchy:
-                    Services.RequireService<ICallHierarchyService>().Show(program, procedure);
+                    Services!.RequireService<ICallHierarchyService>().Show(program, procedure);
                     return true;
                 case CmdIds.ActionAssumeRegisterValues:
                     AssumeRegisterValues();
@@ -136,12 +139,12 @@ namespace Reko.Gui.Design
 
         private void EditSignature()
         {
-            Services.RequireService<ICommandFactory>().EditSignature(program, procedure, Address).Do();
+            Services!.RequireService<ICommandFactory>().EditSignature(program, procedure, Address).Do();
         }
 
         private void ViewWhatPointsHere()
         {
-            var resultSvc = Services.GetService<ISearchResultService>();
+            var resultSvc = Services!.GetService<ISearchResultService>();
             if (resultSvc == null)
                 return;
             var arch = procedure.Architecture;
@@ -154,12 +157,7 @@ namespace Reko.Gui.Design
                 },
                 PointerScannerFlags.All);
             resultSvc.ShowAddressSearchResults(
-                addrControl.Select(a => new AddressSearchHit
-                {
-                    Program = program,
-                    Address = a,
-                    Length = 1
-                }),
+                addrControl.Select(a => new AddressSearchHit(program, a, 1)),
                 new CodeSearchDetails());
         }
 
@@ -169,8 +167,8 @@ namespace Reko.Gui.Design
 
         private void AssumeRegisterValues()
         {
-            var dlgFactory = Services.RequireService<IDialogFactory>();
-            var uiSvc = Services.RequireService<IDecompilerShellUiService>();
+            var dlgFactory = Services!.RequireService<IDialogFactory>();
+            var uiSvc = Services!.RequireService<IDecompilerShellUiService>();
             using (var dlg = dlgFactory.CreateAssumedRegisterValuesDialog(program.Architecture))
             {
                 dlg.Values = GetAssumedRegisterValues(Address);
@@ -192,13 +190,13 @@ namespace Reko.Gui.Design
             return up.Assume
                 .Select(ass => new
                 {
-                    Register = program.Architecture.GetRegister(ass.Register),
+                    Register = program.Architecture.GetRegister(ass.Register!),
                     Value = ass.Value
                 })
                 .Where(ass => ass.Register != null)
                 .ToDictionary(
                     ass => ass.Register,
-                    ass => ass.Value);
+                    ass => ass.Value!);
         }
 
         private void SetAssumedRegisterValues(Address Address, Dictionary<RegisterStorage, string> dictionary)
@@ -207,7 +205,7 @@ namespace Reko.Gui.Design
                 this.Address,
                 procedure != null
                     ? procedure.Name
-                    : userProc.Name);
+                    : userProc?.Name);
             userProc.Assume = dictionary
                 .Select(de => new Core.Serialization.RegisterValue_v2
                 {

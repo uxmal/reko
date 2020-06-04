@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -34,15 +34,15 @@ namespace Reko.Core.Serialization
     public class CharacteristicsLibrary_v1
     {
         [XmlElement("entry")]
-        public Entry[] Entries;
+        public Entry[]? Entries;
 
         public class Entry
         {
             [XmlAttribute("name")]
-            public string ProcedureName;
+            public string? ProcedureName;
 
             [XmlElement("characteristics")]
-            public ProcedureCharacteristics Characteristics;
+            public ProcedureCharacteristics? Characteristics;
         }
     }
 }

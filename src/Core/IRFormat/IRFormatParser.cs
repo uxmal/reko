@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -29,12 +29,13 @@ namespace Reko.Core.IRFormat
 {
     public class IRFormatParser
     {
-        private IRFormatLexer lex;
+        private readonly IRFormatLexer lex;
         private Program program;
 
         public IRFormatParser(TextReader rdr)
         {
             this.lex = new IRFormatLexer(rdr);
+            this.program = new Program();
         }
 
         public Program Parse()

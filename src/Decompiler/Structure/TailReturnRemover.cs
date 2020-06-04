@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -47,7 +47,7 @@ namespace Reko.Structure
             if (!proc.Signature.HasVoidReturn)
                 return;
             var stmts = proc.Body;
-            RemoveRedundantReturn(stmts);
+            RemoveRedundantReturn(stmts!);
         }
 
         public bool VisitAssignment(AbsynAssignment ass)

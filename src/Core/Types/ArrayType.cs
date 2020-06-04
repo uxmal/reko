@@ -45,7 +45,7 @@ namespace Reko.Core.Types
             return v.VisitArray(this);
         }
 
-        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
+        public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
 		{
             return new ArrayType(ElementType, Length) { Qualifier = this.Qualifier };
 		}

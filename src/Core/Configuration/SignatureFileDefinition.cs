@@ -28,10 +28,10 @@ namespace Reko.Core.Configuration
 {
     public class SignatureFileDefinition
     {
-        public string Filename { get; set; }
+        public string? Filename { get; set; }
 
-        public string Label { get; set; }
+        public string? Label { get; set; }
 
-        public string Type { get; set; }
+        public string? Type { get; set; }
     }
 }

@@ -92,9 +92,15 @@ namespace Reko.Core
 
         public static Address FromConstant(Constant value)
         {
-            switch (value.DataType.BitSize)
+            Address addr;
+            int bitSize = value.DataType.BitSize;
+            switch (bitSize)
             {
             case 16: return Ptr16(value.ToUInt16());
+            case 20: 
+                addr = Ptr32(value.ToUInt32());
+                addr.DataType = PrimitiveType.Create(Domain.Pointer, bitSize);
+                return addr;
             case 32: return Ptr32(value.ToUInt32());
             case 64: return Ptr64(value.ToUInt64());
             default: throw new NotImplementedException();
@@ -134,21 +140,21 @@ namespace Reko.Core
 
         public abstract string GenerateName(string prefix, string suffix);
 
-        public static bool operator ==(Address a, Address b)
+        public static bool operator ==(Address? a, Address? b)
         {
-            if ((object)a == null)
-                return ((object)b == null);
-            if ((object)b == null)
-                return ((object)a == null);
+            if (a is null)
+                return (b is null);
+            if (b is null)
+                return (a is null);
             return a.ToLinear() == b.ToLinear();
         }
 
-        public static bool operator !=(Address a, Address b)
+        public static bool operator !=(Address? a, Address? b)
         {
-            if ((object)a == null)
-                return ((object)b != null);
-            if ((object)b == null)
-                return ((object)a != null);
+            if (a is null)
+                return !(b is null);
+            if (b is null)
+                return !(a is null);
             return a.ToLinear() != b.ToLinear();
         }
 
@@ -203,8 +209,7 @@ namespace Reko.Core
 
 		public int CompareTo(object a)
 		{
-            var that = a as Address;
-            if (that == null)
+            if (!(a is Address that))
                 return 1;
             return this.ToLinear().CompareTo(that.ToLinear());
 		}
@@ -220,7 +225,7 @@ namespace Reko.Core
 		/// <param name="s">The string representation of the Address</param>
 		/// <param name="radix">The radix used in the  representation, typically 16 for hexadecimal address representation.</param>
 		/// <returns></returns>
-        public static bool TryParse16(string s, out Address result)
+        public static bool TryParse16(string? s, out Address result)
         {
             if (s != null)
             {
@@ -231,11 +236,11 @@ namespace Reko.Core
                 }
                 catch { }
             }
-            result = null;
+            result = null!;
             return false;
         }
 
-        public static bool TryParse32(string s, out Address result)
+        public static bool TryParse32(string? s, out Address result)
         {
             if (s != null)
             {
@@ -246,11 +251,11 @@ namespace Reko.Core
                 }
                 catch { }
             }
-            result = null;
+            result = default!;
             return false;
         }
 
-        public static bool TryParse64(string s, out Address result)
+        public static bool TryParse64(string? s, out Address result)
         {
             if (s != null)
             {
@@ -261,7 +266,7 @@ namespace Reko.Core
                 }
                 catch { }
             }
-            result = null;
+            result = default!;
             return false;
         }
 

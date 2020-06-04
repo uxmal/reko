@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,17 +30,17 @@ namespace Reko.Core.Types
 	/// </summary>
 	public class TypeVariable : DataType
 	{
-		private int number;
-		private DataType dtOriginal;
+		private DataType? dtOriginal;
+        private EquivalenceClass? eqClass;
 
 		public TypeVariable(int n) : base("T_" + n)
 		{
-			this.number = n;
+			this.Number = n;
 		}
 
 		public TypeVariable(string name, int n) : base(name)
 		{
-			this.number = n;
+			this.Number = n;
 		}
 
         public override void Accept(IDataTypeVisitor v)
@@ -56,9 +56,13 @@ namespace Reko.Core.Types
 		/// <summary>
 		/// The equivalence class this type variable belongs to.
 		/// </summary>
-		public EquivalenceClass Class { get; set; }
+		public EquivalenceClass Class
+        { 
+            get { return eqClass!; }
+            set { eqClass = value;  }
+        }
 
-        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
+        public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
 		{
 			return this;
 		}
@@ -67,13 +71,10 @@ namespace Reko.Core.Types
 		/// Inferred DataType corresponding to type variable when equivalence class 
 		/// is taken into consideration.
 		/// </summary>
-		public DataType DataType { get { return dt; } set { dt = value; } }
-        private DataType dt;
+		public DataType DataType { get { return dt!; } set { dt = value; } }
+        private DataType? dt;
 
-		public int Number
-		{
-			get { return number; }
-		}
+		public int Number { get; }
 
 		/// <summary>
 		/// The original inferred datatype, before the other members of the equivalence class
@@ -81,7 +82,7 @@ namespace Reko.Core.Types
 		/// </summary>
 		public DataType OriginalDataType
 		{
-			get { return dtOriginal; }
+			get { return dtOriginal!; }
 			set { dtOriginal = value; }
 		}
 
@@ -90,5 +91,5 @@ namespace Reko.Core.Types
 			get { return 0; }
 			set { ThrowBadSize(); }
 		}
-	}
+    }
 }

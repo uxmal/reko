@@ -160,6 +160,11 @@ namespace Reko.UnitTests.Gui.Windows
                 return new FakeTreeNode { Text = text };
             }
 
+            public void PerformAfterExpand(Reko.Gui.Controls.TreeViewEventArgs e)
+            {
+                AfterExpand?.Invoke(this, e);
+            }
+
             public void PerformBeforeExpand(Reko.Gui.Controls.TreeViewEventArgs e)
             {
                 BeforeExpand(this, e);
@@ -411,9 +416,8 @@ namespace Reko.UnitTests.Gui.Windows
         {
             this.program.ImageMap.AddItemWithSize(
                 Address.Ptr32(address),
-                new ImageMapItem
+                new ImageMapItem(Address.Ptr32(address))
                 {
-                    Address = Address.Ptr32(address),
                     Size = 4,
                     DataType = PrimitiveType.Int32,
                 });

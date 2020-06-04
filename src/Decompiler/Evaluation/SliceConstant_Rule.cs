@@ -28,8 +28,8 @@ namespace Reko.Evaluation
 {
 	public class SliceConstant_Rule
 	{
-		private Constant c;
-		private Slice slice;
+		private Constant? c;
+		private Slice? slice;
 
 		public bool Match(Slice slice)
 		{
@@ -42,12 +42,12 @@ namespace Reko.Evaluation
 
 		public Expression Transform()
 		{
-			return Constant.Create(slice.DataType, Slice(c.ToUInt64()));
+			return Constant.Create(slice!.DataType, Slice(c!.ToUInt64()));
 		}
 
 		public ulong Slice(ulong val)
 		{
-            ulong mask = Bits.Mask(slice.Offset, slice.DataType.BitSize);
+            ulong mask = Bits.Mask(slice!.Offset, slice.DataType.BitSize);
 			return (val & mask) >> slice.Offset;
 		}
 	}

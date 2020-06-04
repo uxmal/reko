@@ -73,7 +73,7 @@ namespace Reko.Core.Machine
 
         public virtual TInstr MakeInstruction(InstrClass iclass, TMnemonic mnemonic)
         {
-            return null;
+            return default!;
         }
 
         public abstract TInstr CreateInvalidInstruction();

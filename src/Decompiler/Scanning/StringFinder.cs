@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -48,7 +48,7 @@ namespace Reko.Scanning
                     segment.Address + segment.Size,
                     segment.MemoryArea.BaseAddress + segment.MemoryArea.Bytes.Length);
                 var rdr = criteria.CreateReader(segment.MemoryArea, segment.Address, segEnd);
-                Address addrStartRun = null;
+                Address? addrStartRun = null;
                 int cValid = 0;
                 var charType = (PrimitiveType)criteria.StringType.ElementType;
                 while (rdr.IsValid && rdr.TryRead(charType, out var c))
@@ -58,12 +58,7 @@ namespace Reko.Scanning
                     {
                         if (ch == 0 && cValid >= criteria.MinimumLength)
                         {
-                            yield return new AddressSearchHit
-                            {
-                                Program = program,
-                                Address = addrStartRun,
-                                Length = cValid * charType.Size,
-                            };
+                            yield return new AddressSearchHit(program, addrStartRun!, cValid * charType.Size);
                         }
                         addrStartRun = null;
                         cValid = 0;
@@ -86,6 +81,7 @@ namespace Reko.Scanning
         }
     }
 
+#nullable disable   //$C# 9.0 record
     public class StringFinderCriteria
     {
         public StringType StringType;

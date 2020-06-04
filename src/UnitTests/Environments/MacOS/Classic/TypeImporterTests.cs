@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
                 new TypeDeclaration("GrafPort", new Record{
                     Fields = new List<Field>
                     {
-                        new Field(new List<string> { "test" }, new Primitive { Type = PrimitiveType_v1.Int32() })
+                        new Field(new List<string> { "test" }, new Primitive(PrimitiveType_v1.Int32()))
                     }
                 }),
                 new TypeDeclaration("DialogPtr", new TypeReference("WindowPtr")),
@@ -90,8 +90,8 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
                 new TypeDeclaration("Point", new Record{
                     Fields = new List<Field>
                     {
-                        new Field(new List<string> { "x" }, new Primitive { Type = PrimitiveType_v1.Int16() }),
-                        new Field(new List<string> { "y" }, new Primitive { Type = PrimitiveType_v1.Int16() })
+                        new Field(new List<string> { "x" }, new Primitive(PrimitiveType_v1.Int16())),
+                        new Field(new List<string> { "y" }, new Primitive(PrimitiveType_v1.Int16()))
                     }
                 }),
             };

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -49,7 +49,7 @@ namespace Reko.Core.Types
             return v.VisitReference(this);
         }
 
-        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
+        public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
         {
             return new ReferenceTo(Referent.Clone(clonedTypes)) { Qualifier = this.Qualifier };
         }

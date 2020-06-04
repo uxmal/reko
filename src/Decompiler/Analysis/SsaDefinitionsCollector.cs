@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 Pavel Tomin.
  *
@@ -55,7 +55,7 @@ namespace Reko.Analysis
             base.VisitCallInstruction(ci);
             definitions.AddRange(ci.Definitions
                 .Select(d => d.Expression as Identifier)
-                .Where(i => i != null));
+                .Where(i => i != null)!);
         }
 
         public override void VisitDefInstruction(DefInstruction def)

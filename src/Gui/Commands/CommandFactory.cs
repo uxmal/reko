@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using System;
 using System.Collections.Generic;
@@ -28,7 +30,7 @@ namespace Reko.Gui.Commands
 {
     public class CommandFactory : ICommandFactory
     {
-        private IServiceProvider services;
+        private readonly IServiceProvider services;
 
         public CommandFactory(IServiceProvider services)
         {

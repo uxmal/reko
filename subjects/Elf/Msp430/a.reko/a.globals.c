@@ -4,36 +4,34 @@
 
 #include "a.h"
 
-Eq_n g_t0001;
-Eq_n g_t0005;
-Eq_n g_t001B;
+byte g_b0001;
+byte g_b0005;
+byte g_b001B;
 Eq_n g_t0031;
-ptr16 g_ptr0032;
-ptr16 g_ptr0056;
-ptr16 g_ptr0057;
+Eq_n g_t0032;
+Eq_n g_t0056;
+Eq_n g_t0057;
 Eq_n g_t0078;
 Eq_n g_t0079;
 Eq_n g_t007B;
-Eq_n g_t007C;
+byte g_b007C;
 Eq_n g_t007D;
 Eq_n g_t007F;
-ptr16 g_ptr0120;
+word16 g_w0120;
 Eq_n g_t0130;
 Eq_n g_t0134;
 Eq_n g_t0138;
-ptr16 g_ptr013A;
-Eq_n g_t0160;
-ptr16 g_ptr0162;
-ptr16 g_ptr0172;
+Eq_n g_t013A;
+Eq_n g_t013C;
+cui16 g_w0160;
+word16 g_w0162;
+word16 g_w0172;
 Eq_n g_a0200[] = 
 	{
 	};
-Eq_n g_t0202 = 
-	{
-		0x00
-	};
-ptr16 g_ptr0204 = 0x00;
-ptr16 g_ptr0206 = 0x00;
+struct Eq_n * g_ptr0202 = null;
+word16 g_w0204 = 0x00;
+word16 g_w0206 = 0x00;
 Eq_n g_t0208 = 
 	{
 		0x00
@@ -46,16 +44,16 @@ Eq_n g_t020C =
 	{
 		0x00
 	};
-ptr16 g_ptr020E = 0x00;
-ptr16 g_ptr0210 = 0x00;
-ptr16 g_ptr0212 = 0x00;
-ptr16 g_ptr0214 = 0x00;
+word16 g_w020E = 0x00;
+word16 g_w0210 = 0x00;
+word16 g_w0212 = 0x00;
+word16 g_w0214 = 0x00;
 Eq_n g_t0216 = 
 	{
-		0x00
+		0x000A0000
 	};
-ptr16 g_ptr0218 = 0x0A;
-ptr16 g_ptr021A = 0x00;
+word16 g_w0218 = 0x0A;
+word16 g_w021A = 0x00;
 Eq_n g_a021C[] = 
 	{
 	};
@@ -63,20 +61,28 @@ Eq_n g_t021E =
 	{
 		0x00
 	};
-ptr16 g_ptr0220 = 0x00;
-Eq_n g_a0222[] = 
-	{
-	};
+word16 g_w0220 = 0x00;
+cup16 g_w0222 = 0x00;
 Eq_n g_a0226[] = 
 	{
 	};
-ptr16 g_ptr0282 = 0x00;
-ptr16 g_ptr0284 = 0x00;
-struct Eq_n * g_ptr028A = null;
-struct Eq_n * g_ptr029A = null;
-Eq_n g_t09B2 = 
+Eq_n g_t0282 = 
 	{
 		0x00
 	};
+Eq_n g_t0284 = 
+	{
+		0x00
+	};
+word16 g_w0286 = 0x00;
+struct Eq_n * g_ptr0288 = null;
+word16 g_w0296 = 0x00;
+struct Eq_n * g_ptr0298 = null;
+Eq_n g_t09B2 = 
+	{
+		?? /* Can't read address 000009B2 */
+
+	};
+byte g_b09B4;
 byte g_a5B78[];
 

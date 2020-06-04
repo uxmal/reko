@@ -40,8 +40,8 @@
         <dst>1000:05BA</dst>
       </jumpTable>
       <registerValues>
-        <assume addr="00012310" reg="eax" value="1231&lt;32&gt;" />
-        <assume addr="00012310" reg="ecx" value="42424711&lt;32&gt;" />
+        <assume addr="00012310" reg="eax" value="00001231" />
+        <assume addr="00012310" reg="ecx" value="42424711" />
       </registerValues>
       <outputFilePolicy>Segment</outputFilePolicy>
     </user>

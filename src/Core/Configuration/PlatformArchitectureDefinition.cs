@@ -17,7 +17,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
- 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +37,7 @@ namespace Reko.Core.Configuration
             this.TypeLibraries = new List<TypeLibraryDefinition>();
         }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public List<string> TrashedRegisters { get; internal set; }
         public List<TypeLibraryDefinition> TypeLibraries { get; internal set; }
     }

@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable disable
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -476,6 +478,7 @@ namespace Reko.Core.CLanguage
     {
         public List<DeclSpec> SpecQualifierList;
         public List<FieldDeclarator> FieldDeclarators;
+        public List<CAttribute> AttributeList;
 
         public override T Accept<T>(CSyntaxVisitor<T> visitor)
         {
@@ -500,6 +503,12 @@ namespace Reko.Core.CLanguage
                 sep = " ";
             }
             sb.Append(")");
+            if (AttributeList != null && AttributeList.Count > 0)
+            {
+                sb.Append(" (");
+                sb.Append(string.Join(" ", AttributeList));
+                sb.Append(")");
+            }
             return sb.ToString();
         }
     }
@@ -559,12 +568,17 @@ namespace Reko.Core.CLanguage
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.AppendFormat("(attr {0} (", Name);
-            foreach (var token in Tokens)
+            sb.AppendFormat("(attr {0}", Name);
+            if (Tokens != null && Tokens.Count > 0)
             {
-                sb.AppendFormat("{0} {1}", token.Type, token.Value);
+                sb.Append(" (");
+                foreach (var token in Tokens)
+                {
+                    sb.AppendFormat("{0} {1}", token.Type, token.Value);
+                }
+                sb.Append(")");
             }
-            sb.AppendFormat("))");
+            sb.Append(")");
             return sb.ToString();
         }
     }

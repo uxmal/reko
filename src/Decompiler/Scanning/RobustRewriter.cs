@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -50,7 +50,7 @@ namespace Reko.Scanning
             do 
             {
                 cont = false;
-                RtlInstructionCluster rtl = null;
+                RtlInstructionCluster? rtl = null;
                 try
                 {
                     cont = e.MoveNext();

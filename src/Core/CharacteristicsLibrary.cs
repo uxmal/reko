@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -45,17 +45,17 @@ namespace Reko.Core
                 return new CharacteristicsLibrary
                 {
                     Entries = slib.Entries
-                        .ToDictionary(e => e.ProcedureName, e => e.Characteristics)
+                        .Where(e => e.ProcedureName != null && e.Characteristics != null)
+                        .ToDictionary(e => e.ProcedureName!, e => e.Characteristics!)
                 };
             }
         }
 
         public Dictionary<string, ProcedureCharacteristics> Entries { get; set; }
 
-        public ProcedureCharacteristics Lookup(string procName)
+        public ProcedureCharacteristics? Lookup(string procName)
         {
-            ProcedureCharacteristics ch;
-            if (!Entries.TryGetValue(procName, out ch))
+            if (!Entries.TryGetValue(procName, out ProcedureCharacteristics ch))
                 return null;
             return ch;
         }

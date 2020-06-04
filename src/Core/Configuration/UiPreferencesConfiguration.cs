@@ -30,6 +30,6 @@ namespace Reko.Core.Configuration
 {
     public class UiPreferencesConfiguration
     {
-        public List<UiStyleDefinition> Styles { get; internal set; }
+        public List<UiStyleDefinition> Styles { get; set; } = new List<UiStyleDefinition>();
     }
 }

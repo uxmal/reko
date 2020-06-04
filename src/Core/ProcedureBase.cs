@@ -35,20 +35,20 @@ namespace Reko.Core
 	{
 		public ProcedureBase(string name)
 		{
-			this.Name = name;
+			this.name = name;
 			this.Characteristics = DefaultProcedureCharacteristics.Instance;
 		}
 
         /// <summary>
         /// The name of the procedure.
         /// </summary>
-        public string Name { get { return name; } set { name = value; NameChanged.Fire(this); } }
-        public event EventHandler NameChanged;
+        public string Name { get { return name; } set { name = value; NameChanged?.Fire(this); } }
+        public event EventHandler? NameChanged;
         private string name;
 
 		public abstract FunctionType Signature { get; set; }
 
-		public ProcedureCharacteristics Characteristics { get; set; }
+		public ProcedureCharacteristics? Characteristics { get; set; }
 
         /// <summary>
         /// If this is a member function of a class or struct, this property
@@ -56,7 +56,7 @@ namespace Reko.Core
         /// </summary>
         //$TODO: all the infrastructure for class loading remains to be
         // implemented; for now we just store the class name.
-        public SerializedType EnclosingType { get; set; }
+        public SerializedType? EnclosingType { get; set; }
 
         public override string ToString()
         {

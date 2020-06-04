@@ -76,7 +76,7 @@ namespace Reko.Arch.Msp430
         {
             if (op is AddressOperand && (base.InstructionClass & InstrClass.Transfer) == 0)
             {
-                writer.WriteString("&");
+                writer.WriteString("#");
             }
             if (op is ImmediateOperand && Mnemonic != Mnemonics.call)
             {

@@ -39,12 +39,12 @@ namespace Reko.Scanning
     /// </summary>
     public class VarargsFormatScanner
     {
-        private Program program;
-        private IProcessorArchitecture arch;
-        private Frame frame;
-        private ExpressionSimplifier eval;
-        private IServiceProvider services;
-        private FunctionType expandedSig;
+        private readonly Program program;
+        private readonly IProcessorArchitecture arch;
+        private readonly Frame frame;
+        private readonly ExpressionSimplifier eval;
+        private readonly IServiceProvider services;
+        private FunctionType? expandedSig;
 
         public VarargsFormatScanner(
             Program program,
@@ -65,15 +65,15 @@ namespace Reko.Scanning
         public Instruction BuildInstruction(
             Expression callee, 
             CallSite site,
-            ProcedureCharacteristics chr)
+            ProcedureCharacteristics? chr)
         {
             if (callee is ProcedureConstant pc)
-                pc.Procedure.Signature = this.expandedSig;
+                pc.Procedure.Signature = this.expandedSig!;
             var ab = arch.CreateFrameApplicationBuilder(frame, site, callee);
-            return ab.CreateInstruction(this.expandedSig, chr);
+            return ab.CreateInstruction(this.expandedSig!, chr);
         }
 
-        public bool TryScan(Address addrInstr, Expression callee, FunctionType sig, ProcedureCharacteristics chr)
+        public bool TryScan(Address addrInstr, Expression callee, FunctionType sig, ProcedureCharacteristics? chr)
         {
             if (
                 sig == null || !sig.IsVariadic ||
@@ -96,9 +96,9 @@ namespace Reko.Scanning
             return op.Accept<Expression>(eval);
         }
 
-        private string ReadVarargsFormat(Address addrInstr, Expression callee, FunctionType sig)
+        private string? ReadVarargsFormat(Address addrInstr, Expression callee, FunctionType sig)
         {
-            var formatIndex = sig.Parameters.Length - 1;
+            var formatIndex = sig.Parameters!.Length - 1;
             if (formatIndex < 0)
                 throw new ApplicationException("Expected variadic function to take at least one parameter.");
             var formatParam = sig.Parameters[formatIndex];
@@ -188,12 +188,13 @@ namespace Reko.Scanning
         {
             var fixedArgs = sig.Parameters.TakeWhile(p => p.Name != "...").ToList();
             var cc = platform.GetCallingConvention(""); //$REVIEW: default CC tends to be __cdecl.
+            //$BUG: what if platform returns null or throws?
             var allTypes = fixedArgs
                 .Select(p => p.DataType)
                 .Concat(argumentTypes)
                 .ToList();
             var ccr = new CallingConventionEmitter();
-            cc.Generate(
+            cc!.Generate(
                 ccr,
                 sig.ReturnValue.DataType,
                 null, //$TODO: what to do about implicit this?

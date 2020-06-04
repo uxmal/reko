@@ -37,16 +37,16 @@ namespace Reko.Core.Serialization
         public const string Namespace_v1 = "http://schemata.jklnet.org/Decompiler";
 
         [XmlAttribute("module")]
-        public string ModuleName;
+        public string? ModuleName;
 
         [XmlAttribute("case")]
-        public string Case;
+        public string? Case;
 
         [XmlElement("default")]
-        public SerializedLibraryDefaults Defaults;
+        public SerializedLibraryDefaults? Defaults;
 
         [XmlArray("types")]
-        public SerializedType[] Types;
+        public SerializedType[]? Types;
 
         [XmlElement("procedure", typeof(Procedure_v1))]
         [XmlElement("service", typeof(SerializedService))]
@@ -55,7 +55,8 @@ namespace Reko.Core.Serialization
         [XmlElement("global", typeof(GlobalVariable_v1))]
         public List<GlobalVariable_v1> Globals;
 
-        private static XmlSerializer serializer;
+        //$REVIEW: smell of singleton.
+        private static XmlSerializer? serializer;
 
         public SerializedLibrary()
         {
@@ -140,12 +141,12 @@ namespace Reko.Core.Serialization
         public const int NoOrdinal = -1;
 
         [XmlAttribute("name")]
-        public string Name;
+        public string? Name;
 
         [XmlAttribute("ordinal")]
         [DefaultValue(NoOrdinal)]
         public int Ordinal;
     
-        public SerializedType Type;
+        public SerializedType? Type;
     }
 }

@@ -381,8 +381,7 @@ namespace Reko.Core.Output
 
         void IExpressionVisitor.VisitAddress(Address addr)
         {
-            var addr16 = addr as Address16;
-            if (addr16 != null)
+            if (addr is Address16 addr16)
             {
                 writer.Write("Address.Ptr16(0x{0:X}", addr16.ToUInt16());
                 return;
@@ -392,14 +391,12 @@ namespace Reko.Core.Output
                 writer.Write("Address.SegPtr(0x{0:X}, 0x{1:X}", addr.Selector, addr.Offset);
                 return;
             }
-            var addr32 = addr as Address32;
-            if (addr32 != null)
+            if (addr is Address32 addr32)
             {
                 writer.Write("Address.Ptr32(0x{0:X}", addr32.ToUInt32());
                 return;
             }
-            var addr64 = addr as Address64;
-            if (addr64 != null)
+            if (addr is Address64 addr64)
             {
                 writer.Write("Address.Ptr64(0x{0:X}", addr64.ToLinear());
                 return;
@@ -640,7 +637,7 @@ namespace Reko.Core.Output
             {
                 writeArg(ft.ReturnValue);
             }
-            WriteList(ft.Parameters, ", ", writeArg);
+            WriteList(ft.Parameters!, ", ", writeArg);
             writer.Write(")");
             return 0;
         }

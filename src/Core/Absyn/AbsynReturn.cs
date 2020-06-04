@@ -25,12 +25,12 @@ namespace Reko.Core.Absyn
 {
 	public class AbsynReturn : AbsynStatement
 	{
-		public AbsynReturn(Expression retval)
+		public AbsynReturn(Expression? retval)
 		{
 			this.Value = retval;
 		}
 
-		public Expression Value { get; }
+		public Expression? Value { get; }
 
         public override void Accept(IAbsynVisitor visitor)
         {

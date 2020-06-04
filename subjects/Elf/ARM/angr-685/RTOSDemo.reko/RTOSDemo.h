@@ -3121,11 +3121,11 @@ T_161: (in r5_15 + 1<32> : word32)
   Class: Eq_161
   DataType: word32
   OrigDataType: word32
-T_162: (in cond((word32) r5_15 + 1<i32>) : byte)
+T_162: (in cond(r5_15 + 1<32>) : byte)
   Class: Eq_162
   DataType: byte
   OrigDataType: byte
-T_163: (in SLICE(cond((word32) r5_15 + 1<i32>), bool, 2) : bool)
+T_163: (in SLICE(cond(r5_15 + 1<32>), bool, 2) : bool)
   Class: Eq_117
   DataType: bool
   OrigDataType: bool
@@ -3141,11 +3141,11 @@ T_166: (in r5_15 + 1<32> : word32)
   Class: Eq_166
   DataType: word32
   OrigDataType: word32
-T_167: (in cond((word32) r5_15 + 1<i32>) : byte)
+T_167: (in cond(r5_15 + 1<32>) : byte)
   Class: Eq_167
   DataType: byte
   OrigDataType: byte
-T_168: (in SLICE(cond((word32) r5_15 + 1<i32>), bool, 2) : bool)
+T_168: (in SLICE(cond(r5_15 + 1<32>), bool, 2) : bool)
   Class: Eq_117
   DataType: bool
   OrigDataType: bool
@@ -3589,11 +3589,11 @@ T_278: (in r5_114 + 1<32> : word32)
   Class: Eq_278
   DataType: word32
   OrigDataType: word32
-T_279: (in cond((word32) r5_114 + 1<i32>) : byte)
+T_279: (in cond(r5_114 + 1<32>) : byte)
   Class: Eq_279
   DataType: byte
   OrigDataType: byte
-T_280: (in SLICE(cond((word32) r5_114 + 1<i32>), bool, 2) : bool)
+T_280: (in SLICE(cond(r5_114 + 1<32>), bool, 2) : bool)
   Class: Eq_117
   DataType: bool
   OrigDataType: bool

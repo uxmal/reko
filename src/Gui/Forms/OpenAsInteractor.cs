@@ -81,18 +81,14 @@ namespace Reko.Gui.Forms
 
         private void PopulatePlatforms(IConfigurationService dcCfg)
         {
-            var noneOption = new ListOption
-            {
-                Text = "(None)",
-                Value = null,
-            };
+            var noneOption = new ListOption("(None)", null);
             var platforms = new ListOption[] { noneOption }
                 .Concat(
                     dcCfg.GetEnvironments()
                     .OfType<PlatformDefinition>()
                     .OrderBy(p => p.Description)
                     .Where(p => !string.IsNullOrEmpty(p.Name))
-                    .Select(p => new ListOption { Text = p.Description, Value = p }));
+                    .Select(p => new ListOption(p.Description, p)));
             dlg.Platforms.DataSource = new ArrayList(platforms.ToArray());
         }
 
@@ -102,7 +98,7 @@ namespace Reko.Gui.Forms
                     .OfType<RawFileDefinition>()
                     .OrderBy(p => p.Description)
                     .Where(p => !string.IsNullOrEmpty(p.Name))
-                    .Select(p => new ListOption { Text = p.Description, Value = p });
+                    .Select(p => new ListOption(p.Description, p));
             dlg.RawFileTypes.DataSource = new ArrayList(rawFiles.ToArray());
         }
 
@@ -111,7 +107,7 @@ namespace Reko.Gui.Forms
             var archs = dcCfg.GetArchitectures()
                 .OfType<ArchitectureDefinition>()
                 .OrderBy(a => a.Description)
-                .Select(a => new ListOption { Text = a.Description, Value = a });
+                .Select(a => new ListOption(a.Description, a));
             dlg.Architectures.DataSource = new ArrayList(archs.ToArray());
         }
 

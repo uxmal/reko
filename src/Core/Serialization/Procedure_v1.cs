@@ -35,7 +35,7 @@ namespace Reko.Core.Serialization
         /// The name of a procedure.
         /// </summary>
         [XmlAttribute("name")]
-        public string Name;
+        public string? Name;
 
         /// <summary>
         /// Ordinal of a procedure -- if it makes sense
@@ -49,10 +49,10 @@ namespace Reko.Core.Serialization
         /// signature is unknown.
         /// </summary>
         [XmlElement("signature")]
-        public SerializedSignature Signature;
+        public SerializedSignature? Signature;
 
         [XmlElement("characteristics")]
-        public ProcedureCharacteristics Characteristics;
+        public ProcedureCharacteristics? Characteristics;
     }
 
     public class Procedure_v1 : ProcedureBase_v1
@@ -61,7 +61,7 @@ namespace Reko.Core.Serialization
         /// Address of the procedure.
         /// </summary>
         [XmlElement("address")]
-        public string Address;
+        public string? Address;
 
         /// <summary>
         /// Property that indicated whether the procedure body is to be decompiled 
@@ -77,7 +77,7 @@ namespace Reko.Core.Serialization
         /// through analyses.
         /// </summary>
         [XmlElement("assume")]
-        public RegisterValue_v2[] Assume;
+        public RegisterValue_v2[]? Assume;
 
         /// <summary>
         /// The signature of the function as specified by the user. It is written
@@ -85,14 +85,14 @@ namespace Reko.Core.Serialization
         /// values passed or returned in parameters.
         /// </summary>
         [XmlElement("CSignature")]
-        public string CSignature;
+        public string? CSignature;
 
         /// <summary>
         /// Project-relative path into which this procedure should be written. If 
         /// no path is specified, the procedure is written into a default output file.
         /// </summary>
         [XmlElement("OutputFile")]
-        public string OutputFile;
+        public string? OutputFile;
     }
 
     public class RegisterValue_v2
@@ -100,12 +100,12 @@ namespace Reko.Core.Serialization
         // Optional address; if not specified, use parent context
         // (e.g. address of user-provided procedure)
         [XmlAttribute("addr")]
-        public string Address;  
+        public string? Address;  
 
         [XmlAttribute("reg")]
-        public string Register;
+        public string? Register;
 
         [XmlAttribute("value")]
-        public string Value;
+        public string? Value;
     }
 }

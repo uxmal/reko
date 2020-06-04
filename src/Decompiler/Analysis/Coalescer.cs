@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,11 +21,8 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Operators;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace Reko.Analysis
 {
@@ -41,11 +38,11 @@ namespace Reko.Analysis
     /// </remarks>
 	public class Coalescer : InstructionTransformer
 	{
-		private SsaState ssa;
-		private SideEffectFinder sef;
-        private Dictionary<Statement, List<SsaIdentifier>> defsByStatement;
+		private readonly SsaState ssa;
+		private readonly SideEffectFinder sef;
+        private readonly Dictionary<Statement, List<SsaIdentifier>> defsByStatement;
 
-		private static TraceSwitch trace = new TraceSwitch("Coalescer", "Traces the progress of identifier coalescing");
+		private static readonly TraceSwitch trace = new TraceSwitch(nameof(Coalescer), "Traces the progress of identifier coalescing");
 
 		public Coalescer(SsaState ssa)
 		{
@@ -63,7 +60,7 @@ namespace Reko.Analysis
 
         private void SetDefStatement(Statement stm, SsaIdentifier sid)
         {
-            if (defsByStatement.TryGetValue(sid.DefStatement, out var sids))
+            if (defsByStatement.TryGetValue(sid.DefStatement!, out var sids))
             {
                 sids.Remove(sid);
             }

@@ -35,7 +35,7 @@ namespace Reko.Core
 	/// </summary>
 	public class ImageMap
 	{
-        public event EventHandler MapChanged;
+        public event EventHandler? MapChanged;
 
         public ImageMap(Address addrBase)
         {
@@ -123,12 +123,11 @@ namespace Reko.Core
             if (delta > 0)
             {
                 int afterOffset = (int)(delta + itemNew.Size);
-                ImageMapItem itemAfter = null;
+                ImageMapItem? itemAfter = null;
                 if (item.Size > afterOffset)
                 {
-                    itemAfter = new ImageMapItem
+                    itemAfter = new ImageMapItem(addr + itemNew.Size)
                     {
-                        Address = addr + itemNew.Size,
                         Size = (uint)(item.Size - afterOffset),
                         DataType = ChopBefore(item.DataType, afterOffset),
                     };
@@ -150,7 +149,7 @@ namespace Reko.Core
                     var u = new Unifier();
                     if (u.AreCompatible(item.DataType, itemNew.DataType))
                     {
-                        item.DataType = u.Unify(item.DataType, itemNew.DataType);
+                        item.DataType = u.Unify(item.DataType, itemNew.DataType)!;
                     }
                     else
                     {
@@ -204,7 +203,7 @@ namespace Reko.Core
                 return;
 
             // Need to split the item.
-            var itemNew = new ImageMapItem { Address = addr };
+            var itemNew = new ImageMapItem(addr);
             if (item.Size != 0)
             {
                 itemNew.Size = (uint) (item.Size - delta);
@@ -281,7 +280,7 @@ namespace Reko.Core
 
         private void FireMapChanged()
         {
-            if (!mapChangedEventHandlerPaused) MapChanged.Fire(this);
+            if (!mapChangedEventHandlerPaused) MapChanged?.Fire(this);
             else mapChangedPendingEvents = true;
         }
 
@@ -293,7 +292,7 @@ namespace Reko.Core
         public void UnpauseEventHandler()
         {
             mapChangedEventHandlerPaused = false;
-            if (mapChangedPendingEvents) MapChanged.Fire(this);
+            if (mapChangedPendingEvents) MapChanged?.Fire(this);
             mapChangedPendingEvents = false;
         }
 
@@ -327,17 +326,19 @@ namespace Reko.Core
 	{
         private uint _size;
         public uint Size { get { return _size; } set { if ((int) value < 0) throw new ArgumentException(); _size = value; } }
-        public string Name;
+        public string? Name;
         public DataType DataType;
 
-        public ImageMapItem(uint size)
+        public ImageMapItem(Address addr, uint size)
 		{
+            this.Address = addr;
 			this.Size = size;
             DataType = new UnknownType();
         }
 
-        public ImageMapItem()
+        public ImageMapItem(Address addr)
 		{
+            this.Address = addr;
             DataType = new UnknownType();
 		}
 

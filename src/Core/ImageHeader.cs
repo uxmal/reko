@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -33,6 +33,6 @@ namespace Reko.Core
         /// <summary>
         /// The address at which the image would prefer to be loaded.
         /// </summary>
-        public virtual Address PreferredBaseAddress { get; set; }
+        public abstract Address PreferredBaseAddress { get; set; }
     }
 }

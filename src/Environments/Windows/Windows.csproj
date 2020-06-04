@@ -23,7 +23,7 @@
   <Target Name="RunC2Xml" AfterTargets="CoreBuild">
     <Copy SourceFiles="$(ProjectDir)$(OutDir)Reko.Environments.Windows.dll" DestinationFolder="$(ProjectDir)..\..\tools" />
     <Copy SourceFiles="$(ProjectDir)..\..\Arch\X86\bin\$(Configuration)\netstandard2.0\Reko.Arch.X86.dll" DestinationFolder="$(ProjectDir)..\..\tools" />
-    <Exec Condition=" '$(OS)' == 'Unix' " Command="mono $(ProjectDir)../../tools/c2xml.exe -a x86-protected-32 -e win32 %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
-    <Exec Condition=" '$(OS)' != 'Unix' " Command="&quot;$(PRojectDir)..\..\tools\c2xml.exe&quot; -a x86-protected-32 -e win32 %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
+    <Exec Condition=" '$(OS)' == 'Unix' " Command="mono $(ProjectDir)../../tools/c2xml.exe -a x86-protected-32 -e win32 -d msvc %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
+    <Exec Condition=" '$(OS)' != 'Unix' " Command="&quot;$(ProjectDir)..\..\tools\c2xml.exe&quot; -a x86-protected-32 -e win32 -d msvc %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
   </Target>
 </Project>

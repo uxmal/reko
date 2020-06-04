@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Reko.Core.Lib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,8 +32,8 @@ namespace Reko.Core.Lib
     /// <typeparam name="T"></typeparam>
     public class DiGraph<T> : DirectedGraph<T>
     {
-        private Dictionary<T, Node> nodes;
-        private NodeCollection nodeCollection;
+        private readonly Dictionary<T, Node> nodes;
+        private readonly NodeCollection nodeCollection;
 
         public DiGraph()
         {
@@ -62,7 +61,7 @@ namespace Reko.Core.Lib
 
         private class ItemCollection : ICollection<T>
         {
-            private List<Node> outer;
+            private readonly List<Node> outer;
 
             public ItemCollection(List<Node> outer)
             {
@@ -120,7 +119,7 @@ namespace Reko.Core.Lib
 
         private class NodeCollection : ICollection<T>
         {
-            private DiGraph<T> outer;
+            private readonly DiGraph<T> outer;
 
             public NodeCollection(DiGraph<T> outer)
             {
@@ -190,8 +189,7 @@ namespace Reko.Core.Lib
 
         public void AddNode(T item)
         {
-            Node node;
-            if (!nodes.TryGetValue(item, out node))
+            if (!nodes.TryGetValue(item, out Node node))
             {
                 node = new Node(item);
                 nodes.Add(item, node);
@@ -200,8 +198,7 @@ namespace Reko.Core.Lib
 
         public bool RemoveNode(T item)
         {
-            Node node;
-            if (!nodes.TryGetValue(item, out node))
+            if (!nodes.TryGetValue(item, out Node node))
             {
                 return false;
             }

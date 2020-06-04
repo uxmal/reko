@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,10 +48,9 @@ namespace Reko.Analysis
 
 		public override bool Equals(object obj)
 		{
-			Interference i = obj as Interference;
-			if (i == null)
-				return false;
-			return i.Identifier1 == Identifier1 && i.Identifier2 == Identifier2;
+            return
+                obj is Interference i &&
+                i.Identifier1 == Identifier1 && i.Identifier2 == Identifier2;
 		}
 
 		public override int GetHashCode()

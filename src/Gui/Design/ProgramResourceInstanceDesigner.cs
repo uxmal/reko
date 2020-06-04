@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,11 +18,9 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Gui.Design
 {
@@ -31,16 +29,16 @@ namespace Reko.Gui.Design
         public override void Initialize(object obj)
         {
             base.Initialize(obj);
-            TreeNode.Text = ((ProgramResourceInstance)obj).Name;
+            TreeNode!.Text = ((ProgramResourceInstance)obj).Name;
         }
 
         public override void DoDefaultAction()
         {
-            var resEditor = Services.RequireService<IResourceEditorService>();
+            var resEditor = Services!.RequireService<IResourceEditorService>();
             
             resEditor.Show(
-                Host.GetAncestorOfType<Program>(Component),
-                (ProgramResourceInstance)base.Component);
+                Host!.GetAncestorOfType<Program>(Component!),
+                (ProgramResourceInstance)base.Component!);
         }
     }
 }

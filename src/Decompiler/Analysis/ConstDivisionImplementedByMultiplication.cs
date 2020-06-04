@@ -23,8 +23,6 @@ using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Code;
 using Reko.Core;
-using System.Diagnostics;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Reko.Analysis
@@ -49,12 +47,12 @@ namespace Reko.Analysis
     /// </remarks>
     public class ConstDivisionImplementedByMultiplication
     {
-        private Identifier idDst;
-        private Expression dividend;
-        private SsaState ssa;
+        private readonly SsaState ssa;
+        private readonly ExpressionEmitter m;
+        private Identifier? idDst;
+        private Expression? dividend;
         private Rational bestRational;
-        private Identifier idOrig;
-        private ExpressionEmitter m;
+        private Identifier? idOrig;
 
         public ConstDivisionImplementedByMultiplication(SsaState ssa)
         {
@@ -124,7 +122,7 @@ namespace Reko.Analysis
             // the divisor.
 
             var idSlice = idDst;
-            Constant rShift = null;
+            Constant? rShift = null;
             if (idSlice != null)
             {
                 rShift = FindShiftUse(idSlice);
@@ -139,7 +137,7 @@ namespace Reko.Analysis
             return true;
         }
 
-        private Identifier FindAlias(Identifier id, Storage regHead)
+        private Identifier? FindAlias(Identifier id, Storage regHead)
         {
             return (ssa.Identifiers[id].Uses
                 .Select(u => u.Instruction)
@@ -149,7 +147,7 @@ namespace Reko.Analysis
                 .FirstOrDefault());
         }
 
-        private Constant FindShiftUse(Identifier idSlice)
+        private Constant? FindShiftUse(Identifier idSlice)
         {
             return ssa.Identifiers[idSlice]
                 .Uses.Select(u => u.Instruction)
@@ -171,7 +169,7 @@ namespace Reko.Analysis
                 .FirstOrDefault();
         }
 
-        private Identifier FindSliceUse(Identifier id)
+        private Identifier? FindSliceUse(Identifier id)
         {
             return ssa.Identifiers[id]
                 .Uses.Select(u => u.Instruction)
@@ -190,23 +188,23 @@ namespace Reko.Analysis
 
         public Assignment TransformInstruction()
         {
-            var eNum = dividend;
+            var eNum = dividend!;
             if (bestRational.Numerator != 1)
             {
                 eNum = m.IMul(
                     eNum,
                     Constant.Int32((int)bestRational.Numerator));
             }
-            var sidOrig = ssa.Identifiers[idOrig];
-            var sidDst = ssa.Identifiers[idDst];
-            sidOrig.Uses.Remove(sidDst.DefStatement);
+            var sidOrig = ssa.Identifiers[idOrig!];
+            var sidDst = ssa.Identifiers[idDst!];
+            sidOrig.Uses.Remove(sidDst.DefStatement!);
             var ass = new Assignment(
-                idDst,
+                idDst!,
                 m.SDiv(
                     eNum,
                     Constant.Int32((int)bestRational.Denominator)));
 
-            sidDst.DefStatement.Instruction = ass;
+            sidDst.DefStatement!.Instruction = ass;
             return ass;
         }
     }

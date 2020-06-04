@@ -33,7 +33,7 @@ namespace Reko.Analysis
     /// </summary>
 	public class SsaIdentifier
 	{
-		public SsaIdentifier(Identifier id, Identifier idOrig, Statement stmDef, Expression exprDef, bool isSideEffect)
+		public SsaIdentifier(Identifier id, Identifier idOrig, Statement? stmDef, Expression? exprDef, bool isSideEffect)
 		{
             this.Identifier = id ?? throw new ArgumentNullException("id");
 			this.OriginalIdentifier = idOrig ?? throw new ArgumentNullException("idOrig");
@@ -46,12 +46,12 @@ namespace Reko.Analysis
         /// <summary>
         /// Expression that defines the identifier.
         /// </summary>
-        public Expression DefExpression { get; set; }
+        public Expression? DefExpression { get; set; }
 
         /// <summary>
         /// Statement that defines the identifier
         /// </summary>
-        public Statement DefStatement { get; set; }
+        public Statement? DefStatement { get; set; }        //$TODO: want this to be not-nullable
 
         /// <summary>
         /// The Identifier itself
@@ -68,7 +68,7 @@ namespace Reko.Analysis
         /// <summary>
         /// If not null, the induction variable associated with this identifier.
         /// </summary>
-        public LinearInductionVariable InductionVariable { get; set; }
+        public LinearInductionVariable? InductionVariable { get; set; }
 
         /// <summary>
         /// The original expression that was rewritten to this identifier.

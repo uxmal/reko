@@ -3222,7 +3222,7 @@ Eq_1293: (fn void ())
 	T_16221 (in fn0000000000410E50 : ptr64)
 	T_16241 (in fn0000000000410E50 : ptr64)
 Eq_1316: (union "Eq_1316" (bool u0) (word32 u1))
-	T_1316 (in SLICE(cond(globals->dw61B150 - 1<32>), bool, 1) : bool)
+	T_1316 (in SLICE(cond(Mem1541[0x000000000061B150<p64>:word32] - 1<32>), bool, 1) : bool)
 Eq_1337: (union "Eq_1337" (byte u0) (word16 u1))
 	T_1337 (in 0x3F3F<16> : word16)
 	T_1340 (in Mem1142[rsp_1190 + 0x30<64>:word16] : word16)
@@ -3358,7 +3358,7 @@ Eq_1586: (union "Eq_1586" (uint64 u0) (ptr64 u1))
 	T_3608 (in r12 : word64)
 	T_3734 (in 0<64> : word64)
 Eq_1603: (union "Eq_1603" (bool u0) (word32 u1))
-	T_1603 (in SLICE(cond((byte) (uint64) (uint8) fn00000000004049E0((word32) r13_1144 + 16<i32>, 0<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1198, out ebx_4104, out rbp_1214, out r8_1054, out r12_1109) - 1<8>), bool, 1) : bool)
+	T_1603 (in SLICE(cond(SLICE((uint64) (uint8) fn00000000004049E0((word32) r13_1144 + 16<i32>, 0<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1198, out ebx_4104, out rbp_1214, out r8_1054, out r12_1109), byte, 0) - 1<8>), bool, 1) : bool)
 Eq_1649: (fn int32 ((ptr64 Eq_1651), Eq_1652))
 	T_1649 (in sigismember : ptr64)
 	T_1650 (in signature of sigismember : void)
@@ -3393,7 +3393,7 @@ Eq_1690: (union "Eq_1690" (int32 u0) (int64 u1) (uint64 u2))
 	T_9693 (in SEQ(rax_32_32, eax_32) : word64)
 	T_9717 (in SEQ(rax_32_32_157, strlen(r14_119)) : word64)
 Eq_1764: (union "Eq_1764" (bool u0) (word32 u1))
-	T_1764 (in SLICE(cond((byte) (uint64) (uint8) fn00000000004049E0(rax_1335, 1<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1342, out ebx_4106, out rbp_1214, out r8_1054, out r12_1109) - 1<8>), bool, 1) : bool)
+	T_1764 (in SLICE(cond(SLICE((uint64) (uint8) fn00000000004049E0(rax_1335, 1<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1342, out ebx_4106, out rbp_1214, out r8_1054, out r12_1109), byte, 0) - 1<8>), bool, 1) : bool)
 Eq_1865: DIR
 	T_1865 (in rax_2344 : (ptr64 Eq_1865))
 	T_1867 (in Mem2336[0x000000000061AF18<p64>:word64] : word64)
@@ -4469,7 +4469,7 @@ Eq_4880: (union "Eq_4880" (uint64 u0) (ptr64 u1))
 	T_4997 (in out rsi_15 : ptr64)
 	T_5203 (in out rsi_242 : ptr64)
 Eq_4922: (union "Eq_4922" (bool u0) (word32 u1))
-	T_4922 (in SLICE(cond((word32) rsi_90 - 1<32>), bool, 1) : bool)
+	T_4922 (in SLICE(cond(SLICE(rsi_90, word32, 0) - 1<32>), bool, 1) : bool)
 Eq_4933: (union "Eq_4933" (1 u0) (bool u1))
 	T_4933 (in edx == 9<32> : bool)
 Eq_4993: (fn word64 (Eq_17, Eq_4877, Eq_4878, byte, Eq_4880))
@@ -4597,7 +4597,7 @@ Eq_5523: (union "Eq_5523" (int32 u0) (uint64 u1))
 	T_12641 (in 1<u64> : uint64)
 	T_12879 (in 1<u64> : uint64)
 Eq_5550: (union "Eq_5550" (ui64 u0) (word32 u1))
-	T_5550 (in SLICE((uint64) ~(word32) rcx_68, word32, 0) : word32)
+	T_5550 (in SLICE((uint64) ~SLICE(rcx_68, word32, 0), word32, 0) : word32)
 Eq_5645: (fn void ())
 	T_5645 (in fn0000000000406400 : ptr64)
 	T_5646 (in signature of fn0000000000406400 : void)
@@ -4625,7 +4625,7 @@ Eq_5743: (union "Eq_5743" (uint64 u0) (uip32 u1))
 	T_5910 (in 7<32> : word32)
 	T_5928 (in 5<32> : word32)
 	T_6027 (in 0xD<32> : word32)
-	T_6051 (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((byte) fn0000000000404CD0(0xD<32>) - 1<8>), bool, 1)), word32, 0) & 0xFFFFFFFA<32>), word32, 0) + 0xD<32>), word32, 0) : word32)
+	T_6051 (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE(fn0000000000404CD0(0xD<32>), byte, 0) - 1<8>), bool, 1)), word32, 0) & 0xFFFFFFFA<32>), word32, 0) + 0xD<32>), word32, 0) : word32)
 	T_6068 (in 7<32> : word32)
 	T_6069 (in 8<32> : word32)
 	T_6072 (in 9<32> : uip32)
@@ -4636,7 +4636,7 @@ Eq_5743: (union "Eq_5743" (uint64 u0) (uip32 u1))
 	T_6114 (in 0x14<32> : word32)
 	T_6125 (in 6<32> : word32)
 	T_6132 (in 0x13<32> : word32)
-	T_6158 (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((byte) fn0000000000404CD0(0x12<32>) - 1<8>), bool, 1)), word32, 0) & 0xFFFFFFF4<32>), word32, 0) + 0x12<32>), word32, 0) : word32)
+	T_6158 (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE(fn0000000000404CD0(0x12<32>), byte, 0) - 1<8>), bool, 1)), word32, 0) & 0xFFFFFFF4<32>), word32, 0) + 0x12<32>), word32, 0) : word32)
 	T_6170 (in 0x15<32> : word32)
 	T_6214 (in 0xE<32> : word32)
 	T_6215 (in 0xC<32> : word32)
@@ -4646,9 +4646,9 @@ Eq_5911: (union "Eq_5911" (1 u0) (bool u1))
 Eq_6023: (struct "Eq_6023" (8 Eq_17 t0008))
 	T_6023 (in rbp_394 + 8<64> : word64)
 Eq_6040: (union "Eq_6040" (bool u0) (word32 u1))
-	T_6040 (in SLICE(cond((byte) fn0000000000404CD0(0xD<32>) - 1<8>), bool, 1) : bool)
+	T_6040 (in SLICE(cond(SLICE(fn0000000000404CD0(0xD<32>), byte, 0) - 1<8>), bool, 1) : bool)
 Eq_6147: (union "Eq_6147" (bool u0) (word32 u1))
-	T_6147 (in SLICE(cond((byte) fn0000000000404CD0(0x12<32>) - 1<8>), bool, 1) : bool)
+	T_6147 (in SLICE(cond(SLICE(fn0000000000404CD0(0x12<32>), byte, 0) - 1<8>), bool, 1) : bool)
 Eq_6274: (fn word64 (Eq_17, Eq_17, uint64, Eq_17, (ptr32 Eq_11)))
 	T_6274 (in fn0000000000410600 : ptr64)
 	T_6275 (in signature of fn0000000000410600 : void)
@@ -4701,7 +4701,7 @@ Eq_6602: (union "Eq_6602" (bool u0) ((ptr64 char) u1) ((ptr64 Eq_17573) u2) ((pt
 Eq_6614: (union "Eq_6614" (bool u0) ((ptr64 char) u1) ((ptr64 Eq_17573) u2) ((ptr64 Eq_17584) u3) (time_t u4))
 	T_6614 (in rdx_143 + 0<64> : word64)
 Eq_6623: (union "Eq_6623" (ui64 u0) (word32 u1))
-	T_6623 (in SLICE((uint64) ~(word32) rcx_146, word32, 0) : word32)
+	T_6623 (in SLICE((uint64) ~SLICE(rcx_146, word32, 0), word32, 0) : word32)
 Eq_6632: (union "Eq_6632" (bool u0) ((ptr64 char) u1) ((ptr64 Eq_17573) u2) ((ptr64 Eq_17584) u3) (time_t u4))
 	T_6632 (in 4<64> : word64)
 Eq_6640: (union "Eq_6640" (bool u0) ((ptr64 char) u1) ((ptr64 Eq_17573) u2) ((ptr64 Eq_17584) u3) (time_t u4))
@@ -4936,7 +4936,7 @@ Eq_8245: (union "Eq_8245" (bool u0) (byte u1))
 	T_8283 (in Z_869 : Eq_8245)
 	T_8298 (in SLICE(cond(eax_804), bool, 2) : bool)
 	T_8314 (in SLICE(cond(eax_818), bool, 2) : bool)
-	T_8349 (in SLICE(cond(*rsi_3343 - *rdi_3344), bool, 2) : bool)
+	T_8349 (in SLICE(cond(Mem766[rsi_3343 + 0<64>:byte] - Mem766[rdi_3344 + 0<64>:byte]), bool, 2) : bool)
 	T_9108 (in 0<8> : byte)
 Eq_8287: (fn word32 ((ptr64 Eq_8289), Eq_17))
 	T_8287 (in fn0000000000411840 : ptr64)
@@ -4994,7 +4994,7 @@ Eq_8867: (union "Eq_8867" (bool u0) ((ptr64 char) u1) ((ptr64 Eq_17587) u2))
 Eq_8871: (union "Eq_8871" (bool u0) ((ptr64 char) u1) ((ptr64 Eq_17587) u2))
 	T_8871 (in rdx_1608 + 0<64> : word64)
 Eq_8880: (union "Eq_8880" (ui64 u0) (word32 u1))
-	T_8880 (in SLICE((uint64) ~(word32) rcx_1611, word32, 0) : word32)
+	T_8880 (in SLICE((uint64) ~SLICE(rcx_1611, word32, 0), word32, 0) : word32)
 Eq_8889: (union "Eq_8889" (bool u0) ((ptr64 char) u1) ((ptr64 Eq_17587) u2))
 	T_8889 (in 4<64> : word64)
 Eq_8927: (union "Eq_8927" (bool u0) ((ptr64 char) u1) ((ptr64 Eq_17587) u2))
@@ -5093,25 +5093,25 @@ Eq_10003: (union "Eq_10003" (int64 u0) (up64 u1))
 	T_10014 (in rax_11 - 1<64> : word64)
 	T_10021 (in 1<64> : word64)
 Eq_10072: (union "Eq_10072" (bool u0) (word32 u1))
-	T_10072 (in SLICE(cond((word32) (uint64) ((word32) (uint64) edi_7 & 0x100<32>) - 1<32>), bool, 1) : bool)
+	T_10072 (in SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x100<32>), word32, 0) - 1<32>), bool, 1) : bool)
 Eq_10097: (union "Eq_10097" (bool u0) (word32 u1))
-	T_10097 (in SLICE(cond((word32) (uint64) ((word32) (uint64) edi_7 & 0x80<32>) - 1<32>), bool, 1) : bool)
+	T_10097 (in SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x80<32>), word32, 0) - 1<32>), bool, 1) : bool)
 Eq_10123: (union "Eq_10123" (bool u0) (word32 u1))
-	T_10123 (in SLICE(cond((word32) (uint64) ((word32) (uint64) edi_7 & 0x40<32>) - 1<32>), bool, 1) : bool)
+	T_10123 (in SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x40<32>), word32, 0) - 1<32>), bool, 1) : bool)
 Eq_10182: (union "Eq_10182" (bool u0) (word32 u1))
-	T_10182 (in SLICE(cond((word32) (uint64) (edi_7 & 1<32>) - 1<32>), bool, 1) : bool)
+	T_10182 (in SLICE(cond(SLICE((uint64) (edi_7 & 1<32>), word32, 0) - 1<32>), bool, 1) : bool)
 Eq_10213: (union "Eq_10213" (bool u0) (word32 u1))
-	T_10213 (in SLICE(cond((word32) (uint64) (edi_7 & 1<32>) - 1<32>), bool, 1) : bool)
+	T_10213 (in SLICE(cond(SLICE((uint64) (edi_7 & 1<32>), word32, 0) - 1<32>), bool, 1) : bool)
 Eq_10241: (union "Eq_10241" (bool u0) (word32 u1))
-	T_10241 (in SLICE(cond((word32) (uint64) ((word32) (uint64) edi_7 & 4<32>) - 1<32>), bool, 1) : bool)
+	T_10241 (in SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 4<32>), word32, 0) - 1<32>), bool, 1) : bool)
 Eq_10266: (union "Eq_10266" (bool u0) (word32 u1))
-	T_10266 (in SLICE(cond((word32) (uint64) ((word32) (uint64) edi_7 & 2<32>) - 1<32>), bool, 1) : bool)
+	T_10266 (in SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 2<32>), word32, 0) - 1<32>), bool, 1) : bool)
 Eq_10298: (union "Eq_10298" (bool u0) (word32 u1))
-	T_10298 (in SLICE(cond((word32) (uint64) ((word32) (uint64) edi_7 & 0x20<32>) - 1<32>), bool, 1) : bool)
+	T_10298 (in SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x20<32>), word32, 0) - 1<32>), bool, 1) : bool)
 Eq_10323: (union "Eq_10323" (bool u0) (word32 u1))
-	T_10323 (in SLICE(cond((word32) (uint64) ((word32) (uint64) edi_7 & 0x10<32>) - 1<32>), bool, 1) : bool)
+	T_10323 (in SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x10<32>), word32, 0) - 1<32>), bool, 1) : bool)
 Eq_10348: (union "Eq_10348" (bool u0) (word32 u1))
-	T_10348 (in SLICE(cond((word32) (uint64) ((word32) (uint64) edi_7 & 8<32>) - 1<32>), bool, 1) : bool)
+	T_10348 (in SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 8<32>), word32, 0) - 1<32>), bool, 1) : bool)
 Eq_10358: (fn word64 ((ptr64 ptr64), Eq_17, Eq_17))
 	T_10358 (in fn000000000040A630 : ptr64)
 	T_10359 (in signature of fn000000000040A630 : void)
@@ -5370,10 +5370,10 @@ Eq_12139: (union "Eq_12139" (int64 u0) (uint64 u1))
 	T_12870 (in rdx_497 >> 3<64> : word64)
 Eq_12143: (union "Eq_12143" (int32 u0) (uint32 u1))
 	T_12143 (in ecx_141 : Eq_12143)
-	T_12260 (in SLICE((uint64) (SLICE((uint64) ~(word32) (uint64) (0<32> - C_135), word32, 0) + 3<32>), word32, 0) : word32)
+	T_12260 (in SLICE((uint64) (SLICE((uint64) ~SLICE((uint64) (0<32> - C_135), word32, 0), word32, 0) + 3<32>), word32, 0) : word32)
 	T_12265 (in (uint32) (uint8) (rdx_128 * 2<64> != 0<64>) : uint32)
 	T_12340 (in (word32) (ecx_231 != 0<32>) : word32)
-	T_12354 (in SLICE((uint64) (SLICE((uint64) ~(word32) (uint64) (0<32> - SLICE(cond(r12d_1398 - ecx_231), bool, 1)), word32, 0) + 3<32>), word32, 0) : word32)
+	T_12354 (in SLICE((uint64) (SLICE((uint64) ~SLICE((uint64) (0<32> - SLICE(cond(r12d_1398 - ecx_231), bool, 1)), word32, 0), word32, 0) + 3<32>), word32, 0) : word32)
 	T_12438 (in 0<32> : word32)
 	T_12478 (in 0<32> : word32)
 	T_12508 (in 0<32> : word32)
@@ -5741,7 +5741,7 @@ Eq_14179: (union "Eq_14179" (bool u0) (byte u1))
 	T_14179 (in CZ_59 : Eq_14179)
 	T_14182 (in Z_38 | SLICE(C_65, bool, 2) : bool)
 	T_14220 (in SLICE(CZ_59, bool, 1) : bool)
-	T_14232 (in SLICE(cond(*rsi_144 - *rdi_145), bool, 2) : bool)
+	T_14232 (in SLICE(cond(Mem9[rsi_144 + 0<64>:byte] - Mem9[rdi_145 + 0<64>:byte]), bool, 2) : bool)
 Eq_14254: (struct "Eq_14254" (0 word64 qw0000) (8 word64 qw0008) (10 word64 qw0010) (18 word64 qw0018) (20 word64 qw0020) (28 word64 qw0028) (30 word64 qw0030))
 	T_14254 (in rdi : (ptr64 Eq_14254))
 	T_15634 (in fp - 0x58<64> : word64)
@@ -6076,9 +6076,9 @@ Eq_17086: (fn int32 ((ptr64 Eq_16829), (ptr64 char), word32))
 	T_17086 (in fscanf : ptr64)
 	T_17087 (in signature of fscanf : void)
 Eq_17116: (union "Eq_17116" (ui64 u0) (word32 u1))
-	T_17116 (in SLICE((uint64) ~(word32) rcx_191, word32, 0) : word32)
+	T_17116 (in SLICE((uint64) ~SLICE(rcx_191, word32, 0), word32, 0) : word32)
 Eq_17178: (union "Eq_17178" (ui64 u0) (word32 u1))
-	T_17178 (in SLICE((uint64) ~(word32) rcx_234, word32, 0) : word32)
+	T_17178 (in SLICE((uint64) ~SLICE(rcx_234, word32, 0), word32, 0) : word32)
 Eq_17317: (fn int32 ((ptr64 Eq_16829)))
 	T_17317 (in fileno : ptr64)
 	T_17318 (in signature of fileno : void)
@@ -11501,11 +11501,11 @@ T_1314: (in globals->dw61B150 - 1<32> : word32)
   Class: Eq_1314
   DataType: word32
   OrigDataType: word32
-T_1315: (in cond(globals->dw61B150 - 1<32>) : byte)
+T_1315: (in cond(Mem1541[0x000000000061B150<p64>:word32] - 1<32>) : byte)
   Class: Eq_1315
   DataType: byte
   OrigDataType: byte
-T_1316: (in SLICE(cond(globals->dw61B150 - 1<32>), bool, 1) : bool)
+T_1316: (in SLICE(cond(Mem1541[0x000000000061B150<p64>:word32] - 1<32>), bool, 1) : bool)
   Class: Eq_1316
   DataType: Eq_1316
   OrigDataType: (union (bool u0) (word32 u1))
@@ -11513,11 +11513,11 @@ T_1317: (in 0<32> - SLICE(cond(globals->dw61B150 - 1<32>), bool, 1) : word32)
   Class: Eq_1317
   DataType: word32
   OrigDataType: word32
-T_1318: (in (uint64) (0<32> - SLICE(cond(globals->dw61B150 - 1<32>), bool, 1)) : uint64)
+T_1318: (in (uint64) (0<32> - SLICE(cond(Mem1541[0x000000000061B150<p64>:word32] - 1<32>), bool, 1)) : uint64)
   Class: Eq_1318
   DataType: uint64
   OrigDataType: uint64
-T_1319: (in SLICE((uint64) (0<32> - SLICE(cond(globals->dw61B150 - 1<32>), bool, 1)), word32, 0) : word32)
+T_1319: (in SLICE((uint64) (0<32> - SLICE(cond(Mem1541[0x000000000061B150<p64>:word32] - 1<32>), bool, 1)), word32, 0) : word32)
   Class: Eq_1319
   DataType: ui32
   OrigDataType: ui32
@@ -11529,11 +11529,11 @@ T_1321: (in (word32) (uint64) (0<32> - SLICE(cond(globals->dw61B150 - 1<32>), bo
   Class: Eq_1321
   DataType: ui32
   OrigDataType: ui32
-T_1322: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond(globals->dw61B150 - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFFE<32>) : uint64)
+T_1322: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond(Mem1541[0x000000000061B150<p64>:word32] - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFFE<32>) : uint64)
   Class: Eq_1322
   DataType: uint64
   OrigDataType: uint64
-T_1323: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(globals->dw61B150 - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFFE<32>), word32, 0) : word32)
+T_1323: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(Mem1541[0x000000000061B150<p64>:word32] - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFFE<32>), word32, 0) : word32)
   Class: Eq_1323
   DataType: word32
   OrigDataType: word32
@@ -11545,11 +11545,11 @@ T_1325: (in (word32) (uint64) ((word32) (uint64) (0<32> - SLICE(cond(globals->dw
   Class: Eq_1325
   DataType: word32
   OrigDataType: word32
-T_1326: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(globals->dw61B150 - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFFE<32>), word32, 0) + 4<32>) : uint64)
+T_1326: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(Mem1541[0x000000000061B150<p64>:word32] - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFFE<32>), word32, 0) + 4<32>) : uint64)
   Class: Eq_1326
   DataType: uint64
   OrigDataType: uint64
-T_1327: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(globals->dw61B150 - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFFE<32>), word32, 0) + 4<32>), word32, 0) : word32)
+T_1327: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(Mem1541[0x000000000061B150<p64>:word32] - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFFE<32>), word32, 0) + 4<32>), word32, 0) : word32)
   Class: Eq_138
   DataType: word32
   OrigDataType: word32
@@ -12649,11 +12649,11 @@ T_1601: (in (byte) (uint64) (uint8) fn00000000004049E0((word32) r13_1144 + 16<i3
   Class: Eq_1601
   DataType: byte
   OrigDataType: byte
-T_1602: (in cond((byte) (uint64) (uint8) fn00000000004049E0((word32) r13_1144 + 16<i32>, 0<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1198, out ebx_4104, out rbp_1214, out r8_1054, out r12_1109) - 1<8>) : byte)
+T_1602: (in cond(SLICE((uint64) (uint8) fn00000000004049E0((word32) r13_1144 + 16<i32>, 0<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1198, out ebx_4104, out rbp_1214, out r8_1054, out r12_1109), byte, 0) - 1<8>) : byte)
   Class: Eq_1602
   DataType: byte
   OrigDataType: byte
-T_1603: (in SLICE(cond((byte) (uint64) (uint8) fn00000000004049E0((word32) r13_1144 + 16<i32>, 0<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1198, out ebx_4104, out rbp_1214, out r8_1054, out r12_1109) - 1<8>), bool, 1) : bool)
+T_1603: (in SLICE(cond(SLICE((uint64) (uint8) fn00000000004049E0((word32) r13_1144 + 16<i32>, 0<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1198, out ebx_4104, out rbp_1214, out r8_1054, out r12_1109), byte, 0) - 1<8>), bool, 1) : bool)
   Class: Eq_1603
   DataType: Eq_1603
   OrigDataType: (union (bool u0) (word32 u1))
@@ -12661,11 +12661,11 @@ T_1604: (in 0<32> - SLICE(cond((byte) ((uint64) ((uint8) fn00000000004049E0((wor
   Class: Eq_1604
   DataType: word32
   OrigDataType: word32
-T_1605: (in (uint64) (0<32> - SLICE(cond((byte) ((uint64) ((uint8) fn00000000004049E0((word32) r13_1144 + 16<i32>, 0<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1198, out ebx_4104, out rbp_1214, out r8_1054, out r12_1109))) - 1<8>), bool, 1)) : uint64)
+T_1605: (in (uint64) (0<32> - SLICE(cond(SLICE((uint64) ((uint8) fn00000000004049E0((word32) r13_1144 + 16<i32>, 0<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1198, out ebx_4104, out rbp_1214, out r8_1054, out r12_1109)), byte, 0) - 1<8>), bool, 1)) : uint64)
   Class: Eq_1605
   DataType: uint64
   OrigDataType: uint64
-T_1606: (in SLICE((uint64) (0<32> - SLICE(cond((byte) ((uint64) ((uint8) fn00000000004049E0((word32) r13_1144 + 16<i32>, 0<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1198, out ebx_4104, out rbp_1214, out r8_1054, out r12_1109))) - 1<8>), bool, 1)), word32, 0) : word32)
+T_1606: (in SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) ((uint8) fn00000000004049E0((word32) r13_1144 + 16<i32>, 0<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1198, out ebx_4104, out rbp_1214, out r8_1054, out r12_1109)), byte, 0) - 1<8>), bool, 1)), word32, 0) : word32)
   Class: Eq_1606
   DataType: ui32
   OrigDataType: ui32
@@ -12677,11 +12677,11 @@ T_1608: (in (word32) (uint64) (0<32> - SLICE(cond((byte) ((uint64) ((uint8) fn00
   Class: Eq_1608
   DataType: ui32
   OrigDataType: ui32
-T_1609: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond((byte) ((uint64) ((uint8) fn00000000004049E0((word32) r13_1144 + 16<i32>, 0<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1198, out ebx_4104, out rbp_1214, out r8_1054, out r12_1109))) - 1<8>), bool, 1)), word32, 0) & 5<32>) : uint64)
+T_1609: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) ((uint8) fn00000000004049E0((word32) r13_1144 + 16<i32>, 0<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1198, out ebx_4104, out rbp_1214, out r8_1054, out r12_1109)), byte, 0) - 1<8>), bool, 1)), word32, 0) & 5<32>) : uint64)
   Class: Eq_1609
   DataType: uint64
   OrigDataType: uint64
-T_1610: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((byte) ((uint64) ((uint8) fn00000000004049E0((word32) r13_1144 + 16<i32>, 0<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1198, out ebx_4104, out rbp_1214, out r8_1054, out r12_1109))) - 1<8>), bool, 1)), word32, 0) & 5<32>), word32, 0) : word32)
+T_1610: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) ((uint8) fn00000000004049E0((word32) r13_1144 + 16<i32>, 0<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1198, out ebx_4104, out rbp_1214, out r8_1054, out r12_1109)), byte, 0) - 1<8>), bool, 1)), word32, 0) & 5<32>), word32, 0) : word32)
   Class: Eq_1358
   DataType: up32
   OrigDataType: word32
@@ -13293,11 +13293,11 @@ T_1762: (in (byte) (uint64) (uint8) fn00000000004049E0(rax_1335, 1<8>, (byte) rs
   Class: Eq_1762
   DataType: byte
   OrigDataType: byte
-T_1763: (in cond((byte) (uint64) (uint8) fn00000000004049E0(rax_1335, 1<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1342, out ebx_4106, out rbp_1214, out r8_1054, out r12_1109) - 1<8>) : byte)
+T_1763: (in cond(SLICE((uint64) (uint8) fn00000000004049E0(rax_1335, 1<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1342, out ebx_4106, out rbp_1214, out r8_1054, out r12_1109), byte, 0) - 1<8>) : byte)
   Class: Eq_1763
   DataType: byte
   OrigDataType: byte
-T_1764: (in SLICE(cond((byte) (uint64) (uint8) fn00000000004049E0(rax_1335, 1<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1342, out ebx_4106, out rbp_1214, out r8_1054, out r12_1109) - 1<8>), bool, 1) : bool)
+T_1764: (in SLICE(cond(SLICE((uint64) (uint8) fn00000000004049E0(rax_1335, 1<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1342, out ebx_4106, out rbp_1214, out r8_1054, out r12_1109), byte, 0) - 1<8>), bool, 1) : bool)
   Class: Eq_1764
   DataType: Eq_1764
   OrigDataType: (union (bool u0) (word32 u1))
@@ -13305,11 +13305,11 @@ T_1765: (in 0<32> - SLICE(cond((byte) ((uint64) ((uint8) fn00000000004049E0(rax_
   Class: Eq_1765
   DataType: word32
   OrigDataType: word32
-T_1766: (in (uint64) (0<32> - SLICE(cond((byte) ((uint64) ((uint8) fn00000000004049E0(rax_1335, 1<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1342, out ebx_4106, out rbp_1214, out r8_1054, out r12_1109))) - 1<8>), bool, 1)) : uint64)
+T_1766: (in (uint64) (0<32> - SLICE(cond(SLICE((uint64) ((uint8) fn00000000004049E0(rax_1335, 1<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1342, out ebx_4106, out rbp_1214, out r8_1054, out r12_1109)), byte, 0) - 1<8>), bool, 1)) : uint64)
   Class: Eq_1766
   DataType: uint64
   OrigDataType: uint64
-T_1767: (in SLICE((uint64) (0<32> - SLICE(cond((byte) ((uint64) ((uint8) fn00000000004049E0(rax_1335, 1<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1342, out ebx_4106, out rbp_1214, out r8_1054, out r12_1109))) - 1<8>), bool, 1)), word32, 0) : word32)
+T_1767: (in SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) ((uint8) fn00000000004049E0(rax_1335, 1<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1342, out ebx_4106, out rbp_1214, out r8_1054, out r12_1109)), byte, 0) - 1<8>), bool, 1)), word32, 0) : word32)
   Class: Eq_1767
   DataType: ui32
   OrigDataType: ui32
@@ -13321,11 +13321,11 @@ T_1769: (in (word32) (uint64) (0<32> - SLICE(cond((byte) ((uint64) ((uint8) fn00
   Class: Eq_1769
   DataType: ui32
   OrigDataType: ui32
-T_1770: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond((byte) ((uint64) ((uint8) fn00000000004049E0(rax_1335, 1<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1342, out ebx_4106, out rbp_1214, out r8_1054, out r12_1109))) - 1<8>), bool, 1)), word32, 0) & 2<32>) : uint64)
+T_1770: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) ((uint8) fn00000000004049E0(rax_1335, 1<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1342, out ebx_4106, out rbp_1214, out r8_1054, out r12_1109)), byte, 0) - 1<8>), bool, 1)), word32, 0) & 2<32>) : uint64)
   Class: Eq_1770
   DataType: uint64
   OrigDataType: uint64
-T_1771: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((byte) ((uint64) ((uint8) fn00000000004049E0(rax_1335, 1<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1342, out ebx_4106, out rbp_1214, out r8_1054, out r12_1109))) - 1<8>), bool, 1)), word32, 0) & 2<32>), word32, 0) : word32)
+T_1771: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) ((uint8) fn00000000004049E0(rax_1335, 1<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1342, out ebx_4106, out rbp_1214, out r8_1054, out r12_1109)), byte, 0) - 1<8>), bool, 1)), word32, 0) & 2<32>), word32, 0) : word32)
   Class: Eq_1771
   DataType: word32
   OrigDataType: word32
@@ -13337,11 +13337,11 @@ T_1773: (in (word32) (uint64) ((word32) (uint64) (0<32> - SLICE(cond((byte) ((ui
   Class: Eq_1773
   DataType: word32
   OrigDataType: word32
-T_1774: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((byte) ((uint64) ((uint8) fn00000000004049E0(rax_1335, 1<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1342, out ebx_4106, out rbp_1214, out r8_1054, out r12_1109))) - 1<8>), bool, 1)), word32, 0) & 2<32>), word32, 0) + 3<32>) : uint64)
+T_1774: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) ((uint8) fn00000000004049E0(rax_1335, 1<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1342, out ebx_4106, out rbp_1214, out r8_1054, out r12_1109)), byte, 0) - 1<8>), bool, 1)), word32, 0) & 2<32>), word32, 0) + 3<32>) : uint64)
   Class: Eq_1774
   DataType: uint64
   OrigDataType: uint64
-T_1775: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((byte) ((uint64) ((uint8) fn00000000004049E0(rax_1335, 1<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1342, out ebx_4106, out rbp_1214, out r8_1054, out r12_1109))) - 1<8>), bool, 1)), word32, 0) & 2<32>), word32, 0) + 3<32>), word32, 0) : word32)
+T_1775: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) ((uint8) fn00000000004049E0(rax_1335, 1<8>, (byte) rsp_1190.u0 + 56<i32>, rdi_1342, out ebx_4106, out rbp_1214, out r8_1054, out r12_1109)), byte, 0) - 1<8>), bool, 1)), word32, 0) & 2<32>), word32, 0) + 3<32>), word32, 0) : word32)
   Class: Eq_1358
   DataType: up32
   OrigDataType: word32
@@ -19309,11 +19309,11 @@ T_3266: (in *rsi_4115 - *rdi_4116 : byte)
   Class: Eq_3266
   DataType: byte
   OrigDataType: byte
-T_3267: (in cond(*rsi_4115 - *rdi_4116) : byte)
+T_3267: (in cond(Mem3607[rsi_4115 + 0<64>:byte] - Mem3607[rdi_4116 + 0<64>:byte]) : byte)
   Class: Eq_3267
   DataType: byte
   OrigDataType: byte
-T_3268: (in SLICE(cond(*rsi_4115 - *rdi_4116), bool, 2) : bool)
+T_3268: (in SLICE(cond(Mem3607[rsi_4115 + 0<64>:byte] - Mem3607[rdi_4116 + 0<64>:byte]), bool, 2) : bool)
   Class: Eq_3233
   DataType: bool
   OrigDataType: bool
@@ -21461,11 +21461,11 @@ T_3804: (in *rsi_91 - *rdi_92 : byte)
   Class: Eq_3804
   DataType: byte
   OrigDataType: byte
-T_3805: (in cond(*rsi_91 - *rdi_92) : byte)
+T_3805: (in cond(Mem0[rsi_91 + 0<64>:byte] - Mem0[rdi_92 + 0<64>:byte]) : byte)
   Class: Eq_3805
   DataType: byte
   OrigDataType: byte
-T_3806: (in SLICE(cond(*rsi_91 - *rdi_92), bool, 2) : bool)
+T_3806: (in SLICE(cond(Mem0[rsi_91 + 0<64>:byte] - Mem0[rdi_92 + 0<64>:byte]), bool, 2) : bool)
   Class: Eq_3783
   DataType: bool
   OrigDataType: bool
@@ -24929,15 +24929,15 @@ T_4671: (in ~(word32) (uint64) (word32) rcx_31 : word32)
   Class: Eq_4671
   DataType: word32
   OrigDataType: word32
-T_4672: (in (uint64) ~(word32) (uint64) (word32) rcx_31 : uint64)
+T_4672: (in (uint64) ~SLICE((uint64) SLICE(rcx_31, word32, 0), word32, 0) : uint64)
   Class: Eq_4672
   DataType: uint64
   OrigDataType: uint64
-T_4673: (in SLICE((uint64) ~(word32) (uint64) (word32) rcx_31, word32, 0) : word32)
+T_4673: (in SLICE((uint64) ~SLICE((uint64) SLICE(rcx_31, word32, 0), word32, 0), word32, 0) : word32)
   Class: Eq_4673
   DataType: word32
   OrigDataType: word32
-T_4674: (in (int64) SLICE((uint64) ~(word32) (uint64) (word32) rcx_31, word32, 0) : int64)
+T_4674: (in (int64) SLICE((uint64) ~SLICE((uint64) SLICE(rcx_31, word32, 0), word32, 0), word32, 0) : int64)
   Class: Eq_4674
   DataType: int64
   OrigDataType: int64
@@ -25925,11 +25925,11 @@ T_4920: (in (word32) rsi_90 - 1<32> : word32)
   Class: Eq_4920
   DataType: word32
   OrigDataType: word32
-T_4921: (in cond((word32) rsi_90 - 1<32>) : byte)
+T_4921: (in cond(SLICE(rsi_90, word32, 0) - 1<32>) : byte)
   Class: Eq_4921
   DataType: byte
   OrigDataType: byte
-T_4922: (in SLICE(cond((word32) rsi_90 - 1<32>), bool, 1) : bool)
+T_4922: (in SLICE(cond(SLICE(rsi_90, word32, 0) - 1<32>), bool, 1) : bool)
   Class: Eq_4922
   DataType: Eq_4922
   OrigDataType: (union (bool u0) (word32 u1))
@@ -25937,11 +25937,11 @@ T_4923: (in 0<32> - SLICE(cond((word32) rsi_90 - 1<32>), bool, 1) : word32)
   Class: Eq_4923
   DataType: word32
   OrigDataType: word32
-T_4924: (in (uint64) (0<32> - SLICE(cond((word32) rsi_90 - 1<32>), bool, 1)) : uint64)
+T_4924: (in (uint64) (0<32> - SLICE(cond(SLICE(rsi_90, word32, 0) - 1<32>), bool, 1)) : uint64)
   Class: Eq_4924
   DataType: uint64
   OrigDataType: uint64
-T_4925: (in SLICE((uint64) (0<32> - SLICE(cond((word32) rsi_90 - 1<32>), bool, 1)), word32, 0) : word32)
+T_4925: (in SLICE((uint64) (0<32> - SLICE(cond(SLICE(rsi_90, word32, 0) - 1<32>), bool, 1)), word32, 0) : word32)
   Class: Eq_4925
   DataType: word32
   OrigDataType: word32
@@ -25949,11 +25949,11 @@ T_4926: (in ~(word32) (uint64) (0<32> - SLICE(cond((word32) rsi_90 - 1<32>), boo
   Class: Eq_4926
   DataType: word32
   OrigDataType: word32
-T_4927: (in (uint64) ~(word32) (uint64) (0<32> - SLICE(cond((word32) rsi_90 - 1<32>), bool, 1)) : uint64)
+T_4927: (in (uint64) ~SLICE((uint64) (0<32> - SLICE(cond(SLICE(rsi_90, word32, 0) - 1<32>), bool, 1)), word32, 0) : uint64)
   Class: Eq_4927
   DataType: uint64
   OrigDataType: uint64
-T_4928: (in SLICE((uint64) ~(word32) (uint64) (0<32> - SLICE(cond((word32) rsi_90 - 1<32>), bool, 1)), word32, 0) : word32)
+T_4928: (in SLICE((uint64) ~SLICE((uint64) (0<32> - SLICE(cond(SLICE(rsi_90, word32, 0) - 1<32>), bool, 1)), word32, 0), word32, 0) : word32)
   Class: Eq_4928
   DataType: ui32
   OrigDataType: ui32
@@ -25965,7 +25965,7 @@ T_4930: (in (word32) (uint64) ~(word32) (uint64) (0<32> - SLICE(cond((word32) rs
   Class: Eq_4930
   DataType: ui32
   OrigDataType: ui32
-T_4931: (in (uint64) (SLICE((uint64) ~(word32) (uint64) (0<32> - SLICE(cond((word32) rsi_90 - 1<32>), bool, 1)), word32, 0) & 0x2A<32>) : uint64)
+T_4931: (in (uint64) (SLICE((uint64) ~SLICE((uint64) (0<32> - SLICE(cond(SLICE(rsi_90, word32, 0) - 1<32>), bool, 1)), word32, 0), word32, 0) & 0x2A<32>) : uint64)
   Class: Eq_4875
   DataType: uint64
   OrigDataType: uint64
@@ -28437,11 +28437,11 @@ T_5548: (in ~(word32) rcx_68 : word32)
   Class: Eq_5548
   DataType: word32
   OrigDataType: word32
-T_5549: (in (uint64) ~(word32) rcx_68 : uint64)
+T_5549: (in (uint64) ~SLICE(rcx_68, word32, 0) : uint64)
   Class: Eq_5549
   DataType: uint64
   OrigDataType: uint64
-T_5550: (in SLICE((uint64) ~(word32) rcx_68, word32, 0) : word32)
+T_5550: (in SLICE((uint64) ~SLICE(rcx_68, word32, 0), word32, 0) : word32)
   Class: Eq_5550
   DataType: Eq_5550
   OrigDataType: (union (ui64 u1) (word32 u0))
@@ -28449,11 +28449,11 @@ T_5551: (in rcx_68 + 0xFFFFFFFFFEFEFEFF<64> & (word32) ((uint64) (~((word32) rcx
   Class: Eq_5551
   DataType: ui64
   OrigDataType: ui64
-T_5552: (in (uint64) (rcx_68 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~((word32) rcx_68)), word32, 0)) : uint64)
+T_5552: (in (uint64) (rcx_68 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~SLICE(rcx_68, word32, 0)), word32, 0)) : uint64)
   Class: Eq_5552
   DataType: uint64
   OrigDataType: uint64
-T_5553: (in SLICE((uint64) (rcx_68 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~((word32) rcx_68)), word32, 0)), word32, 0) : word32)
+T_5553: (in SLICE((uint64) (rcx_68 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~SLICE(rcx_68, word32, 0)), word32, 0)), word32, 0) : word32)
   Class: Eq_5553
   DataType: ui32
   OrigDataType: ui32
@@ -28465,11 +28465,11 @@ T_5555: (in (word32) (uint64) (rcx_68 + 0xFFFFFFFFFEFEFEFF<64> & (word32) ((uint
   Class: Eq_5555
   DataType: ui32
   OrigDataType: ui32
-T_5556: (in (uint64) (SLICE((uint64) (rcx_68 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~((word32) rcx_68)), word32, 0)), word32, 0) & 0x80808080<32>) : uint64)
+T_5556: (in (uint64) (SLICE((uint64) (rcx_68 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~SLICE(rcx_68, word32, 0)), word32, 0)), word32, 0) & 0x80808080<32>) : uint64)
   Class: Eq_5556
   DataType: uint64
   OrigDataType: uint64
-T_5557: (in SLICE((uint64) (SLICE((uint64) (rcx_68 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~((word32) rcx_68)), word32, 0)), word32, 0) & 0x80808080<32>), word32, 0) : word32)
+T_5557: (in SLICE((uint64) (SLICE((uint64) (rcx_68 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~SLICE(rcx_68, word32, 0)), word32, 0)), word32, 0) & 0x80808080<32>), word32, 0) : word32)
   Class: Eq_5544
   DataType: ui32
   OrigDataType: word32
@@ -30397,11 +30397,11 @@ T_6038: (in (byte) fn0000000000404CD0(0xD<32>) - 1<8> : byte)
   Class: Eq_6038
   DataType: byte
   OrigDataType: byte
-T_6039: (in cond((byte) fn0000000000404CD0(0xD<32>) - 1<8>) : byte)
+T_6039: (in cond(SLICE(fn0000000000404CD0(0xD<32>), byte, 0) - 1<8>) : byte)
   Class: Eq_6039
   DataType: byte
   OrigDataType: byte
-T_6040: (in SLICE(cond((byte) fn0000000000404CD0(0xD<32>) - 1<8>), bool, 1) : bool)
+T_6040: (in SLICE(cond(SLICE(fn0000000000404CD0(0xD<32>), byte, 0) - 1<8>), bool, 1) : bool)
   Class: Eq_6040
   DataType: Eq_6040
   OrigDataType: (union (bool u0) (word32 u1))
@@ -30409,11 +30409,11 @@ T_6041: (in 0<32> - SLICE(cond((byte) fn0000000000404CD0(0xD<32>) - 1<8>), bool,
   Class: Eq_6041
   DataType: word32
   OrigDataType: word32
-T_6042: (in (uint64) (0<32> - SLICE(cond((byte) fn0000000000404CD0(0xD<32>) - 1<8>), bool, 1)) : uint64)
+T_6042: (in (uint64) (0<32> - SLICE(cond(SLICE(fn0000000000404CD0(0xD<32>), byte, 0) - 1<8>), bool, 1)) : uint64)
   Class: Eq_6042
   DataType: uint64
   OrigDataType: uint64
-T_6043: (in SLICE((uint64) (0<32> - SLICE(cond((byte) fn0000000000404CD0(0xD<32>) - 1<8>), bool, 1)), word32, 0) : word32)
+T_6043: (in SLICE((uint64) (0<32> - SLICE(cond(SLICE(fn0000000000404CD0(0xD<32>), byte, 0) - 1<8>), bool, 1)), word32, 0) : word32)
   Class: Eq_6043
   DataType: ui32
   OrigDataType: ui32
@@ -30425,11 +30425,11 @@ T_6045: (in (word32) (uint64) (0<32> - SLICE(cond((byte) fn0000000000404CD0(0xD<
   Class: Eq_6045
   DataType: ui32
   OrigDataType: ui32
-T_6046: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond((byte) fn0000000000404CD0(0xD<32>) - 1<8>), bool, 1)), word32, 0) & 0xFFFFFFFA<32>) : uint64)
+T_6046: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE(fn0000000000404CD0(0xD<32>), byte, 0) - 1<8>), bool, 1)), word32, 0) & 0xFFFFFFFA<32>) : uint64)
   Class: Eq_6046
   DataType: uint64
   OrigDataType: uint64
-T_6047: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((byte) fn0000000000404CD0(0xD<32>) - 1<8>), bool, 1)), word32, 0) & 0xFFFFFFFA<32>), word32, 0) : word32)
+T_6047: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE(fn0000000000404CD0(0xD<32>), byte, 0) - 1<8>), bool, 1)), word32, 0) & 0xFFFFFFFA<32>), word32, 0) : word32)
   Class: Eq_6047
   DataType: word32
   OrigDataType: word32
@@ -30441,11 +30441,11 @@ T_6049: (in (word32) (uint64) ((word32) (uint64) (0<32> - SLICE(cond((byte) fn00
   Class: Eq_6049
   DataType: word32
   OrigDataType: word32
-T_6050: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((byte) fn0000000000404CD0(0xD<32>) - 1<8>), bool, 1)), word32, 0) & 0xFFFFFFFA<32>), word32, 0) + 0xD<32>) : uint64)
+T_6050: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE(fn0000000000404CD0(0xD<32>), byte, 0) - 1<8>), bool, 1)), word32, 0) & 0xFFFFFFFA<32>), word32, 0) + 0xD<32>) : uint64)
   Class: Eq_6050
   DataType: uint64
   OrigDataType: uint64
-T_6051: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((byte) fn0000000000404CD0(0xD<32>) - 1<8>), bool, 1)), word32, 0) & 0xFFFFFFFA<32>), word32, 0) + 0xD<32>), word32, 0) : word32)
+T_6051: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE(fn0000000000404CD0(0xD<32>), byte, 0) - 1<8>), bool, 1)), word32, 0) & 0xFFFFFFFA<32>), word32, 0) + 0xD<32>), word32, 0) : word32)
   Class: Eq_5743
   DataType: Eq_5743
   OrigDataType: word32
@@ -30825,11 +30825,11 @@ T_6145: (in (byte) fn0000000000404CD0(0x12<32>) - 1<8> : byte)
   Class: Eq_6145
   DataType: byte
   OrigDataType: byte
-T_6146: (in cond((byte) fn0000000000404CD0(0x12<32>) - 1<8>) : byte)
+T_6146: (in cond(SLICE(fn0000000000404CD0(0x12<32>), byte, 0) - 1<8>) : byte)
   Class: Eq_6146
   DataType: byte
   OrigDataType: byte
-T_6147: (in SLICE(cond((byte) fn0000000000404CD0(0x12<32>) - 1<8>), bool, 1) : bool)
+T_6147: (in SLICE(cond(SLICE(fn0000000000404CD0(0x12<32>), byte, 0) - 1<8>), bool, 1) : bool)
   Class: Eq_6147
   DataType: Eq_6147
   OrigDataType: (union (bool u0) (word32 u1))
@@ -30837,11 +30837,11 @@ T_6148: (in 0<32> - SLICE(cond((byte) fn0000000000404CD0(0x12<32>) - 1<8>), bool
   Class: Eq_6148
   DataType: word32
   OrigDataType: word32
-T_6149: (in (uint64) (0<32> - SLICE(cond((byte) fn0000000000404CD0(0x12<32>) - 1<8>), bool, 1)) : uint64)
+T_6149: (in (uint64) (0<32> - SLICE(cond(SLICE(fn0000000000404CD0(0x12<32>), byte, 0) - 1<8>), bool, 1)) : uint64)
   Class: Eq_6149
   DataType: uint64
   OrigDataType: uint64
-T_6150: (in SLICE((uint64) (0<32> - SLICE(cond((byte) fn0000000000404CD0(0x12<32>) - 1<8>), bool, 1)), word32, 0) : word32)
+T_6150: (in SLICE((uint64) (0<32> - SLICE(cond(SLICE(fn0000000000404CD0(0x12<32>), byte, 0) - 1<8>), bool, 1)), word32, 0) : word32)
   Class: Eq_6150
   DataType: ui32
   OrigDataType: ui32
@@ -30853,11 +30853,11 @@ T_6152: (in (word32) (uint64) (0<32> - SLICE(cond((byte) fn0000000000404CD0(0x12
   Class: Eq_6152
   DataType: ui32
   OrigDataType: ui32
-T_6153: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond((byte) fn0000000000404CD0(0x12<32>) - 1<8>), bool, 1)), word32, 0) & 0xFFFFFFF4<32>) : uint64)
+T_6153: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE(fn0000000000404CD0(0x12<32>), byte, 0) - 1<8>), bool, 1)), word32, 0) & 0xFFFFFFF4<32>) : uint64)
   Class: Eq_6153
   DataType: uint64
   OrigDataType: uint64
-T_6154: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((byte) fn0000000000404CD0(0x12<32>) - 1<8>), bool, 1)), word32, 0) & 0xFFFFFFF4<32>), word32, 0) : word32)
+T_6154: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE(fn0000000000404CD0(0x12<32>), byte, 0) - 1<8>), bool, 1)), word32, 0) & 0xFFFFFFF4<32>), word32, 0) : word32)
   Class: Eq_6154
   DataType: word32
   OrigDataType: word32
@@ -30869,11 +30869,11 @@ T_6156: (in (word32) (uint64) ((word32) (uint64) (0<32> - SLICE(cond((byte) fn00
   Class: Eq_6156
   DataType: word32
   OrigDataType: word32
-T_6157: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((byte) fn0000000000404CD0(0x12<32>) - 1<8>), bool, 1)), word32, 0) & 0xFFFFFFF4<32>), word32, 0) + 0x12<32>) : uint64)
+T_6157: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE(fn0000000000404CD0(0x12<32>), byte, 0) - 1<8>), bool, 1)), word32, 0) & 0xFFFFFFF4<32>), word32, 0) + 0x12<32>) : uint64)
   Class: Eq_6157
   DataType: uint64
   OrigDataType: uint64
-T_6158: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((byte) fn0000000000404CD0(0x12<32>) - 1<8>), bool, 1)), word32, 0) & 0xFFFFFFF4<32>), word32, 0) + 0x12<32>), word32, 0) : word32)
+T_6158: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE(fn0000000000404CD0(0x12<32>), byte, 0) - 1<8>), bool, 1)), word32, 0) & 0xFFFFFFF4<32>), word32, 0) + 0x12<32>), word32, 0) : word32)
   Class: Eq_5743
   DataType: Eq_5743
   OrigDataType: word32
@@ -32729,11 +32729,11 @@ T_6621: (in ~(word32) rcx_146 : word32)
   Class: Eq_6621
   DataType: word32
   OrigDataType: word32
-T_6622: (in (uint64) ~(word32) rcx_146 : uint64)
+T_6622: (in (uint64) ~SLICE(rcx_146, word32, 0) : uint64)
   Class: Eq_6622
   DataType: uint64
   OrigDataType: uint64
-T_6623: (in SLICE((uint64) ~(word32) rcx_146, word32, 0) : word32)
+T_6623: (in SLICE((uint64) ~SLICE(rcx_146, word32, 0), word32, 0) : word32)
   Class: Eq_6623
   DataType: Eq_6623
   OrigDataType: (union (ui64 u1) (word32 u0))
@@ -32741,11 +32741,11 @@ T_6624: (in rcx_146 + 0xFFFFFFFFFEFEFEFF<64> & (word32) ((uint64) (~((word32) rc
   Class: Eq_6624
   DataType: ui64
   OrigDataType: ui64
-T_6625: (in (uint64) (rcx_146 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~((word32) rcx_146)), word32, 0)) : uint64)
+T_6625: (in (uint64) (rcx_146 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~SLICE(rcx_146, word32, 0)), word32, 0)) : uint64)
   Class: Eq_6625
   DataType: uint64
   OrigDataType: uint64
-T_6626: (in SLICE((uint64) (rcx_146 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~((word32) rcx_146)), word32, 0)), word32, 0) : word32)
+T_6626: (in SLICE((uint64) (rcx_146 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~SLICE(rcx_146, word32, 0)), word32, 0)), word32, 0) : word32)
   Class: Eq_6626
   DataType: ui32
   OrigDataType: ui32
@@ -32757,7 +32757,7 @@ T_6628: (in (word32) (uint64) (rcx_146 + 0xFFFFFFFFFEFEFEFF<64> & (word32) ((uin
   Class: Eq_6628
   DataType: ui32
   OrigDataType: ui32
-T_6629: (in (uint64) (SLICE((uint64) (rcx_146 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~((word32) rcx_146)), word32, 0)), word32, 0) & 0x80808080<32>) : uint64)
+T_6629: (in (uint64) (SLICE((uint64) (rcx_146 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~SLICE(rcx_146, word32, 0)), word32, 0)), word32, 0) & 0x80808080<32>) : uint64)
   Class: Eq_6617
   DataType: uint64
   OrigDataType: uint64
@@ -39633,11 +39633,11 @@ T_8347: (in *rsi_3343 - *rdi_3344 : byte)
   Class: Eq_8347
   DataType: byte
   OrigDataType: byte
-T_8348: (in cond(*rsi_3343 - *rdi_3344) : byte)
+T_8348: (in cond(Mem766[rsi_3343 + 0<64>:byte] - Mem766[rdi_3344 + 0<64>:byte]) : byte)
   Class: Eq_8348
   DataType: byte
   OrigDataType: byte
-T_8349: (in SLICE(cond(*rsi_3343 - *rdi_3344), bool, 2) : bool)
+T_8349: (in SLICE(cond(Mem766[rsi_3343 + 0<64>:byte] - Mem766[rdi_3344 + 0<64>:byte]), bool, 2) : bool)
   Class: Eq_8245
   DataType: Eq_8245
   OrigDataType: bool
@@ -41757,11 +41757,11 @@ T_8878: (in ~(word32) rcx_1611 : word32)
   Class: Eq_8878
   DataType: word32
   OrigDataType: word32
-T_8879: (in (uint64) ~(word32) rcx_1611 : uint64)
+T_8879: (in (uint64) ~SLICE(rcx_1611, word32, 0) : uint64)
   Class: Eq_8879
   DataType: uint64
   OrigDataType: uint64
-T_8880: (in SLICE((uint64) ~(word32) rcx_1611, word32, 0) : word32)
+T_8880: (in SLICE((uint64) ~SLICE(rcx_1611, word32, 0), word32, 0) : word32)
   Class: Eq_8880
   DataType: Eq_8880
   OrigDataType: (union (ui64 u1) (word32 u0))
@@ -41769,11 +41769,11 @@ T_8881: (in rcx_1611 + 0xFFFFFFFFFEFEFEFF<64> & (word32) ((uint64) (~((word32) r
   Class: Eq_8881
   DataType: ui64
   OrigDataType: ui64
-T_8882: (in (uint64) (rcx_1611 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~((word32) rcx_1611)), word32, 0)) : uint64)
+T_8882: (in (uint64) (rcx_1611 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~SLICE(rcx_1611, word32, 0)), word32, 0)) : uint64)
   Class: Eq_8882
   DataType: uint64
   OrigDataType: uint64
-T_8883: (in SLICE((uint64) (rcx_1611 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~((word32) rcx_1611)), word32, 0)), word32, 0) : word32)
+T_8883: (in SLICE((uint64) (rcx_1611 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~SLICE(rcx_1611, word32, 0)), word32, 0)), word32, 0) : word32)
   Class: Eq_8883
   DataType: ui32
   OrigDataType: ui32
@@ -41785,7 +41785,7 @@ T_8885: (in (word32) (uint64) (rcx_1611 + 0xFFFFFFFFFEFEFEFF<64> & (word32) ((ui
   Class: Eq_8885
   DataType: ui32
   OrigDataType: ui32
-T_8886: (in (uint64) (SLICE((uint64) (rcx_1611 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~((word32) rcx_1611)), word32, 0)), word32, 0) & 0x80808080<32>) : uint64)
+T_8886: (in (uint64) (SLICE((uint64) (rcx_1611 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~SLICE(rcx_1611, word32, 0)), word32, 0)), word32, 0) & 0x80808080<32>) : uint64)
   Class: Eq_8874
   DataType: uint64
   OrigDataType: uint64
@@ -46525,11 +46525,11 @@ T_10070: (in (word32) (uint64) ((word32) (uint64) edi_7 & 0x100<32>) - 1<32> : w
   Class: Eq_10070
   DataType: word32
   OrigDataType: word32
-T_10071: (in cond((word32) (uint64) ((word32) (uint64) edi_7 & 0x100<32>) - 1<32>) : byte)
+T_10071: (in cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x100<32>), word32, 0) - 1<32>) : byte)
   Class: Eq_10071
   DataType: byte
   OrigDataType: byte
-T_10072: (in SLICE(cond((word32) (uint64) ((word32) (uint64) edi_7 & 0x100<32>) - 1<32>), bool, 1) : bool)
+T_10072: (in SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x100<32>), word32, 0) - 1<32>), bool, 1) : bool)
   Class: Eq_10072
   DataType: Eq_10072
   OrigDataType: (union (bool u0) (word32 u1))
@@ -46537,11 +46537,11 @@ T_10073: (in 0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 
   Class: Eq_10073
   DataType: word32
   OrigDataType: word32
-T_10074: (in (uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x100<32>)) - 1<32>), bool, 1)) : uint64)
+T_10074: (in (uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x100<32>), word32, 0) - 1<32>), bool, 1)) : uint64)
   Class: Eq_10074
   DataType: uint64
   OrigDataType: uint64
-T_10075: (in SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x100<32>)) - 1<32>), bool, 1)), word32, 0) : word32)
+T_10075: (in SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x100<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) : word32)
   Class: Eq_10075
   DataType: ui32
   OrigDataType: ui32
@@ -46553,11 +46553,11 @@ T_10077: (in (word32) (uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) 
   Class: Eq_10077
   DataType: ui32
   OrigDataType: ui32
-T_10078: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x100<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>) : uint64)
+T_10078: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x100<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>) : uint64)
   Class: Eq_10078
   DataType: uint64
   OrigDataType: uint64
-T_10079: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x100<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>), word32, 0) : word32)
+T_10079: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x100<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>), word32, 0) : word32)
   Class: Eq_10079
   DataType: word32
   OrigDataType: word32
@@ -46569,11 +46569,11 @@ T_10081: (in (word32) (uint64) ((word32) (uint64) (0<32> - SLICE(cond((word32) (
   Class: Eq_10081
   DataType: word32
   OrigDataType: word32
-T_10082: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x100<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>), word32, 0) + 0x72<32>) : uint64)
+T_10082: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x100<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>), word32, 0) + 0x72<32>) : uint64)
   Class: Eq_10082
   DataType: uint64
   OrigDataType: uint64
-T_10083: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x100<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>), word32, 0) + 0x72<32>), byte, 0) : byte)
+T_10083: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x100<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>), word32, 0) + 0x72<32>), byte, 0) : byte)
   Class: Eq_10083
   DataType: byte
   OrigDataType: byte
@@ -46625,11 +46625,11 @@ T_10095: (in (word32) (uint64) ((word32) (uint64) edi_7 & 0x80<32>) - 1<32> : wo
   Class: Eq_10095
   DataType: word32
   OrigDataType: word32
-T_10096: (in cond((word32) (uint64) ((word32) (uint64) edi_7 & 0x80<32>) - 1<32>) : byte)
+T_10096: (in cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x80<32>), word32, 0) - 1<32>) : byte)
   Class: Eq_10096
   DataType: byte
   OrigDataType: byte
-T_10097: (in SLICE(cond((word32) (uint64) ((word32) (uint64) edi_7 & 0x80<32>) - 1<32>), bool, 1) : bool)
+T_10097: (in SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x80<32>), word32, 0) - 1<32>), bool, 1) : bool)
   Class: Eq_10097
   DataType: Eq_10097
   OrigDataType: (union (bool u0) (word32 u1))
@@ -46637,11 +46637,11 @@ T_10098: (in 0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 
   Class: Eq_10098
   DataType: word32
   OrigDataType: word32
-T_10099: (in (uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x80<32>)) - 1<32>), bool, 1)) : uint64)
+T_10099: (in (uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x80<32>), word32, 0) - 1<32>), bool, 1)) : uint64)
   Class: Eq_10099
   DataType: uint64
   OrigDataType: uint64
-T_10100: (in SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x80<32>)) - 1<32>), bool, 1)), word32, 0) : word32)
+T_10100: (in SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x80<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) : word32)
   Class: Eq_10100
   DataType: ui32
   OrigDataType: ui32
@@ -46653,11 +46653,11 @@ T_10102: (in (word32) (uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) 
   Class: Eq_10102
   DataType: ui32
   OrigDataType: ui32
-T_10103: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x80<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>) : uint64)
+T_10103: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x80<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>) : uint64)
   Class: Eq_10103
   DataType: uint64
   OrigDataType: uint64
-T_10104: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x80<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>), word32, 0) : word32)
+T_10104: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x80<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>), word32, 0) : word32)
   Class: Eq_10104
   DataType: word32
   OrigDataType: word32
@@ -46669,11 +46669,11 @@ T_10106: (in (word32) (uint64) ((word32) (uint64) (0<32> - SLICE(cond((word32) (
   Class: Eq_10106
   DataType: word32
   OrigDataType: word32
-T_10107: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x80<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>), word32, 0) + 0x77<32>) : uint64)
+T_10107: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x80<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>), word32, 0) + 0x77<32>) : uint64)
   Class: Eq_10107
   DataType: uint64
   OrigDataType: uint64
-T_10108: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x80<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>), word32, 0) + 0x77<32>), byte, 0) : byte)
+T_10108: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x80<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>), word32, 0) + 0x77<32>), byte, 0) : byte)
   Class: Eq_10108
   DataType: byte
   OrigDataType: byte
@@ -46729,11 +46729,11 @@ T_10121: (in (word32) (uint64) ((word32) (uint64) edi_7 & 0x40<32>) - 1<32> : wo
   Class: Eq_10121
   DataType: word32
   OrigDataType: word32
-T_10122: (in cond((word32) (uint64) ((word32) (uint64) edi_7 & 0x40<32>) - 1<32>) : byte)
+T_10122: (in cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x40<32>), word32, 0) - 1<32>) : byte)
   Class: Eq_10122
   DataType: byte
   OrigDataType: byte
-T_10123: (in SLICE(cond((word32) (uint64) ((word32) (uint64) edi_7 & 0x40<32>) - 1<32>), bool, 1) : bool)
+T_10123: (in SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x40<32>), word32, 0) - 1<32>), bool, 1) : bool)
   Class: Eq_10123
   DataType: Eq_10123
   OrigDataType: (union (bool u0) (word32 u1))
@@ -46741,11 +46741,11 @@ T_10124: (in 0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 
   Class: Eq_10124
   DataType: word32
   OrigDataType: word32
-T_10125: (in (uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x40<32>)) - 1<32>), bool, 1)) : uint64)
+T_10125: (in (uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x40<32>), word32, 0) - 1<32>), bool, 1)) : uint64)
   Class: Eq_10125
   DataType: uint64
   OrigDataType: uint64
-T_10126: (in SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x40<32>)) - 1<32>), bool, 1)), word32, 0) : word32)
+T_10126: (in SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x40<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) : word32)
   Class: Eq_10112
   DataType: ui32
   OrigDataType: word32
@@ -46965,11 +46965,11 @@ T_10180: (in (word32) (uint64) (edi_7 & 1<32>) - 1<32> : word32)
   Class: Eq_10180
   DataType: word32
   OrigDataType: word32
-T_10181: (in cond((word32) (uint64) (edi_7 & 1<32>) - 1<32>) : byte)
+T_10181: (in cond(SLICE((uint64) (edi_7 & 1<32>), word32, 0) - 1<32>) : byte)
   Class: Eq_10181
   DataType: byte
   OrigDataType: byte
-T_10182: (in SLICE(cond((word32) (uint64) (edi_7 & 1<32>) - 1<32>), bool, 1) : bool)
+T_10182: (in SLICE(cond(SLICE((uint64) (edi_7 & 1<32>), word32, 0) - 1<32>), bool, 1) : bool)
   Class: Eq_10182
   DataType: Eq_10182
   OrigDataType: (union (bool u0) (word32 u1))
@@ -46977,11 +46977,11 @@ T_10183: (in 0<32> - SLICE(cond((word32) ((uint64) (edi_7 & 1<32>)) - 1<32>), bo
   Class: Eq_10183
   DataType: word32
   OrigDataType: word32
-T_10184: (in (uint64) (0<32> - SLICE(cond((word32) ((uint64) (edi_7 & 1<32>)) - 1<32>), bool, 1)) : uint64)
+T_10184: (in (uint64) (0<32> - SLICE(cond(SLICE((uint64) (edi_7 & 1<32>), word32, 0) - 1<32>), bool, 1)) : uint64)
   Class: Eq_10184
   DataType: uint64
   OrigDataType: uint64
-T_10185: (in SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) (edi_7 & 1<32>)) - 1<32>), bool, 1)), word32, 0) : word32)
+T_10185: (in SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (edi_7 & 1<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) : word32)
   Class: Eq_10185
   DataType: ui32
   OrigDataType: ui32
@@ -46993,11 +46993,11 @@ T_10187: (in (word32) (uint64) (0<32> - SLICE(cond((word32) ((uint64) (edi_7 & 1
   Class: Eq_10187
   DataType: ui32
   OrigDataType: ui32
-T_10188: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) (edi_7 & 1<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB5<32>) : uint64)
+T_10188: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (edi_7 & 1<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB5<32>) : uint64)
   Class: Eq_10188
   DataType: uint64
   OrigDataType: uint64
-T_10189: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) (edi_7 & 1<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB5<32>), word32, 0) : word32)
+T_10189: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (edi_7 & 1<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB5<32>), word32, 0) : word32)
   Class: Eq_10189
   DataType: word32
   OrigDataType: word32
@@ -47009,11 +47009,11 @@ T_10191: (in (word32) (uint64) ((word32) (uint64) (0<32> - SLICE(cond((word32) (
   Class: Eq_10191
   DataType: word32
   OrigDataType: word32
-T_10192: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) (edi_7 & 1<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB5<32>), word32, 0) + 0x78<32>) : uint64)
+T_10192: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (edi_7 & 1<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB5<32>), word32, 0) + 0x78<32>) : uint64)
   Class: Eq_10192
   DataType: uint64
   OrigDataType: uint64
-T_10193: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) (edi_7 & 1<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB5<32>), word32, 0) + 0x78<32>), byte, 0) : byte)
+T_10193: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (edi_7 & 1<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB5<32>), word32, 0) + 0x78<32>), byte, 0) : byte)
   Class: Eq_10193
   DataType: byte
   OrigDataType: byte
@@ -47089,11 +47089,11 @@ T_10211: (in (word32) (uint64) (edi_7 & 1<32>) - 1<32> : word32)
   Class: Eq_10211
   DataType: word32
   OrigDataType: word32
-T_10212: (in cond((word32) (uint64) (edi_7 & 1<32>) - 1<32>) : byte)
+T_10212: (in cond(SLICE((uint64) (edi_7 & 1<32>), word32, 0) - 1<32>) : byte)
   Class: Eq_10212
   DataType: byte
   OrigDataType: byte
-T_10213: (in SLICE(cond((word32) (uint64) (edi_7 & 1<32>) - 1<32>), bool, 1) : bool)
+T_10213: (in SLICE(cond(SLICE((uint64) (edi_7 & 1<32>), word32, 0) - 1<32>), bool, 1) : bool)
   Class: Eq_10213
   DataType: Eq_10213
   OrigDataType: (union (bool u0) (word32 u1))
@@ -47101,11 +47101,11 @@ T_10214: (in 0<32> - SLICE(cond((word32) ((uint64) (edi_7 & 1<32>)) - 1<32>), bo
   Class: Eq_10214
   DataType: word32
   OrigDataType: word32
-T_10215: (in (uint64) (0<32> - SLICE(cond((word32) ((uint64) (edi_7 & 1<32>)) - 1<32>), bool, 1)) : uint64)
+T_10215: (in (uint64) (0<32> - SLICE(cond(SLICE((uint64) (edi_7 & 1<32>), word32, 0) - 1<32>), bool, 1)) : uint64)
   Class: Eq_10215
   DataType: uint64
   OrigDataType: uint64
-T_10216: (in SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) (edi_7 & 1<32>)) - 1<32>), bool, 1)), word32, 0) : word32)
+T_10216: (in SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (edi_7 & 1<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) : word32)
   Class: Eq_10216
   DataType: ui32
   OrigDataType: ui32
@@ -47117,11 +47117,11 @@ T_10218: (in (word32) (uint64) (0<32> - SLICE(cond((word32) ((uint64) (edi_7 & 1
   Class: Eq_10218
   DataType: ui32
   OrigDataType: ui32
-T_10219: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) (edi_7 & 1<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFE0<32>) : uint64)
+T_10219: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (edi_7 & 1<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFE0<32>) : uint64)
   Class: Eq_10219
   DataType: uint64
   OrigDataType: uint64
-T_10220: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) (edi_7 & 1<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFE0<32>), word32, 0) : word32)
+T_10220: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (edi_7 & 1<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFE0<32>), word32, 0) : word32)
   Class: Eq_10220
   DataType: word32
   OrigDataType: word32
@@ -47133,11 +47133,11 @@ T_10222: (in (word32) (uint64) ((word32) (uint64) (0<32> - SLICE(cond((word32) (
   Class: Eq_10222
   DataType: word32
   OrigDataType: word32
-T_10223: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) (edi_7 & 1<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFE0<32>), word32, 0) + 0x74<32>) : uint64)
+T_10223: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (edi_7 & 1<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFE0<32>), word32, 0) + 0x74<32>) : uint64)
   Class: Eq_10223
   DataType: uint64
   OrigDataType: uint64
-T_10224: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) (edi_7 & 1<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFE0<32>), word32, 0) + 0x74<32>), byte, 0) : byte)
+T_10224: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (edi_7 & 1<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFE0<32>), word32, 0) + 0x74<32>), byte, 0) : byte)
   Class: Eq_10193
   DataType: byte
   OrigDataType: byte
@@ -47201,11 +47201,11 @@ T_10239: (in (word32) (uint64) ((word32) (uint64) edi_7 & 4<32>) - 1<32> : word3
   Class: Eq_10239
   DataType: word32
   OrigDataType: word32
-T_10240: (in cond((word32) (uint64) ((word32) (uint64) edi_7 & 4<32>) - 1<32>) : byte)
+T_10240: (in cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 4<32>), word32, 0) - 1<32>) : byte)
   Class: Eq_10240
   DataType: byte
   OrigDataType: byte
-T_10241: (in SLICE(cond((word32) (uint64) ((word32) (uint64) edi_7 & 4<32>) - 1<32>), bool, 1) : bool)
+T_10241: (in SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 4<32>), word32, 0) - 1<32>), bool, 1) : bool)
   Class: Eq_10241
   DataType: Eq_10241
   OrigDataType: (union (bool u0) (word32 u1))
@@ -47213,11 +47213,11 @@ T_10242: (in 0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 
   Class: Eq_10242
   DataType: word32
   OrigDataType: word32
-T_10243: (in (uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 4<32>)) - 1<32>), bool, 1)) : uint64)
+T_10243: (in (uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 4<32>), word32, 0) - 1<32>), bool, 1)) : uint64)
   Class: Eq_10243
   DataType: uint64
   OrigDataType: uint64
-T_10244: (in SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 4<32>)) - 1<32>), bool, 1)), word32, 0) : word32)
+T_10244: (in SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 4<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) : word32)
   Class: Eq_10244
   DataType: ui32
   OrigDataType: ui32
@@ -47229,11 +47229,11 @@ T_10246: (in (word32) (uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) 
   Class: Eq_10246
   DataType: ui32
   OrigDataType: ui32
-T_10247: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 4<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>) : uint64)
+T_10247: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 4<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>) : uint64)
   Class: Eq_10247
   DataType: uint64
   OrigDataType: uint64
-T_10248: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 4<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>), word32, 0) : word32)
+T_10248: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 4<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>), word32, 0) : word32)
   Class: Eq_10248
   DataType: word32
   OrigDataType: word32
@@ -47245,11 +47245,11 @@ T_10250: (in (word32) (uint64) ((word32) (uint64) (0<32> - SLICE(cond((word32) (
   Class: Eq_10250
   DataType: word32
   OrigDataType: word32
-T_10251: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 4<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>), word32, 0) + 0x72<32>) : uint64)
+T_10251: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 4<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>), word32, 0) + 0x72<32>) : uint64)
   Class: Eq_10251
   DataType: uint64
   OrigDataType: uint64
-T_10252: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 4<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>), word32, 0) + 0x72<32>), byte, 0) : byte)
+T_10252: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 4<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>), word32, 0) + 0x72<32>), byte, 0) : byte)
   Class: Eq_10252
   DataType: byte
   OrigDataType: byte
@@ -47301,11 +47301,11 @@ T_10264: (in (word32) (uint64) ((word32) (uint64) edi_7 & 2<32>) - 1<32> : word3
   Class: Eq_10264
   DataType: word32
   OrigDataType: word32
-T_10265: (in cond((word32) (uint64) ((word32) (uint64) edi_7 & 2<32>) - 1<32>) : byte)
+T_10265: (in cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 2<32>), word32, 0) - 1<32>) : byte)
   Class: Eq_10265
   DataType: byte
   OrigDataType: byte
-T_10266: (in SLICE(cond((word32) (uint64) ((word32) (uint64) edi_7 & 2<32>) - 1<32>), bool, 1) : bool)
+T_10266: (in SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 2<32>), word32, 0) - 1<32>), bool, 1) : bool)
   Class: Eq_10266
   DataType: Eq_10266
   OrigDataType: (union (bool u0) (word32 u1))
@@ -47313,11 +47313,11 @@ T_10267: (in 0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 
   Class: Eq_10267
   DataType: word32
   OrigDataType: word32
-T_10268: (in (uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 2<32>)) - 1<32>), bool, 1)) : uint64)
+T_10268: (in (uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 2<32>), word32, 0) - 1<32>), bool, 1)) : uint64)
   Class: Eq_10268
   DataType: uint64
   OrigDataType: uint64
-T_10269: (in SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 2<32>)) - 1<32>), bool, 1)), word32, 0) : word32)
+T_10269: (in SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 2<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) : word32)
   Class: Eq_10269
   DataType: ui32
   OrigDataType: ui32
@@ -47329,11 +47329,11 @@ T_10271: (in (word32) (uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) 
   Class: Eq_10271
   DataType: ui32
   OrigDataType: ui32
-T_10272: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 2<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>) : uint64)
+T_10272: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 2<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>) : uint64)
   Class: Eq_10272
   DataType: uint64
   OrigDataType: uint64
-T_10273: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 2<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>), word32, 0) : word32)
+T_10273: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 2<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>), word32, 0) : word32)
   Class: Eq_10273
   DataType: word32
   OrigDataType: word32
@@ -47345,11 +47345,11 @@ T_10275: (in (word32) (uint64) ((word32) (uint64) (0<32> - SLICE(cond((word32) (
   Class: Eq_10275
   DataType: word32
   OrigDataType: word32
-T_10276: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 2<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>), word32, 0) + 0x77<32>) : uint64)
+T_10276: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 2<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>), word32, 0) + 0x77<32>) : uint64)
   Class: Eq_10276
   DataType: uint64
   OrigDataType: uint64
-T_10277: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 2<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>), word32, 0) + 0x77<32>), byte, 0) : byte)
+T_10277: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 2<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>), word32, 0) + 0x77<32>), byte, 0) : byte)
   Class: Eq_10277
   DataType: byte
   OrigDataType: byte
@@ -47429,11 +47429,11 @@ T_10296: (in (word32) (uint64) ((word32) (uint64) edi_7 & 0x20<32>) - 1<32> : wo
   Class: Eq_10296
   DataType: word32
   OrigDataType: word32
-T_10297: (in cond((word32) (uint64) ((word32) (uint64) edi_7 & 0x20<32>) - 1<32>) : byte)
+T_10297: (in cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x20<32>), word32, 0) - 1<32>) : byte)
   Class: Eq_10297
   DataType: byte
   OrigDataType: byte
-T_10298: (in SLICE(cond((word32) (uint64) ((word32) (uint64) edi_7 & 0x20<32>) - 1<32>), bool, 1) : bool)
+T_10298: (in SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x20<32>), word32, 0) - 1<32>), bool, 1) : bool)
   Class: Eq_10298
   DataType: Eq_10298
   OrigDataType: (union (bool u0) (word32 u1))
@@ -47441,11 +47441,11 @@ T_10299: (in 0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 
   Class: Eq_10299
   DataType: word32
   OrigDataType: word32
-T_10300: (in (uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x20<32>)) - 1<32>), bool, 1)) : uint64)
+T_10300: (in (uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x20<32>), word32, 0) - 1<32>), bool, 1)) : uint64)
   Class: Eq_10300
   DataType: uint64
   OrigDataType: uint64
-T_10301: (in SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x20<32>)) - 1<32>), bool, 1)), word32, 0) : word32)
+T_10301: (in SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x20<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) : word32)
   Class: Eq_10301
   DataType: ui32
   OrigDataType: ui32
@@ -47457,11 +47457,11 @@ T_10303: (in (word32) (uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) 
   Class: Eq_10303
   DataType: ui32
   OrigDataType: ui32
-T_10304: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x20<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>) : uint64)
+T_10304: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x20<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>) : uint64)
   Class: Eq_10304
   DataType: uint64
   OrigDataType: uint64
-T_10305: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x20<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>), word32, 0) : word32)
+T_10305: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x20<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>), word32, 0) : word32)
   Class: Eq_10305
   DataType: word32
   OrigDataType: word32
@@ -47473,11 +47473,11 @@ T_10307: (in (word32) (uint64) ((word32) (uint64) (0<32> - SLICE(cond((word32) (
   Class: Eq_10307
   DataType: word32
   OrigDataType: word32
-T_10308: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x20<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>), word32, 0) + 0x72<32>) : uint64)
+T_10308: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x20<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>), word32, 0) + 0x72<32>) : uint64)
   Class: Eq_10308
   DataType: uint64
   OrigDataType: uint64
-T_10309: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x20<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>), word32, 0) + 0x72<32>), byte, 0) : byte)
+T_10309: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x20<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFBB<32>), word32, 0) + 0x72<32>), byte, 0) : byte)
   Class: Eq_10309
   DataType: byte
   OrigDataType: byte
@@ -47529,11 +47529,11 @@ T_10321: (in (word32) (uint64) ((word32) (uint64) edi_7 & 0x10<32>) - 1<32> : wo
   Class: Eq_10321
   DataType: word32
   OrigDataType: word32
-T_10322: (in cond((word32) (uint64) ((word32) (uint64) edi_7 & 0x10<32>) - 1<32>) : byte)
+T_10322: (in cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x10<32>), word32, 0) - 1<32>) : byte)
   Class: Eq_10322
   DataType: byte
   OrigDataType: byte
-T_10323: (in SLICE(cond((word32) (uint64) ((word32) (uint64) edi_7 & 0x10<32>) - 1<32>), bool, 1) : bool)
+T_10323: (in SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x10<32>), word32, 0) - 1<32>), bool, 1) : bool)
   Class: Eq_10323
   DataType: Eq_10323
   OrigDataType: (union (bool u0) (word32 u1))
@@ -47541,11 +47541,11 @@ T_10324: (in 0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 
   Class: Eq_10324
   DataType: word32
   OrigDataType: word32
-T_10325: (in (uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x10<32>)) - 1<32>), bool, 1)) : uint64)
+T_10325: (in (uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x10<32>), word32, 0) - 1<32>), bool, 1)) : uint64)
   Class: Eq_10325
   DataType: uint64
   OrigDataType: uint64
-T_10326: (in SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x10<32>)) - 1<32>), bool, 1)), word32, 0) : word32)
+T_10326: (in SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x10<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) : word32)
   Class: Eq_10326
   DataType: ui32
   OrigDataType: ui32
@@ -47557,11 +47557,11 @@ T_10328: (in (word32) (uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) 
   Class: Eq_10328
   DataType: ui32
   OrigDataType: ui32
-T_10329: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x10<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>) : uint64)
+T_10329: (in (uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x10<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>) : uint64)
   Class: Eq_10329
   DataType: uint64
   OrigDataType: uint64
-T_10330: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x10<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>), word32, 0) : word32)
+T_10330: (in SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x10<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>), word32, 0) : word32)
   Class: Eq_10330
   DataType: word32
   OrigDataType: word32
@@ -47573,11 +47573,11 @@ T_10332: (in (word32) (uint64) ((word32) (uint64) (0<32> - SLICE(cond((word32) (
   Class: Eq_10332
   DataType: word32
   OrigDataType: word32
-T_10333: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x10<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>), word32, 0) + 0x77<32>) : uint64)
+T_10333: (in (uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x10<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>), word32, 0) + 0x77<32>) : uint64)
   Class: Eq_10333
   DataType: uint64
   OrigDataType: uint64
-T_10334: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 0x10<32>)) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>), word32, 0) + 0x77<32>), byte, 0) : byte)
+T_10334: (in SLICE((uint64) (SLICE((uint64) (SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 0x10<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) & 0xFFFFFFB6<32>), word32, 0) + 0x77<32>), byte, 0) : byte)
   Class: Eq_10334
   DataType: byte
   OrigDataType: byte
@@ -47629,11 +47629,11 @@ T_10346: (in (word32) (uint64) ((word32) (uint64) edi_7 & 8<32>) - 1<32> : word3
   Class: Eq_10346
   DataType: word32
   OrigDataType: word32
-T_10347: (in cond((word32) (uint64) ((word32) (uint64) edi_7 & 8<32>) - 1<32>) : byte)
+T_10347: (in cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 8<32>), word32, 0) - 1<32>) : byte)
   Class: Eq_10347
   DataType: byte
   OrigDataType: byte
-T_10348: (in SLICE(cond((word32) (uint64) ((word32) (uint64) edi_7 & 8<32>) - 1<32>), bool, 1) : bool)
+T_10348: (in SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 8<32>), word32, 0) - 1<32>), bool, 1) : bool)
   Class: Eq_10348
   DataType: Eq_10348
   OrigDataType: (union (bool u0) (word32 u1))
@@ -47641,11 +47641,11 @@ T_10349: (in 0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 
   Class: Eq_10349
   DataType: word32
   OrigDataType: word32
-T_10350: (in (uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 8<32>)) - 1<32>), bool, 1)) : uint64)
+T_10350: (in (uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 8<32>), word32, 0) - 1<32>), bool, 1)) : uint64)
   Class: Eq_10350
   DataType: uint64
   OrigDataType: uint64
-T_10351: (in SLICE((uint64) (0<32> - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_7) & 8<32>)) - 1<32>), bool, 1)), word32, 0) : word32)
+T_10351: (in SLICE((uint64) (0<32> - SLICE(cond(SLICE((uint64) (SLICE((uint64) edi_7, word32, 0) & 8<32>), word32, 0) - 1<32>), bool, 1)), word32, 0) : word32)
   Class: Eq_10148
   DataType: ui32
   OrigDataType: word32
@@ -48593,11 +48593,11 @@ T_10587: (in *rax_7 - 0x43<8> : byte)
   Class: Eq_10587
   DataType: byte
   OrigDataType: byte
-T_10588: (in cond(*rax_7 - 0x43<8>) : byte)
+T_10588: (in cond(Mem0[rax_7 + 0<64>:byte] - 0x43<8>) : byte)
   Class: Eq_10588
   DataType: byte
   OrigDataType: byte
-T_10589: (in SLICE(cond(*rax_7 - 0x43<8>), bool, 2) : bool)
+T_10589: (in SLICE(cond(Mem0[rax_7 + 0<64>:byte] - 0x43<8>), bool, 2) : bool)
   Class: Eq_10582
   DataType: bool
   OrigDataType: bool
@@ -48649,11 +48649,11 @@ T_10601: (in Mem0[rax_7 + 1<64>:byte] : byte)
   Class: Eq_10601
   DataType: byte
   OrigDataType: byte
-T_10602: (in cond(*((word32) rax_7 + 1<i32>)) : byte)
+T_10602: (in cond(Mem0[rax_7 + 1<64>:byte]) : byte)
   Class: Eq_10602
   DataType: byte
   OrigDataType: byte
-T_10603: (in SLICE(cond(*((word32) rax_7 + 1<i32>)), bool, 2) : bool)
+T_10603: (in SLICE(cond(Mem0[rax_7 + 1<64>:byte]), bool, 2) : bool)
   Class: Eq_10582
   DataType: bool
   OrigDataType: bool
@@ -48717,11 +48717,11 @@ T_10618: (in *rsi_78 - *rdi_79 : byte)
   Class: Eq_10618
   DataType: byte
   OrigDataType: byte
-T_10619: (in cond(*rsi_78 - *rdi_79) : byte)
+T_10619: (in cond(Mem0[rsi_78 + 0<64>:byte] - Mem0[rdi_79 + 0<64>:byte]) : byte)
   Class: Eq_10619
   DataType: byte
   OrigDataType: byte
-T_10620: (in SLICE(cond(*rsi_78 - *rdi_79), bool, 2) : bool)
+T_10620: (in SLICE(cond(Mem0[rsi_78 + 0<64>:byte] - Mem0[rdi_79 + 0<64>:byte]), bool, 2) : bool)
   Class: Eq_10582
   DataType: bool
   OrigDataType: bool
@@ -55261,11 +55261,11 @@ T_12254: (in ~(word32) (uint64) (0<32> - C_135) : word32)
   Class: Eq_12254
   DataType: word32
   OrigDataType: word32
-T_12255: (in (uint64) ~(word32) (uint64) (0<32> - C_135) : uint64)
+T_12255: (in (uint64) ~SLICE((uint64) (0<32> - C_135), word32, 0) : uint64)
   Class: Eq_12255
   DataType: uint64
   OrigDataType: uint64
-T_12256: (in SLICE((uint64) ~(word32) (uint64) (0<32> - C_135), word32, 0) : word32)
+T_12256: (in SLICE((uint64) ~SLICE((uint64) (0<32> - C_135), word32, 0), word32, 0) : word32)
   Class: Eq_12256
   DataType: word32
   OrigDataType: word32
@@ -55277,11 +55277,11 @@ T_12258: (in (word32) (uint64) ~(word32) (uint64) (0<32> - C_135) + 3<32> : word
   Class: Eq_12258
   DataType: word32
   OrigDataType: word32
-T_12259: (in (uint64) (SLICE((uint64) ~(word32) (uint64) (0<32> - C_135), word32, 0) + 3<32>) : uint64)
+T_12259: (in (uint64) (SLICE((uint64) ~SLICE((uint64) (0<32> - C_135), word32, 0), word32, 0) + 3<32>) : uint64)
   Class: Eq_12259
   DataType: uint64
   OrigDataType: uint64
-T_12260: (in SLICE((uint64) (SLICE((uint64) ~(word32) (uint64) (0<32> - C_135), word32, 0) + 3<32>), word32, 0) : word32)
+T_12260: (in SLICE((uint64) (SLICE((uint64) ~SLICE((uint64) (0<32> - C_135), word32, 0), word32, 0) + 3<32>), word32, 0) : word32)
   Class: Eq_12143
   DataType: Eq_12143
   OrigDataType: word32
@@ -55637,11 +55637,11 @@ T_12348: (in ~(word32) (uint64) (0<32> - SLICE(cond(r12d_1398 - ecx_231), bool, 
   Class: Eq_12348
   DataType: word32
   OrigDataType: word32
-T_12349: (in (uint64) ~(word32) (uint64) (0<32> - SLICE(cond(r12d_1398 - ecx_231), bool, 1)) : uint64)
+T_12349: (in (uint64) ~SLICE((uint64) (0<32> - SLICE(cond(r12d_1398 - ecx_231), bool, 1)), word32, 0) : uint64)
   Class: Eq_12349
   DataType: uint64
   OrigDataType: uint64
-T_12350: (in SLICE((uint64) ~(word32) (uint64) (0<32> - SLICE(cond(r12d_1398 - ecx_231), bool, 1)), word32, 0) : word32)
+T_12350: (in SLICE((uint64) ~SLICE((uint64) (0<32> - SLICE(cond(r12d_1398 - ecx_231), bool, 1)), word32, 0), word32, 0) : word32)
   Class: Eq_12350
   DataType: word32
   OrigDataType: word32
@@ -55653,11 +55653,11 @@ T_12352: (in (word32) (uint64) ~(word32) (uint64) (0<32> - SLICE(cond(r12d_1398 
   Class: Eq_12352
   DataType: word32
   OrigDataType: word32
-T_12353: (in (uint64) (SLICE((uint64) ~(word32) (uint64) (0<32> - SLICE(cond(r12d_1398 - ecx_231), bool, 1)), word32, 0) + 3<32>) : uint64)
+T_12353: (in (uint64) (SLICE((uint64) ~SLICE((uint64) (0<32> - SLICE(cond(r12d_1398 - ecx_231), bool, 1)), word32, 0), word32, 0) + 3<32>) : uint64)
   Class: Eq_12353
   DataType: uint64
   OrigDataType: uint64
-T_12354: (in SLICE((uint64) (SLICE((uint64) ~(word32) (uint64) (0<32> - SLICE(cond(r12d_1398 - ecx_231), bool, 1)), word32, 0) + 3<32>), word32, 0) : word32)
+T_12354: (in SLICE((uint64) (SLICE((uint64) ~SLICE((uint64) (0<32> - SLICE(cond(r12d_1398 - ecx_231), bool, 1)), word32, 0), word32, 0) + 3<32>), word32, 0) : word32)
   Class: Eq_12143
   DataType: Eq_12143
   OrigDataType: word32
@@ -63013,7 +63013,7 @@ T_14192: (in *rsi_142 - *rdi_143 : byte)
   Class: Eq_14192
   DataType: byte
   OrigDataType: byte
-T_14193: (in cond(*rsi_142 - *rdi_143) : byte)
+T_14193: (in cond(Mem9[rsi_142 + 0<64>:byte] - Mem9[rdi_143 + 0<64>:byte]) : byte)
   Class: Eq_14183
   DataType: byte
   OrigDataType: byte
@@ -63165,11 +63165,11 @@ T_14230: (in *rsi_144 - *rdi_145 : byte)
   Class: Eq_14230
   DataType: byte
   OrigDataType: byte
-T_14231: (in cond(*rsi_144 - *rdi_145) : byte)
+T_14231: (in cond(Mem9[rsi_144 + 0<64>:byte] - Mem9[rdi_145 + 0<64>:byte]) : byte)
   Class: Eq_14231
   DataType: byte
   OrigDataType: byte
-T_14232: (in SLICE(cond(*rsi_144 - *rdi_145), bool, 2) : bool)
+T_14232: (in SLICE(cond(Mem9[rsi_144 + 0<64>:byte] - Mem9[rdi_145 + 0<64>:byte]), bool, 2) : bool)
   Class: Eq_14179
   DataType: Eq_14179
   OrigDataType: bool
@@ -73321,11 +73321,11 @@ T_16769: (in *rsi_66 - *rdi_67 : byte)
   Class: Eq_16769
   DataType: byte
   OrigDataType: byte
-T_16770: (in cond(*rsi_66 - *rdi_67) : byte)
+T_16770: (in cond(Mem0[rsi_66 + 0<64>:byte] - Mem0[rdi_67 + 0<64>:byte]) : byte)
   Class: Eq_16770
   DataType: byte
   OrigDataType: byte
-T_16771: (in SLICE(cond(*rsi_66 - *rdi_67), bool, 2) : bool)
+T_16771: (in SLICE(cond(Mem0[rsi_66 + 0<64>:byte] - Mem0[rdi_67 + 0<64>:byte]), bool, 2) : bool)
   Class: Eq_16742
   DataType: bool
   OrigDataType: bool
@@ -74701,11 +74701,11 @@ T_17114: (in ~(word32) rcx_191 : word32)
   Class: Eq_17114
   DataType: word32
   OrigDataType: word32
-T_17115: (in (uint64) ~(word32) rcx_191 : uint64)
+T_17115: (in (uint64) ~SLICE(rcx_191, word32, 0) : uint64)
   Class: Eq_17115
   DataType: uint64
   OrigDataType: uint64
-T_17116: (in SLICE((uint64) ~(word32) rcx_191, word32, 0) : word32)
+T_17116: (in SLICE((uint64) ~SLICE(rcx_191, word32, 0), word32, 0) : word32)
   Class: Eq_17116
   DataType: Eq_17116
   OrigDataType: (union (ui64 u1) (word32 u0))
@@ -74713,11 +74713,11 @@ T_17117: (in rcx_191 + 0xFFFFFFFFFEFEFEFF<64> & (word32) ((uint64) (~((word32) r
   Class: Eq_17117
   DataType: ui64
   OrigDataType: ui64
-T_17118: (in (uint64) (rcx_191 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~((word32) rcx_191)), word32, 0)) : uint64)
+T_17118: (in (uint64) (rcx_191 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~SLICE(rcx_191, word32, 0)), word32, 0)) : uint64)
   Class: Eq_17118
   DataType: uint64
   OrigDataType: uint64
-T_17119: (in SLICE((uint64) (rcx_191 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~((word32) rcx_191)), word32, 0)), word32, 0) : word32)
+T_17119: (in SLICE((uint64) (rcx_191 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~SLICE(rcx_191, word32, 0)), word32, 0)), word32, 0) : word32)
   Class: Eq_17119
   DataType: ui32
   OrigDataType: ui32
@@ -74729,11 +74729,11 @@ T_17121: (in (word32) (uint64) (rcx_191 + 0xFFFFFFFFFEFEFEFF<64> & (word32) ((ui
   Class: Eq_17121
   DataType: ui32
   OrigDataType: ui32
-T_17122: (in (uint64) (SLICE((uint64) (rcx_191 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~((word32) rcx_191)), word32, 0)), word32, 0) & 0x80808080<32>) : uint64)
+T_17122: (in (uint64) (SLICE((uint64) (rcx_191 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~SLICE(rcx_191, word32, 0)), word32, 0)), word32, 0) & 0x80808080<32>) : uint64)
   Class: Eq_17122
   DataType: uint64
   OrigDataType: uint64
-T_17123: (in SLICE((uint64) (SLICE((uint64) (rcx_191 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~((word32) rcx_191)), word32, 0)), word32, 0) & 0x80808080<32>), word32, 0) : word32)
+T_17123: (in SLICE((uint64) (SLICE((uint64) (rcx_191 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~SLICE(rcx_191, word32, 0)), word32, 0)), word32, 0) & 0x80808080<32>), word32, 0) : word32)
   Class: Eq_17110
   DataType: ui32
   OrigDataType: word32
@@ -74949,11 +74949,11 @@ T_17176: (in ~(word32) rcx_234 : word32)
   Class: Eq_17176
   DataType: word32
   OrigDataType: word32
-T_17177: (in (uint64) ~(word32) rcx_234 : uint64)
+T_17177: (in (uint64) ~SLICE(rcx_234, word32, 0) : uint64)
   Class: Eq_17177
   DataType: uint64
   OrigDataType: uint64
-T_17178: (in SLICE((uint64) ~(word32) rcx_234, word32, 0) : word32)
+T_17178: (in SLICE((uint64) ~SLICE(rcx_234, word32, 0), word32, 0) : word32)
   Class: Eq_17178
   DataType: Eq_17178
   OrigDataType: (union (ui64 u1) (word32 u0))
@@ -74961,11 +74961,11 @@ T_17179: (in rcx_234 + 0xFFFFFFFFFEFEFEFF<64> & (word32) ((uint64) (~((word32) r
   Class: Eq_17179
   DataType: ui64
   OrigDataType: ui64
-T_17180: (in (uint64) (rcx_234 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~((word32) rcx_234)), word32, 0)) : uint64)
+T_17180: (in (uint64) (rcx_234 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~SLICE(rcx_234, word32, 0)), word32, 0)) : uint64)
   Class: Eq_17180
   DataType: uint64
   OrigDataType: uint64
-T_17181: (in SLICE((uint64) (rcx_234 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~((word32) rcx_234)), word32, 0)), word32, 0) : word32)
+T_17181: (in SLICE((uint64) (rcx_234 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~SLICE(rcx_234, word32, 0)), word32, 0)), word32, 0) : word32)
   Class: Eq_17181
   DataType: ui32
   OrigDataType: ui32
@@ -74977,11 +74977,11 @@ T_17183: (in (word32) (uint64) (rcx_234 + 0xFFFFFFFFFEFEFEFF<64> & (word32) ((ui
   Class: Eq_17183
   DataType: ui32
   OrigDataType: ui32
-T_17184: (in (uint64) (SLICE((uint64) (rcx_234 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~((word32) rcx_234)), word32, 0)), word32, 0) & 0x80808080<32>) : uint64)
+T_17184: (in (uint64) (SLICE((uint64) (rcx_234 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~SLICE(rcx_234, word32, 0)), word32, 0)), word32, 0) & 0x80808080<32>) : uint64)
   Class: Eq_17184
   DataType: uint64
   OrigDataType: uint64
-T_17185: (in SLICE((uint64) (SLICE((uint64) (rcx_234 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~((word32) rcx_234)), word32, 0)), word32, 0) & 0x80808080<32>), word32, 0) : word32)
+T_17185: (in SLICE((uint64) (SLICE((uint64) (rcx_234 + 0xFFFFFFFFFEFEFEFF<64> & SLICE((uint64) (~SLICE(rcx_234, word32, 0)), word32, 0)), word32, 0) & 0x80808080<32>), word32, 0) : word32)
   Class: Eq_17172
   DataType: ui32
   OrigDataType: word32
@@ -77049,7 +77049,7 @@ typedef union Eq_1212 {
 	uint64 u1;
 } Eq_1212;
 
-typedef void (Eq_1213)(int32);
+typedef void (Eq_1213)(int32 rdi);
 
 typedef void (Eq_1214)(void);
 

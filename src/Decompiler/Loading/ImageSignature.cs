@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -17,7 +17,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
-
+ 
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,9 +27,9 @@ namespace Reko.Loading
 {
     public class ImageSignature
     {
-        public string Name;
-        public string Comments;
-        public string EntryPointPattern;
-        public string ImagePattern;
+        public string? Name;
+        public string? Comments;
+        public string? EntryPointPattern;
+        public string? ImagePattern;
     }
 }

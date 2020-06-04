@@ -33,11 +33,11 @@ namespace Reko.Analysis
     /// </summary>
     public class IdentifierReplacer : InstructionTransformer
     {
-        private SsaIdentifierCollection ssaIds;
-        private Statement use;
-        private Identifier idOld;
-        private Expression exprNew;
-        private bool replaceDefinitions;
+        private readonly SsaIdentifierCollection ssaIds;
+        private readonly Statement use;
+        private readonly Identifier idOld;
+        private readonly Expression exprNew;
+        private readonly bool replaceDefinitions;
 
         public IdentifierReplacer(SsaIdentifierCollection ssaIds, Statement use, Identifier idOld, Expression exprNew, bool replaceDefinitions)
         {

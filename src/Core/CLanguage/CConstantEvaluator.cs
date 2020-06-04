@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -88,6 +88,10 @@ namespace Reko.Core.CLanguage
                 return (int) left << (int) right;
             case CTokenType.Shr:
                 return (int) left >> (int) right;
+            case CTokenType.Star:
+                return (int) left * (int) right;
+            case CTokenType.Slash:
+                return (int) left / (int) right;
             }
         }
 

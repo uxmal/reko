@@ -38,7 +38,6 @@ namespace Reko.Analysis
         public abstract class IdentifierTransformer
         {
             protected Identifier id;
-            private int depth;
             protected readonly Statement stm;
             protected readonly SsaTransform outer;
             protected readonly SsaIdentifierCollection ssaIds;
@@ -89,7 +88,7 @@ namespace Reko.Analysis
                 //    throw new StackOverflowException("");
                 sid = ReadVariableRecursive(bs);
                 //--this.depth;
-                return sid;
+                return sid!;
             }
 
             /// <summary>
@@ -100,9 +99,9 @@ namespace Reko.Analysis
             /// <returns>An SsaIdentifier if it is available, 
             /// otherwise null.
             /// </returns>
-            public abstract SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs);
+            public abstract SsaIdentifier? ReadBlockLocalVariable(SsaBlockState bs);
 
-            public SsaIdentifier ReadVariableRecursive(SsaBlockState bs)
+            public SsaIdentifier? ReadVariableRecursive(SsaBlockState bs)
             {
                 SsaIdentifier val;
                 if (bs.Block.Pred.Any(p => !blockstates[p].Visited))
@@ -214,7 +213,7 @@ namespace Reko.Analysis
 
             public SsaIdentifier AddPhiOperands(SsaIdentifier phi)
             {
-                var preds = phi.DefStatement.Block.Pred;
+                var preds = phi.DefStatement!.Block.Pred;
                 var args = preds.Select(p => new PhiArgument(p, ReadVariable(blockstates[p]).Identifier))
                     .ToArray();
                 GeneratePhiFunction(phi, args);
@@ -230,7 +229,7 @@ namespace Reko.Analysis
 
             private static void GeneratePhiFunction(SsaIdentifier phi, PhiArgument[] args)
             {
-                ((PhiAssignment) phi.DefStatement.Instruction).Src =
+                ((PhiAssignment) phi.DefStatement!.Instruction).Src =
                 new PhiFunction(
                         phi.Identifier.DataType,
                         args);
@@ -247,7 +246,7 @@ namespace Reko.Analysis
             /// <returns>true if the phi function was trivial</returns>
             private bool TryRemoveTrivial(SsaIdentifier phi, out SsaIdentifier sid)
             {
-                var phiFunc = ((PhiAssignment) phi.DefStatement.Instruction).Src;
+                var phiFunc = ((PhiAssignment) phi.DefStatement!.Instruction).Src;
                 DebugEx.Verbose(trace, "  Checking {0} for triviality", phiFunc);
                 if (phiFunc.Arguments.All(a => a.Value == phi.Identifier))
                 {
@@ -257,7 +256,7 @@ namespace Reko.Analysis
                 }
                 else
                 {
-                    sid = SamePhiArgument(phi);
+                    sid = SamePhiArgument(phi)!;
                     if (sid == null)
                         return false;
                 }
@@ -297,11 +296,11 @@ namespace Reko.Analysis
             /// </returns>
             private SsaIdentifier EnsureLiveIdentifier(SsaIdentifier sid)
             {
-                while (this.outer.sidsToRemove.Contains(sid))
+                while (this.outer.sidsToRemove.Contains(sid!))
                 {
-                    sid = SamePhiArgument(sid);
+                    sid = SamePhiArgument(sid)!;
                 }
-                return sid;
+                return sid!;
             }
 
             /// <summary>
@@ -312,10 +311,10 @@ namespace Reko.Analysis
             /// If the arguments of phi function are equal, return it.
             /// Return null otherwise.
             /// </returns>
-            private SsaIdentifier SamePhiArgument(SsaIdentifier phi)
+            private SsaIdentifier? SamePhiArgument(SsaIdentifier phi)
             {
-                Identifier same = null;
-                var phiFunc = ((PhiAssignment) phi.DefStatement.Instruction).Src;
+                Identifier? same = null;
+                var phiFunc = ((PhiAssignment) phi.DefStatement!.Instruction).Src;
                 foreach (var de in phiFunc.Arguments)
                 {
                     var op = (Identifier) de.Value;
@@ -325,12 +324,12 @@ namespace Reko.Analysis
                         return null;
                     same = op;
                 }
-                return ssaIds[same];
+                return ssaIds[same!];
             }
 
             private void UsePhiArguments(SsaIdentifier phi)
             {
-                var phiFunc = ((PhiAssignment) phi.DefStatement.Instruction).Src;
+                var phiFunc = ((PhiAssignment) phi.DefStatement!.Instruction).Src;
                 foreach (var de in phiFunc.Arguments)
                 {
                     var id = (Identifier) de.Value;
@@ -369,7 +368,7 @@ namespace Reko.Analysis
                 return outer.ssa.EnsureDefInstruction(id, b);
             }
 
-            private Expression ReadParameter(Block b, FunctionType sig, Storage stg)
+            private Expression? ReadParameter(Block b, FunctionType sig, Storage stg)
             {
                 if (!sig.ParametersValid)
                     return null;
@@ -417,7 +416,7 @@ namespace Reko.Analysis
                         var newDict = alias.ExactAliases
                             .Select(kv => (kv.Key,
                                            kv.Value == sidOld ? sidNew : kv.Value))
-                            .ToDictionary(kv => kv.Item1, kv => kv.Item2);
+                            .ToDictionary(kv => kv.Key, kv => kv.Item2);
                         alias.ExactAliases = newDict;
                     }
                     if (bs.currentFlagDef.TryGetValue(sidOld.Identifier.Storage.Domain, out var flagAlias))
@@ -433,7 +432,7 @@ namespace Reko.Analysis
                         var newDict = flagAlias.ExactAliases
                            .Select(kv => (kv.Key,
                                           kv.Value == sidOld ? sidNew : kv.Value))
-                           .ToDictionary(kv => kv.Item1, kv => kv.Item2);
+                           .ToDictionary(kv => kv.Key, kv => kv.Item2);
                         flagAlias.ExactAliases = newDict;
                     }
                     ReplaceStackDefs(bs, sidOld, sidNew);
@@ -523,7 +522,7 @@ namespace Reko.Analysis
                 return sid.Identifier;
             }
 
-            public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs)
+            public override SsaIdentifier? ReadBlockLocalVariable(SsaBlockState bs)
             {
                 DebugEx.Verbose(trace, "  ReadBlockLocalVariable: ({0}, {1}, ({2})", bs.Block.Name, id, this.liveBits);
                 if (!bs.currentDef.TryGetValue(id.Storage.Domain, out var alias))
@@ -554,13 +553,13 @@ namespace Reko.Analysis
                         var bitrangeR = sidElem == null
                             ? useRange
                             : new BitRange(offsetLo, usedRange.Lsb);
-                        var idR = MakeTmpIdentifier(sidElem, bitrangeR);
+                        var idR = MakeTmpIdentifier(bitrangeR);
                         var rx = new RegisterTransformer(idR, stm, this.outer)
                         {
                             liveBits = bitrangeR
                         };
                         var sidR = rx.ReadVariableRecursive(bs);
-                        sids.Add((sidR, bitrangeR));
+                        sids.Add((sidR!, bitrangeR!));
                         offsetLo = bitrangeR.Msb;
                     }
                     if (sidElem != null)
@@ -581,7 +580,7 @@ namespace Reko.Analysis
                     var elems = new List<Expression>();
                     foreach (var (sidElem, bitrange) in sids)
                     {
-                        var idSlice = MakeTmpIdentifier(sidElem, bitrange);
+                        var idSlice = MakeTmpIdentifier(bitrange);
                         var sidSlice = MakeSlice(sidElem, bitrange, idSlice);
                         alias.ExactAliases[sidSlice.OriginalIdentifier.Storage] = sidSlice;
                         elems.Add(sidSlice.Identifier);
@@ -589,7 +588,7 @@ namespace Reko.Analysis
                     var seq = outer.m.Seq(elems.ToArray());
                     var assSeq = new AliasAssignment(id, seq);
                     var sidTo = InsertBeforeStatement(bs.Block, this.stm, assSeq);
-                    seq.Accept(new InstructionUseAdder(sidTo.DefStatement, ssaIds));
+                    seq.Accept(new InstructionUseAdder(sidTo.DefStatement!, ssaIds));
                     alias.ExactAliases[this.id.Storage] = sidTo;
                     return sidTo;
                 }
@@ -602,13 +601,12 @@ namespace Reko.Analysis
             /// </summary>
             public (SsaIdentifier, BitRange, BitRange) FindIntersectingRegister(List<(SsaIdentifier,BitRange,int)> definitions, BitRange useRange)
             {
-                var result = ((SsaIdentifier)null, useRange, default(BitRange));
-                var stgUse = this.id.Storage;
+                var result = ((SsaIdentifier)null!, useRange, default(BitRange));
                 for (int i = definitions.Count-1; i >= 0; --i)
                 {
                     var (sid, defRange, offset) = definitions[i];
                     var intersection = defRange.Intersect(useRange);
-                    if (!intersection.IsEmpty && (result.Item1 == null || result.Item2.Lsb > intersection.Lsb))
+                    if (!intersection.IsEmpty && (result.Item1 == null || result.useRange.Lsb > intersection.Lsb))
                     {
                         defRange = new BitRange(intersection.Lsb + offset, intersection.Msb + offset);
                         result = (sid, intersection, defRange);
@@ -617,9 +615,8 @@ namespace Reko.Analysis
                 return result;
             }
 
-            private Identifier MakeTmpIdentifier(SsaIdentifier sidElem, BitRange bitrange)
+            private Identifier MakeTmpIdentifier(BitRange bitrange)
             {
-                var dtSlice = PrimitiveType.CreateWord(bitrange.Extent);
                 var reg = outer.ssa.Procedure.Architecture.GetRegister(id.Storage.Domain, bitrange);
                 var frame = outer.ssa.Procedure.Frame;
                 if (reg.GetBitRange() != bitrange)
@@ -640,8 +637,8 @@ namespace Reko.Analysis
                     return sidSrc;
                 var e = outer.m.Slice(idSlice.DataType, sidSrc.Identifier, range.Lsb);
                 var ass = new AliasAssignment(idSlice, e);
-                var sidAlias = InsertAfterDefinition(sidSrc.DefStatement, ass);
-                sidSrc.Uses.Add(sidAlias.DefStatement);
+                var sidAlias = InsertAfterDefinition(sidSrc.DefStatement!, ass);
+                sidSrc.Uses.Add(sidAlias.DefStatement!);
                 return sidAlias;
             }
         }
@@ -701,7 +698,7 @@ namespace Reko.Analysis
                 return sid.Identifier;
             }
 
-            public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs)
+            public override SsaIdentifier? ReadBlockLocalVariable(SsaBlockState bs)
             {
                 if (!bs.currentFlagDef.TryGetValue(flagGroup.FlagRegister.Domain, out var alias))
                     return null;
@@ -727,7 +724,7 @@ namespace Reko.Analysis
                 {
                     var fx = new FlagGroupTransformer(this.id, this.flagGroup, this.stm, this.outer, mask);
                     var sidR = fx.ReadVariableRecursive(bs);
-                    sids.Add((alias, sidR, mask));
+                    sids.Add((alias, sidR!, mask));
                 }
                 if (sids.Count == 1)
                 {
@@ -744,7 +741,7 @@ namespace Reko.Analysis
                         (a, b) => outer.m.Or(a, b.Identifier));
                     var ass = new AliasAssignment(id, e);
                     var sidTo = InsertBeforeStatement(bs.Block, stm, ass);
-                    e.Accept(new InstructionUseAdder(sidTo.DefStatement, ssaIds));
+                    e.Accept(new InstructionUseAdder(sidTo.DefStatement!, ssaIds));
                     return sidTo;
                 }
             }
@@ -761,8 +758,8 @@ namespace Reko.Analysis
                 this.flagGroup = outer.arch.GetFlagGroup(grfFrom.FlagRegister, elem.mask);
                 var idSlice = outer.ssa.Procedure.Frame.EnsureFlagGroup(this.flagGroup);
                 var ass = new AliasAssignment(idSlice, e);
-                var sidSlice = InsertAfterDefinition(elem.sid.DefStatement, ass);
-                elem.sid.Uses.Add(sidSlice.DefStatement);
+                var sidSlice = InsertAfterDefinition(elem.sid.DefStatement!, ass);
+                elem.sid.Uses.Add(sidSlice.DefStatement!);
                 return sidSlice;
             }
 
@@ -800,7 +797,7 @@ namespace Reko.Analysis
                     stackOffset + id.DataType.Size);
             }
 
-            public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs)
+            public override SsaIdentifier? ReadBlockLocalVariable(SsaBlockState bs)
             {
                 var ints = bs.currentStackDef.GetIntervalsOverlappingWith(offsetInterval)
                     .OrderBy(i => i.Key.Start)
@@ -854,21 +851,21 @@ namespace Reko.Analysis
                 }
                 if (sequence.Count == 1)
                 {
-                    var sidTo = MakeSequenceElement(bs, sequence[0]);
+                    var sidTo = MakeSequenceElement(sequence[0]);
                     return sidTo;
                 }
                 else
                 {
                      var seq = outer.arch.Endianness.MakeSequence(
                         this.id.DataType, 
-                        sequence.Select(e => (Expression) MakeSequenceElement(bs, e).Identifier)
+                        sequence.Select(e => (Expression) MakeSequenceElement(e).Identifier)
                                 .ToArray());
                     var assSeq = new AliasAssignment(id, seq);
                     SsaIdentifier sidTo = InsertBeforeStatement(bs.Block, this.stm, assSeq);
 
                     foreach (Identifier item in seq.Expressions)
                     {
-                        outer.ssa.Identifiers[item].Uses.Add(sidTo.DefStatement);
+                        outer.ssa.Identifiers[item].Uses.Add(sidTo.DefStatement!);
                     }
                     return sidTo;
                 }
@@ -888,10 +885,10 @@ namespace Reko.Analysis
                 var sid = ReadVariableRecursive(bs);
                 this.id = curId;
                 this.offsetInterval = curInteval;
-                return sid;
+                return sid!;
             }
 
-            private SsaIdentifier MakeSequenceElement(SsaBlockState bs, (SsaIdentifier sid, Interval<int> interval) elem)
+            private SsaIdentifier MakeSequenceElement((SsaIdentifier sid, Interval<int> interval) elem)
             {
                 var stg = (StackStorage) elem.sid.Identifier.Storage;
                 var start = stg.StackOffset;
@@ -902,7 +899,7 @@ namespace Reko.Analysis
                     // Exact match
                     return elem.sid;
                 }
-                var sidSlice = EnsureSliceStatement(elem.sid, elem.interval, elem.interval.Start - start, bs);
+                var sidSlice = EnsureSliceStatement(elem.sid, elem.interval, elem.interval.Start - start);
                 return sidSlice;
             }
 
@@ -915,7 +912,7 @@ namespace Reko.Analysis
             /// The source, or defined identifer is "wider" than the destinatior or
             /// used storage. We must provide a slice of the defined identifier.
             /// </remarks>
-            private SsaIdentifier EnsureSliceStatement(SsaIdentifier sidFrom, Interval<int> intv, int offset, SsaBlockState bs)
+            private SsaIdentifier EnsureSliceStatement(SsaIdentifier sidFrom, Interval<int> intv, int offset)
             {
                 var bitSize = (intv.End - intv.Start) * DataType.BitsPerByte;
                 var bitOffset = offset * DataType.BitsPerByte;
@@ -937,8 +934,8 @@ namespace Reko.Analysis
 
                 //$TODO: perhaps this alias has already been computed?
                 var ass = new AliasAssignment(idSlice, e);
-                var sidAlias = InsertAfterDefinition(sidFrom.DefStatement, ass);
-                sidUse.Uses.Add(sidAlias.DefStatement);
+                var sidAlias = InsertAfterDefinition(sidFrom.DefStatement!, ass);
+                sidUse.Uses.Add(sidAlias.DefStatement!);
                 return sidAlias;
             }
 
@@ -973,14 +970,14 @@ namespace Reko.Analysis
                         }
                     }
                 }
-                bs.currentStackDef.Add(this.offsetInterval, new Alias { SsaId = sid });
+                bs.currentStackDef.Add(this.offsetInterval, new Alias(sid));
                 return sid.Identifier;
             }
         }
 
         public class SequenceTransformer : IdentifierTransformer
         {
-            private SequenceStorage seq;
+            private readonly SequenceStorage seq;
 
             public SequenceTransformer(
                 Identifier id,
@@ -1031,22 +1028,22 @@ namespace Reko.Analysis
             public SsaIdentifier Fuse(SsaIdentifier [] sids)
             {
                 if (sids.Length == 2 && 
-                    sids[0].DefStatement.Instruction is AliasAssignment aassHead &&
-                    sids[1].DefStatement.Instruction is AliasAssignment aassTail)
+                    sids[0].DefStatement!.Instruction is AliasAssignment aassHead &&
+                    sids[1].DefStatement!.Instruction is AliasAssignment aassTail)
                 {
                     if (aassHead.Src is Slice eHead && aassTail.Src is Slice eTail)
                     {
                         return ssaIds[(Identifier) eHead.Expression];
                     }
                 }
-                if (sids.All(s => s.DefStatement.Instruction is DefInstruction))
+                if (sids.All(s => s.DefStatement!.Instruction is DefInstruction))
                 {
                     // All subregisters came in from caller, so create an
                     // alias statement.
                     var seq = new MkSequence(this.id.DataType, sids.Select(s => s.Identifier).ToArray());
                     var ass = new AliasAssignment(id, seq);
-                    var stm = sids[0].DefStatement.Block.Statements.Add(
-                        sids[0].DefStatement.LinearAddress,
+                    var stm = sids[0].DefStatement!.Block.Statements.Add(
+                        sids[0].DefStatement!.LinearAddress,
                         ass);
                     var sidTo = ssaIds.Add(ass.Dst, stm, ass.Src, false);
                     ass.Dst = sidTo.Identifier;
@@ -1058,8 +1055,8 @@ namespace Reko.Analysis
                 }
 
                 if (sids.Length == 2 && 
-                    sids[0].DefStatement.Instruction is Assignment assHead &&
-                    sids[1].DefStatement.Instruction is Assignment assTail)
+                    sids[0]!.DefStatement!.Instruction is Assignment assHead &&
+                    sids[1]!.DefStatement!.Instruction is Assignment assTail)
                 {
                     // If x_2 = Slice(y_3); z_4 = (Slice) y_3 return y_3
                     if (assHead.Src is Slice slHead &&
@@ -1093,7 +1090,7 @@ namespace Reko.Analysis
 
         public class SimpleTransformer : IdentifierTransformer
         {
-            private Storage stg;
+            private readonly Storage stg;
 
             public SimpleTransformer(Identifier id, Storage stg, Statement stm, SsaTransform outer) : base(id, stm, outer)
             {

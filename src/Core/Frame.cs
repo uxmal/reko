@@ -163,9 +163,9 @@ namespace Reko.Core
 
         public Identifier EnsureFlagGroup(RegisterStorage freg, uint grfMask, string name, DataType dt)
 		{
-			if (grfMask == 0)
-				return null;
-			Identifier id = FindFlagGroup(freg, grfMask);
+            if (grfMask == 0)
+                throw new ArgumentException("Argument must be non-zero.", nameof(grfMask));
+			Identifier? id = FindFlagGroup(freg, grfMask);
 			if (id == null)
 			{
 				id = new Identifier(name, dt, new FlagGroupStorage(freg, grfMask, name, dt));
@@ -177,7 +177,7 @@ namespace Reko.Core
         public Identifier EnsureFlagGroup(FlagGroupStorage grf)
         {
             if (grf.FlagGroupBits == 0)
-                return null;
+                throw new ArgumentException("Argument must have non-zero flag group bits.", nameof(grf));
             var id = FindFlagGroup(grf.FlagRegister, grf.FlagGroupBits);
             if (id == null)
             {
@@ -189,7 +189,7 @@ namespace Reko.Core
 
 		public Identifier EnsureFpuStackVariable(int depth, DataType type)
 		{
-			Identifier id = FindFpuStackVariable(depth);
+			Identifier? id = FindFpuStackVariable(depth);
 			if (id == null)
 			{
 				string name = string.Format("{0}{1}", (depth < 0 ? "rLoc" : "rArg"), Math.Abs(depth));
@@ -208,8 +208,8 @@ namespace Reko.Core
 		/// <returns></returns>
 		public Identifier EnsureRegister(RegisterStorage reg)
 		{
-			Identifier id = FindRegister(reg);
-			if (id == null && reg != null)
+			Identifier? id = FindRegister(reg);
+			if (id == null)
 			{
 				id = new Identifier(reg.Name, reg.DataType, reg);
 				identifiers.Add(id);
@@ -219,7 +219,7 @@ namespace Reko.Core
 
 		public Identifier EnsureOutArgument(Identifier idOrig, DataType outArgumentPointer)
 		{
-			Identifier idOut = FindOutArgument(idOrig);
+			Identifier? idOut = FindOutArgument(idOrig);
 			if (idOut == null)
 			{
 				idOut = new Identifier(idOrig.Name + "Out", outArgumentPointer, new OutArgumentStorage(idOrig));
@@ -230,7 +230,7 @@ namespace Reko.Core
 
 		public Identifier EnsureSequence(DataType dt, params Storage [] elements)
         {
-			Identifier idSeq = FindSequence(elements);
+			Identifier? idSeq = FindSequence(elements);
 			if (idSeq == null)
 			{
 				idSeq = CreateSequence(dt, elements);
@@ -240,7 +240,7 @@ namespace Reko.Core
 
         public Identifier EnsureSequence(DataType dt, string name, params Storage [] elements)
         {
-            Identifier idSeq = FindSequence(elements);
+            Identifier? idSeq = FindSequence(elements);
             if (idSeq == null)
             {
                 idSeq = CreateSequence(dt, name, elements);
@@ -259,9 +259,9 @@ namespace Reko.Core
 			return EnsureStackLocal(cbOffset, type, null);
 		}
 
-		public Identifier EnsureStackLocal(int cbOffset, DataType type, string name)
+		public Identifier EnsureStackLocal(int cbOffset, DataType type, string? name)
 		{
-			Identifier id = FindStackLocal(cbOffset, type.Size);
+			Identifier? id = FindStackLocal(cbOffset, type.Size);
 			if (id == null)
 			{
 				id = new Identifier(namingPolicy.StackLocalName(type, cbOffset, name), type, new StackLocalStorage(cbOffset, type));
@@ -275,9 +275,9 @@ namespace Reko.Core
 			return EnsureStackArgument(cbOffset, type, null);
 		}
 
-		public Identifier EnsureStackArgument(int cbOffset, DataType type, string argName)
+		public Identifier EnsureStackArgument(int cbOffset, DataType type, string? argName)
 		{
-			Identifier id = FindStackArgument(cbOffset, type.Size);
+			Identifier? id = FindStackArgument(cbOffset, type.Size);
 			if (id == null)
 			{
 				id = new Identifier(
@@ -326,7 +326,7 @@ namespace Reko.Core
             throw new ArgumentOutOfRangeException("id", "Identifier must be an argument.");
 		}
 
-        public Identifier FindSequence(Storage[] elements)
+        public Identifier? FindSequence(Storage[] elements)
         {
             foreach (Identifier id in identifiers)
             {
@@ -361,7 +361,7 @@ namespace Reko.Core
 			return cbMax;
 		}
 
-		public Identifier FindFlagGroup(RegisterStorage reg, uint grfMask)
+		public Identifier? FindFlagGroup(RegisterStorage reg, uint grfMask)
 		{
 			foreach (Identifier id in identifiers)
 			{
@@ -375,7 +375,7 @@ namespace Reko.Core
 			return null;
 		}
 
-		public Identifier FindFpuStackVariable(int off)
+		public Identifier? FindFpuStackVariable(int off)
 		{
 			foreach (Identifier id in identifiers)
 			{
@@ -385,7 +385,7 @@ namespace Reko.Core
 			return null;
 		}
 
-		public Identifier FindOutArgument(Identifier idOrig)
+		public Identifier? FindOutArgument(Identifier idOrig)
 		{
 			foreach (Identifier id in identifiers)
 			{
@@ -397,7 +397,7 @@ namespace Reko.Core
 			return null;
 		}
 
-		public Identifier FindRegister(RegisterStorage reg)
+		public Identifier? FindRegister(RegisterStorage reg)
 		{
 			foreach (Identifier id in identifiers)
 			{
@@ -407,7 +407,7 @@ namespace Reko.Core
 			return null;
 		}
 
-		public Identifier FindStackArgument(int offset, int size)
+		public Identifier? FindStackArgument(int offset, int size)
 		{
 			foreach (Identifier id in identifiers)
 			{
@@ -419,7 +419,7 @@ namespace Reko.Core
 			return null;
 		}
 
-		public Identifier FindStackLocal(int offset, int size)
+		public Identifier? FindStackLocal(int offset, int size)
 		{
 			foreach (Identifier id in identifiers)
 			{

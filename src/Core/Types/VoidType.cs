@@ -51,7 +51,7 @@ namespace Reko.Core.Types
             return v.VisitVoidType(this);
         }
 
-        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
+        public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
         {
             return this;
         }

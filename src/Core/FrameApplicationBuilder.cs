@@ -60,14 +60,12 @@ namespace Reko.Core
 
         public override Expression Bind(Identifier id)
         {
-            if (id == null)
-                return null;
             return id.Storage.Accept(this);
         }
 
-        public override Expression BindReturnValue(Identifier id)
+        public override Expression? BindReturnValue(Identifier id)
         {
-            Expression expRet = null;
+            Expression? expRet = null;
             if (id != null)
             {
                 expRet = id.Storage.Accept(this);
@@ -124,7 +122,7 @@ namespace Reko.Core
         {
             var exps = seq.Elements.Select(e => e.Accept(this) as Identifier).ToArray();
             if (exps.All(e => e != null))
-                return binder.EnsureSequence(seq.DataType, exps.Select(i => i.Storage).ToArray());
+                return binder.EnsureSequence(seq.DataType, exps.Select(i => i!.Storage).ToArray());
             throw new NotImplementedException("Handle case when stack parameter is passed.");
         }
 

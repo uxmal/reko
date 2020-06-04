@@ -458,11 +458,10 @@ namespace Reko.Arch.M68k
                 }
             case IndexedOperand idxop:
                 {
-                    var b = binder.EnsureRegister(idxop.Base);
-                    var i = binder.EnsureRegister(idxop.Index);
-                    Expression ea = b;
-                    if (i != null)
+                    Expression ea = null;
+                    if (idxop.Index != null)
                     {
+                        var i = binder.EnsureRegister(idxop.Index);
                         var s = m.Const(i.DataType, idxop.IndexScale);
                         if (idxop.IndexScale > 1)
                         {
@@ -473,8 +472,9 @@ namespace Reko.Arch.M68k
                             ea = i;
                         }
                     }
-                    if (b != null)
+                    if (idxop.Base != null)
                     {
+                        var b = binder.EnsureRegister(idxop.Base);
                         if (ea != null)
                         {
                             ea = m.IAdd(b, ea);

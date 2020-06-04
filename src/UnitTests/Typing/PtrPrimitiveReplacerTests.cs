@@ -52,8 +52,8 @@ namespace Reko.UnitTests.Typing
 			TypeVariableReplacer tvr = new TypeVariableReplacer(store);
 			tvr.ReplaceTypeVariables();
 
-			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store, program);
-			ppr.ReplaceAll(listener);
+			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store, program, listener);
+			ppr.ReplaceAll();
 
 			Verify(program, outputFilename);
 		}
@@ -104,9 +104,8 @@ namespace Reko.UnitTests.Typing
 			TypeVariableReplacer tvr = new TypeVariableReplacer(store);
 			tvr.ReplaceTypeVariables();
 
-            var ppr = new PtrPrimitiveReplacer(factory, store, program);
-
-			ppr.ReplaceAll(new FakeDecompilerEventListener());
+            var ppr = new PtrPrimitiveReplacer(factory, store, program, new FakeDecompilerEventListener());
+			ppr.ReplaceAll();
 
 			Verify(null, "Typing/PprReplaceInts.txt");
 		}
@@ -161,7 +160,7 @@ namespace Reko.UnitTests.Typing
             var factory = new TypeFactory();
             var store = new TypeStore();
 
-            var ppr = new PtrPrimitiveReplacer(factory, store, program);
+            var ppr = new PtrPrimitiveReplacer(factory, store, program, new FakeDecompilerEventListener());
 
             var sExp = "(struct (0 (ptr32 (struct (0 (ptr32 (struct)) ptr0000))) ptr0000))";
 

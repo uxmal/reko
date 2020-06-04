@@ -32,10 +32,10 @@ namespace Reko.Evaluation
 {
     public class DistributedSliceRule
     {
-        private DataType dt;
-        private Expression eLeft;
-        private Expression eRight;
-        private Operator op;
+        private DataType? dt;
+        private Expression? eLeft;
+        private Expression? eRight;
+        private Operator? op;
         private int offset;
 
         public DistributedSliceRule()
@@ -66,12 +66,12 @@ namespace Reko.Evaluation
         public Expression Transform(EvaluationContext ctx)
         {
             return new Slice(
-                dt, 
+                dt!, 
                 new BinaryExpression(
-                    this.op, 
-                    this.eLeft.DataType, 
-                    this.eLeft, 
-                    this.eRight),
+                    this.op!, 
+                    this.eLeft!.DataType, 
+                    this.eLeft!, 
+                    this.eRight!),
                 this.offset);
         }
     }

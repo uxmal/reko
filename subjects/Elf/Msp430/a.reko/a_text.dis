@@ -1,7 +1,7 @@
-void fn00004000(word20 pc, word20 sr, word20 r8)
+void fn00004000(word20 sr, word20 r8)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  pc:[0..19] r8:[0..19] sr:[0..19]
+// MayUse:  r8:[0..19] sr:[0..19]
 // LiveOut:
 // Trashed:
 // Preserved: sp
@@ -9,27 +9,27 @@ void fn00004000(word20 pc, word20 sr, word20 r8)
 fn00004000_exit:
 fn00004000_entry:
 l00004000:
-	Mem3[0x0120<p16>:ptr16] = 0x5A80<16>
+	Mem6[0x0120<p16>:word16] = 0x5A80<16>
 	word20 r15_12 = 0x5B78<16>
-	word20 r14_13 = 0x200<16>
-	word20 r13_6 = 0x21C<16>
-	branch r13_6 == r14_13 l00004020
+	word20 r14_16 = 0x200<16>
+	word20 r13_9 = 0x21C<16>
+	branch r13_9 == r14_16 l00004020
 l00004016:
-	Mem16[r14_13:byte] = Mem10[r15_12:byte]
+	Mem19[r14_16:byte] = Mem13[r15_12:byte]
 	r15_12 = r15_12 + 1<i16>
-	r14_13 = r14_13 + 1<16>
-	branch r14_13 >=u r13_6 l00004016
+	r14_16 = r14_16 + 1<16>
+	branch r14_16 >=u r13_9 l00004016
 l00004020:
-	word20 r15_21 = 0x21C<16>
-	word20 r13_22 = 0x9B4<16>
-	branch r13_22 == r15_21 l00004036
+	word20 r15_24 = 0x21C<16>
+	word20 r13_25 = 0x9B4<16>
+	branch r13_25 == r15_24 l00004036
 l0000402C:
-	Mem29[r15_21:byte] = 0<8>
-	r15_21 = r15_21 + 1<16>
-	branch r15_21 >=u r13_22 l0000402C
+	Mem32[r15_24:byte] = 0<8>
+	r15_24 = r15_24 + 1<16>
+	branch r15_24 >=u r13_25 l0000402C
 l00004036:
 l00004036_thunk_main:
-	main(pc, sr, r8)
+	main(sr, r8)
 
 
 void task_idle(word20 sr, word20 r8)
@@ -56,10 +56,10 @@ l406A:
 	r10_20 = r15_27 + 0x3E8<16>
 
 
-void task_1(word20 pc, word20 sr)
+void task_1(word20 sr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  pc:[0..19] sr:[0..19]
+// MayUse:  sr:[0..19]
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -68,17 +68,17 @@ task_1_exit:
 task_1_entry:
 l4096:
 	word20 r15_6
-	word20 sr_20 = xTaskGetTickCount(sr, out r15_6)
+	word20 sr_22 = xTaskGetTickCount(sr, out r15_6)
 l40A0:
-	Mem17[0x0031<p16>:ptr16] = Mem16[0x0031<p16>:ptr16] ^ 1<8>
+	Mem19[0x0031<p16>:byte] = Mem16[0x0031<p16>:byte] ^ 1<8>
 	word20 r11_50
-	sr_20 = vTaskDelayUntil(pc, putchar(pc, sr_20, 0x58<16>, out r11_50), 0x1F4<16>, fp - 2<16>)
+	sr_22 = vTaskDelayUntil(putchar(sr_22, 0x58<16>, out r11_50), 0x1F4<16>, fp - 2<16>)
 
 
-void task_2(word20 pc, word20 sr)
+void task_2(word20 sr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  pc:[0..19] sr:[0..19]
+// MayUse:  sr:[0..19]
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -87,17 +87,17 @@ task_2_exit:
 task_2_entry:
 l40BC:
 	word20 r15_6
-	word20 sr_20 = xTaskGetTickCount(sr, out r15_6)
+	word20 sr_22 = xTaskGetTickCount(sr, out r15_6)
 l40C6:
-	Mem17[0x0031<p16>:ptr16] = Mem16[0x0031<p16>:ptr16] ^ 2<8>
+	Mem19[0x0031<p16>:byte] = Mem16[0x0031<p16>:byte] ^ 2<8>
 	word20 r11_50
-	sr_20 = vTaskDelayUntil(pc, putchar(pc, sr_20, 0x59<16>, out r11_50), 0xFA<16>, fp - 2<16>)
+	sr_22 = vTaskDelayUntil(putchar(sr_22, 0x59<16>, out r11_50), 0xFA<16>, fp - 2<16>)
 
 
-void task_3(word20 pc, word20 sr)
+void task_3(word20 sr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  pc:[0..19] sr:[0..19]
+// MayUse:  sr:[0..19]
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -106,19 +106,19 @@ task_3_exit:
 task_3_entry:
 l40E2:
 	word20 r15_6
-	word20 sr_20 = xTaskGetTickCount(sr, out r15_6)
+	word20 sr_22 = xTaskGetTickCount(sr, out r15_6)
 l40EC:
-	Mem17[0x0031<p16>:ptr16] = Mem16[0x0031<p16>:ptr16] ^ 4<8>
+	Mem19[0x0031<p16>:byte] = Mem16[0x0031<p16>:byte] ^ 4<8>
 	word20 r11_50
-	sr_20 = vTaskDelayUntil(pc, putchar(pc, sr_20, 0x5A<16>, out r11_50), 0x19<16>, fp - 2<16>)
+	sr_22 = vTaskDelayUntil(putchar(sr_22, 0x5A<16>, out r11_50), 0x19<16>, fp - 2<16>)
 
 
-void main(word20 pc, word20 sr, word20 r8)
+void main(word20 sr, word20 r8)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00004000
-// MayUse:  pc:[0..19] r8:[0..19] sr:[0..19]
+// MayUse:  r8:[0..19] sr:[0..19]
 // LiveOut:
 // Trashed:
 // Preserved: sp
@@ -127,20 +127,20 @@ main_exit:
 main_entry:
 l414C:
 	__set_stackpointer(0xA00<16>)
-	Mem3[0x0120<p16>:ptr16] = 0x5A80<16>
-	Mem4[0x0056<p16>:ptr16] = 0xFFE0<16>
-	Mem5[0x0057<p16>:ptr16] = 7<16>
-	Mem6[0x0032<p16>:ptr16] = 7<16>
-	Mem7[0x0031<p16>:ptr16] = 7<16>
-	word20 sr_23 = init_uart_isr(pc, sr, 0x2580<16>, 0<16>, 0x10<16>)
+	Mem6[0x0120<p16>:word16] = 0x5A80<16>
+	Mem9[0x0056<p16>:byte] = 0xFFE0<16>
+	Mem12[0x0057<p16>:byte] = 7<16>
+	Mem15[0x0032<p16>:byte] = 7<16>
+	Mem18[0x0031<p16>:byte] = 7<16>
+	word20 sr_33 = init_uart_isr(sr, 0x2580<16>, 0<16>, 0x10<16>)
 	uart_putchar_isr_mode(0<8>)
 	printf(r8)
 	uart_putchar_isr_mode(1<8>)
-	word20 r15_154
-	word20 r15_155
-	word20 r15_156
-	word20 r15_157
-	vTaskStartScheduler(pc, xTaskCreate(pc, xTaskCreate(pc, xTaskCreate(pc, xTaskCreate(pc, sr_23, 0<16>, 0x32<16>, 0x414B<16>, 0x4096<16>, out r15_154), 0<16>, 0x32<16>, 0x414B<16>, 0x40BC<16>, out r15_155), 0<16>, 0x32<16>, 0x414B<16>, 0x40E2<16>, out r15_156), 0<16>, 0x96<16>, 0x414B<16>, 0x4048<16>, out r15_157))
+	word20 r15_164
+	word20 r15_165
+	word20 r15_166
+	word20 r15_167
+	vTaskStartScheduler(xTaskCreate(xTaskCreate(xTaskCreate(xTaskCreate(sr_33, 0<16>, 0x32<16>, 0x414B<16>, 0x4096<16>, out r15_164), 0<16>, 0x32<16>, 0x414B<16>, 0x40BC<16>, out r15_165), 0<16>, 0x32<16>, 0x414B<16>, 0x40E2<16>, out r15_166), 0<16>, 0x96<16>, 0x414B<16>, 0x4048<16>, out r15_167))
 l5AD8:
 
 
@@ -193,12 +193,12 @@ l000042B4:
 msp430_compute_modulator_bits_exit:
 
 
-word20 init_uart_isr(word20 pc, word20 sr, word20 r13, word20 r14, word20 r15)
+word20 init_uart_isr(word20 sr, word20 r13, word20 r14, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00004000
-// MayUse:  pc:[0..19] r13:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
+// MayUse:  r13:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: sr
 // Trashed: VNZC r12 r13 r14 r15 sr
 // Preserved: r10 r11 r4 r6 r7 r8 r9 sp
@@ -208,45 +208,46 @@ l000042CC:
 	word16 v15_34 = Mem23[fp + 2<32>:word16]
 	word16 v16_37 = Mem23[fp + 4<32>:word16]
 	byte v17_41 = Mem23[fp + 6<32>:byte]
-	Mem45[0x0218<p16>:ptr16] = Mem23[0x0218<p16>:ptr16] + 1<16>
-	word20 r15_51
-	word20 sr_52 = xQueueCreate(pc, sr & ~8<16>, v17_41, out r15_51)
-	Mem57[0x021C<p16>:ptr16] = r15_51
-	word20 r15_61
-	word20 sr_107 = xQueueCreate(pc, sr_52, v17_41, out r15_61)
-	Mem67[0x021E<p16>:ptr16] = r15_61
-	Mem68[0x0078<p16>:ptr16] = 1<8>
-	Mem69[0x0078<p16>:ptr16] = Mem68[0x0078<p16>:ptr16] | 0x10<16>
-	Mem73[0x0079<p16>:ptr16] = r15 & 0x30<16>
-	word20 r15_83 = msp430_compute_modulator_bits(v15_34, v16_37, r13, r14)
-	Mem90[0x007C<p16>:ptr16] = bLoc10
-	Mem95[0x007D<p16>:ptr16] = __swpb(wLoc10) & 0xFF<8>
-	Mem96[0x007B<p16>:ptr16] = r15_83
-	Mem97[0x0005<p16>:ptr16] = Mem96[0x0005<p16>:ptr16] | 0x30<16>
-	Mem98[0x0078<p16>:ptr16] = 0x10<16>
-	Mem99[0x001B<p16>:ptr16] = Mem98[0x001B<p16>:ptr16] | 0xFFC0<16>
-	Mem100[0x0001<p16>:ptr16] = Mem99[0x0001<p16>:ptr16] | 0x30<16>
-	branch 0x0218<p16> == 0<16> l0000436E
+	Mem47[0x0218<p16>:word16] = Mem23[0x0218<p16>:word16] + 1<16>
+	word20 r15_52
+	word20 sr_53 = xQueueCreate(sr & ~8<16>, v17_41, out r15_52)
+	Mem60[0x021C<p16>:word16] = r15_52
+	word20 r15_64
+	word20 sr_135 = xQueueCreate(sr_53, v17_41, out r15_64)
+	Mem72[0x021E<p16>:word16] = r15_64
+	Mem75[0x0078<p16>:byte] = 1<8>
+	Mem78[0x0078<p16>:byte] = Mem75[0x0078<p16>:byte] | 0x10<16>
+	Mem84[0x0079<p16>:byte] = r15 & 0x30<16>
+	word20 r15_94 = msp430_compute_modulator_bits(v15_34, v16_37, r13, r14)
+	Mem103[0x007C<p16>:byte] = bLoc10
+	Mem110[0x007D<p16>:byte] = __swpb(wLoc10) & 0xFF<8>
+	Mem113[0x007B<p16>:byte] = r15_94
+	Mem116[0x0005<p16>:byte] = Mem113[0x0005<p16>:byte] | 0x30<16>
+	Mem119[0x0078<p16>:byte] = 0x10<16>
+	Mem122[0x001B<p16>:byte] = Mem119[0x001B<p16>:byte] | 0xFFC0<16>
+	Mem125[0x0001<p16>:byte] = Mem122[0x0001<p16>:byte] | 0x30<16>
+	branch Mem125[0x0218<p16>:word16] == 0<16> l0000436E
 l00004366:
-	Mem104[0x0218<p16>:ptr16] = Mem100[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem104[0x0218<p16>:ptr16] != 0<16> l0000436E
+	word16 v38_130 = Mem125[0x0218<p16>:word16]
+	Mem132[0x0218<p16>:word16] = v38_130 + 0xFFFF<16>
+	branch v38_130 != 0xFFFF<16> l0000436E
 l0000436C:
-	sr_107 = sr_107 | 8<16>
+	sr_135 = sr_135 | 8<16>
 l0000436E:
-	return sr_107
+	return sr_135
 init_uart_isr_exit:
 
 
-void getchar(word20 pc, word20 sr)
+void getchar(word20 sr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  pc:[0..19] sr:[0..19]
+// MayUse:  sr:[0..19]
 // LiveOut:
 // Trashed: VNZC r12 r13 r14 r15 r4 r5 r6 r7 r8 sr
 // Preserved: sp
 getchar_entry:
 l4380:
-	branch x_getchar(pc, sr, 0x64<16>, fp - 2<16>) == 0<20> l4396
+	branch x_getchar(sr, 0x64<16>, fp - 2<16>) == 0<20> l4396
 l4396:
 l4390:
 l4398:
@@ -265,12 +266,12 @@ void uart_putchar_isr_mode(word20 r15)
 // Preserved: sp
 uart_putchar_isr_mode_entry:
 l0000439C:
-	Mem4[0x0200<p16>:ptr16] = r15
+	Mem7[0x0200<p16>:byte] = r15
 	return
 uart_putchar_isr_mode_exit:
 
 
-word20 putchar(word20 pc, word20 sr, word20 r15, ptr16 & r11Out)
+word20 putchar(word20 sr, word20 r15, ptr16 & r11Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -278,7 +279,7 @@ word20 putchar(word20 pc, word20 sr, word20 r15, ptr16 & r11Out)
 //      task_2
 //      task_3
 //      putchar
-// MayUse:  pc:[0..19] r15:[0..19] sr:[0..19]
+// MayUse:  r15:[0..19] sr:[0..19]
 // LiveOut: r11 sr
 // Trashed: VNZC r13 r14 r15 sr
 // Preserved: r11 sp
@@ -287,16 +288,16 @@ l000043A2:
 	word20 r11_12 = r15
 	branch r15 == 0xA<16> l000043D6
 l000043D6:
-	putchar(pc, sr, 0xD<16>, out r11_12)
+	putchar(sr, 0xD<16>, out r11_12)
 l000043AC:
 	word20 r15_26
-	branch 0x0200<p16> != 0<16> l000043CA
+	branch Mem5[0x0200<p16>:byte] != 0<8> l000043CA
 l000043CA:
-	sr = x_putchar(pc, sr, 0x64<16>, r11_12, out r15_26)
+	sr = x_putchar(sr, 0x64<16>, r11_12, out r15_26)
 l000043B2:
-	branch (0x0079<p16> & 1<8>) == 0<8> l000043B2
+	branch (Mem5[0x0079<p16>:byte] & 1<8>) == 0<8> l000043B2
 l000043B8:
-	Mem38[0x007F<p16>:ptr16] = r11_12
+	Mem42[0x007F<p16>:byte] = r11_12
 	r15_26 = 1<16>
 l000043BE:
 	branch r15_26 == 0<20> l000043C6
@@ -308,20 +309,20 @@ l000043E0:
 putchar_exit:
 
 
-word20 x_getchar(word20 pc, word20 sr, word20 r14, word20 r15)
+word20 x_getchar(word20 sr, word20 r14, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      getchar
-// MayUse:  pc:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
+// MayUse:  r14:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: r15
 // Trashed: VNZC r12 r13 r14 r15 r4 r5 r6 r7 r8 sr
 // Preserved: sp
 x_getchar_entry:
 l43E4:
-	word20 r15_11
-	xQueueReceive(pc, sr, r14, r15, 0x021C<p16>, out r15_11)
-	branch r15_11 == 0<20> l43F8
+	word20 r15_12
+	xQueueReceive(sr, r14, r15, Mem0[0x021C<p16>:word16], out r15_12)
+	branch r15_12 == 0<20> l43F8
 l43F8:
 	return 0<16>
 l43F4:
@@ -329,63 +330,64 @@ l43F4:
 x_getchar_exit:
 
 
-word20 x_putchar(word20 pc, word20 sr, word20 r14, word20 r15, ptr16 & r15Out)
+word20 x_putchar(word20 sr, word20 r14, word20 r15, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      putchar
-// MayUse:  pc:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
+// MayUse:  r14:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: r15 sr
 // Trashed: VNZC r13 r15 sr
 // Preserved: r12 r14 r4 r5 r6 r7 r8 sp
 x_putchar_entry:
 l000043FC:
-	Mem13[0x0218<p16>:ptr16] = Mem8[0x0218<p16>:ptr16] + 1<16>
-	word20 sr_108 = sr & ~8<16>
-	branch 0x0221<p16> == 0<16> l00004440
+	Mem15[0x0218<p16>:word16] = Mem8[0x0218<p16>:word16] + 1<16>
+	word20 sr_12 = sr & ~8<16>
+	branch Mem15[0x0220<p16>:word16] == 1<16> l00004440
 l00004410:
-	word20 r15_23
-	sr_108 = xQueueSend(pc, sr_108, r14, fp - 2<16>, 0x021E<p16>, out r15_23)
-	branch 0x0221<p16> == 0<16> l00004430
+	word20 r15_25
+	sr_12 = xQueueSend(sr_12, r14, fp - 2<16>, Mem15[0x021E<p16>:word16], out r15_25)
+	branch Mem15[0x0220<p16>:word16] == 1<16> l00004430
 l00004430:
-	branch r15_23 != 1<16> l00004420
+	branch r15_25 != 1<16> l00004420
 l00004434:
-	word20 r15_112
-	sr_108 = xQueueReceive(pc, sr_108, 0<16>, fp - 2<16>, 0x021E<p16>, out r15_112)
+	word20 r15_124
+	sr_12 = xQueueReceive(sr_12, 0<16>, fp - 2<16>, Mem15[0x021E<p16>:word16], out r15_124)
 l00004440:
-	Mem55[0x0220<p16>:ptr16] = 0<16>
-	Mem58[0x007F<p16>:ptr16] = r15
+	Mem62[0x0220<p16>:word16] = 0<16>
+	Mem67[0x007F<p16>:byte] = r15
 l00004420:
-	branch 0x0218<p16> == 0<16> l0000444A
+	branch Mem68[0x0218<p16>:word16] == 0<16> l0000444A
 l00004426:
-	Mem62[0x0218<p16>:ptr16] = Mem61[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem62[0x0218<p16>:ptr16] != 0<16> l0000444A
+	word16 v15_72 = Mem68[0x0218<p16>:word16]
+	Mem74[0x0218<p16>:word16] = v15_72 + 0xFFFF<16>
+	branch v15_72 != 0xFFFF<16> l0000444A
 l0000442C:
-	sr_108 = sr_108 | 8<16>
+	sr_12 = sr_12 | 8<16>
 l0000444A:
 	r15Out = 1<16>
-	return sr_108
+	return sr_12
 x_putchar_exit:
 
 
-void vRxISR(word20 pc, word20 sr)
+void vRxISR(word20 sr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  pc:[0..19] sr:[0..19]
+// MayUse:  sr:[0..19]
 // LiveOut:
 // Trashed: VNZC r10 r11 r4 r5 r6 r7 r8 r9 sr
 // Preserved: r12 r13 r14 r15 sp
 vRxISR_entry:
 l4450:
-	word20 r15_27
-	word20 sr_28 = xQueueSendFromISR(sr, 0<16>, fp - 0xA<32>, 0x021C<p16>, out r15_27)
-	branch r15_27 == 0<20> l4474
+	word20 r15_29
+	word20 sr_30 = xQueueSendFromISR(sr, 0<16>, fp - 0xA<32>, Mem20[0x021C<p16>:word16], out r15_29)
+	branch r15_29 == 0<20> l4474
 l4470:
-	word20 r11_104
-	word20 r10_103
-	word20 r9_102
-	word20 r8_101
-	vPortYield(pc, sr_28, out r8_101, out r9_102, out r10_103, out r11_104)
+	word20 r11_105
+	word20 r10_104
+	word20 r9_103
+	word20 r8_102
+	vPortYield(sr_30, out r8_102, out r9_103, out r10_104, out r11_105)
 l4474:
 	return
 vRxISR_exit:
@@ -400,145 +402,147 @@ void vTxISR(word20 sr)
 // Preserved: r12 r13 r14 r15 sp
 vTxISR_entry:
 l4480:
-	branch xQueueReceiveFromISR(sr, fp - 0xC<32>, fp - 0xA<32>, 0x021E<p16>) == 1<16> l44A2
+	branch xQueueReceiveFromISR(sr, fp - 0xC<32>, fp - 0xA<32>, Mem14[0x021E<p16>:word16]) == 1<16> l44A2
 l44A2:
-	Mem34[0x007F<p16>:ptr16] = bLoc0A
+	Mem37[0x007F<p16>:byte] = bLoc0A
 l449C:
-	Mem35[0x0220<p16>:ptr16] = 1<16>
+	Mem40[0x0220<p16>:word16] = 1<16>
 l44A8:
 	return
 vTxISR_exit:
 
 
-word20 xTaskCreate(word20 pc, word20 sr, word20 r12, word20 r13, word20 r14, word20 r15, ptr16 & r15Out)
+word20 xTaskCreate(word20 sr, word20 r12, word20 r13, word20 r14, word20 r15, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00004000
 //      vTaskStartScheduler
-// MayUse:  pc:[0..19] r12:[0..19] r13:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
+// MayUse:  r12:[0..19] r13:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: r15 sr
 // Trashed: VNZC r12 r13 r14 r15 r4 sr
 // Preserved: r10 r11 r5 r6 r7 r8 r9 sp
 xTaskCreate_entry:
 l000044B4:
-	word20 r10_142
+	word20 r10_158
 	word16 v15_35 = Mem23[fp + 2<32>:word16]
 	word16 v16_37 = Mem23[fp + 4<32>:word16]
-	word20 r15_46
-	word20 sr_152 = prvAllocateTCBAndStack(pc, sr, r13, out r15_46)
-	branch r15_46 == 0<20> l000045A0
+	word20 r15_45
+	word20 sr_171 = prvAllocateTCBAndStack(sr, r13, out r15_45)
+	branch r15_45 == 0<20> l000045A0
 l000045A0:
-	r10_142 = 0xFFFF<16>
+	r10_158 = 0xFFFF<16>
 l000044E2:
-	prvInitialiseTCBVariables(v15_35, r14, r13, r15_46)
-	Mem82[r15_46:word16] = pxPortInitialiseStack(r12, r15, Mem23[r15_46 + 36<i16>:word16] * 2<20> + Mem23[r15_46 + 2<i16>:word16] - 2<16>)
-	Mem84[0x0218<p16>:ptr16] = Mem82[0x0218<p16>:ptr16] + 1<16>
-	Mem86[0x0206<p16>:ptr16] = Mem84[0x0206<p16>:ptr16] + 1<16>
-	sr_152 = sr_152 & ~8<16>
-	branch 0x0207<p16> == 0<16> l00004596
+	prvInitialiseTCBVariables(v15_35, r14, r13, r15_45)
+	Mem81[r15_45:word16] = pxPortInitialiseStack(r12, r15, Mem23[r15_45 + 36<i16>:word16] * 2<20> + Mem23[r15_45 + 2<i16>:word16] - 2<16>)
+	Mem85[0x0218<p16>:word16] = Mem81[0x0218<p16>:word16] + 1<16>
+	Mem88[0x0206<p16>:word16] = Mem85[0x0206<p16>:word16] + 1<16>
+	sr_171 = sr_171 & ~8<16>
+	branch Mem88[0x0206<p16>:word16] == 1<16> l00004596
 l00004596:
-	Mem90[0x0202<p16>:ptr16] = r15_46
+	Mem94[0x0202<p16>:word16] = r15_45
 	prvInitialiseTaskLists()
 l00004514:
-	branch 0x020E<p16> != 0<16> l0000452A
+	branch Mem88[0x020E<p16>:word16] != 0<16> l0000452A
 l0000451A:
-	branch v15_35 >=u Mem86[0x0208<p16>:word16] l0000452A
+	branch v15_35 >=u Mem88[Mem88[0x0202<p16>:word16] + 6<i16>:word16] l0000452A
 l00004526:
-	Mem103[0x0202<p16>:ptr16] = r15_46
+	Mem111[0x0202<p16>:word16] = r15_45
 l0000452A:
-	word16 v25_106 = Mem105[r15_46 + 6<i16>:word16]
-	branch 0x020A<p16> <u v25_106 l00004538
+	word16 v31_114 = Mem113[r15_45 + 6<i16>:word16]
+	branch Mem113[0x020A<p16>:word16] <u v31_114 l00004538
 l00004534:
-	Mem110[0x020A<p16>:ptr16] = v25_106
+	Mem121[0x020A<p16>:word16] = v31_114
 l00004538:
-	Mem115[r15_46 + 4<i16>:word16] = 0x0214<p16>
-	Mem116[0x0214<p16>:ptr16] = Mem115[0x0214<p16>:ptr16] + 1<16>
-	Mem120[r15_46 + 8<i16>:word16] = 0<16>
-	branch 0x020C<p16> <u v25_106 l00004550
+	Mem127[r15_45 + 4<i16>:word16] = Mem122[0x0214<p16>:word16]
+	Mem130[0x0214<p16>:word16] = Mem127[0x0214<p16>:word16] + 1<16>
+	Mem133[r15_45 + 8<i16>:word16] = 0<16>
+	branch Mem133[0x020C<p16>:word16] <u v31_114 l00004550
 l0000454C:
-	Mem124[0x020C<p16>:ptr16] = v25_106
+	Mem140[0x020C<p16>:word16] = v31_114
 l00004550:
-	vListInsertEnd(r15_46 + 8<16>, v25_106 * 0x10<20> + 0x222<16>)
-	r10_142 = 1<16>
-	branch 0x0218<p16> == 0<16> l00004574
+	vListInsertEnd(r15_45 + 8<16>, v31_114 * 0x10<20> + 0x222<16>)
+	r10_158 = 1<16>
+	branch Mem159[0x0218<p16>:word16] == 0<16> l00004574
 l0000456C:
-	Mem146[0x0218<p16>:ptr16] = Mem145[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem146[0x0218<p16>:ptr16] != 0<16> l00004574
+	word16 v51_163 = Mem159[0x0218<p16>:word16]
+	Mem165[0x0218<p16>:word16] = v51_163 + 0xFFFF<16>
+	branch v51_163 != 0xFFFF<16> l00004574
 l00004572:
-	sr_152 = sr_152 | 8<16>
+	sr_171 = sr_171 | 8<16>
 l00004574:
-	branch r10_142 != 1<16> l000045A4
+	branch r10_158 != 1<16> l000045A4
 l00004578:
 	branch v16_37 == 0<16> l00004580
 l0000457C:
-	Mem166[v16_37:word16] = r15_46
+	Mem185[v16_37:word16] = r15_45
 l00004580:
-	branch 0x020E<p16> == 0<16> l000045A4
+	branch Mem186[0x020E<p16>:word16] == 0<16> l000045A4
 l00004586:
-	branch Mem170[0x0208<p16>:word16] <u v15_35 l000045A4
+	branch Mem186[Mem186[0x0202<p16>:word16] + 6<i16>:word16] <u v15_35 l000045A4
 l00004590:
-	word20 r9_316
-	word20 r11_317
-	word20 r8_315
-	sr_152 = vPortYield(pc, sr_152, out r8_315, out r9_316, out r10_142, out r11_317)
+	word20 r9_332
+	word20 r11_333
+	word20 r8_331
+	sr_171 = vPortYield(sr_171, out r8_331, out r9_332, out r10_158, out r11_333)
 l000045A4:
-	r15Out = r10_142
-	return sr_152
+	r15Out = r10_158
+	return sr_171
 xTaskCreate_exit:
 
 
-void vTaskDelete(word20 pc, word20 sr, word20 r15)
+void vTaskDelete(word20 sr, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  pc:[0..19] r15:[0..19] sr:[0..19]
+// MayUse:  r15:[0..19] sr:[0..19]
 // LiveOut:
 // Trashed: VNZC r12 r13 r14 r15 r4 r5 r6 r7 r8 sr
 // Preserved: r10 r11 r9 sp
 vTaskDelete_entry:
 l45B6:
-	Mem16[0x0218<p16>:ptr16] = Mem11[0x0218<p16>:ptr16] + 1<16>
+	Mem18[0x0218<p16>:word16] = Mem11[0x0218<p16>:word16] + 1<16>
 	word20 sr_15 = sr & ~8<16>
-	word20 r11_18 = r15
+	word20 r11_19 = r15
 	branch r15 == 0<20> l460C
 l460C:
-	r11_18 = 0x0202<p16>
+	r11_19 = Mem18[0x0202<p16>:word16]
 l45CA:
-	word20 r10_24 = r11_18 + 8<16>
-	vListRemove(r10_24)
-	branch Mem16[r11_18 + 26<i16>:word16] != 0<16> l4600
+	word20 r10_26 = r11_19 + 8<16>
+	vListRemove(r10_26)
+	branch Mem18[r11_19 + 26<i16>:word16] != 0<16> l4600
 l4600:
-	vListRemove(r11_18 + 0x12<16>)
+	vListRemove(r11_19 + 0x12<16>)
 l45DA:
-	vListInsertEnd(r10_24, 0x296<16>)
-	Mem59[0x0204<p16>:ptr16] = Mem16[0x0204<p16>:ptr16] + 1<16>
-	branch 0x0218<p16> == 0<16> l45F6
+	vListInsertEnd(r10_26, 0x296<16>)
+	Mem63[0x0204<p16>:word16] = Mem18[0x0204<p16>:word16] + 1<16>
+	branch Mem63[0x0218<p16>:word16] == 0<16> l45F6
 l45EE:
-	Mem63[0x0218<p16>:ptr16] = Mem59[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem63[0x0218<p16>:ptr16] != 0<16> l45F6
+	word16 v15_67 = Mem63[0x0218<p16>:word16]
+	Mem69[0x0218<p16>:word16] = v15_67 + 0xFFFF<16>
+	branch v15_67 != 0xFFFF<16> l45F6
 l45F4:
 	sr_15 = sr_15 | 8<16>
 l45F6:
 	branch r15 != 0<20> l4612
 l45FA:
-	word20 r9_169
-	word20 r10_170
-	word20 r11_171
-	word20 r8_168
-	vPortYield(pc, sr_15, out r8_168, out r9_169, out r10_170, out r11_171)
+	word20 r9_171
+	word20 r10_172
+	word20 r11_173
+	word20 r8_170
+	vPortYield(sr_15, out r8_170, out r9_171, out r10_172, out r11_173)
 l4612:
 	return
 vTaskDelete_exit:
 
 
-word20 vTaskDelayUntil(word20 pc, word20 sr, word20 r14, word20 r15)
+word20 vTaskDelayUntil(word20 sr, word20 r14, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      task_1
 //      task_2
 //      task_3
-// MayUse:  pc:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
+// MayUse:  r14:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: sr
 // Trashed: VNZC r12 r13 r14 r15 r4 r5 r6 r7 r8 sr
 // Preserved: r10 r11 r9 sp
@@ -548,109 +552,109 @@ l0000461A:
 	word16 v8_23 = Mem11[r15:word16]
 	word20 r10_16 = 0<16>
 	word20 r11_25 = r14 + v8_23
-	branch 0x0208<p16> <u v8_23 l00004690
+	branch Mem11[0x0208<p16>:word16] <u v8_23 l00004690
 l00004690:
 	branch r11_25 >=u v8_23 l0000463E
 l00004694:
 l00004634:
 	branch r11_25 <u v8_23 l00004640
 l00004638:
-	branch 0x0208<p16> <u r11_25 l00004640
+	branch Mem11[0x0208<p16>:word16] <u r11_25 l00004640
 l0000463E:
 	r10_16 = 1<16>
 l00004640:
-	Mem46[r15:word16] = r11_25
+	Mem48[r15:word16] = r11_25
 	branch r10_16 != 0<20> l00004656
 l00004656:
-	word20 r14_71
-	word20 r15_72
-	vListRemove(0x020A<p16>)
-	Mem64[0x020A<p16>:word16] = r11_25
-	branch r11_25 <u 0x0208<p16> l00004682
+	word20 r14_77
+	word20 r15_79
+	vListRemove(Mem48[0x0202<p16>:word16] + 8<16>)
+	Mem68[Mem48[0x0202<p16>:word16] + 8<i16>:word16] = r11_25
+	branch r11_25 <u Mem68[0x0208<p16>:word16] l00004682
 l00004682:
-	r14_71 = 0x020A<p16>
-	r15_72 = 0x0282<p16>
+	r14_77 = Mem68[0x0202<p16>:word16] + 8<16>
+	r15_79 = Mem68[0x0282<p16>:word16]
 l00004670:
-	r14_71 = 0x020A<p16>
-	r15_72 = 0x0284<p16>
+	r14_77 = Mem68[0x0202<p16>:word16] + 8<16>
+	r15_79 = Mem68[0x0284<p16>:word16]
 l0000467C:
-	vListInsert(r14_71, r15_72)
+	vListInsert(r14_77, r15_79)
 l00004648:
-	word20 r15_98
-	word20 sr_119 = xTaskResumeAll(pc, sr_18, out r15_98)
-	branch r15_98 != 0<20> l00004696
+	word20 r15_101
+	word20 sr_102 = xTaskResumeAll(sr_18, out r15_101)
+	branch r15_101 != 0<20> l00004696
 l00004650:
-	word20 r10_226
-	word20 r8_224
-	word20 r11_227
-	word20 r9_225
-	sr_119 = vPortYield(pc, sr_119, out r8_224, out r9_225, out r10_226, out r11_227)
+	word20 r10_229
+	word20 r8_227
+	word20 r11_230
+	word20 r9_228
+	sr_102 = vPortYield(sr_102, out r8_227, out r9_228, out r10_229, out r11_230)
 l00004696:
-	return sr_119
+	return sr_102
 vTaskDelayUntil_exit:
 
 
-void vTaskDelay(word20 pc, word20 sr, word20 r15)
+void vTaskDelay(word20 sr, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  pc:[0..19] r15:[0..19] sr:[0..19]
+// MayUse:  r15:[0..19] sr:[0..19]
 // LiveOut:
 // Trashed: VNZC r10 r12 r13 r14 r15 r4 r5 r6 r7 r8 r9 sr
 // Preserved: r11 sp
 vTaskDelay_entry:
 l469E:
-	word20 r15_57 = 0<16>
+	word20 r15_63 = 0<16>
 	branch r15 != 0<20> l46B2
 l46B2:
-	word20 r14_38
-	word20 r15_39
+	word20 r14_43
+	word20 r15_45
 	word20 sr_12 = vTaskSuspendAll(sr)
-	vListRemove(0x020A<p16>)
-	word20 r11_17 = r15 + 0x0208<p16>
-	Mem31[0x020A<p16>:word16] = r11_17
-	branch r11_17 <u 0x0208<p16> l46EA
+	word20 r11_18 = r15 + Mem5[0x0208<p16>:word16]
+	vListRemove(Mem5[0x0202<p16>:word16] + 8<16>)
+	Mem34[Mem5[0x0202<p16>:word16] + 8<i16>:word16] = r11_18
+	branch r11_18 <u Mem34[0x0208<p16>:word16] l46EA
 l46EA:
-	r14_38 = 0x020A<p16>
-	r15_39 = 0x0282<p16>
+	r14_43 = Mem34[0x0202<p16>:word16] + 8<16>
+	r15_45 = Mem34[0x0282<p16>:word16]
 l46D4:
-	r14_38 = 0x020A<p16>
-	r15_39 = 0x0284<p16>
+	r14_43 = Mem34[0x0202<p16>:word16] + 8<16>
+	r15_45 = Mem34[0x0284<p16>:word16]
 l46E0:
-	vListInsert(r14_38, r15_39)
-	sr = xTaskResumeAll(pc, sr_12, out r15_57)
+	vListInsert(r14_43, r15_45)
+	sr = xTaskResumeAll(sr_12, out r15_63)
 l46A8:
-	branch r15_57 != 0<20> l46F8
+	branch r15_63 != 0<20> l46F8
 l46AC:
-	word20 r10_147
-	word20 r11_148
-	word20 r8_145
-	word20 r9_146
-	vPortYield(pc, sr, out r8_145, out r9_146, out r10_147, out r11_148)
+	word20 r10_152
+	word20 r11_153
+	word20 r8_150
+	word20 r9_151
+	vPortYield(sr, out r8_150, out r9_151, out r10_152, out r11_153)
 l46F8:
 	return
 vTaskDelay_exit:
 
 
-void vTaskStartScheduler(word20 pc, word20 sr)
+void vTaskStartScheduler(word20 sr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00004000
-// MayUse:  pc:[0..19] sr:[0..19]
+// MayUse:  sr:[0..19]
 // LiveOut:
 // Trashed: VNZC r10 r11 r12 r13 r14 r15 r4 r5 r6 r7 r8 r9 sr
 // Preserved: sp
 vTaskStartScheduler_entry:
 l00004702:
-	branch 0x0202<p16> != 0<16> l0000470A
+	branch Mem0[0x0202<p16>:word16] != 0<16> l0000470A
 l0000470A:
-	word20 r15_18
-	xTaskCreate(pc, sr, 0<16>, 0x32<16>, 0x46FC<16>, 0x49AC<16>, out r15_18)
-	branch r15_18 != 1<16> l00004708
+	word20 r15_19
+	xTaskCreate(sr, 0<16>, 0x32<16>, 0x46FC<16>, 0x49AC<16>, out r15_19)
+	branch r15_19 != 1<16> l00004708
 l00004726:
-	Mem29[0x020E<p16>:ptr16] = 1<16>
-	Mem30[0x0208<p16>:ptr16] = 0<16>
-	xPortStartScheduler(pc)
+	Mem32[0x020E<p16>:word16] = 1<16>
+	Mem35[0x0208<p16>:word16] = 0<16>
+	xPortStartScheduler()
 l00004708:
 	return
 vTaskStartScheduler_exit:
@@ -665,7 +669,7 @@ void vTaskEndScheduler()
 // Preserved: sp
 vTaskEndScheduler_entry:
 l4736:
-	Mem5[0x020E<p16>:ptr16] = 0<16>
+	Mem8[0x020E<p16>:word16] = 0<16>
 	vPortEndScheduler()
 	return
 vTaskEndScheduler_exit:
@@ -687,21 +691,22 @@ word20 vTaskSuspendAll(word20 sr)
 // Preserved: sp
 vTaskSuspendAll_entry:
 l00004742:
-	Mem6[0x0218<p16>:ptr16] = Mem0[0x0218<p16>:ptr16] + 1<16>
-	Mem8[0x0210<p16>:ptr16] = Mem6[0x0210<p16>:ptr16] + 1<16>
-	word20 sr_15 = sr & ~8<16>
-	branch 0x0218<p16> == 0<16> l0000475A
+	Mem8[0x0218<p16>:word16] = Mem0[0x0218<p16>:word16] + 1<16>
+	Mem11[0x0210<p16>:word16] = Mem8[0x0210<p16>:word16] + 1<16>
+	word20 sr_20 = sr & ~8<16>
+	branch Mem11[0x0218<p16>:word16] == 0<16> l0000475A
 l00004752:
-	Mem12[0x0218<p16>:ptr16] = Mem8[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem12[0x0218<p16>:ptr16] != 0<16> l0000475A
+	word16 v9_15 = Mem11[0x0218<p16>:word16]
+	Mem17[0x0218<p16>:word16] = v9_15 + 0xFFFF<16>
+	branch v9_15 != 0xFFFF<16> l0000475A
 l00004758:
-	sr_15 = sr_15 | 8<16>
+	sr_20 = sr_20 | 8<16>
 l0000475A:
-	return sr_15
+	return sr_20
 vTaskSuspendAll_exit:
 
 
-word20 xTaskResumeAll(word20 pc, word20 sr, ptr16 & r15Out)
+word20 xTaskResumeAll(word20 sr, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -711,73 +716,76 @@ word20 xTaskResumeAll(word20 pc, word20 sr, ptr16 & r15Out)
 //      xQueueSend
 //      xQueueReceive
 //      pvPortMalloc
-// MayUse:  pc:[0..19] sr:[0..19]
+// MayUse:  sr:[0..19]
 // LiveOut: r15 sr
 // Trashed: VNZC r15 sr
 // Preserved: r10 r11 r12 r13 r14 r4 r5 r6 r7 r8 r9 sp
 xTaskResumeAll_entry:
 l0000475C:
-	Mem18[0x0218<p16>:ptr16] = Mem14[0x0218<p16>:ptr16] + 1<16>
-	Mem20[0x0210<p16>:ptr16] = Mem18[0x0210<p16>:ptr16] + 0xFFFF<16>
-	word20 r8_101 = 0<16>
-	word20 sr_17 = sr & ~8<16>
-	branch Mem20[0x0210<p16>:ptr16] != 0<16> l000047EA
+	Mem20[0x0218<p16>:word16] = Mem14[0x0218<p16>:word16] + 1<16>
+	word16 v10_21 = Mem20[0x0210<p16>:word16]
+	Mem23[0x0210<p16>:word16] = v10_21 + 0xFFFF<16>
+	word20 r8_109 = 0<16>
+	word20 sr_106 = sr & ~8<16>
+	branch v10_21 != 0xFFFF<16> l000047EA
 l00004772:
-	branch 0x0206<p16> == 0<16> l000047EA
+	branch Mem23[0x0206<p16>:word16] == 0<16> l000047EA
 l00004778:
-	word20 r9_180 = 0<16>
+	word20 r9_192 = 0<16>
 l0000477A:
-	word20 r11_28
-	branch 0x0286<p16> == 0<16> l0000480E
+	word20 r11_34
+	branch Mem30[0x0286<p16>:word16] == 0<16> l0000480E
 l0000480E:
-	r11_28 = 0<16>
+	r11_34 = 0<16>
 l00004780:
-	r11_28 = Mem30[Mem30[0x028A<p16>:word16] + 6<i16>:word16]
+	r11_34 = Mem30[Mem30[Mem30[0x0288<p16>:word16] + 2<i16>:word16] + 6<i16>:word16]
 l0000478C:
-	branch r11_28 == 0<20> l000047D8
+	branch r11_34 == 0<20> l000047D8
 l000047D8:
-	branch 0x0212<p16> == 0<16> l000047E6
+	branch Mem30[0x0212<p16>:word16] == 0<16> l000047E6
 l000047DE:
-	branch 0x0212<p16> != 0<16> l00004802
+	branch Mem30[0x0212<p16>:word16] != 0<16> l00004802
 l00004802:
 	vTaskIncrementTick()
-	Mem51[0x0212<p16>:ptr16] = Mem50[0x0212<p16>:ptr16] + 0xFFFF<16>
-	branch Mem51[0x0212<p16>:ptr16] != 0<16> l00004802
+	word16 v35_60 = Mem59[0x0212<p16>:word16]
+	Mem62[0x0212<p16>:word16] = v35_60 + 0xFFFF<16>
+	branch v35_60 != 0xFFFF<16> l00004802
 l0000480C:
 l000047E4:
-	r9_180 = 1<16>
+	r9_192 = 1<16>
 l000047E6:
-	branch r9_180 == 1<16> l000047FA
+	branch r9_192 == 1<16> l000047FA
 l000047FA:
-	word20 r10_293
-	word20 r9_292
-	word20 r11_294
-	sr_17 = vPortYield(pc, sr_17, out r8_101, out r9_292, out r10_293, out r11_294)
+	word20 r10_303
+	word20 r9_302
+	word20 r11_304
+	sr_106 = vPortYield(sr_106, out r8_109, out r9_302, out r10_303, out r11_304)
 l000047EA:
-	branch 0x0218<p16> == 0<16> l00004812
+	branch Mem95[0x0218<p16>:word16] == 0<16> l00004812
 l000047F0:
-	Mem95[0x0218<p16>:ptr16] = Mem91[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem95[0x0218<p16>:ptr16] != 0<16> l00004812
+	word16 v24_101 = Mem95[0x0218<p16>:word16]
+	Mem103[0x0218<p16>:word16] = v24_101 + 0xFFFF<16>
+	branch v24_101 != 0xFFFF<16> l00004812
 l000047F6:
-	sr_17 = sr_17 | 8<16>
+	sr_106 = sr_106 | 8<16>
 l00004812:
-	r15Out = r8_101
-	return sr_17
+	r15Out = r8_109
+	return sr_106
 xTaskResumeAll_exit:
 l00004790:
-	vListRemove(r11_28 + 0x12<16>)
-	word20 r10_139 = r11_28 + 8<16>
-	vListRemove(r10_139)
-	Mem151[r11_28 + 8<i16>:word16] = 0<16>
-	word16 v14_152 = Mem151[r11_28 + 6<i16>:word16]
-	branch 0x020C<p16> <u v14_152 l000047B6
+	vListRemove(r11_34 + 0x12<16>)
+	word20 r10_147 = r11_34 + 8<16>
+	vListRemove(r10_147)
+	Mem159[r11_34 + 8<i16>:word16] = 0<16>
+	word16 v19_160 = Mem159[r11_34 + 6<i16>:word16]
+	branch Mem159[0x020C<p16>:word16] <u v19_160 l000047B6
 l000047B2:
-	Mem156[0x020C<p16>:ptr16] = v14_152
+	Mem167[0x020C<p16>:word16] = v19_160
 l000047B6:
-	vListInsertEnd(r10_139, v14_152 * 0x10<20> + 0x222<16>)
-	branch Mem175[0x0208<p16>:word16] <u Mem175[r11_28 + 6<i16>:word16] l0000477A
+	vListInsertEnd(r10_147, v19_160 * 0x10<20> + 0x222<16>)
+	branch Mem184[Mem184[0x0202<p16>:word16] + 6<i16>:word16] <u Mem184[r11_34 + 6<i16>:word16] l0000477A
 l000047D4:
-	r9_180 = 1<16>
+	r9_192 = 1<16>
 
 
 word20 xTaskGetTickCount(word20 sr, ptr16 & r15Out)
@@ -794,18 +802,20 @@ word20 xTaskGetTickCount(word20 sr, ptr16 & r15Out)
 // Preserved: sp
 xTaskGetTickCount_entry:
 l0000481E:
-	Mem6[0x0218<p16>:ptr16] = Mem0[0x0218<p16>:ptr16] + 1<16>
-	word20 sr_13 = sr & ~8<16>
-	word20 r15_8 = 0x0208<p16>
-	branch Mem6[0x0218<p16>:ptr16] == 0<16> l00004832
+	word16 v4_6 = Mem0[0x0218<p16>:word16]
+	Mem8[0x0218<p16>:word16] = v4_6 + 1<16>
+	word20 sr_18 = sr & ~8<16>
+	word20 r15_11 = Mem8[0x0208<p16>:word16]
+	branch v4_6 == 1<16> l00004832
 l0000482A:
-	Mem10[0x0218<p16>:ptr16] = Mem6[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem10[0x0218<p16>:ptr16] != 0<16> l00004832
+	word16 v9_13 = Mem8[0x0218<p16>:word16]
+	Mem15[0x0218<p16>:word16] = v9_13 + 0xFFFF<16>
+	branch v9_13 != 0xFFFF<16> l00004832
 l00004830:
-	sr_13 = sr_13 | 8<16>
+	sr_18 = sr_18 | 8<16>
 l00004832:
-	r15Out = r15_8
-	return sr_13
+	r15Out = r15_11
+	return sr_18
 xTaskGetTickCount_exit:
 
 
@@ -818,11 +828,13 @@ void uxTaskGetNumberOfTasks()
 // Preserved: sp
 uxTaskGetNumberOfTasks_entry:
 l4834:
-	Mem6[0x0218<p16>:ptr16] = Mem0[0x0218<p16>:ptr16] + 1<16>
-	branch Mem6[0x0218<p16>:ptr16] == 0<16> l4848
+	word16 v4_6 = Mem0[0x0218<p16>:word16]
+	Mem8[0x0218<p16>:word16] = v4_6 + 1<16>
+	branch v4_6 == 1<16> l4848
 l4840:
-	Mem10[0x0218<p16>:ptr16] = Mem6[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem10[0x0218<p16>:ptr16] != 0<16> l4848
+	word16 v9_13 = Mem8[0x0218<p16>:word16]
+	Mem15[0x0218<p16>:word16] = v9_13 + 0xFFFF<16>
+	branch v9_13 != 0xFFFF<16> l4848
 l4846:
 l4848:
 	return
@@ -841,44 +853,46 @@ void vTaskIncrementTick()
 // Preserved: r10 r11 sp
 vTaskIncrementTick_entry:
 l0000484A:
-	branch 0x0210<p16> != 0<16> l000048D0
+	branch Mem8[0x0210<p16>:word16] != 0<16> l000048D0
 l000048D0:
-	Mem11[0x0212<p16>:ptr16] = Mem8[0x0212<p16>:ptr16] + 1<16>
+	Mem14[0x0212<p16>:word16] = Mem8[0x0212<p16>:word16] + 1<16>
 l00004854:
-	Mem13[0x0208<p16>:ptr16] = Mem8[0x0208<p16>:ptr16] + 1<16>
-	branch Mem13[0x0208<p16>:ptr16] != 0<16> l00004868
+	word16 v8_16 = Mem8[0x0208<p16>:word16]
+	Mem18[0x0208<p16>:word16] = v8_16 + 1<16>
+	branch v8_16 != 1<16> l00004868
 l0000485A:
-	Mem17[0x0282<p16>:ptr16] = 0x0284<p16>
-	Mem18[0x0284<p16>:ptr16] = 0x0282<p16>
+	word16 v9_21 = Mem18[0x0282<p16>:word16]
+	Mem26[0x0282<p16>:word16] = Mem18[0x0284<p16>:word16]
+	Mem29[0x0284<p16>:word16] = v9_21
 l00004868:
-	word20 r11_24
-	word20 r15_19 = 0x0282<p16>
-	branch Mem20[r15_19:word16] == 0<16> l000048CC
+	word20 r11_36
+	word16 v17_31 = Mem30[0x0282<p16>:word16]
+	branch Mem30[v17_31:word16] == 0<16> l000048CC
 l000048CC:
-	r11_24 = 0<16>
+	r11_36 = 0<16>
 l00004872:
-	r11_24 = Mem20[Mem20[Mem20[r15_19 + 2<i16>:word16] + 2<i16>:word16] + 6<i16>:word16]
+	r11_36 = Mem30[Mem30[Mem30[v17_31 + 2<i16>:word16] + 2<i16>:word16] + 6<i16>:word16]
 l0000487E:
-	branch r11_24 == 0<20> l000048D4
+	branch r11_36 == 0<20> l000048D4
 l00004882:
-	branch 0x0208<p16> >=u Mem20[r11_24 + 8<i16>:word16] l000048D4
+	branch Mem30[0x0208<p16>:word16] >=u Mem30[r11_36 + 8<i16>:word16] l000048D4
 l000048D4:
 	return
 vTaskIncrementTick_exit:
 l0000488A:
-	word20 r10_49 = r11_24 + 8<16>
-	vListRemove(r10_49)
-	branch Mem20[r11_24 + 26<i16>:word16] != 0<16> l000048C0
+	word20 r10_62 = r11_36 + 8<16>
+	vListRemove(r10_62)
+	branch Mem30[r11_36 + 26<i16>:word16] != 0<16> l000048C0
 l000048C0:
-	vListRemove(r11_24 + 0x12<16>)
+	vListRemove(r11_36 + 0x12<16>)
 l0000489A:
-	Mem76[r11_24 + 8<i16>:word16] = 0<16>
-	word16 v18_77 = Mem76[r11_24 + 6<i16>:word16]
-	branch 0x020C<p16> <u v18_77 l000048AC
+	Mem89[r11_36 + 8<i16>:word16] = 0<16>
+	word16 v27_90 = Mem89[r11_36 + 6<i16>:word16]
+	branch Mem89[0x020C<p16>:word16] <u v27_90 l000048AC
 l000048A8:
-	Mem81[0x020C<p16>:ptr16] = v18_77
+	Mem97[0x020C<p16>:word16] = v27_90
 l000048AC:
-	vListInsertEnd(r10_49, v18_77 * 0x10<20> + 0x222<16>)
+	vListInsertEnd(r10_62, v27_90 * 0x10<20> + 0x222<16>)
 
 
 void vTaskPlaceOnEventList(word20 r14, word20 r15)
@@ -893,21 +907,21 @@ void vTaskPlaceOnEventList(word20 r14, word20 r15)
 // Preserved: r11 sp
 vTaskPlaceOnEventList_entry:
 l000048DA:
-	word20 r14_43
-	word20 r15_44
-	vListInsert(0x0214<p16>, r15)
-	vListRemove(0x020A<p16>)
-	word20 r11_22 = r14 + 0x0208<p16>
-	Mem36[0x020A<p16>:word16] = r11_22
-	branch r11_22 <u 0x0208<p16> l0000491C
+	word20 r14_49
+	word20 r15_51
+	vListInsert(Mem5[0x0202<p16>:word16] + 0x12<16>, r15)
+	word20 r11_24 = r14 + Mem5[0x0208<p16>:word16]
+	vListRemove(Mem5[0x0202<p16>:word16] + 8<16>)
+	Mem40[Mem5[0x0202<p16>:word16] + 8<i16>:word16] = r11_24
+	branch r11_24 <u Mem40[0x0208<p16>:word16] l0000491C
 l0000491C:
-	r14_43 = 0x020A<p16>
-	r15_44 = 0x0282<p16>
+	r14_49 = Mem40[0x0202<p16>:word16] + 8<16>
+	r15_51 = Mem40[0x0282<p16>:word16]
 l0000490E:
-	r14_43 = 0x020A<p16>
-	r15_44 = 0x0284<p16>
+	r14_49 = Mem40[0x0202<p16>:word16] + 8<16>
+	r15_51 = Mem40[0x0284<p16>:word16]
 l00004928:
-	vListInsert(r14_43, r15_44)
+	vListInsert(r14_49, r15_51)
 	return
 vTaskPlaceOnEventList_exit:
 
@@ -932,40 +946,40 @@ l000049A2:
 l0000493A:
 	r10_13 = Mem8[Mem8[Mem8[r15 + 2<i16>:word16] + 2<i16>:word16] + 6<i16>:word16]
 l00004946:
-	word20 r14_34
-	word20 r15_35
+	word20 r14_36
+	word20 r15_37
 	vListRemove(r10_13 + 0x12<16>)
-	branch 0x0210<p16> != 0<16> l0000499A
+	branch Mem8[0x0210<p16>:word16] != 0<16> l0000499A
 l0000499A:
-	r14_34 = r10_13 + 0x12<16>
-	r15_35 = 0x286<16>
+	r14_36 = r10_13 + 0x12<16>
+	r15_37 = 0x286<16>
 l00004958:
 	vListRemove(r10_13 + 8<16>)
-	Mem49[r10_13 + 8<i16>:word16] = 0<16>
-	word16 v13_50 = Mem49[r10_13 + 6<i16>:word16]
-	branch 0x020C<p16> <u v13_50 l00004974
+	Mem50[r10_13 + 8<i16>:word16] = 0<16>
+	word16 v14_51 = Mem50[r10_13 + 6<i16>:word16]
+	branch Mem50[0x020C<p16>:word16] <u v14_51 l00004974
 l00004970:
-	Mem54[0x020C<p16>:ptr16] = v13_50
+	Mem58[0x020C<p16>:word16] = v14_51
 l00004974:
-	r15_35 = v13_50 * 0x10<20> + 0x222<16>
-	r14_34 = r10_13 + 8<16>
+	r15_37 = v14_51 * 0x10<20> + 0x222<16>
+	r14_36 = r10_13 + 8<16>
 l00004982:
-	word20 r15_111
-	vListInsertEnd(r14_34, r15_35)
-	branch Mem76[0x0208<p16>:word16] <u Mem76[r10_13 + 6<i16>:word16] l00004996
+	word20 r15_116
+	vListInsertEnd(r14_36, r15_37)
+	branch Mem77[Mem77[0x0202<p16>:word16] + 6<i16>:word16] <u Mem77[r10_13 + 6<i16>:word16] l00004996
 l00004996:
-	r15_111 = 0<16>
+	r15_116 = 0<16>
 l00004992:
-	r15_111 = 1<16>
+	r15_116 = 1<16>
 l000049A6:
-	return r15_111
+	return r15_116
 xTaskRemoveFromEventList_exit:
 
 
-void prvIdleTask(word20 pc, word20 sr)
+void prvIdleTask(word20 sr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  pc:[0..19] sr:[0..19]
+// MayUse:  sr:[0..19]
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -973,14 +987,14 @@ void prvIdleTask(word20 pc, word20 sr)
 prvIdleTask_exit:
 prvIdleTask_entry:
 l49AC:
-	sr = prvCheckTasksWaitingTermination(pc, sr)
-	branch 0x0224<p16> >=u 0<16> l49AC
+	sr = prvCheckTasksWaitingTermination(sr)
+	branch Mem0[0x0222<p16>:word16] >=u 2<16> l49AC
 l49B6:
-	word20 r8_35
-	word20 r9_36
-	word20 r10_37
-	word20 r11_38
-	sr = vPortYield(pc, sr, out r8_35, out r9_36, out r10_37, out r11_38)
+	word20 r8_36
+	word20 r9_37
+	word20 r10_38
+	word20 r11_39
+	sr = vPortYield(sr, out r8_36, out r9_37, out r10_38, out r11_39)
 
 
 void prvInitialiseTCBVariables(word20 r12, word20 r13, word20 r14, word20 r15)
@@ -1033,51 +1047,52 @@ l00004A2E:
 	vListInitialise(0x272<16>)
 	vListInitialise(0x286<16>)
 	vListInitialise(0x296<16>)
-	Mem47[0x0282<p16>:ptr16] = 0x262<16>
-	Mem48[0x0284<p16>:ptr16] = 0x272<16>
+	Mem50[0x0282<p16>:word16] = 0x262<16>
+	Mem53[0x0284<p16>:word16] = 0x272<16>
 	return
 prvInitialiseTaskLists_exit:
 
 
-word20 prvCheckTasksWaitingTermination(word20 pc, word20 sr)
+word20 prvCheckTasksWaitingTermination(word20 sr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      prvIdleTask
-// MayUse:  pc:[0..19] sr:[0..19]
+// MayUse:  sr:[0..19]
 // LiveOut: sr
 // Trashed: VNZC r13 r14 r15 sr
 // Preserved: r11 sp
 prvCheckTasksWaitingTermination_entry:
 l4A5E:
-	branch 0x0204<p16> == 0<16> l4ABE
+	branch Mem5[0x0204<p16>:word16] == 0<16> l4ABE
 l4A66:
-	word20 sr_9 = vTaskSuspendAll(sr)
-	word20 r11_14 = 0<16>
-	branch 0x0296<p16> != 0<16> l4A74
+	word20 sr_10 = vTaskSuspendAll(sr)
+	word20 r11_15 = 0<16>
+	branch Mem5[0x0296<p16>:word16] != 0<16> l4A74
 l4A72:
-	r11_14 = 1<16>
+	r11_15 = 1<16>
 l4A74:
-	word20 r15_113
-	sr = xTaskResumeAll(pc, sr_9, out r15_113)
-	branch r11_14 != 0<20> l4ABE
+	word20 r15_121
+	sr = xTaskResumeAll(sr_10, out r15_121)
+	branch r11_15 != 0<20> l4ABE
 l4A7C:
-	word20 r11_36
-	Mem32[0x0218<p16>:ptr16] = Mem5[0x0218<p16>:ptr16] + 1<16>
+	word20 r11_38
+	Mem34[0x0218<p16>:word16] = Mem5[0x0218<p16>:word16] + 1<16>
 	sr = sr & ~8<16>
-	branch 0x0296<p16> == 0<16> l4ABA
+	branch Mem34[0x0296<p16>:word16] == 0<16> l4ABA
 l4ABA:
-	r11_36 = 0<16>
+	r11_38 = 0<16>
 l4A88:
-	r11_36 = Mem32[Mem32[0x029A<p16>:word16] + 6<i16>:word16]
+	r11_38 = Mem34[Mem34[Mem34[0x0298<p16>:word16] + 2<i16>:word16] + 6<i16>:word16]
 l4A94:
-	vListRemove(r11_36 + 8<16>)
-	Mem54[0x0206<p16>:ptr16] = Mem32[0x0206<p16>:ptr16] + 0xFFFF<16>
-	Mem56[0x0204<p16>:ptr16] = Mem54[0x0204<p16>:ptr16] + 0xFFFF<16>
-	branch 0x0218<p16> == 0<16> l4AB2
+	vListRemove(r11_38 + 8<16>)
+	Mem59[0x0206<p16>:word16] = Mem34[0x0206<p16>:word16] + 0xFFFF<16>
+	Mem62[0x0204<p16>:word16] = Mem59[0x0204<p16>:word16] + 0xFFFF<16>
+	branch Mem62[0x0218<p16>:word16] == 0<16> l4AB2
 l4AAA:
-	Mem60[0x0218<p16>:ptr16] = Mem56[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem60[0x0218<p16>:ptr16] != 0<16> l4AB2
+	word16 v19_66 = Mem62[0x0218<p16>:word16]
+	Mem68[0x0218<p16>:word16] = v19_66 + 0xFFFF<16>
+	branch v19_66 != 0xFFFF<16> l4AB2
 l4AB0:
 	sr = sr | 8<16>
 l4AB2:
@@ -1087,34 +1102,34 @@ l4ABE:
 prvCheckTasksWaitingTermination_exit:
 
 
-word20 prvAllocateTCBAndStack(word20 pc, word20 sr, word20 r15, ptr16 & r15Out)
+word20 prvAllocateTCBAndStack(word20 sr, word20 r15, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      xTaskCreate
-// MayUse:  pc:[0..19] r15:[0..19] sr:[0..19]
+// MayUse:  r15:[0..19] sr:[0..19]
 // LiveOut: r15 sr
 // Trashed: VNZC r12 r13 r14 r15 sr
 // Preserved: r10 r11 sp
 prvAllocateTCBAndStack_entry:
 l00004AC2:
-	word20 r15_15
-	word20 sr_16 = pvPortMalloc(pc, sr, 0x26<16>, out r15_15)
-	word20 r11_21 = r15_15
-	branch r15_15 == 0<20> l00004AFA
+	word20 r15_14
+	word20 sr_15 = pvPortMalloc(sr, 0x26<16>, out r15_14)
+	word20 r11_20 = r15_14
+	branch r15_14 == 0<20> l00004AFA
 l00004AD6:
-	word20 r15_28
-	sr_16 = pvPortMalloc(pc, sr_16, r15 * 2<20>, out r15_28)
-	Mem36[r15_15 + 2<i16>:word16] = r15_28
-	branch r15_28 != 0<20> l00004AF0
+	word20 r15_27
+	sr_15 = pvPortMalloc(sr_15, r15 * 2<20>, out r15_27)
+	Mem35[r15_14 + 2<i16>:word16] = r15_27
+	branch r15_27 != 0<20> l00004AF0
 l00004AF0:
-	sr_16 = memset(sr_16, r15 * 2<20>, 0xA5<16>, r15_28)
+	sr_15 = memset(sr_15, r15 * 2<20>, 0xA5<16>, r15_27)
 l00004AE6:
 	vPortFree()
-	r11_21 = 0<16>
+	r11_20 = 0<16>
 l00004AFA:
-	r15Out = r11_21
-	return sr_16
+	r15Out = r11_20
+	return sr_15
 prvAllocateTCBAndStack_exit:
 
 
@@ -1147,20 +1162,20 @@ void vTaskSwitchContext()
 // Preserved: sp
 vTaskSwitchContext_entry:
 l00004B18:
-	branch 0x0210<p16> != 0<16> l00004BAE
+	branch Mem0[0x0210<p16>:word16] != 0<16> l00004BAE
 l00004B1E:
-	branch Mem0[0x020C<p16> * 0x10<20> + 546<i16>:word16] != 0<16> l00004B46
+	branch Mem0[Mem0[0x020C<p16>:word16] * 0x10<20> + 546<i16>:word16] != 0<16> l00004B46
 l00004B30:
-	Mem15[0x020C<p16>:ptr16] = Mem14[0x020C<p16>:ptr16] + 0xFFFF<16>
-	branch Mem15[0x020C<p16> * 0x10<20> + 546<i16>:word16] == 0<16> l00004B30
+	Mem19[0x020C<p16>:word16] = Mem16[0x020C<p16>:word16] + 0xFFFF<16>
+	branch Mem19[Mem19[0x020C<p16>:word16] * 0x10<20> + 546<i16>:word16] == 0<16> l00004B30
 l00004B46:
-	word20 r13_25 = 0x222<16>
-	Mem44[0x020C<p16> * 0x10<20> + r13_25 + 4<i16>:word16] = Mem38[Mem38[0x020C<p16> * 0x10<20> + r13_25 + 4<i16>:word16] + 2<i16>:word16]
-	branch Mem44[0x020C<p16> * 0x10<20> + r13_25 + 4<i16>:word16] == Mem44[(0x020C<p16> * 0x10<20> + r13_25) + 2<i16>:word16] l00004BB0
+	word20 r13_29 = 0x222<16>
+	Mem50[Mem30[0x020C<p16>:word16] * 0x10<20> + r13_29 + 4<i16>:word16] = Mem30[Mem30[Mem30[0x020C<p16>:word16] * 0x10<20> + r13_29 + 4<i16>:word16] + 2<i16>:word16]
+	branch Mem50[Mem50[0x020C<p16>:word16] * 0x10<20> + r13_29 + 4<i16>:word16] == Mem50[(Mem50[0x020C<p16>:word16] * 0x10<20> + r13_29) + 2<i16>:word16] l00004BB0
 l00004BB0:
-	Mem79[0x020C<p16> * 0x10<20> + 550<i16>:word16] = Mem44[Mem44[0x020C<p16> * 0x10<20> + 550<i16>:word16] + 2<i16>:word16]
+	Mem89[Mem50[0x020C<p16>:word16] * 0x10<20> + 550<i16>:word16] = Mem50[Mem50[Mem50[0x020C<p16>:word16] * 0x10<20> + 550<i16>:word16] + 2<i16>:word16]
 l00004B98:
-	Mem90[0x0202<p16>:ptr16] = Mem86[Mem86[0x020C<p16> * 0x10<20> + 550<i16>:word16] + 6<i16>:word16]
+	Mem103[0x0202<p16>:word16] = Mem90[Mem90[Mem90[0x020C<p16>:word16] * 0x10<20> + 550<i16>:word16] + 6<i16>:word16]
 l00004BAE:
 	return
 vTaskSwitchContext_exit:
@@ -1310,12 +1325,12 @@ l00004CBA:
 vListRemove_exit:
 
 
-word20 xQueueCreate(word20 pc, word20 sr, word20 r15, ptr16 & r15Out)
+word20 xQueueCreate(word20 sr, word20 r15, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      init_uart_isr
-// MayUse:  pc:[0..19] r15:[0..19] sr:[0..19]
+// MayUse:  r15:[0..19] sr:[0..19]
 // LiveOut: r15 sr
 // Trashed: VNZC r14 r15 sr
 // Preserved: r10 r11 r9 sp
@@ -1323,121 +1338,125 @@ xQueueCreate_entry:
 l00004CC4:
 	branch r15 != 0<20> l00004CD6
 l00004CD6:
-	word20 r15_22
-	sr = pvPortMalloc(pc, sr, 0x32<16>, out r15_22)
-	branch r15_22 == 0<20> l00004CD2
+	word20 r15_21
+	sr = pvPortMalloc(sr, 0x32<16>, out r15_21)
+	branch r15_21 == 0<20> l00004CD2
 l00004CE4:
 l00004CD2:
-	word20 r15_34 = 0<16>
+	word20 r15_33 = 0<16>
 l00004D76:
-	r15Out = r15_34
+	r15Out = r15_33
 	return sr
 xQueueCreate_exit:
 
 
-word20 xQueueSend(word20 pc, word20 sr, word20 r13, word20 r14, word20 r15, ptr16 & r15Out)
+word20 xQueueSend(word20 sr, word20 r13, word20 r14, word20 r15, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      x_putchar
-// MayUse:  pc:[0..19] r13:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
+// MayUse:  r13:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: r15 sr
 // Trashed: VNZC r12 r13 r14 r15 r4 r5 r6 r7 r8 sr
 // Preserved: r10 r11 r9 sp
 xQueueSend_entry:
 l00004D7E:
 	word20 sr_24 = vTaskSuspendAll(sr) & ~8<16>
-	Mem25[0x0218<p16>:ptr16] = Mem11[0x0218<p16>:ptr16] + 1<16>
-	Mem29[r15 + 46<i16>:word16] = Mem25[r15 + 46<i16>:word16] + 1<16>
-	Mem32[r15 + 48<i16>:word16] = Mem29[r15 + 48<i16>:word16] + 1<16>
-	word20 r11_115 = r15
-	word20 r9_15 = r14
-	branch 0x0218<p16> == 0<16> l00004DAA
+	Mem27[0x0218<p16>:word16] = Mem11[0x0218<p16>:word16] + 1<16>
+	Mem30[r15 + 46<i16>:word16] = Mem27[r15 + 46<i16>:word16] + 1<16>
+	Mem33[r15 + 48<i16>:word16] = Mem30[r15 + 48<i16>:word16] + 1<16>
+	word20 r11_120 = r15
+	word20 r9_102 = r14
+	branch Mem33[0x0218<p16>:word16] == 0<16> l00004DAA
 l00004DA2:
-	Mem35[0x0218<p16>:ptr16] = Mem32[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem35[0x0218<p16>:ptr16] != 0<16> l00004DAA
+	word16 v16_37 = Mem33[0x0218<p16>:word16]
+	Mem39[0x0218<p16>:word16] = v16_37 + 0xFFFF<16>
+	branch v16_37 != 0xFFFF<16> l00004DAA
 l00004DA8:
 	sr_24 = sr_24 | 8<16>
 l00004DAA:
-	word20 r15_43
-	word20 sr_111 = prvIsQueueFull(sr_24, r15, out r15_43)
-	branch r15_43 == 0<20> l00004DB8
+	word20 r15_47
+	word20 sr_115 = prvIsQueueFull(sr_24, r15, out r15_47)
+	branch r15_47 == 0<20> l00004DB8
 l00004DB4:
 	branch r13 != 0<20> l00004E26
 l00004E26:
 	vTaskPlaceOnEventList(r13, r15 + 8<16>)
-	Mem68[0x0218<p16>:ptr16] = Mem67[0x0218<p16>:ptr16] + 1<16>
-	word20 r15_79
-	word20 r15_376
-	word20 sr_100 = xTaskResumeAll(pc, prvUnlockQueue(sr_111 & ~8<16>, r15, out r15_376), out r15_79)
-	branch r15_79 == 0<20> l00004E74
+	Mem74[0x0218<p16>:word16] = Mem71[0x0218<p16>:word16] + 1<16>
+	word20 r15_83
+	word20 r15_385
+	word20 sr_104 = xTaskResumeAll(prvUnlockQueue(sr_115 & ~8<16>, r15, out r15_385), out r15_83)
+	branch r15_83 == 0<20> l00004E74
 l00004E74:
-	word20 r8_97
-	word20 r10_381
-	sr_100 = vPortYield(pc, sr_100, out r8_97, out r9_15, out r10_381, out r11_115)
+	word20 r8_101
+	word20 r10_390
+	sr_104 = vPortYield(sr_104, out r8_101, out r9_102, out r10_390, out r11_120)
 l00004E44:
-	sr_111 = vTaskSuspendAll(sr_100) & ~8<16>
-	Mem113[0x0218<p16>:ptr16] = Mem68[0x0218<p16>:ptr16] + 1<16>
-	Mem118[r11_115 + 46<i16>:word16] = Mem113[r11_115 + 46<i16>:word16] + 1<16>
-	Mem121[r11_115 + 48<i16>:word16] = Mem118[r11_115 + 48<i16>:word16] + 1<16>
-	branch 0x0218<p16> == 0<16> l00004E64
+	sr_115 = vTaskSuspendAll(sr_104) & ~8<16>
+	Mem119[0x0218<p16>:word16] = Mem74[0x0218<p16>:word16] + 1<16>
+	Mem123[r11_120 + 46<i16>:word16] = Mem119[r11_120 + 46<i16>:word16] + 1<16>
+	Mem126[r11_120 + 48<i16>:word16] = Mem123[r11_120 + 48<i16>:word16] + 1<16>
+	branch Mem126[0x0218<p16>:word16] == 0<16> l00004E64
 l00004E5C:
-	Mem124[0x0218<p16>:ptr16] = Mem121[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem124[0x0218<p16>:ptr16] != 0<16> l00004E64
+	word16 v40_130 = Mem126[0x0218<p16>:word16]
+	Mem132[0x0218<p16>:word16] = v40_130 + 0xFFFF<16>
+	branch v40_130 != 0xFFFF<16> l00004E64
 l00004E62:
-	sr_111 = sr_111 | 8<16>
+	sr_115 = sr_115 | 8<16>
 l00004E64:
-	branch 0x0218<p16> == 0<16> l00004DB8
+	branch Mem136[0x0218<p16>:word16] == 0<16> l00004DB8
 l00004E6A:
-	Mem131[0x0218<p16>:ptr16] = Mem130[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem131[0x0218<p16>:ptr16] != 0<16> l00004DB8
+	word16 v42_140 = Mem136[0x0218<p16>:word16]
+	Mem142[0x0218<p16>:word16] = v42_140 + 0xFFFF<16>
+	branch v42_140 != 0xFFFF<16> l00004DB8
 l00004E70:
-	sr_111 = sr_111 | 8<16>
+	sr_115 = sr_115 | 8<16>
 l00004DB8:
-	word20 r10_181
-	Mem139[0x0218<p16>:ptr16] = Mem138[0x0218<p16>:ptr16] + 1<16>
-	word20 sr_137 = sr_111 & ~8<16>
-	branch Mem139[r11_115 + 40<i16>:word16] >=u Mem139[r11_115 + 42<i16>:word16] l00004DF6
+	word20 r10_193
+	Mem152[0x0218<p16>:word16] = Mem149[0x0218<p16>:word16] + 1<16>
+	word20 sr_148 = sr_115 & ~8<16>
+	branch Mem152[r11_120 + 40<i16>:word16] >=u Mem152[r11_120 + 42<i16>:word16] l00004DF6
 l00004DF6:
-	sr_137 = memcpy(sr_137, Mem139[r11_115 + 44<i16>:word16], r9_15, Mem139[r11_115 + 4<i16>:word16])
-	Mem166[r11_115 + 40<i16>:word16] = Mem139[r11_115 + 40<i16>:word16] + 1<16>
-	word20 r15_170 = Mem166[r11_115 + 4<i16>:word16] + Mem166[r11_115 + 44<i16>:word16]
-	Mem173[r11_115 + 4<i16>:word16] = r15_170
-	branch r15_170 >=u Mem173[r11_115 + 2<i16>:word16] l00004E1E
+	sr_148 = memcpy(sr_148, Mem152[r11_120 + 44<i16>:word16], r9_102, Mem152[r11_120 + 4<i16>:word16])
+	Mem178[r11_120 + 40<i16>:word16] = Mem152[r11_120 + 40<i16>:word16] + 1<16>
+	word20 r15_182 = Mem178[r11_120 + 4<i16>:word16] + Mem178[r11_120 + 44<i16>:word16]
+	Mem185[r11_120 + 4<i16>:word16] = r15_182
+	branch r15_182 >=u Mem185[r11_120 + 2<i16>:word16] l00004E1E
 l00004E1A:
-	Mem180[r11_115 + 4<i16>:word16] = Mem173[r11_115:word16]
+	Mem192[r11_120 + 4<i16>:word16] = Mem185[r11_120:word16]
 l00004E1E:
-	Mem186[r11_115 + 48<i16>:word16] = Mem183[r11_115 + 48<i16>:word16] + 1<16>
-	r10_181 = 1<16>
+	Mem198[r11_120 + 48<i16>:word16] = Mem195[r11_120 + 48<i16>:word16] + 1<16>
+	r10_193 = 1<16>
 l00004DC6:
-	r10_181 = 0xFFFD<16>
+	r10_193 = 0xFFFD<16>
 l00004DCA:
-	branch 0x0218<p16> == 0<16> l00004DD8
+	branch Mem201[0x0218<p16>:word16] == 0<16> l00004DD8
 l00004DD0:
-	Mem192[0x0218<p16>:ptr16] = Mem191[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem192[0x0218<p16>:ptr16] != 0<16> l00004DD8
+	word16 v22_205 = Mem201[0x0218<p16>:word16]
+	Mem207[0x0218<p16>:word16] = v22_205 + 0xFFFF<16>
+	branch v22_205 != 0xFFFF<16> l00004DD8
 l00004DD6:
-	sr_137 = sr_137 | 8<16>
+	sr_148 = sr_148 | 8<16>
 l00004DD8:
-	word20 sr_217
-	word20 r15_202
-	word20 sr_203 = prvUnlockQueue(sr_137, r11_115, out r15_202)
-	branch r15_202 == 0<20> l00004DF0
+	word20 sr_226
+	word20 r15_217
+	word20 sr_218 = prvUnlockQueue(sr_148, r11_120, out r15_217)
+	branch r15_217 == 0<20> l00004DF0
 l00004DF0:
-	word20 r15_377
-	sr_217 = xTaskResumeAll(pc, sr_203, out r15_377)
+	word20 r15_386
+	sr_226 = xTaskResumeAll(sr_218, out r15_386)
 l00004DE2:
-	word20 r15_222
-	sr_217 = xTaskResumeAll(pc, sr_203, out r15_222)
-	branch r15_222 != 0<20> l00004E7A
+	word20 r15_231
+	sr_226 = xTaskResumeAll(sr_218, out r15_231)
+	branch r15_231 != 0<20> l00004E7A
 l00004DEA:
-	word20 r11_380
-	word20 r8_378
-	word20 r9_379
-	sr_217 = vPortYield(pc, sr_217, out r8_378, out r9_379, out r10_181, out r11_380)
+	word20 r11_389
+	word20 r8_387
+	word20 r9_388
+	sr_226 = vPortYield(sr_226, out r8_387, out r9_388, out r10_193, out r11_389)
 l00004E7A:
-	r15Out = r10_181
-	return sr_217
+	r15Out = r10_193
+	return sr_226
 xQueueSend_exit:
 
 
@@ -1483,112 +1502,116 @@ l4EE8:
 xQueueSendFromISR_exit:
 
 
-word20 xQueueReceive(word20 pc, word20 sr, word20 r13, word20 r14, word20 r15, ptr16 & r15Out)
+word20 xQueueReceive(word20 sr, word20 r13, word20 r14, word20 r15, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      x_getchar
 //      x_putchar
-// MayUse:  pc:[0..19] r13:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
+// MayUse:  r13:[0..19] r14:[0..19] r15:[0..19] sr:[0..19]
 // LiveOut: r15 sr
 // Trashed: VNZC r12 r13 r14 r15 r4 r5 r6 r7 r8 sr
 // Preserved: r10 r11 r9 sp
 xQueueReceive_entry:
 l00004EF0:
 	word20 sr_24 = vTaskSuspendAll(sr) & ~8<16>
-	Mem25[0x0218<p16>:ptr16] = Mem11[0x0218<p16>:ptr16] + 1<16>
-	Mem29[r15 + 46<i16>:word16] = Mem25[r15 + 46<i16>:word16] + 1<16>
-	Mem32[r15 + 48<i16>:word16] = Mem29[r15 + 48<i16>:word16] + 1<16>
-	word20 r11_115 = r15
-	word20 r9_15 = r14
-	branch 0x0218<p16> == 0<16> l00004F1C
+	Mem27[0x0218<p16>:word16] = Mem11[0x0218<p16>:word16] + 1<16>
+	Mem30[r15 + 46<i16>:word16] = Mem27[r15 + 46<i16>:word16] + 1<16>
+	Mem33[r15 + 48<i16>:word16] = Mem30[r15 + 48<i16>:word16] + 1<16>
+	word20 r11_120 = r15
+	word20 r9_102 = r14
+	branch Mem33[0x0218<p16>:word16] == 0<16> l00004F1C
 l00004F14:
-	Mem35[0x0218<p16>:ptr16] = Mem32[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem35[0x0218<p16>:ptr16] != 0<16> l00004F1C
+	word16 v16_37 = Mem33[0x0218<p16>:word16]
+	Mem39[0x0218<p16>:word16] = v16_37 + 0xFFFF<16>
+	branch v16_37 != 0xFFFF<16> l00004F1C
 l00004F1A:
 	sr_24 = sr_24 | 8<16>
 l00004F1C:
-	word20 r15_43
-	word20 sr_111 = prvIsQueueEmpty(sr_24, r15, out r15_43)
-	branch r15_43 == 0<20> l00004F2A
+	word20 r15_47
+	word20 sr_115 = prvIsQueueEmpty(sr_24, r15, out r15_47)
+	branch r15_47 == 0<20> l00004F2A
 l00004F26:
 	branch r13 != 0<20> l00004F96
 l00004F96:
 	vTaskPlaceOnEventList(r13, r15 + 0x18<16>)
-	Mem68[0x0218<p16>:ptr16] = Mem67[0x0218<p16>:ptr16] + 1<16>
-	word20 r15_79
-	word20 r15_374
-	word20 sr_100 = xTaskResumeAll(pc, prvUnlockQueue(sr_111 & ~8<16>, r15, out r15_374), out r15_79)
-	branch r15_79 == 0<20> l00004FE6
+	Mem74[0x0218<p16>:word16] = Mem71[0x0218<p16>:word16] + 1<16>
+	word20 r15_83
+	word20 r15_383
+	word20 sr_104 = xTaskResumeAll(prvUnlockQueue(sr_115 & ~8<16>, r15, out r15_383), out r15_83)
+	branch r15_83 == 0<20> l00004FE6
 l00004FE6:
-	word20 r8_97
-	word20 r10_379
-	sr_100 = vPortYield(pc, sr_100, out r8_97, out r9_15, out r10_379, out r11_115)
+	word20 r8_101
+	word20 r10_388
+	sr_104 = vPortYield(sr_104, out r8_101, out r9_102, out r10_388, out r11_120)
 l00004FB6:
-	sr_111 = vTaskSuspendAll(sr_100) & ~8<16>
-	Mem113[0x0218<p16>:ptr16] = Mem68[0x0218<p16>:ptr16] + 1<16>
-	Mem118[r11_115 + 46<i16>:word16] = Mem113[r11_115 + 46<i16>:word16] + 1<16>
-	Mem121[r11_115 + 48<i16>:word16] = Mem118[r11_115 + 48<i16>:word16] + 1<16>
-	branch 0x0218<p16> == 0<16> l00004FD6
+	sr_115 = vTaskSuspendAll(sr_104) & ~8<16>
+	Mem119[0x0218<p16>:word16] = Mem74[0x0218<p16>:word16] + 1<16>
+	Mem123[r11_120 + 46<i16>:word16] = Mem119[r11_120 + 46<i16>:word16] + 1<16>
+	Mem126[r11_120 + 48<i16>:word16] = Mem123[r11_120 + 48<i16>:word16] + 1<16>
+	branch Mem126[0x0218<p16>:word16] == 0<16> l00004FD6
 l00004FCE:
-	Mem124[0x0218<p16>:ptr16] = Mem121[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem124[0x0218<p16>:ptr16] != 0<16> l00004FD6
+	word16 v36_130 = Mem126[0x0218<p16>:word16]
+	Mem132[0x0218<p16>:word16] = v36_130 + 0xFFFF<16>
+	branch v36_130 != 0xFFFF<16> l00004FD6
 l00004FD4:
-	sr_111 = sr_111 | 8<16>
+	sr_115 = sr_115 | 8<16>
 l00004FD6:
-	branch 0x0218<p16> == 0<16> l00004F2A
+	branch Mem136[0x0218<p16>:word16] == 0<16> l00004F2A
 l00004FDC:
-	Mem131[0x0218<p16>:ptr16] = Mem130[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem131[0x0218<p16>:ptr16] != 0<16> l00004F2A
+	word16 v41_140 = Mem136[0x0218<p16>:word16]
+	Mem142[0x0218<p16>:word16] = v41_140 + 0xFFFF<16>
+	branch v41_140 != 0xFFFF<16> l00004F2A
 l00004FE2:
-	sr_111 = sr_111 | 8<16>
+	sr_115 = sr_115 | 8<16>
 l00004F2A:
-	word20 r10_147
-	Mem139[0x0218<p16>:ptr16] = Mem138[0x0218<p16>:ptr16] + 1<16>
-	word20 sr_137 = sr_111 & ~8<16>
-	word16 v14_143 = Mem139[r11_115 + 40<i16>:word16]
-	branch v14_143 == 0<16> l00004F92
+	word20 r10_159
+	Mem152[0x0218<p16>:word16] = Mem149[0x0218<p16>:word16] + 1<16>
+	word20 sr_148 = sr_115 & ~8<16>
+	word16 v18_155 = Mem152[r11_120 + 40<i16>:word16]
+	branch v18_155 == 0<16> l00004F92
 l00004F92:
-	r10_147 = 0<16>
+	r10_159 = 0<16>
 l00004F38:
-	word16 v15_148 = Mem139[r11_115 + 44<i16>:word16]
-	word20 r15_152 = Mem139[r11_115 + 6<i16>:word16] + v15_148
-	Mem155[r11_115 + 6<i16>:word16] = r15_152
-	branch r15_152 >=u Mem155[r11_115 + 2<i16>:word16] l00004F50
+	word16 v19_160 = Mem152[r11_120 + 44<i16>:word16]
+	word20 r15_164 = Mem152[r11_120 + 6<i16>:word16] + v19_160
+	Mem167[r11_120 + 6<i16>:word16] = r15_164
+	branch r15_164 >=u Mem167[r11_120 + 2<i16>:word16] l00004F50
 l00004F4C:
-	Mem162[r11_115 + 6<i16>:word16] = Mem155[r11_115:word16]
+	Mem174[r11_120 + 6<i16>:word16] = Mem167[r11_120:word16]
 l00004F50:
-	Mem170[r11_115 + 40<i16>:word16] = v14_143 + 0xFFFF<16>
-	sr_137 = memcpy(sr_137, v15_148, Mem170[r11_115 + 6<i16>:word16], r9_15)
-	Mem191[r11_115 + 46<i16>:word16] = Mem170[r11_115 + 46<i16>:word16] + 1<16>
-	r10_147 = 1<16>
+	Mem182[r11_120 + 40<i16>:word16] = v18_155 + 0xFFFF<16>
+	sr_148 = memcpy(sr_148, v19_160, Mem182[r11_120 + 6<i16>:word16], r9_102)
+	Mem203[r11_120 + 46<i16>:word16] = Mem182[r11_120 + 46<i16>:word16] + 1<16>
+	r10_159 = 1<16>
 l00004F66:
-	branch 0x0218<p16> == 0<16> l00004F74
+	branch Mem206[0x0218<p16>:word16] == 0<16> l00004F74
 l00004F6C:
-	Mem197[0x0218<p16>:ptr16] = Mem196[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem197[0x0218<p16>:ptr16] != 0<16> l00004F74
+	word16 v30_210 = Mem206[0x0218<p16>:word16]
+	Mem212[0x0218<p16>:word16] = v30_210 + 0xFFFF<16>
+	branch v30_210 != 0xFFFF<16> l00004F74
 l00004F72:
-	sr_137 = sr_137 | 8<16>
+	sr_148 = sr_148 | 8<16>
 l00004F74:
-	word20 sr_221
-	word20 r15_206
-	word20 sr_207 = prvUnlockQueue(sr_137, r11_115, out r15_206)
-	branch r15_206 == 0<20> l00004F8C
+	word20 sr_230
+	word20 r15_221
+	word20 sr_222 = prvUnlockQueue(sr_148, r11_120, out r15_221)
+	branch r15_221 == 0<20> l00004F8C
 l00004F8C:
-	word20 r15_375
-	sr_221 = xTaskResumeAll(pc, sr_207, out r15_375)
+	word20 r15_384
+	sr_230 = xTaskResumeAll(sr_222, out r15_384)
 l00004F7E:
-	word20 r15_226
-	sr_221 = xTaskResumeAll(pc, sr_207, out r15_226)
-	branch r15_226 != 0<20> l00004FEC
+	word20 r15_235
+	sr_230 = xTaskResumeAll(sr_222, out r15_235)
+	branch r15_235 != 0<20> l00004FEC
 l00004F86:
-	word20 r9_377
-	word20 r11_378
-	word20 r8_376
-	sr_221 = vPortYield(pc, sr_221, out r8_376, out r9_377, out r10_147, out r11_378)
+	word20 r9_386
+	word20 r11_387
+	word20 r8_385
+	sr_230 = vPortYield(sr_230, out r8_385, out r9_386, out r10_159, out r11_387)
 l00004FEC:
-	r15Out = r10_147
-	return sr_221
+	r15Out = r10_159
+	return sr_230
 xQueueReceive_exit:
 
 
@@ -1646,11 +1669,13 @@ void uxQueueMessagesWaiting()
 // Preserved: sp
 uxQueueMessagesWaiting_entry:
 l5068:
-	Mem6[0x0218<p16>:ptr16] = Mem0[0x0218<p16>:ptr16] + 1<16>
-	branch Mem6[0x0218<p16>:ptr16] == 0<16> l507C
+	word16 v4_6 = Mem0[0x0218<p16>:word16]
+	Mem8[0x0218<p16>:word16] = v4_6 + 1<16>
+	branch v4_6 == 1<16> l507C
 l5074:
-	Mem12[0x0218<p16>:ptr16] = Mem6[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem12[0x0218<p16>:ptr16] != 0<16> l507C
+	word16 v9_14 = Mem8[0x0218<p16>:word16]
+	Mem16[0x0218<p16>:word16] = v9_14 + 0xFFFF<16>
+	branch v9_14 != 0xFFFF<16> l507C
 l507A:
 l507C:
 	return
@@ -1684,49 +1709,51 @@ word20 prvUnlockQueue(word20 sr, word20 r15, ptr16 & r15Out)
 // Preserved: r10 r11 r12 r13 r14 sp
 prvUnlockQueue_entry:
 l00005092:
-	Mem14[0x0218<p16>:ptr16] = Mem8[0x0218<p16>:ptr16] + 1<16>
-	word16 v8_16 = Mem14[r15 + 48<i16>:word16]
-	Mem18[r15 + 48<i16>:word16] = v8_16 + 0xFFFF<16>
+	Mem16[0x0218<p16>:word16] = Mem8[0x0218<p16>:word16] + 1<16>
+	word16 v9_17 = Mem16[r15 + 48<i16>:word16]
+	Mem19[r15 + 48<i16>:word16] = v9_17 + 0xFFFF<16>
 	word20 r10_11 = 0<16>
 	word20 sr_13 = sr & ~8<16>
-	branch v8_16 < 0xFFFF<16> l000050B0
+	branch v9_17 < 0xFFFF<16> l000050B0
 l000050A6:
-	Mem23[r15 + 48<i16>:word16] = 0xFFFF<16>
-	branch Mem23[r15 + 24<i16>:word16] != 0<16> l000050F4
+	Mem24[r15 + 48<i16>:word16] = 0xFFFF<16>
+	branch Mem24[r15 + 24<i16>:word16] != 0<16> l000050F4
 l000050F4:
 	branch xTaskRemoveFromEventList(r15 + 0x18<16>) == 0<20> l000050B0
 l00005100:
 	r10_11 = 1<16>
 l000050B0:
-	branch 0x0218<p16> == 0<16> l000050BE
+	branch Mem41[0x0218<p16>:word16] == 0<16> l000050BE
 l000050B6:
-	Mem43[0x0218<p16>:ptr16] = Mem42[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem43[0x0218<p16>:ptr16] != 0<16> l000050BE
+	word16 v15_45 = Mem41[0x0218<p16>:word16]
+	Mem47[0x0218<p16>:word16] = v15_45 + 0xFFFF<16>
+	branch v15_45 != 0xFFFF<16> l000050BE
 l000050BC:
 	sr_13 = sr_13 | 8<16>
 l000050BE:
-	Mem51[0x0218<p16>:ptr16] = Mem50[0x0218<p16>:ptr16] + 1<16>
-	word16 v13_55 = Mem51[r15 + 46<i16>:word16]
-	Mem57[r15 + 46<i16>:word16] = v13_55 + 0xFFFF<16>
-	word20 sr_135 = sr_13 & ~8<16>
-	branch v13_55 < 0xFFFF<16> l000050D4
+	Mem57[0x0218<p16>:word16] = Mem54[0x0218<p16>:word16] + 1<16>
+	word16 v17_60 = Mem57[r15 + 46<i16>:word16]
+	Mem62[r15 + 46<i16>:word16] = v17_60 + 0xFFFF<16>
+	word20 sr_143 = sr_13 & ~8<16>
+	branch v17_60 < 0xFFFF<16> l000050D4
 l000050CA:
-	Mem62[r15 + 46<i16>:word16] = 0xFFFF<16>
-	branch Mem62[r15 + 8<i16>:word16] != 0<16> l000050E4
+	Mem67[r15 + 46<i16>:word16] = 0xFFFF<16>
+	branch Mem67[r15 + 8<i16>:word16] != 0<16> l000050E4
 l000050E4:
 	branch xTaskRemoveFromEventList(r15 + 8<16>) == 0<20> l000050D4
 l000050F0:
 	r10_11 = 1<16>
 l000050D4:
-	branch 0x0218<p16> == 0<16> l00005104
+	branch Mem85[0x0218<p16>:word16] == 0<16> l00005104
 l000050DA:
-	Mem83[0x0218<p16>:ptr16] = Mem82[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem83[0x0218<p16>:ptr16] != 0<16> l00005104
+	word16 v21_89 = Mem85[0x0218<p16>:word16]
+	Mem91[0x0218<p16>:word16] = v21_89 + 0xFFFF<16>
+	branch v21_89 != 0xFFFF<16> l00005104
 l000050E0:
-	sr_135 = sr_135 | 8<16>
+	sr_143 = sr_143 | 8<16>
 l00005104:
 	r15Out = r10_11
-	return sr_135
+	return sr_143
 prvUnlockQueue_exit:
 
 
@@ -1741,22 +1768,23 @@ word20 prvIsQueueEmpty(word20 sr, word20 r15, ptr16 & r15Out)
 // Preserved: sp
 prvIsQueueEmpty_entry:
 l0000510C:
-	Mem6[0x0218<p16>:ptr16] = Mem0[0x0218<p16>:ptr16] + 1<16>
-	word20 sr_21 = sr & ~8<16>
-	word20 r14_13 = 0<16>
-	branch Mem6[r15 + 40<i16>:word16] != 0<16> l0000511C
+	Mem8[0x0218<p16>:word16] = Mem0[0x0218<p16>:word16] + 1<16>
+	word20 sr_25 = sr & ~8<16>
+	word20 r14_14 = 0<16>
+	branch Mem8[r15 + 40<i16>:word16] != 0<16> l0000511C
 l0000511A:
-	r14_13 = 1<16>
+	r14_14 = 1<16>
 l0000511C:
-	branch 0x0218<p16> == 0<16> l0000512A
+	branch Mem8[0x0218<p16>:word16] == 0<16> l0000512A
 l00005122:
-	Mem17[0x0218<p16>:ptr16] = Mem6[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem17[0x0218<p16>:ptr16] != 0<16> l0000512A
+	word16 v11_19 = Mem8[0x0218<p16>:word16]
+	Mem21[0x0218<p16>:word16] = v11_19 + 0xFFFF<16>
+	branch v11_19 != 0xFFFF<16> l0000512A
 l00005128:
-	sr_21 = sr_21 | 8<16>
+	sr_25 = sr_25 | 8<16>
 l0000512A:
-	r15Out = r14_13
-	return sr_21
+	r15Out = r14_14
+	return sr_25
 prvIsQueueEmpty_exit:
 
 
@@ -1771,32 +1799,33 @@ word20 prvIsQueueFull(word20 sr, word20 r15, ptr16 & r15Out)
 // Preserved: sp
 prvIsQueueFull_entry:
 l0000512E:
-	Mem6[0x0218<p16>:ptr16] = Mem0[0x0218<p16>:ptr16] + 1<16>
-	word20 sr_22 = sr & ~8<16>
-	word20 r14_14 = 0<16>
-	branch Mem6[r15 + 40<i16>:word16] == Mem6[r15 + 42<i16>:word16] l0000514E
+	Mem8[0x0218<p16>:word16] = Mem0[0x0218<p16>:word16] + 1<16>
+	word20 sr_26 = sr & ~8<16>
+	word20 r14_15 = 0<16>
+	branch Mem8[r15 + 40<i16>:word16] == Mem8[r15 + 42<i16>:word16] l0000514E
 l0000514E:
-	r14_14 = 1<16>
+	r14_15 = 1<16>
 l0000513E:
-	branch 0x0218<p16> == 0<16> l00005152
+	branch Mem8[0x0218<p16>:word16] == 0<16> l00005152
 l00005144:
-	Mem18[0x0218<p16>:ptr16] = Mem6[0x0218<p16>:ptr16] + 0xFFFF<16>
-	branch Mem18[0x0218<p16>:ptr16] != 0<16> l00005152
+	word16 v12_20 = Mem8[0x0218<p16>:word16]
+	Mem22[0x0218<p16>:word16] = v12_20 + 0xFFFF<16>
+	branch v12_20 != 0xFFFF<16> l00005152
 l0000514A:
-	sr_22 = sr_22 | 8<16>
+	sr_26 = sr_26 | 8<16>
 l00005152:
-	r15Out = r14_14
-	return sr_22
+	r15Out = r14_15
+	return sr_26
 prvIsQueueFull_exit:
 
 
-word20 pvPortMalloc(word20 pc, word20 sr, word20 r15, ptr16 & r15Out)
+word20 pvPortMalloc(word20 sr, word20 r15, ptr16 & r15Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      prvAllocateTCBAndStack
 //      xQueueCreate
-// MayUse:  pc:[0..19] r15:[0..19] sr:[0..19]
+// MayUse:  r15:[0..19] sr:[0..19]
 // LiveOut: r15 sr
 // Trashed: VNZC r14 r15 sr
 // Preserved: r10 r11 sp
@@ -1808,20 +1837,20 @@ l00005156:
 l00005162:
 	r11_10 = r15 - (r15 & 1<16>) + 2<16>
 l00005166:
-	word20 r14_26 = 0x0216<p16>
 	word20 sr_21 = vTaskSuspendAll(sr)
-	word20 r15_29 = r14_26 + r11_10
-	branch r15_29 <u 0x708<16> l00005186
+	word16 v10_27 = Mem8[0x0216<p16>:word16]
+	word20 r15_31 = v10_27 + r11_10
+	branch r15_31 <u 0x708<16> l00005186
 l00005178:
-	branch r14_26 <u r15_29 l00005186
+	branch v10_27 <u r15_31 l00005186
 l0000517C:
-	Mem37[0x0216<p16>:ptr16] = r15_29
-	r10_11 = r14_26 + 0x2AA<16>
+	Mem41[0x0216<p16>:word16] = r15_31
+	r10_11 = v10_27 + 0x2AA<16>
 l00005186:
 	word20 r15_69
-	word20 sr_43 = xTaskResumeAll(pc, sr_21, out r15_69)
+	word20 sr_44 = xTaskResumeAll(sr_21, out r15_69)
 	r15Out = r10_11
-	return sr_43
+	return sr_44
 pvPortMalloc_exit:
 
 
@@ -1851,7 +1880,7 @@ void vPortInitialiseBlocks()
 // Preserved: sp
 vPortInitialiseBlocks_entry:
 l5194:
-	Mem3[0x0216<p16>:ptr16] = 0<16>
+	Mem6[0x0216<p16>:word16] = 0<16>
 	return
 vPortInitialiseBlocks_exit:
 
@@ -1886,19 +1915,19 @@ l0000519A:
 pxPortInitialiseStack_exit:
 
 
-void xPortStartScheduler(word20 pc)
+void xPortStartScheduler()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      vTaskStartScheduler
-// MayUse:  pc:[0..19]
+// MayUse: 
 // LiveOut:
 // Trashed: r10 r11 r12 r13 r14 r15 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
 xPortStartScheduler_entry:
 l0000520A:
 	prvSetupTimerInterrupt()
-	Mem14[pc + -20480<i16>:word16] = Mem0[Mem0[Mem0[pc + -20494<i16>:word16]:word16]:word16]
+	Mem13[0x00000218<p32>:word16] = Mem0[Mem0[Mem0[0x00000202<p32>:word16]:word16]:word16]
 	return
 xPortStartScheduler_exit:
 
@@ -1918,7 +1947,7 @@ l5238:
 vPortEndScheduler_exit:
 
 
-word20 vPortYield(word20 pc, word20 sr, ptr16 & r8Out, ptr16 & r9Out, ptr16 & r10Out, ptr16 & r11Out)
+word20 vPortYield(word20 sr, ptr16 & r8Out, ptr16 & r9Out, ptr16 & r10Out, ptr16 & r11Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1931,23 +1960,23 @@ word20 vPortYield(word20 pc, word20 sr, ptr16 & r8Out, ptr16 & r9Out, ptr16 & r1
 //      prvIdleTask
 //      xQueueSend
 //      xQueueReceive
-// MayUse:  pc:[0..19] sr:[0..19]
+// MayUse:  sr:[0..19]
 // LiveOut: r10 r11 r8 r9 sr
 // Trashed: VNZC r10 r11 r12 r13 r14 r15 r4 r5 r6 r7 r8 r9 sp sr
 // Preserved:
 vPortYield_entry:
 l0000523A:
-	Mem52[Mem47[pc + -20572<i16>:word16]:word16] = fp - 28<i32>
+	Mem51[Mem46[0x00000202<p32>:word16]:word16] = fp - 28<i32>
 	vTaskSwitchContext()
-	word16 v21_62 = Mem52[Mem52[pc + -20584<i16>:word16]:word16]
-	Mem69[pc + -20570<i16>:word16] = Mem52[v21_62:word16]
-	word20 r11_84 = Mem69[v21_62 + 10<i16>:word16]
-	word20 r10_87 = Mem69[v21_62 + 12<i16>:word16]
-	word20 r9_90 = Mem69[v21_62 + 14<i16>:word16]
-	r8Out = Mem69[v21_62 + 16<i16>:word16]
-	r9Out = r9_90
-	r10Out = r10_87
-	r11Out = r11_84
+	word16 v21_61 = Mem51[Mem51[0x00000202<p32>:word16]:word16]
+	Mem68[0x00000218<p32>:word16] = Mem51[v21_61:word16]
+	word20 r11_83 = Mem68[v21_61 + 10<i16>:word16]
+	word20 r10_86 = Mem68[v21_61 + 12<i16>:word16]
+	word20 r9_89 = Mem68[v21_61 + 14<i16>:word16]
+	r8Out = Mem68[v21_61 + 16<i16>:word16]
+	r9Out = r9_89
+	r10Out = r10_86
+	r11Out = r11_83
 	return sr & ~8<16>
 vPortYield_exit:
 
@@ -1963,30 +1992,30 @@ void prvSetupTimerInterrupt()
 // Preserved: sp
 prvSetupTimerInterrupt_entry:
 l0000528E:
-	Mem3[0x0160<p16>:ptr16] = 0<16>
-	Mem4[0x0160<p16>:ptr16] = 0x100<16>
-	Mem5[0x0160<p16>:ptr16] = Mem4[0x0160<p16>:ptr16] | 4<16>
-	Mem6[0x0172<p16>:ptr16] = 0x20<16>
-	Mem7[0x0162<p16>:ptr16] = 0x10<16>
-	Mem8[0x0160<p16>:ptr16] = Mem7[0x0160<p16>:ptr16] | 4<16>
-	Mem9[0x0160<p16>:ptr16] = Mem8[0x0160<p16>:ptr16] | 0x10<16>
+	Mem6[0x0160<p16>:word16] = 0<16>
+	Mem9[0x0160<p16>:word16] = 0x100<16>
+	Mem12[0x0160<p16>:word16] = Mem9[0x0160<p16>:word16] | 4<16>
+	Mem15[0x0172<p16>:word16] = 0x20<16>
+	Mem18[0x0162<p16>:word16] = 0x10<16>
+	Mem21[0x0160<p16>:word16] = Mem18[0x0160<p16>:word16] | 4<16>
+	Mem24[0x0160<p16>:word16] = Mem21[0x0160<p16>:word16] | 0x10<16>
 	return
 prvSetupTimerInterrupt_exit:
 
 
-void prvTickISR(word20 pc)
+void prvTickISR()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  pc:[0..19]
+// MayUse: 
 // LiveOut:
 // Trashed: VNZC r10 r11 r12 r13 r14 r15 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
 prvTickISR_entry:
 l52B4:
-	Mem48[Mem43[pc + -20690<i16>:word16]:word16] = fp - 26<i32>
+	Mem47[Mem42[0x0202<p16>:word16]:word16] = fp - 26<i32>
 	vTaskIncrementTick()
 	vTaskSwitchContext()
-	Mem73[pc + -20692<i16>:word16] = Mem48[Mem48[Mem48[pc + -20706<i16>:word16]:word16]:word16]
+	Mem72[0x0218<p16>:word16] = Mem47[Mem47[Mem47[0x0202<p16>:word16]:word16]:word16]
 	return
 prvTickISR_exit:
 
@@ -2008,46 +2037,77 @@ l00005308:
 printf_exit:
 
 
-word20 PRINT(word20 r14)
+word20 PRINT(word20 r14, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      vuprintf
-// MayUse:  r14:[0..19]
+// MayUse:  r14:[0..19] r15:[0..19]
 // LiveOut: r15
-// Trashed: VNZC r15
+// Trashed: VNZC r14 r15
 // Preserved: r10 r11 sp
 PRINT_entry:
 l0000531A:
+	word20 r15_35
+	word20 r10_10 = r15
+	word20 r11_12 = r14
 	branch r14 != 0<20> l0000532A
 l0000532A:
-	__write_char()
+	word20 r11_28
+	word20 r15_30
+	call Mem16[0x09B2<p16>:word16] (retsize: 2;)
+		uses: r10:r10_15 + 1<16>,r11:r11_24,r14:r14_25,r15:(int16) Mem16[r10_15:byte]
+		defs: r10:r10_29,r11:r11_28,r14:r14_31,r15:r15_30
+	branch r15_30 < 0<20> l00005342
+l00005342:
+	r15_35 = 0xFFFF<16>
+l00005338:
+	Mem38[0x021A<p16>:word16] = Mem16[0x021A<p16>:word16] + 1<16>
+	r11_12 = r11_28 + 0xFFFF<16>
+	branch r11_28 != 0xFFFFF<20> l0000532A
+l00005340:
 l00005326:
-	word20 r15_23 = 1<16>
+	r15_35 = 1<16>
 l00005344:
-	return r15_23
+	return r15_35
 PRINT_exit:
 
 
-void __write_pad(word20 r14)
+word20 __write_pad(word20 r14, word20 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      vuprintf
-// MayUse:  r14:[0..19]
-// LiveOut:
-// Trashed: VNZC
-// Preserved: r10 r11 r15 r9 sp
+// MayUse:  r14:[0..19] r15:[0..19]
+// LiveOut: r15
+// Trashed: VNZC r14 r15
+// Preserved: r10 r11 r9 sp
 __write_pad_entry:
 l0000534A:
+	word20 r15_40
+	word20 r9_13 = r15
+	word20 r11_15 = r14
 	branch r14 < 1<8> l00005370
-l00005370:
-l00005376:
-	return
-__write_pad_exit:
 l00005358:
+	word20 r10_20 = (int16) SLICE(r15, byte, 0)
 l0000535C:
-	__write_char()
+	word20 r11_32
+	word20 r15_35
+	call Mem25[0x09B2<p16>:word16] (retsize: 2;)
+		uses: r10:r10_23,r11:r11_27,r14:r14_29,r15:r10_23,r9:r9_28
+		defs: r10:r10_33,r11:r11_32,r14:r14_36,r15:r15_35,r9:r9_34
+	branch r15_35 < 0<20> l00005374
+l00005374:
+	r15_40 = 0xFFFF<16>
+l00005366:
+	Mem43[0x021A<p16>:word16] = Mem25[0x021A<p16>:word16] + 1<16>
+	r11_15 = r11_32 + 0xFF<8>
+	branch r11_32 >= 2<8> l0000535C
+l00005370:
+	r15_40 = r9_13
+l00005376:
+	return r15_40
+__write_pad_exit:
 
 
 void vuprintf(word20 r8, word20 r13, word20 r14, word20 r15)
@@ -2061,391 +2121,395 @@ void vuprintf(word20 r8, word20 r13, word20 r14, word20 r15)
 // Preserved: r10 r11 r4 r5 r6 r7 r8 r9 sp
 vuprintf_entry:
 l0000537E:
-	Mem37[0x021A<p16>:ptr16] = 0<16>
-	Mem39[0x09B2<p16>:ptr16] = r15
-	word20 r5_1033 = r13
-	word16 wLoc1C_1111 = 0<16>
-	word16 wLoc1A_1113 = 0<16>
-	word20 r6_101 = r14
+	Mem39[0x021A<p16>:word16] = 0<16>
+	Mem43[0x09B2<p16>:word16] = r15
+	word20 r5_1050 = r13
+	word16 wLoc1C_1128 = 0<16>
+	word16 wLoc1A_1130 = 0<16>
+	word20 r6_106 = r14
 l53A6:
-	word20 r6_51
-	byte v17_45 = Mem44[r6_101:byte]
-	word20 r7_46 = v17_45
-	r6_51 = r6_101
-	branch v17_45 == 0<8> l000053C2
+	word20 r6_55
+	byte v19_49 = Mem48[r6_106:byte]
+	word20 r7_50 = v19_49
+	r6_55 = r6_106
+	branch v19_49 == 0<8> l000053C2
 l000053AE:
-	r6_51 = r6_101
-	r6_51 = r6_101
-	branch v17_45 == 0x25<16> l000053C2
+	r6_55 = r6_106
+	r6_55 = r6_106
+	branch v19_49 == 0x25<16> l000053C2
 l000053B4:
-	r6_51 = r6_51 + 1<16>
-	byte v19_54 = Mem44[r6_51:byte]
-	r7_46 = v19_54
-	branch v19_54 == 0<8> l000053C2
+	r6_55 = r6_55 + 1<16>
+	byte v21_58 = Mem48[r6_55:byte]
+	r7_50 = v21_58
+	branch v21_58 == 0<8> l000053C2
 l000053BC:
-	branch v19_54 != 0x25<16> l000053B4
+	branch v21_58 != 0x25<16> l000053B4
 l000053C2:
-	word20 r13_64 = r6_51 - r6_101
-	branch r13_64 == 0<20> l000053CC
+	word20 r13_68 = r6_55 - r6_106
+	branch r13_68 == 0<20> l000053CC
 l000053C8:
 l5916:
-	branch PRINT(r13_64) < 0<20> l5924
+	branch PRINT(r13_68, r6_106) < 0<20> l5924
 l5920:
 l000053CC:
-	branch r7_46 != 0<20> l000053D4
+	branch r7_50 != 0<20> l000053D4
 l000053D4:
-	r6_101 = r6_51 + 1<16>
-	byte bLoc1E_1118 = 0<8>
-	byte bLoc17_1123 = 0<8>
-	byte bLoc1D_1128 = 0<8>
-	word20 r11_1070 = 0xFF<8>
-	byte bLoc24_1133 = 0<8>
+	r6_106 = r6_55 + 1<16>
+	byte bLoc1E_1135 = 0<8>
+	byte bLoc17_1140 = 0<8>
+	byte bLoc1D_1145 = 0<8>
+	word20 r11_102 = 0xFF<8>
+	byte bLoc24_1150 = 0<8>
 l53E8:
-	word20 r7_1025 = Mem102[r6_101:byte]
-	r6_101 = r6_101 + 1<16>
+	word20 r7_1042 = Mem107[r6_106:byte]
+	r6_106 = r6_106 + 1<16>
 l53EC:
-	branch r7_1025 != 0x75<16> l000053F6
+	branch r7_1042 != 0x75<16> l000053F6
 l000053F6:
-	branch (r7_1025 | 0x20<16>) != 0x78<16> l5406
+	branch (r7_1042 | 0x20<16>) != 0x78<16> l5406
 l00005402:
 l000053F2:
 l58F0:
-	branch (bLoc1E_1118 & 1<8>) == 0<8> l5906
+	branch (bLoc1E_1135 & 1<8>) == 0<8> l5906
 l5906:
-	r5_1033 = r5_1033 + 2<16>
-	wLoc1C_1111 = Mem117[r5_1033:word16]
-	wLoc1A_1113 = 0<16>
+	r5_1050 = r5_1050 + 2<16>
+	wLoc1C_1128 = Mem122[r5_1050:word16]
+	wLoc1A_1130 = 0<16>
 l58F6:
-	r5_1033 = r5_1033 + 4<16>
-	wLoc1C_1111 = Mem117[r5_1033:word16]
-	wLoc1A_1113 = Mem143[r5_1033 + 2<i16>:word16]
+	r5_1050 = r5_1050 + 4<16>
+	wLoc1C_1128 = Mem122[r5_1050:word16]
+	wLoc1A_1130 = Mem148[r5_1050 + 2<i16>:word16]
 l5406:
-	branch r7_1025 != 0x20<16> l5410
+	branch r7_1042 != 0x20<16> l5410
 l5410:
-	branch r7_1025 != 0x23<16> l541A
+	branch r7_1042 != 0x23<16> l541A
 l541A:
-	branch r7_1025 != 0x2A<16> l5424
+	branch r7_1042 != 0x2A<16> l5424
 l5424:
-	branch r7_1025 != 0x2D<16> l542E
+	branch r7_1042 != 0x2D<16> l542E
 l542E:
-	branch r7_1025 != 0x2B<16> l5438
+	branch r7_1042 != 0x2B<16> l5438
 l5438:
-	branch r7_1025 != 0x2E<16> l5442
+	branch r7_1042 != 0x2E<16> l5442
 l5442:
-	branch r7_1025 != 0x30<16> l544C
+	branch r7_1042 != 0x30<16> l544C
 l544C:
-	branch r7_1025 <u 0xFFC6<16> l548C
+	branch r7_1042 <u 0xFFC6<16> l548C
 l548C:
-	branch r7_1025 == 0x68<16> l581A
+	branch r7_1042 == 0x68<16> l581A
 l581A:
-	bLoc1E_1118 = bLoc1E_1118 | 4<8>
+	bLoc1E_1135 = bLoc1E_1135 | 4<8>
 l5492:
-	branch r7_1025 != 0x6C<16> l549E
+	branch r7_1042 != 0x6C<16> l549E
 l549E:
-	word20 r9_361
-	branch r7_1025 == 0x63<16> l580C
+	word16 wLoc20_1492
+	word20 r9_366
+	branch r7_1042 == 0x63<16> l580C
 l580C:
-	r5_1033 = r5_1033 + 2<16>
+	r5_1050 = r5_1050 + 2<16>
 l54A4:
-	byte bLoc18_1185
-	branch r7_1025 == 0x44<16> l5806
+	byte bLoc18_1202
+	branch r7_1042 == 0x44<16> l5806
 l5806:
-	bLoc1E_1118 = bLoc1E_1118 | 1<8>
+	bLoc1E_1135 = bLoc1E_1135 | 1<8>
 l54AA:
-	branch r7_1025 == 0x64<16> l57AE
+	branch r7_1042 == 0x64<16> l57AE
 l54B0:
-	branch r7_1025 == 0x69<16> l57AE
+	branch r7_1042 == 0x69<16> l57AE
 l57AE:
-	branch (bLoc1E_1118 & 1<8>) == 0<8> l57E6
+	branch (bLoc1E_1135 & 1<8>) == 0<8> l57E6
 l57E6:
-	word16 v186_211 = Mem201[r5_1033:word16]
-	r5_1033 = r5_1033 + 2<16>
-	wLoc1C_1111 = v186_211
-	wLoc1A_1113 = 0<16> - (v186_211 * 2<16> <u 0<16>) ^ 0xFFFF<16>
+	word16 v189_216 = Mem206[r5_1050:word16]
+	r5_1050 = r5_1050 + 2<16>
+	wLoc1C_1128 = v189_216
+	wLoc1A_1130 = 0<16> - (v189_216 * 2<16> <u 0<16>) ^ 0xFFFF<16>
 l57B4:
-	r5_1033 = r5_1033 + 4<16>
-	wLoc1C_1111 = Mem201[r5_1033:word16]
-	wLoc1A_1113 = Mem240[r5_1033 + 2<i16>:word16]
+	r5_1050 = r5_1050 + 4<16>
+	wLoc1C_1128 = Mem206[r5_1050:word16]
+	wLoc1A_1130 = Mem245[r5_1050 + 2<i16>:word16]
 l57C0:
-	branch wLoc1A_1113 < 0<16> l57CE
+	branch wLoc1A_1130 < 0<16> l57CE
 l57CE:
-	word16 wLoc1C_1169 = wLoc1C_1111 ^ 0xFFFF<16>
-	wLoc1C_1111 = wLoc1C_1169 + 1<16>
-	wLoc1A_1113 = (wLoc1A_1113 ^ 0xFFFF<16>) + (wLoc1C_1169 <u 1<16>)
-	bLoc24_1133 = 0x2D<16>
+	word16 wLoc1C_1186 = wLoc1C_1128 ^ 0xFFFF<16>
+	wLoc1C_1128 = wLoc1C_1186 + 1<16>
+	wLoc1A_1130 = (wLoc1A_1130 ^ 0xFFFF<16>) + (wLoc1C_1186 <u 1<16>)
+	bLoc24_1150 = 0x2D<16>
 l57C6:
-	bLoc18_1185 = 0xA<16>
+	bLoc18_1202 = 0xA<16>
 l54B6:
-	branch r7_1025 == 0x4F<16> l57A8
+	branch r7_1042 == 0x4F<16> l57A8
 l57A8:
-	bLoc1E_1118 = bLoc1E_1118 | 1<8>
+	bLoc1E_1135 = bLoc1E_1135 | 1<8>
 l54BC:
-	branch r7_1025 == 0x6F<16> l57A2
+	branch r7_1042 == 0x6F<16> l57A2
 l57A2:
-	bLoc18_1185 = 8<8>
+	bLoc18_1202 = 8<8>
 l54C2:
-	branch r7_1025 == 0x70<16> l5784
+	branch r7_1042 == 0x70<16> l5784
 l5784:
-	r5_1033 = r5_1033 + 2<16>
-	wLoc1C_1111 = Mem172[r5_1033:word16]
-	wLoc1A_1113 = 0<16>
-	bLoc18_1185 = 0x10<16>
-	bLoc1E_1118 = bLoc1E_1118 | 0x40<16>
-	r7_1025 = 0x78<16>
+	r5_1050 = r5_1050 + 2<16>
+	wLoc1C_1128 = Mem177[r5_1050:word16]
+	wLoc1A_1130 = 0<16>
+	bLoc18_1202 = 0x10<16>
+	bLoc1E_1135 = bLoc1E_1135 | 0x40<16>
+	r7_1042 = 0x78<16>
 l54C8:
-	branch r7_1025 == 0x73<16> l570C
+	branch r7_1042 == 0x73<16> l570C
 l570C:
-	word16 v149_309 = Mem172[r5_1033:word16]
-	r5_1033 = r5_1033 + 2<16>
-	word16 wLoc20_1193 = v149_309
-	branch v149_309 == 0<16> l5756
+	word16 v152_314 = Mem177[r5_1050:word16]
+	r5_1050 = r5_1050 + 2<16>
+	word16 wLoc20_1210 = v152_314
+	branch v152_314 == 0<16> l5756
 l5756:
-	wLoc20_1193 = fp - 0x4C<32>
+	wLoc20_1210 = fp - 0x4C<32>
 l571A:
-	byte bLoc20_1222 = SLICE(wLoc20_1193, byte, 0)
-	branch r11_1070 < 0<20> l5740
+	byte bLoc20_1239 = SLICE(wLoc20_1210, byte, 0)
+	branch r11_102 < 0<20> l5740
 l5740:
-	word20 r15_350 = wLoc20_1193 - 1<16>
+	word20 r15_355 = wLoc20_1210 - 1<16>
 l5746:
-	r15_350 = r15_350 + 1<16>
-	branch Mem347[r15_350:byte] != 0<8> l5746
+	r15_355 = r15_355 + 1<16>
+	branch Mem352[r15_355:byte] != 0<8> l5746
 l574E:
-	r9_361 = r15_350 - bLoc20_1222
+	r9_366 = r15_355 - bLoc20_1239
 l571E:
-	word20 r15_373 = memchr((int16) SLICE(r11_1070, byte, 0), 0<16>, wLoc20_1193)
-	branch r15_373 == 0<20> l573C
+	word20 r15_378 = memchr((int16) SLICE(r11_102, byte, 0), 0<16>, wLoc20_1210)
+	branch r15_378 == 0<20> l573C
 l5732:
-	r9_361 = r15_373 - bLoc20_1222
-	branch r11_1070 >= r9_361 l54F8
+	r9_366 = r15_378 - bLoc20_1239
+	wLoc20_1492 = wLoc20_1210 (alias)
+	branch r11_102 >= r9_366 l54F8
 l573C:
-	r9_361 = r11_1070
+	wLoc20_1492 = wLoc20_1210
+	r9_366 = r11_102
 l54CE:
-	branch r7_1025 == 0x55<16> l5706
+	branch r7_1042 == 0x55<16> l5706
 l5706:
-	bLoc1E_1118 = bLoc1E_1118 | 1<8>
+	bLoc1E_1135 = bLoc1E_1135 | 1<8>
 l54D4:
-	branch r7_1025 == 0x75<16> l56FE
+	branch r7_1042 == 0x75<16> l56FE
 l56FE:
-	bLoc18_1185 = 0xA<16>
+	bLoc18_1202 = 0xA<16>
 l54DA:
-	branch r7_1025 == 0x58<16> l55FE
+	branch r7_1042 == 0x58<16> l55FE
 l54E0:
-	branch r7_1025 == 0x78<16> l55FE
+	branch r7_1042 == 0x78<16> l55FE
 l55FE:
-	bLoc18_1185 = 0x10<16>
-	branch (bLoc1E_1118 & 8<8>) == 0<8> l561C
+	bLoc18_1202 = 0x10<16>
+	branch (bLoc1E_1135 & 8<8>) == 0<8> l561C
 l560A:
-	branch wLoc1C_1111 != 0<16> l5616
+	branch wLoc1C_1128 != 0<16> l5616
 l5610:
-	branch wLoc1A_1113 == 0<16> l561C
+	branch wLoc1A_1130 == 0<16> l561C
 l5616:
-	bLoc1E_1118 = bLoc1E_1118 | 0x40<16>
+	bLoc1E_1135 = bLoc1E_1135 | 0x40<16>
 l561C:
-	bLoc24_1133 = 0<8>
+	bLoc24_1150 = 0<8>
 l5620:
-	bLoc17_1123 = r11_1070
-	branch r11_1070 < 0<20> l562E
+	bLoc17_1140 = r11_102
+	branch r11_102 < 0<20> l562E
 l5628:
-	bLoc1E_1118 = bLoc1E_1118 & 0xFFDF<16>
+	bLoc1E_1135 = bLoc1E_1135 & 0xFFDF<16>
 l562E:
-	word16 wLoc20_1269 = fp - 0x24<32>
-	branch wLoc1C_1111 != 0<16> l564A
+	word16 wLoc20_1286 = fp - 0x24<32>
+	branch wLoc1C_1128 != 0<16> l564A
 l563E:
-	wLoc20_1269 = SLICE(fp - 0x24<32>, word16, 0) (alias)
-	branch wLoc1A_1113 != 0<16> l564A
+	wLoc20_1286 = SLICE(fp - 0x24<32>, word16, 0) (alias)
+	branch wLoc1A_1130 != 0<16> l564A
 l5644:
-	wLoc20_1269 = SLICE(fp - 0x24<32>, word16, 0) (alias)
-	branch r11_1070 == 0<8> l56C6
+	wLoc20_1286 = SLICE(fp - 0x24<32>, word16, 0) (alias)
+	branch r11_102 == 0<8> l56C6
 l564A:
-	word16 wLoc14_2350 = (uint16) (uint8) bLoc18_1185
+	word16 wLoc14_2367 = (uint16) (uint8) bLoc18_1202
 l5658:
-	byte bLoc16_1336 = 0<8>
-	branch wLoc1A_1113 - (wLoc1C_1111 - wLoc14_2350 <u 0<20>) >=u 0<20> l5672
+	byte bLoc16_1353 = 0<8>
+	branch wLoc1A_1130 - (wLoc1C_1128 - wLoc14_2367 <u 0<20>) >=u 0<20> l5672
 l566E:
-	bLoc16_1336 = 1<8>
+	bLoc16_1353 = 1<8>
 l5672:
-	word20 r4_526
-	word20 r14_515
-	word20 r8_517
-	word20 r12_2467
-	word20 r13_2468
-	word20 r15_2469
-	fn00005B4E(r8, wLoc14_2350, 0<16>, wLoc1C_1111, wLoc1A_1113, out r8_517, out r12_2467, out r13_2468, out r14_515, out r15_2469)
-	branch r14_515 <u 0xA<16> l56EE
+	word20 r4_531
+	word20 r14_520
+	word20 r8_522
+	word20 r12_2484
+	word20 r13_2485
+	word20 r15_2486
+	fn00005B4E(r8, wLoc14_2367, 0<16>, wLoc1C_1128, wLoc1A_1130, out r8_522, out r12_2484, out r13_2485, out r14_520, out r15_2486)
+	branch r14_520 <u 0xA<16> l56EE
 l56EE:
-	r4_526 = r14_515 + 0x57<16>
-	branch r7_1025 != 0x58<16> l5692
+	r4_531 = r14_520 + 0x57<16>
+	branch r7_1042 != 0x58<16> l5692
 l56F8:
-	r4_526 = r14_515 + 0x57<16> & 0xFFDF<16>
+	r4_531 = r14_520 + 0x57<16> & 0xFFDF<16>
 l568E:
-	r4_526 = r14_515 + 0x30<16>
+	r4_531 = r14_520 + 0x30<16>
 l5692:
-	wLoc20_1269 = wLoc20_2472 + 0xFFFF<16>
-	Mem547[wLoc20_1269:byte] = r4_526
-	word20 r14_2470
-	word20 r12_557
-	word20 r13_558
-	word20 r15_2471
-	fn00005B4E(r8_517, wLoc14_2350, 0<16>, wLoc1C_1111, wLoc1A_1113, out r8, out r12_557, out r13_558, out r14_2470, out r15_2471)
-	wLoc1C_1111 = r12_557
-	wLoc1A_1113 = r13_558
-	wLoc20_2472 = wLoc20_1269
-	branch bLoc16_1336 != 0<8> l5658
+	wLoc20_1286 = wLoc20_2489 + 0xFFFF<16>
+	Mem552[wLoc20_1286:byte] = r4_531
+	word20 r14_2487
+	word20 r12_562
+	word20 r13_563
+	word20 r15_2488
+	fn00005B4E(r8_522, wLoc14_2367, 0<16>, wLoc1C_1128, wLoc1A_1130, out r8, out r12_562, out r13_563, out r14_2487, out r15_2488)
+	wLoc1C_1128 = r12_562
+	wLoc1A_1130 = r13_563
+	wLoc20_2489 = wLoc20_1286
+	branch bLoc16_1353 != 0<8> l5658
 l56C0:
-	branch bLoc18_1185 == 8<8> l56D2
+	branch bLoc18_1202 == 8<8> l56D2
 l56D2:
-	branch (bLoc1E_1118 & 8<8>) == 0<8> l56C6
+	branch (bLoc1E_1135 & 8<8>) == 0<8> l56C6
 l56D8:
-	branch r4_526 == 0x30<16> l56C6
+	branch r4_531 == 0x30<16> l56C6
 l56DE:
-	Mem595[wLoc20_2472 + 0xFFFE<16>:byte] = 0x30<16>
-	wLoc20_1269 = wLoc20_2472 + 0xFFFE<16> (alias)
+	Mem600[wLoc20_2489 + 0xFFFE<16>:byte] = 0x30<16>
+	wLoc20_1286 = wLoc20_2489 + 0xFFFE<16> (alias)
 l56C6:
-	r9_361 = fp - 0x4C<32> - SLICE(wLoc20_1269, byte, 0) + 0x28<16>
+	r9_366 = fp - 0x4C<32> - SLICE(wLoc20_1286, byte, 0) + 0x28<16>
+	wLoc20_1492 = wLoc20_1286 (alias)
 l54E6:
-	branch r7_1025 != 0<20> l54EE
+	branch r7_1042 != 0<20> l54EE
 l54EE:
 l54F6:
-	r9_361 = 1<8>
+	wLoc20_1492 = fp - 0x4C<32>
+	r9_366 = 1<8>
 l54F8:
-	bLoc24_1133 = 0<8>
+	bLoc24_1150 = 0<8>
 l54FC:
-	word20 r11_623 = r9_361
-	word20 r10_628 = bLoc17_1123 - r9_361
-	branch r10_628 < 0<20> l55FA
+	word20 r11_628 = r9_366
+	word20 r10_633 = bLoc17_1140 - r9_366
+	branch r10_633 < 0<20> l55FA
 l55FA:
-	r10_628 = 0<8>
+	r10_633 = 0<8>
 l5506:
-	branch bLoc24_1133 == 0<8> l55EE
+	branch bLoc24_1150 == 0<8> l55EE
 l55EE:
-	branch (bLoc1E_1118 & 0x40<16>) == 0<8> l5510
+	branch (bLoc1E_1135 & 0x40<16>) == 0<8> l5510
 l55F6:
-	r11_623 = r9_361 + 2<8>
+	r11_628 = r9_366 + 2<8>
 l550E:
-	r11_623 = r9_361 + 1<8>
+	r11_628 = r9_366 + 1<8>
 l5510:
-	word20 r11_652 = r11_623 + r10_628
-	r8 = bLoc1E_1118 & 0x30<16>
-	branch (bLoc1E_1118 & 0x30<16>) != 0<8> l5542
+	word20 r11_657 = r11_628 + r10_633
+	r8 = bLoc1E_1135 & 0x30<16>
+	branch (bLoc1E_1135 & 0x30<16>) != 0<8> l5542
 l551C:
-	word20 r13_668 = (int16) (bLoc1D_1128 - SLICE(r11_652, byte, 0))
-	branch r13_668 < 1<16> l5542
+	word20 r13_673 = (int16) (bLoc1D_1145 - SLICE(r11_657, byte, 0))
+	branch r13_673 < 1<16> l5542
 l552C:
-	__write_pad(r13_668)
-	branch true l553E
+	branch __write_pad(r13_673, 0x20<16>) >= 0<20> l553E
 l553E:
 l5542:
-	word20 r14_685
-	branch bLoc24_1133 != 0<20> l55E4
+	word20 r14_692
+	word20 r15_695
+	branch bLoc24_1150 != 0<20> l55E4
 l55E4:
-	r14_685 = 1<16>
+	r14_692 = 1<16>
+	r15_695 = fp - 0x24<32>
 l5546:
-	branch (bLoc1E_1118 & 0x40<16>) == 0<8> l5576
+	branch (bLoc1E_1135 & 0x40<16>) == 0<8> l5576
 l554E:
-	r14_685 = 2<16>
+	r14_692 = 2<16>
+	r15_695 = fp - 0x22<32>
 l556A:
-	branch PRINT(r14_685) >= 0<20> l5576
+	branch PRINT(r14_692, r15_695) >= 0<20> l5576
 l5576:
-	branch (bLoc1E_1118 & 0x30<16>) == 0x20<16> l55C4
+	branch (bLoc1E_1135 & 0x30<16>) == 0x20<16> l55C4
 l55C4:
-	word20 r13_759 = (int16) (bLoc1D_1128 - SLICE(r11_652, byte, 0))
-	branch r13_759 < 1<16> l557C
+	word20 r13_768 = (int16) (bLoc1D_1145 - SLICE(r11_657, byte, 0))
+	branch r13_768 < 1<16> l557C
 l55D4:
-	__write_pad(r13_759)
-	branch true l557C
+	branch __write_pad(r13_768, 0x30<16>) >= 0<20> l557C
 l55E2:
 l557C:
-	__write_pad(r10_628)
-	branch false l5924
+	branch __write_pad(r10_633, 0x30<16>) < 0<20> l5924
 l558A:
-	branch PRINT((int16) SLICE(r9_361, byte, 0)) < 0<20> l5924
+	branch PRINT((int16) SLICE(r9_366, byte, 0), wLoc20_1492) < 0<20> l5924
 l559C:
-	branch (bLoc1E_1118 & 0x10<16>) == 0<8> l53A6
+	branch (bLoc1E_1135 & 0x10<16>) == 0<8> l53A6
 l55A4:
-	word20 r13_819 = (int16) (bLoc1D_1128 - SLICE(r11_652, byte, 0))
-	branch r13_819 < 1<16> l53A6
+	word20 r13_833 = (int16) (bLoc1D_1145 - SLICE(r11_657, byte, 0))
+	branch r13_833 < 1<16> l53A6
 l55B4:
-	__write_pad(r13_819)
-	branch true l53A6
+	branch __write_pad(r13_833, 0x20<16>) >= 0<20> l53A6
 l55C2:
 l5572:
 l553A:
 l54EA:
 l5498:
-	bLoc1E_1118 = bLoc1E_1118 | 1<8>
+	bLoc1E_1135 = bLoc1E_1135 | 1<8>
 l5458:
-	word20 r13_833 = 0<16>
+	word20 r13_849 = 0<16>
 l545A:
-	word20 r14_839 = r13_833 * 2<20>
-	word20 r13_848 = r13_833 * 4<20> + r14_839 + r14_839 + r14_839 + (int16) SLICE(r7_1025, byte, 0)
-	byte v65_852 = Mem172[r6_101:byte]
-	r13_833 = r13_848 + 0xFFD0<16>
-	r7_1025 = v65_852
-	r6_101 = r6_101 + 1<16>
-	branch v65_852 >=u 0xFFC6<16> l545A
+	word20 r14_855 = r13_849 * 2<20>
+	word20 r13_864 = r13_849 * 4<20> + r14_855 + r14_855 + r14_855 + (int16) SLICE(r7_1042, byte, 0)
+	byte v68_868 = Mem177[r6_106:byte]
+	r13_849 = r13_864 + 0xFFD0<16>
+	r7_1042 = v68_868
+	r6_106 = r6_106 + 1<16>
+	branch v68_868 >=u 0xFFC6<16> l545A
 l5486:
-	bLoc1D_1128 = r13_848 + 0xFFD0<16>
+	bLoc1D_1145 = r13_864 + 0xFFD0<16>
 l5448:
 l5822:
-	branch (bLoc1E_1118 & 0x10<16>) == 0<8> l582E
+	branch (bLoc1E_1135 & 0x10<16>) == 0<8> l582E
 l582E:
-	bLoc1E_1118 = bLoc1E_1118 | 0x20<16>
+	bLoc1E_1135 = bLoc1E_1135 | 0x20<16>
 l582A:
 l543E:
 l5838:
-	byte v58_875 = Mem172[r6_101:byte]
-	r7_1025 = v58_875
-	r6_101 = r6_101 + 1<16>
-	branch v58_875 == 0x2A<16> l588A
+	byte v61_891 = Mem177[r6_106:byte]
+	r7_1042 = v61_891
+	r6_106 = r6_106 + 1<16>
+	branch v61_891 == 0x2A<16> l588A
 l588A:
-	word16 v61_882 = Mem172[r5_1033:word16]
-	r5_1033 = r5_1033 + 2<16>
-	word20 r15_884 = v61_882
-	branch v61_882 >= 0xFFFF<16> l5898
+	word16 v64_898 = Mem177[r5_1050:word16]
+	r5_1050 = r5_1050 + 2<16>
+	word20 r15_900 = v64_898
+	branch v64_898 >= 0xFFFF<16> l5898
 l5896:
-	r15_884 = 0xFFFF<16>
+	r15_900 = 0xFFFF<16>
 l5898:
-	r11_1070 = r15_884
+	r11_102 = r15_900
 l5842:
-	word20 r13_890 = 0<16>
-	branch v58_875 <u 0xFFC6<16> l587C
+	word20 r13_906 = 0<16>
+	branch v61_891 <u 0xFFC6<16> l587C
 l5850:
-	word20 r14_900 = r13_890 * 2<20>
-	byte v60_913 = Mem172[r6_101:byte]
-	r13_890 = r13_890 * 4<20> + r14_900 + r14_900 + r14_900 + (int16) SLICE(r7_1025, byte, 0) + 0xFFD0<16>
-	r7_1025 = v60_913
-	r6_101 = r6_101 + 1<16>
-	branch v60_913 >=u 0xFFC6<16> l5850
+	word20 r14_916 = r13_906 * 2<20>
+	byte v63_929 = Mem177[r6_106:byte]
+	r13_906 = r13_906 * 4<20> + r14_916 + r14_916 + r14_916 + (int16) SLICE(r7_1042, byte, 0) + 0xFFD0<16>
+	r7_1042 = v63_929
+	r6_106 = r6_106 + 1<16>
+	branch v63_929 >=u 0xFFC6<16> l5850
 l587C:
-	word20 r15_921 = r13_890
-	branch r13_890 >= 0xFFFF<16> l5884
+	word20 r15_937 = r13_906
+	branch r13_906 >= 0xFFFF<16> l5884
 l5882:
-	r15_921 = 0xFFFF<16>
+	r15_937 = 0xFFFF<16>
 l5884:
-	r11_1070 = r15_921
+	r11_102 = r15_937
 l5434:
 l589E:
-	bLoc24_1133 = 0x2B<16>
+	bLoc24_1150 = 0x2B<16>
 l542A:
 l5420:
 l58B8:
-	byte v49_932 = Mem172[r5_1033:byte]
-	r5_1033 = r5_1033 + 2<16>
-	bLoc1D_1128 = v49_932
-	branch v49_932 < 0<8> l58CA
+	byte v52_948 = Mem177[r5_1050:byte]
+	r5_1050 = r5_1050 + 2<16>
+	bLoc1D_1145 = v52_948
+	branch v52_948 < 0<8> l58CA
 l58CA:
-	bLoc1D_1128 = (v49_932 ^ 0xFF<8>) + 1<8>
+	bLoc1D_1145 = (v52_948 ^ 0xFF<8>) + 1<8>
 l58A8:
-	bLoc1E_1118 = (bLoc1E_1118 | 0x10<16>) & 0xFFDF<16>
+	bLoc1E_1135 = (bLoc1E_1135 | 0x10<16>) & 0xFFDF<16>
 l58C6:
 l5416:
 l58D4:
-	bLoc1E_1118 = bLoc1E_1118 | 8<8>
+	bLoc1E_1135 = bLoc1E_1135 | 8<8>
 l540C:
 l58DC:
-	branch bLoc24_1133 == 0<8> l58E6
+	branch bLoc24_1150 == 0<8> l58E6
 l58E6:
-	bLoc24_1133 = 0x20<16>
+	bLoc24_1150 = 0x20<16>
 l58E2:
 l000053D0:
 l5924:
@@ -2703,15 +2767,16 @@ word20 fn00005ADC(word20 r10, word20 r11, word20 r12, word20 r13, ptr16 & r15Out
 // Preserved: sp
 fn00005ADC_entry:
 l00005ADC:
-	Mem4[0x0130<p16>:ptr16] = r12
-	Mem6[0x0138<p16>:ptr16] = r10
-	Mem7[0x0134<p16>:ptr16] = r12
-	Mem9[0x013A<p16>:ptr16] = 0x013C<p16>
-	Mem11[0x0138<p16>:ptr16] = r11
-	Mem13[0x0134<p16>:ptr16] = r13
-	Mem14[0x0138<p16>:ptr16] = r10
-	r15Out = 0x013A<p16>
-	return 0x013A<p16>
+	Mem7[0x0130<p16>:word16] = r12
+	Mem11[0x0138<p16>:word16] = r10
+	Mem14[0x0134<p16>:word16] = r12
+	word20 r14_16 = Mem14[0x013A<p16>:word16]
+	Mem20[0x013A<p16>:word16] = Mem14[0x013C<p16>:word16]
+	Mem24[0x0138<p16>:word16] = r11
+	Mem28[0x0134<p16>:word16] = r13
+	Mem31[0x0138<p16>:word16] = r10
+	r15Out = Mem31[0x013A<p16>:word16]
+	return r14_16
 fn00005ADC_exit:
 
 

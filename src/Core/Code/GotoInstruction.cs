@@ -29,7 +29,6 @@ namespace Reko.Core.Code
     public class GotoInstruction : Instruction
     {
         private Expression condition;
-        private Expression target;
 
         /// <summary>
         /// Use this constructor to create an unconditional transfer instruction.

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,21 +35,21 @@ namespace Reko.Core
     [Designer("Reko.Gui.Design.SystemServiceDesigner,Reko.Gui")]
 	public class SystemService
 	{
-        public string ModuleName;
-		public string Name;
-		public SyscallInfo SyscallInfo;
-		public FunctionType Signature;
-		public ProcedureCharacteristics Characteristics;
+        public string? ModuleName;
+		public string? Name;
+		public SyscallInfo? SyscallInfo;
+		public FunctionType? Signature;
+		public ProcedureCharacteristics? Characteristics;
 
 		public ExternalProcedure CreateExternalProcedure(IProcessorArchitecture arch)
 		{
-            return new ExternalProcedure(Name, Signature, Characteristics);
+            return new ExternalProcedure(Name!, Signature!, Characteristics);
 		}
 	}
 
 	public class RegValue
 	{
-		public RegisterStorage Register;
+		public RegisterStorage? Register;
 		public int Value;
 	}
 
@@ -73,12 +73,12 @@ namespace Reko.Core
         /// <summary>
         /// Register values that select which subservice of the system call to invoke.
         /// </summary>
-		public RegValue [] RegisterValues;
+		public RegValue[]? RegisterValues;
 
         /// <summary>
         /// Stack values that select which subservice of the system call to invoke.
         /// </summary>
-        public StackValue[] StackValues;
+        public StackValue[]? StackValues;
 
 		public bool Matches(int vector, ProcessorState state)
 		{
@@ -95,19 +95,22 @@ namespace Reko.Core
             {
                 return false;
             }
-            for (int i = 0; i < RegisterValues.Length; ++i)
+            if (RegisterValues != null)
             {
-                Constant v = state.GetRegister(RegisterValues[i].Register);
-                if (v == null || v == Constant.Invalid)
-                    return false;
-                if (v.ToUInt32() != RegisterValues[i].Value)
-                    return false;
+                for (int i = 0; i < RegisterValues.Length; ++i)
+                {
+                    Constant v = state!.GetRegister(RegisterValues[i].Register!);
+                    if (v == null || v == Constant.Invalid)
+                        return false;
+                    if (v.ToUInt32() != RegisterValues[i].Value)
+                        return false;
+                }
             }
             if (StackValues != null && StackValues.Length > 0)
             {
                 for (int i = 0; i < StackValues.Length; ++i)
                 {
-                    var c = state.GetStackValue(StackValues[i].Offset) as Constant;
+                    var c = state!.GetStackValue(StackValues[i].Offset) as Constant;
                     if (c == null || c == Constant.Invalid)
                         return false;
                     if (c.ToUInt32() != StackValues[i].Value)

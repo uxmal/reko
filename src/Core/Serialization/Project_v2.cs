@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -58,10 +58,10 @@ namespace Reko.Core.Serialization
         /// Procedures that have been either marked by the user, or have been annotated by the user.
         /// </summary>
         [XmlElement("procedure", typeof(Procedure_v1))]
-        public List<Procedure_v1> UserProcedures;
+        public List<Procedure_v1>? UserProcedures;
 
         [XmlElement("call", typeof(SerializedCall_v1))]
-        public List<SerializedCall_v1> UserCalls;
+        public List<SerializedCall_v1>? UserCalls;
 
         public override T Accept<T>(ISerializedProjectVisitor<T> visitor)
         {
@@ -72,7 +72,7 @@ namespace Reko.Core.Serialization
     public abstract class ProjectFile_v2
     {
         [XmlElement("filename")]
-        public string Filename;
+        public string? Filename;
 
         public abstract T Accept<T>(IProjectFileVisitor_v2<T> visitor);
     }
@@ -88,17 +88,19 @@ namespace Reko.Core.Serialization
     {
         public DecompilerInput_v2()
         {
-            UserGlobalData = new List<GlobalDataItem_v2>(); 
+            UserProcedures = new List<Procedure_v1>();
+            UserGlobalData = new List<GlobalDataItem_v2>();
+            UserCalls = new List<SerializedCall_v1>();
         }
 
         [XmlElement("address")]
-        public string Address;
+        public string? Address;
 
         [XmlElement("comment")]
-        public string Comment;
+        public string? Comment;
 
         [XmlElement("processor")]
-        public string Processor;
+        public string? Processor;
 
         [XmlElement("procedure")]
         public List<Procedure_v1> UserProcedures;
@@ -110,25 +112,25 @@ namespace Reko.Core.Serialization
         public List<GlobalDataItem_v2> UserGlobalData;
 
         [XmlElement("disassembly")]
-        public string DisassemblyFilename;
+        public string? DisassemblyFilename;
 
         [XmlElement("intermediate-code")]
-        public string IntermediateFilename;
+        public string? IntermediateFilename;
 
         [XmlElement("output")]
-        public string OutputFilename;
+        public string? OutputFilename;
 
         [XmlElement("types-file")]
-        public string TypesFilename;
+        public string? TypesFilename;
 
         [XmlElement("global-vars")]
-        public string GlobalsFilename;
+        public string? GlobalsFilename;
 
         [XmlElement("onLoad")]
-        public Script_v2 OnLoadedScript;
+        public Script_v2? OnLoadedScript;
 
         [XmlElement("options")]
-        public ProgramOptions_v2 Options;
+        public ProgramOptions_v2? Options;
 
         public override T Accept<T>(IProjectFileVisitor_v2<T> visitor)
         {
@@ -139,10 +141,10 @@ namespace Reko.Core.Serialization
     public class MetadataFile_v2 : ProjectFile_v2
     {
         [XmlElement("loader")]
-        public string LoaderTypeName;
+        public string? LoaderTypeName;
 
         [XmlElement("module")]
-        public string ModuleName;
+        public string? ModuleName;
 
         public override T Accept<T>(IProjectFileVisitor_v2<T> visitor)
         {
@@ -153,7 +155,7 @@ namespace Reko.Core.Serialization
     public class AssemblerFile_v2 : ProjectFile_v2
     {
         [XmlElement("assembler")]
-        public string Assembler;
+        public string? Assembler;
 
         public override T Accept<T>(IProjectFileVisitor_v2<T> visitor)
         {
@@ -167,30 +169,30 @@ namespace Reko.Core.Serialization
         public bool Enabled;
 
         [XmlAttribute]
-        public string Interpreter;
+        public string? Interpreter;
 
         [XmlText]
-        public string Script;
+        public string? Script;
     }
 
     public class DecompilerOutput_v1
     {
         [XmlElement("disassembly")]
-        public string DisassemblyFilename;
+        public string? DisassemblyFilename;
 
         /// <summary>
         /// If not null, specifies the file name for intermediate code.
         /// </summary>
         [XmlElement("intermediate-code")]
-        public string IntermediateFilename;
+        public string? IntermediateFilename;
 
         [XmlElement("output")]
-        public string OutputFilename;
+        public string? OutputFilename;
 
         [XmlElement("types-file")]
-        public string TypesFilename;
+        public string? TypesFilename;
 
         [XmlElement("global-vars")]
-        public string GlobalsFilename;
+        public string? GlobalsFilename;
     }
 }

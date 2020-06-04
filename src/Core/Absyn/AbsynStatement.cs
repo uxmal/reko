@@ -34,12 +34,6 @@ namespace Reko.Core.Absyn
 
         public abstract T Accept<T>(IAbsynVisitor<T> visitor);
 
-        public bool As<T>(out T t) where T : AbsynStatement
-        {
-            t = this as T;
-            return t != null;
-        }
-
 		public override sealed string ToString()
 		{
 			StringWriter sw = new StringWriter();

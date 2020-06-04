@@ -132,10 +132,10 @@ namespace Reko.Environments.MacOS.Classic
             declarations.AddRange(new[] {
                 new TypeDeclaration(
                     "OBJECT",
-                    new Primitive { Type = PrimitiveType_v1.Ptr32() }),
+                    new Primitive(PrimitiveType_v1.Ptr32())),
                 new TypeDeclaration(
                     "Comp",
-                    new Primitive { Type = PrimitiveType_v1.Ptr32() })
+                    new Primitive(PrimitiveType_v1.Ptr32()))
             });
         }
 

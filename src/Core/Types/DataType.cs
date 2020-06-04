@@ -30,33 +30,35 @@ namespace Reko.Core.Types
     /// part of the decompilation process.
 	/// </summary>
 	/// <remarks>
-	/// The name 'DataType' is used to avoid conflicts with 'System.Type',
+	/// The name 'DataType' is used to avoid conflicts with <see cref="System.Type" />,
     /// which is part of the CLR.
 	/// </remarks>
 	public abstract class DataType : ICloneable
 	{
 		public const int BitsPerByte = 8;
 
+        private string? name;
+
 		protected DataType()
 		{
 		}
 
-		protected DataType(string name)
+		protected DataType(string? name)
 		{
-			this.Name = name;
+			this.name = name!;
 		}
 
         public virtual int BitSize { get { return Size * BitsPerByte; } }		//$REVIEW: Wrong for 36-bit machines
         public virtual bool IsComplex { get { return false; } }
         public virtual bool IsPointer { get { return false; } }
         public virtual bool IsIntegral { get { return false; } }
-        public virtual string Name { get; set; }
+        public virtual string Name { get { return name!; }  set { name = value; } }
         public Qualifier Qualifier { get; set; }
         public abstract int Size { get; set; }  // Size in bytes of the concrete datatype.
 
         public abstract void Accept(IDataTypeVisitor v);
         public abstract T Accept<T>(IDataTypeVisitor<T> v);
-        public abstract DataType Clone(IDictionary<DataType, DataType> clonedTypes);
+        public abstract DataType Clone(IDictionary<DataType, DataType>? clonedTypes);
         //public abstract int GetInferredSize();                  // Computes the size of an item.
         object ICloneable.Clone() { return Clone(); }
 
@@ -65,25 +67,25 @@ namespace Reko.Core.Types
             return Clone(null);
         }
 
-        public T ResolveAs<T>() where T : DataType
+        public T? ResolveAs<T>() where T : DataType
         {
             DataType dt = this;
             // Special case: ResolveAs<TypeReference> or ResolveAs<DataType>
             if ((dt is TypeReference) && (dt is T))
                 return dt as T;
-            TypeReference typeRef = dt as TypeReference;
+            TypeReference? typeRef = dt as TypeReference;
             while (typeRef != null)
             {
                 dt = typeRef.Referent;
                 typeRef = dt as TypeReference;
             }
-            TypeVariable tv = dt as TypeVariable;
+            TypeVariable? tv = dt as TypeVariable;
             while (tv != null)
             {
-                dt = tv.Class.DataType ?? tv.DataType;
+                dt = tv.Class!.DataType ?? tv.DataType;
                 tv = dt as TypeVariable;
             }     
-            EquivalenceClass eq = dt as EquivalenceClass;
+            EquivalenceClass? eq = dt as EquivalenceClass;
             while (eq != null)
             {
                 dt = eq.DataType;
@@ -92,10 +94,10 @@ namespace Reko.Core.Types
             return dt as T;
         }
 
-        public T TypeReferenceAs<T>() where T : DataType
+        public T? TypeReferenceAs<T>() where T : DataType
         {
             DataType dt = this;
-            TypeReference typeRef = dt as TypeReference;
+            TypeReference? typeRef = dt as TypeReference;
             while (typeRef != null)
             {
                 dt = typeRef.Referent;

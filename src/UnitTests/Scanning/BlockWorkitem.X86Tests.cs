@@ -208,7 +208,7 @@ namespace Reko.UnitTests.Scanning
         private void BuildTest(IntelArchitecture arch, Address addr, IPlatform platform, Action<X86Assembler> m)
         {
             proc = new Procedure(arch, "test", addr, arch.CreateFrame());
-            block = proc.AddBlock("testblock");
+            block = proc.AddBlock(addr, "testblock");
             var asm = new X86Assembler(arch, addr, new List<ImageSymbol>());
             scanner = new Mock<IScanner>();
             scanner.Setup(s => s.Services).Returns(sc);
@@ -439,7 +439,7 @@ namespace Reko.UnitTests.Scanning
         private Block ExpectJumpTarget(ushort selector, ushort offset, string blockLabel)
         {
             var addr = Address.SegPtr(selector, offset);
-            var block = new Block(proc, blockLabel) { Address = Address.SegPtr(selector, offset) };
+            var block = new Block(proc, Address.SegPtr(selector, offset), blockLabel);
             scanner.Setup(s => s.EnqueueJumpTarget(
                 It.IsNotNull<Address>(),
                 addr,
@@ -453,7 +453,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_RepMovsw()
         {
-            var follow = new Block(proc, "follow"); // the code that follows the 'rep movsw'
+            var follow = new Block(proc, Address.SegPtr(0x0C00, 0), "follow"); // the code that follows the 'rep movsw'
             BuildTest16(m =>
             {
                 m.Rep();
@@ -504,7 +504,7 @@ namespace Reko.UnitTests.Scanning
                     It.IsNotNull<Address>(),
                     It.Is<Address>(a => a.Offset == 0x0003),
                     proc,
-                    It.IsAny<ProcessorState>())).Returns(new Block(proc, "l0003"));
+                    It.IsAny<ProcessorState>())).Returns(new Block(proc, Address.Ptr16(0x3), "l0003"));
                 scanner.Setup(x => x.TerminateBlock(
                     It.IsAny<Block>(),
                     It.IsAny<Address>()));

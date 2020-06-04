@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Core.CLanguage
         {
             var dlexer = new CDirectiveLexer(
                 parserState, 
-                new CLexer(new StringReader(input)));
+                new CLexer(new StringReader(input), CLexer.GccKeywords));
             lexer = new LookAheadLexer(dlexer);
         }
 

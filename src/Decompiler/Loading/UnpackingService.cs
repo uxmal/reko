@@ -24,6 +24,7 @@ using Reko.Core.Lib;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -59,6 +60,8 @@ namespace Reko.Loading
                 return;
             foreach (SignatureFileDefinition sfe in cfgSvc.GetSignatureFiles())
             {
+                if (sfe.Filename is null)
+                    continue;
                 try
                 {
                     var ldr = CreateSignatureLoader(sfe);
@@ -69,7 +72,7 @@ namespace Reko.Loading
                     Services.RequireService<IDiagnosticsService>().Error(
                         new NullCodeLocation(sfe.Filename),
                         ex,
-                        "Unable to load signatures from {0} with loader {1}.", sfe.Filename, sfe.Type);
+                        "Unable to load signatures from {0} with loader {1}.", sfe.Filename, sfe.Type!);
                 }
             }
         }
@@ -98,10 +101,10 @@ namespace Reko.Loading
             // making Reko unable to load certain EXE files (due to the endless wait times)
             // EnsureSuffixArray(filename + ".sufa-raw.ubj", image);
             var signature = Signatures.Where(s => Matches(s, loader.RawImage, entryPointOffset)).FirstOrDefault();
-            if (signature == null)
+            if (signature == null || signature.Name == null)
                 return loader;
             var le = Services.RequireService<IConfigurationService>().GetImageLoader(signature.Name);  //$REVIEW: all of themn?
-            if (le == null)
+            if (le == null || le.TypeName == null)
             {
                 //$TODO: warn if loader is missing?
                 return loader;
@@ -125,7 +128,7 @@ namespace Reko.Loading
                     return false;
                 int iImage =  (int)entryPointOffset;
                 int iPattern = 0;
-                while (iPattern < sig.EntryPointPattern.Length - 1 && iImage < image.Length)
+                while (iPattern < sig.EntryPointPattern!.Length - 1 && iImage < image.Length)
                 {
                     var msn = sig.EntryPointPattern[iPattern];
                     var lsn = sig.EntryPointPattern[iPattern + 1];
@@ -151,7 +154,7 @@ namespace Reko.Loading
         {
             var fsSvc = Services.RequireService<IFileSystemService>();
             var diagSvc = Services.RequireService<IDiagnosticsService>();
-            Stream stm = null;
+            Stream? stm = null;
             try
             {
                 if (fsSvc.FileExists(filename))
@@ -159,7 +162,7 @@ namespace Reko.Loading
                     stm = fsSvc.CreateFileStream(filename, FileMode.Open, FileAccess.Read);
                     try
                     {
-                        var sSuffix = (int[])new UbjsonReader(stm).Read();
+                        var sSuffix = (int[])new UbjsonReader(stm).Read()!;
                         return SuffixArray.Load(image, sSuffix);
                     }
                     catch (Exception ex)

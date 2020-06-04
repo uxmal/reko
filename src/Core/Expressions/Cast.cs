@@ -23,6 +23,8 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
+#nullable enable
+
 namespace Reko.Core.Expressions
 {
     /// <summary>

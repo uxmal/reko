@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ namespace Reko.Core.Serialization
 	{
 		public StackVariable_v1() {}
 
-		public override Identifier Deserialize(ArgumentDeserializer sser)
+		public override Identifier? Deserialize(ArgumentDeserializer sser)
 		{
 			return sser.Deserialize(this);
 		}

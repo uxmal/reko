@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -42,10 +42,10 @@ namespace Reko.Core.Serialization
 
         [XmlElement(ElementName = "types")]
         [XmlArray( Namespace = SerializedLibrary.Namespace_v4)]
-        public SerializedType[] Types;
+        public SerializedType[]? Types;
 
         [XmlElement("segment")]
-        public MemorySegment_v1[] Segments;
+        public MemorySegment_v1[]? Segments;
 
         /// <summary>
         /// Loads an image map from a file containing the XML description of the
@@ -54,8 +54,10 @@ namespace Reko.Core.Serialization
         /// <param name="mmapFileName"></param>
         /// <param name="platform"></param>
         /// <returns></returns>
-        public static MemoryMap_v1 LoadMemoryMapFromFile(IServiceProvider svc, string mmapFileName, IPlatform platform)
+        public static MemoryMap_v1? LoadMemoryMapFromFile(IServiceProvider svc, string mmapFileName, IPlatform platform)
         {
+            //$REFACTOR: move all this service stuff to the only caller.
+            // change signature to use a simple Stream.
             var cfgSvc = svc.RequireService<IConfigurationService>();
             var fsSvc = svc.RequireService<IFileSystemService>();
             var diagSvc = svc.RequireService<IDiagnosticsService>();
@@ -78,22 +80,28 @@ namespace Reko.Core.Serialization
             }
         }
 
-        public static ImageSegment LoadSegment(MemorySegment_v1 segment, IPlatform platform, IDiagnosticsService diagSvc)
+        public static ImageSegment? LoadSegment(MemorySegment_v1 segment, IPlatform platform, IDiagnosticsService diagSvc)
         {
+            if (segment.Name is null)
+            {
+                diagSvc.Warn("Memory map segments must have names.");
+                return null;
+            }
+
             if (!platform.TryParseAddress(segment.Address, out var addr))
             {
                 diagSvc.Warn(
                     "Unable to parse address '{0}' in memory map segment {1}.",
-                    segment.Address,
-                    segment.Name);
+                    segment.Address!,
+                    segment.Name!);
                 return null;
             }
             if (!uint.TryParse(segment.Size, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var size))
             {
                 diagSvc.Warn(
                     "Unable to parse hexadecimal size '{0}' in memory map segment {1}.",
-                    segment.Size,
-                    segment.Name);
+                    segment.Size!,
+                    segment.Name!);
                 return null;
             }
 
@@ -101,7 +109,7 @@ namespace Reko.Core.Serialization
             return new ImageSegment(segment.Name, mem, ConvertAccess(segment.Attributes));
         }
 
-        public static AccessMode ConvertAccess(string attributes)
+        public static AccessMode ConvertAccess(string? attributes)
         {
             var mode = AccessMode.Read;
             if (attributes == null)
@@ -122,27 +130,27 @@ namespace Reko.Core.Serialization
     public partial class MemorySegment_v1
     {
         [XmlAttribute("name")]
-        public string Name;
+        public string? Name;
 
         [XmlAttribute("addr")]
-        public string Address;
+        public string? Address;
 
         [XmlAttribute("size")]
-        public string Size;
+        public string? Size;
 
         [XmlAttribute("attr")]
-        public string Attributes;
+        public string? Attributes;
 
         [XmlElement("description")]
-        public string Description;
+        public string? Description;
 
 
         [XmlElement("procedure", typeof(Procedure_v1))]
         [XmlElement("service", typeof(SerializedService))]
         [XmlElement("dispatch-procedure", typeof(DispatchProcedure_v1))]
-        public List<ProcedureBase_v1> Procedures;
+        public List<ProcedureBase_v1>? Procedures;
 
         [XmlElement("global", typeof(GlobalVariable_v1))]
-        public List<GlobalVariable_v1> Globals;
+        public List<GlobalVariable_v1>? Globals;
     }
 }

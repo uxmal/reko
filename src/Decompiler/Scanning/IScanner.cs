@@ -59,7 +59,7 @@ namespace Reko.Scanning
         /// <param name="procedureName"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        ProcedureBase ScanProcedure(IProcessorArchitecture arch, Address addr, string procedureName, ProcessorState state);
+        ProcedureBase ScanProcedure(IProcessorArchitecture arch, Address addr, string? procedureName, ProcessorState state);
 
 /// <summary>
 /// Performs a scan starting at the address of the given image symbol
@@ -68,12 +68,12 @@ namespace Reko.Scanning
 /// <param name="isEntryPoint"></param>
         void ScanImageSymbol(ImageSymbol sym, bool isEntryPoint);
 
-        Block EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
-        Address EnqueueUserProcedure(IProcessorArchitecture arch, Procedure_v1 sp);
+        Block? EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
+        Address? EnqueueUserProcedure(IProcessorArchitecture arch, Procedure_v1 sp);
 
-        ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrImportThunk, Address addrInstruction);
+        ExternalProcedure? GetImportedProcedure(IProcessorArchitecture arch, Address addrImportThunk, Address addrInstruction);
 
-        ProcedureBase GetTrampoline(IProcessorArchitecture arch, Address addr);
+        ProcedureBase? GetTrampoline(IProcessorArchitecture arch, Address addr);
 
         void TerminateBlock(Block block, Address addrEnd);
 
@@ -83,8 +83,8 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="addrStart"></param>
         /// <returns></returns>
-        Block FindContainingBlock(Address addr);
-        Block FindExactBlock(Address addr);
+        Block? FindContainingBlock(Address addr);
+        Block? FindExactBlock(Address addr);
         Block SplitBlock(Block block, Address addr);
 
         Block CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew);

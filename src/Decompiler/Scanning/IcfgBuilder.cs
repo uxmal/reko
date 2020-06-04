@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -33,5 +33,12 @@ namespace Reko.Scanning
         public DiGraph<RtlBlock> Blocks;
         public List<Tuple<RtlBlock, Address>> Edges;
         public Dictionary<Address, RtlBlock> AddrToBlock;
+
+        public IcfgBuilder(List<Tuple<RtlBlock, Address>> edges, Dictionary<Address, RtlBlock> mpBlocks, DiGraph<RtlBlock> allBlocks)
+        {
+            Edges = edges;
+            AddrToBlock = mpBlocks;
+            Blocks = allBlocks;
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -32,10 +32,10 @@ namespace Reko.Evaluation
 {
     public class DistributedCastRule
     {
-        private DataType dt;
-        private Expression eLeft;
-        private Expression eRight;
-        private Operator op;
+        private DataType? dt;
+        private Expression? eLeft;
+        private Expression? eRight;
+        private Operator? op;
 
         public DistributedCastRule()
         {
@@ -62,8 +62,8 @@ namespace Reko.Evaluation
 
         public Expression Transform(EvaluationContext ctx)
         {
-            return new Cast(dt, new BinaryExpression(
-                this.op, this.dt, this.eLeft, this.eRight));
+            return new Cast(dt!, new BinaryExpression(
+                this.op!, this.dt!, this.eLeft!, this.eRight!));
         }
     }
 }

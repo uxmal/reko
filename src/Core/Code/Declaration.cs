@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ namespace Reko.Core.Code
 	/// </summary>
 	public class Declaration : Instruction
 	{
-		public Declaration(Identifier id, Expression init)
+		public Declaration(Identifier id, Expression? init)
 		{
 			this.Identifier = id;
 			this.Expression = init;
@@ -49,12 +49,9 @@ namespace Reko.Core.Code
 			v.VisitDeclaration(this);
 		}
 
-		public Expression Expression { get; set; }
+		public Expression? Expression { get; set; }
 
-		public override bool IsControlFlow
-		{
-			get { return false; }
-		}
+        public override bool IsControlFlow => false;
 
 		public Identifier Identifier { get; set; }
 	}

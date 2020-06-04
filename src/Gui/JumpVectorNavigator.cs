@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using System;
 using System.Collections.Generic;
@@ -61,7 +63,7 @@ namespace Reko.Gui
                 if (DialogResult.OK == uiSvc.ShowModalDialog(dlg))
                 {
                     var ujmp = dlg.GetResults();
-                    this.Program.User.JumpTables[ujmp.Address] = ujmp.Table;
+                    this.Program.User.JumpTables[ujmp.Address!] = ujmp.Table!;
                     
                     ///$TODO: register
                     //$TODO: prevent user from proceeding, in effect forcing 

@@ -58,7 +58,7 @@ Eq_8: (union "Eq_8" (cu8 u0) ((ptr16 byte) u1))
 	T_1533 (in Mem123[0x1692<16>:word16] + Mem123[0x1697<16>:word16] : word16)
 	T_1536 (in Mem399[sp_31 + -2<i16>:word16] : word16)
 	T_1540 (in Mem399[sp_31 + -2<i16>:word16] : word16)
-	T_1570 (in SEQ(~(0<8> - (globals->t1697 > 7<8>)), f) : word16)
+	T_1570 (in SEQ(~(0<8> - (Mem112[0x1697<16>:byte] >u 7<8>)), f) : word16)
 	T_1573 (in Mem123[sp_31 + -2<i16>:word16] : word16)
 	T_1596 (in Mem157[0x1696<16>:byte] : byte)
 	T_1597 (in 1<8> : byte)
@@ -690,18 +690,18 @@ Eq_1346: (fn uint8 (Eq_999))
 Eq_1363: (union "Eq_1363" (bool u0) (Eq_2765 u1))
 	T_1363 (in C : Eq_1363)
 	T_1439 (in C_88 : Eq_1363)
-	T_1442 (in cond(a_84 >> 1<8>) : byte)
+	T_1442 (in cond(a_84 >>u 1<8>) : byte)
 	T_1463 (in C_98 : Eq_1363)
-	T_1470 (in SLICE(cond(0x10<8> - *hl_95), bool, 0) : bool)
+	T_1470 (in SLICE(cond(0x10<8> - Mem94[hl_95 + 0<16>:byte]), bool, 0) : bool)
 	T_1552 (in C_454 : Eq_1363)
 	T_1556 (in SLICE(cond(a_410 - 0x2A<8>), bool, 0) : bool)
 	T_1616 (in C_204 : Eq_1363)
-	T_1619 (in cond(a_200 >> 1<8>) : byte)
+	T_1619 (in cond(a_200 >>u 1<8>) : byte)
 	T_1625 (in C_244 : Eq_1363)
-	T_1631 (in SLICE(cond(3<8> - globals->t1696), bool, 0) : bool)
+	T_1631 (in SLICE(cond(3<8> - Mem157[0x1696<16>:byte]), bool, 0) : bool)
 	T_1793 (in C_356 : Eq_1363)
 	T_1824 (in SLICE(cond(hl_382), bool, 0) : bool)
-	T_1832 (in SLICE(cond(2<8> - globals->t1697), bool, 0) : bool)
+	T_1832 (in SLICE(cond(2<8> - Mem354[0x1697<16>:byte]), bool, 0) : bool)
 Eq_1375: (fn void (byte, Eq_6, byte, Eq_8))
 	T_1375 (in fn0390 : ptr16)
 	T_1376 (in signature of fn0390 : void)
@@ -818,7 +818,7 @@ Eq_2021: (struct "Eq_2021" (138C byte b138C))
 	T_2021 (in (uint16) (uint8) Mem0[0x138C<16>:byte] : uint16)
 Eq_2028: (union "Eq_2028" (bool u0) (byte u1))
 	T_2028 (in C : Eq_2028)
-	T_2039 (in cond(a_8 >> 1<8>) : byte)
+	T_2039 (in cond(a_8 >>u 1<8>) : byte)
 Eq_2029: (union "Eq_2029" (uint8 u0) (ptr16 u1))
 	T_2029 (in aOut : Eq_2029)
 	T_2037 (in a_8 >> 1<8> : byte)
@@ -3131,11 +3131,11 @@ T_546: (in a_14 - globals->t1671 : byte)
   Class: Eq_546
   DataType: byte
   OrigDataType: byte
-T_547: (in cond(a_14 - globals->t1671) : byte)
+T_547: (in cond(a_14 - Mem12[0x1671<16>:byte]) : byte)
   Class: Eq_547
   DataType: byte
   OrigDataType: byte
-T_548: (in SLICE(cond(a_14 - globals->t1671), bool, 0) : bool)
+T_548: (in SLICE(cond(a_14 - Mem12[0x1671<16>:byte]), bool, 0) : bool)
   Class: Eq_485
   DataType: bool
   OrigDataType: bool
@@ -6711,7 +6711,7 @@ T_1441: (in a_84 >> 1<8> : byte)
   Class: Eq_1441
   DataType: uint8
   OrigDataType: uint8
-T_1442: (in cond(a_84 >> 1<8>) : byte)
+T_1442: (in cond(a_84 >>u 1<8>) : byte)
   Class: Eq_1363
   DataType: Eq_1363
   OrigDataType: byte
@@ -6819,11 +6819,11 @@ T_1468: (in 0x10<8> - *hl_95 : byte)
   Class: Eq_1468
   DataType: byte
   OrigDataType: byte
-T_1469: (in cond(0x10<8> - *hl_95) : byte)
+T_1469: (in cond(0x10<8> - Mem94[hl_95 + 0<16>:byte]) : byte)
   Class: Eq_1469
   DataType: byte
   OrigDataType: byte
-T_1470: (in SLICE(cond(0x10<8> - *hl_95), bool, 0) : bool)
+T_1470: (in SLICE(cond(0x10<8> - Mem94[hl_95 + 0<16>:byte]), bool, 0) : bool)
   Class: Eq_1363
   DataType: Eq_1363
   OrigDataType: bool
@@ -7223,7 +7223,7 @@ T_1569: (in ~(0<8> - (globals->t1697 > 7<8>)) : byte)
   Class: Eq_1569
   DataType: byte
   OrigDataType: byte
-T_1570: (in SEQ(~(0<8> - (globals->t1697 > 7<8>)), f) : word16)
+T_1570: (in SEQ(~(0<8> - (Mem112[0x1697<16>:byte] >u 7<8>)), f) : word16)
   Class: Eq_8
   DataType: Eq_8
   OrigDataType: word16
@@ -7419,7 +7419,7 @@ T_1618: (in a_200 >> 1<8> : byte)
   Class: Eq_1618
   DataType: uint8
   OrigDataType: uint8
-T_1619: (in cond(a_200 >> 1<8>) : byte)
+T_1619: (in cond(a_200 >>u 1<8>) : byte)
   Class: Eq_1363
   DataType: Eq_1363
   OrigDataType: byte
@@ -7463,11 +7463,11 @@ T_1629: (in 3<8> - globals->t1696 : byte)
   Class: Eq_1629
   DataType: byte
   OrigDataType: byte
-T_1630: (in cond(3<8> - globals->t1696) : byte)
+T_1630: (in cond(3<8> - Mem157[0x1696<16>:byte]) : byte)
   Class: Eq_1630
   DataType: byte
   OrigDataType: byte
-T_1631: (in SLICE(cond(3<8> - globals->t1696), bool, 0) : bool)
+T_1631: (in SLICE(cond(3<8> - Mem157[0x1696<16>:byte]), bool, 0) : bool)
   Class: Eq_1363
   DataType: Eq_1363
   OrigDataType: bool
@@ -8267,11 +8267,11 @@ T_1830: (in 2<8> - globals->t1697 : byte)
   Class: Eq_1830
   DataType: byte
   OrigDataType: byte
-T_1831: (in cond(2<8> - globals->t1697) : byte)
+T_1831: (in cond(2<8> - Mem354[0x1697<16>:byte]) : byte)
   Class: Eq_1831
   DataType: byte
   OrigDataType: byte
-T_1832: (in SLICE(cond(2<8> - globals->t1697), bool, 0) : bool)
+T_1832: (in SLICE(cond(2<8> - Mem354[0x1697<16>:byte]), bool, 0) : bool)
   Class: Eq_1363
   DataType: Eq_1363
   OrigDataType: bool
@@ -9099,7 +9099,7 @@ T_2038: (in a_8 >> 1<8> : byte)
   Class: Eq_2038
   DataType: uint8
   OrigDataType: uint8
-T_2039: (in cond(a_8 >> 1<8>) : byte)
+T_2039: (in cond(a_8 >>u 1<8>) : byte)
   Class: Eq_2028
   DataType: Eq_2028
   OrigDataType: byte
@@ -9731,11 +9731,11 @@ T_2196: (in a_29 - *((word16) hl_23 + 5004<i32>) : byte)
   Class: Eq_2196
   DataType: byte
   OrigDataType: byte
-T_2197: (in cond(a_29 - *((word16) hl_23 + 5004<i32>)) : byte)
+T_2197: (in cond(a_29 - Mem22[hl_23 + 0x138C<16>:byte]) : byte)
   Class: Eq_2197
   DataType: byte
   OrigDataType: byte
-T_2198: (in SLICE(cond(a_29 - *((word16) hl_23 + 5004<i32>)), bool, 0) : bool)
+T_2198: (in SLICE(cond(a_29 - Mem22[hl_23 + 0x138C<16>:byte]), bool, 0) : bool)
   Class: Eq_2174
   DataType: bool
   OrigDataType: bool
@@ -9803,11 +9803,11 @@ T_2214: (in a_6 - globals->t16A7 : byte)
   Class: Eq_2214
   DataType: byte
   OrigDataType: byte
-T_2215: (in cond(a_6 - globals->t16A7) : byte)
+T_2215: (in cond(a_6 - Mem5[0x16A7<16>:byte]) : byte)
   Class: Eq_2215
   DataType: byte
   OrigDataType: byte
-T_2216: (in SLICE(cond(a_6 - globals->t16A7), bool, 0) : bool)
+T_2216: (in SLICE(cond(a_6 - Mem5[0x16A7<16>:byte]), bool, 0) : bool)
   Class: Eq_2174
   DataType: bool
   OrigDataType: bool

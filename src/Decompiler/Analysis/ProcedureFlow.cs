@@ -21,25 +21,21 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Types;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 
 namespace Reko.Analysis
 {
-	/// <summary>
-	/// Describes the flow of registers in and out of a procedure. 
-	/// We are usually interested in registers modified, live in, &c.
-	/// </summary>
-	public class ProcedureFlow : DataFlow
+    /// <summary>
+    /// Describes the flow of registers in and out of a procedure. 
+    /// We are usually interested in registers modified, live in, &c.
+    /// </summary>
+    public class ProcedureFlow : DataFlow
 	{
         public Procedure Procedure { get; }
-        public FunctionType Signature;
+        public FunctionType? Signature;
 
         /// <summary>
         /// A collection of all each storage that is live-in to the procedure,
@@ -161,7 +157,7 @@ namespace Reko.Analysis
             // If it can be improved, do so.
             foreach (var use in uses)
             {
-                CallBinding callBinding = null;
+                CallBinding? callBinding = null;
                 switch (use.Key)
                 {
                 case RegisterStorage reg:
@@ -176,12 +172,11 @@ namespace Reko.Analysis
             }
         }
 
-        private static CallBinding IntersectStackRegisterBinding(StackArgumentStorage stArg, IEnumerable<CallBinding> callBindings)
+        private static CallBinding? IntersectStackRegisterBinding(StackArgumentStorage stArg, IEnumerable<CallBinding> callBindings)
         {
-            var stRange = stArg.GetBitRange();
             foreach (var binding in callBindings)
             {
-                if (binding.Storage is StackArgumentStorage stBinding)
+                if (binding.Storage is StackArgumentStorage)
                 {
                     if (binding.Storage.Equals(stArg))
                         return binding;
@@ -190,7 +185,7 @@ namespace Reko.Analysis
             return null;
         }
 
-        private static CallBinding IntersectRegisterBinding(RegisterStorage regCallee, IEnumerable<CallBinding> callBindings)
+        private static CallBinding? IntersectRegisterBinding(RegisterStorage regCallee, IEnumerable<CallBinding> callBindings)
         {
             var dom = regCallee.Domain;
             var regRange = regCallee.GetBitRange();

@@ -44,9 +44,9 @@ namespace Reko.Core.Lib
     /// </remarks>
     public class ConcurrentBTreeDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
-        private static TraceSwitch trace = new TraceSwitch("ConcurrentBTreeDictionary", "Traces the concurrent BTree dictionary") { Level = TraceLevel.Error };
+        private static readonly TraceSwitch trace = new TraceSwitch("ConcurrentBTreeDictionary", "Traces the concurrent BTree dictionary") { Level = TraceLevel.Error };
 
-        private Node root;
+        private Node? root;
         private int version;
         private readonly int InternalNodeChildren;
         private readonly int LeafNodeChildren;
@@ -97,7 +97,7 @@ namespace Reko.Core.Lib
                 this.totalCount = totalCount;
             }
 
-            public abstract (Node, Node) Put(TKey key, TValue value, bool setting, ConcurrentBTreeDictionary<TKey, TValue> tree);
+            public abstract (Node, Node?) Put(TKey key, TValue value, bool setting, ConcurrentBTreeDictionary<TKey, TValue> tree);
 
             public abstract (TValue, bool) Get(TKey key, ConcurrentBTreeDictionary<TKey, TValue> tree);
 
@@ -107,7 +107,7 @@ namespace Reko.Core.Lib
             /// <param name="key">Key to remove</param>
             /// <param name="tree">The ConcurrentBTreeDictionary</param>
             /// <returns>A new node if <paramref name="key"/> was found and deleted, otherwise null.</returns>
-            public abstract Node Remove(TKey key, ConcurrentBTreeDictionary<TKey, TValue> tree);
+            public abstract Node? Remove(TKey key, ConcurrentBTreeDictionary<TKey, TValue> tree);
 
             public override string ToString()
             {
@@ -136,7 +136,7 @@ namespace Reko.Core.Lib
                 return (values[idx], true);
             }
 
-            public override (Node, Node) Put(TKey key, TValue value, bool setting, ConcurrentBTreeDictionary<TKey, TValue> tree)
+            public override (Node, Node?) Put(TKey key, TValue value, bool setting, ConcurrentBTreeDictionary<TKey, TValue> tree)
             {
                 int idx = Array.BinarySearch(keys, 0, count, key, tree.Comparer);
                 if (idx >= 0)
@@ -157,7 +157,7 @@ namespace Reko.Core.Lib
                 }
             }
 
-            public override Node Remove(TKey key, ConcurrentBTreeDictionary<TKey, TValue> tree)
+            public override Node? Remove(TKey key, ConcurrentBTreeDictionary<TKey, TValue> tree)
             {
                 int idx = Array.BinarySearch(keys, 0, count, key, tree.Comparer);
                 if (idx >= 0)
@@ -178,7 +178,7 @@ namespace Reko.Core.Lib
                 return null;
             }
 
-            private (Node, Node) Insert(int idx, TKey key, TValue value, ConcurrentBTreeDictionary<TKey, TValue> tree)
+            private (Node, Node?) Insert(int idx, TKey key, TValue value, ConcurrentBTreeDictionary<TKey, TValue> tree)
             {
                 if (count == keys.Length)
                 {
@@ -280,7 +280,7 @@ namespace Reko.Core.Lib
                 }
             }
 
-            public override (Node, Node) Put(TKey key, TValue value, bool setting, ConcurrentBTreeDictionary<TKey, TValue> tree)
+            public override (Node, Node?) Put(TKey key, TValue value, bool setting, ConcurrentBTreeDictionary<TKey, TValue> tree)
             {
                 int idx = Array.BinarySearch(keys, 1, count - 1, key, tree.Comparer);
                 int iPos = (idx >= 0)
@@ -304,10 +304,9 @@ namespace Reko.Core.Lib
                 }
             }
 
-            public override Node Remove(TKey key, ConcurrentBTreeDictionary<TKey, TValue> tree)
+            public override Node? Remove(TKey key, ConcurrentBTreeDictionary<TKey, TValue> tree)
             {
                 int idx = Array.BinarySearch(keys, 1, count - 1, key, tree.Comparer);
-                Node removed;
                 int iPos;
                 if (idx >= 0)
                 {
@@ -317,7 +316,7 @@ namespace Reko.Core.Lib
                 {
                     iPos = (~idx) - 1;
                 }
-                removed = nodes[iPos].Remove(key, tree);
+                var removed = nodes[iPos].Remove(key, tree);
                 if (removed != null)
                 {
                     var nKeys = new TKey[tree.InternalNodeChildren];
@@ -330,7 +329,7 @@ namespace Reko.Core.Lib
                 return removed;
             }
 
-            private (Node, Node) Insert(int idx, TKey key, Node leftNode, Node node, ConcurrentBTreeDictionary<TKey, TValue> tree)
+            private (Node, Node?) Insert(int idx, TKey key, Node leftNode, Node node, ConcurrentBTreeDictionary<TKey, TValue> tree)
             {
                 if (count == keys.Length)
                 {
@@ -439,7 +438,7 @@ namespace Reko.Core.Lib
             set
             {
                 EnsureRoot();
-                var (left, right) = root.Put(key, value, true, this);
+                var (left, right) = root!.Put(key, value, true, this);
                 if (right != null)
                     root = NewInternalRoot(left, right);
                 else
@@ -466,7 +465,7 @@ namespace Reko.Core.Lib
         public void Add(TKey key, TValue value)
         {
             EnsureRoot();
-            var (left, right) = root.Put(key, value, false, this);
+            var (left, right) = root!.Put(key, value, false, this);
             Node newRoot;
             if (right != null)
                 newRoot = NewInternalRoot(left, right);
@@ -506,7 +505,7 @@ namespace Reko.Core.Lib
 
         public bool ContainsValue(TValue value)
         {
-            return this.Any(e => e.Value.Equals(value));
+            return this.Any(e => e.Value!.Equals(value));
         }
 
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
@@ -633,11 +632,12 @@ namespace Reko.Core.Lib
             throw new NotImplementedException();
         }
 
+        //$TODO: .NET 5 [NotNullWhen(returnValue: true)]
         public bool TryGetValue(TKey key, out TValue value)
         {
             if (root == null)
             {
-                value = default(TValue);
+                value = default!;
                 return false;
             }
             bool found;
@@ -645,12 +645,13 @@ namespace Reko.Core.Lib
             return found;
         }
 
+        //$TODO: .NET 5 [NotNullWhen(returnValue: true)]
         public bool TryGetLowerBound(TKey key, out TValue value)
         {
             var snapshot = this.root;
             var cmp = this.Comparer;
 
-            value = default(TValue);
+            value = default!;
             bool set = false;
             if (snapshot == null)
                 return set;
@@ -681,12 +682,13 @@ namespace Reko.Core.Lib
             return set;
         }
 
+        //$TODO: .NET 5 [NotNullWhen(returnValue: true)]
         public bool TryGetUpperBound(TKey key, out TValue value)
         {
             var snapshot = this.root;
             var cmp = this.Comparer;
 
-            value = default(TValue);
+            value = default!;
             bool set = false;
             if (snapshot == null)
                 return set;
@@ -717,12 +719,13 @@ namespace Reko.Core.Lib
             return set;
         }
 
+        //$TODO: .NET 5 [NotNullWhen(returnValue: true)]
         public bool TryGetLowerBoundKey(TKey key, out TKey closestKey)
         {
             var snapshot = this.root;
             var cmp = this.Comparer;
 
-            closestKey = default(TKey);
+            closestKey = default!;
             bool set = false;
             if (snapshot == null)
                 return set;
@@ -753,12 +756,13 @@ namespace Reko.Core.Lib
             return set;
         }
 
+        //$TODO: .NET 5 [NotNullWhen(returnValue: true)]
         public bool TryGetUpperBoundKey(TKey key, out TKey closestKey)
         {
             var snapshot = this.root;
             var cmp = this.Comparer;
 
-            closestKey = default(TKey);
+            closestKey = default!;
             bool set = false;
             if (snapshot == null)
                 return set;
@@ -877,10 +881,9 @@ namespace Reko.Core.Lib
                 0, 0);
         }
 
-        private static KeyValuePair<TKey, TValue> GetEntry(Node root, int index)
+        private static KeyValuePair<TKey, TValue> GetEntry(Node? root, int index)
         {
-            int count = root.totalCount;
-            if (0 <= index && index < count)
+            if (root != null && 0 <= index && index < root.totalCount)
             {
                 Node node = root;
                 int itemsLeft = index;
@@ -933,7 +936,7 @@ namespace Reko.Core.Lib
         {
             if (root == null)
                 Debug.Print("(empty)");
-            Dump(root, 0);
+            Dump(root!, 0);
         }
 
         [Conditional("DEBUG")]

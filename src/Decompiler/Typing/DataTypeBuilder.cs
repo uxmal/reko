@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,15 +34,15 @@ namespace Reko.Typing
 	/// <remarks>
 	/// <para>
 	/// Much of the type inference code in this namespace was inspired by the master's thesis
-	/// "Entwicklung eines Typanalysesystem für einen Decompiler", 2004, by Raimar Falke.
+	/// "Entwicklung eines Typanalysesystem fÃ¼r einen Decompiler", 2004, by Raimar Falke.
 	/// </para>
 	/// </remarks>
 	public class DataTypeBuilder : ITraitHandler
 	{
-		private ITypeStore store;
-		private TypeFactory factory;
-		private DataTypeBuilderUnifier unifier;
-        private IPlatform platform;
+		private readonly ITypeStore store;
+		private readonly TypeFactory factory;
+		private readonly DataTypeBuilderUnifier unifier;
+        private readonly IPlatform platform;
 
 		public DataTypeBuilder(TypeFactory factory, ITypeStore store, IPlatform platform)
 		{
@@ -65,13 +65,13 @@ namespace Reko.Typing
             DataType dtCurrent = tv.OriginalDataType;
             if (dtCurrent != null)
             {
-                dtNew = unifier.Unify(dtCurrent, dtNew);
+                dtNew = unifier.Unify(dtCurrent, dtNew)!;
             }
             tv.OriginalDataType = dtNew;
             return dtNew;
         }
 
-        public DataType MergeIntoDataType(Expression exp, DataType dtNew)
+        public DataType MergeIntoDataType(Expression exp, DataType? dtNew)
         {
             if (dtNew == null)
                 return exp.DataType;
@@ -79,7 +79,7 @@ namespace Reko.Typing
             DataType dtCurrent = store.GetDataTypeOf(exp);
             if (dtCurrent != null)
             {
-                var u = unifier.Unify(dtCurrent, dtNew);
+                var u = unifier.Unify(dtCurrent, dtNew)!;
                 dtNew = u;
             }
             store.SetDataTypeOf(exp, dtNew);
@@ -107,7 +107,7 @@ namespace Reko.Typing
 			MergeIntoDataType(dt, type);
 		}
 
-        public DataType DataTypeTrait(Expression exp, DataType dt)
+        public DataType DataTypeTrait(Expression exp, DataType? dt)
         {
             if (dt == PrimitiveType.SegmentSelector)
             {
@@ -121,22 +121,22 @@ namespace Reko.Typing
 
 		public DataType EqualTrait(Expression tv1, Expression tv2)
 		{
-            return null;
+            return null!;
 		}
 
 		public DataType FunctionTrait(Expression function, int funcPtrSize, TypeVariable ret, params TypeVariable [] actuals)
 		{
-            Identifier[] adt = actuals.Select(a => new Identifier("", a, null)).ToArray();
-			var fn = factory.CreateFunctionType(new Identifier("", ret, null), adt);
+            Identifier[] adt = actuals.Select(a => new Identifier("", a, null!)).ToArray();
+			var fn = factory.CreateFunctionType(new Identifier("", ret, null!), adt);
 			var pfn = factory.CreatePointer(fn, funcPtrSize * DataType.BitsPerByte);
 			return MergeIntoDataType(function, pfn);
 		}
 
-		public DataType MemAccessArrayTrait(Expression expBase, Expression expStruct, int structPtrSize, int offset, int elementSize, int length, Expression expField)
+		public DataType MemAccessArrayTrait(Expression? expBase, Expression expStruct, int structPtrSize, int offset, int elementSize, int length, Expression expField)
 		{
 			var element = factory.CreateStructureType(null, elementSize);
 			if (expField != null)
-				element.Fields.Add(0, expField.TypeVariable);
+				element.Fields.Add(0, expField.TypeVariable!);
             var tvElement = store.CreateTypeVariable(factory);
             tvElement.OriginalDataType = element;
 
@@ -144,38 +144,38 @@ namespace Reko.Typing
 		    return MemoryAccessCommon(expBase, expStruct, offset, dtArray, structPtrSize);
 		}
 		
-		public DataType MemAccessTrait(Expression tBase, Expression tStruct, int structPtrSize, Expression tField, int offset)
+		public DataType MemAccessTrait(Expression? tBase, Expression tStruct, int structPtrSize, Expression tField, int offset)
 		{
-			return MemoryAccessCommon(tBase, tStruct, offset, tField.TypeVariable, structPtrSize);
+			return MemoryAccessCommon(tBase, tStruct, offset, tField.TypeVariable!, structPtrSize);
 		}
 
-		public DataType MemFieldTrait(Expression tBase, Expression tStruct, Expression tField, int offset)
+		public DataType MemFieldTrait(Expression? tBase, Expression tStruct, Expression tField, int offset)
         {
             var s = factory.CreateStructureType(null, 0);
-            var field = new StructureField(offset, tField.TypeVariable);
+            var field = new StructureField(offset, tField.TypeVariable!);
             s.Fields.Add(field);
             return MergeIntoDataType(tStruct, s);
         }
 
-        public DataType MemoryAccessCommon(Expression tBase, Expression tStruct, int offset, DataType tField, int structPtrSize)
+        public DataType MemoryAccessCommon(Expression? tBase, Expression tStruct, int offset, DataType tField, int structPtrSize)
         {
             var s = factory.CreateStructureType(null, 0);
             var field = new StructureField(offset, tField);
             s.Fields.Add(field);
 
             var pointer = tBase != null
-                ? (DataType)factory.CreateMemberPointer(tBase.TypeVariable, s, structPtrSize)
+                ? (DataType)factory.CreateMemberPointer(tBase.TypeVariable!, s, structPtrSize)
                 : (DataType)factory.CreatePointer(s, structPtrSize * DataType.BitsPerByte);
             return MergeIntoDataType(tStruct, pointer);
         }
 
-		public DataType MemSizeTrait(Expression tBase, Expression tStruct, int size)
+		public DataType MemSizeTrait(Expression? tBase, Expression tStruct, int size)
 		{
 			if (size <= 0)
 				throw new ArgumentOutOfRangeException("size must be positive");
 			var s = factory.CreateStructureType(null, size);
 			var ptr = tBase != null
-                ? (DataType)factory.CreateMemberPointer(tBase.TypeVariable, s, platform.FramePointerType.Size)
+                ? (DataType)factory.CreateMemberPointer(tBase.TypeVariable!, s, platform.FramePointerType.Size)
 				: (DataType)factory.CreatePointer(s, platform.PointerType.BitSize);
 			return MergeIntoDataType(tStruct, ptr);
 		}

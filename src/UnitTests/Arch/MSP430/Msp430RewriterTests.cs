@@ -66,10 +66,10 @@ namespace Reko.UnitTests.Arch.Msp430
             AssertCode(
                 "0|L--|0100(4): 5 instructions",
                 "1|L--|v3 = Mem0[r14:word16]",
-                "2|L--|v5 = Mem0[pc + -28612<i16>:word16]",
-                "3|L--|v5 = v5 ^ v3",
-                "4|L--|Mem0[pc + -28612<i16>:word16] = v5",
-                "5|L--|VNZC = cond(v5)");
+                "2|L--|v4 = Mem0[0x913E<p16>:word16]",
+                "3|L--|v4 = v4 ^ v3",
+                "4|L--|Mem0[0x913E<p16>:word16] = v4",
+                "5|L--|VNZC = cond(v4)");
         }
 
         [Test]
@@ -321,10 +321,10 @@ namespace Reko.UnitTests.Arch.Msp430
                 "0|L--|0100(4): 6 instructions",
                 "1|L--|v3 = Mem0[r4:word16]",
                 "2|L--|r4 = r4 + 2<i16>",
-                "3|L--|v5 = Mem0[pc + 16446<i16>:word16]",
-                "4|L--|v5 = __dadd(v5, v3)",
-                "5|L--|Mem0[pc + 16446<i16>:word16] = v5",
-                "6|L--|NZC = cond(v5)");
+                "3|L--|v4 = Mem0[0x4140<p16>:word16]",
+                "4|L--|v4 = __dadd(v4, v3)",
+                "5|L--|Mem0[0x4140<p16>:word16] = v4",
+                "6|L--|NZC = cond(v4)");
         }
 
         [Test]
@@ -393,6 +393,32 @@ namespace Reko.UnitTests.Arch.Msp430
             AssertCode(         // ret
                 "0|T--|0100(2): 1 instructions",
                 "1|T--|return (2,0)");
+        }
+
+        [Test]
+        public void MSP430Rw_add_two_abs()
+        {
+            Given_HexString("9252 9C57 7877");
+            AssertCode(         // add.w\t&579C,&7778
+                "0|L--|0100(6): 5 instructions",
+                "1|L--|v2 = Mem0[0x579C<p16>:word16]",
+                "2|L--|v3 = Mem0[0x7778<p16>:word16]",
+                "3|L--|v3 = v3 + v2",
+                "4|L--|Mem0[0x7778<p16>:word16] = v3",
+                "5|L--|VNZC = cond(v3)");
+        }
+
+        [Test]
+        public void MSP430Dis_add_b_pcrel_pcrel()
+        {
+            Given_HexString("D050 6647 40F7");
+            AssertCode(         // add.b\t4768(pc),-08BC(pc)
+                "0|L--|0100(6): 5 instructions",
+                "1|L--|v3 = Mem0[0x4868<p16>:byte]",
+                "2|L--|v4 = Mem0[0xF844<p16>:byte]",
+                "3|L--|v4 = v4 + v3",
+                "4|L--|Mem0[0xF844<p16>:byte] = v4",
+                "5|L--|VNZC = cond(v4)");
         }
     }
 }

@@ -292,8 +292,9 @@ namespace Reko.UnitTests.Core
             var dynlink = new DynamicLinker(project, program, new FakeDecompilerEventListener());
 
             var m = new ExpressionEmitter();
-            var proc = program.EnsureProcedure(program.Architecture, Address.Ptr64(0x00123000), "foo_proc");
-            var block = new Block(proc, "foo");
+            var addr = Address.Ptr64(0x00123000);
+            var proc = program.EnsureProcedure(program.Architecture, addr, "foo_proc");
+            var block = new Block(proc, addr, "foo");
             var stm = new Statement(0x00123400, new Store(m.Word64(0x00123400), Constant.Real32(1.0F)), block);
 
             var result = dynlink.ResolveToImportedValue(stm, Constant.Word32(0x00200000));

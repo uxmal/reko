@@ -74,7 +74,7 @@ namespace Reko.Core.CLanguage
 
         public int VisitArray(ArrayType_v1 array)
         {
-            return Align(array.ElementType.Accept(this)) * array.Length;
+            return Align(array.ElementType!.Accept(this)) * array.Length;
         }
 
         public int VisitEnum(SerializedEnumType e)
@@ -104,7 +104,7 @@ namespace Reko.Core.CLanguage
             foreach (var field in structure.Fields)
             {
                 field.Offset = size;
-                size += field.Type.Accept(this);
+                size += field.Type!.Accept(this);
             }
             structure.ByteSize = size;
             return size;
@@ -116,13 +116,13 @@ namespace Reko.Core.CLanguage
             //namedTypeSizes[typedef.Name] = size;
             //return size;
 
-            int size = typedef.DataType.Accept(this);
+            int size = typedef.DataType!.Accept(this);
             return size;
         }
 
         public int VisitTypeReference(TypeReference_v1 typeReference)
         {
-            return typedefs[typeReference.TypeName].Accept(this);
+            return typedefs[typeReference.TypeName!].Accept(this);
         }
 
         public int VisitUnion(UnionType_v1 union)
@@ -132,7 +132,7 @@ namespace Reko.Core.CLanguage
             var size = 0;
             foreach (var field in union.Alternatives)
             {
-                size = Math.Max(size, field.Type.Accept(this));
+                size = Math.Max(size, field.Type!.Accept(this));
             }
             union.ByteSize = size;
             return size;

@@ -77,9 +77,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private void Given_ImageMapItem(uint addr, DataType dataType, string name)
         {
             var address = Address32.Ptr32(addr);
-            var item = new ImageMapItem
+            var item = new ImageMapItem(address)
             {
-                Address = address,
                 DataType = dataType,
                 Name = name,
                 Size = (uint)dataType.Size,

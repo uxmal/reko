@@ -32,7 +32,7 @@ namespace Reko.Core
     public class Provenance
     {
         public ProvenanceType ProvenanceType;
-        public string Comment;
+        public string? Comment;
     }
 
     public enum ProvenanceType
@@ -46,6 +46,11 @@ namespace Reko.Core
 
     public class Provenance<T> : Provenance
     {
-        public T ReachedFrom;
+        public readonly T ReachedFrom;
+
+        public Provenance(T from)
+        {
+            this.ReachedFrom = from;
+        }
     }
 }

@@ -139,7 +139,7 @@ namespace Reko.UnitTests.Scanning
         public void BlockCloner_CloneCall()
         {
             var call = new CallInstruction(new ProcedureConstant(arch.PointerType, procCalling), new CallSite(0, 0));
-            var block = new Block(procCalling, "test");
+            var block = new Block(procCalling, procCalling.EntryAddress, "test");
             var stmOld = new Statement(42, call, block);
             callgraph.AddEdge(stmOld, procCalling);
 

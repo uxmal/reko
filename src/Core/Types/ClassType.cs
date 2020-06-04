@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,7 +18,7 @@
  */
 #endregion
 
- using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,7 +34,7 @@ namespace Reko.Core.Types
         {
         }
 
-        public ClassType(string name) : base(name)
+        public ClassType(string? name) : base(name)
         {
             Fields = new List<ClassField>();
             Methods = new List<ClassMethod>();
@@ -57,7 +57,7 @@ namespace Reko.Core.Types
             return v.VisitClass(this);
         }
 
-        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
+        public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
         {
             throw new NotImplementedException();
         }
@@ -75,21 +75,37 @@ namespace Reko.Core.Types
 
     public class ClassMember
     {
+        private string? name;
+
         public ClassProtection Protection;
         public ClassMemberAttribute Attribute;
-        public string Name;
+        public string Name {
+            get { return name ?? DefaultFieldName(); }
+            set { this.name = value; }
+        }
+
         public int Offset;  // Offset of a field, self-evident
                             // Offset of a method, in a virtual table.
+
+        private string DefaultFieldName()
+        {
+            return $"m_{Offset:X4}";
+        }
     }
 
     public class ClassField : ClassMember
     {
         public DataType DataType;
+
+        public ClassField(DataType type)
+        {
+            this.DataType = type;
+        }
     }
 
     public class ClassMethod : ClassMember
     {
-       public ProcedureBase Procedure;
+       public ProcedureBase? Procedure;
     }
 
     public enum ClassProtection
@@ -109,6 +125,6 @@ namespace Reko.Core.Types
     public class ClassBase
     {
         public ClassProtection Protection;
-        public CompositeType BaseType;
+        public CompositeType? BaseType;
     }
 }

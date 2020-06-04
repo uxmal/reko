@@ -132,23 +132,41 @@ namespace Reko.Arch.Msp430
             case RegisterOperand rop:
                 return binder.EnsureRegister(rop.Register);
             case MemoryOperand mop:
-                Expression ea = binder.EnsureRegister(mop.Base);
-                if (mop.PostIncrement)
+                Expression ea;
+                if (mop.Base != null)
                 {
-                    var tmp = binder.CreateTemporary(op.Width);
-                    m.Assign(tmp, m.Mem(op.Width, ea));
-                    m.Assign(ea, m.IAdd(ea, m.Int16((short) op.Width.Size)));
-                    return tmp;
-                }
-                else if (mop.Offset != 0)
-                {
-                    var tmp = binder.CreateTemporary(op.Width);
-                    m.Assign(tmp, m.Mem(op.Width, m.IAdd(ea, m.Int16(mop.Offset))));
-                    return tmp;
+                    ea = binder.EnsureRegister(mop.Base);
+                    if (mop.PostIncrement)
+                    {
+                        var tmp = binder.CreateTemporary(op.Width);
+                        m.Assign(tmp, m.Mem(op.Width, ea));
+                        m.Assign(ea, m.IAdd(ea, m.Int16((short) op.Width.Size)));
+                        return tmp;
+                    }
+                    else if (mop.Base == Registers.pc)
+                    {
+                        ea = instr.Address + mop.Offset;
+                        var tmp = binder.CreateTemporary(op.Width);
+                        m.Assign(tmp, m.Mem(op.Width, ea));
+                        return tmp;
+                    }
+                    else if (mop.Offset != 0)
+                    {
+                        var tmp = binder.CreateTemporary(op.Width);
+                        m.Assign(tmp, m.Mem(op.Width, m.IAdd(ea, m.Int16(mop.Offset))));
+                        return tmp;
+                    }
+                    else
+                    {
+                        var tmp = binder.CreateTemporary(op.Width);
+                        m.Assign(tmp, m.Mem(op.Width, ea));
+                        return tmp;
+                    }
                 }
                 else
                 {
                     var tmp = binder.CreateTemporary(op.Width);
+                    ea = Address.Ptr16((ushort) mop.Offset);
                     m.Assign(tmp, m.Mem(op.Width, ea));
                     return tmp;
                 }
@@ -177,10 +195,25 @@ namespace Reko.Arch.Msp430
                 }
                 return dst;
             case MemoryOperand mop:
-                Expression ea = binder.EnsureRegister(mop.Base);
-                if (mop.Offset != 0)
+                Expression ea;
+                if (mop.Base != null)
                 {
-                    ea = m.IAdd(ea, m.Int16(mop.Offset));
+                    if (mop.Base == Registers.pc)
+                    {
+                        ea = instr.Address + mop.Offset;
+                    }
+                    else
+                    {
+                        ea = binder.EnsureRegister(mop.Base);
+                        if (mop.Offset != 0)
+                        {
+                            ea = m.IAdd(ea, m.Int16(mop.Offset));
+                        }
+                    }
+                }
+                else
+                {
+                    ea = Address.Ptr16((ushort) mop.Offset);
                 }
                 var tmp = binder.CreateTemporary(mop.Width);
                 m.Assign(tmp, m.Mem(tmp.DataType, ea));

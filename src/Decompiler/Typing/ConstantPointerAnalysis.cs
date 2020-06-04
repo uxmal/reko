@@ -38,11 +38,11 @@ namespace Reko.Typing
     /// </remarks>
 	public class ConstantPointerAnalysis : InstructionVisitorBase
 	{
-		private TypeFactory factory;
-		private TypeStore store;
-		private Program program;
-		private Identifier globals;
-		private Unifier unifier;
+		private readonly TypeFactory factory;
+		private readonly TypeStore store;
+		private readonly Program program;
+		private Identifier? globals;
+		private readonly Unifier unifier;
 
 		public ConstantPointerAnalysis(TypeFactory factory, TypeStore store, Program program)
 		{
@@ -74,11 +74,11 @@ namespace Reko.Typing
 			}
 		}
 
-		private TypeVariable GetTypeVariableForField(DataType fieldType)
+		private TypeVariable? GetTypeVariableForField(DataType fieldType)
 		{
             if (fieldType is StructureType s)
             {
-                StructureField f = s.Fields.AtOffset(0);
+                StructureField? f = s.Fields.AtOffset(0);
                 if (f == null)
                     return null;
                 return f.DataType as TypeVariable;
@@ -104,15 +104,13 @@ namespace Reko.Typing
 			set { globals = value; }
 		}
 
-        public T ResolveAs<T>(DataType dt) where T : DataType
+        public T? ResolveAs<T>(DataType dt) where T : DataType
         {
             for (; ; )
             {
-                var t = dt as T;
-                if (t != null)
+                if (dt is T t)
                     return t;
-                var eq = dt as EquivalenceClass;
-                if (eq == null)
+                if (!(dt is EquivalenceClass eq))
                     return null;
                 dt = eq.DataType;   
             }
@@ -122,7 +120,7 @@ namespace Reko.Typing
 		{
             if (!c.IsValid)
                 return;
-			DataType dt = c.TypeVariable.DataType;
+			DataType dt = c.TypeVariable!.DataType;
             int offset = StructureField.ToOffset(c);
             switch (dt)
             {
@@ -138,8 +136,8 @@ namespace Reko.Typing
                     //$TODO: these are getting merged earlier, perhaps this is the right place to do those merges?
                     return;
                 }
-                var strGlobals = Globals.TypeVariable.Class.ResolveAs<StructureType>();
-                if (strGlobals.Fields.AtOffset(offset) == null)
+                var strGlobals = Globals.TypeVariable!.Class.ResolveAs<StructureType>();
+                if (strGlobals!.Fields.AtOffset(offset) == null)
                 {
                     if (!IsInsideArray(strGlobals, offset, pointee) &&
                         !IsInsideStruct(strGlobals, offset))
@@ -193,18 +191,18 @@ namespace Reko.Typing
         /// <param name="mptr"></param>
         private void VisitConstantMemberPointer(int offset, MemberPointer mptr)
 		{
-			TypeVariable tvField = GetTypeVariableForField(mptr.Pointee);
+			TypeVariable? tvField = GetTypeVariableForField(mptr.Pointee);
 			if (tvField == null)
 				return;
 
 			TypeVariable tvBase = (TypeVariable) mptr.BasePointer;
 			Pointer ptr = CreatePointerToField(offset, tvField);
 			tvBase.OriginalDataType =
-				unifier.Unify(tvBase.OriginalDataType, ptr);
+				unifier.Unify(tvBase.OriginalDataType, ptr)!;
 
 			ptr = CreatePointerToField(offset, tvField);
 			tvBase.Class.DataType =
-				unifier.Unify(tvBase.Class.DataType, ptr);
+				unifier.Unify(tvBase.Class.DataType, ptr)!;
 		}
 	}
 }

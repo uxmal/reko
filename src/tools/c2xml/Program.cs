@@ -40,13 +40,12 @@ namespace Reko.Tools.C2Xml
         private const string usage = @"c2xml - Convert ANSI C to Reko XML
 
 Usage: 
-    c2xml -a <arch> 
-          -e <env>
-          <inputfile> [<outputfile>]
+    c2xml -a <arch> -e <env> [options] <inputfile> [<outputfile>]
 
 Options:
-  -a (x86|z80)     Processor architecture
-  -e (win32|sysV)  Operating environment
+  -a <arch>        Processor architecture
+  -e <env>         Operating environment
+  -d <dialect>     Dialect of C/C++ used to parse
 ";
 
         static int Main(string[] args)
@@ -71,6 +70,7 @@ Options:
                 Console.Error.WriteLine(ex);
                 return 1;
             }
+
             var arch = rekoCfg.GetArchitecture(options["-a"].ToString());
             if (arch == null)
             {
@@ -99,8 +99,7 @@ Options:
                 return 1;
             }
 
-            if (options.ContainsKey("<outputfile>") &&  
-                options["<outputfile>"] != null)
+            if (options.ContainsKey("<outputfile>") && options["<outputfile>"] != null)
             {
                 try
                 {
@@ -112,12 +111,17 @@ Options:
                     return 1;
                 }
             }
+            string dialect = null;
+            if (options.TryGetValue("-d", out var optDialect))
+            {
+                dialect = (string) optDialect.Value;
+            }
             var xWriter = new XmlTextWriter(new StreamWriter(output, new UTF8Encoding(false)))
             {
                 Formatting = Formatting.Indented
             };
 
-            XmlConverter c = new XmlConverter(input, xWriter, platform);
+            XmlConverter c = new XmlConverter(input, xWriter, platform, dialect);
             c.Convert();
             output.Flush();
             output.Close();

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Core.CLanguage
 
         private void Lex(string text)
         {
-            lexer = new CDirectiveLexer(state, new CLexer(new StringReader(text)));
+            lexer = new CDirectiveLexer(state, new CLexer(new StringReader(text), CLexer.GccKeywords));
         }
 
         private void Expect(CTokenType expectedType)

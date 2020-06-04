@@ -6684,7 +6684,7 @@ T_1427: (in 0x400<16> : word16)
   Class: Eq_19
   DataType: (ptr16 word16)
   OrigDataType: cup16
-T_1428: (in r4 > &(globals->t021C + 484<i32>) : bool)
+T_1428: (in r4 > (char *) (&globals->t021C) + 484<i32> : bool)
   Class: Eq_1428
   DataType: bool
   OrigDataType: bool
@@ -6712,7 +6712,7 @@ T_1434: (in 0x3FF<16> : word16)
   Class: Eq_19
   DataType: (ptr16 word16)
   OrigDataType: word16
-T_1435: (in globals->ptr0082 == &(globals->t021C + 483<i32>) : bool)
+T_1435: (in globals->ptr0082 == (char *) (&globals->t021C) + 483<i32> : bool)
   Class: Eq_1435
   DataType: bool
   OrigDataType: bool
@@ -8288,7 +8288,7 @@ T_1828: (in 0x400<16> : word16)
   Class: Eq_19
   DataType: (ptr16 word16)
   OrigDataType: cup16
-T_1829: (in r4_129 > &(globals->t021C + 484<i32>) : bool)
+T_1829: (in r4_129 > (char *) (&globals->t021C) + 484<i32> : bool)
   Class: Eq_1829
   DataType: bool
   OrigDataType: bool

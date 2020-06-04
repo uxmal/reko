@@ -97,7 +97,7 @@ namespace Reko.UnitTests.Mocks
         {
             if (!blocks.TryGetValue(label, out Block b))
             {
-                b = Procedure.AddBlock(label);
+                b = Procedure.AddBlock(null, label);
                 blocks.Add(label, b);
             }
             return b;
@@ -373,24 +373,24 @@ namespace Reko.UnitTests.Mocks
             return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Word32));
         }
 
-        public Identifier Reg32(string name)
+        public virtual Identifier Reg32(string name)
         {
             return Frame.EnsureRegister(Architecture.GetRegister(name));
         }
 
-        public Identifier Reg16(string name, int number)
+        public virtual Identifier Reg16(string name, int number)
         {
             return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Word16));
         }
 
-        public Identifier Reg8(string name, int number)
+        public virtual Identifier Reg8(string name, int number)
         {
             return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Byte));
         }
 
         // Use this method to model the x86 "ah" or the z80 "h" registers which are 
         // offset from the start of their word registers.
-        public Identifier Reg8(string name, int number, uint bitOffset)
+        public virtual Identifier Reg8(string name, int number, uint bitOffset)
         {
             return Frame.EnsureRegister(new RegisterStorage(name, number, bitOffset, PrimitiveType.Byte));
         }
