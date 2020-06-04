@@ -363,16 +363,18 @@ namespace Reko.Scanning
                 return false;
             }
 
+            /*
             // Otherwise, if one or more nodes has zero predecessors, pick it.
             if (nopreds.Count > 0)
             {
                 cluster.Entries.UnionWith(nopreds);
-                return true;
+                return;
             }
 
             // If we can't find another possibility, return the node with the
             // lowest address.
             cluster.Entries.Add(cluster.Blocks.OrderBy(b => b.Address).First());
+             */
             return false;
         }
 
