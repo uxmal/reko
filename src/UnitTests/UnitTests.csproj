@@ -356,6 +356,7 @@
     <Compile Include="ImageLoaders\OdbgScript\OllyLangInterpreterTests.cs" />
     <Compile Include="ImageLoaders\OdbgScript\OllyScriptParserTests.cs" />
     <Compile Include="ImageLoaders\Omf\OmfLoaderTests.cs" />
+    <Compile Include="ImageLoaders\Srec\SrecLoaderTests.cs" />
     <Compile Include="Loading\NullImageLoaderTests.cs" />
     <Compile Include="Loading\SymbolLoadingServiceTests.cs" />
     <Compile Include="ImageLoaders\Llvm\LlvmLexerTests.cs" />
@@ -1114,6 +1115,10 @@
     <ProjectReference Include="..\ImageLoaders\Omf\Omf.csproj">
       <Project>{0e00ed86-372c-4497-85bb-428bdd1c5ccf}</Project>
       <Name>Omf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\Srec\Srec.csproj">
+      <Project>{6feaf3bb-48d3-4301-9ce5-a1a274db97f5}</Project>
+      <Name>Srec</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\TypeLib\TypeLib.csproj">
       <Project>{a4def935-217c-4107-998c-c7845893cfa0}</Project>
