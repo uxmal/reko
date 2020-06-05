@@ -173,7 +173,7 @@ T_26: (in 0x4006B0<64> : word64)
   Class: Eq_20
   DataType: (ptr64 Eq_20)
   OrigDataType: (ptr64 (fn void ()))
-T_27: (in __libc_start_main(&globals->t4005C5, qwArg00, (char *) fp + 8<i32>, &globals->t400620, &globals->t4006B0, rdx, fp) : int32)
+T_27: (in __libc_start_main(&g_t4005C5, qwArg00, (char *) fp + 8<i32>, &g_t400620, &g_t4006B0, rdx, fp) : int32)
   Class: Eq_27
   DataType: int32
   OrigDataType: int32

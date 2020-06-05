@@ -738,7 +738,7 @@ Eq_608: (union "Eq_608" (uipr32 u0) (word16 u1))
 Eq_610: (union "Eq_610" (uipr32 u0) (word16 u1))
 	T_610 (in 0xA<32> : uipr32)
 Eq_614: (union "Eq_614" (word20 u0) (word16 u1))
-	T_614 (in xQueueReceiveFromISR(sr, fp - 0xC<32>, fp - 0xA<32>, globals->t021E) : word20)
+	T_614 (in xQueueReceiveFromISR(sr, fp - 0xC<32>, fp - 0xA<32>, g_t021E) : word20)
 	T_615 (in 1<16> : word16)
 Eq_624: (union "Eq_624" (uint16 u0) (up20 u1))
 	T_624 (in v15_35 : Eq_624)
@@ -4093,7 +4093,7 @@ T_494: (in out r15_12 : word16)
   Class: Eq_491
   DataType: Eq_491
   OrigDataType: (union (ptr16 u1) (word20 u0))
-T_495: (in xQueueReceive(sr, r14, r15, globals->a021C[0<i32>], out r15_12) : word20)
+T_495: (in xQueueReceive(sr, r14, r15, g_a021C[0<i32>], out r15_12) : word20)
   Class: Eq_2
   DataType: ui20
   OrigDataType: word20
@@ -4245,7 +4245,7 @@ T_532: (in out r15_25 : word16)
   Class: Eq_526
   DataType: Eq_526
   OrigDataType: (union (ptr16 u1) (word20 u0))
-T_533: (in xQueueSend(sr_12, r14, fp - 2<16>, globals->t021E, out r15_25) : word20)
+T_533: (in xQueueSend(sr_12, r14, fp - 2<16>, g_t021E, out r15_25) : word20)
   Class: Eq_2
   DataType: ui20
   OrigDataType: word20
@@ -4365,7 +4365,7 @@ T_562: (in out r15_124 : word16)
   Class: Eq_491
   DataType: Eq_491
   OrigDataType: (union (ptr16 u1) (word20 u0))
-T_563: (in xQueueReceive(sr_12, 0<16>, fp - 2<16>, globals->t021E, out r15_124) : word20)
+T_563: (in xQueueReceive(sr_12, 0<16>, fp - 2<16>, g_t021E, out r15_124) : word20)
   Class: Eq_2
   DataType: ui20
   OrigDataType: word20
@@ -4437,7 +4437,7 @@ T_580: (in out r15_29 : word16)
   Class: Eq_570
   DataType: Eq_570
   OrigDataType: (union (ptr16 u1) (word20 u0))
-T_581: (in xQueueSendFromISR(sr, 0<16>, fp - 0xA<32>, globals->a021C[0<i32>], out r15_29) : word20)
+T_581: (in xQueueSendFromISR(sr, 0<16>, fp - 0xA<32>, g_a021C[0<i32>], out r15_29) : word20)
   Class: Eq_2
   DataType: ui20
   OrigDataType: word20
@@ -4569,7 +4569,7 @@ T_613: (in Mem14[0x021E<p16>:word16] : word16)
   Class: Eq_350
   DataType: Eq_350
   OrigDataType: (union (word20 u1) (word16 u0))
-T_614: (in xQueueReceiveFromISR(sr, fp - 0xC<32>, fp - 0xA<32>, globals->t021E) : word20)
+T_614: (in xQueueReceiveFromISR(sr, fp - 0xC<32>, fp - 0xA<32>, g_t021E) : word20)
   Class: Eq_614
   DataType: Eq_614
   OrigDataType: word20
@@ -4577,7 +4577,7 @@ T_615: (in 1<16> : word16)
   Class: Eq_614
   DataType: word16
   OrigDataType: word16
-T_616: (in xQueueReceiveFromISR(sr, fp - 0xC<32>, fp - 0xA<32>, globals->t021E) == 1<16> : bool)
+T_616: (in xQueueReceiveFromISR(sr, fp - 0xC<32>, fp - 0xA<32>, g_t021E) == 1<16> : bool)
   Class: Eq_616
   DataType: bool
   OrigDataType: bool

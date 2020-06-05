@@ -229,7 +229,7 @@ Eq_426: LPTOP_LEVEL_EXCEPTION_FILTER
 	T_914 (in 0<32> : word32)
 	T_915 (in SetUnhandledExceptionFilter(null) : LPTOP_LEVEL_EXCEPTION_FILTER)
 	T_984 (in 0x4018DF<32> : word32)
-	T_985 (in SetUnhandledExceptionFilter(&globals->t4018DF) : LPTOP_LEVEL_EXCEPTION_FILTER)
+	T_985 (in SetUnhandledExceptionFilter(&g_t4018DF) : LPTOP_LEVEL_EXCEPTION_FILTER)
 Eq_429: (fn Eq_432 ((ptr32 Eq_423)))
 	T_429 (in UnhandledExceptionFilter : ptr32)
 	T_430 (in signature of UnhandledExceptionFilter : void)
@@ -314,7 +314,7 @@ Eq_648: (struct "Eq_648" (400000 word32 dw400000) (400018 word16 w400018))
 	T_650 (in Mem19[0x0040003C<p32>:word32] : word32)
 Eq_667: (struct "Eq_667" (24 int32 dw0024))
 	T_667 (in eax_40 : (ptr32 Eq_667))
-	T_675 (in fn004013FB(&globals->w400000, eax_32 - 0x00400000<p32>, out edx) : word32)
+	T_675 (in fn004013FB(&g_w400000, eax_32 - 0x00400000<p32>, out edx) : word32)
 	T_679 (in 0<32> : word32)
 Eq_668: (fn (ptr32 Eq_667) ((ptr32 Eq_443), uint32, (ptr32 Eq_442)))
 	T_668 (in fn004013FB : ptr32)
@@ -2474,7 +2474,7 @@ T_514: (in out eax_25 : word32)
   Class: Eq_510
   DataType: word32
   OrigDataType: word32
-T_515: (in __cmpxchg(globals->dw403338, edx_19, 0<32>, out eax_25) : bool)
+T_515: (in __cmpxchg(g_dw403338, edx_19, 0<32>, out eax_25) : bool)
   Class: Eq_515
   DataType: bool
   OrigDataType: bool
@@ -3114,7 +3114,7 @@ T_674: (in out edx : ptr32)
   Class: Eq_442
   DataType: (ptr32 Eq_442)
   OrigDataType: ptr32
-T_675: (in fn004013FB(&globals->w400000, eax_32 - 0x00400000<p32>, out edx) : word32)
+T_675: (in fn004013FB(&g_w400000, eax_32 - 0x00400000<p32>, out edx) : word32)
   Class: Eq_667
   DataType: (ptr32 Eq_667)
   OrigDataType: word32
@@ -3350,7 +3350,7 @@ T_733: (in SLICE(eax_8 & 0x1F<32>, byte, 0) : byte)
   Class: Eq_568
   DataType: byte
   OrigDataType: byte
-T_734: (in __ror(eax_8 ^ globals->dw40333C, (byte) (eax_8 & 0x1F<32>)) : word32)
+T_734: (in __ror(eax_8 ^ g_dw40333C, (byte) (eax_8 & 0x1F<32>)) : word32)
   Class: Eq_577
   DataType: word32
   OrigDataType: word32
@@ -3358,7 +3358,7 @@ T_735: (in 0xFFFFFFFF<32> : word32)
   Class: Eq_577
   DataType: word32
   OrigDataType: word32
-T_736: (in __ror(eax_8 ^ globals->dw40333C, (byte) (eax_8 & 0x1F<32>)) != 0xFFFFFFFF<32> : bool)
+T_736: (in __ror(eax_8 ^ g_dw40333C, (byte) (eax_8 & 0x1F<32>)) != 0xFFFFFFFF<32> : bool)
   Class: Eq_736
   DataType: bool
   OrigDataType: bool
@@ -3702,7 +3702,7 @@ T_821: (in 0x403358<32> : word32)
   Class: Eq_820
   DataType: Eq_820
   OrigDataType: PSLIST_HEADER
-T_822: (in InitializeSListHead(&globals->u403358) : void)
+T_822: (in InitializeSListHead(&g_u403358) : void)
   Class: Eq_822
   DataType: void
   OrigDataType: void
@@ -4354,7 +4354,7 @@ T_984: (in 0x4018DF<32> : word32)
   Class: Eq_426
   DataType: Eq_426
   OrigDataType: LPTOP_LEVEL_EXCEPTION_FILTER
-T_985: (in SetUnhandledExceptionFilter(&globals->t4018DF) : LPTOP_LEVEL_EXCEPTION_FILTER)
+T_985: (in SetUnhandledExceptionFilter(&g_t4018DF) : LPTOP_LEVEL_EXCEPTION_FILTER)
   Class: Eq_426
   DataType: Eq_426
   OrigDataType: LPTOP_LEVEL_EXCEPTION_FILTER

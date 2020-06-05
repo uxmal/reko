@@ -241,7 +241,7 @@ Eq_578: (struct "Eq_578" (400000 word32 dw400000) (400018 word16 w400018))
 	T_580 (in Mem19[0x0040003C<p32>:word32] : word32)
 Eq_597: (struct "Eq_597" (24 int32 dw0024))
 	T_597 (in eax_40 : (ptr32 Eq_597))
-	T_605 (in fn004013F6(&globals->w400000, eax_32 - 0x00400000<p32>, out edx) : word32)
+	T_605 (in fn004013F6(&g_w400000, eax_32 - 0x00400000<p32>, out edx) : word32)
 	T_609 (in 0<32> : word32)
 Eq_598: (fn (ptr32 Eq_597) ((ptr32 Eq_450), uint32, (ptr32 Eq_449)))
 	T_598 (in fn004013F6 : ptr32)
@@ -2434,7 +2434,7 @@ T_521: (in out eax_25 : word32)
   Class: Eq_517
   DataType: word32
   OrigDataType: word32
-T_522: (in __cmpxchg(globals->dw403338, edx_19, 0<32>, out eax_25) : bool)
+T_522: (in __cmpxchg(g_dw403338, edx_19, 0<32>, out eax_25) : bool)
   Class: Eq_522
   DataType: bool
   OrigDataType: bool
@@ -2766,7 +2766,7 @@ T_604: (in out edx : ptr32)
   Class: Eq_449
   DataType: (ptr32 Eq_449)
   OrigDataType: ptr32
-T_605: (in fn004013F6(&globals->w400000, eax_32 - 0x00400000<p32>, out edx) : word32)
+T_605: (in fn004013F6(&g_w400000, eax_32 - 0x00400000<p32>, out edx) : word32)
   Class: Eq_597
   DataType: (ptr32 Eq_597)
   OrigDataType: word32

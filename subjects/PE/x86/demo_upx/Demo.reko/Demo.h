@@ -13,7 +13,7 @@ Eq_4: (union "Eq_4" (int32 u0) (UINT u1))
 	T_4 (in uExitCode : UINT)
 	T_10 (in uType : UINT)
 	T_14 (in 0<32> : word32)
-	T_15 (in MessageBoxA(null, &globals->t403000, &globals->t403007, 0<32>) : int32)
+	T_15 (in MessageBoxA(null, &g_t403000, &g_t403007, 0<32>) : int32)
 Eq_5: (fn Eq_4 (Eq_7, Eq_8, Eq_8, Eq_4))
 	T_5 (in MessageBoxA : ptr32)
 	T_6 (in signature of MessageBoxA : void)
@@ -82,11 +82,11 @@ T_14: (in 0<32> : word32)
   Class: Eq_4
   DataType: int32
   OrigDataType: UINT
-T_15: (in MessageBoxA(null, &globals->t403000, &globals->t403007, 0<32>) : int32)
+T_15: (in MessageBoxA(null, &g_t403000, &g_t403007, 0<32>) : int32)
   Class: Eq_4
   DataType: Eq_4
   OrigDataType: (union (int32 u0) (UINT u2))
-T_16: (in ExitProcess(MessageBoxA(null, &globals->t403000, &globals->t403007, 0<32>)) : void)
+T_16: (in ExitProcess(MessageBoxA(null, &g_t403000, &g_t403007, 0<32>)) : void)
   Class: Eq_16
   DataType: void
   OrigDataType: void

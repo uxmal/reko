@@ -65,6 +65,8 @@ namespace Reko.Structure
 
         public void Structure()
         {
+            var fge = new FictitiousGlobalEliminator(program, proc);
+            fge.Transform();
             var cfgc = new ControlFlowGraphCleaner(proc);
             cfgc.Transform();
             var ccc = new CompoundConditionCoalescer(proc);

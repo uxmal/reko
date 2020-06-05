@@ -9129,7 +9129,7 @@ T_1663: (in r4_9 + 0x88<32> : word32)
   Class: Eq_1198
   DataType: (ptr32 (ptr32 Eq_1053))
   OrigDataType: word32
-T_1664: (in xTaskCreate(globals->dw09E8, globals->dw09E4, 0x3B<32>, 0<32>, cpsr, 0x80000000<32>, &r4_9->dw0084 + 1<i32>) : word32)
+T_1664: (in xTaskCreate(g_dw09E8, g_dw09E4, 0x3B<32>, 0<32>, cpsr, 0x80000000<32>, &r4_9->dw0084 + 1<i32>) : word32)
   Class: Eq_1652
   DataType: word32
   OrigDataType: word32
@@ -15285,7 +15285,7 @@ T_3202: (in Mem0[Mem0[Mem0[0x00001724<p32>:word32] + 0<32>:word32] + 0<32>:word3
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: word32
-T_3203: (in __msr(cpsr, **globals->ptr1724) : word32)
+T_3203: (in __msr(cpsr, **g_ptr1724) : word32)
   Class: Eq_507
   DataType: word32
   OrigDataType: word32
@@ -16129,7 +16129,7 @@ T_3413: (in Mem146[Mem146[Mem146[0x00001724<p32>:word32] + 0<32>:word32] + 0<32>
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: word32
-T_3414: (in __msr(cpsr, **globals->ptr1724) : word32)
+T_3414: (in __msr(cpsr, **g_ptr1724) : word32)
   Class: Eq_507
   DataType: word32
   OrigDataType: word32
@@ -20481,7 +20481,7 @@ T_4501: (in 0<32> : word32)
   Class: Eq_1198
   DataType: (ptr32 (ptr32 Eq_1053))
   OrigDataType: word32
-T_4502: (in MPU_xTaskCreate(globals->dw80F8, globals->dw80F4, 0x3B<32>, 0<32>, cpsr, 3<32>, null) : void)
+T_4502: (in MPU_xTaskCreate(g_dw80F8, g_dw80F4, 0x3B<32>, 0<32>, cpsr, 3<32>, null) : void)
   Class: Eq_4502
   DataType: void
   OrigDataType: void
@@ -20521,7 +20521,7 @@ T_4511: (in 0<32> : word32)
   Class: Eq_1198
   DataType: (ptr32 (ptr32 Eq_1053))
   OrigDataType: word32
-T_4512: (in MPU_xTaskCreate(globals->dw8100, globals->dw80FC, 0x3B<32>, 0<32>, cpsr, 2<32>, null) : void)
+T_4512: (in MPU_xTaskCreate(g_dw8100, g_dw80FC, 0x3B<32>, 0<32>, cpsr, 2<32>, null) : void)
   Class: Eq_4502
   DataType: void
   OrigDataType: void
@@ -20557,7 +20557,7 @@ T_4520: (in 0<32> : word32)
   Class: Eq_4424
   DataType: ui32
   OrigDataType: word32
-T_4521: (in OSRAMStringDraw(globals->ptr8104, 0<32>, 0<32>) : void)
+T_4521: (in OSRAMStringDraw(g_ptr8104, 0<32>, 0<32>) : void)
   Class: Eq_4430
   DataType: void
   OrigDataType: void
@@ -21181,7 +21181,7 @@ T_4676: (in Mem9[0x0000828C<p32>:word32] : word32)
   Class: Eq_4674
   DataType: uint32
   OrigDataType: word32
-T_4677: (in SysCtlPeripheralEnable(globals->dw828C) : void)
+T_4677: (in SysCtlPeripheralEnable(g_dw828C) : void)
   Class: Eq_4677
   DataType: void
   OrigDataType: void
@@ -21197,7 +21197,7 @@ T_4680: (in Mem9[0x00008290<p32>:word32] : word32)
   Class: Eq_4674
   DataType: uint32
   OrigDataType: word32
-T_4681: (in SysCtlPeripheralEnable(globals->dw8290) : void)
+T_4681: (in SysCtlPeripheralEnable(g_dw8290) : void)
   Class: Eq_4677
   DataType: void
   OrigDataType: void
@@ -21361,7 +21361,7 @@ T_4721: (in 8<32> : word32)
   Class: Eq_4716
   DataType: ui32
   OrigDataType: word32
-T_4722: (in SSIConfig(r5_55, 0<32>, 0<32>, globals->dw8298, 8<32>) : void)
+T_4722: (in SSIConfig(r5_55, 0<32>, 0<32>, g_dw8298, 8<32>) : void)
   Class: Eq_4722
   DataType: void
   OrigDataType: void
@@ -24041,7 +24041,7 @@ T_5391: (in 5<32> : word32)
   Class: Eq_4741
   DataType: (ptr32 Eq_4741)
   OrigDataType: word32
-T_5392: (in PDCWrite(&globals->dw0005, r1_18) : word32)
+T_5392: (in PDCWrite(&g_dw0005, r1_18) : word32)
   Class: Eq_4611
   DataType: up32
   OrigDataType: word32
@@ -24217,7 +24217,7 @@ T_5435: (in (word32) Mem37[r3_28 + 0<32>:byte] : word32)
   Class: Eq_4742
   DataType: ui32
   OrigDataType: word32
-T_5436: (in PDCWrite(&globals->dw0005, (word32) *r3_28) : word32)
+T_5436: (in PDCWrite(&g_dw0005, (word32) *r3_28) : word32)
   Class: Eq_4611
   DataType: up32
   OrigDataType: word32
@@ -24425,7 +24425,7 @@ T_5487: (in (word32) Mem37[r3_21 + 0<32>:byte] : word32)
   Class: Eq_4742
   DataType: ui32
   OrigDataType: word32
-T_5488: (in PDCWrite(&globals->dw0005, (word32) *r3_21) : word32)
+T_5488: (in PDCWrite(&g_dw0005, (word32) *r3_21) : word32)
   Class: Eq_4611
   DataType: up32
   OrigDataType: word32
@@ -24833,7 +24833,7 @@ T_5589: (in out r0_22 : ptr32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: ptr32
-T_5590: (in xQueueCRSend(*globals->ptr877C, fp - 12<i32>, 0<32>, r7, lr, cpsr, out r0_22) : bool)
+T_5590: (in xQueueCRSend(*g_ptr877C, fp - 12<i32>, 0<32>, r7, lr, cpsr, out r0_22) : bool)
   Class: Eq_5569
   DataType: bool
   OrigDataType: bool
@@ -25037,7 +25037,7 @@ T_5640: (in out r0_22 : ptr32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: ptr32
-T_5641: (in xQueueCRSend(*globals->ptr877C, fp - 12<i32>, 0<32>, r7, lr, cpsr, out r0_22) : bool)
+T_5641: (in xQueueCRSend(*g_ptr877C, fp - 12<i32>, 0<32>, r7, lr, cpsr, out r0_22) : bool)
   Class: Eq_5569
   DataType: bool
   OrigDataType: bool
@@ -33253,7 +33253,7 @@ T_7694: (in 0<32> : word32)
   Class: Eq_7667
   DataType: word32
   OrigDataType: word32
-T_7695: (in I2CMasterIntStatus(globals->ptr9730, 0<32>) : word32)
+T_7695: (in I2CMasterIntStatus(g_ptr9730, 0<32>) : word32)
   Class: Eq_7669
   DataType: word32
   OrigDataType: word32
@@ -33261,7 +33261,7 @@ T_7696: (in 0<32> : word32)
   Class: Eq_7669
   DataType: word32
   OrigDataType: word32
-T_7697: (in I2CMasterIntStatus(globals->ptr9730, 0<32>) == 0<32> : bool)
+T_7697: (in I2CMasterIntStatus(g_ptr9730, 0<32>) == 0<32> : bool)
   Class: Eq_7697
   DataType: bool
   OrigDataType: bool
@@ -33289,7 +33289,7 @@ T_7703: (in Mem7[Mem7[0x00009734<p32>:word32] + 0<32>:word32] : word32)
   Class: Eq_7623
   DataType: word32
   OrigDataType: word32
-T_7704: (in OSRAMDelay(*globals->ptr9734) : void)
+T_7704: (in OSRAMDelay(*g_ptr9734) : void)
   Class: Eq_7677
   DataType: void
   OrigDataType: void
@@ -33305,7 +33305,7 @@ T_7707: (in Mem7[0x00009730<p32>:word32] : word32)
   Class: Eq_7629
   DataType: (ptr32 Eq_7629)
   OrigDataType: word32
-T_7708: (in I2CMasterDataPut(globals->ptr9730, r0) : void)
+T_7708: (in I2CMasterDataPut(g_ptr9730, r0) : void)
   Class: Eq_7644
   DataType: void
   OrigDataType: void
@@ -33513,7 +33513,7 @@ T_7759: (in 6<32> : word32)
   Class: Eq_7652
   DataType: int32
   OrigDataType: word32
-T_7760: (in OSRAMWriteArray(globals->ptr97C4, 6<32>) : void)
+T_7760: (in OSRAMWriteArray(g_ptr97C4, 6<32>) : void)
   Class: Eq_7760
   DataType: void
   OrigDataType: void
@@ -33597,7 +33597,7 @@ T_7780: (in 6<32> : word32)
   Class: Eq_7652
   DataType: int32
   OrigDataType: word32
-T_7781: (in OSRAMWriteArray(globals->ptr97C8, 6<32>) : void)
+T_7781: (in OSRAMWriteArray(g_ptr97C8, 6<32>) : void)
   Class: Eq_7760
   DataType: void
   OrigDataType: void
@@ -34337,7 +34337,7 @@ T_7965: (in Mem15[0x00009960<p32>:word32] : word32)
   Class: Eq_4674
   DataType: uint32
   OrigDataType: word32
-T_7966: (in SysCtlPeripheralEnable(globals->dw9960) : void)
+T_7966: (in SysCtlPeripheralEnable(g_dw9960) : void)
   Class: Eq_4677
   DataType: void
   OrigDataType: void
@@ -34361,7 +34361,7 @@ T_7971: (in 0xC<32> : word32)
   Class: Eq_4699
   DataType: ui32
   OrigDataType: word32
-T_7972: (in GPIOPinTypeI2C(globals->ptr9964, 0xC<32>) : void)
+T_7972: (in GPIOPinTypeI2C(g_ptr9964, 0xC<32>) : void)
   Class: Eq_7972
   DataType: void
   OrigDataType: void
@@ -34389,7 +34389,7 @@ T_7978: (in Mem15[0x00009968<p32>:word32] : word32)
   Class: Eq_7975
   DataType: (ptr32 Eq_7975)
   OrigDataType: word32
-T_7979: (in I2CMasterInit(globals->ptr9968, r0) : void)
+T_7979: (in I2CMasterInit(g_ptr9968, r0) : void)
   Class: Eq_7979
   DataType: void
   OrigDataType: void

@@ -216,7 +216,7 @@ T_43: (in 0x10CB8<32> : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: (ptr32 (fn void ()))
-T_44: (in atexit(&globals->t10CB8) : void)
+T_44: (in atexit(&g_t10CB8) : void)
   Class: Eq_44
   DataType: void
   OrigDataType: void

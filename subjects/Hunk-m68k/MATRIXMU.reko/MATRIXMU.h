@@ -599,7 +599,7 @@ T_92: (in Mem64[0x0000149C<p32>:word32] : word32)
   Class: Eq_25
   DataType: (ptr32 Eq_25)
   OrigDataType: word32
-T_93: (in CloseLibrary(globals->ptr149C) : void)
+T_93: (in CloseLibrary(g_ptr149C) : void)
   Class: Eq_93
   DataType: void
   OrigDataType: void
@@ -2075,7 +2075,7 @@ T_461: (in Mem0[0x0000149C<p32>:word32] : word32)
   Class: Eq_25
   DataType: (ptr32 Eq_25)
   OrigDataType: word32
-T_462: (in CloseLibrary(globals->ptr149C) : void)
+T_462: (in CloseLibrary(g_ptr149C) : void)
   Class: Eq_93
   DataType: void
   OrigDataType: void

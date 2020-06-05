@@ -8,7 +8,7 @@
 void _start(void (* rdx)(), Eq_n qwArg00)
 {
 	__align((char *) fp + 8);
-	__libc_start_main(&globals->t0898, qwArg00, (char *) fp + 8, &globals->t0A70, &globals->t0AE0, rdx, fp);
+	__libc_start_main(&g_t0898, qwArg00, (char *) fp + 8, &g_t0A70, &g_t0AE0, rdx, fp);
 	__hlt();
 }
 
@@ -36,7 +36,7 @@ void register_tm_clones()
 // 00000000000006E0: void __do_global_dtors_aux()
 void __do_global_dtors_aux()
 {
-	if (globals->b201048 != 0x00)
+	if (g_b201048 != 0x00)
 		return;
 	if (__cxa_finalize != 0x00)
 	{
@@ -44,7 +44,7 @@ void __do_global_dtors_aux()
 		__cxa_finalize();
 	}
 	deregister_tm_clones();
-	globals->b201048 = 0x01;
+	g_b201048 = 0x01;
 }
 
 // 0000000000000720: void frame_dummy()
@@ -90,7 +90,7 @@ void _mm_free(real64 (* rdi)[])
 void vec_add(word64 rdi)
 {
 	__align(fp);
-	uint64 rax_n = (uint64) ((uint128) (uint64) rdi /u globals->qw0B00);
+	uint64 rax_n = (uint64) ((uint128) (uint64) rdi /u g_qw0B00);
 	if (rax_n <= 0x00)
 		;
 }
@@ -152,7 +152,7 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 		Eq_n rbx_n = 0x00;
 		do
 		{
-			(*((char *) globals->a200DE8 + rbx_n * 0x08))();
+			(*((char *) g_a200DE8 + rbx_n * 0x08))();
 			rbx_n = (word64) rbx_n.u1 + 1;
 		} while (rbp_n >> 0x03 != rbx_n);
 	}

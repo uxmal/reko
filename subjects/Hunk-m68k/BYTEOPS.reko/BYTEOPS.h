@@ -1485,7 +1485,7 @@ T_92: (in Mem64[0x00002B90<p32>:word32] : word32)
   Class: Eq_25
   DataType: (ptr32 Eq_25)
   OrigDataType: word32
-T_93: (in CloseLibrary(globals->ptr2B90) : void)
+T_93: (in CloseLibrary(g_ptr2B90) : void)
   Class: Eq_93
   DataType: void
   OrigDataType: void
@@ -2989,7 +2989,7 @@ T_468: (in Mem0[0x00002B90<p32>:word32] : word32)
   Class: Eq_25
   DataType: (ptr32 Eq_25)
   OrigDataType: word32
-T_469: (in CloseLibrary(globals->ptr2B90) : void)
+T_469: (in CloseLibrary(g_ptr2B90) : void)
   Class: Eq_93
   DataType: void
   OrigDataType: void
@@ -3725,7 +3725,7 @@ T_652: (in 0000142C : ptr32)
   Class: Eq_644
   DataType: (ptr32 byte)
   OrigDataType: ptr32
-T_653: (in fn0000143C((uint32) (uint8) (byte) ((uint32) (uint8) v32_48 << 5<32>), &globals->b142C) : word32)
+T_653: (in fn0000143C((uint32) (uint8) (byte) ((uint32) (uint8) v32_48 << 5<32>), &g_b142C) : word32)
   Class: Eq_570
   DataType: word32
   OrigDataType: word32
@@ -12253,7 +12253,7 @@ T_2784: (in out a0 : ptr32)
   Class: Eq_4
   DataType: (ptr32 Eq_4)
   OrigDataType: ptr32
-T_2785: (in fn000021C4(globals->ptr2BC0, dwArg04 + 4<i32>, out a0) : word32)
+T_2785: (in fn000021C4(g_ptr2BC0, dwArg04 + 4<i32>, out a0) : word32)
   Class: Eq_2774
   DataType: (ptr32 int32)
   OrigDataType: word32
@@ -12381,7 +12381,7 @@ T_2816: (in dwArg04->dwFFFFFFFC + 4<i32> : word32)
   Class: Eq_2807
   DataType: up32
   OrigDataType: word32
-T_2817: (in fn00002128(globals->ptr2BC0, dwArg04 - 4<i32>, dwArg04->dwFFFFFFFC + 4<i32>) : void)
+T_2817: (in fn00002128(g_ptr2BC0, dwArg04 - 4<i32>, dwArg04->dwFFFFFFFC + 4<i32>) : void)
   Class: Eq_2817
   DataType: void
   OrigDataType: void

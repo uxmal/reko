@@ -587,7 +587,7 @@ Eq_940: FILE
 	T_4145 (in r6 : (ptr32 FILE))
 	T_4779 (in Mem15[Mem15[0x10000914<32>:word32] + 0<32>:word32] : word32)
 	T_4784 (in Mem28[Mem15[0x10000A20<32>:word32] + 0<32>:word32] : word32)
-	T_4810 (in fopen(*globals->ptr100008A0, r4) : (ptr32 FILE))
+	T_4810 (in fopen(*g_ptr100008A0, r4) : (ptr32 FILE))
 	T_4815 (in Mem56[Mem15[0x10000A20<32>:word32] + 0<32>:word32] : word32)
 	T_4820 (in Mem56[Mem56[0x10000A20<32>:word32] + 0<32>:word32] : word32)
 	T_4821 (in 0<32> : word32)
@@ -11532,7 +11532,7 @@ T_2386: (in 10<i32> : int32)
   Class: Eq_2382
   DataType: int32
   OrigDataType: int32
-T_2387: (in strncasecmp(&globals->t409FF4, fp + -2064<i32>, 10<i32>) : int32)
+T_2387: (in strncasecmp(&g_t409FF4, fp + -2064<i32>, 10<i32>) : int32)
   Class: Eq_2387
   DataType: int32
   OrigDataType: int32
@@ -11540,7 +11540,7 @@ T_2388: (in 0<32> : word32)
   Class: Eq_2387
   DataType: int32
   OrigDataType: word32
-T_2389: (in strncasecmp(&globals->t409FF4, fp + -2064<i32>, 10<i32>) != 0<32> : bool)
+T_2389: (in strncasecmp(&g_t409FF4, fp + -2064<i32>, 10<i32>) != 0<32> : bool)
   Class: Eq_2389
   DataType: bool
   OrigDataType: bool
@@ -12020,7 +12020,7 @@ T_2508: (in 10<i32> : int32)
   Class: Eq_2382
   DataType: int32
   OrigDataType: int32
-T_2509: (in strncasecmp(&globals->t409FE0, fp + -2064<i32>, 10<i32>) : int32)
+T_2509: (in strncasecmp(&g_t409FE0, fp + -2064<i32>, 10<i32>) : int32)
   Class: Eq_2387
   DataType: int32
   OrigDataType: int32
@@ -12028,7 +12028,7 @@ T_2510: (in 0<32> : word32)
   Class: Eq_2387
   DataType: int32
   OrigDataType: word32
-T_2511: (in strncasecmp(&globals->t409FE0, fp + -2064<i32>, 10<i32>) != 0<32> : bool)
+T_2511: (in strncasecmp(&g_t409FE0, fp + -2064<i32>, 10<i32>) != 0<32> : bool)
   Class: Eq_2511
   DataType: bool
   OrigDataType: bool
@@ -17984,7 +17984,7 @@ T_3999: (in 20<i32> : int32)
   Class: Eq_3993
   DataType: int32
   OrigDataType: int32
-T_4000: (in strncmp(globals->ptr100009C8[dwLoc18_57], r4, 20<i32>) : int32)
+T_4000: (in strncmp(g_ptr100009C8[dwLoc18_57], r4, 20<i32>) : int32)
   Class: Eq_4000
   DataType: int32
   OrigDataType: int32
@@ -17992,7 +17992,7 @@ T_4001: (in 0<32> : word32)
   Class: Eq_4000
   DataType: int32
   OrigDataType: word32
-T_4002: (in strncmp(globals->ptr100009C8[dwLoc18_57], r4, 20<i32>) != 0<32> : bool)
+T_4002: (in strncmp(g_ptr100009C8[dwLoc18_57], r4, 20<i32>) != 0<32> : bool)
   Class: Eq_4002
   DataType: bool
   OrigDataType: bool
@@ -21152,7 +21152,7 @@ T_4791: (in 0x40A73C<32> : word32)
   Class: Eq_907
   DataType: word16
   OrigDataType: (ptr32 char)
-T_4792: (in strcpy(*globals->ptr100008A0, 0x40A73C<32>) : (ptr32 char))
+T_4792: (in strcpy(*g_ptr100008A0, 0x40A73C<32>) : (ptr32 char))
   Class: Eq_4093
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
@@ -21224,7 +21224,7 @@ T_4809: (in Mem15[Mem15[0x100008A0<32>:word32] + 0<32>:word32] : word32)
   Class: Eq_907
   DataType: Eq_907
   OrigDataType: (ptr32 char)
-T_4810: (in fopen(*globals->ptr100008A0, r4) : (ptr32 FILE))
+T_4810: (in fopen(*g_ptr100008A0, r4) : (ptr32 FILE))
   Class: Eq_940
   DataType: (ptr32 Eq_940)
   OrigDataType: (ptr32 FILE)
@@ -21384,7 +21384,7 @@ T_4849: (in Mem12[Mem12[0x10000A20<32>:word32] + 0<32>:word32] : word32)
   Class: Eq_940
   DataType: (ptr32 Eq_940)
   OrigDataType: (ptr32 FILE)
-T_4850: (in fclose(*globals->ptr10000A20) : int32)
+T_4850: (in fclose(*g_ptr10000A20) : int32)
   Class: Eq_1094
   DataType: int32
   OrigDataType: int32
@@ -21528,7 +21528,7 @@ T_4885: (in Mem12[Mem12[0x100008A0<32>:word32] + 0<32>:word32] : word32)
   Class: Eq_907
   DataType: Eq_907
   OrigDataType: (ptr32 char)
-T_4886: (in strcpy(fp + -272<i32>, *globals->ptr100008A0) : (ptr32 char))
+T_4886: (in strcpy(fp + -272<i32>, *g_ptr100008A0) : (ptr32 char))
   Class: Eq_4093
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)

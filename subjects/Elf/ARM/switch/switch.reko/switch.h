@@ -287,7 +287,7 @@ T_34: (in Mem14[0x00008368<p32>:word32] : word32)
   Class: Eq_24
   DataType: (ptr32 Eq_24)
   OrigDataType: (ptr32 (fn void ()))
-T_35: (in __libc_start_main(globals->ptr8364, dwArg00, fp + 4<i32>, globals->ptr8368, ptrArg08, ptrArg0C, ptrArg10) : int32)
+T_35: (in __libc_start_main(g_ptr8364, dwArg00, fp + 4<i32>, g_ptr8368, ptrArg08, ptrArg0C, ptrArg10) : int32)
   Class: Eq_35
   DataType: int32
   OrigDataType: int32

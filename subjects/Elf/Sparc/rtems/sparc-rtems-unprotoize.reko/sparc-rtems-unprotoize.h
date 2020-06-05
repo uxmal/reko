@@ -407,7 +407,7 @@ Eq_127: (union "Eq_127" (char u0) ((ptr32 Eq_8154) u1) (size_t u2))
 	T_2962 (in notice(0x17250<32>, out i1_261, out i2_262, out i6_263) : word32)
 	T_2974 (in pwait((char *) i6_162 - 28<i32>, out i2_264, out i6_265) : word32)
 	T_3010 (in i0_215 : Eq_127)
-	T_3015 (in pwait(globals->str17270, out i2_217, out i6_221) : word32)
+	T_3015 (in pwait(g_str17270, out i2_217, out i6_221) : word32)
 	T_3018 (in l0 : Eq_127)
 	T_3019 (in o0 : Eq_127)
 	T_3021 (in l1Out : Eq_127)
@@ -478,7 +478,7 @@ Eq_127: (union "Eq_127" (char u0) ((ptr32 Eq_8154) u1) (size_t u2))
 	T_3349 (in out l3_118 : ptr32)
 	T_3350 (in out l4_119 : ptr32)
 	T_3351 (in out i0_36 : ptr32)
-	T_3352 (in shortpath(0<32>, globals->t28180, out l0_37, out l2_117, out l3_118, out l4_119, out i0_36) : word32)
+	T_3352 (in shortpath(0<32>, g_t28180, out l0_37, out l2_117, out l3_118, out l4_119, out i0_36) : word32)
 	T_3355 (in identify_lineno(i0_36) : word32)
 	T_3363 (in notice(l0_37, out i1_120, out i2_121, out i6_122) : word32)
 	T_3364 (in l0_84 : Eq_127)
@@ -487,7 +487,7 @@ Eq_127: (union "Eq_127" (char u0) ((ptr32 Eq_8154) u1) (size_t u2))
 	T_3375 (in out l3_124 : ptr32)
 	T_3376 (in out l4_125 : ptr32)
 	T_3377 (in out i0_126 : ptr32)
-	T_3378 (in shortpath(0<32>, globals->t28180, out l0_84, out l2_123, out l3_124, out l4_125, out i0_126) : word32)
+	T_3378 (in shortpath(0<32>, g_t28180, out l0_84, out l2_123, out l3_124, out l4_125, out i0_126) : word32)
 	T_3386 (in notice(l0_84, out i1_127, out i2_128, out i6_129) : word32)
 	T_3389 (in o1 : Eq_127)
 	T_3390 (in i1Out : Eq_127)
@@ -671,7 +671,7 @@ Eq_127: (union "Eq_127" (char u0) ((ptr32 Eq_8154) u1) (size_t u2))
 	T_4811 (in out l3_211 : ptr32)
 	T_4812 (in out l4_212 : ptr32)
 	T_4813 (in out i0_213 : ptr32)
-	T_4814 (in shortpath(0<32>, globals->t28180, out l0_122, out l2_210, out l3_211, out l4_212, out i0_213) : word32)
+	T_4814 (in shortpath(0<32>, g_t28180, out l0_122, out l2_210, out l3_211, out l4_212, out i0_213) : word32)
 	T_4822 (in notice(l0_122, out i1_214, out i2_215, out i6_216) : word32)
 	T_4823 (in o0_24 : Eq_127)
 	T_4825 (in Mem0[0x28160<32>:word32] : word32)
@@ -834,7 +834,7 @@ Eq_127: (union "Eq_127" (char u0) ((ptr32 Eq_8154) u1) (size_t u2))
 	T_6643 (in strlen(l1_506->dw0000) : size_t)
 	T_6704 (in o0_1425 : Eq_127)
 	T_6707 (in Mem402[0x2B2C0<32>:word32] : word32)
-	T_6708 (in strlen(globals->t2B2C0) : size_t)
+	T_6708 (in strlen(g_t2B2C0) : size_t)
 	T_6713 (in Mem402[0x2B2C0<32>:word32] : word32)
 	T_6714 (in Mem402[0x2B2C0<32>:word32] + o0_1425 : word32)
 	T_6716 (in Mem1431[0x2B2C0<32>:word32] : word32)
@@ -846,8 +846,8 @@ Eq_127: (union "Eq_127" (char u0) ((ptr32 Eq_8154) u1) (size_t u2))
 	T_6776 (in o1_1389 : word32)
 	T_6778 (in Mem1382[0x2B2C0<32>:word32] : word32)
 	T_6781 (in Mem1382[0x2B2C0<32>:word32] : word32)
-	T_6782 (in strlen(globals->t2B2C0) : size_t)
-	T_6783 (in Mem1382[0x2B2C0<32>:word32] + strlen(globals->t2B2C0) : word32)
+	T_6782 (in strlen(g_t2B2C0) : size_t)
+	T_6783 (in Mem1382[0x2B2C0<32>:word32] + strlen(g_t2B2C0) : word32)
 	T_6795 (in Mem1392[0x2B2C0<32>:word32] : word32)
 	T_6797 (in Mem1391[0x2B2C0<32>:word32] : word32)
 	T_6798 (in o0_1357 : Eq_127)
@@ -862,12 +862,12 @@ Eq_127: (union "Eq_127" (char u0) ((ptr32 Eq_8154) u1) (size_t u2))
 	T_6879 (in Mem1329[0x28064<32>:word32] : word32)
 	T_6890 (in o0_1297 : Eq_127)
 	T_6893 (in Mem1270[0x2B2C0<32>:word32] : word32)
-	T_6894 (in strlen(globals->t2B2C0) : size_t)
+	T_6894 (in strlen(g_t2B2C0) : size_t)
 	T_6900 (in Mem1270[0x2B2C0<32>:word32] : word32)
 	T_6901 (in Mem1270[0x2B2C0<32>:word32] + o0_1297 : word32)
 	T_6903 (in Mem1302[0x2B2C0<32>:word32] : word32)
 	T_6929 (in Mem1312[0x2B2C0<32>:word32] : word32)
-	T_6930 (in strlen(globals->t2B2C0) : size_t)
+	T_6930 (in strlen(g_t2B2C0) : size_t)
 	T_6939 (in i1_156[o0_616 * 4<32>] : word32)
 	T_6949 (in o2_640 : Eq_127)
 	T_6958 (in Mem402[0x2B2C0<32>:word32] : word32)
@@ -915,7 +915,7 @@ Eq_127: (union "Eq_127" (char u0) ((ptr32 Eq_8154) u1) (size_t u2))
 	T_7410 (in Mem763[0x28064<32>:word32] : word32)
 	T_7457 (in o0_1170 : Eq_127)
 	T_7460 (in Mem874[0x2B2C0<32>:word32] : word32)
-	T_7461 (in strlen(globals->t2B2C0) : size_t)
+	T_7461 (in strlen(g_t2B2C0) : size_t)
 	T_7466 (in Mem874[0x2B2C0<32>:word32] : word32)
 	T_7467 (in Mem874[0x2B2C0<32>:word32] + o0_1170 : word32)
 	T_7469 (in Mem1175[0x2B2C0<32>:word32] : word32)
@@ -929,21 +929,21 @@ Eq_127: (union "Eq_127" (char u0) ((ptr32 Eq_8154) u1) (size_t u2))
 	T_7519 (in o1_1137 : word32)
 	T_7521 (in Mem1094[0x2B2C0<32>:word32] : word32)
 	T_7524 (in Mem1094[0x2B2C0<32>:word32] : word32)
-	T_7525 (in strlen(globals->t2B2C0) : size_t)
-	T_7526 (in Mem1094[0x2B2C0<32>:word32] + strlen(globals->t2B2C0) : word32)
+	T_7525 (in strlen(g_t2B2C0) : size_t)
+	T_7526 (in Mem1094[0x2B2C0<32>:word32] + strlen(g_t2B2C0) : word32)
 	T_7538 (in Mem1140[0x2B2C0<32>:word32] : word32)
 	T_7540 (in Mem1139[0x2B2C0<32>:word32] : word32)
 	T_7542 (in Mem874[0x2B2C0<32>:word32] : word32)
 	T_7545 (in Mem874[0x2B2C0<32>:word32] : word32)
-	T_7546 (in strlen(globals->t2B2C0) : size_t)
-	T_7547 (in Mem874[0x2B2C0<32>:word32] + strlen(globals->t2B2C0) : word32)
+	T_7546 (in strlen(g_t2B2C0) : size_t)
+	T_7547 (in Mem874[0x2B2C0<32>:word32] + strlen(g_t2B2C0) : word32)
 	T_7549 (in Mem1082[0x2B2C0<32>:word32] : word32)
 	T_7578 (in i1_156[o2_1011 * 4<32>] : word32)
 	T_7580 (in Mem1064[0x28064<32>:word32] : word32)
 	T_7589 (in Mem874[0x2B2C0<32>:word32] : word32)
 	T_7592 (in Mem874[0x2B2C0<32>:word32] : word32)
-	T_7593 (in strlen(globals->t2B2C0) : size_t)
-	T_7594 (in Mem874[0x2B2C0<32>:word32] + strlen(globals->t2B2C0) : word32)
+	T_7593 (in strlen(g_t2B2C0) : size_t)
+	T_7594 (in Mem874[0x2B2C0<32>:word32] + strlen(g_t2B2C0) : word32)
 	T_7596 (in Mem1032[0x2B2C0<32>:word32] : word32)
 	T_7666 (in dwLoc24_338 : Eq_127)
 	T_7669 (in o0_47 : Eq_127)
@@ -1151,7 +1151,7 @@ Eq_304: (union "Eq_304" (bool u0) ((ptr32 int8) u1))
 	T_341 (in o2_16 + 1<32> : word32)
 	T_3644 (in o0 : Eq_304)
 	T_3647 (in o0_37 : Eq_304)
-	T_3655 (in SLICE(cond(0<32> - substr(o0, &globals->b17468)), bool, 0) : bool)
+	T_3655 (in SLICE(cond(0<32> - substr(o0, &g_b17468)), bool, 0) : bool)
 	T_4238 (in Mem24[Mem24[find_rightmost_formals_list(o1) + 68<i32>:word32] + 12<i32>:word32] : word32)
 Eq_344: (union "Eq_344" ((ptr32 int8) u0) ((ptr32 void) u1))
 	T_344 (in o1 : Eq_344)
@@ -1388,8 +1388,8 @@ Eq_721: (struct "Eq_721" 000C (0 word32 dw0000) (4 word32 dw0004) (8 (ptr32 Eq_3
 	T_747 (in i0_33 + 0xC<32> : word32)
 	T_748 (in i0_33 + 0xC<32> : word32)
 	T_4837 (in 0x28240<32> : word32)
-	T_4838 (in visit_each_hash_node(&globals->t28240) : word32)
-	T_4839 (in visit_each_hash_node(visit_each_hash_node(&globals->t28240)) : word32)
+	T_4838 (in visit_each_hash_node(&g_t28240) : word32)
+	T_4839 (in visit_each_hash_node(visit_each_hash_node(&g_t28240)) : word32)
 Eq_724: (struct "Eq_724" (4 word32 dw0004))
 	T_724 (in 0x1800<32> : word32)
 Eq_733: (union "Eq_733" (uint32 u0) (ptr32 u1))
@@ -2068,9 +2068,9 @@ Eq_3400: (union "Eq_3400" ((ptr32 int8) u0) ((ptr32 Eq_8158) u1))
 	T_3479 (in o0 + 1<32> : word32)
 	T_3507 (in check_source((bool) cond((word32) i0_20 + 1<i32> - o0_32), 0<32>, out i1_94, out i2_95, out i6_96) : word32)
 	T_3732 (in check_source((bool) cond(o0_42 - l1_20), 0<32>, out i1_57, out i2_240, out i6_628) : word32)
-	T_3772 (in check_source((bool) cond(globals->dw281E0 - &l1_81->bFFFFFFFF), 0<32>, out i1_629, out i2_630, out i6_631) : word32)
+	T_3772 (in check_source((bool) cond(g_dw281E0 - &l1_81->bFFFFFFFF), 0<32>, out i1_629, out i2_630, out i6_631) : word32)
 	T_3803 (in check_source(1<32> - ((o0_110 ^ 0x29<32>) > 0<32>), l0_113, out i1_632, out i2_633, out i6_634) : word32)
-	T_3820 (in check_source((bool) cond(globals->dw281E0 - l0_168), 0<32>, out i1_635, out i2_636, out i6_637) : word32)
+	T_3820 (in check_source((bool) cond(g_dw281E0 - l0_168), 0<32>, out i1_635, out i2_636, out i6_637) : word32)
 	T_3838 (in check_source(1<32> - (((int32) (*l0_168) ^ 0x29<32>) > 0<32>), l0_168, out i1_638, out i2_639, out i6_640) : word32)
 	T_3867 (in check_source((bool) cond(o0_112 - l0_113), 0<32>, out i1_641, out i2_642, out i6_643) : word32)
 	T_3945 (in check_source((bool) cond(o0_284 - l0_275), 0<32>, out i1_644, out i2_240, out i6_645) : word32)
@@ -2360,7 +2360,7 @@ Eq_4928: (struct "Eq_4928" (68 int32 dw0068))
 	T_5005 (in l2_233 : (ptr32 Eq_4928))
 Eq_4929: (struct "Eq_4929" (C (arr Eq_8133) a000C))
 	T_4929 (in l0_132 : (ptr32 Eq_4929))
-	T_4947 (in getopt_long(i6_86->ptr0048, &globals->b17838, (char *) i6_86 - 20<i32>, out l6_138, out l7_139, out i6_130) : word32)
+	T_4947 (in getopt_long(i6_86->ptr0048, &g_b17838, (char *) i6_86 - 20<i32>, out l6_138, out l7_139, out i6_130) : word32)
 Eq_4930: (fn (ptr32 Eq_4929) ((ptr32 (arr Eq_6265)), (ptr32 int8), (ptr32 ptr32), ptr32, ptr32, ptr32))
 	T_4930 (in getopt_long : ptr32)
 	T_4931 (in signature of getopt_long : void)
@@ -3004,7 +3004,7 @@ T_12: (in 0x16EE4<32> : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: (ptr32 (fn void ()))
-T_13: (in atexit(&globals->t16EE4) : void)
+T_13: (in atexit(&g_t16EE4) : void)
   Class: Eq_13
   DataType: void
   OrigDataType: void
@@ -3516,7 +3516,7 @@ T_140: (in fp + 0x48<32> : word32)
   Class: Eq_136
   DataType: Eq_136
   OrigDataType: va_list
-T_141: (in vfprintf(&globals->t2B640, o0, &fp->dw0044 + 1<i32>) : int32)
+T_141: (in vfprintf(&g_t2B640, o0, &fp->dw0044 + 1<i32>) : int32)
   Class: Eq_141
   DataType: int32
   OrigDataType: int32
@@ -14904,7 +14904,7 @@ T_2987: (in Mem153[l0_164 + 336<i32>:word32] : word32)
   Class: Eq_2982
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_2988: (in fprintf(&globals->t2B640, "%s: ", l0_164->ptr0150) : int32)
+T_2988: (in fprintf(&g_t2B640, "%s: ", l0_164->ptr0150) : int32)
   Class: Eq_2988
   DataType: int32
   OrigDataType: int32
@@ -14948,7 +14948,7 @@ T_2998: (in Mem153[i6_162 + -24<i32>:word32] : word32)
   Class: Eq_2991
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_2999: (in fprintf(&globals->t2B640, i6_162->ptrFFFFFFEC, i6_162->ptrFFFFFFE8) : int32)
+T_2999: (in fprintf(&g_t2B640, i6_162->ptrFFFFFFEC, i6_162->ptrFFFFFFE8) : int32)
   Class: Eq_2999
   DataType: int32
   OrigDataType: int32
@@ -14980,7 +14980,7 @@ T_3006: (in 0x17270<32> : word32)
   Class: Eq_2981
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_3007: (in fprintf(&globals->t2B640, ": %s\n", l2_186) : int32)
+T_3007: (in fprintf(&g_t2B640, ": %s\n", l2_186) : int32)
   Class: Eq_3007
   DataType: int32
   OrigDataType: int32
@@ -15012,7 +15012,7 @@ T_3014: (in out i6_221 : ptr32)
   Class: Eq_2969
   DataType: ptr32
   OrigDataType: ptr32
-T_3015: (in pwait(globals->str17270, out i2_217, out i6_221) : word32)
+T_3015: (in pwait(g_str17270, out i2_217, out i6_221) : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: word32
@@ -16360,7 +16360,7 @@ T_3351: (in out i0_36 : ptr32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: ptr32
-T_3352: (in shortpath(0<32>, globals->t28180, out l0_37, out l2_117, out l3_118, out l4_119, out i0_36) : word32)
+T_3352: (in shortpath(0<32>, g_t28180, out l0_37, out l2_117, out l3_118, out l4_119, out i0_36) : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: word32
@@ -16464,7 +16464,7 @@ T_3377: (in out i0_126 : ptr32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: ptr32
-T_3378: (in shortpath(0<32>, globals->t28180, out l0_84, out l2_123, out l3_124, out l4_125, out i0_126) : word32)
+T_3378: (in shortpath(0<32>, g_t28180, out l0_84, out l2_123, out l3_124, out l4_125, out i0_126) : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: word32
@@ -17152,7 +17152,7 @@ T_3549: (in globals->dw28210 + 1<32> : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: (ptr32 void)
-T_3550: (in memcpy(globals->dw28210 + 1<32>, i0_37, i1_38) : (ptr32 void))
+T_3550: (in memcpy(g_dw28210 + 1<32>, i0_37, i1_38) : (ptr32 void))
   Class: Eq_2750
   DataType: (ptr32 void)
   OrigDataType: (ptr32 void)
@@ -17560,19 +17560,19 @@ T_3651: (in 0x17468<32> : word32)
   Class: Eq_305
   DataType: (ptr32 int8)
   OrigDataType: word32
-T_3652: (in substr(o0, &globals->b17468) : word32)
+T_3652: (in substr(o0, &g_b17468) : word32)
   Class: Eq_3652
   DataType: word32
   OrigDataType: word32
-T_3653: (in 0<32> - substr(o0, &globals->b17468) : word32)
+T_3653: (in 0<32> - substr(o0, &g_b17468) : word32)
   Class: Eq_3653
   DataType: word32
   OrigDataType: word32
-T_3654: (in cond(0<32> - substr(o0, &globals->b17468)) : byte)
+T_3654: (in cond(0<32> - substr(o0, &g_b17468)) : byte)
   Class: Eq_3654
   DataType: byte
   OrigDataType: byte
-T_3655: (in SLICE(cond(0<32> - substr(o0, &globals->b17468)), bool, 0) : bool)
+T_3655: (in SLICE(cond(0<32> - substr(o0, &g_b17468)), bool, 0) : bool)
   Class: Eq_304
   DataType: Eq_304
   OrigDataType: bool
@@ -18040,7 +18040,7 @@ T_3771: (in out i6_631 : ptr32)
   Class: Eq_3392
   DataType: (ptr32 Eq_3392)
   OrigDataType: ptr32
-T_3772: (in check_source((bool) cond(globals->dw281E0 - &l1_81->bFFFFFFFF), 0<32>, out i1_629, out i2_630, out i6_631) : word32)
+T_3772: (in check_source((bool) cond(g_dw281E0 - &l1_81->bFFFFFFFF), 0<32>, out i1_629, out i2_630, out i6_631) : word32)
   Class: Eq_3400
   DataType: Eq_3400
   OrigDataType: word32
@@ -18232,7 +18232,7 @@ T_3819: (in out i6_637 : ptr32)
   Class: Eq_3392
   DataType: (ptr32 Eq_3392)
   OrigDataType: ptr32
-T_3820: (in check_source((bool) cond(globals->dw281E0 - l0_168), 0<32>, out i1_635, out i2_636, out i6_637) : word32)
+T_3820: (in check_source((bool) cond(g_dw281E0 - l0_168), 0<32>, out i1_635, out i2_636, out i6_637) : word32)
   Class: Eq_3400
   DataType: Eq_3400
   OrigDataType: word32
@@ -21304,7 +21304,7 @@ T_4587: (in (int32) Mem212[Mem212[0x28140<32>:word32] + 0<32>:int8] : int32)
   Class: Eq_454
   DataType: int32
   OrigDataType: int32
-T_4588: (in is_id_char((int32) *globals->t28140) : word32)
+T_4588: (in is_id_char((int32) *g_t28140) : word32)
   Class: Eq_957
   DataType: word32
   OrigDataType: word32
@@ -21312,7 +21312,7 @@ T_4589: (in 0<32> : word32)
   Class: Eq_957
   DataType: word32
   OrigDataType: word32
-T_4590: (in is_id_char((int32) *globals->t28140) == 0<32> : bool)
+T_4590: (in is_id_char((int32) *g_t28140) == 0<32> : bool)
   Class: Eq_4590
   DataType: bool
   OrigDataType: bool
@@ -22112,7 +22112,7 @@ T_4789: (in Mem40[0x28180<32>:word32] : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: word32
-T_4790: (in file_excluded_p(globals->t28180) : word32)
+T_4790: (in file_excluded_p(g_t28180) : word32)
   Class: Eq_4790
   DataType: word32
   OrigDataType: word32
@@ -22120,7 +22120,7 @@ T_4791: (in 0<32> : word32)
   Class: Eq_4790
   DataType: word32
   OrigDataType: word32
-T_4792: (in file_excluded_p(globals->t28180) == 0<32> : bool)
+T_4792: (in file_excluded_p(g_t28180) == 0<32> : bool)
   Class: Eq_4792
   DataType: bool
   OrigDataType: bool
@@ -22140,7 +22140,7 @@ T_4796: (in Mem40[0x28180<32>:word32] : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: word32
-T_4797: (in in_system_include_dir(globals->t28180) : word32)
+T_4797: (in in_system_include_dir(g_t28180) : word32)
   Class: Eq_4797
   DataType: word32
   OrigDataType: word32
@@ -22148,7 +22148,7 @@ T_4798: (in 0<32> : word32)
   Class: Eq_4797
   DataType: word32
   OrigDataType: word32
-T_4799: (in in_system_include_dir(globals->t28180) != 0<32> : bool)
+T_4799: (in in_system_include_dir(g_t28180) != 0<32> : bool)
   Class: Eq_4799
   DataType: bool
   OrigDataType: bool
@@ -22208,7 +22208,7 @@ T_4813: (in out i0_213 : ptr32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: ptr32
-T_4814: (in shortpath(0<32>, globals->t28180, out l0_122, out l2_210, out l3_211, out l4_212, out i0_213) : word32)
+T_4814: (in shortpath(0<32>, g_t28180, out l0_122, out l2_210, out l3_211, out l4_212, out i0_213) : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: word32
@@ -22304,11 +22304,11 @@ T_4837: (in 0x28240<32> : word32)
   Class: Eq_721
   DataType: (ptr32 Eq_721)
   OrigDataType: word32
-T_4838: (in visit_each_hash_node(&globals->t28240) : word32)
+T_4838: (in visit_each_hash_node(&g_t28240) : word32)
   Class: Eq_721
   DataType: (ptr32 Eq_721)
   OrigDataType: word32
-T_4839: (in visit_each_hash_node(visit_each_hash_node(&globals->t28240)) : word32)
+T_4839: (in visit_each_hash_node(visit_each_hash_node(&g_t28240)) : word32)
   Class: Eq_721
   DataType: (ptr32 Eq_721)
   OrigDataType: word32
@@ -22572,7 +22572,7 @@ T_4904: (in Mem400[0x2B760<32>:word32] : word32)
   Class: Eq_144
   DataType: (ptr32 char)
   OrigDataType: word32
-T_4905: (in xstrerror(globals->ptr2B760) : void)
+T_4905: (in xstrerror(g_ptr2B760) : void)
   Class: Eq_417
   DataType: void
   OrigDataType: void
@@ -22740,7 +22740,7 @@ T_4946: (in out i6_130 : ptr32)
   Class: Eq_4937
   DataType: ptr32
   OrigDataType: ptr32
-T_4947: (in getopt_long(i6_86->ptr0048, &globals->b17838, (char *) i6_86 - 20<i32>, out l6_138, out l7_139, out i6_130) : word32)
+T_4947: (in getopt_long(i6_86->ptr0048, &g_b17838, (char *) i6_86 - 20<i32>, out l6_138, out l7_139, out i6_130) : word32)
   Class: Eq_4929
   DataType: (ptr32 Eq_4929)
   OrigDataType: word32
@@ -23512,7 +23512,7 @@ T_5139: (in Mem340[0x28028<32>:word32] : word32)
   Class: Eq_5133
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_5140: (in fprintf(&globals->t2B640, "%s: %s\n", globals->ptr28150, globals->ptr28028) : int32)
+T_5140: (in fprintf(&g_t2B640, "%s: %s\n", g_ptr28150, g_ptr28028) : int32)
   Class: Eq_5140
   DataType: int32
   OrigDataType: int32
@@ -26316,7 +26316,7 @@ T_5840: (in 0x2B640<32> : word32)
   Class: Eq_5838
   DataType: (ptr32 Eq_5838)
   OrigDataType: (ptr32 FILE)
-T_5841: (in fputs("memory exhausted\n", &globals->t2B640) : int32)
+T_5841: (in fputs("memory exhausted\n", &g_t2B640) : int32)
   Class: Eq_5841
   DataType: int32
   OrigDataType: int32
@@ -26332,7 +26332,7 @@ T_5844: (in Mem0[0x28030<32>:word32] : word32)
   Class: Eq_33
   DataType: int32
   OrigDataType: int32
-T_5845: (in exit(globals->dw28030) : void)
+T_5845: (in exit(g_dw28030) : void)
   Class: Eq_39
   DataType: void
   OrigDataType: void
@@ -29784,7 +29784,7 @@ T_6707: (in Mem402[0x2B2C0<32>:word32] : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: (ptr32 char)
-T_6708: (in strlen(globals->t2B2C0) : size_t)
+T_6708: (in strlen(g_t2B2C0) : size_t)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: size_t
@@ -29900,7 +29900,7 @@ T_6736: (in i1_156[o1_1434 * 4<32>] : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: (ptr32 char)
-T_6737: (in fprintf(&globals->t2B640, "%s: option `%s' is ambiguous\n", i1_156[0<i32>], i1_156[o1_1434]) : int32)
+T_6737: (in fprintf(&g_t2B640, "%s: option `%s' is ambiguous\n", i1_156[0<i32>], i1_156[o1_1434]) : int32)
   Class: Eq_6737
   DataType: int32
   OrigDataType: int32
@@ -30080,11 +30080,11 @@ T_6781: (in Mem1382[0x2B2C0<32>:word32] : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: (ptr32 char)
-T_6782: (in strlen(globals->t2B2C0) : size_t)
+T_6782: (in strlen(g_t2B2C0) : size_t)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: (union (size_t u1))
-T_6783: (in Mem1382[0x2B2C0<32>:word32] + strlen(globals->t2B2C0) : word32)
+T_6783: (in Mem1382[0x2B2C0<32>:word32] + strlen(g_t2B2C0) : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: word32
@@ -30272,7 +30272,7 @@ T_6829: (in Mem1270[l3_478 + 0<32>:word32] : word32)
   Class: Eq_6817
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_6830: (in fprintf(&globals->t2B640, "%s: option `%c%s' doesn't allow an argument\n", i1_156[0<i32>], (int32) o3_1344->b0000, l3_478->dw0000) : int32)
+T_6830: (in fprintf(&g_t2B640, "%s: option `%c%s' doesn't allow an argument\n", i1_156[0<i32>], (int32) o3_1344->b0000, l3_478->dw0000) : int32)
   Class: Eq_6830
   DataType: int32
   OrigDataType: int32
@@ -30332,7 +30332,7 @@ T_6844: (in Mem1270[l3_478 + 0<32>:word32] : word32)
   Class: Eq_6836
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_6845: (in fprintf(&globals->t2B640, "%s: option `--%s' doesn't allow an argument\n", i1_156[0<i32>], l3_478->dw0000) : int32)
+T_6845: (in fprintf(&g_t2B640, "%s: option `--%s' doesn't allow an argument\n", i1_156[0<i32>], l3_478->dw0000) : int32)
   Class: Eq_6845
   DataType: int32
   OrigDataType: int32
@@ -30528,7 +30528,7 @@ T_6893: (in Mem1270[0x2B2C0<32>:word32] : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: (ptr32 char)
-T_6894: (in strlen(globals->t2B2C0) : size_t)
+T_6894: (in strlen(g_t2B2C0) : size_t)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: size_t
@@ -30656,7 +30656,7 @@ T_6925: (in Mem1270[(o2_1268 + 1<32> << 2<32>) + i1_156 + -4<i32>:word32] : word
   Class: Eq_6913
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_6926: (in fprintf(&globals->t2B640, "%s: option `%s' requires an argument\n", i1_156[0<i32>], (i1_156 + ((char *) o2_1268 + 1<i32> << 2<32>) / 4<i32>)[-1<i32>]) : int32)
+T_6926: (in fprintf(&g_t2B640, "%s: option `%s' requires an argument\n", i1_156[0<i32>], (i1_156 + ((char *) o2_1268 + 1<i32> << 2<32>) / 4<i32>)[-1<i32>]) : int32)
   Class: Eq_6926
   DataType: int32
   OrigDataType: int32
@@ -30672,7 +30672,7 @@ T_6929: (in Mem1312[0x2B2C0<32>:word32] : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: (ptr32 char)
-T_6930: (in strlen(globals->t2B2C0) : size_t)
+T_6930: (in strlen(g_t2B2C0) : size_t)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: size_t
@@ -30920,7 +30920,7 @@ T_6991: (in Mem402[0x2B2C0<32>:word32] : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: (ptr32 char)
-T_6992: (in fprintf(&globals->t2B640, "%s: unrecognized option `%c%s'\n", i1_156[0<i32>], (int32) *o3_1235, globals->t2B2C0) : int32)
+T_6992: (in fprintf(&g_t2B640, "%s: unrecognized option `%c%s'\n", i1_156[0<i32>], (int32) *o3_1235, g_t2B2C0) : int32)
   Class: Eq_6992
   DataType: int32
   OrigDataType: int32
@@ -30968,7 +30968,7 @@ T_7003: (in Mem402[0x2B2C0<32>:word32] : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: (ptr32 char)
-T_7004: (in fprintf(&globals->t2B640, "%s: unrecognized option `--%s'\n", i1_156[0<i32>], globals->t2B2C0) : int32)
+T_7004: (in fprintf(&g_t2B640, "%s: unrecognized option `--%s'\n", i1_156[0<i32>], g_t2B2C0) : int32)
   Class: Eq_7004
   DataType: int32
   OrigDataType: int32
@@ -31516,7 +31516,7 @@ T_7140: (in Mem707[i1_156 + 0<32>:word32] : word32)
   Class: Eq_6265
   DataType: Eq_6265
   OrigDataType: (union ((ptr32 char) u1) ((arr T_6726) u0))
-T_7141: (in fprintf(&globals->t2B640, "%s: invalid option -- %c\n", i1_156[0<i32>], l0_127) : int32)
+T_7141: (in fprintf(&g_t2B640, "%s: invalid option -- %c\n", i1_156[0<i32>], l0_127) : int32)
   Class: Eq_7141
   DataType: int32
   OrigDataType: int32
@@ -31556,7 +31556,7 @@ T_7150: (in Mem707[i1_156 + 0<32>:word32] : word32)
   Class: Eq_6265
   DataType: Eq_6265
   OrigDataType: (union ((ptr32 char) u1) ((arr T_6726) u0))
-T_7151: (in fprintf(&globals->t2B640, "%s: illegal option -- %c\n", i1_156[0<i32>], l0_127) : int32)
+T_7151: (in fprintf(&g_t2B640, "%s: illegal option -- %c\n", i1_156[0<i32>], l0_127) : int32)
   Class: Eq_7151
   DataType: int32
   OrigDataType: int32
@@ -32376,7 +32376,7 @@ T_7355: (in Mem707[i1_156 + 0<32>:word32] : word32)
   Class: Eq_6265
   DataType: Eq_6265
   OrigDataType: (union ((ptr32 char) u1) ((arr T_6726) u0))
-T_7356: (in fprintf(&globals->t2B640, "%s: option requires an argument -- %c\n", i1_156[0<i32>], l0_127) : int32)
+T_7356: (in fprintf(&g_t2B640, "%s: option requires an argument -- %c\n", i1_156[0<i32>], l0_127) : int32)
   Class: Eq_7356
   DataType: int32
   OrigDataType: int32
@@ -32728,7 +32728,7 @@ T_7443: (in i0_668 << 0x18<32> >> 0x18<32> : word32)
   Class: Eq_7434
   DataType: Eq_7434
   OrigDataType: (union (char u1) (int32 u0))
-T_7444: (in fprintf(&globals->t2B640, "%s: option requires an argument -- %c\n", i1_156[0<i32>], i0_668 << 0x18<32> >> 0x18<32>) : int32)
+T_7444: (in fprintf(&g_t2B640, "%s: option requires an argument -- %c\n", i1_156[0<i32>], i0_668 << 0x18<32> >> 0x18<32>) : int32)
   Class: Eq_7444
   DataType: int32
   OrigDataType: int32
@@ -32796,7 +32796,7 @@ T_7460: (in Mem874[0x2B2C0<32>:word32] : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: (ptr32 char)
-T_7461: (in strlen(globals->t2B2C0) : size_t)
+T_7461: (in strlen(g_t2B2C0) : size_t)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: size_t
@@ -32900,7 +32900,7 @@ T_7486: (in i1_156[o1_1177 * 4<32>] : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: (ptr32 char)
-T_7487: (in fprintf(&globals->t2B640, "%s: option `-W %s' is ambiguous\n", i1_156[0<i32>], i1_156[o1_1177]) : int32)
+T_7487: (in fprintf(&g_t2B640, "%s: option `-W %s' is ambiguous\n", i1_156[0<i32>], i1_156[o1_1177]) : int32)
   Class: Eq_7487
   DataType: int32
   OrigDataType: int32
@@ -33052,11 +33052,11 @@ T_7524: (in Mem1094[0x2B2C0<32>:word32] : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: (ptr32 char)
-T_7525: (in strlen(globals->t2B2C0) : size_t)
+T_7525: (in strlen(g_t2B2C0) : size_t)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: (union (size_t u1))
-T_7526: (in Mem1094[0x2B2C0<32>:word32] + strlen(globals->t2B2C0) : word32)
+T_7526: (in Mem1094[0x2B2C0<32>:word32] + strlen(g_t2B2C0) : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: word32
@@ -33136,11 +33136,11 @@ T_7545: (in Mem874[0x2B2C0<32>:word32] : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: (ptr32 char)
-T_7546: (in strlen(globals->t2B2C0) : size_t)
+T_7546: (in strlen(g_t2B2C0) : size_t)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: (union (size_t u1))
-T_7547: (in Mem874[0x2B2C0<32>:word32] + strlen(globals->t2B2C0) : word32)
+T_7547: (in Mem874[0x2B2C0<32>:word32] + strlen(g_t2B2C0) : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: word32
@@ -33200,7 +33200,7 @@ T_7561: (in Mem874[l3_816 + 0<32>:word32] : word32)
   Class: Eq_7553
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_7562: (in fprintf(&globals->t2B640, "%s: option `-W %s' doesn't allow an argument\n", i1_156[0<i32>], l3_816->dw0000) : int32)
+T_7562: (in fprintf(&g_t2B640, "%s: option `-W %s' doesn't allow an argument\n", i1_156[0<i32>], l3_816->dw0000) : int32)
   Class: Eq_7562
   DataType: int32
   OrigDataType: int32
@@ -33324,11 +33324,11 @@ T_7592: (in Mem874[0x2B2C0<32>:word32] : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: (ptr32 char)
-T_7593: (in strlen(globals->t2B2C0) : size_t)
+T_7593: (in strlen(g_t2B2C0) : size_t)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: (union (size_t u1))
-T_7594: (in Mem874[0x2B2C0<32>:word32] + strlen(globals->t2B2C0) : word32)
+T_7594: (in Mem874[0x2B2C0<32>:word32] + strlen(g_t2B2C0) : word32)
   Class: Eq_127
   DataType: Eq_127
   OrigDataType: word32
@@ -33416,7 +33416,7 @@ T_7615: (in Mem874[(o2_1011 << 2<32>) + i1_156 + -4<i32>:word32] : word32)
   Class: Eq_7604
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_7616: (in fprintf(&globals->t2B640, "%s: option `%s' requires an argument\n", i1_156[0<i32>], (i1_156 + (o2_1011 << 2<32>) / 4<i32>)[-1<i32>]) : int32)
+T_7616: (in fprintf(&g_t2B640, "%s: option `%s' requires an argument\n", i1_156[0<i32>], (i1_156 + (o2_1011 << 2<32>) / 4<i32>)[-1<i32>]) : int32)
   Class: Eq_7616
   DataType: int32
   OrigDataType: int32
@@ -34080,7 +34080,7 @@ T_7781: (in Mem72[i6_201 + 76<i32>:word32] : word32)
   Class: Eq_7776
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_7782: (in fprintf(&globals->t2B640, "%s: ", i6_201->ptr004C) : int32)
+T_7782: (in fprintf(&g_t2B640, "%s: ", i6_201->ptr004C) : int32)
   Class: Eq_7782
   DataType: int32
   OrigDataType: int32
@@ -34120,7 +34120,7 @@ T_7791: (in Mem72[i6_201 + 68<i32>:word32] : word32)
   Class: Eq_7785
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_7792: (in fprintf(&globals->t2B640, globals->ptr28078, i6_201->ptr0044) : int32)
+T_7792: (in fprintf(&g_t2B640, g_ptr28078, i6_201->ptr0044) : int32)
   Class: Eq_7792
   DataType: int32
   OrigDataType: int32
@@ -34164,7 +34164,7 @@ T_7802: (in 0x17B30<32> : word32)
   Class: Eq_2981
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_7803: (in fprintf(&globals->t2B640, ": %s\n", o0_221) : int32)
+T_7803: (in fprintf(&g_t2B640, ": %s\n", o0_221) : int32)
   Class: Eq_7803
   DataType: int32
   OrigDataType: int32

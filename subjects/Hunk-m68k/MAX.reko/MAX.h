@@ -3008,7 +3008,7 @@ T_92: (in Mem64[0x00003D98<p32>:word32] : word32)
   Class: Eq_25
   DataType: (ptr32 Eq_25)
   OrigDataType: word32
-T_93: (in CloseLibrary(globals->ptr3D98) : void)
+T_93: (in CloseLibrary(g_ptr3D98) : void)
   Class: Eq_93
   DataType: void
   OrigDataType: void
@@ -4564,7 +4564,7 @@ T_481: (in Mem0[0x00003D98<p32>:word32] : word32)
   Class: Eq_25
   DataType: (ptr32 Eq_25)
   OrigDataType: word32
-T_482: (in CloseLibrary(globals->ptr3D98) : void)
+T_482: (in CloseLibrary(g_ptr3D98) : void)
   Class: Eq_93
   DataType: void
   OrigDataType: void
@@ -5120,7 +5120,7 @@ T_620: (in 000013F0 : ptr32)
   Class: Eq_609
   DataType: (ptr32 Eq_609)
   OrigDataType: ptr32
-T_621: (in fn0000141C(fn00002F18(d0, 0x13DC<u32>, out d1_10, out a1_8), d1_10, a1_8, &globals->t13F0) : void)
+T_621: (in fn0000141C(fn00002F18(d0, 0x13DC<u32>, out d1_10, out a1_8), d1_10, a1_8, &g_t13F0) : void)
   Class: Eq_621
   DataType: void
   OrigDataType: void
@@ -10852,7 +10852,7 @@ T_2053: (in 0<16> : word16)
   Class: Eq_2046
   DataType: word16
   OrigDataType: word16
-T_2054: (in __btst((&globals->t2BED)[(int32) (int16) (d0_2124 & 0xFF<32>)], 0<16>) : bool)
+T_2054: (in __btst((&g_t2BED)[(int32) (int16) (d0_2124 & 0xFF<32>)], 0<16>) : bool)
   Class: Eq_2054
   DataType: bool
   OrigDataType: bool
@@ -13204,7 +13204,7 @@ T_2641: (in 0<16> : word16)
   Class: Eq_2046
   DataType: word16
   OrigDataType: word16
-T_2642: (in __btst((&globals->t2BED)[(int32) (int16) (d0_2416 & 0xFF<32>)], 0<16>) : bool)
+T_2642: (in __btst((&g_t2BED)[(int32) (int16) (d0_2416 & 0xFF<32>)], 0<16>) : bool)
   Class: Eq_2054
   DataType: bool
   OrigDataType: bool
@@ -21516,7 +21516,7 @@ T_4719: (in out a0 : ptr32)
   Class: Eq_4
   DataType: (ptr32 Eq_4)
   OrigDataType: ptr32
-T_4720: (in fn000028E8(globals->ptr3DC8, dwArg04 + 4<i32>, out d1, out a0) : word32)
+T_4720: (in fn000028E8(g_ptr3DC8, dwArg04 + 4<i32>, out d1, out a0) : word32)
   Class: Eq_4613
   DataType: (ptr32 int32)
   OrigDataType: word32
@@ -21644,7 +21644,7 @@ T_4751: (in dwArg04->dwFFFFFFFC + 4<i32> : word32)
   Class: Eq_4742
   DataType: up32
   OrigDataType: word32
-T_4752: (in fn0000284C(globals->ptr3DC8, dwArg04 - 4<i32>, dwArg04->dwFFFFFFFC + 4<i32>) : void)
+T_4752: (in fn0000284C(g_ptr3DC8, dwArg04 - 4<i32>, dwArg04->dwFFFFFFFC + 4<i32>) : void)
   Class: Eq_4752
   DataType: void
   OrigDataType: void

@@ -38,21 +38,21 @@ void register_tm_clones()
 void __do_global_dtors_aux()
 {
 	ptr32 a6_n = fp - 0x04;
-	if (globals->b80002724 == 0x00)
+	if (g_b80002724 == 0x00)
 	{
-		uint32 d0_n = globals->dw80002726;
-		<anonymous> * a2_n[] = globals->a80002714;
+		uint32 d0_n = g_dw80002726;
+		<anonymous> * a2_n[] = g_a80002714;
 		up32 d2_n = 0x00;
 		if (d0_n < 0x00)
 		{
 			do
 			{
 				uint32 d0_n = d0_n + 0x01;
-				globals->dw80002726 = d0_n;
+				g_dw80002726 = d0_n;
 				word32 a0_n;
 				word32 d1_n;
 				a2_n[d0_n]();
-				d0_n = globals->dw80002726;
+				d0_n = g_dw80002726;
 			} while (d2_n - d0_n > 0x00);
 		}
 		word32 a6_n = deregister_tm_clones();
@@ -65,7 +65,7 @@ void __do_global_dtors_aux()
 			word32 d1_n;
 			null();
 		}
-		globals->b80002724 = 0x01;
+		g_b80002724 = 0x01;
 	}
 }
 
@@ -86,7 +86,7 @@ void frame_dummy()
 		null();
 		a7_n = a7_n + 8;
 	}
-	if (globals->dw8000271C != 0x00 && 0x00 != 0x00)
+	if (g_dw8000271C != 0x00 && 0x00 != 0x00)
 	{
 		a7_n->ptrFFFFFFFC = 0x8000271C;
 		word32 a1_n;
@@ -177,7 +177,7 @@ void _sin(real64 rArg04, real64 rArg0C, Eq_n tArg14)
 // 80000624: void __do_global_ctors_aux()
 void __do_global_ctors_aux()
 {
-	<anonymous> * a0_n = globals->ptr8000270C;
+	<anonymous> * a0_n = g_ptr8000270C;
 	ptr32 a6_n = fp - 0x04;
 	ptr32 a2_n = 0x8000270C;
 	while (a0_n != (<anonymous> *) -1)

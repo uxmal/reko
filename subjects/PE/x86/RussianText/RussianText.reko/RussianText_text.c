@@ -18,7 +18,7 @@ void fn00401084()
 // 0040110B: void fn0040110B()
 void fn0040110B()
 {
-	if (globals->dw40208B >= 0x00)
+	if (g_dw40208B >= 0x00)
 	{
 		word32 eax_n;
 		__CRTL_TLS_GetValue();
@@ -36,13 +36,13 @@ void fn0040110B()
 //      fn004011B0
 word32 fn00401158()
 {
-	return fs->ptr002C[globals->dw40208B];
+	return fs->ptr002C[g_dw40208B];
 }
 
 // 00401168: Register int32 main(Stack int32 argc, Stack (ptr32 (ptr32 char)) argv)
 int32 main(int32 argc, char ** argv)
 {
-	printf(&globals->b4020A4);
+	printf(&g_b4020A4);
 	return 0x00;
 }
 
@@ -75,7 +75,7 @@ void fn004011B0(void * dwArg04)
 //      fn004011B0
 void fn004011FC(struct Eq_n * dwArg04)
 {
-	globals->dw4020F8 = (char *) fn00401158() + 28;
+	g_dw4020F8 = (char *) fn00401158() + 28;
 	dwArg04->dw0000 = 0x82727349;
 	dwArg04->ptr0004 = 0x004020E4;
 }

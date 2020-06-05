@@ -238,7 +238,7 @@ T_28: (in 0000000000000AE0 : ptr64)
   Class: Eq_22
   DataType: (ptr64 Eq_22)
   OrigDataType: (ptr64 (fn void ()))
-T_29: (in __libc_start_main(&globals->t0898, qwArg00, (char *) fp + 8<i32>, &globals->t0A70, &globals->t0AE0, rdx, fp) : int32)
+T_29: (in __libc_start_main(&g_t0898, qwArg00, (char *) fp + 8<i32>, &g_t0A70, &g_t0AE0, rdx, fp) : int32)
   Class: Eq_29
   DataType: int32
   OrigDataType: int32

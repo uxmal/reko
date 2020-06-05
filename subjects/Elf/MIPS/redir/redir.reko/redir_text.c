@@ -591,7 +591,7 @@ void handle_stop(word32 r4, word32 ra)
 	word32 r7_n;
 	word32 r25_n;
 	print_log(3, 0x00409DD4, out r5_n, out r6_n, out r7_n, out r25_n);
-	*globals->ptr100008C0 = 1;
+	*g_ptr100008C0 = 1;
 }
 
 // 0040083C: void handle_log_rotate(Register word32 r4, Register word32 ra)
@@ -608,7 +608,7 @@ void handle_log_rotate(word32 r4, word32 ra)
 // 004008D0: void main(Register Eq_n r4, Register (arr Eq_n) r5, Register word32 r16, Register word32 ra)
 void main(Eq_n r4, Eq_n r5[], word32 r16, word32 ra)
 {
-	*globals->ptr10000A20 = *globals->ptr10000914;
+	*g_ptr10000A20 = *g_ptr10000914;
 	signal(2, handle_stop);
 	signal(1, handle_log_rotate);
 	properties_load(r5[0], 0x00, ra);
@@ -625,7 +625,7 @@ void main(Eq_n r4, Eq_n r5[], word32 r16, word32 ra)
 		close(1);
 		close(2);
 	}
-	struct Eq_n * r2_n = globals->ptr10000A40;
+	struct Eq_n * r2_n = g_ptr10000A40;
 	if (r2_n != (struct Eq_n *) 0x0695 && (word32) r2_n->b0695 != 0x00)
 	{
 		FILE * r2_n = fopen(&r2_n->b0695, "w");
@@ -636,13 +636,13 @@ void main(Eq_n r4, Eq_n r5[], word32 r16, word32 ra)
 			fclose(r2_n);
 		}
 	}
-	*globals->ptr100008F4 = globals->ptr10000A40->dw038C;
-	*globals->ptr100008A0 = (union Eq_n *) ((char *) &globals->ptr10000A40->dw038C + 0x0011);
-	*globals->ptr10000A28 = globals->ptr10000A40->dw0684 << 0x0A;
-	*globals->ptr1000090C = (int32) globals->ptr10000A40->t05EC;
+	*g_ptr100008F4 = globals->ptr10000A40->dw038C;
+	*g_ptr100008A0 = (union Eq_n *) ((char *) &globals->ptr10000A40->dw038C + 0x0011);
+	*g_ptr10000A28 = globals->ptr10000A40->dw0684 << 0x0A;
+	*g_ptr1000090C = (int32) globals->ptr10000A40->t05EC;
 	word32 r25_n;
 	__xpg_basename();
-	*globals->ptr10000A28 >= 0x00;
+	*g_ptr10000A28 >= 0x00;
 	word32 r6_n;
 	word32 r5_n;
 	word32 r7_n;
@@ -1088,7 +1088,7 @@ void client_parse_request(Eq_n r4, word32 ra)
 					else
 						*((word32) r4 + 6036) = 3;
 				}
-				else if ((word32) true == 0x00 && strncasecmp(&globals->t409FF4, fp + -0x0810, 0x0A) == 0x00)
+				else if ((word32) true == 0x00 && strncasecmp(&g_t409FF4, fp + -0x0810, 0x0A) == 0x00)
 					request_get_content_length(dwLoc20_n, fp + -0x0810, ra);
 			}
 		}
@@ -1128,7 +1128,7 @@ void client_parse_request(Eq_n r4, word32 ra)
 					*((word32) r4 + 6036) = 2;
 				}
 			}
-			else if ((word32) true == 0x00 && strncasecmp(&globals->t409FE0, fp + -0x0810, 0x0A) == 0x00)
+			else if ((word32) true == 0x00 && strncasecmp(&g_t409FE0, fp + -0x0810, 0x0A) == 0x00)
 			{
 				request_get_content_length(dwLoc20_n, fp + -0x0810, ra);
 				request_save_line(dwLoc20_n, fp + -0x0810, 0x00, ra);
@@ -1393,7 +1393,7 @@ void client_check_activ(struct Eq_n * r4, Eq_n r5, word32 ra)
 	Eq_n dwArg04_n = r5;
 	if (r5 < 0x00)
 		dwArg04_n = time(null);
-	if ((word32) (*globals->ptr1000090C < dwArg04_n - r4->dw17CC) != 0x00)
+	if ((word32) (*g_ptr1000090C < dwArg04_n - r4->dw17CC) != 0x00)
 	{
 		word32 r5_n;
 		word32 r6_n;
@@ -1401,7 +1401,7 @@ void client_check_activ(struct Eq_n * r4, Eq_n r5, word32 ra)
 		word32 r25_n;
 		print_log(3, 0x0040A1B0, out r5_n, out r6_n, out r7_n, out r25_n);
 	}
-	if ((word32) (*globals->ptr1000090C < dwArg04_n - r4->t17D0) != 0x00)
+	if ((word32) (*g_ptr1000090C < dwArg04_n - r4->t17D0) != 0x00)
 	{
 		word32 r5_n;
 		word32 r6_n;
@@ -1890,13 +1890,13 @@ int32 is_a_method(Eq_n r4)
 	do
 	{
 		int32 r2_n;
-		if (globals->ptr100009C8[dwLoc18_n] == null)
+		if (g_ptr100009C8[dwLoc18_n] == null)
 		{
 			r2_n = 0x00;
 			return r2_n;
 		}
 		++dwLoc18_n;
-	} while (strncmp(globals->ptr100009C8[dwLoc18_n], r4, 20) != 0x00);
+	} while (strncmp(g_ptr100009C8[dwLoc18_n], r4, 20) != 0x00);
 	r2_n = 1;
 	return r2_n;
 }
@@ -2039,7 +2039,7 @@ void properties_load(Eq_n r4, Eq_n r5, word32 ra)
 							else
 							{
 								word32 r2_n;
-								globals->t4053F0();
+								g_t4053F0();
 								*((char *) &globals->ptr10000A40->a0004->ptr0000 + ((dwLoc014C_n * 0x14 - dwLoc014C_n) * 0x08 + 144)) = r2_n;
 							}
 						}
@@ -2177,7 +2177,7 @@ void properties_print_usage(Eq_n r4)
 	{
 		if (globals->ptr10000A40->a0004[dwLoc18_n * 0x14 - dwLoc18_n].t0004 == 2)
 		{
-			if ((word32) *((char *) *globals->ptr10000A6C + (word32) (((globals->ptr10000A40 + ((dwLoc18_n * 0x14 - dwLoc18_n << 0x03) + 8) / 0x0696)->a0004))[0].ptr0000 * 0x02) != 0x00010000)
+			if ((word32) *((char *) *g_ptr10000A6C + (word32) (((globals->ptr10000A40 + ((dwLoc18_n * 0x14 - dwLoc18_n << 0x03) + 8) / 0x0696)->a0004))[0].ptr0000 * 0x02) != 0x00010000)
 			{
 				word32 r2_n = (word32) (globals->ptr10000A40 + ((dwLoc18_n * 0x14 - dwLoc18_n << 0x03) + 8) / 0x0696)->a0004[0].ptr0000;
 				word32 r25_n;
@@ -2226,11 +2226,11 @@ void properties_print_usage(Eq_n r4)
 int32 print_log(int32 r4, ptr32 r5, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r25Out)
 {
 	ptr32 r25_n = 0x00406610;
-	if ((word32) (*globals->ptr100008F4 < r4) == 0x00)
+	if ((word32) (*g_ptr100008F4 < r4) == 0x00)
 	{
 		word32 r2_n;
 		vsnprintf();
-		globals->t40697C();
+		g_t40697C();
 	}
 	r5Out = r5;
 	r6Out = r6;
@@ -2246,13 +2246,13 @@ int32 print_log(int32 r4, ptr32 r5, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out,
 Eq_n open_log(char * r4, word32 ra)
 {
 	Eq_n r5_n;
-	if ((word32) **globals->ptr100008A0 != 0x00 && (word32) (*(*globals->ptr100008A0)) != 45)
+	if ((word32) **g_ptr100008A0 != 0x00 && (word32) (*(*g_ptr100008A0)) != 45)
 	{
-		*globals->ptr10000A20 = (FILE **) fopen(*globals->ptr100008A0, r4);
+		*g_ptr10000A20 = (FILE **) fopen(*g_ptr100008A0, r4);
 		r5_n.u0 = <invalid>;
-		if (*globals->ptr10000A20 == null)
+		if (*g_ptr10000A20 == null)
 		{
-			*globals->ptr10000A20 = *globals->ptr10000914;
+			*g_ptr10000A20 = *g_ptr10000914;
 			word32 r6_n;
 			word32 r7_n;
 			word32 r25_n;
@@ -2261,8 +2261,8 @@ Eq_n open_log(char * r4, word32 ra)
 	}
 	else
 	{
-		*globals->ptr10000A20 = *globals->ptr10000914;
-		strcpy(*globals->ptr100008A0, 0x0040A73C);
+		*g_ptr10000A20 = *g_ptr10000914;
+		strcpy(*g_ptr100008A0, 0x0040A73C);
 		r5_n.u0 = <invalid>;
 	}
 	return r5_n;
@@ -2274,10 +2274,10 @@ Eq_n open_log(char * r4, word32 ra)
 //      log_string
 void log_rotate(word32 ra)
 {
-	fclose(*globals->ptr10000A20);
-	if ((word32) **globals->ptr100008A0 != 0x00 && (word32) (*(*globals->ptr100008A0)) != 45)
+	fclose(*g_ptr10000A20);
+	if ((word32) **g_ptr100008A0 != 0x00 && (word32) (*(*g_ptr100008A0)) != 45)
 	{
-		strcpy(fp + -272, *globals->ptr100008A0);
+		strcpy(fp + -272, *g_ptr100008A0);
 		strcat(fp + -272, ".old");
 		word32 r25_n;
 		word32 r2_n;
@@ -2302,15 +2302,15 @@ void log_string(FILE * r4, word32 r5, word32 r7, word32 ra)
 	Eq_n r3_n = <invalid>;
 	Eq_n r6_n = <invalid>;
 	Eq_n r25_n = <invalid>;
-	if (*globals->ptr10000A28 != 0x00)
+	if (*g_ptr10000A28 != 0x00)
 	{
-		int32 r2_n = *globals->ptr10000A28;
+		int32 r2_n = *g_ptr10000A28;
 		int32 dwLoc20_n = r2_n;
 		if (r2_n < 0x00)
 			dwLoc20_n = r2_n + 0x03FF;
 		if ((word32) (dwLoc20_n >> 0x0A < (globals->ptr10000878)->dw0824) != 0x00)
 		{
-			if ((word32) (ftell(r4) < *globals->ptr10000A28) == 0x00)
+			if ((word32) (ftell(r4) < *g_ptr10000A28) == 0x00)
 				log_rotate(ra);
 			else
 				globals->ptr10000878->dw0824 += -0x0A;
@@ -2704,7 +2704,7 @@ void __addsf3(word32 r16, word32 ra, word32 f12, word32 f14)
 	__unpack_f(fp + -24, fp + -72);
 	__unpack_f(fp + -20, fp + -56);
 	struct Eq_n * r2_n;
-	globals->t4077E0();
+	g_t4077E0();
 	__pack_f(r2_n);
 }
 
@@ -2714,7 +2714,7 @@ void __subsf3(word32 r16, word32 ra, word32 f12, word32 f14)
 	__unpack_f(fp + -24, fp + -72);
 	__unpack_f(fp + -20, fp + -56);
 	struct Eq_n * r2_n;
-	globals->t4077E0();
+	g_t4077E0();
 	__pack_f(r2_n);
 }
 
@@ -3079,7 +3079,7 @@ void __adddf3(word32 r16, word32 ra, word32 f12, word32 f13, word32 f14, word32 
 	__unpack_d(fp + -40, fp + -112);
 	__unpack_d(fp + -32, fp + -88);
 	struct Eq_n * r2_n;
-	globals->t408180();
+	g_t408180();
 	__pack_d(r2_n);
 }
 
@@ -3089,7 +3089,7 @@ void __subdf3(word32 r16, word32 ra, word32 f12, word32 f13, word32 f14, word32 
 	__unpack_d(fp + -40, fp + -112);
 	__unpack_d(fp + -32, fp + -88);
 	struct Eq_n * r2_n;
-	globals->t408180();
+	g_t408180();
 	__pack_d(r2_n);
 }
 
@@ -3745,7 +3745,7 @@ void __fpcmp_parts_d(struct Eq_n * r4, struct Eq_n * r5)
 // 00409C10: void __do_global_ctors_aux()
 void __do_global_ctors_aux()
 {
-	struct Eq_n * r2_n = globals->ptr10000878;
+	struct Eq_n * r2_n = g_ptr10000878;
 	<anonymous> * r25_n = r2_n->ptr0854;
 	if (r25_n != (<anonymous> *) -1)
 	{

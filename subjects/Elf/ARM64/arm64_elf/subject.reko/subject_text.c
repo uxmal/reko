@@ -9,7 +9,7 @@ void fn0000000000001460()
 {
 	fn0000000000000E70();
 	fn0000000000000EC0();
-	if (globals->qw1FFD0 == 0x00)
+	if (g_qw1FFD0 == 0x00)
 		return;
 	fn00000000000014A4();
 }
@@ -19,7 +19,7 @@ void fn0000000000001460()
 //      fn0000000000000D88
 void fn0000000000001498()
 {
-	if (globals->qw1FFD0 == 0x00)
+	if (g_qw1FFD0 == 0x00)
 		return;
 	fn00000000000014A4();
 }
@@ -30,7 +30,7 @@ void fn0000000000001498()
 //      fn0000000000001498
 void fn00000000000014A4()
 {
-	globals->ptr1FF08();
+	g_ptr1FF08();
 }
 
 // 00000000000014B0: void fn00000000000014B0()
@@ -38,7 +38,7 @@ void fn00000000000014B0()
 {
 	if (0x00020008 - 0x00020008 == 0x00)
 		return;
-	<anonymous> * x1_n = globals->ptr1FFA0;
+	<anonymous> * x1_n = g_ptr1FFA0;
 	if (x1_n == null)
 		return;
 	x1_n();
@@ -47,7 +47,6 @@ void fn00000000000014B0()
 // 0000000000001740: void fn0000000000001740()
 void fn0000000000001740()
 {
-	globals->qw1FFD8 == 0x00;
-	globals->ptr1FEB0();
+	g_ptr1FEB0();
 }
 

@@ -513,16 +513,16 @@ Eq_100: (fn (ptr16 Eq_112) (Eq_5, Eq_5, Eq_5))
 	T_1722 (in fn125E : ptr16)
 	T_1741 (in fn125E : ptr16)
 Eq_112: (struct "Eq_112" (2773 byte b2773))
-	T_112 (in fn125E((int16) r4->b0000, globals->t004A, out r2_13) : word16)
-	T_122 (in fn125E((int16) r4->b0001, globals->t004C, out r2_27) : word16)
-	T_132 (in fn125E((int16) r4->b0000, globals->t004C, out r2_42) : word16)
-	T_141 (in fn125E((int16) r4->b0001, globals->t004A, out r2_58) : word16)
-	T_263 (in fn125E(r3_116, globals->t004A, out r2_128) : word16)
-	T_273 (in fn125E(globals->t004E, globals->t004C, out r2_141) : word16)
+	T_112 (in fn125E((int16) r4->b0000, g_t004A, out r2_13) : word16)
+	T_122 (in fn125E((int16) r4->b0001, g_t004C, out r2_27) : word16)
+	T_132 (in fn125E((int16) r4->b0000, g_t004C, out r2_42) : word16)
+	T_141 (in fn125E((int16) r4->b0001, g_t004A, out r2_58) : word16)
+	T_263 (in fn125E(r3_116, g_t004A, out r2_128) : word16)
+	T_273 (in fn125E(g_t004E, g_t004C, out r2_141) : word16)
 	T_1707 (in r0 : (ptr16 Eq_112))
-	T_1727 (in fn125E(r4_23, globals->t004C, out r2_32) : word16)
+	T_1727 (in fn125E(r4_23, g_t004C, out r2_32) : word16)
 	T_1728 (in r0_106 : (ptr16 Eq_112))
-	T_1745 (in fn125E(r4_23, globals->t004A, out r2_51) : word16)
+	T_1745 (in fn125E(r4_23, g_t004A, out r2_51) : word16)
 	T_1780 (in r0_19 & ~0xFFE0<16> : word16)
 Eq_179: (fn Eq_190 (Eq_5, Eq_5, Eq_5, Eq_5))
 	T_179 (in fn114A : ptr16)
@@ -539,16 +539,16 @@ Eq_179: (fn Eq_190 (Eq_5, Eq_5, Eq_5, Eq_5))
 	T_2269 (in fn114A : ptr16)
 	T_2279 (in fn114A : ptr16)
 Eq_190: (union "Eq_190" (bool u0) (word16 u1))
-	T_190 (in fn114A(globals->t0064, 0x2904<16>, out r2_25, out r3_26) : bool)
-	T_210 (in fn114A(globals->t006E, r3_35, out r2_45, out r3_46) : bool)
-	T_251 (in fn114A(globals->t0066, 0x3ED7<16>, out r2_104, out r3_105) : bool)
-	T_450 (in fn114A(globals->t006E, r1_14, out r2_15, out r3_16) : bool)
-	T_483 (in fn114A(globals->t006E, r1_50, out r2_61, out r3_62) : bool)
-	T_520 (in fn114A(globals->t006E, r1_101, out r2_108, out r3_109) : bool)
-	T_553 (in fn114A(globals->t006E, r1_144, out r2_155, out r3_156) : bool)
+	T_190 (in fn114A(g_t0064, 0x2904<16>, out r2_25, out r3_26) : bool)
+	T_210 (in fn114A(g_t006E, r3_35, out r2_45, out r3_46) : bool)
+	T_251 (in fn114A(g_t0066, 0x3ED7<16>, out r2_104, out r3_105) : bool)
+	T_450 (in fn114A(g_t006E, r1_14, out r2_15, out r3_16) : bool)
+	T_483 (in fn114A(g_t006E, r1_50, out r2_61, out r3_62) : bool)
+	T_520 (in fn114A(g_t006E, r1_101, out r2_108, out r3_109) : bool)
+	T_553 (in fn114A(g_t006E, r1_144, out r2_155, out r3_156) : bool)
 	T_598 (in fn114A(r0_7, r1_12, out r2_16, out r3_17) : bool)
 	T_993 (in fn114A(r0_54, r1_46, out r2_60, out r3_61) : bool)
-	T_1034 (in fn114A(r4_105, globals->t0064, out r2_157, out r3_111) : bool)
+	T_1034 (in fn114A(r4_105, g_t0064, out r2_157, out r3_111) : bool)
 	T_2272 (in fn114A(r0, r1, out r2_28, out r3_29) : bool)
 	T_2282 (in fn114A(r0, r1, out r2_43, out r3_44) : bool)
 Eq_192: (fn wchar_t (Eq_5, Eq_5, wchar_t, Eq_197))
@@ -1420,7 +1420,7 @@ T_111: (in out r2_13 : ptr16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: ptr16
-T_112: (in fn125E((int16) r4->b0000, globals->t004A, out r2_13) : word16)
+T_112: (in fn125E((int16) r4->b0000, g_t004A, out r2_13) : word16)
   Class: Eq_112
   DataType: (ptr16 Eq_112)
   OrigDataType: word16
@@ -1460,7 +1460,7 @@ T_121: (in out r2_27 : ptr16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: ptr16
-T_122: (in fn125E((int16) r4->b0001, globals->t004C, out r2_27) : word16)
+T_122: (in fn125E((int16) r4->b0001, g_t004C, out r2_27) : word16)
   Class: Eq_112
   DataType: (ptr16 Eq_112)
   OrigDataType: word16
@@ -1500,7 +1500,7 @@ T_131: (in out r2_42 : ptr16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: ptr16
-T_132: (in fn125E((int16) r4->b0000, globals->t004C, out r2_42) : word16)
+T_132: (in fn125E((int16) r4->b0000, g_t004C, out r2_42) : word16)
   Class: Eq_112
   DataType: (ptr16 Eq_112)
   OrigDataType: word16
@@ -1536,7 +1536,7 @@ T_140: (in out r2_58 : ptr16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: ptr16
-T_141: (in fn125E((int16) r4->b0001, globals->t004A, out r2_58) : word16)
+T_141: (in fn125E((int16) r4->b0001, g_t004A, out r2_58) : word16)
   Class: Eq_112
   DataType: (ptr16 Eq_112)
   OrigDataType: word16
@@ -1732,7 +1732,7 @@ T_189: (in out r3_26 : ptr16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: ptr16
-T_190: (in fn114A(globals->t0064, 0x2904<16>, out r2_25, out r3_26) : bool)
+T_190: (in fn114A(g_t0064, 0x2904<16>, out r2_25, out r3_26) : bool)
   Class: Eq_190
   DataType: Eq_190
   OrigDataType: bool
@@ -1812,7 +1812,7 @@ T_209: (in out r3_46 : ptr16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: ptr16
-T_210: (in fn114A(globals->t006E, r3_35, out r2_45, out r3_46) : bool)
+T_210: (in fn114A(g_t006E, r3_35, out r2_45, out r3_46) : bool)
   Class: Eq_190
   DataType: Eq_190
   OrigDataType: bool
@@ -1976,7 +1976,7 @@ T_250: (in out r3_105 : ptr16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: ptr16
-T_251: (in fn114A(globals->t0066, 0x3ED7<16>, out r2_104, out r3_105) : bool)
+T_251: (in fn114A(g_t0066, 0x3ED7<16>, out r2_104, out r3_105) : bool)
   Class: Eq_190
   DataType: Eq_190
   OrigDataType: bool
@@ -2024,7 +2024,7 @@ T_262: (in out r2_128 : ptr16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: ptr16
-T_263: (in fn125E(r3_116, globals->t004A, out r2_128) : word16)
+T_263: (in fn125E(r3_116, g_t004A, out r2_128) : word16)
   Class: Eq_112
   DataType: (ptr16 Eq_112)
   OrigDataType: word16
@@ -2064,7 +2064,7 @@ T_272: (in out r2_141 : ptr16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: ptr16
-T_273: (in fn125E(globals->t004E, globals->t004C, out r2_141) : word16)
+T_273: (in fn125E(g_t004E, g_t004C, out r2_141) : word16)
   Class: Eq_112
   DataType: (ptr16 Eq_112)
   OrigDataType: word16
@@ -2772,7 +2772,7 @@ T_449: (in out r3_16 : ptr16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: ptr16
-T_450: (in fn114A(globals->t006E, r1_14, out r2_15, out r3_16) : bool)
+T_450: (in fn114A(g_t006E, r1_14, out r2_15, out r3_16) : bool)
   Class: Eq_190
   DataType: Eq_190
   OrigDataType: bool
@@ -2904,7 +2904,7 @@ T_482: (in out r3_62 : ptr16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: ptr16
-T_483: (in fn114A(globals->t006E, r1_50, out r2_61, out r3_62) : bool)
+T_483: (in fn114A(g_t006E, r1_50, out r2_61, out r3_62) : bool)
   Class: Eq_190
   DataType: Eq_190
   OrigDataType: bool
@@ -3052,7 +3052,7 @@ T_519: (in out r3_109 : ptr16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: ptr16
-T_520: (in fn114A(globals->t006E, r1_101, out r2_108, out r3_109) : bool)
+T_520: (in fn114A(g_t006E, r1_101, out r2_108, out r3_109) : bool)
   Class: Eq_190
   DataType: Eq_190
   OrigDataType: bool
@@ -3184,7 +3184,7 @@ T_552: (in out r3_156 : ptr16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: ptr16
-T_553: (in fn114A(globals->t006E, r1_144, out r2_155, out r3_156) : bool)
+T_553: (in fn114A(g_t006E, r1_144, out r2_155, out r3_156) : bool)
   Class: Eq_190
   DataType: Eq_190
   OrigDataType: bool
@@ -4968,7 +4968,7 @@ T_998: (in out r3_70 : ptr16)
   Class: Eq_197
   DataType: Eq_197
   OrigDataType: ptr16
-T_999: (in fn126C(globals->t004C, r2_60, r3_61, out r3_70) : word16)
+T_999: (in fn126C(g_t004C, r2_60, r3_61, out r3_70) : word16)
   Class: Eq_148
   DataType: wchar_t
   OrigDataType: word16
@@ -5108,7 +5108,7 @@ T_1033: (in out r3_111 : ptr16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: ptr16
-T_1034: (in fn114A(r4_105, globals->t0064, out r2_157, out r3_111) : bool)
+T_1034: (in fn114A(r4_105, g_t0064, out r2_157, out r3_111) : bool)
   Class: Eq_190
   DataType: Eq_190
   OrigDataType: bool
@@ -5144,7 +5144,7 @@ T_1042: (in 0x35D2<16> : word16)
   Class: Eq_786
   DataType: (ptr16 word16)
   OrigDataType: word16
-T_1043: (in fn0A94(r3_111 >> 3<i16>, r4_105, &globals->w35D2) : void)
+T_1043: (in fn0A94(r3_111 >> 3<i16>, r4_105, &g_w35D2) : void)
   Class: Eq_1043
   DataType: void
   OrigDataType: void
@@ -5876,7 +5876,7 @@ T_1225: (in globals->w2610 - globals->w267A + 0x19<16> : word16)
   Class: Eq_19
   DataType: (ptr16 word16)
   OrigDataType: word16
-T_1226: (in fn0C36(0<16>, globals->w2610 - globals->w267A + 0x19<16>) : void)
+T_1226: (in fn0C36(0<16>, g_w2610 - g_w267A + 0x19<16>) : void)
   Class: Eq_1226
   DataType: void
   OrigDataType: void
@@ -7516,7 +7516,7 @@ T_1635: (in globals->w00AC + 1<16> : word16)
   Class: Eq_41
   DataType: cui16
   OrigDataType: word16
-T_1636: (in __swab(globals->w00AC + 1<16>) : word16)
+T_1636: (in __swab(g_w00AC + 1<16>) : word16)
   Class: Eq_38
   DataType: cu16
   OrigDataType: word16
@@ -7596,7 +7596,7 @@ T_1655: (in out r5_27 : ptr16)
   Class: Eq_1649
   DataType: (ptr16 Eq_1649)
   OrigDataType: ptr16
-T_1656: (in fn0E98(&globals->w35CC, out r5_27) : word16)
+T_1656: (in fn0E98(&g_w35CC, out r5_27) : word16)
   Class: Eq_1616
   DataType: word16
   OrigDataType: word16
@@ -7880,7 +7880,7 @@ T_1726: (in out r2_32 : ptr16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: ptr16
-T_1727: (in fn125E(r4_23, globals->t004C, out r2_32) : word16)
+T_1727: (in fn125E(r4_23, g_t004C, out r2_32) : word16)
   Class: Eq_112
   DataType: (ptr16 Eq_112)
   OrigDataType: word16
@@ -7952,7 +7952,7 @@ T_1744: (in out r2_51 : ptr16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: ptr16
-T_1745: (in fn125E(r4_23, globals->t004A, out r2_51) : word16)
+T_1745: (in fn125E(r4_23, g_t004A, out r2_51) : word16)
   Class: Eq_112
   DataType: (ptr16 Eq_112)
   OrigDataType: word16
@@ -11944,7 +11944,7 @@ T_2742: (in 0x25B8<16> : word16)
   Class: Eq_2712
   DataType: (ptr16 Eq_2712)
   OrigDataType: word16
-T_2743: (in fn1674(r0_36, &globals->t25B8) : void)
+T_2743: (in fn1674(r0_36, &g_t25B8) : void)
   Class: Eq_2718
   DataType: void
   OrigDataType: void

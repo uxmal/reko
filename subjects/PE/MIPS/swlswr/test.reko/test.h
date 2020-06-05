@@ -740,7 +740,7 @@ T_142: (in 0x1201C<32> : word32)
   Class: Eq_139
   DataType: (ptr32 word32)
   OrigDataType: word32
-T_143: (in fn0001147C(&globals->dw12018, &globals->dw1201C) : void)
+T_143: (in fn0001147C(&g_dw12018, &g_dw1201C) : void)
   Class: Eq_143
   DataType: void
   OrigDataType: void
@@ -780,7 +780,7 @@ T_152: (in 0x12014<32> : word32)
   Class: Eq_139
   DataType: (ptr32 word32)
   OrigDataType: word32
-T_153: (in fn0001147C(&globals->dw12010, &globals->dw12014) : void)
+T_153: (in fn0001147C(&g_dw12010, &g_dw12014) : void)
   Class: Eq_143
   DataType: void
   OrigDataType: void
@@ -860,7 +860,7 @@ T_172: (in Mem39[0x13040<32>:word32] : word32)
   Class: Eq_147
   DataType: Eq_147
   OrigDataType: (ptr32 void)
-T_173: (in free(globals->t13040) : void)
+T_173: (in free(g_t13040) : void)
   Class: Eq_173
   DataType: void
   OrigDataType: void
@@ -1112,7 +1112,7 @@ T_235: (in 0x1200C<32> : word32)
   Class: Eq_139
   DataType: (ptr32 word32)
   OrigDataType: word32
-T_236: (in fn0001147C(&globals->dw12008, &globals->dw1200C) : void)
+T_236: (in fn0001147C(&g_dw12008, &g_dw1200C) : void)
   Class: Eq_143
   DataType: void
   OrigDataType: void
@@ -1128,7 +1128,7 @@ T_239: (in 0x12004<32> : word32)
   Class: Eq_139
   DataType: (ptr32 word32)
   OrigDataType: word32
-T_240: (in fn0001147C(&globals->dw12000, &globals->dw12004) : void)
+T_240: (in fn0001147C(&g_dw12000, &g_dw12004) : void)
   Class: Eq_143
   DataType: void
   OrigDataType: void

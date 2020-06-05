@@ -187,7 +187,7 @@ T_37: (in 0x4020A4<32> : word32)
   Class: Eq_36
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_38: (in printf(&globals->b4020A4) : int32)
+T_38: (in printf(&g_b4020A4) : int32)
   Class: Eq_38
   DataType: int32
   OrigDataType: int32

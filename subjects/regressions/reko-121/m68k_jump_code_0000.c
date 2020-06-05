@@ -7,11 +7,11 @@
 // 0000C02A: void fn0000C02A(Register (ptr32 Eq_n) a0, Register (ptr32 word32) a1)
 void fn0000C02A(struct Eq_n * a0, word32 * a1)
 {
-	globals->dwFF0F08 = a0->dw0000;
-	globals->dwFF0F04 = 0;
+	g_dwFF0F08 = a0->dw0000;
+	g_dwFF0F04 = 0;
 	word32 * a6_n = a1;
 	int32 a4_n = 0;
-	while (globals->dwFF0F04 - globals->dwFF0F08 < 0x00)
+	while (g_dwFF0F04 - g_dwFF0F08 < 0x00)
 	{
 		ui32 d3_n = SEQ(SLICE(a4_n, word24, 8), a0->a0004[a4_n]);
 		uipr32 d0_n = SEQ(SLICE(d3_n & 0xFF, word16, 16), (word16) (d3_n & 0xFF) & 0xF0);
@@ -30,7 +30,7 @@ void fn0000C02A(struct Eq_n * a0, word32 * a1)
 					if (v34_n == 0x00)
 						break;
 					*a6_n = 0;
-					globals->dwFF0F04 += 0x04;
+					g_dwFF0F04 += 0x04;
 					++a6_n;
 				}
 				break;

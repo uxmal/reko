@@ -96,7 +96,7 @@ void fn000016D0(word32 d6, struct Eq_n * a5, byte * dwArg08)
 			dwLoc0C_n = d0_n;
 			if (d0_n <= 7)
 			{
-				word16 v40_n = globals->a1758[(int32) (int16) d0_n * 2];
+				word16 v40_n = g_a1758[(int32) (int16) d0_n * 2];
 				uipr32 d0_n = SEQ(SLICE(d0_n, word16, 16), v40_n);
 				word32 d2_n;
 				(0x1758 + (int32) v40_n)();

@@ -17,7 +17,7 @@ void fn0000000000015180(word64 ra, struct Eq_n * gp, Eq_n a0, char ** a1, word64
 	Eq_n s7_n = 1;
 	do
 	{
-		Eq_n a0_n = (uint64) (uint32) getopt_long(a0, a1, "cr:i46bho:gmnpsv", &globals->t108E0, 0);
+		Eq_n a0_n = (uint64) (uint32) getopt_long(a0, a1, "cr:i46bho:gmnpsv", &g_t108E0, 0);
 		if (a0_n == -1)
 		{
 			Eq_n s1_n;
@@ -50,7 +50,7 @@ void fn0000000000015180(word64 ra, struct Eq_n * gp, Eq_n a0, char ** a1, word64
 			{
 				if ((int64) gp->dwFFFFF814 != 0x00)
 					goto l00000000000153D8;
-				fwrite(&globals->v119D8, 1, 46, gp->tFFFFF880);
+				fwrite(&g_v119D8, 1, 46, gp->tFFFFF880);
 				goto l00000000000153DC;
 			}
 			word64 a6_n;
@@ -91,7 +91,7 @@ l00000000000153CC:
 				if (s10_n != 0x00)
 				{
 					if ((int64) gp->dwFFFFF814 == 0x00)
-						fwrite(&globals->v11A08, 1, 37, gp->tFFFFF880);
+						fwrite(&g_v11A08, 1, 37, gp->tFFFFF880);
 					goto l00000000000153D8;
 				}
 				if (false)
@@ -136,7 +136,7 @@ l0000000000015458:
 					goto l0000000000015510;
 				if ((int64) gp->dwFFFFF814 != 0x00)
 					goto l00000000000153D8;
-				fwrite(&globals->v11A30, 1, 28, gp->tFFFFF880);
+				fwrite(&g_v11A30, 1, 28, gp->tFFFFF880);
 				fn0000000000015FCC(gp, 1);
 				goto l00000000000153DC;
 			}
@@ -489,7 +489,7 @@ l00000000000153DC:
 // 0000000000015EB8: void fn0000000000015EB8(Register (ptr64 Eq_n) a0, Stack word32 dwArg00)
 void fn0000000000015EB8(void (* a0)(), word32 dwArg00)
 {
-	__libc_start_main(&globals->t15180, qwArg00, (word64) fp + 8, &globals->t182E8, &globals->t18378, a0, fp & -16);
+	__libc_start_main(&g_t15180, qwArg00, (word64) fp + 8, &g_t182E8, &g_t18378, a0, fp & -16);
 }
 
 // 0000000000015EF0: void fn0000000000015EF0()
@@ -528,7 +528,7 @@ void fn0000000000015F64(struct Eq_n * gp)
 // 0000000000015F94: void fn0000000000015F94(Register word64 ra)
 void fn0000000000015F94(word64 ra)
 {
-	if (globals->qw19E28 != 0x00 && 0x00 != 0x00)
+	if (g_qw19E28 != 0x00 && 0x00 != 0x00)
 	{
 		null();
 		fn0000000000015F24();
@@ -545,50 +545,50 @@ void fn0000000000015FCC(struct Eq_n * gp, Eq_n a0)
 	Eq_n a3_n = gp->tFFFFF880;
 	if (a0 != 0x00)
 	{
-		fwrite(&globals->v10BE0, 1, 26, a3_n);
-		fwrite(&globals->v10C00, 1, 54, gp->tFFFFF880);
-		fwrite(&globals->v10C38, 1, 77, gp->tFFFFF880);
-		fwrite(&globals->v10C88, 1, 62, gp->tFFFFF880);
-		fwrite(&globals->v10CC8, 1, 79, gp->tFFFFF880);
-		fwrite(&globals->v10D18, 1, 79, gp->tFFFFF880);
-		fwrite(&globals->v10D68, 1, 42, gp->tFFFFF880);
-		fwrite(&globals->v10D98, 1, 76, gp->tFFFFF880);
-		fwrite(&globals->v10DE8, 1, 77, gp->tFFFFF880);
-		fwrite(&globals->v10E38, 1, 77, gp->tFFFFF880);
+		fwrite(&g_v10BE0, 1, 26, a3_n);
+		fwrite(&g_v10C00, 1, 54, gp->tFFFFF880);
+		fwrite(&g_v10C38, 1, 77, gp->tFFFFF880);
+		fwrite(&g_v10C88, 1, 62, gp->tFFFFF880);
+		fwrite(&g_v10CC8, 1, 79, gp->tFFFFF880);
+		fwrite(&g_v10D18, 1, 79, gp->tFFFFF880);
+		fwrite(&g_v10D68, 1, 42, gp->tFFFFF880);
+		fwrite(&g_v10D98, 1, 76, gp->tFFFFF880);
+		fwrite(&g_v10DE8, 1, 77, gp->tFFFFF880);
+		fwrite(&g_v10E38, 1, 77, gp->tFFFFF880);
 		fputc(0x0A, gp->tFFFFF880);
-		fwrite(&globals->v10E88, 1, 23, gp->tFFFFF880);
-		fwrite(&globals->v10EA0, 1, 71, gp->tFFFFF880);
-		fwrite(&globals->v10EE8, 1, 57, gp->tFFFFF880);
-		fwrite(&globals->v10F28, 1, 58, gp->tFFFFF880);
-		fwrite(&globals->v10F68, 1, 57, gp->tFFFFF880);
-		fwrite(&globals->v10FA8, 1, 77, gp->tFFFFF880);
-		fwrite(&globals->v10FF8, 1, 77, gp->tFFFFF880);
-		fwrite(&globals->v11048, 1, 77, gp->tFFFFF880);
-		fwrite(&globals->v11098, 1, 46, gp->tFFFFF880);
-		fwrite(&globals->v110C8, 1, 72, gp->tFFFFF880);
-		fwrite(&globals->v11118, 1, 45, gp->tFFFFF880);
-		fwrite(&globals->v11148, 1, 67, gp->tFFFFF880);
-		fwrite(&globals->v11190, 1, 64, gp->tFFFFF880);
-		fwrite(&globals->v111D8, 1, 72, gp->tFFFFF880);
-		fwrite(&globals->v11228, 1, 46, gp->tFFFFF880);
+		fwrite(&g_v10E88, 1, 23, gp->tFFFFF880);
+		fwrite(&g_v10EA0, 1, 71, gp->tFFFFF880);
+		fwrite(&g_v10EE8, 1, 57, gp->tFFFFF880);
+		fwrite(&g_v10F28, 1, 58, gp->tFFFFF880);
+		fwrite(&g_v10F68, 1, 57, gp->tFFFFF880);
+		fwrite(&g_v10FA8, 1, 77, gp->tFFFFF880);
+		fwrite(&g_v10FF8, 1, 77, gp->tFFFFF880);
+		fwrite(&g_v11048, 1, 77, gp->tFFFFF880);
+		fwrite(&g_v11098, 1, 46, gp->tFFFFF880);
+		fwrite(&g_v110C8, 1, 72, gp->tFFFFF880);
+		fwrite(&g_v11118, 1, 45, gp->tFFFFF880);
+		fwrite(&g_v11148, 1, 67, gp->tFFFFF880);
+		fwrite(&g_v11190, 1, 64, gp->tFFFFF880);
+		fwrite(&g_v111D8, 1, 72, gp->tFFFFF880);
+		fwrite(&g_v11228, 1, 46, gp->tFFFFF880);
 		fputc(0x0A, gp->tFFFFF880);
-		fwrite(&globals->v11258, 1, 0x0F, gp->tFFFFF880);
-		fwrite(&globals->v11268, 1, 87, gp->tFFFFF880);
-		fwrite(&globals->v112C0, 1, 60, gp->tFFFFF880);
-		fwrite(&globals->v11300, 1, 0x0044, gp->tFFFFF880);
-		fwrite(&globals->v11348, 1, 58, gp->tFFFFF880);
-		fwrite(&globals->v11388, 1, 57, gp->tFFFFF880);
-		fwrite(&globals->v113C8, 1, 62, gp->tFFFFF880);
+		fwrite(&g_v11258, 1, 0x0F, gp->tFFFFF880);
+		fwrite(&g_v11268, 1, 87, gp->tFFFFF880);
+		fwrite(&g_v112C0, 1, 60, gp->tFFFFF880);
+		fwrite(&g_v11300, 1, 0x0044, gp->tFFFFF880);
+		fwrite(&g_v11348, 1, 58, gp->tFFFFF880);
+		fwrite(&g_v11388, 1, 57, gp->tFFFFF880);
+		fwrite(&g_v113C8, 1, 62, gp->tFFFFF880);
 	}
 	else
 	{
-		fwrite(&globals->v11408, 1, 77, a3_n);
-		fwrite(&globals->v11458, 1, 62, gp->tFFFFF880);
-		fwrite(&globals->v11498, 1, 65, gp->tFFFFF880);
-		fwrite(&globals->v114E0, 1, 76, gp->tFFFFF880);
-		fwrite(&globals->v11530, 1, 65, gp->tFFFFF880);
-		fwrite(&globals->v11578, 1, 41, gp->tFFFFF880);
-		fwrite(&globals->v115A8, 1, 30, gp->tFFFFF880);
+		fwrite(&g_v11408, 1, 77, a3_n);
+		fwrite(&g_v11458, 1, 62, gp->tFFFFF880);
+		fwrite(&g_v11498, 1, 65, gp->tFFFFF880);
+		fwrite(&g_v114E0, 1, 76, gp->tFFFFF880);
+		fwrite(&g_v11530, 1, 65, gp->tFFFFF880);
+		fwrite(&g_v11578, 1, 41, gp->tFFFFF880);
+		fwrite(&g_v115A8, 1, 30, gp->tFFFFF880);
 	}
 }
 
@@ -672,7 +672,7 @@ struct Eq_n * fn000000000001654C(word64 ra, struct Eq_n * gp, Eq_n s0, word64 s1
 			fputs(s3_n, gp_n->tFFFFF888);
 		fputs(null, gp_n->tFFFFF888);
 		if ((int64) gp_n->dwFFFFF810 != 0x00)
-			fwrite(&globals->v115E0, 1, 4, gp_n->tFFFFF888);
+			fwrite(&g_v115E0, 1, 4, gp_n->tFFFFF888);
 		free(null);
 	}
 	Eq_n a5_n = gp_n->tFFFFF870;
@@ -1172,7 +1172,7 @@ Eq_n fn0000000000016D74(word64 ra, struct Eq_n * gp, Eq_n a0, Eq_n a1, struct Eq
 		{
 			a2->t00A8 = a0_n;
 			a2->t00B0 = a0_n;
-			a5_n = &globals->t11780;
+			a5_n = &g_t11780;
 			goto l000000000001716C;
 		}
 		if (s5_n != 31)
@@ -1201,7 +1201,7 @@ l00000000000172C4:
 		if (inet_ntop(2, fp + -400, fp + -0x0188, 47) != null)
 		{
 			a2->t00B0 = __strdup(fp + -0x0188);
-			a5_n = &globals->t12660;
+			a5_n = &g_t12660;
 l000000000001716C:
 			a2->b0060 = (byte) (int64) a5_n->b0000;
 			a2->b0061 = (byte) (int64) a5_n->b0001;
@@ -1238,7 +1238,7 @@ l0000000000016E24:
 	}
 l0000000000017074:
 	if ((int64) gp->dwFFFFF814 == 0x00)
-		fwrite(&globals->v117F8, 1, 43, gp->tFFFFF880);
+		fwrite(&g_v117F8, 1, 43, gp->tFFFFF880);
 	goto l0000000000016E20;
 }
 
@@ -1291,19 +1291,19 @@ Eq_n fn00000000000173D4(Eq_n a0, Eq_n a1)
 	}
 	else
 	{
-		if ((uint64) (uint32) memcmp(a0, &globals->v10880, 16) == 0x00)
+		if ((uint64) (uint32) memcmp(a0, &g_v10880, 16) == 0x00)
 			return 0x00011858;
-		if ((uint64) (uint32) memcmp(a0, &globals->v10898, 16) == 0x00)
+		if ((uint64) (uint32) memcmp(a0, &g_v10898, 16) == 0x00)
 		{
 			a0_n.u0 = 0x00011870;
 			return a0_n;
 		}
 	}
-	if ((uint64) (uint32) memcmp(a0, &globals->v108B0, 0x0C) == 0x00)
+	if ((uint64) (uint32) memcmp(a0, &g_v108B0, 0x0C) == 0x00)
 		return 0x00011888;
-	if ((uint64) (uint32) memcmp(a0, &globals->v108C0, 0x0C) == 0x00)
+	if ((uint64) (uint32) memcmp(a0, &g_v108C0, 0x0C) == 0x00)
 		return 0x000118A0;
-	if ((uint64) (uint32) memcmp(a0, &globals->v108D0, 0x0C) == 0x00)
+	if ((uint64) (uint32) memcmp(a0, &g_v108D0, 0x0C) == 0x00)
 		return 0x000118B8;
 l0000000000017408:
 	ui64 a5_n = s2_n << 0x08 | s3_n;
@@ -1359,7 +1359,7 @@ Eq_n fn00000000000175BC(word64 ra, struct Eq_n * gp, Eq_n s1, Eq_n a0, Eq_n a1, 
 l0000000000017768:
 		if ((int64) gp->dwFFFFF814 != 0x00)
 			goto l0000000000017770;
-		fwrite(&globals->v117F8, 1, 43, gp->tFFFFF880);
+		fwrite(&g_v117F8, 1, 43, gp->tFFFFF880);
 		a0_n.u0 = -1;
 		goto l0000000000017774;
 	}
@@ -1503,12 +1503,12 @@ Eq_n fn0000000000017924(struct Eq_n * gp, union Eq_n & a1Out, union Eq_n & a2Out
 					gp->dw0818 = 0x00;
 				else
 				{
-					a6 = globals->t12B50;
-					word64 a0_n = globals->qw12B58;
-					a1 = globals->t12B60;
-					a2 = globals->t12B68;
-					a3 = globals->t12B70;
-					a4.u0 = (int64) globals->dw12B78;
+					a6 = g_t12B50;
+					word64 a0_n = g_qw12B58;
+					a1 = g_t12B60;
+					a2 = g_t12B68;
+					a3 = g_t12B70;
+					a4.u0 = (int64) g_dw12B78;
 					gp->tFFFFFCE0 = a6;
 					gp->qwFFFFFCE8 = a0_n;
 					gp->tFFFFFCF0 = a1;
@@ -2113,7 +2113,7 @@ Eq_n fn00000000000182B4(Eq_n a0, union Eq_n & a3Out, union Eq_n & a4Out)
 void fn00000000000182E8(word64 ra, word64 a0, word64 a1, word64 a2)
 {
 	int64 s2_n = 106016 - 106008;
-	<anonymous> ** s0_n = &globals->ptr19E18;
+	<anonymous> ** s0_n = &g_ptr19E18;
 	Eq_n s2_n = s2_n >> 0x03;
 	if (s2_n >> 0x03 != 0x00)
 	{
