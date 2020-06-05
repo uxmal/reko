@@ -954,7 +954,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         void setState(ProcessorState state, string regName, ushort val)
         {
             state.SetRegister(
-                program.Architecture.GetRegister(regName),
+                program.Architecture.GetRegister(regName)!,
                 Constant.Word16(val));
 
         }

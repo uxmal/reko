@@ -79,10 +79,10 @@ namespace Reko.Arch.H8
             return new H8Rewriter(this, rdr, state, binder, host);
         }
 
-        public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             if (flagRegister != Registers.CcRegister)
-                return null;
+                throw new ArgumentException($"'{flagRegister.Name}' is not a flag register on this architecture.");
             if (flagGroups.TryGetValue(grf, out var flags))
                 return flags;
             PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
@@ -164,7 +164,7 @@ namespace Reko.Arch.H8
             return Address.Ptr16(c.ToUInt16());
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -174,7 +174,7 @@ namespace Reko.Arch.H8
             return Registers.ByName.TryGetValue(name, out reg);
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             return Address.TryParse32(txtAddr, out addr);
         }

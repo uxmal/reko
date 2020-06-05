@@ -617,7 +617,7 @@ namespace Reko.Analysis
 
             private Identifier MakeTmpIdentifier(BitRange bitrange)
             {
-                var reg = outer.ssa.Procedure.Architecture.GetRegister(id.Storage.Domain, bitrange);
+                var reg = outer.ssa.Procedure.Architecture.GetRegister(id.Storage.Domain, bitrange)!;
                 var frame = outer.ssa.Procedure.Frame;
                 if (reg.GetBitRange() != bitrange)
                 {

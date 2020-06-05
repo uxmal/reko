@@ -181,8 +181,7 @@ namespace Reko.Gui.Design
 
         private Dictionary<RegisterStorage, string> GetAssumedRegisterValues(Address Address)
         {
-            Procedure_v1 up;
-            if (!program.User.Procedures.TryGetValue(this.Address, out up) ||
+            if (!program.User.Procedures.TryGetValue(this.Address, out Procedure_v1 up) ||
                 up.Assume == null)
             {
                 return new Dictionary<RegisterStorage, string>();
@@ -194,9 +193,7 @@ namespace Reko.Gui.Design
                     Value = ass.Value
                 })
                 .Where(ass => ass.Register != null)
-                .ToDictionary(
-                    ass => ass.Register,
-                    ass => ass.Value!);
+                .ToDictionary(ass => ass.Register!, ass => ass.Value!);
         }
 
         private void SetAssumedRegisterValues(Address Address, Dictionary<RegisterStorage, string> dictionary)

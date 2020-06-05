@@ -48,7 +48,7 @@ namespace Reko.ImageLoaders.Srec
             }
         }
 
-        public override Program Load(Address addrLoad) => throw new NotSupportedException();
+        public override Program Load(Address? addrLoad) => throw new NotSupportedException();
 
         public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
         {
@@ -78,7 +78,7 @@ namespace Reko.ImageLoaders.Srec
             var program = new Program(segments, arch, platform);
             if (start != null)
             {
-                program.EntryPoints.Add(start.Address, start);
+                program.EntryPoints.Add(start.Address!, start);
             }
             return program;
         }
@@ -113,7 +113,7 @@ namespace Reko.ImageLoaders.Srec
                     }
                 }
             }
-            if (addrSegmentCur is null && segments.Count == 0)
+            if (addrSegmentCur is null)
                 throw new BadImageFormatException("There was no actual data in file.");
 
             var lastSegment = new ImageSegment(

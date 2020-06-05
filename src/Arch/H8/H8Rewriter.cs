@@ -127,7 +127,7 @@ namespace Reko.Arch.H8
                 case Mnemonic.subx: RewriteAddxSubx(instr, m.ISub); break;
                 case Mnemonic.xor: RewriteLogical(instr, m.Xor); break;
                 }
-                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
+                yield return m.MakeCluster(instr.Address!, instr.Length, iclass);
                 this.m = new RtlEmitter(new List<RtlInstruction>());
             }
         }
@@ -286,7 +286,7 @@ namespace Reko.Arch.H8
             var dst = (Identifier) OpSrc(instr.Operands[0]);
             var src = binder.EnsureRegister(arch.GetRegister(
                 dst.Storage.Domain, 
-                srcRange));
+                srcRange)!);
             m.Assign(dst, m.Cast(dt, src));
             EmitCond(Z, dst);
             m.Assign(binder.EnsureFlagGroup(N), Constant.False());
@@ -347,7 +347,7 @@ namespace Reko.Arch.H8
             var left = (Identifier) OpSrc(instr.Operands[1]);
             var dst = binder.EnsureRegister(arch.GetRegister(
                 left.Storage.Domain,
-                new BitRange(0, left.DataType.BitSize * 2)));
+                new BitRange(0, left.DataType.BitSize * 2))!);
             var umul = m.UMul(left, right);
             umul.DataType = dst.DataType;
             m.Assign(dst, umul);

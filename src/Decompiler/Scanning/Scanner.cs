@@ -850,7 +850,7 @@ namespace Reko.Scanning
             {
                 if (rv.Register != null)
                 {
-                    var reg = Program.Architecture.GetRegister(rv.Register);
+                    var reg = Program.Architecture.GetRegister(rv.Register)!;
                     var val = rv.Value == "*"
                         ? Constant.Invalid
                         : Constant.Create(reg.DataType, Convert.ToUInt64(rv.Value, 16));

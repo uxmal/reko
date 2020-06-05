@@ -211,7 +211,7 @@ namespace Reko.Core
         /// <summary>
         /// Returns register whose name is 'name'
         /// </summary>
-        RegisterStorage GetRegister(string name);
+        RegisterStorage? GetRegister(string name);
 
         /// <summary>
         /// Given a register, returns any sub register occupying the 
@@ -220,8 +220,8 @@ namespace Reko.Core
         /// <param name="reg">Register to examine</param>
         /// <param name="offset">Bit offset of expected subregister.</param>
         /// <param name="width">Bit size of subregister.</param>
-        /// <returns></returns>
-        RegisterStorage GetRegister(StorageDomain domain, BitRange range);  
+        /// <returns>If an invalid domain is passed, null is returned.</returns>
+        RegisterStorage? GetRegister(StorageDomain domain, BitRange range);  
 
         RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width);
         /// <summary>
@@ -453,9 +453,9 @@ namespace Reko.Core
             return null;
         }
 
-        public abstract RegisterStorage GetRegister(string name);
+        public abstract RegisterStorage? GetRegister(string name);
 
-        public abstract RegisterStorage GetRegister(StorageDomain domain, BitRange range);
+        public abstract RegisterStorage? GetRegister(StorageDomain domain, BitRange range);
 
         public abstract RegisterStorage[] GetRegisters();
 

@@ -60,6 +60,8 @@ namespace Reko.Core.Serialization
             if (regName == null)
                 return null;
             var regStorage = arch.GetRegister(regName.Trim());
+            if (regStorage is null)
+                return null;
             DataType dt;
             if (this.argCur!.Type != null)
                 dt = this.argCur.Type.Accept(procSer.TypeLoader);
@@ -132,6 +134,8 @@ namespace Reko.Core.Serialization
                 return null;
             var h = arch.GetRegister(hName);
             var t = arch.GetRegister(tName);
+            if (h is null || t is null)
+                return null;
             DataType dt;
             if (this.argCur!.Type != null)
                 dt = this.argCur.Type.Accept(procSer.TypeLoader);

@@ -31,6 +31,11 @@ namespace Reko.Core.Machine
     {
         public static readonly MachineOperand[] NoOperands = new MachineOperand[0];
 
+        public MachineInstruction()
+        {
+            this.Operands = NoOperands;
+        }
+
         //$TODO: make MachineInstruction have a ctor with (Address, Length, Operands)
         // when that happens, replace all "Address!" with "Address"
         /// <summary>
@@ -52,7 +57,7 @@ namespace Reko.Core.Machine
         /// <summary>
         /// 0 or more operands of the instruction.
         /// </summary>
-        public MachineOperand[]? Operands;
+        public MachineOperand[] Operands;
 
         /// <summary>
         /// Returns true if the instruction is valid.

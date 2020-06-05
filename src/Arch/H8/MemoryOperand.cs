@@ -111,7 +111,7 @@ namespace Reko.Arch.H8
             else
             {
                 //$REFACTOR: does it make sense to move absolute addresses to their own class?
-                writer.WriteAddress($"0x{(uint) Offset:X}:{AddressWidth.BitSize}", Address.Ptr32((uint)Offset));
+                writer.WriteAddress($"0x{(uint) Offset:X}:{AddressWidth!.BitSize}", Address.Ptr32((uint)Offset));
             }
         }
 
