@@ -122,5 +122,31 @@ proc_exit:
             #endregion
             AssertProcedureCode(expected);
         }
+
+        [Test]
+        public void Fge_NestedFieldAccess()
+        {
+            Given_Procedure("proc", m =>
+            {
+                m.Store(
+                    m.Field(
+                        PrimitiveType.Int32,
+                        GlobalAccess(m, new UnknownType(16), 0x1234),
+                        new StructureField(0x4, PrimitiveType.Int32)),
+                    m.Word32(0));
+            });
+
+            When_RunFictitiousGlobalEliminator();
+
+            var expected =
+            #region Expected
+@"proc_entry:
+l1:
+	g_t1234.dw0004 = 0<32>
+proc_exit:
+";
+            #endregion
+            AssertProcedureCode(expected);
+        }
     }
 }
