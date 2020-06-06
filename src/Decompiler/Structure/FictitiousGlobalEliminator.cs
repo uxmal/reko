@@ -51,6 +51,8 @@ namespace Reko.Structure
 
         public override Expression VisitFieldAccess(FieldAccess acc)
         {
+            var str = acc.Structure.Accept(this);
+            acc = new FieldAccess(acc.DataType, str, acc.Field);
             if (!(acc.Structure is Dereference deref))
                 return acc;
             if (deref.Expression != program.Globals)

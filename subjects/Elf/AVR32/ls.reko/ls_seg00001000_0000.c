@@ -97,7 +97,7 @@ Eq_n fn00002744(int32 r9, int32 r11, union Eq_n & lrOut)
 //      fn00003168
 word32 fn000027D8(word32 r12, union Eq_n & r9Out)
 {
-	struct Eq_n * r9_n = (10204 - globals->dw27FA)->ptr0008;
+	struct Eq_n * r9_n = (10204 - g_dw27FA)->ptr0008;
 	if (r12 == 0x00)
 	{
 		word32 r8_n = r9_n->dw0008;
@@ -182,7 +182,7 @@ void fn0000289E(<anonymous> * r10, word32 r11, word32 r12, word32 lr)
 //      fn0000393C
 word32 fn00002A4C()
 {
-	struct Eq_n * r8_n = (0x2A50 - globals->dw2A6A)->ptr0008;
+	struct Eq_n * r8_n = (0x2A50 - g_dw2A6A)->ptr0008;
 	word32 r10_n;
 	word32 r9_n = r8_n->dw0014;
 	word32 r11_n = r8_n->dw000C;
@@ -1290,7 +1290,7 @@ Eq_n fn000032D0(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r7, E
 Eq_n fn0000330C(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r12, Eq_n lr, ptr32 & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r10Out, ptr32 & r11Out, ptr32 & r12Out, ptr32 & lrOut)
 {
 	Eq_n r12_n;
-	if ((byte) (word32) (0x3310 - globals->dw332E)->ptr0008->b0058 != 0x00)
+	if ((byte) (word32) (0x3310 - g_dw332E)->ptr0008->b0058 != 0x00)
 		r12_n.u0 = 0x00;
 	else
 		r12_n = fn00009B5C(r5, r12, r12, lr);
@@ -2110,7 +2110,7 @@ Eq_n fn00003B2C(Eq_n r4, Eq_n r5, Eq_n r12, Eq_n lr, union Eq_n & r5Out, union E
 //      fn000045F0
 Eq_n fn00003B60(union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, ptr32 & lrOut)
 {
-	Eq_n r7_n = (0x3B64 - globals->dw3B8A)->tFFFFFFC8;
+	Eq_n r7_n = (0x3B64 - g_dw3B8A)->tFFFFFFC8;
 	if (*((word32) r7_n + 20) == 0x00)
 	{
 		Eq_n r5_n;
@@ -2144,7 +2144,7 @@ Eq_n fn00003B60(union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, ptr3
 //      fn000045F0
 word32 fn00003B8C(Eq_n r4, Eq_n lr, union Eq_n & r10Out, ptr32 & r11Out, ptr32 & lrOut)
 {
-	Eq_n r5_n = (0x3B90 - globals->dw3B9E)->tFFFFFFC8;
+	Eq_n r5_n = (0x3B90 - g_dw3B9E)->tFFFFFFC8;
 	Eq_n lr_n;
 	word32 r5_n;
 	word32 r7_n;
@@ -9942,7 +9942,7 @@ void fn00009DA8(word32 r12)
 // 00009DC0: void fn00009DC0(Register word32 r11, Register (ptr32 word32) r12)
 void fn00009DC0(word32 r11, word32 * r12)
 {
-	word32 * r8_n = (40388 - globals->dw9DD6)->ptrFFFFFFDC;
+	word32 * r8_n = (40388 - g_dw9DD6)->ptrFFFFFFDC;
 	if (r12 == null)
 		r12 = r8_n;
 	*r12 = r11;
@@ -9953,7 +9953,7 @@ void fn00009DC0(word32 r11, word32 * r12)
 //      fn0000A708
 void fn00009DD8(word32 r10, word32 r11, ptr32 r12)
 {
-	ptr32 r8_n = (0x9DDC - globals->dw9E12)->ptrFFFFFFDC;
+	ptr32 r8_n = (0x9DDC - g_dw9E12)->ptrFFFFFFDC;
 	Eq_n r10_n = (bool) r10;
 	if (r12 == 0x00)
 		r12 = r8_n;

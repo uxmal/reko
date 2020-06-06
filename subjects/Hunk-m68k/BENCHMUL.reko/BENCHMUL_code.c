@@ -179,7 +179,7 @@ l00001148:
 			g_t4110 = d0_n;
 			dwLoc0C_n = (struct Eq_n *) (d0_n + 4);
 			dwLoc10 = d3_n;
-			if (globals->ptr40FC->t0014 >= 0x24)
+			if (g_ptr40FC->t0014 >= 0x24)
 			{
 				Eq_n v64_n = d0_n->t00E0;
 				g_t4114 = v64_n;
@@ -1368,7 +1368,7 @@ void fn00002320(struct Eq_n * dwArg04)
 //      fn00002320
 void fn000023E8(struct Eq_n * dwArg04, up32 dwArg08, up32 dwArg0C)
 {
-	if (globals->ptr40FC->t0014 < 0x27)
+	if (g_ptr40FC->t0014 < 0x27)
 	{
 		if (dwArg04 == null || dwArg08 == 0x00)
 			return;
@@ -1525,7 +1525,7 @@ struct Eq_n * fn000025A8(Eq_n dwArg04, struct Eq_n * dwArg08, struct Eq_n * dwAr
 // 00002618: void fn00002618(Register int32 d0, Stack (ptr32 Eq_n) dwArg04)
 void fn00002618(int32 d0, struct Eq_n * dwArg04)
 {
-	if (globals->ptr40FC->t0014 >= 0x27)
+	if (g_ptr40FC->t0014 >= 0x27)
 		DeletePrivatePool(dwArg04);
 	else if (dwArg04 != null)
 	{
@@ -1592,7 +1592,7 @@ Eq_n fn000026B8(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, union Eq
 					}
 				}
 			}
-			int32 d4_n = SEQ(SLICE(d4_n, word24, 8), ((&globals->t4134)[(int32) ((word16) d6_n & 0xFF)].a0000 + (byte) d4_n).a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000);
+			int32 d4_n = SEQ(SLICE(d4_n, word24, 8), ((&g_t4134)[(int32) ((word16) d6_n & 0xFF)].a0000 + (byte) d4_n).a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000);
 			int32 d5_n = 32 - d4_n;
 			if (d5_n != 0x00)
 			{
@@ -1922,7 +1922,7 @@ Eq_n fn00002A00(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10)
 				}
 			}
 		}
-		int32 d4_n = SEQ(SLICE(d4_n, word24, 8), ((&globals->t4134)[(int32) ((word16) d6_n & 0xFF)].a0000 + (byte) d4_n).a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000);
+		int32 d4_n = SEQ(SLICE(d4_n, word24, 8), ((&g_t4134)[(int32) ((word16) d6_n & 0xFF)].a0000 + (byte) d4_n).a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000);
 		int32 d5_n = 32 - d4_n;
 		if (d5_n == 0x00)
 		{

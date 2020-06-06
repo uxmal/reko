@@ -1279,7 +1279,7 @@ Eq_6: (union "Eq_6" (byte u0) (word16 u1) ((ptr32 Eq_18002) u2) ((ptr32 Eq_18003
 	T_11659 (in 0<i32> : int32)
 	T_11661 (in Mem42[0x1395C<32>:word32] : word32)
 	T_11667 (in Mem42[0x1395C<32>:word32] : word32)
-	T_11670 (in fn00009DDC(globals->t1395C, VR, out r11_50, out r22_97) : word32)
+	T_11670 (in fn00009DDC(g_t1395C, VR, out r11_50, out r22_97) : word32)
 	T_11680 (in fn0000B250(-20<i32>, out r11_69) : word32)
 	T_11684 (in 0x4298<32> : word32)
 	T_11686 (in Mem80[0x134CC<32>:word32] : word32)
@@ -4858,7 +4858,7 @@ Eq_11664: (fn Eq_6 (Eq_6, word32, Eq_7552, ptr32))
 	T_13160 (in fn00009DDC : ptr32)
 	T_13756 (in fn00009DDC : ptr32)
 Eq_11672: (struct "Eq_11672" (4 word32 dw0004))
-	T_11672 (in fn00009DDC(globals->t1395C, VR, out r11_50, out r22_97) | 0x3960<32> : word32)
+	T_11672 (in fn00009DDC(g_t1395C, VR, out r11_50, out r22_97) | 0x3960<32> : word32)
 Eq_11723: (fn Eq_343 (Eq_6, Eq_343, Eq_6, word32, Eq_6, ptr32))
 	T_11723 (in fn00009C2C : ptr32)
 	T_11724 (in signature of fn00009C2C : void)
@@ -52167,7 +52167,7 @@ T_11669: (in out r22_97 : word32)
   Class: Eq_7553
   DataType: ptr32
   OrigDataType: ptr32
-T_11670: (in fn00009DDC(globals->t1395C, VR, out r11_50, out r22_97) : word32)
+T_11670: (in fn00009DDC(g_t1395C, VR, out r11_50, out r22_97) : word32)
   Class: Eq_6
   DataType: Eq_6
   OrigDataType: ui32
@@ -52175,7 +52175,7 @@ T_11671: (in 0x3960<32> : word32)
   Class: Eq_11671
   DataType: ui32
   OrigDataType: ui32
-T_11672: (in fn00009DDC(globals->t1395C, VR, out r11_50, out r22_97) | 0x3960<32> : word32)
+T_11672: (in fn00009DDC(g_t1395C, VR, out r11_50, out r22_97) | 0x3960<32> : word32)
   Class: Eq_11672
   DataType: (ptr32 Eq_11672)
   OrigDataType: (ptr32 (struct (4 T_11675 t0004)))
@@ -52183,11 +52183,11 @@ T_11673: (in 4<i32> : int32)
   Class: Eq_11673
   DataType: int32
   OrigDataType: int32
-T_11674: (in (fn00009DDC(globals->t1395C, VR, out r11_50, out r22_97) | 0x3960<32>) + 4<i32> : word32)
+T_11674: (in (fn00009DDC(g_t1395C, VR, out r11_50, out r22_97) | 0x3960<32>) + 4<i32> : word32)
   Class: Eq_11674
   DataType: ui32
   OrigDataType: ui32
-T_11675: (in Mem67[(fn00009DDC(globals->t1395C, VR, out r11_50, out r22_97) | 0x3960<32>) + 4<i32>:word32] : word32)
+T_11675: (in Mem67[(fn00009DDC(g_t1395C, VR, out r11_50, out r22_97) | 0x3960<32>) + 4<i32>:word32] : word32)
   Class: Eq_11662
   DataType: word32
   OrigDataType: word32

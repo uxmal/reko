@@ -14,7 +14,7 @@ void fn0128()
 	Eq_n r0_n = g_t006C;
 	if (r0_n != 0x00)
 	{
-		globals->t006C.u0 = 0x00;
+		g_t006C.u0 = 0x00;
 		g_t006E = r0_n;
 		fn053A();
 	}
@@ -88,12 +88,12 @@ void fn0300(Eq_n r4)
 	if (g_w0068 == 0x00)
 	{
 		g_w25C0 = 0xF700;
-		globals->t0066.u0 = 0x00;
+		g_t0066.u0 = 0x00;
 		g_w006A = 14300;
 		g_w006A += g_w0068;
-		globals->t004E.u0 = 0x00;
-		globals->t0050.u0 = 0x00;
-		globals->t0052.u0 = 62866;
+		g_t004E.u0 = 0x00;
+		g_t0050.u0 = 0x00;
+		g_t0052.u0 = 62866;
 	}
 	else
 	{
@@ -148,9 +148,9 @@ void fn0300(Eq_n r4)
 //      fn053A
 void fn03CE(word16 * r0)
 {
-	int16 r2_n = (int16) (globals->t0064 >> 3)->b2766;
+	int16 r2_n = (int16) (g_t0064 >> 3)->b2766;
 	++g_w008A;
-	int16 r2_n = r2_n + (int16) (globals->w008A & ~~0x1F)->b2773;
+	int16 r2_n = r2_n + (int16) (g_w008A & ~~0x1F)->b2773;
 	g_w008C += r2_n;
 	ci16 r4_n;
 	struct Eq_n * r5_n = g_a27B0;
@@ -274,7 +274,7 @@ void fn053A()
 {
 	g_w0084 = ~0x3F;
 	Eq_n r5_n = g_t0044;
-	globals->t0044.u0 = 0x00;
+	g_t0044.u0 = 0x00;
 	Eq_n r0_n = g_t006E;
 	Eq_n r1_n = r5_n;
 	if (r5_n <= 0x00)
@@ -291,7 +291,7 @@ void fn053A()
 	g_w0048 = r2_n;
 	fn0444();
 	g_ptr0092 = (struct Eq_n *) ((char *) g_ptr0092 + 2);
-	fn0242(9944, (globals->ptr0092 & ~~0x02)->ptr34AC);
+	fn0242(9944, (g_ptr0092 & ~~0x02)->ptr34AC);
 }
 
 // 0790: void fn0790()

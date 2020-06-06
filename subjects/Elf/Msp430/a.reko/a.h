@@ -5685,7 +5685,7 @@ T_892: (in Mem48[0x0202<p16>:word16] + 8<16> : word20)
   Class: Eq_763
   DataType: Eq_763
   OrigDataType: (union (word20 u1) (word16 u0))
-T_893: (in vListRemove(&globals->ptr0202->t0008) : void)
+T_893: (in vListRemove(&g_ptr0202->t0008) : void)
   Class: Eq_813
   DataType: void
   OrigDataType: void
@@ -5949,7 +5949,7 @@ T_958: (in Mem5[0x0202<p16>:word16] + 8<16> : word20)
   Class: Eq_763
   DataType: Eq_763
   OrigDataType: (union (word20 u1) (word16 u0))
-T_959: (in vListRemove(&globals->ptr0202->t0008) : void)
+T_959: (in vListRemove(&g_ptr0202->t0008) : void)
   Class: Eq_813
   DataType: void
   OrigDataType: void
@@ -7421,7 +7421,7 @@ T_1326: (in Mem5[0x0202<p16>:word16] + 0x12<16> : word20)
   Class: Eq_886
   DataType: (ptr20 Eq_886)
   OrigDataType: (union (word20 u1) (word16 u0))
-T_1327: (in vListInsert((char *) &globals->ptr0202->t0008 + 10<i32>, r15) : void)
+T_1327: (in vListInsert((char *) &g_ptr0202->t0008 + 10<i32>, r15) : void)
   Class: Eq_938
   DataType: void
   OrigDataType: void
@@ -7461,7 +7461,7 @@ T_1336: (in Mem5[0x0202<p16>:word16] + 8<16> : word20)
   Class: Eq_763
   DataType: Eq_763
   OrigDataType: (union (word20 u1) (word16 u0))
-T_1337: (in vListRemove(&globals->ptr0202->t0008) : void)
+T_1337: (in vListRemove(&g_ptr0202->t0008) : void)
   Class: Eq_813
   DataType: void
   OrigDataType: void

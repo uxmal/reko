@@ -37,13 +37,13 @@ void indirect_call_test3(cdecl_class * c)
 // 004010D0: void test4()
 void test4()
 {
-	globals->gbl_c->vtbl->method00(gbl_c);
+	gbl_c->vtbl->method00(gbl_c);
 }
 
 // 004010F0: void test5()
 void test5()
 {
-	globals->gbl_c->vtbl->method04(gbl_c, 999, g_r4020F4);
+	gbl_c->vtbl->method04(gbl_c, 999, g_r4020F4);
 }
 
 // 00401120: void test6(Stack Eq_n c, Stack int32 a, Stack int32 b)
@@ -58,8 +58,8 @@ void test6(Eq_n c, int32 a, int32 b)
 void test7(real64 rArg04)
 {
 	if (rArg04 > 1.0)
-		globals->gbl_thiscall->vtbl->set_double(gbl_thiscall, rArg04);
-	globals->gbl_thiscall->vtbl->modify_double(gbl_thiscall, 0x0D, rArg04);
+		gbl_thiscall->vtbl->set_double(gbl_thiscall, rArg04);
+	gbl_thiscall->vtbl->modify_double(gbl_thiscall, 0x0D, rArg04);
 }
 
 // 004011B0: void nested_if_blocks_test8(Stack real64 rArg04)
@@ -67,9 +67,9 @@ void test7(real64 rArg04)
 //      loop_test11
 void nested_if_blocks_test8(real64 rArg04)
 {
-	globals->gbl_thiscall->vtbl->modify_double(gbl_thiscall, ~0x00, rArg04);
+	gbl_thiscall->vtbl->modify_double(gbl_thiscall, ~0x00, rArg04);
 	if (g_r402100 != rArg04 && g_r4020F8 > rArg04)
-		globals->gbl_thiscall->vtbl->set_double(gbl_thiscall, rArg04);
+		gbl_thiscall->vtbl->set_double(gbl_thiscall, rArg04);
 	test6(gbl_c, 0x06, 0x07);
 }
 
@@ -79,8 +79,8 @@ void nested_if_blocks_test8(real64 rArg04)
 void loop_test9(real32 rArg04)
 {
 	int32 dwLoc08_n;
-	for (dwLoc08_n = 0x00; globals->gbl_thiscall->vtbl->modify_double(gbl_thiscall, dwLoc08_n, (real64) rArg04) > (real64) dwLoc08_n; ++dwLoc08_n)
-		globals->gbl_thiscall->vtbl->set_double(gbl_thiscall, (real64) rArg04);
+	for (dwLoc08_n = 0x00; gbl_thiscall->vtbl->modify_double(gbl_thiscall, dwLoc08_n, (real64) rArg04) > (real64) dwLoc08_n; ++dwLoc08_n)
+		gbl_thiscall->vtbl->set_double(gbl_thiscall, (real64) rArg04);
 }
 
 // 004012A0: void const_div_test10(Stack word32 dwArg04)
@@ -134,12 +134,12 @@ void nested_structs_test13(nested_structs_type * str)
 void gbl_nested_structs_test14()
 {
 	// gbl_nested_structs.a = 5
-	globals->gbl_nested_structs.a = 0x05;
+	gbl_nested_structs.a = 0x05;
 	// gbl_nested_structs.str.b = 6
-	globals->gbl_nested_structs.str.b = 0x06;
+	gbl_nested_structs.str.b = 0x06;
 	// gbl_nested_structs.str.c = 7
-	globals->gbl_nested_structs.str.c = 0x07;
+	gbl_nested_structs.str.c = 0x07;
 	// gbl_nested_structs.d = 8
-	globals->gbl_nested_structs.d = 0x08;
+	gbl_nested_structs.d = 0x08;
 }
 

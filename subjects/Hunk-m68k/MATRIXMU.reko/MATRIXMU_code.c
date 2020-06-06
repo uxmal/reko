@@ -177,7 +177,7 @@ l00001148:
 			*(union Eq_n *) 5292 = d0_n;
 			dwLoc0C_n = (struct Eq_n *) &d0_n->ptr0010;
 			dwLoc10 = d3_n;
-			if (globals->ptr1498->w0014 >= 0x24)
+			if (g_ptr1498->w0014 >= 0x24)
 			{
 				Eq_n v64_n = d0_n->t00E0;
 				*(union Eq_n *) 0x14B0 = v64_n;

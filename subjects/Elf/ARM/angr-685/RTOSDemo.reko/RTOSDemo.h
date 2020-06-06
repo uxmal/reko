@@ -13121,7 +13121,7 @@ T_2661: (in globals->ptr0FF4->dw0004 + 0x38<32> : word32)
   Class: Eq_1515
   DataType: (ptr32 Eq_1515)
   OrigDataType: word32
-T_2662: (in vListInsert(r0, globals->ptr0FF4->dw0004 + 0x38<32>) : bool)
+T_2662: (in vListInsert(r0, g_ptr0FF4->dw0004 + 0x38<32>) : bool)
   Class: Eq_1524
   DataType: bool
   OrigDataType: bool

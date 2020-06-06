@@ -17,8 +17,8 @@ void fn00000000004028C0(char ** rsi, word32 edi, ptr64 r9, struct Eq_n * fs, Eq_
 	g_b61B0D0 = 0x01;
 	g_qw61B180 = 0x00;
 	word32 eax_n = (word32) (uint64) g_dw61A56C;
-	globals->t61B190.u0 = 0x00;
-	globals->t61B188.u1 = ~0x00;
+	g_t61B190.u0 = 0x00;
+	g_t61B188.u1 = ~0x00;
 	g_b61B0F0 = 0x00;
 	char ** rbp_n = rsi;
 	int32 ebx_n = (word32) (uint64) edi;
@@ -59,8 +59,8 @@ void fn00000000004028C0(char ** rsi, word32 edi, ptr64 r9, struct Eq_n * fs, Eq_
 	g_b61B10E = 0x00;
 	g_b61B10D = 0x00;
 	g_dw61B108 = 0x00;
-	globals->t61B100.u0 = 0x00;
-	globals->t61B0F8.u0 = 0x00;
+	g_t61B100.u0 = 0x00;
+	g_t61B0F8.u0 = 0x00;
 	g_b61B17D = 0x00;
 	Eq_n rax_n = getenv("QUOTING_STYLE");
 	word32 rax_32_32_n = SLICE(rax_n, word32, 32);
@@ -80,7 +80,7 @@ void fn00000000004028C0(char ** rsi, word32 edi, ptr64 r9, struct Eq_n * fs, Eq_
 			error(0x00, 0x00, dcgettext(null, 0x00415B00, 0x05), 0x00);
 		}
 	}
-	globals->t61B0C8.u0 = 0x50;
+	g_t61B0C8.u0 = 0x50;
 	word32 r9_32_32_n = SLICE(r9_n, word32, 32);
 	Eq_n rax_n = getenv("COLUMNS");
 	ptr64 r9_n = r9_n;
@@ -96,7 +96,7 @@ l0000000000402AB1:
 				g_t61B0C8 = rax_n;
 		}
 		Eq_n rax_n = getenv("TABSIZE");
-		globals->t61B0D8.u0 = 0x08;
+		g_t61B0D8.u0 = 0x08;
 		ptr64 r9_n = r9_n;
 		if (rax_n != 0x00)
 		{
@@ -481,8 +481,8 @@ l00000000004031F9:
 			case 0xEB:
 				g_dw61B140 = 0xB0;
 				g_dw61B134 = 0xB0;
-				globals->t61B138.u0 = 0x01;
-				globals->t61A560.u0 = 0x01;
+				g_t61B138.u0 = 0x01;
+				g_t61A560.u0 = 0x01;
 				break;
 			case 0xEC:
 				g_b61B114 = 0x01;
@@ -570,7 +570,7 @@ l0000000000402B78:
 				{
 l0000000000403A7C:
 					g_b61B129 = 0x01;
-					globals->t61B0D8.u0 = 0x00;
+					g_t61B0D8.u0 = 0x00;
 				}
 				break;
 			case 262:
@@ -608,8 +608,8 @@ l0000000000403A7C:
 			case 0x010F:
 				g_dw61B140 = 0x90;
 				g_dw61B134 = 0x90;
-				globals->t61B138.u0 = 0x01;
-				globals->t61A560.u0 = 0x01;
+				g_t61B138.u0 = 0x01;
+				g_t61A560.u0 = 0x01;
 				break;
 			case 0x0110:
 				g_dw61B148 = (word32) (uint64) g_a412FB0[fn000000000040A120(rax_32_32_n, 4272048, g_a412FE0, g_t61A640, 4274300, 0x04, g_ptr61A578, fs, out r9_n) * 0x04];
@@ -640,7 +640,7 @@ l0000000000403A7C:
 			if (r14b_n != 0x00)
 			{
 				g_dw61B140 = 0x00;
-				globals->t61B138.u0 = 0x0400;
+				g_t61B138.u0 = 0x0400;
 			}
 		}
 		Eq_n rdx_n = g_t61B0C8;
@@ -772,30 +772,30 @@ l00000000004038A8:
 							}
 							else
 							{
-								globals->t61A3D0.u0 = 4274549;
-								globals->t61A3D8.u0 = 4274537;
+								g_t61A3D0.u0 = 4274549;
+								g_t61A3D8.u0 = 4274537;
 							}
 							goto l00000000004038A8;
 						}
 						if (rax_n != 0x00)
 							goto l00000000004038A8;
-						globals->t61A3D8.u0 = 0x0041394E;
-						globals->t61A3D0.u0 = 0x0041394E;
+						g_t61A3D8.u0 = 0x0041394E;
+						g_t61A3D0.u0 = 0x0041394E;
 					}
 					else
 					{
-						globals->t61A3D8.u0 = 4274534;
-						globals->t61A3D0.u0 = 4274534;
+						g_t61A3D8.u0 = 4274534;
+						g_t61A3D0.u0 = 4274534;
 					}
 l0000000000404484:
 					if (strstr(g_t61A3D8, "%b") == null)
 						goto l0000000000403301;
 l00000000004038C2:
-					globals->t61A748.u0 = 0x05;
+					g_t61A748.u0 = 0x05;
 					do
 					{
 						Eq_n r14_n = g_t61A748;
-						globals->t61A748.u0 = 0x00;
+						g_t61A748.u0 = 0x00;
 						Eq_n r13_n = 0x0061A760;
 						word32 r12d_n = 0x0002000E;
 						do
@@ -805,7 +805,7 @@ l00000000004038C2:
 							r8_n = null;
 							if (fn000000000040CDC0(SLICE(rax_n, word32, 32), *((byte) rsp_n.u0 + 32), 161, r13_n, rax_n, 0x00, 0x00) > 0xA0)
 							{
-								globals->t61A748.u0 = 0x00;
+								g_t61A748.u0 = 0x00;
 								goto l0000000000404361;
 							}
 							Eq_n rax_n = *((byte) rsp_n.u0 + 64);
@@ -1040,9 +1040,9 @@ l00000000004033A0:
 						_obstack_begin(&g_t61AF60, 0x00, 0x00, &g_t402640, &g_t4021F0);
 						r8_n = (int32 *) &g_t4021F0;
 					}
-					globals->t61B1B8.u0 = 100;
+					g_t61B1B8.u0 = 100;
 					Eq_n rax_n = fn0000000000410C40(0x4B00);
-					globals->t61B1B0.u0 = 0x00;
+					g_t61B1B0.u0 = 0x00;
 					g_t61B1C0 = rax_n;
 					fn0000000000404DD0();
 					int32 r13d_n = (word32) (uint64) ((word32) (uint64) ebx_n - r12d_n);
@@ -1219,7 +1219,7 @@ l00000000004035FF:
 												rax_n = g_ptr61AF78;
 											}
 											rax_n->t0000 = g_t61B018;
-											g_ptr61AF78 = (DIR *) &globals->ptr61AF78->t0008;
+											g_ptr61AF78 = (DIR *) &g_ptr61AF78->t0008;
 										}
 									}
 									struct Eq_n * rdx_n = g_ptr61B0E0;
@@ -1237,7 +1237,7 @@ l00000000004035FF:
 											rax_n = g_ptr61AF78;
 										}
 										rax_n->t0000 = g_t61B018;
-										g_ptr61AF78 = (DIR *) &globals->ptr61AF78->t0008;
+										g_ptr61AF78 = (DIR *) &g_ptr61AF78->t0008;
 									}
 									fwrite_unlocked(4274491, 0x01, 0x02, g_ptr61A610);
 									g_t61B018 = (word32) g_t61B018 + 2;
@@ -1739,18 +1739,18 @@ void fn0000000000404DD0()
 		fn0000000000404D90(*((word32) g_t61B1A8 + rbx_n * 0x08));
 		rbx_n = (word32) rbx_n + 1;
 	}
-	globals->t61B1B0.u0 = 0x00;
+	g_t61B1B0.u0 = 0x00;
 	g_b61B17C = 0x00;
-	globals->t61B178.u0 = 0x00;
+	g_t61B178.u0 = 0x00;
 	g_dw61B174 = 0x00;
-	globals->t61B170.u0 = 0x00;
+	g_t61B170.u0 = 0x00;
 	g_dw61B168 = 0x00;
 	g_dw61B164 = 0x00;
 	g_dw61B160 = 0x00;
-	globals->t61B16C.u0 = 0x00;
-	globals->t61B15C.u0 = 0x00;
-	globals->t61B158.u0 = 0x00;
-	globals->t61B154.u0 = 0x00;
+	g_t61B16C.u0 = 0x00;
+	g_t61B15C.u0 = 0x00;
+	g_t61B158.u0 = 0x00;
+	g_t61B154.u0 = 0x00;
 }
 
 // 0000000000404E80: Register word64 fn0000000000404E80(Register (ptr64 int32) r8, Register out (ptr64 int32) r8Out)

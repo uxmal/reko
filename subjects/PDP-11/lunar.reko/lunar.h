@@ -3536,7 +3536,7 @@ T_640: (in Mem59[(Mem59[0x0092<p16>:word16] & ~0xFFFD<16>) + 0x34AC<16>:word16] 
   Class: Eq_19
   DataType: (ptr16 word16)
   OrigDataType: word16
-T_641: (in fn0242(0x26D8<16>, (globals->ptr0092 & ~0xFFFD<16>)->ptr34AC) : void)
+T_641: (in fn0242(0x26D8<16>, (g_ptr0092 & ~0xFFFD<16>)->ptr34AC) : void)
   Class: Eq_397
   DataType: void
   OrigDataType: void

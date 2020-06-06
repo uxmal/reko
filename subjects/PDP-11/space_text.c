@@ -1676,7 +1676,7 @@ void fn1DAE()
 				if (g_ptr1DAA != null)
 				{
 					FnSubfn(&g_b03B8);
-					if (false && (g_w53EA - sp_n->wFFFFFFE8 >= 0x00 && ((char *) (&(globals->ptr0022)->ptrFFFFFFFE) + 0x00001002) - (r4_n - 0x38) <= 0x00))
+					if (false && (g_w53EA - sp_n->wFFFFFFE8 >= 0x00 && ((char *) (&g_ptr0022->ptrFFFFFFFE) + 0x00001002) - (r4_n - 0x38) <= 0x00))
 						goto l0372;
 				}
 				r4_n->wFFFFFF5E = 0x8000;

@@ -797,7 +797,7 @@ void vTaskAllocateMPURegions(word32 r0, struct Eq_n * r1)
 {
 	if (r0 == 0x00)
 	{
-		word32 r0_n = globals->ptr098C->dw0004;
+		word32 r0_n = g_ptr098C->dw0004;
 		vPortStoreTaskMPUSettings(r0_n + 0x04, r1, null, 0x00);
 	}
 	else
@@ -828,7 +828,7 @@ void vTaskEndScheduler(ptr32 cpsr)
 	__msr(cpsr, 191);
 	__isb_sy();
 	__dsb_sy();
-	globals->ptr0A08->dw0074 = 0x00;
+	g_ptr0A08->dw0074 = 0x00;
 	vPortEndScheduler();
 }
 
@@ -1288,7 +1288,7 @@ l00000FA6:
 //      xQueueGenericReceive
 void vTaskPlaceOnEventList(struct Eq_n * r0, up32 r1)
 {
-	vListInsert(r0, globals->ptr0FF4->dw0004 + 0x38);
+	vListInsert(r0, g_ptr0FF4->dw0004 + 0x38);
 	prvAddCurrentTaskToDelayedList.isra.0(r1);
 }
 
@@ -1401,7 +1401,7 @@ word32 uxTaskResetEventItemValue()
 //      xQueueGiveMutexRecursive
 word32 xTaskGetCurrentTaskHandle()
 {
-	return globals->ptr1140->dw0004;
+	return g_ptr1140->dw0004;
 }
 
 // 00001144: void vTaskSetTimeOutState(Register (ptr32 Eq_n) r0)
@@ -1451,7 +1451,7 @@ struct Eq_n * xTaskCheckForTimeOut(struct Eq_n * r0, up32 * r1, ptr32 cpsr)
 //      prvUnlockQueue
 void vTaskMissedYield()
 {
-	globals->ptr11B8->dw0090 = 0x01;
+	g_ptr11B8->dw0090 = 0x01;
 }
 
 // 000011BC: void vTaskPriorityInherit(Register Eq_n r0)
@@ -1657,7 +1657,7 @@ l0000142C:
 		ui32 r2_n;
 		uint32 r1_n = g_dw150C - r0_n;
 		ui32 * r3_n = g_ptr1504;
-		globals->ptr1510->dw0000 = r2_n;
+		g_ptr1510->dw0000 = r2_n;
 		*r3_n = r0_n | 0x11;
 		if (r1_n > 0x20)
 		{
@@ -1681,7 +1681,7 @@ l0000145A:
 		ui32 r3_n = g_dw1518;
 		ui32 * r0_n = g_ptr1504;
 		uint32 r1_n = g_dw151C - r3_n;
-		globals->ptr1510->dw0000 = r2_n;
+		g_ptr1510->dw0000 = r2_n;
 		*r0_n = r3_n | 0x12;
 		if (r1_n > 0x20)
 		{
@@ -1704,7 +1704,7 @@ l0000148A:
 		ui32 * r4_n = g_ptr1504;
 		ui32 r5_n = g_dw1524;
 		uint32 r1_n = g_dw1528;
-		globals->ptr1510->dw0000 = r0_n;
+		g_ptr1510->dw0000 = r0_n;
 		*r4_n = r5_n;
 		ui32 r3_n = 0x05;
 		uint32 r2_n = 0x40;
@@ -1982,7 +1982,7 @@ void vPortFree()
 //      MPU_vPortInitialiseBlocks
 void vPortInitialiseBlocks()
 {
-	globals->ptr1790->dw05C0 = 0x00;
+	g_ptr1790->dw05C0 = 0x00;
 }
 
 // 00001794: void xPortGetFreeHeapSize()

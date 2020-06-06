@@ -470,7 +470,7 @@ T_70: (in Mem6[0x00403018<p32>:word32] : word32)
   Class: Eq_62
   DataType: Eq_62
   OrigDataType: (union ((ptr32 cdecl_class) u1) (cdecl_class_ptr u0))
-T_71: (in globals->gbl_c->vtbl->method00(gbl_c) : void)
+T_71: (in gbl_c->vtbl->method00(gbl_c) : void)
   Class: Eq_71
   DataType: void
   OrigDataType: void
@@ -526,7 +526,7 @@ T_84: (in Mem9[0x004020F4<p32>:real32] : real32)
   Class: Eq_84
   DataType: real32
   OrigDataType: real32
-T_85: (in globals->gbl_c->vtbl->method04(gbl_c, 0x3E7<32>, g_r4020F4) : void)
+T_85: (in gbl_c->vtbl->method04(gbl_c, 0x3E7<32>, g_r4020F4) : void)
   Class: Eq_85
   DataType: void
   OrigDataType: void
@@ -666,7 +666,7 @@ T_119: (in 0xD<32> : word32)
   Class: Eq_119
   DataType: int32
   OrigDataType: int32
-T_120: (in globals->gbl_thiscall->vtbl->modify_double(gbl_thiscall, 0xD<32>, rArg04) : real64)
+T_120: (in gbl_thiscall->vtbl->modify_double(gbl_thiscall, 0xD<32>, rArg04) : real64)
   Class: Eq_120
   DataType: real64
   OrigDataType: real64
@@ -710,7 +710,7 @@ T_130: (in Mem17[0x00403034<p32>:word32] : word32)
   Class: Eq_110
   DataType: (ptr32 Eq_110)
   OrigDataType: (ptr32 (union (thiscall_class u1)))
-T_131: (in globals->gbl_thiscall->vtbl->set_double(gbl_thiscall, rArg04) : void)
+T_131: (in gbl_thiscall->vtbl->set_double(gbl_thiscall, rArg04) : void)
   Class: Eq_131
   DataType: void
   OrigDataType: void
@@ -762,7 +762,7 @@ T_143: (in 0xFFFFFFFF<32> : word32)
   Class: Eq_143
   DataType: int32
   OrigDataType: int32
-T_144: (in globals->gbl_thiscall->vtbl->modify_double(gbl_thiscall, 0xFFFFFFFF<32>, rArg04) : real64)
+T_144: (in gbl_thiscall->vtbl->modify_double(gbl_thiscall, 0xFFFFFFFF<32>, rArg04) : real64)
   Class: Eq_144
   DataType: real64
   OrigDataType: real64
@@ -858,7 +858,7 @@ T_167: (in Mem42[0x00403034<p32>:word32] : word32)
   Class: Eq_110
   DataType: (ptr32 Eq_110)
   OrigDataType: (ptr32 (union (thiscall_class u1)))
-T_168: (in globals->gbl_thiscall->vtbl->set_double(gbl_thiscall, rArg04) : void)
+T_168: (in gbl_thiscall->vtbl->set_double(gbl_thiscall, rArg04) : void)
   Class: Eq_168
   DataType: void
   OrigDataType: void
@@ -918,7 +918,7 @@ T_182: (in (real64) rArg04 : real64)
   Class: Eq_182
   DataType: real64
   OrigDataType: real64
-T_183: (in globals->gbl_thiscall->vtbl->modify_double(gbl_thiscall, dwLoc08_65, (real64) rArg04) : real64)
+T_183: (in gbl_thiscall->vtbl->modify_double(gbl_thiscall, dwLoc08_65, (real64) rArg04) : real64)
   Class: Eq_183
   DataType: real64
   OrigDataType: real64
@@ -926,7 +926,7 @@ T_184: (in (real64) dwLoc08_65 : real64)
   Class: Eq_183
   DataType: real64
   OrigDataType: real64
-T_185: (in globals->gbl_thiscall->vtbl->modify_double(gbl_thiscall, dwLoc08_65, (real64) rArg04) <= (real64) dwLoc08_65 : bool)
+T_185: (in gbl_thiscall->vtbl->modify_double(gbl_thiscall, dwLoc08_65, (real64) rArg04) <= (real64) dwLoc08_65 : bool)
   Class: Eq_185
   DataType: bool
   OrigDataType: bool
@@ -974,7 +974,7 @@ T_196: (in (real64) rArg04 : real64)
   Class: Eq_196
   DataType: real64
   OrigDataType: real64
-T_197: (in globals->gbl_thiscall->vtbl->set_double(gbl_thiscall, (real64) rArg04) : void)
+T_197: (in gbl_thiscall->vtbl->set_double(gbl_thiscall, (real64) rArg04) : void)
   Class: Eq_197
   DataType: void
   OrigDataType: void

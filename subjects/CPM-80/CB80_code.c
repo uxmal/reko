@@ -32,7 +32,7 @@ void fn0390(byte b, Eq_n c, byte e, Eq_n bArg02)
 		g_b1653 = a_n - 0x01;
 		if (a_n == 0x00)
 			break;
-		globals->t1654->u0 = g_b1656;
+		g_t1654->u0 = g_b1656;
 		g_t1654 = (word16) g_t1654 + 1;
 	}
 }
@@ -100,7 +100,7 @@ void fn040D(byte b, Eq_n c, cu8 e, word16 wArg02)
 		}
 		else
 		{
-			globals->t165C->u0 = 0x1A;
+			g_t165C->u0 = 0x1A;
 			g_b165E = 0x00;
 		}
 	}
@@ -297,7 +297,7 @@ bool fn05EF(Eq_n bc, union Eq_n & bOut)
 	Eq_n c = (byte) bc;
 	g_b1670 = b;
 	g_t166F = c;
-	globals->t1671.u0 = 0x01;
+	g_t1671.u0 = 0x01;
 	Eq_n bc_n = bc;
 	do
 	{
@@ -341,7 +341,7 @@ void fn063E(byte b, Eq_n c, byte d, Eq_n e)
 	g_t1676 = c;
 	g_b167B = 0x00;
 	*g_t1678 = 0x00;
-	globals->t167A.u0 = 0x00;
+	g_t167A.u0 = 0x00;
 	while (g_t167A <= 0x03)
 	{
 		g_b167C = 0x30;
@@ -365,7 +365,7 @@ void fn063E(byte b, Eq_n c, byte d, Eq_n e)
 			Eq_n hl_n = g_t1678;
 			Eq_n a_n = *hl_n;
 			hl_n->u0 = (byte) a_n.t0000 + 1;
-			((word16) globals->t1678 + (uint16) ((uint8) ((byte) a_n.t0000 + 1)))->u0 = g_b167C;
+			((word16) g_t1678 + (uint16) ((uint8) ((byte) a_n.t0000 + 1)))->u0 = g_b167C;
 		}
 		g_t167A = (word16) g_t167A + 1;
 		if (g_t167A == 0x00)
@@ -375,7 +375,7 @@ void fn063E(byte b, Eq_n c, byte d, Eq_n e)
 	Eq_n hl_n = g_t1676;
 	Eq_n a_n = *hl_n;
 	hl_n->u0 = (byte) a_n.t0000 + 1;
-	((word16) globals->t1678 + (uint16) ((uint8) ((byte) a_n.t0000 + 1)))->u0 = (byte) ((word16) hl_n.u1 + 48);
+	((word16) g_t1678 + (uint16) ((uint8) ((byte) a_n.t0000 + 1)))->u0 = (byte) ((word16) hl_n.u1 + 48);
 }
 
 // 06CE: Register byte fn06CE(Register byte b, Register Eq_n c)
@@ -493,7 +493,7 @@ void fn07B3(Eq_n b)
 		fn0745(SEQ(SLICE(bc_n, byte, 8), g_b14F8 - 0x0A));
 		fn05CE(0x02FC);
 		fn06CE(0x00, g_t14FE);
-		globals->t14FE.u1 = (word16) g_t14FE + 1;
+		g_t14FE.u1 = (word16) g_t14FE + 1;
 		byte b_n;
 		fn05EF(898, out b_n);
 	}
@@ -634,7 +634,7 @@ uint8 fn0920()
 		byte l_n;
 		S_BDOSVER(out b_n, out h_n, out a_n, out l_n);
 		if ((~(0x00 - (a_n < 0x30)) & g_b168E) >> 0x01 < 0x00)
-			((word16) globals->t168B + 7)->u0 = *((word16) g_t168B + 7) | 0x80;
+			((word16) g_t168B + 7)->u0 = *((word16) g_t168B + 7) | 0x80;
 		a_n = F_OPEN(g_t168B);
 		if (a_n == ~0x00)
 		{
@@ -697,7 +697,7 @@ Eq_n fn0990(byte f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 	}
 	else
 		*g_t168B = 0x00;
-	globals->t1697.u0 = 0x00;
+	g_t1697.u0 = 0x00;
 	while (true)
 	{
 		*((word16) sp_n - 2) = SEQ(~(0x00 - (g_t1697 > 0x07)), f);
@@ -707,7 +707,7 @@ Eq_n fn0990(byte f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 			break;
 		Mem399[sp_n + -2:word16] = Mem123[5778:word16] + Mem123[0x1697:word16];
 		byte a_n = **((word16) sp_n - 2);
-		((word16) globals->t168B + ((word16) globals->t1697 + 1))->u0 = a_n;
+		((word16) g_t168B + ((word16) g_t1697 + 1))->u0 = a_n;
 		Eq_n C_n = (bool) cond(a_n - 0x2A);
 		if (a_n == 0x2A)
 		{
@@ -771,17 +771,17 @@ Eq_n fn0990(byte f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 	*((word16) sp_n - 2) = SEQ(b_n, 0x03);
 	Eq_n hl_n = g_t168B;
 	fn0390(SLICE((word16) hl_n + 0x0C, byte, 8), (byte) ((word16) hl_n + 0x0C), 0x00, *((word16) sp_n - 2));
-	((word16) globals->t168B + 32)->u0 = 0x00;
-	globals->t1697.u0 = 0x00;
+	((word16) g_t168B + 32)->u0 = 0x00;
+	g_t1697.u0 = 0x00;
 	while (g_t1697 <= 0x07)
 	{
-		((word16) globals->t168B + ((word16) globals->t1697 + 1))->u0 = fn03E6(*((word16) g_t168B + ((word16) g_t1697 + 1)));
+		((word16) g_t168B + ((word16) g_t1697 + 1))->u0 = fn03E6(*((word16) g_t168B + ((word16) g_t1697 + 1)));
 		Eq_n a_n = g_t1697;
 		g_t1697 = (word16) a_n + 1;
 		if (a_n == 0x01)
 			break;
 	}
-	globals->t1697.u0 = 0x00;
+	g_t1697.u0 = 0x00;
 	do
 	{
 		Eq_n C_n = (bool) cond(0x02 - g_t1697);
@@ -872,7 +872,7 @@ byte fn0C93()
 //      fn0D84
 Eq_n fn0D64(union Eq_n & aOut)
 {
-	bcu8 a_n = globals->ptr1521->b0009;
+	bcu8 a_n = g_ptr1521->b0009;
 	aOut = a_n >> 0x01;
 	return cond(a_n >> 0x01);
 }
@@ -897,7 +897,7 @@ void fn0D84()
 // 0DB9: void fn0DB9()
 void fn0DB9()
 {
-	bcu8 a_n = globals->ptr1521->b0009;
+	bcu8 a_n = g_ptr1521->b0009;
 	cu8 a_n = __rcr(a_n + 252, 0x01, (bool) cond(a_n + 252));
 	cu8 a_n = __rcr(a_n, 0x01, cond(a_n));
 	__rcr(a_n, 0x01, cond(a_n));
@@ -923,7 +923,7 @@ void fn0E63(byte c)
 		byte l_n;
 		if ((fn1353(0x00, &g_ptr1521, out l_n) | (byte) hl_n) == 0x00)
 			break;
-		if (g_b16A6 == (globals->ptr1521)->b0002)
+		if (g_b16A6 == g_ptr1521->b0002)
 		{
 			cu8 a_n;
 			if (__rcr(a_n, 0x01, fn0EAB(out a_n)) < 0x00)
@@ -939,7 +939,7 @@ void fn0E63(byte c)
 //      fn0E63
 bool fn0EAB(union Eq_n & aOut)
 {
-	globals->t16A7.u0 = 0x00;
+	g_t16A7.u0 = 0x00;
 	while (true)
 	{
 		Eq_n a_n = g_t138C;

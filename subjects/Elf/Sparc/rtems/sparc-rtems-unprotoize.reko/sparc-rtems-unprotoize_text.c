@@ -716,11 +716,11 @@ void unexpand_if_needed(Eq_n o0)
 	word32 i1_n = 0x00;
 	if (g_t27F50 == 0x00)
 	{
-		globals->t27F54.u0 = 0x0400;
+		g_t27F54.u0 = 0x0400;
 		word32 i2_n;
 		word32 i6_n;
 		i0_n = xmalloc(0x0400, out i1_n, out i2_n, out i6_n);
-		globals->t27F50.u0 = 0x0400;
+		g_t27F50.u0 = 0x0400;
 	}
 	Eq_n l1_n;
 	if ((int32) *i0_n == 0x0A)
@@ -3438,7 +3438,7 @@ int8 * _getopt_initialize(int8 * o2, ptr32 & i1Out, ptr32 & i4Out, ptr32 & i5Out
 	ptr32 * o2_n = g_ptr28068;
 	g_ptr2B2F0 = o2_n;
 	g_ptr2B300 = o2_n;
-	globals->t2B2C0.u0 = 0x00;
+	g_t2B2C0.u0 = 0x00;
 	Eq_n o0_n = getenv("POSIXLY_CORRECT");
 	g_t2B2E0 = o0_n;
 	int8 * i0_n = o2;
@@ -3472,7 +3472,7 @@ int8 * _getopt_initialize(int8 * o2, ptr32 & i1Out, ptr32 & i4Out, ptr32 & i5Out
 Eq_n _getopt_internal(Eq_n (* o1)[], int8 * o2, ptr32 * o4, word32 o5, ptr32 & l6Out, ptr32 & l7Out, struct Eq_n & i6Out)
 {
 	ptr32 * o2_n = g_ptr28068;
-	globals->t28064.u0 = 0x00;
+	g_t28064.u0 = 0x00;
 	Eq_n i1_n[] = o1;
 	int8 * i2_n = o2;
 	ptr32 * i4_n = o4;
@@ -3631,7 +3631,7 @@ l000161B8:
 										ptr32 * o2_n = g_ptr28068;
 										Mem1431[0x0002B2C0:word32] = Mem402[0x0002B2C0:word32] + o0_n;
 										g_ptr28068 = (ptr32 *) ((char *) o2_n + 1);
-										globals->t28074.u0 = 0x00;
+										g_t28074.u0 = 0x00;
 										goto l00016978;
 									}
 									Z_n = SLICE(cond(l3_n), bool, 2);
@@ -3722,9 +3722,9 @@ l0001640C:
 									}
 									else
 										o0_n = g_ptr28068;
-									globals->t2B2C0.u0 = 96808;
+									g_t2B2C0.u0 = 96808;
 									g_ptr28068 = (ptr32 *) ((char *) o0_n + 1);
-									globals->t28074.u0 = 0x00;
+									g_t28074.u0 = 0x00;
 									goto l00016978;
 								}
 								ptr32 * o0_n = g_ptr28068;
@@ -3848,7 +3848,7 @@ l000166CC:
 												Z_n = SLICE(cond(l3_n), bool, 2);
 											if (Z_n)
 											{
-												globals->t2B2C0.u0 = 0x00;
+												g_t2B2C0.u0 = 0x00;
 												goto l00016978;
 											}
 											if ((int32) *l1_n == 0x00)
@@ -3924,7 +3924,7 @@ l00016974:
 									o1_n = g_t2B2C0;
 									if ((int32) *o1_n == 0x00)
 									{
-										globals->t28064.u0 = 0x00;
+										g_t28064.u0 = 0x00;
 										goto l0001696C;
 									}
 									o0_n = g_ptr28068;
@@ -3948,7 +3948,7 @@ l00016974:
 											g_ptr28068 = (ptr32 *) ((char *) o2_n + 1);
 										}
 l0001696C:
-										globals->t2B2C0.u0 = 0x00;
+										g_t2B2C0.u0 = 0x00;
 										goto l00016970;
 									}
 									o0_n = g_ptr28068;
@@ -4099,7 +4099,7 @@ Eq_n pexecute(Eq_n o0, pid_t * o1, word32 o3, word32 * o4, word32 * o5, Eq_n l1,
 	else
 		o0_n = 163400;
 	if ((dwArg5C & 0x01) != 0x00)
-		globals->t2B310.u0 = 0x00;
+		g_t2B310.u0 = 0x00;
 	Eq_n dwLoc24_n;
 	Eq_n i0_n;
 	word32 o0_n;
@@ -4116,7 +4116,7 @@ Eq_n pexecute(Eq_n o0, pid_t * o1, word32 o3, word32 * o4, word32 * o5, Eq_n l1,
 	}
 	else
 	{
-		globals->t2B310.u0 = 0x00;
+		g_t2B310.u0 = 0x00;
 		dwLoc24_n.u0 = 0x01;
 	}
 	uint32 dwLoc2C_n = 0x01;

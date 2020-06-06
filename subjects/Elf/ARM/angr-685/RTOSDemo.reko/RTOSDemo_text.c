@@ -523,7 +523,7 @@ void xTaskNotifyStateClear(struct Eq_n * r0, ptr32 cpsr)
 	if (r0 != null)
 		r4_n = r0;
 	else
-		r4_n = globals->ptr8560->ptr0004;
+		r4_n = g_ptr8560->ptr0004;
 	vPortEnterCritical(cpsr);
 	word32 r3_n = (word32) r4_n->b0064;
 	if (r3_n == 0x02)
@@ -1813,7 +1813,7 @@ void IntPriorityGroupingGet()
 // 00009590: void IntPrioritySet(Register ui32 r0, Register ui32 r1)
 void IntPrioritySet(ui32 r0, ui32 r1)
 {
-	ui32 * r4_n = (globals->ptr95B8 + (r0 & ~0x03))->ptr0020;
+	ui32 * r4_n = (g_ptr95B8 + (r0 & ~0x03))->ptr0020;
 	ui32 r0_n = (r0 & 0x03) << 3;
 	*r4_n = r1 << r0_n | *r4_n & ~(0xFF << r0_n);
 }
@@ -2047,7 +2047,7 @@ l00009846:
 	int32 r4_n = 0x5F - r4_n;
 	OSRAMWriteArray(r6_n + (r3_n - 0x20) * 0x05, r4_n);
 	Eq_n r3_n = (word32) *r5_n;
-	ui32 r0_n = (word32) (r3_n - 0x20 + (r3_n - 0x20 << 0x02) + globals->dw987C + r4_n)->b0010;
+	ui32 r0_n = (word32) (r3_n - 0x20 + (r3_n - 0x20 << 0x02) + g_dw987C + r4_n)->b0010;
 	OSRAMWriteFinal(r0_n);
 }
 
@@ -2286,7 +2286,7 @@ void SysCtlPeripheralPresent(uint32 r0)
 // 00009B3C: void SysCtlPeripheralReset(Register uint32 r0)
 void SysCtlPeripheralReset(uint32 r0)
 {
-	ui32 * r2_n = (globals->ptr9B78 + ((r0 >> 28) << 0x02))->ptr0010;
+	ui32 * r2_n = (g_ptr9B78 + ((r0 >> 28) << 0x02))->ptr0010;
 	*r2_n = r0 & ~0xF0000000 | *r2_n;
 	up32 dwLoc0C_n = 0x00;
 	if (false)
@@ -2304,42 +2304,42 @@ void SysCtlPeripheralReset(uint32 r0)
 //      OSRAMInit
 void SysCtlPeripheralEnable(uint32 r0)
 {
-	ui32 * r3_n = (globals->ptr9B94 + ((r0 >> 28) << 0x02))->ptr001C;
+	ui32 * r3_n = (g_ptr9B94 + ((r0 >> 28) << 0x02))->ptr001C;
 	*r3_n = r0 & ~0xF0000000 | *r3_n;
 }
 
 // 00009B98: void SysCtlPeripheralDisable(Register uint32 r0)
 void SysCtlPeripheralDisable(uint32 r0)
 {
-	ui32 * r2_n = (globals->ptr9BB0 + ((r0 >> 28) << 0x02))->ptr001C;
+	ui32 * r2_n = (g_ptr9BB0 + ((r0 >> 28) << 0x02))->ptr001C;
 	*r2_n &= ~(r0 & ~0xF0000000);
 }
 
 // 00009BB4: void SysCtlPeripheralSleepEnable(Register uint32 r0)
 void SysCtlPeripheralSleepEnable(uint32 r0)
 {
-	ui32 * r3_n = (globals->ptr9BCC + ((r0 >> 28) << 0x02))->ptr0028;
+	ui32 * r3_n = (g_ptr9BCC + ((r0 >> 28) << 0x02))->ptr0028;
 	*r3_n = r0 & ~0xF0000000 | *r3_n;
 }
 
 // 00009BD0: void SysCtlPeripheralSleepDisable(Register uint32 r0)
 void SysCtlPeripheralSleepDisable(uint32 r0)
 {
-	ui32 * r2_n = (globals->ptr9BE8 + ((r0 >> 28) << 0x02))->ptr0028;
+	ui32 * r2_n = (g_ptr9BE8 + ((r0 >> 28) << 0x02))->ptr0028;
 	*r2_n &= ~(r0 & ~0xF0000000);
 }
 
 // 00009BEC: void SysCtlPeripheralDeepSleepEnable(Register uint32 r0)
 void SysCtlPeripheralDeepSleepEnable(uint32 r0)
 {
-	ui32 * r3_n = (globals->ptr9C04 + ((r0 >> 28) << 0x02))->ptr0034;
+	ui32 * r3_n = (g_ptr9C04 + ((r0 >> 28) << 0x02))->ptr0034;
 	*r3_n = r0 & ~0xF0000000 | *r3_n;
 }
 
 // 00009C08: void SysCtlPeripheralDeepSleepDisable(Register uint32 r0)
 void SysCtlPeripheralDeepSleepDisable(uint32 r0)
 {
-	ui32 * r2_n = (globals->ptr9C20 + ((r0 >> 28) << 0x02))->ptr0034;
+	ui32 * r2_n = (g_ptr9C20 + ((r0 >> 28) << 0x02))->ptr0034;
 	*r2_n &= ~(r0 & ~0xF0000000);
 }
 
@@ -2517,7 +2517,7 @@ uint32 SysCtlClockGet()
 				r0_n = 0x00;
 				return r0_n;
 			}
-			r0_n = (globals->ptr9E58 + ((uint32) SLICE(r3_n, ui4, 6) << 0x02))->dw0030;
+			r0_n = (g_ptr9E58 + ((uint32) SLICE(r3_n, ui4, 6) << 0x02))->dw0030;
 		}
 		else
 			r0_n = g_dw9E60;

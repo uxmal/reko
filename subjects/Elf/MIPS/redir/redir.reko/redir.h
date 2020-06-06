@@ -213,8 +213,8 @@ Eq_907: (union "Eq_907" (word16 u0) ((ptr32 char) u1) ((ptr32 Eq_7737) u2) ((ptr
 	T_1125 (in 0<32> : word32)
 	T_1132 (in r4 : Eq_907)
 	T_1133 (in r5 : Eq_907)
-	T_1156 (in server_new((char *) &(globals->ptr10000A40->a0004 + 1<i32>)->ptr0000 + 1<i32>, globals->ptr10000A40->dw012C, globals->ptr10000A40->t0554, 0<32>, ra) : word32)
-	T_1175 (in server_new((char *) &(globals->ptr10000A40->a0004 + 1<i32>)->ptr0000 + 1<i32>, globals->ptr10000A40->dw01C4, globals->ptr10000A40->t0554, 1<i32>, ra) : word32)
+	T_1156 (in server_new((char *) &(g_ptr10000A40->a0004 + 1<i32>)->ptr0000 + 1<i32>, g_ptr10000A40->dw012C, g_ptr10000A40->t0554, 0<32>, ra) : word32)
+	T_1175 (in server_new((char *) &(g_ptr10000A40->a0004 + 1<i32>)->ptr0000 + 1<i32>, g_ptr10000A40->dw01C4, g_ptr10000A40->t0554, 1<i32>, ra) : word32)
 	T_1193 (in r5_410 : Eq_907)
 	T_1194 (in <invalid> : void)
 	T_1199 (in r5_1005 : Eq_907)
@@ -6608,11 +6608,11 @@ T_1155: (in 0<32> : word32)
   Class: Eq_1139
   DataType: int32
   OrigDataType: word32
-T_1156: (in server_new((char *) &(globals->ptr10000A40->a0004 + 1<i32>)->ptr0000 + 1<i32>, globals->ptr10000A40->dw012C, globals->ptr10000A40->t0554, 0<32>, ra) : word32)
+T_1156: (in server_new((char *) &(g_ptr10000A40->a0004 + 1<i32>)->ptr0000 + 1<i32>, g_ptr10000A40->dw012C, g_ptr10000A40->t0554, 0<32>, ra) : word32)
   Class: Eq_907
   DataType: Eq_907
   OrigDataType: word32
-T_1157: (in slist_add(r2_325, server_new((char *) &(globals->ptr10000A40->a0004 + 1<i32>)->ptr0000 + 1<i32>, globals->ptr10000A40->dw012C, globals->ptr10000A40->t0554, 0<32>, ra)) : void)
+T_1157: (in slist_add(r2_325, server_new((char *) &(g_ptr10000A40->a0004 + 1<i32>)->ptr0000 + 1<i32>, g_ptr10000A40->dw012C, g_ptr10000A40->t0554, 0<32>, ra)) : void)
   Class: Eq_1157
   DataType: void
   OrigDataType: void
@@ -6684,11 +6684,11 @@ T_1174: (in 1<i32> : int32)
   Class: Eq_1139
   DataType: int32
   OrigDataType: int32
-T_1175: (in server_new((char *) &(globals->ptr10000A40->a0004 + 1<i32>)->ptr0000 + 1<i32>, globals->ptr10000A40->dw01C4, globals->ptr10000A40->t0554, 1<i32>, ra) : word32)
+T_1175: (in server_new((char *) &(g_ptr10000A40->a0004 + 1<i32>)->ptr0000 + 1<i32>, g_ptr10000A40->dw01C4, g_ptr10000A40->t0554, 1<i32>, ra) : word32)
   Class: Eq_907
   DataType: Eq_907
   OrigDataType: word32
-T_1176: (in slist_add(r2_325, server_new((char *) &(globals->ptr10000A40->a0004 + 1<i32>)->ptr0000 + 1<i32>, globals->ptr10000A40->dw01C4, globals->ptr10000A40->t0554, 1<i32>, ra)) : void)
+T_1176: (in slist_add(r2_325, server_new((char *) &(g_ptr10000A40->a0004 + 1<i32>)->ptr0000 + 1<i32>, g_ptr10000A40->dw01C4, g_ptr10000A40->t0554, 1<i32>, ra)) : void)
   Class: Eq_1157
   DataType: void
   OrigDataType: void
@@ -19004,7 +19004,7 @@ T_4254: (in (Mem293[0x10000A40<32>:word32] + 4<i32>)[(dwLoc014C_568 * 0x14<32> -
   Class: Eq_4244
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_4255: (in strcasecmp(r2_212, globals->ptr10000A40->a0004[dwLoc014C_568 * 0x14<32> - dwLoc014C_568].ptr0000) : int32)
+T_4255: (in strcasecmp(r2_212, g_ptr10000A40->a0004[dwLoc014C_568 * 0x14<32> - dwLoc014C_568].ptr0000) : int32)
   Class: Eq_4255
   DataType: int32
   OrigDataType: int32
@@ -19012,7 +19012,7 @@ T_4256: (in 0<32> : word32)
   Class: Eq_4255
   DataType: int32
   OrigDataType: word32
-T_4257: (in strcasecmp(r2_212, globals->ptr10000A40->a0004[dwLoc014C_568 * 0x14<32> - dwLoc014C_568].ptr0000) != 0<32> : bool)
+T_4257: (in strcasecmp(r2_212, g_ptr10000A40->a0004[dwLoc014C_568 * 0x14<32> - dwLoc014C_568].ptr0000) != 0<32> : bool)
   Class: Eq_4257
   DataType: bool
   OrigDataType: bool
@@ -19204,7 +19204,7 @@ T_4304: (in 20<i32> : int32)
   Class: Eq_3753
   DataType: int32
   OrigDataType: int32
-T_4305: (in strncpy((char *) &(globals->ptr10000A40->a0004 + 1<i32>)->ptr0000 + 1<i32> + (dwLoc014C_568 * 0x14<32> - dwLoc014C_568 << 3<8>), r2_266, 20<i32>) : int32)
+T_4305: (in strncpy((char *) &(g_ptr10000A40->a0004 + 1<i32>)->ptr0000 + 1<i32> + (dwLoc014C_568 * 0x14<32> - dwLoc014C_568 << 3<8>), r2_266, 20<i32>) : int32)
   Class: Eq_3755
   DataType: int32
   OrigDataType: int32

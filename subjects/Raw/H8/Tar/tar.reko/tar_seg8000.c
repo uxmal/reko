@@ -1127,7 +1127,7 @@ l8DA2:
 word32 fn8F4E(word16 er0_16_n, Eq_n er4, Eq_n r5, Eq_n r6, union Eq_n & er4Out, ptr16 & r6Out)
 {
 	g_wFFFF9E34 = ~0x00;
-	globals->uFFFF9E36.u0 = ~0x00;
+	g_uFFFF9E36.u0 = ~0x00;
 	Eq_n r6_n;
 	Eq_n r6_n;
 	word16 er0_16_16_n = SLICE(fn9BB6(SEQ(SLICE(fn9B9A(SEQ(er0_16_n, 0x1946), 0x1000, r6, wLoc0A, out r6_n), word16, 16), 0x1A4E), 0x2000, 0x01, r6_n, wLoc0C, 0x07, out r6_n), word16, 16);
@@ -1373,7 +1373,7 @@ word32 fn8F4E(word16 er0_16_n, Eq_n er4, Eq_n r5, Eq_n r6, union Eq_n & er4Out, 
 	Eq_n r6_n;
 	Eq_n r6_n;
 	word16 er0_16_16_n = SLICE(fn9BB6(SEQ(SLICE(fn9C18(SEQ(SLICE(fn9BB6(SEQ(er0_16_16_n, 0x1A4E), 0x2002, 0x02, r6_n, *((word32) sp_n - 4), *((word32) sp_n - 2), out r6_n), word16, 16), 300), er4_n, r6_n, out er2_n, out er4_n, out r6_n), word16, 16), 0x1A4E), 0x2002, 0x03, r6_n, r5, r4_n, out r6_n), word16, 16);
-	globals->uFFFF9E36.u0 = ~0x00;
+	g_uFFFF9E36.u0 = ~0x00;
 	word16 r6_n;
 	word32 er0_n = fn9B9A(SEQ(er0_16_16_n, 0x1946), 0x1000, r6_n, r4_n, out r6_n);
 	er4Out = SEQ(SLICE(er4_n, word16, 16), wLoc02);
