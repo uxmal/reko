@@ -15,8 +15,8 @@ real32 g_r4020F0 = 4.123F;
 real32 g_r4020F4 = 1000.1F;
 real64 g_r4020F8 = 321.0;
 real64 g_r402100 = 123.0;
-cdecl_class_ptr g_gbl_c = null;
-nested_structs_type g_gbl_nested_structs = 
+cdecl_class_ptr gbl_c = null;
+nested_structs_type gbl_nested_structs = 
 	{
 		0,
 		
@@ -28,5 +28,5 @@ nested_structs_type g_gbl_nested_structs =
 	};
 uint32 g_dw40302C = 0x00;
 uint32 g_dw403030 = 0x00;
-thiscall_class * g_gbl_thiscall = null;
+thiscall_class * gbl_thiscall = null;
 
