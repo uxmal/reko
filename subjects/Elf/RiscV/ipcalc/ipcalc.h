@@ -7695,7 +7695,7 @@ T_1146: (in 0<64> : word64)
   Class: Eq_1145
   DataType: word64
   OrigDataType: word64
-T_1147: (in globals->qw19E28 != 0<64> : bool)
+T_1147: (in g_qw19E28 != 0<64> : bool)
   Class: Eq_1147
   DataType: bool
   OrigDataType: bool

@@ -3564,7 +3564,7 @@ T_218: (in 0x24<16> : word16)
   Class: Eq_11
   DataType: cup16
   OrigDataType: cup16
-T_219: (in globals->ptr3E24->t0014 < 0x24<16> : bool)
+T_219: (in g_ptr3E24->t0014 < 0x24<16> : bool)
   Class: Eq_219
   DataType: bool
   OrigDataType: bool
@@ -4888,7 +4888,7 @@ T_549: (in 0<32> : word32)
   Class: Eq_548
   DataType: int32
   OrigDataType: word32
-T_550: (in globals->dw3E50 != 0<32> : bool)
+T_550: (in g_dw3E50 != 0<32> : bool)
   Class: Eq_550
   DataType: bool
   OrigDataType: bool
@@ -14896,7 +14896,7 @@ T_3051: (in 0<32> : word32)
   Class: Eq_4
   DataType: (ptr32 Eq_4)
   OrigDataType: word32
-T_3052: (in globals->ptr3E58 != null : bool)
+T_3052: (in g_ptr3E58 != null : bool)
   Class: Eq_3052
   DataType: bool
   OrigDataType: bool
@@ -14928,7 +14928,7 @@ T_3059: (in 0<32> : word32)
   Class: Eq_4
   DataType: (ptr32 Eq_4)
   OrigDataType: word32
-T_3060: (in globals->ptr3E58 != null : bool)
+T_3060: (in g_ptr3E58 != null : bool)
   Class: Eq_3060
   DataType: bool
   OrigDataType: bool
@@ -15132,7 +15132,7 @@ T_3110: (in 0<32> : word32)
   Class: Eq_4
   DataType: (ptr32 Eq_4)
   OrigDataType: word32
-T_3111: (in globals->ptr3E58 == null : bool)
+T_3111: (in g_ptr3E58 == null : bool)
   Class: Eq_3111
   DataType: bool
   OrigDataType: bool
@@ -15220,7 +15220,7 @@ T_3132: (in 0x27<16> : word16)
   Class: Eq_11
   DataType: cup16
   OrigDataType: cup16
-T_3133: (in globals->ptr3E24->t0014 < 0x27<16> : bool)
+T_3133: (in g_ptr3E24->t0014 < 0x27<16> : bool)
   Class: Eq_3133
   DataType: bool
   OrigDataType: bool
@@ -16476,7 +16476,7 @@ T_3446: (in 0x27<16> : word16)
   Class: Eq_11
   DataType: cup16
   OrigDataType: cup16
-T_3447: (in globals->ptr3E24->t0014 < 0x27<16> : bool)
+T_3447: (in g_ptr3E24->t0014 < 0x27<16> : bool)
   Class: Eq_3447
   DataType: bool
   OrigDataType: bool
@@ -28780,7 +28780,7 @@ T_6522: (in 1<32> : word32)
   Class: Eq_6522
   DataType: ui32
   OrigDataType: ui32
-T_6523: (in (uint32) (uint8) (&globals->t28C5)[SEQ(SLICE(d0_2837, word24, 8), (byte) d5_1007) & 0xFF<32>] & 1<32> : word32)
+T_6523: (in (uint32) (uint8) (&g_t28C5)[SEQ(SLICE(d0_2837, word24, 8), (byte) d5_1007) & 0xFF<32>] & 1<32> : word32)
   Class: Eq_6523
   DataType: ui32
   OrigDataType: ui32
@@ -28788,7 +28788,7 @@ T_6524: (in 0<32> : word32)
   Class: Eq_6523
   DataType: ui32
   OrigDataType: word32
-T_6525: (in ((uint32) (uint8) (&globals->t28C5)[SEQ(SLICE(d0_2837, word24, 8), (byte) d5_1007) & 0xFF<32>] & 1<32>) == 0<32> : bool)
+T_6525: (in ((uint32) (uint8) (&g_t28C5)[SEQ(SLICE(d0_2837, word24, 8), (byte) d5_1007) & 0xFF<32>] & 1<32>) == 0<32> : bool)
   Class: Eq_6525
   DataType: bool
   OrigDataType: bool
@@ -29000,7 +29000,7 @@ T_6577: (in 2<32> : word32)
   Class: Eq_6577
   DataType: ui32
   OrigDataType: ui32
-T_6578: (in (uint32) (uint8) (&globals->t28C5)[SEQ(SLICE(d0_2892, word24, 8), (byte) d5_1007) & 0xFF<32>] & 2<32> : word32)
+T_6578: (in (uint32) (uint8) (&g_t28C5)[SEQ(SLICE(d0_2892, word24, 8), (byte) d5_1007) & 0xFF<32>] & 2<32> : word32)
   Class: Eq_6578
   DataType: ui32
   OrigDataType: ui32
@@ -29008,7 +29008,7 @@ T_6579: (in 0<32> : word32)
   Class: Eq_6578
   DataType: ui32
   OrigDataType: word32
-T_6580: (in ((uint32) (uint8) (&globals->t28C5)[SEQ(SLICE(d0_2892, word24, 8), (byte) d5_1007) & 0xFF<32>] & 2<32>) == 0<32> : bool)
+T_6580: (in ((uint32) (uint8) (&g_t28C5)[SEQ(SLICE(d0_2892, word24, 8), (byte) d5_1007) & 0xFF<32>] & 2<32>) == 0<32> : bool)
   Class: Eq_6580
   DataType: bool
   OrigDataType: bool
@@ -30172,7 +30172,7 @@ T_6870: (in 4<32> : word32)
   Class: Eq_6870
   DataType: ui32
   OrigDataType: ui32
-T_6871: (in (uint32) (uint8) (&globals->t28C5)[SEQ(a7_2763->n0001, (byte) d5_1007) & 0xFF<32>] & 4<32> : word32)
+T_6871: (in (uint32) (uint8) (&g_t28C5)[SEQ(a7_2763->n0001, (byte) d5_1007) & 0xFF<32>] & 4<32> : word32)
   Class: Eq_6871
   DataType: ui32
   OrigDataType: ui32
@@ -30180,7 +30180,7 @@ T_6872: (in 0<32> : word32)
   Class: Eq_6871
   DataType: ui32
   OrigDataType: word32
-T_6873: (in ((uint32) (uint8) (&globals->t28C5)[SEQ(a7_2763->n0001, (byte) d5_1007) & 0xFF<32>] & 4<32>) == 0<32> : bool)
+T_6873: (in ((uint32) (uint8) (&g_t28C5)[SEQ(a7_2763->n0001, (byte) d5_1007) & 0xFF<32>] & 4<32>) == 0<32> : bool)
   Class: Eq_6873
   DataType: bool
   OrigDataType: bool

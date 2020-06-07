@@ -6319,7 +6319,7 @@ T_480: (in 2<i32> : int32)
   Class: Eq_480
   DataType: int32
   OrigDataType: int32
-T_481: (in globals->ptr192D0 + 2<i32> : word32)
+T_481: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_481
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -6499,7 +6499,7 @@ T_525: (in 2<i32> : int32)
   Class: Eq_525
   DataType: int32
   OrigDataType: int32
-T_526: (in globals->ptr192B0 + 2<i32> : word32)
+T_526: (in g_ptr192B0 + 2<i32> : word32)
   Class: Eq_526
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -6567,7 +6567,7 @@ T_542: (in 2<i32> : int32)
   Class: Eq_542
   DataType: int32
   OrigDataType: int32
-T_543: (in globals->ptr192B0 + 2<i32> : word32)
+T_543: (in g_ptr192B0 + 2<i32> : word32)
   Class: Eq_543
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -6635,7 +6635,7 @@ T_559: (in 2<i32> : int32)
   Class: Eq_559
   DataType: int32
   OrigDataType: int32
-T_560: (in globals->ptr192B0 + 2<i32> : word32)
+T_560: (in g_ptr192B0 + 2<i32> : word32)
   Class: Eq_560
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -6703,7 +6703,7 @@ T_576: (in 2<i32> : int32)
   Class: Eq_576
   DataType: int32
   OrigDataType: int32
-T_577: (in globals->ptr192B0 + 2<i32> : word32)
+T_577: (in g_ptr192B0 + 2<i32> : word32)
   Class: Eq_577
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -6795,7 +6795,7 @@ T_599: (in 2<i32> : int32)
   Class: Eq_599
   DataType: int32
   OrigDataType: int32
-T_600: (in globals->ptr192B0 + 2<i32> : word32)
+T_600: (in g_ptr192B0 + 2<i32> : word32)
   Class: Eq_600
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -6855,7 +6855,7 @@ T_614: (in 2<i32> : int32)
   Class: Eq_614
   DataType: int32
   OrigDataType: int32
-T_615: (in globals->ptr192B0 + 2<i32> : word32)
+T_615: (in g_ptr192B0 + 2<i32> : word32)
   Class: Eq_615
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -7191,7 +7191,7 @@ T_698: (in 2<i32> : int32)
   Class: Eq_698
   DataType: int32
   OrigDataType: int32
-T_699: (in globals->ptr192D0 + 2<i32> : word32)
+T_699: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_699
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -7835,7 +7835,7 @@ T_859: (in 2<i32> : int32)
   Class: Eq_859
   DataType: int32
   OrigDataType: int32
-T_860: (in globals->ptr192D0 + 2<i32> : word32)
+T_860: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_860
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -7979,7 +7979,7 @@ T_895: (in 2<i32> : int32)
   Class: Eq_895
   DataType: int32
   OrigDataType: int32
-T_896: (in globals->ptr19294 + 2<i32> : word32)
+T_896: (in g_ptr19294 + 2<i32> : word32)
   Class: Eq_896
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -8063,7 +8063,7 @@ T_916: (in 2<i32> : int32)
   Class: Eq_916
   DataType: int32
   OrigDataType: int32
-T_917: (in globals->ptr19290 + 2<i32> : word32)
+T_917: (in g_ptr19290 + 2<i32> : word32)
   Class: Eq_917
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -8255,7 +8255,7 @@ T_964: (in 2<i32> : int32)
   Class: Eq_964
   DataType: int32
   OrigDataType: int32
-T_965: (in globals->ptr19298 + 2<i32> : word32)
+T_965: (in g_ptr19298 + 2<i32> : word32)
   Class: Eq_965
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -11623,7 +11623,7 @@ T_1806: (in 2<i32> : int32)
   Class: Eq_1806
   DataType: int32
   OrigDataType: int32
-T_1807: (in globals->ptr192B4 + 2<i32> : word32)
+T_1807: (in g_ptr192B4 + 2<i32> : word32)
   Class: Eq_1807
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -11787,7 +11787,7 @@ T_1847: (in 2<i32> : int32)
   Class: Eq_1847
   DataType: int32
   OrigDataType: int32
-T_1848: (in globals->ptr1929C + 2<i32> : word32)
+T_1848: (in g_ptr1929C + 2<i32> : word32)
   Class: Eq_1848
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -12899,7 +12899,7 @@ T_2125: (in Mem78[Mem78[0x00013206<p32>:word32] + 0<32>:word32] : word32)
   Class: Eq_2125
   DataType: ui32
   OrigDataType: ui32
-T_2126: (in r0_91->ptr5150 | *globals->ptr13206 : word32)
+T_2126: (in r0_91->ptr5150 | *g_ptr13206 : word32)
   Class: Eq_2126
   DataType: ui32
   OrigDataType: ui32
@@ -15223,7 +15223,7 @@ T_2706: (in 2<i32> : int32)
   Class: Eq_2706
   DataType: int32
   OrigDataType: int32
-T_2707: (in globals->ptr192A0 + 2<i32> : word32)
+T_2707: (in g_ptr192A0 + 2<i32> : word32)
   Class: Eq_2707
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -15287,7 +15287,7 @@ T_2722: (in 2<i32> : int32)
   Class: Eq_2722
   DataType: int32
   OrigDataType: int32
-T_2723: (in globals->ptr192A4 + 2<i32> : word32)
+T_2723: (in g_ptr192A4 + 2<i32> : word32)
   Class: Eq_2723
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -15927,7 +15927,7 @@ T_2882: (in 2<i32> : int32)
   Class: Eq_2882
   DataType: int32
   OrigDataType: int32
-T_2883: (in globals->ptr192A4 + 2<i32> : word32)
+T_2883: (in g_ptr192A4 + 2<i32> : word32)
   Class: Eq_2883
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -16263,7 +16263,7 @@ T_2966: (in 2<i32> : int32)
   Class: Eq_2966
   DataType: int32
   OrigDataType: int32
-T_2967: (in globals->ptr1932C + 2<i32> : word32)
+T_2967: (in g_ptr1932C + 2<i32> : word32)
   Class: Eq_2967
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -16451,7 +16451,7 @@ T_3013: (in 2<i32> : int32)
   Class: Eq_3013
   DataType: int32
   OrigDataType: int32
-T_3014: (in globals->ptr192D0 + 2<i32> : word32)
+T_3014: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_3014
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -16711,7 +16711,7 @@ T_3078: (in 2<i32> : int32)
   Class: Eq_3078
   DataType: int32
   OrigDataType: int32
-T_3079: (in globals->ptr192D0 + 2<i32> : word32)
+T_3079: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_3079
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -16947,7 +16947,7 @@ T_3137: (in 2<i32> : int32)
   Class: Eq_3137
   DataType: int32
   OrigDataType: int32
-T_3138: (in globals->ptr192BC + 2<i32> : word32)
+T_3138: (in g_ptr192BC + 2<i32> : word32)
   Class: Eq_3138
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -16987,7 +16987,7 @@ T_3147: (in 2<i32> : int32)
   Class: Eq_3147
   DataType: int32
   OrigDataType: int32
-T_3148: (in globals->ptr192D4 + 2<i32> : word32)
+T_3148: (in g_ptr192D4 + 2<i32> : word32)
   Class: Eq_3148
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -17655,7 +17655,7 @@ T_3314: (in 2<i32> : int32)
   Class: Eq_3314
   DataType: int32
   OrigDataType: int32
-T_3315: (in globals->ptr192C4 + 2<i32> : word32)
+T_3315: (in g_ptr192C4 + 2<i32> : word32)
   Class: Eq_3315
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -17911,7 +17911,7 @@ T_3378: (in 2<i32> : int32)
   Class: Eq_3378
   DataType: int32
   OrigDataType: int32
-T_3379: (in globals->ptr192C4 + 2<i32> : word32)
+T_3379: (in g_ptr192C4 + 2<i32> : word32)
   Class: Eq_3379
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -18007,7 +18007,7 @@ T_3402: (in 2<i32> : int32)
   Class: Eq_3402
   DataType: int32
   OrigDataType: int32
-T_3403: (in globals->ptr192C4 + 2<i32> : word32)
+T_3403: (in g_ptr192C4 + 2<i32> : word32)
   Class: Eq_3403
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -18547,7 +18547,7 @@ T_3537: (in 2<i32> : int32)
   Class: Eq_3537
   DataType: int32
   OrigDataType: int32
-T_3538: (in globals->ptr192BC + 2<i32> : word32)
+T_3538: (in g_ptr192BC + 2<i32> : word32)
   Class: Eq_3538
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -18643,7 +18643,7 @@ T_3561: (in 2<i32> : int32)
   Class: Eq_3561
   DataType: int32
   OrigDataType: int32
-T_3562: (in globals->ptr192D4 + 2<i32> : word32)
+T_3562: (in g_ptr192D4 + 2<i32> : word32)
   Class: Eq_3562
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -18875,7 +18875,7 @@ T_3619: (in 2<i32> : int32)
   Class: Eq_3619
   DataType: int32
   OrigDataType: int32
-T_3620: (in globals->ptr19284 + 2<i32> : word32)
+T_3620: (in g_ptr19284 + 2<i32> : word32)
   Class: Eq_3620
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -18971,7 +18971,7 @@ T_3643: (in 2<i32> : int32)
   Class: Eq_3643
   DataType: int32
   OrigDataType: int32
-T_3644: (in globals->ptr192C4 + 2<i32> : word32)
+T_3644: (in g_ptr192C4 + 2<i32> : word32)
   Class: Eq_3644
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -19155,7 +19155,7 @@ T_3689: (in 2<i32> : int32)
   Class: Eq_3689
   DataType: int32
   OrigDataType: int32
-T_3690: (in globals->ptr192BC + 2<i32> : word32)
+T_3690: (in g_ptr192BC + 2<i32> : word32)
   Class: Eq_3690
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -19227,7 +19227,7 @@ T_3707: (in 2<i32> : int32)
   Class: Eq_3707
   DataType: int32
   OrigDataType: int32
-T_3708: (in globals->ptr192C4 + 2<i32> : word32)
+T_3708: (in g_ptr192C4 + 2<i32> : word32)
   Class: Eq_3708
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -19367,7 +19367,7 @@ T_3742: (in 2<i32> : int32)
   Class: Eq_3742
   DataType: int32
   OrigDataType: int32
-T_3743: (in globals->ptr192BC + 2<i32> : word32)
+T_3743: (in g_ptr192BC + 2<i32> : word32)
   Class: Eq_3743
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -19463,7 +19463,7 @@ T_3766: (in 2<i32> : int32)
   Class: Eq_3766
   DataType: int32
   OrigDataType: int32
-T_3767: (in globals->ptr192BC + 2<i32> : word32)
+T_3767: (in g_ptr192BC + 2<i32> : word32)
   Class: Eq_3767
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -19563,7 +19563,7 @@ T_3791: (in 2<i32> : int32)
   Class: Eq_3791
   DataType: int32
   OrigDataType: int32
-T_3792: (in globals->ptr19284 + 2<i32> : word32)
+T_3792: (in g_ptr19284 + 2<i32> : word32)
   Class: Eq_3792
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -20015,7 +20015,7 @@ T_3904: (in 2<i32> : int32)
   Class: Eq_3904
   DataType: int32
   OrigDataType: int32
-T_3905: (in globals->ptr192BC + 2<i32> : word32)
+T_3905: (in g_ptr192BC + 2<i32> : word32)
   Class: Eq_3905
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -20311,7 +20311,7 @@ T_3978: (in 2<i32> : int32)
   Class: Eq_3978
   DataType: int32
   OrigDataType: int32
-T_3979: (in globals->ptr1928C + 2<i32> : word32)
+T_3979: (in g_ptr1928C + 2<i32> : word32)
   Class: Eq_3979
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -20795,7 +20795,7 @@ T_4099: (in 2<i32> : int32)
   Class: Eq_4099
   DataType: int32
   OrigDataType: int32
-T_4100: (in globals->ptr192D0 + 2<i32> : word32)
+T_4100: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_4100
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -21835,7 +21835,7 @@ T_4359: (in 2<i32> : int32)
   Class: Eq_4359
   DataType: int32
   OrigDataType: int32
-T_4360: (in globals->ptr192CC + 2<i32> : word32)
+T_4360: (in g_ptr192CC + 2<i32> : word32)
   Class: Eq_4360
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -22023,7 +22023,7 @@ T_4406: (in 2<i32> : int32)
   Class: Eq_4406
   DataType: int32
   OrigDataType: int32
-T_4407: (in globals->ptr192CC + 2<i32> : word32)
+T_4407: (in g_ptr192CC + 2<i32> : word32)
   Class: Eq_4407
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -22239,7 +22239,7 @@ T_4460: (in 2<i32> : int32)
   Class: Eq_4460
   DataType: int32
   OrigDataType: int32
-T_4461: (in globals->ptr192C4 + 2<i32> : word32)
+T_4461: (in g_ptr192C4 + 2<i32> : word32)
   Class: Eq_4461
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -22291,7 +22291,7 @@ T_4473: (in 2<i32> : int32)
   Class: Eq_4473
   DataType: int32
   OrigDataType: int32
-T_4474: (in globals->ptr192B4 + 2<i32> : word32)
+T_4474: (in g_ptr192B4 + 2<i32> : word32)
   Class: Eq_4474
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -22359,7 +22359,7 @@ T_4490: (in 2<i32> : int32)
   Class: Eq_4490
   DataType: int32
   OrigDataType: int32
-T_4491: (in globals->ptr192BC + 2<i32> : word32)
+T_4491: (in g_ptr192BC + 2<i32> : word32)
   Class: Eq_4491
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -22795,7 +22795,7 @@ T_4599: (in 2<i32> : int32)
   Class: Eq_4599
   DataType: int32
   OrigDataType: int32
-T_4600: (in globals->ptr192B4 + 2<i32> : word32)
+T_4600: (in g_ptr192B4 + 2<i32> : word32)
   Class: Eq_4600
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -22931,7 +22931,7 @@ T_4633: (in 2<i32> : int32)
   Class: Eq_4633
   DataType: int32
   OrigDataType: int32
-T_4634: (in globals->ptr192B0 + 2<i32> : word32)
+T_4634: (in g_ptr192B0 + 2<i32> : word32)
   Class: Eq_4634
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -23679,7 +23679,7 @@ T_4820: (in 2<i32> : int32)
   Class: Eq_4820
   DataType: int32
   OrigDataType: int32
-T_4821: (in globals->ptr192B4 + 2<i32> : word32)
+T_4821: (in g_ptr192B4 + 2<i32> : word32)
   Class: Eq_4821
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -23871,7 +23871,7 @@ T_4868: (in 2<i32> : int32)
   Class: Eq_4868
   DataType: int32
   OrigDataType: int32
-T_4869: (in globals->ptr192B0 + 2<i32> : word32)
+T_4869: (in g_ptr192B0 + 2<i32> : word32)
   Class: Eq_4869
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -23919,7 +23919,7 @@ T_4880: (in 2<i32> : int32)
   Class: Eq_4880
   DataType: int32
   OrigDataType: int32
-T_4881: (in globals->ptr1927C + 2<i32> : word32)
+T_4881: (in g_ptr1927C + 2<i32> : word32)
   Class: Eq_4881
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -24767,7 +24767,7 @@ T_5092: (in 2<i32> : int32)
   Class: Eq_5092
   DataType: int32
   OrigDataType: int32
-T_5093: (in globals->ptr19270 + 2<i32> : word32)
+T_5093: (in g_ptr19270 + 2<i32> : word32)
   Class: Eq_5093
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -24971,7 +24971,7 @@ T_5143: (in 2<i32> : int32)
   Class: Eq_5143
   DataType: int32
   OrigDataType: int32
-T_5144: (in globals->ptr192C4 + 2<i32> : word32)
+T_5144: (in g_ptr192C4 + 2<i32> : word32)
   Class: Eq_5144
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -25199,7 +25199,7 @@ T_5200: (in 2<i32> : int32)
   Class: Eq_5200
   DataType: int32
   OrigDataType: int32
-T_5201: (in globals->ptr1929C + 2<i32> : word32)
+T_5201: (in g_ptr1929C + 2<i32> : word32)
   Class: Eq_5201
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -25583,7 +25583,7 @@ T_5296: (in 2<i32> : int32)
   Class: Eq_5296
   DataType: int32
   OrigDataType: int32
-T_5297: (in globals->ptr19270 + 2<i32> : word32)
+T_5297: (in g_ptr19270 + 2<i32> : word32)
   Class: Eq_5297
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -26235,7 +26235,7 @@ T_5459: (in 2<i32> : int32)
   Class: Eq_5459
   DataType: int32
   OrigDataType: int32
-T_5460: (in globals->ptr192C4 + 2<i32> : word32)
+T_5460: (in g_ptr192C4 + 2<i32> : word32)
   Class: Eq_5460
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -27763,7 +27763,7 @@ T_5841: (in 2<i32> : int32)
   Class: Eq_5841
   DataType: int32
   OrigDataType: int32
-T_5842: (in globals->ptr19298 + 2<i32> : word32)
+T_5842: (in g_ptr19298 + 2<i32> : word32)
   Class: Eq_5842
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -27967,7 +27967,7 @@ T_5892: (in 2<i32> : int32)
   Class: Eq_5892
   DataType: int32
   OrigDataType: int32
-T_5893: (in globals->ptr19298 + 2<i32> : word32)
+T_5893: (in g_ptr19298 + 2<i32> : word32)
   Class: Eq_5893
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -28511,7 +28511,7 @@ T_6028: (in 2<i32> : int32)
   Class: Eq_6028
   DataType: int32
   OrigDataType: int32
-T_6029: (in globals->ptr192D0 + 2<i32> : word32)
+T_6029: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_6029
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -29011,7 +29011,7 @@ T_6153: (in 2<i32> : int32)
   Class: Eq_6153
   DataType: int32
   OrigDataType: int32
-T_6154: (in globals->ptr192D0 + 2<i32> : word32)
+T_6154: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_6154
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -29331,7 +29331,7 @@ T_6233: (in 2<i32> : int32)
   Class: Eq_6233
   DataType: int32
   OrigDataType: int32
-T_6234: (in globals->ptr192D0 + 2<i32> : word32)
+T_6234: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_6234
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -29535,7 +29535,7 @@ T_6284: (in 2<i32> : int32)
   Class: Eq_6284
   DataType: int32
   OrigDataType: int32
-T_6285: (in globals->ptr192D0 + 2<i32> : word32)
+T_6285: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_6285
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -30491,7 +30491,7 @@ T_6523: (in 2<i32> : int32)
   Class: Eq_6523
   DataType: int32
   OrigDataType: int32
-T_6524: (in globals->ptr192D0 + 2<i32> : word32)
+T_6524: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_6524
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -30887,7 +30887,7 @@ T_6622: (in 2<i32> : int32)
   Class: Eq_6622
   DataType: int32
   OrigDataType: int32
-T_6623: (in globals->ptr192D0 + 2<i32> : word32)
+T_6623: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_6623
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -31111,7 +31111,7 @@ T_6678: (in 2<i32> : int32)
   Class: Eq_6678
   DataType: int32
   OrigDataType: int32
-T_6679: (in globals->ptr192D0 + 2<i32> : word32)
+T_6679: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_6679
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -31323,7 +31323,7 @@ T_6731: (in 2<i32> : int32)
   Class: Eq_6731
   DataType: int32
   OrigDataType: int32
-T_6732: (in globals->ptr192D0 + 2<i32> : word32)
+T_6732: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_6732
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -31639,7 +31639,7 @@ T_6810: (in 2<i32> : int32)
   Class: Eq_6810
   DataType: int32
   OrigDataType: int32
-T_6811: (in globals->ptr192B4 + 2<i32> : word32)
+T_6811: (in g_ptr192B4 + 2<i32> : word32)
   Class: Eq_6811
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -32007,7 +32007,7 @@ T_6902: (in 2<i32> : int32)
   Class: Eq_6902
   DataType: int32
   OrigDataType: int32
-T_6903: (in globals->ptr192B0 + 2<i32> : word32)
+T_6903: (in g_ptr192B0 + 2<i32> : word32)
   Class: Eq_6903
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -32651,7 +32651,7 @@ T_7063: (in 2<i32> : int32)
   Class: Eq_7063
   DataType: int32
   OrigDataType: int32
-T_7064: (in globals->ptr1929C + 2<i32> : word32)
+T_7064: (in g_ptr1929C + 2<i32> : word32)
   Class: Eq_7064
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -33067,7 +33067,7 @@ T_7167: (in 2<i32> : int32)
   Class: Eq_7167
   DataType: int32
   OrigDataType: int32
-T_7168: (in globals->ptr192B4 + 2<i32> : word32)
+T_7168: (in g_ptr192B4 + 2<i32> : word32)
   Class: Eq_7168
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -33131,7 +33131,7 @@ T_7183: (in 2<i32> : int32)
   Class: Eq_7183
   DataType: int32
   OrigDataType: int32
-T_7184: (in globals->ptr192B4 + 2<i32> : word32)
+T_7184: (in g_ptr192B4 + 2<i32> : word32)
   Class: Eq_7184
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -33251,7 +33251,7 @@ T_7213: (in 2<i32> : int32)
   Class: Eq_7213
   DataType: int32
   OrigDataType: int32
-T_7214: (in globals->ptr192D0 + 2<i32> : word32)
+T_7214: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_7214
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -33879,7 +33879,7 @@ T_7370: (in 2<i32> : int32)
   Class: Eq_7370
   DataType: int32
   OrigDataType: int32
-T_7371: (in globals->ptr192A8 + 2<i32> : word32)
+T_7371: (in g_ptr192A8 + 2<i32> : word32)
   Class: Eq_7371
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -34347,7 +34347,7 @@ T_7487: (in 2<i32> : int32)
   Class: Eq_7487
   DataType: int32
   OrigDataType: int32
-T_7488: (in globals->ptr192D0 + 2<i32> : word32)
+T_7488: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_7488
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -34535,7 +34535,7 @@ T_7534: (in 2<i32> : int32)
   Class: Eq_7534
   DataType: int32
   OrigDataType: int32
-T_7535: (in globals->ptr192D0 + 2<i32> : word32)
+T_7535: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_7535
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -34659,7 +34659,7 @@ T_7565: (in 2<i32> : int32)
   Class: Eq_7565
   DataType: int32
   OrigDataType: int32
-T_7566: (in globals->ptr1926C + 2<i32> : word32)
+T_7566: (in g_ptr1926C + 2<i32> : word32)
   Class: Eq_7566
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -34779,7 +34779,7 @@ T_7595: (in 2<i32> : int32)
   Class: Eq_7595
   DataType: int32
   OrigDataType: int32
-T_7596: (in globals->ptr19270 + 2<i32> : word32)
+T_7596: (in g_ptr19270 + 2<i32> : word32)
   Class: Eq_7596
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -35211,7 +35211,7 @@ T_7703: (in 2<i32> : int32)
   Class: Eq_7703
   DataType: int32
   OrigDataType: int32
-T_7704: (in globals->ptr192D0 + 2<i32> : word32)
+T_7704: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_7704
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -35395,7 +35395,7 @@ T_7749: (in 2<i32> : int32)
   Class: Eq_7749
   DataType: int32
   OrigDataType: int32
-T_7750: (in globals->ptr192D0 + 2<i32> : word32)
+T_7750: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_7750
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -36071,7 +36071,7 @@ T_7918: (in 2<i32> : int32)
   Class: Eq_7918
   DataType: int32
   OrigDataType: int32
-T_7919: (in globals->ptr192D8 + 2<i32> : word32)
+T_7919: (in g_ptr192D8 + 2<i32> : word32)
   Class: Eq_7919
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -38559,7 +38559,7 @@ T_8540: (in 2<i32> : int32)
   Class: Eq_8540
   DataType: int32
   OrigDataType: int32
-T_8541: (in globals->ptr192C4 + 2<i32> : word32)
+T_8541: (in g_ptr192C4 + 2<i32> : word32)
   Class: Eq_8541
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -38619,7 +38619,7 @@ T_8555: (in 2<i32> : int32)
   Class: Eq_8555
   DataType: int32
   OrigDataType: int32
-T_8556: (in globals->ptr192B4 + 2<i32> : word32)
+T_8556: (in g_ptr192B4 + 2<i32> : word32)
   Class: Eq_8556
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -38815,7 +38815,7 @@ T_8604: (in 2<i32> : int32)
   Class: Eq_8604
   DataType: int32
   OrigDataType: int32
-T_8605: (in globals->ptr192B0 + 2<i32> : word32)
+T_8605: (in g_ptr192B0 + 2<i32> : word32)
   Class: Eq_8605
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -39243,7 +39243,7 @@ T_8711: (in 2<i32> : int32)
   Class: Eq_8711
   DataType: int32
   OrigDataType: int32
-T_8712: (in globals->ptr1929C + 2<i32> : word32)
+T_8712: (in g_ptr1929C + 2<i32> : word32)
   Class: Eq_8712
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -40907,7 +40907,7 @@ T_9127: (in 2<i32> : int32)
   Class: Eq_9127
   DataType: int32
   OrigDataType: int32
-T_9128: (in globals->ptr19270 + 2<i32> : word32)
+T_9128: (in g_ptr19270 + 2<i32> : word32)
   Class: Eq_9128
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -40959,7 +40959,7 @@ T_9140: (in 2<i32> : int32)
   Class: Eq_9140
   DataType: int32
   OrigDataType: int32
-T_9141: (in globals->ptr19248 + 2<i32> : word32)
+T_9141: (in g_ptr19248 + 2<i32> : word32)
   Class: Eq_9141
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -40999,7 +40999,7 @@ T_9150: (in 2<i32> : int32)
   Class: Eq_9150
   DataType: int32
   OrigDataType: int32
-T_9151: (in globals->ptr1924C + 2<i32> : word32)
+T_9151: (in g_ptr1924C + 2<i32> : word32)
   Class: Eq_9151
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -41071,7 +41071,7 @@ T_9168: (in 2<i32> : int32)
   Class: Eq_9168
   DataType: int32
   OrigDataType: int32
-T_9169: (in globals->ptr19294 + 2<i32> : word32)
+T_9169: (in g_ptr19294 + 2<i32> : word32)
   Class: Eq_9169
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -41611,7 +41611,7 @@ T_9303: (in 2<i32> : int32)
   Class: Eq_9303
   DataType: int32
   OrigDataType: int32
-T_9304: (in globals->ptr19268 + 2<i32> : word32)
+T_9304: (in g_ptr19268 + 2<i32> : word32)
   Class: Eq_9304
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -41775,7 +41775,7 @@ T_9344: (in 2<i32> : int32)
   Class: Eq_9344
   DataType: int32
   OrigDataType: int32
-T_9345: (in globals->ptr19250 + 2<i32> : word32)
+T_9345: (in g_ptr19250 + 2<i32> : word32)
   Class: Eq_9345
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -42111,7 +42111,7 @@ T_9428: (in 2<i32> : int32)
   Class: Eq_9428
   DataType: int32
   OrigDataType: int32
-T_9429: (in globals->ptr192E4 + 2<i32> : word32)
+T_9429: (in g_ptr192E4 + 2<i32> : word32)
   Class: Eq_9429
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -42507,7 +42507,7 @@ T_9527: (in 2<i32> : int32)
   Class: Eq_9527
   DataType: int32
   OrigDataType: int32
-T_9528: (in globals->ptr192C4 + 2<i32> : word32)
+T_9528: (in g_ptr192C4 + 2<i32> : word32)
   Class: Eq_9528
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -43315,7 +43315,7 @@ T_9729: (in 2<i32> : int32)
   Class: Eq_9729
   DataType: int32
   OrigDataType: int32
-T_9730: (in globals->ptr192D0 + 2<i32> : word32)
+T_9730: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_9730
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -43611,7 +43611,7 @@ T_9803: (in 2<i32> : int32)
   Class: Eq_9803
   DataType: int32
   OrigDataType: int32
-T_9804: (in globals->ptr192D0 + 2<i32> : word32)
+T_9804: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_9804
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -45247,7 +45247,7 @@ T_10212: (in 2<i32> : int32)
   Class: Eq_10212
   DataType: int32
   OrigDataType: int32
-T_10213: (in globals->ptr192D0 + 2<i32> : word32)
+T_10213: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_10213
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -46239,7 +46239,7 @@ T_10460: (in 2<i32> : int32)
   Class: Eq_10460
   DataType: int32
   OrigDataType: int32
-T_10461: (in globals->ptr192B4 + 2<i32> : word32)
+T_10461: (in g_ptr192B4 + 2<i32> : word32)
   Class: Eq_10461
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -46475,7 +46475,7 @@ T_10519: (in 2<i32> : int32)
   Class: Eq_10519
   DataType: int32
   OrigDataType: int32
-T_10520: (in globals->ptr192B4 + 2<i32> : word32)
+T_10520: (in g_ptr192B4 + 2<i32> : word32)
   Class: Eq_10520
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -46847,7 +46847,7 @@ T_10612: (in 2<i32> : int32)
   Class: Eq_10612
   DataType: int32
   OrigDataType: int32
-T_10613: (in globals->ptr192D8 + 2<i32> : word32)
+T_10613: (in g_ptr192D8 + 2<i32> : word32)
   Class: Eq_10613
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -46963,7 +46963,7 @@ T_10641: (in 2<i32> : int32)
   Class: Eq_10641
   DataType: int32
   OrigDataType: int32
-T_10642: (in globals->ptr192D8 + 2<i32> : word32)
+T_10642: (in g_ptr192D8 + 2<i32> : word32)
   Class: Eq_10642
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -47395,7 +47395,7 @@ T_10749: (in 2<i32> : int32)
   Class: Eq_10749
   DataType: int32
   OrigDataType: int32
-T_10750: (in globals->ptr192B0 + 2<i32> : word32)
+T_10750: (in g_ptr192B0 + 2<i32> : word32)
   Class: Eq_10750
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -47831,7 +47831,7 @@ T_10858: (in 2<i32> : int32)
   Class: Eq_10858
   DataType: int32
   OrigDataType: int32
-T_10859: (in globals->ptr192B0 + 2<i32> : word32)
+T_10859: (in g_ptr192B0 + 2<i32> : word32)
   Class: Eq_10859
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -48991,7 +48991,7 @@ T_11148: (in 2<i32> : int32)
   Class: Eq_11148
   DataType: int32
   OrigDataType: int32
-T_11149: (in globals->ptr192D0 + 2<i32> : word32)
+T_11149: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_11149
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -49235,7 +49235,7 @@ T_11209: (in 2<i32> : int32)
   Class: Eq_11209
   DataType: int32
   OrigDataType: int32
-T_11210: (in globals->ptr192B0 + 2<i32> : word32)
+T_11210: (in g_ptr192B0 + 2<i32> : word32)
   Class: Eq_11210
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -49743,7 +49743,7 @@ T_11336: (in 2<i32> : int32)
   Class: Eq_11336
   DataType: int32
   OrigDataType: int32
-T_11337: (in globals->ptr192D0 + 2<i32> : word32)
+T_11337: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_11337
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -49979,7 +49979,7 @@ T_11395: (in 2<i32> : int32)
   Class: Eq_11395
   DataType: int32
   OrigDataType: int32
-T_11396: (in globals->ptr192D0 + 2<i32> : word32)
+T_11396: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_11396
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -55463,7 +55463,7 @@ T_12766: (in 2<i32> : int32)
   Class: Eq_12766
   DataType: int32
   OrigDataType: int32
-T_12767: (in globals->ptr192D0 + 2<i32> : word32)
+T_12767: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_12767
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -56051,7 +56051,7 @@ T_12913: (in 2<i32> : int32)
   Class: Eq_12913
   DataType: int32
   OrigDataType: int32
-T_12914: (in globals->ptr192D0 + 2<i32> : word32)
+T_12914: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_12914
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -56399,7 +56399,7 @@ T_13000: (in 2<i32> : int32)
   Class: Eq_13000
   DataType: int32
   OrigDataType: int32
-T_13001: (in globals->ptr192D0 + 2<i32> : word32)
+T_13001: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_13001
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -56927,7 +56927,7 @@ T_13132: (in 2<i32> : int32)
   Class: Eq_13132
   DataType: int32
   OrigDataType: int32
-T_13133: (in globals->ptr192D0 + 2<i32> : word32)
+T_13133: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_13133
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -57271,7 +57271,7 @@ T_13218: (in 2<i32> : int32)
   Class: Eq_13218
   DataType: int32
   OrigDataType: int32
-T_13219: (in globals->ptr192D0 + 2<i32> : word32)
+T_13219: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_13219
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -57583,7 +57583,7 @@ T_13296: (in 2<i32> : int32)
   Class: Eq_13296
   DataType: int32
   OrigDataType: int32
-T_13297: (in globals->ptr192D0 + 2<i32> : word32)
+T_13297: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_13297
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -58279,7 +58279,7 @@ T_13470: (in 2<i32> : int32)
   Class: Eq_13470
   DataType: int32
   OrigDataType: int32
-T_13471: (in globals->ptr192D0 + 2<i32> : word32)
+T_13471: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_13471
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -58511,7 +58511,7 @@ T_13528: (in 2<i32> : int32)
   Class: Eq_13528
   DataType: int32
   OrigDataType: int32
-T_13529: (in globals->ptr192D0 + 2<i32> : word32)
+T_13529: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_13529
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -58775,7 +58775,7 @@ T_13594: (in 2<i32> : int32)
   Class: Eq_13594
   DataType: int32
   OrigDataType: int32
-T_13595: (in globals->ptr192D0 + 2<i32> : word32)
+T_13595: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_13595
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -59163,7 +59163,7 @@ T_13691: (in 2<i32> : int32)
   Class: Eq_13691
   DataType: int32
   OrigDataType: int32
-T_13692: (in globals->ptr192D0 + 2<i32> : word32)
+T_13692: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_13692
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -59415,7 +59415,7 @@ T_13754: (in 2<i32> : int32)
   Class: Eq_13754
   DataType: int32
   OrigDataType: int32
-T_13755: (in globals->ptr192D0 + 2<i32> : word32)
+T_13755: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_13755
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -59779,7 +59779,7 @@ T_13845: (in 2<i32> : int32)
   Class: Eq_13845
   DataType: int32
   OrigDataType: int32
-T_13846: (in globals->ptr192D0 + 2<i32> : word32)
+T_13846: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_13846
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -65259,7 +65259,7 @@ T_15215: (in 2<i32> : int32)
   Class: Eq_15215
   DataType: int32
   OrigDataType: int32
-T_15216: (in globals->ptr192D0 + 2<i32> : word32)
+T_15216: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_15216
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -68131,7 +68131,7 @@ T_15933: (in 2<i32> : int32)
   Class: Eq_15933
   DataType: int32
   OrigDataType: int32
-T_15934: (in globals->ptr192C0 + 2<i32> : word32)
+T_15934: (in g_ptr192C0 + 2<i32> : word32)
   Class: Eq_15934
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -68503,7 +68503,7 @@ T_16026: (in 2<i32> : int32)
   Class: Eq_16026
   DataType: int32
   OrigDataType: int32
-T_16027: (in globals->ptr192D0 + 2<i32> : word32)
+T_16027: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_16027
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -69007,7 +69007,7 @@ T_16152: (in 2<i32> : int32)
   Class: Eq_16152
   DataType: int32
   OrigDataType: int32
-T_16153: (in globals->ptr192BC + 2<i32> : word32)
+T_16153: (in g_ptr192BC + 2<i32> : word32)
   Class: Eq_16153
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -69451,7 +69451,7 @@ T_16263: (in 2<i32> : int32)
   Class: Eq_16263
   DataType: int32
   OrigDataType: int32
-T_16264: (in globals->ptr192D0 + 2<i32> : word32)
+T_16264: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_16264
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -69787,7 +69787,7 @@ T_16347: (in 2<i32> : int32)
   Class: Eq_16347
   DataType: int32
   OrigDataType: int32
-T_16348: (in globals->ptr192D0 + 2<i32> : word32)
+T_16348: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_16348
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -70095,7 +70095,7 @@ T_16424: (in 2<i32> : int32)
   Class: Eq_16424
   DataType: int32
   OrigDataType: int32
-T_16425: (in globals->ptr192D0 + 2<i32> : word32)
+T_16425: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_16425
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -70427,7 +70427,7 @@ T_16507: (in 2<i32> : int32)
   Class: Eq_16507
   DataType: int32
   OrigDataType: int32
-T_16508: (in globals->ptr192D0 + 2<i32> : word32)
+T_16508: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_16508
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -70551,7 +70551,7 @@ T_16538: (in 2<i32> : int32)
   Class: Eq_16538
   DataType: int32
   OrigDataType: int32
-T_16539: (in globals->ptr192D0 + 2<i32> : word32)
+T_16539: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_16539
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -75035,7 +75035,7 @@ T_17659: (in 2<i32> : int32)
   Class: Eq_17659
   DataType: int32
   OrigDataType: int32
-T_17660: (in globals->ptr192D8 + 2<i32> : word32)
+T_17660: (in g_ptr192D8 + 2<i32> : word32)
   Class: Eq_17660
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -75143,7 +75143,7 @@ T_17686: (in 2<i32> : int32)
   Class: Eq_17686
   DataType: int32
   OrigDataType: int32
-T_17687: (in globals->ptr192D8 + 2<i32> : word32)
+T_17687: (in g_ptr192D8 + 2<i32> : word32)
   Class: Eq_17687
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -75303,7 +75303,7 @@ T_17726: (in 2<i32> : int32)
   Class: Eq_17726
   DataType: int32
   OrigDataType: int32
-T_17727: (in globals->ptr192D0 + 2<i32> : word32)
+T_17727: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_17727
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -75479,7 +75479,7 @@ T_17770: (in 2<i32> : int32)
   Class: Eq_17770
   DataType: int32
   OrigDataType: int32
-T_17771: (in globals->ptr192D0 + 2<i32> : word32)
+T_17771: (in g_ptr192D0 + 2<i32> : word32)
   Class: Eq_17771
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -75903,7 +75903,7 @@ T_17876: (in 2<i32> : int32)
   Class: Eq_17876
   DataType: int32
   OrigDataType: int32
-T_17877: (in globals->ptr192B0 + 2<i32> : word32)
+T_17877: (in g_ptr192B0 + 2<i32> : word32)
   Class: Eq_17877
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -76255,7 +76255,7 @@ T_17964: (in 2<i32> : int32)
   Class: Eq_17964
   DataType: int32
   OrigDataType: int32
-T_17965: (in globals->ptr192C4 + 2<i32> : word32)
+T_17965: (in g_ptr192C4 + 2<i32> : word32)
   Class: Eq_17965
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -76483,7 +76483,7 @@ T_18021: (in 2<i32> : int32)
   Class: Eq_18021
   DataType: int32
   OrigDataType: int32
-T_18022: (in globals->ptr19260 + 2<i32> : word32)
+T_18022: (in g_ptr19260 + 2<i32> : word32)
   Class: Eq_18022
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -77543,7 +77543,7 @@ T_18286: (in 2<i32> : int32)
   Class: Eq_18286
   DataType: int32
   OrigDataType: int32
-T_18287: (in globals->ptr192C4 + 2<i32> : word32)
+T_18287: (in g_ptr192C4 + 2<i32> : word32)
   Class: Eq_18287
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -78643,7 +78643,7 @@ T_18561: (in 2<i32> : int32)
   Class: Eq_18561
   DataType: int32
   OrigDataType: int32
-T_18562: (in globals->ptr192B0 + 2<i32> : word32)
+T_18562: (in g_ptr192B0 + 2<i32> : word32)
   Class: Eq_18562
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -80271,7 +80271,7 @@ T_18968: (in 2<i32> : int32)
   Class: Eq_18968
   DataType: int32
   OrigDataType: int32
-T_18969: (in globals->ptr192B0 + 2<i32> : word32)
+T_18969: (in g_ptr192B0 + 2<i32> : word32)
   Class: Eq_18969
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -81823,7 +81823,7 @@ T_19356: (in 2<i32> : int32)
   Class: Eq_19356
   DataType: int32
   OrigDataType: int32
-T_19357: (in globals->ptr192B0 + 2<i32> : word32)
+T_19357: (in g_ptr192B0 + 2<i32> : word32)
   Class: Eq_19357
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -81915,7 +81915,7 @@ T_19379: (in 2<i32> : int32)
   Class: Eq_19379
   DataType: int32
   OrigDataType: int32
-T_19380: (in globals->ptr192B0 + 2<i32> : word32)
+T_19380: (in g_ptr192B0 + 2<i32> : word32)
   Class: Eq_19380
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -82019,7 +82019,7 @@ T_19405: (in 2<i32> : int32)
   Class: Eq_19405
   DataType: int32
   OrigDataType: int32
-T_19406: (in globals->ptr1927C + 2<i32> : word32)
+T_19406: (in g_ptr1927C + 2<i32> : word32)
   Class: Eq_19406
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -82911,7 +82911,7 @@ T_19628: (in 2<i32> : int32)
   Class: Eq_19628
   DataType: int32
   OrigDataType: int32
-T_19629: (in globals->ptr1927C + 2<i32> : word32)
+T_19629: (in g_ptr1927C + 2<i32> : word32)
   Class: Eq_19629
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -84883,7 +84883,7 @@ T_20121: (in 2<i32> : int32)
   Class: Eq_20121
   DataType: int32
   OrigDataType: int32
-T_20122: (in globals->ptr192B0 + 2<i32> : word32)
+T_20122: (in g_ptr192B0 + 2<i32> : word32)
   Class: Eq_20122
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -85371,7 +85371,7 @@ T_20243: (in 2<i32> : int32)
   Class: Eq_20243
   DataType: int32
   OrigDataType: int32
-T_20244: (in globals->ptr192B0 + 2<i32> : word32)
+T_20244: (in g_ptr192B0 + 2<i32> : word32)
   Class: Eq_20244
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -86595,7 +86595,7 @@ T_20549: (in 2<i32> : int32)
   Class: Eq_20549
   DataType: int32
   OrigDataType: int32
-T_20550: (in globals->ptr19298 + 2<i32> : word32)
+T_20550: (in g_ptr19298 + 2<i32> : word32)
   Class: Eq_20550
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -87019,7 +87019,7 @@ T_20655: (in 2<i32> : int32)
   Class: Eq_20655
   DataType: int32
   OrigDataType: int32
-T_20656: (in globals->ptr19298 + 2<i32> : word32)
+T_20656: (in g_ptr19298 + 2<i32> : word32)
   Class: Eq_20656
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)

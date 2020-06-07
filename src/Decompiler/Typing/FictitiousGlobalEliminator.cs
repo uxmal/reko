@@ -33,15 +33,13 @@ namespace Reko.Structure
     public class FictitiousGlobalEliminator : InstructionTransformer
     {
         private readonly Program program;
-        private readonly Procedure proc;
 
-        public FictitiousGlobalEliminator(Program program, Procedure proc)
+        public FictitiousGlobalEliminator(Program program)
         {
             this.program = program;
-            this.proc = proc;
         }
 
-        public void Transform()
+        public void Transform(Procedure proc)
         {
             foreach (var stm in proc.Statements)
             {

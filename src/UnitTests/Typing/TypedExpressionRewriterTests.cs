@@ -667,7 +667,7 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	globals->dw1000 = eax
+	g_dw1000 = eax
 proc1_exit:
 
 ";
@@ -703,7 +703,7 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	globals->w1000 = *eax
+	g_w1000 = *eax
 proc1_exit:
 
 ";
@@ -744,8 +744,8 @@ proc1_entry:
 	// succ:  l1
 l1:
 	struct Eq_2 * eax
-	globals->w1000 = eax->w0000
-	globals->w1002 = eax->w0002
+	g_w1000 = eax->w0000
+	g_w1002 = eax->w0002
 proc1_exit:
 
 ";
@@ -792,7 +792,7 @@ l1:
 	real32 *** eax1
 	eax2 = *eax1
 	eax3 = *eax2
-	globals->r1004 = *eax3
+	g_r1004 = *eax3
 proc1_exit:
 
 ";
@@ -839,7 +839,7 @@ proc1_entry:
 l1:
 	struct Eq_2 * r1
 	r1 = r1->ptr0000
-	globals->b1004 = r1->ptr0000->ptr0000->b0004
+	g_b1004 = r1->ptr0000->ptr0000->b0004
 proc1_exit:
 
 ";
@@ -892,7 +892,7 @@ l1:
 	struct Eq_2 * r1
 	ptr32 r2
 	r1 = r1->ptr0000
-	globals->b1004 = r1->ptr0000->ptr0000->b0004
+	g_b1004 = r1->ptr0000->ptr0000->b0004
 	r2 = &r1->b0004
 proc1_exit:
 
@@ -925,7 +925,7 @@ define test
 test_entry:
 	// succ:  l1
 l1:
-	eax = globals->ptr1200
+	eax = g_ptr1200
 	eax->ptr0000 = eax
 	eax->ptr0004 = eax
 test_exit:
@@ -994,7 +994,7 @@ define test
 test_entry:
 	// succ:  l1
 l1:
-	func(globals->arrayBlobs)
+	func(arrayBlobs)
 test_exit:
 
 ";
@@ -1202,7 +1202,7 @@ define test
 test_entry:
 	// succ:  l1
 l1:
-	eax = globals->dw1200
+	eax = g_dw1200
 	ax_1 = (word16) eax
 	return
 	// succ:  test_exit

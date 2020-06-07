@@ -2630,7 +2630,7 @@ T_570: (in 0x5A4D<16> : word16)
   Class: Eq_569
   DataType: word16
   OrigDataType: word16
-T_571: (in globals->w400000 != 0x5A4D<16> : bool)
+T_571: (in g_w400000 != 0x5A4D<16> : bool)
   Class: Eq_571
   DataType: bool
   OrigDataType: bool
@@ -2922,7 +2922,7 @@ T_643: (in 0<8> : byte)
   Class: Eq_540
   DataType: byte
   OrigDataType: byte
-T_644: (in globals->b403354 == 0<8> : bool)
+T_644: (in g_b403354 == 0<8> : bool)
   Class: Eq_644
   DataType: bool
   OrigDataType: bool
@@ -3478,7 +3478,7 @@ T_782: (in 0<32> - (-((word32) (bl_90 + 1<8>)) == 0<32>) : word32)
   Class: Eq_782
   DataType: ui32
   OrigDataType: ui32
-T_783: (in globals->dw403368 & 0<32> - (-((word32) (bl_90 + 1<8>)) == 0<32>) : word32)
+T_783: (in g_dw403368 & 0<32> - (-((word32) (bl_90 + 1<8>)) == 0<32>) : word32)
   Class: Eq_728
   DataType: ui32
   OrigDataType: ui32
@@ -3750,7 +3750,7 @@ T_850: (in fp + 8<32> : word32)
   Class: Eq_850
   DataType: ptr32
   OrigDataType: ptr32
-T_851: (in globals->dw403004 ^ fp + 8<32> : word32)
+T_851: (in g_dw403004 ^ fp + 8<32> : word32)
   Class: Eq_851
   DataType: ui32
   OrigDataType: ui32
@@ -3882,7 +3882,7 @@ T_883: (in 0<32> : word32)
   Class: Eq_883
   DataType: ui32
   OrigDataType: ui32
-T_884: (in globals->dw40336C & 0<32> : word32)
+T_884: (in g_dw40336C & 0<32> : word32)
   Class: Eq_882
   DataType: ui32
   OrigDataType: ui32
@@ -3906,7 +3906,7 @@ T_889: (in 1<32> : word32)
   Class: Eq_889
   DataType: ui32
   OrigDataType: ui32
-T_890: (in globals->dw403010 | 1<32> : word32)
+T_890: (in g_dw403010 | 1<32> : word32)
   Class: Eq_888
   DataType: ui32
   OrigDataType: ui32
@@ -3954,7 +3954,7 @@ T_901: (in 2<32> : word32)
   Class: Eq_901
   DataType: ui32
   OrigDataType: ui32
-T_902: (in globals->dw403010 | 2<32> : word32)
+T_902: (in g_dw403010 | 2<32> : word32)
   Class: Eq_888
   DataType: ui32
   OrigDataType: ui32
@@ -4354,7 +4354,7 @@ T_1001: (in 4<32> : word32)
   Class: Eq_1001
   DataType: ui32
   OrigDataType: ui32
-T_1002: (in globals->dw403010 | 4<32> : word32)
+T_1002: (in g_dw403010 | 4<32> : word32)
   Class: Eq_888
   DataType: ui32
   OrigDataType: ui32
@@ -4550,7 +4550,7 @@ T_1050: (in 0<32> : word32)
   Class: Eq_1049
   DataType: word32
   OrigDataType: word32
-T_1051: (in globals->dw403014 != 0<32> : bool)
+T_1051: (in g_dw403014 != 0<32> : bool)
   Class: Eq_1051
   DataType: bool
   OrigDataType: bool

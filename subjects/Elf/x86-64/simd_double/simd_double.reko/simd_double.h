@@ -366,7 +366,7 @@ T_60: (in 0<8> : byte)
   Class: Eq_59
   DataType: byte
   OrigDataType: byte
-T_61: (in globals->b201048 != 0<8> : bool)
+T_61: (in g_b201048 != 0<8> : bool)
   Class: Eq_61
   DataType: bool
   OrigDataType: bool
@@ -586,7 +586,7 @@ T_115: (in Mem23[0x0000000000000B00<p64>:word64] : word64)
   Class: Eq_115
   DataType: uint64
   OrigDataType: uint64
-T_116: (in (uint128) (uint64) rdi /u globals->qw0B00 : word64)
+T_116: (in (uint128) (uint64) rdi /u g_qw0B00 : word64)
   Class: Eq_116
   DataType: uint64
   OrigDataType: uint64

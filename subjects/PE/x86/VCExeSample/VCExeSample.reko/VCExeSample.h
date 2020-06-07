@@ -774,7 +774,7 @@ T_146: (in Mem15[0x00402100<p32>:real64] : real64)
   Class: Eq_132
   DataType: real64
   OrigDataType: real64
-T_147: (in globals->r402100 == rArg04 : bool)
+T_147: (in g_r402100 == rArg04 : bool)
   Class: Eq_147
   DataType: bool
   OrigDataType: bool
@@ -814,7 +814,7 @@ T_156: (in Mem15[0x004020F8<p32>:real64] : real64)
   Class: Eq_132
   DataType: real64
   OrigDataType: real64
-T_157: (in globals->r4020F8 <= rArg04 : bool)
+T_157: (in g_r4020F8 <= rArg04 : bool)
   Class: Eq_157
   DataType: bool
   OrigDataType: bool

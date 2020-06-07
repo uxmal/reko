@@ -75,7 +75,7 @@ T_9: (in 0<32> : word32)
   Class: Eq_8
   DataType: uint32
   OrigDataType: up32
-T_10: (in globals->dw40208B < 0<32> : bool)
+T_10: (in g_dw40208B < 0<32> : bool)
   Class: Eq_10
   DataType: bool
   OrigDataType: bool
@@ -151,7 +151,7 @@ T_28: (in 4<32> : word32)
   Class: Eq_28
   DataType: ui32
   OrigDataType: ui32
-T_29: (in globals->dw40208B * 4<32> : word32)
+T_29: (in g_dw40208B * 4<32> : word32)
   Class: Eq_29
   DataType: ui32
   OrigDataType: ui32

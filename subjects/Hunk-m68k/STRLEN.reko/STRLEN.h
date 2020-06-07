@@ -1046,7 +1046,7 @@ T_217: (in 0x24<16> : word16)
   Class: Eq_11
   DataType: cup16
   OrigDataType: cup16
-T_218: (in globals->ptr13CC->w0014 < 0x24<16> : bool)
+T_218: (in g_ptr13CC->w0014 < 0x24<16> : bool)
   Class: Eq_218
   DataType: bool
   OrigDataType: bool

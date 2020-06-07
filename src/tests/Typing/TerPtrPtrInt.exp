@@ -22,8 +22,8 @@ PtrPtrIntMock_entry:
 l1:
 	r2 = *r1
 	r3 = *r2
-	globals->dw10000 = r3
-	globals->ptr10004 = r1
+	g_dw10000 = r3
+	g_ptr10004 = r1
 	return r3
 	// succ:  PtrPtrIntMock_exit
 PtrPtrIntMock_exit:

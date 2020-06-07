@@ -17,7 +17,7 @@ void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	globals->w1300 = rand()
+	g_w1300 = rand()
 	return
 	// succ:  proc1_exit
 proc1_exit:

@@ -60,8 +60,8 @@ namespace Reko.UnitTests.Structure
         {
             var program = pb.Program;
             var proc = program.Procedures.Values.First();
-            var tge = new FictitiousGlobalEliminator(program, proc);
-            tge.Transform();
+            var tge = new FictitiousGlobalEliminator(program);
+            tge.Transform(proc);
         }
 
         private void AssertProcedureCode(string expected)

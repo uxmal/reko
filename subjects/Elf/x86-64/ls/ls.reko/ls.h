@@ -72,7 +72,7 @@ Eq_14: (union "Eq_14" (real64 u0) (up64 u1))
 	T_7266 (in rLoc4 : Eq_14)
 	T_12184 (in rLoc3_1520 : Eq_14)
 	T_12185 (in (real64) r8 : real64)
-	T_12190 (in rLoc3_1520 + globals->t415F08 : real64)
+	T_12190 (in rLoc3_1520 + g_t415F08 : real64)
 	T_12193 (in rLoc1_1533 : Eq_14)
 	T_12195 (in rLoc1_1508 * (rLoc2_1511 / rLoc3_1520) : real64)
 	T_12205 (in rLoc3_1583 : Eq_14)
@@ -85,7 +85,7 @@ Eq_14: (union "Eq_14" (real64 u0) (up64 u1))
 	T_12910 (in rLoc1_1533 - rLoc2_1539 : real64)
 	T_12924 (in rLoc2_1557 : Eq_14)
 	T_12925 (in (real64) rax_594 : real64)
-	T_12930 (in rLoc2_1557 + globals->t415F08 : real64)
+	T_12930 (in rLoc2_1557 + g_t415F08 : real64)
 Eq_15: (fn void (Eq_17))
 	T_15 (in fn000000000040D6A0 : ptr64)
 	T_16 (in signature of fn000000000040D6A0 : void)
@@ -1180,7 +1180,7 @@ Eq_17: (union "Eq_17" (byte u0) (word16 u1) ((ptr64 char) u2) ((ptr64 wchar_t) u
 	T_7122 (in out rcx_1106 : ptr64)
 	T_7147 (in Mem639[rsp_328 + 8<64>:word64] : word64)
 	T_7153 (in 0xFFFFFFFFFFFFFFFF<64> : word64)
-	T_7162 (in (word32) rbp_1180 + 1<i32> + (int64) globals->t61B154 : word64)
+	T_7162 (in (word32) rbp_1180 + 1<i32> + (int64) g_t61B154 : word64)
 	T_7165 (in Mem926[rsp_328 + 0x10<64>:word64] : word64)
 	T_7170 (in rax_928 : Eq_17)
 	T_7176 (in localtime((word32) rsp_328 + 40<i32>) : (ptr64 (struct "tm")))
@@ -1322,7 +1322,7 @@ Eq_17: (union "Eq_17" (byte u0) (word16 u1) ((ptr64 char) u2) ((ptr64 wchar_t) u
 	T_7929 (in rcx_114 * 0x180<64> : word64)
 	T_7930 (in fn0000000000410C90(rcx_114 * 0x180<64>, rdi_41) : word64)
 	T_7932 (in Mem101[0x000000000061B1B8<p64>:word64] : word64)
-	T_7934 (in globals->t61B1B8 << 1<64> : word64)
+	T_7934 (in g_t61B1B8 << 1<64> : word64)
 	T_7936 (in Mem110[0x000000000061B1B8<p64>:word64] : word64)
 	T_7938 (in Mem112[0x000000000061B1C0<p64>:word64] : word64)
 	T_7940 (in Mem112[0x000000000061B1B0<p64>:word64] : word64)
@@ -4485,7 +4485,7 @@ Eq_5053: (union "Eq_5053" (int64 u0) (uint64 u1))
 	T_5053 (in rbx_108 : Eq_5053)
 	T_5054 (in 0<u64> : uint64)
 	T_5089 (in SEQ(rax_32_32_100, strlen(rax_24)) + 1<64> : word64)
-	T_5094 (in (int64) globals->t61B178 + 1<64> : word64)
+	T_5094 (in (int64) g_t61B178 + 1<64> : word64)
 	T_5156 (in rbx_108 + rax_48 : word64)
 	T_5180 (in rbx_108 + rax_102 : word64)
 Eq_5073: (fn Eq_17 (Eq_5075, Eq_17))
@@ -4515,14 +4515,14 @@ Eq_5075: (union "Eq_5075" (bool u0) ((ptr64 char) u1) ((ptr64 Eq_17573) u2) ((pt
 Eq_5099: (union "Eq_5099" (int64 u0) (uint64 u1))
 	T_5099 (in rax_48 : Eq_5099)
 	T_5104 (in 2<u64> : uint64)
-	T_5114 (in (int64) globals->dw61B174 + 1<64> : word64)
+	T_5114 (in (int64) g_dw61B174 + 1<64> : word64)
 	T_5179 (in SEQ(SLICE(rax_64, word32, 32), strlen(rax_64)) + 1<64> : word64)
 Eq_5129: (union "Eq_5129" (int64 u0) (uint64 u1))
 	T_5129 (in qwLoc02C0 : word64)
 Eq_5137: (union "Eq_5137" (int64 u0) (uint64 u1))
 	T_5137 (in rax_102 : Eq_5137)
 	T_5149 (in SEQ(rax_32_32_100, strlen(*((word32) rdi + 168<i32>))) + 1<64> : word64)
-	T_5154 (in (int64) globals->t61B16C + 1<64> : word64)
+	T_5154 (in (int64) g_t61B16C + 1<64> : word64)
 Eq_5196: (union "Eq_5196" (word32 u0) ((ptr64 Eq_17576) u1))
 	T_5196 (in Mem16[rdi + 0x28<64>:word32] : word32)
 	T_5972 (in Mem25[rdi + 0x28<64>:word32] : word32)
@@ -4861,10 +4861,10 @@ Eq_7410: (fn uint64 (Eq_5215, (ptr32 Eq_11), Eq_14, Eq_17))
 	T_7444 (in fn0000000000405ED0 : ptr64)
 Eq_7423: (struct "Eq_7423" (10 ptr64 ptr0010))
 	T_7423 (in r15_340 : (ptr64 Eq_7423))
-	T_7430 (in globals->t61B028 - 0x18<64> + rax_329 * 0x18<64> : word64)
+	T_7430 (in g_t61B028 - 0x18<64> + rax_329 * 0x18<64> : word64)
 Eq_7448: (struct "Eq_7448" (10 (ptr64 (arr word64)) ptr0010))
 	T_7448 (in r14_160 : (ptr64 Eq_7448))
-	T_7455 (in globals->t61B028 - 0x18<64> + rax_149 * 0x18<64> : word64)
+	T_7455 (in g_t61B028 - 0x18<64> + rax_149 * 0x18<64> : word64)
 Eq_7478: (fn word64 (Eq_17, Eq_17, (ptr32 Eq_11), Eq_14))
 	T_7478 (in fn0000000000407870 : ptr64)
 	T_7479 (in signature of fn0000000000407870 : void)
@@ -5426,7 +5426,7 @@ Eq_12333: (union "Eq_12333" (real64 u0) (up64 u1))
 	T_12384 (in rLoc1_1601 - rLoc2_1610 : real64)
 	T_12402 (in rLoc2_1626 : Eq_12333)
 	T_12403 (in (real64) rax_775 : real64)
-	T_12408 (in rLoc2_1626 + globals->t415F08 : real64)
+	T_12408 (in rLoc2_1626 + g_t415F08 : real64)
 Eq_12342: (union "Eq_12342" (uint32 u0) (up64 u1))
 	T_12342 (in r12d_1398 - ecx_231 : word32)
 Eq_12344: (union "Eq_12344" (bool u0) (word32 u1))
@@ -5490,7 +5490,7 @@ Eq_12500: (union "Eq_12500" (uint64 u0) (size_t u1))
 	T_12500 (in (uint64) (uint8) (SLICE((uint64) eax_46, word32, 0) == 0<32>) : uint64)
 Eq_12512: (union "Eq_12512" (real64 u0) (up64 u1))
 	T_12512 (in rLoc1_1676 : Eq_12512)
-	T_12515 (in rLoc2_1605 * globals->r415F84 : real64)
+	T_12515 (in rLoc2_1605 * g_r415F84 : real64)
 	T_12653 (in (real64) Mem867[0x0000000000415F90<p64>:real80] : real64)
 	T_12656 (in rLoc1_1684 : Eq_12512)
 	T_12657 (in rLoc2_1678 : Eq_12512)
@@ -5498,7 +5498,7 @@ Eq_12512: (union "Eq_12512" (real64 u0) (up64 u1))
 	T_12671 (in rLoc1_1676 - rLoc2_1678 : real64)
 	T_12685 (in rLoc2_1696 : Eq_12512)
 	T_12686 (in (real64) rax_937 : real64)
-	T_12691 (in rLoc2_1696 + globals->t415F08 : real64)
+	T_12691 (in rLoc2_1696 + g_t415F08 : real64)
 Eq_12525: (struct "Eq_12525" 0001 (0 (arr Eq_12525) a0000))
 	T_12525 (in Mem867[rsi - 1<64> + rax_875:byte] : byte)
 	T_12526 (in 0x30<8> : byte)
@@ -7709,7 +7709,7 @@ T_366: (in 0<64> : word64)
   Class: Eq_365
   DataType: int64
   OrigDataType: word64
-T_367: (in globals->t61B138 == 0<64> : bool)
+T_367: (in g_t61B138 == 0<64> : bool)
   Class: Eq_367
   DataType: bool
   OrigDataType: bool
@@ -7845,7 +7845,7 @@ T_400: (in 0<32> : word32)
   Class: Eq_82
   DataType: up32
   OrigDataType: word32
-T_401: (in globals->dw61B150 == 0<32> : bool)
+T_401: (in g_dw61B150 == 0<32> : bool)
   Class: Eq_401
   DataType: bool
   OrigDataType: bool
@@ -7861,7 +7861,7 @@ T_404: (in 0<32> : word32)
   Class: Eq_147
   DataType: word32
   OrigDataType: word32
-T_405: (in globals->dw61B108 != 0<32> : bool)
+T_405: (in g_dw61B108 != 0<32> : bool)
   Class: Eq_405
   DataType: bool
   OrigDataType: bool
@@ -8445,7 +8445,7 @@ T_550: (in 0<32> : word32)
   Class: Eq_82
   DataType: up32
   OrigDataType: word32
-T_551: (in globals->dw61B150 == 0<32> : bool)
+T_551: (in g_dw61B150 == 0<32> : bool)
   Class: Eq_551
   DataType: bool
   OrigDataType: bool
@@ -10257,7 +10257,7 @@ T_1003: (in Mem1050[0x000000000061A748<p64>:word64] : word64)
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: up64
-T_1004: (in globals->t61A748 < rax_1076 : bool)
+T_1004: (in g_t61A748 < rax_1076 : bool)
   Class: Eq_1004
   DataType: bool
   OrigDataType: bool
@@ -10505,7 +10505,7 @@ T_1065: (in 0<8> : byte)
   Class: Eq_852
   DataType: byte
   OrigDataType: byte
-T_1066: (in globals->b61B129 != 0<8> : bool)
+T_1066: (in g_b61B129 != 0<8> : bool)
   Class: Eq_1066
   DataType: bool
   OrigDataType: bool
@@ -10613,7 +10613,7 @@ T_1092: (in 1<32> : word32)
   Class: Eq_138
   DataType: word32
   OrigDataType: word32
-T_1093: (in globals->dw61B110 == 1<32> : bool)
+T_1093: (in g_dw61B110 == 1<32> : bool)
   Class: Eq_1093
   DataType: bool
   OrigDataType: bool
@@ -10637,7 +10637,7 @@ T_1098: (in 0<8> : byte)
   Class: Eq_144
   DataType: byte
   OrigDataType: byte
-T_1099: (in globals->b61B10D != 0<8> : bool)
+T_1099: (in g_b61B10D != 0<8> : bool)
   Class: Eq_1099
   DataType: bool
   OrigDataType: bool
@@ -10653,7 +10653,7 @@ T_1102: (in 0<8> : byte)
   Class: Eq_141
   DataType: byte
   OrigDataType: byte
-T_1103: (in globals->b61B10E != 0<8> : bool)
+T_1103: (in g_b61B10E != 0<8> : bool)
   Class: Eq_1103
   DataType: bool
   OrigDataType: bool
@@ -10809,7 +10809,7 @@ T_1141: (in 0<32> : word32)
   Class: Eq_82
   DataType: up32
   OrigDataType: word32
-T_1142: (in globals->dw61B150 == 0<32> : bool)
+T_1142: (in g_dw61B150 == 0<32> : bool)
   Class: Eq_1142
   DataType: bool
   OrigDataType: bool
@@ -10825,7 +10825,7 @@ T_1145: (in 0<8> : byte)
   Class: Eq_156
   DataType: byte
   OrigDataType: byte
-T_1146: (in globals->b61B17D != 0<8> : bool)
+T_1146: (in g_b61B17D != 0<8> : bool)
   Class: Eq_1146
   DataType: bool
   OrigDataType: bool
@@ -10841,7 +10841,7 @@ T_1149: (in 0<8> : byte)
   Class: Eq_129
   DataType: byte
   OrigDataType: byte
-T_1150: (in globals->b61B144 != 0<8> : bool)
+T_1150: (in g_b61B144 != 0<8> : bool)
   Class: Eq_1150
   DataType: bool
   OrigDataType: bool
@@ -10873,7 +10873,7 @@ T_1157: (in 0<8> : byte)
   Class: Eq_141
   DataType: byte
   OrigDataType: byte
-T_1158: (in globals->b61B10E != 0<8> : bool)
+T_1158: (in g_b61B10E != 0<8> : bool)
   Class: Eq_1158
   DataType: bool
   OrigDataType: bool
@@ -10897,7 +10897,7 @@ T_1163: (in 1<8> : byte)
   Class: Eq_1163
   DataType: byte
   OrigDataType: byte
-T_1164: (in globals->b61B0C0 & 1<8> : byte)
+T_1164: (in g_b61B0C0 & 1<8> : byte)
   Class: Eq_1126
   DataType: byte
   OrigDataType: byte
@@ -10921,7 +10921,7 @@ T_1169: (in 0<8> : byte)
   Class: Eq_443
   DataType: byte
   OrigDataType: byte
-T_1170: (in globals->b61B130 == 0<8> : bool)
+T_1170: (in g_b61B130 == 0<8> : bool)
   Class: Eq_1170
   DataType: bool
   OrigDataType: bool
@@ -10937,7 +10937,7 @@ T_1173: (in 0<8> : byte)
   Class: Eq_852
   DataType: byte
   OrigDataType: byte
-T_1174: (in globals->b61B129 != 0<8> : bool)
+T_1174: (in g_b61B129 != 0<8> : bool)
   Class: Eq_1174
   DataType: bool
   OrigDataType: bool
@@ -10953,7 +10953,7 @@ T_1177: (in 0<32> : word32)
   Class: Eq_132
   DataType: up32
   OrigDataType: word32
-T_1178: (in globals->dw61B12C != 0<32> : bool)
+T_1178: (in g_dw61B12C != 0<32> : bool)
   Class: Eq_1178
   DataType: bool
   OrigDataType: bool
@@ -10969,7 +10969,7 @@ T_1181: (in 0<8> : byte)
   Class: Eq_716
   DataType: byte
   OrigDataType: byte
-T_1182: (in globals->b61B10C != 0<8> : bool)
+T_1182: (in g_b61B10C != 0<8> : bool)
   Class: Eq_1182
   DataType: bool
   OrigDataType: bool
@@ -11169,7 +11169,7 @@ T_1231: (in 0<8> : byte)
   Class: Eq_144
   DataType: byte
   OrigDataType: byte
-T_1232: (in globals->b61B10D == 0<8> : bool)
+T_1232: (in g_b61B10D == 0<8> : bool)
   Class: Eq_1232
   DataType: bool
   OrigDataType: bool
@@ -11293,7 +11293,7 @@ T_1262: (in 0<64> : word64)
   Class: Eq_17
   DataType: byte
   OrigDataType: word64
-T_1263: (in globals->t61B1B0 != 0<64> : bool)
+T_1263: (in g_t61B1B0 != 0<64> : bool)
   Class: Eq_1263
   DataType: bool
   OrigDataType: bool
@@ -11333,7 +11333,7 @@ T_1272: (in 0<8> : byte)
   Class: Eq_144
   DataType: byte
   OrigDataType: byte
-T_1273: (in globals->b61B10D == 0<8> : bool)
+T_1273: (in g_b61B10D == 0<8> : bool)
   Class: Eq_1273
   DataType: bool
   OrigDataType: bool
@@ -11477,7 +11477,7 @@ T_1308: (in 3<32> : word32)
   Class: Eq_132
   DataType: up32
   OrigDataType: word32
-T_1309: (in globals->dw61B12C == 3<32> : bool)
+T_1309: (in g_dw61B12C == 3<32> : bool)
   Class: Eq_1309
   DataType: bool
   OrigDataType: bool
@@ -11497,7 +11497,7 @@ T_1313: (in 1<32> : word32)
   Class: Eq_1313
   DataType: word32
   OrigDataType: word32
-T_1314: (in globals->dw61B150 - 1<32> : word32)
+T_1314: (in g_dw61B150 - 1<32> : word32)
   Class: Eq_1314
   DataType: word32
   OrigDataType: word32
@@ -11509,7 +11509,7 @@ T_1316: (in SLICE(cond(Mem1541[0x000000000061B150<p64>:word32] - 1<32>), bool, 1
   Class: Eq_1316
   DataType: Eq_1316
   OrigDataType: (union (bool u0) (word32 u1))
-T_1317: (in 0<32> - SLICE(cond(globals->dw61B150 - 1<32>), bool, 1) : word32)
+T_1317: (in 0<32> - SLICE(cond(g_dw61B150 - 1<32>), bool, 1) : word32)
   Class: Eq_1317
   DataType: word32
   OrigDataType: word32
@@ -11525,7 +11525,7 @@ T_1320: (in 0xFFFFFFFE<32> : word32)
   Class: Eq_1320
   DataType: ui32
   OrigDataType: ui32
-T_1321: (in (word32) (uint64) (0<32> - SLICE(cond(globals->dw61B150 - 1<32>), bool, 1)) & 0xFFFFFFFE<32> : word32)
+T_1321: (in (word32) (uint64) (0<32> - SLICE(cond(g_dw61B150 - 1<32>), bool, 1)) & 0xFFFFFFFE<32> : word32)
   Class: Eq_1321
   DataType: ui32
   OrigDataType: ui32
@@ -11541,7 +11541,7 @@ T_1324: (in 4<32> : word32)
   Class: Eq_1324
   DataType: word32
   OrigDataType: word32
-T_1325: (in (word32) (uint64) ((word32) (uint64) (0<32> - SLICE(cond(globals->dw61B150 - 1<32>), bool, 1)) & 0xFFFFFFFE<32>) + 4<32> : word32)
+T_1325: (in (word32) (uint64) ((word32) (uint64) (0<32> - SLICE(cond(g_dw61B150 - 1<32>), bool, 1)) & 0xFFFFFFFE<32>) + 4<32> : word32)
   Class: Eq_1325
   DataType: word32
   OrigDataType: word32
@@ -11565,7 +11565,7 @@ T_1330: (in 0<8> : byte)
   Class: Eq_852
   DataType: byte
   OrigDataType: byte
-T_1331: (in globals->b61B129 == 0<8> : bool)
+T_1331: (in g_b61B129 == 0<8> : bool)
   Class: Eq_1331
   DataType: bool
   OrigDataType: bool
@@ -11785,7 +11785,7 @@ T_1385: (in 0<8> : byte)
   Class: Eq_1384
   DataType: byte
   OrigDataType: byte
-T_1386: (in globals->b61B198 != 0<8> : bool)
+T_1386: (in g_b61B198 != 0<8> : bool)
   Class: Eq_1386
   DataType: bool
   OrigDataType: bool
@@ -11829,7 +11829,7 @@ T_1396: (in 0<32> : word32)
   Class: Eq_82
   DataType: up32
   OrigDataType: word32
-T_1397: (in globals->dw61B150 != 0<32> : bool)
+T_1397: (in g_dw61B150 != 0<32> : bool)
   Class: Eq_1397
   DataType: bool
   OrigDataType: bool
@@ -13393,7 +13393,7 @@ T_1787: (in 6<64> : word64)
   Class: Eq_1786
   DataType: word64
   OrigDataType: word64
-T_1788: (in globals->qw61A450 != 6<64> : bool)
+T_1788: (in g_qw61A450 != 6<64> : bool)
   Class: Eq_1788
   DataType: bool
   OrigDataType: bool
@@ -13597,7 +13597,7 @@ T_1838: (in 0<8> : byte)
   Class: Eq_852
   DataType: byte
   OrigDataType: byte
-T_1839: (in globals->b61B129 == 0<8> : bool)
+T_1839: (in g_b61B129 == 0<8> : bool)
   Class: Eq_1839
   DataType: bool
   OrigDataType: bool
@@ -13653,7 +13653,7 @@ T_1852: (in 0<64> : word64)
   Class: Eq_17
   DataType: byte
   OrigDataType: word64
-T_1853: (in globals->t61B1C8 == 0<64> : bool)
+T_1853: (in g_t61B1C8 == 0<64> : bool)
   Class: Eq_1853
   DataType: bool
   OrigDataType: bool
@@ -13721,7 +13721,7 @@ T_1869: (in Mem2336[0x000000000061AF10<p64>:word64] : word64)
   Class: Eq_1869
   DataType: word64
   OrigDataType: word64
-T_1870: (in rax_2344 - globals->qw61AF10 : word64)
+T_1870: (in rax_2344 - g_qw61AF10 : word64)
   Class: Eq_1870
   DataType: word64
   OrigDataType: word64
@@ -13733,7 +13733,7 @@ T_1872: (in 0xF<32> : word32)
   Class: Eq_1871
   DataType: up32
   OrigDataType: up32
-T_1873: (in (word32) (rax_2344 - globals->qw61AF10) <= 0xF<32> : bool)
+T_1873: (in (word32) (rax_2344 - g_qw61AF10) <= 0xF<32> : bool)
   Class: Eq_1873
   DataType: bool
   OrigDataType: bool
@@ -13949,7 +13949,7 @@ T_1926: (in 0<64> : word64)
   Class: Eq_17
   DataType: byte
   OrigDataType: word64
-T_1927: (in globals->t61B1C8 == 0<64> : bool)
+T_1927: (in g_t61B1C8 == 0<64> : bool)
   Class: Eq_1927
   DataType: bool
   OrigDataType: bool
@@ -13965,7 +13965,7 @@ T_1930: (in 0<8> : byte)
   Class: Eq_141
   DataType: byte
   OrigDataType: byte
-T_1931: (in globals->b61B10E != 0<8> : bool)
+T_1931: (in g_b61B10E != 0<8> : bool)
   Class: Eq_1931
   DataType: bool
   OrigDataType: bool
@@ -14473,7 +14473,7 @@ T_2057: (in Mem2517[0x000000000061AF20<p64>:word64] : word64)
   Class: Eq_2057
   DataType: int64
   OrigDataType: int64
-T_2058: (in globals->qw61AF20 - rax_2574 : word64)
+T_2058: (in g_qw61AF20 - rax_2574 : word64)
   Class: Eq_2058
   DataType: int64
   OrigDataType: int64
@@ -14481,7 +14481,7 @@ T_2059: (in 0xF<64> : word64)
   Class: Eq_2058
   DataType: int64
   OrigDataType: int64
-T_2060: (in globals->qw61AF20 - rax_2574 <= 0xF<64> : bool)
+T_2060: (in g_qw61AF20 - rax_2574 <= 0xF<64> : bool)
   Class: Eq_2060
   DataType: bool
   OrigDataType: bool
@@ -14625,7 +14625,7 @@ T_2095: (in 0<64> : word64)
   Class: Eq_17
   DataType: byte
   OrigDataType: word64
-T_2096: (in globals->t61B1B0 == 0<64> : bool)
+T_2096: (in g_t61B1B0 == 0<64> : bool)
   Class: Eq_2096
   DataType: bool
   OrigDataType: bool
@@ -14665,7 +14665,7 @@ T_2105: (in 0<64> : word64)
   Class: Eq_17
   DataType: byte
   OrigDataType: word64
-T_2106: (in globals->t61B190 == 0<64> : bool)
+T_2106: (in g_t61B190 == 0<64> : bool)
   Class: Eq_2106
   DataType: bool
   OrigDataType: bool
@@ -14993,7 +14993,7 @@ T_2187: (in 0<8> : byte)
   Class: Eq_2186
   DataType: byte
   OrigDataType: byte
-T_2188: (in globals->b61A3C0 != 0<8> : bool)
+T_2188: (in g_b61A3C0 != 0<8> : bool)
   Class: Eq_2188
   DataType: bool
   OrigDataType: bool
@@ -15009,7 +15009,7 @@ T_2191: (in 0<8> : byte)
   Class: Eq_52
   DataType: byte
   OrigDataType: byte
-T_2192: (in globals->b61B0D0 == 0<8> : bool)
+T_2192: (in g_b61B0D0 == 0<8> : bool)
   Class: Eq_2192
   DataType: bool
   OrigDataType: bool
@@ -15101,7 +15101,7 @@ T_2214: (in 0<8> : byte)
   Class: Eq_443
   DataType: byte
   OrigDataType: byte
-T_2215: (in globals->b61B130 != 0<8> : bool)
+T_2215: (in g_b61B130 != 0<8> : bool)
   Class: Eq_2215
   DataType: bool
   OrigDataType: bool
@@ -15257,7 +15257,7 @@ T_2253: (in Mem2336[0x000000000061AF20<p64>:word64] : word64)
   Class: Eq_2057
   DataType: int64
   OrigDataType: int64
-T_2254: (in globals->qw61AF20 - rax_2344 : word64)
+T_2254: (in g_qw61AF20 - rax_2344 : word64)
   Class: Eq_2254
   DataType: int64
   OrigDataType: int64
@@ -15265,7 +15265,7 @@ T_2255: (in 0xFFFFFFFFFFFFFFF0<64> : word64)
   Class: Eq_2254
   DataType: int64
   OrigDataType: int64
-T_2256: (in globals->qw61AF20 - rax_2344 >= 0xFFFFFFFFFFFFFFF0<64> : bool)
+T_2256: (in g_qw61AF20 - rax_2344 >= 0xFFFFFFFFFFFFFFF0<64> : bool)
   Class: Eq_2256
   DataType: bool
   OrigDataType: bool
@@ -15565,7 +15565,7 @@ T_2330: (in 0<8> : byte)
   Class: Eq_443
   DataType: byte
   OrigDataType: byte
-T_2331: (in globals->b61B130 == 0<8> : bool)
+T_2331: (in g_b61B130 == 0<8> : bool)
   Class: Eq_2331
   DataType: bool
   OrigDataType: bool
@@ -15681,7 +15681,7 @@ T_2359: (in 0<8> : byte)
   Class: Eq_443
   DataType: byte
   OrigDataType: byte
-T_2360: (in globals->b61B130 == 0<8> : bool)
+T_2360: (in g_b61B130 == 0<8> : bool)
   Class: Eq_2360
   DataType: bool
   OrigDataType: bool
@@ -16073,7 +16073,7 @@ T_2457: (in rax_2712 + 8<64> : word64)
   Class: Eq_2455
   DataType: (ptr64 word64)
   OrigDataType: up64
-T_2458: (in globals->ptr61AF80 < &rax_2712->t0008 : bool)
+T_2458: (in g_ptr61AF80 < &rax_2712->t0008 : bool)
   Class: Eq_2458
   DataType: bool
   OrigDataType: bool
@@ -16537,7 +16537,7 @@ T_2573: (in 0<8> : byte)
   Class: Eq_141
   DataType: byte
   OrigDataType: byte
-T_2574: (in globals->b61B10E != 0<8> : bool)
+T_2574: (in g_b61B10E != 0<8> : bool)
   Class: Eq_2574
   DataType: bool
   OrigDataType: bool
@@ -16589,7 +16589,7 @@ T_2586: (in 0<32> : word32)
   Class: Eq_2585
   DataType: word32
   OrigDataType: word32
-T_2587: (in (word32) (uint64) globals->dw61B150 == 0<32> : bool)
+T_2587: (in (word32) (uint64) g_dw61B150 == 0<32> : bool)
   Class: Eq_2587
   DataType: bool
   OrigDataType: bool
@@ -16605,7 +16605,7 @@ T_2590: (in 0<8> : byte)
   Class: Eq_443
   DataType: byte
   OrigDataType: byte
-T_2591: (in globals->b61B130 != 0<8> : bool)
+T_2591: (in g_b61B130 != 0<8> : bool)
   Class: Eq_2591
   DataType: bool
   OrigDataType: bool
@@ -16621,7 +16621,7 @@ T_2594: (in 0<8> : byte)
   Class: Eq_129
   DataType: byte
   OrigDataType: byte
-T_2595: (in globals->b61B144 == 0<8> : bool)
+T_2595: (in g_b61B144 == 0<8> : bool)
   Class: Eq_2595
   DataType: bool
   OrigDataType: bool
@@ -16637,7 +16637,7 @@ T_2598: (in 0<64> : word64)
   Class: Eq_17
   DataType: byte
   OrigDataType: word64
-T_2599: (in globals->t61B1B0 == 0<64> : bool)
+T_2599: (in g_t61B1B0 == 0<64> : bool)
   Class: Eq_2599
   DataType: bool
   OrigDataType: bool
@@ -16965,7 +16965,7 @@ T_2680: (in rax_2574 + 8<64> : word64)
   Class: Eq_2455
   DataType: (ptr64 word64)
   OrigDataType: (ptr64 word64)
-T_2681: (in globals->ptr61AF80 < &rax_2574->t0008 : bool)
+T_2681: (in g_ptr61AF80 < &rax_2574->t0008 : bool)
   Class: Eq_2681
   DataType: bool
   OrigDataType: bool
@@ -17093,7 +17093,7 @@ T_2712: (in 1<32> : word32)
   Class: Eq_82
   DataType: up32
   OrigDataType: word32
-T_2713: (in globals->dw61B150 != 1<32> : bool)
+T_2713: (in g_dw61B150 != 1<32> : bool)
   Class: Eq_2713
   DataType: bool
   OrigDataType: bool
@@ -17165,7 +17165,7 @@ T_2730: (in 0xFFFFFFFF<32> : word32)
   Class: Eq_120
   DataType: word32
   OrigDataType: word32
-T_2731: (in globals->dw61B148 != 0xFFFFFFFF<32> : bool)
+T_2731: (in g_dw61B148 != 0xFFFFFFFF<32> : bool)
   Class: Eq_2731
   DataType: bool
   OrigDataType: bool
@@ -17181,7 +17181,7 @@ T_2734: (in 0<8> : byte)
   Class: Eq_129
   DataType: byte
   OrigDataType: byte
-T_2735: (in globals->b61B144 != 0<8> : bool)
+T_2735: (in g_b61B144 != 0<8> : bool)
   Class: Eq_2735
   DataType: bool
   OrigDataType: bool
@@ -17197,7 +17197,7 @@ T_2738: (in 0<8> : byte)
   Class: Eq_141
   DataType: byte
   OrigDataType: byte
-T_2739: (in globals->b61B10E != 0<8> : bool)
+T_2739: (in g_b61B10E != 0<8> : bool)
   Class: Eq_2739
   DataType: bool
   OrigDataType: bool
@@ -17501,7 +17501,7 @@ T_2814: (in 0<8> : byte)
   Class: Eq_443
   DataType: byte
   OrigDataType: byte
-T_2815: (in globals->b61B130 != 0<8> : bool)
+T_2815: (in g_b61B130 != 0<8> : bool)
   Class: Eq_2815
   DataType: bool
   OrigDataType: bool
@@ -17517,7 +17517,7 @@ T_2818: (in 0<8> : byte)
   Class: Eq_2817
   DataType: byte
   OrigDataType: byte
-T_2819: (in globals->b61B128 == 0<8> : bool)
+T_2819: (in g_b61B128 == 0<8> : bool)
   Class: Eq_2819
   DataType: bool
   OrigDataType: bool
@@ -17565,7 +17565,7 @@ T_2830: (in 2<64> : word64)
   Class: Eq_2829
   DataType: word64
   OrigDataType: word64
-T_2831: (in globals->qw61A3E0 == 2<64> : bool)
+T_2831: (in g_qw61A3E0 == 2<64> : bool)
   Class: Eq_2831
   DataType: bool
   OrigDataType: bool
@@ -17989,7 +17989,7 @@ T_2936: (in 1<64> : word64)
   Class: Eq_2935
   DataType: word64
   OrigDataType: word64
-T_2937: (in globals->qw61A3F0 != 1<64> : bool)
+T_2937: (in g_qw61A3F0 != 1<64> : bool)
   Class: Eq_2937
   DataType: bool
   OrigDataType: bool
@@ -18017,7 +18017,7 @@ T_2943: (in 0x6D<8> : byte)
   Class: Eq_2942
   DataType: byte
   OrigDataType: byte
-T_2944: (in *globals->ptr61A3F8 != 0x6D<8> : bool)
+T_2944: (in *g_ptr61A3F8 != 0x6D<8> : bool)
   Class: Eq_2944
   DataType: bool
   OrigDataType: bool
@@ -18081,7 +18081,7 @@ T_2959: (in 0x412CF0<64> : word64)
   Class: Eq_2826
   DataType: (ptr64 word32)
   OrigDataType: word64
-T_2960: (in rbx_2227 == &globals->dw412CF0 : bool)
+T_2960: (in rbx_2227 == &g_dw412CF0 : bool)
   Class: Eq_2960
   DataType: bool
   OrigDataType: bool
@@ -18781,7 +18781,7 @@ T_3134: (in 0<8> : byte)
   Class: Eq_443
   DataType: byte
   OrigDataType: byte
-T_3135: (in globals->b61B130 == 0<8> : bool)
+T_3135: (in g_b61B130 == 0<8> : bool)
   Class: Eq_3135
   DataType: bool
   OrigDataType: bool
@@ -18917,7 +18917,7 @@ T_3168: (in 1<32> : word32)
   Class: Eq_3168
   DataType: word32
   OrigDataType: word32
-T_3169: (in (word32) (uint64) globals->dw61B14C - 1<32> : word32)
+T_3169: (in (word32) (uint64) g_dw61B14C - 1<32> : word32)
   Class: Eq_3169
   DataType: word32
   OrigDataType: word32
@@ -18957,7 +18957,7 @@ T_3178: (in 0<32> : word32)
   Class: Eq_82
   DataType: up32
   OrigDataType: word32
-T_3179: (in globals->dw61B150 == 0<32> : bool)
+T_3179: (in g_dw61B150 == 0<32> : bool)
   Class: Eq_3179
   DataType: bool
   OrigDataType: bool
@@ -19169,7 +19169,7 @@ T_3231: (in 0<32> : word32)
   Class: Eq_82
   DataType: up32
   OrigDataType: word32
-T_3232: (in globals->dw61B150 == 0<32> : bool)
+T_3232: (in g_dw61B150 == 0<32> : bool)
   Class: Eq_3232
   DataType: bool
   OrigDataType: bool
@@ -19257,7 +19257,7 @@ T_3253: (in 0<32> : word32)
   Class: Eq_82
   DataType: up32
   OrigDataType: word32
-T_3254: (in globals->dw61B150 == 0<32> : bool)
+T_3254: (in g_dw61B150 == 0<32> : bool)
   Class: Eq_3254
   DataType: bool
   OrigDataType: bool
@@ -21753,7 +21753,7 @@ T_3877: (in 0x61A56A<64> : word64)
   Class: Eq_3873
   DataType: Eq_3873
   OrigDataType: word64
-T_3878: (in rdi_11 == &globals->b61A56A : bool)
+T_3878: (in rdi_11 == &g_b61A56A : bool)
   Class: Eq_3878
   DataType: bool
   OrigDataType: bool
@@ -21793,7 +21793,7 @@ T_3887: (in 0<64> : word64)
   Class: Eq_17
   DataType: byte
   OrigDataType: word64
-T_3888: (in globals->t61B1B0 == 0<64> : bool)
+T_3888: (in g_t61B1B0 == 0<64> : bool)
   Class: Eq_3888
   DataType: bool
   OrigDataType: bool
@@ -21989,7 +21989,7 @@ T_3936: (in Mem6[0x000000000061B1B0<p64>:word64] : word64)
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: up64
-T_3937: (in globals->t61B1B0 > rbx_12 : bool)
+T_3937: (in g_t61B1B0 > rbx_12 : bool)
   Class: Eq_3937
   DataType: bool
   OrigDataType: bool
@@ -22041,7 +22041,7 @@ T_3949: (in Mem9[0x000000000061B1A0<p64>:word64] : word64)
   Class: Eq_3947
   DataType: uint64
   OrigDataType: up64
-T_3950: (in (word32) rbx_11 + (rbx_11 >> 1<64>) > globals->qw61B1A0 : bool)
+T_3950: (in (word32) rbx_11 + (rbx_11 >> 1<64>) > g_qw61B1A0 : bool)
   Class: Eq_3950
   DataType: bool
   OrigDataType: bool
@@ -22093,7 +22093,7 @@ T_3962: (in 0xFFFFFFFF<32> : word32)
   Class: Eq_120
   DataType: word32
   OrigDataType: word32
-T_3963: (in globals->dw61B148 == 0xFFFFFFFF<32> : bool)
+T_3963: (in g_dw61B148 == 0xFFFFFFFF<32> : bool)
   Class: Eq_3963
   DataType: bool
   OrigDataType: bool
@@ -22669,7 +22669,7 @@ T_4106: (in 0<64> : word64)
   Class: Eq_17
   DataType: byte
   OrigDataType: word64
-T_4107: (in globals->t61B1C8 == 0<64> : bool)
+T_4107: (in g_t61B1C8 == 0<64> : bool)
   Class: Eq_4107
   DataType: bool
   OrigDataType: bool
@@ -23757,7 +23757,7 @@ T_4378: (in 0<8> : byte)
   Class: Eq_69
   DataType: byte
   OrigDataType: byte
-T_4379: (in globals->b61B0F0 != 0<8> : bool)
+T_4379: (in g_b61B0F0 != 0<8> : bool)
   Class: Eq_4379
   DataType: bool
   OrigDataType: bool
@@ -25577,7 +25577,7 @@ T_4833: (in 0<8> : byte)
   Class: Eq_126
   DataType: byte
   OrigDataType: byte
-T_4834: (in globals->b61B145 == 0<8> : bool)
+T_4834: (in g_b61B145 == 0<8> : bool)
   Class: Eq_4834
   DataType: bool
   OrigDataType: bool
@@ -25889,7 +25889,7 @@ T_4911: (in 3<32> : word32)
   Class: Eq_132
   DataType: up32
   OrigDataType: word32
-T_4912: (in globals->dw61B12C == 3<32> : bool)
+T_4912: (in g_dw61B12C == 3<32> : bool)
   Class: Eq_4912
   DataType: bool
   OrigDataType: bool
@@ -26017,7 +26017,7 @@ T_4943: (in 1<32> : word32)
   Class: Eq_132
   DataType: up32
   OrigDataType: word32
-T_4944: (in globals->dw61B12C == 1<32> : bool)
+T_4944: (in g_dw61B12C == 1<32> : bool)
   Class: Eq_4944
   DataType: bool
   OrigDataType: bool
@@ -26493,7 +26493,7 @@ T_5062: (in 0<8> : byte)
   Class: Eq_135
   DataType: byte
   OrigDataType: byte
-T_5063: (in globals->b61B114 == 0<8> : bool)
+T_5063: (in g_b61B114 == 0<8> : bool)
   Class: Eq_5063
   DataType: bool
   OrigDataType: bool
@@ -26509,7 +26509,7 @@ T_5066: (in 0<8> : byte)
   Class: Eq_129
   DataType: byte
   OrigDataType: byte
-T_5067: (in globals->b61B144 == 0<8> : bool)
+T_5067: (in g_b61B144 == 0<8> : bool)
   Class: Eq_5067
   DataType: bool
   OrigDataType: bool
@@ -26525,7 +26525,7 @@ T_5070: (in 4<32> : word32)
   Class: Eq_82
   DataType: up32
   OrigDataType: word32
-T_5071: (in globals->dw61B150 == 4<32> : bool)
+T_5071: (in g_dw61B150 == 4<32> : bool)
   Class: Eq_5071
   DataType: bool
   OrigDataType: bool
@@ -26617,7 +26617,7 @@ T_5093: (in 1<64> : word64)
   Class: Eq_5093
   DataType: word64
   OrigDataType: word64
-T_5094: (in (int64) globals->t61B178 + 1<64> : word64)
+T_5094: (in (int64) g_t61B178 + 1<64> : word64)
   Class: Eq_5053
   DataType: Eq_5053
   OrigDataType: int64
@@ -26633,7 +26633,7 @@ T_5097: (in 0<8> : byte)
   Class: Eq_156
   DataType: byte
   OrigDataType: byte
-T_5098: (in globals->b61B17D == 0<8> : bool)
+T_5098: (in g_b61B17D == 0<8> : bool)
   Class: Eq_5098
   DataType: bool
   OrigDataType: bool
@@ -26653,7 +26653,7 @@ T_5102: (in 4<32> : word32)
   Class: Eq_82
   DataType: up32
   OrigDataType: word32
-T_5103: (in globals->dw61B150 == 4<32> : bool)
+T_5103: (in g_dw61B150 == 4<32> : bool)
   Class: Eq_5103
   DataType: bool
   OrigDataType: bool
@@ -26697,7 +26697,7 @@ T_5113: (in 1<64> : word64)
   Class: Eq_5113
   DataType: word64
   OrigDataType: word64
-T_5114: (in (int64) globals->dw61B174 + 1<64> : word64)
+T_5114: (in (int64) g_dw61B174 + 1<64> : word64)
   Class: Eq_5099
   DataType: Eq_5099
   OrigDataType: int64
@@ -26785,7 +26785,7 @@ T_5135: (in 0<32> : word32)
   Class: Eq_5134
   DataType: word32
   OrigDataType: word32
-T_5136: (in (word32) (uint64) globals->dw61B12C == 0<32> : bool)
+T_5136: (in (word32) (uint64) g_dw61B12C == 0<32> : bool)
   Class: Eq_5136
   DataType: bool
   OrigDataType: bool
@@ -26805,7 +26805,7 @@ T_5140: (in 4<32> : word32)
   Class: Eq_82
   DataType: up32
   OrigDataType: word32
-T_5141: (in globals->dw61B150 == 4<32> : bool)
+T_5141: (in g_dw61B150 == 4<32> : bool)
   Class: Eq_5141
   DataType: bool
   OrigDataType: bool
@@ -26857,7 +26857,7 @@ T_5153: (in 1<64> : word64)
   Class: Eq_5153
   DataType: word64
   OrigDataType: word64
-T_5154: (in (int64) globals->t61B16C + 1<64> : word64)
+T_5154: (in (int64) g_t61B16C + 1<64> : word64)
   Class: Eq_5137
   DataType: Eq_5137
   OrigDataType: int64
@@ -27185,7 +27185,7 @@ T_5235: (in Mem23[0x000000000061A660<p64>:word64] : word64)
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: up64
-T_5236: (in rbx_24 <= globals->t61A660 : bool)
+T_5236: (in rbx_24 <= g_t61A660 : bool)
   Class: Eq_5236
   DataType: bool
   OrigDataType: bool
@@ -28289,7 +28289,7 @@ T_5511: (in 0<8> : byte)
   Class: Eq_126
   DataType: byte
   OrigDataType: byte
-T_5512: (in globals->b61B145 == 0<8> : bool)
+T_5512: (in g_b61B145 == 0<8> : bool)
   Class: Eq_5512
   DataType: bool
   OrigDataType: bool
@@ -28709,7 +28709,7 @@ T_5616: (in 0<64> : word64)
   Class: Eq_5615
   DataType: word64
   OrigDataType: word64
-T_5617: (in globals->qw61A408 == 0<64> : bool)
+T_5617: (in g_qw61A408 == 0<64> : bool)
   Class: Eq_5617
   DataType: bool
   OrigDataType: bool
@@ -28805,7 +28805,7 @@ T_5640: (in 0<8> : byte)
   Class: Eq_2817
   DataType: byte
   OrigDataType: byte
-T_5641: (in globals->b61B128 == 0<8> : bool)
+T_5641: (in g_b61B128 == 0<8> : bool)
   Class: Eq_5641
   DataType: bool
   OrigDataType: bool
@@ -28905,7 +28905,7 @@ T_5665: (in 0<32> : word32)
   Class: Eq_5664
   DataType: word32
   OrigDataType: word32
-T_5666: (in (word32) (uint64) globals->dw61B038 != 0<32> : bool)
+T_5666: (in (word32) (uint64) g_dw61B038 != 0<32> : bool)
   Class: Eq_5666
   DataType: bool
   OrigDataType: bool
@@ -28921,7 +28921,7 @@ T_5669: (in 0<8> : byte)
   Class: Eq_2817
   DataType: byte
   OrigDataType: byte
-T_5670: (in globals->b61B128 == 0<8> : bool)
+T_5670: (in g_b61B128 == 0<8> : bool)
   Class: Eq_5670
   DataType: bool
   OrigDataType: bool
@@ -28945,7 +28945,7 @@ T_5675: (in 0<32> : word32)
   Class: Eq_5674
   DataType: word32
   OrigDataType: word32
-T_5676: (in (word32) (uint64) globals->dw61B034 == 0<32> : bool)
+T_5676: (in (word32) (uint64) g_dw61B034 == 0<32> : bool)
   Class: Eq_5676
   DataType: bool
   OrigDataType: bool
@@ -29277,7 +29277,7 @@ T_5758: (in 0<8> : byte)
   Class: Eq_852
   DataType: byte
   OrigDataType: byte
-T_5759: (in globals->b61B129 != 0<8> : bool)
+T_5759: (in g_b61B129 != 0<8> : bool)
   Class: Eq_5759
   DataType: bool
   OrigDataType: bool
@@ -29293,7 +29293,7 @@ T_5762: (in 0<8> : byte)
   Class: Eq_852
   DataType: byte
   OrigDataType: byte
-T_5763: (in globals->b61B129 != 0<8> : bool)
+T_5763: (in g_b61B129 != 0<8> : bool)
   Class: Eq_5763
   DataType: bool
   OrigDataType: bool
@@ -29385,7 +29385,7 @@ T_5785: (in 0<8> : byte)
   Class: Eq_1384
   DataType: byte
   OrigDataType: byte
-T_5786: (in globals->b61B198 == 0<8> : bool)
+T_5786: (in g_b61B198 == 0<8> : bool)
   Class: Eq_5786
   DataType: bool
   OrigDataType: bool
@@ -29457,7 +29457,7 @@ T_5803: (in 0<8> : byte)
   Class: Eq_443
   DataType: byte
   OrigDataType: byte
-T_5804: (in globals->b61B130 == 0<8> : bool)
+T_5804: (in g_b61B130 == 0<8> : bool)
   Class: Eq_5804
   DataType: bool
   OrigDataType: bool
@@ -29529,7 +29529,7 @@ T_5821: (in 0<8> : byte)
   Class: Eq_443
   DataType: byte
   OrigDataType: byte
-T_5822: (in globals->b61B130 == 0<8> : bool)
+T_5822: (in g_b61B130 == 0<8> : bool)
   Class: Eq_5822
   DataType: bool
   OrigDataType: bool
@@ -30365,7 +30365,7 @@ T_6030: (in 0<8> : byte)
   Class: Eq_1384
   DataType: byte
   OrigDataType: byte
-T_6031: (in globals->b61B198 != 0<8> : bool)
+T_6031: (in g_b61B198 != 0<8> : bool)
   Class: Eq_6031
   DataType: bool
   OrigDataType: bool
@@ -31181,7 +31181,7 @@ T_6234: (in 0<8> : byte)
   Class: Eq_852
   DataType: byte
   OrigDataType: byte
-T_6235: (in globals->b61B129 == 0<8> : bool)
+T_6235: (in g_b61B129 == 0<8> : bool)
   Class: Eq_6235
   DataType: bool
   OrigDataType: bool
@@ -31329,7 +31329,7 @@ T_6271: (in 0<64> : word64)
   Class: Eq_17
   DataType: byte
   OrigDataType: word64
-T_6272: (in globals->t61A748 == 0<64> : bool)
+T_6272: (in g_t61A748 == 0<64> : bool)
   Class: Eq_6272
   DataType: bool
   OrigDataType: bool
@@ -31669,7 +31669,7 @@ T_6356: (in 0<8> : byte)
   Class: Eq_3892
   DataType: byte
   OrigDataType: byte
-T_6357: (in globals->b61B17C == 0<8> : bool)
+T_6357: (in g_b61B17C == 0<8> : bool)
   Class: Eq_6357
   DataType: bool
   OrigDataType: bool
@@ -31725,7 +31725,7 @@ T_6370: (in 0<8> : byte)
   Class: Eq_3892
   DataType: byte
   OrigDataType: byte
-T_6371: (in globals->b61B17C != 0<8> : bool)
+T_6371: (in g_b61B17C != 0<8> : bool)
   Class: Eq_6371
   DataType: bool
   OrigDataType: bool
@@ -31845,7 +31845,7 @@ T_6400: (in 0<8> : byte)
   Class: Eq_129
   DataType: byte
   OrigDataType: byte
-T_6401: (in globals->b61B144 == 0<8> : bool)
+T_6401: (in g_b61B144 == 0<8> : bool)
   Class: Eq_6401
   DataType: bool
   OrigDataType: bool
@@ -32013,7 +32013,7 @@ T_6442: (in fn000000000040D420(rax_32_32_260, 0<32>, r14_1182, fs) : word64)
   Class: Eq_4760
   DataType: uint64
   OrigDataType: uint64
-T_6443: (in (uint64) globals->dw61B174 - fn000000000040D420(rax_32_32_260, 0<32>, r14_1182, fs) : uint64)
+T_6443: (in (uint64) g_dw61B174 - fn000000000040D420(rax_32_32_260, 0<32>, r14_1182, fs) : uint64)
   Class: Eq_6443
   DataType: uint64
   OrigDataType: uint64
@@ -32393,7 +32393,7 @@ T_6537: (in 0<8> : byte)
   Class: Eq_443
   DataType: byte
   OrigDataType: byte
-T_6538: (in globals->b61B130 != 0<8> : bool)
+T_6538: (in g_b61B130 != 0<8> : bool)
   Class: Eq_6538
   DataType: bool
   OrigDataType: bool
@@ -32461,7 +32461,7 @@ T_6554: (in 0<8> : byte)
   Class: Eq_555
   DataType: byte
   OrigDataType: byte
-T_6555: (in globals->b61A569 != 0<8> : bool)
+T_6555: (in g_b61A569 != 0<8> : bool)
   Class: Eq_6555
   DataType: bool
   OrigDataType: bool
@@ -32529,7 +32529,7 @@ T_6571: (in 0<8> : byte)
   Class: Eq_555
   DataType: byte
   OrigDataType: byte
-T_6572: (in globals->b61A569 != 0<8> : bool)
+T_6572: (in g_b61A569 != 0<8> : bool)
   Class: Eq_6572
   DataType: bool
   OrigDataType: bool
@@ -32545,7 +32545,7 @@ T_6575: (in 0<8> : byte)
   Class: Eq_449
   DataType: byte
   OrigDataType: byte
-T_6576: (in globals->b61A568 != 0<8> : bool)
+T_6576: (in g_b61A568 != 0<8> : bool)
   Class: Eq_6576
   DataType: bool
   OrigDataType: bool
@@ -32561,7 +32561,7 @@ T_6579: (in 0<8> : byte)
   Class: Eq_640
   DataType: byte
   OrigDataType: byte
-T_6580: (in globals->b61B146 == 0<8> : bool)
+T_6580: (in g_b61B146 == 0<8> : bool)
   Class: Eq_6580
   DataType: bool
   OrigDataType: bool
@@ -32577,7 +32577,7 @@ T_6583: (in 0<8> : byte)
   Class: Eq_156
   DataType: byte
   OrigDataType: byte
-T_6584: (in globals->b61B17D == 0<8> : bool)
+T_6584: (in g_b61B17D == 0<8> : bool)
   Class: Eq_6584
   DataType: bool
   OrigDataType: bool
@@ -32977,7 +32977,7 @@ T_6683: (in Mem556[0x000000000061B15C<p64>:word32] : word32)
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: word32
-T_6684: (in 0xFFFFFFFE<32> - globals->t61B15C : word32)
+T_6684: (in 0xFFFFFFFE<32> - g_t61B15C : word32)
   Class: Eq_6684
   DataType: word32
   OrigDataType: word32
@@ -32997,7 +32997,7 @@ T_6688: (in Mem556[0x000000000061B158<p64>:word32] : word32)
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: word32
-T_6689: (in (word32) (uint64) (0xFFFFFFFE<32> - globals->t61B15C) - globals->t61B158 : word32)
+T_6689: (in (word32) (uint64) (0xFFFFFFFE<32> - g_t61B15C) - g_t61B158 : word32)
   Class: Eq_6689
   DataType: word32
   OrigDataType: word32
@@ -33541,7 +33541,7 @@ T_6824: (in 0<8> : byte)
   Class: Eq_449
   DataType: byte
   OrigDataType: byte
-T_6825: (in globals->b61A568 != 0<8> : bool)
+T_6825: (in g_b61A568 != 0<8> : bool)
   Class: Eq_6825
   DataType: bool
   OrigDataType: bool
@@ -33653,7 +33653,7 @@ T_6852: (in 0<8> : byte)
   Class: Eq_640
   DataType: byte
   OrigDataType: byte
-T_6853: (in globals->b61B146 != 0<8> : bool)
+T_6853: (in g_b61B146 != 0<8> : bool)
   Class: Eq_6853
   DataType: bool
   OrigDataType: bool
@@ -33745,7 +33745,7 @@ T_6875: (in 0<8> : byte)
   Class: Eq_156
   DataType: byte
   OrigDataType: byte
-T_6876: (in globals->b61B17D == 0<8> : bool)
+T_6876: (in g_b61B17D == 0<8> : bool)
   Class: Eq_6876
   DataType: bool
   OrigDataType: bool
@@ -33765,7 +33765,7 @@ T_6880: (in 0<8> : byte)
   Class: Eq_156
   DataType: byte
   OrigDataType: byte
-T_6881: (in globals->b61B17D != 0<8> : bool)
+T_6881: (in g_b61B17D != 0<8> : bool)
   Class: Eq_6881
   DataType: bool
   OrigDataType: bool
@@ -34193,7 +34193,7 @@ T_6987: (in 0<8> : byte)
   Class: Eq_126
   DataType: byte
   OrigDataType: byte
-T_6988: (in globals->b61B145 == 0<8> : bool)
+T_6988: (in g_b61B145 == 0<8> : bool)
   Class: Eq_6988
   DataType: bool
   OrigDataType: bool
@@ -34529,7 +34529,7 @@ T_7071: (in 0<32> : word32)
   Class: Eq_7070
   DataType: word32
   OrigDataType: word32
-T_7072: (in (word32) (uint64) globals->dw61B12C == 0<32> : bool)
+T_7072: (in (word32) (uint64) g_dw61B12C == 0<32> : bool)
   Class: Eq_7072
   DataType: bool
   OrigDataType: bool
@@ -34761,7 +34761,7 @@ T_7129: (in 0<32> : word32)
   Class: Eq_7128
   DataType: word32
   OrigDataType: word32
-T_7130: (in (word32) (uint64) globals->dw61B12C == 0<32> : bool)
+T_7130: (in (word32) (uint64) g_dw61B12C == 0<32> : bool)
   Class: Eq_7130
   DataType: bool
   OrigDataType: bool
@@ -34817,7 +34817,7 @@ T_7143: (in 0<32> : word32)
   Class: Eq_7142
   DataType: int32
   OrigDataType: int32
-T_7144: (in (word32) (uint64) globals->dw61A3C4 < 0<32> : bool)
+T_7144: (in (word32) (uint64) g_dw61A3C4 < 0<32> : bool)
   Class: Eq_7144
   DataType: bool
   OrigDataType: bool
@@ -34889,7 +34889,7 @@ T_7161: (in (int64) Mem642[0x000000000061B154<p64>:word32] : int64)
   Class: Eq_7161
   DataType: Eq_7161
   OrigDataType: (union (bool u2) ((ptr64 char) u1) ((ptr64 Eq_17586) u0) ((ptr64 Eq_17573) u3) (time_t u4))
-T_7162: (in (word32) rbp_1180 + 1<i32> + (int64) globals->t61B154 : word64)
+T_7162: (in (word32) rbp_1180 + 1<i32> + (int64) g_t61B154 : word64)
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: (union (bool u2) ((ptr64 char) u1) ((ptr64 Eq_17586) u0) ((ptr64 Eq_17573) u3) (time_t u4))
@@ -35033,7 +35033,7 @@ T_7197: (in fn000000000040D420(rax_32_32_376, 0<32>, r14_559, fs) : word64)
   Class: Eq_4760
   DataType: uint64
   OrigDataType: uint64
-T_7198: (in (uint64) globals->t61B154 - fn000000000040D420(rax_32_32_376, 0<32>, r14_559, fs) : uint64)
+T_7198: (in (uint64) g_t61B154 - fn000000000040D420(rax_32_32_376, 0<32>, r14_559, fs) : uint64)
   Class: Eq_7198
   DataType: uint64
   OrigDataType: uint64
@@ -35285,7 +35285,7 @@ T_7260: (in 0<8> : byte)
   Class: Eq_135
   DataType: byte
   OrigDataType: byte
-T_7261: (in globals->b61B114 != 0<8> : bool)
+T_7261: (in g_b61B114 != 0<8> : bool)
   Class: Eq_7261
   DataType: bool
   OrigDataType: bool
@@ -35349,7 +35349,7 @@ T_7276: (in 0<8> : byte)
   Class: Eq_135
   DataType: byte
   OrigDataType: byte
-T_7277: (in globals->b61B114 != 0<8> : bool)
+T_7277: (in g_b61B114 != 0<8> : bool)
   Class: Eq_7277
   DataType: bool
   OrigDataType: bool
@@ -35385,7 +35385,7 @@ T_7285: (in 0<8> : byte)
   Class: Eq_129
   DataType: byte
   OrigDataType: byte
-T_7286: (in globals->b61B144 == 0<8> : bool)
+T_7286: (in g_b61B144 == 0<8> : bool)
   Class: Eq_7286
   DataType: bool
   OrigDataType: bool
@@ -35401,7 +35401,7 @@ T_7289: (in 0<8> : byte)
   Class: Eq_156
   DataType: byte
   OrigDataType: byte
-T_7290: (in globals->b61B17D == 0<8> : bool)
+T_7290: (in g_b61B17D == 0<8> : bool)
   Class: Eq_7290
   DataType: bool
   OrigDataType: bool
@@ -35505,7 +35505,7 @@ T_7315: (in 4<32> : word32)
   Class: Eq_82
   DataType: up32
   OrigDataType: word32
-T_7316: (in globals->dw61B150 == 4<32> : bool)
+T_7316: (in g_dw61B150 == 4<32> : bool)
   Class: Eq_7316
   DataType: bool
   OrigDataType: bool
@@ -35549,7 +35549,7 @@ T_7326: (in 4<32> : word32)
   Class: Eq_82
   DataType: up32
   OrigDataType: word32
-T_7327: (in globals->dw61B150 == 4<32> : bool)
+T_7327: (in g_dw61B150 == 4<32> : bool)
   Class: Eq_7327
   DataType: bool
   OrigDataType: bool
@@ -35669,7 +35669,7 @@ T_7356: (in 0<32> : word32)
   Class: Eq_7355
   DataType: word32
   OrigDataType: word32
-T_7357: (in (word32) (uint64) globals->dw61B12C == 0<32> : bool)
+T_7357: (in (word32) (uint64) g_dw61B12C == 0<32> : bool)
   Class: Eq_7357
   DataType: bool
   OrigDataType: bool
@@ -35685,7 +35685,7 @@ T_7360: (in 4<32> : word32)
   Class: Eq_82
   DataType: up32
   OrigDataType: word32
-T_7361: (in globals->dw61B150 == 4<32> : bool)
+T_7361: (in g_dw61B150 == 4<32> : bool)
   Class: Eq_7361
   DataType: bool
   OrigDataType: bool
@@ -35821,7 +35821,7 @@ T_7394: (in 4<32> : word32)
   Class: Eq_82
   DataType: up32
   OrigDataType: up32
-T_7395: (in globals->dw61B150 > 4<32> : bool)
+T_7395: (in g_dw61B150 > 4<32> : bool)
   Class: Eq_7395
   DataType: bool
   OrigDataType: bool
@@ -35849,7 +35849,7 @@ T_7401: (in 0<64> : word64)
   Class: Eq_17
   DataType: byte
   OrigDataType: word64
-T_7402: (in globals->t61B1B0 == 0<64> : bool)
+T_7402: (in g_t61B1B0 == 0<64> : bool)
   Class: Eq_7402
   DataType: bool
   OrigDataType: bool
@@ -35873,7 +35873,7 @@ T_7407: (in 0<64> : word64)
   Class: Eq_17
   DataType: byte
   OrigDataType: word64
-T_7408: (in globals->t61B1B0 == 0<64> : bool)
+T_7408: (in g_t61B1B0 == 0<64> : bool)
   Class: Eq_7408
   DataType: bool
   OrigDataType: bool
@@ -35949,7 +35949,7 @@ T_7426: (in 0x18<64> : word64)
   Class: Eq_7426
   DataType: word64
   OrigDataType: word64
-T_7427: (in globals->t61B028 - 0x18<64> : word64)
+T_7427: (in g_t61B028 - 0x18<64> : word64)
   Class: Eq_7427
   DataType: word64
   OrigDataType: word64
@@ -35961,7 +35961,7 @@ T_7429: (in rax_329 * 0x18<64> : word64)
   Class: Eq_7429
   DataType: ui64
   OrigDataType: ui64
-T_7430: (in globals->t61B028 - 0x18<64> + rax_329 * 0x18<64> : word64)
+T_7430: (in g_t61B028 - 0x18<64> + rax_329 * 0x18<64> : word64)
   Class: Eq_7423
   DataType: (ptr64 Eq_7423)
   OrigDataType: word64
@@ -36049,7 +36049,7 @@ T_7451: (in 0x18<64> : word64)
   Class: Eq_7451
   DataType: word64
   OrigDataType: word64
-T_7452: (in globals->t61B028 - 0x18<64> : word64)
+T_7452: (in g_t61B028 - 0x18<64> : word64)
   Class: Eq_7452
   DataType: word64
   OrigDataType: word64
@@ -36061,7 +36061,7 @@ T_7454: (in rax_149 * 0x18<64> : word64)
   Class: Eq_7454
   DataType: ui64
   OrigDataType: ui64
-T_7455: (in globals->t61B028 - 0x18<64> + rax_149 * 0x18<64> : word64)
+T_7455: (in g_t61B028 - 0x18<64> + rax_149 * 0x18<64> : word64)
   Class: Eq_7448
   DataType: (ptr64 Eq_7448)
   OrigDataType: word64
@@ -36185,7 +36185,7 @@ T_7485: (in 1<64> : word64)
   Class: Eq_17
   DataType: byte
   OrigDataType: up64
-T_7486: (in globals->t61B1B0 > 1<64> : bool)
+T_7486: (in g_t61B1B0 > 1<64> : bool)
   Class: Eq_7486
   DataType: bool
   OrigDataType: bool
@@ -36201,7 +36201,7 @@ T_7489: (in 0<64> : word64)
   Class: Eq_17
   DataType: byte
   OrigDataType: word64
-T_7490: (in globals->t61B1B0 == 0<64> : bool)
+T_7490: (in g_t61B1B0 == 0<64> : bool)
   Class: Eq_7490
   DataType: bool
   OrigDataType: bool
@@ -36513,7 +36513,7 @@ T_7567: (in Mem76[0x000000000061B0C8<p64>:word64] : word64)
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: up64
-T_7568: (in rax_88 >= globals->t61B0C8 : bool)
+T_7568: (in rax_88 >= g_t61B0C8 : bool)
   Class: Eq_7568
   DataType: bool
   OrigDataType: bool
@@ -36669,7 +36669,7 @@ T_7606: (in Mem76[0x000000000061B1B0<p64>:word64] : word64)
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: up64
-T_7607: (in rbx_31 >= globals->t61B1B0 : bool)
+T_7607: (in rbx_31 >= g_t61B1B0 : bool)
   Class: Eq_7607
   DataType: bool
   OrigDataType: bool
@@ -36829,7 +36829,7 @@ T_7646: (in Mem403[0x000000000061B1B0<p64>:word64] : word64)
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: up64
-T_7647: (in r12_369 < globals->t61B1B0 : bool)
+T_7647: (in r12_369 < g_t61B1B0 : bool)
   Class: Eq_7647
   DataType: bool
   OrigDataType: bool
@@ -37113,7 +37113,7 @@ T_7717: (in Mem248[0x000000000061B1B0<p64>:word64] : word64)
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: up64
-T_7718: (in rbx_184 >= globals->t61B1B0 : bool)
+T_7718: (in rbx_184 >= g_t61B1B0 : bool)
   Class: Eq_7718
   DataType: bool
   OrigDataType: bool
@@ -37325,7 +37325,7 @@ T_7770: (in Mem503[0x000000000061B1B0<p64>:word64] : word64)
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: up64
-T_7771: (in globals->t61B1B0 > rbx_466 : bool)
+T_7771: (in g_t61B1B0 > rbx_466 : bool)
   Class: Eq_7771
   DataType: bool
   OrigDataType: bool
@@ -37501,7 +37501,7 @@ T_7814: (in Mem581[0x000000000061B1B0<p64>:word64] : word64)
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: up64
-T_7815: (in globals->t61B1B0 > rbx_522 : bool)
+T_7815: (in g_t61B1B0 > rbx_522 : bool)
   Class: Eq_7815
   DataType: bool
   OrigDataType: bool
@@ -37573,7 +37573,7 @@ T_7832: (in Mem34[0x000000000061B1B8<p64>:word64] : word64)
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: word64
-T_7833: (in rcx_114 == globals->t61B1B8 : bool)
+T_7833: (in rcx_114 == g_t61B1B8 : bool)
   Class: Eq_7833
   DataType: bool
   OrigDataType: bool
@@ -37977,7 +37977,7 @@ T_7933: (in 1<64> : word64)
   Class: Eq_7933
   DataType: word64
   OrigDataType: word64
-T_7934: (in globals->t61B1B8 << 1<64> : word64)
+T_7934: (in g_t61B1B8 << 1<64> : word64)
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: ui64
@@ -38205,7 +38205,7 @@ T_7990: (in 0<8> : byte)
   Class: Eq_1134
   DataType: byte
   OrigDataType: byte
-T_7991: (in globals->b61B0C1 != 0<8> : bool)
+T_7991: (in g_b61B0C1 != 0<8> : bool)
   Class: Eq_7991
   DataType: bool
   OrigDataType: bool
@@ -38653,7 +38653,7 @@ T_8102: (in 0<8> : byte)
   Class: Eq_852
   DataType: byte
   OrigDataType: byte
-T_8103: (in globals->b61B129 == 0<8> : bool)
+T_8103: (in g_b61B129 == 0<8> : bool)
   Class: Eq_8103
   DataType: bool
   OrigDataType: bool
@@ -38697,7 +38697,7 @@ T_8113: (in 0<8> : byte)
   Class: Eq_1126
   DataType: byte
   OrigDataType: byte
-T_8114: (in globals->b61B0C0 != 0<8> : bool)
+T_8114: (in g_b61B0C0 != 0<8> : bool)
   Class: Eq_8114
   DataType: bool
   OrigDataType: bool
@@ -38765,7 +38765,7 @@ T_8130: (in 0<8> : byte)
   Class: Eq_1384
   DataType: byte
   OrigDataType: byte
-T_8131: (in globals->b61B198 != 0<8> : bool)
+T_8131: (in g_b61B198 != 0<8> : bool)
   Class: Eq_8131
   DataType: bool
   OrigDataType: bool
@@ -38809,7 +38809,7 @@ T_8141: (in 0<8> : byte)
   Class: Eq_1368
   DataType: byte
   OrigDataType: byte
-T_8142: (in globals->b61B115 != 0<8> : bool)
+T_8142: (in g_b61B115 != 0<8> : bool)
   Class: Eq_8142
   DataType: bool
   OrigDataType: bool
@@ -38833,7 +38833,7 @@ T_8147: (in 0<8> : byte)
   Class: Eq_1126
   DataType: byte
   OrigDataType: byte
-T_8148: (in globals->b61B0C0 == 0<8> : bool)
+T_8148: (in g_b61B0C0 == 0<8> : bool)
   Class: Eq_8148
   DataType: bool
   OrigDataType: bool
@@ -38881,7 +38881,7 @@ T_8159: (in 3<32> : word32)
   Class: Eq_132
   DataType: up32
   OrigDataType: word32
-T_8160: (in globals->dw61B12C == 3<32> : bool)
+T_8160: (in g_dw61B12C == 3<32> : bool)
   Class: Eq_8160
   DataType: bool
   OrigDataType: bool
@@ -38897,7 +38897,7 @@ T_8163: (in 0<8> : byte)
   Class: Eq_852
   DataType: byte
   OrigDataType: byte
-T_8164: (in globals->b61B129 == 0<8> : bool)
+T_8164: (in g_b61B129 == 0<8> : bool)
   Class: Eq_8164
   DataType: bool
   OrigDataType: bool
@@ -39137,7 +39137,7 @@ T_8223: (in 0<8> : byte)
   Class: Eq_852
   DataType: byte
   OrigDataType: byte
-T_8224: (in globals->b61B129 == 0<8> : bool)
+T_8224: (in g_b61B129 == 0<8> : bool)
   Class: Eq_8224
   DataType: bool
   OrigDataType: bool
@@ -39213,7 +39213,7 @@ T_8242: (in 0<32> : word32)
   Class: Eq_8241
   DataType: word32
   OrigDataType: word32
-T_8243: (in (word32) (uint64) globals->dw61B150 == 0<32> : bool)
+T_8243: (in (word32) (uint64) g_dw61B150 == 0<32> : bool)
   Class: Eq_8243
   DataType: bool
   OrigDataType: bool
@@ -39245,7 +39245,7 @@ T_8250: (in Mem745[0x000000000061A670<p64>:word64] : word64)
   Class: Eq_8248
   DataType: word64
   OrigDataType: word64
-T_8251: (in r14_121[2<i32>] == globals->qw61A670 : bool)
+T_8251: (in r14_121[2<i32>] == g_qw61A670 : bool)
   Class: Eq_8251
   DataType: bool
   OrigDataType: bool
@@ -39261,7 +39261,7 @@ T_8254: (in 0<8> : byte)
   Class: Eq_156
   DataType: byte
   OrigDataType: byte
-T_8255: (in globals->b61B17D == 0<8> : bool)
+T_8255: (in g_b61B17D == 0<8> : bool)
   Class: Eq_8255
   DataType: bool
   OrigDataType: bool
@@ -39721,7 +39721,7 @@ T_8369: (in Mem876[0x000000000061A668<p64>:word64] : word64)
   Class: Eq_8248
   DataType: word64
   OrigDataType: word64
-T_8370: (in r14_121[2<i32>] == globals->qw61A668 : bool)
+T_8370: (in r14_121[2<i32>] == g_qw61A668 : bool)
   Class: Eq_8370
   DataType: bool
   OrigDataType: bool
@@ -39745,7 +39745,7 @@ T_8375: (in sil_1035 : byte)
   Class: Eq_8375
   DataType: byte
   OrigDataType: byte
-T_8376: (in globals->b61B17C | sil_1035 : byte)
+T_8376: (in g_b61B17C | sil_1035 : byte)
   Class: Eq_3892
   DataType: byte
   OrigDataType: byte
@@ -40217,7 +40217,7 @@ T_8493: (in Mem1365[0x000000000061B174<p64>:word32] : word32)
   Class: Eq_3898
   DataType: int32
   OrigDataType: int32
-T_8494: (in eax_1526 <= globals->dw61B174 : bool)
+T_8494: (in eax_1526 <= g_dw61B174 : bool)
   Class: Eq_8494
   DataType: bool
   OrigDataType: bool
@@ -40233,7 +40233,7 @@ T_8497: (in 0<8> : byte)
   Class: Eq_129
   DataType: byte
   OrigDataType: byte
-T_8498: (in globals->b61B144 == 0<8> : bool)
+T_8498: (in g_b61B144 == 0<8> : bool)
   Class: Eq_8498
   DataType: bool
   OrigDataType: bool
@@ -40249,7 +40249,7 @@ T_8501: (in 0<8> : byte)
   Class: Eq_156
   DataType: byte
   OrigDataType: byte
-T_8502: (in globals->b61B17D == 0<8> : bool)
+T_8502: (in g_b61B17D == 0<8> : bool)
   Class: Eq_8502
   DataType: bool
   OrigDataType: bool
@@ -40729,7 +40729,7 @@ T_8621: (in 0<8> : byte)
   Class: Eq_555
   DataType: byte
   OrigDataType: byte
-T_8622: (in globals->b61A569 != 0<8> : bool)
+T_8622: (in g_b61A569 != 0<8> : bool)
   Class: Eq_8622
   DataType: bool
   OrigDataType: bool
@@ -40785,7 +40785,7 @@ T_8635: (in Mem1530[0x000000000061B168<p64>:word32] : word32)
   Class: Eq_3904
   DataType: int32
   OrigDataType: int32
-T_8636: (in eax_1550 <= globals->dw61B168 : bool)
+T_8636: (in eax_1550 <= g_dw61B168 : bool)
   Class: Eq_8636
   DataType: bool
   OrigDataType: bool
@@ -40801,7 +40801,7 @@ T_8639: (in 0<8> : byte)
   Class: Eq_449
   DataType: byte
   OrigDataType: byte
-T_8640: (in globals->b61A568 != 0<8> : bool)
+T_8640: (in g_b61A568 != 0<8> : bool)
   Class: Eq_8640
   DataType: bool
   OrigDataType: bool
@@ -40845,7 +40845,7 @@ T_8650: (in 0<8> : byte)
   Class: Eq_126
   DataType: byte
   OrigDataType: byte
-T_8651: (in globals->b61B145 == 0<8> : bool)
+T_8651: (in g_b61B145 == 0<8> : bool)
   Class: Eq_8651
   DataType: bool
   OrigDataType: bool
@@ -40861,7 +40861,7 @@ T_8654: (in 0<8> : byte)
   Class: Eq_640
   DataType: byte
   OrigDataType: byte
-T_8655: (in globals->b61B146 != 0<8> : bool)
+T_8655: (in g_b61B146 != 0<8> : bool)
   Class: Eq_8655
   DataType: bool
   OrigDataType: bool
@@ -40913,7 +40913,7 @@ T_8667: (in Mem1663[0x000000000061B160<p64>:word32] : word32)
   Class: Eq_3910
   DataType: int32
   OrigDataType: int32
-T_8668: (in eax_1689 <= globals->dw61B160 : bool)
+T_8668: (in eax_1689 <= g_dw61B160 : bool)
   Class: Eq_8668
   DataType: bool
   OrigDataType: bool
@@ -40973,7 +40973,7 @@ T_8682: (in Mem1695[0x000000000061B16C<p64>:word32] : word32)
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: int32
-T_8683: (in eax_1701 > globals->t61B16C : bool)
+T_8683: (in eax_1701 > g_t61B16C : bool)
   Class: Eq_8683
   DataType: bool
   OrigDataType: bool
@@ -41041,7 +41041,7 @@ T_8699: (in Mem1716[0x000000000061B170<p64>:word32] : word32)
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: int32
-T_8700: (in eax_1743 <= globals->t61B170 : bool)
+T_8700: (in eax_1743 <= g_t61B170 : bool)
   Class: Eq_8700
   DataType: bool
   OrigDataType: bool
@@ -41065,7 +41065,7 @@ T_8705: (in 0<8> : byte)
   Class: Eq_8704
   DataType: byte
   OrigDataType: byte
-T_8706: (in (byte) (word32) globals->b61B114 != 0<8> : bool)
+T_8706: (in (byte) (word32) g_b61B114 != 0<8> : bool)
   Class: Eq_8706
   DataType: bool
   OrigDataType: bool
@@ -41125,7 +41125,7 @@ T_8720: (in Mem1895[0x000000000061B178<p64>:word32] : word32)
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: int32
-T_8721: (in eax_1920 <= globals->t61B178 : bool)
+T_8721: (in eax_1920 <= g_t61B178 : bool)
   Class: Eq_8721
   DataType: bool
   OrigDataType: bool
@@ -41173,7 +41173,7 @@ T_8732: (in 0<8> : byte)
   Class: Eq_144
   DataType: byte
   OrigDataType: byte
-T_8733: (in globals->b61B10D != 0<8> : bool)
+T_8733: (in g_b61B10D != 0<8> : bool)
   Class: Eq_8733
   DataType: bool
   OrigDataType: bool
@@ -41397,7 +41397,7 @@ T_8788: (in Mem1748[0x000000000061B154<p64>:word32] : word32)
   Class: Eq_3922
   DataType: Eq_3922
   OrigDataType: int32
-T_8789: (in eax_1820 <= globals->t61B154 : bool)
+T_8789: (in eax_1820 <= g_t61B154 : bool)
   Class: Eq_8789
   DataType: bool
   OrigDataType: bool
@@ -41517,7 +41517,7 @@ T_8818: (in Mem1748[0x000000000061B15C<p64>:word32] : word32)
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: int32
-T_8819: (in eax_1849 <= globals->t61B15C : bool)
+T_8819: (in eax_1849 <= g_t61B15C : bool)
   Class: Eq_8819
   DataType: bool
   OrigDataType: bool
@@ -41925,7 +41925,7 @@ T_8920: (in Mem1887[0x000000000061B154<p64>:word32] : word32)
   Class: Eq_3922
   DataType: Eq_3922
   OrigDataType: int32
-T_8921: (in eax_1820 <= globals->t61B154 : bool)
+T_8921: (in eax_1820 <= g_t61B154 : bool)
   Class: Eq_8921
   DataType: bool
   OrigDataType: bool
@@ -42137,7 +42137,7 @@ T_8973: (in 0<8> : byte)
   Class: Eq_1368
   DataType: byte
   OrigDataType: byte
-T_8974: (in globals->b61B115 == 0<8> : bool)
+T_8974: (in g_b61B115 == 0<8> : bool)
   Class: Eq_8974
   DataType: bool
   OrigDataType: bool
@@ -42469,7 +42469,7 @@ T_9056: (in 1<32> : word32)
   Class: Eq_132
   DataType: up32
   OrigDataType: up32
-T_9057: (in globals->dw61B12C <= 1<32> : bool)
+T_9057: (in g_dw61B12C <= 1<32> : bool)
   Class: Eq_9057
   DataType: bool
   OrigDataType: bool
@@ -42485,7 +42485,7 @@ T_9060: (in 0<8> : byte)
   Class: Eq_1368
   DataType: byte
   OrigDataType: byte
-T_9061: (in globals->b61B115 == 0<8> : bool)
+T_9061: (in g_b61B115 == 0<8> : bool)
   Class: Eq_9061
   DataType: bool
   OrigDataType: bool
@@ -42589,7 +42589,7 @@ T_9086: (in 0<32> : word32)
   Class: Eq_9085
   DataType: word32
   OrigDataType: word32
-T_9087: (in (word32) (uint64) globals->dw61B150 == 0<32> : bool)
+T_9087: (in (word32) (uint64) g_dw61B150 == 0<32> : bool)
   Class: Eq_9087
   DataType: bool
   OrigDataType: bool
@@ -42633,7 +42633,7 @@ T_9097: (in Mem1554[0x000000000061B164<p64>:word32] : word32)
   Class: Eq_3907
   DataType: int32
   OrigDataType: int32
-T_9098: (in globals->dw61B164 >= edx_1593 : bool)
+T_9098: (in g_dw61B164 >= edx_1593 : bool)
   Class: Eq_9098
   DataType: bool
   OrigDataType: bool
@@ -42725,7 +42725,7 @@ T_9120: (in 0<32> : word32)
   Class: Eq_9119
   DataType: word32
   OrigDataType: word32
-T_9121: (in (word32) (uint64) globals->dw61B150 == 0<32> : bool)
+T_9121: (in (word32) (uint64) g_dw61B150 == 0<32> : bool)
   Class: Eq_9121
   DataType: bool
   OrigDataType: bool
@@ -42861,7 +42861,7 @@ T_9154: (in Mem709[0x000000000061A678<p64>:word64] : word64)
   Class: Eq_8248
   DataType: word64
   OrigDataType: word64
-T_9155: (in r13_727 == globals->qw61A678 : bool)
+T_9155: (in r13_727 == g_qw61A678 : bool)
   Class: Eq_9155
   DataType: bool
   OrigDataType: bool
@@ -49673,7 +49673,7 @@ T_10857: (in 0x415EE0<64> : word64)
   Class: Eq_10853
   DataType: (ptr64 Eq_10853)
   OrigDataType: word64
-T_10858: (in rax_6 == &globals->t415EE0 : bool)
+T_10858: (in rax_6 == &g_t415EE0 : bool)
   Class: Eq_10858
   DataType: bool
   OrigDataType: bool
@@ -49713,7 +49713,7 @@ T_10867: (in Mem0[0x0000000000415EF4<p64>:real32] : real32)
   Class: Eq_10865
   DataType: Eq_10865
   OrigDataType: (union (real32 u0) (up32 u1))
-T_10868: (in (real32) xmm0 <= globals->t415EF4 : bool)
+T_10868: (in (real32) xmm0 <= g_t415EF4 : bool)
   Class: Eq_10868
   DataType: bool
   OrigDataType: bool
@@ -49797,7 +49797,7 @@ T_10888: (in Mem0[0x0000000000415EFC<p64>:real32] : real32)
   Class: Eq_10886
   DataType: Eq_10886
   OrigDataType: (union (real32 u0) (up32 u1))
-T_10889: (in (real32) xmm1 <= globals->t415EFC : bool)
+T_10889: (in (real32) xmm1 <= g_t415EFC : bool)
   Class: Eq_10889
   DataType: bool
   OrigDataType: bool
@@ -49833,7 +49833,7 @@ T_10897: (in Mem0[0x0000000000415F00<p64>:real32] : real32)
   Class: Eq_10895
   DataType: Eq_10895
   OrigDataType: (union (real32 u0) (up32 u1))
-T_10898: (in (real32) xmm1 < globals->t415F00 : bool)
+T_10898: (in (real32) xmm1 < g_t415F00 : bool)
   Class: Eq_10898
   DataType: bool
   OrigDataType: bool
@@ -49853,7 +49853,7 @@ T_10902: (in Mem0[0x0000000000415EF4<p64>:real32] : real32)
   Class: Eq_10865
   DataType: Eq_10865
   OrigDataType: real32
-T_10903: (in (real32) xmm1 + globals->t415EF4 : real32)
+T_10903: (in (real32) xmm1 + g_t415EF4 : real32)
   Class: Eq_10903
   DataType: real32
   OrigDataType: real32
@@ -49913,7 +49913,7 @@ T_10917: (in (real32) (uint128) (uint32) Mem0[0x0000000000415F04<p64>:real32] : 
   Class: Eq_10905
   DataType: Eq_10905
   OrigDataType: (union (uint128 u1) (real32 u0))
-T_10918: (in (real32) (uint128) (uint32) globals->r415F04 < xmm2_33 : bool)
+T_10918: (in (real32) (uint128) (uint32) g_r415F04 < xmm2_33 : bool)
   Class: Eq_10918
   DataType: bool
   OrigDataType: bool
@@ -50977,7 +50977,7 @@ T_11183: (in Mem66[0x0000000000415F0C<p64>:real32] : real32)
   Class: Eq_11181
   DataType: Eq_11181
   OrigDataType: (union (real32 u0) (up32 u1))
-T_11184: (in v26_107 < globals->t415F0C : bool)
+T_11184: (in v26_107 < g_t415F0C : bool)
   Class: Eq_11184
   DataType: bool
   OrigDataType: bool
@@ -50997,7 +50997,7 @@ T_11188: (in Mem66[0x0000000000415F0C<p64>:real32] : real32)
   Class: Eq_11181
   DataType: Eq_11181
   OrigDataType: real32
-T_11189: (in v26_107 - globals->t415F0C : real32)
+T_11189: (in v26_107 - g_t415F0C : real32)
   Class: Eq_11186
   DataType: real32
   OrigDataType: real32
@@ -51225,7 +51225,7 @@ T_11245: (in Mem66[0x0000000000415F08<p64>:real32] : real32)
   Class: Eq_11181
   DataType: Eq_11181
   OrigDataType: (union (real32 u0) (up32 u1))
-T_11246: (in v26_107 >= globals->t415F08 : bool)
+T_11246: (in v26_107 >= g_t415F08 : bool)
   Class: Eq_11246
   DataType: bool
   OrigDataType: bool
@@ -51825,7 +51825,7 @@ T_11395: (in Mem12[0x0000000000415F0C<p64>:real32] : real32)
   Class: Eq_11181
   DataType: Eq_11181
   OrigDataType: (union (real32 u0) (up32 u1))
-T_11396: (in v16_41 < globals->t415F0C : bool)
+T_11396: (in v16_41 < g_t415F0C : bool)
   Class: Eq_11396
   DataType: bool
   OrigDataType: bool
@@ -51849,7 +51849,7 @@ T_11401: (in Mem12[0x0000000000415F0C<p64>:real32] : real32)
   Class: Eq_11181
   DataType: Eq_11181
   OrigDataType: real32
-T_11402: (in v16_41 - globals->t415F0C : real32)
+T_11402: (in v16_41 - g_t415F0C : real32)
   Class: Eq_11399
   DataType: real32
   OrigDataType: real32
@@ -52249,7 +52249,7 @@ T_11501: (in Mem12[0x0000000000415F08<p64>:real32] : real32)
   Class: Eq_11181
   DataType: Eq_11181
   OrigDataType: (union (real32 u0) (up32 u1))
-T_11502: (in v16_41 >= globals->t415F08 : bool)
+T_11502: (in v16_41 >= g_t415F08 : bool)
   Class: Eq_11502
   DataType: bool
   OrigDataType: bool
@@ -53217,7 +53217,7 @@ T_11743: (in Mem14[0x0000000000415F08<p64>:real32] : real32)
   Class: Eq_11181
   DataType: Eq_11181
   OrigDataType: (union (real32 u0) (up32 u1))
-T_11744: (in (real32) xmm0 >= globals->t415F08 : bool)
+T_11744: (in (real32) xmm0 >= g_t415F08 : bool)
   Class: Eq_11744
   DataType: bool
   OrigDataType: bool
@@ -53249,7 +53249,7 @@ T_11751: (in Mem14[0x0000000000415F0C<p64>:real32] : real32)
   Class: Eq_11181
   DataType: Eq_11181
   OrigDataType: (union (real32 u0) (up32 u1))
-T_11752: (in (real32) xmm0 >= globals->t415F0C : bool)
+T_11752: (in (real32) xmm0 >= g_t415F0C : bool)
   Class: Eq_11752
   DataType: bool
   OrigDataType: bool
@@ -53265,7 +53265,7 @@ T_11755: (in Mem14[0x0000000000415F0C<p64>:real32] : real32)
   Class: Eq_11181
   DataType: Eq_11181
   OrigDataType: real32
-T_11756: (in (real32) xmm0 - globals->t415F0C : real32)
+T_11756: (in (real32) xmm0 - g_t415F0C : real32)
   Class: Eq_11756
   DataType: real32
   OrigDataType: real32
@@ -54253,7 +54253,7 @@ T_12002: (in Mem48[0x0000000000415F0C<p64>:real32] : real32)
   Class: Eq_11181
   DataType: Eq_11181
   OrigDataType: (union (real32 u0) (up32 u1))
-T_12003: (in (real32) xmm0_169 >= globals->t415F0C : bool)
+T_12003: (in (real32) xmm0_169 >= g_t415F0C : bool)
   Class: Eq_12003
   DataType: bool
   OrigDataType: bool
@@ -54385,7 +54385,7 @@ T_12035: (in Mem48[0x0000000000415F0C<p64>:real32] : real32)
   Class: Eq_11181
   DataType: Eq_11181
   OrigDataType: real32
-T_12036: (in (real32) xmm0_169 - globals->t415F0C : real32)
+T_12036: (in (real32) xmm0_169 - g_t415F0C : real32)
   Class: Eq_12036
   DataType: real32
   OrigDataType: real32
@@ -54937,7 +54937,7 @@ T_12173: (in Mem512[0x0000000000415F08<p64>:real32] : real32)
   Class: Eq_11181
   DataType: Eq_11181
   OrigDataType: real32
-T_12174: (in rLoc1_1508 + globals->t415F08 : real64)
+T_12174: (in rLoc1_1508 + g_t415F08 : real64)
   Class: Eq_12168
   DataType: real64
   OrigDataType: real64
@@ -54973,7 +54973,7 @@ T_12182: (in Mem537[0x0000000000415F08<p64>:real32] : real32)
   Class: Eq_11181
   DataType: Eq_11181
   OrigDataType: real32
-T_12183: (in rLoc2_1511 + globals->t415F08 : real64)
+T_12183: (in rLoc2_1511 + g_t415F08 : real64)
   Class: Eq_12167
   DataType: real64
   OrigDataType: real64
@@ -55001,7 +55001,7 @@ T_12189: (in Mem543[0x0000000000415F08<p64>:real32] : real32)
   Class: Eq_11181
   DataType: Eq_11181
   OrigDataType: real32
-T_12190: (in rLoc3_1520 + globals->t415F08 : real64)
+T_12190: (in rLoc3_1520 + g_t415F08 : real64)
   Class: Eq_14
   DataType: Eq_14
   OrigDataType: real64
@@ -55873,7 +55873,7 @@ T_12407: (in Mem802[0x0000000000415F08<p64>:real32] : real32)
   Class: Eq_11181
   DataType: Eq_11181
   OrigDataType: real32
-T_12408: (in rLoc2_1626 + globals->t415F08 : real64)
+T_12408: (in rLoc2_1626 + g_t415F08 : real64)
   Class: Eq_12333
   DataType: Eq_12333
   OrigDataType: real64
@@ -56301,7 +56301,7 @@ T_12514: (in Mem867[0x0000000000415F84<p64>:real32] : real32)
   Class: Eq_12514
   DataType: real32
   OrigDataType: real32
-T_12515: (in rLoc2_1605 * globals->r415F84 : real64)
+T_12515: (in rLoc2_1605 * g_r415F84 : real64)
   Class: Eq_12512
   DataType: Eq_12512
   OrigDataType: real64
@@ -56857,7 +56857,7 @@ T_12653: (in (real64) Mem867[0x0000000000415F90<p64>:real80] : real64)
   Class: Eq_12512
   DataType: Eq_12512
   OrigDataType: (union (real64 u0) (up64 u1))
-T_12654: (in (real64) globals->r415F90 <= rLoc1_1676 : bool)
+T_12654: (in (real64) g_r415F90 <= rLoc1_1676 : bool)
   Class: Eq_12654
   DataType: bool
   OrigDataType: bool
@@ -57005,7 +57005,7 @@ T_12690: (in Mem968[0x0000000000415F08<p64>:real32] : real32)
   Class: Eq_11181
   DataType: Eq_11181
   OrigDataType: real32
-T_12691: (in rLoc2_1696 + globals->t415F08 : real64)
+T_12691: (in rLoc2_1696 + g_t415F08 : real64)
   Class: Eq_12512
   DataType: Eq_12512
   OrigDataType: real64
@@ -57813,7 +57813,7 @@ T_12892: (in (real64) Mem543[0x0000000000415F90<p64>:real80] : real64)
   Class: Eq_14
   DataType: Eq_14
   OrigDataType: (union (real64 u0) (up64 u1))
-T_12893: (in (real64) globals->r415F90 > rLoc1_1533 : bool)
+T_12893: (in (real64) g_r415F90 > rLoc1_1533 : bool)
   Class: Eq_12893
   DataType: bool
   OrigDataType: bool
@@ -57961,7 +57961,7 @@ T_12929: (in Mem625[0x0000000000415F08<p64>:real32] : real32)
   Class: Eq_11181
   DataType: Eq_11181
   OrigDataType: real32
-T_12930: (in rLoc2_1557 + globals->t415F08 : real64)
+T_12930: (in rLoc2_1557 + g_t415F08 : real64)
   Class: Eq_14
   DataType: Eq_14
   OrigDataType: real64
@@ -58437,7 +58437,7 @@ T_13048: (in 0x415F50<32>[(int64) eax_76 * 4<64>] : word32)
   Class: Eq_13048
   DataType: ui32
   OrigDataType: ui32
-T_13049: (in ebp_171 | (globals->a415F50)[(int64) eax_76 * 4<64>] : word32)
+T_13049: (in ebp_171 | g_a415F50[(int64) eax_76 * 4<64>] : word32)
   Class: Eq_13049
   DataType: ui32
   OrigDataType: ui32
@@ -67213,7 +67213,7 @@ T_15242: (in Mem50[0x000000000061A5F0<p64>:word32] : word32)
   Class: Eq_15234
   DataType: Eq_15234
   OrigDataType: up32
-T_15243: (in r15d_45 < globals->t61A5F0 : bool)
+T_15243: (in r15d_45 < g_t61A5F0 : bool)
   Class: Eq_15243
   DataType: bool
   OrigDataType: bool
