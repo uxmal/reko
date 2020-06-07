@@ -23,7 +23,6 @@ using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Structure;
 using System;
 using System.Collections.Generic;
 using System.Linq;

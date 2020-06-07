@@ -22,7 +22,7 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
-using Reko.Structure;
+using Reko.Typing;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
@@ -31,7 +31,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.UnitTests.Structure
+namespace Reko.UnitTests.Typing
 {
     public class FictitiousGlobalEliminatorTests
     {

@@ -23,7 +23,7 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 
-namespace Reko.Structure
+namespace Reko.Typing
 {
     /// <summary>
     /// Eliminate fictitious "global" identifiers. For instance, transform
