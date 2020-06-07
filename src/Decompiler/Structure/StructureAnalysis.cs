@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Absyn;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -681,20 +682,35 @@ all other cases, together they constitute a Switch[].
 
         private bool ReduceIncSwitch(Region n, Region? follow)
         {
+            Expression exp = n.Expression!;
+            long offset = 0;
+
             //$REVIEW: workaround for when the datatype of n.Expression
             // is non-integral. What causes this?
-            if (!(n.Expression!.DataType is PrimitiveType pt))
+            if (!(exp.DataType is PrimitiveType pt))
             {
                 eventListener.Warn(eventListener.CreateBlockNavigator(this.program, n.Block), "Non-integral switch expression");
-                pt = PrimitiveType.CreateWord(n.Expression.DataType.BitSize);
+                pt = PrimitiveType.CreateWord(exp.DataType.BitSize);
             }
+            else
+            {
+                if (exp is BinaryExpression binExp && binExp.Operator is ISubOperator)
+                {
+                    if (binExp.Left is Identifier && binExp.Right is Constant c)
+                    {
+                        exp = binExp.Left;
+                        offset = c.ToInt64();
+                    }
+                }
+            }
+
             var cases = CollectSwitchCases(n);
             var stms = new List<AbsynStatement>();
             foreach (var succ in cases.Keys)
             {
                 foreach (int c in cases[succ])
                 {
-                    stms.Add(new AbsynCase(Constant.Create(pt, c)));
+                    stms.Add(new AbsynCase(Constant.Create(pt, c + offset)));
                 }
                 stms.AddRange(succ.Statements);
                 if (succ.Type != RegionType.Tail)
@@ -708,7 +724,7 @@ all other cases, together they constitute a Switch[].
                 }
                 RemoveRegion(succ);
             }
-            var sw = new AbsynSwitch(n.Expression, stms);
+            var sw = new AbsynSwitch(exp, stms);
             n.Statements.Add(sw);
             n.Expression = null;
             if (follow != null)

@@ -3940,42 +3940,42 @@ void fn0000511C(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5
 					up32 r8_n = (word32) *((word32) r7_n + 18);
 					if (r8_n <= 0x0E)
 					{
-						switch (r8_n - 0x01)
+						switch (r8_n)
 						{
-						case 0x00:
+						case 0x01:
 							r11_n.u0 = 0x01;
 							break;
-						case 0x01:
+						case 0x02:
 							r11_n.u0 = 0x02;
 							break;
-						case 0x02:
-							goto l00005296;
 						case 0x03:
+							goto l00005296;
+						case 0x04:
 							r11_n.u0 = 0x03;
 							break;
-						case 0x04:
-							goto l00005296;
 						case 0x05:
+							goto l00005296;
+						case 0x06:
 							r11_n.u0 = 0x04;
 							break;
-						case 0x06:
-							goto l00005296;
 						case 0x07:
+							goto l00005296;
+						case 0x08:
 							r11_n.u0 = 0x05;
 							break;
-						case 0x08:
-							goto l00005296;
 						case 0x09:
+							goto l00005296;
+						case 0x0A:
 							r11_n.u0 = 0x06;
 							break;
-						case 0x0A:
-							goto l00005296;
 						case 11:
+							goto l00005296;
+						case 0x0C:
 							r11_n.u0 = 0x07;
 							break;
-						case 0x0C:
-							goto l00005296;
 						case 0x0D:
+							goto l00005296;
+						case 0x0E:
 							r11_n.u0 = 0x08;
 							break;
 						}
@@ -11572,18 +11572,18 @@ void fn0000B9C8(word32 r4, word32 r8, Eq_n r9[], word32 r10, int32 r11, up32 r12
 	if (r12 <= 0x04)
 	{
 		word32 r10_n;
-		switch (r12 - 0x01)
+		switch (r12)
 		{
-		case 0x00:
+		case 0x01:
 			r10_n = r6_n->dw02B4;
 			break;
-		case 0x01:
-			goto l0000B9FC;
 		case 0x02:
+			goto l0000B9FC;
+		case 0x03:
 l0000B9FC:
 			r10_n = r6_n->dw02B8;
 			break;
-		case 0x03:
+		case 0x04:
 			r10_n = r6_n->dw02B0;
 			break;
 		}
@@ -13978,21 +13978,21 @@ l0000D48E:
 				r9_n = r8_n - 0x12;
 				if (r8_n <= 22)
 				{
-					switch (r8_n - 0x12)
+					switch (r8_n)
 					{
-					case 0x00:
+					case 0x12:
 						**((word32) r12_n + 4) = r7_n->tFFFFFCF0;
 						break;
-					case 0x01:
+					case 0x13:
 						**((word32) r12_n + 4) = r7_n->tFFFFFCF0;
 						break;
-					case 0x02:
+					case 0x14:
 						**((word32) r12_n + 4) = r7_n->tFFFFFCF0;
 						break;
-					case 0x03:
+					case 0x15:
 						**((word32) r12_n + 4) = r7_n->tFFFFFCF0;
 						break;
-					case 0x04:
+					case 22:
 						Eq_n r9_n = *((word32) r12_n + 4);
 						&r9_n->u0->t0000 = 0x00;
 						*((word32) r9_n + 4) = r7_n->tFFFFFCF0;
@@ -14380,22 +14380,20 @@ l0000E038:
 							r10_n = r7_n->tFFFFFD18;
 							r11_n = r7_n->tFFFFFFF8;
 							r12_n = r10_n.u0->t0000;
-							switch (r9_n - 0x01)
+							switch (r9_n)
 							{
-							case 0x00:
-								r9_n = (int32) ((word32) r11_n + r12_n * 0x0C + 4);
-								goto l0000E298;
 							case 0x01:
-								r9_n = (word32) ((word32) r11_n + r12_n * 0x0C + -4);
+								r9_n = (int32) ((word32) r11_n + r12_n * 0x0C + 4);
 								goto l0000E298;
 							case 0x02:
-								r9_n = (int32) ((word32) r11_n + r12_n * 0x0C + 4);
+								r9_n = (word32) ((word32) r11_n + r12_n * 0x0C + -4);
 								goto l0000E298;
 							case 0x03:
-								r9_n = (word32) ((word32) r11_n + r12_n * 0x0C + 4);
+								r9_n = (int32) ((word32) r11_n + r12_n * 0x0C + 4);
 								goto l0000E298;
 							case 0x04:
-								break;
+								r9_n = (word32) ((word32) r11_n + r12_n * 0x0C + 4);
+								goto l0000E298;
 							case 0x05:
 								break;
 							case 0x06:
@@ -14403,6 +14401,8 @@ l0000E038:
 							case 0x07:
 								break;
 							case 0x08:
+								break;
+							case 0x09:
 								r5_r4_n = (word64) ((word32) r11_n + r12_n * 0x0C + 4);
 								r5_n = SLICE(r5_r4_n, word32, 32);
 								r4_n = (word32) r5_r4_n;
@@ -14431,7 +14431,7 @@ l0000E038:
 									r12_n = Mem4021[r7_n + -788:word32] + r9_n;
 									goto l0000E1AE;
 								}
-							case 0x09:
+							case 0x0A:
 								r5_r4_n = (word64) ((word32) r11_n + r12_n * 0x0C + 4);
 								r5_n = SLICE(r5_r4_n, word32, 32);
 								r4_n = (word32) r5_r4_n;
@@ -14477,7 +14477,7 @@ l0000E1AE:
 									r5_n = SLICE(r5_r4_n, word32, 32);
 									goto l0000E282;
 								}
-							case 0x0A:
+							case 11:
 								r5_r4_n = (word64) ((word32) r11_n + r12_n * 0x0C + 4);
 								r5_n = SLICE(r5_r4_n, word32, 32);
 								r4_n = (word32) r5_r4_n;
@@ -14506,7 +14506,7 @@ l0000E1AE:
 									r12_n = Mem4021[r7_n + -788:word32] + r9_n;
 									goto l0000E27A;
 								}
-							case 11:
+							case 0x0C:
 								r5_r4_n = (word64) ((word32) r11_n + r12_n * 0x0C + 4);
 								r5_n = SLICE(r5_r4_n, word32, 32);
 								r4_n = (word32) r5_r4_n;
@@ -14560,8 +14560,6 @@ l0000E282:
 									pc = pc_n;
 									goto l0000E30A;
 								}
-							case 0x0C:
-								break;
 							case 0x0D:
 								break;
 							case 0x0E:
@@ -14569,6 +14567,8 @@ l0000E282:
 							case 0x0F:
 								break;
 							case 0x10:
+								break;
+							case 0x11:
 								break;
 							}
 							r9_n = (word32) r11_n + r12_n * 0x0C + 4;
@@ -15806,24 +15806,22 @@ Eq_n fn0000EA4C(struct Eq_n * r11, Eq_n r12, ptr32 & r9Out, union Eq_n & r10Out,
 			return <invalid>;
 		}
 		Eq_n r8_n;
-		switch (r8_n - 0x01)
+		switch (r8_n)
 		{
-		case 0x00:
-			goto l0000EACE;
 		case 0x01:
+			goto l0000EACE;
+		case 0x02:
 l0000EACE:
 			r10_n->b0000 = (byte) *r12;
 			r12 = (word32) r12 + 4;
 			goto l0000EB1C;
-		case 0x02:
-			goto l0000EAD6;
 		case 0x03:
+			goto l0000EAD6;
+		case 0x04:
 l0000EAD6:
 			r10_n->b0000 = (byte) *r12;
 			r12 = (word32) r12 + 4;
 			goto l0000EB1C;
-		case 0x04:
-			break;
 		case 0x05:
 			break;
 		case 0x06:
@@ -15831,28 +15829,30 @@ l0000EAD6:
 		case 0x07:
 			break;
 		case 0x08:
-			goto l0000EADE;
+			break;
 		case 0x09:
+			goto l0000EADE;
+		case 0x0A:
 l0000EADE:
 			Eq_n r9_r8_n = *r12;
 			r10_n->b0000 = (byte) r9_r8_n;
 			r9 = SLICE(r9_r8_n, word32, 32);
 			r12 = (word32) r12 + 8;
 			goto l0000EB1C;
-		case 0x0A:
-			goto l0000EAEA;
 		case 11:
+			goto l0000EAEA;
+		case 0x0C:
 l0000EAEA:
 			Eq_n r9_r8_n = *r12;
 			r10_n->b0000 = (byte) r9_r8_n;
 			r9 = SLICE(r9_r8_n, word32, 32);
 			r12 = (word32) r12 + 8;
 			goto l0000EB1C;
-		case 0x0C:
-			break;
 		case 0x0D:
 			break;
 		case 0x0E:
+			break;
+		case 0x0F:
 			Eq_n r8_n = *r12;
 			r10_n->b0000 = (byte) r8_n;
 			r12 = (word32) r12 + 4;
@@ -15860,7 +15860,7 @@ l0000EAEA:
 				goto l0000EB1C;
 			r8_n = r6_n->t0260;
 			goto l0000EB1A;
-		case 0x0F:
+		case 0x10:
 			Eq_n r8_n = *r12;
 			r10_n->b0000 = (byte) r8_n;
 			r12 = (word32) r12 + 4;
@@ -15868,8 +15868,6 @@ l0000EAEA:
 				goto l0000EB1C;
 			r8_n.u1 = 60204;
 			goto l0000EB1A;
-		case 0x10:
-			break;
 		case 0x11:
 			break;
 		case 0x12:
@@ -15879,6 +15877,8 @@ l0000EAEA:
 		case 0x14:
 			break;
 		case 0x15:
+			break;
+		case 22:
 			break;
 		}
 		r8_n = *r12;
