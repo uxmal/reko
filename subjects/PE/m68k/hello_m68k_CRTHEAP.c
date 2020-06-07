@@ -599,7 +599,7 @@ int32 fn00002BB4(struct Eq_n * a5, struct Eq_n * dwArg04, up32 dwArg08, struct E
 			dwArg04->ptr0000 = a3_n;
 			if (d0_n + 0x03 <= 3)
 			{
-				word16 v24_n = globals->a2C58[(int32) (int16) (d0_n + 0x03) * 2];
+				word16 v24_n = g_a2C58[(int32) (int16) (d0_n + 0x03) * 2];
 				uipr32 d0_n = SEQ(SLICE(d0_n + 0x03, word16, 16), v24_n);
 				ptr32 a6_n;
 				int32 d0_n;

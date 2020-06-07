@@ -238,7 +238,7 @@ T_28: (in 0000000000000AE0 : ptr64)
   Class: Eq_22
   DataType: (ptr64 Eq_22)
   OrigDataType: (ptr64 (fn void ()))
-T_29: (in __libc_start_main(&globals->t0898, qwArg00, (char *) fp + 8<i32>, &globals->t0A70, &globals->t0AE0, rdx, fp) : int32)
+T_29: (in __libc_start_main(&g_t0898, qwArg00, (char *) fp + 8<i32>, &g_t0A70, &g_t0AE0, rdx, fp) : int32)
   Class: Eq_29
   DataType: int32
   OrigDataType: int32
@@ -366,7 +366,7 @@ T_60: (in 0<8> : byte)
   Class: Eq_59
   DataType: byte
   OrigDataType: byte
-T_61: (in globals->b201048 != 0<8> : bool)
+T_61: (in g_b201048 != 0<8> : bool)
   Class: Eq_61
   DataType: bool
   OrigDataType: bool
@@ -586,7 +586,7 @@ T_115: (in Mem23[0x0000000000000B00<p64>:word64] : word64)
   Class: Eq_115
   DataType: uint64
   OrigDataType: uint64
-T_116: (in (uint128) (uint64) rdi /u globals->qw0B00 : word64)
+T_116: (in (uint128) (uint64) rdi /u g_qw0B00 : word64)
   Class: Eq_116
   DataType: uint64
   OrigDataType: uint64

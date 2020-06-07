@@ -12,7 +12,7 @@ void fn00001000(int32 d0, byte * a0)
 	byte * a2_n = a0;
 	if (a6_n->t0014 < 0x24)
 	{
-		word32 * a0_n = &globals->ptr2B88;
+		word32 * a0_n = &g_ptr2B88;
 		uint32 d0_n;
 		for (d0_n = 0x0C; d0_n != 0x00; --d0_n)
 		{
@@ -20,14 +20,14 @@ void fn00001000(int32 d0, byte * a0)
 			++a0_n;
 		}
 	}
-	globals->ptr2B88 = fp;
-	globals->ptr2B8C = a6_n;
+	g_ptr2B88 = fp;
+	g_ptr2B8C = a6_n;
 	struct Eq_n * d0_n = FindTask(0x00);
 	struct Eq_n * d0_n = OpenLibrary(0x12BC, 0);
 	if (d0_n != null)
 	{
 		int32 d4_n;
-		globals->ptr2B90 = d0_n;
+		g_ptr2B90 = d0_n;
 		if (d0_n->ptr00AC == null)
 		{
 			d4_n = 2;
@@ -61,8 +61,8 @@ void fn00001000(int32 d0, byte * a0)
 			if (d0_n == null)
 			{
 				fn00001214(d0_n);
-				globals->ptr2B94 = d0_n;
-				globals->ptr2B98 = d0_n;
+				g_ptr2B94 = d0_n;
+				g_ptr2B98 = d0_n;
 				null = null;
 				dwLoc0C_n = d0_n;
 				Eq_n d0_n = d0_n->t0024;
@@ -76,9 +76,9 @@ void fn00001000(int32 d0, byte * a0)
 					fn0000127C();
 					return;
 				}
-				globals->t2B9C = d0_n;
-				globals->t2BA0 = d0_n;
-				globals->t2BA4 = d0_n;
+				g_t2B9C = d0_n;
+				g_t2BA0 = d0_n;
+				g_t2BA4 = d0_n;
 				d0_n->t009C = d0_n;
 				d0_n->t00A0 = d0_n;
 				word32 d0_n = ((word32[]) 8)[d0_n];
@@ -174,15 +174,15 @@ l00001148:
 			a1_n->dw0000 = (word32) 0x00;
 			*a6_n = 0x00;
 			execPrivate4();
-			globals->t2B9C = d0_n;
+			g_t2B9C = d0_n;
 			execPrivate5();
-			globals->t2BA0 = d0_n;
+			g_t2BA0 = d0_n;
 			dwLoc0C_n = (struct Eq_n *) (d0_n + 4);
 			dwLoc10 = d3_n;
-			if (globals->ptr2B8C->t0014 >= 0x24)
+			if (g_ptr2B8C->t0014 >= 0x24)
 			{
 				Eq_n v64_n = d0_n->t00E0;
-				globals->t2BA4 = v64_n;
+				g_t2BA4 = v64_n;
 				if (v64_n != 0x00)
 				{
 l0000117E:
@@ -191,8 +191,8 @@ l0000117E:
 						word32 * a0_n = d0_n->ptr00B0;
 						a0_n = a0_n + 1 - *a0_n;
 l00001202:
-						globals->dw2BB0 = a0_n;
-						globals->ptr2BB4 = fp - 16;
+						g_dw2BB0 = a0_n;
+						g_ptr2BB4 = fp - 16;
 						fn00001354(d2_n, dwLoc10, dwLoc0C_n);
 						fn0000127C();
 						return;
@@ -200,10 +200,10 @@ l00001202:
 					goto l000011F8;
 				}
 			}
-			globals->t2BA4 = d0_n;
+			g_t2BA4 = d0_n;
 			goto l0000117E;
 		}
-		CloseLibrary(globals->ptr2B90);
+		CloseLibrary(g_ptr2B90);
 		Alert(0x00010000);
 	}
 	else
@@ -247,12 +247,12 @@ word32 fn00001278(ptr32 dwArg04)
 //      fn00001278
 struct Eq_n * fn0000127C()
 {
-	struct Eq_n * a7_n = globals->ptr2B88;
+	struct Eq_n * a7_n = g_ptr2B88;
 	struct Eq_n * v7_n = a7_n->ptrFFFFFFFC;
 	struct Eq_n * v5_n = a7_n->ptrFFFFFFF8;
 	if (v7_n->dw0004 != 0x00)
 		execPrivate1();
-	CloseLibrary(globals->ptr2B90);
+	CloseLibrary(g_ptr2B90);
 	if (v5_n != null)
 		fn0000126C(v5_n);
 	FreeMem(v7_n, v7_n->dw0000);
@@ -289,10 +289,10 @@ word32 fn000012D0(ptr32 dwArg04)
 //      fn000023C8
 word32 fn0000131C(ptr32 dwArg04)
 {
-	if (globals->dw2BB8 == 0x00)
+	if (g_dw2BB8 == 0x00)
 	{
 		struct Eq_n * a3_n;
-		globals->dw2BB8 = 1;
+		g_dw2BB8 = 1;
 		for (a3_n = *(struct Eq_n **) 11488; a3_n != null; a3_n = a3_n->ptr0000)
 			a3_n->ptr0004();
 		a5 = fn000012D0(dwArg04);
@@ -331,7 +331,7 @@ word32 fn00001390(int32 d2)
 	byte v32_n = (byte) (d0_n * (word16) d1_n + SEQ(SLICE(__swap(SEQ(SLICE(d4_n, word16, 16), (word16) (d4_n + __swap(d1_n) * (word16) d0_n))), word16, 16), 0x00));
 	struct Eq_n * d2_n = SEQ(SLICE(d2_n, word24, 8), v32_n);
 	fn00002A88(d2_n, (uint32) (uint8) (byte) fn00002AC8(d2_n, (uint32) (uint8) v11_n, (uint32) (uint8) v32_n), (uint32) (uint8) v32_n);
-	return fn0000143C((uint32) (uint8) (byte) ((uint32) (uint8) v32_n << 0x05), &globals->b142C);
+	return fn0000143C((uint32) (uint8) (byte) ((uint32) (uint8) v32_n << 0x05), &g_b142C);
 }
 
 // 0000143C: Register Eq_n fn0000143C(Register Eq_n d0, Stack (ptr32 byte) dwArg04)
@@ -877,7 +877,7 @@ l00001974:
 				else
 				{
 					a7_n->t0066 = 0x01;
-					a3_n = &globals->b1DAC;
+					a3_n = &g_b1DAC;
 					d5_n.u0 = 0;
 				}
 l00001BC4:
@@ -1223,17 +1223,17 @@ Eq_n fn00001FF4(int32 dwArg04, ptr32 & a0Out)
 		d0_n.u0 = 0;
 	else
 	{
-		if (globals->ptr2BC0 == null)
+		if (g_ptr2BC0 == null)
 		{
-			struct Eq_n * a0_n = globals->ptr2BBC;
+			struct Eq_n * a0_n = g_ptr2BBC;
 			null = null;
-			globals->ptr2BC0 = fn000022E8(dwLoc10, a0_n, a0_n, out a0);
+			g_ptr2BC0 = fn000022E8(dwLoc10, a0_n, a0_n, out a0);
 		}
-		if (globals->ptr2BC0 == null)
+		if (g_ptr2BC0 == null)
 			d0_n.u0 = 0;
 		else
 		{
-			int32 * d0_n = fn000021C4(globals->ptr2BC0, dwArg04 + 4, out a0);
+			int32 * d0_n = fn000021C4(g_ptr2BC0, dwArg04 + 4, out a0);
 			if (d0_n == null)
 				d0_n.u0 = 0;
 			else
@@ -1251,8 +1251,8 @@ Eq_n fn00001FF4(int32 dwArg04, ptr32 & a0Out)
 // 00002060: void fn00002060(Stack (ptr32 Eq_n) dwArg04)
 void fn00002060(struct Eq_n * dwArg04)
 {
-	if (dwArg04 != null && globals->ptr2BC0 != null)
-		fn00002128(globals->ptr2BC0, dwArg04 - 4, dwArg04->dwFFFFFFFC + 4);
+	if (dwArg04 != null && g_ptr2BC0 != null)
+		fn00002128(g_ptr2BC0, dwArg04 - 4, dwArg04->dwFFFFFFFC + 4);
 }
 
 // 00002128: void fn00002128(Stack (ptr32 Eq_n) dwArg04, Stack up32 dwArg08, Stack up32 dwArg0C)
@@ -1260,7 +1260,7 @@ void fn00002060(struct Eq_n * dwArg04)
 //      fn00002060
 void fn00002128(struct Eq_n * dwArg04, up32 dwArg08, up32 dwArg0C)
 {
-	if (globals->ptr2B8C->t0014 < 0x27)
+	if (g_ptr2B8C->t0014 < 0x27)
 	{
 		if (dwArg04 == null || dwArg08 == 0x00)
 			return;
@@ -1293,7 +1293,7 @@ void fn00002128(struct Eq_n * dwArg04, up32 dwArg08, up32 dwArg0C)
 struct Eq_n * fn000021C4(struct Eq_n * dwArg04, up32 dwArg08, struct Eq_n & a0Out)
 {
 	struct Eq_n * d0_n;
-	struct Eq_n * a0_n = globals->ptr2B8C;
+	struct Eq_n * a0_n = g_ptr2B8C;
 	if (a0_n->t0014 >= 0x27)
 	{
 		a0_n = dwArg04;
@@ -1378,7 +1378,7 @@ l00002296:
 struct Eq_n * fn000022E8(Eq_n dwArg04, struct Eq_n * dwArg08, struct Eq_n * dwArg0C, struct Eq_n & a0Out)
 {
 	struct Eq_n * d0_n;
-	struct Eq_n * a0_n = globals->ptr2B8C;
+	struct Eq_n * a0_n = g_ptr2B8C;
 	if (a0_n->t0014 >= 0x27)
 		d0_n = CreatePrivatePool(dwArg04, dwArg08, dwArg0C);
 	else
@@ -1408,7 +1408,7 @@ struct Eq_n * fn000022E8(Eq_n dwArg04, struct Eq_n * dwArg08, struct Eq_n * dwAr
 // 00002358: void fn00002358(Register int32 d0, Stack (ptr32 Eq_n) dwArg04)
 void fn00002358(int32 d0, struct Eq_n * dwArg04)
 {
-	if (globals->ptr2B8C->t0014 >= 0x27)
+	if (g_ptr2B8C->t0014 >= 0x27)
 		DeletePrivatePool(dwArg04);
 	else if (dwArg04 != null)
 	{
@@ -1471,7 +1471,7 @@ struct Eq_n * fn000023F8(struct Eq_n * dwArg04, struct Eq_n * dwArg08, struct Eq
 					}
 				}
 			}
-			int32 d4_n = SEQ(SLICE(d4_n, word24, 8), ((&globals->t2BC4)[(int32) ((word16) d6_n & 0xFF)].a0000 + (byte) d4_n).a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000);
+			int32 d4_n = SEQ(SLICE(d4_n, word24, 8), ((&g_t2BC4)[(int32) ((word16) d6_n & 0xFF)].a0000 + (byte) d4_n).a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000);
 			int32 d5_n = 32 - d4_n;
 			if (d5_n != 0x00)
 			{
@@ -1696,7 +1696,7 @@ struct Eq_n * fn00002648(struct Eq_n * dwArg04, struct Eq_n * dwArg08, struct Eq
 				}
 			}
 		}
-		int32 d4_n = SEQ(SLICE(d4_n, word24, 8), ((&globals->t2BC4)[(int32) ((word16) d6_n & 0xFF)].a0000 + (byte) d4_n).a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000);
+		int32 d4_n = SEQ(SLICE(d4_n, word24, 8), ((&g_t2BC4)[(int32) ((word16) d6_n & 0xFF)].a0000 + (byte) d4_n).a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000);
 		int32 d5_n = 32 - d4_n;
 		if (d5_n == 0x00)
 		{

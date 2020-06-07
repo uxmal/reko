@@ -67,6 +67,13 @@ namespace Reko.Core
             return loc.Address.GenerateName("l", $"_{loc.Index}");
         }
 
+        public virtual string GlobalName(StructureField field)
+        {
+            if (field.IsNameSet)
+                return field.Name;
+            var fieldName = Types.StructureFieldName(field, null);
+            return string.Format("g_{0}", fieldName);
+        }
 
         public virtual string StackArgumentName(DataType type, int cbOffset, string? nameOverride)
         {

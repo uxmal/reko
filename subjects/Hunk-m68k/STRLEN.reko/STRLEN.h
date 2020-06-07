@@ -546,7 +546,7 @@ T_92: (in Mem64[0x000013D0<p32>:word32] : word32)
   Class: Eq_25
   DataType: (ptr32 Eq_25)
   OrigDataType: word32
-T_93: (in CloseLibrary(globals->ptr13D0) : void)
+T_93: (in CloseLibrary(g_ptr13D0) : void)
   Class: Eq_93
   DataType: void
   OrigDataType: void
@@ -1046,7 +1046,7 @@ T_217: (in 0x24<16> : word16)
   Class: Eq_11
   DataType: cup16
   OrigDataType: cup16
-T_218: (in globals->ptr13CC->w0014 < 0x24<16> : bool)
+T_218: (in g_ptr13CC->w0014 < 0x24<16> : bool)
   Class: Eq_218
   DataType: bool
   OrigDataType: bool
@@ -2022,7 +2022,7 @@ T_461: (in Mem0[0x000013D0<p32>:word32] : word32)
   Class: Eq_25
   DataType: (ptr32 Eq_25)
   OrigDataType: word32
-T_462: (in CloseLibrary(globals->ptr13D0) : void)
+T_462: (in CloseLibrary(g_ptr13D0) : void)
   Class: Eq_93
   DataType: void
   OrigDataType: void
@@ -2434,7 +2434,7 @@ T_564: (in 000013A4 : ptr32)
   Class: Eq_563
   DataType: (ptr32 byte)
   OrigDataType: ptr32
-T_565: (in fn000013AC(&globals->b13A4) : word32)
+T_565: (in fn000013AC(&g_b13A4) : word32)
   Class: Eq_560
   DataType: word32
   OrigDataType: word32

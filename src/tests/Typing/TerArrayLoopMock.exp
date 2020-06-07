@@ -33,7 +33,7 @@ done:
 	return
 	// succ:  ArrayLoopMock_exit
 l1:
-	word32 * ptr_3 = globals->a4000000
+	word32 * ptr_3 = g_a4000000
 	goto looptest
 	// succ:  looptest
 l2:
@@ -41,7 +41,7 @@ l2:
 	ptr_3 = ptr_3 + 1<i32>
 	// succ:  looptest
 looptest:
-	branch ptr_3 >= &globals->dw4001000 done
+	branch ptr_3 >= &g_dw4001000 done
 	goto l2
 	// succ:  l2 done
 ArrayLoopMock_exit:
@@ -66,7 +66,7 @@ T_4: (in 0x4001000<32> : word32)
   Class: Eq_2
   DataType: (ptr32 word32)
   OrigDataType: up32
-T_5: (in ptr_3 >= &globals->dw4001000 : bool)
+T_5: (in ptr_3 >= &g_dw4001000 : bool)
   Class: Eq_5
   DataType: bool
   OrigDataType: bool

@@ -1341,7 +1341,7 @@ T_20: (in 0x5E4<16> : word16)
   Class: Eq_2
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_21: (in fn0468(&globals->b05E4) : void)
+T_21: (in fn0468(&g_b05E4) : void)
   Class: Eq_21
   DataType: void
   OrigDataType: void
@@ -1449,7 +1449,7 @@ T_47: (in 0x5EF<16> : word16)
   Class: Eq_2
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_48: (in fn0468(&globals->b05EF) : void)
+T_48: (in fn0468(&g_b05EF) : void)
   Class: Eq_21
   DataType: void
   OrigDataType: void
@@ -1541,7 +1541,7 @@ T_70: (in 0x601<16> : word16)
   Class: Eq_2
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_71: (in fn0468(&globals->b0601) : void)
+T_71: (in fn0468(&g_b0601) : void)
   Class: Eq_21
   DataType: void
   OrigDataType: void
@@ -1581,7 +1581,7 @@ T_80: (in 0x5E1<16> : word16)
   Class: Eq_79
   DataType: (ptr16 char)
   OrigDataType: (ptr16 char)
-T_81: (in PRINT(&globals->b05E1) : void)
+T_81: (in PRINT(&g_b05E1) : void)
   Class: Eq_81
   DataType: void
   OrigDataType: void
@@ -6693,7 +6693,7 @@ T_1358: (in 1<8> : byte)
   Class: Eq_1358
   DataType: byte
   OrigDataType: byte
-T_1359: (in globals->b002B | 1<8> : byte)
+T_1359: (in g_b002B | 1<8> : byte)
   Class: Eq_1357
   DataType: byte
   OrigDataType: byte
@@ -6949,7 +6949,7 @@ T_1422: (in 0x800<16> : word16)
   Class: Eq_1422
   DataType: cui16
   OrigDataType: cui16
-T_1423: (in globals->w0024 & 0x800<16> : word16)
+T_1423: (in g_w0024 & 0x800<16> : word16)
   Class: Eq_1419
   DataType: cui16
   OrigDataType: cui16
@@ -7049,7 +7049,7 @@ T_1447: (in 0x1020<16> : word16)
   Class: Eq_1107
   DataType: (ptr16 Eq_1107)
   OrigDataType: word16
-T_1448: (in fn0FB2(r0, &globals->t1020, wArg00, wArg02, wArg04, wArg06) : void)
+T_1448: (in fn0FB2(r0, &g_t1020, wArg00, wArg02, wArg04, wArg06) : void)
   Class: Eq_1448
   DataType: void
   OrigDataType: void
@@ -7081,7 +7081,7 @@ T_1455: (in 0x101E<16> : word16)
   Class: Eq_1107
   DataType: (ptr16 Eq_1107)
   OrigDataType: word16
-T_1456: (in fn0FB2(r0, &globals->t101E, wArg00, wArg02, wArg04, wArg06) : void)
+T_1456: (in fn0FB2(r0, &g_t101E, wArg00, wArg02, wArg04, wArg06) : void)
   Class: Eq_1448
   DataType: void
   OrigDataType: void
@@ -7745,7 +7745,7 @@ T_1621: (in 0x138E<16> : word16)
   Class: Eq_79
   DataType: (ptr16 char)
   OrigDataType: (ptr16 char)
-T_1622: (in PRINT(&globals->b138E) : void)
+T_1622: (in PRINT(&g_b138E) : void)
   Class: Eq_81
   DataType: void
   OrigDataType: void
@@ -12049,7 +12049,7 @@ T_2697: (in 0<8> : byte)
   Class: Eq_2696
   DataType: byte
   OrigDataType: byte
-T_2698: (in globals->b002A == 0<8> : bool)
+T_2698: (in g_b002A == 0<8> : bool)
   Class: Eq_2698
   DataType: bool
   OrigDataType: bool
@@ -13453,7 +13453,7 @@ T_3048: (in 0x592<16> : word16)
   Class: Eq_2314
   DataType: (ptr16 char)
   OrigDataType: (ptr16 char)
-T_3049: (in FnSubfn(&globals->b0592) : void)
+T_3049: (in FnSubfn(&g_b0592) : void)
   Class: Eq_2318
   DataType: void
   OrigDataType: void
@@ -13577,7 +13577,7 @@ T_3079: (in 0<16> : word16)
   Class: Eq_1404
   DataType: (ptr16 code)
   OrigDataType: word16
-T_3080: (in globals->ptr1DAA != null : bool)
+T_3080: (in g_ptr1DAA != null : bool)
   Class: Eq_3080
   DataType: bool
   OrigDataType: bool
@@ -13645,7 +13645,7 @@ T_3096: (in 0x3B8<16> : word16)
   Class: Eq_2314
   DataType: (ptr16 char)
   OrigDataType: (ptr16 char)
-T_3097: (in FnSubfn(&globals->b03B8) : void)
+T_3097: (in FnSubfn(&g_b03B8) : void)
   Class: Eq_2318
   DataType: void
   OrigDataType: void
@@ -13685,7 +13685,7 @@ T_3106: (in 0x397<16> : word16)
   Class: Eq_79
   DataType: (ptr16 char)
   OrigDataType: (ptr16 char)
-T_3107: (in PRINT(&globals->b0397) : void)
+T_3107: (in PRINT(&g_b0397) : void)
   Class: Eq_81
   DataType: void
   OrigDataType: void
@@ -13701,7 +13701,7 @@ T_3110: (in 8<8> : byte)
   Class: Eq_3110
   DataType: byte
   OrigDataType: byte
-T_3111: (in globals->b002B | 8<8> : byte)
+T_3111: (in g_b002B | 8<8> : byte)
   Class: Eq_1357
   DataType: byte
   OrigDataType: byte
@@ -13721,7 +13721,7 @@ T_3115: (in 0x397<16> : word16)
   Class: Eq_1377
   DataType: (ptr16 Eq_1377)
   OrigDataType: (ptr16 int8)
-T_3116: (in EXIT(&globals->b0397) : void)
+T_3116: (in EXIT(&g_b0397) : void)
   Class: Eq_1431
   DataType: void
   OrigDataType: void
@@ -13757,7 +13757,7 @@ T_3124: (in Mem94[0x53E8<p16>:word16] : word16)
   Class: Eq_3124
   DataType: cu16
   OrigDataType: cu16
-T_3125: (in r4_87 - 0xB2<16> - globals->w53E8 : word16)
+T_3125: (in r4_87 - 0xB2<16> - g_w53E8 : word16)
   Class: Eq_3125
   DataType: cu16
   OrigDataType: cu16
@@ -13769,7 +13769,7 @@ T_3127: (in ~1<16> : word16)
   Class: Eq_3127
   DataType: cui16
   OrigDataType: cui16
-T_3128: (in r4_87 - 0xB2<16> - globals->w53E8 & ~1<16> : word16)
+T_3128: (in r4_87 - 0xB2<16> - g_w53E8 & ~1<16> : word16)
   Class: Eq_3121
   DataType: cui16
   OrigDataType: cui16
@@ -14201,7 +14201,7 @@ T_3235: (in 0<16> : word16)
   Class: Eq_1404
   DataType: (ptr16 code)
   OrigDataType: word16
-T_3236: (in globals->ptr1DAA == null : bool)
+T_3236: (in g_ptr1DAA == null : bool)
   Class: Eq_3236
   DataType: bool
   OrigDataType: bool
@@ -14409,7 +14409,7 @@ T_3287: (in 0x2000<16> : word16)
   Class: Eq_3287
   DataType: cui16
   OrigDataType: cui16
-T_3288: (in globals->w0024 | 0x2000<16> : word16)
+T_3288: (in g_w0024 | 0x2000<16> : word16)
   Class: Eq_1419
   DataType: cui16
   OrigDataType: cui16
@@ -14461,7 +14461,7 @@ T_3300: (in 0x3B8<16> : word16)
   Class: Eq_2314
   DataType: (ptr16 char)
   OrigDataType: (ptr16 char)
-T_3301: (in FnSubfn(&globals->b03B8) : void)
+T_3301: (in FnSubfn(&g_b03B8) : void)
   Class: Eq_2318
   DataType: void
   OrigDataType: void
@@ -14489,7 +14489,7 @@ T_3307: (in Mem168[sp_16 + -24<i16>:word16] : word16)
   Class: Eq_3307
   DataType: cup16
   OrigDataType: cup16
-T_3308: (in globals->w53EA - sp_16->wFFFFFFE8 : word16)
+T_3308: (in g_w53EA - sp_16->wFFFFFFE8 : word16)
   Class: Eq_3308
   DataType: cup16
   OrigDataType: cup16
@@ -14497,7 +14497,7 @@ T_3309: (in 0<16> : word16)
   Class: Eq_3308
   DataType: cup16
   OrigDataType: cup16
-T_3310: (in globals->w53EA - sp_16->wFFFFFFE8 < 0<16> : bool)
+T_3310: (in g_w53EA - sp_16->wFFFFFFE8 < 0<16> : bool)
   Class: Eq_3310
   DataType: bool
   OrigDataType: bool
@@ -14521,7 +14521,7 @@ T_3315: (in r4_110 - 0x38<16> : word16)
   Class: Eq_3315
   DataType: cu16
   OrigDataType: cu16
-T_3316: (in (char *) &globals->ptr0022->ptrFFFFFFFE + 4098<i32> - (r4_110 - 0x38<16>) : word16)
+T_3316: (in (char *) &g_ptr0022->ptrFFFFFFFE + 4098<i32> - (r4_110 - 0x38<16>) : word16)
   Class: Eq_3316
   DataType: cup16
   OrigDataType: cup16
@@ -14529,7 +14529,7 @@ T_3317: (in 0<16> : word16)
   Class: Eq_3316
   DataType: cup16
   OrigDataType: cup16
-T_3318: (in (char *) &globals->ptr0022->ptrFFFFFFFE + 4098<i32> - (r4_110 - 0x38<16>) <= 0<16> : bool)
+T_3318: (in (char *) &g_ptr0022->ptrFFFFFFFE + 4098<i32> - (r4_110 - 0x38<16>) <= 0<16> : bool)
   Class: Eq_3318
   DataType: bool
   OrigDataType: bool
@@ -14589,7 +14589,7 @@ T_3332: (in 0<16> : word16)
   Class: Eq_3304
   DataType: cup16
   OrigDataType: word16
-T_3333: (in globals->w53EA == 0<16> : bool)
+T_3333: (in g_w53EA == 0<16> : bool)
   Class: Eq_3333
   DataType: bool
   OrigDataType: bool
@@ -14621,7 +14621,7 @@ T_3340: (in 0x3BC<16> : word16)
   Class: Eq_2314
   DataType: (ptr16 char)
   OrigDataType: (ptr16 char)
-T_3341: (in FnSubfn(&globals->b03BC) : void)
+T_3341: (in FnSubfn(&g_b03BC) : void)
   Class: Eq_2318
   DataType: void
   OrigDataType: void
@@ -14649,7 +14649,7 @@ T_3347: (in 0x380<16> : word16)
   Class: Eq_79
   DataType: (ptr16 char)
   OrigDataType: (ptr16 char)
-T_3348: (in PRINT(&globals->b0380) : void)
+T_3348: (in PRINT(&g_b0380) : void)
   Class: Eq_81
   DataType: void
   OrigDataType: void
@@ -14669,7 +14669,7 @@ T_3352: (in 243E : ptr16)
   Class: Eq_1151
   DataType: (ptr16 Eq_1151)
   OrigDataType: ptr16
-T_3353: (in fn0EF8(&globals->t243E, r5) : void)
+T_3353: (in fn0EF8(&g_t243E, r5) : void)
   Class: Eq_3353
   DataType: void
   OrigDataType: void
@@ -14685,7 +14685,7 @@ T_3356: (in 2B94 : ptr16)
   Class: Eq_1151
   DataType: (ptr16 Eq_1151)
   OrigDataType: ptr16
-T_3357: (in fn0EF8(&globals->t2B94, r5) : void)
+T_3357: (in fn0EF8(&g_t2B94, r5) : void)
   Class: Eq_3353
   DataType: void
   OrigDataType: void
@@ -14701,7 +14701,7 @@ T_3360: (in 2E24 : ptr16)
   Class: Eq_1151
   DataType: (ptr16 Eq_1151)
   OrigDataType: ptr16
-T_3361: (in fn0EF8(&globals->t2E24, r5) : void)
+T_3361: (in fn0EF8(&g_t2E24, r5) : void)
   Class: Eq_3353
   DataType: void
   OrigDataType: void
@@ -14717,7 +14717,7 @@ T_3364: (in 2EC8 : ptr16)
   Class: Eq_1151
   DataType: (ptr16 Eq_1151)
   OrigDataType: ptr16
-T_3365: (in fn0EF8(&globals->t2EC8, r5) : void)
+T_3365: (in fn0EF8(&g_t2EC8, r5) : void)
   Class: Eq_3353
   DataType: void
   OrigDataType: void
@@ -14733,7 +14733,7 @@ T_3368: (in 3224 : ptr16)
   Class: Eq_1151
   DataType: (ptr16 Eq_1151)
   OrigDataType: ptr16
-T_3369: (in fn0EF8(&globals->t3224, r5) : void)
+T_3369: (in fn0EF8(&g_t3224, r5) : void)
   Class: Eq_3353
   DataType: void
   OrigDataType: void
@@ -14749,7 +14749,7 @@ T_3372: (in 34B0 : ptr16)
   Class: Eq_1151
   DataType: (ptr16 Eq_1151)
   OrigDataType: ptr16
-T_3373: (in fn0EF8(&globals->t34B0, r5) : void)
+T_3373: (in fn0EF8(&g_t34B0, r5) : void)
   Class: Eq_3353
   DataType: void
   OrigDataType: void
@@ -14765,7 +14765,7 @@ T_3376: (in 3960 : ptr16)
   Class: Eq_1151
   DataType: (ptr16 Eq_1151)
   OrigDataType: ptr16
-T_3377: (in fn0EF8(&globals->t3960, r5) : void)
+T_3377: (in fn0EF8(&g_t3960, r5) : void)
   Class: Eq_3353
   DataType: void
   OrigDataType: void
@@ -14781,7 +14781,7 @@ T_3380: (in 3B40 : ptr16)
   Class: Eq_1151
   DataType: (ptr16 Eq_1151)
   OrigDataType: ptr16
-T_3381: (in fn0EF8(&globals->t3B40, r5) : void)
+T_3381: (in fn0EF8(&g_t3B40, r5) : void)
   Class: Eq_3353
   DataType: void
   OrigDataType: void
@@ -14797,7 +14797,7 @@ T_3384: (in 3E16 : ptr16)
   Class: Eq_1151
   DataType: (ptr16 Eq_1151)
   OrigDataType: ptr16
-T_3385: (in fn0EF8(&globals->t3E16, r5) : void)
+T_3385: (in fn0EF8(&g_t3E16, r5) : void)
   Class: Eq_3353
   DataType: void
   OrigDataType: void
@@ -14813,7 +14813,7 @@ T_3388: (in 3F46 : ptr16)
   Class: Eq_1151
   DataType: (ptr16 Eq_1151)
   OrigDataType: ptr16
-T_3389: (in fn0EF8(&globals->t3F46, r5) : void)
+T_3389: (in fn0EF8(&g_t3F46, r5) : void)
   Class: Eq_3353
   DataType: void
   OrigDataType: void
@@ -14829,7 +14829,7 @@ T_3392: (in 4034 : ptr16)
   Class: Eq_1151
   DataType: (ptr16 Eq_1151)
   OrigDataType: ptr16
-T_3393: (in fn0EF8(&globals->t4034, r5) : void)
+T_3393: (in fn0EF8(&g_t4034, r5) : void)
   Class: Eq_3353
   DataType: void
   OrigDataType: void
@@ -14845,7 +14845,7 @@ T_3396: (in 4076 : ptr16)
   Class: Eq_1151
   DataType: (ptr16 Eq_1151)
   OrigDataType: ptr16
-T_3397: (in fn0EF8(&globals->t4076, r5) : void)
+T_3397: (in fn0EF8(&g_t4076, r5) : void)
   Class: Eq_3353
   DataType: void
   OrigDataType: void
@@ -14861,7 +14861,7 @@ T_3400: (in 4140 : ptr16)
   Class: Eq_1151
   DataType: (ptr16 Eq_1151)
   OrigDataType: ptr16
-T_3401: (in fn0EF8(&globals->t4140, r5) : void)
+T_3401: (in fn0EF8(&g_t4140, r5) : void)
   Class: Eq_3353
   DataType: void
   OrigDataType: void
@@ -14877,7 +14877,7 @@ T_3404: (in 4184 : ptr16)
   Class: Eq_1151
   DataType: (ptr16 Eq_1151)
   OrigDataType: ptr16
-T_3405: (in fn0EF8(&globals->t4184, r5) : void)
+T_3405: (in fn0EF8(&g_t4184, r5) : void)
   Class: Eq_3353
   DataType: void
   OrigDataType: void
@@ -14893,7 +14893,7 @@ T_3408: (in 4234 : ptr16)
   Class: Eq_1151
   DataType: (ptr16 Eq_1151)
   OrigDataType: ptr16
-T_3409: (in fn0EF8(&globals->t4234, r5) : void)
+T_3409: (in fn0EF8(&g_t4234, r5) : void)
   Class: Eq_3353
   DataType: void
   OrigDataType: void
@@ -14909,7 +14909,7 @@ T_3412: (in 4538 : ptr16)
   Class: Eq_1151
   DataType: (ptr16 Eq_1151)
   OrigDataType: ptr16
-T_3413: (in fn0EF8(&globals->t4538, r5) : void)
+T_3413: (in fn0EF8(&g_t4538, r5) : void)
   Class: Eq_3353
   DataType: void
   OrigDataType: void
@@ -14925,7 +14925,7 @@ T_3416: (in 4580 : ptr16)
   Class: Eq_1151
   DataType: (ptr16 Eq_1151)
   OrigDataType: ptr16
-T_3417: (in fn0EF8(&globals->t4580, r5) : void)
+T_3417: (in fn0EF8(&g_t4580, r5) : void)
   Class: Eq_3353
   DataType: void
   OrigDataType: void
@@ -14941,7 +14941,7 @@ T_3420: (in 45CC : ptr16)
   Class: Eq_1151
   DataType: (ptr16 Eq_1151)
   OrigDataType: ptr16
-T_3421: (in fn0EF8(&globals->t45CC, r5) : void)
+T_3421: (in fn0EF8(&g_t45CC, r5) : void)
   Class: Eq_3353
   DataType: void
   OrigDataType: void
@@ -15569,7 +15569,7 @@ T_3577: (in 0x47E0<16> : word16)
   Class: Eq_3327
   DataType: cup16
   OrigDataType: cup16
-T_3578: (in globals->w0026 <= 0x47E0<16> : bool)
+T_3578: (in g_w0026 <= 0x47E0<16> : bool)
   Class: Eq_3578
   DataType: bool
   OrigDataType: bool
@@ -15633,7 +15633,7 @@ T_3593: (in 0x474C<16> : word16)
   Class: Eq_3573
   DataType: (ptr16 word16)
   OrigDataType: cup16
-T_3594: (in r5_228 < globals->a474C : bool)
+T_3594: (in r5_228 < g_a474C : bool)
   Class: Eq_3594
   DataType: bool
   OrigDataType: bool
@@ -16777,7 +16777,7 @@ T_3879: (in 0x5040<16> : word16)
   Class: Eq_3879
   DataType: cui16
   OrigDataType: cui16
-T_3880: (in globals->w0024 | 0x5040<16> : word16)
+T_3880: (in g_w0024 | 0x5040<16> : word16)
   Class: Eq_1419
   DataType: cui16
   OrigDataType: cui16

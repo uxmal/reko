@@ -7,18 +7,18 @@
 // 00010958: void _start(Register (ptr32 Eq_n) g1, Register word32 o2, Register word32 o3, Register word32 o4, Register word32 o5, Register (ptr32 Eq_n) o7, Register ui32 fsr, Stack ui32 dwArg40)
 void _start(void (* g1)(), word32 o2, word32 o3, word32 o4, word32 o5, struct Eq_n * o7, ui32 fsr, ui32 dwArg40)
 {
-	globals->ptr20E60 = fp + 0x44;
-	globals->ptr20E3C = fp + 0x44 + ((dwArg40 << 0x02) + 0x04);
+	g_ptr20E60 = fp + 0x44;
+	g_ptr20E3C = fp + 0x44 + ((dwArg40 << 0x02) + 0x04);
 	if (0x00 != 0x00)
 	{
-		globals->dw20E58 = fsr;
-		globals->dw20E58 &= 0x303FFFFF;
+		g_dw20E58 = fsr;
+		g_dw20E58 &= 0x303FFFFF;
 		if (false)
-			globals->dw20E5C = 0x01;
+			g_dw20E5C = 0x01;
 	}
 	if (g1 == null)
 	{
-		atexit(&globals->t10CB8);
+		atexit(&g_t10CB8);
 		_init(0x00010CB8, 0x00020C00, o2, o3, o4, o5, o7);
 	}
 	else

@@ -316,7 +316,7 @@ T_73: (in 0<64> : word64)
   Class: Eq_72
   DataType: word64
   OrigDataType: word64
-T_74: (in globals->qw1FFD0 == 0<64> : bool)
+T_74: (in g_qw1FFD0 == 0<64> : bool)
   Class: Eq_74
   DataType: bool
   OrigDataType: bool
@@ -344,7 +344,7 @@ T_80: (in 0<64> : word64)
   Class: Eq_72
   DataType: word64
   OrigDataType: word64
-T_81: (in globals->qw1FFD0 == 0<64> : bool)
+T_81: (in g_qw1FFD0 == 0<64> : bool)
   Class: Eq_81
   DataType: bool
   OrigDataType: bool
@@ -416,7 +416,7 @@ T_98: (in 0<64> : word64)
   Class: Eq_97
   DataType: word64
   OrigDataType: word64
-T_99: (in globals->qw1FFD8 == 0<64> : bool)
+T_99: (in g_qw1FFD8 == 0<64> : bool)
   Class: Eq_99
   DataType: bool
   OrigDataType: bool

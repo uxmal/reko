@@ -18,9 +18,9 @@ void __start(word32 r2, word32 dwArg00)
 //      __do_global_dtors_aux
 void deregister_tm_clones()
 {
-	if (globals->dw10AA4 == 68228)
+	if (g_dw10AA4 == 68228)
 		return;
-	<anonymous> * r25_n = globals->ptr10AE4;
+	<anonymous> * r25_n = g_ptr10AE4;
 	if (r25_n == null)
 		return;
 	r25_n();
@@ -31,10 +31,10 @@ void deregister_tm_clones()
 //      frame_dummy
 void register_tm_clones()
 {
-	Eq_n r5_n = globals->dw10AA4 - 68228 >> 0x02;
+	Eq_n r5_n = g_dw10AA4 - 68228 >> 0x02;
 	if ((r5_n >>u 0x1F) + r5_n >> 0x01 == 0x00)
 		return;
-	<anonymous> * r25_n = globals->ptr10AD4;
+	<anonymous> * r25_n = g_ptr10AD4;
 	if (r25_n == null)
 		return;
 	r25_n();
@@ -43,28 +43,28 @@ void register_tm_clones()
 // 000006F4: void __do_global_dtors_aux()
 void __do_global_dtors_aux()
 {
-	if ((word32) globals->b10AF0 == 0x00)
+	if ((word32) g_b10AF0 == 0x00)
 	{
 		if (__cxa_finalize != 0x00)
 		{
-			word32 r2_n = globals->dw10AAC;
+			word32 r2_n = g_dw10AAC;
 			word32 r25_n;
 			word32 r3_n;
 			__cxa_finalize();
 		}
-		Eq_n r2_n = globals->t10AF4;
-		Eq_n r16_n = (globals->dw10AB0 - 68200 >> 0x02) + -1;
+		Eq_n r2_n = g_t10AF4;
+		Eq_n r16_n = (g_dw10AB0 - 68200 >> 0x02) + -1;
 		while ((word32) (r2_n < r16_n) != 0x00)
 		{
 			Eq_n r2_n = (word32) r2_n + 1;
-			globals->t10AF4 = r2_n;
+			g_t10AF4 = r2_n;
 			<anonymous> ** r2_n = (r2_n << 0x02) + 68200;
 			word32 r4_n;
 			(*r2_n)();
-			r2_n = globals->t10AF4;
+			r2_n = g_t10AF4;
 		}
 		deregister_tm_clones();
-		globals->b10AF0 = 0x01;
+		g_b10AF0 = 0x01;
 	}
 }
 
@@ -92,8 +92,8 @@ void main()
 void __libc_csu_init(word32 r4, word32 r5, word32 r6)
 {
 	_init();
-	<anonymous> ** r16_n = globals->ptr10ABC;
-	int32 r18_n = globals->ptr10ABC - r16_n;
+	<anonymous> ** r16_n = g_ptr10ABC;
+	int32 r18_n = g_ptr10ABC - r16_n;
 	if (r18_n >> 0x02 != 0x00)
 	{
 		int32 r17_n = 0x00;
@@ -116,10 +116,10 @@ void __libc_csu_fini()
 // 00000970: void __do_global_ctors_aux()
 void __do_global_ctors_aux()
 {
-	<anonymous> * r25_n = globals->ptr10A60;
+	<anonymous> * r25_n = g_ptr10A60;
 	if (r25_n != (<anonymous> *) -1)
 	{
-		word32 * r16_n = &globals->ptr10A60;
+		word32 * r16_n = &g_ptr10A60;
 		do
 		{
 			r25_n();

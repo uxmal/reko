@@ -7,6 +7,6 @@
 // 00409CB0: void _fini()
 void _fini()
 {
-	globals->t400620();
+	g_t400620();
 }
 

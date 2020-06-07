@@ -648,7 +648,7 @@ word16 * fn8866(word16 * er0, word16 r1, word16 er1_16_n, word16 r2, word16 er2_
 		int16 r5_n = *((word32) sp_n + 20);
 		SEQ(er2_16_16_n, (word32) *((word32) sp_n + 0x0C) + r2_n * 0x02)->wFFFF9EB0 = r5_n;
 		word16 r4_n = *((word32) sp_n + 32);
-		if (r4_n != globals->wFFFF9E40)
+		if (r4_n != g_wFFFF9E40)
 		{
 			int16 r2_n = *((byte) sp_n.u0 + 20);
 			struct Eq_n * sp_n = sp_n - 2;
@@ -900,7 +900,7 @@ word32 fn8BB0(word16 er0_16_n, Eq_n r1, Eq_n er4, Eq_n r5, Eq_n r6, union Eq_n &
 {
 	Eq_n sp_n = fp - 0x0A;
 	Eq_n er4_n = er4;
-	if (globals->uFFFF9E36 != r1)
+	if (g_uFFFF9E36 != r1)
 	{
 		Eq_n r6_n;
 		word16 er0_16_16_n = SLICE(fn9BB6(SEQ(er0_16_n, 0x1A4E), 0x2000, 0x01, r6, wLoc0E, 0x07, out r6_n), word16, 16);
@@ -916,9 +916,9 @@ word32 fn8BB0(word16 er0_16_n, Eq_n r1, Eq_n er4, Eq_n r5, Eq_n r6, union Eq_n &
 		Eq_n sp_n;
 		*((word32) sp_n - 2) = 0x07;
 		er0_16_n = SLICE(fn9BB6(SEQ(er0_16_16_n, 0x1A4E), 0x2000, 0x03, r6_n, *((word32) sp_n - 4), *((word32) sp_n - 2), out r6), word16, 16);
-		globals->wFFFF9E34 = ~0x00;
+		g_wFFFF9E34 = ~0x00;
 		sp_n = sp_n;
-		Eq_n r2_n = globals->uFFFF9E36;
+		Eq_n r2_n = g_uFFFF9E36;
 		Eq_n r5_n = *((word32) sp_n + 6);
 		if (r2_n >= r5_n)
 		{
@@ -930,7 +930,7 @@ word32 fn8BB0(word16 er0_16_n, Eq_n r1, Eq_n er4, Eq_n r5, Eq_n r6, union Eq_n &
 			er0_16_16_n = SLICE(fn9BB6(SEQ(er0_16_n, 0x1A4E), 0x2002, 0x02, r6, *((word32) sp_n - 4), *((word32) sp_n - 2), out r6_n), word16, 16);
 			sp_n = sp_n;
 			er4_n = SEQ(er4_16_16_n, 0x07);
-			if (globals->uFFFF9E36 > r5_n)
+			if (g_uFFFF9E36 > r5_n)
 			{
 				r6_n.u0 = 0x0A;
 				do
@@ -940,17 +940,17 @@ word32 fn8BB0(word16 er0_16_n, Eq_n r1, Eq_n er4, Eq_n r5, Eq_n r6, union Eq_n &
 					Eq_n sp_n = <invalid>;
 					er0_16_16_n = SLICE(er0_n, word16, 16);
 					word16 er4_16_16_n = SLICE(er4_n, word16, 16);
-					ci16 r4_n = (word16) er0_n - globals->wFFFF9E3A;
-					word16 r3_n = globals->wFFFF9E7E;
+					ci16 r4_n = (word16) er0_n - g_wFFFF9E3A;
+					word16 r3_n = g_wFFFF9E7E;
 					if (r3_n == 100 && r4_n > 0x08)
 					{
-						globals->wFFFF9E7E = 200;
+						g_wFFFF9E7E = 200;
 						*((word32) sp_n - 2) = r6_n;
 						er0_16_16_n = SLICE(fn9BB6(SEQ(er0_16_16_n, 12924), 0x1773, 2000, r6_n, *((word32) sp_n - 4), *((word32) sp_n - 2), out r6_n), word16, 16);
-						word32 er2_n = SEQ(er2_16_n, globals->uFFFF9E36);
-						globals->uFFFF9E36 = (word16) (er2_n - 0x01);
+						word32 er2_n = SEQ(er2_16_n, g_uFFFF9E36);
+						g_uFFFF9E36 = (word16) (er2_n - 0x01);
 						er2_16_n = SLICE(er2_n - 0x01, word16, 16);
-						r3_n = globals->wFFFF9E7E;
+						r3_n = g_wFFFF9E7E;
 					}
 					er4_n = SEQ(er4_16_16_n, r4_n);
 					if (r3_n == 200)
@@ -958,13 +958,13 @@ word32 fn8BB0(word16 er0_16_n, Eq_n r1, Eq_n er4, Eq_n r5, Eq_n r6, union Eq_n &
 						er4_n = SEQ(er4_16_16_n, r4_n);
 						if (r4_n < ~0x07)
 						{
-							globals->wFFFF9E7E = 100;
+							g_wFFFF9E7E = 100;
 							*((word32) sp_n - 2) = r6_n;
 							er0_16_16_n = SLICE(fn9BB6(SEQ(er0_16_16_n, 12924), 0x1773, 440, r6_n, *((word32) sp_n - 4), *((word32) sp_n - 2), out r6_n), word16, 16);
 						}
 					}
 					sp_n = sp_n;
-				} while (globals->uFFFF9E36 > *((word32) sp_n + 6));
+				} while (g_uFFFF9E36 > *((word32) sp_n + 6));
 			}
 		}
 		else
@@ -973,7 +973,7 @@ word32 fn8BB0(word16 er0_16_n, Eq_n r1, Eq_n er4, Eq_n r5, Eq_n r6, union Eq_n &
 			er0_16_16_n = SLICE(fn9BB6(SEQ(er0_16_n, 0x1A4E), 0x2002, 0x01, r6, *((word32) sp_n - 4), *((word32) sp_n - 2), out r6_n), word16, 16);
 			sp_n = sp_n;
 			er4_n = SEQ(er4_16_16_n, 0x07);
-			if (globals->uFFFF9E36 < r5_n)
+			if (g_uFFFF9E36 < r5_n)
 			{
 				r6_n.u0 = 0x0A;
 				do
@@ -983,17 +983,17 @@ word32 fn8BB0(word16 er0_16_n, Eq_n r1, Eq_n er4, Eq_n r5, Eq_n r6, union Eq_n &
 					Eq_n sp_n = <invalid>;
 					er0_16_16_n = SLICE(er0_n, word16, 16);
 					word16 er4_16_16_n = SLICE(er4_n, word16, 16);
-					ci16 r4_n = (word16) er0_n - globals->wFFFF9E3A;
-					word16 r3_n = globals->wFFFF9E7E;
+					ci16 r4_n = (word16) er0_n - g_wFFFF9E3A;
+					word16 r3_n = g_wFFFF9E7E;
 					if (r3_n == 100 && r4_n > 0x08)
 					{
-						globals->wFFFF9E7E = 200;
+						g_wFFFF9E7E = 200;
 						*((word32) sp_n - 2) = r6_n;
 						er0_16_16_n = SLICE(fn9BB6(SEQ(er0_16_16_n, 12924), 0x1773, 2000, r6_n, *((word32) sp_n - 4), *((word32) sp_n - 2), out r6_n), word16, 16);
-						word32 er2_n = SEQ(er2_16_n, globals->uFFFF9E36);
-						globals->uFFFF9E36 = (word16) (er2_n + 0x01);
+						word32 er2_n = SEQ(er2_16_n, g_uFFFF9E36);
+						g_uFFFF9E36 = (word16) (er2_n + 0x01);
 						er2_16_n = SLICE(er2_n + 0x01, word16, 16);
-						r3_n = globals->wFFFF9E7E;
+						r3_n = g_wFFFF9E7E;
 					}
 					er4_n = SEQ(er4_16_16_n, r4_n);
 					if (r3_n == 200)
@@ -1001,13 +1001,13 @@ word32 fn8BB0(word16 er0_16_n, Eq_n r1, Eq_n er4, Eq_n r5, Eq_n r6, union Eq_n &
 						er4_n = SEQ(er4_16_16_n, r4_n);
 						if (r4_n < ~0x07)
 						{
-							globals->wFFFF9E7E = 100;
+							g_wFFFF9E7E = 100;
 							*((word32) sp_n - 2) = r6_n;
 							er0_16_16_n = SLICE(fn9BB6(SEQ(er0_16_16_n, 12924), 0x1773, 440, r6_n, *((word32) sp_n - 4), *((word32) sp_n - 2), out r6_n), word16, 16);
 						}
 					}
 					sp_n = sp_n;
-				} while (globals->uFFFF9E36 < *((word32) sp_n + 6));
+				} while (g_uFFFF9E36 < *((word32) sp_n + 6));
 			}
 		}
 		struct Eq_n * sp_n = sp_n - 2;
@@ -1018,7 +1018,7 @@ word32 fn8BB0(word16 er0_16_n, Eq_n r1, Eq_n er4, Eq_n r5, Eq_n r6, union Eq_n &
 l8DA2:
 	word16 er4_16_16_n = SLICE(er4_n, word16, 16);
 	er4_16_16_n = SLICE(er4_n, word16, 16);
-	int16 r2_n = globals->wFFFF9E34;
+	int16 r2_n = g_wFFFF9E34;
 	int16 r5_n = *((word32) sp_n + 8);
 	if (r2_n >= r5_n)
 	{
@@ -1028,7 +1028,7 @@ l8DA2:
 			Eq_n sp_n = sp_n - 2;
 			*sp_n = 0x07;
 			er0_16_n = SLICE(fn9BB6(SEQ(er0_16_n, 0x1A4E), 0x2000, 0x01, r6, *((word32) sp_n - 2), *sp_n, out r6), word16, 16);
-			if (globals->wFFFF9E34 > r5_n)
+			if (g_wFFFF9E34 > r5_n)
 			{
 				r6.u0 = 0x0A;
 				do
@@ -1038,17 +1038,17 @@ l8DA2:
 					Eq_n sp_n = <invalid>;
 					er0_16_n = SLICE(er0_n, word16, 16);
 					word16 er4_16_16_n = SLICE(er4_n, word16, 16);
-					ci16 r4_n = (word16) er0_n - globals->wFFFF9E38;
-					word16 r3_n = globals->wFFFF9E7E;
+					ci16 r4_n = (word16) er0_n - g_wFFFF9E38;
+					word16 r3_n = g_wFFFF9E7E;
 					if (r3_n == 100 && r4_n > 0x08)
 					{
-						globals->wFFFF9E7E = 200;
+						g_wFFFF9E7E = 200;
 						*((word32) sp_n - 2) = r6;
 						er0_16_n = SLICE(fn9BB6(SEQ(er0_16_n, 12924), 0x1773, 2000, r6, *((word32) sp_n - 4), *((word32) sp_n - 2), out r6), word16, 16);
-						word32 er2_n = SEQ(er2_16_n, globals->wFFFF9E34);
-						globals->wFFFF9E34 = (word16) (er2_n - 0x01);
+						word32 er2_n = SEQ(er2_16_n, g_wFFFF9E34);
+						g_wFFFF9E34 = (word16) (er2_n - 0x01);
 						er2_16_n = SLICE(er2_n - 0x01, word16, 16);
-						r3_n = globals->wFFFF9E7E;
+						r3_n = g_wFFFF9E7E;
 					}
 					er4_n = SEQ(er4_16_16_n, r4_n);
 					if (r3_n == 200)
@@ -1056,13 +1056,13 @@ l8DA2:
 						er4_n = SEQ(er4_16_16_n, r4_n);
 						if (r4_n < ~0x07)
 						{
-							globals->wFFFF9E7E = 100;
+							g_wFFFF9E7E = 100;
 							*((word32) sp_n - 2) = r6;
 							er0_16_n = SLICE(fn9BB6(SEQ(er0_16_n, 12924), 0x1773, 440, r6, *((word32) sp_n - 4), *((word32) sp_n - 2), out r6), word16, 16);
 						}
 					}
 					er4_16_16_n = SLICE(er4_n, word16, 16);
-				} while (globals->wFFFF9E34 > *((word32) sp_n + 8));
+				} while (g_wFFFF9E34 > *((word32) sp_n + 8));
 			}
 		}
 	}
@@ -1076,7 +1076,7 @@ l8DA2:
 		er0_16_n = SLICE(fn9C18(SEQ(SLICE(fn9BB6(SEQ(er0_16_n, 0x1A4E), 0x2000, 0x02, r6, *((word32) sp_n - 2), *sp_n, out r6_n), word16, 16), 0x14), er4_n, r6_n, out er2_n, out er4_n, out r6), word16, 16);
 		word16 er2_16_16_n = SLICE(er2_n, word16, 16);
 		er4_16_16_n = SLICE(er4_n, word16, 16);
-		if (globals->wFFFF9E34 < r5_n)
+		if (g_wFFFF9E34 < r5_n)
 		{
 			r6.u0 = 0x0A;
 			do
@@ -1086,17 +1086,17 @@ l8DA2:
 				Eq_n sp_n = <invalid>;
 				er0_16_n = SLICE(er0_n, word16, 16);
 				word16 er4_16_16_n = SLICE(er4_n, word16, 16);
-				ci16 r4_n = (word16) er0_n - globals->wFFFF9E38;
-				word16 r3_n = globals->wFFFF9E7E;
+				ci16 r4_n = (word16) er0_n - g_wFFFF9E38;
+				word16 r3_n = g_wFFFF9E7E;
 				if (r3_n == 100 && r4_n > 0x08)
 				{
-					globals->wFFFF9E7E = 200;
+					g_wFFFF9E7E = 200;
 					*((word32) sp_n - 2) = r6;
 					er0_16_n = SLICE(fn9BB6(SEQ(er0_16_n, 12924), 0x1773, 2000, r6, *((word32) sp_n - 4), *((word32) sp_n - 2), out r6), word16, 16);
-					word32 er2_n = SEQ(er2_16_16_n, globals->wFFFF9E34);
-					globals->wFFFF9E34 = (word16) (er2_n + 0x01);
+					word32 er2_n = SEQ(er2_16_16_n, g_wFFFF9E34);
+					g_wFFFF9E34 = (word16) (er2_n + 0x01);
 					er2_16_16_n = SLICE(er2_n + 0x01, word16, 16);
-					r3_n = globals->wFFFF9E7E;
+					r3_n = g_wFFFF9E7E;
 				}
 				er4_n = SEQ(er4_16_16_n, r4_n);
 				if (r3_n == 200)
@@ -1104,13 +1104,13 @@ l8DA2:
 					er4_n = SEQ(er4_16_16_n, r4_n);
 					if (r4_n < ~0x07)
 					{
-						globals->wFFFF9E7E = 100;
+						g_wFFFF9E7E = 100;
 						*((word32) sp_n - 2) = r6;
 						er0_16_n = SLICE(fn9BB6(SEQ(er0_16_n, 12924), 0x1773, 440, r6, *((word32) sp_n - 4), *((word32) sp_n - 2), out r6), word16, 16);
 					}
 				}
 				er4_16_16_n = SLICE(er4_n, word16, 16);
-			} while (globals->wFFFF9E34 < *((word32) sp_n + 8));
+			} while (g_wFFFF9E34 < *((word32) sp_n + 8));
 		}
 	}
 	word16 r6_n;
@@ -1126,8 +1126,8 @@ l8DA2:
 //      fn9478
 word32 fn8F4E(word16 er0_16_n, Eq_n er4, Eq_n r5, Eq_n r6, union Eq_n & er4Out, ptr16 & r6Out)
 {
-	globals->wFFFF9E34 = ~0x00;
-	globals->uFFFF9E36.u0 = ~0x00;
+	g_wFFFF9E34 = ~0x00;
+	g_uFFFF9E36.u0 = ~0x00;
 	Eq_n r6_n;
 	Eq_n r6_n;
 	word16 er0_16_16_n = SLICE(fn9BB6(SEQ(SLICE(fn9B9A(SEQ(er0_16_n, 0x1946), 0x1000, r6, wLoc0A, out r6_n), word16, 16), 0x1A4E), 0x2000, 0x01, r6_n, wLoc0C, 0x07, out r6_n), word16, 16);
@@ -1142,7 +1142,7 @@ word32 fn8F4E(word16 er0_16_n, Eq_n er4, Eq_n r5, Eq_n r6, union Eq_n & er4Out, 
 	*((word32) sp_n - 2) = 0x07;
 	Eq_n r6_n;
 	word16 er0_16_16_n = SLICE(fn9BB6(SEQ(er0_16_16_n, 0x1A4E), 0x2000, 0x03, r6_n, *((word32) sp_n - 4), *((word32) sp_n - 2), out r6_n), word16, 16);
-	globals->wFFFF9E34 = ~0x00;
+	g_wFFFF9E34 = ~0x00;
 	*((word32) sp_n - 2) = 0x07;
 	Eq_n sp_n = <invalid>;
 	Eq_n r6_n;
@@ -1184,7 +1184,7 @@ word32 fn8F4E(word16 er0_16_n, Eq_n er4, Eq_n r5, Eq_n r6, union Eq_n & er4Out, 
 	word16 r2_n = SEQ(__rcl(SLICE(r3_n, byte, 8), 1, C_n) & 0x00, __bst(r2l_n << 1, C_n, 0x00) & 0x01) + r3_n;
 	bci8 r2h_n = SLICE(r2_n, byte, 8);
 	int16 r2_n = SEQ(r2h_n >> 1, __rcr((byte) r2_n, 1, (bool) cond(r2h_n >> 1)));
-	globals->wFFFF9E3A = r2_n;
+	g_wFFFF9E3A = r2_n;
 	sp_n->t0000.u0 = 0x3002;
 	Eq_n r6_n;
 	Eq_n r6_n;
@@ -1233,13 +1233,13 @@ word32 fn8F4E(word16 er0_16_n, Eq_n er4, Eq_n r5, Eq_n r6, union Eq_n & er4Out, 
 	word16 r2_n = SEQ(__rcl(SLICE(r3_n, byte, 8), 1, C_n) & 0x00, __bst(r2l_n << 1, C_n, 0x00) & 0x01) + r3_n;
 	bci8 r2h_n = SLICE(r2_n, byte, 8);
 	int16 r2_n = SEQ(r2h_n >> 1, __rcr((byte) r2_n, 1, (bool) cond(r2h_n >> 1)));
-	globals->wFFFF9E38 = r2_n;
+	g_wFFFF9E38 = r2_n;
 	*((word32) sp_n - 2) = 0x3002;
 	Eq_n r6_n;
 	Eq_n r6_n;
 	word16 er0_16_16_n = SLICE(fn9B90(SEQ(SLICE(fn9BB6(SEQ(er0_16_16_n, 0x1FF2), 0x3001, r2_n, r6_n, *((word32) sp_n - 4), *((word32) sp_n - 2), out r6_n), word16, 16), 10184), r6_n, *((word32) sp_n - 4), out r6_n), word16, 16);
-	globals->wFFFF9E3E = 0x00;
-	globals->wFFFF9E3C = 2000;
+	g_wFFFF9E3E = 0x00;
+	g_wFFFF9E3C = 2000;
 	Eq_n er4_n;
 	Eq_n r5_n;
 	Eq_n r6_n;
@@ -1273,10 +1273,10 @@ word32 fn8F4E(word16 er0_16_n, Eq_n er4, Eq_n r5, Eq_n r6, union Eq_n & er4Out, 
 		sp_n.u0 = <invalid>;
 		int16 r0_n = (word16) er0_n;
 		er0_16_16_n = SLICE(er0_n, word16, 16);
-		if (r0_n > globals->wFFFF9E3E)
-			globals->wFFFF9E3E = r0_n;
-		if (r0_n < globals->wFFFF9E3C)
-			globals->wFFFF9E3C = r0_n;
+		if (r0_n > g_wFFFF9E3E)
+			g_wFFFF9E3E = r0_n;
+		if (r0_n < g_wFFFF9E3C)
+			g_wFFFF9E3C = r0_n;
 	}
 	struct Eq_n * sp_n = sp_n - 2;
 	sp_n->t0000.u0 = 0x07;
@@ -1328,10 +1328,10 @@ word32 fn8F4E(word16 er0_16_n, Eq_n er4, Eq_n r5, Eq_n r6, union Eq_n & er4Out, 
 		sp_n.u0 = <invalid>;
 		int16 r0_n = (word16) er0_n;
 		er0_16_16_n = SLICE(er0_n, word16, 16);
-		if (r0_n > globals->wFFFF9E3E)
-			globals->wFFFF9E3E = r0_n;
-		if (r0_n < globals->wFFFF9E3C)
-			globals->wFFFF9E3C = r0_n;
+		if (r0_n > g_wFFFF9E3E)
+			g_wFFFF9E3E = r0_n;
+		if (r0_n < g_wFFFF9E3C)
+			g_wFFFF9E3C = r0_n;
 	}
 	struct Eq_n * sp_n = sp_n - 2;
 	sp_n->t0000.u0 = 0x07;
@@ -1350,13 +1350,13 @@ word32 fn8F4E(word16 er0_16_n, Eq_n er4, Eq_n r5, Eq_n r6, union Eq_n & er4Out, 
 	Eq_n er4_n;
 	Eq_n r6_n;
 	word16 er0_16_16_n = SLICE(fn9C18(SEQ(SLICE(fn9BB6(SEQ(er0_16_16_n, 0x1A4E), 0x2002, 0x03, r6_n, *((word32) sp_n - 4), *((word32) sp_n - 2), out r6_n), word16, 16), 0x55), er4_n, r6_n, out er2_n, out er4_n, out r6_n), word16, 16);
-	int16 r2_n = globals->wFFFF9E3E;
+	int16 r2_n = g_wFFFF9E3E;
 	cu8 r2l_n = (byte) r2_n;
 	int16 r2_n = SEQ((bool) (r2l_n < 0x28) + SLICE(r2_n, byte, 8), r2l_n + 0x28);
-	globals->wFFFF9E3E = r2_n;
-	int16 r3_n = globals->wFFFF9E3C;
+	g_wFFFF9E3E = r2_n;
+	int16 r3_n = g_wFFFF9E3C;
 	cu8 r3l_n = (byte) r3_n;
-	globals->wFFFF9E3C = SEQ((bool) (r3l_n < ~0x04) + (SLICE(r3_n, byte, 8) + ~0x00), r3l_n + ~0x04);
+	g_wFFFF9E3C = SEQ((bool) (r3l_n < ~0x04) + (SLICE(r3_n, byte, 8) + ~0x00), r3l_n + ~0x04);
 	Eq_n sp_n = <invalid>;
 	*((word32) sp_n - 2) = 0x3002;
 	word16 r5_n;
@@ -1373,7 +1373,7 @@ word32 fn8F4E(word16 er0_16_n, Eq_n er4, Eq_n r5, Eq_n r6, union Eq_n & er4Out, 
 	Eq_n r6_n;
 	Eq_n r6_n;
 	word16 er0_16_16_n = SLICE(fn9BB6(SEQ(SLICE(fn9C18(SEQ(SLICE(fn9BB6(SEQ(er0_16_16_n, 0x1A4E), 0x2002, 0x02, r6_n, *((word32) sp_n - 4), *((word32) sp_n - 2), out r6_n), word16, 16), 300), er4_n, r6_n, out er2_n, out er4_n, out r6_n), word16, 16), 0x1A4E), 0x2002, 0x03, r6_n, r5, r4_n, out r6_n), word16, 16);
-	globals->uFFFF9E36.u0 = ~0x00;
+	g_uFFFF9E36.u0 = ~0x00;
 	word16 r6_n;
 	word32 er0_n = fn9B9A(SEQ(er0_16_16_n, 0x1946), 0x1000, r6_n, r4_n, out r6_n);
 	er4Out = SEQ(SLICE(er4_n, word16, 16), wLoc02);
@@ -1440,7 +1440,7 @@ word32 fn9370(word16 er0_16_n, word16 er2_16_n, word16 er3_16_n, word16 r4, word
 				Eq_n sp_n = <invalid>;
 				int16 r4_n = (word16) er4_n;
 				word16 er0_16_16_n = SLICE(er0_n, word16, 16);
-				if ((word16) er0_n > globals->wFFFF9E3E)
+				if ((word16) er0_n > g_wFFFF9E3E)
 				{
 					*((word32) sp_n + 0x0A) = r4_n;
 					*((word32) sp_n + 8) = 0x01;
@@ -1591,7 +1591,7 @@ word32 fn9478(word16 er0_16_n, word16 er1_16_n, word16 er2_16_n, word16 er3_16_n
 					word16 er3_16_16_n = SLICE(er3_n, word16, 16);
 					word16 er2_16_16_n = SLICE(er2_n, word16, 16);
 					word16 er1_16_16_n = SLICE(er1_n, word16, 16);
-					if (globals->wFFFF9E80 <= (word16) er0_n)
+					if (g_wFFFF9E80 <= (word16) er0_n)
 					{
 						word32 er1_n;
 						word32 er2_n;
@@ -1608,7 +1608,7 @@ word32 fn9478(word16 er0_16_n, word16 er1_16_n, word16 er2_16_n, word16 er3_16_n
 						er3_16_16_n = SLICE(er3_n, word16, 16);
 						er2_16_16_n = SLICE(er2_n, word16, 16);
 						er1_16_16_n = SLICE(er1_n, word16, 16);
-						if (globals->wFFFF9E80 < (word16) er0_n)
+						if (g_wFFFF9E80 < (word16) er0_n)
 						{
 							r2_n = 0x05;
 l9584:
@@ -1621,7 +1621,7 @@ l9584:
 						word32 er5_n;
 						word32 er6_n;
 						word32 er0_n = fn8584(er0_16_16_n, er1_16_16_n, er2_16_16_n, er3_16_16_n, r4_n, r5_n, r6_n, out er1_n, out er2_n, out er3_n, out er4_n, out er5_n, out er6_n);
-						globals->wFFFF9E80 = (word16) er0_n;
+						g_wFFFF9E80 = (word16) er0_n;
 						word32 er1_n;
 						word32 er3_n;
 						word32 er4_n;
@@ -1699,7 +1699,7 @@ l9584:
 					word16 er3_16_16_n = SLICE(er3_n, word16, 16);
 					word16 er2_16_16_n = SLICE(er2_n, word16, 16);
 					word16 er1_16_16_n = SLICE(er1_n, word16, 16);
-					if (globals->wFFFF9E80 > (word16) er0_n)
+					if (g_wFFFF9E80 > (word16) er0_n)
 					{
 						r2_n = 0x04;
 						goto l966A;
@@ -1719,7 +1719,7 @@ l9584:
 					er3_16_16_n = SLICE(er3_n, word16, 16);
 					er2_16_16_n = SLICE(er2_n, word16, 16);
 					er1_16_16_n = SLICE(er1_n, word16, 16);
-					if (globals->wFFFF9E80 < (word16) er0_n)
+					if (g_wFFFF9E80 < (word16) er0_n)
 					{
 						r2_n = 0x05;
 l966A:
@@ -1732,7 +1732,7 @@ l966A:
 					word32 er5_n;
 					word32 er6_n;
 					word32 er0_n = fn8584(er0_16_16_n, er1_16_16_n, er2_16_16_n, er3_16_16_n, r4_n, r5_n, r6_n, out er1_n, out er2_n, out er3_n, out er4_n, out er5_n, out er6_n);
-					globals->wFFFF9E80 = (word16) er0_n;
+					g_wFFFF9E80 = (word16) er0_n;
 					word32 er1_n;
 					word32 er2_n;
 					word32 er3_n;
@@ -1810,7 +1810,7 @@ l966A:
 					word16 er3_16_16_n = SLICE(er3_n, word16, 16);
 					word16 er2_16_16_n = SLICE(er2_n, word16, 16);
 					word16 er1_16_16_n = SLICE(er1_n, word16, 16);
-					if (globals->wFFFF9E80 > (word16) er0_n)
+					if (g_wFFFF9E80 > (word16) er0_n)
 					{
 						r2_n = 0x04;
 						goto l9740;
@@ -1830,7 +1830,7 @@ l966A:
 					er3_16_16_n = SLICE(er3_n, word16, 16);
 					er2_16_16_n = SLICE(er2_n, word16, 16);
 					er1_16_16_n = SLICE(er1_n, word16, 16);
-					if (globals->wFFFF9E80 < (word16) er0_n)
+					if (g_wFFFF9E80 < (word16) er0_n)
 					{
 						r2_n = 0x05;
 l9740:
@@ -1843,7 +1843,7 @@ l9740:
 					word32 er5_n;
 					word32 er6_n;
 					word32 er0_n = fn8584(er0_16_16_n, er1_16_16_n, er2_16_16_n, er3_16_16_n, r4_n, r5_n, r6_n, out er1_n, out er2_n, out er3_n, out er4_n, out er5_n, out er6_n);
-					globals->wFFFF9E80 = (word16) er0_n;
+					g_wFFFF9E80 = (word16) er0_n;
 					word32 er1_n;
 					word32 er3_n;
 					word32 er5_n;
@@ -1876,7 +1876,7 @@ l9740:
 				*((word32) sp_n - 2) = (word16) er4_n;
 				Eq_n r6_n;
 				word16 er0_16_16_n = SLICE(fn9BB6(SEQ(er0_16_16_n, 0x1A4E), 0x2002, 0x03, r6_n, *((word32) sp_n - 4), *((word32) sp_n - 2), out r6_n), word16, 16);
-				globals->uFFFF9E36 = r6_n;
+				g_uFFFF9E36 = r6_n;
 				er4_16_n = SLICE(er4_n, word16, 16);
 				sp_n = sp_n;
 				Eq_n r6_n;

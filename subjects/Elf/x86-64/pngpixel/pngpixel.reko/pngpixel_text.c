@@ -8,7 +8,7 @@
 void _start(void (* rdx)(), Eq_n qwArg00)
 {
 	__align((char *) fp + 8);
-	__libc_start_main(&globals->t4012F9, qwArg00, (char *) fp + 8, &globals->t401780, &globals->t4017F0, rdx, fp);
+	__libc_start_main(&g_t4012F9, qwArg00, (char *) fp + 8, &g_t401780, &g_t4017F0, rdx, fp);
 	__hlt();
 }
 
@@ -35,17 +35,17 @@ void register_tm_clones()
 // 0000000000400D80: void __do_global_dtors_aux()
 void __do_global_dtors_aux()
 {
-	if (globals->b602108 == 0x00)
+	if (g_b602108 == 0x00)
 	{
 		deregister_tm_clones();
-		globals->b602108 = 0x01;
+		g_b602108 = 0x01;
 	}
 }
 
 // 0000000000400DA0: void frame_dummy()
 void frame_dummy()
 {
-	if (globals->qw601E10 != 0x00 && 0x00 != 0x00)
+	if (g_qw601E10 != 0x00 && 0x00 != 0x00)
 	{
 		fn0000000000000000();
 		register_tm_clones();
@@ -80,7 +80,7 @@ word32 component(Eq_n ecx, word32 edx, word32 esi, word64 rdi, int32 r8d)
 	case 0x0E:
 	case 0x0F:
 l0000000000400EC1:
-		fprintf(globals->ptr602100, "pngpixel: invalid bit depth %u\n", (uint64) ecx);
+		fprintf(g_ptr602100, "pngpixel: invalid bit depth %u\n", (uint64) ecx);
 		exit(0x01);
 	case 0x01:
 		rax_n = (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (byte) (word32) v16_n->b0000 >> (byte) ((uint64) ((word32) ((uint64) (0x07 - (eax_n & 0x07)))))) & 0x01);
@@ -119,7 +119,7 @@ void print_pixel(word32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * f
 	up32 eax_n = (word32) (byte) rax_n;
 	if (eax_n > 0x06)
 		goto l00000000004012C9;
-	switch (globals->a401958[(uint64) eax_n])
+	switch (g_a401958[(uint64) eax_n])
 	{
 	case 0x00:
 		printf("GRAY %u\n", (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x01));
@@ -177,7 +177,7 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 	word64 rax_n = fs->qw0028;
 	if (edi != 0x04)
 	{
-		fwrite(&globals->v401A70, 0x01, 0x27, globals->ptr602100);
+		fwrite(&g_v401A70, 0x01, 0x27, g_ptr602100);
 		goto l000000000040175D;
 	}
 	char * rax_n = rsi->ptr0008;
@@ -187,7 +187,7 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 	FILE * rax_n = fopen(rsi->ptr0018, "rb");
 	if (rax_n == null)
 	{
-		fprintf(globals->ptr602100, "pngpixel: %s: could not open file\n", rsi->ptr0018);
+		fprintf(g_ptr602100, "pngpixel: %s: could not open file\n", rsi->ptr0018);
 		goto l000000000040175D;
 	}
 	word64 rsi_n;
@@ -197,7 +197,7 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 	png_create_read_struct();
 	if (rax_n == 0x00)
 	{
-		fwrite(&globals->v401A18, 0x01, 0x2E, globals->ptr602100);
+		fwrite(&g_v401A18, 0x01, 0x2E, g_ptr602100);
 		goto l000000000040175D;
 	}
 	word64 rax_n;
@@ -325,7 +325,7 @@ l000000000040175D:
 		word64 r8_n;
 		png_error();
 	}
-	fwrite(&globals->v4019E8, 0x01, 44, globals->ptr602100);
+	fwrite(&g_v4019E8, 0x01, 44, g_ptr602100);
 	goto l00000000004016DE;
 }
 
@@ -341,7 +341,7 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 		Eq_n rbx_n = 0x00;
 		do
 		{
-			(*((char *) globals->a601E00 + rbx_n * 0x08))();
+			(*((char *) g_a601E00 + rbx_n * 0x08))();
 			rbx_n = (word64) rbx_n.u1 + 1;
 		} while (rbx_n != rbp_n >> 0x03);
 	}

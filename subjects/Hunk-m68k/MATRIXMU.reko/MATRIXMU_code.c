@@ -12,7 +12,7 @@ void fn00001000(int32 d0, byte * a0)
 	byte * a2_n = a0;
 	if (a6_n->w0014 < 0x24)
 	{
-		word32 * a0_n = &globals->ptr1494;
+		word32 * a0_n = &g_ptr1494;
 		uint32 d0_n;
 		for (d0_n = 0x0C; d0_n != 0x00; --d0_n)
 		{
@@ -20,14 +20,14 @@ void fn00001000(int32 d0, byte * a0)
 			++a0_n;
 		}
 	}
-	globals->ptr1494 = fp;
-	globals->ptr1498 = a6_n;
+	g_ptr1494 = fp;
+	g_ptr1498 = a6_n;
 	struct Eq_n * d0_n = FindTask(0x00);
 	struct Eq_n * d0_n = OpenLibrary(0x12BC, 0);
 	if (d0_n != null)
 	{
 		int32 d4_n;
-		globals->ptr149C = d0_n;
+		g_ptr149C = d0_n;
 		if (d0_n->ptr00AC == null)
 		{
 			d4_n = 2;
@@ -61,8 +61,8 @@ void fn00001000(int32 d0, byte * a0)
 			if (d0_n == null)
 			{
 				fn00001214(d0_n);
-				globals->ptr14A0 = d0_n;
-				globals->ptr14A4 = d0_n;
+				g_ptr14A0 = d0_n;
+				g_ptr14A4 = d0_n;
 				null = null;
 				dwLoc0C_n = d0_n;
 				Eq_n d0_n = d0_n->t0024;
@@ -75,7 +75,7 @@ void fn00001000(int32 d0, byte * a0)
 					fn0000127C();
 					return;
 				}
-				globals->t14A8 = d0_n;
+				g_t14A8 = d0_n;
 				*(union Eq_n *) 5292 = d0_n;
 				*(union Eq_n *) 0x14B0 = d0_n;
 				d0_n->t009C = d0_n;
@@ -172,12 +172,12 @@ l00001148:
 			*a1_n = 0x00;
 			*a6_n = 0x00;
 			execPrivate4();
-			globals->t14A8 = d0_n;
+			g_t14A8 = d0_n;
 			execPrivate5();
 			*(union Eq_n *) 5292 = d0_n;
 			dwLoc0C_n = (struct Eq_n *) &d0_n->ptr0010;
 			dwLoc10 = d3_n;
-			if (globals->ptr1498->w0014 >= 0x24)
+			if (g_ptr1498->w0014 >= 0x24)
 			{
 				Eq_n v64_n = d0_n->t00E0;
 				*(union Eq_n *) 0x14B0 = v64_n;
@@ -201,7 +201,7 @@ l00001202:
 			*(union Eq_n *) 0x14B0 = d0_n;
 			goto l0000117E;
 		}
-		CloseLibrary(globals->ptr149C);
+		CloseLibrary(g_ptr149C);
 		Alert(0x00010000);
 	}
 	else
@@ -245,12 +245,12 @@ void fn00001278(word32 dwArg04)
 //      fn00001278
 void fn0000127C()
 {
-	struct Eq_n * a7_n = globals->ptr1494;
+	struct Eq_n * a7_n = g_ptr1494;
 	struct Eq_n * v7_n = a7_n->ptrFFFFFFFC;
 	struct Eq_n * v5_n = a7_n->ptrFFFFFFF8;
 	if (v7_n->dw0004 != 0x00)
 		execPrivate1();
-	CloseLibrary(globals->ptr149C);
+	CloseLibrary(g_ptr149C);
 	if (v5_n != null)
 		fn0000126C(v5_n);
 	FreeMem(v7_n, v7_n->dw0000);

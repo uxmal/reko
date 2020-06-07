@@ -8,7 +8,7 @@
 void fn0000000000400480(void (* rdx)(), Eq_n qwArg00)
 {
 	__align((char *) fp + 8);
-	__libc_start_main(&globals->t400660, qwArg00, (char *) fp + 8, &globals->t400710, &globals->t400780, rdx, fp);
+	__libc_start_main(&g_t400660, qwArg00, (char *) fp + 8, &g_t400710, &g_t400780, rdx, fp);
 	__hlt();
 }
 

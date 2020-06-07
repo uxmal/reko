@@ -7,7 +7,7 @@
 // 004001BC: void _init()
 void _init()
 {
-	globals->t40072C();
-	globals->t409C10();
+	g_t40072C();
+	g_t409C10();
 }
 

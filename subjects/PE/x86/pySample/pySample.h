@@ -83,7 +83,7 @@ Eq_128: PyObject
 	T_128 (in ptrArg10 : (ptr32 PyObject))
 	T_133 (in 0<32> : word32)
 Eq_135: PyObject
-	T_135 (in Py_InitModule4("pySample", globals->methods, null, null, 0x3EF<32>) : (ptr32 PyObject))
+	T_135 (in Py_InitModule4("pySample", methods, null, null, 0x3EF<32>) : (ptr32 PyObject))
 Eq_137: (union "Eq_137" (_onexit_t u0) (HMODULE u1))
 	T_137 (in dwArg04 : Eq_137)
 	T_412 (in ebx_113 : Eq_137)
@@ -139,7 +139,7 @@ Eq_138: DWORD
 	T_255 (in 0x3E8<32> : word32)
 	T_287 (in edi_82 : DWORD)
 	T_290 (in Mem67[0x100033B0<p32>:word32] : word32)
-	T_291 (in _decode_pointer(globals->t100033B0) : (ptr32 void))
+	T_291 (in _decode_pointer(g_t100033B0) : (ptr32 void))
 	T_294 (in edi_82 - 4<32> : word32)
 	T_306 (in 0x1000209C<32> : word32)
 	T_336 (in Mem103[esp_102 + 0<32>:word32] : word32)
@@ -216,7 +216,7 @@ Eq_138: DWORD
 	T_707 (in 1<32> : word32)
 	T_729 (in eax_22 : Eq_138)
 	T_732 (in Mem7[0x100033B4<p32>:word32] : word32)
-	T_733 (in _decode_pointer(globals->t100033B4) : (ptr32 void))
+	T_733 (in _decode_pointer(g_t100033B4) : (ptr32 void))
 	T_736 (in Mem25[ebp_13 + -28<i32>:word32] : word32)
 	T_737 (in 0xFFFFFFFF<32> : word32)
 	T_742 (in ecx_35 : Eq_138)
@@ -273,11 +273,11 @@ Eq_146: LONG
 	T_188 (in Exchange : LONG)
 	T_189 (in Comperand : LONG)
 	T_191 (in 0<32> : word32)
-	T_192 (in InterlockedCompareExchange(&globals->t100033AC, edi_124, 0<32>) : LONG)
+	T_192 (in InterlockedCompareExchange(&g_t100033AC, edi_124, 0<32>) : LONG)
 	T_193 (in 0<32> : word32)
 	T_198 (in 1<32> : word32)
 	T_199 (in 0<32> : word32)
-	T_200 (in InterlockedCompareExchange(&globals->t100033AC, 1<32>, 0<32>) : LONG)
+	T_200 (in InterlockedCompareExchange(&g_t100033AC, 1<32>, 0<32>) : LONG)
 	T_201 (in 0<32> : word32)
 	T_253 (in 1<32> : word32)
 	T_260 (in 0<32> : word32)
@@ -286,7 +286,7 @@ Eq_146: LONG
 	T_280 (in Mem116[esp_110 + 0<32>:LONG] : LONG)
 	T_281 (in InterlockedExchange(esp_110->ptrFFFFFFFC, esp_110->t0000) : LONG)
 	T_307 (in 0<32> : word32)
-	T_367 (in InterlockedExchange(&globals->t100033AC, ebp_145) : LONG)
+	T_367 (in InterlockedExchange(&g_t100033AC, ebp_145) : LONG)
 Eq_178: (segment "Eq_178" (18 (ptr32 Eq_180) ptr0018))
 	T_178 (in fs : selector)
 Eq_180: (struct "Eq_180" (4 Eq_146 t0004))
@@ -487,7 +487,7 @@ Eq_988: (union "Eq_988" (ui32 u0) (ptr32 u1))
 	T_988 (in 0x10000000<p32> : ptr32)
 Eq_990: (struct "Eq_990" (24 uint32 dw0024))
 	T_990 (in eax_43 : (ptr32 Eq_990))
-	T_996 (in fn10001700(&globals->t10000000, eax_36 - 0x10000000<p32>, out edx_22) : word32)
+	T_996 (in fn10001700(&g_t10000000, eax_36 - 0x10000000<p32>, out edx_22) : word32)
 	T_997 (in 0<32> : word32)
 Eq_991: (fn (ptr32 Eq_990) ((ptr32 Eq_913), uint32, ptr32))
 	T_991 (in fn10001700 : ptr32)
@@ -1062,7 +1062,7 @@ T_134: (in 0x3EF<32> : word32)
   Class: Eq_129
   DataType: int32
   OrigDataType: int32
-T_135: (in Py_InitModule4("pySample", globals->methods, null, null, 0x3EF<32>) : (ptr32 PyObject))
+T_135: (in Py_InitModule4("pySample", methods, null, null, 0x3EF<32>) : (ptr32 PyObject))
   Class: Eq_135
   DataType: (ptr32 Eq_135)
   OrigDataType: (ptr32 PyObject)
@@ -1190,7 +1190,7 @@ T_166: (in 0<32> : word32)
   Class: Eq_165
   DataType: int32
   OrigDataType: int32
-T_167: (in globals->dw10003070 <= 0<32> : bool)
+T_167: (in g_dw10003070 <= 0<32> : bool)
   Class: Eq_167
   DataType: bool
   OrigDataType: bool
@@ -1210,7 +1210,7 @@ T_171: (in 1<32> : word32)
   Class: Eq_171
   DataType: word32
   OrigDataType: word32
-T_172: (in globals->dw10003070 - 1<32> : word32)
+T_172: (in g_dw10003070 - 1<32> : word32)
   Class: Eq_165
   DataType: int32
   OrigDataType: word32
@@ -1290,7 +1290,7 @@ T_191: (in 0<32> : word32)
   Class: Eq_146
   DataType: Eq_146
   OrigDataType: LONG
-T_192: (in InterlockedCompareExchange(&globals->t100033AC, edi_124, 0<32>) : LONG)
+T_192: (in InterlockedCompareExchange(&g_t100033AC, edi_124, 0<32>) : LONG)
   Class: Eq_146
   DataType: Eq_146
   OrigDataType: LONG
@@ -1322,7 +1322,7 @@ T_199: (in 0<32> : word32)
   Class: Eq_146
   DataType: Eq_146
   OrigDataType: LONG
-T_200: (in InterlockedCompareExchange(&globals->t100033AC, 1<32>, 0<32>) : LONG)
+T_200: (in InterlockedCompareExchange(&g_t100033AC, 1<32>, 0<32>) : LONG)
   Class: Eq_146
   DataType: Eq_146
   OrigDataType: LONG
@@ -1330,7 +1330,7 @@ T_201: (in 0<32> : word32)
   Class: Eq_146
   DataType: Eq_146
   OrigDataType: word32
-T_202: (in InterlockedCompareExchange(&globals->t100033AC, 1<32>, 0<32>) != 0<32> : bool)
+T_202: (in InterlockedCompareExchange(&g_t100033AC, 1<32>, 0<32>) != 0<32> : bool)
   Class: Eq_202
   DataType: bool
   OrigDataType: bool
@@ -1350,7 +1350,7 @@ T_206: (in 0<32> : word32)
   Class: Eq_205
   DataType: word32
   OrigDataType: word32
-T_207: (in globals->dw100033A8 == 0<32> : bool)
+T_207: (in g_dw100033A8 == 0<32> : bool)
   Class: Eq_207
   DataType: bool
   OrigDataType: bool
@@ -1386,7 +1386,7 @@ T_215: (in 2<32> : word32)
   Class: Eq_205
   DataType: word32
   OrigDataType: word32
-T_216: (in globals->dw100033A8 == 2<32> : bool)
+T_216: (in g_dw100033A8 == 2<32> : bool)
   Class: Eq_216
   DataType: bool
   OrigDataType: bool
@@ -1510,7 +1510,7 @@ T_246: (in 0x100020A8<32> : word32)
   Class: Eq_244
   DataType: (ptr32 Eq_244)
   OrigDataType: (ptr32 PVFV)
-T_247: (in _initterm_e(&globals->t100020A0, &globals->t100020A8) : int32)
+T_247: (in _initterm_e(&g_t100020A0, &g_t100020A8) : int32)
   Class: Eq_247
   DataType: int32
   OrigDataType: int32
@@ -1518,7 +1518,7 @@ T_248: (in 0<32> : word32)
   Class: Eq_247
   DataType: int32
   OrigDataType: word32
-T_249: (in _initterm_e(&globals->t100020A0, &globals->t100020A8) == 0<32> : bool)
+T_249: (in _initterm_e(&g_t100020A0, &g_t100020A8) == 0<32> : bool)
   Class: Eq_249
   DataType: bool
   OrigDataType: bool
@@ -1686,7 +1686,7 @@ T_290: (in Mem67[0x100033B0<p32>:word32] : word32)
   Class: Eq_138
   DataType: Eq_138
   OrigDataType: (ptr32 void)
-T_291: (in _decode_pointer(globals->t100033B0) : (ptr32 void))
+T_291: (in _decode_pointer(g_t100033B0) : (ptr32 void))
   Class: Eq_138
   DataType: Eq_138
   OrigDataType: (ptr32 void)
@@ -1730,7 +1730,7 @@ T_301: (in 0x1000209C<32> : word32)
   Class: Eq_299
   DataType: (ptr32 Eq_299)
   OrigDataType: (ptr32 PVFV)
-T_302: (in _initterm(&globals->t10002098, &globals->t1000209C) : void)
+T_302: (in _initterm(&g_t10002098, &g_t1000209C) : void)
   Class: Eq_302
   DataType: void
   OrigDataType: void
@@ -1978,7 +1978,7 @@ T_363: (in 0<32> : word32)
   Class: Eq_362
   DataType: (ptr32 code)
   OrigDataType: word32
-T_364: (in globals->ptr100033B8 == null : bool)
+T_364: (in g_ptr100033B8 == null : bool)
   Class: Eq_364
   DataType: bool
   OrigDataType: bool
@@ -1990,7 +1990,7 @@ T_366: (in 0x100033AC<p32> : ptr32)
   Class: Eq_264
   DataType: (ptr32 Eq_264)
   OrigDataType: (ptr32 LONG)
-T_367: (in InterlockedExchange(&globals->t100033AC, ebp_145) : LONG)
+T_367: (in InterlockedExchange(&g_t100033AC, ebp_145) : LONG)
   Class: Eq_146
   DataType: Eq_146
   OrigDataType: LONG
@@ -2006,7 +2006,7 @@ T_370: (in 1<32> : word32)
   Class: Eq_370
   DataType: word32
   OrigDataType: word32
-T_371: (in globals->dw10003070 + 1<32> : word32)
+T_371: (in g_dw10003070 + 1<32> : word32)
   Class: Eq_165
   DataType: int32
   OrigDataType: word32
@@ -2294,7 +2294,7 @@ T_442: (in 0<32> : word32)
   Class: Eq_165
   DataType: int32
   OrigDataType: word32
-T_443: (in globals->dw10003070 != 0<32> : bool)
+T_443: (in g_dw10003070 != 0<32> : bool)
   Class: Eq_443
   DataType: bool
   OrigDataType: bool
@@ -2434,7 +2434,7 @@ T_477: (in 0<32> : word32)
   Class: Eq_476
   DataType: word32
   OrigDataType: word32
-T_478: (in globals->dw100020CC == 0<32> : bool)
+T_478: (in g_dw100020CC == 0<32> : bool)
   Class: Eq_478
   DataType: bool
   OrigDataType: bool
@@ -2986,7 +2986,7 @@ T_615: (in 0<32> : word32)
   Class: Eq_476
   DataType: word32
   OrigDataType: word32
-T_616: (in globals->dw100020CC == 0<32> : bool)
+T_616: (in g_dw100020CC == 0<32> : bool)
   Class: Eq_616
   DataType: bool
   OrigDataType: bool
@@ -3258,7 +3258,7 @@ T_683: (in 0<32> : word32)
   Class: Eq_476
   DataType: word32
   OrigDataType: word32
-T_684: (in globals->dw100020CC == 0<32> : bool)
+T_684: (in g_dw100020CC == 0<32> : bool)
   Class: Eq_684
   DataType: bool
   OrigDataType: bool
@@ -3454,7 +3454,7 @@ T_732: (in Mem7[0x100033B4<p32>:word32] : word32)
   Class: Eq_138
   DataType: Eq_138
   OrigDataType: (ptr32 void)
-T_733: (in _decode_pointer(globals->t100033B4) : (ptr32 void))
+T_733: (in _decode_pointer(g_t100033B4) : (ptr32 void))
   Class: Eq_138
   DataType: Eq_138
   OrigDataType: (ptr32 void)
@@ -4058,7 +4058,7 @@ T_883: (in 0x100021D8<p32> : ptr32)
   Class: Eq_873
   DataType: (ptr32 word32)
   OrigDataType: ptr32
-T_884: (in esi_13 < globals->a100021D8 : bool)
+T_884: (in esi_13 < g_a100021D8 : bool)
   Class: Eq_884
   DataType: bool
   OrigDataType: bool
@@ -4426,7 +4426,7 @@ T_975: (in 0x10000000<p32> : ptr32)
   Class: Eq_888
   DataType: (ptr32 Eq_888)
   OrigDataType: ptr32
-T_976: (in fn100016D0(&globals->t10000000) : word32)
+T_976: (in fn100016D0(&g_t10000000) : word32)
   Class: Eq_976
   DataType: word32
   OrigDataType: word32
@@ -4434,7 +4434,7 @@ T_977: (in 0<32> : word32)
   Class: Eq_976
   DataType: word32
   OrigDataType: word32
-T_978: (in fn100016D0(&globals->t10000000) == 0<32> : bool)
+T_978: (in fn100016D0(&g_t10000000) == 0<32> : bool)
   Class: Eq_978
   DataType: bool
   OrigDataType: bool
@@ -4506,7 +4506,7 @@ T_995: (in out edx_22 : ptr32)
   Class: Eq_915
   DataType: ptr32
   OrigDataType: ptr32
-T_996: (in fn10001700(&globals->t10000000, eax_36 - 0x10000000<p32>, out edx_22) : word32)
+T_996: (in fn10001700(&g_t10000000, eax_36 - 0x10000000<p32>, out edx_22) : word32)
   Class: Eq_990
   DataType: (ptr32 Eq_990)
   OrigDataType: word32
@@ -4606,7 +4606,7 @@ T_1020: (in 0<32> : word32)
   Class: Eq_476
   DataType: word32
   OrigDataType: word32
-T_1021: (in globals->dw100020CC != 0<32> : bool)
+T_1021: (in g_dw100020CC != 0<32> : bool)
   Class: Eq_1021
   DataType: bool
   OrigDataType: bool
@@ -4702,7 +4702,7 @@ T_1044: (in fp + 8<32> : word32)
   Class: Eq_1044
   DataType: ptr32
   OrigDataType: ptr32
-T_1045: (in globals->dw10003000 ^ fp + 8<32> : word32)
+T_1045: (in g_dw10003000 ^ fp + 8<32> : word32)
   Class: Eq_1045
   DataType: ui32
   OrigDataType: ui32

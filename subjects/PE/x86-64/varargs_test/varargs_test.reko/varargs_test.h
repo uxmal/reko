@@ -216,7 +216,7 @@ Eq_436: LPTOP_LEVEL_EXCEPTION_FILTER
 	T_997 (in 0<u64> : uint64)
 	T_998 (in SetUnhandledExceptionFilter(null) : LPTOP_LEVEL_EXCEPTION_FILTER)
 	T_1063 (in 0000000140001B24 : ptr64)
-	T_1064 (in SetUnhandledExceptionFilter(&globals->t40001B24) : LPTOP_LEVEL_EXCEPTION_FILTER)
+	T_1064 (in SetUnhandledExceptionFilter(&g_t40001B24) : LPTOP_LEVEL_EXCEPTION_FILTER)
 Eq_440: (fn Eq_443 ((ptr64 Eq_432)))
 	T_440 (in UnhandledExceptionFilter : ptr64)
 	T_441 (in signature of UnhandledExceptionFilter : void)
@@ -488,7 +488,7 @@ T_8: (in fp - 0xC8<64> : word64)
   Class: Eq_8
   DataType: ptr64
   OrigDataType: ptr64
-T_9: (in globals->qw40003000 ^ fp - 0xC8<64> : word64)
+T_9: (in g_qw40003000 ^ fp - 0xC8<64> : word64)
   Class: Eq_3
   DataType: ui64
   OrigDataType: ui64
@@ -692,7 +692,7 @@ T_59: (in Mem0[0x0000000140003000<p64>:word64] : word64)
   Class: Eq_5
   DataType: ui64
   OrigDataType: word64
-T_60: (in rcx != globals->qw40003000 : bool)
+T_60: (in rcx != g_qw40003000 : bool)
   Class: Eq_60
   DataType: bool
   OrigDataType: bool
@@ -1268,7 +1268,7 @@ T_203: (in 0000000140001ABC : ptr64)
   Class: Eq_202
   DataType: Eq_202
   OrigDataType: _HANDLE_MATH_ERROR
-T_204: (in __setusermatherr(&globals->t40001ABC) : void)
+T_204: (in __setusermatherr(&g_t40001ABC) : void)
   Class: Eq_204
   DataType: void
   OrigDataType: void
@@ -1608,7 +1608,7 @@ T_288: (in 00000001400021D0 : ptr64)
   Class: Eq_286
   DataType: (ptr64 Eq_286)
   OrigDataType: (ptr64 PVFV)
-T_289: (in _initterm_e(&globals->t400021B8, &globals->t400021D0) : int32)
+T_289: (in _initterm_e(&g_t400021B8, &g_t400021D0) : int32)
   Class: Eq_282
   DataType: int32
   OrigDataType: int32
@@ -1656,7 +1656,7 @@ T_300: (in 00000001400021B0 : ptr64)
   Class: Eq_298
   DataType: (ptr64 Eq_298)
   OrigDataType: (ptr64 PVFV)
-T_301: (in _initterm(&globals->t400021A0, &globals->t400021B0) : void)
+T_301: (in _initterm(&g_t400021A0, &g_t400021B0) : void)
   Class: Eq_301
   DataType: void
   OrigDataType: void
@@ -2344,7 +2344,7 @@ T_472: (in qwLoc38 : word64)
   Class: Eq_470
   DataType: word64
   OrigDataType: word64
-T_473: (in fn0000000140001550(&globals->t400030E0, qwLoc38) : void)
+T_473: (in fn0000000140001550(&g_t400030E0, qwLoc38) : void)
   Class: Eq_473
   DataType: void
   OrigDataType: void
@@ -2460,7 +2460,7 @@ T_501: (in 0000000140002200 : ptr64)
   Class: Eq_432
   DataType: (ptr64 Eq_432)
   OrigDataType: ptr64
-T_502: (in fn0000000140001448(&globals->t40002200) : void)
+T_502: (in fn0000000140001448(&g_t40002200) : void)
   Class: Eq_502
   DataType: void
   OrigDataType: void
@@ -2728,7 +2728,7 @@ T_568: (in out rax_24 : word64)
   Class: Eq_564
   DataType: word64
   OrigDataType: word64
-T_569: (in __cmpxchg(globals->qw400035B8, rcx_17, 0<u64>, out rax_24) : bool)
+T_569: (in __cmpxchg(g_qw400035B8, rcx_17, 0<u64>, out rax_24) : bool)
   Class: Eq_569
   DataType: bool
   OrigDataType: bool
@@ -3264,7 +3264,7 @@ T_702: (in 0x5A4D<16> : word16)
   Class: Eq_701
   DataType: word16
   OrigDataType: word16
-T_703: (in globals->w40000000 != 0x5A4D<16> : bool)
+T_703: (in g_w40000000 != 0x5A4D<16> : bool)
   Class: Eq_703
   DataType: bool
   OrigDataType: bool
@@ -3660,7 +3660,7 @@ T_801: (in 0<8> : byte)
   Class: Eq_571
   DataType: byte
   OrigDataType: byte
-T_802: (in globals->b400035F0 == 0<8> : bool)
+T_802: (in g_b400035F0 == 0<8> : bool)
   Class: Eq_802
   DataType: bool
   OrigDataType: bool
@@ -3724,7 +3724,7 @@ T_817: (in Mem5[0x00000001400035C0<p64>:word64] : word64)
   Class: Eq_647
   DataType: Eq_647
   OrigDataType: word64
-T_818: (in rdx_7 ^ globals->t400035C0 : word64)
+T_818: (in rdx_7 ^ g_t400035C0 : word64)
   Class: Eq_61
   DataType: ui64
   OrigDataType: ui64
@@ -3756,7 +3756,7 @@ T_825: (in SLICE((uint64) (SLICE((uint64) SLICE(rdx_7, word32, 0), word32, 0) & 
   Class: Eq_76
   DataType: byte
   OrigDataType: byte
-T_826: (in __ror(rdx_7 ^ globals->t400035C0, (byte) (uint64) ((word32) (uint64) (word32) rdx_7 & 0x3F<32>)) : word64)
+T_826: (in __ror(rdx_7 ^ g_t400035C0, (byte) (uint64) ((word32) (uint64) (word32) rdx_7 & 0x3F<32>)) : word64)
   Class: Eq_5
   DataType: ui64
   OrigDataType: word64
@@ -3764,7 +3764,7 @@ T_827: (in 0xFFFFFFFFFFFFFFFF<64> : word64)
   Class: Eq_5
   DataType: ui64
   OrigDataType: word64
-T_828: (in __ror(rdx_7 ^ globals->t400035C0, (byte) (uint64) ((word32) (uint64) (word32) rdx_7 & 0x3F<32>)) != 0xFFFFFFFFFFFFFFFF<64> : bool)
+T_828: (in __ror(rdx_7 ^ g_t400035C0, (byte) (uint64) ((word32) (uint64) (word32) rdx_7 & 0x3F<32>)) != 0xFFFFFFFFFFFFFFFF<64> : bool)
   Class: Eq_828
   DataType: bool
   OrigDataType: bool
@@ -4080,7 +4080,7 @@ T_906: (in 0000000140003600 : ptr64)
   Class: Eq_905
   DataType: Eq_905
   OrigDataType: PSLIST_HEADER
-T_907: (in InitializeSListHead(&globals->u40003600) : void)
+T_907: (in InitializeSListHead(&g_u40003600) : void)
   Class: Eq_907
   DataType: void
   OrigDataType: void
@@ -4204,7 +4204,7 @@ T_937: (in 0<32> : word32)
   Class: Eq_936
   DataType: word32
   OrigDataType: word32
-T_938: (in globals->dw40003014 == 0<32> : bool)
+T_938: (in g_dw40003014 == 0<32> : bool)
   Class: Eq_938
   DataType: bool
   OrigDataType: bool
@@ -4268,7 +4268,7 @@ T_953: (in 0<32> : word32)
   Class: Eq_953
   DataType: ui32
   OrigDataType: ui32
-T_954: (in globals->dw40003610 & 0<32> : word32)
+T_954: (in g_dw40003610 & 0<32> : word32)
   Class: Eq_952
   DataType: ui32
   OrigDataType: ui32
@@ -4544,7 +4544,7 @@ T_1022: (in SLICE(rax_132, word32, 0) : word32)
   Class: Eq_1022
   DataType: ui32
   OrigDataType: ui32
-T_1023: (in globals->dw40003610 & (word32) rax_132 : word32)
+T_1023: (in g_dw40003610 & (word32) rax_132 : word32)
   Class: Eq_952
   DataType: ui32
   OrigDataType: ui32
@@ -4708,7 +4708,7 @@ T_1063: (in 0000000140001B24 : ptr64)
   Class: Eq_436
   DataType: Eq_436
   OrigDataType: LPTOP_LEVEL_EXCEPTION_FILTER
-T_1064: (in SetUnhandledExceptionFilter(&globals->t40001B24) : LPTOP_LEVEL_EXCEPTION_FILTER)
+T_1064: (in SetUnhandledExceptionFilter(&g_t40001B24) : LPTOP_LEVEL_EXCEPTION_FILTER)
   Class: Eq_436
   DataType: Eq_436
   OrigDataType: LPTOP_LEVEL_EXCEPTION_FILTER
@@ -4852,7 +4852,7 @@ T_1099: (in 0000000140002680 : ptr64)
   Class: Eq_1097
   DataType: (ptr64 word64)
   OrigDataType: ptr64
-T_1100: (in rbx_12 < &globals->qw40002680 : bool)
+T_1100: (in rbx_12 < &g_qw40002680 : bool)
   Class: Eq_1100
   DataType: bool
   OrigDataType: bool
@@ -4912,7 +4912,7 @@ T_1114: (in 0000000140002690 : ptr64)
   Class: Eq_1112
   DataType: (ptr64 word64)
   OrigDataType: ptr64
-T_1115: (in rbx_12 < &globals->qw40002690 : bool)
+T_1115: (in rbx_12 < &g_qw40002690 : bool)
   Class: Eq_1115
   DataType: bool
   OrigDataType: bool
@@ -5368,7 +5368,7 @@ T_1228: (in 0xFFFFFFFFFFFFFFFF<64> : word64)
   Class: Eq_1228
   DataType: ui64
   OrigDataType: ui64
-T_1229: (in globals->qw40003020 | 0xFFFFFFFFFFFFFFFF<64> : word64)
+T_1229: (in g_qw40003020 | 0xFFFFFFFFFFFFFFFF<64> : word64)
   Class: Eq_1227
   DataType: ui64
   OrigDataType: ui64
@@ -5808,7 +5808,7 @@ T_1338: (in 8<32> : word32)
   Class: Eq_1338
   DataType: ui32
   OrigDataType: ui32
-T_1339: (in (word32) (uint64) globals->dw4000301C | 8<32> : word32)
+T_1339: (in (word32) (uint64) g_dw4000301C | 8<32> : word32)
   Class: Eq_1339
   DataType: ui32
   OrigDataType: ui32
@@ -5908,7 +5908,7 @@ T_1363: (in 0<32> : word32)
   Class: Eq_1362
   DataType: word32
   OrigDataType: word32
-T_1364: (in globals->dw40003030 != 0<32> : bool)
+T_1364: (in g_dw40003030 != 0<32> : bool)
   Class: Eq_1364
   DataType: bool
   OrigDataType: bool

@@ -51,9 +51,9 @@ void fn0001116C(struct Eq_n * r2, word32 ** r4, word32 dwArg00)
 //      Win32CrtStartup
 void fn000111C4()
 {
-	ui32 r8_n = globals->dw13030;
+	ui32 r8_n = g_dw13030;
 	if (r8_n != 0x00 && r8_n != 0xB064)
-		globals->dw13034 = ~r8_n;
+		g_dw13034 = ~r8_n;
 	else
 	{
 		uint32 r2_n;
@@ -62,8 +62,8 @@ void fn000111C4()
 		ui32 dwLoc0C_n = r8_n;
 		if (r8_n == 0x00)
 			dwLoc0C_n = 0xB064;
-		globals->dw13030 = dwLoc0C_n;
-		globals->dw13034 = ~dwLoc0C_n;
+		g_dw13030 = dwLoc0C_n;
+		g_dw13034 = ~dwLoc0C_n;
 	}
 }
 
@@ -83,33 +83,33 @@ void fn00011278(Eq_n r4)
 //      fn00011434
 void fn000112A8(Eq_n r4, int32 r5, int32 r6)
 {
-	globals->b13038 = (byte) (r6 << 0x18 >> 0x18);
+	g_b13038 = (byte) (r6 << 0x18 >> 0x18);
 	if (r5 != 0x00)
 	{
-		fn0001147C(&globals->dw12018, &globals->dw1201C);
+		fn0001147C(&g_dw12018, &g_dw1201C);
 		if (r6 != 0x00)
 			return;
 		TerminateProcess(fn00011460(), r4);
 	}
-	else if (globals->t13040 == 0x00)
+	else if (g_t13040 == 0x00)
 	{
 l00011374:
-		fn0001147C(&globals->dw12010, &globals->dw12014);
+		fn0001147C(&g_dw12010, &g_dw12014);
 	}
 	else
 	{
 		do
 		{
-			globals->t1303C = (word32) globals->t1303C - 4;
-			if ((word32) (globals->t1303C < globals->t13040) != 0x00)
+			g_t1303C = (word32) g_t1303C - 4;
+			if ((word32) (g_t1303C < g_t13040) != 0x00)
 			{
-				free(globals->t13040);
-				globals->t1303C.u0 = 0x00;
-				globals->t13040 = globals->t1303C;
+				free(g_t13040);
+				g_t1303C.u0 = 0x00;
+				g_t13040 = g_t1303C;
 				goto l00011374;
 			}
-		} while (*globals->t1303C == null);
-		<anonymous> * r8_n = *globals->t1303C;
+		} while (*g_t1303C == null);
+		<anonymous> * r8_n = *g_t1303C;
 		r8_n();
 	}
 }
@@ -160,8 +160,8 @@ void fn0001147C(word32 * r4, word32 * r5)
 //      fn000110E8
 void fn000114E4()
 {
-	fn0001147C(&globals->dw12008, &globals->dw1200C);
-	fn0001147C(&globals->dw12000, &globals->dw12004);
+	fn0001147C(&g_dw12008, &g_dw1200C);
+	fn0001147C(&g_dw12000, &g_dw12004);
 }
 
 // 0001152C: Register word32 fn0001152C()
@@ -169,9 +169,9 @@ void fn000114E4()
 //      fn000116FC
 word32 fn0001152C()
 {
-	Eq_n r8_n = globals->t13040;
+	Eq_n r8_n = g_t13040;
 	struct Eq_n * sp_n = fp + -56;
-	if (globals->t1303C - r8_n >= 0x00)
+	if (g_t1303C - r8_n >= 0x00)
 	{
 		if (r8_n != 0x00)
 		{
@@ -203,8 +203,8 @@ word32 fn0001152C()
 		}
 		*sp_n->t0028 = sp_n->ptr0038;
 		sp_n->t0028 = (word32) sp_n->t0028 + 4;
-		globals->t1303C = sp_n->t0028;
-		globals->t13040 = sp_n->t001C;
+		g_t1303C = sp_n->t0028;
+		g_t13040 = sp_n->t001C;
 		sp_n->ptr002C = sp_n->ptr0038;
 		return dwLoc0C;
 	}

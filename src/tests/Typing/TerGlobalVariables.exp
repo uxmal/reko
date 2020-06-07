@@ -19,9 +19,9 @@ GlobalVariablesMock_entry:
 	// succ:  l1
 l1:
 	r63 = fp
-	real32 * ptr = &globals->r10000004
+	real32 * ptr = &g_r10000004
 	*ptr = 0.75F
-	globals->r10000000 = 0.5F
+	g_r10000000 = 0.5F
 GlobalVariablesMock_exit:
 
 // Equivalence classes ////////////

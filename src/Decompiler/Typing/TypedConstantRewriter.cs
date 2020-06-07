@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Structure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,7 @@ namespace Reko.Typing
 		private bool dereferenced;
         private Dictionary<ushort, Identifier> mpSelectorToSegId;
         private DecompilerEventListener eventListener;
+        private FictitiousGlobalEliminator fge;
 
         public TypedConstantRewriter(Program program, DecompilerEventListener eventListener)
 		{
@@ -61,6 +63,7 @@ namespace Reko.Typing
             {
                 this.mpSelectorToSegId = new Dictionary<ushort, Identifier>();
             }
+            this.fge = new FictitiousGlobalEliminator(program);
         }
 
         /// <summary>
@@ -284,6 +287,7 @@ namespace Reko.Typing
                     return ReadNullTerminatedString(c, charType);
                 }
                 e = RewriteGlobalFieldAccess(dt, c.ToInt32());
+                e = e.Accept(fge);
             }
 			return e;
 		}

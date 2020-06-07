@@ -140,13 +140,13 @@ Eq_599: (union "Eq_599" (uint64 u0) (size_t u1))
 	T_600 (in count : size_t)
 	T_603 (in 1<u64> : uint64)
 	T_604 (in 0x27<u64> : uint64)
-	T_607 (in fwrite(&globals->v401A70, 1<u64>, 0x27<u64>, globals->ptr602100) : size_t)
+	T_607 (in fwrite(&g_v401A70, 1<u64>, 0x27<u64>, g_ptr602100) : size_t)
 	T_660 (in 1<u64> : uint64)
 	T_661 (in 0x2E<u64> : uint64)
-	T_664 (in fwrite(&globals->v401A18, 1<u64>, 0x2E<u64>, globals->ptr602100) : size_t)
+	T_664 (in fwrite(&g_v401A18, 1<u64>, 0x2E<u64>, g_ptr602100) : size_t)
 	T_675 (in 1<u64> : uint64)
 	T_676 (in 0x2C<u64> : uint64)
-	T_679 (in fwrite(&globals->v4019E8, 1<u64>, 0x2C<u64>, globals->ptr602100) : size_t)
+	T_679 (in fwrite(&g_v4019E8, 1<u64>, 0x2C<u64>, g_ptr602100) : size_t)
 Eq_614: (fn int32 ((ptr64 char)))
 	T_614 (in atol : ptr64)
 	T_615 (in signature of atol : void)
@@ -310,7 +310,7 @@ T_29: (in 0x4017F0<64> : word64)
   Class: Eq_23
   DataType: (ptr64 Eq_23)
   OrigDataType: (ptr64 (fn void ()))
-T_30: (in __libc_start_main(&globals->t4012F9, qwArg00, (char *) fp + 8<i32>, &globals->t401780, &globals->t4017F0, rdx, fp) : int32)
+T_30: (in __libc_start_main(&g_t4012F9, qwArg00, (char *) fp + 8<i32>, &g_t401780, &g_t4017F0, rdx, fp) : int32)
   Class: Eq_30
   DataType: int32
   OrigDataType: int32
@@ -386,7 +386,7 @@ T_48: (in 0<8> : byte)
   Class: Eq_47
   DataType: byte
   OrigDataType: byte
-T_49: (in globals->b602108 != 0<8> : bool)
+T_49: (in g_b602108 != 0<8> : bool)
   Class: Eq_49
   DataType: bool
   OrigDataType: bool
@@ -426,7 +426,7 @@ T_58: (in 0<64> : word64)
   Class: Eq_57
   DataType: word64
   OrigDataType: word64
-T_59: (in globals->qw601E10 != 0<64> : bool)
+T_59: (in g_qw601E10 != 0<64> : bool)
   Class: Eq_59
   DataType: bool
   OrigDataType: bool
@@ -718,7 +718,7 @@ T_131: (in (uint64) ecx : uint64)
   Class: Eq_127
   DataType: uint64
   OrigDataType: uint64
-T_132: (in fprintf(globals->ptr602100, "pngpixel: invalid bit depth %u\n", (uint64) ecx) : int32)
+T_132: (in fprintf(g_ptr602100, "pngpixel: invalid bit depth %u\n", (uint64) ecx) : int32)
   Class: Eq_132
   DataType: int32
   OrigDataType: int32
@@ -2618,7 +2618,7 @@ T_606: (in Mem17[0x0000000000602100<p64>:word64] : word64)
   Class: Eq_125
   DataType: (ptr64 Eq_125)
   OrigDataType: (ptr64 FILE)
-T_607: (in fwrite(&globals->v401A70, 1<u64>, 0x27<u64>, globals->ptr602100) : size_t)
+T_607: (in fwrite(&g_v401A70, 1<u64>, 0x27<u64>, g_ptr602100) : size_t)
   Class: Eq_599
   DataType: Eq_599
   OrigDataType: size_t
@@ -2786,7 +2786,7 @@ T_648: (in Mem49[rsi + 0x18<64>:word64] : word64)
   Class: Eq_631
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_649: (in fprintf(globals->ptr602100, "pngpixel: %s: could not open file\n", rsi->ptr0018) : int32)
+T_649: (in fprintf(g_ptr602100, "pngpixel: %s: could not open file\n", rsi->ptr0018) : int32)
   Class: Eq_649
   DataType: int32
   OrigDataType: int32
@@ -2846,7 +2846,7 @@ T_663: (in Mem73[0x0000000000602100<p64>:word64] : word64)
   Class: Eq_125
   DataType: (ptr64 Eq_125)
   OrigDataType: (ptr64 FILE)
-T_664: (in fwrite(&globals->v401A18, 1<u64>, 0x2E<u64>, globals->ptr602100) : size_t)
+T_664: (in fwrite(&g_v401A18, 1<u64>, 0x2E<u64>, g_ptr602100) : size_t)
   Class: Eq_599
   DataType: Eq_599
   OrigDataType: size_t
@@ -2906,7 +2906,7 @@ T_678: (in Mem192[0x0000000000602100<p64>:word64] : word64)
   Class: Eq_125
   DataType: (ptr64 Eq_125)
   OrigDataType: (ptr64 FILE)
-T_679: (in fwrite(&globals->v4019E8, 1<u64>, 0x2C<u64>, globals->ptr602100) : size_t)
+T_679: (in fwrite(&g_v4019E8, 1<u64>, 0x2C<u64>, g_ptr602100) : size_t)
   Class: Eq_599
   DataType: Eq_599
   OrigDataType: size_t

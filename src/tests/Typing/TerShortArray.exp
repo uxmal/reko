@@ -15,7 +15,7 @@ void proc1(int16 dwArg04[], ui32 dwArg08)
 proc1_entry:
 	// succ:  l1
 l1:
-	globals->dw1234 = (int32) dwArg04[dwArg08]
+	g_dw1234 = (int32) dwArg04[dwArg08]
 proc1_exit:
 
 // Equivalence classes ////////////

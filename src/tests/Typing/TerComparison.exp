@@ -15,7 +15,7 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	f = p->ptr0004 < &globals->t1028
+	f = p->ptr0004 < &g_t1028
 proc1_exit:
 
 // Equivalence classes ////////////
@@ -51,7 +51,7 @@ T_6: (in 0x1028<32> : word32)
   Class: Eq_5
   DataType: (ptr32 Eq_5)
   OrigDataType: int32
-T_7: (in p->ptr0004 < &globals->t1028 : bool)
+T_7: (in p->ptr0004 < &g_t1028 : bool)
   Class: Eq_7
   DataType: bool
   OrigDataType: bool

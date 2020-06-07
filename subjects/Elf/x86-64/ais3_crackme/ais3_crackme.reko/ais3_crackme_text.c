@@ -8,7 +8,7 @@
 void _start(void (* rdx)(), Eq_n qwArg00)
 {
 	__align((char *) fp + 8);
-	__libc_start_main(&globals->t4005C5, qwArg00, (char *) fp + 8, &globals->t400620, &globals->t4006B0, rdx, fp);
+	__libc_start_main(&g_t4005C5, qwArg00, (char *) fp + 8, &g_t400620, &g_t4006B0, rdx, fp);
 	__hlt();
 }
 
@@ -44,17 +44,17 @@ void register_tm_clones()
 // 00000000004004D0: void __do_global_dtors_aux()
 void __do_global_dtors_aux()
 {
-	if (globals->b601038 == 0x00)
+	if (g_b601038 == 0x00)
 	{
 		deregister_tm_clones();
-		globals->b601038 = 0x01;
+		g_b601038 = 0x01;
 	}
 }
 
 // 00000000004004F0: void frame_dummy()
 void frame_dummy()
 {
-	if (globals->qw600E08 == 0x00 || 0x00 == 0x00)
+	if (g_qw600E08 == 0x00 || 0x00 == 0x00)
 		register_tm_clones();
 	else
 	{
@@ -111,7 +111,7 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 		Eq_n rbx_n = 0x00;
 		do
 		{
-			(*((char *) globals->a600DF8 + rbx_n * 0x08))();
+			(*((char *) g_a600DF8 + rbx_n * 0x08))();
 			rbx_n = (word64) rbx_n.u1 + 1;
 		} while (rbx_n != rbp_n >> 0x03);
 	}

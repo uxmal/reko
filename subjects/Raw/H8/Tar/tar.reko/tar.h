@@ -9767,7 +9767,7 @@ T_2022: (in Mem67[0x9E40<p16>:word16] : word16)
   Class: Eq_1339
   DataType: word16
   OrigDataType: word16
-T_2023: (in r4_69 == globals->wFFFF9E40 : bool)
+T_2023: (in r4_69 == g_wFFFF9E40 : bool)
   Class: Eq_2023
   DataType: bool
   OrigDataType: bool
@@ -13067,7 +13067,7 @@ T_2847: (in Mem17[0x9E36<p16>:word16] : word16)
   Class: Eq_8
   DataType: Eq_8
   OrigDataType: word16
-T_2848: (in globals->uFFFF9E36 != r1 : bool)
+T_2848: (in g_uFFFF9E36 != r1 : bool)
   Class: Eq_2848
   DataType: bool
   OrigDataType: bool
@@ -13459,7 +13459,7 @@ T_2945: (in Mem88[0x9E36<p16>:word16] : word16)
   Class: Eq_8
   DataType: Eq_8
   OrigDataType: ci16
-T_2946: (in globals->uFFFF9E36 < r5_84 : bool)
+T_2946: (in g_uFFFF9E36 < r5_84 : bool)
   Class: Eq_2946
   DataType: bool
   OrigDataType: bool
@@ -13639,7 +13639,7 @@ T_2990: (in Mem362[0x9E34<p16>:word16] : word16)
   Class: Eq_2478
   DataType: int16
   OrigDataType: ci16
-T_2991: (in globals->wFFFF9E34 < r5_357 : bool)
+T_2991: (in g_wFFFF9E34 < r5_357 : bool)
   Class: Eq_2991
   DataType: bool
   OrigDataType: bool
@@ -13751,7 +13751,7 @@ T_3018: (in Mem209[0x9E36<p16>:word16] : word16)
   Class: Eq_8
   DataType: Eq_8
   OrigDataType: ci16
-T_3019: (in globals->uFFFF9E36 > r5_205 : bool)
+T_3019: (in g_uFFFF9E36 > r5_205 : bool)
   Class: Eq_3019
   DataType: bool
   OrigDataType: bool
@@ -13847,7 +13847,7 @@ T_3042: (in Mem518[0x9E34<p16>:word16] : word16)
   Class: Eq_2478
   DataType: int16
   OrigDataType: ci16
-T_3043: (in globals->wFFFF9E34 > r5_513 : bool)
+T_3043: (in g_wFFFF9E34 > r5_513 : bool)
   Class: Eq_3043
   DataType: bool
   OrigDataType: bool
@@ -14531,7 +14531,7 @@ T_3213: (in Mem627[sp_550 + 8<i32>:word16] : word16)
   Class: Eq_2478
   DataType: int16
   OrigDataType: ci16
-T_3214: (in globals->wFFFF9E34 <= *((word32) sp_550 + 8<i32>) : bool)
+T_3214: (in g_wFFFF9E34 <= *((word32) sp_550 + 8<i32>) : bool)
   Class: Eq_3214
   DataType: bool
   OrigDataType: bool
@@ -14647,7 +14647,7 @@ T_3242: (in Mem318[sp_241 + 6<i32>:word16] : word16)
   Class: Eq_8
   DataType: Eq_8
   OrigDataType: ci16
-T_3243: (in globals->uFFFF9E36 <= *((word32) sp_241 + 6<i32>) : bool)
+T_3243: (in g_uFFFF9E36 <= *((word32) sp_241 + 6<i32>) : bool)
   Class: Eq_3243
   DataType: bool
   OrigDataType: bool
@@ -14991,7 +14991,7 @@ T_3328: (in Mem248[0x9E3A<p16>:word16] : word16)
   Class: Eq_2266
   DataType: int16
   OrigDataType: word16
-T_3329: (in (word16) er0_236 - globals->wFFFF9E3A : word16)
+T_3329: (in (word16) er0_236 - g_wFFFF9E3A : word16)
   Class: Eq_3081
   DataType: ci16
   OrigDataType: word16
@@ -15059,7 +15059,7 @@ T_3345: (in Mem557[0x9E38<p16>:word16] : word16)
   Class: Eq_2266
   DataType: int16
   OrigDataType: word16
-T_3346: (in (word16) er0_545 - globals->wFFFF9E38 : word16)
+T_3346: (in (word16) er0_545 - g_wFFFF9E38 : word16)
   Class: Eq_3124
   DataType: ci16
   OrigDataType: word16
@@ -15099,7 +15099,7 @@ T_3355: (in Mem198[sp_121 + 6<i32>:word16] : word16)
   Class: Eq_8
   DataType: Eq_8
   OrigDataType: ci16
-T_3356: (in globals->uFFFF9E36 >= *((word32) sp_121 + 6<i32>) : bool)
+T_3356: (in g_uFFFF9E36 >= *((word32) sp_121 + 6<i32>) : bool)
   Class: Eq_3356
   DataType: bool
   OrigDataType: bool
@@ -15219,7 +15219,7 @@ T_3385: (in Mem506[sp_429 + 8<i32>:word16] : word16)
   Class: Eq_2478
   DataType: int16
   OrigDataType: ci16
-T_3386: (in globals->wFFFF9E34 >= *((word32) sp_429 + 8<i32>) : bool)
+T_3386: (in g_wFFFF9E34 >= *((word32) sp_429 + 8<i32>) : bool)
   Class: Eq_3386
   DataType: bool
   OrigDataType: bool
@@ -15363,7 +15363,7 @@ T_3421: (in Mem128[0x9E3A<p16>:word16] : word16)
   Class: Eq_2266
   DataType: int16
   OrigDataType: word16
-T_3422: (in (word16) er0_116 - globals->wFFFF9E3A : word16)
+T_3422: (in (word16) er0_116 - g_wFFFF9E3A : word16)
   Class: Eq_3269
   DataType: ci16
   OrigDataType: word16
@@ -15431,7 +15431,7 @@ T_3438: (in Mem436[0x9E38<p16>:word16] : word16)
   Class: Eq_2266
   DataType: int16
   OrigDataType: word16
-T_3439: (in (word16) er0_424 - globals->wFFFF9E38 : word16)
+T_3439: (in (word16) er0_424 - g_wFFFF9E38 : word16)
   Class: Eq_3167
   DataType: ci16
   OrigDataType: word16
@@ -17879,7 +17879,7 @@ T_4050: (in Mem607[0x9E3E<p16>:word16] : word16)
   Class: Eq_2266
   DataType: int16
   OrigDataType: ci16
-T_4051: (in r0_609 <= globals->wFFFF9E3E : bool)
+T_4051: (in r0_609 <= g_wFFFF9E3E : bool)
   Class: Eq_4051
   DataType: bool
   OrigDataType: bool
@@ -18743,7 +18743,7 @@ T_4266: (in Mem849[0x9E3E<p16>:word16] : word16)
   Class: Eq_2266
   DataType: int16
   OrigDataType: ci16
-T_4267: (in r0_851 <= globals->wFFFF9E3E : bool)
+T_4267: (in r0_851 <= g_wFFFF9E3E : bool)
   Class: Eq_4267
   DataType: bool
   OrigDataType: bool
@@ -19627,7 +19627,7 @@ T_4487: (in Mem857[0x9E3C<p16>:word16] : word16)
   Class: Eq_2266
   DataType: int16
   OrigDataType: ci16
-T_4488: (in r0_851 >= globals->wFFFF9E3C : bool)
+T_4488: (in r0_851 >= g_wFFFF9E3C : bool)
   Class: Eq_4488
   DataType: bool
   OrigDataType: bool
@@ -19655,7 +19655,7 @@ T_4494: (in Mem615[0x9E3C<p16>:word16] : word16)
   Class: Eq_2266
   DataType: int16
   OrigDataType: ci16
-T_4495: (in r0_609 >= globals->wFFFF9E3C : bool)
+T_4495: (in r0_609 >= g_wFFFF9E3C : bool)
   Class: Eq_4495
   DataType: bool
   OrigDataType: bool
@@ -20379,7 +20379,7 @@ T_4675: (in Mem109[0x9E3E<p16>:word16] : word16)
   Class: Eq_2266
   DataType: int16
   OrigDataType: ci16
-T_4676: (in (word16) er0_143 <= globals->wFFFF9E3E : bool)
+T_4676: (in (word16) er0_143 <= g_wFFFF9E3E : bool)
   Class: Eq_4676
   DataType: bool
   OrigDataType: bool
@@ -22231,7 +22231,7 @@ T_5138: (in SLICE(er0_275, word16, 0) : word16)
   Class: Eq_5137
   DataType: ci16
   OrigDataType: ci16
-T_5139: (in globals->wFFFF9E80 <= (word16) er0_275 : bool)
+T_5139: (in g_wFFFF9E80 <= (word16) er0_275 : bool)
   Class: Eq_5139
   DataType: bool
   OrigDataType: bool
@@ -22555,7 +22555,7 @@ T_5219: (in SLICE(er0_299, word16, 0) : word16)
   Class: Eq_5137
   DataType: ci16
   OrigDataType: ci16
-T_5220: (in globals->wFFFF9E80 >= (word16) er0_299 : bool)
+T_5220: (in g_wFFFF9E80 >= (word16) er0_299 : bool)
   Class: Eq_5220
   DataType: bool
   OrigDataType: bool
@@ -23123,7 +23123,7 @@ T_5361: (in SLICE(er0_548, word16, 0) : word16)
   Class: Eq_5137
   DataType: ci16
   OrigDataType: ci16
-T_5362: (in globals->wFFFF9E80 <= (word16) er0_548 : bool)
+T_5362: (in g_wFFFF9E80 <= (word16) er0_548 : bool)
   Class: Eq_5362
   DataType: bool
   OrigDataType: bool
@@ -23287,7 +23287,7 @@ T_5402: (in SLICE(er0_571, word16, 0) : word16)
   Class: Eq_5137
   DataType: ci16
   OrigDataType: ci16
-T_5403: (in globals->wFFFF9E80 >= (word16) er0_571 : bool)
+T_5403: (in g_wFFFF9E80 >= (word16) er0_571 : bool)
   Class: Eq_5403
   DataType: bool
   OrigDataType: bool
@@ -23971,7 +23971,7 @@ T_5573: (in SLICE(er0_850, word16, 0) : word16)
   Class: Eq_5137
   DataType: ci16
   OrigDataType: ci16
-T_5574: (in globals->wFFFF9E80 <= (word16) er0_850 : bool)
+T_5574: (in g_wFFFF9E80 <= (word16) er0_850 : bool)
   Class: Eq_5574
   DataType: bool
   OrigDataType: bool
@@ -24803,7 +24803,7 @@ T_5781: (in SLICE(er0_873, word16, 0) : word16)
   Class: Eq_5137
   DataType: ci16
   OrigDataType: ci16
-T_5782: (in globals->wFFFF9E80 >= (word16) er0_873 : bool)
+T_5782: (in g_wFFFF9E80 >= (word16) er0_873 : bool)
   Class: Eq_5782
   DataType: bool
   OrigDataType: bool
