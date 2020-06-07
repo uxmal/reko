@@ -378,9 +378,9 @@ namespace Reko.Typing
             //$REVIEW: We can't use ComplexExpresionBuilder to rewrite pointers to
             // global variable. It's too aggressive now
             // (e.g. &globals->var.ptr00.ptr00 instead of &globals->var)
-            var ptrStr = new Pointer(GlobalVars, platform.PointerType.BitSize);
-            var fa = new FieldAccess(f.DataType, new Dereference(ptrStr, globals), f);
-            return CreateAddrOf(fa, dt);
+            var name = program.NamingPolicy.GlobalName(f);
+            var globalVar = Identifier.Global(name, f.DataType);
+            return CreateAddrOf(globalVar, dt);
         }
 
         private Expression CreateAddrOf(Expression e, DataType dt)
