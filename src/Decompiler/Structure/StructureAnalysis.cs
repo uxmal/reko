@@ -683,7 +683,6 @@ all other cases, together they constitute a Switch[].
         private bool ReduceIncSwitch(Region n, Region? follow)
         {
             Expression exp = n.Expression!;
-            long offset = 0;
 
             //$REVIEW: workaround for when the datatype of n.Expression
             // is non-integral. What causes this?
@@ -692,18 +691,7 @@ all other cases, together they constitute a Switch[].
                 eventListener.Warn(eventListener.CreateBlockNavigator(this.program, n.Block), "Non-integral switch expression");
                 pt = PrimitiveType.CreateWord(exp.DataType.BitSize);
             }
-            else
-            {
-                if (exp is BinaryExpression binExp && binExp.Operator is ISubOperator)
-                {
-                    if (binExp.Left is Identifier && binExp.Right is Constant c)
-                    {
-                        exp = binExp.Left;
-                        offset = c.ToInt64();
-                    }
-                }
-            }
-
+            var (switchExp, offset) = GetConstantOffset(exp);
             var cases = CollectSwitchCases(n);
             var stms = new List<AbsynStatement>();
             foreach (var succ in cases.Keys)
@@ -724,7 +712,7 @@ all other cases, together they constitute a Switch[].
                 }
                 RemoveRegion(succ);
             }
-            var sw = new AbsynSwitch(exp, stms);
+            var sw = new AbsynSwitch(switchExp, stms);
             n.Statements.Add(sw);
             n.Expression = null;
             if (follow != null)
@@ -739,11 +727,29 @@ all other cases, together they constitute a Switch[].
             return true;
         }
 
+        private (Expression, long) GetConstantOffset(Expression exp)
+        {
+            if (exp is BinaryExpression bin &&
+                bin.Right is Constant offset &&
+                offset.IsValid)
+            {
+                if (bin.Operator == Operator.IAdd)
+                {
+                    return (bin.Left, -offset.ToInt64());
+                }
+                else if (bin.Operator == Operator.ISub)
+                {
+                    return (bin.Left, offset.ToInt64());
+                }
+            }
+            return (exp, 0);
+        }
+
         /// <summary>
         /// Collects the cases of a switch statement such that cases with
-        /// the same destination region are collected in the same list
+        /// the same destination region are collected in the same list.
         /// </summary>
-        /// <param name="n"></param>
+        /// <param name="n">The 'head' of the switch statement.</param>
         /// <returns>A mapping from Region to a list of the case values
         /// that jump to that region.</returns>
         private Dictionary<Region, List<int>> CollectSwitchCases(Region n)
