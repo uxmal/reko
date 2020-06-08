@@ -36,21 +36,18 @@ namespace Reko.Typing
 	{
         private readonly Program program;
         private readonly IPlatform platform;
-		private readonly TypeStore store;
 		private readonly Identifier globals;
-		private Constant? c;
+        private readonly Dictionary<ushort, Identifier> mpSelectorToSegId;
+        private readonly DecompilerEventListener eventListener;
+        private Constant? c;
 		private PrimitiveType? pOrig;
 		private bool dereferenced;
-        private Dictionary<ushort, Identifier> mpSelectorToSegId;
-        private DecompilerEventListener eventListener;
-        private FictitiousGlobalEliminator fge;
 
         public TypedConstantRewriter(Program program, DecompilerEventListener eventListener)
 		{
             this.eventListener = eventListener;
             this.program = program;
             this.platform = program.Platform;
-            this.store = program.TypeStore;
             this.globals = program.Globals;
             if (program.SegmentMap != null)
             {
@@ -62,7 +59,6 @@ namespace Reko.Typing
             {
                 this.mpSelectorToSegId = new Dictionary<ushort, Identifier>();
             }
-            this.fge = new FictitiousGlobalEliminator(program);
         }
 
         /// <summary>
@@ -286,7 +282,6 @@ namespace Reko.Typing
                     return ReadNullTerminatedString(c, charType);
                 }
                 e = RewriteGlobalFieldAccess(dt, c.ToInt32());
-                //e = e.Accept(fge);
             }
 			return e;
 		}

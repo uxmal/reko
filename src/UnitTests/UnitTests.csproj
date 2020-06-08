@@ -797,7 +797,6 @@
     <Compile Include="Typing\ExpressionTypeAscenderTests.cs" />
     <Compile Include="Typing\ExpressionNormalizerTests.cs" />
     <Compile Include="Typing\ExpressionTypeDescenderTests.cs" />
-    <Compile Include="Typing\FictitiousGlobalEliminatorTests.cs" />
     <Compile Include="Typing\Fragments.cs" />
     <Compile Include="Typing\GlobalVariablesMock.cs" />
     <Compile Include="Typing\NestedComplexTypeExtractorTests.cs" />
