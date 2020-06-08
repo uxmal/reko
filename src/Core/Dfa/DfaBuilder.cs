@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -20,12 +20,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Collections;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using BitArray = System.Collections.BitArray;
 
 namespace Reko.Core.Dfa
 {
@@ -34,12 +30,12 @@ namespace Reko.Core.Dfa
     /// </summary>
     public class DfaBuilder
     {
-        private Dictionary<IntermediateState, IntermediateState> Dstates;
-        private List<Tuple<int, int, int>> Dtran;
-        private NodeComparer nodeComparer;
+        private readonly Dictionary<IntermediateState, IntermediateState> Dstates;
+        private readonly List<Tuple<int, int, int>> Dtran;
+        private readonly NodeComparer nodeComparer;
 
         public DfaBuilder(string pattern)
-            : this(new PatternParser(pattern).Parse())
+            : this(new PatternParser(pattern).Parse() ?? new TreeNode { Type = NodeType.EOS })
         {
         }
 
@@ -47,11 +43,13 @@ namespace Reko.Core.Dfa
         {
             this.ParseTree = node;
             this.nodeComparer = new NodeComparer();
+            Dstates = new Dictionary<IntermediateState, IntermediateState>();
+            Dtran = new List<Tuple<int, int, int>>();
         }
 
         public TreeNode ParseTree { get; private set; }
-        public State[] States { get; set; }
-        public int[,] Transitions { get; set; }
+        public State[]? States { get; set; }
+        public int[,]? Transitions { get; set; }
 
         private class IntermediateState
         {
@@ -72,13 +70,12 @@ namespace Reko.Core.Dfa
 
             public override bool Equals(object obj)
             {
-                var other = obj as IntermediateState;
-                if (other == null)
+                if (!(obj is IntermediateState that))
                     return false;
-                if (Nodes.Count != other.Nodes.Count)
+                if (Nodes.Count != that.Nodes.Count)
                     return false;
                 var ea = Nodes.GetEnumerator();
-                var eb = other.Nodes.GetEnumerator();
+                var eb = that.Nodes.GetEnumerator();
                 while (ea.MoveNext() && eb.MoveNext())
                 {
                     if (ea.Current != eb.Current)
@@ -118,10 +115,8 @@ namespace Reko.Core.Dfa
 
         public void BuildAutomaton(TreeNode tree)
         {
-            Dstates = new Dictionary<IntermediateState, IntermediateState>();
-            Dtran = new List<Tuple<int, int, int>>();
             var unmarked = new Queue<IntermediateState>();
-            var state = CreateIntermediateState(ParseTree.FirstPos);
+            var state = CreateIntermediateState(ParseTree.FirstPos!);
             state.Starts = true;
             Dstates.Add(state, state);
             unmarked.Enqueue(state);
@@ -130,9 +125,8 @@ namespace Reko.Core.Dfa
                 var T = unmarked.Dequeue();
                 foreach (var p in T.Nodes.SelectMany(p => p.GetTransitionCharacters(), (p, c) => new { Node = p, Value = c }))
                 {
-                    var U = CreateIntermediateState(p.Node.FollowPos);
-                    IntermediateState dstate;
-                    Dstates.TryGetValue(U, out dstate);
+                    var U = CreateIntermediateState(p.Node.FollowPos!);
+                    Dstates.TryGetValue(U, out IntermediateState dstate);
                     if (U.Nodes.Count() > 0 && dstate == null)
                     {
                         Dstates.Add(U, U);
@@ -194,55 +188,55 @@ namespace Reko.Core.Dfa
                 node.LastPos = new HashSet<TreeNode>();
                 break;
             case NodeType.Cut:
-                BuildNodeSets(node.Left);
-                BuildNodeSets(node.Right);
-                node.Nullable = node.Left.Nullable && node.Right.Nullable;
+                BuildNodeSets(node.Left!);
+                BuildNodeSets(node.Right!);
+                node.Nullable = node.Left!.Nullable && node.Right!.Nullable;
                 var setcu = new HashSet<TreeNode>(node.Left.FirstPos);
                 if (node.Left.Nullable)
                 {
-                    setcu.UnionWith(node.Right.FirstPos);
+                    setcu.UnionWith(node.Right!.FirstPos);
                 }
                 node.FirstPos = setcu;
-                setcu = new HashSet<TreeNode>(node.Right.LastPos);
+                setcu = new HashSet<TreeNode>(node.Right!.LastPos);
                 if (node.Right.Nullable)
                 {
                     setcu.UnionWith(node.Left.LastPos);
                 }
                 node.LastPos = setcu;
-                foreach (var n in node.Right.FirstPos)
+                foreach (var n in node.Right.FirstPos!)
                 {
                     n.Starts = true;
                 }
-                foreach (var i in node.Left.LastPos)
+                foreach (var i in node.Left.LastPos!)
                 {
-                    i.FollowPos.UnionWith(node.Right.FirstPos);
+                    i.FollowPos!.UnionWith(node.Right.FirstPos);
                 }
                 break;
             case NodeType.Star:
-                BuildNodeSets(node.Left);
+                BuildNodeSets(node.Left!);
                 node.Nullable = true;
-                node.FirstPos = new HashSet<TreeNode>(node.Left.FirstPos);
+                node.FirstPos = new HashSet<TreeNode>(node.Left!.FirstPos);
                 node.LastPos = new HashSet<TreeNode>(node.Left.LastPos);
-                foreach (var i in node.Left.LastPos)
+                foreach (var i in node.Left.LastPos!)
                 {
-                    i.FollowPos.UnionWith(node.FirstPos);
+                    i.FollowPos!.UnionWith(node.FirstPos);
                 }
                 break;
             case NodeType.Plus:
-                BuildNodeSets(node.Left);
-                node.Nullable = node.Left.Nullable;
+                BuildNodeSets(node.Left!);
+                node.Nullable = node.Left!.Nullable;
                 node.FirstPos = new HashSet<TreeNode>(node.Left.FirstPos);
                 node.LastPos = new HashSet<TreeNode>(node.Left.LastPos);
-                foreach (var i in node.Left.LastPos)
+                foreach (var i in node.Left.LastPos!)
                 {
-                    i.FollowPos.UnionWith(node.FirstPos);
+                    i.FollowPos!.UnionWith(node.FirstPos);
                 }
 
                 break;
             case NodeType.Or:
-                BuildNodeSets(node.Left);
-                BuildNodeSets(node.Right);
-                node.Nullable = node.Left.Nullable | node.Right.Nullable;
+                BuildNodeSets(node.Left!);
+                BuildNodeSets(node.Right!);
+                node.Nullable = node.Left!.Nullable | node.Right!.Nullable;
 
                 var set = new HashSet<TreeNode>(node.Left.FirstPos);
                 set.UnionWith(node.Left.FirstPos);
@@ -253,9 +247,9 @@ namespace Reko.Core.Dfa
                 node.LastPos = set;
                 break;
             case NodeType.Cat:
-                BuildNodeSets(node.Left);
-                BuildNodeSets(node.Right);
-                node.Nullable = node.Left.Nullable & node.Right.Nullable;
+                BuildNodeSets(node.Left!);
+                BuildNodeSets(node.Right!);
+                node.Nullable = node.Left!.Nullable & node.Right!.Nullable;
                 var setc = new HashSet<TreeNode>(node.Left.FirstPos);
                 if (node.Left.Nullable)
                 {
@@ -270,9 +264,9 @@ namespace Reko.Core.Dfa
                 }
                 node.LastPos = setc;
 
-                foreach (var i in node.Left.LastPos)
+                foreach (var i in node.Left.LastPos!)
                 {
-                    i.FollowPos.UnionWith(node.Right.FirstPos);
+                    i.FollowPos!.UnionWith(node.Right.FirstPos);
                 }
                 break;
             default:

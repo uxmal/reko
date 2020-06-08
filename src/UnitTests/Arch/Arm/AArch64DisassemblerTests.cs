@@ -22,13 +22,14 @@ using NUnit.Framework;
 using Reko.Arch.Arm;
 using Reko.Arch.Arm.AArch64;
 using Reko.Core;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
     public class Arm64DisassemblerTests : DisassemblerTestBase<AArch64Instruction>
     {
-        private IProcessorArchitecture arch = new Arm64Architecture("aarch64");
+        private IProcessorArchitecture arch = new Arm64Architecture(new ServiceContainer(), "aarch64");
         private Address baseAddress = Address.Ptr64(0x00100000);
         private AArch64Instruction instr;
 

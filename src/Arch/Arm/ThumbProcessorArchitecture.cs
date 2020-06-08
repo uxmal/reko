@@ -40,11 +40,11 @@ namespace Reko.Arch.Arm
 #if NATIVE
         private INativeArchitecture native;
 #endif
-        private Dictionary<string, RegisterStorage> regsByName;
-        private Dictionary<int, RegisterStorage> regsByNumber;
-        private Dictionary<uint, FlagGroupStorage> flagGroups;
+        private readonly Dictionary<string, RegisterStorage> regsByName;
+        private readonly Dictionary<int, RegisterStorage> regsByNumber;
+        private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public ThumbArchitecture(string archId) : base(archId)
+        public ThumbArchitecture(IServiceProvider services, string archId) : base(services, archId)
         {
             this.Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Ptr32;

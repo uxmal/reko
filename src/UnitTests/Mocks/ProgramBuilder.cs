@@ -25,6 +25,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Mocks
 {
@@ -39,7 +40,7 @@ namespace Reko.UnitTests.Mocks
         private Dictionary<string, Block> blocks = new Dictionary<string, Block>();
 		private List<ProcUpdater> unresolvedProcedures = new List<ProcUpdater>();
 
-		public ProgramBuilder() : this(new FakeArchitecture())
+		public ProgramBuilder() : this(new FakeArchitecture(new ServiceContainer()))
 		{
 		}
 
@@ -57,7 +58,7 @@ namespace Reko.UnitTests.Mocks
                 SegmentMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
-                Architecture = new FakeArchitecture()
+                Architecture = new FakeArchitecture(new ServiceContainer())
             };
         }
 

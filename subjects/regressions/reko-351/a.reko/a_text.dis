@@ -1,20 +1,22 @@
 word32 deregister_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __do_global_dtors_aux
 // MayUse: 
 // LiveOut: a6 a7
 // Trashed: CVZNX a0 a6 a7 d0 d1
 // Preserved:
 deregister_tm_clones_entry:
 l80000080:
-	word32 a6_23 = fp - 0x00000004
+	word32 a6_23 = fp - 4<32>
 	branch true l800000AA
 l80000096:
-	branch null == 0x00000000 l800000AA
+	branch null == 0<32> l800000AA
 l800000A0:
 	word32 a0_26
 	call null (retsize: 4;)
-		uses: a0:a0_26,a6:fp - 0x00000004,Stack +0004:0x80002724
+		uses: a0:a0_26,a6:fp - 4<32>,Stack +0004:0x80002724<p32>
 		defs: a0:a0_26,a6:a6_23
 l800000AA:
 	return Mem31[a6_23:word32]
@@ -24,26 +26,28 @@ deregister_tm_clones_exit:
 void register_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      frame_dummy
 // MayUse: 
 // LiveOut:
 // Trashed: CVZNX a0 a6 a7 d0
 // Preserved:
 register_tm_clones_entry:
 l800000AE:
-	word32 d0_12 = 0
+	word32 d0_12 = 0<i32>
 	branch false l800000C6
 l800000C4:
-	d0_12 = 0x00000001
+	d0_12 = 1<32>
 l800000C6:
-	word32 d0_18 = d0_12 >> 0x00000001
-	branch d0_18 == 0x00000000 l800000E0
+	word32 d0_18 = d0_12 >> 1<32>
+	branch d0_18 == 0<32> l800000E0
 l800000CA:
-	branch null == 0x00000000 l800000E0
+	branch null == 0<32> l800000E0
 l800000D4:
-	word32 a0_37
+	word32 a0_36
 	call null (retsize: 4;)
-		uses: a0:a0_37,a6:fp - 0x00000004,Stack +0004:0x80002724,Stack +0008:d0_18
-		defs: a0:a0_37
+		uses: a0:a0_36,a6:fp - 4<32>,Stack +0004:0x80002724<p32>,Stack +0008:d0_18
+		defs: a0:a0_36
 l800000E0:
 	return
 register_tm_clones_exit:
@@ -58,37 +62,37 @@ void __do_global_dtors_aux()
 // Preserved:
 __do_global_dtors_aux_entry:
 l800000E4:
-	word32 a6_38 = fp - 0x00000004
-	branch Mem15[0x80002724:byte] != 0x00 l8000014C
+	word32 a6_35 = fp - 4<32>
+	branch Mem13[0x80002724<p32>:byte] != 0<8> l8000014C
 l800000F4:
-	word32 d0_21 = Mem15[0x80002726:word32]
-	word32 a2_20 = 0x80002714
-	word32 d2_25 = 0x00000000
-	branch d0_21 >=u 0x00000000 l8000012C
+	word32 d0_19 = Mem13[0x80002726<p32>:word32]
+	word32 a2_18 = 0x80002714<p32>
+	word32 d2_23 = 0<32>
+	branch d0_19 >=u 0<32> l8000012C
 l80000114:
-	word32 d0_31 = d0_21 + 0x00000001
-	Mem34[0x80002726:word32] = d0_31
-	word32 a0_46
-	word32 d1_95
-	call Mem34[a2_20 + d0_31 * 4:word32] (retsize: 4;)
-		uses: a0:a0_46,a2:a2_36,a6:a6_38,d0:d0_31,d1:d1_95,d2:d2_39
-		defs: a0:a0_46,a2:a2_43,a6:a6_42,d1:d1_95,d2:d2_44
-	d0_21 = Mem34[0x80002726:word32]
-	branch d2_25 - d0_21 >u 0x00000000 l80000114
+	word32 d0_29 = d0_19 + 1<32>
+	Mem31[0x80002726<p32>:word32] = d0_29
+	word32 a0_43
+	word32 d1_91
+	call Mem31[a2_18 + d0_29 * 4<i32>:word32] (retsize: 4;)
+		uses: a0:a0_43,a2:a2_33,a6:a6_35,d0:d0_29,d1:d1_91,d2:d2_36
+		defs: a0:a0_43,a2:a2_40,a6:a6_39,d1:d1_91,d2:d2_41
+	d0_19 = Mem31[0x80002726<p32>:word32]
+	branch d2_23 - d0_19 >u 0<32> l80000114
 l8000012C:
-	word32 a6_55 = deregister_tm_clones()
-	word32 a7_56 = <invalid>
-	branch null == 0x00000000 l80000144
+	word32 a6_52 = deregister_tm_clones()
+	word32 a7_53 = <invalid>
+	branch null == 0<32> l80000144
 l8000013A:
-	Mem68[a7_56 - 0x00000004:word32] = 0x8000065C
-	word32 d0_75
-	word32 a0_76
-	word32 d1_77
+	Mem65[a7_53 - 4<i32>:word32] = 0x8000065C<p32>
+	word32 d0_72
+	word32 a0_73
+	word32 d1_74
 	call null (retsize: 4;)
-		uses: a0:a0_76,a2:a2_69,a6:a6_55,d0:d0_75,d1:d1_77,d2:d2_70
-		defs: a0:a0_76,d0:d0_75,d1:d1_77
+		uses: a0:a0_73,a2:a2_66,a6:a6_52,d0:d0_72,d1:d1_74,d2:d2_67
+		defs: a0:a0_73,d0:d0_72,d1:d1_74
 l80000144:
-	Mem81[0x80002724:byte] = 0x01
+	Mem77[0x80002724<p32>:byte] = 1<8>
 l8000014C:
 	return
 __do_global_dtors_aux_exit:
@@ -116,26 +120,26 @@ void frame_dummy()
 // Preserved: a7
 frame_dummy_entry:
 l80000160:
-	word32 a6_18 = fp - 0x00000004
-	word32 a7_23 = fp - 0x00000004
-	branch null == 0x00000000 l8000017E
+	word32 a6_18 = fp - 4<32>
+	word32 a7_23 = fp - 4<32>
+	branch null == 0<32> l8000017E
 l8000016E:
 	word32 a7_17
 	word32 a1_20
 	call null (retsize: 4;)
-		uses: a1:a1_20,a6:fp - 0x00000004,Stack +0004:0x8000065C,Stack +0008:0x8000272A
+		uses: a1:a1_20,a6:fp - 4<32>,Stack +0004:0x8000065C<p32>,Stack +0008:0x8000272A<p32>
 		defs: a1:a1_20,a6:a6_18,a7:a7_17
-	a7_23 = a7_17 + 8
+	a7_23 = a7_17 + 8<i32>
 l8000017E:
-	branch Mem25[0x8000271C:word32] != 0x00000000 l8000018E
+	branch Mem25[0x8000271C<p32>:word32] != 0<32> l8000018E
 l8000018E:
-	branch null == 0x00000000 l80000188
+	branch null == 0<32> l80000188
 l80000198:
-	Mem38[a7_23 - 4:word32] = 0x8000271C
-	word32 a1_44
+	Mem37[a7_23 - 4<i32>:word32] = 0x8000271C<p32>
+	word32 a1_43
 	call null (retsize: 4;)
-		uses: a1:a1_44,a6:a6_40
-		defs: a1:a1_44
+		uses: a1:a1_43,a6:a6_39
+		defs: a1:a1_43
 l800001A0_thunk_register_tm_clones:
 	register_tm_clones()
 	return
@@ -162,6 +166,8 @@ call_frame_dummy_exit:
 void sine_taylor(real64 rArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  Stack +0004:[0..63]
 // LiveOut:
 // Trashed:
@@ -175,39 +181,43 @@ _Z11sine_taylord_exit:
 void factorial(int32 dwArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      sine_taylor
 // MayUse:  Stack +0004:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
 _ZL9factoriali_entry:
 l8000033C:
-	word32 dwLoc08_35 = 2
+	word32 dwLoc08_32 = 2<i32>
 l8000034C:
-	branch dwLoc08_35 - dwArg04 > 0x00000000 l8000036A
+	branch dwLoc08_32 - dwArg04 > 0<32> l8000036A
 l8000036A:
 	return
 _ZL9factoriali_exit:
 l80000356:
-	dwLoc08_35 = dwLoc08_35 + 0x00000001
+	dwLoc08_32 = dwLoc08_32 + 1<32>
 
 
 void pow_int(real64 rArg04, int32 dwArg0C)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      sine_taylor
 // MayUse:  Stack +0004:[0..63] Stack +000C:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
 _ZL7pow_intdi_entry:
 l80000372:
-	word32 dwLoc08_49 = 0x00000000
+	word32 dwLoc08_46 = 0<32>
 l80000386:
-	branch dwLoc08_49 - dwArg0C >= 0x00000000 l800003A8
+	branch dwLoc08_46 - dwArg0C >= 0<32> l800003A8
 l800003A8:
 	return
 _ZL7pow_intdi_exit:
 l80000390:
-	dwLoc08_49 = dwLoc08_49 + 0x00000001
+	dwLoc08_46 = dwLoc08_46 + 1<32>
 
 
 void sine_taylor(real64 rArg04, int32 dwArg0C)
@@ -219,24 +229,24 @@ void sine_taylor(real64 rArg04, int32 dwArg0C)
 // Preserved:
 _Z11sine_taylordi_entry:
 l800003BC:
-	word32 dwLoc08_127 = 3
+	word32 dwLoc08_115 = 3<i32>
 l800003D6:
-	branch dwLoc08_127 - dwArg0C > 0x00000000 l80000428
+	branch dwLoc08_115 - dwArg0C > 0<32> l80000428
 l80000428:
-	word32 dwLoc08_130 = 5
+	word32 dwLoc08_118 = 5<i32>
 l8000042E:
-	branch dwLoc08_130 - dwArg0C > 0x00000000 l80000480
+	branch dwLoc08_118 - dwArg0C > 0<32> l80000480
 l80000480:
 	return
 _Z11sine_taylordi_exit:
 l80000438:
-	pow_int(rArg04, dwLoc08_130)
-	factorial(dwLoc08_130)
-	dwLoc08_130 = dwLoc08_130 + 0x00000004
+	pow_int(rArg04, dwLoc08_118)
+	factorial(dwLoc08_118)
+	dwLoc08_118 = dwLoc08_118 + 4<32>
 l800003E0:
-	pow_int(rArg04, dwLoc08_127)
-	factorial(dwLoc08_127)
-	dwLoc08_127 = dwLoc08_127 + 0x00000004
+	pow_int(rArg04, dwLoc08_115)
+	factorial(dwLoc08_115)
+	dwLoc08_115 = dwLoc08_115 + 4<32>
 
 
 void main()
@@ -249,7 +259,7 @@ void main()
 main_entry:
 l8000049A:
 	sine_taylor(4.61425307021499e+18)
-	_sin(4.61425307021499e+18, 4.56906395155395e+18, fp - 0x00000008)
+	_sin(4.61425307021499e+18, 4.56906395155395e+18, fp - 8<32>)
 	return
 main_exit:
 
@@ -257,27 +267,29 @@ main_exit:
 void _sin(real64 rArg04, real64 rArg0C, int32 & tArg14)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  Stack +0004:[0..63] Stack +000C:[0..63] Stack +0014:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
 _Z4_sinddRi_entry:
 l800004DE:
-	real64 rLoc0C_114 = rArg04
+	real64 rLoc0C_109 = rArg04
 	real64 v9_14 = (real64) ((real96) rArg04 * rArg04)
-	word32 dwLoc20_120 = 0x00000002
-	real64 rLoc14_122 = 0x3FF0000000000000
+	word32 dwLoc20_115 = 2<32>
+	real64 rLoc14_117 = 0x3FF0000000000000<64>
 l8000051A:
-	branch (real64) ((real96) rLoc0C_114 / rLoc14_122) < rArg0C l8000060E
+	branch (real64) ((real96) rLoc0C_109 / rLoc14_117) < rArg0C l8000060E
 l8000060E:
 	return
 _Z4_sinddRi_exit:
 l80000530:
-	Mem106[tArg14:word32] = Mem98[tArg14:word32] + 0x00000001
-	word32 v23_57 = dwLoc20_120 + 0x00000000
-	rLoc0C_114 = (real64) ((real96) (real64) ((real96) rLoc0C_114 * v9_14) * v9_14)
-	dwLoc20_120 = v23_57 + 0x00000003
-	rLoc14_122 = (real64) ((real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_122 * (real80) ((real96) v23_57)) * (real80) ((real96) (v23_57 + 0x00000001))) * (real80) ((real96) (v23_57 + 0x00000002))) * (real80) ((real96) (v23_57 + 0x00000003)))
+	Mem101[tArg14:word32] = Mem94[tArg14:word32] + 1<32>
+	word32 v18_53 = dwLoc20_115 + 0<32>
+	rLoc0C_109 = (real64) ((real96) (real64) ((real96) rLoc0C_109 * v9_14) * v9_14)
+	dwLoc20_115 = v18_53 + 3<32>
+	rLoc14_117 = (real64) ((real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_117 * (real80) ((real96) v18_53)) * (real80) ((real96) (v18_53 + 1<32>))) * (real80) ((real96) (v18_53 + 2<32>))) * (real80) ((real96) (v18_53 + 3<32>)))
 
 
 void __do_global_ctors_aux()
@@ -289,18 +301,18 @@ void __do_global_ctors_aux()
 // Preserved:
 __do_global_ctors_aux_entry:
 l80000624:
-	word32 a0_12 = Mem11[0x8000270C:word32]
-	word32 a6_19 = fp - 0x00000004
-	word32 a2_13 = 0x8000270C
-	branch a0_12 == -1 l80000646
+	word32 a0_11 = Mem10[0x8000270C<p32>:word32]
+	word32 a6_18 = fp - 4<32>
+	word32 a2_12 = 0x8000270C<p32>
+	branch a0_11 == -1<i32> l80000646
 l8000063C:
-	word32 a2_24
-	call a0_12 (retsize: 4;)
-		uses: a2:a2_20,a6:a6_19
-		defs: a2:a2_24,a6:a6_23
-	a0_12 = Mem11[a2_24 - 4:word32]
-	a2_13 = a2_24 - 4
-	branch a0_12 != -1 l8000063C
+	word32 a2_23
+	call a0_11 (retsize: 4;)
+		uses: a2:a2_19,a6:a6_18
+		defs: a2:a2_23,a6:a6_22
+	a0_11 = Mem10[a2_23 - 4<i32>:word32]
+	a2_12 = a2_23 - 4<i32>
+	branch a0_11 != -1<i32> l8000063C
 l80000646:
 	return
 __do_global_ctors_aux_exit:

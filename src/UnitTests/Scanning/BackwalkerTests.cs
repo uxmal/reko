@@ -154,7 +154,7 @@ namespace Reko.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            arch = new FakeArchitecture();
+            arch = new FakeArchitecture(new ServiceContainer());
             m = new ProcedureBuilder();
             state = arch.CreateProcessorState();
             listener = new FakeDecompilerEventListener();
@@ -171,7 +171,7 @@ namespace Reko.UnitTests.Scanning
             var el = new FakeDecompilerEventListener();
             sc.AddService<IFileSystemService>(fsSvc);
             sc.AddService<DecompilerEventListener>(el);
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
             var asm = new X86TextAssembler(arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {

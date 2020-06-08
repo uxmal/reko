@@ -1,8 +1,8 @@
 // Equivalence classes ////////////
 Eq_1: word32
-	T_1 (in 0x0000002A : word32)
+	T_1 (in 0x2A<32> : word32)
 // Type Variables ////////////
-T_1: (in 0x0000002A : word32)
+T_1: (in 0x2A<32> : word32)
   Class: Eq_1
   DataType: word32
   OrigDataType: word32

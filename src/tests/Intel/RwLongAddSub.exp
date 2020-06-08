@@ -20,31 +20,31 @@
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	ax = Mem0[ds:0x0300:word16]
-	dx = Mem0[ds:0x0302:word16]
-	ax = ax + Mem0[ds:0x0304:word16]
+	ax = Mem0[ds:0x300<16>:word16]
+	dx = Mem0[ds:0x302<16>:word16]
+	ax = ax + Mem0[ds:0x304<16>:word16]
 	SCZO = cond(ax)
-	dx = dx + Mem0[ds:0x0306:word16] + C
+	dx = dx + Mem0[ds:0x306<16>:word16] + C
 	SCZO = cond(dx)
-	ax = Mem0[ds:si + 0x0308:word16]
+	ax = Mem0[ds:si + 0x308<16>:word16]
 	ax = ax + cx
 	SCZO = cond(ax)
-	dx = Mem0[ds:si + 0x030A:word16]
+	dx = Mem0[ds:si + 0x30A<16>:word16]
 	dx = dx + bx + C
 	SCZO = cond(dx)
-	v12 = Mem0[ds:0x0200:word32] + eax
-	Mem0[ds:0x0200:word32] = v12
+	v12 = Mem0[ds:0x200<16>:word32] + eax
+	Mem0[ds:0x200<16>:word32] = v12
 	SCZO = cond(v12)
-	v14 = Mem0[ds:0x0204:word32] + edx + C
-	Mem0[ds:0x0204:word32] = v14
+	v14 = Mem0[ds:0x204<16>:word32] + edx + C
+	Mem0[ds:0x204<16>:word32] = v14
 	SCZO = cond(v14)
-	cx = Mem0[ds:si + 0x030C:word16]
+	cx = Mem0[ds:si + 0x30C<16>:word16]
 	ax = ax - cx
 	SCZO = cond(ax)
-	bx = Mem0[ds:si + 0x030E:word16]
+	bx = Mem0[ds:si + 0x30E<16>:word16]
 	dx = dx - bx - C
 	SCZO = cond(dx)
 	return

@@ -36,9 +36,9 @@ namespace Reko.Core.Expressions
     /// </remarks>
     public abstract class ExpressionTypeAscenderBase : ExpressionVisitor<DataType>
     {
-        private IPlatform platform;
-        private TypeFactory factory;
-        private StructureType globalFields;
+        private readonly IPlatform platform;
+        private readonly TypeFactory factory;
+        private readonly StructureType globalFields;
 
         public ExpressionTypeAscenderBase(Program program, TypeFactory factory)
         {
@@ -75,7 +75,7 @@ namespace Reko.Core.Expressions
             if (pfn is ProcedureConstant pc && 
                 pc.Procedure.Signature.ParametersValid)
             {
-                dt = RecordDataType(pc.Procedure.Signature.ReturnValue.DataType, appl);
+                dt = RecordDataType(pc.Procedure.Signature.ReturnValue!.DataType, appl);
             }
             return dt;
         }
@@ -98,9 +98,13 @@ namespace Reko.Core.Expressions
             DataType dt;
             if (binExp.Operator == Operator.IAdd)
             {
-                dt = GetPossibleFieldType(dtLeft, dtRight, binExp.Right);
-                if (dt == null)
+                var dtField = GetPossibleFieldType(dtLeft, dtRight, binExp.Right);
+                if (dtField != null)
                 {
+                    dt = dtField;
+                }
+                else
+                { 
                     dt = PullSumDataType(dtLeft, dtRight);
                 }
             }
@@ -172,7 +176,7 @@ namespace Reko.Core.Expressions
         /// <param name="dtRight">Type of possible offset</param>
         /// <param name="right">Possible constant offset from start of structure</param>
         /// <returns>A (ptr field-type) if it was a ptr-to-struct, else null.</returns>
-        private Pointer GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right)
+        private Pointer? GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right)
         {
             if (right is Constant cOffset)
             {
@@ -192,7 +196,7 @@ namespace Reko.Core.Expressions
         /// <param name="dtLeft">Possible pointer to a structure</param>
         /// <param name="offset"></param>
         /// <returns>A (ptr field-type) if it was a ptr-to-struct, else null.</returns>
-        private Pointer GetPossibleFieldType(DataType dtLeft, int offset)
+        private Pointer? GetPossibleFieldType(DataType dtLeft, int offset)
         {
             var ptrLeft = dtLeft.ResolveAs<Pointer>();
             if (ptrLeft == null)
@@ -211,10 +215,14 @@ namespace Reko.Core.Expressions
             var dtField = field.DataType.ResolveAs<DataType>();
             if (dtField == null)
                 return null;
-            //$TODO This really should be offset != field.Offset
-            // However doing so causes a regression in hello_ppc.exe
-            if (offset >= field.Offset + dtField.Size)
-                return null;
+            // If we access beyond the start of the field, we can't have the
+            // same type as the field.
+            if (offset != field.Offset)
+            {
+                // Check if field is nested structure
+                var ptrField = factory.CreatePointer(dtField, ptrLeft.BitSize);
+                return GetPossibleFieldType(ptrField, offset - field.Offset);
+            }
             return factory.CreatePointer(dtField, dtLeft.BitSize);
         }
 
@@ -312,19 +320,12 @@ namespace Reko.Core.Expressions
             return RecordDataType(dt, c);
         }
 
-        private DataType ExistingGlobalField(Constant c)
+        private DataType? ExistingGlobalField(Constant c)
         {
             if (!(c.DataType is PrimitiveType pt) || (pt.Domain & Domain.Pointer) == 0)
                 return null;
             var global = factory.CreatePointer(globalFields, pt.BitSize);
             return GetPossibleFieldType(global, PrimitiveType.Int32, c);
-        }
-
-        public DataType VisitDepositBits(DepositBits d)
-        {
-            var dtSource = d.Source.Accept(this);
-            d.InsertedBits.Accept(this);
-            return EnsureDataType(dtSource, d);
         }
 
         public DataType VisitDereference(Dereference deref)
@@ -400,22 +401,12 @@ namespace Reko.Core.Expressions
             return dt is PrimitiveType pt && pt.Domain == Domain.Selector;
         }
 
-        private bool IsIntegral(DataType dt)
-        {
-            return dt is PrimitiveType pt && pt.IsIntegral;
-        }
-
         public DataType VisitOutArgument(OutArgument outArgument)
         {
             var dt = outArgument.Expression.Accept(this);
             return dt;
             //Expression exp = outArgument;
             //return RecordDataType(OutPointerTo(outArgument.TypeVariable), exp);
-        }
-
-        private DataType OutPointerTo(TypeVariable tv)
-        {
-            return new Pointer(tv, platform.FramePointerType.BitSize);
         }
 
         public DataType VisitPhiFunction(PhiFunction phi)

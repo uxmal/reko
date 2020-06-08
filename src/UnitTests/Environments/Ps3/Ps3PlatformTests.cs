@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.Core.Types;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Environments.Ps3
 {
@@ -37,7 +38,7 @@ namespace Reko.UnitTests.Environments.Ps3
         [Test]
         public void Ps3p_GetTrampoline()
         {
-            var arch = new PowerPcBe64Architecture("ppc-be-64");
+            var arch = new PowerPcBe64Architecture(new ServiceContainer(), "ppc-be-64");
             var m = new InstructionBuilder(arch, Address.Ptr32(0x10030000));
             m.Lis(m.r11, 0x1006);
             m.Lwz(m.r11, 0x1234, m.r11);

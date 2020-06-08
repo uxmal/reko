@@ -56,7 +56,7 @@ namespace Reko.Core
         /// <returns>The name as a string.</returns>
         public virtual string BlockName(Address addr)
         {
-            if (addr == null) throw new ArgumentNullException(nameof(addr));
+            if (addr is null) throw new ArgumentNullException(nameof(addr));
             return addr.GenerateName("l", "");
         }
 
@@ -67,18 +67,25 @@ namespace Reko.Core
             return loc.Address.GenerateName("l", $"_{loc.Index}");
         }
 
+        public virtual string GlobalName(StructureField field)
+        {
+            if (field.IsNameSet)
+                return field.Name;
+            var fieldName = Types.StructureFieldName(field, null);
+            return string.Format("g_{0}", fieldName);
+        }
 
-        public virtual string StackArgumentName(DataType type, int cbOffset, string nameOverride)
+        public virtual string StackArgumentName(DataType type, int cbOffset, string? nameOverride)
         {
             return GenerateStackAccessName(type, "Arg", cbOffset, nameOverride);
         }
 
-        public virtual string StackLocalName(DataType type, int cbOffset, string nameOverride)
+        public virtual string StackLocalName(DataType type, int cbOffset, string? nameOverride)
         {
             return GenerateStackAccessName(type, "Loc", cbOffset, nameOverride);
         }
 
-        private string GenerateStackAccessName(DataType type, string prefix, int cbOffset, string nameOverride)
+        private string GenerateStackAccessName(DataType type, string prefix, int cbOffset, string? nameOverride)
         {
             if (nameOverride != null)
                 return nameOverride;

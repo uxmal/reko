@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.Pdp11
 {
@@ -45,8 +46,7 @@ namespace Reko.UnitTests.Arch.Pdp11
         private void RunTest(string expected, params ushort[] words)
         {
             var instr = RunTest(words);
-            var r = new StringRenderer();
-            r.Address = instr.Address;
+            var r = new StringRenderer(instr.Address);
             instr.Render(r, options);
             Assert.AreEqual(expected, r.ToString());
         }
@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Arch.Pdp11
             }
             var image = new MemoryArea(Address.Ptr16(0x200), bytes);
             var rdr = new LeImageReader(image, 0);
-            var arch = new Pdp11Architecture("pdp11");
+            var arch = new Pdp11Architecture(new ServiceContainer(), "pdp11");
             var dasm = new Pdp11Disassembler(rdr, arch);
             return dasm.First();
         }

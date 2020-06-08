@@ -16,7 +16,4 @@
     <ProjectReference Include="..\..\UserInterfaces\WindowsForms\WindowsForms.csproj" />
     <ProjectReference Include="..\AmigaOS\AmigaOS.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Resources.Extensions" />
-  </ItemGroup>
 </Project>

@@ -3,29 +3,29 @@ sp_2: orig: sp
 Top_3: orig: Top
 edx:edx
     def:  def edx
-    uses: Mem6[ds:0x7960:word32] = edx
-          Mem14[ds:si + 0x00C8:word32] = -edx
+    uses: Mem6[ds:0x7960<16>:word32] = edx
+          Mem14[ds:si + 0xC8<16>:word32] = -edx
 ds:ds
     def:  def ds
-    uses: Mem6[ds:0x7960:word32] = edx
-          Mem8[ds:0x7964:byte] = cl
-          Mem14[ds:si + 0x00C8:word32] = -edx
+    uses: Mem6[ds:0x7960<16>:word32] = edx
+          Mem8[ds:0x7964<16>:byte] = cl
+          Mem14[ds:si + 0xC8<16>:word32] = -edx
 Mem6: orig: Mem0
-    def:  Mem6[ds:0x7960:word32] = edx
+    def:  Mem6[ds:0x7960<16>:word32] = edx
 cl:cl
     def:  def cl
-    uses: Mem8[ds:0x7964:byte] = cl
+    uses: Mem8[ds:0x7964<16>:byte] = cl
 Mem8: orig: Mem0
-    def:  Mem8[ds:0x7964:byte] = cl
+    def:  Mem8[ds:0x7964<16>:byte] = cl
 eax_9: orig: eax
 eax_10: orig: eax
 SCZO_11: orig: SCZO
 C_12: orig: C
 si:si
     def:  def si
-    uses: Mem14[ds:si + 0x00C8:word32] = -edx
+    uses: Mem14[ds:si + 0xC8<16>:word32] = -edx
 Mem14: orig: Mem0
-    def:  Mem14[ds:si + 0x00C8:word32] = -edx
+    def:  Mem14[ds:si + 0xC8<16>:word32] = -edx
 O_15: orig: O
 S_16: orig: S
 Z_17: orig: Z
@@ -39,9 +39,9 @@ fn0C00_0000_entry:
 	def si
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem6[ds:0x7960:word32] = edx
-	Mem8[ds:0x7964:byte] = cl
-	Mem14[ds:si + 0x00C8:word32] = -edx
+	Mem6[ds:0x7960<16>:word32] = edx
+	Mem8[ds:0x7964<16>:byte] = cl
+	Mem14[ds:si + 0xC8<16>:word32] = -edx
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

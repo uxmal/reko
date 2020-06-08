@@ -34,7 +34,7 @@ namespace Reko.Arch.OpenRISC
     {
         private Dictionary<uint, FlagGroupStorage> flagGroups = new Dictionary<uint, FlagGroupStorage>();
 
-        public OpenRISCArchitecture(string archId) : base(archId)
+        public OpenRISCArchitecture(IServiceProvider services, string archId) : base(services, archId)
         {
             this.Endianness = EndianServices.Big;
             this.FramePointerType = PrimitiveType.Word32;

@@ -21,22 +21,22 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Msp430
 {
     using Decoder = Decoder<Msp430Disassembler, Mnemonics, Msp430Instruction>;
+#pragma warning disable IDE1006
 
     public class Msp430Disassembler : DisassemblerBase<Msp430Instruction, Mnemonics>
     {
         private readonly EndianImageReader rdr;
         private readonly Msp430Architecture arch;
         private readonly List<MachineOperand> ops;
+        private Address addr;
         private ushort uExtension;
         private PrimitiveType dataWidth;
 
@@ -49,7 +49,7 @@ namespace Reko.Arch.Msp430
 
         public override Msp430Instruction DisassembleInstruction()
         {
-            var addr = rdr.Address;
+            this.addr = rdr.Address;
             if (!rdr.TryReadLeUInt16(out ushort uInstr))
                 return null;
             uExtension = 0;
@@ -329,7 +329,7 @@ namespace Reko.Arch.Msp430
             {
                 if (!rdr.TryReadLeInt16(out short offset))
                     return null;
-                return ImmediateOperand.Word16((ushort)offset);
+                return ImmediateOperand.Word16((ushort) offset);
             }
             else
             { 
@@ -344,20 +344,26 @@ namespace Reko.Arch.Msp430
 
         private MachineOperand Indexed(RegisterStorage reg, PrimitiveType dataWidth)
         {
+            var delta = (rdr.Address - this.addr);
             if (!rdr.TryReadLeInt16(out short offset))
                 return null;
             if (reg.Number == 2)
             {
-                return AddressOperand.Ptr16((ushort)offset);
-            }
-            else
+                // Absolute address will not use a base register.
+                reg = null;
+            } 
+            else if (reg == Registers.pc)
             {
-                return new MemoryOperand(dataWidth ?? PrimitiveType.Word16)
-                {
-                    Base = reg,
-                    Offset = offset
-                };
+                // We need to adjust the offset because we want it to be relative
+                // to the beginning of the current instruction, not to the address
+                // of the offset. 
+                offset = (short) (offset + delta);
             }
+            return new MemoryOperand(dataWidth ?? PrimitiveType.Word16)
+            {
+                Base = reg,
+                Offset = offset
+            };
         }
 
         public override Msp430Instruction CreateInvalidInstruction()
@@ -372,11 +378,8 @@ namespace Reko.Arch.Msp430
 
         public override Msp430Instruction NotYetImplemented(uint uInstr, string message)
         {
-            var hexBytes = $"{(byte) uInstr:X2}{uInstr >> 2:X2}";
-            EmitUnitTest("MSP430", hexBytes, message, "MSP430Dis", Address.Ptr16(0x4000), w =>
-            {
-                w.WriteLine($"    AssertCode(\"@@@\", \"{hexBytes}\");");
-            });
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("MSP430Dis", this.addr, this.rdr, message);
             return CreateInvalidInstruction();
         }
 

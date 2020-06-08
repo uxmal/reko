@@ -33,18 +33,20 @@ namespace Reko.Core.Machine
     /// instructions. This convenience class lets implementors focus on the
     /// important method, DisassembleInstruction.
     /// </summary>
-    /// <typeparam name="TInstr"></typeparam>
-    public abstract class DisassemblerBase<TInstr, TMnemonic> : IDisposable, IEnumerable<TInstr>
+    /// <remarks>
+    /// All methods and properties that are specific to the instruction type 
+    /// <typeparamref name="TInstr"/> should go here.
+    /// </remarks>
+    public abstract class DisassemblerBase<TInstr, TMnemonic> : DisassemblerBase, IEnumerable<TInstr>
         where TInstr : MachineInstruction
     {
         public IEnumerator<TInstr> GetEnumerator()
         {
             for (;;)
             {
-                TInstr instr = DisassembleInstruction();
+                TInstr? instr = DisassembleInstruction();
                 if (instr == null)
                     break;
-                Debug.Assert(instr.Operands != null);   //$REVIEW: when we switch to C# 8.0 perhaps we don't need this?
                 yield return instr;
             }
         }
@@ -64,76 +66,13 @@ namespace Reko.Core.Machine
         /// </remarks>
         /// <returns>Return a disassembled machine instruction, or null
         /// if the end of the reader has been reached</returns>
-        public abstract TInstr DisassembleInstruction();
+        public abstract TInstr? DisassembleInstruction();
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        ~DisassemblerBase()
-        {
-            Dispose(false);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-
-        }
-
-
-        public virtual TInstr NotYetImplemented(uint wInstr, string message)
-        {
-            return CreateInvalidInstruction();
-        }
-
-        private static readonly Dictionary<string, HashSet<string>> seen =
-            new Dictionary<string, HashSet<string>>();
-
-        /// <summary>
-        /// Emits the text of a unit test that can be pasted into the unit tests 
-        /// for a disassembler.
-        /// </summary>
-        [Conditional("DEBUG")]
-        protected void EmitUnitTest(
-            string archName, 
-            string instrHexBytes,
-            string message,
-            string testPrefix, 
-            Address addrInstr,
-            Action<TextWriter> testBodyGenerator)
-        {
-            //$REVIEW: not thread safe.
-            if (!seen.TryGetValue(archName, out var archSeen))
-            {
-                archSeen = new HashSet<string>();
-                seen.Add(archName, archSeen);
-            }
-            if (archSeen.Contains(instrHexBytes))
-                return;
-            archSeen.Add(instrHexBytes);
-
-            var writer = new StringWriter();
-            writer.Write("// Reko: a decoder for {0} instruction {1} at address {2} has not been implemented.", archName, instrHexBytes, addrInstr);
-            if (!string.IsNullOrEmpty(message))
-            {
-                writer.Write(" ({0})", message);
-            }
-            writer.WriteLine();
-            writer.WriteLine("[Test]");
-            writer.WriteLine("public void {0}_{1}()", testPrefix, instrHexBytes);
-            writer.WriteLine("{");
-            testBodyGenerator(writer);
-            writer.WriteLine("}");
-
-            Debug.WriteLine(writer.ToString());
-            Console.Out.WriteLine(writer.ToString());
-        }
+        public abstract TInstr NotYetImplemented(uint wInstr, string message);
 
         public virtual TInstr MakeInstruction(InstrClass iclass, TMnemonic mnemonic)
         {
-            return null;
+            return default!;
         }
 
         public abstract TInstr CreateInvalidInstruction();
@@ -286,4 +225,26 @@ namespace Reko.Core.Machine
             return fields.Select(f => new Bitfield(f.pos, f.len)).ToArray();
         }
     }
+
+    /// <summary>
+    /// Base class that implementes <see cref="IDisposable"/> and the  type-agnostic <see cref="EmitUnitTest(string, string, string, string, Address, Action{TextWriter})"/>
+    /// method.
+    /// </summary>
+    public class DisassemblerBase : IDisposable
+    {
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~DisassemblerBase()
+        {
+            Dispose(false);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+        }
+            }
 }

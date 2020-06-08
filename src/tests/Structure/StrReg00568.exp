@@ -2,7 +2,7 @@
 // Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
-	Mem14[ds:0x0049:word16] = fn0C00_000B(0x0045, ds)
+	Mem14[ds:0x49<16>:word16] = fn0C00_000B(0x45<16>, ds)
 	return
 	// succ:  fn0C00_0000_exit
 l0C00_0000:
@@ -10,7 +10,7 @@ fn0C00_0000_exit:
 
 void fn0C00_0000(selector ds)
 {
-	Mem14[ds:0x0049:word16] = fn0C00_000B(0x0045, ds);
+	Mem14[ds:0x49<16>:word16] = fn0C00_000B(0x45<16>, ds);
 }
 ===========================
 // fn0C00_000B
@@ -19,39 +19,39 @@ word16 fn0C00_000B(word16 si, selector ds)
 fn0C00_000B_entry:
 	// succ:  l0C00_000B
 l0C00_000B:
-	word16 dx_38 = 0x0000
-	word16 cx_17 = 0x0000
-	branch Mem0[ds:si:byte] != 0x2D l0C00_001B
+	word16 dx_38 = 0<16>
+	word16 cx_17 = 0<16>
+	branch Mem0[ds:si:byte] != 0x2D<8> l0C00_001B
 	// succ:  l0C00_0016 l0C00_001B
 l0C00_0016:
-	si = si + 0x0001
-	cx_17 = 0xFFFF
+	si = si + 1<16>
+	cx_17 = 0xFFFF<16>
 	goto l0C00_0021
 	// succ:  l0C00_0021
 l0C00_001B:
-	branch Mem0[ds:si:byte] != 0x2B l0C00_0021
+	branch Mem0[ds:si:byte] != 0x2B<8> l0C00_0021
 	// succ:  l0C00_0020 l0C00_0021
 l0C00_0020:
-	si = si + 0x0001
+	si = si + 1<16>
 	// succ:  l0C00_0021
 l0C00_0021:
 	byte al_22 = Mem0[ds:si:byte]
-	si = si + 0x0001
-	branch al_22 == 0x00 l0C00_003C
+	si = si + 1<i16>
+	branch al_22 == 0<8> l0C00_003C
 	// succ:  l0C00_0026 l0C00_003C
 l0C00_0026:
-	branch al_22 <u 0x30 l0C00_003C
+	branch al_22 <u 0x30<8> l0C00_003C
 	// succ:  l0C00_002A l0C00_003C
 l0C00_002A:
-	word16 ax_49 = (uint16) (uint8) (al_22 - 0x30)
-	branch al_22 >u 0x39 l0C00_003C
+	word16 ax_49 = (uint16) (uint8) (al_22 - 0x30<8>)
+	branch al_22 >u 0x39<8> l0C00_003C
 	// succ:  l0C00_002E l0C00_003C
 l0C00_002E:
-	dx_38 = dx_38 * 0x000A + ax_49
+	dx_38 = dx_38 * 0xA<16> + ax_49
 	goto l0C00_0021
 	// succ:  l0C00_0021
 l0C00_003C:
-	branch cx_17 >= 0x0000 l0C00_0042
+	branch cx_17 >= 0<16> l0C00_0042
 	// succ:  l0C00_0040 l0C00_0042
 l0C00_0040:
 	dx_38 = -dx_38
@@ -63,27 +63,27 @@ fn0C00_000B_exit:
 
 word16 fn0C00_000B(word16 si, selector ds)
 {
-	word16 dx_38 = 0x0000;
-	word16 cx_17 = 0x0000;
-	if (Mem0[ds:si:byte] == 0x2D)
+	word16 dx_38 = 0<16>;
+	word16 cx_17 = 0<16>;
+	if (Mem0[ds:si:byte] == 0x2D<8>)
 	{
 		++si;
-		cx_17 = 0xFFFF;
+		cx_17 = 0xFFFF<16>;
 	}
-	else if (Mem0[ds:si:byte] == 0x2B)
+	else if (Mem0[ds:si:byte] == 0x2B<8>)
 		++si;
 	while (true)
 	{
 		byte al_22 = Mem0[ds:si:byte];
 		++si;
-		if (al_22 == 0x00 || al_22 <u 0x30)
+		if (al_22 == 0<8> || al_22 <u 0x30<8>)
 			break;
-		word16 ax_49 = (uint16) (uint8) (al_22 - 0x30);
-		if (al_22 >u 0x39)
+		word16 ax_49 = (uint16) (uint8) (al_22 - 0x30<8>);
+		if (al_22 >u 0x39<8>)
 			break;
-		dx_38 = dx_38 * 0x000A + ax_49;
+		dx_38 = dx_38 * 0xA<16> + ax_49;
 	}
-	if (cx_17 < 0x0000)
+	if (cx_17 < 0<16>)
 		dx_38 = -dx_38;
 	return dx_38;
 }

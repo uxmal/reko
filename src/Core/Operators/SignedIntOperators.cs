@@ -35,7 +35,7 @@ namespace Reko.Core.Operators
             if (!ValidArgs(c1, c2))
                 return Constant.Invalid;
 
-            return Constant.Bool(c1.ToInt32() < c2.ToInt32());
+            return Constant.Bool(c1.ToInt64() < c2.ToInt64());
 		}
 
         public override Operator Negate() => Gt;
@@ -50,7 +50,7 @@ namespace Reko.Core.Operators
             if (!ValidArgs(c1, c2))
                 return Constant.Invalid;
 
-            return Constant.Bool(c1.ToInt32() > c2.ToInt32());
+            return Constant.Bool(c1.ToInt64() > c2.ToInt64());
 		}
 
         public override Operator Negate() => Lt;
@@ -65,7 +65,7 @@ namespace Reko.Core.Operators
             if (!ValidArgs(c1, c2))
                 return Constant.Invalid;
 
-            return Constant.Bool(c1.ToInt32() <= c2.ToInt32());
+            return Constant.Bool(c1.ToInt64() <= c2.ToInt64());
         }
 
         public override Operator Negate() => Ge;
@@ -80,7 +80,7 @@ namespace Reko.Core.Operators
             if (!ValidArgs(c1, c2))
                 return Constant.Invalid;
 
-            return Constant.Bool(c1.ToInt32() >= c2.ToInt32());
+            return Constant.Bool(c1.ToInt64() >= c2.ToInt64());
         }
 
         public override Operator Negate() => Le;

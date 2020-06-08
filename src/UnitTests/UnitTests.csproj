@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(ProjectDir)..\Drivers\Common.items" />
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -21,6 +22,7 @@
     <ProjectReference Include="..\Arch\Blackfin\Blackfin.csproj" />
     <ProjectReference Include="..\Arch\Cil\Cil.csproj" />
     <ProjectReference Include="..\Arch\Cray\Cray.csproj" />
+    <ProjectReference Include="..\Arch\H8\H8.csproj" />
     <ProjectReference Include="..\Arch\i8051\i8051.csproj" />
     <ProjectReference Include="..\Arch\LatticeMico\LatticeMico.csproj" />
     <ProjectReference Include="..\Arch\M6800\M6800.csproj" />
@@ -66,7 +68,7 @@
     <ProjectReference Include="..\Environments\Trs80\Trs80.csproj" />
     <ProjectReference Include="..\Environments\Wii\Wii.csproj" />
     <ProjectReference Include="..\Environments\Windows\Windows.csproj" />
-    <ProjectReference Include="..\Environments\Xbox360\Xbox360.csproj" />
+    <ProjectReference Include="..\Environments\Xbox\Xbox.csproj" />
     <ProjectReference Include="..\Environments\ZX81\ZX81.csproj" />
     <ProjectReference Include="..\Gui\Gui.csproj" />
     <ProjectReference Include="..\ImageLoaders\BinHex\BinHex.csproj" />
@@ -82,42 +84,16 @@
     <ProjectReference Include="..\ImageLoaders\Nro\Nro.csproj" />
     <ProjectReference Include="..\ImageLoaders\OdbgScript\OdbgScript.csproj" />
     <ProjectReference Include="..\ImageLoaders\Omf\Omf.csproj" />
+    <ProjectReference Include="..\ImageLoaders\Srec\Srec.csproj" />
     <ProjectReference Include="..\ImageLoaders\TypeLib\TypeLib.csproj" />
     <ProjectReference Include="..\ImageLoaders\VmsExe\VmsExe.csproj" />
     <ProjectReference Include="..\ImageLoaders\XexLoader\Xex.csproj" />
     <ProjectReference Include="..\Libraries\Libc\Libc.csproj" />
     <ProjectReference Include="..\Libraries\Microchip\Utils\Microchip.Utils.csproj" />
     <ProjectReference Include="..\Libraries\Python\Python.csproj" />
-
- <!--   <ProjectReference Include="..\Native\NativeProxy.csproj" /> -->
+    <ProjectReference Include="..\Native\NativeProxy.csproj" />
     <ProjectReference Include="..\Symbols\LGSymLoader\LGSymLoader.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\*.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\*.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)tools\genPICdb\picdb.zip" />
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.pdb" />
-  </ItemGroup>
-  
-  <!-- <Import Project="$(SolutionDir)Drivers\Common.items" /> -->
-
-  <!-- TODO: Duplicated in Common.items -->
-  <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x86'">
-<!--    
-    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll" />
-    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.pdb" />
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x64'">
-    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll" />
-    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.pdb" />
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X64\capstone.dll" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(OS)' == 'Unix'">
-    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\libArmNative.so" />
--->
-</ItemGroup>
   <ItemGroup>
     <Compile Remove="CmdLine\**" />
     <Compile Remove="WindowsForms\**" />

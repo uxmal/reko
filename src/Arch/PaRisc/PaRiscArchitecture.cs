@@ -33,7 +33,7 @@ namespace Reko.Arch.PaRisc
 {
     public class PaRiscArchitecture : ProcessorArchitecture
     {
-        public PaRiscArchitecture(string archId) : base(archId)
+        public PaRiscArchitecture(IServiceProvider services, string archId) : base(services, archId)
         {
             InstructionBitSize = 32;
             StackRegister = Registers.GpRegs[30];
@@ -100,7 +100,10 @@ namespace Reko.Arch.PaRisc
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            throw new NotImplementedException();
+            if (Registers.RegistersByStorageDomain.TryGetValue(domain, out var reg))
+                return reg;
+            else
+                return null;
         }
 
         public override RegisterStorage GetRegister(string name)

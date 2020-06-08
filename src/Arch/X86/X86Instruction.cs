@@ -32,11 +32,6 @@ namespace Reko.Arch.X86
     /// </summary>
     public class X86Instruction : MachineInstruction
 	{
-        private const InstrClass CondLinear = InstrClass.Conditional | InstrClass.Linear;
-        private const InstrClass CondTransfer = InstrClass.Conditional | InstrClass.Transfer;
-        private const InstrClass LinkTransfer = InstrClass.Call | InstrClass.Transfer;
-        private const InstrClass Transfer = InstrClass.Transfer;
-
 		public Mnemonic Mnemonic { get; set; }  // Instruction mnemonic.
         public int repPrefix;                   // 0 = no prefix, 2 = repnz, 3 = repz
 		public PrimitiveType dataWidth;	        // Width of the data (if it's a word).
@@ -52,10 +47,13 @@ namespace Reko.Arch.X86
 		}
 
         public override int MnemonicAsInteger => (int) Mnemonic;
+        public override string MnemonicAsString => Mnemonic.ToString();
 
-		private bool NeedsExplicitMemorySize()
+        private bool NeedsExplicitMemorySize()
 		{
-			if (Mnemonic == Mnemonic.movsx || Mnemonic == Mnemonic.movzx)
+			if (Mnemonic == Mnemonic.movsx ||
+                Mnemonic == Mnemonic.movzx ||
+                Mnemonic == Mnemonic.movsxd)
 				return true;
             if (Mnemonic == Mnemonic.lea ||
                 Mnemonic == Mnemonic.lds ||
@@ -85,21 +83,9 @@ namespace Reko.Arch.X86
                 writer.WriteChar(' ');
             }
 
-            string s = Mnemonic.ToString();
+            var s = new StringBuilder(Mnemonic.ToString());
 			switch (Mnemonic)
 			{
-			case Mnemonic.cwd:
-				if (dataWidth == PrimitiveType.Word32)
-				{
-					s = "cdq";
-				}
-				break;
-			case Mnemonic.cbw:
-				if (dataWidth == PrimitiveType.Word32)
-				{
-					s = "cwde";
-				}
-				break;
 			case Mnemonic.ins:
 			case Mnemonic.outs:
 			case Mnemonic.movs:
@@ -109,15 +95,15 @@ namespace Reko.Arch.X86
 			case Mnemonic.scas:
 				switch (dataWidth.Size)
 				{
-				case 1: s += 'b'; break;
-				case 2: s += 'w'; break;
-				case 4: s += 'd'; break;
-				case 8: s += 'q'; break;
+				case 1: s.Append('b'); break;
+				case 2: s.Append('w'); break;
+				case 4: s.Append('d'); break;
+				case 8: s.Append('q'); break;
                 default: throw new ArgumentOutOfRangeException();
 				}
 				break;
 			}
-			writer.WriteMnemonic(s);
+			writer.WriteMnemonic(s.ToString());
 
             if (NeedsExplicitMemorySize())
             {

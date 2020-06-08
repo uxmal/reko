@@ -198,8 +198,7 @@ namespace Reko.Arch.Pdp11
 
         private Expression RewriteJmpSrc(MachineOperand op)
         {
-            var memOp = op as MemoryOperand;
-            if (memOp == null)
+            if (!(op is MemoryOperand memOp))
             {
                 // PDP-11 always has a memory reference 
                 // for the destination of a transfer instruction.
@@ -254,7 +253,7 @@ namespace Reko.Arch.Pdp11
                 {
                     var offset = (short)memOp.EffectiveAddress;
                     var addrBase = (long)instr.Address.ToLinear() + instr.Length;
-                    var addr = Constant.Word16((ushort) (addrBase + offset));
+                    var addr = m.Ptr16((ushort) (addrBase + offset));
                     return m.Mem(
                         PrimitiveType.Word16,
                         addr);
@@ -303,7 +302,9 @@ namespace Reko.Arch.Pdp11
             case AddressOperand addrOp:
                 return addrOp.Address;
             case MemoryOperand memOp:
-                var r = binder.EnsureRegister(memOp.Register);
+                var r = memOp.Register != null
+                    ? binder.EnsureRegister(memOp.Register)
+                    : null;
                 var tmp = binder.CreateTemporary(op.Width);
                 switch (memOp.Mode)
                 {
@@ -384,7 +385,9 @@ namespace Reko.Arch.Pdp11
                 m.Assign(dst, src);
                 return dst;
             case MemoryOperand memOp:
-                var r = binder.EnsureRegister(memOp.Register);
+                var r = memOp.Register != null
+                    ? binder.EnsureRegister(memOp.Register)
+                    : null;
                 Expression tmp = MaybeAssignTmp(gen(src));
                 switch (memOp.Mode)
                 {
@@ -492,7 +495,9 @@ namespace Reko.Arch.Pdp11
                 m.Assign(dst, gen(dst, src));
                 return dst;
             case MemoryOperand memOp:
-                var r = binder.EnsureRegister(memOp.Register);
+                var r = memOp.Register != null
+                    ? binder.EnsureRegister(memOp.Register)
+                    : null;
                 var tmp = binder.CreateTemporary(dasm.Current.DataWidth);
                 switch (memOp.Mode)
                 {

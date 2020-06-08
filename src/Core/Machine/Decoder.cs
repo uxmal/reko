@@ -43,7 +43,7 @@ namespace Reko.Core.Machine
         [Conditional("DEBUG")]
         public static void DumpMaskedInstruction(uint wInstr, uint shMask, TMnemonic mnemonic)
         {
-            DumpMaskedInstruction(wInstr, shMask, mnemonic.ToString());
+            DumpMaskedInstruction(wInstr, shMask, mnemonic!.ToString());
         }
 
         [Conditional("DEBUG")]
@@ -77,7 +77,8 @@ namespace Reko.Core.Machine
             {
                 sb.AppendFormat(" {0}", tag);
             }
-            Debug.Print(sb.ToString());
+            Debug.WriteLine(sb.ToString());
+            Console.WriteLine(sb.ToString());
         }
     }
 

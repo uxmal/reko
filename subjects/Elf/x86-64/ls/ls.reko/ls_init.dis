@@ -7,7 +7,7 @@ void _init()
 // Preserved: rsp
 _init_entry:
 l0000000000402168:
-	branch __gmon_start__ == 0x0000000000000000 l000000000040217D
+	branch __gmon_start__ == 0<64> l000000000040217D
 l0000000000402178:
 	call __gmon_start__ (retsize: 8;)
 l000000000040217D:

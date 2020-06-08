@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ namespace Reko.Typing
 		/// <summary>
 		/// <paramref>exp</paramref> has the data type <paramref>dataType</paramref>
 		/// </summary>
-        DataType DataTypeTrait(Expression exp, DataType dataType);
+        DataType DataTypeTrait(Expression exp, DataType? dataType);
 
 		/// <summary>
 		/// The types <paramref>exp1</paramref> and <paramref>exp2</paramref> are assignable
@@ -65,16 +65,16 @@ namespace Reko.Typing
 		/// <param name="structPtrSize">Size of the pointer associated with the structure field reference.</param>
 		/// <param name="eField">Type variable for the field.</param>
 		/// <param name="offset">Field offset within the structure (in bytes).</param>
-        DataType MemAccessTrait(Expression eBase, Expression eStruct, int structPtrSize, Expression eField, int offset);
-        DataType MemFieldTrait(Expression eBase, Expression eStruct, Expression eField, int offset);
+        DataType MemAccessTrait(Expression? eBase, Expression eStruct, int structPtrSize, Expression eField, int offset);
+        DataType MemFieldTrait(Expression? eBase, Expression eStruct, Expression eField, int offset);
 
 		/// <summary>
 		/// <paramref>tStruct</paramref> has an array at offset <paramref>offset</paramref> whose elementsize is <paramref>elementSize</paramref>
 		/// and consists of <paramref>length items</paramref>.
 		/// </summary>
-		DataType MemAccessArrayTrait(Expression tBase, Expression tStruct, int structPtrSize, int offset, int elementSize, int length, Expression tField);
+		DataType MemAccessArrayTrait(Expression? tBase, Expression tStruct, int structPtrSize, int offset, int elementSize, int length, Expression tField);
 
-		DataType MemSizeTrait(Expression tBase, Expression tStruct, int size);
+		DataType MemSizeTrait(Expression? tBase, Expression tStruct, int size);
 		DataType PointerTrait(Expression tPointer, int ptrSize, Expression tPointee);
 	}
 }

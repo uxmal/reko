@@ -28,12 +28,12 @@ namespace Reko.Core.Configuration
 {
     public class TypeLibraryDefinition
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public string Architecture { get; set; }
+        public string? Architecture { get; set; }
 
-        public string Module { get; set; }
+        public string? Module { get; set; }
 
-        public string Loader { get; set; }
+        public string? Loader { get; set; }
     }
 }

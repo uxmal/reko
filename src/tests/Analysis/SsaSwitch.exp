@@ -3,15 +3,15 @@ fp:fp
     uses: sp_2 = fp
 sp_2: orig: sp
     def:  sp_2 = fp
-    uses: sp_4 = sp_2 - 2
+    uses: sp_4 = sp_2 - 2<i16>
 Top_3: orig: Top
-    def:  Top_3 = 0
+    def:  Top_3 = 0<i8>
     uses: use Top_3
 sp_4: orig: sp
-    def:  sp_4 = sp_2 - 2
+    def:  sp_4 = sp_2 - 2<i16>
     uses: Mem7[ss:sp_4:word16] = cs
           ds_8 = Mem7[ss:sp_4:selector]
-          sp_9 = sp_4 + 2
+          sp_9 = sp_4 + 2<i16>
 cs:cs
     def:  def cs
     uses: Mem7[ss:sp_4:word16] = cs
@@ -28,18 +28,18 @@ ds_8: orig: ds
     uses: bl_11 = Mem7[ds_8:si:byte]
           use ds_8
 sp_9: orig: sp
-    def:  sp_9 = sp_4 + 2
+    def:  sp_9 = sp_4 + 2<i16>
     uses: use sp_9
 si:si
     def:  def si
     uses: bl_11 = Mem7[ds_8:si:byte]
 bl_11: orig: bl
     def:  bl_11 = Mem7[ds_8:si:byte]
-    uses: SCZO_12 = cond(bl_11 - 0x02)
+    uses: SCZO_12 = cond(bl_11 - 2<8>)
           bx_18 = SEQ(bh_15, bl_11) (alias)
           bx_28 = SEQ(bh, bl_11) (alias)
 SCZO_12: orig: SCZO
-    def:  SCZO_12 = cond(bl_11 - 0x02)
+    def:  SCZO_12 = cond(bl_11 - 2<8>)
     uses: CZ_13 = SLICE(SCZO_12, bool, 2) (alias)
           C_30 = SLICE(SCZO_12, bool, 1) (alias)
           O_34 = SLICE(SCZO_12, bool, 4) (alias)
@@ -49,10 +49,10 @@ CZ_13: orig: CZ
     def:  CZ_13 = SLICE(SCZO_12, bool, 2) (alias)
     uses: branch Test(UGT,CZ_13) l0C00_0023
 ax_14: orig: ax
-    def:  ax_14 = 0x0000
+    def:  ax_14 = 0<16>
     uses: ax_25 = PHI((ax_14, l0C00_0023), (ax_23, l0C00_001B), (ax_22, l0C00_001F), (ax_24, l0C00_0017))
 bh_15: orig: bh
-    def:  bh_15 = 0x00
+    def:  bh_15 = 0<8>
     uses: SZO_16 = cond(bh_15)
           bx_18 = SEQ(bh_15, bl_11) (alias)
 SZO_16: orig: SZO
@@ -80,13 +80,13 @@ bl_21: orig: bl
     def:  bl_21 = SLICE(bx_19, byte, 0) (alias)
     uses: switch (bl_21) { l0C00_0017 l0C00_001B l0C00_001F }
 ax_22: orig: ax
-    def:  ax_22 = 0x0003
+    def:  ax_22 = 3<16>
     uses: ax_25 = PHI((ax_14, l0C00_0023), (ax_23, l0C00_001B), (ax_22, l0C00_001F), (ax_24, l0C00_0017))
 ax_23: orig: ax
-    def:  ax_23 = 0x0002
+    def:  ax_23 = 2<16>
     uses: ax_25 = PHI((ax_14, l0C00_0023), (ax_23, l0C00_001B), (ax_22, l0C00_001F), (ax_24, l0C00_0017))
 ax_24: orig: ax
-    def:  ax_24 = 0x0001
+    def:  ax_24 = 1<16>
     uses: ax_25 = PHI((ax_14, l0C00_0023), (ax_23, l0C00_001B), (ax_22, l0C00_001F), (ax_24, l0C00_0017))
 ax_25: orig: ax
     def:  ax_25 = PHI((ax_14, l0C00_0023), (ax_23, l0C00_001B), (ax_22, l0C00_001F), (ax_24, l0C00_0017))
@@ -154,15 +154,15 @@ fn0C00_0000_entry:
 	def si
 	def bh
 	sp_2 = fp
-	Top_3 = 0
+	Top_3 = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_4 = sp_2 - 2
+	sp_4 = sp_2 - 2<i16>
 	Mem7[ss:sp_4:word16] = cs
 	ds_8 = Mem7[ss:sp_4:selector]
-	sp_9 = sp_4 + 2
+	sp_9 = sp_4 + 2<i16>
 	bl_11 = Mem7[ds_8:si:byte]
-	SCZO_12 = cond(bl_11 - 0x02)
+	SCZO_12 = cond(bl_11 - 2<8>)
 	CZ_13 = SLICE(SCZO_12, bool, 2) (alias)
 	bx_28 = SEQ(bh, bl_11) (alias)
 	C_30 = SLICE(SCZO_12, bool, 1) (alias)
@@ -172,7 +172,7 @@ l0C00_0000:
 	branch Test(UGT,CZ_13) l0C00_0023
 	// succ:  l0C00_0009 l0C00_0023
 l0C00_0009:
-	bh_15 = 0x00
+	bh_15 = 0<8>
 	SZO_16 = cond(bh_15)
 	C_17 = false
 	bx_18 = SEQ(bh_15, bl_11) (alias)
@@ -186,19 +186,19 @@ l0C00_0009:
 	switch (bl_21) { l0C00_0017 l0C00_001B l0C00_001F }
 	// succ:  l0C00_0017 l0C00_001B l0C00_001F
 l0C00_0017:
-	ax_24 = 0x0001
+	ax_24 = 1<16>
 	return
 	// succ:  fn0C00_0000_exit
 l0C00_001B:
-	ax_23 = 0x0002
+	ax_23 = 2<16>
 	return
 	// succ:  fn0C00_0000_exit
 l0C00_001F:
-	ax_22 = 0x0003
+	ax_22 = 3<16>
 	return
 	// succ:  fn0C00_0000_exit
 l0C00_0023:
-	ax_14 = 0x0000
+	ax_14 = 0<16>
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

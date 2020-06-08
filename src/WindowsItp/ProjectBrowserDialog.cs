@@ -3,6 +3,7 @@ using Reko.Core;
 using Reko.Gui;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
+using System.ComponentModel.Design;
 using System.Windows.Forms;
 
 namespace Reko.WindowsItp
@@ -23,8 +24,9 @@ namespace Reko.WindowsItp
             var imageMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
-            var program = new Core.Program(imageMap, arch, new DefaultPlatform(null, arch));
+            var sc = new ServiceContainer();
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
+            var program = new Core.Program(imageMap, arch, new DefaultPlatform(sc, arch));
             var project = new Project { Programs = { program } };
             pbs.Load(project);
         }

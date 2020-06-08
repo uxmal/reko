@@ -26,6 +26,8 @@ namespace Reko.Core
 {
     public static class BytePattern
     {
+        private const string hexDigits = "0123456789ABCDEFabcdef";
+
         /// <summary>
         /// Generate an array of bytes from a string of hexadecimal digits.
         /// </summary>
@@ -43,7 +45,7 @@ namespace Reko.Core
                 char c = sBytes[i];
                 if (BytePattern.TryParseHexDigit(c, out byte b))
                 {
-                    bb = bb | (b << shift);
+                    bb |= (b << shift);
                     shift -= 4;
                     if (shift < 0)
                     {
@@ -75,6 +77,11 @@ namespace Reko.Core
             }
             b = 0;
             return false;
+        }
+
+        public static bool IsHexDigit(char c)
+        {
+            return hexDigits.IndexOf(c) >= 0;
         }
     }
 }

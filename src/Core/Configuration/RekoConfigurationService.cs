@@ -42,9 +42,9 @@ namespace Reko.Core.Configuration
          ICollection<RawFileDefinition> GetRawFiles();
 
          PlatformDefinition GetEnvironment(string envName);
-         IProcessorArchitecture GetArchitecture(string archLabel);
+         IProcessorArchitecture? GetArchitecture(string archLabel);
          ICollection<SymbolSourceDefinition> GetSymbolSources();
-         RawFileDefinition GetRawFile(string rawFileFormat);
+         RawFileDefinition? GetRawFile(string rawFileFormat);
 
          IEnumerable<UiStyleDefinition> GetDefaultPreferences ();
 
@@ -55,7 +55,7 @@ namespace Reko.Core.Configuration
          /// <param name="path"></param>
          /// <returns></returns>
          string GetInstallationRelativePath(params string [] pathComponents);
-        LoaderDefinition GetImageLoader(string loader);
+         LoaderDefinition? GetImageLoader(string loader);
     }
 
     public class RekoConfigurationService : IConfigurationService
@@ -105,7 +105,7 @@ namespace Reko.Core.Configuration
             {
                 Filename = sSig.Filename,
                 Label = sSig.Label,
-                Type = sSig.Type,
+                TypeName = sSig.TypeName,
             };
         }
 
@@ -129,7 +129,7 @@ namespace Reko.Core.Configuration
                 Description = sOption.Description,
                 Required = sOption.Required,
                 TypeName = sOption.TypeName,
-                Choices = sOption.Choices
+                Choices = sOption.Choices ?? new ListOption_v1[0]
             };
         }
 
@@ -210,7 +210,7 @@ namespace Reko.Core.Configuration
             };
         }
 
-        private EntryPointDefinition LoadEntryPoint(EntryPoint_v1 sEntry)
+        private EntryPointDefinition LoadEntryPoint(EntryPoint_v1? sEntry)
         {
             if (sEntry == null)
             {
@@ -247,7 +247,7 @@ namespace Reko.Core.Configuration
             };
         }
 
-        private List<TDst> LoadCollection<TSrc, TDst>(TSrc[] sItems, Func<TSrc, TDst> fn)
+        private List<TDst> LoadCollection<TSrc, TDst>(TSrc[]? sItems, Func<TSrc, TDst> fn)
         {
             if (sItems == null)
                 return new List<TDst>();
@@ -269,20 +269,18 @@ namespace Reko.Core.Configuration
             var appDir = AppDomain.CurrentDomain.BaseDirectory;
             configFileName = Path.Combine(appDir, configFileName);
 
-            using (var stm = File.Open(configFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
+            using var stm = File.Open(configFileName, FileMode.Open, FileAccess.Read, FileShare.Read);
                 var ser = new XmlSerializer(typeof(RekoConfiguration_v1));
                 var sConfig = (RekoConfiguration_v1)ser.Deserialize(stm);
                 var cfg = new RekoConfigurationService(services, sConfig);
-                return cfg; ;
+                return cfg;
             }
-        }
 
-        private long ConvertNumber(string sNumber)
+        private long ConvertNumber(string? sNumber)
         {
             if (string.IsNullOrEmpty(sNumber))
                 return 0;
-            sNumber = sNumber.Trim();
+            sNumber = sNumber!.Trim();
             if (sNumber.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase))
             {
                 if (Int64.TryParse(
@@ -335,18 +333,20 @@ namespace Reko.Core.Configuration
             return rawFiles;
         }
 
-        public IProcessorArchitecture GetArchitecture(string archLabel)
+        public IProcessorArchitecture? GetArchitecture(string archLabel)
         {
             var elem = GetArchitectures()
                 .Where(e => e.Name == archLabel).SingleOrDefault();
             if (elem == null)
+                return null;
+            if (elem.TypeName == null)
                 return null;
 
             var svc = services.RequireService<IPluginLoaderService>();
             var t = svc.GetType(elem.TypeName);
             if (t == null)
                 return null;
-            var arch = (IProcessorArchitecture)Activator.CreateInstance(t, elem.Name);
+            var arch = (IProcessorArchitecture)Activator.CreateInstance(t, this.services, elem.Name);
             arch.Description = elem.Description;
             return arch;
         }
@@ -370,7 +370,7 @@ namespace Reko.Core.Configuration
             return loaders.FirstOrDefault(ldr => ldr.Label == loaderName);
         }
 
-        public virtual RawFileDefinition GetRawFile(string rawFileFormat)
+        public virtual RawFileDefinition? GetRawFile(string rawFileFormat)
         {
             return GetRawFiles()
                 .Where(r => r.Name == rawFileFormat)

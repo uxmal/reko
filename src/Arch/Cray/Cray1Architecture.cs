@@ -31,7 +31,7 @@ namespace Reko.Arch.Cray
 {
     public class Cray1Architecture : ProcessorArchitecture
     {
-        public Cray1Architecture(string archId) : base(archId)
+        public Cray1Architecture(IServiceProvider services, string archId) : base(services, archId)
         {
             this.Endianness = EndianServices.Big;
             this.FramePointerType = PrimitiveType.Ptr32;

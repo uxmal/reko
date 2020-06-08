@@ -79,11 +79,12 @@ namespace Reko.UnitTests.Arch.X86.Assembler
         private void RunTest(AssemblerFragment fragment, string sExp)
         {
             Address addrBase=  Address.SegPtr(0xC00, 0);
-            X86Assembler asm = new X86Assembler(new X86ArchitectureReal("x86-real-16"), addrBase, new List<ImageSymbol>());
+            X86Assembler asm = new X86Assembler(new X86ArchitectureReal(new ServiceContainer(), "x86-real-16"), addrBase, new List<ImageSymbol>());
             fragment.Build(asm);
             Program lr = asm.GetImage();
             var mem = lr.SegmentMap.Segments.Values.First().MemoryArea;
             X86Disassembler dasm = new X86Disassembler(
+                sc,
                 ProcessorMode.Real,
                 mem.CreateLeReader(mem.BaseAddress),
                 PrimitiveType.Word16,

@@ -15,7 +15,7 @@
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
 	ax = ax ^ ax
@@ -28,11 +28,11 @@ l0C00_0004:
 	SCZO = cond(ax)
 	ax = ax + cx
 	SCZO = cond(ax)
-	cx = cx - 0x0001
-	branch cx != 0x0000 l0C00_0004
+	cx = cx - 1<16>
+	branch cx != 0<16> l0C00_0004
 	// succ:  l0C00_000A l0C00_0004
 l0C00_000A:
-	Mem0[ds:0x0300:word16] = ax
+	Mem0[ds:0x300<16>:word16] = ax
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

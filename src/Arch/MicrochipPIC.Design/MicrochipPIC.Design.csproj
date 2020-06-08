@@ -16,7 +16,4 @@
     <ProjectReference Include="..\..\Libraries\Microchip\Utils\Microchip.Utils.csproj"/>
     <ProjectReference Include="..\Microchip\MicrochipPIC.csproj"/>
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Resources.Extensions" />
-  </ItemGroup>
 </Project>

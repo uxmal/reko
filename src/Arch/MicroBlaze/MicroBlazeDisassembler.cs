@@ -24,6 +24,7 @@ using System.Linq;
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 
 namespace Reko.Arch.MicroBlaze
 {
@@ -59,7 +60,7 @@ namespace Reko.Arch.MicroBlaze
 
 
         /// <summary>
-        /// Create a Reko bitfield using PA Risc bit position and bit length.
+        /// Create a Reko bitfield using big-endian bit position and bit length.
         /// </summary>
         /// <remarks>
         /// PA Risc instruction bits are numbered from the MSB to LSB, but 
@@ -98,11 +99,8 @@ namespace Reko.Arch.MicroBlaze
 
         public override MicroBlazeInstruction NotYetImplemented(uint wInstr, string message)
         {
-            var hex = $"{wInstr:X8}";
-            EmitUnitTest("MicroBlaze", hex, message, "MicroBlazeDis", this.addr, w =>
-            {
-                w.WriteLine("AssertCode(\"@@@\", \"{0}\");", hex);
-            });
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("MicroBlazeDis", this.addr, this.rdr, message);
             return CreateInvalidInstruction();
         }
 

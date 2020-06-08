@@ -10,13 +10,13 @@ word32 fn10000000(word32 dwArg04)
 fn10000000_entry:
 	// succ:  l10000000
 l10000000:
-	branch dwArg04 > 0x00000001 l10000011
+	branch dwArg04 > 1<32> l10000011
 	// succ:  l1000000A l10000011
 l1000000A:
-	return 0x00000001
+	return 1<32>
 	// succ:  fn10000000_exit
 l10000011:
-	return fn10000000(dwArg04 - 0x00000001) + fn10000000(dwArg04 - 0x00000002)
+	return fn10000000(dwArg04 - 1<32>) + fn10000000(dwArg04 - 2<32>)
 	// succ:  fn10000000_exit
 fn10000000_exit:
 

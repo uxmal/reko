@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Structure
 
                 var sa = new StructureAnalysis(new FakeDecompilerEventListener(), program, proc);
                 sa.Structure();
-                CodeFormatter fmt = new CodeFormatter(new TextFormatter(fut.TextWriter));
+                CodeFormatter fmt = proc.CreateCodeFormatter(new TextFormatter(fut.TextWriter));
                 fmt.Write(proc);
                 fut.TextWriter.WriteLine("===========================");
 
@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Structure
 
                     var sa = new StructureAnalysis(new FakeDecompilerEventListener(), program, proc);
                     sa.Structure();
-                    var fmt = new CodeFormatter(new TextFormatter(fut.TextWriter));
+                    var fmt = proc.CreateCodeFormatter(new TextFormatter(fut.TextWriter));
                     fmt.Write(proc);
                     fut.TextWriter.WriteLine("===========================");
                 }
@@ -99,7 +99,7 @@ namespace Reko.UnitTests.Structure
 
                     var sa = new StructureAnalysis(new FakeDecompilerEventListener(), program, proc);
                     sa.Structure();
-                    var fmt = new CodeFormatter(new TextFormatter(fut.TextWriter));
+                    var fmt = proc.CreateCodeFormatter(new TextFormatter(fut.TextWriter));
                     fmt.Write(proc);
                     fut.TextWriter.WriteLine("===========================");
                 }
@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Structure
 
                 var sa = new StructureAnalysis(new FakeDecompilerEventListener(), program, proc);
                 sa.Structure();
-                CodeFormatter fmt = new CodeFormatter(new TextFormatter(fut.TextWriter));
+                CodeFormatter fmt = proc.CreateCodeFormatter(new TextFormatter(fut.TextWriter));
                 fmt.Write(proc);
                 fut.TextWriter.WriteLine("===========================");
 
@@ -136,7 +136,7 @@ namespace Reko.UnitTests.Structure
                 cfgc.Transform();
                 var sa = new StructureAnalysis(new FakeDecompilerEventListener(), program, proc);
                 sa.Structure();
-                var fmt = new CodeFormatter(new TextFormatter(sw));
+                var fmt = proc.CreateCodeFormatter(new TextFormatter(sw));
                 fmt.Write(proc);
                 sw.WriteLine("===");
             }
@@ -159,7 +159,7 @@ namespace Reko.UnitTests.Structure
                 cfgc.Transform();
                 var sa = new StructureAnalysis(new FakeDecompilerEventListener(), program, proc);
                 sa.Structure();
-                var fmt = new CodeFormatter(new TextFormatter(sw));
+                var fmt = proc.CreateCodeFormatter(new TextFormatter(sw));
                 fmt.Write(proc);
                 sw.WriteLine("===");
             }
@@ -298,8 +298,8 @@ ret
 ", Address.Ptr32(0x00400000));
             RunTest(@"void fn00400000(word32 dwArg04)
 {
-	if (dwArg04 != 0x00000000)
-		Mem9[0x00123234:word32] = 0x00006423;
+	if (dwArg04 != 0<32>)
+		Mem9[0x00123234<p32>:word32] = 0x6423<32>;
 }
 ===
 ", program);
@@ -316,27 +316,27 @@ ret
             var sExp =
 @"void fn00100000(word32 dwArg00, word32 dwArg04)
 {
-	Mem11[0x02000000:word32] = fn0010000C(dwArg00, dwArg04);
+	Mem11[0x02000000<p32>:word32] = fn0010000C(dwArg00, dwArg04);
 }
 ===
 word32 fn0010000C(word32 dwArg04, word32 dwArg08)
 {
-	word32 ecx_11 = Mem7[dwArg04 + 0x0000003C:word32] + dwArg04;
-	word32 esi_19 = (word32) Mem18[ecx_11 + 0x00000006:word16];
-	word32 edx_20 = 0x00000000;
-	word32 eax_23 = (word32) Mem7[ecx_11 + 0x00000014:word16] + 0x00000012 + ecx_11;
-	if (esi_19 >u 0x00000000)
+	word32 ecx_11 = Mem7[dwArg04 + 0x3C<32>:word32] + dwArg04;
+	word32 esi_19 = (word32) Mem18[ecx_11 + 6<32>:word16];
+	word32 edx_20 = 0<32>;
+	word32 eax_23 = (word32) Mem7[ecx_11 + 0x14<32>:word16] + 0x12<32> + ecx_11;
+	if (esi_19 >u 0<32>)
 	{
 		do
 		{
-			word32 ecx_31 = Mem22[eax_23 + 0x0000000C:word32];
-			if (dwArg08 >=u ecx_31 && dwArg08 <u Mem22[eax_23 + 0x00000008:word32] + ecx_31)
+			word32 ecx_31 = Mem22[eax_23 + 0xC<32>:word32];
+			if (dwArg08 >=u ecx_31 && dwArg08 <u Mem22[eax_23 + 8<32>:word32] + ecx_31)
 				return eax_23;
 			++edx_20;
-			eax_23 += 0x00000028;
+			eax_23 += 0x28<32>;
 		} while (edx_20 <u esi_19);
 	}
-	eax_23 = 0x00000000;
+	eax_23 = 0<32>;
 	return eax_23;
 }
 ===

@@ -34,9 +34,9 @@ namespace Reko.Arch.Z80
 {
     public class Z80ProcessorArchitecture : ProcessorArchitecture
     {
-        private Dictionary<uint, FlagGroupStorage> flagGroups;
+        private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public Z80ProcessorArchitecture(string archId) : base(archId)
+        public Z80ProcessorArchitecture(IServiceProvider services, string archId) : base(services, archId)
         {
             this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 8;
@@ -50,7 +50,7 @@ namespace Reko.Arch.Z80
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new Z80Disassembler(imageReader);
+            return new Z80Disassembler(this, imageReader);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
@@ -144,11 +144,10 @@ namespace Reko.Arch.Z80
         public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs)
         {
             ulong mask = regs.Where(b => b != null && b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
-            RegisterStorage[]  subregs;
             if ((mask & reg.BitMask) == reg.BitMask)
                 return reg;
             RegisterStorage rMax = null;
-            if (Registers.SubRegisters.TryGetValue(reg.Domain, out subregs))
+            if (Registers.SubRegisters.TryGetValue(reg.Domain, out RegisterStorage[] subregs))
             {
                 throw new NotImplementedException();
                 //foreach (var subreg in subregs.Values)
@@ -165,8 +164,7 @@ namespace Reko.Arch.Z80
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            FlagGroupStorage f;
-            if (flagGroups.TryGetValue(grf, out f))
+            if (flagGroups.TryGetValue(grf, out FlagGroupStorage f))
             {
                 return f;
             }
@@ -267,7 +265,7 @@ namespace Reko.Arch.Z80
         internal static RegisterStorage[] All;
         internal static Dictionary<StorageDomain, RegisterStorage[]> SubRegisters;
         internal static Dictionary<string, RegisterStorage> regsByName;
-        private static RegisterStorage[] regsByStorage;
+        private readonly static RegisterStorage[] regsByStorage;
 
         static Registers()
         {

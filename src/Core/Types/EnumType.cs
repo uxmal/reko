@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -56,9 +56,12 @@ namespace Reko.Core.Types
             return v.VisitEnum(this);
         }
 
-        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
+        public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
         {
-            return new EnumType(this) { Qualifier = this.Qualifier };
+            return new EnumType(this)
+            {
+                Qualifier = this.Qualifier
+            };
         }
     }
 }

@@ -182,10 +182,9 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 this.InstructionClass = InstrClass.Invalid;
             }
 
-            public override int MnemonicAsInteger
-            {
-                get { throw new NotImplementedException(); }
-            }
+            public override int MnemonicAsInteger => throw new NotImplementedException();
+
+            public override string MnemonicAsString => throw new NotImplementedException();
 
             public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
             {

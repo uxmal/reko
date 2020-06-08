@@ -21,6 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Commands;
 using Reko.UnitTests.Mocks;
@@ -44,7 +45,7 @@ namespace Reko.UnitTests.Gui.Commands
                 SegmentMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute)),
-                Architecture = new FakeArchitecture(),
+                Architecture = new FakeArchitecture(sc),
             };
             program.BuildImageMap();
         }
@@ -53,7 +54,7 @@ namespace Reko.UnitTests.Gui.Commands
         public void Cmasp_Do()
         {
             var addr = Address.SegPtr(0x0C20, 0);
-            var proc = new Procedure(new FakeArchitecture(), "foo", addr, null);
+            var proc = new Procedure(new FakeArchitecture(sc), "foo", addr, null);
             var progaddr = new ProgramAddress(program, addr);
             var dc = new Mock<IDecompiler>();
             var dcSvc = new Mock<IDecompilerService>();

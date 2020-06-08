@@ -65,7 +65,7 @@ namespace Reko.UnitTests.Environments.SegaGenesis
             var cfgSvc = new Mock<IConfigurationService>();
             var openv = new Mock<PlatformDefinition>();
             var diagSvc = new Mock<IDiagnosticsService>();
-            var arch = new M68kArchitecture("m68k");
+            var arch = new M68kArchitecture(sc, "m68k");
             var platform = new SegaGenesisPlatform(sc, arch);
             cfgSvc.Setup(c => c.GetArchitecture("m68k")).Returns(arch);
             cfgSvc.Setup(c => c.GetEnvironment("sega-genesis")).Returns(openv.Object);

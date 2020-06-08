@@ -27,6 +27,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -43,7 +44,7 @@ namespace Reko.UnitTests.Arch.X86
         [SetUp]
         public void Setup()
         {
-            this.arch = new X86ArchitectureFlat32("x86-protected-32");
+            this.arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
             this.frame = arch.CreateFrame();
             this.callee = frame.EnsureRegister(Registers.eax);
         }
@@ -89,7 +90,7 @@ namespace Reko.UnitTests.Arch.X86
                     PrimitiveType.Real64,
                     new FpuStackStorage(1, PrimitiveType.Real64)));
             var instr = fab.CreateInstruction(sigCallee, new ProcedureCharacteristics());
-            Assert.AreEqual("eax(ST[Top:real64], ST[Top + 1:real64])", instr.ToString());
+            Assert.AreEqual("eax(ST[Top:real64], ST[Top + 1<i8>:real64])", instr.ToString());
         }
 
         [Test]
@@ -108,7 +109,7 @@ namespace Reko.UnitTests.Arch.X86
             // Top below refers to the value of Top _before_ the call.
             // Rewriters must remember to emit an instruction to adjust  Top
             // _after_ the call.
-            Assert.AreEqual("ST[Top - 1:real64] = eax()", instr.ToString());
+            Assert.AreEqual("ST[Top - 1<i8>:real64] = eax()", instr.ToString());
         }
     }
 }

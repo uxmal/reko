@@ -1,8 +1,9 @@
-﻿using Reko.Core;
+using Reko.Core;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace Reko.WindowsItp
                 new CoreProgram
                 {
                     //new Decompiler.Arch.X86.X86ArchitectureFlat32("x86-protected-32");
-                    Architecture = new Reko.Arch.PowerPC.PowerPcBe32Architecture("ppc-be-32"),
+                    Architecture = new Reko.Arch.PowerPC.PowerPcBe32Architecture(new ServiceContainer(), "ppc-be-32"),
                     SegmentMap = segmentMap
                 },
                 seg);

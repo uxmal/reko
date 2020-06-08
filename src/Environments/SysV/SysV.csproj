@@ -25,6 +25,6 @@
     <Copy SourceFiles="$(ProjectDir)$(OutDir)\Reko.Environments.SysV.dll" DestinationFolder="$(SolutionDir)tools" />
     <Copy SourceFiles="$(SolutionDir)Arch\X86\bin\$(Configuration)\netstandard2.1\Reko.Arch.X86.dll" DestinationFolder="$(SolutionDir)tools" />
     <Exec Condition=" '$(OS)' == 'Unix' " Command="dotnet &quot;$(SolutionDir)tools/c2xml.dll&quot; -a x86-protected-32 -e elf-neutral %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
-    <Exec Condition=" '$(OS)' != 'Unix' " Command="&quot;$(SolutionDir)tools\c2xml.exe&quot; -a x86-protected-32 -e elf-neutral %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
+    <Exec Condition=" '$(OS)' != 'Unix' " Command="&quot;$(SolutionDir)tools\c2xml.exe&quot; -a x86-protected-32 -e elf-neutral -d gcc %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
   </Target>
 </Project>

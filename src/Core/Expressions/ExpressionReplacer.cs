@@ -1,4 +1,3 @@
-
 #region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
@@ -29,9 +28,9 @@ namespace Reko.Core.Expressions
 {
     public class ExpressionReplacer : ExpressionVisitor<Expression>
     {
-        private ExpressionValueComparer cmp;
-        private Expression original;
-        private Expression replacement;
+        private readonly ExpressionValueComparer cmp;
+        private readonly Expression original;
+        private readonly Expression replacement;
 
         private ExpressionReplacer(Expression original, Expression replacement)
         {
@@ -48,7 +47,7 @@ namespace Reko.Core.Expressions
         public static Expression Replace(Expression original, Expression replacement, Expression root)
         {
             var rep = new ExpressionReplacer(original, replacement);
-            return root?.Accept(rep);
+            return root.Accept(rep);
         }
 
         public Expression VisitAddress(Address addr)
@@ -109,15 +108,6 @@ namespace Reko.Core.Expressions
                 return replacement;
             else
                 return c;
-        }
-
-        public Expression VisitDepositBits(DepositBits d)
-        {
-            if (cmp.Equals(d, original))
-                return replacement;
-            var src = d.Source.Accept(this);
-            var bits = d.InsertedBits.Accept(this);
-            return new DepositBits(src, bits, d.BitPosition);
         }
 
         public Expression VisitDereference(Dereference deref)
@@ -212,11 +202,6 @@ namespace Reko.Core.Expressions
         }
 
         public Expression VisitUnaryExpression(UnaryExpression unary)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static Expression Replace(Expression dst, object srcExpr, Expression jumpTableFormat)
         {
             throw new NotImplementedException();
         }

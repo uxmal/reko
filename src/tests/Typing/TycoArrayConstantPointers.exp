@@ -4,8 +4,8 @@ define Fn
 Fn_entry:
 	// succ:  l1
 l1:
-	a = 0x00123456
-	a[i * 0x00000008] = 0x0000002A
+	a = 0x123456<32>
+	a[i * 8<32>] = 0x2A<32>
 Fn_exit:
 
 // Equivalence classes ////////////
@@ -14,7 +14,7 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 (struct))
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in 0x00123456 : word32)
+T_2: (in 0x123456<32> : word32)
   Class: Eq_2
   DataType: word32
   OrigDataType: word32
@@ -22,7 +22,7 @@ T_3: (in a : word32)
   Class: Eq_2
   DataType: (ptr32 (struct (0 (arr T_9) a0000)))
   OrigDataType: (ptr32 (struct (0 (arr T_9) a0000)))
-T_4: (in 0x0000002A : word32)
+T_4: (in 0x2A<32> : word32)
   Class: Eq_4
   DataType: word32
   OrigDataType: word32
@@ -30,15 +30,15 @@ T_5: (in i : word32)
   Class: Eq_5
   DataType: ui32
   OrigDataType: ui32
-T_6: (in 0x00000008 : word32)
+T_6: (in 8<32> : word32)
   Class: Eq_6
   DataType: ui32
   OrigDataType: ui32
-T_7: (in i * 0x00000008 : word32)
+T_7: (in i * 8<32> : word32)
   Class: Eq_7
   DataType: ui32
   OrigDataType: ui32
-T_8: (in a[i * 0x00000008] : word32)
+T_8: (in a[i * 8<32>] : word32)
   Class: Eq_4
   DataType: word32
   OrigDataType: word32

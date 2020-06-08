@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 
 namespace Reko.Arch.LatticeMico
@@ -81,12 +82,9 @@ namespace Reko.Arch.LatticeMico
 
         public override LatticeMico32Instruction NotYetImplemented(uint wInstr, string message)
         {
-            var hexBytes = wInstr.ToString("X8");
-            EmitUnitTest("LatticeMico32", hexBytes, message, "Lm32Dis", Address.Ptr32(0x00100000), w =>
-            {
-                w.WriteLine("Assert_HexBytes(\"@@@\", \"{0}\");", hexBytes);
-            });
-            return base.NotYetImplemented(wInstr, message);
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("Lm32Dis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         #region Mutators

@@ -26,21 +26,21 @@ fn0C00_0000_entry:
 	def Mem0
 	// succ:  l0C00_0000
 l0C00_0000:
-	di_6 = Mem0[ds:0x0100:word16]
+	di_6 = Mem0[ds:0x100<16>:word16]
 	si_7 = Mem0[ds:di_6:word16]
 	ds_si_8 = SEQ(ds, si_7) (alias)
 	ax_9 = fn0C00_0026(ds_si_8)
-	Mem14[ds:di_6 + 0x0002:word16] = ax_9
-	bx_15 = Mem14[ds:0x0102:word16]
-	si_16 = Mem14[ds:bx_15 + 0x0004:word16]
+	Mem14[ds:di_6 + 2<16>:word16] = ax_9
+	bx_15 = Mem14[ds:0x102<16>:word16]
+	si_16 = Mem14[ds:bx_15 + 4<16>:word16]
 	ds_si_17 = SEQ(ds, si_16) (alias)
 	ax_18 = fn0C00_0026(ds_si_17)
-	Mem23[ds:bx_15 + 0x0008:word16] = ax_18
-	di_24 = Mem23[ds:0x0104:word16]
+	Mem23[ds:bx_15 + 8<16>:word16] = ax_18
+	di_24 = Mem23[ds:0x104<16>:word16]
 	si_25 = Mem23[ds:di_24:word16]
 	ds_si_26 = SEQ(ds, si_25) (alias)
 	ax_27 = fn0C00_0033(ds_si_26)
-	Mem32[ds:di_24 + 0x0002:word16] = ax_27
+	Mem32[ds:di_24 + 2<16>:word16] = ax_27
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -75,9 +75,9 @@ fn0C00_0026_entry:
 	ds = SLICE(ds_si, selector, 16)
 	// succ:  l0C00_0026
 l0C00_0026:
-	di_9 = Mem7[ds:0x0104:word16]
-	v6_10 = Mem7[ds:di_9 + 0x0030:word16] + 0x0001
-	Mem11[ds:di_9 + 0x0030:word16] = v6_10
+	di_9 = Mem7[ds:0x104<16>:word16]
+	v6_10 = Mem7[ds:di_9 + 0x30<16>:word16] + 1<16>
+	Mem11[ds:di_9 + 0x30<16>:word16] = v6_10
 	ax_15 = fn0C00_0033(ds_si)
 	return ax_15
 	// succ:  fn0C00_0026_exit
@@ -110,7 +110,7 @@ fn0C00_0033_entry:
 	// succ:  l0C00_0033
 l0C00_0033:
 	ax_7 = Mem0[ds_si:word16]
-	ax_8 = ax_7 * 0x0002
+	ax_8 = ax_7 * 2<16>
 	return ax_8
 	// succ:  fn0C00_0033_exit
 fn0C00_0033_exit:

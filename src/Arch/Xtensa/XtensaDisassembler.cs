@@ -27,6 +27,7 @@ using System.Text;
 using Reko.Core.Expressions;
 using System.Linq;
 using Reko.Core.Lib;
+using Reko.Core.Services;
 
 #pragma warning disable IDE1006 // Naming Styles
 
@@ -139,15 +140,8 @@ namespace Reko.Arch.Xtensa
 
         public override XtensaInstruction NotYetImplemented(uint wInstr, string message)
         {
-            var len = rdr.Address - this.state.addr;
-            var rdr2 = rdr.Clone();
-            rdr2.Offset -= len;
-            var hexBytes = string.Join("", rdr2.ReadBytes((int) len).Select(b => b.ToString("X2")));
-
-            base.EmitUnitTest("Xtensa", hexBytes, message, "Xtdasm", this.state.addr, w =>
-            {
-                w.WriteLine("AssertCode(\"@@@\", \"{0}\");", hexBytes);
-            });
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("Xtdasm", this.state.addr, this.rdr, message);
             return CreateInvalidInstruction();
         }
 

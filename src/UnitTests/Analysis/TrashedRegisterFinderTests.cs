@@ -30,6 +30,7 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -53,7 +54,7 @@ namespace Reko.UnitTests.Analysis
         public void Setup()
         {
             this.platform = new Mock<IPlatform>();
-            this.arch = new FakeArchitecture();
+            this.arch = new FakeArchitecture(new ServiceContainer());
             this.builder = new ProgramBuilder(arch);
             this.dynamicLinker = new Mock<IDynamicLinker>();
             this.sbExpected = new StringBuilder();
@@ -181,14 +182,14 @@ namespace Reko.UnitTests.Analysis
                 m.Return();
             });
 
-            Expect("main", "Preserved: r63", "Trashed: r1", "Constants: r1:0x00000000");
+            Expect("main", "Preserved: r63", "Trashed: r1", "Constants: r1:0<32>");
             RunTest();
         }
 
         [Test]
         public void TrfSimple()
         {
-            Expect("TrfSimple", "Preserved: r63", "Trashed: r1", "Constants: r1:0x0000002A");
+            Expect("TrfSimple", "Preserved: r63", "Trashed: r1", "Constants: r1:0x2A<32>");
             builder.Add("TrfSimple", m =>
             {
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
@@ -229,8 +230,8 @@ namespace Reko.UnitTests.Analysis
         [Test(Description = "Tests that constants are discovered")]
         public void TrfConstants()
         {
-            Given_Architecture(new Reko.Arch.X86.X86ArchitectureReal("x86-real-16"));
-            Expect("TrfConstants", "Preserved: sp", "Trashed: ds", "Constants: ds:0x0C00");
+            Given_Architecture(new Reko.Arch.X86.X86ArchitectureReal(new ServiceContainer(), "x86-real-16"));
+            Expect("TrfConstants", "Preserved: sp", "Trashed: ds", "Constants: ds:0xC00<16>");
             builder.Add("TrfConstants", m =>
             {
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
@@ -248,7 +249,7 @@ namespace Reko.UnitTests.Analysis
         [Test(Description = "Constant in one branch, not constant in the other")]
         public void TrfConstNonConst()
         {
-            Given_Architecture(new Reko.Arch.X86.X86ArchitectureFlat32("x86-protected-32"));
+            Given_Architecture(new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32"));
             Expect("TrfConstNonConst", "Preserved: esp", "Trashed: cx", "");
             builder.Add("TrfConstNonConst", m =>
             {
@@ -493,7 +494,7 @@ Constants: cl:0x00
                 "TrfFpuReturn",
                 "Preserved: r63",
                 "Trashed: Top",
-                "Constants: Top:0xFF");
+                "Constants: Top:0xFF<8>");
 
             builder.Add("TrfFpuReturn", m =>
             {
@@ -517,7 +518,7 @@ Constants: cl:0x00
                 "TrfFpuReturnTwoValues",
                 "Preserved: r63",
                 "Trashed: Top",
-                "Constants: Top:0xFE");
+                "Constants: Top:0xFE<8>");
 
             builder.Add("TrfFpuReturnTwoValues", m =>
             {
@@ -544,7 +545,7 @@ Constants: cl:0x00
                 "TrfFpuMultiplyAdd",
                 "Preserved: r63",
                 "Trashed: Top",
-                "Constants: Top:0x02");
+                "Constants: Top:2<8>");
             builder.Add("TrfFpuMultiplyAdd", m =>
             {
                 var sp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);
@@ -576,7 +577,7 @@ Constants: cl:0x00
         [Test]
         public void TrfRecursive_duplicate_tails()
         {
-            Given_Architecture(new Reko.Arch.X86.X86ArchitectureFlat32("x86-protected-32"));
+            Given_Architecture(new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32"));
             Given_PlatformTrashedRegisters();
             Expect(
                 "recursive",
@@ -614,7 +615,7 @@ Constants: cl:0x00
         [Test]
         public void TrfFibonacci()
         {
-            Given_Architecture(new Reko.Arch.X86.X86ArchitectureFlat32("x86-protected-32"));
+            Given_Architecture(new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32"));
             Given_PlatformTrashedRegisters();
             Expect(
                 "recursive",
@@ -675,7 +676,7 @@ Constants: cl:0x00
                 "recursive",
                 "Preserved: ",
                 "Trashed: r1",
-                "Constants: r1:0x00000002");
+                "Constants: r1:2<32>");
             builder.Add("recursive", m =>
             {
                 var r1 = m.Reg32("r1", 1);
@@ -724,7 +725,7 @@ Constants: cl:0x00
         [Category(Categories.UnitTests)]
         public void TrfSaveRegistersOnStack_TwoExits()
         {
-            Given_Architecture(new Reko.Arch.X86.X86ArchitectureFlat32("x86-protected-32"));
+            Given_Architecture(new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32"));
             Expect("main", "Preserved: ebp,esp", "Trashed: eax", "");
             builder.Add("main", m =>
             {
@@ -808,7 +809,7 @@ Constants: cl:0x00
             Assert.AreEqual(ebp, ctx.StackState[-4]);
             Assert.AreEqual(esi, ctx.StackState[-8]);
             Assert.AreEqual(edi, ctx.StackState[-12]);
-            Assert.AreEqual("0x00000042", ctx.StackState[-16].ToString());
+            Assert.AreEqual("0x42<32>", ctx.StackState[-16].ToString());
             Assert.AreSame(Constant.Invalid, ctx.StackState[-20]);
         }
 
@@ -842,7 +843,7 @@ Constants: cl:0x00
         [Test(Description = "Part of handling x86 and Z80 sub-registers.")]
         public void TrfDpb()
         {
-            var arch = new Reko.Arch.X86.X86ArchitectureFlat32("x86-protected-32");
+            var arch = new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
             Given_Architecture(arch);
             Expect("main", "Preserved: esp", "Trashed: ecx", "");
             builder.Add("main", m =>
@@ -862,7 +863,7 @@ Constants: cl:0x00
         [Category(Categories.UnitTests)]
         public void TrfWideThenNarrow()
         {
-            var arch = new Reko.Arch.X86.X86ArchitectureFlat32("x86-protected-32");
+            var arch = new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
             Given_Architecture(arch);
             Expect("main", "Preserved: esp", "Trashed: ecx", "");
             builder.Add("main", m =>

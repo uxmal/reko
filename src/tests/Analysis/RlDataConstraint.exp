@@ -10,18 +10,18 @@ fn0C00_0000_entry:
 	def si
 	def Mem0
 l0C00_0000:
-	ax_7 = Mem0[ds:si + 0x0200:word16]
-	Mem8[ds:0x0200:word16] = 0x0000
-	Mem9[ds:0x0300:word16] = ax_7
-	ax_10 = Mem9[ds:si + 0x0202:word16]
-	Mem11[ds:0x0202:word16] = ax_10
-	ax_12 = Mem11[ds:si + 0x0204:word16]
-	v6_13 = Mem11[ds:0x0204:word16] + ax_12
-	Mem14[ds:0x0204:word16] = v6_13
-	ax_16 = Mem14[ds:0x0200:word16]
+	ax_7 = Mem0[ds:si + 0x200<16>:word16]
+	Mem8[ds:0x200<16>:word16] = 0<16>
+	Mem9[ds:0x300<16>:word16] = ax_7
+	ax_10 = Mem9[ds:si + 0x202<16>:word16]
+	Mem11[ds:0x202<16>:word16] = ax_10
+	ax_12 = Mem11[ds:si + 0x204<16>:word16]
+	v6_13 = Mem11[ds:0x204<16>:word16] + ax_12
+	Mem14[ds:0x204<16>:word16] = v6_13
+	ax_16 = Mem14[ds:0x200<16>:word16]
 	call fn0C00_002A (retsize: 2;)
 		uses: ds:ds
-	Mem17[ds:0x0200:word16] = ax_16
+	Mem17[ds:0x200<16>:word16] = ax_16
 	return
 fn0C00_0000_exit:
 // fn0C00_002A /////////////////////
@@ -34,6 +34,6 @@ define fn0C00_002A
 fn0C00_002A_entry:
 	def ds
 l0C00_002A:
-	Mem9[ds:0x0200:word16] = 0xFFFF
+	Mem9[ds:0x200<16>:word16] = 0xFFFF<16>
 	return
 fn0C00_002A_exit:

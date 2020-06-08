@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,20 +30,19 @@ namespace Reko.UnitTests.Typing
     public class StructureFieldMergerTests
     {
         private TypeFactory factory;
-        private StructureFieldMerger sfm;
 
         [SetUp]
         public void Setup()
         {
             factory = new TypeFactory();
-            sfm = new StructureFieldMerger();
         }
         
         [Test]
         public void StrFldMerger_EmptyStruct()
         {
             StructureType str = new StructureType("foo", 0);
-            DataType dt = sfm.Merge(str);
+            var sfm = new StructureFieldMerger(str);
+            DataType dt = sfm.Merge();
             Assert.AreEqual("(struct \"foo\")", dt.ToString());
         }
 
@@ -52,7 +51,8 @@ namespace Reko.UnitTests.Typing
         {
             StructureType str = new StructureType("foo", 0);
             str.Fields.Add(4, PrimitiveType.Word16);
-            DataType dt = sfm.Merge(str);
+            var sfm = new StructureFieldMerger(str);
+            DataType dt = sfm.Merge();
             Assert.AreEqual("(struct \"foo\" (4 word16 w0004))", dt.ToString());
         }
 
@@ -62,7 +62,8 @@ namespace Reko.UnitTests.Typing
             StructureType str = new StructureType("foo", 0);
             str.Fields.Add(4, PrimitiveType.Word16);
             str.Fields.Add(6, PrimitiveType.Word16);
-            DataType dt = sfm.Merge(str);
+            var sfm = new StructureFieldMerger(str);
+            DataType dt = sfm.Merge();
             Assert.AreEqual("(struct \"foo\" (4 word16 w0004) (6 word16 w0006))", dt.ToString());
         }
 
@@ -72,6 +73,7 @@ namespace Reko.UnitTests.Typing
             StructureType str = new StructureType("foo", 0);
             str.Fields.Add(2, PrimitiveType.Word32);
             str.Fields.Add(4, PrimitiveType.Word32);
+            var sfm = new StructureFieldMerger(str);
             foreach (List<StructureField> cluster in sfm.GetOverlappingClusters(str.Fields))
             {
                 Assert.AreEqual(2, cluster.Count);
@@ -87,6 +89,7 @@ namespace Reko.UnitTests.Typing
             str.Fields.Add(2, eq);
             str.Fields.Add(4, PrimitiveType.SegmentSelector);
 
+            var sfm = new StructureFieldMerger(str);
             IEnumerable<List<StructureField>> eb = sfm.GetOverlappingClusters(str.Fields);
             IEnumerator<List<StructureField>> e = eb.GetEnumerator();
             Assert.IsTrue(e.MoveNext());
@@ -101,7 +104,8 @@ namespace Reko.UnitTests.Typing
             fields.Add(new StructureField(0, PrimitiveType.Ptr32));
             fields.Add(new StructureField(0, PrimitiveType.Word16));
             fields.Add(new StructureField(2, PrimitiveType.SegmentSelector));
-            
+
+            var sfm = new StructureFieldMerger(new StructureType());
             DataType dt = sfm.BuildOverlappedStructure(fields);
             Assert.AreEqual("(union (ptr32 u0) ((struct (0 word16 w0000) (2 selector pseg0002)) u1))", dt.ToString());
         }
@@ -114,7 +118,8 @@ namespace Reko.UnitTests.Typing
             EquivalenceClass eq = Eqv(u);
             str.Fields.Add(2, eq);
             str.Fields.Add(4, PrimitiveType.SegmentSelector);
-            StructureType strNew = sfm.Merge(str);
+            var sfm = new StructureFieldMerger(str);
+            StructureType strNew = sfm.Merge();
             Assert.AreEqual("(struct \"foo\" (2 (union (ptr32 u0) ((struct (0 word16 w0000) (2 selector pseg0002)) u1)) u0002))", strNew.ToString());
 
         }

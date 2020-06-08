@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -27,12 +27,13 @@ namespace Reko.Scanning
 {
     public class ImageSymbolWorkItem : WorkItem
     {
-        private IScanner scanner;
-        private Program program;
-        private ImageSymbol sym;
-        private bool isEntryPoint;
+        private readonly IScanner scanner;
+        private readonly Program program;
+        private readonly ImageSymbol sym;
+        private readonly bool isEntryPoint;
 
-        public ImageSymbolWorkItem(IScanner scanner, Program program, ImageSymbol sym, bool isEntryPoint) : base(sym.Address)
+        public ImageSymbolWorkItem(IScanner scanner, Program program, ImageSymbol sym, bool isEntryPoint) 
+            : base(sym.Address!)
         {
             this.scanner = scanner;
             this.program = program;
@@ -48,7 +49,7 @@ namespace Reko.Scanning
         public override string ToString()
         {
             return string.Format("Symbol: {0}{1}",
-                sym.Name ?? sym.Address.ToString(),
+                sym.Name ?? sym.Address!.ToString(),
                 isEntryPoint ? " entry" : "");
         }
     }

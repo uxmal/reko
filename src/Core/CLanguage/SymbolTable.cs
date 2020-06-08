@@ -96,7 +96,7 @@ namespace Reko.Core.CLanguage
             foreach (var declarator in decl.init_declarator_list)
             {
                 var nt = ntde.GetNameAndType(declarator.Declarator);
-                var serType = nt.DataType;
+                var serType = nt.DataType!;
 
                 if (nt.DataType is SerializedSignature sSig)
                 {
@@ -133,7 +133,7 @@ namespace Reko.Core.CLanguage
                     };
                     Types.Add(typedef);
                     //$REVIEW: do we really need to check for consistence?
-                    NamedTypes[typedef.Name] = serType;
+                    NamedTypes[typedef.Name!] = serType;
                     types.Add(serType);
                 }
             }

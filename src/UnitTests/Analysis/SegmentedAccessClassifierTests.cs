@@ -79,7 +79,7 @@ namespace Reko.UnitTests.Analysis
 
 		public class Mp3 : ProcedureBuilder
 		{
-			// ds is used both as ds:[bx+4] and ds:[0x3000], which means
+			// ds is used both as ds:[bx+4] and ds:[0x3000<16>], which means
 			// it isn't strongly associated with  any register.
 
 			protected override void BuildBody()
@@ -174,7 +174,7 @@ namespace Reko.UnitTests.Analysis
             Identifier bx = ssa.Identifiers.Where(s => s.Identifier.Name == "bx").Single().Identifier;
 			Assert.AreEqual("bx", bx.Name);
 			Identifier a = mpc.AssociatedIdentifier(ds);
-			Assert.IsNull(a, "ds is used both as ds:[bx+4] and ds:[0x3000], it should't be strongly associated with a register");
+			Assert.IsNull(a, "ds is used both as ds:[bx+4] and ds:[0x3000<16>], it should't be strongly associated with a register");
 		}
 	}
 }

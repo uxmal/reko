@@ -49,10 +49,10 @@ namespace Reko.Core
         }
 
         // 'Oracular' information provided by the user.
-        public string Loader { get; set; }
-        public string Processor { get; set; }
-        public string Environment { get; set; }
-        public Address LoadAddress { get; set; }
+        public string? Loader { get; set; }
+        public string? Processor { get; set; }
+        public string? Environment { get; set; }
+        public Address? LoadAddress { get; set; }
         public SortedList<Address, Serialization.Procedure_v1> Procedures { get; set; }
         public SortedList<Address, UserCallData> Calls { get; set; }
         public SortedList<Address, Serialization.GlobalDataItem_v2> Globals { get; set; }
@@ -64,7 +64,7 @@ namespace Reko.Core
         /// <summary>
         /// A script to run after the image is loaded.
         /// </summary>
-        public Serialization.Script_v2 OnLoadedScript { get; set; }
+        public Serialization.Script_v2? OnLoadedScript { get; set; }
 
         /// <summary>
         /// Scanning heuristics to try.
@@ -72,9 +72,10 @@ namespace Reko.Core
         public SortedSet<string> Heuristics { get; set; }
 
         /// <summary>
-        /// Text encoding to use to interpret strings.
+        /// Text encoding to use to interpret strings. If none is specified,
+        /// use the host platform's encoding.
         /// </summary>
-        public Encoding TextEncoding { get; set; }
+        public Encoding? TextEncoding { get; set; }
 
         /// <summary>
         /// Users can set register values at any location.
@@ -114,7 +115,7 @@ namespace Reko.Core
         /// <summary>
         /// Selects the policy to use when generating output files.
         /// </summary>
-        public string OutputFilePolicy { get; set; }
+        public string? OutputFilePolicy { get; set; }
     }
 
     public class Annotation
@@ -134,22 +135,22 @@ namespace Reko.Core
     /// </summary>
     public class UserCallData
     {
-        public Address Address { get; set; } // The address of the call.
+        public Address? Address { get; set; } // The address of the call.
 
-        public string Comment { get; set; }
+        public string? Comment { get; set; }
 
         public bool NoReturn { get; set; }
 
-        public FunctionType Signature { get; set; }
+        public FunctionType? Signature { get; set; }
     }
 
     public class UserIndirectJump
     {
-        public Address Address { get; set; } // the address of the jump
+        public Address? Address { get; set; } // the address of the jump
 
-        public RegisterStorage IndexRegister { get; set; }  // Index register used in jump
+        public RegisterStorage? IndexRegister { get; set; }  // Index register used in jump
 
-        public ImageMapVectorTable Table { get; set; } // Table of destinations
+        public ImageMapVectorTable? Table { get; set; } // Table of destinations
     }
 
     /// <summary>
@@ -157,15 +158,15 @@ namespace Reko.Core
     /// </summary>
     public class UserSegment
     {
-        public Address Address { get; set; } // the start address of the segment.
+        public Address? Address { get; set; } // the start address of the segment.
 
         public ulong Offset { get; set; }   // the file offset from which this segment was loaded.
 
         public uint Length { get; set; }    // The length of the segment in addressable units (bytes on a byte oriented machine)
 
-        public string Name { get; set; }    // User provided name
+        public string? Name { get; set; }    // User provided name
 
-        public IProcessorArchitecture Architecture { get; set; }
+        public IProcessorArchitecture? Architecture { get; set; }
 
         public AccessMode AccessMode { get; set; }
     }

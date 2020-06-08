@@ -23,6 +23,7 @@ using Reko.Arch.RiscV;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -34,7 +35,7 @@ namespace Reko.UnitTests.Arch.RiscV
     {
         public RiscVDisassemblerTests()
         {
-            this.Architecture = new RiscVArchitecture("riscV");
+            this.Architecture = new RiscVArchitecture(new ServiceContainer(), "riscV");
             this.LoadAddress = Address.Ptr32(0x00100000);
         }
 
@@ -44,19 +45,8 @@ namespace Reko.UnitTests.Arch.RiscV
 
         private void AssertCode(string sExp, uint uInstr)
         {
-            //DumpWord(uInstr);
             var i = DisassembleWord(uInstr);
             Assert.AreEqual(sExp, i.ToString());
-        }
-         
-        private void DumpWord(uint uInstr)
-        {
-            var sb = new StringBuilder();
-            for (uint m = 0x80000000; m != 0; m >>= 1)
-            {
-                sb.Append((uInstr & m) != 0 ? '1' : '0');
-            }
-            Debug.Print("AssertCode(\"@@@\", \"{0}\");", sb);
         }
 
         private void AssertCode(string sExp, string bits)

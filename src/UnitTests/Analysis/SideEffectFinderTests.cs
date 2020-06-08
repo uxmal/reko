@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -60,12 +61,12 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void SefApplication()
 		{
-			var p = new Procedure(new FakeArchitecture(), "foo", Address.Ptr32(0x00123400), null);
+			var p = new Procedure(new FakeArchitecture(new ServiceContainer()), "foo", Address.Ptr32(0x00123400), null);
 			var a = new Application(
 				new ProcedureConstant(PrimitiveType.Ptr32, p), 
 				PrimitiveType.Word32,
 				Constant.Word32(3));
-			Assert.AreEqual("foo(0x00000003)", a.ToString());
+			Assert.AreEqual("foo(3<32>)", a.ToString());
 			Assert.IsTrue(sef.HasSideEffect(a));
 		}
 
@@ -75,8 +76,8 @@ namespace Reko.UnitTests.Analysis
 			Procedure proc = new ConstrainedMock().Procedure;
             Statement def = proc.EntryBlock.Succ[0].Statements[0];
             Statement use = proc.EntryBlock.Succ[0].Statements[2];
-			Assert.AreEqual("id = bar(3)", def.Instruction.ToString());
-			Assert.AreEqual("Mem0[0x10000304:word32] = id", use.Instruction.ToString());
+			Assert.AreEqual("id = bar(3<i32>)", def.Instruction.ToString());
+			Assert.AreEqual("Mem0[0x10000304<32>:word32] = id", use.Instruction.ToString());
 			Assert.AreEqual(SideEffectFlags.Application, sef.FindSideEffect(def.Instruction));
             Assert.AreEqual(SideEffectFlags.Load | SideEffectFlags.Store, sef.FindSideEffect(proc.EntryBlock.Succ[0].Statements[1].Instruction));
 			Assert.AreEqual(SideEffectFlags.Load|SideEffectFlags.Store, sef.FindSideEffect(use.Instruction));
@@ -90,8 +91,8 @@ namespace Reko.UnitTests.Analysis
 			Statement def = proc.EntryBlock.Succ[0].Statements[0];
             Statement use = proc.EntryBlock.Succ[0].Statements[2];
 
-			Assert.AreEqual("id = Mem0[0x01000000:word32]", def.Instruction.ToString());
-			Assert.AreEqual("Mem0[0x10000008:word32] = id", use.Instruction.ToString());
+			Assert.AreEqual("id = Mem0[0x1000000<32>:word32]", def.Instruction.ToString());
+			Assert.AreEqual("Mem0[0x10000008<32>:word32] = id", use.Instruction.ToString());
 			Assert.AreEqual(SideEffectFlags.Load, sef.FindSideEffect(def.Instruction));
             Assert.AreEqual(SideEffectFlags.Load, sef.FindSideEffect(proc.EntryBlock.Succ[0].Statements[1].Instruction));
 			Assert.AreEqual(SideEffectFlags.Store|SideEffectFlags.Load, sef.FindSideEffect(use.Instruction));

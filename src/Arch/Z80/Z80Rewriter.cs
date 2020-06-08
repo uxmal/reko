@@ -47,7 +47,7 @@ namespace Reko.Arch.Z80
             this.arch = arch;
             this.binder = binder;
             this.host = host;
-            this.dasm = new Z80Disassembler(rdr).GetEnumerator();
+            this.dasm = new Z80Disassembler(arch, rdr).GetEnumerator();
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -341,7 +341,7 @@ namespace Reko.Arch.Z80
             var z = FlagGroup(FlagM.ZF);
             m.Assign(z, m.Cond(m.ISub(a, m.Mem8(hl))));
             m.Assign(hl, incDec(hl, m.Int16(1)));
-            m.Assign(bc, m.ISubS(bc, 1));
+            m.Assign(bc, m.ISub(bc, 1));
             if (repeat)
             {
                 m.BranchInMiddleOfInstruction(m.Eq0(bc), addr + dasm.Current.Length, InstrClass.ConditionalTransfer);

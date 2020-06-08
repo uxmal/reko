@@ -24,9 +24,9 @@ namespace Reko.Arch.X86
 {
     public partial class X86Disassembler
     {
-        private static Decoder [] CreateGroupDecoders()
+        private static void CreateGroupDecoders()
         {
-            return new Decoder[]
+            Grp1 = new Decoder[8]
             {
 				// group 1
 				Instr(Mnemonic.add),
@@ -37,9 +37,23 @@ namespace Reko.Arch.X86
                 Instr(Mnemonic.sub),
                 Instr(Mnemonic.xor),
                 Instr(Mnemonic.cmp),
+            };
 
-				// group 2
-				Instr(Mnemonic.rol),
+            Grp1A = new Decoder[8]
+            {
+                Instr(Mnemonic.pop, Ev),
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+            };
+
+            Grp2 = new Decoder[8]
+            {
+                Instr(Mnemonic.rol),
                 Instr(Mnemonic.ror),
                 Instr(Mnemonic.rcl),
                 Instr(Mnemonic.rcr),
@@ -47,9 +61,11 @@ namespace Reko.Arch.X86
                 Instr(Mnemonic.shr),
                 Instr(Mnemonic.shl),
                 Instr(Mnemonic.sar),
+            };
 
-				// group 3
-				Instr(Mnemonic.test, Ix),
+            Grp3 = new Decoder[8]
+            {
+                Instr(Mnemonic.test, Ix),
                 Instr(Mnemonic.test, Ix),
                 Instr(Mnemonic.not),
                 Instr(Mnemonic.neg),
@@ -57,35 +73,42 @@ namespace Reko.Arch.X86
                 Instr(Mnemonic.imul),
                 Instr(Mnemonic.div),
                 Instr(Mnemonic.idiv),
-				
-				// group 4
-				Instr(Mnemonic.inc, Eb),
+            };
+
+            Grp4 = new Decoder[8]
+            {
+                Instr(Mnemonic.inc, Eb),
                 Instr(Mnemonic.dec, Eb),
                 s_invalid,
                 s_invalid,
                 s_invalid,
                 s_invalid,
                 s_invalid,
-                s_invalid, 
+                s_invalid,
+            };
 
-				// group 5
-				Instr(Mnemonic.inc, Ev),
+            Grp5 = new Decoder[8]
+            {
+                Instr(Mnemonic.inc, Ev),
                 Instr(Mnemonic.dec, Ev),
-                new Alternative64Decoder(
+                Amd64Instr(
                     Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Ev),
                     Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Eq)),
                 Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Ep),
-                new Alternative64Decoder(
+                Amd64Instr(
                     Instr(Mnemonic.jmp, InstrClass.Transfer, Ev),
                     Instr(Mnemonic.jmp, InstrClass.Transfer, Eq)),
                 Instr(Mnemonic.jmp, InstrClass.Transfer, Ep),
-                new Alternative64Decoder(
+                Amd64Instr(
                     Instr(Mnemonic.push, Ev),
                     Instr(Mnemonic.push, Eq)),
                 s_invalid,
+            };
 
-				// group 6
-				new Group6Decoder(
+            // 0F 00
+            Grp6 = new Decoder[8]
+            {
+                new Group6Decoder(
                     Instr(Mnemonic.sldt, InstrClass.System, Ew),
                     Instr(Mnemonic.sldt, InstrClass.System, Rv)),
                 new Group6Decoder(
@@ -99,11 +122,14 @@ namespace Reko.Arch.X86
                 Instr(Mnemonic.verw, Ew),
                 s_invalid,
                 s_invalid,
+            };
 
-				// group 7
-				new Group7Decoder(
+            // 0F 01
+            Grp7 = new Decoder[8]
+            {
+                new Group7Decoder(
                     Instr(Mnemonic.sgdt, Ms),
-                    s_invalid,
+                    Instr(Mnemonic.monitor),
                     Instr(Mnemonic.vmcall),
                     Instr(Mnemonic.vmlaunch),
                     Instr(Mnemonic.vmresume),
@@ -164,9 +190,12 @@ namespace Reko.Arch.X86
                     s_invalid,
                     s_invalid,
                     s_invalid),
+            };
 
-				// group 8
-				s_invalid,
+            // 0F BA
+            Grp8 = new Decoder[8]
+            {
+                s_invalid,
                 s_invalid,
                 s_invalid,
                 s_invalid,
@@ -174,12 +203,15 @@ namespace Reko.Arch.X86
                 Instr(Mnemonic.bts),
                 Instr(Mnemonic.btr),
                 Instr(Mnemonic.btc),
+            };
 
-				// group 9
-				s_invalid,
+            // 0F C7
+            Grp9 = new Decoder[8]
+            {
+                s_invalid,
                 new Group6Decoder(
                     new PrefixedDecoder(
-                        new Alternative64Decoder(
+                        Amd64Instr(
                             Instr(Mnemonic.cmpxchg8b, Mq),
                             Instr(Mnemonic.cmpxchg16b, Mdq))),
                     s_invalid),
@@ -199,19 +231,25 @@ namespace Reko.Arch.X86
                         dec:Instr(Mnemonic.vmptrst, Mq),
                         decF3:Instr(Mnemonic.vmptrst, Mq)),
                     Instr(Mnemonic.rdseed, Rv)),
+            };
 
-				// group 10
-				s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+            // 0F B9
+            Grp10 = new Decoder[8]
+            {
+                Instr(Mnemonic.ud1, InstrClass.Invalid),
+				Instr(Mnemonic.ud1, InstrClass.Invalid),
+				Instr(Mnemonic.ud1, InstrClass.Invalid),
+				Instr(Mnemonic.ud1, InstrClass.Invalid),
+				Instr(Mnemonic.ud1, InstrClass.Invalid),
+				Instr(Mnemonic.ud1, InstrClass.Invalid),
+				Instr(Mnemonic.ud1, InstrClass.Invalid),
+				Instr(Mnemonic.ud1, InstrClass.Invalid),
+            };
 
-				// group 11
-				s_nyi,
+            // C6/C7
+            Grp11 = new Decoder[8]
+            {
+                Instr(Mnemonic.mov),
                 s_nyi,
                 s_nyi,
                 s_nyi,
@@ -219,9 +257,12 @@ namespace Reko.Arch.X86
                 s_nyi,
                 s_nyi,
                 s_nyi,
+            };
 
-				// group 12
-				s_invalid,
+            // 0F 71
+            Grp12 = new Decoder[8]
+            {
+                s_invalid,
                 s_invalid,
                 new PrefixedDecoder(
                     Instr(Mnemonic.psrlw, Nq,Ib),
@@ -235,13 +276,16 @@ namespace Reko.Arch.X86
                     Instr(Mnemonic.psllw, Nq,Ib),
                     Instr(Mnemonic.vpsllw, Hx,Ux,Ib)),
                 s_invalid,
+            };
 
-				// group 13
-				s_invalid,
+            // 0F 72
+            Grp13 = new Decoder[8]
+            {
+                s_invalid,
                 s_invalid,
                 new PrefixedDecoder(
                     Instr(Mnemonic.psrld, Nq,Ib),
-                    Instr(Mnemonic.vpsrld, Hx,Ux,Ib)),
+                    VexInstr(Mnemonic.psrld, Mnemonic.vpsrld, Hx,Ux,Ib)),
                 s_invalid,
 
                 new PrefixedDecoder(
@@ -250,35 +294,41 @@ namespace Reko.Arch.X86
                 s_invalid,
                 new PrefixedDecoder(
                     Instr(Mnemonic.pslld, Nq,Ib),
-                    Instr(Mnemonic.vpslld, Hx,Ux,Ib)),
+                    VexInstr(Mnemonic.pslld, Mnemonic.vpslld, Hx,Ux,Ib)),
                 s_invalid,
+            };
 
-				// group 14
-				s_invalid,
+            // 0F 73
+            Grp14 = new Decoder[8]
+            {
+                s_invalid,
                 s_invalid,
                 new PrefixedDecoder(
                     Instr(Mnemonic.psrlq, Nq,Ib),
-                    Instr(Mnemonic.vpsrlq, Hx,Ux,Ib)),
+                    VexInstr(Mnemonic.psrlq, Mnemonic.vpsrlq, Hx,Ux,Ib)),
                 new PrefixedDecoder(
                     s_invalid,
-                    Instr(Mnemonic.vpsrldq, Hx,Ux,Ib)),
+                    VexInstr(Mnemonic.psrldq, Mnemonic.vpsrldq, Hx,Ux,Ib)),
 
                 s_invalid,
                 s_invalid,
                 new PrefixedDecoder(
                     Instr(Mnemonic.psllq, Nq,Ib),
-                    Instr(Mnemonic.vpsllq, Hx,Ux,Ib)),
+                    VexInstr(Mnemonic.psllq, Mnemonic.vpsllq, Hx,Ux,Ib)),
                 new PrefixedDecoder(
                     s_invalid,
-                    Instr(Mnemonic.vpslldq, Hx,Ux,Ib)),
+                    VexInstr(Mnemonic.pslldq, Mnemonic.vpslldq, Hx,Ux,Ib)),
+            };
 
-				// group 15
-				new Group7Decoder(Instr(Mnemonic.fxsave)),
+            // 0F AE
+            Grp15 = new Decoder[8]
+            {
+                new Group7Decoder(Instr(Mnemonic.fxsave)),
                 new Group7Decoder(Instr(Mnemonic.fxrstor)),
                 Instr(Mnemonic.ldmxcsr, Md),
                 Instr(Mnemonic.stmxcsr, Md),
 
-                new Alternative64Decoder(
+                Amd64Instr(
                     Instr(Mnemonic.xsave, Mb),
                     Instr(Mnemonic.xsave64, Mb)),
 				new Group7Decoder(
@@ -317,19 +367,25 @@ namespace Reko.Arch.X86
                     Instr(Mnemonic.sfence),
                     Instr(Mnemonic.sfence),
                     Instr(Mnemonic.sfence)),
+            };
 
-				// group 16
-				Instr(Mnemonic.prefetchnta, Mb),
+            // 0F 18
+            Grp16 = new Decoder[8]
+            {
+                Instr(Mnemonic.prefetchnta, Mb),
 				Instr(Mnemonic.prefetcht0, Mb),
 				Instr(Mnemonic.prefetcht1, Mb),
 				Instr(Mnemonic.prefetcht2, Mb),
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
+                Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding),
+                Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding),
+                Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding),
+                Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding)
+            };
 
-				// group 17
-				s_invalid,
+            // VEX.0F38 F3
+            Grp17 = new Decoder[8]
+            {
+                s_invalid,
 				s_nyi,
 				s_nyi,
 				s_nyi,

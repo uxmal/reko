@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,19 +29,17 @@ namespace Reko.Core.Expressions
 	/// </summary>
 	public class Dereference : Expression
 	{
-		private Expression exp;
-
 		public Dereference(DataType ptrType, Expression exp) : base(ptrType)
 		{
-            if (exp == null)
-                throw new ArgumentNullException();
-            this.exp = exp;
+            this.Expression = exp;
         }
 
         public override IEnumerable<Expression> Children
         {
             get { yield return Expression; }
         }
+
+        public Expression Expression { get; }
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
@@ -60,14 +58,7 @@ namespace Reko.Core.Expressions
 
 		public override Expression CloneExpression()
 		{
-			return new Dereference(DataType, exp.CloneExpression());
+			return new Dereference(DataType, this.Expression.CloneExpression());
 		}
-
-		public Expression Expression
-		{
-			get { return exp; }
-            set { exp = value; if (exp == null) throw new ArgumentNullException(); }
-		}
-
 	}
 }

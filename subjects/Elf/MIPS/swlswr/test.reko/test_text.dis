@@ -9,27 +9,29 @@ void __start(word32 r2, word32 dwArg00)
 __start_exit:
 __start_entry:
 l00000610:
-	word32 r8_19 = Mem0[0x00020A60:word32]
-	call Mem23[0x00020A24:word32] (retsize: 0;)
-		uses: r2:r2,r4:Mem0[0x00020A68:word32],r5:dwArg00,r6:fp + 4,r7:Mem0[0x00020A64:word32],r8:r8_19,Stack +0010:r8_19,Stack +0014:r2,Stack +0018:fp + -40,Stack +0028:dwArg00
+	word32 r8_19 = Mem0[0x00020A60<p32>:word32]
+	call Mem23[0x00020A24<p32>:word32] (retsize: 0;)
+		uses: r2:r2,r4:Mem0[0x00020A68<p32>:word32],r5:dwArg00,r6:fp + 4<i32>,r7:Mem0[0x00020A64<p32>:word32],r8:r8_19,Stack +0010:r8_19,Stack +0014:r2,Stack +0018:fp + -40<i32>,Stack +0028:dwArg00
 l00000664:
 
 
 void deregister_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __do_global_dtors_aux
 // MayUse: 
 // LiveOut:
 // Trashed: r2 r25 r28 r4
 // Preserved: sp
 deregister_tm_clones_entry:
 l00000670:
-	branch Mem0[0x00010AA4:word32] == 0x00010A84 l00000670_ds_t
+	branch Mem0[0x10AA4<32>:word32] == 0x10A84<32> l00000670_ds_t
 l00000670_ds_t:
 l00000670_ds_f:
-	word32 r25_12 = Mem0[0x00010AE4:word32]
+	word32 r25_12 = Mem0[0x10AE4<32>:word32]
 l00000690:
-	branch r25_12 == 0x00000000 l00000690_ds_t
+	branch r25_12 == 0<32> l00000690_ds_t
 l00000690_ds_t:
 l000006A0:
 	return
@@ -43,19 +45,21 @@ deregister_tm_clones_exit:
 void register_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      frame_dummy
 // MayUse: 
 // LiveOut:
 // Trashed: r2 r25 r28 r4 r5
 // Preserved: sp
 register_tm_clones_entry:
 l000006A8:
-	word32 r5_12 = Mem0[0x00010AA4:word32] - 0x00010A84 >> 0x02
-	branch (r5_12 >>u 0x1F) + r5_12 >> 0x01 == 0x00000000 l000006A8_ds_t
+	word32 r5_12 = Mem0[0x10AA4<32>:word32] - 0x10A84<32> >> 2<8>
+	branch (r5_12 >>u 0x1F<8>) + r5_12 >> 1<8> == 0<32> l000006A8_ds_t
 l000006A8_ds_t:
 l000006A8_ds_f:
-	word32 r25_17 = Mem0[0x00010AD4:word32]
+	word32 r25_17 = Mem0[0x10AD4<32>:word32]
 l000006DC:
-	branch r25_17 == 0x00000000 l000006DC_ds_t
+	branch r25_17 == 0<32> l000006DC_ds_t
 l000006DC_ds_t:
 l000006EC:
 	return
@@ -75,14 +79,14 @@ void __do_global_dtors_aux()
 // Preserved: r16 r17 r18 r19 ra sp
 __do_global_dtors_aux_entry:
 l000006F4:
-	branch (word32) Mem19[0x00010AF0:byte] != 0x00000000 l000006F4_ds_t
+	branch (word32) Mem19[0x10AF0<32>:byte] != 0<32> l000006F4_ds_t
 l000006F4_ds_t:
 l000006F4_ds_f:
 l0000072C:
-	branch __cxa_finalize == 0x00000000 l0000072C_ds_t
+	branch __cxa_finalize == 0<32> l0000072C_ds_t
 l0000072C_ds_t:
 l0000072C_ds_f:
-	word32 r2_24 = Mem19[0x00010AAC:word32]
+	word32 r2_24 = Mem19[0x10AAC<32>:word32]
 l00000734:
 	word32 r25_27
 	word32 r3_30
@@ -90,27 +94,27 @@ l00000734:
 		uses: r25:r25_27,r3:r3_30,r4:Mem19[r2_24:word32]
 		defs: r25:r25_27,r3:r3_30
 l00000744:
-	word32 r2_40 = Mem19[0x00010AF4:word32]
-	word32 r16_42 = (Mem19[0x00010AB0:word32] - 0x00010A68 >> 0x02) + -1
-	branch (word32) (r2_40 <u r16_42) == 0x00000000 l00000744_ds_t
+	word32 r2_40 = Mem19[0x10AF4<32>:word32]
+	word32 r16_42 = (Mem19[0x10AB0<32>:word32] - 0x10A68<32> >> 2<8>) + -1<i32>
+	branch (word32) (r2_40 <u r16_42) == 0<32> l00000744_ds_t
 l00000744_ds_t:
 l00000744_ds_f:
 l00000774:
-	word32 r2_47 = r2_40 + 1
-	Mem50[0x00010AF4:word32] = r2_47
-	word32 r2_52 = (r2_47 << 0x02) + 0x00010A68
+	word32 r2_47 = r2_40 + 1<i32>
+	Mem50[0x10AF4<32>:word32] = r2_47
+	word32 r2_52 = (r2_47 << 2<8>) + 0x10A68<32>
 	word32 r4_60
 	call Mem50[r2_52:word32] (retsize: 0;)
-		uses: r2:r2_52,r3:r2_47 << 0x02,r4:r4_60
+		uses: r2:r2_52,r3:r2_47 << 2<8>,r4:r4_60
 		defs: r4:r4_60
-	r2_40 = Mem50[0x00010AF4:word32]
-	branch (word32) (r2_40 <u r16_42) != 0x00000000 l00000774_ds_t
+	r2_40 = Mem50[0x10AF4<32>:word32]
+	branch (word32) (r2_40 <u r16_42) != 0<32> l00000774_ds_t
 l00000774_ds_t:
 l00000774_ds_f:
 l000007A0:
 l000007A4:
 	deregister_tm_clones()
-	Mem76[0x00010AF0:byte] = 0x01
+	Mem76[0x10AF0<32>:byte] = 1<8>
 l000007B8:
 	return
 __do_global_dtors_aux_exit:
@@ -140,12 +144,12 @@ void main()
 // Preserved: r30 ra sp
 main_entry:
 l000007F0:
-	memset(fp + -20, 0x00000000, 5)
-	word32 r2_38 = calloc(1, 5)
+	memset(fp + -20<i32>, 0<32>, 5<i32>)
+	word32 r2_38 = calloc(1<i32>, 5<i32>)
 	Mem45[r2_38:word32] = dwLoc14
-	Mem48[r2_38 + 0x00000004:byte] = (byte) (word32) bLoc10
-	Mem51[r2_38:byte] = 0x0C
-	Mem53[r2_38 + 0x00000001:word32] = 0x00000000
+	Mem48[r2_38 + 4<32>:byte] = (byte) (word32) bLoc10
+	Mem51[r2_38:byte] = 0xC<8>
+	Mem53[r2_38 + 1<32>:word32] = 0<32>
 	r2_43 = r2_38
 	r3_44 = dwLoc14
 	r2_52 = r2_38
@@ -163,19 +167,19 @@ void __libc_csu_init(word32 r4, word32 r5, word32 r6)
 __libc_csu_init_entry:
 l000008C0:
 	_init()
-	word32 r16_35 = Mem30[0x00010ABC:word32]
-	word32 r18_37 = Mem30[0x00010ABC:word32] - r16_35
-	branch r18_37 >> 0x02 == 0x00000000 l000008C0_ds_t
+	word32 r16_35 = Mem30[0x10ABC<32>:word32]
+	word32 r18_37 = Mem30[0x10ABC<32>:word32] - r16_35
+	branch r18_37 >> 2<8> == 0<32> l000008C0_ds_t
 l000008C0_ds_t:
 l000008C0_ds_f:
-	word32 r17_40 = 0x00000000
+	word32 r17_40 = 0<32>
 l00000920:
 	call Mem30[r16_35:word32] (retsize: 0;)
 		uses: r4:r4,r5:r5,r6:r6
-	r17_40 = r17_40 + 1
-	branch r18_37 >> 0x02 != r17_40 l00000920_ds_t
+	r17_40 = r17_40 + 1<i32>
+	branch r18_37 >> 2<8> != r17_40 l00000920_ds_t
 l00000920_ds_t:
-	r16_35 = r16_35 + 4
+	r16_35 = r16_35 + 4<i32>
 l00000920_ds_f:
 l00000940:
 	return
@@ -204,17 +208,17 @@ void __do_global_ctors_aux()
 // Preserved: r16 r17 ra sp
 __do_global_ctors_aux_entry:
 l00000970:
-	word32 r25_18 = Mem17[0x00010A60:word32]
-	branch r25_18 == -1 l00000970_ds_t
+	word32 r25_18 = Mem17[0x10A60<32>:word32]
+	branch r25_18 == -1<i32> l00000970_ds_t
 l00000970_ds_t:
 l00000970_ds_f:
 l000009A4:
-	word32 r16_21 = 0x00010A60
+	word32 r16_21 = 0x10A60<32>
 l000009A8:
 	call r25_18 (retsize: 0;)
-	r16_21 = r16_21 + -4
+	r16_21 = r16_21 + -4<i32>
 	r25_18 = Mem17[r16_21:word32]
-	branch r25_18 != -1 l000009A8_ds_t
+	branch r25_18 != -1<i32> l000009A8_ds_t
 l000009A8_ds_t:
 l000009A8_ds_f:
 l000009BC:

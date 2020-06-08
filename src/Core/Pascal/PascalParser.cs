@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable disable
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -108,11 +110,8 @@ namespace Reko.Core.Pascal
             Expect(TokenType.Semi);
 
             var body = ParseSubroutine();
-            return new CallableDeclaration
+            return new CallableDeclaration(name, type, pps)
             {
-                Name = name,
-                Parameters = pps,
-                ReturnType = type,
                 Body = body
             };
         }
@@ -125,10 +124,8 @@ namespace Reko.Core.Pascal
             Expect(TokenType.Semi);
 
             var body = ParseSubroutine();
-            return new CallableDeclaration
+            return new CallableDeclaration(name, null, pps)
             {
-                Name = name,
-                Parameters = pps,
                 Body = body,
             };
         }
@@ -261,19 +258,19 @@ namespace Reko.Core.Pascal
             {
             case TokenType.Boolean:
                 lexer.Read();
-                return new Primitive { Type = Serialization.PrimitiveType_v1.Bool() };
+                return new Primitive(Serialization.PrimitiveType_v1.Bool());
             case TokenType.Char:
                 lexer.Read();
                 return Primitive.Char();
             case TokenType.Integer:
                 lexer.Read();
-                return new Primitive { Type = Serialization.PrimitiveType_v1.Int16() };
+                return new Primitive(Serialization.PrimitiveType_v1.Int16());
             case TokenType.Longint:
                 lexer.Read();
-                return new Primitive { Type = Serialization.PrimitiveType_v1.Int32() };
+                return new Primitive(Serialization.PrimitiveType_v1.Int32());
             case TokenType.Extended:    //$REFACTOR: Mac MPW specific.
                 lexer.Read();
-                return new Primitive { Type = Serialization.PrimitiveType_v1.Real80() };
+                return new Primitive(Serialization.PrimitiveType_v1.Real80());
             case TokenType.Id:
                 var id = Expect<string>(TokenType.Id);
                 return new TypeReference(id);
@@ -445,7 +442,7 @@ namespace Reko.Core.Pascal
             Expect(TokenType.RBracket);
             Expect(TokenType.Of);
             var type = ParseType();
-            var arr = new Array { ElementType = type, Dimensions = dims };
+            var arr = new Array(type, dims);
             return arr;
         }
 

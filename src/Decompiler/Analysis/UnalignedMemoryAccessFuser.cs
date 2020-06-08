@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -104,8 +104,8 @@ namespace Reko.Analysis
             var offR = GetOffsetOf(memR);
 
             var appL = appR.Item2.Arguments[0] as Application;
-            Statement stmL = null;
-            Assignment assL = null;
+            Statement? stmL = null;
+            Assignment? assL = null;
             if (appL == null)
             {
                 var regL = (Identifier)appR.Item2.Arguments[0];
@@ -122,8 +122,7 @@ namespace Reko.Analysis
             if (pairL == null)
                 return;
 
-            var applL = pairL.Item2;
-            var memL = appL.Arguments[1];
+            var memL = appL!.Arguments[1];
             var offL = GetOffsetOf(memL);
 
             Expression mem;
@@ -140,19 +139,19 @@ namespace Reko.Analysis
             else
                 return;
 
-            ssa.RemoveUses(stmL);
-            ssa.RemoveUses(stmR);
+            ssa.RemoveUses(stmL!);
+            ssa.RemoveUses(stmR!);
             if (assL != null)
             {
                 assL.Src = appL.Arguments[0];
-                ssa.AddUses(stmL);
+                ssa.AddUses(stmL!);
             }
             assR.Src = mem;
             if (stmL != null)
             {
                 stmL.Block.Statements.Remove(stmL);
             }
-            ssa.AddUses(stmR);
+            ssa.AddUses(stmR!);
         }
 
         private void FuseUnalignedPairs(List<Tuple<UnalignedAccess, UnalignedAccess>> pairs)
@@ -168,32 +167,30 @@ namespace Reko.Analysis
             Statement stmL, stmR;
             if (pair.Item1.isLeft)
             {
-                stmL = pair.Item1.stm;
-                stmR = pair.Item2.stm;
+                stmL = pair.Item1.stm!;
+                stmR = pair.Item2.stm!;
             }
             else
             {
-                stmL = pair.Item2.stm;
-                stmR = pair.Item1.stm;
+                stmL = pair.Item2.stm!;
+                stmR = pair.Item1.stm!;
             }
 
             ssa.RemoveUses(stmL);
             ssa.RemoveUses(stmR);
 
-            if (pair.Item1.mem is Identifier)
+            if (pair.Item1.mem is Identifier id)
             {
-                stmR.Instruction = new Assignment(
-                    (Identifier)pair.Item1.mem,
-                    pair.Item1.value);
+                stmR.Instruction = new Assignment(id, pair.Item1.value!);
             }
             else
             {
-                var memId = ((MemoryAccess)((Store)pair.Item2.stm.Instruction).Dst).MemoryId;
+                var memId = ((MemoryAccess)((Store)pair.Item2.stm!.Instruction).Dst).MemoryId;
                 var sidMem = ssa.Identifiers[memId];
                 sidMem.DefStatement = null;
                 stmR.Instruction = new Store(
-                    pair.Item1.mem,
-                    pair.Item1.value);
+                    pair.Item1.mem!,
+                    pair.Item1.value!);
             }
             stmL.Block.Statements.Remove(stmL);
             ssa.AddUses(stmR);
@@ -227,12 +224,12 @@ namespace Reko.Analysis
 
         public class UnalignedAccess
         {
-            public Statement stm;
-            public Identifier reg;
+            public Statement? stm;
+            public Identifier? reg;
             public int offset;
             public bool isLeft;
-            public Expression value;
-            public Expression mem;
+            public Expression? value;
+            public Expression? mem;
         }
 
         private Dictionary<Identifier, List<UnalignedAccess>> FindAllUnalignedStoreInstructions(IEnumerable<Statement> stms)
@@ -311,7 +308,7 @@ namespace Reko.Analysis
                 }
                 else
                 {
-                    var mem = id.Storage as StackStorage;
+                    var mem = (StackStorage) id.Storage;
                     return mem.StackOffset;
                 }
             }
@@ -329,7 +326,7 @@ namespace Reko.Analysis
             }
         }
 
-        private Tuple<string, Application> MatchIntrinsicApplication(Expression e, string [] names)
+        private Tuple<string, Application>? MatchIntrinsicApplication(Expression? e, string [] names)
         {
             if (e is Application app &&
                 app.Procedure is ProcedureConstant pc &&

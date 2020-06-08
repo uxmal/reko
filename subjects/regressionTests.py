@@ -115,6 +115,9 @@ def strip_id_nums_for_file(file_name):
 
 def collect_jobs(dir_name, files, pool_state):
     needClear = True
+    if dir_name.endswith(".reko"):
+        clear_dir(dir_name, files)
+        needClear = False
     for pname in files:
         if pname.endswith(".dcproject"):
             if needClear:

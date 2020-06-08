@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -121,7 +121,7 @@ namespace Reko.UnitTests.ImageLoaders.IntelHex
 :00000001FF
 ";
             var hex = new HexLoader(sc, "foo.text", Encoding.ASCII.GetBytes(data));
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(sc);
             var program = hex.Load(Address.Ptr32(0x00), arch, new DefaultPlatform(sc, arch));
             Assert.AreEqual(1, program.SegmentMap.Segments.Count);
             Assert.AreEqual(0x21, program.SegmentMap.Segments.Values[0].MemoryArea.Bytes[0]);
@@ -140,7 +140,7 @@ namespace Reko.UnitTests.ImageLoaders.IntelHex
 :00000001FF
 ";
             var hex = new HexLoader(sc, "foo.text", Encoding.ASCII.GetBytes(data));
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(sc);
             var program = hex.Load(Address.Ptr32(0x00), arch, new DefaultPlatform(sc, arch));
             Assert.AreEqual(1, program.SegmentMap.Segments.Count, "Wrong number of segments");
 
@@ -189,7 +189,7 @@ namespace Reko.UnitTests.ImageLoaders.IntelHex
 :00000001FF
 ";
             var hex = new HexLoader(sc, "foo.text", Encoding.ASCII.GetBytes(data));
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(sc);
             var program = hex.Load(Address.Ptr32(0x00), arch, new DefaultPlatform(sc, arch));
             Assert.AreEqual(5, program.SegmentMap.Segments.Count, "Wrong number of segments");
 

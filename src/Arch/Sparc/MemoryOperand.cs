@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -47,7 +47,7 @@ namespace Reko.Arch.Sparc
             {
                 writer.WriteString("+");
             }
-            writer.WriteString(Offset.ToString());
+            writer.WriteString(Offset.ToInt16().ToString());
             writer.WriteString("]");
         }
     }

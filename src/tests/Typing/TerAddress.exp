@@ -5,7 +5,7 @@ define fn
 fn_entry:
 	// succ:  l1
 l1:
-	Mem0[0x00001028:real32] = (real32) Mem0[0x00001020:real64]
+	Mem0[0x00001028<p32>:real32] = (real32) Mem0[0x00001020<p32>:real64]
 	return
 	// succ:  fn_exit
 fn_exit:
@@ -17,7 +17,7 @@ define fn
 fn_entry:
 	// succ:  l1
 l1:
-	globals->r1028 = (real32) globals->r1020
+	g_r1028 = (real32) g_r1020
 	return
 	// succ:  fn_exit
 fn_exit:
@@ -34,11 +34,11 @@ T_2: (in 00001020 : ptr32)
   Class: Eq_2
   DataType: (ptr32 real64)
   OrigDataType: (ptr32 (struct (0 T_3 t0000)))
-T_3: (in Mem0[0x00001020:real64] : real64)
+T_3: (in Mem0[0x00001020<p32>:real64] : real64)
   Class: Eq_3
   DataType: real64
   OrigDataType: real64
-T_4: (in (real32) Mem0[0x00001020:real64] : real32)
+T_4: (in (real32) Mem0[0x00001020<p32>:real64] : real32)
   Class: Eq_4
   DataType: real32
   OrigDataType: real32
@@ -46,7 +46,7 @@ T_5: (in 00001028 : ptr32)
   Class: Eq_5
   DataType: (ptr32 real32)
   OrigDataType: (ptr32 (struct (0 T_6 t0000)))
-T_6: (in Mem0[0x00001028:real32] : real32)
+T_6: (in Mem0[0x00001028<p32>:real32] : real32)
   Class: Eq_4
   DataType: real32
   OrigDataType: real32

@@ -1,9 +1,9 @@
 fp:fp
     def:  def fp
     uses: r63_2 = fp
-          r63_6 = fp - 0x00000004
-          r63_8 = fp - 0x00000004 + 4
-          Mem7[ecx_5 + 0x00000004:word32](Mem14[fp - 0x00000004:int32])
+          r63_6 = fp - 4<32>
+          r63_8 = fp - 4<32> + 4<i32>
+          Mem7[ecx_5 + 4<32>:word32](Mem14[fp - 4<32>:int32])
 r63_2: orig: r63
     def:  r63_2 = fp
 Mem0:Mem
@@ -14,13 +14,13 @@ eax_4: orig: eax
     uses: ecx_5 = Mem0[eax_4:word32]
 ecx_5: orig: ecx
     def:  ecx_5 = Mem0[eax_4:word32]
-    uses: Mem7[ecx_5 + 0x00000004:word32](Mem14[fp - 0x00000004:int32])
+    uses: Mem7[ecx_5 + 4<32>:word32](Mem14[fp - 4<32>:int32])
 r63_6: orig: r63
-    def:  r63_6 = fp - 0x00000004
+    def:  r63_6 = fp - 4<32>
 Mem7: orig: Mem0
-    uses: Mem7[ecx_5 + 0x00000004:word32](Mem14[fp - 0x00000004:int32])
+    uses: Mem7[ecx_5 + 4<32>:word32](Mem14[fp - 4<32>:int32])
 r63_8: orig: r63
-    def:  r63_8 = fp - 0x00000004 + 4
+    def:  r63_8 = fp - 4<32> + 4<i32>
 eax_9: orig: eax
     def:  eax_9 = <invalid>
 ecx_10: orig: ecx
@@ -32,9 +32,9 @@ dwArg04_12: orig: dwArg04
     def:  dwArg04_12 = a
     uses: eax_4 = dwArg04_12
 dwLoc04_13: orig: dwLoc04
-    def:  dwLoc04_13 = 0x0000000A
+    def:  dwLoc04_13 = 0xA<32>
 Mem14: orig: Mem0
-    uses: Mem7[ecx_5 + 0x00000004:word32](Mem14[fp - 0x00000004:int32])
+    uses: Mem7[ecx_5 + 4<32>:word32](Mem14[fp - 4<32>:int32])
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder(struct <anonymous> * a)
@@ -48,12 +48,12 @@ l1:
 	r63_2 = fp
 	eax_4 = dwArg04_12
 	ecx_5 = Mem0[eax_4:word32]
-	r63_6 = fp - 0x00000004
-	dwLoc04_13 = 0x0000000A
-	Mem7[ecx_5 + 0x00000004:word32](Mem14[fp - 0x00000004:int32])
+	r63_6 = fp - 4<32>
+	dwLoc04_13 = 0xA<32>
+	Mem7[ecx_5 + 4<32>:word32](Mem14[fp - 4<32>:int32])
 	ecx_10 = <invalid>
 	eax_9 = <invalid>
-	r63_8 = fp - 0x00000004 + 4
+	r63_8 = fp - 4<32> + 4<i32>
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:

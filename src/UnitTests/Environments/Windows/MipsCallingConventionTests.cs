@@ -25,6 +25,7 @@ using Reko.Core;
 using Reko.Core.Types;
 using Reko.Environments.Windows;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 
 namespace Reko.UnitTests.Environments.Windows
@@ -42,7 +43,7 @@ namespace Reko.UnitTests.Environments.Windows
         [SetUp]
         public void Setup()
         {
-            this.arch = new MipsLe32Architecture("mips-le-32");
+            this.arch = new MipsLe32Architecture(new ServiceContainer(), "mips-le-32");
         }
 
         private Pointer Ptr(DataType dt)

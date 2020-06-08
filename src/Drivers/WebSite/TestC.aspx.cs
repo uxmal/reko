@@ -147,7 +147,7 @@ namespace Reko.WebSite
 				{
                     var sc = new ServiceContainer();
                     var ldr = new Loader(sc);
-                    var cfg = RekoConfigurationService.Load();
+                    var cfg = RekoConfigurationService.Load(sc);
                     var arch = cfg.GetArchitecture("x86-protected-32");
                     var env = cfg.GetEnvironment("win32");
                     var platform = env.Load(sc, arch);

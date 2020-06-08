@@ -48,19 +48,21 @@ namespace Reko.Typing
 
         protected override DataType RecordDataType(DataType dt, Expression exp)
         {
-            exp.TypeVariable.DataType = unifier.Unify(exp.TypeVariable.DataType, dt);
-            exp.TypeVariable.OriginalDataType = unifier.Unify(exp.TypeVariable.OriginalDataType, dt);
-            return exp.TypeVariable.DataType;
+            var tv = exp.TypeVariable!;
+            tv.DataType = unifier.Unify(tv.DataType, dt)!;
+            tv.OriginalDataType = unifier.Unify(tv.OriginalDataType, dt)!;
+            return tv.DataType;
         }
 
         protected override DataType EnsureDataType(DataType dt, Expression exp)
         {
-            if (exp.TypeVariable.DataType == null)
+            var tv = exp.TypeVariable!;
+            if (tv.DataType == null)
             {
-                exp.TypeVariable.DataType = dt;
-                exp.TypeVariable.OriginalDataType = dt;
+                tv.DataType = dt;
+                tv.OriginalDataType = dt;
             }
-            return exp.TypeVariable.DataType;
+            return tv.DataType;
         }
     }
 }

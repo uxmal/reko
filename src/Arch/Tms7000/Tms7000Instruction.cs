@@ -28,6 +28,8 @@ namespace Reko.Arch.Tms7000
         public Mnemonic Mnemonic;
 
         public override int MnemonicAsInteger => (int) Mnemonic;
+        
+        public override string MnemonicAsString => Mnemonic.ToString();
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

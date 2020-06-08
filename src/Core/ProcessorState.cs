@@ -38,6 +38,7 @@ namespace Reko.Core
         private readonly Dictionary<RegisterStorage, Expression> linearDerived;
         private readonly SortedList<int, Expression> stackState;
 
+#nullable disable
         public ProcessorState()
         {
             this.linearDerived = new Dictionary<RegisterStorage, Expression>();
@@ -50,11 +51,12 @@ namespace Reko.Core
             this.stackState = new SortedList<int, Expression>(orig.stackState);
             this.ErrorListener = this.ErrorListener;
         }
+#nullable enable
 
         /// <summary>
         /// Method to call if an error occurs within the processor state object (such as stack over/underflows).
         /// </summary>
-        public Action<string> ErrorListener { get; set; }
+        public Action<string>? ErrorListener { get; set; }
 
         public abstract IProcessorArchitecture Architecture { get; }
 
@@ -84,17 +86,14 @@ namespace Reko.Core
         /// specified signature.
         /// </summary>
         /// <param name="sigCallee">The signature of the called procedure.</param>
-        public abstract void OnAfterCall(FunctionType sigCallee);
+        public abstract void OnAfterCall(FunctionType? sigCallee);
 
         private bool IsStackRegister(Expression ea)
         {
-            var id = ea as Identifier;
-            if (id == null)
-                return false;
-            var reg = id.Storage as RegisterStorage;
-            if (reg == null)
-                return false;
-            return (reg == Architecture.StackRegister);
+            return
+                ea is Identifier id &&
+                id.Storage is RegisterStorage reg &&
+                reg == Architecture.StackRegister;
         }
 
         private bool GetStackOffset(Expression ea, out int offset)
@@ -123,10 +122,8 @@ namespace Reko.Core
         {
             if (id.Storage is TemporaryStorage)
                 return Constant.Invalid;
-            var reg = id.Storage as RegisterStorage;
-            if (reg == null)
+            if (!(id.Storage is RegisterStorage reg))
                 return Constant.Invalid;
-
             return GetValue(reg);
         }
 
@@ -149,8 +146,7 @@ namespace Reko.Core
                 var ea = Architecture.MakeAddressFromConstant(constAddr, false);
                 return GetMemoryValue(ea, access.DataType, segmentMap);
             }
-            var addr = access.EffectiveAddress as Address;
-            if (addr != null)
+            if (access.EffectiveAddress is Address addr)
             {
                 return GetMemoryValue(addr, access.DataType, segmentMap);
             }
@@ -206,7 +202,7 @@ namespace Reko.Core
             return Constant.Invalid;
         }
 
-        public Expression GetDefiningExpression(Identifier id)
+        public Expression? GetDefiningExpression(Identifier id)
         {
             return null;
         }
@@ -237,8 +233,7 @@ namespace Reko.Core
         {
             if (id.Storage is TemporaryStorage)
                 return;
-            var reg = id.Storage as RegisterStorage;
-            if (reg == null)
+            if (!(id.Storage is RegisterStorage reg))
                 return;
             SetValue(reg, value);
         }

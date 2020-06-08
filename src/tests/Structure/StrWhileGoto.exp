@@ -8,30 +8,30 @@ fn0C00_0000_entry:
 l0C00_0000:
 l0C00_0005:
 	Mem14[ds:di:word16] = ax_9
-	branch ax_9 != 0x0000 l0C00_0011
+	branch ax_9 != 0<16> l0C00_0011
 	// succ:  l0C00_000B l0C00_0011
 l0C00_000B:
-	ax_24 = 0xFFFF
+	ax_24 = 0xFFFF<16>
 	goto l0C00_0024
 	// succ:  l0C00_0024
 l0C00_0011:
-	branch ax_9 != 0x000D l0C00_001A
+	branch ax_9 != 0xD<16> l0C00_001A
 	// succ:  l0C00_0016 l0C00_001A
 l0C00_0016:
-	Mem22[ds:0x0302:word16] = Mem14[ds:0x0302:word16] + 0x0001
+	Mem22[ds:0x302<16>:word16] = Mem14[ds:0x302<16>:word16] + 1<16>
 	// succ:  l0C00_001A
 l0C00_001A:
 	word16 ax_24
 	word16 si_10
 	word16 ax_9 = Mem8[ds:si_10:word16]
-	si_10 = si_10 + 0x0002
-	branch ax_9 != 0x0020 l0C00_0005
+	si_10 = si_10 + 2<i16>
+	branch ax_9 != 0x20<16> l0C00_0005
 	// succ:  l0C00_0020 l0C00_0005
 l0C00_0020:
 	ax_24 = si_10 - si
 	// succ:  l0C00_0024
 l0C00_0024:
-	Mem31[ds:0x0300:word16] = ax_24
+	Mem31[ds:0x300<16>:word16] = ax_24
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -44,20 +44,20 @@ void fn0C00_0000(word16 si, word16 di, selector ds)
 		word16 ax_24;
 		word16 si_10;
 		word16 ax_9 = Mem8[ds:si_10:word16];
-		si_10 += 0x0002;
-		if (ax_9 == 0x0020)
+		si_10 += 2<i16>;
+		if (ax_9 == 0x20<16>)
 			break;
 		Mem14[ds:di:word16] = ax_9;
-		if (ax_9 == 0x0000)
+		if (ax_9 == 0<16>)
 		{
-			ax_24 = 0xFFFF;
+			ax_24 = 0xFFFF<16>;
 			goto l0C00_0024;
 		}
-		if (ax_9 == 0x000D)
-			Mem22[ds:0x0302:word16] = Mem14[ds:0x0302:word16] + 0x0001;
+		if (ax_9 == 0xD<16>)
+			Mem22[ds:0x302<16>:word16] = Mem14[ds:0x302<16>:word16] + 1<16>;
 	}
 	ax_24 = si_10 - si;
 l0C00_0024:
-	Mem31[ds:0x0300:word16] = ax_24;
+	Mem31[ds:0x300<16>:word16] = ax_24;
 }
 ===========================

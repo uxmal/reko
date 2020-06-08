@@ -20,7 +20,7 @@ namespace Reko.Core.NativeInterface
 
 		private const string SYM_NAME = "gCPUProvider";
 
-		public NativeProcessorArchitecture(string archID, string libPath, ILibraryLoader ldr) : base(archID)
+		public NativeProcessorArchitecture(IServiceProvider services, string archID, string libPath, ILibraryLoader ldr) : base(services, archID)
 		{
 			loader = ldr;
 			handle = ldr.LoadLibrary(libPath);
@@ -119,7 +119,7 @@ namespace Reko.Core.NativeInterface
 			throw new NotImplementedException();
 		}
 
-		public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+		public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
 		{
 			throw new NotImplementedException();
 		}
@@ -129,7 +129,7 @@ namespace Reko.Core.NativeInterface
 			throw new NotImplementedException();
 		}
 
-		public override bool TryParseAddress(string txtAddr, out Address addr)
+		public override bool TryParseAddress(string? txtAddr, out Address addr)
 		{
 			throw new NotImplementedException();
 		}

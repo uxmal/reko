@@ -33,13 +33,14 @@ namespace Reko.UnitTests.Arch.Mos6502
     [TestFixture]
     public class EmulatorTests
     {
-        private ServiceContainer sc;
-        private Mos6502Architecture arch = new Mos6502Architecture("mos6502");
+        private readonly ServiceContainer sc;
+        private readonly Mos6502Architecture arch;
         private Mos6502Emulator emu;
 
         public EmulatorTests()
         {
             this.sc = new ServiceContainer();
+            this.arch = new Mos6502Architecture(sc, "mos6502");
         }
 
         private void Given_Code(Action<Assembler> p)

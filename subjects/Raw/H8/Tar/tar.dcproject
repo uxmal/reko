@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>h8</arch>
+  <input>
+    <filename>tar.srec</filename>
+    <asmDir>tar.reko</asmDir>
+    <srcDir>tar.reko</srcDir>
+    <includeDir>tar.reko</includeDir>
+    <resources>tar.reko\resources</resources>
+    <user>
+      <address>00000000</address>
+      <loader>Srec</loader>
+      <processor name="h8" />
+      <heuristic name="shingle" />
+      <onLoad Enabled="false" />
+      <registerValues />
+      <extractResources>false</extractResources>
+      <outputFilePolicy>Segment</outputFilePolicy>
+    </user>
+  </input>
+</project>

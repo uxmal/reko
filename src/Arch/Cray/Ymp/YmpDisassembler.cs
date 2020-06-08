@@ -24,6 +24,7 @@ using System.Text;
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 
 namespace Reko.Arch.Cray.Ymp
 {
@@ -35,9 +36,10 @@ namespace Reko.Arch.Cray.Ymp
     {
         private static readonly Decoder rootDecoder;
         
-        private CrayYmpArchitecture arch;
-        private EndianImageReader rdr;
-        private List<MachineOperand>  ops;
+        private readonly CrayYmpArchitecture arch;
+        private readonly EndianImageReader rdr;
+        private readonly List<MachineOperand>  ops;
+        private Address addr;
 
         public YmpDisassembler(CrayYmpArchitecture arch, EndianImageReader rdr)
         {
@@ -48,7 +50,7 @@ namespace Reko.Arch.Cray.Ymp
 
         public override CrayInstruction DisassembleInstruction()
         {
-            var addr = rdr.Address;
+            this.addr = rdr.Address;
             if (!rdr.TryReadBeUInt16(out ushort hInstr))
                 return null;
             ops.Clear();
@@ -77,6 +79,13 @@ namespace Reko.Arch.Cray.Ymp
                 Mnemonic = Mnemonic.Invalid,
                 Operands = MachineInstruction.NoOperands
             };
+        }
+
+        public override CrayInstruction NotYetImplemented(uint wInstr, string message)
+        {
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("YmpDis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         #region Mutators

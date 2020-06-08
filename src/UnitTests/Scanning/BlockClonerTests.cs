@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.Core.Types;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -42,7 +43,7 @@ namespace Reko.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            this.arch = new FakeArchitecture();
+            this.arch = new FakeArchitecture(new ServiceContainer());
             this.procCalling = new ProcedureBuilder(arch, "procCalling").Procedure;
             this.callgraph = new CallGraph();
         }
@@ -138,7 +139,7 @@ namespace Reko.UnitTests.Scanning
         public void BlockCloner_CloneCall()
         {
             var call = new CallInstruction(new ProcedureConstant(arch.PointerType, procCalling), new CallSite(0, 0));
-            var block = new Block(procCalling, "test");
+            var block = new Block(procCalling, procCalling.EntryAddress, "test");
             var stmOld = new Statement(42, call, block);
             callgraph.AddEdge(stmOld, procCalling);
 

@@ -26,6 +26,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.Design;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Arch.M68k.Assembler
 {
@@ -39,7 +41,9 @@ namespace Reko.UnitTests.Arch.M68k.Assembler
         [SetUp]
         public void Setup()
         {
-            arch = new M68kArchitecture("m68k");
+            var sc = new ServiceContainer();
+            sc.AddService<ITestGenerationService>(new UnitTestGenerationService(sc));
+            arch = new M68kArchitecture(sc, "m68k");
             asm = new M68kAssembler(arch, Address.Ptr32(0x00010000), new List<ImageSymbol>());
         }
 
@@ -47,6 +51,7 @@ namespace Reko.UnitTests.Arch.M68k.Assembler
         {
             builder(asm);
             dasm = M68kDisassembler.Create68020(
+                arch.Services,
                 asm.GetImage().SegmentMap.Segments.Values.First().MemoryArea.CreateBeReader(asm.BaseAddress));
         }
 

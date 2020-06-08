@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@ namespace Reko.Analysis
 			{
                 sb.Write(" {0}", sGrf);
 			}
-			EmitRegistersCore(arch, regs, sb);
+			EmitRegistersCore(regs, sb);
 		}
 
         public static void EmitRegisters(IProcessorArchitecture arch, string caption, Dictionary<RegisterStorage, uint> grfFlags, IDictionary<Storage, BitRange> regRanges, TextWriter sb)
@@ -75,10 +75,10 @@ namespace Reko.Analysis
             }
         }
 
-        public static void EmitRegisters(IProcessorArchitecture arch, string caption, HashSet<Storage> regs, TextWriter sb)
+        public static void EmitRegisters(string caption, HashSet<Storage> regs, TextWriter sb)
 		{
 			sb.Write(caption);
-			EmitRegistersCore(arch, regs, sb);
+			EmitRegistersCore(regs, sb);
 		}
 
         public static void EmitRegisterValues<TValue>(string caption, Dictionary<Storage, TValue> symbols, TextWriter sb)
@@ -90,7 +90,7 @@ namespace Reko.Analysis
             }
         }
 
-        private static void EmitRegistersCore(IProcessorArchitecture arch, IEnumerable<Storage> regs, TextWriter sb)
+        private static void EmitRegistersCore(IEnumerable<Storage> regs, TextWriter sb)
 		{
             foreach (var reg in regs.Where(r => r!= null).OrderBy(r => r.Name))
             {
@@ -110,10 +110,10 @@ namespace Reko.Analysis
         }
         }
 
-		public string EmitRegisters(IProcessorArchitecture arch, string caption, HashSet<Storage> regs)
+		public string EmitRegisters(string caption, HashSet<Storage> regs)
 		{
 			StringWriter sw = new StringWriter();
-			EmitRegisters(arch, caption, regs, sw);
+			EmitRegisters(caption, regs, sw);
 			return sw.ToString();
 		}
 

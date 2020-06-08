@@ -90,6 +90,7 @@ namespace Reko.Arch.Arm.AArch32
         public ArmCondition Condition { get; set; }
 
         public override int MnemonicAsInteger => (int) Mnemonic;
+        public override string MnemonicAsString => Mnemonic.ToString();
 
         /// <summary>
         /// PC-relative addressing has an extra offset.This varies
@@ -342,7 +343,7 @@ namespace Reko.Arch.Arm.AArch32
                 writer.WriteAddress(addr.ToString(), addr);
                 writer.WriteChar(']');
 
-                var sr = new StringRenderer();
+                var sr = new StringRenderer(this.Address);
                 RenderMemoryOperand(mem, sr);
                 var str = sr.ToString();
                 writer.AddAnnotation(str);

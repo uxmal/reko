@@ -73,7 +73,7 @@ create a connection listener }
 remove a connection listener }
 post a listener request }
 deny an open connection request }
-
+
 
 
 dspStatus = 247;
@@ -207,7 +207,7 @@ qType: INTEGER;
 ioTrap: INTEGER;
 ioCmdAddr: Ptr;
 ioCompletion: ProcPtr;
-
+
 ioResult: OSErr;
 ioNamePtr: StringPtr;
 ioVRefNum: INTEGER;
@@ -321,7 +321,7 @@ space in receive queue}
 {client attention code}
 {size of attention data}
 {pointer to attention data}
-
+
 
 attnInterval: Byte;
 filler4: Byte;
@@ -356,7 +356,7 @@ END.
 {use ddp packet checksum}
 
 {new connection id returned}
-
+
 
 
 {#####################################################################}
@@ -407,7 +407,7 @@ AnnotationID = 'ANNO';
 NoLooping = 0;
 ForwardLooping = 1;
 ForwardBackwardLooping = 2;
-
+
 
 
 { AIFF-C Versions }
@@ -457,7 +457,7 @@ ckID: ID;
 ckSize: LONGINT;
 numChannels: INTEGER;
 numSampleFrames: LONGINT;
-
+
 
 
 sampleSize: INTEGER;
@@ -509,7 +509,7 @@ ckID: ID;
 ckSize: LONGINT;
 MIDIdata: PACKED ARRAY [0..0] OF SignedByte;
 END;
-
+
 
 AudioRecordingChunkPtr = ^AudioRecordingChunk;
 AudioRecordingChunk = RECORD
@@ -550,7 +550,7 @@ END.
 {$ENDC}
 
 {### END OF FILE AIFF.p}
-
+
 
 
 {#####################################################################}
@@ -611,7 +611,7 @@ kARMSearchMore = $00000200;
 kARMSearchRelFirst = $00000400;
 { search target on a relative path first }
 { define alias record information types }
-
+
 asiZoneName = -3;
 asiServerName = -2;
 asiVolumeName = -1;
@@ -692,7 +692,7 @@ given a file spec, return target file spec if input file spec is an alias.
 It resolves the entire alias chain or one step of the chain. It returns
 info about whether the target is a folder or file; and whether the input
 
-
+
 
 
 file spec was an alias or not. }
@@ -730,7 +730,7 @@ END.
 
 {### END OF FILE Aliases.p}
 
-
+
 
 
 {#####################################################################}
@@ -780,7 +780,7 @@ CONST
 typeBoolean = 'bool';
 typeChar = 'TEXT';
 typeSMInt = 'shor';
-
+
 
 
 typeInteger = 'long';
@@ -835,7 +835,7 @@ keyPreDispatch = 'phac';
 { PreHandler Accessor Call }
 keySelectProc = 'selh';
 { More selector Call }
-
+
 { keywords used in attributes }
 keyTransactionIDAttr = 'tran';
 keyReturnIDAttr = 'rtid';
@@ -914,7 +914,7 @@ errAENotAppleEvent = -1707;
 { Error messages in response to sending/receiving a message }
 errAEEventNotHandled = -1708;
 { The AppleEvent was not handled by any handler }
-
+
 
 
 errAEReplyNotValid = -1709;
@@ -1000,7 +1000,7 @@ END;
 
 AEArrayType = (kAEDataArray,kAEPackedArray,kAEHandleArray,kAEDescArray,
 kAEKeyDescArray);
-
+
 
 
 { Array routines support these different types of elements}
@@ -1054,7 +1054,7 @@ Since AEDescList is a subtype of AEDesc, the calls in the previous
 section can also be used for AEDescList. All list and array indices are 1-based.
 If the data was greater than maximumSize in the routines below, then actualSize will
 be greater than maximumSize, but only maximumSize bytes will actually be retrieved. }
-
+
 
 
 FUNCTION AECreateList(factoringPtr: Ptr;
@@ -1113,7 +1113,7 @@ INLINE $303C, $0B0D, $A816;
 FUNCTION AEDeleteItem(theAEDescList: AEDescList;
 index: LONGINT): OSErr;
 INLINE $303C, $040E, $A816;
-
+
 
 
 { *********************************************************************
@@ -1173,7 +1173,7 @@ theAEKeyword: AEKeyword;
 theAEDesc: AEDesc): OSErr;
 INLINE $303C,$0610,$A816;
 FUNCTION AEGetParamPtr(theAppleEvent: AppleEvent;
-
+
 
 
 theAEKeyword: AEKeyword;
@@ -1232,7 +1232,7 @@ INLINE $303C,$0627,$A816;
 The next four calls are basic routines used to create, send, and process AppleEvents.
 
 }
-
+
 
 
 FUNCTION AECreateAppleEvent(theAEEventClass: AEEventClass;
@@ -1290,7 +1290,7 @@ INLINE $303C,$0818,$A816;
 { Allows application to examine the currently executing event }
 FUNCTION AEGetTheCurrentEvent(VAR theAppleEvent: AppleEvent): OSErr;
 INLINE $303C,$021A,$A816;
-
+
 
 
 { Set the current event to the parameter }
@@ -1351,7 +1351,7 @@ INLINE $303C, $0A22, $A816;
 Remove a Coercion Handler
 
 }
-
+
 FUNCTION AERemoveCoercionHandler(fromType: DescType;
 toType: DescType;
 handler: ProcPtr;
@@ -1391,7 +1391,7 @@ END.
 {$ENDC}
 
 {### END OF FILE AppleEvents.p}
-
+
 
 
 {#####################################################################}
@@ -1470,7 +1470,7 @@ lookupReply = 242;
 writeLAP = 243;
 detachPH = 244;
 attachPH = 245;
-
+
 
 
 writeDDP = 246;
@@ -1633,7 +1633,7 @@ codes}
 codes}
 codes}
 codes}
-
+
 
 
 afpFileCreate = 7;
@@ -1740,7 +1740,7 @@ RetransType = PACKED RECORD
 retransInterval: Byte;
 retransCount: Byte;
 END;
-
+
 
 
 BDSElement = RECORD
@@ -1796,7 +1796,7 @@ atpTimeOut: Byte;
 atpRetries: Byte;
 atpNumBufs: Byte;
 atpNumRsp: Byte;
-
+
 
 
 atpBDSSize: Byte;
@@ -1866,7 +1866,7 @@ OpenSktParm,CloseSktParm,WriteDDPParm:
 {ALAP Protocol Type}
 {->protocol handler routine}
 {socket number}
-
+
 
 
 checksumFlag: Byte;
@@ -1966,7 +1966,7 @@ reqTID: INTEGER;
 {result code}
 {ATP user bytes}
 {request transaction ID}
-
+
 
 
 ioRefNum: INTEGER;
@@ -2056,7 +2056,7 @@ aspQuantumSize: INTEGER;
 {SCB pointer for AbortOS}
 {for SPGetParms}
 {for SPGetParms}
-
+
 
 
 numSesss: INTEGER);
@@ -2143,7 +2143,7 @@ FUNCTION PWriteLAP(thePBptr: MPPPBPtr;async: BOOLEAN): OSErr;
 FUNCTION POpenSkt(thePBptr: MPPPBPtr;async: BOOLEAN): OSErr;
 FUNCTION PCloseSkt(thePBptr: MPPPBPtr;async: BOOLEAN): OSErr;
 FUNCTION PWriteDDP(thePBptr: MPPPBPtr;async: BOOLEAN): OSErr;
-
+
 
 
 FUNCTION PRegisterName(thePBptr: MPPPBPtr;async: BOOLEAN): OSErr;
@@ -2222,7 +2222,7 @@ END.
 {$ENDC}
 
 {### END OF FILE AppleTalk.p}
-
+
 
 
 {#####################################################################}
@@ -2278,7 +2278,7 @@ hmBalloonAborted = -853;
 hmSameAsLastBalloon = -854;
 { Returned from HMShowMenuBalloon if menu & item is same as last time }
 hmHelpManagerNotInited = -855; { Returned from HMGetHelpMenuHandle if help menu not setup }
-
+
 
 
 hmSkippedBalloon = -857;
@@ -2388,7 +2388,7 @@ kHMCheckedItem = 2;
 kHMOtherItem = 3;
 { item is enabled, and control value > 1 }
 { Resource Types for whichType parameter used when extracting 'hmnu' & 'hdlg' messages }
-
+
 
 
 kHMMenuResType = 'hmnu';
@@ -2488,7 +2488,7 @@ INLINE $303C,$0002,_Pack14;
 FUNCTION HMGetBalloons: BOOLEAN;
 INLINE $303C,$0003,_Pack14;
 FUNCTION HMSetBalloons(flag: BOOLEAN): OSErr;
-
+
 
 
 INLINE $303C,$0104,_Pack14;
@@ -2547,7 +2547,7 @@ INLINE $303C,$0213,_Pack14;
 FUNCTION HMGetMenuResID(menuID: INTEGER;VAR resID: INTEGER): OSErr;
 INLINE $303C,$0314,_Pack14;
 FUNCTION HMGetBalloonWindow(VAR window: WindowPtr): OSErr;
-
+
 
 INLINE $303C,$0215,_Pack14;
 
@@ -2559,7 +2559,7 @@ END.
 {### END OF FILE Balloons.p}
 
 
-
+
 
 
 {#####################################################################}
@@ -2621,7 +2621,7 @@ crmGenericError = -1;
 crmNoErr = 0;
 TYPE
 { data structures general to the use of the Communications Resource Manager }
-
+
 
 
 CRMErr = OSErr;
@@ -2678,7 +2678,7 @@ FUNCTION CRMParseCAPSResource(theHandle: Handle;selector: ResType;VAR value: LON
 FUNCTION CRMReserveRF(refNum: INTEGER): OSErr;
 { decrements useCount by one }
 FUNCTION CRMReleaseRF(refNum: INTEGER): OSErr;
-
+
 
 {$ENDC} { UsingCommResources }
 {$IFC NOT UsingIncludes}
@@ -2688,7 +2688,7 @@ END.
 {### END OF FILE CommResources.p}
 
 
-
+
 
 
 {#####################################################################}
@@ -2743,7 +2743,7 @@ cmNotClosed = 5;
 cmNoRequestPending = 6;
 
 }
-
+
 
 
 cmNotSupported = 7;
@@ -2798,7 +2798,7 @@ cmStatusReserved0 = $00008000;
 TYPE
 CMStatFlags = LONGINT;
 CMBufFields = (cmDataIn,cmDataOut,cmCntlIn,cmCntlOut,cmAttnIn,cmAttnOut,
-
+
 
 
 cmRsrvIn,cmRsrvOut);
@@ -2847,7 +2847,7 @@ bufSizes: CMBufferSizes;
 mluField: LONGINT;
 asyncCount: CMBufferSizes;
 END;
-
+
 
 
 { application routines type definitions }
@@ -2900,7 +2900,7 @@ FUNCTION CMClose(hConn: ConnHandle;async: BOOLEAN;completor: ConnectionCompletio
 timeout: LONGINT;now: BOOLEAN): CMErr;
 FUNCTION CMAbort(hConn: ConnHandle): CMErr;
 FUNCTION CMStatus(hConn: ConnHandle;VAR sizes: CMBufferSizes;VAR flags: CMStatFlags): CMErr;
-
+
 
 
 PROCEDURE CMIdle(hConn: ConnHandle);
@@ -2944,7 +2944,7 @@ PROCEDURE CMEvent(hConn: ConnHandle;theEvent: EventRecord);
 PROCEDURE CMGetToolName(procID: INTEGER;VAR name: Str255);
 FUNCTION CMGetProcID(name: Str255): INTEGER;
 PROCEDURE CMSetRefCon(hConn: ConnHandle;refCon: LONGINT);
-
+
 FUNCTION CMGetRefCon(hConn: ConnHandle): LONGINT;
 FUNCTION CMGetUserData(hConn: ConnHandle): LONGINT;
 PROCEDURE CMSetUserData(hConn: ConnHandle;userData: LONGINT);
@@ -2961,7 +2961,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Connections.p}
-
+
 
 
 {#####################################################################}
@@ -3009,7 +3009,7 @@ cmIdleMsg = 50;
 cmResetMsg = 51;
 cmAbortMsg = 52;
 cmReadMsg = 100;
-
+
 
 
 cmWriteMsg = 101;
@@ -3057,14 +3057,10 @@ cmL2Intl = 1;
 
 }
 
-{
-private data constants }
-cdefType = 'cdef'; { main connection definition procedure
-}
-cvalType = 'cval'; { validation definition procedure
-}
-csetType = 'cset'; { connection setup definition procedure
-}
+{ private data constants }
+cdefType = 'cdef'; { main connection definition procedure }
+cvalType = 'cval'; { validation definition procedure }
+csetType = 'cset'; { connection setup definition procedure }
 clocType = 'cloc'; { connection configuration localization defProc }
 cscrType = 'cscr'; { connection scripting defProc interfaces }
 cbndType = 'cbnd';
@@ -3103,7 +3099,7 @@ END.
 {$ENDC}
 
 {### END OF FILE ConnectionTools.p}
-
+
 
 
 {#####################################################################}
@@ -3160,7 +3156,7 @@ popupTitleUnderline = $00000400;
 {
 
 Popup Title characteristics }
-
+
 
 
 popupTitleOutline = $00000800;
@@ -3216,7 +3212,7 @@ CCTabPtr = ^CtlCTab;
 CCTabHandle = ^CCTabPtr;
 
 { synonym for compatibility }
-
+
 
 
 CtlCTab = RECORD
@@ -3283,7 +3279,7 @@ INLINE $A963;
 FUNCTION GetCtlValue(theControl: ControlHandle): INTEGER;
 INLINE $A960;
 PROCEDURE SetCtlMin(theControl: ControlHandle;minValue: INTEGER);
-
+
 
 
 INLINE $A964;
@@ -3326,7 +3322,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Controls.p}
-
+
 
 
 {#####################################################################}
@@ -3402,7 +3398,7 @@ END.
 {### END OF FILE CRMSerialDevices.p}
 
 
-
+
 
 
 {#####################################################################}
@@ -3451,7 +3447,7 @@ CTBUErr = OSErr;
 CONST
 
 }
-
+
 
 
 { Choose return codes}
@@ -3513,7 +3509,7 @@ END;
 NLType = ARRAY [0..3] OF NLTypeEntry;
 
 }
-
+
 
 NBPReply = RECORD
 theEntity: EntityName;
@@ -3547,7 +3543,7 @@ END.
 {$ENDC}
 
 {### END OF FILE CTBUtilities.p}
-
+
 
 
 {#####################################################################}
@@ -3602,7 +3598,7 @@ frameN: INTEGER;
 {'CURS' resource id for frame #2}
 {<for internal use>}
 {'CURS' resource id for frame #N}
-
+
 fillN: INTEGER;
 END;
 
@@ -3655,7 +3651,7 @@ here. SpinCursor is provided for those users who do not happen to have a
 convenient counter handy but still want to use the spinning "beach ball"
 cursor, or any sequence of cursors set up by InitCursorCtl. A positive
 increment sequences forward through the curos (rotating the "beach ball"
-
+
 
 cursor clockwise), and a negative increment sequences backward through the
 cursors (rotating the "beach ball" cursor counter-clockwise). A zero value
@@ -3688,7 +3684,7 @@ END.
 {$ENDC}
 
 {### END OF FILE CursorCtl.p}
-
+
 
 
 {#####################################################################}
@@ -3754,7 +3750,7 @@ attempt to call other routine before InitDBPack }
 
 { messages for status functions for DBStartQuery }
 kDBUpdateWind = 0;
-
+
 
 
 kDBAboutToInit = 1;
@@ -3811,7 +3807,7 @@ theType: ResType;
 id: INTEGER;
 { resource id }
 END;
-
+
 
 
 ResListPtr = ^ResListArray;
@@ -3956,7 +3952,7 @@ INLINE $303C,$0514,$A82F;
 FUNCTION DBRemoveResultHandler(dataType: DBType): OSErr;
 INLINE $303C,$0215,$A82F;
 FUNCTION DBGetResultHandler(dataType: DBType;VAR theHandler: ProcPtr;getSysHandler: BOOLEAN): OSErr;
-
+
 
 INLINE $303C,$0516,$A82F;
 
@@ -4461,7 +4457,7 @@ INLINE $A989;
 PROCEDURE FreeAlert(alertID: INTEGER);
 INLINE $A98A;
 PROCEDURE GetDItem(theDialog: DialogPtr;itemNo: INTEGER;VAR itemType: INTEGER;
-
+
 VAR item: Handle;VAR box: Rect);
 INLINE $A98D;
 PROCEDURE SetDItem(theDialog: DialogPtr;itemNo: INTEGER;itemType: INTEGER;
@@ -5035,7 +5031,7 @@ $A0 - $7F | $20 - $7F |
 $A0 - $7F | $80 - $FF |
 16
 | "Old style" MacApp symbol ab==>b.a
-
+
 
 ----------------------------------------------------------------------$80
 | $01 - $FF |
@@ -5090,7 +5086,7 @@ in input parameter to showMacsBugSymbol to convert the MacsBug symbol to
 a Disassembler operand string.
 Also returned in nextModule is where we think the FOLLOWING module
 begins. In the "old style" cases (see validMacsBugSymbol) this will
-
+
 always be 8 or 16 bytes after the input address. For new style the
 Apple Pascal and C cases this will depend on the symbol length, existence
 of a pad byte, and size of the constant (literal) area. See
@@ -5128,7 +5124,7 @@ END.
 {$ENDC}
 
 {### END OF FILE DisAsmLookup.p}
-
+
 
 
 {#####################################################################}
@@ -5197,7 +5193,7 @@ FUNCTION DIBadMount(where: Point;evtMessage: LONGINT): INTEGER;
 FUNCTION DIFormat(drvNum: INTEGER): OSErr;
 FUNCTION DIVerify(drvNum: INTEGER): OSErr;
 FUNCTION DIZero(drvNum: INTEGER;volName: Str255): OSErr;
-
+
 
 {$ENDC}
 
@@ -5209,7 +5205,7 @@ END.
 {$ENDC}
 
 {### END OF FILE DiskInit.p}
-
+
 
 
 {#####################################################################}
@@ -5275,7 +5271,7 @@ sony:
 {file system ID}
 
 {after 1st rd/wrt: 0=1 side, -1=2 side}
-
+
 
 
 needsFlush: SignedByte;
@@ -5311,7 +5307,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Disks.p}
-
+
 
 
 {#####################################################################}
@@ -5372,7 +5368,7 @@ pumOnSave = 0;
 
 }
 }
-
+
 
 
 pumManual = 1;
@@ -5645,7 +5641,7 @@ whichFormat: FormatType;
 VAR currentMark: LONGINT): OSErr;
 INLINE $303C,$061E,$A82D;
 FUNCTION SetEditionFormatMark(whichEdition: EditionRefNum;
-
+
 
 whichFormat: FormatType;
 setMarkTo: LONGINT): OSErr;
@@ -5928,7 +5924,7 @@ msgBuff: Ptr;
 VAR msgLen: LONGINT): OSErr;
 INLINE $3F3C,$0033,$A88F;
 FUNCTION GetProcessSerialNumberFromPortName(portName: PPCPortRec;VAR PSN: ProcessSerialNumber): OSErr;
-
+
 
 
 INLINE $3F3C,$0035,$A88F;
@@ -6062,13 +6058,13 @@ value of that variable is used to open the error message file. *)
 {$IFC NOT UsingIncludes}
 END.
 {$ENDC}
-
+
 
 
 {### END OF FILE ErrMgr.p}
 
 
-
+
 
 
 {#####################################################################}
@@ -6144,7 +6140,7 @@ unitTblFullErr = -29;
 {IO abort error (Printing Manager)}
 {Couldn't rd/wr/ctl/sts cause driver not
 {unit table has no more entries}
-
+
 
 
 dceExtErr = -30;
@@ -6250,7 +6246,7 @@ envBadVers = -5501;
 {Version non-positive}
 envVersTooBig = -5502;
 {Version bigger than call can handle}
-
+
 fontDecError = -64;
 fontNotDeclared = -65;
 fontSubErr = -66;
@@ -6356,7 +6352,7 @@ memWZErr = -111;
 {Not enough room in heap zone}
 {Master Pointer was NIL in HandleZone or
 WhichZone failed (applied to free block)}
-
+
 
 }}
 memPurErr = -112;
@@ -6458,7 +6454,7 @@ failed to allocate memory for structure}
 { could not allocate enough memory }
 { was not type AIFF or was of bad
 { the Channel is being used for a PFD}
-
+
 buffersTooSmall = -210;
 channelNotBusy = -211;
 noMoreRealTime = -212;
@@ -6653,7 +6649,7 @@ badEditionFileErr = -453;
 {edition file is corrupt}
 badSubPartErr = -454;
 {can not use sub parts in this release}
-
+
 multiplePublisherWrn = -460;
 {that container}
 containerNotFoundWrn = -461;
@@ -6766,7 +6762,7 @@ afpContainsSharedErr = -5033;
 afpIDNotFound = -5034;
 
 
-
+
 
 
 afpIDExists = -5035;
@@ -6961,7 +6957,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Errors.p}
-
+
 
 
 {#####################################################################}
@@ -7011,7 +7007,7 @@ mDownMask = 2;
 mUpMask = 4;
 keyDownMask = 8;
 keyUpMask = 16;
-
+
 
 
 autoKeyMask = 32;
@@ -7126,7 +7122,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Events.p}
-
+
 
 
 {#####################################################################}
@@ -7176,7 +7172,7 @@ fsWrPerm = 2;
 fDesktop = -2;
 fsRdWrPerm = 3;
 fDisk = 0;
-
+
 fsRdWrShPerm = 4;
 fsFromStart = 1;
 fsFromLEOF = 2;
@@ -7233,7 +7229,7 @@ bHasPersonalAccessPrivileges = 9;
 bHasUserGroupList = 8;
 bHasCatSearch = 7;
 bHasFileIDs = 6;
-
+
 
 
 bHasBTreeMgr = 5;
@@ -7300,7 +7296,7 @@ frOpenChain: LONGINT;
 
 {scroll position}
 {DirID chain of open folders}
-
+
 frScript: SignedByte;
 frXFlags: SignedByte;
 frComment: INTEGER;
@@ -7368,7 +7364,7 @@ ioDrFndrInfo: DXInfo;
 {AppleTalk server address or zero}
 {approx. speed rating or zero if unrated}
 {foreign privilege model supported or zero if none}
-
+
 
 
 ioDrParID: LONGINT);
@@ -7454,7 +7450,7 @@ offset to pascal User Name string }
 offset to pascal User Password string }
 offset to pascal Volume Password string }
 variable length data may follow }
-
+
 
 
 DTPBRec = RECORD
@@ -7515,7 +7511,7 @@ ioFlVersNum: SignedByte;
 
 {size of buffer area}
 {length of vol parms data}
-
+
 
 
 ioFlFndrInfo: FInfo;
@@ -7589,7 +7585,7 @@ ioNewDirID: LONGINT);
 {ptr to destination pathname}
 {ptr to optional name}
 {destination directory ID}
-
+
 WDParam:
 (filler9: INTEGER;
 ioWDIndex: INTEGER;
@@ -7655,7 +7651,7 @@ filler1: LONGINT;
 {current position in the catalog}
 {optional performance enhancement buffer}
 {length of buffer pointed to by ioOptBuffer}
-
+
 
 
 ioNewName: StringPtr;
@@ -7713,7 +7709,7 @@ CASE INTEGER OF
 {1st part of version number in BCD}
 minorRev: 0..9;
 {2nd part is 1 nibble in BCD}
-
+
 bugFixRev: 0..9;
 stage: SignedByte;
 nonRelRev: SignedByte);
@@ -7779,7 +7775,7 @@ INLINE $205F,$A415,$3E80;
 FUNCTION PBFlushVol(paramBlock: ParmBlkPtr;async: BOOLEAN): OSErr;
 FUNCTION PBFlushVolSync(paramBlock: ParmBlkPtr): OSErr;
 INLINE $205F,$A013,$3E80;
-
+
 
 
 FUNCTION PBFlushVolAsync(paramBlock: ParmBlkPtr): OSErr;
@@ -7838,7 +7834,7 @@ FUNCTION PBAllocate(paramBlock: ParmBlkPtr;async: BOOLEAN): OSErr;
 FUNCTION PBAllocateSync(paramBlock: ParmBlkPtr): OSErr;
 INLINE $205F,$A010,$3E80;
 FUNCTION PBAllocateAsync(paramBlock: ParmBlkPtr): OSErr;
-
+
 
 
 INLINE $205F,$A410,$3E80;
@@ -8006,7 +8002,7 @@ INLINE $205F,$A209,$3E80;
 FUNCTION PBHDeleteAsync(paramBlock: HParmBlkPtr): OSErr;
 INLINE $205F,$A609,$3E80;
 FUNCTION PBHRename(paramBlock: HParmBlkPtr;async: BOOLEAN): OSErr;
-
+
 
 
 FUNCTION PBHRenameSync(paramBlock: HParmBlkPtr): OSErr;
@@ -8064,7 +8060,7 @@ FUNCTION HDelete(vRefNum: INTEGER;dirID: LONGINT;fileName: Str255): OSErr;
 FUNCTION HGetFInfo(vRefNum: INTEGER;dirID: LONGINT;fileName: Str255;VAR fndrInfo: FInfo): OSErr;
 FUNCTION HSetFInfo(vRefNum: INTEGER;dirID: LONGINT;fileName: Str255;fndrInfo: FInfo): OSErr;
 FUNCTION HSetFLock(vRefNum: INTEGER;dirID: LONGINT;fileName: Str255): OSErr;
-
+
 
 
 FUNCTION HRstFLock(vRefNum: INTEGER;dirID: LONGINT;fileName: Str255): OSErr;
@@ -8122,7 +8118,7 @@ INLINE $205F,$7038,$A260,$3E80;
 FUNCTION PBHOpenDenyAsync(paramBlock: HParmBlkPtr): OSErr;
 INLINE $205F,$7038,$A660,$3E80;
 FUNCTION PBHOpenRFDeny(paramBlock: HParmBlkPtr;async: BOOLEAN): OSErr;
-
+
 
 
 FUNCTION PBHOpenRFDenySync(paramBlock: HParmBlkPtr): OSErr;
@@ -8178,7 +8174,7 @@ FUNCTION PBDTGetIconInfo(paramBlock: DTPBPtr;async: BOOLEAN): OSErr;
 FUNCTION PBDTGetIconInfoSync(paramBlock: DTPBPtr): OSErr;
 INLINE $205F,$7024,$A260,$3E80;
 FUNCTION PBDTGetIconInfoAsync(paramBlock: DTPBPtr): OSErr;
-
+
 
 
 INLINE $205F,$7024,$A660,$3E80;
@@ -8236,7 +8232,7 @@ FUNCTION PBDTDeleteAsync(paramBlock: DTPBPtr): OSErr;
 INLINE $205F,$702F,$A460,$3E80;
 { VolumeMount traps }
 FUNCTION PBGetVolMountInfoSize(paramBlock: ParmBlkPtr): OSErr;
-
+
 INLINE $205F,$703F,$A260,$3E80;
 FUNCTION PBGetVolMountInfo(paramBlock: ParmBlkPtr): OSErr;
 INLINE $205F,$7040,$A260,$3E80;
@@ -8277,7 +8273,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Files.p}
-
+
 
 
 {#####################################################################}
@@ -8327,7 +8323,7 @@ ftNoErr = 0;
 ftRejected = 1;
 ftFailed = 2;
 ftTimeOut = 3;
-
+
 ftTooManyRetry = 4;
 ftNotEnoughDSpace = 5;
 ftRemoteCancel = 6;
@@ -8375,7 +8371,7 @@ refCon: LONGINT;
 userData: LONGINT;
 
 
-
+
 
 
 defProc: ProcPtr;
@@ -8434,7 +8430,7 @@ FileTransferReadProcPtr = ProcPtr;
 FileTransferWriteProcPtr = ProcPtr;
 FileTransferSendProcPtr = ProcPtr;
 FileTransferReceiveProcPtr = ProcPtr;
-
+
 
 
 FileTransferEnvironsProcPtr = ProcPtr;
@@ -8477,7 +8473,7 @@ FUNCTION FTIntlToEnglish(hFT: FTHandle;inputPtr: Ptr;VAR outputPtr: Ptr;
 language: INTEGER): OSErr;
 FUNCTION FTEnglishToIntl(hFT: FTHandle;inputPtr: Ptr;VAR outputPtr: Ptr;
 language: INTEGER): OSErr;
-
+
 
 
 
@@ -8495,7 +8491,7 @@ END.
 {$ENDC}
 
 {### END OF FILE FileTransfers.p}
-
+
 
 
 {#####################################################################}
@@ -8543,7 +8539,7 @@ ftGetErrorStringMsg = 8;
 ftAbortMsg = 52;
 ftStartMsg = 100;
 ftExecMsg = 102;
-
+
 
 ftSendMsg = 103;
 ftReceiveMsg = 104;
@@ -8588,7 +8584,7 @@ END.
 {$ENDC}
 
 {### END OF FILE FileTransferTools.p}
-
+
 
 
 {#####################################################################}
@@ -8671,7 +8667,7 @@ floppy aliases }
 server aliases }
 application aliases }
 all other containers }
-
+
 {Finder Flags}
 kIsOnDesk = $1;
 kColor = $E;
@@ -8696,7 +8692,7 @@ END.
 {### END OF FILE Finder.p}
 
 
-
+
 
 
 {#####################################################################}
@@ -8785,7 +8781,7 @@ END.
 {$ENDC}
 
 {### END OF FILE FixMath.p}
-
+
 
 
 {#####################################################################}
@@ -8853,7 +8849,7 @@ kExtensionFolderType = 'extn';
 {Finder objects to put into the Apple menu go here}
 {Control Panels go here (may contain INITs)}
 {Finder extensions go here}
-
+
 
 kPreferencesFolderType = 'pref';
 kTemporaryFolderType = 'temp';
@@ -8876,7 +8872,6 @@ END.
 {$ENDC}
 
 {### END OF FILE Folders.p}
-
 
 
 {#####################################################################}
@@ -8992,7 +8987,6 @@ ascent: INTEGER;
 {height of font rectangle}
 {offset to offset/width table}
 {ascent}
-
 
 
 descent: INTEGER;
@@ -9075,7 +9069,7 @@ KernTable = RECORD
 numKerns: INTEGER;
 
 {number of kerning entries}
-
+
 
 
 END;
@@ -9168,7 +9162,7 @@ INLINE $A903;
 FUNCTION FMSwapFont(inRec: FMInput): FMOutPtr;
 INLINE $A901;
 PROCEDURE SetFScaleDisable(fscaleDisable: BOOLEAN);
-
+
 
 
 INLINE $A834;
@@ -9201,7 +9195,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Fonts.p}
-
+
 
 
 {#####################################################################}
@@ -9279,7 +9273,7 @@ using 32-bit addressing mode }
 Machine is 32-bit capable }
 Alias Mgr Attributes }
 True if the Alias Mgr is present }
-
+
 
 
 gestaltAliasMgrSupportsRemoteAppletalk = 1;
@@ -9446,7 +9440,7 @@ Do we have a Universal ROM?}
 Help Mgr Attributes }
 true if help mgr is present }
 keyboard type }
-
+
 gestaltMacKbd = 1;
 gestaltMacAndPad = 2;
 gestaltMacPlusKbd = 3;
@@ -9574,7 +9568,7 @@ e.g. gestaltPPCSupportsRealTime +gestaltPPCSupportsIncoming + gestaltPPCSupports
 indicates PPC is cuurently is only supports real time delivery
 and both incoming and outgoing network sessions are allowed.
 By default local real time delivery is supported as long as PPCInit has been called.}
-
+
 gestaltPPCToolboxPresent = $0000;
 gestaltPPCSupportsRealTime = $1000;
 gestaltPPCSupportsIncoming = $0001;
@@ -9734,7 +9728,7 @@ terminal mgr attributes }
 { time mgr version }
 { standard time mgr is present }
 
-
+
 
 gestaltRevisedTimeMgr = 2;
 gestaltExtendedTimeMgr = 3;
@@ -9805,7 +9799,7 @@ END.
 {$ENDC}
 
 {### END OF FILE GestaltEqu.p}
-
+
 
 
 {#####################################################################}
@@ -9852,7 +9846,7 @@ Port3DPtr = ^Port3D;
 Port3DHandle = ^Port3DPtr;
 Port3D = RECORD
 grPort: GrafPtr;
-
+
 
 
 viewRect: Rect;
@@ -9909,7 +9903,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Graf3D.p}
-
+
 
 
 {#####################################################################}
@@ -10026,7 +10020,7 @@ XCmdPtr
 = ^XCmdBlock;
 XCmdBlock = RECORD
 paramCount: INTEGER; { If = -1 then new use for XWindoids }
-
+
 
 params: ARRAY[1..16] OF Handle;
 returnValue: Handle;
@@ -10142,7 +10136,7 @@ PROCEDURE HideHCPalettes(paramPtr: XCmdPtr);
 PROCEDURE ShowHCPalettes(paramPtr: XCmdPtr);
 PROCEDURE RegisterXWMenu(paramPtr: XCmdPtr; window: WindowPtr; menu: MenuHandle; registering: BOOLEAN);
 PROCEDURE SetXWIdleTime(paramPtr: XCmdPtr; window: WindowPtr; interval: LongInt);
-
+
 
 
 PROCEDURE XWHasInterruptCode(paramPtr: XCmdPtr; window: WindowPtr; haveCode: BOOLEAN);
@@ -10185,7 +10179,7 @@ PROCEDURE TraceScript(paramPtr: XCmdPtr; traceInto: BOOLEAN);
 END.
 {$ENDC}
 {### END OF FILE HyperXCmd.p}
-
+
 
 
 {#####################################################################}
@@ -10232,7 +10226,7 @@ genericMoverObjectIconResource = -3969;
 genericPreferencesIconResource = -3971;
 genericQueryDocumentIconResource = -16506;
 genericExtensionIconResource = -16415;
-
+
 
 
 systemFolderIconResource = -3983;
@@ -10263,7 +10257,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Icons.p}
-
+
 
 
 {#####################################################################}
@@ -10310,7 +10304,7 @@ F_GWININFO = $6508;
 F_SWININFO = $6509;
 F_GSCROLLINFO = $6510;
 F_SSCROLLINFO = $6511;
-
+
 
 { Open modes for IEopen(), from <fcntl.h> }
 O_RDONLY = $0000;
@@ -10354,7 +10348,7 @@ PROCEDURE IEatexit(exitProc: UNIV LONGINT);
 {C;}
 PROCEDURE IEexit(status: LONGINT);
 {C;}
-
+
 
 
 PROCEDURE IE_exit(status: LONGINT);
@@ -10368,7 +10362,7 @@ END.
 {$ENDC}
 
 {### END OF FILE IntEnv.p}
-
+
 
 
 {#####################################################################}
@@ -10469,7 +10463,7 @@ smArabic script }
 smDevanagari script }
 smThai script }
 smKorean script }
-
+
 langLithuanian = 24;
 langPolish = 25;
 langHungarian = 26;
@@ -10641,7 +10635,7 @@ smKannada script }
 smTamil script }
 smTelugu script }
 smSinhalese script }
-
+
 
 langBurmese = 77;
 langKhmer = 78;
@@ -10756,7 +10750,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Language.p}
-
+
 
 
 {#####################################################################}
@@ -10807,7 +10801,7 @@ lDrawMsg = 1;
 lHiliteMsg = 2;
 lCloseMsg = 3;
 
-
+
 
 
 TYPE
@@ -10862,7 +10856,7 @@ INLINE $3F3C,$003C,$A9E7;
 FUNCTION LLastClick(lHandle: ListHandle): Cell;
 INLINE $3F3C,$0040,$A9E7;
 FUNCTION LNextCell(hNext: BOOLEAN;vNext: BOOLEAN;VAR theCell: Cell;lHandle: ListHandle): BOOLEAN;
-
+
 INLINE $3F3C,$0048,$A9E7;
 FUNCTION LSearch(dataPtr: Ptr;dataLen: INTEGER;searchProc: ProcPtr;VAR theCell: Cell;
 lHandle: ListHandle): BOOLEAN;
@@ -10909,7 +10903,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Lists.p}
-
+
 {#####################################################################}
 {### FILE: MacPrint.p}
 {#####################################################################}
@@ -10950,7 +10944,7 @@ END.
 {$ENDC}
 
 {### END OF FILE MacPrint.p}
-
+
 
 
 {#####################################################################}
@@ -11004,7 +10998,7 @@ zcbFree: LONGINT;
 gzProc: ProcPtr;
 moreMast: INTEGER;
 flags: INTEGER;
-
+
 
 
 cntRel: INTEGER;
@@ -11122,7 +11116,7 @@ startPtr: UNIV Ptr);
 PROCEDURE SetZone(hz: THz);
 INLINE $205F,$A01B;
 FUNCTION CompactMem(cbNeeded: Size): Size;
-
+
 
 
 FUNCTION CompactMemSys(cbNeeded: Size): Size;
@@ -11199,7 +11193,7 @@ INLINE $205F,$A057;
 PROCEDURE MaxApplZone;
 INLINE $A063;
 FUNCTION HoldMemory(address: UNIV Ptr;count: LONGINT): OSErr;
-
+
 FUNCTION UnholdMemory(address: UNIV Ptr;count: LONGINT): OSErr;
 FUNCTION LockMemory(address: UNIV Ptr;count: LONGINT): OSErr;
 FUNCTION LockMemoryContiguous(address: UNIV Ptr;count: LONGINT): OSErr;
@@ -11232,7 +11226,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Memory.p}
-
+
 {#####################################################################}
 {### FILE: MemTypes.p}
 {#####################################################################}
@@ -11273,7 +11267,7 @@ END.
 {$ENDC}
 
 {### END OF FILE MemTypes.p}
-
+
 
 
 {#####################################################################}
@@ -11335,7 +11329,7 @@ MenuPtr = ^MenuInfo;
 MenuHandle = ^MenuPtr;
 MenuInfo = RECORD
 menuID: INTEGER;
-
+
 
 
 menuWidth: INTEGER;
@@ -11401,7 +11395,7 @@ PROCEDURE InvalMenuBar;
 INLINE $A81D;
 PROCEDURE DeleteMenu(menuID: INTEGER);
 INLINE $A936;
-
+
 
 
 PROCEDURE ClearMenuBar;
@@ -11460,7 +11454,7 @@ INLINE $A84E;
 PROCEDURE SetItemCmd(theMenu: MenuHandle;item: INTEGER;cmdChar: CHAR);
 INLINE $A84F;
 FUNCTION PopUpMenuSelect(menu: MenuHandle;top: INTEGER;left: INTEGER;popUpItem: INTEGER): LONGINT;
-
+
 
 
 INLINE $A80B;
@@ -11488,7 +11482,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Menus.p}
-
+
 
 
 {#####################################################################}
@@ -11557,7 +11551,7 @@ midiExternalSync = 1;
 midiPortTypeTime = 0;
 
 {time port}
-
+
 
 
 midiPortTypeInput = 1;
@@ -11639,7 +11633,7 @@ midiVConnectRmvd = -256;
 {pending virtual connection created}
 {pending virtual connection resolved}
 {pending virtual connection removed}
-
+
 midiNoConErr = -257;
 midiWriteErr = -258;
 midiNameLenErr = -259;
@@ -11719,7 +11713,7 @@ numIDs: INTEGER;
 list: ARRAY [1..1] OF OSType;
 
 { -r or $R- permits access to [1..numIDs] of OSType }
-
+
 
 
 END;
@@ -11775,7 +11769,7 @@ PROCEDURE MIDIRemovePort(refnum: INTEGER);
 INLINE $203C,$004C,midiToolNum,$A800;
 FUNCTION MIDIGetSync(refnum: INTEGER): INTEGER;
 INLINE $203C,$0050,midiToolNum,$A800;
-
+
 
 
 PROCEDURE MIDISetSync(refnum: INTEGER;sync: INTEGER);
@@ -11823,7 +11817,7 @@ END.
 {$ENDC}
 
 {### END OF FILE MIDI.p}
-
+
 
 
 {#####################################################################}
@@ -11882,7 +11876,7 @@ nmStr: StringPtr;
 {handle to small icon}
 {handle to sound record}
 {string to appear in alert}
-
+
 nmResp: NMProcPtr;
 nmRefCon: LONGINT;
 END;
@@ -11986,7 +11980,7 @@ INLINE $2EBC,$0000,$014A;
 { UsingOSEvents }
 
 {$IFC NOT UsingIncludes}
-
+
 
 END.
 {$ENDC}
@@ -11994,7 +11988,7 @@ END.
 {### END OF FILE OSEvents.p}
 
 
-
+
 
 
 {#####################################################################}
@@ -12044,7 +12038,7 @@ INTERFACE
 {$ENDC}
 {$IFC UNDEFINED UsingDisks}
 {$I $$Shell(PInterfaces)Disks.p}
-
+
 {$ENDC}
 {$IFC UNDEFINED UsingErrors}
 {$I $$Shell(PInterfaces)Errors.p}
@@ -12089,7 +12083,7 @@ END.
 {$ENDC}
 
 {### END OF FILE OSIntf.p}
-
+
 
 
 {#####################################################################}
@@ -12145,7 +12139,7 @@ envSE30 = 7;
 {Externally clocked}
 
 {Updated to equal latest SysEnvirons version}
-
+
 
 
 envPortable = 8;
@@ -12203,7 +12197,7 @@ volClik: INTEGER;
 misc: INTEGER;
 END;
 {QElemPtr = ^QElem;}
-
+
 
 
 QElemPtr = ^QElem;
@@ -12266,7 +12260,7 @@ vcbXTRef: INTEGER;
 vcbCTRef: INTEGER;
 vcbCtlBuf: Ptr;
 vcbDirIDM: LONGINT;
-
+
 vcbOffsM: INTEGER;
 END;
 DrvQElPtr = ^DrvQEl;
@@ -12323,7 +12317,7 @@ ioVolIndex: INTEGER;
 ioVCrDate: LONGINT;
 
 
-
+
 
 
 ioVLsBkUp: LONGINT;
@@ -12449,7 +12443,7 @@ FUNCTION DTInstall(dtTaskPtr: QElemPtr): OSErr;
 FUNCTION GetMMUMode: SignedByte;
 PROCEDURE SwapMMUMode(VAR mode: SignedByte);
 FUNCTION SysEnvirons(versionRequested: INTEGER;VAR theWorld: SysEnvRec): OSErr;
-
+
 FUNCTION ReadDateTime(VAR time: LONGINT): OSErr;
 PROCEDURE GetDateTime(VAR secs: LONGINT);
 FUNCTION SetDateTime(time: LONGINT): OSErr;
@@ -12505,7 +12499,7 @@ END.
 {$ENDC}
 
 {### END OF FILE OSUtils.p}
-
+
 
 
 {#####################################################################}
@@ -12567,7 +12561,7 @@ zeroCycle = 1;
 {Edition Manager}
 
 {0:00 AM/PM format}
-
+
 longDay = 0;
 longWeek = 1;
 longMonth = 2;
@@ -12642,7 +12636,7 @@ verHungary = 43;
 
 { Croatian system for Yugoslavia }
 { Hindi system for India }
-
+
 verEstonia = 44;
 verLatvia = 45;
 verLapland = 46;
@@ -12735,7 +12729,7 @@ dateSep: CHAR;
 {order of short date elements: mdy, dmy, etc.}
 {format flags for each short date element}
 {date separator character}
-
+
 
 
 timeCycle: Byte;
@@ -12814,7 +12808,7 @@ PROCEDURE IUTimePString(dateTime: LONGINT;wantSeconds: BOOLEAN;VAR result: Str25
 intlHandle: Handle);
 INLINE $3F3C,$0010,$A9ED;
 FUNCTION IUMetric: BOOLEAN;
-
+
 INLINE $3F3C,$0004,$A9ED;
 FUNCTION IUMagString(aPtr: Ptr;bPtr: Ptr;aLen: INTEGER;bLen: INTEGER): INTEGER;
 INLINE $3F3C,$000A,$A9ED;
@@ -12858,7 +12852,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Packages.p}
-
+
 {#####################################################################}
 {### FILE: PackIntf.p}
 {#####################################################################}
@@ -12939,7 +12933,7 @@ END.
 {$ENDC}
 
 {### END OF FILE PaletteMgr.p}
-
+
 
 
 {#####################################################################}
@@ -13058,7 +13052,7 @@ PROCEDURE GetEntryColor(srcPalette: PaletteHandle;srcEntry: INTEGER;VAR dstRGB: 
 INLINE $AA9B;
 PROCEDURE SetEntryColor(dstPalette: PaletteHandle;dstEntry: INTEGER;srcRGB: RGBColor);
 INLINE $AA9C;
-
+
 
 PROCEDURE GetEntryUsage(srcPalette: PaletteHandle;srcEntry: INTEGER;VAR dstUsage: INTEGER;
 VAR dstTolerance: INTEGER);
@@ -13104,7 +13098,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Palettes.p}
-
+
 
 
 {#####################################################################}
@@ -13158,7 +13152,7 @@ CONST
 _IOFBF = $00; { File buffering }
 _IOLBF = $40; { Line buffering }
 _IONBF = $04; { No buffering }
-
+
 
 
 {
@@ -13313,14 +13307,14 @@ FUNCTION PLPos(STRING1: STR255; STRING2: STR255): INTEGER;
 
 {$IFC NOT UsingIncludes}
 END.
-
+
 
 
 {$ENDC}
 {### END OF FILE PasLibIntf.p}
 
 
-
+
 
 
 {#####################################################################}
@@ -13367,7 +13361,7 @@ ALongs = ARRAY [1..8000] OF LONGINT;
 PInts = ^AInts;
 HInts = ^PInts;
 AInts = ARRAY [1..8000] OF INTEGER;
-
+
 
 
 { PerfGlobals are declared as a record, so main program can allocate
@@ -13444,7 +13438,7 @@ FUNCTION PerfControl(thePerfGlobals: TP2PerfGlobals;turnOn: BOOLEAN): BOOLEAN;
 { Call this to turn off/on measuring.
 Returns previous state.
 }
-
+
 FUNCTION PerfDump(thePerfGlobals: TP2PerfGlobals;reportFile: Str255;doHistogram: BOOLEAN;
 rptFileColumns: INTEGER): INTEGER;
 { Call this to dump the statistics into a file. }
@@ -13458,7 +13452,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Perf.p}
-
+
 
 
 {#####################################################################}
@@ -13553,7 +13547,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Picker.p}
-
+
 {#####################################################################}
 {### FILE: PickerIntf.p}
 {#####################################################################}
@@ -13594,7 +13588,7 @@ END.
 {$ENDC}
 
 {### END OF FILE PickerIntf.p}
-
+
 
 
 {#####################################################################}
@@ -13646,7 +13640,7 @@ ColorBankIsExactAnd555 = 0;
 {system color pick method}
 {method that chooses the most popular set of colors}
 {method that chooses a good average mix of colors}
-
+
 
 
 ColorBankIs555 = 1;
@@ -13764,7 +13758,7 @@ handle to the font names }
 
 FUNCTION GetPictInfo(thePictHandle: PicHandle;
 VAR thePictInfo: PictInfo;
-
+
 
 
 verb: INTEGER;
@@ -13804,7 +13798,7 @@ END.
 {$ENDC}
 
 {### END OF FILE PictUtil.p}
-
+
 
 
 {#####################################################################}
@@ -13903,7 +13897,7 @@ PROCEDURE SleepQInstall(qRecPtr: SleepQRecPtr);
 INLINE $205F,$A28A;
 PROCEDURE SleepQRemove(qRecPtr: SleepQRecPtr);
 INLINE $205F,$A48A;
-
+
 
 
 
@@ -13927,7 +13921,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Power.p}
-
+
 
 
 {#####################################################################}
@@ -13974,7 +13968,7 @@ CONST
 ppcServiceRealTime = 1;
 ppcServiceStoreAndForward = 2;
 TYPE
-
+
 
 
 PPCLocationKind = INTEGER;
@@ -14047,7 +14041,7 @@ END;
 
 { NBP name entity }
 { just the NBP type string, for PPCOpen }
-
+
 
 
 PortInfoArrayPtr = ^PortInfoArray;
@@ -14219,7 +14213,7 @@ reserved
 }
 
 { reserved }
-
+
 portRefNum: PPCPortRefNum;
 sessRefNum: PPCSessRefNum;
 serviceType: PPCServiceType;
@@ -14438,13 +14432,13 @@ INLINE $303C,$0D00,$A82B;
 {$IFC NOT UsingIncludes}
 END.
 {$ENDC}
-
+
 
 
 {### END OF FILE PPCToolBox.p}
 
 
-
+
 
 
 {#####################################################################}
@@ -14504,7 +14498,7 @@ lPrPageClose = $00020000;
 {The PrDevCtl Proc's CParam for reset}
 {The PrDevCtl Proc's CParam for std paper advance}
 {The PrDevCtl Proc's CParam for end page}
-
+
 
 
 lPrDocClose = $00050000;
@@ -14582,7 +14576,7 @@ END;
 
 {Whether the PrPort allocation was done by us.}
 {Whether the BitMap allocation was done by us.}
-
+
 
 
 { Printing Graf Port. All printer imaging, whether spooling, banding, etc, happens "thru" a GrafPort.
@@ -14650,7 +14644,7 @@ f11: BOOLEAN;
 {Spool File vol, set to 0 initially}
 {Spool File version, set to 0 initially}
 {An eXtra byte.}
-
+
 
 
 f10: BOOLEAN;
@@ -14727,7 +14721,7 @@ TPfPgDir = RECORD
 iPages: INTEGER;
 iPgPos: ARRAY [0..128] OF LONGINT;
 {ARRAY [0..iPfMaxPgs] OF LONGINT}
-
+
 
 
 END;
@@ -14786,7 +14780,7 @@ iYRsl: INTEGER;
 END;
 
 {more fields here depending on call}
-
+
 
 
 TDftBitsBlk = RECORD
@@ -14899,7 +14893,7 @@ INLINE $2F3C,$9A00,$0000,$A8FD;
 
 {$ENDC} { UsingPrinting }
 {$IFC NOT UsingIncludes}
-
+
 
 END.
 {$ENDC}
@@ -14907,7 +14901,7 @@ END.
 {### END OF FILE Printing.p}
 
 
-
+
 {#####################################################################}
 {### FILE: PrintTraps.p}
 {#####################################################################}
@@ -14949,7 +14943,7 @@ END.
 {$ENDC}
 
 {### END OF FILE PrintTraps.p}
-
+
 
 
 {#####################################################################}
@@ -14999,7 +14993,7 @@ CONST
 *
 Process identifier.
 ************************************************************************
-
+
 
 Various reserved process serial numbers. }
 kNoProcess = 0;
@@ -15051,7 +15045,7 @@ launchAvailableSize: LONGINT;
 launchAppParameters: AppParametersPtr;
 END;
 
-
+
 
 
 CONST
@@ -15122,7 +15116,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Processes.p}
-
+
 
 
 {#####################################################################}
@@ -15228,7 +15222,7 @@ INLINE $203C, $0004, $0012, $AB1D;
 FUNCTION QDDone(port: GrafPtr): BOOLEAN;
 INLINE $203C, $0004, $0013, $AB1D;
 FUNCTION OffscreenVersion: LONGINT;
-
+
 
 INLINE $7014, $AB1D;
 FUNCTION NewTempScreenBuffer(globalRect: Rect;purgeable: BOOLEAN;VAR gdh: GDHandle;
@@ -15245,7 +15239,7 @@ END.
 {$ENDC}
 
 {### END OF FILE QDOffscreen.p}
-
+
 
 
 {#####################################################################}
@@ -15301,7 +15295,7 @@ notPatBic = 15;
 {invalid color table request}
 
 {the 16 transfer modes}
-
+
 { Special Text Transfer Mode
 grayishTextOr = 49;
 
@@ -15384,7 +15378,7 @@ pHiliteBit = 0;
 {1 if screen device [not used]}
 { 1 if no driver for this GDevice }
 {1 if in use}
-
+
 
 
 defQDColors = 127;
@@ -15441,7 +15435,7 @@ DeviceLoopFlags25,DeviceLoopFlags26,DeviceLoopFlags27,DeviceLoopFlags28,
 DeviceLoopFlags29,DeviceLoopFlags30,DeviceLoopFlags31);
 
 FontInfo = RECORD
-
+
 
 
 ascent: INTEGER;
@@ -15496,7 +15490,7 @@ rectProc: Ptr;
 
 {size in bytes}
 {enclosing rectangle}
-
+
 
 
 rRectProc: Ptr;
@@ -15558,7 +15552,7 @@ value: INTEGER;
 {magnitude of blue component}
 
 {index or other value}
-
+
 
 
 rgb: RGBColor;
@@ -15643,7 +15637,7 @@ CCrsrHandle = ^CCrsrPtr;
 {flags whether expanded Pattern valid}
 {Handle to expanded Pattern data}
 {old-Style pattern/RGB color}
-
+
 
 
 CCrsr = RECORD
@@ -15733,7 +15727,7 @@ compProc: ProcPtr;
 
 {CProcHndl Handle to next CProcRec}
 {pointer to complement procedure}
-
+
 
 
 END;
@@ -15818,7 +15812,7 @@ newProc3: Ptr;
 {flags for Palette Manager}
 
 {fields added to QDProcs}
-
+
 
 
 newProc4: Ptr;
@@ -15893,7 +15887,7 @@ END;
 {request list data}
 
 push as short}
-
+
 
 
 DeviceLoopDrawingProcPtr = ProcPtr;
@@ -16004,7 +15998,7 @@ PROCEDURE MeasureText(count: INTEGER;textAddr: Ptr;charLocs: Ptr);
 INLINE $A837;
 PROCEDURE GetFontInfo(VAR info: FontInfo);
 INLINE $A88B;
-
+
 
 
 PROCEDURE ForeColor(color: LONGINT);
@@ -16063,7 +16057,7 @@ PROCEDURE FrameArc(r: Rect;startAngle: INTEGER;arcAngle: INTEGER);
 INLINE $A8BE;
 PROCEDURE PaintArc(r: Rect;startAngle: INTEGER;arcAngle: INTEGER);
 INLINE $A8BF;
-
+
 
 
 PROCEDURE EraseArc(r: Rect;startAngle: INTEGER;arcAngle: INTEGER);
@@ -16122,7 +16116,7 @@ PROCEDURE FillRgn(rgn: RgnHandle;pat: Pattern);
 INLINE $A8D6;
 PROCEDURE ScrollRect(r: Rect;dh: INTEGER;dv: INTEGER;updateRgn: RgnHandle);
 INLINE $A8EF;
-
+
 
 
 PROCEDURE CopyBits(srcBits: BitMap;dstBits: BitMap;srcRect: Rect;dstRect: Rect;
@@ -16237,7 +16231,7 @@ PROCEDURE CloseCPort(port: CGrafPtr);
 INLINE $A87D;
 FUNCTION NewPixMap: PixMapHandle;
 INLINE $AA03;
-
+
 
 
 PROCEDURE DisposPixMap(pm: PixMapHandle);
@@ -16296,7 +16290,7 @@ PROCEDURE CalcCMask(srcBits: BitMap;dstBits: BitMap;srcRect: Rect;dstRect: Rect;
 seedRGB: RGBColor;matchProc: ProcPtr;matchData: LONGINT);
 INLINE $AA4F;
 FUNCTION OpenCPicture(newHeader: OpenCPicParams): PicHandle;
-
+
 
 
 INLINE $AA20;
@@ -16355,7 +16349,7 @@ INLINE $AA30;
 PROCEDURE DisposeGDevice(gdh: GDHandle);
 INLINE $AA30;
 PROCEDURE SetGDevice(gd: GDHandle);
-
+
 
 
 INLINE $AA31;
@@ -16413,11 +16407,11 @@ INLINE $A836,$2E88;
 {$IFC NOT UsingIncludes}
 END.
 {$ENDC}
-
+
 {### END OF FILE Quickdraw.p}
 
 
-
+
 
 
 {#####################################################################}
@@ -16479,7 +16473,7 @@ mapFalse = $FF00;
 {insert ROM map w/ TmpResLoad = FALSE.}
 FUNCTION InitResources: INTEGER;
 INLINE $A995;
-
+
 
 
 PROCEDURE RsrcZoneInit;
@@ -16538,7 +16532,7 @@ FUNCTION GetResAttrs(theResource: Handle): INTEGER;
 INLINE $A9A6;
 PROCEDURE GetResInfo(theResource: Handle;VAR theID: INTEGER;VAR theType: ResType;
 VAR name: Str255);
-
+
 
 
 INLINE $A9A8;
@@ -16595,7 +16589,7 @@ PROCEDURE WritePartialResource(theResource: Handle;offset: LONGINT;buffer: UNIV 
 count: LONGINT);
 INLINE $7002,$A822;
 PROCEDURE SetResourceSize(theResource: Handle;newSize: LONGINT);
-
+
 INLINE $7003,$A822;
 
 {$ENDC} { UsingResources }
@@ -16606,7 +16600,7 @@ END.
 {### END OF FILE Resources.p}
 
 
-
+
 
 
 {#####################################################################}
@@ -16660,7 +16654,7 @@ INLINE $205F,$A034,$3E80;
 {$ENDC}
 
 { UsingRetrace }
-
+
 
 
 {$IFC NOT UsingIncludes}
@@ -16670,7 +16664,7 @@ END.
 {### END OF FILE Retrace.p}
 
 
-
+
 
 
 {#####################################################################}
@@ -16716,15 +16710,6 @@ sMacOS68020 = 2;
 sMacOS68030 = 3;
 sMacOS68040 = 4;
 
-{Revision of code (For sExec)}
-{CPU type = 68000}
-{CPU type = 68020}
-{CPU type = 68030}
-{CPU type = 68040}
-{Mac OS, CPU type = 68000}
-{Mac OS, CPU type = 68020}
-{Mac OS, CPU type = 68030}
-{Mac OS, CPU type = 68040}
 
 board = 0;
 displayVideoAppleTFB = 16843009;
@@ -16753,7 +16738,7 @@ sRsrcLoadDir = 5;
 {Icon}
 {Driver directory}
 {Load directory}
-
+
 
 
 sRsrcBootRec = 6;
@@ -16867,7 +16852,7 @@ Networking cards.}
 {0021}
 {Test Long.}
 {Test String.}
-
+
 
 
 {#####################################################################}
@@ -16993,7 +16978,7 @@ RTGetVersionParam:
 { A5-world }
 
 { run-time version (returned) }
-
+
 
 
 RTGetJTAddrParam:
@@ -17024,7 +17009,7 @@ END.
 {$ENDC}
 
 {### END OF FILE RTLib.p}
-
+
 
 
 {#####################################################################}
@@ -17074,7 +17059,7 @@ Overflow = 64;
 Invalid = 128;
 CurInex1 = 256;
 CurInex2 = 512;
-
+
 
 
 CurDivByZero = 1024;
@@ -17123,7 +17108,7 @@ Environment = RECORD
 FPCR: LONGINT;
 FPSR: LONGINT;
 END;
-
+
 
 
 TrapVector = RECORD
@@ -17169,7 +17154,7 @@ CStrPtr = ^CHAR;
 { return IEEE default environment }
 FUNCTION IEEEDefaultEnv: environment;
 PROCEDURE SetTrapVector(Traps: trapvector);
-
+
 
 
 PROCEDURE GetTrapVector(VAR Traps: trapvector);
@@ -17222,7 +17207,7 @@ FUNCTION Remainder(x: Extended;y: Extended;VAR quo: INTEGER): Extended;
 FUNCTION Rint(x: Extended): Extended;
 FUNCTION Scalb(n: INTEGER;x: Extended): Extended;
 FUNCTION Logb(x: Extended): Extended;
-
+
 
 
 FUNCTION CopySign(x: Extended;y: Extended): Extended;
@@ -17262,7 +17247,7 @@ END.
 {$ENDC}
 
 {### END OF FILE SANE.p}
-
+
 
 
 {#####################################################################}
@@ -17315,7 +17300,7 @@ FUNCTION GetScrap(hDest: Handle;theType: ResType;VAR offset: LONGINT): LONGINT;
 INLINE $A9FD;
 FUNCTION ZeroScrap: LONGINT;
 INLINE $A9FC;
-
+
 
 
 FUNCTION PutScrap(length: LONGINT;theType: ResType;source: Ptr): LONGINT;
@@ -17330,7 +17315,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Scrap.p}
-
+
 
 
 {#####################################################################}
@@ -17392,7 +17377,7 @@ smCyrillic = 7;
 {Hebrew}
 {Greek}
 {Cyrillic}
-
+
 smRSymbol = 8;
 smDevanagari = 9;
 smGurmukhi = 10;
@@ -17480,7 +17465,7 @@ smFirstByte = -1;
 {(old name for smGeez)}
 {(old name for smEastEurRoman)}
 {(old name for smExtArabic)}
-
+
 
 
 smLastByte = 1;
@@ -17556,7 +17541,7 @@ smIdeographicLevel2 = $0100;
 smIdeographicUser = $0200;
 {user char}
 { old names for above, for backward compatibility }
-
+
 
 
 smFISClassLvl1 = $0000;
@@ -17660,7 +17645,7 @@ smMaskAll = $FFFFFFFF;
 smMaskAscii = $00000001;
 
 {2^smTransAscii}
-
+
 
 
 smMaskNative = $00000002;
@@ -17764,7 +17749,7 @@ smScriptJust = 8;
 {Justification flag}
 smScriptRedraw = 10;
 {Word redraw flag}
-
+
 smScriptSysFond = 12;
 smScriptAppFond = 14;
 smScriptBundle = 16;
@@ -17881,7 +17866,7 @@ has intelligent cut & paste}
 has only single bytes}
 chars have upper & lower case}
 is contextual}
-
+
 smsfNoForceFont = 4;
 smsfB0Digits = 5;
 smsfAutoInit = 6;
@@ -17954,7 +17939,7 @@ appleLogo = $F0;
 graveUprO = $F1;
 acuteUprU = $F2;
 circumflexUprU = $F3;
-
+
 
 
 graveUprU = $F4;
@@ -18058,7 +18043,7 @@ mask to long date found}
 {close curly bracket}
 {open guillemet}
 {close guillemet}
-
+
 tokenAsterisk = 26;
 tokenDivide = 27;
 tokenPlusMinus = 28;
@@ -18149,7 +18134,7 @@ delimPad = -2;
 
 {e.g. #}
 {non-breaking space}
-
+
 
 
 { obsolete, misspelled token names kept for backward compatibility }
@@ -18220,7 +18205,7 @@ toggleBadNum = 6;
 toggleOutOfRange = 7;
 
 {synonym for toggleErr3}
-
+
 
 
 toggleErr3 = 7;
@@ -18276,7 +18261,7 @@ NBreakTable = RECORD
 flags1: SignedByte;
 flags2: SignedByte;
 version: INTEGER;
-
+
 
 
 classTableOff: INTEGER;
@@ -18365,7 +18350,7 @@ itlbSmallSize: INTEGER;
 {preferred font size}
 {default small FOND ID}
 {default small font size}
-
+
 
 
 itlbSysFond: INTEGER;
@@ -18453,7 +18438,7 @@ reserved: ARRAY [0..7] OF LONGINT;
 {escape symbol code}
 {handle to itl4 resource of current script}
 {must be zero!}
-
+
 
 
 END;
@@ -18513,7 +18498,7 @@ TogglePB = RECORD
 togFlags: LONGINT;
 
 {caller normally sets low word to dateStdMask=$7F}
-
+
 
 
 amChars: ResType;
@@ -18594,7 +18579,7 @@ resourceNum: INTEGER;
 {reserved}
 {contains 'itl4'}
 {resource ID}
-
+
 
 
 version: INTEGER;
@@ -18673,7 +18658,7 @@ type for truncWhere parameter in new TruncString, TruncText }
 TruncCode = INTEGER;
 { type for styleRunPosition parameter in NPixel2Char etc. }
 JustStyleCode = INTEGER;
-
+
 
 
 FUNCTION FontScript: INTEGER;
@@ -18732,7 +18717,7 @@ INLINE $31DF,$0BAC;
 PROCEDURE ReadLocation(VAR loc: MachineLocation);
 INLINE $205F,$203C,$000C,$00E4,$A051;
 PROCEDURE WriteLocation(loc: MachineLocation);
-
+
 
 
 INLINE $205F,$203C,$000C,$00E4,$A052;
@@ -18789,7 +18774,7 @@ INLINE $2F3C,$8408,$0024,$A8B5;
 FUNCTION FindScriptRun(textPtr: Ptr;textLen: LONGINT;VAR lenUsed: LONGINT): ScriptRunStatus;
 INLINE $2F3C,$820C,$0026,$A8B5;
 FUNCTION VisibleLength(textPtr: Ptr;textLen: LONGINT): LONGINT;
-
+
 INLINE $2F3C,$8408,$0028,$A8B5;
 FUNCTION ValidDate(vDate: LongDateRec;flags: LONGINT;VAR newSecs: LongDateTime): INTEGER;
 INLINE $2F3C,$820C,$FFE4,$A8B5;
@@ -18827,7 +18812,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Script.p}
-
+
 
 
 {#####################################################################}
@@ -18890,7 +18875,7 @@ pMapSIG = $504D;
 {attempted operation is out of sequence}
 {CPU bus timeout}
 {SCSI bus wasn't in Status phase}
-
+
 
 
 TYPE
@@ -18979,7 +18964,7 @@ FUNCTION SCSIRead(tibPtr: Ptr): OSErr;
 INLINE $3F3C,$0005,$A815;
 FUNCTION SCSIRBlind(tibPtr: Ptr): OSErr;
 INLINE $3F3C,$0008,$A815;
-
+
 
 FUNCTION SCSIWrite(tibPtr: Ptr): OSErr;
 INLINE $3F3C,$0006,$A815;
@@ -19005,7 +18990,7 @@ END.
 {$ENDC}
 
 {### END OF FILE SCSI.p}
-
+
 {#####################################################################}
 {### FILE: SCSIIntf.p}
 {#####################################################################}
@@ -19046,7 +19031,7 @@ END.
 {$ENDC}
 
 {### END OF FILE SCSIIntf.p}
-
+
 
 
 {#####################################################################}
@@ -19103,7 +19088,7 @@ PROCEDURE GetAppParms(VAR apName: Str255;VAR apRefNum: INTEGER;VAR apParam: Hand
 INLINE $A9F5;
 PROCEDURE CountAppFiles(VAR message: INTEGER;VAR count: INTEGER);
 PROCEDURE GetAppFiles(index: INTEGER;VAR theFile: AppFile);
-
+
 
 PROCEDURE ClrAppFiles(index: INTEGER);
 
@@ -19116,7 +19101,7 @@ END.
 {$ENDC}
 
 {### END OF FILE SegLoad.p}
-
+
 
 
 {#####################################################################}
@@ -19224,7 +19209,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Serial.p}
-
+
 
 
 {#####################################################################}
@@ -19291,7 +19276,7 @@ INLINE $3F3C,$0004,$A895;
 
 {$IFC NOT UsingIncludes}
 END.
-
+
 
 
 
@@ -19300,7 +19285,7 @@ END.
 {### END OF FILE ShutDown.p}
 
 
-
+
 
 
 {#####################################################################}
@@ -19354,7 +19339,7 @@ SIGTERM =	   $0020;
 FUNCTION
 IEsignal(sigNum: LONGINT; sigHdlr: UNIV SignalHandler):
 SignalHandler; {C;}
-
+
 FUNCTION
 IEraise(sigNum: LONGINT):
 LONGINT; {c;}
@@ -19366,7 +19351,7 @@ END.
 {### END OF FILE Signal.p}
 
 
-
+
 
 
 {#####################################################################}
@@ -19532,7 +19517,7 @@ siPadding: PACKED ARRAY [0..2] OF SignedByte;
 { addr of top of ROM }
 { slot number }
 { reserved }
-
+
 
 
 END;
@@ -19617,7 +19602,7 @@ FUNCTION SReadStruct(spBlkPtr: SpBlockPtr): OSErr;
 {RefNum of the driver.}
 { Number of devices to load.}
 {State of StartBoot code.}
-
+
 
 
 INLINE $205F,$7007,$A06E,$3E80;
@@ -19674,7 +19659,7 @@ INLINE $205F,$702C,$A06E,$3E80;
 FUNCTION SGetDriver(spBlkPtr: SpBlockPtr): OSErr;
 INLINE $205F,$702D,$A06E,$3E80;
 FUNCTION SPtrToSlot(spBlkPtr: SpBlockPtr): OSErr;
-
+
 
 
 INLINE $205F,$702E,$A06E,$3E80;
@@ -19717,7 +19702,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Slots.p}
-
+
 
 
 {#####################################################################}
@@ -19777,7 +19762,7 @@ sampledSynth = 5;
 {square wave synthesizer}
 {wave table synthesizer}
 {sampled sound synthesizer}
-
+
 
 
 { old Sound Manager MACE synthesizer numbers }
@@ -19826,7 +19811,7 @@ stdQLength = 128;
 dataOffsetFlag = $8000;
 waveInitChannelMask = $07;
 waveInitChannel0 = $04;
-
+
 
 
 waveInitChannel1 = $05;
@@ -19985,7 +19970,7 @@ sysBeepDisable = $0000;
 sysBeepEnable = $0001;
 
 { SysBeep() enable flags }
-
+
 
 
 unitTypeNoSelection = $FFFF;
@@ -20039,7 +20024,7 @@ END;
 FTSynthPtr = ^FTSynthRec;
 FTSynthRec = RECORD
 mode: INTEGER;
-
+
 
 
 sndRec: FTSndRecPtr;
@@ -20104,7 +20089,7 @@ dataPart: PACKED ARRAY [0..0] OF Byte;
 {This is a variable length array}
 {This is a variable length array}
 {This is a variable length array}
-
+
 
 
 END;
@@ -20258,7 +20243,7 @@ sample }
 }
 }
 }
-
+
 
 
 sampleArea: PACKED ARRAY [0..0] OF Byte;
@@ -20314,7 +20299,7 @@ dbhSampleRate: Fixed;
 dbhBufferPtr: ARRAY [0..1] OF SndDoubleBufferPtr;
 dbhDoubleBack: ProcPtr;
 END;
-
+
 
 
 FUNCTION SndDoCommand(chan: SndChannelPtr;cmd: SndCommand;noWait: BOOLEAN): OSErr;
@@ -20446,7 +20431,7 @@ siLevelMeterOnOff = 'lmet';
 { level meter state }
 siRecordingQuality = 'qual';
 { recording quality }
-
+
 siVoxRecordInfo = 'voxr';
 siVoxStopInfo = 'voxs';
 siNumberChannels = 'chan';
@@ -20627,7 +20612,7 @@ END.
 {$ENDC}
 
 {### END OF FILE SoundInput.p}
-
+
 
 
 {#####################################################################}
@@ -20678,7 +20663,7 @@ getDlgID = -4000;
 getOpen = 1;
 getCancel = 3;
 getEject = 5;
-
+
 
 
 getDrive = 6;
@@ -20732,7 +20717,7 @@ good: BOOLEAN;
 copy: BOOLEAN;
 fType: OSType;
 vRefNum: INTEGER;
-
+
 
 version: INTEGER;
 fName: Str63;
@@ -20798,7 +20783,7 @@ INLINE $3F3C,$0003,$A9EA;
 PROCEDURE SFPGetFile(where: Point;
 prompt: Str255;
 
-
+
 
 
 fileFilter: FileFilterProcPtr;
@@ -20850,7 +20835,7 @@ following integers are possible activatable DITL items, in
 the order that the tab key will cycle through. The first
 in the list is the item made active when dialog is first shown.
 activateProc is a pointer to a procedure like:
-
+
 PROCEDURE MyActivateProc(theDialog:
 itemNo:
 activating:
@@ -20881,7 +20866,7 @@ END.
 {$ENDC}
 
 {### END OF FILE StandardFile.p}
-
+
 
 
 {#####################################################################}
@@ -20963,7 +20948,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Start.p}
-
+
 {#####################################################################}
 {### FILE: Strings.p}
 {#####################################################################}
@@ -21008,7 +20993,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Strings.p}
-
+
 
 
 {#####################################################################}
@@ -21114,7 +21099,7 @@ VAR] (long) pointer to MMU Mapping table}
 VAR] (long) size of the MMU mapping table}
 VAR] (long) pointer to Slot manager information}
 VAR] (long) pointer to Sound Chip}
-
+
 SMGlobals = $0CC4;
 TheGDevice = $0CC8;
 CQDGlobals = $0CCC;
@@ -21375,7 +21360,7 @@ HiHeapMark = $BAE;
 {[GLOBAL VAR] (long) highest address used by a zone below sp<01Nov85 JTC>}
 MemErr = $220;
 {[GLOBAL VAR] last memory manager error [word]}
-
+
 
 
 UTableBase = $11C;
@@ -21467,7 +21452,7 @@ IWM = $1E0;
 Lvl1DT = $192;
 {[GLOBAL VAR] Level-1 secondary interrupt vector table (32 bytes)
 Interrupt level 1 dispatch table [32 bytes]}
-
+
 
 
 Lvl2DT = $1B2;
@@ -21568,7 +21553,7 @@ CrsrScale = $8D3;
 {[GLOBAL VAR] cursor scaled? [byte]}
 MouseMask = $8D6;
 {[GLOBAL VAR] V-H mask for ANDing with mouse [long]}
-
+
 
 
 MouseOffset = $8DA;
@@ -21668,7 +21653,7 @@ SoundVBL = $26A;
 {[GLOBAL VAR] vertical retrace control element [16 bytes]}
 SoundDCE = $27A;
 {[GLOBAL VAR] sound driver DCE [pointer]}
-
+
 
 
 SoundActive = $27E;
@@ -21799,7 +21784,7 @@ user hook during dragging [pointer]}
 DeskPattern = $A3C;
 {[GLOBAL VAR] Pattern with which desktop is painted (8 bytes)
 
-
+
 
 
 desk pattern [8 bytes]}
@@ -21896,7 +21881,7 @@ END.
 {$ENDC}
 
 {### END OF FILE SysEqu.p}
-
+
 
 
 {#####################################################################}
@@ -21945,7 +21930,7 @@ tmNoErr = 0;
 tmNotSent = 1;
 tmEnvironsChanged = 2;
 tmNotSupported = 7;
-
+
 
 
 tmNoTools = 8;
@@ -21989,7 +21974,7 @@ tmTextTerminal = $0001;
 tmGraphicsTerminal = $0002;
 TYPE { TMTermTypes }
 	TMTermTypes = INTEGER;
-
+
 TermDataBlockPtr = ^TermDataBlock;
 TermDataBlockH = ^TermDataBlockPtr;
 TermDataBlock = RECORD
@@ -22089,7 +22074,7 @@ FUNCTION TMSetupFilter(procID: INTEGER;theConfig: Ptr;count: INTEGER;theDialog: 
 VAR theEvent: EventRecord;VAR theItem: INTEGER;VAR magicCookie: LONGINT): BOOLEAN;
 PROCEDURE TMSetupItem(procID: INTEGER;theConfig: Ptr;count: INTEGER;theDialog: DialogPtr;
 VAR theItem: INTEGER;VAR magicCookie: LONGINT);
-
+
 PROCEDURE TMSetupXCleanup(procID: INTEGER;theConfig: Ptr;count: INTEGER;
 theDialog: DialogPtr;OKed: BOOLEAN;VAR magicCookie: LONGINT);
 PROCEDURE TMSetupPostflight(procID: INTEGER);
@@ -22124,7 +22109,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Terminals.p}
-
+
 
 
 {#####################################################################}
@@ -22299,7 +22284,7 @@ face}
 size}
 color}
 size mode}
-
+
 
 
 toglBit = 5;
@@ -22404,7 +22389,7 @@ lineHeight: INTEGER;
 fontAscent: INTEGER;
 selPoint: Point;
 selStart: INTEGER;
-
+
 
 
 selEnd: INTEGER;
@@ -22472,7 +22457,7 @@ END;
 
 {maximum height in line}
 {maximum ascent in line}
-
+
 
 
 LHPtr = ^LHTable;
@@ -22547,7 +22532,7 @@ PROCEDURE TEInit;
 {character Style}
 {size in point}
 {absolute (RGB) color}
-
+
 
 
 INLINE $A9CC;
@@ -22606,7 +22591,7 @@ INLINE $A9D4;
 FUNCTION TEStylNew(destRect: Rect;viewRect: Rect): TEHandle;
 INLINE $A83E;
 FUNCTION TEStyleNew(destRect: Rect;viewRect: Rect): TEHandle;
-
+
 
 
 INLINE $A83E;
@@ -22663,7 +22648,7 @@ PROCEDURE SetClikLoop(clikProc: ProcPtr;hTE: TEHandle);
 PROCEDURE SetWordBreak(wBrkProc: ProcPtr;hTE: TEHandle);
 
 {$ENDC} { UsingTextEdit }
-
+
 
 
 {$IFC NOT UsingIncludes}
@@ -22673,7 +22658,7 @@ END.
 {### END OF FILE TextEdit.p}
 
 
-
+
 
 
 {#####################################################################}
@@ -22726,7 +22711,7 @@ PROCEDURE InsXTime(tmTaskPtr: QElemPtr);
 INLINE $205F,$A458;
 PROCEDURE PrimeTime(tmTaskPtr: QElemPtr;count: LONGINT);
 INLINE $201F,$205F,$A05A;
-
+
 
 
 PROCEDURE RmvTime(tmTaskPtr: QElemPtr);
@@ -22741,7 +22726,7 @@ END.
 {$ENDC}
 
 {### END OF FILE Timer.p}
-
+
 
 
 {#####################################################################}
@@ -22791,7 +22776,7 @@ INTERFACE
 {$ENDC}
 {$IFC UNDEFINED UsingFonts}
 {$I $$Shell(PInterfaces)Fonts.p}
-
+
 {$ENDC}
 {$IFC UNDEFINED UsingLists}
 {$I $$Shell(PInterfaces)Lists.p}
@@ -22818,7 +22803,7 @@ END.
 {$ENDC}
 
 {### END OF FILE ToolIntf.p}
-
+
 
 
 {#####################################################################}
@@ -22870,7 +22855,7 @@ INLINE $A868;
 FUNCTION FixRound(x: Fixed): INTEGER;
 INLINE $A86C;
 FUNCTION GetString(stringID: INTEGER): StringHandle;
-
+
 
 
 INLINE $A9BA;
@@ -22939,6 +22924,42 @@ END.
 {$ENDC}
 
 {### END OF FILE ToolUtils.p}
+
+
+{ Added by uxmal: Apple SANE numeric library bindings. Derived from:
+  http://www.mac.linux-m68k.org/devel/macalmanac.php
+
+_PACK 4  -  $A9EB       FLOATING-POINT MATH             Stack-based
+
+NOTE: The Standard Apple Numerics Environment (SANE) declares a second name for
+      this trap: _FP68K. SANE also requires the data type of routine parameters;
+      this is accomplished by setting certain high bits of the routine number
+      (and altering the 16-bit value). The numbers listed below, with all high
+      bits clear, will work for 80-bit extended-precision floating-point param-
+      eters. See the Apple Numerics Manual for more information.
+
+Name                 Sel     Name                Sel     Name                Sel
+-----------------  -----    -----------------  -----    -----------------  -----
+FOABS                 15    FOLOGB                26    FOGETENV               3
+FOADD                  0    FOMUL                  4    FOSETHV                5
+FOB2D                 11    FONEG                 13    FOSETXCP              21
+FOCLASS               28    FONEXT                19    FOSQRT                18
+FOCMP                  8    FOPROCENTRY           23    FOSUB                  2
+FOCPX                 10    FOPROCEXIT            25    FOTESTXCP             27
+FOCPYSGN              17    FOREM                 12    FOTTI                 22
+FOD2B                  9    FORTI                 20    FOX2Z                 16
+FODIV                  6    FOSCALB               24    FOZ2X                 14
+FOGETHV                7    FOSETENV               1
+}
+
+UNIT SANE;
+INTERFACE 
+
+PROCEDURE FOB2D(arg0: real; arg1: real);
+INLINE $3F3C,$000B,$A9EB;
+
+END.
+
 
 {#####################################################################}
 {### FILE: Traps.p}
@@ -23379,7 +23400,6 @@ _GetNewWindow = $A9BD;
 _GetNewControl = $A9BE;
 
 
-
 _GetRMenu = $A9BF;
 _GetNewMBar = $A9C0;
 _UniqueID = $A9C1;
@@ -23404,6 +23424,9 @@ _Pack2 = $A9E9;
 _Pack3 = $A9EA;
 _FP68K = $A9EB;
 _Pack4 = $A9EB;
+
+
+
 _Elems68K = $A9EC;
 _Pack5 = $A9EC;
 _Pack6 = $A9ED;
@@ -23436,7 +23459,7 @@ _DebugStr = $ABFF;
 _ResourceDispatch = $A822;
 
 
-
+
 
 
 {
@@ -23485,7 +23508,7 @@ _Eject = $A017;
 _GetFPos = $A018;
 _SetFilLock = $A041;
 _RstFilLock = $A042;
-
+
 
 
 _SetFilType = $A043;
@@ -23538,7 +23561,7 @@ _GetHandleSize = $A025;
 _HandleZone = $A126;
 _ReallocHandle = $A027;
 _RecoverHandle = $A128;
-
+
 
 
 _HLock = $A029;
@@ -23594,7 +23617,7 @@ _SetApplBase = $A057;
 _HWPriv = $A198;
 {
 ; New names for (mostly) new flavors of old LwrString trap (redone <13>)
-
+
 }
 _LowerText = $A056;
 _StripText = $A256;
@@ -23699,7 +23722,7 @@ _TECopy = $A9D5;
 _TECut = $A9D6;
 
 
-
+
 _TEDelete = $A9D7;
 _TEActivate = $A9D8;
 _TEDeactivate = $A9D9;
@@ -23756,7 +23779,7 @@ _CharExtra = $AA23;
 _DisposCTable = $AA24;
 
 
-
+
 _DisposeCTable = $AA24;
 _DisposCIcon = $AA25;
 _DisposeCIcon = $AA25;
@@ -23809,7 +23832,7 @@ _DelSearch = $AA4C;
 _DelComp = $AA4D;
 
 
-
+
 _SetStdCProcs = $AA4E;
 _StdOpcodeProc = $ABF8;
 {
@@ -23856,7 +23879,7 @@ _NewPalette = $AA91;
 _GetNewPalette = $AA92;
 
 
-
+
 
 
 _DisposePalette = $AA93;
@@ -23910,7 +23933,7 @@ _NMRemove = $A05F;
 ; All QDOffscreen Routines go through one trap with a selector
 }
 _QDExtensions = $AB1D;
-
+
 
 {
 ; UserDelay
@@ -23930,7 +23953,7 @@ END.
 {### END OF FILE Traps.p}
 
 
-
+
 
 
 {#####################################################################}
@@ -23984,8 +24007,7 @@ LongIntPtr = ^LONGINT;
 {$ENDC}
 Fixed = LONGINT;
 
-{ fixed point arithmatic type }
-
+{ fixed point arithmetic type }
 
 
 FixedPtr = ^Fixed;
@@ -24138,7 +24160,7 @@ fourBitMode = 130;
 }
 }
 }
-
+
 
 
 eightBitMode = 131;
@@ -24224,7 +24246,7 @@ END;
 {Number of components in pixel.}
 {Number of bits per component}
 {Offset from one plane to the next.}
-
+
 
 
 VDEntRecPtr = ^VDEntryRecord;
@@ -24448,7 +24470,7 @@ nextWindow: WindowPeek;
 windowPic: PicHandle;
 refCon: LONGINT;
 END;
-
+
 
 
 CWindowPeek = ^CWindowRecord;
@@ -24572,7 +24594,7 @@ INLINE $A92E;
 FUNCTION GetWindowPic(theWindow: WindowPtr): PicHandle;
 INLINE $A92F;
 FUNCTION CheckUpdate(VAR theEvent: EventRecord): BOOLEAN;
-
+
 
 
 INLINE $A911;

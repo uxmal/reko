@@ -59,7 +59,7 @@ namespace Reko.Arch.X86
 		private ProcessorMode mode;
         private Dictionary<uint, FlagGroupStorage> flagGroupCache;
 
-        public IntelArchitecture(string archId, ProcessorMode mode) : base(archId)
+        public IntelArchitecture(IServiceProvider services, string archId, ProcessorMode mode) : base(services, archId)
         {
             this.mode = mode;
             this.flagGroupCache = new Dictionary<uint, FlagGroupStorage>();
@@ -81,7 +81,7 @@ namespace Reko.Arch.X86
 
         public X86Disassembler CreateDisassemblerImpl(EndianImageReader imageReader)
         {
-            return mode.CreateDisassembler(imageReader, Options);
+            return mode.CreateDisassembler(this.Services, imageReader, Options);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
@@ -253,11 +253,10 @@ namespace Reko.Arch.X86
 
         private static RegisterStorage GetSubregisterUsingMask(StorageDomain domain, ulong mask)
         {
-            RegisterStorage[] subregs;
             if (mask == 0)
                 return null;
             RegisterStorage reg = null;
-            if (Registers.SubRegisters.TryGetValue(domain, out subregs))
+            if (Registers.SubRegisters.TryGetValue(domain, out RegisterStorage[] subregs))
             {
                 for (int i = 0; i < subregs.Length; ++i)
                 {
@@ -276,8 +275,7 @@ namespace Reko.Arch.X86
             if (mask == 0)
                 return null;
             mask &= reg.BitMask;
-            RegisterStorage[] subregs;
-            if (Registers.SubRegisters.TryGetValue(reg.Domain, out subregs))
+            if (Registers.SubRegisters.TryGetValue(reg.Domain, out RegisterStorage[] subregs))
             {
                 for (int i = 0; i < subregs.Length; ++i)
                 {
@@ -297,7 +295,7 @@ namespace Reko.Arch.X86
 
         public override List<RtlInstruction> InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
         {
-            return this.mode.InlineCall(addrCallee, addrContinuation, rdr, binder);
+            return this.mode.InlineCall(this.Services, addrCallee, addrContinuation, rdr, binder);
         }
 
         public override void LoadUserOptions(Dictionary<string, object> options)
@@ -366,32 +364,32 @@ namespace Reko.Arch.X86
 
     public class X86ArchitectureReal : IntelArchitecture
     {
-        public X86ArchitectureReal(string archId)
-            : base(archId, ProcessorMode.Real)
+        public X86ArchitectureReal(IServiceProvider services, string archId)
+            : base(services, archId, ProcessorMode.Real)
         {
         }
     }
 
     public class X86ArchitectureProtected16 : IntelArchitecture
     {
-        public X86ArchitectureProtected16(string archId)
-            : base(archId, ProcessorMode.ProtectedSegmented)
+        public X86ArchitectureProtected16(IServiceProvider services, string archId)
+            : base(services, archId, ProcessorMode.ProtectedSegmented)
         {
         }
     }
 
     public class X86ArchitectureFlat32 : IntelArchitecture
     {
-        public X86ArchitectureFlat32(string archId)
-            : base(archId, ProcessorMode.Protected32)
+        public X86ArchitectureFlat32(IServiceProvider services, string archId)
+            : base(services, archId, ProcessorMode.Protected32)
         {
         }
     }
 
     public class X86ArchitectureFlat64 : IntelArchitecture
     {
-        public X86ArchitectureFlat64(string archId)
-            : base(archId, ProcessorMode.Protected64)
+        public X86ArchitectureFlat64(IServiceProvider services, string archId)
+            : base(services, archId, ProcessorMode.Protected64)
         {
         }
     }

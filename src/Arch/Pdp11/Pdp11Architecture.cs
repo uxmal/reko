@@ -75,7 +75,7 @@ namespace Reko.Arch.Pdp11
         private FlagGroupStorage[] flagRegs;
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public Pdp11Architecture(string archId) : base(archId)
+        public Pdp11Architecture(IServiceProvider services, string archId) : base(services, archId)
         {
             regs = new RegisterStorage[] { 
                 Registers.r0, Registers.r1, Registers.r2, Registers.r3, 

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -78,7 +78,7 @@ namespace Reko.UnitTests
         {
             switch (archName)
             {
-            case "m68k": return new Reko.Arch.M68k.M68kArchitecture("m68k");
+            case "m68k": return new Reko.Arch.M68k.M68kArchitecture(Services, "m68k");
             default: throw new NotImplementedException();
             }
         }

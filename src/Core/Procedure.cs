@@ -67,7 +67,7 @@ namespace Reko.Core
         public bool UserSpecified { get; set; }
 
         public IProcessorArchitecture Architecture { get; }
-        public List<AbsynStatement> Body { get; set; }
+        public List<AbsynStatement>? Body { get; set; }
         public BlockGraph ControlGraph { get; }
         public Block EntryBlock { get; }
         public Block ExitBlock { get; }
@@ -183,7 +183,7 @@ namespace Reko.Core
 
         public void WriteBody(bool showEdges, TextWriter writer)
         {
-            var formatter = new CodeFormatter(new TextFormatter(writer));
+            var formatter = CreateCodeFormatter(new TextFormatter(writer));
             new ProcedureFormatter(this, new BlockDecorator { ShowEdges = showEdges }, formatter).WriteProcedureBlocks();
         }
 
@@ -195,8 +195,13 @@ namespace Reko.Core
             var formatter = new TextFormatter(writer);
             Signature.Emit(Name, FunctionType.EmitFlags.None, new TextFormatter(writer));
             writer.WriteLine();
-            var codeFormatter = new CodeFormatter(formatter);
+            var codeFormatter = CreateCodeFormatter(formatter);
             new ProcedureFormatter(this, decorator, codeFormatter).WriteProcedureBlocks();
+        }
+
+        public CodeFormatter CreateCodeFormatter(Formatter formatter)
+        {
+            return new CodeFormatter(formatter);
         }
 
         public void WriteGraph(TextWriter writer)
@@ -222,7 +227,7 @@ namespace Reko.Core
 
         public Block AddBlock(Address addr, string name)
         {
-            Block block = new Block(this, name) { Address = addr };
+            Block block = new Block(this, addr, name);
             blocks.Add(block);
             return block;
         }
@@ -231,13 +236,6 @@ namespace Reko.Core
         {
             var block = AddBlock(addr, name);
             block.IsSynthesized = true;
-            return block;
-        }
-
-        public Block AddBlock(string name)
-        {
-            Block block = new Block(this, name);
-            blocks.Add(block);
             return block;
         }
 

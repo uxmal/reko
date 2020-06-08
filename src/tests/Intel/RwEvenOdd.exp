@@ -11,15 +11,15 @@
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	ax = 0x0003
+	ax = 3<16>
 	call fn0C00_0015 (retsize: 2;)
-	Mem0[ds:0x0300:byte] = al
-	ax = 0x0003
+	Mem0[ds:0x300<16>:byte] = al
+	ax = 3<16>
 	call fn0C00_0020 (retsize: 2;)
-	Mem0[ds:0x0301:byte] = al
+	Mem0[ds:0x301<16>:byte] = al
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -39,7 +39,7 @@ fn0C00_0000_exit:
 define fn0C00_0015
 fn0C00_0015_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0015
 l0C00_0015:
 	ax = ax | ax
@@ -48,7 +48,7 @@ l0C00_0015:
 	branch Test(EQ,Z) l0C00_001D
 	// succ:  l0C00_0019 l0C00_001D
 l0C00_0019:
-	ax = ax - 0x0001
+	ax = ax - 1<16>
 	SZO = cond(ax)
 	// succ:  l0C00_001A_thunk_fn0C00_0020
 l0C00_001A_thunk_fn0C00_0020:
@@ -56,7 +56,7 @@ l0C00_001A_thunk_fn0C00_0020:
 	return
 	// succ:  fn0C00_0015_exit
 l0C00_001D:
-	al = 0x01
+	al = 1<8>
 	return
 	// succ:  fn0C00_0015_exit
 fn0C00_0015_exit:
@@ -76,7 +76,7 @@ fn0C00_0015_exit:
 define fn0C00_0020
 fn0C00_0020_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0020
 l0C00_0020:
 	ax = ax | ax
@@ -85,7 +85,7 @@ l0C00_0020:
 	branch Test(EQ,Z) l0C00_0028
 	// succ:  l0C00_0024 l0C00_0028
 l0C00_0024:
-	ax = ax - 0x0001
+	ax = ax - 1<16>
 	SZO = cond(ax)
 	// succ:  l0C00_0025_thunk_fn0C00_0015
 l0C00_0025_thunk_fn0C00_0015:

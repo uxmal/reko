@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,7 +40,7 @@ namespace Reko.UnitTests.Arch.Arc
         [SetUp]
         public void Setup()
         {
-            this.arch = new ARCompactArchitecture("arCompact");
+            this.arch = new ARCompactArchitecture(CreateServiceContainer(), "arCompact");
             arch.LoadUserOptions(new Dictionary<string, object>
             {
                 { "Endianness", "be" }
@@ -84,7 +85,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("E043"); // add_s	r0,r0,00000043
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = r0 + 0x00000043");
+                "1|L--|r0 = r0 + 0x43<32>");
         }
 
         [Test]
@@ -93,7 +94,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("2414804A"); // add1	r10,r4,r1
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r10 = r4 + (r1 << 0x01)",
+                "1|L--|r10 = r4 + (r1 << 1<8>)",
                 "2|L--|ZNCV = cond(r10)");
         }
 
@@ -103,7 +104,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("7934"); // add1_s	r1,r1,r1
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r1 = r1 + (r1 << 0x01)");
+                "1|L--|r1 = r1 + (r1 << 1<8>)");
         }
 
         [Test]
@@ -112,7 +113,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("21158003"); // add2.f	r3,r1,r0
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r3 = r1 + (r0 << 0x02)",
+                "1|L--|r3 = r1 + (r0 << 2<8>)",
                 "2|L--|ZNCV = cond(r3)");
         }
 
@@ -122,7 +123,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("7915"); // add2_s	r1,r1,r0
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r1 = r1 + (r0 << 0x02)");
+                "1|L--|r1 = r1 + (r0 << 2<8>)");
         }
 
         [Test]
@@ -131,7 +132,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("25561C40"); // add3	r0,r13,00000031
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = r13 + (0x00000031 << 0x03)");
+                "1|L--|r0 = r13 + (0x31<32> << 3<8>)");
         }
 
         [Test]
@@ -140,7 +141,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("7936"); // add3_s	r1,r1,r1
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r1 = r1 + (r1 << 0x03)");
+                "1|L--|r1 = r1 + (r1 << 3<8>)");
         }
 
         [Test]
@@ -162,7 +163,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("20440401"); // and	r1,r0,00000010
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = r0 & 0x00000010");
+                "1|L--|r1 = r0 & 0x10<32>");
         }
 
         [Test]
@@ -189,7 +190,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("6E12"); // asl_s	r0,r14,00000002
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = r14 << 0x00000002");
+                "1|L--|r0 = r14 << 2<32>");
         }
 
         [Test]
@@ -207,7 +208,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("691B"); // asr_s	r0,r1,00000003
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = r1 >> 0x00000003");
+                "1|L--|r0 = r1 >> 3<32>");
         }
 
         [Test]
@@ -235,7 +236,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("B9A1"); // bclr_s	r1,r1,00000001
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r1 = __bclr(r1, 0x00000001)");
+                "1|L--|r1 = __bclr(r1, 1<32>)");
         }
 
         [Test]
@@ -254,7 +255,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("20530001"); // bmsk	r1,r0,00000000
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = __bitmask(r0, 0x00000000)");
+                "1|L--|r1 = __bitmask(r0, 0<32>)");
         }
 
         [Test]
@@ -263,7 +264,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("204F07C1"); // bset	r1,r0,0000001F
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = __bset(r0, 0x0000001F)");
+                "1|L--|r1 = __bset(r0, 0x1F<32>)");
         }
 
         [Test]
@@ -272,7 +273,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("B982"); // bset_s	r1,r1,00000002
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r1 = __bset(r1, 0x00000002)");
+                "1|L--|r1 = __bset(r1, 2<32>)");
         }
 
         [Test]
@@ -290,7 +291,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("B8E0"); // btst_s	r0,00000000
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|ZN = cond(__btst(r0, 0x00000000))");
+                "1|L--|ZN = cond(__btst(r0, 0<32>))");
         }
 
         [Test]
@@ -299,7 +300,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("25922053"); // bxor	r21,r21,+000004C1
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r21 = __bxor(r21, 1217)");
+                "1|L--|r21 = __bxor(r21, 1217<i32>)");
         }
 
         [Test]
@@ -694,7 +695,7 @@ namespace Reko.UnitTests.Arch.Arc
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|fp = Mem0[sp:word32]",
-                "2|L--|sp = sp + 4");
+                "2|L--|sp = sp + 4<i32>");
         }
 
         [Test]
@@ -703,7 +704,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("10B20601"); // ld.as	r1,[r0,50]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = Mem0[r0 + 200:word32]");
+                "1|L--|r1 = Mem0[r0 + 200<i32>:word32]");
         }
 
         [Test]
@@ -712,7 +713,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("D7F8"); // ld_s	r15,[pcl,992]
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r15 = Mem0[0x001003E0:word32]");
+                "1|L--|r15 = Mem0[0x001003E0<p32>:word32]");
         }
 
         [Test]
@@ -730,7 +731,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("910B"); // ldw_s	r0,[r1,22]
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = (word32) Mem0[r1 + 22:word16]");
+                "1|L--|r0 = (word32) Mem0[r1 + 22<i32>:word16]");
         }
 
         [Test]
@@ -748,7 +749,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("B8C0"); // bmsk_s	r0,r0,00000000
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = __bitmask(r0, 0x00000000)");
+                "1|L--|r0 = __bitmask(r0, 0<32>)");
         }
 
         [Test]
@@ -830,7 +831,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("E83E"); // breq_s	r0,+00000000,000036AC
             AssertCode(
                 "0|T--|00100000(2): 1 instructions",
-                "1|T--|if (r0 == 0) branch 0010007C");
+                "1|T--|if (r0 == 0<i32>) branch 0010007C");
         }
 
         [Test]
@@ -884,7 +885,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("EBD4"); // brne_s	r3,+00000000,00003154
             AssertCode(
                 "0|T--|00100000(2): 1 instructions",
-                "1|T--|if (r3 != 0) branch 000FFFA8");
+                "1|T--|if (r3 != 0<i32>) branch 000FFFA8");
         }
 
         [Test]
@@ -902,7 +903,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("244C8000"); // cmp	r4,00000000
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|ZNCV = cond(r4 - 0x00000000)");
+                "1|L--|ZNCV = cond(r4 - 0<32>)");
         }
 
         [Test]
@@ -911,7 +912,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("E080"); // cmp_s	r0,00000000
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|ZNCV = cond(r0 - 0x00000000)");
+                "1|L--|ZNCV = cond(r0 - 0<32>)");
         }
 
         [Test]
@@ -974,7 +975,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("13FEB0C0"); // ldb.x	r0,[fp,-2]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = (word32) Mem0[fp - 2:int8]");
+                "1|L--|r0 = (word32) Mem0[fp - 2<i32>:int8]");
         }
 
         [Test]
@@ -1004,7 +1005,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("202A0F8012345678"); // lr	r0,[65603]
             AssertCode(
                 "0|L--|00100000(8): 1 instructions",
-                "1|L--|r0 = __load_aux_reg(0x12345678)");
+                "1|L--|r0 = __load_aux_reg(0x12345678<32>)");
         }
 
         [Test]
@@ -1022,7 +1023,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("B823"); // lsr_s	r0,r0,00000003
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = r0 >>u 0x00000003");
+                "1|L--|r0 = r0 >>u 3<32>");
         }
 
         [Test]
@@ -1031,7 +1032,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("2088706A"); // max	r56,r56,-0000057F
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r56 = max(r56, -1407)");
+                "1|L--|r56 = max(r56, -1407<i32>)");
         }
 
         [Test]
@@ -1142,7 +1143,7 @@ namespace Reko.UnitTests.Arch.Arc
             AssertCode(
                 "0|L--|00100000(2): 2 instructions",
                 "1|L--|blink = Mem0[sp:word32]",
-                "2|L--|sp = sp + 4");
+                "2|L--|sp = sp + 4<i32>");
         }
 
         [Test]
@@ -1151,7 +1152,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("C5E1"); // push_s	r13
             AssertCode(
                 "0|L--|00100000(2): 2 instructions",
-                "1|L--|sp = sp - 4",
+                "1|L--|sp = sp - 4<i32>",
                 "2|L--|Mem0[sp:word32] = r13");
         }
 
@@ -1161,7 +1162,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("208D13FC"); // rcmp	r8,-000000F1
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|ZNCV = cond(-241 - r8)");
+                "1|L--|ZNCV = cond(-241<i32> - r8)");
         }
 
         [Test]
@@ -1216,7 +1217,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("212B0000"); // sr	r1,[]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__store_aux_reg(0x00000000, r1)");
+                "1|L--|__store_aux_reg(0<32>, r1)");
         }
 
         [Test]
@@ -1225,7 +1226,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("1BFCB000"); // st	r0,[fp,-4]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[fp - 4:word32] = r0");
+                "1|L--|Mem0[fp - 4<i32>:word32] = r0");
         }
 
         [Test]
@@ -1234,7 +1235,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("1B980018"); // st.as	r0,[r3,24]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r3 + 96:word32] = r0");
+                "1|L--|Mem0[r3 + 96<i32>:word32] = r0");
         }
 
         [Test]
@@ -1243,7 +1244,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("1cfc b6c8"); // st.aw   fp,[sp,-4]
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|sp = sp - 4",
+                "1|L--|sp = sp - 4<i32>",
                 "2|L--|Mem0[sp:word32] = fp");
         }
 
@@ -1253,7 +1254,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("A707"); // st_s	r0,[r15,28]
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|Mem0[r15 + 28:word32] = r0");
+                "1|L--|Mem0[r15 + 28<i32>:word32] = r0");
         }
 
         [Test]
@@ -1263,7 +1264,7 @@ namespace Reko.UnitTests.Arch.Arc
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|Mem0[r14:byte] = SLICE(r0, byte, 0)",
-                "2|L--|r14 = r14 + 1");
+                "2|L--|r14 = r14 + 1<i32>");
         }
 
         [Test]
@@ -1281,7 +1282,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("1A282004"); // stw	r0,[r18,40]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r18 + 40:word16] = SLICE(r0, word16, 0)");
+                "1|L--|Mem0[r18 + 40<i32>:word16] = SLICE(r0, word16, 0)");
         }
 
         [Test]
@@ -1290,7 +1291,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("1857805C"); // stw.as	r1,[r0,-41]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r0 - 164:word16] = SLICE(r1, word16, 0)");
+                "1|L--|Mem0[r0 - 164<i32>:word16] = SLICE(r1, word16, 0)");
         }
 
         [Test]
@@ -1299,7 +1300,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("B6C8"); // stw_s	r14,[r14,16]
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|Mem0[r14 + 16:word16] = SLICE(r14, word16, 0)");
+                "1|L--|Mem0[r14 + 16<i32>:word16] = SLICE(r14, word16, 0)");
         }
 
         [Test]
@@ -1317,7 +1318,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("C1A1"); // sub_s	sp,sp,00000004
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|sp = sp - 0x00000004");
+                "1|L--|sp = sp - 4<32>");
         }
 
         [Test]
@@ -1326,7 +1327,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("249830C1"); // sub2	sp,sp,+00000043
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|sp = sp - (67 << 0x02)");
+                "1|L--|sp = sp - (67<i32> << 2<8>)");
         }
 
         [Test]
@@ -1335,7 +1336,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("20192104"); // sub3	r4,r16,r4
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = r16 - (r4 << 0x03)");
+                "1|L--|r4 = r16 - (r4 << 3<8>)");
         }
 
         [Test]

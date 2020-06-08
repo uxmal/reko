@@ -211,7 +211,7 @@ namespace Reko.WindowsItp
         private void assumeRegistesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var dlg = new AssumedRegisterValuesDialog();
-            dlg.Architecture = new X86ArchitectureFlat64("x86-protected-64");
+            dlg.Architecture = new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64");
             dlg.ShowDialog(this);
         }
 

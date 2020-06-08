@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,37 +19,36 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Machine;
+using Reko.Core.Lib;
 using Reko.Core.Operators;
-using Reko.Core.Types;
 using Reko.Core.Rtl;
+using Reko.Core.Types;
 using Reko.Evaluation;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Reko.Core.Lib;
 
 namespace Reko.Scanning
 {
-	/// <summary>
-	/// Walks code backwards to find "dominating" comparisons against constants,
-	/// which may provide vector table limits.
-	/// </summary>
+    /// <summary>
+    /// Walks code backwards to find "dominating" comparisons against constants,
+    /// which may provide vector table limits.
+    /// </summary>
     /// <remarks>
     /// This is a godawful hack; a proper range analysis would be much
     /// better. Have a spare few months?
     /// </remarks>
-	public class Backwalker<TBlock, TInstr>
+    public class Backwalker<TBlock, TInstr>
+        where TBlock : class
+        where TInstr : class
 	{
-        private IBackWalkHost<TBlock, TInstr> host;
-        private ExpressionSimplifier eval;
-        private Identifier UsedAsFlag;
+        private static readonly TraceSwitch trace = new TraceSwitch("BackWalker", "Traces the progress backward instruction walking");
 
-        private static TraceSwitch trace = new TraceSwitch("BackWalker", "Traces the progress backward instruction walking");
-        private TBlock startBlock;
+        private readonly IBackWalkHost<TBlock, TInstr> host;
+        private readonly ExpressionSimplifier eval;
+        private Identifier? UsedAsFlag;
+        private TBlock? startBlock;
 
         public Backwalker(IBackWalkHost<TBlock, TInstr> host, RtlTransfer xfer, ExpressionSimplifier eval)
 		{
@@ -60,14 +59,13 @@ namespace Reko.Scanning
             {
                 target = seq.Expressions[1];
             }
-            var mem = target as MemoryAccess;
-            if (mem == null)
+            if (target is MemoryAccess mem)
             {
-                Index = RegisterOf(target as Identifier);
+                Index = DetermineIndexRegister(mem);
             }
             else
             {
-                Index = DetermineIndexRegister(mem);
+                Index = RegisterOf(target as Identifier);
             }
             Operations = new List<BackwalkOperation>();
             JumpSize = target.DataType.Size;
@@ -76,11 +74,11 @@ namespace Reko.Scanning
         /// <summary>
         /// The register used to perform a table-dispatch switch.
         /// </summary>
-        public RegisterStorage Index { get; private set; }
-        public Expression IndexExpression { get; set; }
-        public Identifier UsedFlagIdentifier { get; set; }
+        public RegisterStorage? Index { get; private set; }
+        public Expression? IndexExpression { get; set; }
+        public Identifier? UsedFlagIdentifier { get; set; }
         public int Stride { get; private set; }
-        public Address VectorAddress { get; private set; }
+        public Address? VectorAddress { get; private set; }
         public List<BackwalkOperation> Operations { get; private set; }
         public int JumpSize { get; set; }
 
@@ -91,7 +89,7 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="block"></param>
         /// <returns></returns>
-        public List<BackwalkOperation> BackWalk(TBlock block)
+        public List<BackwalkOperation>? BackWalk(TBlock block)
         {
             this.startBlock = block;
             if (Stride > 1)
@@ -131,7 +129,7 @@ namespace Reko.Scanning
                         var immSrc = binSrc.Right as Constant;
                         if (binSrc.Operator == Operator.IAdd || binSrc.Operator == Operator.ISub)
                         {
-                            Index = HandleAddition(Index, Index, regSrc, immSrc, binSrc.Operator == Operator.IAdd);
+                            Index = HandleAddition(Index, Index, regSrc, immSrc!, binSrc.Operator == Operator.IAdd);
                             return true;
                         }
                         if (binSrc.Operator == Operator.And)
@@ -185,8 +183,8 @@ namespace Reko.Scanning
                 }
                 if (assSrc is ConditionOf cof && UsedFlagIdentifier != null)
                 {
-                    var grfDef = (((Identifier)assDst).Storage as FlagGroupStorage).FlagGroupBits;
-                    var grfUse = (UsedFlagIdentifier.Storage as FlagGroupStorage).FlagGroupBits;
+                    var grfDef = (((Identifier)assDst).Storage as FlagGroupStorage)!.FlagGroupBits;
+                    var grfUse = (UsedFlagIdentifier.Storage as FlagGroupStorage)!.FlagGroupBits;
                     if ((grfDef & grfUse) == 0)
                         return true;
                     var binCmp = cof.Expression as BinaryExpression;
@@ -197,8 +195,8 @@ namespace Reko.Scanning
                     {
                         var idLeft = RegisterOf(binCmp.Left  as Identifier);
                         if (idLeft != null &&
-                            (idLeft == Index || idLeft == host.GetSubregister(Index, 0, 8)) ||
-                           (IndexExpression != null && IndexExpression.ToString() == idLeft.ToString()))    //$HACK: sleazy, but we don't appear to have an expression comparer
+                            (idLeft == Index || idLeft == host.GetSubregister(Index!, 0, 8)) ||
+                           (IndexExpression != null && IndexExpression.ToString() == idLeft!.ToString()))    //$HACK: sleazy, but we don't appear to have an expression comparer
                         {
                             if (binCmp.Right is Constant immSrc)
                             {
@@ -264,7 +262,7 @@ namespace Reko.Scanning
                     // should convert to an _address_.
                     var addr = binEa.Left as Address;
                     baseReg = GetBaseRegister(binEa.Right);
-                    if (addr != null && VectorAddress == null)
+                    if (!(addr is null || VectorAddress is null))
                     {
                         this.VectorAddress = addr;
                         Index = baseReg;
@@ -287,7 +285,7 @@ namespace Reko.Scanning
             var bra = host.AsBranch(instr);
             if (bra != null)
             {
-                bool fallthrough = host.IsFallthrough(instr, startBlock);
+                bool fallthrough = host.IsFallthrough(instr, startBlock!);
                 return VisitBranch(bra, fallthrough);
             }
 
@@ -326,7 +324,7 @@ namespace Reko.Scanning
             return true;
         }
 
-        private BinaryExpression NegateRight(BinaryExpression bin)
+        private BinaryExpression? NegateRight(BinaryExpression? bin)
         {
             if (bin != null &&
                 (bin.Operator == Operator.IAdd) &&
@@ -341,7 +339,7 @@ namespace Reko.Scanning
             return bin;
         }
 
-        private RegisterStorage RegisterOf(Expression e)
+        private RegisterStorage RegisterOf(Expression? e)
         {
             if (e is Cast c)
                 e = c.Expression;
@@ -351,7 +349,7 @@ namespace Reko.Scanning
         }
 
         public bool BackwalkInstructions(
-            RegisterStorage regIdx,
+            RegisterStorage? regIdx,
             IEnumerable<TInstr> backwardStatementSequence)
         {
             foreach (var instr in backwardStatementSequence)
@@ -363,10 +361,10 @@ namespace Reko.Scanning
         }
 
         public bool BackwalkInstructions(
-            RegisterStorage regIdx,
+            RegisterStorage? regIdx,
             TBlock block)
         {
-            return BackwalkInstructions(regIdx, host.GetBlockInstructions(block).Reverse());
+            return BackwalkInstructions(regIdx, host.GetBlockInstructions(block).Reverse()!);
         }
 
         [Conditional("DEBUG")]
@@ -379,7 +377,7 @@ namespace Reko.Scanning
             }
         }
 
-        private RegisterStorage GetBaseRegister(Expression ea)
+        private RegisterStorage? GetBaseRegister(Expression ea)
         {
             if (ea is Identifier id)
                 return RegisterOf(id);
@@ -393,13 +391,12 @@ namespace Reko.Scanning
             }
             if (e == null)
                 return null;
-            id = e as Identifier;
-            if (id != null)
-                return RegisterOf(id);
-            var scaledExpr = bin.Left as BinaryExpression;
+            if (e is Identifier idBase)
+                return RegisterOf(idBase);
             if (bin == null)
                 return RegisterStorage.None;
-            return RegisterOf(scaledExpr.Left as Identifier);
+            var scaledExpr = bin.Left as BinaryExpression;
+            return RegisterOf(scaledExpr!.Left as Identifier);
         }
 
         private int GetMultiplier(Expression exp)
@@ -440,7 +437,7 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="mem"></param>
         /// <returns></returns>
-        public RegisterStorage DetermineIndexRegister(MemoryAccess mem)
+        public RegisterStorage? DetermineIndexRegister(MemoryAccess mem)
         {
             Stride = 0;
             // Mem[reg]
@@ -474,7 +471,7 @@ namespace Reko.Scanning
                 if (host.IsStackRegister(idLeft.Storage))
                     return null;
                 DetermineVector(mem, bin.Right);
-                if (VectorAddress != null && host.IsValidAddress(VectorAddress))
+                if (!(VectorAddress is null) && host.IsValidAddress(VectorAddress))
                     return RegisterOf(idLeft);
                 else
                     return null;
@@ -483,18 +480,18 @@ namespace Reko.Scanning
             if (IsScaledIndex(binLeft))
             {
                 // We have [(id * C1) + C2]
-                return DetermineVectorWithScaledIndex(mem, bin.Right, binLeft);
+                return DetermineVectorWithScaledIndex(mem, bin.Right, binLeft!);
             }
             var binRight = bin.Right as BinaryExpression;
             if (IsScaledIndex(binRight))
             {
                 // We may have [C1 + (id * C2)]
-                return DetermineVectorWithScaledIndex(mem, bin.Left, binRight);
+                return DetermineVectorWithScaledIndex(mem, bin.Left, binRight!);
             }
             return null;
         }
 
-        private bool IsScaledIndex(BinaryExpression bin)
+        private bool IsScaledIndex(BinaryExpression? bin)
         {
             return bin != null && bin.Operator is IMulOperator && bin.Right is Constant;
         }
@@ -526,10 +523,10 @@ namespace Reko.Scanning
             }
         }
 
-        private RegisterStorage HandleAddition(
-			RegisterStorage regIdx,
-			RegisterStorage ropDst,
-			RegisterStorage ropSrc, 
+        private RegisterStorage? HandleAddition(
+			RegisterStorage? regIdx,
+			RegisterStorage? ropDst,
+			RegisterStorage? ropSrc, 
 			Constant immSrc, 
 			bool add)
 		{

@@ -9,11 +9,11 @@ fn0C00_0000_entry:
 	def ds
 l0C00_0000:
 	call fn0C00_000C (retsize: 2;)
-		uses: al:0x20,ds:ds
+		uses: al:0x20<8>,ds:ds
 		defs: C:C_7
 	branch C_7 l0C00_000B
 l0C00_0007:
-	Mem10[ds:0x0300:byte] = 0x20
+	Mem10[ds:0x300<16>:byte] = 0x20<8>
 l0C00_000B:
 	return
 fn0C00_0000_exit:
@@ -29,12 +29,12 @@ fn0C00_000C_entry:
 	def ds
 	def Mem0
 l0C00_000C:
-	SCZO_5 = cond(al - 0x20)
+	SCZO_5 = cond(al - 0x20<8>)
 	C_6 = SLICE(SCZO_5, bool, 1) (alias)
-	branch al <u 0x20 l0C00_0014
+	branch al <u 0x20<8> l0C00_0014
 l0C00_0010:
-	v7_9 = Mem0[ds:0x0201:word16] + 0x0001
-	Mem10[ds:0x0201:word16] = v7_9
+	v7_9 = Mem0[ds:0x201<16>:word16] + 1<16>
+	Mem10[ds:0x201<16>:word16] = v7_9
 l0C00_0014:
 	return
 fn0C00_000C_exit:

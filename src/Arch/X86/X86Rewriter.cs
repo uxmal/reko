@@ -32,6 +32,7 @@ using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
 using System.Diagnostics;
 using System.Linq;
+using Reko.Core.Services;
 
 namespace Reko.Arch.X86
 {
@@ -60,10 +61,8 @@ namespace Reko.Arch.X86
             EndianImageReader rdr,
             IStorageBinder binder)
         {
-            if (host == null)
-                throw new ArgumentNullException("host");
             this.arch = arch;
-            this.host = host;
+            this.host = host ?? throw new ArgumentNullException("host");
             this.state = state;
             this.rdr = rdr;
             this.binder = binder;
@@ -100,9 +99,10 @@ namespace Reko.Arch.X86
                 case Mnemonic.aas: RewriteAas(); break;
                 case Mnemonic.adc: RewriteAdcSbb(m.IAdd); break;
                 case Mnemonic.add: RewriteAddSub(Operator.IAdd); break;
-                case Mnemonic.addss: RewriteScalarBinop(m.FAdd, PrimitiveType.Real32); break;
-                case Mnemonic.addsd:
-                case Mnemonic.vaddsd: RewriteScalarBinop(m.FAdd, PrimitiveType.Real64); break;
+                case Mnemonic.addss: RewriteScalarBinop(m.FAdd, PrimitiveType.Real32, false); break;
+                case Mnemonic.vaddss: RewriteScalarBinop(m.FAdd, PrimitiveType.Real32, true); break;
+                case Mnemonic.addsd: RewriteScalarBinop(m.FAdd, PrimitiveType.Real64, false); break;
+                case Mnemonic.vaddsd: RewriteScalarBinop(m.FAdd, PrimitiveType.Real64, true); break;
                 case Mnemonic.addps: RewritePackedBinop("__addps", PrimitiveType.Real32); break;
                 case Mnemonic.addpd: RewritePackedBinop("__addpd", PrimitiveType.Real64); break;
                 case Mnemonic.aesimc: RewriteAesimc(); break;
@@ -121,6 +121,9 @@ namespace Reko.Arch.X86
                 case Mnemonic.bts: RewriteBts(); break;
                 case Mnemonic.call: RewriteCall(instrCur.Operands[0], instrCur.Operands[0].Width); break;
                 case Mnemonic.cbw: RewriteCbw(); break;
+                case Mnemonic.cdq: RewriteCdq(); break;
+                case Mnemonic.cdqe: RewriteCdqe(); break;
+                case Mnemonic.cqo: RewriteCqo(); break;
                 case Mnemonic.clc: RewriteSetFlag(FlagM.CF, Constant.False()); break;
                 case Mnemonic.cld: RewriteSetFlag(FlagM.DF, Constant.False()); break;
                 case Mnemonic.cli: RewriteCli(); break;
@@ -169,16 +172,21 @@ namespace Reko.Arch.X86
                 case Mnemonic.cvttss2si: RewriteCvtts2si(PrimitiveType.Real32); break;
                 case Mnemonic.cvttps2pi: RewriteCvttps2pi(); break;
                 case Mnemonic.cwd: RewriteCwd(); break;
+                case Mnemonic.cwde: RewriteCwde(); break;
                 case Mnemonic.daa: EmitDaaDas("__daa"); break;
                 case Mnemonic.das: EmitDaaDas("__das"); break;
                 case Mnemonic.dec: RewriteIncDec(-1); break;
                 case Mnemonic.div: RewriteDivide(m.UDiv, Domain.UnsignedInt); break;
                 case Mnemonic.divps: RewritePackedBinop("__divps", PrimitiveType.Real32); break;
-                case Mnemonic.divsd: RewriteScalarBinop(m.FDiv, PrimitiveType.Real64); break;
-                case Mnemonic.divss: RewriteScalarBinop(m.FDiv, PrimitiveType.Real32); break;
-                case Mnemonic.f2xm1: RewriteF2xm1(); break;
+                case Mnemonic.divsd: RewriteScalarBinop(m.FDiv, PrimitiveType.Real64, false); break;
+                case Mnemonic.vdivsd: RewriteScalarBinop(m.FDiv, PrimitiveType.Real64, true); break;
+                case Mnemonic.divss: RewriteScalarBinop(m.FDiv, PrimitiveType.Real32, false); break;
+                case Mnemonic.vdivss: RewriteScalarBinop(m.FDiv, PrimitiveType.Real32, true); break;
                 case Mnemonic.emms: RewriteEmms(); break;
                 case Mnemonic.enter: RewriteEnter(); break;
+                case Mnemonic.endbr32:
+                case Mnemonic.endbr64: RewriteEndbr(); break;
+                case Mnemonic.f2xm1: RewriteF2xm1(); break;
                 case Mnemonic.fabs: RewriteFabs(); break;
                 case Mnemonic.fadd: EmitCommonFpuInstruction(m.FAdd, false, false); break;
                 case Mnemonic.faddp: EmitCommonFpuInstruction(m.FAdd, false, true); break;
@@ -269,6 +277,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.fyl2xp1: RewriteFyl2xp1(); break;
                 case Mnemonic.getsec: RewriteGetsec(); break;
                 case Mnemonic.hlt: RewriteHlt(); break;
+                case Mnemonic.icebp: RewriteIcebp(); break;
                 case Mnemonic.idiv: RewriteDivide(m.SDiv, Domain.SignedInt); break;
                 case Mnemonic.@in: RewriteIn(); break;
                 case Mnemonic.imul: RewriteMultiply(Operator.SMul, Domain.SignedInt); break;
@@ -285,7 +294,8 @@ namespace Reko.Arch.X86
                 case Mnemonic.ja: RewriteConditionalGoto(ConditionCode.UGT, instrCur.Operands[0]); break;
                 case Mnemonic.jbe: RewriteConditionalGoto(ConditionCode.ULE, instrCur.Operands[0]); break;
                 case Mnemonic.jc: RewriteConditionalGoto(ConditionCode.ULT, instrCur.Operands[0]); break;
-                case Mnemonic.jcxz: RewriteJcxz(); break;
+                case Mnemonic.jcxz: RewriteJcxz(Registers.cx); break;
+                case Mnemonic.jecxz: RewriteJcxz(Registers.ecx); break;
                 case Mnemonic.jge: RewriteConditionalGoto(ConditionCode.GE, instrCur.Operands[0]); break;
                 case Mnemonic.jg: RewriteConditionalGoto(ConditionCode.GT, instrCur.Operands[0]); break;
                 case Mnemonic.jl: RewriteConditionalGoto(ConditionCode.LT, instrCur.Operands[0]); break;
@@ -297,6 +307,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.jo: RewriteConditionalGoto(ConditionCode.OV, instrCur.Operands[0]); break;
                 case Mnemonic.jpe: RewriteConditionalGoto(ConditionCode.PE, instrCur.Operands[0]); break;
                 case Mnemonic.jpo: RewriteConditionalGoto(ConditionCode.PO, instrCur.Operands[0]); break;
+                case Mnemonic.jrcxz: RewriteJcxz(Registers.rcx); break;
                 case Mnemonic.js: RewriteConditionalGoto(ConditionCode.SG, instrCur.Operands[0]); break;
                 case Mnemonic.jz: RewriteConditionalGoto(ConditionCode.EQ, instrCur.Operands[0]); break;
                 case Mnemonic.lahf: RewriteLahf(); break;
@@ -337,7 +348,9 @@ namespace Reko.Arch.X86
                 case Mnemonic.vmwrite: RewriteVmwrite(); break;
                 case Mnemonic.movbe: RewriteMovbe(); break;
                 case Mnemonic.movd: RewriteMovzx(); break;
-                case Mnemonic.movdqa: RewriteMov(); break;
+                case Mnemonic.movdqa:
+                case Mnemonic.vmovdqa:
+                    RewriteMov(); break;
                 case Mnemonic.movhpd: RewritePackedUnaryop("__movhpd", PrimitiveType.Real64, PrimitiveType.Real64); break;
                 case Mnemonic.movhps: RewritePackedUnaryop("__movhps", PrimitiveType.Real32, PrimitiveType.Real64); break;
                 case Mnemonic.movlpd: RewritePackedUnaryop("__movlpd", PrimitiveType.Real64, PrimitiveType.Real64); break;
@@ -356,14 +369,17 @@ namespace Reko.Arch.X86
                 case Mnemonic.movss:
                 case Mnemonic.vmovss: RewriteMovssd(PrimitiveType.Real32); break;
                 case Mnemonic.movsx: RewriteMovsx(); break;
+                case Mnemonic.movsxd: RewriteMovsx(); break;
                 case Mnemonic.movups: RewriteMov(); break;
                 case Mnemonic.movupd: RewriteMov(); break;
                 case Mnemonic.movzx: RewriteMovzx(); break;
                 case Mnemonic.mul: RewriteMultiply(Operator.UMul, Domain.UnsignedInt); break;
                 case Mnemonic.mulpd: RewritePackedBinop("__mulpd", PrimitiveType.Real64); break;
                 case Mnemonic.mulps: RewritePackedBinop("__mulps", PrimitiveType.Real32); break;
-                case Mnemonic.mulss: RewriteScalarBinop(m.FMul, PrimitiveType.Real32); break;
-                case Mnemonic.mulsd: RewriteScalarBinop(m.FMul, PrimitiveType.Real64); break;
+                case Mnemonic.mulsd: RewriteScalarBinop(m.FMul, PrimitiveType.Real64, false); break;
+                case Mnemonic.vmulsd: RewriteScalarBinop(m.FMul, PrimitiveType.Real64, true); break;
+                case Mnemonic.mulss: RewriteScalarBinop(m.FMul, PrimitiveType.Real32, false); break;
+                case Mnemonic.vmulss: RewriteScalarBinop(m.FMul, PrimitiveType.Real32, true); break;
                 case Mnemonic.neg: RewriteNeg(); break;
                 case Mnemonic.nop: m.Nop(); break;
                 case Mnemonic.not: RewriteNot(); break;
@@ -486,7 +502,8 @@ namespace Reko.Arch.X86
                 case Mnemonic.shr: RewriteBinOp(BinaryOperator.Shr); break;
                 case Mnemonic.shrd: RewriteShxd("__shrd"); break;
                 case Mnemonic.sidt: RewriteSxdt("__sidt"); break;
-                case Mnemonic.vshufps: RewritePackedTernaryop("__vshufps", PrimitiveType.Real32); break;
+                case Mnemonic.shufps:
+                case Mnemonic.vshufps: RewritePackedTernaryop("__shufps", PrimitiveType.Real32); break;
                 case Mnemonic.sldt: RewriteSxdt("__sldt"); break;
                 case Mnemonic.smsw: RewriteSmsw(); break;
                 case Mnemonic.sqrtps: RewritePackedUnaryop("__sqrtps", PrimitiveType.Real32); break;
@@ -498,8 +515,10 @@ namespace Reko.Arch.X86
                 case Mnemonic.stosb: RewriteStringInstruction(); break;
                 case Mnemonic.str: RewriteStr(); break;
                 case Mnemonic.sub: RewriteAddSub(BinaryOperator.ISub); break;
-                case Mnemonic.subsd: RewriteScalarBinop(m.FSub, PrimitiveType.Real64); break;
-                case Mnemonic.subss: RewriteScalarBinop(m.FSub, PrimitiveType.Real32); break;
+                case Mnemonic.subsd: RewriteScalarBinop(m.FSub, PrimitiveType.Real64, false); break;
+                case Mnemonic.vsubsd: RewriteScalarBinop(m.FSub, PrimitiveType.Real64, true); break;
+                case Mnemonic.subss: RewriteScalarBinop(m.FSub, PrimitiveType.Real32, false); break;
+                case Mnemonic.vsubss: RewriteScalarBinop(m.FSub, PrimitiveType.Real32, true); break;
                 case Mnemonic.subpd: RewritePackedBinop("__subpd", PrimitiveType.Real64); break;
                 case Mnemonic.subps: RewritePackedBinop("__subps", PrimitiveType.Real32); break;
                 case Mnemonic.syscall: RewriteSyscall(); break;
@@ -639,31 +658,10 @@ namespace Reko.Arch.X86
             return orw.Transform(instrCur, opSrc, dstWidth, state);
         }
 
-        private static HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-
-        [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(dasm.Current.Mnemonic))
-                return;
-            seen.Add(dasm.Current.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var bytes = r2.ReadBytes(dasm.Current.Length);
-            Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void X86Rw_" + dasm.Current.Mnemonic + "()");
-            Debug.WriteLine("        {");
-            Debug.Write("            BuildTest(");
-            Debug.Write(string.Join(
-                ", ",
-                bytes.Select(b => string.Format("0x{0:X2}", (int)b))));
-            Debug.WriteLine(");\t// " + dasm.Current.ToString());
-            Debug.WriteLine("            AssertCode(");
-            Debug.WriteLine("                \"0|L--|{0}({1}): 1 instructions\",", dasm.Current.Address, dasm.Current.Length);
-            Debug.WriteLine("                \"1|L--|@@@\");");
-            Debug.WriteLine("        }");
-            Debug.WriteLine("");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("X86Rw", instrCur, rdr, "");
         }
     }
 }

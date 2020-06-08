@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 		{
             this.sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            arch = new X86ArchitectureReal("x86-real-16");
+            arch = new X86ArchitectureReal(sc, "x86-real-16");
             asm = new X86TextAssembler(arch);
         }
 
@@ -121,7 +121,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 
         private void AssembleFragment(string asmSrc)
         {
-            var arch = new X86ArchitectureReal("x86-real-16");
+            var arch = new X86ArchitectureReal(sc, "x86-real-16");
             program = asm.AssembleFragment(Address.SegPtr(0x0C00, 0), asmSrc);
             mem = program.SegmentMap.Segments.Values.First().MemoryArea;
         }
@@ -139,7 +139,7 @@ hello	endp
             var segment = program.SegmentMap.Segments.Values.First();
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsFragment.txt"))
 			{
-				var arch = new X86ArchitectureReal("x86-real-16");
+				var arch = new X86ArchitectureReal(sc, "x86-real-16");
 				var d = new Dumper(program);
 				d.DumpData(program.SegmentMap, arch, segment.Address, segment.ContentSize, new TextFormatter(fut.TextWriter));
 				fut.AssertFilesEqual();
@@ -222,7 +222,7 @@ foo		endp
 		}
 
 		[Test]
-		public void StringInstruction()
+		public void Asm86_StringInstruction()
 		{
 			AssembleFragment(
 				@"	.i86
@@ -359,6 +359,7 @@ foo		endp
             var program = asm.AssembleFragment(addr, "mov [0x400],0x1234\n");
             var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
             var dasm = new X86Disassembler(
+                sc,
                 ProcessorMode.Real,
                 mem.CreateLeReader(addr),
                 PrimitiveType.Word16,

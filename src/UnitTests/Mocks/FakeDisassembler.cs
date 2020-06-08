@@ -53,5 +53,10 @@ namespace Reko.UnitTests.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public override MachineInstruction NotYetImplemented(uint wInstr, string message)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

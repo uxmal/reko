@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -21,6 +21,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -32,14 +33,14 @@ namespace Reko.Core.Dfa
         public NodeType Type;
         public int Number;
         public byte Value;
-        public BitArray ValueClass;
-        public TreeNode Left;
-        public TreeNode Right;
+        public BitArray? ValueClass;
+        public TreeNode? Left;
+        public TreeNode? Right;
         public bool Nullable;
         public bool Starts;
-        public HashSet<TreeNode> FirstPos;
-        public HashSet<TreeNode> LastPos;
-        public HashSet<TreeNode> FollowPos;
+        public HashSet<TreeNode>? FirstPos;
+        public HashSet<TreeNode>? LastPos;
+        public HashSet<TreeNode>? FollowPos;
 
         public IEnumerable<byte> GetTransitionCharacters()
         {
@@ -49,8 +50,9 @@ namespace Reko.Core.Dfa
             }
             else if (Type == NodeType.CharClass)
             {
+                Debug.Assert(ValueClass != null);
                 int i = 0;
-                foreach (bool x in ValueClass)
+                foreach (bool x in ValueClass!)
                 {
                     if (x)
                         yield return (byte) i;
@@ -81,16 +83,16 @@ namespace Reko.Core.Dfa
             if (Starts)
                 writer.Write(" - Starts");
             writer.WriteLine();
-            WriteSet("    First:  ", FirstPos, writer);
-            WriteSet("    Last:   ", LastPos, writer);
-            WriteSet("    Follow: ", FollowPos, writer);
+            WriteSet("    First:  ", FirstPos!, writer);
+            WriteSet("    Last:   ", LastPos!, writer);
+            WriteSet("    Follow: ", FollowPos!, writer);
             switch (Type)
             {
             case NodeType.Char: writer.Write("    {0} (0x{1:X2})", (char) Value, (int) Value); break;
             case NodeType.CharClass: writer.Write("[]"); break;
-            case NodeType.Cat: Left.Write(writer); Right.Write(writer); break;
-            case NodeType.Plus: Left.Write(writer); break;
-            case NodeType.Cut: Left.Write(writer); Right.Write(writer); break;
+            case NodeType.Cat: Left!.Write(writer); Right!.Write(writer); break;
+            case NodeType.Plus: Left!.Write(writer); break;
+            case NodeType.Cut: Left!.Write(writer); Right!.Write(writer); break;
             }
             writer.WriteLine();
         }

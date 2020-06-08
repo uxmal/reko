@@ -82,11 +82,11 @@ namespace Reko.WebSite
 
 		private void DecompileAssembler(string archName, Address loadAddress)
 		{
-            var cfg = RekoConfigurationService.Load();
+            var sc = new ServiceContainer();
+            var cfg = RekoConfigurationService.Load(sc);
             var arch = cfg.GetArchitecture(archName);
             var asm = arch.CreateAssembler(null);
             var program = asm.AssembleFragment(loadAddress, txtAssembler.Text + Environment.NewLine);
-            var sc = new ServiceContainer();
             var loader = new Loader(sc);
             var decomp = new Decompiler(loader, sc);
             var proj = new Project {

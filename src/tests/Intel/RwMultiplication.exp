@@ -16,38 +16,38 @@
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	al = Mem0[ds:0x0300:byte]
-	ax = Mem0[ds:0x0301:byte] *u al
+	al = Mem0[ds:0x300<16>:byte]
+	ax = Mem0[ds:0x301<16>:byte] *u al
 	SCZO = cond(ax)
-	Mem0[ds:0x0302:word16] = ax
-	ax = Mem0[ds:0x0304:word16]
-	dx_ax = Mem0[ds:0x0306:word16] *u ax
+	Mem0[ds:0x302<16>:word16] = ax
+	ax = Mem0[ds:0x304<16>:word16]
+	dx_ax = Mem0[ds:0x306<16>:word16] *u ax
 	SCZO = cond(dx_ax)
-	Mem0[ds:0x0308:word16] = ax
-	Mem0[ds:0x030A:word16] = dx
-	cx = Mem0[ds:0x030C:word16]
-	ax = Mem0[ds:0x030E:word16]
+	Mem0[ds:0x308<16>:word16] = ax
+	Mem0[ds:0x30A<16>:word16] = dx
+	cx = Mem0[ds:0x30C<16>:word16]
+	ax = Mem0[ds:0x30E<16>:word16]
 	dx_ax = cx *s ax
 	SCZO = cond(dx_ax)
-	Mem0[ds:0x0310:word16] = ax
-	Mem0[ds:0x0312:word16] = dx
-	al = Mem0[ds:0x0300:byte]
-	cl = Mem0[ds:0x0301:byte]
+	Mem0[ds:0x310<16>:word16] = ax
+	Mem0[ds:0x312<16>:word16] = dx
+	al = Mem0[ds:0x300<16>:byte]
+	cl = Mem0[ds:0x301<16>:byte]
 	ax = cl *u al
 	SCZO = cond(ax)
-	Mem0[ds:0x0302:word16] = ax
-	ax = Mem0[ds:0x0304:word16] *s 0x0024
+	Mem0[ds:0x302<16>:word16] = ax
+	ax = Mem0[ds:0x304<16>:word16] *s 0x24<16>
 	SCZO = cond(ax)
-	dx = ax *s 0x0024
+	dx = ax *s 0x24<16>
 	SCZO = cond(dx)
-	ax = Mem0[ds:0x0304:word16] *s 0x0114
+	ax = Mem0[ds:0x304<16>:word16] *s 0x114<16>
 	SCZO = cond(ax)
-	dx = ax *s 0x0114
+	dx = ax *s 0x114<16>
 	SCZO = cond(dx)
-	ax = Mem0[ds:0x0304:word16] *s 0x0114
+	ax = Mem0[ds:0x304<16>:word16] *s 0x114<16>
 	SCZO = cond(ax)
 	return
 	// succ:  fn0C00_0000_exit

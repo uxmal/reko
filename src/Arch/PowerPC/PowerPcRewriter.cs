@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using Reko.Core.Services;
 
 namespace Reko.Arch.PowerPC
 {
@@ -265,7 +266,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.nand: RewriteAnd(true); break;
                 case Mnemonic.nor: RewriteOr(true); break;
                 case Mnemonic.or: RewriteOr(false); break;
-                case Mnemonic.orc: RewriteOrc(false); break;
+                case Mnemonic.orc: RewriteOrc(); break;
                 case Mnemonic.ori: RewriteOr(false); break;
                 case Mnemonic.oris: RewriteOris(); break;
                 case Mnemonic.ps_abs: RewritePairedInstruction_Src1("__ps_abs"); break;
@@ -403,13 +404,14 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.vnor: RewriteOr(true); break;
                 case Mnemonic.vor:
                 case Mnemonic.vor128: RewriteVor(); break;
-                case Mnemonic.vorc: RewriteOrc(false);break;
+                case Mnemonic.vorc: RewriteOrc();break;
                 case Mnemonic.vperm:
                 case Mnemonic.vperm128: RewriteVperm(); break;
                 case Mnemonic.vpkd3d128: RewriterVpkD3d(); break;
                 case Mnemonic.vrefp:
                 case Mnemonic.vrefp128: RewriteVrefp(); break;
                 case Mnemonic.vrfin128: RewriteVectorUnary("__vrfin"); break;
+                case Mnemonic.vrfip128: RewriteVectorUnary("__vrfip"); break;
                 case Mnemonic.vrfiz128: RewriteVectorUnary("__vrfiz"); break;
                 case Mnemonic.vrlimi128: RewriteVrlimi(); break;
                 case Mnemonic.vrsqrtefp: 
@@ -439,7 +441,12 @@ namespace Reko.Arch.PowerPC
         private Expression Shift16(MachineOperand machineOperand)
         {
             var imm = (ImmediateOperand)machineOperand;
-            return Constant.Word32(imm.Value.ToInt32() << 16);
+            return Constant.Create(arch.WordWidth, imm.Value.ToInt32() << 16);
+        }
+
+        private Expression ImmOperand(MachineOperand op)
+        {
+            return ((ImmediateOperand) op).Value;
         }
 
         private Expression RewriteOperand(MachineOperand op, bool maybe0 = false)
@@ -458,13 +465,39 @@ namespace Reko.Arch.PowerPC
                     return binder.EnsureRegister(rOp.Register);
                 }
             case ImmediateOperand iOp:
-                // Sign-extend the bastard.
-                return SignExtend(iOp.Value);
+                // Extend the immediate value to word size. If this is not wanted,
+                // convert the operand manually or use RewriteSignedOperand
+                return Constant.Create(arch.WordWidth, iOp.Value.ToUInt64());
             case AddressOperand aOp:
                 return aOp.Address;
             default:
-                throw new NotImplementedException(
-                    string.Format("RewriteOperand:{0} ({1}}}", op, op.GetType()));
+                throw new NotImplementedException($"RewriteOperand:{op} ({op.GetType()}");
+            }
+        }
+
+        private Expression RewriteSignedOperand(MachineOperand op, bool maybe0 = false)
+        {
+            switch (op)
+            {
+            case RegisterOperand rOp:
+                if (maybe0 && rOp.Register.Number == 0)
+                    return Constant.Zero(rOp.Register.DataType);
+                if (arch.IsCcField(rOp.Register))
+                {
+                    return binder.EnsureFlagGroup(arch.GetCcFieldAsFlagGroup(rOp.Register));
+                }
+                else
+                {
+                    return binder.EnsureRegister(rOp.Register);
+                }
+            case ImmediateOperand iOp:
+                // Extend the immediate value to word size. If this is not wanted,
+                // convert the operand manually or use RewriteSignedOperand
+                return Constant.Word(arch.WordWidth.BitSize, iOp.Value.ToInt64());
+            case AddressOperand aOp:
+                return aOp.Address;
+            default:
+                throw new NotImplementedException($"RewriteOperand:{op} ({op.GetType()}");
             }
         }
 
@@ -473,37 +506,18 @@ namespace Reko.Arch.PowerPC
             return GetEnumerator();
         }
 
-#if DEBUG
-        private static HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-        
         private void EmitUnitTest()
         {
-            if (rdr == null || seen.Contains(dasm.Current.Mnemonic))
-                return;
-            seen.Add(dasm.Current.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var uInstr = r2.ReadUInt32();
-            Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void PPCRw_{0}()", dasm.Current.Mnemonic);
-            Debug.WriteLine("        {");
-            Debug.WriteLine("            AssertCode(0x{0:X8},   // {1}", uInstr, dasm.Current);
-            Debug.WriteLine("                \"0|L--|00100000({0}): 1 instructions\",", dasm.Current.Length);
-            Debug.WriteLine("                \"1|L--|@@@\");");
-            Debug.WriteLine("        }");
-            Debug.WriteLine("");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("PPCRw", instr, rdr, "");
         }
-#else
-        private void EmitUnitTest() { }
-#endif
 
         private Expression EffectiveAddress(MachineOperand operand, RtlEmitter emitter)
         {
             var mop = (MemoryOperand) operand;
             var reg = binder.EnsureRegister(mop.BaseRegister);
             var offset = mop.Offset;
-            return emitter.IAdd(reg, offset);
+            return emitter.IAddS(reg, offset);
         }
 
         private Expression EffectiveAddress_r0(MachineOperand operand, RtlEmitter emitter)
@@ -511,13 +525,16 @@ namespace Reko.Arch.PowerPC
             var mop = (MemoryOperand) operand;
             if (mop.BaseRegister.Number == 0)
             {
-                return Constant.Word32((int) mop.Offset.ToInt16());
+                return Constant.Word32(mop.Offset);
             }
             else
             {
                 var reg = binder.EnsureRegister(mop.BaseRegister);
                 var offset = mop.Offset;
-                return emitter.IAdd(reg, offset);
+                if (offset != 0)
+                    return emitter.IAddS(reg, offset);
+                else
+                    return reg;
             }
         }
 
@@ -529,23 +546,6 @@ namespace Reko.Arch.PowerPC
                 return e2;
             else
                 return m.IAdd(e1, e2);
-        }
-
-        private Expression SignExtend(Constant value)
-        {
-            PrimitiveType iType = (PrimitiveType)value.DataType;
-            if (arch.WordWidth.BitSize == 64)
-            {
-                return (iType.Domain == Domain.SignedInt)
-                    ? Constant.Int64(value.ToInt64())
-                    : Constant.Word64(value.ToUInt64());
-            }
-            else
-            {
-                return (iType.Domain == Domain.SignedInt)
-                    ? Constant.Int32(value.ToInt32())
-                    : Constant.Word32(value.ToUInt32());
-            }
         }
 
         private Expression UpdatedRegister(Expression effectiveAddress)

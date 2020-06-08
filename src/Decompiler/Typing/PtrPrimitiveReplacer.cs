@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,36 +39,35 @@ namespace Reko.Typing
     /// </remarks>
 	public class PtrPrimitiveReplacer : DataTypeTransformer
 	{
-		private TypeFactory factory;
-		private TypeStore store; 
-		private bool changed;
-        private Program program;
-        private HashSet<EquivalenceClass> classesVisited;
-        private HashSet<DataType> visitedTypes;
-        private DecompilerEventListener eventListener;
+		private readonly TypeFactory factory;
+		private readonly TypeStore store; 
+        private readonly Program program;
+        private readonly HashSet<EquivalenceClass> classesVisited;
+        private readonly HashSet<DataType> visitedTypes;
+        private readonly DecompilerEventListener eventListener;
         private int recursionGuard;
         private int nestCount;
+        private bool changed;
 
-        public PtrPrimitiveReplacer(TypeFactory factory, TypeStore store, Program program)
+        public PtrPrimitiveReplacer(TypeFactory factory, TypeStore store, Program program, DecompilerEventListener eventListener)
 		{
 			this.factory = factory;
 			this.store = store;
             this.program = program;
+            this.eventListener = eventListener;
             this.visitedTypes = new HashSet<DataType>();
-		}
+            this.classesVisited = new HashSet<EquivalenceClass>();
+        }
 
-		public DataType Replace(DataType dt)
+		public DataType? Replace(DataType? dt)
 		{
-			return dt != null 
-				? dt.Accept(this)
-				: null;
+			return dt?.Accept(this);
 		}
 
-		public bool ReplaceAll(DecompilerEventListener eventListener)
+		public bool ReplaceAll()
 		{
 			changed = false;
-			classesVisited  = new HashSet<EquivalenceClass>();
-            this.eventListener = eventListener;
+            classesVisited.Clear();
 
             // Replace the DataType of all the equivalence classes
 			foreach (TypeVariable tv in store.TypeVariables)
@@ -80,7 +79,7 @@ namespace Reko.Typing
 				{
 					classesVisited.Add(eq);
                     var dt = Replace(eq.DataType);
-                    eq.DataType = dt;
+                    eq.DataType = dt!;
 				}
 			}
 
@@ -89,46 +88,43 @@ namespace Reko.Typing
 			{
                 if (eventListener.IsCanceled())
                     return false;
-                tv.DataType = Replace(tv.DataType);
+                tv.DataType = Replace(tv.DataType)!;
 			}
 
 			foreach (EquivalenceClass eq in classesVisited)
 			{
                 if (eventListener.IsCanceled())
                     return false;
-                if (eq != program.Globals.TypeVariable.Class &&
+                if (eq != program.Globals.TypeVariable!.Class &&
                     (eq.DataType is PrimitiveType ||
                     eq.DataType is VoidType ||
 					eq.DataType is EquivalenceClass ||
                     eq.DataType is CodeType))
 				{
-					eq.DataType = null;
-					changed = true;
-					continue;
-				}
-				
-				Pointer ptr = eq.DataType as Pointer;
-				if (ptr != null)
-				{
-					eq.DataType = ptr.Pointee;
+					eq.DataType = null!;
 					changed = true;
 					continue;
 				}
 
-				MemberPointer mp = eq.DataType as MemberPointer;
-				if (mp != null)
-				{
-					eq.DataType = mp.Pointee;
-					changed = true;
-				}
+                if (eq.DataType is Pointer ptr)
+                {
+                    eq.DataType = ptr.Pointee;
+                    changed = true;
+                    continue;
+                }
 
-                ArrayType array = eq.DataType as ArrayType;
-                if (array != null)
+                if (eq.DataType is MemberPointer mp)
+                {
+                    eq.DataType = mp.Pointee;
+                    changed = true;
+                }
+
+                if (eq.DataType is ArrayType array)
                 {
                     eq.DataType = array.ElementType;
                     changed = true;
                 }
-			}
+            }
 			return changed;
 		}
 
@@ -155,9 +151,8 @@ namespace Reko.Typing
                 }
             }
 
-            DataType dt = eq.DataType;
-            PrimitiveType pr = dt as PrimitiveType;
-            if (pr != null)
+            DataType? dt = eq.DataType;
+            if (dt is PrimitiveType pr)
             {
                 changed = true;
                 return pr;
@@ -172,27 +167,23 @@ namespace Reko.Typing
                 changed = true;
                 return dt;
             }
-            Pointer ptr = dt as Pointer;
-            if (ptr != null)
+            if (dt is Pointer ptr)
             {
                 changed = true;
                 DataType pointee = eq;
                 return factory.CreatePointer(pointee, ptr.BitSize);
             }
-            MemberPointer mp = dt as MemberPointer;
-            if (mp != null)
+            if (dt is MemberPointer mp)
             {
                 changed = true;
                 return factory.CreateMemberPointer(mp.BasePointer, eq, mp.Size);
             }
-            ArrayType array = dt as ArrayType;
-            if (array != null)
+            if (dt is ArrayType array)
             {
                 changed = true;
                 return factory.CreateArrayType(array.ElementType, array.Length);
             }
-            EquivalenceClass eq2 = dt as EquivalenceClass;
-            if (eq2 != null)
+            if (dt is EquivalenceClass eq2)
             {
                 changed = true;
                 return eq2;

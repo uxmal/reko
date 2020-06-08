@@ -25,6 +25,7 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using Reko.Core.Expressions;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.Mips
 {
@@ -37,7 +38,7 @@ namespace Reko.UnitTests.Arch.Mips
         [SetUp]
         public void Setup()
         {
-            this.arch = new MipsBe32Architecture("mips-be-32");
+            this.arch = new MipsBe32Architecture(new ServiceContainer(), "mips-be-32");
             Registers = this;
         }
 
@@ -68,18 +69,18 @@ namespace Reko.UnitTests.Arch.Mips
 
         private void Given_Mips_v6_Architecture()
         {
-            arch = new MipsBe32Architecture("mips-be-32");
+            arch = new MipsBe32Architecture(new ServiceContainer(), "mips-be-32");
             arch.LoadUserOptions(new Dictionary<string, object> { { "decoder", "v6" } });
         }
 
         private void Given_Mips64_Architecture()
         {
-            arch = new MipsBe64Architecture("mips-be-64");
+            arch = new MipsBe64Architecture(new ServiceContainer(), "mips-be-64");
         }
 
         private void Given_Mips64_v6_Architecture()
         {
-            arch = new MipsBe64Architecture("mips-be-32");
+            arch = new MipsBe64Architecture(new ServiceContainer(), "mips-be-32");
             arch.LoadUserOptions(new Dictionary<string, object> { { "decoder", "v6" } });
         }
 
@@ -1189,17 +1190,16 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        [Ignore("Requires MIPS processor option support")]
+        [Ignore("Discovered by RekoSifter tool")]
         public void MipsDis_jalx()
         {
-            AssertCode("jalx	0x01bdc881", 0x746f7220);
+            AssertCode("jalx\t0x01bdc881", 0x746f7220);
         }
 
         [Test]
-        [Ignore("Requires MIPS processor option support")]
         public void MipsDis_cache()
         {
-            AssertCode("cache	0x2,0(k0)", 0xbf420000);
+            AssertCode("cache\t02,0000(r26)", 0xbf420000);
         }
 
         [Test]
@@ -1318,5 +1318,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("clo\tr24,r12", 0x7186C4E1);
         }
+
+ 
     }
 }

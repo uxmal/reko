@@ -37,24 +37,6 @@ using System.Linq;
 
 namespace Reko
 {
-    public interface IDecompiler
-    {
-        Project Project { get; }
-
-        bool Load(string fileName, string loader=null);
-        Program LoadRawImage(string file, LoadDetails raw);
-        Program LoadRawImage(byte[] bytes, LoadDetails raw);
-        void ScanPrograms();
-        ProcedureBase ScanProcedure(ProgramAddress paddr, IProcessorArchitecture arch);
-        void AnalyzeDataFlow();
-        void ReconstructTypes();
-        void StructureProgram();
-        void WriteDecompilerProducts();
-        void ExtractResources();
-
-        void Assemble(string file, IAssembler asm, IPlatform platform);
-    }
-
 	/// <summary>
 	/// The main driver class for decompilation of binaries. 
 	/// </summary>
@@ -62,7 +44,7 @@ namespace Reko
 	{
 		private readonly IDecompiledFileService host;
 		private readonly ILoader loader;
-		private IScanner scanner;
+		private IScanner? scanner;
         private readonly DecompilerEventListener eventListener;
         private readonly IServiceProvider services;
 
@@ -74,18 +56,18 @@ namespace Reko
             this.eventListener = services.RequireService<DecompilerEventListener>();
         }
 
-        public Project Project { get { return project; } set { project = value; ProjectChanged.Fire(this); } }
-        public event EventHandler ProjectChanged;
-        private Project project;
+        public Project? Project { get { return project; } set { project = value; ProjectChanged?.Fire(this); } }
+        public event EventHandler? ProjectChanged;
+        private Project? project;
 
         /// <summary>
         /// Main entry point of the decompiler. Loads, decompiles, and outputs the results.
         /// </summary>
-        public void Decompile(string filename, string loader = null)
+        public void Decompile(string filename, string? loaderName = null)
         {
             try
             {
-                Load(filename, loader);
+                Load(filename, loaderName);
                 ExtractResources();
                 ScanPrograms();
                 AnalyzeDataFlow();
@@ -112,6 +94,8 @@ namespace Reko
 		///</summary>
         public virtual void AnalyzeDataFlow()
         {
+            if (project is null)
+                return;
             var eventListener = services.RequireService<DecompilerEventListener>();
             foreach (var program in project.Programs)
             {
@@ -143,7 +127,7 @@ namespace Reko
             dump.Dump(segmentItems, wr);
         }
 
-        private void EmitProgram(Program program, IEnumerable<Procedure> procs, DataFlowAnalysis dfa, string filename, TextWriter output)
+        private void EmitProgram(Program program, IEnumerable<Procedure> procs, DataFlowAnalysis? dfa, string filename, TextWriter output)
         {
             if (output == null)
                 return;
@@ -158,6 +142,7 @@ namespace Reko
                     else
                         proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
                     output.WriteLine();
+                    WriteProcedureCallers(program, proc, output);
                     flow.Emit(program.Architecture, output);
                     foreach (Block block in new DfsIterator<Block>(proc.ControlGraph).PostOrder().Reverse())
                     {
@@ -184,7 +169,7 @@ namespace Reko
         /// <param name="loaderName">Optional .NET class name of a custom
         /// image loader</param>
         /// <returns>True if the file could be loaded.</returns>
-        public bool Load(string fileName, string loaderName = null)
+        public bool Load(string fileName, string? loaderName = null)
         {
             eventListener.ShowStatus("Loading source program.");
             byte[] image = loader.LoadImageBytes(fileName, 0);
@@ -212,15 +197,17 @@ namespace Reko
         /// </summary>
         private void BuildImageMaps()
         {
+            if (this.Project is null)
+                return;
             foreach (var program in this.Project.Programs)
             {
                 program.BuildImageMap();
             }
         }
 
-        public void RunScriptOnProgramImage(Program program, Script_v2 script)
+        public void RunScriptOnProgramImage(Program program, Script_v2? script)
         {
-            if (script == null || !script.Enabled)
+            if (script == null || !script.Enabled || script.Script == null)
                 return;
             IScriptInterpreter interpreter;
             try
@@ -238,7 +225,7 @@ namespace Reko
 
             try
             {
-                interpreter.LoadFromString(script.Script, program, null);
+                interpreter.LoadFromString(script.Script, program, Environment.CurrentDirectory);
                 interpreter.Run();
             }
             catch (Exception ex)
@@ -250,7 +237,7 @@ namespace Reko
         public void Assemble(string fileName, IAssembler asm, IPlatform platform)
         {
             eventListener.ShowStatus("Assembling program.");
-            var program = loader.AssembleExecutable(fileName, asm, platform, null);
+            var program = loader.AssembleExecutable(fileName, asm, platform, null!);
             Project = AddProgramToProject(fileName, program);
             WriteEntryPoints(program);
             eventListener.ShowStatus("Assembled program.");
@@ -266,7 +253,7 @@ namespace Reko
         public Program LoadRawImage(string fileName, LoadDetails raw)
         {
             eventListener.ShowStatus("Loading raw bytes.");
-            raw.ArchitectureOptions = raw.ArchitectureOptions ?? new Dictionary<string, object>();
+            raw.ArchitectureOptions ??= new Dictionary<string, object>();
             byte[] image = loader.LoadImageBytes(fileName, 0);
             var program = loader.LoadRawImage(fileName, image, null, raw);
             Project = AddProgramToProject(fileName, program);
@@ -284,7 +271,7 @@ namespace Reko
         public Program LoadRawImage(byte[] image, LoadDetails raw)
         {
             eventListener.ShowStatus("Loading raw bytes.");
-            raw.ArchitectureOptions = raw.ArchitectureOptions ?? new Dictionary<string, object>();
+            raw.ArchitectureOptions ??= new Dictionary<string, object>();
             var program = loader.LoadRawImage("image", image, null, raw);
             Project = AddProgramToProject("image", program);
             eventListener.ShowStatus("Raw bytes loaded.");
@@ -307,6 +294,8 @@ namespace Reko
 
         public void ExtractResources()
         {
+            if (project is null)
+                return;
             foreach (var program in project.Programs)
             {
                 if (program.User.ExtractResources)
@@ -397,8 +386,11 @@ namespace Reko
                 {
                     foreach (ProgramResourceInstance pr2 in pr1.Resources)
                     {
-                        path = Path.Combine(dirPath, pr1.Name + ext);
-                        fsSvc.WriteAllBytes(path, pr2.Bytes);
+                        if (pr2.Bytes != null)
+                        {
+                            path = Path.Combine(dirPath, pr1.Name + ext);
+                            fsSvc.WriteAllBytes(path, pr2.Bytes);
+                        }
                     }
                 }
             }
@@ -418,6 +410,8 @@ namespace Reko
         /// <param name="ivs"></param>
         public void ReconstructTypes()
         {
+            if (Project is null)
+                return;
             foreach (var program in Project.Programs.Where(p => p.NeedsTypeReconstruction))
             {
                 var analyzer = new TypeAnalyzer(eventListener);
@@ -445,9 +439,9 @@ namespace Reko
             var fmt = new AbsynCodeFormatter(new TextFormatter(w));
             foreach (var proc in procs)
             {
-                w.WriteLine("// {0}: {1}", proc.EntryAddress, proc);
                 try
                 {
+                    WriteProcedureHeader(program, proc, w);
                     fmt.Write(proc);
                     w.WriteLine();
                 }
@@ -459,14 +453,48 @@ namespace Reko
             }
         }
 
+        /// <summary>
+        /// Writes the high-level language procedure header for procedure <paramref name="proc"/>.
+        /// </summary>
+        /// <remarks>
+        /// //$REFACTOR: this is using C++-style comments. This should be in a HLL-specific class.
+        /// </remarks>
+        /// <param name="program"></param>
+        /// <param name="proc"></param>
+        /// <param name="w"></param>
+        private void WriteProcedureHeader(Program program, Procedure proc, TextWriter w)
+        {
+            w.WriteLine("// {0}: {1}", proc.EntryAddress, proc);
+            WriteProcedureCallers(program, proc, w);
+        }
+
+        /// <summary>
+        /// Writes the names of the procedures calling the procedure <paramref name="proc" />.
+        /// </summary>
+        private void WriteProcedureCallers(Program program, Procedure proc, TextWriter w)
+        {
+            var callers = program.CallGraph.CallerProcedures(proc)
+                .Distinct()
+                .OrderBy(p => p.EntryAddress)
+                .ToArray();
+            if (callers.Length > 0)
+            {
+                w.WriteLine("// Called from:");
+                foreach (var caller in callers)
+                {
+                    w.WriteLine("//      {0}", caller.Name);
+                }
+            }
+        }
+
         public void WriteGlobals(Program program, string filename, TextWriter w)
         {
             var headerfile = Path.ChangeExtension(Path.GetFileName(program.Filename), ".h");
             WriteHeaderComment(filename, program, w);
             w.WriteLine("#include \"{0}\"", headerfile);
             w.WriteLine();
-            var gdw = new GlobalDataWriter(program, services);
-            gdw.WriteGlobals(new TextFormatter(w));
+            var gdw = new GlobalDataWriter(program, new TextFormatter(w), services);
+            gdw.Write();
             w.WriteLine();
         }
     
@@ -519,7 +547,7 @@ namespace Reko
 		/// <param name="cfg">configuration information</param>
 		public void ScanPrograms()
 		{
-			if (Project.Programs.Count == 0)
+			if (Project is null || Project.Programs.Count == 0)
 				throw new InvalidOperationException("Programs must be loaded first.");
 
             foreach (Program program in Project.Programs)
@@ -562,21 +590,22 @@ namespace Reko
                     var sser = program.CreateProcedureSerializer();
                     if (program.Architecture.TryParseAddress(sc.InstructionAddress, out var addr))
                     {
-                        return new KeyValuePair<Address, FunctionType>(
+                        return new KeyValuePair<Address?, FunctionType?>(
                             addr,
                             sser.Deserialize(sc.Signature, program.Architecture.CreateFrame()));
                     }
                     else
-                        return new KeyValuePair<Address, FunctionType>(null, null);
+                        return new KeyValuePair<Address?, FunctionType?>(null, null);
                 })
-                .ToDictionary(item => item.Key, item => item.Value);
+                .Where(item => !(item.Key is null))
+                .ToDictionary(item => item.Key!, item => item.Value!);
         }
 
         private IScanner CreateScanner(Program program)
         {
             return new Scanner(
                 program,
-                new DynamicLinker(project, program, eventListener),
+                new DynamicLinker(project!, program, eventListener),
                 services);
         }
 
@@ -587,6 +616,8 @@ namespace Reko
         /// </summary>
         public void StructureProgram()
 		{
+            if (project is null)
+                return;
             foreach (var program in project.Programs)
             {
                 int i = 0;
@@ -616,6 +647,8 @@ namespace Reko
 
 		public void WriteDecompilerProducts()
 		{
+            if (Project is null)
+                return;
             foreach (var program in Project.Programs)
             {
                 host.WriteTypes(program, (n, w) => WriteDecompiledTypes(program, n, w));
@@ -626,6 +659,8 @@ namespace Reko
 
         private void WriteEntryPoints()
         {
+            if (Project is null)
+                return;
             foreach (var program in Project.Programs)
             {
                 WriteEntryPoints(program);

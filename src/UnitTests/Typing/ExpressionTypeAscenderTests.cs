@@ -27,6 +27,7 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Diagnostics;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Typing
 {
@@ -45,7 +46,7 @@ namespace Reko.UnitTests.Typing
             this.m = new ExpressionEmitter();
             this.store = new TypeStore();
             this.factory = new TypeFactory();
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(new ServiceContainer());
             var platform = new DefaultPlatform(null, arch);
             program = new Program { Architecture = arch, Platform = platform };
             this.exa = new ExpressionTypeAscender(program, store, factory);
@@ -229,6 +230,23 @@ namespace Reko.UnitTests.Typing
                 Address.Ptr32(0x10001200), PrimitiveType.Real32);
             RunTest(Address.Ptr32(0x10001200),
                 "Typing/ExaUsrGlobals_Addr32.txt");
+        }
+
+        [Test(Description = "Pointers should be processed as globals")]
+        public void ExaUsrGlobals_Structure_SecondField()
+        {
+            var str = new StructureType
+            {
+                Fields =
+                {
+                    { 0, PrimitiveType.Int32 },
+                    { 4, PrimitiveType.Real32 },
+                },
+            };
+            Given_GlobalVariable(
+                Address.Ptr32(0x10001200), str);
+            RunTest(Address.Ptr32(0x10001204),
+                "Typing/ExaUsrGlobals_Structure_SecondField.txt");
         }
 
         [Test(Description = "Operand sizes of a widening multiplication shouldn't affect the size of the product.")]

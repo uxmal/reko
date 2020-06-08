@@ -28,6 +28,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Reko.Arch.X86
@@ -146,10 +147,26 @@ namespace Reko.Arch.X86
             m.Branch(CreateTestCondition(cc, instrCur.Mnemonic), OperandAsCodeAddress(op1), InstrClass.ConditionalTransfer);
         }
 
+        private void RewriteEndbr()
+        {
+            // Endbr signals an indirect jump/call target, but is otherwise a NOP. We want to avoid fusing
+            // endbr's with other kinds of NOPs however, so we set the InstrClass to just linear.
+            m.Nop();
+            Debug.Assert(iclass == InstrClass.Linear);
+        }
+
         private void RewriteInt()
         {
             m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, SrcOp(instrCur.Operands[0])));
             iclass |= InstrClass.Call | InstrClass.Transfer;
+        }
+
+        private void RewriteIcebp()
+        {
+            // This is not supposed to be executed, so we mark the cluster as invalid.
+            //$REVIEW: the new scanner being developed should make this less necessary.
+            this.iclass = InstrClass.Invalid;
+            m.Invalid();
         }
 
         private void RewriteInto()
@@ -162,10 +179,10 @@ namespace Reko.Arch.X86
                     host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, Constant.Byte(4)));
         }
 
-        private void RewriteJcxz()
+        private void RewriteJcxz(RegisterStorage cx)
         {
             m.Branch(
-                m.Eq0(orw.AluRegister(Registers.rcx, instrCur.dataWidth)),
+                m.Eq0(orw.AluRegister(cx)),
                 OperandAsCodeAddress(instrCur.Operands[0]),
                 InstrClass.ConditionalTransfer);
         }

@@ -41,10 +41,10 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
         [SetUp]
         public void Setup()
         {
-            this.platform = new MacOSClassic(null, new M68kArchitecture("m68k"));
+            this.sc = new ServiceContainer();
+            this.platform = new MacOSClassic(sc, new M68kArchitecture(sc, "m68k"));
             this.tlib = new TypeLibrary();
             this.diagSvc = new Moq.Mock<IDiagnosticsService>();
-            this.sc = new ServiceContainer();
             this.sc.AddService(diagSvc.Object);
         }
 

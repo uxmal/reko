@@ -4,7 +4,7 @@ globals_t: (in globals : ptr32)
   Class: Eq_1
   DataType: 
   OrigDataType: 
-T_2: (in 0x10001200 : ptr32)
+T_2: (in 0x10001200<p32> : ptr32)
   Class: Eq_2
   DataType: (ptr32 real32)
   OrigDataType: (ptr32 real32)

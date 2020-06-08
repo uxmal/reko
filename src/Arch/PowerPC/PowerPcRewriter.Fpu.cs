@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -234,7 +235,7 @@ namespace Reko.Arch.PowerPC
 
         public void RewriteMtfsf()
         {
-            var op1 = RewriteOperand(instr.Operands[0]);
+            var op1 = ((ImmediateOperand)instr.Operands[0]).Value;
             var op2 = RewriteOperand(instr.Operands[1]);
             m.SideEffect(
                 host.PseudoProcedure("__mtfsf",

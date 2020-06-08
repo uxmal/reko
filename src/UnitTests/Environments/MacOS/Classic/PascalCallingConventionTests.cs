@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Types;
 using Reko.Environments.MacOS.Classic;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Environments.MacOS.Classic
 {
@@ -35,7 +36,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
 
         public PascalCallingConventionTests()
         {
-            this.arch = new M68kArchitecture("m68k");
+            this.arch = new M68kArchitecture(new ServiceContainer(), "m68k");
         }
 
         [SetUp]

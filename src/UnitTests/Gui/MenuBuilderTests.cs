@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,16 @@ namespace Reko.UnitTests.Gui
 		}
 	}
 
-	public class FakeMenuBuilder : MenuBuilder
+    public class CmdID
+    {
+        public const int File = 0x0100;
+
+        public const int NextPhase = 0x0300;
+        public const int FinishPhases = 0x0301;
+    }
+
+
+    public class FakeMenuBuilder : MenuBuilder
 	{
 		private StringWriter sb;
 

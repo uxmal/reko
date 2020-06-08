@@ -68,6 +68,9 @@ namespace Reko.Environments.SysV
             case "ppc-be-32":
             case "ppc-le-32":
                 return new PowerPcCallingConvention(Architecture);
+            case "ppc-be-64":
+            case "ppc-le-64":
+                return new PowerPc64CallingConvention(Architecture);
             case "sparc32":
                 return new SparcCallingConvention(Architecture);
             case "x86-protected-32":
@@ -96,6 +99,8 @@ namespace Reko.Environments.SysV
                 return new M68kCallingConvention(Architecture);
             case "avr8":
                 return new Avr8CallingConvention(Architecture);
+            case "avr32":
+                return new Avr32CallingConvention(Architecture);
             case "msp430":
                 return new Msp430CallingConvention(Architecture);
             case "risc-v":

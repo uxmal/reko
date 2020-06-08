@@ -73,13 +73,13 @@ namespace Reko.UnitTests.Scanning
 
         private void BuildTest32(Action<X86Assembler> m)
         {
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
             BuildTest(arch, Address.Ptr32(0x10000), new FakePlatform(sc, arch), m);
         }
 
         private void BuildTest16(Action<X86Assembler> m)
         {
-            var arch = new X86ArchitectureReal("x86-real-16");
+            var arch = new X86ArchitectureReal(sc, "x86-real-16");
             BuildTest(arch, Address.SegPtr(0x0C00, 0x000), new MsdosPlatform(sc, arch), m);
         }
 
@@ -208,7 +208,7 @@ namespace Reko.UnitTests.Scanning
         private void BuildTest(IntelArchitecture arch, Address addr, IPlatform platform, Action<X86Assembler> m)
         {
             proc = new Procedure(arch, "test", addr, arch.CreateFrame());
-            block = proc.AddBlock("testblock");
+            block = proc.AddBlock(addr, "testblock");
             var asm = new X86Assembler(arch, addr, new List<ImageSymbol>());
             scanner = new Mock<IScanner>();
             scanner.Setup(s => s.Services).Returns(sc);
@@ -372,7 +372,7 @@ namespace Reko.UnitTests.Scanning
             var sw = new StringWriter();
             block.WriteStatements(sw);
             string sExp =
-                "\tax = SEQ(0x0C00, Mem0[ds:bx + 0x0004:word16])(cx)" + nl;
+                "\tax = SEQ(0xC00<16>, Mem0[ds:bx + 4<16>:word16])(cx)" + nl;
             Assert.AreEqual(sExp, sw.ToString());
         }
 
@@ -425,7 +425,7 @@ namespace Reko.UnitTests.Scanning
             wi.Process();
             var sw = new StringWriter();
             block.WriteStatements(sw);
-            string sExp = "\tbx = bx & 0x0003" + nl +
+            string sExp = "\tbx = bx & 3<16>" + nl +
                 "\tSZO = cond(bx)" + nl +
                 "\tC = false" + nl +
                 "\tbx = bx + bx" + nl + 
@@ -439,7 +439,7 @@ namespace Reko.UnitTests.Scanning
         private Block ExpectJumpTarget(ushort selector, ushort offset, string blockLabel)
         {
             var addr = Address.SegPtr(selector, offset);
-            var block = new Block(proc, blockLabel) { Address = Address.SegPtr(selector, offset) };
+            var block = new Block(proc, Address.SegPtr(selector, offset), blockLabel);
             scanner.Setup(s => s.EnqueueJumpTarget(
                 It.IsNotNull<Address>(),
                 addr,
@@ -453,7 +453,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_RepMovsw()
         {
-            var follow = new Block(proc, "follow"); // the code that follows the 'rep movsw'
+            var follow = new Block(proc, Address.SegPtr(0x0C00, 0), "follow"); // the code that follows the 'rep movsw'
             BuildTest16(m =>
             {
                 m.Rep();
@@ -504,7 +504,7 @@ namespace Reko.UnitTests.Scanning
                     It.IsNotNull<Address>(),
                     It.Is<Address>(a => a.Offset == 0x0003),
                     proc,
-                    It.IsAny<ProcessorState>())).Returns(new Block(proc, "l0003"));
+                    It.IsAny<ProcessorState>())).Returns(new Block(proc, Address.Ptr16(0x3), "l0003"));
                 scanner.Setup(x => x.TerminateBlock(
                     It.IsAny<Block>(),
                     It.IsAny<Address>()));
@@ -523,7 +523,7 @@ namespace Reko.UnitTests.Scanning
                 "\tesi = esi ^ esi" + nl +
                 "\tSZO = cond(esi)" + nl +
                 "\tC = false" + nl + 
-                "\tesi = esi + 0x00000001" + nl +
+                "\tesi = esi + 1<32>" + nl +
                 "\tSZO = cond(esi)" + nl +
                  "\tgoto 0C00:0003" + nl;
             var sw = new StringWriter();
@@ -555,7 +555,7 @@ namespace Reko.UnitTests.Scanning
                 "testblock:" + nl +
                 "\tebx = GetDC" + nl +
                 "\teax = GetDC(Mem0[esp:HWND])" + nl +
-                "\tesp = esp + 0x00000004" + nl +
+                "\tesp = esp + 4<32>" + nl +
                 "\treturn" + nl;
             var sw = new StringWriter();
             block.Write(sw);

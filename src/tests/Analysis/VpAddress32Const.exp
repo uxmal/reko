@@ -1,12 +1,12 @@
 = VpAddress32Const ========================
 r1_1: orig: r1
-    def:  r1_1 = 0x00123400
-    uses: r1_3 = Mem0[r1_1 + 0x00000056:word32]
+    def:  r1_1 = 0x00123400<p32>
+    uses: r1_3 = Mem0[r1_1 + 0x56<32>:word32]
 Mem0:Mem
     def:  def Mem0
-    uses: r1_3 = Mem0[r1_1 + 0x00000056:word32]
+    uses: r1_3 = Mem0[r1_1 + 0x56<32>:word32]
 r1_3: orig: r1
-    def:  r1_3 = Mem0[r1_1 + 0x00000056:word32]
+    def:  r1_3 = Mem0[r1_1 + 0x56<32>:word32]
 // VpAddress32Const
 // Return size: 0
 define VpAddress32Const
@@ -14,19 +14,19 @@ VpAddress32Const_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	r1_1 = 0x00123400
-	r1_3 = Mem0[r1_1 + 0x00000056:word32]
+	r1_1 = 0x00123400<p32>
+	r1_3 = Mem0[r1_1 + 0x56<32>:word32]
 	return
 	// succ:  VpAddress32Const_exit
 VpAddress32Const_exit:
 
 r1_1: orig: r1
-    def:  r1_1 = 0x00123400
+    def:  r1_1 = 0x00123400<p32>
 Mem0:Mem
     def:  def Mem0
-    uses: r1_3 = Mem0[0x00123456:word32]
+    uses: r1_3 = Mem0[0x00123456<p32>:word32]
 r1_3: orig: r1
-    def:  r1_3 = Mem0[0x00123456:word32]
+    def:  r1_3 = Mem0[0x00123456<p32>:word32]
 // VpAddress32Const
 // Return size: 0
 define VpAddress32Const
@@ -34,8 +34,8 @@ VpAddress32Const_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	r1_1 = 0x00123400
-	r1_3 = Mem0[0x00123456:word32]
+	r1_1 = 0x00123400<p32>
+	r1_3 = Mem0[0x00123456<p32>:word32]
 	return
 	// succ:  VpAddress32Const_exit
 VpAddress32Const_exit:

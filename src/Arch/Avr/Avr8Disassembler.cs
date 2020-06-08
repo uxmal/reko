@@ -25,6 +25,7 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using Reko.Core.Expressions;
 using System.Diagnostics;
+using Reko.Core.Services;
 
 namespace Reko.Arch.Avr
 {
@@ -59,10 +60,6 @@ namespace Reko.Arch.Avr
             instr.Address = addr;
             var length = rdr.Address - addr;
             instr.Length = (int) length;
-
-#if DEBUG
-            if (instr.Mnemonic == Mnemonic.invalid) EmitUnitTest(wInstr);
-#endif
             return instr;
         }
 
@@ -337,13 +334,11 @@ namespace Reko.Arch.Avr
             return (short)d;
         }
 
-        private void EmitUnitTest(ushort wInstr)
+        public override AvrInstruction NotYetImplemented(uint wInstr, string message)
         {
-            var instrHex = $"{wInstr:X4}";
-            base.EmitUnitTest("AVR8", instrHex, "", "Avr8_dis", this.addr, w =>
-            {
-                w.WriteLine("            AssertCode(\"@@@\", 0x{0:X4});", wInstr);
-            });
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("Avr8_dis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         static Avr8Disassembler()

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(a, 3);
             });
             string expected = ToExpectedString(
-                "a = 0x00000003"
+                "a = 3<32>"
             );
             Assert.AreEqual(expected, testResult);
         }
@@ -85,9 +85,9 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(a, 3);
             });
             string expected = ToExpectedString(
-                "a = 0x00000002",
+                "a = 2<32>",
                 "call <invalid> (retsize: 4;)",
-                "a = 0x00000003"
+                "a = 3<32>"
             );
 
             Assert.AreEqual(expected, testResult);
@@ -135,7 +135,7 @@ namespace Reko.UnitTests.Analysis
                 m.BranchIf(m.Test(ConditionCode.LE, CN), "foo");
             });
             string expected = ToExpectedString(
-                "a = a + 0x00000003",
+                "a = a + 3<32>",
                 "a = a + a",
                 "N = cond(a)",
                 "branch Test(LE,CN) foo"

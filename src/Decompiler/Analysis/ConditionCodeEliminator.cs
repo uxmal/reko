@@ -22,7 +22,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
-using Reko.Core.Output;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -49,22 +49,23 @@ namespace Reko.Analysis
 	/// </remarks>
 	public class ConditionCodeEliminator : InstructionTransformer
 	{
-        private SsaState ssa;
-		private SsaIdentifierCollection ssaIds;
-		private SsaIdentifier sidGrf;
-        private Statement useStm;
-        private IPlatform platform;
-        private ExpressionEmitter m;
+        private static readonly TraceSwitch trace = new TraceSwitch("CcodeEliminator", "Traces the progress of the condition code eliminator", "Verbose");
+        
+        private readonly SsaState ssa;
+		private readonly SsaIdentifierCollection ssaIds;
+        private readonly IPlatform platform;
+        private readonly ExpressionEmitter m;
+        private readonly HashSet<Identifier> aliases;
+		private SsaIdentifier? sidGrf;
+        private Statement? useStm;
 
-        private static TraceSwitch trace = new TraceSwitch("CcodeEliminator", "Traces the progress of the condition code eliminator", "Verbose");
-        private HashSet<Identifier> aliases;
-
-        public ConditionCodeEliminator(SsaState ssa, IPlatform arch)
+        public ConditionCodeEliminator(SsaState ssa, IPlatform platform, DecompilerEventListener listener)
 		{
-            this.ssa=ssa;
+            this.ssa = ssa;
 			this.ssaIds = ssa.Identifiers;
-            this.platform = arch;
+            this.platform = platform;
             this.m = new ExpressionEmitter();
+            this.aliases = new HashSet<Identifier>();
 		}
 
         public void Transform()
@@ -74,10 +75,10 @@ namespace Reko.Analysis
                 sidGrf = s;
                 if (!IsLocallyDefinedFlagGroup(sidGrf))
                     continue;
-                if (sidGrf.DefStatement.Instruction is AliasAssignment)
+                if (sidGrf.DefStatement!.Instruction is AliasAssignment)
                     continue;
                 var uses = new HashSet<Statement>();
-                this.aliases = new HashSet<Identifier>();
+                this.aliases.Clear();
                 ClosureOfUsingStatements(sidGrf, uses, aliases);
                 trace.Inform("Tracing {0}", sidGrf.DefStatement.Instruction);
 
@@ -176,7 +177,7 @@ namespace Reko.Analysis
 			var gf = new GrfDefinitionFinder(ssaIds);
 			gf.FindDefiningExpression(sid);
 			
-			Expression e = gf.DefiningExpression;
+			Expression? e = gf.DefiningExpression;
 			if (e == null)
 			{
 				return sid.Identifier;
@@ -184,22 +185,21 @@ namespace Reko.Analysis
 
             switch (e)
 			{
-            case BinaryExpression binDef:
+            case BinaryExpression _:
 				if (gf.IsNegated)
 					e = e.Invert();
 				return e;
             case ConditionOf cof:
-				var condBinDef = cof.Expression as BinaryExpression;
-				if (condBinDef == null)
+                if (!(cof.Expression is BinaryExpression condBinDef))
                     condBinDef = CmpExpressionToZero(cof.Expression);
-				return ComparisonFromConditionCode(cc, condBinDef, gf.IsNegated);
-            case Application app:
+                return ComparisonFromConditionCode(cc, condBinDef, gf.IsNegated);
+            case Application _:
 				return sid.Identifier;
-            case PhiFunction phi:
+            case PhiFunction _:
 				return sid.Identifier;
             default:
 			throw new NotImplementedException("NYI: e: " + e.ToString());
-		}
+		    }
 		}
 
 		public override Instruction TransformAssignment(Assignment a)
@@ -227,8 +227,8 @@ namespace Reko.Analysis
         private Instruction TransformAddOrSub(Assignment a, BinaryExpression binUse)
         {
             Expression u = binUse.Right;
-            Cast c = null;
-            if (u != sidGrf.Identifier && !this.aliases.Contains(u))
+            Cast? c = null;
+            if (u != sidGrf!.Identifier && !this.aliases.Contains(u))
             {
                 c = binUse.Right as Cast;
                 if (c != null)
@@ -243,8 +243,8 @@ namespace Reko.Analysis
                 binUse.Right = new Cast(c.DataType, u);
             else
                 binUse.Right = u;
-            oldSid.Uses.Remove(useStm);
-            Use(u, useStm);
+            oldSid.Uses.Remove(useStm!);
+            Use(u, useStm!);
             return a;
         }
 
@@ -260,18 +260,17 @@ namespace Reko.Analysis
             if (!(sidOrigLo.DefExpression is BinaryExpression shift) || shift.Operator != Operator.Shl)
                 return a;
 
-            var block = sidOrigHi.DefStatement.Block;
-            var sidShift = sidOrigLo.DefStatement;
+            var block = sidOrigHi.DefStatement!.Block;
             var expShrSrc = shift.Left;
             var expRorSrc = rolc.Arguments[0];
 
-            var stmGrf = sidGrf.DefStatement;
-            block.Statements.Remove(stmGrf);
+            var stmGrf = sidGrf!.DefStatement;
+            block.Statements.Remove(stmGrf!);
 
             // xx = lo
             var tmpLo = ssa.Procedure.Frame.CreateTemporary(expShrSrc.DataType);
             var sidTmpLo = ssaIds.Add(tmpLo, sidOrigLo.DefStatement, expShrSrc, false);
-            sidOrigLo.DefStatement.Instruction = new Assignment(sidTmpLo.Identifier, expShrSrc);
+            sidOrigLo.DefStatement!.Instruction = new Assignment(sidTmpLo.Identifier, expShrSrc);
 
             var tmpHi = ssa.Procedure.Frame.CreateTemporary(rolc.Arguments[0].DataType);
             var sidTmpHi = ssaIds.Add(tmpHi, sidOrigHi.DefStatement, rolc.Arguments[0], false);
@@ -288,8 +287,8 @@ namespace Reko.Analysis
             sidTmpLo.Uses.Add(stmTmp);
             sidTmpHi.Uses.Add(stmTmp);
 
-            ssa.RemoveUses(sidCarry.DefStatement);
-            block.Statements.Remove(sidCarry.DefStatement);
+            ssa.RemoveUses(sidCarry.DefStatement!);
+            block.Statements.Remove(sidCarry.DefStatement!);
             ssaIds.Remove(sidCarry);
 
             var expNewLo = m.Cast(
@@ -353,17 +352,16 @@ namespace Reko.Analysis
                   shift.Operator == Operator.Shr))
                 return a;
 
-            var block = sidOrigLo.DefStatement.Block;
-            var sidShift = sidOrigHi.DefStatement;
+            var block = sidOrigLo.DefStatement!.Block;
             var expShrSrc = shift.Left;
             var expRorSrc = rorc.Arguments[0];
 
-            var stmGrf = sidGrf.DefStatement;
-            block.Statements.Remove(stmGrf);
+            var stmGrf = sidGrf!.DefStatement;
+            block.Statements.Remove(stmGrf!);
 
             var tmpHi = ssa.Procedure.Frame.CreateTemporary(expShrSrc.DataType);
             var sidTmpHi = ssaIds.Add(tmpHi, sidOrigHi.DefStatement, expShrSrc, false);
-            sidOrigHi.DefStatement.Instruction = new Assignment(sidTmpHi.Identifier, expShrSrc);
+            sidOrigHi.DefStatement!.Instruction = new Assignment(sidTmpHi.Identifier, expShrSrc);
 
             var tmpLo = ssa.Procedure.Frame.CreateTemporary(rorc.Arguments[0].DataType);
             var sidTmpLo = ssaIds.Add(tmpLo, sidOrigLo.DefStatement, rorc.Arguments[0], false);
@@ -380,8 +378,8 @@ namespace Reko.Analysis
             sidTmpHi.Uses.Add(stmTmp);
             sidTmpLo.Uses.Add(stmTmp);
 
-            ssa.RemoveUses(sidCarry.DefStatement);
-            block.Statements.Remove(sidCarry.DefStatement);
+            ssa.RemoveUses(sidCarry.DefStatement!);
+            block.Statements.Remove(sidCarry.DefStatement!);
             ssaIds.Remove(sidCarry);
 
             var expNewHi = m.Slice(
@@ -416,9 +414,9 @@ namespace Reko.Analysis
         public override Expression VisitTestCondition(TestCondition tc)
 		{
 			SsaIdentifier sid = ssaIds[(Identifier) tc.Expression];
-			sid.Uses.Remove(useStm);
+			sid.Uses.Remove(useStm!);
 			Expression c = UseGrfConditionally(sid, tc.ConditionCode);
-			Use(c, useStm);
+			Use(c, useStm!);
 			return c;
 		}
 
@@ -429,7 +427,7 @@ namespace Reko.Analysis
 
 		public Expression ComparisonFromConditionCode(ConditionCode cc, BinaryExpression bin, bool isNegated)
 		{
-			BinaryOperator cmpOp = null;
+            BinaryOperator? cmpOp;
 			if (isNegated)
 			{
 				cc = cc.Invert();
@@ -483,7 +481,7 @@ namespace Reko.Analysis
                 else
                 {
                     var pt = bin.Left.DataType.ResolveAs<PrimitiveType>();
-                    zero = Constant.Zero(pt);
+                    zero = Constant.Zero(pt!);
                 }
                 e = new BinaryExpression(cmpOp, PrimitiveType.Bool, bin, zero);
             }
@@ -493,8 +491,8 @@ namespace Reko.Analysis
 		public Expression ComparisonFromOverflow(BinaryExpression bin, bool isNegated)
 		{
             var sig = new FunctionType(
-                new Identifier("", PrimitiveType.Bool, null),
-                new Identifier("", bin.DataType, null));
+                new Identifier("", PrimitiveType.Bool, null!),
+                new Identifier("", bin.DataType, null!));
             Expression e = new Application(
                 new ProcedureConstant(
                     platform.PointerType,
@@ -511,8 +509,8 @@ namespace Reko.Analysis
         public Expression ComparisonFromParity(BinaryExpression bin, bool isNegated)
         {
             var sig = new FunctionType(
-                new Identifier("", PrimitiveType.Bool, null),
-                new Identifier("", bin.DataType, null));
+                new Identifier("", PrimitiveType.Bool, null!),
+                new Identifier("", bin.DataType, null!));
             Expression e = new Application(
                 new ProcedureConstant(
                     platform.PointerType,
@@ -533,9 +531,9 @@ namespace Reko.Analysis
         public Expression OrderedComparison(BinaryExpression bin, bool isNegated)
 		{
             var sig = new FunctionType(
-                new Identifier("", PrimitiveType.Bool, null),
-                new Identifier("x", bin.DataType, null),
-                new Identifier("y", bin.DataType, null));
+                new Identifier("", PrimitiveType.Bool, null!),
+                new Identifier("x", bin.DataType, null!),
+                new Identifier("y", bin.DataType, null!));
             Expression e = m.Fn(
                 new ProcedureConstant(
                     platform.PointerType,

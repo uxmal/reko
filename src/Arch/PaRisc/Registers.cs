@@ -44,6 +44,7 @@ namespace Reko.Arch.PaRisc
         public static readonly Dictionary<int, RegisterStorage> ControlRegisters;
 
         public static readonly FlagGroupStorage CF;
+        public static Dictionary<StorageDomain, RegisterStorage> RegistersByStorageDomain { get; }
 
         static Registers()
         {
@@ -112,6 +113,8 @@ namespace Reko.Arch.PaRisc
 
             CF = new FlagGroupStorage(PSW, 0xF000, "C", PrimitiveType.Byte);
 
+            RegistersByStorageDomain =
+                GpRegs.ToDictionary(r => r.Domain);
         }
     }
 }

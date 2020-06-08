@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -30,23 +31,27 @@ using System.Text;
 namespace Reko.Arch.Mos6502
 {
     using Decoder = Decoder<Disassembler, Mnemonic, Instruction>;
+#pragma warning disable IDE1006
 
     // http://www.e-tradition.net/bytes/6502/6502_instruction_set.html
     // 65816 = http://www.zophar.net/fileuploads/2/10538ivwiu/65816info.txt
     public class Disassembler : DisassemblerBase<Instruction, Mnemonic>
     {
+        private readonly Mos6502Architecture arch;
         private readonly EndianImageReader rdr;
         private readonly List<Operand> ops;
+        private Address addr;
 
-        public Disassembler(EndianImageReader rdr)
+        public Disassembler(Mos6502Architecture arch, EndianImageReader rdr)
         {
+            this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<Operand>();
         }
 
         public override Instruction DisassembleInstruction()
         {
-            var addr = rdr.Address;
+            this.addr = rdr.Address;
             if (!rdr.TryReadByte(out byte op))
                 return null;
             ops.Clear();
@@ -75,6 +80,13 @@ namespace Reko.Arch.Mos6502
                 Mnemonic = Mnemonic.illegal,
                 Operands = MachineInstruction.NoOperands
             };
+        }
+
+        public override Instruction NotYetImplemented(uint wInstr, string message)
+        {
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("Dis6502", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         private static bool Imm(uint uInstr, Disassembler dasm)
@@ -240,39 +252,6 @@ namespace Reko.Arch.Mos6502
                     (dasm.rdr.Address.ToUInt16() + (sbyte) bOff)),
             });
             return true;
-        }
-
-        private Operand AbsoluteOperand(string fmt, ref int i)
-        {
-            if (i < fmt.Length)
-            {
-                if (fmt[i] == 'x')
-                {
-                    ++i;
-                    return new Operand(PrimitiveType.Byte)
-                    {
-                        Mode = AddressMode.AbsoluteX,
-                        Register = Registers.x,
-                        Offset = rdr.Read(PrimitiveType.Word16)
-                    };
-                }
-                else if (fmt[i] == 'y')
-                {
-                    ++i;
-                    return new Operand(PrimitiveType.Byte)
-                    {
-                        Mode = AddressMode.AbsoluteY,
-                        Register = Registers.y,
-                        Offset = rdr.Read(PrimitiveType.Word16)
-                    };
-                }
-            }
-            return new Operand(PrimitiveType.Byte)
-            {
-                Mode = AddressMode.Absolute,
-                Register = null,
-                Offset = rdr.Read(PrimitiveType.Word16)
-            };
         }
 
         private static Decoder Instr(Mnemonic mnemonic, params Mutator<Disassembler> [] mutators)

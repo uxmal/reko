@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Gui.Design
             this.services = new ServiceContainer();
             this.program = new Program
             {
-                Architecture = new FakeArchitecture()
+                Architecture = new FakeArchitecture(services)
             };
         }
 

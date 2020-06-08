@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections;
@@ -103,12 +104,7 @@ namespace Reko.Gui.Forms
             var hits = Decompiler.Project.Programs
                 .SelectMany(p => p.ImageMap.Items
                         .Where(i => i.Value.DataType is UnknownType)
-                        .Select(i => new AddressSearchHit
-                        {
-                            Program = p,
-                            Address = i.Key,
-                            Length = 1
-                        }));
+                        .Select(i => new AddressSearchHit(p, i.Key, 1)));
             srSvc.ShowSearchResults(
                 new AddressSearchResult(
                     Services,

@@ -62,9 +62,8 @@ namespace Reko.UnitTests.Core
         {
             this.program.ImageMap.AddItemWithSize(
                 address,
-                new ImageMapItem
+                new ImageMapItem(address)
                 {
-                    Address = address,
                     Size = (uint)dataType.Size,
                     DataType = dataType,
                 });
@@ -74,9 +73,8 @@ namespace Reko.UnitTests.Core
         {
             this.program.ImageMap.AddItemWithSize(
                 address,
-                new ImageMapBlock
+                new ImageMapBlock(address)
                 {
-                    Address = address,
                     Size = size,
                 });
         }

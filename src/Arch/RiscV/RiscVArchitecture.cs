@@ -53,7 +53,7 @@ namespace Reko.Arch.RiscV
         internal readonly PrimitiveType NaturalSignedInteger;
         private Dictionary<string, RegisterStorage> regsByName;
 
-        public RiscVArchitecture(string archId) : base(archId)
+        public RiscVArchitecture(IServiceProvider services, string archId) : base(services, archId)
         {
             this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 16;

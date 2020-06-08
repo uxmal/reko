@@ -39,7 +39,7 @@ namespace Reko.Arch.M68k
     {
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public M68kArchitecture(string archId) : base(archId)
+        public M68kArchitecture(IServiceProvider services, string archId) : base(services, archId)
         {
             InstructionBitSize = 16;
             Endianness = EndianServices.Big;
@@ -53,7 +53,7 @@ namespace Reko.Arch.M68k
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
-            return M68kDisassembler.Create68020(rdr);
+            return M68kDisassembler.Create68020(this.Services, rdr);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
@@ -63,7 +63,7 @@ namespace Reko.Arch.M68k
 
         public IEnumerable<M68kInstruction> CreateDisassemblerImpl(EndianImageReader rdr)
         {
-            return M68kDisassembler.Create68020(rdr);
+            return M68kDisassembler.Create68020(this.Services, rdr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)

@@ -91,15 +91,16 @@ namespace Reko.Analysis
             this.cmp = new ExpressionValueComparer();
         }
 
+        //$REVIEW: this is a Record, and ideally would have non-nullable fields. C# 9?
         private class Candidate
         {
-            public Block Predecessor;
-            public Branch PredecessorTest;
-            public Block PredecessorConditional;
-            public Block Block;
-            public Branch BlockTest;
-            public Block Final1;
-            public Block Final2;
+            public Block? Predecessor;
+            public Branch? PredecessorTest;
+            public Block? PredecessorConditional;
+            public Block? Block;
+            public Branch? BlockTest;
+            public Block? Final1;
+            public Block? Final2;
         }
 
         public void Transform()
@@ -115,7 +116,7 @@ namespace Reko.Analysis
                 FuseIntoPredecessor(c);
 
                 // We may need to mutate the predecessor again.
-                wl.Add(c.Predecessor);
+                wl.Add(c.Predecessor!);
             }
         }
 
@@ -132,7 +133,7 @@ namespace Reko.Analysis
         ///  |
         ///  Final
         /// </summary>
-        private Candidate DetermineCandidate(Block block)
+        private Candidate? DetermineCandidate(Block block)
         {
             if (block.Pred.Count != 2)
                 return null;
@@ -222,7 +223,7 @@ namespace Reko.Analysis
             return false;
         }
 
-        private Identifier DetermineConditionalIdentifier(Expression e)
+        private Identifier? DetermineConditionalIdentifier(Expression e)
         {
             return (e is TestCondition predTest)
                 ? predTest.Expression as Identifier
@@ -234,7 +235,7 @@ namespace Reko.Analysis
         /// predecessor has <paramref name="block"/> as its single successor,
         /// return it.
         /// </summary>
-        private Block ApplicablePredecessor(Block block)
+        private Block? ApplicablePredecessor(Block block)
         {
             if (block.Pred.Count != 2)
                 return null;
@@ -251,7 +252,7 @@ namespace Reko.Analysis
             return pred;
         }
 
-        private Branch BlockTest(Block block, bool singleStatement)
+        private Branch? BlockTest(Block block, bool singleStatement)
         {
             var c = block.Statements.Count;
             if (c == 0 || (singleStatement && c != 1))
@@ -267,14 +268,14 @@ namespace Reko.Analysis
         private void FuseIntoPredecessor(Candidate c)
         {
             // 'Block' is dead, so unhook it from the graph.
-            c.PredecessorConditional.Succ[0] = c.Final2;
-            c.Final2.Pred[0] = c.PredecessorConditional;
-            c.PredecessorTest.Target = c.Final1;
-            Block.ReplaceJumpsTo(c.Block, c.Final1);
+            c.PredecessorConditional!.Succ[0] = c.Final2!;
+            c.Final2!.Pred[0] = c.PredecessorConditional;
+            c.PredecessorTest!.Target = c.Final1!;
+            Block.ReplaceJumpsTo(c.Block!, c.Final1!);
 
             // Delete the dead block
             var cfg = proc.ControlGraph;
-            cfg.Blocks.Remove(c.Block);
+            cfg.Blocks.Remove(c.Block!);
         }
     }
 }

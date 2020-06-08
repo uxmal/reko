@@ -65,7 +65,10 @@ INativeInstruction * Arm32Disassembler::NextInstruction()
 	{
 		instr->id = ARM_INS_INVALID;
 		instr->detail->arm.op_count = 0;
-		strncpy(instr->mnemonic, "Invalid", sizeof(instr->mnemonic));
+		// Big hammer for small problem, but it's 2020 and we don't have a cross-platform
+		// "secure" strcpy it seems. This branch is seldom executed, so we should be OK.
+		snprintf(instr->mnemonic, sizeof(instr->mnemonic), "Invalid");
+
 		auto info = NativeInstructionInfo{
 			uAddr, 4, static_cast<uint32_t>(InstrClass::Invalid), ARM_INS_INVALID
 		};

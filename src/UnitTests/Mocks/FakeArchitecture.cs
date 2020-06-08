@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Mocks
 		private const int iReturnRegister = 62;
         private bool ignoreUnknownTraces;
 
-        public FakeArchitecture() : base("fake")
+        public FakeArchitecture(IServiceProvider services) : base(services, "fake")
         {
             this.CarryFlagMask = (uint)StatusFlags.C;
             this.Description = "Fake Architecture for testing";
@@ -398,7 +398,7 @@ namespace Reko.UnitTests.Mocks
 
     public class FakeArchitecture64 : ProcessorArchitecture
     {
-        public FakeArchitecture64() : base("fakeArch64")
+        public FakeArchitecture64(IServiceProvider services) : base(services, "fakeArch64")
         {
             Endianness = EndianServices.Little;
             FramePointerType = PrimitiveType.Ptr64;

@@ -10,7 +10,7 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem8[ds:0x0300:word16] = 0x0004
+	Mem8[ds:0x300<16>:word16] = 4<16>
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

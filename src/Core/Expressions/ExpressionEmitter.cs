@@ -18,13 +18,12 @@
  */
 #endregion
 
-using Reko.Core.Code;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Expressions
 {
@@ -117,7 +116,7 @@ namespace Reko.Core.Expressions
         /// <returns>A unary expresssion representing the address-of operation.</returns>
         public UnaryExpression AddrOf(DataType ptType, Expression e)
         {
-            return new UnaryExpression(UnaryOperator.AddrOf, ptType, e);
+            return new UnaryExpression(Operator.AddrOf, ptType, e);
         }
 
         /// <summary>
@@ -249,16 +248,41 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Generate a deposit-bits expression, which models the act
-        /// of updating a subsequence of bits inside of a wider register.
+        /// Generate a sequence of expressions which model the act
+        /// of updating a subsequence of bits inside of a wider value.
         /// </summary>
-        /// <param name="dst">The wider register.</param>
+        /// <param name="dst">The wider value, expected to be a <see cref="Identifier"/> or a
+        /// <see cref="Constant"/>.</param>
         /// <param name="src">The smaller value to deposit.</param>
         /// <param name="offset">The bit offset at which to deposit the value.</param>
         /// <returns>A deposit-bits expression.</returns>
-        public DepositBits Dpb(Expression dst, Expression src, int offset)
+        /// <remarks>
+        /// The method expects 
+        /// </remarks>
+        public Expression Dpb(Expression dst, Expression src, int offset)
         {
-            return new DepositBits(dst, src, offset);
+            Debug.Assert(dst is Identifier || dst is Constant);
+            var exps = new List<Expression>();
+            if (offset > 0)
+            {
+                exps.Add(Slice(PrimitiveType.CreateWord(offset), dst, 0));
+            }
+            var msb = Math.Min(dst.DataType.BitSize, offset + src.DataType.BitSize);
+            var dtInserted = PrimitiveType.CreateWord(msb - offset);
+            if (dtInserted.BitSize < src.DataType.BitSize)
+            {
+                exps.Add(Slice(dtInserted, src, 0));
+            }
+            else
+            {
+                exps.Add(src);
+            }
+            if (msb < dst.DataType.BitSize)
+            {
+                exps.Add(Slice(PrimitiveType.CreateWord(dst.DataType.BitSize - msb), dst, msb));
+            }
+            exps.Reverse();
+            return new MkSequence(dst.DataType, exps.ToArray());
         }
 
         /// <summary>
@@ -827,6 +851,36 @@ namespace Reko.Core.Expressions
         public OutArgument Out(DataType dt, Expression expr)
         {
             return new OutArgument(dt, expr);
+        }
+
+        /// <summary>
+        /// Generate a 16-bit pointer.
+        /// </summary>
+        /// <param name="ptr">Pointer value</param>
+        /// <returns>A 16-bit <see cref="Address"/> instance.</returns>
+        public Address Ptr16(ushort ptr)
+        {
+            return Address.Ptr16(ptr);
+        }
+
+        /// <summary>
+        /// Generate a 32-bit pointer.
+        /// </summary>
+        /// <param name="ptr">Pointer value</param>
+        /// <returns>A 32-bit <see cref="Address"/> instance.</returns>
+        public Address Ptr32(uint ptr)
+        {
+            return Address.Ptr32(ptr);
+        }
+
+        /// <summary>
+        /// Generate a 64-bit pointer.
+        /// </summary>
+        /// <param name="ptr">Pointer value</param>
+        /// <returns>A 64-bit <see cref="Address"/> instance.</returns>
+        public Address Ptr64(ulong ptr)
+        {
+            return Address.Ptr64(ptr);
         }
 
         /// <summary>

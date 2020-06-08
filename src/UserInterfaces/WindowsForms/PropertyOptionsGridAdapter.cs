@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Services;
@@ -27,8 +29,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
@@ -94,7 +94,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return TypeDescriptor.GetEditor(this, editorBaseType, true);
         }
 
-        public PropertyDescriptor GetDefaultProperty()
+        public PropertyDescriptor? GetDefaultProperty()
         {
             return null;
         }
@@ -156,12 +156,12 @@ namespace Reko.UserInterfaces.WindowsForms
 
             public override void SetValue(object component, object value)
             {
-                values[Option.Name] = value;
+                values[Option.Name!] = value;
             }
 
-            public override object GetValue(object component)
+            public override object? GetValue(object component)
             {
-                return values[Option.Name];
+                return values[Option.Name!];
             }
 
             public override bool IsReadOnly
@@ -169,7 +169,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 get { return false; }
             }
 
-            public override Type ComponentType
+            public override Type? ComponentType
             {
                 get { return null; }
             }
@@ -228,17 +228,18 @@ namespace Reko.UserInterfaces.WindowsForms
                 return UITypeEditorEditStyle.Modal;
             }
 
-            public override object EditValue(ITypeDescriptorContext context, System.IServiceProvider provider, object value)
+            public override object? EditValue(ITypeDescriptorContext context, System.IServiceProvider provider, object value)
             {
                 var svc = provider.RequireService<IWindowsFormsEditorService>();
                 var pd = DictionaryPropertyDescriptor.GetFromContext(context);
                 var pluginSvc = provider.RequireService<IPluginLoaderService>();
 
+                if (pd.Option.TypeName is null)
+                    return value;
                 var dlgType = pluginSvc.GetType(pd.Option.TypeName);
                 if (dlgType == null)
                     return value;
-                var form = Activator.CreateInstance(dlgType) as Form;
-                if (form == null)
+                if (!(Activator.CreateInstance(dlgType) is Form form))
                     return value;
                 var valueProperty = dlgType.GetProperty("Value");
                 if (valueProperty == null)

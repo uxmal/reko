@@ -27,6 +27,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 
 namespace Reko.Arch.Arc
@@ -107,7 +108,7 @@ namespace Reko.Arch.Arc
                 case Mnemonic.unimp_s:
                 default:
                     EmitUnitTest(this.instr);
-                    break;
+                    goto case Mnemonic.Invalid;
                 case Mnemonic.Invalid:
                     this.iclass = InstrClass.Invalid;
                     m.Invalid();
@@ -354,47 +355,10 @@ namespace Reko.Arch.Arc
             return GetEnumerator();
         }
 
-        private static readonly HashSet<Mnemonic> seenMnemonics = new HashSet<Mnemonic>();
-
-        void EmitUnitTest(ArcInstruction instr, string message = "")
+        private void EmitUnitTest(MachineInstruction instr, string message = "")
         {
-            m.Invalid();
-            iclass = InstrClass.Invalid;
-            if (seenMnemonics.Contains(instr.Mnemonic))
-                return;
-            seenMnemonics.Add(instr.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= instr.Length;
-
-            var sb = new StringBuilder();
-            if (!string.IsNullOrEmpty(message))
-            {
-                sb.AppendLine($"        // {message}");
-            }
-            sb.AppendLine($"        [Test]");
-            sb.AppendLine($"        public void ARCompactRw_{instr.Mnemonic}()");
-            sb.AppendLine("        {");
-
-            if (instr.Length > 2)
-            {
-                var wInstrHi = r2.ReadUInt16();
-                var wInstrLo = r2.ReadUInt16();
-                uint wInstr = (((uint) wInstrHi) << 16) | wInstrLo; 
-                sb.AppendLine($"            RewriteCode(\"{wInstr:X8}\"); // {instr}");
-            }
-            else
-            {
-                var wInstr = r2.ReadUInt16();
-                sb.AppendLine($"            RewriteCode(\"{wInstr:X4}\"); // {instr}");
-            }
-            sb.AppendLine("            AssertCode(");
-            sb.AppendLine($"                \"0|L--|00100000({instr.Length}): 1 instructions\",");
-            sb.AppendLine($"                \"1|L--|@@@\");");
-            sb.AppendLine("        }");
-            sb.AppendLine();
-            Console.Write(sb);
-            Debug.WriteLine(sb);
+            var testgenSvc = arch.Services.GetService<ITestGenerationService>();
+            testgenSvc?.ReportMissingRewriter("ARCompactRw", instr, rdr, message);
         }
 
         private Expression Adc(Expression a, Expression b)

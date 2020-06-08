@@ -3,30 +3,30 @@
 void fn0C00_0000(word16 ax, selector ds)
 fn0C00_0000_entry:
 	byte cl_11
-	branch ax < 0x0000 l0C00_0012
+	branch ax < 0<16> l0C00_0012
 	goto l0C00_0005
 	// succ:  l0C00_0005 l0C00_0012
 l0C00_0000:
 l0C00_0005:
-	cl_11 = 0x00
-	branch ax <= 0x000C l0C00_000F
+	cl_11 = 0<8>
+	branch ax <= 0xC<16> l0C00_000F
 	// succ:  l0C00_000C l0C00_000F
 l0C00_000C:
-	ax = 0x000C
+	ax = 0xC<16>
 	// succ:  l0C00_000F
 l0C00_000F:
 	goto l0C00_001C
 	// succ:  l0C00_001C
 l0C00_0012:
-	cl_11 = 0x01
-	branch ax >= 0xFFF4 l0C00_001C
+	cl_11 = 1<8>
+	branch ax >= 0xFFF4<16> l0C00_001C
 	// succ:  l0C00_0019 l0C00_001C
 l0C00_0019:
-	ax = 0xFFF4
+	ax = 0xFFF4<16>
 	// succ:  l0C00_001C
 l0C00_001C:
-	Mem20[ds:0x0300:word16] = ax
-	Mem23[ds:0x0302:byte] = cl_11
+	Mem20[ds:0x300<16>:word16] = ax
+	Mem23[ds:0x302<16>:byte] = cl_11
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -34,19 +34,19 @@ fn0C00_0000_exit:
 void fn0C00_0000(word16 ax, selector ds)
 {
 	byte cl_11;
-	if (ax >= 0x0000)
+	if (ax >= 0<16>)
 	{
-		cl_11 = 0x00;
-		if (ax > 0x000C)
-			ax = 0x000C;
+		cl_11 = 0<8>;
+		if (ax > 0xC<16>)
+			ax = 0xC<16>;
 	}
 	else
 	{
-		cl_11 = 0x01;
-		if (ax < 0xFFF4)
-			ax = 0xFFF4;
+		cl_11 = 1<8>;
+		if (ax < 0xFFF4<16>)
+			ax = 0xFFF4<16>;
 	}
-	Mem20[ds:0x0300:word16] = ax;
-	Mem23[ds:0x0302:byte] = cl_11;
+	Mem20[ds:0x300<16>:word16] = ax;
+	Mem23[ds:0x302<16>:byte] = cl_11;
 }
 ===========================

@@ -12,8 +12,8 @@ l0C00_0000:
 		uses: ds:ds
 		defs: bx:bx_6,cx:cx_7
 	cl_15 = SLICE(cx_7, byte, 0) (alias)
-	Mem14[ds:0x0300:word16] = bx_6
-	Mem16[ds:0x0302:byte] = cl_15
+	Mem14[ds:0x300<16>:word16] = bx_6
+	Mem16[ds:0x302<16>:byte] = cl_15
 	return
 fn0C00_0000_exit:
 // fn0C00_000C /////////////////////
@@ -27,38 +27,38 @@ fn0C00_000C_entry:
 	def ds
 	def Mem0
 l0C00_000C:
-	di_7 = 0x7E0F
-	cx_8 = 0x000C
-	SZO_10 = cond(0x00)
+	di_7 = 0x7E0F<16>
+	cx_8 = 0xC<16>
+	SZO_10 = cond(0<8>)
 	Z_23 = SLICE(SZO_10, bool, 2) (alias)
 l0C00_0019:
 	Z_22 = PHI((Z_23, l0C00_000C), (Z_20, l0C00_0019_1))
 	di_15 = PHI((di_7, l0C00_000C), (di_18, l0C00_0019_1))
 	cx_12 = PHI((cx_8, l0C00_000C), (cx_19, l0C00_0019_1))
 	ch_51 = SLICE(cx_12, byte, 8) (alias)
-	branch cx_12 == 0x0000 l0C00_001B
+	branch cx_12 == 0<16> l0C00_001B
 l0C00_0019_1:
-	SCZO_17 = cond(0x00 - Mem0[ds:di_15:byte])
+	SCZO_17 = cond(0<8> - Mem0[ds:di_15:byte])
 	Z_20 = SLICE(SCZO_17, bool, 2) (alias)
-	di_18 = di_15 + 0x0001
-	cx_19 = cx_12 - 0x0001
+	di_18 = di_15 + 1<i16>
+	cx_19 = cx_12 - 1<16>
 	ch_52 = SLICE(cx_19, byte, 8) (alias)
-	branch Mem0[ds:di_15:byte] != 0x00 l0C00_0019
+	branch Mem0[ds:di_15:byte] != 0<8> l0C00_0019
 l0C00_001B:
 	ch_50 = PHI((ch_51, l0C00_0019), (ch_52, l0C00_0019_1))
 	di_30 = PHI((di_15, l0C00_0019), (di_18, l0C00_0019_1))
 	Z_21 = PHI((Z_22, l0C00_0019), (Z_20, l0C00_0019_1))
 	branch Z_21 l0C00_002D
 l0C00_001D:
-	ah_32 = Mem0[ds:di_30 + 0x0001:byte]
-	ax_34 = SEQ(ah_32, 0x00) (alias)
+	ah_32 = Mem0[ds:di_30 + 1<16>:byte]
+	ax_34 = SEQ(ah_32, 0<8>) (alias)
 	cx_35 = __bsr(ax_34)
-	cx_36 = cx_35 - 0x0008
-	bx_38 = di_30 - 0x7E03
+	cx_36 = cx_35 - 8<16>
+	bx_38 = di_30 - 0x7E03<16>
 	return
 l0C00_002D:
-	bx_24 = 0x0000
-	cx_53 = SEQ(ch_50, 0x00) (alias)
+	bx_24 = 0<16>
+	cx_53 = SEQ(ch_50, 0<8>) (alias)
 	return
 fn0C00_000C_exit:
 	cx_49 = PHI((cx_36, l0C00_001D), (cx_53, l0C00_002D))

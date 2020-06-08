@@ -31,9 +31,11 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.zSeries
 {
+#pragma warning disable IDE1006 // Naming Styles
+
     public class zSeriesArchitecture : ProcessorArchitecture
     {
-        public zSeriesArchitecture(string archId) : base(archId)
+        public zSeriesArchitecture(IServiceProvider services, string archId) : base(services, archId)
         {
             this.Endianness = EndianServices.Big;
             this.InstructionBitSize = 16;

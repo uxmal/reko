@@ -79,12 +79,16 @@ STDMETHODIMP_(int32_t) Arm64Rewriter::Next()
 	// Most instructions are linear.
 	rtlClass = InstrClass::Linear;
 	
+#if 0
 	switch (instr->id)
 	{
 	default:
 		NotImplementedYet();
 		break;
 	}
+#else
+	NotImplementedYet();
+#endif
 	m.FinishCluster(rtlClass, addrInstr, instr->size);
 	return S_OK;
 }

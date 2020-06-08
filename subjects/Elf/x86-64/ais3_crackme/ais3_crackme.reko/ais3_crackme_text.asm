@@ -39,7 +39,7 @@ l000000000040044E:
 deregister_tm_clones proc
 	mov	eax,0060103F
 	push	rbp
-	sub	r8,+00601038
+	sub	rax,+00601038
 	cmp	rax,0E
 	mov	rbp,rsp
 	ja	0000000000400477
@@ -66,7 +66,7 @@ l0000000000400481:
 register_tm_clones proc
 	mov	eax,00601038
 	push	rbp
-	sub	r8,+00601038
+	sub	rax,+00601038
 	sar	rax,03
 	mov	rbp,rsp
 	mov	rdx,rax
@@ -142,7 +142,7 @@ verify proc
 
 l0000000000400531:
 	mov	eax,[rbp-04]
-	movsx	rdx,eax
+	movsxd	rdx,eax
 	mov	rax,[rbp-18]
 	add	rax,rdx
 	movzx	eax,byte ptr [rax]
@@ -172,7 +172,7 @@ l0000000000400531:
 	mov	[rbp-05],al
 	add	byte ptr [rbp-05],08
 	mov	eax,[rbp-04]
-	cbw
+	cdqe
 	movzx	eax,byte ptr [rax+00601020]
 	cmp	al,[rbp-05]
 	jz	000000000040059D
@@ -186,7 +186,7 @@ l000000000040059D:
 
 l00000000004005A1:
 	mov	eax,[rbp-04]
-	movsx	rdx,eax
+	movsxd	rdx,eax
 	mov	rax,[rbp-18]
 	add	rax,rdx
 	movzx	eax,byte ptr [rax]

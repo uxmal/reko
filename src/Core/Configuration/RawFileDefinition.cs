@@ -42,17 +42,17 @@ namespace Reko.Core.Configuration
             this.EntryPoint = new EntryPointDefinition();
         }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
-        public string Architecture { get; set; }
+        public string? Architecture { get; set; }
 
-        public string Environment { get; set; }
+        public string? Environment { get; set; }
 
-        public string BaseAddress { get; set; }
+        public string? BaseAddress { get; set; }
 
-        public string Loader { get; set; }
+        public string? Loader { get; set; }
 
         public EntryPointDefinition EntryPoint { get; set; }
     }
@@ -65,14 +65,14 @@ namespace Reko.Core.Configuration
         /// <summary>
         /// Optional name of the entry point.
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// The address of the entry point serialized as a string.
         /// The architecture is responsible for converting the string
         /// to a <see cref="Reko.Core.Address"/>.
         /// </summary>
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         /// <summary>
         /// If true, the <see cref="Address"/> property indicates an 

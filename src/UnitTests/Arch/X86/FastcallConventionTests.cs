@@ -33,6 +33,7 @@ using System.Xml.Serialization;
 using Reko.Environments.Windows;
 using System.Collections.Generic;
 using CommonMockFactory = Reko.UnitTests.Mocks.CommonMockFactory;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.X86
 {
@@ -55,8 +56,9 @@ namespace Reko.UnitTests.Arch.X86
         public void Setup()
         {
             mockFactory = new CommonMockFactory();
-            arch = new X86ArchitectureFlat32("x86-protected-32");
-            platform = new Win32Platform(null, arch);
+            var sc = new ServiceContainer();
+            arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
+            platform = new Win32Platform(sc, arch);
         }
 
         private void Given_32bit_CallingConvention()

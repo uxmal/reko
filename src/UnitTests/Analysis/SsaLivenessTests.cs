@@ -28,6 +28,7 @@ using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -42,7 +43,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void SltLiveLoop()
 		{
-			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
+			Build(new LiveLoopMock().Procedure, new FakeArchitecture(new ServiceContainer()));
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/SltLiveLoop.txt"))
 			{
@@ -55,7 +56,7 @@ namespace Reko.UnitTests.Analysis
             SsaIdentifier i_3 = ssa.Identifiers.Where(s => s.Identifier.Name == "i_3").Single();
 			Assert.IsFalse(sla.IsLiveOut(i.Identifier, i_1.DefStatement));
             var block1 = proc.ControlGraph.Blocks.Where(b => b.Name =="loop").Single();
-			Assert.AreEqual("branch Mem0[i_3:byte] != 0 loop", block1.Statements[2].Instruction.ToString());
+			Assert.AreEqual("branch Mem0[i_3:byte] != 0<i8> loop", block1.Statements[2].Instruction.ToString());
 			Assert.IsTrue(sla.IsLiveOut(i_1.Identifier, block1.Statements[2]), "i_1 should be live at the end of block 1");
 			Assert.IsTrue(sla.IsLiveOut(i_3.Identifier, block1.Statements[2]),"i_3 should be live at the end of block 1");
 			Assert.AreEqual("i_1 = PHI((i, LiveLoopMock_entry), (i_3, loop))", block1.Statements[0].Instruction.ToString());
@@ -65,7 +66,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void SltSimple()
 		{
-			Build(new SimpleMock().Procedure, new FakeArchitecture());
+			Build(new SimpleMock().Procedure, new FakeArchitecture(new ServiceContainer()));
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/SltSimple.txt"))
 			{
@@ -76,8 +77,8 @@ namespace Reko.UnitTests.Analysis
 			}
 
 			Block block = proc.EntryBlock.Succ[0];
-			Assert.AreEqual("Mem4[0x10000000:word32] = a + b", block.Statements[0].Instruction.ToString());
-			Assert.AreEqual("Mem5[0x10000004:word32] = a", block.Statements[1].Instruction.ToString());
+			Assert.AreEqual("Mem4[0x10000000<32>:word32] = a + b", block.Statements[0].Instruction.ToString());
+			Assert.AreEqual("Mem5[0x10000004<32>:word32] = a", block.Statements[1].Instruction.ToString());
 
 			SsaIdentifier a = ssa.Identifiers.Where(s=>s.Identifier.Name=="a").Single();
             SsaIdentifier b = ssa.Identifiers.Where(s => s.Identifier.Name == "b").Single();
@@ -106,7 +107,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void SltManyIncrements()
 		{
-			Build(new ManyIncrements().Procedure, new FakeArchitecture());
+			Build(new ManyIncrements().Procedure, new FakeArchitecture(new ServiceContainer()));
 			using (FileUnitTester fut = new FileUnitTester("Analysis/SltManyIncrements.txt"))
 			{
 				ssa.Write(fut.TextWriter);
@@ -127,6 +128,7 @@ namespace Reko.UnitTests.Analysis
             };
             this.proc = proc;
             var dynamicLinker = new Mock<IDynamicLinker>().Object;
+            var listener = new FakeDecompilerEventListener();
             var sst = new SsaTransform(
                 program,
                 proc,
@@ -135,10 +137,10 @@ namespace Reko.UnitTests.Analysis
                 new ProgramDataFlow());
             sst.Transform();
 			ssa = sst.SsaState;
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, platform);
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, platform, listener);
 			cce.Transform();
             var segmentMap = new SegmentMap(Address.Ptr32(0x00123400));
-			ValuePropagator vp = new ValuePropagator(segmentMap, ssa, program.CallGraph, dynamicLinker, new FakeDecompilerEventListener());
+            ValuePropagator vp = new ValuePropagator(segmentMap, ssa, program.CallGraph, dynamicLinker, listener);
 			vp.Transform();
 			DeadCode.Eliminate(ssa);
 			Coalescer coa = new Coalescer(ssa);

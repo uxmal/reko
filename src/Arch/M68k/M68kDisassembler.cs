@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -34,30 +35,34 @@ namespace Reko.Arch.M68k
     // M68k opcode map in http://www.freescale.com/files/archives/doc/ref_manual/M68000PRM.pdf
     using Mutator = Mutator<M68kDisassembler>;
 
+#pragma warning disable IDE1006 // Naming Styles
+
     public partial class M68kDisassembler : DisassemblerBase<M68kInstruction, Mnemonic>
     {
         public const string HexStringFormat = "{0}${1}";
 
         private static readonly TraceSwitch trace = new TraceSwitch("m68dasm", "Detailed tracing of M68k disassembler");
 
-        private EndianImageReader rdr;          // program counter 
-        private List<MachineOperand> ops;       // Operand list being built
+        private readonly IServiceProvider services;
+        private readonly EndianImageReader rdr;          // program counter 
+        private readonly List<MachineOperand> ops;       // Operand list being built
         internal M68kInstruction instr;         // instruction being built
         private string g_dasm_str;              //string to hold disassembly: OBSOLETE
         private PrimitiveType dataWidth;        // width of data.
         private ushort bitSet;                  // Bit set.
         private uint g_cpu_type = 0;
 
-        private M68kDisassembler(EndianImageReader rdr, uint cpuType)
+        private M68kDisassembler(IServiceProvider services, EndianImageReader rdr, uint cpuType)
         {
+            this.services = services;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
             this.g_cpu_type = cpuType;
         }
 
-        public static M68kDisassembler Create68000(EndianImageReader rdr) { return new M68kDisassembler(rdr, TYPE_68000); }
-        public static M68kDisassembler Create68010(EndianImageReader rdr) { return new M68kDisassembler(rdr, TYPE_68010); }
-        public static M68kDisassembler Create68020(EndianImageReader rdr) { return new M68kDisassembler(rdr, TYPE_68020); }
+        public static M68kDisassembler Create68000(IServiceProvider services, EndianImageReader rdr) { return new M68kDisassembler(services, rdr, TYPE_68000); }
+        public static M68kDisassembler Create68010(IServiceProvider services, EndianImageReader rdr) { return new M68kDisassembler(services, rdr, TYPE_68010); }
+        public static M68kDisassembler Create68020(IServiceProvider services, EndianImageReader rdr) { return new M68kDisassembler(services, rdr, TYPE_68020); }
 
         static M68kDisassembler()
         {
@@ -70,7 +75,6 @@ namespace Reko.Arch.M68k
             var addr = rdr.Address;
             if (!rdr.TryReadBeUInt16(out ushort uInstr))
                 return null;
-            var offset = rdr.Offset;
             Decoder handler = g_instruction_table[uInstr];
             instr = new M68kInstruction
             {
@@ -195,6 +199,13 @@ namespace Reko.Arch.M68k
                 InstructionClass = InstrClass.Invalid,
                 Operands = MachineInstruction.NoOperands
             };
+        }
+
+        public override M68kInstruction NotYetImplemented(uint wInstr, string message)
+        {
+            var testGenSvc = this.services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("M68kdis", this.instr.Address, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         /// <summary>
@@ -1501,7 +1512,7 @@ namespace Reko.Arch.M68k
             return true;
         }
 
-        static PrimitiveType[] float_data_format = new PrimitiveType[8] 
+        private static readonly PrimitiveType[] float_data_format = new PrimitiveType[8] 
 	    {
             PrimitiveType.Int32,  // ".l",
             PrimitiveType.Real32, // ".s",
@@ -2682,8 +2693,8 @@ namespace Reko.Arch.M68k
             };
         }
 
-        private static Mutator q9 = Q(9, 0x07, 8, PrimitiveType.Byte);
-        private static Mutator Q0 = Q(0, 0xFF, 0, PrimitiveType.SByte);
+        private static readonly Mutator q9 = Q(9, 0x07, 8, PrimitiveType.Byte);
+        private static readonly Mutator Q0 = Q(0, 0xFF, 0, PrimitiveType.SByte);
 
         // Predecrement operator
         private static Mutator Pre(int bitOffset)
@@ -3145,7 +3156,7 @@ namespace Reko.Arch.M68k
 };
         }
 
-        private static Decoder illegal = new Decoder(new Mutator[0], 0, 0, 0, Mnemonic.illegal);
+        private static readonly Decoder illegal = new Decoder(new Mutator[0], 0, 0, 0, Mnemonic.illegal);
 
         // Check if opcode is using a valid ea mode
         static bool valid_ea(uint opcode, uint mask)

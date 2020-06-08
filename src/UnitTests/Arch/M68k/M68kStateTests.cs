@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.M68k
 {
@@ -38,7 +39,7 @@ namespace Reko.UnitTests.Arch.M68k
         [SetUp]
         public void Setup()
         {
-            arch = new M68kArchitecture("m68k");
+            arch = new M68kArchitecture(new ServiceContainer(), "m68k");
             state = new M68kState(arch);
         }
 

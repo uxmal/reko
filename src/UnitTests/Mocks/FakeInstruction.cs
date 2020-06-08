@@ -45,7 +45,9 @@ namespace Reko.UnitTests.Mocks
 
         public Mnemonic Mnemonic { get; set; }
 
-        public override int MnemonicAsInteger { get { return (int)Mnemonic; } }
+        public override int MnemonicAsInteger => (int)Mnemonic;
+
+        public override string MnemonicAsString => Mnemonic.ToString();
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Core.CLanguage
 
         private void Lex(string str)
         {
-            this.lex = new CLexer(new StringReader(str));
+            this.lex = new CLexer(new StringReader(str), CLexer.GccKeywords);
         }
 
         private void AssertToken(CTokenType exp)
@@ -442,6 +442,17 @@ namespace Reko.UnitTests.Core.CLanguage
             Lex("a // foo\r\n b");
             AssertToken(CTokenType.Id, "a");
             AssertToken(CTokenType.Id, "b");
+        }
+
+        [Test]
+        public void CLexer_Octal()
+        {
+            Lex("0123, 0, 056");
+            AssertToken(CTokenType.NumericLiteral, 83);
+            AssertToken(CTokenType.Comma);
+            AssertToken(CTokenType.NumericLiteral, 0);
+            AssertToken(CTokenType.Comma);
+            AssertToken(CTokenType.NumericLiteral, 46);
         }
     }
 }

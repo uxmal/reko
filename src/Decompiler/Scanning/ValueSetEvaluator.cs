@@ -42,14 +42,14 @@ namespace Reko.Scanning
     {
         private const int MaxTransferTableEntries = 2000;
 
-        private IProcessorArchitecture arch;
-        private SegmentMap segmentMap;
-        private Dictionary<Expression, ValueSet> context;
-        private ProcessorState state;
-        private ExpressionValueComparer cmp;
-        private Dictionary<Address, DataType> memAccesses;
+        private readonly IProcessorArchitecture arch;
+        private readonly SegmentMap segmentMap;
+        private readonly Dictionary<Expression, ValueSet> context;
+        private readonly ProcessorState? state;
+        private readonly ExpressionValueComparer cmp;
+        private readonly Dictionary<Address, DataType> memAccesses;
 
-        public ValueSetEvaluator(IProcessorArchitecture arch, SegmentMap segmentMap, Dictionary<Expression, ValueSet> context, ProcessorState state = null)
+        public ValueSetEvaluator(IProcessorArchitecture arch, SegmentMap segmentMap, Dictionary<Expression, ValueSet> context, ProcessorState? state = null)
         {
             this.arch = arch;
             this.segmentMap = segmentMap;
@@ -185,11 +185,6 @@ namespace Reko.Scanning
             return new ConcreteValueSet(c.DataType, c);
         }
 
-        public ValueSet VisitDepositBits(DepositBits d, BitRange bitRange)
-        {
-            throw new NotImplementedException();
-        }
-
         public ValueSet VisitDereference(Dereference deref, BitRange bitRange)
         {
             throw new NotImplementedException();
@@ -255,8 +250,7 @@ namespace Reko.Scanning
 
         private Expression ReadSegmentedValue(DataType dt, Constant seg, Expression eOff)
         {
-            var off = eOff as Constant;
-            if (eOff != null)
+            if (eOff is Constant off)
             {
                 var addr = arch.MakeSegmentedAddress(seg, off);
                 if (!segmentMap.TryFindSegment(addr, out ImageSegment segment))
@@ -278,7 +272,7 @@ namespace Reko.Scanning
                 }
                 else
                 {
-                    return rdr.Read((PrimitiveType)dt);
+                    return rdr.Read((PrimitiveType) dt);
                 }
             }
             throw new NotImplementedException();

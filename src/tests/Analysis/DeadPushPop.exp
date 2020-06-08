@@ -12,7 +12,7 @@ di:di
 Mem10: orig: Mem0
     uses: si_26 = si_15 + Mem10[ds:di_25:word16]
 si_11: orig: si
-    def:  si_11 = 0x0000
+    def:  si_11 = 0<16>
     uses: si_15 = PHI((si_11, l0C00_0008), (si_26, l0C00_0012))
 S_37: orig: S
 SCZO_13: orig: SCZO
@@ -35,17 +35,17 @@ wLoc02_31: orig: wLoc02
 di_25: orig: di
     def:  di_25 = PHI((di, l0C00_0008), (di_27, l0C00_0012))
     uses: si_26 = si_15 + Mem10[ds:di_25:word16]
-          di_27 = di_25 + 0x0002
+          di_27 = di_25 + 2<16>
 si_26: orig: si
     def:  si_26 = si_15 + Mem10[ds:di_25:word16]
     uses: si_15 = PHI((si_11, l0C00_0008), (si_26, l0C00_0012))
 di_27: orig: di
-    def:  di_27 = di_25 + 0x0002
+    def:  di_27 = di_25 + 2<16>
     uses: di_25 = PHI((di, l0C00_0008), (di_27, l0C00_0012))
 SCZO_28: orig: SCZO
 cx:cx
     def:  def cx
-    uses: branch cx == 0x0000 l0C00_001A
+    uses: branch cx == 0<16> l0C00_001A
 ds:ds
     def:  def ds
     uses: si_26 = si_15 + Mem10[ds:di_25:word16]
@@ -58,16 +58,16 @@ fn0C00_0008_entry:
 	def ds
 	// succ:  l0C00_0008
 l0C00_0008:
-	si_11 = 0x0000
+	si_11 = 0<16>
 	// succ:  l0C00_000D
 l0C00_000D:
 	di_25 = PHI((di, l0C00_0008), (di_27, l0C00_0012))
 	si_15 = PHI((si_11, l0C00_0008), (si_26, l0C00_0012))
-	branch cx == 0x0000 l0C00_001A
+	branch cx == 0<16> l0C00_001A
 	// succ:  l0C00_0012 l0C00_001A
 l0C00_0012:
 	si_26 = si_15 + Mem10[ds:di_25:word16]
-	di_27 = di_25 + 0x0002
+	di_27 = di_25 + 2<16>
 	goto l0C00_000D
 	// succ:  l0C00_000D
 l0C00_001A:
@@ -81,14 +81,14 @@ Top_3: orig: Top
 cx_4: orig: cx
 di:di
     def:  def di
-    uses: ax_7 = fn0C00_0008(0x0014, di, ds)
-          fn0C00_0008(0x0014, di, ds)
+    uses: ax_7 = fn0C00_0008(0x14<16>, di, ds)
+          fn0C00_0008(0x14<16>, di, ds)
 ds:ds
     def:  ds = SLICE(ds_si, selector, 16)
-    uses: ax_7 = fn0C00_0008(0x0014, di, ds)
-          fn0C00_0008(0x0014, di, ds)
+    uses: ax_7 = fn0C00_0008(0x14<16>, di, ds)
+          fn0C00_0008(0x14<16>, di, ds)
 ax_7: orig: ax
-    def:  ax_7 = fn0C00_0008(0x0014, di, ds)
+    def:  ax_7 = fn0C00_0008(0x14<16>, di, ds)
     uses: Mem13[ds_si:word16] = ax_7
 S_8: orig: S
 C_9: orig: C
@@ -115,11 +115,11 @@ fn0C00_0000_entry:
 	ds = SLICE(ds_si, selector, 16)
 	// succ:  l0C00_0000
 l0C00_0000:
-	ax_7 = fn0C00_0008(0x0014, di, ds)
+	ax_7 = fn0C00_0008(0x14<16>, di, ds)
 	Mem13[ds_si:word16] = ax_7
 	// succ:  l0C00_0006_thunk_fn0C00_0008
 l0C00_0006_thunk_fn0C00_0008:
-	fn0C00_0008(0x0014, di, ds)
+	fn0C00_0008(0x14<16>, di, ds)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

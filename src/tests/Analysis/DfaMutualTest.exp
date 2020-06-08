@@ -29,14 +29,14 @@ fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:
 	word16 dx_10
-	branch dx != 0x001E l0C00_000F
+	branch dx != 0x1E<16> l0C00_000F
 	// succ:  l0C00_0009 l0C00_000F
 l0C00_0009:
 	dx_10 = fn0C00_0013(dx)
 	goto l0C00_0010
 	// succ:  l0C00_0010
 l0C00_000F:
-	dx_10 = dx - 0x0001
+	dx_10 = dx - 1<16>
 	// succ:  l0C00_0010
 l0C00_0010:
 	dxOut = dx_10
@@ -57,14 +57,14 @@ fn0C00_0013_entry:
 	// succ:  l0C00_0013
 l0C00_0013:
 	word16 dx_10
-	branch dx < 0x0014 l0C00_001F
+	branch dx < 0x14<16> l0C00_001F
 	// succ:  l0C00_0018 l0C00_001F
 l0C00_0018:
-	fn0C00_0004(dx - 0x0001, out dx_10)
+	fn0C00_0004(dx - 1<16>, out dx_10)
 	goto l0C00_0025
 	// succ:  l0C00_0025
 l0C00_001F:
-	fn0C00_0004(dx - 0x000A, out dx_10)
+	fn0C00_0004(dx - 0xA<16>, out dx_10)
 	// succ:  l0C00_0025
 l0C00_0025:
 	return dx_10

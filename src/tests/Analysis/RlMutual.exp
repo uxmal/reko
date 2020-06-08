@@ -22,13 +22,13 @@ define fn0C00_0004
 fn0C00_0004_entry:
 	def dx
 l0C00_0004:
-	branch dx != 0x001E l0C00_000F
+	branch dx != 0x1E<16> l0C00_000F
 l0C00_0009:
 	call fn0C00_0013 (retsize: 2;)
 		uses: dx:dx
 		defs: dx:dx_10,SCZO:SCZO_13
 l0C00_000F:
-	dx_7 = dx - 0x0001
+	dx_7 = dx - 1<16>
 l0C00_0010:
 	dx_14 = PHI((dx_10, l0C00_0009), (dx_7, l0C00_000F))
 	ax_15 = dx_14
@@ -46,14 +46,14 @@ define fn0C00_0013
 fn0C00_0013_entry:
 	def dx
 l0C00_0013:
-	branch dx < 0x0014 l0C00_001F
+	branch dx < 0x14<16> l0C00_001F
 l0C00_0018:
 	call fn0C00_0004 (retsize: 2;)
-		uses: dx:dx - 0x0001
+		uses: dx:dx - 1<16>
 		defs: ax:ax_18,dx:dx_17,SCZO:SCZO_20
 l0C00_001F:
 	call fn0C00_0004 (retsize: 2;)
-		uses: dx:dx - 0x000A
+		uses: dx:dx - 0xA<16>
 		defs: ax:ax_11,dx:dx_10,SCZO:SCZO_13
 l0C00_0025:
 	dx_27 = PHI((dx_17, l0C00_0018), (dx_10, l0C00_001F))

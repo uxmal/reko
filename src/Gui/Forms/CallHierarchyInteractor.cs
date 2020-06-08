@@ -42,7 +42,7 @@ namespace Reko.Gui.Forms
 
         public IWindowFrame Frame { get; set; }
 
-        public ITreeNodeDesignerHost Host { get { return host ?? new TreeNodeDesignerHost(view.CallTree, Services); } }
+        public ITreeNodeDesignerHost Host { get { return host ?? (host = new TreeNodeDesignerHost(view.CallTree, Services)); } }
 
         public void Close()
         {

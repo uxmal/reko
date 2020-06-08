@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -29,19 +29,19 @@ namespace Reko.Core.Serialization.Json
 {
     public class JsonProjectSerializer
     {
-        private JsonWriter js;
+        private JsonWriter? js;
 
         public void Serialize(Project project, TextWriter writer)
         {
             this.js = new JsonWriter(writer);
-            js.BeginObject();
+            js!.BeginObject();
             js.WriteKeyValue("programs", () => js.WriteList(project.Programs, WriteProgram));
             js.EndObject();
         }
 
         public void WriteProgram(Program program)
         {
-            js.BeginObject();
+            js!.BeginObject();
             js.WriteKeyValue("name", program.Name);
             js.WriteKeyValue("procedures", () => js.WriteList(program.Procedures, WriteProcedure));
             js.EndObject();
@@ -49,7 +49,7 @@ namespace Reko.Core.Serialization.Json
 
         public void WriteProcedure(KeyValuePair<Address, Procedure> proc)
         {
-            js.BeginObject();
+            js!.BeginObject();
             js.WriteKeyValue("address", proc.Key.ToString());
             js.WriteKeyValue("name", proc.Value.Name);
             js.EndObject();

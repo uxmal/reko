@@ -62,7 +62,6 @@
     <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Xtensa.dll" target="lib\netstandard2.0" />
     <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Z80.dll" target="lib\netstandard2.0" />
     <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.zSeries.dll" target="lib\netstandard2.0" />
-    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Assemblers.Pdp11.dll" target="lib\netstandard2.0" />
     <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.AmigaOS.Design.dll" target="lib\netstandard2.0" />
     <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.AmigaOS.dll" target="lib\netstandard2.0" />
     <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.AtariTOS.dll" target="lib\netstandard2.0" />
@@ -83,7 +82,7 @@
     <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.Trs80.dll" target="lib\netstandard2.0" />
     <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.Wii.dll" target="lib\netstandard2.0" />
     <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.Windows.dll" target="lib\netstandard2.0" />
-    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.Xbox360.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.Xbox.dll" target="lib\netstandard2.0" />
     <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Environments.ZX81.dll" target="lib\netstandard2.0" />
     <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.ImageLoaders.BinHex.dll" target="lib\netstandard2.0" />
     <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.ImageLoaders.Coff.dll" target="lib\netstandard2.0" />

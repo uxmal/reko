@@ -9,9 +9,9 @@ fn0C00_0000_entry:
 	def ds
 l0C00_0000:
 	call fn0C00_000F (retsize: 2;)
-		uses: Stack +0002:0x0064
+		uses: Stack +0002:0x64<16>
 		defs: ax:ax_8
-	Mem17[ds:0x0064:word16] = ax_8
+	Mem17[ds:0x64<16>:word16] = ax_8
 	return
 fn0C00_0000_exit:
 // fn0C00_000F /////////////////////
@@ -24,15 +24,15 @@ define fn0C00_000F
 fn0C00_000F_entry:
 	def wArg02
 l0C00_000F:
-	branch wArg02 == 0x0001 l0C00_0026
+	branch wArg02 == 1<16> l0C00_0026
 l0C00_0018:
 	call fn0C00_000F (retsize: 2;)
-		uses: Stack +0002:wArg02 - 0x0001
+		uses: Stack +0002:wArg02 - 1<16>
 		defs: ax:ax_17
 	dx_ax_24 = wArg02 *s ax_17
 	ax_26 = SLICE(dx_ax_24, word16, 0) (alias)
 l0C00_0026:
-	ax_13 = 0x0001
+	ax_13 = 1<16>
 l0C00_0029:
 	ax_36 = PHI((ax_26, l0C00_0018), (ax_13, l0C00_0026))
 	return

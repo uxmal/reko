@@ -29,6 +29,7 @@ using System.Diagnostics;
 using System.Linq;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 
 namespace Reko.Arch.Vax
 {
@@ -68,7 +69,8 @@ namespace Reko.Arch.Vax
                 switch (this.instr.Mnemonic)
                 {
                 default:
-                    //EmitUnitTest();
+                    EmitUnitTest();
+
                     //emitter.SideEffect(Constant.String(
                     //    this.instr.ToString(),
                     //    StringType.NullTerminated(PrimitiveType.Char)));
@@ -469,36 +471,15 @@ namespace Reko.Arch.Vax
             }
         }
 
-        private static HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-
-        [Conditional("DEBUG")]
-        private void EmitUnitTest()
-        {
-            if (seen.Contains(this.instr.Mnemonic))
-                return;
-            seen.Add(this.instr.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= this.instr.Length;
-            var bytes = r2.ReadBytes(this.instr.Length);
-            Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void VaxRw_" + this.instr.Mnemonic + "()");
-            Debug.WriteLine("        {");
-            Debug.Write("            BuildTest(");
-            Debug.Write(string.Join(
-                ", ",
-                bytes.Select(b => string.Format("0x{0:X2}", (int)b))));
-            Debug.WriteLine(");\t// " + this.instr.ToString());
-            Debug.WriteLine("            AssertCode(");
-            Debug.WriteLine("                \"0|L--|00100000(2): 1 instructions\",");
-            Debug.WriteLine("                \"1|L--|@@@\");");
-            Debug.WriteLine("        }");
-            Debug.WriteLine("");
-        }
-
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        private void EmitUnitTest()
+        {
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("VaxRw", instr, rdr, "");
         }
 
         private Expression RewriteSrcOp(int iOp, PrimitiveType width)
@@ -558,7 +539,14 @@ namespace Reko.Arch.Vax
                     ea = reg;
                     if (memOp.Offset != null)
                     {
-                        ea = m.IAdd(ea, memOp.Offset);
+                        if (memOp.Offset.DataType.BitSize < ea.DataType.BitSize)
+                        {
+                            ea = m.IAddS(ea, memOp.Offset.ToInt32());
+                        }
+                        else
+                        {
+                            ea = m.IAdd(ea, memOp.Offset);
+                        }
                     }
                     if (memOp.Index != null)
                     {
@@ -644,8 +632,7 @@ namespace Reko.Arch.Vax
                 // Can't assign to an immediate.
                 return null;
             }
-            var memOp = op as MemoryOperand;
-            if (memOp != null)
+            if (op is MemoryOperand memOp)
             {
                 Expression ea;
                 Identifier reg = null;
@@ -659,7 +646,14 @@ namespace Reko.Arch.Vax
                     ea = reg;
                     if (memOp.Offset != null)
                     {
-                        ea = m.IAdd(ea, memOp.Offset);
+                        if (memOp.Offset.DataType.BitSize < ea.DataType.BitSize)
+                        {
+                            ea = m.IAddS(ea, memOp.Offset.ToInt32());
+                        }
+                        else
+                        {
+                            ea = m.IAdd(ea, memOp.Offset);
+                        }
                     }
                 }
                 else
@@ -668,7 +662,7 @@ namespace Reko.Arch.Vax
                 }
                 var tmp = binder.CreateTemporary(width);
                 m.Assign(tmp, fn(m.Mem(width, ea)));
-                Expression load; 
+                Expression load;
                 if (memOp.Deferred)
                     load = m.Mem(width, m.Mem32(ea));
                 else

@@ -36,11 +36,12 @@ namespace Reko.UnitTests.Core
 	[TestFixture]
 	public class CodeFormatterTests
 	{
+		private static readonly string nl = Environment.NewLine;
+        
         private TextFormatter formatter;
 		private CodeFormatter cf;
 		private StringWriter sw;
         private ExpressionEmitter m;
-		private string nl = Environment.NewLine;
 
         [SetUp]
         public void Setup()
@@ -60,7 +61,7 @@ namespace Reko.UnitTests.Core
 			var e = m.IMul(m.IAdd(id1, id2), Constant.Word16(2));
 			e.Accept(cf);
 
-			Assert.AreEqual("(v1 + v2) * 0x0002", sw.ToString());
+			Assert.AreEqual("(v1 + v2) * 2<16>", sw.ToString());
 		}
 
 		[Test]
@@ -72,7 +73,7 @@ namespace Reko.UnitTests.Core
 			var e = m.IAdd(m.IMul(id1, id2), Constant.Word16(2));
 			e.Accept(cf);
 
-			Assert.AreEqual("v1 * v2 + 0x0002", sw.ToString());
+			Assert.AreEqual("v1 * v2 + 2<16>", sw.ToString());
 		}
 
 		[Test]
@@ -107,9 +108,9 @@ namespace Reko.UnitTests.Core
 			formatter.UseTabs = true;
             formatter.TabSize = 4;
             formatter.Indentation = 6;
-            var b = new Branch(Constant.Word32(0), new Block(null, "target"));
+            var b = new Branch(Constant.Word32(0), new Block(null, null, "target"));
 			b.Accept(cf);
-			Assert.AreEqual("\t  branch 0x00000000 target" + nl, sw.ToString());
+			Assert.AreEqual("\t  branch 0<32> target" + nl, sw.ToString());
 		}
 
 		[Test]
@@ -118,9 +119,9 @@ namespace Reko.UnitTests.Core
             formatter.UseTabs = false;
             formatter.TabSize = 4;
             formatter.Indentation = 6;
-            Instruction b = new Branch(Constant.Word32(0), new Block(null, "Test"));
+            Instruction b = new Branch(Constant.Word32(0), new Block(null, null, "Test"));
 			b.Accept(cf);
-			Assert.AreEqual("      branch 0x00000000 Test" + nl, sw.ToString());
+			Assert.AreEqual("      branch 0<32> Test" + nl, sw.ToString());
 		}
 
 		[Test]
@@ -167,8 +168,8 @@ namespace Reko.UnitTests.Core
             dw.Accept(cf);
             var sExp =
                 "\tdo" + nl +
-                "\t\tfoo = 3;" + nl +
-                "\twhile (bar < 0x00000000);" + nl;
+                "\t\tfoo = 3<i32>;" + nl +
+                "\twhile (bar < 0<32>);" + nl;
             Assert.AreEqual(sExp, sw.ToString());
         }
 
@@ -185,9 +186,9 @@ namespace Reko.UnitTests.Core
             var sExp =
                 "\tdo" + nl +
                 "\t{" + nl +
-                    "\t\tfoo = 3;" + nl + 
-                    "\t\tfoo = 4;" + nl + 
-                "\t} while (bar < 0x00000000);" + nl;
+                    "\t\tfoo = 3<i32>;" + nl + 
+                    "\t\tfoo = 4<i32>;" + nl + 
+                "\t} while (bar < 0<32>);" + nl;
             Assert.AreEqual(sExp, sw.ToString());
         }
 
@@ -344,6 +345,27 @@ Second abstract syntax comment line");
  // Second abstract syntax comment line
 ";
             Assert.AreEqual(expected, sw.ToString());
+        }
+
+        [Test]
+        public void CfInt32()
+        {
+            Constant.Int32(-3).Accept(cf);
+            Assert.AreEqual("-3<i32>", sw.ToString());
+        }
+
+        [Test]
+        public void CfWord16()
+        {
+            Assert.AreEqual("0x123<16>", Constant.Word16(0x123).ToString());
+        }
+
+        [Test]
+        public void CfByte()
+        {
+            Assert.AreEqual("0<8>", Constant.Byte(0).ToString());
+            Assert.AreEqual("0xA<8>", Constant.Byte(0x0A).ToString());
+            Assert.AreEqual("0xFF<8>", Constant.Byte(0xFF).ToString());
         }
     }
 }

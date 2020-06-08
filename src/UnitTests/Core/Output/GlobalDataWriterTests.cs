@@ -67,13 +67,14 @@ namespace Reko.UnitTests.Core.Output
 
         private void Given_Globals(params StructureField[] fields)
         {
-            var arch = new Mocks.FakeArchitecture();
+            var sc = new ServiceContainer();
+            var arch = new Mocks.FakeArchitecture(sc);
             this.program = new Program(
                 new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 arch,
-                new DefaultPlatform(null, arch));
+                new DefaultPlatform(sc, arch));
             var globalStruct = new StructureType();
             globalStruct.Fields.AddRange(fields);
             program.Globals.TypeVariable = new TypeVariable("globals_t", 1) { DataType = globalStruct };
@@ -88,12 +89,13 @@ namespace Reko.UnitTests.Core.Output
         private void RunTest(string sExp)
         {
             var sw = new StringWriter();
-            var gdw = new GlobalDataWriter(program, sc);
-            gdw.WriteGlobals(new TextFormatter(sw)
+            var formatter = new TextFormatter(sw)
             {
                 Indentation = 0,
                 UseTabs = false,
-            });
+            };
+            var gdw = new GlobalDataWriter(program, formatter, sc);
+            gdw.Write();
             Assert.AreEqual(sExp, sw.ToString());
         }
 
@@ -156,9 +158,9 @@ char g_b1004 = 'H';
             RunTest(
 @"uint32 g_a1000[3] = 
 {
-    0x00000001,
-    0x0000000A,
-    0x00000064,
+    0x01,
+    0x0A,
+    100,
 };
 ");
         }
@@ -176,7 +178,7 @@ char g_b1004 = 'H';
 
             RunTest(
 @"int32 * g_ptr1000 = &g_dw1008;
-int32 g_dw1008 = 1234;
+int32 g_dw1008 = 0x04D2;
 ");
         }
 
@@ -202,7 +204,7 @@ int32 g_dw1008 = 1234;
 @"Eq_2 g_t1000 = 
 {
     4,
-    -104,
+    -0x0068,
 };
 ");
         }

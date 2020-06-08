@@ -35,17 +35,17 @@ void fn0040110B()
 // Preserved: esp
 fn0040110B_entry:
 l0040110B:
-	branch Mem0[0x0040208B:word32] <u 0x00000000 l0040113C
+	branch Mem0[0x0040208B<p32>:word32] <u 0<32> l0040113C
 l00401114:
 	word32 eax_11
 	call __CRTL_TLS_GetValue (retsize: 4;)
-		uses: eax:eax_11,Stack +0004:Mem0[0x0040208B:word32]
+		uses: eax:eax_11,Stack +0004:Mem0[0x0040208B<p32>:word32]
 		defs: eax:eax_11
-	branch eax_11 == 0x00000000 l0040113C
+	branch eax_11 == 0<32> l0040113C
 l00401123:
 	word32 eax_22 = GetProcessHeap()
 	call __CRTL_TLS_ExitThread (retsize: 4;)
-		uses: eax:HeapFree(eax_22, 0x00000008, eax_11),Stack +0000:0x00000008,Stack +0004:Mem24[0x0040208B:word32],Stack +FFFFFFFC:eax_22
+		uses: eax:HeapFree(eax_22, 8<32>, eax_11),Stack +0000:8<32>,Stack +0004:Mem24[0x0040208B<p32>:word32],Stack +FFFFFFFC:eax_22
 l0040113C:
 	return
 fn0040110B_exit:
@@ -54,13 +54,16 @@ fn0040110B_exit:
 word32 fn00401158()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      _GetExceptDLLinfo
+//      fn004011B0
 // MayUse:  fs:[0..15]
 // LiveOut: eax
 // Trashed: eax edx Top
 // Preserved: esp
 fn00401158_entry:
 l00401158:
-	return Mem0[Mem0[fs:0x002C:word32] + Mem0[0x0040208B:word32] * 0x00000004:word32]
+	return Mem0[Mem0[fs:0x2C<16>:word32] + Mem0[0x0040208B<p32>:word32] * 4<32>:word32]
 fn00401158_exit:
 
 
@@ -73,8 +76,8 @@ int32 main(int32 argc, char ** argv)
 // Preserved:
 main_entry:
 l00401168:
-	printf(0x004020A4)
-	return 0x00000000
+	printf(0x4020A4<32>)
+	return 0<32>
 main_exit:
 
 
@@ -114,14 +117,14 @@ void fn004011B0(word32 dwArg04)
 fn004011B0_entry:
 l004011B0:
 	word32 ebx_12 = dwArg04
-	branch dwArg04 != 0x00000000 l004011D7
+	branch dwArg04 != 0<32> l004011D7
 l004011C6:
-	branch dwArg04 != 0x00000000 l004011D7
+	branch dwArg04 != 0<32> l004011D7
 l004011CA:
-	fn004011FC(fp - 0x0000000C)
+	fn004011FC(fp - 0xC<32>)
 	ebx_12 = dwLoc08
 l004011D7:
-	memcpy(fn00401158(), ebx_12, 0x0000009C)
+	memcpy(fn00401158(), ebx_12, 0x9C<32>)
 	_InitTermAndUnexPtrs()
 	return
 fn004011B0_exit:
@@ -130,15 +133,18 @@ fn004011B0_exit:
 void fn004011FC(word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      _GetExceptDLLinfo
+//      fn004011B0
 // MayUse:  fs:[0..15] Stack +0004:[0..31]
 // LiveOut:
 // Trashed: SCZO eax edx Top
 // Preserved: ebp ebx esp
 fn004011FC_entry:
 l004011FC:
-	Mem17[0x004020F8:word32] = fn00401158() + 0x0000001C
-	Mem18[dwArg04:word32] = 0x82727349
-	Mem19[dwArg04 + 0x00000004:word32] = 0x004020E4
+	Mem17[0x004020F8<p32>:word32] = fn00401158() + 0x1C<32>
+	Mem18[dwArg04:word32] = 0x82727349<32>
+	Mem19[dwArg04 + 4<32>:word32] = 0x004020E4<p32>
 	return
 fn004011FC_exit:
 

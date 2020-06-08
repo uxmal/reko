@@ -55,10 +55,11 @@ namespace Reko.UnitTests.Arch.X86
 		[SetUp]
 		public void SetUp()
 		{
-            var arch = new X86ArchitectureReal("x86-real-16");
-            program = new Program() { Architecture = arch };
             sc = new ServiceContainer();
+            sc.AddService<ITestGenerationService>(new UnitTestGenerationService(sc));
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            var arch = new X86ArchitectureReal(sc, "x86-real-16");
+            program = new Program() { Architecture = arch };
             asm = new X86TextAssembler(arch);
 			configFile = null;
 		}
@@ -168,7 +169,7 @@ namespace Reko.UnitTests.Arch.X86
             Block block = new List<Block>(proc.ControlGraph.Successors(proc.EntryBlock))[0];
 			Assert.AreEqual(5, block.Statements.Count);
 			Assignment instr1 = (Assignment) block.Statements[0].Instruction;
-			Assert.AreEqual("ax = 0x0000", block.Statements[0].Instruction.ToString());
+			Assert.AreEqual("ax = 0<16>", block.Statements[0].Instruction.ToString());
 
 			Assert.AreSame(new List<Block>(proc.ControlGraph.Successors(block))[0], proc.ExitBlock);
 		}

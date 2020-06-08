@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Evaluation
             var c = Constant.Word32(4);
             Create(ExpressionMatcher.AnyConstant("c"));
             Assert.IsTrue(matcher.Match(c));
-            Assert.AreEqual("0x00000004", matcher.CapturedExpression("c").ToString());
+            Assert.AreEqual("4<32>", matcher.CapturedExpression("c").ToString());
         }
 
         [Test]

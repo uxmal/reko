@@ -28,6 +28,7 @@ using System.Text;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using Reko.UserInterfaces.WindowsForms;
 using Reko.UnitTests.Mocks;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Gui
 {
@@ -41,7 +42,7 @@ namespace Reko.UnitTests.Gui
         {
             program = new Program
             {
-                Architecture = new FakeArchitecture()
+                Architecture = new FakeArchitecture(new ServiceContainer())
             };
         }
 

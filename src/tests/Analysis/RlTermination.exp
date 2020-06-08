@@ -9,10 +9,10 @@ fn0C00_0000_entry:
 	def ds
 l0C00_0000:
 	call fn0C00_0015 (retsize: 2;)
-		uses: ax:0x0020,bx:0x3212,ds:ds
+		uses: ax:0x20<16>,bx:0x3212<16>,ds:ds
 		defs: ax:ax_8
-	Mem14[ds:0x0230:word16] = ax_8
-	Mem15[ds:0x0234:word16] = 0x007B
+	Mem14[ds:0x230<16>:word16] = ax_8
+	Mem15[ds:0x234<16>:word16] = 0x7B<16>
 	return
 fn0C00_0000_exit:
 // fn0C00_0015 /////////////////////
@@ -30,13 +30,13 @@ fn0C00_0015_entry:
 l0C00_0015:
 	branch ax <u Mem0[ds:bx:word16] l0C00_0023
 l0C00_0019:
-	branch ax >=u Mem0[ds:bx + 0x0002:word16] l0C00_0023
+	branch ax >=u Mem0[ds:bx + 2<16>:word16] l0C00_0023
 l0C00_001E:
 	bx_19 = bx + ax
 	ax_21 = Mem0[ds:bx_19:word16]
 	return
 l0C00_0023:
-	Mem16[ds:0x0232:word16] = 0x0000
-	msdos_terminate(0x00)
+	Mem16[ds:0x232<16>:word16] = 0<16>
+	msdos_terminate(0<8>)
 fn0C00_0015_exit:
 	use ax_21

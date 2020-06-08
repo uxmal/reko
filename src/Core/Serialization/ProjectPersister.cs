@@ -39,8 +39,10 @@ namespace Reko.Core.Serialization
         /// <param name="projectAbsPath"></param>
         /// <param name="projectRelative"></param>
         /// <returns></returns>
-        public string ConvertToAbsolutePath(string projectAbsPath, string projectRelative)
+        public string? ConvertToAbsolutePath(string projectAbsPath, string? projectRelative)
         {
+            if (projectRelative == null)
+                return null;
             var dir = Path.GetDirectoryName(projectAbsPath);
             if (string.IsNullOrEmpty(projectRelative))
                 return dir;

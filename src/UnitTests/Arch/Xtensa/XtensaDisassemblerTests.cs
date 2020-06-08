@@ -28,6 +28,7 @@ using Reko.Core;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.Xtensa
 {
@@ -38,7 +39,7 @@ namespace Reko.UnitTests.Arch.Xtensa
 
         public XtensaDisassemblerTests()
         {
-            this.arch = new XtensaArchitecture("xtensa");
+            this.arch = new XtensaArchitecture(new ServiceContainer(), "xtensa");
         }
 
         public override IProcessorArchitecture Architecture

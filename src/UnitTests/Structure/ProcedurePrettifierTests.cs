@@ -28,6 +28,7 @@ using Reko.Structure;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -41,7 +42,7 @@ namespace Reko.UnitTests.Structure
     {
         private void RunTest(string sExp, Action<AbsynCodeEmitter> gen)
         {
-            var proc = new Procedure(new FakeArchitecture(), "test", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
+            var proc = new Procedure(new FakeArchitecture(new ServiceContainer()), "test", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
             proc.Body = new List<AbsynStatement>();
             var m = new AbsynCodeEmitter(proc.Body);
             gen(m);
@@ -61,7 +62,7 @@ namespace Reko.UnitTests.Structure
             sw.WriteLine("{0}()", proc.Name);
             sw.WriteLine("{");
 
-            var cf = new CodeFormatter(new TextFormatter(sw) { UseTabs = false });
+            var cf = proc.CreateCodeFormatter(new TextFormatter(sw) { UseTabs = false });
             cf.WriteStatementList(proc.Body);
 
             sw.WriteLine("}");
@@ -100,7 +101,7 @@ namespace Reko.UnitTests.Structure
             var id = new Identifier("id", PrimitiveType.Word32, null);
             var pp = new ProcedurePrettifier(null);
             var m = new AbsynCodeEmitter(new List<AbsynStatement>());
-            Assert.AreEqual("id += 0x00000002;", m.Assign(id, m.IAdd(id, 2)).Accept(pp).ToString());
+            Assert.AreEqual("id += 2<32>;", m.Assign(id, m.IAdd(id, 2)).Accept(pp).ToString());
         }
 
         [Test]
@@ -110,7 +111,7 @@ namespace Reko.UnitTests.Structure
             #region Expected
 @"test()
 {
-    for (id = 0x00000000; id != 0x000003E8; ++id)
+    for (id = 0<32>; id != 0x3E8<32>; ++id)
         foo(id);
 }
 ";

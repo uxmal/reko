@@ -113,7 +113,7 @@ namespace Reko.Scanning
         /// <returns>The <paramref name="sr"/> object, mutated to contain all the
         /// new instructions.
         /// </returns>
-        public ScanResults ScanInstructions(ScanResults sr)
+        public ScanResults? ScanInstructions(ScanResults sr)
         {
             var ranges = FindUnscannedRanges().ToList();
             DumpRanges(ranges);
@@ -172,7 +172,7 @@ namespace Reko.Scanning
             return MakeTriples(program.ImageMap.Items.Values)
                 .Select(triple => CreateUnscannedArea(triple))
                 .Where(triple => triple.HasValue)
-                .Select(triple => triple.Value);
+                .Select(triple => triple!.Value);
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace Reko.Scanning
             // Determine an architecture for the item.
             var prevArch = GetBlockArchitecture(prev);
             var nextArch = GetBlockArchitecture(next);
-            IProcessorArchitecture arch = null;
+            IProcessorArchitecture? arch = null;
             if (prevArch == null)
             {
                 arch = nextArch ?? program.Architecture;
@@ -265,10 +265,10 @@ namespace Reko.Scanning
                 item.Size);
         }
 
-        private static IProcessorArchitecture GetBlockArchitecture(ImageMapItem item)
+        private static IProcessorArchitecture? GetBlockArchitecture(ImageMapItem item)
         {
             return (item is ImageMapBlock imb)
-                ? imb.Block.Procedure.Architecture
+                ? imb.Block!.Procedure.Architecture
                 : null;
         }
 

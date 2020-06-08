@@ -88,6 +88,12 @@ namespace Reko.Arch.MicrochipPIC.PIC16
             return instrCur;
         }
 
+        public override PICInstruction NotYetImplemented(uint wInstr, string message)
+        {
+            //$TODO: does this need a separate implementation for each pic model?
+            return CreateInvalidInstruction();
+        }
+
         #region Instruction Decoder helpers
 
         private static readonly Decoder[] decoderTable = new Decoder[4]

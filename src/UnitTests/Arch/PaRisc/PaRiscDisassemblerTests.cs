@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,14 +42,14 @@ namespace Reko.UnitTests.Arch.PaRisc
 
         private void AssertCode(string sExp, string hexBytes)
         {
-            this.arch = new PaRiscArchitecture("paRisc");
+            this.arch = new PaRiscArchitecture(new ServiceContainer(), "paRisc");
             var i = DisassembleHexBytes(hexBytes);
             Assert.AreEqual(sExp, i.ToString());
         }
 
         private void AssertCode64(string sExp, string hexBytes)
         {
-            this.arch = new PaRiscArchitecture("paRisc");
+            this.arch = new PaRiscArchitecture(new ServiceContainer(), "paRisc");
             arch.Options["WordSize"] = "64";
             var i = DisassembleHexBytes(hexBytes);
             Assert.AreEqual(sExp, i.ToString());

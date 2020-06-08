@@ -28,6 +28,7 @@ using System.Linq;
 using Reko.Core.Machine;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
+using Reko.Core.Services;
 
 namespace Reko.Arch.Msp430
 {
@@ -131,23 +132,41 @@ namespace Reko.Arch.Msp430
             case RegisterOperand rop:
                 return binder.EnsureRegister(rop.Register);
             case MemoryOperand mop:
-                Expression ea = binder.EnsureRegister(mop.Base);
-                if (mop.PostIncrement)
+                Expression ea;
+                if (mop.Base != null)
                 {
-                    var tmp = binder.CreateTemporary(op.Width);
-                    m.Assign(tmp, m.Mem(op.Width, ea));
-                    m.Assign(ea, m.IAdd(ea, m.Int16((short) op.Width.Size)));
-                    return tmp;
-                }
-                else if (mop.Offset != 0)
-                {
-                    var tmp = binder.CreateTemporary(op.Width);
-                    m.Assign(tmp, m.Mem(op.Width, m.IAdd(ea, m.Int16(mop.Offset))));
-                    return tmp;
+                    ea = binder.EnsureRegister(mop.Base);
+                    if (mop.PostIncrement)
+                    {
+                        var tmp = binder.CreateTemporary(op.Width);
+                        m.Assign(tmp, m.Mem(op.Width, ea));
+                        m.Assign(ea, m.IAdd(ea, m.Int16((short) op.Width.Size)));
+                        return tmp;
+                    }
+                    else if (mop.Base == Registers.pc)
+                    {
+                        ea = instr.Address + mop.Offset;
+                        var tmp = binder.CreateTemporary(op.Width);
+                        m.Assign(tmp, m.Mem(op.Width, ea));
+                        return tmp;
+                    }
+                    else if (mop.Offset != 0)
+                    {
+                        var tmp = binder.CreateTemporary(op.Width);
+                        m.Assign(tmp, m.Mem(op.Width, m.IAdd(ea, m.Int16(mop.Offset))));
+                        return tmp;
+                    }
+                    else
+                    {
+                        var tmp = binder.CreateTemporary(op.Width);
+                        m.Assign(tmp, m.Mem(op.Width, ea));
+                        return tmp;
+                    }
                 }
                 else
                 {
                     var tmp = binder.CreateTemporary(op.Width);
+                    ea = Address.Ptr16((ushort) mop.Offset);
                     m.Assign(tmp, m.Mem(op.Width, ea));
                     return tmp;
                 }
@@ -176,10 +195,25 @@ namespace Reko.Arch.Msp430
                 }
                 return dst;
             case MemoryOperand mop:
-                Expression ea = binder.EnsureRegister(mop.Base);
-                if (mop.Offset != 0)
+                Expression ea;
+                if (mop.Base != null)
                 {
-                    ea = m.IAdd(ea, m.Int16(mop.Offset));
+                    if (mop.Base == Registers.pc)
+                    {
+                        ea = instr.Address + mop.Offset;
+                    }
+                    else
+                    {
+                        ea = binder.EnsureRegister(mop.Base);
+                        if (mop.Offset != 0)
+                        {
+                            ea = m.IAdd(ea, m.Int16(mop.Offset));
+                        }
+                    }
+                }
+                else
+                {
+                    ea = Address.Ptr16((ushort) mop.Offset);
                 }
                 var tmp = binder.CreateTemporary(mop.Width);
                 m.Assign(tmp, m.Mem(tmp.DataType, ea));
@@ -434,31 +468,11 @@ namespace Reko.Arch.Msp430
             iclass = InstrClass.Invalid;
         }
 
-        private static HashSet<Mnemonics> seen = new HashSet<Mnemonics>();
-
         [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(instr.Mnemonic))
-                return;
-            seen.Add(instr.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var bytes = r2.ReadBytes(dasm.Current.Length);
-            Console.WriteLine("        [Test]");
-            Console.WriteLine("        public void Msp430Rw_" + instr.Mnemonic + "()");
-            Console.WriteLine("        {");
-            Console.Write("            BuildTest(");
-            Console.Write(string.Join(
-                ", ",
-                bytes.Select(b => string.Format("0x{0:X2}", (int)b))));
-            Console.WriteLine(");\t// " + dasm.Current.ToString());
-            Console.WriteLine("            AssertCode(");
-            Console.WriteLine("                \"0|L--|0100(2): 1 instructions\",");
-            Console.WriteLine("                \"1|L--|@@@\");");
-            Console.WriteLine("        }");
-            Console.WriteLine("");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("Msp430Rw", instr, rdr, "");
         }
     }
 }

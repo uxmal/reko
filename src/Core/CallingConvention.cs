@@ -36,7 +36,7 @@ namespace Reko.Core
     public interface CallingConvention
     {
 
-        void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams);
+        void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams);
 
         /// <summary>
         /// Can <paramref name="stg"/> be used as a parameter in this calling convention?
@@ -76,7 +76,7 @@ namespace Reko.Core
         /// stack) and the initial stack offset of the first parameter
         /// passed on the stack.
         /// </summary>
-        void LowLevelDetails(int stackAlignment, int initialStackOffset);
+        void LowLevelDetails(int stackAlignment, int parameterStackSaveOffset);
 
         /// <summary>
         /// Add a register parameter.
@@ -135,8 +135,8 @@ namespace Reko.Core
             this.Parameters = new List<Storage>();
         }
 
-        public Storage ImplicitThis { get; private set; }
-        public Storage Return { get; private set; }
+        public Storage? ImplicitThis { get; private set; }
+        public Storage? Return { get; private set; }
         public List<Storage> Parameters { get; private set; }
         public int StackDelta { get; private set; }
         public int FpuStackDelta { get; private set; }

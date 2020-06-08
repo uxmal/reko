@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using Reko.Core.Machine;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.X86
 {
@@ -43,7 +44,8 @@ namespace Reko.UnitTests.Arch.X86
         [OneTimeSetUp]
         public void Setup()
         {
-            arch = new X86ArchitectureReal("x86-real-16");
+            var sc = new ServiceContainer();
+            arch = new X86ArchitectureReal(sc, "x86-real-16");
             var mem = new MemoryArea(Address.Ptr32(0x10000), new byte[4]);
 			var program = new Program(
                 new SegmentMap(
@@ -51,7 +53,7 @@ namespace Reko.UnitTests.Arch.X86
                     new ImageSegment(
                         "code", mem, AccessMode.ReadWriteExecute)),
                 arch,
-                new DefaultPlatform(null, arch));
+                new DefaultPlatform(sc, arch));
 			var procAddress = Address.Ptr32(0x10000000);
             instr = new X86Instruction(Mnemonic.nop, InstrClass.Linear, PrimitiveType.Word16, PrimitiveType.Word16)
             {
@@ -71,7 +73,7 @@ namespace Reko.UnitTests.Arch.X86
 				Registers.bx,
 				Constant.Int32(32));
 			var e = orw.CreateMemoryAccess(instr, m, state);
-			Assert.AreEqual("Mem0[ds:bx + 0x0020:byte]", e.ToString());
+			Assert.AreEqual("Mem0[ds:bx + 0x20<16>:byte]", e.ToString());
 		}
 	}
 }

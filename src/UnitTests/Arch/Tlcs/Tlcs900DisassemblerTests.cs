@@ -24,6 +24,7 @@ using Reko.Arch.Tlcs.Tlcs900;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -34,7 +35,7 @@ namespace Reko.UnitTests.Arch.Tlcs
     {
         public Tlcs900DisassemblerTests()
         {
-            this.Architecture = new Tlcs900Architecture("tlcs900");
+            this.Architecture = new Tlcs900Architecture(new ServiceContainer(), "tlcs900");
             this.LoadAddress = Address.Ptr32(0x00010000);
         }
 

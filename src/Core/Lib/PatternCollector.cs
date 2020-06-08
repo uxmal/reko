@@ -1,3 +1,5 @@
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,9 +19,9 @@ namespace Reko.Core.Lib
         const int SYMLEN = 16;         /* Number of chars in the symbol name, incl null */
         const int PATLEN = 23;         /* Number of bytes in the pattern part */
 
-        public string name;         // char name[SYMLEN];      /* The symbol name */
-        public byte[] pat; // [PATLEN];   /* The pattern */
-        public ushort offset;        /* Offset (needed temporarily) */
+        public string? name;         // char name[SYMLEN];      /* The symbol name */
+        public byte[]? pat; // [PATLEN];   /* The pattern */
+        public ushort? offset;        /* Offset (needed temporarily) */
     };
 
     public abstract class PatternCollector
@@ -79,7 +81,7 @@ namespace Reko.Core.Lib
             }
 #endif
         /* Called by map(). Return the i+1th key in *pKeys */
-        public byte[] getKey(int i)
+        public byte[]? getKey(int i)
         {
             return keys[i].pat;
         }

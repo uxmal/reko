@@ -314,7 +314,7 @@ l0800_02D8:
 	mov	[01D8],si
 	mov	al,[si+01DA]
 	cbw
-	xchg	ax,si
+	xchg	si,ax
 	jmp	02F1
 
 l0800_02E4:
@@ -377,7 +377,7 @@ __setargv proc
 	inc	ax
 	mov	bp,es
 	xchg	si,dx
-	xchg	ax,bx
+	xchg	bx,ax
 	mov	si,[008A]
 	add	si,02
 	mov	cx,0001
@@ -1890,10 +1890,10 @@ l0800_0C89:
 	jcxz	0C9D
 
 l0800_0C8E:
-	xchg	ax,cx
+	xchg	cx,ax
 	sub	dx,dx
 	div	bx
-	xchg	ax,cx
+	xchg	cx,ax
 	div	bx
 	mov	[si],dl
 	inc	si
@@ -2645,7 +2645,7 @@ l0800_11FB:
 	jmp	111F
 
 l0800_1200:
-	xchg	ax,dx
+	xchg	dx,ax
 	sub	al,30
 	cbw
 	cmp	ch,02
@@ -3505,7 +3505,7 @@ l0800_172B:
 
 l0800_172F:
 	cbw
-	xchg	ax,di
+	xchg	di,ax
 	inc	word ptr [bp-26]
 	push	word ptr [bp+08]
 	call	word ptr [bp+04]
@@ -3522,7 +3522,7 @@ l0800_1743:
 	jnz	1775
 
 l0800_174A:
-	xchg	ax,bx
+	xchg	bx,ax
 	or	bl,bl
 	js	1767
 
@@ -3574,7 +3574,7 @@ l0800_1794:
 	lodsb
 	cbw
 	mov	[bp+0A],si
-	xchg	ax,di
+	xchg	di,ax
 	or	di,di
 	jl	17E6
 
@@ -3720,7 +3720,7 @@ l0800_187E:
 	jz	188A
 
 l0800_1888:
-	xchg	ax,dx
+	xchg	dx,ax
 	stosw
 
 l0800_188A:
@@ -3996,7 +3996,7 @@ l0800_1A7A:
 	jl	1AD9
 
 l0800_1A8A:
-	xchg	ax,si
+	xchg	si,ax
 	mov	bx,si
 	mov	cl,03
 	shr	si,cl
@@ -4004,8 +4004,8 @@ l0800_1A8A:
 	and	cl,bl
 	shl	ch,cl
 	test	[bp+si-20],ch
-	xchg	ax,si
-	xchg	ax,bx
+	xchg	si,ax
+	xchg	bx,ax
 	jz	1AA7
 
 l0800_1A9F:
@@ -4121,9 +4121,9 @@ l0800_1B14:
 	js	1B21
 
 l0800_1B18:
-	xchg	ax,bx
+	xchg	bx,ax
 	cmp	byte ptr [bx+055A],01
-	xchg	ax,bx
+	xchg	bx,ax
 	jz	1B06
 
 l0800_1B21:
@@ -4318,7 +4318,7 @@ l0800_1BE6:
 
 l0800_1BF4:
 	cbw
-	xchg	ax,bx
+	xchg	bx,ax
 	test	bl,80
 	jnz	1C00
 
@@ -4327,7 +4327,7 @@ l0800_1BFB:
 	jnz	1BE6
 
 l0800_1C00:
-	xchg	ax,bx
+	xchg	bx,ax
 	dec	word ptr [bp+0C]
 	jl	1C61
 
@@ -4447,17 +4447,17 @@ l0800_1CA5:
 
 l0800_1CA7:
 	mov	cx,[bp+0A]
-	xchg	ax,bx
+	xchg	bx,ax
 	call	1B9E
-	xchg	ax,bx
+	xchg	bx,ax
 	jc	1C61
 
 l0800_1CB1:
-	xchg	ax,si
+	xchg	si,ax
 	jmp	1CBE
 
 l0800_1CB4:
-	xchg	ax,si
+	xchg	si,ax
 	mul	word ptr [bp+0A]
 	add	si,ax
 	adc	di,dx
@@ -4475,23 +4475,23 @@ l0800_1CC3:
 
 l0800_1CCD:
 	mov	cx,[bp+0A]
-	xchg	ax,bx
+	xchg	bx,ax
 	call	1B9E
-	xchg	ax,bx
+	xchg	bx,ax
 	jnc	1CB4
 
 l0800_1CD7:
 	jmp	1D03
 
 l0800_1CD9:
-	xchg	ax,si
+	xchg	si,ax
 	mul	cx
-	xchg	ax,di
+	xchg	di,ax
 	xchg	dx,cx
 	mul	dx
 	add	si,di
 	adc	ax,cx
-	xchg	ax,di
+	xchg	di,ax
 	adc	dl,dh
 	jnz	1D32
 
@@ -4505,9 +4505,9 @@ l0800_1CEF:
 	call	word ptr [bp+04]
 	pop	cx
 	mov	cx,[bp+0A]
-	xchg	ax,bx
+	xchg	bx,ax
 	call	1B9E
-	xchg	ax,bx
+	xchg	bx,ax
 	jnc	1CD9
 
 l0800_1D03:
@@ -4520,7 +4520,7 @@ l0800_1D03:
 
 l0800_1D0F:
 	mov	dx,di
-	xchg	ax,si
+	xchg	si,ax
 	cmp	byte ptr [bp-05],00
 	jz	1D1F
 

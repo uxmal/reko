@@ -254,7 +254,8 @@ namespace Reko.ImageLoaders.MzExe
                 case NE_TARGETOS.Windows:
                 case NE_TARGETOS.Windows386:
                     program.Resources.Name = "NE resources";
-                    program.Resources.Resources.AddRange(rsrcLoader.LoadResources());
+                    if (offRsrcTable != offResidentNameTable) // Some NE images contain no resources (indicated by offRsrcTable == offResidentNameTable)
+                        program.Resources.Resources.AddRange(rsrcLoader.LoadResources());
                     break;
                 case NE_TARGETOS.Os2:
                     program.Resources.Name = "OS/2 resources";

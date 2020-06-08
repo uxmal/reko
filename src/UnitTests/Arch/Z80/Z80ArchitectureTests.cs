@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.Z80;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace Reko.UnitTests.Arch.Z80
         [SetUp]
         public void Setup()
         {
-            this.arch = new Z80ProcessorArchitecture("z80");
+            this.arch = new Z80ProcessorArchitecture(new ServiceContainer(), "z80");
         }
 
         [Test]

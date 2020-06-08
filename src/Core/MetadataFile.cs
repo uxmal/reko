@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -37,6 +37,6 @@ namespace Reko.Core
             return visitor.VisitMetadataFile(this);
         }
 
-        public string ModuleName { get; set; }
+        public string? ModuleName { get; set; }
     }
 }

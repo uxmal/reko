@@ -29,6 +29,7 @@ using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using BindingFlags = System.Reflection.BindingFlags;
+using Reko.Core.Lib;
 
 namespace Reko.Arch.SuperH
 {
@@ -36,7 +37,9 @@ namespace Reko.Arch.SuperH
     // RaymondC says: https://devblogs.microsoft.com/oldnewthing/20190820-00/?p=102792
     public abstract class SuperHArchitecture : ProcessorArchitecture
     {
-        public SuperHArchitecture(string archId, EndianServices endianness) : base(archId)
+        private readonly Dictionary<uint, FlagGroupStorage> grfs;
+
+        public SuperHArchitecture(IServiceProvider services, string archId, EndianServices endianness) : base(services, archId)
         {
             this.Endianness = endianness;
             this.FramePointerType = PrimitiveType.Ptr32;
@@ -44,11 +47,12 @@ namespace Reko.Arch.SuperH
             this.PointerType = PrimitiveType.Ptr32;
             this.WordWidth = PrimitiveType.Word32;
             // No architecture-defined stack register -- defined by platform.
+            this.grfs = new Dictionary<uint, FlagGroupStorage>();
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
-            return new SuperHDisassembler(rdr);
+            return new SuperHDisassembler(this, rdr);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
@@ -87,7 +91,17 @@ namespace Reko.Arch.SuperH
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            throw new NotImplementedException();
+            if (flagRegister == Registers.sr)
+            {
+                if (!grfs.TryGetValue(grf, out FlagGroupStorage fl))
+                {
+                    PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+                    fl = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf), dt);
+                    grfs.Add(grf, fl);
+                }
+                return fl;
+            }
+            return null;
         }
 
         public override SortedList<string, int> GetMnemonicNames()
@@ -108,7 +122,22 @@ namespace Reko.Arch.SuperH
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            throw new NotImplementedException();
+            if (domain == Registers.fr0.Domain)
+            {
+                // Special case the floating point numbers.
+                if (range.Extent == 32)
+                {
+                    return Registers.fpregs[range.Lsb / 32];
+                }
+                if (range.Extent == 64)
+                {
+                    return Registers.dfpregs[range.Lsb / 64];
+                }
+                throw new NotImplementedException("GetRegister: FP registers not done yet.");
+            }
+            return Registers.RegistersByDomain.TryGetValue(domain, out var reg)
+                ? reg 
+                : null;
         }
 
         public override RegisterStorage[] GetRegisters()
@@ -116,9 +145,22 @@ namespace Reko.Arch.SuperH
             return Registers.gpregs;
         }
 
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            uint grf = flags.FlagGroupBits;
+            if ((grf & Registers.S.FlagGroupBits) != 0) yield return Registers.S;
+            if ((grf & Registers.T.FlagGroupBits) != 0) yield return Registers.T;
+        }
+
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
-            return "T";
+            var s = new StringBuilder();
+            if (flagRegister == Registers.sr)
+            {
+                if ((Registers.S.FlagGroupBits & grf) != 0) s.Append(Registers.S.Name);
+                if ((Registers.T.FlagGroupBits & grf) != 0) s.Append(Registers.T.Name);
+            }
+            return s.ToString();
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
@@ -147,14 +189,14 @@ namespace Reko.Arch.SuperH
 
     public class SuperHLeArchitecture : SuperHArchitecture
     {
-        public SuperHLeArchitecture(string archId) : base(archId, EndianServices.Little)
+        public SuperHLeArchitecture(IServiceProvider services, string archId) : base(services, archId, EndianServices.Little)
         {
         }
     }
 
     public class SuperHBeArchitecture : SuperHArchitecture
     {
-        public SuperHBeArchitecture(string arch) : base(arch, EndianServices.Big)
+        public SuperHBeArchitecture(IServiceProvider services, string arch) : base(services, arch, EndianServices.Big)
         {
         }
     }

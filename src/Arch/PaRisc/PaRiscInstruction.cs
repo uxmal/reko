@@ -43,6 +43,8 @@ namespace Reko.Arch.PaRisc
 
         public override int MnemonicAsInteger => (int) Mnemonic;
 
+        public override string MnemonicAsString => Mnemonic.ToString();
+
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             WriteMnemonic(writer);

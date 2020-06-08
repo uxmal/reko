@@ -9,28 +9,28 @@ void fn0000000000400480(word64 rdx, word64 qwArg00)
 fn0000000000400480_exit:
 fn0000000000400480_entry:
 l0000000000400480:
-	__align(fp + 8)
-	__libc_start_main(0x0000000000400660, qwArg00, fp + 8, 0x0000000000400710, 0x0000000000400780, rdx, fp)
+	__align(fp + 8<i64>)
+	__libc_start_main(0x400660<64>, qwArg00, fp + 8<i64>, 0x400710<64>, 0x400780<64>, rdx, fp)
 	__hlt()
 
 
-void fn00000000004004B0(word64 r8)
+void fn00000000004004B0()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r8:[0..63]
+// MayUse: 
 // LiveOut:
-// Trashed: SCZO r8 rax rdi Top
+// Trashed: SCZO rax rdi Top
 // Preserved: rbp rsp
 fn00000000004004B0_entry:
 l00000000004004B0:
-	branch r8 == 0x0000000000601040 l00000000004004D8
+	branch 0<64> == 0<64> l00000000004004D8
 l00000000004004C1:
-	branch 0x0000000000000000 == 0x0000000000000000 l00000000004004D8
+	branch 0<u64> == 0<64> l00000000004004D8
 l00000000004004D8:
 	return
 l00000000004004CB:
-	call 0x0000000000000000 (retsize: 0;)
-		uses: r8:r8,rdi:0x0000000000601040
+	call 0<u64> (retsize: 0;)
+		uses: rdi:0x601040<u64>
 	return
 fn00000000004004B0_exit:
 
@@ -68,6 +68,8 @@ l00000000004006F5:
 void fn0000000000400700()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn00000000004006F0
 // MayUse: 
 // LiveOut:
 // Trashed: Top

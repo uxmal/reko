@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Evaluation
             Assert.IsTrue(instrmatcher.Match(
                 m.Assign(ax, m.IAdd(ax, m.Word16(42)))));
 
-            Assert.AreEqual("0x002A", instrmatcher.CapturedExpressions("c").ToString());
+            Assert.AreEqual("0x2A<16>", instrmatcher.CapturedExpressions("c").ToString());
         }
     }
 }

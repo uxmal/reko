@@ -60,7 +60,6 @@ namespace Reko.Core
         HashSet<RegisterStorage> CreateTrashedRegisters();
 
         IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> addr, PointerScannerFlags flags);
-        CallingConvention GetCallingConvention(string ccName);
         TypeLibrary CreateMetadata();
 
         /// <summary>
@@ -78,7 +77,7 @@ namespace Reko.Core
         /// of each resulting ImageSegment.
         /// </summary>
         /// <returns></returns>
-        SegmentMap CreateAbsoluteMemoryMap();
+        SegmentMap? CreateAbsoluteMemoryMap();
 
         /// <summary>
         /// Given a procedure signature, determines whether it conforms to any
@@ -95,7 +94,7 @@ namespace Reko.Core
         /// <param name="signature"></param>
         /// <returns>The name of the calling convention, or null
         /// if no calling convention could be determined.</returns>
-        string DetermineCallingConvention(FunctionType signature);
+        string? DetermineCallingConvention(FunctionType signature);
 
         /// <summary>
         /// Given a C basic type, returns the number of bytes that type is
@@ -106,6 +105,8 @@ namespace Reko.Core
         /// </returns>
         int GetByteSizeFromCBasicType(CBasicType cb);
 
+        CallingConvention? GetCallingConvention(string? ccName);
+
         /// <summary>
         /// Given a primitive type <paramref name="t"/> returns the
         /// rendering of that primitive in the programming language
@@ -114,9 +115,9 @@ namespace Reko.Core
         /// <param name="t">Primitive type</param>
         /// <param name="language">Programming language to use</param>
         /// <returns></returns>
-        string GetPrimitiveTypeName(PrimitiveType t, string language);
+        string? GetPrimitiveTypeName(PrimitiveType t, string language);
 
-        ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host);
+        ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host);
 
         /// <summary>
         /// Given an executable entry point, find the location of the "main" program,
@@ -139,9 +140,9 @@ namespace Reko.Core
         /// <param name="vector"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap);
-        SystemService FindService(RtlInstruction call, ProcessorState state, SegmentMap segmentMap);
-        DispatchProcedure_v1 FindDispatcherProcedureByAddress(Address addr);
+        SystemService? FindService(int vector, ProcessorState state, SegmentMap segmentMap);
+        SystemService? FindService(RtlInstruction call, ProcessorState state, SegmentMap segmentMap);
+        DispatchProcedure_v1? FindDispatcherProcedureByAddress(Address addr);
 
         string FormatProcedureName(Program program, Procedure proc);
 
@@ -153,11 +154,11 @@ namespace Reko.Core
         void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter emitter);
 
         void LoadUserOptions(Dictionary<string, object> options);
-        ExternalProcedure LookupProcedureByName(string moduleName, string procName);
-        ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal);
-        Expression ResolveImportByName(string moduleName, string globalName);
-        Expression ResolveImportByOrdinal(string moduleName, int ordinal);
-        ProcedureCharacteristics LookupCharacteristicsByName(string procName);
+        ExternalProcedure? LookupProcedureByName(string? moduleName, string procName);
+        ExternalProcedure? LookupProcedureByOrdinal(string moduleName, int ordinal);
+        Expression? ResolveImportByName(string? moduleName, string globalName);
+        Expression? ResolveImportByOrdinal(string moduleName, int ordinal);
+        ProcedureCharacteristics? LookupCharacteristicsByName(string procName);
         Address MakeAddressFromConstant(Constant c, bool codeAlign);
         Address MakeAddressFromLinear(ulong uAddr, bool codeAlign);
 
@@ -168,12 +169,12 @@ namespace Reko.Core
         /// <returns>null if the call couldn't be resolved, or an Address to
         /// what must be a procedure if the call could be resolved.
         /// </returns>
-        Address ResolveIndirectCall(RtlCall instr);
+        Address? ResolveIndirectCall(RtlCall instr);
 
-        bool TryParseAddress(string sAddress, out Address addr);
-        Dictionary<string, object> SaveUserOptions();
-        ProcedureBase_v1 SignatureFromName(string importName);
-        Tuple<string, SerializedType, SerializedType> DataTypeFromImportName(string importName);
+        bool TryParseAddress(string? sAddress, out Address addr);
+        Dictionary<string, object>? SaveUserOptions();
+        ProcedureBase_v1? SignatureFromName(string importName);
+        Tuple<string, SerializedType, SerializedType>? DataTypeFromImportName(string importName);
 
         /// <summary>
         /// Write one or more metadata files for the loaded program.
@@ -193,6 +194,7 @@ namespace Reko.Core
         /// Initializes a Platform instance
         /// </summary>
         /// <param name="arch"></param>
+        #nullable disable
         protected Platform(IServiceProvider services, IProcessorArchitecture arch, string platformId)
         {
             this.Services = services;
@@ -201,6 +203,7 @@ namespace Reko.Core
             this.Heuristics = new PlatformHeuristics();
             this.DefaultTextEncoding = Encoding.ASCII;
         }
+        #nullable enable
 
         public IProcessorArchitecture Architecture { get; private set; }
         public IServiceProvider Services { get; private set; }
@@ -293,7 +296,7 @@ namespace Reko.Core
         /// <paramref name="ccName"/>.
         /// </summary>
         /// <param name="ccName">Name of the calling convention.</param>
-        public abstract CallingConvention GetCallingConvention(string ccName);
+        public abstract CallingConvention? GetCallingConvention(string? ccName);
         
         /// <summary>
         /// Creates an empty imagemap based on the absolute memory map. It is 
@@ -301,20 +304,20 @@ namespace Reko.Core
         /// of each resulting ImageSegment.
         /// </summary>
         /// <returns></returns>
-        public virtual SegmentMap CreateAbsoluteMemoryMap()
+        public virtual SegmentMap? CreateAbsoluteMemoryMap()
         {
             if (this.MemoryMap == null || this.MemoryMap.Segments == null)
                 return null;
             var diagSvc = Services.RequireService<IDiagnosticsService>();
             var segs = MemoryMap.Segments.Select(s => MemoryMap_v1.LoadSegment(s, this, diagSvc))
                 .Where(s => s != null)
-                .ToSortedList(s => s.Address);
+                .ToSortedList(s => s!.Address, s => s!);
             return new SegmentMap(
                 segs.Values.First().Address,
                 segs.Values.ToArray());
         }
 
-        public virtual string DetermineCallingConvention(FunctionType signature)
+        public virtual string? DetermineCallingConvention(FunctionType signature)
         {
             return null;
         }
@@ -346,7 +349,7 @@ namespace Reko.Core
                     Metadata = tlSvc.LoadMetadataIntoLibrary(this, tl, Metadata); 
                 }
                 this.CharacteristicsLibs = envCfg.CharacteristicsLibraries
-                    .Select(cl => tlSvc.LoadCharacteristics(cl.Name))
+                    .Select(cl => tlSvc.LoadCharacteristics(cl.Name!))
                     .Where(cl => cl != null).ToArray();
 
                 ApplyCharacteristicsToServices(CharacteristicsLibs, Metadata);
@@ -384,7 +387,7 @@ namespace Reko.Core
 
         public abstract int GetByteSizeFromCBasicType(CBasicType cb);
 
-        public virtual string GetPrimitiveTypeName(PrimitiveType pt, string language)
+        public virtual string? GetPrimitiveTypeName(PrimitiveType pt, string language)
         {
             return null;
         }
@@ -396,14 +399,14 @@ namespace Reko.Core
             throw new NotSupportedException();
         }
 
-        public abstract SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap);
+        public abstract SystemService? FindService(int vector, ProcessorState state, SegmentMap segmentMap);
 
-        public virtual DispatchProcedure_v1 FindDispatcherProcedureByAddress(Address addr)
+        public virtual DispatchProcedure_v1? FindDispatcherProcedureByAddress(Address addr)
         {
             return null;
         }
 
-        public virtual SystemService FindService(RtlInstruction rtl, ProcessorState state, SegmentMap segmentMap)
+        public virtual SystemService? FindService(RtlInstruction rtl, ProcessorState state, SegmentMap segmentMap)
         {
             return null;
         }
@@ -420,7 +423,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="imageReader"></param>
         /// <returns></returns>
-        public virtual ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+        public virtual ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
             return null;
         }
@@ -450,12 +453,12 @@ namespace Reko.Core
             return Address.Create(Architecture.PointerType, uAddr);
         }
 
-        public virtual bool TryParseAddress(string sAddress, out Address addr)
+        public virtual bool TryParseAddress(string? sAddress, out Address addr)
         {
             return Architecture.TryParseAddress(sAddress, out addr);
         }
 
-        public abstract ExternalProcedure LookupProcedureByName(string moduleName, string procName);
+        public abstract ExternalProcedure? LookupProcedureByName(string? moduleName, string procName);
 
         /// <summary>
         /// If the platform can be customized by user, load those customizations here.
@@ -467,29 +470,29 @@ namespace Reko.Core
         /// If the platform can be customized by user, save those customizations here.
         /// </summary>
         /// <returns>The options serialized as strings, or lists of objects, or dictionaries of objects.</returns>
-        public virtual Dictionary<string, object> SaveUserOptions() { return null; }
+        public virtual Dictionary<string, object>? SaveUserOptions() { return null; }
         
         /// <summary>
         /// Guess signature from the name of the procedure.
         /// </summary>
         /// <param name="fnName"></param>
         /// <returns>null if there is no way to guess a ProcedureSignature from the name.</returns>
-        public virtual ProcedureBase_v1 SignatureFromName(string fnName)
+        public virtual ProcedureBase_v1? SignatureFromName(string fnName)
         {
             return null;
         }
 
-        public virtual Tuple<string, SerializedType, SerializedType> DataTypeFromImportName(string importName)
+        public virtual Tuple<string, SerializedType, SerializedType>? DataTypeFromImportName(string importName)
         {
             return null;
         }
 
-        public virtual ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
+        public virtual ExternalProcedure? LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
             return null;
         }
 
-        public virtual Expression ResolveImportByName(string moduleName, string globalName)
+        public virtual Expression? ResolveImportByName(string? moduleName, string globalName)
         {
             var ep = LookupProcedureByName(moduleName, globalName);
             if (ep != null)
@@ -498,7 +501,7 @@ namespace Reko.Core
                 return null;
         }
 
-        public virtual Expression ResolveImportByOrdinal(string moduleName, int ordinal)
+        public virtual Expression? ResolveImportByOrdinal(string moduleName, int ordinal)
         {
             var ep = LookupProcedureByOrdinal(moduleName, ordinal);
             if (ep != null)
@@ -515,12 +518,12 @@ namespace Reko.Core
         /// <returns>null if the call couldn't be resolved, or an Address to
         /// what must be a procedure if the call could be resolved.
         /// </returns>
-        public virtual Address ResolveIndirectCall(RtlCall instr)
+        public virtual Address? ResolveIndirectCall(RtlCall instr)
         {
             return null;
         }
 
-        public virtual ProcedureCharacteristics LookupCharacteristicsByName(string procName)
+        public virtual ProcedureCharacteristics? LookupCharacteristicsByName(string procName)
         {
             EnsureTypeLibraries(PlatformIdentifier);
             return CharacteristicsLibs.Select(cl => cl.Lookup(procName))
@@ -576,14 +579,14 @@ namespace Reko.Core
             return new HashSet<RegisterStorage>();
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention? GetCallingConvention(string? ccName)
         {
             // The default platform has no idea, so let the architecture decide.
             // Some architectures define a standard calling procedure.
             return this.Architecture.GetCallingConvention(ccName);
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState state, SegmentMap segmentMap)
         {
             return null;
         }
@@ -607,13 +610,13 @@ namespace Reko.Core
             }
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             //$Identical to Win32, move into base class?
             return TypeLibraries
                 .Select(t => t.Lookup(procName))
                 .Where(sig => sig != null)
-                .Select(sig => new ExternalProcedure(procName, sig))
+                .Select(sig => new ExternalProcedure(procName, sig!))
                 .FirstOrDefault();
         }
     }

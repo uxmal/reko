@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using System;
 using System.Collections.Generic;
@@ -31,8 +33,8 @@ namespace Reko.Gui
     /// </summary>
     public class StatementNavigator : ICodeLocation
     {
-        private Program program;
-        private IServiceProvider services;
+        private readonly Program program;
+        private readonly IServiceProvider services;
 
         public StatementNavigator(Program program, Statement stm, IServiceProvider services)
         {

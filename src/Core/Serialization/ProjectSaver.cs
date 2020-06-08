@@ -78,6 +78,7 @@ namespace Reko.Core.Serialization
                     Calls = program.User.Calls
                         .Select(uc => SerializeUserCall(program, uc.Value))
                         .Where(uc => uc != null)
+                        .Select(uc => uc!)
                         .ToList(),
                     IndirectJumps = program.User.IndirectJumps.Select(SerializeIndirectJump).ToList(),
                     JumpTables = program.User.JumpTables.Select(SerializeJumpTable).ToList(),
@@ -93,7 +94,7 @@ namespace Reko.Core.Serialization
                     Heuristics = program.User.Heuristics
                         .Select(h => new Heuristic_v3 { Name = h }).ToList(),
                     Annotations = program.User.Annotations.Select(SerializeAnnotation).ToList(),
-                    TextEncoding = program.User.TextEncoding != Encoding.ASCII ? program.User.TextEncoding.WebName : null,
+                    TextEncoding = program.User.TextEncoding != Encoding.ASCII ? program.User.TextEncoding?.WebName : null,
                     RegisterValues = SerializeRegisterValues(program.User.RegisterValues),
                     ShowAddressesInDisassembly = program.User.ShowAddressesInDisassembly,
                     ShowBytesInDisassembly = program.User.ShowBytesInDisassembly,
@@ -115,11 +116,15 @@ namespace Reko.Core.Serialization
                 var sAddr = de.Key.ToString();
                 foreach (var rv in de.Value)
                 {
+                    var reg = rv.Register;
+                    var regValue = rv.Value;
+                    if (reg is null || regValue is null)
+                        continue;
                     sRegValues.Add(new RegisterValue_v2
                     {
                         Address = sAddr,
-                        Register = rv.Register.Name,
-                        Value = rv.Value.ToString().Replace("0x", ""),
+                        Register = reg.Name,
+                        Value = string.Format($"{{0:X{reg.DataType.Size * 2}}}", regValue.ToUInt64()),
                     });
                 }
             }
@@ -133,15 +138,15 @@ namespace Reko.Core.Serialization
             {
                 name = string.Format("g_{0:X}", de.Key.ToLinear());
             }
-            return name;
+            return name!;
         }
 
-        private SerializedCall_v1 SerializeUserCall(Program program, UserCallData uc)
+        private SerializedCall_v1? SerializeUserCall(Program program, UserCallData? uc)
         {
-            if (uc == null || uc.Address == null)
+            if (uc == null || uc.Address is null)
                 return null;
             var procser = program.CreateProcedureSerializer();
-            SerializedSignature ssig = null;
+            SerializedSignature? ssig = null;
             if (uc.Signature != null)
             {
                 ssig = procser.Serialize(uc.Signature);
@@ -160,8 +165,8 @@ namespace Reko.Core.Serialization
             return new IndirectJump_v4
             {
                 InstructionAddress = de.Key.ToString(),
-                TableAddress = de.Value.Address.ToString(),
-                IndexRegister = de.Value.IndexRegister.Name,
+                TableAddress = de.Value.Address?.ToString(),
+                IndexRegister = de.Value.IndexRegister?.Name,
             };
         }
 
@@ -183,7 +188,7 @@ namespace Reko.Core.Serialization
             };
         }
 
-        private ProcessorOptions_v4 SerializeProcessorOptions(UserData user, IProcessorArchitecture architecture)
+        private ProcessorOptions_v4? SerializeProcessorOptions(UserData user, IProcessorArchitecture architecture)
         {
             if (architecture == null)
                 return null;
@@ -204,7 +209,7 @@ namespace Reko.Core.Serialization
             }
         }
 
-        private PlatformOptions_v4 SerializePlatformOptions(UserData user, IPlatform platform)
+        private PlatformOptions_v4? SerializePlatformOptions(UserData user, IPlatform platform)
         {
             if (platform == null)
                 return null;
@@ -223,28 +228,31 @@ namespace Reko.Core.Serialization
             return new PlatformOptions_v4
             {
                 Name = user.Environment,
-                Options = SerializeValue(dictionary, doc)
+                Options = SerializeValue(dictionary, doc)!
                     .ChildNodes
                     .OfType<XmlElement>()
                     .ToArray()
             };
         }
 
-        private XmlElement SerializeOptionValue(string key, object value, XmlDocument doc)
+        private XmlElement? SerializeOptionValue(string key, object value, XmlDocument doc)
         {
             var el = SerializeValue(value, doc);
-            el.SetAttribute("key", "", key);
+            if (el != null)
+            {
+                el.SetAttribute("key", "", key);
+            }
             return el;
         }
 
-        private XmlElement SerializeValue(object value, XmlDocument doc)
+        private XmlElement? SerializeValue(object? value, XmlDocument doc)
         {
-            if (value == null)
+            if (value is null)
                 return null;
             if (value is string sValue)
             {
                 var el = doc.CreateElement("item", SerializedLibrary.Namespace_v5);
-                el.InnerXml = (string)value;
+                el.InnerXml = sValue;
                 return el;
             }
             if (value is IDictionary dict)
@@ -253,8 +261,11 @@ namespace Reko.Core.Serialization
                 foreach (DictionaryEntry de in dict)
                 {
                     var sub = SerializeValue(de.Value, doc);
-                    sub.SetAttribute("key", de.Key.ToString());
-                    el.AppendChild(sub);
+                    if (sub != null)
+                    {
+                        sub.SetAttribute("key", de.Key.ToString());
+                        el.AppendChild(sub);
+                    }
                 }
                 return el;
             }
@@ -274,7 +285,7 @@ namespace Reko.Core.Serialization
         {
             return new MetadataFile_v3
             {
-                 Filename = ConvertToProjectRelativePath(projectAbsPath, metadata.Filename),
+                 Filename = ConvertToProjectRelativePath(projectAbsPath, metadata.Filename!),
                   ModuleName = metadata.ModuleName,
             };
         }

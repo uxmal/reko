@@ -3,57 +3,57 @@ fp:fp
     uses: r63_2 = fp
 r63_2: orig: r63
     def:  r63_2 = fp
-    uses: r1_4 = Mem0[r63_2 + 0x00000004:word32]
-          r63_6 = r63_2 - 0x00000004
+    uses: r1_4 = Mem0[r63_2 + 4<32>:word32]
+          r63_6 = r63_2 - 4<32>
           r63_9 = PHI((r63_2, m1), (r63_2, m1), (r63_2, m1), (r63_8, m2))
           r63_9 = PHI((r63_2, m1), (r63_2, m1), (r63_2, m1), (r63_8, m2))
           r63_9 = PHI((r63_2, m1), (r63_2, m1), (r63_2, m1), (r63_8, m2))
           r63_13 = PHI((r63_2, l1), (r63_12, m3))
 Mem0:Mem
     def:  def Mem0
-    uses: r1_4 = Mem0[r63_2 + 0x00000004:word32]
+    uses: r1_4 = Mem0[r63_2 + 4<32>:word32]
 r1_4: orig: r1
-    def:  r1_4 = Mem0[r63_2 + 0x00000004:word32]
-    uses: branch r1_4 >u 0x00000005 m4_default
+    def:  r1_4 = Mem0[r63_2 + 4<32>:word32]
+    uses: branch r1_4 >u 5<32> m4_default
           switch (r1_4) { m2 m2 m3 m3 m2 m3 }
 r63_6: orig: r63
-    def:  r63_6 = r63_2 - 0x00000004
-    uses: Mem7[r63_6:word32] = 0x00000042
+    def:  r63_6 = r63_2 - 4<32>
+    uses: Mem7[r63_6:word32] = 0x42<32>
           foo(Mem7[r63_6:int32])
-          r63_8 = r63_6 + 0x00000004
+          r63_8 = r63_6 + 4<32>
 Mem7: orig: Mem0
-    def:  Mem7[r63_6:word32] = 0x00000042
+    def:  Mem7[r63_6:word32] = 0x42<32>
     uses: foo(Mem7[r63_6:int32])
 r63_8: orig: r63
-    def:  r63_8 = r63_6 + 0x00000004
+    def:  r63_8 = r63_6 + 4<32>
     uses: r63_9 = PHI((r63_2, m1), (r63_2, m1), (r63_2, m1), (r63_8, m2))
 r63_9: orig: r63
     def:  r63_9 = PHI((r63_2, m1), (r63_2, m1), (r63_2, m1), (r63_8, m2))
-    uses: r63_10 = r63_9 - 0x00000004
+    uses: r63_10 = r63_9 - 4<32>
 r63_10: orig: r63
-    def:  r63_10 = r63_9 - 0x00000004
-    uses: Mem11[r63_10:word32] = 0x0000002A
+    def:  r63_10 = r63_9 - 4<32>
+    uses: Mem11[r63_10:word32] = 0x2A<32>
           foo(Mem11[r63_10:int32])
-          r63_12 = r63_10 + 0x00000004
+          r63_12 = r63_10 + 4<32>
 Mem11: orig: Mem0
-    def:  Mem11[r63_10:word32] = 0x0000002A
+    def:  Mem11[r63_10:word32] = 0x2A<32>
     uses: foo(Mem11[r63_10:int32])
 r63_12: orig: r63
-    def:  r63_12 = r63_10 + 0x00000004
+    def:  r63_12 = r63_10 + 4<32>
     uses: r63_13 = PHI((r63_2, l1), (r63_12, m3))
 r63_13: orig: r63
     def:  r63_13 = PHI((r63_2, l1), (r63_12, m3))
-    uses: r63_14 = r63_13 - 0x00000004
+    uses: r63_14 = r63_13 - 4<32>
 r63_14: orig: r63
-    def:  r63_14 = r63_13 - 0x00000004
-    uses: Mem15[r63_14:word32] = 0x00000000
+    def:  r63_14 = r63_13 - 4<32>
+    uses: Mem15[r63_14:word32] = 0<32>
           foo(Mem15[r63_14:int32])
-          r63_16 = r63_14 + 0x00000004
+          r63_16 = r63_14 + 4<32>
 Mem15: orig: Mem0
-    def:  Mem15[r63_14:word32] = 0x00000000
+    def:  Mem15[r63_14:word32] = 0<32>
     uses: foo(Mem15[r63_14:int32])
 r63_16: orig: r63
-    def:  r63_16 = r63_14 + 0x00000004
+    def:  r63_16 = r63_14 + 4<32>
 // SsaSwitchWithSharedBranches
 // Return size: 0
 define SsaSwitchWithSharedBranches
@@ -63,31 +63,31 @@ SsaSwitchWithSharedBranches_entry:
 	// succ:  l1
 l1:
 	r63_2 = fp
-	r1_4 = Mem0[r63_2 + 0x00000004:word32]
-	branch r1_4 >u 0x00000005 m4_default
+	r1_4 = Mem0[r63_2 + 4<32>:word32]
+	branch r1_4 >u 5<32> m4_default
 	// succ:  m1 m4_default
 m1:
 	switch (r1_4) { m2 m2 m3 m3 m2 m3 }
 	// succ:  m2 m2 m3 m3 m2 m3
 m2:
-	r63_6 = r63_2 - 0x00000004
-	Mem7[r63_6:word32] = 0x00000042
+	r63_6 = r63_2 - 4<32>
+	Mem7[r63_6:word32] = 0x42<32>
 	foo(Mem7[r63_6:int32])
-	r63_8 = r63_6 + 0x00000004
+	r63_8 = r63_6 + 4<32>
 	// succ:  m3
 m3:
 	r63_9 = PHI((r63_2, m1), (r63_2, m1), (r63_2, m1), (r63_8, m2))
-	r63_10 = r63_9 - 0x00000004
-	Mem11[r63_10:word32] = 0x0000002A
+	r63_10 = r63_9 - 4<32>
+	Mem11[r63_10:word32] = 0x2A<32>
 	foo(Mem11[r63_10:int32])
-	r63_12 = r63_10 + 0x00000004
+	r63_12 = r63_10 + 4<32>
 	// succ:  m4_default
 m4_default:
 	r63_13 = PHI((r63_2, l1), (r63_12, m3))
-	r63_14 = r63_13 - 0x00000004
-	Mem15[r63_14:word32] = 0x00000000
+	r63_14 = r63_13 - 4<32>
+	Mem15[r63_14:word32] = 0<32>
 	foo(Mem15[r63_14:int32])
-	r63_16 = r63_14 + 0x00000004
+	r63_16 = r63_14 + 4<32>
 	return
 	// succ:  SsaSwitchWithSharedBranches_exit
 SsaSwitchWithSharedBranches_exit:

@@ -108,13 +108,12 @@ namespace Reko.UnitTests.Core
         {
             var proc = Procedure.Create(arch.Object, address, arch.Object.CreateFrame());
             var label = program.NamingPolicy.BlockName(address);
-            var block = new Block(proc, label);
+            var block = new Block(proc, address, label);
             program.Procedures.Add(address, proc);
 
             program.ImageMap.AddItemWithSize(
-                address, new ImageMapBlock
+                address, new ImageMapBlock(address)
                 {
-                    Address = address,
                     Block = block,
                     Size = 8
                 });
@@ -211,9 +210,8 @@ __foo@8 proc
 
             program.ImageMap.AddItemWithSize(
                 Address.Ptr32(0x10004),
-                new ImageMapItem
+                new ImageMapItem(Address.Ptr32(0x10004))
                 {
-                    Address = Address.Ptr32(0x10004),
                     DataType = PrimitiveType.Word32,
                     Size = 4,
                 });
@@ -256,9 +254,8 @@ l00010004	dd	0x07060504
 
             program.ImageMap.AddItemWithSize(
                 Address.Ptr32(0x10004),
-                new ImageMapItem
+                new ImageMapItem(Address.Ptr32(0x10004))
                 {
-                    Address = Address.Ptr32(0x10004),
                     DataType = str,
                     Size = 12,
                 });
@@ -294,7 +291,7 @@ l00010004		db	0x04
                     (MemoryArea m, Address a) => new LeImageReader(m, a));
 
             var addr = program.ImageMap.BaseAddress + 8;
-            var item = new ImageMapItem(90) { Address = addr };
+            var item = new ImageMapItem(addr, 90);
             program.ImageMap.AddItem(item.Address, item);
             var dmp = new Dumper(program);
             var sw = new StringWriter();

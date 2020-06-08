@@ -30,14 +30,12 @@ namespace Reko.Analysis
 {
 	public class LiveCopyInserter
 	{
-		private SsaState ssa;
-		private SsaIdentifierCollection ssaIds;
-		private SsaLivenessAnalysis sla;
-		private BlockDominatorGraph doms;
+		private readonly SsaIdentifierCollection ssaIds;
+		private readonly SsaLivenessAnalysis sla;
+		private readonly BlockDominatorGraph doms;
 
 		public LiveCopyInserter(SsaState ssa)
 		{
-			this.ssa = ssa;
 			this.ssaIds = ssa.Identifiers;
 			this.sla = new SsaLivenessAnalysis(ssa);
 			this.doms = ssa.Procedure.CreateBlockDominatorGraph();
@@ -54,11 +52,12 @@ namespace Reko.Analysis
 			return i;
 		}
 
+        //$REFACTOR: this should go to SsaState.
 		public Identifier InsertAssignmentNewId(Identifier idOld, Block b, int i)
 		{
             var stm = new Statement(
                 b.Address.ToLinear(),
-                null,
+                null!,
                 b);
             SsaIdentifier sidNew = ssaIds.Add((Identifier)ssaIds[idOld].OriginalIdentifier, stm, idOld, false);
 			stm.Instruction = new Assignment(sidNew.Identifier, idOld);
@@ -103,12 +102,11 @@ namespace Reko.Analysis
 			{
 				if (sid.DefStatement == null || sid.Uses.Count == 0)
 					continue;
-				PhiAssignment ass = sid.DefStatement.Instruction as PhiAssignment;
-				if (ass != null)
-				{
-					Transform(sid.DefStatement, ass);
-				}
-			}
+                if (sid.DefStatement.Instruction is PhiAssignment ass)
+                {
+                    Transform(sid.DefStatement, ass);
+                }
+            }
 		}
 
 		public void Transform(Statement stm, PhiAssignment phi)
@@ -116,9 +114,10 @@ namespace Reko.Analysis
 			Identifier idDst = phi.Dst;
 			for (int i = 0; i < phi.Src.Arguments.Length; ++i)
 			{
-                Identifier id = phi.Src.Arguments[i].Value as Identifier;
                 Block pred = phi.Src.Arguments[i].Block;
-				if (id != null && !(id is MemoryIdentifier) && idDst != id)
+                if (phi.Src.Arguments[i].Value is Identifier id &&
+                    !(id is MemoryIdentifier) &&
+                    idDst != id)
 				{
 					if (IsLiveAtCopyPoint(idDst, pred))
 					{
@@ -139,10 +138,9 @@ namespace Reko.Analysis
 
 		public class DominatedUseRenamer : InstructionTransformer
 		{
-			private BlockDominatorGraph domGraph;
-			private SsaIdentifier sidOld; 
-			private SsaIdentifier sidNew;
-			private Statement stmCur;
+			private readonly BlockDominatorGraph domGraph;
+			private SsaIdentifier? sidOld; 
+			private SsaIdentifier? sidNew;
 
 			public DominatedUseRenamer(BlockDominatorGraph domGraph)
 			{
@@ -156,8 +154,7 @@ namespace Reko.Analysis
 
 				foreach (Statement stm in sidOld.Uses)
 				{
-					stmCur = stm;
-					if (domGraph.DominatesStrictly(sidOld.DefStatement, stm))
+					if (domGraph.DominatesStrictly(sidOld.DefStatement!, stm))
 					{
 						stm.Instruction = stm.Instruction.Accept(this);
 					}
@@ -166,7 +163,7 @@ namespace Reko.Analysis
 
 			public override Expression VisitIdentifier(Identifier id)
 			{
-				return (id == sidOld.Identifier) ? sidNew.Identifier : id;
+				return (id == sidOld!.Identifier) ? sidNew!.Identifier : id;
 			}
 
 

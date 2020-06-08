@@ -4,11 +4,11 @@ T_1: (in ds : selector)
   Class: Eq_1
   DataType: 
   OrigDataType: (ptr32 (segment (300 (arr T_8) a0300)))
-T_2: (in 0x0300 : word16)
+T_2: (in 0x300<16> : word16)
   Class: Eq_2
   DataType: 
   OrigDataType: word16
-T_3: (in SEQ(ds, 0x0300) : ptr32)
+T_3: (in SEQ(ds, 0x300<16>) : ptr32)
   Class: Eq_3
   DataType: 
   OrigDataType: ptr32
@@ -16,15 +16,15 @@ T_4: (in bx : word16)
   Class: Eq_4
   DataType: 
   OrigDataType: ui16
-T_5: (in 0x0008 : word16)
+T_5: (in 8<16> : word16)
   Class: Eq_5
   DataType: 
   OrigDataType: ui16
-T_6: (in bx * 0x0008 : word16)
+T_6: (in bx * 8<16> : word16)
   Class: Eq_6
   DataType: 
   OrigDataType: ui16
-T_7: (in SEQ(ds, 0x0300)[bx * 0x0008] : word32)
+T_7: (in SEQ(ds, 0x300<16>)[bx * 8<16>] : word32)
   Class: Eq_7
   DataType: 
   OrigDataType: word32

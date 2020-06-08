@@ -91,12 +91,13 @@ namespace Reko.UnitTests.Analysis
 
 		protected override void RunTest(Program program, TextWriter writer)
 		{
-			DataFlowAnalysis dfa = new DataFlowAnalysis(program, dynamicLinker.Object, new FakeDecompilerEventListener());
+            var listener = new FakeDecompilerEventListener();
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, dynamicLinker.Object, listener);
 			var ssts = dfa.UntangleProcedures();
 			foreach (var sst in ssts)
 			{
 				SsaState ssa = sst.SsaState;
-				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
+				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform, listener);
 				cce.Transform();
 
 				DeadCode.Eliminate(ssa);
@@ -175,7 +176,7 @@ l1:
 	call foo (retsize: 4;)
 		uses: r1:r1
 		defs: r1:r1_2
-	Mem4[0x00123400:word32] = r1_2
+	Mem4[0x00123400<p32>:word32] = r1_2
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -193,7 +194,7 @@ ProcedureBuilder_exit:
                 var r1 = m.Frame.EnsureRegister(_r1);
                 var r2 = m.Frame.EnsureRegister(_r2);
                 var call = m.Call(foo, 4);
-                m.MStore(m.Word32(0x123400), r1);
+                m.MStore(m.Ptr32(0x123400), r1);
                 m.Return();
             });
         }
@@ -224,7 +225,7 @@ ProcedureBuilder_exit:
 
             var sExp =
 @"
-foo(0x00000001)
+foo(1<32>)
 ";
             AssertProcedureCode(sExp);
         }

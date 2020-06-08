@@ -63,8 +63,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var mem = new MemoryArea(Address.Ptr32(0x10), new byte[40]);
             var seg = new ImageSegment(".text", mem, AccessMode.ReadWrite);
             var segmentMap = new SegmentMap(Address.Ptr32(0x05), seg);
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
-            var platform = new Win32Platform(null, arch);
+            var arch = new X86ArchitectureFlat32(services, "x86-protected-32");
+            var platform = new Win32Platform(services, arch);
             program = new Program(segmentMap, arch, platform);
             program.ImageMap = segmentMap.CreateImageMap();
         }
@@ -77,9 +77,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private void Given_ImageMapItem(uint addr, DataType dataType, string name)
         {
             var address = Address32.Ptr32(addr);
-            var item = new ImageMapItem
+            var item = new ImageMapItem(address)
             {
-                Address = address,
                 DataType = dataType,
                 Name = name,
                 Size = (uint)dataType.Size,

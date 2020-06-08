@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core.Output;
 using System;
 using System.Collections.Generic;
@@ -99,7 +101,7 @@ namespace Reko.Gui
             if (!string.IsNullOrEmpty(dest))
             {
                 TextWriter.Write(" href=\"");
-                WriteEntityEscaped(dest);
+                WriteEntityEscaped(dest!);
                 TextWriter.Write("\"");
             }
             TextWriter.Write(">");

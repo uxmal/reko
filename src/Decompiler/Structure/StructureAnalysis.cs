@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Absyn;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -54,12 +55,14 @@ namespace Reko.Structure
         private Queue<Region> unresolvedSwitches;
         private readonly DecompilerEventListener eventListener;
 
+#nullable disable
         public StructureAnalysis(DecompilerEventListener listener, Program program, Procedure proc)
         {
             this.eventListener = listener;
             this.program = program;
             this.proc = proc;
         }
+#nullable enable
 
         public void Structure()
         {
@@ -176,7 +179,7 @@ namespace Reko.Structure
         private DominatorGraph<Region> BuildPostDoms()
         {
             var revGraph = new ReverseGraph(regionGraph);
-            var exitNode = new Region(new Block(proc, "DummyExitBlock")) { Type = RegionType.Tail };
+            var exitNode = new Region(new Block(proc, proc.EntryAddress, "DummyExitBlock")) { Type = RegionType.Tail };
             revGraph.Nodes.Add(exitNode);
             var tailRegions = regionGraph.Nodes.Where(n => n.Type == RegionType.Tail);
             foreach (var r in tailRegions)
@@ -330,7 +333,7 @@ namespace Reko.Structure
         /// </summary>
         private bool VirtualizeReturn(Region n)
         {
-            VirtualEdge returnEdge = null;
+            VirtualEdge? returnEdge = null;
             foreach (var s in regionGraph.Successors(n))
                 if (s.IsReturn)
                     returnEdge = new VirtualEdge(n, s, VirtualEdgeType.Goto);
@@ -351,6 +354,7 @@ namespace Reko.Structure
         private bool ReduceIfRegion(Region n)
         {
             var ss = regionGraph.Successors(n).ToArray();
+            var cond = n.Expression!;
             var el = ss[0];
             var th = ss[1];
             var elS = LinearSuccessor(el);
@@ -360,7 +364,7 @@ namespace Reko.Structure
                 if (RefinePredecessor(n, el))
                     return false;
                 // Collapse (If else) into n.
-                n.Statements.Add(new AbsynIf(n.Expression.Invert(), el.Statements));
+                n.Statements.Add(new AbsynIf(cond.Invert(), el.Statements));
                 regionGraph.RemoveEdge(n, el);
                 if (elS != null)
                     regionGraph.RemoveEdge(el, elS);
@@ -374,7 +378,7 @@ namespace Reko.Structure
                 if (RefinePredecessor(n, th))
                     return false;
                 // Collapse (if-then) into n
-                n.Statements.Add(new AbsynIf(n.Expression, th.Statements));
+                n.Statements.Add(new AbsynIf(cond, th.Statements));
                 regionGraph.RemoveEdge(n, th);
                 if (thS != null)
                     regionGraph.RemoveEdge(th, thS);
@@ -390,7 +394,7 @@ namespace Reko.Structure
                     return false;
 
                 // Collapse (If then else) into n.
-                n.Statements.Add(new AbsynIf(n.Expression.Invert(), el.Statements, th.Statements));
+                n.Statements.Add(new AbsynIf(cond.Invert(), el.Statements, th.Statements));
                 regionGraph.RemoveEdge(n, el);
                 regionGraph.RemoveEdge(n, th);
                 regionGraph.RemoveEdge(el, elS);
@@ -568,7 +572,7 @@ all other cases, together they constitute a Switch[].
         private Region FindIrregularSwitchFollowRegion(Region n)
         {
             this.postDoms = BuildPostDoms();
-            var immPDom = this.postDoms.ImmediateDominator(n);
+            var immPDom = this.postDoms.ImmediateDominator(n)!;
             var caseNodes = regionGraph.Successors(n).ToHashSet();
             if (caseNodes.Any(s => regionGraph.Successors(s).Contains(immPDom)))
                 return immPDom;
@@ -576,7 +580,7 @@ all other cases, together they constitute a Switch[].
             int incoming(Region r)
             {
                 return regionGraph.Predecessors(r)
-                    .Where(p => caseNodes.Contains(p))
+                    .Where(p => caseNodes!.Contains(p))
                     .Count();
             }
             var candidates = caseNodes.SelectMany(c => regionGraph.Successors(c))
@@ -652,9 +656,9 @@ all other cases, together they constitute a Switch[].
             return false;
         }
 
-        private Region GetSwitchFollow(Region n)
+        private Region? GetSwitchFollow(Region n)
         {
-            Region follow = null;
+            Region? follow = null;
             foreach (var s in regionGraph.Successors(n))
             {
                 var ss = LinearSuccessor(s);
@@ -676,22 +680,25 @@ all other cases, together they constitute a Switch[].
             return regionGraph.Successors(n).All(s => s.Type == RegionType.Tail);
         }
 
-        private bool ReduceIncSwitch(Region n, Region follow)
+        private bool ReduceIncSwitch(Region n, Region? follow)
         {
+            Expression exp = n.Expression!;
+
             //$REVIEW: workaround for when the datatype of n.Expression
             // is non-integral. What causes this?
-            if (!(n.Expression.DataType is PrimitiveType pt))
+            if (!(exp.DataType is PrimitiveType pt))
             {
                 eventListener.Warn(eventListener.CreateBlockNavigator(this.program, n.Block), "Non-integral switch expression");
-                pt = PrimitiveType.CreateWord(n.Expression.DataType.BitSize);
+                pt = PrimitiveType.CreateWord(exp.DataType.BitSize);
             }
+            var (switchExp, offset) = GetConstantOffset(exp);
             var cases = CollectSwitchCases(n);
             var stms = new List<AbsynStatement>();
             foreach (var succ in cases.Keys)
             {
                 foreach (int c in cases[succ])
                 {
-                    stms.Add(new AbsynCase(Constant.Create(pt, c)));
+                    stms.Add(new AbsynCase(Constant.Create(pt, c + offset)));
                 }
                 stms.AddRange(succ.Statements);
                 if (succ.Type != RegionType.Tail)
@@ -705,7 +712,7 @@ all other cases, together they constitute a Switch[].
                 }
                 RemoveRegion(succ);
             }
-            var sw = new AbsynSwitch(n.Expression, stms);
+            var sw = new AbsynSwitch(switchExp, stms);
             n.Statements.Add(sw);
             n.Expression = null;
             if (follow != null)
@@ -720,11 +727,29 @@ all other cases, together they constitute a Switch[].
             return true;
         }
 
+        private (Expression, long) GetConstantOffset(Expression exp)
+        {
+            if (exp is BinaryExpression bin &&
+                bin.Right is Constant offset &&
+                offset.IsValid)
+            {
+                if (bin.Operator == Operator.IAdd)
+                {
+                    return (bin.Left, -offset.ToInt64());
+                }
+                else if (bin.Operator == Operator.ISub)
+                {
+                    return (bin.Left, offset.ToInt64());
+                }
+            }
+            return (exp, 0);
+        }
+
         /// <summary>
         /// Collects the cases of a switch statement such that cases with
-        /// the same destination region are collected in the same list
+        /// the same destination region are collected in the same list.
         /// </summary>
-        /// <param name="n"></param>
+        /// <param name="n">The 'head' of the switch statement.</param>
         /// <returns>A mapping from Region to a list of the case values
         /// that jump to that region.</returns>
         private Dictionary<Region, List<int>> CollectSwitchCases(Region n)
@@ -769,7 +794,7 @@ all other cases, together they constitute a Switch[].
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        private Region LinearSuccessor(Region n)
+        private Region? LinearSuccessor(Region n)
         {
             if (n.Type != RegionType.Linear)
                 return null;
@@ -782,7 +807,7 @@ all other cases, together they constitute a Switch[].
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        private Region SingleSuccessor(Region n)
+        private Region? SingleSuccessor(Region n)
         {
             var succ = regionGraph.Successors(n);
             if (succ.Count != 1)
@@ -790,7 +815,7 @@ all other cases, together they constitute a Switch[].
             return succ.First();
         }
 
-        private Region SinglePredecessor(Region n)
+        private Region? SinglePredecessor(Region n)
         {
             var succ = regionGraph.Predecessors(n);
             if (succ.Count != 1)
@@ -874,7 +899,7 @@ doing future pattern matches.
             {
                 // Goto to a return statement => just a return statement.
                 var ret = (AbsynReturn)vEdge.To.Statements[0];
-                Expression v = ret.Value?.CloneExpression();
+                Expression? v = ret.Value?.CloneExpression();
                 stm = new AbsynReturn(v);
             }
             else
@@ -924,16 +949,13 @@ doing future pattern matches.
         {
             if (from.Type == RegionType.Condition)
             {
+                var e = from.Expression!;
                 var succs = regionGraph.Successors(from).ToArray();
                 if (succs[0] == to)
                 {
-                    from.Expression = from.Expression.Invert();
+                    e = e.Invert();
                 }
-                var ifStm = new AbsynIf
-                {
-                    Condition = from.Expression,
-                    Then = { stm }
-                };
+                var ifStm = new AbsynIf(e, new List<AbsynStatement> { stm });
                 from.Statements.Add(ifStm);
                 from.Expression = null;
                 Probe();
@@ -1031,9 +1053,9 @@ are added during loop refinement, which we discuss next.
                     {
                         // DoWhile!
                         var exp = s == succs[0]
-                            ? n.Expression.Invert()
+                            ? n.Expression!.Invert()
                             : n.Expression;
-                        loopStm = new AbsynDoWhile(s.Statements, exp);
+                        loopStm = new AbsynDoWhile(s.Statements, exp!);
                         n.Type = RegionType.Linear;
                     }
                     n.Statements = new List<AbsynStatement> { loopStm };
@@ -1053,11 +1075,11 @@ are added during loop refinement, which we discuss next.
                 {
                     // While!
                     var exp = s == succs[0] 
-                        ? n.Expression.Invert() 
-                        : n.Expression;
+                        ? n.Expression!.Invert() 
+                        : n.Expression!;
                     if (n.Statements.Count == 0)
                     {
-                        n.Statements.Add(new AbsynWhile(exp, s.Statements));
+                        n.Statements.Add(new AbsynWhile(exp!, s.Statements));
                     }
                     else
                     {
@@ -1160,8 +1182,8 @@ refinement on the loop body, which we describe below.
             var (follow, latch) = DetermineFollowLatch(head, loopNodes);
             if (follow == null && latch == null)
                 return false;
-            var lexicalNodes = GetLexicalNodes(head, follow, loopNodes);
-            var virtualized = VirtualizeIrregularExits(head, latch, follow, lexicalNodes);
+            var lexicalNodes = GetLexicalNodes(head, follow!, loopNodes);
+            var virtualized = VirtualizeIrregularExits(head, latch!, follow!, lexicalNodes);
             if (virtualized)
                 return true;
             foreach (var n in lexicalNodes)
@@ -1177,6 +1199,7 @@ refinement on the loop body, which we describe below.
             var succs = regionGraph.Successors(n).ToArray();
             if (succs.Length == 2 && n.Type == RegionType.Condition)
             {
+                var e = n.Expression!;
                 var el = succs[0];
                 var th = succs[1];
 
@@ -1184,36 +1207,35 @@ refinement on the loop body, which we describe below.
                     SinglePredecessor(el) == n && SinglePredecessor(th) == n)
                 {
                     // Both successors are tails.
-                    n.Statements.Add(new AbsynIf(n.Expression, th.Statements, el.Statements));
+                    n.Statements.Add(new AbsynIf(e, th.Statements, el.Statements));
                     regionGraph.RemoveEdge(n, el);
                     regionGraph.RemoveEdge(n, th);
                     RemoveRegion(el);
                     RemoveRegion(th);
                     n.Expression = null;
                     n.Type = RegionType.Tail;
-            Probe();
+                    Probe();
                     return true;
                 }
                 if (regions.Contains(el) && el.Type == RegionType.Tail && SinglePredecessor(el) == n)
                 {
-                    var e = n.Expression.Invert();
+                    e = e.Invert();
                     n.Statements.Add(new AbsynIf(e, el.Statements));
                     regionGraph.RemoveEdge(n, el);
                     RemoveRegion(el);
                     n.Expression = null;
                     n.Type = RegionType.Linear;
-            Probe();
+                    Probe();
                     return true;
                 }
                 if (regions.Contains(th) && th.Type == RegionType.Tail && SinglePredecessor(th) == n)
                 {
-                    var e = n.Expression;
                     n.Statements.Add(new AbsynIf(e, th.Statements));
                     regionGraph.RemoveEdge(n, th);
                     RemoveRegion(th);
                     n.Expression = null;
                     n.Type = RegionType.Linear;
-            Probe();
+                    Probe();
                     return true;
                 }
             }
@@ -1251,7 +1273,7 @@ refinement on the loop body, which we describe below.
                     .Count();
         }
 
-        private (Region follow, Region latch) DetermineFollowLatch(Region head, ISet<Region> loopNodes)
+        private (Region? follow, Region? latch) DetermineFollowLatch(Region head, ISet<Region> loopNodes)
         {
             var headSucc = regionGraph.Successors(head).ToArray();
             if (headSucc.Length == 2)
@@ -1259,7 +1281,7 @@ refinement on the loop body, which we describe below.
                 // If the head is a Conditional node and one of the edges 
                 // leaves the loop, the head of that edge is the follow 
                 // node of the loop.
-                Region follow = null;
+                Region? follow = null;
                 if (!loopNodes.Contains(headSucc[0]))
                 {
                     follow = headSucc[0];
@@ -1430,7 +1452,7 @@ refinement on the loop body, which we describe below.
         /// </summary>
         private bool LastResort(Region n)
         {
-            VirtualEdge vEdge = null;
+            VirtualEdge? vEdge = null;
 
             foreach (var s in regionGraph.Successors(n))
             {

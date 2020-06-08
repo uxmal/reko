@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Evaluation
             IdConstant ic = new IdConstant(ctx.Object, new Unifier(null, null), listener);
             Assert.IsTrue(ic.Match(edx));
             Expression e = ic.Transform();
-            Assert.AreEqual("321", e.ToString());
+            Assert.AreEqual("321<i32>", e.ToString());
             Assert.AreEqual("DWORD", e.DataType.ToString());
         }
 

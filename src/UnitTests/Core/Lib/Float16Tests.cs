@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Core.Lib
         [Test]
         public void F16_NegativeZero()
         {
-            Assert.AreEqual("0", F16(0x8000));
+            Assert.AreEqual("-0", F16(0x8000));
         }
 
         [Test]

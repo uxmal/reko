@@ -6,6 +6,8 @@
 /////////////////////////////////////////////////////////////////////
 #define TREE_WITH_PARENT_POINTERS
 
+#nullable enable
+
 namespace Reko.Core.Lib
 {
     using System;
@@ -134,9 +136,9 @@ namespace Reko.Core.Lib
         IEnumerable<KeyValuePair<Interval<T>, TypeValue>>
         where T : IComparable<T>
     {
-        private IntervalNode root;
-        private IComparer<T> comparer;
-        private KeyValueComparer<T, TypeValue> keyvalueComparer;
+        private IntervalNode? root;
+        private readonly IComparer<T> comparer;
+        private readonly KeyValueComparer<T, TypeValue> keyvalueComparer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IntervalTree&lt;T, TypeValue&gt;"/> class.
@@ -293,7 +295,8 @@ namespace Reko.Core.Lib
         /// <returns></returns>
         public List<KeyValuePair<Interval<T>, TypeValue>> GetIntervalsStartingAt(T arg)
         {
-            return IntervalNode.GetIntervalsStartingAt(this.root, arg);
+            return IntervalNode.GetIntervalsStartingAt(this.root, arg)
+                ?? new List<KeyValuePair<Interval<T>, TypeValue>>();
         }
 
 #if TREE_WITH_PARENT_POINTERS
@@ -451,7 +454,7 @@ namespace Reko.Core.Lib
         /// <param name="subtree">The subtree.</param>
         /// <param name="data">The data.</param>
         /// <returns></returns>
-        private bool TryGetIntervalImpl(IntervalNode subtree, Interval<T> data, out TypeValue value)
+        private bool TryGetIntervalImpl(IntervalNode? subtree, Interval<T> data, out TypeValue value)
         {
             if (subtree != null)
             {
@@ -474,7 +477,7 @@ namespace Reko.Core.Lib
                     }
                     else if (subtree.Range != null)
                     {
-                        int kthIndex = subtree.Range.BinarySearch(new KeyValuePair<T, TypeValue>(data.End, default(TypeValue)), this.keyvalueComparer);
+                        int kthIndex = subtree.Range.BinarySearch(new KeyValuePair<T, TypeValue>(data.End, default!), this.keyvalueComparer);
                         if (kthIndex >= 0)
                         {
                             value = subtree.Range[kthIndex].Value;
@@ -483,7 +486,7 @@ namespace Reko.Core.Lib
                     }
                 }
             }
-            value = default(TypeValue);
+            value = default!;
             return false;
         }
 
@@ -512,18 +515,18 @@ namespace Reko.Core.Lib
             #region Fields
 
 #if TREE_WITH_PARENT_POINTERS
-            private IntervalNode Parent;
+            private IntervalNode? Parent;
 #endif
             #endregion
 
             #region Properties
 
             public int Balance { get; private set; }
-            public IntervalNode Left { get; private set; }
-            public IntervalNode Right { get; private set; }
+            public IntervalNode? Left { get; private set; }
+            public IntervalNode? Right { get; private set; }
             public Interval<T> Interval { get; private set; }
             public TypeValue Value { get; private set; }
-            public List<KeyValuePair<T, TypeValue>> Range { get; private set; }
+            public List<KeyValuePair<T, TypeValue>>? Range { get; private set; }
             public T Max { get; private set; }
 
             #endregion
@@ -550,7 +553,7 @@ namespace Reko.Core.Lib
             /// <param name="elem">The elem.</param>
             /// <param name="data">The data.</param>
             /// <returns></returns>
-            public static IntervalNode Add(IntervalNode elem, Interval<T> interval, TypeValue value, ref bool wasAdded, ref bool wasSuccessful)
+            public static IntervalNode Add(IntervalNode? elem, Interval<T> interval, TypeValue value, ref bool wasAdded, ref bool wasSuccessful)
             {
                 if (elem == null)
                 {
@@ -561,7 +564,7 @@ namespace Reko.Core.Lib
                 else
                 {
                     int compareResult = interval.Start.CompareTo(elem.Interval.Start);
-                    IntervalNode newChild = null;
+                    IntervalNode? newChild = null;
                     if (compareResult < 0)
                     {
                         newChild = Add(elem.Left, interval, value, ref wasAdded, ref wasSuccessful);
@@ -585,20 +588,20 @@ namespace Reko.Core.Lib
                             {
                                 if (elem.Left.Balance == 1)
                                 {
-                                    int elemLeftRightBalance = elem.Left.Right.Balance;
+                                    int elemLeftRightBalance = elem.Left.Right!.Balance;
 
                                     elem.Left = RotateLeft(elem.Left);
                                     elem = RotateRight(elem);
 
                                     elem.Balance = 0;
-                                    elem.Left.Balance = elemLeftRightBalance == 1 ? -1 : 0;
-                                    elem.Right.Balance = elemLeftRightBalance == -1 ? 1 : 0;
+                                    elem.Left!.Balance = elemLeftRightBalance == 1 ? -1 : 0;
+                                    elem.Right!.Balance = elemLeftRightBalance == -1 ? 1 : 0;
                                 }
                                 else if (elem.Left.Balance == -1)
                                 {
                                     elem = RotateRight(elem);
                                     elem.Balance = 0;
-                                    elem.Right.Balance = 0;
+                                    elem.Right!.Balance = 0;
                                 }
                                 wasAdded = false;
                             }
@@ -626,14 +629,14 @@ namespace Reko.Core.Lib
                             {
                                 if (elem.Right.Balance == -1)
                                 {
-                                    int elemRightLeftBalance = elem.Right.Left.Balance;
+                                    int elemRightLeftBalance = elem.Right.Left!.Balance;
 
                                     elem.Right = RotateRight(elem.Right);
                                     elem = RotateLeft(elem);
 
                                     elem.Balance = 0;
-                                    elem.Left.Balance = elemRightLeftBalance == 1 ? -1 : 0;
-                                    elem.Right.Balance = elemRightLeftBalance == -1 ? 1 : 0;
+                                    elem.Left!.Balance = elemRightLeftBalance == 1 ? -1 : 0;
+                                    elem.Right!.Balance = elemRightLeftBalance == -1 ? 1 : 0;
                                 }
 
                                 else if (elem.Right.Balance == 1)
@@ -641,7 +644,7 @@ namespace Reko.Core.Lib
                                     elem = RotateLeft(elem);
 
                                     elem.Balance = 0;
-                                    elem.Left.Balance = 0;
+                                    elem.Left!.Balance = 0;
                                 }
                                 wasAdded = false;
                             }
@@ -659,7 +662,6 @@ namespace Reko.Core.Lib
                     }
                     ComputeMax(elem);
                 }
-
                 return elem;
             }
 
@@ -677,7 +679,7 @@ namespace Reko.Core.Lib
                 }
                 else if (node.Left == null)
                 {
-                    node.Max = (maxRange.CompareTo(node.Right.Max) >= 0) ? maxRange : node.Right.Max;
+                    node.Max = (maxRange.CompareTo(node.Right!.Max) >= 0) ? maxRange : node.Right.Max;
                 }
                 else if (node.Right == null)
                 {
@@ -704,7 +706,7 @@ namespace Reko.Core.Lib
             /// </summary>
             /// <param name="node">The node.</param>
             /// <returns></returns>
-            public static IntervalNode FindMin(IntervalNode node)
+            public static IntervalNode? FindMin(IntervalNode? node)
             {
                 while (node != null && node.Left != null)
                 {
@@ -718,7 +720,7 @@ namespace Reko.Core.Lib
             /// </summary>
             /// <param name="node">The node.</param>
             /// <returns></returns>
-            public static IntervalNode FindMax(IntervalNode node)
+            public static IntervalNode? FindMax(IntervalNode? node)
             {
                 while (node != null && node.Right != null)
                 {
@@ -776,7 +778,7 @@ namespace Reko.Core.Lib
             /// Succeeds this instance.
             /// </summary>
             /// <returns></returns>
-            public IntervalNode Successor()
+            public IntervalNode? Successor()
             {
                 if (this.Right != null)
                     return FindMin(this.Right);
@@ -795,7 +797,7 @@ namespace Reko.Core.Lib
             /// Precedes this instance.
             /// </summary>
             /// <returns></returns>
-            public IntervalNode Predecesor()
+            public IntervalNode? Predecesor()
             {
                 if (this.Left != null)
                 {
@@ -819,10 +821,10 @@ namespace Reko.Core.Lib
             /// <param name="node">The node.</param>
             /// <param name="arg">The arg.</param>
             /// <returns></returns>
-            public static IntervalNode Delete(IntervalNode node, Interval<T> arg, ref bool wasDeleted, ref bool wasSuccessful)
+            public static IntervalNode? Delete(IntervalNode node, Interval<T> arg, ref bool wasDeleted, ref bool wasSuccessful)
             {
                 int cmp = arg.Start.CompareTo(node.Interval.Start);
-                IntervalNode newChild = null;
+                IntervalNode? newChild = null;
 
                 if (cmp < 0)
                 {
@@ -849,7 +851,7 @@ namespace Reko.Core.Lib
                             var min = FindMin(node.Right);
 
                             var interval = node.Interval;
-                            node.Swap(min);
+                            node.Swap(min!);
 
                             wasDeleted = false;
 
@@ -923,56 +925,56 @@ namespace Reko.Core.Lib
                     }
                     else if (node.Balance == -2)
                     {
-                        if (node.Left.Balance == 1)
+                        if (node.Left!.Balance == 1)
                         {
-                            int leftRightBalance = node.Left.Right.Balance;
+                            int leftRightBalance = node.Left.Right!.Balance;
 
                             node.Left = RotateLeft(node.Left);
                             node = RotateRight(node);
 
                             node.Balance = 0;
-                            node.Left.Balance = (leftRightBalance == 1) ? -1 : 0;
-                            node.Right.Balance = (leftRightBalance == -1) ? 1 : 0;
+                            node.Left!.Balance = (leftRightBalance == 1) ? -1 : 0;
+                            node.Right!.Balance = (leftRightBalance == -1) ? 1 : 0;
                         }
                         else if (node.Left.Balance == -1)
                         {
                             node = RotateRight(node);
                             node.Balance = 0;
-                            node.Right.Balance = 0;
+                            node.Right!.Balance = 0;
                         }
                         else if (node.Left.Balance == 0)
                         {
                             node = RotateRight(node);
                             node.Balance = 1;
-                            node.Right.Balance = -1;
+                            node.Right!.Balance = -1;
 
                             wasDeleted = false;
                         }
                     }
                     else if (node.Balance == 2)
                     {
-                        if (node.Right.Balance == -1)
+                        if (node.Right!.Balance == -1)
                         {
-                            int rightLeftBalance = node.Right.Left.Balance;
+                            int rightLeftBalance = node.Right.Left!.Balance;
 
                             node.Right = RotateRight(node.Right);
                             node = RotateLeft(node);
 
                             node.Balance = 0;
-                            node.Left.Balance = (rightLeftBalance == 1) ? -1 : 0;
-                            node.Right.Balance = (rightLeftBalance == -1) ? 1 : 0;
+                            node.Left!.Balance = (rightLeftBalance == 1) ? -1 : 0;
+                            node.Right!.Balance = (rightLeftBalance == -1) ? 1 : 0;
                         }
                         else if (node.Right.Balance == 1)
                         {
                             node = RotateLeft(node);
                             node.Balance = 0;
-                            node.Left.Balance = 0;
+                            node.Left!.Balance = 0;
                         }
                         else if (node.Right.Balance == 0)
                         {
                             node = RotateLeft(node);
                             node.Balance = -1;
-                            node.Left.Balance = 1;
+                            node.Left!.Balance = 1;
 
                             wasDeleted = false;
                         }
@@ -988,7 +990,7 @@ namespace Reko.Core.Lib
             /// <param name="subtree">The subtree.</param>
             /// <param name="data">The data.</param>
             /// <returns></returns>
-            public static List<KeyValuePair<Interval<T>, TypeValue>> GetIntervalsStartingAt(IntervalNode subtree, T start)
+            public static List<KeyValuePair<Interval<T>, TypeValue>>? GetIntervalsStartingAt(IntervalNode? subtree, T start)
             {
                 if (subtree != null)
                 {
@@ -1065,7 +1067,6 @@ namespace Reko.Core.Lib
                         ////the max value is stored in the node, if the node doesn't overlap then neither are the nodes in its range 
                         if (this.Range != null && this.Range.Count > 0)
                         {
-                            int rangeCount = this.Range.Count;
                             foreach (var kvp in this.GetRange())
                             {
                                 if (kvp.Key.OverlapsWith(toFind))
@@ -1184,7 +1185,7 @@ namespace Reko.Core.Lib
             /// <returns></returns>
             private static IntervalNode RotateLeft(IntervalNode node)
             {
-                var right = node.Right;
+                var right = node.Right!;
                 Debug.Assert(node.Right != null);
 
                 var rightLeft = right.Left;
@@ -1227,7 +1228,7 @@ namespace Reko.Core.Lib
             /// <returns></returns>
             private static IntervalNode RotateRight(IntervalNode node)
             {
-                var left = node.Left;
+                var left = node.Left!;
                 Debug.Assert(node.Left != null);
 
                 var leftRight = left.Right;
@@ -1285,7 +1286,7 @@ namespace Reko.Core.Lib
                     else if (rangeCount > 12)
                     {
                         var keyvalueComparer = new KeyValueComparer<T, TypeValue>(ComparerUtil.GetComparer());
-                        int k = this.Range.BinarySearch(new KeyValuePair<T, TypeValue>(interval.End, default(TypeValue)), keyvalueComparer);
+                        int k = this.Range.BinarySearch(new KeyValuePair<T, TypeValue>(interval.End, default!), keyvalueComparer);
                         if (k >= 0)
                         {
                             intervalPosition = k + 1;
@@ -1385,7 +1386,7 @@ namespace Reko.Core.Lib
 
         private class KeyValueComparer<TKey, TValue> : IComparer<KeyValuePair<TKey, TValue>>
         {
-            private IComparer<TKey> keyComparer;
+            private readonly IComparer<TKey> keyComparer;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="IntervalTree&lt;T, TypeValue&gt;.KeyValueComparer&lt;TKey, TValue&gt;"/> class.

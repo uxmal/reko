@@ -119,7 +119,7 @@ namespace Reko.Arch.X86
                 opr(
                     opr(
                         SrcOp(instrCur.Operands[0]),
-                        SrcOp(instrCur.Operands[1])),
+                        SrcOp(instrCur.Operands[1], instrCur.Operands[0].Width)),
                     c),
                 CopyFlags.EmitCc);
         }
@@ -287,27 +287,64 @@ namespace Reko.Arch.X86
 
         public void RewriteCbw()
         {
-            if (instrCur.dataWidth == PrimitiveType.Word32)
-            {
-                m.Assign(
-                    orw.AluRegister(Registers.eax),
-                    m.Cast(PrimitiveType.Int32, orw.AluRegister(Registers.ax)));
-            }
-            else
-            {
-                m.Assign(
-                    orw.AluRegister(Registers.ax),
-                    m.Cast(PrimitiveType.Int16, orw.AluRegister(Registers.al)));
-            }
+            m.Assign(
+                orw.AluRegister(Registers.ax),
+                m.Cast(PrimitiveType.Int16, orw.AluRegister(Registers.al)));
         }
+
+        private void RewriteCdq()
+        {
+            Identifier edx_eax = binder.EnsureSequence(
+                PrimitiveType.Int64,
+                Registers.edx,
+                Registers.eax);
+            m.Assign(
+                edx_eax, m.Cast(edx_eax.DataType, orw.AluRegister(Registers.eax)));
+        }
+
+        public void RewriteCdqe()
+        {
+            m.Assign(
+                orw.AluRegister(Registers.rax),
+                m.Cast(PrimitiveType.Int64, orw.AluRegister(Registers.eax)));
+        }
+
+        public void RewriteCqo()
+        {
+            Identifier rdx_rax = binder.EnsureSequence(
+                PrimitiveType.Int128,
+                Registers.rdx,
+                Registers.rax);
+            m.Assign(
+                rdx_rax, m.Cast(rdx_rax.DataType, orw.AluRegister(Registers.rax)));
+
+        }
+
+        private void RewriteCwd()
+        {
+            Identifier dx_ax = binder.EnsureSequence(
+                PrimitiveType.Int32,
+                Registers.dx,
+                Registers.ax);
+            m.Assign(
+                dx_ax, m.Cast(dx_ax.DataType, orw.AluRegister(Registers.ax)));
+        }
+
+        public void RewriteCwde()
+        {
+            m.Assign(
+                orw.AluRegister(Registers.eax),
+                m.Cast(PrimitiveType.Int32, orw.AluRegister(Registers.ax)));
+        }
+
 
         public void EmitBinOp(BinaryOperator binOp, MachineOperand dst, DataType dtDst, Expression left, Expression right, CopyFlags flags)
         {
             if (right is Constant c)
             {
-                if (c.DataType == PrimitiveType.Byte && left.DataType != c.DataType)
+                if (c.DataType.BitSize  < left.DataType.BitSize)
                 {
-                    right = m.Const(left.DataType, c.ToInt32());
+                    right = m.Const(left.DataType, c.ToInt64());
                 }
             }
             EmitCopy(dst, new BinaryExpression(binOp, dtDst, left, right), flags);
@@ -377,28 +414,6 @@ namespace Reko.Arch.X86
                     intrinsicName,
                     Z.DataType,
                     op1, op2, acc, m.Out(instrCur.dataWidth, op1)));
-        }
-
-        private void RewriteCwd()
-        {
-            if (instrCur.dataWidth == PrimitiveType.Word32)
-            {
-                Identifier edx_eax = binder.EnsureSequence(
-                    PrimitiveType.Int64,
-                    Registers.edx,
-                    Registers.eax);
-                m.Assign(
-                    edx_eax, m.Cast(edx_eax.DataType, orw.AluRegister(Registers.eax)));
-            }
-            else
-            {
-                Identifier dx_ax = binder.EnsureSequence(
-                    PrimitiveType.Int32,
-                    Registers.dx,
-                    Registers.ax);
-                m.Assign(
-                    dx_ax, m.Cast(dx_ax.DataType, orw.AluRegister(Registers.ax)));
-            }
         }
 
         private void EmitDaaDas(string fnName)
@@ -682,9 +697,17 @@ namespace Reko.Arch.X86
             {
                 src = m.Cast(dt, src);
             }
-            if (dst is Identifier)
+            if (dst is Identifier idDst)
             {
-                m.Assign(dst, m.Dpb(dst, src, 0));
+                if (src is MemoryAccess mem)
+                {
+                    var dtHigh = PrimitiveType.CreateWord(idDst.DataType.BitSize - mem.DataType.BitSize);
+                    m.Assign(idDst, m.Seq(Constant.Zero(dtHigh), mem));
+                }
+                else
+                {
+                    m.Assign(idDst, m.Dpb(idDst, src, 0));
+                }
             }
             else
             {
@@ -694,11 +717,14 @@ namespace Reko.Arch.X86
 
         private void RewriteMovsx()
         {
-            m.Assign(
-                SrcOp(instrCur.Operands[0]),
-                m.Cast(
-                    PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize),
-                    SrcOp(instrCur.Operands[1])));
+            var dst = SrcOp(instrCur.Operands[0]);
+            var src = SrcOp(instrCur.Operands[1]);
+            var dstBitSize = dst.DataType.BitSize;
+            if (dstBitSize != src.DataType.BitSize)
+            {
+                src = m.Cast(PrimitiveType.Create(Domain.SignedInt, dstBitSize), src);
+            }
+            m.Assign(dst, src);
         }
 
         private void RewriteMovzx()
@@ -1116,11 +1142,11 @@ namespace Reko.Arch.X86
         {
             Constant direction = state.GetFlagGroup((uint)FlagM.DF);
             if (direction == null || !direction.IsValid)
-                return m.IAdd;        // Better safe than sorry.
+                return m.IAddS;        // Better safe than sorry.
             if (direction.ToBoolean())
-                return m.ISub;
+                return m.ISubS;
             else
-                return m.IAdd;
+                return m.IAddS;
         }
 
         private void RewriteSti()

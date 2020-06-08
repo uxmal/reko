@@ -13,7 +13,7 @@ l0C00_0000:
 	branch rArg0 <= Mem0[ds:bx:real32] l0C00_000D
 	// succ:  l0C00_0009 l0C00_000D
 l0C00_0009:
-	Mem12[ds:si:word16] = 0x0004
+	Mem12[ds:si:word16] = 4<16>
 	// succ:  l0C00_000D
 l0C00_000D:
 	return

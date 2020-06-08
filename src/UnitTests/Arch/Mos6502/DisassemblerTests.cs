@@ -26,17 +26,29 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.Design;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Arch.Mos6502
 {
     [TestFixture]   
     public class DisassemblerTests
     {
+        private ServiceContainer sc;
+        private Mos6502Architecture arch;
+
+        public DisassemblerTests()
+        {
+            this.sc = new ServiceContainer();
+            this.sc.AddService<ITestGenerationService>(new UnitTestGenerationService(sc));
+            this.arch = new Mos6502Architecture(sc, "mos6502");
+        }
+
         private MachineInstruction RunTest(params byte[] bytes)
         {
             var image = new MemoryArea(Address.Ptr32(0x200), bytes);
             var rdr = new LeImageReader(image, 0);
-            var dasm = new Disassembler(rdr);
+            var dasm = new Disassembler(arch, rdr);
             return dasm.First();
         }
 

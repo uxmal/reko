@@ -37,7 +37,7 @@ namespace Reko.Arch.i8051
     {
         private Dictionary<uint, FlagGroupStorage> flagGroups;
         
-        public i8051Architecture(string archId) : base(archId)
+        public i8051Architecture(IServiceProvider services, string archId) : base(services, archId)
         {
             this.Endianness = EndianServices.Big;
             this.StackRegister = Registers.SP;

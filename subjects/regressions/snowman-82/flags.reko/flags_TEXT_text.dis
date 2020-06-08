@@ -7,7 +7,7 @@ void foo(byte sil, word64 rdi)
 // Preserved: rsp
 foo_entry:
 l0000000000000F9E:
-	branch (SLICE((uint64) (SLICE((uint64) Mem0[rdi:word32], word32, 0) >>u 0x0000000A), byte, 0) ^ sil) == 0x00 l0000000000000FB4
+	branch (SLICE((uint64) (SLICE((uint64) Mem0[rdi:word32], word32, 0) >>u 0xA<32>), byte, 0) ^ sil) == 0<8> l0000000000000FB4
 l0000000000000FA6_thunk_bar:
 	bar()
 	return
@@ -19,6 +19,8 @@ foo_exit:
 void bar()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      foo
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax

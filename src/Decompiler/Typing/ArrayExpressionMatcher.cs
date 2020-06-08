@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,23 +30,19 @@ namespace Reko.Typing
 	/// </summary>
 	public class ArrayExpressionMatcher
 	{
-		private Constant elemSize;
-        private PrimitiveType dtPointer;
+        private readonly PrimitiveType dtPointer;
 
 		public ArrayExpressionMatcher(PrimitiveType dtPointer)
 		{
             this.dtPointer = dtPointer;
 		}
 
-		public Expression ArrayPointer { get; set; }
+		public Expression? ArrayPointer { get; set; }
 
-        public Expression Index { get; set; }
+        public Expression? Index { get; set; }
 
 			
-		public Constant ElementSize
-		{
-			get { return elemSize; }
-		}
+		public Constant? ElementSize { get; private set; }
 
 		public bool MatchMul(BinaryExpression b)
 		{
@@ -55,12 +51,12 @@ namespace Reko.Typing
                 Expression e = b.Right;
                 if (!(b.Left is Constant c))
                 {
-                    c = b.Right as Constant;
+                    c = (b.Right as Constant)!;
                     e = b.Left;
                 }
                 if (c != null)
 				{
-					elemSize = c;
+					ElementSize = c;
 					Index = e;
 					return true;
 				}
@@ -69,7 +65,7 @@ namespace Reko.Typing
 			{
                 if (b.Right is Constant c)
                 {
-                    elemSize = b.Operator.ApplyConstants(Constant.Create(b.Left.DataType, 1), c);
+                    ElementSize = b.Operator.ApplyConstants(Constant.Create(b.Left.DataType, 1), c);
                     Index = b.Left;
                     return true;
                 }
@@ -79,7 +75,7 @@ namespace Reko.Typing
 
 		public bool Match(Expression e)
 		{
-			elemSize = null;
+			ElementSize = null;
 			Index = null;
 			ArrayPointer = null;
 
@@ -103,19 +99,18 @@ namespace Reko.Typing
                         return true;
                     }
                 }
-                bInner = b.Right as BinaryExpression;
-				if (bInner != null)
-				{
-					if (MatchMul(bInner))
-					{
-						// (+ ptr (* i c))
-						ArrayPointer = b.Left;
-						return true;
-					}
-					if (bInner.Operator == Operator.IAdd)
-					{
-						// (+ x (+ a b)) 
-						var bbInner = bInner.Left as BinaryExpression;
+                if (b.Right is BinaryExpression bInner2)
+                {
+                    if (MatchMul(bInner2))
+                    {
+                        // (+ ptr (* i c))
+                        ArrayPointer = b.Left;
+                        return true;
+                    }
+                    if (bInner2.Operator == Operator.IAdd)
+                    {
+                        // (+ x (+ a b)) 
+                        var bbInner = bInner2.Left as BinaryExpression;
                         if (bbInner != null && MatchMul(bbInner))
                         {
                             // (+ x (+ (* i c) y)) rearranges to become
@@ -125,29 +120,29 @@ namespace Reko.Typing
                                 Operator.IAdd,
                                 PrimitiveType.Create(Domain.Pointer, b.Left.DataType.BitSize),
                                 b.Left,
-                                bInner.Right);
+                                bInner2.Right);
                             return true;
                         }
-					}
-				}
-			}
+                    }
+                }
+            }
 			return false;
 		}
 
-		public Expression Transform(Expression baseptr, DataType dtAccess)
+		public Expression Transform(Expression? baseptr, DataType dtAccess)
 		{
             if (baseptr != null)
             {
-                ArrayPointer = new MkSequence(dtPointer, baseptr, ArrayPointer);
+                ArrayPointer = new MkSequence(dtPointer, baseptr, ArrayPointer!);
             }
 			return new ArrayAccess(
                 dtAccess, 
-                ArrayPointer,
+                ArrayPointer!,
                 new BinaryExpression(
                     Operator.IMul, 
-                    Index.DataType,
+                    Index!.DataType,
                     Index,
-                    ElementSize));
+                    ElementSize!));
 		}
 	}
 }

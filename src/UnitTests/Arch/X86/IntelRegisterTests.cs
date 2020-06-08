@@ -27,6 +27,7 @@ using NUnit.Framework;
 using System;
 using System.Text;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.X86
 {
@@ -37,7 +38,7 @@ namespace Reko.UnitTests.Arch.X86
 
 		public IntelRegisterTests()
 		{
-			arch = new X86ArchitectureFlat32("x86-protected-32");
+			arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
 		}
 
 		[Test]

@@ -47,10 +47,10 @@ namespace Reko.Core.Serialization
         }
 
         [XmlElement("arch")]
-        public string ArchitectureName;
+        public string? ArchitectureName;
 
         [XmlElement("platform")]
-        public string PlatformName;
+        public string? PlatformName;
 
         [XmlElement("input", typeof(DecompilerInput_v4))]
         [XmlElement("metadata", typeof(MetadataFile_v3))]
@@ -71,28 +71,28 @@ namespace Reko.Core.Serialization
         }
 
         [XmlElement("comment")]
-        public string Comment;
+        public string? Comment;
 
         [XmlElement("disassembly")]
-        public string DisassemblyFilename;
+        public string? DisassemblyFilename;
 
         [XmlElement("intermediate-code")]
-        public string IntermediateFilename;
+        public string? IntermediateFilename;
 
         [XmlElement("output")]
-        public string OutputFilename;
+        public string? OutputFilename;
 
         [XmlElement("types-file")]
-        public string TypesFilename;
+        public string? TypesFilename;
 
         [XmlElement("global-vars")]
-        public string GlobalsFilename;
+        public string? GlobalsFilename;
 
         [XmlElement("resources")]
-        public string ResourcesDirectory;
+        public string? ResourcesDirectory;
 
         [XmlElement("user")]
-        public UserData_v4 User;
+        public UserData_v4? User;
 
         public override T Accept<T>(IProjectFileVisitor_v3<T> visitor)
         {
@@ -115,16 +115,16 @@ namespace Reko.Core.Serialization
         }
 
         [XmlElement("address")]
-        public string LoadAddress;
+        public string? LoadAddress;
 
         [XmlElement("loader")]
-        public string Loader;
+        public string? Loader;
 
         [XmlElement("processor")]
-        public ProcessorOptions_v4 Processor;
+        public ProcessorOptions_v4? Processor;
 
         [XmlElement("platform")]
-        public PlatformOptions_v4 PlatformOptions;
+        public PlatformOptions_v4? PlatformOptions;
 
         [XmlElement("procedure")]
         public List<Procedure_v1> Procedures;
@@ -142,7 +142,7 @@ namespace Reko.Core.Serialization
         public List<Heuristic_v3> Heuristics;
 
         [XmlElement("onLoad")]
-        public Script_v2 OnLoadedScript;
+        public Script_v2? OnLoadedScript;
 
         [XmlElement("jumpTable")]
         public List<JumpTable_v4> JumpTables;
@@ -151,11 +151,11 @@ namespace Reko.Core.Serialization
         public List<Annotation_v3> Annotations;
 
         [XmlElement("textEncoding")]
-        public string TextEncoding;
+        public string? TextEncoding;
 
         [XmlArray("registerValues")]
         [XmlArrayItem("assume")]
-        public RegisterValue_v2[] RegisterValues;
+        public RegisterValue_v2[]? RegisterValues;
 
         [XmlElement("segment")]
         public List<Segment_v4> Segments;
@@ -173,66 +173,66 @@ namespace Reko.Core.Serialization
         public bool ExtractResources;
 
         [XmlElement("outputFilePolicy")]
-        public string OutputFilePolicy;
+        public string? OutputFilePolicy;
     }
 
     public class PlatformOptions_v4
     {
         [XmlAttribute("name")]
-        public string Name;
+        public string? Name;
 
         [XmlAnyElement]
-        public XmlElement[] Options;
+        public XmlElement[]? Options;
     }
 
     public class ProcessorOptions_v4
     {
         [XmlAttribute("name")]
-        public string Name;
+        public string? Name;
 
         [XmlAnyElement]
-        public XmlElement[] Options;
+        public XmlElement[]? Options;
     }
 
     public class JumpTable_v4
     {
         [XmlAttribute("tableAddress")]
-        public string TableAddress;
+        public string? TableAddress;
 
         [XmlElement("dst")]
-        public string[] Destinations;
+        public string[]? Destinations;
     }
 
     public class IndirectJump_v4
     {
         [XmlAttribute("instrAdress")]
-        public string InstructionAddress;
+        public string? InstructionAddress;
 
         [XmlAttribute("tableAddress")]
-        public string TableAddress;
+        public string? TableAddress;
 
         [XmlAttribute("idxReg")]
-        public string IndexRegister;
+        public string? IndexRegister;
     }
 
     public class Segment_v4
     {
         [XmlAttribute("name")]
-        public string Name;
+        public string? Name;
 
         [XmlAttribute("offset")]
-        public string Offset;
+        public string? Offset;
 
         [XmlAttribute("length")]
-        public string Length;
+        public string? Length;
 
         [XmlAttribute("addr")]
-        public string Address;
+        public string? Address;
 
         [XmlAttribute("arch")]
-        public string Architecture;
+        public string? Architecture;
 
         [XmlAttribute("access")]
-        public string Access;
+        public string? Access;
     }
 }

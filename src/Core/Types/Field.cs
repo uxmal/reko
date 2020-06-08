@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -26,6 +26,11 @@ namespace Reko.Core.Types
 {
     public abstract class Field
     {
+        protected Field(DataType type)
+        {
+            this.DataType = type;
+        }
+
         public DataType DataType { get; set; }
 
         public abstract string Name { get; set; }

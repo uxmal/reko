@@ -108,7 +108,7 @@ cmd2
         {
             Given_Parser("foo 0B00:0C00");
             var script = parser.ParseScript();
-            Assert.AreEqual("1: foo SEQ(0x0000000000000B00, 0x0000000000000C00)", script.Lines[0].ToString());
+            Assert.AreEqual("1: foo SEQ(0xB00<u64>, 0xC00<u64>)", script.Lines[0].ToString());
         }
     }
 }

@@ -36,7 +36,8 @@ namespace Reko.Arch.Cil
         };
 
         public OpCode Opcode { get; set; }
-        public override int MnemonicAsInteger { get { return (int)Opcode.Value; } }
+        public override int MnemonicAsInteger => (int)Opcode.Value;
+        public override string MnemonicAsString => Opcode.ToString();
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

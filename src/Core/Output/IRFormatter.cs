@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -17,6 +17,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -47,7 +48,8 @@ namespace Reko.Core.Output
         public void WriteProcedure(Procedure procedure)
         {
             //@"define void @empty() {
-            var pd = new ProcedureFormatter(procedure, new CodeFormatter(new TextFormatter(w)));
+            var arch = procedure.Architecture;
+            var pd = new ProcedureFormatter(procedure, new CodeFormatter(new TextFormatter(this.w)));
             pd.WriteProcedureBlocks();
         }
     }

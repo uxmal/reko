@@ -97,8 +97,10 @@ namespace Reko.Arch.Tlcs.Tlcs900
             var op2 = RewriteSrc(this.instr.Operands[1]);
             var div = binder.EnsureRegister(arch.GetSubregister(Registers.regs[(int)reg.Domain], 0, (int)reg.BitSize * 2));
             var tmp = binder.CreateTemporary(reg.DataType);
-            var quo = binder.EnsureRegister(arch.GetSubregister(reg, 0, 8));
-            var rem = binder.EnsureRegister(arch.GetSubregister(reg, 8, 8));
+            var q = arch.GetSubregister(reg, 0, 8);
+            var r = arch.GetSubregister(reg, 8, 8);
+            var quo = q != null ? binder.EnsureRegister(q) : null;
+            var rem = q != null ? binder.EnsureRegister(r) : null;
             m.Assign(tmp, div);
             m.Assign(quo, fn(tmp, op2));
             m.Assign(rem, m.Remainder(tmp, op2));
@@ -138,7 +140,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         {
             if (instr.Operands.Length > 0)
             {
-                EmitUnitTest("Tlcs900_rw_", "00010000");
+                EmitUnitTest();
                 Invalid();
                 return;
             }
@@ -150,7 +152,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             m.Assign(m.Mem(dt, dst), tmp);
             m.Assign(src, m.IAddS(src, dt.Size));
             m.Assign(dst, m.IAddS(dst, dt.Size));
-            m.Assign(cnt, m.ISubS(cnt, 1));
+            m.Assign(cnt, m.ISub(cnt, 1));
             m.Branch(m.Ne0(cnt), instr.Address, InstrClass.ConditionalTransfer);
             EmitCc(null, flags);
         }
@@ -191,9 +193,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 (a, b) => m.And(
                     a,
                     m.Comp(
-                        m.Shl(m.Const(
-                            PrimitiveType.Create(Domain.SignedInt, op1.DataType.BitSize),
-                            1), b))));
+                        m.Shl(m.Const(op1.DataType, 1), b))));
         }
 
         private void RewriteScc()

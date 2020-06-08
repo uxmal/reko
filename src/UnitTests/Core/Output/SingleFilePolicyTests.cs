@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Output;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,7 +39,8 @@ namespace Reko.UnitTests.Core.Output
         public void Setup()
         {
             var segs = new SegmentMap(Address.Ptr32(0x00100000));
-            var platform = new Mocks.FakePlatform(null, new Mocks.FakeArchitecture());
+            var sc = new ServiceContainer();
+            var platform = new Mocks.FakePlatform(sc, new Mocks.FakeArchitecture(sc));
             this.program = new Program(segs, platform.Architecture, platform)
             {
                 Name = "myprogram.exe"
@@ -57,10 +59,7 @@ namespace Reko.UnitTests.Core.Output
 
         private void Given_Item(uint uAddr, uint size)
         {
-            var item = new ImageMapItem(size)
-            {
-                Address = Address.Ptr32(uAddr),
-            };
+            var item = new ImageMapItem(Address.Ptr32(uAddr), size);
             program.ImageMap.AddItem(item.Address, item);
         }
 

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using System;
 using System.Collections.Generic;
@@ -32,11 +34,11 @@ namespace Reko.Gui
 
     public class SearchService : IObserver<ICodeLocation>
     {
-        private IDisposable subscription;
+        private IDisposable? subscription;
 
         public void StartSearch(IObservable<ICodeLocation> newSearcher, ISearchResult result)
         {
-            if (subscription == null)
+            if (subscription != null)
             {
                 subscription.Dispose();
             }
@@ -45,7 +47,7 @@ namespace Reko.Gui
 
         void IObserver<ICodeLocation>.OnCompleted()
         {
-            subscription.Dispose();
+            subscription?.Dispose();
             subscription = null;
         }
 

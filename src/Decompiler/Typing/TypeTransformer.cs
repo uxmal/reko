@@ -119,17 +119,16 @@ namespace Reko.Typing
 		/// <param name="s"></param>
 		public void MergeStaggeredArrays(StructureType s)
 		{
-			ArrayType arrMerged = null;
-			StructureType strMerged = null;
-            EquivalenceClass eqMerged = null;
+			ArrayType? arrMerged = null;
+			StructureType? strMerged = null;
+            EquivalenceClass? eqMerged = null;
 			int offset = 0;
 			for (int i = 0; i < s.Fields.Count; ++i)
 			{
-				ArrayType a = s.Fields[i].DataType as ArrayType;
-				if (a == null)
-					continue;
-                EquivalenceClass eqElem = a.ElementType as EquivalenceClass;
-                StructureType strElem;
+                if (!(s.Fields[i].DataType is ArrayType a))
+                    continue;
+                EquivalenceClass? eqElem = a.ElementType as EquivalenceClass;
+                StructureType? strElem;
                 if (eqElem == null)
                     strElem = a.ElementType as StructureType;
                 else
@@ -139,11 +138,11 @@ namespace Reko.Typing
 
 				if (StructuresOverlap(strMerged, offset, strElem, s.Fields[i].Offset))
 				{
-					strMerged = MergeOffsetStructures(strMerged, offset, strElem, s.Fields[i].Offset);
+					strMerged = MergeOffsetStructures(strMerged!, offset, strElem, s.Fields[i].Offset);
                     if (eqMerged != null)
                         eqMerged.DataType = strMerged;
                     else
-                        arrMerged.ElementType = strMerged;
+                        arrMerged!.ElementType = strMerged;
 					s.Fields.RemoveAt(i);
                     Changed = true;
 					--i;
@@ -157,17 +156,6 @@ namespace Reko.Typing
 				}
 			}
 		}
-
-        private T ResolveAs<T>(DataType dt) where T : DataType
-        {
-            for (; ; )
-            {
-                EquivalenceClass eq = dt as EquivalenceClass;
-                if (eq == null)
-                    return dt as T;
-                dt = eq.DataType;
-            }
-        }
 
 		public StructureType MergeStructureFields(StructureType str)
 		{
@@ -189,16 +177,15 @@ namespace Reko.Typing
 				{
 					if (f.Offset == offset)
 					{
-						UnionType uf = f.DataType as UnionType;
-						if (uf != null)
-						{
-							ut = unifier.UnifyUnions(ut, uf);
-						}
-						else
-						{
-							unifier.UnifyIntoUnion(ut, f.DataType);
-						}
-					}
+                        if (f.DataType is UnionType uf)
+                        {
+                            ut = unifier.UnifyUnions(ut, uf);
+                        }
+                        else
+                        {
+                            unifier.UnifyIntoUnion(ut, f.DataType);
+                        }
+                    }
 					else
 					{
 						strNew.Fields.Add(offset, ut.Simplify());
@@ -213,12 +200,12 @@ namespace Reko.Typing
 				strNew.Fields.Add(offset, ut.Simplify());
 			}
 
-            StructureFieldMerger sfm = new StructureFieldMerger();
-            strNew = sfm.Merge(strNew);
+            var sfm = new StructureFieldMerger(strNew);
+            strNew = sfm.Merge();
 			return strNew;
 		}
 
-		public bool StructuresOverlap(StructureType a, int aOffset, StructureType b, int bOffset)
+		public bool StructuresOverlap(StructureType? a, int aOffset, StructureType? b, int bOffset)
 		{
 			if (a == null || b == null)
 				return false;
@@ -229,8 +216,8 @@ namespace Reko.Typing
 
 		public void Transform()
 		{
-			var ppr = new PtrPrimitiveReplacer(factory, store, program);
-            ppr.ReplaceAll(eventListener);
+			var ppr = new PtrPrimitiveReplacer(factory, store, program, eventListener);
+            ppr.ReplaceAll();
             var cpa = new ConstantPointerAnalysis(factory, store, program);
             cpa.FollowConstantPointers();
 			int iteration = 0;
@@ -268,7 +255,7 @@ namespace Reko.Typing
                     }
                     // Debug.Print("Transformed {0}:{1}", tv, tv.Class.DataType);
 				}
-				if (ppr.ReplaceAll(eventListener))
+				if (ppr.ReplaceAll())
 					Changed = true;
 				if (NestedComplexTypeExtractor.ReplaceAll(factory, store))
 					Changed = true;
@@ -319,7 +306,7 @@ namespace Reko.Typing
             {
                 fn.ReturnValue.DataType = fn.ReturnValue.DataType.Accept(this);
             }
-            for (int i = 0; i < fn.Parameters.Length; ++i)
+            for (int i = 0; i < fn.Parameters!.Length; ++i)
             {
                 fn.Parameters[i].DataType = fn.Parameters[i].DataType.Accept(this);
             }
@@ -435,9 +422,8 @@ namespace Reko.Typing
 
 			UnionType utNew = FactorDuplicateAlternatives(ut);
             var dt = utNew.Simplify();
-            utNew = dt as UnionType;
-            if (utNew == null || utNew.Alternatives.Count != ut.Alternatives.Count)
-				Changed = true;
+            Changed |= (!(dt is UnionType utNew2) ||
+                        utNew2.Alternatives.Count != ut.Alternatives.Count);
             return dt;
 		}
 

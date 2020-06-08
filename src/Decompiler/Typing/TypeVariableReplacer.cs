@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,8 +30,8 @@ namespace Reko.Typing
 	/// </summary>
 	public class TypeVariableReplacer : DataTypeTransformer
 	{
-		private TypeStore store;
-        private HashSet<DataType> visitedTypes;
+		private readonly TypeStore store;
+        private readonly HashSet<DataType> visitedTypes;
 
 		public TypeVariableReplacer(TypeStore store)
 		{

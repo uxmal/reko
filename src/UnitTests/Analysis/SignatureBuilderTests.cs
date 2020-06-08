@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ using Reko.Analysis;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -35,7 +36,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void TestGrfWithOneBit()
 		{
-			IProcessorArchitecture arch = new X86ArchitectureReal("x86-real-16");
+			IProcessorArchitecture arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16");
 			SignatureBuilder sb = new SignatureBuilder(null, arch);
             sb.AddFlagGroupReturnValue(
                 new KeyValuePair<RegisterStorage, uint>(Registers.eflags, (uint) FlagM.CF),

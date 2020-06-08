@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -37,14 +38,18 @@ namespace Reko.Arch.Z80
     /// </summary>
     public class Z80Disassembler : DisassemblerBase<Z80Instruction, Mnemonic>
     {
+#pragma warning disable IDE1006 // Naming Styles
+
+        private readonly Z80ProcessorArchitecture arch;
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
         private Address addr;
         private Z80Instruction instr;
         private RegisterStorage IndexRegister;
 
-        public Z80Disassembler(EndianImageReader rdr)
+        public Z80Disassembler(Z80ProcessorArchitecture arch, EndianImageReader rdr)
         {
+            this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
         }
@@ -78,7 +83,14 @@ namespace Reko.Arch.Z80
             };
         }
 
-        private static CondCode[] ConditionCode =
+        public override Z80Instruction NotYetImplemented(uint wInstr, string message)
+        {
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("Z80dis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
+        }
+
+        private static readonly CondCode[] ConditionCode =
         {
             CondCode.nz,
             CondCode.z,
@@ -90,7 +102,7 @@ namespace Reko.Arch.Z80
             CondCode.m,
         };
 
-        private static RegisterStorage[] ByteRegister =
+        private static readonly RegisterStorage[] ByteRegister =
         {
             Registers.b,
             Registers.c,
@@ -104,9 +116,9 @@ namespace Reko.Arch.Z80
 
         private class InstrDecoder : Decoder
         {
-            public readonly InstrClass IClass;
-            public readonly Mnemonic i8080mnemonic;
-            public readonly Mnemonic Z80mnemonic;
+            private readonly InstrClass IClass;
+            private readonly Mnemonic i8080mnemonic;
+            private readonly Mnemonic Z80mnemonic;
             private readonly Mutator[] mutators;
 
             public InstrDecoder(InstrClass iclass, Mnemonic i8080, Mnemonic z80, params Mutator [] mutators)
@@ -240,7 +252,7 @@ namespace Reko.Arch.Z80
             {
                 if (!disasm.rdr.TryReadByte(out var op2))
                     return disasm.CreateInvalidInstruction();
-                Decoder decoder = null;
+                Decoder decoder;
                 if (0x40 <= op2 && op2 < 0x80)
                     decoder = edDecoders[op2 - 0x40];
                 else if (0xA0 <= op2 && op2 < 0xC0)

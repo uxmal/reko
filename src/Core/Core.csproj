@@ -7,8 +7,14 @@
     <OutputType>Library</OutputType>
     <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>8.0</LangVersion>
+    <nullable>enable</nullable>
+    <WarningsAsErrors>CS8600;CS8601;CS8602;CS8603;CS8604;CS8610;CS8613;CS8618;CS8619;CS8623;CS8625</WarningsAsErrors>
     <PackageProjectUrl>https://github.com/uxmal/reko</PackageProjectUrl>
     <RepositoryUrl>https://github.com/uxmal/reko</RepositoryUrl>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;ALWAYS_SHOW_SIGIL</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Serialization\DecompilerDiscoveries.cs" />

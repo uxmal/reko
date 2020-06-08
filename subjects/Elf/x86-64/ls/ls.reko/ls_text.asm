@@ -99,7 +99,7 @@ l0000000000402A50:
 	js	0000000000403786
 
 l0000000000402A6F:
-	cbw
+	cdqe
 	xor	edi,edi
 	mov	esi,[00416460+rax*4]
 	call	000000000040E640
@@ -784,7 +784,7 @@ l00000000004033E8:
 	jle	00000000004042A0
 
 l0000000000403423:
-	movsx	rax,r12d
+	movsxd	rax,r12d
 	lea	rbp,[rbp+rax*8+00]
 
 l000000000040342B:
@@ -1189,7 +1189,7 @@ l00000000004038EB:
 	mov	rsi,r13
 	mov	rdi,rax
 	call	000000000040CDC0
-	cmp	r8,+000000A0
+	cmp	rax,+000000A0
 	ja	0000000000404356
 
 l000000000040391F:
@@ -2339,7 +2339,7 @@ l000000000040475C:
 
 l0000000000404772:
 	mov	rsi,[004135E0+r15*8]
-	movsx	r14,r15d
+	movsxd	r14,r15d
 	test	rsi,rsi
 	jnz	000000000040475C
 
@@ -2441,7 +2441,7 @@ fn0000000000404890 proc
 fn00000000004048C0 proc
 	mov	eax,0061A5FF
 	push	rbp
-	sub	r8,+0061A5F8
+	sub	rax,+0061A5F8
 	cmp	rax,0E
 	mov	rbp,rsp
 	ja	00000000004048D7
@@ -2989,7 +2989,7 @@ l0000000000404F54:
 	cmovz	edx,[000000000061B14C]                               ; [rip+002161EC]
 
 l0000000000404F60:
-	cbw
+	cdqe
 	movzx	r8d,[000000000061B10C]                               ; [rip+002161A2]
 	add	edx,ecx
 	lea	rdx,[rax+rdx*2]
@@ -3359,7 +3359,7 @@ l0000000000405365:
 	xor	edx,edx
 	mov	rsi,rbx
 	call	000000000040D240
-	movsx	r12,eax
+	movsxd	r12,eax
 
 l0000000000405379:
 	mov	rcx,[rbp-00002078]
@@ -3496,7 +3496,7 @@ l00000000004054C8:
 	jnz	00000000004054C8
 
 l00000000004054DD:
-	cbw
+	cdqe
 	add	rbx,r14
 	add	r12,rax
 
@@ -3646,12 +3646,12 @@ l000000000040564F:
 	jz	00000000004056E6
 
 l0000000000405658:
-	movsx	rcx,dword ptr [rsi+30]
+	movsxd	rcx,dword ptr [rsi+30]
 	mov	edx,ecx
 	add	rax,rcx
 	mov	rcx,[rsi+20]
 	not	edx
-	movsx	rdx,edx
+	movsxd	rdx,edx
 	and	rdx,rax
 	mov	rax,[rsi+08]
 	mov	rbx,rcx
@@ -3738,7 +3738,7 @@ l0000000000405728:
 	mov	rdi,rbp
 	call	0000000000402520
 	mov	rdi,rbp
-	movsx	rbp,ebx
+	movsxd	rbp,ebx
 	call	0000000000402380
 	add	rbp,rax
 	nop
@@ -3774,7 +3774,7 @@ l0000000000405780:
 	mov	edi,00000001
 	mov	esi,0041375E
 	xor	eax,eax
-	movsx	rbp,ebx
+	movsxd	rbp,ebx
 	call	0000000000402730
 	jmp	0000000000405764
 
@@ -4096,7 +4096,7 @@ l0000000000405D7A:
 	jz	0000000000405EA0
 
 l0000000000405D87:
-	movsx	rbx,[000000000061B178]                               ; [rip+002153EA]
+	movsxd	rbx,[000000000061B178]                              ; [rip+002153EA]
 	add	rbx,01
 
 l0000000000405D92:
@@ -4108,7 +4108,7 @@ l0000000000405D9B:
 	jz	0000000000405E58
 
 l0000000000405DA8:
-	movsx	rax,[000000000061B174]                               ; [rip+002153C5]
+	movsxd	rax,[000000000061B174]                              ; [rip+002153C5]
 	add	rax,01
 
 l0000000000405DB3:
@@ -4123,7 +4123,7 @@ l0000000000405DBF:
 	jz	0000000000405E40
 
 l0000000000405DC8:
-	movsx	rax,[000000000061B16C]                               ; [rip+0021539D]
+	movsxd	rax,[000000000061B16C]                              ; [rip+0021539D]
 	add	rax,01
 
 l0000000000405DD3:
@@ -5270,7 +5270,7 @@ l0000000000406B20:
 	mov	rdi,rsp
 	mov	rbx,rsp
 	call	0000000000402210
-	movsx	rcx,dword ptr [rbp+10]
+	movsxd	rcx,dword ptr [rbp+10]
 	mov	rdi,rax
 	lea	rdx,[rcx+rcx*4]
 	shl	rdx,05
@@ -5371,7 +5371,7 @@ l0000000000406C60:
 	jnz	0000000000406C60
 
 l0000000000406C6D:
-	cbw
+	cdqe
 	lea	rdx,[rbp+rax+01]
 
 l0000000000406C74:
@@ -5486,7 +5486,7 @@ l0000000000406DC8:
 	jnz	0000000000406DC8
 
 l0000000000406DD5:
-	cbw
+	cdqe
 	lea	rbp,[rbp+rax+01]
 
 l0000000000406DDC:
@@ -5598,7 +5598,7 @@ l0000000000406F0E:
 	nop	word ptr cs:[rax+rax+00000000]
 
 l0000000000406F20:
-	movsx	rdi,edi
+	movsxd	rdi,edi
 	mov	rdx,rax
 	mov	rsi,[0061A3D0+rdi*8]
 	mov	rdi,r13
@@ -5917,7 +5917,7 @@ l0000000000407328:
 	mov	rdi,rbp
 	xor	eax,eax
 	call	0000000000402890
-	movsx	rax,[000000000061B154]                               ; [rip+00213DFA]
+	movsxd	rax,[000000000061B154]                              ; [rip+00213DFA]
 	lea	r13,[rbp+rax+01]
 	jmp	0000000000406E9C
 
@@ -9748,7 +9748,7 @@ l000000000040AD98:
 ;;     000000000040BC1C (in fn000000000040BB90)
 fn000000000040ADB0 proc
 	mov	rax,[rdi]
-	cmp	r8,+00415EE0
+	cmp	rax,+00415EE0
 	jz	000000000040AE30
 
 l000000000040ADBB:
@@ -10979,7 +10979,7 @@ l000000000040BE0E:
 
 l000000000040BE2A:
 	mov	rax,r14
-	add	r8,+00000288
+	add	rax,+00000288
 	cmp	[rsp+28],rbx
 	mov	[rsp+18],rax
 	ja	000000000040C0E0
@@ -11403,7 +11403,7 @@ l000000000040C274:
 	jz	000000000040C3D0
 
 l000000000040C289:
-	movsx	rcx,ebx
+	movsxd	rcx,ebx
 	movzx	ecx,byte ptr [rcx+00415F78]
 
 l000000000040C293:
@@ -11810,7 +11810,7 @@ l000000000040C6E0:
 
 l000000000040C6F0:
 	mov	rax,r10
-	movsx	rcx,ecx
+	movsxd	rcx,ecx
 	and	eax,01
 	add	rax,rcx
 	setnz	al
@@ -11951,7 +11951,7 @@ l000000000040C833:
 	js	000000000040C8B0
 
 l000000000040C84E:
-	cbw
+	cdqe
 	mov	qword ptr [r12],+00000001
 	mov	edx,00000001
 	or	ebp,[00415F50+rax*4]
@@ -11970,7 +11970,7 @@ l000000000040C86F:
 	cmp	rax,01
 	sbb	rax,rax
 	and	eax,00000200
-	add	r8,+00000200
+	add	rax,+00000200
 	mov	[r12],rax
 	mov	eax,00000004
 
@@ -12597,7 +12597,7 @@ l000000000040D030:
 	mov	rdi,[rsp+10]
 	call	00000000004022B0
 	cmp	byte ptr [rsp+2F],00
-	movsx	r15,eax
+	movsxd	r15,eax
 	jz	000000000040D118
 
 l000000000040D04D:
@@ -12630,7 +12630,7 @@ l000000000040D092:
 000000000040D09A                               66 0F 1F 44 00 00           f..D..
 
 l000000000040D0A0:
-	cbw
+	cdqe
 	add	rax,r15
 	cmp	[rsp+08],rax
 	jc	000000000040D0E0
@@ -12671,7 +12671,7 @@ l000000000040D106:
 	mov	rsi,[rsp+20]
 	mov	rdi,[rsp+10]
 	call	00000000004022B0
-	movsx	r15,eax
+	movsxd	r15,eax
 
 l000000000040D118:
 	mov	rax,[r12]
@@ -14240,7 +14240,7 @@ l000000000040E428:
 ;;     000000000040EC21 (in fn000000000040EC10)
 fn000000000040E450 proc
 	push	r15
-	movsx	r15,edi
+	movsxd	r15,edi
 	push	r14
 	push	r13
 	push	r12
@@ -15049,7 +15049,7 @@ l000000000040F0C1:
 	jnz	000000000040F0C1
 
 l000000000040F0D1:
-	movsx	rcx,ecx
+	movsxd	rcx,ecx
 	mov	r8,rbx
 
 l000000000040F0D7:
@@ -15059,7 +15059,7 @@ l000000000040F0D7:
 	cmovns	eax,ebp
 
 l000000000040F0E1:
-	cbw
+	cdqe
 	cmp	rcx,rax
 	mov	rbx,rax
 	cmovnc	rbx,rcx
@@ -15078,7 +15078,7 @@ l000000000040F0FE:
 	jbe	000000000040F144
 
 l000000000040F103:
-	movsx	rbp,ebp
+	movsxd	rbp,ebp
 	mov	[rsp+30],rcx
 	mov	[rsp+28],r9d
 	sub	rbp,rcx
@@ -16260,7 +16260,7 @@ l00000000004112B0:
 ;;     00000000004043D4 (in fn00000000004028C0)
 fn00000000004112D0 proc
 	push	r13
-	movsx	r10,esi
+	movsxd	r10,esi
 	push	r12
 	mov	r12,r8
 	push	rbp

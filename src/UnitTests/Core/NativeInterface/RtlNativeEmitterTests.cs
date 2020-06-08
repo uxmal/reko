@@ -109,7 +109,7 @@ namespace Reko.UnitTests.Core.NativeInterface
             var cluster = m.ExtractCluster();
             var sExp = 
 @"00111100(4):
-Mem0[0x00123400:word16] = 0x5678
+Mem0[0x00123400<p32>:word16] = 0x5678<u16>
 ";
             AssertInstructions(sExp, cluster);
         }
@@ -125,7 +125,7 @@ Mem0[0x00123400:word16] = 0x5678
             var cluster = m.ExtractCluster();
             var sExp =
 @"00111100(4):
-Mem0[0x00123400:word16] = Mem0[0x00123400:word16] + 0x5678
+Mem0[0x00123400<p32>:word16] = Mem0[0x00123400<p32>:word16] + 0x5678<u16>
 ";
             AssertInstructions(sExp, cluster);
         }
@@ -150,7 +150,7 @@ Mem0[0x00123400:word16] = Mem0[0x00123400:word16] + 0x5678
             var cluster = m.ExtractCluster();
             var sExp =
 @"00111100(4):
-RightTriangle(3, 4, 5)
+RightTriangle(3<i16>, 4<i16>, 5<i16>)
 ";
             AssertInstructions(sExp, cluster);
         }

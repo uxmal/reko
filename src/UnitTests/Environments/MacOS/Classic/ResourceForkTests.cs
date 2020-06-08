@@ -34,8 +34,9 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
         [Test]
         public void ReadHeader()
         {
-            var arch = new M68kArchitecture("m68k");
-            var macOS = new MacOSClassic(new ServiceContainer(), arch);
+            var sc = new ServiceContainer();
+            var arch = new M68kArchitecture(sc, "m68k");
+            var macOS = new MacOSClassic(sc, arch);
 
             MemoryStream stm = new MemoryStream();
             WriteBeUint32(stm, 0x00000010);

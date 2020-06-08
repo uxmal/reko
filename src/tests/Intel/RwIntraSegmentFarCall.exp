@@ -10,27 +10,27 @@
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = sp - 2
-	Mem0[ss:sp:word16] = 0x0D00
-	sp = sp - 2
-	Mem0[ss:sp:word16] = 0x0300
-	sp = sp - 2
-	Mem0[ss:sp:word16] = 0x0001
-	sp = sp - 2
+	sp = sp - 2<i16>
+	Mem0[ss:sp:word16] = 0xD00<16>
+	sp = sp - 2<i16>
+	Mem0[ss:sp:word16] = 0x300<16>
+	sp = sp - 2<i16>
+	Mem0[ss:sp:word16] = 1<16>
+	sp = sp - 2<i16>
 	call fn0C00_0020 (retsize: 2;)
-	sp = sp + 0x0006
+	sp = sp + 6<16>
 	SCZO = cond(sp)
-	sp = sp - 2
-	Mem0[ss:sp:word16] = 0x0D00
-	sp = sp - 2
-	Mem0[ss:sp:word16] = 0x0304
-	sp = sp - 2
-	Mem0[ss:sp:word16] = 0x0002
+	sp = sp - 2<i16>
+	Mem0[ss:sp:word16] = 0xD00<16>
+	sp = sp - 2<i16>
+	Mem0[ss:sp:word16] = 0x304<16>
+	sp = sp - 2<i16>
+	Mem0[ss:sp:word16] = 2<16>
 	call fn0C00_002E (retsize: 4;)
-	sp = sp + 0x0006
+	sp = sp + 6<16>
 	SCZO = cond(sp)
 	return
 	// succ:  fn0C00_0000_exit
@@ -53,19 +53,19 @@ fn0C00_0000_exit:
 define fn0C00_0020
 fn0C00_0020_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0020
 l0C00_0020:
-	sp = sp - 2
+	sp = sp - 2<i16>
 	Mem0[ss:sp:word16] = bp
 	bp = sp
-	es_bx = Mem0[ss:bp + 0x0006:segptr32]
-	ax = Mem0[ss:bp + 0x000A:word16]
+	es_bx = Mem0[ss:bp + 6<16>:segptr32]
+	ax = Mem0[ss:bp + 0xA<16>:word16]
 	v9 = Mem0[es:bx:word16] + ax
 	Mem0[es:bx:word16] = v9
 	SCZO = cond(v9)
 	bp = Mem0[ss:sp:word16]
-	sp = sp + 2
+	sp = sp + 2<i16>
 	return
 	// succ:  fn0C00_0020_exit
 fn0C00_0020_exit:
@@ -87,19 +87,19 @@ fn0C00_0020_exit:
 define fn0C00_002E
 fn0C00_002E_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_002E
 l0C00_002E:
-	sp = sp - 2
+	sp = sp - 2<i16>
 	Mem0[ss:sp:word16] = bp
 	bp = sp
-	es_bx = Mem0[ss:bp + 0x0006:segptr32]
-	ax = Mem0[ss:bp + 0x000A:word16]
+	es_bx = Mem0[ss:bp + 6<16>:segptr32]
+	ax = Mem0[ss:bp + 0xA<16>:word16]
 	v9 = Mem0[es:bx:word16] - ax
 	Mem0[es:bx:word16] = v9
 	SCZO = cond(v9)
 	bp = Mem0[ss:sp:word16]
-	sp = sp + 2
+	sp = sp + 2<i16>
 	return
 	// succ:  fn0C00_002E_exit
 fn0C00_002E_exit:

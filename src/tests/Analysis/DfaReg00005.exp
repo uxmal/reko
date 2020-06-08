@@ -10,10 +10,10 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	branch fn0C00_000C(0x20, ds) l0C00_000B
+	branch fn0C00_000C(0x20<8>, ds) l0C00_000B
 	// succ:  l0C00_0007 l0C00_000B
 l0C00_0007:
-	Mem10[ds:0x0300:byte] = 0x20
+	Mem10[ds:0x300<16>:byte] = 0x20<8>
 	// succ:  l0C00_000B
 l0C00_000B:
 	return
@@ -32,11 +32,11 @@ bool fn0C00_000C(byte al, selector ds)
 fn0C00_000C_entry:
 	// succ:  l0C00_000C
 l0C00_000C:
-	bool C_6 = SLICE(cond(al - 0x20), bool, 1)
-	branch al <u 0x20 l0C00_0014
+	bool C_6 = SLICE(cond(al - 0x20<8>), bool, 1)
+	branch al <u 0x20<8> l0C00_0014
 	// succ:  l0C00_0010 l0C00_0014
 l0C00_0010:
-	Mem10[ds:0x0201:word16] = Mem0[ds:0x0201:word16] + 0x0001
+	Mem10[ds:0x201<16>:word16] = Mem0[ds:0x201<16>:word16] + 1<16>
 	// succ:  l0C00_0014
 l0C00_0014:
 	return C_6

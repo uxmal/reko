@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -19,10 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Analysis
 {
@@ -31,8 +28,8 @@ namespace Reko.Analysis
     /// </summary>
     public class ExpressionIdentifierUseFinder : ExpressionVisitorBase
     {
-        private SsaIdentifierCollection ssaIds;
-        private List<Identifier> identifiers;
+        private readonly SsaIdentifierCollection ssaIds;
+        private readonly List<Identifier> identifiers;
 
         public ExpressionIdentifierUseFinder(SsaIdentifierCollection ssaIds)
         {

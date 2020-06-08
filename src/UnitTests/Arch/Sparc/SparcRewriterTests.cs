@@ -28,6 +28,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -36,7 +37,7 @@ namespace Reko.UnitTests.Arch.Sparc
     [TestFixture]
     public class SparcRewriterTests : RewriterTestBase
     {
-        private SparcArchitecture arch = new SparcArchitecture("sparc", PrimitiveType.Word32);
+        private SparcArchitecture arch = new SparcArchitecture(CreateServiceContainer(), "sparc", PrimitiveType.Word32);
         private Address baseAddr = Address.Ptr32(0x00100000);
         private SparcProcessorState state;
         private Mock<IRewriterHost> host;
@@ -124,28 +125,28 @@ namespace Reko.UnitTests.Arch.Sparc
         [Test]
         public void SparcRw_or_imm()
         {
-            Given_UInt32s(0xBE10E004);//"or\t%g3,0x00000004,%i7");
+            Given_UInt32s(0xBE10E004);//"or\t%g3,0x00000004<32>,%i7");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|i7 = g3 | 0x00000004");
+                "1|L--|i7 = g3 | 4<32>");
         }
 
         [Test]
         public void SparcRw_and_neg()
         {
-            Given_UInt32s(0x86087FFE); // "and\t%g1,0xFFFFFFFE,%g3")
+            Given_UInt32s(0x86087FFE); // "and\t%g1,0xFFFFFFFE<32>,%g3")
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|g3 = g1 & 0xFFFFFFFE");
+                "1|L--|g3 = g1 & 0xFFFFFFFE<32>");
         }
 
         [Test]
         public void SparcRw_sll_imm()
         {
-            Given_UInt32s(0xAB2EA01F);// sll\t%i2,0x0000001F,%l5"
+            Given_UInt32s(0xAB2EA01F);// sll\t%i2,0x0000001F<32>,%l5"
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|l5 = i2 << 0x0000001F");
+                "1|L--|l5 = i2 << 0x1F<32>");
         }
 
         [Test]
@@ -154,7 +155,7 @@ namespace Reko.UnitTests.Arch.Sparc
             Given_UInt32s(0x0B2AAAAA);  // sethi\t0x002AAAAA,%g5");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|g5 = 0xAAAAA800");
+                "1|L--|g5 = 0xAAAAA800<32>");
         }
 
         [Test]
@@ -162,7 +163,7 @@ namespace Reko.UnitTests.Arch.Sparc
         public void SparcRw_taddcc()
         {
             Given_UInt32s(0x8B006001);
-            AssertCode("taddcc\t%g1,0x00000001,%g5");
+            AssertCode("taddcc\t%g1,0x00000001<32>,%g5");
         }
 
         [Test]
@@ -230,7 +231,7 @@ namespace Reko.UnitTests.Arch.Sparc
             Given_UInt32s(0x9DE3BEE8); // save\t%g1,%o1,%g5
             AssertCode(
                 "0|L--|00100000(4): 10 instructions",
-                "1|L--|v3 = sp + 0xFFFFFEE8",
+                "1|L--|v3 = sp + 0xFFFFFEE8<32>",
                 "2|L--|i0 = o0",
                 "3|L--|i1 = o1",
                 "4|L--|i2 = o2",
@@ -300,7 +301,7 @@ namespace Reko.UnitTests.Arch.Sparc
             AssertCode(
                 "0|T--|00100000(4): 2 instructions",
                 "1|L--|g7 = 00100000",
-                "2|TD-|goto g1 + -16");
+                "2|TD-|goto g1 + -16<i32>");
         }
 
         [Test]
@@ -310,7 +311,7 @@ namespace Reko.UnitTests.Arch.Sparc
             AssertCode(
                 "0|T--|00100000(4): 2 instructions",
                 "1|L--|o7 = 00100000",
-                "2|TD-|call g1 + -16 (0)");
+                "2|TD-|call g1 + -16<i32> (0)");
         }
 
         [Test]
@@ -326,11 +327,11 @@ namespace Reko.UnitTests.Arch.Sparc
                         new PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, 1)),
                     VoidType.Instance,
                     Constant.Word32(0x19)));
-            Given_UInt32s(0x91D02999);  // ta\t%g1,0x00000019"
+            Given_UInt32s(0x91D02999);  // ta\t%g1,0x00000019<32>"
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|T--|if (false) branch 00100004",
-                "2|L--|__syscall(0x00000019)");
+                "2|L--|__syscall(0x19<32>)");
         }
 
         [Test]
@@ -348,7 +349,7 @@ namespace Reko.UnitTests.Arch.Sparc
             Given_UInt32s(0xC248A044); //ldsb\t[%g2+68],%g1");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|g1 = (int32) Mem0[g2 + 68:int8]");
+                "1|L--|g1 = (int32) Mem0[g2 + 68<i32>:int8]");
         }
 
         [Test]
@@ -357,7 +358,7 @@ namespace Reko.UnitTests.Arch.Sparc
             Given_UInt32s(0xC230BFF0);// sth\t%g1,[%g2+68]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[g2 + -16:word16] = (word16) g1");
+                "1|L--|Mem0[g2 + -16<i32>:word16] = (word16) g1");
         }
 
         [Test]
@@ -385,7 +386,7 @@ namespace Reko.UnitTests.Arch.Sparc
                 Instr(Mnemonic.or, Registers.g0, Constant.Word32(3), Registers.IntegerRegisters[1]));
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|g1 = 0x00000000 | 0x00000003");      // Simplification happens later in the decompiler.
+                "1|L--|g1 = 0<32> | 3<32>");      // Simplification happens later in the decompiler.
         }
 
         [Test]
@@ -394,7 +395,7 @@ namespace Reko.UnitTests.Arch.Sparc
             Given_UInt32s(0x80a22003);   // subcc %o0, 3, %g0
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|g0 = o0 - 0x00000003",
+                "1|L--|g0 = o0 - 3<32>",
                 "2|L--|NZVC = cond(g0)");
         }
 
@@ -410,28 +411,28 @@ namespace Reko.UnitTests.Arch.Sparc
         [Test]
         public void SparcRw_sra()
         {
-            Given_UInt32s(0x913C3C03);// sra%l2,0x00000003,%o0;
+            Given_UInt32s(0x913C3C03);// sra%l2,0x00000003<32>,%o0;
             AssertCode(
                  "0|L--|00100000(4): 1 instructions",
-                 "1|L--|o0 = l0 >> 0x00000003");
+                 "1|L--|o0 = l0 >> 3<32>");
         }
 
         [Test]
         public void SparcRw_subx()
         {
-            Given_UInt32s(0x986060FF);  //  subx %g0,0xFFFFFFFF,%o4
+            Given_UInt32s(0x986060FF);  //  subx %g0,0xFFFFFFFF<32>,%o4
             AssertCode(
                  "0|L--|00100000(4): 1 instructions",
-                 "1|L--|o4 = g1 - 0x000000FF - C");
+                 "1|L--|o4 = g1 - 0xFF<32> - C");
         }
 
         [Test]
         public void SparcRw_addx()
         {
-            Given_UInt32s(0x90402000);  // addx %g0,0x00000000,%o0
+            Given_UInt32s(0x90402000);  // addx %g0,0<32>,%o0
             AssertCode(
                  "0|L--|00100000(4): 1 instructions",
-                 "1|L--|o0 = 0x00000000 + 0x00000000 + C");
+                 "1|L--|o0 = 0<32> + 0<32> + C");
         }
 
         [Test]
@@ -464,10 +465,10 @@ namespace Reko.UnitTests.Arch.Sparc
         [Test]
         public void SparcRw_srl()
         {
-            Given_UInt32s(0x8532E010); // srl %o3,0x00000010,%g2
+            Given_UInt32s(0x8532E010); // srl %o3,0x00000010<32>,%g2
             AssertCode(
                "0|L--|00100000(4): 1 instructions",
-               "1|L--|g2 = o3 >>u 0x00000010");
+               "1|L--|g2 = o3 >>u 0x10<32>");
         }
 
         [Test]

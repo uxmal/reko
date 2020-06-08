@@ -136,28 +136,27 @@ enum {
 };
 enum {
     Ticks = 0x16A,                  /*[GLOBAL VAR] Current number of ticks since system startup (long)
-   Tick count, time since boot [unsigned long]*/
+                                        Tick count, time since boot [unsigned long]*/
     TimeLM = 0x20C,                 /*[GLOBAL VAR] Time has name conflict w/ type. Clock time (extrapolated) [long]*/
     MonkeyLives = 0x100,            /*[GLOBAL VAR]  monkey lives if >= 0 [word]*/
     SEvtEnb = 0x15C,                /*[GLOBAL VAR] 0 if SystemEvent should return FALSE (byte)
-   enable SysEvent calls from GNE [byte]*/
-    JournalFlag = 0x8DE,            /*[GLOBAL VAR] Journaling mode (word)
-   journaling state [word]*/
+                                     enable SysEvent calls from GNE [byte]*/
+    JournalFlag = 0x8DE,            /*[GLOBAL VAR] Journaling mode (word) journaling state [word]*/
     JournalRef = 0x8E8,             /*[GLOBAL VAR] Reference number of journaling device driver (word)
-   Journalling driver's refnum [word]*/
-    BufPtr = 0x10C,                 /*[GLOBAL VAR] Address of end of jump table
-   top of application memory [pointer]*/
+                                     Journalling driver's refnum [word]*/
+    BufPtr = 0x10C,                /*[GLOBAL VAR] Address of end of jump table
+                                     top of application memory [pointer]*/
     StkLowPt = 0x110,               /*[GLOBAL VAR]  Lowest stack as measured in VBL task [pointer]*/
     TheZone = 0x118,                /*[GLOBAL VAR] Address of current heap zone
-   current heap zone [pointer]*/
+                                        current heap zone [pointer]*/
     ApplLimit = 0x130,              /*[GLOBAL VAR] Application heap limit
-   application limit [pointer]*/
+                                        application limit [pointer]*/
     SysZone = 0x2A6,                /*[GLOBAL VAR] Address of system heap zone
-   system heap zone [pointer]*/
+                                        system heap zone [pointer]*/
     ApplZone = 0x2AA,               /*[GLOBAL VAR] Address of application heap zone
-   application heap zone [pointer]*/
+                                        application heap zone [pointer]*/
     HeapEnd = 0x114,                /*[GLOBAL VAR] Address of end of application heap zone
-   end of heap [pointer]*/
+                                        end of heap [pointer]*/
     HiHeapMark = 0xBAE,             /*[GLOBAL VAR]  (long) highest address used by a zone below sp<01Nov85 JTC>*/
     MemErr = 0x220,                 /*[GLOBAL VAR]  last memory manager error [word]*/
     UTableBase = 0x11C,             /*[GLOBAL VAR] Base address of unit table

@@ -5,21 +5,21 @@ WhileLtIncMock_entry:
 	def a
 	// succ:  l1
 l1:
-	i_1 = 0x00000000
+	i_1 = 0<32>
 	goto loopHdr
 	// succ:  loopHdr
 l2:
 	return
 	// succ:  WhileLtIncMock_exit
 loop:
-	Mem4[a + i_2 * 0x00000004:word32] = 0x00000000
-	i_5 = i_2 + 0x00000001
+	Mem4[a + i_2 * 4<32>:word32] = 0<32>
+	i_5 = i_2 + 1<32>
 	// succ:  loopHdr
 loopHdr:
 	i_2 = PHI((i_1, l1), (i_5, loop))
-	branch i_2 < 0x00000064 loop
+	branch i_2 < 0x64<32> loop
 	goto l2
 	// succ:  l2 loop
 WhileLtIncMock_exit:
 
-(0x00000000 0x00000001 0x00000064 signed)
+(0<32> 1<32> 0x64<32> signed)

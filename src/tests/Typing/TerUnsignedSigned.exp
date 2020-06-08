@@ -5,13 +5,13 @@ define register_tm_clones
 register_tm_clones_entry:
 	// succ:  l1
 l1:
-	rsp = 0x0000000000201028
-	rsi = 0x0000000000201028
+	rsp = 0x201028<64>
+	rsi = 0x201028<64>
 	rsi = rsi - rsp
-	branch (rsi >> 0x0000000000000003) + (((rsi >> 0x0000000000000003) >>u 0x3F) >> 0x0000000000000001) == 0x0000000000000000 mHyperSpace
+	branch (rsi >> 3<64>) + (((rsi >> 3<64>) >>u 0x3F<8>) >> 1<64>) == 0<64> mHyperSpace
 	// succ:  mHello mHyperSpace
 mHello:
-	Mem0[0x000000000000002A:word64] = rsi
+	Mem0[0x2A<64>:word64] = rsi
 	// succ:  mHyperspace
 mHyperspace:
 	return
@@ -26,13 +26,13 @@ define register_tm_clones
 register_tm_clones_entry:
 	// succ:  l1
 l1:
-	rsp = 0x0000000000201028
-	rsi = 0x0000000000201028
+	rsp = 0x201028<64>
+	rsi = 0x201028<64>
 	rsi = rsi - rsp
-	branch (rsi >> 0x0000000000000003) + (((rsi >> 0x0000000000000003) >> 0x3F) >> 0x0000000000000001) == 0x0000000000000000 mHyperSpace
+	branch (rsi >> 3<64>) + (((rsi >> 3<64>) >> 0x3F<8>) >> 1<64>) == 0<64> mHyperSpace
 	// succ:  mHello mHyperSpace
 mHello:
-	*(int64 *) 0x000000000000002A = rsi
+	*(int64 *) 0x2A<64> = rsi
 	// succ:  mHyperspace
 mHyperspace:
 	return
@@ -44,15 +44,15 @@ register_tm_clones_exit:
 Eq_1: (struct "Globals" (2A int64 qw002A))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_10: (union "Eq_10" (int64 u0) (uint64 u1))
-	T_10 (in rsi >> 0x0000000000000003 : word64)
+	T_10 (in rsi >> 3<64> : word64)
 Eq_12: (union "Eq_12" (int64 u0) (uint64 u1))
-	T_12 (in rsi >> 0x0000000000000003 >> 0x3F : word64)
+	T_12 (in rsi >> 3<64> >> 0x3F<8> : word64)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr64 Eq_1)
   OrigDataType: (ptr64 (struct "Globals"))
-T_2: (in 0x0000000000201028 : word64)
+T_2: (in 0x201028<64> : word64)
   Class: Eq_2
   DataType: word64
   OrigDataType: word64
@@ -60,7 +60,7 @@ T_3: (in rsp : word64)
   Class: Eq_2
   DataType: word64
   OrigDataType: word64
-T_4: (in 0x0000000000201028 : word64)
+T_4: (in 0x201028<64> : word64)
   Class: Eq_4
   DataType: int64
   OrigDataType: word64
@@ -72,55 +72,55 @@ T_6: (in rsi - rsp : word64)
   Class: Eq_4
   DataType: int64
   OrigDataType: word64
-T_7: (in 0x0000000000000003 : word64)
+T_7: (in 3<64> : word64)
   Class: Eq_7
   DataType: word64
   OrigDataType: word64
-T_8: (in rsi >> 0x0000000000000003 : word64)
+T_8: (in rsi >> 3<64> : word64)
   Class: Eq_8
   DataType: int64
   OrigDataType: int64
-T_9: (in 0x0000000000000003 : word64)
+T_9: (in 3<64> : word64)
   Class: Eq_9
   DataType: word64
   OrigDataType: word64
-T_10: (in rsi >> 0x0000000000000003 : word64)
+T_10: (in rsi >> 3<64> : word64)
   Class: Eq_10
   DataType: Eq_10
   OrigDataType: (union (int64 u0) (uint64 u1))
-T_11: (in 0x3F : byte)
+T_11: (in 0x3F<8> : byte)
   Class: Eq_11
   DataType: byte
   OrigDataType: byte
-T_12: (in rsi >> 0x0000000000000003 >> 0x3F : word64)
+T_12: (in rsi >> 3<64> >> 0x3F<8> : word64)
   Class: Eq_12
   DataType: Eq_12
   OrigDataType: (union (int64 u1) (uint64 u0))
-T_13: (in 0x0000000000000001 : word64)
+T_13: (in 1<64> : word64)
   Class: Eq_13
   DataType: word64
   OrigDataType: word64
-T_14: (in rsi >> 0x0000000000000003 >> 0x3F >> 0x0000000000000001 : word64)
+T_14: (in rsi >> 3<64> >> 0x3F<8> >> 1<64> : word64)
   Class: Eq_14
   DataType: int64
   OrigDataType: int64
-T_15: (in (rsi >> 0x0000000000000003) + (((rsi >> 0x0000000000000003) >> 0x3F) >> 0x0000000000000001) : word64)
+T_15: (in (rsi >> 3<64>) + (((rsi >> 3<64>) >> 0x3F<8>) >> 1<64>) : word64)
   Class: Eq_15
   DataType: int64
   OrigDataType: int64
-T_16: (in 0x0000000000000000 : word64)
+T_16: (in 0<64> : word64)
   Class: Eq_15
   DataType: int64
   OrigDataType: word64
-T_17: (in (rsi >> 0x0000000000000003) + (((rsi >> 0x0000000000000003) >> 0x3F) >> 0x0000000000000001) == 0x0000000000000000 : bool)
+T_17: (in (rsi >> 3<64>) + (((rsi >> 3<64>) >> 0x3F<8>) >> 1<64>) == 0<64> : bool)
   Class: Eq_17
   DataType: bool
   OrigDataType: bool
-T_18: (in 0x000000000000002A : word64)
+T_18: (in 0x2A<64> : word64)
   Class: Eq_18
   DataType: (ptr64 int64)
   OrigDataType: (ptr64 (struct (0 T_19 t0000)))
-T_19: (in Mem0[0x000000000000002A:word64] : word64)
+T_19: (in Mem0[0x2A<64>:word64] : word64)
   Class: Eq_4
   DataType: int64
   OrigDataType: word64

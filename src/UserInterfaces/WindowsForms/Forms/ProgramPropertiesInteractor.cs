@@ -67,8 +67,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             else
                 dlg.Heuristics.SelectedItem = heuristicDescriptions[dlg.Program.User.Heuristics.First()];
 
-            dlg.OutputPolicies.Items.Add(new ListOption { Text = "Separate file per segment", Value = Program.SegmentFilePolicy });
-            dlg.OutputPolicies.Items.Add(new ListOption { Text = "Single file per program", Value = Program.SingleFilePolicy});
+            dlg.OutputPolicies.Items.Add(new ListOption("Separate file per segment", Program.SegmentFilePolicy));
+            dlg.OutputPolicies.Items.Add(new ListOption("Single file per program", Program.SingleFilePolicy));
             var i = dlg.OutputPolicies.Items.Cast<ListOption>().ToList().FindIndex(x => (string)((ListOption)x).Value == dlg.Program.User.OutputFilePolicy);
             if (i >= 0)
             {

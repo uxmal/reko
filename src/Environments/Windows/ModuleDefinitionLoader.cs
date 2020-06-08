@@ -36,9 +36,9 @@ namespace Reko.Environments.Windows
     {
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(ModuleDefinitionLoader), "Traces for ModuleDefinitionLoader") { Level = TraceLevel.Warning };
 
-        private Lexer lexer;
+        private readonly Lexer lexer;
+        private readonly string filename;
         private Token bufferedTok;
-        private string filename;
         private IPlatform platform;
         private string moduleName;
 
@@ -91,7 +91,13 @@ namespace Reko.Environments.Windows
                 int ordinal = -1;
                 if (PeekAndDiscard(TokenType.At))
                 {
-                    ordinal = Convert.ToInt32(Expect(TokenType.Number));
+                    var num = Get();
+                    switch (num.Type)
+                    {
+                    case TokenType.Number: ordinal = Convert.ToInt32(num.Text); break;
+                    case TokenType.HexNumber: ordinal = Convert.ToInt32(num.Text, 16); break;
+                    default: throw new FormatException("Expected a number after '@'.");
+                    }
                     PeekAndDiscard(TokenType.NONAME);
                 }
                 PeekAndDiscard(TokenType.PRIVATE);
@@ -119,6 +125,7 @@ namespace Reko.Environments.Windows
             if (Peek().Type == TokenType.Id)
             {
                 moduleName = Get().Text.ToUpper();
+                lib.SetModuleName(moduleName);
             }
             if (PeekAndDiscard(TokenType.BASE))
             {
@@ -163,7 +170,7 @@ namespace Reko.Environments.Windows
         {
             var tok = Get();
             if (tok.Type != type)
-                throw new FormatException(string.Format("Expected token type {0} but saw {1}.", type, tok.Type));
+                throw new FormatException($"Expected token type {type} but saw {tok.Type}.");
             return tok.Text;
         }
 
@@ -185,6 +192,7 @@ namespace Reko.Environments.Windows
             Eq,
             Id,
             Number,
+            HexNumber,
         }
 
         public class Token
@@ -211,7 +219,7 @@ namespace Reko.Environments.Windows
 
         private class Lexer
         {
-            private Dictionary<string, TokenType> keywords = new Dictionary<string, TokenType> {
+            private static readonly Dictionary<string, TokenType> keywords = new Dictionary<string, TokenType> {
                 { "BASE", TokenType.BASE},
                 { "DATA", TokenType.DATA },
                 { "EXPORTS", TokenType.EXPORTS },
@@ -229,9 +237,12 @@ namespace Reko.Environments.Windows
                 Id,
                 String,
                 Number,
+                Zero,
+                HexPrefix,
+                HexNumber,
             }
 
-            private TextReader rdr;
+            private readonly TextReader rdr;
             private int lineNumber;
 
             public Lexer(TextReader reader)
@@ -263,6 +274,7 @@ namespace Reko.Environments.Windows
                         case '=': rdr.Read(); return new Token(TokenType.Eq, lineNumber);
                         case ':': rdr.Read(); return new Token(TokenType.Colon, lineNumber);
                         case ';': rdr.Read(); st = State.Comment; break;
+                        case '0': rdr.Read(); sb = new StringBuilder(); sb.Append(ch); st = State.Zero; break;
                         case '\r': rdr.Read(); break;
                         case '\n': ++lineNumber; rdr.Read(); break;
                         default:
@@ -315,6 +327,38 @@ namespace Reko.Environments.Windows
                         rdr.Read();
                         sb.Append(ch);
                         break;
+                    case State.Zero:
+                        if (c == -1)
+                            return Tok(TokenType.Number, sb);
+                        switch (ch)
+                        {
+                        case 'x': case 'X':
+                            rdr.Read();
+                            sb.Clear();
+                            st = State.HexPrefix;
+                            break;
+                        default:
+                            return Tok(TokenType.Number, sb);
+                        }
+                        break;
+                    case State.HexPrefix:
+                        if (c != -1 && BytePattern.IsHexDigit(ch))
+                        { 
+                            rdr.Read();
+                            sb.Append(ch);
+                            st = State.HexNumber;
+                            break;
+                        }
+                        throw new FormatException("Invalid hexadecimal constant.");
+                    case State.HexNumber:
+                        if (c != -1 && BytePattern.IsHexDigit(ch))
+                        {
+                            rdr.Read();
+                            sb.Append(ch);
+                            st = State.HexNumber;
+                            break;
+                        }
+                        return Tok(TokenType.HexNumber, sb);
                     }
                 }
             }
@@ -322,8 +366,7 @@ namespace Reko.Environments.Windows
             private Token IdOrKeyword(StringBuilder sb)
             {
                 var id = sb.ToString();
-                TokenType t;
-                if (keywords.TryGetValue(id, out t))
+                if (keywords.TryGetValue(id, out TokenType t))
                     return new Token(t, lineNumber);
                 else
                     return new Token(TokenType.Id, id, lineNumber);

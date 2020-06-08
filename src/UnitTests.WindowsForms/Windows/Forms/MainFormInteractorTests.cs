@@ -73,6 +73,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private Mock<ISelectionService> selSvc;
         private Mock<ICallHierarchyService> callHierSvc;
         private Mock<IDecompiledFileService> dcFileSvc;
+        private Mock<ITestGenerationService> testGenSvc;
 
         [SetUp]
         public void Setup()
@@ -601,6 +602,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             selSvc = new Mock<ISelectionService>();
             callHierSvc = new Mock<ICallHierarchyService>();
             dcFileSvc = new Mock<IDecompiledFileService>();
+            testGenSvc = new Mock<ITestGenerationService>();
 
             svcFactory.Setup(s => s.CreateArchiveBrowserService()).Returns(archSvc.Object);
             svcFactory.Setup(s => s.CreateCodeViewerService()).Returns(cvSvc.Object);
@@ -629,6 +631,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory.Setup(s => s.CreateSelectionService()).Returns(selSvc.Object);
             svcFactory.Setup(s => s.CreateCallHierarchyService()).Returns(callHierSvc.Object);
             svcFactory.Setup(s => s.CreateDecompiledFileService()).Returns(dcFileSvc.Object);
+            svcFactory.Setup(s => s.CreateTestGenerationService()).Returns(testGenSvc.Object);
+
             services.AddService<IDialogFactory>(dlgFactory.Object);
             services.AddService<IServiceFactory>(svcFactory.Object);
             services.AddService<IFileSystemService>(fsSvc.Object);

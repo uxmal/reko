@@ -7,21 +7,21 @@ l0:
 	r63 = fp
 	// succ:  l0_seek
 l0_seek:
-	branch t == 0x00000000 l5_found
+	branch t == 0<32> l5_found
 	// succ:  l1 l5_found
 l1:
-	vv = Mem0[t + 0x00000000:word32]
+	vv = Mem0[t + 0<32>:word32]
 	branch v == vv l5_found
 	// succ:  l2 l5_found
 l2:
 	branch v < vv l4_lt
 	// succ:  l3 l4_lt
 l3:
-	t = Mem0[t + 0x00000008:word32]
+	t = Mem0[t + 8<32>:word32]
 	goto l0_seek
 	// succ:  l0_seek
 l4_lt:
-	t = Mem0[t + 0x00000004:word32]
+	t = Mem0[t + 4<32>:word32]
 	// succ:  l5_found
 l5_found:
 	return t
@@ -33,9 +33,9 @@ Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_4: (struct (0 int32 dw0000) (4 (ptr32 Eq_4) ptr0004) (8 (ptr32 Eq_4) ptr0008))
 	T_4 (in t : word32)
-	T_5 (in 0x00000000 : word32)
-	T_16 (in Mem0[t + 0x00000004:word32] : word32)
-	T_19 (in Mem0[t + 0x00000008:word32] : word32)
+	T_5 (in 0<32> : word32)
+	T_16 (in Mem0[t + 4<32>:word32] : word32)
+	T_19 (in Mem0[t + 8<32>:word32] : word32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -53,23 +53,23 @@ T_4: (in t : word32)
   Class: Eq_4
   DataType: (ptr32 Eq_4)
   OrigDataType: (ptr32 (struct (0 T_9 t0000) (4 T_16 t0004) (8 T_19 t0008)))
-T_5: (in 0x00000000 : word32)
+T_5: (in 0<32> : word32)
   Class: Eq_4
   DataType: (ptr32 Eq_4)
   OrigDataType: word32
-T_6: (in t == 0x00000000 : bool)
+T_6: (in t == 0<32> : bool)
   Class: Eq_6
   DataType: bool
   OrigDataType: bool
-T_7: (in 0x00000000 : word32)
+T_7: (in 0<32> : word32)
   Class: Eq_7
   DataType: word32
   OrigDataType: word32
-T_8: (in t + 0x00000000 : word32)
+T_8: (in t + 0<32> : word32)
   Class: Eq_8
   DataType: word32
   OrigDataType: word32
-T_9: (in Mem0[t + 0x00000000:word32] : word32)
+T_9: (in Mem0[t + 0<32>:word32] : word32)
   Class: Eq_9
   DataType: int32
   OrigDataType: word32
@@ -89,27 +89,27 @@ T_13: (in v < vv : bool)
   Class: Eq_13
   DataType: bool
   OrigDataType: bool
-T_14: (in 0x00000004 : word32)
+T_14: (in 4<32> : word32)
   Class: Eq_14
   DataType: word32
   OrigDataType: word32
-T_15: (in t + 0x00000004 : word32)
+T_15: (in t + 4<32> : word32)
   Class: Eq_15
   DataType: ptr32
   OrigDataType: ptr32
-T_16: (in Mem0[t + 0x00000004:word32] : word32)
+T_16: (in Mem0[t + 4<32>:word32] : word32)
   Class: Eq_4
   DataType: (ptr32 Eq_4)
   OrigDataType: word32
-T_17: (in 0x00000008 : word32)
+T_17: (in 8<32> : word32)
   Class: Eq_17
   DataType: word32
   OrigDataType: word32
-T_18: (in t + 0x00000008 : word32)
+T_18: (in t + 8<32> : word32)
   Class: Eq_18
   DataType: ptr32
   OrigDataType: ptr32
-T_19: (in Mem0[t + 0x00000008:word32] : word32)
+T_19: (in Mem0[t + 8<32>:word32] : word32)
   Class: Eq_4
   DataType: (ptr32 Eq_4)
   OrigDataType: word32

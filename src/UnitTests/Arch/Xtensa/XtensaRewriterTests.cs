@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -32,7 +33,7 @@ namespace Reko.UnitTests.Arch.Xtensa
     [TestFixture]
     public class XtensaRewriterTests : RewriterTestBase
     {
-        private readonly XtensaArchitecture arch = new XtensaArchitecture("xtensa");
+        private readonly XtensaArchitecture arch = new XtensaArchitecture(CreateServiceContainer(), "xtensa");
         private readonly Address baseAddr = Address.Ptr32(0x0010000);
 
         public override IProcessorArchitecture Architecture => arch;
@@ -86,7 +87,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0xFDC342);
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a4 = a3 - 3");
+                "1|L--|a4 = a3 - 3<i32>");
         }
 
         [Test]
@@ -95,7 +96,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x440B); // "addi.n\ta4,a4,-01", );
             AssertCode(
                "0|L--|00010000(2): 1 instructions",
-               "1|L--|a4 = a4 - 1");
+               "1|L--|a4 = a4 - 1<i32>");
         }
 
         [Test]
@@ -104,7 +105,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0xF0D422); // "addmi\ta2,a4,FFFFF000";
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a2 = a4 + 0xFFFFF000");
+                "1|L--|a2 = a4 + 0xFFFFF000<32>");
         }
 
         [Test]
@@ -114,7 +115,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x906000);
             AssertCode(
                "0|L--|00010000(3): 1 instructions",
-               "1|L--|a6 = a0 + a0 * 0x00000002");
+               "1|L--|a6 = a0 + a0 * 2<32>");
         }
 
         [Test]
@@ -123,7 +124,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0xA02230); // addx4\ta2,a2,a3", );
             AssertCode(
                "0|L--|00010000(3): 1 instructions",
-               "1|L--|a2 = a3 + a2 * 0x00000004");
+               "1|L--|a2 = a3 + a2 * 4<32>");
         }
 
         [Test]
@@ -177,7 +178,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x1244f6); // bgeui\ta4,00000004,00100016", );
             AssertCode(
                "0|T--|00010000(3): 1 instructions",
-               "1|T--|if (a4 >=u 0x00000004) branch 00010016");
+               "1|T--|if (a4 >=u 4<32>) branch 00010016");
         }
 
         [Test]
@@ -187,7 +188,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x32CC);
             AssertCode(
                 "0|T--|00010000(2): 1 instructions",
-                "1|T--|if (a2 != 0x00000000) branch 00010007");
+                "1|T--|if (a2 != 0<32>) branch 00010007");
         }
 
         [Test]
@@ -196,7 +197,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("F2718B");    // iii	a1,022C
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|__iii(a1 + 0x022C)");
+                "1|L--|__iii(a1 + 0x22C<u16>)");
         }
 
         [Test]
@@ -223,7 +224,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("C272D7");    // ipf	a2,035C
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|__ipf(a2 + 0x035C)");
+                "1|L--|__ipf(a2 + 0x35C<u16>)");
         }
 
         [Test]
@@ -352,14 +353,14 @@ namespace Reko.UnitTests.Arch.Xtensa
         [Test]
         public void Xtrw_s32i()
         {
-            Given_UInt32s(0xE561D2); // "s32i\ta13,a1,0x00000394"
+            Given_UInt32s(0xE561D2); // "s32i\ta13,a1,0x394<32>"
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|Mem0[a1 + 0x00000394:word32] = a13");
-            Given_UInt32s(0xE76102); // "s32i\ta0,a1,0x0000039C"
+                "1|L--|Mem0[a1 + 0x394<u32>:word32] = a13");
+            Given_UInt32s(0xE76102); // "s32i\ta0,a1,0x39C<32>"
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|Mem0[a1 + 0x0000039C:word32] = a0");
+                "1|L--|Mem0[a1 + 0x39C<u32>:word32] = a0");
         }
 
         [Test]
@@ -413,7 +414,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0xA0A392u); // movi\ta9,000003A0
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a9 = 0x000003A0");
+                "1|L--|a9 = 0x3A0<32>");
         }
 
 
@@ -424,7 +425,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0xF37C); // movi.n\ta3,-01",
             AssertCode(
                 "0|L--|00010000(2): 1 instructions",
-                "1|L--|a3 = -1");
+                "1|L--|a3 = -1<i32>");
         }
 
         [Test]
@@ -433,7 +434,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x7d39);    // s32i.n\ta3,a13,1C
             AssertCode(
                "0|L--|00010000(2): 1 instructions",
-               "1|L--|Mem0[a13 + 0x0000001C:word32] = a3");
+               "1|L--|Mem0[a13 + 0x1C<u32>:word32] = a3");
         }
 
         
@@ -444,7 +445,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x414420); // "srli\ta4,a2,04", );
             AssertCode(
                "0|L--|00010000(3): 1 instructions",
-               "1|L--|a4 = a2 >>u 4");
+               "1|L--|a4 = a2 >>u 4<i32>");
         }
 
         [Test]
@@ -453,7 +454,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("227CC3");    // dpfro	a12,030C
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|__dpfro(a12 + 0x030C)");
+                "1|L--|__dpfro(a12 + 0x30C<u16>)");
         }
 
         [Test]
@@ -462,7 +463,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("627CF2");    // dhi	a12,03C8
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|__dhi(a12 + 0x03C8)");
+                "1|L--|__dhi(a12 + 0x3C8<u16>)");
         }
 
         [Test]
@@ -471,7 +472,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("427CF5");    // dhwb	a12,03D4
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|__dhwb(a12 + 0x03D4)");
+                "1|L--|__dhwb(a12 + 0x3D4<u16>)");
         }
 
         [Test]
@@ -480,7 +481,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("827992");    // dhu	a9,09
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|__dhu(a9 + 0x09)");
+                "1|L--|__dhu(a9 + 9<8>)");
         }
 
         [Test]
@@ -489,7 +490,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("527954");    // dhwbi	a9,0150
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|__dhwbi(a9 + 0x0150)");
+                "1|L--|__dhwbi(a9 + 0x150<u16>)");
         }
 
         [Test]
@@ -498,7 +499,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("727982");    // dii	a9,0208
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|__dii(a9 + 0x0208)");
+                "1|L--|__dii(a9 + 0x208<u16>)");
         }
 
         [Test]
@@ -507,7 +508,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("827E53");    // diu	a14,05
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|__diu(a14 + 0x05)");
+                "1|L--|__diu(a14 + 5<8>)");
         }
 
         [Test]
@@ -516,7 +517,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("027202");    // dpfr	a2,0008
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|__dpfr(a2 + 0x0008)");
+                "1|L--|__dpfr(a2 + 8<u16>)");
         }
 
         [Test]
@@ -525,7 +526,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("127908");    // dpfw	a9,0020
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|__dpfw(a9 + 0x0020)");
+                "1|L--|__dpfw(a9 + 0x20<u16>)");
         }
 
         [Test]
@@ -534,7 +535,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("327928");    // dpfwo	a9,00A0
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|__dpfwo(a9 + 0x00A0)");
+                "1|L--|__dpfwo(a9 + 0xA0<u16>)");
         }
 
         [Test]
@@ -552,7 +553,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("36F805");    // entry	a8,02F8
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a8 = a8 - 0x02F8");
+                "1|L--|a8 = a8 - 0x2F8<u16>");
         }
 
         [Test]
@@ -579,7 +580,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x342020); // "extui\ta2,a2,00,04", );
             AssertCode(
                "0|L--|00010000(3): 1 instructions",
-               "1|L--|a2 = a2 & 0x0000000F");
+               "1|L--|a2 = a2 & 0xF<32>");
         }
 
         [Test]
@@ -652,7 +653,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x8bfc00);
             AssertCode(
                 "0|L--|00010000(3): 2 instructions",
-                "1|T--|if (a0 != 0x00000000) branch 00010003",
+                "1|T--|if (a0 != 0<32>) branch 00010003",
                 "2|L--|f15 = f12");
         }
 
@@ -684,7 +685,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0xb34530);
             AssertCode(
               "0|L--|00010000(3): 2 instructions",
-              "1|T--|if (a3 < 0x00000000) branch 00010003",
+              "1|T--|if (a3 < 0<32>) branch 00010003",
               "2|L--|a4 = a5");
         }
 
@@ -694,7 +695,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("0000BB");    // movgez_s	f0,f0,a0
             AssertCode(
                 "0|L--|00010000(3): 2 instructions",
-                "1|T--|if (a0 < 0x00000000) branch 00010003",
+                "1|T--|if (a0 < 0<32>) branch 00010003",
                 "2|L--|f0 = f0");
         }
 
@@ -704,7 +705,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("0020AB");    // movltz_s	f2,f0,a0
             AssertCode(
                 "0|L--|00010000(3): 2 instructions",
-                "1|T--|if (a0 >= 0x00000000) branch 00010003",
+                "1|T--|if (a0 >= 0<32>) branch 00010003",
                 "2|L--|f2 = f0");
         }
 
@@ -715,7 +716,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x932530);
             AssertCode(
                 "0|L--|00010000(3): 2 instructions",
-                "1|T--|if (a3 == 0x00000000) branch 00010003",
+                "1|T--|if (a3 == 0<32>) branch 00010003",
                 "2|L--|a2 = a5");
         }
 
@@ -725,7 +726,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("40C19B");    // movnez_s	f12,f1,a4
             AssertCode(
                 "0|L--|00010000(3): 2 instructions",
-                "1|T--|if (a4 == 0x00000000) branch 00010003",
+                "1|T--|if (a4 == 0<32>) branch 00010003",
                 "2|L--|f12 = f1");
         }
 
@@ -764,7 +765,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("02B243");    // l32ai	a0,a2,010C
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a0 = __l32ai(a2 + 0x010C)");
+                "1|L--|a0 = __l32ai(a2 + 0x10C<u16>)");     //$LIT: 0x10c<u32> at least?
         }
 
         [Test]
@@ -774,7 +775,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x094400);
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a0 = __l32e(a4 + -48)");
+                "1|L--|a0 = __l32e(a4 + -48<i32>)");
         }
 
 
@@ -785,7 +786,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0xFF2152);
             AssertCode(
                "0|L--|00010000(3): 1 instructions",
-               "1|L--|a5 = Mem0[a1 + 0x000003FC:word32]");
+               "1|L--|a5 = Mem0[a1 + 0x3FC<u32>:word32]");
         }
 
         [Test]
@@ -794,7 +795,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x7D48); // "l32i.n\ta4,a13,28"
             AssertCode(
                 "0|L--|00010000(2): 1 instructions",
-                "1|L--|a4 = Mem0[a13 + 0x0000001C:word32]");
+                "1|L--|a4 = Mem0[a13 + 0x1C<u32>:word32]");
         }
 
         [Test]
@@ -816,7 +817,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x030122);  // l8ui\ta2,a1,0003
             AssertCode(
                "0|L--|00010000(3): 2 instructions",
-               "1|L--|v3 = Mem0[a1 + 0x00000003:byte]",
+               "1|L--|v3 = Mem0[a1 + 3<u32>:byte]",
                "2|L--|a2 = (uint32) v3");
         }
 
@@ -826,7 +827,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("341090");    // lddec	mr1,a0
             AssertCode(
                 "0|L--|00010000(3): 2 instructions",
-                "1|L--|a0 = a0 - 4",
+                "1|L--|a0 = a0 - 4<i32>",
                 "2|L--|mr1 = Mem0[a0:word32]");
         }
 
@@ -836,7 +837,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("441180");    // ldinc	mr1,a1
             AssertCode(
                 "0|L--|00010000(3): 2 instructions",
-                "1|L--|a1 = a1 + 4",
+                "1|L--|a1 = a1 + 4<i32>",
                 "2|L--|mr1 = Mem0[a1:word32]");
         }
 
@@ -856,11 +857,11 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("768002 3022A0");    // loop	a0,00010006; addx4...
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|LCOUNT = a0 - 0x00000001",
+                "1|L--|LCOUNT = a0 - 1<32>",
                 "2|L--|00010003(3): 4 instructions",
-                "3|L--|a2 = a3 + a2 * 0x00000004",
-                "4|T--|if (LCOUNT == 0x00000000) branch 00010006",
-                "5|L--|LCOUNT = LCOUNT - 0x00000001",
+                "3|L--|a2 = a3 + a2 * 4<32>",
+                "4|T--|if (LCOUNT == 0<32>) branch 00010006",
+                "5|L--|LCOUNT = LCOUNT - 1<32>",
                 "6|T--|goto 00010003");
         }
 
@@ -919,7 +920,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("001033");    // clamps	a1,a0,07
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a1 = __clamps(a0, 0x07)");
+                "1|L--|a1 = __clamps(a0, 7<8>)");
         }
 
         [Test]
@@ -929,7 +930,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x1f0d66);
             AssertCode(
                 "0|T--|00010000(3): 1 instructions",
-                "1|T--|if (a13 != -1) branch 00010023");
+                "1|T--|if (a13 != -1<i32>) branch 00010023");
         }
 
         [Test]
@@ -997,7 +998,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x004100);
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|__break(0x01, 0x00)");
+                "1|L--|__break(1<8>, 0<8>)");
         }
 
         [Test]
@@ -1007,7 +1008,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0xFE8C);
             AssertCode(
                 "0|T--|00010000(2): 1 instructions",
-                "1|T--|if (a14 == 0x00000000) branch 00010013");
+                "1|T--|if (a14 == 0<32>) branch 00010013");
         }
 
         [Test]
@@ -1085,7 +1086,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0xE7E407);
             AssertCode(
                 "0|T--|00010000(3): 1 instructions",
-                "1|T--|if ((a4 & 0x00000001) != 0x00000000) branch 0000FFEB");
+                "1|T--|if ((a4 & 1<32>) != 0<32>) branch 0000FFEB");
         }
 
         [Test]
@@ -1207,7 +1208,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("208940");    // rotw	-06
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|__rotw(-6)");
+                "1|L--|__rotw(-6<i8>)");
         }
 
         [Test]
@@ -1235,7 +1236,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x006140);
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a4 = __rsil(0x01)");
+                "1|L--|a4 = __rsil(1<8>)");
         }
 
         [Test]
@@ -1273,7 +1274,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x254367);
             AssertCode(
                 "0|T--|00010000(3): 1 instructions",
-                "1|T--|if ((~a3 & a6) == 0x00000000) branch 00010029");
+                "1|T--|if ((~a3 & a6) == 0<32>) branch 00010029");
         }
 
         [Test]
@@ -1283,7 +1284,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x274242);
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|Mem0[a2 + 0x00000027:byte] = a4");
+                "1|L--|Mem0[a2 + 0x27<u32>:byte] = a4");        //$LIT: check 0x27<u32>
         }
 
         [Test]
@@ -1296,11 +1297,6 @@ namespace Reko.UnitTests.Arch.Xtensa
                 "1|L--|a5 = a5 ^ a4");
         }
 
-
-
-
-
-
         [Test]
         public void Xtrw_srai()
         {
@@ -1308,7 +1304,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x3130a0);
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a3 = a10 >> 16");
+                "1|L--|a3 = a10 >> 16<i32>");
         }
 
         [Test]
@@ -1318,7 +1314,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0xff6656);
             AssertCode(
                 "0|T--|00010000(3): 1 instructions",
-                "1|T--|if (a6 != 0x00000000) branch 0000FFFA");
+                "1|T--|if (a6 != 0<32>) branch 0000FFFA");
         }
 
         [Test]
@@ -1328,7 +1324,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x0e8c37);
             AssertCode(
                 "0|T--|00010000(3): 1 instructions",
-                "1|T--|if ((a12 & a3) != 0x00000000) branch 00010012");
+                "1|T--|if ((a12 & a3) != 0<32>) branch 00010012");
         }
 
         [Test]
@@ -1338,7 +1334,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x008016);
             AssertCode(
                 "0|T--|00010000(3): 1 instructions",
-                "1|T--|if (a0 == 0x00000000) branch 0001000C");
+                "1|T--|if (a0 == 0<32>) branch 0001000C");
         }
 
         [Test]
@@ -1348,7 +1344,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0xe974b6);
             AssertCode(
               "0|T--|00010000(3): 1 instructions",
-              "1|T--|if (a4 <u 0x00000007) branch 0000FFED");
+              "1|T--|if (a4 <u 7<32>) branch 0000FFED");
         }
 
         [Test]
@@ -1358,7 +1354,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x402300);
             AssertCode(
               "0|L--|00010000(3): 1 instructions",
-              "1|L--|SAR = a3 * 0x00000008");
+              "1|L--|SAR = a3 * 8<32>");
         }
 
         [Test]
@@ -1368,7 +1364,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x401200);
             AssertCode(
               "0|L--|00010000(3): 1 instructions",
-              "1|L--|SAR = 0x00000020 - a2");
+              "1|L--|SAR = 0x20<32> - a2");
         }
 
         [Test]
@@ -1378,7 +1374,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0xf60b27);
             AssertCode(
               "0|T--|00010000(3): 1 instructions",
-              "1|T--|if ((a11 & a2) == 0x00000000) branch 0000FFFA");
+              "1|T--|if ((a11 & a2) == 0<32>) branch 0000FFFA");
         }
 
 
@@ -1389,7 +1385,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x404800);
             AssertCode(
               "0|L--|00010000(3): 1 instructions",
-              "1|L--|SAR = 0x08");
+              "1|L--|SAR = 8<8>");
         }
 
         [Test]
@@ -1408,7 +1404,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("108723");    // sext	a8,a7,08
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a8 = __sext(a7, 0x08)");
+                "1|L--|a8 = __sext(a7, 8<8>)");
         }
 
         [Test]
@@ -1427,7 +1423,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x114c40); //, "slli\ta4,a12,14");
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a4 = a12 << 20");
+                "1|L--|a4 = a12 << 20<i32>");
         }
 
         [Test]
@@ -1457,7 +1453,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x1ac567);
             AssertCode(
                "0|T--|00010000(3): 1 instructions",
-               "1|T--|if ((~a5 & a6) != 0x00000000) branch 0001001E");
+               "1|T--|if ((~a5 & a6) != 0<32>) branch 0001001E");
         }
 
         [Test]
@@ -1480,7 +1476,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0xc0ff02);
             AssertCode(
                "0|L--|00010000(3): 1 instructions",
-               "1|L--|Mem0[a15 + 0x00000300:word32] = a0");
+               "1|L--|Mem0[a15 + 0x300<u32>:word32] = a0");
         }
 
         [Test]
@@ -1690,7 +1686,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("04054B");    // mula.da.hh.ldinc	mr0,a5,mr0,a0
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
-                "1|L--|a5 = a5 + 4",
+                "1|L--|a5 = a5 + 4<i32>",
                 "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hh(mr0, a0)",
                 "3|L--|mr0 = Mem0[a5:word32]");
         }
@@ -1701,7 +1697,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("044559");    // mula.da.hl.lddec	mr0,a5,mr1,a0
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
-                "1|L--|a5 = a5 - 4",
+                "1|L--|a5 = a5 - 4<i32>",
                 "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hl(mr1, a0)");
         }
 
@@ -1711,7 +1707,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("248149");    // mula.da.hl.ldinc	mr0,a1,mr0,a2
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
-                "1|L--|a1 = a1 + 4",
+                "1|L--|a1 = a1 + 4<i32>",
                 "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hl(mr0, a2)",
                 "3|L--|mr0 = Mem0[a1:word32]");
         }
@@ -1722,7 +1718,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("04015A");    // mula.da.lh.lddec	mr0,a1,mr0,a0
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
-                "1|L--|a1 = a1 - 4",
+                "1|L--|a1 = a1 - 4<i32>",
                 "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_lh(mr0, a0)",
                 "3|L--|mr0 = Mem0[a1:word32]");
         }
@@ -1733,7 +1729,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("040C0A");    // mula.da.lh.ldinc	mr0,a12,mr0,a0
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
-                "1|L--|a12 = a12 + 4",
+                "1|L--|a12 = a12 + 4<i32>",
                 "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_lh(mr0, a0)",
                 "3|L--|mr0 = Mem0[a12:word32]");
         }
@@ -1744,7 +1740,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("F45158");    // mula.da.ll.lddec	mr1,a1,mr1,a15
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
-                "1|L--|a1 = a1 - 4",
+                "1|L--|a1 = a1 - 4<i32>",
                 "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_ll(mr1, a15)",
                 "3|L--|mr1 = Mem0[a1:word32]");
         }
@@ -1755,7 +1751,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("040C08");    // mula.da.ll.ldinc	mr0,a12,mr0,a0
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
-                "1|L--|a12 = a12 + 4",
+                "1|L--|a12 = a12 + 4<i32>",
                 "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_ll(mr0, a0)",
                 "3|L--|mr0 = Mem0[a12:word32]");
         }
@@ -1766,7 +1762,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("64FF1B");    // mula.dd.hh.lddec	mr3,a15,mr1,a6
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
-                "1|L--|a15 = a15 - 4",
+                "1|L--|a15 = a15 - 4<i32>",
                 "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hh(mr1, a6)",
                 "3|L--|mr3 = Mem0[a15:word32]");
         }
@@ -1777,7 +1773,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("448518");    // mula.dd.ll.lddec	mr0,a5,mr0,a4
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
-                "1|L--|a5 = a5 - 4",
+                "1|L--|a5 = a5 - 4<i32>",
                 "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_ll(mr0, a4)");
         }
 
@@ -1834,7 +1830,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0xD0BB90);
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a11 = a11 * 0x00000002 - a9");
+                "1|L--|a11 = a11 * 2<32> - a9");
         }
 
         [Test]
@@ -1844,7 +1840,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0xE05530);
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a5 = a5 * 0x00000004 - a3");
+                "1|L--|a5 = a5 * 4<32> - a3");
         }
 
         [Test]
@@ -1854,7 +1850,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0xF03DD0);
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a3 = a13 * 0x00000008 - a13");
+                "1|L--|a3 = a13 * 8<32> - a13");
         }
 
         [Test]
@@ -1874,7 +1870,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x55d327);
             AssertCode(
                 "0|T--|00010000(3): 1 instructions",
-                "1|T--|if ((a3 & 0x00000001 << a2) != 0x00000000) branch 00010059");
+                "1|T--|if ((a3 & 1<u32> << a2) != 0<32>) branch 00010059");
         }
 
         [Test]
@@ -1884,7 +1880,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x045247);
             AssertCode(
                 "0|T--|00010000(3): 1 instructions",
-                "1|T--|if ((a2 & 0x00000001 << a4) == 0x00000000) branch 00010008");
+                "1|T--|if ((a2 & 1<u32> << a4) == 0<32>) branch 00010008");
         }
 
         [Test]
@@ -1893,7 +1889,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("C2E201");    // s32c1i	a12,a2,0004
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a12 = __s32c1i(a2 + 0x0004, SCOMPARE1)");
+                "1|L--|a12 = __s32c1i(a2 + 4<u16>, SCOMPARE1)");        //$LIT: should be 4<u32> or 4<32>?
         }
 
         [Test]
@@ -1903,7 +1899,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x490020);
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|__s32e(a0 + -64, a2)");
+                "1|L--|__s32e(a0 + -64<i32>, a2)");
         }
 
         [Test]
@@ -1931,7 +1927,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("403440");    // ssa8b	a4
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|SAR = 32 - a4 * 0x00000008");
+                "1|L--|SAR = 32<i32> - a4 * 8<32>");
         }
 
         [Test]
@@ -2022,7 +2018,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("007200");    // waiti	02
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|__waiti(0x02)");
+                "1|L--|__waiti(2<8>)");
         }
 
         [Test]

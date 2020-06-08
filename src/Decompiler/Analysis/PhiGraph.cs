@@ -24,8 +24,6 @@ using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Analysis
 {
@@ -35,8 +33,8 @@ namespace Reko.Analysis
     /// </summary>
     public class PhiGraph : DirectedGraph<PhiAssignment>
     {
-        private PhiAssignment[] phis;
-        private SsaState ssa;
+        private readonly PhiAssignment[] phis;
+        private readonly SsaState ssa;
 
         public PhiGraph(SsaState ssa, IEnumerable<PhiAssignment> phis)
         {

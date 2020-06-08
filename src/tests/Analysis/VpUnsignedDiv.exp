@@ -1,12 +1,12 @@
 = ProcedureBuilder ========================
 Mem0:Mem
     def:  def Mem0
-    uses: r1_1 = Mem0[0x00123400:word32]
+    uses: r1_1 = Mem0[0x00123400<32>:word32]
 r1_1: orig: r1
-    def:  r1_1 = Mem0[0x00123400:word32]
+    def:  r1_1 = Mem0[0x00123400<32>:word32]
     uses: r2_r1_3 = SEQ(r2_2, r1_1) (alias)
 r2_2: orig: r2
-    def:  r2_2 = 0x00000000
+    def:  r2_2 = 0x00000000<32>
     uses: r2_r1_3 = SEQ(r2_2, r1_1) (alias)
           r2_r1_6 = SEQ(r2_2, r1_5) (alias)
 r2_r1_3: orig: r2_r1
@@ -14,15 +14,15 @@ r2_r1_3: orig: r2_r1
     uses: v5_4 = r2_r1_3
 v5_4: orig: v5
     def:  v5_4 = r2_r1_3
-    uses: r1_5 = v5_4 /u 0x0000002A
+    uses: r1_5 = v5_4 /u 0x0000002A<32>
 r1_5: orig: r1
-    def:  r1_5 = v5_4 /u 0x0000002A
+    def:  r1_5 = v5_4 /u 0x0000002A<32>
     uses: r2_r1_6 = SEQ(r2_2, r1_5) (alias)
-          Mem7[0x00123404:word32] = r1_5
+          Mem7[0x00123404<32>:word32] = r1_5
 r2_r1_6: orig: r2_r1
     def:  r2_r1_6 = SEQ(r2_2, r1_5) (alias)
 Mem7: orig: Mem0
-    def:  Mem7[0x00123404:word32] = r1_5
+    def:  Mem7[0x00123404<32>:word32] = r1_5
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -30,39 +30,39 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	r1_1 = Mem0[0x00123400:word32]
-	r2_2 = 0x00000000
+	r1_1 = Mem0[0x00123400<32>:word32]
+	r2_2 = 0x00000000<32>
 	r2_r1_3 = SEQ(r2_2, r1_1) (alias)
 	v5_4 = r2_r1_3
-	r1_5 = v5_4 /u 0x0000002A
+	r1_5 = v5_4 /u 0x0000002A<32>
 	r2_r1_6 = SEQ(r2_2, r1_5) (alias)
-	Mem7[0x00123404:word32] = r1_5
+	Mem7[0x00123404<32>:word32] = r1_5
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 
 Mem0:Mem
     def:  def Mem0
-    uses: r1_1 = Mem0[0x00123400:word32]
+    uses: r1_1 = Mem0[0x00123400<32>:word32]
 r1_1: orig: r1
-    def:  r1_1 = Mem0[0x00123400:word32]
-    uses: r2_r1_3 = SEQ(0x00000000, r1_1) (alias)
+    def:  r1_1 = Mem0[0x00123400<32>:word32]
+    uses: r2_r1_3 = SEQ(0x00000000<32>, r1_1) (alias)
 r2_2: orig: r2
-    def:  r2_2 = 0x00000000
+    def:  r2_2 = 0x00000000<32>
 r2_r1_3: orig: r2_r1
-    def:  r2_r1_3 = SEQ(0x00000000, r1_1) (alias)
+    def:  r2_r1_3 = SEQ(0x00000000<32>, r1_1) (alias)
     uses: v5_4 = r2_r1_3
-          r1_5 = r2_r1_3 /u 0x0000002A
-          r2_r1_6 = SEQ(0x00000000, r2_r1_3 /u 0x0000002A) (alias)
-          Mem7[0x00123404:word32] = r2_r1_3 /u 0x0000002A
+          r1_5 = r2_r1_3 /u 0x0000002A<32>
+          r2_r1_6 = SEQ(0x00000000<32>, r2_r1_3 /u 0x0000002A<32>) (alias)
+          Mem7[0x00123404<32>:word32] = r2_r1_3 /u 0x0000002A<32>
 v5_4: orig: v5
     def:  v5_4 = r2_r1_3
 r1_5: orig: r1
-    def:  r1_5 = r2_r1_3 /u 0x0000002A
+    def:  r1_5 = r2_r1_3 /u 0x0000002A<32>
 r2_r1_6: orig: r2_r1
-    def:  r2_r1_6 = SEQ(0x00000000, r2_r1_3 /u 0x0000002A) (alias)
+    def:  r2_r1_6 = SEQ(0x00000000<32>, r2_r1_3 /u 0x0000002A<32>) (alias)
 Mem7: orig: Mem0
-    def:  Mem7[0x00123404:word32] = r2_r1_3 /u 0x0000002A
+    def:  Mem7[0x00123404<32>:word32] = r2_r1_3 /u 0x0000002A<32>
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -70,13 +70,13 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	r1_1 = Mem0[0x00123400:word32]
-	r2_2 = 0x00000000
-	r2_r1_3 = SEQ(0x00000000, r1_1) (alias)
+	r1_1 = Mem0[0x00123400<32>:word32]
+	r2_2 = 0x00000000<32>
+	r2_r1_3 = SEQ(0x00000000<32>, r1_1) (alias)
 	v5_4 = r2_r1_3
-	r1_5 = r2_r1_3 /u 0x0000002A
-	r2_r1_6 = SEQ(0x00000000, r2_r1_3 /u 0x0000002A) (alias)
-	Mem7[0x00123404:word32] = r2_r1_3 /u 0x0000002A
+	r1_5 = r2_r1_3 /u 0x0000002A<32>
+	r2_r1_6 = SEQ(0x00000000<32>, r2_r1_3 /u 0x0000002A<32>) (alias)
+	Mem7[0x00123404<32>:word32] = r2_r1_3 /u 0x0000002A<32>
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:

@@ -23,6 +23,7 @@ using Reko.Arch.LatticeMico;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
 
         public LatticeMico32DisassemblerTests()
         {
-            this.arch = new LatticeMico32Architecture("latticeMico32");
+            this.arch = new LatticeMico32Architecture(new ServiceContainer(), "latticeMico32");
         }
 
         public override IProcessorArchitecture Architecture => arch;

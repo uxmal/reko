@@ -22,10 +22,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 
 namespace Reko.Analysis
 {
@@ -40,10 +37,10 @@ namespace Reko.Analysis
     /// </summary>
     public class StrengthReduction
     {
-        private SsaState ssa;
-        private LinearInductionVariable liv;
-        private LinearInductionVariableContext ctx;
-        private List<IncrementedUse> incrUses;
+        private readonly SsaState ssa;
+        private readonly LinearInductionVariable liv;
+        private readonly LinearInductionVariableContext ctx;
+        private readonly List<IncrementedUse> incrUses;
 
         public StrengthReduction(SsaState ssa, LinearInductionVariable liv, LinearInductionVariableContext ctx)
         {
@@ -59,14 +56,14 @@ namespace Reko.Analysis
         /// </summary>
         public void ClassifyUses()
         {
-            foreach (Statement stm in ssa.Identifiers[ctx.PhiIdentifier].Uses)
+            foreach (Statement stm in ssa.Identifiers[ctx.PhiIdentifier!].Uses)
             {
                 if (stm == ctx.DeltaStatement)
                     continue;
                 if (stm == ctx.TestStatement)
                     continue;
                 IncrementedUseFinder iuf = new IncrementedUseFinder(incrUses);
-                iuf.Match(ctx.PhiIdentifier, stm);
+                iuf.Match(ctx.PhiIdentifier!, stm);
             }
         }
 
@@ -85,7 +82,7 @@ namespace Reko.Analysis
                 return;
             if (ModifyInitialAssigment(use))
             {
-                use.Expression.Right = Constant.Create(use.Increment.DataType, 0);
+                use.Expression!.Right = Constant.Create(use.Increment.DataType, 0);
                 ModifyTest(ctx, use);
                 liv.AddIncrement(use.Increment);
             }
@@ -99,7 +96,7 @@ namespace Reko.Analysis
                 branch.Condition is BinaryExpression exp &&
                 exp.Right is Constant c)
             {
-                exp.Right = Operator.ISub.ApplyConstants(c, use.Increment);
+                exp.Right = Operator.ISub.ApplyConstants(c, use.Increment!);
             }
         }
 
@@ -111,7 +108,7 @@ namespace Reko.Analysis
                 return false;
             if (ass.Src is Constant c)
             {
-                ass.Src = Operator.IAdd.ApplyConstants(c, use.Increment);
+                ass.Src = Operator.IAdd.ApplyConstants(c, use.Increment!);
             }
             else
             {
@@ -120,7 +117,7 @@ namespace Reko.Analysis
                     Operator.IAdd,
                     ass.Src.DataType,
                     ass.Src,
-                    use.Increment);
+                    use.Increment!);
             }
             return true;
             
@@ -128,7 +125,7 @@ namespace Reko.Analysis
 
         public class IncrementedUse
         {
-            public IncrementedUse(Statement stm, BinaryExpression exp, Constant inc)
+            public IncrementedUse(Statement stm, BinaryExpression? exp, Constant? inc)
             {
                 this.Statement = stm;
                 this.Expression = exp;
@@ -136,15 +133,15 @@ namespace Reko.Analysis
             }
 
             public Statement Statement { get; }
-            public BinaryExpression Expression { get; }
-            public Constant Increment { get; }
+            public BinaryExpression? Expression { get; }
+            public Constant? Increment { get; }
         }
 
         public class IncrementedUseFinder : InstructionVisitorBase
         {
             private readonly List<IncrementedUse> uses;
-            private Identifier id;
-            private Statement stmCur;
+            private Identifier? id;
+            private Statement? stmCur;
 
             public IncrementedUseFinder(List<IncrementedUse> uses)
             {
@@ -166,7 +163,7 @@ namespace Reko.Analysis
                     &&
                     binExp.Right is Constant c)
                 {
-                    uses.Add(new IncrementedUse(stmCur, binExp, c));
+                    uses.Add(new IncrementedUse(stmCur!, binExp, c));
                 }
                 else
                 {
@@ -178,7 +175,7 @@ namespace Reko.Analysis
             {
                 if (this.id == id)
                 {
-                    uses.Add(new IncrementedUse(stmCur, null, null));
+                    uses.Add(new IncrementedUse(stmCur!, null, null));
                 }
             }
         }

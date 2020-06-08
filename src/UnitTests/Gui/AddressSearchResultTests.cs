@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Gui
                     mem.BaseAddress,
                     new ImageSegment(
                         "code", mem, AccessMode.ReadWriteExecute));
-            var arch = new Mocks.FakeArchitecture();
+            var arch = new Mocks.FakeArchitecture(sc);
             this.program = new Program(imageMap, arch, new DefaultPlatform(sc, arch));
         }
 

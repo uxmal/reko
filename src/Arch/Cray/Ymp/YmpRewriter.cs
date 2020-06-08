@@ -27,6 +27,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 
 namespace Reko.Arch.Cray.Ymp
@@ -84,31 +85,10 @@ namespace Reko.Arch.Cray.Ymp
             return this.GetEnumerator();
         }
 
-        private static readonly HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-
         private void EmitUnitTest()
         {
-            if (rdr == null || seen.Contains(dasm.Current.Mnemonic))
-                return;
-            seen.Add(dasm.Current.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var sb = new StringBuilder();
-            while (r2.Offset < rdr.Offset)
-            {
-                var parcel = r2.ReadBeUInt16();
-                sb.Append(Convert.ToString(parcel, 8).PadLeft(6, '0'));
-            }
-            Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void YmpRw_{0}()", dasm.Current.Mnemonic);
-            Debug.WriteLine("        {");
-            Debug.WriteLine("            RewriteCode(\"{0}\");   // {1}", sb.ToString(), dasm.Current);
-            Debug.WriteLine("            AssertCode(");
-            Debug.WriteLine("                \"0|L--|00100000({0}): 1 instructions\",", dasm.Current.Length);
-            Debug.WriteLine("                \"1|L--|@@@\");");
-            Debug.WriteLine("        }");
-            Debug.WriteLine("");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("YmpRw", this.instrCur, rdr, "");
         }
 
         private Expression Rewrite(MachineOperand mop)

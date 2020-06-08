@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -43,8 +43,8 @@ namespace Reko.Arch.PowerPC
                 "__unpack_quantized",
                 fpPair,
                 tmp1,
-                RewriteOperand(instr.Operands[3]),
-                RewriteOperand(instr.Operands[4])));
+                ImmOperand(instr.Operands[3]),
+                ImmOperand(instr.Operands[4])));
             m.Assign(RewriteOperand(instr.Operands[0]), tmp2);
             if (update)
             {
@@ -88,7 +88,18 @@ namespace Reko.Arch.PowerPC
             {
                 ea = RewriteOperand(instr.Operands[1]);
                 baseReg = ea;
-                ea = m.IAdd(ea, RewriteOperand(instr.Operands[2]));
+                if (instr.Operands[2] is RegisterOperand rIdx)
+                {
+                    if (rIdx.Register.Number != 0)
+                    {
+                        ea = m.IAdd(ea, binder.EnsureRegister(rIdx.Register));
+                    }
+                }
+                else
+                {
+                    var offset = ((ImmediateOperand) instr.Operands[2]).Value.ToInt64();
+                    ea = m.IAdd(ea, Constant.Create(arch.SignedWord, offset));
+                }
             }
             return (ea, baseReg);
         }

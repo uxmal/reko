@@ -16,26 +16,26 @@
 define fn10000000
 fn10000000_entry:
 	esp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l10000000
 l10000000:
-	edi = 0x10000034
-	esi = 0x00000003
+	edi = 0x10000034<32>
+	esi = 3<32>
 	ebx = malloc
 	goto l1000002F
 	// succ:  l1000002F
 l10000015:
-	esp = esp - 4
-	Mem0[esp:word32] = 0x00000008
+	esp = esp - 4<i32>
+	Mem0[esp:word32] = 8<32>
 	eax = malloc(Mem0[esp:size_t])
-	esp = esp + 0x00000004
+	esp = esp + 4<32>
 	SCZO = cond(esp)
-	Mem0[eax:word32] = 0x00000000
-	Mem0[eax + 0x00000004:word32] = 0x00000000
+	Mem0[eax:word32] = 0<32>
+	Mem0[eax + 4<32>:word32] = 0<32>
 	Mem0[edi:word32] = eax
-	esi = esi - 0x00000001
+	esi = esi - 1<32>
 	SZO = cond(esi)
-	edi = edi + 0x00000004
+	edi = edi + 4<32>
 	SCZO = cond(edi)
 	// succ:  l1000002F
 l1000002F:

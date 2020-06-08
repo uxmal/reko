@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -25,6 +25,7 @@ using Reko.ImageLoaders.MzExe;
 using Reko.ImageLoaders.MzExe.Borland;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,7 +46,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Borland
             this.writer = null;
             this.exeLoader = null;
             this.offNames = -1;
-            this.arch = new X86ArchitectureReal("x86-real-16");
+            this.arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16");
         }
 
         private void Given_MzExeProgram(uint size)

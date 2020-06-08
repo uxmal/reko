@@ -9,6 +9,6 @@ void fn00401000()
 fn00401000_exit:
 fn00401000_entry:
 l00401000:
-	ExitProcess(MessageBoxA(0x00000000, 0x00403000, 0x00403007, 0x00000000))
+	ExitProcess(MessageBoxA(0<32>, 0x403000<32>, 0x403007<32>, 0<32>))
 
 

@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ namespace Reko.Arch.zSeries
     using Decoder = WideDecoder<zSeriesDisassembler, Mnemonic, zSeriesInstruction>;
     using WideInstrDecoder = WideInstrDecoder<zSeriesDisassembler, Mnemonic, zSeriesInstruction>;
 
+#pragma warning disable IDE1006 // Naming Styles
     public class zSeriesDisassembler : DisassemblerBase<zSeriesInstruction, Mnemonic>
     {
         private readonly static Decoder[] decoders;
@@ -129,22 +131,12 @@ namespace Reko.Arch.zSeries
             };
         }
 
-        private void Nyi(ulong uInstr, string message)
+        public override zSeriesInstruction NotYetImplemented(uint wInstr, string message)
         {
-            var rdr2 = rdr.Clone();
-            int len = (int) (rdr.Address - this.addr);
-            rdr2.Offset -= len;
-            var bytes = rdr2.ReadBytes(len);
-            var leHexBytes = string.Join("", bytes
-                    .Select(b => b.ToString("X2")));
-            var instrHexBytes = $"{uInstr:X8}";
-            base.EmitUnitTest("zSeries", instrHexBytes, message, "zSerDasm", this.addr, w =>
-            {
-                w.WriteLine("    AssertCode(\"@@@\", \"{0}\");", leHexBytes);
-            });
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("zSerDasm", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
-
-
 
         #region Mutators
 
@@ -361,11 +353,12 @@ namespace Reko.Arch.zSeries
             return true;
         }
 
-        private static Bitfield[] rsya_offset = new[]
+        private static readonly Bitfield[] rsya_offset = new[]
         {
             new Bitfield(8, 8),
             new Bitfield(16, 12),
         };
+
         private static bool RSYa(ulong uInstr, zSeriesDisassembler dasm)
         {
             var r1 = Registers.GpRegisters[(uInstr >> 36) & 0xF];
@@ -390,7 +383,7 @@ namespace Reko.Arch.zSeries
             return true;
         }
 
-        private static Bitfield[] rxya_offset = new[]
+        private static readonly Bitfield[] rxya_offset = new[]
         {
             new Bitfield(8, 8),
             new Bitfield(16, 12),
@@ -430,8 +423,7 @@ namespace Reko.Arch.zSeries
 
             public override zSeriesInstruction Decode(ulong uInstr, zSeriesDisassembler dasm)
             {
-                dasm.Nyi(uInstr, msg);
-                return dasm.CreateInvalidInstruction();
+                return dasm.NotYetImplemented(0, msg);
             }
         }
 

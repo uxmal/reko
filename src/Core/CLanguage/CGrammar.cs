@@ -306,9 +306,13 @@ namespace Reko.Core.CLanguage
             };
         }
 
-        public StructDecl StructDecl(List<DeclSpec> sql, List<FieldDeclarator> decls)
+        public StructDecl StructDecl(List<DeclSpec> sql, List<FieldDeclarator> decls, List<CAttribute>? attrs)
         {
-            return new StructDecl { SpecQualifierList = sql, FieldDeclarators = decls };
+            return new StructDecl { 
+                SpecQualifierList = sql, 
+                FieldDeclarators = decls,
+                AttributeList = attrs 
+            };
         }
 
         public Declarator ArrayDeclarator(Declarator decl, CExpression expr)

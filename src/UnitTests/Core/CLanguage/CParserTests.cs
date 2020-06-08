@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Core.CLanguage
 
         private void Lex(string str)
         {
-            lexer = new CLexer(new StringReader(str));
+            lexer = new CLexer(new StringReader(str), CLexer.GccKeywords);
             parser = new CParser(parserState, lexer);
         }
 
@@ -1362,6 +1362,79 @@ int __far __pascal FS_ALLOCATEPAGESPACE(struct sffsi __far * psffsi, struct sffs
 int __far __pascal FS_FILELOCKS(struct sffsi __far * psffsi, struct sffsd __far * psffsd, struct filelock __far * pUnLockRange, struct filelock __far * pLockRange, unsigned long timeout, unsigned long flags);
 ");
             var decl = parser.Parse();
+        }
+
+        [Test]
+        public void CParser_GccStyleAttributes()
+        {
+            Lex(@"
+extern char *tempnam (const char *__dir, const char *__pfx)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__malloc__));");
+            var decls = parser.Parse();
+            Assert.AreEqual(1, decls.Count);
+            var attrs = decls[0].attribute_list;
+            Assert.AreEqual(3, attrs.Count);
+            Assert.AreEqual("__nothrow__", attrs[0].Name.Components[0]);
+            Assert.AreEqual("__leaf__", attrs[1].Name.Components[0]);
+            Assert.AreEqual("__malloc__", attrs[2].Name.Components[0]);
+        }
+
+        [Test]
+        public void CParser_restrict()
+        {
+            Lex(@"
+extern struct __iob *fopen (const char *__restrict __filename,
+      const char *__restrict __modes) ;");
+            var decl = parser.Parse()[0];
+            Assert.AreEqual("(decl Extern (Struct __iob) ((init-decl (ptr (func fopen ((Const Char (ptr Restrict __filename)) (Const Char (ptr Restrict __modes))))))))", decl.ToString());
+        }
+
+        [Test]
+        public void CParser_GccAsm()
+        {
+            Lex(@"
+extern int myfunc() __asm__ ("""" ""__flub"");");
+            var attrs = parser.Parse()[0].attribute_list;
+            Assert.AreEqual(1, attrs.Count);
+            Assert.AreEqual("__asm__", attrs[0].Name.Components[0]);
+            Assert.AreEqual("__flub", attrs[0].Tokens[0].Value);
+        }
+
+        [Test]
+        public void CParser_GccParserState_Float32()
+        {
+            parserState.Typedefs.Add("_Float32");
+            Lex(@"_Float32 x = 42;");
+            var decl = parser.Parse()[0];
+            Assert.AreEqual("(decl _Float32 ((init-decl x 42)))", decl.ToString());
+        }
+
+        [Test]
+        public void CParser_GccRestrict()
+        {
+            parserState.Typedefs.Add("_Float32");
+            Lex(@"extern _Float32 strtof32 (const char *__restrict __nptr,char **__restrict __endptr)__attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));");
+            var decl = parser.Parse()[0];
+            Assert.AreEqual("(decl (attr __nothrow__) (attr __leaf__) (attr __nonnull__ (NumericLiteral 1)) Extern _Float32 ((init-decl (func strtof32 ((Const Char (ptr Restrict __nptr)) (Char (ptr (ptr Restrict __endptr))))))))", decl.ToString());
+        }
+
+        [Test]
+        public void CParser_GccStructAttributes()
+        {
+            Lex(
+@"typedef struct {
+    long long __max_align_ll __attribute__((__aligned__(__alignof__(long long))));
+} max_align_t;");
+            var decl = parser.Parse()[0];
+            Assert.AreEqual("(decl Typedef (Struct  ((Long Long) ((__max_align_ll)) ((attr __aligned__ (Id __alignof__LParen Long Long RParen )))) ((init-decl max_align_t)))", decl.ToString());
+        }
+
+        [Test]
+        public void CParser_Atomic()
+        {
+            Lex("typedef _Atomic char atomic_char;");
+            var decl = parser.Parse()[0];
+            Assert.AreEqual("(decl Typedef _Atomic Char ((init-decl atomic_char)))", decl.ToString());
         }
     }
 }

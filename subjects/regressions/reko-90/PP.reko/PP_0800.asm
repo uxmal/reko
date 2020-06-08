@@ -19057,7 +19057,7 @@ l0800_8C5C:
 	jz	8C65
 
 l0800_8C64:
-	xchg	ax,dx
+	xchg	dx,ax
 
 l0800_8C65:
 	xor	dx,dx
@@ -19096,7 +19096,7 @@ l0800_8C71:
 
 l0800_8C81:
 	sub	cl,10
-	xchg	ax,dx
+	xchg	dx,ax
 	xor	ax,ax
 	shl	dx,cl
 	retf
@@ -19130,7 +19130,7 @@ l0800_8C92:
 
 l0800_8CA2:
 	sub	cl,10
-	xchg	ax,dx
+	xchg	dx,ax
 	cwd
 	sar	ax,cl
 	retf
@@ -19176,7 +19176,7 @@ l0800_8CB2:
 
 l0800_8CC2:
 	sub	cl,10
-	xchg	ax,dx
+	xchg	dx,ax
 	xor	dx,dx
 	shr	ax,cl
 	retf
@@ -19326,7 +19326,7 @@ fn0800_8D76 proc
 	mov	ax,4400
 	mov	bx,[bp+04]
 	int	21
-	xchg	ax,dx
+	xchg	dx,ax
 	and	ax,0080
 	pop	bp
 	ret
@@ -19373,10 +19373,10 @@ l0800_8DBC:
 	jcxz	8DD1
 
 l0800_8DC1:
-	xchg	ax,cx
+	xchg	cx,ax
 	sub	dx,dx
 	div	bx
-	xchg	ax,cx
+	xchg	cx,ax
 	div	bx
 	mov	ss:[si],dl
 	inc	si
@@ -19581,8 +19581,8 @@ l0800_8E95:
 ;;     0800:C4B5 (in fn0800_C379)
 fn0800_8F18 proc
 	push	si
-	xchg	ax,si
-	xchg	ax,dx
+	xchg	si,ax
+	xchg	dx,ax
 	test	ax,ax
 	jz	8F21
 
@@ -19593,12 +19593,12 @@ l0800_8F21:
 	jcxz	8F28
 
 l0800_8F23:
-	xchg	ax,cx
+	xchg	cx,ax
 	mul	si
 	add	ax,cx
 
 l0800_8F28:
-	xchg	ax,si
+	xchg	si,ax
 	mul	bx
 	add	dx,si
 	pop	si
@@ -19765,7 +19765,7 @@ l0800_8FD4:
 
 l0800_8FD8:
 	cbw
-	xchg	ax,di
+	xchg	di,ax
 	inc	word ptr [bp-06]
 	push	word ptr [bp+0A]
 	push	word ptr [bp+08]
@@ -19785,7 +19785,7 @@ l0800_8FF1:
 	jnz	902B
 
 l0800_8FF8:
-	xchg	ax,bx
+	xchg	bx,ax
 	or	bl,bl
 	js	9019
 
@@ -19840,7 +19840,7 @@ l0800_9051:
 	lodsb
 	cbw
 	mov	[bp+0C],si
-	xchg	ax,di
+	xchg	di,ax
 	or	di,di
 	jl	9075
 
@@ -19858,7 +19858,7 @@ l0800_906A:
 	jmp	word ptr cs:[bx+9459]
 
 l0800_9071:
-	xchg	ax,di
+	xchg	di,ax
 	jmp	8FD8
 
 l0800_9075:
@@ -19969,7 +19969,7 @@ l0800_9110:
 	jz	911C
 
 l0800_911A:
-	xchg	ax,dx
+	xchg	dx,ax
 	stosw
 
 l0800_911C:
@@ -20255,7 +20255,7 @@ l0800_932D:
 	jl	9394
 
 l0800_9341:
-	xchg	ax,si
+	xchg	si,ax
 	mov	bx,si
 	mov	cl,03
 	shr	si,cl
@@ -20263,8 +20263,8 @@ l0800_9341:
 	and	cl,bl
 	shl	ch,cl
 	test	[bp+si-2A],ch
-	xchg	ax,si
-	xchg	ax,bx
+	xchg	si,ax
+	xchg	bx,ax
 	jz	935E
 
 l0800_9356:
@@ -20385,9 +20385,9 @@ l0800_93D7:
 	js	93E4
 
 l0800_93DB:
-	xchg	ax,bx
+	xchg	bx,ax
 	cmp	byte ptr [bx+257C],01
-	xchg	ax,bx
+	xchg	bx,ax
 	jz	93C5
 
 l0800_93E4:
@@ -20585,7 +20585,7 @@ l0800_94C6:
 
 l0800_94D8:
 	cbw
-	xchg	ax,bx
+	xchg	bx,ax
 	test	bl,80
 	jnz	94E7
 
@@ -20595,7 +20595,7 @@ l0800_94DF:
 	jnz	94C6
 
 l0800_94E7:
-	xchg	ax,bx
+	xchg	bx,ax
 	dec	word ptr [bp+0E]
 	jl	9550
 
@@ -20720,17 +20720,17 @@ l0800_959C:
 
 l0800_959E:
 	mov	cx,[bp+0C]
-	xchg	ax,bx
+	xchg	bx,ax
 	call	9485
-	xchg	ax,bx
+	xchg	bx,ax
 	jc	9550
 
 l0800_95A8:
-	xchg	ax,si
+	xchg	si,ax
 	jmp	95B5
 
 l0800_95AB:
-	xchg	ax,si
+	xchg	si,ax
 	mul	word ptr [bp+0C]
 	add	si,ax
 	adc	di,dx
@@ -20750,23 +20750,23 @@ l0800_95BA:
 
 l0800_95C8:
 	mov	cx,[bp+0C]
-	xchg	ax,bx
+	xchg	bx,ax
 	call	9485
-	xchg	ax,bx
+	xchg	bx,ax
 	jnc	95AB
 
 l0800_95D2:
 	jmp	9602
 
 l0800_95D4:
-	xchg	ax,si
+	xchg	si,ax
 	mul	cx
-	xchg	ax,di
+	xchg	di,ax
 	xchg	dx,cx
 	mul	dx
 	add	si,di
 	adc	ax,cx
-	xchg	ax,di
+	xchg	di,ax
 	adc	dl,dh
 	jnz	9636
 
@@ -20782,9 +20782,9 @@ l0800_95EA:
 	pop	cx
 	pop	cx
 	mov	cx,[bp+0C]
-	xchg	ax,bx
+	xchg	bx,ax
 	call	9485
-	xchg	ax,bx
+	xchg	bx,ax
 	jnc	95D4
 
 l0800_9602:
@@ -20797,7 +20797,7 @@ l0800_9602:
 
 l0800_9612:
 	mov	dx,di
-	xchg	ax,si
+	xchg	si,ax
 	cmp	byte ptr [bp-01],00
 	jz	9622
 
@@ -21293,7 +21293,7 @@ l0800_997F:
 	jmp	98DB
 
 l0800_9987:
-	xchg	ax,dx
+	xchg	dx,ax
 	sub	al,30
 	cbw
 	cmp	ch,02
@@ -22865,11 +22865,11 @@ l0800_A4B6:
 	mov	di,dx
 	mov	cx,000A
 	mul	cx
-	xchg	ax,di
+	xchg	di,ax
 	xchg	cx,dx
 	mul	dx
-	xchg	ax,dx
-	xchg	ax,di
+	xchg	dx,ax
+	xchg	di,ax
 	add	ax,bx
 	adc	dx,cx
 
@@ -22969,7 +22969,7 @@ fn0800_A53C proc
 	jc	A553
 
 l0800_A550:
-	xchg	ax,cx
+	xchg	cx,ax
 	jmp	A557
 
 l0800_A553:
@@ -23471,7 +23471,7 @@ fn0800_A817 proc
 	int	21
 	pushf
 	pop	cx
-	xchg	ax,bx
+	xchg	bx,ax
 	mov	ah,1A
 	pop	dx
 	pop	ds
@@ -23511,7 +23511,7 @@ fn0800_A84A proc
 	int	21
 	pushf
 	pop	cx
-	xchg	ax,bx
+	xchg	bx,ax
 	mov	ah,1A
 	pop	dx
 	pop	ds
@@ -26476,7 +26476,7 @@ l0800_BA21:
 
 l0800_BA41:
 	sub	di,bx
-	xchg	ax,di
+	xchg	di,ax
 
 l0800_BA44:
 	pop	di
@@ -27048,7 +27048,7 @@ l0800_BF95:
 	movsb
 
 l0800_BF96:
-	xchg	ax,dx
+	xchg	dx,ax
 	mov	dx,es
 	pop	ds
 	pop	di
@@ -27126,7 +27126,7 @@ l0800_BFDD:
 	repne scasb
 
 l0800_BFDF:
-	xchg	ax,cx
+	xchg	cx,ax
 	not	ax
 	dec	ax
 

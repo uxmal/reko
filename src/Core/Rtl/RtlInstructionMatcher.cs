@@ -30,17 +30,17 @@ namespace Reko.Core.Rtl
     public class RtlInstructionMatcher : RtlInstructionVisitor<bool>
     {
         private RtlInstruction pattern;
-        private ExpressionMatcher matcher;
+        private readonly ExpressionMatcher matcher;
 
         public RtlInstructionMatcher(RtlInstruction pattern)
         {
             this.pattern = pattern;
-            this.matcher = new ExpressionMatcher(null);
+            this.matcher = new ExpressionMatcher(null!);
         }
 
-        public Expression CapturedExpressions(string label) { return matcher.CapturedExpression(label); }
+        public Expression? CapturedExpressions(string label) { return matcher.CapturedExpression(label); }
 
-        public Operator CapturedOperators(string label) { return matcher.CapturedOperators(label); }
+        public Operator? CapturedOperators(string label) { return matcher.CapturedOperators(label); }
 
         public bool Match(RtlInstruction instr)
         {

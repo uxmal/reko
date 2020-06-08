@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using System;
 using System.Collections.Generic;
@@ -31,8 +33,8 @@ namespace Reko.Gui
     /// </summary>
     public class BlockNavigator : ICodeLocation
     {
-        private IServiceProvider sp;
-        private Program program;
+        private readonly IServiceProvider sp;
+        private readonly Program program;
 
         public BlockNavigator(Program program, Block block, IServiceProvider sp)
         {

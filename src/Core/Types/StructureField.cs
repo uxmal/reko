@@ -30,32 +30,30 @@ namespace Reko.Core.Types
     /// </summary>
 	public class StructureField : Field
 	{
-        public StructureField(int offset, DataType type)
+        public StructureField(int offset, DataType type) : base(type)
 		{
             this.Offset = offset;
-            this.DataType = type ?? throw new ArgumentNullException(nameof(type));
 		}
 
-		public StructureField(int offset, DataType type, string name)
+		public StructureField(int offset, DataType type, string? name) : base(type)
 		{
             this.Offset = offset;
-            this.DataType = type ?? throw new ArgumentNullException("type");
             this.name = name;
 		}
 
         public override string Name
         {
-            get { if (name == null) return DefaultName(); return name; }
+            get { return name ?? DefaultName(); }
             set { name = value; }
         }
 
-        public bool IsNameSet { get { return name != null; } }
+        public bool IsNameSet => name != null;
 
-        private string name;
+        private string? name;
 
         public int Offset { get; set; }
 
-        public StructureField Clone(IDictionary<DataType, DataType> clonedTypes = null)
+        public StructureField Clone(IDictionary<DataType, DataType>? clonedTypes = null)
 		{
 			return new StructureField(Offset, DataType.Clone(clonedTypes), name);
 		}
@@ -65,7 +63,7 @@ namespace Reko.Core.Types
             return NamingPolicy.Instance.Types.StructureFieldName(this, this.name);
         }
 
-        public static int ToOffset(Constant offset)
+        public static int ToOffset(Constant? offset)
         {
             if (offset == null)
                 return 0;
@@ -91,34 +89,39 @@ namespace Reko.Core.Types
             get { return innerList[i]; }
         }
 
-		public void Add(int offset, DataType dt)
+		public StructureField Add(int offset, DataType dt)
 		{
-			Add(new StructureField(offset, dt));
+			return Add(new StructureField(offset, dt));
 		}
 
-		public void Add(int offset, DataType dt, string name)
+		public StructureField Add(int offset, DataType dt, string name)
 		{
-			Add(new StructureField(offset, dt, name));
+			return Add(new StructureField(offset, dt, name));
 		}
 
         //$PERF: slow, should use binary search.
-		public void Add(StructureField f)
+		public StructureField Add(StructureField f)
 		{
 			int i;
-			StructureField ff = null;
 			for (i = 0; i < innerList.Count; ++i)
 			{
-				ff = innerList[i];
+				var ff = innerList[i];
 				if (f.Offset == ff.Offset)
 				{
 					if (f.DataType == ff.DataType)
-						return;
+						return ff;
 				}
 				if (f.Offset <= ff.Offset)
 					break;
 			}
 			innerList.Insert(i, f);
+            return f;
 		}
+
+        void ICollection<StructureField>.Add(StructureField f)
+        {
+            Add(f);
+        }
 
         public void AddRange(IEnumerable<StructureField> fields)
         {
@@ -133,7 +136,7 @@ namespace Reko.Core.Types
         /// </summary>
         /// <param name="offset">Offset (in bytes) of the field to retrieve.</param>
         /// <returns>The requested StructureField if it exists at <paramref>offset</paramref>, otherwise null.</returns>
-        public StructureField AtOffset(int offset)
+        public StructureField? AtOffset(int offset)
         {
             foreach (StructureField f in innerList)
             {
@@ -149,9 +152,9 @@ namespace Reko.Core.Types
         /// </summary>
         /// <param name="offset"></param>
         /// <returns></returns>
-		public StructureField LowerBound(int offset)
+		public StructureField? LowerBound(int offset)
 		{
-			StructureField fPrev = null;
+			StructureField? fPrev = null;
 			foreach (StructureField f in innerList)
 			{
 				if (f.Offset <= offset)

@@ -36,18 +36,19 @@ namespace Reko.Core
     {
         public Address ReferenceAddress;
         public string ModuleName;
-        public string EntryName;
+        public readonly string EntryName;
 
-        public ImportReference(Address addr, string moduleName, SymbolType symType)
+        public ImportReference(Address addr, string moduleName, string entryName, SymbolType symType)
         {
             this.ReferenceAddress = addr;
             this.ModuleName = moduleName;
+            this.EntryName = entryName;
             this.SymbolType = symType;
         }
 
         public SymbolType SymbolType { get; }
 
-        public abstract Expression ResolveImport(IDynamicLinker dynamicLinker, IPlatform platform, AddressContext ctx);
+        public abstract Expression? ResolveImport(IDynamicLinker dynamicLinker, IPlatform platform, AddressContext ctx);
 
         public abstract ExternalProcedure ResolveImportedProcedure(IDynamicLinker dynamicLinker, IPlatform platform, AddressContext ctx);
 
@@ -59,10 +60,9 @@ namespace Reko.Core
         public string ImportName;
 
         public NamedImportReference(Address addr, string moduleName, string importName, SymbolType symType)
-            : base(addr, moduleName, symType)
+            : base(addr, moduleName, importName, symType)
         {
             this.ImportName = importName;
-            this.EntryName = importName;
         }
 
         public override int CompareTo(ImportReference that)
@@ -83,7 +83,7 @@ namespace Reko.Core
             }
             else
             {
-                int cmp = this.ModuleName.CompareTo(that.ModuleName);
+                int cmp = this.ModuleName!.CompareTo(that.ModuleName);
                 if (cmp != 0)
                     return cmp;
             }
@@ -93,7 +93,7 @@ namespace Reko.Core
                 StringComparison.InvariantCulture);
         }
 
-        public override Expression ResolveImport(
+        public override Expression? ResolveImport(
             IDynamicLinker resolver,
             IPlatform platform,
             AddressContext ctx)
@@ -136,10 +136,14 @@ namespace Reko.Core
         public int Ordinal;
 
         public OrdinalImportReference(Address addr, string moduleName, int ordinal, SymbolType symType)
-            : base(addr, moduleName, symType)
+            : base(addr, moduleName, MakeEntryName(moduleName, ordinal), symType)
         {
             this.Ordinal = ordinal;
-            this.EntryName = string.Format("{0}_{1}", moduleName, ordinal);
+        }
+
+        private static string MakeEntryName(string moduleName, int ordinal)
+        {
+            return string.Format("{0}_{1}", moduleName, ordinal);
         }
 
         public override int CompareTo(ImportReference that)
@@ -155,7 +159,7 @@ namespace Reko.Core
             return cmp;
         }
 
-        public override Expression ResolveImport(IDynamicLinker dynamicLinker, IPlatform platform, AddressContext ctx)
+        public override Expression? ResolveImport(IDynamicLinker dynamicLinker, IPlatform platform, AddressContext ctx)
         {
             var imp = dynamicLinker.ResolveImport(ModuleName, Ordinal, platform);
             if (imp != null)

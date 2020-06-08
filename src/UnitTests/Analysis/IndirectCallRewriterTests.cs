@@ -445,7 +445,7 @@ trash = <invalid>
             var expected =
 @"
 FakeST_3[FakeTop_1] = fn()
-FakeTop_2 = FakeTop_1 - 5
+FakeTop_2 = FakeTop_1 - 5<i8>
 ";
             AssertProcedureCode(expected);
         }

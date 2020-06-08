@@ -27,6 +27,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 
 namespace Reko.Arch.OpenRISC
@@ -149,30 +150,14 @@ namespace Reko.Arch.OpenRISC
             return GetEnumerator();
         }
 
-        private static HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-
         /// <summary>
         /// Emits the text of a unit test that can be pasted into the unit tests 
         /// for this rewriter.
         /// </summary>
-        [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(dasm.Current.Mnemonic))
-                return;
-            seen.Add(dasm.Current.Mnemonic);
-            var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var bytes = r2.ReadUInt32();
-            Console.WriteLine("        [Test]");
-            Console.WriteLine("        public void OpenRiscRw_" + dasm.Current.Mnemonic + "()");
-            Console.WriteLine("        {");
-            Console.WriteLine("            Given_HexString(\"{0:X8}\");\t// {1}", bytes, dasm.Current.ToString());
-            Console.WriteLine("            AssertCode(");
-            Console.WriteLine("                \"0|L--|00100000({0}): 1 instructions\",", dasm.Current.Length);
-            Console.WriteLine("                \"1|L--|@@@\");");
-            Console.WriteLine("        }");
-            Console.WriteLine("");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("OpenRiscRw", instrCur, rdr, "");
         }
 
         private Address Addr(MachineOperand op)

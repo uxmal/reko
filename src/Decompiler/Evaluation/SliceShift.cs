@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -35,9 +35,9 @@ namespace Reko.Evaluation
     public class SliceShift
     {
         private EvaluationContext ctx;
-        private Expression expr;
-        private DataType dt;
-        private Identifier id;
+        private Expression? expr;
+        private DataType? dt;
+        private Identifier? id;
 
         public SliceShift(EvaluationContext ctx)
         {
@@ -46,7 +46,7 @@ namespace Reko.Evaluation
 
         public bool Match(Slice slice)
         {
-            BinaryExpression shift;
+            BinaryExpression? shift;
             id = slice.Expression as Identifier;
             if (id != null)
             {
@@ -60,8 +60,7 @@ namespace Reko.Evaluation
                 return false;
             if (shift.Operator != BinaryOperator.Shl)
                 return false;
-            Constant c = shift.Right as Constant;
-            if (c == null)
+            if (!(shift.Right is Constant c))
                 return false;
             if (c.ToInt32() != slice.Offset)
                 return false;
@@ -76,9 +75,9 @@ namespace Reko.Evaluation
             if (id != null)
             {
                 ctx.RemoveIdentifierUse(id);
-                ctx.UseExpression(expr);
+                ctx.UseExpression(expr!);
             }
-            expr.DataType = dt;
+            expr!.DataType = dt!;
             return expr;
         }
     }

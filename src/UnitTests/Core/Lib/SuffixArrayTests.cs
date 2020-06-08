@@ -1,4 +1,4 @@
-﻿/*
+/*
  Copyright (c) 2012 Eran Meir
 
  Permission is hereby granted, free of charge, to any person obtaining a copy

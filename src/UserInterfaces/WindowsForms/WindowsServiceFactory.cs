@@ -206,5 +206,10 @@ namespace Reko.UserInterfaces.WindowsForms
             var svc = new DecompiledFileService(fsSvc);
             return svc;
         }
+
+        public ITestGenerationService CreateTestGenerationService()
+        {
+            return new TestGenerationService(services);
+        }
     }
 }

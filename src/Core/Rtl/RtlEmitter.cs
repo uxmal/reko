@@ -380,7 +380,7 @@ namespace Reko.Core.Rtl
         /// <param name="dataType">Data type of the constant.</param>
         /// <param name="p">Bit vector.</param>
         /// <returns>A Constant</returns>
-        public Expression Const(DataType dataType, int p)
+        public Expression Const(DataType dataType, long p)
         {
             return Constant.Create(dataType, p);
         }

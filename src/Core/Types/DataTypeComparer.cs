@@ -107,8 +107,8 @@ namespace Reko.Core.Types
             if (y is UnknownType)
                 return 1;
 
-			PrimitiveType ix = x as PrimitiveType;
-			PrimitiveType iy = y as PrimitiveType;
+			PrimitiveType? ix = x as PrimitiveType;
+			PrimitiveType? iy = y as PrimitiveType;
 			if (ix != null && iy != null)
 			{
 				return ix.Compare(iy);
@@ -121,8 +121,8 @@ namespace Reko.Core.Types
             if (x is EnumType || y is EnumType)
                 throw new NotImplementedException();
 
-            CodeType cx = x as CodeType;
-            CodeType cy = y as CodeType;
+            CodeType? cx = x as CodeType;
+            CodeType? cy = y as CodeType;
             if (cx != null && cy != null)
             {
                 return 0; 
@@ -132,36 +132,36 @@ namespace Reko.Core.Types
             if (cy != null)
                 return 1;
 
-			TypeVariable tx = x as TypeVariable;
-			TypeVariable ty = y as TypeVariable;
+			TypeVariable? tx = x as TypeVariable;
+			TypeVariable? ty = y as TypeVariable;
 			if (tx != null && ty != null)
 			{
 				return tx.Number - ty.Number;
 			}
 
-            TypeReference tr_x = x as TypeReference;
-            TypeReference tr_y = y as TypeReference;
+            TypeReference? tr_x = x as TypeReference;
+            TypeReference? tr_y = y as TypeReference;
             if (tr_x != null && tr_y != null)
             {
                 return StringComparer.InvariantCulture.Compare(tr_x.Name, tr_y.Name);
             }
 
-			EquivalenceClass ex = x as EquivalenceClass;
-			EquivalenceClass ey = y as EquivalenceClass;
+			EquivalenceClass? ex = x as EquivalenceClass;
+			EquivalenceClass? ey = y as EquivalenceClass;
 			if (ex != null && ey != null)
 			{
 				return ex.Number - ey.Number;
 			}
 
-			Pointer ptrX = x as Pointer;
-			Pointer ptrY = y as Pointer;
+			Pointer? ptrX = x as Pointer;
+			Pointer? ptrY = y as Pointer;
 			if (ptrX != null && ptrY != null)
 			{
 				return Compare(ptrX.Pointee, ptrY.Pointee, ++count);
 			}
 
-			MemberPointer mX = x as MemberPointer;
-			MemberPointer mY = y as MemberPointer;
+			MemberPointer? mX = x as MemberPointer;
+			MemberPointer? mY = y as MemberPointer;
 			if (mX != null && mY != null)
 			{
 				int d = Compare(mX.BasePointer, mY.BasePointer, ++count);
@@ -170,42 +170,42 @@ namespace Reko.Core.Types
 				return Compare(mX.Pointee, mY.Pointee, ++count);
 			}
 
-            ReferenceTo rX = x as ReferenceTo;
-            ReferenceTo rY = y as ReferenceTo;
+            ReferenceTo? rX = x as ReferenceTo;
+            ReferenceTo? rY = y as ReferenceTo;
             if (rX != null && rY != null)
             {
                 return Compare(rX.Referent, rY.Referent, ++count);
             }
 
-			StructureType sX = x as StructureType;
-			StructureType sY = y as StructureType;
+			StructureType? sX = x as StructureType;
+			StructureType? sY = y as StructureType;
 			if (sX != null && sY != null)
 			{
 				return Compare(sX, sY, ++count);
 			}
 
-			UnionType ux = x as UnionType;
-			UnionType uy = y as UnionType;
+			UnionType? ux = x as UnionType;
+			UnionType? uy = y as UnionType;
 			if (ux != null && uy != null)
 			{
 				return Compare(ux, uy, ++count);
 			}
-			ArrayType ax = x as ArrayType;
-			ArrayType ay = y as ArrayType;
+			ArrayType? ax = x as ArrayType;
+			ArrayType? ay = y as ArrayType;
 			if (ax != null && ay != null)
 			{
 				return Compare(ax, ay, ++count);
 			}
 
-            StringType strX = x as StringType;
-            StringType strY = y as StringType;
+            StringType? strX = x as StringType;
+            StringType? strY = y as StringType;
             if (strX != null && strY != null)
             {
                 return Compare(strX, strY, ++count);
             }
 
-            FunctionType fnX = x as FunctionType;
-            FunctionType fnY = y as FunctionType;
+            FunctionType? fnX = x as FunctionType;
+            FunctionType? fnY = y as FunctionType;
             if (fnX != null && fnY != null)
             {
                 return Compare(fnX, fnY, ++count);
@@ -286,7 +286,7 @@ namespace Reko.Core.Types
 
         public int Compare(FunctionType x, FunctionType y, int count)
         {
-            int d = x.Parameters.Length - y.Parameters.Length;
+            int d = x.Parameters!.Length - y.Parameters!.Length;
             if (d != 0)
                 return d;
             ++count;
@@ -296,7 +296,7 @@ namespace Reko.Core.Types
                 if (d != 0)
                     return d;
             }
-            return Compare(x.ReturnValue.DataType, y.ReturnValue.DataType, count);
+            return Compare(x.ReturnValue!.DataType, y.ReturnValue!.DataType, count);
         }
 
         public bool Equals(DataType a, DataType b)
@@ -324,7 +324,7 @@ namespace Reko.Core.Types
                     {
                         hash = GetHashCode(ft.ReturnValue.DataType);
                     }
-                    foreach (var p in ft.Parameters)
+                    foreach (var p in ft.Parameters!)
                     {
                         hash = hash * 11 ^ GetHashCode(p.DataType);
                     }

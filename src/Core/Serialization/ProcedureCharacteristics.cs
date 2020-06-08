@@ -65,10 +65,10 @@ namespace Reko.Core.Serialization
         public bool Allocator { get; set; }
 
         [XmlElement("array-size")]
-        public ArraySizeCharacteristic ArraySize { get; set; }
+        public ArraySizeCharacteristic? ArraySize { get; set; }
 
         [XmlElement("varargs")]
-        public virtual string VarargsParserClass { get; set; }
+        public virtual string? VarargsParserClass { get; set; }
 
         /// <summary>
         /// After the call has returned, increment the instruction pointer
@@ -89,7 +89,7 @@ namespace Reko.Core.Serialization
         {
             foreach (PropertyDescriptor prop in TypeDescriptor.GetProperties(this))
             {
-                DefaultValueAttribute dv = (DefaultValueAttribute)
+                var dv = (DefaultValueAttribute)
                     prop.Attributes[typeof(DefaultValueAttribute)];
             }
         }
@@ -121,7 +121,7 @@ namespace Reko.Core.Serialization
 		}
 
         [XmlElement("varargs")]
-        public override string VarargsParserClass { get { return ""; } set { throw Invalid(); } }
+        public override string? VarargsParserClass { get { return ""; } set { throw Invalid(); } }
 		
         private Exception Invalid()
 		{

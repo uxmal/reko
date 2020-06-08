@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -25,6 +25,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Environments.SysV.ArchSpecific;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Environments.SysV.ArchSpecific
 {
@@ -46,7 +47,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         [SetUp]
         public void Setup()
         {
-            arch = new Arm32Architecture("arm32");
+            arch = new Arm32Architecture(new ServiceContainer(), "arm32");
         }
 
         private Pointer Ptr(DataType dt)

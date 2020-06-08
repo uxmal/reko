@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.ComponentModel.Design;
 
 namespace Reko.Arch.M68k.Assembler
 {
@@ -57,7 +58,7 @@ namespace Reko.Arch.M68k.Assembler
         {
             this.addrBase = baseAddress;
             this.lexer = new Lexer(rdr);
-            this.arch = new M68kArchitecture("m68k");
+            this.arch = new M68kArchitecture(new ServiceContainer(), "m68k");
             asm = new M68kAssembler(arch, addrBase, entryPoints);
             this.emitter = asm.Emitter;
 

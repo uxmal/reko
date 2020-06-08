@@ -31,6 +31,7 @@ using Reko.UnitTests.Mocks;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Types;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -39,6 +40,7 @@ namespace Reko.UnitTests.Scanning
     {
         private StorageBinder binder;
         private IProcessorArchitecture arch;
+        private ServiceContainer sc;
         private FakeArchitecture fakeArch;
         private RtlBackwalkHost host;
         private Program program;
@@ -48,7 +50,8 @@ namespace Reko.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            fakeArch = new FakeArchitecture();
+            sc = new ServiceContainer();
+            fakeArch = new FakeArchitecture(sc);
             arch = fakeArch;
             program = new Program {
                 Architecture = arch,
@@ -251,7 +254,7 @@ namespace Reko.UnitTests.Scanning
             Assert.IsFalse(bwslc.Step());   // test
             Assert.AreEqual("r2",
                 string.Join(",", bwslc.Live.Select(l => l.Key.ToString()).OrderBy(n => n)));
-            Assert.AreEqual("(r2 << 0x02) + 0x00123400", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("(r2 << 2<8>) + 0x123400<32>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("1[0,4]", bwslc.JumpTableIndexInterval.ToString());
         }
 
@@ -273,7 +276,7 @@ namespace Reko.UnitTests.Scanning
             Assert.IsTrue(bwslc.Start(b, 1, Target(b)));   // indirect jump
             Assert.IsTrue(bwslc.Step());    // assign flags
             Assert.IsFalse(bwslc.Step());    // and
-            Assert.AreEqual("Mem0[(r1 & 0x00000007) * 0x00000004 + 0x00123400:word32]", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("Mem0[(r1 & 7<32>) * 4<32> + 0x123400<32>:word32]", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("1[0,7]", bwslc.JumpTableIndexInterval.ToString());
         }
 
@@ -283,7 +286,7 @@ namespace Reko.UnitTests.Scanning
         {
             // In old x86 binaries we see this mechanism
             // for zero extending a register.
-            arch = new Reko.Arch.X86.X86ArchitectureReal("x86-real-16");
+            arch = new Reko.Arch.X86.X86ArchitectureReal(sc, "x86-real-16");
             var bl = binder.EnsureRegister(arch.GetRegister("bl"));
             var bh = binder.EnsureRegister(arch.GetRegister("bh"));
             var bx = binder.EnsureRegister(arch.GetRegister("bx"));
@@ -333,7 +336,7 @@ namespace Reko.UnitTests.Scanning
             Assert.IsTrue(bwslc.Step());    // branch.
             Assert.IsFalse(bwslc.Step());    // cmp.
 
-            Assert.AreEqual("Mem0[(word16) (byte) bx * 0x0002 + 0x8400:word16]", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("Mem0[(word16) (byte) bx * 2<16> + 0x8400<16>:word16]", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("1[0,2]", bwslc.JumpTableIndexInterval.ToString());
         }
 
@@ -349,7 +352,7 @@ namespace Reko.UnitTests.Scanning
             // rep movsd 
             // jmp dword ptr[007862E8 + edx * 4]
 
-            arch = new Reko.Arch.X86.X86ArchitectureReal("x86-real-16");
+            arch = new Reko.Arch.X86.X86ArchitectureReal(sc, "x86-real-16");
             var ecx = binder.EnsureRegister(arch.GetRegister("ecx"));
             var edx = binder.EnsureRegister(arch.GetRegister("edx"));
             var esi = binder.EnsureRegister(arch.GetRegister("esi"));
@@ -402,14 +405,14 @@ namespace Reko.UnitTests.Scanning
             Assert.IsTrue(bwslc.Step());
             Assert.IsTrue(bwslc.Step());       
             Assert.False(bwslc.Step());     // edx &= 3
-            Assert.AreEqual("Mem0[(edx & 0x00000003) * 0x00000004 + 0x00123400:word32]", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("Mem0[(edx & 3<32>) * 4<32> + 0x123400<32>:word32]", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("1[0,3]", bwslc.JumpTableIndexInterval.ToString());
         }
 
         [Test]
         public void Bwslc_SegmentedLoad()
         {
-            arch = new Reko.Arch.X86.X86ArchitectureReal("x86-real-16");
+            arch = new Reko.Arch.X86.X86ArchitectureReal(sc, "x86-real-16");
             var cx = binder.EnsureRegister(arch.GetRegister("cx"));
             var bx = binder.EnsureRegister(arch.GetRegister("bx"));
             var ds = binder.EnsureRegister(arch.GetRegister("ds"));
@@ -437,7 +440,7 @@ namespace Reko.UnitTests.Scanning
             Assert.IsTrue(bwslc.Step());
             Assert.IsFalse(bwslc.Step());
 
-            Assert.AreEqual("Mem0[ds:bx * 0x0002 + 0x0022:ptr32]", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("Mem0[ds:bx * 2<16> + 0x22<16>:ptr32]", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("1[0,F]", bwslc.JumpTableIndexInterval.ToString());
 
         }
@@ -445,7 +448,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwslc_ClearingBits()
         {
-            arch = new Reko.Arch.X86.X86ArchitectureReal("x86-real-16");
+            arch = new Reko.Arch.X86.X86ArchitectureReal(sc, "x86-real-16");
             var eax = binder.EnsureRegister(arch.GetRegister("eax"));
             var edx = binder.EnsureRegister(arch.GetRegister("edx"));
             var dl = binder.EnsureRegister(arch.GetRegister("dl"));
@@ -477,7 +480,7 @@ namespace Reko.UnitTests.Scanning
             Assert.IsTrue(bwslc.Step());
             Assert.IsFalse(bwslc.Step());
 
-            Assert.AreEqual("Mem0[Mem0[eax + 0x00123500:byte] * 0x00000004 + 0x00123400:word32]", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("Mem0[Mem0[eax + 0x123500<32>:byte] * 4<32> + 0x123400<32>:word32]", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("1[0,3]", bwslc.JumpTableIndexInterval.ToString());
         }
 
@@ -494,7 +497,7 @@ namespace Reko.UnitTests.Scanning
             Assert.IsTrue(bwslc.Step());
             Assert.AreEqual(1, bwslc.Live.Count);
             Assert.AreEqual("r1", bwslc.Live.First().Key.ToString());
-            Assert.AreEqual("r1 * 0x00000002 + 0x00123400", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("r1 * 2<32> + 0x123400<32>", bwslc.JumpTableFormat.ToString());
         }
 
         [Test]
@@ -512,7 +515,7 @@ namespace Reko.UnitTests.Scanning
             Assert.IsTrue(bwslc.Step());
             Assert.AreEqual(1, bwslc.Live.Count);
             Assert.AreEqual("r1", bwslc.Live.First().Key.ToString());
-            Assert.AreEqual("r1 * 0x00000004 + 0x00123400", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("r1 * 4<32> + 0x123400<32>", bwslc.JumpTableFormat.ToString());
         }
 
         [Test]
@@ -536,7 +539,7 @@ namespace Reko.UnitTests.Scanning
             var W32 = PrimitiveType.Word32;
             var I16 = PrimitiveType.Int16;
             var I32 = PrimitiveType.Int32;
-            arch = new Reko.Arch.M68k.M68kArchitecture("m68k");
+            arch = new Reko.Arch.M68k.M68kArchitecture(sc, "m68k");
             var d0 = Reg("d0");
             var d1 = Reg("d1");
             var v2 = binder.CreateTemporary("v2", W8);
@@ -594,7 +597,8 @@ namespace Reko.UnitTests.Scanning
             while (bwslc.Step())
                 ;
             Assert.AreEqual(2, bwslc.Live.Count);
-            Assert.AreEqual("(int32) (int16) Mem0[(word32) (word16) (d0 * 0x00000002) + 0x0010EC32:word16] + 0x0010EC30", bwslc.JumpTableFormat.ToString());
+            Console.WriteLine(bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("(int32) (int16) Mem0[(word32) (word16) (SEQ(d1, d0) * 2<32>) + 0x10EC32<32>:word16] + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("d0", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("(byte) d0", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
             Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());
@@ -621,7 +625,7 @@ namespace Reko.UnitTests.Scanning
             var W32 = PrimitiveType.Word32;
             var I16 = PrimitiveType.Int16;
             var I32 = PrimitiveType.Int32;
-            arch = new Reko.Arch.M68k.M68kArchitecture("m68k");
+            arch = new Reko.Arch.M68k.M68kArchitecture(sc, "m68k");
             var d0 = Reg("d0");
             var d1 = Reg("d1");
             var v2 = binder.CreateTemporary("v2", W8);
@@ -679,7 +683,8 @@ namespace Reko.UnitTests.Scanning
             while (bwslc.Step())
                 ;
             Assert.AreEqual(2, bwslc.Live.Count);
-            Assert.AreEqual("(int32) Mem0[(word32) SLICE(d0 * 0x00000002, word16, 0) + 0x0010EC32:word16] + 0x0010EC30", bwslc.JumpTableFormat.ToString());
+            Console.WriteLine(bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("(int32) Mem0[(word32) SLICE(SEQ(d1, d0) * 2<32>, word16, 0) + 0x10EC32<32>:word16] + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("d0", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("SLICE(d0, byte, 0)", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
             Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());
@@ -752,7 +757,7 @@ namespace Reko.UnitTests.Scanning
                 ;
 
             Assert.AreEqual(2, bwslc.Live.Count);
-            Assert.AreEqual("(int32) (int16) DPB(r1 * 0x00000002, Mem0[r1 * 0x00000002 + 0x001066A4:word16], 0) + 0x001066A2", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("(int32) (int16) DPB(r1 * 0x00000002<32>, Mem0[r1 * 0x00000002<32> + 0x001066A4<32>:word16], 0) + 0x001066A2<32>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("v80", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("v80", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
             Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());
@@ -761,7 +766,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwslc_Issue_691()
         {
-            arch = new Reko.Arch.M68k.M68kArchitecture("m68k");
+            arch = new Reko.Arch.M68k.M68kArchitecture(sc, "m68k");
             var d0 = Reg("d0");
             var CVZN = Cc("CVZN");
             var C = Cc("C");
@@ -805,7 +810,7 @@ namespace Reko.UnitTests.Scanning
             Assert.IsTrue(bwslc.Start(b2, 6, Target(b2)));
             while (bwslc.Step())
                 ;
-            Assert.AreEqual("(int32) (int16) (word16) ((word16) (v3 * 0x00000002) * 0x00000002) + 0x0000A8B4", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("(int32) (int16) (word16) ((word16) (v3 * 2<32>) * 2<32>) + 0xA8B4<32>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("v3", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("v3", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
             Assert.AreEqual("1[20,7FFFFFFFFFFFFFFF]", bwslc.JumpTableIndexInterval.ToString());
@@ -847,7 +852,7 @@ namespace Reko.UnitTests.Scanning
             Assert.IsTrue(bwslc.Start(b0088, 3, Target(b0088)));
             while (bwslc.Step())
                 ;
-            Assert.AreEqual("(uint16) (R7 * 0x02) + 0x008E", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("(uint16) (R7 * 2<8>) + 0x8E<16>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("A", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("A", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
             Assert.AreEqual("1[0,3]", bwslc.JumpTableIndexInterval.ToString());
@@ -888,7 +893,7 @@ namespace Reko.UnitTests.Scanning
         // ja default                   :                                           : [ebp + 8], CZ
         // movzx edx, byte ptr[ebp + 8] : edx = ZEX([(ebp + 8)], 8)                 : [ebp + 8]
         //                              : JTT = [0x023450 + ZEX([ebp + 8)], 8) * 4] :
-        // jmp [0x00234500 + edx * 4]   : JTT = [0x0023450 + edx * 4]               : edx
+        // jmp [0x00234500<32> + edx * 4]   : JTT = [0x0023450 + edx * 4]               : edx
 
         // M68k relative jump code.
         //  corresponds to

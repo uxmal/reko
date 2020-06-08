@@ -12,6 +12,9 @@
     </NuGetPackageImportStamp>
     <Configurations>Debug;Release;UnixRelease</Configurations>
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NUnit" Version="3.12.0" />
   </ItemGroup>

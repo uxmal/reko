@@ -6,16 +6,16 @@ al:al
     uses: branch fn0C00_000A(al, out al_5) l0C00_0009
 al_5: orig: al
     def:  branch fn0C00_000A(al, out al_5) l0C00_0009
-    uses: Mem11[ds:0x0300:byte] = al_5
+    uses: Mem11[ds:0x300<16>:byte] = al_5
 S_6: orig: S
 C_7: orig: C
 Z_8: orig: Z
 O_9: orig: O
 ds:ds
     def:  def ds
-    uses: Mem11[ds:0x0300:byte] = al_5
+    uses: Mem11[ds:0x300<16>:byte] = al_5
 Mem11: orig: Mem0
-    def:  Mem11[ds:0x0300:byte] = al_5
+    def:  Mem11[ds:0x300<16>:byte] = al_5
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(byte al, selector ds)
@@ -27,7 +27,7 @@ l0C00_0000:
 	branch fn0C00_000A(al, out al_5) l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:
-	Mem11[ds:0x0300:byte] = al_5
+	Mem11[ds:0x300<16>:byte] = al_5
 	// succ:  l0C00_0009
 l0C00_0009:
 	return
@@ -39,17 +39,17 @@ sp_2: orig: sp
 Top_3: orig: Top
 al:al
     def:  def al
-    uses: al_19 = al - 0x30
-          al_22 = al - 0x37
-          al_25 = al - 0x57
-          branch al <u 0x30 l0C00_0032
-          branch al <=u 0x39 l0C00_0022
-          branch al <u 0x41 l0C00_0032
-          branch al <=u 0x46 l0C00_0022
-          branch al <u 0x61 l0C00_0032
-          branch al >u 0x66 l0C00_0032
-          branch al <u 0x3A l0C00_0030
-          branch al <u 0x47 l0C00_0030
+    uses: al_19 = al - 0x30<8>
+          al_22 = al - 0x37<8>
+          al_25 = al - 0x57<8>
+          branch al <u 0x30<8> l0C00_0032
+          branch al <=u 0x39<8> l0C00_0022
+          branch al <u 0x41<8> l0C00_0032
+          branch al <=u 0x46<8> l0C00_0022
+          branch al <u 0x61<8> l0C00_0032
+          branch al >u 0x66<8> l0C00_0032
+          branch al <u 0x3A<8> l0C00_0030
+          branch al <u 0x47<8> l0C00_0030
           alOut = al
 SCZO_5: orig: SCZO
 C_6: orig: C
@@ -66,17 +66,17 @@ CZ_16: orig: CZ
 C_17: orig: C
 al_28: orig: al
 al_19: orig: al
-    def:  al_19 = al - 0x30
+    def:  al_19 = al - 0x30<8>
     uses: al_30 = PHI((al_19, l0C00_0022), (al_22, l0C00_0028), (al_25, l0C00_002E))
 SCZO_20: orig: SCZO
 C_21: orig: C
 al_22: orig: al
-    def:  al_22 = al - 0x37
+    def:  al_22 = al - 0x37<8>
     uses: al_30 = PHI((al_19, l0C00_0022), (al_22, l0C00_0028), (al_25, l0C00_002E))
 SCZO_23: orig: SCZO
 C_24: orig: C
 al_25: orig: al
-    def:  al_25 = al - 0x57
+    def:  al_25 = al - 0x57<8>
     uses: al_30 = PHI((al_19, l0C00_0022), (al_22, l0C00_0028), (al_25, l0C00_002E))
 SCZO_26: orig: SCZO
 C_27: orig: C
@@ -122,33 +122,33 @@ fn0C00_000A_entry:
 	def al
 	// succ:  l0C00_000A
 l0C00_000A:
-	branch al <u 0x30 l0C00_0032
+	branch al <u 0x30<8> l0C00_0032
 	// succ:  l0C00_000E l0C00_0032
 l0C00_000E:
-	branch al <=u 0x39 l0C00_0022
+	branch al <=u 0x39<8> l0C00_0022
 	// succ:  l0C00_0012 l0C00_0022
 l0C00_0012:
-	branch al <u 0x41 l0C00_0032
+	branch al <u 0x41<8> l0C00_0032
 	// succ:  l0C00_0016 l0C00_0032
 l0C00_0016:
-	branch al <=u 0x46 l0C00_0022
+	branch al <=u 0x46<8> l0C00_0022
 	// succ:  l0C00_001A l0C00_0022
 l0C00_001A:
-	branch al <u 0x61 l0C00_0032
+	branch al <u 0x61<8> l0C00_0032
 	// succ:  l0C00_001E l0C00_0032
 l0C00_001E:
-	branch al >u 0x66 l0C00_0032
+	branch al >u 0x66<8> l0C00_0032
 	// succ:  l0C00_0022 l0C00_0032
 l0C00_0022:
-	al_19 = al - 0x30
-	branch al <u 0x3A l0C00_0030
+	al_19 = al - 0x30<8>
+	branch al <u 0x3A<8> l0C00_0030
 	// succ:  l0C00_0028 l0C00_0030
 l0C00_0028:
-	al_22 = al - 0x37
-	branch al <u 0x47 l0C00_0030
+	al_22 = al - 0x37<8>
+	branch al <u 0x47<8> l0C00_0030
 	// succ:  l0C00_002E l0C00_0030
 l0C00_002E:
-	al_25 = al - 0x57
+	al_25 = al - 0x57<8>
 	// succ:  l0C00_0030
 l0C00_0030:
 	al_30 = PHI((al_19, l0C00_0022), (al_22, l0C00_0028), (al_25, l0C00_002E))

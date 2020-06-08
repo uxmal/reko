@@ -36,9 +36,9 @@ namespace Reko.Arch.M6800
 
     public class M6809Architecture : ProcessorArchitecture
     {
-        private Dictionary<uint, FlagGroupStorage> flagGroups;
+        private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public M6809Architecture(string archId) : base(archId)
+        public M6809Architecture(IServiceProvider services, string archId) : base(services, archId)
         {
             this.Endianness = EndianServices.Big;
             this.FramePointerType = PrimitiveType.Ptr16;
@@ -70,7 +70,7 @@ namespace Reko.Arch.M6800
 
         public override ProcessorState CreateProcessorState()
         {
-            return new M6809State(this);
+            return new M6809.M6809State(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)

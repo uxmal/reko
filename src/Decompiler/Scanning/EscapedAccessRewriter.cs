@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,9 +51,9 @@ namespace Reko.Scanning
 		private Expression EffectiveAddress(Identifier id)
 		{
 			Identifier fp = proc.Frame.FramePointer;
-			StackLocalStorage local = id.Storage as StackLocalStorage;
+			StackLocalStorage? local = id.Storage as StackLocalStorage;
 
-			int offset = local.StackOffset + proc.Frame.FrameOffset;
+			int offset = local!.StackOffset + proc.Frame.FrameOffset;
 			BinaryOperator op;
 			if (offset < 0)
 			{
@@ -79,7 +79,7 @@ namespace Reko.Scanning
 		/// </remarks>
 		public void InsertFramePointerAssignment(IProcessorArchitecture arch)
 		{
-			Block b = proc.AddBlock(proc.Name + "_frame_asgn");
+			Block b = proc.AddBlock(proc.EntryAddress, proc.Name + "_frame_asgn");
 			Block s = proc.EntryBlock.Succ[0];
             proc.ControlGraph.RemoveEdge(proc.EntryBlock, s);
             proc.ControlGraph.AddEdge(proc.EntryBlock, b);

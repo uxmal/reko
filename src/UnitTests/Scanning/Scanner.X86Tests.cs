@@ -46,17 +46,18 @@ namespace Reko.UnitTests.Scanning
         {
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            arch = new X86ArchitectureReal("x86-real-16");
+            arch = new X86ArchitectureReal(sc, "x86-real-16");
             BuildTest(Address.SegPtr(0x0C00, 0x0000), new MsdosPlatform(sc, arch), asmProg);
         }
 
         private void BuildTest32(Action<X86Assembler> asmProg)
         {
-            arch = new X86ArchitectureFlat32("x86-protected-32");
+            sc = new ServiceContainer();
+            arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
             BuildTest(Address.Ptr32(0x00100000), new FakePlatform(sc, null), asmProg);
         }
 
-        private void BuildTest(Address addrBase, IPlatform platform , Action<X86Assembler> asmProg)
+        private void BuildTest(Address addrBase, IPlatform platform, Action<X86Assembler> asmProg)
         {
             var sc = new ServiceContainer();
             var eventListener = new FakeDecompilerEventListener();
@@ -126,15 +127,15 @@ namespace Reko.UnitTests.Scanning
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	branch cx == 0x0000 l0C00_0002
+	branch cx == 0<16> l0C00_0002
 	// succ:  l0C00_0000_1 l0C00_0002
 l0C00_0000_1:
 	SCZO = cond(ax - Mem0[es:di:word16])
-	di = di + 0x0002
-	cx = cx - 0x0001
+	di = di + 2<i16>
+	cx = cx - 1<16>
 	branch Test(NE,Z) l0C00_0000
 	// succ:  l0C00_0002 l0C00_0000
 l0C00_0002:

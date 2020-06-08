@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.zSeries
 {
+#pragma warning disable IDE1006 // Naming Styles
     public partial class zSeriesRewriter
     {
         private void RewriteAhi(PrimitiveType dt)
@@ -115,7 +116,7 @@ namespace Reko.Arch.zSeries
         private void RewriteLarl()
         {
             Expression src = Addr(instr.Operands[1]);
-            Expression dst = Reg(instr.Operands[0]);
+            Identifier dst = Reg(instr.Operands[0]);
             if (src.DataType.BitSize < dst.DataType.BitSize)
             {
                 src = m.Dpb(dst, src, 0);
@@ -325,7 +326,7 @@ namespace Reko.Arch.zSeries
             var len = ((MemoryOperand)instr.Operands[0]).Length;
             var dt = PrimitiveType.CreateWord(len);
             var eaSrc = EffectiveAddress(instr.Operands[1]);
-                var tmp = binder.CreateTemporary(dt);
+            var tmp = binder.CreateTemporary(dt);
             var eaDst = EffectiveAddress(instr.Operands[0]);
 
             if (cmp.Equals(eaSrc, eaDst))

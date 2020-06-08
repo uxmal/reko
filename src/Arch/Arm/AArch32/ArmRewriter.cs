@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections;
@@ -1052,35 +1053,10 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(dst, intrinsic);
         }
 
-        private static HashSet<Mnemonic> seenMnemonics = new HashSet<Mnemonic>();
-
-        void EmitUnitTest(AArch32Instruction instr)
+        private void EmitUnitTest(AArch32Instruction instr)
         {
-            if (seenMnemonics.Contains(instr.Mnemonic))
-                return;
-            seenMnemonics.Add(instr.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= instr.Length;
-
-            Console.WriteLine("        [Test]");
-            Console.WriteLine("        public void ArmRw_{0}()", instr.Mnemonic);
-            Console.WriteLine("        {");
-
-            if (instr.Length > 2)
-            {
-                var wInstr = r2.ReadBeUInt32();
-                Console.WriteLine($"            RewriteCode(\"{wInstr:X8}\");");
-            }
-            else
-            {
-                var wInstr = r2.ReadBeUInt16();
-                Console.WriteLine($"            RewriteCode(\"{wInstr:X4}\");");
-            }
-            Console.WriteLine("            AssertCode(");
-            Console.WriteLine($"                \"0|L--|00100000({instr.Length}): 1 instructions\",");
-            Console.WriteLine($"                \"1|L--|@@@\");");
-            Console.WriteLine("        }");
+            var testgenSvc = arch.Services.GetService<ITestGenerationService>();
+            testgenSvc?.ReportMissingRewriter("ArmRw", instr, rdr, "");
         }
     }
 

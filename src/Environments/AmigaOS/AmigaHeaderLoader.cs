@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -49,7 +49,7 @@ namespace Reko.Environments.AmigaOS
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
             var rdr = new StreamReader(new MemoryStream(bytes));
-            var lexer = new CLexer(rdr);
+            var lexer = new CLexer(rdr, CLexer.StdKeywords);
             var state = new ParserState();
             var parser = new CParser(state, lexer);
             var symbolTable = new SymbolTable(platform);

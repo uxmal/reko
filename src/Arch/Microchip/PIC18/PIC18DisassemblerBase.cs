@@ -94,6 +94,12 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             };
         }
 
+        public override PICInstruction NotYetImplemented(uint wInstr, string message)
+        {
+            //$TODO: does this need a separate implementation for each pic model?
+            return CreateInvalidInstruction();
+        }
+
         /// <summary>
         /// Gets an additional instruction's word. Used for 2-word or 3-word instructions.
         /// Check for consistency (NOP-alike format) and provides the 12 least-significant bits.

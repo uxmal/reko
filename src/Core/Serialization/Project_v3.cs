@@ -59,7 +59,7 @@ namespace Reko.Core.Serialization
     public abstract class ProjectFile_v3
     {
         [XmlElement("filename")]
-        public string Filename;
+        public string? Filename;
 
         public abstract T Accept<T>(IProjectFileVisitor_v3<T> visitor);
     }
@@ -78,19 +78,20 @@ namespace Reko.Core.Serialization
         public UserData_v3()
         {
             Procedures = new List<Procedure_v1>();
+            Calls = new List<SerializedCall_v1>();
             GlobalData = new List<GlobalDataItem_v2>();
             Heuristics = new List<Heuristic_v3>();
             Annotations = new List<Annotation_v3>();
         }
 
         [XmlElement("address")]
-        public string LoadAddress;
+        public string? LoadAddress;
 
         [XmlElement("processor")]
-        public ProcessorOptions_v3 Processor;
+        public ProcessorOptions_v3? Processor;
 
         [XmlElement("platform")]
-        public PlatformOptions_v3 PlatformOptions;
+        public PlatformOptions_v3? PlatformOptions;
 
         [XmlElement("procedure")]
         public List<Procedure_v1> Procedures;
@@ -105,7 +106,7 @@ namespace Reko.Core.Serialization
         public List<Heuristic_v3> Heuristics;
 
         [XmlElement("onLoad")]
-        public Script_v2 OnLoadedScript;
+        public Script_v2? OnLoadedScript;
 
         [XmlElement("annotation")]
         public List<Annotation_v3> Annotations;
@@ -114,7 +115,7 @@ namespace Reko.Core.Serialization
     public class Heuristic_v3
     {
         [XmlAttribute("name")]
-        public string Name;
+        public string? Name;
     }
 
     public class DecompilerInput_v3 : ProjectFile_v3
@@ -125,22 +126,22 @@ namespace Reko.Core.Serialization
         }
 
         [XmlElement("comment")]
-        public string Comment;
+        public string? Comment;
 
         [XmlElement("disassembly")]
-        public string DisassemblyFilename;
+        public string? DisassemblyFilename;
 
         [XmlElement("intermediate-code")]
-        public string IntermediateFilename;
+        public string? IntermediateFilename;
 
         [XmlElement("output")]
-        public string OutputFilename;
+        public string? OutputFilename;
 
         [XmlElement("types-file")]
-        public string TypesFilename;
+        public string? TypesFilename;
 
         [XmlElement("global-vars")]
-        public string GlobalsFilename;
+        public string? GlobalsFilename;
 
         [XmlElement("user")]
         public UserData_v3 User;
@@ -154,10 +155,10 @@ namespace Reko.Core.Serialization
     public class MetadataFile_v3 : ProjectFile_v3
     {
         [XmlElement("loader")]
-        public string LoaderTypeName;
+        public string? LoaderTypeName;
 
         [XmlElement("module")]
-        public string ModuleName;
+        public string? ModuleName;
 
         public override T Accept<T>(IProjectFileVisitor_v3<T> visitor)
         {
@@ -168,7 +169,7 @@ namespace Reko.Core.Serialization
     public class AssemblerFile_v3 : ProjectFile_v3
     {
         [XmlElement("assembler")]
-        public string Assembler;
+        public string? Assembler;
 
         public override T Accept<T>(IProjectFileVisitor_v3<T> visitor)
         {
@@ -179,24 +180,24 @@ namespace Reko.Core.Serialization
     public class PlatformOptions_v3
     {
         [XmlAttribute("name")]
-        public string Name;
+        public string? Name;
 
         [XmlAnyElement]
-        public XmlElement[] Options;
+        public XmlElement[]? Options;
     }
 
     public class ProcessorOptions_v3
     {
         [XmlAttribute("name")]
-        public string Name;
+        public string? Name;
     }
 
     public class Annotation_v3
     {
         [XmlAttribute("addr")]
-        public string Address;
+        public string? Address;
 
         [XmlText]
-        public string Text;
+        public string? Text;
     }
 }

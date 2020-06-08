@@ -41,6 +41,8 @@ static thiscall_class *gbl_thiscall;
 static int remainder;
 static int quotient;
 
+static nested_structs_type gbl_nested_structs;
+
 extern void test1(char *arg1, int arg2, char *arg3, float arg4);
 
 
@@ -147,4 +149,12 @@ extern "C" __declspec(dllexport) void nested_structs_test12(nested_structs_type 
 extern "C" __declspec(dllexport) void nested_structs_test13(nested_structs_type *str)
 {
     nested_structs_test12(str);
+}
+
+extern "C" __declspec(dllexport) void gbl_nested_structs_test14()
+{
+    gbl_nested_structs.a = 5;
+    gbl_nested_structs.str.b = 6;
+    gbl_nested_structs.str.c = 7;
+    gbl_nested_structs.d = 8;
 }

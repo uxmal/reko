@@ -34,9 +34,9 @@ namespace Reko.Scanning
     /// </summary>
     public class IdentifierRelocator : InstructionTransformer, StorageVisitor<Identifier>
     {
-        private Frame frame;
-        private Dictionary<Identifier, Identifier> mapIds;
-        private Identifier id;
+        private readonly Frame frame;
+        private readonly Dictionary<Identifier, Identifier> mapIds;
+        private Identifier? id; //$TODO: use 'id' as context?
 
         public IdentifierRelocator(Frame frame)
         {
@@ -62,12 +62,12 @@ namespace Reko.Scanning
 
         public Identifier VisitFlagGroupStorage(FlagGroupStorage flags)
         {
-            return frame.EnsureFlagGroup(flags.FlagRegister, flags.FlagGroupBits, flags.Name, id.DataType);
+            return frame.EnsureFlagGroup(flags.FlagRegister, flags.FlagGroupBits, flags.Name, id!.DataType);
         }
 
         public Identifier VisitFpuStackStorage(FpuStackStorage fpu)
         {
-            return frame.EnsureFpuStackVariable(fpu.FpuStackOffset, id.DataType);
+            return frame.EnsureFpuStackVariable(fpu.FpuStackOffset, id!.DataType);
         }
 
         public Identifier VisitRegisterStorage(RegisterStorage reg)
@@ -95,18 +95,18 @@ namespace Reko.Scanning
             var tmp2 = frame.FindTemporary(tmp.Name);
             if (tmp2 != null)
                 return tmp2;
-            return frame.CreateTemporary(id.DataType);
+            return frame.CreateTemporary(id!.DataType);
         }
 
         public Identifier VisitSequenceStorage(SequenceStorage seq)
         {
-            return frame.EnsureSequence(id.DataType, seq.Elements);
+            return frame.EnsureSequence(id!.DataType, seq.Elements);
         }
 
         public Identifier VisitOutArgumentStorage(OutArgumentStorage ost)
         {
             var idOut = id;
-            return frame.EnsureOutArgument((Identifier) VisitIdentifier(ost.OriginalIdentifier), idOut.DataType);
+            return frame.EnsureOutArgument((Identifier) VisitIdentifier(ost.OriginalIdentifier), idOut!.DataType);
         }
     }
 }

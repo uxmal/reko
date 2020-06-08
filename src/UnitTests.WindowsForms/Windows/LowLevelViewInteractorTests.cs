@@ -129,7 +129,7 @@ namespace Reko.UnitTests.Gui.Windows
             interactor.Object.Program = program;
             interactor.Object.GotoAddress();
 
-            Assert.AreEqual("0x01020304", interactor.Object.Control.ToolBarAddressTextbox.Text);
+            Assert.AreEqual("0x01020304<p32>", interactor.Object.Control.ToolBarAddressTextbox.Text);
         }
 
         private void Given_Architecture()

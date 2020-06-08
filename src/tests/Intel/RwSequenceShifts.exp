@@ -14,22 +14,22 @@
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	eax = Mem0[ds:0x0100:word32]
-	edx = Mem0[ds:0x0104:word32]
-	eax = __shld(eax, edx, 0x04)
-	edx = edx >>u 0x00000004
+	eax = Mem0[ds:0x100<16>:word32]
+	edx = Mem0[ds:0x104<16>:word32]
+	eax = __shld(eax, edx, 4<8>)
+	edx = edx >>u 4<32>
 	SCZO = cond(edx)
-	Mem0[ds:0x0108:word32] = eax
-	Mem0[ds:0x010C:word32] = edx
-	eax = Mem0[ds:0x0100:word32]
-	edx = Mem0[ds:0x0104:word32]
-	eax = eax << 0x00000001
+	Mem0[ds:0x108<16>:word32] = eax
+	Mem0[ds:0x10C<16>:word32] = edx
+	eax = Mem0[ds:0x100<16>:word32]
+	edx = Mem0[ds:0x104<16>:word32]
+	eax = eax << 1<32>
 	SCZO = cond(eax)
-	v7 = (edx & 0x00000001 << 0x20 - 0x01) != 0x00000000
-	edx = __rcl(edx, 0x01, C)
+	v7 = (edx & 1<32> << 0x20<8> - 1<8>) != 0<32>
+	edx = __rcl(edx, 1<8>, C)
 	C = v7
 	return
 	// succ:  fn0C00_0000_exit

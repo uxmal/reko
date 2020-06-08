@@ -23,6 +23,8 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
+#nullable enable
+
 namespace Reko.Core.Lib
 {
     public static class SuffixArray
@@ -51,8 +53,8 @@ namespace Reko.Core.Lib
     {
         private const int EOC = int.MaxValue;
         private int[] m_sa;
-        private int[] m_isa;
-        private int[] m_lcp;
+        private int[]? m_isa;
+        private int[]? m_lcp;
         private Dictionary<T, int> m_chainHeadsDict;
         private List<Chain> m_chainStack = new List<Chain>();
         private List<Chain> m_subChains = new List<Chain>();
@@ -78,7 +80,7 @@ namespace Reko.Core.Lib
 
             FormInitialChains();
             BuildSuffixArray();
-            m_chainHeadsDict = null;  // free the mem.
+            m_chainHeadsDict = new Dictionary<T, int>();  // free the mem.
             BuildLcpArray();
         }
 
@@ -86,6 +88,7 @@ namespace Reko.Core.Lib
         {
             m_str = str;
             m_sa = sa;
+            m_chainHeadsDict = new Dictionary<T, int>();
             this.cmp = Comparer<T>.Default;
             BuildLcpArray();
         }
@@ -103,7 +106,7 @@ namespace Reko.Core.Lib
         /// <summary>
         /// Longest common prefix array
         /// </summary>
-        public int[] Lcp
+        public int[]? Lcp
         {
             get { return m_lcp; }
         }
@@ -255,19 +258,20 @@ namespace Reko.Core.Lib
             // Scan the string left to right, keeping rightmost occurences of characters as the chain heads
             for (int i = 0; i < m_str.Length; i++)
             {
-                if (m_chainHeadsDict.ContainsKey(m_str[i]))
+                //$REVIEW: the forced non-nulls
+                if (m_chainHeadsDict!.ContainsKey(m_str[i]))
                 {
-                    m_isa[i] = m_chainHeadsDict[m_str[i]];
+                    m_isa![i] = m_chainHeadsDict[m_str[i]];
                 }
                 else
                 {
-                    m_isa[i] = EOC;
+                    m_isa![i] = EOC;
                 }
                 m_chainHeadsDict[m_str[i]] = i;
             }
 
             // Prepare chains to be pushed to stack
-            foreach (int headIndex in m_chainHeadsDict.Values)
+            foreach (int headIndex in m_chainHeadsDict!.Values)
             {
                 Chain newChain = new Chain(this);
                 newChain.head = headIndex;
@@ -293,7 +297,7 @@ namespace Reko.Core.Lib
                 Chain chain = m_chainStack[m_chainStack.Count - 1];
                 m_chainStack.RemoveAt(m_chainStack.Count - 1);
 
-                if (m_isa[chain.head] == EOC)
+                if (m_isa![chain.head] == EOC)
                 {
                     // Singleton (A chain that contain only 1 suffix)
                     RankSuffix(chain.head);
@@ -312,7 +316,7 @@ namespace Reko.Core.Lib
             m_subChains.Clear();
             while (chain.head != EOC)
             {
-                int nextIndex = m_isa[chain.head];
+                int nextIndex = m_isa![chain.head];
                 if (chain.head + chain.length > m_str.Length - 1)
                 {
                     RankSuffix(chain.head);
@@ -334,13 +338,13 @@ namespace Reko.Core.Lib
             {
                 // Continuation of an existing chain, this is the leftmost
                 // occurence currently known (others may come up later)
-                m_isa[m_chainHeadsDict[sym]] = chain.head;
+                m_isa![m_chainHeadsDict[sym]] = chain.head;
                 m_isa[chain.head] = EOC;
             }
             else
             {
                 // This is the beginning of a new subchain
-                m_isa[chain.head] = EOC;
+                m_isa![chain.head] = EOC;
                 Chain newChain = new Chain(this);
                 newChain.head = chain.head;
                 newChain.length = chain.length + 1;
@@ -359,7 +363,7 @@ namespace Reko.Core.Lib
 
             while (chain.head != EOC)
             {
-                int nextIndex = m_isa[chain.head];
+                int nextIndex = m_isa![chain.head];
                 if (chain.head + chain.length > m_str.Length - 1)
                 {
                     // If this substring reaches end of string it cannot be extended.
@@ -401,7 +405,7 @@ namespace Reko.Core.Lib
         {
             // We use the ISA to hold both ranks and chain links, so we differentiate by setting
             // the sign.
-            m_isa[index] = -m_nextRank;
+            m_isa![index] = -m_nextRank;
             m_sa[m_nextRank - 1] = index;
             m_nextRank++;
         }

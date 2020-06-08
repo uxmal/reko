@@ -38,7 +38,7 @@ namespace Reko.Analysis
 		private readonly SsaState ssa;
 		private readonly Dictionary<Identifier,Identifier> assocs;
 		private readonly Dictionary<Identifier,Constant> consts;
-		private readonly Identifier overAssociatedId = new Identifier("overAssociated", VoidType.Instance, null);
+		private readonly Identifier overAssociatedId = new Identifier("overAssociated", VoidType.Instance, null!);
         private readonly Constant overAssociatedConst = Constant.Real64(0.0);
 
 		public SegmentedAccessClassifier(SsaState  ssa)
@@ -86,7 +86,7 @@ namespace Reko.Analysis
 			consts[basePtr] = memberPtr;
 		}
 
-		public Identifier AssociatedIdentifier(Identifier pointer)
+		public Identifier? AssociatedIdentifier(Identifier pointer)
 		{
             if (assocs.TryGetValue(pointer, out Identifier id))
             {

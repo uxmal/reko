@@ -45,23 +45,25 @@ namespace Reko.Analysis
             this.dynamicLinker = dynamicLinker;
         }
 
-        public Statement Statement { get; set; }
+        public Statement? Statement { get; set; }
 
-        public Expression GetValue(Identifier id)
+        public Expression? GetValue(Identifier id)
         {
             if (id == null)
                 return null;
             var sid = ssaIds[id];
             if (sid.DefStatement == null)
                 return null;
-            var ass = sid.DefStatement.Instruction as Assignment;
-            if (ass != null && ass.Dst == sid.Identifier)
+            if (sid.DefStatement.Instruction is Assignment ass &&
+                ass.Dst == sid.Identifier)
             {
                 return ass.Src;
             }
-            var phiAss = sid.DefStatement.Instruction as PhiAssignment;
-            if (phiAss != null && phiAss.Dst == sid.Identifier)
+            if (sid.DefStatement.Instruction is PhiAssignment phiAss &&
+                phiAss.Dst == sid.Identifier)
+            {
                 return phiAss.Src;
+            }
             return null;
         }
 
@@ -76,7 +78,7 @@ namespace Reko.Analysis
                 // Search imported procedures only in Global Memory
                 access.MemoryId.Storage == MemoryStorage.Instance)
             {
-                var pc = dynamicLinker.ResolveToImportedValue(this.Statement, c);
+                var pc = dynamicLinker.ResolveToImportedValue(this.Statement!, c);
                 if (pc != null)
                     return pc;
             }
@@ -88,7 +90,7 @@ namespace Reko.Analysis
             return access;
         }
 
-        public Expression GetDefiningExpression(Identifier id)
+        public Expression? GetDefiningExpression(Identifier id)
         {
             return ssaIds[id].DefExpression;
         }
@@ -147,7 +149,7 @@ namespace Reko.Analysis
         public void RemoveIdentifierUse(Identifier id)
         {
             if (id != null)
-                ssaIds[id].Uses.Remove(Statement);
+                ssaIds[id].Uses.Remove(Statement!);
         }
 
         public void RemoveExpressionUse(Expression exp)
@@ -186,13 +188,12 @@ namespace Reko.Analysis
             var src = ssaIds[id].DefStatement;
             if (src == null)
                 return false;
-            var assSrc = src.Instruction as Assignment;
-            if (assSrc == null)
+            if (!(src.Instruction is Assignment assSrc))
                 return false;
             return ExpressionIdentifierUseFinder.Find(ssaIds, assSrc.Src)
                 .Select(c => ssaIds[c].DefStatement)
                 .Where(d => d != null)
-                .Select(ph => ph.Instruction as PhiAssignment)
+                .Select(ph => ph!.Instruction as PhiAssignment)
                 .Where(ph => ph != null)
                 .Any();
                 //.SelectMany(ph => ssaIds[ph.Ops].DefStatement)

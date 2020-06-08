@@ -63,7 +63,7 @@ namespace Reko.Arch.Vax
 
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public VaxArchitecture(string name) : base(name)
+        public VaxArchitecture(IServiceProvider services, string name) : base(services, name)
         {
             this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 8;

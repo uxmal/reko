@@ -8,15 +8,15 @@ T_2: (in p : word32)
   Class: Eq_2
   DataType: (ptr32 (struct (4 T_5 t0004)))
   OrigDataType: (ptr32 (struct (4 T_5 t0004)))
-T_3: (in 0x00000004 : word32)
+T_3: (in 4<32> : word32)
   Class: Eq_3
   DataType: word32
   OrigDataType: word32
-T_4: (in p + 0x00000004 : word32)
+T_4: (in p + 4<32> : word32)
   Class: Eq_4
   DataType: word32
   OrigDataType: word32
-T_5: (in Mem0[p + 0x00000004:word32] : word32)
+T_5: (in Mem0[p + 4<32>:word32] : word32)
   Class: Eq_5
   DataType: word32
   OrigDataType: word32

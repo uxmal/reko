@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Gui.Forms
             var platform = new Mock<IPlatform>();
             platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
             program = new Program();
-            program.Architecture = new X86ArchitectureReal("x86-real-16");
+            program.Architecture = new X86ArchitectureReal(sc, "x86-real-16");
             program.Platform = platform.Object;
             var mem = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[10000]);
             program.SegmentMap = new SegmentMap(

@@ -6,12 +6,12 @@ ProcedureBuilder_entry:
 	// succ:  l1
 grox:
 l1:
-	sp = sp - 0x0002
+	sp = sp - 2<16>
 	Mem0[sp:selector] = cs
 	ds = Mem0[sp:word16]
-	sp = sp + 0x0002
+	sp = sp + 2<16>
 	bl = Mem0[si:byte]
-	SCZO = cond(bl - 0x02)
+	SCZO = cond(bl - 2<8>)
 	branch Test(UGT,SCZO) grox
 	// succ:  l2 grox
 l2:

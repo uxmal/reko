@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -26,14 +26,15 @@ using System.Text;
 namespace Reko.Core
 {
     /// <summary>
-    /// Abstract class representing all files that are in use by the project
+    /// Abstract class representing any file used by the project.
     /// </summary>
     public abstract class ProjectFile
     {
+        //$TODO: add a ctor with the filename.
         /// <summary>
         /// The file name of the file to be decompiled.
         /// </summary>
-        public string Filename { get; set; }
+        public string? Filename { get; set; }
 
         public abstract T Accept<T>(IProjectFileVisitor<T> visitor);
     }

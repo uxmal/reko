@@ -47,7 +47,7 @@ namespace Reko.Core.Rtl
             this.Class = InstrClass.Transfer;
         }
 
-        public RtlMicroGoto(Expression condition, object microTarget)
+        public RtlMicroGoto(Expression? condition, object microTarget)
         {
             Debug.Assert(microTarget is string || microTarget is RtlLocation);
             this.Condition = condition;
@@ -59,7 +59,7 @@ namespace Reko.Core.Rtl
         /// If not null, this micro-goto is predicated on this condition. If
         /// null, the micro-goto is unconditional.
         /// </summary>
-        public Expression Condition { get; }
+        public Expression? Condition { get; }
 
         /// <summary>
         /// Name of the microLabelName to jump to. The micro label must be inside

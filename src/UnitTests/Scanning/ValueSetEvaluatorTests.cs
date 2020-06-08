@@ -26,6 +26,7 @@ using Reko.Scanning;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -152,7 +153,7 @@ namespace Reko.UnitTests.Scanning
             Given_Evaluator();
 
             var vs = vse.Evaluate(m.Mem32(r1));
-            Assert.AreEqual("[0x00003000,0x00003028,0x00003008]", vs.Item1.ToString());
+            Assert.AreEqual("[0x3000<32>,0x3028<32>,0x3008<32>]", vs.Item1.ToString());
         }
 
         [Test]
@@ -209,7 +210,7 @@ namespace Reko.UnitTests.Scanning
             var vs = vse.Evaluate(m.Cast(
                 PrimitiveType.Int32,
                 m.Cast(PrimitiveType.Byte, r1)));
-            Assert.AreEqual("[-1,0,127]", vs.Item1.ToString());
+            Assert.AreEqual("[-1<i32>,0<i32>,127<i32>]", vs.Item1.ToString());
         }
 
         [Test]
@@ -231,13 +232,13 @@ namespace Reko.UnitTests.Scanning
             Given_Evaluator();
 
             var vs = vse.Evaluate(m.IMul(r1, 4));
-            Assert.AreEqual("[0x0000000C,0x00000024,0x00000028]", vs.Item1.ToString());
+            Assert.AreEqual("[0xC<32>,0x24<32>,0x28<32>]", vs.Item1.ToString());
         }
 
         [Test]
         public void Vse_segmented_addrs()
         {
-            program.Architecture = new Reko.Arch.X86.X86ArchitectureReal("x86-real-16");
+            program.Architecture = new Reko.Arch.X86.X86ArchitectureReal(new ServiceContainer(), "x86-real-16");
             Given_UInt16Array(Address.SegPtr(0xC00, 4), new ushort[] {
                 0x1234,
                 0x0C00,
@@ -261,7 +262,7 @@ namespace Reko.UnitTests.Scanning
         public void Vse_NestedCasts()
         {
             // Extracted from:
-            // (int32) (int16) Mem0[(word32) (word16) ((word32) r0 * 0x00000002) + 0x0010EC32:word16] + 0x0010EC30
+            // (int32) (int16) Mem0[(word32) (word16) ((word32) r0 * 0x2<32>) + 0x10EC32<32>:word16] + 0x10EC30<32>
 
             var r0 = m.Reg32("r0", 0);
 
@@ -285,7 +286,7 @@ namespace Reko.UnitTests.Scanning
 
             var exp = m.Mem32(m.IAdd(m.IMul(r0, 4), 0x2080));
             var (vs, reads) = vse.Evaluate(exp);
-            Assert.AreEqual("[0x00001100,0x00001060,0x00001800]", vs.ToString());
+            Assert.AreEqual("[0x1100<32>,0x1060<32>,0x1800<32>]", vs.ToString());
             Assert.AreEqual("([00002080, word32],[00002084, word32],[00002088, word32])", DumpReads(reads));
         }
 

@@ -41,7 +41,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
 
         protected override IProcessorArchitecture GetArchitecture()
         {
-            return new Reko.Arch.X86.X86ArchitectureFlat32("x86-flat-32");
+            return new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-flat-32");
         }
 
         protected override ElfRelocator CreateRelocator(ElfLoader loader, SortedList<Address, ImageSymbol> imageSymbols)
@@ -65,7 +65,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
                 .WriteLeUInt32(0x00123400)
                 .WriteLeUInt32(0x00123400)
                 .WriteLeUInt32(0x00123400)
-                .WriteLeUInt32(0x00001036)  // Points 6 bytes into PLT stub at 0x1030
+                .WriteLeUInt32(0x00001036)  // Points 6 bytes into PLT stub at 0x1030<16>
                 .WriteLeUInt32(0x00123400)
                 .WriteLeUInt32(0x00123400)
                 .WriteLeUInt32(0x00123400);

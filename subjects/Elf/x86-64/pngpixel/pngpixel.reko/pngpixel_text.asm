@@ -22,7 +22,7 @@ _start proc
 deregister_tm_clones proc
 	mov	eax,006020FF
 	push	rbp
-	sub	r8,+006020F8
+	sub	rax,+006020F8
 	cmp	rax,0E
 	mov	rbp,rsp
 	jbe	0000000000400D30

@@ -34,6 +34,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -106,7 +107,7 @@ namespace Reko.UnitTests.Analysis
         [Category(Categories.UnitTests)]
         public void Dfa2_Simple()
         {
-            var pb = new ProgramBuilder(new FakeArchitecture());
+            var pb = new ProgramBuilder(new FakeArchitecture(new ServiceContainer()));
             pb.Add("test", m =>
                 {
                 var r1 = m.Reg32("r1", 1);
@@ -126,7 +127,7 @@ void test()
 test_entry:
 	// succ:  l1
 l1:
-	Mem6[0x00010008:word32] = Mem0[0x00010000:word32] + Mem0[0x00010004:word32]
+	Mem6[0x10008<32>:word32] = Mem0[0x10000<32>:word32] + Mem0[0x10004<32>:word32]
 	return
 	// succ:  test_exit
 test_exit:
@@ -137,7 +138,7 @@ test_exit:
         [Test]
         public void Dfa2_StackArgs()
         {
-            var pb = new ProgramBuilder(new FakeArchitecture());
+            var pb = new ProgramBuilder(new FakeArchitecture(new ServiceContainer()));
             pb.Add("test", m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);
@@ -147,7 +148,7 @@ test_exit:
                 m.Assign(r1, m.Mem32(m.IAdd(sp, 4)));
                 m.Assign(r2, m.Mem32(m.IAdd(sp, 8)));
                 m.Assign(r1, m.IAdd(r1, r2));
-                m.MStore(m.Word32(0x010008), r1);
+                m.MStore(m.Ptr32(0x010008), r1);
                 m.Return();
             });
             var dfa = new DataFlowAnalysis(pb.BuildProgram(), dynamicLinker.Object, new FakeDecompilerEventListener());
@@ -158,7 +159,7 @@ void test(word32 dwArg04, word32 dwArg08)
 test_entry:
 	// succ:  l1
 l1:
-	Mem7[0x00010008:word32] = dwArg04 + dwArg08
+	Mem7[0x00010008<p32>:word32] = dwArg04 + dwArg08
 	return
 	// succ:  test_exit
 test_exit:
@@ -212,7 +213,7 @@ void test()
 test_entry:
 	// succ:  l1
 l1:
-	foo(0x00000001, 0x00000002)
+	foo(1<32>, 2<32>)
 	return
 	// succ:  test_exit
 test_exit:
@@ -224,7 +225,7 @@ test_exit:
         [Category(Categories.FailedTests)]
         public void Dfa2_UserDefinedStackArgs()
         {
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
+            var arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
             var pb = new ProgramBuilder(arch);
             var test = pb.Add(
                 new Procedure_v1
@@ -238,7 +239,7 @@ test_exit:
                     m.Assign(r1, m.Mem32(m.IAdd(fp, 4)));
                     m.Assign(r2, m.Mem32(m.IAdd(fp, 8)));
                     m.Assign(r1, m.IAdd(r1, r2));
-                    m.MStore(m.Word32(0x010008), r1);
+                    m.MStore(m.Ptr32(0x010008), r1);
                     m.Return();
                 });
             var program = pb.BuildProgram();
@@ -263,7 +264,7 @@ void test(int32 a, int32 b)
 test_entry:
 	// succ:  l1
 l1:
-	Mem6[0x00010008:word32] = a + b
+	Mem6[0x00010008<p32>:word32] = a + b
 	return
 	// succ:  test_exit
 test_exit:
@@ -279,9 +280,9 @@ test_exit:
             {
                 var r1 = m.Register("r1");
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
-                m.Assign(r1, m.Mem32(m.Word32(0x123400)));
+                m.Assign(r1, m.Mem32(m.Ptr32(0x00123400)));
                 m.Call("level1", 0);
-                m.MStore(m.Word32(0x123400), r1);
+                m.MStore(m.Ptr32(0x00123400), r1);
                 m.Return();
             });
             pb.Add("level1", m =>
@@ -312,7 +313,7 @@ void main()
 main_entry:
 	// succ:  l1
 l1:
-	Mem7[0x00123400:word32] = level1(Mem0[0x00123400:word32])
+	Mem7[0x00123400<p32>:word32] = level1(Mem0[0x00123400<p32>:word32])
 	return
 	// succ:  main_exit
 main_exit:
@@ -333,7 +334,7 @@ word32 level2(word32 r1)
 level2_entry:
 	// succ:  l1
 l1:
-	return r1 + 0x00000001
+	return r1 + 1<32>
 	// succ:  level2_exit
 level2_exit:
 ";
@@ -351,10 +352,10 @@ level2_exit:
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
-                m.MStore(sp, m.Mem32(m.Word32(0x123400)));
+                m.MStore(sp, m.Mem32(m.Ptr32(0x123400)));
                 m.Call("level1", 4);
                 m.Assign(sp, m.IAdd(sp, 4));
-                m.MStore(m.Word32(0x123404), r1);
+                m.MStore(m.Ptr32(0x123404), r1);
                 m.Return();
             });
             pb.Add("level1", m =>
@@ -392,7 +393,7 @@ void main()
 main_entry:
 	// succ:  l1
 l1:
-	Mem8[0x00123404:word32] = level1(Mem0[0x00123400:word32])
+	Mem8[0x00123404<p32>:word32] = level1(Mem0[0x00123400<p32>:word32])
 	return
 	// succ:  main_exit
 main_exit:
@@ -413,7 +414,7 @@ word32 level2(word32 dwArg04)
 level2_entry:
 	// succ:  l1
 l1:
-	return dwArg04 + 0x00000001
+	return dwArg04 + 1<32>
 	// succ:  level2_exit
 level2_exit:
 ";
@@ -439,7 +440,7 @@ level2_exit:
                 var r1 = m.Register("r1");
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
                 m.Assign(sp, m.Frame.FramePointer);
-                m.MStore(m.Word32(0x1234), m.Cast(PrimitiveType.Byte, r1));
+                m.MStore(m.Ptr32(0x1234), m.Cast(PrimitiveType.Byte, r1));
                 m.Return();
             });
             var program = pb.BuildProgram();
@@ -472,7 +473,7 @@ void level1(word32 r1)
 level1_entry:
 	// succ:  l1
 l1:
-	Mem4[0x00001234:byte] = (byte) r1
+	Mem4[0x00001234<p32>:byte] = (byte) r1
 	return
 	// succ:  level1_exit
 level1_exit:

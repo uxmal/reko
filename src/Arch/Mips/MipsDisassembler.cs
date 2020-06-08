@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -95,22 +96,9 @@ namespace Reko.Arch.Mips
 
         public override MipsInstruction NotYetImplemented(uint wInstr, string message)
         {
-            var instr = CreateInvalidInstruction();
-            EmitUnitTest(wInstr, message);
-            return instr;
-        }
-
-        [Conditional("DEBUG")]
-        public void EmitUnitTest(uint wInstr, string message)
-        {
-            var op = (wInstr >> 26);
-            if (op == 0 || op == 1)
-                return;
-            var instrHex = $"{wInstr:X8}";
-            base.EmitUnitTest("MIPS", instrHex, message, "MipsDis", this.addr, w =>
-            {
-                w.WriteLine("    AssertCode(\"@@@\", \"0x{0:X8}\");", wInstr);
-            });
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("MipsDis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         private RegisterOperand Reg(uint regNumber)

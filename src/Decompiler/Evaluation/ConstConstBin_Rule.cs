@@ -30,10 +30,10 @@ namespace Reko.Evaluation
 	/// </summary>
 	public class ConstConstBin_Rule
 	{
-		private Constant cLeft;
-		private Constant cRight;
-		private Operator op;
-        private Address addr;
+		private Constant? cLeft;
+		private Constant? cRight;
+		private Operator? op;
+        private Address? addr;
 
 		public bool Match(BinaryExpression binExp)
 		{
@@ -48,10 +48,10 @@ namespace Reko.Evaluation
 					return true;
 				}
 			}
-            addr = binExp.Left as Address;
-            if (addr != null && cRight != null &&
+            if (binExp.Left is Address a && cRight != null &&
                 (op == Operator.IAdd || op == Operator.ISub))
             {
+                addr = a;
                 return true;
             }
 			return false;
@@ -59,13 +59,13 @@ namespace Reko.Evaluation
 
 		public Expression Transform()
 		{
-            if (addr == null)
+            if (addr is null)
             {
-                return op.ApplyConstants(cLeft, cRight);
+                return op!.ApplyConstants(cLeft!, cRight!);
             }
             else
             {
-                return addr + cRight.ToInt32();
+                return addr + cRight!.ToInt32();
             }
 		}
 	}

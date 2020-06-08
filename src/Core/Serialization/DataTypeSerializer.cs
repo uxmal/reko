@@ -56,7 +56,7 @@ namespace Reko.Core.Serialization
             return new SerializedEnumType
             {
                 Name = e.Name,
-                Values = members,
+                Values = members!,
             };
         }
 
@@ -67,10 +67,10 @@ namespace Reko.Core.Serialization
 
         public SerializedType VisitFunctionType(FunctionType ft)
         {
-            Argument_v1 ret = null;
+            Argument_v1? ret = null;
             if (!ft.HasVoidReturn)
             {
-                ret = SerializeArgument(null, null, ft.ReturnValue.DataType);
+                ret = SerializeArgument(null, null, ft.ReturnValue!.DataType);
             }
             Argument_v1[] parms;
             if (ft.Parameters != null)
@@ -92,7 +92,7 @@ namespace Reko.Core.Serialization
             };
         }
 
-        private Argument_v1 SerializeArgument(string name, Storage stg, DataType dt)
+        private Argument_v1 SerializeArgument(string? name, Storage? stg, DataType dt)
         {
             return new Argument_v1
             {

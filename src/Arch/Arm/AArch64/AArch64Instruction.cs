@@ -31,46 +31,16 @@ using System.Text;
 
 namespace Reko.Arch.Arm.AArch64
 {
-    public class Arm64Instruction : MachineInstruction
-    {
-        private INativeInstruction nInstr;
-        private NativeInstructionInfo info;
-
-        public Arm64Instruction(INativeInstruction nInstr)
-        {
-            this.nInstr = nInstr;
-            nInstr.GetInfo(out info);
-            this.Address = Address.Ptr32((uint)info.LinearAddress);
-            this.Length = (int)info.Length;
-        }
-
-        //$REVIEW: is this really needed? nInstr is a ComInstance object,
-        // provided by the CLR, and probably has its own finalizer.
-        ~Arm64Instruction()
-        {
-            Marshal.ReleaseComObject(nInstr);
-            nInstr = null;
-        }
-
-        public override int MnemonicAsInteger
-        {
-            get { return info.Mnemonic; }
-        }
-
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            nInstr.Render(writer, options);
-        }
-    }
-
     public class AArch64Instruction : MachineInstruction
     {
-        public Mnemonic Mnemonic;
         public Mnemonic shiftCode;
         public MachineOperand shiftAmount;
         public VectorData vectorData;
 
+        public Mnemonic Mnemonic { get; set; }
         public override int MnemonicAsInteger => (int)Mnemonic;
+
+        public override string MnemonicAsString => Mnemonic.ToString();
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

@@ -32,19 +32,18 @@ namespace Reko.Core
 	/// </summary>
 	public class RelocationDictionary 
     {
-        private SortedList<ulong, Constant> map = new SortedList<ulong, Constant>();
+        private readonly SortedList<ulong, Constant> map = new SortedList<ulong, Constant>();
 
         /// <summary>
         /// Retrieves a relocated value at the <paramref name="linAddress"/>.
         /// </summary>
         /// <param name="linAddress"></param>
         /// <returns></returns>
-        public Constant this[ulong linAddress]
+        public Constant? this[ulong linAddress]
         {
             get
             {
-                Constant c;
-                if (map.TryGetValue(linAddress, out c))
+                if (map.TryGetValue(linAddress, out Constant c))
                     return c;
                 else
                     return null;
@@ -77,8 +76,7 @@ namespace Reko.Core
         {
             ulong linAddr = addr.ToLinear();
             ulong linAddrEnd = linAddr + length;
-            ulong linReloc;
-            if (map.TryGetLowerBoundKey(linAddr, out linReloc))
+            if (map.TryGetLowerBoundKey(linAddr, out ulong linReloc))
             {
                 // |-reloc----|
                 //      |-addr----|

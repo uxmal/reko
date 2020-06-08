@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using Reko.Environments.AmigaOS;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -36,9 +37,10 @@ namespace Reko.UnitTests.Environments.AmigaOS
         [Test]
         public void Ahl_ParseSimpleDef()
         {
-            var arch = new M68kArchitecture("m68k");
-            var platform = new AmigaOSPlatform(null, arch);
-            var ahl = new AmigaHeaderLoader(null, "", Encoding.UTF8.GetBytes(
+            var sc = new ServiceContainer();
+            var arch = new M68kArchitecture(sc, "m68k");
+            var platform = new AmigaOSPlatform(sc, arch);
+            var ahl = new AmigaHeaderLoader(sc, "", Encoding.UTF8.GetBytes(
                 "[[reko::amiga_function_vector(ExecLibrary, -432)]] [[reko::returns(register,\"A0\")]] " +
                 "void * FlobDevice([[reko::arg(register, \"A1\")]] struct Device * device);"));
             ahl.Load(platform, new TypeLibrary());
@@ -50,9 +52,10 @@ namespace Reko.UnitTests.Environments.AmigaOS
         [Test]
         public void Ahl_ParseSimpleDef_voidfn()
         {
-            var arch = new M68kArchitecture("m68k");
-            var platform = new AmigaOSPlatform(null, arch);
-            var ahl = new AmigaHeaderLoader(null, "", Encoding.UTF8.GetBytes(
+            var sc = new ServiceContainer();
+            var arch = new M68kArchitecture(sc, "m68k");
+            var platform = new AmigaOSPlatform(sc, arch);
+            var ahl = new AmigaHeaderLoader(sc, "", Encoding.UTF8.GetBytes(
                 "[[reko::amiga_function_vector(ExecLibrary, -432)]]  " +
                 "void  FrabDevice([[reko::arg(register, \"A1\")]] struct Device * device);"));
             var Q = ahl.Load(platform, new TypeLibrary());

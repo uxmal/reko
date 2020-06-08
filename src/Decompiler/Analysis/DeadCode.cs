@@ -35,17 +35,19 @@ namespace Reko.Analysis
 	/// </summary>
 	public class DeadCode : InstructionVisitorBase
 	{
-		private SsaState ssa;
-		private WorkList<SsaIdentifier> liveIds;
-		private CriticalInstruction critical;
+		private static readonly TraceSwitch trace = new TraceSwitch(nameof(DeadCode), "Traces dead code elimination");
+        
+        private readonly SsaState ssa;
+		private readonly WorkList<SsaIdentifier> liveIds;
+		private readonly CriticalInstruction critical;
 
-		private static TraceSwitch trace = new TraceSwitch("DeadCode", "Traces dead code elimination");
 
 		private DeadCode(SsaState ssa) 
 		{
 			this.ssa = ssa;
 			this.critical = new CriticalInstruction();
-		}
+            this.liveIds = new WorkList<SsaIdentifier>();
+        }
 
 		/// <summary>
 		/// Cleanup statements of the type eax = Foo(); where eax is dead (has no uses),
@@ -78,7 +80,7 @@ namespace Reko.Analysis
         /// chain of dead expressions.
         /// expressions.
         /// </summary>
-        private static Application ContainedApplication(Expression exp)
+        private static Application? ContainedApplication(Expression exp)
         {
             for (; ;)
             {
@@ -89,14 +91,20 @@ namespace Reko.Analysis
                 case Slice slice: return ContainedApplication(slice.Expression);
                 case UnaryExpression u: return ContainedApplication(u.Expression);
                 case Dereference deref: return ContainedApplication(deref.Expression);
-                case DepositBits dpb:
-                    var s = ContainedApplication(dpb.Source);
-                    var b = ContainedApplication(dpb.InsertedBits);
-                    if (s != null && b == null)
-                        return s;
-                    if (s == null && b != null)
-                        return b;
-                    return null;
+                case MkSequence seq:
+                    Application? appl = null;
+                    foreach (var elem in seq.Expressions)
+                    {
+                        var a = ContainedApplication(elem);
+                        if (a != null)
+                        {
+                            if (appl == null)
+                                appl = a;
+                            else
+                                return null;
+                        }
+                    }
+                    return appl;
                 default:
                     return null;
                 }
@@ -133,7 +141,6 @@ namespace Reko.Analysis
 
 		private void Eliminate()
 		{
-			liveIds = new WorkList<SsaIdentifier>();
 			HashSet<Statement> marks = new HashSet<Statement>();
 
 			// Initially, just mark those statements that contain critical statements.
@@ -154,14 +161,14 @@ namespace Reko.Analysis
 
 			while (liveIds.GetWorkItem(out SsaIdentifier sid))
 			{
-				Statement def = sid.DefStatement;
+				Statement? def = sid.DefStatement;
 				if (def != null)
 				{
 					if (!marks.Contains(def))
 					{
 						if (trace.TraceInfo) Debug.WriteLine(string.Format("Marked: {0}", def.Instruction));
                         marks.Add(def);
-						sid.DefStatement.Instruction.Accept(this);
+						sid.DefStatement?.Instruction.Accept(this);
 					}
 				}
 			}

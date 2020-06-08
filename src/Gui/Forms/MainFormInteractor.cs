@@ -204,6 +204,9 @@ namespace Reko.Gui.Forms
 
             var selSvc = svcFactory.CreateSelectionService();
             sc.AddService<ISelectionService>(selSvc);
+
+            var testGenSvc = svcFactory.CreateTestGenerationService();
+            sc.AddService<ITestGenerationService>(testGenSvc);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)
@@ -564,12 +567,11 @@ namespace Reko.Gui.Forms
                                         0,
                                         (int)seg.MemoryArea.Length)
                                     .Where(o => filter(o, program))
-                                    .Select(offset => new AddressSearchHit
-                                    {
-                                        Program = program,
-                                        Address = program.SegmentMap.MapLinearAddressToAddress(
-                                            linBaseAddr + (ulong)offset)
-                                    });
+                                    .Select(offset => new AddressSearchHit(
+                                        program,
+                                        program.SegmentMap.MapLinearAddressToAddress(
+                                            linBaseAddr + (ulong)offset),
+                                        0));
                             }));
                     srSvc.ShowAddressSearchResults(hits, new CodeSearchDetails());
                 }
@@ -718,10 +720,11 @@ namespace Reko.Gui.Forms
             }
 
             var fsSvc = Services.RequireService<IFileSystemService>();
+            var saver = new ProjectSaver(sc);
+            var sProject = saver.Serialize(ProjectFileName, decompilerSvc.Decompiler.Project);
+
             using (var xw = fsSvc.CreateXmlWriter(ProjectFileName))
             {
-                var saver = new ProjectSaver(sc);
-                var sProject = saver.Serialize(ProjectFileName, decompilerSvc.Decompiler.Project);
                 saver.Save(sProject, xw);
             }
             return true;

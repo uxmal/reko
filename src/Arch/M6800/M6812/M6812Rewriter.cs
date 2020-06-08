@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -51,7 +52,7 @@ namespace Reko.Arch.M6800.M6812
             this.state = state;
             this.binder = binder;
             this.host = host;
-            this.dasm = new M6812Disassembler(rdr).GetEnumerator();
+            this.dasm = new M6812Disassembler(arch, rdr).GetEnumerator();
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -67,7 +68,8 @@ namespace Reko.Arch.M6800.M6812
                 case Mnemonic.mov: 
                 case Mnemonic.rev: 
                 case Mnemonic.revw:
-                case Mnemonic.tbl: 
+                case Mnemonic.tbl:
+                    EmitUnitTest();
                     host.Warn(
                         instr.Address,
                         "M6812 instruction '{0}' is not supported yet.",
@@ -261,6 +263,12 @@ namespace Reko.Arch.M6800.M6812
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        private void EmitUnitTest()
+        {
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("M6812Rw", instr, rdr, "");
         }
 
         private Expression RewriteOp(MachineOperand op)

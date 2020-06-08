@@ -26,6 +26,7 @@ using Reko.UnitTests.Mocks;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -64,7 +65,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
         private void Given_Program()
         {
-            this.arch = new FakeArchitecture();
+            this.arch = new FakeArchitecture(new ServiceContainer());
             var platform = new FakePlatform(null, arch);
 
             this.program = new Program

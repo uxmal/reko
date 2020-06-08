@@ -2,17 +2,17 @@
 Eq_1: (struct (10000000 real32 r10000000))
 	T_1 (in globals : (ptr32 (struct)))
 Eq_2: (struct (0 real32 r0000))
-	T_2 (in 0x10000000 : word32)
+	T_2 (in 0x10000000<32> : word32)
 // Type Variables ////////////
 T_1: (in globals : (ptr32 (struct)))
   Class: Eq_1
   DataType: (struct (10000000 real32 r10000000))
   OrigDataType: (ptr32 (struct (10000000 T_3 t10000000)))
-T_2: (in 0x10000000 : word32)
+T_2: (in 0x10000000<32> : word32)
   Class: Eq_2
   DataType: (struct (0 real32 r0000))
   OrigDataType: (ptr32 (struct (0 T_3 t0000)))
-T_3: (in Mem0[0x10000000:real32] : real32)
+T_3: (in Mem0[0x10000000<32>:real32] : real32)
   Class: Eq_3
   DataType: 
   OrigDataType: real32

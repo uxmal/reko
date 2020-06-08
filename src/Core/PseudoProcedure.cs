@@ -32,9 +32,9 @@ namespace Reko.Core
 	/// </summary>
 	public class PseudoProcedure : ProcedureBase
 	{
-		private int arity;
-        private DataType returnType;
-		private FunctionType sig;
+		private readonly int arity;
+        private readonly DataType returnType;
+		private readonly FunctionType? sig;
 
         /// <summary>
         /// Well-known operations that many processors support but most high- or 
@@ -69,7 +69,7 @@ namespace Reko.Core
 		public PseudoProcedure(string name, FunctionType sig) : base(name)
 		{
 			this.sig = sig;
-            this.returnType = sig.ReturnValue?.DataType;
+            this.returnType = sig.ReturnValue?.DataType!;
 		}
 
 		public int Arity
@@ -88,7 +88,7 @@ namespace Reko.Core
 
 		public override FunctionType Signature
 		{
-			get { return sig; }
+			get { return sig!; }
 			set { throw new InvalidOperationException("Changing the signature of a PseudoProcedure is not allowed."); }
 		}
 

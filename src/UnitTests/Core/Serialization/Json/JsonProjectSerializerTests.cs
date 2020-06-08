@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -52,7 +53,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void Jprjs_Programs()
         {
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(new ServiceContainer());
             var proc1 = new Procedure(arch, "fn00123400", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
             var proc2 = new Procedure(arch, "fn00123500", Address.Ptr32(0x00123500), new Frame(PrimitiveType.Ptr32));
             var project = new Project

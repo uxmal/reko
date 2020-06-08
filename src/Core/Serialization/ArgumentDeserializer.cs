@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -37,7 +37,8 @@ namespace Reko.Core.Serialization
         private readonly Frame frame;
         private readonly int retAddressOnStack;  // number of bytes on the stack occupied by return address
         private readonly int stackAlignment;
-        private Argument_v1 argCur;
+        //$REFACTOR: pass argCur as parameter. 
+        private Argument_v1? argCur;
 
         public ArgumentDeserializer(
             ProcedureSerializer procSer, 
@@ -53,11 +54,16 @@ namespace Reko.Core.Serialization
             this.stackAlignment = stackAlign;
         }
 
-        public Identifier VisitRegister(Register_v1 reg)
+        public Identifier? VisitRegister(Register_v1 reg)
         {
-            var regStorage = arch.GetRegister(reg.Name.Trim());
+            var regName = reg.Name;
+            if (regName == null)
+                return null;
+            var regStorage = arch.GetRegister(regName.Trim());
+            if (regStorage is null)
+                return null;
             DataType dt;
-            if (this.argCur.Type != null)
+            if (this.argCur!.Type != null)
                 dt = this.argCur.Type.Accept(procSer.TypeLoader);
             else
                 dt = regStorage.DataType;
@@ -77,16 +83,12 @@ namespace Reko.Core.Serialization
             return idArg;
         }
 
-        public Identifier Deserialize(StackVariable_v1 ss)
+        public Identifier? Deserialize(StackVariable_v1 _)
         {
-            if (argCur.Name == "...")
+            if (argCur!.Name == "...")
             {
-                return procSer.CreateId(
-                    "...",
-                    new UnknownType(),
-                    new StackArgumentStorage(
-                        procSer.StackOffset + retAddressOnStack,
-                        new UnknownType()));
+                procSer.IsVariadic = true;
+                return null;
             }
             if (argCur.Type == null)
                 throw new ApplicationException(string.Format("Argument '{0}' has no type.", argCur.Name));
@@ -108,10 +110,10 @@ namespace Reko.Core.Serialization
             return idArg;
         }
 
-        public Identifier Deserialize(FpuStackVariable_v1 fs)
+        public Identifier Deserialize(FpuStackVariable_v1 _)
         {
             var idArg = procSer.CreateId(
-                argCur.Name ?? "fpArg" + procSer.FpuStackOffset, 
+                argCur!.Name ?? "fpArg" + procSer.FpuStackOffset, 
                 PrimitiveType.Real64,
                 new FpuStackStorage(procSer.FpuStackOffset, PrimitiveType.Real64));
             ++procSer.FpuStackOffset;
@@ -120,29 +122,35 @@ namespace Reko.Core.Serialization
 
         public Identifier Deserialize(FlagGroup_v1 flag)
         {
-            var flags = arch.GetFlagGroup(flag.Name);
+            var flags = arch.GetFlagGroup(flag.Name!);
             return frame.EnsureFlagGroup(flags.FlagRegister, flags.FlagGroupBits, flags.Name, flags.DataType);
         }
 
-        public Identifier Deserialize(SerializedSequence sq)
+        public Identifier? Deserialize(SerializedSequence sq)
         {
-            var h = arch.GetRegister(sq.Registers[0].Name.Trim());
-            var t = arch.GetRegister(sq.Registers[1].Name.Trim());
+            var hName = sq.Registers?[0].Name?.Trim();
+            var tName = sq.Registers?[1].Name?.Trim();
+            if (hName == null || tName == null)
+                return null;
+            var h = arch.GetRegister(hName);
+            var t = arch.GetRegister(tName);
+            if (h is null || t is null)
+                return null;
             DataType dt;
-            if (this.argCur.Type != null)
+            if (this.argCur!.Type != null)
                 dt = this.argCur.Type.Accept(procSer.TypeLoader);
             else 
                 dt = PrimitiveType.CreateWord(h.DataType.BitSize + h.DataType.BitSize);
             return frame.EnsureSequence(dt, h, t);
         }
 
-        public Identifier Deserialize(Argument_v1 arg)
+        public Identifier? Deserialize(Argument_v1 arg)
         {
             argCur = arg;
-            return arg.Kind.Deserialize(this);
+            return arg.Kind?.Deserialize(this);
         }
 
-        public Identifier Deserialize(Argument_v1 arg, SerializedKind kind)
+        public Identifier? Deserialize(Argument_v1 arg, SerializedKind kind)
         {
             argCur = arg;
             return kind.Deserialize(this);

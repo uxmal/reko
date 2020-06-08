@@ -29,15 +29,15 @@ fn10000000_entry:
 	def dwArg04
 	// succ:  l10000000
 l10000000:
-	branch dwArg04 > 0x00000001 l10000011
+	branch dwArg04 > 1<32> l10000011
 	// succ:  l1000000A l10000011
 l1000000A:
-	eax_37 = 0x00000001
+	eax_37 = 1<32>
 	return eax_37
 	// succ:  fn10000000_exit
 l10000011:
-	eax_17 = fn10000000(dwArg04 - 0x00000002)
-	eax_26 = fn10000000(dwArg04 - 0x00000001)
+	eax_17 = fn10000000(dwArg04 - 2<32>)
+	eax_26 = fn10000000(dwArg04 - 1<32>)
 	eax_31 = eax_26 + eax_17
 	return eax_31
 	// succ:  fn10000000_exit

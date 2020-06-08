@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ namespace Reko.UnitTests.Arch.Mips
         [SetUp]
         public void Setup()
         {
-            this.arch = new MipsBe32Architecture("mips-be-micro");
+            this.arch = new MipsBe32Architecture(new ServiceContainer(), "mips-be-micro");
         }
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
@@ -58,7 +59,7 @@ namespace Reko.UnitTests.Arch.Mips
 
         private void Given_Mips64Architecture()
         {
-            this.arch = new MipsBe64Architecture("mips-be-micro");
+            this.arch = new MipsBe64Architecture(new ServiceContainer(), "mips-be-micro");
         }
 
         [Test]

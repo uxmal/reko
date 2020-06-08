@@ -31,19 +31,21 @@ namespace Reko.Arch.X86
     {
         private static Decoder[] CreateTwobyteDecoders()
         {
+            var reservedNop = Instr(Mnemonic.nop, InstrClass.Linear | InstrClass.Padding, Ev);
+
             return new Decoder[]
             {
 				// 0F 00
-				new GroupDecoder(6),
-                new GroupDecoder(7),
+				new GroupDecoder(Grp6),
+                new GroupDecoder(Grp7),
                 Instr(Mnemonic.lar, InstrClass.System, Gv,Ew),
                 Instr(Mnemonic.lsl, InstrClass.System, Gv,Ew),
                 s_invalid,
-                new Alternative64Decoder(
+                Amd64Instr(
                     s_invalid,
                     Instr(Mnemonic.syscall, InstrClass.Transfer|InstrClass.Call)),
                 Instr(Mnemonic.clts),
-                new Alternative64Decoder(
+                Amd64Instr(
                     s_invalid,
                     Instr(Mnemonic.sysret, InstrClass.Transfer)),
 
@@ -58,87 +60,106 @@ namespace Reko.Arch.X86
 
 				// 0F 10
 				new PrefixedDecoder(
-                    Instr(Mnemonic.movups, Vps,Wps),
-                    Instr(Mnemonic.movupd, Vpd,Wpd),
-                    Instr(Mnemonic.movss,  Vx,Wss),
-                    Instr(Mnemonic.movsd,  Vx,Wsd)),
+                    VexInstr(Mnemonic.movups,Mnemonic.vmovups, Vps,Wps),
+                    VexInstr(Mnemonic.movupd,Mnemonic.vmovupd, Vpd,Wpd),
+                    VexInstr(Mnemonic.movss, Mnemonic.vmovss,  Vx,Wss),
+                    VexInstr(Mnemonic.movsd, Mnemonic.vmovsd,  Vx,Wsd)),
                 new PrefixedDecoder(
-                    Instr(Mnemonic.movups, Wps,Vps),
-                    Instr(Mnemonic.movupd, Wpd,Vpd),
-                    Instr(Mnemonic.movss,  Wss,Vss),
-                    Instr(Mnemonic.movsd,  Wsd,Vsd)),
+                    VexInstr(Mnemonic.movups, Mnemonic.vmovups, Wps,Vps),
+                    VexInstr(Mnemonic.movupd, Mnemonic.vmovupd, Wpd,Vpd),
+                    VexInstr(Mnemonic.movss,  Mnemonic.vmovss, Wss,Vss),
+                    VexInstr(Mnemonic.movsd,  Mnemonic.vmovsd, Wsd,Vsd)),
                 new PrefixedDecoder(
-                    Instr(Mnemonic.movlps,   Vq,Hq,Mq),
-                    Instr(Mnemonic.movlpd,   Vq,Hq,Mq),
-                    Instr(Mnemonic.movsldup, Vx,Wx),
-                    Instr(Mnemonic.movddup,  Vx,Wx)),
+                    VexInstr(Mnemonic.movlps,   Mnemonic.vmovlps,   Vq,Hq,Mq),
+                    VexInstr(Mnemonic.movlpd,   Mnemonic.vmovlpd,   Vq,Hq,Mq),
+                    VexInstr(Mnemonic.movsldup, Mnemonic.vmovsldup, Vx,Wx),
+                    VexInstr(Mnemonic.movddup,  Mnemonic.vmovddup,  Vx,Wx)),
                 new PrefixedDecoder(
-					Instr(Mnemonic.vmovlps, Mq,Vq),
-                    dec66:Instr(Mnemonic.vmovlpd, Mq,Vq)),
+                    VexInstr(Mnemonic.movlps,   Mnemonic.vmovlps, Mq,Vq),
+                    dec66:VexInstr(Mnemonic.movlpd, Mnemonic.vmovlpd, Mq,Vq)),
 
                 new PrefixedDecoder(
-                    Instr(Mnemonic.unpcklps, Vx,Hx,Wx),
-                    Instr(Mnemonic.unpcklpd, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.unpcklps, Mnemonic.vunpcklps, Vx,Hx,Wx),
+                    VexInstr(Mnemonic.unpcklpd, Mnemonic.vunpcklpd, Vx,Hx,Wx)),
                 new PrefixedDecoder(
-                    Instr(Mnemonic.unpckhps, Vx,Hx,Wx),
-                    Instr(Mnemonic.unpckhpd, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.unpckhps, Mnemonic.vunpckhps, Vx,Hx,Wx),
+                    VexInstr(Mnemonic.unpckhpd, Mnemonic.vunpckhpd, Vx,Hx,Wx)),
                 new PrefixedDecoder(
-                    Instr(Mnemonic.movlhps, Vx,Wx),
-                    Instr(Mnemonic.movhpd, Vx,Wx),
-                    Instr(Mnemonic.movshdup, Vx,Wx)),
+                    VexInstr(Mnemonic.movlhps, Mnemonic.vmovlhps, Vx,Wx),
+                    VexInstr(Mnemonic.movhpd, Mnemonic.vmovhpd, Vx,Wx),
+                    VexInstr(Mnemonic.movshdup, Mnemonic.vmovshdup, Vx,Wx)),
                 new PrefixedDecoder(
-                    Instr(Mnemonic.movhps, Mq,Vq),
-                    Instr(Mnemonic.movhpd, Mq,Vq)),
+                    VexInstr(Mnemonic.movhps, Mnemonic.vmovhps, Mq,Vq),
+                    VexInstr(Mnemonic.movhpd, Mnemonic.vmovhpd, Mq,Vq)),
 
-                new GroupDecoder(16),
+                new GroupDecoder(Grp16),
                 Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev),
                 Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev),
                 Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev),
+
                 Instr(Mnemonic.cldemote, Eb),
                 Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev),
-                Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev),
+                new PrefixedDecoder(
+                    dec: reservedNop,
+                    dec66: reservedNop,
+                    decF3: new ModRmOpcodeDecoder(
+                        reservedNop,
+                        (0xFA, Instr(Mnemonic.endbr64, InstrClass.Linear)),
+                        (0xFB, Instr(Mnemonic.endbr32, InstrClass.Linear))),
+                    decF2: reservedNop,
+                    decWide: reservedNop,
+                    dec66Wide: reservedNop),
                 Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev),
 
 				// 0F 20
-				Instr(Mnemonic.mov, Rv,Cd),
-                Instr(Mnemonic.mov, Rv,Dd),
-                Instr(Mnemonic.mov, Cd,Rv),
-                Instr(Mnemonic.mov, Dd,Rv),
+                Amd64Instr(
+				    Instr(Mnemonic.mov, Rd,Cd),
+				    Instr(Mnemonic.mov, Rq,Cd)),
+                Amd64Instr(
+                    Instr(Mnemonic.mov, Rd,Dd),
+                    Instr(Mnemonic.mov, Rq,Dd)),
+                Amd64Instr(
+                    Instr(Mnemonic.mov, Cd,Rd),
+                    Instr(Mnemonic.mov, Cd,Rq)),
+                Amd64Instr(
+                    Instr(Mnemonic.mov, Dd,Rd),
+                    Instr(Mnemonic.mov, Dd,Rq)),
 				s_invalid,
                 s_invalid,
                 s_invalid,
                 s_invalid,
 
                 new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.movaps, Vps,Wps),
-                    dec66:Instr(Mnemonic.movapd, Vpd,Wpd)),
+                    dec:  VexInstr(Mnemonic.movaps, Mnemonic.vmovaps, Vps,Wps),
+                    dec66:VexInstr(Mnemonic.movapd, Mnemonic.vmovapd, Vpd,Wpd)),
                 new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.movaps, Wps,Vps),
-                    dec66:Instr(Mnemonic.movapd, Wpd,Vpd)),
+                    dec:  VexInstr(Mnemonic.movaps, Mnemonic.vmovaps, Wps,Vps),
+                    dec66:VexInstr(Mnemonic.movapd, Mnemonic.vmovapd, Wpd,Vpd)),
                 new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.cvtpi2ps, Vps,Qpi),
-                    dec66:Instr(Mnemonic.cvtpi2pd, Vpd,Qpi),
-                    decF3:Instr(Mnemonic.cvtsi2ss, Vss,Hss,Ey),
-                    decF2:Instr(Mnemonic.cvtsi2sd, Vsd,Hsd,Ey)),
+                    dec:  VexInstr(Mnemonic.cvtpi2ps, Mnemonic.vcvtpi2ps, Vps,Qpi),
+                    dec66:VexInstr(Mnemonic.cvtpi2pd, Mnemonic.vcvtpi2pd, Vpd,Qpi),
+                    decF3:VexInstr(Mnemonic.cvtsi2ss, Mnemonic.vcvtsi2ss, Vss,Hss,Ey),
+                    decF2:VexInstr(Mnemonic.cvtsi2sd, Mnemonic.vcvtsi2sd, Vsd,Hsd,Ey)),
                 new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.movntps, Mps,Vps),
-                    dec66:Instr(Mnemonic.movntpd, Mpd,Vpd)),
+                    dec:  VexInstr(Mnemonic.movntps, Mnemonic.vmovntps, Mps,Vps),
+                    dec66:VexInstr(Mnemonic.movntpd, Mnemonic.vmovntpd, Mpd,Vpd)),
+
                 new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.cvttps2pi, Ppi,Wps),
-                    dec66:Instr(Mnemonic.cvttpd2pi, Ppi,Wpq),
-                    decF3:Instr(Mnemonic.cvttss2si, Gd,Wss),
-                    decF2:Instr(Mnemonic.cvttsd2si, Gd,Wsd)),
+                    dec:  VexInstr(Mnemonic.cvttps2pi, Mnemonic.vcvttps2pi, Ppi,Wps),
+                    dec66:VexInstr(Mnemonic.cvttpd2pi, Mnemonic.vcvttpd2pi, Ppi,Wpd),
+                    decF3:VexInstr(Mnemonic.cvttss2si, Mnemonic.vcvttss2si, Gd,Wss),
+                    decF2:VexInstr(Mnemonic.cvttsd2si, Mnemonic.vcvttsd2si, Gd,Wsd)),
                 new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.cvtps2pi, Ppi,Wps),
-                    dec66:Instr(Mnemonic.cvtpd2si, Qpi,Wpd),
-                    decF3:Instr(Mnemonic.cvtss2si, Gy,Wss),
-                    decF2:Instr(Mnemonic.cvtsd2si, Gy,Wsd)),
+                    dec:  VexInstr(Mnemonic.cvtps2pi, Mnemonic.vcvtps2pi, Ppi,Wps),
+                    dec66:VexInstr(Mnemonic.cvtpd2si, Mnemonic.vcvtpd2si, Qpi,Wpd),
+                    decF3:VexInstr(Mnemonic.cvtss2si, Mnemonic.vcvtss2si, Gy,Wss),
+                    decF2:VexInstr(Mnemonic.cvtsd2si, Mnemonic.vcvtsd2si, Gy,Wsd)),
                 new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.ucomiss, Vss,Wss),
-                    dec66:Instr(Mnemonic.ucomisd, Vsd,Wsd)),
+                    dec:  VexInstr(Mnemonic.ucomiss, Mnemonic.vucomiss, Vss,Wss),
+                    dec66:VexInstr(Mnemonic.ucomisd, Mnemonic.vucomisd, Vsd,Wsd)),
                 new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.comiss, Vss,Wss),
-                    dec66:Instr(Mnemonic.comisd, Vsd,Wsd)),
+                    dec:  VexInstr(Mnemonic.comiss, Mnemonic.vcomiss, Vss,Wss),
+                    dec66:VexInstr(Mnemonic.comisd, Mnemonic.vcomisd, Vsd,Wsd)),
 
 				// 0F 30
 				Instr(Mnemonic.wrmsr, InstrClass.System),
@@ -180,146 +201,154 @@ namespace Reko.Arch.X86
 
 				// 0F 50
                 new PrefixedDecoder(
-                    Instr(Mnemonic.movmskps, Gy,Ups),
-                    Instr(Mnemonic.movmskpd, Gy,Upd)),
+                    VexInstr(Mnemonic.movmskps, Mnemonic.vmovmskps, Gy,Ups),
+                    VexInstr(Mnemonic.movmskpd, Mnemonic.vmovmskpd, Gy,Upd)),
                 new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.sqrtps, Vps,Wps),
-                    dec66:Instr(Mnemonic.sqrtpd, Vpd,Wpd),
-                    decF3:Instr(Mnemonic.sqrtss, Vss,Hss,Wss),
-                    decF2:Instr(Mnemonic.sqrtsd, Vsd,Hsd,Wsd)),
+                    dec:  VexInstr(Mnemonic.sqrtps, Mnemonic.vsqrtps, Vps,Wps),
+                    dec66:VexInstr(Mnemonic.sqrtpd, Mnemonic.vsqrtpd, Vpd,Wpd),
+                    decF3:VexInstr(Mnemonic.sqrtss, Mnemonic.vsqrtss, Vss,Hss,Wss),
+                    decF2:VexInstr(Mnemonic.sqrtsd, Mnemonic.vsqrtsd, Vsd,Hsd,Wsd)),
                 new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.rsqrtps, Vps,Wps),
+                    dec:  VexInstr(Mnemonic.rsqrtps, Mnemonic.vrsqrtps, Vps,Wps),
                     dec66:s_invalid,
-                    decF3:Instr(Mnemonic.rsqrtss, Vss,Hss,Wss),
+                    decF3:VexInstr(Mnemonic.rsqrtss, Mnemonic.vrsqrtss, Vss,Hss,Wss),
                     decF2:s_invalid),
                 new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.rcpps, Vps,Wps),
+                    dec:  VexInstr(Mnemonic.rcpps, Mnemonic.vrcpps, Vps,Wps),
                     dec66:s_invalid,
-                    decF3:Instr(Mnemonic.rcpss, Vss,Hss,Wss),
+                    decF3:VexInstr(Mnemonic.rcpss, Mnemonic.vrcpss, Vss,Hss,Wss),
                     decF2:s_invalid),
-                new PrefixedDecoder(
-                    dec: Instr(Mnemonic.andps, Vps,Hps,Wps),
-                    dec66:Instr(Mnemonic.andpd, Vpd,Hpd,Wpd)),
-                new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.andnps, Vps,Hps,Wps),
-                    dec66:Instr(Mnemonic.andnpd, Vpd,Hpd,Wpd)),
-                new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.orps, Vps,Hps,Wps),
-                    dec66:Instr(Mnemonic.orpd, Vpd,Hpd,Wpd)),
-                new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.xorps, Vps,Hps,Wps),
-                    dec66:Instr(Mnemonic.xorpd, Vpd,Hpd,Wpd)),
 
                 new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.addps, Vps,Hps,Wps),
-                    dec66:Instr(Mnemonic.addpd, Vpd,Hpd,Wpd),
-                    decF3:Instr(Mnemonic.addss, Vss,Hss,Wss),
-                    decF2:Instr(Mnemonic.addsd, Vsd,Hsd,Wsd)),
+                    dec: VexInstr(Mnemonic.andps, Mnemonic.vandps, Vps,Hps,Wps),
+                    dec66:VexInstr(Mnemonic.andpd, Mnemonic.vandpd, Vpd,Hpd,Wpd)),
                 new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.mulps, Vps,Hps,Wps),
-                    dec66:Instr(Mnemonic.mulpd, Vpd,Hpd,Wpd),
-                    decF3:Instr(Mnemonic.mulss, Vss,Hss,Wss),
-                    decF2:Instr(Mnemonic.mulsd, Vsd,Hsd,Wsd)),
+                    dec:  VexInstr(Mnemonic.andnps, Mnemonic.vandnps, Vps,Hps,Wps),
+                    dec66:VexInstr(Mnemonic.andnpd, Mnemonic.vandnpd, Vpd,Hpd,Wpd)),
+                new PrefixedDecoder(
+                    dec:  VexInstr(Mnemonic.orps, Mnemonic.vorps, Vps,Hps,Wps),
+                    dec66:VexInstr(Mnemonic.orpd, Mnemonic.vorpd, Vpd,Hpd,Wpd)),
+                new PrefixedDecoder(
+                    dec:  VexInstr(Mnemonic.xorps, Mnemonic.vxorps, Vps,Hps,Wps),
+                    dec66:VexInstr(Mnemonic.xorpd, Mnemonic.vxorpd, Vpd,Hpd,Wpd)),
+
+                new PrefixedDecoder(
+                    dec:  VexInstr(Mnemonic.addps, Mnemonic.vaddps, Vps,Hps,Wps),
+                    dec66:VexInstr(Mnemonic.addpd, Mnemonic.vaddpd, Vpd,Hpd,Wpd),
+                    decF3:VexInstr(Mnemonic.addss, Mnemonic.vaddss, Vss,Hss,Wss),
+                    decF2:VexInstr(Mnemonic.addsd, Mnemonic.vaddsd, Vsd,Hsd,Wsd)),
+                new PrefixedDecoder(
+                    dec:  VexInstr(Mnemonic.mulps, Mnemonic.vmulps, Vps,Hps,Wps),
+                    dec66:VexInstr(Mnemonic.mulpd, Mnemonic.vmulpd, Vpd,Hpd,Wpd),
+                    decF3:VexInstr(Mnemonic.mulss, Mnemonic.vmulss, Vss,Hss,Wss),
+                    decF2:VexInstr(Mnemonic.mulsd, Mnemonic.vmulsd, Vsd,Hsd,Wsd)),
 				new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.cvtps2pd, Vpd,Wps),
-                    dec66:Instr(Mnemonic.cvtpd2ps, Vps,Wpd),
-                    decF3:Instr(Mnemonic.cvtss2sd, Vsd,Hx,Wss),
-                    decF2:Instr(Mnemonic.cvtsd2ss, Vss,Hx,Wsd)),
+                    dec:  VexInstr(Mnemonic.cvtps2pd, Mnemonic.vcvtps2pd, Vpd,Wps),
+                    dec66:VexInstr(Mnemonic.cvtpd2ps, Mnemonic.vcvtpd2ps, Vps,Wpd),
+                    decF3:VexInstr(Mnemonic.cvtss2sd, Mnemonic.vcvtss2sd, Vsd,Hx,Wss),
+                    decF2:VexInstr(Mnemonic.cvtsd2ss, Mnemonic.vcvtsd2ss, Vss,Hx,Wsd)),
                 new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.cvtdq2ps, Vps,Wdq),
-                    dec66:Instr(Mnemonic.cvtps2dq, Vdq,Wps),
-                    decF3:Instr(Mnemonic.cvttps2dq, Vdq,Wps),
+                    dec:  VexInstr(Mnemonic.cvtdq2ps, Mnemonic.vcvtdq2ps, Vps,Wdq),
+                    dec66:VexInstr(Mnemonic.cvtps2dq, Mnemonic.vcvtps2dq, Vdq,Wps),
+                    decF3:VexInstr(Mnemonic.cvttps2dq, Mnemonic.vcvttps2dq, Vdq,Wps),
                     decF2:s_invalid),
                 new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.subps, Vps,Hps,Wps),
-                    dec66:Instr(Mnemonic.subpd, Vpd,Hpd,Wpd),
-                    decF3:Instr(Mnemonic.subss, Vss,Hss,Wss),
-                    decF2:Instr(Mnemonic.subsd, Vsd,Hsd,Wsd)),
+                    dec:  VexInstr(Mnemonic.subps, Mnemonic.vsubps, Vps,Hps,Wps),
+                    dec66:VexInstr(Mnemonic.subpd, Mnemonic.vsubpd, Vpd,Hpd,Wpd),
+                    decF3:VexInstr(Mnemonic.subss, Mnemonic.vsubss, Vss,Hss,Wss),
+                    decF2:VexInstr(Mnemonic.subsd, Mnemonic.vsubsd, Vsd,Hsd,Wsd)),
                 new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.minps, Vps,Hps,Wps),
-                    dec66:Instr(Mnemonic.minpd, Vpd,Hpd,Wpd),
-                    decF3:Instr(Mnemonic.minss, Vss,Hss,Wss),
-                    decF2:Instr(Mnemonic.minsd, Vsd,Hsd,Wsd)),
+                    dec:  VexInstr(Mnemonic.minps, Mnemonic.vminps, Vps,Hps,Wps),
+                    dec66:VexInstr(Mnemonic.minpd, Mnemonic.vminpd, Vpd,Hpd,Wpd),
+                    decF3:VexInstr(Mnemonic.minss, Mnemonic.vminss, Vss,Hss,Wss),
+                    decF2:VexInstr(Mnemonic.minsd, Mnemonic.vminsd, Vsd,Hsd,Wsd)),
                 new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.divps, Vps,Hps,Wps),
-                    dec66:Instr(Mnemonic.divpd, Vpd,Hpd,Wpd),
-                    decF3:Instr(Mnemonic.divss, Vss,Hss,Wss),
-                    decF2:Instr(Mnemonic.divsd, Vsd,Hsd,Wsd)),
+                    dec:  VexInstr(Mnemonic.divps, Mnemonic.vdivps, Vps,Hps,Wps),
+                    dec66:VexInstr(Mnemonic.divpd, Mnemonic.vdivpd, Vpd,Hpd,Wpd),
+                    decF3:VexInstr(Mnemonic.divss, Mnemonic.vdivss, Vss,Hss,Wss),
+                    decF2:VexInstr(Mnemonic.divsd, Mnemonic.vdivsd, Vsd,Hsd,Wsd)),
                 new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.maxps, Vps,Hps,Wps),
-                    dec66:Instr(Mnemonic.maxpd, Vpd,Hpd,Wpd),
-                    decF3:Instr(Mnemonic.maxss, Vss,Hss,Wss),
-                    decF2:Instr(Mnemonic.maxsd, Vsd,Hsd,Wsd)),
+                    dec:  VexInstr(Mnemonic.maxps, Mnemonic.vmaxps, Vps,Hps,Wps),
+                    dec66:VexInstr(Mnemonic.maxpd, Mnemonic.vmaxpd, Vpd,Hpd,Wpd),
+                    decF3:VexInstr(Mnemonic.maxss, Mnemonic.vmaxss, Vss,Hss,Wss),
+                    decF2:VexInstr(Mnemonic.maxsd, Mnemonic.vmaxsd, Vsd,Hsd,Wsd)),
 					
 				// 0F 60
 				new PrefixedDecoder(
                     Instr(Mnemonic.punpcklbw, Pq,Qd),
-                    dec66:Instr(Mnemonic.punpcklbw, Vx,Wx)),
+                    dec66:VexInstr(Mnemonic.punpcklbw, Mnemonic.vpunpcklbw, Vx,Wx)),
 				new PrefixedDecoder(
                     Instr(Mnemonic.punpcklwd, Pq,Qd),
-                    Instr(Mnemonic.punpcklwd, Vx,Wx)),
+                    VexInstr(Mnemonic.punpcklwd, Mnemonic.vpunpcklwd, Vx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.punpckldq, Pq,Qd),
-                    Instr(Mnemonic.punpckldq, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.punpckldq, Mnemonic.vpunpckldq, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.packsswb, Pq,Qd),
-                    Instr(Mnemonic.vpacksswb, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.packsswb, Mnemonic.vpacksswb, Vx,Hx,Wx)),
 
                 new PrefixedDecoder(
                     Instr(Mnemonic.pcmpgtb, Pq,Qd),
-                    Instr(Mnemonic.pcmpgtb, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.pcmpgtb, Mnemonic.vpcmpgtb, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.pcmpgtw, Pq,Qd),
-                    Instr(Mnemonic.pcmpgtw, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.pcmpgtw, Mnemonic.vpcmpgtw, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.pcmpgtd, Pq,Qd),
-                    Instr(Mnemonic.pcmpgtd, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.pcmpgtd, Mnemonic.vpcmpgtd, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.packuswb, Pq,Qd),
-                    Instr(Mnemonic.vpunpckhbw, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.punpckhbw, Mnemonic.vpunpckhbw, Vx,Hx,Wx)),
 
                 new PrefixedDecoder(
                     Instr(Mnemonic.punpckhbw, Pq,Qd),
-                    Instr(Mnemonic.vpunpckhbw, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.punpckhbw, Mnemonic.vpunpckhbw, Vx,Hx,Wx)),
                 new PrefixedDecoder(
-                    Instr(Mnemonic.punpckhwd, Pq,Qd),
-                    Instr(Mnemonic.vpunpckhwd, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.punpckhwd, Mnemonic.vpunpckhwd, Pq,Qd),
+                    VexInstr(Mnemonic.punpckhwd, Mnemonic.vpunpckhwd, Vx,Hx,Wx)),
                 new PrefixedDecoder(
-                    Instr(Mnemonic.punpckhdq, Pq,Qd),
-                    Instr(Mnemonic.vpunpckhdq, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.punpckhdq, Mnemonic.vpunpckhdq, Pq,Qd),
+                    VexInstr(Mnemonic.punpckhdq, Mnemonic.vpunpckhdq, Vx,Hx,Wx)),
                 new PrefixedDecoder(
-                    Instr(Mnemonic.packssdw, Pq,Qd),
-                    Instr(Mnemonic.vpackssdw, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.packssdw, Mnemonic.vpackssdw, Pq,Qd),
+                    VexInstr(Mnemonic.packssdw, Mnemonic.vpackssdw, Vx,Hx,Wx)),
 
                  new PrefixedDecoder(
                     s_invalid,
-                    Instr(Mnemonic.vpunpcklqdq, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.punpcklqdq, Mnemonic.vpunpcklqdq, Vx,Hx,Wx)),
                  new PrefixedDecoder(
                     s_invalid,
-                    Instr(Mnemonic.vpunpckhqdq, Vx,Hx,Wx)),
-                Instr(Mnemonic.movd, Vy,Ey),
-				Instr(Mnemonic.movdqa, Vx,Wx),
+                    VexInstr(Mnemonic.punpckhqdq, Mnemonic.vpunpckhqdq, Vx,Hx,Wx)),
+                new PrefixedDecoder(
+                    Instr(Mnemonic.movd, Py,Ey),
+                    dec66:VexInstr(Mnemonic.movd,Mnemonic.vmovd, Vy,Ey)),
+				new PrefixedDecoder(
+                    Instr(Mnemonic.movq, Pq,Qq),
+                    dec66:VexInstr(Mnemonic.movdqa, Mnemonic.vmovdqa, Vx,Wx),
+                    decF3:VexInstr(Mnemonic.movdqu, Mnemonic.vmovdqu, Vx,Wx)),
 
 				// 0F 70
 				new PrefixedDecoder(
                     Instr(Mnemonic.pshufw, Pq,Qq,Ib),
-                    dec66:Instr(Mnemonic.pshufd, Vx,Wx,Ib),
-                    decF3:Instr(Mnemonic.pshufhw, Vx,Wx,Ib),
-                    decF2:Instr(Mnemonic.pshuflw, Vx,Wx,Ib)),
-                new GroupDecoder(12),
-                new GroupDecoder(13),
-                new GroupDecoder(14),
+                    dec66:VexInstr(Mnemonic.pshufd, Mnemonic.vpshufd, Vx,Wx,Ib),
+                    decF3:VexInstr(Mnemonic.pshufhw, Mnemonic.vpshufhw, Vx,Wx,Ib),
+                    decF2:VexInstr(Mnemonic.pshuflw, Mnemonic.vpshuflw, Vx,Wx,Ib)),
+                new GroupDecoder(Grp12),
+                new GroupDecoder(Grp13),
+                new GroupDecoder(Grp14),
 
 				new PrefixedDecoder(
                     Instr(Mnemonic.pcmpeqb, Pq,Qq),
-                    dec66:Instr(Mnemonic.pcmpeqb, Vx,Wx)),
+                    dec66:VexInstr(Mnemonic.pcmpeqb, Mnemonic.vpcmpeqb, Vx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.pcmpeqw, Pq,Qq),
-                    dec66:Instr(Mnemonic.pcmpeqw, Vx,Wx)),
+                    dec66:VexInstr(Mnemonic.pcmpeqw, Mnemonic.vpcmpeqw, Vx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.pcmpeqd, Pq,Qq),
-                    dec66:Instr(Mnemonic.pcmpeqd, Vx,Wx)),
-                Instr(Mnemonic.emms, InstrClass.System),
+                    dec66:VexInstr(Mnemonic.pcmpeqd, Mnemonic.vpcmpeqd, Vx,Wx)),
+                VexInstr(
+                    Instr(Mnemonic.emms, InstrClass.System),
+                    s_nyi),//$TODO: vzeroupper, vzeroall
 
 				new PrefixedDecoder(
                     dec:Instr(Mnemonic.vmread, InstrClass.System, Ey,Gy)),
@@ -330,20 +359,22 @@ namespace Reko.Arch.X86
 
                 new PrefixedDecoder(
                     dec:s_invalid,
-                    dec66:Instr(Mnemonic.vhaddpd,  Vpd,Hpd,Wpd),
-                    decF2:Instr(Mnemonic.vhaddps, Vps,Hps,Wps)),
+                    dec66:VexInstr(Mnemonic.haddpd, Mnemonic.vhaddpd,  Vpd,Hpd,Wpd),
+                    decF2:VexInstr(Mnemonic.haddps, Mnemonic.vhaddps, Vps,Hps,Wps)),
                 new PrefixedDecoder(
                     dec:s_invalid,
-                    dec66:Instr(Mnemonic.vhsubpd, Vpd,Hpd,Wpd),
-                    decF2:Instr(Mnemonic.vhsubps, Vps,Hps,Wps)),
+                    dec66:VexInstr(Mnemonic.hsubpd, Mnemonic.vhsubpd, Vpd,Hpd,Wpd),
+                    decF2:VexInstr(Mnemonic.hsubps, Mnemonic.vhsubps, Vps,Hps,Wps)),
                 new PrefixedDecoder(
-                    dec: Instr(Mnemonic.movd, Ey,Pd), decWide: Instr(Mnemonic.movq, Ey,Pd),
-                    dec66: Instr(Mnemonic.movd, Ey,Vy), dec66Wide: Instr(Mnemonic.movq, Ey,Vy),
-                    decF3: Instr(Mnemonic.movq, Vy,Wy)),
+                    dec: Instr(Mnemonic.movd, Ey,Pd),
+                    decWide: Instr(Mnemonic.movq, Ey,Pd),
+                    dec66: VexInstr(Mnemonic.movd, Mnemonic.vmovd, Ey,Vy),
+                    dec66Wide: VexInstr(Mnemonic.movq, Mnemonic.vmovq, Ey,Vy),
+                    decF3: VexInstr(Mnemonic.movq, Mnemonic.vmovq, Vy,Wy)),
 				new PrefixedDecoder(
                     dec:Instr(Mnemonic.movq, Qq,Pq),
-                    dec66:Instr(Mnemonic.movdqa, Wx,Vx),
-                    decF3:Instr(Mnemonic.movdqu, Wx,Vx)),
+                    dec66:VexInstr(Mnemonic.movdqa, Mnemonic.vmovdqa, Wx,Vx),
+                    decF3:VexInstr(Mnemonic.movdqu, Mnemonic.vmovdqu, Wx,Vx)),
 
 				// 0F 80
 				Instr(Mnemonic.jo,	InstrClass.ConditionalTransfer, Jv),
@@ -399,7 +430,7 @@ namespace Reko.Arch.X86
                 Instr(Mnemonic.bts, Ev,Gv),
 				Instr(Mnemonic.shrd, Ev,Gv,Ib),
 				Instr(Mnemonic.shrd, Ev,Gv,c),
-				new GroupDecoder(15),
+				new GroupDecoder(Grp15),
 				Instr(Mnemonic.imul, Gv,Ev),
 
 				// 0F B0
@@ -415,8 +446,8 @@ namespace Reko.Arch.X86
 				new PrefixedDecoder(
                     dec:Instr(Mnemonic.jmpe),
                     decF3:Instr(Mnemonic.popcnt, Gv,Ev)),
-				Instr(Mnemonic.ud1, InstrClass.Invalid, Gv,Ev),
-				new GroupDecoder(8, Ev,Ib),
+				new GroupDecoder(Grp10, Gv,Ev), 
+				new GroupDecoder(Grp8, Ev,Ib),
 				Instr(Mnemonic.btc, Gv,Ev),
 
                 new PrefixedDecoder(
@@ -433,23 +464,23 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.xadd, Eb,Gb),
 				Instr(Mnemonic.xadd, Ev,Gv),
 				new PrefixedDecoder(
-                    dec:  Instr(Mnemonic.cmpps, Vps,Hps,Wps,Ib),
-                    dec66:Instr(Mnemonic.cmppd, Vpd,Hpd,Wpd,Ib),
-                    decF3:Instr(Mnemonic.cmpss, Vss,Hss,Wss,Ib),
-                    decF2:Instr(Mnemonic.cmpsd, Vpd,Hpd,Wpd,Ib)),
+                    dec:  VexInstr(Mnemonic.cmpps, Mnemonic.vcmpps, Vps,Hps,Wps,Ib),
+                    dec66:VexInstr(Mnemonic.cmppd, Mnemonic.vcmppd, Vpd,Hpd,Wpd,Ib),
+                    decF3:VexInstr(Mnemonic.cmpss, Mnemonic.vcmpss, Vss,Hss,Wss,Ib),
+                    decF2:VexInstr(Mnemonic.cmpsd, Mnemonic.vcmpsd, Vpd,Hpd,Wpd,Ib)),
 				new PrefixedDecoder(
                     Instr(Mnemonic.movnti, My,Gy),
                     s_invalid),
                 new PrefixedDecoder(
-                    Instr(Mnemonic.pinsrw, Pq,Ry),     //$TODO: encoding is weird.
-                    Instr(Mnemonic.vpinsrw, Vdq,Hdq,Ry)),
+                    VexInstr(Mnemonic.pinsrw, Mnemonic.vpinsrw, Pq,Ry),     //$TODO: encoding is weird.
+                    VexInstr(Mnemonic.pinsrw, Mnemonic.vpinsrw, Vdq,Hdq,Ry)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.pextrw, Gd,Nq,Ib),
-                    Instr(Mnemonic.vextrw, Gd,Udq,Ib)),
+                    VexInstr(Mnemonic.pextrw, Mnemonic.vpextrw, Gd,Udq,Ib)),
                 new PrefixedDecoder(
-                    Instr(Mnemonic.vshufps, Vps,Hps,Wps,Ib),
-                    Instr(Mnemonic.vshufpd, Vpd,Hpd,Wpd,Ib)),
-				new GroupDecoder(9),
+                    VexInstr(Mnemonic.shufps, Mnemonic.vshufps, Vps,Hps,Wps,Ib),
+                    VexInstr(Mnemonic.shufpd, Mnemonic.vshufpd, Vpd,Hpd,Wpd,Ib)),
+				new GroupDecoder(Grp9),
 
 				Instr(Mnemonic.bswap, rv),
 				Instr(Mnemonic.bswap, rv),
@@ -463,157 +494,158 @@ namespace Reko.Arch.X86
 				// 0F D0
 				new PrefixedDecoder(
                     dec:  s_invalid,
-					dec66:Instr(Mnemonic.addsubpd, Vpd,Hpd,Wpd),
+					dec66:VexInstr(Mnemonic.addsubpd, Mnemonic.vaddsubpd, Vpd,Hpd,Wpd),
 					decF3:s_invalid,
-					decF2:Instr(Mnemonic.addsubps, Vps,Hps,Wps)),
+					decF2:VexInstr(Mnemonic.addsubps, Mnemonic.vaddsubps, Vps,Hps,Wps)),
 				new PrefixedDecoder(
                     Instr(Mnemonic.psrlw, Pq,Qq),
-                    Instr(Mnemonic.vpsrlw, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.psrlw, Mnemonic.vpsrlw, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.psrld, Pq,Qq),
-                    Instr(Mnemonic.vpsrld, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.psrld, Mnemonic.vpsrld, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.psrlq, Pq,Qq),
-                    Instr(Mnemonic.vpmullw, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.psrlq, Mnemonic.vpsrlq, Vx,Hx,Wx)),
+
                 new PrefixedDecoder(
                     Instr(Mnemonic.paddq, Pq,Qq),
-                    Instr(Mnemonic.vpaddq, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.paddq, Mnemonic.vpaddq, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.pmullw, Pq,Qq),
-                    Instr(Mnemonic.vpmullw, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.pmullw, Mnemonic.vpmullw, Vx,Hx,Wx)),
 				Instr(Mnemonic.movq, Wx,Vx),
                 new PrefixedDecoder(
                     Instr(Mnemonic.pmovmskb, Gd,Nq),
-                    Instr(Mnemonic.vpmovmskb, Gd,Ux)),
+                    VexInstr(Mnemonic.pmovmskb, Mnemonic.vpmovmskb, Gd,Ux)),
 
                 new PrefixedDecoder(
                     Instr(Mnemonic.psubusb, Pq,Qq),
-                    Instr(Mnemonic.vpsubusb, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.psubusb, Mnemonic.vpsubusb, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.psubusw, Pq,Qq),
-                    Instr(Mnemonic.vpsubusw, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.psubusw, Mnemonic.vpsubusw, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.pminub, Pq,Qq),
-                    Instr(Mnemonic.vpminub, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.pminub, Mnemonic.vpminub, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.pand, Pq,Qq),
-                    Instr(Mnemonic.vpand, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.pand, Mnemonic.vpand, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.paddusb, Pq,Qq),
-                    Instr(Mnemonic.vpaddusb, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.paddusb, Mnemonic.vpaddusb, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.paddusw, Pq,Qq),
-                    Instr(Mnemonic.vpaddusw, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.paddusw, Mnemonic.vpaddusw, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.pmaxub, Pq,Qq),
-                    Instr(Mnemonic.vpmaxub, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.pmaxub, Mnemonic.vpmaxub, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.pandn, Pq,Qq),
-                    Instr(Mnemonic.vpandn, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.pandn, Mnemonic.vpandn, Vx,Hx,Wx)),
 
 				// 0F E0
                 new PrefixedDecoder(
                     Instr(Mnemonic.pavgb, Pq,Qq),
-                    Instr(Mnemonic.vpavgb, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.pavgb, Mnemonic.vpavgb, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.psraw, Pq,Qq),
-                    Instr(Mnemonic.vpsraw, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.psraw, Mnemonic.vpsraw, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.psrad, Pq,Qq),
-                    Instr(Mnemonic.vpsrad, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.psrad, Mnemonic.vpsrad, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.pavgw, Pq,Qq),
-                    Instr(Mnemonic.vpavgw, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.pavgw, Mnemonic.vpavgw, Vx,Hx,Wx)),
 
                 new PrefixedDecoder(
                     Instr(Mnemonic.pmulhuw, Pq,Qq),
-                    Instr(Mnemonic.vpmulhuw, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.pmulhuw, Mnemonic.vpmulhuw, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.pmulhw, Pq,Qq),
-                    Instr(Mnemonic.vpmulhw, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.pmulhw, Mnemonic.vpmulhw, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     dec:  s_invalid,
-                    dec66:Instr(Mnemonic.cvttpd2dq, Vdq,Wpd),
-                    decF3:Instr(Mnemonic.cvtdq2pd, Vx,Wpd),
-                    decF2:Instr(Mnemonic.cvtpd2dq, Vdq,Wpd)),
+                    dec66:VexInstr(Mnemonic.cvttpd2dq, Mnemonic.vcvttpd2dq, Vdq,Wpd),
+                    decF3:VexInstr(Mnemonic.cvtdq2pd, Mnemonic.vcvtdq2pd, Vx,Wpd),
+                    decF2:VexInstr(Mnemonic.cvtpd2dq, Mnemonic.vcvtpd2dq, Vdq,Wpd)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.movntq, Mq,Pq),
-                    Instr(Mnemonic.vmovntq, Mx,Vx)),
+                    VexInstr(Mnemonic.movntq, Mnemonic.vmovntq, Mx,Vx)),
 
                 new PrefixedDecoder(
                     Instr(Mnemonic.psubsb, Pq,Qq),
-                    Instr(Mnemonic.vpsubsb, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.psubsb, Mnemonic.vpsubsb, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.psubsw, Pq,Qq),
-                    Instr(Mnemonic.vpsubsw, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.psubsw, Mnemonic.vpsubsw, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.pminsw, Pq,Qq),
-                    Instr(Mnemonic.vpminsw, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.pminsw, Mnemonic.vpminsw, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.por, Pq,Qq),
-                    Instr(Mnemonic.vpor, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.por, Mnemonic.vpor, Vx,Hx,Wx)),
 
                 new PrefixedDecoder(
                     Instr(Mnemonic.paddsb, Pq,Qq),
-                    Instr(Mnemonic.vpaddsb, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.paddsb, Mnemonic.vpaddsb, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.paddsw, Pq,Qq),
-                    Instr(Mnemonic.vpaddsw, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.paddsw, Mnemonic.vpaddsw, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.pmaxsw, Pq,Qq),
-                    Instr(Mnemonic.vpmaxsw, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.pmaxsw, Mnemonic.vpmaxsw, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.pxor, Pq,Qq),
-                    Instr(Mnemonic.vpxor, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.pxor, Mnemonic.vpxor, Vx,Hx,Wx)),
 
 				// 0F F0
                 new PrefixedDecoder(
                     s_invalid,
-                    decF2:Instr(Mnemonic.vlddqu, Vx,Mx)),
+                    decF2:VexInstr(Mnemonic.lddqu, Mnemonic.vlddqu, Vx,Mx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.psllw, Pq,Qq), 
-                    dec66:Instr(Mnemonic.vpsllw, Vx,Hx,Wx)),
+                    dec66:VexInstr(Mnemonic.psllw, Mnemonic.vpsllw, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.pslld, Pq,Qq),
-                    dec66:Instr(Mnemonic.vpslld, Vx,Hx,Wx)),
+                    dec66:VexInstr(Mnemonic.pslld, Mnemonic.vpslld, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.psllq, Pq,Qq),
-                    dec66:Instr(Mnemonic.vpsllq, Vx,Hx,Wx)),
+                    dec66:VexInstr(Mnemonic.psllq, Mnemonic.vpsllq, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.pmuludq, Pq,Qq),
-                    dec66:Instr(Mnemonic.vpmuludq, Vx,Hx,Wx)),
+                    dec66:VexInstr(Mnemonic.pmuludq, Mnemonic.vpmuludq, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.pmaddwd, Pq,Qq),
-                    dec66:Instr(Mnemonic.vpmaddwd, Vx,Hx,Wx)),
+                    dec66:VexInstr(Mnemonic.pmaddwd, Mnemonic.vpmaddwd, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.psadbw, Pq,Qq),
-                    dec66:Instr(Mnemonic.vpsadbw, Vx,Hx,Wx)),
+                    dec66:VexInstr(Mnemonic.psadbw, Mnemonic.vpsadbw, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.maskmovq, Pq,Qq),
-                    dec66:Instr(Mnemonic.vmaskmovdqu, Vdq,Udq)),
+                    dec66:VexInstr(Mnemonic.maskmovdqu, Mnemonic.vmaskmovdqu, Vdq,Udq)),
 
                 new PrefixedDecoder(
                     Instr(Mnemonic.psubb, Pq,Qq),
-                    Instr(Mnemonic.vpsubb, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.psubb, Mnemonic.vpsubb, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.psubw, Pq,Qq),
-                    Instr(Mnemonic.vpsubw, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.psubw, Mnemonic.vpsubw, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.psubd, Pq,Qq),
-                    Instr(Mnemonic.vpsubd, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.psubd, Mnemonic.vpsubd, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.psubq, Pq,Qq),
-                    Instr(Mnemonic.vpsubq, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.psubq, Mnemonic.vpsubq, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.paddb, Pq,Qq),
-                    Instr(Mnemonic.vpaddb, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.paddb, Mnemonic.vpaddb, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.paddw, Pq,Qq),
-                    Instr(Mnemonic.vpaddw, Vx,Hx,Wx)),
+                    VexInstr(Mnemonic.paddw, Mnemonic.vpaddw, Vx,Hx,Wx)),
                 new PrefixedDecoder(
                     Instr(Mnemonic.paddd, Pq,Qq),
-                    Instr(Mnemonic.vpaddd, Vx,Hx,Wx)),
-				Instr(Mnemonic.ud0, InstrClass.Invalid,  Gv,Ev),
+                    VexInstr(Mnemonic.paddd, Mnemonic.vpaddd, Vx,Hx,Wx)),
+				Instr(Mnemonic.ud0, InstrClass.Invalid,  Gv,Ev)
 			};
         }
     }

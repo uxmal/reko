@@ -23,6 +23,7 @@ using Reko.Arch.M6800.M6809;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ namespace Reko.UnitTests.Arch.M6800
         [SetUp]
         public void Setup()
         {
-            this.arch = new Reko.Arch.M6800.M6809Architecture("m6809");
+            this.arch = new Reko.Arch.M6800.M6809Architecture(new ServiceContainer(), "m6809");
             this.addr = Address.Ptr16(0x0100);
         }
 

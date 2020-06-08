@@ -37,17 +37,18 @@ namespace Reko.Core.Configuration
             this.CharacteristicsLibraries = new List<TypeLibraryDefinition>();
             this.SignatureFiles = new List<SignatureFileDefinition>();
             this.Architectures = new List<PlatformArchitectureDefinition>();
+            this.Options = new Dictionary<string, object>();
         }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
-        public PlatformHeuristics_v1 Heuristics { get; set; }
+        public PlatformHeuristics_v1? Heuristics { get; set; }
 
-        public string TypeName { get; set; }
+        public string? TypeName { get; set; }
 
-        public string MemoryMapFile { get; set; }
+        public string? MemoryMapFile { get; set; }
 
         public bool CaseInsensitive { get; set; }
 
@@ -59,12 +60,13 @@ namespace Reko.Core.Configuration
 
         public virtual IPlatform Load(IServiceProvider services, IProcessorArchitecture arch)
         {
+            if (TypeName is null)
+                throw new InvalidOperationException("Platform configuration TypeName has no value.");
             var svc = services.RequireService<IPluginLoaderService>();
             var type = svc.GetType(TypeName);
             if (type == null)
                 throw new TypeLoadException(
                     string.Format("Unable to load {0} environment.", Description));
-            var cs = type.GetConstructors();
             var platform = (Platform)Activator.CreateInstance(type, services, arch);
             LoadSettingsFromConfiguration(services, platform);
             return platform;
@@ -72,16 +74,16 @@ namespace Reko.Core.Configuration
 
         public void LoadSettingsFromConfiguration(IServiceProvider services, Platform platform)
         {
-            platform.Name = this.Name;
+            platform.Name = this.Name!;
             if (!string.IsNullOrEmpty(MemoryMapFile))
             {
-                platform.MemoryMap = MemoryMap_v1.LoadMemoryMapFromFile(services, MemoryMapFile, platform);
+                platform.MemoryMap = MemoryMap_v1.LoadMemoryMapFromFile(services, MemoryMapFile!, platform)!;
             }
-            platform.Description = this.Description;
+            platform.Description = this.Description!;
             platform.Heuristics = LoadHeuristics(this.Heuristics);
         }
 
-        private PlatformHeuristics LoadHeuristics(PlatformHeuristics_v1 heuristics)
+        private PlatformHeuristics LoadHeuristics(PlatformHeuristics_v1? heuristics)
         {
             if (heuristics == null)
             {
@@ -98,8 +100,8 @@ namespace Reko.Core.Configuration
             else
             {
                 prologs = heuristics.ProcedurePrologs
-                    .Select(p => LoadMaskedPattern(p))
-                    .Where(p => p.Bytes != null)
+                    .Select(p => LoadMaskedPattern(p)!)
+                    .Where(p => p != null && p.Bytes != null)
                     .ToArray();
             }
 
@@ -109,7 +111,7 @@ namespace Reko.Core.Configuration
             };
         }
 
-        public MaskedPattern LoadMaskedPattern(BytePattern_v1 sPattern)
+        public MaskedPattern? LoadMaskedPattern(BytePattern_v1 sPattern)
         {
             List<byte> bytes;
             List<byte> mask;
@@ -169,7 +171,7 @@ namespace Reko.Core.Configuration
 
         public override string ToString()
         {
-            return Description;
+            return Description ?? "";
         }
     }
 }

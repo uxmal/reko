@@ -17,29 +17,29 @@
 define fn10000000
 fn10000000_entry:
 	esp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l10000000
 l10000000:
-	edi = Mem0[0x1000002C:word32]
-	esi = 0x00000003
+	edi = Mem0[0x1000002C<p32>:word32]
+	esi = 3<32>
 	ebx = GetDC
 	goto l10000027
 	// succ:  l10000027
 l10000016:
 	v9 = Mem0[edi:word32]
-	esp = esp - 4
+	esp = esp - 4<i32>
 	Mem0[esp:word32] = v9
 	eax = GetDC(Mem0[esp:HWND])
-	esp = esp + 0x00000004
+	esp = esp + 4<32>
 	Mem0[edi:word32] = eax
-	esp = esp - 4
-	Mem0[esp:word32] = 0x00000000
+	esp = esp - 4<i32>
+	Mem0[esp:word32] = 0<32>
 	eax = GetDC(Mem0[esp:HWND])
-	esp = esp + 0x00000004
-	Mem0[edi + 0x00000004:word32] = eax
-	esi = esi - 0x00000001
+	esp = esp + 4<32>
+	Mem0[edi + 4<32>:word32] = eax
+	esi = esi - 1<32>
 	SZO = cond(esi)
-	edi = edi + 0x00000008
+	edi = edi + 8<32>
 	SCZO = cond(edi)
 	// succ:  l10000027
 l10000027:

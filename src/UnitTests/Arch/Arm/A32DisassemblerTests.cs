@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Reko.Arch.Arm.AArch32;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.Arm
 {
@@ -39,7 +40,7 @@ namespace Reko.UnitTests.Arch.Arm
         protected static MachineInstruction Disassemble(byte[] bytes)
         {
             var image = new MemoryArea(Address.Ptr32(0x00100000), bytes);
-            var dasm = new Arm32Architecture("arm32").CreateDisassembler(image.CreateLeReader(0));
+            var dasm = new Arm32Architecture(new ServiceContainer(), "arm32").CreateDisassembler(image.CreateLeReader(0));
             return dasm.First();
         }
 
@@ -106,7 +107,7 @@ namespace Reko.UnitTests.Arch.Arm
         private const string ArmObsolete = "Obsolete instrction? can't find it in ARM Architecture Reference Manual - ARMv8, for ARMv8";
         protected override IProcessorArchitecture CreateArchitecture()
         {
-            return new Arm32Architecture("arm32");
+            return new Arm32Architecture(new ServiceContainer(), "arm32");
         }
 
         private void Expect_Code(string sExp)
@@ -1373,6 +1374,15 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        [Ignore("Discovered by RekoSifter tool")]
+        public void ArmDasm_stc_addrMode()
+        {
+            ///*R:stchi p1,cr3,[r2,-#&184]!                61 31 22 8D
+            Disassemble32(0x8D223161);
+            Expect_Code("stfhis\tf3,[r2, #fffffe7c]");
+        }
+
+        [Test]
         public void ArmDasm_bkpt()
         {
             Disassemble32(0x01262B70);
@@ -2152,37 +2162,59 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vacgt.f32\td16,d5,d31");
         }
 
-        //////////////////////////
+        [Test]
+        [Ignore("Discovered by RekoSifter tool")]
+        public void ArmDasm_Regression_1166()
+        {
+            Disassemble32(0xC103B1D6);
+            Expect_Code(": ldrtle        r0, [r1], r1, asr #0    ");
+            // definitely causes an error
+        }
+
+        [Test]
+        [Ignore("Discovered by RekoSifter tool")]
+        public void ArmDasm_tsteq()
+        {
+            Disassemble32(0x2E1F0E01);
+            Expect_Code("tsteq\tlr, lr, lsr #0");
+        }
+
+        // O:cmplt r6, r3, ror #0                     63 2D 46 B1
+
+
+
+            //////////////////////////
 
 #if BORED
-        /// If you're bored and want something to do, why not implement a 
-        /// A32 decoder or 10? :)
+/// If you're bored and want something to do, why not implement a 
+/// A32 decoder or 10? :)
 
-        // An A32 decoder for the instruction F4E7F270 (AdvancedSimdElementLoadStore) has not been implemented yet.
-        [Test]
-        public void ArmDasm_F4E7F270()
-        {
-            Disassemble32(0xF4E7F270);
-            Expect_Code("@@@");
-        }
+// An A32 decoder for the instruction F4E7F270 (AdvancedSimdElementLoadStore) has not been implemented yet.
+[Test]
+public void ArmDasm_F4E7F270()
+{
+    Disassemble32(0xF4E7F270);
+    Expect_Code("@@@");
+}
 
-        // An A32 decoder for the instruction F4E7B940 (AdvancedSimdElementLoadStore) has not been implemented yet.
-        [Test]
-        public void ArmDasm_F4E7B940()
-        {
-            Disassemble32(0xF4E7B940);
-            Expect_Code("@@@");
-        }
+// An A32 decoder for the instruction F4E7B940 (AdvancedSimdElementLoadStore) has not been implemented yet.
+[Test]
+public void ArmDasm_F4E7B940()
+{
+    Disassemble32(0xF4E7B940);
+    Expect_Code("@@@");
+}
 
-        // An A32 decoder for the instruction F4E7F370 (AdvancedSimdElementLoadStore) has not been implemented yet.
-        [Test]
-        public void ArmDasm_F4E7F370()
-        {
-            Disassemble32(0xF4E7F370);
-            Expect_Code("@@@");
-        }
+// An A32 decoder for the instruction F4E7F370 (AdvancedSimdElementLoadStore) has not been implemented yet.
+[Test]
+public void ArmDasm_F4E7F370()
+{
+    Disassemble32(0xF4E7F370);
+    Expect_Code("@@@");
+}
 
 #endif
 
+        }
     }
-}
+ 

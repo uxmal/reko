@@ -10,7 +10,7 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem12[ds:0x012C:word16] = fn0C00_000B(0x001E)
+	Mem12[ds:0x12C<16>:word16] = fn0C00_000B(0x1E<16>)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -43,15 +43,15 @@ word16 fn0C00_000F(word16 dx)
 fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
-	word16 si_14 = 0x0000
+	word16 si_14 = 0<16>
 	goto l0C00_0018
 	// succ:  l0C00_0018
 l0C00_0015:
 	si_14 = si_14 + dx
-	dx = dx - 0x0001
+	dx = dx - 1<16>
 	// succ:  l0C00_0018
 l0C00_0018:
-	branch dx >= 0x0000 l0C00_0015
+	branch dx >= 0<16> l0C00_0015
 	// succ:  l0C00_001D l0C00_0015
 l0C00_001D:
 	return si_14

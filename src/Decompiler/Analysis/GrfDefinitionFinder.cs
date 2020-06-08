@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,11 +33,11 @@ namespace Reko.Analysis
 	/// </summary>
 	public class GrfDefinitionFinder : InstructionVisitorBase
 	{
-		private SsaIdentifierCollection ssaIds;
-		private SsaIdentifier sid;
+		private readonly SsaIdentifierCollection ssaIds;
+		private SsaIdentifier? sid;
 		private bool negated;
-		private Statement stm;
-		private Expression defExpr;
+		private Statement? stm;
+		private Expression? defExpr;
 
 		public GrfDefinitionFinder(SsaIdentifierCollection ssaIds)
 		{
@@ -54,21 +54,20 @@ namespace Reko.Analysis
 		{
 			this.sid = sid;
 			negated = false;
-			stm = sid.DefStatement;
+			stm = sid.DefStatement!;
 			if (stm != null)
 			{
-				Statement stmOld = null;
 				defExpr = null;
 				while (stm != null && defExpr == null)
 				{
-					stmOld = stm;
+					var stmOld = stm;
 					stm = null;
 					stmOld.Instruction.Accept(this);
 				}
 			}
 		}
 
-		public Expression DefiningExpression
+		public Expression? DefiningExpression
 		{
 			get { return defExpr; }
 		}
@@ -92,7 +91,7 @@ namespace Reko.Analysis
         {
             foreach (var di in ci.Definitions)
             {
-                if (di.Expression == sid.Identifier)
+                if (di.Expression == sid!.Identifier)
                 {
                     defExpr = new Application(ci.Callee, new UnknownType());
                     return;
@@ -132,9 +131,8 @@ namespace Reko.Analysis
 
         public override void VisitUnaryExpression(UnaryExpression unary)
 		{
-			if (unary != null && unary.Operator == Operator.Not)
+			if (unary != null && unary.Operator == Operator.Not && unary.Expression is Identifier id)
 			{
-				Identifier id = (Identifier) unary.Expression;
 				negated = !negated;
 
 				stm = ssaIds[id].DefStatement;

@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -27,6 +28,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Reko.Arch.X86
 {
@@ -42,7 +44,7 @@ namespace Reko.Arch.X86
         }
 
         /// <summary>
-        /// Decodes a single instructions by interpreting a format string.
+        /// Decodes a single instructions by executing an array of mutators.
         /// </summary>
         public class InstructionDecoder : Decoder
         {
@@ -72,6 +74,29 @@ namespace Reko.Arch.X86
             public override string ToString()
             {
                 return $"{iclass}:{mnemonic}";
+            }
+        }
+
+        /// <summary>
+        /// Decodes an instruction that has a different mnemonic when using a VEX prefix.
+        /// </summary>
+        public class VexInstructionDecoder : Decoder
+        {
+            private readonly Decoder legacy;
+            private readonly Decoder vex;
+
+            public VexInstructionDecoder(Decoder legacy, Decoder vex)
+            {
+                this.legacy = legacy;
+                this.vex = vex;
+            }
+
+            public override bool Decode(X86Disassembler disasm, byte op)
+            {
+                var decoder = disasm.decodingContext.IsVex
+                    ? this.vex
+                    : this.legacy;
+                return decoder.Decode(disasm, op);
             }
         }
 
@@ -156,18 +181,17 @@ namespace Reko.Arch.X86
         /// </summary>
         public class GroupDecoder : Decoder
         {
-            public readonly int Group;
-            public readonly Mutator<X86Disassembler>[] mutators;
+            private readonly Decoder[] group;
+            private readonly Mutator<X86Disassembler>[] mutators;
 
-            public GroupDecoder(int group, params Mutator<X86Disassembler>[] mutators)
+            public GroupDecoder(Decoder[] groupDecoders, params Mutator<X86Disassembler>[] mutators)
             {
-                this.Group = group;
+                this.group = groupDecoders;
                 this.mutators = mutators;
             }
 
             public override bool Decode(X86Disassembler disasm, byte op)
             {
-                int grp = Group - 1;
                 if (!disasm.TryEnsureModRM(out byte modRm))
                     return false;
                 if (mutators != null)
@@ -179,7 +203,7 @@ namespace Reko.Arch.X86
                     }
                 }
 
-                Decoder decoder = s_groupDecoders[grp * 8 + ((modRm >> 3) & 0x07)];
+                Decoder decoder = group[((modRm >> 3) & 0x07)];
                 return decoder.Decode(disasm, op);
             }
         }
@@ -354,16 +378,7 @@ namespace Reko.Arch.X86
                     return false;
                 if (op == 0x38 || op == 0x3A)
                     return false;
-                var instr = s_decoders0F[op].Decode(disasm, op);
-                if (!instr)
-                    return false;
-                if (!s_mpVex.TryGetValue(disasm.decodingContext.mnemonic, out Mnemonic vexCode))
-                {
-                    Debug.Print("X86Disassembler: {0} Failed to map {1} to VEX counterpart", disasm.addr, disasm.decodingContext.mnemonic);
-                    return false;
-                }
-                disasm.decodingContext.mnemonic = vexCode;
-                return true;
+                return s_decoders0F[op].Decode(disasm, op);
             }
         }
 
@@ -407,13 +422,64 @@ namespace Reko.Arch.X86
                 }
                 if (!disasm.rdr.TryReadByte(out op))
                     return false;
-                if (!decoders[op].Decode(disasm, op))
+                return decoders[op].Decode(disasm, op);
+            }
+        }
+
+        /// <summary>
+        /// Decoder for EVEX-prefixed instructions.
+        /// </summary>
+        public class EvexDecoder : Decoder
+        {
+            private static readonly Bitfield p0Reserved = new Bitfield(2, 2);
+            private static readonly Bitfield p1Reserved = new Bitfield(2, 1);
+            private static readonly Bitfield p1Vvvv = new Bitfield(3, 4);
+
+            public override bool Decode(X86Disassembler disasm, byte op)
+            {
+                // 62 must be the first byte. The presence of previous
+                // prefixes is an error (according to Intel manual 2.6, vol 2A.
+                var ctx = disasm.decodingContext;
+                if (ctx.F2Prefix |
+                    ctx.F3Prefix |
+                    ctx.IsRegisterExtensionActive() |
+                    ctx.SizeOverridePrefix)
+                        return false;
+                // The EVEX prefix consists of a leading 0x62 byte, and three
+                // packed payload bytes P0, P1, and P2.
+                //$TODO: this is incomplete: there are many missing flags.
+                if (!disasm.rdr.TryReadByte(out byte p0)) return false;
+                if (!disasm.rdr.TryReadByte(out byte p1)) return false;
+                if (!disasm.rdr.TryReadByte(out byte p2)) return false;
+                if (p0Reserved.Read(p0) != 0)
                     return false;
-                if (s_mpVex.TryGetValue(disasm.decodingContext.mnemonic, out var vCode))
+                if (p1Reserved.Read(p1) != 1)
+                    return false;
+                var pp = p1 & 3;
+                var rxb = p0 >> 5;
+                var w = p1 >> 7;
+                var vvvv = p1Vvvv.Read(p1);
+                ctx.IsVex = true;
+                ctx.VexRegister = (byte) vvvv;
+                ctx.VexLong = (op & 4) != 0;
+                ctx.RegisterExtension.FlagWideValue = w != 0;
+                ctx.RegisterExtension.FlagTargetModrmRegister = (rxb & 4) == 0;
+                ctx.RegisterExtension.FlagTargetSIBIndex = (rxb & 2) == 0;
+                ctx.RegisterExtension.FlagTargetModrmRegOrMem = (rxb & 1) == 0;
+                ctx.F2Prefix = pp == 3;
+                ctx.F3Prefix = pp == 2;
+                ctx.SizeOverridePrefix = pp == 1;
+
+                Decoder[] decoders;
+                switch (pp)
                 {
-                    disasm.decodingContext.mnemonic = vCode;
+                case 2: decoders = s_decoders0F38; break;
+                case 3: decoders = s_decoders0F3A; break;
+                default: decoders = s_decoders0F; break;
                 }
-                return true;
+                if (!disasm.rdr.TryReadByte(out op))
+                    return false;
+                return decoders[op].Decode(disasm, op);
             }
         }
 
@@ -466,10 +532,23 @@ namespace Reko.Arch.X86
         {
             public override bool Decode(X86Disassembler disasm, byte op)
             {
-                disasm.decodingContext.addressWidth = (disasm.decodingContext.addressWidth == PrimitiveType.Word16)
-                    ? PrimitiveType.Word32
-                    : PrimitiveType.Word16;
-                op = disasm.rdr.ReadByte();
+                PrimitiveType addrWidth;
+                if (disasm.decodingContext.addressWidth != disasm.defaultAddressWidth)
+                {
+                    addrWidth = disasm.defaultAddressWidth;
+                }
+                else
+                {
+                    if (disasm.defaultAddressWidth.BitSize == 16)
+                        addrWidth = PrimitiveType.Word32;
+                    else if (disasm.defaultAddressWidth.BitSize == 32)
+                        addrWidth = PrimitiveType.Word16;
+                    else
+                        addrWidth = PrimitiveType.Word32;
+                }
+                disasm.decodingContext.addressWidth = addrWidth;
+                if (!disasm.rdr.TryReadByte(out op))
+                    return false;
                 return s_rootDecoders[op].Decode(disasm, op);
             }
         }
@@ -537,6 +616,72 @@ namespace Reko.Arch.X86
             }
         }
 
+
+        /// <summary>
+        /// This decoder will use a different sub-decoder depending on the current
+        /// address width.
+        /// </summary>
+        public class AddrWidthDecoder : Decoder
+        {
+            private readonly Decoder bit16;
+            private readonly Decoder bit32;
+            private readonly Decoder bit64;
+
+            public AddrWidthDecoder(
+                Decoder bit16,
+                Decoder bit32,
+                Decoder bit64)
+            {
+                this.bit16 = bit16;
+                this.bit32 = bit32;
+                this.bit64 = bit64;
+            }
+
+            public override bool Decode(X86Disassembler disasm, byte op)
+            {
+                switch (disasm.decodingContext.addressWidth.Size)
+                {
+                case 2: return bit16.Decode(disasm, op);
+                case 4: return bit32.Decode(disasm, op);
+                case 8: return bit64.Decode(disasm, op);
+                default: return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// This decoder will use a different sub-decoder depending on the current
+        /// data width.
+        /// </summary>
+        public class DataWidthDecoder : Decoder
+        {
+            private readonly Decoder bit16;
+            private readonly Decoder bit32;
+            private readonly Decoder bit64;
+
+            public DataWidthDecoder(
+                Decoder bit16,
+                Decoder bit32,
+                Decoder bit64)
+            {
+                this.bit16 = bit16;
+                this.bit32 = bit32;
+                this.bit64 = bit64;
+            }
+
+            public override bool Decode(X86Disassembler disasm, byte op)
+            {
+                switch (disasm.decodingContext.dataWidth.Size)
+                {
+                case 2: return bit16.Decode(disasm, op);
+                case 4: return bit32.Decode(disasm, op);
+                case 8: return bit64.Decode(disasm, op);
+                default: return false;
+                }
+            }
+        }
+
+
         /// <summary>
         /// This hacky decoder will interpret old-school software emulated
         /// X87 instructions implemented as interrupts.
@@ -561,6 +706,40 @@ namespace Reko.Arch.X86
                     }
                 }
                 return true;
+            }
+        }
+
+        /// <summary>
+        /// Decodes an instruction encoded in the ModRM byte.
+        /// </summary>
+        public class ModRmOpcodeDecoder : Decoder
+        {
+            private readonly InstructionDecoder[] decoders;
+
+            public ModRmOpcodeDecoder(
+                InstructionDecoder defaultDecoder,
+                params (byte, InstructionDecoder) [] decoders)
+            {
+                this.decoders = new InstructionDecoder[256];
+                foreach (var (b, decoder) in decoders)
+                {
+                    Debug.Assert(this.decoders[b] == null, $"Decoder {b:X2} has already a value!");
+                    this.decoders[b] = decoder;
+                }
+                for (int i = 0; i < this.decoders.Length; ++i)
+                {
+                    if (this.decoders[i] == null)
+                    {
+                        this.decoders[i] = defaultDecoder;
+                    }
+                }
+            }
+
+            public override bool Decode(X86Disassembler disasm, byte op)
+            {
+                if (!disasm.TryEnsureModRM(out byte modRm))
+                    return false;
+                return this.decoders[modRm].Decode(disasm, op);
             }
         }
     }

@@ -19,42 +19,42 @@
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	ax = Mem0[ds:0x0200:word16]
-	dx = Mem0[ds:0x0202:word16]
-	cx = Mem0[ds:0x0204:word16]
-	bx = Mem0[ds:0x0206:word16]
+	ax = Mem0[ds:0x200<16>:word16]
+	dx = Mem0[ds:0x202<16>:word16]
+	cx = Mem0[ds:0x204<16>:word16]
+	bx = Mem0[ds:0x206<16>:word16]
 	ax = ax + cx
 	SCZO = cond(ax)
 	dx = dx + bx + C
 	SCZO = cond(dx)
-	Mem0[ds:0x0208:word16] = ax
-	Mem0[ds:0x020A:word16] = dx
-	ax = Mem0[ds:0x0210:word16]
-	dx = Mem0[ds:0x0212:word16]
-	es_cx = Mem0[ds:0x0214:segptr32]
+	Mem0[ds:0x208<16>:word16] = ax
+	Mem0[ds:0x20A<16>:word16] = dx
+	ax = Mem0[ds:0x210<16>:word16]
+	dx = Mem0[ds:0x212<16>:word16]
+	es_cx = Mem0[ds:0x214<16>:segptr32]
 	bx = es
 	ax = ax - cx
 	SCZO = cond(ax)
-	Mem0[ds:0x0218:word16] = ax
+	Mem0[ds:0x218<16>:word16] = ax
 	dx = dx - bx - C
 	SCZO = cond(dx)
-	Mem0[ds:0x021A:word16] = dx
+	Mem0[ds:0x21A<16>:word16] = dx
 	ax = ax ^ ax
 	SZO = cond(ax)
 	C = false
-	cl = Mem0[ds:0x0220:byte]
-	SCZO = cond(cl - 0x30)
+	cl = Mem0[ds:0x220<16>:byte]
+	SCZO = cond(cl - 0x30<8>)
 	ax = ax + ax + C
 	SCZO = cond(ax)
-	cl = Mem0[ds:0x0221:byte]
-	SCZO = cond(cl - 0x3A)
+	cl = Mem0[ds:0x221<16>:byte]
+	SCZO = cond(cl - 0x3A<8>)
 	C = !C
 	ax = ax + ax + C
 	SCZO = cond(ax)
-	Mem0[ds:0x0222:word16] = ax
+	Mem0[ds:0x222<16>:word16] = ax
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

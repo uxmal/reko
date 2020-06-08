@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -76,9 +77,16 @@ namespace Reko.Arch.PowerPC
         {
             var spr = RewriteOperand(instr.Operands[0]);
             var reg = RewriteOperand(instr.Operands[1]);
-            m.Assign(
-                reg, 
-                host.PseudoProcedure("__read_spr", PrimitiveType.Word32, spr));
+            if (spr is Identifier id)
+            {
+                m.Assign(reg, id);
+            }
+            else
+            {
+                m.Assign(
+                    reg,
+                    host.PseudoProcedure("__read_spr", PrimitiveType.Word32, spr));
+            }
         }
 
         private void RewriteMtmsr(PrimitiveType dt)
@@ -91,7 +99,14 @@ namespace Reko.Arch.PowerPC
         {
             var spr = RewriteOperand(instr.Operands[0]);
             var reg = RewriteOperand(instr.Operands[1]);
-            m.SideEffect(host.PseudoProcedure("__write_spr", PrimitiveType.Word32, spr, reg));
+            if (spr is Identifier id)
+            {
+                m.Assign(id, reg);
+            }
+            else
+            {
+                m.SideEffect(host.PseudoProcedure("__write_spr", PrimitiveType.Word32, spr, reg));
+            }
         }
 
         private void RewriteRfi()

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using System;
 using System.Collections.Generic;
@@ -28,8 +30,8 @@ namespace Reko.Gui.Commands
 {
     public class Cmd_ViewWhatPointsHere : Command
     {
-        private Program program;
-        private IEnumerable<Address> addresses;
+        private readonly Program program;
+        private readonly IEnumerable<Address> addresses;
 
         public Cmd_ViewWhatPointsHere(IServiceProvider services, Program program, IEnumerable<Address> addresses)
            : base(services)
@@ -60,12 +62,7 @@ namespace Reko.Gui.Commands
                     rdr,
                     addresses,
                     PointerScannerFlags.All)
-                    .Select(a => new AddressSearchHit
-                    {
-                        Program = program,
-                        Address = a,
-                        Length = 1
-                    });
+                    .Select(a => new AddressSearchHit(program, a, 1));
         }
     }
 }

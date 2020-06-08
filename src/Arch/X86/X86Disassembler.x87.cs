@@ -126,7 +126,7 @@ namespace Reko.Arch.X86
             //  F0h tangent(ST0)
             //  F2h arctangent(ST0)
             default:
-                this.NotYetImplemented("Emulated x87");
+                this.NotYetImplemented(b1, "Emulated x87");
                 return null;
             case 0xF4:
                 //  F4h ST0 = ln(ST0)
@@ -800,7 +800,7 @@ namespace Reko.Arch.X86
 				s_invalid,
 						
 				// DF E0
-				Instr(Mnemonic.fstsw, aw),
+				Instr(Mnemonic.fstsw, AX),
 				s_invalid,
 				s_invalid,
 				s_invalid,

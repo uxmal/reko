@@ -174,7 +174,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 LoadSymbolsFromDynamicSegment(dynSeg, symtab, syment, offStrtab, offSymtab);
 
                 // Generate a symbol for each relocation.
-                Debug.Print("Relocating entries in .dynamic:");
+                ElfImageLoader.trace.Inform("Relocating entries in .dynamic:");
                 foreach (var elfSym in relTable.RelocateEntries(program, offStrtab, offSymtab, syment.UValue))
                 {
                     symbols.Add(elfSym);
@@ -204,7 +204,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                         continue;
                     }
 
-                    DebugEx.Inform(ElfImageLoader.trace, "Relocating entries in DT_JMPREL:");
+                    ElfImageLoader.trace.Inform("Relocating entries in DT_JMPREL:");
                     foreach (var elfSym in relTable.RelocateEntries(program, offStrtab, offSymtab, syment.UValue))
                     {
                         symbols.Add(elfSym);
@@ -232,13 +232,13 @@ namespace Reko.ImageLoaders.Elf.Relocators
             if (addrEnd != 0)
             {
                 // We have found some symbols to ensure.
-                DebugEx.Verbose(ElfImageLoader.trace, "== Symbols in the DT_DYNAMIC segment");
+                ElfImageLoader.trace.Verbose("== Symbols in the DT_DYNAMIC segment");
                 int i = 0;
                 for (ulong uSymAddr = symtab.UValue; uSymAddr < addrEnd; uSymAddr += syment.UValue)
                 {
                     var elfSym = Loader.EnsureSymbol(offSymtab, i, syment.UValue, offStrtab);
                     ++i;
-                    DebugEx.Verbose(ElfImageLoader.trace, "  {0:X8} {1}", elfSym.Value, elfSym.Name);
+                    ElfImageLoader.trace.Verbose("  {0:X8} {1}", elfSym.Value, elfSym.Name);
                     var imgSym = Loader.CreateImageSymbol(elfSym, true);
                     if (imgSym == null || imgSym.Address.ToLinear() == 0)
                         continue;
@@ -276,7 +276,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 {
                     var relocation = ReadRelocation(rdrRela);
                     var elfSym = relocator.Loader.EnsureSymbol(offSymtab, relocation.SymbolIndex, symEntrySize, offStrtab);
-                    DebugEx.Verbose(ElfImageLoader.trace, "  {0}: symbol {1} type: {2} addend: {3:X}", relocation, elfSym, relocator.RelocationTypeToString((byte)relocation.Info), relocation.Addend);
+                    ElfImageLoader.trace.Verbose("  {0}: symbol {1} type: {2} addend: {3:X}", relocation, elfSym, relocator.RelocationTypeToString((byte)relocation.Info), relocation.Addend);
                     relocator.RelocateEntry(program, elfSym, null, relocation);
                     symbols.Add(elfSym);
                 }
@@ -391,7 +391,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             foreach (var section in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_REL))
             {
-                DebugEx.Inform(ElfImageLoader.trace, "REL: offset {0:X} symbol section {1}, relocating in section {2}",
+                ElfImageLoader.trace.Inform("REL: offset {0:X} symbol section {1}, relocating in section {2}",
                     section.FileOffset,
                     section.LinkedSection.Name,
                     section.RelocatedSection.Name);
@@ -400,7 +400,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 for (uint i = 0; i < section.EntryCount(); ++i)
                 {
                     var rel = Elf32_Rel.Read(rdr);
-                    DebugEx.Verbose(ElfImageLoader.trace,
+                    ElfImageLoader.trace.Verbose(
                         "  off:{0:X8} type:{1,-16} {3,3} {2}",
                         rel.r_offset,
                         RelocationTypeToString(rel.r_info & 0xFF),
@@ -415,7 +415,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             foreach (var section in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_RELA))
             {
-                DebugEx.Inform(ElfImageLoader.trace, 
+                ElfImageLoader.trace.Inform(
                     "RELA: offset {0:X} symbol section {1}, relocating in section {2}",
                     section.FileOffset,
                     section.LinkedSection.Name,
@@ -426,7 +426,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 for (uint i = 0; i < section.EntryCount(); ++i)
                 {
                     var rela = Elf32_Rela.Read(rdr);
-                    DebugEx.Verbose(ElfImageLoader.trace,
+                    ElfImageLoader.trace.Verbose(
                         "  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2}",
                         rela.r_offset,
                         RelocationTypeToString(rela.r_info & 0xFF),

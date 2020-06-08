@@ -23,6 +23,8 @@ using System;
 
 namespace Reko.Core.Code
 {
+#pragma warning disable IDE1006
+
     public interface InstructionVisitor
 	{
 		void VisitAssignment(Assignment ass);
@@ -184,12 +186,6 @@ namespace Reko.Core.Code
 
 		public virtual void VisitConstant(Constant c)
 		{
-		}
-
-		public virtual void VisitDepositBits(DepositBits d)
-		{
-			d.Source.Accept(this);
-			d.InsertedBits.Accept(this);
 		}
 
 		public virtual void VisitDereference(Dereference deref)

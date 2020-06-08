@@ -9,21 +9,23 @@ void _start(word64 rdx, word64 qwArg00)
 _start_exit:
 _start_entry:
 l0000000000400410:
-	__align(fp + 8)
-	__libc_start_main(0x00000000004005C5, qwArg00, fp + 8, 0x0000000000400620, 0x00000000004006B0, rdx, fp)
+	__align(fp + 8<i64>)
+	__libc_start_main(0x4005C5<64>, qwArg00, fp + 8<i64>, 0x400620<64>, 0x4006B0<64>, rdx, fp)
 	__hlt()
 
 
 void call_gmon_start()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      _init
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax Top
 // Preserved: rsp
 call_gmon_start_entry:
 l000000000040043C:
-	branch __gmon_start__ == 0x0000000000000000 l000000000040044E
+	branch __gmon_start__ == 0<64> l000000000040044E
 l000000000040044C:
 	call __gmon_start__ (retsize: 8;)
 l000000000040044E:
@@ -31,89 +33,91 @@ l000000000040044E:
 call_gmon_start_exit:
 
 
-void deregister_tm_clones(word64 r8)
+void deregister_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r8:[0..63]
+// Called from:
+//      __do_global_dtors_aux
+// MayUse: 
 // LiveOut:
-// Trashed: SCZO r8 rax rdi Top
+// Trashed: SCZO rax rdi Top
 // Preserved: rbp rsp
 deregister_tm_clones_entry:
 l0000000000400460:
 	branch false l0000000000400477
 l0000000000400477:
-	branch 0x0000000000000000 == 0x0000000000000000 l0000000000400475
+	branch 0<u64> == 0<64> l0000000000400475
 l0000000000400481:
-	call 0x0000000000000000 (retsize: 0;)
-		uses: r8:r8 - 6295608,rdi:0x0000000000601038
+	call 0<u64> (retsize: 0;)
+		uses: rdi:0x601038<u64>
 	return
 l0000000000400475:
 	return
 deregister_tm_clones_exit:
 
 
-void register_tm_clones(word64 r8)
+void register_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r8:[0..63]
+// Called from:
+//      frame_dummy
+// MayUse: 
 // LiveOut:
-// Trashed: SCZO r8 rax rdi rdx rsi Top
+// Trashed: SCZO rax rdi rdx rsi Top
 // Preserved: rbp rsp
 register_tm_clones_entry:
 l0000000000400490:
-	branch true l00000000004004B4
+	branch false l00000000004004B4
 l00000000004004B4:
-	branch 0x0000000000000000 == 0x0000000000000000 l00000000004004B2
+	branch 0<u64> == 0<64> l00000000004004B2
 l00000000004004BE:
-	call 0x0000000000000000 (retsize: 0;)
-		uses: r8:r8 - 6295608,rdi:0x0000000000601038,rsi:393475
+	call 0<u64> (retsize: 0;)
+		uses: rdi:0x601038<u64>,rsi:0<i64>
 	return
 l00000000004004B2:
 	return
 register_tm_clones_exit:
 
 
-void __do_global_dtors_aux(word64 r8)
+void __do_global_dtors_aux()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r8:[0..63]
+// MayUse: 
 // LiveOut:
-// Trashed: SCZO r8 rax rdi Top
+// Trashed: SCZO rax rdi Top
 // Preserved: rbp rsp
 __do_global_dtors_aux_entry:
 l00000000004004D0:
-	branch Mem0[0x0000000000601038:byte] != 0x00 l00000000004004EA
+	branch Mem0[0x0000000000601038<p64>:byte] != 0<8> l00000000004004EA
 l00000000004004D9:
-	deregister_tm_clones(r8)
-	Mem21[0x0000000000601038:byte] = 0x01
+	deregister_tm_clones()
+	Mem19[0x0000000000601038<p64>:byte] = 1<8>
 l00000000004004EA:
 	return
 __do_global_dtors_aux_exit:
 
 
-void frame_dummy(word64 r8)
+void frame_dummy()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r8:[0..63]
+// MayUse: 
 // LiveOut:
-// Trashed: SCZO r8 rax rdi rdx rsi Top
+// Trashed: SCZO rax rdi rdx rsi Top
 // Preserved: rbp rsp
 frame_dummy_entry:
 l00000000004004F0:
-	branch Mem0[0x0000000000600E08:word64] == 0x0000000000000000 l0000000000400518
+	branch Mem0[0x0000000000600E08<p64>:word64] == 0<64> l0000000000400518
 l00000000004004FA:
-	branch 0x0000000000000000 == 0x0000000000000000 l0000000000400518
+	branch 0<u64> == 0<64> l0000000000400518
 l0000000000400518:
 l0000000000400518_thunk_register_tm_clones:
-	register_tm_clones(r8)
+	register_tm_clones()
 	return
 l0000000000400504:
-	word64 r8_29
 	call fn0000000000000000 (retsize: 8;)
-		uses: r8:r8,rdi:0x0000000000600E08
-		defs: r8:r8_29
+		uses: rdi:0x600E08<u64>
 l0000000000400510_thunk_register_tm_clones:
-	register_tm_clones(r8_29)
+	register_tm_clones()
 	return
 frame_dummy_exit:
 
@@ -121,30 +125,31 @@ frame_dummy_exit:
 word32 verify(word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      main
 // MayUse:  rdi:[0..63]
 // LiveOut: rax
 // Trashed: SCZO rax rcx rdx rsi Top
 // Preserved: rbp rsp
 verify_entry:
 l0000000000400520:
-	word32 dwLoc0C_100 = 0x00000000
+	word32 dwLoc0C_103 = 0<32>
 l00000000004005A1:
-	word64 rax_114
-	word64 rax_17 = rdi + (int64) SLICE((uint64) dwLoc0C_100, word32, 0)
-	word32 rax_32_32_115 = SLICE(rax_17, word32, 32)
-	branch SLICE((word32) Mem12[rax_17:byte], byte, 0) != 0x00 l0000000000400531
+	word64 rax_112
+	word64 rax_17 = rdi + (int64) SLICE((uint64) dwLoc0C_103, word32, 0)
+	word32 rax_32_32_113 = SLICE(rax_17, word32, 32)
+	branch SLICE((word32) Mem12[rax_17:byte], byte, 0) != 0<8> l0000000000400531
 l0000000000400531:
-	byte al_34 = SLICE((uint64) (SLICE((uint64) dwLoc0C_100, word32, 0) ^ SLICE((uint64) ((word32) Mem12[rdi + (int64) SLICE((uint64) dwLoc0C_100, word32, 0):byte]), word32, 0)), byte, 0)
-	word64 rax_75 = (uint64) dwLoc0C_100
-	branch SLICE((word32) Mem74[SEQ(SLICE(rax_75, word48, 16), (int16) SLICE(rax_75, byte, 0)) + 0x0000000000601020:byte], byte, 0) == SLICE((uint64) (SLICE((uint64) SLICE((uint64) ((word32) al_34 >> SLICE((uint64) SLICE((uint64) (0x00000008 - SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc0C_100, word32, 0) ^ 0x00000009), word32, 0) & 0x00000003), word32, 0), word32, 0)), word32, 0), byte, 0)), word32, 0), word32, 0) | SLICE((uint64) SLICE((uint64) SLICE((uint64) ((word32) al_34 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc0C_100, word32, 0) ^ 0x00000009), word32, 0) & 0x00000003), word32, 0), byte, 0)), word32, 0), word32, 0), word32, 0)), byte, 0) + 0x08 l000000000040059D
+	byte al_34 = SLICE((uint64) (SLICE((uint64) dwLoc0C_103, word32, 0) ^ SLICE((uint64) ((word32) Mem12[rdi + (int64) SLICE((uint64) dwLoc0C_103, word32, 0):byte]), word32, 0)), byte, 0)
+	branch SLICE((word32) Mem74[(int64) SLICE((uint64) dwLoc0C_103, word32, 0) + 0x601020<64>:byte], byte, 0) == SLICE((uint64) (SLICE((uint64) SLICE((uint64) ((word32) al_34 >> SLICE((uint64) SLICE((uint64) (8<32> - SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc0C_103, word32, 0) ^ 9<32>), word32, 0) & 3<32>), word32, 0), word32, 0)), word32, 0), byte, 0)), word32, 0), word32, 0) | SLICE((uint64) SLICE((uint64) SLICE((uint64) ((word32) al_34 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc0C_103, word32, 0) ^ 9<32>), word32, 0) & 3<32>), word32, 0), byte, 0)), word32, 0), word32, 0), word32, 0)), byte, 0) + 8<8> l000000000040059D
 l000000000040059D:
-	dwLoc0C_100 = dwLoc0C_100 + 0x00000001
+	dwLoc0C_103 = dwLoc0C_103 + 1<32>
 l0000000000400596:
-	rax_114 = 0x0000000000000000
+	rax_112 = 0<u64>
 l00000000004005B9:
-	rax_114 = SEQ(rax_32_32_115, (word32) (dwLoc0C_100 == 0x00000017)) (alias)
+	rax_112 = SEQ(rax_32_32_113, (word32) (dwLoc0C_103 == 0x17<32>)) (alias)
 l00000000004005C3:
-	return SLICE(rax_114, word32, 0)
+	return SLICE(rax_112, word32, 0)
 verify_exit:
 
 
@@ -157,16 +162,16 @@ void main(word64 rsi, word32 edi)
 // Preserved: rbp rsp
 main_entry:
 l00000000004005C5:
-	branch edi == 0x00000002 l00000000004005EB
+	branch edi == 2<32> l00000000004005EB
 l00000000004005EB:
-	branch SLICE((uint64) (uint32) verify(Mem12[rsi + 0x0000000000000008:word64]), word32, 0) == 0x00000000 l000000000040060E
+	branch SLICE((uint64) (uint32) verify(Mem12[rsi + 8<64>:word64]), word32, 0) == 0<32> l000000000040060E
 l000000000040060E:
-	puts(0x0000000000400718)
+	puts(0x400718<u64>)
 l0000000000400602:
-	puts(0x00000000004006F0)
+	puts(0x4006F0<u64>)
 l0000000000400618:
 l00000000004005DA:
-	puts(0x00000000004006C8)
+	puts(0x4006C8<u64>)
 l000000000040061D:
 	return
 main_exit:
@@ -183,16 +188,16 @@ __libc_csu_init_entry:
 	word32 edi = SLICE(rdi, word32, 0)
 l0000000000400620:
 	_init()
-	word64 rbp_19 = 0x0000000000600E00 - 0x0000000000600DF8
+	word64 rbp_19 = 0x0000000000600E00<p64> - 0x0000000000600DF8<p64>
 	word32 r13d_72 = SLICE((uint64) edi, word32, 0)
-	branch rbp_19 >> 0x0000000000000003 == 0x0000000000000000 l0000000000400686
+	branch rbp_19 >> 3<64> == 0<64> l0000000000400686
 l000000000040066A:
-	word64 rbx_36 = 0x0000000000000000
+	word64 rbx_36 = 0<u64>
 l0000000000400670:
-	call Mem17[0x0000000000600DF8 + rbx_36 * 0x0000000000000008:word64] (retsize: 8;)
+	call Mem17[0x0000000000600DF8<p64> + rbx_36 * 8<64>:word64] (retsize: 8;)
 		uses: rdi:(uint64) r13d_72,rdx:rdx,rsi:rsi
-	rbx_36 = rbx_36 + 0x0000000000000001
-	branch rbx_36 != rbp_19 >> 0x0000000000000003 l0000000000400670
+	rbx_36 = rbx_36 + 1<64>
+	branch rbx_36 != rbp_19 >> 3<64> l0000000000400670
 l0000000000400686:
 	return
 __libc_csu_init_exit:

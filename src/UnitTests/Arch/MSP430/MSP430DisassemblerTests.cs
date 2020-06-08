@@ -23,6 +23,7 @@ using Reko.Arch.Msp430;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -33,7 +34,7 @@ namespace Reko.UnitTests.Arch.Tlcs
     {
         public MSP430DisassemblerTests()
         {
-            this.Architecture = new Msp430Architecture("msp430");
+            this.Architecture = new Msp430Architecture(new ServiceContainer(), "msp430");
             this.LoadAddress = Address.Ptr16(0x0100);
         }
 
@@ -92,7 +93,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void MSP430Dis_symbolic()
         {
-            AssertCode("rrc.w\t1234(pc)", "1010 3412");
+            AssertCode("rrc.w\t1236(pc)", "1010 3412");
         }
 
         [Test]
@@ -102,7 +103,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
-        public void MSP430Dis_sub_two_abs()
+        public void MSP430Dis_add_two_abs()
         {
             AssertCode("add.w\t&579C,&7778", "9252 9C57 7877");
         }
@@ -187,5 +188,18 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("br.w\t414C", "30404C41");
         }
+
+        [Test]
+        public void MSP430Dis_add_b_pcrel_pcrel()
+        {
+            AssertCode("add.b\t4768(pc),-08BC(pc)", "D050 6647 40F7");
+        }
+
+        [Test]
+        public void MSP430Dis_mov_imm()
+        {
+            AssertCode("mov.w\t#EEA0,r12", "3C40 A0EE");
+        }
+
     }
 }

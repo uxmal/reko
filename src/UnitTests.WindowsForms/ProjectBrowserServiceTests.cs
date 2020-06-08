@@ -200,6 +200,11 @@ namespace Reko.UnitTests.Gui.Windows
                 return new FakeTreeNode { Text = text };
             }
 
+            public void PerformAfterExpand(Reko.Gui.Controls.TreeViewEventArgs e)
+            {
+                AfterExpand?.Invoke(this, e);
+            }
+
             public void PerformBeforeExpand(Reko.Gui.Controls.TreeViewEventArgs e)
             {
                 BeforeExpand(this, e);
@@ -444,7 +449,7 @@ namespace Reko.UnitTests.Gui.Windows
             var mem = new MemoryArea(Address.Ptr32(0x12340000), new byte[0x1000]);
             var segmentMap = new SegmentMap(Address.Ptr32(0x12300000));
             segmentMap.AddSegment(mem, ".text", AccessMode.ReadExecute);
-            var arch = new Mock<ProcessorArchitecture>("mmix");
+            var arch = new Mock<ProcessorArchitecture>(sc, "mmix");
             arch.Object.Description = "Foo Processor";
             var platform = new DefaultPlatform(sc, arch.Object);
             this.program = new Program(segmentMap, arch.Object, platform);
@@ -463,9 +468,8 @@ namespace Reko.UnitTests.Gui.Windows
         {
             this.program.ImageMap.AddItemWithSize(
                 Address.Ptr32(address),
-                new ImageMapItem
+                new ImageMapItem(Address.Ptr32(address))
                 {
-                    Address = Address.Ptr32(address),
                     Size = 4,
                     DataType = PrimitiveType.Int32,
                 });

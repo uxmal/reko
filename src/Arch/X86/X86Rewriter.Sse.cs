@@ -101,7 +101,7 @@ namespace Reko.Arch.X86
         private void RewriteCvtToReal(PrimitiveType size)
         {
             var src = SrcOp(instrCur.Operands[instrCur.Operands.Length == 3 ? 2 : 1]);
-            var dst = SrcOp(instrCur.Operands[0]);
+            var dst = (Identifier) SrcOp(instrCur.Operands[0]);
             var tmp = binder.CreateTemporary(size);
             m.Assign(tmp, m.Cast(size, src));
             m.Assign(dst, m.Dpb(dst, tmp, 0));
@@ -202,7 +202,7 @@ namespace Reko.Arch.X86
         {
             var srcType = CreatePackedArrayType(elemType, instrCur.Operands[1].Width);
             var src = SrcOp(instrCur.Operands[1], srcType);
-            var dst = SrcOp(instrCur.Operands[0]);
+            var dst = (Identifier) SrcOp(instrCur.Operands[0]);
             var ret = binder.CreateTemporary(PrimitiveType.Byte);
             m.Assign(ret, host.PseudoProcedure(fnName, ret.DataType, src));
             m.Assign(dst, m.Dpb(dst, ret, 0));
@@ -371,23 +371,48 @@ namespace Reko.Arch.X86
                     SrcOp(instrCur.Operands[2])));
         }
 
-        private void RewriteScalarBinop(Func<Expression, Expression, Expression> fn, PrimitiveType size)
+        private void RewriteScalarBinop(Func<Expression, Expression, Expression> fn, PrimitiveType size, bool zeroExtend)
         {
             var dst = SrcOp(instrCur.Operands[0]);
             var tmp = binder.CreateTemporary(size);
+            Expression src1;
+            Expression src2;
             if (instrCur.Operands.Length == 3)
             {
-                var src1 = SrcOp(instrCur.Operands[1]);
-                var src2 = SrcOp(instrCur.Operands[2]);
-                src1 = m.Cast(size, src1);
-                src2 = m.Cast(size, src2);
-                m.Assign(tmp, fn(src1, src2));
-                m.Assign(dst, m.Dpb(dst, tmp, 0));
+                src1 = SrcOp(instrCur.Operands[1]);
+                src2 = SrcOp(instrCur.Operands[2]);
             }
             else
             {
-                m.Assign(tmp, fn(m.Cast(size, dst), SrcOp(instrCur.Operands[1])));
-                m.Assign(dst, m.Dpb(dst, tmp, 0));
+                src1 = dst;
+                src2 = SrcOp(instrCur.Operands[1]);
+            }
+            if (src1.DataType.BitSize != size.BitSize)
+                src1 = m.Cast(size, src1);
+            if (src2.DataType.BitSize != size.BitSize)
+                src2 = m.Cast(size, src2);
+            m.Assign(tmp, fn(src1, src2));
+
+            //$REVIEW: this does a DPB-ish operation.
+            var highBits = dst.DataType.BitSize - size.BitSize;
+            if (highBits > 0)
+            {
+                var dtHighPart = PrimitiveType.CreateWord(highBits);
+                Expression hi;
+                if (zeroExtend)
+                {
+                    hi = Constant.Zero(dtHighPart);
+                }
+                else
+                {
+                    hi = binder.CreateTemporary(dtHighPart);
+                    m.Assign(hi, m.Slice(dtHighPart, dst, size.BitSize));
+                }
+                m.Assign(dst, m.Seq(hi, tmp));
+            }
+            else
+            {
+                m.Assign(dst, tmp);
             }
         }
 
@@ -406,7 +431,7 @@ namespace Reko.Arch.X86
         private void RewriteSqrtsd()
         {
             var src = SrcOp(instrCur.Operands[1]);
-            var dst = SrcOp(instrCur.Operands[0]);
+            var dst = (Identifier) SrcOp(instrCur.Operands[0]);
             var tmp = binder.CreateTemporary(PrimitiveType.Real64);
             m.Assign(tmp, host.PseudoProcedure("__sqrt", PrimitiveType.Real64, src));
             m.Assign(dst, m.Dpb(dst, tmp, 0));
@@ -476,10 +501,17 @@ namespace Reko.Arch.X86
             Expression src1;
             Expression src2;
             Expression src3;
+            if (instrCur.Operands.Length == 3)
             {
                 src1 = SrcOp(instrCur.Operands[0]);
                 src2 = SrcOp(instrCur.Operands[1]);
                 src3 = SrcOp(instrCur.Operands[2]);
+            }
+            else
+            {
+                src1 = SrcOp(instrCur.Operands[0]);
+                src2 = src1;
+                src3 = SrcOp(instrCur.Operands[1]);
             }
             var tmp1 = binder.CreateTemporary(arrayType);
             var tmp2 = binder.CreateTemporary(arrayType);
@@ -521,7 +553,7 @@ namespace Reko.Arch.X86
             var rsrc = instrCur.Operands[1] as RegisterOperand;
             if (rdst != null && rsrc != null && rdst.Register.Number == rsrc.Register.Number)
             { // selfie!
-                m.Assign(orw.AluRegister(rdst), m.Cast(rdst.Width, Constant.Int32(0)));
+                m.Assign(orw.AluRegister(rdst), Constant.Zero(rdst.Width));
                 return;
             }
             var dst = this.SrcOp(instrCur.Operands[0]);

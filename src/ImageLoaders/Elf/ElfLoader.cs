@@ -256,14 +256,16 @@ namespace Reko.ImageLoaders.Elf
                 }
                 options["decoder"] = "nano";
                 break;
-            case ElfMachine.EM_BLACKFIN:
-                arch = "blackfin";
+            case ElfMachine.EM_BLACKFIN: arch = "blackfin"; break;
+            case ElfMachine.EM_MORPHOS_PPC: arch = "ppc-be-32"; break;
+            case ElfMachine.EM_PARISC:
+                arch = "paRisc";
+                options["WordSize"] = "32";
                 break;
-
-            case ElfMachine.EM_MORPHOS_PPC:
-                arch = "ppc-be-32";
+            case ElfMachine.EM_AVR32:
+            case ElfMachine.EM_AVR32a:
+                arch = "avr32";
                 break;
-
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machine));
             }
@@ -510,7 +512,7 @@ namespace Reko.ImageLoaders.Elf
         /// <param name="gotEnd"></param>
         public void ConstructGotEntries(Program program, SortedList<Address, ImageSymbol> symbols, Address gotStart, Address gotEnd, bool makeGlobals)
         {
-            DebugEx.Verbose(ElfImageLoader.trace, "== Constructing GOT entries ==");
+            ElfImageLoader.trace.Verbose("== Constructing GOT entries ==");
             var rdr = program.CreateImageReader(program.Architecture, gotStart);
             while (rdr.Address < gotEnd)
             {
@@ -525,7 +527,7 @@ namespace Reko.ImageLoaders.Elf
                     {
                         ImageSymbol gotSym = CreateGotSymbol(addrGot, symbol.Name);
                         symbols[addrGot] = gotSym;
-                        DebugEx.Verbose(ElfImageLoader.trace, "{0}+{1:X4}: Found GOT entry {2}, referring to symbol at {3}",
+                        ElfImageLoader.trace.Verbose("{0}+{1:X4}: Found GOT entry {2}, referring to symbol at {3}",
                             gotStart, addrGot - gotStart, gotSym, symbol);
                         if (symbol.Type == SymbolType.ExternalProcedure)
                         {
@@ -544,7 +546,7 @@ namespace Reko.ImageLoaders.Elf
                     // This GOT entry has no corresponding symbol. It's likely a global
                     // variable with no name.
                     ImageSymbol gotDataSym = ImageSymbol.Create(SymbolType.Data, this.Architecture, addrGot);
-                    DebugEx.Verbose(ElfImageLoader.trace, "{0}+{1:X4}: GOT entry with no symbol, assuming local data {2}",
+                    ElfImageLoader.trace.Verbose("{0}+{1:X4}: GOT entry with no symbol, assuming local data {2}",
                         gotStart, addrGot - gotStart, addrGot);
                     program.ImportReferences.Add(
                         addrGot,

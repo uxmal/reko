@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections;
@@ -218,28 +219,10 @@ namespace Reko.Arch.Sparc
             return GetEnumerator();
         }
 
-        private static HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-
-        //[Conditional("DEBUG")]
         public void EmitUnitTest()
         {
-            if (seen.Contains(instrCur.Mnemonic))
-                return;
-            seen.Add(instrCur.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var wInstr = r2.ReadUInt32();
-            Console.WriteLine("        [Test]");
-            Console.WriteLine("        public void SparcRw_" + dasm.Current.Mnemonic + "()");
-            Console.WriteLine("        {");
-            Console.Write($"            BuildTest(0x{wInstr:X8}");
-            Console.WriteLine(");\t// " + dasm.Current.ToString());
-            Console.WriteLine("            AssertCode(");
-            Console.WriteLine("                \"0|L--|{0}({1}): 1 instructions\",", instrCur.Address, instrCur.Length);
-            Console.WriteLine("                \"1|L--|@@@\");");
-            Console.WriteLine("        }");
-            Console.WriteLine("");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("SparcRw", instrCur, rdr, "");
         }
 
         private void EmitCc(Expression dst)

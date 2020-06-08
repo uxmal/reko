@@ -20,13 +20,13 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	ds_si_6 = SEQ(ds, 0x0200) (alias)
+	ds_si_6 = SEQ(ds, 0x200<16>) (alias)
 	ax_7 = fn0C00_0015(ds_si_6)
-	Mem8[ds:0x0202:word16] = ax_7
-	ds_si_10 = SEQ(ds, 0x0300) (alias)
+	Mem8[ds:0x202<16>:word16] = ax_7
+	ds_si_10 = SEQ(ds, 0x300<16>) (alias)
 	ax_11 = fn0C00_0015(ds_si_10)
 	al_12 = SLICE(ax_11, byte, 0) (alias)
-	Mem13[ds:0x0302:byte] = al_12
+	Mem13[ds:0x302<16>:byte] = al_12
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

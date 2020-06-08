@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace Reko.UnitTests.Arch.Mips
 
         public Mips16eDisassemblerTests()
         {
-            this.arch = new MipsBe32Architecture("mips-be-32");
+            this.arch = new MipsBe32Architecture(new ServiceContainer(), "mips-be-32");
             arch.LoadUserOptions(new Dictionary<string, object> { { "decoder", "mips16e" } });
             this.LoadAddress = Address.Ptr32(0x00100000);
         }

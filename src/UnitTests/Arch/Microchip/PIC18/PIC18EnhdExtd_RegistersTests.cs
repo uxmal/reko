@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work of:
@@ -28,6 +28,7 @@ using Reko.Arch.MicrochipPIC.PIC18;
 namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
 {
     using Common;
+    using System.ComponentModel.Design;
     using static Common.Sample;
 
     [TestFixture]
@@ -36,7 +37,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
 
         private PICArchitecture GetArch(string picName, PICExecMode mode = PICExecMode.Traditional)
         {
-            var arch = new PICArchitecture("pic") { Options = new PICArchitectureOptions(picName, mode) };
+            var arch = new PICArchitecture(new ServiceContainer(), "pic") { Options = new PICArchitectureOptions(picName, mode) };
             Assert.NotNull(arch);
             arch.CreatePICProcessorModel();
             return arch;

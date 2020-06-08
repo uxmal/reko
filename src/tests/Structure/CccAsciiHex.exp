@@ -8,7 +8,7 @@ l0C00_0000:
 	branch fn0C00_000A(al, out al_5) l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:
-	Mem11[ds:0x0300:byte] = al_5
+	Mem11[ds:0x300<16>:byte] = al_5
 	// succ:  l0C00_0009
 l0C00_0009:
 	return
@@ -25,7 +25,7 @@ l0C00_0000:
 	branch fn0C00_000A(al, out al_5) l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:
-	Mem11[ds:0x0300:byte] = al_5
+	Mem11[ds:0x300<16>:byte] = al_5
 	// succ:  l0C00_0009
 l0C00_0009:
 	return
@@ -38,33 +38,33 @@ bool fn0C00_000A(byte al, ptr16 & alOut)
 fn0C00_000A_entry:
 	// succ:  l0C00_000A
 l0C00_000A:
-	branch al <u 0x30 l0C00_0032
+	branch al <u 0x30<8> l0C00_0032
 	// succ:  l0C00_000E l0C00_0032
 l0C00_000E:
-	branch al <=u 0x39 l0C00_0022
+	branch al <=u 0x39<8> l0C00_0022
 	// succ:  l0C00_0012 l0C00_0022
 l0C00_0012:
-	branch al <u 0x41 l0C00_0032
+	branch al <u 0x41<8> l0C00_0032
 	// succ:  l0C00_0016 l0C00_0032
 l0C00_0016:
-	branch al <=u 0x46 l0C00_0022
+	branch al <=u 0x46<8> l0C00_0022
 	// succ:  l0C00_001A l0C00_0022
 l0C00_001A:
-	branch al <u 0x61 l0C00_0032
+	branch al <u 0x61<8> l0C00_0032
 	// succ:  l0C00_001E l0C00_0032
 l0C00_001E:
-	branch al >u 0x66 l0C00_0032
+	branch al >u 0x66<8> l0C00_0032
 	// succ:  l0C00_0022 l0C00_0032
 l0C00_0022:
-	byte al_19 = al - 0x30
-	branch al <u 0x3A l0C00_0030
+	byte al_19 = al - 0x30<8>
+	branch al <u 0x3A<8> l0C00_0030
 	// succ:  l0C00_0028 l0C00_0030
 l0C00_0028:
-	al_19 = al - 0x37
-	branch al <u 0x47 l0C00_0030
+	al_19 = al - 0x37<8>
+	branch al <u 0x47<8> l0C00_0030
 	// succ:  l0C00_002E l0C00_0030
 l0C00_002E:
-	al_19 = al - 0x57
+	al_19 = al - 0x57<8>
 	// succ:  l0C00_0030
 l0C00_0030:
 	alOut = al_19
@@ -82,7 +82,7 @@ bool fn0C00_000A(byte al, ptr16 & alOut)
 fn0C00_000A_entry:
 	// succ:  l0C00_000A
 l0C00_000A:
-	branch al <u 0x30 || al >u 0x39 && (al <u 0x41 || al >u 0x46 && (al <u 0x61 || al >u 0x66)) l0C00_0032
+	branch al <u 0x30<8> || al >u 0x39<8> && (al <u 0x41<8> || al >u 0x46<8> && (al <u 0x61<8> || al >u 0x66<8>)) l0C00_0032
 	goto l0C00_0022
 	// succ:  l0C00_0022 l0C00_0032
 l0C00_000E:
@@ -91,15 +91,15 @@ l0C00_0016:
 l0C00_001A:
 l0C00_001E:
 l0C00_0022:
-	byte al_19 = al - 0x30
-	branch al <u 0x3A l0C00_0030
+	byte al_19 = al - 0x30<8>
+	branch al <u 0x3A<8> l0C00_0030
 	// succ:  l0C00_0028 l0C00_0030
 l0C00_0028:
-	al_19 = al - 0x37
-	branch al <u 0x47 l0C00_0030
+	al_19 = al - 0x37<8>
+	branch al <u 0x47<8> l0C00_0030
 	// succ:  l0C00_002E l0C00_0030
 l0C00_002E:
-	al_19 = al - 0x57
+	al_19 = al - 0x57<8>
 	// succ:  l0C00_0030
 l0C00_0030:
 	alOut = al_19

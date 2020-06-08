@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -33,9 +33,9 @@ namespace Reko.Core.Serialization
     public class SerializedTypedef : SerializedType
     {
         [XmlAttribute("name")]
-        public string Name;
+        public string? Name;
 
-        public SerializedType DataType;
+        public SerializedType? DataType;
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {

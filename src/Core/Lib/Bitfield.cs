@@ -83,22 +83,22 @@ namespace Reko.Core.Lib
                 n = n << bitfield.Length | (int)((u >> bitfield.Position) & bitfield.Mask);
                 bitsTotal += bitfield.Length;
             }
-            n = n << (32 - bitsTotal);
-            n = n >> (32 - bitsTotal);
+            n <<= (32 - bitsTotal);
+            n >>= (32 - bitsTotal);
             return n;
         }
 
-        public static int ReadSignedFields(Bitfield[] fields, ulong ul)
+        public static long ReadSignedFields(Bitfield[] fields, ulong ul)
         {
-            int n = 0;
+            long n = 0;
             int bitsTotal = 0;
             foreach (var bitfield in fields)
             {
-                n = n << bitfield.Length | (int) ((ul >> bitfield.Position) & bitfield.Mask);
+                n = n << bitfield.Length | (long) ((ul >> bitfield.Position) & bitfield.Mask);
                 bitsTotal += bitfield.Length;
             }
-            n = n << (32 - bitsTotal);
-            n = n >> (32 - bitsTotal);
+            n <<= (64 - bitsTotal);
+            n >>= (64 - bitsTotal);
             return n;
         }
 

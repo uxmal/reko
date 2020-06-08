@@ -23,7 +23,6 @@ using System.Linq;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
 
@@ -41,14 +40,14 @@ namespace Reko.Analysis
     /// </remarks>
     public class IndirectCallRewriter
     {
-        private SsaState ssa;
-        private Program program;
-        private Procedure proc;
-        private IndirectCallTypeAscender asc;
-        private IndirectCallExpander expander;
-        private SsaIdentifierTransformer ssaIdTransformer;
-        private DecompilerEventListener eventListener;
-        private SsaMutator ssam;
+        private readonly SsaState ssa;
+        private readonly Program program;
+        private readonly Procedure proc;
+        private readonly IndirectCallTypeAscender asc;
+        private readonly IndirectCallExpander expander;
+        private readonly SsaIdentifierTransformer ssaIdTransformer;
+        private readonly DecompilerEventListener eventListener;
+        private readonly SsaMutator ssam;
 
         public IndirectCallRewriter(
             Program program,
@@ -155,7 +154,7 @@ namespace Reko.Analysis
     /// </summary>
     class IndirectCallExpander : InstructionTransformer
     {
-        private SsaState ssa;
+        private readonly SsaState ssa;
 
         public IndirectCallExpander(SsaState ssa)
         {
@@ -192,16 +191,14 @@ namespace Reko.Analysis
     /// </summary>
     class SsaIdentifierTransformer : InstructionTransformer
     {
-        private SsaState ssa;
-        private IStorageBinder binder;
-        private Statement stm;
-        private CallInstruction call;
-        private ArgumentTransformer argumentTransformer;
+        private readonly SsaState ssa;
+        private readonly ArgumentTransformer argumentTransformer;
+        private Statement? stm;
+        private CallInstruction? call;
 
         public SsaIdentifierTransformer(SsaState ssa)
         {
             this.ssa = ssa;
-            this.binder = ssa.Procedure.Frame;
             this.argumentTransformer = new ArgumentTransformer(this);
         }
 
@@ -217,7 +214,7 @@ namespace Reko.Analysis
         public override Instruction TransformAssignment(Assignment a)
         {
             a.Src = a.Src.Accept(this);
-            a.Dst = (Identifier)FindDefinedId(call, a.Dst.Storage);
+            a.Dst = (Identifier)FindDefinedId(call!, a.Dst.Storage);
             if (a.Dst == null)
                 return new SideEffect(a.Src);
             DefId(a.Dst, a.Src);
@@ -275,7 +272,7 @@ namespace Reko.Analysis
         {
             if (ssa.Identifiers.TryGetValue(id, out var sid))
             {
-                sid.Uses.Add(stm);
+                sid.Uses.Add(stm!);
             }
         }
 
@@ -297,7 +294,7 @@ namespace Reko.Analysis
 
         abstract class UsedIdsTransformer : InstructionTransformer
         {
-            SsaIdentifierTransformer outer;
+            private readonly SsaIdentifierTransformer outer;
 
             public UsedIdsTransformer(SsaIdentifierTransformer outer)
             {
@@ -310,7 +307,7 @@ namespace Reko.Analysis
             {
                 if (id is MemoryIdentifier memoryId)
                     return VisitMemoryIdentifier(memoryId);
-                var usedId = outer.FindUsedId(outer.call, id.Storage);
+                var usedId = outer.FindUsedId(outer.call!, id.Storage);
                 if (usedId != null)
                     usedId.Accept(outer);
                 return usedId ?? outer.InvalidArgument();
@@ -319,7 +316,7 @@ namespace Reko.Analysis
 
         class ArgumentTransformer : UsedIdsTransformer
         {
-            SsaIdentifierTransformer outer;
+            private readonly SsaIdentifierTransformer outer;
 
             public ArgumentTransformer(SsaIdentifierTransformer outer) :
                 base(outer)
@@ -332,14 +329,14 @@ namespace Reko.Analysis
                 var sid = outer.ssa.Identifiers.Add(
                     id, outer.stm, null, false);
                 sid.DefStatement = null;
-                sid.Uses.Add(outer.stm);
+                sid.Uses.Add(outer.stm!);
                 return sid.Identifier;
             }
         }
 
         class DestinationTransformer : UsedIdsTransformer
         {
-            SsaIdentifierTransformer outer;
+            private readonly SsaIdentifierTransformer outer;
 
             public DestinationTransformer(SsaIdentifierTransformer outer) :
                 base(outer)

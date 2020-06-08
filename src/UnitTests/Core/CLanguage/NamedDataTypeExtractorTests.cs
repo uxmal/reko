@@ -29,6 +29,7 @@ using System.Linq;
 using System.Text;
 using Reko.UnitTests.Mocks;
 using Reko.Core;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Core.CLanguage
 {
@@ -43,8 +44,9 @@ namespace Reko.UnitTests.Core.CLanguage
         [SetUp]
         public void Setup()
         {
-            this.arch = new FakeArchitecture();
-            this.platform = new DefaultPlatform(null, arch);
+            var sc = new ServiceContainer();
+            this.arch = new FakeArchitecture(sc);
+            this.platform = new DefaultPlatform(sc, arch);
             symbolTable = new SymbolTable(platform);
         }
 
@@ -272,6 +274,30 @@ namespace Reko.UnitTests.Core.CLanguage
                 });
             Assert.AreEqual("ref(ptr(prim(Character,1)))",
                 nt.DataType.ToString());
+        }
+
+        [Test]
+        public void NamedDataTypeExtractor_short_unsigned_int()
+        {
+            Run(new[] {
+                SType(CTokenType.Short),
+                SType(CTokenType.Unsigned),
+                SType(CTokenType.Int),
+                },
+                new IdDeclarator { Name = "size_t" });
+            Assert.AreEqual("prim(UnsignedInt,2)", nt.DataType.ToString());
+        }
+
+        [Test]
+        public void NamedDataTypeExtractor_unsigned_short_int()
+        {
+            Run(new[] {
+                SType(CTokenType.Unsigned),
+                SType(CTokenType.Short),
+                SType(CTokenType.Int),
+                },
+                new IdDeclarator { Name = "size_t" });
+            Assert.AreEqual("prim(UnsignedInt,2)", nt.DataType.ToString());
         }
     }
 }
