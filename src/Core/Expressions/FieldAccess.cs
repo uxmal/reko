@@ -41,8 +41,8 @@ namespace Reko.Core.Expressions
 			this.Structure = expr; this.Field = field;
 		}
 
-        public Expression Structure { get; private set; }
-        public Field Field { get; private set; }
+        public Expression Structure { get; }
+        public Field Field { get; }
 
         public override IEnumerable<Expression> Children
         {

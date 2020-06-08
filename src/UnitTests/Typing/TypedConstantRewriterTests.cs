@@ -178,7 +178,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        public void Tcr_RewriteDereferecedFirstStructField()
+        public void Tcr_RewriteDereferencedFirstStructField()
         {
             Given_TypedConstantRewriter();
             var str = new StructureType

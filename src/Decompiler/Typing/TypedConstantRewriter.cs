@@ -286,7 +286,7 @@ namespace Reko.Typing
                     return ReadNullTerminatedString(c, charType);
                 }
                 e = RewriteGlobalFieldAccess(dt, c.ToInt32());
-                e = e.Accept(fge);
+                //e = e.Accept(fge);
             }
 			return e;
 		}
@@ -372,7 +372,7 @@ namespace Reko.Typing
             if (dereferenced || f.Offset != offset)
             {
                 var ceb = new ComplexExpressionBuilder(
-                    null, null, globals, null, offset);
+                    program, null, globals, null, offset);
                 return ceb.BuildComplex(dereferenced);
             }
             //$REVIEW: We can't use ComplexExpresionBuilder to rewrite pointers to
