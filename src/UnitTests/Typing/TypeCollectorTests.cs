@@ -236,7 +236,6 @@ namespace Reko.UnitTests.Typing
             }, "Typing/TycoReg00300.txt");
         }
 
-
         [Test]
         [Category(Categories.IntegrationTests)]
         public void TycoCallFunctionWithArraySize()

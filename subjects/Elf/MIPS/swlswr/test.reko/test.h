@@ -45,9 +45,6 @@ Eq_126: (struct "Eq_126" (0 Eq_134 t0000) (1 word32 dw0001) (4 byte b0004))
 	T_133 (in calloc(1<i32>, 5<i32>) : (ptr32 void))
 	T_152 (in r2_43 : word32)
 	T_154 (in r2_52 : word32)
-Eq_127: (fn (ptr32 Eq_126) (Eq_119, Eq_119))
-	T_127 (in calloc : ptr32)
-	T_128 (in signature of calloc : void)
 Eq_134: (union "Eq_134" (byte u0) (word32 u1))
 	T_134 (in dwLoc14 : word32)
 	T_137 (in Mem45[r2_38 + 0<32>:word32] : word32)
@@ -573,11 +570,11 @@ T_126: (in r2_38 : (ptr32 Eq_126))
   OrigDataType: (ptr32 (struct (0 T_134 t0000) (1 T_151 t0001) (4 T_143 t0004)))
 T_127: (in calloc : ptr32)
   Class: Eq_127
-  DataType: (ptr32 Eq_127)
-  OrigDataType: (ptr32 (fn T_133 (T_131, T_132)))
+  DataType: ptr32
+  OrigDataType: ptr32
 T_128: (in signature of calloc : void)
   Class: Eq_127
-  DataType: (ptr32 Eq_127)
+  DataType: ptr32
   OrigDataType: 
 T_129: (in num : size_t)
   Class: Eq_119
@@ -1001,8 +998,6 @@ typedef struct Eq_126 {
 	word32 dw0001;	// 1
 	byte b0004;	// 4
 } Eq_126;
-
-typedef Eq_126 * (Eq_127)(Eq_119, Eq_119);
 
 typedef union Eq_134 {
 	byte u0;

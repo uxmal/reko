@@ -30,9 +30,6 @@ Eq_22: (fn void ())
 Eq_30: (fn void ())
 	T_30 (in __hlt : ptr64)
 	T_31 (in signature of __hlt : void)
-Eq_42: (fn (ptr64 void) (Eq_44, Eq_44))
-	T_42 (in calloc : ptr64)
-	T_43 (in signature of calloc : void)
 Eq_44: (union "Eq_44" (int64 u0) (size_t u1))
 	T_44 (in num : size_t)
 	T_45 (in size : size_t)
@@ -211,11 +208,11 @@ T_41: (in edi : word32)
   OrigDataType: word32
 T_42: (in calloc : ptr64)
   Class: Eq_42
-  DataType: (ptr64 Eq_42)
-  OrigDataType: (ptr64 (fn T_48 (T_46, T_47)))
+  DataType: ptr64
+  OrigDataType: ptr64
 T_43: (in signature of calloc : void)
   Class: Eq_42
-  DataType: (ptr64 Eq_42)
+  DataType: ptr64
   OrigDataType: 
 T_44: (in num : size_t)
   Class: Eq_44
@@ -286,8 +283,6 @@ typedef void (Eq_21)();
 typedef void (Eq_22)();
 
 typedef void (Eq_30)();
-
-typedef void (Eq_42)(Eq_44, Eq_44);
 
 typedef union Eq_44 {
 	int64 u0;

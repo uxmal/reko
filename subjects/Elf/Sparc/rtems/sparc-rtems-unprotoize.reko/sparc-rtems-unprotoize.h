@@ -1046,10 +1046,6 @@ Eq_136: va_list
 Eq_145: (fn (ptr32 char) ((ptr32 char)))
 	T_145 (in strerror : ptr32)
 	T_146 (in signature of strerror : void)
-Eq_154: (fn (ptr32 void) (Eq_127))
-	T_154 (in malloc : ptr32)
-	T_155 (in signature of malloc : void)
-	T_184 (in malloc : ptr32)
 Eq_166: (fn Eq_127 (Eq_127, ptr32, (ptr32 Eq_130), (ptr32 Eq_131)))
 	T_166 (in notice : ptr32)
 	T_167 (in signature of notice : void)
@@ -3570,11 +3566,11 @@ T_153: (in i6Out : ptr32)
   OrigDataType: ptr32
 T_154: (in malloc : ptr32)
   Class: Eq_154
-  DataType: (ptr32 Eq_154)
-  OrigDataType: (ptr32 (fn T_157 (T_150)))
+  DataType: ptr32
+  OrigDataType: ptr32
 T_155: (in signature of malloc : void)
   Class: Eq_154
-  DataType: (ptr32 Eq_154)
+  DataType: ptr32
   OrigDataType: 
 T_156: (in size : size_t)
   Class: Eq_127
@@ -3690,10 +3686,10 @@ T_183: (in o0 == 0<32> : bool)
   OrigDataType: bool
 T_184: (in malloc : ptr32)
   Class: Eq_154
-  DataType: (ptr32 Eq_154)
-  OrigDataType: (ptr32 (fn T_185 (T_178)))
+  DataType: ptr32
+  OrigDataType: ptr32
 T_185: (in malloc(o1) : (ptr32 void))
-  Class: Eq_157
+  Class: Eq_185
   DataType: (ptr32 void)
   OrigDataType: (ptr32 void)
 T_186: (in cond(malloc(o1)) : byte)
@@ -35758,8 +35754,6 @@ typedef FILE Eq_134;
 typedef va_list Eq_136;
 
 typedef char * (Eq_145)(char *);
-
-typedef void (Eq_154)(Eq_127);
 
 typedef Eq_127 (Eq_166)(Eq_127, ptr32, Eq_130 *, Eq_131 *);
 

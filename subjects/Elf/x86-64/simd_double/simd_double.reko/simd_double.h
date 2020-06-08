@@ -55,9 +55,6 @@ Eq_80: (union "Eq_80" (ui64 u0) (size_t u1))
 	T_125 (in 0x2000<64> : ui64)
 	T_130 (in 0x2000<64> : ui64)
 	T_135 (in 0x2000<64> : ui64)
-Eq_87: (fn (ptr64 void) (Eq_80))
-	T_87 (in malloc : ptr64)
-	T_88 (in signature of malloc : void)
 Eq_103: (fn void ((ptr64 (arr real64))))
 	T_103 (in free : ptr64)
 	T_104 (in signature of free : void)
@@ -472,11 +469,11 @@ T_86: (in rsi == 2<64> : bool)
   OrigDataType: bool
 T_87: (in malloc : ptr64)
   Class: Eq_87
-  DataType: (ptr64 Eq_87)
-  OrigDataType: (ptr64 (fn T_90 (T_80)))
+  DataType: ptr64
+  OrigDataType: ptr64
 T_88: (in signature of malloc : void)
   Class: Eq_87
-  DataType: (ptr64 Eq_87)
+  DataType: ptr64
   OrigDataType: 
 T_89: (in size : size_t)
   Class: Eq_80
@@ -1321,8 +1318,6 @@ typedef union Eq_80 {
 	ui64 u0;
 	size_t u1;
 } Eq_80;
-
-typedef void (Eq_87)(Eq_80);
 
 typedef void (Eq_103)(real64 *[]);
 

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <characteristics xmlns="http://schemata.jklnet.org/Decompiler">
   <entry name="abort">
     <characteristics>
@@ -54,5 +54,15 @@
     <characterictics>
       <varargs>Reko.Libraries.Libc.PrintfFormatParser,Reko.Libraries.Libc</varargs>
     </characterictics>
+  </entry>
+  <entry name="malloc">
+    <characteristics>
+      <allocator>true</allocator>
+    </characteristics>
+  </entry>
+  <entry name="calloc">
+    <characteristics>
+      <allocator>true</allocator>
+    </characteristics>
   </entry>
 </characteristics>

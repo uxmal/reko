@@ -130,6 +130,19 @@ namespace Reko.Typing
 
         public void FunctionTrait(Expression function, int funcPtrBitSize, TypeVariable ret, params TypeVariable[] actuals)
         {
+            if (function is ProcedureConstant pc &&
+                pc.Procedure is ExternalProcedure ep &&
+                ep.Characteristics != null &&
+                ep.Characteristics.Allocator)
+            {
+                // Allocation sites mustn't be tied to other allocation sites. Don't mutate
+                // the existing signature. 
+                //$TODO: In fact, no user- or environment-provided function types should
+                // ever merge new FunctionTypes into the existing signature; the existing 
+                // signature should be treated as correct.
+                return;
+            }
+
             Identifier[] parameters = actuals
                 .Select(a => new Identifier("", a, null!))
                 .ToArray();

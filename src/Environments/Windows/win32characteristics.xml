@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <characteristics xmlns="http://schemata.jklnet.org/Decompiler">
   <entry name="_amsg_exit">
     <characteristics>
@@ -42,4 +42,15 @@
       <varargs>Reko.Environments.Windows.MsWPrintfFormatParser,Reko.Environments.Windows</varargs>
     </characteristics>
   </entry>
+  <entry name="malloc">
+    <characteristics>
+      <allocator>true</allocator>
+    </characteristics>
+  </entry>
+  <entry name="calloc">
+    <characteristics>
+      <allocator>true</allocator>
+    </characteristics>
+  </entry>
+
 </characteristics>
