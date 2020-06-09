@@ -110,7 +110,7 @@ namespace Reko.ImageLoaders.WebAssembly
         public override WasmInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingDecoder("WasmDis", this.addr, rdr, message);
+            testGenSvc?.ReportMissingDecoder("WasmDis", this.addr, this.rdr, message);
             return CreateInvalidInstruction();
         }
 
@@ -295,6 +295,5 @@ namespace Reko.ImageLoaders.WebAssembly
             { Mnemonic.f32_reinterpret_i32, "" },
             { Mnemonic.f64_reinterpret_i64, "" },
         };
-
     }
 }

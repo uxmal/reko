@@ -1,0 +1,300 @@
+// readonly_builtin
+// Return size: 0
+define readonly_builtin
+readonly_builtin_entry:
+	r11 = fp
+	// succ:  l400000000010C740
+l400000000010C740:
+readonly_builtin_exit:
+
+
+// export_builtin
+// Return size: 0
+define export_builtin
+export_builtin_entry:
+	r11 = fp
+	// succ:  l400000000010C780
+l400000000010C780:
+export_builtin_exit:
+
+
+// shift_builtin
+// Return size: 0
+define shift_builtin
+shift_builtin_entry:
+	r11 = fp
+	// succ:  l400000000010C7C0
+l400000000010C7C0:
+shift_builtin_exit:
+
+
+// source_builtin
+// Return size: 0
+define source_builtin
+source_builtin_entry:
+	r11 = fp
+	// succ:  l400000000010CCC0
+l400000000010CCC0:
+source_builtin_exit:
+
+
+// suspend_builtin
+// Return size: 0
+define suspend_builtin
+suspend_builtin_entry:
+	r11 = fp
+	// succ:  l400000000010D580
+l400000000010D580:
+suspend_builtin_exit:
+
+
+// test_builtin
+// Return size: 0
+define test_builtin
+test_builtin_entry:
+	r11 = fp
+	// succ:  l400000000010D800
+l400000000010D800:
+test_builtin_exit:
+
+
+// times_builtin
+// Return size: 0
+define times_builtin
+times_builtin_entry:
+	r11 = fp
+	// succ:  l400000000010D9C0
+l400000000010D9C0:
+times_builtin_exit:
+
+
+// trap_builtin
+// Return size: 0
+define trap_builtin
+trap_builtin_entry:
+	r11 = fp
+	// succ:  l400000000010DF80
+l400000000010DF80:
+trap_builtin_exit:
+
+
+// describe_command
+// Return size: 0
+define describe_command
+describe_command_entry:
+	r11 = fp
+	// succ:  l400000000010E880
+l400000000010E880:
+describe_command_exit:
+
+
+// type_builtin
+// Return size: 0
+define type_builtin
+type_builtin_entry:
+	r11 = fp
+	// succ:  l400000000010F580
+l400000000010F580:
+type_builtin_exit:
+
+
+// ulimit_builtin
+// Return size: 0
+define ulimit_builtin
+ulimit_builtin_entry:
+	r11 = fp
+	// succ:  l4000000000110080
+l4000000000110080:
+ulimit_builtin_exit:
+
+
+// parse_symbolic_mode
+// Return size: 0
+define parse_symbolic_mode
+parse_symbolic_mode_entry:
+	r11 = fp
+	// succ:  l4000000000111440
+l4000000000111440:
+parse_symbolic_mode_exit:
+
+
+// umask_builtin
+// Return size: 0
+define umask_builtin
+umask_builtin_entry:
+	r11 = fp
+	// succ:  l4000000000111900
+l4000000000111900:
+umask_builtin_exit:
+
+
+// wait_builtin
+// Return size: 0
+define wait_builtin
+wait_builtin_entry:
+	r11 = fp
+	// succ:  l4000000000111D80
+l4000000000111D80:
+wait_builtin_exit:
+
+
+// getopts_reset
+// Return size: 0
+define getopts_reset
+getopts_reset_entry:
+	r11 = fp
+	// succ:  l4000000000112580
+l4000000000112580:
+getopts_reset_exit:
+
+
+// getopts_builtin
+// Return size: 0
+define getopts_builtin
+getopts_builtin_entry:
+	r11 = fp
+	// succ:  l40000000001125C0
+l40000000001125C0:
+getopts_builtin_exit:
+
+
+// set_login_shell
+// Return size: 0
+define set_login_shell
+set_login_shell_entry:
+	r11 = fp
+	// succ:  l4000000000113000
+l4000000000113000:
+set_login_shell_exit:
+
+
+// reset_shopt_options
+// Return size: 0
+define reset_shopt_options
+reset_shopt_options_entry:
+	r11 = fp
+	// succ:  l40000000001138C0
+l40000000001138C0:
+reset_shopt_options_exit:
+
+
+// get_shopt_options
+// Return size: 0
+define get_shopt_options
+get_shopt_options_entry:
+	r11 = fp
+	// succ:  l4000000000113A40
+l4000000000113A40:
+get_shopt_options_exit:
+
+
+// shopt_listopt
+// Return size: 0
+define shopt_listopt
+shopt_listopt_entry:
+	r11 = fp
+	// succ:  l4000000000113BC0
+l4000000000113BC0:
+shopt_listopt_exit:
+
+
+// set_bashopts
+// Return size: 0
+define set_bashopts
+set_bashopts_entry:
+	r11 = fp
+	// succ:  l4000000000113D00
+l4000000000113D00:
+set_bashopts_exit:
+
+
+// shopt_setopt
+// Return size: 0
+define shopt_setopt
+shopt_setopt_entry:
+	r11 = fp
+	// succ:  l40000000001142C0
+l40000000001142C0:
+shopt_setopt_exit:
+
+
+// shopt_builtin
+// Return size: 0
+define shopt_builtin
+shopt_builtin_entry:
+	r11 = fp
+	// succ:  l4000000000114380
+l4000000000114380:
+shopt_builtin_exit:
+
+
+// parse_bashopts
+// Return size: 0
+define parse_bashopts
+parse_bashopts_entry:
+	r11 = fp
+	// succ:  l4000000000114C80
+l4000000000114C80:
+parse_bashopts_exit:
+
+
+// initialize_bashopts
+// Return size: 0
+define initialize_bashopts
+initialize_bashopts_entry:
+	r11 = fp
+	// succ:  l4000000000114DC0
+l4000000000114DC0:
+initialize_bashopts_exit:
+
+
+// printf_builtin
+// Return size: 0
+define printf_builtin
+printf_builtin_entry:
+	r11 = fp
+	// succ:  l40000000001169C0
+l40000000001169C0:
+printf_builtin_exit:
+
+
+// sh_getopt
+// Return size: 0
+define sh_getopt
+sh_getopt_entry:
+	r11 = fp
+	// succ:  l4000000000119D80
+l4000000000119D80:
+sh_getopt_exit:
+
+
+// sh_getopt_restore_state
+// Return size: 0
+define sh_getopt_restore_state
+sh_getopt_restore_state_entry:
+	r11 = fp
+	// succ:  l400000000011A440
+l400000000011A440:
+sh_getopt_restore_state_exit:
+
+
+// internal_getopt
+// Return size: 0
+define internal_getopt
+internal_getopt_entry:
+	r11 = fp
+	// succ:  l400000000011A4C0
+l400000000011A4C0:
+internal_getopt_exit:
+
+
+// reset_internal_getopt
+// Return size: 0
+define reset_internal_getopt
+reset_internal_getopt_entry:
+	r11 = fp
+	// succ:  l400000000011AE80
+l400000000011AE80:
+reset_internal_getopt_exit:
+
+

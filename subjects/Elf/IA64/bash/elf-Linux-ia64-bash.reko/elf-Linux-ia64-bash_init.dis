@@ -1,0 +1,10 @@
+// _init
+// Return size: 0
+define _init
+_init_entry:
+	r11 = fp
+	// succ:  l4000000000019230
+l4000000000019230:
+_init_exit:
+
+

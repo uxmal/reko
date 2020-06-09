@@ -1,0 +1,370 @@
+// posix_readline_initialize
+// Return size: 0
+define posix_readline_initialize
+posix_readline_initialize_entry:
+	r11 = fp
+	// succ:  l40000000000D4F40
+l40000000000D4F40:
+posix_readline_initialize_exit:
+
+
+// reset_completer_word_break_chars
+// Return size: 0
+define reset_completer_word_break_chars
+reset_completer_word_break_chars_entry:
+	r11 = fp
+	// succ:  l40000000000D5040
+l40000000000D5040:
+reset_completer_word_break_chars_exit:
+
+
+// enable_hostname_completion
+// Return size: 0
+define enable_hostname_completion
+enable_hostname_completion_entry:
+	r11 = fp
+	// succ:  l40000000000D5240
+l40000000000D5240:
+enable_hostname_completion_exit:
+
+
+// initialize_readline
+// Return size: 0
+define initialize_readline
+initialize_readline_entry:
+	r11 = fp
+	// succ:  l40000000000D56C0
+l40000000000D56C0:
+initialize_readline_exit:
+
+
+// bashline_reinitialize
+// Return size: 0
+define bashline_reinitialize
+bashline_reinitialize_entry:
+	r11 = fp
+	// succ:  l40000000000D6A80
+l40000000000D6A80:
+bashline_reinitialize_exit:
+
+
+// bashline_reset
+// Return size: 0
+define bashline_reset
+bashline_reset_entry:
+	r11 = fp
+	// succ:  l40000000000D6AC0
+l40000000000D6AC0:
+bashline_reset_exit:
+
+
+// bash_re_edit
+// Return size: 0
+define bash_re_edit
+bash_re_edit_entry:
+	r11 = fp
+	// succ:  l40000000000D6C00
+l40000000000D6C00:
+bash_re_edit_exit:
+
+
+// get_hostname_list
+// Return size: 0
+define get_hostname_list
+get_hostname_list_entry:
+	r11 = fp
+	// succ:  l40000000000D6D40
+l40000000000D6D40:
+get_hostname_list_exit:
+
+
+// clear_hostname_list
+// Return size: 0
+define clear_hostname_list
+clear_hostname_list_entry:
+	r11 = fp
+	// succ:  l40000000000D6E00
+l40000000000D6E00:
+clear_hostname_list_exit:
+
+
+// bash_default_completion
+// Return size: 0
+define bash_default_completion
+bash_default_completion_entry:
+	r11 = fp
+	// succ:  l40000000000D6F00
+l40000000000D6F00:
+bash_default_completion_exit:
+
+
+// bash_servicename_completion_function
+// Return size: 0
+define bash_servicename_completion_function
+bash_servicename_completion_function_entry:
+	r11 = fp
+	// succ:  l40000000000D8280
+l40000000000D8280:
+bash_servicename_completion_function_exit:
+
+
+// bash_groupname_completion_function
+// Return size: 0
+define bash_groupname_completion_function
+bash_groupname_completion_function_entry:
+	r11 = fp
+	// succ:  l40000000000D8640
+l40000000000D8640:
+bash_groupname_completion_function_exit:
+
+
+// set_directory_hook
+// Return size: 0
+define set_directory_hook
+set_directory_hook_entry:
+	r11 = fp
+	// succ:  l40000000000D88C0
+l40000000000D88C0:
+set_directory_hook_exit:
+
+
+// bind_keyseq_to_unix_command
+// Return size: 0
+define bind_keyseq_to_unix_command
+bind_keyseq_to_unix_command_entry:
+	r11 = fp
+	// succ:  l40000000000D8940
+l40000000000D8940:
+bind_keyseq_to_unix_command_exit:
+
+
+// bash_directory_completion_matches
+// Return size: 0
+define bash_directory_completion_matches
+bash_directory_completion_matches_entry:
+	r11 = fp
+	// succ:  l40000000000D8C40
+l40000000000D8C40:
+bash_directory_completion_matches_exit:
+
+
+// bash_dequote_text
+// Return size: 0
+define bash_dequote_text
+bash_dequote_text_entry:
+	r11 = fp
+	// succ:  l40000000000D8D80
+l40000000000D8D80:
+bash_dequote_text_exit:
+
+
+// list_reverse
+// Return size: 0
+define list_reverse
+list_reverse_entry:
+	r11 = fp
+	// succ:  l40000000000D8E00
+l40000000000D8E00:
+list_reverse_exit:
+
+
+// list_length
+// Return size: 0
+define list_length
+list_length_entry:
+	r11 = fp
+	// succ:  l40000000000D8EC0
+l40000000000D8EC0:
+list_length_exit:
+
+
+// list_append
+// Return size: 0
+define list_append
+list_append_entry:
+	r11 = fp
+	// succ:  l40000000000D8F40
+l40000000000D8F40:
+list_append_exit:
+
+
+// find_string_in_alist
+// Return size: 0
+define find_string_in_alist
+find_string_in_alist_entry:
+	r11 = fp
+	// succ:  l40000000000D8FC0
+l40000000000D8FC0:
+find_string_in_alist_exit:
+
+
+// find_token_in_alist
+// Return size: 0
+define find_token_in_alist
+find_token_in_alist_entry:
+	r11 = fp
+	// succ:  l40000000000D9140
+l40000000000D9140:
+find_token_in_alist_exit:
+
+
+// find_index_in_alist
+// Return size: 0
+define find_index_in_alist
+find_index_in_alist_entry:
+	r11 = fp
+	// succ:  l40000000000D9280
+l40000000000D9280:
+find_index_in_alist_exit:
+
+
+// substring
+// Return size: 0
+define substring
+substring_entry:
+	r11 = fp
+	// succ:  l40000000000D9400
+l40000000000D9400:
+substring_exit:
+
+
+// strsub
+// Return size: 0
+define strsub
+strsub_entry:
+	r11 = fp
+	// succ:  l40000000000D94C0
+l40000000000D94C0:
+strsub_exit:
+
+
+// strcreplace
+// Return size: 0
+define strcreplace
+strcreplace_entry:
+	r11 = fp
+	// succ:  l40000000000D9880
+l40000000000D9880:
+strcreplace_exit:
+
+
+// strip_trailing
+// Return size: 0
+define strip_trailing
+strip_trailing_entry:
+	r11 = fp
+	// succ:  l40000000000D9D80
+l40000000000D9D80:
+strip_trailing_exit:
+
+
+// xbcopy
+// Return size: 0
+define xbcopy
+xbcopy_entry:
+	r11 = fp
+	// succ:  l40000000000D9E80
+l40000000000D9E80:
+xbcopy_exit:
+
+
+// set_default_locale
+// Return size: 0
+define set_default_locale
+set_default_locale_entry:
+	r11 = fp
+	// succ:  l40000000000DA140
+l40000000000DA140:
+set_default_locale_exit:
+
+
+// set_default_locale_vars
+// Return size: 0
+define set_default_locale_vars
+set_default_locale_vars_entry:
+	r11 = fp
+	// succ:  l40000000000DA240
+l40000000000DA240:
+set_default_locale_vars_exit:
+
+
+// get_locale_var
+// Return size: 0
+define get_locale_var
+get_locale_var_entry:
+	r11 = fp
+	// succ:  l40000000000DA840
+l40000000000DA840:
+get_locale_var_exit:
+
+
+// set_lang
+// Return size: 0
+define set_lang
+set_lang_entry:
+	r11 = fp
+	// succ:  l40000000000DABC0
+l40000000000DABC0:
+set_lang_exit:
+
+
+// set_locale_var
+// Return size: 0
+define set_locale_var
+set_locale_var_entry:
+	r11 = fp
+	// succ:  l40000000000DAD40
+l40000000000DAD40:
+set_locale_var_exit:
+
+
+// set_default_lang
+// Return size: 0
+define set_default_lang
+set_default_lang_entry:
+	r11 = fp
+	// succ:  l40000000000DB800
+l40000000000DB800:
+set_default_lang_exit:
+
+
+// localetrans
+// Return size: 0
+define localetrans
+localetrans_entry:
+	r11 = fp
+	// succ:  l40000000000DB8C0
+l40000000000DB8C0:
+localetrans_exit:
+
+
+// mk_msgstr
+// Return size: 0
+define mk_msgstr
+mk_msgstr_entry:
+	r11 = fp
+	// succ:  l40000000000DBC80
+l40000000000DBC80:
+mk_msgstr_exit:
+
+
+// localeexpand
+// Return size: 0
+define localeexpand
+localeexpand_entry:
+	r11 = fp
+	// succ:  l40000000000DBF80
+l40000000000DBF80:
+localeexpand_exit:
+
+
+// file_status
+// Return size: 0
+define file_status
+file_status_entry:
+	r11 = fp
+	// succ:  l40000000000DC400
+l40000000000DC400:
+file_status_exit:
+
+

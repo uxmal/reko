@@ -1,0 +1,710 @@
+// timeval_to_secs
+// Return size: 0
+define timeval_to_secs
+timeval_to_secs_entry:
+	r11 = fp
+	// succ:  l400000000012C500
+l400000000012C500:
+timeval_to_secs_exit:
+
+
+// print_timeval
+// Return size: 0
+define print_timeval
+print_timeval_entry:
+	r11 = fp
+	// succ:  l400000000012C680
+l400000000012C680:
+print_timeval_exit:
+
+
+// sh_makepath
+// Return size: 0
+define sh_makepath
+sh_makepath_entry:
+	r11 = fp
+	// succ:  l400000000012C8C0
+l400000000012C8C0:
+sh_makepath_exit:
+
+
+// sh_canonpath
+// Return size: 0
+define sh_canonpath
+sh_canonpath_entry:
+	r11 = fp
+	// succ:  l400000000012CE40
+l400000000012CE40:
+sh_canonpath_exit:
+
+
+// sh_physpath
+// Return size: 0
+define sh_physpath
+sh_physpath_entry:
+	r11 = fp
+	// succ:  l400000000012D540
+l400000000012D540:
+sh_physpath_exit:
+
+
+// sh_realpath
+// Return size: 0
+define sh_realpath
+sh_realpath_entry:
+	r11 = fp
+	// succ:  l400000000012DF80
+l400000000012DF80:
+sh_realpath_exit:
+
+
+// sh_mktmpname
+// Return size: 0
+define sh_mktmpname
+sh_mktmpname_entry:
+	r11 = fp
+	// succ:  l400000000012E4C0
+l400000000012E4C0:
+sh_mktmpname_exit:
+
+
+// sh_mktmpfd
+// Return size: 0
+define sh_mktmpfd
+sh_mktmpfd_entry:
+	r11 = fp
+	// succ:  l400000000012E700
+l400000000012E700:
+sh_mktmpfd_exit:
+
+
+// sh_mktmpfp
+// Return size: 0
+define sh_mktmpfp
+sh_mktmpfp_entry:
+	r11 = fp
+	// succ:  l400000000012EA00
+l400000000012EA00:
+sh_mktmpfp_exit:
+
+
+// strlist_create
+// Return size: 0
+define strlist_create
+strlist_create_entry:
+	r11 = fp
+	// succ:  l400000000012EB40
+l400000000012EB40:
+strlist_create_exit:
+
+
+// strlist_resize
+// Return size: 0
+define strlist_resize
+strlist_resize_entry:
+	r11 = fp
+	// succ:  l400000000012ECC0
+l400000000012ECC0:
+strlist_resize_exit:
+
+
+// strlist_flush
+// Return size: 0
+define strlist_flush
+strlist_flush_entry:
+	r11 = fp
+	// succ:  l400000000012EE40
+l400000000012EE40:
+strlist_flush_exit:
+
+
+// strlist_dispose
+// Return size: 0
+define strlist_dispose
+strlist_dispose_entry:
+	r11 = fp
+	// succ:  l400000000012EEC0
+l400000000012EEC0:
+strlist_dispose_exit:
+
+
+// strlist_remove
+// Return size: 0
+define strlist_remove
+strlist_remove_entry:
+	r11 = fp
+	// succ:  l400000000012EF80
+l400000000012EF80:
+strlist_remove_exit:
+
+
+// strlist_copy
+// Return size: 0
+define strlist_copy
+strlist_copy_entry:
+	r11 = fp
+	// succ:  l400000000012F080
+l400000000012F080:
+strlist_copy_exit:
+
+
+// strlist_merge
+// Return size: 0
+define strlist_merge
+strlist_merge_entry:
+	r11 = fp
+	// succ:  l400000000012F280
+l400000000012F280:
+strlist_merge_exit:
+
+
+// strlist_append
+// Return size: 0
+define strlist_append
+strlist_append_entry:
+	r11 = fp
+	// succ:  l400000000012F540
+l400000000012F540:
+strlist_append_exit:
+
+
+// strlist_prefix_suffix
+// Return size: 0
+define strlist_prefix_suffix
+strlist_prefix_suffix_entry:
+	r11 = fp
+	// succ:  l400000000012F780
+l400000000012F780:
+strlist_prefix_suffix_exit:
+
+
+// strlist_print
+// Return size: 0
+define strlist_print
+strlist_print_entry:
+	r11 = fp
+	// succ:  l400000000012FC00
+l400000000012FC00:
+strlist_print_exit:
+
+
+// strlist_walk
+// Return size: 0
+define strlist_walk
+strlist_walk_entry:
+	r11 = fp
+	// succ:  l400000000012FD00
+l400000000012FD00:
+strlist_walk_exit:
+
+
+// strlist_sort
+// Return size: 0
+define strlist_sort
+strlist_sort_entry:
+	r11 = fp
+	// succ:  l400000000012FE00
+l400000000012FE00:
+strlist_sort_exit:
+
+
+// strlist_from_word_list
+// Return size: 0
+define strlist_from_word_list
+strlist_from_word_list_entry:
+	r11 = fp
+	// succ:  l400000000012FEC0
+l400000000012FEC0:
+strlist_from_word_list_exit:
+
+
+// strlist_to_word_list
+// Return size: 0
+define strlist_to_word_list
+strlist_to_word_list_entry:
+	r11 = fp
+	// succ:  l4000000000130000
+l4000000000130000:
+strlist_to_word_list_exit:
+
+
+// strvec_strcmp
+// Return size: 0
+define strvec_strcmp
+strvec_strcmp_entry:
+	r11 = fp
+	// succ:  l40000000001300C0
+l40000000001300C0:
+strvec_strcmp_exit:
+
+
+// strvec_create
+// Return size: 0
+define strvec_create
+strvec_create_entry:
+	r11 = fp
+	// succ:  l4000000000130140
+l4000000000130140:
+strvec_create_exit:
+
+
+// strvec_resize
+// Return size: 0
+define strvec_resize
+strvec_resize_entry:
+	r11 = fp
+	// succ:  l40000000001301C0
+l40000000001301C0:
+strvec_resize_exit:
+
+
+// strvec_len
+// Return size: 0
+define strvec_len
+strvec_len_entry:
+	r11 = fp
+	// succ:  l4000000000130240
+l4000000000130240:
+strvec_len_exit:
+
+
+// strvec_flush
+// Return size: 0
+define strvec_flush
+strvec_flush_entry:
+	r11 = fp
+	// succ:  l40000000001302C0
+l40000000001302C0:
+strvec_flush_exit:
+
+
+// strvec_dispose
+// Return size: 0
+define strvec_dispose
+strvec_dispose_entry:
+	r11 = fp
+	// succ:  l4000000000130380
+l4000000000130380:
+strvec_dispose_exit:
+
+
+// strvec_remove
+// Return size: 0
+define strvec_remove
+strvec_remove_entry:
+	r11 = fp
+	// succ:  l4000000000130400
+l4000000000130400:
+strvec_remove_exit:
+
+
+// strvec_copy
+// Return size: 0
+define strvec_copy
+strvec_copy_entry:
+	r11 = fp
+	// succ:  l40000000001305C0
+l40000000001305C0:
+strvec_copy_exit:
+
+
+// strvec_sort
+// Return size: 0
+define strvec_sort
+strvec_sort_entry:
+	r11 = fp
+	// succ:  l4000000000130740
+l4000000000130740:
+strvec_sort_exit:
+
+
+// strvec_from_word_list
+// Return size: 0
+define strvec_from_word_list
+strvec_from_word_list_entry:
+	r11 = fp
+	// succ:  l4000000000130800
+l4000000000130800:
+strvec_from_word_list_exit:
+
+
+// strvec_to_word_list
+// Return size: 0
+define strvec_to_word_list
+strvec_to_word_list_entry:
+	r11 = fp
+	// succ:  l4000000000130A00
+l4000000000130A00:
+strvec_to_word_list_exit:
+
+
+// spname
+// Return size: 0
+define spname
+spname_entry:
+	r11 = fp
+	// succ:  l4000000000130C80
+l4000000000130C80:
+spname_exit:
+
+
+// dirspell
+// Return size: 0
+define dirspell
+dirspell_entry:
+	r11 = fp
+	// succ:  l4000000000131300
+l4000000000131300:
+dirspell_exit:
+
+
+// sh_single_quote
+// Return size: 0
+define sh_single_quote
+sh_single_quote_entry:
+	r11 = fp
+	// succ:  l4000000000131400
+l4000000000131400:
+sh_single_quote_exit:
+
+
+// sh_double_quote
+// Return size: 0
+define sh_double_quote
+sh_double_quote_entry:
+	r11 = fp
+	// succ:  l40000000001315C0
+l40000000001315C0:
+sh_double_quote_exit:
+
+
+// sh_mkdoublequoted
+// Return size: 0
+define sh_mkdoublequoted
+sh_mkdoublequoted_entry:
+	r11 = fp
+	// succ:  l4000000000131800
+l4000000000131800:
+sh_mkdoublequoted_exit:
+
+
+// sh_un_double_quote
+// Return size: 0
+define sh_un_double_quote
+sh_un_double_quote_entry:
+	r11 = fp
+	// succ:  l4000000000131940
+l4000000000131940:
+sh_un_double_quote_exit:
+
+
+// sh_backslash_quote
+// Return size: 0
+define sh_backslash_quote
+sh_backslash_quote_entry:
+	r11 = fp
+	// succ:  l4000000000131B00
+l4000000000131B00:
+sh_backslash_quote_exit:
+
+
+// sh_backslash_quote_for_double_quotes
+// Return size: 0
+define sh_backslash_quote_for_double_quotes
+sh_backslash_quote_for_double_quotes_entry:
+	r11 = fp
+	// succ:  l4000000000131D00
+l4000000000131D00:
+sh_backslash_quote_for_double_quotes_exit:
+
+
+// sh_contains_shell_metas
+// Return size: 0
+define sh_contains_shell_metas
+sh_contains_shell_metas_entry:
+	r11 = fp
+	// succ:  l4000000000131EC0
+l4000000000131EC0:
+sh_contains_shell_metas_exit:
+
+
+// ansicstr
+// Return size: 0
+define ansicstr
+ansicstr_entry:
+	r11 = fp
+	// succ:  l4000000000132040
+l4000000000132040:
+ansicstr_exit:
+
+
+// ansic_quote
+// Return size: 0
+define ansic_quote
+ansic_quote_entry:
+	r11 = fp
+	// succ:  l4000000000132B80
+l4000000000132B80:
+ansic_quote_exit:
+
+
+// ansic_shouldquote
+// Return size: 0
+define ansic_shouldquote
+ansic_shouldquote_entry:
+	r11 = fp
+	// succ:  l4000000000132F80
+l4000000000132F80:
+ansic_shouldquote_exit:
+
+
+// ansiexpand
+// Return size: 0
+define ansiexpand
+ansiexpand_entry:
+	r11 = fp
+	// succ:  l4000000000133080
+l4000000000133080:
+ansiexpand_exit:
+
+
+// mailstat
+// Return size: 0
+define mailstat
+mailstat_entry:
+	r11 = fp
+	// succ:  l4000000000133240
+l4000000000133240:
+mailstat_exit:
+
+
+// fmtulong
+// Return size: 0
+define fmtulong
+fmtulong_entry:
+	r11 = fp
+	// succ:  l4000000000133AC0
+l4000000000133AC0:
+fmtulong_exit:
+
+
+// fmtumax
+// Return size: 0
+define fmtumax
+fmtumax_entry:
+	r11 = fp
+	// succ:  l4000000000134380
+l4000000000134380:
+fmtumax_exit:
+
+
+// zcatfd
+// Return size: 0
+define zcatfd
+zcatfd_entry:
+	r11 = fp
+	// succ:  l4000000000134C40
+l4000000000134C40:
+zcatfd_exit:
+
+
+// zmapfd
+// Return size: 0
+define zmapfd
+zmapfd_entry:
+	r11 = fp
+	// succ:  l4000000000134D40
+l4000000000134D40:
+zmapfd_exit:
+
+
+// get_new_window_size
+// Return size: 0
+define get_new_window_size
+get_new_window_size_entry:
+	r11 = fp
+	// succ:  l4000000000134FC0
+l4000000000134FC0:
+get_new_window_size_exit:
+
+
+// fpurge
+// Return size: 0
+define fpurge
+fpurge_entry:
+	r11 = fp
+	// succ:  l4000000000135180
+l4000000000135180:
+fpurge_exit:
+
+
+// zgetline
+// Return size: 0
+define zgetline
+zgetline_entry:
+	r11 = fp
+	// succ:  l4000000000135200
+l4000000000135200:
+zgetline_exit:
+
+
+// uconvert
+// Return size: 0
+define uconvert
+uconvert_entry:
+	r11 = fp
+	// succ:  l4000000000135540
+l4000000000135540:
+uconvert_exit:
+
+
+// falarm
+// Return size: 0
+define falarm
+falarm_entry:
+	r11 = fp
+	// succ:  l4000000000135AC0
+l4000000000135AC0:
+falarm_exit:
+
+
+// fsleep
+// Return size: 0
+define fsleep
+fsleep_entry:
+	r11 = fp
+	// succ:  l4000000000135BC0
+l4000000000135BC0:
+fsleep_exit:
+
+
+// sh_modcase
+// Return size: 0
+define sh_modcase
+sh_modcase_entry:
+	r11 = fp
+	// succ:  l4000000000135C40
+l4000000000135C40:
+sh_modcase_exit:
+
+
+// input_avail
+// Return size: 0
+define input_avail
+input_avail_entry:
+	r11 = fp
+	// succ:  l4000000000136D00
+l4000000000136D00:
+input_avail_exit:
+
+
+// fnx_tofs
+// Return size: 0
+define fnx_tofs
+fnx_tofs_entry:
+	r11 = fp
+	// succ:  l4000000000136F00
+l4000000000136F00:
+fnx_tofs_exit:
+
+
+// fnx_fromfs
+// Return size: 0
+define fnx_fromfs
+fnx_fromfs_entry:
+	r11 = fp
+	// succ:  l4000000000136F40
+l4000000000136F40:
+fnx_fromfs_exit:
+
+
+// u32tochar
+// Return size: 0
+define u32tochar
+u32tochar_entry:
+	r11 = fp
+	// succ:  l4000000000136F80
+l4000000000136F80:
+u32tochar_exit:
+
+
+// u32toutf8
+// Return size: 0
+define u32toutf8
+u32toutf8_entry:
+	r11 = fp
+	// succ:  l4000000000137080
+l4000000000137080:
+u32toutf8_exit:
+
+
+// u32cconv
+// Return size: 0
+define u32cconv
+u32cconv_entry:
+	r11 = fp
+	// succ:  l4000000000137180
+l4000000000137180:
+u32cconv_exit:
+
+
+// mbstrlen
+// Return size: 0
+define mbstrlen
+mbstrlen_entry:
+	r11 = fp
+	// succ:  l4000000000137200
+l4000000000137200:
+mbstrlen_exit:
+
+
+// mbsmbchar
+// Return size: 0
+define mbsmbchar
+mbsmbchar_entry:
+	r11 = fp
+	// succ:  l4000000000137400
+l4000000000137400:
+mbsmbchar_exit:
+
+
+// mbschr
+// Return size: 0
+define mbschr
+mbschr_entry:
+	r11 = fp
+	// succ:  l40000000001375C0
+l40000000001375C0:
+mbschr_exit:
+
+
+// zwrite
+// Return size: 0
+define zwrite
+zwrite_entry:
+	r11 = fp
+	// succ:  l4000000000137780
+l4000000000137780:
+zwrite_exit:
+
+
+// __libc_csu_init
+// Return size: 0
+define __libc_csu_init
+__libc_csu_init_entry:
+	r11 = fp
+	// succ:  l4000000000137D00
+l4000000000137D00:
+__libc_csu_init_exit:
+
+
+// __libc_csu_fini
+// Return size: 0
+define __libc_csu_fini
+__libc_csu_fini_entry:
+	r11 = fp
+	// succ:  l4000000000137E00
+l4000000000137E00:
+__libc_csu_fini_exit:
+
+

@@ -69,6 +69,7 @@ namespace Reko.Arch.Mos6502
             testGenSvc?.ReportMissingDecoder("Dis65816", this.addr, this.rdr, message);
             return CreateInvalidInstruction();
         }
+
         public override Instruction CreateInvalidInstruction()
         {
             return new Instruction
