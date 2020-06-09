@@ -29,6 +29,7 @@ namespace Reko.Core.Machine
 {
     public class ConditionalDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
         where TInstr : MachineInstruction
+        where TMnemonic : struct
     {
         private readonly Bitfield[] bitfields;
         private readonly Predicate<uint> predicate;

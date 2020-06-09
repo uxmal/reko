@@ -35,6 +35,7 @@ namespace Reko.Core.Machine
     /// <typeparam name="TInstr">Instruction type</typeparam>
     public abstract class Decoder<TDasm, TMnemonic, TInstr> : Decoder
         where TInstr : MachineInstruction
+        where TMnemonic : struct
     {
         public abstract TInstr Decode(uint wInstr, TDasm dasm);
 

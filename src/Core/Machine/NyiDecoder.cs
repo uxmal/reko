@@ -28,6 +28,7 @@ namespace Reko.Core.Machine
 {
     public class NyiDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
         where TInstr : MachineInstruction
+        where TMnemonic : struct
         where TDasm : DisassemblerBase<TInstr, TMnemonic>
     {
         private readonly string message;
@@ -45,6 +46,7 @@ namespace Reko.Core.Machine
 
     public class WideNyiDecoder<TDasm, TMnemonic, TInstr> : WideDecoder<TDasm, TMnemonic, TInstr>
         where TInstr : MachineInstruction
+        where TMnemonic : struct
         where TDasm : DisassemblerBase<TInstr, TMnemonic>
     {
         private readonly string message;

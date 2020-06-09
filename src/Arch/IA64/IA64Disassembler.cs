@@ -187,7 +187,7 @@ namespace Reko.Arch.IA64
         public override IA64Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingDecoder("IA32Dis", this.addr, rdr, message);
+            testGenSvc?.ReportMissingDecoder("Ia64Dis", this.addr, rdr, message);
             return CreateInvalidInstruction();
         }
 

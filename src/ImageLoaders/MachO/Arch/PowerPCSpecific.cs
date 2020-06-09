@@ -8,7 +8,7 @@ using Reko.Core.Configuration;
 
 namespace Reko.ImageLoaders.MachO.Arch
 {
-    class PowerPCSpecific  : ArchSpecific
+    class PowerPCSpecific : ArchSpecific
     {
         public PowerPCSpecific(IProcessorArchitecture arch) : base(arch)
         {

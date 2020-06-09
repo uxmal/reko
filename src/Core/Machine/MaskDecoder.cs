@@ -30,6 +30,7 @@ namespace Reko.Core.Machine
 {
     public class MaskDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
         where TDasm : DisassemblerBase<TInstr, TMnemonic>
+        where TMnemonic : struct
         where TInstr : MachineInstruction
     {
         private readonly Bitfield bitfield;
@@ -85,6 +86,7 @@ namespace Reko.Core.Machine
 
     public class WideMaskDecoder<TDasm, TMnemonic, TInstr> : WideDecoder<TDasm, TMnemonic, TInstr>
         where TDasm : DisassemblerBase<TInstr, TMnemonic>
+        where TMnemonic : struct
         where TInstr : MachineInstruction
     {
         private readonly Bitfield bitfield;

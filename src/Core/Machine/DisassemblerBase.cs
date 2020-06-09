@@ -39,6 +39,7 @@ namespace Reko.Core.Machine
     /// </remarks>
     public abstract class DisassemblerBase<TInstr, TMnemonic> : DisassemblerBase, IEnumerable<TInstr>
         where TInstr : MachineInstruction
+        where TMnemonic : struct
     {
         public virtual IEnumerator<TInstr> GetEnumerator()
         {

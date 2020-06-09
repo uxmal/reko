@@ -30,6 +30,7 @@ namespace Reko.Core.Machine
 {
     public class BitfieldDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
         where TInstr : MachineInstruction
+        where TMnemonic : struct
     {
         private readonly Bitfield[] bitfields;
         private readonly Decoder<TDasm, TMnemonic, TInstr>[] decoders;
