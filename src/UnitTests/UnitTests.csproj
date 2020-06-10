@@ -172,6 +172,7 @@
     <Compile Include="Arch\Avr\Avr32RewriterTests.cs" />
     <Compile Include="Arch\Blackfin\BlackfinDisassemblerTests.cs" />
     <Compile Include="Arch\Blackfin\BlackfinRewriterTests.cs" />
+    <Compile Include="Arch\CompactRisc\Cr16DisassemblerTests.cs" />
     <Compile Include="Arch\Cray\Cray1\Cray1DisassemblerTests.cs" />
     <Compile Include="Arch\Cray\Ymp\YmpDisassemblerTests.cs" />
     <Compile Include="Arch\Cray\Ymp\YmpRewriterTests.cs" />
@@ -865,6 +866,10 @@
     <ProjectReference Include="..\Arch\Cil\Cil.csproj">
       <Project>{F6F2225D-B778-4FD2-9BA9-A8E2B58ACCCC}</Project>
       <Name>Cil</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\CompactRisc\CompactRisc.csproj">
+      <Project>{60C6B7F9-30BF-47DE-AF91-F6E5CA371757}</Project>
+      <Name>CompactRisc</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Cray\Cray.csproj">
       <Project>{47B16677-2BFC-4A5C-A830-E1683C574AEC}</Project>

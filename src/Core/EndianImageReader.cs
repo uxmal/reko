@@ -254,5 +254,5 @@ namespace Reko.Core
 		public override ulong ReadUInt64(int offset) { return PeekBeUInt64(offset); }
 
 		public override bool TryRead(PrimitiveType dataType, out Constant c) { return TryReadBe(dataType, out c); }
-	}
+    }
 }

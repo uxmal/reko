@@ -143,6 +143,10 @@
       <Project>{f6f2225d-b778-4fd2-9ba9-a8e2b58acccc}</Project>
       <Name>Cil</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\CompactRisc\CompactRisc.csproj">
+      <Project>{60c6b7f9-30bf-47de-af91-f6e5ca371757}</Project>
+      <Name>CompactRisc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\Cray\Cray.csproj">
       <Project>{47b16677-2bfc-4a5c-a830-e1683c574aec}</Project>
       <Name>Cray</Name>
