@@ -36,7 +36,7 @@ namespace Reko.Typing
 	/// </summary>
 	public class EquivalenceClassBuilder : InstructionVisitorBase
 	{
-        private static TraceSwitch trace = new TraceSwitch(nameof(EquivalenceClassBuilder), "Trace EquivalenceClassBuilder") { Level = TraceLevel.Warning };
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(EquivalenceClassBuilder), "Trace EquivalenceClassBuilder") { Level = TraceLevel.Warning };
 
 		private readonly TypeFactory factory;
 		private readonly TypeStore store;

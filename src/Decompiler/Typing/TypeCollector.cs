@@ -23,6 +23,7 @@ using Reko.Core.Code;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 
 namespace Reko.Typing
 {
@@ -59,8 +60,8 @@ namespace Reko.Typing
             desc.MeetDataType(program.Globals, factory.CreatePointer(
                 factory.CreateStructureType(),
                 program.Platform.PointerType.BitSize));
-            CollectSegmentTypes();
-            CollectUserGlobalVariableTypes();
+            var segTypes = CollectSegmentTypes();
+            CollectUserGlobalVariableTypes(segTypes);
             int cProc = program.Procedures.Count;
             int i = 0;
             foreach (Procedure proc in program.Procedures.Values)
@@ -88,7 +89,12 @@ namespace Reko.Typing
             }
         }
 
-        public void CollectUserGlobalVariableTypes()
+        /// <summary>
+        /// Given a list of user-specified globals, make sure fields are present in
+        /// the program
+        /// </summary>
+        /// <param name="segmentTypes"></param>
+        public void CollectUserGlobalVariableTypes(Dictionary<ImageSegment, StructureType> segmentTypes)
         {
             var deser = program.CreateTypeLibraryDeserializer();
             foreach (var ud in program.User.Globals)
@@ -97,22 +103,42 @@ namespace Reko.Typing
                 if (ud.Value.DataType != null)
                 {
                     var dt = ud.Value.DataType.Accept(deser);
-                    var offset = (int) (addr - program.SegmentMap.BaseAddress);
-                    var f = new StructureField(offset, dt, ud.Value.Name);
-                    program.GlobalFields.Fields.Add(f);
+                    if (ud.Key.Selector.HasValue)
+                    {
+                        if (program.SegmentMap.TryFindSegment(ud.Key, out var seg) &&
+                            segmentTypes.TryGetValue(seg, out var structureType))
+                        {
+                            var f = new StructureField((int)ud.Key.Offset, dt, ud.Value.Name);
+                            structureType.Fields.Add(f);
+                        }
+                    }
+                    else
+                    {
+                        var offset = (int) (addr - program.SegmentMap.BaseAddress);
+                        var f = new StructureField(offset, dt, ud.Value.Name);
+                        program.GlobalFields.Fields.Add(f);
+                    }
                 }
             }
         }
 
-        public void CollectSegmentTypes()
+        public Dictionary<ImageSegment, StructureType> CollectSegmentTypes()
         {
+            var result = new Dictionary<ImageSegment, StructureType>();
             foreach (var seg in program.SegmentMap.Segments.Values)
             {
                 if (seg.Identifier != null)
+                {
+                    var name = seg.Identifier.Name + "_t";
+                    var segType = factory.CreateStructureType(name, 0);
+                    segType.IsSegment = true;
+                    result.Add(seg, segType);
                     desc.MeetDataType(seg.Identifier, factory.CreatePointer(
-                        factory.CreateStructureType(),
+                        segType,
                         seg.Identifier.DataType.BitSize));
+                }
             }
+            return result;
         }
 
         /// <summary>

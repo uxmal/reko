@@ -100,14 +100,22 @@ namespace Reko.Core
         public string Name { get; set; }
 
         /// <summary>
-        /// The processor architecture to use for decompilation.
+        /// The default processor architecture to use for decompilation.
         /// </summary>
+        /// <remarks>
+        /// Individual procedures may have different procedure architectures
+        /// than the default architecture.
+        /// </remarks>
 		public IProcessorArchitecture Architecture
         {
             get { return archDefault; }
             set { SetDefaultArchitecture(value); }
         }
 
+        /// <summary>
+        /// The <see cref="IPlatform"/> describing the operating environment
+        /// of the binary being decompiled.
+        /// </summary>
         public IPlatform Platform { get; set; }
 
         /// <summary>

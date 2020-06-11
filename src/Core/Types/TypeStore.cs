@@ -44,8 +44,8 @@ namespace Reko.Core.Types
 
     public class TypeStore : ITypeStore
     {
-        private SortedList<int, EquivalenceClass> usedClasses;
-        private Dictionary<TypeVariable, Expression> tvSources;
+        private readonly SortedList<int, EquivalenceClass> usedClasses;
+        private readonly Dictionary<TypeVariable, Expression> tvSources;
 
         public TypeStore()
         {

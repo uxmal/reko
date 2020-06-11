@@ -27,6 +27,7 @@ using Reko.Typing;
 using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Reko.UnitTests.Typing
@@ -35,11 +36,13 @@ namespace Reko.UnitTests.Typing
     public class TypeCollectorTests : TypingTestBase
     {
         private bool buildEquivalenceClasses;
+        private FakeDecompilerEventListener eventListener;
 
         [SetUp]
         public void Setup()
         {
             this.buildEquivalenceClasses = false;
+            this.eventListener = new FakeDecompilerEventListener();
         }
 
         protected override void RunTest(Program program, string outputFile)
@@ -93,7 +96,7 @@ namespace Reko.UnitTests.Typing
                 program.TypeFactory,
                 program.TypeStore,
                 program,
-                new FakeDecompilerEventListener());
+                eventListener);
             return tyco;
         }
 
@@ -315,9 +318,41 @@ namespace Reko.UnitTests.Typing
             };
             var tyco = Given_TypeCollector(program);
 
-            tyco.CollectUserGlobalVariableTypes();
+            tyco.CollectUserGlobalVariableTypes(new Dictionary<ImageSegment, StructureType>());
 
             Assert.AreEqual("400: xAcceleration: real64", program.GlobalFields.Fields.First().ToString());
+        }
+
+        [Test]
+        public void TycoUserSegmentedData()
+        {
+            var addrUserData = Address.SegPtr(0xC30, 0x0042);
+            var addrSeg = Address.SegPtr(0xC30, 0);
+            var seg = new ImageSegment("seg0C30", addrSeg, new MemoryArea(addrSeg, new byte[0x100]), AccessMode.ReadWriteExecute);
+            seg.Identifier = new Identifier("seg0C30", PrimitiveType.SegmentSelector, MemoryStorage.Instance);
+            var program = new ProgramBuilder().BuildProgram();
+            program.SegmentMap.AddSegment(seg);
+            program.User = new UserData
+            {
+                Globals =
+                {
+                    {
+                        addrUserData, new GlobalDataItem_v2
+                        {
+                            Name = "myGlobal",
+                            DataType = PrimitiveType_v1.Real32(),
+                        }
+                    }
+                }
+            };
+            var eqb = new EquivalenceClassBuilder(program.TypeFactory, program.TypeStore, eventListener);
+            eqb.EnsureSegmentTypeVariables(program.SegmentMap.Segments.Values);
+            var tyco = Given_TypeCollector(program);
+
+            var segTypes = tyco.CollectSegmentTypes();
+            tyco.CollectUserGlobalVariableTypes(segTypes);
+
+            Assert.AreEqual("42: myGlobal: real32", segTypes[seg].Fields.First().ToString());
         }
 
         [Test]
