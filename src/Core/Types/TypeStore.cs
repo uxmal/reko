@@ -52,7 +52,7 @@ namespace Reko.Core.Types
             TypeVariables = new List<TypeVariable>();
             usedClasses = new SortedList<int, EquivalenceClass>();
             tvSources = new Dictionary<TypeVariable, Expression>();
-            SegmentTypes = new Dictionary<uint, StructureType>();
+            SegmentTypes = new Dictionary<ImageSegment, StructureType>();
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Reko.Core.Types
         /// </summary>
         public List<TypeVariable> TypeVariables { get; private set; }
 
-        public Dictionary<uint, StructureType> SegmentTypes { get; private set; }
+        public Dictionary<ImageSegment, StructureType> SegmentTypes { get; private set; }
 
         public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Expression e)
         {

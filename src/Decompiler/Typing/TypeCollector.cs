@@ -60,8 +60,7 @@ namespace Reko.Typing
             desc.MeetDataType(program.Globals, factory.CreatePointer(
                 factory.CreateStructureType(),
                 program.Platform.PointerType.BitSize));
-            var segTypes = CollectSegmentTypes();
-            CollectUserGlobalVariableTypes(segTypes);
+            CollectUserGlobalVariableTypes(store.SegmentTypes);
             int cProc = program.Procedures.Count;
             int i = 0;
             foreach (Procedure proc in program.Procedures.Values)
@@ -120,25 +119,6 @@ namespace Reko.Typing
                     }
                 }
             }
-        }
-
-        public Dictionary<ImageSegment, StructureType> CollectSegmentTypes()
-        {
-            var result = new Dictionary<ImageSegment, StructureType>();
-            foreach (var seg in program.SegmentMap.Segments.Values)
-            {
-                if (seg.Identifier != null)
-                {
-                    var name = seg.Identifier.Name + "_t";
-                    var segType = factory.CreateStructureType(name, 0);
-                    segType.IsSegment = true;
-                    result.Add(seg, segType);
-                    desc.MeetDataType(seg.Identifier, factory.CreatePointer(
-                        segType,
-                        seg.Identifier.DataType.BitSize));
-                }
-            }
-            return result;
         }
 
         /// <summary>

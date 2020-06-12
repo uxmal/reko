@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Core.Output
             Assert.AreEqual("myprogram_text.asm", placements[0].Key);
             var procs = placements[0].Value;
             Assert.AreEqual(1, procs.Count);
-            Assert.AreEqual("fn00101000", procs[0].Name);
+            Assert.AreEqual("fn00101000", procs.Values.Cast<Procedure>().First().Name);
         }
 
         [Test]
@@ -103,8 +103,8 @@ namespace Reko.UnitTests.Core.Output
             var placements = ofp.GetProcedurePlacements(".asm").ToArray();
             Assert.AreEqual(1, placements.Length);
             Assert.AreEqual("myprogram_text.asm", placements[0].Key);
-            var procs = placements[0].Value;
-            Assert.AreEqual(2, procs.Count);
+            var procs = placements[0].Value.Values.Cast<Procedure>().ToArray();
+            Assert.AreEqual(2, procs.Length);
             Assert.AreEqual("fn00101000", procs[0].Name);
             Assert.AreEqual("fn00101400", procs[1].Name);
         }
@@ -122,11 +122,11 @@ namespace Reko.UnitTests.Core.Output
             Assert.AreEqual(2, placements.Length);
             Assert.AreEqual("myprogram_text.asm", placements[0].Key);
             Assert.AreEqual("myprogram_init.asm", placements[1].Key);
-            var procs = placements[0].Value;
-            Assert.AreEqual(1, procs.Count);
+            var procs = placements[0].Value.Values.Cast<Procedure>().ToArray();
+            Assert.AreEqual(1, procs.Length);
             Assert.AreEqual("fn00101000", procs[0].Name);
-            procs = placements[1].Value;
-            Assert.AreEqual(1, procs.Count);
+            procs = placements[1].Value.Values.Cast<Procedure>().ToArray();
+            Assert.AreEqual(1, procs.Length);
             Assert.AreEqual("fn00201400", procs[0].Name);
         }
 

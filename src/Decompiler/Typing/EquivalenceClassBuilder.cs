@@ -90,9 +90,12 @@ namespace Reko.Typing
                 if (selector.HasValue)
                 {
                     segment.Identifier!.TypeVariable = null;
-                    var tvSeg = store.EnsureExpressionTypeVariable(factory, segment.Identifier, segment.Identifier.Name + "_t");
-                    tvSeg.OriginalDataType = segment.Identifier.DataType;
-                    this.segTypevars[selector.Value] = tvSeg;
+                    var tvSelector = store.EnsureExpressionTypeVariable(factory, segment.Identifier);
+                    this.segTypevars[selector.Value] = tvSelector;
+                    tvSelector.OriginalDataType = factory.CreatePointer(
+                        segment.Fields,
+                        segment.Identifier.DataType.BitSize);
+                    store.SegmentTypes[segment] = segment.Fields;
                 }
             }
         }
