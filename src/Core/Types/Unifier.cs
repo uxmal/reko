@@ -78,8 +78,11 @@ namespace Reko.Core.Types
 			if (a == null || b == null)
 				return false;
 
-			if (depth > 20)
-				throw new StackOverflowException("Way too deep");     //$BUG: discover why datatypes recurse so deep.
+            if (depth > 20)
+            {
+                trace.Error("Way too deep");     //$BUG: discover why datatypes recurse so deep.
+                return true;
+            }
 			
 			PrimitiveType? pa = a as PrimitiveType;
 			PrimitiveType? pb = b as PrimitiveType;
