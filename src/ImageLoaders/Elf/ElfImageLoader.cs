@@ -125,8 +125,8 @@ namespace Reko.ImageLoaders.Elf
         {
             switch (endianness)
             {
-            case LITTLE_ENDIAN: return new LeImageReader(RawImage, fileOffset);
-            case BIG_ENDIAN: return new BeImageReader(RawImage, fileOffset);
+            case LITTLE_ENDIAN: return new LeImageReader(RawImage, (long)fileOffset);
+            case BIG_ENDIAN: return new BeImageReader(RawImage, (long)fileOffset);
             default: throw new BadImageFormatException("Endianness is incorrectly specified.");
             }
         }

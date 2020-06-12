@@ -156,8 +156,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             var rdr = program.CreateImageReader(arch, instr.Address);
             for (int i = 0; i < instr.Length; i += byteSize)
             {
-                var v = rdr.Read(instrByteSize);
-                sb.AppendFormat(instrByteFormat, v.ToUInt64());
+                if (rdr.TryRead(instrByteSize, out var v))
+                {
+                    sb.AppendFormat(instrByteFormat, v.ToUInt64());
+                }
             }
             return sb.ToString();
         }

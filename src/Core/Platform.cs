@@ -76,7 +76,8 @@ namespace Reko.Core
         /// the caller's responsibility to fill in the MemoryArea properties
         /// of each resulting ImageSegment.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A <see cref="SegmentMap"/> or null if this platform doesn't support 
+        /// memory maps.</returns>
         SegmentMap? CreateAbsoluteMemoryMap();
 
         /// <summary>
@@ -88,8 +89,7 @@ namespace Reko.Core
         /// calling conventions. Others, like many ELF implementations,
         /// will have one and only one calling convention. On such platforms
         /// we will assume that the calling convention is represented by
-        /// the empty string "". //$REVIEW: this probably highlights the 
-        /// need for a CallingConvention abstraction.
+        /// the empty string "". 
         /// </remarks>
         /// <param name="signature"></param>
         /// <returns>The name of the calling convention, or null

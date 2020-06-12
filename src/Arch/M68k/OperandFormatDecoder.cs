@@ -136,14 +136,28 @@ namespace Reko.Arch.M68k
                         }
                         Constant @base = null;
                         Constant outer = null;
-                        if (EXT_BASE_DISPLACEMENT_PRESENT(extension)) 
-                            @base = EXT_BASE_DISPLACEMENT_LONG(extension) 
-                                ? rdr.ReadBe(PrimitiveType.Word32)
-                                : rdr.ReadBe(PrimitiveType.Int16);
+                        if (EXT_BASE_DISPLACEMENT_PRESENT(extension))
+                        {
+                            if (!rdr.TryReadBe(
+                                EXT_BASE_DISPLACEMENT_LONG(extension)
+                                    ? PrimitiveType.Word32
+                                    : PrimitiveType.Int16,
+                                out @base))
+                            {
+                                op = null; return false;
+                            }
+                        }
                         if (EXT_OUTER_DISPLACEMENT_PRESENT(extension))
-                            outer = EXT_OUTER_DISPLACEMENT_LONG(extension)
-                                ? rdr.ReadBe(PrimitiveType.Word32)
-                                : rdr.ReadBe(PrimitiveType.Int16);
+                        {
+                            if (!rdr.TryReadBe(
+                                EXT_OUTER_DISPLACEMENT_LONG(extension)
+                                    ? PrimitiveType.Word32
+                                    : PrimitiveType.Int16,
+                                out outer))
+                            {
+                                op = null; return false;
+                            }
+                        }
                         RegisterStorage base_reg = EXT_BASE_REGISTER_PRESENT(extension)
                             ? Registers.pc
                             : null;
@@ -220,13 +234,23 @@ namespace Reko.Arch.M68k
                 Constant @base = null;
                 if (EXT_BASE_DISPLACEMENT_PRESENT(extension))
                 {
-                    @base = rdr.ReadBe(EXT_BASE_DISPLACEMENT_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16);
+                    if (!rdr.TryReadBe(
+                        EXT_BASE_DISPLACEMENT_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16,
+                        out @base))
+                    {
+                        op = null; return true;
+                    }
                 }
 
                 Constant outer = null;
                 if (EXT_OUTER_DISPLACEMENT_PRESENT(extension))
                 {
-                    outer = rdr.ReadBe(EXT_OUTER_DISPLACEMENT_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16);
+                    if (!rdr.TryReadBe(
+                        EXT_OUTER_DISPLACEMENT_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16,
+                        out outer))
+                    {
+                        op = null; return true;
+                    }
                 }
                 if (EXT_BASE_REGISTER_PRESENT(extension))
                 {

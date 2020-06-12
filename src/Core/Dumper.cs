@@ -325,8 +325,8 @@ namespace Reko.Core
 
             while (rdr.Address < addrEnd)
 			{
-                var v = rdr.Read(instrByteSize);
-                writer.WriteFormat(instrByteFormat, v.ToUInt64());
+                if (rdr.TryRead(instrByteSize, out var v))
+                    writer.WriteFormat(instrByteFormat, v.ToUInt64());
 			}
 		}
 

@@ -28,7 +28,7 @@ using System.Text;
 namespace Reko.UnitTests.Core
 {
 	[TestFixture]
-	public class ProgramImageTests
+	public class MemoryAreaTests
 	{
 		[Test]
 		public void PriReadLiterals()
@@ -60,31 +60,31 @@ namespace Reko.UnitTests.Core
 		}
 
 		[Test]
-		public void ReadLeUShort()
+		public void TryReadLeUShort()
 		{
 			MemoryArea img = new MemoryArea(Address.Ptr32(0x10000), new byte[] {
 				0x78, 0x56, 0x34, 0x12 });
-			Constant c = img.ReadLe(2, PrimitiveType.Word16);
+			Assert.IsTrue(img.TryReadLe(2, PrimitiveType.Word16, out Constant c));
 			Assert.AreSame(PrimitiveType.Word16, c.DataType);
 			Assert.AreEqual("0x1234<16>", c.ToString());
 		}
 
 		[Test]
-		public void ReadLeUInt32()
+		public void TryReadLeUInt32()
 		{
 			MemoryArea img = new MemoryArea(Address.Ptr32(0x10000), new byte[] {
 				0x78, 0x56, 0x34, 0x12 });
-			Constant c = img.ReadLe(0, PrimitiveType.Word32);
+			Assert.IsTrue(img.TryReadLe(0, PrimitiveType.Word32, out Constant c));
 			Assert.AreSame(PrimitiveType.Word32, c.DataType);
 			Assert.AreEqual("0x12345678<32>", c.ToString());
 		}
 
 		[Test]
-		public void ReadLeNegativeInt()
+		public void TryReadLeNegativeInt()
 		{
 			MemoryArea img = new MemoryArea(Address.Ptr32(0x10000), new byte[] {
 				0xFE, 0xFF, 0xFF, 0xFF });
-			Constant c = img.ReadLe(0, PrimitiveType.Int32);
+			Assert.IsTrue(img.TryReadLe(0, PrimitiveType.Int32, out Constant c));
 			Assert.AreSame(PrimitiveType.Int32, c.DataType);
 			Assert.AreEqual("-2<i32>", c.ToString());
 		}

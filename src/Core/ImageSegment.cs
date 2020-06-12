@@ -147,9 +147,9 @@ namespace Reko.Core
         /// <returns></returns>
         public EndianImageReader CreateImageReader(IProcessorArchitecture arch)
         {
-            var addrBegin = Address.Max(this.Address, this.MemoryArea.BaseAddress);
-            var addrEnd = Address.Min(this.Address + this.Size, this.MemoryArea.EndAddress);
-            return arch.CreateImageReader(this.MemoryArea, addrBegin, addrEnd);
+            var offsetBegin = Math.Max(this.Address - this.MemoryArea.BaseAddress, 0);
+            var offsetEnd = Math.Min(this.Size, this.MemoryArea.Length);
+            return arch.CreateImageReader(this.MemoryArea, offsetBegin, offsetEnd);
         }
 
         public bool IsInRange(Address addr)

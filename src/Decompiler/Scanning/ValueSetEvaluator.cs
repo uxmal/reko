@@ -272,7 +272,10 @@ namespace Reko.Scanning
                 }
                 else
                 {
-                    return rdr.Read((PrimitiveType) dt);
+                    if (!rdr.TryRead((PrimitiveType) dt, out var v))
+                        return Constant.Invalid;
+                    else
+                        return v;
                 }
             }
             throw new NotImplementedException();

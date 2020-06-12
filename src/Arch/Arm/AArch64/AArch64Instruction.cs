@@ -20,14 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
-using Reko.Core.NativeInterface;
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Reko.Arch.Arm.AArch64
 {

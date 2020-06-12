@@ -254,15 +254,8 @@ namespace Reko.ImageLoaders.Elf
             return (int) (Sections[Header64.e_shstrndx].FileOffset + idxString);
         }
 
-        public string GetSymbol64(int iSymbolSection, ulong symbolNo)
-        {
-            var symSection = Sections[iSymbolSection];
-            return GetSymbol64(iSymbolSection, symbolNo);
-        }
-
         public string GetSymbol64(ElfSection symSection, ulong symbolNo)
         {
-            var strSection = symSection.LinkedSection;
             ulong offset = symSection.FileOffset + symbolNo * symSection.EntrySize;
             var rdr = imgLoader.CreateReader(offset);
             rdr.TryReadUInt64(out offset);
@@ -298,7 +291,7 @@ namespace Reko.ImageLoaders.Elf
                     if (section.Name == null || section.Address == null)
                         continue;
                     if (segMap.TryGetLowerBound(section.Address, out var mem) &&
-                        section.Address < mem.EndAddress)
+                        mem.IsValidAddress(section.Address))
                     {
                         AccessMode mode = AccessModeOf(section.Flags);
                         var seg = segmentMap.AddSegment(new ImageSegment(

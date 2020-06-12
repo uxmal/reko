@@ -296,7 +296,8 @@ namespace Reko.UserInterfaces.WindowsForms
             if (addrRange == null)
                 return;
             var rdr = program.CreateImageReader(program.Architecture, addrRange.Begin);
-            var addrDst = rdr.Read(program.Platform.PointerType);
+            if (!rdr.TryRead(program.Platform.PointerType, out var addrDst))
+                return;
             var txt = control.ToolBarAddressTextbox;
             txt.Text = addrDst.ToString();
             txt.SelectAll();

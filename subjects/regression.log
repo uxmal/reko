@@ -303,110 +303,14 @@ l0000000000400F4C: warning: Non-integral switch expression
 === Elf\x86-64\simd_double\simd_double
 === Elf\zSeries\fib\example
 === Hunk-m68k\BENCHFN
-*** Hunk-m68k\BENCHFN
-000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-fn000012D0: error: An internal error occurred while building the expressions of fn000012D0
-    a1Out = a1_58
-       at Reko.Core.Output.MockGenerator.Reko.Core.Code.InstructionVisitor.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 354
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 87
-   at Reko.Core.Output.MockGenerator.WriteCode(Procedure proc) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 188
-   at Reko.Core.Output.MockGenerator.WriteMethod(Procedure proc) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 147
-   at Reko.Core.Output.MockGenerator.DumpMethod(Procedure proc) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 108
-   at Reko.Analysis.DataFlowAnalysis.DumpWatchedProcedure(String caption, Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 520
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 403
-0000288D: warning: Expected sizes of arrays to have been determined by now
-00003EAC: warning: Expected sizes of arrays to have been determined by now
-0000288D: warning: Expected sizes of arrays to have been determined by now
-00003EAC: warning: Expected sizes of arrays to have been determined by now
 === Hunk-m68k\BENCHLNG
-*** Hunk-m68k\BENCHLNG
-000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-fn000012D0: error: An internal error occurred while building the expressions of fn000012D0
-    a1Out = a1_58
-       at Reko.Core.Output.MockGenerator.Reko.Core.Code.InstructionVisitor.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 354
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 87
-   at Reko.Core.Output.MockGenerator.WriteCode(Procedure proc) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 188
-   at Reko.Core.Output.MockGenerator.WriteMethod(Procedure proc) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 147
-   at Reko.Core.Output.MockGenerator.DumpMethod(Procedure proc) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 108
-   at Reko.Analysis.DataFlowAnalysis.DumpWatchedProcedure(String caption, Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 520
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 403
-000028C5: warning: Expected sizes of arrays to have been determined by now
-00003E5C: warning: Expected sizes of arrays to have been determined by now
-000028C5: warning: Expected sizes of arrays to have been determined by now
-00003E5C: warning: Expected sizes of arrays to have been determined by now
 === Hunk-m68k\BENCHMUL
-*** Hunk-m68k\BENCHMUL
-000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-fn000012D0: error: An internal error occurred while building the expressions of fn000012D0
-    a1Out = a1_58
-       at Reko.Core.Output.MockGenerator.Reko.Core.Code.InstructionVisitor.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 354
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 87
-   at Reko.Core.Output.MockGenerator.WriteCode(Procedure proc) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 188
-   at Reko.Core.Output.MockGenerator.WriteMethod(Procedure proc) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 147
-   at Reko.Core.Output.MockGenerator.DumpMethod(Procedure proc) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 108
-   at Reko.Analysis.DataFlowAnalysis.DumpWatchedProcedure(String caption, Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 520
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 403
-00002B15: warning: Expected sizes of arrays to have been determined by now
-00004134: warning: Expected sizes of arrays to have been determined by now
-00002B15: warning: Expected sizes of arrays to have been determined by now
-00004134: warning: Expected sizes of arrays to have been determined by now
 === Hunk-m68k\BYTEOPS
 === Hunk-m68k\FIBO
-*** Hunk-m68k\FIBO
-000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-fn000012D0: error: An internal error occurred while building the expressions of fn000012D0
-    d1Out = d1_64
-       at Reko.Core.Output.MockGenerator.Reko.Core.Code.InstructionVisitor.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 354
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 87
-   at Reko.Core.Output.MockGenerator.WriteCode(Procedure proc) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 188
-   at Reko.Core.Output.MockGenerator.WriteMethod(Procedure proc) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 147
-   at Reko.Core.Output.MockGenerator.DumpMethod(Procedure proc) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 108
-   at Reko.Analysis.DataFlowAnalysis.DumpWatchedProcedure(String caption, Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 520
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 403
-000028B1: warning: Expected sizes of arrays to have been determined by now
-00003ED0: warning: Expected sizes of arrays to have been determined by now
-000028B1: warning: Expected sizes of arrays to have been determined by now
-00003ED0: warning: Expected sizes of arrays to have been determined by now
 === Hunk-m68k\MATRIXMU
 === Hunk-m68k\MAX
-*** Hunk-m68k\MAX
-000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-fn000012D0: error: An internal error occurred while building the expressions of fn000012D0
-    a1Out = a1_58
-       at Reko.Core.Output.MockGenerator.Reko.Core.Code.InstructionVisitor.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 354
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 87
-   at Reko.Core.Output.MockGenerator.WriteCode(Procedure proc) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 188
-   at Reko.Core.Output.MockGenerator.WriteMethod(Procedure proc) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 147
-   at Reko.Core.Output.MockGenerator.DumpMethod(Procedure proc) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 108
-   at Reko.Analysis.DataFlowAnalysis.DumpWatchedProcedure(String caption, Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 520
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 403
-00002BED: warning: Expected sizes of arrays to have been determined by now
-00003DCC: warning: Expected sizes of arrays to have been determined by now
-00002BED: warning: Expected sizes of arrays to have been determined by now
-00003DCC: warning: Expected sizes of arrays to have been determined by now
 === Hunk-m68k\STRLEN
 === Hunk-m68k\TESTLONG
-*** Hunk-m68k\TESTLONG
-000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-fn000012D0: error: An internal error occurred while building the expressions of fn000012D0
-    a1Out = a1_58
-       at Reko.Core.Output.MockGenerator.Reko.Core.Code.InstructionVisitor.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 354
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 87
-   at Reko.Core.Output.MockGenerator.WriteCode(Procedure proc) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 188
-   at Reko.Core.Output.MockGenerator.WriteMethod(Procedure proc) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 147
-   at Reko.Core.Output.MockGenerator.DumpMethod(Procedure proc) in D:\dev\uxmal\reko\master\src\Core\Output\MockGenerator.cs:line 108
-   at Reko.Analysis.DataFlowAnalysis.DumpWatchedProcedure(String caption, Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 520
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 403
-00002815: warning: Expected sizes of arrays to have been determined by now
-00003DAC: warning: Expected sizes of arrays to have been determined by now
-00002815: warning: Expected sizes of arrays to have been determined by now
-00003DAC: warning: Expected sizes of arrays to have been determined by now
 === MZ-x86\BENCHFN.dcproject
 *** MZ-x86\BENCHFN.dcproject
 0800:1764: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -1038,4 +942,4 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 63 binaries in 74.87 seconds ---
+Decompiled 63 binaries in 84.81 seconds ---

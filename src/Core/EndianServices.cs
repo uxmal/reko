@@ -48,14 +48,15 @@ namespace Reko.Core
 
         /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred 
-        /// endianness of the processor, limited to the specified address
+        /// endianness of the processor, limited to the specified offset
         /// range.
         /// </summary>
-        /// <param name="img">Program image to read</param>
-        /// <param name="addr">Address at which to start</param>
+        /// <param name="memoryArea">Program image to read</param>
+        /// <param name="offsetBegin">Offset within the memory area which to begin reading.</param>
+        /// <param name="offsetEnd">Offset within the memory area at which to stop reading.</param>
         /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
-        public abstract EndianImageReader CreateImageReader(MemoryArea memoryArea, Address addrBegin, Address addrEnd);
-
+        public abstract EndianImageReader CreateImageReader(MemoryArea memoryArea, long offsetBegin, long offsetEnd);
+        
         /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred
         /// endianness of the processor.
@@ -63,7 +64,7 @@ namespace Reko.Core
         /// <param name="img">Program image to read</param>
         /// <param name="addr">offset from the start of the image</param>
         /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
-        public abstract EndianImageReader CreateImageReader(MemoryArea img, ulong off);
+        public abstract EndianImageReader CreateImageReader(MemoryArea img, long off);
 
         /// <summary>
         /// Creates an <see cref="ImageWriter" /> with the preferred 
@@ -130,12 +131,12 @@ namespace Reko.Core
                 return new LeImageReader(image, addr);
             }
 
-            public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+            public override EndianImageReader CreateImageReader(MemoryArea image, long offsetBegin, long offsetEnd)
             {
-                return new LeImageReader(image, addrBegin, addrEnd);
+                return new LeImageReader(image, offsetBegin, offsetEnd);
             }
 
-            public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
+            public override EndianImageReader CreateImageReader(MemoryArea image, long offset)
             {
                 return new LeImageReader(image, offset);
             }
@@ -187,12 +188,12 @@ namespace Reko.Core
                 return new BeImageReader(image, addr);
             }
 
-            public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+            public override EndianImageReader CreateImageReader(MemoryArea image, long offsetBegin, long offsetEnd)
             {
-                return new BeImageReader(image, addrBegin, addrEnd);
+                return new BeImageReader(image, offsetBegin, offsetEnd);
             }
 
-            public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
+            public override EndianImageReader CreateImageReader(MemoryArea image, long offset)
             {
                 return new BeImageReader(image, offset);
             }
