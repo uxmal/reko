@@ -140,7 +140,7 @@ namespace Reko
                 var irPath = Path.Combine(program.SourceDirectory, irFilename);
                 using (TextWriter output = CreateTextWriter(irPath))
                 {
-                    writer(irFilename, placement.Value, output);
+                    writer(irFilename, placement.Value.Values.Cast<Procedure>(), output);
                 }
             }
         }
@@ -164,7 +164,7 @@ namespace Reko
                 var filePath = Path.Combine(program.SourceDirectory, filename);
                 using (TextWriter output = CreateTextWriter(filePath))
                 {
-                    writer(filename, placement.Value, output);
+                    writer(filename, placement.Value.Values.Cast<Procedure>(), output);
                 }
             }
         }

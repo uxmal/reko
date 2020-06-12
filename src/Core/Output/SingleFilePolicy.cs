@@ -35,12 +35,12 @@ namespace Reko.Core.Output
         public SingleFilePolicy(Program program) : base(program)
         { }
 
-        public override Dictionary<string, List<Procedure>> GetProcedurePlacements(string fileExtension)
+        public override Dictionary<string, IDictionary<Address, object>> GetProcedurePlacements(string fileExtension)
         {
             var filename = Path.ChangeExtension(program.Name, fileExtension);
-            return new Dictionary<string, List<Procedure>>
+            return new Dictionary<string, IDictionary<Address, object>>
             {
-                { filename, program.Procedures.Values.ToList() }
+                { filename, program.Procedures.Values.ToDictionary(p => p.EntryAddress, p => (object) p) }
             };
         }
 

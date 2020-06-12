@@ -45,24 +45,26 @@ namespace Reko.Core.Output
             this.defaultFile = "";
         }
 
-        public override Dictionary<string, List<Procedure>> GetProcedurePlacements(string fileExtension)
+        public override Dictionary<string, IDictionary<Address, object>> GetProcedurePlacements(string fileExtension)
         {
             // Default file if we cannot find segment.
             this.defaultFile = Path.ChangeExtension(program.Name, fileExtension);
 
             // Find the segment for each procedure
-            var result = new Dictionary<string, List<Procedure>>();
+            var result = new Dictionary<string, IDictionary<Address,object>>();
             foreach (var proc in program.Procedures.Values)
             {
                 var filename = DetermineFilename(proc);
                 filename = Path.ChangeExtension(filename, fileExtension);
-                if (!result.TryGetValue(filename, out var procs))
+                if (!result.TryGetValue(filename, out var objects))
                 {
-                    procs = new List<Procedure>();
-                    result.Add(filename, procs);
+                    objects = new BTreeDictionary <Address, object>();
+                    result.Add(filename, objects);
                 }
-                procs.Add(proc);
+                objects.Add(proc.EntryAddress, proc);
             }
+
+            // Find the segment for each addressable data object.
             return result;
         }
 

@@ -39,8 +39,18 @@ namespace Reko.Core.Output
             this.program = program;
         }
 
-        public abstract Dictionary<string, List<Procedure>> GetProcedurePlacements(string fileExtension);
+        /// <summary>
+        /// Returns a placement mapping for rendering high-level items.
+        /// </summary>
+        /// <param name="fileExtension"></param>
+        /// <returns></returns>
+        public abstract Dictionary<string, IDictionary<Address, object>> GetProcedurePlacements(string fileExtension);
 
+        /// <summary>
+        /// Returns a placement mapping for rendering low-level items.
+        /// </summary>
+        /// <param name="fileExtension">File extension to use on the files in the mapping.</param>
+        /// <returns></returns>
         public abstract Dictionary<string, Dictionary<ImageSegment, List<ImageMapItem>>> GetItemPlacements(string fileExtension);
     }
 }

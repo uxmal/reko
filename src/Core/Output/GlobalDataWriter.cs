@@ -37,13 +37,13 @@ namespace Reko.Core.Output
         private readonly Program program;
         private readonly IServiceProvider services;
         private readonly DataTypeComparer cmp;
-        private EndianImageReader? rdr;
-        private CodeFormatter codeFormatter;
-        private StructureType globals;
-        private int recursionGuard;     //$REVIEW: remove this once deep recursion bugs have been flushed out.
-        private Formatter formatter;
-        private TypeReferenceFormatter tw;
+        private readonly CodeFormatter codeFormatter;
+        private readonly Formatter formatter;
+        private readonly TypeReferenceFormatter tw;
         private Queue<StructureField> queue;
+        private StructureType globals;
+        private EndianImageReader? rdr;
+        private int recursionGuard;     //$REVIEW: remove this once deep recursion bugs have been flushed out.
 
         public GlobalDataWriter(Program program, Formatter formatter, IServiceProvider services)
         {
