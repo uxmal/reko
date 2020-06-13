@@ -90,7 +90,10 @@ namespace Reko.Core.Types
         public int CompareInternal(DataType x, DataType y, int count)
         {
             if (count > 20)
-                throw new ApplicationException("Way too deep");     //$BUG: discover why datatypes recurse so deep.
+            {
+                Debug.WriteLine("Way too deep");     //$BUG: discover why datatypes recurse so deep.
+                return 0;
+            }
             int prioX = x.Accept(this);
 			int prioY = y.Accept(this);
 			int dPrio = prioX - prioY;
