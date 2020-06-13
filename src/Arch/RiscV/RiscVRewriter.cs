@@ -40,9 +40,11 @@ namespace Reko.Arch.RiscV
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly ProcessorState state;
+#nullable disable
         private RiscVInstruction instr;
         private RtlEmitter m;
         private InstrClass iclass;
+#nullable enable
 
         public RiscVRewriter(RiscVArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -59,7 +61,7 @@ namespace Reko.Arch.RiscV
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                var addr = dasm.Current.Address;
+                var addr = dasm.Current.Address!;
                 var len = dasm.Current.Length;
                 var rtlInstructions = new List<RtlInstruction>();
                 this.iclass = this.instr.InstructionClass;
@@ -69,7 +71,7 @@ namespace Reko.Arch.RiscV
                 {
                 default:
                     host.Warn(
-                        instr.Address, 
+                        addr, 
                         "Risc-V instruction '{0}' not supported yet.",
                         instr.Mnemonic);
                     EmitUnitTest();
@@ -200,7 +202,7 @@ namespace Reko.Arch.RiscV
             throw new NotImplementedException($"Rewriting RiscV addressing mode {op.GetType().Name} is not implemented yet.");
         }
 
-        private void MaybeSignExtend(Expression dst, Expression src, DataType dt)
+        private void MaybeSignExtend(Expression dst, Expression src, DataType? dt)
         {
             if (dt != null && dt.BitSize < dst.DataType.BitSize)
             {
