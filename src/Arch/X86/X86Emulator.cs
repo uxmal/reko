@@ -72,6 +72,7 @@ namespace Reko.Arch.X86
         private Address ip;
         private bool ignoreRep;
 
+#nullable disable
         public X86Emulator(
             IntelArchitecture arch, 
             SegmentMap segmentMap, 
@@ -88,6 +89,7 @@ namespace Reko.Arch.X86
             this.iFlags = X86.Registers.eflags.Number;
             this.envEmulator = envEmulator;
         }
+#nullable enable
 
         public override MachineInstruction CurrentInstruction => dasm.Current;
 
@@ -129,7 +131,7 @@ namespace Reko.Arch.X86
             var sb = new StringBuilder();
             for (int i = 0; i < 8; ++i)
             {
-                sb.AppendFormat(" {0} {1:X8}", arch.GetRegister(i + StorageDomain.Register, new BitRange(0, 64)).Name, Registers[i]);
+                sb.AppendFormat(" {0} {1:X8}", arch.GetRegister(i + StorageDomain.Register, new BitRange(0, 64))!.Name, Registers[i]);
             }
             return sb;
         }
@@ -242,7 +244,7 @@ namespace Reko.Arch.X86
         protected TWord GetEffectiveOffset(MemoryOperand m)
         {
             TWord ea = 0;
-            if (m.Offset.IsValid)
+            if (m.Offset!.IsValid)
                 ea += m.Offset.ToUInt32();
             if (m.Index != RegisterStorage.None)
                 ea += (TWord)ReadRegister(m.Index) * m.Scale;

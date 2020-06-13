@@ -297,7 +297,7 @@ namespace Reko.Core
         /// instructions.</returns>
         List<RtlInstruction>? InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder);
 
-        Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state);
+        Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state);
         Address MakeSegmentedAddress(Constant seg, Constant offset);
 
         string GrfToString(RegisterStorage flagRegister, string prefix, uint grf);                       // Converts a union of processor flag bits to its string representation
@@ -546,7 +546,7 @@ namespace Reko.Core
         public abstract Address MakeAddressFromConstant(Constant c, bool codeAlign);
         public virtual Address MakeSegmentedAddress(Constant seg, Constant offset) { throw new NotSupportedException("This architecture doesn't support segmented addresses."); }
         public virtual void PostprocessProgram(Program program) { }
-        public abstract Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state);
+        public abstract Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state);
         public virtual Dictionary<string, object>? SaveUserOptions() { return null; }
 
         public abstract bool TryParseAddress(string? txtAddr, out Address addr);

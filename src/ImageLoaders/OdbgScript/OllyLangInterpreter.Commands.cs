@@ -1525,7 +1525,7 @@ rulong hwnd;
                         if (maxsize != 0 && maxsize < memlen)
                             memlen = maxsize;
 
-                        byte[] membuf = null, mask = null, bytes = null;
+                        byte[] membuf, mask, bytes;
 
                         membuf = new byte[memlen];
                         if (Host.TryReadBytes(addr, (int)memlen, membuf))

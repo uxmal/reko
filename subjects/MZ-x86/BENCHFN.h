@@ -426,11 +426,11 @@ Eq_252: (fn Eq_246 (Eq_236, Eq_236, Eq_236, Eq_236, Eq_236))
 Eq_265: (union "Eq_265" ((ptr32 Eq_4541) u0) ((memptr (ptr16 Eq_268) Eq_4542) u1) (Eq_4543 u2))
 	T_265 (in sp_43 : Eq_265)
 	T_266 (in <invalid> : void)
-	T_521 (in C_114 : Eq_265)
-	T_557 (in Z_197 : Eq_265)
-	T_572 (in Z_115 : Eq_265)
+	T_521 (in C_114 : bool)
+	T_557 (in Z_197 : bool)
+	T_572 (in Z_115 : bool)
 	T_607 (in CZ : Eq_265)
-	T_3568 (in es_di_1514 : Eq_265)
+	T_3568 (in es_di_1514 : word32)
 Eq_268: (segment "Eq_268")
 	T_268 (in ss : selector)
 Eq_276: (struct "Eq_276" (2 Eq_236 t0002))
@@ -4177,10 +4177,10 @@ T_520: (in al_200 == 0x20<8> : bool)
   Class: Eq_520
   DataType: bool
   OrigDataType: bool
-T_521: (in C_114 : Eq_265)
+T_521: (in C_114 : bool)
   Class: Eq_265
   DataType: Eq_265
-  OrigDataType: (ptr32 Eq_4541)
+  OrigDataType: bool
 T_522: (in cx_125 : word16)
   Class: Eq_522
   DataType: word16
@@ -4321,7 +4321,7 @@ T_556: (in fn0800_03BF(si_103, di_88, ax_110, cx_109, out ax_110, out cx_109, ou
   Class: Eq_556
   DataType: byte
   OrigDataType: byte
-T_557: (in Z_197 : Eq_265)
+T_557: (in Z_197 : bool)
   Class: Eq_265
   DataType: Eq_265
   OrigDataType: bool
@@ -4381,7 +4381,7 @@ T_571: (in fn0800_03BF(si_103, di_88, ax_108, cx_109, out ax_110, out cx_109, ou
   Class: Eq_556
   DataType: byte
   OrigDataType: byte
-T_572: (in Z_115 : Eq_265)
+T_572: (in Z_115 : bool)
   Class: Eq_265
   DataType: Eq_265
   OrigDataType: bool
@@ -16365,7 +16365,7 @@ T_3567: (in fn0800_1708(fp - 2<i16>, ds, out es_1517) : word16)
   Class: Eq_246
   DataType: Eq_246
   OrigDataType: word16
-T_3568: (in es_di_1514 : Eq_265)
+T_3568: (in es_di_1514 : word32)
   Class: Eq_265
   DataType: Eq_265
   OrigDataType: (ptr32 Eq_4541)

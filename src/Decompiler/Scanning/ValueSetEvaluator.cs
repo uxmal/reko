@@ -235,7 +235,7 @@ namespace Reko.Scanning
         {
             if (eAddr is Constant cAddr)
             {
-                var addr = arch.MakeAddressFromConstant(cAddr, false);
+                var addr = arch.MakeAddressFromConstant(cAddr, false)!;
                 if (!segmentMap.TryFindSegment(addr, out ImageSegment seg))
                     return Constant.Invalid;
                 var rdr = arch.CreateImageReader(seg.MemoryArea, addr);
@@ -387,8 +387,7 @@ namespace Reko.Scanning
             var segs = vaSeg.Values.ToArray();
             if (segs.Length != 1)
                 return ValueSet.Any;
-            var cSeg = segs[0] as Constant;
-            if (cSeg == null)
+            if (!(segs[0] is Constant cSeg))
                 return ValueSet.Any;
 
             var vsOff = access.EffectiveAddress.Accept(this, bitRange);

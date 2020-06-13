@@ -141,9 +141,10 @@ namespace Reko.Core
         {
             if (access.EffectiveAddress is Constant constAddr)
             {
+                // This can only happen on linear architectures.
                 if (constAddr == Constant.Invalid)
                     return constAddr;
-                var ea = Architecture.MakeAddressFromConstant(constAddr, false);
+                var ea = Architecture.MakeAddressFromConstant(constAddr, false)!;
                 return GetMemoryValue(ea, access.DataType, segmentMap);
             }
             if (access.EffectiveAddress is Address addr)

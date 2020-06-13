@@ -44,28 +44,24 @@ namespace Reko.Arch.X86
 			if (opA.GetType() != opB.GetType())
 				return false;
 
-			RegisterOperand regOpA = opA as RegisterOperand;
-			if (regOpA != null)
-			{
-				RegisterOperand regOpB = (RegisterOperand) opB;
-                return NormalizeRegisters || regOpA.Register == regOpB.Register;
-			}
-			ImmediateOperand immOpA = opA as ImmediateOperand;
-			if (immOpA != null)
-			{
-                var immOpB = (ImmediateOperand) opB;
-				return NormalizeConstants || immOpA.Value.Equals(immOpB.Value);			// disregard immediate values.
-			}
-            var addrOpA = opA as AddressOperand;
-            if (addrOpA != null)
+            if (opA is RegisterOperand regOpA)
             {
-                var addrOpB = (AddressOperand)opB;
+                RegisterOperand regOpB = (RegisterOperand) opB;
+                return NormalizeRegisters || regOpA.Register == regOpB.Register;
+            }
+            if (opA is ImmediateOperand immOpA)
+            {
+                var immOpB = (ImmediateOperand) opB;
+                return NormalizeConstants || immOpA.Value.Equals(immOpB.Value);         // disregard immediate values.
+            }
+            if (opA is AddressOperand addrOpA)
+            {
+                var addrOpB = (AddressOperand) opB;
                 return NormalizeConstants || addrOpA.Address == addrOpB.Address;
             }
-            var memOpA = opA as MemoryOperand;
-            if (memOpA != null)
+            if (opA is MemoryOperand memOpA)
             {
-                var memOpB = (MemoryOperand)opB;
+                var memOpB = (MemoryOperand) opB;
                 if (!base.CompareRegisters(memOpA.Base, memOpB.Base))
                     return false;
                 if (!base.CompareRegisters(memOpA.Index, memOpB.Index))
@@ -74,13 +70,12 @@ namespace Reko.Arch.X86
                     return false;
                 return base.CompareValues(memOpA.Offset, memOpB.Offset);
             }
-            var fpuA = opA as FpuOperand;
-            if (fpuA != null)
+            if (opA is FpuOperand fpuA)
             {
-                var fpuB = opB as FpuOperand;
+                var fpuB = (FpuOperand) opB;
                 return NormalizeRegisters || fpuA.StNumber == fpuB.StNumber;
             }
-			throw new NotImplementedException(string.Format("NYI: {0}", opA.GetType()));
+            throw new NotImplementedException(string.Format("NYI: {0}", opA.GetType()));
 		}
 
 
@@ -135,55 +130,43 @@ namespace Reko.Arch.X86
 			return hash;
 		}
 
-		private int GetHashCode(MachineOperand op)
-		{
-            int h;
-			RegisterOperand regOp = op as RegisterOperand;
-			if (regOp != null)
-			{
-				return base.GetRegisterHash(regOp.Register);
-			}
-			ImmediateOperand immOp = op as ImmediateOperand;
-			if (immOp != null)
-			{
-                return base.GetConstantHash(immOp.Value);
-			}
-            var addrOp = op as AddressOperand;
-            if (addrOp != null)
+        private int GetHashCode(MachineOperand op)
+        {
+            return op switch
             {
-                return base.NormalizeConstants
-                    ? 1
-                    : addrOp.Address.GetHashCode();
-            }
-            var memOp = op as MemoryOperand;
-            if (memOp != null)
+                RegisterOperand regOp => base.GetRegisterHash(regOp.Register),
+                ImmediateOperand immOp => base.GetConstantHash(immOp.Value),
+                AddressOperand addrOp => base.NormalizeConstants
+                        ? 1
+                        : addrOp.Address.GetHashCode(),
+                MemoryOperand memOp => GetMemoryOperandHash(memOp),
+                FpuOperand fpuOp => 59 * fpuOp.StNumber.GetHashCode(),
+                _ => throw new NotImplementedException("Unhandled operand type: " + op.GetType().FullName)
+            };
+        }
+            
+
+        private int GetMemoryOperandHash(MemoryOperand memOp)
+        {
+            int h = 0;
+            if (memOp.Base != null)
             {
-                h = 0;
-                if (memOp.Base != null)
-                {
-                    h = base.GetRegisterHash(memOp.Base);
-                }
-                if (memOp.Index != null)
-                {
-                    h = 13 * h ^ base.GetRegisterHash(memOp.Index);
-                    h = 17 * h ^ memOp.Scale;
-                }
-                if (memOp.Offset != null)
-                {
-                    h = 23 * h ^ GetConstantHash(memOp.Offset);
-                }
-                if (memOp.SegOverride != null)
-                {
-                    h = 29 * h ^ GetRegisterHash(memOp.SegOverride);
-                }
-                return h;
+                h = base.GetRegisterHash(memOp.Base);
             }
-            var fpuOp = op as FpuOperand;
-            if (fpuOp != null)
+            if (memOp.Index != null)
             {
-                return h = 59 * fpuOp.StNumber.GetHashCode();
+                h = 13 * h ^ base.GetRegisterHash(memOp.Index);
+                h = 17 * h ^ memOp.Scale;
             }
-			throw new NotImplementedException("Unhandled operand type: " + op.GetType().FullName);
-		}
-	}
+            if (memOp.Offset != null)
+            {
+                h = 23 * h ^ GetConstantHash(memOp.Offset);
+            }
+            if (memOp.SegOverride != null)
+            {
+                h = 29 * h ^ GetRegisterHash(memOp.SegOverride);
+            }
+            return h;
+        }
+    }
 }

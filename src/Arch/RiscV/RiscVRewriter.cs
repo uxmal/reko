@@ -61,7 +61,7 @@ namespace Reko.Arch.RiscV
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                var addr = dasm.Current.Address!;
+                var addr = dasm.Current.Address;
                 var len = dasm.Current.Length;
                 var rtlInstructions = new List<RtlInstruction>();
                 this.iclass = this.instr.InstructionClass;

@@ -625,7 +625,7 @@ namespace Reko.Arch.X86
             MemoryOperand mem = (MemoryOperand)instrCur.Operands[1];
             if (mem.Base == RegisterStorage.None && mem.Index == RegisterStorage.None)
             {
-                src = mem.Offset;
+                src = mem.Offset!;
             }
             else
             {
@@ -655,7 +655,7 @@ namespace Reko.Arch.X86
         {
             var reg = (RegisterOperand)instrCur.Operands[0];
             MemoryOperand mem = (MemoryOperand)instrCur.Operands[1];
-            if (!mem.Offset.IsValid)
+            if (!mem.Offset!.IsValid)
             {
                 mem = new MemoryOperand(mem.Width, mem.Base, mem.Index, mem.Scale, Constant.Create(instrCur.addrWidth, 0));
             }
@@ -916,7 +916,7 @@ namespace Reko.Arch.X86
             Expression rhs;
 
             // Check if the push requires preserving the original stack pointer
-            if (expr is Constant || (expr is Identifier && (expr as Identifier).Storage != arch.StackRegister))
+            if (expr is Constant || (expr is Identifier id && id.Storage != arch.StackRegister))
             {
                 rhs = expr;
             }
@@ -931,7 +931,7 @@ namespace Reko.Arch.X86
 
         private void RewriteRotation(string operation, bool useCarry, bool left)
         {
-            Identifier t = null;
+            Identifier? t;
             Expression sh;
             if (left)
             {
@@ -1041,7 +1041,7 @@ namespace Reko.Arch.X86
         private void RewriteStringInstruction()
         {
             var topOfLoop = instrCur.Address;
-            Identifier regCX = null;
+            Identifier? regCX = null;
             if (instrCur.repPrefix != 0)
             {
                 regCX = orw.AluRegister(Registers.rcx, instrCur.addrWidth);
@@ -1114,7 +1114,7 @@ namespace Reko.Arch.X86
             {
                 m.Assign(RegDi, incOperator(RegDi, instrCur.dataWidth.Size));
             }
-            if (instrCur.repPrefix == 0)
+            if (regCX is null)
                 return;
 
             m.Assign(regCX, m.ISub(regCX, 1));

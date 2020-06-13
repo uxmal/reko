@@ -30,7 +30,7 @@ namespace Reko.Arch.X86
             return (0x34 <= vectorNumber && vectorNumber <= 0x3E);
         }
 
-        private X86Instruction RewriteEmulated8087Instruction(byte vectorNumber)
+        private X86Instruction? RewriteEmulated8087Instruction(byte vectorNumber)
         {
             //$TODO: check for nulls.
             switch (vectorNumber)
@@ -50,7 +50,7 @@ namespace Reko.Arch.X86
             throw new InvalidOperationException();
         }
 
-        private X86Instruction Patchx87Instruction(byte op)
+        private X86Instruction? Patchx87Instruction(byte op)
         {
             long off = rdr.Offset - 2;
             // On a real 8086, the NOP was a FWAIT, but
@@ -69,7 +69,7 @@ namespace Reko.Arch.X86
             0x26, // ES
         };  
 
-        private X86Instruction Patchx87InstructionSegPrefix()
+        private X86Instruction? Patchx87InstructionSegPrefix()
         {
             var modifiedEscOp = rdr.Bytes[rdr.Offset];
             long off = rdr.Offset - 2;
@@ -87,7 +87,7 @@ namespace Reko.Arch.X86
         /// "short cuts". None of these correspond to a real x87
         /// instruction, so we have to simulate them.
         /// </summary>
-        private X86Instruction Emitx87BorlandShortcut()
+        private X86Instruction? Emitx87BorlandShortcut()
         {
             byte b1 = rdr.Bytes[rdr.Offset];
             rdr.Offset += 2;    // Skip the two trailing bytes.

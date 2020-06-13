@@ -34,13 +34,13 @@ namespace Reko.Arch.X86.Assembler
 	/// </summary>
 	public class OperandParser
 	{
-		public event ErrorEventHandler Error;
+		public event ErrorEventHandler? Error;
 
-		private Lexer lexer;
-		private PrimitiveType addrWidth;
-		private Symbol sym;
+		private readonly Lexer lexer;
+		private PrimitiveType? addrWidth;
+		private Symbol? sym;
 		private SymbolTable symtab; 
-		private Address addrBase;
+		private readonly Address addrBase;
 		private PrimitiveType defaultWordWidth;
 		private PrimitiveType defaultAddressWidth;
 		private RegisterStorage segOverride;
@@ -56,7 +56,7 @@ namespace Reko.Arch.X86.Assembler
             this.segOverride = RegisterStorage.None;
 		}
 
-		public PrimitiveType AddressWidth
+		public PrimitiveType? AddressWidth
 		{
 			get { return addrWidth; }
 		}
@@ -115,7 +115,7 @@ namespace Reko.Arch.X86.Assembler
 				break;
 			case Token.REGISTER:
 			{
-				reg = lexer.Register;
+				reg = lexer.Register!;
  				PrimitiveType width = reg.DataType;
  				if (addrWidth == null)
  					addrWidth = width;
@@ -125,8 +125,7 @@ namespace Reko.Arch.X86.Assembler
 			}
 			case Token.ID:
 			{
-				int v;
-                if (symtab.Equates.TryGetValue(lexer.StringLiteral.ToLower(), out v))
+                if (symtab.Equates.TryGetValue(lexer.StringLiteral.ToLower(), out int v))
 				{
                     totalInt += v;
 				}
@@ -166,9 +165,9 @@ namespace Reko.Arch.X86.Assembler
 			}
 		}
 
-		private ParsedOperand ParseMemoryOperand(RegisterStorage segOver)
+		private ParsedOperand? ParseMemoryOperand(RegisterStorage segOver)
 		{
-            MemoryOperand memOp = new MemoryOperand(null);
+            MemoryOperand memOp = new MemoryOperand(null!); // null will be replaced later.
 			memOp.SegOverride = segOver;
 			this.segOverride = segOver;
 
@@ -184,7 +183,7 @@ namespace Reko.Arch.X86.Assembler
 				case Token.KET:
 					if (totalInt != 0 || sym != null)
 					{
-						if (addrWidth == null || sym != null)
+						if (addrWidth is null || sym != null)
 							memOp.Offset = Constant.Create(defaultAddressWidth, totalInt);
 						else
 							memOp.Offset = X86Assembler.IntegralConstant(totalInt, addrWidth);
@@ -202,7 +201,8 @@ namespace Reko.Arch.X86.Assembler
 				ParseMemoryFactor(memOp);
 			} 
 		}
-		private ParsedOperand IntegerCommon() {
+
+		private ParsedOperand? IntegerCommon() {
 			if (lexer.PeekToken() == Token.BRA)
 			{
 				Expect(Token.BRA);
@@ -214,7 +214,7 @@ namespace Reko.Arch.X86.Assembler
 			}
 		}
 
-		public ParsedOperand ParseOperand()
+		public ParsedOperand? ParseOperand()
 		{
 			sym = null;
 			totalInt = 0;
@@ -236,7 +236,7 @@ namespace Reko.Arch.X86.Assembler
 				return IntegerCommon();
 			case Token.REGISTER:
 			{
-				RegisterStorage reg = lexer.Register;
+				RegisterStorage reg = lexer.Register!;
 				switch (lexer.PeekToken())
 				{
 				case Token.COLON:		// Segment override of the form "es:" usually precedes a memory operand.
@@ -270,10 +270,9 @@ namespace Reko.Arch.X86.Assembler
 			}
 		}
 
-        public ParsedOperand ParseIdOperand(string symStr)
+        public ParsedOperand? ParseIdOperand(string symStr)
         {
-            int v;
-            if (symtab.Equates.TryGetValue(symStr.ToLower(), out v))
+            if (symtab.Equates.TryGetValue(symStr.ToLower(), out int v))
             {
                 totalInt += lexer.Integer;
                 return IntegerCommon();
@@ -282,26 +281,27 @@ namespace Reko.Arch.X86.Assembler
             {
                 lexer.GetToken();
                 var memOp = ParseMemoryOperand(RegisterStorage.None);
+                if (memOp is null)
+                    return null;
                 memOp.Symbol = symtab.CreateSymbol(symStr);
                 return memOp;
             }
             return new ParsedOperand(
-                           new MemoryOperand(addrWidth, Constant.Create(defaultWordWidth, addrBase.Offset)),
+                           new MemoryOperand(addrWidth!, Constant.Create(defaultWordWidth, addrBase.Offset)),
                            symtab.CreateSymbol(symStr));
         }
 
-        private void OnError(string msg )
+        private void OnError(string msg)
 		{
-			if (Error != null)
-			{
-				Error(this, new ErrorEventArgs(msg));
-			}
-		}
+            Error?.Invoke(this, new ErrorEventArgs(msg));
+        }
 	
-		private ParsedOperand ParsePtrOperand(PrimitiveType width)
+		private ParsedOperand? ParsePtrOperand(PrimitiveType width)
 		{
 			Expect(Token.PTR);
-			ParsedOperand op = ParseOperand();
+			ParsedOperand? op = ParseOperand();
+            if (op is null)
+                return null;
 			op.Operand.Width = width;
 			return op;
 		}

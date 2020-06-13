@@ -112,7 +112,7 @@ namespace Reko.Arch.X86
                 Expression seg;
                 if (mem.DefaultSegment == Registers.cs)
                 {
-                    seg = Constant.Create(PrimitiveType.SegmentSelector, instr.Address.Selector.Value);
+                    seg = Constant.Create(PrimitiveType.SegmentSelector, instr.Address.Selector!.Value);
                 }
                 else
                 {
@@ -144,9 +144,9 @@ namespace Reko.Arch.X86
         /// </summary>
         public Expression EffectiveAddressExpression(X86Instruction instr, MemoryOperand mem, X86State state)
         {
-            Expression eIndex = null;
-            Expression eBase = null;
-            Expression expr = null;
+            Expression? eIndex = null;
+            Expression? eBase = null;
+            Expression? expr = null;
             bool ripRelative = false;
 
             if (mem.Base != RegisterStorage.None)
@@ -169,7 +169,7 @@ namespace Reko.Arch.X86
                 }
             }
 
-            if (mem.Offset.IsValid)
+            if (mem.Offset!.IsValid)
             {
                 if (ripRelative)
                 {
@@ -185,7 +185,7 @@ namespace Reko.Arch.X86
                         op = Operator.ISub;
                     }
 
-                    DataType dt = (eBase != null) ? eBase.DataType : eIndex.DataType;
+                    DataType dt = (eBase != null) ? eBase.DataType : eIndex!.DataType;
                     Constant cOffset = Constant.Create(dt, l);
                     expr = new BinaryExpression(op, dt, expr, cOffset);
                 }
@@ -202,13 +202,13 @@ namespace Reko.Arch.X86
                 {
                     eIndex = m.IMul(eIndex, Constant.Create(mem.Index.DataType, mem.Scale));
                 }
-                expr = m.IAdd(expr, eIndex);
+                expr = m.IAdd(expr!, eIndex);
             }
             if (!IsSegmentedAccessRequired && expr is Constant c && mem.SegOverride == RegisterStorage.None)
             {
-                return arch.MakeAddressFromConstant(c, false);
+                return arch.MakeAddressFromConstant(c, false)!;
             }
-            return expr;
+            return expr!;
         }
 
         public Identifier FlagGroup(FlagM flags)
@@ -234,29 +234,6 @@ namespace Reko.Arch.X86
             return new MemoryAccess(Registers.ST, idx, PrimitiveType.Real64);
         }
 
-        [Obsolete("Retire these?")]
-        public Expression ImportedGlobal(Address addrInstruction, PrimitiveType addrWidth, MemoryOperand mem)
-        {
-            if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == RegisterStorage.None &&
-                mem.Index == RegisterStorage.None)
-            {
-                var id = host.GetImport(Address.Ptr32(mem.Offset.ToUInt32()), addrInstruction);
-                return id;
-            }
-            return null;
-        }
-
-        [Obsolete("Retire these?")]
-        public ExternalProcedure ImportedProcedure(Address addrInstruction, PrimitiveType addrWidth, MemoryOperand mem)
-        {
-            if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == RegisterStorage.None &&
-                mem.Index == RegisterStorage.None)
-            {
-                return host.GetImportedProcedure(arch, Address.Ptr32(mem.Offset.ToUInt32()), addrInstruction);
-            }
-            return null;
-        }
-
         public UnaryExpression AddrOf(Expression expr)
         {
             return new UnaryExpression(Operator.AddrOf,
@@ -274,7 +251,7 @@ namespace Reko.Arch.X86
 
         public override Address ImmediateAsAddress(Address address, ImmediateOperand imm)
         {
-            return this.arch.ProcessorMode.CreateSegmentedAddress(address.Selector.Value, imm.Value.ToUInt32());
+            return this.arch.ProcessorMode.CreateSegmentedAddress(address.Selector!.Value, imm.Value.ToUInt32())!;
         }
 
         public override MemoryAccess StackAccess(Expression expr, DataType dt)

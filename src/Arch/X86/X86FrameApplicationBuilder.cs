@@ -43,7 +43,7 @@ namespace Reko.Arch.X86
         {
         }
 
-        public override Expression BindReturnValue(Identifier id)
+        public override Expression? BindReturnValue(Identifier id)
         {
             var old = this.simulateFpuFrameShift;
             this.simulateFpuFrameShift = true;
@@ -58,7 +58,7 @@ namespace Reko.Arch.X86
             int offset = fpu.FpuStackOffset;
             if (this.simulateFpuFrameShift)
             {
-                offset -= sigCallee.FpuStackDelta;
+                offset -= sigCallee!.FpuStackDelta;
             }
             if (offset != 0)
             {

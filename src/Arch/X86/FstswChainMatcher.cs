@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -70,11 +70,9 @@ namespace Reko.Arch.X86
             }
             if (instrs[i].Mnemonic == Mnemonic.test)
             {
-                RegisterOperand acc = instrs[i].Operands[0] as RegisterOperand;
-                if (acc == null)
+                if (!(instrs[i].Operands[0] is RegisterOperand acc))
                     return false;
-                ImmediateOperand imm = instrs[i].Operands[1] as ImmediateOperand;
-                if (imm == null)
+                if (!(instrs[i].Operands[1] is ImmediateOperand imm))
                     return false;
                 int mask = imm.Value.ToInt32();
                 if (acc.Register == Registers.ax || acc.Register == Registers.eax)

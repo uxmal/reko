@@ -127,7 +127,7 @@ namespace Reko.Arch.H8
                 case Mnemonic.subx: RewriteAddxSubx(instr, m.ISub); break;
                 case Mnemonic.xor: RewriteLogical(instr, m.Xor); break;
                 }
-                yield return m.MakeCluster(instr.Address!, instr.Length, iclass);
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
                 this.m = new RtlEmitter(new List<RtlInstruction>());
             }
         }
