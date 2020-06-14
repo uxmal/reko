@@ -68,6 +68,7 @@ namespace Reko.Evaluation
         private MkSeqFromSlices_Rule mkSeqFromSlicesRule;
         private ComparisonConstOnLeft constOnLeft;
         private SliceSequence sliceSeq;
+        private ComplicatedNotRule complicatedNot;
 
         public ExpressionSimplifier(SegmentMap segmentMap, EvaluationContext ctx, DecompilerEventListener listener)
         {
@@ -100,6 +101,7 @@ namespace Reko.Evaluation
             this.mkSeqFromSlicesRule = new MkSeqFromSlices_Rule(ctx);
             this.constOnLeft = new ComparisonConstOnLeft();
             this.sliceSeq = new SliceSequence(ctx);
+            this.complicatedNot = new ComplicatedNotRule(ctx);
         }
 
         public bool Changed { get { return changed; } set { changed = value; } }
@@ -387,6 +389,18 @@ namespace Reko.Evaluation
             {
                 Changed = true;
                 return shiftShift.Transform();
+            }
+
+            if (complicatedNot.Match(binExp))
+            {
+                Changed = true;
+                return complicatedNot.Transform();
+            }
+
+            if (complicatedNot.Match(binExp))
+            {
+                Changed = true;
+                return complicatedNot.Transform();
             }
 
             // No change, just return as is.
