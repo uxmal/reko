@@ -68,7 +68,9 @@ namespace Reko.Evaluation
         private MkSeqFromSlices_Rule mkSeqFromSlicesRule;
         private ComparisonConstOnLeft constOnLeft;
         private SliceSequence sliceSeq;
-        private ComplicatedNotRule complicatedNot;
+        private readonly LogicalNotFollowedByNegRule logicalNotFollowedByNeg;
+        private readonly LogicalNotFromArithmeticSequenceRule logicalNotFromBorrow;
+        private readonly UnaryNegEqZeroRule unaryNegEqZero;
 
         public ExpressionSimplifier(SegmentMap segmentMap, EvaluationContext ctx, DecompilerEventListener listener)
         {
@@ -101,7 +103,9 @@ namespace Reko.Evaluation
             this.mkSeqFromSlicesRule = new MkSeqFromSlices_Rule(ctx);
             this.constOnLeft = new ComparisonConstOnLeft();
             this.sliceSeq = new SliceSequence(ctx);
-            this.complicatedNot = new ComplicatedNotRule(ctx);
+            this.logicalNotFollowedByNeg = new LogicalNotFollowedByNegRule();
+            this.logicalNotFromBorrow = new LogicalNotFromArithmeticSequenceRule();
+            this.unaryNegEqZero = new UnaryNegEqZeroRule();
         }
 
         public bool Changed { get { return changed; } set { changed = value; } }
@@ -365,7 +369,7 @@ namespace Reko.Evaluation
             if (constOnLeft.Match(binExp))
             {
                 Changed = true;
-                return constOnLeft.Transform();
+                return constOnLeft.Transform().Accept(this);
             }
             if (addMici.Match(binExp))
             {
@@ -391,16 +395,17 @@ namespace Reko.Evaluation
                 return shiftShift.Transform();
             }
 
-            if (complicatedNot.Match(binExp))
+            // (-exp == 0) => (exp == 0)
+            if (unaryNegEqZero.Match(binExp))
             {
                 Changed = true;
-                return complicatedNot.Transform();
+                return unaryNegEqZero.Transform();
             }
 
-            if (complicatedNot.Match(binExp))
+            if (logicalNotFromBorrow.Match(binExp))
             {
                 Changed = true;
-                return complicatedNot.Transform();
+                return logicalNotFromBorrow.Transform();
             }
 
             // No change, just return as is.
@@ -867,6 +872,14 @@ namespace Reko.Evaluation
                 Changed = true;
                 return negSub.Transform();
             }
+
+            // (!-exp) >= (!exp)
+            if (logicalNotFollowedByNeg.Match(unary))
+            {
+                Changed = true;
+                return logicalNotFollowedByNeg.Transform();
+            }
+
             return unary;
         }
     }

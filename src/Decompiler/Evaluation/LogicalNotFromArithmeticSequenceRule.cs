@@ -27,9 +27,9 @@ using System;
 namespace Reko.Evaluation
 {
     /// <summary>
-    /// Rule that matches (0 - (-EXPRESSION == 0) + 1) and generates (!EXPRESSION).
+    /// Rule that matches (0 - (EXPRESSION == 0) + 1) and generates (!EXPRESSION).
     /// This is a solution for a very specific sequence of instructions.
-    ///
+    /// 
     /// Example x86 assembler:
     /// neg ax
     /// sbb ax, ax
@@ -37,17 +37,12 @@ namespace Reko.Evaluation
     ///
     /// Example result:
     /// turn func(0x00 - (-MyVariable == 0x00) + 0x01) into func(!MyVariable)
+    /// (With the help of UnaryNegEqZeroRule)
     /// </summary>
-    public class ComplicatedNotRule
+    public class LogicalNotFromArithmeticSequenceRule
     {
-        private readonly EvaluationContext ctx;
         private DataType? dataType;
         private Expression? expression;
-
-        public ComplicatedNotRule(EvaluationContext ctx)
-        {
-            this.ctx = ctx;
-        }
 
         public bool Match(BinaryExpression binExp)
         {
@@ -69,11 +64,9 @@ namespace Reko.Evaluation
             if (!middleExpression.Right.IsZero)
                 return false;
 
-            if (!(middleExpression.Left is UnaryExpression unaryExpression) || unaryExpression.Operator != Operator.Neg)
-                return false;
+            expression = middleExpression.Left;
 
             dataType = binExp.DataType;
-            expression = unaryExpression.Expression;
 
             return true;
         }
