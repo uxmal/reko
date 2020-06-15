@@ -13,6 +13,7 @@
 // bx:bx
 // v11:v11
 // cx:cx
+// SZO:SZO
 // Top:Top
 // return address size: 2
 define fn0C00_0000
@@ -49,6 +50,15 @@ l0C00_0000:
 	SCZO = cond(cx)
 	C = cx == 0<16>
 	Mem0[ds:0x306<16>:word16] = cx
+	eax = Mem0[ds:0x310<16>:word32]
+	eax = -eax
+	SCZO = cond(eax)
+	C = eax == 0<32>
+	eax = eax - eax - C
+	SCZO = cond(eax)
+	eax = eax + 1<32>
+	SZO = cond(eax)
+	Mem0[ds:0x30C<16>:word32] = eax
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
