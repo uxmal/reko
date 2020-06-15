@@ -26,6 +26,9 @@ using System;
 
 namespace Reko.Evaluation
 {
+    /// <summary>
+    /// Rule that reduce (-Foo == 0) into (Foo == 0).
+    /// </summary>
     public class UnaryNegEqZeroRule
     {
         private Expression? expression;

@@ -26,6 +26,9 @@ using System;
 
 namespace Reko.Evaluation
 {
+    /// <summary>
+    /// Rule that reduce (!-Foo) into (!Foo).
+    /// </summary>
     class LogicalNotFollowedByNegRule
     {
         private DataType? dataType;
