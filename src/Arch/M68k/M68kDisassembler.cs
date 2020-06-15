@@ -2133,10 +2133,9 @@ namespace Reko.Arch.M68k
             dasm.mnemonic = BIT_B(extension) ? Mnemonic.muls : Mnemonic.mulu;
             dasm.dataWidth = PrimitiveType.Word32;
 
-            if (!opDecoder.TryParseOperand((ushort)uInstr, 0, PrimitiveType.Word32, dasm.rdr, out var op1))
-            {
+            var op1 = dasm.get_ea_mode_str(uInstr, PrimitiveType.Word32);
+            if (op1 is null)
                 return false;
-            }
             dasm.ops.Add(op1);
             dasm.ops.Add(op2);
             return true;
@@ -2912,51 +2911,51 @@ namespace Reko.Arch.M68k
 	Instr(sl,D9,E0, 0xf1c0, 0xb180, 0xbf8, Mnemonic.eor),           // d68000_eor_32
 	Instr(sb,Ib,ccr, 0xffff, 0x0a3c, 0x000, Mnemonic.eori),         // d68000_eori_to_ccr
     Instr(sw,Iw,SR, 0xffff, 0x0a7c, 0x000, Mnemonic.eori),          // d68000_eori_to_sr
-    Instr(sb,Ib,E0, 0xffc0, 0x0a00, 0xbf8, Mnemonic.eori),      // d68000_eori_8
-	Instr(sw,Iw,E0, 0xffc0, 0x0a40, 0xbf8, Mnemonic.eori),      // d68000_eori_16
-	Instr(sl,Il,E0, 0xffc0, 0x0a80, 0xbf8, Mnemonic.eori),      // d68000_eori_32
-	Instr(D9,D0, 0xf1f8, 0xc140, 0x000, Mnemonic.exg),          // d68000_exg_dd 
-	Instr(A9,A0, 0xf1f8, 0xc148, 0x000, Mnemonic.exg),          // d68000_exg_aa
-	Instr(D9,A0, 0xf1f8, 0xc188, 0x000, Mnemonic.exg),          // d68000_exg_da
-	Instr(sl,D0, 0xfff8, 0x49c0, 0x000, Mnemonic.extb),         // d68020_extb_32
-	Instr(sw,D0, 0xfff8, 0x4880, 0x000, Mnemonic.ext),          // d68000_ext_16
-	Instr(sl,D0, 0xfff8, 0x48c0, 0x000, Mnemonic.ext),          // d68000_ext_32
+    Instr(sb,Ib,E0, 0xffc0, 0x0a00, 0xbf8, Mnemonic.eori),          // d68000_eori_8
+	Instr(sw,Iw,E0, 0xffc0, 0x0a40, 0xbf8, Mnemonic.eori),          // d68000_eori_16
+	Instr(sl,Il,E0, 0xffc0, 0x0a80, 0xbf8, Mnemonic.eori),          // d68000_eori_32
+	Instr(D9,D0, 0xf1f8, 0xc140, 0x000, Mnemonic.exg),              // d68000_exg_dd 
+	Instr(A9,A0, 0xf1f8, 0xc148, 0x000, Mnemonic.exg),              // d68000_exg_aa
+	Instr(D9,A0, 0xf1f8, 0xc188, 0x000, Mnemonic.exg),              // d68000_exg_da
+	Instr(sl,D0, 0xfff8, 0x49c0, 0x000, Mnemonic.extb),             // d68020_extb_32
+	Instr(sw,D0, 0xfff8, 0x4880, 0x000, Mnemonic.ext),              // d68000_ext_16
+	Instr(sl,D0, 0xfff8, 0x48c0, 0x000, Mnemonic.ext),              // d68000_ext_32
     Instr(d68040_fpu         , 0xffc0, 0xf200, 0x000),
     Instr(d68000_illegal      , 0xffff, 0x4afc, 0x000, iclass:InstrClass.Invalid),
     Instr(sl,E0, 0xffc0, 0x4ec0, 0x27b, Mnemonic.jmp, InstrClass.Transfer),   // d68000_jmp
 	Instr(sl,E0, 0xffc0, 0x4e80, 0x27b, Mnemonic.jsr, InstrClass.Transfer|InstrClass.Call),   // d68000_jsr
-	Instr(E0,A9, 0xf1c0, 0x41c0, 0x27b, Mnemonic.lea),          // d68000_lea
-	Instr(A0,Iw, 0xfff8, 0x4e50, 0x000, Mnemonic.link),         // d68000_link_16 
-	Instr(A0,Il, 0xfff8, 0x4808, 0x000, Mnemonic.link),         // d68020_link_32
-	Instr(s6,q9,D0, 0xf1f8, 0xe008, 0x000, Mnemonic.lsr),       // d68000_lsr_s_8
-	Instr(s6,q9,D0, 0xf1f8, 0xe048, 0x000, Mnemonic.lsr),       // d68000_lsr_s_16 
-	Instr(s6,q9,D0, 0xf1f8, 0xe088, 0x000, Mnemonic.lsr),       // d68000_lsr_s_32 
-	Instr(sb,D9,D0, 0xf1f8, 0xe028, 0x000, Mnemonic.lsr),       // d68000_lsr_r_8  
-	Instr(sw,D9,D0, 0xf1f8, 0xe068, 0x000, Mnemonic.lsr),       // d68000_lsr_r_16 
-	Instr(sl,D9,D0, 0xf1f8, 0xe0a8, 0x000, Mnemonic.lsr),       // d68000_lsr_r_32 
-	Instr(sw,E0,    0xffc0, 0xe2c0, 0x3f8, Mnemonic.lsr),       // d68000_lsr_ea   
-	Instr(s6,q9,D0, 0xf1f8, 0xe108, 0x000, Mnemonic.lsl),       // d68000_lsl_s_8  
-	Instr(s6,q9,D0, 0xf1f8, 0xe148, 0x000, Mnemonic.lsl),       // d68000_lsl_s_16 
-	Instr(s6,q9,D0, 0xf1f8, 0xe188, 0x000, Mnemonic.lsl),       // d68000_lsl_s_32 
-	Instr(sb,D9,D0, 0xf1f8, 0xe128, 0x000, Mnemonic.lsl),       // d68000_lsl_r_8  
-	Instr(sw,D9,D0, 0xf1f8, 0xe168, 0x000, Mnemonic.lsl),       // d68000_lsl_r_16 
-	Instr(sl,D9,D0, 0xf1f8, 0xe1a8, 0x000, Mnemonic.lsl),       // d68000_lsl_r_32 
-	Instr(sw,E0,    0xffc0, 0xe3c0, 0x3f8, Mnemonic.lsl),       // d68000_lsl_ea       
-	Instr(sb,E0,e6, 0xf000, 0x1000, 0xbff, Mnemonic.move),      // d68000_move_8   
-	Instr(sw,E0,e6, 0xf000, 0x3000, 0xfff, Mnemonic.move),      // d68000_move_16  
-	Instr(sl,E0,e6, 0xf000, 0x2000, 0xfff, Mnemonic.move),      // d68000_move_32  
-	Instr(sw,E0,A9, 0xf1c0, 0x3040, 0xfff, Mnemonic.movea),     // d68000_movea_16 
-	Instr(sl,E0,A9, 0xf1c0, 0x2040, 0xfff, Mnemonic.movea),     // d68000_movea_32
-	Instr(sb,E0,ccr,   0xffc0, 0x44c0, 0xbff, Mnemonic.move),   // d68000_move_to_ccr
-	Instr(sb,ccr,E0,   0xffc0, 0x42c0, 0xbf8, Mnemonic.move),   // d68010_move_fr_ccr
-	Instr(d68000_move_to_sr   , 0xffc0, 0x46c0, 0xbff),
-    Instr(d68000_move_fr_sr   , 0xffc0, 0x40c0, 0xbf8),
+	Instr(E0,A9, 0xf1c0, 0x41c0, 0x27b, Mnemonic.lea),              // d68000_lea
+	Instr(A0,Iw, 0xfff8, 0x4e50, 0x000, Mnemonic.link),             // d68000_link_16 
+	Instr(A0,Il, 0xfff8, 0x4808, 0x000, Mnemonic.link),             // d68020_link_32
+	Instr(s6,q9,D0, 0xf1f8, 0xe008, 0x000, Mnemonic.lsr),           // d68000_lsr_s_8
+	Instr(s6,q9,D0, 0xf1f8, 0xe048, 0x000, Mnemonic.lsr),           // d68000_lsr_s_16
+	Instr(s6,q9,D0, 0xf1f8, 0xe088, 0x000, Mnemonic.lsr),           // d68000_lsr_s_32
+	Instr(sb,D9,D0, 0xf1f8, 0xe028, 0x000, Mnemonic.lsr),           // d68000_lsr_r_8
+	Instr(sw,D9,D0, 0xf1f8, 0xe068, 0x000, Mnemonic.lsr),           // d68000_lsr_r_16
+	Instr(sl,D9,D0, 0xf1f8, 0xe0a8, 0x000, Mnemonic.lsr),           // d68000_lsr_r_32
+	Instr(sw,E0,    0xffc0, 0xe2c0, 0x3f8, Mnemonic.lsr),           // d68000_lsr_ea
+	Instr(s6,q9,D0, 0xf1f8, 0xe108, 0x000, Mnemonic.lsl),           // d68000_lsl_s_8
+	Instr(s6,q9,D0, 0xf1f8, 0xe148, 0x000, Mnemonic.lsl),           // d68000_lsl_s_16
+	Instr(s6,q9,D0, 0xf1f8, 0xe188, 0x000, Mnemonic.lsl),           // d68000_lsl_s_32
+	Instr(sb,D9,D0, 0xf1f8, 0xe128, 0x000, Mnemonic.lsl),           // d68000_lsl_r_8 
+	Instr(sw,D9,D0, 0xf1f8, 0xe168, 0x000, Mnemonic.lsl),           // d68000_lsl_r_16
+	Instr(sl,D9,D0, 0xf1f8, 0xe1a8, 0x000, Mnemonic.lsl),           // d68000_lsl_r_32
+	Instr(sw,E0,    0xffc0, 0xe3c0, 0x3f8, Mnemonic.lsl),           // d68000_lsl_ea
+	Instr(sb,E0,e6, 0xf000, 0x1000, 0xbff, Mnemonic.move),          // d68000_move_8
+	Instr(sw,E0,e6, 0xf000, 0x3000, 0xfff, Mnemonic.move),          // d68000_move_16
+	Instr(sl,E0,e6, 0xf000, 0x2000, 0xfff, Mnemonic.move),          // d68000_move_32
+	Instr(sw,E0,A9, 0xf1c0, 0x3040, 0xfff, Mnemonic.movea),         // d68000_movea_16
+	Instr(sl,E0,A9, 0xf1c0, 0x2040, 0xfff, Mnemonic.movea),         // d68000_movea_32
+	Instr(sb,E0,ccr,   0xffc0, 0x44c0, 0xbff, Mnemonic.move),       // d68000_move_to_ccr
+	Instr(sb,ccr,E0,   0xffc0, 0x42c0, 0xbf8, Mnemonic.move),       // d68010_move_fr_ccr
+	Instr(sw,E0,SR, 0xffc0, 0x46c0, 0xbff, Mnemonic.move),          // d68000_move_to_sr
+    Instr(sw,SR,E0, 0xffc0, 0x40c0, 0xbf8, Mnemonic.move),          // d68000_move_fr_sr
     Instr(d68000_move_to_usp  , 0xfff8, 0x4e60, 0x000),
     Instr(d68000_move_fr_usp  , 0xfff8, 0x4e68, 0x000),
     Instr(d68010_movec        , 0xfffe, 0x4e7a, 0x000),
-    Instr(sw,Mw,E0, 0xfff8, 0x48a0, 0x000, Mnemonic.movem),     // d68000_movem_pd_16
-	Instr(sl,Ml,E0, 0xfff8, 0x48e0, 0x000, Mnemonic.movem),     // d68000_movem_pd_32
-	Instr(sw,Mw,E0, 0xffc0, 0x4880, 0x2f8, Mnemonic.movem),     // d68000_movem_re_16
+    Instr(sw,Mw,E0, 0xfff8, 0x48a0, 0x000, Mnemonic.movem),         // d68000_movem_pd_16
+	Instr(sl,Ml,E0, 0xfff8, 0x48e0, 0x000, Mnemonic.movem),         // d68000_movem_pd_32
+	Instr(sw,Mw,E0, 0xffc0, 0x4880, 0x2f8, Mnemonic.movem),         // d68000_movem_re_16
 	Instr(sl,Ml,E0, 0xffc0, 0x48c0, 0x2f8, Mnemonic.movem),         // d68000_movem_re_32
 	Instr(sw,n,E0,mw, 0xffc0, 0x4c80, 0x37b, Mnemonic.movem),       // d68000_movem_er_16
 	Instr(sl,n,E0,ml, 0xffc0, 0x4cc0, 0x37b, Mnemonic.movem),       // d68000_movem_er_32
@@ -3057,9 +3056,9 @@ namespace Reko.Arch.M68k
 	Instr(sb,D0,D9,   0xf1f8, 0x9100, 0x000, Mnemonic.subx),    // d68000_subx_rr_8
 	Instr(sw,D0,D9,   0xf1f8, 0x9140, 0x000, Mnemonic.subx),    // d68000_subx_rr_16
 	Instr(sl,D0,D9,   0xf1f8, 0x9180, 0x000, Mnemonic.subx),    // d68000_subx_rr_32
-	Instr(sb,Pre0,Pre9,   0xf1f8, 0x9108, 0x000, Mnemonic.subx),        // d68000_subx_mm_8
-	Instr(sw,Pre0,Pre9,   0xf1f8, 0x9148, 0x000, Mnemonic.subx),        // d68000_subx_mm_16
-	Instr(sl,Pre0,Pre9,     0xf1f8, 0x9188, 0x000, Mnemonic.subx),      // d68000_subx_mm_32
+	Instr(sb,Pre0,Pre9, 0xf1f8, 0x9108, 0x000, Mnemonic.subx),  // d68000_subx_mm_8
+	Instr(sw,Pre0,Pre9, 0xf1f8, 0x9148, 0x000, Mnemonic.subx),  // d68000_subx_mm_16
+	Instr(sl,Pre0,Pre9, 0xf1f8, 0x9188, 0x000, Mnemonic.subx),  // d68000_subx_mm_32
 	Instr(sl,D0,      0xfff8, 0x4840, 0x000, Mnemonic.swap),    // d68000_swap
 	Instr(d68000_tas          , 0xffc0, 0x4ac0, 0xbf8),
 	Instr(d68000_trap         , 0xfff0, 0x4e40, 0x000, iclass:InstrClass.Transfer|InstrClass.Call),
