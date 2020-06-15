@@ -31,7 +31,7 @@ namespace Reko.Arch.M68k
     public class M68kInstruction : MachineInstruction
     {
         public Mnemonic Mnemonic { get; set; }
-        public PrimitiveType DataWidth { get; set; }
+        public PrimitiveType? DataWidth { get; set; }
 
         public override int MnemonicAsInteger => (int) Mnemonic;
 
@@ -41,7 +41,7 @@ namespace Reko.Arch.M68k
         {
             if (Mnemonic == Mnemonic.illegal && Operands.Length > 0 && writer.Platform != null)
             {
-                var imm = Operands[0] as M68kImmediateOperand;
+                var imm = (M68kImmediateOperand) Operands[0];
                 // MacOS uses invalid opcodes to invoke Macintosh Toolbox services. 
                 // We may have to generalize the Platform API to allow specifying 
                 // the opcode of the invoking instruction, to disambiguate from 
@@ -49,7 +49,7 @@ namespace Reko.Arch.M68k
                 var svc = writer.Platform.FindService((int)imm.Constant.ToUInt32(), null, null);
                 if (svc != null)
                 {
-                    writer.WriteString(svc.Name);
+                    writer.WriteString(svc.Name!);
                     return;
                 }
             }
@@ -68,8 +68,10 @@ namespace Reko.Arch.M68k
         {
             if (op is MemoryOperand memOp && memOp.Base == Registers.pc)
             {
-                var uAddr = Address.ToUInt32() + memOp.Offset.ToInt32();
-                var addr = Address.Ptr32((uint) uAddr);
+                var uAddr = Address.ToUInt32();
+                if (memOp.Offset != null)
+                    uAddr = (uint)(uAddr +  memOp.Offset.ToInt32());
+                var addr = Address.Ptr32(uAddr);
                 if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
                 {
                     writer.WriteAddress(addr.ToString(), addr);

@@ -334,6 +334,7 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
+
         public void M68krw_suba_16()
         {
             Given_UInt16s(0x90DC);      // suba.w (a4)+,a0
@@ -1356,7 +1357,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x44c3);
             AssertCode(     // move\td3,ccr
                 "0|L--|00010000(2): 1 instructions",
-                "1|L--|ccr = SLICE(d3, word16, 0)");
+                "1|L--|ccr = SLICE(d3, byte, 0)");
         }
 
         [Test]
@@ -1572,7 +1573,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x0C3B, 0x0004, 0x0028);    // cmpi.b\t#$04,($2C,pc,d0.w)
             AssertCode(
                 "0|L--|00010000(6): 2 instructions",
-                "1|L--|v3 = Mem0[0x0001002C<p32> + (int32) ((int16) d0):byte] - 4<i8>",
+                "1|L--|v3 = Mem0[0x0001002C<p32> + (int32) ((int16) d0):byte] - 4<8>",
                 "2|L--|CVZN = cond(v3)");
         }
 

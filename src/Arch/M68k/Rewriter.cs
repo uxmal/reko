@@ -53,6 +53,7 @@ namespace Reko.Arch.M68k
         private InstrClass iclass;
         private OperandRewriter orw;
 
+#nullable disable
         public Rewriter(M68kArchitecture m68kArchitecture, EndianImageReader rdr, M68kState m68kState, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = m68kArchitecture;
@@ -62,6 +63,7 @@ namespace Reko.Arch.M68k
             this.rdr = rdr;
             this.dasm = arch.CreateDisassemblerImpl(rdr).GetEnumerator();
         }
+#nullable enable
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
@@ -73,7 +75,7 @@ namespace Reko.Arch.M68k
                 rtlInstructions = new List<RtlInstruction>();
                 iclass = instr.InstructionClass;
                 m = new RtlEmitter(rtlInstructions);
-                orw = new OperandRewriter(arch, this.m, this.binder, instr.DataWidth);
+                orw = new OperandRewriter(arch, this.m, this.binder, instr.DataWidth!);
                 switch (instr.Mnemonic)
                 {
                 default:
@@ -295,7 +297,7 @@ VS Overflow Set 1001 V
             testGenSvc?.ReportMissingRewriter("M68krw", instr, rdr, "");
         }
 
-        private RegisterStorage GetRegister(MachineOperand op)
+        private RegisterStorage? GetRegister(MachineOperand op)
         {
             var rOp = op as RegisterOperand;
             return rOp?.Register;

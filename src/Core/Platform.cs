@@ -140,8 +140,8 @@ namespace Reko.Core
         /// <param name="vector"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        SystemService? FindService(int vector, ProcessorState state, SegmentMap segmentMap);
-        SystemService? FindService(RtlInstruction call, ProcessorState state, SegmentMap segmentMap);
+        SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap);
+        SystemService? FindService(RtlInstruction call, ProcessorState? state, SegmentMap? segmentMap);
         DispatchProcedure_v1? FindDispatcherProcedureByAddress(Address addr);
 
         string FormatProcedureName(Program program, Procedure proc);
@@ -399,14 +399,14 @@ namespace Reko.Core
             throw new NotSupportedException();
         }
 
-        public abstract SystemService? FindService(int vector, ProcessorState state, SegmentMap segmentMap);
+        public abstract SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap);
 
         public virtual DispatchProcedure_v1? FindDispatcherProcedureByAddress(Address addr)
         {
             return null;
         }
 
-        public virtual SystemService? FindService(RtlInstruction rtl, ProcessorState state, SegmentMap segmentMap)
+        public virtual SystemService? FindService(RtlInstruction rtl, ProcessorState? state, SegmentMap? segmentMap)
         {
             return null;
         }
@@ -586,7 +586,7 @@ namespace Reko.Core
             return this.Architecture.GetCallingConvention(ccName);
         }
 
-        public override SystemService? FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             return null;
         }
