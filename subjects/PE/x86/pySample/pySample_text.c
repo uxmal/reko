@@ -43,7 +43,7 @@ PyObject * fn100010F0(PyObject * ptrArg04, PyObject * ptrArg08)
 // 10001170: void initpySample()
 void initpySample()
 {
-	Py_InitModule4("pySample", globals->methods, null, null, 1007);
+	Py_InitModule4("pySample", methods, null, null, 1007);
 }
 
 // 100011E9: Register word32 fn100011E9(Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Register out Eq_n ecxOut, Register out ptr32 edxOut, Register out ptr32 ebxOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
@@ -55,22 +55,22 @@ word32 fn100011E9(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, DWORD & ecxOut, ptr3
 	Eq_n ebp_n = 0x00;
 	if (dwArg08 == 0x00)
 	{
-		if (globals->dw10003070 <= 0x00)
+		if (g_dw10003070 <= 0x00)
 		{
 			eax_n = 0x00;
 			goto l10001384;
 		}
-		--globals->dw10003070;
+		--g_dw10003070;
 	}
 	ecx = (Eq_n) *adjust_fdiv;
-	globals->t100033A4 = ecx;
+	g_t100033A4 = ecx;
 	ptr32 * esp_n = fp - 16;
 	if (dwArg08 == 0x01)
 	{
 		Eq_n edi_n = fs->ptr0018->t0004;
 		while (true)
 		{
-			Eq_n eax_n = InterlockedCompareExchange(&globals->t100033AC, edi_n, 0x00);
+			Eq_n eax_n = InterlockedCompareExchange(&g_t100033AC, edi_n, 0x00);
 			if (eax_n == 0x00)
 				break;
 			if (eax_n == edi_n)
@@ -80,12 +80,12 @@ word32 fn100011E9(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, DWORD & ecxOut, ptr3
 			}
 			Sleep(1000);
 		}
-		if (globals->dw100033A8 != 0x00)
+		if (g_dw100033A8 != 0x00)
 			_amsg_exit(0x1F);
-		globals->dw100033A8 = 0x01;
+		g_dw100033A8 = 0x01;
 		ecx = 0x100020A8;
 		esp_n = fp - 16;
-		if (_initterm_e(&globals->t100020A0, &globals->t100020A8) != 0x00)
+		if (_initterm_e(&g_t100020A0, &g_t100020A8) != 0x00)
 		{
 			eax_n = 0x00;
 l10001381:
@@ -101,36 +101,36 @@ l10001384:
 			ediOut = edi;
 			return eax_n;
 		}
-		_initterm(&globals->t10002098, &globals->t1000209C);
-		globals->dw100033A8 = 0x02;
+		_initterm(&g_t10002098, &g_t1000209C);
+		g_dw100033A8 = 0x02;
 		ecx = 0x1000209C;
 		if (ebp_n == 0x00)
-			InterlockedExchange(&globals->t100033AC, ebp_n);
+			InterlockedExchange(&g_t100033AC, ebp_n);
 		esp_n = fp - 16;
-		if (globals->ptr100033B8 != null)
+		if (g_ptr100033B8 != null)
 		{
 			ecx = 0x100033B8;
 			esp_n = fp - 16;
 			word32 edi_n;
 			if (fn10001742(InterlockedCompareExchange, 268448684, 0x02, out edx, out edi_n) != 0x00)
-				globals->ptr100033B8();
+				g_ptr100033B8();
 		}
-		++globals->dw10003070;
+		++g_dw10003070;
 	}
 	else if (dwArg08 == 0x00)
 	{
-		while (InterlockedCompareExchange(&globals->t100033AC, 0x01, 0x00) != 0x00)
+		while (InterlockedCompareExchange(&g_t100033AC, 0x01, 0x00) != 0x00)
 			Sleep(1000);
-		if (globals->dw100033A8 != 0x02)
+		if (g_dw100033A8 != 0x02)
 			_amsg_exit(0x1F);
-		Eq_n v15_n = globals->t100033B4;
+		Eq_n v15_n = g_t100033B4;
 		Eq_n eax_n = _decode_pointer(v15_n);
 		ecx = v15_n;
 		ptr32 esp_n = fp - 16;
 		if (eax_n != 0x00)
 		{
 			ptr32 esp_n = fp - 16;
-			DWORD edi_n = _decode_pointer(globals->t100033B0);
+			DWORD edi_n = _decode_pointer(g_t100033B0);
 			while (true)
 			{
 				ptr32 edx_n;
@@ -150,14 +150,14 @@ l10001384:
 			free(*esp_n);
 			ecx = (Eq_n) *esp_n;
 			Eq_n eax_n = _encoded_null();
-			globals->t100033B0 = eax_n;
-			globals->t100033B4 = eax_n;
+			g_t100033B0 = eax_n;
+			g_t100033B4 = eax_n;
 			esp_n = esp_n + 1;
 		}
 		struct Eq_n * esp_n = esp_n - 4;
 		esp_n->t0000 = 0x00;
-		esp_n->ptrFFFFFFFC = (LONG *) &globals->t100033AC;
-		globals->dw100033A8 = 0x00;
+		esp_n->ptrFFFFFFFC = (LONG *) &g_t100033AC;
+		g_dw100033A8 = 0x00;
 		InterlockedExchange(esp_n->ptrFFFFFFFC, esp_n->t0000);
 		esp_n = (ptr32 *) (&esp_n->t0000 + 1);
 	}
@@ -174,19 +174,19 @@ Eq_n fn10001388(Eq_n ecx, Eq_n edx, Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi,
 	Eq_n ebx_n = ebp_n->t0008;
 	ebp_n->tFFFFFFE4 = 0x01;
 	ebp_n->dwFFFFFFFC = 0x00;
-	globals->t10003008 = edx;
+	g_t10003008 = edx;
 	ebp_n->dwFFFFFFFC = 0x01;
 	struct Eq_n * esp_n = fp - 8;
 	Eq_n edi_n = ecx;
 	Eq_n esi_n = edx;
-	if (edx == 0x00 && globals->dw10003070 == 0x00)
+	if (edx == 0x00 && g_dw10003070 == 0x00)
 	{
 		ebp_n->tFFFFFFE4 = 0x00;
 		goto l1000147A;
 	}
 	if (edx == 0x01 || edx == 0x02)
 	{
-		if (globals->dw100020CC != 0x00)
+		if (g_dw100020CC != 0x00)
 		{
 			Eq_n eax_n;
 			fn00000000();
@@ -235,7 +235,7 @@ l1000147A:
 		word32 edx_n;
 		fn100011E9(esp_n->tFFFFFFF8, esp_n->tFFFFFFFC, esp_n->t0000, out ecx_n, out edx_n, out ebx_n, out esi_n, out edi_n);
 		esp_n = (struct Eq_n *) ((char *) &esp_n->t0000 + 4);
-		if (globals->dw100020CC != 0x00)
+		if (g_dw100020CC != 0x00)
 		{
 			esp_n->t0000 = edi_n;
 			esp_n->tFFFFFFFC = 0x00;
@@ -258,7 +258,7 @@ l1000147A:
 		esp_n = (struct Eq_n *) ((char *) &esp_n->t0000 + 4);
 		if (eax_n == 0x00)
 			ebp_n->tFFFFFFE4 &= eax_n;
-		if (ebp_n->tFFFFFFE4 != 0x00 && globals->dw100020CC != 0x00)
+		if (ebp_n->tFFFFFFE4 != 0x00 && g_dw100020CC != 0x00)
 		{
 			esp_n->t0000 = edi_n;
 			esp_n->tFFFFFFFC = esi_n;
@@ -276,7 +276,7 @@ l1000147A:
 //      fn10001388
 void fn10001493()
 {
-	globals->t10003008 = ~0x00;
+	g_t10003008 = ~0x00;
 }
 
 // 1000149E: Register Eq_n DllMain(Stack Eq_n hModule, Stack Eq_n dwReason, Stack Eq_n lpReserved)
@@ -295,7 +295,7 @@ Eq_n fn100015CF(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 	Eq_n eax_n;
 	struct Eq_n * esp_n;
 	struct Eq_n * ebp_n = fn100017E8(ebx, esi, edi, dwLoc0C, 0x14);
-	Eq_n eax_n = _decode_pointer(globals->t100033B4);
+	Eq_n eax_n = _decode_pointer(g_t100033B4);
 	ebp_n->tFFFFFFE4 = eax_n;
 	if (eax_n == ~0x00)
 	{
@@ -308,9 +308,9 @@ Eq_n fn100015CF(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 		lock();
 		Eq_n ecx_n = esp_n->t0000;
 		ebp_n->dwFFFFFFFC &= 0x00;
-		esp_n->t0000 = globals->t100033B4;
+		esp_n->t0000 = g_t100033B4;
 		ebp_n->tFFFFFFE4 = _decode_pointer(esp_n->t0000);
-		esp_n->tFFFFFFFC = globals->t100033B0;
+		esp_n->tFFFFFFFC = g_t100033B0;
 		ebp_n->tFFFFFFE0 = _decode_pointer(esp_n->tFFFFFFFC);
 		esp_n->ptrFFFFFFF8 = ebp_n - 0x20;
 		esp_n->ptrFFFFFFF4 = ebp_n - 0x1C;
@@ -321,12 +321,12 @@ Eq_n fn100015CF(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 		struct Eq_n * esp_n;
 		Eq_n eax_n;
 		encode_pointer();
-		globals->t100033B4 = eax_n;
+		g_t100033B4 = eax_n;
 		esp_n->tFFFFFFFC = ebp_n->tFFFFFFE0;
 		word32 esp_n;
 		Eq_n eax_n;
 		encode_pointer();
-		globals->t100033B0 = eax_n;
+		g_t100033B0 = eax_n;
 		ebp_n->dwFFFFFFFC = ~0x01;
 		fn10001665();
 		esp_n = esp_n + 0x1C;
@@ -353,7 +353,7 @@ void fn1000166E(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 // 10001680: void fn10001680()
 void fn10001680()
 {
-	word32 * esi_n = globals->a100021D8;
+	word32 * esi_n = g_a100021D8;
 	if (false)
 	{
 		do
@@ -361,7 +361,7 @@ void fn10001680()
 			if (*esi_n != 0x00)
 				fn00000000();
 			++esi_n;
-		} while (esi_n < globals->a100021D8);
+		} while (esi_n < g_a100021D8);
 	}
 }
 
@@ -414,11 +414,11 @@ ui32 fn10001742(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi, ptr32 &
 	ebp_n->dwFFFFFFFC &= 0x00;
 	ptr32 edx_n = 0x10000000;
 	Eq_n dwLoc0C_n = 0x10000000;
-	if (fn100016D0(&globals->t10000000) != 0x00)
+	if (fn100016D0(&g_t10000000) != 0x00)
 	{
 		Eq_n eax_n = ebp_n->t0008;
 		dwLoc0C_n = eax_n - 0x10000000;
-		struct Eq_n * eax_n = fn10001700(&globals->t10000000, eax_n - 0x10000000, out edx_n);
+		struct Eq_n * eax_n = fn10001700(&g_t10000000, eax_n - 0x10000000, out edx_n);
 		if (eax_n != null)
 		{
 			eax_n = ~(eax_n->dw0024 >> 0x1F) & 0x01;
@@ -440,7 +440,7 @@ l100017A8:
 //      fn10001388
 word32 fn100017C6(Eq_n dwArg04, Eq_n dwArg08)
 {
-	if (dwArg08 == 0x01 && globals->dw100020CC == 0x00)
+	if (dwArg08 == 0x01 && g_dw100020CC == 0x00)
 		DisableThreadLibraryCalls(dwArg04);
 	return 0x01;
 }
@@ -456,7 +456,7 @@ ptr32 fn100017E8(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi, Eq_n d
 	esp_n->ptrFFFFFFFC = ebx;
 	esp_n->ptrFFFFFFF8 = esi;
 	esp_n->dwFFFFFFF4 = edi;
-	esp_n->dwFFFFFFF0 = globals->dw10003000 ^ fp + 0x08;
+	esp_n->dwFFFFFFF0 = g_dw10003000 ^ fp + 0x08;
 	esp_n->tFFFFFFEC = dwArg00;
 	fs->ptr0000 = fp - 0x08;
 	return fp + 0x08;
@@ -479,9 +479,9 @@ word32 fn1000182D(struct Eq_n * ebp, Eq_n dwArg00)
 //      DllMain
 void fn10001864()
 {
-	ui32 eax_n = globals->dw10003000;
+	ui32 eax_n = g_dw10003000;
 	if (eax_n != 0xBB40E64E && (eax_n & 0xFFFF0000) != 0x00)
-		globals->dw10003004 = ~eax_n;
+		g_dw10003004 = ~eax_n;
 	else
 	{
 		GetSystemTimeAsFileTime(fp - 0x0C);
@@ -492,8 +492,8 @@ void fn10001864()
 			esi_n = ~0x44BF19B0;
 		else if ((esi_n & 0xFFFF0000) == 0x00)
 			esi_n |= esi_n << 0x10;
-		globals->dw10003000 = esi_n;
-		globals->dw10003004 = ~esi_n;
+		g_dw10003000 = esi_n;
+		g_dw10003004 = ~esi_n;
 	}
 }
 

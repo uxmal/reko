@@ -1066,7 +1066,7 @@ namespace Reko.Scanning
                 if (!program.SegmentMap.IsValidAddress(addr))
                     break;
                 var st = state.Clone();
-                blocks.Add(BlockFromAddress(ric!.Address, addr, blockCur!.Procedure, state));
+                blocks.Add(BlockFromAddress(ric!.Address, addr, blockCur!.Procedure, st));
             }
             return blocks;
         }
@@ -1182,7 +1182,7 @@ namespace Reko.Scanning
             {
                 if (!(mem.EffectiveAddress is Constant offset))
                     return null;
-                addrTarget = program.Platform.MakeAddressFromConstant(offset, true);
+                addrTarget = program.Platform.MakeAddressFromConstant(offset, true)!;
             }
             var impEp = scanner.GetImportedProcedure(this.arch, addrTarget, ric!.Address);
             //if (impEp != null)

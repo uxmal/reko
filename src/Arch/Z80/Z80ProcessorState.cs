@@ -69,7 +69,7 @@ namespace Reko.Arch.Z80
 
         public override void SetRegister(RegisterStorage reg, Constant v)
         {
-            if (reg != null && v != null && v.IsValid)
+            if (v != null && v.IsValid)
             {
                 isValid[(int)reg.Domain] = true;
                 registerFile[(int)reg.Domain] = v.ToByte();
@@ -94,7 +94,7 @@ namespace Reko.Arch.Z80
             return new CallSite(returnAddressSize, 0);
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
     }

@@ -44,10 +44,9 @@ namespace Reko.Core.Machine
         {
             for (;;)
             {
-                TInstr instr = DisassembleInstruction();
+                TInstr? instr = DisassembleInstruction();
                 if (instr == null)
                     break;
-                Debug.Assert(instr.Operands != null);   //$REVIEW: when we switch to C# 8.0 perhaps we don't need this?
                 yield return instr;
             }
         }
@@ -67,7 +66,7 @@ namespace Reko.Core.Machine
         /// </remarks>
         /// <returns>Return a disassembled machine instruction, or null
         /// if the end of the reader has been reached</returns>
-        public abstract TInstr DisassembleInstruction();
+        public abstract TInstr? DisassembleInstruction();
 
         public abstract TInstr NotYetImplemented(uint wInstr, string message);
 

@@ -252,7 +252,7 @@ namespace Reko.Core
                 var writer = new InstrWriter(program.Platform, addrStart, formatter);
                 foreach (var instr in dasm)
                 {
-                    writer.Address = instr.Address!;
+                    writer.Address = instr.Address;
                     if (instr.Address! >= addrLast)
                         break;
                     if (!DumpAssemblerLine(segment.MemoryArea, arch, instr, writer))
@@ -268,7 +268,7 @@ namespace Reko.Core
 
         public bool DumpAssemblerLine(MemoryArea mem, IProcessorArchitecture arch, MachineInstruction instr, InstrWriter writer)
         {
-            var instrAddress = instr.Address!;
+            var instrAddress = instr.Address;
             Address addrBegin = instrAddress;
             if (ShowAddresses)
                 writer.WriteFormat("{0} ", addrBegin);
@@ -325,8 +325,8 @@ namespace Reko.Core
 
             while (rdr.Address < addrEnd)
 			{
-                var v = rdr.Read(instrByteSize);
-                writer.WriteFormat(instrByteFormat, v.ToUInt64());
+                if (rdr.TryRead(instrByteSize, out var v))
+                    writer.WriteFormat(instrByteFormat, v.ToUInt64());
 			}
 		}
 

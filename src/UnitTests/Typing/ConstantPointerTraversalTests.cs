@@ -41,8 +41,8 @@ namespace Reko.UnitTests.Typing
         public void Setup()
         {
             arch = new Mock<IProcessorArchitecture>();
-            arch.Setup(a => a.CreateImageReader(It.IsAny<MemoryArea>(), It.IsAny<ulong>()))
-                .Returns((MemoryArea i, ulong o) => i.CreateLeReader(o));
+            arch.Setup(a => a.CreateImageReader(It.IsAny<MemoryArea>(), It.IsAny<long>()))
+                .Returns((MemoryArea i, long o) => i.CreateLeReader(o));
             globalStruct = new StructureType
             {
             };

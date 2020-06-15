@@ -24,6 +24,7 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Types;
+using Reko.Scanning;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -130,6 +131,19 @@ namespace Reko.Typing
 
         public void FunctionTrait(Expression function, int funcPtrBitSize, TypeVariable ret, params TypeVariable[] actuals)
         {
+            if (function is ProcedureConstant pc &&
+                pc.Procedure is ExternalProcedure ep &&
+                ep.Characteristics != null &&
+                ep.Characteristics.Allocator)
+            {
+                // Allocation sites mustn't be tied to other allocation sites. Don't mutate
+                // the existing signature. 
+                //$TODO: In fact, no user- or environment-provided function types should
+                // ever merge new FunctionTypes into the existing signature; the existing 
+                // signature should be treated as correct.
+                return;
+            }
+
             Identifier[] parameters = actuals
                 .Select(a => new Identifier("", a, null!))
                 .ToArray();
@@ -195,13 +209,23 @@ namespace Reko.Typing
             var tvElement = store.CreateTypeVariable(factory);
             tvElement.DataType = dtElement;
             tvElement.OriginalDataType = dtElement;
-
-            DataType dtArray = factory.CreateArrayType(tvElement, length);
-            MemoryAccessCommon(expBase, expStruct, offset, dtArray, structPtrBitSize);
+            StructField(expBase, expStruct, offset, factory.CreateArrayType(tvElement, length), structPtrBitSize);
             return tvElement;
         }
 
-        public DataType MemoryAccessCommon(Expression? eBase, Expression eStructPtr, int offset, DataType dtField, int structPtrBitSize)
+        /// <summary>
+        /// Assert that there is a structure field at offset <paramref name="offset" />
+        /// of <paramref name="eStructPtr"/>, which is treated as a pointer to the struct.
+        /// </summary>
+        /// <param name="eBase">Optional base pointer used in segmented addressing.</param>
+        /// <param name="eStructPtr">Expression that is a pointer to a structure.</param>
+        /// <param name="offset">An offset within that structure.</param>
+        /// <param name="dtField">The data type of the field being accessed.</param>
+        /// <param name="structPtrBitSize">Side of eStructPtr in bits.</param>
+        /// <returns>The union of <paramref name="eStructPtr" /> with a pointer to a structure
+        /// containing a field at offset <paramref name="offset" />.
+        /// </returns>
+        public DataType StructField(Expression? eBase, Expression eStructPtr, int offset, DataType dtField, int structPtrBitSize)
         {
             var s = factory.CreateStructureType(null, 0);
             var field = new StructureField(offset, dtField);
@@ -456,7 +480,7 @@ namespace Reko.Typing
                 //$TODO: instead of pushing it into globals, it should 
                 // allocate special types for each segment. This can be 
                 // done at load time.
-                MemoryAccessCommon(
+                StructField(
                     null,
                     globals, 
                     c.ToInt32() * 0x10,   //$REVIEW Platform-dependent: only valid for x86 real mode.
@@ -497,8 +521,6 @@ namespace Reko.Typing
         {
             MeetDataType(tvAccess, tvAccess.DataType);
             int eaBitSize = effectiveAddress.TypeVariable!.DataType.BitSize;
-            if (eaBitSize == 24)
-                eaBitSize.ToString();   //$DEBUG
             Expression p;
             int offset;
             if (fieldAccessPattern.Match(effectiveAddress))
@@ -511,7 +533,7 @@ namespace Reko.Typing
                 {
                     VisitInductionVariable(globals, (Identifier) p, iv, offset, tvAccess);
                 }
-                MemoryAccessCommon(basePointer, p, offset, tvAccess, eaBitSize);
+                StructField(basePointer, p, offset, tvAccess, eaBitSize);
             }
             else if (effectiveAddress is Constant c)
             {
@@ -519,7 +541,7 @@ namespace Reko.Typing
                 p = effectiveAddress;
                 offset = 0;
                 //$BUG: offsets should be long for 64-bit architectures.
-                MemoryAccessCommon(null, globals, OffsetOf(c), tvAccess, eaBitSize);
+                StructField(null, globals, OffsetOf(c), tvAccess, eaBitSize);
             }
             else if (effectiveAddress is Address addr && !addr.Selector.HasValue)
             {
@@ -528,7 +550,7 @@ namespace Reko.Typing
                 p = effectiveAddress;
                 offset = 0;
                 //$BUG: offsets should be long for 64-bit architectures.
-                MemoryAccessCommon(null, globals, (int) addr.ToLinear(), tvAccess, eaBitSize);
+                StructField(null, globals, (int) addr.ToLinear(), tvAccess, eaBitSize);
             }
             else if (IsArrayAccess(effectiveAddress))
             {
@@ -538,16 +560,21 @@ namespace Reko.Typing
                 // First do the array index.
                 binEa.Right.Accept(this, binEa.Right.TypeVariable!);
 
-                var tvElement = ArrayField(basePointer, binEa.Left, binEa.DataType.BitSize, 0, 1, 0, tvAccess);
+                var cbElement = tvAccess.DataType.Size;
+                var tvElement = ArrayField(basePointer, binEa.Left, binEa.DataType.BitSize, 0, cbElement, 0, tvAccess);
                 var dtArray = factory.CreateArrayType(tvElement, 0);
-                MemoryAccessCommon(basePointer, binEa.Left, 0, dtArray, eaBitSize);
 
                 var tvArray = store.CreateTypeVariable(factory);
                 tvArray.DataType = dtArray;
                 tvArray.OriginalDataType = dtArray;
-                VisitMemoryAccess(basePointer, tvArray, binEa.Left, globals);
 
-                MemoryAccessCommon(basePointer, effectiveAddress, 0, tvAccess, eaBitSize);
+                StructField(basePointer, binEa.Left, 0, dtArray, eaBitSize);
+
+                if (!(binEa.Left is Identifier))
+                {
+                    VisitMemoryAccess(basePointer, tvArray, binEa.Left, globals);
+                }
+                StructField(basePointer, effectiveAddress, 0, tvAccess, eaBitSize);
                 effectiveAddress.Accept(this, effectiveAddress.TypeVariable!);
                 return false;
             }
@@ -557,11 +584,15 @@ namespace Reko.Typing
                 p = effectiveAddress;
                 offset = 0;
             }
-            MemoryAccessCommon(basePointer, p, offset, tvAccess, eaBitSize);
+            StructField(basePointer, p, offset, tvAccess, eaBitSize);
             p.Accept(this, p.TypeVariable!);
             return false;
         }
 
+        /// <summary>
+        /// Returns true if the <paramref name="effectiveAddress"/> is an addition
+        /// with an integral right-hand-side.
+        /// </summary>
         private bool IsArrayAccess(Expression effectiveAddress)
         {
             if (!(effectiveAddress is BinaryExpression binEa) ||
@@ -629,13 +660,13 @@ namespace Reko.Typing
                 if (offset != 0)
                 {
                     SetSize(eBase, id, stride);
-                    MemoryAccessCommon(eBase, id, offset, tvField.DataType, platform.PointerType.BitSize);
+                    StructField(eBase, id, offset, tvField.DataType, platform.PointerType.BitSize);
                 }
             }
             else
             {
                 SetSize(eBase, id, stride);
-                MemoryAccessCommon(eBase, id, offset, tvField.DataType, platform.PointerType.BitSize);
+                StructField(eBase, id, offset, tvField.DataType, platform.PointerType.BitSize);
             }
         }
 

@@ -72,7 +72,7 @@ l00401172:
 	word32 edx_n;
 	ebp_n->tFFFFFFDC = (byte) (uint32) (uint8) fn0040143A(out edx_n);
 	struct Eq_n * ebp_n = ebp_n;
-	uip32 eax_n = globals->dw403334;
+	uip32 eax_n = g_dw403334;
 	word32 ebx_n = SEQ(ebx_24_8_n, 0x00);
 	if (eax_n != 0x01)
 	{
@@ -80,10 +80,10 @@ l00401172:
 		struct Eq_n * esp_n;
 		if (eax_n == 0x00)
 		{
-			globals->dw403334 = 0x01;
+			g_dw403334 = 0x01;
 			struct Eq_n * esp_n = esp_n - 4;
-			esp_n->ptr0000 = &globals->t4020F0;
-			esp_n->ptrFFFFFFFC = &globals->t4020E4;
+			esp_n->ptr0000 = &g_t4020F0;
+			esp_n->ptrFFFFFFFC = &g_t4020E4;
 			esp_n = (struct Eq_n *) ((char *) &esp_n->ptr0000 + 4);
 			if (_initterm_e(esp_n->ptrFFFFFFFC, esp_n->ptr0000) != 0x00)
 			{
@@ -91,10 +91,10 @@ l00401172:
 				eax_n.u0 = 0xFF;
 				goto l004012C3;
 			}
-			esp_n->ptr0000 = &globals->t4020E0;
-			esp_n->ptrFFFFFFFC = &globals->t4020D8;
+			esp_n->ptr0000 = &g_t4020E0;
+			esp_n->ptrFFFFFFFC = &g_t4020D8;
 			_initterm(esp_n->ptrFFFFFFFC, esp_n->ptr0000);
-			globals->dw403334 = 0x02;
+			g_dw403334 = 0x02;
 		}
 		else
 		{
@@ -212,7 +212,7 @@ byte fn0040143A(ptr32 & edxOut)
 		{
 			__lock();
 			ptr32 eax_n;
-			__cmpxchg(globals->dw403338, edx_n, 0x00, out eax_n);
+			__cmpxchg(g_dw403338, edx_n, 0x00, out eax_n);
 			if (eax_n == 0x00)
 			{
 				edxOut = edx_n;
@@ -235,7 +235,7 @@ byte fn0040143A(ptr32 & edxOut)
 byte fn0040146F(word32 edx, word32 dwArg04)
 {
 	if (dwArg04 == 0x00)
-		globals->b403354 = 0x01;
+		g_b403354 = 0x01;
 	fn004019FE(edx);
 	if (fn00401C46() == 0x00)
 		return 0x00;
@@ -254,15 +254,15 @@ byte fn0040153F(word32 ebx, Eq_n esi, Eq_n edi, ptr32 & edxOut, ptr32 & ebxOut, 
 	struct Eq_n * ebp_n = fn00401980(ebx, esi, edi, dwLoc0C, 0x08);
 	ebp_n->dwFFFFFFFC &= 0x00;
 	word24 eax_24_8_n = 0x5A;
-	if (globals->w400000 == 23117)
+	if (g_w400000 == 23117)
 	{
-		struct Eq_n * eax_n = globals->ptr40003C;
+		struct Eq_n * eax_n = g_ptr40003C;
 		eax_24_8_n = SLICE(eax_n, word24, 8);
 		eax_24_8_n = SLICE(eax_n, word24, 8);
 		if (eax_n->dw400000 == 0x4550 && eax_n->w400018 == 0x010B)
 		{
 			ui32 eax_n = ebp_n->dw0008;
-			struct Eq_n * eax_n = fn004013F6(&globals->w400000, eax_n - 0x00400000, out edx);
+			struct Eq_n * eax_n = fn004013F6(&g_w400000, eax_n - 0x00400000, out edx);
 			dwLoc0C = eax_n - 0x00400000;
 			eax_24_8_n = SLICE(eax_n, word24, 8);
 			eax_24_8_n = SLICE(eax_n, word24, 8);
@@ -295,7 +295,7 @@ l004015C3:
 void fn004015C9(Eq_n bArg04)
 {
 	if (fn00401B98() != 0x00 && bArg04 == 0x00)
-		globals->dw403338 = 0x00;
+		g_dw403338 = 0x00;
 }
 
 // 004015E6: void fn004015E6(Stack Eq_n bArg08)
@@ -303,7 +303,7 @@ void fn004015C9(Eq_n bArg04)
 //      Win32CrtStartup
 void fn004015E6(Eq_n bArg08)
 {
-	if (globals->b403354 == 0x00 || bArg08 == 0x00)
+	if (g_b403354 == 0x00 || bArg08 == 0x00)
 	{
 		fn00401C46();
 		fn00401C46();
@@ -315,9 +315,9 @@ void fn004015E6(Eq_n bArg08)
 //      Win32CrtStartup
 void fn0040165E()
 {
-	ui32 eax_n = globals->dw403004;
+	ui32 eax_n = g_dw403004;
 	if (eax_n != 0xBB40E64E && (eax_n & 0xFFFF0000) != 0x00)
-		globals->dw403000 = ~eax_n;
+		g_dw403000 = ~eax_n;
 	else
 	{
 		GetSystemTimeAsFileTime(fp - 0x10);
@@ -328,8 +328,8 @@ void fn0040165E()
 			ecx_n = ~0x44BF19B0;
 		else if ((ecx_n & 0xFFFF0000) == 0x00)
 			ecx_n |= (ecx_n | 0x4711) << 0x10;
-		globals->dw403004 = ecx_n;
-		globals->dw403000 = ~ecx_n;
+		g_dw403004 = ecx_n;
+		g_dw403000 = ~ecx_n;
 	}
 }
 
@@ -356,13 +356,13 @@ void fn0040176D(word32 dwArg04)
 {
 	if (IsProcessorFeaturePresent(0x17) == 0x00)
 	{
-		globals->dw403368 = 0x00;
+		g_dw403368 = 0x00;
 		memset(fp - 808, 0x00, 0x02CC);
 		memset(fp - 0x5C, 0x00, 0x50);
 		byte bl_n = 0x00 - (IsDebuggerPresent() == 0x01);
 		SetUnhandledExceptionFilter(null);
 		if (UnhandledExceptionFilter(fp - 0x0C) == 0x00)
-			globals->dw403368 &= 0x00 - (-((word32) (bl_n + 0x01)) == 0x00);
+			g_dw403368 &= 0x00 - (-((word32) (bl_n + 0x01)) == 0x00);
 	}
 	else
 		__fastfail(dwArg04);
@@ -388,7 +388,7 @@ byte fn0040188B()
 //      Win32CrtStartup
 void fn00401972()
 {
-	globals->ptr4020D4();
+	g_ptr4020D4();
 }
 
 // 00401980: Register ptr32 fn00401980(Register word32 ebx, Register Eq_n esi, Register Eq_n edi, Stack Eq_n dwArg00, Stack ui32 dwArg08)
@@ -401,7 +401,7 @@ ptr32 fn00401980(word32 ebx, Eq_n esi, Eq_n edi, Eq_n dwArg00, ui32 dwArg08)
 	esp_n->dwFFFFFFFC = ebx;
 	esp_n->tFFFFFFF8 = esi;
 	esp_n->tFFFFFFF4 = edi;
-	esp_n->dwFFFFFFF0 = globals->dw403004 ^ fp + 0x08;
+	esp_n->dwFFFFFFF0 = g_dw403004 ^ fp + 0x08;
 	esp_n->tFFFFFFEC = dwArg00;
 	fs->ptr0000 = fp - 0x08;
 	return fp + 0x08;
@@ -427,44 +427,44 @@ word32 fn004019C6(struct Eq_n * ebp, Eq_n dwArg00, union Eq_n & ebpOut, ptr32 & 
 //      fn0040146F
 void fn004019FE(word32 edx)
 {
-	globals->dw40336C &= 0x00;
-	globals->dw403010 |= 0x01;
+	g_dw40336C &= 0x00;
+	g_dw403010 |= 0x01;
 	if (IsProcessorFeaturePresent(0x0A) != 0x00)
 	{
 		ui32 edi_n;
-		globals->dw403010 |= 0x02;
-		globals->dw40336C = 0x01;
+		g_dw403010 |= 0x02;
+		g_dw40336C = 0x01;
 		__cpuid(0x00, 0x00, &0x00, &0x01, &0x00, &edx);
 		__cpuid(0x01, 0x00, &0x01, &0x01, &0x00, &edx);
 		byte bLoc14_n = (byte) (dwLoc14 & 0x00);
 		if ((edx ^ 0x49656E69 | 1818588270 | 0x756E6546) == 0x00 && (0x00 == 0x000106C0 || (0x00 == 0x00020660 || (0x00 == 0x00020670 || (0x00 == 0x00030650 || (0x00 == 0x00030660 || false))))))
 		{
-			ui32 edi_n = globals->dw403370;
-			globals->dw403370 = edi_n | 0x01;
+			ui32 edi_n = g_dw403370;
+			g_dw403370 = edi_n | 0x01;
 			edi_n = edi_n | 0x01;
 		}
 		else
-			edi_n = globals->dw403370;
+			edi_n = g_dw403370;
 		if (false)
 		{
 			__cpuid(0x07, 0x00, &0x07, &0x01, &0x00, &edx);
 			bLoc14_n = 0x01;
 			if (0x00 != 0x00)
-				globals->dw403370 = edi_n | 0x02;
+				g_dw403370 = edi_n | 0x02;
 		}
 		if (0x00 != 0x00)
 		{
-			globals->dw403010 |= 0x04;
-			globals->dw40336C = 0x02;
+			g_dw403010 |= 0x04;
+			g_dw40336C = 0x02;
 			if (0x00 != 0x00 && (0x00 != 0x00 && (((word32) __xgetbv(0x00) & 0x06) == 0x06 && true)))
 			{
-				ui32 eax_n = globals->dw403010;
-				globals->dw40336C = 0x03;
-				globals->dw403010 = eax_n | 0x08;
+				ui32 eax_n = g_dw403010;
+				g_dw40336C = 0x03;
+				g_dw403010 = eax_n | 0x08;
 				if ((bLoc14_n & 0x20) != 0x00)
 				{
-					globals->dw40336C = 0x05;
-					globals->dw403010 = eax_n | 0x08 | 0x20;
+					g_dw40336C = 0x05;
+					g_dw403010 = eax_n | 0x08 | 0x20;
 				}
 			}
 		}
@@ -477,7 +477,7 @@ void fn004019FE(word32 edx)
 //      fn004015C9
 uint32 fn00401B98()
 {
-	return (uint32) (uint8) (globals->dw403014 != 0x00);
+	return (uint32) (uint8) (g_dw403014 != 0x00);
 }
 
 // 00401C46: Register byte fn00401C46()

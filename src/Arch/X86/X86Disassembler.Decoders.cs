@@ -567,12 +567,12 @@ namespace Reko.Arch.X86
             private readonly Decoder decoderF2;
 
             public PrefixedDecoder(
-                Decoder dec = null,
-                Decoder dec66 = null,
-                Decoder decF3 = null,
-                Decoder decF2 = null,
-                Decoder decWide = null,
-                Decoder dec66Wide = null,
+                Decoder? dec = null,
+                Decoder? dec66 = null,
+                Decoder? decF3 = null,
+                Decoder? decF2 = null,
+                Decoder? decWide = null,
+                Decoder? dec66Wide = null,
                 InstrClass iclass = InstrClass.Linear)
             {
                 this.decoderBase = dec ?? s_invalid;

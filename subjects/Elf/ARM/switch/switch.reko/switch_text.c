@@ -7,7 +7,7 @@
 // 00008334: void _start(Stack int32 dwArg00, Stack (ptr32 Eq_n) ptrArg08, Stack (ptr32 Eq_n) ptrArg0C, Stack (ptr32 void) ptrArg10)
 void _start(int32 dwArg00, void (* ptrArg08)(), void (* ptrArg0C)(), void * ptrArg10)
 {
-	__libc_start_main(globals->ptr8364, dwArg00, fp + 4, globals->ptr8368, ptrArg08, ptrArg0C, ptrArg10);
+	__libc_start_main(g_ptr8364, dwArg00, fp + 4, g_ptr8368, ptrArg08, ptrArg0C, ptrArg10);
 	abort();
 }
 
@@ -16,8 +16,8 @@ void _start(int32 dwArg00, void (* ptrArg08)(), void (* ptrArg0C)(), void * ptrA
 //      _init
 word32 call_gmon_start()
 {
-	ptr32 r10_n = 0x8380 + globals->dw8394;
-	<anonymous> * r3_n = r10_n + globals->dw8398;
+	ptr32 r10_n = 0x8380 + g_dw8394;
+	<anonymous> * r3_n = r10_n + g_dw8398;
 	if (r3_n == null)
 		return r10;
 	word32 r10_n;
@@ -31,10 +31,10 @@ word32 call_gmon_start()
 //      _fini
 void __do_global_dtors_aux()
 {
-	byte * r5_n = globals->ptr83F4;
+	byte * r5_n = g_ptr83F4;
 	if ((word32) *r5_n != 0x00)
 		return;
-	<anonymous> *** r4_n = globals->ptr83F8;
+	<anonymous> *** r4_n = g_ptr83F8;
 	<anonymous> * r2_n = **r4_n;
 	if (r2_n == null)
 		*r5_n = 0x01;
@@ -58,9 +58,9 @@ void call___do_global_dtors_aux()
 //      _init
 void frame_dummy()
 {
-	if (*globals->ptr8424 == 0x00)
+	if (*g_ptr8424 == 0x00)
 		return;
-	if (globals->dw8428 == 0x00)
+	if (g_dw8428 == 0x00)
 		return;
 	word32 pc_n;
 	fn00000000();
@@ -233,8 +233,8 @@ void __libc_csu_init()
 {
 	ptr32 r10_n;
 	Eq_n r4_n = _init(out r10_n);
-	<anonymous> * r1_n[] = r10_n + globals->dw86A8;
-	int32 r3_n = r10_n + globals->dw86AC - r1_n;
+	<anonymous> * r1_n[] = r10_n + g_dw86A8;
+	int32 r3_n = r10_n + g_dw86AC - r1_n;
 	if (r4_n >= r3_n >> 2)
 		return;
 	r1_n[r4_n]();
@@ -243,9 +243,9 @@ void __libc_csu_init()
 // 000086B0: void __libc_csu_fini()
 void __libc_csu_fini()
 {
-	ptr32 r10_n = 0x86C8 + globals->dw8700;
-	<anonymous> * r1_n[] = r10_n + globals->dw8704;
-	int32 r3_n = r10_n + globals->dw8708 - r1_n;
+	ptr32 r10_n = 0x86C8 + g_dw8700;
+	<anonymous> * r1_n[] = r10_n + g_dw8704;
+	int32 r3_n = r10_n + g_dw8708 - r1_n;
 	int32 r4_n = (r3_n >> 2) - 0x01;
 	if (r3_n >> 2 == 0x00)
 		_fini();
@@ -258,7 +258,7 @@ void __libc_csu_fini()
 //      _init
 word32 __do_global_ctors_aux()
 {
-	struct Eq_n * r3_n = globals->ptr8740;
+	struct Eq_n * r3_n = g_ptr8740;
 	<anonymous> * r2_n = r3_n->ptrFFFFFFFC;
 	if (r2_n == (<anonymous> *) 0x01)
 		return r4;

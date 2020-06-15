@@ -740,7 +740,7 @@ T_142: (in 0x1201C<32> : word32)
   Class: Eq_139
   DataType: (ptr32 word32)
   OrigDataType: word32
-T_143: (in fn0001147C(&globals->dw12018, &globals->dw1201C) : void)
+T_143: (in fn0001147C(&g_dw12018, &g_dw1201C) : void)
   Class: Eq_143
   DataType: void
   OrigDataType: void
@@ -764,7 +764,7 @@ T_148: (in 0<32> : word32)
   Class: Eq_147
   DataType: (ptr32 (ptr32 code))
   OrigDataType: word32
-T_149: (in globals->t13040 == 0<32> : bool)
+T_149: (in g_t13040 == 0<32> : bool)
   Class: Eq_149
   DataType: bool
   OrigDataType: bool
@@ -780,7 +780,7 @@ T_152: (in 0x12014<32> : word32)
   Class: Eq_139
   DataType: (ptr32 word32)
   OrigDataType: word32
-T_153: (in fn0001147C(&globals->dw12010, &globals->dw12014) : void)
+T_153: (in fn0001147C(&g_dw12010, &g_dw12014) : void)
   Class: Eq_143
   DataType: void
   OrigDataType: void
@@ -824,7 +824,7 @@ T_163: (in Mem39[0x13040<32>:word32] : word32)
   Class: Eq_147
   DataType: Eq_147
   OrigDataType: up32
-T_164: (in globals->t1303C < globals->t13040 : bool)
+T_164: (in g_t1303C < g_t13040 : bool)
   Class: Eq_164
   DataType: bool
   OrigDataType: bool
@@ -836,7 +836,7 @@ T_166: (in 0<32> : word32)
   Class: Eq_165
   DataType: word32
   OrigDataType: word32
-T_167: (in (word32) (globals->t1303C < globals->t13040) != 0<32> : bool)
+T_167: (in (word32) (g_t1303C < g_t13040) != 0<32> : bool)
   Class: Eq_167
   DataType: bool
   OrigDataType: bool
@@ -860,7 +860,7 @@ T_172: (in Mem39[0x13040<32>:word32] : word32)
   Class: Eq_147
   DataType: Eq_147
   OrigDataType: (ptr32 void)
-T_173: (in free(globals->t13040) : void)
+T_173: (in free(g_t13040) : void)
   Class: Eq_173
   DataType: void
   OrigDataType: void
@@ -916,7 +916,7 @@ T_186: (in 0<32> : word32)
   Class: Eq_185
   DataType: (ptr32 code)
   OrigDataType: word32
-T_187: (in *globals->t1303C == null : bool)
+T_187: (in *g_t1303C == null : bool)
   Class: Eq_187
   DataType: bool
   OrigDataType: bool
@@ -1112,7 +1112,7 @@ T_235: (in 0x1200C<32> : word32)
   Class: Eq_139
   DataType: (ptr32 word32)
   OrigDataType: word32
-T_236: (in fn0001147C(&globals->dw12008, &globals->dw1200C) : void)
+T_236: (in fn0001147C(&g_dw12008, &g_dw1200C) : void)
   Class: Eq_143
   DataType: void
   OrigDataType: void
@@ -1128,7 +1128,7 @@ T_239: (in 0x12004<32> : word32)
   Class: Eq_139
   DataType: (ptr32 word32)
   OrigDataType: word32
-T_240: (in fn0001147C(&globals->dw12000, &globals->dw12004) : void)
+T_240: (in fn0001147C(&g_dw12000, &g_dw12004) : void)
   Class: Eq_143
   DataType: void
   OrigDataType: void
@@ -1172,7 +1172,7 @@ T_250: (in Mem11[0x1303C<32>:word32] : word32)
   Class: Eq_147
   DataType: Eq_147
   OrigDataType: int32
-T_251: (in globals->t1303C - r8_10 : word32)
+T_251: (in g_t1303C - r8_10 : word32)
   Class: Eq_251
   DataType: int32
   OrigDataType: int32
@@ -1180,7 +1180,7 @@ T_252: (in 0<32> : word32)
   Class: Eq_251
   DataType: int32
   OrigDataType: int32
-T_253: (in globals->t1303C - r8_10 >= 0<32> : bool)
+T_253: (in g_t1303C - r8_10 >= 0<32> : bool)
   Class: Eq_253
   DataType: bool
   OrigDataType: bool

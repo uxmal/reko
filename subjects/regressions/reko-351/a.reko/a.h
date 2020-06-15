@@ -188,7 +188,7 @@ T_36: (in 0<8> : byte)
   Class: Eq_35
   DataType: byte
   OrigDataType: byte
-T_37: (in globals->b80002724 != 0<8> : bool)
+T_37: (in g_b80002724 != 0<8> : bool)
   Class: Eq_37
   DataType: bool
   OrigDataType: bool
@@ -416,7 +416,7 @@ T_93: (in 0<32> : word32)
   Class: Eq_92
   DataType: word32
   OrigDataType: word32
-T_94: (in globals->dw8000271C != 0<32> : bool)
+T_94: (in g_dw8000271C != 0<32> : bool)
   Class: Eq_94
   DataType: bool
   OrigDataType: bool

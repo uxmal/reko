@@ -82,6 +82,8 @@ namespace Reko.Core.Types
 		/// <returns></returns>
 		public static EquivalenceClass Merge(EquivalenceClass class1, EquivalenceClass class2)
 		{
+            if (class1.Name == "Eq_32" || class2.Name == "Eq_32")
+                class1.ToString();  //$DEBUG
 			if (class1 == class2)
 				return class1;
 			TypeVariable newRep = class1.Representative.Number <= class2.Representative.Number

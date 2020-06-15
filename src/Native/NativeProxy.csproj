@@ -88,7 +88,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CmakeCompiler>Visual Studio 15 2017</CmakeCompiler>
+    <CmakeCompiler>Visual Studio 16 2019</CmakeCompiler>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|x64'">
     <OutputPath>bin\x64\UnixRelease\</OutputPath>
@@ -98,7 +98,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CmakeCompiler>Visual Studio 15 2017 Win64</CmakeCompiler>
+    <CmakeCompiler>Visual Studio 16 2019</CmakeCompiler>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|x86'">
     <OutputPath>bin\x86\UnixRelease\</OutputPath>
@@ -108,7 +108,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CmakeCompiler>Visual Studio 15 2017</CmakeCompiler>
+    <CmakeCompiler>Visual Studio 16 2019</CmakeCompiler>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -131,15 +131,18 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="CleanCMake" AfterTargets="Clean">
-    <Exec Condition=" '$(OS)' != 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake.exe -DACTION=clean -DREKO_PATH=&quot;$(SolutionDir)../&quot; -DREKO_COMPILER=&quot;$(CmakeCompiler)&quot; -DREKO_PLATFORM=$(Platform) -DCMAKE_BUILD_TYPE=$(Configuration) -DIS_MSYS=FALSE -P &quot;$(SolutionDir)Native\reko.cmake&quot;" WorkingDirectory="$(SolutionDir)Native" />
+    <Exec Command="echo %PATH%" />
+    <Exec Condition=" '$(OS)' != 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake -DACTION=clean -DREKO_PATH=&quot;$(SolutionDir)../&quot; -DREKO_COMPILER=&quot;$(CmakeCompiler)&quot; -DREKO_PLATFORM=$(Platform) -DCMAKE_BUILD_TYPE=$(Configuration) -DIS_MSYS=FALSE -P &quot;$(SolutionDir)Native\reko.cmake&quot;" WorkingDirectory="$(SolutionDir)Native" />
     <Exec Condition=" '$(OS)' == 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake -DACTION=clean -DREKO_PATH=&quot;$(SolutionDir)../&quot; -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -P &quot;$(SolutionDir)Native\reko.cmake&quot;" WorkingDirectory="$(SolutionDir)Native" />
   </Target>
   <Target Name="AfterBuild">
-    <!-- Start building the native shared libraries using CMake -->
+    <Exec Command="echo %PATH%" />
+    <!-- Start building the native
+     shared libraries using CMake -->
     <Exec Condition=" '$(OS)' != 'Unix' AND $(Platform) != 'AnyCPU'" Command="..\tools\hdrgen\bin\$(Configuration)\hdrgen.exe &quot;$(SolutionDir)Core\bin\$(Configuration)\Reko.Core.dll&quot; &quot;$(ProjectDir)include\reko.h&quot;" WorkingDirectory="$(ProjectDir)" />
     <Exec Condition=" '$(OS)' == 'Unix' AND $(Platform) != 'AnyCPU'" Command="../tools/hdrgen/bin/$(Configuration)/hdrgen.exe $(SolutionDir)Core/bin/$(Configuration)/Reko.Core.dll $(ProjectDir)include/reko.h" WorkingDirectory="$(ProjectDir)" />
     <!-- FIXME: not all C# configurations are valid CMake configurations -->
-    <Exec Condition=" '$(OS)' != 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake.exe -DREKO_PATH=&quot;$(SolutionDir)../&quot; -DREKO_COMPILER=&quot;$(CmakeCompiler)&quot; -DREKO_PLATFORM=$(Platform) -DCMAKE_BUILD_TYPE=$(Configuration) -DIS_MSYS=FALSE -P &quot;$(SolutionDir)Native\reko.cmake&quot;" WorkingDirectory="$(SolutionDir)Native" />
+    <Exec Condition=" '$(OS)' != 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake -DREKO_PATH=&quot;$(SolutionDir)../&quot; -DREKO_COMPILER=&quot;$(CmakeCompiler)&quot; -DREKO_PLATFORM=$(Platform) -DCMAKE_BUILD_TYPE=$(Configuration) -DIS_MSYS=FALSE -P &quot;$(SolutionDir)Native\reko.cmake&quot;" WorkingDirectory="$(SolutionDir)Native" />
     <Exec Condition=" '$(OS)' == 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake -DREKO_PATH=&quot;$(SolutionDir)../&quot; -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -P &quot;$(SolutionDir)Native\reko.cmake&quot;" WorkingDirectory="$(SolutionDir)Native" />
   </Target>
 </Project>

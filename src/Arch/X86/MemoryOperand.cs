@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ namespace Reko.Arch.X86
         public RegisterStorage Base { get; set; }
         public RegisterStorage Index { get; set; }
         public byte Scale { get; set; }
-		public Constant Offset {get;set;}
+		public Constant? Offset {get;set;}
 
 		public MemoryOperand(PrimitiveType width) : base(width)
 		{
@@ -73,7 +73,7 @@ namespace Reko.Arch.X86
 
 		public bool IsAbsolute
 		{
-            get { return Offset.IsValid && Base == RegisterStorage.None && Index == RegisterStorage.None; }
+            get { return Offset != null && Offset.IsValid && Base == RegisterStorage.None && Index == RegisterStorage.None; }
 		}
 
 		public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
@@ -116,8 +116,8 @@ namespace Reko.Arch.X86
 			}
 			else
 			{
-                var s = FormatUnsignedValue(Offset);
-				writer.WriteAddress(s, Address.FromConstant(Offset));
+                var s = FormatUnsignedValue(Offset!);
+				writer.WriteAddress(s, Address.FromConstant(Offset!));
 			}
 
 			if (Index != RegisterStorage.None)
@@ -172,7 +172,7 @@ namespace Reko.Arch.X86
 			get 
 			{
 				if (SegOverride != RegisterStorage.None)
-					return SegOverride;
+					return SegOverride!;
 				if (Base == Registers.bp || Base == Registers.ebp || Base == Registers.sp || Base == Registers.esp)
 					return Registers.ss;
 				return Registers.ds;

@@ -28,6 +28,8 @@ using System.Text;
 
 namespace Reko.Arch.M68k
 {
+#pragma warning disable IDE1006
+
     public interface M68kOperand
     {
         T Accept<T>(M68kOperandVisitor<T> visitor);
@@ -105,7 +107,7 @@ namespace Reko.Arch.M68k
         public const string HexStringFormat = "{0}${1}";
 
         public AddressRegister Base;
-        public Constant Offset;
+        public Constant? Offset;
 
         public MemoryOperand(PrimitiveType width, AddressRegister baseReg)
             : base(width)

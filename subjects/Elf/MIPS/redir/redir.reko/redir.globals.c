@@ -73,10 +73,7 @@ Eq_n g_t10000024 =
 		0x23F2,
 		4,
 		0x00,
-		
-		{
-			0
-		},
+		0x40,
 		300,
 		200,
 		47,
@@ -99,7 +96,7 @@ uint16 (** g_ptr10000A6C)[] = null;
 FILE * g_ptr10000AA8 = null;
 Eq_n g_t10000AAC = 
 	{
-		0x00
+		null
 	};
 Eq_n g_t10008860;
 word32 g_dw100107A0;

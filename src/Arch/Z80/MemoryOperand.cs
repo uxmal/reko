@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -31,8 +31,8 @@ namespace Reko.Arch.Z80
 {
     public class MemoryOperand : MachineOperand
     {
-        public RegisterStorage Base;
-        public Constant Offset;
+        public RegisterStorage? Base;
+        public Constant? Offset;
 
         public MemoryOperand(RegisterStorage baseReg, PrimitiveType type): base(type)
         {
@@ -81,7 +81,7 @@ namespace Reko.Arch.Z80
             else
             {
                 writer.WriteString("(");
-                writer.WriteAddress(string.Format("{0:X4}", Offset.ToUInt16()), Address.Ptr16(Offset.ToUInt16()));
+                writer.WriteAddress(string.Format("{0:X4}", Offset!.ToUInt16()), Address.Ptr16(Offset.ToUInt16()));
                 writer.WriteString(")");
             }
         }

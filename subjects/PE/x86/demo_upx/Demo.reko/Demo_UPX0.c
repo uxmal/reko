@@ -7,6 +7,6 @@
 // 00401000: void fn00401000()
 void fn00401000()
 {
-	ExitProcess(MessageBoxA(null, &globals->t403000, &globals->t403007, 0x00));
+	ExitProcess(MessageBoxA(null, &g_t403000, &g_t403007, 0x00));
 }
 

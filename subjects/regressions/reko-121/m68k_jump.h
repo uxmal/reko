@@ -81,7 +81,7 @@ T_18: (in Mem60[0x00FF0F08<p32>:word32] : word32)
   Class: Eq_6
   DataType: int32
   OrigDataType: int32
-T_19: (in globals->dwFF0F04 - globals->dwFF0F08 : word32)
+T_19: (in g_dwFF0F04 - g_dwFF0F08 : word32)
   Class: Eq_19
   DataType: int32
   OrigDataType: int32
@@ -89,7 +89,7 @@ T_20: (in 0<32> : word32)
   Class: Eq_19
   DataType: int32
   OrigDataType: int32
-T_21: (in globals->dwFF0F04 - globals->dwFF0F08 < 0<32> : bool)
+T_21: (in g_dwFF0F04 - g_dwFF0F08 < 0<32> : bool)
   Class: Eq_21
   DataType: bool
   OrigDataType: bool
@@ -289,7 +289,7 @@ T_70: (in 4<32> : word32)
   Class: Eq_70
   DataType: word32
   OrigDataType: word32
-T_71: (in globals->dwFF0F04 + 4<32> : word32)
+T_71: (in g_dwFF0F04 + 4<32> : word32)
   Class: Eq_9
   DataType: int32
   OrigDataType: word32

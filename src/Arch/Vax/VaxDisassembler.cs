@@ -288,7 +288,8 @@ namespace Reko.Arch.Vax
         {
             return (u, d) =>
             {
-                long jOffset = d.rdr.ReadLeSigned(width);
+                if (!d.rdr.TryReadLeSigned(width, out long jOffset))
+                    return false;
                 uint uAddr = (uint) ((long) d.rdr.Address.Offset + jOffset);
                 d.ops.Add(AddressOperand.Ptr32(uAddr));
                 return true;

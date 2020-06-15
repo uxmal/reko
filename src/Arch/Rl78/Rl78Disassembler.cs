@@ -403,7 +403,6 @@ namespace Reko.Arch.Rl78
             public override Rl78Instruction Decode(uint uInstr, Rl78Disassembler dasm)
             {
                 return dasm.NotYetImplemented(uInstr, message);
-                return dasm.CreateInvalidInstruction();
             }
         }
 

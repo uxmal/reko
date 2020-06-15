@@ -36,9 +36,6 @@ Eq_51: (fn void ())
 Eq_57: (fn void ())
 	T_57 (in register_tm_clones : ptr64)
 	T_58 (in signature of register_tm_clones : void)
-Eq_62: (fn (ptr64 void) (Eq_64, Eq_64))
-	T_62 (in calloc : ptr64)
-	T_63 (in signature of calloc : void)
 Eq_64: (union "Eq_64" (int64 u0) (size_t u1))
 	T_64 (in num : size_t)
 	T_65 (in size : size_t)
@@ -184,7 +181,7 @@ T_28: (in 0x400780<64> : word64)
   Class: Eq_22
   DataType: (ptr64 Eq_22)
   OrigDataType: (ptr64 (fn void ()))
-T_29: (in __libc_start_main(&globals->t400660, qwArg00, (char *) fp + 8<i32>, &globals->t400710, &globals->t400780, rdx, fp) : int32)
+T_29: (in __libc_start_main(&g_t400660, qwArg00, (char *) fp + 8<i32>, &g_t400710, &g_t400780, rdx, fp) : int32)
   Class: Eq_29
   DataType: int32
   OrigDataType: int32
@@ -268,7 +265,7 @@ T_49: (in 0<8> : byte)
   Class: Eq_48
   DataType: byte
   OrigDataType: byte
-T_50: (in globals->b601040 != 0<8> : bool)
+T_50: (in g_b601040 != 0<8> : bool)
   Class: Eq_50
   DataType: bool
   OrigDataType: bool
@@ -318,11 +315,11 @@ T_61: (in edi : word32)
   OrigDataType: word32
 T_62: (in calloc : ptr64)
   Class: Eq_62
-  DataType: (ptr64 Eq_62)
-  OrigDataType: (ptr64 (fn T_68 (T_66, T_67)))
+  DataType: ptr64
+  OrigDataType: ptr64
 T_63: (in signature of calloc : void)
   Class: Eq_62
-  DataType: (ptr64 Eq_62)
+  DataType: ptr64
   OrigDataType: 
 T_64: (in num : size_t)
   Class: Eq_64
@@ -859,8 +856,6 @@ typedef void (Eq_30)();
 typedef void (Eq_51)();
 
 typedef void (Eq_57)();
-
-typedef void (Eq_62)(Eq_64, Eq_64);
 
 typedef union Eq_64 {
 	int64 u0;

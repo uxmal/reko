@@ -85,20 +85,19 @@ namespace Reko.Arch.RiscV
         {
             this.arch = arch;
             this.iregs = new[] { "a0", "a1", "a2", "a3", "a4", "a5", "a6", "a7" }
-                .Select(r => arch.GetRegister(r))
+                .Select(r => arch.GetRegister(r)!)
                 .ToArray();
             this.fregs = new[] { "fa0", "fa1", "fa2", "fa3", "fa4", "fa5", "fa6", "fa7" }
-                .Select(r => arch.GetRegister(r))
+                .Select(r => arch.GetRegister(r)!)
                 .ToArray();
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(arch.WordWidth.Size, 0);
             if (dtRet != null)
             {
-                var pt = dtRet as PrimitiveType;
-                if (pt != null && pt.Domain == Domain.Real)
+                if (dtRet is PrimitiveType pt && pt.Domain == Domain.Real)
                 {
                     //$TODO floats > 64 bits
                     ccr.RegReturn(fregs[0]);

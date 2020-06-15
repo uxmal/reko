@@ -15,7 +15,7 @@ void proc1(ui32 eax, struct Eq_3 * ecx)
 proc1_entry:
 	// succ:  l1
 l1:
-	globals->dw10000 = (int32) ecx->a0064[eax]
+	g_dw10000 = (int32) ecx->a0064[eax]
 proc1_exit:
 
 // Equivalence classes ////////////

@@ -17,7 +17,7 @@ define fn
 fn_entry:
 	// succ:  l1
 l1:
-	globals->r1028 = (real32) globals->r1020
+	g_r1028 = (real32) g_r1020
 	return
 	// succ:  fn_exit
 fn_exit:

@@ -344,7 +344,7 @@ Eq_24: (union "Eq_24" (int32 u0) (word64 u1))
 Eq_34: (union "Eq_34" (int32 u0) (up32 u1) ((ptr64 char) u2) ((ptr64 Eq_4244) u3) ((ptr64 void) u4))
 	T_34 (in a0_60 : Eq_34)
 	T_35 (in 118<i32> : int32)
-	T_49 (in (uint64) (uint32) getopt_long(a0, a1, "cr:i46bho:gmnpsv", &globals->t108E0, 0<i32>) : uint64)
+	T_49 (in (uint64) (uint32) getopt_long(a0, a1, "cr:i46bho:gmnpsv", &g_t108E0, 0<i32>) : uint64)
 	T_50 (in -1<i32> : int32)
 	T_112 (in a5_334 : Eq_34)
 	T_115 (in a5_254 : Eq_34)
@@ -509,7 +509,7 @@ Eq_113: (union "Eq_113" (int32 u0) ((ptr64 FILE) u1) (size_t u2))
 	T_136 (in 1<i32> : int32)
 	T_137 (in 46<i32> : int32)
 	T_140 (in Mem88[gp + -1920<i32>:word64] : word64)
-	T_141 (in fwrite(&globals->v119D8, 1<i32>, 46<i32>, gp->tFFFFF880) : size_t)
+	T_141 (in fwrite(&g_v119D8, 1<i32>, 46<i32>, gp->tFFFFF880) : size_t)
 	T_156 (in a1Out : Eq_113)
 	T_158 (in a3Out : Eq_113)
 	T_161 (in out a1_101 : ptr64)
@@ -519,7 +519,7 @@ Eq_113: (union "Eq_113" (int32 u0) ((ptr64 FILE) u1) (size_t u2))
 	T_199 (in 1<i32> : int32)
 	T_200 (in 37<i32> : int32)
 	T_203 (in Mem94[gp + -1920<i32>:word64] : word64)
-	T_204 (in fwrite(&globals->v11A08, 1<i32>, 37<i32>, gp->tFFFFF880) : size_t)
+	T_204 (in fwrite(&g_v11A08, 1<i32>, 37<i32>, gp->tFFFFF880) : size_t)
 	T_345 (in a0 : (ptr64 FILE))
 	T_350 (in Mem376[gp + -1920<i32>:word64] : word64)
 	T_391 (in Mem346[gp + -1920<i32>:word64] : word64)
@@ -529,166 +529,166 @@ Eq_113: (union "Eq_113" (int32 u0) ((ptr64 FILE) u1) (size_t u2))
 	T_1015 (in 1<i32> : int32)
 	T_1016 (in 28<i32> : int32)
 	T_1019 (in Mem94[gp + -1920<i32>:word64] : word64)
-	T_1020 (in fwrite(&globals->v11A30, 1<i32>, 28<i32>, gp->tFFFFF880) : size_t)
+	T_1020 (in fwrite(&g_v11A30, 1<i32>, 28<i32>, gp->tFFFFF880) : size_t)
 	T_1157 (in a3_9 : Eq_113)
 	T_1160 (in Mem7[gp + -1920<i32>:word64] : word64)
 	T_1165 (in 1<i32> : int32)
 	T_1166 (in 26<i32> : int32)
-	T_1167 (in fwrite(&globals->v10BE0, 1<i32>, 26<i32>, a3_9) : size_t)
+	T_1167 (in fwrite(&g_v10BE0, 1<i32>, 26<i32>, a3_9) : size_t)
 	T_1170 (in 1<i32> : int32)
 	T_1171 (in 54<i32> : int32)
 	T_1174 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1175 (in fwrite(&globals->v10C00, 1<i32>, 54<i32>, gp->tFFFFF880) : size_t)
+	T_1175 (in fwrite(&g_v10C00, 1<i32>, 54<i32>, gp->tFFFFF880) : size_t)
 	T_1178 (in 1<i32> : int32)
 	T_1179 (in 77<i32> : int32)
 	T_1182 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1183 (in fwrite(&globals->v10C38, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
+	T_1183 (in fwrite(&g_v10C38, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
 	T_1186 (in 1<i32> : int32)
 	T_1187 (in 62<i32> : int32)
 	T_1190 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1191 (in fwrite(&globals->v10C88, 1<i32>, 62<i32>, gp->tFFFFF880) : size_t)
+	T_1191 (in fwrite(&g_v10C88, 1<i32>, 62<i32>, gp->tFFFFF880) : size_t)
 	T_1194 (in 1<i32> : int32)
 	T_1195 (in 79<i32> : int32)
 	T_1198 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1199 (in fwrite(&globals->v10CC8, 1<i32>, 79<i32>, gp->tFFFFF880) : size_t)
+	T_1199 (in fwrite(&g_v10CC8, 1<i32>, 79<i32>, gp->tFFFFF880) : size_t)
 	T_1202 (in 1<i32> : int32)
 	T_1203 (in 79<i32> : int32)
 	T_1206 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1207 (in fwrite(&globals->v10D18, 1<i32>, 79<i32>, gp->tFFFFF880) : size_t)
+	T_1207 (in fwrite(&g_v10D18, 1<i32>, 79<i32>, gp->tFFFFF880) : size_t)
 	T_1210 (in 1<i32> : int32)
 	T_1211 (in 42<i32> : int32)
 	T_1214 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1215 (in fwrite(&globals->v10D68, 1<i32>, 42<i32>, gp->tFFFFF880) : size_t)
+	T_1215 (in fwrite(&g_v10D68, 1<i32>, 42<i32>, gp->tFFFFF880) : size_t)
 	T_1218 (in 1<i32> : int32)
 	T_1219 (in 76<i32> : int32)
 	T_1222 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1223 (in fwrite(&globals->v10D98, 1<i32>, 76<i32>, gp->tFFFFF880) : size_t)
+	T_1223 (in fwrite(&g_v10D98, 1<i32>, 76<i32>, gp->tFFFFF880) : size_t)
 	T_1226 (in 1<i32> : int32)
 	T_1227 (in 77<i32> : int32)
 	T_1230 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1231 (in fwrite(&globals->v10DE8, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
+	T_1231 (in fwrite(&g_v10DE8, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
 	T_1234 (in 1<i32> : int32)
 	T_1235 (in 77<i32> : int32)
 	T_1238 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1239 (in fwrite(&globals->v10E38, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
+	T_1239 (in fwrite(&g_v10E38, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
 	T_1243 (in stream : (ptr64 FILE))
 	T_1247 (in Mem7[gp + -1920<i32>:word64] : word64)
 	T_1251 (in 1<i32> : int32)
 	T_1252 (in 23<i32> : int32)
 	T_1255 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1256 (in fwrite(&globals->v10E88, 1<i32>, 23<i32>, gp->tFFFFF880) : size_t)
+	T_1256 (in fwrite(&g_v10E88, 1<i32>, 23<i32>, gp->tFFFFF880) : size_t)
 	T_1259 (in 1<i32> : int32)
 	T_1260 (in 71<i32> : int32)
 	T_1263 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1264 (in fwrite(&globals->v10EA0, 1<i32>, 71<i32>, gp->tFFFFF880) : size_t)
+	T_1264 (in fwrite(&g_v10EA0, 1<i32>, 71<i32>, gp->tFFFFF880) : size_t)
 	T_1267 (in 1<i32> : int32)
 	T_1268 (in 57<i32> : int32)
 	T_1271 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1272 (in fwrite(&globals->v10EE8, 1<i32>, 57<i32>, gp->tFFFFF880) : size_t)
+	T_1272 (in fwrite(&g_v10EE8, 1<i32>, 57<i32>, gp->tFFFFF880) : size_t)
 	T_1275 (in 1<i32> : int32)
 	T_1276 (in 58<i32> : int32)
 	T_1279 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1280 (in fwrite(&globals->v10F28, 1<i32>, 58<i32>, gp->tFFFFF880) : size_t)
+	T_1280 (in fwrite(&g_v10F28, 1<i32>, 58<i32>, gp->tFFFFF880) : size_t)
 	T_1283 (in 1<i32> : int32)
 	T_1284 (in 57<i32> : int32)
 	T_1287 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1288 (in fwrite(&globals->v10F68, 1<i32>, 57<i32>, gp->tFFFFF880) : size_t)
+	T_1288 (in fwrite(&g_v10F68, 1<i32>, 57<i32>, gp->tFFFFF880) : size_t)
 	T_1291 (in 1<i32> : int32)
 	T_1292 (in 77<i32> : int32)
 	T_1295 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1296 (in fwrite(&globals->v10FA8, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
+	T_1296 (in fwrite(&g_v10FA8, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
 	T_1299 (in 1<i32> : int32)
 	T_1300 (in 77<i32> : int32)
 	T_1303 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1304 (in fwrite(&globals->v10FF8, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
+	T_1304 (in fwrite(&g_v10FF8, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
 	T_1307 (in 1<i32> : int32)
 	T_1308 (in 77<i32> : int32)
 	T_1311 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1312 (in fwrite(&globals->v11048, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
+	T_1312 (in fwrite(&g_v11048, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
 	T_1315 (in 1<i32> : int32)
 	T_1316 (in 46<i32> : int32)
 	T_1319 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1320 (in fwrite(&globals->v11098, 1<i32>, 46<i32>, gp->tFFFFF880) : size_t)
+	T_1320 (in fwrite(&g_v11098, 1<i32>, 46<i32>, gp->tFFFFF880) : size_t)
 	T_1323 (in 1<i32> : int32)
 	T_1324 (in 72<i32> : int32)
 	T_1327 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1328 (in fwrite(&globals->v110C8, 1<i32>, 72<i32>, gp->tFFFFF880) : size_t)
+	T_1328 (in fwrite(&g_v110C8, 1<i32>, 72<i32>, gp->tFFFFF880) : size_t)
 	T_1331 (in 1<i32> : int32)
 	T_1332 (in 45<i32> : int32)
 	T_1335 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1336 (in fwrite(&globals->v11118, 1<i32>, 45<i32>, gp->tFFFFF880) : size_t)
+	T_1336 (in fwrite(&g_v11118, 1<i32>, 45<i32>, gp->tFFFFF880) : size_t)
 	T_1339 (in 1<i32> : int32)
 	T_1340 (in 67<i32> : int32)
 	T_1343 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1344 (in fwrite(&globals->v11148, 1<i32>, 67<i32>, gp->tFFFFF880) : size_t)
+	T_1344 (in fwrite(&g_v11148, 1<i32>, 67<i32>, gp->tFFFFF880) : size_t)
 	T_1347 (in 1<i32> : int32)
 	T_1348 (in 64<i32> : int32)
 	T_1351 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1352 (in fwrite(&globals->v11190, 1<i32>, 64<i32>, gp->tFFFFF880) : size_t)
+	T_1352 (in fwrite(&g_v11190, 1<i32>, 64<i32>, gp->tFFFFF880) : size_t)
 	T_1355 (in 1<i32> : int32)
 	T_1356 (in 72<i32> : int32)
 	T_1359 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1360 (in fwrite(&globals->v111D8, 1<i32>, 72<i32>, gp->tFFFFF880) : size_t)
+	T_1360 (in fwrite(&g_v111D8, 1<i32>, 72<i32>, gp->tFFFFF880) : size_t)
 	T_1363 (in 1<i32> : int32)
 	T_1364 (in 46<i32> : int32)
 	T_1367 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1368 (in fwrite(&globals->v11228, 1<i32>, 46<i32>, gp->tFFFFF880) : size_t)
+	T_1368 (in fwrite(&g_v11228, 1<i32>, 46<i32>, gp->tFFFFF880) : size_t)
 	T_1373 (in Mem7[gp + -1920<i32>:word64] : word64)
 	T_1377 (in 1<i32> : int32)
 	T_1378 (in 15<i32> : int32)
 	T_1381 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1382 (in fwrite(&globals->v11258, 1<i32>, 15<i32>, gp->tFFFFF880) : size_t)
+	T_1382 (in fwrite(&g_v11258, 1<i32>, 15<i32>, gp->tFFFFF880) : size_t)
 	T_1385 (in 1<i32> : int32)
 	T_1386 (in 87<i32> : int32)
 	T_1389 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1390 (in fwrite(&globals->v11268, 1<i32>, 87<i32>, gp->tFFFFF880) : size_t)
+	T_1390 (in fwrite(&g_v11268, 1<i32>, 87<i32>, gp->tFFFFF880) : size_t)
 	T_1393 (in 1<i32> : int32)
 	T_1394 (in 60<i32> : int32)
 	T_1397 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1398 (in fwrite(&globals->v112C0, 1<i32>, 60<i32>, gp->tFFFFF880) : size_t)
+	T_1398 (in fwrite(&g_v112C0, 1<i32>, 60<i32>, gp->tFFFFF880) : size_t)
 	T_1401 (in 1<i32> : int32)
 	T_1402 (in 68<i32> : int32)
 	T_1405 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1406 (in fwrite(&globals->v11300, 1<i32>, 68<i32>, gp->tFFFFF880) : size_t)
+	T_1406 (in fwrite(&g_v11300, 1<i32>, 68<i32>, gp->tFFFFF880) : size_t)
 	T_1409 (in 1<i32> : int32)
 	T_1410 (in 58<i32> : int32)
 	T_1413 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1414 (in fwrite(&globals->v11348, 1<i32>, 58<i32>, gp->tFFFFF880) : size_t)
+	T_1414 (in fwrite(&g_v11348, 1<i32>, 58<i32>, gp->tFFFFF880) : size_t)
 	T_1417 (in 1<i32> : int32)
 	T_1418 (in 57<i32> : int32)
 	T_1421 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1422 (in fwrite(&globals->v11388, 1<i32>, 57<i32>, gp->tFFFFF880) : size_t)
+	T_1422 (in fwrite(&g_v11388, 1<i32>, 57<i32>, gp->tFFFFF880) : size_t)
 	T_1425 (in 1<i32> : int32)
 	T_1426 (in 62<i32> : int32)
 	T_1429 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1430 (in fwrite(&globals->v113C8, 1<i32>, 62<i32>, gp->tFFFFF880) : size_t)
+	T_1430 (in fwrite(&g_v113C8, 1<i32>, 62<i32>, gp->tFFFFF880) : size_t)
 	T_1433 (in 1<i32> : int32)
 	T_1434 (in 77<i32> : int32)
-	T_1435 (in fwrite(&globals->v11408, 1<i32>, 77<i32>, a3_9) : size_t)
+	T_1435 (in fwrite(&g_v11408, 1<i32>, 77<i32>, a3_9) : size_t)
 	T_1438 (in 1<i32> : int32)
 	T_1439 (in 62<i32> : int32)
 	T_1442 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1443 (in fwrite(&globals->v11458, 1<i32>, 62<i32>, gp->tFFFFF880) : size_t)
+	T_1443 (in fwrite(&g_v11458, 1<i32>, 62<i32>, gp->tFFFFF880) : size_t)
 	T_1446 (in 1<i32> : int32)
 	T_1447 (in 65<i32> : int32)
 	T_1450 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1451 (in fwrite(&globals->v11498, 1<i32>, 65<i32>, gp->tFFFFF880) : size_t)
+	T_1451 (in fwrite(&g_v11498, 1<i32>, 65<i32>, gp->tFFFFF880) : size_t)
 	T_1454 (in 1<i32> : int32)
 	T_1455 (in 76<i32> : int32)
 	T_1458 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1459 (in fwrite(&globals->v114E0, 1<i32>, 76<i32>, gp->tFFFFF880) : size_t)
+	T_1459 (in fwrite(&g_v114E0, 1<i32>, 76<i32>, gp->tFFFFF880) : size_t)
 	T_1462 (in 1<i32> : int32)
 	T_1463 (in 65<i32> : int32)
 	T_1466 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1467 (in fwrite(&globals->v11530, 1<i32>, 65<i32>, gp->tFFFFF880) : size_t)
+	T_1467 (in fwrite(&g_v11530, 1<i32>, 65<i32>, gp->tFFFFF880) : size_t)
 	T_1470 (in 1<i32> : int32)
 	T_1471 (in 41<i32> : int32)
 	T_1474 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1475 (in fwrite(&globals->v11578, 1<i32>, 41<i32>, gp->tFFFFF880) : size_t)
+	T_1475 (in fwrite(&g_v11578, 1<i32>, 41<i32>, gp->tFFFFF880) : size_t)
 	T_1478 (in 1<i32> : int32)
 	T_1479 (in 30<i32> : int32)
 	T_1482 (in Mem7[gp + -1920<i32>:word64] : word64)
-	T_1483 (in fwrite(&globals->v115A8, 1<i32>, 30<i32>, gp->tFFFFF880) : size_t)
+	T_1483 (in fwrite(&g_v115A8, 1<i32>, 30<i32>, gp->tFFFFF880) : size_t)
 	T_1494 (in strlen : size_t)
 	T_1500 (in 128<i32> : int32)
 	T_1511 (in s6_43 : Eq_113)
@@ -702,7 +702,7 @@ Eq_113: (union "Eq_113" (int32 u0) ((ptr64 FILE) u1) (size_t u2))
 	T_1654 (in 1<i32> : int32)
 	T_1655 (in 4<i32> : int32)
 	T_1658 (in Mem36[gp_40 + -1912<i32>:word64] : word64)
-	T_1659 (in fwrite(&globals->v115E0, 1<i32>, 4<i32>, gp_40->tFFFFF888) : size_t)
+	T_1659 (in fwrite(&g_v115E0, 1<i32>, 4<i32>, gp_40->tFFFFF888) : size_t)
 	T_1915 (in a2 : size_t)
 	T_1918 (in 16<i32> : int32)
 	T_2172 (in num : size_t)
@@ -719,7 +719,7 @@ Eq_113: (union "Eq_113" (int32 u0) ((ptr64 FILE) u1) (size_t u2))
 	T_2637 (in 1<i32> : int32)
 	T_2638 (in 43<i32> : int32)
 	T_2641 (in Mem408[gp + -1920<i32>:word64] : word64)
-	T_2642 (in fwrite(&globals->v117F8, 1<i32>, 43<i32>, gp->tFFFFF880) : size_t)
+	T_2642 (in fwrite(&g_v117F8, 1<i32>, 43<i32>, gp->tFFFFF880) : size_t)
 	T_2714 (in 16<i32> : int32)
 	T_2745 (in a2 : size_t)
 	T_2747 (in 16<i32> : int32)
@@ -737,7 +737,7 @@ Eq_113: (union "Eq_113" (int32 u0) ((ptr64 FILE) u1) (size_t u2))
 	T_3157 (in 1<i32> : int32)
 	T_3158 (in 43<i32> : int32)
 	T_3161 (in Mem180[gp + -1920<i32>:word64] : word64)
-	T_3162 (in fwrite(&globals->v117F8, 1<i32>, 43<i32>, gp->tFFFFF880) : size_t)
+	T_3162 (in fwrite(&g_v117F8, 1<i32>, 43<i32>, gp->tFFFFF880) : size_t)
 	T_3195 (in Mem27[gp + -1920<i32>:word64] : word64)
 	T_3196 (in a1 : word64)
 	T_3214 (in 256<i32> : int32)
@@ -2229,10 +2229,6 @@ Eq_4087: (union "Eq_4087" (int64 u0) (uint64 u1))
 	T_4094 (in (int64) Mem54[a0 + ((a1_101 << 0<u32>) >>u 0<u32>):byte] : int64)
 Eq_4091: (union "Eq_4091" (int64 u0) (uint64 u1))
 	T_4091 (in a1_101 << 0<u32> >> 0<u32> : word64)
-Eq_4093: (struct "Eq_4093" 0001 (0 (arr Eq_4093) a0000))
-	T_4093 (in Mem54[a0 + ((a1_101 << 0<u32>) >>u 0<u32>):byte] : byte)
-	T_4241
-	T_4242
 Eq_4101: (union "Eq_4101" (int32 u0) (ui64 u1))
 	T_4101 (in 15<i32> : int32)
 Eq_4112: (union "Eq_4112" (int32 u0) (int64 u1))
@@ -2274,7 +2270,7 @@ Eq_4222: (union "Eq_4222" (int32 u0) (int64 u1))
 	T_4232 (in 0<i32> : int32)
 Eq_4238: (union "Eq_4238" (int32 u0) (word64 u1))
 	T_4238 (in 8<i32> : int32)
-Eq_4243: (union "Eq_4243" (byte u0) ((arr Eq_4093) u1))
+Eq_4243: (union "Eq_4243" (byte u0) ((arr byte) u1))
 	T_4243
 Eq_4244: (struct "Eq_4244" 0001 (0 Eq_4243 t0000) (1 byte b0001) (FFF byte b0FFF))
 	T_4244
@@ -2382,13 +2378,13 @@ Eq_4295: (struct "Eq_4295" 0001 (0 byte b0000) (FFF byte b0FFF))
 	T_4295
 Eq_4296: (struct "Eq_4296" 0001 (0 byte b0000) (FFF byte b0FFF))
 	T_4296
-Eq_4297: (union "Eq_4297" (byte u0) ((arr Eq_4093) u1))
+Eq_4297: (union "Eq_4297" (byte u0) ((arr byte) u1))
 	T_4297
 Eq_4298: (struct "Eq_4298" 0001 (0 Eq_4297 t0000) (1 byte b0001) (FFF byte b0FFF))
 	T_4298
 Eq_4299: (struct "Eq_4299" 0001 (0 byte b0000) (FFF byte b0FFF))
 	T_4299
-Eq_4300: (union "Eq_4300" (byte u0) ((arr Eq_4093) u1))
+Eq_4300: (union "Eq_4300" (byte u0) ((arr byte) u1))
 	T_4300
 Eq_4301: (struct "Eq_4301" 0001 (0 Eq_4300 t0000) (1 byte b0001) (FFF byte b0FFF))
 	T_4301
@@ -3295,15 +3291,15 @@ T_46: (in 0<i32> : int32)
   Class: Eq_43
   DataType: int32
   OrigDataType: (union (int32 u0) ((ptr64 int32) u1))
-T_47: (in getopt_long(a0, a1, "cr:i46bho:gmnpsv", &globals->t108E0, 0<i32>) : int32)
+T_47: (in getopt_long(a0, a1, "cr:i46bho:gmnpsv", &g_t108E0, 0<i32>) : int32)
   Class: Eq_47
   DataType: int32
   OrigDataType: int32
-T_48: (in (uint32) getopt_long(a0, a1, "cr:i46bho:gmnpsv", &globals->t108E0, 0<i32>) : uint32)
+T_48: (in (uint32) getopt_long(a0, a1, "cr:i46bho:gmnpsv", &g_t108E0, 0<i32>) : uint32)
   Class: Eq_48
   DataType: uint32
   OrigDataType: uint32
-T_49: (in (uint64) (uint32) getopt_long(a0, a1, "cr:i46bho:gmnpsv", &globals->t108E0, 0<i32>) : uint64)
+T_49: (in (uint64) (uint32) getopt_long(a0, a1, "cr:i46bho:gmnpsv", &g_t108E0, 0<i32>) : uint64)
   Class: Eq_34
   DataType: Eq_34
   OrigDataType: uint64
@@ -3671,7 +3667,7 @@ T_140: (in Mem88[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 FILE)
-T_141: (in fwrite(&globals->v119D8, 1<i32>, 46<i32>, gp->tFFFFF880) : size_t)
+T_141: (in fwrite(&g_v119D8, 1<i32>, 46<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -3923,7 +3919,7 @@ T_203: (in Mem94[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 FILE)
-T_204: (in fwrite(&globals->v11A08, 1<i32>, 37<i32>, gp->tFFFFF880) : size_t)
+T_204: (in fwrite(&g_v11A08, 1<i32>, 37<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -7187,7 +7183,7 @@ T_1019: (in Mem94[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1020: (in fwrite(&globals->v11A30, 1<i32>, 28<i32>, gp->tFFFFF880) : size_t)
+T_1020: (in fwrite(&g_v11A30, 1<i32>, 28<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -7559,7 +7555,7 @@ T_1112: (in fp & -16<i32> : word64)
   Class: Eq_1103
   DataType: (ptr64 void)
   OrigDataType: (ptr64 void)
-T_1113: (in __libc_start_main(&globals->t15180, qwArg00, (word64) fp + 8<i32>, &globals->t182E8, &globals->t18378, a0, fp & -16<i32>) : int32)
+T_1113: (in __libc_start_main(&g_t15180, qwArg00, (word64) fp + 8<i32>, &g_t182E8, &g_t18378, a0, fp & -16<i32>) : int32)
   Class: Eq_1113
   DataType: int32
   OrigDataType: int32
@@ -7695,7 +7691,7 @@ T_1146: (in 0<64> : word64)
   Class: Eq_1145
   DataType: word64
   OrigDataType: word64
-T_1147: (in globals->qw19E28 != 0<64> : bool)
+T_1147: (in g_qw19E28 != 0<64> : bool)
   Class: Eq_1147
   DataType: bool
   OrigDataType: bool
@@ -7775,7 +7771,7 @@ T_1166: (in 26<i32> : int32)
   Class: Eq_113
   DataType: int32
   OrigDataType: (union (int32 u0) (size_t u1))
-T_1167: (in fwrite(&globals->v10BE0, 1<i32>, 26<i32>, a3_9) : size_t)
+T_1167: (in fwrite(&g_v10BE0, 1<i32>, 26<i32>, a3_9) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -7807,7 +7803,7 @@ T_1174: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 FILE)
-T_1175: (in fwrite(&globals->v10C00, 1<i32>, 54<i32>, gp->tFFFFF880) : size_t)
+T_1175: (in fwrite(&g_v10C00, 1<i32>, 54<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -7839,7 +7835,7 @@ T_1182: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1183: (in fwrite(&globals->v10C38, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
+T_1183: (in fwrite(&g_v10C38, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -7871,7 +7867,7 @@ T_1190: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1191: (in fwrite(&globals->v10C88, 1<i32>, 62<i32>, gp->tFFFFF880) : size_t)
+T_1191: (in fwrite(&g_v10C88, 1<i32>, 62<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -7903,7 +7899,7 @@ T_1198: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1199: (in fwrite(&globals->v10CC8, 1<i32>, 79<i32>, gp->tFFFFF880) : size_t)
+T_1199: (in fwrite(&g_v10CC8, 1<i32>, 79<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -7935,7 +7931,7 @@ T_1206: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1207: (in fwrite(&globals->v10D18, 1<i32>, 79<i32>, gp->tFFFFF880) : size_t)
+T_1207: (in fwrite(&g_v10D18, 1<i32>, 79<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -7967,7 +7963,7 @@ T_1214: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1215: (in fwrite(&globals->v10D68, 1<i32>, 42<i32>, gp->tFFFFF880) : size_t)
+T_1215: (in fwrite(&g_v10D68, 1<i32>, 42<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -7999,7 +7995,7 @@ T_1222: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1223: (in fwrite(&globals->v10D98, 1<i32>, 76<i32>, gp->tFFFFF880) : size_t)
+T_1223: (in fwrite(&g_v10D98, 1<i32>, 76<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8031,7 +8027,7 @@ T_1230: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1231: (in fwrite(&globals->v10DE8, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
+T_1231: (in fwrite(&g_v10DE8, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8063,7 +8059,7 @@ T_1238: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1239: (in fwrite(&globals->v10E38, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
+T_1239: (in fwrite(&g_v10E38, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8131,7 +8127,7 @@ T_1255: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1256: (in fwrite(&globals->v10E88, 1<i32>, 23<i32>, gp->tFFFFF880) : size_t)
+T_1256: (in fwrite(&g_v10E88, 1<i32>, 23<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8163,7 +8159,7 @@ T_1263: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1264: (in fwrite(&globals->v10EA0, 1<i32>, 71<i32>, gp->tFFFFF880) : size_t)
+T_1264: (in fwrite(&g_v10EA0, 1<i32>, 71<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8195,7 +8191,7 @@ T_1271: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1272: (in fwrite(&globals->v10EE8, 1<i32>, 57<i32>, gp->tFFFFF880) : size_t)
+T_1272: (in fwrite(&g_v10EE8, 1<i32>, 57<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8227,7 +8223,7 @@ T_1279: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1280: (in fwrite(&globals->v10F28, 1<i32>, 58<i32>, gp->tFFFFF880) : size_t)
+T_1280: (in fwrite(&g_v10F28, 1<i32>, 58<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8259,7 +8255,7 @@ T_1287: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1288: (in fwrite(&globals->v10F68, 1<i32>, 57<i32>, gp->tFFFFF880) : size_t)
+T_1288: (in fwrite(&g_v10F68, 1<i32>, 57<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8291,7 +8287,7 @@ T_1295: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1296: (in fwrite(&globals->v10FA8, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
+T_1296: (in fwrite(&g_v10FA8, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8323,7 +8319,7 @@ T_1303: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1304: (in fwrite(&globals->v10FF8, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
+T_1304: (in fwrite(&g_v10FF8, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8355,7 +8351,7 @@ T_1311: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1312: (in fwrite(&globals->v11048, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
+T_1312: (in fwrite(&g_v11048, 1<i32>, 77<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8387,7 +8383,7 @@ T_1319: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1320: (in fwrite(&globals->v11098, 1<i32>, 46<i32>, gp->tFFFFF880) : size_t)
+T_1320: (in fwrite(&g_v11098, 1<i32>, 46<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8419,7 +8415,7 @@ T_1327: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1328: (in fwrite(&globals->v110C8, 1<i32>, 72<i32>, gp->tFFFFF880) : size_t)
+T_1328: (in fwrite(&g_v110C8, 1<i32>, 72<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8451,7 +8447,7 @@ T_1335: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1336: (in fwrite(&globals->v11118, 1<i32>, 45<i32>, gp->tFFFFF880) : size_t)
+T_1336: (in fwrite(&g_v11118, 1<i32>, 45<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8483,7 +8479,7 @@ T_1343: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1344: (in fwrite(&globals->v11148, 1<i32>, 67<i32>, gp->tFFFFF880) : size_t)
+T_1344: (in fwrite(&g_v11148, 1<i32>, 67<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8515,7 +8511,7 @@ T_1351: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1352: (in fwrite(&globals->v11190, 1<i32>, 64<i32>, gp->tFFFFF880) : size_t)
+T_1352: (in fwrite(&g_v11190, 1<i32>, 64<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8547,7 +8543,7 @@ T_1359: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1360: (in fwrite(&globals->v111D8, 1<i32>, 72<i32>, gp->tFFFFF880) : size_t)
+T_1360: (in fwrite(&g_v111D8, 1<i32>, 72<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8579,7 +8575,7 @@ T_1367: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1368: (in fwrite(&globals->v11228, 1<i32>, 46<i32>, gp->tFFFFF880) : size_t)
+T_1368: (in fwrite(&g_v11228, 1<i32>, 46<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8635,7 +8631,7 @@ T_1381: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1382: (in fwrite(&globals->v11258, 1<i32>, 15<i32>, gp->tFFFFF880) : size_t)
+T_1382: (in fwrite(&g_v11258, 1<i32>, 15<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8667,7 +8663,7 @@ T_1389: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1390: (in fwrite(&globals->v11268, 1<i32>, 87<i32>, gp->tFFFFF880) : size_t)
+T_1390: (in fwrite(&g_v11268, 1<i32>, 87<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8699,7 +8695,7 @@ T_1397: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1398: (in fwrite(&globals->v112C0, 1<i32>, 60<i32>, gp->tFFFFF880) : size_t)
+T_1398: (in fwrite(&g_v112C0, 1<i32>, 60<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8731,7 +8727,7 @@ T_1405: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1406: (in fwrite(&globals->v11300, 1<i32>, 68<i32>, gp->tFFFFF880) : size_t)
+T_1406: (in fwrite(&g_v11300, 1<i32>, 68<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8763,7 +8759,7 @@ T_1413: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1414: (in fwrite(&globals->v11348, 1<i32>, 58<i32>, gp->tFFFFF880) : size_t)
+T_1414: (in fwrite(&g_v11348, 1<i32>, 58<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8795,7 +8791,7 @@ T_1421: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1422: (in fwrite(&globals->v11388, 1<i32>, 57<i32>, gp->tFFFFF880) : size_t)
+T_1422: (in fwrite(&g_v11388, 1<i32>, 57<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8827,7 +8823,7 @@ T_1429: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1430: (in fwrite(&globals->v113C8, 1<i32>, 62<i32>, gp->tFFFFF880) : size_t)
+T_1430: (in fwrite(&g_v113C8, 1<i32>, 62<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8847,7 +8843,7 @@ T_1434: (in 77<i32> : int32)
   Class: Eq_113
   DataType: int32
   OrigDataType: (union (int32 u0) (size_t u1))
-T_1435: (in fwrite(&globals->v11408, 1<i32>, 77<i32>, a3_9) : size_t)
+T_1435: (in fwrite(&g_v11408, 1<i32>, 77<i32>, a3_9) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8879,7 +8875,7 @@ T_1442: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1443: (in fwrite(&globals->v11458, 1<i32>, 62<i32>, gp->tFFFFF880) : size_t)
+T_1443: (in fwrite(&g_v11458, 1<i32>, 62<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8911,7 +8907,7 @@ T_1450: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1451: (in fwrite(&globals->v11498, 1<i32>, 65<i32>, gp->tFFFFF880) : size_t)
+T_1451: (in fwrite(&g_v11498, 1<i32>, 65<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8943,7 +8939,7 @@ T_1458: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1459: (in fwrite(&globals->v114E0, 1<i32>, 76<i32>, gp->tFFFFF880) : size_t)
+T_1459: (in fwrite(&g_v114E0, 1<i32>, 76<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -8975,7 +8971,7 @@ T_1466: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1467: (in fwrite(&globals->v11530, 1<i32>, 65<i32>, gp->tFFFFF880) : size_t)
+T_1467: (in fwrite(&g_v11530, 1<i32>, 65<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -9007,7 +9003,7 @@ T_1474: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1475: (in fwrite(&globals->v11578, 1<i32>, 41<i32>, gp->tFFFFF880) : size_t)
+T_1475: (in fwrite(&g_v11578, 1<i32>, 41<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -9039,7 +9035,7 @@ T_1482: (in Mem7[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_1483: (in fwrite(&globals->v115A8, 1<i32>, 30<i32>, gp->tFFFFF880) : size_t)
+T_1483: (in fwrite(&g_v115A8, 1<i32>, 30<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -9743,7 +9739,7 @@ T_1658: (in Mem36[gp_40 + -1912<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 FILE)
-T_1659: (in fwrite(&globals->v115E0, 1<i32>, 4<i32>, gp_40->tFFFFF888) : size_t)
+T_1659: (in fwrite(&g_v115E0, 1<i32>, 4<i32>, gp_40->tFFFFF888) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -13675,7 +13671,7 @@ T_2641: (in Mem408[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_2642: (in fwrite(&globals->v117F8, 1<i32>, 43<i32>, gp->tFFFFF880) : size_t)
+T_2642: (in fwrite(&g_v117F8, 1<i32>, 43<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -14099,15 +14095,15 @@ T_2747: (in 16<i32> : int32)
   Class: Eq_113
   DataType: int32
   OrigDataType: (union (int32 u0) (size_t u1))
-T_2748: (in memcmp(a0, &globals->v10880, 16<i32>) : int32)
+T_2748: (in memcmp(a0, &g_v10880, 16<i32>) : int32)
   Class: Eq_2748
   DataType: int32
   OrigDataType: int32
-T_2749: (in (uint32) memcmp(a0, &globals->v10880, 16<i32>) : uint32)
+T_2749: (in (uint32) memcmp(a0, &g_v10880, 16<i32>) : uint32)
   Class: Eq_2749
   DataType: uint32
   OrigDataType: uint32
-T_2750: (in (uint64) (uint32) memcmp(a0, &globals->v10880, 16<i32>) : uint64)
+T_2750: (in (uint64) (uint32) memcmp(a0, &g_v10880, 16<i32>) : uint64)
   Class: Eq_2750
   DataType: uint64
   OrigDataType: uint64
@@ -14115,7 +14111,7 @@ T_2751: (in 0<64> : word64)
   Class: Eq_2750
   DataType: uint64
   OrigDataType: word64
-T_2752: (in (uint64) (uint32) memcmp(a0, &globals->v10880, 16<i32>) == 0<64> : bool)
+T_2752: (in (uint64) (uint32) memcmp(a0, &g_v10880, 16<i32>) == 0<64> : bool)
   Class: Eq_2752
   DataType: bool
   OrigDataType: bool
@@ -14255,15 +14251,15 @@ T_2786: (in 16<i32> : int32)
   Class: Eq_113
   DataType: int32
   OrigDataType: (union (int32 u0) (size_t u1))
-T_2787: (in memcmp(a0, &globals->v10898, 16<i32>) : int32)
+T_2787: (in memcmp(a0, &g_v10898, 16<i32>) : int32)
   Class: Eq_2748
   DataType: int32
   OrigDataType: int32
-T_2788: (in (uint32) memcmp(a0, &globals->v10898, 16<i32>) : uint32)
+T_2788: (in (uint32) memcmp(a0, &g_v10898, 16<i32>) : uint32)
   Class: Eq_2788
   DataType: uint32
   OrigDataType: uint32
-T_2789: (in (uint64) (uint32) memcmp(a0, &globals->v10898, 16<i32>) : uint64)
+T_2789: (in (uint64) (uint32) memcmp(a0, &g_v10898, 16<i32>) : uint64)
   Class: Eq_2789
   DataType: uint64
   OrigDataType: uint64
@@ -14271,7 +14267,7 @@ T_2790: (in 0<64> : word64)
   Class: Eq_2789
   DataType: uint64
   OrigDataType: word64
-T_2791: (in (uint64) (uint32) memcmp(a0, &globals->v10898, 16<i32>) != 0<64> : bool)
+T_2791: (in (uint64) (uint32) memcmp(a0, &g_v10898, 16<i32>) != 0<64> : bool)
   Class: Eq_2791
   DataType: bool
   OrigDataType: bool
@@ -14287,15 +14283,15 @@ T_2794: (in 12<i32> : int32)
   Class: Eq_113
   DataType: int32
   OrigDataType: (union (int32 u0) (size_t u1))
-T_2795: (in memcmp(a0, &globals->v108B0, 12<i32>) : int32)
+T_2795: (in memcmp(a0, &g_v108B0, 12<i32>) : int32)
   Class: Eq_2748
   DataType: int32
   OrigDataType: int32
-T_2796: (in (uint32) memcmp(a0, &globals->v108B0, 12<i32>) : uint32)
+T_2796: (in (uint32) memcmp(a0, &g_v108B0, 12<i32>) : uint32)
   Class: Eq_2796
   DataType: uint32
   OrigDataType: uint32
-T_2797: (in (uint64) (uint32) memcmp(a0, &globals->v108B0, 12<i32>) : uint64)
+T_2797: (in (uint64) (uint32) memcmp(a0, &g_v108B0, 12<i32>) : uint64)
   Class: Eq_2797
   DataType: uint64
   OrigDataType: uint64
@@ -14303,7 +14299,7 @@ T_2798: (in 0<64> : word64)
   Class: Eq_2797
   DataType: uint64
   OrigDataType: word64
-T_2799: (in (uint64) (uint32) memcmp(a0, &globals->v108B0, 12<i32>) == 0<64> : bool)
+T_2799: (in (uint64) (uint32) memcmp(a0, &g_v108B0, 12<i32>) == 0<64> : bool)
   Class: Eq_2799
   DataType: bool
   OrigDataType: bool
@@ -14327,15 +14323,15 @@ T_2804: (in 12<i32> : int32)
   Class: Eq_113
   DataType: int32
   OrigDataType: (union (int32 u0) (size_t u1))
-T_2805: (in memcmp(a0, &globals->v108C0, 12<i32>) : int32)
+T_2805: (in memcmp(a0, &g_v108C0, 12<i32>) : int32)
   Class: Eq_2748
   DataType: int32
   OrigDataType: int32
-T_2806: (in (uint32) memcmp(a0, &globals->v108C0, 12<i32>) : uint32)
+T_2806: (in (uint32) memcmp(a0, &g_v108C0, 12<i32>) : uint32)
   Class: Eq_2806
   DataType: uint32
   OrigDataType: uint32
-T_2807: (in (uint64) (uint32) memcmp(a0, &globals->v108C0, 12<i32>) : uint64)
+T_2807: (in (uint64) (uint32) memcmp(a0, &g_v108C0, 12<i32>) : uint64)
   Class: Eq_2807
   DataType: uint64
   OrigDataType: uint64
@@ -14343,7 +14339,7 @@ T_2808: (in 0<64> : word64)
   Class: Eq_2807
   DataType: uint64
   OrigDataType: word64
-T_2809: (in (uint64) (uint32) memcmp(a0, &globals->v108C0, 12<i32>) == 0<64> : bool)
+T_2809: (in (uint64) (uint32) memcmp(a0, &g_v108C0, 12<i32>) == 0<64> : bool)
   Class: Eq_2809
   DataType: bool
   OrigDataType: bool
@@ -14363,15 +14359,15 @@ T_2813: (in 12<i32> : int32)
   Class: Eq_113
   DataType: int32
   OrigDataType: (union (int32 u0) (size_t u1))
-T_2814: (in memcmp(a0, &globals->v108D0, 12<i32>) : int32)
+T_2814: (in memcmp(a0, &g_v108D0, 12<i32>) : int32)
   Class: Eq_2748
   DataType: int32
   OrigDataType: int32
-T_2815: (in (uint32) memcmp(a0, &globals->v108D0, 12<i32>) : uint32)
+T_2815: (in (uint32) memcmp(a0, &g_v108D0, 12<i32>) : uint32)
   Class: Eq_2815
   DataType: uint32
   OrigDataType: uint32
-T_2816: (in (uint64) (uint32) memcmp(a0, &globals->v108D0, 12<i32>) : uint64)
+T_2816: (in (uint64) (uint32) memcmp(a0, &g_v108D0, 12<i32>) : uint64)
   Class: Eq_2816
   DataType: uint64
   OrigDataType: uint64
@@ -14379,7 +14375,7 @@ T_2817: (in 0<64> : word64)
   Class: Eq_2816
   DataType: uint64
   OrigDataType: word64
-T_2818: (in (uint64) (uint32) memcmp(a0, &globals->v108D0, 12<i32>) != 0<64> : bool)
+T_2818: (in (uint64) (uint32) memcmp(a0, &g_v108D0, 12<i32>) != 0<64> : bool)
   Class: Eq_2818
   DataType: bool
   OrigDataType: bool
@@ -15755,7 +15751,7 @@ T_3161: (in Mem180[gp + -1920<i32>:word64] : word64)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: (ptr64 (union (FILE u1)))
-T_3162: (in fwrite(&globals->v117F8, 1<i32>, 43<i32>, gp->tFFFFF880) : size_t)
+T_3162: (in fwrite(&g_v117F8, 1<i32>, 43<i32>, gp->tFFFFF880) : size_t)
   Class: Eq_113
   DataType: Eq_113
   OrigDataType: size_t
@@ -19477,11 +19473,11 @@ T_4091: (in a1_101 << 0<u32> >> 0<u32> : word64)
   OrigDataType: (union (int64 u1) (uint64 u0))
 T_4092: (in a0 + ((a1_101 << 0<u32>) >>u 0<u32>) : word64)
   Class: Eq_4092
-  DataType: (ptr64 Eq_4093)
+  DataType: (ptr64 byte)
   OrigDataType: (ptr64 (struct (0 T_4093 t0000)))
 T_4093: (in Mem54[a0 + ((a1_101 << 0<u32>) >>u 0<u32>):byte] : byte)
   Class: Eq_4093
-  DataType: Eq_4093
+  DataType: byte
   OrigDataType: byte
 T_4094: (in (int64) Mem54[a0 + ((a1_101 << 0<u32>) >>u 0<u32>):byte] : int64)
   Class: Eq_4087
@@ -20072,13 +20068,13 @@ T_4240: (in s2_23 != s1_30 : bool)
   DataType: bool
   OrigDataType: bool
 T_4241:
-  Class: Eq_4093
-  DataType: Eq_4093
+  Class: Eq_4241
+  DataType: byte
   OrigDataType: (struct 0001 (0 T_4093 t0000))
 T_4242:
-  Class: Eq_4093
-  DataType: Eq_4093
-  OrigDataType: (arr Eq_4093)
+  Class: Eq_4242
+  DataType: (arr byte)
+  OrigDataType: (arr T_4241)
 T_4243:
   Class: Eq_4243
   DataType: Eq_4243
@@ -23622,10 +23618,6 @@ typedef union Eq_4091 {
 	uint64 u1;
 } Eq_4091;
 
-typedef struct Eq_4093 {	// size: 1 1
-	Eq_4093 a0000[];	// 0
-} Eq_4093;
-
 typedef union Eq_4101 {
 	int32 u0;
 	ui64 u1;
@@ -23721,7 +23713,7 @@ typedef union Eq_4238 {
 
 typedef union Eq_4243 {
 	byte u0;
-	Eq_4093 u1[];
+	byte u1[];
 } Eq_4243;
 
 typedef struct Eq_4244 {	// size: 1 1
@@ -24092,7 +24084,7 @@ typedef struct Eq_4296 {	// size: 1 1
 
 typedef union Eq_4297 {
 	byte u0;
-	Eq_4093 u1[];
+	byte u1[];
 } Eq_4297;
 
 typedef struct Eq_4298 {	// size: 1 1
@@ -24108,7 +24100,7 @@ typedef struct Eq_4299 {	// size: 1 1
 
 typedef union Eq_4300 {
 	byte u0;
-	Eq_4093 u1[];
+	byte u1[];
 } Eq_4300;
 
 typedef struct Eq_4301 {	// size: 1 1

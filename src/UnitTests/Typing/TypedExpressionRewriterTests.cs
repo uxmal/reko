@@ -112,7 +112,10 @@ namespace Reko.UnitTests.Typing
             eqb.Build(program);
             var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program, eventListener);
             coll.CollectTypes();
+            program.TypeStore.Dump();
+
             program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory);
+                program.TypeStore.Dump();
             tvr.ReplaceTypeVariables();
             trans.Transform();
             ctn.RenameAllTypes(program.TypeStore);
@@ -667,7 +670,7 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	globals->dw1000 = eax
+	g_dw1000 = eax
 proc1_exit:
 
 ";
@@ -703,7 +706,7 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	globals->w1000 = *eax
+	g_w1000 = *eax
 proc1_exit:
 
 ";
@@ -744,8 +747,8 @@ proc1_entry:
 	// succ:  l1
 l1:
 	struct Eq_2 * eax
-	globals->w1000 = eax->w0000
-	globals->w1002 = eax->w0002
+	g_w1000 = eax->w0000
+	g_w1002 = eax->w0002
 proc1_exit:
 
 ";
@@ -792,7 +795,7 @@ l1:
 	real32 *** eax1
 	eax2 = *eax1
 	eax3 = *eax2
-	globals->r1004 = *eax3
+	g_r1004 = *eax3
 proc1_exit:
 
 ";
@@ -839,7 +842,7 @@ proc1_entry:
 l1:
 	struct Eq_2 * r1
 	r1 = r1->ptr0000
-	globals->b1004 = r1->ptr0000->ptr0000->b0004
+	g_b1004 = r1->ptr0000->ptr0000->b0004
 proc1_exit:
 
 ";
@@ -892,7 +895,7 @@ l1:
 	struct Eq_2 * r1
 	ptr32 r2
 	r1 = r1->ptr0000
-	globals->b1004 = r1->ptr0000->ptr0000->b0004
+	g_b1004 = r1->ptr0000->ptr0000->b0004
 	r2 = &r1->b0004
 proc1_exit:
 
@@ -925,7 +928,7 @@ define test
 test_entry:
 	// succ:  l1
 l1:
-	eax = globals->ptr1200
+	eax = g_ptr1200
 	eax->ptr0000 = eax
 	eax->ptr0004 = eax
 test_exit:
@@ -994,7 +997,7 @@ define test
 test_entry:
 	// succ:  l1
 l1:
-	func(globals->arrayBlobs)
+	func(arrayBlobs)
 test_exit:
 
 ";
@@ -1202,7 +1205,7 @@ define test
 test_entry:
 	// succ:  l1
 l1:
-	eax = globals->dw1200
+	eax = g_dw1200
 	ax_1 = (word16) eax
 	return
 	// succ:  test_exit
@@ -1222,7 +1225,7 @@ test_exit:
         }
 
         [Test]
-        public void TerTypeRecursion()
+        public void TerArrayAssignment()
         {
             var sExp =
             #region Expected
@@ -1237,10 +1240,10 @@ l000000000040EC30:
 	branch rdx == 0<64> l000000000040EC69
 	// succ:  l000000000040EC40 l000000000040EC69
 l000000000040EC40:
-	word64 rax_22 = 0x2A<64>
+	word64 rax_22 = 0x10000040<64>
 	// succ:  l000000000040EC50
 l000000000040EC50:
-	Mem0[rdi + rbx_18:byte] = SLICE((uint64) Mem0[Mem0[rax_22:word64] + (uint64) ((word32) Mem0[rsi + rbx_18:byte]) * 4<64>:word32], byte, 0)
+	Mem0[rdi + rbx_18:byte] = (byte) Mem0[Mem0[rax_22:word64] + (uint64) ((word32) Mem0[rsi + rbx_18:byte]) * 4<64>:word32]
 	rbx_18 = rbx_18 - 1<64>
 	branch rbx_18 != 0xFFFFFFFFFFFFFFFF<64> l000000000040EC50
 	// succ:  l000000000040EC69 l000000000040EC50
@@ -1260,10 +1263,10 @@ l000000000040EC30:
 	branch rdx == 0<64> l000000000040EC69
 	// succ:  l000000000040EC40 l000000000040EC69
 l000000000040EC40:
-	word32 (** rax_22)[] = (word32 (**)[]) 0x2A<64>
+	word32 (** rax_22)[] = (word32 (**)[]) 0x10000040<64>
 	// succ:  l000000000040EC50
 l000000000040EC50:
-	rdi[rbx_18] = (byte) (uint64) *((char *) *rax_22 + (uint64) ((word32) (rsi + rbx_18)) * 4<64>)
+	rdi[rbx_18] = (byte) *((char *) *rax_22 + (uint64) ((word32) (rsi + rbx_18)) * 4<64>)
 	rbx_18 = rbx_18 - 1<64>
 	branch rbx_18 != 0xFFFFFFFFFFFFFFFF<64> l000000000040EC50
 	// succ:  l000000000040EC69 l000000000040EC50
@@ -1289,10 +1292,10 @@ test_exit:
                 m.BranchIf(m.Eq(rdx, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x0)), "l000000000040EC69");
 
                 m.Label("l000000000040EC40");
-                m.Declare(rax_22, m.Word64(42));
+                m.Declare(rax_22, m.Word64(0x10000040));
 
                 m.Label("l000000000040EC50");
-                m.MStore(m.IAdd(rdi, rbx_18), m.Slice(PrimitiveType.Byte, m.Cast(PrimitiveType.Create(Domain.UnsignedInt, 64), m.Mem(PrimitiveType.Word32, m.IAdd(m.Mem(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), rax_22), m.IMul(m.Cast(PrimitiveType.Create(Domain.UnsignedInt, 64), m.Cast(PrimitiveType.Word32, m.Mem(PrimitiveType.Byte, m.IAdd(rsi, rbx_18)))), Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x4))))), 0));
+                m.MStore(m.IAdd(rdi, rbx_18), m.Cast(PrimitiveType.Byte, m.Mem(PrimitiveType.Word32, m.IAdd(m.Mem(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), rax_22), m.IMul(m.Cast(PrimitiveType.Create(Domain.UnsignedInt, 64), m.Cast(PrimitiveType.Word32, m.Mem(PrimitiveType.Byte, m.IAdd(rsi, rbx_18)))), Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x4))))));
                 m.Assign(rbx_18, m.ISub(rbx_18, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x1)));
                 m.BranchIf(m.Ne(rbx_18, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0xFFFFFFFFFFFFFFFF)), "l000000000040EC50");
 

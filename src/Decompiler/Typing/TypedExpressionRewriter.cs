@@ -41,7 +41,6 @@ namespace Reko.Typing
     public class TypedExpressionRewriter : InstructionTransformer
     {
         private readonly Program program;
-        private readonly Identifier globals;
         private readonly DataTypeComparer compTypes;
         private readonly TypedConstantRewriter tcr;
         private readonly Unifier unifier;
@@ -52,7 +51,6 @@ namespace Reko.Typing
         public TypedExpressionRewriter(Program program, DecompilerEventListener eventListener)
         {
             this.program = program;
-            this.globals = program.Globals;
             this.eventListener = eventListener;
             this.compTypes = new DataTypeComparer();
             this.tcr = new TypedConstantRewriter(program, eventListener);
@@ -122,12 +120,11 @@ namespace Reko.Typing
                     tvDst.DataType = dtDst;
                     tvDst.OriginalDataType = dtSrc;
                     dst.TypeVariable = tvDst;
-                    var ceb = new ComplexExpressionBuilder(dtSrc, null, dst, null, 0);
+                    var ceb = new ComplexExpressionBuilder(program, null, dst, null, 0);
                     dst = ceb.BuildComplex(false);
                 }
                 else if (uSrc != null)
                 {
-                    //throw new NotImplementedException();
                     //var ceb = new ComplexExpressionBuilder(dtSrc, dtSrc, dtDst, null, src, null, 0);
                     //src = ceb.BuildComplex(false);
                     src = new Cast(dtDst, src);
@@ -187,7 +184,7 @@ namespace Reko.Typing
                 offset += (int) cOther.ToUInt32();
                 index = null;
             }
-            var ceb = new ComplexExpressionBuilder(null, basePtr, complex, index, offset);
+            var ceb = new ComplexExpressionBuilder(program, basePtr, complex, index, offset);
             return ceb.BuildComplex(dereferenced);
         }
 

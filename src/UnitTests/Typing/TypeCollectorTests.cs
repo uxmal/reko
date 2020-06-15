@@ -109,8 +109,6 @@ namespace Reko.UnitTests.Typing
             fut.AssertFilesEqual();
         }
 
-        
-
         [Test]
         public void TycoMemStore()
         {
@@ -235,7 +233,6 @@ namespace Reko.UnitTests.Typing
                 m.MStore(m.Word32(0x123400), m.IAdd(m.Mem32(m.Word32(0x123400)), 1));
             }, "Typing/TycoReg00300.txt");
         }
-
 
         [Test]
         [Category(Categories.IntegrationTests)]

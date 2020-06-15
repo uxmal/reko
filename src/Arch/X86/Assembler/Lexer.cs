@@ -38,8 +38,7 @@ namespace Reko.Arch.X86.Assembler
 		private Token tok;
 		private int lineNumber;
 		private StringBuilder sb;
-		private RegisterStorage reg;
-		private int integer;
+        private int integer;
 
         private static SortedList<string, Token> keywords = new SortedList<string, Token>(StringComparer.InvariantCultureIgnoreCase);
 		private const string IdentifierCharacters = "._$@?";
@@ -225,13 +224,12 @@ namespace Reko.Arch.X86.Assembler
 		private Token ClassifySymbol()
 		{
 			string s = sb.ToString();
-            Token tok;
-            if (keywords.TryGetValue(s, out tok))
+            if (keywords.TryGetValue(s, out Token tok))
                 return tok;
-			RegisterStorage reg = Registers.GetRegister(s);
+            RegisterStorage reg = Registers.GetRegister(s);
 			if (reg != RegisterStorage.None)
 			{
-				this.reg = reg;
+				this.Register = reg;
 				return Token.REGISTER;
 			}
 			return Token.ID;
@@ -391,12 +389,9 @@ namespace Reko.Arch.X86.Assembler
 			return tok;
 		}
 
-		public RegisterStorage Register
-		{
-			get { return reg; }
-		}
+        public RegisterStorage? Register { get; private set; }
 
-		public void SkipUntil(Token t)
+        public void SkipUntil(Token t)
 		{
 			Token tok = PeekToken();
 			while (tok != t && tok != Token.EOFile)

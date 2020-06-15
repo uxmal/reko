@@ -81,6 +81,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\H8\H8.csproj">
+      <Name>H8</Name>
+      <Project>{ba8b271c-4a48-4e32-b55b-26b54297833f}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\i8051\i8051.csproj">
       <Name>i8051</Name>
       <Project>{ab5ddeb2-87c0-42c7-8cd3-72cb2b1282fb}</Project>
@@ -604,6 +612,14 @@
     <ProjectReference Include="..\ImageLoaders\OdbgScript\OdbgScript.csproj">
       <Name>OdbgScript</Name>
       <Project>{2882376f-663a-4fc8-842c-b0300a6829e8}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\Srec\Srec.csproj">
+      <Name>Srec</Name>
+      <Project>{6feaf3bb-48d3-4301-9ce5-a1a274db97f5}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>

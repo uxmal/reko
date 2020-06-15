@@ -461,7 +461,7 @@ void fn0000000140001600(word32 ecx, word32 edx)
 // Preserved: rbx rsp
 fn0000000140001600_entry:
 l0000000140001600:
-	byte al_15 = SLICE((word32) Mem5[0x00000001400035F0<p64>:byte], byte, 0)
+	byte al_15 = SLICE((uint64) (word32) Mem5[0x00000001400035F0<p64>:byte], byte, 0)
 	branch ecx != 0<32> l0000000140001617
 l0000000140001614_1:
 	al_15 = 1<8> (alias)
@@ -555,54 +555,54 @@ word64 fn0000000140001718(word64 rcx, ptr64 & r8Out)
 // Preserved: rsp
 fn0000000140001718_entry:
 l0000000140001718:
-	word64 rax_101
+	word64 rax_86
 	word64 r8_23 = rcx
-	word56 rax_56_8_90 = 0x5A<56>
+	word56 rax_56_8_87 = 0x5A<56>
 	branch Mem0[0x0000000140000000<p64>:word16] != 0x5A4D<16> l00000001400017A6
 l000000014000172D:
 	word64 rax_11 = (int64) Mem0[0x000000014000003C<p64>:word32]
-	rax_56_8_90 = SLICE(rax_11, word56, 8) (alias)
+	rax_56_8_87 = SLICE(rax_11, word56, 8) (alias)
 	word64 rcx_13 = rax_11 + 0x0000000140000000<p64>
 	branch Mem0[rcx_13:word32] != 0x4550<32> l00000001400017A6
 l0000000140001747:
-	rax_56_8_90 = 2<56> (alias)
+	rax_56_8_87 = 2<56> (alias)
 	branch Mem0[rcx_13 + 0x18<64>:word16] != 0x20B<16> l00000001400017A6
 l00000001400017A6:
-	rax_101 = SEQ(rax_56_8_90, 0<8>) (alias)
+	rax_86 = SEQ(rax_56_8_87, 0<8>) (alias)
 l0000000140001752:
-	word32 eax_30 = (word32) Mem0[rcx_13 + 6<64>:word16]
-	word64 rdx_28 = rcx_13 + 0x18<64> + (uint64) ((uint32) ((word32) Mem0[rcx_13 + 0x14<64>:word16]))
+	word64 rax_28 = (uint64) (word32) Mem0[rcx_13 + 6<64>:word16]
+	word64 rdx_26 = rcx_13 + 0x18<64> + (uint64) ((word32) Mem0[rcx_13 + 0x14<64>:word16])
 	r8_23 = rcx - 0x0000000140000000<p64>
-	word64 r9_33 = rdx_28 + (uint64) ((uint32) eax_30) * 0x28<64>
-	word56 rax_56_8_100 = (uint56) (uint24) SLICE(eax_30, word24, 8)
+	word56 rax_56_8_92 = SLICE(rax_28, word56, 8)
+	word64 r9_30 = rdx_26 + rax_28 * 0x28<64>
 l000000014000176C:
-	branch rdx_28 == r9_33 l000000014000178D
+	branch rdx_26 == r9_30 l000000014000178D
 l000000014000178D:
-	rdx_28 = 0<u64>
+	rdx_26 = 0<u64>
 l0000000140001775:
-	word64 rcx_44 = (uint64) Mem36[rdx_28 + 0xC<64>:word32]
-	word32 ecx_50 = SLICE(rcx_44, word32, 0)
-	branch r8_23 <u rcx_44 l0000000140001787
+	word64 rcx_41 = (uint64) Mem33[rdx_26 + 0xC<64>:word32]
+	word32 ecx_47 = SLICE(rcx_41, word32, 0)
+	branch r8_23 <u rcx_41 l0000000140001787
 l000000014000177D:
-	word64 rax_51 = (uint64) (SLICE((uint64) Mem36[rdx_28 + 8<64>:word32], word32, 0) + ecx_50)
-	rax_56_8_100 = SLICE(rax_51, word56, 8) (alias)
-	branch r8_23 <u rax_51 l000000014000178F
+	word64 rax_48 = (uint64) (SLICE((uint64) Mem33[rdx_26 + 8<64>:word32], word32, 0) + ecx_47)
+	rax_56_8_92 = SLICE(rax_48, word56, 8) (alias)
+	branch r8_23 <u rax_48 l000000014000178F
 l000000014000178F:
-	branch rdx_28 != 0<64> l0000000140001798
+	branch rdx_26 != 0<64> l0000000140001798
 l0000000140001798:
-	branch Mem36[rdx_28 + 0x24<64>:word32] >= 0<32> l00000001400017A2
+	branch Mem33[rdx_26 + 0x24<64>:word32] >= 0<32> l00000001400017A2
 l00000001400017A2:
-	rax_101 = SEQ(rax_56_8_100, 1<8>) (alias)
+	rax_86 = SEQ(rax_56_8_92, 1<8>) (alias)
 l000000014000179E:
-	rax_101 = SEQ(rax_56_8_100, 0<8>) (alias)
+	rax_86 = SEQ(rax_56_8_92, 0<8>) (alias)
 l0000000140001794:
-	rax_101 = SEQ(rax_56_8_100, 0<8>) (alias)
+	rax_86 = SEQ(rax_56_8_92, 0<8>) (alias)
 l00000001400017AC:
 	r8Out = r8_23
-	return rax_101
+	return rax_86
 fn0000000140001718_exit:
 l0000000140001787:
-	rdx_28 = rdx_28 + 0x28<64>
+	rdx_26 = rdx_26 + 0x28<64>
 
 
 void fn00000001400017B4(byte cl)
@@ -1223,11 +1223,11 @@ l0000000140001EC7:
 	word64 rcx_37 = (uint64) Mem5[Mem5[rdx + 0x10<64>:word64] + 8<64>:word32] + Mem5[rdx + 8<64>:word64]
 	branch (Mem5[rcx_37 + 3<64>:byte] & 0xF<8>) == 0<8> l0000000140001EE9
 l0000000140001EDF:
-	r9_13 = rcx + (uint64) ((word32) Mem5[rcx_37 + 3<64>:byte] & 0xFFFFFFF0<32>)
+	r9_13 = rcx + (uint64) (SLICE((uint64) ((word32) Mem5[rcx_37 + 3<64>:byte]), word32, 0) & 0xFFFFFFF0<32>)
 l0000000140001EE9:
-	word64 r9_48 = r9_13 ^ rdx_33
+	word64 r9_49 = r9_13 ^ rdx_33
 l0000000140001EF0_thunk_fn00000001400011B0:
-	fn00000001400011B0(r9_48, qwArg00)
+	fn00000001400011B0(r9_49, qwArg00)
 	return
 fn0000000140001E9C_exit:
 

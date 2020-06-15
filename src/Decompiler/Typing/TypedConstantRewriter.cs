@@ -36,20 +36,18 @@ namespace Reko.Typing
 	{
         private readonly Program program;
         private readonly IPlatform platform;
-		private readonly TypeStore store;
 		private readonly Identifier globals;
-		private Constant? c;
+        private readonly Dictionary<ushort, Identifier> mpSelectorToSegId;
+        private readonly DecompilerEventListener eventListener;
+        private Constant? c;
 		private PrimitiveType? pOrig;
 		private bool dereferenced;
-        private Dictionary<ushort, Identifier> mpSelectorToSegId;
-        private DecompilerEventListener eventListener;
 
         public TypedConstantRewriter(Program program, DecompilerEventListener eventListener)
 		{
             this.eventListener = eventListener;
             this.program = program;
             this.platform = program.Platform;
-            this.store = program.TypeStore;
             this.globals = program.Globals;
             if (program.SegmentMap != null)
             {
@@ -369,15 +367,15 @@ namespace Reko.Typing
             if (dereferenced || f.Offset != offset)
             {
                 var ceb = new ComplexExpressionBuilder(
-                    null, null, globals, null, offset);
+                    program, null, globals, null, offset);
                 return ceb.BuildComplex(dereferenced);
             }
             //$REVIEW: We can't use ComplexExpresionBuilder to rewrite pointers to
             // global variable. It's too aggressive now
             // (e.g. &globals->var.ptr00.ptr00 instead of &globals->var)
-            var ptrStr = new Pointer(GlobalVars, platform.PointerType.BitSize);
-            var fa = new FieldAccess(f.DataType, new Dereference(ptrStr, globals), f);
-            return CreateAddrOf(fa, dt);
+            var name = program.NamingPolicy.GlobalName(f);
+            var globalVar = Identifier.Global(name, f.DataType);
+            return CreateAddrOf(globalVar, dt);
         }
 
         private Expression CreateAddrOf(Expression e, DataType dt)

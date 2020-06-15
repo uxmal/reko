@@ -45,11 +45,11 @@ namespace Reko.Arch.Mos6502
             Registers.a, Registers.x, Registers.y, Registers.s, Registers.p
         };
 
-        private Mos6502Architecture arch;
-        private SegmentMap map;
-        private IPlatformEmulator envEmulator;
-        private ushort[] regs;
-        private IEnumerator<Instruction> dasm;
+        private readonly Mos6502Architecture arch;
+        private readonly SegmentMap map;
+        private readonly IPlatformEmulator envEmulator;
+        private readonly ushort[] regs;
+        private IEnumerator<Instruction>? dasm;
 
         public Mos6502Emulator(Mos6502Architecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator)
             : base(segmentMap)
@@ -60,7 +60,7 @@ namespace Reko.Arch.Mos6502
             this.regs = new ushort[12];
         }
 
-        public override MachineInstruction CurrentInstruction => dasm.Current;
+        public override MachineInstruction CurrentInstruction => dasm!.Current;
         
         public override Address InstructionPointer
         {
@@ -86,7 +86,7 @@ namespace Reko.Arch.Mos6502
 
         protected override void Run()
         {
-            while (IsRunning && dasm.MoveNext())
+            while (IsRunning && dasm!.MoveNext())
             {
                 TraceCurrentInstruction();
                 var pc = dasm.Current.Address;
@@ -115,7 +115,8 @@ namespace Reko.Arch.Mos6502
         {
             if (trace.Level != TraceLevel.Verbose)
                 return;
-            Debug.Print("emu: {0} {1,-15} {2}", dasm.Current.Address, dasm.Current, DumpRegs());
+            var instr = dasm!.Current;
+            Debug.Print("emu: {0} {1,-15} {2}", instr.Address, instr, DumpRegs());
         }
 
         private string DumpRegs()
@@ -129,7 +130,7 @@ namespace Reko.Arch.Mos6502
             switch (instr.Mnemonic)
             {
             default:
-                throw new NotImplementedException(string.Format("Instruction emulation for {0} not implemented yet.", instr));
+                throw new NotImplementedException($"Instruction emulation for {instr} not implemented yet.");
             case Mnemonic.bne: if ((regs[Registers.p.Number] & Zmask) == 0) Jump(instr.Operands[0]); return;
             case Mnemonic.dex: NZ(regs[Registers.x.Number] = (byte)(ReadRegister(Registers.x)-1)); return;
             case Mnemonic.dey: NZ(regs[Registers.y.Number] = (byte)(ReadRegister(Registers.y)-1)); return;
@@ -146,7 +147,7 @@ namespace Reko.Arch.Mos6502
 
         protected void Jump(MachineOperand op)
         {
-            InstructionPointer = Address.Ptr16(((Operand) op).Offset.ToUInt16());
+            InstructionPointer = Address.Ptr16(((Operand) op).Offset!.ToUInt16());
         }
 
         private ushort Read(MachineOperand mop)
@@ -158,13 +159,13 @@ namespace Reko.Arch.Mos6502
             default:
                 throw new NotImplementedException($"Addressing mode {op.Mode} not implemented yet.");
             case AddressMode.Immediate:
-                return op.Offset.ToUInt16();
+                return op.Offset!.ToUInt16();
             case AddressMode.ZeroPage:
-                ea = op.Offset.ToByte();
+                ea = op.Offset!.ToByte();
                 break;
             case AddressMode.AbsoluteY:
                 // Treat y as unsigned.
-                ea = (ushort) (regs[Registers.y.Number] + op.Offset.ToUInt16());
+                ea = (ushort) (regs[Registers.y.Number] + op.Offset!.ToUInt16());
                 break;
             }
             return ReadMemory(op, ea);
@@ -179,15 +180,15 @@ namespace Reko.Arch.Mos6502
             default:
                 throw new NotImplementedException($"Addressing mode {op.Mode} not implemented yet.");
             case AddressMode.ZeroPage:
-                ea = op.Offset.ToByte();
+                ea = op.Offset!.ToByte();
                 break;
             case AddressMode.ZeroPageX:
             case AddressMode.ZeroPageY:
-                ea = (ushort)(regs[op.Register.Number] + op.Offset.ToByte());
+                ea = (ushort)(regs[op.Register!.Number] + op.Offset!.ToByte());
                 break;
             case AddressMode.AbsoluteY:
                 // Treat y as unsigned.
-                ea = (ushort) (regs[Registers.y.Number] + op.Offset.ToUInt16());
+                ea = (ushort) (regs[Registers.y.Number] + op.Offset!.ToUInt16());
                 break;
             }
             WriteMemory(op, ea, value);

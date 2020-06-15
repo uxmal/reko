@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Reko.Core.Types
 {
@@ -107,6 +108,8 @@ namespace Reko.Core.Types
                 if (dtOld != null)
                 {
                     dt = u.Unify(dt, dtOld)!;
+                    if (tv.Class.ClassMembers.Count == 4)
+                        tv.ToString();
                 }
                 else if (dt != null)
                 {

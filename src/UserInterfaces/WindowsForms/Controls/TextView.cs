@@ -540,7 +540,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             var modelPos = model.CurrentPosition;
             try
             {
-                var writer = new StreamWriter(stream, Encoding.Unicode);
+                var writer = new StreamWriter(stream, new UnicodeEncoding(false, false));
                 var start = GetStartSelection();
                 var end = GetEndSelection();
                 if (layout.ComparePositions(start, end) == 0)

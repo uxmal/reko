@@ -54,7 +54,7 @@ namespace Reko.Arch.X86
                .ToArray();
         }
 
-        public virtual Address MakeAddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
+        public virtual Address? MakeAddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
         {
             return state.AddressFromSegOffset(seg, offset);
         }
@@ -78,7 +78,7 @@ namespace Reko.Arch.X86
 
         public abstract OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host);
 
-        public abstract Address CreateSegmentedAddress(ushort seg, uint offset);
+        public abstract Address? CreateSegmentedAddress(ushort seg, uint offset);
 
         public virtual Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
         {
@@ -87,7 +87,7 @@ namespace Reko.Arch.X86
             return SegmentedAccess.Create(ss, sp, offset, dataType);
         }
 
-        public RegisterStorage GetControlRegister(int n)
+        public RegisterStorage? GetControlRegister(int n)
         {
             if (0 <= n && n < controlRegs.Length)
                 return controlRegs[n];
@@ -95,7 +95,7 @@ namespace Reko.Arch.X86
                 return null;
         }
 
-        public RegisterStorage GetDebugRegister(int n)
+        public RegisterStorage? GetDebugRegister(int n)
         {
             if (0 <= n && n < debugRegs.Length)
                 return debugRegs[n];
@@ -103,22 +103,22 @@ namespace Reko.Arch.X86
                 return null;
         }
 
-        public virtual List<RtlInstruction> InlineCall(IServiceProvider services, Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
+        public virtual List<RtlInstruction>? InlineCall(IServiceProvider services, Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
         {
             return null;
         }
 
         public abstract Address MakeAddressFromConstant(Constant c);
 
-        public abstract bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state, out Address addr);
+        public abstract bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState? state, out Address addr);
 
-        protected bool TryReadSegmentedCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state, out Address addr)
+        protected bool TryReadSegmentedCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState? state, out Address addr)
         {
             if (byteSize == PrimitiveType.Word16.Size)
             {
-                if (rdr.TryReadLeUInt16(out ushort uOffset))
+                if (state != null && rdr.TryReadLeUInt16(out ushort uOffset))
                 {
-                    addr = CreateSegmentedAddress(state.GetRegister(Registers.cs).ToUInt16(), uOffset);
+                    addr = CreateSegmentedAddress(state.GetRegister(Registers.cs).ToUInt16(), uOffset)!;
                     return true;
                 }
             }
@@ -126,17 +126,17 @@ namespace Reko.Arch.X86
             {
                 if (rdr.TryReadLeUInt16(out var off) && rdr.TryReadLeUInt16(out var seg))
                 {
-                    addr = CreateSegmentedAddress(seg, off);
+                    addr = CreateSegmentedAddress(seg, off)!;
                     return true;
                 }
             }
-            addr = null;
+            addr = default!;
             return false;
         }
 
-        public abstract bool TryParseAddress(string txtAddress, out Address addr);
+        public abstract bool TryParseAddress(string? txtAddress, out Address addr);
 
-        public bool TryParseSegmentedAddress(string txtAddress, out Address addr)
+        public bool TryParseSegmentedAddress(string? txtAddress, out Address addr)
         {
             if (txtAddress != null)
             {
@@ -147,13 +147,13 @@ namespace Reko.Arch.X86
                     {
                         addr = CreateSegmentedAddress(
                             Convert.ToUInt16(txtAddress.Substring(0, c), 16),
-                            Convert.ToUInt32(txtAddress.Substring(c + 1), 16));
+                            Convert.ToUInt32(txtAddress.Substring(c + 1), 16))!;
                         return true;
                     }
                     catch { }
                 }
             }
-            addr = null;
+            addr = default!;
             return false;
         }
     }
@@ -198,16 +198,15 @@ namespace Reko.Arch.X86
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            // Must pass segment:offset to make a segmented address.
-            return null;
+            throw new NotSupportedException("Must pass segment:offset to make a segmented address.");
         }
 
-        public override bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state, out Address addr)
+        public override bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState? state, out Address addr)
         {
             return TryReadSegmentedCodeAddress(byteSize, rdr, state, out addr);
         }
 
-        public override bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, out Address addr)
         {
             return TryParseSegmentedAddress(txtAddress, out addr);
         }
@@ -251,12 +250,12 @@ namespace Reko.Arch.X86
             throw new NotSupportedException("Must pass segment:offset to make a segmented address.");
         }
 
-        public override bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state, out Address addr)
+        public override bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState? state, out Address addr)
         {
             return TryReadSegmentedCodeAddress(byteSize, rdr, state, out addr);
         }
 
-        public override bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, out Address addr)
         {
             return TryParseSegmentedAddress(txtAddress, out addr);
         }
@@ -274,7 +273,7 @@ namespace Reko.Arch.X86
             get { return Registers.esp; }
         }
 
-        public override List<RtlInstruction> InlineCall(
+        public override List<RtlInstruction>? InlineCall(
             IServiceProvider services,
             Address addrCallee, 
             Address addrContinuation, 
@@ -349,8 +348,9 @@ namespace Reko.Arch.X86
             return new OperandRewriter32(arch, m, binder, host);
         }
 
-        public override Address CreateSegmentedAddress(ushort seg, uint offset)
+        public override Address? CreateSegmentedAddress(ushort seg, uint offset)
         {
+            // Segmented addresses are not supported in 32-bit protected mode.
             return null;
         }
 
@@ -360,7 +360,7 @@ namespace Reko.Arch.X86
             return MemoryAccess.Create(esp, offset, dataType);
         }
 
-        public override bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state, out Address addr)
+        public override bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState? state, out Address addr)
         {
             if (rdr.TryReadLeUInt32(out uint uAddr))
             {
@@ -369,12 +369,12 @@ namespace Reko.Arch.X86
             }
             else
             {
-                addr = null;
+                addr = default!;
                 return false;
             }
         }
 
-        public override bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
         }
@@ -430,9 +430,9 @@ namespace Reko.Arch.X86
             return new OperandRewriter64(arch, m, binder, host);
         }
 
-        public override Address CreateSegmentedAddress(ushort seg, uint offset)
+        public override Address? CreateSegmentedAddress(ushort seg, uint offset)
         {
-            return null;
+            throw new NotSupportedException("Segmented addresses are not supported in 64-bit protected mode.");
         }
 
         public override Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
@@ -441,7 +441,7 @@ namespace Reko.Arch.X86
             return MemoryAccess.Create(rsp, offset, dataType);
         }
 
-        public override bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state, out Address addr)
+        public override bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState? state, out Address addr)
         {
             if (rdr.TryReadLeUInt64(out ulong uAddr))
             {
@@ -450,12 +450,12 @@ namespace Reko.Arch.X86
             }
             else
             {
-                addr = null;
+                addr = null!;
                 return false;
             }
         }
 
-        public override bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, out Address addr)
         {
             return Address.TryParse64(txtAddress, out addr);
         }

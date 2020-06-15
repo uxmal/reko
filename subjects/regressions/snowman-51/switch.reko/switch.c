@@ -9,15 +9,15 @@ char * get(uint32 n)
 {
 	if (n > 0x02)
 		return "other";
-	switch (n + 0x01)
+	switch (n)
 	{
-	case 0x00:
+	case ~0x00:
 		return "zero";
-	case 0x01:
+	case 0x00:
 		return "one";
-	case 0x02:
+	case 0x01:
 		return "two";
-	case 0x03:
+	case 0x02:
 		return "three";
 	}
 }

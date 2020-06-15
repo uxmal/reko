@@ -48,9 +48,9 @@ namespace Reko.UnitTests.Scanning
             var mem = new MemoryArea(Address.Ptr32(0x00400000), bytes);
             arch.Setup(a => a.CreateImageReader(
                 It.IsAny<MemoryArea>(),
-                It.IsAny<Address>(),
-                It.IsAny<Address>()))
-                .Returns(new LeImageReader(mem, mem.BaseAddress));
+                It.IsAny<long>(),
+                It.IsAny<long>()))
+                .Returns(new LeImageReader(mem, 0));
             this.program = new Program
             {
                 Architecture = arch.Object,

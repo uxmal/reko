@@ -44,7 +44,7 @@ namespace Reko.Arch.X86
             Func<Expression,Expression,Expression> op,
             bool fReversed,
             bool fPopStack,
-            DataType cast)
+            DataType? cast)
         {
             switch (instrCur.Operands.Length)
             {
@@ -393,8 +393,8 @@ namespace Reko.Arch.X86
             }
             if (nextInstr.Mnemonic == Mnemonic.test)
             {
-                RegisterOperand acc = nextInstr.Operands[0] as RegisterOperand;
-                ImmediateOperand imm = nextInstr.Operands[1] as ImmediateOperand;
+                RegisterOperand? acc = nextInstr.Operands[0] as RegisterOperand;
+                ImmediateOperand? imm = nextInstr.Operands[1] as ImmediateOperand;
                 if (imm == null || acc == null)
                     return false;
                 int mask = imm.Value.ToInt32();
@@ -489,12 +489,13 @@ namespace Reko.Arch.X86
         private void Branch(ConditionCode code, MachineOperand op)
         {
             this.iclass = InstrClass.ConditionalTransfer;
-            m.Branch(m.Test(code, orw.AluRegister(Registers.FPUF)), OperandAsCodeAddress( op), InstrClass.ConditionalTransfer);
+            m.Branch(m.Test(code, orw.AluRegister(Registers.FPUF)), OperandAsCodeAddress(op)!, InstrClass.ConditionalTransfer);
         }
 
         private void RewriteFtst()
         {
-            m.Assign(orw.FlagGroup(FlagM.CF),
+            m.Assign(
+                orw.FlagGroup(FlagM.CF),
                 m.ISub(FpuRegister(0), Constant.Real64(0.0)));
         }
 
@@ -569,7 +570,7 @@ namespace Reko.Arch.X86
             return orw.FpuRegister(reg, state);
         }
 
-        public Expression MaybeCast(DataType type, Expression e)
+        public Expression MaybeCast(DataType? type, Expression e)
         {
             if (type != null)
                 return new Cast(type, e);

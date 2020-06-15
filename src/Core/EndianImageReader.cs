@@ -28,12 +28,17 @@ using System.Threading.Tasks;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// This image reader has an associated notion of endianness. Abstract methods are provided for reading
+    /// values that change bitpatterns depending on endianness.
+    /// </summary>
 	public abstract class EndianImageReader : ImageReader
 	{
 		protected EndianImageReader(MemoryArea img, Address addr) : base(img, addr) { }
+		protected EndianImageReader(MemoryArea img, long offsetBegin, long offsetEnd) : base(img, offsetBegin, offsetEnd) { }
 		protected EndianImageReader(MemoryArea img, Address addrBegin, Address addrEnd) : base(img, addrBegin, addrEnd) { }
-		protected EndianImageReader(MemoryArea img, ulong off) : base(img, off) { }
-		protected EndianImageReader(byte[] img, ulong off) : base(img, off) { }
+		protected EndianImageReader(MemoryArea img, long off) : base(img, off) { }
+		protected EndianImageReader(byte[] img, long off) : base(img, off) { }
 		protected EndianImageReader(byte[] img) : this(img, 0) { }
 
         /// <summary>
@@ -42,20 +47,20 @@ namespace Reko.Core
         /// <param name="bytes"></param>
         /// <param name="offset"></param>
         /// <returns></returns>
-		public abstract EndianImageReader CreateNew(byte[] bytes, ulong offset);
+		public abstract EndianImageReader CreateNew(byte[] bytes, long offset);
 		public abstract EndianImageReader CreateNew(MemoryArea image, Address addr);
 
 		public virtual EndianImageReader Clone()
 		{
 			EndianImageReader rdr;
-			if (image != null)
+			if (mem != null)
 			{
-				rdr = CreateNew(image, addrStart!);
+				rdr = CreateNew(mem, addrStart!);
 				rdr.off = off;
 			}
 			else
 			{
-				rdr = CreateNew(bytes, (ulong)off);
+				rdr = CreateNew(bytes, off);
 			}
 			return rdr;
 		}
@@ -72,13 +77,13 @@ namespace Reko.Core
         /// <returns></returns>
         public bool ReadNullCharTerminator(DataType charType)
 		{
-			switch (charType.BitSize)
-			{
-			case 8: return (char)ReadByte() == 0;
-			case 16: return (char)ReadUInt16() == 0;
-			default: throw new NotSupportedException(string.Format("Character bit size {0} not supported.", charType.BitSize));
-			}
-		}
+            return charType.BitSize switch
+            {
+                8 => (char) ReadByte() == 0,
+                16 => (char) ReadUInt16() == 0,
+                _ => throw new NotSupportedException(string.Format("Character bit size {0} not supported.", charType.BitSize)),
+            };
+        }
 
 		/// <summary>
 		/// Reads a NUL-terminated string starting at the current position.
@@ -107,7 +112,9 @@ namespace Reko.Core
 		/// <returns></returns>
 		public StringConstant ReadLengthPrefixedString(PrimitiveType lengthType, PrimitiveType charType, Encoding encoding)
 		{
-			int length = Read(lengthType).ToInt32();
+            if (!TryRead(lengthType, out var cLength))
+                throw new InvalidOperationException("Unable to read string length prefix.");
+			int length = cLength.ToInt32();
 			int iStart = (int)Offset;
             var cStr = new StringConstant(
 				StringType.LengthPrefixedStringType(charType, lengthType),
@@ -140,7 +147,6 @@ namespace Reko.Core
 		public abstract uint ReadUInt32(int offset);
 		public abstract ulong ReadUInt64(int offset);
 
-		public abstract Constant Read(PrimitiveType dataType);
 		public abstract bool TryRead(PrimitiveType dataType, out Constant c);
 
 		public abstract bool TryPeekUInt32(int offset, out uint value);
@@ -152,13 +158,14 @@ namespace Reko.Core
 	/// </summary>
 	public class LeImageReader : EndianImageReader
 	{
-		public LeImageReader(byte[] bytes, ulong offset = 0) : base(bytes, offset) { }
-		public LeImageReader(MemoryArea image, ulong offset) : base(image, offset) { }
+		public LeImageReader(byte[] bytes, long offset = 0) : base(bytes, offset) { }
+		public LeImageReader(MemoryArea image, long offset) : base(image, offset) { }
 		public LeImageReader(MemoryArea image, Address addr) : base(image, addr) { }
+		public LeImageReader(MemoryArea image, long offsetBegin, long offsetEnd) : base(image, offsetBegin, offsetEnd) { }
 		public LeImageReader(MemoryArea image, Address addrBegin, Address addrEnd) : base(image, addrBegin, addrEnd) { }
-		public LeImageReader(byte[] bytes) : this(bytes, 0) { }
+        public LeImageReader(byte[] bytes) : this(bytes, 0) { }
 
-		public override EndianImageReader CreateNew(byte[] bytes, ulong offset)
+		public override EndianImageReader CreateNew(byte[] bytes, long offset)
 		{
 			return new LeImageReader(bytes, offset);
 		}
@@ -194,7 +201,6 @@ namespace Reko.Core
 		public override uint ReadUInt32(int offset) { return PeekLeUInt32(offset); }
 		public override ulong ReadUInt64(int offset) { return PeekLeUInt64(offset); }
 
-		public override Constant Read(PrimitiveType dataType) { return ReadLe(dataType); }
 		public override bool TryRead(PrimitiveType dataType, out Constant c) { return TryReadLe(dataType, out c); }
 
 	}
@@ -205,13 +211,14 @@ namespace Reko.Core
 	/// </summary>
 	public class BeImageReader : EndianImageReader
 	{
-		public BeImageReader(byte[] bytes, ulong offset) : base(bytes, offset) { }
-		public BeImageReader(MemoryArea image, ulong offset) : base(image, offset) { }
+		public BeImageReader(byte[] bytes, long offset) : base(bytes, offset) { }
+		public BeImageReader(MemoryArea image, long offset) : base(image, offset) { }
 		public BeImageReader(MemoryArea image, Address addr) : base(image, addr) { }
+		public BeImageReader(MemoryArea image, long offsetBegin, long offsetEnd) : base(image, offsetBegin, offsetEnd) { }
 		public BeImageReader(MemoryArea image, Address addrBegin, Address addrEnd) : base(image, addrBegin, addrEnd) { }
 		public BeImageReader(byte[] bytes) : this(bytes, 0) { }
 
-		public override EndianImageReader CreateNew(byte[] bytes, ulong offset)
+		public override EndianImageReader CreateNew(byte[] bytes, long offset)
 		{
 			return new BeImageReader(bytes, offset);
 		}
@@ -246,7 +253,6 @@ namespace Reko.Core
 		public override uint ReadUInt32(int offset) { return PeekBeUInt32(offset); }
 		public override ulong ReadUInt64(int offset) { return PeekBeUInt64(offset); }
 
-		public override Constant Read(PrimitiveType dataType) { return ReadBe(dataType); }
 		public override bool TryRead(PrimitiveType dataType, out Constant c) { return TryReadBe(dataType, out c); }
 	}
 }

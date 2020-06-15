@@ -29,6 +29,7 @@ using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
+using Reko.Core.Serialization;
 
 namespace Reko.UnitTests.Typing
 {
@@ -56,11 +57,9 @@ namespace Reko.UnitTests.Typing
 			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, program.Architecture);
 			TraitCollector coll = new TraitCollector(factory, store, dtb, program);
 			coll.CollectProgramTraits(program);
-			sktore.BuildEquivalenceClassDataTypes(factory);
 #else
             TypeCollector coll = new TypeCollector(factory, store, program, listener);
             coll.CollectTypes();
-
             store.BuildEquivalenceClassDataTypes(factory);
 #endif
 
@@ -541,6 +540,63 @@ namespace Reko.UnitTests.Typing
                 m.Return();
             });
             RunTest(pb.BuildProgram(), "Typing/TtranSelfRef.txt");
+        }
+
+        [Test]
+        public void TtranMalloc()
+        {
+            var r1 = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
+            var malloc = new ExternalProcedure("malloc", FunctionType.Func(
+                new Identifier("", new Pointer(new UnknownType(), 32), r1),
+                new Identifier("size", PrimitiveType.UInt32, new RegisterStorage("r2", 2, 0, PrimitiveType.Word32))),
+                new ProcedureCharacteristics
+                {
+                    Allocator = true,
+                });
+
+            var pb = new ProgramBuilder();
+            pb.Add(nameof(TtranMalloc), m =>
+            {
+                var r1_1 = new Identifier("r1_1", PrimitiveType.Word32, r1);
+                var r1_2 = new Identifier("r1_2", PrimitiveType.Word32, r1);
+                m.Assign(r1_1, m.Fn(malloc, m.Word32(40)));
+                m.MStore(m.IAddS(r1_1, 4), Constant.Real32(0.5F));
+                m.Assign(r1_2, m.Fn(malloc, m.Word32(20)));
+                m.MStore(m.IAddS(r1_2, 4), Constant.Int32(-2));
+                m.Return();
+            });
+            RunTest(pb.BuildProgram(), $"Typing/{nameof(TtranMalloc)}.txt");
+        }
+
+        [Test]
+        [Category(Categories.IntegrationTests)]
+        public void TtranArrayAssignment()
+        {
+            var pp = new ProgramBuilder();
+            pp.Add("Fn", m =>
+            {
+                Identifier rbx_18 = m.Local(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), "rbx_18");
+                Identifier rdx = m.Local(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), "rdx");
+                Identifier rax_22 = m.Local(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), "rax_22");
+                Identifier rsi = m.Local(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), "rsi");
+                Identifier rdi = m.Local(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), "rdi");
+
+                m.Label("l000000000040EC30");
+                m.Declare(rbx_18, m.ISub(rdx, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x1)));
+                m.BranchIf(m.Eq(rdx, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x0)), "l000000000040EC69");
+
+                m.Label("l000000000040EC40");
+                m.Declare(rax_22, m.Word64(0x10000040));
+
+                m.Label("l000000000040EC50");
+                m.MStore(m.IAdd(rdi, rbx_18), m.Cast(PrimitiveType.Byte, m.Mem(PrimitiveType.Word32, m.IAdd(m.Mem(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), rax_22), m.IMul(m.Cast(PrimitiveType.Create(Domain.UnsignedInt, 64), m.Cast(PrimitiveType.Word32, m.Mem(PrimitiveType.Byte, m.IAdd(rsi, rbx_18)))), Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x4))))));
+                m.Assign(rbx_18, m.ISub(rbx_18, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x1)));
+                m.BranchIf(m.Ne(rbx_18, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0xFFFFFFFFFFFFFFFF)), "l000000000040EC50");
+
+                m.Label("l000000000040EC69");
+                m.Return();
+            });
+            RunTest(pp.BuildProgram(), $"Typing/{nameof(TtranArrayAssignment)}.txt");
         }
     }
 }

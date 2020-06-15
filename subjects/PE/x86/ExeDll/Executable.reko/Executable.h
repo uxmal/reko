@@ -229,7 +229,7 @@ Eq_426: LPTOP_LEVEL_EXCEPTION_FILTER
 	T_914 (in 0<32> : word32)
 	T_915 (in SetUnhandledExceptionFilter(null) : LPTOP_LEVEL_EXCEPTION_FILTER)
 	T_984 (in 0x4018DF<32> : word32)
-	T_985 (in SetUnhandledExceptionFilter(&globals->t4018DF) : LPTOP_LEVEL_EXCEPTION_FILTER)
+	T_985 (in SetUnhandledExceptionFilter(&g_t4018DF) : LPTOP_LEVEL_EXCEPTION_FILTER)
 Eq_429: (fn Eq_432 ((ptr32 Eq_423)))
 	T_429 (in UnhandledExceptionFilter : ptr32)
 	T_430 (in signature of UnhandledExceptionFilter : void)
@@ -314,7 +314,7 @@ Eq_648: (struct "Eq_648" (400000 word32 dw400000) (400018 word16 w400018))
 	T_650 (in Mem19[0x0040003C<p32>:word32] : word32)
 Eq_667: (struct "Eq_667" (24 int32 dw0024))
 	T_667 (in eax_40 : (ptr32 Eq_667))
-	T_675 (in fn004013FB(&globals->w400000, eax_32 - 0x00400000<p32>, out edx) : word32)
+	T_675 (in fn004013FB(&g_w400000, eax_32 - 0x00400000<p32>, out edx) : word32)
 	T_679 (in 0<32> : word32)
 Eq_668: (fn (ptr32 Eq_667) ((ptr32 Eq_443), uint32, (ptr32 Eq_442)))
 	T_668 (in fn004013FB : ptr32)
@@ -2474,7 +2474,7 @@ T_514: (in out eax_25 : word32)
   Class: Eq_510
   DataType: word32
   OrigDataType: word32
-T_515: (in __cmpxchg(globals->dw403338, edx_19, 0<32>, out eax_25) : bool)
+T_515: (in __cmpxchg(g_dw403338, edx_19, 0<32>, out eax_25) : bool)
   Class: Eq_515
   DataType: bool
   OrigDataType: bool
@@ -2734,7 +2734,7 @@ T_579: (in Mem68[0x00403004<p32>:word32] : word32)
   Class: Eq_561
   DataType: ui32
   OrigDataType: word32
-T_580: (in __ror(eax_55 & 0x1F<32> | 0xFFFFFFFF<32>, (byte) (0x20<32> - (eax_55 & 0x1F<32>))) ^ globals->dw403004 : word32)
+T_580: (in __ror(eax_55 & 0x1F<32> | 0xFFFFFFFF<32>, (byte) (0x20<32> - (eax_55 & 0x1F<32>))) ^ g_dw403004 : word32)
   Class: Eq_564
   DataType: ui32
   OrigDataType: ui32
@@ -2978,7 +2978,7 @@ T_640: (in 0x5A4D<16> : word16)
   Class: Eq_639
   DataType: word16
   OrigDataType: word16
-T_641: (in globals->w400000 != 0x5A4D<16> : bool)
+T_641: (in g_w400000 != 0x5A4D<16> : bool)
   Class: Eq_641
   DataType: bool
   OrigDataType: bool
@@ -3114,7 +3114,7 @@ T_674: (in out edx : ptr32)
   Class: Eq_442
   DataType: (ptr32 Eq_442)
   OrigDataType: ptr32
-T_675: (in fn004013FB(&globals->w400000, eax_32 - 0x00400000<p32>, out edx) : word32)
+T_675: (in fn004013FB(&g_w400000, eax_32 - 0x00400000<p32>, out edx) : word32)
   Class: Eq_667
   DataType: (ptr32 Eq_667)
   OrigDataType: word32
@@ -3270,7 +3270,7 @@ T_713: (in 0<8> : byte)
   Class: Eq_533
   DataType: byte
   OrigDataType: byte
-T_714: (in globals->b403354 == 0<8> : bool)
+T_714: (in g_b403354 == 0<8> : bool)
   Class: Eq_714
   DataType: bool
   OrigDataType: bool
@@ -3334,7 +3334,7 @@ T_729: (in Mem6[0x0040333C<p32>:word32] : word32)
   Class: Eq_564
   DataType: ui32
   OrigDataType: word32
-T_730: (in eax_8 ^ globals->dw40333C : word32)
+T_730: (in eax_8 ^ g_dw40333C : word32)
   Class: Eq_567
   DataType: ui32
   OrigDataType: ui32
@@ -3350,7 +3350,7 @@ T_733: (in SLICE(eax_8 & 0x1F<32>, byte, 0) : byte)
   Class: Eq_568
   DataType: byte
   OrigDataType: byte
-T_734: (in __ror(eax_8 ^ globals->dw40333C, (byte) (eax_8 & 0x1F<32>)) : word32)
+T_734: (in __ror(eax_8 ^ g_dw40333C, (byte) (eax_8 & 0x1F<32>)) : word32)
   Class: Eq_577
   DataType: word32
   OrigDataType: word32
@@ -3358,7 +3358,7 @@ T_735: (in 0xFFFFFFFF<32> : word32)
   Class: Eq_577
   DataType: word32
   OrigDataType: word32
-T_736: (in __ror(eax_8 ^ globals->dw40333C, (byte) (eax_8 & 0x1F<32>)) != 0xFFFFFFFF<32> : bool)
+T_736: (in __ror(eax_8 ^ g_dw40333C, (byte) (eax_8 & 0x1F<32>)) != 0xFFFFFFFF<32> : bool)
   Class: Eq_736
   DataType: bool
   OrigDataType: bool
@@ -3702,7 +3702,7 @@ T_821: (in 0x403358<32> : word32)
   Class: Eq_820
   DataType: Eq_820
   OrigDataType: PSLIST_HEADER
-T_822: (in InitializeSListHead(&globals->u403358) : void)
+T_822: (in InitializeSListHead(&g_u403358) : void)
   Class: Eq_822
   DataType: void
   OrigDataType: void
@@ -4158,7 +4158,7 @@ T_935: (in 0<32> - (-((word32) (bl_90 + 1<8>)) == 0<32>) : word32)
   Class: Eq_935
   DataType: ui32
   OrigDataType: ui32
-T_936: (in globals->dw403368 & 0<32> - (-((word32) (bl_90 + 1<8>)) == 0<32>) : word32)
+T_936: (in g_dw403368 & 0<32> - (-((word32) (bl_90 + 1<8>)) == 0<32>) : word32)
   Class: Eq_885
   DataType: ui32
   OrigDataType: ui32
@@ -4354,7 +4354,7 @@ T_984: (in 0x4018DF<32> : word32)
   Class: Eq_426
   DataType: Eq_426
   OrigDataType: LPTOP_LEVEL_EXCEPTION_FILTER
-T_985: (in SetUnhandledExceptionFilter(&globals->t4018DF) : LPTOP_LEVEL_EXCEPTION_FILTER)
+T_985: (in SetUnhandledExceptionFilter(&g_t4018DF) : LPTOP_LEVEL_EXCEPTION_FILTER)
   Class: Eq_426
   DataType: Eq_426
   OrigDataType: LPTOP_LEVEL_EXCEPTION_FILTER
@@ -4382,7 +4382,7 @@ T_991: (in 0x004024C8<p32> : ptr32)
   Class: Eq_986
   DataType: (ptr32 word32)
   OrigDataType: ptr32
-T_992: (in esi_10 < globals->a4024C8 : bool)
+T_992: (in esi_10 < g_a4024C8 : bool)
   Class: Eq_992
   DataType: bool
   OrigDataType: bool
@@ -4510,7 +4510,7 @@ T_1023: (in fp + 8<32> : word32)
   Class: Eq_1023
   DataType: ptr32
   OrigDataType: ptr32
-T_1024: (in globals->dw403004 ^ fp + 8<32> : word32)
+T_1024: (in g_dw403004 ^ fp + 8<32> : word32)
   Class: Eq_1024
   DataType: ui32
   OrigDataType: ui32
@@ -4642,7 +4642,7 @@ T_1056: (in 0<32> : word32)
   Class: Eq_1056
   DataType: ui32
   OrigDataType: ui32
-T_1057: (in globals->dw40336C & 0<32> : word32)
+T_1057: (in g_dw40336C & 0<32> : word32)
   Class: Eq_1055
   DataType: ui32
   OrigDataType: ui32
@@ -4666,7 +4666,7 @@ T_1062: (in 1<32> : word32)
   Class: Eq_1062
   DataType: ui32
   OrigDataType: ui32
-T_1063: (in globals->dw403010 | 1<32> : word32)
+T_1063: (in g_dw403010 | 1<32> : word32)
   Class: Eq_1061
   DataType: ui32
   OrigDataType: ui32
@@ -4714,7 +4714,7 @@ T_1074: (in 2<32> : word32)
   Class: Eq_1074
   DataType: ui32
   OrigDataType: ui32
-T_1075: (in globals->dw403010 | 2<32> : word32)
+T_1075: (in g_dw403010 | 2<32> : word32)
   Class: Eq_1061
   DataType: ui32
   OrigDataType: ui32
@@ -5114,7 +5114,7 @@ T_1174: (in 4<32> : word32)
   Class: Eq_1174
   DataType: ui32
   OrigDataType: ui32
-T_1175: (in globals->dw403010 | 4<32> : word32)
+T_1175: (in g_dw403010 | 4<32> : word32)
   Class: Eq_1061
   DataType: ui32
   OrigDataType: ui32
@@ -5310,7 +5310,7 @@ T_1223: (in 0<32> : word32)
   Class: Eq_1222
   DataType: word32
   OrigDataType: word32
-T_1224: (in globals->dw403014 != 0<32> : bool)
+T_1224: (in g_dw403014 != 0<32> : bool)
   Class: Eq_1224
   DataType: bool
   OrigDataType: bool

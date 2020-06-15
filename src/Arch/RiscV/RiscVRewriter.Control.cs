@@ -64,7 +64,6 @@ namespace Reko.Arch.RiscV
             m.Goto(RewriteOp(instr.Operands[0]));
         }
 
-
         private void RewriteCompressedJalr()
         {
             m.Call(RewriteOp(instr.Operands[0]), 0);

@@ -49,7 +49,7 @@ namespace Reko.Arch.X86
             this.retSizeOnStack = retSizeOnStack;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(stackAlignment, retSizeOnStack);
             ccr.CallerCleanup(retSizeOnStack);

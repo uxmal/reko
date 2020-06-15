@@ -1068,13 +1068,13 @@ Eq_n fn00401ADC(Eq_n r2, struct Eq_n * r3, ptr32 r25, ptr32 r26, Eq_n r27, Eq_n 
 			r9_n = (struct Eq_n *) *r29_n;
 		}
 		r31 = r31_n;
-		Eq_n r11_n[] = null;
-		Eq_n (* r10_n)[] = (char *) r9_n->ptr0000 + (r28_n->dw0000 << 0x04);
+		word32 r11_n[] = null;
+		word32 (* r10_n)[] = (char *) r9_n->ptr0000 + (r28_n->dw0000 << 0x04);
 		word32 ctr_n;
 		for (ctr_n = 0x20; ctr_n != 0x00; --ctr_n)
 		{
 			Mem213[r10_n + r11_n:word32] = 0x00;
-			Eq_n (* r11_n)[] = r11_n + 1;
+			word32 (* r11_n)[] = r11_n + 1;
 			Mem215[r10_n + r11_n:word32] = 0x00;
 			Mem217[r10_n + (r11_n + 0x04):word32] = 0x00;
 			Mem219[r10_n + (r11_n + 0x08):word32] = 0x00;
@@ -1396,7 +1396,7 @@ Eq_n fn00402248(Eq_n r2, struct Eq_n * r3, Eq_n r4, struct Eq_n * r5, struct Eq_
 		word32 r11_n = (int32) (int8) (word32) Mem24[Mem24[r2 + 0x0078:word32] + r3:byte];
 		if ((r11_n & 0x01) != 0x00 && (r11_n & 0x10) == 0x00)
 		{
-			Eq_n (* r3_n)[][];
+			word32 (* r3_n)[][];
 			if ((r11_n & 0x40) != 0x00)
 			{
 				struct Eq_n * r31_n = *((word32) *((word32) r2 + 0x009C) + r3 * 0x04);
@@ -1574,7 +1574,7 @@ Eq_n fn004026B8(Eq_n r2, struct Eq_n * r3, word32 r5, ptr32 r26, Eq_n r27, struc
 		word32 r11_n = (int32) (int8) (word32) Mem35[Mem35[r2 + 0x0078:word32] + r3:byte];
 		if ((r11_n & 0x01) != 0x00 && (r11_n & 0x40) == 0x00)
 		{
-			Eq_n (* r3_n)[][];
+			word32 (* r3_n)[][];
 			if (r5 != 0x00)
 			{
 				if (r5 != 0x01)
@@ -1994,14 +1994,14 @@ void fn00403070(struct Eq_n * r3, int32 r4, struct Eq_n * r5, struct Eq_n *** r6
 	r3->ptr0000 = r5;
 }
 
-// 00403104: void fn00403104(Register Eq_n r2, Register (ptr32 (arr (arr Eq_n))) r3)
+// 00403104: void fn00403104(Register Eq_n r2, Register (ptr32 (arr (arr word32))) r3)
 // Called from:
 //      fn004020BC
 //      fn00402248
 //      fn004026B8
 //      fn00403744
 //      fn00403898
-void fn00403104(Eq_n r2, Eq_n (* r3)[][])
+void fn00403104(Eq_n r2, word32 (* r3)[][])
 {
 	struct Eq_n * r8_n = *((word32) r2 + 228);
 	int32 r3_n = (int32) (int16) r3;
@@ -2475,7 +2475,7 @@ Eq_n fn00403898(Eq_n r2, struct Eq_n * r3, ptr32 r28, word32 r29, word32 r30, Eq
 	v5->dw0004 = r29;
 	v5->dw0008 = r30;
 	v5->t000C = r31;
-	Eq_n (* r3_n)[][] = null;
+	word32 (* r3_n)[][] = null;
 	if (r4_n > r3)
 	{
 		Eq_n (* r28_n)[] = *((word32) r2 + 0x0078);

@@ -1333,5 +1333,47 @@ m.Label("l0800_0585");
             Given_CompoundConditionCoalescer(m.Procedure);
             RunTest(sExp, m.Procedure);
         }
+
+        [Test(Description = "Github issue #874 opened by @blindmatrix")]
+        public void StrAnls_SwitchWithOffset()
+        {
+            var r1 = m.Reg32("r1", 1);
+
+            m.Label("head");
+            m.Switch(m.IAddS(r1, 1), "case_m1", "case_0", "case_1");
+
+            m.Label("case_m1");
+            m.Assign(r1, 3);
+            m.Goto("done");
+
+            m.Label("case_0");
+            m.Assign(r1, 2);
+            m.Goto("done");
+
+            m.Label("case_1");
+            m.Assign(r1, 1);
+            m.Goto("done");
+
+            m.Label("done");
+            m.Return(r1);
+
+            var sExp =
+@"    switch (r1)
+    {
+    case ~0x00:
+        r1 = 0x03;
+        break;
+    case 0x00:
+        r1 = 0x02;
+        break;
+    case 0x01:
+        r1 = 0x01;
+        break;
+    }
+    return r1;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
     }
 }

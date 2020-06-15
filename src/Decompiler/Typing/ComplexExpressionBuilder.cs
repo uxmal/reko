@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.Core.Operators;
 using System.Diagnostics;
+using Reko.Core;
 
 namespace Reko.Typing
 {
@@ -43,24 +44,26 @@ namespace Reko.Typing
     /// </remarks>
     public class ComplexExpressionBuilder : IDataTypeVisitor<Expression>
     {
-        private Expression? expComplex;     // The expression we wish to convert to high-level code.
-        private Expression? index;          // Optional index expression (like ptr + i). Should never be a constant (see "offset" member variable)
-        private Expression? basePtr;         // Non-null if x86-style base segment present.
-        private DataType? dtComplex;        // DataType inferred by reko
-        private DataType? dtComplexOrig;    // DataType of only this expression.
-        private int offset;                 // constant offset from expComplex.
+        private readonly Program program;
+        private Expression? expComplex;         // The expression we wish to convert to high-level code.
+        private Expression? index;              // Optional index expression (like ptr + i). Should never be a constant (see "offset" member variable)
+        private readonly Expression? basePtr;   // Non-null if x86-style base segment present.
+        private DataType? dtComplex;            // DataType inferred by reko
+        private DataType? dtComplexOrig;        // DataType of only this expression.
+        private int offset;                     // constant offset from expComplex.
         private DataType? enclosingPtr;
         private bool dereferenced;          // True if expComplex was dereferenced (Mem0[expComplex])
         private bool dereferenceGenerated;  // True if a dereferencing expression has been emitted (field access or the like.
         private int depth;
 
         public ComplexExpressionBuilder(
-            DataType? dtResult,
+            Program program,
             Expression? basePtr,
             Expression complex,
             Expression? index,
             int offset)
         {
+            this.program = program;
             this.basePtr = basePtr;
             this.expComplex = complex;
             this.index = index;
@@ -415,7 +418,7 @@ namespace Reko.Typing
                 }
                 return new UnaryExpression(
                     Operator.AddrOf,
-                    new Pointer(dt, 32),         //$BUG: hardwired '4'.
+                    new Pointer(dt, program.Platform.PointerType.BitSize),
                     mps);
             }
             else if (e != null)
@@ -428,17 +431,38 @@ namespace Reko.Typing
 
         private Expression CreateFieldAccess(DataType dtStructure, DataType dtField, Expression exp, Field field)
         {
-            if (enclosingPtr != null && !dereferenceGenerated)
+            if (exp == program.Globals)
             {
-                dereferenceGenerated = true;
-                exp = CreateDereference(dtStructure, exp);
-                if (dtField.ResolveAs<ArrayType>() != null)
+                var name = GlobalFieldName(field);
+                var globalVar = Identifier.Global(name, field.DataType);
+                if (dtField.ResolveAs<ArrayType>() is null)
                 {
-                    dereferenceGenerated = false;
+                    dereferenceGenerated = true;
                 }
+                return globalVar;
             }
-            var fa = new FieldAccess(dtField, exp, field);
-            return fa;
+            else
+            {
+                if (enclosingPtr != null && !dereferenceGenerated)
+                {
+                    dereferenceGenerated = true;
+                    exp = CreateDereference(dtStructure, exp);
+                    if (dtField.ResolveAs<ArrayType>() != null)
+                    {
+                        dereferenceGenerated = false;
+                    }
+                }
+                var fa = new FieldAccess(dtField, exp, field);
+                return fa;
+            }
+        }
+
+        private string GlobalFieldName(Field field)
+        {
+            if (field is StructureField strField)
+                return program.NamingPolicy.GlobalName(strField);
+            else
+                return field.Name;
         }
 
         private Expression? ScaleDownIndex(Expression? exp, int elementSize)
@@ -457,7 +481,7 @@ namespace Reko.Typing
                     Constant.Int32(elementSize));
             }
 
-            // Expression is of the form (* x c) where c is a multuple of elementSize.
+            // Expression is of the form (* x c) where c is a multiple of elementSize.
 
             var scale = cRight.ToInt32() / elementSize;
             if (scale == 1)

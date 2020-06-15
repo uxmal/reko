@@ -116,7 +116,7 @@ namespace Reko.Arch.X86
         {
             if (op is MemoryOperand memOp && memOp.Base == Registers.rip)
             {
-                var addr = this.Address + this.Length + memOp.Offset.ToInt32();
+                var addr = this.Address + this.Length + memOp.Offset!.ToInt32();
                 if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
                 {
                     writer.WriteString("[");

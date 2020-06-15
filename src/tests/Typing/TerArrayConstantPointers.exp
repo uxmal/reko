@@ -16,7 +16,7 @@ define Fn
 Fn_entry:
 	// succ:  l1
 l1:
-	a = globals->a123456
+	a = g_a123456
 	a[i].dw0000 = 42<i32>
 Fn_exit:
 

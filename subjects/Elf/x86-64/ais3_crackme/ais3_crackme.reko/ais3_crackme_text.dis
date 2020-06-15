@@ -133,23 +133,21 @@ word32 verify(word64 rdi)
 // Preserved: rbp rsp
 verify_entry:
 l0000000000400520:
-	word32 dwLoc0C_103 = 0<32>
+	word32 dwLoc0C_100 = 0<32>
 l00000000004005A1:
-	word64 rax_112
-	word64 rax_17 = rdi + (int64) SLICE((uint64) dwLoc0C_103, word32, 0)
-	word32 rax_32_32_113 = SLICE(rax_17, word32, 32)
-	branch SLICE((word32) Mem12[rax_17:byte], byte, 0) != 0<8> l0000000000400531
+	word64 rax_115
+	branch SLICE((uint64) (word32) Mem12[rdi + (int64) SLICE((uint64) dwLoc0C_100, word32, 0):byte], byte, 0) != 0<8> l0000000000400531
 l0000000000400531:
-	byte al_34 = SLICE((uint64) (SLICE((uint64) dwLoc0C_103, word32, 0) ^ SLICE((uint64) ((word32) Mem12[rdi + (int64) SLICE((uint64) dwLoc0C_103, word32, 0):byte]), word32, 0)), byte, 0)
-	branch SLICE((word32) Mem74[(int64) SLICE((uint64) dwLoc0C_103, word32, 0) + 0x601020<64>:byte], byte, 0) == SLICE((uint64) (SLICE((uint64) SLICE((uint64) ((word32) al_34 >> SLICE((uint64) SLICE((uint64) (8<32> - SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc0C_103, word32, 0) ^ 9<32>), word32, 0) & 3<32>), word32, 0), word32, 0)), word32, 0), byte, 0)), word32, 0), word32, 0) | SLICE((uint64) SLICE((uint64) SLICE((uint64) ((word32) al_34 << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc0C_103, word32, 0) ^ 9<32>), word32, 0) & 3<32>), word32, 0), byte, 0)), word32, 0), word32, 0), word32, 0)), byte, 0) + 8<8> l000000000040059D
+	byte al_35 = SLICE((uint64) (SLICE((uint64) dwLoc0C_100, word32, 0) ^ SLICE((uint64) SLICE((uint64) ((word32) Mem12[rdi + (int64) SLICE((uint64) dwLoc0C_100, word32, 0):byte]), word32, 0), word32, 0)), byte, 0)
+	branch SLICE((uint64) (word32) Mem77[(int64) SLICE((uint64) dwLoc0C_100, word32, 0) + 0x601020<64>:byte], byte, 0) == SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) ((word32) al_35), word32, 0) >> SLICE((uint64) SLICE((uint64) (8<32> - SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc0C_100, word32, 0) ^ 9<32>), word32, 0) & 3<32>), word32, 0), word32, 0)), word32, 0), byte, 0)), word32, 0), word32, 0) | SLICE((uint64) SLICE((uint64) SLICE((uint64) (SLICE((uint64) ((word32) al_35), word32, 0) << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc0C_100, word32, 0) ^ 9<32>), word32, 0) & 3<32>), word32, 0), byte, 0)), word32, 0), word32, 0), word32, 0)), byte, 0) + 8<8> l000000000040059D
 l000000000040059D:
-	dwLoc0C_103 = dwLoc0C_103 + 1<32>
+	dwLoc0C_100 = dwLoc0C_100 + 1<32>
 l0000000000400596:
-	rax_112 = 0<u64>
+	rax_115 = 0<u64>
 l00000000004005B9:
-	rax_112 = SEQ(rax_32_32_113, (word32) (dwLoc0C_103 == 0x17<32>)) (alias)
+	rax_115 = (uint64) (word32) (dwLoc0C_100 == 0x17<32>)
 l00000000004005C3:
-	return SLICE(rax_112, word32, 0)
+	return SLICE(rax_115, word32, 0)
 verify_exit:
 
 

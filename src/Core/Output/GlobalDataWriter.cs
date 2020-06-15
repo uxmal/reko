@@ -84,7 +84,7 @@ namespace Reko.Core.Output
 
         private void WriteGlobalVariable(StructureField field)
         {
-            var name = string.Format("g_{0:X}", field.Name);
+            var name = program.NamingPolicy.GlobalName(field);
             var addr = Address.Ptr32((uint)field.Offset);  //$BUG: this is completely wrong; field.Offsets should be as wide as the platform permits.
             try
             {
@@ -258,7 +258,8 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitPointer(Pointer ptr)
         {
-            var c = rdr!.Read(PrimitiveType.Create(Domain.Pointer, ptr.BitSize));
+            if (!rdr!.TryRead(PrimitiveType.Create(Domain.Pointer, ptr.BitSize), out var c))
+                return codeFormatter;
             var addr = Address.FromConstant(c);
             // Check if it is pointer to function
             if (program.Procedures.TryGetValue(addr, out Procedure proc))

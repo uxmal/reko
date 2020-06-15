@@ -129,7 +129,7 @@ namespace Reko.UnitTests.Typing
 			c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
 			c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
 			Expression e = tcr.Rewrite(c, false);
-			Assert.AreEqual("&globals->dw100000", e.ToString());
+			Assert.AreEqual("&g_dw100000", e.ToString());
 		}
 
         [Test]
@@ -174,11 +174,11 @@ namespace Reko.UnitTests.Typing
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
             c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
             var e = tcr.Rewrite(c, false);
-            Assert.AreEqual("&globals->t100100.r0004", e.ToString());
+            Assert.AreEqual("&g_t100100.r0004", e.ToString());
         }
 
         [Test]
-        public void Tcr_RewriteDereferecedFirstStructField()
+        public void Tcr_RewriteDereferencedFirstStructField()
         {
             Given_TypedConstantRewriter();
             var str = new StructureType
@@ -195,7 +195,7 @@ namespace Reko.UnitTests.Typing
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
             c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
             var e = tcr.Rewrite(c, true);
-            Assert.AreEqual("globals->t100100.dw0000", e.ToString());
+            Assert.AreEqual("g_t100100.dw0000", e.ToString());
         }
 
         private void Given_String(string str, uint addr)
@@ -277,7 +277,7 @@ namespace Reko.UnitTests.Typing
             c.TypeVariable.DataType = charPtr;
             c.TypeVariable.OriginalDataType = charPtr;
             var e = tcr.Rewrite(c, false);
-            Assert.AreEqual("&globals->dw100000", e.ToString());
+            Assert.AreEqual("&g_dw100000", e.ToString());
         }
 
         [Test(Description="Pointers to the end of arrays are well-defined.")]
@@ -292,7 +292,7 @@ namespace Reko.UnitTests.Typing
             c.TypeVariable.OriginalDataType = new Pointer(PrimitiveType.Real32, 32);
 
             var e = tcr.Rewrite(c, false);
-            Assert.AreEqual("&globals->r100040", e.ToString());
+            Assert.AreEqual("&g_r100040", e.ToString());
         }
 
         [Test(Description = "Segmented pointers need to be properly handled")]

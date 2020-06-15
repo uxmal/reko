@@ -34,22 +34,22 @@ namespace Reko.Arch.M68k
     /// </summary>
     public class IndexedOperand : MachineOperand, M68kOperand
     {
-        public Constant BaseDisplacement;
-        public Constant OuterDisplacement;
-        public RegisterStorage Base;
-        public RegisterStorage Index;
-        public PrimitiveType index_reg_width;
+        public Constant? BaseDisplacement;
+        public Constant? OuterDisplacement;
+        public RegisterStorage? Base;
+        public RegisterStorage? Index;
+        public PrimitiveType? index_reg_width;
         public int IndexScale;
         public bool preindex;
         public bool postindex;
 
         public IndexedOperand(
             PrimitiveType width,
-            Constant baseReg,
-            Constant outer,
-            RegisterStorage base_reg,
-            RegisterStorage index_reg,
-            PrimitiveType index_reg_width,
+            Constant? baseReg,
+            Constant? outer,
+            RegisterStorage? base_reg,
+            RegisterStorage? index_reg,
+            PrimitiveType? index_reg_width,
             int index_scale,
             bool preindex,
             bool postindex)
@@ -113,7 +113,7 @@ namespace Reko.Arch.M68k
             {
                 writer.WriteString(sep);
                 writer.WriteString(Index.Name);
-                if (index_reg_width.BitSize == 16)
+                if (index_reg_width!.BitSize == 16)
                     writer.WriteString(".w");
                 if (IndexScale > 1)
                     writer.WriteFormat("*{0}", IndexScale);

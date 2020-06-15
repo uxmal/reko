@@ -43,12 +43,14 @@ namespace Reko.Arch.M68k.Assembler
         private M68kAssembler asm ;
         private PrimitiveType dataWidth;
 
+#nullable disable
         public M68kTextAssembler()
         {
             this.entryPoints = new List<ImageSymbol>();
             this.ImageSymbols = new List<ImageSymbol>();
             this.LineNumber = 1;
         }
+#nullable enable
 
         public int LineNumber { get; private set; }
 
@@ -149,9 +151,15 @@ namespace Reko.Arch.M68k.Assembler
         private void ProcessAdd()
         {
             int width = ExpectDataWidth();
+            if (width == 0)
+                return;
             var eaSrc = ExpectEffectiveAddress();
+            if (eaSrc is null)
+                return;
             Expect(TokenType.COMMA);
             var eaDst = ExpectEffectiveAddress();
+            if (eaDst is null)
+                return;
             if (eaDst is RegisterOperand rDst)
             {
                 if (rDst.Register is AddressRegister)
@@ -177,6 +185,8 @@ namespace Reko.Arch.M68k.Assembler
             var q = ExpectInteger();
             Expect(TokenType.COMMA);
             var eaDst = ExpectEffectiveAddress();
+            if (eaDst is null)
+                return;
             Emit(q, eaDst, code, asm.Addq_b, asm.Addq_w, asm.Addq_l);
         }
 
@@ -184,6 +194,8 @@ namespace Reko.Arch.M68k.Assembler
         {
             int code = ExpectDataWidth();
             var ea = ExpectEffectiveAddress();
+            if (ea is null)
+                return;
             Emit(ea, code, asm.Clr_b, asm.Clr_w, asm.Clr_l);
         }
 
@@ -191,10 +203,13 @@ namespace Reko.Arch.M68k.Assembler
         {
             int code = ExpectDataWidth();
             var eaSrc = ExpectEffectiveAddress();
+            if (eaSrc is null)
+                return;
             Expect(TokenType.COMMA);
             var eaDst = ExpectEffectiveAddress();
-            var rDst = eaDst as RegisterOperand;
-            if (rDst != null)
+            if (eaDst is null)
+                return;
+            if (eaDst is RegisterOperand rDst)
             {
                 if (rDst.Register is AddressRegister)
                 {
@@ -240,8 +255,12 @@ namespace Reko.Arch.M68k.Assembler
         private void ProcessLea()
         {
             var ea = ExpectEffectiveAddress();
+            if (ea is null)
+                return;
             Expect(TokenType.COMMA);
             var aReg = ExpectAddressRegister();
+            if (aReg is null)
+                return;
             asm.Lea(ea, new RegisterOperand(aReg));
         }
 
@@ -251,6 +270,8 @@ namespace Reko.Arch.M68k.Assembler
             var eaSrc = ExpectEffectiveAddress();
             Expect(TokenType.COMMA);
             var eaDst = ExpectEffectiveAddress();
+            if (eaSrc is null || eaDst is null)
+                return;
             Emit(eaSrc, eaDst, width, asm.Move_b, asm.Move_w, asm.Move_l);
         }
 
@@ -260,8 +281,9 @@ namespace Reko.Arch.M68k.Assembler
             RegisterSetOperand mask = ExpectRegisterSet();
             Expect(TokenType.COMMA);
             var ea = ExpectEffectiveAddress();
-            var pre = ea as PredecrementMemoryOperand;
-            if (pre != null)
+            if (ea is null)
+                return;
+            if (ea is PredecrementMemoryOperand pre)
             {
                 Emit(mask, pre, width, ByteWidthIllegal, asm.Movem_w, asm.Movem_l);
             }
@@ -300,6 +322,8 @@ namespace Reko.Arch.M68k.Assembler
         private void ProcessPea()
         {
             var ea = ExpectEffectiveAddress();
+            if (ea is null)
+                return;
             asm.Pea(ea);
         }
 
@@ -315,6 +339,8 @@ namespace Reko.Arch.M68k.Assembler
             var q = ExpectInteger();
             Expect(TokenType.COMMA);
             var d = ExpectEffectiveAddress();
+            if (d is null)
+                return;
             Emit(q, d, mask, asm.Subq_b, asm.Subq_w, asm.Subq_l);
         }
 
@@ -323,7 +349,10 @@ namespace Reko.Arch.M68k.Assembler
             Expect(TokenType.DOT);
             var width = Expect(TokenType.ID);
             if (string.IsNullOrEmpty(width) || width.Length > 1)
+            {
                 Error("Expected a data width (.b, .w, or .l) but got '{0}'", width);
+                return 0;
+            }
             switch (width[0])
             { case 'b': dataWidth = PrimitiveType.Byte; return 0;
             case 'w': dataWidth = PrimitiveType.Word16; return 1;
@@ -341,12 +370,12 @@ namespace Reko.Arch.M68k.Assembler
         {
             //$BUGBUG: lots o' work here :(
             Expect(TokenType.ID);
-            return new RegisterSetOperand(0x42, null);
+            return new RegisterSetOperand(0x42, null!);
         }
 
-        private MachineOperand ExpectEffectiveAddress()
+        private MachineOperand? ExpectEffectiveAddress()
         {
-            AddressRegister aReg;
+            AddressRegister? aReg;
             int offset;
             var tok = lexer.GetToken();
             switch (tok.Type)
@@ -374,8 +403,10 @@ namespace Reko.Arch.M68k.Assembler
                 }
                 Expect(TokenType.LPAREN);
                 aReg = ExpectAddressRegister();
+                if (aReg is null)
+                    return null;
                 Expect(TokenType.RPAREN);
-                return new PredecrementMemoryOperand(null, aReg);
+                return new PredecrementMemoryOperand(null!, aReg);
             case TokenType.INTEGER:
                 offset = Convert.ToInt32(tok.Text);
                 Expect(TokenType.LPAREN);
@@ -390,9 +421,9 @@ namespace Reko.Arch.M68k.Assembler
             return null;
         }
 
-        private MachineOperand ParseAddressExpression(int offset)
+        private MachineOperand? ParseAddressExpression(int offset)
         {
-            AddressRegister aReg;
+            AddressRegister? aReg;
             var tok = lexer.PeekToken();
             switch (tok.Type)
             {
@@ -403,8 +434,10 @@ namespace Reko.Arch.M68k.Assembler
                 offset += i;
                 Expect(TokenType.COMMA);
                 aReg = ExpectAddressRegister();
+                if (aReg is null)
+                    return null;
                 Expect(TokenType.RPAREN);
-                return new MemoryOperand(null, aReg, Constant.Int32(offset));
+                return new MemoryOperand(null!, aReg, Constant.Int32(offset));
             case TokenType.ID:
                 var id = Expect(TokenType.ID);
                 aReg = AReg(id);
@@ -413,11 +446,11 @@ namespace Reko.Arch.M68k.Assembler
                     Expect(TokenType.RPAREN);
                     if (PeekAndDiscard(TokenType.PLUS))
                     {
-                        return new PostIncrementMemoryOperand(null, aReg);
+                        return new PostIncrementMemoryOperand(null!, aReg);
                     }
                     else
                     {
-                        return new MemoryOperand(null, aReg, Constant.Int32(offset));
+                        return new MemoryOperand(null!, aReg, Constant.Int32(offset));
                     }
                 }
                 Error("oo");
@@ -431,10 +464,10 @@ namespace Reko.Arch.M68k.Assembler
         private MachineOperand ForwardEa(Symbol symbol)
         {
             //$TODO: remember me so we can backpatch.
-            return new MemoryOperand(null, Registers.a0);
+            return new MemoryOperand(null!, Registers.a0);
         }
 
-        private AddressRegister ExpectAddressRegister()
+        private AddressRegister? ExpectAddressRegister()
         {
             var name = Expect(TokenType.ID);
             Debug.Assert(!string.IsNullOrEmpty(name));
@@ -445,7 +478,7 @@ namespace Reko.Arch.M68k.Assembler
             return null;
         }
 
-        private AddressRegister AReg(string name)
+        private AddressRegister? AReg(string name)
         {
             if (IsAddressRegisterName(name))
             {

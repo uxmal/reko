@@ -31,12 +31,15 @@ namespace Reko.Arch.RiscV
 {
     public class MemoryOperand : MachineOperand
     {
-        public RegisterStorage Base;
-        public int Offset;
 
-        public MemoryOperand(PrimitiveType width) : base(width)
+        public MemoryOperand(PrimitiveType width, RegisterStorage baseRegister, int offset) : base(width)
         {
+            this.Base = baseRegister;
+            this.Offset = offset;
         }
+
+        public RegisterStorage Base { get; }
+        public int Offset { get; }
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

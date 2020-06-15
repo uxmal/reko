@@ -42,9 +42,9 @@ namespace Reko.Arch.M68k
     /// </remarks>
     public class OperandRewriter
     {
-        private M68kArchitecture arch;
-        private RtlEmitter m;
-        private IStorageBinder binder;
+        private readonly M68kArchitecture arch;
+        private readonly RtlEmitter m;
+        private readonly IStorageBinder binder;
 
         public OperandRewriter(M68kArchitecture arch, RtlEmitter emitter, IStorageBinder binder, PrimitiveType dataWidth)
         {
@@ -61,7 +61,6 @@ namespace Reko.Arch.M68k
         /// </summary>
         /// <param name="operand"></param>
         /// <param name="addrInstr">Address of the current instruction</param>
-        /// <returns></returns>
         public Expression RewriteSrc(MachineOperand operand, Address addrInstr, bool addressAsAddress = false)
         {
             Expression ea;
@@ -119,7 +118,7 @@ namespace Reko.Arch.M68k
                 if (indop.Index != null)
                 {
                     var idx = Combine(null, indop.Index, addrInstr);
-                    if (indop.index_reg_width.BitSize != 32)
+                    if (indop.index_reg_width!.BitSize != 32)
                         idx = m.Cast(PrimitiveType.Word32, m.Cast(PrimitiveType.Int16, idx));
                     if (indop.IndexScale > 1)
                         idx = m.IMul(idx, indop.IndexScale);
@@ -148,10 +147,10 @@ namespace Reko.Arch.M68k
             return ea;
         }
 
-        public Expression Combine(Expression e, RegisterStorage reg, Address addrInstr)
+        public Expression Combine(Expression? e, RegisterStorage? reg, Address addrInstr)
         {
             if (reg == null)
-                return e;
+                return e!;
             Expression ea;
             if (reg == Registers.pc)
             {
@@ -176,23 +175,23 @@ namespace Reko.Arch.M68k
             return m.IAdd(e, ea);
         }
 
-        public Expression Combine(Expression e, Expression o)
+        public Expression Combine(Expression? e, Expression? o)
         {
-            if (o == null)
-                return e;
-            if (e == null)
+            if (o is null)
+                return e!;
+            if (e is null)
                 return o;
             if (o is Constant c && c.DataType.BitSize < 32)
                 o = Constant.Int32(c.ToInt32());    // Sign extend displacements shorter than a pointer.
             return m.IAdd(e, o);
         }
 
-        public Expression RewriteDst(MachineOperand operand, Address addrInstr, Expression src, Func<Expression, Expression, Expression> opGen)
+        public Expression? RewriteDst(MachineOperand operand, Address addrInstr, Expression src, Func<Expression, Expression, Expression> opGen)
         {
             return RewriteDst(operand, addrInstr, this.DataWidth, src, opGen);
         }
 
-        public Expression RewriteDst(
+        public Expression? RewriteDst(
             MachineOperand operand,
             Address addrInstr,
             PrimitiveType dataWidth,
@@ -302,7 +301,10 @@ namespace Reko.Arch.M68k
             Expression ea;
             if (mem.Base == Registers.pc)
             {
-                ea = addrInstr + mem.Offset.ToInt32();
+                var addr = addrInstr;
+                if (mem.Offset != null)
+                    addr += mem.Offset.ToInt32();
+                ea = addr;
             }
             else
             {
@@ -388,7 +390,7 @@ namespace Reko.Arch.M68k
                     if (indop.Index != null)
                     {
                         var idx = Combine(null, indop.Index, addrInstr);
-                        if (indop.index_reg_width.BitSize != 32)
+                        if (indop.index_reg_width!.BitSize != 32)
                             idx = m.Cast(PrimitiveType.Word32, m.Cast(PrimitiveType.Int16, idx));
                         if (indop.IndexScale > 1)
                             idx = m.IMul(idx, m.Int32(indop.IndexScale));
@@ -458,7 +460,7 @@ namespace Reko.Arch.M68k
                 }
             case IndexedOperand idxop:
                 {
-                    Expression ea = null;
+                    Expression? ea = null;
                     if (idxop.Index != null)
                     {
                         var i = binder.EnsureRegister(idxop.Index);
@@ -495,7 +497,7 @@ namespace Reko.Arch.M68k
                             ea = idxop.BaseDisplacement;
                         }
                     }
-                    var access = m.Mem(dataWidth, ea);
+                    var access = m.Mem(dataWidth, ea!);
                     m.Assign(access, src);
                     return src;
                 }

@@ -175,7 +175,7 @@ T_29: (in 0x4005C0<64> : word64)
   Class: Eq_23
   DataType: (ptr64 Eq_23)
   OrigDataType: (ptr64 (fn void ()))
-T_30: (in __libc_start_main(&globals->t40053D, qwArg00, (char *) fp + 8<i32>, &globals->t400550, &globals->t4005C0, rdx, fp) : int32)
+T_30: (in __libc_start_main(&g_t40053D, qwArg00, (char *) fp + 8<i32>, &g_t400550, &g_t4005C0, rdx, fp) : int32)
   Class: Eq_30
   DataType: int32
   OrigDataType: int32
@@ -243,7 +243,7 @@ T_46: (in 0<8> : byte)
   Class: Eq_45
   DataType: byte
   OrigDataType: byte
-T_47: (in globals->b601040 != 0<8> : bool)
+T_47: (in g_b601040 != 0<8> : bool)
   Class: Eq_47
   DataType: bool
   OrigDataType: bool
@@ -283,7 +283,7 @@ T_56: (in 0<64> : word64)
   Class: Eq_55
   DataType: word64
   OrigDataType: word64
-T_57: (in globals->qw600E20 == 0<64> : bool)
+T_57: (in g_qw600E20 == 0<64> : bool)
   Class: Eq_57
   DataType: bool
   OrigDataType: bool

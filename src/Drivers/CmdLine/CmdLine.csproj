@@ -148,6 +148,10 @@
       <Project>{47b16677-2bfc-4a5c-a830-e1683c574aec}</Project>
       <Name>Cray</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\H8\H8.csproj">
+      <Project>{ba8b271c-4a48-4e32-b55b-26b54297833f}</Project>
+      <Name>H8</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\i8051\i8051.csproj">
       <Project>{ab5ddeb2-87c0-42c7-8cd3-72cb2b1282fb}</Project>
       <Name>i8051</Name>
@@ -395,6 +399,10 @@
     <ProjectReference Include="..\..\ImageLoaders\Omf\Omf.csproj">
       <Project>{0e00ed86-372c-4497-85bb-428bdd1c5ccf}</Project>
       <Name>Omf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\Srec\Srec.csproj">
+      <Project>{6feaf3bb-48d3-4301-9ce5-a1a274db97f5}</Project>
+      <Name>Srec</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\TypeLib\TypeLib.csproj">
       <Project>{a4def935-217c-4107-998c-c7845893cfa0}</Project>

@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Absyn;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -681,20 +682,23 @@ all other cases, together they constitute a Switch[].
 
         private bool ReduceIncSwitch(Region n, Region? follow)
         {
+            Expression exp = n.Expression!;
+
             //$REVIEW: workaround for when the datatype of n.Expression
             // is non-integral. What causes this?
-            if (!(n.Expression!.DataType is PrimitiveType pt))
+            if (!(exp.DataType is PrimitiveType pt))
             {
                 eventListener.Warn(eventListener.CreateBlockNavigator(this.program, n.Block), "Non-integral switch expression");
-                pt = PrimitiveType.CreateWord(n.Expression.DataType.BitSize);
+                pt = PrimitiveType.CreateWord(exp.DataType.BitSize);
             }
+            var (switchExp, offset) = GetConstantOffset(exp);
             var cases = CollectSwitchCases(n);
             var stms = new List<AbsynStatement>();
             foreach (var succ in cases.Keys)
             {
                 foreach (int c in cases[succ])
                 {
-                    stms.Add(new AbsynCase(Constant.Create(pt, c)));
+                    stms.Add(new AbsynCase(Constant.Create(pt, c + offset)));
                 }
                 stms.AddRange(succ.Statements);
                 if (succ.Type != RegionType.Tail)
@@ -708,7 +712,7 @@ all other cases, together they constitute a Switch[].
                 }
                 RemoveRegion(succ);
             }
-            var sw = new AbsynSwitch(n.Expression, stms);
+            var sw = new AbsynSwitch(switchExp, stms);
             n.Statements.Add(sw);
             n.Expression = null;
             if (follow != null)
@@ -723,11 +727,29 @@ all other cases, together they constitute a Switch[].
             return true;
         }
 
+        private (Expression, long) GetConstantOffset(Expression exp)
+        {
+            if (exp is BinaryExpression bin &&
+                bin.Right is Constant offset &&
+                offset.IsValid)
+            {
+                if (bin.Operator == Operator.IAdd)
+                {
+                    return (bin.Left, -offset.ToInt64());
+                }
+                else if (bin.Operator == Operator.ISub)
+                {
+                    return (bin.Left, offset.ToInt64());
+                }
+            }
+            return (exp, 0);
+        }
+
         /// <summary>
         /// Collects the cases of a switch statement such that cases with
-        /// the same destination region are collected in the same list
+        /// the same destination region are collected in the same list.
         /// </summary>
-        /// <param name="n"></param>
+        /// <param name="n">The 'head' of the switch statement.</param>
         /// <returns>A mapping from Region to a list of the case values
         /// that jump to that region.</returns>
         private Dictionary<Region, List<int>> CollectSwitchCases(Region n)

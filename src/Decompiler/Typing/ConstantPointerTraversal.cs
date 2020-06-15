@@ -36,7 +36,7 @@ namespace Reko.Typing
         private readonly IProcessorArchitecture arch;
         private readonly StructureType globalStr;
         private readonly SegmentMap segmentMap;
-        private readonly HashSet<int> visited;
+        private readonly HashSet<long> visited;
         private readonly Stack<IEnumerator<WorkItem>> stack;
         private IEnumerator<WorkItem>? eCurrent;
         private int gOffset;
@@ -53,7 +53,7 @@ namespace Reko.Typing
             this.globalStr =  globalStr;
             this.segmentMap = segmentMap;
             this.Discoveries = new List<StructureField>();
-            this.visited = new HashSet<int>();
+            this.visited = new HashSet<long>();
             this.stack = new Stack<IEnumerator<WorkItem>>();
         }
 
@@ -64,7 +64,7 @@ namespace Reko.Typing
             this.globalStr = (StructureType)((EquivalenceClass) ptr.Pointee).DataType;
             this.segmentMap = program.SegmentMap;
             this.Discoveries = new List<StructureField>();
-            this.visited = new HashSet<int>();
+            this.visited = new HashSet<long>();
             this.stack = new Stack<IEnumerator<WorkItem>>();
         }
 
@@ -142,25 +142,23 @@ namespace Reko.Typing
         public IEnumerable<WorkItem>? VisitPointer(Pointer ptr)
         {
             Debug.Print("Iterating pointer at {0:X}", gOffset);
-            ImageSegment segment;
-            if (!segmentMap.TryFindSegment(segmentMap.MapLinearAddressToAddress((ulong) gOffset), out segment))
+            if (!segmentMap.TryFindSegment(segmentMap.MapLinearAddressToAddress((ulong) gOffset), out ImageSegment segment))
                 return null;
-            var rdr = arch.CreateImageReader(segment.MemoryArea,  (ulong) gOffset - segment.MemoryArea.BaseAddress.ToLinear());
-            if (!rdr.IsValid)
+            var rdr = arch.CreateImageReader(segment.MemoryArea, gOffset - (long)segment.MemoryArea.BaseAddress.ToLinear());
+            if (!rdr.TryRead(PrimitiveType.Create(Domain.Pointer, ptr.BitSize), out var c))
                 return null;
-            var c = rdr.Read(PrimitiveType.Create(Domain.Pointer, ptr.BitSize));
-            int offset = c.ToInt32();
+            long offset = c.ToInt64();
             Debug.Print("  pointer value: {0:X}", offset);
-            if (visited.Contains(offset) || !segment.MemoryArea.IsValidLinearAddress((uint) offset))
+            if (visited.Contains(offset) || !segment.MemoryArea.IsValidLinearAddress((ulong) offset))
                 return Enumerable.Empty<WorkItem>();
 
             // We've successfully traversed a pointer to a valid destination!
             // The address must therefore be of type ptr.Pointee.
             visited.Add(offset);
-            if (globalStr.Fields.AtOffset(offset) == null)
+            if (globalStr.Fields.AtOffset((int)offset) == null)
             {
                 Debug.Print("       Discovery: {0:X} {1}", offset, ptr.Pointee);
-                Discoveries.Add(new StructureField(offset, ptr.Pointee));
+                Discoveries.Add(new StructureField((int)offset, ptr.Pointee));
             }
             return Single(new WorkItem { DataType = ptr.Pointee, GlobalOffset = c.ToInt32() });
         }

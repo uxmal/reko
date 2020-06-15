@@ -1,0 +1,100 @@
+// TtranMalloc
+// Return size: 0
+define TtranMalloc
+TtranMalloc_entry:
+	// succ:  l1
+l1:
+	r1_1 = malloc(0x28<32>)
+	Mem0[r1_1 + 4<i32>:real32] = 0.5F
+	r1_2 = malloc(0x14<32>)
+	Mem0[r1_2 + 4<i32>:int32] = -2<i32>
+	return
+	// succ:  TtranMalloc_exit
+TtranMalloc_exit:
+
+// Equivalence classes ////////////
+Eq_1: (struct "Globals")
+	globals_t (in globals : (ptr32 (struct "Globals")))
+Eq_6: (struct (4 real32 r0004))
+	T_6 (in malloc(0x28<32>) : (ptr32 <unknown>))
+	T_7 (in r1_1 : word32)
+Eq_14: (struct (4 int32 dw0004))
+	T_14 (in malloc(0x14<32>) : (ptr32 <unknown>))
+	T_15 (in r1_2 : word32)
+// Type Variables ////////////
+globals_t: (in globals : (ptr32 (struct "Globals")))
+  Class: Eq_1
+  DataType: (ptr32 Eq_1)
+  OrigDataType: (ptr32 (struct "Globals"))
+T_2: (in malloc : ptr32)
+  Class: Eq_2
+  DataType: ptr32
+  OrigDataType: ptr32
+T_3: (in signature of malloc : void)
+  Class: Eq_2
+  DataType: ptr32
+  OrigDataType: 
+T_4: (in size : uint32)
+  Class: Eq_4
+  DataType: uint32
+  OrigDataType: 
+T_5: (in 0x28<32> : word32)
+  Class: Eq_4
+  DataType: uint32
+  OrigDataType: uint32
+T_6: (in malloc(0x28<32>) : (ptr32 <unknown>))
+  Class: Eq_6
+  DataType: (ptr32 Eq_6)
+  OrigDataType: (ptr32 <unknown>)
+T_7: (in r1_1 : word32)
+  Class: Eq_6
+  DataType: (ptr32 Eq_6)
+  OrigDataType: (ptr32 (struct (4 real32 r0004)))
+T_8: (in 0.5F : real32)
+  Class: Eq_8
+  DataType: real32
+  OrigDataType: real32
+T_9: (in 4<i32> : int32)
+  Class: Eq_9
+  DataType: int32
+  OrigDataType: int32
+T_10: (in r1_1 + 4<i32> : word32)
+  Class: Eq_10
+  DataType: ptr32
+  OrigDataType: ptr32
+T_11: (in Mem0[r1_1 + 4<i32>:real32] : real32)
+  Class: Eq_8
+  DataType: real32
+  OrigDataType: real32
+T_12: (in malloc : ptr32)
+  Class: Eq_2
+  DataType: ptr32
+  OrigDataType: ptr32
+T_13: (in 0x14<32> : word32)
+  Class: Eq_4
+  DataType: uint32
+  OrigDataType: uint32
+T_14: (in malloc(0x14<32>) : (ptr32 <unknown>))
+  Class: Eq_14
+  DataType: (ptr32 Eq_14)
+  OrigDataType: (ptr32 <unknown>)
+T_15: (in r1_2 : word32)
+  Class: Eq_14
+  DataType: (ptr32 Eq_14)
+  OrigDataType: (ptr32 (struct (4 int32 dw0004)))
+T_16: (in -2<i32> : int32)
+  Class: Eq_16
+  DataType: int32
+  OrigDataType: int32
+T_17: (in 4<i32> : int32)
+  Class: Eq_17
+  DataType: int32
+  OrigDataType: int32
+T_18: (in r1_2 + 4<i32> : word32)
+  Class: Eq_18
+  DataType: ptr32
+  OrigDataType: ptr32
+T_19: (in Mem0[r1_2 + 4<i32>:int32] : int32)
+  Class: Eq_16
+  DataType: int32
+  OrigDataType: int32
