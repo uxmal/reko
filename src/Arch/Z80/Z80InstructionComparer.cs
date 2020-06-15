@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -47,40 +47,35 @@ namespace Reko.Arch.Z80
                 return false;
             if (opA.GetType() != opB.GetType())
                 return false;
-            var regOpA = opA as RegisterOperand;
-            if (regOpA != null)
+            if (opA is RegisterOperand regOpA)
             {
                 if (NormalizeRegisters)
                     return true;
-                var regOpB = (RegisterOperand)opB;
+                var regOpB = (RegisterOperand) opB;
                 return regOpA.Register == regOpB.Register;
             }
-            var immOpA = opA as ImmediateOperand;
-            if (immOpA != null)
+            if (opA is ImmediateOperand immOpA)
             {
                 if (NormalizeConstants)
                     return true;
-                var immOpB = (ImmediateOperand)opB;
+                var immOpB = (ImmediateOperand) opB;
                 return CompareValues(immOpA.Value, immOpB.Value);
             }
-            var addrOpA = opA as AddressOperand;
-            if (addrOpA != null)
+            if (opA is AddressOperand addrOpA)
             {
                 if (NormalizeConstants)
                     return true;
-                var addrOpB = (AddressOperand)opB;
+                var addrOpB = (AddressOperand) opB;
                 return addrOpA.Address.ToLinear() == addrOpB.Address.ToLinear();
             }
-            var condOpA = opA as ConditionOperand;
-            if (condOpA != null)
+            if (opA is ConditionOperand condOpA)
             {
-                return condOpA.Code == ((ConditionOperand)opB).Code;
+                return condOpA.Code == ((ConditionOperand) opB).Code;
             }
-            var memOpA = opA as MemoryOperand;
-            if (memOpA != null)
+            if (opA is MemoryOperand memOpA)
             {
-                var memOpB = opB as MemoryOperand;
-                if (NormalizeRegisters && !CompareRegisters(memOpA.Base ,memOpB.Base))
+                var memOpB = (MemoryOperand) opB;
+                if (NormalizeRegisters && !CompareRegisters(memOpA.Base, memOpB.Base))
                     return false;
                 if (NormalizeConstants && !CompareValues(memOpA.Offset, memOpB.Offset))
                     return false;
@@ -103,37 +98,32 @@ namespace Reko.Arch.Z80
             if (op == null)
                 return 0;
             int h = op.GetType().GetHashCode();
-            var regOp = op as RegisterOperand;
-            if (regOp != null)
+            if (op is RegisterOperand regOp)
             {
                 if (NormalizeRegisters)
                     return h;
                 else
                     return h * 29 ^ regOp.Register.GetHashCode();
             }
-            var immOp = op as ImmediateOperand;
-            if (immOp != null)
+            if (op is ImmediateOperand immOp)
             {
                 if (NormalizeConstants)
                     return h;
                 else
                     return h * 13 ^ GetConstantHash(immOp.Value);
             }
-            var addrOp = op as AddressOperand;
-            if (addrOp != null)
+            if (op is AddressOperand addrOp)
             {
                 if (NormalizeConstants)
                     return h;
                 else
                     return h * 29 ^ addrOp.Address.GetHashCode();
             }
-            var condOp = op as ConditionOperand;
-            if (condOp != null)
+            if (op is ConditionOperand condOp)
             {
                 return h * 19 ^ condOp.Code.GetHashCode();
             }
-            var memOp = op as MemoryOperand;
-            if (memOp != null)
+            if (op is MemoryOperand memOp)
             {
                 if (!NormalizeRegisters && memOp.Base != null)
                     h = h * 23 ^ memOp.Base.GetHashCode();

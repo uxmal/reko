@@ -37,7 +37,7 @@ namespace Reko.Core.Machine
 
         public abstract bool CompareOperands(MachineInstruction x, MachineInstruction y);
 
-        public bool CompareRegisters(RegisterStorage regA, RegisterStorage regB)
+        public bool CompareRegisters(RegisterStorage? regA, RegisterStorage? regB)
         {
             if (regA == null)
             {

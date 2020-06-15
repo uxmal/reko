@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Arch.Z80
             Given_Bytes(0xDD, 0x7E, 0x3);
             AssertCode(
                 "0|L--|0100(3): 1 instructions",
-                "1|L--|a = Mem0[ix + 3<16>:byte]");
+                "1|L--|a = Mem0[ix + 3<i16>:byte]");
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace Reko.UnitTests.Arch.Z80
             Given_Bytes(0xDD, 0x71, 0x80);
             AssertCode(
                 "0|L--|0100(3): 1 instructions",
-                "1|L--|Mem0[ix - 0x80<16>:byte] = c");
+                "1|L--|Mem0[ix - 128<i16>:byte] = c");
         }
 
         [Test]
@@ -180,7 +180,7 @@ namespace Reko.UnitTests.Arch.Z80
             Given_Bytes(0xDD, 0xBE, 0x08);
             AssertCode(
                 "0|L--|0100(3): 1 instructions",
-                "1|L--|SZPC = cond(a - Mem0[ix + 8<16>:byte])");
+                "1|L--|SZPC = cond(a - Mem0[ix + 8<i16>:byte])");
         }
 
         [Test]

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -31,6 +31,8 @@ using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
+#pragma warning disable IDE1006
+
     public partial class ImageMapView : Control
     {
         private const float ZoomOutFactor = 1.25F;
@@ -60,7 +62,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private long granularity;
 
         [Browsable(false)]
-        public ImageMap ImageMap {
+        public ImageMap ImageMap
+        {
             get { return imageMap; } 
             set { 
                 if (imageMap != null)
@@ -118,13 +121,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public Painter CalculateLayout()
         {
             return new Painter(this);
-        }
-
-        long AddressableExtent(ImageSegment seg)
-        {
-            var addrMin = Address.Max(seg.Address, seg.MemoryArea.BaseAddress);
-            var addrMax = Address.Min(seg.Address + seg.ContentSize, seg.MemoryArea.EndAddress);
-            return addrMax - addrMin;
         }
 
         private void BoundGranularity(long value)
