@@ -2814,7 +2814,7 @@ namespace Reko.Arch.M68k
 	Instr(sw,D9,E0, 0xf1c0, 0xc140, 0x3f8, Mnemonic.and),           // d68000_and_re_16
 	Instr(sl,D9,E0, 0xf1c0, 0xc180, 0x3f8, Mnemonic.and),           // d68000_and_re_32
 	Instr(Iw,ccr,   0xffff, 0x023c, 0x000, Mnemonic.andi),          // d68000_andi_to_ccr
-	Instr(Iw,SR,    0xffff, 0x027c, 0x000, Mnemonic.andi),          // d68000_andi_to_sr
+	Instr(Iw,SR,    0xffff, 0x027c, 0x000, Mnemonic.andi, InstrClass.System), // d68000_andi_to_sr
 	Instr(sb,Ib,E0, 0xffc0, 0x0200, 0xbf8, Mnemonic.andi),          // d68000_andi_8
 	Instr(sw,Iw,E0, 0xffc0, 0x0240, 0xbf8, Mnemonic.andi),          // d68000_andi_16
 	Instr(sl,Il,E0, 0xffc0, 0x0280, 0xbf8, Mnemonic.andi),          // d68000_andi_32
@@ -2910,7 +2910,7 @@ namespace Reko.Arch.M68k
 	Instr(sw,D9,E0, 0xf1c0, 0xb140, 0xbf8, Mnemonic.eor),           // d68000_eor_16
 	Instr(sl,D9,E0, 0xf1c0, 0xb180, 0xbf8, Mnemonic.eor),           // d68000_eor_32
 	Instr(sb,Ib,ccr, 0xffff, 0x0a3c, 0x000, Mnemonic.eori),         // d68000_eori_to_ccr
-    Instr(sw,Iw,SR, 0xffff, 0x0a7c, 0x000, Mnemonic.eori),          // d68000_eori_to_sr
+    Instr(sw,Iw,SR, 0xffff, 0x0a7c, 0x000, Mnemonic.eori,InstrClass.System), // d68000_eori_to_sr
     Instr(sb,Ib,E0, 0xffc0, 0x0a00, 0xbf8, Mnemonic.eori),          // d68000_eori_8
 	Instr(sw,Iw,E0, 0xffc0, 0x0a40, 0xbf8, Mnemonic.eori),          // d68000_eori_16
 	Instr(sl,Il,E0, 0xffc0, 0x0a80, 0xbf8, Mnemonic.eori),          // d68000_eori_32
@@ -2948,8 +2948,8 @@ namespace Reko.Arch.M68k
 	Instr(sl,E0,A9, 0xf1c0, 0x2040, 0xfff, Mnemonic.movea),         // d68000_movea_32
 	Instr(sb,E0,ccr,   0xffc0, 0x44c0, 0xbff, Mnemonic.move),       // d68000_move_to_ccr
 	Instr(sb,ccr,E0,   0xffc0, 0x42c0, 0xbf8, Mnemonic.move),       // d68010_move_fr_ccr
-	Instr(sw,E0,SR, 0xffc0, 0x46c0, 0xbff, Mnemonic.move),          // d68000_move_to_sr
-    Instr(sw,SR,E0, 0xffc0, 0x40c0, 0xbf8, Mnemonic.move),          // d68000_move_fr_sr
+	Instr(sw,E0,SR, 0xffc0, 0x46c0, 0xbff, Mnemonic.move, InstrClass.System),   // d68000_move_to_sr
+    Instr(sw,SR,E0, 0xffc0, 0x40c0, 0xbf8, Mnemonic.move, InstrClass.System),   // d68000_move_fr_sr
     Instr(d68000_move_to_usp  , 0xfff8, 0x4e60, 0x000),
     Instr(d68000_move_fr_usp  , 0xfff8, 0x4e68, 0x000),
     Instr(d68010_movec        , 0xfffe, 0x4e7a, 0x000),
@@ -2993,7 +2993,7 @@ namespace Reko.Arch.M68k
 	Instr(sw,D9,E0, 0xf1c0, 0x8140, 0x3f8, Mnemonic.or),        // d68000_or_re_16    
 	Instr(sl,D9,E0, 0xf1c0, 0x8180, 0x3f8, Mnemonic.or),        // d68000_or_re_32
 	Instr(sb,Ib,ccr, 0xffff, 0x003c, 0x000, Mnemonic.ori),      // d68000_ori_to_ccr   
-	Instr(sw,Iw,SR, 0xffff, 0x007c, 0x000, Mnemonic.ori),       // d68000_ori_to_sr    
+	Instr(sw,Iw,SR, 0xffff, 0x007c, 0x000, Mnemonic.ori, InstrClass.System),       // d68000_ori_to_sr    
 	Instr(s6,Iv,E0, 0xffc0, 0x0000, 0xbf8, Mnemonic.ori),       // d68000_ori_8        
 	Instr(s6,Iv,E0, 0xffc0, 0x0040, 0xbf8, Mnemonic.ori),       // d68000_ori_16        
 	Instr(s6,Iv,E0, 0xffc0, 0x0080, 0xbf8, Mnemonic.ori),       // d68000_ori_32       
