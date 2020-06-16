@@ -31,17 +31,19 @@ namespace Reko.Core.Machine
     {
         public static readonly MachineOperand[] NoOperands = new MachineOperand[0];
 
+        private Address? addr;      //$REFACTOR: in C# 9, there will be 'init' properties.
+
         public MachineInstruction()
         {
             this.Operands = NoOperands;
         }
 
         //$TODO: make MachineInstruction have a ctor with (Address, Length, Operands)
-        // when that happens, replace all "Address!" with "Address"
+        //$REFACTOR: in C# 9, there will be 'init' properties, then we won't need a nullable backing field.
         /// <summary>
         /// The address at which the instruction begins.
         /// </summary>
-        public Address? Address;
+        public Address Address { get { return addr!; } set { addr = value; } }
 
         /// <summary>
         /// The length of the entire instruction. Some architectures, e.g. M68k, x86, and most
@@ -70,7 +72,7 @@ namespace Reko.Core.Machine
         /// </summary>
         public bool Contains(Address addr)
         {
-            ulong ulInstr = Address!.ToLinear();
+            ulong ulInstr = Address.ToLinear();
             ulong ulAddr = addr.ToLinear();
             return ulInstr <= ulAddr && ulAddr < ulInstr + (uint)Length;
         }
@@ -92,14 +94,14 @@ namespace Reko.Core.Machine
         
         public sealed override string ToString()
         {
-            var renderer = new StringRenderer(Address!);
+            var renderer = new StringRenderer(Address);
             this.Render(renderer, MachineInstructionWriterOptions.None);
             return renderer.ToString();
         }
 
         public string ToString(IPlatform platform)
         {
-            var renderer = new StringRenderer(platform, Address!);
+            var renderer = new StringRenderer(platform, Address);
             this.Render(renderer, MachineInstructionWriterOptions.None);
             return renderer.ToString();
         }

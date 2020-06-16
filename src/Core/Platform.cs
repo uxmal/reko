@@ -76,7 +76,8 @@ namespace Reko.Core
         /// the caller's responsibility to fill in the MemoryArea properties
         /// of each resulting ImageSegment.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A <see cref="SegmentMap"/> or null if this platform doesn't support 
+        /// memory maps.</returns>
         SegmentMap? CreateAbsoluteMemoryMap();
 
         /// <summary>
@@ -88,8 +89,7 @@ namespace Reko.Core
         /// calling conventions. Others, like many ELF implementations,
         /// will have one and only one calling convention. On such platforms
         /// we will assume that the calling convention is represented by
-        /// the empty string "". //$REVIEW: this probably highlights the 
-        /// need for a CallingConvention abstraction.
+        /// the empty string "". 
         /// </remarks>
         /// <param name="signature"></param>
         /// <returns>The name of the calling convention, or null
@@ -140,8 +140,8 @@ namespace Reko.Core
         /// <param name="vector"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        SystemService? FindService(int vector, ProcessorState state, SegmentMap segmentMap);
-        SystemService? FindService(RtlInstruction call, ProcessorState state, SegmentMap segmentMap);
+        SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap);
+        SystemService? FindService(RtlInstruction call, ProcessorState? state, SegmentMap? segmentMap);
         DispatchProcedure_v1? FindDispatcherProcedureByAddress(Address addr);
 
         string FormatProcedureName(Program program, Procedure proc);
@@ -399,14 +399,14 @@ namespace Reko.Core
             throw new NotSupportedException();
         }
 
-        public abstract SystemService? FindService(int vector, ProcessorState state, SegmentMap segmentMap);
+        public abstract SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap);
 
         public virtual DispatchProcedure_v1? FindDispatcherProcedureByAddress(Address addr)
         {
             return null;
         }
 
-        public virtual SystemService? FindService(RtlInstruction rtl, ProcessorState state, SegmentMap segmentMap)
+        public virtual SystemService? FindService(RtlInstruction rtl, ProcessorState? state, SegmentMap? segmentMap)
         {
             return null;
         }
@@ -586,7 +586,7 @@ namespace Reko.Core
             return this.Architecture.GetCallingConvention(ccName);
         }
 
-        public override SystemService? FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             return null;
         }

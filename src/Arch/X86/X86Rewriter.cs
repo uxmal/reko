@@ -54,6 +54,7 @@ namespace Reko.Arch.X86
         private int len;
         private List<RtlInstruction> rtlInstructions;
 
+#nullable disable
         public X86Rewriter(
             IntelArchitecture arch,
             IRewriterHost host,
@@ -68,6 +69,7 @@ namespace Reko.Arch.X86
             this.binder = binder;
             this.dasm = new LookaheadEnumerator<X86Instruction>(arch.CreateDisassemblerImpl(rdr));
         }
+#nullable enable
 
         /// <summary>
         /// Iterator that yields one RtlIntructionCluster for each x86 instruction.

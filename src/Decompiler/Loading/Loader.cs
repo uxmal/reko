@@ -269,7 +269,7 @@ namespace Reko.Loading
             return imgLoader;
         }
 
-        public static Address GetRawBinaryEntryAddress(
+        public static Address? GetRawBinaryEntryAddress(
             RawFileDefinition rawFile,
             byte[] image, 
             IProcessorArchitecture arch, 

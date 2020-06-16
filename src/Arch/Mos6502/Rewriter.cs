@@ -44,6 +44,7 @@ namespace Reko.Arch.Mos6502
         private InstrClass iclass;
         private RtlEmitter m;
 
+#nullable disable
         public Rewriter(Mos6502Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
@@ -53,6 +54,7 @@ namespace Reko.Arch.Mos6502
             this.rdr = rdr;
             this.dasm = new Disassembler(arch, rdr).GetEnumerator();
         }
+#nullable enable
 
         private AddressCorrelatedException NYI()
         {
@@ -168,7 +170,7 @@ namespace Reko.Arch.Mos6502
             var f = FlagGroupStorage(flags);
             m.Branch(
                 m.Test(cc, f),
-                Address.Ptr16(((Operand)instrCur.Operands[0]).Offset.ToUInt16()),
+                Address.Ptr16(((Operand)instrCur.Operands[0]).Offset!.ToUInt16()),
                 iclass);
         }
 
@@ -414,17 +416,17 @@ namespace Reko.Arch.Mos6502
             case AddressMode.Accumulator:
                 return binder.EnsureRegister(Registers.a);
             case AddressMode.Immediate:
-                return op.Offset;
+                return op.Offset!;
             case AddressMode.IndirectIndexed:
                 var y = binder.EnsureRegister(Registers.y);
-                addrZeroPage = m.Ptr16(op.Offset.ToByte());
+                addrZeroPage = m.Ptr16(op.Offset!.ToByte());
                 return m.Mem8(
                     m.IAdd(
                         m.Mem(PrimitiveType.Ptr16, addrZeroPage),
                         m.Cast(PrimitiveType.UInt16, y)));
             case AddressMode.IndexedIndirect:
                 var x = binder.EnsureRegister(Registers.x);
-                addrZeroPage = m.Ptr16(op.Offset.ToByte());
+                addrZeroPage = m.Ptr16(op.Offset!.ToByte());
                 return m.Mem8(
                     m.Mem(
                         PrimitiveType.Ptr16,
@@ -432,22 +434,22 @@ namespace Reko.Arch.Mos6502
                             addrZeroPage,
                             m.Cast(PrimitiveType.UInt16, x))));
             case AddressMode.Absolute:
-                return m.Mem8(arch.MakeAddressFromConstant(op.Offset, false));
+                return m.Mem8(arch.MakeAddressFromConstant(op.Offset!, false));
             case AddressMode.AbsoluteX:
             case AddressMode.AbsoluteY:
                 return m.Mem8(m.IAdd(
-                    arch.MakeAddressFromConstant(op.Offset, false),
-                    binder.EnsureRegister(op.Register)));
+                    arch.MakeAddressFromConstant(op.Offset!, false),
+                    binder.EnsureRegister(op.Register!)));
             case AddressMode.ZeroPage:
-                 return m.Mem8(arch.MakeAddressFromConstant(op.Offset, false));
+                 return m.Mem8(arch.MakeAddressFromConstant(op.Offset!, false));
             case AddressMode.ZeroPageX:
             case AddressMode.ZeroPageY:
                 return m.Mem8(
                     m.IAdd(
-                        arch.MakeAddressFromConstant(op.Offset, false),
-                        binder.EnsureRegister(op.Register)));
+                        arch.MakeAddressFromConstant(op.Offset!, false),
+                        binder.EnsureRegister(op.Register!)));
             case AddressMode.Indirect:
-                return m.Mem16(m.Mem16(arch.MakeAddressFromConstant(op.Offset, false)));
+                return m.Mem16(m.Mem16(arch.MakeAddressFromConstant(op.Offset!, false)));
             }
         }
 

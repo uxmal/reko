@@ -605,10 +605,14 @@ namespace Reko.ImageLoaders.OdbgScript
                 {
                 case Var.etype.STR: // empty buf + str . buf
                     if (!v.IsBuf)
+                    {
                         v = Var.Create("##") + v.str;
+                        variables[id.Name] = v;
+                    }
                     break;
                 case Var.etype.DW: // empty buf + dw . buf
                     v = Var.Create("##") + v.ToUInt64();
+                    variables[id.Name] = v;
                     break;
                 }
                 return true;
@@ -626,7 +630,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        static string[] valid_commands =
+        private static readonly string[] valid_commands =
         {
             "SCRIPT", "SCRIPTLOG", "MODULES", "MEMORY",
             "THREADS", "BREAKPOINTS", "REFERENCES", "SOURCELIST",
@@ -1525,7 +1529,7 @@ rulong hwnd;
                         if (maxsize != 0 && maxsize < memlen)
                             memlen = maxsize;
 
-                        byte[] membuf = null, mask = null, bytes = null;
+                        byte[] membuf, mask, bytes;
 
                         membuf = new byte[memlen];
                         if (Host.TryReadBytes(addr, (int)memlen, membuf))
@@ -1562,9 +1566,9 @@ rulong hwnd;
 
         private bool DoFINDMEM(Expression[] args)
         {
-            Address addr = null;
             if (args.Length >= 1 && args.Length <= 2)
             {
+                Address addr = null;
                 if (args.Length == 2 && !GetAddress(args[1], out addr))
                     return false;
 
@@ -2259,7 +2263,7 @@ string str;
             string param;
 
             if (args.Length == 3 &&
-                GetAddress(args[0], out Address addr) &&
+                GetAddress(args[0], out Address _) &&
                 GetRulong(args[1], out ulong index) &&
                 args[2] is Identifier cmd)
             {
@@ -3897,6 +3901,7 @@ rulong dw1, dw2;
                 case Var.etype.STR:
                     if (v.IsBuf)
                         v = Var.Create(v.to_string());
+                    variables[id.Name] = v;
                     return true;
                 }
             }
@@ -3940,9 +3945,9 @@ rulong dw1, dw2;
                 }
                 if (GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2))
                 {
-                zf = ((dw1 & dw2) == 0);
-                return true;
-            }
+                    zf = ((dw1 & dw2) == 0);
+                    return true;
+                }
             }
             return false;
         }

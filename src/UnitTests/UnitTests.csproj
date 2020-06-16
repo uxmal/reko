@@ -602,7 +602,7 @@
     <Compile Include="Core\PrimitiveTypeTests.cs" />
     <Compile Include="Core\ProcedureSignatureTests.cs" />
     <Compile Include="Core\ProcedureTests.cs" />
-    <Compile Include="Core\ProgramImageTests.cs" />
+    <Compile Include="Core\MemoryAreaTests.cs" />
     <Compile Include="Core\ProgramTests.cs" />
     <Compile Include="Core\StorageTests.cs" />
     <Compile Include="Core\RelocationDictionaryTests.cs" />

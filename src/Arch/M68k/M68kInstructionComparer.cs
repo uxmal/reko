@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -50,54 +50,46 @@ namespace Reko.Arch.M68k
 
             if (opA.GetType() != opB.GetType())
                 return false;
-            var regA = opA as RegisterOperand;
-            if (regA != null)
+            if (opA is RegisterOperand regA)
             {
-                var regB = opB as RegisterOperand;
+                var regB = (RegisterOperand) opB;
                 return NormalizeRegisters || regA.Register == regB.Register;
             }
-            var immA = opA as M68kImmediateOperand;
-            if (immA != null)
+            if (opA is M68kImmediateOperand immA)
             {
-                var immB = opB as M68kImmediateOperand;
+                var immB = (M68kImmediateOperand) opB;
                 return CompareValues(immA.Constant, immB.Constant);
             }
-            var preA = opA as PredecrementMemoryOperand;
-            if (preA != null)
+            if (opA is PredecrementMemoryOperand preA)
             {
-                var preB = opB as PredecrementMemoryOperand;
+                var preB = (PredecrementMemoryOperand) opB;
                 return CompareRegisters(preA.Register, preB.Register);
             }
-            var postA = opA as PostIncrementMemoryOperand;
-            if (postA != null)
+            if (opA is PostIncrementMemoryOperand postA)
             {
-                var postB = opB as PostIncrementMemoryOperand;
+                var postB = (PostIncrementMemoryOperand) opB;
                 return CompareRegisters(postA.Register, postB.Register);
             }
-            var regsetA = opA as RegisterSetOperand;
-            if (regsetA != null)
+            if (opA is RegisterSetOperand regsetA)
             {
-                var regsetB = opB as RegisterSetOperand;
+                var regsetB = (RegisterSetOperand) opB;
                 return NormalizeRegisters || regsetA.BitSet == regsetB.BitSet;
             }
-            var memA = opA as MemoryOperand;
-            if (memA != null)
+            if (opA is MemoryOperand memA)
             {
-                var memB = (MemoryOperand)opB;
+                var memB = (MemoryOperand) opB;
                 if (!NormalizeRegisters && !CompareRegisters(memA.Base, memB.Base))
                     return false;
                 return NormalizeConstants || CompareValues(memA.Offset, memB.Offset);
             }
-            var addrA = opA as M68kAddressOperand;
-            if (addrA != null)
+            if (opA is M68kAddressOperand addrA)
             {
-                var addrB = (M68kAddressOperand)opB;
+                var addrB = (M68kAddressOperand) opB;
                 return NormalizeConstants || addrA.Address == addrB.Address;
             }
-            var idxA = opA as IndirectIndexedOperand;
-            if (idxA != null)
+            if (opA is IndirectIndexedOperand idxA)
             {
-                var idxB = (IndirectIndexedOperand)opB;
+                var idxB = (IndirectIndexedOperand) opB;
                 if (!NormalizeRegisters)
                 {
                     if (!CompareRegisters(idxA.ARegister, idxB.ARegister))
@@ -130,35 +122,31 @@ namespace Reko.Arch.M68k
         {
             if (op == null)
                 return 0;
-            var rop = op as RegisterOperand;
-            if (rop != null)
+            if (op is RegisterOperand rop)
             {
                 if (NormalizeRegisters)
                     return 0;
                 else
                     return rop.Register.GetHashCode();
             }
-            var immop = op as M68kImmediateOperand;
-            if (immop != null)
+            if (op is M68kImmediateOperand immop)
             {
                 if (NormalizeConstants)
                     return 0;
                 else
                     return immop.Constant.GetHashCode();
             }
-            var addrOp = op as M68kAddressOperand;
-            if (addrOp != null)
+            if (op is M68kAddressOperand addrOp)
             {
                 if (NormalizeConstants)
                     return 0;
                 else
                     return addrOp.Address.GetHashCode();
             }
-            var memOp = op as MemoryOperand;
-            if (memOp != null)
+            if (op is MemoryOperand memOp)
             {
                 int h = 0;
-                if (!NormalizeConstants)
+                if (!NormalizeConstants && memOp.Offset != null)
                 {
                     h = memOp.Offset.GetHashCode();
                 }
@@ -168,8 +156,7 @@ namespace Reko.Arch.M68k
                 }
                 return h;
             }
-            var ind = op as IndirectIndexedOperand;
-            if (ind != null)
+            if (op is IndirectIndexedOperand ind)
             {
                 int h = 0;
                 if (!NormalizeConstants)
@@ -185,8 +172,7 @@ namespace Reko.Arch.M68k
                 }
                 return h;
             }
-            var pre = op as PredecrementMemoryOperand;
-            if (pre != null)
+            if (op is PredecrementMemoryOperand pre)
             {
                 int h = 43;
                 if (!NormalizeRegisters)
@@ -195,8 +181,7 @@ namespace Reko.Arch.M68k
                 }
                 return h;
             }
-            var post = op as PostIncrementMemoryOperand;
-            if (post != null)
+            if (op is PostIncrementMemoryOperand post)
             {
                 int h = 47;
                 if (!NormalizeRegisters)
@@ -205,8 +190,7 @@ namespace Reko.Arch.M68k
                 }
                 return h;
             }
-            var regset = op as RegisterSetOperand;
-            if (regset != null)
+            if (op is RegisterSetOperand regset)
             {
                 int h = 29;
                 if (!NormalizeRegisters)
@@ -215,8 +199,7 @@ namespace Reko.Arch.M68k
                 }
                 return h;
             }
-            var indexOp = op as IndexedOperand;
-            if (indexOp != null)
+            if (op is IndexedOperand indexOp)
             {
                 int h = 53;
                 if (!NormalizeRegisters)
@@ -228,7 +211,7 @@ namespace Reko.Arch.M68k
                     if (indexOp.Index != null)
                     {
                         h = h * 11 ^ GetRegisterHash(indexOp.Index);
-                        h = h * 13 ^ indexOp.index_reg_width.GetHashCode();
+                        h = h * 13 ^ indexOp.index_reg_width!.GetHashCode();
                     }
                 }
                 if (!NormalizeConstants)

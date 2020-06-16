@@ -50,12 +50,12 @@ namespace Reko.Arch.RiscV
         {
             this.arch = arch;
             this.rdr = rdr;
+            this.addrInstr = rdr.Address;
             this.state = new State();
         }
 
-        public override RiscVInstruction DisassembleInstruction()
+        public override RiscVInstruction? DisassembleInstruction()
         {
-            this.addrInstr = rdr.Address;
             if (!rdr.TryReadLeUInt16(out ushort hInstr))
             {
                 return null;
@@ -66,6 +66,7 @@ namespace Reko.Arch.RiscV
             instr.Address = addrInstr;
             instr.Length = (int) (rdr.Address - addrInstr);
             instr.InstructionClass |= hInstr == 0 ? InstrClass.Zero : 0;
+            this.addrInstr = rdr.Address;
             return instr;
         }
 
@@ -338,9 +339,9 @@ namespace Reko.Arch.RiscV
             private readonly Decoder rv128;
 
             public WordSizeDecoder(
-                Decoder rv32 = null,
-                Decoder rv64 = null,
-                Decoder rv128 = null)
+                Decoder? rv32 = null,
+                Decoder? rv64 = null,
+                Decoder? rv128 = null)
             {
                 this.rv32 = rv32 ?? invalid;
                 this.rv64 = rv64 ?? invalid;
@@ -374,9 +375,9 @@ namespace Reko.Arch.RiscV
         // Conditional decoder
 
         private static WordSizeDecoder WordSize(
-            Decoder rv32 = null,
-            Decoder rv64 = null,
-            Decoder rv128 = null)
+            Decoder? rv32 = null,
+            Decoder? rv64 = null,
+            Decoder? rv128 = null)
         {
             return new WordSizeDecoder(rv32, rv64, rv128);
         }
@@ -601,11 +602,10 @@ namespace Reko.Arch.RiscV
                 var uOffset = (int) Bitfield.ReadFields(masks, u);
                 var iBase = (int) baseRegMask.Read(u);
 
-                d.state.ops.Add(new MemoryOperand(dt)
-                {
-                    Base = d.arch.GetRegister(iBase),
-                    Offset = uOffset
-                });
+                d.state.ops.Add(new MemoryOperand(
+                    dt,
+                    d.arch.GetRegister(iBase),
+                    uOffset));
                 return true;
             };
         }
@@ -623,11 +623,10 @@ namespace Reko.Arch.RiscV
                 var uOffset = (int) Bitfield.ReadFields(masks, u) * dt.Size;
                 var iBase = (int)baseRegMask.Read(u);
 
-                d.state.ops.Add(new MemoryOperand(dt)
-                {
-                    Base = d.arch.GetRegister(iBase),
-                    Offset = uOffset
-                });
+                d.state.ops.Add(new MemoryOperand(
+                    dt,
+                    d.arch.GetRegister(iBase),
+                    uOffset));
                 return true;
             };
         }
@@ -644,11 +643,10 @@ namespace Reko.Arch.RiscV
                 var uOffset = (int) Bitfield.ReadFields(masks, u) * dt.Size;
                 var iBase = compressedRegs[baseRegMask.Read(u)];
 
-                d.state.ops.Add(new MemoryOperand(dt)
-                {
-                    Base = d.arch.GetRegister(iBase),
-                    Offset = uOffset
-                });
+                d.state.ops.Add(new MemoryOperand(
+                    dt,
+                    d.arch.GetRegister(iBase),
+                    uOffset));
                 return true;
             };
         }

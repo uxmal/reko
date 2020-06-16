@@ -62,7 +62,7 @@ namespace Reko.Arch.X86
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
-		public Address AddressFromSegOffset(RegisterStorage seg, uint offset)
+		public Address? AddressFromSegOffset(RegisterStorage seg, uint offset)
 		{
 			Constant c = GetRegister(seg);
 			if (c.IsValid)
@@ -73,7 +73,7 @@ namespace Reko.Arch.X86
 				return null;
 		}
 
-        public Address AddressFromSegReg(RegisterStorage seg, RegisterStorage reg)
+        public Address? AddressFromSegReg(RegisterStorage seg, RegisterStorage reg)
 		{
 			Constant c = GetRegister(reg);
 			if (c.IsValid)
@@ -153,7 +153,7 @@ namespace Reko.Arch.X86
             return new CallSite(returnAddressSize, 0);
         }
 
-        public override void OnAfterCall(FunctionType sig)
+        public override void OnAfterCall(FunctionType? sig)
         {
         }
 

@@ -90,7 +90,7 @@ namespace Reko.Arch.X86
 
         private void RewriteCall(MachineOperand callTarget, PrimitiveType opsize)
         {
-            Address addr = OperandAsCodeAddress(callTarget);
+            Address? addr = OperandAsCodeAddress(callTarget);
             if (addr != null)
             {
                 if (addr.ToLinear() == (dasm.Current.Address + dasm.Current.Length).ToLinear())
@@ -133,7 +133,7 @@ namespace Reko.Arch.X86
                         m.Invalid();
                         return;
                     }
-                    var seg = Constant.Create(PrimitiveType.SegmentSelector, instrCur.Address.Selector.Value);
+                    var seg = Constant.Create(PrimitiveType.SegmentSelector, instrCur.Address.Selector!.Value);
                     target = m.Seq(seg, target);
                 }
                 m.Call(target, (byte) opsize.Size);
@@ -144,7 +144,7 @@ namespace Reko.Arch.X86
         private void RewriteConditionalGoto(ConditionCode cc, MachineOperand op1)
         {
             iclass = InstrClass.ConditionalTransfer;
-            m.Branch(CreateTestCondition(cc, instrCur.Mnemonic), OperandAsCodeAddress(op1), InstrClass.ConditionalTransfer);
+            m.Branch(CreateTestCondition(cc, instrCur.Mnemonic), OperandAsCodeAddress(op1)!, InstrClass.ConditionalTransfer);
         }
 
         private void RewriteEndbr()
@@ -183,7 +183,7 @@ namespace Reko.Arch.X86
         {
             m.Branch(
                 m.Eq0(orw.AluRegister(cx)),
-                OperandAsCodeAddress(instrCur.Operands[0]),
+                OperandAsCodeAddress(instrCur.Operands[0])!,
                 InstrClass.ConditionalTransfer);
         }
 
@@ -195,7 +195,7 @@ namespace Reko.Arch.X86
                 var reboot = new ExternalProcedure(
                     "__bios_reboot",
                     new FunctionType(
-                        new Identifier("", VoidType.Instance, null)))
+                        new Identifier("", VoidType.Instance, null!)))
                 {
                     Characteristics = new ProcedureCharacteristics
                     {
@@ -207,9 +207,9 @@ namespace Reko.Arch.X86
 			}
 
             iclass = InstrClass.Transfer;
-			if (instrCur.Operands[0] is ImmediateOperand)
-			{
-				Address addr = OperandAsCodeAddress(instrCur.Operands[0]);
+			Address? addr = OperandAsCodeAddress(instrCur.Operands[0]);
+			if (addr != null)
+            {
                 m.Goto(addr);
 				return;
 			}
@@ -238,12 +238,12 @@ namespace Reko.Arch.X86
                     m.Cand(
                         m.Test(cc, orw.FlagGroup(useFlags)),
                         m.Ne0(cx)),
-                    OperandAsCodeAddress(instrCur.Operands[0]),
+                    OperandAsCodeAddress(instrCur.Operands[0])!,
                     InstrClass.ConditionalTransfer);
             }
             else
             {
-                m.Branch(m.Ne0(cx), OperandAsCodeAddress(instrCur.Operands[0]), InstrClass.ConditionalTransfer);
+                m.Branch(m.Ne0(cx), OperandAsCodeAddress(instrCur.Operands[0])!, InstrClass.ConditionalTransfer);
             }
         }
 
@@ -329,22 +329,23 @@ namespace Reko.Arch.X86
         /// </summary>
         /// <param name="instrCur"></param>
         /// <returns></returns>
+        //$TODO: this is a MS-DOS specific detail, and should be implemented as a system service.
         private bool IsRealModeReboot(X86Instruction instrCur)
         {
-            var addrOp = instrCur.Operands[0] as X86AddressOperand;
-            bool isRealModeReboot = addrOp != null && addrOp.Address.ToLinear() == 0xFFFF0;
+            bool isRealModeReboot = 
+                instrCur.Operands[0] is X86AddressOperand addrOp &&
+                addrOp.Address.ToLinear() == 0xFFFF0;
             return isRealModeReboot;
         }
 
-        public Address OperandAsCodeAddress(MachineOperand op)
+        public Address? OperandAsCodeAddress(MachineOperand op)
         {
-            if (op is AddressOperand ado)
-                return ado.Address;
-            if (op is ImmediateOperand imm)
+            return op switch
             {
-                return orw.ImmediateAsAddress(instrCur.Address, imm);
-            }
-            return null;
+                AddressOperand ado => ado.Address,
+                ImmediateOperand imm => orw.ImmediateAsAddress(instrCur.Address, imm),
+                _ => null
+            };
         }
     }
 }

@@ -29,11 +29,11 @@ namespace Reko.Arch.X86.Assembler
     public class AssembledSegment
     {
         public IEmitter Emitter { get; } 
-        public Symbol Symbol { get; }
+        public Symbol? Symbol { get; }
         public List<Relocation> Relocations { get; }
         public ushort Selector { get; set; }
 
-        public AssembledSegment(IEmitter emitter, Symbol sym)
+        public AssembledSegment(IEmitter emitter, Symbol? sym)
         {
             this.Emitter = emitter;
             this.Symbol = sym;
@@ -42,8 +42,14 @@ namespace Reko.Arch.X86.Assembler
 
         public class Relocation
         {
-            public AssembledSegment Segment;
-            public uint Offset;
+            public Relocation(AssembledSegment seg, uint offset)
+            {
+                this.Segment = seg;
+                this.Offset = offset;
+            }
+
+            public readonly AssembledSegment Segment;
+            public readonly uint Offset;
         }
 
     }

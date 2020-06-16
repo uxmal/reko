@@ -33,7 +33,7 @@ namespace Reko.Arch.M68k
     /// </summary>
     public class OperandFormatDecoder
     {
-        private M68kDisassembler dasm;
+        private readonly M68kDisassembler dasm;
 
         public OperandFormatDecoder(M68kDisassembler dasm, int i)
         {
@@ -82,7 +82,7 @@ namespace Reko.Arch.M68k
             case 5: // Address register indirect with displacement.
                 if (!rdr.TryReadBe(PrimitiveType.Int16, out offset))
                 {
-                    op = null;
+                    op = default!;
                     return false;
                 }
                 op = MemoryOperand.Indirect(dataWidth, AddressRegister(operandBits, 0), offset);
@@ -96,7 +96,7 @@ namespace Reko.Arch.M68k
                     ushort usAddr;
                     if (!rdr.TryReadBeUInt16(out usAddr))
                     {
-                        op = null; return false;
+                        op = default!; return false;
                     }
                     op = new M68kAddressOperand(usAddr);
                     return true;
@@ -104,16 +104,16 @@ namespace Reko.Arch.M68k
                     uint uAddr;
                     if (!rdr.TryReadBeUInt32(out uAddr))
                     {
-                        op = null; return false;
+                        op = default!; return false;
                     }
                     op = new M68kAddressOperand(uAddr);
                     return true;
                 case 2: // Program counter with displacement
-                    var off = rdr.Address - dasm.instr.Address;
+                    var off = rdr.Address - dasm.addr;
                     short sOffset;
                     if (!rdr.TryReadBeInt16(out sOffset))
                     {
-                        op = null; return false;
+                        op = default!; return false;
                     }
                     off += sOffset;
                     op = new MemoryOperand(dataWidth, Registers.pc, Constant.Int16((short) off));
@@ -124,7 +124,7 @@ namespace Reko.Arch.M68k
                     ushort extension;
                     if (!rdr.TryReadBeUInt16(out extension))
                     {
-                        op = null; return false;
+                        op = default!; return false;
                     }
 
                     if (EXT_FULL(extension))
@@ -134,21 +134,35 @@ namespace Reko.Arch.M68k
                             op = new M68kImmediateOperand(Constant.Word32(0));
                             return true;
                         }
-                        Constant @base = null;
-                        Constant outer = null;
-                        if (EXT_BASE_DISPLACEMENT_PRESENT(extension)) 
-                            @base = EXT_BASE_DISPLACEMENT_LONG(extension) 
-                                ? rdr.ReadBe(PrimitiveType.Word32)
-                                : rdr.ReadBe(PrimitiveType.Int16);
+                        Constant? @base = null;
+                        Constant? outer = null;
+                        if (EXT_BASE_DISPLACEMENT_PRESENT(extension))
+                        {
+                            if (!rdr.TryReadBe(
+                                EXT_BASE_DISPLACEMENT_LONG(extension)
+                                    ? PrimitiveType.Word32
+                                    : PrimitiveType.Int16,
+                                out @base))
+                            {
+                                op = default!; return false;
+                            }
+                        }
                         if (EXT_OUTER_DISPLACEMENT_PRESENT(extension))
-                            outer = EXT_OUTER_DISPLACEMENT_LONG(extension)
-                                ? rdr.ReadBe(PrimitiveType.Word32)
-                                : rdr.ReadBe(PrimitiveType.Int16);
-                        RegisterStorage base_reg = EXT_BASE_REGISTER_PRESENT(extension)
+                        {
+                            if (!rdr.TryReadBe(
+                                EXT_OUTER_DISPLACEMENT_LONG(extension)
+                                    ? PrimitiveType.Word32
+                                    : PrimitiveType.Int16,
+                                out outer))
+                            {
+                                op = default!; return false;
+                            }
+                        }
+                        RegisterStorage? base_reg = EXT_BASE_REGISTER_PRESENT(extension)
                             ? Registers.pc
                             : null;
-                        RegisterStorage index_reg = null;
-                        PrimitiveType index_width = null;
+                        RegisterStorage? index_reg = null;
+                        PrimitiveType? index_width = null;
                         int index_scale = 0;
                         if (EXT_INDEX_REGISTER_PRESENT(extension))
                         {
@@ -186,12 +200,12 @@ namespace Reko.Arch.M68k
                     Constant coff;
                     if (!rdr.TryReadBe(dataWidth, out coff))
                     {
-                        op = null; return false;
+                        op = default!; return false;
                     }
                     op = new M68kImmediateOperand(coff);
                     return true;
                 default:
-                    op = null;
+                    op = default!;
                     return false;
                 }
             default: 
@@ -203,7 +217,7 @@ namespace Reko.Arch.M68k
         {
             if (!rdr.TryReadBeUInt16(out ushort extension))
             {
-                op = null; return false;
+                op = default!; return false;
             }
             if (EXT_FULL(extension))
             {
@@ -213,20 +227,30 @@ namespace Reko.Arch.M68k
                     return true;
                 }
 
-                RegisterStorage base_reg = null;
-                RegisterStorage index_reg = null;
-                PrimitiveType index_reg_width = null;
+                RegisterStorage? base_reg = null;
+                RegisterStorage? index_reg = null;
+                PrimitiveType? index_reg_width = null;
                 int index_scale = 1;
-                Constant @base = null;
+                Constant? @base = null;
                 if (EXT_BASE_DISPLACEMENT_PRESENT(extension))
                 {
-                    @base = rdr.ReadBe(EXT_BASE_DISPLACEMENT_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16);
+                    if (!rdr.TryReadBe(
+                        EXT_BASE_DISPLACEMENT_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16,
+                        out @base))
+                    {
+                        op = default!; return true;
+                    }
                 }
 
-                Constant outer = null;
+                Constant? outer = null;
                 if (EXT_OUTER_DISPLACEMENT_PRESENT(extension))
                 {
-                    outer = rdr.ReadBe(EXT_OUTER_DISPLACEMENT_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16);
+                    if (!rdr.TryReadBe(
+                        EXT_OUTER_DISPLACEMENT_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16,
+                        out outer))
+                    {
+                        op = default!; return true;
+                    }
                 }
                 if (EXT_BASE_REGISTER_PRESENT(extension))
                 {

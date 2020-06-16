@@ -323,7 +323,7 @@ l00000001400015F2:
 //      Win32CrtStartup
 void fn0000000140001600(word32 ecx, word32 edx)
 {
-	byte al_n = (byte) (word32) g_b400035F0;
+	byte al_n = (byte) (uint64) (word32) g_b400035F0;
 	if (ecx == 0x00)
 		al_n = 0x01;
 	g_b400035F0 = al_n;
@@ -390,13 +390,13 @@ byte fn000000014000164C(up32 ecx, ui64 r8, union Eq_n & r8Out)
 	}
 }
 
-// 0000000140001718: Register uint64 fn0000000140001718(Register (ptr64 (ptr64 code)) rcx, Register out (ptr64 (ptr64 code)) r8Out)
+// 0000000140001718: Register word64 fn0000000140001718(Register (ptr64 (ptr64 code)) rcx, Register out (ptr64 (ptr64 code)) r8Out)
 // Called from:
 //      Win32CrtStartup
 //      fn000000014000164C
-uint64 fn0000000140001718(<anonymous> ** rcx, <anonymous> & r8Out)
+word64 fn0000000140001718(<anonymous> ** rcx, <anonymous> & r8Out)
 {
-	uint64 rax_n;
+	word64 rax_n;
 	<anonymous> ** r8_n = rcx;
 	word56 rax_56_8_n = 0x5A;
 	if (g_w40000000 == 23117)
@@ -409,11 +409,11 @@ uint64 fn0000000140001718(<anonymous> ** rcx, <anonymous> & r8Out)
 			rax_56_8_n = 0x02;
 			if (rcx_n->w0018 == 0x020B)
 			{
-				word32 eax_n = (word32) rcx_n->w0006;
-				struct Eq_n * rdx_n = &rcx_n->w0018 + (uint64) ((uint32) ((word32) rcx_n->w0014));
+				uint64 rax_n = (uint64) (word32) rcx_n->w0006;
+				struct Eq_n * rdx_n = &rcx_n->w0018 + (uint64) ((word32) rcx_n->w0014);
 				r8_n = rcx - 0x140000000;
-				struct Eq_n * r9_n = rdx_n + (uint64) ((uint32) eax_n);
-				uint56 rax_56_8_n = (uint56) (uint24) SLICE(eax_n, word24, 8);
+				word56 rax_56_8_n = SLICE(rax_n, word56, 8);
+				struct Eq_n * r9_n = rdx_n + rax_n;
 				for (; rdx_n != r9_n; rdx_n += 0x28)
 				{
 					<anonymous> ** rcx_n = (uint64) rdx_n->dw000C;
@@ -826,7 +826,7 @@ void fn0000000140001E9C(int64 rcx, struct Eq_n * rdx, struct Eq_n * r8, word64 q
 	word64 rdx_n = (int64) r11d_n + r10_n;
 	struct Eq_n * rcx_n = (uint64) rdx->ptr0010->dw0008 + rdx->qw0008;
 	if ((rcx_n->b0003 & 0x0F) != 0x00)
-		r9_n = rcx + (uint64) ((word32) rcx_n->b0003 & ~0x0F);
+		r9_n = rcx + (uint64) ((word32) ((uint64) ((word32) rcx_n->b0003)) & ~0x0F);
 	ui64 r9_n = r9_n ^ rdx_n;
 	fn00000001400011B0(r9_n, qwArg00);
 }

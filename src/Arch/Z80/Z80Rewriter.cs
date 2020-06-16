@@ -42,6 +42,7 @@ namespace Reko.Arch.Z80
         private InstrClass iclass;
         private RtlEmitter m;
 
+#nullable disable
         public Z80Rewriter(Z80ProcessorArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
@@ -49,6 +50,7 @@ namespace Reko.Arch.Z80
             this.host = host;
             this.dasm = new Z80Disassembler(arch, rdr).GetEnumerator();
         }
+#nullable enable
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
@@ -448,7 +450,7 @@ namespace Reko.Arch.Z80
                 m.Goto(target.Address);
                 break;
             case MemoryOperand mTarget:
-                m.Goto(binder.EnsureRegister(mTarget.Base));
+                m.Goto(binder.EnsureRegister(mTarget.Base!));
                 break;
             }
         }
@@ -504,12 +506,12 @@ namespace Reko.Arch.Z80
                 return immOp.Value;
             case MemoryOperand memOp:
                 {
-                    Identifier bReg = null;
+                    Identifier? bReg = null;
                     if (memOp.Base != null)
                         bReg = binder.EnsureRegister(memOp.Base);
-                    if (memOp.Offset == null)
+                    if (memOp.Offset is null)
                     {
-                        return m.Mem(memOp.Width, bReg);
+                        return m.Mem(memOp.Width, bReg!);
                     }
                     else if (bReg == null)
                     {
@@ -518,18 +520,7 @@ namespace Reko.Arch.Z80
                     else
                     {
                         int s = memOp.Offset.ToInt32();
-                        if (s > 0)
-                        {
-                            return m.Mem(memOp.Width, m.IAdd(bReg, s));
-                        }
-                        else if (s < 0)
-                        {
-                            return m.Mem(memOp.Width, m.ISub(bReg, -s));
-                        }
-                        else
-                        {
-                            return m.Mem(memOp.Width, bReg);
-                        }
+                        return m.Mem(memOp.Width, m.AddSubSignedInt(bReg, s));
                     }
                 }
             default:

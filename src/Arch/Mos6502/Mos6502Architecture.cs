@@ -30,6 +30,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core.Serialization;
 using Reko.Core.Operators;
+using Reko.Core.Assemblers;
 
 namespace Reko.Arch.Mos6502
 {
@@ -166,7 +167,7 @@ namespace Reko.Arch.Mos6502
             return Address.Ptr16(c.ToUInt16());
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             if (rdr.TryReadLeUInt16(out var uaddr))
             {
@@ -189,7 +190,7 @@ namespace Reko.Arch.Mos6502
             return sb.ToString();
         }
 
-        public override bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, out Address addr)
         {
             return Address.TryParse16(txtAddress, out addr);
         }

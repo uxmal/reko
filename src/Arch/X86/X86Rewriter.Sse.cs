@@ -83,7 +83,6 @@ namespace Reko.Arch.X86
             m.Assign(SrcOp(instrCur.Operands[0]), m.Seq(tmp2, tmp1));
         }
 
-
         private void RewriteCvts2si(PrimitiveType floatType)
         {
             instrCur.Operands[0].Width = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
@@ -444,11 +443,11 @@ namespace Reko.Arch.X86
             m.Assign(dst, src);
         }
 
-        private void RewritePackedBinop(string fnName, PrimitiveType elementType, DataType dstType = null)
+        private void RewritePackedBinop(string fnName, PrimitiveType elementType, DataType? dstType = null)
         {
             var dst = SrcOp(instrCur.Operands[0]);
             ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
-            if (dstType == null)
+            if (dstType is null)
                 dstType = arrayType;
             Expression src1;
             Expression src2;
@@ -469,11 +468,11 @@ namespace Reko.Arch.X86
             m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1, tmp2));
         }
 
-        private void RewritePackedShift(string fnName, PrimitiveType elementType, DataType dstType = null)
+        private void RewritePackedShift(string fnName, PrimitiveType elementType, DataType? dstType = null)
         {
             var dst = SrcOp(instrCur.Operands[0]);
             ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
-            if (dstType == null)
+            if (dstType is null)
                 dstType = arrayType;
             Expression src1;
             Expression src2;
@@ -492,11 +491,11 @@ namespace Reko.Arch.X86
             m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1, src2));
         }
 
-        private void RewritePackedTernaryop(string fnName, PrimitiveType elementType, DataType dstType = null)
+        private void RewritePackedTernaryop(string fnName, PrimitiveType elementType, DataType? dstType = null)
         {
             var dst = SrcOp(instrCur.Operands[0]);
             ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
-            if (dstType == null)
+            if (dstType is null)
                 dstType = arrayType;
             Expression src1;
             Expression src2;
@@ -520,7 +519,7 @@ namespace Reko.Arch.X86
             m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1, tmp2, src3));
         }
 
-        private void RewritePackedUnaryop(string fnName, PrimitiveType elementType, DataType dstType = null)
+        private void RewritePackedUnaryop(string fnName, PrimitiveType elementType, DataType? dstType = null)
         {
             var dst = SrcOp(instrCur.Operands[0]);
             ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);

@@ -7,6 +7,8 @@
     <RootNamespace>Reko.Arch.X86</RootNamespace>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>8.0</LangVersion>
+    <nullable>enable</nullable>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="StringInstructionRewriter.cs" />

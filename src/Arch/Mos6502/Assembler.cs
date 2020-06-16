@@ -30,20 +30,22 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.Mos6502
 {
+#pragma warning disable IDE1006
+
     public class Assembler : IAssembler
     {
         private static readonly Dictionary<Mnemonic, InstrOpcodes> instrOpcodes;
 
-        private ServiceContainer sc;
-        private Mos6502Architecture arch;
-        private Address addrBase;
-        private Core.Assemblers.IEmitter m;
-        private List<ImageSymbol> symbols;
-        private SymbolTable symtab;
+        private readonly IServiceProvider services;
+        private readonly Mos6502Architecture arch;
+        private readonly Address addrBase;
+        private readonly IEmitter m;
+        private readonly List<ImageSymbol> symbols;
+        private readonly SymbolTable symtab;
 
-        public Assembler(ServiceContainer sc, Mos6502Architecture arch, Address addrBase, List<ImageSymbol> symbols)
+        public Assembler(IServiceProvider services, Mos6502Architecture arch, Address addrBase, List<ImageSymbol> symbols)
         {
-            this.sc = sc;
+            this.services = services;
             this.arch = arch;
             this.addrBase = addrBase;
             this.symbols = symbols;
@@ -87,25 +89,25 @@ namespace Reko.Arch.Mos6502
                 if (ops.Imm == 0)
                     break;
                 m.EmitByte(ops.Imm);
-                m.EmitByte(op.Offset.ToByte());
+                m.EmitByte(op.Offset!.ToByte());
                 return;
             case AddressMode.ZeroPage:
                 if (ops.Zp == 0)
                     break;
                 m.EmitByte(ops.Zp);
-                m.EmitByte(op.Offset.ToByte());
+                m.EmitByte(op.Offset!.ToByte());
                 return;
             case AddressMode.ZeroPageX:
                 if (ops.ZpX == 0)
                     break;
                 m.EmitByte(ops.ZpX);
-                m.EmitByte(op.Offset.ToByte());
+                m.EmitByte(op.Offset!.ToByte());
                 return;
             case AddressMode.AbsoluteY:
                 if (ops.AbsY == 0)
                     break;
                 m.EmitByte(ops.AbsY);
-                m.EmitLeUInt16(op.Offset.ToUInt16());
+                m.EmitLeUInt16(op.Offset!.ToUInt16());
                 return;
             }
             throw new NotSupportedException($"Instruction {mnemonic} does not support address mode {op.Mode}.");
@@ -301,10 +303,12 @@ namespace Reko.Arch.Mos6502
         public class ParsedOperand
         {
             public Operand Operand;
+            public Symbol? Symbol;
 
-            public ParsedOperand(Operand op, Symbol sym)
+            public ParsedOperand(Operand op, Symbol? sym)
             {
                 this.Operand = op;
+                this.Symbol = sym;
             }
         }
 

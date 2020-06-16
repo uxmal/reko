@@ -39,7 +39,7 @@ namespace Reko.Arch.X86
         {
             if (op.Width.Size == 4)
             {
-                Push(InstructionPointer.Selector.Value, PrimitiveType.Word16);
+                Push(InstructionPointer.Selector!.Value, PrimitiveType.Word16);
             }
             var nextIp = InstructionPointer.Offset + (uint) dasm.Current.Length;   // Push return value on stack
             Push(nextIp, PrimitiveType.Word16);

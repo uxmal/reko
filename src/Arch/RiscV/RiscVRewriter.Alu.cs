@@ -30,7 +30,7 @@ namespace Reko.Arch.RiscV
 {
     public partial class RiscVRewriter
     {
-        private void RewriteAdd(PrimitiveType dtDst = null)
+        private void RewriteAdd(PrimitiveType? dtDst = null)
         {
             var src1 = RewriteOp(instr.Operands[1]);
             var src2 = RewriteOp(instr.Operands[2]);
@@ -38,7 +38,7 @@ namespace Reko.Arch.RiscV
             RewriteAdd(dst, src1, src2, dtDst);
         }
 
-        private void RewriteAdd(Expression dst, Expression src1, Expression src2, PrimitiveType dtDst = null)
+        private void RewriteAdd(Expression dst, Expression src1, Expression src2, PrimitiveType? dtDst = null)
         { 
             Expression src;
             if (src1.IsZero)
@@ -101,7 +101,7 @@ namespace Reko.Arch.RiscV
             m.Assign(dst, m.Cast(PrimitiveType.Int64, src));
         }
 
-        private void RewriteBinOp(Func<Expression,Expression, Expression> op, PrimitiveType dtDst = null)
+        private void RewriteBinOp(Func<Expression,Expression, Expression> op, PrimitiveType? dtDst = null)
         {
             var src1 = RewriteOp(instr.Operands[1]);
             var src2 = RewriteOp(instr.Operands[2]);
@@ -109,14 +109,14 @@ namespace Reko.Arch.RiscV
             MaybeSignExtend(dst, op(src1, src2), dtDst);
         }
 
-        private void RewriteCompressedAdd(PrimitiveType dtDst = null)
+        private void RewriteCompressedAdd(PrimitiveType? dtDst = null)
         {
             var src1 = RewriteOp(instr.Operands[1]);
             var dst = RewriteOp(instr.Operands[0]);
             RewriteAdd(dst, dst, src1, dtDst);
         }
 
-        private void RewriteCompressedBinOp(Func<Expression, Expression, Expression> op, PrimitiveType dtDst = null)
+        private void RewriteCompressedBinOp(Func<Expression, Expression, Expression> op, PrimitiveType? dtDst = null)
         {
             var src1 = RewriteOp(instr.Operands[1]);
             var dst = RewriteOp(instr.Operands[0]);

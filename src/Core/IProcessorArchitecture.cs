@@ -36,7 +36,7 @@ namespace Reko.Core
 	public interface IProcessorArchitecture
 	{
         /// <summary>
-        /// Creates an IEnumerable of disassembled MachineInstructions which consumes 
+        /// Creates an IEnumerable of disassembled <see cref="MachineInstruction" />s which consumes 
         /// its input from the provided <paramref name="imageReader"/>.
         /// </summary>
         /// <remarks>The IEnumerable lets us use Linq expressions
@@ -52,7 +52,6 @@ namespace Reko.Core
         /// Creates an instance of a ProcessorState appropriate for this
         /// processor.
         /// </summary>
-        /// <param name="map">Segment map with descriptions of segments</param>
         /// <returns>An instance of <see cref="ProcessorState"/>.</returns>
 		ProcessorState CreateProcessorState();
 
@@ -88,27 +87,28 @@ namespace Reko.Core
         /// </summary>
         /// <param name="img">Program image to read</param>
         /// <param name="addr">Address at which to start</param>
-        /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
+        /// <returns>An <seealso cref="EndianImageReader"/> of the appropriate endianness</returns>
         EndianImageReader CreateImageReader(MemoryArea img, Address addr);
 
         /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred 
-        /// endianness of the processor, limited to the specified address
+        /// endianness of the processor, limited to the specified offset
         /// range.
         /// </summary>
-        /// <param name="img">Program image to read</param>
-        /// <param name="addr">Address at which to start</param>
-        /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
-        EndianImageReader CreateImageReader(MemoryArea memoryArea, Address addrBegin, Address addrEnd);
+        /// <param name="memoryArea">Memory area from which to read.</param>
+        /// <param name="offsetBegin">Starting offset within the memory area.</param>
+        /// <param name="offsetEnd">Ending offset within the memory area.</param>
+        /// <returns>An <seealso cref="EndianImageReader"/> of the appropriate endianness</returns>
+        EndianImageReader CreateImageReader(MemoryArea memoryArea, long offsetBegin, long offsetEnd);
 
         /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred
         /// endianness of the processor.
         /// </summary>
-        /// <param name="img">Program image to read</param>
+        /// <param name="memoryArea">Program image to read</param>
         /// <param name="addr">offset from the start of the image</param>
-        /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
-        EndianImageReader CreateImageReader(MemoryArea img, ulong off);
+        /// <returns>An <seealso cref="EndianImageReader"/> of the appropriate endianness</returns>
+        EndianImageReader CreateImageReader(MemoryArea memoryArea, long off);
 
         /// <summary>
         /// Creates an <see cref="ImageWriter" /> with the preferred 
@@ -297,7 +297,7 @@ namespace Reko.Core
         /// instructions.</returns>
         List<RtlInstruction>? InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder);
 
-        Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state);
+        Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state);
         Address MakeSegmentedAddress(Constant seg, Constant offset);
 
         string GrfToString(RegisterStorage flagRegister, string prefix, uint grf);                       // Converts a union of processor flag bits to its string representation
@@ -432,8 +432,8 @@ namespace Reko.Core
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);
         public Frame CreateFrame() { return new Frame(FramePointerType); }
         public EndianImageReader CreateImageReader(MemoryArea img, Address addr) => this.Endianness.CreateImageReader(img, addr);
-        public EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd) => Endianness.CreateImageReader(img, addrBegin, addrEnd);
-        public EndianImageReader CreateImageReader(MemoryArea img, ulong off) => Endianness.CreateImageReader(img, off);
+        public EndianImageReader CreateImageReader(MemoryArea img, long offsetBegin, long offsetEnd) => Endianness.CreateImageReader(img, offsetBegin, offsetEnd);
+        public EndianImageReader CreateImageReader(MemoryArea img, long off) => Endianness.CreateImageReader(img, off);
         public ImageWriter CreateImageWriter() => Endianness.CreateImageWriter();
         public ImageWriter CreateImageWriter(MemoryArea img, Address addr) => Endianness.CreateImageWriter(img, addr);
         public bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value) => Endianness.TryRead(mem, addr, dt, out value);
@@ -546,7 +546,7 @@ namespace Reko.Core
         public abstract Address MakeAddressFromConstant(Constant c, bool codeAlign);
         public virtual Address MakeSegmentedAddress(Constant seg, Constant offset) { throw new NotSupportedException("This architecture doesn't support segmented addresses."); }
         public virtual void PostprocessProgram(Program program) { }
-        public abstract Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state);
+        public abstract Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state);
         public virtual Dictionary<string, object>? SaveUserOptions() { return null; }
 
         public abstract bool TryParseAddress(string? txtAddr, out Address addr);

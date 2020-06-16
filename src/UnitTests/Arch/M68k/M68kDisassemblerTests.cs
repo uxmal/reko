@@ -579,13 +579,13 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_move_to_ccr()
         {
-            RunTest("move.w\td3,ccr", 0x44c3);
+            RunTest("move.b\td3,ccr", 0x44c3);
         }
 
         [Test]
         public void M68kdis_move_fr_ccr()
         {
-            RunTest("move.w\tccr,(a3)", 0x42d3, 0x0000);
+            RunTest("move.b\tccr,(a3)", 0x42d3, 0x0000);
         }
 
         [Test]
@@ -774,5 +774,19 @@ namespace Reko.UnitTests.Arch.M68k
         R:rorl  %a2@(19131)                         E6 EA 4A BB
         O:rorw %a2@(0)                             E6 EA 4A BB
         */
+
+        [Test]
+        public void M68kdis_tst_68020()
+        {
+            RunTest("tst.b\t$1236(pc)", 0x4A3A, 0x1234);
+            RunTest("tst.b\t($36,pc,d1.w*2)", 0x4A3B, 0x1234);
+            RunTest("tst.b\t#$34", 0x4A3C, 0x1234);
+        }
+
+        [Test]
+        public void M68kdis_fsqrt()
+        {
+            RunTest("fsqrt.s\td4,fp0", 0xF204, 0x4404);
+        }
     }
 }

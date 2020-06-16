@@ -33,25 +33,25 @@ namespace Reko.Arch.RiscV
 {
     public class RiscVArchitecture : ProcessorArchitecture
     {
-        static string [] regnames = {
+        private static readonly string [] regnames = {
             "zero", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
             "s0",   "s1", "a0", "a1", "a2", "a3", "a4", "a5",
             "a6",   "a7", "s2", "s3", "s4", "s5", "s6", "s7",
             "s8",   "s9", "s10","s11","t3", "t4", "t5", "t6"
         };
 
-        static string[]  fpuregnames = {
+        private static readonly string[] fpuregnames = {
           "ft0", "ft1", "ft2",  "ft3",  "ft4", "ft5", "ft6",  "ft7",
           "fs0", "fs1", "fa0",  "fa1",  "fa2", "fa3", "fa4",  "fa5",
           "fa6", "fa7", "fs2",  "fs3",  "fs4", "fs5", "fs6",  "fs7",
           "fs8", "fs9", "fs10", "fs11", "ft8", "ft9", "ft10", "ft11"
         };
 
-        private RegisterStorage[] regs;
+        private readonly RegisterStorage[] regs;
         internal readonly RegisterStorage[] FpRegs;
         internal readonly RegisterStorage LinkRegister;
         internal readonly PrimitiveType NaturalSignedInteger;
-        private Dictionary<string, RegisterStorage> regsByName;
+        private readonly Dictionary<string, RegisterStorage> regsByName;
 
         public RiscVArchitecture(IServiceProvider services, string archId) : base(services, archId)
         {
@@ -142,7 +142,7 @@ namespace Reko.Arch.RiscV
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
             if (regsByName.TryGetValue(name, out RegisterStorage reg))
                 return reg;
@@ -172,27 +172,36 @@ namespace Reko.Arch.RiscV
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            //$TODO: what about 32-bit? 
-            var uAddr = c.ToUInt32();
-            if (codeAlign)
-                uAddr &= ~1u;
-            return Address.Ptr32(uAddr);
+            if (this.WordWidth.BitSize == 32)
+            {
+                var uAddr = c.ToUInt32();
+                if (codeAlign)
+                    uAddr &= ~1u;
+                return Address.Ptr32(uAddr);
+            }
+            else
+            {
+                var uAddr = c.ToUInt64();
+                return Address.Ptr64(uAddr);
+            }
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return regsByName.TryGetValue(name, out reg);
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
-            //$TODO: what if 32-bit?
-            return Address.TryParse64(txtAddr, out addr);
+            if (this.WordWidth.BitSize == 32)
+                return Address.TryParse32(txtAddr, out addr);
+            else
+                return Address.TryParse64(txtAddr, out addr);
         }
     }
 }
