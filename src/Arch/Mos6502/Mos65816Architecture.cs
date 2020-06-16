@@ -45,7 +45,7 @@ namespace Reko.Arch.Mos6502
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
-            return new Mos65816Disassembler(rdr);
+            return new Mos65816Disassembler(this, rdr);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
