@@ -369,6 +369,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Environments\BbcMicro\BbcMicro.csproj">
+      <Name>BbcMicro</Name>
+      <Project>{1a75d9c8-f708-4b8e-8f2d-f909ed1c0ad8}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Environments\C64\C64.csproj">
       <Name>C64</Name>
       <Project>{fdfe3507-e8ce-4930-b9b5-8fb647cfc6dc}</Project>

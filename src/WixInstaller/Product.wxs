@@ -111,6 +111,7 @@
         <File Source="$(var.AmigaOS_Design.TargetPath)" />
         <File Source="$(var.AtariTOS.TargetPath)" />
         <File Source="$(var.AtariTOS.ProjectDir)atariTOS.xml" />
+        <File Source="$(var.BbcMicro.TargetPath)" />
         <File Source="$(var.C64.TargetPath)" />
         <File Source="$(var.C64.ProjectDir)C64.xml" />
         <File Source="$(var.Cpm.TargetPath)" />

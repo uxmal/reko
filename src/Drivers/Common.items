@@ -192,6 +192,7 @@ by the PreBuild.targets file.
     <Environments Include="$(SolutionDir)Environments\AmigaOS\bin\$(Configuration)\netstandard2.0\Reko.Environments.AmigaOS.*" />
     <Environments Include="$(SolutionDir)Environments\AmigaOS.Design\bin\$(Configuration)\Reko.Environments.AmigaOS.Design.*" />
     <Environments Include="$(SolutionDir)Environments\AtariTOS\bin\$(Configuration)\netstandard2.0\Reko.Environments.AtariTOS.*" />
+    <Environments Include="$(SolutionDir)Environments\BbcMicro\bin\$(Configuration)\netstandard2.0\Reko.Environments.BbcMicro.*" />
     <Environments Include="$(SolutionDir)Environments\C64\bin\$(Configuration)\netstandard2.0\Reko.Environments.C64.*" />
     <Environments Include="$(SolutionDir)Environments\Cpm\bin\$(Configuration)\netstandard2.0\Reko.Environments.Cpm.*" />
     <Environments Include="$(SolutionDir)Environments\Dreamcast\bin\$(Configuration)\netstandard2.0\Reko.Environments.Dreamcast.*" />
