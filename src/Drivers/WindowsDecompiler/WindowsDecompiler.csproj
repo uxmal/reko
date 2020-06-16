@@ -412,6 +412,10 @@
       <Project>{46d47ac5-dec2-44e6-942a-f1d9b77bb514}</Project>
       <Name>SegaGenesis</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Environments\Snes\Snes.csproj">
+      <Project>{b4704089-c5bd-42ed-b509-8f2c0a528ba1}</Project>
+      <Name>Snes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Environments\Switch\Switch.csproj">
       <Project>{c1bae231-5a72-40d2-8b75-328849d58c0f}</Project>
       <Name>Switch</Name>

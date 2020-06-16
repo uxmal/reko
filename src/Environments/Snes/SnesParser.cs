@@ -17,7 +17,7 @@ namespace Reko.Environments.Snes
     //     * https://github.com/snes9xgit/snes9x/blob/master/memmap.cpp
     //     * sns_slot.c of the MAME project:
     //     * http://git.redump.net/mame/tree/src/mess/machine/sns_slot.c
-    //     
+    //       https://github.com/gocha/ida-snes-ldr
     // Ported from Python to C# using pytocs:
     // https://github.com/uxmal/pytocs
     public class SnesParser : ImageLoader
@@ -48,7 +48,7 @@ namespace Reko.Environments.Snes
 
 
 
-        public virtual object getValidExtensions()
+        public virtual List<string> getValidExtensions()
         {
             return new List<string> {
                     "smc",
@@ -57,7 +57,7 @@ namespace Reko.Environments.Snes
                 };
         }
 
-        public virtual object isValidData(byte[] data)
+        public virtual bool isValidData(byte[] data)
         {
             if (data.Length > 0)
             {
@@ -65,7 +65,7 @@ namespace Reko.Environments.Snes
                 {
                     return true;
                 }
-                // TODO: Need more conclusive tests
+                //$TODO: Need more conclusive tests
                 return false;
             }
             return false;
@@ -76,15 +76,12 @@ namespace Reko.Environments.Snes
             throw new NotImplementedException();
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
             var romdata = RawImage;
-            var mem = new MemoryArea(null, romdata);
             bool bsHeader;
             bool bs;
-            var props = new Dictionary<object, object>
-            {
-            };
+            var props = new Dictionary<object, object> { };
             var forceInterleavedOff = false;
             while (true)
             {
@@ -218,10 +215,10 @@ namespace Reko.Environments.Snes
                 //           in the ROM. If the size of the ROM is not a power of 2, then some
                 //           bytes may enter the sum multiple times through mirroring. The
                 //           checksum complement is the bitwise-xor of the checksum with 0xFFFF.
-                props["checksum"] = String.Format("%04X", data[header + 46] + (data[header + 47] << 8));
-                props["checksum_complement"] = String.Format("%04X", data[header + 44] + (data[header + 45] << 8));
+                props["checksum"] = String.Format("{0:X4}", data[header + 46] + (data[header + 47] << 8));
+                props["checksum_complement"] = String.Format("{0:X4}", data[header + 44] + (data[header + 45] << 8));
 
-                var arch = new Mos6502ProcessorArchitecture("m6502");
+                var arch = new Mos65816Architecture(Services, "m65816");
                 return new Program
                 {
                     Platform = new SnesPlatform(Services, arch, "snes"),

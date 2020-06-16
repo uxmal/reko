@@ -28,13 +28,18 @@ using Reko.Core.CLanguage;
 
 namespace Reko.Environments.Snes
 {
-    public class SnesPlatform : Core.Platform
+    public class SnesPlatform : Platform
     {
         public SnesPlatform(IServiceProvider services, IProcessorArchitecture arch, string platformId) : base(services, arch, platformId)
         {
         }
 
         public override string DefaultCallingConvention => "";
+
+        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        {
+            throw new NotImplementedException();
+        }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
@@ -46,7 +51,7 @@ namespace Reko.Environments.Snes
             throw new NotImplementedException();
         }
 
-        public override SystemService FindService(int vector, ProcessorState state)
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();
         }
@@ -56,14 +61,14 @@ namespace Reko.Environments.Snes
             throw new NotImplementedException();
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention? GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }

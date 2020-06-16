@@ -130,6 +130,7 @@
         <File Source="$(var.RT11.ProjectDir)rt11_services.xml" />
         <File Source="$(var.SegaGenesis.TargetPath)" />
         <File Source="$(var.SegaGenesis.ProjectDir)SegaGenesis.xml" />
+        <File Source="$(var.Snes.TargetPath)" />
         <File Source="$(var.Switch.TargetPath)" />
         <File Source="$(var.SysV.TargetPath)" />
         <File Source="$(var.SysV.ProjectDir)lp32.xml" />
