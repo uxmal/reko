@@ -392,5 +392,40 @@ namespace Reko.UnitTests.Evaluation
 
             Assert.AreEqual("0x12345678<32>", result.ToString());
         }
+
+        [Test]
+        public void Exs_ReduceUnaryNotFollowedByNeg()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Not(m.Neg(foo));
+            Assert.AreEqual("!-foo_1", expr.ToString());
+            Assert.AreEqual("!foo_1", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_ReduceNegComparedToZero()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Eq0(m.Neg(foo));
+            Assert.AreEqual("-foo_1 == 0<32>", expr.ToString());
+            Assert.AreEqual("foo_1 == 0<32>", expr.Accept(simplifier).ToString());
+
+            expr = m.Eq(m.Word32(0), m.Neg(foo));
+            Assert.AreEqual("0<32> == -foo_1", expr.ToString());
+            Assert.AreEqual("foo_1 == 0<32>", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_ReduceArithmeticSequenceToLogicalNot()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.IAdd(m.ISub(m.Word32(0), m.Eq0(m.Neg(foo))), m.Word32(1));
+            Assert.AreEqual("0<32> - (-foo_1 == 0<32>) + 1<32>", expr.ToString());
+            Assert.AreEqual("!foo_1", expr.Accept(simplifier).ToString());
+
+            expr = m.IAdd(m.ISub(m.Word32(0), m.Eq0(foo)), m.Word32(1));
+            Assert.AreEqual("0<32> - (foo_1 == 0<32>) + 1<32>", expr.ToString());
+            Assert.AreEqual("!foo_1", expr.Accept(simplifier).ToString());
+        }
     }
 }

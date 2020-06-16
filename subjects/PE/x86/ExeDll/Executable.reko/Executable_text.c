@@ -363,7 +363,7 @@ ui32 fn00401613(ui32 dwArg04)
 		crt_atexit();
 	else
 		register_onexit_function();
-	return ~(0x00 - (-eax_n == 0x00)) & dwArg04;
+	return ~(0x00 - (eax_n == 0x00)) & dwArg04;
 }
 
 // 0040164E: void fn0040164E(Stack ui32 dwArg04)
@@ -486,7 +486,7 @@ void fn00401774(word32 dwArg04)
 		byte bl_n = 0x00 - (IsDebuggerPresent() == 0x01);
 		SetUnhandledExceptionFilter(null);
 		if (UnhandledExceptionFilter(fp - 0x0C) == 0x00)
-			g_dw403368 &= 0x00 - (-((word32) (bl_n + 0x01)) == 0x00);
+			g_dw403368 &= 0x00 - ((word32) (bl_n + 0x01) == 0x00);
 	}
 	else
 		__fastfail(dwArg04);

@@ -495,7 +495,7 @@ l00401788:
 	SetUnhandledExceptionFilter(0<32>)
 	branch UnhandledExceptionFilter(fp - 0xC<32>) != 0<32> l00401882
 l00401875:
-	Mem108[0x00403368<p32>:word32] = Mem97[0x00403368<p32>:word32] & 0<32> - (-((word32) (bl_90 + 1<8>)) == 0<32>)
+	Mem108[0x00403368<p32>:word32] = Mem97[0x00403368<p32>:word32] & 0<32> - ((word32) (bl_90 + 1<8>) == 0<32>)
 l00401882:
 	return
 fn0040176D_exit:
