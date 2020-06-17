@@ -135,33 +135,36 @@ namespace Reko
             }
         }
 
-        private void EmitProgram(Program program, IEnumerable<Procedure> procs, DataFlowAnalysis? dfa, string filename, TextWriter output)
+        private void EmitProgram(Program program, IEnumerable<object> objects, DataFlowAnalysis? dfa, string filename, TextWriter output)
         {
             if (output == null)
                 return;
-            foreach (Procedure proc in procs)
+            foreach (object o in objects)
             {
-                if (program.NeedsSsaTransform && dfa != null)
+                if (o is Procedure proc)
                 {
-                    ProcedureFlow flow = dfa.ProgramDataFlow[proc];
-                    TextFormatter f = new TextFormatter(output);
-                    if (flow.Signature != null)
-                        flow.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
-                    else
-                        proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
-                    output.WriteLine();
-                    WriteProcedureCallers(program, proc, output);
-                    flow.Emit(proc.Architecture, output);
-                    foreach (Block block in new DfsIterator<Block>(proc.ControlGraph).PostOrder().Reverse())
+                    if (program.NeedsSsaTransform && dfa != null)
                     {
-                        if (block == null)
-                            continue;
-                        block.Write(output);
+                        ProcedureFlow flow = dfa.ProgramDataFlow[proc];
+                        TextFormatter f = new TextFormatter(output);
+                        if (flow.Signature != null)
+                            flow.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
+                        else
+                            proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
+                        output.WriteLine();
+                        WriteProcedureCallers(program, proc, output);
+                    flow.Emit(proc.Architecture, output);
+                        foreach (Block block in new DfsIterator<Block>(proc.ControlGraph).PostOrder().Reverse())
+                        {
+                            if (block == null)
+                                continue;
+                            block.Write(output);
+                        }
                     }
-                }
-                else
-                {
-                    proc.Write(false, output);
+                    else
+                    {
+                        proc.Write(false, output);
+                    }
                 }
                 output.WriteLine();
                 output.WriteLine();
@@ -434,25 +437,33 @@ namespace Reko
             }
         }
 
-        public void WriteDecompiledProcedures(Program program, string filename, IEnumerable<Procedure> procs, TextWriter w)
+        public void WriteDecompiledProcedures(Program program, string filename, IEnumerable<object> objects, TextWriter w)
         {
             var headerfile = Path.ChangeExtension(filename, ".h");
             WriteHeaderComment(filename, program, w);
             w.WriteLine("#include \"{0}\"", headerfile);
             w.WriteLine();
             var fmt = new AbsynCodeFormatter(new TextFormatter(w));
-            foreach (var proc in procs)
+            foreach (var o in objects)
             {
-                try
+                if (o is Procedure proc)
                 {
-                    WriteProcedureHeader(program, proc, w);
-                    fmt.Write(proc);
-                    w.WriteLine();
+                    try
+                    {
+                        WriteProcedureHeader(program, proc, w);
+                        fmt.Write(proc);
+                        w.WriteLine();
+                    }
+                    catch (Exception ex)
+                    {
+                        w.WriteLine();
+                        w.WriteLine("// Exception {0} when writing procedure.", ex.Message);
+                    }
                 }
-                catch (Exception ex)
+                else if (o is StructureField field)
                 {
-                    w.WriteLine();
-                    w.WriteLine("// Exception {0} when writing procedure.", ex.Message);
+                    //$TODO: adapt GlobalDataWriter.
+                    w.WriteLine("{0} {1};  //$TODO: emit address", field.DataType, field.Name);
                 }
             }
         }

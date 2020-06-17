@@ -46,9 +46,9 @@ namespace Reko
         /// </returns>
         TextWriter CreateTextWriter(string filename);
         void WriteDisassembly(Program program, Action<string, Dictionary<ImageSegment, List<ImageMapItem>>, Formatter> writer);
-        void WriteIntermediateCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer);
+        void WriteIntermediateCode(Program program, Action<string, IEnumerable<object>, TextWriter> writer);
         void WriteTypes(Program program, Action<string, TextWriter> writer);
-        void WriteDecompiledCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer);
+        void WriteDecompiledCode(Program program, Action<string, IEnumerable<object>, TextWriter> writer);
         void WriteGlobals(Program program, Action<string, TextWriter> writer);
     }
 
@@ -75,7 +75,7 @@ namespace Reko
             writer("", new Dictionary<ImageSegment, List<ImageMapItem>>(), new NullFormatter());
         }
 
-        public void WriteIntermediateCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer)
+        public void WriteIntermediateCode(Program program, Action<string, IEnumerable<object>, TextWriter> writer)
         {
             writer("", program.Procedures.Values, TextWriter.Null);
         }
@@ -85,7 +85,7 @@ namespace Reko
             writer("", TextWriter.Null);
         }
 
-        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<object>, TextWriter> writer)
         {
             writer("", program.Procedures.Values, TextWriter.Null);
         }
@@ -131,7 +131,7 @@ namespace Reko
             }
         }
 
-        public void WriteIntermediateCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer)
+        public void WriteIntermediateCode(Program program, Action<string, IEnumerable<object>, TextWriter> writer)
         {
             var outputPolicy = program.CreateOutputPolicy();
             foreach (var placement in outputPolicy.GetProcedurePlacements(".dis"))
@@ -140,7 +140,7 @@ namespace Reko
                 var irPath = Path.Combine(program.SourceDirectory, irFilename);
                 using (TextWriter output = CreateTextWriter(irPath))
                 {
-                    writer(irFilename, placement.Value.Values.Cast<Procedure>(), output);
+                    writer(irFilename, placement.Value.Values.OfType<Procedure>(), output);
                 }
             }
         }
@@ -155,17 +155,15 @@ namespace Reko
             }
         }
 
-        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<object>, TextWriter> writer)
         {
             var outputPolicy = program.CreateOutputPolicy();
             foreach (var placement in outputPolicy.GetProcedurePlacements(".c"))
             {
                 var filename = placement.Key;
                 var filePath = Path.Combine(program.SourceDirectory, filename);
-                using (TextWriter output = CreateTextWriter(filePath))
-                {
-                    writer(filename, placement.Value.Values.Cast<Procedure>(), output);
-                }
+                using TextWriter output = CreateTextWriter(filePath);
+                writer(filename, placement.Value.Values, output);
             }
         }
 

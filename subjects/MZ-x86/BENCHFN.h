@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (FFFFDBBA Eq_2 tFFFFDBBA) (8000 (ptr16 Eq_2) ptr8000))
+Eq_1: (struct "Globals" (8000 (ptr16 Eq_2) ptr8000))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (segment "seg0800_t" (1F8 (ptr16 Eq_4) ptr01F8) (330 word16 w0330) (332 (ptr16 Eq_412) ptr0332) (7F2 code t07F2) (1D65 code t1D65))
 	T_2 (in seg0800 : selector)
@@ -20675,7 +20675,6 @@ T_4644:
   OrigDataType: 
 */
 typedef struct Globals {
-	Eq_2 tFFFFDBBA;	// FFFFDBBA
 	struct seg0800_t * ptr8000;	// 8000
 } Eq_1;
 

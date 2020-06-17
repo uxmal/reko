@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Lib;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -58,13 +59,34 @@ namespace Reko.Core.Output
                 filename = Path.ChangeExtension(filename, fileExtension);
                 if (!result.TryGetValue(filename, out var objects))
                 {
-                    objects = new BTreeDictionary <Address, object>();
+                    objects = new BTreeDictionary<Address, object>();
                     result.Add(filename, objects);
                 }
                 objects.Add(proc.EntryAddress, proc);
             }
 
             // Find the segment for each addressable data object.
+            foreach (var segment in program.SegmentMap.Segments.Values)
+            {
+                if (!segment.Address.Selector.HasValue)
+                    continue;
+                if (segment.Identifier?.TypeVariable?.Class.DataType is StructureType strType)
+                {
+                    foreach (var field in strType.Fields)
+                    {
+                        var addrField = segment.Address + field.Offset;
+                        var filename = FilenameBasedOnSegment(addrField, segment);
+                        filename = Path.ChangeExtension(filename, fileExtension);
+
+                        if (!result.TryGetValue(filename, out var objects))
+                        {
+                            objects = new BTreeDictionary<Address, object>();
+                            result.Add(filename, objects);
+                        }
+                        objects.Add(addrField, field);
+                    }
+                }
+            }
             return result;
         }
 
