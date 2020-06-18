@@ -64,6 +64,7 @@ namespace Reko.ImageLoaders.MachO
         protected EndianImageReader rdr;
         public ArchSpecific specific;
         protected Dictionary<uint, uint> mpCputypeToUnixthreadPc;
+        protected Dictionary<string, ulong> segments;
         private string platformName;
 
         protected Parser(MachOLoader ldr, EndianImageReader rdr)
@@ -81,6 +82,7 @@ namespace Reko.ImageLoaders.MachO
                 { CPU_TYPE_ARM64, 0x110 },
                 { CPU_TYPE_MC680x0, 0x44 }
             };
+            this.segments = new Dictionary<string, ulong>();
         }
 
         public ArchSpecific CreateArchitecture(uint cputype)
@@ -93,6 +95,7 @@ namespace Reko.ImageLoaders.MachO
             case CPU_TYPE_MIPS: return MakeSpecific("mips-be-32", a => new MipsSpecific(a));
             case CPU_TYPE_POWERPC: return MakeSpecific("ppc-be-32", a => new PowerPCSpecific(a));
             case CPU_TYPE_MC680x0: return MakeSpecific("m68k", a=> new M68kSpecific(a));
+            case CPU_TYPE_ARM64: return MakeSpecific("arm-64", a => new Arm64Specific(a));
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", cputype));
             }
@@ -115,6 +118,7 @@ namespace Reko.ImageLoaders.MachO
         // http://llvm.org/docs/doxygen/html/Support_2MachO_8h_source.html
         // http://opensource.apple.com//source/clang/clang-503.0.38/src/tools/macho-dump/macho-dump.cpp
         // https://github.com/opensource-apple/cctools/blob/master/libstuff/ofile.c
+        // https://github.com/aidansteele/osx-abi-macho-file-format-reference
         [Flags]
         public enum Command : uint
         {
@@ -210,6 +214,9 @@ namespace Reko.ImageLoaders.MachO
                 case LC_VERSION_MIN_MACOSX:
                     platformName = "macOsX";
                     break;
+                case LC_MAIN & ~LC_REQ_DYLD:
+                    ParseMain();
+                    break;
                 }
                 rdr.Offset = pos + cmdsize;
             }
@@ -270,7 +277,8 @@ namespace Reko.ImageLoaders.MachO
             {
                 throw new BadImageFormatException("Could not read segment command.");
             }
-            Debug.Print("  Found segment '{0}' with {1} sections.", segname, nsects);
+            Debug.Print("  Found segment '{0}' at address {1} with {2} sections.", segname, vmaddr, nsects);
+            this.segments[segname] = vmaddr;
 
             for (uint i = 0; i < nsects; ++i)
             {
@@ -293,8 +301,8 @@ namespace Reko.ImageLoaders.MachO
             {
                 throw new BadImageFormatException("Could not read segment command.");
             }
-            Debug.Print("Found segment '{0}' with {1} sections.", segname, nsects);
-
+            Debug.Print("Found segment '{0}' at address {1} with {2} sections.", segname, vmaddr, nsects);
+            this.segments[segname] = vmaddr;
             for (uint i = 0; i < nsects; ++i)
             {
                 Debug.Print("Parsing section number {0}.", i);
@@ -442,6 +450,7 @@ namespace Reko.ImageLoaders.MachO
             AddSection(segmentMap, (uint)size, flags, reserved1, reserved2, protection, addr, bytes, name);
         }
 
+        protected abstract void ParseMain();
 
         void ParseSymtabCommand(IProcessorArchitecture arch)
         {
@@ -460,7 +469,8 @@ namespace Reko.ImageLoaders.MachO
                     if (msym != null)
                     {
                         ldr.machoSymbols.Add(msym);
-                        if (addr.ToLinear() != 0)
+                        if (addr.ToLinear() != 0 &&
+                            msym.Name != "radr://5614542")      // Ignore Apple's hack for radar bug 5614542
                         {
                             ldr.imageSymbols[addr] = ImageSymbol.Procedure(arch, addr, msym.Name);
                         }
@@ -578,13 +588,21 @@ namespace Reko.ImageLoaders.MachO
         {
             Debug.Print("    Loading indirect symbols");
             var indirects = new List<uint>();
+
             for (uint i = 0; i < nindirectsyms; ++i)
             {
                 if (!rdr.TryReadUInt32(out uint indir))
                     return indirects;
                 indirects.Add(indir);
-                var sym = ldr.machoSymbols[(int) indir];
-                Debug.Print("      {0}: {1} {2:X2} {3:X2} {4:X8} {5}", i, indir, sym.n_type, sym.n_desc, sym.n_value, sym.Name);
+                if ((int)indir < 0)
+                {
+                    Debug.Print(" *** Invalid indirect symbol {0:X}", indir);
+                }
+                else
+                {
+                    var sym = ldr.machoSymbols[(int) indir];
+                    Debug.Print("      {0}: {1} {2:X2} {3:X2} {4:X8} {5}", i, indir, sym.n_type, sym.n_desc, sym.n_value, sym.Name);
+                }
             }
             return indirects;
         }
@@ -643,6 +661,11 @@ namespace Reko.ImageLoaders.MachO
                 };
             }
             throw new BadImageFormatException("Invalid Mach-O header.");
+        }
+
+        protected override void ParseMain()
+        {
+            throw new NotImplementedException();
         }
 
         protected override void ParseUnixThread(uint cputype)
@@ -739,6 +762,13 @@ namespace Reko.ImageLoaders.MachO
             throw new BadImageFormatException("Invalid Mach-O header.");
         }
 
+        protected override void ParseMain()
+        {
+            var entryOffset = rdr.ReadUInt64();
+            var addrEntry = base.segments["__TEXT"] + entryOffset;
+            base.ldr.entryPoints.Add(ImageSymbol.Procedure(specific.Architecture, Address.Ptr64(addrEntry)));
+        }
+
         protected override void ParseUnixThread(uint cputype)
         {
             throw new NotImplementedException();
@@ -746,7 +776,7 @@ namespace Reko.ImageLoaders.MachO
 
         protected override void LoadImports(MachOSection section, List<uint> indirects)
         {
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
 
         public override (MachOSymbol, Address) ReadSymbol(byte[] strBytes, EndianImageReader syms, uint i)

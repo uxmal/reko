@@ -39,6 +39,8 @@ namespace Reko.ImageLoaders.MachO
         const uint MH_MAGIC_32_LE = 0xCEFAEDFE; //0xfeedface;
         const uint MH_MAGIC_64_LE = 0xCFFAEDFE; // 0xfeedfacf;
 
+        internal static readonly TraceSwitch trace = new TraceSwitch(nameof(MachOLoader), "Trace loading of MachO binaries") { Level = TraceLevel.Verbose };
+
         private Parser parser;
         internal List<MachOSection> sections;
         internal Dictionary<string, MachOSection> sectionsByName;
@@ -92,7 +94,13 @@ namespace Reko.ImageLoaders.MachO
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             CollectSymbolStubs(machoSymbols, imageSymbols);
-            return new RelocationResults(entryPoints, imageSymbols);
+            var imgSymbols = new SortedList<Address, ImageSymbol>();
+            foreach (var de in imageSymbols)
+            {
+                if (program.SegmentMap.IsValidAddress(de.Key))
+                    imgSymbols.Add(de.Key, de.Value);
+            }
+            return new RelocationResults(entryPoints, imgSymbols);
         }
 
         /// <summary>

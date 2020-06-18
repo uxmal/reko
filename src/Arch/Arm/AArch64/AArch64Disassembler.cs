@@ -1948,7 +1948,9 @@ namespace Reko.Arch.Arm.AArch64
                         Nyi("AdvancedSimdLdStMultiplePostIdx L:opcode=0:0100"),
                         Nyi("AdvancedSimdLdStMultiplePostIdx L:opcode=0:0101"),
                         Nyi("AdvancedSimdLdStMultiplePostIdx L:opcode=0:0110"),
-                        Nyi("AdvancedSimdLdStMultiplePostIdx L:opcode=0:0111"),
+                        Select((16,5), Is31,
+                            Instr(Mnemonic.st1, q(30),Vmr(0,5,2,BBBB),MvmrPpost(2)),
+                            Nyi("AdvancedSimdLdStMultiplePostIdx L:opcode=0:0111")),
                         Select((16,5), Is31,
                             Instr(Mnemonic.st2, q(30),Vmr(0,5,2,BBBB),MvmrPpost(2)),
                             Nyi("AdvancedSimdLdStMultiplePostIdx L:opcode=0:1000 Rm != 11111")),
@@ -2027,14 +2029,14 @@ namespace Reko.Arch.Arm.AArch64
                     Select((10, 5), Is31, Instr(Mnemonic.caspa, x("32-bit")), invalid),
                     Select((10, 5), Is31, Instr(Mnemonic.caspal, x("32-bit")), invalid),
 
-                    Instr(Mnemonic.stllrb, x("")),
-                    Instr(Mnemonic.stlrb, x("")),
+                    Instr(Mnemonic.stllrb, W_0, Mb(w8, 5, 5)),
+                    Instr(Mnemonic.stlrb, W_0, Mb(w8, 5, 5)),
                     Select((10, 5), Is31, Instr(Mnemonic.caspb, x("32-bit")), invalid),
                     Select((10, 5), Is31, Instr(Mnemonic.caspbl, x("32-bit")), invalid),
-                    Instr(Mnemonic.ldlarb, x("")),
-                    Instr(Mnemonic.ldarb, x("")),
-                    Select((10, 5), Is31, Instr(Mnemonic.casab, x("32-bit")), invalid),
-                    Select((10, 5), Is31, Instr(Mnemonic.casalb, x("32-bit")), invalid),
+                    Instr(Mnemonic.ldlarb, W_0, Mb(w8, 5, 5)),
+                    Instr(Mnemonic.ldarb, W_0, Mb(w8, 5, 5)),
+                    Select((10, 5), Is31, Instr(Mnemonic.casab, W_16, W_0, Mb(w32, 5, 5)), invalid),
+                    Select((10, 5), Is31, Instr(Mnemonic.casalb, W_16,W_0,Mb(w32, 5, 5)), invalid),
 
                     Nyi("LoadStoreExclusive size:o2:L:o1:o0 010000"),
                     Nyi("LoadStoreExclusive size:o2:L:o1:o0 010001"),
@@ -2227,7 +2229,7 @@ namespace Reko.Arch.Arm.AArch64
 
             Decoder Bitfield;
             {
-                Bitfield = Mask(22, 1,
+                Bitfield = Mask(22, 1, "  Bitfield",
                     Mask(29, 3,
                         Instr(Mnemonic.sbfm, W_0,W_5,U(16,6,i32),U(10,6,i32), SbfmAliases),
                         Instr(Mnemonic.bfm, W_0,W_5,U(16,6,i32),U(10,6,i32)),
