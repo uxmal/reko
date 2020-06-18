@@ -79,6 +79,7 @@ namespace Reko.Typing
                             string.Format("Exception in TypedExpressionRewriter.RewriteProgram: {0} ({1})\r\n{2}", proc, ex.Message, ex.StackTrace));
                         // reset flags after error
                         dereferenced = false;
+                        basePtr = null;
                     }
                 }
             }
@@ -262,12 +263,12 @@ namespace Reko.Typing
 
         public override Expression VisitAddress(Address addr)
         {
-            return tcr.Rewrite(addr, dereferenced);
+            return tcr.Rewrite(addr, basePtr, dereferenced);
         }
 
         public override Expression VisitConstant(Constant c)
         {
-            return tcr.Rewrite(c, this.dereferenced);
+            return tcr.Rewrite(c, basePtr, this.dereferenced);
         }
 
         public override Expression VisitMemoryAccess(MemoryAccess access)

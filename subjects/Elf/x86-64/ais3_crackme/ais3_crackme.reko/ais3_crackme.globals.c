@@ -17,5 +17,8 @@ char g_str400718[] = "I'm sorry, that's the wrong secret key!";
 	{
 	};
 word64 g_qw600E08 = 0x00;
+byte g_a601020[] = 
+	{
+	};
 byte g_b601038 = 0x00;
 

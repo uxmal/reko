@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (4005C5 Eq_16 t4005C5) (400620 Eq_19 t400620) (4006B0 Eq_20 t4006B0) (4006C8 (str char) str4006C8) (4006F0 (str char) str4006F0) (400718 (str char) str400718) (600DF8 (arr (ptr64 code)) a600DF8) (600E08 word64 qw600E08) (601038 byte b601038))
+Eq_1: (struct "Globals" (4005C5 Eq_16 t4005C5) (400620 Eq_19 t400620) (4006B0 Eq_20 t4006B0) (4006C8 (str char) str4006C8) (4006F0 (str char) str4006F0) (400718 (str char) str400718) (600DF8 (arr (ptr64 code)) a600DF8) (600E08 word64 qw600E08) (601020 (arr byte) a601020) (601038 byte b601038))
 	globals_t (in globals : (ptr64 (struct "Globals")))
 Eq_2: (fn void ())
 	T_2 (in call_gmon_start : ptr64)
@@ -479,9 +479,9 @@ T_103: (in (int64) SLICE((uint64) dwLoc0C_100, word32, 0) : int64)
   OrigDataType: (ptr64 (struct (601020 T_106 t601020)))
 T_104: (in 0x601020<64> : word64)
   Class: Eq_104
-  DataType: word64
-  OrigDataType: word64
-T_105: (in (int64) (word32) (uint64) dwLoc0C_100 + 0x601020<64> : word64)
+  DataType: (ptr64 (arr byte))
+  OrigDataType: (ptr64 (struct (0 (arr T_231) a0000)))
+T_105: (in (int64) SLICE((uint64) dwLoc0C_100, word32, 0) + 0x601020<64> : word64)
   Class: Eq_105
   DataType: int64
   OrigDataType: int64
@@ -713,7 +713,7 @@ T_162: (in (byte) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (uint6
   Class: Eq_109
   DataType: byte
   OrigDataType: byte
-T_163: (in (byte) (uint64) (word32) ((int64) (word32) (uint64) dwLoc0C_100 + 0x601020<64>) == (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_35)) >> (byte) ((uint64) ((word32) ((uint64) (8<32> - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_100) ^ 9<32>)) & 3<32>)))))))))))) | (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_35)) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_100) ^ 9<32>)) & 3<32>)))))))))))) + 8<8> : bool)
+T_163: (in (byte) (uint64) (word32) g_a601020[(int64) (word32) (uint64) dwLoc0C_100] == (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_35)) >> (byte) ((uint64) ((word32) ((uint64) (8<32> - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_100) ^ 9<32>)) & 3<32>)))))))))))) | (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_35)) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_100) ^ 9<32>)) & 3<32>)))))))))))) + 8<8> : bool)
   Class: Eq_163
   DataType: bool
   OrigDataType: bool
@@ -940,7 +940,7 @@ T_218: (in 0<u64> : uint64)
 T_219: (in 0000000000600DF8 : ptr64)
   Class: Eq_219
   DataType: (ptr64 (arr (ptr64 code)))
-  OrigDataType: (ptr64 (struct (0 (arr T_231) a0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_232) a0000)))
 T_220: (in 8<64> : word64)
   Class: Eq_220
   DataType: ui64
@@ -987,6 +987,10 @@ T_230:
   OrigDataType: (arr T_229)
 T_231:
   Class: Eq_231
+  DataType: byte
+  OrigDataType: (struct 0001 (0 T_106 t0000))
+T_232:
+  Class: Eq_232
   DataType: (ptr64 code)
   OrigDataType: (struct 0008 (0 T_222 t0000))
 */
@@ -999,6 +1003,7 @@ typedef struct Globals {
 	char str400718[];	// 400718
 	<anonymous> * a600DF8[];	// 600DF8
 	word64 qw600E08;	// 600E08
+	byte a601020[];	// 601020
 	byte b601038;	// 601038
 } Eq_1;
 

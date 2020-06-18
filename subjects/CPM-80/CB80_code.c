@@ -864,7 +864,7 @@ void fn0BE4(byte f)
 //      fn0E63
 byte fn0C93()
 {
-	return (word16) g_t138C + g_b138D + ((uint16) ((uint8) g_t138C) + 5004) + 0x7F;
+	return (char *) *((char *) &g_t138C + (uint16) ((uint8) g_t138C)) + ((word16) g_t138C + g_b138D) + 0x007F;
 }
 
 // 0D64: FlagGroup Eq_n fn0D64(Register out Eq_n aOut)
@@ -975,7 +975,7 @@ void fn100A(word16 af)
 			break;
 		cu8 a_n = g_b14FF;
 		g_b14FF = a_n + 0x01;
-		(uint16) (uint8) (a_n + 0x01) + 0x14FF = (uint16) g_b16A8;
+		(&g_b14FF)[(uint16) (uint8) (a_n + 0x01)] = g_b16A8;
 		g_b16A8 = fn045B();
 		af = SEQ(0x00 - (g_b16A8 < 33), f_n);
 	}

@@ -1303,5 +1303,47 @@ test_exit:
                 m.Return();
             }, sExp);
         }
+
+        [Test]
+        public void TerGithubIssue879()
+        {
+            var sExp =
+            #region Expected
+                @"// Before ///////
+// test
+// Return size: 0
+define test
+test_entry:
+	// succ:  l1
+l1:
+	Mem0[ds:0x118<16>:byte] = Mem0[ds:(uint16) (uint8) Mem0[ds:0x94<16>:byte] + 0x95<16>:byte]
+test_exit:
+
+// After ///////
+// test
+// Return size: 0
+define test
+test_entry:
+	// succ:  l1
+l1:
+	ds->b0118 = ds->a0095[(uint16) (uint8) ds->b0094]
+test_exit:
+
+";
+            #endregion
+
+            RunStringTest(m =>
+            {
+                Identifier ds = m.Reg16("ds", 42);
+                m.SStore(ds, m.Word16(0x118),
+                    m.SegMem8(
+                        ds,
+                        m.IAdd(
+                            m.Cast(PrimitiveType.UInt16, m.Cast(PrimitiveType.UInt8,
+                                m.SegMem8(ds, m.Word16(0x94)))),
+                            m.Word16(0x95))));
+            }, sExp);
+
+        }
     }
 }

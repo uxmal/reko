@@ -527,13 +527,28 @@ namespace Reko.Typing
             {
                 // Mem[p + c]
                 p = fieldAccessPattern.CapturedExpression("p")!;
-                offset = OffsetOf((Constant) fieldAccessPattern.CapturedExpression("c")!);
-                var iv = GetInductionVariable(p);
-                if (iv != null)
+                var c = (Constant) fieldAccessPattern.CapturedExpression("c")!;
+                offset = OffsetOf(c);
+                if (p is Cast cast && cast.Expression.DataType.BitSize < cast.DataType.BitSize)
                 {
-                    VisitInductionVariable(globals, (Identifier) p, iv, offset, tvAccess);
+                    // p some cast-extended thing and cannot be a pointer; c therefore must be treated as a
+                    // pointer and p is the index.
+                    // First do the array index.
+                    p.Accept(this, p.TypeVariable!);
+
+                    var cbElement = tvAccess.DataType.Size;
+                    var tvElement = ArrayField(basePointer, c, c.DataType.BitSize, 0, cbElement, 0, tvAccess);
+                    StructField(basePointer, c, 0, tvElement, eaBitSize);
                 }
-                StructField(basePointer, p, offset, tvAccess, eaBitSize);
+                else
+                {
+                    var iv = GetInductionVariable(p);
+                    if (iv != null)
+                    {
+                        VisitInductionVariable(globals, (Identifier) p, iv, offset, tvAccess);
+                    }
+                    StructField(basePointer, p, offset, tvAccess, eaBitSize);
+                }
             }
             else if (effectiveAddress is Constant c)
             {
@@ -555,25 +570,8 @@ namespace Reko.Typing
             else if (IsArrayAccess(effectiveAddress))
             {
                 // Mem[p + i] where i is integer type.
-                var binEa = (BinaryExpression)effectiveAddress;
-
-                // First do the array index.
-                binEa.Right.Accept(this, binEa.Right.TypeVariable!);
-
-                var cbElement = tvAccess.DataType.Size;
-                var tvElement = ArrayField(basePointer, binEa.Left, binEa.DataType.BitSize, 0, cbElement, 0, tvAccess);
-                var dtArray = factory.CreateArrayType(tvElement, 0);
-
-                var tvArray = store.CreateTypeVariable(factory);
-                tvArray.DataType = dtArray;
-                tvArray.OriginalDataType = dtArray;
-
-                StructField(basePointer, binEa.Left, 0, dtArray, eaBitSize);
-
-                if (!(binEa.Left is Identifier))
-                {
-                    VisitMemoryAccess(basePointer, tvArray, binEa.Left, globals);
-                }
+                var binEa = (BinaryExpression) effectiveAddress;
+                VisitPossibleArrayAccess(basePointer, tvAccess, binEa.Left, binEa.Right, globals, eaBitSize);
                 StructField(basePointer, effectiveAddress, 0, tvAccess, eaBitSize);
                 effectiveAddress.Accept(this, effectiveAddress.TypeVariable!);
                 return false;
@@ -587,6 +585,28 @@ namespace Reko.Typing
             StructField(basePointer, p, offset, tvAccess, eaBitSize);
             p.Accept(this, p.TypeVariable!);
             return false;
+        }
+
+        private void VisitPossibleArrayAccess(Expression? basePointer, TypeVariable tvAccess, Expression left, Expression right, Expression globals, int eaBitSize)
+        {
+
+            // First do the array index.
+            right.Accept(this, right.TypeVariable!);
+
+            var cbElement = tvAccess.DataType.Size;
+            var tvElement = ArrayField(basePointer, left, left.DataType.BitSize, 0, cbElement, 0, tvAccess);
+            var dtArray = factory.CreateArrayType(tvElement, 0);
+
+            var tvArray = store.CreateTypeVariable(factory);
+            tvArray.DataType = dtArray;
+            tvArray.OriginalDataType = dtArray;
+
+            StructField(basePointer, left, 0, dtArray, eaBitSize);
+
+            if (!(left is Identifier))
+            {
+                VisitMemoryAccess(basePointer, tvArray, left, globals);
+            }
         }
 
         /// <summary>

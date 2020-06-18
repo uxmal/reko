@@ -1148,7 +1148,7 @@ void fn0D98(struct Eq_n * r0, byte * r4)
 	word16 r1_n;
 	for (r1_n = 0x46; r1_n != 0x00; --r1_n)
 	{
-		*r4 = (byte) ((int16) r0->b0000 + 0x0EE0);
+		*r4 = g_a0EE0[(int16) r0->b0000];
 		++r0;
 		++r4;
 	}

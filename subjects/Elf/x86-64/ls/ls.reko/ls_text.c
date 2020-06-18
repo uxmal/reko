@@ -5775,7 +5775,7 @@ l000000000040C237:
 						uint64 rcx_n;
 						rdx_n = qwLocD0_n + 1;
 						if ((word32) (uint64) eax_n != 0x00 || ebx_n != 0x01)
-							rcx_n = (uint64) (word32) ((int64) ebx_n + 4284280);
+							rcx_n = (uint64) (word32) g_a415F78[(int64) ebx_n];
 						else
 							rcx_n = 0x6B;
 						*qwLocD0_n = (byte) rcx_n;

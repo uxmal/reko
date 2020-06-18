@@ -478,9 +478,9 @@ l1483_nDBF:
 		__cli();
 		di_n = di - 0x01;
 		Mem432[ds_n:bx_n + 0x45 + di_n:word16] = Mem423[ss:sp_n + 0x00:word16];
-		struct Eq_n Eq_n::* bp_n = (char *) &(ds_n->*bp_n).t0000 + 1;
+		struct Eq_n Eq_n::* bp_n = (char *) &bp_n->t0000 + 1;
 		Mem438[ds_n:bx_n + 0xC079 + si_n:word16] = Mem432[ds_n:bx_n + 0xC079 + si_n:word16] + bp_n;
-		sp_n = &(ds_n->*sp_n).w0000 + 2;
+		sp_n = &sp_n->w0000 + 2;
 		bp_n = bp_n - 0x01;
 		ds_bx_n = ds_bx_n;
 	}
@@ -488,7 +488,7 @@ l1483_nDBF:
 	<type-error> Eq_n::* bx_n = (word16) ds_bx_n;
 	ds_n = SLICE(ds_bx_n, selector, 16);
 	Mem457[ds_n:bx_n + 0x02 + di_n:byte] = Mem451[ds_n:bx_n + 0x02 + di_n:byte] + SLICE(cx_n, byte, 0);
-	sp_n = &(ds_n->*sp_n).w0000 + 1;
+	sp_n = &sp_n->w0000 + 1;
 	cx_n = cx_n;
 	goto l1483_nDBF;
 }

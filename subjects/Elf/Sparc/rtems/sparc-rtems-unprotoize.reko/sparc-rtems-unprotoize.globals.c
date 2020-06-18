@@ -175,6 +175,9 @@ Eq_n g_t2B310 =
 word64 g_qw2B400 = 0x00;
 struct Eq_n * g_ptr2B408 = null;
 ptr32 g_ptr2B40C = 0x00;
+byte g_a2B411[] = 
+	{
+	};
 Eq_n g_t2B640 = 
 	{
 	};

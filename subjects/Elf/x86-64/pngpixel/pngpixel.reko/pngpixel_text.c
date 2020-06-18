@@ -144,7 +144,7 @@ l00000000004012C9:
 			{
 				word32 esi_n;
 				if (eax_n < 0x00)
-					esi_n = (word32) (uint64) (word32) (byte) (uint64) (word32) ((uint64) eax_n + 0x00);
+					esi_n = (word32) (uint64) (word32) (byte) (uint64) (word32) null[(uint64) eax_n];
 				else
 					esi_n = 0xFF;
 				printf("INDEXED %u = %d %d %d %d\n", (uint64) (word32) (uint64) eax_n, (uint64) (word32) (byte) (uint64) (word32) null[(uint64) eax_n].b0000, (uint64) (word32) (byte) (uint64) (word32) ((Eq_n[]) 0x01)[(uint64) eax_n].b0000, (uint64) (word32) (uint64) (word32) (byte) (uint64) (word32) ((Eq_n[]) 0x02)[(uint64) eax_n].b0000, (uint64) esi_n);

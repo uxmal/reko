@@ -1531,11 +1531,11 @@ Eq_n munge_compile_params(Eq_n o0, ptr32 & i6Out)
 	{
 		ui32 o3_n;
 		int32 g2_n = l0_n << 0x02;
-		if (((word32) ((word32) *i0_n + 177169) & 0x08) != 0x00)
+		if (((word32) g_a2B411[(word32) *i0_n] & 0x08) != 0x00)
 		{
 			o3_n = l0_n + 0x01;
 			i0_n = (word32) i0_n + 1;
-			while (((word32) ((word32) *i0_n + 177169) & 0x08) != 0x00)
+			while (((word32) g_a2B411[(word32) *i0_n] & 0x08) != 0x00)
 				i0_n = (word32) i0_n + 1;
 		}
 		else
@@ -1966,7 +1966,7 @@ void seek_to_line(Eq_n o0)
 Eq_n forward_to_next_token_char(Eq_n o0)
 {
 	Eq_n i0_n = (word32) o0 + 1;
-	if (((word32) ((word32) *((word32) o0 + 1) + 177169) & 0x08) != 0x00)
+	if (((word32) g_a2B411[(word32) *((word32) o0 + 1)] & 0x08) != 0x00)
 	{
 		up32 o0_n = g_dw281D0;
 		while (true)
@@ -1975,7 +1975,7 @@ Eq_n forward_to_next_token_char(Eq_n o0)
 			word32 i2_n;
 			word32 i6_n;
 			i0_n = check_source((bool) cond((word32) i0_n + 1 - o0_n), 0x00, out i1_n, out i2_n, out i6_n);
-			if (((word32) ((word32) *i0_n + 177169) & 0x08) == 0x00)
+			if (((word32) g_a2B411[(word32) *i0_n] & 0x08) == 0x00)
 				break;
 			o0_n = g_dw281D0;
 		}
@@ -2126,7 +2126,7 @@ l00013BAC:
 			word32 i2_n;
 			check_source((bool) cond(g_dw281E0 - &l1_n->bFFFFFFFF), 0x00, out i1_n, out i2_n, out i6_n);
 			Eq_n l0_n = &l1_n->bFFFFFFFF;
-			if (((word32) ((word32) l1_n->bFFFFFFFF + 177169) & 0x08) != 0x00)
+			if (((word32) g_a2B411[(word32) l1_n->bFFFFFFFF] & 0x08) != 0x00)
 			{
 				ui32 o0_n = g_dw281E0;
 				while (true)
@@ -2136,7 +2136,7 @@ l00013BAC:
 					word32 i2_n;
 					word32 i6_n;
 					check_source((bool) cond(o0_n - l0_n), 0x00, out i1_n, out i2_n, out i6_n);
-					if (((word32) ((word32) *l0_n + 177169) & 0x08) == 0x00)
+					if (((word32) g_a2B411[(word32) *l0_n] & 0x08) == 0x00)
 						break;
 					o0_n = g_dw281E0;
 				}
@@ -2174,7 +2174,7 @@ l00013BAC:
 			Eq_n l5_n;
 			struct Eq_n * o1_n = i2_n->ptr0010;
 			int8 * l0_n = (word32) l1_n - 1;
-			if (((word32) ((word32) *((word32) l1_n - 1) + 177169) & 0x08) != 0x00)
+			if (((word32) g_a2B411[(word32) *((word32) l1_n - 1)] & 0x08) != 0x00)
 			{
 				l5_n = o1_n->t0004;
 				ui32 o0_n = *((word32) l2_n + 480);
@@ -2184,7 +2184,7 @@ l00013BAC:
 					word32 i1_n;
 					word32 i6_n;
 					check_source((bool) cond(o0_n - l0_n), 0x00, out i1_n, out i2_n, out i6_n);
-					if (((word32) ((word32) *l0_n + 177169) & 0x08) == 0x00)
+					if (((word32) g_a2B411[(word32) *l0_n] & 0x08) == 0x00)
 						break;
 					o0_n = (ui32) *((word32) l2_n + 480);
 				}
@@ -2289,7 +2289,7 @@ word32 find_rightmost_formals_list(int8 * o0)
 					word32 i2_n;
 					word32 i6_n;
 					i0_n = check_source(SLICE(cond(o0_n - (i0_n + ~0x00)), bool, 0), 0x00, out i1_n, out i2_n, out i6_n);
-					if (((word32) ((word32) *i0_n + 177169) & 0x08) == 0x00)
+					if (((word32) g_a2B411[(word32) *i0_n] & 0x08) == 0x00)
 						break;
 					o0_n = g_dw281E0;
 				}
@@ -2439,7 +2439,7 @@ l000145B4:
 	{
 		Eq_n l0_n;
 		g_t28140 = o3_n;
-		if (((word32) ((word32) *((word32) o3_n + 1) + 177169) & 0x08) != 0x00)
+		if (((word32) g_a2B411[(word32) *((word32) o3_n + 1)] & 0x08) != 0x00)
 		{
 			l0_n = (word32) o3_n + 1;
 			Eq_n o0_n = i6_n->tFFFFFFEC;
@@ -2449,7 +2449,7 @@ l000145B4:
 				word32 i2_n;
 				word32 i1_n;
 				check_source((bool) cond(l0_n - o0_n), i6_n->tFFFFFFEC, out i1_n, out i2_n, out i6_n);
-				if (((word32) ((word32) *l0_n + 177169) & 0x08) == 0x00)
+				if (((word32) g_a2B411[(word32) *l0_n] & 0x08) == 0x00)
 					break;
 				o0_n = i6_n->tFFFFFFEC;
 			}
@@ -2470,7 +2470,7 @@ l000145B4:
 				struct Eq_n * o0_n = careful_find_l_paren(l1_n->ptr0140, out l1_n, out i6_n);
 				l1_n->ptr0140 = (struct Eq_n *) &o0_n->bFFFFFFFF;
 				struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
-				if (((word32) ((word32) o0_n->bFFFFFFFF + 177169) & 0x08) != 0x00)
+				if (((word32) g_a2B411[(word32) o0_n->bFFFFFFFF] & 0x08) != 0x00)
 				{
 					Eq_n i0_n = 0x00028000;
 					Eq_n o2_n = g_t28140;
@@ -2482,7 +2482,7 @@ l000145B4:
 						word32 i2_n;
 						word32 i1_n;
 						i0_n = check_source(0x01 - (o2_n - o1_n < 0x00), o1_n, out i1_n, out i2_n, out i6_n);
-						if (((word32) ((word32) *g_t28140 + 177169) & 0x08) == 0x00)
+						if (((word32) g_a2B411[(word32) *g_t28140] & 0x08) == 0x00)
 							break;
 						o2_n = g_t28140;
 					}

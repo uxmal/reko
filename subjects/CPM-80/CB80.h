@@ -97,7 +97,7 @@ Eq_75: (fn Eq_80 (Eq_8, Eq_43))
 	T_75 (in fn03BB : ptr16)
 	T_76 (in signature of fn03BB : void)
 	T_95 (in fn03BB : ptr16)
-Eq_80: (union "Eq_80" (bool u0) (Eq_2760 u1))
+Eq_80: (union "Eq_80" (bool u0) (Eq_2762 u1))
 	T_80 (in fn03BB(g_t1658, out a_23) : bool)
 	T_93 (in  : bool)
 	T_99 (in fn03BB(g_t1659, out a_9) : bool)
@@ -197,7 +197,7 @@ Eq_219: (union "Eq_219" (byte u0) ((ptr16 Fcb) u1))
 	T_280 (in Mem67[0x1660<16>:word16] : word16)
 	T_309 (in Mem83[0x1660<16>:word16] : word16)
 	T_330 (in Mem67[0x1660<16>:word16] : word16)
-Eq_222: (union "Eq_222" (byte u0) ((ptr16 Eq_2762) u1))
+Eq_222: (union "Eq_222" (byte u0) ((ptr16 Eq_2764) u1))
 	T_222 (in hl_137 : Eq_222)
 	T_223 (in <invalid> : void)
 	T_502 (in bOut : Eq_222)
@@ -420,7 +420,7 @@ Eq_585: (union "Eq_585" (byte u0) ((ptr16 (arr Eq_597)) u1))
 	T_702 (in Mem29[0x1678<16>:word16] : word16)
 	T_715 (in Mem52[0x1678<16>:word16] : word16)
 	T_739 (in 0x2C<8> : byte)
-Eq_597: (struct "Eq_597" 0001 (0 Eq_2763 t0000))
+Eq_597: (struct "Eq_597" 0001 (0 Eq_2765 t0000))
 	T_597 (in 0<8> : byte)
 	T_602 (in Mem19[Mem17[0x1678<16>:word16] + 0<16>:byte] : byte)
 	T_612 (in a_77 : Eq_597)
@@ -607,7 +607,7 @@ Eq_1031: (fn cu8 (cu8, byte))
 Eq_1123: (fn Eq_80 (byte, byte, Eq_1127, byte, Eq_1129, Eq_1130))
 	T_1123 (in fn0990 : ptr16)
 	T_1124 (in signature of fn0990 : void)
-Eq_1127: (union "Eq_1127" (byte u0) ((ptr16 Eq_2764) u1))
+Eq_1127: (union "Eq_1127" (byte u0) ((ptr16 Eq_2766) u1))
 	T_1127 (in c : Eq_1127)
 	T_1132 (in SLICE(hl_79, byte, 0) : byte)
 	T_1371 (in Mem14[0x1692<16>:byte] : byte)
@@ -687,7 +687,7 @@ Eq_1340: (fn uint8 (Eq_999))
 Eq_1346: (fn uint8 (Eq_999))
 	T_1346 (in F_MAKE : ptr16)
 	T_1347 (in signature of F_MAKE : void)
-Eq_1363: (union "Eq_1363" (bool u0) (Eq_2765 u1))
+Eq_1363: (union "Eq_1363" (bool u0) (Eq_2767 u1))
 	T_1363 (in C : Eq_1363)
 	T_1439 (in C_88 : Eq_1363)
 	T_1442 (in cond(a_84 >>u 1<8>) : byte)
@@ -799,7 +799,7 @@ Eq_1991: (fn void (byte, Eq_793, byte, Eq_795))
 	T_1991 (in fn075C : ptr16)
 	T_1992 (in signature of fn075C : void)
 	T_2070 (in fn075C : ptr16)
-Eq_2016: (union "Eq_2016" (cu8 u0) ((ptr16 Eq_2766) u1))
+Eq_2016: (union "Eq_2016" (cu8 u0) ((ptr16 Eq_2768) u1))
 	T_2016 (in Mem0[0x138C<16>:byte] : byte)
 	T_2019 (in Mem0[0x138C<16>:byte] : byte)
 	T_2175 (in 0<8> : byte)
@@ -934,18 +934,18 @@ Eq_2748: (fn void ())
 Eq_2751: (fn void ())
 	T_2751 (in fn15B0 : ptr16)
 	T_2752 (in signature of fn15B0 : void)
-Eq_2760: (union "Eq_2760" (bool u0) (byte u1))
-	T_2760
-Eq_2762: (struct "Eq_2762" (FFFFFFFC (ptr16 byte) ptrFFFFFFFC) (FFFFFFFE Eq_8 tFFFFFFFE) (2 byte b0002) (3 byte b0003))
+Eq_2762: (union "Eq_2762" (bool u0) (byte u1))
 	T_2762
-Eq_2763: (union "Eq_2763" (byte u0) ((arr Eq_597) u1))
-	T_2763
-Eq_2764: (struct "Eq_2764" (0 Eq_8 t0000) (2 byte b0002))
+Eq_2764: (struct "Eq_2764" (FFFFFFFC (ptr16 byte) ptrFFFFFFFC) (FFFFFFFE Eq_8 tFFFFFFFE) (2 byte b0002) (3 byte b0003))
 	T_2764
-Eq_2765: (union "Eq_2765" (bool u0) (byte u1))
+Eq_2765: (union "Eq_2765" (byte u0) ((arr Eq_597) u1))
 	T_2765
-Eq_2766: (struct "Eq_2766" (138C byte b138C))
+Eq_2766: (struct "Eq_2766" (0 Eq_8 t0000) (2 byte b0002))
 	T_2766
+Eq_2767: (union "Eq_2767" (bool u0) (byte u1))
+	T_2767
+Eq_2768: (struct "Eq_2768" (138C byte b138C))
+	T_2768
 // Type Variables ////////////
 globals_t: (in globals : (ptr16 (struct "Globals")))
   Class: Eq_1
@@ -3333,7 +3333,7 @@ T_596: (in Mem17[0x167B<16>:byte] : byte)
   OrigDataType: byte
 T_597: (in 0<8> : byte)
   Class: Eq_597
-  DataType: (struct "Eq_597" 0001 (0 Eq_2763 t0000))
+  DataType: (struct "Eq_597" 0001 (0 Eq_2765 t0000))
   OrigDataType: byte
 T_598: (in 0x1678<16> : word16)
   Class: Eq_598
@@ -3354,7 +3354,7 @@ T_601: (in Mem17[0x1678<16>:word16] + 0<16> : word16)
 T_602: (in Mem19[Mem17[0x1678<16>:word16] + 0<16>:byte] : byte)
   Class: Eq_597
   DataType: Eq_585
-  OrigDataType: (struct "Eq_597" 0001 (0 Eq_2763 t0000))
+  OrigDataType: (struct "Eq_597" 0001 (0 Eq_2765 t0000))
 T_603: (in 0<8> : byte)
   Class: Eq_603
   DataType: cu8
@@ -9033,9 +9033,9 @@ T_2021: (in (uint16) (uint8) Mem0[0x138C<16>:byte] : uint16)
   OrigDataType: (ptr16 (struct (138C T_2024 t138C)))
 T_2022: (in 0x138C<16> : word16)
   Class: Eq_2022
-  DataType: word16
-  OrigDataType: word16
-T_2023: (in (uint16) (uint8) g_t138C + 0x138C<16> : word16)
+  DataType: (ptr16 (arr byte))
+  OrigDataType: (ptr16 (struct (0 (arr T_2760) a0000)))
+T_2023: (in (uint16) (uint8) Mem0[0x138C<16>:byte] + 0x138C<16> : word16)
   Class: Eq_2023
   DataType: uint16
   OrigDataType: uint16
@@ -9043,7 +9043,7 @@ T_2024: (in Mem0[(uint16) (uint8) Mem0[0x138C<16>:byte] + 0x138C<16>:byte] : byt
   Class: Eq_2024
   DataType: byte
   OrigDataType: byte
-T_2025: (in (word16) g_t138C + g_b138D + ((uint16) ((uint8) g_t138C) + 0x138C<16>) : byte)
+T_2025: (in Mem0[0x138D<16>:byte] + Mem0[0x138C<16>:byte] + Mem0[(uint16) ((uint8) Mem0[0x138C<16>:byte]) + 0x138C<16>:byte] : byte)
   Class: Eq_2025
   DataType: byte
   OrigDataType: byte
@@ -9051,7 +9051,7 @@ T_2026: (in 0x7F<8> : byte)
   Class: Eq_2026
   DataType: byte
   OrigDataType: byte
-T_2027: (in (word16) g_t138C + g_b138D + ((uint16) ((uint8) g_t138C) + 0x138C<16>) + 0x7F<8> : byte)
+T_2027: (in Mem0[0x138D<16>:byte] + Mem0[0x138C<16>:byte] + Mem0[(uint16) ((uint8) Mem0[0x138C<16>:byte]) + 0x138C<16>:byte] + 0x7F<8> : byte)
   Class: Eq_2012
   DataType: byte
   OrigDataType: byte
@@ -9945,8 +9945,8 @@ T_2249: (in (uint16) (uint8) (a_365 + 1<8>) : uint16)
   OrigDataType: (ptr16 (struct (14FF T_2252 t14FF)))
 T_2250: (in 0x14FF<16> : word16)
   Class: Eq_2250
-  DataType: word16
-  OrigDataType: word16
+  DataType: (ptr16 (arr cu8))
+  OrigDataType: (ptr16 (struct (0 (arr T_2761) a0000)))
 T_2251: (in (uint16) (uint8) (a_365 + 1<8>) + 0x14FF<16> : word16)
   Class: Eq_2251
   DataType: uint16
@@ -11985,19 +11985,19 @@ T_2759:
   OrigDataType: (arr Eq_597)
 T_2760:
   Class: Eq_2760
-  DataType: Eq_2760
-  OrigDataType: 
+  DataType: byte
+  OrigDataType: (struct 0001 (0 T_2024 t0000))
 T_2761:
   Class: Eq_2761
-  DataType: uint8
-  OrigDataType: 
+  DataType: cu8
+  OrigDataType: (struct 0001 (0 T_2252 t0000))
 T_2762:
   Class: Eq_2762
   DataType: Eq_2762
   OrigDataType: 
 T_2763:
   Class: Eq_2763
-  DataType: Eq_2763
+  DataType: uint8
   OrigDataType: 
 T_2764:
   Class: Eq_2764
@@ -12010,6 +12010,14 @@ T_2765:
 T_2766:
   Class: Eq_2766
   DataType: Eq_2766
+  OrigDataType: 
+T_2767:
+  Class: Eq_2767
+  DataType: Eq_2767
+  OrigDataType: 
+T_2768:
+  Class: Eq_2768
+  DataType: Eq_2768
   OrigDataType: 
 */
 typedef struct Globals {
@@ -12154,7 +12162,7 @@ typedef Eq_80 (Eq_75)(Eq_8, Eq_43);
 
 typedef union Eq_80 {
 	bool u0;
-	Eq_2760 u1;
+	Eq_2762 u1;
 } Eq_80;
 
 typedef cu8 (Eq_89)(cu8, byte, Eq_80);
@@ -12191,7 +12199,7 @@ typedef union Eq_219 {
 
 typedef union Eq_222 {
 	byte u0;
-	struct Eq_2762 * u1;
+	struct Eq_2764 * u1;
 } Eq_222;
 
 typedef byte (Eq_226)(byte, uint16, Eq_230);
@@ -12271,7 +12279,7 @@ typedef union Eq_585 {
 } Eq_585;
 
 typedef struct Eq_597 {	// size: 1 1
-	Eq_2763 t0000;	// 0
+	Eq_2765 t0000;	// 0
 } Eq_597;
 
 typedef union Eq_603 {
@@ -12372,7 +12380,7 @@ typedef Eq_80 (Eq_1123)(byte, byte, Eq_1127, byte, Eq_1129, Eq_1130);
 
 typedef union Eq_1127 {
 	byte u0;
-	struct Eq_2764 * u1;
+	struct Eq_2766 * u1;
 } Eq_1127;
 
 typedef union Eq_1129 {
@@ -12428,7 +12436,7 @@ typedef uint8 (Eq_1346)(Eq_999);
 
 typedef union Eq_1363 {
 	bool u0;
-	Eq_2765 u1;
+	Eq_2767 u1;
 } Eq_1363;
 
 typedef void (Eq_1375)(byte, Eq_6, byte, Eq_8);
@@ -12520,7 +12528,7 @@ typedef void (Eq_1991)(byte, Eq_793, byte, Eq_795);
 
 typedef union Eq_2016 {
 	cu8 u0;
-	struct Eq_2766 * u1;
+	struct Eq_2768 * u1;
 } Eq_2016;
 
 typedef struct Eq_2021 {
@@ -12629,34 +12637,34 @@ typedef void (Eq_2748)();
 
 typedef void (Eq_2751)();
 
-typedef union Eq_2760 {
+typedef union Eq_2762 {
 	bool u0;
 	byte u1;
-} Eq_2760;
+} Eq_2762;
 
-typedef struct Eq_2762 {
+typedef struct Eq_2764 {
 	byte * ptrFFFFFFFC;	// FFFFFFFC
 	Eq_8 tFFFFFFFE;	// FFFFFFFE
 	byte b0002;	// 2
 	byte b0003;	// 3
-} Eq_2762;
-
-typedef union Eq_2763 {
-	byte u0;
-	Eq_597 u1[];
-} Eq_2763;
-
-typedef struct Eq_2764 {
-	Eq_8 t0000;	// 0
-	byte b0002;	// 2
 } Eq_2764;
 
 typedef union Eq_2765 {
-	bool u0;
-	byte u1;
+	byte u0;
+	Eq_597 u1[];
 } Eq_2765;
 
 typedef struct Eq_2766 {
-	byte b138C;	// 138C
+	Eq_8 t0000;	// 0
+	byte b0002;	// 2
 } Eq_2766;
+
+typedef union Eq_2767 {
+	bool u0;
+	byte u1;
+} Eq_2767;
+
+typedef struct Eq_2768 {
+	byte b138C;	// 138C
+} Eq_2768;
 

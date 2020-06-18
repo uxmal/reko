@@ -193,12 +193,12 @@ Eq_1057: (struct "Eq_1057" 0003 (0 byte b0000) (1 byte b0001))
 	T_1057
 Eq_1058: (struct "Eq_1058" 0003 (1 byte b0001))
 	T_1058
-Eq_1059: (struct "Eq_1059" 0003 (0 byte b0000))
-	T_1059
 Eq_1060: (struct "Eq_1060" 0003 (0 byte b0000))
 	T_1060
 Eq_1061: (struct "Eq_1061" 0003 (0 byte b0000))
 	T_1061
+Eq_1062: (struct "Eq_1062" 0003 (0 byte b0000))
+	T_1062
 // Type Variables ////////////
 globals_t: (in globals : (ptr64 (struct "Globals")))
   Class: Eq_1
@@ -2430,8 +2430,8 @@ T_557: (in (uint64) eax_222 : uint64)
   OrigDataType: (ptr64 (struct (0 T_560 t0000)))
 T_558: (in 0<64> : word64)
   Class: Eq_558
-  DataType: word64
-  OrigDataType: word64
+  DataType: (ptr64 (arr byte))
+  OrigDataType: (ptr64 (struct (0 (arr T_1059) a0000)))
 T_559: (in (uint64) eax_222 + 0<64> : word64)
   Class: Eq_559
   DataType: uint64
@@ -2510,8 +2510,8 @@ T_577: (in (uint64) SLICE((uint64) eax_222, word32, 0) : uint64)
   OrigDataType: uint64
 T_578: (in 0<64> : word64)
   Class: Eq_578
-  DataType: (ptr64 (arr Eq_1059))
-  OrigDataType: (ptr64 (struct (0 (arr T_1059) a0000)))
+  DataType: (ptr64 (arr Eq_1060))
+  OrigDataType: (ptr64 (struct (0 (arr T_1060) a0000)))
 T_579: (in (uint64) eax_222 : uint64)
   Class: Eq_579
   DataType: uint64
@@ -2550,8 +2550,8 @@ T_587: (in (uint64) (word32) SLICE((uint64) (word32) 0<64>[(uint64) eax_222 * 3<
   OrigDataType: (union (int64 u1) (uint64 u0))
 T_588: (in 1<64> : word64)
   Class: Eq_588
-  DataType: (ptr64 (arr Eq_1060))
-  OrigDataType: (ptr64 (struct (0 (arr T_1060) a0000)))
+  DataType: (ptr64 (arr Eq_1061))
+  OrigDataType: (ptr64 (struct (0 (arr T_1061) a0000)))
 T_589: (in (uint64) eax_222 : uint64)
   Class: Eq_589
   DataType: uint64
@@ -2590,8 +2590,8 @@ T_597: (in (uint64) (word32) SLICE((uint64) (word32) 1<64>[(uint64) eax_222 * 3<
   OrigDataType: (union (int64 u1) (uint64 u0))
 T_598: (in 2<64> : word64)
   Class: Eq_598
-  DataType: (ptr64 (arr Eq_1061))
-  OrigDataType: (ptr64 (struct (0 (arr T_1061) a0000)))
+  DataType: (ptr64 (arr Eq_1062))
+  OrigDataType: (ptr64 (struct (0 (arr T_1062) a0000)))
 T_599: (in (uint64) eax_222 : uint64)
   Class: Eq_599
   DataType: uint64
@@ -2640,7 +2640,7 @@ T_610: (in (uint64) esi_372 : uint64)
   Class: Eq_573
   DataType: Eq_573
   OrigDataType: (union (int64 u1) (uint64 u0))
-T_611: (in printf("INDEXED %u = %d %d %d %d\n", (uint64) (word32) (uint64) eax_222, (uint64) (word32) (byte) (uint64) (word32) null[(uint64) eax_222].b0000, (uint64) (word32) (byte) (uint64) (word32) ((Eq_1060[]) 1<64>)[(uint64) eax_222].b0000, (uint64) (word32) (uint64) (word32) (byte) (uint64) (word32) ((Eq_1061[]) 2<64>)[(uint64) eax_222].b0000, (uint64) esi_372) : int32)
+T_611: (in printf("INDEXED %u = %d %d %d %d\n", (uint64) (word32) (uint64) eax_222, (uint64) (word32) (byte) (uint64) (word32) null[(uint64) eax_222].b0000, (uint64) (word32) (byte) (uint64) (word32) ((Eq_1061[]) 1<64>)[(uint64) eax_222].b0000, (uint64) (word32) (uint64) (word32) (byte) (uint64) (word32) ((Eq_1062[]) 2<64>)[(uint64) eax_222].b0000, (uint64) esi_372) : int32)
   Class: Eq_611
   DataType: int32
   OrigDataType: int32
@@ -4387,7 +4387,7 @@ T_1046: (in 0<u64> : uint64)
 T_1047: (in 0000000000601E00 : ptr64)
   Class: Eq_1047
   DataType: (ptr64 (arr (ptr64 code)))
-  OrigDataType: (ptr64 (struct (0 (arr T_1062) a0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_1063) a0000)))
 T_1048: (in 8<64> : word64)
   Class: Eq_1048
   DataType: ui64
@@ -4434,18 +4434,22 @@ T_1058:
   OrigDataType: (struct 0003 (0 T_540 t0000))
 T_1059:
   Class: Eq_1059
-  DataType: Eq_1059
-  OrigDataType: (struct 0003 (0 T_582 t0000))
+  DataType: byte
+  OrigDataType: (struct 0001 (0 T_560 t0000))
 T_1060:
   Class: Eq_1060
   DataType: Eq_1060
-  OrigDataType: (struct 0003 (0 T_592 t0000))
+  OrigDataType: (struct 0003 (0 T_582 t0000))
 T_1061:
   Class: Eq_1061
   DataType: Eq_1061
-  OrigDataType: (struct 0003 (0 T_602 t0000))
+  OrigDataType: (struct 0003 (0 T_592 t0000))
 T_1062:
   Class: Eq_1062
+  DataType: Eq_1062
+  OrigDataType: (struct 0003 (0 T_602 t0000))
+T_1063:
+  Class: Eq_1063
   DataType: (ptr64 code)
   OrigDataType: (struct 0008 (0 T_1050 t0000))
 */
@@ -4637,10 +4641,6 @@ typedef struct Eq_1058 {	// size: 3 3
 	byte b0001;	// 1
 } Eq_1058;
 
-typedef struct Eq_1059 {	// size: 3 3
-	byte b0000;	// 0
-} Eq_1059;
-
 typedef struct Eq_1060 {	// size: 3 3
 	byte b0000;	// 0
 } Eq_1060;
@@ -4648,4 +4648,8 @@ typedef struct Eq_1060 {	// size: 3 3
 typedef struct Eq_1061 {	// size: 3 3
 	byte b0000;	// 0
 } Eq_1061;
+
+typedef struct Eq_1062 {	// size: 3 3
+	byte b0000;	// 0
+} Eq_1062;
 
