@@ -352,6 +352,10 @@ namespace Reko.Arch.Arm.AArch64
                 return true;
             };
         }
+        private readonly static Mutator<AArch64Disassembler> H_0 = H(0, 5);
+        private readonly static Mutator<AArch64Disassembler> H_5 = H(5, 5);
+        private readonly static Mutator<AArch64Disassembler> H_10 = H(10, 5);
+        private readonly static Mutator<AArch64Disassembler> H_16 = H(16, 5);
 
         // 16-bit SIMD/FPU register or zero if field = 0b00000
         private static Mutator<AArch64Disassembler> Hz(int pos, int size)
@@ -387,6 +391,7 @@ namespace Reko.Arch.Arm.AArch64
         }
         private readonly static Mutator<AArch64Disassembler> S_0 = S(0, 5);
         private readonly static Mutator<AArch64Disassembler> S_5 = S(5, 5);
+        private readonly static Mutator<AArch64Disassembler> S_10 = S(10, 5);
         private readonly static Mutator<AArch64Disassembler> S_16 = S(16, 5);
 
         // 32-bit SIMD/FPU register or zero if field = 0b00000
@@ -461,10 +466,16 @@ namespace Reko.Arch.Arm.AArch64
                 return true;
             };
         }
+        private readonly static Mutator<AArch64Disassembler> Q_0 = Q(0, 5);
+        private readonly static Mutator<AArch64Disassembler> Q_5 = Q(5, 5);
+        private readonly static Mutator<AArch64Disassembler> Q_10 = Q(10, 5);
+        private readonly static Mutator<AArch64Disassembler> Q_16 = Q(16, 5);
 
-        // Picks either a Dx or a Qx SIMD register depending on whether the
-        // 'Q' bit is set. The q() mutator must be called first for this to 
-        // work correctly.
+        /// <summary>
+        /// Picks either a Dx or a Qx SIMD register depending on whether the
+        /// 'Q' bit is set. The q() mutator must be called first for this to 
+        /// work correctly.
+        /// </summary>
         private static Mutator<AArch64Disassembler> V(int pos, int size)
         {
             var bitfield = new Bitfield(pos, size);
@@ -1550,16 +1561,16 @@ namespace Reko.Arch.Arm.AArch64
                     // 00 1 00
                     Instr(Mnemonic.str, B(0,5), Mo(w8, 5, 10, 12)),
                     Instr(Mnemonic.ldr, B(0,5), Mo(w8, 5, 10, 12)),
-                    Instr(Mnemonic.str, Q(0,5), Mo(w128, 5, 10, 12)),
-                    Instr(Mnemonic.ldr, Q(0,5), Mo(w128, 5, 10, 12)),
+                    Instr(Mnemonic.str, Q_0, Mo(w128, 5, 10, 12)),
+                    Instr(Mnemonic.ldr, Q_0, Mo(w128, 5, 10, 12)),
                     // 01 0 00
                     Instr(Mnemonic.strh, W_0, Mo(w16, 5, 10, 12)),
                     Instr(Mnemonic.ldrh, W_0, Mo(w16, 5, 10, 12)),
                     Instr(Mnemonic.ldrsh, X_0, Mo(i16, 5, 10, 12)),
                     Instr(Mnemonic.ldrsh, W_0, Mo(i16, 5, 10, 12)),
                     // 01 1 00
-                    Instr(Mnemonic.str, H(0,5), Mo(w16, 5, 10, 12)),
-                    Instr(Mnemonic.ldr, H(0,5), Mo(w16, 5, 10, 12)),
+                    Instr(Mnemonic.str, H_0, Mo(w16, 5, 10, 12)),
+                    Instr(Mnemonic.ldr, H_0, Mo(w16, 5, 10, 12)),
                     invalid,
                     invalid,
                     // 10 0 00
@@ -1597,8 +1608,8 @@ namespace Reko.Arch.Arm.AArch64
                         // LoadStoreRegisterRegOff sz:V:opc=00 1 00
                         Instr(Mnemonic.str, B(0,5),Mr(w8)),
                         Instr(Mnemonic.ldr, B(0,5),Mr(w8)),
-                        Instr(Mnemonic.str, Q(0,5),Mr(w128)),
-                        Instr(Mnemonic.ldr, Q(0,5),Mr(w128)),
+                        Instr(Mnemonic.str, Q_0,Mr(w128)),
+                        Instr(Mnemonic.ldr, Q_0,Mr(w128)),
 
                         // LoadStoreRegisterRegOff sz:V:opc=01 0 00
                         Instr(Mnemonic.strh, W_0,Mr(w16)),
@@ -1607,8 +1618,8 @@ namespace Reko.Arch.Arm.AArch64
                         Instr(Mnemonic.ldrsh, W_0,Mr(i16)),
 
                         // LoadStoreRegisterRegOff sz:V:opc=01 1 00
-                        Instr(Mnemonic.str, H(0,5),Mr(w16)),
-                        Instr(Mnemonic.ldr, H(0,5),Mr(w16)),
+                        Instr(Mnemonic.str, H_0,Mr(w16)),
+                        Instr(Mnemonic.ldr, H_0,Mr(w16)),
                         invalid,
                         invalid,
 
@@ -1641,10 +1652,10 @@ namespace Reko.Arch.Arm.AArch64
             Decoder LdStRegPairOffset;
             {
                 LdStRegPairOffset = Mask(Bf((30,2), (26,1), (22,1)), // opc:V:L
-                    Instr(Mnemonic.stp, W_0,W(10,5), Mo(w32,5,15,7)),
-                    Instr(Mnemonic.ldp, W_0,W(10,5), Mo(w32,5,15,7)),
-                    Instr(Mnemonic.stp, S_0,S(10,5), Mo(w32,5,15,7)),
-                    Instr(Mnemonic.ldp, S_0,S(10,5), Mo(w32,5,15,7)),
+                    Instr(Mnemonic.stp, W_0, W_10, Mo(w32,5,15,7)),
+                    Instr(Mnemonic.ldp, W_0, W_10, Mo(w32,5,15,7)),
+                    Instr(Mnemonic.stp, S_0, S_10, Mo(w32,5,15,7)),
+                    Instr(Mnemonic.ldp, S_0, S_10, Mo(w32,5,15,7)),
 
                     invalid,
                     Instr(Mnemonic.ldpsw, X_0,X_10, Mo(w32,5,15,7)),
@@ -1653,8 +1664,8 @@ namespace Reko.Arch.Arm.AArch64
                     
                     Instr(Mnemonic.stp, X_0,X_10, Mo(w64,5,15,7)),
                     Instr(Mnemonic.ldp, X_0,X_10, Mo(w64,5,15,7)),
-                    Instr(Mnemonic.stp, Q(0,5),Q(10,5), Mo(w128,5,15,7)),
-                    Instr(Mnemonic.ldp, Q(0,5),Q(10,5), Mo(w128,5,15,7)),
+                    Instr(Mnemonic.stp, Q_0, Q_10, Mo(w128,5,15,7)),
+                    Instr(Mnemonic.ldp, Q_0, Q_10, Mo(w128,5,15,7)),
 
                     invalid,
                     invalid,
@@ -1665,10 +1676,10 @@ namespace Reko.Arch.Arm.AArch64
             Decoder LdStRegPairPre;
             {
                 LdStRegPairPre = Mask(Bf((30,2), (26,1), (22,1)), // opc:V:L
-                    Instr(Mnemonic.stp, W_0,W(10,5), MprePair(PrimitiveType.Word32)),
-                    Instr(Mnemonic.ldp, W_0,W(10,5), MprePair(PrimitiveType.Word32)),
-                    Instr(Mnemonic.stp, S_0,S(10,5), MprePair(PrimitiveType.Word32)),
-                    Instr(Mnemonic.ldp, S_0,S(10,5), MprePair(PrimitiveType.Word32)),
+                    Instr(Mnemonic.stp, W_0, W_10, MprePair(PrimitiveType.Word32)),
+                    Instr(Mnemonic.ldp, W_0, W_10, MprePair(PrimitiveType.Word32)),
+                    Instr(Mnemonic.stp, S_0, S_10, MprePair(PrimitiveType.Word32)),
+                    Instr(Mnemonic.ldp, S_0, S_10, MprePair(PrimitiveType.Word32)),
 
                     invalid,
                     Instr(Mnemonic.ldpsw, X_0,X_10, MprePair(PrimitiveType.Word32)),
@@ -1677,8 +1688,8 @@ namespace Reko.Arch.Arm.AArch64
                     
                     Instr(Mnemonic.stp, X_0,X_10, MprePair(PrimitiveType.Word64)),
                     Instr(Mnemonic.ldp, X_0,X_10, MprePair(PrimitiveType.Word64)),
-                    Instr(Mnemonic.stp, Q(0,5),Q(10,5), MprePair(PrimitiveType.Word128)),
-                    Instr(Mnemonic.ldp, Q(0,5),Q(10,5), MprePair(PrimitiveType.Word128)),
+                    Instr(Mnemonic.stp, Q_0, Q_10, MprePair(PrimitiveType.Word128)),
+                    Instr(Mnemonic.ldp, Q_0, Q_10, MprePair(PrimitiveType.Word128)),
 
                     invalid,
                     invalid,
@@ -1689,10 +1700,10 @@ namespace Reko.Arch.Arm.AArch64
             Decoder LdStRegPairPost;
             {
                 LdStRegPairPost = Mask(Bf((30,2), (26,1), (22,1)), // opc:V:L
-                    Instr(Mnemonic.stp, W_0,W(10,5), MpostPair(PrimitiveType.Word32)),
-                    Instr(Mnemonic.ldp, W_0,W(10,5), MpostPair(PrimitiveType.Word32)),
-                    Instr(Mnemonic.stp, S_0,S(10,5), MpostPair(PrimitiveType.Word32)),
-                    Instr(Mnemonic.ldp, S_0,S(10,5), MpostPair(PrimitiveType.Word32)),
+                    Instr(Mnemonic.stp, W_0, W_10, MpostPair(PrimitiveType.Word32)),
+                    Instr(Mnemonic.ldp, W_0, W_10, MpostPair(PrimitiveType.Word32)),
+                    Instr(Mnemonic.stp, S_0, S_10, MpostPair(PrimitiveType.Word32)),
+                    Instr(Mnemonic.ldp, S_0, S_10, MpostPair(PrimitiveType.Word32)),
 
                     invalid,
                     Instr(Mnemonic.ldpsw, X_0,X_10, MpostPair(PrimitiveType.Word32)),
@@ -1701,8 +1712,8 @@ namespace Reko.Arch.Arm.AArch64
                     
                     Instr(Mnemonic.stp, X_0,X_10, MpostPair(PrimitiveType.Word64)),
                     Instr(Mnemonic.ldp, X_0,X_10, MpostPair(PrimitiveType.Word64)),
-                    Instr(Mnemonic.stp, Q(0,5),Q(10,5), MpostPair(PrimitiveType.Word128)),
-                    Instr(Mnemonic.ldp, Q(0,5),Q(10,5), MpostPair(PrimitiveType.Word128)),
+                    Instr(Mnemonic.stp, Q_0, Q_10, MpostPair(PrimitiveType.Word128)),
+                    Instr(Mnemonic.ldp, Q_0, Q_10, MpostPair(PrimitiveType.Word128)),
 
                     invalid,
                     invalid,
@@ -1742,8 +1753,8 @@ namespace Reko.Arch.Arm.AArch64
                     // LdStRegUnscaledImm size=00 V=1 opc=00
                     Instr(Mnemonic.stur, B(0,5), Mu(w8,5,12,9)),
                     Instr(Mnemonic.ldur, B(0,5), Mu(w8,5,12,9)),
-                    Instr(Mnemonic.stur, Q(0,5), Mu(w128,5,12,9)),
-                    Instr(Mnemonic.ldur, Q(0,5), Mu(w128,5,12,9)),
+                    Instr(Mnemonic.stur, Q_0, Mu(w128,5,12,9)),
+                    Instr(Mnemonic.ldur, Q_0, Mu(w128,5,12,9)),
 
                     // LdStRegUnscaledImm size=01 V=0 opc=00
                     Instr(Mnemonic.sturh, W_0, Mo(w16, 5, 12, 9)),
@@ -1752,8 +1763,8 @@ namespace Reko.Arch.Arm.AArch64
                     Instr(Mnemonic.ldursh, W_0, Mu(i16,5,12,9)),
 
                     // LdStRegUnscaledImm size=01 V=1 opc=00
-                    Instr(Mnemonic.stur, H(0,5), Mu(w16,5,12,9)),
-                    Instr(Mnemonic.ldur, H(0,5), Mu(w16,5,12,9)),
+                    Instr(Mnemonic.stur, H_0, Mu(w16,5,12,9)),
+                    Instr(Mnemonic.ldur, H_0, Mu(w16,5,12,9)),
                     invalid,
                     invalid,
 
@@ -1791,16 +1802,16 @@ namespace Reko.Arch.Arm.AArch64
 
                         Instr(Mnemonic.str, B(0, 5), Mpost(w8)),
                         Instr(Mnemonic.ldr, B(0, 5), Mpost(w8)),
-                        Instr(Mnemonic.str, Q(0, 5), Mpost(w128)),
-                        Instr(Mnemonic.ldr, Q(0, 5), Mpost(w128)),
+                        Instr(Mnemonic.str, Q_0, Mpost(w128)),
+                        Instr(Mnemonic.ldr, Q_0, Mpost(w128)),
 
                         Instr(Mnemonic.strh, W_0, Mpost(w16)),
                         Instr(Mnemonic.ldrh, W_0, Mpost(w16)),
                         Instr(Mnemonic.ldrsh, X_0, Mpost(i16)),
                         Instr(Mnemonic.ldrsh, W_0, Mpost(i16)),
 
-                        Instr(Mnemonic.str, H(0, 5), Mpost(w16)),
-                        Instr(Mnemonic.ldr, H(0, 5), Mpost(w16)),
+                        Instr(Mnemonic.str, H_0, Mpost(w16)),
+                        Instr(Mnemonic.ldr, H_0, Mpost(w16)),
                         invalid,
                         invalid,
 
@@ -1837,16 +1848,16 @@ namespace Reko.Arch.Arm.AArch64
 
                         Instr(Mnemonic.str, B(0, 5), Mpre(w8)),
                         Instr(Mnemonic.ldr, B(0, 5), Mpre(w8)),
-                        Instr(Mnemonic.str, Q(0, 5), Mpre(w128)),
-                        Instr(Mnemonic.ldr, Q(0, 5), Mpre(w128)),
+                        Instr(Mnemonic.str, Q_0, Mpre(w128)),
+                        Instr(Mnemonic.ldr, Q_0, Mpre(w128)),
 
                         Instr(Mnemonic.strh, W_0, Mpre(w16)),
                         Instr(Mnemonic.ldrh, W_0, Mpre(w16)),
                         Instr(Mnemonic.ldrsh, X_0, Mpre(i16)),
                         Instr(Mnemonic.ldrsh, W_0, Mpre(i16)),
 
-                        Instr(Mnemonic.str, H(0, 5), Mpre(w16)),
-                        Instr(Mnemonic.ldr, H(0, 5), Mpre(w16)),
+                        Instr(Mnemonic.str, H_0, Mpre(w16)),
+                        Instr(Mnemonic.ldr, H_0, Mpre(w16)),
                         invalid,
                         invalid,
 
@@ -1879,7 +1890,7 @@ namespace Reko.Arch.Arm.AArch64
                         Instr(Mnemonic.ldr, X_0, Mlit(w64)),
                         Instr(Mnemonic.ldr, D_0, Mlit(w64)),
                         Instr(Mnemonic.ldrsw, X_0, Mlit(i32)),
-                        Instr(Mnemonic.ldr, Q(0,5), Mlit(w128)),
+                        Instr(Mnemonic.ldr, Q_0, Mlit(w128)),
                         Instr(Mnemonic.prfm, U(0,5, w8),Mlit(w32)),
                         invalid);
                 }
@@ -2557,7 +2568,7 @@ namespace Reko.Arch.Arm.AArch64
                         Mask(15, 1,
                             Select((10, 5), n => n == 0x1F,
                                 Instr(Mnemonic.mul, W_0, W_5, W_16),
-                                Instr(Mnemonic.madd, W_0,W_5,W_16,W(10,5))),
+                                Instr(Mnemonic.madd, W_0,W_5,W_16, W_10)),
                             Select((10, 5), n => n == 0x1F,
                                 Instr(Mnemonic.mneg, W_0, W_5, W_16),
                                 Instr(Mnemonic.msub, W_0, W_5, W_16, W(10,5)))),
@@ -2755,7 +2766,7 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("* Data Processing 2 source - sf:S=1:0 opcode=010000"),
                             Nyi("* Data Processing 2 source - sf:S=1:0 opcode=010001"),
                             Nyi("* Data Processing 2 source - sf:S=1:0 opcode=010010"),
-                            Instr(Mnemonic.crc32x, W_0, W_5, X(16, 5))),
+                            Instr(Mnemonic.crc32x, W_0, W_5, X_16)),
                         Nyi("* Data Processing 2 source - sf:S=1:0 opcode=0101xx"),
                         Nyi("* Data Processing 2 source - sf:S=1:0 opcode=0110xx"),
                         Nyi("* Data Processing 2 source - sf:S=1:0 opcode=0111xx"),
@@ -2846,10 +2857,10 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("ConversionBetweenFpAndInt sf:S=0b00 type=00"),
                             (0b00_010, Instr(Mnemonic.scvtf, S_0,W_5)),
                             (0b00_011, Instr(Mnemonic.ucvtf, S_0,W_5)),
-                            (0b00_110, Instr(Mnemonic.fmov,  W_0,S(5,5))),
+                            (0b00_110, Instr(Mnemonic.fmov,  W_0, S_5)),
                             (0b00_111, Instr(Mnemonic.fmov,  S_0,W_5)),
-                            (0b01_000, Instr(Mnemonic.fcvtps, W_0,S(5,5))),
-                            (0b10_000, Instr(Mnemonic.fcvtms, W_0,S(5,5))),
+                            (0b01_000, Instr(Mnemonic.fcvtps, W_0, S_5)),
+                            (0b10_000, Instr(Mnemonic.fcvtms, W_0, S_5)),
                             (0b11_000, Instr(Mnemonic.fcvtzs, W_5,S_0)),
                             (0b11_001, Instr(Mnemonic.fcvtzu, W_5,S_0))),
                         Sparse(16, 5, "  type=01",
@@ -3042,7 +3053,7 @@ namespace Reko.Arch.Arm.AArch64
                         Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=11011"),
                         Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=11100"),
                         Mask(22, 2, // U=1 opcode=11101 size
-                            Instr(Mnemonic.scvtf, S_0,S(5,5)),
+                            Instr(Mnemonic.scvtf, S_0, S_5),
                             Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=11101 size=01"),
                             Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=11101 size=10"),
                             Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=11101 size=11")),
@@ -3092,12 +3103,12 @@ namespace Reko.Arch.Arm.AArch64
                 FloatingPointDataProcessing1src = Mask(Bf((31, 1), (29, 1), (22, 2)), "  FloatingPointDataProcessing1src",
                     Sparse(15, 6, "  00",
                         Nyi("FloatingPointDataProcessing1src M:S:Type=00 00"),
-                        (0b000000, Instr(Mnemonic.fmov, S_0,S(5,5))),
-                        (0b000001, Instr(Mnemonic.fabs, S_0,S(5,5))),
-                        (0b000010, Instr(Mnemonic.fneg, S_0,S(5,5))),
-                        (0b000011, Instr(Mnemonic.fsqrt, S_0,S(5,5))),
-                        (0b000101, Instr(Mnemonic.fcvt, D_0,S(5,5))),
-                        (0b000111, Instr(Mnemonic.fcvt, H(0,5),S(5,5)))
+                        (0b000000, Instr(Mnemonic.fmov, S_0, S_5)),
+                        (0b000001, Instr(Mnemonic.fabs, S_0, S_5)),
+                        (0b000010, Instr(Mnemonic.fneg, S_0, S_5)),
+                        (0b000011, Instr(Mnemonic.fsqrt, S_0, S_5)),
+                        (0b000101, Instr(Mnemonic.fcvt, D_0, S_5)),
+                        (0b000111, Instr(Mnemonic.fcvt, H_0, S_5))
                         ),
                     Sparse(15, 6, "  01",
                         Nyi("FloatingPointDataProcessing1src M:S:Type=00 01"),
@@ -3106,7 +3117,7 @@ namespace Reko.Arch.Arm.AArch64
                         (0b000010, Instr(Mnemonic.fneg, D_0, D_5)),
                         (0b000011, Instr(Mnemonic.fsqrt,D(0,5), D_5)),
                         (0b000100, Instr(Mnemonic.fcvt, S_0, D_5)),
-                        (0b000111, Instr(Mnemonic.fcvt, H(0,5), D_5))
+                        (0b000111, Instr(Mnemonic.fcvt, H_0, D_5))
                         ),
                     Nyi("FloatingPointDataProcessing1src M:S:Type=00 10"),
                     Nyi("FloatingPointDataProcessing1src M:S:Type=00 11"),
@@ -3128,17 +3139,17 @@ namespace Reko.Arch.Arm.AArch64
             {
                 FloatingPointDataProcessing2src = Mask(Bf((31,1),(29,1),(22,2)),   // M:S:Type
                     Mask(12, 4,            // M:S:Type=0 0 00 opcode
-                        Instr(Mnemonic.fmul, S_0,S(5,5),S(16,5)),
-                        Instr(Mnemonic.fdiv, S_0,S(5,5),S(16,5)),
-                        Instr(Mnemonic.fadd, S_0,S(5,5),S(16,5)),
-                        Instr(Mnemonic.fsub, S_0,S(5,5),S(16,5)),
+                        Instr(Mnemonic.fmul, S_0, S_5, S_16),
+                        Instr(Mnemonic.fdiv, S_0, S_5, S_16),
+                        Instr(Mnemonic.fadd, S_0, S_5, S_16),
+                        Instr(Mnemonic.fsub, S_0, S_5, S_16),
 
-                        Instr(Mnemonic.fmax, S_0,S(5,5),S(16,5)),
-                        Instr(Mnemonic.fmin, S_0,S(5,5),S(16,5)),
-                        Instr(Mnemonic.fmaxnm, S_0,S(5,5),S(16,5)),
-                        Instr(Mnemonic.fnmul, S_0,S(5,5),S(16,5)),
+                        Instr(Mnemonic.fmax, S_0, S_5, S_16),
+                        Instr(Mnemonic.fmin, S_0, S_5, S_16),
+                        Instr(Mnemonic.fmaxnm, S_0, S_5, S_16),
+                        Instr(Mnemonic.fnmul, S_0, S_5, S_16),
 
-                        Instr(Mnemonic.fnmul, S_0,S(5,5),S(16,5)),
+                        Instr(Mnemonic.fnmul, S_0, S_5, S_16),
                         invalid,
                         invalid,
                         invalid,
@@ -3169,17 +3180,17 @@ namespace Reko.Arch.Arm.AArch64
                         invalid),
                     invalid,
                     Mask(12, 4,            // M:S:Type=0 0 11 opcode
-                        Instr(Mnemonic.fmul, H(0,5),H(5,5),H(16,5)),
-                        Instr(Mnemonic.fdiv, H(0,5),H(5,5),H(16,5)),
-                        Instr(Mnemonic.fadd, H(0,5),H(5,5),H(16,5)),
-                        Instr(Mnemonic.fsub, H(0,5),H(5,5),H(16,5)),
+                        Instr(Mnemonic.fmul, H_0, H_5, H_16),
+                        Instr(Mnemonic.fdiv, H_0, H_5, H_16),
+                        Instr(Mnemonic.fadd, H_0, H_5, H_16),
+                        Instr(Mnemonic.fsub, H_0, H_5, H_16),
 
-                        Instr(Mnemonic.fmax, H(0,5),H(5,5),H(16,5)),
-                        Instr(Mnemonic.fmin, H(0,5),H(5,5),H(16,5)),
-                        Instr(Mnemonic.fmaxnm, H(0,5),H(5,5),H(16,5)),
-                        Instr(Mnemonic.fnmul, H(0,5),H(5,5),H(16,5)),
+                        Instr(Mnemonic.fmax, H_0, H_5, H_16),
+                        Instr(Mnemonic.fmin, H_0, H_5, H_16),
+                        Instr(Mnemonic.fmaxnm, H_0, H_5, H_16),
+                        Instr(Mnemonic.fnmul, H_0, H_5, H_16),
 
-                        Instr(Mnemonic.fnmul, H(0,5),H(5,5),H(16,5)),
+                        Instr(Mnemonic.fnmul, H_0, H_5, H_16),
                         invalid,
                         invalid,
                         invalid,
@@ -3213,7 +3224,7 @@ namespace Reko.Arch.Arm.AArch64
                             Instr(Mnemonic.fmov, S_0,If32(13,8)),
                             Instr(Mnemonic.fmov, D_0,If64(13,8)),
                             invalid,
-                            Instr(Mnemonic.fmov, H(0,5),If16(13,8))),
+                            Instr(Mnemonic.fmov, H_0,If16(13,8))),
                         invalid),
                     invalid,
                     invalid,
@@ -3226,22 +3237,22 @@ namespace Reko.Arch.Arm.AArch64
                     Select((14,2),n=>n!=0,
                         invalid,
                         Mask(Bf((22,2),(3,2)),  // M:S=00 type:opcode
-                            Instr(Mnemonic.fcmp,  S(5,5),S(16,5)),
-                            Instr(Mnemonic.fcmp,  S(5,5),Sz(16,5)),
-                            Instr(Mnemonic.fcmpe, S(5,5),S(16,5)),
-                            Instr(Mnemonic.fcmpe, S(5,5),Sz(16,5)),
-                            Instr(Mnemonic.fcmp,  D(5,5), D_16),
-                            Instr(Mnemonic.fcmp,  D(5,5),Dz(16,5)),
-                            Instr(Mnemonic.fcmpe, D(5,5), D_16),
-                            Instr(Mnemonic.fcmpe, D(5,5),Dz(16,5)),
+                            Instr(Mnemonic.fcmp,  S_5, S_16),
+                            Instr(Mnemonic.fcmp,  S_5,Sz(16,5)),
+                            Instr(Mnemonic.fcmpe, S_5, S_16),
+                            Instr(Mnemonic.fcmpe, S_5,Sz(16,5)),
+                            Instr(Mnemonic.fcmp,  D_5, D_16),
+                            Instr(Mnemonic.fcmp,  D_5,Dz(16,5)),
+                            Instr(Mnemonic.fcmpe, D_5, D_16),
+                            Instr(Mnemonic.fcmpe, D_5,Dz(16,5)),
                             invalid,
                             invalid,
                             invalid,
                             invalid,
-                            Instr(Mnemonic.fcmp,  H(5,5),H(16,5)),
-                            Instr(Mnemonic.fcmp,  H(5,5),Hz(16,5)),
-                            Instr(Mnemonic.fcmpe, H(5,5),H(16,5)),
-                            Instr(Mnemonic.fcmpe, H(5,5),Hz(16,5)))),
+                            Instr(Mnemonic.fcmp,  H_5, H_16),
+                            Instr(Mnemonic.fcmp,  H_5,Hz(16,5)),
+                            Instr(Mnemonic.fcmpe, H_5, H_16),
+                            Instr(Mnemonic.fcmpe, H_5,Hz(16,5)))),
                     invalid,
                     invalid,
                     invalid);
@@ -3251,10 +3262,10 @@ namespace Reko.Arch.Arm.AArch64
             {
                 FloatingPointCondSelect = Mask(Bf((31, 1), (29, 1)),   // M:S
                     Mask(22, 2,  // M:S=00 type
-                        Instr(Mnemonic.fcsel, S_0,S(5,5),S(16,5),C(12,4)),
+                        Instr(Mnemonic.fcsel, S_0, S_5, S_16,C(12,4)),
                         Instr(Mnemonic.fcsel, D_0, D_5, D_16,C(12,4)),
                         invalid,
-                        Instr(Mnemonic.fcsel, H(0,5),H(5,5),H(16,5),C(12,4))),
+                        Instr(Mnemonic.fcsel, H_0, H_5, H_16,C(12,4))),
                     invalid,
                     invalid,
                     invalid);
@@ -3401,7 +3412,7 @@ namespace Reko.Arch.Arm.AArch64
                     (0b01010, Mask(29, 1,    // opcode=01010 U=0 size
                         Mask(22, 2,       // opcode=01010 U=0 size
                             Instr(Mnemonic.smaxv, q30, B(0, 5), Vr(5, 5, BHS_)),
-                            Instr(Mnemonic.smaxv, q30, H(0, 5), Vr(5, 5, BHS_)),
+                            Instr(Mnemonic.smaxv, q30, H_0, Vr(5, 5, BHS_)),
                             Instr(Mnemonic.smaxv, q30, S_0, Vr(5, 5, BHS_)),
                             invalid),
                         Nyi("AdvancedSimdAcrossLanes opcode=01010 U=1"))),
@@ -3501,10 +3512,10 @@ namespace Reko.Arch.Arm.AArch64
 
                 Decoder FloatingPointDataProcessing3src = Mask(Bf((31,1), (29,1), (22,2)),  // M:S:type 
                     Mask(Bf((21,1),(15,1)),
-                        Instr(Mnemonic.fmadd, S_0,S(5,5),S(16,5),S(10,5)),
-                        Instr(Mnemonic.fmsub, S_0,S(5,5),S(16,5),S(10,5)),
-                        Instr(Mnemonic.fnmadd, S_0,S(5,5),S(16,5),S(10,5)),
-                        Instr(Mnemonic.fnmsub, S_0,S(5,5),S(16,5),S(10,5))),
+                        Instr(Mnemonic.fmadd, S_0, S_5, S_16, S_10),
+                        Instr(Mnemonic.fmsub, S_0, S_5, S_16, S_10),
+                        Instr(Mnemonic.fnmadd, S_0, S_5, S_16, S_10),
+                        Instr(Mnemonic.fnmsub, S_0, S_5, S_16, S_10)),
                     Mask(Bf((21,1),(15,1)),
                         Instr(Mnemonic.fmadd, D_0, D_5, D_16, D_10),
                         Instr(Mnemonic.fmsub, D_0, D_5, D_16, D_10),
@@ -3512,10 +3523,10 @@ namespace Reko.Arch.Arm.AArch64
                         Instr(Mnemonic.fnmsub, D_0, D_5, D_16, D_10)),
                     Nyi("FloatingPointDataProcessing3src - M:S:type=0010"),
                     Mask(Bf((21, 1), (15, 1)),
-                        Instr(Mnemonic.fmadd, H(0,5),H(5,5),H(16,5),H(10,5)),
-                        Instr(Mnemonic.fmsub, H(0,5),H(5,5),H(16,5),H(10,5)),
-                        Instr(Mnemonic.fnmadd, H(0,5),H(5,5),H(16,5),H(10,5)),
-                        Instr(Mnemonic.fnmsub, H(0,5),H(5,5),H(16,5),H(10,5))),
+                        Instr(Mnemonic.fmadd, H_0, H_5, H_16,H(10,5)),
+                        Instr(Mnemonic.fmsub, H_0, H_5, H_16,H(10,5)),
+                        Instr(Mnemonic.fnmadd, H_0, H_5, H_16,H(10,5)),
+                        Instr(Mnemonic.fnmsub, H_0, H_5, H_16,H(10,5))),
                     Nyi("FloatingPointDataProcessing3src - M:S:type=0100"),
                     Nyi("FloatingPointDataProcessing3src - M:S:type=0101"),
                     Nyi("FloatingPointDataProcessing3src - M:S:type=0110"),
@@ -3546,7 +3557,7 @@ namespace Reko.Arch.Arm.AArch64
 
                 Decoder Cryptographic3regSHA = Select((22, 2), IsZero,
                     Sparse(12, 3, "  Cryptographic3regSHA", invalid,
-                        (0b000, Instr(Mnemonic.sha1c, q1, Q(0,5), S_5, Vr(16,5, SSSS))),
+                        (0b000, Instr(Mnemonic.sha1c, q1, Q_0, S_5, Vr(16,5, SSSS))),
                         (0b001, Instr(Mnemonic.sha1p, x(""))),
                         (0b010, Instr(Mnemonic.sha1m, x(""))),
                         (0b011, Instr(Mnemonic.sha1su0, x(""))),
