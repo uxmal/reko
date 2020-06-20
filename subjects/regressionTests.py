@@ -108,12 +108,15 @@ numbered_id_regexp = re.compile('(?P<id_name>\w+)_\d+')
 fn_seg_name_regexp = re.compile('(?P<seg_name>fn\w+)_(?P<offset_name>\d+)')
 
 def strip_id_nums_for_file(file_name):
-    file = fileinput.FileInput(file_name, inplace=True)
-    for line in file:
-        #remove EOLN
-        line = line[:-1]
-        line = fn_seg_name_regexp.sub('\g<seg_name>-\g<offset_name>', line)
-        print(numbered_id_regexp.sub('\g<id_name>_n', line))
+    try:
+        file = fileinput.FileInput(file_name, inplace=True)
+        for line in file:
+            #remove EOLN
+            line = line[:-1]
+            line = fn_seg_name_regexp.sub('\g<seg_name>-\g<offset_name>', line)
+            print(numbered_id_regexp.sub('\g<id_name>_n', line))
+    except UnicodeDecodeError:
+        print("Unicode decoding error in "+ file_name, file=sys.stderr)
 
 def collect_jobs(dir_name, files, pool_state):
     needClear = True
