@@ -1920,5 +1920,16 @@ namespace Reko.UnitTests.Arch.Arm
                 "3|T--|if (v3) branch 00100004",
                 "4|L--|NZCV = cond(w14 + 0xD<32>)");
         }
+
+        [Test]
+        public void A64Rw_stlr()
+        {
+            Given_HexString("00FD9FC8");
+            AssertCode(     // stlr	x0,[x8]
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v3 = x8",
+                "2|L--|__stlr_64(v3, x0)");
+        }
+
     }
 }

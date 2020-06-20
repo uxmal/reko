@@ -890,6 +890,10 @@
       <Project>{9E952B82-A52F-4221-BC4A-DD9D8B9F7854}</Project>
       <Name>MicroBlaze</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\MicrochipPIC.Design\MicrochipPIC.Design.csproj">
+      <Project>{e75c3be2-0f98-48cd-943d-198159b57dc7}</Project>
+      <Name>MicrochipPIC.Design</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\Microchip\MicrochipPIC.csproj">
       <Project>{a959c1a2-a622-4600-81ad-29e08545b2f7}</Project>
       <Name>MicrochipPIC</Name>
@@ -917,6 +921,10 @@
     <ProjectReference Include="..\Arch\Pdp11\Pdp11.csproj">
       <Project>{CD10A2C6-246C-4CBB-8E92-86579714795A}</Project>
       <Name>Pdp11</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\PowerPC.Design\PowerPC.Design.csproj">
+      <Project>{16550df3-0916-4bdd-aa7a-7e1bad7aba3b}</Project>
+      <Name>PowerPC.Design</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\PowerPC\PowerPC.csproj">
       <Project>{B7DC39DD-6693-4F71-AE7F-007C5C62CBAA}</Project>
@@ -1018,6 +1026,10 @@
       <Project>{D0D1798C-08F7-4DE6-94E9-CC382E1FBEC8}</Project>
       <Name>MacOS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Environments\MorphOS\MorphOS.csproj">
+      <Project>{22b34ddf-36cf-48f1-8e62-dc7f18e42594}</Project>
+      <Name>MorphOS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Environments\Msdos.Design\Msdos.Design.csproj">
       <Project>{6b0ded4f-5035-49ce-ae54-be92b3354e44}</Project>
       <Name>Msdos.Design</Name>
@@ -1029,6 +1041,10 @@
     <ProjectReference Include="..\Environments\NeoGeo\NeoGeo.csproj">
       <Project>{1e57924e-b623-4894-8e3a-87e3e99e2303}</Project>
       <Name>NeoGeo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Environments\OS2\OS2.csproj">
+      <Project>{6369aaec-5946-412b-929b-024c4fb1cfd6}</Project>
+      <Name>OS2</Name>
     </ProjectReference>
     <ProjectReference Include="..\Environments\Ps3\Ps3.csproj">
       <Project>{1a60f017-4e4c-48f8-bb97-47d52186c7fd}</Project>
@@ -1045,6 +1061,10 @@
     <ProjectReference Include="..\Environments\SegaGenesis\SegaGenesis.csproj">
       <Project>{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}</Project>
       <Name>SegaGenesis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Environments\Snes\Snes.csproj">
+      <Project>{b4704089-c5bd-42ed-b509-8f2c0a528ba1}</Project>
+      <Name>Snes</Name>
     </ProjectReference>
     <ProjectReference Include="..\Environments\Switch\Switch.csproj">
       <Project>{c1bae231-5a72-40d2-8b75-328849d58c0f}</Project>

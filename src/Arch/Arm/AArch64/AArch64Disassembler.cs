@@ -385,9 +385,9 @@ namespace Reko.Arch.Arm.AArch64
                 return true;
             };
         }
-        private static Mutator<AArch64Disassembler> S_0 = S(0, 5);
-        private static Mutator<AArch64Disassembler> S_5 = S(5, 5);
-        private static Mutator<AArch64Disassembler> S_16 = S(16, 5);
+        private readonly static Mutator<AArch64Disassembler> S_0 = S(0, 5);
+        private readonly static Mutator<AArch64Disassembler> S_5 = S(5, 5);
+        private readonly static Mutator<AArch64Disassembler> S_16 = S(16, 5);
 
         // 32-bit SIMD/FPU register or zero if field = 0b00000
         private static Mutator<AArch64Disassembler> Sz(int pos, int size)
@@ -423,6 +423,10 @@ namespace Reko.Arch.Arm.AArch64
                 return true;
             };
         }
+        private readonly static Mutator<AArch64Disassembler> D_0 = D(0, 5);
+        private readonly static Mutator<AArch64Disassembler> D_5 = D(5, 5);
+        private readonly static Mutator<AArch64Disassembler> D_10 = D(10, 5);
+        private readonly static Mutator<AArch64Disassembler> D_16 = D(16, 5);
 
         // 64-bit SIMD/FPU register or zero if field = 0b00000
         private static Mutator<AArch64Disassembler> Dz(int pos, int size)
@@ -1201,12 +1205,14 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
-
-        // bit which determines whether or not to use Qx or Dx registers in SIMD
+        /// <summary>
+        /// Q bit determines whether or not to use Qx or Dx registers in SIMD
+        /// </summary>
         private static Mutator<AArch64Disassembler> q(int offset)
         {
             return (u, d) => { d.state.useQ = Bits.IsBitSet(u, offset); return true; };
         }
+        private static readonly Mutator<AArch64Disassembler> q30 = q(30);
 
         // Force Q bit to true
         private static bool q1(uint u, AArch64Disassembler d)
@@ -1238,7 +1244,7 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
-        private static Bitfield barrierField = new Bitfield(8, 4);
+        private static readonly Bitfield barrierField = new Bitfield(8, 4);
         private static bool Barrier(uint uInstr, AArch64Disassembler dasm)
         {
             var barrierType = new BarrierOperand((BarrierOption)barrierField.Read(uInstr));
@@ -1406,44 +1412,43 @@ namespace Reko.Arch.Arm.AArch64
         private static PrimitiveType w128 => PrimitiveType.Word128;
 
         // Packing arragement in SIMD vector register
-        private static VectorData[] BHS_ = new[]
+        private static readonly VectorData[] BHS_ = new[]
         {
             VectorData.I8, VectorData.I16, VectorData.I32, VectorData.Invalid
         };
-        // Packing arragement in SIMD vector register
-        private static VectorData[] BHSD = new[]
+        private static readonly VectorData[] BHSD = new[]
         {
             VectorData.I8, VectorData.I16, VectorData.I32, VectorData.I64
         };
-        private static VectorData[] BHS_128 = new[]
+        private static readonly VectorData[] BHS_128 = new[]
         {
             VectorData.I8, VectorData.I16, VectorData.I32, VectorData.Invalid
         };
-        private static VectorData[] HSD_ = new[]
+        private static readonly VectorData[] HSD_ = new[]
         {
              VectorData.I16, VectorData.I32, VectorData.I64, VectorData.Invalid
         };
-        private static VectorData[]BBB_ = new[]
+        private static readonly VectorData[]BBB_ = new[]
         {
              VectorData.I8, VectorData.I8, VectorData.I8, VectorData.Invalid
         };
-        private static VectorData[] BBBB = new[]
+        private static readonly VectorData[] BBBB = new[]
         {
              VectorData.I8, VectorData.I8, VectorData.I8, VectorData.I8
         };
-        private static VectorData[] HHHH = new[]
+        private static readonly VectorData[] HHHH = new[]
         {
              VectorData.I16, VectorData.I16, VectorData.I16, VectorData.I16
         };
-        private static VectorData[] SSSS = new[]
+        private static readonly VectorData[] SSSS = new[]
         {
              VectorData.I32, VectorData.I32, VectorData.I32, VectorData.I32
         };
-        private static VectorData[] DDDD = new[]
+        private static readonly VectorData[] DDDD = new[]
         {
              VectorData.I64, VectorData.I64, VectorData.I64, VectorData.I64
         };
-        private static VectorData[] SSDD = new[]
+        private static readonly VectorData[] SSDD = new[]
         {
              VectorData.I32, VectorData.I32, VectorData.I64, VectorData.I64
         };
@@ -1489,17 +1494,6 @@ namespace Reko.Arch.Arm.AArch64
         private static Decoder Instr(Mnemonic mnemonic, VectorData vectorData, params Mutator<AArch64Disassembler>[] mutators)
         {
             return new InstrDecoder(mnemonic, InstrClass.Linear, vectorData, mutators);
-        }
-
-        private static Decoder Sparse(int pos, uint mask, Decoder @default, params (uint, Decoder)[] decoders)
-        {
-            return new SparseMaskDecoder("", pos, mask, decoders.ToDictionary(k => k.Item1, v => v.Item2), @default);
-        }
-
-
-        private static Decoder Sparse(string tag, int pos, uint mask, Decoder @default, params (uint, Decoder)[] decoders)
-        {
-            return new SparseMaskDecoder(tag, pos, mask, decoders.ToDictionary(k => k.Item1, v => v.Item2), @default);
         }
 
         private static Decoder Sparse(string tag, int pos1, int length1,int pos2, int length2, Decoder @default, params (uint, Decoder)[] decoders)
@@ -1584,8 +1578,8 @@ namespace Reko.Arch.Arm.AArch64
                     Instr(Mnemonic.prfm, U(0,5, w8), Mo(w64, 5, 10, 12)),
                     invalid,
                     // 11 1 00
-                    Instr(Mnemonic.str, D(0,5), Mo(w64, 5, 10, 12)),
-                    Instr(Mnemonic.ldr, D(0,5), Mo(w64, 5, 10, 12)),
+                    Instr(Mnemonic.str, D_0, Mo(w64, 5, 10, 12)),
+                    Instr(Mnemonic.ldr, D_0, Mo(w64, 5, 10, 12)),
                     invalid,
                     invalid);
             }
@@ -1637,8 +1631,8 @@ namespace Reko.Arch.Arm.AArch64
                         invalid,
 
                         // LoadStoreRegisterRegOff sz:V:opc=11 1 00
-                        Instr(Mnemonic.str, D(0,5),Mr(w64)),
-                        Instr(Mnemonic.ldr, D(0,5),Mr(w64)),
+                        Instr(Mnemonic.str, D_0,Mr(w64)),
+                        Instr(Mnemonic.ldr, D_0,Mr(w64)),
                         invalid,
                         invalid));
 
@@ -1654,8 +1648,8 @@ namespace Reko.Arch.Arm.AArch64
 
                     invalid,
                     Instr(Mnemonic.ldpsw, X_0,X_10, Mo(w32,5,15,7)),
-                    Instr(Mnemonic.stp, D(0,5),D(10,5), Mo(w64,5,15,7)),
-                    Instr(Mnemonic.ldp, D(0,5),D(10,5), Mo(w64,5,15,7)),
+                    Instr(Mnemonic.stp, D_0, D_10, Mo(w64,5,15,7)),
+                    Instr(Mnemonic.ldp, D_0, D_10, Mo(w64,5,15,7)),
                     
                     Instr(Mnemonic.stp, X_0,X_10, Mo(w64,5,15,7)),
                     Instr(Mnemonic.ldp, X_0,X_10, Mo(w64,5,15,7)),
@@ -1678,8 +1672,8 @@ namespace Reko.Arch.Arm.AArch64
 
                     invalid,
                     Instr(Mnemonic.ldpsw, X_0,X_10, MprePair(PrimitiveType.Word32)),
-                    Instr(Mnemonic.stp, D(0,5),D(10,5), MprePair(PrimitiveType.Word64)),
-                    Instr(Mnemonic.ldp, D(0,5),D(10,5), MprePair(PrimitiveType.Word64)),
+                    Instr(Mnemonic.stp, D_0, D_10, MprePair(PrimitiveType.Word64)),
+                    Instr(Mnemonic.ldp, D_0, D_10, MprePair(PrimitiveType.Word64)),
                     
                     Instr(Mnemonic.stp, X_0,X_10, MprePair(PrimitiveType.Word64)),
                     Instr(Mnemonic.ldp, X_0,X_10, MprePair(PrimitiveType.Word64)),
@@ -1702,8 +1696,8 @@ namespace Reko.Arch.Arm.AArch64
 
                     invalid,
                     Instr(Mnemonic.ldpsw, X_0,X_10, MpostPair(PrimitiveType.Word32)),
-                    Instr(Mnemonic.stp, D(0,5),D(10,5), MpostPair(PrimitiveType.Word64)),
-                    Instr(Mnemonic.ldp, D(0,5),D(10,5), MpostPair(PrimitiveType.Word64)),
+                    Instr(Mnemonic.stp, D_0, D_10, MpostPair(PrimitiveType.Word64)),
+                    Instr(Mnemonic.ldp, D_0, D_10, MpostPair(PrimitiveType.Word64)),
                     
                     Instr(Mnemonic.stp, X_0,X_10, MpostPair(PrimitiveType.Word64)),
                     Instr(Mnemonic.ldp, X_0,X_10, MpostPair(PrimitiveType.Word64)),
@@ -1782,8 +1776,8 @@ namespace Reko.Arch.Arm.AArch64
                     invalid,
 
                     // LdStRegUnscaledImm size=11 V=0 opc=00
-                    Instr(Mnemonic.stur, D(0,5), Mu(w64,5,12,9)),
-                    Instr(Mnemonic.ldur, D(0,5), Mu(w64,5,12,9)),
+                    Instr(Mnemonic.stur, D_0, Mu(w64,5,12,9)),
+                    Instr(Mnemonic.ldur, D_0, Mu(w64,5,12,9)),
                     invalid,
                     invalid);
 
@@ -1871,8 +1865,8 @@ namespace Reko.Arch.Arm.AArch64
                         invalid,
                         invalid,
 
-                        Instr(Mnemonic.str, D(0,5), Mpre(w64)),
-                        Instr(Mnemonic.ldr, D(0,5), Mpre(w64)),
+                        Instr(Mnemonic.str, D_0, Mpre(w64)),
+                        Instr(Mnemonic.ldr, D_0, Mpre(w64)),
                         invalid,
                         invalid);
                 }
@@ -1883,7 +1877,7 @@ namespace Reko.Arch.Arm.AArch64
                         Instr(Mnemonic.ldr, W_0, Mlit(w32)),
                         Instr(Mnemonic.ldr, S_0, Mlit(w32)),
                         Instr(Mnemonic.ldr, X_0, Mlit(w64)),
-                        Instr(Mnemonic.ldr, D(0,5), Mlit(w64)),
+                        Instr(Mnemonic.ldr, D_0, Mlit(w64)),
                         Instr(Mnemonic.ldrsw, X_0, Mlit(i32)),
                         Instr(Mnemonic.ldr, Q(0,5), Mlit(w128)),
                         Instr(Mnemonic.prfm, U(0,5, w8),Mlit(w32)),
@@ -1902,8 +1896,8 @@ namespace Reko.Arch.Arm.AArch64
                         Nyi("AdvancedSimdLdStMultiple L:opcode=0:0010"),
                         Nyi("AdvancedSimdLdStMultiple L:opcode=0:0011"),
                         Mask(30,1,
-                            Instr(Mnemonic.st3, q(30),Vmr(0,5,3,BHSD,10), Mb(w64,5,5)),
-                            Instr(Mnemonic.st3, q(30),Vmr(0,5,3,BHSD,10), Mb(w128,5,5))),
+                            Instr(Mnemonic.st3, q30,Vmr(0,5,3,BHSD,10), Mb(w64,5,5)),
+                            Instr(Mnemonic.st3, q30,Vmr(0,5,3,BHSD,10), Mb(w128,5,5))),
                         Nyi("AdvancedSimdLdStMultiple L:opcode=0:0101"),
                         Nyi("AdvancedSimdLdStMultiple L:opcode=0:0110"),
                         Nyi("AdvancedSimdLdStMultiple L:opcode=0:0111"),
@@ -1949,10 +1943,10 @@ namespace Reko.Arch.Arm.AArch64
                         Nyi("AdvancedSimdLdStMultiplePostIdx L:opcode=0:0101"),
                         Nyi("AdvancedSimdLdStMultiplePostIdx L:opcode=0:0110"),
                         Select((16,5), Is31,
-                            Instr(Mnemonic.st1, q(30),Vmr(0,5,2,BBBB),MvmrPpost(2)),
+                            Instr(Mnemonic.st1, q30,Vmr(0,5,2,BBBB),MvmrPpost(2)),
                             Nyi("AdvancedSimdLdStMultiplePostIdx L:opcode=0:0111")),
                         Select((16,5), Is31,
-                            Instr(Mnemonic.st2, q(30),Vmr(0,5,2,BBBB),MvmrPpost(2)),
+                            Instr(Mnemonic.st2, q30,Vmr(0,5,2,BBBB),MvmrPpost(2)),
                             Nyi("AdvancedSimdLdStMultiplePostIdx L:opcode=0:1000 Rm != 11111")),
                         Nyi("AdvancedSimdLdStMultiplePostIdx L:opcode=0:1001"),
                         Nyi("AdvancedSimdLdStMultiplePostIdx L:opcode=0:1010"),
@@ -1962,13 +1956,13 @@ namespace Reko.Arch.Arm.AArch64
                         Nyi("AdvancedSimdLdStMultiplePostIdx L:opcode=0:1110"),
                         Nyi("AdvancedSimdLdStMultiplePostIdx L:opcode=0:1111"),
                         Select((16,5), Is31, 
-                            Instr(Mnemonic.ld4, q(30),Vmr(0,5,4,BBBB),MvmrPpost(4)),
+                            Instr(Mnemonic.ld4, q30,Vmr(0,5,4,BBBB),MvmrPpost(4)),
                             Nyi("AdvancedSimdLdStMultiplePostIdx L:opcode=1:0000 Rm!=11111")),
                         Nyi("AdvancedSimdLdStMultiplePostIdx L:opcode=1:0001"),
                         Nyi("AdvancedSimdLdStMultiplePostIdx L:opcode=1:0010"),
                         Nyi("AdvancedSimdLdStMultiplePostIdx L:opcode=1:0011"),
                         Select((16,5), Is31,
-                            Instr(Mnemonic.ld3, q(30),Vmr(0,5,3,BBBB),MvmrPpost(3)),
+                            Instr(Mnemonic.ld3, q30,Vmr(0,5,3,BBBB),MvmrPpost(3)),
                             Nyi("AdvancedSimdLdStMultiplePostIdx L:opcode=1:0100 Rm != 11111")),
                         Nyi("AdvancedSimdLdStMultiplePostIdx L:opcode=1:0101"),
                         Nyi("AdvancedSimdLdStMultiplePostIdx L:opcode=1:0110"),
@@ -2012,8 +2006,8 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("AdvancedSimdLdStSingleStructure L:R=1 0 opcode=101"),
                             Mask(12, 1, // L:R=10 opcode=110 S
                                 Mask(30, 1,
-                                    Instr(Mnemonic.ld1r, q(30),Vmr(0,5,1,BHSD,10),Mb(w64,  5,5)),
-                                    Instr(Mnemonic.ld1r, q(30),Vmr(0,5,1,BHSD,10),Mb(w128, 5,5))),
+                                    Instr(Mnemonic.ld1r, q30,Vmr(0,5,1,BHSD,10),Mb(w64,  5,5)),
+                                    Instr(Mnemonic.ld1r, q30,Vmr(0,5,1,BHSD,10),Mb(w128, 5,5))),
                                 invalid),
                             Nyi("AdvancedSimdLdStSingleStructure L:R=1 0 opcode=111")),
                         Nyi("AdvancedSimdLdStSingleStructure L:R=1 1"));
@@ -2278,18 +2272,18 @@ namespace Reko.Arch.Arm.AArch64
 
             var UncondBranchReg = Select((16,5), n => n != 0x1F,
                 invalid,
-                Mask(21, 4,
-                    Sparse(10, 6,
+                Mask(21, 4, "  UncondBranchReg",
+                    Sparse(10, 6, "  0000",
                         invalid,
                         (0, Select((0, 5), n => n == 0, Instr(Mnemonic.br, InstrClass.Transfer, X_5), invalid)),
                         (2, Select((0, 5), n => n == 0x1F, Nyi("BRAA,BRAAZ... Key A"), invalid)),
                         (3, Select((0, 5), n => n == 0x1F, Nyi("BRAA,BRAAZ... Key B"), invalid))),
-                    Sparse(10, 6,
+                    Sparse(10, 6, "  0001",
                         invalid,
                         (0, Select((0, 5), n => n == 0, Instr(Mnemonic.blr, InstrClass.Transfer | InstrClass.Call, X_5), invalid)),
                         (2, Select((0, 5), n => n == 0x1F, Nyi("BlRAA,BlRAAZ... Key A"), invalid)),
                         (3, Select((0, 5), n => n == 0x1F, Nyi("BlRAA,BlRAAZ... Key B"), invalid))),
-                    Sparse(10, 6,
+                    Sparse(10, 6, "  0010",
                         invalid,
                         (0, Select((0, 5), n => n == 0, Instr(Mnemonic.ret, InstrClass.Transfer, X_5), invalid)),
                         (2, Select((0, 5), n => n == 0x1F, Nyi("RETAA,RETAAZ... Key A"), invalid)),
@@ -2297,7 +2291,7 @@ namespace Reko.Arch.Arm.AArch64
                     invalid,
 
                     Select((5,5), n => n == 0x1F,
-                        Sparse(10, 6,
+                        Sparse(10, 6, "  0100",
                             invalid,
                             (0, Select((0, 5), n => n == 0, Instr(Mnemonic.eret), invalid)),
                             (2, Select((0, 5), n => n == 0x1F, Nyi("ERETAA,RETAAZ... Key A"), invalid)),
@@ -2368,8 +2362,8 @@ namespace Reko.Arch.Arm.AArch64
                                 Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=0000 op2=110"),
                                 Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=0000 op2=111")),
                             Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=0001"),
-                            Sparse(5, 7, // System L:op0 = 0b000 op1=0b011 crN=0010 crM=0010 op2=???
-                                Sparse(5, 0x7F,
+                            Sparse(5, 3, "  crM=0010",
+                                Sparse(5, 7, "  ",
                                     Instr(Mnemonic.hint, U(5, 7, PrimitiveType.Byte)),
                                     (0b0000_000, Instr(Mnemonic.nop)),
                                     (0b0000_001, Instr(Mnemonic.yield)),
@@ -2676,9 +2670,9 @@ namespace Reko.Arch.Arm.AArch64
             Decoder DataProcessing1source;
             {
                 DataProcessing1source = Mask(Bf((31,1),(29,1)), // sf:S 
-                    Sparse(16, 0b11111, // sf:S=00
+                    Sparse(16, 5, "  sf:S=00",
                         Nyi("DataProcessing1source sf:S=00 opcode2=?????"),
-                        (0b00000, Sparse(10, 0x3F,      // sf:S=00 opcode2=00000 opcode
+                        (0b00000, Sparse(10, 6, "  opcode2=00000",
                             Nyi("DataProcessing1source sf:S=00 opcode2=00000 opcode=??????"),
                             (0b000000, Instr(Mnemonic.rbit, W_0,W_5)),
                             (0b000001, Instr(Mnemonic.rev16, W_0,W_5)),
@@ -2688,9 +2682,9 @@ namespace Reko.Arch.Arm.AArch64
                             ))
                         ),
                     Nyi("DataProcessing1source sf:S=01"),
-                    Sparse(16, 0b11111, // sf:S=00
+                    Sparse(16, 5, "  sf:S=10",
                         Nyi("DataProcessing1source sf:S=10"),
-                        (0b00000, Sparse(10, 0x3F,      // sf:S=10 opcode2=00000 opcode
+                        (0b00000, Sparse(10, 6, "  opcode2=00000",
                             Nyi("DataProcessing1source sf:S=10 opcode2=00000 opcode=??????"),
                             (0b000000, Instr(Mnemonic.rbit, X_0, X_5)),
                             (0b000001, Instr(Mnemonic.rev16, X_0, X_5)),
@@ -2846,9 +2840,9 @@ namespace Reko.Arch.Arm.AArch64
 
             Decoder ConversionBetweenFpAndInt;
             {
-                ConversionBetweenFpAndInt = Mask(Bf((31, 1), (29, 1)),
+                ConversionBetweenFpAndInt = Mask(Bf((31, 1), (29, 1)), "  Conversion between floating-point and integer",
                     Mask(22, 2,      // sf:S=0b00 type
-                        Sparse(16, 0b11111,  // sf:S=0b00 type=00 rmode:opcode
+                        Sparse(16, 5, "  type=00",
                             Nyi("ConversionBetweenFpAndInt sf:S=0b00 type=00"),
                             (0b00_010, Instr(Mnemonic.scvtf, S_0,W_5)),
                             (0b00_011, Instr(Mnemonic.ucvtf, S_0,W_5)),
@@ -2858,20 +2852,22 @@ namespace Reko.Arch.Arm.AArch64
                             (0b10_000, Instr(Mnemonic.fcvtms, W_0,S(5,5))),
                             (0b11_000, Instr(Mnemonic.fcvtzs, W_5,S_0)),
                             (0b11_001, Instr(Mnemonic.fcvtzu, W_5,S_0))),
-                        Sparse(16, 0b11111,  // sf:S=0b00 type=01 rmode:opcode
+                        Sparse(16, 5, "  type=01",
                             Nyi("ConversionBetweenFpAndInt sf:S=0b00 type=01"),
-                            (0b00_010, Instr(Mnemonic.scvtf, D(0,5),W_5))
+                            (0b00_010, Instr(Mnemonic.scvtf, D_0,W_5))
                             ),
                         Nyi("ConversionBetweenFpAndInt sf:S=0b00 type=10"),
                         Nyi("ConversionBetweenFpAndInt sf:S=0b00 type=11")),
                     invalid,
-                    Mask(22, 2,      // sf:S=0b00 type
+                    Mask(22, 2,      "  sf:S=0b10",
                         Nyi("ConversionBetweenFpAndInt sf:S=0b10 type=00"),
-                        Sparse(16, 0b11111,  // sf:S=0b10 type=01
+                        Sparse(16, 5,  "  type=01",
                             Nyi("ConversionBetweenFpAndInt sf:S=0b10 type=01"),
-                            (0b00_111, Instr(Mnemonic.fmov, D(0,5),X_5))
+                            (0b00_110, Instr(Mnemonic.fmov, X_5, D_0)),
+                            (0b00_111, Instr(Mnemonic.fmov, D_0,X_5)),
+                            (0b11_000, Instr(Mnemonic.fcvtzs, W_5, D_0))
                             ),
-                        Sparse(16, 0b11111, // sf:S=0b10 type=10
+                        Sparse(16, 5, "  type=10",
                             Nyi("ConversionBetweenFpAndInt sf:S=0b10 type=10"),
                             (0b01_111, Instr(Mnemonic.fmov, Vri(0,5,w128,VectorData.I64, 1),X_5))),
                         Nyi("ConversionBetweenFpAndInt sf:S=0b10 type=11")),
@@ -2909,29 +2905,29 @@ namespace Reko.Arch.Arm.AArch64
 
             Decoder AdvancedSimd3Same;
             {
-                AdvancedSimd3Same = Mask(29, 1,
-                    Sparse(11, 0b11111,
+                AdvancedSimd3Same = Mask(29, 1, "  Advanced SIMD three same",
+                    Sparse(11, 5, "  U=0",
                         Nyi("AdvancedSimd3Same U=0"),
                         (0b00011, Mask(22, 2,    // U=0 opcode=00011 size
                             Nyi("AdvancedSimd3Same U=0 opcode=00011 size=00"),
                             Nyi("AdvancedSimd3Same U=0 opcode=00011 size=01"),
                             Select((0, 21), Rn_Rm_Same,
-                                Instr(Mnemonic.mov, q(30), Vr(0,5,BBB_,30), Vr(5,5,BBB_,30)),                     // U=0 opcode=00011 size=10
-                                Instr(Mnemonic.orr, q(30), Vr(0,5,BBB_,30), Vr(5,5,BBB_,30), Vr(16,5,BBB_,30))),  // U=0 opcode=00011 size=10
+                                Instr(Mnemonic.mov, q30, Vr(0,5,BBB_,30), Vr(5,5,BBB_,30)),                     // U=0 opcode=00011 size=10
+                                Instr(Mnemonic.orr, q30, Vr(0,5,BBB_,30), Vr(5,5,BBB_,30), Vr(16,5,BBB_,30))),  // U=0 opcode=00011 size=10
                             Nyi("AdvancedSimd3Same U=0 opcode=00011 size=11"))),
-                        (0b01100, Instr(Mnemonic.smax, q(30),Vr(0,5,BHS_), Vr(5,5,BHS_),Vr(16,5,BHS_))),
-                        (0b10000, Instr(Mnemonic.add, q(30),Vr(0,5,BHSD),Vr(5,5,BHSD),Vr(16,5,BHSD))),
-                        (0b10011, Instr(Mnemonic.mul, q(30),Vr(0,5,BHS_),Vr(5,5,BHS_),Vr(16,5,BHS_))),
-                        (0b10110, Instr(Mnemonic.sqdmulh, q(30),Vr(0,5,BHS_),Vr(5,5,BHS_),Vr(16,5,BHS_))),
+                        (0b01100, Instr(Mnemonic.smax, q30,Vr(0,5,BHS_), Vr(5,5,BHS_),Vr(16,5,BHS_))),
+                        (0b10000, Instr(Mnemonic.add, q30,Vr(0,5,BHSD),Vr(5,5,BHSD),Vr(16,5,BHSD))),
+                        (0b10011, Instr(Mnemonic.mul, q30,Vr(0,5,BHS_),Vr(5,5,BHS_),Vr(16,5,BHS_))),
+                        (0b10110, Instr(Mnemonic.sqdmulh, q30,Vr(0,5,BHS_),Vr(5,5,BHS_),Vr(16,5,BHS_))),
                         (0b11010, Mask(23, 1,       // U=0 opcode=11010 size=?x
-                            Instr(Mnemonic.fadd, q(30),Vr(0,5,SSDD),Vr(5,5,SSDD),Vr(16,5,SSDD)),
+                            Instr(Mnemonic.fadd, q30,Vr(0,5,SSDD),Vr(5,5,SSDD),Vr(16,5,SSDD)),
                             Instr(Mnemonic.fsub, x("vector"))))),
-                    Mask(11, 5, // U=1 opcode
+                    Mask(11, 5, "  U=1 opcode",
                         Nyi("AdvancedSimd3Same U=1 opcode=00000"),
                         Nyi("AdvancedSimd3Same U=1 opcode=00001"),
                         Nyi("AdvancedSimd3Same U=1 opcode=00010"),
                         Mask(22, 2, // U=1 opcode=00011 size
-                            Instr(Mnemonic.eor, q(30),Vr(0,5,BBB_,30), Vr(5,5,BBB_,30), Vr(16,5,BBB_,30)),
+                            Instr(Mnemonic.eor, q30,Vr(0,5,BBB_,30), Vr(5,5,BBB_,30), Vr(16,5,BBB_,30)),
                             Nyi("AdvancedSimd3Same U=1 opcode=00011 size=01"),
                             Nyi("AdvancedSimd3Same U=1 opcode=00011 size=10"),
                             Nyi("AdvancedSimd3Same U=1 opcode=00011 size=11")),
@@ -2945,26 +2941,26 @@ namespace Reko.Arch.Arm.AArch64
                         Nyi("AdvancedSimd3Same U=1 opcode=01011"),
                         Nyi("AdvancedSimd3Same U=1 opcode=01100"),
                         Nyi("AdvancedSimd3Same U=1 opcode=01101"),
-                        Nyi("AdvancedSimd3Same U=1 opcode=01110"),
-                        Nyi("AdvancedSimd3Same U=1 opcode=01111"),
-                        Nyi("AdvancedSimd3Same U=1 opcode=10000"),
+                        Instr(Mnemonic.uabd, q30, Vr(0,5,BHS_,30), Vr(5,5,BHS_,30), Vr(16,5,BHS_,30)),
+                        Nyi("uaba - AdvancedSimd3Same U=1 opcode=01111"),
+                        Nyi("sub - vector - AdvancedSimd3Same U=1 opcode=10000"),
                         Instr(Mnemonic.cmeq, q1, Vr(0,5,BBBB),Vr(5,5,BBBB),Vr(16,5,BBBB)),
-                        Nyi("AdvancedSimd3Same U=1 opcode=10010"),
-                        Nyi("AdvancedSimd3Same U=1 opcode=10011"),
-                        Nyi("AdvancedSimd3Same U=1 opcode=10100"),
-                        Nyi("AdvancedSimd3Same U=1 opcode=10101"),
-                        Nyi("AdvancedSimd3Same U=1 opcode=10110"),
-                        Nyi("AdvancedSimd3Same U=1 opcode=10111"),
+                        Nyi("mls (vector) - AdvancedSimd3Same U=1 opcode=10010"),
+                        Nyi("pmul - AdvancedSimd3Same U=1 opcode=10011"),
+                        Nyi("umaxp - AdvancedSimd3Same U=1 opcode=10100"),
+                        Nyi("uminp - AdvancedSimd3Same U=1 opcode=10101"),
+                        Nyi("sqrdmulh (vector) - AdvancedSimd3Same U=1 opcode=10110"),
+                        Nyi("unallocated - AdvancedSimd3Same U=1 opcode=10111"),
                         Nyi("AdvancedSimd3Same U=1 opcode=10000"),
                         Nyi("AdvancedSimd3Same U=1 opcode=11001"),
                         Mask(22, 2, // U=1 opcode=00011 size
-                            Instr(Mnemonic.fadd, VectorData.F32, q(30),V(0,5),V(5,5),V(16,5)),
-                            Instr(Mnemonic.fadd, VectorData.F64, q(30),V(0,5),V(5,5),V(16,5)),
+                            Instr(Mnemonic.fadd, VectorData.F32, q30,V(0,5),V(5,5),V(16,5)),
+                            Instr(Mnemonic.fadd, VectorData.F64, q30,V(0,5),V(5,5),V(16,5)),
                             Nyi("AdvancedSimd3Same U=1 opcode=11010 size=10"),
                             Nyi("AdvancedSimd3Same U=1 opcode=11010 size=11")),
                         Mask(23, 2, // U=1 opcode=00011 size=?x
-                            Instr(Mnemonic.fmul, VectorData.F32, q(30),V(0,5),V(5,5),V(16,5)),
-                            Instr(Mnemonic.fmul, VectorData.F64, q(30),V(0,5),V(5,5),V(16,5)),
+                            Instr(Mnemonic.fmul, VectorData.F32, q30,V(0,5),V(5,5),V(16,5)),
+                            Instr(Mnemonic.fmul, VectorData.F64, q30,V(0,5),V(5,5),V(16,5)),
                             invalid,
                             invalid),
                         Nyi("AdvancedSimd3Same U=1 opcode=11100"),
@@ -2981,8 +2977,8 @@ namespace Reko.Arch.Arm.AArch64
                     Nyi("AdvancedSimd3Different U:opcode=0 0010"),
                     Nyi("AdvancedSimd3Different U:opcode=0 0011"),
                     Mask(30, 1,
-                        Instr(Mnemonic.addhn, q(30),Vr(0,5,BHS_),Vr(5,5,HSD_),Vr(16,5,HSD_)),
-                        Instr(Mnemonic.addhn2, q(30),Vr(0,5,BHS_),Vr(5,5,HSD_),Vr(16,5,HSD_))),
+                        Instr(Mnemonic.addhn, q30,Vr(0,5,BHS_),Vr(5,5,HSD_),Vr(16,5,HSD_)),
+                        Instr(Mnemonic.addhn2, q30,Vr(0,5,BHS_),Vr(5,5,HSD_),Vr(16,5,HSD_))),
                     Nyi("AdvancedSimd3Different U:opcode=0 0101"),
                     Nyi("AdvancedSimd3Different U:opcode=0 0110"),
                     Nyi("AdvancedSimd3Different U:opcode=0 0111"),
@@ -2995,18 +2991,18 @@ namespace Reko.Arch.Arm.AArch64
                     Nyi("AdvancedSimd3Different U:opcode=0 1110"),
                     Nyi("AdvancedSimd3Different U:opcode=0 1111"),
                     Nyi("AdvancedSimd3Different U:opcode=1 0000"),
-                    Instr(Mnemonic.uaddw, q(30), Vr(0, 5, HSD_), Vr(5, 5, HSD_), Vr(16, 5, BHS_)),
+                    Instr(Mnemonic.uaddw, q30, Vr(0, 5, HSD_), Vr(5, 5, HSD_), Vr(16, 5, BHS_)),
                     Nyi("AdvancedSimd3Different U:opcode=1 0010"),
                     Nyi("AdvancedSimd3Different U:opcode=1 0011"),
                     Nyi("AdvancedSimd3Different U:opcode=1 0100"),
                     Nyi("AdvancedSimd3Different U:opcode=1 0101"),
                     Nyi("AdvancedSimd3Different U:opcode=1 0110"),
                     Nyi("AdvancedSimd3Different U:opcode=1 0111"),
-                    Instr(Mnemonic.umlal, q1,Vr(0,5,HSD_),q(30),Vr(5,5,BHS_),Vr(16,5,BHS_)),
+                    Instr(Mnemonic.umlal, q1,Vr(0,5,HSD_),q30,Vr(5,5,BHS_),Vr(16,5,BHS_)),
                     Nyi("AdvancedSimd3Different U:opcode=1 1001"),
                     Nyi("AdvancedSimd3Different U:opcode=1 1010"),
                     Nyi("AdvancedSimd3Different U:opcode=1 1011"),
-                    Instr(Mnemonic.umull, q1,Vr(0,5,HSD_),q(30),Vr(5,5,BHS_),Vr(16,5,BHS_)),
+                    Instr(Mnemonic.umull, q1,Vr(0,5,HSD_),q30,Vr(5,5,BHS_),Vr(16,5,BHS_)),
                     Nyi("AdvancedSimd3Different U:opcode=1 1101"),
                     Nyi("AdvancedSimd3Different U:opcode=1 1110"),
                     Nyi("AdvancedSimd3Different U:opcode=1 1111"));
@@ -3093,24 +3089,24 @@ namespace Reko.Arch.Arm.AArch64
 
             Decoder FloatingPointDataProcessing1src;
             {
-                FloatingPointDataProcessing1src = Mask(Bf((31, 1), (29, 1), (22, 2)),  // M:S:Type
-                    Sparse(15, 0x3F,    // M:S:Type=00 00
+                FloatingPointDataProcessing1src = Mask(Bf((31, 1), (29, 1), (22, 2)), "  FloatingPointDataProcessing1src",
+                    Sparse(15, 6, "  00",
                         Nyi("FloatingPointDataProcessing1src M:S:Type=00 00"),
                         (0b000000, Instr(Mnemonic.fmov, S_0,S(5,5))),
                         (0b000001, Instr(Mnemonic.fabs, S_0,S(5,5))),
                         (0b000010, Instr(Mnemonic.fneg, S_0,S(5,5))),
                         (0b000011, Instr(Mnemonic.fsqrt, S_0,S(5,5))),
-                        (0b000101, Instr(Mnemonic.fcvt, D(0,5),S(5,5))),
+                        (0b000101, Instr(Mnemonic.fcvt, D_0,S(5,5))),
                         (0b000111, Instr(Mnemonic.fcvt, H(0,5),S(5,5)))
                         ),
-                    Sparse(15, 0x3F,    // M:S:Type=00 01
+                    Sparse(15, 6, "  01",
                         Nyi("FloatingPointDataProcessing1src M:S:Type=00 01"),
-                        (0b000000, Instr(Mnemonic.fmov, D(0,5),D(5,5))),
-                        (0b000001, Instr(Mnemonic.fabs, D(0,5),D(5,5))),
-                        (0b000010, Instr(Mnemonic.fneg, D(0,5),D(5,5))),
-                        (0b000011, Instr(Mnemonic.fsqrt,D(0,5),D(5,5))),
-                        (0b000100, Instr(Mnemonic.fcvt, S_0,D(5,5))),
-                        (0b000111, Instr(Mnemonic.fcvt, H(0,5),D(5,5)))
+                        (0b000000, Instr(Mnemonic.fmov, D_0, D_5)),
+                        (0b000001, Instr(Mnemonic.fabs, D_0, D_5)),
+                        (0b000010, Instr(Mnemonic.fneg, D_0, D_5)),
+                        (0b000011, Instr(Mnemonic.fsqrt,D(0,5), D_5)),
+                        (0b000100, Instr(Mnemonic.fcvt, S_0, D_5)),
+                        (0b000111, Instr(Mnemonic.fcvt, H(0,5), D_5))
                         ),
                     Nyi("FloatingPointDataProcessing1src M:S:Type=00 10"),
                     Nyi("FloatingPointDataProcessing1src M:S:Type=00 11"),
@@ -3152,17 +3148,17 @@ namespace Reko.Arch.Arm.AArch64
                         invalid,
                         invalid),
                     Mask(12, 4,            // M:S:Type=0 0 01 opcode
-                        Instr(Mnemonic.fmul, D(0,5),D(5,5),D(16,5)),
-                        Instr(Mnemonic.fdiv, D(0,5),D(5,5),D(16,5)),
-                        Instr(Mnemonic.fadd, D(0,5),D(5,5),D(16,5)),
-                        Instr(Mnemonic.fsub, D(0,5),D(5,5),D(16,5)),
+                        Instr(Mnemonic.fmul, D_0, D_5, D_16),
+                        Instr(Mnemonic.fdiv, D_0, D_5, D_16),
+                        Instr(Mnemonic.fadd, D_0, D_5, D_16),
+                        Instr(Mnemonic.fsub, D_0, D_5, D_16),
 
-                        Instr(Mnemonic.fmax, D(0,5),D(5,5),D(16,5)),
-                        Instr(Mnemonic.fmin, D(0,5),D(5,5),D(16,5)),
-                        Instr(Mnemonic.fmaxnm, D(0,5),D(5,5),D(16,5)),
-                        Instr(Mnemonic.fnmul, D(0,5),D(5,5),D(16,5)),
+                        Instr(Mnemonic.fmax, D_0, D_5, D_16),
+                        Instr(Mnemonic.fmin, D_0, D_5, D_16),
+                        Instr(Mnemonic.fmaxnm, D_0, D_5, D_16),
+                        Instr(Mnemonic.fnmul, D_0, D_5, D_16),
 
-                        Instr(Mnemonic.fnmul, D(0,5),D(5,5),D(16,5)),
+                        Instr(Mnemonic.fnmul, D_0, D_5, D_16),
                         invalid,
                         invalid,
                         invalid,
@@ -3215,7 +3211,7 @@ namespace Reko.Arch.Arm.AArch64
                     Select((5, 5), n => n == 0,   // M:S=00 imm5=00000
                         Mask(22, 2,   // M:S=00 imm5=00000
                             Instr(Mnemonic.fmov, S_0,If32(13,8)),
-                            Instr(Mnemonic.fmov, D(0,5),If64(13,8)),
+                            Instr(Mnemonic.fmov, D_0,If64(13,8)),
                             invalid,
                             Instr(Mnemonic.fmov, H(0,5),If16(13,8))),
                         invalid),
@@ -3234,9 +3230,9 @@ namespace Reko.Arch.Arm.AArch64
                             Instr(Mnemonic.fcmp,  S(5,5),Sz(16,5)),
                             Instr(Mnemonic.fcmpe, S(5,5),S(16,5)),
                             Instr(Mnemonic.fcmpe, S(5,5),Sz(16,5)),
-                            Instr(Mnemonic.fcmp,  D(5,5),D(16,5)),
+                            Instr(Mnemonic.fcmp,  D(5,5), D_16),
                             Instr(Mnemonic.fcmp,  D(5,5),Dz(16,5)),
-                            Instr(Mnemonic.fcmpe, D(5,5),D(16,5)),
+                            Instr(Mnemonic.fcmpe, D(5,5), D_16),
                             Instr(Mnemonic.fcmpe, D(5,5),Dz(16,5)),
                             invalid,
                             invalid,
@@ -3256,7 +3252,7 @@ namespace Reko.Arch.Arm.AArch64
                 FloatingPointCondSelect = Mask(Bf((31, 1), (29, 1)),   // M:S
                     Mask(22, 2,  // M:S=00 type
                         Instr(Mnemonic.fcsel, S_0,S(5,5),S(16,5),C(12,4)),
-                        Instr(Mnemonic.fcsel, D(0,5),D(5,5),D(16,5),C(12,4)),
+                        Instr(Mnemonic.fcsel, D_0, D_5, D_16,C(12,4)),
                         invalid,
                         Instr(Mnemonic.fcsel, H(0,5),H(5,5),H(16,5),C(12,4))),
                     invalid,
@@ -3282,20 +3278,20 @@ namespace Reko.Arch.Arm.AArch64
                 AdvancedSimdShiftByImm = Select((19, 4), IsZero,
                     invalid,
                     Mask(29, 1,
-                        Sparse(11,0b11111, // U=0
+                        Sparse(11,5, "  U=0",
                             Nyi("AdvancedSimdShiftByImm U=0"),
-                            (0b00000, Instr(Mnemonic.sshr, q(30),Vr(0,5,BHS_,20),q1,Vr(5,5,BHS_,20),ShrnShift)),
-                            (0b10000, Instr(Mnemonic.shrn, q(30),Vr(0,5,BHS_,20),q1,Vr(5,5,HSD_,20),ShrnShift)),
+                            (0b00000, Instr(Mnemonic.sshr, q30,Vr(0,5,BHS_,20),q1,Vr(5,5,BHS_,20),ShrnShift)),
+                            (0b10000, Instr(Mnemonic.shrn, q30,Vr(0,5,BHS_,20),q1,Vr(5,5,HSD_,20),ShrnShift)),
                         (0b10100, Select((16, 3), n => n == 0, 
-                            Instr(Mnemonic.sxtl, q1,As(19,4),V(0,5), q(30),V(5,5)),
+                            Instr(Mnemonic.sxtl, q1,As(19,4),V(0,5), q30,V(5,5)),
                             Instr(Mnemonic.sshll, x("sshll"))))
                             ),
-                        Sparse(11, 0b11111, // U=1
+                        Sparse(11, 5, "  U=1",
                             Nyi("AdvancedSimdShiftByImm U=1"),
                             (0b10100, Select((16, 3), n => n == 0,
                                 Mask(30, 1,
-                                    Instr(Mnemonic.uxtl, q1,Vr(0,5,HSD_,20),q(30),Vr(5,5,BHS_,20)),
-                                    Instr(Mnemonic.uxtl2, q(30),Vr(0,5,HSD_,20),Vr(5,5,BHS_128,20))),
+                                    Instr(Mnemonic.uxtl, q1,Vr(0,5,HSD_,20),q30,Vr(5,5,BHS_,20)),
+                                    Instr(Mnemonic.uxtl2, q30,Vr(0,5,HSD_,20),Vr(5,5,BHS_128,20))),
                                 Mask(30, 1,       // U=1 Q
                                     Instr(Mnemonic.ushll, x("")),
                                     Instr(Mnemonic.ushll2, x(""))))))));
@@ -3303,10 +3299,10 @@ namespace Reko.Arch.Arm.AArch64
 
             Decoder AdvancedSimdModifiedImm;
             {
-                AdvancedSimdModifiedImm = Sparse("AdvancedSimdModifiedImm", 12, 0b1111,
+                AdvancedSimdModifiedImm = Sparse(12, 4, "AdvancedSimdModifiedImm",
                     Nyi("AdvancedSimdModifiedImm cmode"),
                     (0b0000, Mask(Bf((29, 2), (11, 1)),  // cmode=0b1110 Q:op:op2
-                        Instr(Mnemonic.movi, q(30),Vr(0,5,SSSS),Is64(16,3,5,5,29,1,12,4)),
+                        Instr(Mnemonic.movi, q30,Vr(0,5,SSSS),Is64(16,3,5,5,29,1,12,4)),
                         Nyi("AdvancedSimdModifiedImm cmode=0000 Q:op:op2=001"),
                         Nyi("AdvancedSimdModifiedImm cmode=0000 Q:op:op2=010"),
                         Nyi("AdvancedSimdModifiedImm cmode=0000 Q:op:op2=011"),
@@ -3315,30 +3311,30 @@ namespace Reko.Arch.Arm.AArch64
                         Nyi("AdvancedSimdModifiedImm cmode=0000 Q:op:op2=110"),
                         Nyi("AdvancedSimdModifiedImm cmode=0000 Q:op:op2=111"))),
                     (0b1000, Mask(Bf((29, 2), (11, 1)),  // cmode=0b1110 Q:op:op2
-                        Instr(Mnemonic.movi, q(30),Vr(0,5,HHHH),Is64(16,3,5,5,29,1,12,4)),
+                        Instr(Mnemonic.movi, q30,Vr(0,5,HHHH),Is64(16,3,5,5,29,1,12,4)),
                         Nyi("AdvancedSimdModifiedImm cmode=1000 Q:op:op2=001"),
                         Nyi("AdvancedSimdModifiedImm cmode=1000 Q:op:op2=010"),
                         Nyi("AdvancedSimdModifiedImm cmode=1000 Q:op:op2=011"),
-                        Instr(Mnemonic.movi, q(30),Vr(0,5,HHHH),Is64(16,3,5,5,29,1,12,4)),
+                        Instr(Mnemonic.movi, q30,Vr(0,5,HHHH),Is64(16,3,5,5,29,1,12,4)),
                         Nyi("AdvancedSimdModifiedImm cmode=1000 Q:op:op2=101"),
                         Nyi("AdvancedSimdModifiedImm cmode=1000 Q:op:op2=110"),
                         Nyi("AdvancedSimdModifiedImm cmode=1000 Q:op:op2=111"))),
                     (0b1110, Mask(Bf((29, 2), (11, 1)),  // cmode=0b1110 Q:op:op2
-                        Instr(Mnemonic.movi, q(30),Vr(0,5,BBBB),Is64(16,3,5,5,29,1,12,4)),
+                        Instr(Mnemonic.movi, q30,Vr(0,5,BBBB),Is64(16,3,5,5,29,1,12,4)),
                         Nyi("AdvancedSimdModifiedImm cmode=1110 Q:op:op2=001"),
                         Nyi("AdvancedSimdModifiedImm cmode=1110 Q:op:op2=010"),
                         Nyi("AdvancedSimdModifiedImm cmode=1110 Q:op:op2=011"),
                         Nyi("AdvancedSimdModifiedImm cmode=1110 Q:op:op2=100"),
                         Nyi("AdvancedSimdModifiedImm cmode=1110 Q:op:op2=101"),
-                        Instr(Mnemonic.movi, q(30),Vr(0,5,DDDD),Is64(16,3,5,5,29,1,12,4)),
+                        Instr(Mnemonic.movi, q30,Vr(0,5,DDDD),Is64(16,3,5,5,29,1,12,4)),
                         Nyi("AdvancedSimdModifiedImm cmode=1110 Q:op:op2=111"))),
 
                     (0b1111, Mask(Bf((29, 2), (11, 1)),  // cmode=0b1111 Q:op:op2
-                        Instr(Mnemonic.fmov, q(30),Vr(0,5,SSSS,30), If32(16,3,5,5)),
+                        Instr(Mnemonic.fmov, q30,Vr(0,5,SSSS,30), If32(16,3,5,5)),
                         Nyi("AdvancedSimdModifiedImm cmode=1111 Q:op:op2=001"),
                         Nyi("AdvancedSimdModifiedImm cmode=1111 Q:op:op2=010"),
                         Nyi("AdvancedSimdModifiedImm cmode=1111 Q:op:op2=011"),
-                        Instr(Mnemonic.fmov, q(30),Vr(0,5,SSSS,30), If32(16,3,5,5)),
+                        Instr(Mnemonic.fmov, q30,Vr(0,5,SSSS,30), If32(16,3,5,5)),
                         Nyi("AdvancedSimdModifiedImm cmode=1111 Q:op:op2=101"),
                         Nyi("AdvancedSimdModifiedImm cmode=1111 Q:op:op2=110"),
                         Nyi("AdvancedSimdModifiedImm cmode=1111 Q:op:op2=111"))));
@@ -3378,21 +3374,21 @@ namespace Reko.Arch.Arm.AArch64
                         Mask(22, 2,
                             Instr(Mnemonic.fcvtms, x("vector")),
                             Instr(Mnemonic.fcvtms, x("vector")),
-                            Instr(Mnemonic.fcvtzs, VectorData.F32, q(30),V(0,5),V(5,5)),
-                            Instr(Mnemonic.fcvtzs, VectorData.F64, q(30),V(0,5),V(5,5))),
+                            Instr(Mnemonic.fcvtzs, VectorData.F32, q30,V(0,5),V(5,5)),
+                            Instr(Mnemonic.fcvtzs, VectorData.F64, q30,V(0,5),V(5,5))),
                         Nyi("AdvancedSimd2RegMisc U=0 opcode=11100"),
                         Mask(22, 2,
-                            Instr(Mnemonic.scvtf, VectorData.I32, q(30),V(0,5),V(5,5)),
+                            Instr(Mnemonic.scvtf, VectorData.I32, q30,V(0,5),V(5,5)),
                             Nyi("AdvancedSimd2RegMisc U=0 opcode=11101 size=01"),
                             Nyi("AdvancedSimd2RegMisc U=0 opcode=11101 size=10"),
                             Nyi("AdvancedSimd2RegMisc U=0 opcode=11101 size=11")),
                         invalid,
                         Nyi("AdvancedSimd2RegMisc U=0 opcode=11111")),
-                    Sparse(12, 0b11111,
+                    Sparse(12, 5, "  AdvancedSimd2RegMisc U=1",
                         Nyi("AdvancedSimd2RegMisc U=1"),
                         (0b00000, Instr(Mnemonic.rev32, x("AdvancedSimd2RegMisc U=1 opcode=00000"))),
                         (0b00101, Mask(22, 2,
-                            Instr(Mnemonic.not, q(30),Vr(0,5,BBBB),Vr(5,5,BBBB)),
+                            Instr(Mnemonic.not, q30,Vr(0,5,BBBB),Vr(5,5,BBBB)),
                             Nyi("AdvancedSimd2RegMisc U=1 opcode=00101 size=01"),
                             Nyi("AdvancedSimd2RegMisc U=1 opcode=00101 size=10"),
                             Nyi("AdvancedSimd2RegMisc U=1 opcode=00101 size=11")))));
@@ -3400,20 +3396,20 @@ namespace Reko.Arch.Arm.AArch64
 
             Decoder AdvancedSimdAcrossLanes;
             {
-                AdvancedSimdAcrossLanes = Sparse(12, 0b11111, // opcode
+                AdvancedSimdAcrossLanes = Sparse(12, 5, "  Advanced SIMD across lanes",
                     Nyi("AdvancedSimdAcrossLanes opcode"),
                     (0b01010, Mask(29, 1,    // opcode=01010 U=0 size
                         Mask(22, 2,       // opcode=01010 U=0 size
-                            Instr(Mnemonic.smaxv, q(30), B(0, 5), Vr(5, 5, BHS_)),
-                            Instr(Mnemonic.smaxv, q(30), H(0, 5), Vr(5, 5, BHS_)),
-                            Instr(Mnemonic.smaxv, q(30), S_0, Vr(5, 5, BHS_)),
+                            Instr(Mnemonic.smaxv, q30, B(0, 5), Vr(5, 5, BHS_)),
+                            Instr(Mnemonic.smaxv, q30, H(0, 5), Vr(5, 5, BHS_)),
+                            Instr(Mnemonic.smaxv, q30, S_0, Vr(5, 5, BHS_)),
                             invalid),
                         Nyi("AdvancedSimdAcrossLanes opcode=01010 U=1"))),
                     (0b11011, Mask(29, 1,
                         Mask(22,2,   // opcode=11011 U=0 size
-                            Instr(Mnemonic.addv, q(30),B(0,5),Vr(5,5,BHS_)),
-                            Instr(Mnemonic.addv, q(30),H(0,5),Vr(5,5,BHS_)),
-                            Instr(Mnemonic.addv, q(30),S_0,Vr(5,5,BHS_)),
+                            Instr(Mnemonic.addv, q30,B(0,5),Vr(5,5,BHS_)),
+                            Instr(Mnemonic.addv, q30,H(0,5),Vr(5,5,BHS_)),
+                            Instr(Mnemonic.addv, q30,S_0,Vr(5,5,BHS_)),
                             invalid),
                         Nyi("AdvancedSimdAcrossLanes opcode=11011 U=1"))));
             }
@@ -3425,26 +3421,26 @@ namespace Reko.Arch.Arm.AArch64
                     Mask(29, 2,    // Q:op
                         Nyi("AdvancedSIMDcopy Q:op=00"),
                         Nyi("AdvancedSIMDcopy Q:op=01"),
-                        Sparse(11, 0b1111,
+                        Sparse(11, 4, "  op=10",
                             invalid,
-                            (0b0000, Instr(Mnemonic.dup, q(30),Vrs(0,5,16,5,false,false),Vrs(5,5,16,5,true,false))),
+                            (0b0000, Instr(Mnemonic.dup, q30,Vrs(0,5,16,5,false,false),Vrs(5,5,16,5,true,false))),
                             (0b0001, Select((16, 4), n => n == 0b1000,
-                                Instr(Mnemonic.dup, q(30),Vrs(0,5,16,5,false,false),X_5),
-                                Instr(Mnemonic.dup, q(30),Vrs(0,5,16,5,false,false),W_5)))),
-                        Instr(Mnemonic.mov, q(30),Vrs(0,5,16,5,true,false),Vrs(5,5,11,4,true,true))));
+                                Instr(Mnemonic.dup, q30,Vrs(0,5,16,5,false,false),X_5),
+                                Instr(Mnemonic.dup, q30,Vrs(0,5,16,5,false,false),W_5)))),
+                        Instr(Mnemonic.mov, q30,Vrs(0,5,16,5,true,false),Vrs(5,5,11,4,true,true))));
             }
 
             Decoder AdvancedSimdExtract = Select((22, 2), IsZero,
-                Instr(Mnemonic.ext, q(30), Vr(0, 5, BBBB), Vr(5, 5, BBBB), Vr(16, 5, BBBB), U(11, 4, PrimitiveType.Byte)),
+                Instr(Mnemonic.ext, q30, Vr(0, 5, BBBB), Vr(5, 5, BBBB), Vr(16, 5, BBBB), U(11, 4, PrimitiveType.Byte)),
                 invalid);
 
             Decoder AdvancedSIMD2RegMisc;
             {
                 AdvancedSIMD2RegMisc = Mask(29, 1,
-                    Sparse(12, 0b11111,
+                    Sparse(12, 5, "  AdvancedSIMD2RegMisc U=0",
                         Nyi("AdvancedSIMD2RegMisc U=0"),
                         (0b10010, Mask(30, 1,
-                            Instr(Mnemonic.xtn, q(30),Vr(0,5,BHS_),q1,Vr(5,5,HSD_)),
+                            Instr(Mnemonic.xtn, q30,Vr(0,5,BHS_),q1,Vr(5,5,HSD_)),
                             Instr(Mnemonic.xtn2, x(""))))),
                     Nyi("AdvancedSIMD2RegMisc U=1"));
             }
@@ -3457,7 +3453,7 @@ namespace Reko.Arch.Arm.AArch64
                         Instr(Mnemonic.tbx, x("1 register variant")),
                         Instr(Mnemonic.tbl, x("2 register variant")),
                         Instr(Mnemonic.tbx, x("2 register variant")),
-                        Instr(Mnemonic.tbl, q(30),Vr(0,5,BBBB),Vmr(5,5,3,BBBB), Vr(0,5,BBBB)),
+                        Instr(Mnemonic.tbl, q30,Vr(0,5,BBBB),Vmr(5,5,3,BBBB), Vr(0,5,BBBB)),
                         Instr(Mnemonic.tbx, x("3 register variant")),
                         Instr(Mnemonic.tbl, x("4 register variant")),
                         Instr(Mnemonic.tbx, x("4 register variant"))),
@@ -3489,7 +3485,7 @@ namespace Reko.Arch.Arm.AArch64
 
             Decoder DataProcessingScalarFpAdvancedSimd;
             {
-                Decoder FloatingPointDecoders = Mask(10, 2,  // op3=xxxxxxx??
+                Decoder FloatingPointDecoders = Mask(10, 2, "  Floating point decoders",
                     Mask(12, 2,                              // op3=xxxxx??00
                         Mask(14, 2,                          // op3=xxx??0000
                             ConversionBetweenFpAndInt,          // op3=xxx000000
@@ -3510,10 +3506,10 @@ namespace Reko.Arch.Arm.AArch64
                         Instr(Mnemonic.fnmadd, S_0,S(5,5),S(16,5),S(10,5)),
                         Instr(Mnemonic.fnmsub, S_0,S(5,5),S(16,5),S(10,5))),
                     Mask(Bf((21,1),(15,1)),
-                        Instr(Mnemonic.fmadd, D(0,5),D(5,5),D(16,5),D(10,5)),
-                        Instr(Mnemonic.fmsub, D(0,5),D(5,5),D(16,5),D(10,5)),
-                        Instr(Mnemonic.fnmadd, D(0,5),D(5,5),D(16,5),D(10,5)),
-                        Instr(Mnemonic.fnmsub, D(0,5),D(5,5),D(16,5),D(10,5))),
+                        Instr(Mnemonic.fmadd, D_0, D_5, D_16, D_10),
+                        Instr(Mnemonic.fmsub, D_0, D_5, D_16, D_10),
+                        Instr(Mnemonic.fnmadd, D_0, D_5, D_16, D_10),
+                        Instr(Mnemonic.fnmsub, D_0, D_5, D_16, D_10)),
                     Nyi("FloatingPointDataProcessing3src - M:S:type=0010"),
                     Mask(Bf((21, 1), (15, 1)),
                         Instr(Mnemonic.fmadd, H(0,5),H(5,5),H(16,5),H(10,5)),
@@ -3534,7 +3530,7 @@ namespace Reko.Arch.Arm.AArch64
                     invalid);
 
                 Decoder CryptographicAES = Select((22, 2), IsZero,
-                    Sparse(12, 0x1F, invalid,
+                    Sparse(12, 5, "  CryptographicAES", invalid,
                         (0b00100, Instr(Mnemonic.aese, q1,Vr(0, 5, BBBB), Vr(5,5,BBBB))),
                         (0b00101, Instr(Mnemonic.aesd, q1, Vr(0,5, BBBB), Vr(5,5,BBBB))),
                         (0b00110, Instr(Mnemonic.aesmc, q1, Vr(0, 5, BBBB), Vr(5, 5, BBBB))),
@@ -3542,14 +3538,14 @@ namespace Reko.Arch.Arm.AArch64
                     invalid);
 
                 Decoder Cryptographic2regSHA = Select((22, 2), IsZero,
-                    Sparse(12, 0x1F, invalid,
+                    Sparse(12, 5, "  Cryptographic2regSHA", invalid,
                         (0b00000, Instr(Mnemonic.sha1h, S_0, S_5)),
                         (0b00001, Instr(Mnemonic.sha1su1, Vr(0, 5, SSSS), Vr(5, 5, SSSS))),
                         (0b00010, Instr(Mnemonic.sha256su0, Vr(0, 5, SSSS), Vr(5, 5, SSSS)))),
                     invalid);
 
                 Decoder Cryptographic3regSHA = Select((22, 2), IsZero,
-                    Sparse(12, 0x7, invalid,
+                    Sparse(12, 3, "  Cryptographic3regSHA", invalid,
                         (0b000, Instr(Mnemonic.sha1c, q1, Q(0,5), S_5, Vr(16,5, SSSS))),
                         (0b001, Instr(Mnemonic.sha1p, x(""))),
                         (0b010, Instr(Mnemonic.sha1m, x(""))),
@@ -3594,7 +3590,7 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1101"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1110"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1111")),
-                        Sparse(19, 0b1111,        // op0=0000 op1=01 op2
+                        Sparse(19, 4, "  op1=01",
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=01"),
                             (0b0101, Mask(10, 2,
                                 Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=01 op2=0101 op3=xxxxxxx00"),
@@ -3809,8 +3805,8 @@ namespace Reko.Arch.Arm.AArch64
                                 Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b10 op2=0b0001"),
                                 AdvancedSimdShiftByImm)),
                         Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b11")),
-                    Mask(23, 2, "op0=5", // op0=5 op1
-                        Sparse(19, 0b1111, // op0=5 op1=0b00 op2
+                    Mask(23, 2, "  op0=5", // op0=5 op1
+                        Sparse(19, 4, "  op1=0b00",
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=???"),
                             (0b0000, Mask(10, 2,     // op0=5 op1=0b00 op2=0000")),
                                 Mask(15, 1,             // op0=5 op1=0b00 op2=0000 op3=xxxxxxx00"),
@@ -3844,10 +3840,10 @@ namespace Reko.Arch.Arm.AArch64
                                     Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0101 op3=10xxxxx10"),
                                     Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0101 op3=11xxxxx10")),
                                 Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0101 op3=xxxxxxx11")))),
-                        Sparse(19, 0b1111,  // op0=5 op1=01 op2
+                        Sparse(19, 4, "  op1=01",
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b01 op2=????"),
                             (0b0101, FloatingPointDecoders)),
-                        Sparse("  op0=5 op1=0b10 ", 19, 0b1111,  // op0=5 op1=10 op2
+                        Sparse(19, 4,"  op0=5 op1=0b10 ", // op0=5 op1=10 op2
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b10"),
                             (0b0000, Mask(10, 2, // op0=5 op1=0b10 op2=0000 op3=xxxxxxx??
                                 AdvancedSimdScalar_x_IdxElem,
@@ -3909,7 +3905,11 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=1010"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=1011"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=1100"),
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=1101"),
+                            Mask(10, 2, "  op2=1101",
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=1101 op3=xxxxxxxx00"),
+                                AdvancedSimd3Same,
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=1101 op3=xxxxxxxx10"),
+                                AdvancedSimd3Same),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=1110"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=1111")),
                         Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=01"),
@@ -3945,7 +3945,7 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=1101"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=1110"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=1111")),
-                        Sparse(19, 0b1111,
+                        Sparse(19, 4, "  op1=01",
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=01"),
                             (0b0100, Mask(10, 2,
                                 Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=01 op2=0100 op3=xxxxxxx00"),
@@ -3956,17 +3956,17 @@ namespace Reko.Arch.Arm.AArch64
                                     invalid,
                                     invalid),
                                 Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=01 op2=0100 op3=xxxxxxx11")))),
-                        Sparse(19, 0b1111,
+                        Sparse(19, 4, "  op1=10",
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=10")),
-                        Sparse(19, 0b1111,
+                        Sparse(19, 4, "  op1=11",
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=11"),
                             (0b1010, Mask(10, 1,
                                 AdvancedSimdScalar_x_IdxElem,
                                 invalid)))),
 
                     Nyi("DataProcessingScalarFpAdvancedSimd - op0=8"),
-                    Mask(23, 2, // op0=9 op1
-                        Mask(19, 4,    // op0=9 op1=00 op2
+                    Mask(23, 2, "  op0=9",
+                        Mask(19, 4,    "op1=00",
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=00 op2=0000"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=00 op2=0001"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=00 op2=0010"),
@@ -3986,7 +3986,11 @@ namespace Reko.Arch.Arm.AArch64
                                 Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=00 op2=1100 op3=xxxxxxx11")),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=00 op2=1101"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=00 op2=1110"),
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=00 op2=1111")),
+                            Mask(10, 2, "  op2=1111",
+                                FloatingPointDecoders,
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=00 op2=1111 01"),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=00 op2=1111 10"),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=00 op2=1111 11"))),
                         Mask(19, 4,        // op0=9 op1=01 op2
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=01 op2=0000"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=01 op2=0001"),
@@ -4006,7 +4010,11 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=01 op2=1111")),
                         FloatingPointDataProcessing3src,    // op0=9 op1=10
                         FloatingPointDataProcessing3src),   // op0=9 op1=11
-                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=A"),
+                    Mask(23, 2, "DataProcessingScalarFpAdvancedSimd - op0=A",
+                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=A op1=00"),
+                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=A op1=01"),
+                        invalid,
+                        invalid),
                     Nyi("DataProcessingScalarFpAdvancedSimd - op0=B"),
 
                     Mask(23, 2,              // op0=C op1

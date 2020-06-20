@@ -182,6 +182,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.st2: RewriteStN("__st2"); break;
                 case Mnemonic.st3: RewriteStN("__st3"); break;
                 case Mnemonic.st4: RewriteStN("__st4"); break;
+                case Mnemonic.stlr: RewriteStlr(); break;
                 case Mnemonic.stp: RewriteLoadStorePair(false); break;
                 case Mnemonic.str: RewriteStr(null); break;
                 case Mnemonic.strb: RewriteStr(PrimitiveType.Byte); break;
@@ -259,11 +260,11 @@ namespace Reko.Arch.Arm.AArch64
                 Identifier vreg;
                 if (vectorOp.Width.BitSize == 64)
                 {
-                    vreg= binder.EnsureRegister(Registers.SimdRegs64[vectorOp.VectorRegister.Number - 32]);
+                    vreg = binder.EnsureRegister(Registers.SimdRegs64[vectorOp.VectorRegister.Number - 32]);
                 }
                 else
                 {
-                    vreg= binder.EnsureRegister(Registers.SimdRegs128[vectorOp.VectorRegister.Number - 32]);
+                    vreg = binder.EnsureRegister(Registers.SimdRegs128[vectorOp.VectorRegister.Number - 32]);
                 }
                 if (vectorOp.Index >= 0)
                 {
@@ -274,9 +275,8 @@ namespace Reko.Arch.Arm.AArch64
                 {
                     return vreg;
                 }
-            default:
-                throw new NotImplementedException($"Rewriting {op.GetType().Name} not implemented yet.");
             }
+            throw new NotImplementedException($"Rewriting {op.GetType().Name} not implemented yet.");
         }
 
         private Expression MaybeZeroRegister(RegisterStorage reg, PrimitiveType dt)

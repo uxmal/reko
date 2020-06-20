@@ -271,6 +271,7 @@ namespace Reko.Arch.Arm.AArch64
         casalb,
         ldaxrh,
         stlrh,
-        stllrh
+        stllrh,
+        uabd
     }
 }

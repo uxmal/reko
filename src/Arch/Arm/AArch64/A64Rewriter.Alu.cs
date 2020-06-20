@@ -517,6 +517,14 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, host.PseudoProcedure(fnName, dst.DataType, src1, src2, src3));
         }
 
+        private void RewriteStlr()
+        {
+            var src1 = RewriteOp(instr.Operands[0], false);
+            var ea = binder.CreateTemporary(new Pointer(src1.DataType, arch.PointerType.BitSize));
+            m.Assign(ea, binder.EnsureRegister(((MemoryOperand) instr.Operands[1]).Base));
+            m.SideEffect(host.PseudoProcedure($"__stlr_{src1.DataType.BitSize}", VoidType.Instance, ea, src1));
+        }
+
         private void RewriteStr(PrimitiveType dt)
         {
             var rSrc = (RegisterOperand)instr.Operands[0];

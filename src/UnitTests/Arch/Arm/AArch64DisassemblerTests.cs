@@ -29,9 +29,15 @@ namespace Reko.UnitTests.Arch.Arm
     [TestFixture]
     public class Arm64DisassemblerTests : DisassemblerTestBase<AArch64Instruction>
     {
-        private IProcessorArchitecture arch = new Arm64Architecture(new ServiceContainer(), "aarch64");
-        private Address baseAddress = Address.Ptr64(0x00100000);
+        private readonly IProcessorArchitecture arch;
+        private readonly Address baseAddress;
         private AArch64Instruction instr;
+
+        public Arm64DisassemblerTests()
+        {
+            this.arch = new Arm64Architecture(CreateServiceContainer(), "aarch64");
+            this.baseAddress = Address.Ptr64(0x00100000);
+        }
 
         public override IProcessorArchitecture Architecture
         {
@@ -51,6 +57,12 @@ namespace Reko.UnitTests.Arch.Arm
         private void Expect_Code(string sexp)
         {
             Assert.AreEqual(sexp, instr.ToString());
+        }
+
+        private void AssertCode(string sExpected, string hexBytes)
+        {
+            var instr = DisassembleHexBytes(hexBytes);
+            Assert.AreEqual(sExpected, instr.ToString());
         }
 
         [Test]
@@ -952,6 +964,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_fcvtzs_i32_from_f64()
+        {
+            AssertCode("fcvtzs\tw8,d8", "0801789E");
+        }
+
+        [Test]
         public void AArch64Dis_ucvtf_real32_int32()
         {
             Given_Instruction(0x1E230101);
@@ -1070,6 +1088,12 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0x1E2703E1);
             Expect_Code("fmov\ts1,w31");
+        }
+
+        [Test]
+        public void AArch64Dis_fmov_f64_to_d64()
+        {
+            AssertCode("fmov\tx8,d8", "0801669E");
         }
 
         [Test]
@@ -1543,7 +1567,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Dis_08007E98()
+        public void AArch64Dis_strxb()
         {
             Given_Instruction(0x08007E98);
             Expect_Code("stxrb\tw0,w24,[x20]");
@@ -1620,6 +1644,12 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0xFA482002);
             Expect_Code("ccmp\tx0,x8,#2,HS");
+        }
+
+        [Test]
+        public void AArch64Dis_uabd()
+        {
+            AssertCode("uabd\tv0.8h,v24.8h,v9.8h", "0077696E");
         }
 
         /*
