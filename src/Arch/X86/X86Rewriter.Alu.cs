@@ -744,8 +744,18 @@ namespace Reko.Arch.X86
                     dasm.Peek(1).Operands[0].Width == PrimitiveType.Word16)
                 {
                     dasm.MoveNext();
-                    m.Assign(StackPointer(), m.ISubS(StackPointer(), reg.Register.DataType.Size));
-                    RewriteCall(dasm.Current.Operands[0], dasm.Current.Operands[0].Width);
+                    MachineOperand targetOperand = dasm.Current.Operands[0];
+
+                    if (targetOperand is ImmediateOperand immOperand)
+                    {
+                        targetOperand = new X86AddressOperand(orw.ImmediateAsAddress(instrCur.Address, immOperand));
+                    }
+                    else
+                    {
+                        m.Assign(StackPointer(), m.ISubS(StackPointer(), reg.Register.DataType.Size));
+                    }
+
+                    RewriteCall(targetOperand, targetOperand.Width);
                     this.len = (byte)(this.len + dasm.Current.Length);
                     return;
                 }
