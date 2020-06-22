@@ -58,7 +58,7 @@ namespace Reko.ImageLoaders.Elf
             foreach (var ph in Segments)
             {
                 if (ph.p_vaddr <= addr && addr < ph.p_vaddr + ph.p_filesz)
-                    return addr - ph.p_vaddr;
+                    return (addr - ph.p_vaddr) + ph.p_offset;
             }
             return ~0ul;
         }
@@ -145,8 +145,10 @@ namespace Reko.ImageLoaders.Elf
         {
             switch (machine)
             {
+            case ElfMachine.EM_68K: return new M68kRelocator(this, imageSymbols);
             case ElfMachine.EM_386: return new x86Relocator(this, imageSymbols);
             case ElfMachine.EM_ARM: return new ArmRelocator(this, imageSymbols);
+            case ElfMachine.EM_HEXAGON: return new HexagonRelocator(this, imageSymbols);
             case ElfMachine.EM_MIPS: return new MipsRelocator(this, imageSymbols);
             case ElfMachine.EM_NANOMIPS: return new NanoMipsRelocator(this, imageSymbols);
             case ElfMachine.EM_MSP430: return new Msp430Relocator(this, imageSymbols);
@@ -154,7 +156,6 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_SPARC32PLUS:
             case ElfMachine.EM_SPARC: return new Sparc32Relocator(this, imageSymbols);
             case ElfMachine.EM_XTENSA: return new XtensaRelocator(this, imageSymbols);
-            case ElfMachine.EM_68K: return new M68kRelocator(this, imageSymbols);
             case ElfMachine.EM_AVR: return new AvrRelocator(this, imageSymbols);
             case ElfMachine.EM_AVR32:
             case ElfMachine.EM_AVR32a: return new Avr32Relocator(this, imageSymbols);
