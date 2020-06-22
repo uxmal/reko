@@ -184,6 +184,7 @@
     <Compile Include="Arch\Pdp11\Assembler\Pdp11TextAssemblerTests.cs" />
     <Compile Include="Arch\PowerPC\PowerPcDisassemblerTests.Xenon.cs" />
     <Compile Include="Arch\PowerPC\PowerPcEmulatorTests.cs" />
+    <Compile Include="Arch\Qualcomm\HexagonDisassemblerTests.cs" />
     <Compile Include="Arch\Sparc\Sparc64DisassemblerTests.cs" />
     <Compile Include="Arch\Sparc\Sparc64RewriterTests.cs" />
     <Compile Include="Arch\SuperH\SuperHArchitectureTests.cs" />
@@ -935,6 +936,10 @@
     <ProjectReference Include="..\Arch\PowerPC\PowerPC.csproj">
       <Project>{B7DC39DD-6693-4F71-AE7F-007C5C62CBAA}</Project>
       <Name>PowerPC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\Qualcomm\Qualcomm.csproj">
+      <Project>{4F48595F-967A-438E-9B62-00DE972E2719}</Project>
+      <Name>Qualcomm</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\RiscV\RiscV.csproj">
       <Project>{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}</Project>

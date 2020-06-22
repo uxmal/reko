@@ -118,6 +118,8 @@ namespace Reko.Environments.SysV
                 return new zSeriesCallingConvention(Architecture);
             case "blackfin":
                 return new BlackfinCallingConvention(Architecture);
+            case "hexagon":
+                return new HexagonCallingConvention(Architecture);
             default:
                 throw new NotImplementedException(string.Format("ELF calling convention for {0} not implemented yet.", Architecture.Description));
             }

@@ -284,6 +284,10 @@
       <Project>{b7dc39dd-6693-4f71-ae7f-007c5c62cbaa}</Project>
       <Name>PowerPC</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\Qualcomm\Qualcomm.csproj">
+      <Project>{4f48595f-967a-438e-9b62-00de972e2719}</Project>
+      <Name>Qualcomm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\RiscV\RiscV.csproj">
       <Project>{e0697f4c-5f5e-4037-9f0e-7a9064a55b4d}</Project>
       <Name>RiscV</Name>

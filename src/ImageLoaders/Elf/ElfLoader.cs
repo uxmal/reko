@@ -267,8 +267,11 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_AVR32a:
                 arch = "avr32";
                 break;
+            case ElfMachine.EM_HEXAGON:
+                arch = "hexagon";
+                break;
             default:
-                throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machine));
+                throw new NotSupportedException($"Processor format {machine} is not supported.");
             }
             var a = cfgSvc.GetArchitecture(arch);
             a.LoadUserOptions(options);
