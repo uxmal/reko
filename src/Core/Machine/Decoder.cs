@@ -33,11 +33,9 @@ namespace Reko.Core.Machine
     /// </summary>
     /// <typeparam name="TDasm">Disassembler</typeparam>
     /// <typeparam name="TInstr">Instruction type</typeparam>
-    public abstract class Decoder<TDasm, TMnemonic, TInstr> 
+    public abstract class Decoder<TDasm, TMnemonic, TInstr> : Decoder
         where TInstr : MachineInstruction
     {
-        private static readonly TraceSwitch trace = new TraceSwitch(nameof(Decoder), "Trace the progress of machine code decoders") { Level = TraceLevel.Warning };
-
         public abstract TInstr Decode(uint wInstr, TDasm dasm);
 
         [Conditional("DEBUG")]
@@ -45,6 +43,23 @@ namespace Reko.Core.Machine
         {
             DumpMaskedInstruction(wInstr, shMask, mnemonic!.ToString());
         }
+    }
+
+
+    public abstract class WideDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
+        where TInstr : MachineInstruction
+    {
+        public sealed override TInstr Decode(uint wInstr, TDasm dasm)
+        {
+            throw new InvalidOperationException("32-bit decoding is not allowed with wide decoders.");
+        }
+
+        public abstract TInstr Decode(ulong ulInstr, TDasm dasm);
+    }
+
+    public class Decoder
+    {
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(Decoder), "Trace the progress of machine code decoders") { Level = TraceLevel.Verbose };
 
         [Conditional("DEBUG")]
         public static void DumpMaskedInstruction(uint wInstr, Bitfield[] bitfields, string tag)
@@ -80,16 +95,5 @@ namespace Reko.Core.Machine
             Debug.WriteLine(sb.ToString());
             Console.WriteLine(sb.ToString());
         }
-    }
-
-    public abstract class WideDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
-        where TInstr : MachineInstruction
-    {
-        public sealed override TInstr Decode(uint wInstr, TDasm dasm)
-        {
-            throw new InvalidOperationException("32-bit decoding is not allowed with wide decoders.");
-        }
-
-        public abstract TInstr Decode(ulong ulInstr, TDasm dasm);
     }
 }
