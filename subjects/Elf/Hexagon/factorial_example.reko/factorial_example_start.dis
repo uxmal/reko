@@ -1,0 +1,150 @@
+// hexagon_start_init
+// Return size: 0
+define hexagon_start_init
+hexagon_start_init_entry:
+	r29 = fp
+	// succ:  l00000098
+l00000098:
+hexagon_start_init_exit:
+
+
+// __coredump
+// Return size: 0
+define __coredump
+__coredump_entry:
+	r29 = fp
+	// succ:  l00000770
+l00000770:
+__coredump_exit:
+
+
+// event_handle_reset
+// Return size: 0
+define event_handle_reset
+event_handle_reset_entry:
+	r29 = fp
+	// succ:  l00000970
+l00000970:
+event_handle_reset_exit:
+
+
+// thread_start
+// Return size: 0
+define thread_start
+thread_start_entry:
+	r29 = fp
+	// succ:  l00000A64
+l00000A64:
+thread_start_exit:
+
+
+// event_handle_nmi
+// Return size: 0
+define event_handle_nmi
+event_handle_nmi_entry:
+	r29 = fp
+	// succ:  l00000A68
+l00000A68:
+event_handle_nmi_exit:
+
+
+// event_handle_error
+// Return size: 0
+define event_handle_error
+event_handle_error_entry:
+	r29 = fp
+	// succ:  l00000A74
+l00000A74:
+event_handle_error_exit:
+
+
+// event_handle_rsvd
+// Return size: 0
+define event_handle_rsvd
+event_handle_rsvd_entry:
+	r29 = fp
+	// succ:  l00000A80
+l00000A80:
+event_handle_rsvd_exit:
+
+
+// event_handle_tlbmissx
+// Return size: 0
+define event_handle_tlbmissx
+event_handle_tlbmissx_entry:
+	r29 = fp
+	// succ:  l00000AC0
+l00000AC0:
+event_handle_tlbmissx_exit:
+
+
+// event_handle_tlbmissrw
+// Return size: 0
+define event_handle_tlbmissrw
+event_handle_tlbmissrw_entry:
+	r29 = fp
+	// succ:  l00000BC0
+l00000BC0:
+event_handle_tlbmissrw_exit:
+
+
+// event_handle_trap0
+// Return size: 0
+define event_handle_trap0
+event_handle_trap0_entry:
+	r29 = fp
+	// succ:  l00000CB0
+l00000CB0:
+event_handle_trap0_exit:
+
+
+// event_handle_trap1
+// Return size: 0
+define event_handle_trap1
+event_handle_trap1_entry:
+	r29 = fp
+	// succ:  l00000E30
+l00000E30:
+event_handle_trap1_exit:
+
+
+// event_handle_int
+// Return size: 0
+define event_handle_int
+event_handle_int_entry:
+	r29 = fp
+	// succ:  l00000E3C
+l00000E3C:
+event_handle_int_exit:
+
+
+// .NoHandler
+// Return size: 0
+define .NoHandler
+.NoHandler_entry:
+	r29 = fp
+	// succ:  l00000FA0
+l00000FA0:
+.NoHandler_exit:
+
+
+// hexagon_pre_main
+// Return size: 0
+define hexagon_pre_main
+hexagon_pre_main_entry:
+	r29 = fp
+	// succ:  l00003BB8
+l00003BB8:
+hexagon_pre_main_exit:
+
+
+// hexagon_start_main
+// Return size: 0
+define hexagon_start_main
+hexagon_start_main_entry:
+	r29 = fp
+	// succ:  l00003D34
+l00003D34:
+hexagon_start_main_exit:
+
+
