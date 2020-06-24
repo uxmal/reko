@@ -1,10 +1,13 @@
-// _fini
-// Return size: 0
-define _fini
-_fini_entry:
-	r29 = fp
-	// succ:  l0000B360
-l0000B360:
+void _fini()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 _fini_exit:
+_fini_entry:
+l0000B360:
 
 
