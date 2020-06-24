@@ -33,24 +33,73 @@ namespace Reko.Arch.Qualcomm
 
         public RegisterStorage Base { get; set; }
         public int Offset { get; set; }
+        public RegisterStorage Index { get; internal set; }
+        public uint Shift { get; internal set; }
+
+        public object AutoIncrement { get; set; }
 
         protected override void DoRender(MachineInstructionRenderer writer, MachineInstructionRendererOptions options)
         {
             writer.WriteString("mem");
             if (Width.Size == 1)
                 writer.WriteString("b");
+            else if (Width == PrimitiveType.Int16)
+                writer.WriteString("h");
+            else if (Width.Size == 2)
+                writer.WriteString("uh");
             else if (Width.Size == 4)
                 writer.WriteString("w");
-            else 
-                throw new System.NotImplementedException();
+            else if (Width.Size == 8)
+                writer.WriteString("d");
+            else
+                throw new System.NotImplementedException($"Unimplemented size {Width.Size}");
             writer.WriteChar('(');
-            writer.WriteString(Base.Name);
-            if (Offset < 0)
+            if (Base != null)
             {
-                writer.WriteFormat("-{0}", -Offset);
-            } else if (Offset > 0)
+                writer.WriteString(Base.Name);
+                if (AutoIncrement != null)
+                {
+                    writer.WriteString("++");
+                    if (AutoIncrement is int uIncr)
+                    {
+                        writer.WriteFormat("#{0}", uIncr);
+                    }
+                    else
+                    {
+                        writer.WriteString(AutoIncrement.ToString());
+                    }
+                }
+            }
+            if (Index != null)
             {
-                writer.WriteFormat("+{0}", Offset);
+                if (Base != null)
+                {
+                    writer.WriteString("+");
+                }
+                writer.WriteString(Index.Name);
+                if (Shift > 0)
+                {
+                    writer.WriteFormat("<<#{0}", Shift);
+                }
+            }
+            if (Base != null)
+            {
+                if (Offset < 0)
+                {
+                    writer.WriteFormat("-{0}", -Offset);
+                }
+                else if (Offset > 0)
+                {
+                    writer.WriteFormat("+{0}", Offset);
+                }
+            }
+            else
+            {
+                if (Index != null)
+                {
+                    writer.WriteChar('+');
+                }
+                writer.WriteFormat("{0:X8}", (uint) Offset);
             }
             writer.WriteChar(')');
         }

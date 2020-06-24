@@ -31,8 +31,8 @@ namespace Reko.UnitTests.Arch.Qualcomm
 {
     public class HexagonDisassemblerTests : DisassemblerTestBase<HexagonPacket>
     {
-        private HexagonArchitecture arch;
-        private Address addrLoad;
+        private readonly HexagonArchitecture arch;
+        private readonly Address addrLoad;
 
         public HexagonDisassemblerTests()
         {
@@ -50,445 +50,486 @@ namespace Reko.UnitTests.Arch.Qualcomm
             Assert.AreEqual(sExp, instr.ToString());
         }
 
-        // Reko: a decoder for the instruction 62000000 at address 01E08000 has not been implemented.
         [Test]
-        public void Hexagon_dasm_62000000()
+        public void Hexagon_dasm_allocframe()
         {
-            AssertCode("@@@", "62000000");
+            AssertCode("{ allocframe(+00000018) }", "03C09DA0");
         }
 
-        // Reko: a decoder for the instruction 00040000 at address 01E08004 has not been implemented.
         [Test]
-        public void Hexagon_dasm_00040000()
+        public void Hexagon_dasm_and_simm()
         {
-            AssertCode("@@@", "00040000");
+            AssertCode("{ r7 = and(r7,0000001F) }", "E7C30776");
         }
-        // Reko: a decoder for the instruction 00004004 at address 01E08008 has not been implemented.
         [Test]
-        public void Hexagon_dasm_00004004()
+        public void Hexagon_dasm_and_rr()
         {
-            AssertCode("@@@", "00004004");
+            AssertCode("{ r1:r0 = and(r1:r0,r5:r4) }", "00C4E0D3");
         }
-        // Reko: a decoder for the instruction 003C0000 at address 01E0800C has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_003C0000()
+        public void Hexagon_dasm_and_not_rr()
         {
-            AssertCode("@@@", "003C0000");
+            AssertCode("{ r1:r0 = and(r5:r4,~r1:r0) }", "20C4E0D3");
         }
-        // Reko: a decoder for the instruction 0000805F at address 01E08010 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_0000805F()
+        public void Hexagon_dasm_ANDEQ_lsl()
         {
-            AssertCode("@@@", "0000805F");
+            AssertCode("{ r26 &= lsl(r26,r7) }", "DAC75AC6");
         }
-        // Reko: a decoder for the instruction 0000C0F8 at address 01E08018 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_0000C0F8()
+        public void Hexagon_dasm_add()
         {
-            AssertCode("@@@", "0000C0F8");
+            AssertCode("{ r28 = add(r28,r1) }", "1C411CF3");
         }
-        // Reko: a decoder for the instruction 0000C011 at address 01E08020 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_0000C011()
+        public void Hexagon_dasm_add_mpy()
         {
-            AssertCode("@@@", "0000C011");
+            AssertCode("{ r26 = add(r23,mpyi(r26,r19)) }", "17DA13E3");
         }
-        // Reko: a decoder for the instruction 013C0000 at address 01E08024 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_013C0000()
+        public void Hexagon_dasm_addasl()
         {
-            AssertCode("@@@", "013C0000");
+            AssertCode("{ r26 = addasl(r18,r23,00000003) }", "7AD217C4");
         }
-        // Reko: a decoder for the instruction 0000801B at address 01E08028 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_0000801B()
+        public void Hexagon_dasm_ASSIGN_control_register()
         {
-            AssertCode("@@@", "0000801B");
+            AssertCode("{ r17 = UGP }", "11400A6A");
         }
-        // Reko: a decoder for the instruction 0000C0B2 at address 01E08030 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_0000C0B2()
+        public void Hexagon_dasm_ASSIGN_r_predicate()
         {
-            AssertCode("@@@", "0000C0B2");
+            AssertCode("{ r0 = p0 }", "00C04089");
         }
-        // Reko: a decoder for the instruction 00004008 at address 01E08038 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_00004008()
+        public void Hexagon_dasm_ASSIGN_predicate_expr()
         {
-            AssertCode("@@@", "00004008");
+            AssertCode("{ p0 = cmp.eq(r1,00000000) }", "00400175");
         }
-        // Reko: a decoder for the instruction 00000085 at address 01E08040 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_00000085()
+        public void Hexagon_dasm_add_asl()
         {
-            AssertCode("@@@", "00000085");
+            AssertCode("{ r1 = add(000000F2,asl(r1,00000004)) }", "1272E1DE");
         }
-        // Reko: a decoder for the instruction 00008041 at address 01E08048 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_00008041()
+        public void Hexagon_dasm_add_conditional()
         {
-            AssertCode("@@@", "00008041");
+            AssertCode("{ if (!p0.new) r0 = add(r16,00000014) }", "80629074");
         }
-        // Reko: a decoder for the instruction 0000C001 at address 01E08050 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_0000C001()
+        public void Hexagon_dasm_ASSIGN_or()
         {
-            AssertCode("@@@", "0000C001");
+            AssertCode("{ r1 = or(r1,r2) }", "01C221F1");
         }
-        // Reko: a decoder for the instruction 0000C06C at address 01E08058 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_0000C06C()
+        public void Hexagon_dasm_or_predicates()
         {
-            AssertCode("@@@", "0000C06C");
+            AssertCode("{ p0 = or(p1,p2) }", "0041226B");
         }
-        // Reko: a decoder for the instruction 0000001A at address 01E08060 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_0000001A()
+        public void Hexagon_dasm_ASSIGN_r_h_imm()
         {
-            AssertCode("@@@", "0000001A");
+            AssertCode("{ r0.h = 0000 }", "00C02072");
         }
-        // Reko: a decoder for the instruction 0000800C at address 01E08068 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_0000800C()
+        public void Hexagon_dasm_ASSIGN_r_l_uimm()
         {
-            AssertCode("@@@", "0000800C");
+            AssertCode("{ r1.l = 00F0 }", "3CC02171");
         }
-        // Reko: a decoder for the instruction 00000000 at address 01E08088 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_00000000()
+        public void Hexagon_dasm_ASSIGN_r_sysreg()
         {
-            AssertCode("@@@", "00000000");
+            AssertCode("{ r1 = brkptcfg1 }", "01C0A76E");
         }
-        // Reko: a decoder for the instruction 73160000 at address 01E0808C has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_73160000()
+        public void Hexagon_dasm_ASSIGN_simm()
         {
-            AssertCode("@@@", "73160000");
+            AssertCode("{ r0 = FFFF8000 }", "00408078");
         }
-        // Reko: a decoder for the instruction 00010040 at address 01E08090 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_00010040()
+        public void Hexagon_dasm_any8()
         {
-            AssertCode("@@@", "00010040");
+            AssertCode("{ p0 = any8(vcmpb.eq(r5:r4,r7:r6)) }", "006604D2");
         }
-        // Reko: a decoder for the instruction C0050000 at address 01E08094 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_C0050000()
+        public void Hexagon_dasm_call()
         {
-            AssertCode("@@@", "C0050000");
+            AssertCode("{ call\t00101924 }", "924C005A");
         }
-        // Reko: a decoder for the instruction FF000000 at address 01E08098 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_FF000000()
+        public void Hexagon_dasm_call_predicated()
         {
-            AssertCode("@@@", "FF000000");
+            AssertCode("{ if (p1) call\t000F5D0C }", "875D975D");
         }
-        // Reko: a decoder for the instruction C1050000 at address 01E0809C has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_C1050000()
+        public void Hexagon_dasm_callr()
         {
-            AssertCode("@@@", "C1050000");
+            AssertCode("{ callr\tr28 }", "00C0BC50");
         }
-        // Reko: a decoder for the instruction 0F000280 at address 01E080A0 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_0F000280()
+        public void Hexagon_dasm_cl0()
         {
-            AssertCode("@@@", "0F000280");
+            AssertCode("{ r6 = cl0(r1:r0) }", "46404088");
         }
-        // Reko: a decoder for the instruction A2050000 at address 01E080A4 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_A2050000()
+        public void Hexagon_dasm_cmp_eq_r_r()
         {
-            AssertCode("@@@", "A2050000");
+            AssertCode("{ p0 = cmp.eq(r18,r20) }", "005412F2");
         }
-        // Reko: a decoder for the instruction 00008008 at address 01E080A8 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_00008008()
+        public void Hexagon_dasm_cmp_eq_rr_rr()
         {
-            AssertCode("@@@", "00008008");
+            AssertCode("{ p0 = cmp.eq(r1:r0,r3:r2) }", "004280D2");
         }
-        // Reko: a decoder for the instruction 40880000 at address 01E080AC has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_40880000()
+        public void Hexagon_dasm_cmp_gt()
         {
-            AssertCode("@@@", "40880000");
+            AssertCode("{ p0 = cmp.gt(r2,00000000) }", "00404275");
         }
-        // Reko: a decoder for the instruction 0100C007 at address 01E080B0 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_0100C007()
+        public void Hexagon_dasm_cmbp_eq()
         {
-            AssertCode("@@@", "0100C007");
+            AssertCode("{ p0 = cmpb.eq(r0,78) }", "004F00DD");
         }
-        // Reko: a decoder for the instruction 00380000 at address 01E080B4 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_00380000()
+        public void Hexagon_dasm_crswap()
         {
-            AssertCode("@@@", "00380000");
+            AssertCode("{ crswap(r29,sgp0) }", "00C01D65");
         }
-        // Reko: a decoder for the instruction 0C004045 at address 01E080B8 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_0C004045()
+        public void Hexagon_dasm_combine_lowords()
         {
-            AssertCode("@@@", "0C004045");
+            AssertCode("{ r0 = combine(r0.l,r0.l) }", "00C0E0F3");
         }
-        // Reko: a decoder for the instruction 20380000 at address 01E080BC has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_20380000()
+        public void Hexagon_dasm_combine_reg_reg()
         {
-            AssertCode("@@@", "20380000");
+            AssertCode("{ r19:r18 = combine(r3,r2) }", "12C203F5");
         }
-        // Reko: a decoder for the instruction 0D008051 at address 01E080C0 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_0D008051()
+        public void Hexagon_dasm_combined_test_jump()
         {
-            AssertCode("@@@", "0D008051");
+            AssertCode("{ if (p0.new) jump:nt\t00100018; p0 = cmp.eq(r1,00000000) }", "0CC00110");
         }
-        // Reko: a decoder for the instruction 0000000D at address 01E080C8 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_0000000D()
+        public void Hexagon_dasm_combined_negated_test_jump()
         {
-            AssertCode("@@@", "0000000D");
+            AssertCode("{ if (!p0.new) jump:t\t000FFFF4; p0 = cmp.eq(r29,00000001) }", "FAE07D10");
         }
-        // Reko: a decoder for the instruction 01004019 at address 01E080D0 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_01004019()
+        public void Hexagon_dasm_convert_chop()
         {
-            AssertCode("@@@", "01004019");
+            AssertCode("{ r7:r6 = convert_df2ud(r23:r22):chop }", "E680F680");
         }
-        // Reko: a decoder for the instruction 0200C0D6 at address 01E080D8 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_0200C0D6()
+        public void Hexagon_dasm_dczeroa()
         {
-            AssertCode("@@@", "0200C0D6");
+            AssertCode("{ dczeroa(r6) }", "00C0C6A0");
         }
-        // Reko: a decoder for the instruction 0900803C at address 01E080E0 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_0900803C()
+        public void Hexagon_dasm_dealloc_return()
         {
-            AssertCode("@@@", "0900803C");
+            AssertCode("{ dealloc_return }", "1EC01E96");
         }
-        // Reko: a decoder for the instruction 0A00C011 at address 01E080E8 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_0A00C011()
+        public void Hexagon_dasm_dealloc_return_conditional()
         {
-            AssertCode("@@@", "0A00C011");
+            AssertCode("{ if (p0.new) dealloc_return:nt }", "1EC81E96");
         }
-        // Reko: a decoder for the instruction 0B0000D3 at address 01E080F0 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_0B0000D3()
+        public void Hexagon_dasm_dfclass()
         {
-            AssertCode("@@@", "0B0000D3");
+            AssertCode("{ p3 = dfclass(r1:r0,00000002) }", "534080DC");
         }
-        // Reko: a decoder for the instruction 00004014 at address 01E080F8 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_00004014()
+        public void Hexagon_dasm_dfcmp()
         {
-            AssertCode("@@@", "00004014");
+            AssertCode("{ p0 = dfcmp.eq(r5:r4,r3:r2) }", "0042E4D2");
         }
-        // Reko: a decoder for the instruction 09008043 at address 01E08100 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_09008043()
+        public void Hexagon_dasm_duplex_add_sp()
         {
-            AssertCode("@@@", "09008043");
+            AssertCode("{ memw(r29) = r0; r16 = add(r29,00000000) }", "0028086C");
         }
-        // Reko: a decoder for the instruction 0A00C016 at address 01E08108 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_0A00C016()
+        public void Hexagon_dasm_duplex_dealloc_return()
         {
-            AssertCode("@@@", "0A00C016");
+            AssertCode("{ dealloc_return; r0 = memw(r0) }", "403F0000");
         }
-        // Reko: a decoder for the instruction 000F00A0 at address 01E08110 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_000F00A0()
+        public void Hexagon_dasm_duplex_ld_memd()
         {
-            AssertCode("@@@", "000F00A0");
+            AssertCode("{ r1:r0 = memd(r29); r3:r2 = memd(r29+8) }", "001E093E");
         }
-        // Reko: a decoder for the instruction A3090000 at address 01E08114 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_A3090000()
+        public void Hexagon_dasm_duplex_combine()
         {
-            AssertCode("@@@", "A3090000");
+            AssertCode("{ r23:r22 = combine(00000000,00000001); r23:r22 = combine(00000002,00000001) }", "A73EB73E");
         }
-        // Reko: a decoder for the instruction 1F000018 at address 01E08118 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_1F000018()
+        public void Hexagon_dasm_duplex_cmp_eq_allocframe()
         {
-            AssertCode("@@@", "1F000018");
+            AssertCode("{ allocframe(00000000); p0 = cmp.eq(r1,00000000) }", "003C1079");
         }
-        // Reko: a decoder for the instruction A4090000 at address 01E0811C has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_A4090000()
+        public void Hexagon_dasm_extractu()
         {
-            AssertCode("@@@", "A4090000");
+            AssertCode("{ r7:r6 = extractu(r23:r22,00000001,00000021) }", "86819681");
         }
-        // Reko: a decoder for the instruction 00000018 at address 01E08120 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_00000018()
+        public void Hexagon_dasm_icdtagr()
         {
-            AssertCode("@@@", "00000018");
+            AssertCode("{ r7 = icdtagr(r23) }", "E755F755");
         }
-        // Reko: a decoder for the instruction 84300000 at address 01E08124 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_84300000()
+        public void Hexagon_dasm_insert()
         {
-            AssertCode("@@@", "84300000");
+            AssertCode("{ r1 = insert(0000000B,00000013) }", "814B498F");
         }
-        // Reko: a decoder for the instruction 000000A0 at address 01E08128 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_000000A0()
+        public void Hexagon_dasm_jump()
         {
-            AssertCode("@@@", "000000A0");
+            AssertCode("{ jump\t00100098 }", "4CC00058");
         }
-        // Reko: a decoder for the instruction 63200000 at address 01E0812C has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_63200000()
+        public void Hexagon_dasm_jumpr_31_conditional()
         {
-            AssertCode("@@@", "63200000");
+            AssertCode("{ if (p0.new) jumpr\tr31; p0 = cmp.eq(r2,00000000) }", "C63F2059");
         }
-        // Reko: a decoder for the instruction 00000078 at address 01E08138 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_00000078()
+        public void Hexagon_dasm_jump_predicated()
         {
-            AssertCode("@@@", "00000078");
+            AssertCode("{ if (!p1) jump:nt\t000FFFF8 }", "FC61FF5C");
         }
-        // Reko: a decoder for the instruction 00240000 at address 01E0813C has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_00240000()
+        public void Hexagon_dasm_jump_conditional_application()
         {
-            AssertCode("@@@", "00240000");
+            AssertCode("{ if (cmp.gtu(r4.new,r0)) jump:t\t00100024; r4 = add(r2,r3) }", "044302F3 10E00221");
         }
-        // Reko: a decoder for the instruction 03100000 at address 01E08148 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_03100000()
+        public void Hexagon_dasm_ld_memd()
         {
-            AssertCode("@@@", "03100000");
+            AssertCode("{ r17:r16 = memd(r30-8) }", "F07FDE97");
         }
-        // Reko: a decoder for the instruction 84180000 at address 01E0814C has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_84180000()
+        public void Hexagon_dasm_ld_memuh()
         {
-            AssertCode("@@@", "84180000");
+            AssertCode("{ r1 = memuh(r0+6) }", "61C06091");
         }
-        // Reko: a decoder for the instruction 01000200 at address 01E08150 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_01000200()
+        public void Hexagon_dasm_ld_memw_locked()
         {
-            AssertCode("@@@", "01000200");
+            AssertCode("{ r1 = memw_locked(r0) }", "01C00092");
         }
-        // Reko: a decoder for the instruction A5140000 at address 01E0815C has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_A5140000()
+        public void Hexagon_dasm_ld_indexed()
         {
-            AssertCode("@@@", "A5140000");
+            AssertCode("{ r3 = memb(r20+r4) }", "0344313A");
         }
-        // Reko: a decoder for the instruction 0100C00B at address 01E08160 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_0100C00B()
+        public void Hexagon_dasm_max()
         {
-            AssertCode("@@@", "0100C00B");
+            AssertCode("{ r18 = max(r2,r18) }", "1252C2D5");
         }
-        // Reko: a decoder for the instruction 40380000 at address 01E08164 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_40380000()
+        public void Hexagon_dasm_memw_locked()
         {
-            AssertCode("@@@", "40380000");
+            AssertCode("{ memw_locked(r16,p0) = r1 }", "00C1B0A0");
         }
-        // Reko: a decoder for the instruction 0200400C at address 01E08168 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_0200400C()
+        public void Hexagon_dasm_mux()
         {
-            AssertCode("@@@", "0200400C");
+            AssertCode("{ r7 = mux(p1,FFFFFFD5,0000006F) }", "A77AB77A");
         }
-        // Reko: a decoder for the instruction 00004010 at address 01E08170 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_00004010()
+        public void Hexagon_dasm_mpyi()
         {
-            AssertCode("@@@", "00004010");
+            AssertCode("{ r17 = mpyi(r1,r0) }", "114001ED");
         }
-        // Reko: a decoder for the instruction 00300000 at address 01E08178 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_00300000()
+        public void Hexagon_dasm_mpyu_64()
         {
-            AssertCode("@@@", "00300000");
+            AssertCode("{ r1:r0 = mpyu(r1,r4) }", "004441E5");
         }
-        // Reko: a decoder for the instruction A5180000 at address 01E0817C has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_A5180000()
+        public void Hexagon_dasm_nop()
         {
-            AssertCode("@@@", "A5180000");
+            AssertCode("{ nop }", "0040007F");
         }
-        // Reko: a decoder for the instruction 00400000 at address 01E08188 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_00400000()
+        public void Hexagon_dasm_or()
         {
-            AssertCode("@@@", "00400000");
+            AssertCode("{ r1 = or(r1,r7) }", "014721F1");
         }
-        // Reko: a decoder for the instruction 00000008 at address 01E08190 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_00000008()
+        public void Hexagon_dasm_rte()
         {
-            AssertCode("@@@", "00000008");
+            AssertCode("{ rte }", "00C0E057");
         }
-        // Reko: a decoder for the instruction A5300000 at address 01E08194 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_A5300000()
+        public void Hexagon_dasm_st_indexed()
         {
-            AssertCode("@@@", "A5300000");
+            AssertCode("{ memw(r17<<#2+0000E700) = r3 }", "9C43000080E391AD");
         }
-        // Reko: a decoder for the instruction A1090000 at address 01E081A4 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_A1090000()
+        public void Hexagon_dasm_store_gp()
         {
-            AssertCode("@@@", "A1090000");
+            AssertCode("{ memw(gp+178576) = r12 }", "874C974C");
         }
-        // Reko: a decoder for the instruction 1F000000 at address 01E081A8 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_1F000000()
+        public void Hexagon_dasm_st_memw()
         {
-            AssertCode("@@@", "1F000000");
+            AssertCode("{ memw(r1) = r0 }", "00C081A1");
         }
-        // Reko: a decoder for the instruction 44240000 at address 01E081B4 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_44240000()
+        public void Hexagon_dasm_st_predicated_autoinc()
         {
-            AssertCode("@@@", "44240000");
+            AssertCode("{ if (p0) memd(r0++#8) = r1:r0 }", "08E0C0AB");
         }
-        // Reko: a decoder for the instruction 63140000 at address 01E081C4 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_63140000()
+        public void Hexagon_dasm_setbit()
         {
-            AssertCode("@@@", "63140000");
+            AssertCode("{ r2 = setbit(r2,00000010) }", "02D8C28C");
         }
-        // Reko: a decoder for the instruction 00004020 at address 01E081C8 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_00004020()
+        public void Hexagon_dasm_start()
         {
-            AssertCode("@@@", "00004020");
+            AssertCode("{ start(r8) }", "20C06864");
         }
-        // Reko: a decoder for the instruction 435C0000 at address 01E081CC has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_435C0000()
+        public void Hexagon_dasm_stop()
         {
-            AssertCode("@@@", "435C0000");
+            AssertCode("{ stop(r0) }", "00C06064");
         }
-        // Reko: a decoder for the instruction 01004020 at address 01E081D0 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_01004020()
+        public void Hexagon_dasm_store_r64()
         {
-            AssertCode("@@@", "01004020");
+            AssertCode("{ memd(r29+56) = r15:r14 }", "07CEDDA1");
         }
-        // Reko: a decoder for the instruction 00008020 at address 01E081D8 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_00008020()
+        public void Hexagon_dasm_tlbw()
         {
-            AssertCode("@@@", "00008020");
+            AssertCode("{ tlbw(r3:r2,r0) }", "00C0026C");
         }
-        // Reko: a decoder for the instruction 01008020 at address 01E081E0 has not been implemented.
+
         [Test]
-        public void Hexagon_dasm_01008020()
+        public void Hexagon_dasm_tstbit()
         {
-            AssertCode("@@@", "01008020");
+            AssertCode("{ p0 = tstbit(r0,00000000) }", "00C00085");
         }
+
+        [Test]
+        public void Hexagon_dasm_valignb_rr()
+        {
+            AssertCode("{ r7:r6 = valignb(r11:r10,r13:r12,p2) }", "464A0CC2");
+        }
+
+        [Test]
+        public void Hexagon_dasm_vsplatb()
+        {
+            AssertCode("{ r7 = vsplatb(r1) }", "E740418C");
+        }
+
+        [Test]
+        public void Hexagon_dasm_lsr_rr()
+        {
+            AssertCode("{ r1:r0 = lsr(r1:r0,00000030) }", "20700080");
+        }
+
+        [Test]
+        public void Hexagon_dasm_longnew()
+        {
+            AssertCode("{ memb(gp+132) = r2.new; r2 = or(r3,and(r2,0000000F)) }", "E34142DA0044000028C4A048");
+        }
+
+        [Test]
+        public void Hexagon_dasm_zxth()
+        {
+            AssertCode("{ r0 = zxth(r0) }", "0040C070");
+        }
+
+        [Test]
+        public void Hexagon_dasm_long_offset()
+        {
+            AssertCode("{ r2 = memb(r2+00001B44) }", "6D40000002D1029D");
+        }
+
+        [Test]
+        public void Hexagon_dasm_05C0816C()
+        {
+            AssertCode("{ r5 = tlbp(r1) }", "05C0816C");
+        }
+
+        // 2032F0F6 E0004140 
 
     }
 }

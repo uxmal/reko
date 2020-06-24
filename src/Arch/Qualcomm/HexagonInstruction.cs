@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Machine;
 using System;
+using System.Text;
 
 namespace Reko.Arch.Qualcomm
 {
@@ -36,31 +37,104 @@ namespace Reko.Arch.Qualcomm
         public Mnemonic Mnemonic { get; }
         public override int MnemonicAsInteger => (int) Mnemonic;
         public override string MnemonicAsString => Mnemonic.ToString();
-        public ParseType ParseType { get; internal set; }
+        public ParseType ParseType { get; set; }
+
+        public MachineOperand ConditionPredicate { get; set; }
+        public bool ConditionInverted { get; set; }
+        public bool ConditionPredicateNew { get; set; }
+
+        public DirectionHint DirectionHint { get; set; }
+
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (Mnemonic == Mnemonic.ASSIGN)
+            if (ConditionPredicate != null)
             {
+                renderer.WriteMnemonic("if");
+                renderer.WriteString(" (");
+                if (ConditionInverted)
+                    renderer.WriteChar('!');
+                ConditionPredicate.Render(renderer, options);
+                if (ConditionPredicateNew)
+                    renderer.WriteString(".new");
+                renderer.WriteString(") ");
+            }
+            switch (Mnemonic)
+            {
+            case Mnemonic.ASSIGN:
                 RenderOperand(Operands[0], renderer, options);
                 renderer.WriteString(" = ");
                 RenderOperand(Operands[1], renderer, options);
-            }
-            else
-            {
+                break;
+            case Mnemonic.ANDEQ:
+                RenderOperand(Operands[0], renderer, options);
+                renderer.WriteString(" &= ");
+                RenderOperand(Operands[1], renderer, options);
+                break;
+            case Mnemonic.SUBEQ:
+                RenderOperand(Operands[0], renderer, options);
+                renderer.WriteString(" -= ");
+                RenderOperand(Operands[1], renderer, options);
+                break;
+            case Mnemonic.OREQ:
+                RenderOperand(Operands[0], renderer, options);
+                renderer.WriteString(" |= ");
+                RenderOperand(Operands[1], renderer, options);
+                break;
+            case Mnemonic.ADDEQ:
+                RenderOperand(Operands[0], renderer, options);
+                renderer.WriteString(" += ");
+                RenderOperand(Operands[1], renderer, options);
+                break;
+            case Mnemonic.SIDEEFFECT:
+                RenderOperand(Operands[0], renderer, options);
+                break;
+            default:
                 RenderMnemonic(renderer, options);
                 RenderOperands(renderer, options);
+                break;
             }
         }
 
         private void RenderMnemonic(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            renderer.WriteMnemonic(Mnemonic.ToString());
+            var s = Mnemonic.ToString();
+            var sb = new StringBuilder();
+            for (int i = 0; i < s.Length; ++i)
+            {
+                char ch = s[i];
+                if (ch == '_' && i < s.Length - 1 && s[i + 1] == '_')
+                {
+                    sb.Append('.');
+                    ++i;
+                }
+                else
+                {
+                    sb.Append(ch);
+                }
+            }
+            if (DirectionHint != DirectionHint.None)
+            {
+                sb.Append(':');
+                if (DirectionHint == DirectionHint.Taken)
+                    sb.Append('t');
+                else
+                    sb.Append("nt");
+            }
+            renderer.WriteMnemonic(sb.ToString());
         }
     }
 
     public enum ParseType
     {
         Duplex = 0b00,
+        End = 0b11,
+    }
+
+    public enum DirectionHint
+    {
+        None = 0,
+        NotTaken = 1,
+        Taken = 2,
     }
 }

@@ -59,7 +59,10 @@ namespace Reko.Core.Machine
 
     public class Decoder
     {
-        private static readonly TraceSwitch trace = new TraceSwitch(nameof(Decoder), "Trace the progress of machine code decoders") { Level = TraceLevel.Verbose };
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(Decoder), "Trace the progress of machine code decoders")
+        {
+            Level = TraceLevel.Warning 
+        };
 
         [Conditional("DEBUG")]
         public static void DumpMaskedInstruction(uint wInstr, Bitfield[] bitfields, string tag)

@@ -37,7 +37,7 @@ namespace Reko.Arch.Qualcomm
             this.FramePointerType = PrimitiveType.Ptr32;
             this.InstructionBitSize = 32;
             this.PointerType = PrimitiveType.Ptr32;
-            this.StackRegister = null;
+            this.StackRegister = Registers.sp;
             this.WordWidth = PrimitiveType.Word32;
         }
 
@@ -68,7 +68,7 @@ namespace Reko.Arch.Qualcomm
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new HexagonRewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)

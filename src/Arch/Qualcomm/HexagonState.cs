@@ -38,7 +38,7 @@ namespace Reko.Arch.Qualcomm
 
         public override ProcessorState Clone()
         {
-            throw new System.NotImplementedException();
+            return new HexagonState(this.arch);
         }
 
         public override Constant GetRegister(RegisterStorage r)
@@ -58,7 +58,6 @@ namespace Reko.Arch.Qualcomm
 
         public override void OnProcedureEntered()
         {
-            throw new System.NotImplementedException();
         }
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
@@ -68,7 +67,6 @@ namespace Reko.Arch.Qualcomm
 
         public override void SetRegister(RegisterStorage r, Constant v)
         {
-            throw new System.NotImplementedException();
         }
     }
 }
