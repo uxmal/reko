@@ -5,6 +5,7 @@
 # * having a dcproject file associated with them or
 # * a subject.cmd file containing reko command lines to execute.
 
+from __future__ import print_function
 from optparse import OptionParser
 from threading import Thread
 from datetime import datetime
