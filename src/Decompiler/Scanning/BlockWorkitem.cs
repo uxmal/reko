@@ -426,7 +426,7 @@ namespace Reko.Scanning
                     var chr = impProc.Characteristics;
                     if (chr != null && chr.IsAlloca)
                         return ProcessAlloca(site, impProc);
-                    EmitCall(CreateProcedureConstant(impProc), sig, chr!, site);
+                    EmitCall(CreateProcedureConstant(impProc), sig, chr, site);
                     Emit(new ReturnInstruction());
                     blockCur!.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
                     return false;
@@ -449,7 +449,7 @@ namespace Reko.Scanning
                     }
                     var sig = trampoline.Signature;
                     var chr = trampoline.Characteristics;
-                    EmitCall(CreateProcedureConstant(trampoline), sig, chr!, jmpSite);
+                    EmitCall(CreateProcedureConstant(trampoline), sig, chr, jmpSite);
                     Emit(new ReturnInstruction());
                     blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
                     return false;
@@ -552,7 +552,7 @@ namespace Reko.Scanning
                 }
                 var pcCallee = CreateProcedureConstant(callee);
                 sig = callee.Signature;
-                chr = callee.Characteristics!;
+                chr = callee.Characteristics;
                 EmitCall(pcCallee, sig, chr, site);
                 if (callee is Procedure pCallee)
                 {
@@ -857,7 +857,7 @@ namespace Reko.Scanning
                 Emit(new SideEffect(side.Expression));
                 if (side.Expression is Application appl &&
                     appl.Procedure is ProcedureConstant fn &&
-                    fn.Procedure.Characteristics!.Terminates)
+                    fn.Procedure.Characteristics.Terminates)
                 {
                     scanner.TerminateBlock(blockCur!, ric!.Address + ric.Length);
                     return false;
