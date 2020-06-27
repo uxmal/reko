@@ -10,18 +10,6 @@
       <varargs>Reko.Environments.Windows.MsPrintfFormatParser,Reko.Environments.Windows</varargs>
     </characteristics>
   </entry>
-  <entry name="Py_BuildValue">
-    <!-- @ptomin This needs to be moved to a 'PythonCharacteristics.xml' file -->
-    <characteristics>
-      <varargs>Reko.Libraries.Python.PyBuildValueFormatParser,Reko.Libraries.Python</varargs>
-    </characteristics>
-  </entry>
-  <entry name="PyArg_ParseTuple">
-    <!-- @ptomin This needs to be moved to a 'PythonCharacteristics.xml' file -->
-    <characteristics>
-      <varargs>Reko.Libraries.Python.PyArgFormatParser,Reko.Libraries.Python</varargs>
-    </characteristics>
-  </entry>
   <entry name="exit">
     <characteristics>
       <terminates>true</terminates>
