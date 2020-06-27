@@ -263,6 +263,16 @@ namespace Reko.Core
             return new TypeLibraryDeserializer(Platform, true, EnvironmentMetadata.Clone());
         }
 
+        public virtual ProcedureCharacteristics? LookupCharacteristicsByName(string procName)
+        {
+            if (EnvironmentMetadata.Characteristics.TryGetValue(
+                procName,
+                out var chr)
+            )
+                return chr;
+            return Platform.LookupCharacteristicsByName(procName);
+        }
+
         /// <summary>
         /// The processor architectures that exist in the Program. 
         /// </summary>

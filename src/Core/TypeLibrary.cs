@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Output;
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,9 @@ namespace Reko.Core
 		public TypeLibrary(bool caseInsensitive = false) : this(
             caseInsensitive,
             new Dictionary<string, DataType>(),
-            new Dictionary<string, FunctionType>(TypeLibrary.Comparer(caseInsensitive)),
+            new Dictionary<string, FunctionType>(Comparer(caseInsensitive)),
+            new Dictionary<string, ProcedureCharacteristics>(
+                Comparer(caseInsensitive)),
             new Dictionary<string, DataType>())
         {
         }
@@ -47,17 +50,24 @@ namespace Reko.Core
             bool caseInsensitive,
             IDictionary<string,DataType> types,
             IDictionary<string, FunctionType> procedures,
+            IDictionary<string, ProcedureCharacteristics> characteristics,
             IDictionary<string, DataType> globals)
         {
             this.isCaseInsensitive = caseInsensitive;
             this.Types = types;
             this.Signatures = procedures;
+            this.Characteristics = characteristics;
             this.Globals = globals;
             this.Modules = new Dictionary<string, ModuleDescriptor>();
         }
 
         public IDictionary<string, DataType> Types { get; private set; }
         public IDictionary<string, FunctionType> Signatures { get; private set; }
+        public IDictionary<string, ProcedureCharacteristics> Characteristics
+        {
+            get;
+            private set;
+        }
         public IDictionary<string, DataType> Globals { get; private set; }
         public IDictionary<string, ModuleDescriptor> Modules { get; private set; }
 

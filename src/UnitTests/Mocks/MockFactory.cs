@@ -90,7 +90,11 @@ namespace Reko.UnitTests.Mocks
         public void Given_PlatformTypes(Dictionary<string, DataType> types)
         {
             this.platformMetadata = new TypeLibrary(
-                false, types, new Dictionary<string, FunctionType>(), new Dictionary<string, DataType>()
+                false,
+                types,
+                new Dictionary<string, FunctionType>(),
+                new Dictionary<string, ProcedureCharacteristics>(),
+                new Dictionary<string, DataType>()
             );
         }
 
@@ -169,7 +173,12 @@ namespace Reko.UnitTests.Mocks
                 signatures = new Dictionary<string, FunctionType>();
             if (globals == null)
                 globals = new Dictionary<string, DataType>();
-            var loaderMetadata = new TypeLibrary(false, types, signatures, globals);
+            var loaderMetadata = new TypeLibrary(
+                false,
+                types,
+                signatures,
+                new Dictionary<string, ProcedureCharacteristics>(),
+                globals);
             if (module != null)
                 loaderMetadata.Modules.Add(moduleName, module);
 
