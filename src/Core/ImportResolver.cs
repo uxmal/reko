@@ -124,11 +124,8 @@ namespace Reko.Core
             {
                 if (program.EnvironmentMetadata.Signatures.TryGetValue(importName, out var sig))
                 {
-                    var chr = platform.LookupCharacteristicsByName(importName);
-                    if (chr != null)
-                        return new ExternalProcedure(importName, sig, chr);
-                    else
-                        return new ExternalProcedure(importName, sig);
+                    var chr = program.LookupCharacteristicsByName(importName);
+                    return new ExternalProcedure(importName, sig, chr);
                 }
             }
             if (project.LoadedMetadata.Signatures.TryGetValue(importName, out var signature))
