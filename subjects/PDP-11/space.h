@@ -1248,11 +1248,11 @@ Eq_3894: (union "Eq_3894" (bool u0) (byte u1))
 	T_3894
 Eq_3895: (union "Eq_3895" (bool u0) (byte u1))
 	T_3895
-Eq_3896: (union "Eq_3896" (bool u0) (byte u1))
+Eq_3896: (union "Eq_3895" (bool u0) (byte u1))
 	T_3896
-Eq_3897: (union "Eq_3897" (bool u0) (byte u1))
+Eq_3897: (union "Eq_3895" (bool u0) (byte u1))
 	T_3897
-Eq_3898: (union "Eq_3898" (bool u0) (byte u1))
+Eq_3898: (union "Eq_3895" (bool u0) (byte u1))
 	T_3898
 Eq_3899: (union "Eq_3899" (bool u0) (byte u1))
 	T_3899
@@ -17825,17 +17825,17 @@ typedef union Eq_3895 {
 	byte u1;
 } Eq_3895;
 
-typedef union Eq_3896 {
+typedef union Eq_3895 {
 	bool u0;
 	byte u1;
 } Eq_3896;
 
-typedef union Eq_3897 {
+typedef union Eq_3895 {
 	bool u0;
 	byte u1;
 } Eq_3897;
 
-typedef union Eq_3898 {
+typedef union Eq_3895 {
 	bool u0;
 	byte u1;
 } Eq_3898;

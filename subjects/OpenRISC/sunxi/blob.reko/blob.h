@@ -3300,7 +3300,7 @@ Eq_4004: (union "Eq_4004" (int32 u0) (up32 u1))
 	T_4006 (in r5_31 + 0xFEDCBA98<32> : word32)
 Eq_4005: (union "Eq_4005" (int32 u0) (up32 u1))
 	T_4005 (in 0xFEDCBA98<32> : word32)
-Eq_4012: (union "Eq_4012" (int32 u0) (up32 u1))
+Eq_4012: (union "Eq_4004" (int32 u0) (up32 u1))
 	T_4012 (in Mem75[r6_30 + 0<32>:word32] : word32)
 	T_4014 (in r5_31 + 0x1234567<32> : word32)
 Eq_4013: (union "Eq_4013" (int32 u0) (up32 u1))
@@ -78373,7 +78373,7 @@ typedef union Eq_4005 {
 	up32 u1;
 } Eq_4005;
 
-typedef union Eq_4012 {
+typedef union Eq_4004 {
 	int32 u0;
 	up32 u1;
 } Eq_4012;

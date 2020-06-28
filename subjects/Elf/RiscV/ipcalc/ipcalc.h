@@ -972,7 +972,7 @@ Eq_287: (union "Eq_287" (int32 u0) ((ptr64 char) u1) ((ptr64 Eq_4244) u2) ((ptr6
 	T_2860 (in fp + -408<i32> : word64)
 	T_2934 (in fp + -376<i32> : word64)
 	T_3089 (in fp + -376<i32> : word64)
-Eq_288: (union "Eq_288" (int32 u0) ((ptr64 char) u1) ((ptr64 Eq_4244) u2) ((ptr64 void) u3))
+Eq_288: (union "Eq_287" (int32 u0) ((ptr64 char) u1) ((ptr64 Eq_4244) u2) ((ptr64 void) u3))
 	T_288 (in dst : (ptr64 char))
 	T_294 (in fp + -184<i32> : word64)
 	T_972 (in fp + -184<i32> : word64)
@@ -2038,7 +2038,7 @@ Eq_2988: (fn (ptr64 Eq_3) (word64, (ptr64 Eq_3), Eq_4, Eq_2993, ptr64, ptr64, pt
 Eq_2993: (union "Eq_2993" (int32 u0) ((ptr64 char) u1) ((ptr64 Eq_4244) u2) ((ptr64 void) u3))
 	T_2993 (in a0 : Eq_2993)
 	T_3004 (in fp + -408<i32> : word64)
-Eq_2999: (union "Eq_2999" (int32 u0) ((ptr64 char) u1) ((ptr64 Eq_4244) u2) ((ptr64 void) u3))
+Eq_2999: (union "Eq_2993" (int32 u0) ((ptr64 char) u1) ((ptr64 Eq_4244) u2) ((ptr64 void) u3))
 	T_2999 (in s7 : Eq_2999)
 	T_3014 (in fp + -392<i32> : word64)
 Eq_3003: (union "Eq_3003" (int32 u0) ((ptr64 char) u1) ((ptr64 Eq_4244) u2) ((ptr64 void) u3))
@@ -2378,13 +2378,13 @@ Eq_4295: (struct "Eq_4295" 0001 (0 byte b0000) (FFF byte b0FFF))
 	T_4295
 Eq_4296: (struct "Eq_4296" 0001 (0 byte b0000) (FFF byte b0FFF))
 	T_4296
-Eq_4297: (union "Eq_4297" (byte u0) ((arr byte) u1))
+Eq_4297: (union "Eq_4243" (byte u0) ((arr byte) u1))
 	T_4297
 Eq_4298: (struct "Eq_4298" 0001 (0 Eq_4297 t0000) (1 byte b0001) (FFF byte b0FFF))
 	T_4298
 Eq_4299: (struct "Eq_4299" 0001 (0 byte b0000) (FFF byte b0FFF))
 	T_4299
-Eq_4300: (union "Eq_4300" (byte u0) ((arr byte) u1))
+Eq_4300: (union "Eq_4243" (byte u0) ((arr byte) u1))
 	T_4300
 Eq_4301: (struct "Eq_4301" 0001 (0 Eq_4300 t0000) (1 byte b0001) (FFF byte b0FFF))
 	T_4301
@@ -22069,7 +22069,7 @@ typedef union Eq_278 {
 	int64 u1;
 } Eq_278;
 
-typedef char * (Eq_284)(Eq_286, Eq_287, Eq_288, Eq_289);
+typedef char * (Eq_284)(Eq_286, Eq_287, Eq_287, Eq_289);
 
 typedef union Eq_286 {
 	int32 u0;
@@ -22083,7 +22083,7 @@ typedef union Eq_287 {
 	void * u3;
 } Eq_287;
 
-typedef union Eq_288 {
+typedef union Eq_287 {
 	int32 u0;
 	char * u1;
 	struct Eq_4244 * u2;
@@ -23281,7 +23281,7 @@ typedef union Eq_2964 {
 	void * u3;
 } Eq_2964;
 
-typedef Eq_3 * (Eq_2988)(word64, Eq_3 *, Eq_4, Eq_2993, ptr64, ptr64, ptr64, ptr64, Eq_16, Eq_2999, void, ptr64, Eq_16);
+typedef Eq_3 * (Eq_2988)(word64, Eq_3 *, Eq_4, Eq_2993, ptr64, ptr64, ptr64, ptr64, Eq_16, Eq_2993, void, ptr64, Eq_16);
 
 typedef union Eq_2993 {
 	int32 u0;
@@ -23290,7 +23290,7 @@ typedef union Eq_2993 {
 	void * u3;
 } Eq_2993;
 
-typedef union Eq_2999 {
+typedef union Eq_2993 {
 	int32 u0;
 	char * u1;
 	struct Eq_4244 * u2;
@@ -24082,7 +24082,7 @@ typedef struct Eq_4296 {	// size: 1 1
 	byte b0FFF;	// FFF
 } Eq_4296;
 
-typedef union Eq_4297 {
+typedef union Eq_4243 {
 	byte u0;
 	byte u1[];
 } Eq_4297;
@@ -24098,7 +24098,7 @@ typedef struct Eq_4299 {	// size: 1 1
 	byte b0FFF;	// FFF
 } Eq_4299;
 
-typedef union Eq_4300 {
+typedef union Eq_4243 {
 	byte u0;
 	byte u1[];
 } Eq_4300;

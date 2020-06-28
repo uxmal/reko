@@ -236,6 +236,8 @@ namespace Reko.UnitTests.Typing
 
             ut.AddAlternative(PrimitiveType.Real32);
             ut.AddAlternative(PrimitiveType.Int32);
+            // TypeTransformer.Transform() clear some state (TypeTransformer.visitedTypes) between iterations.
+            trans = new TypeTransformer(factory, null, null);
             DataType d = ut.Accept(trans);
             Assert.AreEqual("(union \"foo\" (int32 u0) (real32 u1))", d.ToString());
         }
