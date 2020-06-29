@@ -34,6 +34,8 @@ namespace Reko.UnitTests.Arch
             this.services = services;
         }
 
+        public string OutputDirectory { get; set; }
+
         public void ReportMissingDecoder(string testPrefix, Address addrStart, EndianImageReader rdr, string message)
         {
             var test = TestGenerationService.GenerateDecoderUnitTest(testPrefix, addrStart, rdr, message);

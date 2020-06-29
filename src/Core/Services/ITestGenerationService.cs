@@ -35,6 +35,12 @@ namespace Reko.Core.Services
     public interface ITestGenerationService
     {
         /// <summary>
+        /// Users can optionally override the output directory for more control 
+        /// of where the output goes.
+        /// </summary>
+        string? OutputDirectory { get; set; }
+
+        /// <summary>
         /// This method is called when an incomplete disassembler can't decode a byte sequence.
         /// </summary>
         /// <remarks>
@@ -71,6 +77,8 @@ namespace Reko.Core.Services
             this.emittedRewriterTests = new Dictionary<string, HashSet<int>>();
             this.emittedDecoderTests = new Dictionary<string, HashSet<byte[]>>();
         }
+
+        public string? OutputDirectory { get; set; }
 
         public void ReportMissingDecoder(string testPrefix, Address addrStart, EndianImageReader rdr, string message)
         {
@@ -195,6 +203,8 @@ namespace Reko.Core.Services
 
         private string? GetOutputDirectory(IFileSystemService fsSvc)
         {
+            if (OutputDirectory != null)
+                return OutputDirectory;
             var dcSvc = this.services.GetService<IDecompilerService>();
             if (dcSvc == null)
                 return null;
