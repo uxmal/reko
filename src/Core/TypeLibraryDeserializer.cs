@@ -203,17 +203,17 @@ namespace Reko.Core
             return sType.Accept(this);
         }
 
-        public ExternalProcedure? LoadExternalProcedure(ProcedureBase_v1 sProc)
+        public ExternalProcedure? LoadExternalProcedure(
+            ProcedureBase_v1 sProc, ProcedureCharacteristics? chr = null)
         {
-            //$TODO: code below.
-            //if (sProc.Name is null)
-            //    return null;
+            if (sProc.Name is null)
+                return null;
             var sSig = sProc.Signature;
             var sser = new ProcedureSerializer(platform, this, this.defaultConvention ?? "");
             var sig = sser.Deserialize(sSig, platform.Architecture.CreateFrame());    //$BUGBUG: catch dupes?
             if (sig is null)
                 return null;
-            return new ExternalProcedure(sProc.Name!, sig)  //$TODO: remove "!"
+            return new ExternalProcedure(sProc.Name, sig, chr)
             {
                 EnclosingType = sSig?.EnclosingType
             };

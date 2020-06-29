@@ -50,6 +50,20 @@ namespace Reko.UnitTests.Core
             this.program = mockFactory.CreateProgram();
         }
 
+        private void AssertExternalProcedure(
+            string expected,
+            ExternalProcedure ep)
+        {
+            var actual = $@"
+{ep}
+VarargsParserClass: {ep.Characteristics.VarargsParserClass}";
+            if (expected != actual)
+            {
+                Console.WriteLine(actual);
+                Assert.AreEqual(expected, actual);
+            }
+        }
+
         [Test]
         public void DynLink_ProcedureByName()
         {
@@ -186,6 +200,33 @@ namespace Reko.UnitTests.Core
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(sigExp, ep.Signature.ToString("bar", FunctionType.EmitFlags.AllDetails));
+        }
+
+        [Test]
+        public void DynLink_MangledProcedureCharacteristics()
+        {
+            var chr = new ProcedureCharacteristics
+            {
+                VarargsParserClass = "FakeParser",
+            };
+            program.EnvironmentMetadata.Characteristics.Add("foo@mangled", chr);
+            platform.Setup(p => p.SignatureFromName(
+                It.Is<string>(n => n == "foo@mangled")))
+            .Returns(new Procedure_v1
+            {
+                Name = "foo",
+                Signature = new SerializedSignature(),
+            });
+
+            var eventListener = new FakeDecompilerEventListener();
+            var proj = new Project();
+            var impres = new DynamicLinker(proj, program, eventListener);
+            var ep = impres.ResolveProcedure("", "foo@mangled", platform.Object);
+
+            var expected = @"
+void foo()
+VarargsParserClass: FakeParser";
+            AssertExternalProcedure(expected, ep);
         }
 
         [Test]

@@ -83,7 +83,8 @@ namespace Reko.Core
             if (sProc != null)
             {
                 var loader = program.CreateTypeLibraryDeserializer();
-                ep = loader.LoadExternalProcedure(sProc);
+                var chr = program.LookupCharacteristicsByName(importName);
+                ep = loader.LoadExternalProcedure(sProc, chr);
                 if (ep is null)
                     return null;
                 if (!ep.Signature.ParametersValid)
