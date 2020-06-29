@@ -272,6 +272,7 @@ namespace Reko.Arch.Arm.AArch64
         ldaxrh,
         stlrh,
         stllrh,
-        uabd
+        uabd,
+        umnegl
     }
 }

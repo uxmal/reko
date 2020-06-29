@@ -1652,6 +1652,12 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("uabd\tv0.8h,v24.8h,v9.8h", "0077696E");
         }
 
+        [Test]
+        public void AArch64Dis_GitHub_898()
+        {
+            AssertCode("umull\tx2,w2,w14", "427CAE9B");
+        }
+
         /*
          * //$BORED: amuse yourself by making these tests pass.
         [Test]

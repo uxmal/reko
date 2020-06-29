@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_b_label()
+        public void AArch64Rw_b_label()
         {
             Given_Instruction("00010111 11111111 11111111 00000000");
             AssertCode(
@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_bl_label()
+        public void AArch64Rw_bl_label()
         {
             Given_Instruction("10010111 11111111 11111111 00000000");
             AssertCode(     // bl\t#&FFC00
@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_br_Xn()
+        public void AArch64Rw_br_Xn()
         {
             Given_Instruction("11010110 00011111 00000011 11000000");
             AssertCode(
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_add_Wn_imm()
+        public void AArch64Rw_add_Wn_imm()
         {
             Given_Instruction("000 10001 01 011111111111 10001 10011");
             AssertCode(
@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_adds_Xn_imm()
+        public void AArch64Rw_adds_Xn_imm()
         {
             Given_Instruction("101 10001 00 011111111111 10001 10011");
             AssertCode(
@@ -110,7 +110,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_subs_Wn_imm()
+        public void AArch64Rw_subs_Wn_imm()
         {
             Given_Instruction("011 10001 00 011111111111 10001 10011");
             AssertCode( // subs\tw19, w17,#&7FF
@@ -120,7 +120,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_sub_Xn_imm()
+        public void AArch64Rw_sub_Xn_imm()
         {
             Given_Instruction("110 10001 00 011111111111 10001 10011");
             AssertCode( // sub\tx19,x17,#&7FF
@@ -129,7 +129,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_and_Wn_imm()
+        public void AArch64Rw_and_Wn_imm()
         {
             Given_Instruction(0x120F3041);
             AssertCode( // and\tw1,w2,#&3FFE0000
@@ -138,7 +138,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_and_Xn_imm()
+        public void AArch64Rw_and_Xn_imm()
         {
             Given_Instruction(0x920F3041);
             AssertCode(     // and\tx1,x2,#&3FFE0000
@@ -147,7 +147,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ands_Xn_imm()
+        public void AArch64Rw_ands_Xn_imm()
         {
             Given_Instruction("111 100100 0 010101 010101 00100 00111");
             AssertCode(     // ands\tx7,x4,#&FFFFF801
@@ -159,7 +159,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_movk_imm()
+        public void AArch64Rw_movk_imm()
         {
             Given_Instruction("111 10010 100 1010 1010 1010 0100 00111"); // 87 54 95 F2");
             AssertCode(     // movk\tx7,#&AAA4
@@ -168,7 +168,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ldp()
+        public void AArch64Rw_ldp()
         {
             Given_Instruction(0x2D646C2F);
             AssertCode(     // ldp\ts15,27,[x1,-#&E0]
@@ -180,7 +180,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_tbz()
+        public void AArch64Rw_tbz()
         {
             Given_Instruction(0x36686372);
             AssertCode(     // tbz\tw18,#&D,#&100C6C
@@ -189,7 +189,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_adrp()
+        public void AArch64Rw_adrp()
         {
             Given_Instruction(0xF00000E2);
             AssertCode(     // adrp\tx2,#&1F000
@@ -198,7 +198,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ldr_UnsignedOffset()
+        public void AArch64Rw_ldr_UnsignedOffset()
         {
             Given_Instruction(0xF947E442);
             AssertCode(     // ldr\tx2,[x2,#&FC8]
@@ -207,7 +207,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_mov_reg64()
+        public void AArch64Rw_mov_reg64()
         {
             Given_Instruction(0xAA0103F4);
             AssertCode(     // mov\tx20,x1
@@ -216,7 +216,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_adrp_00001()
+        public void AArch64Rw_adrp_00001()
         {
             Given_Instruction(0xB0000001);
             AssertCode(     // adrp\tx1,#&1000
@@ -225,7 +225,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_mov_reg32()
+        public void AArch64Rw_mov_reg32()
         {
             Given_Instruction(0x2A0003F5);
             AssertCode(     // mov\tw21,w0
@@ -234,7 +234,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_movz_imm32()
+        public void AArch64Rw_movz_imm32()
         {
             Given_Instruction(0x528000C0);
             AssertCode(     // movz\tw0,#6
@@ -243,7 +243,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ldrsw()
+        public void AArch64Rw_ldrsw()
         {
             Given_Instruction(0xB9800033);
             AssertCode(     // ldrsw\tx19,[x1]
@@ -253,7 +253,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_add_reg()
+        public void AArch64Rw_add_reg()
         {
             Given_Instruction(0x8B130280);
             AssertCode(     // add\tx0,x20,x19
@@ -262,7 +262,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_add_reg_with_shift()
+        public void AArch64Rw_add_reg_with_shift()
         {
             Given_Instruction(0x8B130A80);
             AssertCode( // add\tx0,x20,x19,lsl #2
@@ -271,7 +271,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_cbz()
+        public void AArch64Rw_cbz()
         {
             Given_Instruction(0xB4001341);
             AssertCode(     // cbz\tx1,#&100268
@@ -280,7 +280,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_lsl()
+        public void AArch64Rw_lsl()
         {
             Given_Instruction(0xD37DF29C);
             AssertCode(     // ubfm\tx28,x20,#0,#&3D
@@ -289,7 +289,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ccmp_imm()
+        public void AArch64Rw_ccmp_imm()
         {
             Given_Instruction(0xFA400B84);
             AssertCode(     // ccmp\tx28,#0,#4,EQ
@@ -301,7 +301,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_str_UnsignedImmediate()
+        public void AArch64Rw_str_UnsignedImmediate()
         {
             Given_Instruction(0xF9000AE0);
             AssertCode(     // str\tx0,[x23,#&10]
@@ -310,7 +310,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ret()
+        public void AArch64Rw_ret()
         {
             Given_Instruction(0xD65F03C0);
             AssertCode(     // ret\tx30
@@ -319,7 +319,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_str_reg()
+        public void AArch64Rw_str_reg()
         {
             Given_Instruction(0xB8356B7F);
             AssertCode(     // str\tw31,[x27,x21]
@@ -328,7 +328,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_nop()
+        public void AArch64Rw_nop()
         {
             Given_Instruction(0xD503201F);
             AssertCode(     // nop
@@ -338,7 +338,7 @@ namespace Reko.UnitTests.Arch.Arm
 
 
         [Test]
-        public void A64Rw_str_w32()
+        public void AArch64Rw_str_w32()
         {
             Given_Instruction(0xB9006FA0);
             AssertCode(     // str\tw0,[x29,#&6C]
@@ -347,7 +347,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ldr()
+        public void AArch64Rw_ldr()
         {
             Given_Instruction(0xF9400000);
             AssertCode(     // ldr\tx0,[x0]
@@ -356,7 +356,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_subs()
+        public void AArch64Rw_subs()
         {
             Given_Instruction(0xEB13001F);
             AssertCode(     // subs\tx31,x0,x19
@@ -366,7 +366,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_cset()
+        public void AArch64Rw_cset()
         {
             Given_Instruction(0x1A9F17E0);
             AssertCode(     // csinc\tw0,w31,w31,NE
@@ -374,7 +374,7 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|w0 = (word32) Test(EQ,Z)");
         }
 
-        public void A64Rw_cinc()
+        public void AArch64Rw_cinc()
         {
             Given_Instruction(0x1A88A518);
             AssertCode(     // csinc\tw0,w31,w31,NE
@@ -384,7 +384,7 @@ namespace Reko.UnitTests.Arch.Arm
 
 
         [Test]
-        public void A64Rw_ldrb()
+        public void AArch64Rw_ldrb()
         {
             Given_Instruction(0x39402260);
             AssertCode(     // ldrb\tw0,[x19,#&8]
@@ -394,7 +394,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_cbnz()
+        public void AArch64Rw_cbnz()
         {
             Given_Instruction(0x35000140);
             AssertCode(     // cbnz\tw0,#&100028
@@ -403,7 +403,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_strb()
+        public void AArch64Rw_strb()
         {
             Given_Instruction(0x39002260);
             AssertCode(     // strb\tw0,[x19,#&8]
@@ -412,7 +412,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ldr_w32()
+        public void AArch64Rw_ldr_w32()
         {
             Given_Instruction(0xB9400001);
             AssertCode(     // ldr\tw1,[x0]
@@ -421,7 +421,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_cbnz_negative_offset()
+        public void AArch64Rw_cbnz_negative_offset()
         {
             Given_Instruction(0x35FFFE73);
             AssertCode(     // cbnz\tw19,#&FFFCC
@@ -430,7 +430,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_bne1()
+        public void AArch64Rw_bne1()
         {
             Given_Instruction(0x54000401);
             AssertCode(     // b.ne\t#&100080
@@ -439,7 +439,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ldr_reg_shift()
+        public void AArch64Rw_ldr_reg_shift()
         {
             Given_Instruction(0xF8737AA3);
             AssertCode(     // ldr\tx3,[x21,x19,lsl,#3]
@@ -448,7 +448,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_blr()
+        public void AArch64Rw_blr()
         {
             Given_Instruction(0xD63F0060);
             AssertCode(
@@ -457,7 +457,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_bne_backward()
+        public void AArch64Rw_bne_backward()
         {
             Given_Instruction(0x54FFFF21);
             AssertCode(     // b.ne\t#&FFFE4
@@ -466,7 +466,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_stp_preindex()
+        public void AArch64Rw_stp_preindex()
         {
             Given_Instruction(0xA9B87BFD);
             AssertCode(     // stp\tx29,x30,[x31,-#&80]!
@@ -478,7 +478,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ldp_w64()
+        public void AArch64Rw_ldp_w64()
         {
             Given_Instruction(0xA9446BB9);
             AssertCode(     // ldp\tx25,x26,[x29,#&40]
@@ -490,7 +490,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ldp_post()
+        public void AArch64Rw_ldp_post()
         {
             Given_Instruction(0xA8C17BFD);
             AssertCode(     // ldp\tx29,x30,[x31],#&8
@@ -503,7 +503,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ldr_64_neg_lit()
+        public void AArch64Rw_ldr_64_neg_lit()
         {
             Given_Instruction(0x18FFFFE0);
             AssertCode(     // ldr\tw0,#&FFFFC
@@ -512,7 +512,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_movn()
+        public void AArch64Rw_movn()
         {
             Given_Instruction(0x12800000);
             AssertCode(     // movn\tw0,#0
@@ -521,7 +521,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_asr()
+        public void AArch64Rw_asr()
         {
             Given_Instruction(0x13017E73);
             AssertCode(     // sbfm\tw19,w19,#1,#&1F
@@ -530,7 +530,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_and_reg()
+        public void AArch64Rw_and_reg()
         {
             Given_Instruction(0x8A140000);
             AssertCode(     // and\tx0,x0,x20
@@ -539,7 +539,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_and_reg_reg()
+        public void AArch64Rw_and_reg_reg()
         {
             Given_Instruction(0x0A000020);
             AssertCode(     // and\tw0,w1,w0
@@ -548,7 +548,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_sfbiz()
+        public void AArch64Rw_sfbiz()
         {
             Given_Instruction(0x937D7C63);
             AssertCode(     // sbfm\tx3,x3,#&3,#&20
@@ -557,7 +557,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_mul_64()
+        public void AArch64Rw_mul_64()
         {
             Given_Instruction(0x9B017C14);
             AssertCode(     // mul\tx20,x0,x1
@@ -566,7 +566,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_madd_64()
+        public void AArch64Rw_madd_64()
         {
             Given_Instruction(0x9B013C14);
             AssertCode(     // madd\tx20,x0,x1,x15
@@ -575,7 +575,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ands_64_reg()
+        public void AArch64Rw_ands_64_reg()
         {
             Given_Instruction(0xEA010013);
             AssertCode(     // ands\tx19,x0,x1
@@ -587,7 +587,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_test_64_reg()
+        public void AArch64Rw_test_64_reg()
         {
             Given_Instruction(0xEA01001F);
             AssertCode(     // test\tx31,x0,x1
@@ -598,7 +598,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ldurb()
+        public void AArch64Rw_ldurb()
         {
             Given_Instruction(0x385F9019);
             AssertCode(     // ldurb\tw25,[x0,-#&7]
@@ -608,7 +608,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_strb_postidx()
+        public void AArch64Rw_strb_postidx()
         {
             Given_Instruction(0x38018C14);
             AssertCode(     // strb\tw20,[x0,#&18]!
@@ -618,7 +618,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_strb_preidx_sp()
+        public void AArch64Rw_strb_preidx_sp()
         {
             Given_Instruction(0x38018FFF);
             AssertCode(     // strb\tw31,[sp,#&18]!
@@ -628,7 +628,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ldrh_32_off0()
+        public void AArch64Rw_ldrh_32_off0()
         {
             Given_Instruction(0x79400021);
             AssertCode(     // ldrh\tw1,[x1]
@@ -638,7 +638,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_add_extension()
+        public void AArch64Rw_add_extension()
         {
             Given_Instruction(0x8B34C2D9);
             AssertCode(     // add\tx25,x22,w20,sxtw #0
@@ -647,7 +647,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_madd_32()
+        public void AArch64Rw_madd_32()
         {
             Given_Instruction(0x1B003C21);
             AssertCode(     // madd\tw1,w1,w0,w15
@@ -656,7 +656,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_mneg_32()
+        public void AArch64Rw_mneg_32()
         {
             Given_Instruction(0x1B00FC21);
             AssertCode(     // mneg\tw1,w1,w0
@@ -665,7 +665,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_msub_32()
+        public void AArch64Rw_msub_32()
         {
             Given_Instruction(0x1B00BC21);
             AssertCode(     // msub\tw1,w1,w0,w15
@@ -674,7 +674,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_strb_post_idx()
+        public void AArch64Rw_strb_post_idx()
         {
             Given_Instruction(0x38001410);
             AssertCode(     // strb\tw16,[x0],#&1
@@ -684,7 +684,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_strb_post_idx_zero()
+        public void AArch64Rw_strb_post_idx_zero()
         {
             Given_Instruction(0x3800141F);
             AssertCode(     // strb\tw31,[x0],#&1
@@ -694,7 +694,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_strb_post_sp()
+        public void AArch64Rw_strb_post_sp()
         {
             Given_Instruction(0x381FC7FF);
             AssertCode(     // strb\tw31,[sp],-#&4
@@ -704,7 +704,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_msub_64()
+        public void AArch64Rw_msub_64()
         {
             Given_Instruction(0x9B038441);
             AssertCode(     // msub\tx1,x2,x3,x1
@@ -713,7 +713,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ldur_64_negative_offset()
+        public void AArch64Rw_ldur_64_negative_offset()
         {
             Given_Instruction(0xF85F8260);
             AssertCode(     // ldur\tx0,[x19,-#&8]
@@ -722,7 +722,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_strb_indexed()
+        public void AArch64Rw_strb_indexed()
         {
             Given_Instruction(0x3820483F);
             AssertCode(     // strb\tw31,[x1,w0,uxtw]
@@ -731,7 +731,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_str_q0()
+        public void AArch64Rw_str_q0()
         {
             Given_Instruction(0x3D8027A0);
             AssertCode(     // str\tq0,[x29,#&90]
@@ -740,7 +740,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_cmp_32_uxtb()
+        public void AArch64Rw_cmp_32_uxtb()
         {
             Given_Instruction(0x6B20031F);
             AssertCode(     // cmp\tw0,w0,uxtb #0
@@ -749,7 +749,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ldrb_idx()
+        public void AArch64Rw_ldrb_idx()
         {
             Given_Instruction(0x38616857);
             AssertCode(     // ldrb\tw23,[x2,x1]
@@ -759,7 +759,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_strb_index()
+        public void AArch64Rw_strb_index()
         {
             Given_Instruction(0x38216A63);
             AssertCode(     // strb\tw3,[x19,x1]
@@ -768,7 +768,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_strb_zero()
+        public void AArch64Rw_strb_zero()
         {
             Given_Instruction(0x38216A7F);
             AssertCode(     // strb\tw3,[x19,x1]
@@ -777,7 +777,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_add_ext_reg_sxtw()
+        public void AArch64Rw_add_ext_reg_sxtw()
         {
             Given_Instruction(0x8B33D2D3);
             AssertCode(     // add\tx19,x22,w19,sxtw #4
@@ -786,7 +786,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ldr_64_preidx()
+        public void AArch64Rw_ldr_64_preidx()
         {
             Given_Instruction(0xF8410E81);
             AssertCode(     // ldr\tx1,[x20,#&10]!
@@ -796,7 +796,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ldrb_post()
+        public void AArch64Rw_ldrb_post()
         {
             Given_Instruction(0x38401420);
             AssertCode(     // ldrb\tw0,[x1],#&1
@@ -807,7 +807,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_strb_uxtw()
+        public void AArch64Rw_strb_uxtw()
         {
             Given_Instruction(0x38344B23);
             AssertCode(     // strb\tw3,[x25,w20,uxtw]
@@ -816,7 +816,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_sdiv()
+        public void AArch64Rw_sdiv()
         {
             Given_Instruction(0x1AC00F03);
             AssertCode(     // sdiv\tw3,w24,w0
@@ -826,7 +826,7 @@ namespace Reko.UnitTests.Arch.Arm
 
 
         [Test]
-        public void A64Rw_ldrb_preidx()
+        public void AArch64Rw_ldrb_preidx()
         {
             Given_Instruction(0x38401C41);
             AssertCode(     // ldrb\tw1,[x2,#&1]!
@@ -837,7 +837,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ldrb_idx_uxtw()
+        public void AArch64Rw_ldrb_idx_uxtw()
         {
             Given_Instruction(0x38614873);
             AssertCode(     // ldrb\tw19,[x3,w1,uxtw]
@@ -847,7 +847,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ldrh_32_idx_lsl()
+        public void AArch64Rw_ldrh_32_idx_lsl()
         {
             Given_Instruction(0x787B7B20);
             AssertCode(     // ldrh\tw0,[x25,x27,lsl #1]
@@ -857,7 +857,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ldrh_32_sxtw()
+        public void AArch64Rw_ldrh_32_sxtw()
         {
             Given_Instruction(0x7876D800);
             AssertCode(     // ldrh\tw0,[x0,w22,sxtw #1]
@@ -866,7 +866,7 @@ namespace Reko.UnitTests.Arch.Arm
                  "2|L--|w0 = (word32) v5");
         }
 
-        public void A64Rw_3873C800()
+        public void AArch64Rw_3873C800()
         {
             Given_Instruction(0x3873C800);
             AssertCode(     // @@@
@@ -875,7 +875,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_movn_imm()
+        public void AArch64Rw_movn_imm()
         {
             Given_Instruction(0x9280000A);
             AssertCode(     // movn\tx10,#0
@@ -884,7 +884,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_sturb_off()
+        public void AArch64Rw_sturb_off()
         {
             Given_Instruction(0x381FF09F);
             AssertCode(     // sturb\tw31,[x4,-#&1]
@@ -893,7 +893,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_adr()
+        public void AArch64Rw_adr()
         {
             Given_Instruction(0x10000063);
             AssertCode(     // adr\tx3,#&10000C
@@ -902,7 +902,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_orn()
+        public void AArch64Rw_orn()
         {
             Given_Instruction(0x2A2200F8);
             AssertCode(     // orn\tw24,w7,w2
@@ -911,7 +911,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_mvn()
+        public void AArch64Rw_mvn()
         {
             Given_Instruction(0x2A2203F8);
             AssertCode(     // mvn\tw24,w2
@@ -920,7 +920,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_sdiv_64()
+        public void AArch64Rw_sdiv_64()
         {
             Given_Instruction(0x9AC20C62);
             AssertCode(     // sdiv\tx2,x3,x2
@@ -929,7 +929,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_eor_reg_32()
+        public void AArch64Rw_eor_reg_32()
         {
             Given_Instruction(0x4A140074);
             AssertCode(     // eor\tw20,w3,w20
@@ -938,7 +938,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_sub_reg_ext_64()
+        public void AArch64Rw_sub_reg_ext_64()
         {
             Given_Instruction(0xCB214F18);
             AssertCode(     // sub\tx24,x24,w1,uxtw #3
@@ -947,7 +947,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_bic_reg_32()
+        public void AArch64Rw_bic_reg_32()
         {
             Given_Instruction(0x0A350021);
             AssertCode(     // bic\tw1,w1,w21
@@ -956,7 +956,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_umulh()
+        public void AArch64Rw_umulh()
         {
             Given_Instruction(0x9BC57C00);
             AssertCode(     // umulh\tx0,w0,w5
@@ -965,7 +965,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_lsrv()
+        public void AArch64Rw_lsrv()
         {
             Given_Instruction(0x1AC22462);
             AssertCode(     // lsrv\tw2,w3,w2
@@ -974,7 +974,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_smull()
+        public void AArch64Rw_smull()
         {
             Given_Instruction(0x9B237C43);
             AssertCode(     // smull\tx3,w2,w3
@@ -983,7 +983,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_smaddl()
+        public void AArch64Rw_smaddl()
         {
             Given_Instruction(0x9B233C43);
             AssertCode(     // smaddl\tx3,w2,w3,x15
@@ -992,7 +992,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_strh_reg()
+        public void AArch64Rw_strh_reg()
         {
             Given_Instruction(0x78206A62);
             AssertCode(     // strh\tw2,[x19,x0]
@@ -1001,7 +1001,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_stp_r64_pre()
+        public void AArch64Rw_stp_r64_pre()
         {
             Given_Instruction(0x6DB73BEF);
             AssertCode(     // stp\td15,d14,[sp,-#&90]!
@@ -1013,7 +1013,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ldr_r64_off()
+        public void AArch64Rw_ldr_r64_off()
         {
             Given_Instruction(0xFD45E540);
             AssertCode(     // ldr\td0,[x10,#&BC8]
@@ -1022,7 +1022,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_str_r64_imm()
+        public void AArch64Rw_str_r64_imm()
         {
             Given_Instruction(0xFD001BE0);
             AssertCode(     // str\td0,[sp,#&30]
@@ -1031,7 +1031,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_scvtf_int()
+        public void AArch64Rw_scvtf_int()
         {
             Given_Instruction(0x1E220120);
             AssertCode(     // scvtf\ts0,w9
@@ -1040,7 +1040,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_mov_vector_to_vector()
+        public void AArch64Rw_mov_vector_to_vector()
         {
             Given_Instruction(0x4EA31C68);
             AssertCode(     // @@@
@@ -1049,7 +1049,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ldp_w32()
+        public void AArch64Rw_ldp_w32()
         {
             Given_Instruction(0x296107A2);
             AssertCode(     // ldp\tw2,w1,[x29,-#&F8]
@@ -1061,7 +1061,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_scvtf_r32()
+        public void AArch64Rw_scvtf_r32()
         {
             Given_Instruction(0x5E21D82F);
             AssertCode(     // scvtf\ts15,s1
@@ -1070,7 +1070,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_stp_r32()
+        public void AArch64Rw_stp_r32()
         {
             Given_Instruction(0x2D010FE2);
             AssertCode(     // stp\ts2,s3,[sp,#&8]
@@ -1082,7 +1082,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fcvtms_f32_to_i32()
+        public void AArch64Rw_fcvtms_f32_to_i32()
         {
             Given_Instruction(0x1E300003);
             AssertCode(     // fcvtms\tw3,s0
@@ -1092,7 +1092,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_udiv_w32()
+        public void AArch64Rw_udiv_w32()
         {
             Given_Instruction(0x1ADA0908);
             AssertCode(     // udiv\tw8,w8,w26
@@ -1101,7 +1101,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_rev16_w32()
+        public void AArch64Rw_rev16_w32()
         {
             Given_Instruction(0x5AC0056B);
             AssertCode(     // rev16\tw11,w11
@@ -1110,7 +1110,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_add_32_ext()
+        public void AArch64Rw_add_32_ext()
         {
             Given_Instruction(0x0B20A1EF);
             AssertCode(     // add\tw15,w15,w0,sxth #0
@@ -1119,7 +1119,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_scvtf_i32_to_f32()
+        public void AArch64Rw_scvtf_i32_to_f32()
         {
             Given_Instruction(0x1E6202E0);
             AssertCode(     // scvtf\td0,w23
@@ -1128,7 +1128,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fmov_f64_to_i64()
+        public void AArch64Rw_fmov_f64_to_i64()
         {
             Given_Instruction(0x9E6701B0);
             AssertCode(     // fmov\td16,x13
@@ -1137,7 +1137,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_sxtl()
+        public void AArch64Rw_sxtl()
         {
             Given_Instruction(0x0F10A673);
             AssertCode(     // sxtl\tv19.4h,v19.4h
@@ -1147,7 +1147,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fcvtzs_vector_real32()
+        public void AArch64Rw_fcvtzs_vector_real32()
         {
             Given_Instruction(0x4EA1BAB5);
             AssertCode(     // fcvtzs\tv21.4s,v21.4s
@@ -1157,7 +1157,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fmul_real32()
+        public void AArch64Rw_fmul_real32()
         {
             Given_Instruction(0x1E210B25);
             AssertCode(     // fmul\ts5,s25,s1
@@ -1166,7 +1166,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fcvtzs_i32_from_f32()
+        public void AArch64Rw_fcvtzs_i32_from_f32()
         {
             Given_Instruction(0x1E380069);
             AssertCode(     // fcvtzs\tw3,s9
@@ -1176,7 +1176,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ucvtf_real32_int32()
+        public void AArch64Rw_ucvtf_real32_int32()
         {
             Given_Instruction(0x1E230101);
             AssertCode(     // ucvtf\ts1,w8
@@ -1185,7 +1185,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fcsel()
+        public void AArch64Rw_fcsel()
         {
             Given_Instruction(0x1E2B1C00);
             AssertCode(     // fcsel\ts0,s0,s11,NE
@@ -1194,7 +1194,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fcvtps_f32_to_i32()
+        public void AArch64Rw_fcvtps_f32_to_i32()
         {
             Given_Instruction(0x1E280008);
             AssertCode(     // fcvtps\tw8,s0
@@ -1204,7 +1204,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fcmp_f32()
+        public void AArch64Rw_fcmp_f32()
         {
             Given_Instruction(0x1E222060);
             AssertCode(     // fcmp\ts3,s2
@@ -1213,7 +1213,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fabs_f32()
+        public void AArch64Rw_fabs_f32()
         {
             Given_Instruction(0x1E20C021);
             AssertCode(     // fabs\ts1,s1
@@ -1223,7 +1223,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fneg_f32()
+        public void AArch64Rw_fneg_f32()
         {
             Given_Instruction(0x1E214021);
             AssertCode(     // fneg\ts1,s1
@@ -1232,7 +1232,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fsqrt()
+        public void AArch64Rw_fsqrt()
         {
             Given_Instruction(0x1E21C001);
             AssertCode(     // fsqrt\ts1,s0
@@ -1242,7 +1242,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fmov_i32_to_f32()
+        public void AArch64Rw_fmov_i32_to_f32()
         {
             Given_Instruction(0x1E2703E1);
             AssertCode(     // fmov\ts1,w31
@@ -1251,7 +1251,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fcvt_f32_to_f64()
+        public void AArch64Rw_fcvt_f32_to_f64()
         {
             Given_Instruction(0x1E22C041);
             AssertCode(     // fcvt\td1,s2
@@ -1260,7 +1260,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fcvt_f64_to_f32()
+        public void AArch64Rw_fcvt_f64_to_f32()
         {
             Given_Instruction(0x1E624000);
             AssertCode(     // fcvt\ts0,d0
@@ -1269,7 +1269,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_mov_w128()
+        public void AArch64Rw_mov_w128()
         {
             Given_Instruction(0x4EA91D22);
             AssertCode(     // mov\tv2.16b,v9.16b
@@ -1278,7 +1278,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_uxtl()
+        public void AArch64Rw_uxtl()
         {
             Given_Instruction(0x2F08A400);
             AssertCode(     // uxtl\tv0.8h,v0.8b
@@ -1288,7 +1288,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_xtn()
+        public void AArch64Rw_xtn()
         {
             Given_Instruction(0x0E612A10);
             AssertCode(     // xtn\tv16.4h,v16.4s
@@ -1299,7 +1299,7 @@ namespace Reko.UnitTests.Arch.Arm
 
 
         [Test]
-        public void A64Rw_fmov_f32_to_w32()
+        public void AArch64Rw_fmov_f32_to_w32()
         {
             Given_Instruction(0x1E26002B);
             AssertCode(     // fmov\tw11,s1
@@ -1308,7 +1308,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fmov_vector_immediate()
+        public void AArch64Rw_fmov_vector_immediate()
         {
             Given_Instruction(0x4F03F600);
             AssertCode(     // fmov\tv0.4s,#1.0F
@@ -1318,7 +1318,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_dup_element_w32()
+        public void AArch64Rw_dup_element_w32()
         {
             Given_Instruction(0x4E0406E2);
             AssertCode(     // dup\tv2.4s,v23.s[0]
@@ -1328,7 +1328,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fadd_vector_f32()
+        public void AArch64Rw_fadd_vector_f32()
         {
             Given_Instruction(0x4E30D4D0);
             AssertCode(     // fadd\tv16.4s,v6.4s,v16.4s
@@ -1339,7 +1339,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_scvtf_vector_i32()
+        public void AArch64Rw_scvtf_vector_i32()
         {
             Given_Instruction(0x4E21DA10);
             AssertCode(     // scvtf\tv16.4s,v16.4s
@@ -1349,7 +1349,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_mul_vector_i16()
+        public void AArch64Rw_mul_vector_i16()
         {
             Given_Instruction(0x4E609C20);
             AssertCode(     // mul\tv0.8h,v1.8h,v0.8h
@@ -1360,7 +1360,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_addv_i32()
+        public void AArch64Rw_addv_i32()
         {
             Given_Instruction(0x4EB1B821);
             AssertCode(     // addv\ts1,v1.4s
@@ -1370,7 +1370,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_mov_vector_element_i16()
+        public void AArch64Rw_mov_vector_element_i16()
         {
             Given_Instruction(0x6E0A5633);
             AssertCode(     // mov\tv19.h[2],v17.h[5]
@@ -1379,7 +1379,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_add_vector_i32()
+        public void AArch64Rw_add_vector_i32()
         {
             Given_Instruction(0x4EA28482);
             AssertCode(     // add\tv2.4s,v4.4s,v2.4s
@@ -1390,7 +1390,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fmul_vector_f32()
+        public void AArch64Rw_fmul_vector_f32()
         {
             Given_Instruction(0x6E30DC90);
             AssertCode(     // fmul\tv16.4s,v4.4s,v16.4s
@@ -1401,7 +1401,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ccmp_w32()
+        public void AArch64Rw_ccmp_w32()
         {
             Given_Instruction(0x7A43B900);
             AssertCode(     // ccmp\tw8,#3,#0,LT
@@ -1413,7 +1413,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ucvtf_f32()
+        public void AArch64Rw_ucvtf_f32()
         {
             Given_Instruction(0x7E21D821);
             AssertCode(     // ucvtf\ts1,s1
@@ -1422,7 +1422,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_clz()
+        public void AArch64Rw_clz()
         {
             Given_Instruction(0xDAC01002);
             AssertCode(     // clz\tx2,x0
@@ -1431,7 +1431,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_stp_zero_offset()
+        public void AArch64Rw_stp_zero_offset()
         {
             Given_Instruction(0xA9007EBF);
             AssertCode(     // stp\tx31,x31,[x21]
@@ -1443,7 +1443,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ld2()
+        public void AArch64Rw_ld2()
         {
             Given_Instruction(0x4C4081C1);	// ld2	{v1.8b,v2.8b},[x14]
             AssertCode(
@@ -1452,7 +1452,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ld3()
+        public void AArch64Rw_ld3()
         {
             Given_Instruction(0x0C404565);
             AssertCode(     // ld3\t{v5.4h,v6.4h,v7.4h},[x11]
@@ -1461,7 +1461,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_movi_b()
+        public void AArch64Rw_movi_b()
         {
             Given_Instruction(0x0F00E460);
             AssertCode(     // movi\tv0.8b,#&3030303
@@ -1471,7 +1471,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_movi_w16()
+        public void AArch64Rw_movi_w16()
         {
             Given_Instruction(0x4F008441);
             AssertCode(     // movi\tv1.8h,#&20002
@@ -1481,7 +1481,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_movi_w64_0()
+        public void AArch64Rw_movi_w64_0()
         {
             Given_Instruction(0x6F00E401);
             AssertCode(     // movi\tv1.2d,#0
@@ -1492,7 +1492,7 @@ namespace Reko.UnitTests.Arch.Arm
 
 
         [Test]
-        public void A64Rw_scvtf_fixed()
+        public void AArch64Rw_scvtf_fixed()
         {
             Given_Instruction(0x1E18C008);
             AssertCode(     // scvtf\ts8,w0,#&10
@@ -1501,7 +1501,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_umlal_vector()
+        public void AArch64Rw_umlal_vector()
         {
             Given_Instruction(0x2E208045);
             AssertCode(     // umlal\tv5.4h,v2.8b,v0.8b
@@ -1516,7 +1516,7 @@ namespace Reko.UnitTests.Arch.Arm
    
 
         [Test]
-        public void A64Rw_fmov_vector_hiword()
+        public void AArch64Rw_fmov_vector_hiword()
         {
             Given_Instruction(0x9EAF0060);
             AssertCode(     // fmov\tq0.d[1],x3
@@ -1525,7 +1525,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_smaxv()
+        public void AArch64Rw_smaxv()
         {
             Given_Instruction(0x4EB0A800);
             AssertCode(     // smaxv\ts0,v0.4s
@@ -1535,7 +1535,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_smax_vector()
+        public void AArch64Rw_smax_vector()
         {
             Given_Instruction(0x4EA16400);
             AssertCode(     // smax\tv0.4s,v0.4s,v1.4s
@@ -1546,7 +1546,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_umull_vector()
+        public void AArch64Rw_umull_vector()
         {
             Given_Instruction(0x2E20C084);
             AssertCode(     // umull\tv4.8h,v4.8b,v0.8b
@@ -1557,7 +1557,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_uaddw_i16()
+        public void AArch64Rw_uaddw_i16()
         {
             Given_Instruction(0x6E231082);
             AssertCode(     // uaddw\tv2.8h,v4.8h,v3.16b
@@ -1568,7 +1568,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_add_with_extension()
+        public void AArch64Rw_add_with_extension()
         {
             Given_Instruction(0x8B3F63E0);	// add	x0,sp,x31,uxtx #0
             AssertCode(
@@ -1578,7 +1578,7 @@ namespace Reko.UnitTests.Arch.Arm
 
 
         [Test]
-        public void A64Rw_bfm()
+        public void AArch64Rw_bfm()
         {
             Given_Instruction(0x33101D28);	// bfm	w8,w9,#&10,#7
             AssertCode(
@@ -1587,7 +1587,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_csinv()
+        public void AArch64Rw_csinv()
         {
             Given_Instruction(0x5A9F03E8);	// csinv	w8,w31,w31,EQ
             AssertCode(
@@ -1596,7 +1596,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_csel()
+        public void AArch64Rw_csel()
         {
             Given_Instruction(0x9A8903E2);	// csel	x2,x31,x9,EQ
             AssertCode(
@@ -1605,7 +1605,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fdiv()
+        public void AArch64Rw_fdiv()
         {
             Given_Instruction(0x1E201820);	// fdiv	s0,s1,s0
             AssertCode(
@@ -1614,7 +1614,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ubfm()
+        public void AArch64Rw_ubfm()
         {
             Given_Instruction(0x5302096B);	// ubfm	w11,w11,#2,#2
             AssertCode(
@@ -1623,7 +1623,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fsub()
+        public void AArch64Rw_fsub()
         {
             Given_Instruction(0x1E203920);	// fsub	s0,s9,s0
             AssertCode(
@@ -1632,7 +1632,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_sxtb()
+        public void AArch64Rw_sxtb()
         {
             Given_Instruction(0x13001F6A);	// sxtb	w10,w27
             AssertCode(
@@ -1641,7 +1641,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fmax()
+        public void AArch64Rw_fmax()
         {
             Given_Instruction(0x1E2A4800);	// fmax	s0,s0,s10
             AssertCode(
@@ -1651,7 +1651,7 @@ namespace Reko.UnitTests.Arch.Arm
 
 
         [Test]
-        public void A64Rw_add()
+        public void AArch64Rw_add()
         {
             Given_Instruction(0x8B8C6D6D);	// add	x13,x11,x12,asr #&1B
             AssertCode(
@@ -1660,7 +1660,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_csneg()
+        public void AArch64Rw_csneg()
         {
             Given_Instruction(0x5A895528);	// csneg	w8,w9,w9,PL
             AssertCode(
@@ -1670,7 +1670,7 @@ namespace Reko.UnitTests.Arch.Arm
 
 
         [Test]
-        public void A64Rw_fmin()
+        public void AArch64Rw_fmin()
         {
             Given_Instruction(0x1E285800);	// fmin	s0,s0,s8
             AssertCode(
@@ -1679,7 +1679,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_rorv()
+        public void AArch64Rw_rorv()
         {
             Given_Instruction(0x1AC92D09);	// rorv	w9,w8,w9
             AssertCode(
@@ -1688,7 +1688,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_cmp()
+        public void AArch64Rw_cmp()
         {
             Given_Instruction(0x6B98069F);	// cmp	w20,w24,asr #1
             AssertCode(
@@ -1697,7 +1697,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ldpsw()
+        public void AArch64Rw_ldpsw()
         {
             Given_Instruction(0x69404222);	// ldpsw	x2,x16,[x17]
             AssertCode(
@@ -1709,7 +1709,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fnmul()
+        public void AArch64Rw_fnmul()
         {
             Given_Instruction(0x1E227800);	// fnmul	s0,s0,s2
             AssertCode(
@@ -1719,7 +1719,7 @@ namespace Reko.UnitTests.Arch.Arm
 
 
         [Test]
-        public void A64Rw_cmeq()
+        public void AArch64Rw_cmeq()
         {
             Given_Instruction(0x6E208C21);	// cmeq	v1.16b,v1.16b,v0.16b
             AssertCode(
@@ -1730,7 +1730,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_st1()
+        public void AArch64Rw_st1()
         {
             Given_Instruction(0x0D0041B5);	// st1	{v21.h}[0],[x13]
             AssertCode(
@@ -1739,7 +1739,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_not()
+        public void AArch64Rw_not()
         {
             Given_Instruction(0x6E205821);	// not	v1.16b,v1.16b
             AssertCode(
@@ -1750,7 +1750,7 @@ namespace Reko.UnitTests.Arch.Arm
 
 
         [Test]
-        public void A64Rw_uxtb()
+        public void AArch64Rw_uxtb()
         {
             Given_Instruction(0x53001E63);	// uxtb	w3,w19
             AssertCode(
@@ -1759,7 +1759,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_uxth()
+        public void AArch64Rw_uxth()
         {
             Given_Instruction(0x53003C00);	// uxth	w0,w0
             AssertCode(
@@ -1768,7 +1768,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_csinc()
+        public void AArch64Rw_csinc()
         {
             Given_Instruction(0x9A800660);	// csinc	x0,x19,x0,EQ
             AssertCode(
@@ -1777,7 +1777,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_fmadd_f32()
+        public void AArch64Rw_fmadd_f32()
         {
             Given_Instruction(0x1F0000B9);
             AssertCode(     // fmadd\ts25,s5,s0,s0
@@ -1787,7 +1787,7 @@ namespace Reko.UnitTests.Arch.Arm
 
 
         [Test]
-        public void A64Rw_fmsub_f32()
+        public void AArch64Rw_fmsub_f32()
         {
             Given_Instruction(0x1F00A08B);
             AssertCode(     // fmsub\ts11,s16,s0,s8
@@ -1797,7 +1797,7 @@ namespace Reko.UnitTests.Arch.Arm
 
 
         [Test]
-        public void A64Rw_fmadd_f16()
+        public void AArch64Rw_fmadd_f16()
         {
             Given_Instruction(0x1FD61F00);
             AssertCode(     // fmadd\th0,h24,h22,h7
@@ -1806,7 +1806,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_prfm()
+        public void AArch64Rw_prfm()
         {
             Given_Instruction(0xD8545280);
             AssertCode(     // prfm\t#0,#&1A8A50"
@@ -1816,7 +1816,7 @@ namespace Reko.UnitTests.Arch.Arm
 
 
         [Test]
-        public void A64Rw_ld1r_i8()
+        public void AArch64Rw_ld1r_i8()
         {
             Given_Instruction(0x4D40C220);
             AssertCode(     // ld1r\t{v0.16b},[x17]
@@ -1825,7 +1825,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_shrn_i8()
+        public void AArch64Rw_shrn_i8()
         {
             Given_Instruction(0x0F0E8463);
             AssertCode(     // shrn\tv3.8b,v3.8h,#2
@@ -1835,7 +1835,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ccmp_reg()
+        public void AArch64Rw_ccmp_reg()
         {
             Given_Instruction(0x7A42D020);
             AssertCode(     // ccmp\tw1,w2,#0,LE
@@ -1847,7 +1847,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_str_sxtx()
+        public void AArch64Rw_str_sxtx()
         {
             Given_Instruction(0x3CBBEBC8);
             AssertCode( // str	q8, [x30,x27,sxtx]
@@ -1856,7 +1856,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_svc()
+        public void AArch64Rw_svc()
         {
             Given_Instruction(0xD41B7B61);	// svc	#&DBDB
             AssertCode(
@@ -1865,7 +1865,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_mrs()
+        public void AArch64Rw_mrs()
         {
             Given_Instruction(0xD53B0020);	// mrs	x0,CTR_EL0
             AssertCode(
@@ -1874,7 +1874,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_dsb()
+        public void AArch64Rw_dsb()
         {
             Given_Instruction(0xD5033F9F);	// dsb	#&F
             AssertCode(
@@ -1883,7 +1883,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_isb()
+        public void AArch64Rw_isb()
         {
             Given_Instruction(0xD5033FDF);	// isb	#&F
             AssertCode(
@@ -1892,7 +1892,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_smc()
+        public void AArch64Rw_smc()
         {
             Given_Instruction(0xD4000003);	// smc	#0
             AssertCode(
@@ -1901,7 +1901,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_msr()
+        public void AArch64Rw_msr()
         {
             Given_Instruction(0xD50343DF);	// msr	pstate,#3
             AssertCode(
@@ -1910,7 +1910,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_ccmn()
+        public void AArch64Rw_ccmn()
         {
             Given_Instruction(0x3A4D09C0);	// ccmn	w14,#&D,#0,EQ
             AssertCode(
@@ -1922,13 +1922,23 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void A64Rw_stlr()
+        public void AArch64Rw_stlr()
         {
             Given_HexString("00FD9FC8");
             AssertCode(     // stlr	x0,[x8]
                 "0|L--|0000000000100000(4): 2 instructions",
                 "1|L--|v3 = x8",
                 "2|L--|__stlr_64(v3, x0)");
+        }
+
+
+        [Test]
+        public void AArch64Rw_GitHub_898()
+        {
+            Given_HexString("427CAE9B");
+            AssertCode(
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|x2 = (uint64) w2 *u w14");
         }
 
     }
