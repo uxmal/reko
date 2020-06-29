@@ -43,7 +43,7 @@ namespace Reko.Typing
         private DecompilerEventListener eventListener;
 
 		private static TraceSwitch trace = new TraceSwitch("TypeTransformer", "Traces the transformation of types") { Level = TraceLevel.Verbose };
-        private HashSet<DataType> visitedTypes;
+        private readonly Dictionary<DataType, DataType> visitedTypes;
 
         public TypeTransformer(TypeFactory factory, TypeStore store, Program program)
             : this(factory, store, program, new NullDecompilerEventListener())
@@ -57,7 +57,7 @@ namespace Reko.Typing
             this.program = program;
 			this.eventListener = eventListener;
 			this.unifier = new Unifier(factory, trace);
-            this.visitedTypes = new HashSet<DataType>();
+            this.visitedTypes = new Dictionary<DataType, DataType>();
         }
 
 		public bool Changed
@@ -233,8 +233,8 @@ namespace Reko.Typing
                     return;
                 }
 				Changed = false;
-                this.visitedTypes = new HashSet<DataType>();
-				foreach (TypeVariable tv in store.TypeVariables)
+                visitedTypes.Clear();
+                foreach (TypeVariable tv in store.TypeVariables)
 				{
                     if (eventListener.IsCanceled())
                         return;
@@ -356,9 +356,9 @@ namespace Reko.Typing
             // Do not transform user-defined types
             if (str.UserDefined)
                 return str;
-            if (visitedTypes.Contains(str))
-                return str;
-            visitedTypes.Add(str);
+            if (visitedTypes.TryGetValue(str, out var visitedResult))
+                return visitedResult;
+            visitedTypes[str] = str;
             foreach (var field in str.Fields)
             {
                 field.DataType = field.DataType.Accept(this);
@@ -372,8 +372,10 @@ namespace Reko.Typing
                 DataType dt = strNew.Simplify();
                 if (dt != strNew)
                     Changed = true;
+                visitedTypes[str] = dt;
                 return dt;
             }
+            visitedTypes[str] = strNew;
             return strNew;
 		}
 
@@ -406,6 +408,9 @@ namespace Reko.Typing
             // Do not transform user-defined types
             if (ut.UserDefined)
                 return ut;
+            if (visitedTypes.TryGetValue(ut, out var visitedResult))
+                return visitedResult;
+            visitedTypes[ut] = ut;
             foreach (var alt in ut.Alternatives.Values)
             {
                 alt.DataType = alt.DataType.Accept(this);
@@ -417,13 +422,16 @@ namespace Reko.Typing
 				StructureMerger sm = new StructureMerger(upsm.Structures, upsm.EquivalenceClasses);
 				sm.Merge();
 				Changed = true;
-				return new Pointer(sm.MergedClass, upsm.PointerBitSize);
+                var ptr = new Pointer(sm.MergedClass, upsm.PointerBitSize);
+                visitedTypes[ut] = ptr;
+                return ptr;
 			}
 
 			UnionType utNew = FactorDuplicateAlternatives(ut);
             var dt = utNew.Simplify();
             Changed |= (!(dt is UnionType utNew2) ||
                         utNew2.Alternatives.Count != ut.Alternatives.Count);
+            visitedTypes[ut] = dt;
             return dt;
 		}
 
