@@ -92,6 +92,7 @@ def clear_dir(dir_name, files):
                 try:
                     os.remove(filename)
                 except:
+                    # File may be held open by another program, try again later.
                     failedFiles.append(filename)
     # Retry all failed files with a delay. Let the error propagate if persists.
     if failedFiles:
