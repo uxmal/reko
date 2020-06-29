@@ -101,7 +101,9 @@ namespace Reko.Arch.Qualcomm
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            throw new NotImplementedException();
+            return Registers.ByDomain.TryGetValue(domain, out var reg)
+                ? reg
+                : null;
         }
 
         public override RegisterStorage[] GetRegisters()

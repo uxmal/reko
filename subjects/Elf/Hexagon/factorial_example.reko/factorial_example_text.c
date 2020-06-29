@@ -7,6 +7,7 @@
 // 00005000: void .EventVectors()
 void .EventVectors()
 {
+	event_handle_reset();
 }
 
 // 000050C0: void strict_aliasing_workaround(Register (ptr32 uint16) r0)
@@ -130,6 +131,8 @@ void _Tls_get__Mbcurmax()
 }
 
 // 00006604: void _Tls_get__Mbstate()
+// Called from:
+//      _Getpmbstate
 void _Tls_get__Mbstate()
 {
 }
@@ -142,9 +145,12 @@ void _Getmbcurmax()
 // 000066BC: void _Getpmbstate()
 void _Getpmbstate()
 {
+	_Tls_get__Mbstate();
 }
 
 // 000066C0: void _Stoulx()
+// Called from:
+//      _Stoul
 void _Stoulx()
 {
 }
@@ -152,6 +158,7 @@ void _Stoulx()
 // 00006894: void _Stoul()
 void _Stoul()
 {
+	_Stoulx();
 }
 
 // 000068A0: void _Clearlocks()
@@ -220,6 +227,8 @@ void calloc()
 }
 
 // 00006E70: void _Tls_get__Errno()
+// Called from:
+//      _Geterrno
 void _Tls_get__Errno()
 {
 }
@@ -227,6 +236,7 @@ void _Tls_get__Errno()
 // 00006F10: void _Geterrno()
 void _Geterrno()
 {
+	_Tls_get__Errno();
 }
 
 // 00006F20: void atexit()
@@ -244,6 +254,13 @@ void free()
 {
 }
 
+// 00006FF4: void fn00006FF4()
+// Called from:
+//      dkw_malloc_init
+void fn00006FF4()
+{
+}
+
 // 000070C0: void fwrite()
 void fwrite()
 {
@@ -252,6 +269,7 @@ void fwrite()
 // 00007210: void dkw_malloc_init()
 void dkw_malloc_init()
 {
+	fn00006FF4();
 }
 
 // 00007220: void malloc()
@@ -400,6 +418,8 @@ void _Mbtowc()
 }
 
 // 00008F70: void _Tls_get__Wcstate()
+// Called from:
+//      _Getpwcstate
 void _Tls_get__Wcstate()
 {
 }
@@ -407,6 +427,7 @@ void _Tls_get__Wcstate()
 // 0000901C: void _Getpwcstate()
 void _Getpwcstate()
 {
+	_Tls_get__Wcstate();
 }
 
 // 00009020: void _Atrealloc()
@@ -457,6 +478,7 @@ void ldiv()
 // 000094E0: void close()
 void close()
 {
+	__sys_close();
 }
 
 // 000094F0: void write()
@@ -467,6 +489,7 @@ void write()
 // 00009510: void remove()
 void remove()
 {
+	__sys_remove();
 }
 
 // 00009520: void sqrtl()
@@ -545,6 +568,8 @@ void fesetenv()
 }
 
 // 00009C40: void _Tls_get__Locale()
+// Called from:
+//      localeconv
 void _Tls_get__Locale()
 {
 }
@@ -552,6 +577,7 @@ void _Tls_get__Locale()
 // 00009CEC: void localeconv()
 void localeconv()
 {
+	_Tls_get__Locale();
 }
 
 // 00009CF0: void _Dint()
@@ -737,21 +763,41 @@ void __qdsp_umoddi3()
 // 0000A600: void __hexagon_adddf3()
 void __hexagon_adddf3()
 {
+	fn0000A610();
+}
+
+// 0000A604: void fn0000A604()
+// Called from:
+//      __hexagon_fast2_subdf3
+void fn0000A604()
+{
+}
+
+// 0000A610: void fn0000A610()
+// Called from:
+//      __hexagon_adddf3
+void fn0000A610()
+{
 }
 
 // 0000A6A4: void __hexagon_fast2_subdf3()
 void __hexagon_fast2_subdf3()
 {
+	fn0000A604();
 }
 
-// 0000A880: void __hexagon_divdf3()
-void __hexagon_divdf3()
+// 0000A880: void __hexagon_divdf3(Sequence word64 r1_r0, Sequence word64 r3_r2)
+void __hexagon_divdf3(word64 r1_r0, word64 r3_r2)
 {
+	dfclass(r3_r2, 0x02);
+	dfclass(r1_r0, 0x02);
 }
 
-// 0000AB20: void __hexagon_fast_muldf3()
-void __hexagon_fast_muldf3()
+// 0000AB20: void __hexagon_fast_muldf3(Sequence word64 r1_r0, Sequence word64 r3_r2)
+void __hexagon_fast_muldf3(word64 r1_r0, word64 r3_r2)
 {
+	dfclass(r3_r2, 0x02);
+	dfclass(r1_r0, 0x02);
 }
 
 // 0000AEB0: void _exit()
@@ -770,11 +816,15 @@ void __sys_Mtxunlock()
 }
 
 // 0000AF60: void __sys_Mtxinit()
+// Called from:
+//      BeforeBegin
 void __sys_Mtxinit()
 {
 }
 
 // 0000AF70: void __sys_Mtxdst()
+// Called from:
+//      AtEnd
 void __sys_Mtxdst()
 {
 }
@@ -785,11 +835,15 @@ void __trylockMutex()
 }
 
 // 0000AFC0: void __sys_close()
+// Called from:
+//      close
 void __sys_close()
 {
 }
 
 // 0000B020: void __sys_remove()
+// Called from:
+//      remove
 void __sys_remove()
 {
 }
@@ -802,11 +856,13 @@ void __sys_sbrk()
 // 0000B130: void BeforeBegin()
 void BeforeBegin()
 {
+	__sys_Mtxinit();
 }
 
 // 0000B140: void AtEnd()
 void AtEnd()
 {
+	__sys_Mtxdst();
 }
 
 // 0000B150: void sys_Tlsalloc()

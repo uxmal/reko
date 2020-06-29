@@ -92,6 +92,12 @@ namespace Reko.UnitTests.Arch.Qualcomm
         }
 
         [Test]
+        public void Hexagon_dasm_add_lsl16()
+        {
+            AssertCode("{ r1 = add(r3.l,r1.l):<<16 }", "014341D5");
+        }
+
+        [Test]
         public void Hexagon_dasm_addasl()
         {
             AssertCode("{ r26 = addasl(r18,r23,00000003) }", "7AD217C4");
@@ -524,7 +530,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
         }
 
         [Test]
-        public void Hexagon_dasm_05C0816C()
+        public void Hexagon_dasm_tlbp()
         {
             AssertCode("{ r5 = tlbp(r1) }", "05C0816C");
         }

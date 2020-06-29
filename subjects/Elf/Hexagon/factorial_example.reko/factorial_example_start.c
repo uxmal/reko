@@ -15,6 +15,8 @@ void __coredump()
 }
 
 // 00000970: void event_handle_reset()
+// Called from:
+//      .EventVectors
 void event_handle_reset()
 {
 }
@@ -39,19 +41,22 @@ void event_handle_rsvd()
 {
 }
 
-// 00000AC0: void event_handle_tlbmissx()
-void event_handle_tlbmissx()
+// 00000AC0: void event_handle_tlbmissx(Register word32 sgp0)
+void event_handle_tlbmissx(word32 sgp0)
 {
+	crswap(fp, sgp0);
 }
 
-// 00000BC0: void event_handle_tlbmissrw()
-void event_handle_tlbmissrw()
+// 00000BC0: void event_handle_tlbmissrw(Register word32 sgp0)
+void event_handle_tlbmissrw(word32 sgp0)
 {
+	crswap(fp, sgp0);
 }
 
-// 00000CB0: void event_handle_trap0()
-void event_handle_trap0()
+// 00000CB0: void event_handle_trap0(Register word32 sgp0)
+void event_handle_trap0(word32 sgp0)
 {
+	crswap(fp, sgp0);
 }
 
 // 00000E30: void event_handle_trap1()
@@ -59,9 +64,10 @@ void event_handle_trap1()
 {
 }
 
-// 00000E3C: void event_handle_int()
-void event_handle_int()
+// 00000E3C: void event_handle_int(Register word32 sgp0)
+void event_handle_int(word32 sgp0)
 {
+	crswap(fp, sgp0);
 }
 
 // 00000FA0: void .NoHandler()

@@ -37,6 +37,7 @@ namespace Reko.Arch.Qualcomm
         public static Dictionary<uint, RegisterStorage> SystemRegisters { get; }
         public static RegisterStorage[]  GuestControlRegisters { get; }
         public static Dictionary<string, RegisterStorage> ByName { get; }
+        public static Dictionary<StorageDomain, RegisterStorage> ByDomain { get; }
 
         public static RegisterStorage sp { get; }
         public static RegisterStorage fp { get; }
@@ -45,6 +46,7 @@ namespace Reko.Arch.Qualcomm
 
         public static RegisterStorage sgp0 { get; private set; }
         public static RegisterStorage sgp1 { get; private set; }
+        public static RegisterStorage pc { get; private set; }
 
         // R0 - r5 arg regs
         // r0 return
@@ -59,7 +61,7 @@ namespace Reko.Arch.Qualcomm
             var factory = new StorageFactory();
             GpRegs = factory.RangeOfReg32(32, "r{0}");
             sp = GpRegs[29];
-            fp = GpRegs[31];
+            fp = GpRegs[30];
             lr = GpRegs[31];
             PredicateRegisters = factory.RangeOfReg(4, n => $"p{n}", PrimitiveType.Byte);
 
@@ -69,6 +71,7 @@ namespace Reko.Arch.Qualcomm
             SystemRegisters = GenerateSystemRegisters(sysfactory);
             sgp0 = SystemRegisters[0];
             sgp1 = SystemRegisters[1];
+            pc = SystemRegisters[9];
             gp = Rename(ControlRegisters, 11, "gp");
 
             ByName = GpRegs
@@ -76,6 +79,8 @@ namespace Reko.Arch.Qualcomm
                 .Concat(ControlRegisters)
                 .Concat(SystemRegisters.Values)
                 .ToDictionary(k => k.Name);
+            ByDomain = ByName.Values
+                .ToDictionary(k => k.Domain);
         }
 
         private static RegisterStorage[] GenerateControlRegisters(StorageFactory sysfactory)

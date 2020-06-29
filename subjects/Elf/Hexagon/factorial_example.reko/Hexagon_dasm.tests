@@ -2,156 +2,6 @@
 // Please copy the contents of this file and report it on GitHub, using the 
 // following URL: https://github.com/uxmal/reko/issues
 
-// Reko: a decoder for the instruction 476A576A at address 000028D0 has not been implemented. (0b0010)
-[Test]
-public void Hexagon_dasm_476A576A()
-{
-    AssertCode("@@@", "476A576A");
-}
-// Reko: a decoder for the instruction 876B976B at address 000028F8 has not been implemented. (0b1100)
-[Test]
-public void Hexagon_dasm_876B976B()
-{
-    AssertCode("@@@", "876B976B");
-}
-// Reko: a decoder for the instruction A76BB76B at address 000028FC has not been implemented. (0b1101)
-[Test]
-public void Hexagon_dasm_A76BB76B()
-{
-    AssertCode("@@@", "A76BB76B");
-}
-// Reko: a decoder for the instruction 476C576C at address 00002910 has not been implemented. (0b001)
-[Test]
-public void Hexagon_dasm_476C576C()
-{
-    AssertCode("@@@", "476C576C");
-}
-// Reko: a decoder for the instruction 676C776C at address 00002914 has not been implemented. (0b001)
-[Test]
-public void Hexagon_dasm_676C776C()
-{
-    AssertCode("@@@", "676C776C");
-}
-// Reko: a decoder for the instruction 08C2A2AB at address 00006DD8 has not been implemented. (0b000)
-[Test]
-public void Hexagon_dasm_08C2A2AB()
-{
-    AssertCode("@@@", "08C2A2AB");
-}
-// Reko: a decoder for the instruction 10D5A0AB at address 0000721C has not been implemented. (0b010)
-[Test]
-public void Hexagon_dasm_10D5A0AB()
-{
-    AssertCode("@@@", "10D5A0AB");
-}
-// Reko: a decoder for the instruction 8440448C at address 00007718 has not been implemented. (0b100)
-[Test]
-public void Hexagon_dasm_8440448C()
-{
-    AssertCode("@@@", "8440448C");
-}
-// Reko: a decoder for the instruction 78C4A2AB at address 000077C4 has not been implemented. (0b000)
-[Test]
-public void Hexagon_dasm_78C4A2AB()
-{
-    AssertCode("@@@", "78C4A2AB");
-}
-// Reko: a decoder for the instruction 78C5A1AB at address 00007CAC has not been implemented. (0b000)
-[Test]
-public void Hexagon_dasm_78C5A1AB()
-{
-    AssertCode("@@@", "78C5A1AB");
-}
-// Reko: a decoder for the instruction D6410000E34202E0 at address 00007DFC has not been implemented. (0b0000)
-[Test]
-public void Hexagon_dasm_D6410000E34202E0()
-{
-    AssertCode("@@@", "D6410000E34202E0");
-}
-// Reko: a decoder for the instruction 014341D5 at address 00007E20 has not been implemented. (0b010)
-[Test]
-public void Hexagon_dasm_014341D5()
-{
-    AssertCode("@@@", "014341D5");
-}
-// Reko: a decoder for the instruction 78C2BBAB at address 00007FB0 has not been implemented. (0b000)
-[Test]
-public void Hexagon_dasm_78C2BBAB()
-{
-    AssertCode("@@@", "78C2BBAB");
-}
-// Reko: a decoder for the instruction 94FF1482 at address 00008174 has not been implemented. (0b00)
-[Test]
-public void Hexagon_dasm_94FF1482()
-{
-    AssertCode("@@@", "94FF1482");
-}
-// Reko: a decoder for the instruction 08C3A1AB at address 00009AF8 has not been implemented. (0b000)
-[Test]
-public void Hexagon_dasm_08C3A1AB()
-{
-    AssertCode("@@@", "08C3A1AB");
-}
-// Reko: a decoder for the instruction 08C2B1AB at address 00009B08 has not been implemented. (0b000)
-[Test]
-public void Hexagon_dasm_08C2B1AB()
-{
-    AssertCode("@@@", "08C2B1AB");
-}
-// Reko: a decoder for the instruction 457A6C88 at address 0000A944 has not been implemented. (0b010)
-[Test]
-public void Hexagon_dasm_457A6C88()
-{
-    AssertCode("@@@", "457A6C88");
-}
-// Reko: a decoder for the instruction 477F6E88 at address 0000AA84 has not been implemented. (0b010)
-[Test]
-public void Hexagon_dasm_477F6E88()
-{
-    AssertCode("@@@", "477F6E88");
-}
-// Reko: a decoder for the instruction 467F6C88 at address 0000AA88 has not been implemented. (0b010)
-[Test]
-public void Hexagon_dasm_467F6C88()
-{
-    AssertCode("@@@", "467F6C88");
-}
-// Reko: a decoder for the instruction 06C54CE7 at address 0000AB4C has not been implemented. (0b000)
-[Test]
-public void Hexagon_dasm_06C54CE7()
-{
-    AssertCode("@@@", "06C54CE7");
-}
-// Reko: a decoder for the instruction A6600E82 at address 0000AB50 has not been implemented. (0b00)
-[Test]
-public void Hexagon_dasm_A6600E82()
-{
-    AssertCode("@@@", "A6600E82");
-}
-// Reko: a decoder for the instruction AA600682 at address 0000AB60 has not been implemented. (0b00)
-[Test]
-public void Hexagon_dasm_AA600682()
-{
-    AssertCode("@@@", "AA600682");
-}
-// Reko: a decoder for the instruction 5C41C113 at address 0000ADE0 has not been implemented. (0b11)
-[Test]
-public void Hexagon_dasm_5C41C113()
-{
-    AssertCode("@@@", "5C41C113");
-}
-// Reko: a decoder for the instruction C2410682 at address 0000AE04 has not been implemented. (0b00)
-[Test]
-public void Hexagon_dasm_C2410682()
-{
-    AssertCode("@@@", "C2410682");
-}
-// Reko: a decoder for the instruction 44756088 at address 0000AE68 has not been implemented. (0b010)
-[Test]
-public void Hexagon_dasm_44756088()
-{
-    AssertCode("@@@", "44756088");
-}
 // Reko: a decoder for the instruction 01440000105A809B at address 0000B0BC has not been implemented. (01)
 [Test]
 public void Hexagon_dasm_01440000105A809B()
@@ -163,4 +13,10 @@ public void Hexagon_dasm_01440000105A809B()
 public void Hexagon_dasm_12E0422404440000()
 {
     AssertCode("@@@", "12E0422404440000");
+}
+// Reko: a decoder for the instruction 5C41C113 at address 0000ADE0 has not been implemented. (0b11)
+[Test]
+public void Hexagon_dasm_5C41C113()
+{
+    AssertCode("@@@", "5C41C113");
 }

@@ -46,6 +46,7 @@ namespace Reko.Arch.Qualcomm
 
         public bool Sat { get; set; }
         public bool Rnd { get; set; }
+        public bool Lsl16 { get; set; }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
@@ -81,6 +82,10 @@ namespace Reko.Arch.Qualcomm
             if (Sat)
             {
                 renderer.WriteString(":sat");
+            }
+            if (Lsl16)
+            {
+                writer.WriteString(":<<16");
             }
         }
     }

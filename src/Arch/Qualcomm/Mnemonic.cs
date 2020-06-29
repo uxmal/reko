@@ -239,5 +239,8 @@ namespace Reko.Arch.Qualcomm
         siad,
         tlbp,
         tlbinvasid,
+        all8,
+        brev,
+        tlbr,
     }
 }

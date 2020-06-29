@@ -43,7 +43,7 @@ namespace Reko.Arch.Qualcomm
 
         public override Constant GetRegister(RegisterStorage r)
         {
-            throw new System.NotImplementedException();
+            return Constant.Invalid;
         }
 
         public override void OnAfterCall(FunctionType sigCallee)

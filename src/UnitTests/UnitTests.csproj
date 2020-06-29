@@ -185,6 +185,7 @@
     <Compile Include="Arch\PowerPC\PowerPcDisassemblerTests.Xenon.cs" />
     <Compile Include="Arch\PowerPC\PowerPcEmulatorTests.cs" />
     <Compile Include="Arch\Qualcomm\HexagonDisassemblerTests.cs" />
+    <Compile Include="Arch\Qualcomm\HexagonRewriterTests.cs" />
     <Compile Include="Arch\Sparc\Sparc64DisassemblerTests.cs" />
     <Compile Include="Arch\Sparc\Sparc64RewriterTests.cs" />
     <Compile Include="Arch\SuperH\SuperHArchitectureTests.cs" />

@@ -85,16 +85,16 @@ namespace Reko.Arch.Qualcomm
                     return MakeInvalidPacket(addr);
                 }
                 instrs.Add(instr);
-                if (ShouldTerminatePacket(uInstr))
+                if (ShouldTerminatePacket(instr))
                 {
                     return MakePacket(addr);
                 }
             }
         }
 
-        private bool ShouldTerminatePacket(uint uInstr)
+        private bool ShouldTerminatePacket(HexagonInstruction instr)
         {
-            var parseType = (ParseType) ((uInstr >> 14) & 3);
+            var parseType = instr.ParseType;
             if (parseType == ParseType.Duplex)
                 return true;
             if (parseType == ParseType.End)
@@ -108,13 +108,24 @@ namespace Reko.Arch.Qualcomm
             // Additionally, if an instruction can go in a higher-numbered slot, and that slot is empty,
             // then it must be moved into the higher-numbered slot."
 
-            instrs.Reverse();  
-            var packet = new HexagonPacket(instrs.ToArray())
+            var instrs = new HexagonInstruction[this.instrs.Count];
+            var iclass = InstrClass.Linear;
+            for (int i = 0; i < instrs.Length; ++i)
             {
+                var instr = this.instrs[instrs.Length - i - 1];
+                instrs[i] = instr;
+                if (instr.InstructionClass != InstrClass.Linear)
+                {
+                    iclass = instr.InstructionClass;
+                }
+            }
+            var packet = new HexagonPacket(instrs)
+            {
+                InstructionClass = iclass,
                 Address = addr,
                 Length = (int) (this.rdr.Address - addr)
             };
-            instrs.Clear();
+            this.instrs.Clear();
             return packet;
         }
 
@@ -142,8 +153,9 @@ namespace Reko.Arch.Qualcomm
         private HexagonInstruction DisassembleInstruction(uint uInstr)
         {
             this.Clear();
+            var addr = rdr.Address;
             var instr = iclassDecoder.Decode(uInstr, this);
-            instr.Length = 4;
+            instr.Length = (int) (rdr.Address - addr);
             return instr;
         }
 
@@ -514,6 +526,7 @@ namespace Reko.Arch.Qualcomm
         private static readonly Mutator<HexagonDisassembler> uw_5L9 = uimm(PrimitiveType.Word32, Bf((5, 9)));
         private static readonly Mutator<HexagonDisassembler> uw_7L4 = uimm(PrimitiveType.Word32, Bf((7, 4)));
         private static readonly Mutator<HexagonDisassembler> uw_7L5 = uimm(PrimitiveType.Word32, Bf((7, 5)));
+        private static readonly Mutator<HexagonDisassembler> uw_7L6 = uimm(PrimitiveType.Word32, Bf((7, 6)));
         private static readonly Mutator<HexagonDisassembler> uw_8L1 = uimm(PrimitiveType.Word32, Bf((8, 1)));
         private static readonly Mutator<HexagonDisassembler> uw_8L5 = uimm(PrimitiveType.Word32, Bf((8, 5)));
         private static readonly Mutator<HexagonDisassembler> uw_8L5_2L3 = uimm(PrimitiveType.Word32, Bf((8, 5), (2,3)));
@@ -569,7 +582,9 @@ namespace Reko.Arch.Qualcomm
         private static readonly Mutator<HexagonDisassembler> sw_4L7 = simm(PrimitiveType.Word32, Bf((4, 7)));
         private static readonly Mutator<HexagonDisassembler> sw_0L8 = simm(PrimitiveType.Word32, Bf((0, 8)));
         private static readonly Mutator<HexagonDisassembler> sw_5L8 = simm(PrimitiveType.Word32, Bf((5, 8)));
+
         private static readonly Mutator<HexagonDisassembler> sw5_10 = simm(PrimitiveType.Word32, Bf((21, 1), (5, 9)));
+        private static readonly Mutator<HexagonDisassembler> sw_7L6 = simm(PrimitiveType.Word32, Bf((7, 6)));
         private static readonly Mutator<HexagonDisassembler> sw16_13 = simm(PrimitiveType.Word32, Bf((16, 7), (13, 1)));
         private static readonly Mutator<HexagonDisassembler> sw_16L4_5L8 = simm(PrimitiveType.Word32, Bf((16, 4), (5, 8)));
         private static readonly Mutator<HexagonDisassembler> sw_16L7_13L1 = simm(PrimitiveType.Word32, Bf((16, 7), (13, 1)));
@@ -964,6 +979,24 @@ namespace Reko.Arch.Qualcomm
             };
         }
 
+
+        private static Mutator<HexagonDisassembler> Lsl16(Mutator<HexagonDisassembler> mutator)
+        {
+            return (u, d) =>
+            {
+                if (!mutator(u, d))
+                    return false;
+                int i = d.ops.Count - 1;
+                var op = d.ops[i];
+                op = new DecoratorOperand(op.Width, op)
+                {
+                    Lsl16 = true,
+                };
+                d.ops[i] = op;
+                return true;
+            };
+        }
+
         #endregion
 
         #region Decoders
@@ -997,6 +1030,7 @@ namespace Reko.Arch.Qualcomm
                 var instr = new HexagonInstruction(dasm.addrInstr, this.mnemonic, dasm.ops.ToArray())
                 {
                     InstructionClass = this.iclass,
+                    ParseType = (ParseType) ((uInstr >> 14) & 3),
                     ConditionPredicate = dasm.conditionPredicate,
                     ConditionInverted = dasm. conditionPredicateInverted,
                     ConditionPredicateNew = dasm.conditionPredicateNew,
@@ -1506,6 +1540,7 @@ namespace Reko.Arch.Qualcomm
             0,0,0,1, 0,0,1,1, 1,0,j,j,s,s,s,s,P,P,1,-,-,-,0,0,j,j,j,j,j,j,j,-,"p1=cmp.eq(Rs,#-1); if(p1.new) jump:t #r9:2"
             0,0,0,1, 0,0,1,1, 1,0,j,j,s,s,s,s,P,P,1,-,-,-,0,1,j,j,j,j,j,j,j,-,"p1=cmp.gt(Rs,#-1); if(p1.new) jump:t #r9:2"
             0,0,0,1, 0,0,1,1, 1,0,j,j,s,s,s,s,P,P,1,-,-,-,1,1,j,j,j,j,j,j,j,-,"p1=tstbit(Rs,#0); if (p1.new)jump:t #r9:2"
+
             0,0,0,1, 0,0,1,1, 1,1,j,j,s,s,s,s,P,P,0,-,-,-,0,0,j,j,j,j,j,j,j,-,"p1=cmp.eq(Rs,#-1); if(!p1.new) jump:nt #r9:2"
             0,0,0,1, 0,0,1,1, 1,1,j,j,s,s,s,s,P,P,0,-,-,-,0,1,j,j,j,j,j,j,j,-,"p1=cmp.gt(Rs,#-1); if(!p1.new) jump:nt #r9:2"
             0,0,0,1, 0,0,1,1, 1,1,j,j,s,s,s,s,P,P,0,-,-,-,1,1,j,j,j,j,j,j,j,-,"p1=tstbit(Rs,#0); if(!p1.new) jump:nt #r9:2"
@@ -1949,14 +1984,14 @@ namespace Reko.Arch.Qualcomm
                 invalid,
                 invalid,
                 invalid,
-                Instr(Mnemonic.jumpr, R16),
+                Instr(Mnemonic.jumpr, InstrClass.Transfer, R16),
                 Instr(Mnemonic.SIDEEFFECT, Apply(Mnemonic.hintjr, R16)),
                 invalid,
                 invalid,
                 invalid,
                 invalid,
-                Instr(Mnemonic.jumpr, R16, Conditional(8, 11, 12, 21)),
-                Instr(Mnemonic.jumpr, R16, Conditional(8, 11, 12, 21)),
+                Instr(Mnemonic.jumpr, InstrClass.ConditionalTransfer, R16, Conditional(8, 11, 12, 21)),
+                Instr(Mnemonic.jumpr, InstrClass.ConditionalTransfer, R16, Conditional(8, 11, 12, 21)),
                 invalid,
                 invalid,
                 invalid,
@@ -2403,7 +2438,9 @@ namespace Reko.Arch.Qualcomm
             /*
             0,1,1,0, 1,0,1, 0,0,0,0, s,s,s,s,s,P,P,-,-,-,-,-,-,-,-,-,d,d,d,d,d,"Rd=Cs"
             0,1,1,0, 1,0,1, 0,0,0,1, s,s,s,s,s,P,P,-,-,-,-,-,-,-,-,-,d,d,d,d,d,"Rd=Gs"
+
             0,1,1,0, 1,0,1, 0,0,1,0, 0,1,0,0,1,P,P,-,j,j,j,j,j,j,-,-,d,d,d,d,d,"Rd=add(pc,#u6)"
+
             0,1,1,0, 1,0,1, 1,0,0,0, 0,-,-,s,s,P,P,0,-,-,-,t,t,-,-,-,-,-,-,d,d,"Pd=and(Pt,Ps)"
             0,1,1,0, 1,0,1, 1,0,0,0, 0,-,-,s,s,P,P,1,-,-,-,t,t,1,-,-,1,-,-,d,d,"Pd=fastcorner9(Ps,Pt)"
             0,1,1,0, 1,0,1, 1,0,0,0, 1,-,-,s,s,P,P,0,-,-,-,t,t,u,u,-,-,-,-,d,d,"Pd=and(Ps,and(Pt,Pu))"
@@ -2426,7 +2463,7 @@ namespace Reko.Arch.Qualcomm
             var decoder_6_5 = Mask(21, 4, "  CR 3 - 0b101",
                 Assign(R0, C16),
                 Assign(R0, G16),
-                Nyi("0b0010"),
+                Assign(R0, Mnemonic.add, Reg(Registers.pc), uw_7L6),
                 invalid,
 
                 invalid,
@@ -2446,8 +2483,12 @@ namespace Reko.Arch.Qualcomm
                 Mask(20, 1, "  0b1011",
                     Assign(P_0, Apply(Mnemonic.and, P_16,  InvertIfSet(20, P_8))),
                     Assign(P_0, Apply(Mnemonic.or, P_16, Apply(Mnemonic.or, P_8, P_6)))),
-                Nyi("0b1100"),
-                Nyi("0b1101"),
+                Mask(20, 1, "  0b1100",
+                    Assign(P_0, Mnemonic.any8, P_16),
+                    Assign(P_0, Mnemonic.and, P_16, Apply(Mnemonic.and, P_8, InvertIfSet(20, P_6)))),
+                Mask(20, 1, "  0b1101",
+                    Assign(P_0, Mnemonic.all8, P_16),
+                    Assign(P_0, Mnemonic.and, P_16, Apply(Mnemonic.or, P_8, InvertIfSet(20, P_6)))),
                 Mask(20, 1, "  0b1110",
                     Assign(P_0, Apply(Mnemonic.not, P_16)),
                     Assign(P_0, Apply(Mnemonic.or, P_16, Apply(Mnemonic.and, P_8, InvertIfSet(20, P_6))))),
@@ -2462,6 +2503,7 @@ namespace Reko.Arch.Qualcomm
             0,1,1,0, 1,1,0, 0,0,0, 1,-,-,-,-,-,P,P,-,-,-,-,-,-,0,1,1,-,-,-,-,-,"k0lock"
             0,1,1,0, 1,1,0, 0,0,0, 1,-,-,-,-,-,P,P,-,-,-,-,-,-,0,1,0,-,-,-,-,-,"tlbunlock"
             0,1,1,0, 1,1,0, 0,0,0, 1,-,-,-,-,-,P,P,-,-,-,-,-,-,1,0,0,-,-,-,-,-,"k0unlock"
+
             0,1,1,0, 1,1,0, 0,0,1, 0,s,s,s,s,s,P,P,-,-,-,-,-,-,-,-,-,d,d,d,d,d,"Rdd=tlbr(Rs)"
 
             0,1,1,0, 1,1,0, 0,1,0, 0,s,s,s,s,s,P,P,-,-,-,-,-,-,-,-,-,d,d,d,d,d,"Rd=tlbp(Rs)"
@@ -2476,7 +2518,7 @@ namespace Reko.Arch.Qualcomm
                 Mask(21, 1, "   0b000",
                     Instr(Mnemonic.SIDEEFFECT, Apply(Mnemonic.tlbw, RR16, R8)),
                     Instr(Mnemonic.brkpt)),
-                Nyi("0b001"),
+                Assign(RR0, Mnemonic.tlbr, R16),
                 Mask(21, 1, "  0b010",
                     Assign(R0, Mnemonic.tlbp, R16),
                     Instr(Mnemonic.SIDEEFFECT, Apply(Mnemonic.tlbinvasid, R16))),
@@ -2765,31 +2807,57 @@ namespace Reko.Arch.Qualcomm
             */
             var decoder_81 = Assign(RR0, Apply(Mnemonic.extractu, RR16, uw_8L6, uw_21L3_5L3));
             /*
-            1,0,0,0, 0,0,1,0, 0,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j,0,0,0,x,x,x,x,x,"Rxx-=asr(Rss,#u6)"
-            1,0,0,0, 0,0,1,0, 0,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j,0,0,1,x,x,x,x,x,"Rxx-=lsr(Rss,#u6)"
-            1,0,0,0, 0,0,1,0, 0,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j,0,1,0,x,x,x,x,x,"Rxx-=asl(Rss,#u6)"
-            1,0,0,0, 0,0,1,0, 0,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j,0,1,1,x,x,x,x,x,"Rxx-=rol(Rss,#u6)"
-            1,0,0,0, 0,0,1,0, 0,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j,1,0,0,x,x,x,x,x,"Rxx+=asr(Rss,#u6)"
-            1,0,0,0, 0,0,1,0, 0,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j,1,0,1,x,x,x,x,x,"Rxx+=lsr(Rss,#u6)"
-            1,0,0,0, 0,0,1,0, 0,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j,1,1,0,x,x,x,x,x,"Rxx+=asl(Rss,#u6)"
-            1,0,0,0, 0,0,1,0, 0,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j,1,1,1,x,x,x,x,x,"Rxx+=rol(Rss,#u6)"
-            1,0,0,0, 0,0,1,0, 0,1,-,s,s,s,s,s,P,P,j,j,j,j,j,j,0,0,0,x,x,x,x,x,"Rxx&=asr(Rss,#u6)"
-            1,0,0,0, 0,0,1,0, 0,1,-,s,s,s,s,s,P,P,j,j,j,j,j,j,0,0,1,x,x,x,x,x,"Rxx&=lsr(Rss,#u6)"
-            1,0,0,0, 0,0,1,0, 0,1,-,s,s,s,s,s,P,P,j,j,j,j,j,j,0,1,0,x,x,x,x,x,"Rxx&=asl(Rss,#u6)"
-            1,0,0,0, 0,0,1,0, 0,1,-,s,s,s,s,s,P,P,j,j,j,j,j,j,0,1,1,x,x,x,x,x,"Rxx&=rol(Rss,#u6)"
-            1,0,0,0, 0,0,1,0, 0,1,-,s,s,s,s,s,P,P,j,j,j,j,j,j,1,0,0,x,x,x,x,x,"Rxx|=asr(Rss,#u6)"
-            1,0,0,0, 0,0,1,0, 0,1,-,s,s,s,s,s,P,P,j,j,j,j,j,j,1,0,1,x,x,x,x,x,"Rxx|=lsr(Rss,#u6)"
-            1,0,0,0, 0,0,1,0, 0,1,-,s,s,s,s,s,P,P,j,j,j,j,j,j,1,1,0,x,x,x,x,x,"Rxx|=asl(Rss,#u6)"
-            1,0,0,0, 0,0,1,0, 0,1,-,s,s,s,s,s,P,P,j,j,j,j,j,j,1,1,1,x,x,x,x,x,"Rxx|=rol(Rss,#u6)"
-            1,0,0,0, 0,0,1,0, 1,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j,0,0,1,x,x,x,x,x,"Rxx^=lsr(Rss,#u6)"
-            1,0,0,0, 0,0,1,0, 1,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j,0,1,0,x,x,x,x,x,"Rxx^=asl(Rss,#u6)"
-            1,0,0,0, 0,0,1,0, 1,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j,0,1,1,x,x,x,x,x,"Rxx^=rol(Rss,#u6)"
+            1,0,0,0, 0,0,1,0, 0,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j, 0,0,0, x,x,x,x,x,"Rxx-=asr(Rss,#u6)"
+            1,0,0,0, 0,0,1,0, 0,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j, 0,0,1, x,x,x,x,x,"Rxx-=lsr(Rss,#u6)"
+            1,0,0,0, 0,0,1,0, 0,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j, 0,1,0, x,x,x,x,x,"Rxx-=asl(Rss,#u6)"
+            1,0,0,0, 0,0,1,0, 0,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j, 0,1,1, x,x,x,x,x,"Rxx-=rol(Rss,#u6)"
+            1,0,0,0, 0,0,1,0, 0,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j, 1,0,0, x,x,x,x,x,"Rxx+=asr(Rss,#u6)"
+            1,0,0,0, 0,0,1,0, 0,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j, 1,0,1, x,x,x,x,x,"Rxx+=lsr(Rss,#u6)"
+            1,0,0,0, 0,0,1,0, 0,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j, 1,1,0, x,x,x,x,x,"Rxx+=asl(Rss,#u6)"
+            1,0,0,0, 0,0,1,0, 0,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j, 1,1,1, x,x,x,x,x,"Rxx+=rol(Rss,#u6)"
+
+            1,0,0,0, 0,0,1,0, 0,1,-,s,s,s,s,s,P,P,j,j,j,j,j,j, 0,0,0, x,x,x,x,x,"Rxx&=asr(Rss,#u6)"
+            1,0,0,0, 0,0,1,0, 0,1,-,s,s,s,s,s,P,P,j,j,j,j,j,j, 0,0,1, x,x,x,x,x,"Rxx&=lsr(Rss,#u6)"
+            1,0,0,0, 0,0,1,0, 0,1,-,s,s,s,s,s,P,P,j,j,j,j,j,j, 0,1,0, x,x,x,x,x,"Rxx&=asl(Rss,#u6)"
+            1,0,0,0, 0,0,1,0, 0,1,-,s,s,s,s,s,P,P,j,j,j,j,j,j, 0,1,1, x,x,x,x,x,"Rxx&=rol(Rss,#u6)"
+            1,0,0,0, 0,0,1,0, 0,1,-,s,s,s,s,s,P,P,j,j,j,j,j,j, 1,0,0, x,x,x,x,x,"Rxx|=asr(Rss,#u6)"
+            1,0,0,0, 0,0,1,0, 0,1,-,s,s,s,s,s,P,P,j,j,j,j,j,j, 1,0,1, x,x,x,x,x,"Rxx|=lsr(Rss,#u6)"
+            1,0,0,0, 0,0,1,0, 0,1,-,s,s,s,s,s,P,P,j,j,j,j,j,j, 1,1,0, x,x,x,x,x,"Rxx|=asl(Rss,#u6)"
+            1,0,0,0, 0,0,1,0, 0,1,-,s,s,s,s,s,P,P,j,j,j,j,j,j, 1,1,1, x,x,x,x,x,"Rxx|=rol(Rss,#u6)"
+
+            1,0,0,0, 0,0,1,0, 1,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j, 0,0,1, x,x,x,x,x,"Rxx^=lsr(Rss,#u6)"
+            1,0,0,0, 0,0,1,0, 1,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j, 0,1,0, x,x,x,x,x,"Rxx^=asl(Rss,#u6)"
+            1,0,0,0, 0,0,1,0, 1,0,-,s,s,s,s,s,P,P,j,j,j,j,j,j, 0,1,1, x,x,x,x,x,"Rxx^=rol(Rss,#u6)"
             */
             var decoder_82 = Mask(22, 2, "  0x82...",
-                Nyi("0b00"),
-                Nyi("0b01"),
-                Nyi("0b10"),
-                Nyi("0b11"));
+                Mask(5, 3,  "  0b00",
+                    Instr(Mnemonic.SUBEQ, RR0, Apply(Mnemonic.asr, RR16, uw_8L6)), 
+                    Instr(Mnemonic.SUBEQ, RR0, Apply(Mnemonic.lsr, RR16, uw_8L6)), 
+                    Instr(Mnemonic.SUBEQ, RR0, Apply(Mnemonic.asl, RR16, uw_8L6)), 
+                    Instr(Mnemonic.SUBEQ, RR0, Apply(Mnemonic.rol, RR16, uw_8L6)),
+                    Instr(Mnemonic.ADDEQ, RR0, Apply(Mnemonic.asr, RR16, uw_8L6)),
+                    Instr(Mnemonic.ADDEQ, RR0, Apply(Mnemonic.lsr, RR16, uw_8L6)),
+                    Instr(Mnemonic.ADDEQ, RR0, Apply(Mnemonic.asl, RR16, uw_8L6)),
+                    Instr(Mnemonic.ADDEQ, RR0, Apply(Mnemonic.rol, RR16, uw_8L6))),
+                Mask(5, 3, "  0b01",
+                    Instr(Mnemonic.ANDEQ, RR0, Apply(Mnemonic.asr, RR16, uw_8L6)),
+                    Instr(Mnemonic.ANDEQ, RR0, Apply(Mnemonic.lsr, RR16, uw_8L6)),
+                    Instr(Mnemonic.ANDEQ, RR0, Apply(Mnemonic.asl, RR16, uw_8L6)),
+                    Instr(Mnemonic.ANDEQ, RR0, Apply(Mnemonic.rol, RR16, uw_8L6)),
+                    Instr(Mnemonic.OREQ, RR0, Apply(Mnemonic.asr, RR16, uw_8L6)),
+                    Instr(Mnemonic.OREQ, RR0, Apply(Mnemonic.lsr, RR16, uw_8L6)),
+                    Instr(Mnemonic.OREQ, RR0, Apply(Mnemonic.asl, RR16, uw_8L6)),
+                    Instr(Mnemonic.OREQ, RR0, Apply(Mnemonic.rol, RR16, uw_8L6))),
+                Mask(5, 3, "  0b10",
+                    Instr(Mnemonic.XOREQ, RR0, Apply(Mnemonic.asr, RR16, uw_8L6)),
+                    Instr(Mnemonic.XOREQ, RR0, Apply(Mnemonic.lsr, RR16, uw_8L6)),
+                    Instr(Mnemonic.XOREQ, RR0, Apply(Mnemonic.asl, RR16, uw_8L6)),
+                    Instr(Mnemonic.XOREQ, RR0, Apply(Mnemonic.rol, RR16, uw_8L6)),
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid),
+                invalid);
             /*
             1,0,0,0, 0,0,1,1, I,I,I,s,s,s,s,s,P,P,j,j,j,j,j,j,I,I,I,x,x,x,x,x,"Rxx=insert(Rss,#u6,#U6)"
                */
@@ -2885,15 +2953,15 @@ namespace Reko.Arch.Qualcomm
 
             1,0,0,0, 1,0,0,0, 0,1,1, s,s,s,s,s,P,P,-,-,-,-,-,-,0,0,0,d,d,d,d,d,"Rd=normamt(Rss)"
             1,0,0,0, 1,0,0,0, 0,1,1, s,s,s,s,s,P,P,-,-,-,-,-,-,0,0,1,d,d,d,d,d,"Rd=convert_df2uw(Rss)"
+            1,0,0,0, 1,0,0,0, 0,1,1, s,s,s,s,s,P,P,j,j,j,j,j,j,0,1,0,d,d,d,d,d,"Rd=add(clb(Rss),#s6)"
             1,0,0,0, 1,0,0,0, 0,1,1, s,s,s,s,s,P,P,-,-,-,-,-,-,0,1,1,d,d,d,d,d,"Rd=popcount(Rss)"
             1,0,0,0, 1,0,0,0, 0,1,1, s,s,s,s,s,P,P,0,0,j,j,j,j,1,0,0,d,d,d,d,d,"Rd=vasrhub(Rss,#u4):raw"
             1,0,0,0, 1,0,0,0, 0,1,1, s,s,s,s,s,P,P,0,0,j,j,j,j,1,0,1,d,d,d,d,d,"Rd=vasrhub(Rss,#u4):sat"
-            1,0,0,0, 1,0,0,0, 0,1,1, s,s,s,s,s,P,P,j,j,j,j,j,j,0,1,0,d,d,d,d,d,"Rd=add(clb(Rss),#s6)"
             */
             var decoder_88_3 = Mask(5, 3, "  0x88 3...",
                 Nyi("0b000"),
                 Nyi("0b001"),
-                Nyi("0b010"),
+                Assign(R0, Mnemonic.add, Apply(Mnemonic.clb, R16), sw_7L6),
                 Nyi("0b011"),
                 Nyi("0b100"),
                 Nyi("0b101"),
@@ -2990,9 +3058,9 @@ namespace Reko.Arch.Qualcomm
                 invalid,
                 Nyi("0b010"),
                 invalid,
-                Nyi("0b100"),
-                Nyi("0b101"),
-                Nyi("0b110"),
+                Assign(R0, Mnemonic.ct0, R16),
+                Assign(R0, Mnemonic.ct1, R16),
+                Assign(R0, Mnemonic.brev, R16),
                 Assign(R0, Apply(Mnemonic.vsplatb, R16)));
             /*
             1,0,0,0, 1,1,0,0, 1,0,-,s,s,s,s,s,P,P,-,-,-,-,-,-,0,0,-,d,d,d,d,d,"Rd=vsathb(Rs)"
@@ -3575,12 +3643,12 @@ namespace Reko.Arch.Qualcomm
 
             /*
             1,0,1,0, 1,0,1,1, 1,0,1, x,x,x,x,x,P,P, 0,0,0, t,t,t,0,j,j,j,j,-,0,-,"memb(Rx++#s4:0)=Nt.new"
-            1,0,1,0, 1,0,1,1, 1,0,1, x,x,x,x,x,P,P, 0,0,1, t,t,t,0,j,j,j,j,-,0,-,"memh(Rx++#s4:1)=Nt.new"
-            1,0,1,0, 1,0,1,1, 1,0,1, x,x,x,x,x,P,P, 0,1,0, t,t,t,0,j,j,j,j,-,0,-,"memw(Rx++#s4:2)=Nt.new"
             1,0,1,0, 1,0,1,1, 1,0,1, e,e,e,e,e,P,P, 0,0,0, t,t,t,1,-,I,I,I,I,I,I,"memb(Re=#U6)=Nt.new"
+            1,0,1,0, 1,0,1,1, 1,0,1, x,x,x,x,x,P,P, 0,0,1, t,t,t,0,j,j,j,j,-,0,-,"memh(Rx++#s4:1)=Nt.new"
             1,0,1,0, 1,0,1,1, 1,0,1, e,e,e,e,e,P,P, 0,0,1, t,t,t,1,-,I,I,I,I,I,I,"memh(Re=#U6)=Nt.new"
+            1,0,1,0, 1,0,1,1, 1,0,1, x,x,x,x,x,P,P, 0,1,0, t,t,t,0,j,j,j,j,-,0,-,"memw(Rx++#s4:2)=Nt.new"
             1,0,1,0, 1,0,1,1, 1,0,1, e,e,e,e,e,P,P, 0,1,0, t,t,t,1,-,I,I,I,I,I,I,"memw(Re=#U6)=Nt.new"
-                                                           
+
             1,0,1,0, 1,0,1,1, 1,0,1, x,x,x,x,x,P,P, 1,0,0, t,t,t,0,j,j,j,j,0,v,v,"if (Pv)memb(Rx++#s4:0)=Nt.new"
             1,0,1,0, 1,0,1,1, 1,0,1, x,x,x,x,x,P,P, 1,0,0, t,t,t,0,j,j,j,j,1,v,v,"if (!Pv)memb(Rx++#s4:0)=Nt.new"
             1,0,1,0, 1,0,1,1, 1,0,1, x,x,x,x,x,P,P, 1,0,0, t,t,t,1,j,j,j,j,0,v,v,"if (Pv.new)memb(Rx++#s4:0)=Nt.new"
@@ -3595,10 +3663,10 @@ namespace Reko.Arch.Qualcomm
             1,0,1,0, 1,0,1,1, 1,0,1, x,x,x,x,x,P,P, 1,1,0, t,t,t,1,j,j,j,j,1,v,v,"if (!Pv.new)memw(Rx++#s4:2)=Nt.new"
             */
             var decoder_AB_5 = Mask(11, 3, "  0xAB 5...",
-                Nyi("0b000"),
+                Assign(Mpostinc(PrimitiveType.Byte, 16, (3, 4), 0), New8),
                 Nyi("0b001"),
-                Nyi("0b010"),
-                Nyi("0b011"),
+                Assign(Mpostinc(PrimitiveType.Word32, 16, (3, 4), 2), New8),
+                invalid,
                 Nyi("0b100"),
                 Nyi("0b101"),
                 Nyi("0b110"),
@@ -4232,15 +4300,26 @@ namespace Reko.Arch.Qualcomm
             1,1,0,1, 0,1,0,1, 0,0,1,s,s,s,s,s,P,P,-,t,t,t,t,t,1,0,-,d,d,d,d,d,"Rd=sub(Rt.L,Rs.L):sat"
             1,1,0,1, 0,1,0,1, 0,0,1,s,s,s,s,s,P,P,-,t,t,t,t,t,1,1,-,d,d,d,d,d,"Rd=sub(Rt.L,Rs.H):sat"
 
-            1,1,0,1, 0,1,0,1, 0,1,0,s,s,s,s,s,P,P,-,t,t,t,t,t, 0,0,0, d,d,d,d,d,"Rd=add(Rt.L,Rs.L):<<16"
-            1,1,0,1, 0,1,0,1, 0,1,0,s,s,s,s,s,P,P,-,t,t,t,t,t, 0,0,1, d,d,d,d,d,"Rd=add(Rt.L,Rs.H):<<16"
-            1,1,0,1, 0,1,0,1, 0,1,0,s,s,s,s,s,P,P,-,t,t,t,t,t, 0,1,0, d,d,d,d,d,"Rd=add(Rt.H,Rs.L):<<16"
-            1,1,0,1, 0,1,0,1, 0,1,0,s,s,s,s,s,P,P,-,t,t,t,t,t, 0,1,1, d,d,d,d,d,"Rd=add(Rt.H,Rs.H):<<16"
-            1,1,0,1, 0,1,0,1, 0,1,0,s,s,s,s,s,P,P,-,t,t,t,t,t, 1,0,0, d,d,d,d,d,"Rd=add(Rt.L,Rs.L):sat:<<16"
-            1,1,0,1, 0,1,0,1, 0,1,0,s,s,s,s,s,P,P,-,t,t,t,t,t, 1,0,1, d,d,d,d,d,"Rd=add(Rt.L,Rs.H):sat:<<16"
-            1,1,0,1, 0,1,0,1, 0,1,0,s,s,s,s,s,P,P,-,t,t,t,t,t, 1,1,0, d,d,d,d,d,"Rd=add(Rt.H,Rs.L):sat:<<16"
-            1,1,0,1, 0,1,0,1, 0,1,0,s,s,s,s,s,P,P,-,t,t,t,t,t, 1,1,1, d,d,d,d,d,"Rd=add(Rt.H,Rs.H):sat:<<16"
+            1,1,0,1, 0,1,0,1, 0,1,0, s,s,s,s,s,P,P,-,t,t,t,t,t, 0,0,0, d,d,d,d,d,"Rd=add(Rt.L,Rs.L):<<16"
+            1,1,0,1, 0,1,0,1, 0,1,0, s,s,s,s,s,P,P,-,t,t,t,t,t, 0,0,1, d,d,d,d,d,"Rd=add(Rt.L,Rs.H):<<16"
+            1,1,0,1, 0,1,0,1, 0,1,0, s,s,s,s,s,P,P,-,t,t,t,t,t, 0,1,0, d,d,d,d,d,"Rd=add(Rt.H,Rs.L):<<16"
+            1,1,0,1, 0,1,0,1, 0,1,0, s,s,s,s,s,P,P,-,t,t,t,t,t, 0,1,1, d,d,d,d,d,"Rd=add(Rt.H,Rs.H):<<16"
+            1,1,0,1, 0,1,0,1, 0,1,0, s,s,s,s,s,P,P,-,t,t,t,t,t, 1,0,0, d,d,d,d,d,"Rd=add(Rt.L,Rs.L):sat:<<16"
+            1,1,0,1, 0,1,0,1, 0,1,0, s,s,s,s,s,P,P,-,t,t,t,t,t, 1,0,1, d,d,d,d,d,"Rd=add(Rt.L,Rs.H):sat:<<16"
+            1,1,0,1, 0,1,0,1, 0,1,0, s,s,s,s,s,P,P,-,t,t,t,t,t, 1,1,0, d,d,d,d,d,"Rd=add(Rt.H,Rs.L):sat:<<16"
+            1,1,0,1, 0,1,0,1, 0,1,0, s,s,s,s,s,P,P,-,t,t,t,t,t, 1,1,1, d,d,d,d,d,"Rd=add(Rt.H,Rs.H):sat:<<16"
+            */
+            var decoder_D5_2 = Mask(5, 3, "  0xD5 2...",
+                Assign(R0, Lsl16(Apply(Mnemonic.add, R8_L, R16_L))),
+                Nyi("0b001"),
+                Nyi("0b010"),
+                Nyi("0b011"),
+                Nyi("0b100"),
+                Nyi("0b101"),
+                Nyi("0b110"),
+                Nyi("0b111"));
 
+            /*
             1,1,0,1, 0,1,0,1, 0,1,1,s,s,s,s,s,P,P,-,t,t,t,t,t,0,0,0,d,d,d,d,d,"Rd=sub(Rt.L,Rs.L):<<16"
             1,1,0,1, 0,1,0,1, 0,1,1,s,s,s,s,s,P,P,-,t,t,t,t,t,0,0,1,d,d,d,d,d,"Rd=sub(Rt.L,Rs.H):<<16"
             1,1,0,1, 0,1,0,1, 0,1,1,s,s,s,s,s,P,P,-,t,t,t,t,t,0,1,0,d,d,d,d,d,"Rd=sub(Rt.H,Rs.L):<<16"
@@ -4272,7 +4351,7 @@ namespace Reko.Arch.Qualcomm
                     Assign(R0, Apply(Mnemonic.sub, R8_L, R16_H)),
                     Nyi("0b10"),
                     Nyi("0b11")),
-                Nyi("0b010"),
+                decoder_D5_2,
                 Nyi("0b011"),
                 Nyi("0b100"),
                 Mask(7, 1, "  0b101",
@@ -4402,6 +4481,11 @@ namespace Reko.Arch.Qualcomm
             /*
             1,1,1,0, 0,0,0,0, 0,-,-,s,s,s,s,s,P,P,0,j,j,j,j,j,j,j,j,d,d,d,d,d,"Rd=+mpyi(Rs,#u8)"
             1,1,1,0, 0,0,0,0, 1,-,-,s,s,s,s,s,P,P,0,j,j,j,j,j,j,j,j,d,d,d,d,d,"Rd=-mpyi(Rs,#u8)"
+            */
+            var decoder_E0 = Mask(23, 1, "  0xE0...",
+                Instr(Mnemonic.ADDEQ, R0, Apply(Mnemonic.mpyi, R16, uw_5L8)),
+                Instr(Mnemonic.SUBEQ, R0, Apply(Mnemonic.mpyi, R16, uw_5L8)));      //$EXT
+            /*
             1,1,1,0, 0,0,0,1, 0,-,-,s,s,s,s,s,P,P,0,j,j,j,j,j,j,j,j,x,x,x,x,x,"Rx+=mpyi(Rs,#u8)"
             1,1,1,0, 0,0,0,1, 1,-,-,s,s,s,s,s,P,P,0,j,j,j,j,j,j,j,j,x,x,x,x,x,"Rx-=mpyi(Rs,#u8)"
             */
@@ -4504,7 +4588,11 @@ namespace Reko.Arch.Qualcomm
             1,1,1,0, 0,1,1,1, N,1,0,s,s,s,s,s,P,P,0,t,t,t,t,t, 1,1,1, x,x,x,x,x,"Rxx-=cmpy(Rs,Rt*)[:<<N]:sat"
             */
             var decoder_E7 = Mask(5, 3, "  0xE7...",
-                Nyi("0b000"),
+                Sparse(21, 3, "  0b000", invalid,
+                    (0b000, Instr(Mnemonic.ADDEQ, RR0, Apply(Mnemonic.mpy, RR16, RR8))),
+                    (0b001, Instr(Mnemonic.SUBEQ, RR0, Apply(Mnemonic.mpy, RR16, RR8))),
+                    (0b010, Instr(Mnemonic.ADDEQ, RR0, Apply(Mnemonic.mpyu, RR16, RR8))),
+                    (0b011, Instr(Mnemonic.SUBEQ, RR0, Apply(Mnemonic.mpyu, RR16, RR8)))),
                 Nyi("0b001"),
                 Nyi("0b010"),
                 Nyi("0b011"),
@@ -4577,6 +4665,7 @@ namespace Reko.Arch.Qualcomm
             1,1,1,0, 1,0,1,0, N,1,1,s,s,s,s,s,P,P,0,t,t,t,t,t,1,0,1,x,x,x,x,x,"Rxx+=vmpyweuh(Rss,Rtt)[:<<N]:rnd:sat"
             1,1,1,0, 1,0,1,0, N,1,1,s,s,s,s,s,P,P,0,t,t,t,t,t,1,1,0,x,x,x,x,x,"Rxx+=vrmpywoh(Rss,Rtt)[:<<N]"
             1,1,1,0, 1,0,1,0, N,1,1,s,s,s,s,s,P,P,0,t,t,t,t,t,1,1,1,x,x,x,x,x,"Rxx+=vmpywouh(Rss,Rtt)[:<<N]:rnd:sat"
+
             1,1,1,0, 1,0,1,1, 0,0,0,s,s,s,s,s,P,P,0,t,t,t,t,t,0,0,0,d,d,d,d,d,"Rd=sfadd(Rs,Rt)"
             1,1,1,0, 1,0,1,1, 0,0,0,s,s,s,s,s,P,P,0,t,t,t,t,t,0,0,1,d,d,d,d,d,"Rd=sfsub(Rs,Rt)"
             1,1,1,0, 1,0,1,1, 0,1,0,s,s,s,s,s,P,P,0,t,t,t,t,t,0,0,0,d,d,d,d,d,"Rd=sfmpy(Rs,Rt)"
@@ -4585,6 +4674,9 @@ namespace Reko.Arch.Qualcomm
             1,1,1,0, 1,0,1,1, 1,1,0,s,s,s,s,s,P,P,0,t,t,t,t,t,0,0,0,d,d,d,d,d,"Rd=sffixupn(Rs,Rt)"
             1,1,1,0, 1,0,1,1, 1,1,0,s,s,s,s,s,P,P,0,t,t,t,t,t,0,0,1,d,d,d,d,d,"Rd=sffixupd(Rs,Rt)"
             1,1,1,0, 1,0,1,1, 1,1,1,s,s,s,s,s,P,P,0,t,t,t,t,t,1,e,e,d,d,d,d,d,"Rd,Pe=sfrecipa(Rs,Rt)"
+            */
+            var decoder_EB = Nyi("  0xEB...");
+            /*
             1,1,1,0, 1,1,0,0, N,0,0,s,s,s,s,s,P,P,-,t,t,t,t,t,0,0,0,d,d,d,d,d,"Rd=mpy(Rs.L,Rt.L)[:<<N]"
             1,1,1,0, 1,1,0,0, N,0,0,s,s,s,s,s,P,P,-,t,t,t,t,t,0,0,1,d,d,d,d,d,"Rd=mpy(Rs.L,Rt.H)[:<<N]"
             1,1,1,0, 1,1,0,0, N,0,0,s,s,s,s,s,P,P,-,t,t,t,t,t,0,1,0,d,d,d,d,d,"Rd=mpy(Rs.H,Rt.L)[:<<N]"
@@ -4719,7 +4811,7 @@ namespace Reko.Arch.Qualcomm
                 invalid);
 
             var decoder_E = Mask(24, 4, "  XTYPE 2, 3",
-                Nyi("0b0000"),
+                decoder_E0,
                 decoder_E1,
                 decoder_E2,
                 decoder_E3,
@@ -4730,7 +4822,7 @@ namespace Reko.Arch.Qualcomm
                 Nyi("0b1000"),
                 Nyi("0b1001"),
                 Nyi("0b1010"),
-                Nyi("0b1011"),
+                decoder_EB,
                 Nyi("0b1100"),
                 decoder_ED,
                 Nyi("0b1110"),

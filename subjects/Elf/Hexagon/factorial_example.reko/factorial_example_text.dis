@@ -1,2171 +1,5936 @@
-void .EventVectors()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-.EventVectors_exit:
+// .EventVectors
+// Return size: 0
+define .EventVectors
 .EventVectors_entry:
+	r29 = fp
+	// succ:  l00005000
 l00005000:
+	// succ:  l00005000_thunk_event_handle_reset
+l00005000_thunk_event_handle_reset:
+	call event_handle_reset (retsize: 0;)
+	return
+	// succ:  .EventVectors_exit
+.EventVectors_exit:
 
 
+// strict_aliasing_workaround
+// Return size: 0
 void strict_aliasing_workaround(uint16 * r0)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_ZL26strict_aliasing_workaroundPt_exit:
 _ZL26strict_aliasing_workaroundPt_entry:
+	r29 = fp
+	// succ:  l000050C0
 l000050C0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	Mem0[r30 - 12<i32>:word32] = r0
+	r0 = Mem0[r30 - 12<i32>:word32]
+	Mem0[r30 - 4<i32>:word32] = r0
+	r0 = Mem0[r30 - 4<i32>:word32]
+	return
+	// succ:  _ZL26strict_aliasing_workaroundPt_exit
+_ZL26strict_aliasing_workaroundPt_exit:
 
 
+// fact
+// Return size: 0
 void fact(int32 r0)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Z4facti_exit:
 _Z4facti_entry:
+	r29 = fp
+	// succ:  l000050DC
 l000050DC:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r30 - 4<i32>:word32] = r0
+	r0 = Mem0[r30 - 4<i32>:word32]
+	p0 = r0 > 1<32>
+	branch p0 l00005100
+	// succ:  l000050F8 l00005100
+l000050F8:
+	r0 = 1<32>
+	goto l00005118
+	// succ:  l00005118
+l00005100:
+	r0 = Mem0[r30 - 4<i32>:word32]
+	r0 = r0 + 0xFFFFFFFF<32>
+	r1 = r0
+	r0 = Mem0[r30 - 4<i32>:word32]
+	// succ:  l00005118
+l00005118:
+	return
+	// succ:  _Z4facti_exit
+_Z4facti_exit:
 
 
-void main()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-main_exit:
+// main
+// Return size: 0
+define main
 main_entry:
+	r29 = fp
+	// succ:  l00005120
 l00005120:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 24<i32>
+	Mem0[r30 - 12<i32>:word32] = r0
+	Mem0[r30 - 16<i32>:word32] = r1
+	r0 = Mem0[r30 - 12<i32>:word32]
+	p0 = r0 == 2<32>
+	branch p0 l00005180
+	// succ:  l00005140 l00005180
+l00005140:
+	r0 = Mem0[r30 - 16<i32>:word32]
+	r0 = r0 + 4<32>
+	r0 = Mem0[r0:word32]
+	Mem0[r30 - 4<i32>:word32] = r0
+	r0 = Mem0[r30 - 4<i32>:word32]
+	Mem0[r29:word32] = r0
+	r0 = 0xD000<32>
+	r0 = Mem0[r30 - 4<i32>:word32]
+	p0 = r0 > 0xFFFFFFFF<32>
+	branch p0 l00005194
+	// succ:  l0000517C l00005194
+l0000517C:
+	goto l000051A8
+	// succ:  l000051A8
+l00005180:
+	r0 = 0xD013<32>
+	r0 = 0xFFFFFFFF<32>
+	goto l000051D4
+	// succ:  l000051D4
+l00005194:
+	r0 = 0xD02F<32>
+	r0 = 0xFFFFFFFF<32>
+	goto l000051D4
+	// succ:  l000051D4
+l000051A8:
+	r0 = Mem0[r30 - 4<i32>:word32]
+	Mem0[r30 - 8<i32>:word32] = r0
+	r0 = Mem0[r30 - 4<i32>:word32]
+	Mem0[r29:word32] = r0
+	r0 = Mem0[r30 - 8<i32>:word32]
+	Mem0[r29 + 4<i32>:word32] = r0
+	r0 = 0xD050<32>
+	r0 = 0<32>
+	// succ:  l000051D4
+l000051D4:
+	return
+	// succ:  main_exit
+main_exit:
 
 
-void atoi()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-atoi_exit:
+// atoi
+// Return size: 0
+define atoi
 atoi_entry:
+	r29 = fp
+	// succ:  l000051DC
 l000051DC:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r30 - 4<i32>:word32] = r0
+	r0 = Mem0[r30 - 4<i32>:word32]
+	r1 = 0<32>
+	r2 = 0xA<32>
+	return
+	// succ:  atoi_exit
+atoi_exit:
 
 
-void thread_create()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-thread_create_exit:
+// thread_create
+// Return size: 0
+define thread_create
 thread_create_entry:
+	r29 = fp
+	// succ:  l00005200
 l00005200:
+	r6 = SEQ(0<16>, SLICE(r6, word16, 0))
+	r5 = SEQ(0<16>, SLICE(r5, word16, 0))
+	r7 = r2 << 2<32>
+	r4 = SEQ(0<16>, SLICE(r4, word16, 0))
+	r8 = 1<32>
+	r6 = SEQ(SLICE(r6, word16, 16), 0x6C50<16>)
+	r5 = SEQ(SLICE(r5, word16, 16), 0x6BF0<16>)
+	r4 = SEQ(SLICE(r4, word16, 16), 0x6B90<16>)
+	r6 = r6 + r7
+	r4 = r4 + r7
+	r5 = r7 + r5
+	Mem0[r4:word32] = r0
+	Mem0[r5:word32] = r1
+	Mem0[r6:word32] = r3
+	return
+	// succ:  thread_create_exit
+thread_create_exit:
 
 
-void thread_stop()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-thread_stop_exit:
+// thread_stop
+// Return size: 0
+define thread_stop
 thread_stop_entry:
+	r29 = fp
+	// succ:  l00005240
 l00005240:
+	r1 = 1<32>
+	r0 = htid
+	r28 = SEQ(0<16>, SLICE(r28, word16, 0))
+	r28 = SEQ(SLICE(r28, word16, 16), 0x1DC0<16>)
+thread_stop_exit:
 
 
-void thread_join()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-thread_join_exit:
+// thread_join
+// Return size: 0
+define thread_join
 thread_join_entry:
+	r29 = fp
+	// succ:  l00005260
 l00005260:
+	r3 = 1<32>
+	r1 = htid
+	r0 = r0 & r1
+	r2 = modectl
+	r2 = r0 & r2
+	return
+	// succ:  thread_join_exit
+thread_join_exit:
 
 
-void thread_get_tnum()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-thread_get_tnum_exit:
+// thread_get_tnum
+// Return size: 0
+define thread_get_tnum
 thread_get_tnum_entry:
+	r29 = fp
+	// succ:  l00005290
 l00005290:
+	return
+	// succ:  thread_get_tnum_exit
+thread_get_tnum_exit:
 
 
-void thread_stack_size()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-thread_stack_size_exit:
+// thread_stack_size
+// Return size: 0
+define thread_stack_size
 thread_stack_size_entry:
+	r29 = fp
+	// succ:  l000052A0
 l000052A0:
+	r2 = SEQ(0<16>, SLICE(r2, word16, 0))
+	r3 = r0 << 2<32>
+	r2 = SEQ(SLICE(r2, word16, 16), 0x6CB0<16>)
+	r4 = r2 + r3
+	Mem0[r4:word32] = r1
+	return
+	// succ:  thread_stack_size_exit
+thread_stack_size_exit:
 
 
-void __sys_get_cmdline()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__sys_get_cmdline_exit:
+// __sys_get_cmdline
+// Return size: 0
+define __sys_get_cmdline
 __sys_get_cmdline_entry:
+	r29 = fp
+	// succ:  l000052C0
 l000052C0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	r3 = Mem0[gp + 224<i32>:word32]
+	r2 = 0<32>
+	Mem0[r29 + 8<i32>:word64] = r17_r16
+	Mem0[r29:word32] = r0
+	r16 = r29 + 0<32>
+	Mem0[r2:word32] = r1
+	r0 = r29 + 0<32>
+	r1 = 8<32>
+	r0 = 0x15<32>
+	r1 = r16
+	r2 = r0
+	v13 = r30
+	r31 = Mem0[v13 + 4<i32>:word32]
+	r30 = Mem0[v13:word32]
+	r29 = v13 + 8<i32>
+	return
+	// succ:  __sys_get_cmdline_exit
+__sys_get_cmdline_exit:
 
 
-void printf()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-printf_exit:
+// printf
+// Return size: 0
+define printf
 printf_entry:
+	r29 = fp
+	// succ:  l00005310
 l00005310:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r16 = r0
+	r0 = 0xE498<32>
+	r1 = r29 + 0x18<32>
+	r3 = Mem0[r29 + 4<i32>:word64]
+	r1 = 0x18<32>
+	r2 = r16
+	r0 = 0x5360<32>
+	r16 = r0
+	r0 = 0x18<32>
+	v12 = r30
+	r31 = Mem0[v12 + 4<i32>:word32]
+	r30 = Mem0[v12:word32]
+	r29 = v12 + 8<i32>
+	return
+	// succ:  printf_exit
+printf_exit:
 
 
-void prout()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-prout_exit:
+// prout
+// Return size: 0
+define prout
 prout_entry:
+	r29 = fp
+	// succ:  l00005360
 l00005360:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r17_r16 = r0_r2
+	r4 = r1
+	r3 = r17
+	r17_r16 = Mem0[r29:word64]
+	r0 = -1<i32>
+	r0 = r17 + 0<32>
+	p0 = r0 == r16
+	v16 = r30
+	r31 = Mem0[v16 + 4<i32>:word32]
+	r30 = Mem0[v16:word32]
+	r29 = v16 + 8<i32>
+	return
+	// succ:  prout_exit
+prout_exit:
 
 
-void memset()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-memset_exit:
+// memset
+// Return size: 0
+define memset
 memset_entry:
+	r29 = fp
+	// succ:  l00005390
 l00005390:
+	r6 = r0
+	r3 = r0
+	return
+	// succ:  memset_exit
+memset_exit:
 
 
-void __libc_start_main()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__libc_start_main_exit:
+// __libc_start_main
+// Return size: 0
+define __libc_start_main
 __libc_start_main_entry:
+	r29 = fp
+	// succ:  l000054C0
 l000054C0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r16 = r3
+	p0 = r1 > 0xFFFFFFFF<32>
+	branch p0 l000055FC
+	// succ:  l000054D0 l000055FC
+l000054D0:
+	r3 = Mem0[r0:byte]
+	p0 = r3 == 0x20<32>
+	r1 = r1 + 0xFFFFFFFF<32>
+	r3 = r0 + 1<32>
+	r0 = r3
+	// succ:  l00005504
+l00005504:
+	r17 = 0<32>
+	r0 = 0<32>
+	r5_r4 = 1<64>
+	r17 = 0<32>
+	r6 = 0<32>
+	p0 = r17 > 0x63<32>
+	r7 = Mem0[r4:byte]
+	// succ:  l000055BC
+l000055BC:
+	r1 = r1 + 0xFFFFFFFF<32>
+	r4 = r4 + 1<32>
+	r0 = r16 + 0<32>
+	r2 = 0xE440<32>
+	// succ:  l000055FC
+l000055FC:
+	v12 = r30
+	r31 = Mem0[v12 + 4<i32>:word32]
+	r30 = Mem0[v12:word32]
+	r29 = v12 + 8<i32>
+	return
+	// succ:  __libc_start_main_exit
+__libc_start_main_exit:
 
 
-void hexagon_cache_cleaninv()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-hexagon_cache_cleaninv_exit:
+// hexagon_cache_cleaninv
+// Return size: 0
+define hexagon_cache_cleaninv
 hexagon_cache_cleaninv_entry:
+	r29 = fp
+	// succ:  l00005610
 l00005610:
+	r2 = r0 & 0x1F<32>
+	r1 = r2 >>u 5<32>
+	r4 = r0
+	r3 = 0<32>
+	r1 = r1 << 5<32>
+	r2 = r4 + 0x20<32>
+	r4 = r2
+	r0 = r0 + r1
+	r0 = r0 + 0xFFFFFFE0<32>
+	r1 = Mem0[r0:int8]
+	return
+hexagon_cache_cleaninv_exit:
 
 
-void hexagon_cache_inva()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-hexagon_cache_inva_exit:
+// hexagon_cache_inva
+// Return size: 0
+define hexagon_cache_inva
 hexagon_cache_inva_entry:
+	r29 = fp
+	// succ:  l00005658
 l00005658:
+	r2 = r0 & 0x1F<32>
+	r1 = r2 >>u 5<32>
+	r1 = 0<32>
+	r1 = r0 + 0x20<32>
+	r0 = r1
+	return
+	// succ:  hexagon_cache_inva_exit
+hexagon_cache_inva_exit:
 
 
-void __registerx()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__registerx_exit:
+// __registerx
+// Return size: 0
+define __registerx
 __registerx_entry:
+	r29 = fp
+	// succ:  l00005690
 l00005690:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r17_r16 = r1_r0
+	Mem0[r29:word64] = r19_r18
+	p0 = r16 == 0<32>
+	r19_r18 = r4_r3
+	branch p0 l000056D0
+	// succ:  l000056A4 l000056D0
+l000056A4:
+	r1_r0 = 0x1800000001<64>
+	Mem0[r0 + 12<i32>:word32] = r18
+	Mem0[r0 + 20<i32>:word32] = 0<32>
+	Mem0[r0 + 8<i32>:word32] = r17
+	Mem0[r0 + 16<i32>:word32] = r19
+	Mem0[r0 + 4<i32>:word32] = r16
+	r1 = Mem0[gp + 116<i32>:word32]
+	Mem0[gp:word32] = r0
+	// succ:  l000056D0
+l000056D0:
+	r19_r18 = Mem0[r29:word64]
+	r17_r16 = Mem0[r29 + 8<i32>:word64]
+	v20 = r30
+	r31 = Mem0[v20 + 4<i32>:word32]
+	r30 = Mem0[v20:word32]
+	r29 = v20 + 8<i32>
+	return
+	// succ:  __registerx_exit
+__registerx_exit:
 
 
-void __register_frame_info_bases()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__register_frame_info_bases_exit:
+// __register_frame_info_bases
+// Return size: 0
+define __register_frame_info_bases
 __register_frame_info_bases_entry:
+	r29 = fp
+	// succ:  l000056E0
 l000056E0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r17_r16 = r2_r0
+	Mem0[r29:word64] = r19_r18
+	p0 = r16 == 0<32>
+	r18 = r3
+	branch p0 l00005720
+	// succ:  l000056F4 l00005720
+l000056F4:
+	r1_r0 = 0x1800000001<64>
+	Mem0[r0 + 12<i32>:word32] = r17
+	Mem0[r0 + 20<i32>:word32] = 0<32>
+	Mem0[r0 + 8<i32>:word32] = 0<32>
+	Mem0[r0 + 16<i32>:word32] = r18
+	Mem0[r0 + 4<i32>:word32] = r16
+	r1 = Mem0[gp + 116<i32>:word32]
+	Mem0[gp:word32] = r0
+	// succ:  l00005720
+l00005720:
+	r19_r18 = Mem0[r29:word64]
+	r17_r16 = Mem0[r29 + 8<i32>:word64]
+	v19 = r30
+	r31 = Mem0[v19 + 4<i32>:word32]
+	r30 = Mem0[v19:word32]
+	r29 = v19 + 8<i32>
+	return
+	// succ:  __register_frame_info_bases_exit
+__register_frame_info_bases_exit:
 
 
-void __deregister_frame_info_bases()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__deregister_frame_info_bases_exit:
+// __deregister_frame_info_bases
+// Return size: 0
+define __deregister_frame_info_bases
 __deregister_frame_info_bases_entry:
+	r29 = fp
+	// succ:  l00005730
 l00005730:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 0<i32>
+	r1 = Mem0[r0:word32]
+	r1 = 0x10074<32>
+	r2 = r1
+	r1 = Mem0[r2:word32]
+	r3 = Mem0[r1 + 4<i32>:word32]
+	r3 = Mem0[r1:word32]
+	r0 = r1
+	v10 = r30
+	r31 = Mem0[v10 + 4<i32>:word32]
+	r30 = Mem0[v10:word32]
+	r29 = v10 + 8<i32>
+	return
+	// succ:  __deregister_frame_info_bases_exit
+__deregister_frame_info_bases_exit:
 
 
-void _Printf()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Printf_exit:
+// _Printf
+// Return size: 0
+define _Printf
 _Printf_entry:
+	r29 = fp
+	// succ:  l00005770
 l00005770:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 200<i32>
+	r5_r4 = 0<64>
+	r1 = r3
+	r0 = r29 + 0x54<32>
+	r19_r18 = r1_r0
+	Mem0[r29 + 88<i32>:word64] = r5_r4
+	r21 = r29 + 0x60<32>
+	r24 = 0x3E8<32>
+	r23 = 0x3E7<32>
+	r22 = r29 + 0x50<32>
+	Mem0[r21 + 12<i32>:word32] = r19
+	Mem0[r21 + 8<i32>:word32] = r18
+	r25 = 0xD088<32>
+	Mem0[r21 + 52<i32>:word32] = 0xFFFFFF80<32>
+	// succ:  l000057B8
+l000057B8:
+	r1 = r17
+	r0 = r29 + 0x50<32>
+	r2 = r16
+	r3 = r29 + 0x58<32>
+	Mem0[r22:word32] = 0<32>
+	r0 = Mem0[r29 + 80<i32>:word32]
+	r1 = 0<32>
+	r1 = 0xFFFFFFFF<32>
+	p0 = r0 == 0x25<32>
+	r19 = r1 + r18
+	r3 = Mem0[r21 + 8<i32>:word32]
+	r0 = Mem0[r21 + 12<i32>:word32]
+	r2 = r19
+	r1 = r17
+	r20 = 0xFFFFFFFF<32>
+	Mem0[r21 + 12<i32>:word32] = r0
+	r0 = Mem0[r21 + 52<i32>:word32]
+	p0 = r0 == 0x25<32>
+	r17 = r17 + r18
+	Mem0[r21 + 44<i32>:word32] = 0<32>
+	r19_r18 = 0<64>
+	r20 = Mem0[r18:byte]
+	Mem0[r21 + 44<i32>:word32] = r19
+	p0 = r24 > r19
+	r0 = Mem0[r18:byte]
+	p0 = r0 == 0x24<32>
+	r0 = r19
+	r18 = r18
+	Mem0[r21 + 44<i32>:word32] = 0<32>
+	r18 = r17 + 0<32>
+	p0 = r23 >u r0
+	// succ:  l00005880
+l00005880:
+	Mem0[r21 + 60<i32>:word16] = 0<16>
+	Mem0[r21 + 36<i32>:word32] = 0xFFFFFF80<32>
+	r2 = 5<32>
+	Mem0[r21 + 20<i32>:word32] = 0<32>
+	Mem0[r21 + 40<i32>:word32] = 0<32>
+	r0 = 0xD088<32>
+	Mem0[r21 + 28<i32>:word32] = 0<32>
+	Mem0[r21 + 24<i32>:word32] = 0<32>
+	Mem0[r21 + 32<i32>:word32] = 0<32>
+	r1 = Mem0[r18:byte]
+	r18 = r18 + 1<32>
+	// succ:  l000058BC
+l000058BC:
+	r2 = 5<32>
+	r1 = Mem0[r18:byte]
+	r0 = 8<32>
+	r0 = Mem0[r18:byte]
+	Mem0[r21 + 56<i32>:word32] = 0<32>
+	p0 = r0 == 0x2A<32>
+	r0 = Mem0[r29 + 84<i32>:word32]
+	r1 = r0 + 4<32>
+	r0 = Mem0[r0:word32]
+	Mem0[r21 + 56<i32>:word32] = r0
+	r1 = Mem0[r21 + 60<i32>:int16]
+	Mem0[r21 + 56<i32>:word32] = r0
+	Mem0[r21 + 60<i32>:word16] = r1
+	r18 = r18 + 1<32>
+	// succ:  l00005964
+l00005964:
+	r0 = Mem0[r18:byte]
+	Mem0[r21 + 48<i32>:word32] = 0xFFFFFFFF<32>
+	p0 = r0 == 0x2E<32>
+	r0 = Mem0[r18 + 1<i32>:byte]
+	Mem0[r21 + 48<i32>:word32] = 0<32>
+	p0 = r0 == 0x2A<32>
+	r0 = Mem0[r29 + 84<i32>:word64]
+	r18 = r18 + 2<32>
+	r1 = r0 + 4<32>
+	r17 = Mem0[r18 + 1<i32>:byte]
+	r17 = Mem0[r18 + 1<i32>:byte]
+	r18 = r18
+	// succ:  l000059B8
+l000059B8:
+	r1 = Mem0[r18:byte]
+	goto l000059B8
+	// succ:  l000059B8
+_Printf_exit:
 
 
-void _Putfld()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Putfld_exit:
+// _Putfld
+// Return size: 0
+define _Putfld
 _Putfld_entry:
+	r29 = fp
+	// succ:  l00005AD0
 l00005AD0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r16 = r0
+	p0 = r2 >u 0x40<32>
+	branch p0 l00005B00
+	// succ:  l00005AE0 l00005B00
+l00005AE0:
+	r0 = Mem0[r16 + 20<i32>:word32]
+	p0 = r2 == 0x25<32>
+	r0 = r3 + r0
+	r1 = r0 + 1<32>
+	Mem0[r0:byte] = 0x25<8>
+	goto l00005CFC
+	// succ:  l00005CFC
+l00005B00:
+	p0 = r2 >u 0x52<32>
+	// succ:  l00005B24
+l00005B24:
+	r0 = r0 + 7<32>
+	r0 = r0 & 0xFFFFFFF8<32>
+	r5_r4 = Mem0[r0:word64]
+	Mem0[r16:word64] = r5_r4
+	p0 = r6 > 0<32>
+	r0 = r6 + 0xFFFFFFFF<32>
+	Mem0[r16 + 44<i32>:word32] = r0
+	branch p0 l00005B24
+	// succ:  l00005B54 l00005B24
+l00005B54:
+	r1_r0 = r5_r4
+	// succ:  l00005C80
+l00005C80:
+	r1 = Mem0[r16 + 20<i32>:word32]
+	Mem0[r1:byte] = 0x2B<8>
+	r1 = Mem0[r16 + 20<i32>:word32]
+	r0 = r16 + 0x14<32>
+	Mem0[r1:byte] = 0x2D<8>
+	r1 = Mem0[r16 + 20<i32>:word32]
+	r0 = r16 + 0x14<32>
+	branch p0 l00005CE8
+	// succ:  l00005CD8 l00005CE8
+l00005CD8:
+	// succ:  l00005CE8
+l00005CE8:
+	r4 = Mem0[r0:word32]
+	r1_r0 = r2_r16
+	goto l00005D00
+	// succ:  l00005D00
+l00005CFC:
+	r1 = 0<32>
+	// succ:  l00005D00
+l00005D00:
+	v18 = r30
+	r31 = Mem0[v18 + 4<i32>:word32]
+	r30 = Mem0[v18:word32]
+	r29 = v18 + 8<i32>
+	return
+	// succ:  _Putfld_exit
+_Putfld_exit:
 
 
-void _Putstr()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Putstr_exit:
+// _Putstr
+// Return size: 0
+define _Putstr
 _Putstr_entry:
+	r29 = fp
+	// succ:  l00006200
 l00006200:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 112<i32>
+	r23_r22 = 0<64>
+	r18 = r1
+	r17 = r0
+	r19 = Mem0[r17 + 24<i32>:word32]
+	r20 = Mem0[r17 + 16<i32>:word32]
+	Mem0[r29:word64] = r23_r22
+	r19 = r19 + r0
+	r22 = 0x40<32>
+	r16 = r29 + 0x10<32>
+	r1 = Mem0[r17 + 60<i32>:byte]
+	r1 = r1 & 4<32>
+	r1 = 0x41<32>
+	r22 = r19
+	r0 = r19
+	r21 = 0xFFFFFFFF<32>
+	r0 = 0x7FFFFFFF<32>
+	r21 = -1<i32>
+	r19 = 0<32>
+	r1 = Mem0[r18:word32]
+	r0 = r29 + 8<32>
+	r2 = r29 + 0<32>
+	r0 = Mem0[r17 + 20<i32>:word32]
+	r1 = r0 + r20
+	Mem0[r17 + 56<i32>:word32] = 0<32>
+	r1_r0 = r16_r17
+	r19 = r0
+	Mem0[r17 + 20<i32>:word32] = 0<32>
+	r0 = 0<32>
+	r0 = r0 + r16
+	r1 = r29 + 8<32>
+	r2 = r20
+	r0 = Mem0[r17 + 20<i32>:word32]
+	r21 = r19
+	r1_r0 = r16_r17
+	r21 = r0
+	Mem0[r17 + 20<i32>:word32] = 0<32>
+	Mem0[r17 + 56<i32>:word32] = 0<32>
+	r21 = 0<32>
+	p0 = r21 == 0<32>
+	r0 = r16
+	// succ:  l00006310_thunk_fn000063D0
+l00006310_thunk_fn000063D0:
+	call fn000063D0 (retsize: 0;)
+	return
+	// succ:  _Putstr_exit
+_Putstr_exit:
 
 
-void _Puttxt()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Puttxt_exit:
+// _Puttxt
+// Return size: 0
+define _Puttxt
 _Puttxt_entry:
+	r29 = fp
+	// succ:  l00006320
 l00006320:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 32<i32>
+	r17_r16 = r1_r0
+	r2 = Mem0[r16 + 20<i32>:word32]
+	r3 = Mem0[r16 + 24<i32>:word32]
+	r4 = Mem0[r16 + 28<i32>:word32]
+	r0 = Mem0[r16 + 24<i32>:word32]
+	r0 = Mem0[r16 + 4<i32>:word32]
+	r3 = Mem0[r16:word32]
+	r5 = Mem0[r16 + 60<i32>:word16]
+	r3 = Mem0[r16 + 40<i32>:word32]
+	r5 = r5 & 4<32>
+	r22 = r20
+	r21 = 0x20<32>
+	r3 = Mem0[r16 + 8<i32>:word32]
+	r0 = Mem0[r16 + 12<i32>:word32]
+	r1 = 0xD140<32>
+	r18 = -1<i32>
+	r2 = r19
+	Mem0[r16 + 12<i32>:word32] = r0
+	r0 = Mem0[r16 + 52<i32>:word32]
+	r3 = Mem0[r16 + 8<i32>:word32]
+	r0 = Mem0[r16 + 12<i32>:word32]
+	r18 = 0xFFFFFFFF<32>
+	r1 = r17
+	Mem0[r16 + 12<i32>:word32] = r0
+	r1 = Mem0[r16 + 20<i32>:word32]
+	r0 = Mem0[r16 + 20<i32>:word32]
+	// succ:  l000063C0_thunk_fn000063D0
+l000063C0_thunk_fn000063D0:
+	call fn000063D0 (retsize: 0;)
+	return
+	// succ:  _Puttxt_exit
+_Puttxt_exit:
 
 
-void _Tls_get__Mbcurmax()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// fn000063D0
+// Return size: 0
+define fn000063D0
+fn000063D0_entry:
+	r29 = fp
+	// succ:  l000063D0
+l000063D0:
+	r19 = Mem0[r16 + 24<i32>:word32]
+	r3 = Mem0[r16 + 8<i32>:word32]
+	r0 = Mem0[r16 + 12<i32>:word32]
+	r1 = 0xD168<32>
+	r18 = -1<i32>
+	r2 = r17
+	Mem0[r16 + 12<i32>:word32] = r0
+	r0 = Mem0[r16 + 52<i32>:word32]
+	r1 = Mem0[r16 + 16<i32>:word32]
+	r0 = Mem0[r16 + 12<i32>:word32]
+	r3 = Mem0[r16 + 8<i32>:word32]
+	Mem0[r16 + 12<i32>:word32] = r0
+	r1 = Mem0[r16 + 28<i32>:word32]
+	r0 = Mem0[r16 + 20<i32>:word32]
+	r19 = Mem0[r16 + 32<i32>:word32]
+	r3 = Mem0[r16 + 8<i32>:word32]
+	r0 = Mem0[r16 + 12<i32>:word32]
+	r1 = 0xD168<32>
+	r18 = -1<i32>
+	r2 = r17
+	Mem0[r16 + 12<i32>:word32] = r0
+	r0 = Mem0[r16 + 52<i32>:word32]
+	r3 = Mem0[r16 + 28<i32>:word32]
+	r1 = Mem0[r16 + 16<i32>:word32]
+	r3 = Mem0[r16 + 8<i32>:word32]
+	r0 = Mem0[r16 + 12<i32>:word32]
+	r1 = r1 + r3
+	Mem0[r16 + 12<i32>:word32] = r0
+	r1 = Mem0[r16 + 4<i32>:word32]
+	r0 = Mem0[r16 + 20<i32>:word32]
+	r19 = Mem0[r16 + 40<i32>:word32]
+	r3 = Mem0[r16 + 8<i32>:word32]
+	r0 = Mem0[r16 + 12<i32>:word32]
+	r1 = 0xD168<32>
+	r18 = -1<i32>
+	r2 = r17
+	Mem0[r16 + 12<i32>:word32] = r0
+	r0 = Mem0[r16 + 52<i32>:word32]
+	r0 = Mem0[r16 + 60<i32>:byte]
+	p0 = r20 > 0<32>
+	r19 = 0x20<32>
+	r3 = Mem0[r16 + 8<i32>:word32]
+	r0 = Mem0[r16 + 12<i32>:word32]
+	r1 = 0xD140<32>
+	r18 = -1<i32>
+	r2 = r17
+	Mem0[r16 + 12<i32>:word32] = r0
+	r0 = Mem0[r16 + 52<i32>:word32]
+	goto l0000654C_thunk_fn0000661C
+	// succ:  l0000654C_thunk_fn0000661C
+l000063D0:
+	r19 = Mem0[r16 + 24<i32>:word32]
+	r3 = Mem0[r16 + 8<i32>:word32]
+	r0 = Mem0[r16 + 12<i32>:word32]
+	r1 = 0xD168<32>
+	r18 = -1<i32>
+	r2 = r17
+	Mem0[r16 + 12<i32>:word32] = r0
+	r0 = Mem0[r16 + 52<i32>:word32]
+	r1 = Mem0[r16 + 16<i32>:word32]
+	r0 = Mem0[r16 + 12<i32>:word32]
+	r3 = Mem0[r16 + 8<i32>:word32]
+	Mem0[r16 + 12<i32>:word32] = r0
+	r1 = Mem0[r16 + 28<i32>:word32]
+	r0 = Mem0[r16 + 20<i32>:word32]
+	r19 = Mem0[r16 + 32<i32>:word32]
+	r3 = Mem0[r16 + 8<i32>:word32]
+	r0 = Mem0[r16 + 12<i32>:word32]
+	r1 = 0xD168<32>
+	r18 = -1<i32>
+	r2 = r17
+	Mem0[r16 + 12<i32>:word32] = r0
+	r0 = Mem0[r16 + 52<i32>:word32]
+	r3 = Mem0[r16 + 28<i32>:word32]
+	r1 = Mem0[r16 + 16<i32>:word32]
+	r3 = Mem0[r16 + 8<i32>:word32]
+	r0 = Mem0[r16 + 12<i32>:word32]
+	r1 = r1 + r3
+	Mem0[r16 + 12<i32>:word32] = r0
+	r1 = Mem0[r16 + 4<i32>:word32]
+	r0 = Mem0[r16 + 20<i32>:word32]
+	r19 = Mem0[r16 + 40<i32>:word32]
+	r3 = Mem0[r16 + 8<i32>:word32]
+	r0 = Mem0[r16 + 12<i32>:word32]
+	r1 = 0xD168<32>
+	r18 = -1<i32>
+	r2 = r17
+	Mem0[r16 + 12<i32>:word32] = r0
+	r0 = Mem0[r16 + 52<i32>:word32]
+	r0 = Mem0[r16 + 60<i32>:byte]
+	p0 = r20 > 0<32>
+	r19 = 0x20<32>
+	r3 = Mem0[r16 + 8<i32>:word32]
+	r0 = Mem0[r16 + 12<i32>:word32]
+	r1 = 0xD140<32>
+	r18 = -1<i32>
+	r2 = r17
+	Mem0[r16 + 12<i32>:word32] = r0
+	r0 = Mem0[r16 + 52<i32>:word32]
+	goto l0000654C_thunk_fn0000661C
+	// succ:  l0000654C_thunk_fn0000661C
+l0000654C_thunk_fn0000661C:
+	call fn0000661C (retsize: 0;)
+	return
+	// succ:  fn000063D0_exit
+l0000654C_thunk_fn0000661C:
+	call fn0000661C (retsize: 0;)
+	return
+	// succ:  fn000063D0_exit
+fn000063D0_exit:
 
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Tls_get__Mbcurmax_exit:
+
+// _Tls_get__Mbcurmax
+// Return size: 0
+define _Tls_get__Mbcurmax
 _Tls_get__Mbcurmax_entry:
+	r29 = fp
+	// succ:  l00006560
 l00006560:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r1 = 1<32>
+	Mem0[r29:word64] = r19_r18
+	r16 = 0x14<32>
+	r18 = 0x10018<32>
+	// succ:  l00006578
+l00006578:
+	r0 = memw_locked(r16)
+	p0 = r0 > 0<32>
+	branch p0 l0000658C
+	// succ:  l00006584 l0000658C
+l00006584:
+	branch p0 l00006578
+	// succ:  l0000658C l00006578
+l0000658C:
+	r17 = 2<32>
+	r1 = 0x6FF0<32>
+	r0 = 0x10018<32>
+	Mem0[r16:word32] = r17
+	r0 = Mem0[r18:word32]
+	r0 = Mem0[r18:word32]
+	r1 = r17
+	r0 = r17 + 0<32>
+	r16 = r17 + 0<32>
+	// succ:  l000065F8
+l000065F8:
+	r19_r18 = Mem0[r29:word64]
+	r17_r16 = Mem0[r29 + 8<i32>:word64]
+	r0 = r16
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
+	return
+	// succ:  _Tls_get__Mbcurmax_exit
+_Tls_get__Mbcurmax_exit:
 
 
-void _Tls_get__Mbstate()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Tls_get__Mbstate_exit:
+// _Tls_get__Mbstate
+// Return size: 0
+define _Tls_get__Mbstate
 _Tls_get__Mbstate_entry:
+	r29 = fp
+	// succ:  l00006604
 l00006604:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r1 = 1<32>
+	r17 = 0x10020<32>
+	r16 = 0x1001C<32>
+	goto l0000660C_thunk_fn0000661C
+	// succ:  l0000660C_thunk_fn0000661C
+l00006604:
+l0000660C_thunk_fn0000661C:
+	call fn0000661C (retsize: 0;)
+	return
+	// succ:  _Tls_get__Mbstate_exit
+_Tls_get__Mbstate_exit:
 
 
-void _Getmbcurmax()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// fn0000661C
+// Return size: 0
+define fn0000661C
+fn0000661C_entry:
+	r29 = fp
+	// succ:  l0000661C
+l0000661C:
+	Mem0[r29:word64] = r19_r18
+	goto l0000661C_thunk_fn00006620
+	// succ:  l0000661C_thunk_fn00006620
+l0000661C:
+	Mem0[r29:word64] = r19_r18
+	goto l0000661C_thunk_fn00006620
+	// succ:  l0000661C_thunk_fn00006620
+l0000661C_thunk_fn00006620:
+	call fn00006620 (retsize: 0;)
+	return
+	// succ:  fn0000661C_exit
+l0000661C_thunk_fn00006620:
+	call fn00006620 (retsize: 0;)
+	return
+	// succ:  fn0000661C_exit
+fn0000661C_exit:
 
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Getmbcurmax_exit:
+
+// fn00006620
+// Return size: 0
+define fn00006620
+fn00006620_entry:
+	r29 = fp
+	// succ:  l00006620
+l00006620:
+	r0 = memw_locked(r16)
+	p0 = r0 > 0<32>
+	branch p0 l00006634
+	// succ:  l0000662C l00006634
+l0000662C:
+	branch p0 l00006620
+	// succ:  l00006634 l00006620
+l00006634:
+	r18 = 2<32>
+	r1 = 0x6FF0<32>
+	r0 = 0x10020<32>
+	Mem0[r16:word32] = r18
+	r0 = Mem0[r17:word32]
+	r0 = Mem0[r17:word32]
+	r1 = r16
+	r0 = r16
+	r16 = 0<32>
+	// succ:  l000066A4
+l000066A4:
+	r19_r18 = Mem0[r29:word64]
+	r17_r16 = Mem0[r29 + 8<i32>:word64]
+	r0 = r16
+	v12 = r30
+	r31 = Mem0[v12 + 4<i32>:word32]
+	r30 = Mem0[v12:word32]
+	r29 = v12 + 8<i32>
+	return
+	// succ:  fn00006620_exit
+fn00006620_exit:
+
+
+// _Getmbcurmax
+// Return size: 0
+define _Getmbcurmax
 _Getmbcurmax_entry:
+	r29 = fp
+	// succ:  l000066B0
 l000066B0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 0<i32>
+	v6 = r30
+	r31 = Mem0[v6 + 4<i32>:word32]
+	r30 = Mem0[v6:word32]
+	r29 = v6 + 8<i32>
+	return
+	// succ:  _Getmbcurmax_exit
+_Getmbcurmax_exit:
 
 
-void _Getpmbstate()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Getpmbstate_exit:
+// _Getpmbstate
+// Return size: 0
+define _Getpmbstate
 _Getpmbstate_entry:
+	r29 = fp
+	// succ:  l000066BC
 l000066BC:
+	// succ:  l000066BC_thunk__Tls_get__Mbstate
+l000066BC_thunk__Tls_get__Mbstate:
+	call _Tls_get__Mbstate (retsize: 0;)
+	return
+	// succ:  _Getpmbstate_exit
+_Getpmbstate_exit:
 
 
-void _Stoulx()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Stoulx_exit:
+// _Stoulx
+// Return size: 0
+define _Stoulx
 _Stoulx_entry:
+	r29 = fp
+	// succ:  l000066C0
 l000066C0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 64<i32>
+	p0 = r3 == 0<32>
+	Mem0[r29 + 8<i32>:word32] = r3
+	r16 = r1
+	r19_r18 = r2_r0
+	r4 = p0
+	Mem0[r29 + 4<i32>:word32] = r4
+	Mem0[r3:word32] = 0<32>
+	r22 = r18 + 0xFFFFFFFF<32>
+	r17 = Mem0[r22 + 1<i32>:byte]
+	p0 = r0 == 0x2B<32>
+	r21 = 0x2B<32>
+	r22 = r1
+	goto l00006720
+	// succ:  l00006720
+l000066C0:
+l00006720:
+	p0 = r19 > 0x24<32>
+	r0 = 0<32>
+	Mem0[r16:word32] = r18
+	// succ:  l00006738_thunk___restore_r16_through_r27_and_deallocframe
+l00006738_thunk___restore_r16_through_r27_and_deallocframe:
+	call __restore_r16_through_r27_and_deallocframe (retsize: 0;)
+	return
+	// succ:  _Stoulx_exit
+_Stoulx_exit:
 
 
-void _Stoul()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Stoul_exit:
+// _Stoul
+// Return size: 0
+define _Stoul
 _Stoul_entry:
+	r29 = fp
+	// succ:  l00006894
 l00006894:
+	// succ:  l00006894_thunk__Stoulx
+l00006894_thunk__Stoulx:
+	call _Stoulx (retsize: 0;)
+	return
+	// succ:  _Stoul_exit
+_Stoul_exit:
 
 
-void _Clearlocks()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Clearlocks_exit:
+// _Clearlocks
+// Return size: 0
+define _Clearlocks
 _Clearlocks_entry:
+	r29 = fp
+	// succ:  l000068A0
 l000068A0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r0 = 0<32>
+	Mem0[gp + 4<i32>:byte] = r0
+	r17_r16 = 0xE8D400000020<64>
+	r0 = r16
+	r16 = r16 + 4<32>
+	r17 = r17 + 0xFFFFFFFF<32>
+	r17_r16 = 0xE90400000030<64>
+	r0 = 0<32>
+	Mem0[gp + 4<i32>:byte] = r0
+	r0 = r16
+	r16 = r16 + 4<32>
+	r17 = r17 + 0xFFFFFFFF<32>
+	v11 = r30
+	r31 = Mem0[v11 + 4<i32>:word32]
+	r30 = Mem0[v11:word32]
+	r29 = v11 + 8<i32>
+	return
+	// succ:  _Clearlocks_exit
+_Clearlocks_exit:
 
 
-void _Initlocks()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Initlocks_exit:
+// _Initlocks
+// Return size: 0
+define _Initlocks
 _Initlocks_entry:
+	r29 = fp
+	// succ:  l00006900
 l00006900:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r17_r16 = 0xE8D400000020<64>
+	r0 = r16
+	r16 = r16 + 4<32>
+	r17 = r17 + 0xFFFFFFFF<32>
+	r17_r16 = 0xE90400000030<64>
+	r0 = 1<32>
+	Mem0[gp + 4<i32>:byte] = r0
+	r0 = r16
+	r16 = r16 + 4<32>
+	r17 = r17 + 0xFFFFFFFF<32>
+	r17_r16 = Mem0[r29:word64]
+	r0 = 1<32>
+	// succ:  l00006944_thunk__Lockfilelock
+l00006944_thunk__Lockfilelock:
+	call _Lockfilelock (retsize: 0;)
+	return
+	// succ:  _Initlocks_exit
+_Initlocks_exit:
 
 
-void _Lockfilelock()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Lockfilelock_exit:
+// _Lockfilelock
+// Return size: 0
+define _Lockfilelock
 _Lockfilelock_entry:
+	r29 = fp
+	// succ:  l00006958
 l00006958:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 24<i32>
+	r1 = 1<32>
+	r20 = 0x2C<32>
+	r16 = r0
+	r19 = 0x10024<32>
+	r18 = 0xE8E0<32>
+	// succ:  l0000697C
+l0000697C:
+	r0 = memw_locked(r20)
+	p0 = r0 > 0<32>
+	branch p0 l00006990
+	// succ:  l00006988 l00006990
+l00006988:
+	branch p0 l0000697C
+	// succ:  l00006990 l0000697C
+l00006990:
+	r21 = 0x14<32>
+	r17 = 0x20<32>
+	r0 = r17
+	r17 = r17 + 4<32>
+	r21 = r21 + 0xFFFFFFFF<32>
+	r21 = 4<32>
+	r0 = 1<32>
+	r17 = 0xE930<32>
+	Mem0[r19:byte] = r0
+	r0 = r17
+	r17 = r17 + 4<32>
+	r21 = r21 + 0xFFFFFFFF<32>
+	r1 = Mem0[r19:byte]
+	r0 = Mem0[r16 + 2<i32>:byte]
+	p0 = r1
+	// succ:  l00006A08_thunk___restore_r16_through_r21_and_deallocframe
+l00006A08_thunk___restore_r16_through_r21_and_deallocframe:
+	call __restore_r16_through_r21_and_deallocframe (retsize: 0;)
+	return
+	// succ:  _Lockfilelock_exit
+_Lockfilelock_exit:
 
 
-void _Unlockfilelock()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Unlockfilelock_exit:
+// _Unlockfilelock
+// Return size: 0
+define _Unlockfilelock
 _Unlockfilelock_entry:
+	r29 = fp
+	// succ:  l00006A10
 l00006A10:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 0<i32>
+	r0 = Mem0[r0 + 2<i32>:byte]
+	r1 = Mem0[gp + 36<i32>:int8]
+	p0 = r1
+	r1 = 0xE8E0<32>
+	v10 = r30
+	r31 = Mem0[v10 + 4<i32>:word32]
+	r30 = Mem0[v10:word32]
+	r29 = v10 + 8<i32>
+	return
+	// succ:  _Unlockfilelock_exit
+_Unlockfilelock_exit:
 
 
-void _Locksyslock()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Locksyslock_exit:
+// _Locksyslock
+// Return size: 0
+define _Locksyslock
 _Locksyslock_entry:
+	r29 = fp
+	// succ:  l00006A44
 l00006A44:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 24<i32>
+	r1 = 1<32>
+	r20 = 0x2C<32>
+	r16 = r0
+	r19 = 0x10028<32>
+	r18 = 0xE930<32>
+	// succ:  l00006A68
+l00006A68:
+	r0 = memw_locked(r20)
+	p0 = r0 > 0<32>
+	branch p0 l00006A7C
+	// succ:  l00006A74 l00006A7C
+l00006A74:
+	branch p0 l00006A68
+	// succ:  l00006A7C l00006A68
+l00006A7C:
+	r21 = 0x14<32>
+	r17 = 0x20<32>
+	r0 = r17
+	r17 = r17 + 4<32>
+	r21 = r21 + 0xFFFFFFFF<32>
+	r21 = 4<32>
+	r0 = 1<32>
+	r17 = 0xE930<32>
+	Mem0[gp + 4<i32>:byte] = r0
+	r0 = r17
+	r17 = r17 + 4<32>
+	r21 = r21 + 0xFFFFFFFF<32>
+	p0 = r0
+	// succ:  l00006AF4_thunk___restore_r16_through_r21_and_deallocframe
+l00006AF4_thunk___restore_r16_through_r21_and_deallocframe:
+	call __restore_r16_through_r21_and_deallocframe (retsize: 0;)
+	return
+	// succ:  _Locksyslock_exit
+_Locksyslock_exit:
 
 
-void _Unlocksyslock()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Unlocksyslock_exit:
+// _Unlocksyslock
+// Return size: 0
+define _Unlocksyslock
 _Unlocksyslock_entry:
+	r29 = fp
+	// succ:  l00006AF8
 l00006AF8:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 0<i32>
+	r1 = Mem0[gp + 40<i32>:int8]
+	p0 = r1
+	r1 = 0xE930<32>
+	v10 = r30
+	r31 = Mem0[v10 + 4<i32>:word32]
+	r30 = Mem0[v10:word32]
+	r29 = v10 + 8<i32>
+	return
+	// succ:  _Unlocksyslock_exit
+_Unlocksyslock_exit:
 
 
-void _Tls_get__Tolotab()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Tls_get__Tolotab_exit:
+// _Tls_get__Tolotab
+// Return size: 0
+define _Tls_get__Tolotab
 _Tls_get__Tolotab_entry:
+	r29 = fp
+	// succ:  l00006B30
 l00006B30:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r1 = 1<32>
+	r17 = 0x10034<32>
+	r16 = 0x10030<32>
+	Mem0[r29:word64] = r19_r18
+	// succ:  l00006B4C
+l00006B4C:
+	r0 = memw_locked(r16)
+	p0 = r0 > 0<32>
+	branch p0 l00006B60
+	// succ:  l00006B58 l00006B60
+l00006B58:
+	branch p0 l00006B4C
+	// succ:  l00006B60 l00006B4C
+l00006B60:
+	r18 = 2<32>
+	r1 = 0x6FF0<32>
+	r0 = 0x10034<32>
+	Mem0[r16:word32] = r18
+	r0 = Mem0[r17:word32]
+	r0 = Mem0[r17:word32]
+	r1 = r16
+	r0 = r16
+	r16 = 0<32>
+	// succ:  l00006BCC
+l00006BCC:
+	r19_r18 = Mem0[r29:word64]
+	r17_r16 = Mem0[r29 + 8<i32>:word64]
+	r0 = r16
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
+	return
+	// succ:  _Tls_get__Tolotab_exit
+_Tls_get__Tolotab_exit:
 
 
-void _Getptolower()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Getptolower_exit:
+// _Getptolower
+// Return size: 0
+define _Getptolower
 _Getptolower_entry:
+	r29 = fp
+	// succ:  l00006BD8
 l00006BD8:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 0<i32>
+	v6 = r30
+	r31 = Mem0[v6 + 4<i32>:word32]
+	r30 = Mem0[v6:word32]
+	r29 = v6 + 8<i32>
+	return
+	// succ:  _Getptolower_exit
+_Getptolower_exit:
 
 
-void _Vacopy()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Vacopy_exit:
+// _Vacopy
+// Return size: 0
+define _Vacopy
 _Vacopy_entry:
+	r29 = fp
+	// succ:  l00006BF0
 l00006BF0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	r3 = r1
+	r2 = 4<32>
+	Mem0[r29 + 4<i32>:word32] = r3
+	r1 = r29 + 4<32>
+	v9 = r30
+	r31 = Mem0[v9 + 4<i32>:word32]
+	r30 = Mem0[v9:word32]
+	r29 = v9 + 8<i32>
+	return
+	// succ:  _Vacopy_exit
+_Vacopy_exit:
 
 
-void _Wctombx()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Wctombx_exit:
+// _Wctombx
+// Return size: 0
+define _Wctombx
 _Wctombx_entry:
+	r29 = fp
+	// succ:  l00006C10
 l00006C10:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 32<i32>
+	r20 = r4
+	r18 = r2
+	r17_r16 = r1_r0
+	r5 = Mem0[r3:word32]
+	p0 = r16 == 0<32>
+	branch p0 l00006D24
+	goto l00006C34
+	// succ:  l00006C34 l00006D24
+l00006C10:
+l00006C34:
+	r0 = Mem0[r18 + 6<i32>:word16]
+	r21 = 0<32>
+	r19 = 0<32>
+	r21 = r21 + 1<32>
+	p0 = r21 > 0xFEF<32>
+	r2 = r1 & 0xFF<32>
+	r3 = r17
+	r0 = r1 & 0x8000<32>
+	p0 = r0 == 0<32>
+	r4 = r1 & 0x1000<32>
+	r3 = r17 + 0<32>
+	r5 = r1 & 0x2000<32>
+	p1 = r4 == 0<32>
+	p0 = r5 == 0<32>
+	r17 = r3 + 0<32>
+	r4 = r3 << 8<32>
+	r17 = r4 + 0<32>
+	branch p0 l00006CE0
+	// succ:  l00006CC0 l00006CE0
+l00006CC0:
+	p0 = r2 == 0<32>
+	r19 = r19
+	r21 = 0<32>
+	r2 = r16 + r19
+	r3 = r1 + 0<32>
+	r3 = r17 + 0<32>
+	Mem0[r2:byte] = r3
+	// succ:  l00006CE0
+l00006CE0:
+	r1 = r1 & 0x4000<32>
+	Mem0[r18 + 6<i32>:word16] = r0
+	goto l00006D3C
+	// succ:  l00006D3C
+l00006D24:
+	Mem0[r18:word32] = 0<32>
+	Mem0[r18 + 4<i32>:word32] = 0<32>
+	r0 = Mem0[r3:word32]
+	r0 = Mem0[r0:word16]
+	r19 = r0 & 0xF00<32>
+l00006D3C:
+	// succ:  l00006D58 l00006D5C
+l00006D58:
+	// succ:  l00006D5C
+l00006D5C:
+	// succ:  l00006DAC
+l00006DAC:
+	Mem0[r16:byte] = r1
+	r4 = -1<i32>
+	r1 = 0xFFFFFFFA<32>
+	r2 = r16 + 1<32>
+	r1 = r1 + 0xFFFFFFFA<32>
+	r0 = r0 & 0x3F<32>
+	// succ:  l00006E54_in__Wctombx
+l00006E54_in__Wctombx:
+	r1_r0 = 0<64>
+	r2 = r17
+	v23 = r30
+	r31 = Mem0[v23 + 4<i32>:word32]
+	r30 = Mem0[v23:word32]
+	r29 = v23 + 8<i32>
+	return
+	// succ:  _Wctombx_exit
+_Wctombx_exit:
 
 
-void _Wctomb()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Wctomb_exit:
+// _Wctomb
+// Return size: 0
+define _Wctomb
 _Wctomb_entry:
+	r29 = fp
+	// succ:  l00006DF0
 l00006DF0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r17_r16 = r2_r0
+	Mem0[r29:word64] = r19_r18
+	r18 = r1
+	r19 = r0
+	r4 = 0<32>
+	p0 = r16 == 0<32>
+	branch p0 l00006E1C
+	// succ:  l00006E14 l00006E1C
+l00006E14:
+	r4 = r0
+	// succ:  l00006E1C
+l00006E1C:
+	r19_r18 = Mem0[r29:word64]
+	r17_r16 = Mem0[r29 + 8<i32>:word64]
+	r1_r0 = r18_r16
+	r3_r2 = r19_r17
+	// succ:  l00006E28_thunk__Wctombx
+l00006E28_thunk__Wctombx:
+	call _Wctombx (retsize: 0;)
+	return
+	// succ:  _Wctomb_exit
+_Wctomb_exit:
 
 
-void abort()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-abort_exit:
+// abort
+// Return size: 0
+define abort
 abort_entry:
+	r29 = fp
+	// succ:  l00006E30
 l00006E30:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 0<i32>
+	r0 = 6<32>
+	r0 = 1<32>
+	// succ:  l00006E38_thunk_calloc
+l00006E38_thunk_calloc:
+	call calloc (retsize: 0;)
+	return
+	// succ:  abort_exit
+abort_exit:
 
 
-void calloc()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-calloc_exit:
+// calloc
+// Return size: 0
+define calloc
 calloc_entry:
+	r29 = fp
+	// succ:  l00006E40
 l00006E40:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r0 = r17
+	// succ:  l00006E54
+l00006E54:
+	r1_r0 = 0<64>
+	r2 = r17
+	v12 = r30
+	r31 = Mem0[v12 + 4<i32>:word32]
+	r30 = Mem0[v12:word32]
+	r29 = v12 + 8<i32>
+	return
+	// succ:  calloc_exit
+calloc_exit:
 
 
-void _Tls_get__Errno()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Tls_get__Errno_exit:
+// _Tls_get__Errno
+// Return size: 0
+define _Tls_get__Errno
 _Tls_get__Errno_entry:
+	r29 = fp
+	// succ:  l00006E70
 l00006E70:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r1 = 1<32>
+	r17 = 0x1003C<32>
+	r16 = 0x10038<32>
+	Mem0[r29:word64] = r19_r18
+	goto l00006E8C
+	// succ:  l00006E8C
+l00006E70:
+	goto _Tls_get__Errno_exit
+	// succ:  _Tls_get__Errno_exit
+l00006E8C:
+	r0 = memw_locked(r16)
+	p0 = r0 > 0<32>
+	branch p0 l00006EA0
+	// succ:  l00006E98 l00006EA0
+l00006E98:
+	branch p0 l00006E8C
+	// succ:  l00006EA0 l00006E8C
+l00006EA0:
+	r18 = 2<32>
+	r1 = 0x6FF0<32>
+	r0 = 0x1003C<32>
+	Mem0[r16:word32] = r18
+	r0 = Mem0[r17:word32]
+	r0 = Mem0[r17:word32]
+	r1 = r16
+	Mem0[r16:word32] = 0<32>
+	r0 = r16
+	r16 = 0<32>
+	// succ:  l00006F04
+l00006F04:
+	r19_r18 = Mem0[r29:word64]
+	r17_r16 = Mem0[r29 + 8<i32>:word64]
+	r0 = r16
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
+	return
+	// succ:  _Tls_get__Errno_exit
+_Tls_get__Errno_exit:
 
 
-void _Geterrno()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Geterrno_exit:
+// _Geterrno
+// Return size: 0
+define _Geterrno
 _Geterrno_entry:
+	r29 = fp
+	// succ:  l00006F10
 l00006F10:
+	// succ:  l00006F10_thunk__Tls_get__Errno
+l00006F10_thunk__Tls_get__Errno:
+	call _Tls_get__Errno (retsize: 0;)
+	return
+	// succ:  _Geterrno_exit
+_Geterrno_exit:
 
 
-void atexit()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-atexit_exit:
+// atexit
+// Return size: 0
+define atexit
 atexit_entry:
+	r29 = fp
+	// succ:  l00006F20
 l00006F20:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r0 = 1<32>
+	r16 = r0
+	r0 = Mem0[gp + 12<i32>:word32]
+	r17 = 0xFFFFFFFF<32>
+	r1 = Mem0[gp + 64<i32>:word32]
+	r0 = Mem0[gp + 12<i32>:word32]
+	r1 = Mem0[gp + 8<i32>:word32]
+	r17 = 0<32>
+	r0 = r0 + 0xFFFFFFFF<32>
+	r0 = 1<32>
+	v12 = r30
+	r31 = Mem0[v12 + 4<i32>:word32]
+	r30 = Mem0[v12:word32]
+	r29 = v12 + 8<i32>
+	return
+	// succ:  atexit_exit
+atexit_exit:
 
 
-void exit()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-exit_exit:
+// exit
+// Return size: 0
+define exit
 exit_entry:
+	r29 = fp
+	// succ:  l00006F70
 l00006F70:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r16 = r0
+	r2 = Mem0[gp + 4<i32>:word32]
+	r1 = Mem0[gp + 12<i32>:word32]
+	r0 = Mem0[gp + 8<i32>:word32]
+	r2 = r1 + 1<32>
+	Mem0[gp + 64<i32>:word32] = r2
+	r1 = Mem0[gp + 12<i32>:word32]
+	r1 = Mem0[gp + 8<i32>:word32]
+	r0 = r0 + 0xFFFFFFFF<32>
+	Mem0[gp:word32] = r0
+	Mem0[gp + 544<i32>:word32] = r17
+	Mem0[gp + 32<i32>:word32] = r1
+	// succ:  l00006FEC_thunk_free
+l00006FEC_thunk_free:
+	call free (retsize: 0;)
+	return
+	// succ:  exit_exit
+exit_exit:
 
 
-void free()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-free_exit:
+// free
+// Return size: 0
+define free
 free_entry:
+	r29 = fp
+	// succ:  l00006FF0
 l00006FF0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	// succ:  l00006FF0_thunk_fn00006FF4
+l00006FF0_thunk_fn00006FF4:
+	call fn00006FF4 (retsize: 0;)
+	return
+	// succ:  free_exit
+free_exit:
 
 
-void fwrite()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// fn00006FF4
+// Return size: 0
+define fn00006FF4
+fn00006FF4_entry:
+	r29 = fp
+	// succ:  l00006FF4
+l00006FF4:
+	r1 = 8<32>
+	r0 = 1<32>
+	r1 = Mem0[gp + 72<i32>:word32]
+	r0 = r16 + 0xFFFFFFF8<32>
+	Mem0[gp:word32] = r0
+	Mem0[r16 - 4<i32>:word32] = r1
+	r3 = r0 + r1
+	r2 = 0<32>
+	Mem0[gp + 64<i32>:word32] = r2
+	r2 = Mem0[r0 + 4<i32>:word32]
+	r2 = Mem0[r2 + 4<i32>:word32]
+	r3 = Mem0[r2:word32]
+	Mem0[r0 + 4<i32>:word32] = r2
+	r1 = r1 + r3
+	Mem0[r0:word32] = r1
+	goto l00007094_in_fn00006FF4
+	// succ:  l00007094_in_fn00006FF4
+l00006FF4:
+	r1 = 8<32>
+	r0 = 1<32>
+	r1 = Mem0[gp + 72<i32>:word32]
+	r0 = r16 + 0xFFFFFFF8<32>
+	Mem0[gp:word32] = r0
+	Mem0[r16 - 4<i32>:word32] = r1
+	r3 = r0 + r1
+	r2 = 0<32>
+	Mem0[gp + 64<i32>:word32] = r2
+	r2 = Mem0[r0 + 4<i32>:word32]
+	r2 = Mem0[r2 + 4<i32>:word32]
+	r3 = Mem0[r2:word32]
+	Mem0[r0 + 4<i32>:word32] = r2
+	r1 = r1 + r3
+	Mem0[r0:word32] = r1
+	// succ:  l00007094
+l00007094:
+	r0 = 1<32>
+	v12 = r30
+	r31 = Mem0[v12 + 4<i32>:word32]
+	r30 = Mem0[v12:word32]
+	r29 = v12 + 8<i32>
+	return
+l00007094_in_fn00006FF4:
+	r0 = 1<32>
+	v9 = r30
+	r31 = Mem0[v9 + 4<i32>:word32]
+	r30 = Mem0[v9:word32]
+	r29 = v9 + 8<i32>
+	return
+	// succ:  fn00006FF4_exit
+fn00006FF4_exit:
 
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fwrite_exit:
+
+// fwrite
+// Return size: 0
+define fwrite
 fwrite_entry:
+	r29 = fp
+	// succ:  l000070C0
 l000070C0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 56<i32>
+	r19 = r0
+	r0 = 0<32>
+	r17_r16 = r3_r1
+	r0 = r2
+	r23 = r21
+	r0 = r17
+	// succ:  l000070E8
+l000070E8:
+	r0 = Mem0[r17 + 16<i32>:word32]
+	r18 = r23
+	r1 = Mem0[r17 + 24<i32>:word32]
+	r0 = r17
+	r22 = 0<32>
+	r0 = Mem0[r17 + 1<i32>:byte]
+	r2 = r18
+	r3 = r18
+	r3 = p0
+	r1 = Mem0[r29 + 8<i32>:word64]
+	r3 = r18
+	p0 = r0 == 0<32>
+	branch p0 l0000714C
+	// succ:  l0000713C l0000714C
+l0000713C:
+	p1 = r1
+	r2 = Mem0[r17 + 24<i32>:word32]
+	r0 = Mem0[r17 + 16<i32>:word32]
+	r1 = r19
+	r5 = p1
+	goto l00007154
+	// succ:  l00007154
+l0000714C:
+	r2 = Mem0[r17 + 24<i32>:word32]
+	r0 = Mem0[r17 + 16<i32>:word32]
+	r1 = r19
+	// succ:  l00007154
+l00007154:
+	Mem0[r29 + 8<i32>:word32] = r5
+	p0 = r3 >u r4
+	r0 = Mem0[r17 + 16<i32>:word32]
+	r0 = Mem0[r29 + 8<i32>:word32]
+	r24 = Mem0[r17 + 8<i32>:word32]
+	r0 = r17 + 0<32>
+	r19 = r19 + r20
+	r18 = 0<32>
+	r22 = 0<32>
+	p0 = r18 == r20
+	branch p0 l000070E8
+	// succ:  l000071C4 l000070E8
+l000071C4:
+	// succ:  l000071C8
+l000071C8:
+	r0 = Mem0[r17 + 1<i32>:byte]
+	p0 = r22 == 0<32>
+	r20 = Mem0[r17 + 8<i32>:word32]
+	r19 = Mem0[r17 + 16<i32>:word32]
+	r0 = r17
+	p0 = r0 == 0<32>
+	r22 = 0<32>
+	r1 = r16
+	// succ:  l00007208_thunk___restore_r16_through_r25_and_deallocframe
+l00007208_thunk___restore_r16_through_r25_and_deallocframe:
+	call __restore_r16_through_r25_and_deallocframe (retsize: 0;)
+	return
+	// succ:  fwrite_exit
+fwrite_exit:
 
 
-void dkw_malloc_init()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-dkw_malloc_init_exit:
+// dkw_malloc_init
+// Return size: 0
+define dkw_malloc_init
 dkw_malloc_init_entry:
+	r29 = fp
+	// succ:  l00007210
 l00007210:
+	// succ:  l00007214_thunk_fn00006FF4
+l00007214_thunk_fn00006FF4:
+	call fn00006FF4 (retsize: 0;)
+	return
+	// succ:  dkw_malloc_init_exit
+dkw_malloc_init_exit:
 
 
-void malloc()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-malloc_exit:
+// malloc
+// Return size: 0
+define malloc
 malloc_entry:
+	r29 = fp
+	// succ:  l00007220
 l00007220:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r0 = 1<32>
+	r16 = r0
+	r1 = r16 + 0xF<32>
+	r17 = r1 & 0xFFFFFFF8<32>
+	r0 = 8<32>
+	// succ:  l00007254
+l00007254:
+	r4 = Mem0[gp + 68<i32>:word32]
+	r2 = 8<32>
+	r5 = r4
+	r0 = r2
+	r1 = Mem0[r0:word32]
+	r2 = r1
+	// succ:  l000072E0
+l000072E0:
+	r0 = 1<32>
+	r2 = Mem0[r0:word32]
+	r3 = Mem0[r1:word32]
+	r3 = 0<32>
+	r0 = Mem0[r2 + 4<i32>:word32]
+	r3 = r2 + 4<32>
+	p0 = r0 == 0<32>
+	Mem0[gp + 96<i32>:word32] = r3
+	r16 = r1 + 8<32>
+	r0 = 1<32>
+	v17 = r30
+	r31 = Mem0[v17 + 4<i32>:word32]
+	r30 = Mem0[v17:word32]
+	r29 = v17 + 8<i32>
+	return
+	// succ:  malloc_exit
+malloc_exit:
 
 
-void memchr()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-memchr_exit:
+// memchr
+// Return size: 0
+define memchr
 memchr_entry:
+	r29 = fp
+	// succ:  l00007350
 l00007350:
+	r3 = r0
+	r0 = 0<32>
+	r1 = r1 & 0xFF<32>
+	return
+	// succ:  memchr_exit
+memchr_exit:
 
 
-void puts()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-puts_exit:
+// puts
+// Return size: 0
+define puts
 puts_entry:
+	r29 = fp
+	// succ:  l00007380
 l00007380:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r16 = r0
+	r0 = 0xE498<32>
+	r1_r0 = 0xE4980000000A<64>
+	p0 = r0 > 0xFFFFFFFF<32>
+	r0 = 0xE498<32>
+	r1 = p1
+	r17_r16 = Mem0[r29 + 8<i32>:word64]
+	r1 = Mem0[r29:word64]
+	p0 = r1
+	v13 = r30
+	r31 = Mem0[v13 + 4<i32>:word32]
+	r30 = Mem0[v13:word32]
+	r29 = v13 + 8<i32>
+	return
+	// succ:  puts_exit
+puts_exit:
 
 
-void memcpy()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-memcpy_exit:
+// memcpy
+// Return size: 0
+define memcpy
 memcpy_entry:
+	r29 = fp
+	// succ:  l000073E0
 l000073E0:
+	p1 = r1 == r0
+	p0 = r2 >u 0x17<32>
+	return
+	// succ:  memcpy_exit
+memcpy_exit:
 
 
-void strlen()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-strlen_exit:
+// strlen
+// Return size: 0
+define strlen
 strlen_entry:
+	r29 = fp
+	// succ:  l000076E0
 l000076E0:
+	r4 = Mem0[r0:byte]
+	r2 = 0<32>
+	r4 = p0
+	r2 = r2 + 0xFFFFFFF8<32>
+	return
+	// succ:  strlen_exit
+strlen_exit:
 
 
-void raise()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-raise_exit:
+// raise
+// Return size: 0
+define raise
 raise_entry:
+	r29 = fp
+	// succ:  l00007760
 l00007760:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 32<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r1 = 1<32>
+	Mem0[r29 + 16<i32>:word64] = r19_r18
+	r16 = r0
+	r18 = 0xFFFFFFFF<32>
+	r17 = r0
+	r1_r0 = 0x6666664200000027<64>
+	Mem0[r3 + 9<i32>:byte] = 0x80<8>
+	r2 = r3 + 8<32>
+	r5 = r16 + 9<32>
+	p0 = r5 >u 0x12<32>
+	r3 = r4 >>u 0x1F<32>
+	r1 = 0xE4E8<32>
+	r0 = 3<32>
+	r17 = r2 + 1<32>
+	// succ:  l00007850
+l00007850:
+	r1 = 0xE4E8<32>
+	r0 = 0xD4CC<32>
+	r0 = 1<32>
+	// succ:  l0000787C_thunk_signal
+l0000787C_thunk_signal:
+	call signal (retsize: 0;)
+	return
+	// succ:  raise_exit
+raise_exit:
 
 
-void signal()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-signal_exit:
+// signal
+// Return size: 0
+define signal
 signal_entry:
+	r29 = fp
+	// succ:  l00007880
 l00007880:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r17_r16 = r1_r0
+	Mem0[r29:word64] = r19_r18
+	r18 = -1<i32>
+	r0 = r16 + 0xFFFFFFFF<32>
+	p0 = r0 >u 0x2A<32>
+	r0 = 1<32>
+	r19_r18 = Mem0[r29:word64]
+	r17_r16 = Mem0[r29 + 8<i32>:word64]
+	r0 = r18
+	v15 = r30
+	r31 = Mem0[v15 + 4<i32>:word32]
+	r30 = Mem0[v15:word32]
+	r29 = v15 + 8<i32>
+	return
+	// succ:  signal_exit
+signal_exit:
 
 
-void strchr()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-strchr_exit:
+// strchr
+// Return size: 0
+define strchr
 strchr_entry:
+	r29 = fp
+	// succ:  l000078D0
 l000078D0:
+	r2 = r1 & 0xFF<32>
+	r1 = Mem0[r0:byte]
+	r1 = 0<32>
+	r0 = r0 + 1<32>
+	r0 = r1
+	return
+	// succ:  strchr_exit
+strchr_exit:
 
 
-void _Tls_get__Ctype()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Tls_get__Ctype_exit:
+// _Tls_get__Ctype
+// Return size: 0
+define _Tls_get__Ctype
 _Tls_get__Ctype_entry:
+	r29 = fp
+	// succ:  l000078F0
 l000078F0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r1 = 1<32>
+	r17 = 0x10050<32>
+	r16 = 0x1004C<32>
+	Mem0[r29:word64] = r19_r18
+	// succ:  l0000790C
+l0000790C:
+	r0 = memw_locked(r16)
+	p0 = r0 > 0<32>
+	branch p0 l00007920
+	// succ:  l00007918 l00007920
+l00007918:
+	branch p0 l0000790C
+	// succ:  l00007920 l0000790C
+l00007920:
+	r18 = 2<32>
+	r1 = 0x6FF0<32>
+	r0 = 0x10050<32>
+	Mem0[r16:word32] = r18
+	r0 = Mem0[r17:word32]
+	r0 = Mem0[r17:word32]
+	r1 = r16
+	r0 = r16
+	r16 = 0<32>
+	// succ:  l0000798C
+l0000798C:
+	r19_r18 = Mem0[r29:word64]
+	r17_r16 = Mem0[r29 + 8<i32>:word64]
+	r0 = r16
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
+	return
+	// succ:  _Tls_get__Ctype_exit
+_Tls_get__Ctype_exit:
 
 
-void _Getpctype()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Getpctype_exit:
+// _Getpctype
+// Return size: 0
+define _Getpctype
 _Getpctype_entry:
+	r29 = fp
+	// succ:  l00007998
 l00007998:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 0<i32>
+	v6 = r30
+	r31 = Mem0[v6 + 4<i32>:word32]
+	r30 = Mem0[v6:word32]
+	r29 = v6 + 8<i32>
+	return
+	// succ:  _Getpctype_exit
+_Getpctype_exit:
 
 
-void _Exit()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Exit_exit:
+// _Exit
+// Return size: 0
+define _Exit
 _Exit_entry:
+	r29 = fp
+	// succ:  l000079B0
 l000079B0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 0<i32>
+	// succ:  l000079BC_thunk__Fwprep
+l000079BC_thunk__Fwprep:
+	call _Fwprep (retsize: 0;)
+	return
+	// succ:  _Exit_exit
+_Exit_exit:
 
 
-void _Fwprep()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Fwprep_exit:
+// _Fwprep
+// Return size: 0
+define _Fwprep
 _Fwprep_entry:
+	r29 = fp
+	// succ:  l000079C0
 l000079C0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r16 = r0
+	r1 = Mem0[r16 + 16<i32>:word32]
+	r0 = Mem0[r16:word16]
+	r3 = r0 & r2
+	r0 = r16
+	r1 = 0xFFFFFFFF<32>
+	r0 = Mem0[r16:int16]
+	r0 = 0x200<32>
+	Mem0[r16 + 8<i32>:word32] = r0
+	Mem0[r16 + 16<i32>:word32] = r0
+	r1 = Mem0[r16:int16]
+	r2 = r0 + 0x200<32>
+	Mem0[r16 + 48<i32>:word32] = r0
+	Mem0[r16 + 52<i32>:word32] = r0
+	Mem0[r16 + 8<i32>:word16] = r0
+	Mem0[r16 + 12<i32>:word32] = r2
+	// succ:  l00007A80
+l00007A80:
+	r2 = Mem0[r16:int16]
+	r0 = Mem0[r16 + 8<i32>:word32]
+	r1 = 0<32>
+	Mem0[r16 + 20<i32>:word32] = r0
+	r3 = Mem0[r16 + 12<i32>:word32]
+	Mem0[r16 + 8<i32>:word16] = r2
+	Mem0[r16 + 24<i32>:word32] = r3
+	v12 = r30
+	r31 = Mem0[v12 + 4<i32>:word32]
+	r30 = Mem0[v12:word32]
+	r29 = v12 + 8<i32>
+	return
+	// succ:  _Fwprep_exit
+_Fwprep_exit:
 
 
-void _Getmem()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Getmem_exit:
+// _Getmem
+// Return size: 0
+define _Getmem
 _Getmem_entry:
+	r29 = fp
+	// succ:  l00007AB0
 l00007AB0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 0<i32>
+	v6 = r30
+	r31 = Mem0[v6 + 4<i32>:word32]
+	r30 = Mem0[v6:word32]
+	r29 = v6 + 8<i32>
+	return
+	// succ:  _Getmem_exit
+_Getmem_exit:
 
 
-void _Ldtob()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Ldtob_exit:
+// _Ldtob
+// Return size: 0
+define _Ldtob
 _Ldtob_entry:
+	r29 = fp
+	// succ:  l00007AD0
 l00007AD0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 256<i32>
+	r16 = r0
+	r26 = r1
+	r1_r0 = Mem0[r16:word64]
+	Mem0[r29 + 152<i32>:word64] = r1_r0
+	p0 = r18 == 0x61<32>
+	Mem0[r16 + 48<i32>:word32] = 1<32>
+	p0 = r18 == 0x67<32>
+	// succ:  l00007B18
+l00007B18:
+	r1 = r16
+	r0 = r29 + 0x96<32>
+	r0 = Mem0[r16 + 16<i32>:word32]
+	r1 = 0x22<32>
+	p0 = r2 == 0x65<32>
+	r2 = r26 + 0xFFFFFF9A<32>
+	branch p0 l00007B8C
+	// succ:  l00007B44 l00007B8C
+l00007B44:
+	r3 = 2<32>
+	r4 = 0x26<32>
+	// succ:  l00007B80
+l00007B80:
+	r2 = r2 & 0xFF<32>
+	r1 = r4 + 0<32>
+	p0 = r3 >u r2
+	// succ:  l00007B8C
+l00007B8C:
+	Mem0[r16 + 28<i32>:word32] = 0xFFFFFF83<32>
+	r2 = 3<32>
+	// succ:  l00007B98_thunk___restore_r16_through_r27_and_deallocframe
+l00007B98_thunk___restore_r16_through_r27_and_deallocframe:
+	call __restore_r16_through_r27_and_deallocframe (retsize: 0;)
+	return
+	// succ:  _Ldtob_exit
+_Ldtob_exit:
 
 
-void _LDunscale()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_LDunscale_exit:
+// _LDunscale
+// Return size: 0
+define _LDunscale
 _LDunscale_entry:
+	r29 = fp
+	// succ:  l00008100
 l00008100:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 0<i32>
+	v6 = r30
+	r31 = Mem0[v6 + 4<i32>:word32]
+	r30 = Mem0[v6:word32]
+	r29 = v6 + 8<i32>
+	return
+	// succ:  _LDunscale_exit
+_LDunscale_exit:
 
 
-void _Litob()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Litob_exit:
+// _Litob
+// Return size: 0
+define _Litob
 _Litob_entry:
+	r29 = fp
+	// succ:  l00008110
 l00008110:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 72<i32>
+	r2 = 0x18<32>
+	r16 = r0
+	r3 = 0x30<32>
+	p0 = r1 == 0x58<32>
+	p1 = r1 == 0x6F<32>
+	r17 = r3 + 0<32>
+	r17 = r2 + 0<32>
+	r21_r20 = Mem0[r16:word64]
+	// succ:  l00008180
+l00008180:
+	r1_r0 = 0<64>
+	r19_r18 = 3<64>
+	r23 = 0x17<32>
+	r24 = r29 + 0<32>
+	r3_r2 = r19_r18
+	r3_r2 = r19_r18
+	r1_r0 = r21_r20
+	r21_r20 = r1_r0
+	Mem0[r16:word64] = r21_r20
+	r23 = r29 + 0<32>
+	r26 = r23 + 0xFFFFFFFF<32>
+	r27 = r23 + r26
+	r3_r2 = r19_r18
+	r1_r0 = r21_r20
+	Mem0[r16:word64] = r1_r0
+	r2 = r26 + 0xFFFFFFFF<32>
+	r5_r4 = r5_r4
+	r21_r20 = r1_r0
+	r26 = r2
+	p0 = r26 > 0<32>
+	r23 = r2 + 1<32>
+	r0 = Mem0[r16 - 4<i32>:byte]
+	r0 = r29 + 0<32>
+	p0 = r0 == 0x30<32>
+	r0 = r29 + 0<32>
+	r23 = r23 + 0xFFFFFFFF<32>
+	r0 = r0 + (r23 + 0x3F<32>)
+	Mem0[r0:byte] = 0x30<8>
+	r0 = Mem0[r16 + 16<i32>:word32]
+	r1 = r29 + 0<32>
+	Mem0[r16 + 28<i32>:word32] = r2
+	r1 = r1 + r23
+	r1 = Mem0[r16 + 48<i32>:word32]
+	r2 = Mem0[r16 + 60<i32>:word16]
+	Mem0[r16 + 24<i32>:word32] = r0
+	r1 = r2 & 0xFFEF<32>
+	Mem0[r16 + 60<i32>:word16] = r1
+	// succ:  l0000829C_thunk___restore_r16_through_r27_and_deallocframe
+l0000829C_thunk___restore_r16_through_r27_and_deallocframe:
+	call __restore_r16_through_r27_and_deallocframe (retsize: 0;)
+	return
+	// succ:  _Litob_exit
+_Litob_exit:
 
 
-void _LXp_getw()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_LXp_getw_exit:
+// _LXp_getw
+// Return size: 0
+define _LXp_getw
 _LXp_getw_entry:
+	r29 = fp
+	// succ:  l000082E0
 l000082E0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	p0 = r1 == 0<32>
+	r17_r16 = Mem0[gp + 192<i32>:word64]
+	branch p0 l00008348
+	// succ:  l000082F0 l00008348
+l000082F0:
+	r17_r16 = Mem0[r0:word64]
+	// succ:  l00008348
+l00008348:
+	v11 = r30
+	r31 = Mem0[v11 + 4<i32>:word32]
+	r30 = Mem0[v11:word32]
+	r29 = v11 + 8<i32>
+	return
+	// succ:  _LXp_getw_exit
+_LXp_getw_exit:
 
 
-void _LXp_setw()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_LXp_setw_exit:
+// _LXp_setw
+// Return size: 0
+define _LXp_setw
 _LXp_setw_entry:
+	r29 = fp
+	// succ:  l00008350
 l00008350:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 48<i32>
+	r17_r16 = r1_r0
+	r19_r18 = r3_r2
+	Mem0[r29 + 8<i32>:word64] = r19_r18
+	r1 = r29 + 8<32>
+	r0 = r29 + 6<32>
+	branch p0 l000083AC
+	// succ:  l00008388 l000083AC
+l00008388:
+	r1_r0 = Mem0[r29 + 8<i32>:word64]
+	r3_r2 = 0<64>
+	Mem0[r16 + 8<i32>:word64] = r3_r2
+	Mem0[r16:word64] = r1_r0
+	// succ:  l0000838C_thunk_fn0000845C
+l0000838C_thunk_fn0000845C:
+	call fn0000845C (retsize: 0;)
+	return
+	// succ:  _LXp_setw_exit
+l000083AC:
+	r0 = r29 + 8<32>
+	r1 = 0x1A<32>
+	r1 = Mem0[r29 + 6<i32>:int16]
+	r0 = r29 + 8<32>
+	r3_r2 = Mem0[r29 + 8<i32>:word64]
+	r1_r0 = r19_r18
+	Mem0[r16:word64] = r3_r2
+	p0 = r17 > 2<32>
+	r19_r18 = r1_r0
+	Mem0[r16 + 8<i32>:word64] = r19_r18
+	branch p0 l0000843C
+	// succ:  l000083E0 l0000843C
+l000083E0:
+	r23_r22 = Mem0[gp + 192<i32>:word64]
+	r20 = r16 + 8<32>
+	r0 = r29 + 6<32>
+	r1 = r20
+	r1 = Mem0[r29 + 6<i32>:int16]
+	r0 = r20
+	r3_r2 = Mem0[r20:word64]
+	r1_r0 = r19_r18
+	Mem0[r16 + 16<i32>:word64] = r1_r0
+	r1_r0 = 0<64>
+	Mem0[r16 + 24<i32>:word64] = r1_r0
+	goto l00008470
+	// succ:  l00008470
+l0000843C:
+	branch p0 l00008448
+	// succ:  l00008440 l00008448
+l00008440:
+	r1_r0 = 0<64>
+	Mem0[r16 + 16<i32>:word64] = r1_r0
+	// succ:  l00008448
+l00008448:
+	goto l00008528
+	// succ:  l00008528
+l00008470:
+	r0 = r29 + 0x1E<32>
+	// succ:  l00008470_thunk_fn00008474
+l00008470_thunk_fn00008474:
+	call fn00008474 (retsize: 0;)
+	return
+	// succ:  _LXp_setw_exit
+l00008528:
+	Mem0[r18:word64] = r3_r2
+	Mem0[r29 + 40<i32>:word64] = r23_r22
+	Mem0[r29 + 16<i32>:word64] = r3_r2
+	r1 = r29 + 0x10<32>
+	r0 = r29 + 0xE<32>
+	r4 = Mem0[r29 + 14<i32>:int16]
+	p0 = r5 > 0xFFFFFFE6<32>
+	r1 = r27 + 0<32>
+	r6 = r26 + 0<32>
+	r3_r2 = Mem0[r29 + 40<i32>:word64]
+	r5_r4 = Mem0[r1:word64]
+	r1 = r1 + 8<32>
+	r0 = r0 + 1<32>
+	// succ:  l000085A4
+l000085A4:
+	r5_r4 = Mem0[r0:word64]
+	Mem0[r0 + 8<i32>:word64] = r5_r4
+	r0 = r0 + 0xFFFFFFF8<32>
+	goto l00008528
+	// succ:  l00008528
+_LXp_setw_exit:
 
 
-void _LXp_addh()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_LXp_addh_exit:
+// _LXp_addh
+// Return size: 0
+define _LXp_addh
 _LXp_addh_entry:
+	r29 = fp
+	// succ:  l00008450
 l00008450:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 96<i32>
+	Mem0[r29 + 8<i32>:word32] = r0
+	r17 = r1
+	r19_r18 = r3_r2
+	// succ:  l00008458_thunk_fn0000845C
+l00008458_thunk_fn0000845C:
+	call fn0000845C (retsize: 0;)
+	return
+	// succ:  _LXp_addh_exit
+_LXp_addh_exit:
 
 
-void _LXp_mulh()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// fn0000845C
+// Return size: 0
+define fn0000845C
+fn0000845C_entry:
+	r29 = fp
+	// succ:  l0000845C
+l0000845C:
+	Mem0[r29 + 8<i32>:word32] = r0
+	r17 = r1
+	Mem0[r29 + 32<i32>:word64] = r19_r18
+	Mem0[r29 + 40<i32>:word64] = r19_r18
+	r0 = r29 + 0x1E<32>
+	r1 = r29 + 0x20<32>
+	goto l00008468_thunk_fn00008474
+	// succ:  l00008468_thunk_fn00008474
+l0000845C:
+	Mem0[r29 + 32<i32>:word64] = r19_r18
+	Mem0[r29 + 40<i32>:word64] = r19_r18
+	r0 = r29 + 0x1E<32>
+	r1 = r29 + 0x20<32>
+	r0 = Mem0[r29 + 8<i32>:word32]
+	r0 = Mem0[r29 + 8<i32>:word64]
+	r1 = r29 + 0x28<32>
+	r0 = Mem0[r0 + 6<i32>:int16]
+	r1 = Mem0[r1:int16]
+	r0 = 1<32>
+	r16 = 0x30<32>
+	r2 = Mem0[r29 + 8<i32>:word32]
+	r1_r0 = Mem0[r16:word64]
+	p0 = r17 > 1<32>
+	Mem0[r2:word64] = r1_r0
+	branch p0 l00008780
+	goto l000084C4_thunk_fn000084D0
+	// succ:  l000084C4_thunk_fn000084D0 l000084C4_thunk_fn00008780
+l00008468_thunk_fn00008474:
+	call fn00008474 (retsize: 0;)
+	return
+	// succ:  fn0000845C_exit
+l000084C4_thunk_fn000084D0:
+	call fn000084D0 (retsize: 0;)
+	return
+	// succ:  fn0000845C_exit
+l000084C4_thunk_fn00008780:
+	call fn00008780 (retsize: 0;)
+	return
+	// succ:  fn0000845C_exit
+fn0000845C_exit:
 
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_LXp_mulh_exit:
+
+// fn00008474
+// Return size: 0
+define fn00008474
+fn00008474_entry:
+	r29 = fp
+	// succ:  l00008474
+l00008474:
+	r0 = Mem0[r29 + 8<i32>:word32]
+	r0 = Mem0[r29 + 8<i32>:word64]
+	r1 = r29 + 0x28<32>
+	r0 = Mem0[r0 + 6<i32>:int16]
+	r1 = Mem0[r1:int16]
+	r0 = 1<32>
+	r16 = 0x30<32>
+	r2 = Mem0[r29 + 8<i32>:word32]
+	r1_r0 = Mem0[r16:word64]
+	p0 = r17 > 1<32>
+	Mem0[r2:word64] = r1_r0
+	branch p0 l000084C8_thunk_fn00008780
+	goto l000084C8_thunk_fn000084D0
+	// succ:  l000084C8_thunk_fn000084D0 l000084C8_thunk_fn00008780
+l00008474:
+	r0 = Mem0[r29 + 8<i32>:word32]
+	r0 = Mem0[r29 + 8<i32>:word64]
+	r1 = r29 + 0x28<32>
+	r0 = Mem0[r0 + 6<i32>:int16]
+	r1 = Mem0[r1:int16]
+	r0 = 1<32>
+	r16 = 0x30<32>
+	r2 = Mem0[r29 + 8<i32>:word32]
+	r1_r0 = Mem0[r16:word64]
+	p0 = r17 > 1<32>
+	Mem0[r2:word64] = r1_r0
+	branch p0 l000084C8_thunk_fn00008780
+	goto l000084C8_thunk_fn000084D0
+	// succ:  l000084C8_thunk_fn000084D0 l000084C8_thunk_fn00008780
+l000084C8_thunk_fn000084D0:
+	call fn000084D0 (retsize: 0;)
+	return
+	// succ:  fn00008474_exit
+l000084C8_thunk_fn000084D0:
+	call fn000084D0 (retsize: 0;)
+	return
+	// succ:  fn00008474_exit
+l000084C8_thunk_fn00008780:
+	call fn00008780 (retsize: 0;)
+	return
+	// succ:  fn00008474_exit
+l000084C8_thunk_fn00008780:
+	call fn00008780 (retsize: 0;)
+	return
+	// succ:  fn00008474_exit
+fn00008474_exit:
+
+
+// fn000084D0
+// Return size: 0
+define fn000084D0
+fn000084D0_entry:
+	r29 = fp
+	// succ:  l000084D0
+l000084D0:
+	r2 = Mem0[r29 + 8<i32>:word64]
+	r1_r0 = 0<64>
+	Mem0[r2 + 8<i32>:word64] = r1_r0
+	r0 = Mem0[r29 + 8<i32>:word32]
+	// succ:  l000084D4_thunk___restore_r16_through_r27_and_deallocframe
+l000084D4_thunk___restore_r16_through_r27_and_deallocframe:
+	call __restore_r16_through_r27_and_deallocframe (retsize: 0;)
+	return
+	// succ:  fn000084D0_exit
+fn000084D0_exit:
+
+
+// fn00008780
+// Return size: 0
+define fn00008780
+fn00008780_entry:
+	r29 = fp
+	// succ:  l00008780
+l00008780:
+	r0 = Mem0[r29 + 8<i32>:word32]
+	// succ:  l00008780_thunk___restore_r16_through_r27_and_deallocframe
+l00008780_thunk___restore_r16_through_r27_and_deallocframe:
+	call __restore_r16_through_r27_and_deallocframe (retsize: 0;)
+	return
+	// succ:  fn00008780_exit
+fn00008780_exit:
+
+
+// _LXp_mulh
+// Return size: 0
+define _LXp_mulh
 _LXp_mulh_entry:
+	r29 = fp
+	// succ:  l00008788
 l00008788:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 96<i32>
+	r19_r18 = r3_r2
+	r17_r16 = r1_r0
+	r3_r2 = r19_r18
+	r1_r0 = Mem0[r16:word64]
+	r0 = r29 + 0x10<32>
+	r3_r2 = r1_r0
+	Mem0[r29 + 16<i32>:word64] = r3_r2
+	r0 = 1<32>
+	r1_r0 = Mem0[r29 + 16<i32>:word64]
+	p0 = r20 > 0<32>
+	Mem0[r16:word64] = r1_r0
+	branch p0 l000088EC
+	// succ:  l000087E8 l000088EC
+l000087E8:
+	r1_r0 = 0<64>
+	Mem0[r16 + 8<i32>:word64] = r1_r0
+	// succ:  l00008870
+l00008870:
+	r0 = r29 + 6<32>
+	r1 = r29 + 8<32>
+	Mem0[r29 + 8<i32>:word64] = r3_r2
+	r0 = r29 + 8<32>
+	r1 = 0x1A<32>
+	r1 = Mem0[r29 + 6<i32>:int16]
+	r0 = r29 + 8<32>
+	r3_r2 = Mem0[r29 + 8<i32>:word64]
+	r1_r0 = r17_r16
+	r1_r0 = Mem0[r29 + 16<i32>:word64]
+	r3_r2 = Mem0[r29 + 8<i32>:word64]
+	r1_r0 = r17_r16
+	r3_r2 = r1_r0
+	r1 = Mem0[r29:word64]
+	r0 = 0<32>
+	Mem0[r1 - 8<i32>:word64] = r5_r4
+	r1 = r2
+	goto l000088F0
+	// succ:  l000088F0
+l000088EC:
+l000088EC_thunk_fn0000897C:
+	call fn0000897C (retsize: 0;)
+	return
+	// succ:  _LXp_mulh_exit
+l000088F0:
+	// succ:  l000088EC_thunk_fn0000897C l00008980
+l00008980:
+	r1_r0 = r18_r17
+	// succ:  l00008980_thunk_fn00008984
+l00008980_thunk_fn00008984:
+	call fn00008984 (retsize: 0;)
+	return
+	// succ:  _LXp_mulh_exit
+_LXp_mulh_exit:
 
 
-void _LXp_movx()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_LXp_movx_exit:
+// _LXp_movx
+// Return size: 0
+define _LXp_movx
 _LXp_movx_entry:
+	r29 = fp
+	// succ:  l000088F4
 l000088F4:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	r1 = r2
+	r3 = r1 << 3<32>
+	Mem0[r29:word64] = r17_r16
+	r2 = r3
+	r16 = r0
+	v12 = r30
+	r31 = Mem0[v12 + 4<i32>:word32]
+	r30 = Mem0[v12:word32]
+	r29 = v12 + 8<i32>
+	return
+	// succ:  _LXp_movx_exit
+_LXp_movx_exit:
 
 
-void _LXp_addx()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_LXp_addx_exit:
+// _LXp_addx
+// Return size: 0
+define _LXp_addx
 _LXp_addx_entry:
+	r29 = fp
+	// succ:  l00008910
 l00008910:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 32<i32>
+	r19_r18 = r2_r1
+	r17_r16 = r0_r3
+	r20 = 0<32>
+	r23_r22 = Mem0[gp + 192<i32>:word64]
+	r3_r2 = Mem0[r19:word64]
+	r1_r0 = r18_r17
+	r19 = r19 + 8<32>
+	// succ:  l00008950_thunk_fn00008A20
+l00008950_thunk_fn00008A20:
+	call fn00008A20 (retsize: 0;)
+	return
+	// succ:  _LXp_addx_exit
+_LXp_addx_exit:
 
 
-void _LXp_subx()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_LXp_subx_exit:
+// _LXp_subx
+// Return size: 0
+define _LXp_subx
 _LXp_subx_entry:
+	r29 = fp
+	// succ:  l00008954
 l00008954:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 32<i32>
+	r19_r18 = r2_r1
+	r17_r16 = r0_r3
+	r20 = 0<32>
+	r23_r22 = Mem0[gp + 192<i32>:word64]
+	r3_r2 = Mem0[r19:word64]
+	r1_r0 = r18_r17
+	r20 = r20 + 1<32>
+	// succ:  l00008974_thunk_fn0000897C
+l00008974_thunk_fn0000897C:
+	call fn0000897C (retsize: 0;)
+	return
+	// succ:  _LXp_subx_exit
+_LXp_subx_exit:
 
 
-void _LXp_ldexpx()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// fn0000897C
+// Return size: 0
+define fn0000897C
+fn0000897C_entry:
+	r29 = fp
+	// succ:  l0000897C
+l0000897C:
+	r1_r0 = r18_r17
+	r20 = r20 + 1<32>
+	goto l0000897C_thunk_fn00008984
+	// succ:  l0000897C_thunk_fn00008984
+l0000897C:
+	r19 = r19 + 8<32>
+	goto l00008984_thunk_fn00008A44
+	// succ:  l00008984_thunk_fn00008A44
+l0000897C_thunk_fn00008984:
+	call fn00008984 (retsize: 0;)
+	return
+	// succ:  fn0000897C_exit
+l00008984_thunk_fn00008A44:
+	call fn00008A44 (retsize: 0;)
+	return
+	// succ:  fn0000897C_exit
+fn0000897C_exit:
 
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_LXp_ldexpx_exit:
+
+// fn00008984
+// Return size: 0
+define fn00008984
+fn00008984_entry:
+	r29 = fp
+	// succ:  l00008984
+l00008984:
+	r19 = r19 + 8<32>
+	goto l00008994_thunk_fn00008A44
+	// succ:  l00008994_thunk_fn00008A44
+l00008984:
+	r19 = r19 + 8<32>
+	goto l00008994_thunk_fn00008A44
+	// succ:  l00008994_thunk_fn00008A44
+l00008994_thunk_fn00008A44:
+	call fn00008A44 (retsize: 0;)
+	return
+	// succ:  fn00008984_exit
+l00008994_thunk_fn00008A44:
+	call fn00008A44 (retsize: 0;)
+	return
+	// succ:  fn00008984_exit
+fn00008984_exit:
+
+
+// _LXp_ldexpx
+// Return size: 0
+define _LXp_ldexpx
 _LXp_ldexpx_entry:
+	r29 = fp
+	// succ:  l000089A0
 l000089A0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 32<i32>
+	r17_r16 = r1_r0
+	r21_r20 = Mem0[gp + 192<i32>:word64]
+	r22 = r16
+	r19 = r19 + 1<32>
+	r2 = r18
+	r23 = r22 + 8<32>
+	r1_r0 = Mem0[r22:word64]
+	Mem0[r22:word64] = r1_r0
+	r22 = r23
+	// succ:  l000089E8_thunk_fn00008A48
+l000089E8_thunk_fn00008A48:
+	call fn00008A48 (retsize: 0;)
+	return
+	// succ:  _LXp_ldexpx_exit
+_LXp_ldexpx_exit:
 
 
-void _LXp_mulx()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_LXp_mulx_exit:
+// _LXp_mulx
+// Return size: 0
+define _LXp_mulx
 _LXp_mulx_entry:
+	r29 = fp
+	// succ:  l000089F0
 l000089F0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 48<i32>
+	r20 = r4
+	r19_r18 = r3_r2
+	r17_r16 = r1_r0
+	r25_r24 = Mem0[gp + 192<i32>:word64]
+	r3_r2 = Mem0[r18:word64]
+	r1_r0 = Mem0[r18 + 8<i32>:word64]
+	// succ:  l00008A1C_thunk_fn00008A20
+l00008A1C_thunk_fn00008A20:
+	call fn00008A20 (retsize: 0;)
+	return
+	// succ:  _LXp_mulx_exit
+_LXp_mulx_exit:
 
 
-void _LXp_invx()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// fn00008A20
+// Return size: 0
+define fn00008A20
+fn00008A20_entry:
+	r29 = fp
+	// succ:  l00008A20
+l00008A20:
+	r1_r0 = r16_r20
+	r1_r0 = r17_r16
+	goto l00008A34_thunk_fn00008AA4
+	// succ:  l00008A34_thunk_fn00008AA4
+l00008A20:
+	r1_r0 = r16_r20
+	r1_r0 = r17_r16
+	goto l00008A34_thunk_fn00008AA4
+	// succ:  l00008A34_thunk_fn00008AA4
+l00008A34_thunk_fn00008AA4:
+	call fn00008AA4 (retsize: 0;)
+	return
+	// succ:  fn00008A20_exit
+l00008A34_thunk_fn00008AA4:
+	call fn00008AA4 (retsize: 0;)
+	return
+	// succ:  fn00008A20_exit
+fn00008A20_exit:
 
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_LXp_invx_exit:
+
+// fn00008A44
+// Return size: 0
+define fn00008A44
+fn00008A44_entry:
+	r29 = fp
+	goto l00008A44_thunk_fn0000897C
+	// succ:  l00008A44_thunk_fn0000897C
+l00008A44:
+	r2 = r21
+	goto l00008A44_thunk_fn00008A48
+	// succ:  l00008A44_thunk_fn00008A48
+l00008A44_thunk_fn0000897C:
+	call fn0000897C (retsize: 0;)
+	return
+	// succ:  fn00008A44_exit
+l00008A44_thunk_fn00008A48:
+	call fn00008A48 (retsize: 0;)
+	return
+	// succ:  fn00008A44_exit
+fn00008A44_exit:
+
+
+// fn00008A48
+// Return size: 0
+define fn00008A48
+fn00008A48_entry:
+	r29 = fp
+	// succ:  l00008A48
+l00008A48:
+	r3_r2 = Mem0[r18:word64]
+	r1_r0 = r17_r16
+	r23 = 1<32>
+	r1_r0 = Mem0[r26:word64]
+	r1_r0 = r20_r22
+	r2 = r21 + 0<32>
+	r1_r0 = r17_r22
+	r3_r2 = Mem0[r26:word64]
+	r3_r2 = Mem0[r27:word64]
+	r1_r0 = r17_r16
+	r27 = r27 + 8<32>
+	// succ:  l00008A94_thunk_fn00008AA4
+l00008A94_thunk_fn00008AA4:
+	call fn00008AA4 (retsize: 0;)
+	return
+	// succ:  fn00008A48_exit
+fn00008A48_exit:
+
+
+// fn00008AA4
+// Return size: 0
+define fn00008AA4
+fn00008AA4_entry:
+	r29 = fp
+	// succ:  l00008AA4
+l00008AA4:
+	// succ:  l00008B18
+l00008B18:
+	r2 = r20
+	r3_r2 = r25_r24
+	r1_r0 = r17_r19
+	r1_r0 = r27_r26
+	r3_r2 = r27_r26
+	r25_r24 = Mem0[gp + 216<i32>:word64]
+	r3_r2 = Mem0[r16 + 8<i32>:word64]
+	r1_r0 = r25_r24
+	r3_r2 = r1_r0
+	r27_r26 = Mem0[gp + 192<i32>:word64]
+	r24 = 1<32>
+	r1_r0 = r17_r16
+	r3_r2 = r1_r0
+	// succ:  l00008B5C_thunk_fn00008B64
+l00008B5C_thunk_fn00008B64:
+	call fn00008B64 (retsize: 0;)
+	return
+	// succ:  fn00008AA4_exit
+fn00008AA4_exit:
+
+
+// _LXp_invx
+// Return size: 0
+define _LXp_invx
 _LXp_invx_entry:
+	r29 = fp
+	// succ:  l00008AC0
 l00008AC0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 48<i32>
+	r22 = r2
+	r17_r16 = r1_r0
+	r0 = r16 + 0<32>
+	r0 = 0xE620<32>
+	r1_r0 = Mem0[r0:word64]
+	Mem0[r16:word64] = r1_r0
+	// succ:  l00008AF4_thunk_fn00008B64
+l00008AF4_thunk_fn00008B64:
+	call fn00008B64 (retsize: 0;)
+	return
+	// succ:  _LXp_invx_exit
+_LXp_invx_exit:
 
 
-void _LXp_sqrtx()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// fn00008B64
+// Return size: 0
+define fn00008B64
+fn00008B64_entry:
+	r29 = fp
+	// succ:  l00008B64
+l00008B64:
+	r2 = r20
+	r1_r0 = r16_r22
+	r1_r0 = r17_r22
+	r4 = r21
+	r3_r2 = r17_r19
+	r3_r2 = Mem0[gp + 216<i32>:word64]
+	r1_r0 = r17_r22
+	r4 = r21
+	r1_r0 = r17_r22
+	r3_r2 = r17_r16
+	r18 = r22
+	r25 = 0<32>
+	r3_r2 = Mem0[r18:word64]
+	r1_r0 = r17_r16
+	r18 = r18 + 8<32>
+	r25 = r25 + 1<32>
+	Mem0[r16:word64] = r1_r0
+	// succ:  l00008CAC
+l00008CAC:
+	r25_r24 = Mem0[gp + 240<i32>:word64]
+	r23_r22 = Mem0[gp + 232<i32>:word64]
+	r2 = r21
+	r1_r0 = r19_r18
+	r3_r2 = r23_r22
+	r1_r0 = r17_r18
+	r3_r2 = r17_r16
+	r1_r0 = r17_r18
+	r4 = r20
+	r4 = r20
+	r1_r0 = r17_r18
+	r3_r2 = r17_r19
+	r3_r2 = r25_r24
+	r1_r0 = r17_r18
+	r4 = r20
+	r3_r2 = r17_r18
+	r1_r0 = r17_r19
+	r3_r2 = r17_r19
+	r4 = r20
+	r1_r0 = r17_r16
+	// succ:  l00008D20_thunk_fn00008DE0
+l00008D20_thunk_fn00008DE0:
+	call fn00008DE0 (retsize: 0;)
+	return
+	// succ:  fn00008B64_exit
+fn00008B64_exit:
 
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_LXp_sqrtx_exit:
+
+// _LXp_sqrtx
+// Return size: 0
+define _LXp_sqrtx
 _LXp_sqrtx_entry:
+	r29 = fp
+	// succ:  l00008C04
 l00008C04:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 48<i32>
+	r18 = r2
+	r17_r16 = r1_r0
+	r0 = r16 + 0<32>
+	r5_r4 = Mem0[r16:word64]
+	r1_r0 = Mem0[gp + 192<i32>:word64]
+	r1_r0 = Mem0[gp + 192<i32>:word64]
+	r0 = 1<32>
+	r0 = 0xE630<32>
+	r1_r0 = Mem0[r0:word64]
+	Mem0[r16:word64] = r1_r0
+	// succ:  l00008C54_thunk_fn00008D44
+l00008C54_thunk_fn00008D44:
+	call fn00008D44 (retsize: 0;)
+	return
+	// succ:  _LXp_sqrtx_exit
+_LXp_sqrtx_exit:
 
 
-void _Mbtowcx()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Mbtowcx_exit:
+// _Mbtowcx
+// Return size: 0
+define _Mbtowcx
 _Mbtowcx_entry:
+	r29 = fp
+	// succ:  l00008D30
 l00008D30:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 0<i32>
+	p0 = r1 == 0<32>
+	r6 = Mem0[r3 + 6<i32>:int16]
+	r5 = Mem0[r3:word32]
+	r7 = Mem0[r4:word32]
+	r8 = 0<32>
+	r7 = r1 + 0<32>
+	branch p0 l00008EFC
+l00008D30:
+_Mbtowcx_exit:
 
 
-void _Mbtowc()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// fn00008D44
+// Return size: 0
+define fn00008D44
+fn00008D44_entry:
+	r29 = fp
+	// succ:  l00008D44
+l00008D44:
+	r8 = 0<32>
+	r7 = r1 + 0<32>
+	goto l00008D44_thunk_fn00008D4C
+	// succ:  l00008D44_thunk_fn00008D4C
+l00008D44:
+	call fn00008D4C (retsize: 0;)
+	return
+	// succ:  l00008D44_thunk_fn00008D4C l00008EFC fn00008D44_exit
+l00008D44_thunk_fn00008D4C:
+	call fn00008D4C (retsize: 0;)
+	return
+	// succ:  fn00008D44_exit
+l00008D44_thunk_fn00008D4C:
+	call fn00008D4C (retsize: 0;)
+	return
+	// succ:  fn00008D44_exit
+l00008EFC:
+	Mem0[r3:word32] = 0<32>
+	Mem0[r3 + 4<i32>:word32] = 0<32>
+	r0 = Mem0[r4:word32]
+	r0 = Mem0[r0:word16]
+	r2 = r0 & 0xF00<32>
+	v11 = r30
+	r31 = Mem0[v11 + 4<i32>:word32]
+	r30 = Mem0[v11:word32]
+	r29 = v11 + 8<i32>
+	return
+	// succ:  fn00008D44_exit
+fn00008D44_exit:
 
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Mbtowc_exit:
+
+// fn00008D4C
+// Return size: 0
+define fn00008D4C
+fn00008D4C_entry:
+	r29 = fp
+	// succ:  l00008D4C
+l00008D4C:
+	r12 = Mem0[r7:byte]
+	r13 = r5 + 0<32>
+	r14 = r6 & 0xFF<32>
+	r15 = r6 & 0<32>
+	p0 = r15 == 0<32>
+	r9 = r6 & 0x4000<32>
+	r5 = r13 + 0<32>
+	p1 = r9 == 0<32>
+	r14 = r6 & 0x1000<32>
+	p0 = r14 == 0<32>
+	r9 = r5 << 8<32>
+	branch p1 l00008DE0
+	goto l00008DC0
+	// succ:  l00008DC0 l00008D90_thunk_fn00008DE0
+l00008D90_thunk_fn00008DE0:
+	call fn00008DE0 (retsize: 0;)
+	return
+	// succ:  fn00008D4C_exit
+l00008DC0:
+	r13 = 0xFFFFFFFF<32>
+	r7 = r7 + 1<32>
+	p1 = r12 == 0<32>
+	r8 = 0<32>
+	r13 = 0<32>
+	r2 = r13 + r2
+	r5 = r9 + 0<32>
+	r12 = r6 & 0x2000<32>
+	// succ:  l00008DDC_thunk_fn00008DE0
+l00008DDC_thunk_fn00008DE0:
+	call fn00008DE0 (retsize: 0;)
+	return
+	// succ:  fn00008D4C_exit
+fn00008D4C_exit:
+
+
+// fn00008DE0
+// Return size: 0
+define fn00008DE0
+fn00008DE0_entry:
+	r29 = fp
+	// succ:  l00008DE0
+l00008DE0:
+	r5 = r9 + 0<32>
+	r12 = r6 & 0x2000<32>
+	// succ:  l00008DEC
+l00008DEC:
+	p0 = r12 == 0<32>
+	Mem0[r3:word32] = r5
+	p0 = r0 == 0<32>
+	p1 = r7 == r1
+	r0 = r2 + 0<32>
+	r0 = 0xFFFFFFFD<32>
+	p0 = r5 == 0<32>
+	Mem0[r3 + 8<i32>:word16] = r6
+	r0 = -1<i32>
+	v15 = r30
+	r31 = Mem0[v15 + 4<i32>:word32]
+	r30 = Mem0[v15:word32]
+	r29 = v15 + 8<i32>
+	return
+	// succ:  fn00008DE0_exit
+fn00008DE0_exit:
+
+
+// _Mbtowc
+// Return size: 0
+define _Mbtowc
 _Mbtowc_entry:
+	r29 = fp
+	// succ:  l00008F3C
 l00008F3C:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	Mem0[r29:word64] = r19_r18
+	r19_r18 = r1_r2
+	r17_r16 = r0_r3
+	r17_r16 = Mem0[r29 + 8<i32>:word64]
+	r4 = r0
+	r1_r0 = r19_r17
+	r3_r2 = r16_r18
+	r19_r18 = Mem0[r29:word64]
+	// succ:  l00008F5C_thunk__Mbtowcx
+l00008F5C_thunk__Mbtowcx:
+	call _Mbtowcx (retsize: 0;)
+	return
+	// succ:  _Mbtowc_exit
+_Mbtowc_exit:
 
 
-void _Tls_get__Wcstate()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Tls_get__Wcstate_exit:
+// _Tls_get__Wcstate
+// Return size: 0
+define _Tls_get__Wcstate
 _Tls_get__Wcstate_entry:
+	r29 = fp
+	// succ:  l00008F70
 l00008F70:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r1 = 1<32>
+	r17 = 0x10058<32>
+	r16 = 0x10054<32>
+	Mem0[r29:word64] = r19_r18
+	goto l00008F8C
+	// succ:  l00008F8C
+l00008F70:
+l00008F8C:
+	r0 = memw_locked(r16)
+	p0 = r0 > 0<32>
+	branch p0 l00008FA0
+	// succ:  l00008F98 l00008FA0
+l00008F98:
+	branch p0 l00008F8C
+	// succ:  l00008FA0 l00008F8C
+l00008FA0:
+	r18 = 2<32>
+	r1 = 0x6FF0<32>
+	r0 = 0x10058<32>
+	Mem0[r16:word32] = r18
+	r0 = Mem0[r17:word32]
+	r0 = Mem0[r17:word32]
+	r1 = r16
+	r0 = r16
+	r16 = 0<32>
+	// succ:  l00009010
+l00009010:
+	r19_r18 = Mem0[r29:word64]
+	r17_r16 = Mem0[r29 + 8<i32>:word64]
+	r0 = r16
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
+	return
+	// succ:  _Tls_get__Wcstate_exit
+_Tls_get__Wcstate_exit:
 
 
-void _Getpwcstate()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Getpwcstate_exit:
+// _Getpwcstate
+// Return size: 0
+define _Getpwcstate
 _Getpwcstate_entry:
+	r29 = fp
+	// succ:  l0000901C
 l0000901C:
+	// succ:  l0000901C_thunk__Tls_get__Wcstate
+l0000901C_thunk__Tls_get__Wcstate:
+	call _Tls_get__Wcstate (retsize: 0;)
+	return
+	// succ:  _Getpwcstate_exit
+_Getpwcstate_exit:
 
 
-void _Atrealloc()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Atrealloc_exit:
+// _Atrealloc
+// Return size: 0
+define _Atrealloc
 _Atrealloc_entry:
+	r29 = fp
+	// succ:  l00009020
 l00009020:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r17 = Mem0[gp + 4<i32>:word32]
+	r0 = r17
+	r0 = r0 << 2<32>
+	r1 = Mem0[gp + 8<i32>:word32]
+	r2 = Mem0[gp + 64<i32>:word32]
+	r0 = r16
+	r2 = r2 << 2<32>
+	r3 = Mem0[gp + 4<i32>:word32]
+	r0 = Mem0[gp + 12<i32>:word32]
+	r1 = Mem0[gp + 8<i32>:word32]
+	r2 = r3 << 2<32>
+	r0 = Mem0[gp + 8<i32>:word32]
+	r1 = 0xE940<32>
+	r2 = Mem0[gp + 4<i32>:word32]
+	r0 = Mem0[gp + 12<i32>:word32]
+	r1 = 1<32>
+	Mem0[gp + 512<i32>:word32] = r16
+	r0 = r2 + r17
+	r3 = r0 + r17
+	Mem0[gp:word32] = r0
+	Mem0[gp + 96<i32>:word32] = r3
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
+	return
+	// succ:  _Atrealloc_exit
+_Atrealloc_exit:
 
 
-void _Closreg()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Closreg_exit:
+// _Closreg
+// Return size: 0
+define _Closreg
 _Closreg_entry:
+	r29 = fp
+	// succ:  l000090C0
 l000090C0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r1 = 1<32>
+	r16 = 0x1005C<32>
+	// succ:  l000090D0
+l000090D0:
+	r0 = memw_locked(r16)
+	p0 = r0 > 0<32>
+	branch p0 l000090E4
+	// succ:  l000090DC l000090E4
+l000090DC:
+	branch p0 l000090D0
+	// succ:  l000090E4 l000090D0
+l000090E4:
+	r0 = 2<32>
+	r0 = 0x9114<32>
+	r17 = 2<32>
+	r0 = 2<32>
+	Mem0[r16:word32] = r17
+	// succ:  l00009108_thunk_closeall
+l00009108_thunk_closeall:
+	call closeall (retsize: 0;)
+	return
+	// succ:  _Closreg_exit
+_Closreg_exit:
 
 
-void closeall()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-closeall_exit:
+// closeall
+// Return size: 0
+define closeall
 closeall_entry:
+	r29 = fp
+	// succ:  l00009114
 l00009114:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r17_r16 = 0xE51400000038<64>
+	r17 = r17 + 0xFFFFFFFF<32>
+	r16 = r16 + 4<32>
+	v9 = r30
+	r31 = Mem0[v9 + 4<i32>:word32]
+	r30 = Mem0[v9:word32]
+	r29 = v9 + 8<i32>
+	return
+	// succ:  closeall_exit
+closeall_exit:
 
 
-void fclose()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fclose_exit:
+// fclose
+// Return size: 0
+define fclose
 fclose_entry:
+	r29 = fp
+	// succ:  l00009140
 l00009140:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r16 = r0
+	Mem0[r29:word64] = r19_r18
+	r0 = Mem0[r16:byte]
+	r0 = r16
+	r17 = r0
+	r0 = 2<32>
+	r0 = Mem0[r16:byte]
+	r0 = Mem0[r16 + 8<i32>:word32]
+	Mem0[r16 + 8<i32>:word32] = 0<32>
+	r0 = Mem0[r16 + 4<i32>:word32]
+	r1 = Mem0[r16 + 64<i32>:word32]
+	r17 = 0xFFFFFFFF<32>
+	p0 = r0 == 0<32>
+	r0 = r1
+	r1 = Mem0[r16 + 64<i32>:word32]
+	r18 = r0
+	r0 = r1
+	Mem0[r16 + 64<i32>:word32] = 0<32>
+	r17 = 0xFFFFFFFF<32>
+	p0 = r18 == 0<32>
+	r0 = r16
+	r0 = 2<32>
+	// succ:  l000091F4
+l000091F4:
+	r19_r18 = Mem0[r29:word64]
+	r17_r16 = Mem0[r29 + 8<i32>:word64]
+	r0 = r17
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
+	return
+	// succ:  fclose_exit
+fclose_exit:
 
 
-void fflush()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fflush_exit:
+// fflush
+// Return size: 0
+define fflush
 fflush_entry:
+	r29 = fp
+	// succ:  l00009200
 l00009200:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r16 = r0
+	Mem0[r29:word64] = r19_r18
+	r0 = r16 + 0<32>
+	r0 = Mem0[r16:word16]
+	r1 = r0 & 0x2000<32>
+	r17 = Mem0[r16 + 8<i32>:word32]
+	r1 = Mem0[r16 + 16<i32>:word32]
+	r0 = Mem0[r16 + 4<i32>:word32]
+	r1 = r17
+	r17 = r17 + r0
+	r1 = Mem0[r16 + 16<i32>:word32]
+	r0 = Mem0[r16:int16]
+	r17 = Mem0[r16 + 8<i32>:word32]
+	Mem0[r16 + 16<i32>:word32] = r17
+	r0 = r16
+	r1 = r0 & 0xDFFF<32>
+	Mem0[r16 + 24<i32>:word32] = r17
+	Mem0[r16 + 52<i32>:word32] = r17
+	Mem0[r16:word16] = r1
+	// succ:  l000092B0
+l000092B0:
+	r17 = 0<32>
+	r19_r18 = Mem0[r29:word64]
+	r17_r16 = Mem0[r29 + 8<i32>:word64]
+	r0 = r17
+	v12 = r30
+	r31 = Mem0[v12 + 4<i32>:word32]
+	r30 = Mem0[v12:word32]
+	r29 = v12 + 8<i32>
+	return
+	// succ:  fflush_exit
+fflush_exit:
 
 
-void fputc()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fputc_exit:
+// fputc
+// Return size: 0
+define fputc
 fputc_entry:
+	r29 = fp
+	// succ:  l000092E0
 l000092E0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r17_r16 = r1_r0
+	r0 = r17
+	r0 = Mem0[r17 + 16<i32>:word32]
+	r1 = Mem0[r17 + 24<i32>:word32]
+	r0 = r17
+	r0 = Mem0[r17 + 16<i32>:word32]
+	r1 = r0 + 1<32>
+	Mem0[r0:byte] = r16
+	r0 = Mem0[r17:word16]
+	r1 = r0 & 0x800<32>
+	r0 = r17
+	r16 = 0xFFFFFFFF<32>
+	// succ:  l00009354
+l00009354:
+	v13 = r30
+	r31 = Mem0[v13 + 4<i32>:word32]
+	r30 = Mem0[v13:word32]
+	r29 = v13 + 8<i32>
+	return
+	// succ:  fputc_exit
+fputc_exit:
 
 
-void fputs()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fputs_exit:
+// fputs
+// Return size: 0
+define fputs
 fputs_entry:
+	r29 = fp
+	// succ:  l00009360
 l00009360:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 32<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r17_r16 = r0_r1
+	Mem0[r29 + 16<i32>:word64] = r19_r18
+	r0 = r16
+	// succ:  l00009378
+l00009378:
+	r1 = Mem0[r16 + 24<i32>:word32]
+	r0 = r16
+	r0 = Mem0[r16 + 1<i32>:byte]
+	r0 = r17
+	r3 = r0
+	// succ:  l000093E0
+l000093E0:
+	r2 = Mem0[r16 + 24<i32>:word32]
+	r0 = Mem0[r16 + 16<i32>:word32]
+	p0 = r3 >u r4
+	r2 = r18
+	r3 = p0
+	r1 = Mem0[r29 + 4<i32>:word64]
+	r0 = Mem0[r16 + 16<i32>:word32]
+	r0 = r16 + 0<32>
+	// succ:  l00009448
+l00009448:
+	r16 = 0xFFFFFFFF<32>
+	// succ:  l00009454
+l00009454:
+	r19_r18 = Mem0[r29 + 16<i32>:word64]
+	r17_r16 = Mem0[r29 + 24<i32>:word64]
+	r0 = r16
+	v19 = r30
+	r31 = Mem0[v19 + 4<i32>:word32]
+	r30 = Mem0[v19:word32]
+	r29 = v19 + 8<i32>
+	return
+	// succ:  fputs_exit
+fputs_exit:
 
 
-void ldexpl()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-ldexpl_exit:
+// ldexpl
+// Return size: 0
+define ldexpl
 ldexpl_entry:
+	r29 = fp
+	// succ:  l00009470
 l00009470:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r16 = r2
+	Mem0[r29:word64] = r1_r0
+	r0 = r29 + 0<32>
+	r1 = r16
+	r0 = r29 + 0<32>
+	r0 = 4<32>
+	// succ:  l000094AC
+l000094AC:
+	r17_r16 = Mem0[r29 + 8<i32>:word64]
+	r1_r0 = Mem0[r29:word64]
+	v12 = r30
+	r31 = Mem0[v12 + 4<i32>:word32]
+	r30 = Mem0[v12:word32]
+	r29 = v12 + 8<i32>
+	return
+	// succ:  ldexpl_exit
+ldexpl_exit:
 
 
-void ldiv()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-ldiv_exit:
+// ldiv
+// Return size: 0
+define ldiv
 ldiv_entry:
+	r29 = fp
+	// succ:  l000094C0
 l000094C0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r17_r16 = r1_r0
+	v11 = r30
+	r31 = Mem0[v11 + 4<i32>:word32]
+	r30 = Mem0[v11:word32]
+	r29 = v11 + 8<i32>
+	return
+	// succ:  ldiv_exit
+ldiv_exit:
 
 
-void close()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-close_exit:
+// close
+// Return size: 0
+define close
 close_entry:
+	r29 = fp
+	// succ:  l000094E0
 l000094E0:
+	// succ:  l000094E0_thunk___sys_close
+l000094E0_thunk___sys_close:
+	call __sys_close (retsize: 0;)
+	return
+	// succ:  close_exit
+close_exit:
 
 
-void write()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-write_exit:
+// write
+// Return size: 0
+define write
 write_entry:
+	r29 = fp
+	// succ:  l000094F0
 l000094F0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r16 = r2
+	v9 = r30
+	r31 = Mem0[v9 + 4<i32>:word32]
+	r30 = Mem0[v9:word32]
+	r29 = v9 + 8<i32>
+	return
+	// succ:  write_exit
+write_exit:
 
 
-void remove()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-remove_exit:
+// remove
+// Return size: 0
+define remove
 remove_entry:
+	r29 = fp
+	// succ:  l00009510
 l00009510:
+	// succ:  l00009510_thunk___sys_remove
+l00009510_thunk___sys_remove:
+	call __sys_remove (retsize: 0;)
+	return
+	// succ:  remove_exit
+remove_exit:
 
 
-void sqrtl()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-sqrtl_exit:
+// sqrtl
+// Return size: 0
+define sqrtl
 sqrtl_entry:
+	r29 = fp
+	// succ:  l00009520
 l00009520:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 24<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r17_r16 = r1_r0
+	Mem0[r29 + 8<i32>:word64] = r17_r16
+	r1 = r29 + 8<32>
+	r0 = r29 + 6<32>
+	r0 = r29 + 8<32>
+	r0 = 1<32>
+	r1_r0 = r17_r16
+	v12 = r30
+	r31 = Mem0[v12 + 4<i32>:word32]
+	r30 = Mem0[v12:word32]
+	r29 = v12 + 8<i32>
+	return
+	// succ:  sqrtl_exit
+sqrtl_exit:
 
 
-void strrchr()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-strrchr_exit:
+// strrchr
+// Return size: 0
+define strrchr
 strrchr_entry:
+	r29 = fp
+	// succ:  l00009570
 l00009570:
+	r1 = r1 & 0xFF<32>
+	r2 = 0<32>
+	// succ:  l00009574
+l00009574:
+	r3 = r0
+	p0 = r4 == 0<32>
+	r0 = r3
+	r2 = r0 + 0<32>
+	p1 = r4 == r1
+	branch p0 l00009574
+	// succ:  l0000958C l00009574
+l0000958C:
+	return
+	// succ:  strrchr_exit
+strrchr_exit:
 
 
-void _Atexit()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Atexit_exit:
+// _Atexit
+// Return size: 0
+define _Atexit
 _Atexit_entry:
+	r29 = fp
+	// succ:  l00009590
 l00009590:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r16 = r0
+	r2 = Mem0[gp + 64<i32>:word32]
+	r1 = Mem0[gp + 12<i32>:word32]
+	r1 = Mem0[gp + 12<i32>:word32]
+	r1 = Mem0[gp + 8<i32>:word32]
+	r0 = r1 + 0xFFFFFFFF<32>
+	v12 = r30
+	r31 = Mem0[v12 + 4<i32>:word32]
+	r30 = Mem0[v12:word32]
+	r29 = v12 + 8<i32>
+	return
+	// succ:  _Atexit_exit
+_Atexit_exit:
 
 
-void _Dunscale()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Dunscale_exit:
+// _Dunscale
+// Return size: 0
+define _Dunscale
 _Dunscale_entry:
+	r29 = fp
+	// succ:  l000095D0
 l000095D0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r17_r16 = r0_r1
+	r2 = Mem0[r16 + 6<i32>:int16]
+	r0 = r16
+	r1 = r0
+	r0 = 0<32>
+	Mem0[r17:word16] = 0<16>
+	// succ:  l00009664
+l00009664:
+	v13 = r30
+	r31 = Mem0[v13 + 4<i32>:word32]
+	r30 = Mem0[v13:word32]
+	r29 = v13 + 8<i32>
+	return
+	// succ:  _Dunscale_exit
+_Dunscale_exit:
 
 
-void _Feraise()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Feraise_exit:
+// _Feraise
+// Return size: 0
+define _Feraise
 _Feraise_entry:
+	r29 = fp
+	// succ:  l00009670
 l00009670:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	r2 = r0 & 0xC<32>
+	Mem0[r29:word64] = r17_r16
+	p0 = r2 == 0<32>
+	r16 = r1 + 0<32>
+	r16 = r0 + 0<32>
+	r17 = r16 & 3<32>
+	r0 = r16
+	Mem0[r0:word32] = 0x21<32>
+	r17_r16 = Mem0[r29:word64]
+	v13 = r30
+	r31 = Mem0[v13 + 4<i32>:word32]
+	r30 = Mem0[v13:word32]
+	r29 = v13 + 8<i32>
+	return
+	// succ:  _Feraise_exit
+_Feraise_exit:
 
 
-void _Fofind()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Fofind_exit:
+// _Fofind
+// Return size: 0
+define _Fofind
 _Fofind_entry:
+	r29 = fp
+	// succ:  l000096C0
 l000096C0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r17_r16 = 0xE53800000000<64>
+	r1 = Mem0[r0:word16]
+	r16 = r16 + 1<32>
+	Mem0[r0:word16] = 0xFF7F<16>
+	// succ:  l0000971C
+l0000971C:
+	v10 = r30
+	r31 = Mem0[v10 + 4<i32>:word32]
+	r30 = Mem0[v10:word32]
+	r29 = v10 + 8<i32>
+	return
+	// succ:  _Fofind_exit
+_Fofind_exit:
 
 
-void _Fofree()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Fofree_exit:
+// _Fofree
+// Return size: 0
+define _Fofree
 _Fofree_entry:
+	r29 = fp
+	// succ:  l00009720
 l00009720:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 0<i32>
+	r2 = r0 + 0x4C<32>
+	r1 = Mem0[r0:byte]
+	r1 = r1 & 0x80<32>
+	r1 = -1<i32>
+	r2 = 0x34<32>
+	r1 = r1 + 1<32>
+	r4 = Mem0[r2 + 4<i32>:word32]
+	r2 = r2 + 4<32>
+	r3 = r2 + 0<32>
+	Mem0[r3:word32] = 0<32>
+	v11 = r30
+	r31 = Mem0[v11 + 4<i32>:word32]
+	r30 = Mem0[v11:word32]
+	r29 = v11 + 8<i32>
+	return
+	// succ:  _Fofree_exit
+_Fofree_exit:
 
 
-void _Genld()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Genld_exit:
+// _Genld
+// Return size: 0
+define _Genld
 _Genld_entry:
+	r29 = fp
+	// succ:  l00009780
 l00009780:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 48<i32>
+	r17_r16 = r2_r0
+	r19_r18 = r4_r3
+	r20 = r1
+	r0 = Mem0[r0 + 44<i32>:word32]
+	r3_r2 = 0xD78800000001<64>
+	r17 = r3 + 0<32>
+	p1 = r1 == 0x66<32>
+	p0 = r18 > 0<32>
+	r21 = Mem0[r0:int8]
+	branch p1 l000097E0
+	// succ:  l000097C0 l000097E0
+l000097C0:
+	p2 = r20 == 0x47<32>
+	p0 = r20 == 0x67<32>
+	p3 = r19 > 0xFFFFFFFB<32>
+	goto l000097E4
+	// succ:  l000097E4
+l000097E0:
+	r0 = Mem0[r16 - 4<i32>:byte]
+	r20 = r19 + 1<32>
+	branch p1 l00009868
+	goto l000097EC
+	// succ:  l000097EC l00009868
+l000097E4:
+	r0 = Mem0[r16 - 4<i32>:byte]
+	r20 = r19 + 1<32>
+	// succ:  l000097EC
+l000097EC:
+	r0 = Mem0[r16 + 48<i32>:word32]
+	r22 = 0x70<32>
+	branch p2 l00009810
+	// succ:  l00009804 l00009810
+l00009804:
+	p1 = r20 == 0x61<32>
+	branch p0 l000099CC
+	// succ:  l00009810 l000099CC
+l00009810:
+	r1 = r1 & 8<32>
+	Mem0[r16 + 48<i32>:word32] = r18
+	r0 = r18 + 0<32>
+	p1 = r1 == 0<32>
+	r1 = 0<32>
+	r0 = r0 + 0xFFFFFFFF<32>
+	r22 = 0x45<32>
+	r22 = 0x65<32>
+	Mem0[r16 + 48<i32>:word32] = r18
+	r0 = r18 + 0<32>
+	p0 = r0 > r18
+	Mem0[r16 + 48<i32>:word32] = 0<32>
+	Mem0[r16 + 48<i32>:word32] = r0
+	p0 = r0 > 0xFFFFFFFF<32>
+	// succ:  l00009868
+l00009868:
+	r1 = Mem0[r16 + 16<i32>:word32]
+	r0 = Mem0[r16 + 28<i32>:word32]
+	p0 = r19 > r18
+	r0 = r1 + r0
+	branch p0 l00009958
+	// succ:  l00009880 l00009958
+l00009880:
+	r2 = r18
+	r1 = r17
+	r0 = Mem0[r16 + 16<i32>:word32]
+	r1 = Mem0[r16 + 28<i32>:word32]
+	Mem0[r16 + 32<i32>:word32] = r2
+	r1 = r1 + r18
+	p0 = r0 > 0<32>
+	Mem0[r16 + 28<i32>:word32] = r1
+	r2 = Mem0[r16 - 4<i32>:byte]
+	branch p0 l000098AC
+	// succ:  l000098A4 l000098AC
+l000098A4:
+	goto l000098B0
+	// succ:  l000098B0
+l000098AC:
+	r0 = Mem0[r16 + 16<i32>:word32]
+	// succ:  l000098B0
+l000098B0:
+	r0 = r0 + r1
+	Mem0[r0:byte] = r21
+	r0 = Mem0[r16 + 16<i32>:word32]
+	r1 = Mem0[r16 + 4<i32>:word32]
+	r1 = r1 + 1<32>
+	Mem0[r16 + 40<i32>:word32] = r0
+	goto l00009B18
+	// succ:  l00009B18
+l00009958:
+	r2 = r19
+	r1 = r17
+	r3 = Mem0[r16 + 16<i32>:word32]
+	r0 = Mem0[r16 + 28<i32>:word32]
+	r1 = r1 & 8<32>
+	r1 = Mem0[r16 + 16<i32>:word32]
+	r3 = r0
+	Mem0[r16 + 28<i32>:word32] = r3
+	r0 = r0 + r1
+	Mem0[r0:byte] = r21
+	r0 = Mem0[r16 + 28<i32>:word32]
+	r3 = Mem0[r16 + 16<i32>:word32]
+	r4 = Mem0[r16 + 16<i32>:word32]
+	r2 = r3 + 0<32>
+	r0 = r4 + r0
+	p0 = r5 > r3
+	r2 = r17
+	r1 = Mem0[r16 + 16<i32>:word32]
+	r0 = Mem0[r16 + 28<i32>:word32]
+	Mem0[r16 + 32<i32>:word32] = r1
+	r22 = r20
+	p0 = r20 == 0x41<32>
+	goto l000099D0
+	// succ:  l000099D0
+l000099CC:
+	r22 = r20
+	// succ:  l000099D0
+l000099D0:
+	r22 = 0x50<32>
+	r1 = Mem0[r16 + 16<i32>:word32]
+	r0 = Mem0[r16 + 28<i32>:word32]
+	Mem0[r0:byte] = r2
+	r0 = r2 + r0
+	r1 = r0 + 1<32>
+	Mem0[r0:byte] = r21
+	r5 = Mem0[r16 + 16<i32>:word32]
+	r1 = Mem0[r16 + 28<i32>:word32]
+	r1 = r17
+	r0 = r5 + r1
+	r2 = r18 + 0xFFFFFFFF<32>
+	p0 = r4 > r2
+	r2 = r17
+	r1 = Mem0[r16 + 28<i32>:word32]
+	r0 = Mem0[r16 + 16<i32>:word32]
+	Mem0[r16 + 32<i32>:word32] = r0
+	r20 = Mem0[r16 + 28<i32>:word32]
+	r17 = Mem0[r16 + 16<i32>:word32]
+	r21 = r20
+	p0 = r19 > 0xFFFFFFFF<32>
+	r0 = r17 + r20
+	Mem0[r0:byte] = 0x2B<8>
+	// succ:  l00009A88
+l00009A88:
+	r18 = 0<32>
+	r23 = r29 + 0<32>
+	r18 = r18 + 1<32>
+	Mem0[r23:byte] = r1
+	r23 = r23
+	r17 = r21 + 0<32>
+	p0 = r0 == 0x65<32>
+	r17 = r21 + 0<32>
+	Mem0[r21:byte] = 0x30<8>
+	// succ:  l00009AD8
+l00009AD8:
+	r2 = r18
+	r0 = r29 + 0<32>
+	r1 = r17
+	r2 = r2 + 0xFFFFFFFF<32>
+	r3 = r0 + r2
+	r3 = Mem0[r3 - 1<i32>:int8]
+	r3 = r3 + 0x30<32>
+	r17 = r17 + r18
+	// succ:  l00009B0C
+l00009B0C:
+	r1 = Mem0[r16 + 16<i32>:word32]
+	r0 = Mem0[r16 + 28<i32>:word32]
+	// succ:  l00009B18
+l00009B18:
+	r0 = Mem0[r16 + 60<i32>:word16]
+	r0 = Mem0[r16 + 8<i32>:word32]
+	r3 = Mem0[r16:word32]
+	r4 = Mem0[r16 + 24<i32>:word32]
+	r5 = Mem0[r16 + 4<i32>:word32]
+	// succ:  l00009B4C_thunk__LDint
+l00009B4C_thunk__LDint:
+	call _LDint (retsize: 0;)
+	return
+	// succ:  _Genld_exit
+_Genld_exit:
 
 
-void _LDint()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_LDint_exit:
+// _LDint
+// Return size: 0
+define _LDint
 _LDint_entry:
+	r29 = fp
+	// succ:  l00009B50
 l00009B50:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 0<i32>
+	v6 = r30
+	r31 = Mem0[v6 + 4<i32>:word32]
+	r30 = Mem0[v6:word32]
+	r29 = v6 + 8<i32>
+	return
+	// succ:  _LDint_exit
+_LDint_exit:
 
 
-void _LDscale()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_LDscale_exit:
+// _LDscale
+// Return size: 0
+define _LDscale
 _LDscale_entry:
+	r29 = fp
+	// succ:  l00009B60
 l00009B60:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 0<i32>
+	v6 = r30
+	r31 = Mem0[v6 + 4<i32>:word32]
+	r30 = Mem0[v6:word32]
+	r29 = v6 + 8<i32>
+	return
+	// succ:  _LDscale_exit
+_LDscale_exit:
 
 
-void _LDtest()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_LDtest_exit:
+// _LDtest
+// Return size: 0
+define _LDtest
 _LDtest_entry:
+	r29 = fp
+	// succ:  l00009B70
 l00009B70:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 0<i32>
+	v6 = r30
+	r31 = Mem0[v6 + 4<i32>:word32]
+	r30 = Mem0[v6:word32]
+	r29 = v6 + 8<i32>
+	return
+	// succ:  _LDtest_exit
+_LDtest_exit:
 
 
-void div()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-div_exit:
+// div
+// Return size: 0
+define div
 div_entry:
+	r29 = fp
+	// succ:  l00009B80
 l00009B80:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r17_r16 = r1_r0
+	v11 = r30
+	r31 = Mem0[v11 + 4<i32>:word32]
+	r30 = Mem0[v11:word32]
+	r29 = v11 + 8<i32>
+	return
+	// succ:  div_exit
+div_exit:
 
 
-void feraiseexcept()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-feraiseexcept_exit:
+// feraiseexcept
+// Return size: 0
+define feraiseexcept
 feraiseexcept_entry:
+	r29 = fp
+	// succ:  l00009BA0
 l00009BA0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r1 = Mem0[r29 + 4<i32>:word64]
+	r0 = r29 + 4<32>
+	r0 = Mem0[r29 + 4<i32>:word32]
+	r0 = r16
+	v10 = r30
+	r31 = Mem0[v10 + 4<i32>:word32]
+	r30 = Mem0[v10:word32]
+	r29 = v10 + 8<i32>
+	return
+	// succ:  feraiseexcept_exit
+feraiseexcept_exit:
 
 
-void _Force_raise()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Force_raise_exit:
+// _Force_raise
+// Return size: 0
+define _Force_raise
 _Force_raise_entry:
+	r29 = fp
+	// succ:  l00009BE0
 l00009BE0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	r3_r2 = Mem0[gp + 192<i32>:word64]
+	Mem0[r29:word64] = r19_r18
+	Mem0[r29 + 8<i32>:word64] = r17_r16
+	r18 = 0xD798<32>
+	r0 = Mem0[r18 - 8<i32>:word32]
+	r3_r2 = Mem0[r18 + 8<i32>:word64]
+	r1_r0 = Mem0[r18:word64]
+	r3_r2 = r1_r0
+	r17 = r17 + 0xFFFFFFFF<32>
+	r18 = r18 + 0x18<32>
+	r1_r0 = r3_r2
+	r19_r18 = Mem0[r29:word64]
+	r17_r16 = Mem0[r29 + 8<i32>:word64]
+	v17 = r30
+	r31 = Mem0[v17 + 4<i32>:word32]
+	r30 = Mem0[v17:word32]
+	r29 = v17 + 8<i32>
+	return
+	// succ:  _Force_raise_exit
+_Force_raise_exit:
 
 
-void fesetenv()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fesetenv_exit:
+// fesetenv
+// Return size: 0
+define fesetenv
 fesetenv_entry:
+	r29 = fp
+	// succ:  l00009C2C
 l00009C2C:
+	r1 = Mem0[r0:word32]
+	USR = r1
+	return
+	// succ:  fesetenv_exit
+fesetenv_exit:
 
 
-void _Tls_get__Locale()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Tls_get__Locale_exit:
+// _Tls_get__Locale
+// Return size: 0
+define _Tls_get__Locale
 _Tls_get__Locale_entry:
+	r29 = fp
+	// succ:  l00009C40
 l00009C40:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r1 = 1<32>
+	r17 = 0x10064<32>
+	r16 = 0x10060<32>
+	Mem0[r29:word64] = r19_r18
+	goto l00009C5C
+	// succ:  l00009C5C
+l00009C40:
+	goto _Tls_get__Locale_exit
+	// succ:  _Tls_get__Locale_exit
+l00009C5C:
+	r0 = memw_locked(r16)
+	p0 = r0 > 0<32>
+	branch p0 l00009C70
+	// succ:  l00009C68 l00009C70
+l00009C68:
+	branch p0 l00009C5C
+	// succ:  l00009C70 l00009C5C
+l00009C70:
+	r18 = 2<32>
+	r1 = 0x6FF0<32>
+	r0 = 0x10064<32>
+	Mem0[r16:word32] = r18
+	r0 = Mem0[r17:word32]
+	r0 = Mem0[r17:word32]
+	r1 = r16
+	r0 = r16
+	r16 = 0<32>
+	// succ:  l00009CE0
+l00009CE0:
+	r19_r18 = Mem0[r29:word64]
+	r17_r16 = Mem0[r29 + 8<i32>:word64]
+	r0 = r16
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
+	return
+	// succ:  _Tls_get__Locale_exit
+_Tls_get__Locale_exit:
 
 
-void localeconv()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-localeconv_exit:
+// localeconv
+// Return size: 0
+define localeconv
 localeconv_entry:
+	r29 = fp
+	// succ:  l00009CEC
 l00009CEC:
+	// succ:  l00009CEC_thunk__Tls_get__Locale
+l00009CEC_thunk__Tls_get__Locale:
+	call _Tls_get__Locale (retsize: 0;)
+	return
+	// succ:  localeconv_exit
+localeconv_exit:
 
 
-void _Dint()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Dint_exit:
+// _Dint
+// Return size: 0
+define _Dint
 _Dint_entry:
+	r29 = fp
+	// succ:  l00009CF0
 l00009CF0:
+	r2 = Mem0[r0 + 6<i32>:word16]
+	r3 = 0x7FF<32>
+	r1 = Mem0[r0 + 4<i32>:word16]
+	r1 = Mem0[r0 + 2<i32>:word16]
+	r0 = Mem0[r0:word16]
+	r3 = 2<32>
+	r3 = 1<32>
+	p0 = r0 == 0<32>
+	return
+	// succ:  _Dint_exit
+_Dint_exit:
 
 
-void _Dnorm()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Dnorm_exit:
+// _Dnorm
+// Return size: 0
+define _Dnorm
 _Dnorm_entry:
+	r29 = fp
+	// succ:  l00009E20
 l00009E20:
+	r1 = Mem0[r0 + 6<i32>:word16]
+	r1 = r1 & 0x8000<32>
+	r3 = r1 & 0xF<32>
+	Mem0[r0 + 6<i32>:word16] = r3
+	r5 = Mem0[r0 + 2<i32>:int16]
+	r3 = Mem0[r0 + 4<i32>:int16]
+	r2 = r2 + 0xFFFFFFF0<32>
+	Mem0[r0:word16] = 0<16>
+	r4 = Mem0[r0:int16]
+	Mem0[r0:word16] = r5
+	Mem0[r0 + 8<i32>:word16] = r3
+	Mem0[r0 + 2<i32>:word16] = r4
+	r4 = r3 + 0<32>
+	r8 = Mem0[r0 + 2<i32>:int16]
+	r5 = Mem0[r0:int16]
+	r7 = 0x10<32>
+	r6 = Mem0[gp + 132<i32>:word32]
+	r9 = Mem0[r0 + 4<i32>:int16]
+	r2 = r2 + 0xFFFFFFFF<32>
+	r12 = r8 & r6
+	r4 = r9 & r6
+	r13 = r5 & r6
+	r12 = r12 >>u 0xF<32>
+	r4 = r4 >>u 0xF<32>
+	r13 = r13 >>u 0xF<32>
+	r3 = r4
+	p0 = r7 >u r14
+	r9_r8 = r12_r13
+	Mem0[r0 + 6<i32>:word16] = r4
+	Mem0[r0 + 2<i32>:word16] = r13
+	Mem0[r0:word16] = r5
+	Mem0[r0 + 4<i32>:word16] = r12
+	// succ:  l00009EF4
+l00009EF4:
+	r5 = 0x20<32>
+	r13 = Mem0[r0 + 2<i32>:int16]
+	r3 = Mem0[r0:int16]
+	r5 = Mem0[gp + 136<i32>:word32]
+	r12 = Mem0[r0 + 4<i32>:int16]
+	r2 = r2 + 1<32>
+	r8 = r13 & r5
+	r9 = r12 & r5
+	r7 = r4 << 0xF<32>
+	// succ:  l00009F14
+l00009F14:
+	r13_r12 = r6_r7
+	branch p0 l00009F14
+	// succ:  l00009F4C l00009F14
+l00009F4C:
+	r4 = r13 >>u 1<32>
+	Mem0[r0:word16] = r6
+	Mem0[r0 + 8<i32>:word16] = r7
+	Mem0[r0:word16] = r4
+	Mem0[r0 + 8<i32>:word16] = r3
+	r3 = r4 & 0xF<32>
+	return
+_Dnorm_exit:
 
 
-void _Dscale()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Dscale_exit:
+// _Dscale
+// Return size: 0
+define _Dscale
 _Dscale_entry:
+	r29 = fp
+	// succ:  l00009F70
 l00009F70:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r17_r16 = r1_r0
+	r2 = Mem0[r16 + 6<i32>:int16]
+	r0 = r16
+	r1 = 0<32>
+	// succ:  l00009FD4
+l00009FD4:
+	r0 = Mem0[r16 + 6<i32>:word16]
+	r2 = r2 + r17
+	r0 = r0 & 0x800F<32>
+	r1 = 0xFFFF<32>
+	r0 = r0 & 0x8000<32>
+	r1 = r0 & 0xF<32>
+	Mem0[r16 + 4<i32>:word16] = 0<16>
+	Mem0[r16:word16] = 0<16>
+	p0 = r3 >u r2
+	Mem0[r16 + 8<i32>:word16] = r1
+	r1 = -1<i32>
+	branch p0 l0000A06C
+	// succ:  l0000A040 l0000A06C
+l0000A040:
+	Mem0[r16 + 6<i32>:word16] = r0
+	Mem0[r16 + 2<i32>:word16] = 0xFF80<16>
+	goto l0000A1D8
+	// succ:  l0000A1D8
+l0000A06C:
+	p0 = r4 > 0xFFF0FFFF<32>
+	r4 = 0<32>
+	r13 = Mem0[r16 + 2<i32>:int16]
+	r12 = Mem0[r16 + 4<i32>:int16]
+	r4 = 0<32>
+	r5 = Mem0[r16:int16]
+	r6 = 0<32>
+	r9 = r1
+	r13_r12 = r12_r9
+	r5 = r7
+	r1 = 0<32>
+	p0 = r6 > r14
+	Mem0[r16 + 4<i32>:word16] = r9
+	Mem0[r16 + 6<i32>:word16] = 0xFF80<16>
+	r1 = 0<32>
+	r8 = r13
+	Mem0[r16:word16] = r7
+	Mem0[r16 + 2<i32>:word16] = r8
+	// succ:  l0000A0F0
+l0000A0F0:
+	r3 = Mem0[r16 + 2<i32>:word16]
+	r5 = Mem0[r16:word16]
+	r6 = Mem0[r16 + 4<i32>:word16]
+	Mem0[r16 + 6<i32>:word16] = r1
+	Mem0[r16 + 2<i32>:word16] = r12
+	Mem0[r16 + 4<i32>:word16] = r8
+	Mem0[r16:word16] = r9
+	Mem0[r16 + 6<i32>:word16] = r1
+	r2 = Mem0[r16:int16]
+	r3 = 0x8000<32>
+	r2 = Mem0[r16:int16]
+	r2 = r2 + 1<32>
+	Mem0[r16 + 8<i32>:word16] = r2
+	r2 = Mem0[r16 + 2<i32>:int16]
+	r2 = r2 + 1<32>
+	Mem0[r16 + 8<i32>:word16] = r2
+	r2 = Mem0[r16 + 4<i32>:int16]
+	r2 = r2 + 1<32>
+	Mem0[r16 + 8<i32>:word16] = r2
+	r1 = 0xFFFF<32>
+	p0 = r0 == 0<32>
+	// succ:  l0000A1D8
+l0000A1D8:
+	v26 = r30
+	r31 = Mem0[v26 + 4<i32>:word32]
+	r30 = Mem0[v26:word32]
+	r29 = v26 + 8<i32>
+	return
+	// succ:  _Dscale_exit
+_Dscale_exit:
 
 
-void _Dtest()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_Dtest_exit:
+// _Dtest
+// Return size: 0
+define _Dtest
 _Dtest_entry:
+	r29 = fp
+	// succ:  l0000A1E0
 l0000A1E0:
+	r2 = Mem0[r0 + 6<i32>:word16]
+	r1 = 0x7FF0<32>
+	r3 = r2 & r1
+	r1 = 2<32>
+	r1 = 1<32>
+	r1 = 2<32>
+	return
+	// succ:  _Dtest_exit
+_Dtest_exit:
 
 
-void fegetenv()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fegetenv_exit:
+// fegetenv
+// Return size: 0
+define fegetenv
 fegetenv_entry:
+	r29 = fp
+	// succ:  l0000A260
 l0000A260:
+	r1 = USR
+	Mem0[r0:word32] = r1
+	return
+	// succ:  fegetenv_exit
+fegetenv_exit:
 
 
-void __save_r16_through_r27()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__save_r16_through_r27_exit:
+// __save_r16_through_r27
+// Return size: 0
+define __save_r16_through_r27
 __save_r16_through_r27_entry:
+	r29 = fp
+	// succ:  l0000A270
 l0000A270:
+	Mem0[r30 - 40<i32>:word64] = r25_r24
+	Mem0[r30 - 48<i32>:word64] = r27_r26
+	// succ:  l0000A270_thunk___save_r16_through_r23
+l0000A270_thunk___save_r16_through_r23:
+	call __save_r16_through_r23 (retsize: 0;)
+	return
+	// succ:  __save_r16_through_r27_exit
+__save_r16_through_r27_exit:
 
 
-void __save_r16_through_r23()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__save_r16_through_r23_exit:
+// __save_r16_through_r23
+// Return size: 0
+define __save_r16_through_r23
 __save_r16_through_r23_entry:
+	r29 = fp
+	// succ:  l0000A278
 l0000A278:
+	Mem0[r30 - 24<i32>:word64] = r21_r20
+	Mem0[r30 - 32<i32>:word64] = r23_r22
+	// succ:  l0000A278_thunk___save_r16_through_r19
+l0000A278_thunk___save_r16_through_r19:
+	call __save_r16_through_r19 (retsize: 0;)
+	return
+	// succ:  __save_r16_through_r23_exit
+__save_r16_through_r23_exit:
 
 
-void __save_r16_through_r19()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__save_r16_through_r19_exit:
+// __save_r16_through_r19
+// Return size: 0
+define __save_r16_through_r19
 __save_r16_through_r19_entry:
+	r29 = fp
+	// succ:  l0000A280
 l0000A280:
+	Mem0[r30 - 8<i32>:word64] = r17_r16
+	Mem0[r30 - 16<i32>:word64] = r19_r18
+	return
+	// succ:  __save_r16_through_r19_exit
+__save_r16_through_r19_exit:
 
 
-void __save_r16_through_r27_stkchk()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__save_r16_through_r27_stkchk_exit:
+// __save_r16_through_r27_stkchk
+// Return size: 0
+define __save_r16_through_r27_stkchk
 __save_r16_through_r27_stkchk_entry:
+	r29 = fp
+	// succ:  l0000A290
 l0000A290:
+	Mem0[r30 - 40<i32>:word64] = r25_r24
+	Mem0[r30 - 48<i32>:word64] = r27_r26
+	// succ:  l0000A290_thunk___save_r16_through_r23_stkchk
+l0000A290_thunk___save_r16_through_r23_stkchk:
+	call __save_r16_through_r23_stkchk (retsize: 0;)
+	return
+	// succ:  __save_r16_through_r27_stkchk_exit
+__save_r16_through_r27_stkchk_exit:
 
 
-void __save_r16_through_r23_stkchk()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__save_r16_through_r23_stkchk_exit:
+// __save_r16_through_r23_stkchk
+// Return size: 0
+define __save_r16_through_r23_stkchk
 __save_r16_through_r23_stkchk_entry:
+	r29 = fp
+	// succ:  l0000A298
 l0000A298:
+	Mem0[r30 - 24<i32>:word64] = r21_r20
+	Mem0[r30 - 32<i32>:word64] = r23_r22
+	// succ:  l0000A298_thunk___save_r16_through_r19_stkchk
+l0000A298_thunk___save_r16_through_r19_stkchk:
+	call __save_r16_through_r19_stkchk (retsize: 0;)
+	return
+	// succ:  __save_r16_through_r23_stkchk_exit
+__save_r16_through_r23_stkchk_exit:
 
 
-void __save_r16_through_r19_stkchk()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__save_r16_through_r19_stkchk_exit:
+// __save_r16_through_r19_stkchk
+// Return size: 0
+define __save_r16_through_r19_stkchk
 __save_r16_through_r19_stkchk_entry:
+	r29 = fp
+	// succ:  l0000A2A0
 l0000A2A0:
+	Mem0[r30 - 8<i32>:word64] = r17_r16
+	Mem0[r30 - 16<i32>:word64] = r19_r18
+	r17 = UGP
+	r16 = Mem0[r17 + 68<i32>:word32]
+	return
+	// succ:  __save_r16_through_r19_stkchk_exit
+__save_r16_through_r19_stkchk_exit:
 
 
-void __save_r16_through_r25()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__save_r16_through_r25_exit:
+// __save_r16_through_r25
+// Return size: 0
+define __save_r16_through_r25
 __save_r16_through_r25_entry:
+	r29 = fp
+	// succ:  l0000A2C0
 l0000A2C0:
+	Mem0[r30 - 32<i32>:word64] = r23_r22
+	Mem0[r30 - 40<i32>:word64] = r25_r24
+	// succ:  l0000A2C0_thunk___save_r16_through_r21
+l0000A2C0_thunk___save_r16_through_r21:
+	call __save_r16_through_r21 (retsize: 0;)
+	return
+	// succ:  __save_r16_through_r25_exit
+__save_r16_through_r25_exit:
 
 
-void __save_r16_through_r21()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__save_r16_through_r21_exit:
+// __save_r16_through_r21
+// Return size: 0
+define __save_r16_through_r21
 __save_r16_through_r21_entry:
+	r29 = fp
+	// succ:  l0000A2C8
 l0000A2C8:
+	Mem0[r30 - 16<i32>:word64] = r19_r18
+	Mem0[r30 - 24<i32>:word64] = r21_r20
+	// succ:  l0000A2C8_thunk___save_r16_through_r17
+l0000A2C8_thunk___save_r16_through_r17:
+	call __save_r16_through_r17 (retsize: 0;)
+	return
+	// succ:  __save_r16_through_r21_exit
+__save_r16_through_r21_exit:
 
 
-void __save_r16_through_r17()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__save_r16_through_r17_exit:
+// __save_r16_through_r17
+// Return size: 0
+define __save_r16_through_r17
 __save_r16_through_r17_entry:
+	r29 = fp
+	// succ:  l0000A2D0
 l0000A2D0:
+	Mem0[r30 - 8<i32>:word64] = r17_r16
+	return
+	// succ:  __save_r16_through_r17_exit
+__save_r16_through_r17_exit:
 
 
-void __save_r16_through_r25_stkchk()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__save_r16_through_r25_stkchk_exit:
+// __save_r16_through_r25_stkchk
+// Return size: 0
+define __save_r16_through_r25_stkchk
 __save_r16_through_r25_stkchk_entry:
+	r29 = fp
+	// succ:  l0000A2D8
 l0000A2D8:
+	Mem0[r30 - 32<i32>:word64] = r23_r22
+	Mem0[r30 - 40<i32>:word64] = r25_r24
+	// succ:  l0000A2D8_thunk___save_r16_through_r21_stkchk
+l0000A2D8_thunk___save_r16_through_r21_stkchk:
+	call __save_r16_through_r21_stkchk (retsize: 0;)
+	return
+	// succ:  __save_r16_through_r25_stkchk_exit
+__save_r16_through_r25_stkchk_exit:
 
 
-void __save_r16_through_r21_stkchk()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__save_r16_through_r21_stkchk_exit:
+// __save_r16_through_r21_stkchk
+// Return size: 0
+define __save_r16_through_r21_stkchk
 __save_r16_through_r21_stkchk_entry:
+	r29 = fp
+	// succ:  l0000A2E0
 l0000A2E0:
+	Mem0[r30 - 16<i32>:word64] = r19_r18
+	Mem0[r30 - 24<i32>:word64] = r21_r20
+	// succ:  l0000A2E0_thunk___save_r16_through_r17_stkchk
+l0000A2E0_thunk___save_r16_through_r17_stkchk:
+	call __save_r16_through_r17_stkchk (retsize: 0;)
+	return
+	// succ:  __save_r16_through_r21_stkchk_exit
+__save_r16_through_r21_stkchk_exit:
 
 
-void __save_r16_through_r17_stkchk()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__save_r16_through_r17_stkchk_exit:
+// __save_r16_through_r17_stkchk
+// Return size: 0
+define __save_r16_through_r17_stkchk
 __save_r16_through_r17_stkchk_entry:
+	r29 = fp
+	// succ:  l0000A2E8
 l0000A2E8:
+	Mem0[r30 - 8<i32>:word64] = r17_r16
+	r17 = UGP
+	r16 = Mem0[r17 + 68<i32>:word32]
+	return
+	// succ:  __save_r16_through_r17_stkchk_exit
+__save_r16_through_r17_stkchk_exit:
 
 
-void __restore_r16_through_r23_and_deallocframe_before_tailcall()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__restore_r16_through_r23_and_deallocframe_before_tailcall_exit:
+// __restore_r16_through_r23_and_deallocframe_before_tailcall
+// Return size: 0
+define __restore_r16_through_r23_and_deallocframe_before_tailcall
 __restore_r16_through_r23_and_deallocframe_before_tailcall_entry:
+	r29 = fp
+	// succ:  l0000A304
 l0000A304:
+	r21_r20 = Mem0[r30 - 24<i32>:word64]
+	r23_r22 = Mem0[r30 - 32<i32>:word64]
+	// succ:  l0000A304_thunk___restore_r16_through_r19_and_deallocframe_before_tailcall
+l0000A304_thunk___restore_r16_through_r19_and_deallocframe_before_tailcall:
+	call __restore_r16_through_r19_and_deallocframe_before_tailcall (retsize: 0;)
+	return
+	// succ:  __restore_r16_through_r23_and_deallocframe_before_tailcall_exit
+__restore_r16_through_r23_and_deallocframe_before_tailcall_exit:
 
 
-void __restore_r16_through_r19_and_deallocframe_before_tailcall()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__restore_r16_through_r19_and_deallocframe_before_tailcall_exit:
+// __restore_r16_through_r19_and_deallocframe_before_tailcall
+// Return size: 0
+define __restore_r16_through_r19_and_deallocframe_before_tailcall
 __restore_r16_through_r19_and_deallocframe_before_tailcall_entry:
+	r29 = fp
+	// succ:  l0000A310
 l0000A310:
+	r19_r18 = Mem0[r30 - 16<i32>:word64]
+	// succ:  l0000A310_thunk___restore_r16_through_r17_and_deallocframe_before_tailcall
+l0000A310_thunk___restore_r16_through_r17_and_deallocframe_before_tailcall:
+	call __restore_r16_through_r17_and_deallocframe_before_tailcall (retsize: 0;)
+	return
+	// succ:  __restore_r16_through_r19_and_deallocframe_before_tailcall_exit
+__restore_r16_through_r19_and_deallocframe_before_tailcall_exit:
 
 
-void __restore_r16_through_r27_and_deallocframe_before_tailcall()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__restore_r16_through_r27_and_deallocframe_before_tailcall_exit:
+// __restore_r16_through_r27_and_deallocframe_before_tailcall
+// Return size: 0
+define __restore_r16_through_r27_and_deallocframe_before_tailcall
 __restore_r16_through_r27_and_deallocframe_before_tailcall_entry:
+	r29 = fp
+	// succ:  l0000A318
 l0000A318:
+	r27_r26 = Mem0[r30 - 48<i32>:word64]
+	// succ:  l0000A318_thunk___restore_r16_through_r25_and_deallocframe_before_tailcall
+l0000A318_thunk___restore_r16_through_r25_and_deallocframe_before_tailcall:
+	call __restore_r16_through_r25_and_deallocframe_before_tailcall (retsize: 0;)
+	return
+	// succ:  __restore_r16_through_r27_and_deallocframe_before_tailcall_exit
+__restore_r16_through_r27_and_deallocframe_before_tailcall_exit:
 
 
-void __restore_r16_through_r25_and_deallocframe_before_tailcall()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__restore_r16_through_r25_and_deallocframe_before_tailcall_exit:
+// __restore_r16_through_r25_and_deallocframe_before_tailcall
+// Return size: 0
+define __restore_r16_through_r25_and_deallocframe_before_tailcall
 __restore_r16_through_r25_and_deallocframe_before_tailcall_entry:
+	r29 = fp
+	// succ:  l0000A320
 l0000A320:
+	r23_r22 = Mem0[r30 - 32<i32>:word64]
+	r25_r24 = Mem0[r30 - 40<i32>:word64]
+	// succ:  l0000A320_thunk___restore_r16_through_r21_and_deallocframe_before_tailcall
+l0000A320_thunk___restore_r16_through_r21_and_deallocframe_before_tailcall:
+	call __restore_r16_through_r21_and_deallocframe_before_tailcall (retsize: 0;)
+	return
+	// succ:  __restore_r16_through_r25_and_deallocframe_before_tailcall_exit
+__restore_r16_through_r25_and_deallocframe_before_tailcall_exit:
 
 
-void __restore_r16_through_r21_and_deallocframe_before_tailcall()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__restore_r16_through_r21_and_deallocframe_before_tailcall_exit:
+// __restore_r16_through_r21_and_deallocframe_before_tailcall
+// Return size: 0
+define __restore_r16_through_r21_and_deallocframe_before_tailcall
 __restore_r16_through_r21_and_deallocframe_before_tailcall_entry:
+	r29 = fp
+	// succ:  l0000A328
 l0000A328:
+	r19_r18 = Mem0[r30 - 16<i32>:word64]
+	r21_r20 = Mem0[r30 - 24<i32>:word64]
+	// succ:  l0000A328_thunk___restore_r16_through_r17_and_deallocframe_before_tailcall
+l0000A328_thunk___restore_r16_through_r17_and_deallocframe_before_tailcall:
+	call __restore_r16_through_r17_and_deallocframe_before_tailcall (retsize: 0;)
+	return
+	// succ:  __restore_r16_through_r21_and_deallocframe_before_tailcall_exit
+__restore_r16_through_r21_and_deallocframe_before_tailcall_exit:
 
 
-void __restore_r16_through_r17_and_deallocframe_before_tailcall()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__restore_r16_through_r17_and_deallocframe_before_tailcall_exit:
+// __restore_r16_through_r17_and_deallocframe_before_tailcall
+// Return size: 0
+define __restore_r16_through_r17_and_deallocframe_before_tailcall
 __restore_r16_through_r17_and_deallocframe_before_tailcall_entry:
+	r29 = fp
+	// succ:  l0000A330
 l0000A330:
+	r17_r16 = Mem0[r30 - 8<i32>:word64]
+	return
+	// succ:  __restore_r16_through_r17_and_deallocframe_before_tailcall_exit
+__restore_r16_through_r17_and_deallocframe_before_tailcall_exit:
 
 
-void __restore_r16_through_r23_and_deallocframe()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__restore_r16_through_r23_and_deallocframe_exit:
+// __restore_r16_through_r23_and_deallocframe
+// Return size: 0
+define __restore_r16_through_r23_and_deallocframe
 __restore_r16_through_r23_and_deallocframe_entry:
+	r29 = fp
+	// succ:  l0000A340
 l0000A340:
+	r21_r20 = Mem0[r30 - 24<i32>:word64]
+	r23_r22 = Mem0[r30 - 32<i32>:word64]
+	// succ:  l0000A340_thunk___restore_r16_through_r19_and_deallocframe
+l0000A340_thunk___restore_r16_through_r19_and_deallocframe:
+	call __restore_r16_through_r19_and_deallocframe (retsize: 0;)
+	return
+	// succ:  __restore_r16_through_r23_and_deallocframe_exit
+__restore_r16_through_r23_and_deallocframe_exit:
 
 
-void __restore_r16_through_r19_and_deallocframe()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__restore_r16_through_r19_and_deallocframe_exit:
+// __restore_r16_through_r19_and_deallocframe
+// Return size: 0
+define __restore_r16_through_r19_and_deallocframe
 __restore_r16_through_r19_and_deallocframe_entry:
+	r29 = fp
+	// succ:  l0000A348
 l0000A348:
+	r19_r18 = Mem0[r30 - 16<i32>:word64]
+	// succ:  l0000A348_thunk___restore_r16_through_r17_and_deallocframe
+l0000A348_thunk___restore_r16_through_r17_and_deallocframe:
+	call __restore_r16_through_r17_and_deallocframe (retsize: 0;)
+	return
+	// succ:  __restore_r16_through_r19_and_deallocframe_exit
+__restore_r16_through_r19_and_deallocframe_exit:
 
 
-void __restore_r16_through_r27_and_deallocframe()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__restore_r16_through_r27_and_deallocframe_exit:
+// __restore_r16_through_r27_and_deallocframe
+// Return size: 0
+define __restore_r16_through_r27_and_deallocframe
 __restore_r16_through_r27_and_deallocframe_entry:
+	r29 = fp
+	// succ:  l0000A350
 l0000A350:
+	r27_r26 = Mem0[r30 - 48<i32>:word64]
+	// succ:  l0000A350_thunk___restore_r16_through_r25_and_deallocframe
+l0000A350_thunk___restore_r16_through_r25_and_deallocframe:
+	call __restore_r16_through_r25_and_deallocframe (retsize: 0;)
+	return
+	// succ:  __restore_r16_through_r27_and_deallocframe_exit
+__restore_r16_through_r27_and_deallocframe_exit:
 
 
-void __restore_r16_through_r25_and_deallocframe()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__restore_r16_through_r25_and_deallocframe_exit:
+// __restore_r16_through_r25_and_deallocframe
+// Return size: 0
+define __restore_r16_through_r25_and_deallocframe
 __restore_r16_through_r25_and_deallocframe_entry:
+	r29 = fp
+	// succ:  l0000A354
 l0000A354:
+	r23_r22 = Mem0[r30 - 32<i32>:word64]
+	r25_r24 = Mem0[r30 - 40<i32>:word64]
+	// succ:  l0000A354_thunk___restore_r16_through_r21_and_deallocframe
+l0000A354_thunk___restore_r16_through_r21_and_deallocframe:
+	call __restore_r16_through_r21_and_deallocframe (retsize: 0;)
+	return
+	// succ:  __restore_r16_through_r25_and_deallocframe_exit
+__restore_r16_through_r25_and_deallocframe_exit:
 
 
-void __restore_r16_through_r21_and_deallocframe()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__restore_r16_through_r21_and_deallocframe_exit:
+// __restore_r16_through_r21_and_deallocframe
+// Return size: 0
+define __restore_r16_through_r21_and_deallocframe
 __restore_r16_through_r21_and_deallocframe_entry:
+	r29 = fp
+	// succ:  l0000A360
 l0000A360:
+	r19_r18 = Mem0[r30 - 16<i32>:word64]
+	r21_r20 = Mem0[r30 - 24<i32>:word64]
+	// succ:  l0000A360_thunk___restore_r16_through_r17_and_deallocframe
+l0000A360_thunk___restore_r16_through_r17_and_deallocframe:
+	call __restore_r16_through_r17_and_deallocframe (retsize: 0;)
+	return
+	// succ:  __restore_r16_through_r21_and_deallocframe_exit
+__restore_r16_through_r21_and_deallocframe_exit:
 
 
-void __restore_r16_through_r17_and_deallocframe()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__restore_r16_through_r17_and_deallocframe_exit:
+// __restore_r16_through_r17_and_deallocframe
+// Return size: 0
+define __restore_r16_through_r17_and_deallocframe
 __restore_r16_through_r17_and_deallocframe_entry:
+	r29 = fp
+	// succ:  l0000A368
 l0000A368:
+	v3 = r30
+	r31 = Mem0[v3 + 4<i32>:word32]
+	r30 = Mem0[v3:word32]
+	r29 = v3 + 8<i32>
+	return
+	// succ:  __restore_r16_through_r17_and_deallocframe_exit
+__restore_r16_through_r17_and_deallocframe_exit:
 
 
-void __deallocframe()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__deallocframe_exit:
+// __deallocframe
+// Return size: 0
+define __deallocframe
 __deallocframe_entry:
+	r29 = fp
+	// succ:  l0000A370
 l0000A370:
+	v3 = r30
+	r31 = Mem0[v3 + 4<i32>:word32]
+	r30 = Mem0[v3:word32]
+	r29 = v3 + 8<i32>
+	return
+	// succ:  __deallocframe_exit
+__deallocframe_exit:
 
 
-void __hexagon_memcpy_likely_aligned_min32bytes_mult8bytes()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__hexagon_memcpy_likely_aligned_min32bytes_mult8bytes_exit:
+// __hexagon_memcpy_likely_aligned_min32bytes_mult8bytes
+// Return size: 0
+define __hexagon_memcpy_likely_aligned_min32bytes_mult8bytes
 __hexagon_memcpy_likely_aligned_min32bytes_mult8bytes_entry:
+	r29 = fp
+	// succ:  l0000A380
 l0000A380:
+	r5_r4 = Mem0[r1:word64]
+	r3 = 0xFFFFFFFD<32>
+	Mem0[r0:word64] = r5_r4
+	return
+	// succ:  __hexagon_memcpy_likely_aligned_min32bytes_mult8bytes_exit
+__hexagon_memcpy_likely_aligned_min32bytes_mult8bytes_exit:
 
 
-void __qdsp_divdi3()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__qdsp_divdi3_exit:
+// __qdsp_divdi3
+// Return size: 0
+define __qdsp_divdi3
 __qdsp_divdi3_entry:
+	r29 = fp
+	// succ:  l0000A3E0
 l0000A3E0:
+	r3_r2 = r1_r0
+	r5_r4 = r3_r2
+	r15_r14 = 1<64>
+	r1_r0 = 0<64>
+	r11 = r10 + 1<32>
+	p0 = r5_r4 >u r3_r2
+	branch p0 l0000A444
+	// succ:  l0000A428 l0000A444
+l0000A428:
+	p0 = r13_r12 >u r3_r2
+	r9_r8 = r15_r14 + r1_r0
+	r13_r12 = r13_r12 >>u 1<32>
+	r15_r14 = r15_r14 >>u 1<32>
+	// succ:  l0000A444
+l0000A444:
+	return
+	// succ:  __qdsp_divdi3_exit
+__qdsp_divdi3_exit:
 
 
-void __hexagon_divsi3()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__hexagon_divsi3_exit:
+// __hexagon_divsi3
+// Return size: 0
+define __hexagon_divsi3
 __hexagon_divsi3_entry:
+	r29 = fp
+	// succ:  l0000A460
 l0000A460:
+	p1 = r1 > 0xFFFFFFFF<32>
+	p0 = r0 > 0xFFFFFFFF<32>
+	p2 = r2 >u r1
+	p0 = r2 >u r5
+	r0 = 0<32>
+	return
+	// succ:  __hexagon_divsi3_exit
+__hexagon_divsi3_exit:
 
 
-void __hexagon_udivdi3()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__hexagon_udivdi3_exit:
+// __hexagon_udivdi3
+// Return size: 0
+define __hexagon_udivdi3
 __hexagon_udivdi3_entry:
+	r29 = fp
+	// succ:  l0000A4E0
 l0000A4E0:
+	r3_r2 = r1_r0
+	r5_r4 = r3_r2
+	r15_r14 = 1<64>
+	r1_r0 = 0<64>
+	r11 = r10 + 1<32>
+	p0 = r5_r4 >u r3_r2
+	return
+	// succ:  __hexagon_udivdi3_exit
+__hexagon_udivdi3_exit:
 
 
-void __qdsp_udivsi3()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__qdsp_udivsi3_exit:
+// __qdsp_udivsi3
+// Return size: 0
+define __qdsp_udivsi3
 __qdsp_udivsi3_entry:
+	r29 = fp
+	// succ:  l0000A540
 l0000A540:
+	p0 = r1 >u r0
+	r5_r4 = 0x100000000<64>
+	return
+	// succ:  __qdsp_udivsi3_exit
+__qdsp_udivsi3_exit:
 
 
-void __qdsp_umoddi3()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__qdsp_umoddi3_exit:
+// __qdsp_umoddi3
+// Return size: 0
+define __qdsp_umoddi3
 __qdsp_umoddi3_entry:
+	r29 = fp
+	// succ:  l0000A590
 l0000A590:
+	r3_r2 = r1_r0
+	r5_r4 = r3_r2
+	r15_r14 = 1<64>
+	r1_r0 = 0<64>
+	r11 = r10 + 1<32>
+	p0 = r5_r4 >u r3_r2
+	branch p0 l0000A5E0
+	// succ:  l0000A5C4 l0000A5E0
+l0000A5C4:
+	p0 = r13_r12 >u r3_r2
+	r9_r8 = r15_r14 + r1_r0
+	r13_r12 = r13_r12 >>u 1<32>
+	r15_r14 = r15_r14 >>u 1<32>
+	// succ:  l0000A5E0
+l0000A5E0:
+	return
+	// succ:  __qdsp_umoddi3_exit
+__qdsp_umoddi3_exit:
 
 
-void __hexagon_adddf3()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__hexagon_adddf3_exit:
+// __hexagon_adddf3
+// Return size: 0
+define __hexagon_adddf3
 __hexagon_adddf3_entry:
+	r29 = fp
+	// succ:  l0000A600
 l0000A600:
+	r13_r12 = 0x2000000000000000<64>
+	// succ:  l0000A600_thunk_fn0000A610
+l0000A600_thunk_fn0000A610:
+	call fn0000A610 (retsize: 0;)
+	return
+	// succ:  __hexagon_adddf3_exit
+__hexagon_adddf3_exit:
 
 
-void __hexagon_fast2_subdf3()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// fn0000A604
+// Return size: 0
+define fn0000A604
+fn0000A604_entry:
+	r29 = fp
+	// succ:  l0000A604
+l0000A604:
+	r13_r12 = 0x2000000000000000<64>
+	goto l0000A604_thunk_fn0000A610
+	// succ:  l0000A604_thunk_fn0000A610
+l0000A604:
+l0000A604_thunk_fn0000A610:
+	call fn0000A610 (retsize: 0;)
+	return
+	// succ:  fn0000A604_exit
+fn0000A604_exit:
 
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__hexagon_fast2_subdf3_exit:
+
+// fn0000A610
+// Return size: 0
+define fn0000A610
+fn0000A610_entry:
+	r29 = fp
+	// succ:  l0000A610
+l0000A610:
+	p2 = r5 >u r4
+	r9_r8 = r13_r12
+	p3 = dfclass(r3_r2, 2<32>)
+	p3 = dfclass(r1_r0, 2<32>)
+	r5_r4 = r4_r5
+	r3_r2 = r1_r0
+	r1_r0 = r3_r2
+	branch p3 l0000A764_in_fn0000A610
+	goto l0000A630_in_fn0000A610
+	// succ:  l0000A630_in_fn0000A610 l0000A764_in_fn0000A610
+l0000A610:
+	p2 = r5 >u r4
+	r9_r8 = r13_r12
+	p3 = dfclass(r3_r2, 2<32>)
+	p3 = dfclass(r1_r0, 2<32>)
+	r5_r4 = r4_r5
+	r3_r2 = r1_r0
+	r1_r0 = r3_r2
+	branch p3 l0000A764
+	// succ:  l0000A630 l0000A764
+l0000A630:
+	r7_r6 = 0x3E00000001<64>
+	r14 = 0<32>
+	p2 = r1 > 0xFFFFFFFF<32>
+	r15_r14 = 0<64>
+	r13_r12 = r11_r10
+	r9_r8 = r9_r8 >> r15
+	p3 = r3 > 0xFFFFFFFF<32>
+	r5 = r4 + 0xFFFFFBC4<32>
+	r7_r6 = 0x7F60000003D<64>
+	r13_r12 = r11_r10
+	p0 = r12 == 0<32>
+	p0 = r13 == 0<32>
+	return
+	// succ:  fn0000A610_exit
+l0000A630_in_fn0000A610:
+	r7_r6 = 0x3E00000001<64>
+	r14 = 0<32>
+	p2 = r1 > 0xFFFFFFFF<32>
+	r15_r14 = 0<64>
+	r13_r12 = r11_r10
+	r9_r8 = r9_r8 >> r15
+	p3 = r3 > 0xFFFFFFFF<32>
+	r5 = r4 + 0xFFFFFBC4<32>
+	r7_r6 = 0x7F60000003D<64>
+	r13_r12 = r11_r10
+	p0 = r12 == 0<32>
+	p0 = r13 == 0<32>
+	return
+	// succ:  fn0000A610_exit
+l0000A764:
+	r3_r2 = r1_r0
+	r1_r0 = r3_r2
+	p3 = r13_r12 >u r9_r8
+	r9_r8 = r13_r12
+	r13_r12 = r9_r8
+	r13_r12 = 0<64>
+	r13_r12 = 0x2000000000000000<64>
+	r5 = 1<32>
+	r9_r8 = r9_r8 << 9<32>
+	r7_r6 = 0x3E00000001<64>
+	p1 = r3 > 0xFFFFFFFF<32>
+	p0 = r1 > 0xFFFFFFFF<32>
+	r9_r8 = r3_r2
+	r13_r12 = r1_r0
+	r13_r12 = r9_r8 + r13_r12
+	r3_r2 = 0<64>
+	p0 = r13 > 0xFFFFFFFF<32>
+	r3 = 0x80000000<32>
+	r1_r0 = r13_r12
+	r1_r0 = r9_r8
+	return
+	// succ:  fn0000A610_exit
+l0000A764_in_fn0000A610:
+	r3_r2 = r1_r0
+	r1_r0 = r3_r2
+	p3 = r13_r12 >u r9_r8
+	r9_r8 = r13_r12
+	r13_r12 = r9_r8
+	r13_r12 = 0<64>
+	r13_r12 = 0x2000000000000000<64>
+	r5 = 1<32>
+	r9_r8 = r9_r8 << 9<32>
+	r7_r6 = 0x3E00000001<64>
+	p1 = r3 > 0xFFFFFFFF<32>
+	p0 = r1 > 0xFFFFFFFF<32>
+	r9_r8 = r3_r2
+	r13_r12 = r1_r0
+	r13_r12 = r9_r8 + r13_r12
+	r3_r2 = 0<64>
+	p0 = r13 > 0xFFFFFFFF<32>
+	r3 = 0x80000000<32>
+	r1_r0 = r13_r12
+	r1_r0 = r9_r8
+	return
+	// succ:  fn0000A610_exit
+fn0000A610_exit:
+
+
+// __hexagon_fast2_subdf3
+// Return size: 0
+define __hexagon_fast2_subdf3
 __hexagon_fast2_subdf3_entry:
+	r29 = fp
+	// succ:  l0000A6A4
 l0000A6A4:
+	// succ:  l0000A6A4_thunk_fn0000A604
+l0000A6A4_thunk_fn0000A604:
+	call fn0000A604 (retsize: 0;)
+	return
+	// succ:  __hexagon_fast2_subdf3_exit
+__hexagon_fast2_subdf3_exit:
 
 
-void __hexagon_divdf3()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__hexagon_divdf3_exit:
+// __hexagon_divdf3
+// Return size: 0
+define __hexagon_divdf3
 __hexagon_divdf3_entry:
+	r29 = fp
+	// succ:  l0000A880
 l0000A880:
+	r15_r14 = 0x4000000000000000<64>
+	p3 = dfclass(r3_r2, 2<32>)
+	p3 = dfclass(r1_r0, 2<32>)
+	r7_r6 = 0<64>
+	r13_r12 = r15_r14
+	r15_r14 = insert(r0, 0x34<32>, 0xC<32>)
+	branch p3 l0000AA18
+	// succ:  l0000A8A0 l0000AA18
+l0000A8A0:
+	r11_r10 = 1<64>
+	r9_r8 = r15_r14
+	p0 = r15 > 0xFFFFFFFF<32>
+	r9_r8 = r9_r8 << 1<32>
+	r8 = 0x3FE<32>
+	r9 = 0xFFFFFC02<32>
+	r15_r14 = r7_r6
+	p1 = r28 > 0xFFFFFFFF<32>
+	branch p0 l0000A914
+	// succ:  l0000A8FC l0000A914
+l0000A8FC:
+	r4 = r4 + 0xFFFFFFC9<32>
+	return
+	// succ:  __hexagon_divdf3_exit
+l0000A914:
+	r4 = r4 + 0xFFFFFFC9<32>
+	r28 = 0x3F<32>
+	p3 = r15 > 0xFFFFFFFF<32>
+	r6 = 0x30<32>
+	r4 = 0<32>
+	r13_r12 = r13_r12 >> r5
+	r28 = 0xFFFFFBCA<32>
+	r3_r2 = 0<64>
+	r15_r14 = r13_r12
+	USR = r7
+	return
+	// succ:  __hexagon_divdf3_exit
+l0000AA18:
+	p0 = dfclass(r3_r2, 0xF<32>)
+	p0 = dfclass(r1_r0, 0xF<32>)
+	p1 = dfclass(r3_r2, 8<32>)
+	p1 = dfclass(r1_r0, 8<32>)
+	p2 = dfclass(r3_r2, 1<32>)
+	p2 = dfclass(r1_r0, 1<32>)
+	branch p1 l0000AB14
+	// succ:  l0000AA38 l0000AB14 l0000AAF0
+l0000AA38:
+	branch p0 l0000AAF0
+l0000AAF0:
+	r3_r2 = r1_r0
+	r1_r0 = r3_r2
+	p1 = dfclass(r3_r2, 0x10<32>)
+	p0 = dfclass(r1_r0, 0x10<32>)
+	return
+	// succ:  __hexagon_divdf3_exit
+l0000AB14:
+	r28 = 1<32>
+	return
+	// succ:  __hexagon_divdf3_exit
+__hexagon_divdf3_exit:
 
 
-void __hexagon_fast_muldf3()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__hexagon_fast_muldf3_exit:
+// __hexagon_fast_muldf3
+// Return size: 0
+define __hexagon_fast_muldf3
 __hexagon_fast_muldf3_entry:
+	r29 = fp
+	// succ:  l0000AB20
 l0000AB20:
+	r13_r12 = 0x4000000000000000<64>
+	p0 = dfclass(r3_r2, 2<32>)
+	p0 = dfclass(r1_r0, 2<32>)
+	r9_r8 = 1<64>
+	r28 = 0xFFFFFC00<32>
+	r5_r4 = r3_r2 << 0xA<32>
+	r13_r12 = insert(r0, 0x34<32>, 0xC<32>)
+	r5_r4 = insert(r8, 2<32>, 0x3A<32>)
+	r5_r4 = 0x7FC00000000<64>
+	p1 = r6 == 0<32>
+	p1 = r14 == 0<32>
+	branch p0 l0000ACC8
+	// succ:  l0000AB70 l0000ACC8
+l0000AB70:
+	r6 = r6 + 0xFFFFFBC6<32>
+	return
+	// succ:  __hexagon_fast_muldf3_exit
+l0000ACC8:
+	r3_r2 = r1_r0
+	r1_r0 = r3_r2
+	p3 = r13_r12 >u r5_r4
+	r5_r4 = r13_r12
+	r13_r12 = r5_r4
+	p1 = dfclass(r3_r2, 0xE<32>)
+	p1 = dfclass(r1_r0, 8<32>)
+	p0 = dfclass(r3_r2, 1<32>)
+	p0 = dfclass(r1_r0, 8<32>)
+	p2 = dfclass(r3_r2, 1<32>)
+	branch p1 l0000AD98
+	// succ:  l0000AD00 l0000AD98
+l0000AD00:
+	r28 = 0x7C000000<32>
+	branch p2 l0000AD94
+	// succ:  l0000AD10 l0000AD94 l0000AD5C
+l0000AD10:
+	branch p0 l0000AD5C
+l0000AD5C:
+	r28 = USR
+	USR = r28
+	return
+	// succ:  __hexagon_fast_muldf3_exit
+l0000AD94:
+	r3_r2 = r1_r0
+	// succ:  l0000AD98
+l0000AD98:
+	return
+	// succ:  __hexagon_fast_muldf3_exit
+__hexagon_fast_muldf3_exit:
 
 
-void _exit()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-_exit_exit:
+// _exit
+// Return size: 0
+define _exit
 _exit_entry:
+	r29 = fp
+	// succ:  l0000AEB0
 l0000AEB0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	r1 = Mem0[gp + 224<i32>:word32]
+	r3 = r0
+	Mem0[r29 + 4<i32>:word32] = r3
+	r4 = r29 + 4<32>
+	r0 = 0x18<32>
+	r1 = r4
+	r2 = r3
+	r3 = r0
+	v12 = r30
+	r31 = Mem0[v12 + 4<i32>:word32]
+	r30 = Mem0[v12:word32]
+	r29 = v12 + 8<i32>
+	return
+	// succ:  _exit_exit
+_exit_exit:
 
 
-void lockMutex()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-lockMutex_exit:
+// lockMutex
+// Return size: 0
+define lockMutex
 lockMutex_entry:
+	r29 = fp
+	// succ:  l0000AEF0
 l0000AEF0:
+	r2 = memw_locked(r0)
+	r2 = r2 + 1<32>
+	r4 = r4 << 0x10<32>
+	p1 = r3 == r4
+	branch p1 l0000AF20
+	// succ:  l0000AF10 l0000AF20
+l0000AF10:
+	r2 = r4 + 1<32>
+	p1 = r1 == 0<32>
+	branch p1 l0000AF20
+	// succ:  l0000AF1C l0000AF20
+l0000AF1C:
+	goto l0000AEF0
+	// succ:  l0000AEF0
+l0000AF20:
+	branch p0 l0000AEF0
+	// succ:  l0000AF28 l0000AEF0
+l0000AF28:
+	return
+	// succ:  lockMutex_exit
+lockMutex_exit:
 
 
-void __sys_Mtxunlock()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__sys_Mtxunlock_exit:
+// __sys_Mtxunlock
+// Return size: 0
+define __sys_Mtxunlock
 __sys_Mtxunlock_entry:
+	r29 = fp
+	// succ:  l0000AF30
 l0000AF30:
+	r1 = memw_locked(r0)
+	r3 = 1<32>
+	return
+	// succ:  __sys_Mtxunlock_exit
+__sys_Mtxunlock_exit:
 
 
-void __sys_Mtxinit()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__sys_Mtxinit_exit:
+// __sys_Mtxinit
+// Return size: 0
+define __sys_Mtxinit
 __sys_Mtxinit_entry:
+	r29 = fp
+	// succ:  l0000AF60
 l0000AF60:
+	r1 = 0<32>
+	Mem0[r0:word32] = r1
+	return
+	// succ:  __sys_Mtxinit_exit
+l0000AF60:
+__sys_Mtxinit_exit:
 
 
-void __sys_Mtxdst()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__sys_Mtxdst_exit:
+// __sys_Mtxdst
+// Return size: 0
+define __sys_Mtxdst
 __sys_Mtxdst_entry:
+	r29 = fp
+	// succ:  l0000AF70
 l0000AF70:
+	return
+	// succ:  __sys_Mtxdst_exit
+l0000AF70:
+	// succ:  __sys_Mtxdst_exit
+__sys_Mtxdst_exit:
 
 
-void __trylockMutex()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__trylockMutex_exit:
+// __trylockMutex
+// Return size: 0
+define __trylockMutex
 __trylockMutex_entry:
+	r29 = fp
+	// succ:  l0000AF80
 l0000AF80:
+	r4 = htid
+	// succ:  l0000AF84
+l0000AF84:
+	r2 = memw_locked(r0)
+	r3 = r2 >> 0x10<32>
+	p1 = r3 == r4
+	r2 = r2 + 1<32>
+	branch p1 l0000AFB4
+	// succ:  l0000AF98 l0000AFB4
+l0000AF98:
+	p1 = r3 == 0<32>
+	r5 = r4 << 0x10<32>
+	r2 = r5 + 0<32>
+	r2 = r2 + 1<32>
+	branch p1 l0000AFB4
+	// succ:  l0000AFB0 l0000AFB4
+l0000AFB0:
+	return
+	// succ:  __trylockMutex_exit
+l0000AFB4:
+	branch p0 l0000AF84
+	// succ:  l0000AFBC l0000AF84
+l0000AFBC:
+	return
+	// succ:  __trylockMutex_exit
+__trylockMutex_exit:
 
 
-void __sys_close()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__sys_close_exit:
+// __sys_close
+// Return size: 0
+define __sys_close
 __sys_close_entry:
+	r29 = fp
+	// succ:  l0000AFC0
 l0000AFC0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	r1 = Mem0[gp + 224<i32>:word32]
+	Mem0[r29 + 4<i32>:word32] = r0
+	Mem0[r29 + 8<i32>:word64] = r17_r16
+	r16 = r29 + 4<32>
+	r1 = 4<32>
+	r0 = r29 + 4<32>
+	r0 = 2<32>
+	r1 = r16
+	r2 = r0
+	r16 = r1
+	Mem0[r0:word32] = r16
+	r2 = -1<i32>
+	// succ:  l0000B010
+l0000B010:
+	v12 = r30
+	r31 = Mem0[v12 + 4<i32>:word32]
+	r30 = Mem0[v12:word32]
+	r29 = v12 + 8<i32>
+	return
+	// succ:  __sys_close_exit
+__sys_close_exit:
 
 
-void __sys_remove()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__sys_remove_exit:
+// __sys_remove
+// Return size: 0
+define __sys_remove
 __sys_remove_entry:
+	r29 = fp
+	// succ:  l0000B020
 l0000B020:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 16<i32>
+	r1 = Mem0[gp + 224<i32>:word32]
+	Mem0[r29 + 8<i32>:word64] = r17_r16
+	r16 = r0
+	Mem0[r29:word32] = r16
+	r0 = r16
+	r17 = r29 + 0<32>
+	r0 = r16
+	r1 = r0
+	Mem0[r2:word32] = r1
+	r1 = r0
+	r0 = r16
+	r0 = r29 + 0<32>
+	r1 = 8<32>
+	r0 = 0xE<32>
+	r1 = r17
+	r2 = r0
+	r16 = r1
+	Mem0[r0:word32] = r16
+	r2 = -1<i32>
+	// succ:  l0000B090
+l0000B090:
+	v13 = r30
+	r31 = Mem0[v13 + 4<i32>:word32]
+	r30 = Mem0[v13:word32]
+	r29 = v13 + 8<i32>
+	return
+	// succ:  __sys_remove_exit
+__sys_remove_exit:
 
 
-void __sys_sbrk()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__sys_sbrk_exit:
+// __sys_sbrk
+// Return size: 0
+define __sys_sbrk
 __sys_sbrk_entry:
+	r29 = fp
+	// succ:  l0000B0A0
 l0000B0A0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r17 = r0
+	r0 = 0x1006C<32>
+	r1 = 0xE018<32>
+	r2 = Mem0[r1:word32]
+	r3 = 0<32>
+	r16 = r3 + 0<32>
+	r16 = r2 + 0<32>
+	Mem0[r0:word32] = r16
+	r2 = Mem0[r1:word32]
+	r3 = r17
+	r1 = r3 & 0xFFFFFFF8<32>
+	Mem0[r16:word32] = r17
+	Mem0[r0:word32] = r1
+	// succ:  l0000B118
+l0000B118:
+	r0 = 0x1006C<32>
+	v13 = r30
+	r31 = Mem0[v13 + 4<i32>:word32]
+	r30 = Mem0[v13:word32]
+	r29 = v13 + 8<i32>
+	return
+	// succ:  __sys_sbrk_exit
+__sys_sbrk_exit:
 
 
-void BeforeBegin()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-BeforeBegin_exit:
+// BeforeBegin
+// Return size: 0
+define BeforeBegin
 BeforeBegin_entry:
+	r29 = fp
+	// succ:  l0000B130
 l0000B130:
+	r0 = 0x10070<32>
+	// succ:  l0000B130_thunk___sys_Mtxinit
+l0000B130_thunk___sys_Mtxinit:
+	call __sys_Mtxinit (retsize: 0;)
+	return
+	// succ:  BeforeBegin_exit
+BeforeBegin_exit:
 
 
-void AtEnd()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-AtEnd_exit:
+// AtEnd
+// Return size: 0
+define AtEnd
 AtEnd_entry:
+	r29 = fp
+	// succ:  l0000B140
 l0000B140:
+	r0 = 0x10070<32>
+	// succ:  l0000B140_thunk___sys_Mtxdst
+l0000B140_thunk___sys_Mtxdst:
+	call __sys_Mtxdst (retsize: 0;)
+	return
+	// succ:  AtEnd_exit
+AtEnd_exit:
 
 
-void sys_Tlsalloc()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-sys_Tlsalloc_exit:
+// sys_Tlsalloc
+// Return size: 0
+define sys_Tlsalloc
 sys_Tlsalloc_entry:
+	r29 = fp
+	// succ:  l0000B150
 l0000B150:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r0 = 0x10070<32>
+	r1 = 0xEC18<32>
+	r0 = 0xFE104FFF<32>
+	r17 = 0xB<32>
+	r2 = 0x2C<32>
+	r3 = r0 + 0x1EFB001<32>
+	p0 = r3 >u 0x3F<32>
+	r3 = Mem0[r2 + 4<i32>:word32]
+	r1 = r1 + 0x18<32>
+	r2 = r2 + 4<32>
+	r0 = r0 + 1<32>
+	Mem0[r2:word32] = 1<32>
+	r3 = 0<32>
+	Mem0[r16:word32] = r0
+	r17 = 0<32>
+	r0 = 0x10070<32>
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
+	return
+	// succ:  sys_Tlsalloc_exit
+sys_Tlsalloc_exit:
 
 
-void sys_Tlsfree()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-sys_Tlsfree_exit:
+// sys_Tlsfree
+// Return size: 0
+define sys_Tlsfree
 sys_Tlsfree_entry:
+	r29 = fp
+	// succ:  l0000B1D0
 l0000B1D0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 8<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r17 = r0 + 0x1EFB000<32>
+	p0 = r17 >u 0x3F<32>
+	r16 = 0x16<32>
+	r16 = 0xEB30<32>
+	r0 = 0x30<32>
+	r16 = 0<32>
+	Mem0[r0:word32] = 0<32>
+	r0 = 0x30<32>
+	v11 = r30
+	r31 = Mem0[v11 + 4<i32>:word32]
+	r30 = Mem0[v11:word32]
+	r29 = v11 + 8<i32>
+	return
+	// succ:  sys_Tlsfree_exit
+sys_Tlsfree_exit:
 
 
-void sys_Tlsset()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-sys_Tlsset_exit:
+// sys_Tlsset
+// Return size: 0
+define sys_Tlsset
 sys_Tlsset_entry:
+	r29 = fp
+	// succ:  l0000B224
 l0000B224:
+	r0 = 0x16<32>
+	r2 = r0 + 0x1EFB000<32>
+	p0 = r2 >u 0x3F<32>
+	r3 = htid
+	r0 = 0<32>
+	r4 = 0x30<32>
+	return
+	// succ:  sys_Tlsset_exit
+sys_Tlsset_exit:
 
 
-void sys_Tlsget()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-sys_Tlsget_exit:
+// sys_Tlsget
+// Return size: 0
+define sys_Tlsget
 sys_Tlsget_entry:
+	r29 = fp
+	// succ:  l0000B260
 l0000B260:
+	r0 = 0<32>
+	r1 = r0 + 0x1EFB000<32>
+	p0 = r1 >u 0x3F<32>
+	r2 = 0xEC30<32>
+	return
+	// succ:  sys_Tlsget_exit
+sys_Tlsget_exit:
 
 
-void __sys_write()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-__sys_write_exit:
+// __sys_write
+// Return size: 0
+define __sys_write
 __sys_write_entry:
+	r29 = fp
+	// succ:  l0000B2A0
 l0000B2A0:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 24<i32>
+	r4 = Mem0[gp + 224<i32>:word32]
+	r3 = r0
+	Mem0[r29 + 16<i32>:word64] = r17_r16
+	r0 = r1
+	Mem0[r29:word32] = r3
+	r16 = r29 + 0<32>
+	r1 = r2
+	Mem0[r16 + 8<i32>:word32] = r2
+	Mem0[r4:word32] = r0
+	r0 = r29 + 0<32>
+	r1 = 0xC<32>
+	r0 = 5<32>
+	r1 = r16
+	r2 = r0
+	r16 = r1
+	Mem0[r0:word32] = r16
+	r2 = -1<i32>
+	// succ:  l0000B304
+l0000B304:
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
+	return
+	// succ:  __sys_write_exit
+__sys_write_exit:
 
 
-void sqrt()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-sqrt_exit:
+// sqrt
+// Return size: 0
+define sqrt
 sqrt_entry:
+	r29 = fp
+	// succ:  l0000B310
 l0000B310:
+	v3 = r29 - 8<i32>
+	Mem0[v3:word32] = r30
+	Mem0[v3 + 4<i32>:word32] = r31
+	r30 = v3
+	r29 = v3 - 24<i32>
+	Mem0[r29 + 496<i32>:word64] = r17_r16
+	r17_r16 = r1_r0
+	Mem0[r29 + 8<i32>:word64] = r17_r16
+	r1 = r29 + 8<32>
+	r0 = r29 + 6<32>
+	r0 = r29 + 8<32>
+	r0 = 1<32>
+	r1_r0 = r17_r16
+	v12 = r30
+	r31 = Mem0[v12 + 4<i32>:word32]
+	r30 = Mem0[v12:word32]
+	r29 = v12 + 8<i32>
+	return
+	// succ:  sqrt_exit
+sqrt_exit:
 
 
