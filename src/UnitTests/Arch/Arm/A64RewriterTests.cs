@@ -1938,7 +1938,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("427CAE9B");
             AssertCode(
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|x2 = (uint64) w2 *u w14");
+                "1|L--|x2 = (uint64) (w2 *u w14)");
         }
 
     }
