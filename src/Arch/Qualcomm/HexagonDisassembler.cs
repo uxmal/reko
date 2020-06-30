@@ -634,7 +634,7 @@ namespace Reko.Arch.Qualcomm
             {
                 var baseReg = Registers.GpRegs[bfBaseReg.Read(u)];
                 var indexReg = Registers.GpRegs[bfIndexReg.Read(u)];
-                var shift = Bitfield.ReadFields(bfsShiftAmt, u);
+                var shift = (int)Bitfield.ReadFields(bfsShiftAmt, u);
                 var mem = new MemoryOperand(width)
                 {
                     Base = baseReg,
@@ -645,6 +645,7 @@ namespace Reko.Arch.Qualcomm
                 return true;
             };
         }
+
         private static Mutator<HexagonDisassembler> Midx(PrimitiveType width, int indexRegPos, Bitfield[] bfsShiftAmt, Bitfield[] bfsOffset)
         {
             var indexRegField = new Bitfield(indexRegPos, 5);
@@ -652,7 +653,7 @@ namespace Reko.Arch.Qualcomm
             {
                 var offset = d.ExtendConstant(Bitfield.ReadFields(bfsOffset, u));
                 var indexReg = Registers.GpRegs[indexRegField.Read(u)];
-                var shift = Bitfield.ReadFields(bfsShiftAmt, u);
+                var shift = (int)Bitfield.ReadFields(bfsShiftAmt, u);
                 var mem = new MemoryOperand(width)
                 {
                     Index = indexReg,
@@ -774,11 +775,19 @@ namespace Reko.Arch.Qualcomm
         {
             return (u, d) =>
             {
-                return ApplyMutators(mnemonic, mutators, u, d);
+                return ApplyMutators(mnemonic, mutators, null, u, d);
             };
         }
 
-        private static bool ApplyMutators(Mnemonic mnemonic, Mutator<HexagonDisassembler>[] mutators, uint u, HexagonDisassembler d)
+        private static Mutator<HexagonDisassembler> Apply(Mnemonic mnemonic, PrimitiveType dt, params Mutator<HexagonDisassembler>[] mutators)
+        {
+            return (u, d) =>
+            {
+                return ApplyMutators(mnemonic, mutators, dt, u, d);
+            };
+        }
+
+        private static bool ApplyMutators(Mnemonic mnemonic, Mutator<HexagonDisassembler>[] mutators, PrimitiveType dt, uint u, HexagonDisassembler d)
         {
             var opsOld = d.ops;
             d.ops = new List<MachineOperand>();
@@ -791,7 +800,7 @@ namespace Reko.Arch.Qualcomm
             }
             if (success)
             {
-                var op = new ApplicationOperand(d.ops[0].Width, mnemonic, d.ops.ToArray());
+                var op = new ApplicationOperand(dt ?? d.ops[0].Width, mnemonic, d.ops.ToArray());
                 opsOld.Add(op);
             }
             d.ops = opsOld;
@@ -882,7 +891,7 @@ namespace Reko.Arch.Qualcomm
         {
             return (u, d) =>
             {
-                if (!ApplyMutators(mnemonic, mutators, u, d))
+                if (!ApplyMutators(mnemonic, mutators,null, u, d))
                     return false;
                 d.conditionPredicate = d.ops[d.ops.Count - 1];
                 d.ops.RemoveAt(d.ops.Count - 1);
@@ -1210,6 +1219,13 @@ namespace Reko.Arch.Qualcomm
             return new InstrDecoder(InstrClass.Linear, Mnemonic.ASSIGN,
                 mutatorDst,
                 Apply(mnemonic, mutators));
+        }
+
+        public static Decoder Assign(Mutator<HexagonDisassembler> mutatorDst, Mnemonic mnemonic, PrimitiveType dtResult,  params Mutator<HexagonDisassembler>[] mutators)
+        {
+            return new InstrDecoder(InstrClass.Linear, Mnemonic.ASSIGN,
+                mutatorDst,
+                Apply(mnemonic, dtResult, mutators));
         }
 
         private static Decoder Duplex(Decoder slot0, Decoder slot1)
@@ -2032,8 +2048,8 @@ namespace Reko.Arch.Qualcomm
                     (0b010, Instr(Mnemonic.ickill)))),
                 (0b1110, Instr(Mnemonic.isync)),
                 (0b1111, Mask(12, 1, "  0b1111",
-                    Instr(Mnemonic.rte),
-                    Instr(Mnemonic.rteunlock))));
+                    Instr(Mnemonic.rte, InstrClass.Transfer),
+                    Instr(Mnemonic.rteunlock, InstrClass.Transfer))));
             /*
             0,1,0,1, 1,0,0, j,j,j,j,j,j,j,j,j,P,P,j,j,j,j,j,j,j,j,j,j,j,j,j,-,"jump #r22:2"
             0,1,0,1, 1,0,1, j,j,j,j,j,j,j,j,j,P,P,j,j,j,j,j,j,j,j,j,j,j,j,j,0,"call #r22:2"
@@ -3213,7 +3229,7 @@ namespace Reko.Arch.Qualcomm
             /*
             1,0,0,1, 0,1,0,0,0,0,0,s,s,s,s,s,P,P,0,-,-,j,j,j,j,j,j,j,j,j,j,j,"dcfetch(Rs+#u11:3)"
             */
-            var decoder_94 = Instr(Mnemonic.dcfetch, R16, uw_0L11_3);
+            var decoder_94 = Instr(Mnemonic.SIDEEFFECT, Apply(Mnemonic.dcfetch, R16, uw_0L11_3));
             /*
             1,0,0,1, 0,j,j,0, 0,0,1, s,s,s,s,s,P,P,j,j,j,j,j,j,j,j,j,d,d,d,d,d,"Rd=membh(Rs+#s11:1)"
             1,0,0,1, 0,j,j,0, 0,1,0, s,s,s,s,s,P,P,j,j,j,j,j,j,j,j,j,y,y,y,y,y,"Ryy=memh_fifo(Rs+#s11:1)"
@@ -4538,7 +4554,7 @@ namespace Reko.Arch.Qualcomm
             var decoder_E5 = Mask(5, 3, "  0xE5...",
                 Sparse(21, 3, "  0b000", invalid,
                     (0, Assign(RR0, Mnemonic.mpy, R16, R8)),
-                    (2, Assign(RR0, Mnemonic.mpyu, R16, R8))),
+                    (2, Assign(RR0, Mnemonic.mpyu, PrimitiveType.UInt64, R16, R8))),
                 Nyi("0b001"),
                 Nyi("0b010"),
                 Nyi("0b011"),

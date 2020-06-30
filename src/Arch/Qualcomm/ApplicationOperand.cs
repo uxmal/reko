@@ -40,14 +40,44 @@ namespace Reko.Arch.Qualcomm
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             renderer.WriteMnemonic(Mnemonic.ToString().Replace("__", "."));
-            var sep = "(";
-            foreach (var op in Operands)
+            switch (Mnemonic)
             {
+            case Mnemonic.EQ:
+                Operands[0].Render(renderer, options);
+                renderer.WriteString("=");
+                Operands[1].Render(renderer, options);
+                break;
+            case Mnemonic.LE:
+                Operands[0].Render(renderer, options);
+                renderer.WriteString("<=");
+                Operands[1].Render(renderer, options);
+                break;
+            case Mnemonic.GE:
+                Operands[0].Render(renderer, options);
+                renderer.WriteString(">=");
+                Operands[1].Render(renderer, options);
+                break;
+            case Mnemonic.NE:
+                Operands[0].Render(renderer, options);
+                renderer.WriteString("!=");
+                Operands[1].Render(renderer, options);
+                break;
+
+            default:
+                renderer.WriteMnemonic(Mnemonic.ToString().Replace("__", "."));
+                var sep = "(";
+                foreach (var op in Operands)
+                {
                 renderer.WriteString(sep);
                 op.Render(renderer, options);
-                sep = ",";
-            }
+                renderer.WriteString(sep);
+                op.Render(renderer, options);
+                    sep = ",";
+                }
             renderer.WriteString(")");
+            renderer.WriteString(")");
+                break;
+            }
         }
     }
 }

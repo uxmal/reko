@@ -2,6 +2,12 @@
 // Please copy the contents of this file and report it on GitHub, using the 
 // following URL: https://github.com/uxmal/reko/issues
 
+// Reko: a decoder for the instruction 5C41C113 at address 0000ADE0 has not been implemented. (0b11)
+[Test]
+public void Hexagon_dasm_5C41C113()
+{
+    AssertCode("@@@", "5C41C113");
+}
 // Reko: a decoder for the instruction 01440000105A809B at address 0000B0BC has not been implemented. (01)
 [Test]
 public void Hexagon_dasm_01440000105A809B()
@@ -13,10 +19,4 @@ public void Hexagon_dasm_01440000105A809B()
 public void Hexagon_dasm_12E0422404440000()
 {
     AssertCode("@@@", "12E0422404440000");
-}
-// Reko: a decoder for the instruction 5C41C113 at address 0000ADE0 has not been implemented. (0b11)
-[Test]
-public void Hexagon_dasm_5C41C113()
-{
-    AssertCode("@@@", "5C41C113");
 }

@@ -52,11 +52,22 @@ l00000100:
 	reseved63 = r0
 	// succ:  l00000104
 l00000104:
+	dckill()
+	isync()
+	ickill()
+	isync()
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0<16>)
 	p0 = r0 == 0<32>
+	branch p0 l00000124
+	// succ:  l00000120_1 l00000124
+l00000120_1:
+	call r0 (retsize: 0;)
+	// succ:  l00000124
+l00000124:
 	r0 = 0<32>
 	ssr = r0
+	isync()
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0<16>)
 	p0 = r0 == 0<32>
@@ -79,8 +90,12 @@ l00000104:
 	r0 = SEQ(SLICE(r0, word16, 16), 0xD0<16>)
 	r0 = Mem0[r0:word32]
 	p1 = r0 == 0<32>
+	p2 = p0 | p1
 	r0 = syscfg
+	r3 = p2 ? 0<32> : 0x28<32>
+	r0 = r0 | r3
 	syscfg = r0
+	isync()
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0<16>)
 	p3 = r0 == 0<32>
@@ -92,6 +107,8 @@ l00000104:
 	r0 = SEQ(SLICE(r0, word16, 16), 0x90E3<16>)
 	r0 = Mem0[r0:word32]
 	p3 = r0 == 0<32>
+	p0 = p2 | p3
+	r0 = p0 ? 0<32> : 1<32>
 	r1 = SEQ(0<16>, SLICE(r1, word16, 0))
 	r1 = SEQ(SLICE(r1, word16, 16), 0xF0<16>)
 	Mem0[r1:word32] = r0
@@ -107,8 +124,10 @@ l00000104:
 	r0 = SEQ(SLICE(r0, word16, 16), 0xE0<16>)
 	r0 = Mem0[r0:word32]
 	p0 = r0 == 0<32>
+	p0 = !p0
 	r0 = p0
 	isdben = r0
+	brkpt()
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0<16>)
 	p0 = r0 == 0<32>
@@ -230,6 +249,7 @@ l00000104:
 	r0 = SEQ(SLICE(r0, word16, 16), 0x3FB0<16>)
 	r0 = Mem0[r0:word32]
 	p0 = r0 == 0<32>
+	p0 = !p0
 	r1 = p0
 	r0 = syscfg
 	r0 = insert(1<32>, 1<32>)
@@ -238,6 +258,7 @@ l00000104:
 	r0 = SEQ(SLICE(r0, word16, 16), 0x3FC0<16>)
 	r0 = Mem0[r0:word32]
 	p0 = r0 == 0<32>
+	p0 = !p0
 	r1 = p0
 	r0 = syscfg
 	r0 = insert(1<32>, 9<32>)
@@ -246,6 +267,7 @@ l00000104:
 	r0 = SEQ(SLICE(r0, word16, 16), 0x3FD0<16>)
 	r0 = Mem0[r0:word32]
 	p0 = r0 == 0<32>
+	p0 = !p0
 	r1 = p0
 	r0 = syscfg
 	r0 = insert(1<32>, 9<32>)
@@ -254,6 +276,7 @@ l00000104:
 	r0 = SEQ(SLICE(r0, word16, 16), 0x3FE0<16>)
 	r0 = Mem0[r0:word32]
 	p0 = r0 == 0<32>
+	p0 = !p0
 	r1 = p0
 	r0 = ssr
 	r0 = insert(1<32>, 0x19<32>)
@@ -265,6 +288,7 @@ l00000104:
 	// succ:  l000004E8 l000004F8
 l000004E8:
 	r0 = syscfg
+	r1 = (uint32) SLICE(r0, ui18, 2)
 	p0 = r1 == 0<32>
 	branch p0 l00000570
 	// succ:  l000004F8 l00000570
@@ -275,21 +299,29 @@ l000004F8:
 	ccr = r0
 	r0 = syscfg
 	r0 = insert(3<32>, 0x13<32>)
+	isync()
 	r1 = rev
 	r1 = r1 & 0xFF<32>
 	p0 = r1 == 2<32>
 	branch p0 l00000538
 	// succ:  l00000534 l00000538
 l00000534:
+	syncht()
 	// succ:  l00000538
 l00000538:
 	syscfg = r0
+	isync()
+	l2kill()
 	r2 = rev
+	r2 = (uint32) SLICE(r2, ui12, 4)
+	r2 = Mem0[0x00001B44<p32> + r2:int8]
 	r3 = SEQ(0<16>, SLICE(r3, word16, 0))
 	r3 = SEQ(SLICE(r3, word16, 16), 0x3F00<16>)
 	r3 = Mem0[r3:word32]
+	r3 = min(r3, r2)
 	r0 = insert(3<32>, 0x13<32>)
 	syscfg = r0
+	isync()
 	// succ:  l00000570
 l00000570:
 	r1 = SEQ(0<16>, SLICE(r1, word16, 0))
@@ -313,6 +345,7 @@ l000005A4:
 	branch p0 l000005B8
 	// succ:  l000005B4 l000005B8
 l000005B4:
+	r2 = setbit(r2, 0x10<32>)
 	// succ:  l000005B8
 l000005B8:
 	r1 = SEQ(0<16>, SLICE(r1, word16, 0))
@@ -322,6 +355,7 @@ l000005B8:
 	// succ:  l000005C8
 l000005C8:
 	syscfg = r2
+	isync()
 	r2 = ccr
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0x3F20<16>)
@@ -329,10 +363,14 @@ l000005C8:
 	r1 = SEQ(0<16>, SLICE(r1, word16, 0))
 	r1 = SEQ(SLICE(r1, word16, 16), 0x3F40<16>)
 	r1 = Mem0[r1:word32]
+	r0 = r0 | r1 << 1<32>
 	r2 = insert(2<32>, 0x12<32>)
+	r2 = setbit(r2, 8<32>)
 	ccr = r2
 	r0 = r0 & 0<32>
+	r0 = setbit(r0, 0<32>)
 	USR = r0
+	isync()
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0x3F80<16>)
 	r0 = Mem0[r0:word32]
@@ -350,9 +388,12 @@ l00000630:
 	r0 = SEQ(SLICE(r0, word16, 16), 0x3FA0<16>)
 	r0 = Mem0[r0:word32]
 	p3 = r0 == 0<32>
+	r0 = p3 ? 0x1F<32> : 0x3F<32>
 	r3_r2 = 0<64>
 	// succ:  l00000648
 l00000648:
+	tlbw(r3_r2, r0)
+	isync()
 	r0 = r0 + 0xFFFFFFFF<32>
 	p0 = r0 == 0<32>
 	branch p0 l00000648
@@ -365,12 +406,18 @@ l0000065C:
 	r1 = SEQ(SLICE(r1, word16, 16), 0<16>)
 	r0 = SEQ(0xDC03<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0<16>)
+	r1 = r1 | r2
+	r0 = r0 | r2 << 1<32>
+	r0 = setbit(r0, 8<32>)
 	r0 = r0 & 0xFFFFFFF0<32>
 	r2 = 0<32>
+	tlbw(r1_r0, r3)
 	r0 = syscfg
+	r0 = setbit(r0, 0<32>)
 	r1 = p3
 	r0 = insert(1<32>, 1<32>)
 	syscfg = r0
+	isync()
 	// succ:  l000006A8
 l000006A8:
 	r0 = 0<32>
@@ -378,10 +425,14 @@ l000006A8:
 	r1 = 0xFFFFFFFF<32>
 	iel = r1
 	iahl = r1
+	cswi(r1)
 	r0 = ssr
+	r0 = setbit(r0, 4<32>)
 	ssr = r0
 	r0 = syscfg
+	r0 = setbit(r0, 8<32>)
 	syscfg = r0
+	isync()
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0<16>)
 	p0 = r0 == 0<32>
@@ -389,6 +440,7 @@ l000006A8:
 	// succ:  l000006EC l000006F4
 l000006EC:
 	ccr = r0
+	isync()
 	// succ:  l000006F4
 l000006F4:
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
@@ -398,6 +450,7 @@ l000006F4:
 	// succ:  l00000704 l0000070C
 l00000704:
 	USR = r0
+	isync()
 	// succ:  l0000070C
 l0000070C:
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
@@ -407,6 +460,7 @@ l0000070C:
 	// succ:  l0000071C l00000724
 l0000071C:
 	syscfg = r0
+	isync()
 	// succ:  l00000724
 l00000724:
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
@@ -421,13 +475,18 @@ l00000738:
 	r1 = 0x20<32>
 	r28 = SEQ(0<16>, SLICE(r28, word16, 0))
 	r28 = SEQ(SLICE(r28, word16, 16), 0x5841<16>)
+	call r28 (retsize: 0;)
 	r0 = 0x16<32>
 	r1 = SEQ(0<16>, SLICE(r1, word16, 0))
 	r1 = SEQ(SLICE(r1, word16, 16), 0x80A3<16>)
+	trap0(0<32>)
 	// succ:  l00000760
 l00000760:
 	r28 = SEQ(0<16>, SLICE(r28, word16, 0))
 	r28 = SEQ(SLICE(r28, word16, 16), 0xEEE0<16>)
+	call r28 (retsize: 0;)
+	return
+	// succ:  hexagon_start_init_exit
 hexagon_start_init_exit:
 
 
@@ -441,68 +500,174 @@ l00000770:
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0x3FF0<16>)
 	r0 = Mem0[r0:word32]
+	Mem0[r0:word64] = r1_r0
+	r0 = r0 + 8<i32>
+	Mem0[r0:word64] = r3_r2
+	r0 = r0 + 8<i32>
+	Mem0[r0:word64] = r5_r4
+	r0 = r0 + 8<i32>
 	Mem0[r0:word64] = r7_r6
+	dccleana(r0)
 	r0 = r0 + 8<32>
+	Mem0[r0:word64] = r9_r8
+	r0 = r0 + 8<i32>
+	Mem0[r0:word64] = r11_r10
+	r0 = r0 + 8<i32>
+	Mem0[r0:word64] = r13_r12
+	r0 = r0 + 8<i32>
 	Mem0[r0:word64] = r15_r14
+	dccleana(r0)
 	r0 = r0 + 8<32>
+	Mem0[r0:word64] = r17_r16
+	r0 = r0 + 8<i32>
+	Mem0[r0:word64] = r19_r18
+	r0 = r0 + 8<i32>
+	Mem0[r0:word64] = r21_r20
+	r0 = r0 + 8<i32>
 	Mem0[r0:word64] = r23_r22
+	dccleana(r0)
 	r0 = r0 + 8<32>
+	Mem0[r0:word64] = r25_r24
+	r0 = r0 + 8<i32>
+	Mem0[r0:word64] = r27_r26
+	r0 = r0 + 8<i32>
+	Mem0[r0:word64] = r29_r28
+	r0 = r0 + 8<i32>
 	Mem0[r0:word64] = r31_r30
+	dccleana(r0)
 	r0 = r0 + 8<32>
 	r1 = SA0
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = LC0
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = SA1
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = LC1
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = P3:0
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = M0
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = M1
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = USR
 	Mem0[r0:word32] = r1
+	dccleana(r0)
 	r0 = r0 + 4<32>
 	r1 = PC
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = UGP
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = sgp0
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = ssr
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = imask
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = badva
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = elr
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = stid
 	Mem0[r0:word32] = r1
+	dccleana(r0)
 	r0 = r0 + 4<32>
 	r1 = evb
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = ipend
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = syscfg
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = modectl
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = rev
-	r1 = 0<32>
-	r1 = 0<32>
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = 0<32>
 	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
+	r1 = 0<32>
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
+	r1 = 0<32>
+	Mem0[r0:word32] = r1
+	dccleana(r0)
 	r0 = r0 + 4<32>
 	r1 = diag
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = iad
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = iel
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = iahl
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = pcyclehi
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = pcyclelo
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = isdbst
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = isdbcfg0
 	Mem0[r0:word32] = r1
+	dccleana(r0)
 	r0 = r0 + 4<32>
 	r1 = isdbcfg1
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = brkptpc0
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = brkptcfg0
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = brkptpc1
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = brkptcfg1
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = isdben
+	Mem0[r0:word32] = r1
+	r0 = r0 + 4<i32>
 	r1 = isdgpr
 	Mem0[r0:word32] = r1
+	dccleana(r0)
 	r1 = Mem0[r0 - 276<i32>:word32]
 	r0 = ssr
+	r0 = clrbit(r0, 0<32>)
+	r0 = clrbit(r0, 2<32>)
 	ssr = r0
+	isync()
 	r0 = 0xCD<32>
+	trap0(0<32>)
 	r2 = 0xFFFFFFFF<32>
 	r0 = 0xFFFFFFFF<32>
+	stop(r0)
 __coredump_exit:
 
 
@@ -531,6 +696,7 @@ l00000970:
 	r28 = r28 + r1
 	r2 = 0<32>
 	ssr = r2
+	isync()
 	imask = r2
 	r2 = SEQ(0<16>, SLICE(r2, word16, 0))
 	r2 = SEQ(SLICE(r2, word16, 16), 0x6B30<16>)
@@ -546,6 +712,7 @@ l00000970:
 	r2 = SEQ(0<16>, SLICE(r2, word16, 0))
 	r2 = SEQ(SLICE(r2, word16, 16), 0x3FE0<16>)
 	r2 = Mem0[r2:word32]
+	p0 = !(r2 == 0<32>)
 	r1 = p0
 	r2 = ssr
 	r2 = insert(1<32>, 0x19<32>)
@@ -554,6 +721,7 @@ l00000970:
 	USR = r2
 	r2 = SEQ(0x4C<16>, SLICE(r2, word16, 0))
 	ccr = r2
+	isync()
 	r2 = SEQ(0xEAFA<16>, SLICE(r2, word16, 0))
 	r2 = SEQ(SLICE(r2, word16, 16), 0xFBBE<16>)
 	r3 = r2
@@ -594,6 +762,9 @@ thread_start_entry:
 	r29 = fp
 	// succ:  l00000A64
 l00000A64:
+	call r28 (retsize: 0;)
+	return
+	// succ:  thread_start_exit
 thread_start_exit:
 
 
@@ -666,6 +837,7 @@ l00000AC0:
 	r9 = P3:0
 	r8 = ssr
 	r7 = elr
+	p1 = tstbit(r8, 0<32>)
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
 	branch p1 l00000B00
 	// succ:  l00000AF8 l00000B00
@@ -684,20 +856,28 @@ l00000B04:
 	p0 = r6 > 0x7E<32>
 	r6 = r6 + 1<32>
 	r3 = SEQ(0<16>, SLICE(r3, word16, 0))
+	r6 = p0 ? r1 : r6
+	memw_locked(r0, p0, r6)
 	r3 = SEQ(SLICE(r3, word16, 16), 0x3F70<16>)
 	branch p0 l00000B04
 	// succ:  l00000B24 l00000B04
 l00000B24:
 	r3 = Mem0[r3:word32]
 	r7 = r7 >>u 8<32>
+	r3 = r3 + (r7 << 1<32>)
 	r3 = Mem0[r3:int16]
 	r7 = r7 << 8<32>
+	r5 = (uint32) SLICE(r3, ui4, 12)
 	r1 = 0<32>
 	r0 = 0x10<32>
+	r4 = (uint32) SLICE(r3, ui4, 4)
 	r0 = SEQ(0xC003<16>, SLICE(r0, word16, 0))
 	r1 = SEQ(3<16>, SLICE(r1, word16, 0))
 	r4 = r4 << 0x18<32>
+	r0 = r0 | r5 << 9<32>
+	r1 = r1 | r7
 	r4 = SEQ(0<16>, SLICE(r4, word16, 0))
+	r0 = r0 | r4
 	r5 = 1<32>
 	r4 = SEQ(SLICE(r4, word16, 16), 0x6E00<16>)
 	// succ:  l00000B68
@@ -707,18 +887,24 @@ l00000B68:
 	branch p0 l00000B68
 	// succ:  l00000B74 l00000B68
 l00000B74:
+	memw_locked(r4, p0, r5)
 	branch p0 l00000B68
 	// succ:  l00000B7C l00000B68
 l00000B7C:
+	r5 = tlbp(r1)
+	p0 = tstbit(r5, 0x1F<32>)
 	branch p0 l00000B90
 	// succ:  l00000B88 l00000B90
 l00000B88:
+	tlbw(r1_r0, r6)
+	isync()
 	// succ:  l00000B90
 l00000B90:
 	r1 = 0<32>
 	// succ:  l00000B94
 l00000B94:
 	r2 = memw_locked(r4)
+	memw_locked(r4, p0, r1)
 	branch p0 l00000B94
 	// succ:  l00000BA0 l00000B94
 l00000BA0:
@@ -730,9 +916,7 @@ l00000BA0:
 	r1_r0 = Mem0[r29:word64]
 	r29 = r29 + 0x40<32>
 	crswap(r29, sgp0)
-	// succ:  l00000BBC_thunk_event_handle_tlbmissrw
-l00000BBC_thunk_event_handle_tlbmissrw:
-	call event_handle_tlbmissrw (retsize: 0;)
+	rte()
 	return
 	// succ:  event_handle_tlbmissx_exit
 event_handle_tlbmissx_exit:
@@ -766,23 +950,32 @@ l00000BF8:
 	p0 = r6 > 0x7E<32>
 	r6 = r6 + 1<32>
 	r3 = SEQ(SLICE(r3, word16, 16), 0x3F70<16>)
+	r6 = p0 ? r1 : r6
+	memw_locked(r0, p0, r6)
 	branch p0 l00000BF8
 	// succ:  l00000C18 l00000BF8
 l00000C18:
 	r3 = Mem0[r3:word32]
+	r3 = r3 + (r7 << 1<32>)
 	r3 = Mem0[r3:int16]
 	r7 = r7 << 8<32>
+	r5 = (uint32) SLICE(r3, ui4, 12)
 	r1 = 0<32>
 	r0 = 0x10<32>
+	r4 = (uint32) SLICE(r3, ui4, 4)
 	r0 = SEQ(0xC003<16>, SLICE(r0, word16, 0))
 	r1 = SEQ(3<16>, SLICE(r1, word16, 0))
 	r4 = r4 << 0x18<32>
+	r0 = r0 | r5 << 9<32>
+	r1 = r1 | r7
 	r4 = SEQ(0<16>, SLICE(r4, word16, 0))
+	r0 = r0 | r4
 	r5 = 1<32>
 	r4 = SEQ(SLICE(r4, word16, 16), 0x6E00<16>)
 	// succ:  l00000C58
 l00000C58:
 	r2 = memw_locked(r4)
+	memw_locked(r4, p0, r5)
 	p1 = r2 == 0<32>
 	branch p0 l00000C58
 	// succ:  l00000C68 l00000C58
@@ -790,15 +983,20 @@ l00000C68:
 	branch p1 l00000C58
 	// succ:  l00000C6C l00000C58
 l00000C6C:
+	r5 = tlbp(r1)
+	p0 = tstbit(r5, 0x1F<32>)
 	branch p0 l00000C80
 	// succ:  l00000C78 l00000C80
 l00000C78:
+	tlbw(r1_r0, r6)
+	isync()
 	// succ:  l00000C80
 l00000C80:
 	r1 = 0<32>
 	// succ:  l00000C84
 l00000C84:
 	r2 = memw_locked(r4)
+	memw_locked(r4, p0, r1)
 	branch p0 l00000C84
 	// succ:  l00000C90 l00000C84
 l00000C90:
@@ -810,9 +1008,7 @@ l00000C90:
 	r1_r0 = Mem0[r29:word64]
 	r29 = r29 + 0x40<32>
 	crswap(r29, sgp0)
-	// succ:  l00000CAC_thunk_event_handle_trap0
-l00000CAC_thunk_event_handle_trap0:
-	call event_handle_trap0 (retsize: 0;)
+	rte()
 	return
 	// succ:  event_handle_tlbmissrw_exit
 event_handle_tlbmissrw_exit:
@@ -837,8 +1033,16 @@ l00000CB0:
 	r3 = SEQ(0<16>, SLICE(r3, word16, 0))
 	r3 = SEQ(SLICE(r3, word16, 16), 0xF0<16>)
 	r3 = Mem0[r3:word32]
+	branch p3 l00000E00
+	// succ:  l00000CE8 l00000E00
+l00000CE8:
+	p3 = r3 == 1<32>
 	Mem0[r29 + 16<i32>:word64] = r7_r6
 	r4 = SEQ(SLICE(r4, word16, 16), 0x5555<16>)
+	p0 = p1 | p2
+	branch p0 l00000DDC
+	// succ:  l00000CF8 l00000DDC
+l00000CF8:
 	Mem0[r29 + 24<i32>:word64] = r9_r8
 	r6 = 0xCD<32>
 	r3 = SEQ(0<16>, SLICE(r3, word16, 0))
@@ -851,6 +1055,8 @@ l00000D08:
 	r3 = SEQ(SLICE(r3, word16, 16), 0x100<16>)
 	r7 = Mem0[r3:word32]
 	r4 = SEQ(SLICE(r4, word16, 16), 0x80<16>)
+	p3 = p2 | p3
+	r9 = r5
 	r8 = htid
 	p0 = r7 == 0<32>
 	branch p3 l00000E14
@@ -870,6 +1076,7 @@ l00000D44:
 l00000D4C:
 	p0 = r7 == 0<32>
 	r7 = memw_locked(r3)
+	memw_locked(r3, p1, r5)
 	p0 = r7 == 0<32>
 	branch p1 l00000D4C
 	// succ:  l00000D5C l00000D4C
@@ -878,20 +1085,29 @@ l00000D5C:
 	// succ:  l00000D60 l00000D40
 l00000D60:
 	Mem0[r4:word64] = r1_r0
+	r2 = p2 ? r2 : r8
 	Mem0[r4 + 8<i32>:word32] = r2
 	Mem0[r4 + 12<i32>:word32] = r5
+	dccleaninva(r4)
 	r6 = Mem0[r4 + 15<i32>:int8]
+	dccleaninva(r4)
 	r6 = SEQ(0<16>, SLICE(r6, word16, 0))
 	r6 = SEQ(SLICE(r6, word16, 16), 0xF0<16>)
 	r6 = Mem0[r6:word32]
 	r5 = 0<32>
 	r6 = 0<32>
+	branch p0 l00000DA0
+	// succ:  l00000D90 l00000DA0
+l00000D90:
+	p0 = r6 == 2<32>
 	r6 = Mem0[r4 + 12<i32>:word32]
+	dccleaninva(r4)
 	r1_r0 = Mem0[r4:word64]
 	r5 = 0<32>
 	// succ:  l00000DA0
 l00000DA0:
 	r7 = memw_locked(r3)
+	memw_locked(r3, p1, r5)
 	Mem0[r29 + 32<i32>:word32] = r4
 	p0 = r6 == 0<32>
 	branch p1 l00000DA0
@@ -907,7 +1123,9 @@ l00000DB8:
 	r29 = r29 + 0x28<32>
 	P3:0 = r9
 	crswap(r29, sgp0)
-	// succ:  l00000DD0
+	rte()
+	return
+	// succ:  event_handle_trap0_exit
 l00000DD0:
 	r4 = Mem0[r29 + 32<i32>:word32]
 	goto l00000D44
@@ -916,29 +1134,35 @@ l00000DDC:
 	r1 = pcyclehi
 	r0 = pcyclelo
 	r7_r6 = Mem0[r29 + 16<i32>:word64]
+	r3_r2 = r0 *u r4
+	branch p2 l00000DFC
+	// succ:  l00000DF0 l00000DFC
+l00000DF0:
 	r3_r2 = r3_r2 >>u 0x20<32>
+	r1_r0 = r1 *u r4
 	r1_r0 = r3_r2 + r1_r0
+	// succ:  l00000DFC
+l00000DFC:
 	r5_r4 = Mem0[r29:word64]
 	r3_r2 = Mem0[r29 + 8<i32>:word64]
 	r29 = r29 + 0x28<32>
 	P3:0 = r5
+	goto l00000E08
+	// succ:  l00000E08
+l00000E00:
+	r5_r4 = Mem0[r29:word64]
+	r3_r2 = Mem0[r29 + 8<i32>:word64]
+	r29 = r29 + 0x28<32>
+	// succ:  l00000E08
+l00000E08:
 	crswap(r29, sgp0)
-	r6 = SEQ(SLICE(r6, word16, 16), 0x98<16>)
-	branch p2 l00000E20
-	goto l00000E18
-	// succ:  l00000E18 l00000E20
+	rte()
+	return
+	// succ:  event_handle_trap0_exit
 l00000E14:
 	r6 = SEQ(SLICE(r6, word16, 16), 0x98<16>)
-	// succ:  l00000E18
-l00000E18:
 	goto l00000D44
 	// succ:  l00000D44
-l00000E20:
-	r1 = SEQ(0<16>, SLICE(r1, word16, 0))
-	r1 = SEQ(SLICE(r1, word16, 16), 0x3FF0<16>)
-	r1 = Mem0[r1:word32]
-	goto l00000D40
-	// succ:  l00000D40
 event_handle_trap0_exit:
 
 
@@ -1006,6 +1230,7 @@ l00000E3C:
 	r1 = SEQ(SLICE(r1, word16, 16), 0x4000<16>)
 	r0 = r0 & 0x1F<32>
 	Mem0[r29 + 136<i32>:word64] = r7_r6
+	r1 = r1 + (r0 << 2<32>)
 	Mem0[r29 + 144<i32>:word64] = r9_r8
 	r1 = Mem0[r1:word32]
 	r31 = r28
@@ -1018,6 +1243,7 @@ l00000E3C:
 l00000EEC:
 	ssr = r2
 	crswap(r29, sgp0)
+	call r1 (retsize: 0;)
 	crswap(r29, sgp0)
 	r0 = ssr
 	r7_r6 = Mem0[r29 + 136<i32>:word64]
@@ -1025,8 +1251,11 @@ l00000EEC:
 	r26 = SEQ(0<16>, SLICE(r26, word16, 0))
 	r26 = SEQ(SLICE(r26, word16, 16), 4<16>)
 	r0 = insert(3<32>, 0x13<32>)
+	r7 = r7 >> 0x10<32>
 	r7 = r7 & 0x1F<32>
+	r26 = r26 & r26 << r7
 	ssr = r0
+	ciad(r26)
 	// succ:  l00000F24
 l00000F24:
 	r9_r8 = Mem0[r29 + 144<i32>:word64]
@@ -1060,10 +1289,12 @@ l00000F24:
 	r1_r0 = Mem0[r29:word64]
 	r3_r2 = Mem0[r29 + 8<i32>:word64]
 	SA0 = r0
+	v46 = r30
+	r31 = Mem0[v46 + 4<i32>:word32]
+	r30 = Mem0[v46:word32]
+	r29 = v46 + 8<i32>
 	crswap(r29, sgp0)
-	// succ:  l00000F94_thunk_.NoHandler
-l00000F94_thunk_.NoHandler:
-	call .NoHandler (retsize: 0;)
+	rte()
 	return
 	// succ:  event_handle_int_exit
 event_handle_int_exit:
@@ -1141,6 +1372,7 @@ l00003C78:
 	r6 = SEQ(0<16>, SLICE(r6, word16, 0))
 	r6 = SEQ(SLICE(r6, word16, 16), 0x8083<16>)
 	r6 = Mem0[r6:word32]
+	r7 = r6 - r7
 	r7 = r7 + 0xF<32>
 	r7 = r7 & 0xFFFFFFF0<32>
 	r1 = SEQ(0<16>, SLICE(r1, word16, 0))
@@ -1149,10 +1381,16 @@ l00003C78:
 	r7 = Mem0[r1:word32]
 	r1 = SEQ(0<16>, SLICE(r1, word16, 0))
 	r1 = SEQ(SLICE(r1, word16, 16), 0<16>)
+	branch p0 l00003CBC
+	// succ:  l00003CAC l00003CBC
+l00003CAC:
+	p0 = r1 >u -1<i32>
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0x8083<16>)
 	r0 = Mem0[r0:word32]
 	r29 = r0 & 0xFFFFFFF0<32>
+	// succ:  l00003CBC
+l00003CBC:
 	r0 = SEQ(4<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0<16>)
 	gp = r0
@@ -1161,20 +1399,36 @@ l00003C78:
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0x80B3<16>)
 	r1 = 0x400<32>
+	call r28 (retsize: 0;)
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0<16>)
+	branch p0 l00003CE8_thunk_hexagon_start_main
+	goto l00003CEC
+	// succ:  l00003CEC l00003CE8_thunk_hexagon_start_main
+l00003CE8_thunk_hexagon_start_main:
+	call hexagon_start_main (retsize: 0;)
+	return
+	// succ:  hexagon_pre_main_exit
+l00003CEC:
+	p0 = r0 > 2<32>
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0x9C03<16>)
 	r2 = SEQ(0<16>, SLICE(r2, word16, 0))
 	r2 = SEQ(SLICE(r2, word16, 16), 0xC903<16>)
 	r28 = SEQ(0<16>, SLICE(r28, word16, 0))
 	r28 = SEQ(SLICE(r28, word16, 16), 0x4E41<16>)
+	r2 = r2 - r0
+	call r28 (retsize: 0;)
+	r1 = 0<32>
 	r0 = SEQ(4<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0x400<16>)
 	r2 = SEQ(4<16>, SLICE(r2, word16, 0))
 	r2 = SEQ(SLICE(r2, word16, 16), 0x400<16>)
 	r28 = SEQ(0<16>, SLICE(r28, word16, 0))
 	r28 = SEQ(SLICE(r28, word16, 16), 0x4E41<16>)
+	r2 = r2 - r0
+	call r28 (retsize: 0;)
+	r1 = 0<32>
 	// succ:  l00003D28_thunk_hexagon_start_main
 l00003D28_thunk_hexagon_start_main:
 	call hexagon_start_main (retsize: 0;)
@@ -1218,10 +1472,18 @@ l00003D34:
 	r23_r22 = r5_r4
 	r28 = SEQ(0<16>, SLICE(r28, word16, 0))
 	r28 = SEQ(SLICE(r28, word16, 16), 0x5301<16>)
+	call r28 (retsize: 0;)
 	r0 = SEQ(0<16>, SLICE(r0, word16, 0))
 	r0 = SEQ(SLICE(r0, word16, 16), 0<16>)
 	p0 = r0 == 0<32>
+	branch p0 l00003DB8
+	// succ:  l00003DB4_1 l00003DB8
+l00003DB4_1:
+	call r0 (retsize: 0;)
+	// succ:  l00003DB8
+l00003DB8:
 	r0 = 0x3F<32>
+	stop(r0)
 	// succ:  l00003DBC_thunk__init
 l00003DBC_thunk__init:
 	call _init (retsize: 0;)

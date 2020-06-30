@@ -34,7 +34,7 @@ namespace Reko.Arch.Qualcomm
         public RegisterStorage Base { get; set; }
         public int Offset { get; set; }
         public RegisterStorage Index { get; internal set; }
-        public uint Shift { get; internal set; }
+        public int Shift { get; internal set; }
 
         public object AutoIncrement { get; set; }
 

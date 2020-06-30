@@ -21,7 +21,6 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
-using Reko.Core.Pascal;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -29,6 +28,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace Reko.Arch.Qualcomm
 {
@@ -118,21 +118,23 @@ namespace Reko.Arch.Qualcomm
                 case Mnemonic.SUBEQ: RewriteAugmentedAssign(instr.Operands[0], m.ISub, instr.Operands[1]); break;
                 case Mnemonic.XOREQ: RewriteAugmentedAssign(instr.Operands[0], m.Xor, instr.Operands[1]); break;
                 case Mnemonic.SIDEEFFECT: RewriteSideEffect(instr.InstructionClass, instr.Operands[0]); break;
-                case Mnemonic.callr: RewriteCallr(instr); break;
+                case Mnemonic.call: RewriteCall(instr); break;
+                case Mnemonic.callr: RewriteCall(instr); break;
                 case Mnemonic.deallocframe: RewriteDeallocFrame(); break;
                 case Mnemonic.dealloc_return: RewriteDeallocReturn(); break;
                 case Mnemonic.jump: RewriteJump(instr, instr.Operands[0]); break;
                 case Mnemonic.jumpr: RewriteJumpr(instr.Operands[0]); break;
                 case Mnemonic.nop: m.Nop(); break;
                 case Mnemonic.rte: RewriteRte(); break;
-                case Mnemonic.brkpt: 
+                case Mnemonic.brkpt:
                 case Mnemonic.dckill:
-                case Mnemonic.ickill: 
+                case Mnemonic.ickill:
                 case Mnemonic.isync:
                 case Mnemonic.l2kill:
                 case Mnemonic.syncht:
                     m.SideEffect(RewriteIntrinsic(instr.Mnemonic.ToString(), VoidType.Instance)); break;
                 }
+                m.Instructions.Last().Class = instr.InstructionClass;
             }
         }
 
@@ -145,7 +147,7 @@ namespace Reko.Arch.Qualcomm
             case ImmediateOperand imm: return imm.Value;
             case AddressOperand addr: return addr.Address;
             case ApplicationOperand app: return RewriteApplication(app);
-            case MemoryOperand mem: var src =  RewriteMemoryOperand(mem); MaybeEmitIncrement(mem); return src;
+            case MemoryOperand mem: var src = RewriteMemoryOperand(mem); MaybeEmitIncrement(mem); return src;
             case RegisterPairOperand pair: return binder.EnsureSequence(PrimitiveType.Word64, pair.HighRegister, pair.LowRegister);
             case DecoratorOperand dec: return RewriteDecorator(dec);
             }
@@ -160,10 +162,28 @@ namespace Reko.Arch.Qualcomm
                 //$TODO;
                 return exp;
             }
-            throw new NotImplementedException();
+            if (dec.Inverted)
+            {
+                exp = m.Not(exp);
+                return exp;
+            }
+            if (dec.Carry)
+            {
+                var app = (ApplicationOperand) dec.Operand;
+                var p = binder.EnsureRegister(((RegisterOperand)app.Operands[2]).Register);
+                exp = m.IAdd(exp, p);
+                //$TODO: what about carry-out? it's in p.
+                return exp;
+            }
+            if (dec.Width.BitSize < (int) dec.Operand.Width.BitSize)
+            {
+                exp = m.Slice(dec.Width, exp, dec.BitOffset);
+                return exp;
+            }
+            throw new NotImplementedException(dec.ToString());
         }
 
-        private void OperandDst(MachineOperand op, Action<Expression,Expression> write, Expression src)
+        private void OperandDst(MachineOperand op, Action<Expression, Expression> write, Expression src)
         {
             switch (op)
             {
@@ -206,6 +226,7 @@ namespace Reko.Arch.Qualcomm
         private Expression RewriteApplication(ApplicationOperand app)
         {
             var ops = app.Operands.Select(OperandSrc).ToArray();
+            var dt = app.Width;
             switch (app.Mnemonic)
             {
             case Mnemonic.add: return m.IAdd(ops[0], ops[1]);
@@ -213,40 +234,94 @@ namespace Reko.Arch.Qualcomm
             case Mnemonic.allocframe: RewriteAllocFrame(app.Operands[0]); return null;
             case Mnemonic.and: return m.And(ops[0], ops[1]);
             case Mnemonic.asl: return m.Shl(ops[0], ops[1]);
+            case Mnemonic.aslh: return m.Shl(ops[0], 16);
             case Mnemonic.asr: return m.Sar(ops[0], ops[1]);
+            case Mnemonic.asrh: return m.Sar(ops[0], 16);
             case Mnemonic.cmp__eq: return m.Eq(ops[0], ops[1]);
             case Mnemonic.cmp__gt: return m.Gt(ops[0], ops[1]);
             case Mnemonic.cmp__gtu: return m.Ugt(ops[0], ops[1]);
-            case Mnemonic.cmph__eq: return RewriteCmph(m.Eq, ops[0], ops[1]);
-            case Mnemonic.cmph__gtu: return RewriteCmph(m.Ugt, ops[0], ops[1]);
+            case Mnemonic.cmpb__eq: return RewriteCmp(PrimitiveType.Byte, m.Eq, ops[0], ops[1]);
+            case Mnemonic.cmpb__gt: return RewriteCmp(PrimitiveType.Byte, m.Gt, ops[0], ops[1]);
+            case Mnemonic.cmpb__gtu: return RewriteCmp(PrimitiveType.Byte, m.Ugt, ops[0], ops[1]);
+            case Mnemonic.cmph__eq: return RewriteCmp(PrimitiveType.Word16, m.Eq, ops[0], ops[1]);
+            case Mnemonic.cmph__gt: return RewriteCmp(PrimitiveType.Word16, m.Gt, ops[0], ops[1]);
+            case Mnemonic.cmph__gtu: return RewriteCmp(PrimitiveType.Word16, m.Ugt, ops[0], ops[1]);
+            case Mnemonic.dfcmp__eq: return m.FEq(ops[0], ops[1]);
+            case Mnemonic.dfcmp__ge: return m.FGe(ops[0], ops[1]);
+            case Mnemonic.dfcmp__uo: return host.PseudoProcedure("isunordered", PrimitiveType.Bool, ops[0], ops[1]);
             case Mnemonic.combine: return RewriteCombine(ops[0], ops[1]);
+            case Mnemonic.convert_d2df: return m.Convert(ops[0], PrimitiveType.Int64, PrimitiveType.Real64);
+            case Mnemonic.convert_df2sf: return m.Convert(ops[0], PrimitiveType.Real64, PrimitiveType.Real32);
+            case Mnemonic.convert_sf2df: return m.Convert(ops[0], PrimitiveType.Real32, PrimitiveType.Real64);
+            case Mnemonic.EQ: return m.Eq(ops[0], ops[1]);
+            case Mnemonic.extract: return RewriteExtract(Domain.SignedInt, ops[0], app.Operands);
             case Mnemonic.extractu: return RewriteExtract(Domain.UnsignedInt, ops[0], app.Operands);
             case Mnemonic.loop0: RewriteLoop(0, ops); return null;
             case Mnemonic.loop1: RewriteLoop(1, ops); return null;
+            case Mnemonic.lsl: return m.Shl(ops[0], ops[1]);
             case Mnemonic.lsr: return m.Shr(ops[0], ops[1]);
+            case Mnemonic.mpy: return RewriteMpy(ops[0], ops[1]);
+            case Mnemonic.mpyi: return RewriteMpyi(ops[0], ops[1]);
+            case Mnemonic.mpyu: return RewriteMpyu(app.Width, ops[0], ops[1]);
             case Mnemonic.mux: return m.Conditional(ops[1].DataType, ops[0], ops[1], ops[2]);
+            case Mnemonic.NE: return m.Ne(ops[0], ops[1]);
+            case Mnemonic.neg: return m.Neg(ops[0]);
             case Mnemonic.not: return m.Not(ops[0]);
-            case Mnemonic.or: return m.And(ops[0], ops[1]);
+            case Mnemonic.or: return m.Or(ops[0], ops[1]);
             case Mnemonic.sub: return m.ISub(ops[0], ops[1]);
-            case Mnemonic.xor: return m.And(ops[0], ops[1]);
+            case Mnemonic.sxtb: return RewriteExt(ops[0], PrimitiveType.SByte, PrimitiveType.Int32);
+            case Mnemonic.sxth: return RewriteExt(ops[0], PrimitiveType.Int16, PrimitiveType.Int32);
+            case Mnemonic.xor: return m.Xor(ops[0], ops[1]);
+            case Mnemonic.zxtb: return RewriteExt(ops[0], PrimitiveType.Byte, PrimitiveType.UInt32);
+            case Mnemonic.zxth: return RewriteExt(ops[0], PrimitiveType.UInt16, PrimitiveType.UInt32);
+
+            case Mnemonic.abs: dt = PrimitiveType.Int32; goto intrinsicFunc;
+            case Mnemonic.max: dt = PrimitiveType.Int32; goto intrinsicFunc;
+            case Mnemonic.maxu: dt = PrimitiveType.UInt32; goto intrinsicFunc;
+            case Mnemonic.min: dt = PrimitiveType.Int32; goto intrinsicFunc;
+            case Mnemonic.minu: dt = PrimitiveType.UInt32; goto intrinsicFunc;
+
+            case Mnemonic.all8:
+            case Mnemonic.any8:
+            case Mnemonic.bitsclr:
+            case Mnemonic.bitsplit:
+            case Mnemonic.bitsset:
+            case Mnemonic.ciad:
+            case Mnemonic.cl0:
+            case Mnemonic.cl1:
+            case Mnemonic.clb:
             case Mnemonic.clrbit:
             case Mnemonic.crswap:
             case Mnemonic.cswi:
-            case Mnemonic.dccleana:
-            case Mnemonic.dccleaninva:
+            case Mnemonic.ct0:
             case Mnemonic.dfclass:
+            case Mnemonic.fastcorner9:
             case Mnemonic.insert:   //$BUG: like DPB?
-            case Mnemonic.max:
             case Mnemonic.memw_locked:
-            case Mnemonic.min:
             case Mnemonic.setbit:
+            case Mnemonic.start:
             case Mnemonic.stop:
             case Mnemonic.tlbw:
             case Mnemonic.tlbp:
             case Mnemonic.trap0:
             case Mnemonic.trap1:
+            case Mnemonic.togglebit:
             case Mnemonic.tstbit:
-                return RewriteIntrinsic(app.Mnemonic.ToString(), app.Width, ops); 
+                intrinsicFunc:
+                return RewriteIntrinsic(app.Mnemonic.ToString(), dt, ops);
+
+            case Mnemonic.dccleana:
+            case Mnemonic.dccleaninva:
+            case Mnemonic.dcfetch:
+            case Mnemonic.dcinva:
+            case Mnemonic.dczeroa:
+                return RewriteIntrinsic(app.Mnemonic.ToString(), VoidType.Instance, ops);
+
+            case Mnemonic.vavgh: return RewriteVectorIntrinsic(app.Mnemonic, PrimitiveType.Word16, ops);
+            case Mnemonic.vcmpb__eq: return RewriteVectorIntrinsic(app.Mnemonic, PrimitiveType.Byte, ops);
+            case Mnemonic.vmux: return RewriteVectorIntrinsic(app.Mnemonic, PrimitiveType.Byte, ops);
+            case Mnemonic.vsplatb: return RewriteVectorIntrinsic(app.Mnemonic, PrimitiveType.Byte, ops);
+            case Mnemonic.vsubh: return RewriteVectorIntrinsic(app.Mnemonic, PrimitiveType.Int16, ops);
             }
             throw new ArgumentException($"Hexagon rewriter for {app.Mnemonic} not implemented yet.", app.Mnemonic.ToString());
         }
@@ -263,7 +338,14 @@ namespace Reko.Arch.Qualcomm
             {
                 ea = binder.EnsureRegister(mem.Base);
                 if (mem.Index != null)
-                    throw new NotImplementedException("Index");
+                {
+                    Expression index = binder.EnsureRegister(mem.Index);
+                    if (mem.Shift > 0)
+                    {
+                        index = m.IMul(index, 1 << mem.Shift);
+                    }
+                    ea = m.IAdd(ea, index);
+                }
                 if (mem.Offset != 0)
                 {
                     ea = m.AddSubSignedInt(ea, mem.Offset);
@@ -322,6 +404,7 @@ namespace Reko.Arch.Qualcomm
         {
             var src = OperandSrc(opSrc);
             OperandDst(opDst, (l, r) => { m.Assign(l, r); }, src);
+            //$TODO: conditions.
         }
 
         private void RewriteAugmentedAssign(MachineOperand opDst, Func<Expression, Expression,Expression> fn, MachineOperand opSrc)
@@ -331,7 +414,7 @@ namespace Reko.Arch.Qualcomm
         }
 
 
-        private void RewriteCallr(HexagonInstruction instr)
+        private void RewriteCall(HexagonInstruction instr)
         {
             if (instr.ConditionPredicate != null)
             {
@@ -341,9 +424,9 @@ namespace Reko.Arch.Qualcomm
             m.Call(OperandSrc(instr.Operands[0]), 0);
         }
 
-        private Expression RewriteCmph(Func<Expression,Expression,Expression> cmp, Expression a, Expression b)
+        private Expression RewriteCmp(DataType dt, Func<Expression,Expression,Expression> cmp, Expression a, Expression b)
         {
-            return cmp(m.Slice(PrimitiveType.Word16, a, 0), m.Slice(PrimitiveType.Word16, b, 0));
+            return cmp(m.Slice(dt, a, 0), m.Slice(dt, b, 0));
         }
 
         private Expression RewriteCombine(Expression hi, Expression lo)
@@ -382,15 +465,21 @@ namespace Reko.Arch.Qualcomm
             m.Return(0, 0);
         }
 
+        private Expression RewriteExt(Expression e, PrimitiveType dtSlice, PrimitiveType dtResult)
+        {
+            return m.Convert(m.Slice(dtSlice, e, 0), dtSlice, dtResult);
+        }
 
         private Expression RewriteExtract(Domain domain, Expression expression, MachineOperand[] operands)
         {
             var dt = PrimitiveType.Create(domain, operands[0].Width.BitSize);
             if (operands[1] is RegisterPairOperand pair)
             {
-                throw new NotImplementedException();
                 var offset = binder.EnsureRegister(pair.LowRegister);
                 var width = binder.EnsureRegister(pair.HighRegister);
+                return m.And(
+                    m.Shl(expression, offset),
+                    m.ISub(m.Shl(Constant.UInt64(1), width), 1));
             }
             else
             {
@@ -398,7 +487,7 @@ namespace Reko.Arch.Qualcomm
                 var offset = ((ImmediateOperand) operands[1]).Value.ToInt32();
                 var dtSlice = PrimitiveType.CreateBitSlice(width);
                 var slice = m.Slice(dtSlice, expression, offset);
-                return m.Cast(dt, slice);
+                return m.Convert(slice, dtSlice, dt);
             }
         }
 
@@ -437,6 +526,34 @@ namespace Reko.Arch.Qualcomm
             m.SideEffect(host.PseudoProcedure($"__nyi_loop{n}", VoidType.Instance, args));
         }
 
+        private Expression RewriteMpy(Expression a, Expression b)
+        {
+            var mul = m.IMul(a, b);
+            mul.DataType = PrimitiveType.Word64;
+            return m.Slice(a.DataType, mul, 32);
+        }
+
+        private Expression RewriteMpyi(Expression a, Expression b)
+        {
+            return m.IMul(a, b);
+        }
+
+        private Expression RewriteMpyu(PrimitiveType dtResult, Expression a, Expression b)
+        {
+            if (dtResult.BitSize == 64)
+            {
+                var umul = m.UMul(a, b);
+                umul.DataType = PrimitiveType.Word64;
+                return umul;
+            }
+            else
+            {
+                var mul = m.IMul(a, b);
+                mul.DataType = PrimitiveType.Word64;
+                mul = m.Slice(a.DataType, mul, 32);
+                return mul;
+            }
+        }
         private void RewriteRte()
         {
             m.SideEffect(host.PseudoProcedure("rte", VoidType.Instance));
@@ -452,5 +569,13 @@ namespace Reko.Arch.Qualcomm
                 m.SideEffect(e);
             }
         }
+ 
+        private Expression RewriteVectorIntrinsic(Mnemonic mnemonic, PrimitiveType dtElem, Expression[] ops)
+        {
+            var cElem = ops[0].DataType.Size / dtElem.Size;
+            var dtVector = new ArrayType(dtElem, cElem);
+            return host.PseudoProcedure(mnemonic.ToString(), dtVector, ops);
+        }
+
     }
 }

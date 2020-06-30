@@ -320,6 +320,12 @@ namespace Reko.UnitTests.Arch.Qualcomm
         }
 
         [Test]
+        public void Hexagon_dasm_EQ()
+        {
+            AssertCode("{ if (r3=00000000) jump:nt\t0010002C }", "16C08361");
+        }
+
+        [Test]
         public void Hexagon_dasm_extractu()
         {
             AssertCode("{ r7:r6 = extractu(r23:r22,00000001,00000021) }", "86819681");

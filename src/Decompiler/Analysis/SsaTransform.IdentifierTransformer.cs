@@ -25,6 +25,7 @@ using Reko.Core.Lib;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.Analysis
@@ -42,7 +43,7 @@ namespace Reko.Analysis
             protected readonly SsaTransform outer;
             protected readonly SsaIdentifierCollection ssaIds;
             protected readonly IDictionary<Block, SsaBlockState> blockstates;
-
+            private Stack<Block> bloxx = new Stack<Block>();
             public IdentifierTransformer(Identifier id, Statement stm, SsaTransform outer)
             {
                 this.id = id;
@@ -84,10 +85,18 @@ namespace Reko.Analysis
                 // CFG of the Procedure being malformed due to errors in the Scanning
                 // phase. Once #726 is addressed, there should be no need for this
                 // code.
-                //if (++this.depth > 1000)
-                //    throw new StackOverflowException("");
+                bloxx.Push(bs.Block);
+                if (this.bloxx.Count> 1000)
+                {
+                    bs.Block.Procedure.Dump(true);
+                    foreach (var block in bloxx)
+                    {
+                        Debug.Print("  {0}", block.Name);
+                    }
+                    throw new StackOverflowException($"Boundless recursion in {bs.Block.Procedure.Name}.");
+                }
                 sid = ReadVariableRecursive(bs);
-                //--this.depth;
+                bloxx.Pop();
                 return sid!;
             }
 

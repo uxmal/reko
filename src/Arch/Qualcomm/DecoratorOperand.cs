@@ -85,7 +85,7 @@ namespace Reko.Arch.Qualcomm
             }
             if (Lsl16)
             {
-                writer.WriteString(":<<16");
+                renderer.WriteString(":<<16");
             }
         }
     }

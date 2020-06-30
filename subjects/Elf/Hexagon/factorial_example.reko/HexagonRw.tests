@@ -5,9 +5,9 @@
         [Test]
         public void HexagonRw_()
         {
-            Given_HexString("00C000A2");
-            AssertCode(     // { dckill }
-                "0|L--|00000104(4): 1 instructions",
+            Given_HexString("1C40086A0EC40AC1");
+            AssertCode(     // { r15:r14 = extractu(r11:r10,r5:r4); r28 = USR }
+                "0|L--|0000AC34(8): 1 instructions",
                 "1|L--|@@@");
         }
 
