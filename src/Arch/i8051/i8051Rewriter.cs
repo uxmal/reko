@@ -354,7 +354,7 @@ namespace Reko.Arch.i8051
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("i8051_rw", this.instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("i8051_rw", this.instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private void Invalid()

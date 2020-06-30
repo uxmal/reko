@@ -222,7 +222,7 @@ namespace Reko.Arch.Alpha
         /// </summary>
         private void EmitUnitTest()
         {
-            arch.Services.GetService<ITestGenerationService>()?.ReportMissingRewriter("AlphaRw", dasm.Current, rdr, "");
+            arch.Services.GetService<ITestGenerationService>()?.ReportMissingRewriter("AlphaRw", dasm.Current, dasm.Current.Mnemonic.ToString(), rdr, "");
         }
 
         IEnumerator IEnumerable.GetEnumerator()

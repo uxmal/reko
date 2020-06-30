@@ -153,7 +153,7 @@ namespace Reko.Arch.Rl78
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("Rl78Rw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("Rl78Rw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         IEnumerator IEnumerable.GetEnumerator()

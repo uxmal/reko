@@ -457,7 +457,7 @@ namespace Reko.Arch.Mos6502
         private void EmitUnitTest(Instruction instr)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("Rw6502", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("Rw6502", instr, instr.Mnemonic.ToString(), rdr, "");
         }
     }
 }

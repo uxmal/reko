@@ -95,7 +95,7 @@ namespace Reko.Arch.Blackfin
         private void EmitUnitTest(BlackfinInstruction instr)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("BlackfinRw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("BlackfinRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private Address Addr(int iOperand)

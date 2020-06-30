@@ -746,7 +746,7 @@ namespace Reko.Arch.X86
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("X86Rw", instrCur, rdr, "");
+            testGenSvc?.ReportMissingRewriter("X86Rw", instrCur, instrCur.Mnemonic.ToString(), rdr, "");
         }
     }
 }

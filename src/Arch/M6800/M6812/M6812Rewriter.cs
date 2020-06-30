@@ -268,7 +268,7 @@ namespace Reko.Arch.M6800.M6812
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("M6812Rw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("M6812Rw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private Expression RewriteOp(MachineOperand op)

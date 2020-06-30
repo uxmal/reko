@@ -316,7 +316,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("Tlcs90_rw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("Tlcs90_rw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
     }
 }

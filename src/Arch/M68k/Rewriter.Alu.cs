@@ -647,9 +647,8 @@ namespace Reko.Arch.M68k
             var dataWidth = instr.DataWidth!;
             if (instr.Operands[1] is RegisterSetOperand dstRegs)
             {
-                var postInc = instr.Operands[0] as PostIncrementMemoryOperand;
-                Identifier? srcReg = null;
-                if (postInc != null)
+                Identifier srcReg;
+                if (instr.Operands[0] is PostIncrementMemoryOperand postInc)
                 {
                     srcReg = binder.EnsureRegister(postInc.Register);
                 }

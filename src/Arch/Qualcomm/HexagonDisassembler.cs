@@ -62,8 +62,8 @@ namespace Reko.Arch.Qualcomm
 
         public override HexagonPacket DisassembleInstruction()
         {
-            instrs.Clear();
             var addr = rdr.Address;
+            instrs.Clear();
             for (; ; )
             {
                 this.addrInstr = rdr.Address;
@@ -1963,9 +1963,9 @@ namespace Reko.Arch.Qualcomm
             0,1,0,1, 0,0,0, 1,0,0,1,s,s,s,s,s,P,P,-,-,-,-,u,u,-,-,-,-,-,-,-,-,"if (!Pu) callr Rs"
             */
             var decoder_5_0 = Sparse(21, 4, "  5_0", invalid,
-                (0b0101, Instr(Mnemonic.callr, R16)),
-                (0b1000, Instr(Mnemonic.callr, R16, Conditional(8, -1, -1, -1))),
-                (0b1001, Instr(Mnemonic.callr, R16, Conditional(8, -1, -1, 21))));
+                (0b0101, Instr(Mnemonic.callr, InstrClass.Transfer|InstrClass.Call, R16)),
+                (0b1000, Instr(Mnemonic.callr, InstrClass.ConditionalTransfer | InstrClass.Call, R16, Conditional(8, -1, -1, -1))),
+                (0b1001, Instr(Mnemonic.callr, InstrClass.ConditionalTransfer | InstrClass.Call, R16, Conditional(8, -1, -1, 21))));
 
             /*
             0,1,0,1, 0,0,1, 0,1,0,0,s,s,s,s,s,P,P,-,-,-,-,-,-,-,-,-,-,-,-,-,-,"jumpr Rs"
@@ -2387,7 +2387,7 @@ namespace Reko.Arch.Qualcomm
                     (0, Instr(Mnemonic.SIDEEFFECT, Apply(Mnemonic.wait, R16))),
                     (1, Instr(Mnemonic.SIDEEFFECT, Apply(Mnemonic.resume, R16)))),
                 Sparse(5, 3, "  6 2 3", invalid,
-                    (0, Instr(Mnemonic.SIDEEFFECT, Apply(Mnemonic.stop, R16))),
+                    (0, Instr(Mnemonic.SIDEEFFECT, InstrClass.Terminates, Apply(Mnemonic.stop, R16))),
                     (1, Instr(Mnemonic.SIDEEFFECT, Apply(Mnemonic.start, R16))),
                     (2, Instr(Mnemonic.SIDEEFFECT, Apply(Mnemonic.nmi, R16)))),
                 

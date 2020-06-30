@@ -472,7 +472,7 @@ namespace Reko.Arch.Msp430
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("Msp430Rw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("Msp430Rw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
     }
 }

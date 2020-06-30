@@ -243,7 +243,7 @@ namespace Reko.Arch.RiscV
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("RiscV_rw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("RiscV_rw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
     }
 }

@@ -157,7 +157,7 @@ namespace Reko.Arch.OpenRISC
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("OpenRiscRw", instrCur, rdr, "");
+            testGenSvc?.ReportMissingRewriter("OpenRiscRw", instrCur, instrCur.Mnemonic.ToString(), rdr, "");
         }
 
         private Address Addr(MachineOperand op)

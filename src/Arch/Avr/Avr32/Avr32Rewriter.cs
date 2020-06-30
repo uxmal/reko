@@ -176,7 +176,7 @@ namespace Reko.Arch.Avr.Avr32
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("Avr32Rw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("Avr32Rw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         IEnumerator IEnumerable.GetEnumerator()

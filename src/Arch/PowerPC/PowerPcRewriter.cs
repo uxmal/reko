@@ -509,7 +509,7 @@ namespace Reko.Arch.PowerPC
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("PPCRw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("PPCRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private Expression EffectiveAddress(MachineOperand operand, RtlEmitter emitter)

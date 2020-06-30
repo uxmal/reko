@@ -46,9 +46,9 @@ namespace Reko.UnitTests.Arch
             Console.WriteLine(test);
         }
 
-        public void ReportMissingRewriter(string testPrefix, MachineInstruction instr, EndianImageReader rdr, string message)
+        public void ReportMissingRewriter(string testPrefix, MachineInstruction instr, string mnemonic, EndianImageReader rdr, string message)
         {
-            var test = TestGenerationService.GenerateRewriterUnitTest(testPrefix, instr, rdr, message);
+            var test = TestGenerationService.GenerateRewriterUnitTest(testPrefix, instr, mnemonic, rdr, message);
             Console.WriteLine(test);
         }
 

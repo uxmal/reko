@@ -241,7 +241,7 @@ namespace Reko.Arch.Sparc
         public void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("SparcRw", instrCur, rdr, "");
+            testGenSvc?.ReportMissingRewriter("SparcRw", instrCur, instrCur.Mnemonic.ToString(), rdr, "");
         }
 
         private void EmitCc(Expression dst)

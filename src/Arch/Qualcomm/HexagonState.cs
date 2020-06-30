@@ -48,12 +48,11 @@ namespace Reko.Arch.Qualcomm
 
         public override void OnAfterCall(FunctionType sigCallee)
         {
-            throw new System.NotImplementedException();
         }
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            throw new System.NotImplementedException();
+            return new CallSite(0, 0);
         }
 
         public override void OnProcedureEntered()
@@ -62,7 +61,6 @@ namespace Reko.Arch.Qualcomm
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
         {
-            throw new System.NotImplementedException();
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)

@@ -479,7 +479,7 @@ namespace Reko.Arch.Vax
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("VaxRw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("VaxRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private Expression RewriteSrcOp(int iOp, PrimitiveType width)

@@ -196,7 +196,7 @@ namespace Reko.Arch.SuperH
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("SHRw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("SHRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private Expression SrcOp(MachineOperand op, Func<int, int> immediateFn=null)

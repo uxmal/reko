@@ -233,10 +233,10 @@ namespace Reko.Arch.H8
             m.Assign(binder.EnsureFlagGroup(grf), m.Cond(e));
         }
 
-        private void EmitUnitTest(MachineInstruction instr, string message = "")
+        private void EmitUnitTest(H8Instruction instr, string message = "")
         {
             var testgenSvc = arch.Services.GetService<ITestGenerationService>();
-            testgenSvc?.ReportMissingRewriter("H8Rw", instr, rdr, message);
+            testgenSvc?.ReportMissingRewriter("H8Rw", instr, instr.Mnemonic.ToString(), rdr, message);
         }
 
 

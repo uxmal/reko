@@ -138,7 +138,7 @@ namespace Reko.Arch.PaRisc
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("PaRiscRw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("PaRiscRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private void MaybeAnnulNextInstruction(InstrClass iclass, Expression e)

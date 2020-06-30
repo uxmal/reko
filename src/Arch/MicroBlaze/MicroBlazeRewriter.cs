@@ -147,7 +147,7 @@ namespace Reko.Arch.MicroBlaze
                 "MicroBlaze instruction '{0}' is not supported yet.",
                 instrCur.Mnemonic);
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("MicroBlazeRw", instrCur, rdr, "");
+            testGenSvc?.ReportMissingRewriter("MicroBlazeRw", instrCur, instrCur.Mnemonic.ToString(), rdr, "");
         }
 
         IEnumerator IEnumerable.GetEnumerator()

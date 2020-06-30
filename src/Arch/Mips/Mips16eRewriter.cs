@@ -129,7 +129,7 @@ Architecture */
         protected void EmitUnitTest(MipsInstruction instr)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("Mips16eRw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("Mips16eRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private Expression Rewrite(MachineOperand op)

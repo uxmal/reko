@@ -332,7 +332,7 @@ namespace Reko.Arch.Mips
         protected void EmitUnitTest(MipsInstruction instr)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("MipsRw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("MipsRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private Expression RewriteOperand(MachineOperand op)

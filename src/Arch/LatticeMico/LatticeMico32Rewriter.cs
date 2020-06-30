@@ -147,7 +147,7 @@ namespace Reko.Arch.LatticeMico
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("Lm32Rw", this.instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("Lm32Rw", this.instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private Expression Nor(Expression a, Expression b)

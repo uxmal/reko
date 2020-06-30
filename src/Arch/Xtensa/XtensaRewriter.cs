@@ -347,7 +347,7 @@ namespace Reko.Arch.Xtensa
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("Xtrw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("Xtrw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         IEnumerator IEnumerable.GetEnumerator()
