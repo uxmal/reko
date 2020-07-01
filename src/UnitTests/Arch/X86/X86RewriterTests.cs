@@ -1302,9 +1302,8 @@ namespace Reko.UnitTests.Arch.X86
         {
             Run16bitTest(0x0E, 0xE8, 0x42, 0x32);
             AssertCode(
-                "0|T--|0C00:0000(4): 2 instructions",
-                "1|L--|sp = sp - 2<i16>",
-                "2|T--|call 0C00:3246 (2)");
+                "0|T--|0C00:0000(4): 1 instructions",
+                "1|T--|call 0C00:3246 (4)");
         }
 
         [Test]
