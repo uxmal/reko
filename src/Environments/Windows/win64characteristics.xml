@@ -25,6 +25,23 @@
       <varargs>Reko.Environments.Windows.MsWPrintfFormatParser,Reko.Environments.Windows</varargs>
     </characteristics>
   </entry>
+
+  <entry name="scanf">
+    <characteristics>
+      <varargs>ScanfFormatParser,Reko.Libraries.Libc</varargs>
+    </characteristics>
+  </entry>
+  <entry name="fscanf">
+    <characteristics>
+      <varargs>ScanfFormatParser,Reko.Libraries.Libc</varargs>
+    </characteristics>
+  </entry>
+  <entry name="sscanf">
+    <characteristics>
+      <varargs>ScanfFormatParser,Reko.Libraries.Libc</varargs>
+    </characteristics>
+  </entry>
+
   <entry name="malloc">
     <characteristics>
       <allocator>true</allocator>

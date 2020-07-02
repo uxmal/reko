@@ -8524,7 +8524,7 @@ l0000000000411AC9:
 						}
 						ungetc(rdi_n, rax_n);
 						rax_32_32_n = 0x00;
-						if (fscanf(rax_n, "%50s %50s", 0x00) <= 0x01)
+						if (fscanf(rax_n, "%50s %50s", fp - 0xB8, fp - 0x78) <= 0x01)
 							break;
 						word32 * rdx_n = fp - 0xB8;
 						do

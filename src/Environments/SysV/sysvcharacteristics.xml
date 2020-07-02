@@ -55,6 +55,28 @@
       <varargs>Reko.Libraries.Libc.PrintfFormatParser,Reko.Libraries.Libc</varargs>
     </characterictics>
   </entry>
+  
+  <entry name="scanf">
+    <characteristics>
+      <varargs>Reko.Libraries.Libc.ScanfFormatParser,Reko.Libraries.Libc</varargs>
+    </characteristics>
+  </entry>
+  <entry name="fscanf">
+    <characteristics>
+      <varargs>Reko.Libraries.Libc.ScanfFormatParser,Reko.Libraries.Libc</varargs>
+    </characteristics>
+  </entry>
+  <entry name="sscanf">
+    <characteristics>
+      <varargs>Reko.Libraries.Libc.ScanfFormatParser,Reko.Libraries.Libc</varargs>
+    </characteristics>
+  </entry>
+  <entry name="__isoc99_scanf">
+    <characteristics>
+      <varargs>Reko.Libraries.Libc.ScanfFormatParser,Reko.Libraries.Libc</varargs>
+    </characteristics>
+  </entry>
+
   <entry name="malloc">
     <characteristics>
       <allocator>true</allocator>
