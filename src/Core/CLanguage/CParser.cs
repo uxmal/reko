@@ -20,15 +20,10 @@
 
 #nullable disable
 
-using Reko.Core.Pascal;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Core.CLanguage
 {
@@ -47,8 +42,8 @@ namespace Reko.Core.CLanguage
 	    translated to any other language.
         */
 
-        private LookAheadLexer lexer;
-        private CGrammar grammar;
+        private readonly LookAheadLexer lexer;
+        private readonly CGrammar grammar;
 
         public CParser(ParserState parserState, CLexer lexer)
         {
@@ -62,7 +57,7 @@ namespace Reko.Core.CLanguage
 
         //------------------ token sets ------------------------------------
 
-        static BitArray startOfTypeName = NewBitArray(
+        static readonly BitArray startOfTypeName = NewBitArray(
             CTokenType.Const, CTokenType.Volatile, CTokenType.Restrict,
             CTokenType._Atomic,
             CTokenType.Void, CTokenType.Wchar_t,
@@ -71,7 +66,7 @@ namespace Reko.Core.CLanguage
             CTokenType.Unsigned, CTokenType.Struct,
             CTokenType.Union, CTokenType.Enum,
             CTokenType.__Stdcall);
-        static BitArray startOfDecl = NewBitArray(
+        static readonly BitArray startOfDecl = NewBitArray(
             CTokenType.Typedef, CTokenType.Extern, CTokenType.Static, CTokenType.Auto,
             CTokenType.Register,
             CTokenType.Const, CTokenType.Volatile, CTokenType.Restrict,
@@ -83,7 +78,7 @@ namespace Reko.Core.CLanguage
             CTokenType.Signed, CTokenType.Unsigned,CTokenType.Struct, CTokenType.Union,
             CTokenType.Enum, CTokenType._Far, CTokenType._Near,
             CTokenType.__Unaligned, CTokenType.__Inline);
-        static BitArray startOfDeclarator = NewBitArray(
+        static readonly BitArray startOfDeclarator = NewBitArray(
             CTokenType.Star, CTokenType.Ampersand, CTokenType.LParen, CTokenType.LBracket,
             CTokenType.Semicolon);
 
@@ -889,6 +884,9 @@ IGNORE tab + cr + lf
             case CTokenType._Near:
             case CTokenType._Far:
             case CTokenType.__Unaligned:
+            case CTokenType.Const:
+            case CTokenType.Volatile:
+            case CTokenType.Restrict:
                 var tq = grammar.TypeQualifier(lexer.Read().Type);
                 decl = Parse_Declarator();
                 if (decl is PointerDeclarator ptr)

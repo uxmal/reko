@@ -1447,9 +1447,10 @@ extern int myfunc() __asm__ ("""" ""__flub"");");
         [Test]
         public void CParser_declspec_restrict()
         {
-            Lex("  __declspec(restrict)      void * __cdecl test();");
+            Lex("  __declspec(noalias) __declspec(restrict)      void * __cdecl test();");
             var decl = parser.Parse()[0];
-            Assert.AreEqual("(decl (__declspec restrict) Void ((init-decl (ptr (__Cdecl (func test)))))))", decl.ToString());
+            
+            Assert.AreEqual("(decl (__declspec noalias) (__declspec restrict) Void ((init-decl (ptr (__Cdecl (func test)))))))", decl.ToString());
         }
 
         [Test]
@@ -1511,7 +1512,7 @@ extern int myfunc() __asm__ ("""" ""__flub"");");
         }
 
         [Test]
-        public void CParser_XXX()
+        public void CParser_Parenthesized_Statements()
         {
             Lex(@" {
   	(hKey);    
@@ -1520,6 +1521,21 @@ extern int myfunc() __asm__ ("""" ""__flub"");");
 	return 0L;
 }");
             var stm = parser.Parse_Stat();
+        }
+
+        [Test]
+        public void CParser_cdecl_declaration()
+        {
+            Lex(@"size_t  __cdecl _msize(     void * _Memory);");
+            parser.Parse();
+        }
+
+        [Test]
+        public void CParser_const_before_ptr()
+        {
+            Lex("typedef struct _REGINI const *LPCREGINI;");
+            var decl = parser.Parse()[0];
+            Assert.AreEqual("(decl Typedef (Struct _REGINI) ((init-decl (ptr Const LPCREGINI))))", decl.ToString());
         }
     }
 }

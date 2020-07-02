@@ -488,7 +488,9 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CLexer_L()
         {
-            Lex("L");
+            Lex("L;L");
+            AssertToken(CTokenType.Id, "L");
+            AssertToken(CTokenType.Semicolon);
             AssertToken(CTokenType.Id, "L");
         }
     }

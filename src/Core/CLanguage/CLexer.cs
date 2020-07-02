@@ -757,9 +757,16 @@ namespace Reko.Core.CLanguage
                         state = State.StringLiteral;
                         break;
                     default:
-                        sb.Append(ch);
-                        rdr.Read();
-                        state = State.Id;
+                        if (Char.IsLetter(ch) || Char.IsDigit(ch) || ch == '_')
+                        {
+                            rdr.Read();
+                            sb.Append(ch);
+                            state = State.Id;
+                        }
+                        else
+                        {
+                            return LookupId();
+                        }
                         break;
                     }
                     break;

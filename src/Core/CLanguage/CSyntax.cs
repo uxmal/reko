@@ -340,10 +340,13 @@ namespace Reko.Core.CLanguage
                 sb.Append(string.Join(" ", Attributes));
                 sb.Append(" ");
             }
-            foreach (var declspec in DeclSpecs)
+            if (DeclSpecs != null)
             {
-                sb.Append(declspec);
-                sb.Append(" ");
+                foreach (var declspec in DeclSpecs)
+                {
+                    sb.Append(declspec);
+                    sb.Append(" ");
+                }
             }
             sb.Append(Declarator);
             sb.Append(")");
