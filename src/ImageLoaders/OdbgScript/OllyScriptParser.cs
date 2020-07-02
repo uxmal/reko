@@ -595,7 +595,7 @@ namespace Reko.ImageLoaders.OdbgScript
                         }
                         break;
                     case State.Identifier:
-                        if (c == -1 || !char.IsLetterOrDigit(ch))
+                        if (c == -1 || !(char.IsLetterOrDigit(ch) || ch == '_' || ch == '.'))
                             return MakeToken(TokenType.Id, sb.ToString());
                         rdr.Read();
                         sb.Append(ch);
@@ -807,6 +807,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 var tok = new Token(type, this.lineNumber, value);
                 Debug.Assert(type != TokenType.Newline);
+                Debug.Print("Olly: {0} ({1})", type, value);
                 return tok;
             }
 

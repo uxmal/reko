@@ -63,7 +63,6 @@ namespace Reko.ImageLoaders.MzExe
 
         public override Program Load(Address addrLoad)
         {
-            //$TODO: no space allocated for the PSP!
             this.segPsp = (ushort)(addrLoad.Selector.Value - 0x10);
             var ss = (ushort) (ExeLoader.e_ss + addrLoad.Selector.Value);
             this.addrStackTop = Address.SegPtr(ss, ExeLoader.e_sp);
@@ -77,7 +76,13 @@ namespace Reko.ImageLoaders.MzExe
             int cbCopy = Math.Min(cbImageSize, RawImage.Length - iImageStart);
             Array.Copy(RawImage, iImageStart, bytes, 0, cbCopy);
             imgLoaded = new MemoryArea(addrLoad, bytes);
-            this.segmentMap = new SegmentMap(addrLoad);
+            var addrPsp = Address.SegPtr(segPsp, 0);
+            this.segmentMap = new SegmentMap(
+                addrPsp,
+                new ImageSegment(
+                    "PSP",
+                    new MemoryArea(addrPsp, new byte[0x100]),
+                    AccessMode.ReadWriteExecute));
             return new Program(segmentMap, arch, platform);
         }
 
@@ -186,6 +191,7 @@ namespace Reko.ImageLoaders.MzExe
             state.SetRegister(Registers.ss, Constant.UInt16((ushort) addrStackTop.Selector.Value));
             state.SetRegister(Registers.sp, Constant.UInt16((ushort) addrStackTop.Offset));
             state.SetRegister(Registers.ds, Constant.UInt16(segPsp));
+            state.SetRegister(Registers.es, Constant.UInt16(segPsp));
             var ep = ImageSymbol.Procedure(arch, addrStart, state: state);
             return ep;
         }

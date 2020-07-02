@@ -45,7 +45,11 @@ namespace Reko.Arch.X86
         public const uint Dmask = 1u << 10;
         public const uint Omask = 1u << 11;
 
-        protected static readonly TraceSwitch trace = new TraceSwitch(nameof(X86Emulator), "Trace execution of X86 Emulator") { Level = TraceLevel.Warning };
+        protected static readonly TraceSwitch trace = new TraceSwitch(nameof(X86Emulator), "Trace execution of X86 Emulator") 
+        { 
+            Level = TraceLevel.Verbose 
+        };
+
         public static readonly (uint value, uint hibit)[] masks = new(uint, uint)[]{
                 (0, 0),
                 (0x0000_00FFu,  0x0000_0080),

@@ -219,9 +219,10 @@
         <File Source="$(var.Decompiler.ProjectDir)Loading\Signatures\PLATFORM_INDEPENDENT.xml" />
         
         <!-- Unpacker scripts -->
-        <File Source="$(var.OdbgScript.ProjectDir)upx_ultimate.osc" />
+        <File Source="$(var.OdbgScript.ProjectDir)PkLite-1.50-unpacker.osc" />
         <File Source="$(var.OdbgScript.ProjectDir)RekoUnpacker_823.osc" />
-        
+        <File Source="$(var.OdbgScript.ProjectDir)upx_ultimate.osc" />
+
         <!-- External files -->
         <File Source="$(var.SolutionDir)..\external\Capstone\$(var.Platform)\capstone.dll" />
         <File Source="$(var.SolutionDir)..\external\Msagl\Microsoft.Msagl.dll" />
