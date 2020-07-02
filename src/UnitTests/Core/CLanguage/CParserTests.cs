@@ -1537,5 +1537,18 @@ extern int myfunc() __asm__ ("""" ""__flub"");");
             var decl = parser.Parse()[0];
             Assert.AreEqual("(decl Typedef (Struct _REGINI) ((init-decl (ptr Const LPCREGINI))))", decl.ToString());
         }
+
+        [Test]
+        public void CParser_forward_decl()
+        {
+            Lex(@"
+            typedef unsigned int Request;
+            struct test {
+                int Request[42];
+            };
+            ");
+            var decl = parser.Parse()[1];
+
+        }
     }
 }

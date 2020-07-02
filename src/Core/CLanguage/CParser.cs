@@ -246,14 +246,14 @@ namespace Reko.Core.CLanguage
         }
 
         // return true if '*', '&' '(', '[', ';', noTypeIdent
-        bool IsDeclarator()
+        bool IsDeclarator(bool checkForTypes)
         {
             var token = lexer.Peek(0);
             if (startOfDeclarator[(int)token.Type])
                 return true;
             if (token.Type != CTokenType.Id) 
                 return false;
-            return !IsTypeName(token);
+            return !checkForTypes || !IsTypeName(token);
         }
 
 #if not
@@ -535,7 +535,7 @@ IGNORE tab + cr + lf
                 }
                 else
                 {
-                    if (IsDeclarator())
+                    if (IsDeclarator(true))
                         break;
                 }
                 if (token.Type == CTokenType.Id)
@@ -834,7 +834,7 @@ IGNORE tab + cr + lf
                 if (t == null)
                     break;
                 sql.Add(t);
-            } while (!IsDeclarator());
+            } while (!IsDeclarator(false));
             return sql;
         }
 
