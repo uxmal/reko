@@ -77,10 +77,12 @@ namespace Reko.Core.CLanguage
             CTokenType.Const, CTokenType.Volatile, CTokenType.Restrict,
             CTokenType._Atomic,
             CTokenType.Void,
+            CTokenType.Bool, CTokenType._Bool,
             CTokenType.Char, CTokenType.Wchar_t, CTokenType.Short, CTokenType.Int, 
             CTokenType.__Int64, CTokenType.Long,CTokenType.Double, CTokenType.Float,
             CTokenType.Signed, CTokenType.Unsigned,CTokenType.Struct, CTokenType.Union,
-            CTokenType.Enum, CTokenType._Far, CTokenType._Near);
+            CTokenType.Enum, CTokenType._Far, CTokenType._Near,
+            CTokenType.__Unaligned, CTokenType.__Inline);
         static BitArray startOfDeclarator = NewBitArray(
             CTokenType.Star, CTokenType.Ampersand, CTokenType.LParen, CTokenType.LBracket,
             CTokenType.Semicolon);
@@ -235,7 +237,7 @@ namespace Reko.Core.CLanguage
                    x.Type == CTokenType.__Fastcall || x.Type == CTokenType.__Stdcall ||
                    x.Type == CTokenType.__Thiscall || x.Type == CTokenType.__Cdecl ||
                    x.Type == CTokenType.__Pascal || x.Type == CTokenType._Far ||
-                   x.Type == CTokenType._Near)
+                   x.Type == CTokenType._Near || x.Type == CTokenType.__Unaligned)
             {
                 x = lexer.Peek(++i);
             }
@@ -587,41 +589,52 @@ IGNORE tab + cr + lf
             case CTokenType._Atomic:
             case CTokenType._Far:
             case CTokenType._Near:
+            case CTokenType.__Unaligned:
                 return grammar.TypeQualifier(lexer.Read().Type);
             case CTokenType.__Declspec:
                 lexer.Read();
                 ExpectToken(CTokenType.LParen);
-                var s = (string)ExpectToken(CTokenType.Id);
-                if (s == "align")
+                var sToken = lexer.Read();
+                if (sToken.Type == CTokenType.Restrict)
                 {
-                    ExpectToken(CTokenType.LParen);
-                    ExpectToken(CTokenType.NumericLiteral);
                     ExpectToken(CTokenType.RParen);
+                    return grammar.ExtendedDeclspec("restrict");
                 }
-                else if (s == "deprecated")
+                else if (sToken.Type == CTokenType.Id)
                 {
-                    if (PeekThenDiscard(CTokenType.LParen))
+                    var s = (string) sToken.Value;
+                    if (s == "align")
                     {
-                        ExpectToken(CTokenType.StringLiteral);
+                        ExpectToken(CTokenType.LParen);
+                        ExpectToken(CTokenType.NumericLiteral);
                         ExpectToken(CTokenType.RParen);
                     }
-                }
-                else if (s == "dllimport")
-                {
-                }
-                else if (s == "noreturn")            //$BUG: use for termination analysis
-                {
-                }
-                else if (s == "noalias")
-                {
-                }
-                else if (s == "restrict")
-                {
+                    else if (s == "deprecated")
+                    {
+                        if (PeekThenDiscard(CTokenType.LParen))
+                        {
+                            ExpectToken(CTokenType.StringLiteral);
+                            ExpectToken(CTokenType.RParen);
+                        }
+                    }
+                    else if (s == "dllimport")
+                    {
+                    }
+                    else if (s == "noreturn")            //$BUG: use for termination analysis
+                    {
+                    }
+                    else if (s == "noalias")
+                    {
+                    }
+                    else
+                        throw new CParserException($"Unknown __declspec '{s}'.");
+                    ExpectToken(CTokenType.RParen);
+                    return grammar.ExtendedDeclspec(s);
                 }
                 else
-                    throw new CParserException($"Unknown __declspec '{s}'.");
-                ExpectToken(CTokenType.RParen);
-                return grammar.ExtendedDeclspec(s);
+                {
+                    throw new CParserException($"Unknown __declspec '{sToken}'.");
+                }
             case CTokenType.__Success:
                 lexer.Read();
                 ExpectToken(CTokenType.LParen);
@@ -757,6 +770,7 @@ IGNORE tab + cr + lf
             case CTokenType._Atomic:
             case CTokenType._Far:
             case CTokenType._Near:
+            case CTokenType.__Unaligned:
                 return null;
             default:
                 throw Unexpected(token);
@@ -874,6 +888,7 @@ IGNORE tab + cr + lf
                 return Parse_Reference();
             case CTokenType._Near:
             case CTokenType._Far:
+            case CTokenType.__Unaligned:
                 var tq = grammar.TypeQualifier(lexer.Read().Type);
                 decl = Parse_Declarator();
                 if (decl is PointerDeclarator ptr)
@@ -1664,9 +1679,13 @@ IGNORE tab + cr + lf
                 return grammar.Const(lexer.Read().Value);
             case CTokenType.StringLiteral:
                 return grammar.Const(lexer.Read().Value);
+            case CTokenType.WideStringLiteral:
+                return grammar.Const(lexer.Read().Value);
             case CTokenType.RealLiteral:
                 return grammar.Const(lexer.Read().Value);
             case CTokenType.CharLiteral:
+                return grammar.Const(lexer.Read().Value);
+            case CTokenType.WideCharLiteral:
                 return grammar.Const(lexer.Read().Value);
             default:
                 ExpectToken(CTokenType.LParen);

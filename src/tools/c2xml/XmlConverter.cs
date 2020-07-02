@@ -81,6 +81,7 @@ namespace Reko.Tools.C2Xml
             {
             case "gcc": return new CLexer(rdr, CLexer.GccKeywords);
             case "msvc": return new CLexer(rdr, CLexer.MsvcKeywords);
+            case "msvcce": return new CLexer(rdr, CLexer.MsvcCeKeywords);
             default: return new CLexer(rdr, CLexer.StdKeywords);
             }
         }
@@ -94,7 +95,14 @@ namespace Reko.Tools.C2Xml
 
             foreach (var decl in declarations)
             {
-                symbolTable.AddDeclaration(decl);
+                try
+                {
+                    symbolTable.AddDeclaration(decl);
+                } catch (Exception ex)
+                {
+                    Console.WriteLine("Error when handling declaration {0}: {1}", decl, ex.Message);
+                    throw;
+                }
             }
 
             var lib = new SerializedLibrary

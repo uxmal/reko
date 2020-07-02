@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -32,6 +32,8 @@ namespace Reko.Core.CLanguage
         T VisitIdentifier(CIdentifier id);
 
         T VisitApplication(Application application);
+
+        T VisitArrayAccess(CArrayAccess aref);
 
         T VisitMember(MemberExpression member);
 

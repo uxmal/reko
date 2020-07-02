@@ -95,7 +95,7 @@ namespace Reko.Core.CLanguage
             return sb.ToString();
         }
     }
-   
+
     public interface DeclSpecVisitor<T>
     {
         T VisitSimpleType(SimpleTypeSpec simpleType);
@@ -652,13 +652,13 @@ namespace Reko.Core.CLanguage
         public string FieldName;
         public bool Dereference;
 
-                public override T Accept<T>(CExpressionVisitor<T> visitor)
+        public override T Accept<T>(CExpressionVisitor<T> visitor)
         {
             return visitor.VisitMember(this);
         }
 
         public override string ToString() { return string.Format("({0} {1} {2}",
-            Expression, 
+            Expression,
             Dereference ? "->" : ".",
             FieldName); }
     }
@@ -760,7 +760,23 @@ namespace Reko.Core.CLanguage
         public override string ToString()
         {
             return string.Format("(sizeof {0})",
-                Type != null ? (object)Type : (object)Expression);
+                Type != null ? (object) Type : (object) Expression);
+        }
+    }
+
+    public class CArrayAccess : CExpression
+    {
+        public CExpression Expression;
+        public CExpression Index;
+
+        public override T Accept<T>(CExpressionVisitor<T> visitor)
+        {
+            return visitor.VisitArrayAccess(this);
+        }
+
+        public override string ToString()
+        {
+            return $"(aref {Expression} {Index})";
         }
     }
 
@@ -810,6 +826,13 @@ namespace Reko.Core.CLanguage
             else
                 return string.Format("(case {0})", Value);
         }
+    }
+
+    public class IfStat : Stat
+    {
+        public CExpression Expression;
+        public Stat Consequence;
+        public Stat Alternative;
     }
 
     public class WhileStat : Stat
