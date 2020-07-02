@@ -174,6 +174,7 @@ namespace Reko.Environments.Windows
             case CBasicType.Double: return 8;
             case CBasicType.LongDouble: return 8;
             case CBasicType.Int64: return 8;
+            case CBasicType.WChar_t: return 2;
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }
         }
