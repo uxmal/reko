@@ -325,19 +325,17 @@
 	</signature>
   </service>
   <service name="bios_kbd_check_keystroke">
-	<syscallinfo>
-	  <vector>16</vector>
-	  <regvalue reg="ah">01</regvalue>
-	</syscallinfo>
-	<signature>
-	  <return>
-		<reg>ah</reg>
-	  </return>
-	  <arg out="true">
-		<reg>al</reg>
-	  </arg>
-	</signature>
+    <syscallinfo>
+      <vector>16</vector>
+      <regvalue reg="ah">01</regvalue>
+    </syscallinfo>
+    <signature>
+      <return><flag>Z</flag></return>
+      <arg out="true"><reg>al</reg></arg>
+      <arg out="true"><reg>ah</reg></arg>
+    </signature>
   </service>
+  
   <service name="bios_get_system_time">
 	<syscallinfo>
 	  <vector>1A</vector>
