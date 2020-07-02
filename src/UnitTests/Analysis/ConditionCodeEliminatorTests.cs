@@ -56,7 +56,11 @@ namespace Reko.UnitTests.Analysis
 
         private void Given_ConditionCodeEliminator()
         {
-            cce = new ConditionCodeEliminator(ssaState, new DefaultPlatform(null, new FakeArchitecture(new ServiceContainer())), new FakeDecompilerEventListener());
+            var program = new Program
+            {
+                Platform = new DefaultPlatform(null, new FakeArchitecture(new ServiceContainer()))
+            };
+            cce = new ConditionCodeEliminator(program, ssaState, new FakeDecompilerEventListener());
         }
 
         protected Program CompileTest(Action<ProcedureBuilder> m)
@@ -107,7 +111,7 @@ namespace Reko.UnitTests.Analysis
                 var larw = new LongAddRewriter(ssa, listener);
                 larw.Transform();
 
-                var cce = new ConditionCodeEliminator(ssa, program.Platform, listener);
+                var cce = new ConditionCodeEliminator(program, ssa, listener);
                 cce.Transform();
                 ssa.Validate(s => { ssa.Dump(true); Assert.Fail(s); });
 

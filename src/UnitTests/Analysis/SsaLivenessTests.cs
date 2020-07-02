@@ -137,7 +137,7 @@ namespace Reko.UnitTests.Analysis
                 new ProgramDataFlow());
             sst.Transform();
 			ssa = sst.SsaState;
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, platform, listener);
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(program, ssa, listener);
 			cce.Transform();
             var segmentMap = new SegmentMap(Address.Ptr32(0x00123400));
             ValuePropagator vp = new ValuePropagator(segmentMap, ssa, program.CallGraph, dynamicLinker, listener);

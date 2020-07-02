@@ -199,7 +199,7 @@ namespace Reko.UnitTests.Analysis
 			this.ssaIds = ssa.Identifiers;
 
             var listener = new FakeDecompilerEventListener();
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, platform, listener);
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(program, ssa, listener);
 			cce.Transform();
 			DeadCode.Eliminate(ssa);
 

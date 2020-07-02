@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Analysis
                     dfa.ProgramDataFlow);
                 sst.Transform();
 				SsaState ssa = sst.SsaState;
-                var cce = new ConditionCodeEliminator(ssa, program.Platform, listener);
+                var cce = new ConditionCodeEliminator(program, ssa, listener);
                 cce.Transform();
 				ssa.Write(writer);
 				proc.Write(false, writer);

@@ -53,17 +53,19 @@ namespace Reko.Analysis
         
         private readonly SsaState ssa;
 		private readonly SsaIdentifierCollection ssaIds;
-        private readonly IPlatform platform;
+        private readonly Program program;
+        private readonly DecompilerEventListener listener;
         private readonly ExpressionEmitter m;
         private readonly HashSet<Identifier> aliases;
 		private SsaIdentifier? sidGrf;
         private Statement? useStm;
 
-        public ConditionCodeEliminator(SsaState ssa, IPlatform platform, DecompilerEventListener listener)
-		{
+        public ConditionCodeEliminator(Program program, SsaState ssa, DecompilerEventListener listener)
+        {
             this.ssa = ssa;
 			this.ssaIds = ssa.Identifiers;
-            this.platform = platform;
+            this.program = program;
+            this.listener = listener;
             this.m = new ExpressionEmitter();
             this.aliases = new HashSet<Identifier>();
 		}
@@ -80,15 +82,23 @@ namespace Reko.Analysis
                 var uses = new HashSet<Statement>();
                 this.aliases.Clear();
                 ClosureOfUsingStatements(sidGrf, uses, aliases);
-                trace.Inform("Tracing {0}", sidGrf.DefStatement.Instruction);
+                trace.Inform("CCE: Tracing {0}", sidGrf.DefStatement.Instruction);
 
                 foreach (var u in uses)
                 {
-                    useStm = u;
+                    try
+                    {
+                        useStm = u;
 
-                    trace.Inform("   used {0}", useStm.Instruction);
-                    useStm.Instruction.Accept(this);
-                    trace.Inform("    now {0}", useStm.Instruction);
+                        trace.Inform("CCE:   used {0}", useStm.Instruction);
+                        useStm.Instruction.Accept(this);
+                        trace.Inform("CCE:    now {0}", useStm.Instruction);
+                    }
+                    catch (Exception ex)
+                    {
+                        var loc = listener.CreateStatementNavigator(program, u);
+                        listener.Error(loc, ex, "An error occurred while eliminating condition codes in procedure {0}.", ssa.Procedure.Name);
+                    }
                 }
             }
         }
@@ -495,7 +505,7 @@ namespace Reko.Analysis
                 new Identifier("", bin.DataType, null!));
             Expression e = new Application(
                 new ProcedureConstant(
-                    platform.PointerType,
+                    program.Platform.PointerType,
                     new PseudoProcedure("OVERFLOW", sig)),
                 PrimitiveType.Bool,
                 bin);
@@ -513,7 +523,7 @@ namespace Reko.Analysis
                 new Identifier("", bin.DataType, null!));
             Expression e = new Application(
                 new ProcedureConstant(
-                    platform.PointerType,
+                    program.Platform.PointerType,
                     new PseudoProcedure("PARITY_EVEN", sig)),
                 PrimitiveType.Bool,
                 bin);
@@ -536,7 +546,7 @@ namespace Reko.Analysis
                 new Identifier("y", bin.DataType, null!));
             Expression e = m.Fn(
                 new ProcedureConstant(
-                    platform.PointerType,
+                    program.Platform.PointerType,
                     new PseudoProcedure("isunordered", sig)),
                 bin.Left,
                 bin.Right);

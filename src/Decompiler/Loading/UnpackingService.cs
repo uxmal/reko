@@ -96,6 +96,8 @@ namespace Reko.Loading
         /// the original loader is returned.</returns>
         public ImageLoader FindUnpackerBySignature(ImageLoader loader, uint entryPointOffset)
         {
+            var diagSvc = Services.RequireService<IDiagnosticsService>();
+
             // $TODO: the code below triggers the creation of the suffix array
             // The suffix array is currently unused but the algorithm that generates it scales poorly
             // making Reko unable to load certain EXE files (due to the endless wait times)
@@ -103,10 +105,11 @@ namespace Reko.Loading
             var signature = Signatures.Where(s => Matches(s, loader.RawImage, entryPointOffset)).FirstOrDefault();
             if (signature == null || signature.Name == null)
                 return loader;
+            diagSvc.Inform("Packer '{0}' detected.", signature.Name);
             var le = Services.RequireService<IConfigurationService>().GetImageLoader(signature.Name);  //$REVIEW: all of themn?
             if (le == null || le.TypeName == null)
             {
-                //$TODO: warn if loader is missing?
+                diagSvc.Warn("Unable to unpack executable file packed with '{0}'.", signature.Name);
                 return loader;
             }
             var unpacker = Loader.CreateOuterImageLoader<ImageLoader>(le.TypeName, loader);

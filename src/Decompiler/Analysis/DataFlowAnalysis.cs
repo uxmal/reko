@@ -451,7 +451,7 @@ namespace Reko.Analysis
                 larw.Transform();
 
                 // Propagate condition codes and registers. 
-                var cce = new ConditionCodeEliminator(ssa, program.Platform, eventListener);
+                var cce = new ConditionCodeEliminator(program, ssa, eventListener);
                 cce.Transform();
 
                 vp.Transform();

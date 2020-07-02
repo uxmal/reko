@@ -97,7 +97,7 @@ namespace Reko.UnitTests.Analysis
 			foreach (var sst in ssts)
 			{
 				SsaState ssa = sst.SsaState;
-				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform, listener);
+				ConditionCodeEliminator cce = new ConditionCodeEliminator(program, ssa, listener);
 				cce.Transform();
 
 				DeadCode.Eliminate(ssa);
