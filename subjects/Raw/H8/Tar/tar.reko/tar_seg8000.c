@@ -428,11 +428,11 @@ word32 fn8032(word16 er1_16_n, word16 er2_16_n, word16 er3_16_n, ui16 r4, ui16 r
 	return er0_n;
 }
 
-// 8584: Register word32 fn8584(Register word16 er0_16_n, Register word16 er1_16_n, Register word16 er2_16_n, Register word16 er3_16_n, Register word16 r4, Register int16 r5, Register Eq_n r6, Register out Eq_n er1Out, Register out Eq_n er2Out, Register out Eq_n er3Out, Register out Eq_n er4Out, Register out Eq_n er5Out, Register out Eq_n er6Out)
+// 8584: Register word32 fn8584(Register word16 er0_16_n, Register word16 er1_16_n, Register word16 er2_16_n, Register word16 er3_16_n, Register uint16 r4, Register int16 r5, Register Eq_n r6, Register out Eq_n er1Out, Register out Eq_n er2Out, Register out Eq_n er3Out, Register out Eq_n er4Out, Register out Eq_n er5Out, Register out Eq_n er6Out)
 // Called from:
 //      fn8866
 //      fn9478
-word32 fn8584(word16 er0_16_n, word16 er1_16_n, word16 er2_16_n, word16 er3_16_n, word16 r4, int16 r5, Eq_n r6, union Eq_n & er1Out, union Eq_n & er2Out, union Eq_n & er3Out, union Eq_n & er4Out, union Eq_n & er5Out, union Eq_n & er6Out)
+word32 fn8584(word16 er0_16_n, word16 er1_16_n, word16 er2_16_n, word16 er3_16_n, uint16 r4, int16 r5, Eq_n r6, union Eq_n & er1Out, union Eq_n & er2Out, union Eq_n & er3Out, union Eq_n & er4Out, union Eq_n & er5Out, union Eq_n & er6Out)
 {
 	word16 sp_16_16_n = SLICE(fp, word16, 16);
 	struct Eq_n * sp_n = SEQ(sp_16_16_n, fp - 0x0A);
@@ -647,7 +647,7 @@ word16 * fn8866(word16 * er0, word16 r1, word16 er1_16_n, word16 r2, word16 er2_
 		word16 er2_16_16_n = SLICE(er2_n - 0x01, word16, 16);
 		int16 r5_n = *((word32) sp_n + 20);
 		SEQ(er2_16_16_n, (word32) *((word32) sp_n + 0x0C) + r2_n * 0x02)->wFFFF9EB0 = r5_n;
-		word16 r4_n = *((word32) sp_n + 32);
+		uint16 r4_n = *((word32) sp_n + 32);
 		if (r4_n != g_wFFFF9E40)
 		{
 			int16 r2_n = *((byte) sp_n.u0 + 20);
@@ -709,17 +709,17 @@ word16 * fn8866(word16 * er0, word16 r1, word16 er1_16_n, word16 r2, word16 er2_
 				*((word32) sp_n + 8) = r2_n * 0x02;
 				*((word32) sp_n + 8) = r2_n * 0x02 + 0x9EB0;
 				int16 r3_n = 0x00;
-				bu8 * er6_n = SEQ(er6_16_16_n, r2_n * 0x02 + 40514);
+				word16 * er6_n = SEQ(er6_16_16_n, r2_n * 0x02 + 40514);
 				do
 				{
 					er6_n = SEQ(er6_16_16_n, r6h_n, r6l_n + 0x0C);
 					int16 r5_n = *((word32) sp_n + 8);
 					cu8 r5l_n = (byte) r5_n;
-					uint16 r0_n = *SEQ(er5_16_n, r5_n);
+					word16 r0_n = *SEQ(er5_16_n, r5_n);
 					*((word32) sp_n + 8) = SEQ((bool) (r5l_n < 0x0C) + SLICE(r5_n, byte, 8), r5l_n + 0x0C);
-					bu8 r1l_n = *er6_n;
+					word16 r1_n = *er6_n;
 					*((word32) sp_n + 0x0A) = r3_n;
-					Eq_n r4_n = (word32) *((word32) sp_n + 6) + fn9E08(r0_n, r1l_n);
+					Eq_n r4_n = (word32) *((word32) sp_n + 6) + fn9E08(r0_n, SLICE(r1_n, byte, 8), (byte) r1_n);
 					*((word32) sp_n + 6) = r4_n;
 					cu8 r6l_n = (byte) er6_n;
 					word32 er3_n = SEQ(er3_16_16_n, *((word32) sp_n + 0x0A));
@@ -1381,10 +1381,10 @@ word32 fn8F4E(word16 er0_16_n, Eq_n er4, Eq_n r5, Eq_n r6, union Eq_n & er4Out, 
 	return er0_n;
 }
 
-// 9370: Register word32 fn9370(Register word16 er0_16_n, Register word16 er2_16_n, Register word16 er3_16_n, Register word16 r4, Register word16 er4_16_n, Register Eq_n r5, Register word16 r6, Register out Eq_n er1Out, Register out Eq_n er2Out, Register out Eq_n er3Out, Register out Eq_n er4Out, Register out Eq_n r5Out, Register out Eq_n r6Out)
+// 9370: Register word32 fn9370(Register word16 er0_16_n, Register word16 er2_16_n, Register word16 er3_16_n, Register uint16 r4, Register word16 er4_16_n, Register Eq_n r5, Register word16 r6, Register out Eq_n er1Out, Register out Eq_n er2Out, Register out Eq_n er3Out, Register out Eq_n er4Out, Register out Eq_n r5Out, Register out Eq_n r6Out)
 // Called from:
 //      fn9478
-word32 fn9370(word16 er0_16_n, word16 er2_16_n, word16 er3_16_n, word16 r4, word16 er4_16_n, Eq_n r5, word16 r6, union Eq_n & er1Out, union Eq_n & er2Out, union Eq_n & er3Out, union Eq_n & er4Out, union Eq_n & r5Out, union Eq_n & r6Out)
+word32 fn9370(word16 er0_16_n, word16 er2_16_n, word16 er3_16_n, uint16 r4, word16 er4_16_n, Eq_n r5, word16 r6, union Eq_n & er1Out, union Eq_n & er2Out, union Eq_n & er3Out, union Eq_n & er4Out, union Eq_n & r5Out, union Eq_n & r6Out)
 {
 	word16 sp_16_16_n = SLICE(fp, word16, 16);
 	struct Eq_n * sp_n = SEQ(sp_16_16_n, fp - 0x06);
@@ -1560,13 +1560,13 @@ word32 fn9478(word16 er0_16_n, word16 er1_16_n, word16 er2_16_n, word16 er3_16_n
 			word32 er5_n;
 			word32 er0_n = fn9CBC(er0_16_16_n, er4_16_n, 0x00, er5_16_n, r6_n, out er2_n, out er4_n, out er5_n, out r6_n);
 			sp_n.u0 = <invalid>;
-			word16 r0_n = (word16) er0_n;
-			word16 r4_n = (word16) er4_n;
+			uint16 r4_n = (word16) er4_n;
 			er0_16_16_n = SLICE(er0_n, word16, 16);
 			word16 er2_16_16_n = SLICE(er2_n, word16, 16);
 			er4_16_n = SLICE(er4_n, word16, 16);
 			er5_16_n = SLICE(er5_n, word16, 16);
 			r5_n = 0x04;
+			uint16 r0_n = (uint16) (uint8) (byte) er0_n;
 			if (r0_n == 0x04)
 				break;
 			if (r0_n != 0x02)
@@ -1584,7 +1584,7 @@ word32 fn9478(word16 er0_16_n, word16 er1_16_n, word16 er2_16_n, word16 er3_16_n
 					word32 er6_n;
 					word32 er0_n = fn8584(SLICE(fn9D6A(er0_16_16_n, r6_n, out er2_n, out r6_n), word16, 16), er1_16_n, SLICE(er2_n, word16, 16), er3_16_n, r4_n, 0x04, r6_n, out er1_n, out er2_n, out er3_n, out er4_n, out er5_n, out er6_n);
 					Eq_n sp_n = <invalid>;
-					word16 r4_n = (word16) er4_n;
+					uint16 r4_n = (word16) er4_n;
 					int16 r5_n = (word16) er5_n;
 					Eq_n r6_n = (word16) er6_n;
 					word16 er0_16_16_n = SLICE(er0_n, word16, 16);
@@ -1692,7 +1692,7 @@ l9584:
 					word32 er6_n;
 					word32 er0_n = fn8584(er0_16_16_n, er1_16_16_n, er2_16_16_n, er3_16_16_n, 0x0A, r5_n, r6_n, out er1_n, out er2_n, out er3_n, out er4_n, out er5_n, out er6_n);
 					Eq_n sp_n = <invalid>;
-					word16 r4_n = (word16) er4_n;
+					uint16 r4_n = (word16) er4_n;
 					int16 r5_n = (word16) er5_n;
 					Eq_n r6_n = (word16) er6_n;
 					word16 er0_16_16_n = SLICE(er0_n, word16, 16);
@@ -1803,7 +1803,7 @@ l966A:
 					word32 er6_n;
 					word32 er0_n = fn8584(er0_16_16_n, SLICE(er1_n - 0x01, word16, 16), SLICE(er2_n, word16, 16), er3_16_16_n, 0x01, r5_n, r6_n, out er1_n, out er2_n, out er3_n, out er4_n, out er5_n, out er6_n);
 					Eq_n sp_n = <invalid>;
-					word16 r4_n = (word16) er4_n;
+					uint16 r4_n = (word16) er4_n;
 					int16 r5_n = (word16) er5_n;
 					Eq_n r6_n = (word16) er6_n;
 					word16 er0_16_16_n = SLICE(er0_n, word16, 16);
@@ -2005,7 +2005,7 @@ Eq_n fn9B9A(Eq_n er0, word16 r1, Eq_n r6, Eq_n wArg00, union Eq_n & r6Out)
 	return SEQ(SLICE(er0_n, word16, 16), r6_n);
 }
 
-// 9BA6: Register Eq_n fn9BA6(Register Eq_n er0, Register ui16 r1, Register ui16 r2, Register Eq_n r6, Stack Eq_n wArg00, Register out Eq_n r6Out)
+// 9BA6: Register Eq_n fn9BA6(Register Eq_n er0, Register word16 r1, Register ui16 r2, Register Eq_n r6, Stack Eq_n wArg00, Register out Eq_n r6Out)
 // Called from:
 //      fn8866
 //      fn9478
@@ -2016,7 +2016,7 @@ Eq_n fn9B9A(Eq_n er0, word16 r1, Eq_n r6, Eq_n wArg00, union Eq_n & r6Out)
 //      fn9D34
 //      fn9D6A
 //      fn9DC0
-Eq_n fn9BA6(Eq_n er0, ui16 r1, ui16 r2, Eq_n r6, Eq_n wArg00, union Eq_n & r6Out)
+Eq_n fn9BA6(Eq_n er0, word16 r1, ui16 r2, Eq_n r6, Eq_n wArg00, union Eq_n & r6Out)
 {
 	word16 r6_n;
 	word32 er0_n;
@@ -2123,8 +2123,10 @@ struct Eq_n * fn9C34(ui16 r0, word16 er0_16_n, byte r1l, byte r2l)
 word32 fn9C6E(ui16 r0, word16 er0_16_n, Eq_n er4, Eq_n r6, union Eq_n & er4Out, ptr16 & r6Out)
 {
 	word16 er4_16_n = SLICE(er4, word16, 16);
+	byte r0h_n = SLICE(r0, byte, 8);
+	byte r0l_n = (byte) r0;
 	ptr16 r6_n;
-	word32 er0_n = SEQ(SLICE(fn9BA6(SEQ(er0_16_n, 0x14C0), r0, r0 * 0x08 + 0x9E94, r6, wLoc04, out r6_n), word16, 16), SEQ(er4_16_n, r0 * 0x08)->wFFFF9E96);
+	word32 er0_n = SEQ(SLICE(fn9BA6(SEQ(er0_16_n, 0x14C0), SEQ(r0h_n | 0x10, r0l_n), r0 * 0x08 + 0x9E94, r6, wLoc04, out r6_n), word16, 16), SEQ(er4_16_n, r0 * 0x08)->wFFFF9E96);
 	er4Out = er4;
 	r6Out = r6_n;
 	return er0_n;
@@ -2137,9 +2139,11 @@ word32 fn9C6E(ui16 r0, word16 er0_16_n, Eq_n er4, Eq_n r6, union Eq_n & er4Out, 
 word32 fn9C92(ui16 r0, word16 er0_16_n, Eq_n er4, Eq_n r6, union Eq_n & er4Out, ptr16 & r6Out)
 {
 	word16 er4_16_n = SLICE(er4, word16, 16);
+	byte r0h_n = SLICE(r0, byte, 8);
+	byte r0l_n = (byte) r0;
 	ui16 r3_n = r0 * 0x08 + 0x9E94;
 	ptr16 r6_n;
-	word32 er0_n = SEQ(SLICE(fn9BA6(SEQ(er0_16_n, 0x14C0), r0, r3_n, r6, wLoc04, out r6_n), word16, 16), 0x00, SEQ(er4_16_n, r3_n)->b0006);
+	word32 er0_n = SEQ(SLICE(fn9BA6(SEQ(er0_16_n, 0x14C0), SEQ(r0h_n | 0x10, r0l_n), r3_n, r6, wLoc04, out r6_n), word16, 16), 0x00, SEQ(er4_16_n, r3_n)->b0006);
 	er4Out = er4;
 	r6Out = r6_n;
 	return er0_n;
@@ -2280,13 +2284,14 @@ word32 fn9DF2(word16 er0_16_n, Eq_n r6, ptr16 & r6Out)
 	return er0_n;
 }
 
-// 9E08: Register uint16 fn9E08(Register uint16 r0, Register bu8 r1l)
+// 9E08: Register word16 fn9E08(Register word16 r0, Register bu8 r1h, Register bu8 r1l)
 // Called from:
 //      fn8866
-uint16 fn9E08(uint16 r0, bu8 r1l)
+word16 fn9E08(word16 r0, bu8 r1h, bu8 r1l)
 {
 	bu8 r0h_n = SLICE(r0, byte, 8);
-	return r0h_n * r1l;
+	uint16 r0_n = r0h_n * r1l;
+	return SEQ(SLICE(r0_n, byte, 8) + (byte) (SLICE(r0, byte, 8) * r1h) + (byte) (r1h * r0h_n), (byte) r0_n);
 }
 
 // 9E18: Register ui16 fn9E18(Register ui16 r0, Register ui16 r1, Register word16 r2, Register word16 r3, Register int16 r4, Register word16 r5, Register word16 r6, Stack ptr16 wArg00, Register out ptr16 r1Out, Register out Eq_n r2lOut, Register out ptr16 r6Out)

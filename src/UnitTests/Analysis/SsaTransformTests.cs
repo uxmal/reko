@@ -4496,5 +4496,64 @@ proc1_exit:
                 m.MStore(m.Word32(0x00123404), m.Mem32(m.IAddS(m.Procedure.Frame.FramePointer, 12)));
             });
         }
+
+        [Test]
+        public void Ssa_GitHub_907()
+        {
+            var sExp =
+            #region Expected
+@"Mem0:Mem
+    def:  def Mem0
+    uses: ax_2 = Mem0[0x1234<16>:word16]
+ax_2: orig: ax
+    def:  ax_2 = Mem0[0x1234<16>:word16]
+    uses: ah_3 = SLICE(ax_2, byte, 8) (alias)
+          al_5 = SLICE(ax_2, byte, 0) (alias)
+ah_3: orig: ah
+    def:  ah_3 = SLICE(ax_2, byte, 8) (alias)
+    uses: ah_4 = ah_3 | 0x80<8>
+ah_4: orig: ah
+    def:  ah_4 = ah_3 | 0x80<8>
+    uses: ax_6 = SEQ(ah_4, al_5) (alias)
+al_5: orig: al
+    def:  al_5 = SLICE(ax_2, byte, 0) (alias)
+    uses: ax_6 = SEQ(ah_4, al_5) (alias)
+ax_6: orig: ax
+    def:  ax_6 = SEQ(ah_4, al_5) (alias)
+    uses: Mem7[0x1236<16>:word16] = ax_6
+Mem7: orig: Mem0
+    def:  Mem7[0x1236<16>:word16] = ax_6
+// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def Mem0
+	// succ:  l1
+l1:
+	ax_2 = Mem0[0x1234<16>:word16]
+	ah_3 = SLICE(ax_2, byte, 8) (alias)
+	al_5 = SLICE(ax_2, byte, 0) (alias)
+	ah_4 = ah_3 | 0x80<8>
+	ax_6 = SEQ(ah_4, al_5) (alias)
+	Mem7[0x1236<16>:word16] = ax_6
+	return
+	// succ:  proc1_exit
+proc1_exit:
+======
+";
+            #endregion
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16"));
+            RunTest(sExp, m =>
+            {
+                var ax = m.Register(arch.GetRegister("ax"));
+                var ah = m.Register(arch.GetRegister("ah"));
+                var al = m.Register(arch.GetRegister("al"));
+
+                m.Assign(ax, m.Mem16(m.Word16(0x1234)));
+                m.Assign(ah, m.Or(ah, 0x80));
+                m.MStore(m.Word16(0x1236), ax);
+                m.Return();
+            });
+        }
     }
 }

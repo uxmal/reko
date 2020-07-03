@@ -13,14 +13,11 @@ Eq_n g_t0103 =
 		0x5A,
 	};
 word16 g_w0108 = 5888;
-char g_b02A3 = 'd';
+byte g_b02A3 = 100;
 struct Eq_n * g_ptr1388 = null;
 cu8 g_b138A = 0x00;
 byte g_b138B = 0x00;
-Eq_n g_t138C = 
-	{
-		0x00
-	};
+cu8 g_b138C = 0x00;
 byte g_b138D = 0x00;
 ptr16 g_ptr14BC = 0x00;
 int16 g_w14BE = 0;
@@ -42,10 +39,34 @@ Eq_n g_t14FE =
 		0x01
 	};
 cu8 g_b14FF = 0x00;
-cu8 g_b151D = 0x00;
-cu8 g_b151E = 0x00;
-cu8 g_b151F = 0x00;
-cu8 g_b1520 = 0x00;
+Eq_n g_t151D = 
+	{
+		
+		{
+			0x00
+		},
+	};
+Eq_n g_t151E = 
+	{
+		
+		{
+			0x00
+		},
+	};
+Eq_n g_t151F = 
+	{
+		
+		{
+			0x00
+		},
+	};
+Eq_n g_t1520 = 
+	{
+		
+		{
+			0x00
+		},
+	};
 struct Eq_n * g_ptr1521 = null;
 byte g_b1529 = 0x00;
 word16 g_w1640 = 0x00;
@@ -82,7 +103,7 @@ Eq_n g_t165C =
 	};
 byte g_b165D = 0x1A;
 cu8 g_b165E = 0x1A;
-char g_b165F = '\x1A';
+byte g_b165F = 0x1A;
 Eq_n g_t1660 = 
 	{
 		0x1A
@@ -99,13 +120,13 @@ Eq_n g_t1664 =
 	};
 byte g_b1665 = 0x1A;
 cu8 g_b1667 = 0x1A;
-char * g_ptr1668 = &g_t1A1A;
-char g_b166A = '\x1A';
+byte * g_ptr1668 = &g_t1A1A;
+byte g_b166A = 0x1A;
 Eq_n g_t166B = 
 	{
 		0x1A
 	};
-char g_b166C = '\x1A';
+byte g_b166C = 0x1A;
 Eq_n g_t166D = 
 	{
 		0x1A
@@ -118,7 +139,10 @@ Eq_n g_t166F =
 byte g_b1670 = 0x1A;
 Eq_n g_t1671 = 
 	{
-		0x00001A1A
+		
+		{
+			0x1A
+		},
 	};
 Eq_n g_t1672 = 
 	{
@@ -140,10 +164,7 @@ Eq_n g_t1678 =
 		0x1A
 	};
 byte g_b1679 = 0x1A;
-Eq_n g_t167A = 
-	{
-		0x1A
-	};
+cu8 g_b167A = 0x1A;
 cu8 g_b167B = 0x1A;
 byte g_b167C = 0x1A;
 Eq_n g_t167D = 
@@ -197,15 +218,9 @@ Eq_n g_t1696 =
 	{
 		0x17
 	};
-Eq_n g_t1697 = 
-	{
-		-0x00003D49
-	};
+cu8 g_b1697 = ~0x48;
 byte g_b16A6 = 0x23;
-Eq_n g_t16A7 = 
-	{
-		0x7E
-	};
+cu8 g_b16A7 = 0x7E;
 cu8 g_b16A8 = 0x23;
 cu8 g_b16A9 = 0x56;
 bui8 g_b16AA = 0x2A;

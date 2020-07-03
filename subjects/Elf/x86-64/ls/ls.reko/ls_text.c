@@ -5854,7 +5854,8 @@ l000000000040BE7D:
 				if (rLoc1_n < rLoc2_n)
 				{
 					uint16 wLoc82_n = __fstcw();
-					__fldcw((word16) (uint64) (word32) wLoc82_n);
+					uint64 rax_n = (uint64) (word32) wLoc82_n;
+					__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
 					__fldcw(wLoc82_n);
 					rLoc1_n = rLoc1_n;
 					rax_n = (int64) rLoc1_n;
@@ -5862,7 +5863,8 @@ l000000000040BE7D:
 				else
 				{
 					uint16 wLoc82_n = __fstcw();
-					__fldcw((word16) (uint64) (word32) wLoc82_n);
+					uint64 rax_n = (uint64) (word32) wLoc82_n;
+					__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
 					__fldcw(wLoc82_n);
 					rLoc1_n = rLoc1_n - rLoc2_n;
 					rax_n = (int64) rLoc2_n ^ 0x00;
@@ -5892,7 +5894,7 @@ l000000000040BE7D:
 		Eq_n rax_n = (uint64) (uint32) strlen(rsi);
 		r15_n = rax_n;
 		r14_n = (byte) r11_n.u0 + 1;
-		if (rax_n > ((byte) r11_n.u0 + 2) + (uint64) ((uint8) ((word32) ((uint64) eax_n) == 0x00)) || (bLocC8_n & 0x08) != 0x00 && Mem869[(rsi - 0x01) + rax_n:byte] == 0x30)
+		if (rax_n > ((byte) r11_n.u0 + 2) + (uint64) ((uint8) ((word32) ((uint64) eax_n) == 0x00)) || (bLocC8_n & 0x08) != 0x00 && Mem873[(rsi - 0x01) + rax_n:byte] == 0x30)
 		{
 			Eq_n rLoc1_n = rLoc2_n * g_r415F84;
 			if (eax_n != 0x01 && (real64) g_r415F90 > rLoc1_n)
@@ -5903,7 +5905,8 @@ l000000000040BE7D:
 				if (rLoc1_n < rLoc2_n)
 				{
 					uint16 wLoc82_n = __fstcw();
-					__fldcw((word16) (uint64) (word32) wLoc82_n);
+					uint64 rax_n = (uint64) (word32) wLoc82_n;
+					__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
 					__fldcw(wLoc82_n);
 					rLoc1_n = rLoc1_n;
 					rax_n.u0 = (int64) rLoc1_n;
@@ -5911,7 +5914,8 @@ l000000000040BE7D:
 				else
 				{
 					uint16 wLoc82_n = __fstcw();
-					__fldcw((word16) (uint64) (word32) wLoc82_n);
+					uint64 rax_n = (uint64) (word32) wLoc82_n;
+					__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
 					__fldcw(wLoc82_n);
 					rLoc1_n = rLoc1_n - rLoc2_n;
 					rax_n = (int64) rLoc2_n ^ 0x00;
@@ -5943,7 +5947,8 @@ l000000000040BE7D:
 			if (rLoc1_n < rLoc2_n)
 			{
 				uint16 wLoc82_n = __fstcw();
-				__fldcw((word16) (uint64) (word32) wLoc82_n);
+				uint64 rax_n = (uint64) (word32) wLoc82_n;
+				__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
 				__fldcw(wLoc82_n);
 				rLoc1_n = rLoc1_n;
 				rax_n.u0 = (int64) rLoc1_n;
@@ -5951,7 +5956,8 @@ l000000000040BE7D:
 			else
 			{
 				uint16 wLoc82_n = __fstcw();
-				__fldcw((word16) (uint64) (word32) wLoc82_n);
+				uint64 rax_n = (uint64) (word32) wLoc82_n;
+				__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
 				__fldcw(wLoc82_n);
 				rLoc1_n = rLoc1_n - rLoc2_n;
 				rax_n = (int64) rLoc2_n ^ 0x00;

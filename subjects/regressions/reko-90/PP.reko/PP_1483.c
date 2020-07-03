@@ -46,13 +46,15 @@ Eq_n fn1483-0C11(byte * ds_si, word16 * es_di, Eq_n al, word16 cx, Eq_n bx, Eq_n
 		struct Eq_n Eq_n::* ax_n = (word16) dh_ax_n;
 		word16 v23_n = Mem35[ds_n:ax_n + 0x020E + di_n:word16] + di_n;
 		Mem88[ds_n:ax_n + 0x020E + di_n:word16] = v23_n;
-		Eq_n ss_bp_n = <invalid>;
 		Eq_n ecx_n = <invalid>;
+		Eq_n ss_bp_n = <invalid>;
 		struct Eq_n Eq_n::* ax_n = bx_n - 0x0903 - (SLICE(dh_ax_n, byte, 16) < 0x00);
-		struct Eq_n * ss_n = SLICE(ss_bp_n, selector, 16);
 		word16 cx_n = (word16) ecx_n;
+		struct Eq_n * ss_n = SLICE(ss_bp_n, selector, 16);
 		byte al_n = (byte) ax_n;
 		byte ah_n = SLICE(ax_n, byte, 8);
+		byte ch_n = SLICE(cx_n - 0x01, byte, 8);
+		byte cl_n = (byte) (cx_n - 0x01);
 		if (v23_n != 0x00 && cx_n != 0x01)
 		{
 			word16 di_n;
@@ -60,14 +62,16 @@ Eq_n fn1483-0C11(byte * ds_si, word16 * es_di, Eq_n al, word16 cx, Eq_n bx, Eq_n
 		}
 		else
 		{
+			byte al_n = (ds_n->*ax_n).b0000;
 			ss_n->*bx = si_n;
 			es_n->*di_n = ds_n->*si_n;
+			Eq_n cx_n = SEQ(ch_n + al_n, cl_n);
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
 			Eq_n stackArg0 = <invalid>;
 			word16 di_n;
 			struct Eq_n * es_n;
-			return (word16) (uint32) (uint16) fn1483-0C91(bx, bp, ax, cx_n - 0x01, (word32) si_n + 1, (word16) di_n + 1, stackArg0, out di_n, out es_n);
+			return (word16) (uint32) (uint16) fn1483-0C91(bx, bp, ax, cx_n, (word32) si_n + 1, (word16) di_n + 1, stackArg0, out di_n, out es_n);
 		}
 	}
 	else
@@ -327,7 +331,8 @@ void fn1483-0D3F(Eq_n ds_di, Eq_n ss_bp, Eq_n ax, Eq_n cx, ui16 dx, byte bl, byt
 	ss->*((word16) sp_n - 0x0E) = si;
 	ss->*((word16) sp_n - 16) = di;
 	word16 bx_n = bx_n + Mem134[ds:(bx_n - 121) + di:word16] + SCZDOP_n;
-	Mem141[ss:v19_n + 0xF512 + di:byte] = Mem134[ss:v19_n + 0xF512 + di:byte] + SLICE(dx_n, byte, 8) + (bx_n <u 0x00);
+	byte dh_n = SLICE(dx_n, byte, 8);
+	Mem141[ss:v19_n + 0xF512 + di:byte] = Mem134[ss:v19_n + 0xF512 + di:byte] + dh_n + (bx_n <u 0x00);
 	ds->*((word16) bx_n + 0x007D) &= (byte) ax_n;
 	byte ch_n = SLICE(cx_n, byte, 8);
 	word16 ax_n = __aad(si);
@@ -335,15 +340,17 @@ void fn1483-0D3F(Eq_n ds_di, Eq_n ss_bp, Eq_n ax, Eq_n cx, ui16 dx, byte bl, byt
 	Eq_n v31_n = ds->*((word32) ax_n + 0x0000995D);
 	ds->*((word32) ax_n + 0x0000995D) = ax_n;
 	ss->*((word16) sp_n - 18) = sp_n - 16;
+	cu8 al_n = (byte) ax_n;
 	word16 bx_n = bx_n + Mem164[ds:bx_n + v31_n:word16];
 	byte ah_n = SLICE(ax_n, byte, 8);
-	byte al_n = (byte) ax_n + 0x2A + ch_n;
+	byte al_n = al_n + 0x2A + ch_n;
 	real64 rLoc1_n = rRet0;
 	Eq_n si_n = v31_n;
 	byte bl_n = (byte) bx_n;
 	byte bh_n = SLICE(bx_n, byte, 8);
 	struct Eq_n Eq_n::* sp_n = sp_n - 16;
-	mp16 ax_n = SEQ(ah_n, al_n);
+	word16 ax_n = SEQ(ah_n, al_n);
+	word16 dx_n = SEQ(dh_n - SLICE(bx_n, byte, 8) - (al_n < 0x2A), (byte) dx_n);
 	if (!(sp_n - 18) || cx_n == 0x01)
 	{
 		Eq_n v36_n = ds->*((word32) di + ((word16) bx_n + 40)) - ah_n - (sp_n - 18);
@@ -365,7 +372,6 @@ void fn1483-0D3F(Eq_n ds_di, Eq_n ss_bp, Eq_n ax, Eq_n cx, ui16 dx, byte bl, byt
 				byte bl_n = (byte) bx_n;
 				byte bh_n = SLICE(bx_n, byte, 8);
 				sp_n = (struct Eq_n Eq_n::*) ((char *) fp + 420);
-				dl_n = (byte) dx_n;
 				byte cl_n = (byte) cx_n;
 				if (!CZ_n)
 					break;
@@ -377,21 +383,21 @@ void fn1483-0D3F(Eq_n ds_di, Eq_n ss_bp, Eq_n ax, Eq_n cx, ui16 dx, byte bl, byt
 					goto l1483_nDA8;
 				rLoc1_n = __rndint(rLoc1_n);
 				si_n = (word32) si_n + 1;
+				byte ah_n = SLICE(fp + ~0x7055, byte, 8) | Mem209[ss:(fp + 0x0D8F) + si_n:byte];
 				es = psegArg01A4;
 				bp_n = (struct Eq_n Eq_n::*) ((char *) fp + 394);
 				byte bl_n = SLICE(bx_n + 0x01, byte, 0);
 				byte bl_n = SLICE(bx_n + 0x01, byte, 0);
 				byte bh_n = SLICE(bx_n + 0x01, byte, 8);
-				ax_n = (char *) fp + 0x00008FAA;
-				byte ah_n = SLICE((char *) fp + 0x00008FAA, byte, 8);
+				ax_n = SEQ(ah_n, (byte) ((char *) fp + 0x00008FAA));
 				byte cl_n = (byte) (cx_n - 0x01);
 				byte ch_n = SLICE(cx_n - 0x01, byte, 8);
-				if ((SLICE(fp + ~0x7055, byte, 8) | Mem209[ss:(fp + 0x0D8F) + si_n:byte]) != 0x00 || cx_n == 0x01)
+				if (ah_n != 0x00 || cx_n == 0x01)
 				{
-					Mem226[bx_n:bx_n + 0x01 + si_n:word16] = Mem209[bx_n:bx_n + 0x01 + si_n:word16] + (fp + ~0x7055);
+					Mem228[bx_n:bx_n + 0x01 + si_n:word16] = Mem209[bx_n:bx_n + 0x01 + si_n:word16] + ax_n;
 					byte cl_n = cl_n - bx_n->*((word32) si_n + 95);
 					byte al_n = bx_n->*si_n;
-					byte ah_n = ah_n ^ Mem242[bx_n:(bx_n + 0x02) + (si_n + 1):byte];
+					byte ah_n = ah_n ^ Mem244[bx_n:(bx_n + 0x02) + (si_n + 1):byte];
 					bx_n->*((word32) si_n + 25415) = bx_n->*((word32) si_n + 25415) ^ cl_n;
 					ui16 v57_v56_n = SEQ(bArg02C1, bArg0FA0) + SEQ(232, dl_n);
 					word16 si_n = si_n + 1;
@@ -439,7 +445,7 @@ void fn1483-0D3F(Eq_n ds_di, Eq_n ss_bp, Eq_n ax, Eq_n cx, ui16 dx, byte bl, byt
 					}
 				}
 				Mem223[bx_n:bx_n + 0x01 + si_n:byte] = Mem209[bx_n:bx_n + 0x01 + si_n:byte] + bl_n;
-				CZ_n.u0 = SLICE(cond((char *) fp + 0x00008FAA - ((char *) fp + 394)), bool, 2);
+				CZ_n.u0 = SLICE(cond(ax_n - ((char *) fp + 394)), bool, 2);
 				--cx_n;
 				ds_bx_n = SEQ(bx_n, bx_n + 0x01);
 			}
@@ -474,12 +480,12 @@ l1483_nDBF:
 			(ss->*bp_n).w8CC3 = __ror((ss->*bp_n).w8CC3, cl_n);
 			return;
 		}
-		Mem423[ss:bp_n + si_n:word16] = -Mem413[ss:bp_n + si_n:word16];
+		Mem425[ss:bp_n + si_n:word16] = -Mem415[ss:bp_n + si_n:word16];
 		__cli();
 		di_n = di - 0x01;
-		Mem432[ds_n:bx_n + 0x45 + di_n:word16] = Mem423[ss:sp_n + 0x00:word16];
+		Mem434[ds_n:bx_n + 0x45 + di_n:word16] = Mem425[ss:sp_n + 0x00:word16];
 		struct Eq_n Eq_n::* bp_n = (char *) &bp_n->t0000 + 1;
-		Mem438[ds_n:bx_n + 0xC079 + si_n:word16] = Mem432[ds_n:bx_n + 0xC079 + si_n:word16] + bp_n;
+		Mem440[ds_n:bx_n + 0xC079 + si_n:word16] = Mem434[ds_n:bx_n + 0xC079 + si_n:word16] + bp_n;
 		sp_n = &sp_n->w0000 + 2;
 		bp_n = bp_n - 0x01;
 		ds_bx_n = ds_bx_n;
@@ -487,7 +493,7 @@ l1483_nDBF:
 	*((word32) di_n + ds_bx_n) >>= 0x01;
 	<type-error> Eq_n::* bx_n = (word16) ds_bx_n;
 	ds_n = SLICE(ds_bx_n, selector, 16);
-	Mem457[ds_n:bx_n + 0x02 + di_n:byte] = Mem451[ds_n:bx_n + 0x02 + di_n:byte] + SLICE(cx_n, byte, 0);
+	Mem459[ds_n:bx_n + 0x02 + di_n:byte] = Mem453[ds_n:bx_n + 0x02 + di_n:byte] + SLICE(cx_n, byte, 0);
 	sp_n = &sp_n->w0000 + 1;
 	cx_n = cx_n;
 	goto l1483_nDBF;

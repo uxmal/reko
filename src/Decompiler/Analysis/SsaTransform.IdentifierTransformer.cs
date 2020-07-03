@@ -546,7 +546,7 @@ namespace Reko.Analysis
                 {
                     var useRange = new BitRange(offsetLo, offsetHi);
                     var (sidElem, usedRange, defRange) = FindIntersectingRegister(alias.Definitions, useRange);
-                    if (sidElem == null || offsetLo < usedRange.Lsb)
+                    if (sidElem is null || offsetLo < usedRange.Lsb)
                     {
                         // Found a gap in the register that wasn't defined in
                         // this basic block. Seek backwards
@@ -599,10 +599,10 @@ namespace Reko.Analysis
             /// the first intersection of the read interval in <paramref name="bitLo"/> and 
             /// <paramref name="bitHi"> intersects the written register.
             /// </summary>
-            public (SsaIdentifier, BitRange, BitRange) FindIntersectingRegister(List<(SsaIdentifier,BitRange,int)> definitions, BitRange useRange)
+            public (SsaIdentifier?, BitRange, BitRange) FindIntersectingRegister(List<(SsaIdentifier,BitRange,int)> definitions, BitRange useRange)
             {
-                var result = ((SsaIdentifier)null!, useRange, default(BitRange));
-                for (int i = definitions.Count-1; i >= 0; --i)
+                var result = ((SsaIdentifier?)null, useRange, default(BitRange));
+                for (int i = definitions.Count - 1; i >= 0; --i)
                 {
                     var (sid, defRange, offset) = definitions[i];
                     var intersection = defRange.Intersect(useRange);
@@ -610,6 +610,7 @@ namespace Reko.Analysis
                     {
                         defRange = new BitRange(intersection.Lsb + offset, intersection.Msb + offset);
                         result = (sid, intersection, defRange);
+                        useRange = new BitRange(useRange.Lsb, defRange.Lsb);
                     }
                 }
                 return result;
