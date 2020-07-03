@@ -732,7 +732,7 @@ Eq_n fn0990(byte f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 		Mem256[sp_n + -4:word16] = Mem247[5778:word16] + Mem247[0x1697:word16];
 		byte * de_n = (word16) g_t168B + 9;
 		byte * bc_n = *((word16) sp_n - 4);
-		byte l_n;
+		byte l_n = *((word16) sp_n + 2);
 		do
 		{
 			*de_n = *bc_n;
@@ -758,7 +758,7 @@ Eq_n fn0990(byte f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 		*((word16) sp_n - 4) = (word16) g_t1694 + 1;
 		byte * de_n = (word16) g_t168B + 9;
 		byte * bc_n = *((word16) sp_n - 4);
-		byte l_n;
+		byte l_n = *((word16) sp_n + 2);
 		do
 		{
 			*de_n = *bc_n;

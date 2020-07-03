@@ -728,7 +728,7 @@ void fn004014A4(struct Eq_n * r2, ptr32 r3, word16 * r4, int32 r5)
 	{
 		if (r5 > 0x00)
 		{
-			int32 ctr_n;
+			int32 ctr_n = r5;
 			do
 			{
 				int32 r11_n = (word32) *r4;

@@ -7366,7 +7366,7 @@ Eq_n fn0800-4C55(Eq_n ax, Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 	{
 		word16 dx_n;
 		Eq_n ds_n;
-		Eq_n ax_n;
+		Eq_n ax_n = fn0800-409C(ds_n, 1011, 0x00, SEQ(*((word32) ds_n + 10721), *((word32) ds_n + 10719)), out dx_n, out ds_n);
 		do
 		{
 			Eq_n ds_n;
@@ -9764,7 +9764,7 @@ word16 fn0800-6AD4(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 		{
 			word16 dx_n;
 			Eq_n ds_n;
-			Eq_n ax_n;
+			Eq_n ax_n = fn0800-409C(ds_n, 1011, 0x00, SEQ(*((word32) ds_n + 10721), *((word32) ds_n + 10719)), out dx_n, out ds_n);
 			do
 			{
 				Eq_n ds_n;
@@ -11913,7 +11913,7 @@ void fn0800-87F8(Eq_n ds)
 	struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
 	word16 Eq_n::* di_n = (word16) es_di_n;
 	word16 ax_n = 0x00;
-	Eq_n cx_n;
+	Eq_n cx_n = *((word32) ds + 11825);
 	do
 	{
 		es_n->*di_n = ax_n;
@@ -12577,7 +12577,7 @@ l0800_nDF7:
 l0800_nDD9:
 		if (ax_n == 0x00)
 		{
-			word16 cx_n;
+			word16 cx_n = si_n + (0x24 - fp);
 			do
 			{
 				byte al_n;
@@ -17130,7 +17130,7 @@ Eq_n fn0800_B97F(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04, Eq_n wArg08, ptr16 & dxOut
 				ax_n = ax_n;
 				goto l0800_BA44;
 			}
-			Eq_n cx_n;
+			Eq_n cx_n = ax_n;
 			Eq_n si_n = wArg04;
 			Eq_n di_n = wArg04;
 			do

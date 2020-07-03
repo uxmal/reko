@@ -3960,7 +3960,7 @@ Eq_n fn00015256(Eq_n r0, struct Eq_n * r2, Eq_n r4, struct Eq_n * ap, union Eq_n
 		r0_n = fn0000D69A(r0, r4, fp, pc, out r2, out r3_n, out r4_n, out r5_n, out r6_n, out ap, out fp, out pc);
 		r5_n = r0_n;
 	}
-	uint32 r7_n;
+	uint32 r7_n = (word32) r5_n + 1;
 	Eq_n r4_n = 0x00;
 	do
 	{
@@ -5429,7 +5429,7 @@ int32 fn0001878E(Eq_n ap, union Eq_n * fp, struct Eq_n & r2Out, struct Eq_n & r3
 	struct Eq_n * r4_n;
 	(g_ptr1927C + 2)();
 	struct Eq_n * r2_n = ap_n->ptr0004;
-	Eq_n r11_n;
+	Eq_n r11_n = ap_n->t0008;
 	do
 	{
 		struct Eq_n * r3_n = r2_n->dw0000;
@@ -5513,7 +5513,7 @@ int32 fn0001878E(Eq_n ap, union Eq_n * fp, struct Eq_n & r2Out, struct Eq_n & r3
 			ui32 r3_n;
 			(g_ptr1927C + 2)();
 			word32 * r2_n = ap_n->ptr0004;
-			up32 r11_n;
+			up32 r11_n = 0x00;
 			do
 			{
 				++r2_n;

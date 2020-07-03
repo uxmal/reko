@@ -225,7 +225,7 @@ byte * fn04A0(byte * r4, struct Eq_n * pc, union Eq_n & r5Out)
 	pc->w0A52 = v5_n;
 	if (v5_n == 0x00)
 	{
-		Eq_n r5_n;
+		Eq_n r5_n = g_t0F04;
 		do
 		{
 			Eq_n r3_n = (int16) *((word32) r5_n + 0x0EF0);
@@ -257,7 +257,7 @@ l04EE:
 							Eq_n r0_n;
 							if (!fn064A(r0_n, r1_n, r3_n, r4, r5_n, out r0_n, out r4, out r5_n))
 							{
-								struct Eq_n * r2_n;
+								struct Eq_n * r2_n = null;
 								do
 								{
 									if (r2_n[0x06DC] - r0_n == 0x00)
@@ -473,7 +473,7 @@ void fn06A2()
 {
 	if (g_t0F0A != 0x00)
 	{
-		Eq_n r5_n;
+		Eq_n r5_n = g_t0F04;
 		do
 		{
 			if (*((word32) r5_n + 0x0EF0) == 0x00)
@@ -497,7 +497,7 @@ void fn06A2()
 //      fn0200
 byte * fn06D6(byte * r4, Eq_n r5, struct Eq_n * pc)
 {
-	struct Eq_n * r2_n;
+	struct Eq_n * r2_n = g_ptr0F06;
 	do
 	{
 		Eq_n r3_n = (int16) r2_n[0x0EE6];
@@ -680,7 +680,7 @@ l08B2:
 		pc->w063A = v36_n;
 		if (v36_n != 0x00)
 		{
-			struct Eq_n * r2_n;
+			struct Eq_n * r2_n = g_ptr0F06;
 			do
 			{
 				if (r2_n[0x0EE6] == 0x00)

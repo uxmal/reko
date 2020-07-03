@@ -789,7 +789,7 @@ Eq_n _read(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, cu16 wArg06)
 				ax_n = ax_n;
 				return ax_n;
 			}
-			Eq_n cx_n;
+			Eq_n cx_n = ax_n;
 			Eq_n si_n = wArg04;
 			Eq_n di_n = wArg04;
 			do
@@ -993,7 +993,7 @@ l0800_nCC1:
 l0800_nCA4:
 		if (ax_n == 0x00)
 		{
-			word16 cx_n;
+			word16 cx_n = si_n + (0x24 - fp);
 			do
 			{
 				byte al_n;

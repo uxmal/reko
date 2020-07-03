@@ -144,7 +144,7 @@ void fn054C(Eq_n r0, struct Eq_n * r3)
 	r3->t00A0 = r0;
 	r3->b00A1 = r3->b00A2;
 	struct Eq_n * r0_n = r3 + (r0 >> 3 & ~0x01) / 0x00A3;
-	ci16 r2_n;
+	ci16 r2_n = r0 & ~~0x0F;
 	Eq_n wLoc02_n = 0x00;
 	do
 	{

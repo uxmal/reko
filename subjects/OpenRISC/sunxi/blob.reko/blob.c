@@ -322,28 +322,28 @@ word32 fn00004D60(struct Eq_n * r3)
 	uint32 r5_n = r3->dw0054;
 	uint32 r4_n = r3->dw0058;
 	ui32 r3_n = (r4_n & 0x0F) * 0x02 | (r5_n & 0x0F) << 0x09;
-	ui32 * r2_n;
+	ui32 * r2_n = (ui32 *) 0x01C63310;
 	do
 	{
 		*r2_n |= r3_n;
 		r2_n += -1;
 	} while (r2_n != (ui32 *) 0x01C63334);
 	ui32 r3_n = (r4_n & 0xF0) >> 0x03 | (r5_n & 0xF0) << 0x05;
-	ui32 * r2_n;
+	ui32 * r2_n = (ui32 *) 0x01C63390;
 	do
 	{
 		*r2_n |= r3_n;
 		r2_n += -1;
 	} while (r2_n != (ui32 *) 0x01C633B4);
 	ui32 r3_n = (r4_n & 0x0F00) >> 0x07 | (r5_n & 0x0F00) << 0x01;
-	ui32 * r2_n;
+	ui32 * r2_n = (ui32 *) 29766672;
 	do
 	{
 		*r2_n |= r3_n;
 		r2_n += -1;
 	} while (r2_n != (ui32 *) 0x01C63434);
 	ui32 r2_n = (r4_n & 0xF000) >> 11 | (r5_n & 0xF000) >> 0x03;
-	ui32 * r6_n;
+	ui32 * r6_n = (ui32 *) 29766800;
 	do
 	{
 		*r6_n |= r2_n;
@@ -2812,7 +2812,7 @@ word32 fn00008D58(union Eq_n & r11Out)
 word32 fn00008DD8(struct Eq_n * r3, union Eq_n & r11Out, union Eq_n & r15Out)
 {
 	struct Eq_n * r5_n = fp - 564;
-	byte * r4_n;
+	byte * r4_n = fp - 564;
 	do
 	{
 		*r4_n = 0x00;
@@ -7180,7 +7180,7 @@ void fn000100B8(Eq_n dwArg08, Eq_n dwArg20)
 //      fn00010570
 word32 fn000101A8(Eq_n r15, word32 VR)
 {
-	ui32 * r2_n;
+	ui32 * r2_n = &g_dw4358;
 	do
 	{
 		if (fn00009B70() == 0x00)

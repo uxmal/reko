@@ -167,13 +167,14 @@ namespace Reko.Structure
             if (loopVariable == null)
                 return null;
 
-            var initializer = FindInitializer(loopVariable, container, i);
+            var (initializer, deadDecl) = FindInitializer(loopVariable, container, i);
             var candidate = new ForLoopCandidate
             {
                 LoopBody = loopBody,
                 Container = container,
                 LoopVariable = loopVariable,
                 Initializer = initializer,
+                DeadDeclaration = deadDecl,
                 Condition = cmp,
                 Update = update,
             };
@@ -216,39 +217,48 @@ namespace Reko.Structure
             return null;
         }
 
-        private AbsynAssignment? FindInitializer(Identifier loopVariable, List<AbsynStatement> stmts, int i)
+        /// <summary>
+        /// Attempt to find the statement that initalizes the for loop variable. 
+        /// </summary>
+        /// <param name="loopVariable">The index variable of the potential loop.</param>
+        /// <param name="stmts">The statements in which the loop is located.</param>
+        /// <param name="i">The location of the loop within those statements.</param>
+        /// <returns>If an initializing statement is found, a pair consisting of a possibly
+        /// freshly created initializing statement and a possible old declaration that needs
+        /// to be deleted.
+        /// </returns>
+        private (AbsynAssignment?, AbsynDeclaration?) FindInitializer(Identifier loopVariable, List<AbsynStatement> stmts, int i)
         {
             for (i = i - 1; i >= 0; --i)
             {
                 if (stmts[i] is AbsynAssignment ass)
                 {
                     if (ass.Dst == loopVariable)
-                        return ass;
+                        return (ass, null);
                     if (UsedIdentifierFinder.Contains(ass.Dst, loopVariable))
-                        return null;
+                        return (null, null);
                     if (UsedIdentifierFinder.Contains(ass.Src, loopVariable))
-                        return null;
+                        return (null, null);
                 }
                 else if (stmts[i] is AbsynDeclaration decl)
                 {
                     if (decl.Identifier == loopVariable)
                     {
                         if (decl.Expression == null)
-                            return null;
+                            return (null, null);
                         var init = new AbsynAssignment(decl.Identifier, decl.Expression);
-                        decl.Expression = null;
-                        return init;
+                        return (init, decl);
                     }
                     else
                     {
                         if (UsedIdentifierFinder.Contains(decl.Expression!, loopVariable))
-                            return null;
+                            return (null, null);
                     }
                 }
                 else
-                    return null;
+                    return (null, null);
             }
-            return null;
+            return (null, null);
         }
 
         private List<AbsynAssignment> FindUpdateAssignments(Identifier? id, List<AbsynStatement> stmts)
@@ -320,6 +330,10 @@ namespace Reko.Structure
                 // Putting in nulls is bad but we will remove them later.
                 stmts[iInit] = null!;
             }
+            if (candidate.DeadDeclaration != null)
+            {
+                candidate.DeadDeclaration.Expression = null;
+            }
             candidate.LoopBody!.Remove(candidate.Update!);
             var forLoop = new AbsynFor(
                 candidate.Initializer!,
@@ -355,6 +369,7 @@ namespace Reko.Structure
         public List<AbsynStatement>? Container;
         public List<AbsynStatement>? LoopBody;
         public Identifier? LoopVariable;
+        public AbsynDeclaration? DeadDeclaration;
         public AbsynAssignment? Initializer;
         public Expression? Condition;
         public AbsynAssignment? Update;

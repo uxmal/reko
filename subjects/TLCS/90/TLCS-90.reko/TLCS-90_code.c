@@ -645,7 +645,7 @@ void fn1BF9(byte b, byte c, Eq_n de, struct Eq_n * ix)
 	ix->bFFFFFFF8 = (bool) (v4_n < 0x09) + ix->bFFFFFFF8;
 	++ix->bFFFFFFF5;
 	Eq_n hl_n = 0x0823;
-	word16 bc_n;
+	word16 bc_n = SEQ(b + 1, c);
 	do
 	{
 		*de = *hl_n;

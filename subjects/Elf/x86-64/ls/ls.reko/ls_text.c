@@ -965,7 +965,7 @@ l0000000000403AE2:
 									++rdi_n;
 								}
 								((byte) rsp_n.u0 + 200)->u2 = 0x10000000;
-								word32 * r13_n;
+								word32 * r13_n = SEQ(r13_56_8_n, 0x00) + 0x00412CC0;
 								do
 								{
 									word32 r15d_n = (word32) (uint64) *r13_n;
@@ -1079,7 +1079,7 @@ l00000000004034D2:
 										fn0000000000406440(&g_qw61A3F0, out rcx_n);
 									}
 									fflush_unlocked(g_ptr61A610);
-									word32 * rbx_n;
+									word32 * rbx_n = g_a412CC0;
 									do
 									{
 										word32 ebp_n = (word32) (uint64) *rbx_n;
@@ -1938,7 +1938,7 @@ FILE * fn00000000004052D0(FILE * rcx, struct Eq_n * rdx, Eq_n rsi, FILE * rdi, E
 				{
 					r12.u0 = 0x00;
 					word16 rcx_n[] = *__ctype_b_loc();
-					Eq_n rax_n;
+					Eq_n rax_n = qwLoc2070_n;
 					do
 					{
 						r12 = r12 - ~0x00 - (((word16) ((uint64) ((word32) rcx_n[(uint64) ((word32) (*rax_n))])) & 0x4000) < 0x01);
@@ -2056,7 +2056,7 @@ l0000000000405502:
 		if (qwLoc2070_n < r12_n)
 		{
 			uint16 ** rax_n = __ctype_b_loc();
-			Eq_n rdx_n;
+			Eq_n rdx_n = qwLoc2070_n;
 			do
 			{
 				if ((*((char *) *rax_n + ((uint64) ((word32) (*rdx_n)) * 0x02 + 1)) & 0x40) == 0x00)
@@ -2096,7 +2096,7 @@ void fn0000000000405630(struct Eq_n * rsi, Eq_n rdi)
 		rsi->qw0018 = rcx_n;
 	rsi->qw0010 = rsi->qw0018;
 	fputs_unlocked(rdi, g_ptr61A610);
-	uint64 rbx_n;
+	uint64 rbx_n = 0x00;
 	do
 	{
 		__printf_chk(0x01, 4274009, 0x00);
@@ -2396,7 +2396,7 @@ Eq_n fn0000000000405ED0(Eq_n edi, struct Eq_n * fs, Eq_n rLoc4)
 		{
 			Eq_n rsi_n = g_t61B028;
 			ui64 rcx_n = rcx_n * 0x08 + 0x08;
-			struct Eq_n * rdx_n;
+			struct Eq_n * rdx_n = (word32) rsi_n + rcx_n * 0x18 + 0x10;
 			struct Eq_n * rsi_n = (word32) rsi_n + rbp_n * 0x18;
 			do
 			{

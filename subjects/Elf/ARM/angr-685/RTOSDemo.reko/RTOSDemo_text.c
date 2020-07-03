@@ -1926,7 +1926,7 @@ void OSRAMWriteArray(struct Eq_n * r0, int32 r1)
 {
 	if (r1 == 0x00)
 		return;
-	struct Eq_n * r5_n;
+	struct Eq_n * r5_n = r0;
 	word32 * r7_n = g_ptr96FC;
 	struct Eq_n * r4_n = g_ptr9700;
 	struct Eq_n * r6_n = r0 + r1;
@@ -2057,7 +2057,7 @@ void OSRAMImageDraw(struct Eq_n * r0, word32 r1, word32 r2, word32 r3, word32 dw
 	if (dwArg00 != 0x00)
 	{
 		struct Eq_n * r5_n = r0;
-		word32 r4_n;
+		word32 r4_n = r2;
 		uint32 r8_n = (uint32) SLICE(r1 + 0x24, ui4, 4);
 		word32 r6_n = dwArg00 + r2;
 		ui32 r7_n = r1 + 0x24 & 0x0F;

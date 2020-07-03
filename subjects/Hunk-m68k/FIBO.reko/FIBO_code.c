@@ -1387,7 +1387,7 @@ l000022F2:
 					if ((dwArg04->t000C & 0x00010000) != 0x00)
 					{
 						struct Eq_n * a2_n = a3_n;
-						uint32 d2_n;
+						uint32 d2_n = dwArg08 + 0x07 >> 0x03;
 						do
 						{
 							a2_n->dw0000 = 0x00;

@@ -58,7 +58,7 @@ l0000A63C:
 		if ((r2 & 0x0F) > 0x03)
 		{
 			uint32 r6_n = (r2 & 0x0F) - 0x04;
-			int32 r3_n;
+			int32 r3_n = 0x00;
 			uint32 r4_n = (r6_n >> 2) + 0x01;
 			do
 			{
