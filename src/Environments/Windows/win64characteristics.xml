@@ -28,17 +28,17 @@
 
   <entry name="scanf">
     <characteristics>
-      <varargs>ScanfFormatParser,Reko.Libraries.Libc</varargs>
+      <varargs>Reko.Libraries.Libc.ScanfFormatParser,Reko.Libraries.Libc</varargs>
     </characteristics>
   </entry>
   <entry name="fscanf">
     <characteristics>
-      <varargs>ScanfFormatParser,Reko.Libraries.Libc</varargs>
+      <varargs>Reko.Libraries.Libc.ScanfFormatParser,Reko.Libraries.Libc</varargs>
     </characteristics>
   </entry>
   <entry name="sscanf">
     <characteristics>
-      <varargs>ScanfFormatParser,Reko.Libraries.Libc</varargs>
+      <varargs>Reko.Libraries.Libc.ScanfFormatParser,Reko.Libraries.Libc</varargs>
     </characteristics>
   </entry>
 
