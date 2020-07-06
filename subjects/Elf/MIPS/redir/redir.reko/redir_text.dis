@@ -4459,7 +4459,7 @@ void __fixunsdfsi(real64 f12_f13)
 // Preserved: FCSR sp
 __fixunsdfsi_entry:
 l00407740:
-	branch !(f12_f13 >= 1105199104.0) l00407740_ds_t
+	branch !(f12_f13 >= 5.46040909100927e-315) l00407740_ds_t
 l00407740_ds_t:
 l00407740_ds_f:
 l00407790:

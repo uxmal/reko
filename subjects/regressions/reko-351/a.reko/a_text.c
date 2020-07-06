@@ -151,8 +151,8 @@ void sine_taylor(real64 rArg04, int32 dwArg0C)
 // 8000049A: void main()
 void main()
 {
-	sine_taylor(4.61425307021499e+18);
-	_sin(4.61425307021499e+18, 4.56906395155395e+18, fp - 0x08);
+	sine_taylor(3.14);
+	_sin(3.14, 0.003, fp - 0x08);
 }
 
 // 800004DE: void _sin(Stack real64 rArg04, Stack real64 rArg0C, Stack Eq_n tArg14)

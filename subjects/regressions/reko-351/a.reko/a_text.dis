@@ -258,8 +258,8 @@ void main()
 // Preserved: a6 a7
 main_entry:
 l8000049A:
-	sine_taylor(4.61425307021499e+18)
-	_sin(4.61425307021499e+18, 4.56906395155395e+18, fp - 8<32>)
+	sine_taylor(3.14)
+	_sin(3.14, 0.003, fp - 8<32>)
 	return
 main_exit:
 

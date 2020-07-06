@@ -465,6 +465,11 @@ namespace Reko.Evaluation
                                 Changed = true;
                                 return ConstantReal.Create(ptCast, c.ToReal64());
                             }
+                            if (ptSrc.IsWord())
+                            {
+                                Changed = true;
+                                return CastRawBitsToReal(ptCast, c);
+                            }
                         }
                         else if ((ptSrc.Domain & Domain.Integer) != 0)
                         {
@@ -519,6 +524,31 @@ namespace Reko.Evaluation
                 return castCastRule.Transform();
             }
             return cast;
+        }
+
+        /// <summary>
+        /// Take a bitvector of type wordXXX and reinterpret it as a floating-point
+        /// constant.
+        /// </summary>
+        /// <param name="ptCast">Floating-point type to which the raw bits are being cast.</param>
+        /// <param name="rawBits">The raw bits being cast.</param>
+        /// <returns>A floating-point constant, possibly with a <see cref="Cast"/> wrapped around it
+        /// if the constant is not 32- or 64-bit.
+        /// </returns>
+        private Expression CastRawBitsToReal(PrimitiveType ptCast, Constant rawBits)
+        {
+            var bitSize = Math.Min(rawBits.DataType.BitSize, 64);
+            var dtImm = PrimitiveType.Create(Domain.Real, bitSize);
+            var cImm = Constant.RealFromBitpattern(dtImm, rawBits.ToInt64());
+            cImm = ConstantReal.Create(dtImm, cImm.ToReal64());
+            if (cImm.DataType.BitSize == ptCast.BitSize)
+            {
+                return cImm;
+            }
+            else
+            {
+                return new Cast(ptCast, cImm);
+            }
         }
 
         public virtual Expression VisitConditionalExpression(ConditionalExpression c)
@@ -623,9 +653,10 @@ namespace Reko.Evaluation
                     eNew = e;
                 return eNew;
             }).ToArray();
-            //$TODO: handle sequences of more than two consts. 
             if (newSeq.Length == 2)
             {
+                // Special case for the frequent case of segment:offset or 
+                // two concatenated bit vectors.
                 if (newSeq[0] is Constant c1 && newSeq[1] is Constant c2)
                 {
                     PrimitiveType tHead = (PrimitiveType) c1.DataType;

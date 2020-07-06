@@ -17407,19 +17407,19 @@ T_3575: (in (real32) Mem346[a0_329 + 52<i64>:real32] : real32)
   Class: Eq_3575
   DataType: real32
   OrigDataType: real32
-T_3576: (in 0<64> : word64)
+T_3576: (in 0.0F : real32)
   Class: Eq_3576
-  DataType: word64
-  OrigDataType: word64
-T_3577: (in (real32) 0<64> : real32)
+  DataType: real32
+  OrigDataType: real32
+T_3577: (in (real32) 0.0F : real32)
   Class: Eq_3575
   DataType: real32
   OrigDataType: real32
-T_3578: (in (real32) a0_329->r0034 == (real32) 0<64> : bool)
+T_3578: (in (real32) a0_329->r0034 == (real32) 0.0F : bool)
   Class: Eq_3578
   DataType: bool
   OrigDataType: bool
-T_3579: (in (word64) ((real32) Mem346[a0_329 + 52<i64>:real32] == (real32) 0<64>) : word64)
+T_3579: (in (word64) ((real32) Mem346[a0_329 + 52<i64>:real32] == (real32) 0.0F) : word64)
   Class: Eq_3579
   DataType: word64
   OrigDataType: word64
@@ -17427,7 +17427,7 @@ T_3580: (in 0<64> : word64)
   Class: Eq_3579
   DataType: word64
   OrigDataType: word64
-T_3581: (in (word64) ((real32) a0_329->r0034 == (real32) 0<64>) == 0<64> : bool)
+T_3581: (in (word64) ((real32) a0_329->r0034 == (real32) 0.0F) == 0<64> : bool)
   Class: Eq_3581
   DataType: bool
   OrigDataType: bool
@@ -18543,19 +18543,19 @@ T_3859: (in (real32) Mem350[a0_333 + 52<i64>:real32] : real32)
   Class: Eq_3859
   DataType: real32
   OrigDataType: real32
-T_3860: (in 0<64> : word64)
+T_3860: (in 0.0F : real32)
   Class: Eq_3860
-  DataType: word64
-  OrigDataType: word64
-T_3861: (in (real32) 0<64> : real32)
+  DataType: real32
+  OrigDataType: real32
+T_3861: (in (real32) 0.0F : real32)
   Class: Eq_3859
   DataType: real32
   OrigDataType: real32
-T_3862: (in (real32) a0_333->r0034 == (real32) 0<64> : bool)
+T_3862: (in (real32) a0_333->r0034 == (real32) 0.0F : bool)
   Class: Eq_3862
   DataType: bool
   OrigDataType: bool
-T_3863: (in (word64) ((real32) Mem350[a0_333 + 52<i64>:real32] == (real32) 0<64>) : word64)
+T_3863: (in (word64) ((real32) Mem350[a0_333 + 52<i64>:real32] == (real32) 0.0F) : word64)
   Class: Eq_3863
   DataType: word64
   OrigDataType: word64
@@ -18563,7 +18563,7 @@ T_3864: (in 0<64> : word64)
   Class: Eq_3863
   DataType: word64
   OrigDataType: word64
-T_3865: (in (word64) ((real32) a0_333->r0034 == (real32) 0<64>) == 0<64> : bool)
+T_3865: (in (word64) ((real32) a0_333->r0034 == (real32) 0.0F) == 0<64> : bool)
   Class: Eq_3865
   DataType: bool
   OrigDataType: bool

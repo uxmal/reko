@@ -1721,7 +1721,7 @@ struct Eq_n * fn0000000000017B40(word64 ra, struct Eq_n * gp, Eq_n a0, ptr64 a1,
 			Eq_n a0_n = a0_n->t0020;
 			if (a0_n != 0x00)
 				*s1_n = (union Eq_n *) __strdup(a0_n);
-			if ((word64) ((real32) a0_n->r0034 == (real32) 0x00) == 0x00)
+			if ((word64) ((real32) a0_n->r0034 == (real32) 0.0F) == 0x00)
 			{
 				a1_n.u0 = 1;
 				__asprintf_chk(s4_n, a1_n, "%f,%f", 0x00);
@@ -1926,7 +1926,7 @@ struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, Eq_n s1, Eq_n a0, 
 			Eq_n a0_n = a0_n->t0020;
 			if (a0_n != 0x00)
 				*s2_n = (union Eq_n *) __strdup(a0_n);
-			if ((word64) ((real32) a0_n->r0034 == (real32) 0x00) == 0x00)
+			if ((word64) ((real32) a0_n->r0034 == (real32) 0.0F) == 0x00)
 			{
 				a1_n.u0 = 1;
 				__asprintf_chk(s5_n, a1_n, "%f,%f", 0x00);

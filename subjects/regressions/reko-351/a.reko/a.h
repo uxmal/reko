@@ -680,11 +680,11 @@ T_159: (in signature of sine_taylor : void)
   Class: Eq_158
   DataType: (ptr32 Eq_158)
   OrigDataType: 
-T_160: (in 4.61425307021499e+18 : real64)
+T_160: (in 3.14 : real64)
   Class: Eq_114
   DataType: real64
   OrigDataType: real64
-T_161: (in sine_taylor(4.61425307021499e+18) : void)
+T_161: (in sine_taylor(3.14) : void)
   Class: Eq_161
   DataType: void
   OrigDataType: void
@@ -708,11 +708,11 @@ T_166: (in tArg14 : Eq_166)
   Class: Eq_166
   DataType: Eq_166
   OrigDataType: (union ((ptr32 (struct (0 T_184 t0000))) u1) ((ref int32) u0))
-T_167: (in 4.61425307021499e+18 : real64)
+T_167: (in 3.14 : real64)
   Class: Eq_164
   DataType: real64
   OrigDataType: real64
-T_168: (in 4.56906395155395e+18 : real64)
+T_168: (in 0.003 : real64)
   Class: Eq_165
   DataType: real64
   OrigDataType: real64
@@ -728,7 +728,7 @@ T_171: (in fp - 8<32> : word32)
   Class: Eq_166
   DataType: Eq_166
   OrigDataType: (union (ptr32 u0) ((ref int32) u1))
-T_172: (in _sin(4.61425307021499e+18, 4.56906395155395e+18, fp - 8<32>) : void)
+T_172: (in _sin(3.14, 0.003, fp - 8<32>) : void)
   Class: Eq_172
   DataType: void
   OrigDataType: void
