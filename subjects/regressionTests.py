@@ -96,7 +96,7 @@ def clear_dir(dir_name, files):
                     failedFiles.append(filename)
     # Retry all failed files with a delay. Let the error propagate if persists.
     if failedFiles:
-        time.sleep(1000)
+        time.sleep(2)   # seconds
         for filename in failedFiles:
             if os.exists(filename):
                 os.remove(filename)
