@@ -72,6 +72,15 @@ namespace Reko.Evaluation
             {
                 ctx.RemoveIdentifierUse(idDst!);
                 var cNew = src!.CloneExpression();
+                if (src.DataType.IsWord() &&
+                    src is Constant cSrc && 
+                    idDst!.DataType is PrimitiveType pt &&
+                    pt.Domain == Domain.Real)
+                {
+                    // Raw bitvector assigned to an real-valued register. We need to interpret the bitvector
+                    // as a floating-point constant.
+                    cNew = Constant.RealFromBitpattern(pt, cSrc.ToInt64());
+                }
                 cNew.DataType = dt!;
                 return cNew;
             }
