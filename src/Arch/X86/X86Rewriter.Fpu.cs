@@ -391,6 +391,48 @@ namespace Reko.Arch.X86
                     orw.AluRegister(Registers.FPUF));
                 return true;
             }
+            if (nextInstr.Mnemonic == Mnemonic.and)
+            {
+                RegisterOperand? acc = nextInstr.Operands[0] as RegisterOperand;
+                ImmediateOperand? imm = nextInstr.Operands[1] as ImmediateOperand;
+                if (imm == null || acc == null)
+                    return false;
+                int mask = imm.Value.ToInt32();
+                if (acc.Register == Registers.ax || acc.Register == Registers.eax)
+                    mask >>= 8;
+                else if (acc.Register != Registers.ah)
+                    return false;
+                dasm.Skip(1);       // over the 'and'
+                if (!dasm.MoveNext())
+                    return false;
+                nextInstr = dasm.Current;
+                var nextOp = nextInstr.Mnemonic;
+                if (nextOp != Mnemonic.cmp && nextOp != Mnemonic.xor)
+                    return false;
+                acc = nextInstr.Operands[0] as RegisterOperand;
+                imm = nextInstr.Operands[1] as ImmediateOperand;
+                if (imm == null || acc == null)
+                    return false;
+                mask = imm.Value.ToInt32() & mask;
+                if (acc.Register == Registers.ax || acc.Register == Registers.eax)
+                    mask >>= 8;
+                else if (acc.Register != Registers.ah)
+                    return false;
+                dasm.Skip(1);       // over the 'cmp'
+                if (!IgnoreIntermediateInstructions())
+                {
+                    host.Warn(instrCur.Address, "Expected branch instruction after fstsw;and {0},{1}.", acc.Register, imm.Value);
+                    return false;
+                }
+                if (nextOp == Mnemonic.cmp)
+                {
+                    return EvaluateFstswCmpInstructions(acc, imm, mask);
+                }
+                else
+                {
+                    return EvaluateFstswXorInstructions(acc, imm, mask);
+                }
+            }
             if (nextInstr.Mnemonic == Mnemonic.test)
             {
                 RegisterOperand? acc = nextInstr.Operands[0] as RegisterOperand;
@@ -409,81 +451,154 @@ namespace Reko.Arch.X86
 
                 // Advance past the 'test' instruction.
                 dasm.Skip(1);
-                while (dasm.MoveNext())
+                if (!IgnoreIntermediateInstructions())
                 {
-                    instrCur = dasm.Current;
-                    this.len += instrCur.Length;
-
-                    /* fcom/fcomp/fcompp Results:
-                        Condition      C3  C2  C0
-                        ST(0) > SRC     0   0   0
-                        ST(0) < SRC     0   0   1
-                        ST(0) = SRC     1   0   0
-                        Unordered       1   1   1
-
-                       Masks:
-                        Mask   Flags
-                        0x01   C0
-                        0x04   C2
-                        0x40   C3
-                        0x05   C2 and C0
-                        0x41   C3 and C0
-                        0x44   C3 and C2
-
-                      Masks && jump operations:
-                        Mnem   Mask Condition
-                        jpe    0x05    >=
-                        jpe    0x41    >
-                        jpe    0x44    !=
-                        jpo    0x05    <
-                        jpo    0x41    <=
-                        jpo    0x44    =
-                        jz     0x01    >=
-                        jz     0x40    !=
-                        jz     0x41    >
-                        jnz    0x01    <
-                        jnz    0x40    =
-                        jnz    0x41    <=
-                    */
-
-                    switch (instrCur.Mnemonic)
-                    {
-                    //$TODO The following instructions are being added on an ad-hoc
-                    // basis, since they don't affect the x86 flags register.
-                    // The long term fix is to implement an architecture-specific
-                    // condition code elimination pass as described elsewhere.
-                    case Mnemonic.mov: RewriteMov(); break;
-                    case Mnemonic.fstp: RewriteFst(true); break;
-                    case Mnemonic.push: RewritePush(); break;
-                    case Mnemonic.lea: RewriteLea(); break;
-
-                    case Mnemonic.jpe:
-                        if (mask == 0x05) { Branch(ConditionCode.GE, instrCur.Operands[0]); return true; }
-                        if (mask == 0x41) { Branch(ConditionCode.GT, instrCur.Operands[0]); return true; }
-                        if (mask == 0x44) { Branch(ConditionCode.NE, instrCur.Operands[0]); return true; }
-                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} mnemonic.", mask, instrCur.Mnemonic);
-                    case Mnemonic.jpo:
-                        if (mask == 0x44) { Branch(ConditionCode.EQ, instrCur.Operands[0]); return true; }
-                        if (mask == 0x41) { Branch(ConditionCode.LE, instrCur.Operands[0]); return true; }
-                        if (mask == 0x05) { Branch(ConditionCode.LT, instrCur.Operands[0]); return true; }
-                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} mnemonic.", mask, instrCur.Mnemonic);
-                    case Mnemonic.jz:
-                        if (mask == 0x40) { Branch(ConditionCode.NE, instrCur.Operands[0]); return true; }
-                        if (mask == 0x41) { Branch(ConditionCode.GT, instrCur.Operands[0]); return true; }
-                        if (mask == 0x01) { Branch(ConditionCode.GE, instrCur.Operands[0]); return true; }
-                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} mnemonic.", mask, instrCur.Mnemonic);
-                    case Mnemonic.jnz:
-                        if (mask == 0x40) { Branch(ConditionCode.EQ, instrCur.Operands[0]); return true; }
-                        if (mask == 0x41) { Branch(ConditionCode.LE, instrCur.Operands[0]); return true; }
-                        if (mask == 0x01) { Branch(ConditionCode.LT, instrCur.Operands[0]); return true; }
-                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} mnemonic.", mask, instrCur.Mnemonic);
-                    default:
-                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected instruction {0} after fstsw", instrCur);
-                    }
+                    host.Warn(instrCur.Address, "Expected branch instruction after fstsw;test {0},{1}.", acc.Register, imm.Value);
+                    return false;
                 }
-                throw new AddressCorrelatedException(instrCur.Address, "Expected branch instruction after fstsw;test {0},{1}.", acc.Register, imm.Value);
+                return EvaluateFstswTestInstructions(acc, imm, mask);
             }
             return false;
+        }
+
+        private bool IgnoreIntermediateInstructions()
+        {
+            while (dasm.MoveNext())
+            {
+                instrCur = dasm.Current;
+                this.len += instrCur.Length;
+                switch (instrCur.Mnemonic)
+                {
+                //$TODO The following instructions are being added on an ad-hoc
+                // basis, since they don't affect the x86 flags register.
+                // The long term fix is to implement an architecture-specific
+                // condition code elimination pass as described elsewhere.
+                case Mnemonic.mov: RewriteMov(); break;
+                case Mnemonic.fstp: RewriteFst(true); break;
+                case Mnemonic.push: RewritePush(); break;
+                case Mnemonic.lea: RewriteLea(); break;
+                default:
+                    return instrCur.InstructionClass.HasFlag(InstrClass.ConditionalTransfer);
+                }
+            }
+            return false;
+        }
+
+        private bool EvaluateFstswCmpInstructions(RegisterOperand acc, ImmediateOperand imm, int mask)
+        {
+            switch (instrCur.Mnemonic)
+            {
+            case Mnemonic.jz:
+                switch (mask)
+                {
+                case 0x40: Branch(ConditionCode.EQ, instrCur.Operands[0]); return true;
+                }
+                break;
+            }
+            this.host.Warn(instrCur.Address, "Unexpected {0} fstsw;cmp mask for {1} mnemonic.", mask, instrCur.Mnemonic);
+            return false;
+        }
+
+        private bool EvaluateFstswXorInstructions(RegisterOperand acc, ImmediateOperand imm, int mask)
+        {
+            switch (instrCur.Mnemonic)
+            {
+            case Mnemonic.jz:
+                switch (mask)
+                {
+                case 0x40: Branch(ConditionCode.NE, instrCur.Operands[0]); return true;
+                }
+                break;
+            }
+            this.host.Warn(instrCur.Address, "Unexpected {0} fstsw;xor mask for {1} mnemonic.", mask, instrCur.Mnemonic);
+            return false;
+        }
+
+        private bool EvaluateFstswTestInstructions(RegisterOperand acc, ImmediateOperand imm, int mask)
+        {
+            /* fcom/fcomp/fcompp Results:
+                Condition      C3  C2  C0
+                ST(0) > SRC     0   0   0
+                ST(0) < SRC     0   0   1
+                ST(0) = SRC     1   0   0
+                Unordered       1   1   1
+
+               Masks:
+                Mask   Flags
+                0x01   C0
+                0x04   C2
+                0x40   C3
+                0x05   C2 and C0
+                0x41   C3 and C0
+                0x44   C3 and C2
+
+              Masks && jump operations:
+                Mnem   Mask Condition
+                jpe    0x05    >=
+                jpe    0x41    >
+                jpe    0x44    !=
+                jpo    0x05    <
+                jpo    0x41    <=
+                jpo    0x44    =
+                jz     0x01    >=
+                jz     0x40    !=
+                jz     0x41    >
+                jnz    0x01    <
+                jnz    0x40    =
+                jnz    0x41    <=
+            */
+
+
+            switch (instrCur.Mnemonic)
+            {
+            case Mnemonic.jpe:
+                switch (mask)
+                {
+                case 0x05: { Branch(ConditionCode.GE, instrCur.Operands[0]); return true; }
+                case 0x41: { Branch(ConditionCode.GT, instrCur.Operands[0]); return true; }
+                case 0x44: { Branch(ConditionCode.NE, instrCur.Operands[0]); return true; }
+                default:
+                    this.host.Warn(instrCur.Address, "Unexpected {0} fstsw mask for {1} mnemonic.", mask, instrCur.Mnemonic);
+                    return false;
+                }
+            case Mnemonic.jpo:
+                switch (mask)
+                {
+                case 0x44: { Branch(ConditionCode.EQ, instrCur.Operands[0]); return true; }
+                case 0x41: { Branch(ConditionCode.LE, instrCur.Operands[0]); return true; }
+                case 0x05: { Branch(ConditionCode.LT, instrCur.Operands[0]); return true; }
+                default:
+                    this.host.Warn(instrCur.Address, "Unexpected {0} fstsw mask for {1} mnemonic.", mask, instrCur.Mnemonic);
+                    return false;
+                }
+            case Mnemonic.jz:
+                switch (mask)
+                {
+                case 0x40: { Branch(ConditionCode.NE, instrCur.Operands[0]); return true; }
+                case 0x41: { Branch(ConditionCode.GT, instrCur.Operands[0]); return true; }
+                case 0x45: { Branch(ConditionCode.GT, instrCur.Operands[0]); return true; } //$TODO: or unordered.
+                case 0x01: { Branch(ConditionCode.GE, instrCur.Operands[0]); return true; }
+                case 0x05: { Branch(ConditionCode.GE, instrCur.Operands[0]); return true; }   //$TODO: or unordered
+                default:
+                    this.host.Warn(instrCur.Address, "Unexpected {0} fstsw mask for {1} mnemonic.", mask, instrCur.Mnemonic);
+                    return false;
+                }
+            case Mnemonic.jnz:
+                switch (mask)
+                {
+                case 0x40: { Branch(ConditionCode.EQ, instrCur.Operands[0]); return true; }
+                case 0x41: { Branch(ConditionCode.LE, instrCur.Operands[0]); return true; }
+                case 0x45: { Branch(ConditionCode.LE, instrCur.Operands[0]); return true; }  //$TODO: or unordered
+                case 0x01: { Branch(ConditionCode.LT, instrCur.Operands[0]); return true; }
+                case 0x05: { Branch(ConditionCode.LT, instrCur.Operands[0]); return true; }   //$TODO: or unordered
+                default:
+                    this.host.Warn(instrCur.Address, "Unexpected {0} fstsw mask for {1} mnemonic.", mask, instrCur.Mnemonic);
+                    return false;
+                }
+            default:
+                this.host.Warn(instrCur.Address, "Unexpected instruction {0} after fstsw", instrCur);
+                return false;
+            }
         }
 
         private void Branch(ConditionCode code, MachineOperand op)

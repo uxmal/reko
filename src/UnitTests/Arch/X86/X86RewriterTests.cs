@@ -3712,5 +3712,101 @@ namespace Reko.UnitTests.Arch.X86
                 "2|L--|Mem0[esi - 2<32>:word32] = v4",
                 "3|L--|SCZO = cond(v4)");
         }
+
+        [Test]
+        public void X86Rw_fstsw_and_cmp_jz__eq()
+        {
+            Run32bitTest(
+                "DF E0" +       // fstsw	ax
+                "80 E4 45" +    // and	ah,45
+                "80 FC 40" +    // cmp	ah,40
+                "74 02");       // jz	$+4
+            AssertCode(
+                "0|T--|10000000(10): 1 instructions",
+                "1|T--|if (Test(EQ,FPUF)) branch 1000000C");
+        }
+
+        [Test]
+        public void X86Rw_fstsw_and_xor_40_jz__ne()
+        {
+            Run32bitTest(
+                "DF E0" +       // fstsw	ax
+                "80 E4 45" +    // and	ah,45
+                "80 F4 40" +    // xor ah, 40
+                "74 02");       // jz	$+4
+            AssertCode(
+                "0|T--|10000000(10): 1 instructions",
+                "1|T--|if (Test(NE,FPUF)) branch 1000000C");
+        }
+
+        [Test]
+        public void X86Rw_fstsw_test_45_jz__gt()
+        {
+            Run32bitTest(
+                "DF E0" +       // fstsw	ax
+                "F6 C4 45" +    // test	ah,45
+                "74 02");       // jz	0804849B
+            AssertCode(
+                "0|T--|10000000(7): 2 instructions",
+                "1|L--|SCZO = FPUF",
+                "2|T--|if (Test(GT,FPUF)) branch 10000009");
+        }
+
+        [Test]
+        public void X86Rw_fstsw_test_05_jz__ge()
+        {
+            Run32bitTest(
+                "DF E0" +       // fstsw	ax
+                "F6 C4 05" +    // test	ah,05 -- ge
+                "74 02");       // jz	080484BE
+            AssertCode(
+                "0|T--|10000000(7): 2 instructions",
+                "1|L--|SCZO = FPUF",
+                "2|T--|if (Test(GE,FPUF)) branch 10000009");
+        }
+
+        /*
+        [Test]
+        public void X86Rw_fstsw_and_cmp_jz()
+        {
+            Run32bitTest(
+                "DF E0" +       // fstsw	ax
+                "80 E4 45" +    // and	ah,45
+                "80 FC 40" +    // cmp	ah,40
+                "74 02");       // jz	$+4
+            AssertCode("@@@");
+        }
+
+        [Test]
+        public void X86Rw_fstsw_and_cmp_jz()
+        {
+            Run32bitTest(
+                "DF E0" +       // fstsw	ax
+                "80 E4 45" +    // and	ah,45
+                "80 FC 40" +    // cmp	ah,40
+                "74 02");       // jz	$+4
+            AssertCode("@@@");
+        }
+        [Test]
+        public void X86Rw_fstsw_and_cmp_jz()
+        {
+            Run32bitTest(
+                "DF E0" +       // fstsw	ax
+                "80 E4 45" +    // and	ah,45
+                "80 FC 40" +    // cmp	ah,40
+                "74 02");       // jz	$+4
+            AssertCode("@@@");
+        }
+        [Test]
+        public void X86Rw_fstsw_and_cmp_jz()
+        {
+            Run32bitTest(
+                "DF E0" +       // fstsw	ax
+                "80 E4 45" +    // and	ah,45
+                "80 FC 40" +    // cmp	ah,40
+                "74 02");       // jz	$+4
+            AssertCode("@@@");
+        }
+        */
     }
 }
