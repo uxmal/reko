@@ -45,13 +45,18 @@ namespace Reko.Core
 
         public TypeNamingPolicy Types { get; }
 
+        /// <summary>
+        /// Generates the name for a <see cref="Procedure"/> starting at address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr">Address of the procedure.</param>
+        /// <returns>Name for the procedure.</returns>
         public virtual string ProcedureName(Address addr)
         {
             return addr.GenerateName("fn", "");
         }
 
         /// <summary>
-        /// Generates the name for a block starting at address <paramref name="addr"/>.
+        /// Generates the name for a basic block starting at address <paramref name="addr"/>.
         /// </summary>
         /// <returns>The name as a string.</returns>
         public virtual string BlockName(Address addr)
@@ -60,6 +65,11 @@ namespace Reko.Core
             return addr.GenerateName("l", "");
         }
 
+        /// <summary>
+        /// Generates the name for a basic block based on its <see cref="RtlLocation"/>.
+        /// </summary>
+        /// <param name="loc">Location of the basic block.</param>
+        /// <returns>The name of the basic block as a string.</returns>
         public virtual string BlockName(RtlLocation loc)
         {
             if (loc.Index == 0)
@@ -67,6 +77,11 @@ namespace Reko.Core
             return loc.Address.GenerateName("l", $"_{loc.Index}");
         }
 
+        /// <summary>
+        /// Generates the name of a global variable.
+        /// </summary>
+        /// <param name="field">Global variable field.</param>
+        /// <returns></returns>
         public virtual string GlobalName(StructureField field)
         {
             if (field.IsNameSet)
@@ -75,11 +90,25 @@ namespace Reko.Core
             return string.Format("g_{0}", fieldName);
         }
 
+        /// <summary>
+        /// Generates the name of an argument to a procedure that is passed on the stack.
+        /// </summary>
+        /// <param name="type">Type of the argument.</param>
+        /// <param name="cbOffset">Offset from the top of the frame of the called procedure.</param>
+        /// <param name="nameOverride">If not null, use this string instead of synthesizing a name.</param>
+        /// <returns></returns>
         public virtual string StackArgumentName(DataType type, int cbOffset, string? nameOverride)
         {
             return GenerateStackAccessName(type, "Arg", cbOffset, nameOverride);
         }
 
+        /// <summary>
+        /// Generates the name of a local stack-based variable in a procedure.
+        /// </summary>
+        /// <param name="type">Type of the argument.</param>
+        /// <param name="cbOffset">Offset from the top of the frame of the called procedure.</param>
+        /// <param name="nameOverride">If not null, use this string instead of synthesizing a name.</param>
+        /// <returns></returns>
         public virtual string StackLocalName(DataType type, int cbOffset, string? nameOverride)
         {
             return GenerateStackAccessName(type, "Loc", cbOffset, nameOverride);
