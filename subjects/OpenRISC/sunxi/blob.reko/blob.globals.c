@@ -4,8 +4,6 @@
 
 #include "blob.h"
 
-Eq_n g_tE0432800;
-Eq_n g_tFFFFFFFF;
 Eq_n g_t0001 = 
 	{
 		0,
@@ -1197,4 +1195,5 @@ word32 g_dw40000000;
 <anonymous> g_t48100F7C;
 <anonymous> g_t48100FCC;
 Eq_n g_t48103000;
-
+Eq_n g_tE0432800;
+Eq_n g_tFFFFFFFF;

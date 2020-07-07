@@ -437,19 +437,24 @@ namespace Reko
             }
         }
 
-        public void WriteDecompiledProcedures(Program program, string filename, IEnumerable<object> objects, TextWriter w)
+        public void WriteDecompiledObjects(Program program, string filename, IEnumerable<IAddressable> objects, TextWriter w)
         {
-            var headerfile = Path.ChangeExtension(filename, ".h");
             WriteHeaderComment(filename, program, w);
+            //$REFACTOR: common code -- hardwired ".h"
+            var headerfile = Path.ChangeExtension(Path.GetFileName(program.Filename), ".h");
             w.WriteLine("#include \"{0}\"", headerfile);
             w.WriteLine();
             var fmt = new AbsynCodeFormatter(new TextFormatter(w));
+            var gdw = new GlobalDataWriter(program, fmt.InnerFormatter, false, this.services);
+            IAddressable? prev = null;
             foreach (var o in objects)
             {
                 if (o is Procedure proc)
                 {
                     try
                     {
+                        if (prev is GlobalVariable)
+                            w.WriteLine();
                         WriteProcedureHeader(program, proc, w);
                         fmt.Write(proc);
                         w.WriteLine();
@@ -460,10 +465,9 @@ namespace Reko
                         w.WriteLine("// Exception {0} when writing procedure.", ex.Message);
                     }
                 }
-                else if (o is StructureField field)
+                else if (o is GlobalVariable global)
                 {
-                    //$TODO: adapt GlobalDataWriter.
-                    w.WriteLine("{0} {1};  //$TODO: emit address", field.DataType, field.Name);
+                    gdw.WriteGlobalVariable(global.Address, global.DataType, global.Name);
                 }
             }
         }
@@ -508,7 +512,7 @@ namespace Reko
             WriteHeaderComment(filename, program, w);
             w.WriteLine("#include \"{0}\"", headerfile);
             w.WriteLine();
-            var gdw = new GlobalDataWriter(program, new TextFormatter(w), services);
+            var gdw = new GlobalDataWriter(program, new TextFormatter(w), true, services);
             gdw.Write();
             w.WriteLine();
         }
@@ -667,8 +671,7 @@ namespace Reko
             foreach (var program in Project.Programs)
             {
                 host.WriteTypes(program, (n, w) => WriteDecompiledTypes(program, n, w));
-                host.WriteDecompiledCode(program, (n, p, w) => WriteDecompiledProcedures(program, n, p, w));
-                host.WriteGlobals(program, (n, w) => WriteGlobals(program, n, w));
+                host.WriteDecompiledCode(program, (n, p, w) => WriteDecompiledObjects(program, n, p, w));
             }
 		}
 

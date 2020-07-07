@@ -31,17 +31,17 @@ using System.Text;
 namespace Reko.Core.Output
 {
     /// <summary>
-    /// This <see cref="OutputFilePolicy" /> places procedures and global data objects in
+    /// This <see cref="OutputFilePolicy" /> places <see cref="IAddressable"/> objects in
     /// files that are named after the segments of the decompiled binary.
     /// </summary>
     public class SegmentFilePolicy : OutputFilePolicy
     {
         private const int MaxChunkSize = 64 * 1024;
-        
+
+        private readonly string progname;
+        private readonly Dictionary<ImageSegment, string> segmentFilenames;
         private string defaultFile;
         private string defaultDataFile;
-        private string progname;
-        private Dictionary<ImageSegment, string> segmentFilenames;
 
         public SegmentFilePolicy(Program program) : base(program)
         {
@@ -51,97 +51,42 @@ namespace Reko.Core.Output
             this.defaultDataFile = "";
         }
 
-        public override Dictionary<string, IDictionary<Address, object>> GetObjectPlacements(
+        public override Dictionary<string, IDictionary<Address, IAddressable>> GetObjectPlacements(
             string fileExtension,
             DecompilerEventListener listener)
         {
+            Debug.Assert(fileExtension.Length > 0 && fileExtension[0] == '.');
+
             // Default file if we cannot find segment.
             this.defaultFile = Path.ChangeExtension(program.Name, fileExtension);
-            this.defaultDataFile = Path.ChangeExtension(program.Name, "globals." + fileExtension);
+            this.defaultDataFile = Path.ChangeExtension(program.Name, "globals" + fileExtension);
 
             // Find the segment for each procedure
-            var result = new Dictionary<string, IDictionary<Address,object>>();
+            var result = new Dictionary<string, IDictionary<Address,IAddressable>>();
             foreach (var proc in program.Procedures.Values)
             {
                 var filename = DetermineFilename(proc, fileExtension);
-                PlaceObject(proc, filename, proc.EntryAddress, result);
+                PlaceObject(proc, filename, result);
             }
 
-            // Find the segment for each global object.
-            var wl = new WorkList<(StructureField, Address)>(program.GlobalFields.Fields.Select(MakeGlobalWorkItem));
+            // Place all global objects.
+            var wl = new WorkList<(StructureField, Address)>(
+                MakeGlobalWorkItems()
+                .Concat(MakeSegmentWorkitems()));
             var objectTracer = new GlobalObjectTracer(program, wl);
             while (wl.GetWorkItem(out var item))
             {
                 var (field, addr) = item;
                 var filename = DetermineFilename(addr, fileExtension);
-                PlaceObject(field, filename, addr, result);
-                objectTracer.TraceObject(field.DataType, addr);
-            }
-
-            // Find the segment for each addressable data object.
-            var wlSeg = new WorkList<(StructureField, Address)>(MakeSegmentWorkitems());
-            while (wlSeg.GetWorkItem(out var item))
-            {
-                var (field, addr) = item;
-                var filename = DetermineFilename(addr, fileExtension);
-                PlaceObject(field, filename, addr, result);
+                var globalVar = new GlobalVariable(addr, field.DataType, program.NamingPolicy.GlobalName(field));
+                PlaceObject(globalVar, filename, result);
                 objectTracer.TraceObject(field.DataType, addr);
             }
             return result;
         }
 
 
-        private (StructureField, Address) MakeGlobalWorkItem(StructureField field)
-        {
-            var addr = program.Platform.MakeAddressFromLinear((ulong) field.Offset, false);
-            return (field, addr);
-        }
 
-        private IEnumerable<(StructureField, Address)> MakeSegmentWorkitems()
-        {
-            foreach (var segment in program.SegmentMap.Segments.Values)
-            {
-                if (!segment.Address.Selector.HasValue)
-                    continue;
-                if (segment.Identifier?.TypeVariable?.Class.DataType is StructureType strType)
-                {
-                    foreach (var field in strType.Fields)
-                    {
-                        var addrField = segment.Address + field.Offset;
-                        yield return (field, addrField);
-                    }
-                }
-            }
-        }
-
-        private void TraceObject(DataType dt, Address addr, WorkList<(StructureField, Address)> wl)
-        {
-        }
-
-        /// <summary>
-        /// Given an object <paramref name="o"/> with its filename <paramref name="filename" /> and
-        /// address <paramref name="addr"/>, create a placement for it in the <paramref name="result"/> dictionary.
-        /// </summary>
-        /// <param name="o"></param>
-        /// <param name="filename"></param>
-        /// <param name="addr"></param>
-        /// <param name="result"></param>
-        private void PlaceObject(
-            object o,
-            string filename,
-            Address addr,
-            Dictionary<string, IDictionary<Address, object>> result)
-        {
-            if (!result.TryGetValue(filename, out var objects))
-            {
-                objects = new BTreeDictionary<Address, object>();
-                result.Add(filename, objects);
-            }
-            if (!objects.ContainsKey(addr))
-            {
-                objects.Add(addr, o);
-            }
-        }
 
 
         public override Dictionary<string, Dictionary<ImageSegment, List<ImageMapItem>>> GetItemPlacements(string fileExtension)
@@ -267,15 +212,6 @@ namespace Reko.Core.Output
                 }
             }
             return sb.ToString();
-        }
-
-        private static string NameOf(object o)
-        {
-            if (o is Procedure proc)
-                return proc.Name;
-            if (o is StructureField field)
-                return field.Name;
-            return o.ToString();
         }
     }
 }

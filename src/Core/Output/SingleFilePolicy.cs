@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,16 +34,40 @@ namespace Reko.Core.Output
     /// </summary>
     public class SingleFilePolicy : OutputFilePolicy
     {
-        public SingleFilePolicy(Program program) : base(program)
-        { }
+        private string defaultFile;
+        private string defaultDataFile;
 
-        public override Dictionary<string, IDictionary<Address, object>> GetObjectPlacements(string fileExtension, DecompilerEventListener listener)
+        public SingleFilePolicy(Program program) : base(program)
         {
-            var filename = Path.ChangeExtension(program.Name, fileExtension);
-            return new Dictionary<string, IDictionary<Address, object>>
+            this.defaultFile = ""; 
+            this.defaultDataFile = "";
+        }
+
+        public override Dictionary<string, IDictionary<Address, IAddressable>> GetObjectPlacements(string fileExtension, DecompilerEventListener listener)
+        {
+            this.defaultFile = Path.ChangeExtension(program.Name, fileExtension);
+            this.defaultDataFile = Path.ChangeExtension(program.Name, "globals" + fileExtension);
+
+            // Find the segment for each procedure
+            var result = new Dictionary<string, IDictionary<Address, IAddressable>>();
+            foreach (var proc in program.Procedures.Values)
             {
-                { filename, program.Procedures.Values.ToDictionary(p => p.EntryAddress, p => (object) p) }
-            };
+                PlaceObject(proc, defaultFile, result);
+            }
+
+            // Place all global objects.
+            var wl = new WorkList<(StructureField, Address)>(
+                MakeGlobalWorkItems()
+                .Concat(MakeSegmentWorkitems()));
+            var objectTracer = new GlobalObjectTracer(program, wl);
+            while (wl.GetWorkItem(out var item))
+            {
+                var (field, addr) = item;
+                var globalVar = new GlobalVariable(addr, field.DataType, program.NamingPolicy.GlobalName(field));
+                PlaceObject(globalVar, defaultDataFile, result);
+                objectTracer.TraceObject(field.DataType, addr);
+            }
+            return result;
         }
 
         public override Dictionary<string, Dictionary<ImageSegment, List<ImageMapItem>>> GetItemPlacements(string fileExtension)

@@ -175,7 +175,7 @@ namespace Reko.UserInterfaces.WindowsForms
                         var tsf = new TextSpanFormatter();
                         var fmt = new AbsynCodeFormatter(tsf);
                         fmt.InnerFormatter.UseTabs = false;
-                        var gdw = new GlobalDataWriter(program, tsf, services);
+                        var gdw = new GlobalDataWriter(program, tsf, false, services);
                         gdw.WriteGlobalVariable(curAddr, dt, name);
                         //$TODO: make spacing between globals / procedures user adjustable
                         tsf.WriteLine("");

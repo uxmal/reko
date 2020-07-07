@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Core.Output
                 Indentation = 0,
                 UseTabs = false,
             };
-            var gdw = new GlobalDataWriter(program, formatter, sc);
+            var gdw = new GlobalDataWriter(program, formatter, true, sc);
             gdw.Write();
             Assert.AreEqual(sExp, sw.ToString());
         }

@@ -31,6 +31,7 @@ namespace Reko.Core.Output
         private readonly WorkList<(StructureField, Address)> wl;
         private readonly HashSet<Address> visited;
         private readonly DataTypeComparer cmp;
+        private readonly StructureFieldCollection globalFields;
         private int recursionGuard;
 #nullable disable
         private EndianImageReader rdr; 
@@ -40,8 +41,22 @@ namespace Reko.Core.Output
         {
             this.program = program;
             this.wl = wl;
+            this.globalFields = GlobalFields(program);
             this.visited = new HashSet<Address>();
             this.cmp = new DataTypeComparer();
+        }
+
+        private StructureFieldCollection GlobalFields(Program program)
+        {
+            if (program.Globals.TypeVariable?.DataType is Pointer ptr)
+            {
+                var str = ptr.Pointee.ResolveAs<StructureType>();
+                if (str != null)
+                {
+                    return str.Fields;
+                }
+            }
+            return program.GlobalFields.Fields;
         }
 
         public void TraceObject(DataType dataType, Address addr)
@@ -112,8 +127,8 @@ namespace Reko.Core.Output
                 return 0;
             visited.Add(addr);
 
-            int offset = (int) addr.ToLinear(); //$REVIEW: could be 64-bit!
-            var field = program.GlobalFields.Fields.AtOffset(offset);
+            int offset = (int) addr.ToLinear(); //$BUG: could be 64-bit!
+            var field = globalFields.AtOffset(offset);
             if (field is null)
             {
                 // Nothing there! Ensure a new global at that location. Later,
@@ -128,7 +143,7 @@ namespace Reko.Core.Output
                 {
                     dt = StringType.NullTerminated(pt);
                 }
-                field = program.GlobalFields.Fields.Add(offset, dt);
+                field = globalFields.Add(offset, dt);
             }
             wl.Add((field, addr));
             return 0;

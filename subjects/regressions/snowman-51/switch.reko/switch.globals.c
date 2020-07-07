@@ -9,4 +9,3 @@ char g_str10072008[] = "three";
 char g_str10072010[] = "two";
 char g_str10072014[] = "one";
 char g_str10072018[] = "zero";
-

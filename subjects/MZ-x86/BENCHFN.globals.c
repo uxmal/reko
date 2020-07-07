@@ -4,6 +4,4 @@
 
 #include "BENCHFN.h"
 
-Eq_n g_tFFFFDBBA;
-struct seg0800_t * g_ptr8000 = &g_tFFFFDBBA;
-
+Eq_n g_tDBBA;

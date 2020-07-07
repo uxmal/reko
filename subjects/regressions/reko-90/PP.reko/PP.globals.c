@@ -4,9 +4,20 @@
 
 #include "PP.h"
 
-Eq_n g_tFFFF83BA;
 Eq_n g_a0000[];
 Eq_n g_a0001[];
-struct seg0800_t * g_ptr8000 = &g_tFFFF83BA;
-struct seg1483_t * g_ptr14830 = null;
-
+Eq_n g_t478B;
+Eq_n g_tFFFF9D35;
+word16 g_wFFFF9D37;
+word16 g_wFFFF9D39;
+Eq_n g_tFFFF9D3B;
+Eq_n g_tFFFF9D3D;
+Eq_n g_tFFFF9D3F;
+int16 g_aFFFFBC39[];
+Eq_n g_aFFFFBC41[];
+int16 g_aFFFFBE1F[];
+Eq_n g_aFFFFBE2D[];
+<anonymous> g_tFFFFBEE5;
+<anonymous> g_tFFFFBF0D;
+<anonymous> g_tFFFFC7B5;
+<anonymous> g_tFFFFC7F0;

@@ -167,7 +167,7 @@ namespace Reko.Typing
             if (field == null)
                 return false;
             var array = field.DataType.ResolveAs<ArrayType>();
-            if (array == null)
+            if (array is null || array is StringType)
                 return false;
             return unifier.AreCompatible(array.ElementType, dt);
         }

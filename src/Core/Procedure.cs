@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core.Absyn;
-using Reko.Core.Code;
 using Reko.Core.Lib;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
@@ -29,16 +28,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Core
 {
-	/// <summary>
-	/// Represents a procedure that has been decompiled from machine code.
-	/// </summary>
-	public class Procedure : ProcedureBase
+    /// <summary>
+    /// Represents a procedure that has been decompiled from machine code.
+    /// </summary>
+    public class Procedure : ProcedureBase, IAddressable
 	{
-        private List<Block> blocks;
+        private readonly List<Block> blocks;
 
 		public Procedure(IProcessorArchitecture arch, string name, Address addrEntry, Frame frame) : base(name)
 		{
@@ -73,6 +71,8 @@ namespace Reko.Core
         public Block ExitBlock { get; }
         public Frame Frame { get; }
         public Address EntryAddress { get; }
+
+        Address IAddressable.Address => EntryAddress;
 
         /// <summary>
         /// Returns all the statements of the procedure, in no particular order.
