@@ -68,17 +68,14 @@ namespace Reko.Core.Output
             }
 
             // Find the segment for each global object.
-            var visited = new HashSet<Address>();
             var wl = new WorkList<(StructureField, Address)>(program.GlobalFields.Fields.Select(MakeGlobalWorkItem));
+            var objectTracer = new GlobalObjectTracer(program, wl);
             while (wl.GetWorkItem(out var item))
             {
                 var (field, addr) = item;
-                if (visited.Contains(addr))
-                    continue;
-                visited.Add(addr);
                 var filename = DetermineFilename(addr, fileExtension);
                 PlaceObject(field, filename, addr, result);
-                TraceObject(field, addr, wl);
+                objectTracer.TraceObject(field.DataType, addr);
             }
 
             // Find the segment for each addressable data object.
@@ -86,12 +83,9 @@ namespace Reko.Core.Output
             while (wlSeg.GetWorkItem(out var item))
             {
                 var (field, addr) = item;
-                if (visited.Contains(addr))
-                    continue;
-                visited.Add(addr);
                 var filename = DetermineFilename(addr, fileExtension);
                 PlaceObject(field, filename, addr, result);
-                TraceObject(field, addr, wl);
+                objectTracer.TraceObject(field.DataType, addr);
             }
             return result;
         }
@@ -119,6 +113,7 @@ namespace Reko.Core.Output
                 }
             }
         }
+
         private void TraceObject(DataType dt, Address addr, WorkList<(StructureField, Address)> wl)
         {
         }

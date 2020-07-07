@@ -17,21 +17,18 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
-using Moq;
+
 using NUnit.Framework;
 using Reko.Core;
-using Reko.Core.Types;
+using Reko.Core.Expressions;
 using Reko.Core.Output;
-using Reko.Core.Serialization;
-using System.IO;
-using System;
-using System.Collections.Generic;
+using Reko.Core.Services;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using System.ComponentModel.Design;
+using System.IO;
 using System.Linq;
 using System.Text;
-using Reko.Core.Services;
-using Reko.UnitTests.Mocks;
-using Reko.Core.Expressions;
 using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Core.Output
