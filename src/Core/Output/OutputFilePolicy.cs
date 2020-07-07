@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -44,13 +45,16 @@ namespace Reko.Core.Output
         /// </summary>
         /// <param name="fileExtension"></param>
         /// <returns></returns>
-        public abstract Dictionary<string, IDictionary<Address, object>> GetProcedurePlacements(string fileExtension);
+        public abstract Dictionary<string, IDictionary<Address, object>> GetObjectPlacements(
+            string fileExtension,
+            DecompilerEventListener listener);
 
         /// <summary>
         /// Returns a placement mapping for rendering low-level items.
         /// </summary>
         /// <param name="fileExtension">File extension to use on the files in the mapping.</param>
         /// <returns></returns>
-        public abstract Dictionary<string, Dictionary<ImageSegment, List<ImageMapItem>>> GetItemPlacements(string fileExtension);
+        public abstract Dictionary<string, Dictionary<ImageSegment, List<ImageMapItem>>> GetItemPlacements(
+            string fileExtension);
     }
 }

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,7 +36,7 @@ namespace Reko.Core.Output
         public SingleFilePolicy(Program program) : base(program)
         { }
 
-        public override Dictionary<string, IDictionary<Address, object>> GetProcedurePlacements(string fileExtension)
+        public override Dictionary<string, IDictionary<Address, object>> GetObjectPlacements(string fileExtension, DecompilerEventListener listener)
         {
             var filename = Path.ChangeExtension(program.Name, fileExtension);
             return new Dictionary<string, IDictionary<Address, object>>

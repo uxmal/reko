@@ -22,6 +22,8 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Memory;
 using Reko.Core.Output;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -34,6 +36,7 @@ namespace Reko.UnitTests.Core.Output
     [TestFixture]
     public class SegmentFilePolicyTests
     {
+        private FakeDecompilerEventListener listener;
         private Program program;
 
         [SetUp]
@@ -42,10 +45,15 @@ namespace Reko.UnitTests.Core.Output
             var segs = new SegmentMap(Address.Ptr32(0x00100000));
             var sc = new ServiceContainer();
             var platform = new Mocks.FakePlatform(sc, new Mocks.FakeArchitecture(sc));
+            this.listener = new FakeDecompilerEventListener();
             this.program = new Program(segs, platform.Architecture, platform)
             {
                 Name = "myprogram.exe"
             };
+            var treeNode = new StructureType();
+            treeNode.Fields.Add(0, new Pointer(treeNode, 32), "left");
+            treeNode.Fields.Add(4, new Pointer(treeNode, 32), "right");
+            treeNode.Fields.Add(8, PrimitiveType.Int32, "data");
         }
 
         private void Given_Executable(string name, uint uAddr, uint uSize)
@@ -55,6 +63,16 @@ namespace Reko.UnitTests.Core.Output
                 name,
                 new ByteMemoryArea(addr, new byte[uSize]),
                 AccessMode.Execute);
+            program.SegmentMap.AddSegment(seg);
+        }
+
+        private void Given_Segment(string name, uint uAddr, uint uSize)
+        {
+            var addr = Address.Ptr32(uAddr);
+            var seg = new ImageSegment(
+                name,
+                new MemoryArea(addr, new byte[uSize]),
+                AccessMode.ReadWrite);
             program.SegmentMap.AddSegment(seg);
         }
 
@@ -77,6 +95,20 @@ namespace Reko.UnitTests.Core.Output
             program.User.Procedures.Add(addr, uProc);
         }
 
+        private void Given_Data(uint uAddr, string hexBytes)
+        {
+            var addr = Address.Ptr32(uAddr);
+            bool foundSeg = program.SegmentMap.TryFindSegment(addr, out var seg);
+            Assert.IsTrue(foundSeg);
+            var w = new LeImageWriter(seg.MemoryArea, (uint) (addr - seg.MemoryArea.BaseAddress));
+            w.WriteBytes(BytePattern.FromHexBytes(hexBytes).ToArray());
+        }
+
+        private void Given_GlobalVariable(int uOffset, DataType dt)
+        {
+            program.GlobalFields.Fields.Add(uOffset, dt);
+        }
+
         [Test]
         public void Segfp_Single_Segment()
         {
@@ -84,7 +116,7 @@ namespace Reko.UnitTests.Core.Output
             Given_Procedure(0x00101000);
 
             var ofp = new SegmentFilePolicy(program);
-            var placements = ofp.GetProcedurePlacements(".asm").ToArray();
+            var placements = ofp.GetObjectPlacements(".asm", listener).ToArray();
             Assert.AreEqual(1, placements.Length);
             Assert.AreEqual("myprogram_text.asm", placements[0].Key);
             var procs = placements[0].Value;
@@ -100,7 +132,7 @@ namespace Reko.UnitTests.Core.Output
             Given_Procedure(0x00101400);
 
             var ofp = new SegmentFilePolicy(program);
-            var placements = ofp.GetProcedurePlacements(".asm").ToArray();
+            var placements = ofp.GetObjectPlacements(".asm", listener).ToArray();
             Assert.AreEqual(1, placements.Length);
             Assert.AreEqual("myprogram_text.asm", placements[0].Key);
             var procs = placements[0].Value.Values.Cast<Procedure>().ToArray();
@@ -118,7 +150,7 @@ namespace Reko.UnitTests.Core.Output
             Given_Procedure(0x00201400);
 
             var ofp = new SegmentFilePolicy(program);
-            var placements = ofp.GetProcedurePlacements(".asm").ToArray();
+            var placements = ofp.GetObjectPlacements(".asm", listener).ToArray();
             Assert.AreEqual(2, placements.Length);
             Assert.AreEqual("myprogram_text.asm", placements[0].Key);
             Assert.AreEqual("myprogram_init.asm", placements[1].Key);
@@ -141,7 +173,7 @@ namespace Reko.UnitTests.Core.Output
             Given_Procedure(0x00133F00);
 
             var ofp = new SegmentFilePolicy(program);
-            var placements = ofp.GetProcedurePlacements(".asm").ToArray();
+            var placements = ofp.GetObjectPlacements(".asm", listener).ToArray();
             Assert.AreEqual(3, placements.Length);
             Assert.AreEqual("myprogram_text_0000.asm", placements[0].Key);
             Assert.AreEqual("myprogram_text_0001.asm", placements[1].Key);
@@ -159,10 +191,26 @@ namespace Reko.UnitTests.Core.Output
             Given_UserProcedure(0x00101000, "myproc", "myproc.c");
 
             var ofp = new SegmentFilePolicy(program);
-            var placements = ofp.GetProcedurePlacements(".asm").ToArray();
+            var placements = ofp.GetObjectPlacements(".asm", listener).ToArray();
             Assert.AreEqual(2, placements.Length);
             Assert.AreEqual("myproc.asm", placements[0].Key);
             Assert.AreEqual("myprogram_text.asm", placements[1].Key);
+        }
+
+        [Test]
+        public void SegFp_object_placement()
+        {
+            Given_Executable(".text", 0x0010_0000, 0x4000);
+            Given_Segment(".data", 0x0020_0000, 0x4000);
+            Given_Data(0x0020_0010, "78 56 34 12");
+            Given_GlobalVariable(0x0020_0010, PrimitiveType.Int32);
+
+            var ofp = new SegmentFilePolicy(program);
+            var placements = ofp.GetObjectPlacements(".c", listener).ToArray();
+            Assert.AreEqual(1, placements.Length);
+            Assert.AreEqual("myprogram_data.c", placements[0].Key);
+            var objs = placements[0].Value.OrderBy(k => k.Key).ToArray();
+            Assert.AreEqual(1, objs.Length);
         }
     }
 }

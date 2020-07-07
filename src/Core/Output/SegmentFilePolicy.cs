@@ -19,10 +19,13 @@
 #endregion
 
 using Reko.Core.Lib;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Core.Output
@@ -36,6 +39,7 @@ namespace Reko.Core.Output
         private const int MaxChunkSize = 64 * 1024;
         
         private string defaultFile;
+        private string defaultDataFile;
         private string progname;
         private Dictionary<ImageSegment, string> segmentFilenames;
 
@@ -44,28 +48,63 @@ namespace Reko.Core.Output
             this.segmentFilenames = new Dictionary<ImageSegment, string>();
             this.progname = Path.GetFileNameWithoutExtension(program.Name);
             this.defaultFile = "";
+            this.defaultDataFile = "";
         }
 
-        public override Dictionary<string, IDictionary<Address, object>> GetProcedurePlacements(string fileExtension)
+        public override Dictionary<string, IDictionary<Address, object>> GetObjectPlacements(
+            string fileExtension,
+            DecompilerEventListener listener)
         {
             // Default file if we cannot find segment.
             this.defaultFile = Path.ChangeExtension(program.Name, fileExtension);
+            this.defaultDataFile = Path.ChangeExtension(program.Name, "globals." + fileExtension);
 
             // Find the segment for each procedure
             var result = new Dictionary<string, IDictionary<Address,object>>();
             foreach (var proc in program.Procedures.Values)
             {
-                var filename = DetermineFilename(proc);
-                filename = Path.ChangeExtension(filename, fileExtension);
-                if (!result.TryGetValue(filename, out var objects))
-                {
-                    objects = new BTreeDictionary<Address, object>();
-                    result.Add(filename, objects);
-                }
-                objects.Add(proc.EntryAddress, proc);
+                var filename = DetermineFilename(proc, fileExtension);
+                PlaceObject(proc, filename, proc.EntryAddress, result);
+            }
+
+            // Find the segment for each global object.
+            var visited = new HashSet<Address>();
+            var wl = new WorkList<(StructureField, Address)>(program.GlobalFields.Fields.Select(MakeGlobalWorkItem));
+            while (wl.GetWorkItem(out var item))
+            {
+                var (field, addr) = item;
+                if (visited.Contains(addr))
+                    continue;
+                visited.Add(addr);
+                var filename = DetermineFilename(addr, fileExtension);
+                PlaceObject(field, filename, addr, result);
+                TraceObject(field, addr, wl);
             }
 
             // Find the segment for each addressable data object.
+            var wlSeg = new WorkList<(StructureField, Address)>(MakeSegmentWorkitems());
+            while (wlSeg.GetWorkItem(out var item))
+            {
+                var (field, addr) = item;
+                if (visited.Contains(addr))
+                    continue;
+                visited.Add(addr);
+                var filename = DetermineFilename(addr, fileExtension);
+                PlaceObject(field, filename, addr, result);
+                TraceObject(field, addr, wl);
+            }
+            return result;
+        }
+
+
+        private (StructureField, Address) MakeGlobalWorkItem(StructureField field)
+        {
+            var addr = program.Platform.MakeAddressFromLinear((ulong) field.Offset, false);
+            return (field, addr);
+        }
+
+        private IEnumerable<(StructureField, Address)> MakeSegmentWorkitems()
+        {
             foreach (var segment in program.SegmentMap.Segments.Values)
             {
                 if (!segment.Address.Selector.HasValue)
@@ -75,20 +114,40 @@ namespace Reko.Core.Output
                     foreach (var field in strType.Fields)
                     {
                         var addrField = segment.Address + field.Offset;
-                        var filename = FilenameBasedOnSegment(addrField, segment);
-                        filename = Path.ChangeExtension(filename, fileExtension);
-
-                        if (!result.TryGetValue(filename, out var objects))
-                        {
-                            objects = new BTreeDictionary<Address, object>();
-                            result.Add(filename, objects);
-                        }
-                        objects.Add(addrField, field);
+                        yield return (field, addrField);
                     }
                 }
             }
-            return result;
         }
+        private void TraceObject(DataType dt, Address addr, WorkList<(StructureField, Address)> wl)
+        {
+        }
+
+        /// <summary>
+        /// Given an object <paramref name="o"/> with its filename <paramref name="filename" /> and
+        /// address <paramref name="addr"/>, create a placement for it in the <paramref name="result"/> dictionary.
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="filename"></param>
+        /// <param name="addr"></param>
+        /// <param name="result"></param>
+        private void PlaceObject(
+            object o,
+            string filename,
+            Address addr,
+            Dictionary<string, IDictionary<Address, object>> result)
+        {
+            if (!result.TryGetValue(filename, out var objects))
+            {
+                objects = new BTreeDictionary<Address, object>();
+                result.Add(filename, objects);
+            }
+            if (!objects.ContainsKey(addr))
+            {
+                objects.Add(addr, o);
+            }
+        }
+
 
         public override Dictionary<string, Dictionary<ImageSegment, List<ImageMapItem>>> GetItemPlacements(string fileExtension)
         {
@@ -99,8 +158,7 @@ namespace Reko.Core.Output
                 var segment = entry.Key;
                 foreach (var item in entry.Value)
                 {
-                    var filename = DetermineFilename(item, segment);
-                    filename = Path.ChangeExtension(filename, fileExtension);
+                    var filename = DetermineFilename(item, segment, fileExtension);
                     if (!result.TryGetValue(filename, out var segments))
                     {
                         segments = new Dictionary<ImageSegment, List<ImageMapItem>>();
@@ -117,21 +175,21 @@ namespace Reko.Core.Output
             return result;
         }
 
-        private string DetermineFilename(Procedure proc)
+        private string DetermineFilename(Procedure proc, string fileExtension)
         {
             if (program.User.Procedures.TryGetValue(proc.EntryAddress, out var userProc) &&
                 !string.IsNullOrWhiteSpace(userProc.OutputFile))
             {
-                return userProc.OutputFile!;
+                return Path.ChangeExtension(userProc.OutputFile!, fileExtension);
             }
             if (program.User.ProcedureSourceFiles.TryGetValue(proc.EntryAddress, out var sourcefile))
             {
-                return sourcefile;
+                return Path.ChangeExtension(sourcefile, fileExtension);
             }
 
             if (program.SegmentMap.TryFindSegment(proc.EntryAddress, out var seg))
             {
-                return FilenameBasedOnSegment(proc.EntryAddress, seg);
+                return FilenameBasedOnSegment(proc.EntryAddress, seg, fileExtension);
             }
             else
             {
@@ -140,12 +198,26 @@ namespace Reko.Core.Output
             }
         }
 
-        private string DetermineFilename(ImageMapItem item, ImageSegment seg)
+        private string DetermineFilename(Address addr, string fileExtension)
         {
-            return FilenameBasedOnSegment(item.Address, seg);
+            //$TODO: user placements.
+            if (program.SegmentMap.TryFindSegment(addr, out var seg))
+            {
+                return FilenameBasedOnSegment(addr, seg, fileExtension);
+            }
+            else
+            {
+                // No known segment for this procedure, so add it to the default.
+                return this.defaultDataFile;
+            }
         }
 
-        private string FilenameBasedOnSegment(Address addr, ImageSegment seg)
+        private string DetermineFilename(ImageMapItem item, ImageSegment seg, string fileExtension)
+        {
+            return FilenameBasedOnSegment(item.Address, seg, fileExtension);
+        }
+
+        private string FilenameBasedOnSegment(Address addr, ImageSegment seg, string fileExtension)
         {
             if (!segmentFilenames.TryGetValue(seg, out var filename))
             {
@@ -160,9 +232,14 @@ namespace Reko.Core.Output
                 var chunk = offset / MaxChunkSize;
                 filename = $"{filename}_{chunk:X4}";
             }
-            return filename;
+            return Path.ChangeExtension(filename, fileExtension);
         }
 
+        /// <summary>
+        /// Replace non-identifier characters in the segment name with underscores.
+        /// </summary>
+        /// <param name="name">Segment name to sanitize.</param>
+        /// <returns>Sanitized segment name.</returns>
         private string SanitizeSegmentName(string name)
         {
             var sb = new StringBuilder();
@@ -195,6 +272,15 @@ namespace Reko.Core.Output
                 }
             }
             return sb.ToString();
+        }
+
+        private static string NameOf(object o)
+        {
+            if (o is Procedure proc)
+                return proc.Name;
+            if (o is StructureField field)
+                return field.Name;
+            return o.ToString();
         }
     }
 }

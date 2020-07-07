@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -52,7 +53,7 @@ namespace Reko.UnitTests
 
             this.fsSvc = new Mock<IFileSystemService>();
 
-            this.dfSvc = new DecompiledFileService(fsSvc.Object);
+            this.dfSvc = new DecompiledFileService(fsSvc.Object, new FakeDecompilerEventListener());
 
             var arch = new Mock<IProcessorArchitecture>();
             this.proc1 = Procedure.Create(arch.Object, Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
