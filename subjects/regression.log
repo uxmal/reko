@@ -423,34 +423,6 @@ error: An error occurred during decompilation. System.InvalidOperationException:
    at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 236
 >>>>>>> Feature: write global objects in files determined by the relevant OutputPolicy.
 === OpenRISC\sunxi\blob.dcproject
-*** OpenRISC\sunxi\blob.dcproject
-blob.bin: error: Using SingleFilePolicy blob.bin
-blob.bin: error: Using SingleFilePolicy blob.bin
-fn0000F8E8: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-blob.bin: error: Using SingleFilePolicy blob.bin
-00003CA8: warning: Expected sizes of arrays to have been determined by now
-000100B8: warning: Expected sizes of arrays to have been determined by now
-00012478: warning: Expected sizes of arrays to have been determined by now
-00012490: warning: Expected sizes of arrays to have been determined by now
-00012510: warning: Expected sizes of arrays to have been determined by now
-00012590: warning: Expected sizes of arrays to have been determined by now
-00012B68: warning: Expected sizes of arrays to have been determined by now
-00012BA4: warning: Expected sizes of arrays to have been determined by now
-0001300E: warning: Expected sizes of arrays to have been determined by now
-000137E8: warning: Expected sizes of arrays to have been determined by now
-00013974: warning: Expected sizes of arrays to have been determined by now
-blob.bin: error: Using SingleFilePolicy blob.bin
-00003CA8: warning: Expected sizes of arrays to have been determined by now
-000100B8: warning: Expected sizes of arrays to have been determined by now
-00012478: warning: Expected sizes of arrays to have been determined by now
-00012490: warning: Expected sizes of arrays to have been determined by now
-00012510: warning: Expected sizes of arrays to have been determined by now
-00012590: warning: Expected sizes of arrays to have been determined by now
-00012B68: warning: Expected sizes of arrays to have been determined by now
-00012BA4: warning: Expected sizes of arrays to have been determined by now
-0001300E: warning: Expected sizes of arrays to have been determined by now
-000137E8: warning: Expected sizes of arrays to have been determined by now
-00013974: warning: Expected sizes of arrays to have been determined by now
 === PDP-11\lunar.lda
 === PDP-11\space.dcproject
 *** PDP-11\space.dcproject
@@ -797,7 +769,6 @@ Error: An error occurred during decompilation.
 0001E734: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
 000257A4: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
 0001E3F0: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
-MicroBlaze.corpus: error: Using SingleFilePolicy MicroBlaze.corpus
 error: An error occurred during decompilation. System.NullReferenceException: Object reference not set to an instance of an object.
    at Reko.Analysis.StackPointerBackpropagator.MatchStackOffsetPattern(Identifier sp) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\StackPointerBackpropagator.cs:line 124
    at Reko.Analysis.StackPointerBackpropagator.BackpropagateStackPointer(Identifier spAtExit) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\StackPointerBackpropagator.cs:line 93
@@ -1219,11 +1190,6 @@ Parameter name: key
    at Reko.Analysis.WebBuilder.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 112
 fn000125CA: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 === i8051\reko-825\ledwith8051.dcproject
-*** i8051\reko-825\ledwith8051.dcproject
-ledwith8051.hex: error: Using SingleFilePolicy ledwith8051.hex
-ledwith8051.hex: error: Using SingleFilePolicy ledwith8051.hex
-ledwith8051.hex: error: Using SingleFilePolicy ledwith8051.hex
-ledwith8051.hex: error: Using SingleFilePolicy ledwith8051.hex
 === i8051\rtl8188efw.dcproject
 === regressions\angr-148\test
 === regressions\reko-121\m68k_jump.dcproject
@@ -1346,11 +1312,6 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 0800:6ECA: warning: Expected sizes of arrays to have been determined by now
 0800:6ED8: warning: Expected sizes of arrays to have been determined by now
 === regressions\snowman-51\switch.dcproject
-*** regressions\snowman-51\switch.dcproject
-switch.dll: error: Using SingleFilePolicy switch.dll
-switch.dll: error: Using SingleFilePolicy switch.dll
-switch.dll: error: Using SingleFilePolicy switch.dll
-switch.dll: error: Using SingleFilePolicy switch.dll
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
@@ -1394,8 +1355,4 @@ error: An error occurred during decompilation. System.NullReferenceException: Ob
    at Reko.Decompiler.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 569
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 193
 Stripping SSA identifier numbers
-<<<<<<< HEAD
-Decompiled 72 binaries in 74.51 seconds ---
-=======
-Decompiled 66 binaries in 63.59 seconds ---
->>>>>>> Feature: write global objects in files determined by the relevant OutputPolicy.
+Decompiled 66 binaries in 84.88 seconds ---

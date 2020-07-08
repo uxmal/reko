@@ -140,9 +140,11 @@ namespace Reko
             {
                 var irFilename = Path.GetFileName(placement.Key);
                 var irPath = Path.Combine(program.SourceDirectory, irFilename);
-                using (TextWriter output = CreateTextWriter(irPath))
+                var procs = placement.Value.Values.OfType<Procedure>().ToArray();
+                if (procs.Length > 0)
                 {
-                    writer(irFilename, placement.Value.Values.OfType<Procedure>(), output);
+                    using TextWriter output = CreateTextWriter(irPath);
+                    writer(irFilename, procs, output);
                 }
             }
         }
