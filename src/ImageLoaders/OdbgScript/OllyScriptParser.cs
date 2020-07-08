@@ -455,9 +455,9 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public class Lexer : IDisposable
         {
+            private readonly StringBuilder sb;
             private TextReader rdr;
             private int lineNumber;
-            private StringBuilder sb;
 
             public Lexer(TextReader rdr)
             {
@@ -669,6 +669,7 @@ namespace Reko.ImageLoaders.OdbgScript
                         {
                         case -1: return MakeToken(TokenType.Slash);
                         case '*': rdr.Read(); state = State.BlockComment; break;
+                        case '/': rdr.Read(); state = State.LineComment; break;
                         default: rdr.Read(); return MakeToken(TokenType.Slash);
                         }
                         break;
