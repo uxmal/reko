@@ -368,6 +368,19 @@ namespace Reko.UnitTests.Evaluation
         }
 
         [Test]
+        public void Exs_Word32ConstantToReal32Convert()
+        {
+            Given_ExpressionSimplifier();
+            var value = Constant.Word32(0x1);
+            var exp = m.Convert(
+                value, PrimitiveType.Word32, PrimitiveType.Real32);
+
+            var result = exp.Accept(simplifier);
+
+            Assert.AreEqual("1.0F", result.ToString());
+        }
+
+        [Test]
         public void Exs_SegMem_Constants()
         {
             Given_SegmentedArchitecture();
