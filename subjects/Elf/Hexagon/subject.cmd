@@ -1,1 +1,1 @@
-decompile.exe factorial_example.elf
+decompile.exe --scan-only factorial_example.elf
