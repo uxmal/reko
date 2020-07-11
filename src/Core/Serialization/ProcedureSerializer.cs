@@ -52,6 +52,8 @@ namespace Reko.Core.Serialization
         public string DefaultConvention { get; set; }
 
         public int FpuStackOffset { get; set; }
+        public bool FpuStackGrowing { get; set; }
+        public bool FpuStackShrinking => !FpuStackGrowing;
         public int StackOffset { get; set; }
         public bool IsVariadic { get; set; }
 
@@ -115,18 +117,9 @@ namespace Reko.Core.Serialization
                     frame,
                     retAddrSize,
                     Architecture.WordWidth.Size);
-
-                int fpuDelta = FpuStackOffset;
-                FpuStackOffset = 0;
-                if (ss.ReturnValue != null)
-                {
-                    ret = DeserializeArgument(ss.ReturnValue, "");
-                    fpuDelta += FpuStackOffset;
-                }
-
-                FpuStackOffset = 0;
                 if (ss.Arguments != null)
                 {
+                    FpuStackGrowing = true;
                     for (int iArg = 0; iArg < ss.Arguments.Length; ++iArg)
                     {
                         var sArg = ss.Arguments[iArg];
@@ -137,8 +130,12 @@ namespace Reko.Core.Serialization
                         }
                     }
                 }
-                fpuDelta -= FpuStackOffset;
-                FpuStackOffset = fpuDelta;
+                if (ss.ReturnValue != null)
+                {
+                    FpuStackGrowing = false;
+                    ret = DeserializeArgument(ss.ReturnValue, "");
+                }
+                FpuStackOffset = -FpuStackOffset;
                 var sig = FunctionType.Create(ret, parameters.ToArray());
                 sig.IsVariadic = this.IsVariadic;
                 sig.IsInstanceMetod = ss.IsInstanceMethod;

@@ -110,7 +110,7 @@ namespace Reko.Arch.X86
                 var pt = dtRet.ResolveAs<PrimitiveType>();
                 if (pt != null && pt.Domain == Domain.Real)
                 {
-                    ccr.FpuReturn(0, PrimitiveType.Real64);
+                    ccr.FpuReturn(-1, PrimitiveType.Real64);
                     return;
                 }
                 if (retSize > 4)

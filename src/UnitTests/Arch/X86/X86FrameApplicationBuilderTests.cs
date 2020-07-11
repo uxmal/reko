@@ -103,7 +103,7 @@ namespace Reko.UnitTests.Arch.X86
                 new Identifier(
                     "",         // return values don't have names!
                     PrimitiveType.Real64,
-                    new FpuStackStorage(0, PrimitiveType.Real64)));
+                    new FpuStackStorage(-1, PrimitiveType.Real64)));
             sigCallee.FpuStackDelta = 1;
             var instr = fab.CreateInstruction(sigCallee, new ProcedureCharacteristics());
             // Top below refers to the value of Top _before_ the call.

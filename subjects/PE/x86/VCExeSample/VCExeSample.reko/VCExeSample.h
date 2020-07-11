@@ -1298,10 +1298,10 @@ T_277: (in d : real64)
   Class: Eq_277
   DataType: real64
   OrigDataType: real64
-T_278: (in <invalid> : void)
+T_278: (in d : real64)
   Class: Eq_276
   DataType: real64
-  OrigDataType: void
+  OrigDataType: real64
 T_279:
   Class: Eq_279
   DataType: Eq_279
