@@ -34,14 +34,21 @@ namespace Reko.Arch.RiscV
             var dst = RewriteOp(instr.Operands[0]);
             var left = RewriteOp(instr.Operands[1]);
             var right = RewriteOp(instr.Operands[2]);
-            m.Assign(dst, m.Cast(dst.DataType, fn(m.Cast(dt, left), m.Cast(dt, right))));
+            var result = fn(
+                m.Convert(left, left.DataType, dt), 
+                m.Convert(right, right.DataType, dt));
+            m.Assign(dst, m.Convert(result, result.DataType, dst.DataType));
         }
 
-        private void RewriteFcvt(PrimitiveType dt)
+        private void RewriteFcvt(PrimitiveType dtFrom, PrimitiveType dtTo)
         {
-            var dst = RewriteOp(instr.Operands[0]);
             var src = RewriteOp(instr.Operands[1]);
-            m.Assign(dst, m.Cast(dt, src));
+            if (src.DataType.BitSize > dtFrom.BitSize)
+            {
+                src = m.Slice(dtFrom, src, 0);
+            }
+            var dst = RewriteOp(instr.Operands[0]);
+            m.Assign(dst, m.Convert(src, dtFrom, dtTo));
         }
 
         private void RewriteFload(PrimitiveType dt)

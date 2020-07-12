@@ -245,7 +245,7 @@ namespace Reko.Arch.Pdp11
             Expression dst;
             if (instr.Operands[1] is RegisterOperand && instr.DataWidth.Size == 1)
             {
-                dst = RewriteDst(instr.Operands[1], src, s => m.Cast(PrimitiveType.Int16, s));
+                dst = RewriteDst(instr.Operands[1], src, s => m.Convert(s, s.DataType, PrimitiveType.Int16));
             }
             else
             {

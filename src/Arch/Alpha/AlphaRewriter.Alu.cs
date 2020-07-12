@@ -36,7 +36,7 @@ namespace Reko.Arch.Alpha
             var e = cmp(op1, op2);
             if (e.DataType == PrimitiveType.Bool)
             {
-                e = m.Cast(dst.DataType, e);
+                e = m.Convert(e, e.DataType, dst.DataType);
             }
             m.Assign(dst, e);
         }
@@ -109,7 +109,7 @@ namespace Reko.Arch.Alpha
             src.DataType = dtSrc;
             if (dtSrc != dtDst)
             {
-                src = m.Cast(dtDst, src);
+                src = m.Convert(src, src.DataType, dtDst);
             }
             var dst = Rewrite(instr.Operands[0]);
             m.Assign(dst, src);
@@ -140,15 +140,19 @@ namespace Reko.Arch.Alpha
             m.Assign(dst, src);
         }
 
-        private void RewriteSt(PrimitiveType dtDst)
+        private void RewriteSt(PrimitiveType dtFrom, PrimitiveType dtTo = null)
         {
             var src = Rewrite(instr.Operands[0]);
-            if (src.DataType != dtDst)
+            if (dtTo != null)
             {
-                src = m.Cast(dtDst, src);
+                src = m.Convert(src, dtFrom, dtTo);
+            }
+            else if (src.DataType != dtFrom)
+            {
+                src = m.Slice(dtFrom, src, 0);
             }
             var dst = Rewrite(instr.Operands[1]);
-            dst.DataType = dtDst;
+            dst.DataType = dtTo ?? dtFrom;
             m.Assign(dst, src);
         }
 
@@ -161,9 +165,10 @@ namespace Reko.Arch.Alpha
 
         private Expression addl(Expression a, Expression b)
         {
-            return m.Cast(
-                PrimitiveType.Word64,
-                m.Slice(PrimitiveType.Int32, m.IAdd(a, b), 0));
+            return m.Convert(
+                m.Slice(PrimitiveType.Int32, m.IAdd(a, b), 0),
+                PrimitiveType.Int32,
+                PrimitiveType.Int64);
         }
 
         private Expression addq(Expression a, Expression b)
@@ -210,9 +215,12 @@ namespace Reko.Arch.Alpha
             if (b.IsZero)
                 return b;
 
-            return m.Cast(
-                PrimitiveType.Word64,
-                m.Slice(PrimitiveType.Int32, m.IMul(a, b), 0));
+            return m.Convert(
+                m.IMul(
+                    m.Slice(PrimitiveType.Int32, a, 0),
+                    m.Slice(PrimitiveType.Int32, b, 0)),
+                PrimitiveType.Int32,
+                PrimitiveType.Int64);
         }
 
         private Expression mulq(Expression a, Expression b)
@@ -254,9 +262,10 @@ namespace Reko.Arch.Alpha
 
         private Expression SExtend(Expression e)
         {
-            return m.Cast(
-                PrimitiveType.Word64,
-                m.Slice(PrimitiveType.Int32, e, 0));
+            return m.Convert(
+                m.Slice(PrimitiveType.Int32, e, 0),
+                PrimitiveType.Int32,
+                PrimitiveType.Word64);
         }
 
         private Expression s4addl(Expression a, Expression b)

@@ -146,17 +146,17 @@ namespace Reko.Arch.Blackfin
         private void RewriteMovx()
         {
             var src = Operand(1);
-            m.Assign(Reg(0), m.Cast(PrimitiveType.Word32, src));
+            m.Assign(Reg(0), m.Convert(src, src.DataType, PrimitiveType.Word32));
         }
 
         private void RewriteMovxb()
         {
-            m.Assign(Reg(0), m.Cast(PrimitiveType.Int32, m.Slice(PrimitiveType.SByte, Reg(1), 0)));
+            m.Assign(Reg(0), m.Convert(m.Slice(PrimitiveType.SByte, Reg(1), 0), PrimitiveType.SByte, PrimitiveType.Int32));
         }
 
         private void RewriteMovzb()
         {
-            m.Assign(Reg(0), m.Cast(PrimitiveType.Word32, m.Slice(PrimitiveType.Byte, Reg(1), 0)));
+            m.Assign(Reg(0), m.Convert(m.Slice(PrimitiveType.Byte, Reg(1), 0), PrimitiveType.Byte, PrimitiveType.Word32));
         }
 
         private void RewriteMul()

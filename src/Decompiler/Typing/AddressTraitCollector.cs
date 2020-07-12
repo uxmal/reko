@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Reko.Typing
 {
@@ -180,6 +181,11 @@ namespace Reko.Typing
                 handler.MemAccessTrait(null, program.Globals, program.Platform.PointerType.Size, eField!, v);
             // C is a pointer to tvField: [[c]] = ptr(tvField)
             handler.MemAccessTrait(basePointer, c, c.DataType.Size, eField!, 0);
+        }
+
+        public void VisitConversion(Conversion conversion)
+        {
+            conversion.Expression.Accept(this);
         }
 
 		public void VisitDereference(Dereference deref)

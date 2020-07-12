@@ -35,10 +35,10 @@ namespace Reko.ImageLoaders.MzExe.Pe
             ushort fixup = rdr.ReadLeUInt16();
             var rt = (ArmRt) (fixup >> 12);
             DebugEx.Verbose(PeImageLoader.trace, "  {0:X4} {1}", fixup, rt);
-            switch (fixup)
-            {
+            //switch (fixup)
+            //{
 
-            }
+            //}
         }
 
         public enum ArmRt

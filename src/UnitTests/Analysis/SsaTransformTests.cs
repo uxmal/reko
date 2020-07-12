@@ -2551,9 +2551,9 @@ proc1_exit:
     uses: CZ_2 = cond(r3)
 CZ_2: orig: CZ
     def:  CZ_2 = cond(r3)
-    uses: r3_3 = (int32) Test(ULE,CZ_2)
+    uses: r3_3 = CONVERT(Test(ULE,CZ_2), bool, int32)
 r3_3: orig: r3
-    def:  r3_3 = (int32) Test(ULE,CZ_2)
+    def:  r3_3 = CONVERT(Test(ULE,CZ_2), bool, int32)
 // proc1
 // Return size: 0
 define proc1
@@ -2562,7 +2562,7 @@ proc1_entry:
 	// succ:  l1
 l1:
 	CZ_2 = cond(r3)
-	r3_3 = (int32) Test(ULE,CZ_2)
+	r3_3 = CONVERT(Test(ULE,CZ_2), bool, int32)
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -2574,7 +2574,7 @@ proc1_exit:
                 var r3 = m.Register("r3");
 
                 m.Assign(CZ, m.Cond(r3));
-                m.Assign(r3, m.Cast(PrimitiveType.Int32, m.Test(ConditionCode.ULE, CZ)));
+                m.Assign(r3, m.Convert(m.Test(ConditionCode.ULE, CZ), PrimitiveType.Bool, PrimitiveType.Int32));
                 m.Return();
             });
         }

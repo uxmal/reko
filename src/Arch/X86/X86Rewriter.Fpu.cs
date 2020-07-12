@@ -57,8 +57,7 @@ namespace Reko.Arch.X86
                     var opRight = SrcOp(instrCur.Operands[0]);
                     if (opRight.DataType.BitSize < opLeft.DataType.BitSize)
                     {
-                        //                        opRight = m.Convert(opRight, opRight.DataType, opLeft.DataType);
-                        opRight = m.Cast(opLeft.DataType, opRight);
+                        opRight = m.Convert(opRight, opRight.DataType, opLeft.DataType);
                     }
                     m.Assign(
                         opLeft,
@@ -114,7 +113,8 @@ namespace Reko.Arch.X86
         private void RewriteFbstp()
         {
             instrCur.Operands[0].Width = PrimitiveType.Bcd80;
-            m.Assign(SrcOp(instrCur.Operands[0]), m.Cast(instrCur.Operands[0].Width, orw.FpuRegister(0, state)));
+            var src = orw.FpuRegister(0, state);
+            m.Assign(SrcOp(instrCur.Operands[0]), m.Convert(src, src.DataType, instrCur.Operands[0].Width));
             ShrinkFpuStack(1);
         }
 
@@ -180,13 +180,14 @@ namespace Reko.Arch.X86
 
         private void RewriteFicom(bool pop)
         {
+            var src = SrcOp(instrCur.Operands[0]);
+            var dtSrc = PrimitiveType.Create(Domain.SignedInt, src.DataType.BitSize);
             m.Assign(
                 orw.AluRegister(Registers.FPUF),
                 m.Cond(
                     m.FSub(
                         orw.FpuRegister(0, state),
-                        m.Cast(PrimitiveType.Real64,
-                            SrcOp(instrCur.Operands[0])))));
+                        m.Convert(src, dtSrc, PrimitiveType.Real64))));
             if (pop)
                 ShrinkFpuStack(1);
         }
@@ -197,7 +198,7 @@ namespace Reko.Arch.X86
             var iType = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
             m.Assign(
                 orw.FpuRegister(0, state),
-                m.Cast(PrimitiveType.Real64, SrcOp(instrCur.Operands[0], iType)));
+                m.Convert(SrcOp(instrCur.Operands[0], iType), iType, PrimitiveType.Real64));
         }
 
         private void RewriteFincstp()
@@ -208,18 +209,20 @@ namespace Reko.Arch.X86
 
         private void RewriteFist(bool pop)
         {
-            instrCur.Operands[0].Width = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
-            m.Assign(SrcOp(instrCur.Operands[0]), m.Cast(instrCur.Operands[0].Width, orw.FpuRegister(0, state)));
+            var src = orw.FpuRegister(0, state);
+            var dtDst = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
+            m.Assign(SrcOp(instrCur.Operands[0]), m.Convert(src, src.DataType, dtDst));
             if (pop)
                 ShrinkFpuStack(1);
         }
 
         private void RewriteFistt(bool pop)
         {
-            instrCur.Operands[0].Width = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
+            var dtSrc = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
+            instrCur.Operands[0].Width = dtSrc;
             var fpuReg = orw.FpuRegister(0, state);
             var trunc = host.PseudoProcedure("trunc", fpuReg.DataType, fpuReg);
-            m.Assign(SrcOp(instrCur.Operands[0]), m.Cast(instrCur.Operands[0].Width, trunc));
+            m.Assign(SrcOp(instrCur.Operands[0]), m.Convert(trunc, trunc.DataType, dtSrc));
             if (pop)
                 ShrinkFpuStack(1);
         }
@@ -239,9 +242,10 @@ namespace Reko.Arch.X86
             var dst = FpuRegister(0);
             if (src.DataType.Size != dst.DataType.Size)
             {
-                src = m.Cast(
-                    PrimitiveType.Create(Domain.Real, dst.DataType.BitSize),
-                    src);
+                src = m.Convert(
+                    src,
+                    src.DataType,
+                    PrimitiveType.Create(Domain.Real, dst.DataType.BitSize));
             }
             m.Assign(dst, src);
         }
@@ -329,9 +333,10 @@ namespace Reko.Arch.X86
             Expression dst = SrcOp(instrCur.Operands[0]);
             if (src.DataType.Size != dst.DataType.Size)
             {
-                src = m.Cast(
-                    PrimitiveType.Create(Domain.Real, dst.DataType.BitSize),
-                    src);
+                src = m.Convert(
+                    src,
+                    src.DataType,
+                    PrimitiveType.Create(Domain.Real, dst.DataType.BitSize));
             }
             m.Assign(dst, src);
             if (pop)
@@ -406,8 +411,8 @@ namespace Reko.Arch.X86
             }
             if (nextInstr.Mnemonic == Mnemonic.and)
             {
-                RegisterOperand? acc = nextInstr.Operands[0] as RegisterOperand;
-                ImmediateOperand? imm = nextInstr.Operands[1] as ImmediateOperand;
+                var acc = nextInstr.Operands[0] as RegisterOperand;
+                var imm = nextInstr.Operands[1] as ImmediateOperand;
                 if (imm == null || acc == null)
                     return false;
                 int mask = imm.Value.ToInt32();
@@ -448,8 +453,8 @@ namespace Reko.Arch.X86
             }
             if (nextInstr.Mnemonic == Mnemonic.test)
             {
-                RegisterOperand? acc = nextInstr.Operands[0] as RegisterOperand;
-                ImmediateOperand? imm = nextInstr.Operands[1] as ImmediateOperand;
+                var acc = nextInstr.Operands[0] as RegisterOperand;
+                var imm = nextInstr.Operands[1] as ImmediateOperand;
                 if (imm == null || acc == null)
                     return false;
                 int mask = imm.Value.ToInt32();
@@ -698,10 +703,18 @@ namespace Reko.Arch.X86
             return orw.FpuRegister(reg, state);
         }
 
-        public Expression MaybeCast(DataType? type, Expression e)
+        public Expression MaybeConvert(DataType? type, Expression e)
         {
             if (type != null)
-                return new Cast(type, e);
+                return m.Convert(e, e.DataType, type);
+            else
+                return e;
+        }
+
+        public Expression MaybeSlice(DataType type, Expression e)
+        {
+            if (type.BitSize < e.DataType.BitSize)
+                return m.Slice(type, e, 0);
             else
                 return e;
         }

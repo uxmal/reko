@@ -339,6 +339,12 @@ namespace Reko.Analysis
             return BitRange.Empty;
         }
 
+        public BitRange VisitConversion(Conversion conversion)
+        {
+            return conversion.Expression.Accept(this);
+        }
+
+
         public BitRange VisitDereference(Dereference deref)
         {
             throw new NotImplementedException();

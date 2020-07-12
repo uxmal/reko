@@ -169,7 +169,9 @@ namespace Reko.Arch.M68k
             var dReg = binder.EnsureRegister(((RegisterOperand) instr.Operands[0]).Register);
             m.Assign(
                 dReg,
-                m.Cast(dtDst, m.Cast(dtSrc, dReg)));
+                m.Convert(
+                    m.Slice(dtSrc, dReg, 0),
+                    dtSrc, dtDst));
             m.Assign(
                 orw.FlagGroup(FlagM.NF | FlagM.ZF),
                 m.Cond(dReg));
@@ -179,9 +181,8 @@ namespace Reko.Arch.M68k
         {
             var dReg = orw.RewriteSrc(instr.Operands[0], instr.Address);
             m.Assign(
-                dReg, 
-                m.Cast(PrimitiveType.Int32,
-                    m.Cast(PrimitiveType.SByte, dReg)));
+                dReg,
+                m.Convert(m.Slice(PrimitiveType.SByte, dReg, 0), PrimitiveType.SByte, PrimitiveType.Int32));
             m.Assign(
                 orw.FlagGroup(FlagM.NF | FlagM.ZF),
                 m.Cond(dReg));
@@ -361,8 +362,18 @@ namespace Reko.Arch.M68k
                 rem = binder.CreateTemporary(dt);
                 quot = binder.CreateTemporary(dt);
                 dividend = binder.EnsureRegister(((RegisterOperand) instr.Operands[1]).Register);
-                m.Assign(rem, m.Cast(rem.DataType, m.Remainder(dividend, src)));
-                m.Assign(quot, m.Cast(quot.DataType, op(dividend, src)));
+                var r = m.Remainder(dividend, src);
+                if (r.DataType.BitSize != rem.DataType.BitSize)
+                {
+                    r = m.Convert(r, r.DataType, rem.DataType);
+                }
+                var q = op(dividend, src);
+                if (q.DataType.BitSize != quot.DataType.BitSize)
+                {
+                    q = m.Convert(q, q.DataType, quot.DataType);
+                }
+                m.Assign(rem, r);
+                m.Assign(quot, q);
                 m.Assign(dividend, m.Seq(rem, quot));
             }
             else
@@ -499,7 +510,7 @@ namespace Reko.Arch.M68k
                 {
                     var idx = orw.Combine(null, indop.Index, instr.Address);
                     if (indop.index_reg_width!.BitSize != 32)
-                        idx = m.Cast(PrimitiveType.Word32, m.Slice(PrimitiveType.Int16, idx, 0));
+                        idx = m.Convert(m.Slice(PrimitiveType.Int16, idx, 0), PrimitiveType.Int16, PrimitiveType.Int32);
                     if (indop.IndexScale > 1)
                         idx = m.IMul(idx, m.Int32(indop.IndexScale));
                     ea = orw.Combine(ea, idx);
@@ -563,7 +574,7 @@ namespace Reko.Arch.M68k
             if (GetRegister(instr.Operands[0]) == Registers.ccr)
             {
                 // move from ccr.
-                var src = m.Cast(PrimitiveType.UInt16, binder.EnsureRegister(Registers.ccr));
+                var src = m.Convert(binder.EnsureRegister(Registers.ccr), PrimitiveType.Byte, PrimitiveType.UInt16);
                 var dst = orw.RewriteDst(instr.Operands[1], instr.Address, PrimitiveType.UInt16, src, (s, d) => s);
                 return;
             }

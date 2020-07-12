@@ -515,7 +515,7 @@ namespace Reko.Arch.Vax
                 }
                 else
                 {
-                    return m.Cast(width, reg);
+                    return m.Slice(width, reg, 0);
                 }
 
             case ImmediateOperand immOp:
@@ -601,7 +601,7 @@ namespace Reko.Arch.Vax
                 {
                     var tmp = binder.CreateTemporary(width);
                     var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(32 - width.BitSize));
-                    m.Assign(tmp, fn(m.Cast(width, reg)));
+                    m.Assign(tmp, fn(m.Slice(width, reg, 0)));
                     m.Assign(tmpHi, m.Slice(tmpHi.DataType, reg, width.BitSize));
                     m.Assign(reg, m.Seq(tmpHi, tmp));
                     return tmp;

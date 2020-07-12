@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -201,12 +201,12 @@ namespace Reko.Arch.Arm.AArch64
             else if (Registers.IsIntegerRegister(srcReg))
             {
                 var intType = PrimitiveType.Create(Domain.SignedInt, (int)srcReg.BitSize);
-                m.Assign(dst, m.Cast(realType, m.Cast(intType, src)));
+                m.Assign(dst, m.Convert(src, intType, realType));
             }
             else if (instr.vectorData == VectorData.Invalid)
             {
                 var intType = PrimitiveType.Create(Domain.SignedInt, (int)srcReg.BitSize);
-                m.Assign(dst, m.Cast(realType, m.Cast(intType, src)));
+                m.Assign(dst, m.Convert(src, intType, realType));
             }
             else
             {

@@ -243,7 +243,7 @@ namespace Reko.Arch.LatticeMico
             var dst = Rewrite(instr.Operands[0]);
             if (src.DataType.BitSize < dst.DataType.BitSize)
             {
-                src = m.Cast(dt, src);
+                src = m.Convert(src, src.DataType, dt);
             }
             m.Assign(dst, src);
         }
@@ -260,8 +260,7 @@ namespace Reko.Arch.LatticeMico
         {
             var src = Rewrite(instr.Operands[1]);
             var dst = Rewrite(instr.Operands[0]);
-            src = m.Cast(dt, src);
-            m.Assign(dst, m.Cast(PrimitiveType.Int32, src));
+            m.Assign(dst, m.Convert(m.Slice(dt, src, 0), dt, PrimitiveType.Int32));
         }
 
         private void RewriteStore()

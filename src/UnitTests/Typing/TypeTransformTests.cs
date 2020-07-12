@@ -53,15 +53,9 @@ namespace Reko.UnitTests.Typing
             aen.Transform(program);
             EquivalenceClassBuilder eq = new EquivalenceClassBuilder(factory, store, listener);
             eq.Build(program);
-#if OLD
-			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, program.Architecture);
-			TraitCollector coll = new TraitCollector(factory, store, dtb, program);
-			coll.CollectProgramTraits(program);
-#else
             TypeCollector coll = new TypeCollector(factory, store, program, listener);
             coll.CollectTypes();
             store.BuildEquivalenceClassDataTypes(factory);
-#endif
 
             TypeVariableReplacer tvr = new TypeVariableReplacer(store);
             tvr.ReplaceTypeVariables();

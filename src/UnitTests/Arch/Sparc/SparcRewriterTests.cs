@@ -340,7 +340,7 @@ namespace Reko.UnitTests.Arch.Sparc
             Given_UInt32s(0x8BA0188A);  // fitos   %f10,%f5
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|f5 = (real32) f10");
+                "1|L--|f5 = CONVERT(f10, int32, real32)");
         }
 
         [Test]
@@ -349,7 +349,7 @@ namespace Reko.UnitTests.Arch.Sparc
             Given_UInt32s(0xC248A044); //ldsb\t[%g2+68],%g1");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|g1 = (int32) Mem0[g2 + 68<i32>:int8]");
+                "1|L--|g1 = CONVERT(Mem0[g2 + 68<i32>:int8], int8, int32)");
         }
 
         [Test]
@@ -358,7 +358,7 @@ namespace Reko.UnitTests.Arch.Sparc
             Given_UInt32s(0xC230BFF0);// sth\t%g1,[%g2+68]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[g2 + -16<i32>:word16] = (word16) g1");
+                "1|L--|Mem0[g2 + -16<i32>:word16] = SLICE(g1, word16, 0)");
         }
 
         [Test]
@@ -367,7 +367,7 @@ namespace Reko.UnitTests.Arch.Sparc
             Given_UInt32s(0xC230800C);//sth\t%g1,[%g2+%i4]");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[g2 + o4:word16] = (word16) g1");
+                "1|L--|Mem0[g2 + o4:word16] = SLICE(g1, word16, 0)");
         }
 
         [Test]
@@ -376,7 +376,7 @@ namespace Reko.UnitTests.Arch.Sparc
             Given_UInt32s(0xC2308000);//sth\t%g1,[%g2+%g0]");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[g2:word16] = (word16) g1");
+                "1|L--|Mem0[g2:word16] = SLICE(g1, word16, 0)");
         }
 
         [Test]

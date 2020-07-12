@@ -65,15 +65,15 @@ l10000027:
 	goto l1000005E
 	// succ:  l1000005E
 l1000002F:
-	eax = (int32) Mem0[ebp - 4<32>:word16]
+	eax = CONVERT(Mem0[ebp - 4<32>:word16], word16, int32)
 	ecx = Mem0[ebp + 8<32>:word32]
-	edx = (int32) Mem0[ecx + eax:byte]
+	edx = CONVERT(Mem0[ecx + eax:byte], byte, int32)
 	SZO = cond(edx & edx)
 	C = false
 	branch Test(EQ,Z) l1000005A
 	// succ:  l1000003E l1000005A
 l1000003E:
-	eax = (int32) Mem0[ebp - 4<32>:word16]
+	eax = CONVERT(Mem0[ebp - 4<32>:word16], word16, int32)
 	SCZO = cond(eax - 0x7FFF<32>)
 	branch Test(GE,SO) l1000005A
 	// succ:  l10000049 l1000005A

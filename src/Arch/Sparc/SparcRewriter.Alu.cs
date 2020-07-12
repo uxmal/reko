@@ -90,7 +90,7 @@ namespace Reko.Arch.Sparc
             if (size.Size < dst.DataType.Size)
             {
                 size = (size.Domain == Domain.SignedInt) ? PrimitiveType.Int32 : PrimitiveType.Word32;
-                src = m.Cast(size, src);
+                src = m.Convert(src, src.DataType, size);
             }
             m.Assign(dst, src);
         }
@@ -178,7 +178,9 @@ namespace Reko.Arch.Sparc
             var src = RewriteOp(instrCur.Operands[0]);
             var dst = RewriteMemOp(instrCur.Operands[1], size);
             if (size.Size < src.DataType.Size)
-                src = m.Cast(size, src);
+            {
+                src = m.Slice(size, src, 0);
+            }
             m.Assign(dst, src);
         }
     }

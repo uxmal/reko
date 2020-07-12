@@ -354,6 +354,12 @@ namespace Reko.Typing
             return exp;
         }
 
+        public override Expression VisitConversion(Conversion conversion)
+        {
+            var exp = conversion.Expression.Accept(this);
+            return new Cast(DataTypeOf(conversion), exp);
+        }
+
         private bool TypesAreCompatible(DataType dtSrc, DataType dtDst)
         {
             if (compTypes.Compare(dtSrc, dtDst) == 0)

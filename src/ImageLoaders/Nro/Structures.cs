@@ -56,10 +56,10 @@ namespace Reko.ImageLoaders.Nro
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public NroSegmentHeader[] segments0;
         public UInt32 bss_size;
-        private UInt32 reserved0;
+        public UInt32 reserved0;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
         public byte[] build_id;
-        private UInt32 reserved1;
+        public UInt32 reserved1;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public NroSegmentHeader[] segments1;
     }

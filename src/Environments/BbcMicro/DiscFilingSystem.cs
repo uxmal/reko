@@ -164,9 +164,9 @@ namespace Reko.Environments.BbcMicro
 
     public class DFSEntry : ArchiveDirectoryEntry
     {
-        public Address LoadAddress { get; internal set; }
-        public Address ExecAddress { get; internal set; }
-        public uint Length { get; internal set; }
+        public Address LoadAddress { get; set; }
+        public Address ExecAddress { get; set; }
+        public uint Length { get; set; }
         public string Name { get; set; }
     }
 }

@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Arch.Blackfin
             Given_HexString("20E1E803");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|R0 = (word32) 0x3E8<16>");
+                "1|L--|R0 = CONVERT(0x3E8<16>, word16, word32)");
         }
 
         [Test]
@@ -125,7 +125,7 @@ namespace Reko.UnitTests.Arch.Blackfin
             Given_HexString("4043");
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|R0 = (word32) SLICE(R0, byte, 0)");
+                "1|L--|R0 = CONVERT(SLICE(R0, byte, 0), byte, word32)");
         }
 
         [Test]
@@ -134,7 +134,7 @@ namespace Reko.UnitTests.Arch.Blackfin
             Given_HexString("0143");
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|R1 = (int32) SLICE(R0, int8, 0)");
+                "1|L--|R1 = CONVERT(SLICE(R0, int8, 0), int8, int32)");
         }
 
         [Test]

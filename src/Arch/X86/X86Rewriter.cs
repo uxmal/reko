@@ -163,12 +163,12 @@ namespace Reko.Arch.X86
                 case Mnemonic.cvtps2pd: RewriteCvtps2pi("__cvtps2pd", PrimitiveType.Real32, PrimitiveType.Real64); break;
                 case Mnemonic.cvtdq2ps: RewriteCvtps2pi("__cvtdq2ps", PrimitiveType.Int64, PrimitiveType.Real32); break;
                 case Mnemonic.cvtsd2si: RewriteCvts2si(PrimitiveType.Real64); break;
-                case Mnemonic.cvtsd2ss: RewriteCvtToReal(PrimitiveType.Real32); break;
+                case Mnemonic.cvtsd2ss: RewriteCvtToReal(PrimitiveType.Real64, PrimitiveType.Real32); break;
                 case Mnemonic.cvtsi2ss:
-                case Mnemonic.vcvtsi2ss: RewriteCvtToReal(PrimitiveType.Real32); break;
+                case Mnemonic.vcvtsi2ss: RewriteCvtIntToReal(PrimitiveType.Real32); break;
                 case Mnemonic.cvtsi2sd:
-                case Mnemonic.vcvtsi2sd: RewriteCvtToReal(PrimitiveType.Real64); break;
-                case Mnemonic.cvtss2sd: RewriteCvtToReal(PrimitiveType.Real64); break;
+                case Mnemonic.vcvtsi2sd: RewriteCvtIntToReal(PrimitiveType.Real64); break;
+                case Mnemonic.cvtss2sd: RewriteCvtToReal(PrimitiveType.Real32, PrimitiveType.Real64); break;
                 case Mnemonic.cvtss2si: RewriteCvts2si(PrimitiveType.Real32); break;
                 case Mnemonic.cvttsd2si: RewriteCvtts2si(PrimitiveType.Real64); break;
                 case Mnemonic.cvttss2si: RewriteCvtts2si(PrimitiveType.Real32); break;
@@ -644,7 +644,7 @@ namespace Reko.Arch.X86
                 // the whole 64-bit register, then overwriting the bottom 32 bits. 
                 var reg = (RegisterStorage) idDst.Storage;
                 idDst = binder.EnsureRegister(Registers.Gp64BitRegisters[reg.Number]);
-                src = m.Cast(PrimitiveType.UInt64, src);
+                src = m.Convert(src, src.DataType, PrimitiveType.UInt64);
             }
             m.Assign(idDst, src);
         }

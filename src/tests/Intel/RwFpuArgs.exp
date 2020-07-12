@@ -16,21 +16,21 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	Top = Top - 1<i8>
-	ST[Top:real64] = (real64) Mem0[ds:0x300<16>:real32]
+	ST[Top:real64] = CONVERT(Mem0[ds:0x300<16>:real32], real32, real64)
 	Top = Top - 1<i8>
-	ST[Top:real64] = (real64) Mem0[ds:0x304<16>:real32]
+	ST[Top:real64] = CONVERT(Mem0[ds:0x304<16>:real32], real32, real64)
 	sp = sp - 2<i16>
 	Mem0[ss:sp:word16] = 0x308<16>
 	call fn0C00_0024 (retsize: 2;)
 	Top = Top - 1<i8>
 	ST[Top:real64] = 0.0
-	Mem0[ds:0x30C<16>:real32] = (real32) ST[Top:real64]
+	Mem0[ds:0x30C<16>:real32] = CONVERT(ST[Top:real64], real64, real32)
 	Top = Top + 1<i8>
 	ax = Mem0[ds:0x308<16>:word16]
 	sp = sp - 2<i16>
 	Mem0[ss:sp:word16] = ax
 	call fn0C00_0031 (retsize: 2;)
-	Mem0[ds:0x30C<16>:real32] = (real32) ST[Top:real64]
+	Mem0[ds:0x30C<16>:real32] = CONVERT(ST[Top:real64], real64, real32)
 	Top = Top + 1<i8>
 	sp = sp + 4<16>
 	SCZO = cond(sp)
@@ -59,9 +59,9 @@ l0C00_0024:
 	Mem0[ss:sp:word16] = bp
 	bp = sp
 	bx = Mem0[ss:bp + 4<16>:word16]
-	Mem0[ds:bx:real32] = (real32) ST[Top:real64]
+	Mem0[ds:bx:real32] = CONVERT(ST[Top:real64], real64, real32)
 	Top = Top + 1<i8>
-	Mem0[ds:bx + 4<16>:real32] = (real32) ST[Top:real64]
+	Mem0[ds:bx + 4<16>:real32] = CONVERT(ST[Top:real64], real64, real32)
 	Top = Top + 1<i8>
 	bp = Mem0[ss:sp:word16]
 	sp = sp + 2<i16>
@@ -91,7 +91,7 @@ l0C00_0031:
 	bp = sp
 	bx = Mem0[ss:bp + 4<16>:word16]
 	Top = Top - 1<i8>
-	ST[Top:real64] = (real64) Mem0[ds:bx:real32]
+	ST[Top:real64] = CONVERT(Mem0[ds:bx:real32], real32, real64)
 	bp = Mem0[ss:sp:word16]
 	sp = sp + 2<i16>
 	return

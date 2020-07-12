@@ -155,7 +155,10 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteRevsh()
         {
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var intrinsic = m.Cast(PrimitiveType.Int32, host.PseudoProcedure("__rev_16", PrimitiveType.Word16, m.Slice(PrimitiveType.Word16, this.Operand(Src1()), 0)));
+            var intrinsic = m.Convert(
+                host.PseudoProcedure("__rev_16", PrimitiveType.Word16, m.Slice(PrimitiveType.Word16, this.Operand(Src1()), 0)),
+                PrimitiveType.Word16,
+                PrimitiveType.Int32);
             m.Assign(opDst, intrinsic);
         }
 
@@ -251,7 +254,7 @@ namespace Reko.Arch.Arm.AArch32
             m.Goto(m.IAdd(
                 instr.Address + this.pcValueOffset,
                 m.IMul(
-                    m.Cast(PrimitiveType.UInt32, m.Mem(elemSize, ea)),
+                    m.Convert(m.Mem(elemSize, ea), elemSize, PrimitiveType.UInt32),
                     2)));
         }
 
@@ -295,7 +298,7 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (dtDst != dtSrc)
             {
-                src = m.Cast(dtDst, src);
+                src = m.Convert(src, dtSrc, dtDst);
             }
             if (!mem.PreIndex && instr.Writeback)
             {
@@ -353,7 +356,7 @@ namespace Reko.Arch.Arm.AArch32
             var opDst = this.Operand(Src1());
             if (size != PrimitiveType.Word32)
             {
-                opSrc = m.Cast(size, opSrc);
+                opSrc = m.Slice(size, opSrc, 0);
             }
             m.Assign(opDst, opSrc);
             MaybePostOperand(Src1());
@@ -486,11 +489,11 @@ namespace Reko.Arch.Arm.AArch32
 
             var left = Operand(Src1());
             left = hiLeft ? m.Sar(left, m.Int32(16)) : left;
-            left = m.Cast(dt, left);
+            left = m.Convert(left, left.DataType, dt);
 
             var right = Operand(Src2());
             right = hiRight ? m.Sar(right, m.Int32(16)) : right;
-            right = m.Cast(dt, right);
+            right = m.Convert(right, right.DataType, dt);
 
             m.Assign(dst, m.IAdd(op(left, right), Operand(Src3())));
             m.Assign(Q(), m.Cond(dst));
@@ -546,11 +549,11 @@ namespace Reko.Arch.Arm.AArch32
 
             var left = Operand(Src1());
             left = hiLeft ? m.Sar(left, m.Int32(16)) : left;
-            left = m.Cast(dt, left);
+            left = m.Convert(left, left.DataType, dt);
 
             var right = Operand(Src2());
             right = hiRight ? m.Sar(right, m.Int32(16)) : right;
-            right = m.Cast(dt, right);
+            right = m.Convert(right, right.DataType, dt);
 
             m.Assign(dst, mul(left, right));
         }
@@ -652,13 +655,11 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteSbfx()
         {
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var src = m.Cast(
-                PrimitiveType.Int32,
-                m.Slice(
+            var src = m.Slice(
                     this.Operand(Src1()),
-                    ((ImmediateOperand)Src2()).Value.ToInt32(),
-                    ((ImmediateOperand)Src3()).Value.ToInt32()));
-            m.Assign(dst, src);
+                    ((ImmediateOperand) Src2()).Value.ToInt32(),
+                    ((ImmediateOperand) Src3()).Value.ToInt32());
+            m.Assign(dst, m.Convert(src, src.DataType, PrimitiveType.Int32));
         }
 
 
@@ -680,11 +681,11 @@ namespace Reko.Arch.Arm.AArch32
 
             var left = Operand(Src2());
             left = hiLeft ? m.Sar(left, m.Int32(16)) : left;
-            left = m.Cast(dt, left);
+            left = m.Convert(left, left.DataType, dt);
 
             var right = Operand(Src3());
             right = hiRight ? m.Sar(right, m.Int32(16)) : right;
-            right = m.Cast(dt, right);
+            right = m.Convert(right, right.DataType, dt);
 
             m.Assign(dst, m.IAdd(op(left, right), dst));
         }
@@ -700,11 +701,11 @@ namespace Reko.Arch.Arm.AArch32
             var right = Operand(Src3());
 
             var product1 = mul(
-                m.Cast(dt, left),
-                swap ? m.Sar(right, m.Int32(16)) : (Expression)m.Cast(dt, right));
+                m.Convert(left, left.DataType, dt),
+                swap ? m.Sar(right, m.Int32(16)) : (Expression)m.Convert(right, right.DataType, dt));
             var product2 = mul(
                 m.Sar(left, m.Int32(16)),
-                swap ? m.Cast(dt, right) : (Expression)m.Sar(right, m.Int32(16)));
+                swap ? m.Convert(right, right.DataType, dt) : (Expression)m.Sar(right, m.Int32(16)));
 
             m.Assign(dst, m.IAdd(dst, addSub(product1, product2)));
         }
@@ -716,11 +717,11 @@ namespace Reko.Arch.Arm.AArch32
             var right = Operand(Src2());
 
             var product1 = mul(
-                m.Cast(dt, left),
-                swap ? m.Sar(right, m.Int32(16)) : (Expression)m.Cast(dt, right));
+                m.Convert(left, left.DataType, dt),
+                swap ? m.Sar(right, m.Int32(16)) : (Expression)m.Convert(right, right.DataType, dt));
             var product2 = mul(
                 m.Sar(left, m.Int32(16)),
-                swap ? m.Cast(dt, right) : (Expression)m.Sar(right, m.Int32(16)));
+                swap ? m.Convert(right, right.DataType, dt) : (Expression)m.Sar(right, m.Int32(16)));
 
             m.Assign(dst, m.IAdd(dst, addSub(product1, product2)));
         }
@@ -730,7 +731,8 @@ namespace Reko.Arch.Arm.AArch32
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var fac1 = this.Operand(Src1());
             var fac2 = this.Operand(Src2());
-            fac2 = m.Cast(PrimitiveType.Int16, highPart ? m.Sar(fac2, m.Int32(16)) : fac2);
+            var src = highPart ? m.Sar(fac2, m.Int32(16)) : fac2;
+            fac2 = m.Convert(src, src.DataType, PrimitiveType.Int16); 
 
             var acc = this.Operand(Src3());
             m.Assign(dst, m.IAdd(
@@ -749,9 +751,8 @@ namespace Reko.Arch.Arm.AArch32
                 
             var mul = m.SMul(src1, src2);
             mul.DataType = PrimitiveType.Int64;
-            m.Assign(dst, fn(
-                m.Cast(PrimitiveType.Int32, m.Sar(mul, m.Int32(32))),
-                src3));
+            var src = m.Sar(mul, m.Int32(32));
+            m.Assign(dst, fn(m.Convert(src, src.DataType, PrimitiveType.Int32), src3));
         }
 
         private void RewriteSmmul()
@@ -762,7 +763,8 @@ namespace Reko.Arch.Arm.AArch32
 
             var mul = m.SMul(src1, src2);
             mul.DataType = PrimitiveType.Int64;
-            m.Assign(dst, m.Cast(PrimitiveType.Int32, m.Sar(mul, m.Int32(32))));
+            var src = m.Sar(mul, m.Int32(32));
+            m.Assign(dst, m.Convert(src, src.DataType, PrimitiveType.Int32));
         }
 
         private void RewriteSmusd()
@@ -783,7 +785,8 @@ namespace Reko.Arch.Arm.AArch32
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var fac1 = this.Operand(Src1());
             var fac2 = this.Operand(Src2());
-            fac2 = m.Cast(PrimitiveType.Int16, highPart ? m.Sar(fac2, m.Int32(16)) : fac2);
+            var src = highPart ? m.Sar(fac2, m.Int32(16)) : fac2;
+            fac2 = m.Convert(src, src.DataType, PrimitiveType.Int16);
             m.Assign(dst, m.Sar(
                 m.SMul(fac1, fac2),
                 m.Int32(16)));
@@ -882,13 +885,11 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteUbfx()
         {
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var src = m.Cast(
-                PrimitiveType.UInt32,
-                m.Slice(
+            var src = m.Slice(
                     this.Operand(Src1()),
-                    ((ImmediateOperand)Src2()).Value.ToInt32(),
-                    ((ImmediateOperand)Src3()).Value.ToInt32()));
-            m.Assign(dst, src);
+                    ((ImmediateOperand) Src2()).Value.ToInt32(),
+                    ((ImmediateOperand) Src3()).Value.ToInt32());
+            m.Assign(dst, m.Convert(src, src.DataType, PrimitiveType.UInt32));
         }
 
         private void RewriteUmaal()
@@ -903,8 +904,8 @@ namespace Reko.Arch.Arm.AArch32
                 ((RegisterOperand)Src1()).Register,
                 ((RegisterOperand)Dst()).Register);
             m.Assign(tmp, m.UMul(rn, rm));
-            m.Assign(tmp, m.IAdd(tmp, m.Cast(PrimitiveType.UInt64, hi)));
-            m.Assign(dst, m.IAdd(tmp, m.Cast(PrimitiveType.UInt64, lo)));
+            m.Assign(tmp, m.IAdd(tmp, m.Convert(hi, hi.DataType, PrimitiveType.UInt64)));
+            m.Assign(dst, m.IAdd(tmp, m.Convert(lo, lo.DataType, PrimitiveType.UInt64)));
         }
 
         private void RewriteUmlal()
@@ -990,7 +991,11 @@ namespace Reko.Arch.Arm.AArch32
             {
                 src = m.Shr(src, Operand(instr.ShiftValue));
             }
-            src = m.Cast(dt, src);
+            if (dt.BitSize < src.DataType.BitSize)
+            {
+                src = m.Slice(dt, src, 0);
+            }
+            src = m.Convert(src, src.DataType, dst.DataType);
             m.Assign(dst, m.IAdd(this.Operand(Src1()), src));
         }
 
@@ -1002,8 +1007,11 @@ namespace Reko.Arch.Arm.AArch32
             {
                 src = m.Shr(src,Operand(instr.ShiftValue));
             }
-            src = m.Cast(dtSrc, src);
-            src = m.Cast(dtDst, src);
+            if (dtSrc.BitSize < src.DataType.BitSize)
+            {
+                src = m.Slice(dtSrc, src, 0);
+            }
+            src = m.Convert(src, dtSrc, dtDst);
             m.Assign(dst, src);
         }
 

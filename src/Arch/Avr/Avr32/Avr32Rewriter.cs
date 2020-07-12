@@ -495,7 +495,11 @@ namespace Reko.Arch.Avr.Avr32
         private void RewriteCast(PrimitiveType dtFrom, PrimitiveType dtTo)
         {
             var src = RewriteOp(0);
-            var dst = RewriteOpDst(0, m.Cast(dtTo, m.Cast(dtFrom, src)));
+            if (src.DataType.BitSize > dtFrom.BitSize)
+            {
+                src = m.Slice(dtFrom, src, 0);
+            }
+            var dst = RewriteOpDst(0, m.Convert(src, dtFrom, dtTo));
             EmitCc(NZC, dst);
         }
 
@@ -572,7 +576,7 @@ namespace Reko.Arch.Avr.Avr32
             var src = RewriteOp(1);
             if (src.DataType.BitSize < instr.Operands[0].Width.BitSize)
             {
-                src = m.Cast(dtDst, src);
+                src = m.Convert(src, dtCast, dtDst);
             }
             RewriteOpDst(0, src);
         }
@@ -974,7 +978,7 @@ namespace Reko.Arch.Avr.Avr32
             }
             else
             {
-                src = m.Cast(PrimitiveType.Word32, Condition());
+                src = m.Convert(Condition(), PrimitiveType.Bool, PrimitiveType.Word32);
             }
             RewriteOpDst(0, src);
         }

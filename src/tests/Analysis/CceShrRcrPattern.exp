@@ -8,7 +8,7 @@ main_entry:
 l1:
 	v7_11 = SEQ(r1, r2) >>u 1<8>
 	r1_2 = SLICE(v7_11, word32, 32)
-	r2_5 = (word32) v7_11
+	r2_5 = CONVERT(v7_11, uint64, word32)
 	Mem7[0x3000<32>:word32] = r2_5
 	Mem8[0x3004<32>:word32] = r1_2
 	return

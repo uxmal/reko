@@ -199,7 +199,6 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 listener.Warn(loc, $"Unimplemented PowerPC64 relocation type {rt}.");
                 return symbol;
             }
-            return symbol;
         }
 
         public override string RelocationTypeToString(uint type)

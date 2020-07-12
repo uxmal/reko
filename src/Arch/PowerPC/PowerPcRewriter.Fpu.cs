@@ -59,7 +59,8 @@ namespace Reko.Arch.PowerPC
         {
             var dst = RewriteOperand(instr.Operands[0]);
             var src = RewriteOperand(instr.Operands[1]);
-            m.Assign(dst, m.Cast(PrimitiveType.Real64, src));
+            var dtSrc = PrimitiveType.Create(Domain.SignedInt, src.DataType.BitSize);
+            m.Assign(dst, m.Convert(src, dtSrc, PrimitiveType.Real64));
         }
 
         public void RewriteFcmpo()
@@ -110,7 +111,7 @@ namespace Reko.Arch.PowerPC
         {
             var dst = RewriteOperand(instr.Operands[0]);
             var src = RewriteOperand(instr.Operands[1]);
-            m.Assign(dst, m.Cast(PrimitiveType.Int32, src));
+            m.Assign(dst, m.Convert(src, PrimitiveType.Real64, PrimitiveType.Int32));
         }
 
         public void RewriteFdiv()
@@ -139,9 +140,9 @@ namespace Reko.Arch.PowerPC
             var opt = RewriteOperand(instr.Operands[0]);
             if (needsCast)
             {
-                opa = m.Cast(dt, opa);
-                opb = m.Cast(dt, opb);
-                opc = m.Cast(dt, opc);
+                opa = m.Slice(dt, opa, 0);
+                opb = m.Slice(dt, opb, 0);
+                opc = m.Slice(dt, opc, 0);
             }
 
             var exp = add(m.FMul(opa, opc), opb);
@@ -151,7 +152,7 @@ namespace Reko.Arch.PowerPC
             }
             if (needsCast)
             {
-                exp=m.Cast(PrimitiveType.Real64, exp);
+                exp = m.Convert(exp, dt, PrimitiveType.Real64);
             }
             m.Assign(opt, exp);
             MaybeEmitCr1(opt);
@@ -178,7 +179,7 @@ namespace Reko.Arch.PowerPC
         {
             var opS = RewriteOperand(instr.Operands[1]);
             var opD = RewriteOperand(instr.Operands[0]);
-            m.Assign(opD, m.Cast(PrimitiveType.Real32, opS));
+            m.Assign(opD, m.Convert(opS, PrimitiveType.Real64, PrimitiveType.Real32));
             MaybeEmitCr1(opD);
         }
 

@@ -1345,5 +1345,41 @@ test_exit:
             }, sExp);
 
         }
+
+        [Test]
+        public void TerConvertToCast()
+        {
+            var sExp =
+            #region Expected
+@"// Before ///////
+// test
+// Return size: 0
+define test
+test_entry:
+	// succ:  l1
+l1:
+	Mem0[ptr:real32] = CONVERT(n, int16, real32)
+test_exit:
+
+// After ///////
+// test
+// Return size: 0
+define test
+test_entry:
+	// succ:  l1
+l1:
+	*ptr = (real32) n
+test_exit:
+
+";
+            #endregion
+
+            RunStringTest(m =>
+            {
+                Identifier n = m.Reg16("n", 42);
+                Identifier ptr = m.Reg32("ptr", 43);
+                m.MStore(ptr, m.Convert(n, PrimitiveType.Int16, PrimitiveType.Real32));
+            }, sExp);
+        }
     }
 }

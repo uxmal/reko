@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             Given_HexString("4BC23FD1");  // ldw\t-24(sr0,r30),r2
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = (uint64) Mem0[r30 + -24<i64>:word32]");
+                "1|L--|r2 = CONVERT(Mem0[r30 + -24<i64>:word32], word32, uint64)");
         }
 
         [Test]
@@ -138,7 +138,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             Given_HexString("0EC41093");  // ldw\t2(sr0,r22),r19
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r19 = (uint64) Mem0[r22 + 2<i64>:word32]");
+                "1|L--|r19 = CONVERT(Mem0[r22 + 2<i64>:word32], word32, uint64)");
         }
 
         [Test]
@@ -311,7 +311,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             Given_HexString("d0a619fa");  // extrw,u\tr5,0F,06,r6
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r6 = (uint32) SLICE(r5, word6, 17)");
+                "1|L--|r6 = CONVERT(SLICE(r5, word6, 17), word6, uint32)");
         }
 
         [Test]
@@ -360,7 +360,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             Given_HexString("0fe01018");  // ldb\t0(sr0,r31),r24
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r24 = (uint64) Mem0[r31:byte]");
+                "1|L--|r24 = CONVERT(Mem0[r31:byte], byte, uint64)");
         }
 
         [Test]
@@ -398,7 +398,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|r30 = r30 + -64<i64>",
-                "2|L--|r3 = (uint64) Mem0[r30:word32]");
+                "2|L--|r3 = CONVERT(Mem0[r30:word32], word32, uint64)");
         }
 
         // If you're making a backward jump, annul the following instruction
@@ -450,7 +450,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             Given_HexString("0D77A9A4");	// ldwa,sm	r23(sr2,r11),r4
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = (uint64) Mem0[r11 + r23:word32]");
+                "1|L--|r4 = CONVERT(Mem0[r11 + r23:word32], word32, uint64)");
         }
 
         [Test]

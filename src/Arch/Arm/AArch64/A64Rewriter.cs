@@ -136,7 +136,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.ldrh: RewriteLdr(PrimitiveType.Word16); break;
                 case Mnemonic.ldrsb: RewriteLdr(PrimitiveType.SByte); break;
                 case Mnemonic.ldrsh: RewriteLdr(PrimitiveType.Int16); break;
-                case Mnemonic.ldrsw: RewriteLdr(PrimitiveType.Int32); break;
+                case Mnemonic.ldrsw: RewriteLdr(PrimitiveType.Int32, PrimitiveType.Int64); break;
                 case Mnemonic.lslv: RewriteBinary(m.Shl); break;
                 case Mnemonic.lsrv: RewriteBinary(m.Shr); break;
                 case Mnemonic.ldur: RewriteLdr(null); break;
@@ -177,7 +177,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.smax: RewriteSmax(); break;
                 case Mnemonic.smaxv: RewriteSmaxv(); break;
                 case Mnemonic.smc: RewriteSmc(); break;
-                case Mnemonic.smull: RewriteMull(PrimitiveType.Int64, m.SMul); break;
+                case Mnemonic.smull: RewriteMull(PrimitiveType.Int32, PrimitiveType.Int64, m.SMul); break;
                 case Mnemonic.st1: RewriteStN("__st1"); break;
                 case Mnemonic.st2: RewriteStN("__st2"); break;
                 case Mnemonic.st3: RewriteStN("__st3"); break;
@@ -206,7 +206,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.udiv: RewriteBinary(m.UDiv); break;
                 case Mnemonic.umaddl: RewriteMaddl(PrimitiveType.UInt64, m.UMul); break;
                 case Mnemonic.umlal: RewriteUmlal(); break;
-                case Mnemonic.umull: RewriteMull(PrimitiveType.UInt64, m.UMul); break;
+                case Mnemonic.umull: RewriteMull(PrimitiveType.UInt32, PrimitiveType.UInt64, m.UMul); break;
                 case Mnemonic.umulh: RewriteMulh(PrimitiveType.UInt64, m.UMul); break;
                 case Mnemonic.uxtb: RewriteUSxt(Domain.UnsignedInt, 8); break;
                 case Mnemonic.uxth: RewriteUSxt(Domain.UnsignedInt, 16); break;
@@ -217,7 +217,6 @@ namespace Reko.Arch.Arm.AArch64
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
         }
-
 
         IEnumerator IEnumerable.GetEnumerator()
         {

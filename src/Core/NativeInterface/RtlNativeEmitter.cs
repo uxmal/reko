@@ -168,7 +168,8 @@ namespace Reko.Core.NativeInterface
 
         public HExpr Cast(BaseType type, HExpr a)
         {
-            return MapToHandle(m.Cast(Interop.DataTypes[type], GetExpression(a)));
+            var src = GetExpression(a);
+            return MapToHandle(m.Convert(src, src.DataType, Interop.DataTypes[type]));
         }
 
         public HExpr Comp(HExpr a)

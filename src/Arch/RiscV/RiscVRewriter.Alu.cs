@@ -92,13 +92,13 @@ namespace Reko.Arch.RiscV
             }
             else if (src2.IsZero)
             {
-                src = m.Cast(PrimitiveType.Word32, src1);
+                src = m.Convert(src1, src1.DataType, PrimitiveType.Word32);
             }
             else
             {
-                src = m.IAdd(m.Cast(PrimitiveType.Word32, src1), src2);
+                src = m.IAdd(m.Convert(src1, src1.DataType, PrimitiveType.Word32), src2);
             }
-            m.Assign(dst, m.Cast(PrimitiveType.Int64, src));
+            m.Assign(dst, m.Convert(src, src.DataType, PrimitiveType.Int64));
         }
 
         private void RewriteBinOp(Func<Expression,Expression, Expression> op, PrimitiveType? dtDst = null)
@@ -131,7 +131,7 @@ namespace Reko.Arch.RiscV
             m.Assign(dst, src);
         }
 
-        private void RewriteLoad(DataType dt)
+        private void RewriteLoad(DataType dtSrc, DataType dtDst)
         {
             var dst = RewriteOp(instr.Operands[0]);
             Expression ea;
@@ -154,10 +154,10 @@ namespace Reko.Arch.RiscV
                     ea = m.IAdd(ea, offset);
                 }
             }
-            Expression src = m.Mem(dt, ea);
+            Expression src = m.Mem(dtSrc, ea);
             if (dst.DataType.Size != src.DataType.Size)
             {
-                src = m.Cast(arch.NaturalSignedInteger, src);
+                src = m.Convert(src, src.DataType, dtDst);
             }
             m.Assign(dst, src);
         }
@@ -172,7 +172,7 @@ namespace Reko.Arch.RiscV
             Expression src = m.Mem(dt, ea);
             if (dt.BitSize < dst.DataType.BitSize)
             {
-                src = m.Cast(arch.NaturalSignedInteger, src);
+                src = m.Convert(src, src.DataType, arch.NaturalSignedInteger);
             }
             m.Assign(dst, src);
         }
@@ -215,10 +215,10 @@ namespace Reko.Arch.RiscV
         private void RewriteShiftw(Func<Expression, Expression, Expression> fn)
         {
             var dst = RewriteOp(instr.Operands[0]);
-            var left = RewriteOp(instr.Operands[1]);
+            var left = m.Slice(PrimitiveType.Word32, RewriteOp(instr.Operands[1]), 0);
             var right = RewriteOp(instr.Operands[2]);
-            var src = m.Cast(PrimitiveType.Word32, fn(left, right));
-            m.Assign(dst, m.Cast(PrimitiveType.Int64, src));
+            var src = m.Convert(fn(left, right), PrimitiveType.Word32, PrimitiveType.Int64);
+            m.Assign(dst, src);
         }
 
         private void RewriteSlt(bool unsigned)
@@ -242,7 +242,7 @@ namespace Reko.Arch.RiscV
             {
                 src = m.Lt(left, right);
             }
-            m.Assign(dst, m.Cast(arch.WordWidth, src));
+            m.Assign(dst, m.Convert(src, src.DataType, arch.WordWidth));
         }
 
         private void RewriteSlti(bool unsigned)
@@ -259,7 +259,7 @@ namespace Reko.Arch.RiscV
             {
                 src = m.Lt(left, right);
             }
-            m.Assign(dst, m.Cast(arch.WordWidth, src));
+            m.Assign(dst, m.Convert(src, src.DataType, arch.WordWidth));
         }
 
         private void RewriteStore(DataType dt)
@@ -286,7 +286,7 @@ namespace Reko.Arch.RiscV
             }
             if (src.DataType.BitSize > dt.BitSize)
             {
-                src = m.Cast(dt, src);
+                src = m.Slice(dt, src, 0);
             }
             m.Assign(m.Mem(dt, ea), src);
         }
@@ -317,7 +317,7 @@ namespace Reko.Arch.RiscV
             {
                 src = m.ISub(src, right);
             }
-            m.Assign(dst, m.Cast(PrimitiveType.Int64, m.Cast(PrimitiveType.Word32, src)));
+            m.Assign(dst, m.Convert(m.Slice(PrimitiveType.Word32, src, 0), PrimitiveType.Word32, PrimitiveType.Int64));
         }
 
         private void RewriteXor()

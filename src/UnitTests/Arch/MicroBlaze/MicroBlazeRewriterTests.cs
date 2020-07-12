@@ -297,7 +297,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v5 = Mem0[r3 + r23:byte]",
-                "2|L--|r20 = (word32) v5");
+                "2|L--|r20 = CONVERT(v5, byte, word32)");
         }
 
         [Test]
@@ -307,7 +307,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             AssertCode(
                 "0|L--|00100000(8): 2 instructions",
                 "1|L--|v3 = Mem0[0x1FFFD644<p32>:byte]",
-                "2|L--|r3 = (word32) v3");
+                "2|L--|r3 = CONVERT(v3, byte, word32)");
         }
 
         [Test]
@@ -317,7 +317,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v3 = Mem0[0xFFFFD644<p32>:byte]",
-                "2|L--|r3 = (word32) v3");
+                "2|L--|r3 = CONVERT(v3, byte, word32)");
         }
 
         [Test]
@@ -327,7 +327,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v4 = Mem0[r6 + r19:word16]",
-                "2|L--|r6 = (word32) v4");
+                "2|L--|r6 = CONVERT(v4, word16, word32)");
         }
 
         [Test]
@@ -337,7 +337,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v4 = Mem0[r4:word16]",
-                "2|L--|r6 = (word32) v4");
+                "2|L--|r6 = CONVERT(v4, word16, word32)");
         }
 
         [Test]
@@ -448,7 +448,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v2 = SLICE(r3, int8, 0)",
-                "2|L--|r3 = (int32) v2");
+                "2|L--|r3 = CONVERT(v2, int8, int32)");
         }
 
         [Test]

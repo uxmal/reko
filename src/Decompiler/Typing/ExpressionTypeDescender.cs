@@ -490,6 +490,14 @@ namespace Reko.Typing
             return false;
         }
 
+        public bool VisitConversion(Conversion conversion, TypeVariable tv)
+        {
+            MeetDataType(conversion, tv.DataType);
+            MeetDataType(conversion.Expression.TypeVariable!, conversion.SourceDataType);
+            conversion.Expression.Accept(this, conversion.Expression.TypeVariable!);
+            return false;
+        }
+
         public bool VisitDereference(Dereference deref, TypeVariable tv)
         {
             //$BUG: push (ptr (typeof(deref)

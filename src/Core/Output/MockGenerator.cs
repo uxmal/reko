@@ -441,6 +441,17 @@ namespace Reko.Core.Output
             writer.Write(")");
         }
 
+        void IExpressionVisitor.VisitConversion(Conversion conversion)
+        {
+            Method("Convert");
+            conversion.DataType.Accept(this);
+            writer.Write(", ");
+            conversion.SourceDataType.Accept(this);
+            writer.Write(", ");
+            conversion.Expression.Accept(this);
+            writer.Write(")");
+        }
+
         void IExpressionVisitor.VisitConditionalExpression(ConditionalExpression cond)
         {
             throw new NotImplementedException();

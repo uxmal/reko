@@ -590,7 +590,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             AssertCode(
                 "0|L--|00010000(3): 2 instructions",
                 "1|L--|v4 = a1",
-                "2|L--|f5 = (real32) v4 / 32768.0F");
+                "2|L--|f5 = CONVERT(v4, int32, real32) / 32768.0F");
         }
 
         [Test]
@@ -818,7 +818,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             AssertCode(
                "0|L--|00010000(3): 2 instructions",
                "1|L--|v3 = Mem0[a1 + 3<u32>:byte]",
-               "2|L--|a2 = (uint32) v3");
+               "2|L--|a2 = CONVERT(v3, byte, uint32)");
         }
 
         [Test]
@@ -1433,7 +1433,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x816760);
             AssertCode(
                "0|L--|00010000(3): 1 instructions",
-               "1|L--|a6 = (word32) (a7_a6 >>u SAR)");
+               "1|L--|a6 = CONVERT(a7_a6 >>u SAR, word64, word32)");
         }
 
         [Test]
@@ -1621,8 +1621,8 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0xc15650);
             AssertCode(
                "0|L--|00010000(3): 3 instructions",
-               "1|L--|v4 = (uint16) a6",
-               "2|L--|v5 = (uint16) a5",
+               "1|L--|v4 = CONVERT(a6, word32, uint16)",
+               "2|L--|v5 = CONVERT(a5, word32, uint16)",
                "3|L--|a5 = v4 *u v5");
         }
 
@@ -1946,7 +1946,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             AssertCode(
                 "0|L--|00010000(3): 2 instructions",
                 "1|L--|v4 = a0",
-                "2|L--|f11 = (real32) v4 / 16.0F");
+                "2|L--|f11 = CONVERT(v4, uint32, real32) / 16.0F");
         }
 
         [Test]

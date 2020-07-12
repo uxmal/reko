@@ -287,7 +287,7 @@ namespace Reko.Arch.H8
             var src = binder.EnsureRegister(arch.GetRegister(
                 dst.Storage.Domain, 
                 srcRange)!);
-            m.Assign(dst, m.Cast(dt, src));
+            m.Assign(dst, m.Convert(src, src.DataType, dt));
             EmitCond(Z, dst);
             m.Assign(binder.EnsureFlagGroup(N), Constant.False());
             m.Assign(binder.EnsureFlagGroup(V), Constant.False());

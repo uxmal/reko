@@ -275,9 +275,9 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("F3A4");  // sla
             AssertCode(
                 "0|L--|0100(2): 6 instructions",
-                "1|L--|v4 = Mem0[hl + (int16) a:byte]",
+                "1|L--|v4 = Mem0[hl + CONVERT(a, byte, int16):byte]",
                 "2|L--|v5 = v4 << 1<i8>",
-                "3|L--|Mem0[hl + (int16) a:byte] = v5",
+                "3|L--|Mem0[hl + CONVERT(a, byte, int16):byte] = v5",
                 "4|L--|H = false",
                 "5|L--|N = false",
                 "6|L--|SZXC = cond(v5)");

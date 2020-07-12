@@ -336,7 +336,7 @@ namespace Reko.UnitTests.Scanning
             Assert.IsTrue(bwslc.Step());    // branch.
             Assert.IsFalse(bwslc.Step());    // cmp.
 
-            Assert.AreEqual("Mem0[(word16) (byte) bx * 2<16> + 0x8400<16>:word16]", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("Mem0[CONVERT(SLICE(bx, byte, 0), byte, word16) * 2<16> + 0x8400<16>:word16]", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("1[0,2]", bwslc.JumpTableIndexInterval.ToString());
         }
 

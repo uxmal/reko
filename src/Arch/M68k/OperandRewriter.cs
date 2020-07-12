@@ -72,7 +72,7 @@ namespace Reko.Arch.M68k
                 if (DataWidth != null && DataWidth.Size != reg.Width.Size)
                 {
                     if (DataWidth.Domain == Domain.Real)
-                        r = m.Cast(DataWidth, r);
+                        r = m.Convert(r, r.DataType, DataWidth);
                     else
                         r = m.Slice(DataWidth, r, 0);
                 }
@@ -105,7 +105,10 @@ namespace Reko.Arch.M68k
                 ea = RewriteIndirectBaseRegister(indidx, addrInstr);
                 Expression ix = binder.EnsureRegister(indidx.XRegister);
                 if (indidx.XWidth.Size != 4)
-                    ix = m.Cast(PrimitiveType.Int32, m.Cast(PrimitiveType.Int16, ix));
+                {
+                    ix = m.Slice(PrimitiveType.Int16, ix, 0);
+                    ix = m.Convert(ix, PrimitiveType.Int16, PrimitiveType.Int32);
+                }
                 if (indidx.Scale > 1)
                     ix = m.IMul(ix, Constant.Int32(indidx.Scale));
                 return m.Mem(DataWidth, m.IAdd(ea, ix));
@@ -119,7 +122,7 @@ namespace Reko.Arch.M68k
                 {
                     var idx = Combine(null, indop.Index, addrInstr);
                     if (indop.index_reg_width!.BitSize != 32)
-                        idx = m.Cast(PrimitiveType.Word32, m.Cast(PrimitiveType.Int16, idx));
+                        idx = m.Convert(idx, PrimitiveType.Int16, PrimitiveType.Int32);
                     if (indop.IndexScale > 1)
                         idx = m.IMul(idx, indop.IndexScale);
                     ea = Combine(ea, idx);
@@ -333,7 +336,7 @@ namespace Reko.Arch.M68k
                     {
                         var tmpLo = binder.CreateTemporary(dataWidth);
                         var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(r.DataType.BitSize - dataWidth.BitSize));
-                        m.Assign(tmpLo, opGen(m.Cast(dataWidth, r)));
+                        m.Assign(tmpLo, opGen(m.Convert(r, r.DataType, dataWidth)));
                         m.Assign(tmpHi, m.Slice(tmpHi.DataType, r, dataWidth.BitSize));
                         m.Assign(r, m.Seq(tmpHi, tmpLo));
                         return tmpLo;
@@ -391,7 +394,10 @@ namespace Reko.Arch.M68k
                     {
                         var idx = Combine(null, indop.Index, addrInstr);
                         if (indop.index_reg_width!.BitSize != 32)
-                            idx = m.Cast(PrimitiveType.Word32, m.Cast(PrimitiveType.Int16, idx));
+                        {
+                            idx = m.Slice(PrimitiveType.Int16, idx, 0);
+                            idx = m.Convert(idx, PrimitiveType.Int16, PrimitiveType.Int32);
+                        }
                         if (indop.IndexScale > 1)
                             idx = m.IMul(idx, m.Int32(indop.IndexScale));
                         ea = Combine(ea, idx);

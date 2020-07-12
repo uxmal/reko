@@ -180,7 +180,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_Instruction("5C5C");	// castu.b	r12
             AssertCode(
                 "0|L--|00100000(2): 2 instructions",
-                "1|L--|r12 = (word32) (byte) r12",
+                "1|L--|r12 = CONVERT(SLICE(r12, byte, 0), byte, word32)",
                 "2|L--|NZC = cond(r12)");
         }
 
@@ -286,6 +286,7 @@ namespace Reko.UnitTests.Arch.Avr
         }
 
         [Test]
+
         public void Avr32Rw_ld_sh()
         {
             Given_Instruction("0114");	// ld.sh	r4,r0++
@@ -293,7 +294,7 @@ namespace Reko.UnitTests.Arch.Avr
                 "0|L--|00100000(2): 3 instructions",
                 "1|L--|v3 = Mem0[r0:int16]",
                 "2|L--|r0 = r0 + 2<i32>",
-                "3|L--|r4 = (int32) v3");
+                "3|L--|r4 = CONVERT(v3, int16, int32)");
         }
 
         [Test]
@@ -302,7 +303,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_Instruction("0B94");	// ld.ub	r5[1]
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r4 = (word32) Mem0[r5 + 1<i32>:byte]");
+                "1|L--|r4 = CONVERT(Mem0[r5 + 1<i32>:byte], byte, word32)");
         }
 
         [Test]
@@ -313,7 +314,7 @@ namespace Reko.UnitTests.Arch.Avr
                 "0|L--|00100000(2): 3 instructions",
                 "1|L--|v3 = Mem0[r0:word16]",
                 "2|L--|r0 = r0 + 2<i32>",
-                "3|L--|r3 = (word32) v3");
+                "3|L--|r3 = CONVERT(v3, word16, word32)");
         }
 
         [Test]
@@ -709,7 +710,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_Instruction("5F3C");	// srcs	r12
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r12 = (word32) Test(ULT,C)");
+                "1|L--|r12 = CONVERT(Test(ULT,C), bool, word32)");
         }
 
         [Test]
@@ -718,7 +719,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_Instruction("5F29");	// srcc	r9
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r9 = (word32) Test(UGE,C)");
+                "1|L--|r9 = CONVERT(Test(UGE,C), bool, word32)");
         }
 
         [Test]

@@ -77,7 +77,7 @@ namespace Reko.Arch.Arm.AArch32
             case ArmVectorData.F64F32: dstType = PrimitiveType.Real64; break;
             default: NotImplementedYet(); return;
             }
-            m.Assign(dst, m.Cast(dstType, src));
+            m.Assign(dst, m.Convert(src, src.DataType, dstType));
         }
 
         private void RewriteVcvtr()
@@ -90,7 +90,8 @@ namespace Reko.Arch.Arm.AArch32
             case ArmVectorData.S32F32: dstType = PrimitiveType.Int32; break;
             default: NotImplementedYet(); return;
             }
-            m.Assign(dst, m.Cast(dstType, host.PseudoProcedure("trunc", src.DataType, src)));
+            src = host.PseudoProcedure("trunc", src.DataType, src);
+            m.Assign(dst, m.Convert(src, src.DataType, dstType));
         }
 
         private void RewriteVext()
@@ -162,7 +163,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 if (dst.DataType.BitSize != src.DataType.BitSize)
                 {
-                    src = m.Cast(dst.DataType, src);
+                    src = m.Convert(src, src.DataType, dst.DataType);
                 }
                 m.Assign(dst, src);
             }

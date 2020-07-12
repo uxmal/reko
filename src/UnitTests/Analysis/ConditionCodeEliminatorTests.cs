@@ -651,7 +651,7 @@ m1Loop:
 	h_10 = a_8
 	v13_27 = SEQ(h_3, l_11) >>u 1<8>
 	a_8 = SLICE(v13_27, byte, 8)
-	a_13 = (byte) v13_27
+	a_13 = CONVERT(v13_27, uint16, byte)
 	l_15 = a_13
 	c_17 = c_16 - 1<8>
 	branch c_17 != 0<8> m1Loop
@@ -715,7 +715,6 @@ ProcedureBuilder_exit:
 
         [Test]
         [Category(Categories.UnitTests)]
-        [Obsolete("Change this to use CONVERT")]
         public void CceMultibitCcFromPhiNode()
         {
             var sExp =
@@ -775,11 +774,11 @@ ProcedureBuilder_exit:
 
                 m.Label("m2");
                 //m.Assign(tmp, m.Convert(m.Test(ConditionCode.UGT, CZ), PrimitiveType.Bool, PrimitiveType.SByte));
-                m.MStore(m.Word32(0x00123400), m.Cast(PrimitiveType.SByte, m.Test(ConditionCode.UGT, CZ)));
-                m.MStore(m.Word32(0x00123402), m.Cast(PrimitiveType.SByte, m.Test(ConditionCode.ULE, CZ)));
-                m.MStore(m.Word32(0x00123404), m.Cast(PrimitiveType.SByte, m.Test(ConditionCode.EQ, Z)));
+                m.MStore(m.Word32(0x00123400), m.Convert(m.Test(ConditionCode.UGT, CZ), PrimitiveType.Bool, PrimitiveType.SByte));
+                m.MStore(m.Word32(0x00123402), m.Convert(m.Test(ConditionCode.ULE, CZ), PrimitiveType.Bool, PrimitiveType.SByte));
+                m.MStore(m.Word32(0x00123404), m.Convert(m.Test(ConditionCode.EQ, Z), PrimitiveType.Bool, PrimitiveType.SByte));
                 m.Return();
             });
-        }
+    }
     }
 }

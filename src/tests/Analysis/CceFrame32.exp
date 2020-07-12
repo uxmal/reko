@@ -33,13 +33,13 @@ l10000027:
 l1000002F:
 	wLoc08_44 = PHI((wLoc08_42, l10000017), (wLoc08_47, l10000049))
 	Mem15 = PHI((Mem11, l10000017), (Mem31, l10000049))
-	eax_16 = (int32) wLoc08_44
+	eax_16 = CONVERT(wLoc08_44, word16, int32)
 	ecx_17 = dwArg04
-	edx_18 = (int32) Mem15[ecx_17 + eax_16:byte]
+	edx_18 = CONVERT(Mem15[ecx_17 + eax_16:byte], byte, int32)
 	branch edx_18 == 0<32> l1000005A
 	// succ:  l1000003E l1000005A
 l1000003E:
-	eax_22 = (int32) wLoc08_44
+	eax_22 = CONVERT(wLoc08_44, word16, int32)
 	branch eax_22 >= 0x7FFF<32> l1000005A
 	// succ:  l10000049 l1000005A
 l10000049:

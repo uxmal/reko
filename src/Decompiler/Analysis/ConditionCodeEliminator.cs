@@ -382,9 +382,10 @@ namespace Reko.Analysis
             block.Statements.Remove(sidCarry.DefStatement!);
             ssaIds.Remove(sidCarry);
 
-            var expNewLo = m.Cast(
-                PrimitiveType.CreateWord(tmpHi.DataType.BitSize),
-                sidTmp.Identifier);
+            var expNewLo = m.Convert(
+                sidTmp.Identifier,
+                sidTmp.Identifier.DataType,
+                PrimitiveType.CreateWord(tmpHi.DataType.BitSize));
             var stmNewLo = block.Statements.Insert(
                 iRolc + 2,
                 sidOrigLo.DefStatement.LinearAddress,
@@ -485,9 +486,10 @@ namespace Reko.Analysis
             sidOrigHi.DefStatement = stmNewHi;
             sidOrigHi.DefExpression = expNewHi;
 
-            var expNewLo = m.Cast(
-                PrimitiveType.CreateWord(tmpLo.DataType.BitSize),
-                sidTmp.Identifier);
+            var expNewLo = m.Convert(
+                sidTmp.Identifier,
+                sidTmp.Identifier.DataType,
+                PrimitiveType.CreateWord(tmpLo.DataType.BitSize));
             var stmNewLo = block.Statements.Insert(
                 iRorc + 3,
                 sidOrigLo.DefStatement.LinearAddress,

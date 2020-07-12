@@ -129,9 +129,9 @@ namespace Reko.Arch.Mips
                 case Mnemonic.ctc1: RewriteCtc1(instr); break;
                 case Mnemonic.clo: RewriteClo(instr); break;
                 case Mnemonic.clz: RewriteClz(instr); break;
-                case Mnemonic.cvt_d_l: RewriteCvtD(instr, PrimitiveType.Real64); break;
-                case Mnemonic.cvt_s_d: RewriteCvtD(instr, PrimitiveType.Real32); break;
-                case Mnemonic.cvt_w_d: RewriteCvtD(instr, PrimitiveType.Int32); break;
+                case Mnemonic.cvt_d_l: RewriteCvtToD(instr, PrimitiveType.Int32); break;
+                case Mnemonic.cvt_s_d: RewriteCvtFromD(instr, PrimitiveType.Real32); break;
+                case Mnemonic.cvt_w_d: RewriteCvtFromD(instr, PrimitiveType.Int32); break;
                 case Mnemonic.dadd:
                 case Mnemonic.daddi:
                     RewriteAdd(instr, PrimitiveType.Word64); break;

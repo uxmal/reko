@@ -32,7 +32,7 @@ namespace Reko.Arch.H8
 {
     public class H8Architecture : ProcessorArchitecture
     {
-        private Dictionary<uint, FlagGroupStorage> flagGroups;
+        private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public H8Architecture(IServiceProvider services, string archId) : base(services, archId)
         {

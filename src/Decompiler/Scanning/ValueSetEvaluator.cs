@@ -185,6 +185,29 @@ namespace Reko.Scanning
             return new ConcreteValueSet(c.DataType, c);
         }
 
+        public ValueSet VisitConversion(Conversion conversion, BitRange bitRange)
+        {
+            if (this.context.TryGetValue(conversion, out ValueSet vs))
+                return vs;
+            var bitRangeNarrow = new BitRange(0, (short) conversion.DataType.BitSize);
+            vs = conversion.Expression.Accept(this, bitRangeNarrow);
+            if (conversion.DataType.BitSize == conversion.Expression.DataType.BitSize)
+            {
+                // no-op!
+                return vs;
+            }
+            if (conversion.DataType.BitSize < conversion.Expression.DataType.BitSize)
+            {
+                return vs.Truncate(conversion.DataType);
+            }
+            if (conversion.DataType is PrimitiveType pt && pt.Domain == Domain.SignedInt)
+            {
+                return vs.SignExtend(conversion.DataType);
+            }
+            return vs.ZeroExtend(conversion.DataType);
+        }
+
+
         public ValueSet VisitDereference(Dereference deref, BitRange bitRange)
         {
             throw new NotImplementedException();

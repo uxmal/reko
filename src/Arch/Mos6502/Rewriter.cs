@@ -423,7 +423,7 @@ namespace Reko.Arch.Mos6502
                 return m.Mem8(
                     m.IAdd(
                         m.Mem(PrimitiveType.Ptr16, addrZeroPage),
-                        m.Cast(PrimitiveType.UInt16, y)));
+                        m.Convert(y, y.DataType, PrimitiveType.UInt16)));
             case AddressMode.IndexedIndirect:
                 var x = binder.EnsureRegister(Registers.x);
                 addrZeroPage = m.Ptr16(op.Offset!.ToByte());
@@ -432,7 +432,7 @@ namespace Reko.Arch.Mos6502
                         PrimitiveType.Ptr16,
                         m.IAdd(
                             addrZeroPage,
-                            m.Cast(PrimitiveType.UInt16, x))));
+                            m.Convert(x, x.DataType, PrimitiveType.UInt16))));
             case AddressMode.Absolute:
                 return m.Mem8(arch.MakeAddressFromConstant(op.Offset!, false));
             case AddressMode.AbsoluteX:

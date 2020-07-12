@@ -266,6 +266,11 @@ namespace Reko.Core.Serialization.Json
             w.Write(']');
         }
 
+        public void VisitConversion(Conversion conversion)
+        {
+            throw new NotImplementedException();
+        }
+
         public void VisitDeclaration(Declaration decl)
         {
             throw new NotImplementedException();

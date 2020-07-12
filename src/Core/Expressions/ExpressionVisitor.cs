@@ -53,7 +53,8 @@ namespace Reko.Core.Expressions
 
         void VisitSlice(Slice slice);
 		void VisitTestCondition(TestCondition tc);
-		void VisitUnaryExpression(UnaryExpression unary);
+        void VisitConversion(Conversion conversion);
+        void VisitUnaryExpression(UnaryExpression unary);
     }
 
     public interface ExpressionVisitor<T>
@@ -66,6 +67,7 @@ namespace Reko.Core.Expressions
         T VisitConditionalExpression(ConditionalExpression cond);
         T VisitConditionOf(ConditionOf cof);
         T VisitConstant(Constant c);
+        T VisitConversion(Conversion conversion);
         T VisitDereference(Dereference deref);
         T VisitFieldAccess(FieldAccess acc);
         T VisitIdentifier(Identifier id);
@@ -93,6 +95,7 @@ namespace Reko.Core.Expressions
         T VisitConditionalExpression(ConditionalExpression c, C context);
         T VisitConditionOf(ConditionOf cof, C ctx);
         T VisitConstant(Constant c, C ctx);
+        T VisitConversion(Conversion conversion, C context);
         T VisitDereference(Dereference deref, C ctx);
         T VisitFieldAccess(FieldAccess acc, C ctx);
         T VisitIdentifier(Identifier id, C ctx);
@@ -159,6 +162,11 @@ namespace Reko.Core.Expressions
 		public void VisitConstant(Constant c)
 		{
 		}
+
+        public virtual void VisitConversion(Conversion conversion)
+        {
+            conversion.Expression.Accept(this);
+        }
 
 		public void VisitDereference(Dereference deref)
 		{
@@ -289,6 +297,11 @@ namespace Reko.Core.Expressions
         public virtual T VisitConstant(Constant c)
         {
             return DefaultValue;
+        }
+
+        public virtual T VisitConversion(Conversion conversion)
+        {
+            throw new NotImplementedException();
         }
 
         public virtual T VisitDereference(Dereference deref)

@@ -93,7 +93,7 @@ namespace Reko.Arch.Alpha
             }
             else
             {
-                src = m.Cast(dtTo, Rewrite(instr.Operands[0]));
+                src = m.Convert(Rewrite(instr.Operands[0]), dtFrom, dtTo);
             }
             var dst = Rewrite(instr.Operands[1]);
             m.Assign(dst, src);

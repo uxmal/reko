@@ -55,6 +55,7 @@ namespace Reko.Arch.M68k
                 m.Branch(test, addr, iclass);
             }
         }
+
         private void RewriteFbcc(Func<Expression, Expression> fnTest)
         {
             iclass = InstrClass.ConditionalTransfer;
@@ -167,7 +168,7 @@ namespace Reko.Arch.M68k
         private Expression MaybeCastFpuArgs(Expression src, Expression dst)
         {
             if (src.DataType != dst.DataType)
-                return m.Cast(dst.DataType, src);
+                return m.Convert(src, src.DataType, dst.DataType);
             else
                 return src;
         }

@@ -328,6 +328,13 @@ namespace Reko.Core.Expressions
             return GetPossibleFieldType(global, PrimitiveType.Int32, c);
         }
 
+        public DataType VisitConversion(Conversion conversion)
+        {
+            conversion.Expression.Accept(this);
+            RecordDataType(conversion.DataType, conversion);
+            return conversion.DataType;
+        }
+
         public DataType VisitDereference(Dereference deref)
         {
             //$TODO: if deref.Expression is of pointer type, this

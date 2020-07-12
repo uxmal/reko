@@ -37,9 +37,11 @@ namespace Reko.ImageLoaders.WebAssembly
         private readonly WasmArchitecture arch;
         private readonly IEnumerator<WasmInstruction> dasm;
         private readonly IStorageBinder binder;
-        private WasmInstruction instr;
         private InstrClass iclass;
+        #nullable disable
+        private WasmInstruction instr;
         private RtlEmitter m;
+        #nullable enable
 
         public WasmRewriter(WasmArchitecture arch, EndianImageReader rdr, IStorageBinder binder)
         {

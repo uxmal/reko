@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Arch.Mos6502
             Given_Bytes(0xF1, 0xE0);
             AssertCode(
                 "0|L--|0200(2): 2 instructions",
-                "1|L--|a = a - Mem0[Mem0[0x00E0<p16>:ptr16] + (uint16) y:byte] - !C",   //$LIT
+                "1|L--|a = a - Mem0[Mem0[0x00E0<p16>:ptr16] + CONVERT(y, byte, uint16):byte] - !C",   //$LIT
                 "2|L--|NVZC = cond(a)");
         }
 
@@ -132,7 +132,7 @@ namespace Reko.UnitTests.Arch.Mos6502
             Given_Bytes(0xC1, 0x38);
             AssertCode(
                 "0|L--|0200(2): 1 instructions",
-                "1|L--|NZC = cond(a - Mem0[Mem0[0x0038<p16> + (uint16) x:ptr16]:byte])");
+                "1|L--|NZC = cond(a - Mem0[Mem0[0x0038<p16> + CONVERT(x, byte, uint16):ptr16]:byte])");
         }
 
         [Test]
