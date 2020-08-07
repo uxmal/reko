@@ -340,7 +340,11 @@ namespace Reko.Core
 
         public override int OffsetOf(Storage stgSub)
         {
-            return -1;
+            if (!(stgSub is FpuStackStorage that))
+                return -1;
+            if (that.FpuStackOffset != this.FpuStackOffset)
+                return -1;
+            return 0;
         }
 
         public override bool OverlapsWith(Storage sThat)
