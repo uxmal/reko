@@ -158,3 +158,8 @@ extern "C" __declspec(dllexport) void gbl_nested_structs_test14()
     gbl_nested_structs.str.c = 7;
     gbl_nested_structs.d = 8;
 }
+
+extern "C" __declspec(dllexport) double double_return_test15(double d)
+{
+    return d;
+}

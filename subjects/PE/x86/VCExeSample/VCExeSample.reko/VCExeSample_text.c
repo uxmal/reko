@@ -143,3 +143,9 @@ void gbl_nested_structs_test14()
 	gbl_nested_structs.d = 0x08;
 }
 
+// 004013B0: FpuStack real64 double_return_test15(Stack real64 d)
+real64 double_return_test15(real64 d)
+{
+	return d;
+}
+

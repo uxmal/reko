@@ -31,8 +31,6 @@ namespace Reko.Arch.X86
 {
     public class X86FrameApplicationBuilder : FrameApplicationBuilder
     {
-        private bool simulateFpuFrameShift;
-
         public X86FrameApplicationBuilder(
             IntelArchitecture arch,
             IStorageBinder binder, 
@@ -43,23 +41,10 @@ namespace Reko.Arch.X86
         {
         }
 
-        public override Expression? BindReturnValue(Identifier id)
-        {
-            var old = this.simulateFpuFrameShift;
-            this.simulateFpuFrameShift = true;
-            var exp = base.BindReturnValue(id);
-            this.simulateFpuFrameShift = old;
-            return exp;
-        }
-
         public override Expression VisitFpuStackStorage(FpuStackStorage fpu)
         {
             Expression e = binder.EnsureRegister(Registers.Top);
             int offset = fpu.FpuStackOffset;
-            if (this.simulateFpuFrameShift)
-            {
-                offset -= sigCallee!.FpuStackDelta;
-            }
             if (offset != 0)
             {
                 BinaryOperator op;

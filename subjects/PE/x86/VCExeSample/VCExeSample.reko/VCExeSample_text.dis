@@ -275,3 +275,16 @@ l00401380:
 gbl_nested_structs_test14_exit:
 
 
+real64 double_return_test15(real64 d)
+// stackDelta: 4; fpuStackDelta: 1; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: FPU -1
+// Trashed: FPU -1
+// Preserved:
+double_return_test15_entry:
+l004013B0:
+	return d
+double_return_test15_exit:
+
+

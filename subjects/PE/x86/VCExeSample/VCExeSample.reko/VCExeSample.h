@@ -183,12 +183,12 @@ Eq_265: nested_structs_type
 	T_265 (in 0040301C : ptr32)
 Eq_268: nested_struct
 	T_268 (in 00403020 : ptr32)
-Eq_276: (struct "nested_struct" (0 int32 b) (4 int32 c))
-	T_276
-Eq_277: (struct "nested_structs_type" 0010 (0 int32 a) (4 nested_struct str) (C int32 d))
-	T_277
-Eq_278: (struct "nested_struct" (0 int32 b) (4 int32 c))
-	T_278
+Eq_279: (struct "nested_struct" (0 int32 b) (4 int32 c))
+	T_279
+Eq_280: (struct "nested_structs_type" 0010 (0 int32 a) (4 nested_struct str) (C int32 d))
+	T_280
+Eq_281: (struct "nested_struct" (0 int32 b) (4 int32 c))
+	T_281
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -1290,17 +1290,29 @@ T_275: (in Mem10[0x00403028<p32>:word32] : word32)
   Class: Eq_273
   DataType: int32
   OrigDataType: int32
-T_276:
+T_276: (in  : real64)
   Class: Eq_276
-  DataType: Eq_276
-  OrigDataType: 
-T_277:
+  DataType: real64
+  OrigDataType: real64
+T_277: (in d : real64)
   Class: Eq_277
-  DataType: Eq_277
+  DataType: real64
+  OrigDataType: real64
+T_278: (in d : real64)
+  Class: Eq_276
+  DataType: real64
+  OrigDataType: real64
+T_279:
+  Class: Eq_279
+  DataType: Eq_279
   OrigDataType: 
-T_278:
-  Class: Eq_278
-  DataType: Eq_278
+T_280:
+  Class: Eq_280
+  DataType: Eq_280
+  OrigDataType: 
+T_281:
+  Class: Eq_281
+  DataType: Eq_281
   OrigDataType: 
 */
 typedef struct Globals {
@@ -1483,16 +1495,16 @@ typedef nested_struct Eq_268;
 typedef struct nested_struct {
 	int32 b;	// 0
 	int32 c;	// 4
-} Eq_276;
+} Eq_279;
 
 typedef struct nested_structs_type {	// size: 16 10
 	int32 a;	// 0
 	nested_struct str;	// 4
 	int32 d;	// C
-} Eq_277;
+} Eq_280;
 
 typedef struct nested_struct {
 	int32 b;	// 0
 	int32 c;	// 4
-} Eq_278;
+} Eq_281;
 
