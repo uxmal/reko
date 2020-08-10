@@ -149,15 +149,18 @@ namespace Reko.UnitTests.Evaluation
         public void Exs_Cast_real()
         {
             Given_ExpressionSimplifier();
-            var expr = m.Cast(PrimitiveType.Real32, Constant.Real64(1.5));
+            var expr = m.Convert(Constant.Real64(1.5), PrimitiveType.Real64, PrimitiveType.Real32);
             Assert.AreEqual("1.5F", expr.Accept(simplifier).ToString());
         }
 
         [Test]
-        public void Exs_Cast_byte_typeref()
+        public void Exs_Slice_byte_typeref()
         {
             Given_ExpressionSimplifier();
-            var expr = m.Cast(new TypeReference("BYTE", PrimitiveType.Byte), Constant.Word32(0x11));
+            var expr = m.Slice(
+                new TypeReference("BYTE", PrimitiveType.Byte),
+                Constant.Word32(0x4711),
+                0);
             Assert.AreEqual("0x11<8>", expr.Accept(simplifier).ToString());
         }
 
@@ -165,11 +168,13 @@ namespace Reko.UnitTests.Evaluation
         public void Exs_CastCast()
         {
             Given_ExpressionSimplifier();
-            var expr = m.Cast(
-                PrimitiveType.Real32,
-                m.Cast(
-                    PrimitiveType.Real64,
-                    m.Mem(PrimitiveType.Real32, m.Ptr32(0x123400))));
+            var expr = m.Convert(
+                m.Convert(
+                    m.Mem(PrimitiveType.Real32, m.Ptr32(0x123400)),
+                    PrimitiveType.Real32,
+                    PrimitiveType.Real64),
+                PrimitiveType.Real64,
+                PrimitiveType.Real32);
             Assert.AreEqual("Mem0[0x00123400<p32>:real32]", expr.Accept(simplifier).ToString());
         }
 
@@ -218,8 +223,8 @@ namespace Reko.UnitTests.Evaluation
         {
             Given_ExpressionSimplifier();
             var w16 = PrimitiveType.Word16;
-            var expr = m.IAdd(m.Cast(w16, foo), m.Cast(w16, foo));
-            Assert.AreEqual("(word16) (foo_1 * 2<32>)", expr.Accept(simplifier).ToString());
+            var expr = m.IAdd(m.Slice(w16, foo, 0), m.Slice(w16, foo, 0));
+            Assert.AreEqual("SLICE(foo_1 * 2<32>, word16, 0)", expr.Accept(simplifier).ToString());
         }
 
         [Test]
@@ -237,8 +242,8 @@ namespace Reko.UnitTests.Evaluation
             Given_ExpressionSimplifier();
             var w16 = PrimitiveType.Word16;
             var w32 = PrimitiveType.Word32;
-            var expr = m.Cast(w16, (m.Cast(w16, foo)));
-            Assert.AreEqual("(word16) foo_1", expr.Accept(simplifier).ToString());
+            var expr = m.Convert(m.Convert(foo, foo.DataType, w16), w16, w16);
+            Assert.AreEqual("CONVERT(foo_1, word32, word16)", expr.Accept(simplifier).ToString());
         }
 
         [Test]
@@ -334,7 +339,7 @@ namespace Reko.UnitTests.Evaluation
             Given_ExpressionSimplifier();
             var pc = new ProcedureConstant(PrimitiveType.Ptr64, new ExternalProcedure("puts", new FunctionType()));
 
-            var exp = m.Cast(PrimitiveType.Word64, pc);
+            var exp = m.Convert(pc, pc.DataType, PrimitiveType.Word64);
             Assert.AreEqual("puts", exp.Accept(simplifier).ToString());
         }
 
@@ -345,7 +350,7 @@ namespace Reko.UnitTests.Evaluation
             var value = Constant.Word32(0x00123400);
             value.DataType = PrimitiveType.Ptr32;
 
-            var exp = m.Cast(PrimitiveType.Word32, value);
+            var exp = m.Convert(value, value.DataType, PrimitiveType.Word32);
             Assert.AreEqual("0x00123400<p32>", exp.Accept(simplifier).ToString());
         }
 
@@ -355,11 +360,11 @@ namespace Reko.UnitTests.Evaluation
             Given_ExpressionSimplifier();
             var value = foo;
             value.DataType = new UnknownType();
-            var exp = m.Cast(new UnknownType(), value);
+            var exp = m.Convert(value, value.DataType, new UnknownType());
 
             var result = exp.Accept(simplifier);
 
-            Assert.AreEqual("(<type-error>) foo_1", result.ToString());
+            Assert.AreEqual("CONVERT(foo_1, <type-error>, <type-error>)", result.ToString());
         }
 
         [Test]

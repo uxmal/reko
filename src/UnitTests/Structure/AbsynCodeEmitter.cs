@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -24,6 +24,7 @@ using Reko.Core.Absyn;
 using Reko.Core.Expressions;
 using Reko.Core;
 using Reko.Core.Code;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Structure
 {
@@ -113,6 +114,21 @@ namespace Reko.UnitTests.Structure
             stmts.Add(new AbsynWhile(cond, bodyStmts));
         }
 
-   
+        /// <summary>
+        /// Generates a cast expression which coerces the <paramref name="expr"/> to
+        /// the data type <paramref name="dataType"/>.
+        /// </summary>
+        /// <param name="dataType">Type to coerce to.</param>
+        /// <param name="expr">Value to coerce.</param>
+        /// <returns>A cast expression.</returns>
+        /// <remarks>
+        /// This method is not on <see cref="ExpressionEmitter"/> because we want to 
+        /// discourage the use of <see cref="Cast"/> expressions in early stages of Reko.
+        /// Use <see cref="Slice"/> or <see cref="Convert"/> expressions instead.
+        /// </remarks>
+        public Cast Cast(DataType dataType, Expression expr)
+        {
+            return new Cast(dataType, expr);
+        }
     }
 }

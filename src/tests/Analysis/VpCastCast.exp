@@ -1,9 +1,9 @@
 = ProcedureBuilder ========================
 Mem0:Mem
     def:  def Mem0
-    uses: Mem2[0x1234000<32>:real32] = (real32) (real64) Mem0[0x123400<32>:real32]
+    uses: Mem2[0x1234000<32>:real32] = CONVERT(CONVERT(Mem0[0x123400<32>:real32], real32, real64), real64, real32)
 Mem2: orig: Mem0
-    def:  Mem2[0x1234000<32>:real32] = (real32) (real64) Mem0[0x123400<32>:real32]
+    def:  Mem2[0x1234000<32>:real32] = CONVERT(CONVERT(Mem0[0x123400<32>:real32], real32, real64), real64, real32)
 // ProcedureBuilder
 // Return size: 0
 define ProcedureBuilder
@@ -11,7 +11,7 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	Mem2[0x1234000<32>:real32] = (real32) (real64) Mem0[0x123400<32>:real32]
+	Mem2[0x1234000<32>:real32] = CONVERT(CONVERT(Mem0[0x123400<32>:real32], real32, real64), real64, real32)
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:

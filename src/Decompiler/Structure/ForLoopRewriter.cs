@@ -214,6 +214,8 @@ namespace Reko.Structure
                 return id;
             if (exp is Cast c && c.Expression is Identifier castId)
                 return castId;
+            if (exp is Conversion conv && conv.Expression is Identifier convId)
+                return convId;
             return null;
         }
 

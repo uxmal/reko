@@ -585,9 +585,20 @@ namespace Reko.UnitTests.Typing
                 m.Declare(rax_22, m.Word64(0x10000040));
 
                 m.Label("l000000000040EC50");
-                m.MStore(m.IAdd(rdi, rbx_18), m.Cast(PrimitiveType.Byte, m.Mem(PrimitiveType.Word32, m.IAdd(m.Mem(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), rax_22), m.IMul(m.Cast(PrimitiveType.Create(Domain.UnsignedInt, 64), m.Cast(PrimitiveType.Word32, m.Mem(PrimitiveType.Byte, m.IAdd(rsi, rbx_18)))), Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x4))))));
-                m.Assign(rbx_18, m.ISub(rbx_18, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x1)));
-                m.BranchIf(m.Ne(rbx_18, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0xFFFFFFFFFFFFFFFF)), "l000000000040EC50");
+                m.MStore(m.IAdd(rdi, rbx_18), m.Convert(m.Mem32(
+                    m.IAdd(m.Mem64(rax_22), m.IMul(
+                        m.Convert(
+                            m.Convert(
+                                m.Mem8(m.IAdd(rsi, rbx_18)),
+                                PrimitiveType.Byte,
+                                PrimitiveType.Word32),
+                            PrimitiveType.Word32,
+                            PrimitiveType.Word64),
+                        Constant.Create(PrimitiveType.Word64, 0x4)))),
+                        PrimitiveType.Word32,
+                        PrimitiveType.Byte));
+                m.Assign(rbx_18, m.ISub(rbx_18, Constant.Create(PrimitiveType.Word64, 0x1)));
+                m.BranchIf(m.Ne(rbx_18, Constant.Create(PrimitiveType.Word64, 0xFFFFFFFFFFFFFFFF)), "l000000000040EC50");
 
                 m.Label("l000000000040EC69");
                 m.Return();

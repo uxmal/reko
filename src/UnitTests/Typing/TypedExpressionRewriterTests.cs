@@ -18,6 +18,7 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -25,14 +26,11 @@ using Reko.Core.Types;
 using Reko.Typing;
 using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
-using System.Diagnostics;
-using System.Collections.Generic;
-using Reko.Core.Serialization;
-using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Typing
 {
@@ -609,8 +607,10 @@ namespace Reko.UnitTests.Typing
                     m.Assign(ebp, m.ISub(m.Frame.FramePointer, 4));
                     m.Assign(eax, m.Mem32(m.IAdd(ebp, 0x0C)));
                     m.Assign(ecx, m.Mem32(m.IAdd(ebp, 0x08)));
-                    m.Assign(eax, m.Cast(PrimitiveType.Int32, m.Mem(PrimitiveType.Int16,
-                        m.IAdd(ecx, m.IMul(eax, 2)))));
+                    m.Assign(eax, m.Convert(m.Mem(PrimitiveType.Int16,
+                        m.IAdd(ecx, m.IMul(eax, 2))),
+                        PrimitiveType.Int16,
+                        PrimitiveType.Int32));
                     m.MStore(m.Word32(0x1234), eax);
                 });
             RunTest(pm, "Typing/TerShortArray.txt");
@@ -630,13 +630,15 @@ namespace Reko.UnitTests.Typing
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(
                     eax_2,
-                    m.Cast(PrimitiveType.Int32,
+                    m.Convert(
                     m.Mem(PrimitiveType.Int16,
                         m.IAdd(
                             ecx,
                             m.IAdd(
                                 m.IMul(eax, 2),
-                                100)))));
+                                100))),
+                    PrimitiveType.Int16,
+                    PrimitiveType.Int32));
                 m.MStore(m.Word32(0x010000), eax_2);
             });
             RunTest(pm, "Typing/TerArray.txt");
@@ -1172,8 +1174,10 @@ test_exit:
             pb.Add("fn", m =>
             {
                 m.MStore(Address.Ptr32(0x001028),
-                    m.Cast(PrimitiveType.Real32,
-                    m.Mem(PrimitiveType.Real64, Address.Ptr32(0x001020))));
+                    m.Convert(
+                        m.Mem(PrimitiveType.Real64, Address.Ptr32(0x001020)),
+                        PrimitiveType.Real64,
+                        PrimitiveType.Real32));
                 m.Return();
             });
             var program = pb.BuildProgram();
@@ -1243,7 +1247,7 @@ l000000000040EC40:
 	word64 rax_22 = 0x10000040<64>
 	// succ:  l000000000040EC50
 l000000000040EC50:
-	Mem0[rdi + rbx_18:byte] = (byte) Mem0[Mem0[rax_22:word64] + (uint64) ((word32) Mem0[rsi + rbx_18:byte]) * 4<64>:word32]
+	Mem0[rdi + rbx_18:byte] = CONVERT(Mem0[Mem0[rax_22:word64] + CONVERT(CONVERT(Mem0[rsi + rbx_18:byte], byte, word32), word32, uint64) * 4<64>:word32], word32, byte)
 	rbx_18 = rbx_18 - 1<64>
 	branch rbx_18 != 0xFFFFFFFFFFFFFFFF<64> l000000000040EC50
 	// succ:  l000000000040EC69 l000000000040EC50
@@ -1281,11 +1285,11 @@ test_exit:
             // fn000000000040EC30 //////////
             RunStringTest(m =>
             {
-                Identifier rbx_18 = m.Local(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), "rbx_18");
-                Identifier rdx = m.Local(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), "rdx");
-                Identifier rax_22 = m.Local(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), "rax_22");
-                Identifier rsi = m.Local(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), "rsi");
-                Identifier rdi = m.Local(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), "rdi");
+                Identifier rbx_18 = m.Local(PrimitiveType.Word64, "rbx_18");
+                Identifier rdx = m.Local(PrimitiveType.Word64, "rdx");
+                Identifier rax_22 = m.Local(PrimitiveType.Word64, "rax_22");
+                Identifier rsi = m.Local(PrimitiveType.Word64, "rsi");
+                Identifier rdi = m.Local(PrimitiveType.Word64, "rdi");
 
                 m.Label("l000000000040EC30");
                 m.Declare(rbx_18, m.ISub(rdx, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x1)));
@@ -1295,9 +1299,19 @@ test_exit:
                 m.Declare(rax_22, m.Word64(0x10000040));
 
                 m.Label("l000000000040EC50");
-                m.MStore(m.IAdd(rdi, rbx_18), m.Cast(PrimitiveType.Byte, m.Mem(PrimitiveType.Word32, m.IAdd(m.Mem(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), rax_22), m.IMul(m.Cast(PrimitiveType.Create(Domain.UnsignedInt, 64), m.Cast(PrimitiveType.Word32, m.Mem(PrimitiveType.Byte, m.IAdd(rsi, rbx_18)))), Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x4))))));
-                m.Assign(rbx_18, m.ISub(rbx_18, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x1)));
-                m.BranchIf(m.Ne(rbx_18, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0xFFFFFFFFFFFFFFFF)), "l000000000040EC50");
+                m.MStore(m.IAdd(rdi, rbx_18), m.Convert(
+                    m.Mem32(m.IAdd(m.Mem64(rax_22), m.IMul(m.Convert(
+                        m.Convert(
+                            m.Mem8(m.IAdd(rsi, rbx_18)),
+                            PrimitiveType.Byte,
+                            PrimitiveType.Word32),
+                        PrimitiveType.Word32,
+                        PrimitiveType.UInt64),
+                    Constant.Create(PrimitiveType.Word64, 0x4)))),
+                    PrimitiveType.Word32,
+                    PrimitiveType.Byte));
+                m.Assign(rbx_18, m.ISub(rbx_18, Constant.Create(PrimitiveType.Word64, 0x1)));
+                m.BranchIf(m.Ne(rbx_18, Constant.Create(PrimitiveType.Word64, 0xFFFFFFFFFFFFFFFF)), "l000000000040EC50");
 
                 m.Label("l000000000040EC69");
                 m.Return();
@@ -1316,7 +1330,7 @@ define test
 test_entry:
 	// succ:  l1
 l1:
-	Mem0[ds:0x118<16>:byte] = Mem0[ds:(uint16) (uint8) Mem0[ds:0x94<16>:byte] + 0x95<16>:byte]
+	Mem0[ds:0x118<16>:byte] = Mem0[ds:CONVERT(CONVERT(Mem0[ds:0x94<16>:byte], byte, uint8), uint8, uint16) + 0x95<16>:byte]
 test_exit:
 
 // After ///////
@@ -1335,12 +1349,17 @@ test_exit:
             RunStringTest(m =>
             {
                 Identifier ds = m.Reg16("ds", 42);
+
                 m.SStore(ds, m.Word16(0x118),
                     m.SegMem8(
                         ds,
                         m.IAdd(
-                            m.Cast(PrimitiveType.UInt16, m.Cast(PrimitiveType.UInt8,
-                                m.SegMem8(ds, m.Word16(0x94)))),
+                            m.Convert(m.Convert(
+                                m.SegMem8(ds, m.Word16(0x94)),
+                                PrimitiveType.Byte,
+                                PrimitiveType.UInt8),
+                            PrimitiveType.UInt8,
+                            PrimitiveType.UInt16),
                             m.Word16(0x95))));
             }, sExp);
 

@@ -50,7 +50,7 @@ namespace Reko.Evaluation
             if (idHi == null || idLo == null)
                 return false;
             var defHi = ctx.GetDefiningExpression(idHi) as Slice;
-            var defLo = ctx.GetDefiningExpression(idLo) as Cast;
+            var defLo = ctx.GetDefiningExpression(idLo) as Slice;
             if (defHi == null || defLo == null)
                 return false;
 

@@ -192,7 +192,7 @@ namespace Reko.UnitTests.Analysis
             {
                 var r1 = m.Reg32("r1", 1);
                 var tmp = m.Temp(PrimitiveType.Word16, "tmp");
-                m.Assign(tmp, m.Cast(PrimitiveType.Word16, r1));
+                m.Assign(tmp, m.Slice(PrimitiveType.Word16, r1, 0));
                 m.MStore(m.Word32(0x2000), tmp);
                 m.Return();
             });
@@ -226,7 +226,7 @@ namespace Reko.UnitTests.Analysis
                 m.MStore(m.Word32(0x02004), r1);
                 m.Goto("mxit");
                 m.Label("mge");
-                m.MStore(m.Word32(0x02008), m.Cast(PrimitiveType.Word16, r1));
+                m.MStore(m.Word32(0x02008), m.Slice(PrimitiveType.Word16, r1, 0));
                 m.Label("mxit");
                 m.Return();
             });

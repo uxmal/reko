@@ -1,20 +1,20 @@
 = FCmpFragment ========================
 fp0_3: orig: fp0
-    def:  fp0_3 = (real80) Mem0[a6 - 0x10<32>:int32]
-    uses: NZCV_4 = cond((real96) fp0_3 - Mem0[a6 + 8<32>:real96])
-          branch (real96) fp0_3 == Mem0[a6 + 8<32>:real96] l1
+    def:  fp0_3 = CONVERT(Mem0[a6 - 0x10<32>:int32], int32, real80)
+    uses: NZCV_4 = cond(CONVERT(fp0_3, real80, real96) - Mem0[a6 + 8<32>:real96])
+          branch CONVERT(fp0_3, real80, real96) == Mem0[a6 + 8<32>:real96] l1
 NZCV_4: orig: NZCV
-    def:  NZCV_4 = cond((real96) fp0_3 - Mem0[a6 + 8<32>:real96])
+    def:  NZCV_4 = cond(CONVERT(fp0_3, real80, real96) - Mem0[a6 + 8<32>:real96])
 a6:a6
     def:  def a6
-    uses: fp0_3 = (real80) Mem0[a6 - 0x10<32>:int32]
-          NZCV_4 = cond((real96) fp0_3 - Mem0[a6 + 8<32>:real96])
-          branch (real96) fp0_3 == Mem0[a6 + 8<32>:real96] l1
+    uses: fp0_3 = CONVERT(Mem0[a6 - 0x10<32>:int32], int32, real80)
+          NZCV_4 = cond(CONVERT(fp0_3, real80, real96) - Mem0[a6 + 8<32>:real96])
+          branch CONVERT(fp0_3, real80, real96) == Mem0[a6 + 8<32>:real96] l1
 Mem0:Mem
     def:  def Mem0
-    uses: fp0_3 = (real80) Mem0[a6 - 0x10<32>:int32]
-          NZCV_4 = cond((real96) fp0_3 - Mem0[a6 + 8<32>:real96])
-          branch (real96) fp0_3 == Mem0[a6 + 8<32>:real96] l1
+    uses: fp0_3 = CONVERT(Mem0[a6 - 0x10<32>:int32], int32, real80)
+          NZCV_4 = cond(CONVERT(fp0_3, real80, real96) - Mem0[a6 + 8<32>:real96])
+          branch CONVERT(fp0_3, real80, real96) == Mem0[a6 + 8<32>:real96] l1
 // FCmpFragment
 // Return size: 0
 define FCmpFragment
@@ -23,9 +23,9 @@ FCmpFragment_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	fp0_3 = (real80) Mem0[a6 - 0x10<32>:int32]
-	NZCV_4 = cond((real96) fp0_3 - Mem0[a6 + 8<32>:real96])
-	branch (real96) fp0_3 == Mem0[a6 + 8<32>:real96] l1
+	fp0_3 = CONVERT(Mem0[a6 - 0x10<32>:int32], int32, real80)
+	NZCV_4 = cond(CONVERT(fp0_3, real80, real96) - Mem0[a6 + 8<32>:real96])
+	branch CONVERT(fp0_3, real80, real96) == Mem0[a6 + 8<32>:real96] l1
 	// succ:  l2 l1
 l2:
 	return
@@ -33,21 +33,21 @@ l2:
 FCmpFragment_exit:
 
 fp0_3: orig: fp0
-    def:  fp0_3 = (real80) Mem0[a6 - 0x10<32>:int32]
-    uses: NZCV_4 = cond((real96) fp0_3 - Mem0[a6 + 8<32>:real96])
-          branch (real96) fp0_3 == Mem0[a6 + 8<32>:real96] l1
+    def:  fp0_3 = CONVERT(Mem0[a6 - 0x10<32>:int32], int32, real80)
+    uses: NZCV_4 = cond(CONVERT(fp0_3, real80, real96) - Mem0[a6 + 8<32>:real96])
+          branch CONVERT(fp0_3, real80, real96) == Mem0[a6 + 8<32>:real96] l1
 NZCV_4: orig: NZCV
-    def:  NZCV_4 = cond((real96) fp0_3 - Mem0[a6 + 8<32>:real96])
+    def:  NZCV_4 = cond(CONVERT(fp0_3, real80, real96) - Mem0[a6 + 8<32>:real96])
 a6:a6
     def:  def a6
-    uses: fp0_3 = (real80) Mem0[a6 - 0x10<32>:int32]
-          NZCV_4 = cond((real96) fp0_3 - Mem0[a6 + 8<32>:real96])
-          branch (real96) fp0_3 == Mem0[a6 + 8<32>:real96] l1
+    uses: fp0_3 = CONVERT(Mem0[a6 - 0x10<32>:int32], int32, real80)
+          NZCV_4 = cond(CONVERT(fp0_3, real80, real96) - Mem0[a6 + 8<32>:real96])
+          branch CONVERT(fp0_3, real80, real96) == Mem0[a6 + 8<32>:real96] l1
 Mem0:Mem
     def:  def Mem0
-    uses: fp0_3 = (real80) Mem0[a6 - 0x10<32>:int32]
-          NZCV_4 = cond((real96) fp0_3 - Mem0[a6 + 8<32>:real96])
-          branch (real96) fp0_3 == Mem0[a6 + 8<32>:real96] l1
+    uses: fp0_3 = CONVERT(Mem0[a6 - 0x10<32>:int32], int32, real80)
+          NZCV_4 = cond(CONVERT(fp0_3, real80, real96) - Mem0[a6 + 8<32>:real96])
+          branch CONVERT(fp0_3, real80, real96) == Mem0[a6 + 8<32>:real96] l1
 // FCmpFragment
 // Return size: 0
 define FCmpFragment
@@ -56,9 +56,9 @@ FCmpFragment_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	fp0_3 = (real80) Mem0[a6 - 0x10<32>:int32]
-	NZCV_4 = cond((real96) fp0_3 - Mem0[a6 + 8<32>:real96])
-	branch (real96) fp0_3 == Mem0[a6 + 8<32>:real96] l1
+	fp0_3 = CONVERT(Mem0[a6 - 0x10<32>:int32], int32, real80)
+	NZCV_4 = cond(CONVERT(fp0_3, real80, real96) - Mem0[a6 + 8<32>:real96])
+	branch CONVERT(fp0_3, real80, real96) == Mem0[a6 + 8<32>:real96] l1
 	// succ:  l2 l1
 l2:
 	return

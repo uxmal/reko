@@ -2512,9 +2512,9 @@ proc1_exit:
     uses: Z_2 = cond(r3)
 Z_2: orig: Z
     def:  Z_2 = cond(r3)
-    uses: r3_3 = (int32) Test(EQ,Z_2)
+    uses: r3_3 = CONVERT(Test(EQ,Z_2), bool, int32)
 r3_3: orig: r3
-    def:  r3_3 = (int32) Test(EQ,Z_2)
+    def:  r3_3 = CONVERT(Test(EQ,Z_2), bool, int32)
 // proc1
 // Return size: 0
 define proc1
@@ -2523,7 +2523,7 @@ proc1_entry:
 	// succ:  l1
 l1:
 	Z_2 = cond(r3)
-	r3_3 = (int32) Test(EQ,Z_2)
+	r3_3 = CONVERT(Test(EQ,Z_2), bool, int32)
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -2535,7 +2535,7 @@ proc1_exit:
                 var r3 = m.Register("r3");
 
                 m.Assign(Z, m.Cond(r3));
-                m.Assign(r3, m.Cast(PrimitiveType.Int32, m.Test(ConditionCode.EQ, Z)));
+                m.Assign(r3, m.Convert(m.Test(ConditionCode.EQ, Z), PrimitiveType.Bool, PrimitiveType.Int32));
                 m.Return();
             });
         }
@@ -2592,9 +2592,9 @@ SCZ_2: orig: SCZ
     uses: SZ_3 = SLICE(SCZ_2, bool, 1) (alias)
 SZ_3: orig: SZ
     def:  SZ_3 = SLICE(SCZ_2, bool, 1) (alias)
-    uses: r3_4 = (int32) Test(LE,SZ_3)
+    uses: r3_4 = CONVERT(Test(LE,SZ_3), bool, int32)
 r3_4: orig: r3
-    def:  r3_4 = (int32) Test(LE,SZ_3)
+    def:  r3_4 = CONVERT(Test(LE,SZ_3), bool, int32)
 // proc1
 // Return size: 0
 define proc1
@@ -2604,7 +2604,7 @@ proc1_entry:
 l1:
 	SCZ_2 = cond(r3)
 	SZ_3 = SLICE(SCZ_2, bool, 1) (alias)
-	r3_4 = (int32) Test(LE,SZ_3)
+	r3_4 = CONVERT(Test(LE,SZ_3), bool, int32)
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -2617,7 +2617,7 @@ proc1_exit:
                 var r3 = m.Register("r3");
 
                 m.Assign(SCZ, m.Cond(r3));
-                m.Assign(r3, m.Cast(PrimitiveType.Int32, m.Test(ConditionCode.LE, SZ)));
+                m.Assign(r3, m.Convert(m.Test(ConditionCode.LE, SZ), PrimitiveType.Bool, PrimitiveType.Int32));
                 m.Return();
             });
         }
@@ -3337,8 +3337,8 @@ proc_exit:
             {
                 var r1 = m.Reg32("r1", 1);
                 var r2 = m.Reg32("r2", 2);
-                m.MStore(m.Word32(0x123400), m.Cast(PrimitiveType.Byte, r1));
-                m.MStore(m.Word32(0x123404), m.Cast(PrimitiveType.Real32, r2));
+                m.MStore(m.Word32(0x123400), m.Convert(r1, PrimitiveType.Word32, PrimitiveType.Byte));
+                m.MStore(m.Word32(0x123404), m.Convert(r2, PrimitiveType.Word32, PrimitiveType.Real32));
                 m.Return();
             });
             proc.Signature = FunctionType.Action(
@@ -3354,8 +3354,8 @@ proc_exit:
 	r1_2 = r2
 	r2_5 = r1
 l1:
-	Mem3[0x123400<32>:byte] = (byte) r1_2
-	Mem6[0x123404<32>:real32] = (real32) r2_5
+	Mem3[0x123400<32>:byte] = CONVERT(r1_2, word32, byte)
+	Mem6[0x123404<32>:real32] = CONVERT(r2_5, word32, real32)
 	return
 test_exit:
 ";
@@ -4110,7 +4110,7 @@ proc1_exit:
 
                 m.Label("m0");
                 m.Assign(f1, m.Mem64(m.ISubS(fp, 8)));
-                m.Assign(f1, m.FMul(f1, m.Cast(PrimitiveType.Real64, r1)));
+                m.Assign(f1, m.FMul(f1, m.Convert(r1, PrimitiveType.Int32, PrimitiveType.Real64)));
                 m.MStore(m.ISubS(fp, 8), f1);
                 m.Assign(r1, m.IAddS(r1, 1));
                 m.BranchIf(m.Ne(r1, 10), "m0");
@@ -4136,7 +4136,7 @@ m0:
 	r1_8 = PHI((r1_4, l1), (r1_11, m0))
 	Mem6 = PHI((Mem3, l1), (Mem10, m0))
 	f1_7 = qwLoc08_14
-	f1_9 = f1_7 * (real64) r1_8
+	f1_9 = f1_7 * CONVERT(r1_8, int32, real64)
 	qwLoc08_15 = f1_9
 	r1_11 = r1_8 + 1<i32>
 	branch r1_11 != 0xA<32> m0

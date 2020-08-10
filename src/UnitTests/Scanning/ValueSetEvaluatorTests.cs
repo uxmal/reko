@@ -185,7 +185,7 @@ namespace Reko.UnitTests.Scanning
             Given_ValueSet(r1, IVS(0, -0x43F, -0x43F));
             Given_Evaluator();
 
-            var vs = vse.Evaluate(m.Cast(PrimitiveType.Byte, r1));
+            var vs = vse.Evaluate(m.Convert(r1, r1.DataType, PrimitiveType.Byte));
             Assert.AreEqual("0[-3F,-3F]", vs.Item1.ToString());
         }
 
@@ -196,7 +196,7 @@ namespace Reko.UnitTests.Scanning
             Given_ValueSet(r1, IVS(4, -0x400, 0x400));
             Given_Evaluator();
 
-            var vs = vse.Evaluate(m.Cast(PrimitiveType.Byte, r1));
+            var vs = vse.Evaluate(m.Convert(r1, r1.DataType, PrimitiveType.Byte));
             Assert.AreEqual("4[0,FF]", vs.Item1.ToString());
         }
 
@@ -207,9 +207,10 @@ namespace Reko.UnitTests.Scanning
             Given_ValueSet(r1, CVS(0x1FF, 0x00, 0x7F));
             Given_Evaluator();
 
-            var vs = vse.Evaluate(m.Cast(
-                PrimitiveType.Int32,
-                m.Cast(PrimitiveType.Byte, r1)));
+            var vs = vse.Evaluate(m.Convert(
+                m.Slice(PrimitiveType.Byte, r1, 0),
+                PrimitiveType.Byte,
+                PrimitiveType.Int32));
             Assert.AreEqual("[-1<i32>,0<i32>,127<i32>]", vs.Item1.ToString());
         }
 
@@ -270,7 +271,7 @@ namespace Reko.UnitTests.Scanning
             Given_Evaluator();
 
             var exp = m.IAdd(
-                m.Cast(W32, m.Cast(W16, m.IMul(m.Cast(W32, r0), 2))),
+                m.Convert(m.Convert(m.IMul(m.Convert(r0, r0.DataType, W32), 2), W32, W16), W16, W32),
                 0x00100000);
             var vs = vse.Evaluate(exp);
             Assert.AreEqual("2[100000,100006]", vs.Item1.ToString());
@@ -299,8 +300,8 @@ namespace Reko.UnitTests.Scanning
             Given_ValueSet(r1, ValueSet.Any);
             Given_Evaluator();
 
-            var exp = m.Cast(PrimitiveType.Int16, m.Seq(r1, r0));
-            var (vs, reads) = vse.Evaluate(exp);
+            var exp = m.Convert(m.Slice(W16, m.Seq(r1, r0), 0), W16, PrimitiveType.Int16);
+            var (vs, _) = vse.Evaluate(exp);
             Assert.AreEqual("1[0,3]", vs.ToString());
         }
 
@@ -329,10 +330,11 @@ namespace Reko.UnitTests.Scanning
             Given_ValueSet(r2, ValueSet.Any);
             Given_Evaluator();
 
-            var exp = m.Cast(
-                PrimitiveType.Int16,
-                m.Seq(r2, m.Slice(m.IMul(m.Seq(r1, r0), 2), 0, 16)));
-            var (vs, reads) = vse.Evaluate(exp);
+            var exp = m.Convert(
+                m.Seq(r2, m.Slice(m.IMul(m.Seq(r1, r0), 2), 0, 16)),
+                PrimitiveType.Word32,
+                PrimitiveType.Int16);
+            var (vs, _) = vse.Evaluate(exp);
             Assert.AreEqual("2[0,6]", vs.ToString());
         }
     }

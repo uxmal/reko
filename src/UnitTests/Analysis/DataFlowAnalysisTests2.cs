@@ -440,7 +440,7 @@ level2_exit:
                 var r1 = m.Register("r1");
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
                 m.Assign(sp, m.Frame.FramePointer);
-                m.MStore(m.Ptr32(0x1234), m.Cast(PrimitiveType.Byte, r1));
+                m.MStore(m.Ptr32(0x1234), m.Slice(PrimitiveType.Byte, r1, 0));
                 m.Return();
             });
             var program = pb.BuildProgram();
@@ -473,14 +473,13 @@ void level1(word32 r1)
 level1_entry:
 	// succ:  l1
 l1:
-	Mem4[0x00001234<p32>:byte] = (byte) r1
+	Mem4[0x00001234<p32>:byte] = SLICE(r1, byte, 0)
 	return
 	// succ:  level1_exit
 level1_exit:
 ";
             #endregion
             AssertProgramFlow(sExp, pb.Program, dfa.ProgramDataFlow);
-
         }
     }
 }

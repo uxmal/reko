@@ -80,21 +80,21 @@ namespace Reko.Analysis
             {
                 if (storeOffset[i] == null)
                     continue;
-                var cast1 = GetCastRhs(storeOffset[i].Store);
-                var slice1 = GetSliceRhs(storeOffset[i].Store);
-                if (cast1 != null || slice1 != null)
+                var slice1a = GetSliceRhs(storeOffset[i].Store);
+                var slice1b = GetSliceRhs(storeOffset[i].Store);
+                if (slice1a != null || slice1b != null)
                 {
                     for (int j = i + 1; j < storeOffset.Length; ++j)
                     {
-                        var cast2 = GetCastRhs(storeOffset[j].Store);
-                        var slice2 = GetSliceRhs(storeOffset[j].Store);
-                        if (cast1 != null && slice2 != null)
+                        var slice2a = GetSliceRhs(storeOffset[j].Store);
+                        var slice2b = GetSliceRhs(storeOffset[j].Store);
+                        if (slice1a != null && slice2b != null)
                         {
                             ReplaceStores(sid, storeOffset[i], storeOffset[j]);
                             storeOffset[i] = null!;
                             storeOffset[j] = null!;
                         }
-                        else if (slice1 != null && cast2 != null)
+                        else if (slice1b != null && slice2a != null)
                         {
                             throw new NotImplementedException();
                         }
@@ -122,12 +122,6 @@ namespace Reko.Analysis
         {
             var slice = store.Src as Slice;
             return slice;
-        }
-
-        private Cast? GetCastRhs(Store store)
-        {
-            var cast = store.Src as Cast;
-            return cast;
         }
 
         private class StoreOffset

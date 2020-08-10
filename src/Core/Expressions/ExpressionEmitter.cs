@@ -168,19 +168,6 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Generates a cast expression which coerces the <paramref name="expr"/> to
-        /// the data type <paramref name="dataType"/>.
-        /// </summary>
-        /// <param name="dataType">Type to coerce to.</param>
-        /// <param name="expr">Value to coerce.</param>
-        /// <returns>A cast expression.</returns>
-        [Obsolete("", false)]
-        public Cast Cast(DataType dataType, Expression expr)
-        {
-            return new Cast(dataType, expr);
-        }
-
-        /// <summary>
         /// Generates the bitwise complement of <paramref name="expr"/> (the '~' 
         /// operator in the C language family).
         /// </summary>

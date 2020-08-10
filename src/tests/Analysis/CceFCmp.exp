@@ -6,8 +6,8 @@ FCmpFragment_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	fp0_3 = (real80) Mem0[a6 - 0x10<32>:int32]
-	branch (real96) fp0_3 == Mem0[a6 + 8<32>:real96] l1
+	fp0_3 = CONVERT(Mem0[a6 - 0x10<32>:int32], int32, real80)
+	branch CONVERT(fp0_3, real80, real96) == Mem0[a6 + 8<32>:real96] l1
 	// succ:  l2 l1
 l2:
 	return

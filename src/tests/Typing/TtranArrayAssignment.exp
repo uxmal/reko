@@ -11,7 +11,7 @@ l000000000040EC40:
 	word64 rax_22 = 0x10000040<64>
 	// succ:  l000000000040EC50
 l000000000040EC50:
-	Mem0[rdi + rbx_18:byte] = (byte) Mem0[rax_22 + 0<64>:word64][(uint64) (word32) Mem0[rsi + rbx_18:byte] * 4<64>]
+	Mem0[rdi + rbx_18:byte] = CONVERT(Mem0[rax_22 + 0<64>:word64][CONVERT(CONVERT(Mem0[rsi + rbx_18:byte], byte, word32), word32, word64) * 4<64>], word32, byte)
 	rbx_18 = rbx_18 - 1<64>
 	branch rbx_18 != 0xFFFFFFFFFFFFFFFF<64> l000000000040EC50
 	// succ:  l000000000040EC69 l000000000040EC50
@@ -84,27 +84,27 @@ T_15: (in Mem0[rsi + rbx_18:byte] : byte)
   Class: Eq_15
   DataType: byte
   OrigDataType: byte
-T_16: (in (word32) Mem0[rsi + rbx_18:byte] : word32)
+T_16: (in CONVERT(Mem0[rsi + rbx_18:byte], byte, word32) : word32)
   Class: Eq_16
   DataType: word32
   OrigDataType: word32
-T_17: (in (uint64) (word32) Mem0[rsi + rbx_18:byte] : uint64)
+T_17: (in CONVERT(CONVERT(Mem0[rsi + rbx_18:byte], byte, word32), word32, word64) : word64)
   Class: Eq_17
-  DataType: uint64
-  OrigDataType: uint64
+  DataType: ui64
+  OrigDataType: ui64
 T_18: (in 4<64> : word64)
   Class: Eq_18
   DataType: ui64
   OrigDataType: ui64
-T_19: (in (uint64) (word32) Mem0[rsi + rbx_18:byte] * 4<64> : uint64)
+T_19: (in CONVERT(CONVERT(Mem0[rsi + rbx_18:byte], byte, word32), word32, word64) * 4<64> : word64)
   Class: Eq_19
   DataType: ui64
   OrigDataType: ui64
-T_20: (in Mem0[rax_22 + 0<64>:word64][(uint64) (word32) Mem0[rsi + rbx_18:byte] * 4<64>] : word32)
+T_20: (in Mem0[rax_22 + 0<64>:word64][CONVERT(CONVERT(Mem0[rsi + rbx_18:byte], byte, word32), word32, word64) * 4<64>] : word32)
   Class: Eq_20
   DataType: word32
   OrigDataType: word32
-T_21: (in (byte) Mem0[rax_22 + 0<64>:word64][(uint64) (word32) Mem0[rsi + rbx_18:byte] * 4<64>] : byte)
+T_21: (in CONVERT(Mem0[rax_22 + 0<64>:word64][CONVERT(CONVERT(Mem0[rsi + rbx_18:byte], byte, word32), word32, word64) * 4<64>], word32, byte) : byte)
   Class: Eq_21
   DataType: byte
   OrigDataType: byte

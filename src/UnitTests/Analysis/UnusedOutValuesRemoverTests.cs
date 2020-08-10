@@ -336,7 +336,7 @@ foo_exit:
                 var r1 = m.Frame.EnsureRegister(_r1);
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Call("level1", 0);
-                m.MStore(m.Ptr32(0x00123400), m.Cast(PrimitiveType.Byte, r1)); // forces r1 to be liveout on level1
+                m.MStore(m.Ptr32(0x00123400), m.Slice(PrimitiveType.Byte, r1, 0)); // forces r1 to be liveout on level1
                 m.Return();
             });
             pb.Add("level1", m =>
@@ -367,7 +367,7 @@ l1:
 	call level1 (retsize: 0;)
 		uses: r2:r2
 		defs: r1:r1_4
-	Mem5[0x00123400<p32>:byte] = (byte) r1_4
+	Mem5[0x00123400<p32>:byte] = SLICE(r1_4, byte, 0)
 	return
 	// succ:  main_exit
 main_exit:

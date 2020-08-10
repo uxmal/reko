@@ -645,7 +645,7 @@ namespace Reko.UnitTests.Analysis
 
             m.Assign(tmp, m.Mem8(a2));
             m.Assign(d3, m.Dpb(d3, tmp, 0));
-            m.MStore(m.IAdd(a2, 4), m.Cast(PrimitiveType.Byte, d3));
+            m.MStore(m.IAdd(a2, 4), m.Slice(PrimitiveType.Byte, d3, 0));
 
             SsaState ssa = RunTest(m);
 
@@ -667,7 +667,6 @@ d3:d3
     uses: d3_5 = SEQ(SLICE(d3, word24, 8), tmp_3)
 d3_5: orig: d3
     def:  d3_5 = SEQ(SLICE(d3, word24, 8), tmp_3)
-    uses: Mem6[a2 + 4<32>:byte] = tmp_3
 Mem6: orig: Mem0
     def:  Mem6[a2 + 4<32>:byte] = tmp_3
 // ProcedureBuilder
@@ -700,7 +699,7 @@ ProcedureBuilder_exit:
 
             m.Assign(tmp, m.Mem16(a2));
             m.Assign(d3, m.Dpb(d3, tmp, 0));
-            m.MStore(m.IAdd(a2, 4), m.Cast(PrimitiveType.Byte, d3));
+            m.MStore(m.IAdd(a2, 4), m.Slice(PrimitiveType.Byte, d3, 0));
 
             SsaState ssa = RunTest(m);
 
@@ -709,22 +708,22 @@ ProcedureBuilder_exit:
 @"a2:a2
     def:  def a2
     uses: tmp_3 = Mem0[a2:word16]
-          Mem6[a2 + 4<32>:byte] = (byte) tmp_3
+          Mem6[a2 + 4<32>:byte] = SLICE(tmp_3, byte, 0)
 Mem0:Mem
     def:  def Mem0
     uses: tmp_3 = Mem0[a2:word16]
 tmp_3: orig: tmp
     def:  tmp_3 = Mem0[a2:word16]
     uses: d3_5 = SEQ(SLICE(d3, word16, 16), tmp_3)
-          Mem6[a2 + 4<32>:byte] = (byte) tmp_3
+          Mem6[a2 + 4<32>:byte] = SLICE(tmp_3, byte, 0)
 d3:d3
     def:  def d3
     uses: d3_5 = SEQ(SLICE(d3, word16, 16), tmp_3)
 d3_5: orig: d3
     def:  d3_5 = SEQ(SLICE(d3, word16, 16), tmp_3)
-    uses: Mem6[a2 + 4<32>:byte] = (byte) tmp_3
+    uses: Mem6[a2 + 4<32>:byte] = SLICE(tmp_3, byte, 0)
 Mem6: orig: Mem0
-    def:  Mem6[a2 + 4<32>:byte] = (byte) tmp_3
+    def:  Mem6[a2 + 4<32>:byte] = SLICE(tmp_3, byte, 0)
 // ProcedureBuilder
 // Return size: 0
 define ProcedureBuilder
@@ -736,7 +735,7 @@ ProcedureBuilder_entry:
 l1:
 	tmp_3 = Mem0[a2:word16]
 	d3_5 = SEQ(SLICE(d3, word16, 16), tmp_3)
-	Mem6[a2 + 4<32>:byte] = (byte) tmp_3
+	Mem6[a2 + 4<32>:byte] = SLICE(tmp_3, byte, 0)
 ProcedureBuilder_exit:
 ";
             #endregion
@@ -751,7 +750,7 @@ ProcedureBuilder_exit:
             var m = new ProcedureBuilder();
             var r1 = m.Reg32("r1", 1);
 
-            m.Assign(r1, m.Cast(PrimitiveType.Real32, ConstantReal.Real64(1)));
+            m.Assign(r1, m.Convert(Constant.Real64(1), PrimitiveType.Real64, PrimitiveType.Real32));
 
             var ssa = RunTest(m);
             var sExp =
@@ -981,11 +980,13 @@ ProcedureBuilder_exit:
             var m = new ProcedureBuilder();
             m.MStore(
                 m.Word32(0x1234000),
-                m.Cast(
-                    PrimitiveType.Real32,
-                    m.Cast(
-                        PrimitiveType.Real64, 
-                        m.Mem(PrimitiveType.Real32, m.Word32(0x123400)))));
+                m.Convert(
+                    m.Convert(
+                        m.Mem(PrimitiveType.Real32, m.Word32(0x123400)),
+                        PrimitiveType.Real32,
+                        PrimitiveType.Real64),
+                    PrimitiveType.Real64,
+                    PrimitiveType.Real32));
             m.Return();
 
             Assert.IsNotNull(dynamicLinker);
@@ -1159,7 +1160,7 @@ SsaProcedureBuilder_exit:
             var d3_5 = m.Reg32("d3_5", 3);
             var d3_6 = m.Reg32("d3_6", 3);
 
-            m.Assign(wLoc02_2, m.Cast(PrimitiveType.Word16, d3));
+            m.Assign(wLoc02_2, m.Slice(PrimitiveType.Word16, d3, 0));
             m.Label("m1");
             m.Assign(d3_3, m.Dpb(d3, m.Word16(3), 0));
             m.Goto("m3");
@@ -1174,11 +1175,11 @@ SsaProcedureBuilder_exit:
             var sExp =
             #region Expected
 @"d3: orig: d3
-    uses: wLoc02_2 = (word16) d3
+    uses: wLoc02_2 = SLICE(d3, word16, 0)
           d3_3 = SEQ(SLICE(d3, word16, 16), 3<16>)
           d3_4 = SEQ(SLICE(d3, word16, 16), 4<16>)
 wLoc02_2: orig: wLoc04
-    def:  wLoc02_2 = (word16) d3
+    def:  wLoc02_2 = SLICE(d3, word16, 0)
     uses: d3_6 = SEQ(SLICE(d3_5, word16, 16), wLoc02_2)
 d3_3: orig: d3_3
     def:  d3_3 = SEQ(SLICE(d3, word16, 16), 3<16>)
@@ -1197,7 +1198,7 @@ define SsaProcedureBuilder
 SsaProcedureBuilder_entry:
 	// succ:  l1
 l1:
-	wLoc02_2 = (word16) d3
+	wLoc02_2 = SLICE(d3, word16, 0)
 	// succ:  m1
 m1:
 	d3_3 = SEQ(SLICE(d3, word16, 16), 3<16>)
@@ -1320,7 +1321,7 @@ SsaProcedureBuilder_exit:
             m.AddDefToEntryBlock(r19);
             m.AddDefToEntryBlock(r30);
             m.Assign(r11_1, m.Word64(0x91690000));
-            m.Assign(r4_1, m.Cast(PrimitiveType.Word64, m.Mem32(m.IAdd(r19, 28))));
+            m.Assign(r4_1, m.Convert(m.Mem32(m.IAdd(r19, 28)), PrimitiveType.Word32, PrimitiveType.Word64));
             m.Assign(r10_1, m.Word64(0x42420000));
             m.Assign(r11_2, m.Or(r11_1, 0x1448));
             m.Assign(r10_2, m.Or(r10_1, 0x8DA6));
@@ -1345,17 +1346,17 @@ r11_2: orig: r11_2
 r11_3: orig: r11_3
     def:  r11_3 = 0x42428DA691691448<64>
 r4_1: orig: r4_1
-    def:  r4_1 = (word64) Mem10[r19 + 0x1C<64>:word32]
+    def:  r4_1 = CONVERT(Mem10[r19 + 0x1C<64>:word32], word32, word64)
 r19: orig: r19
     def:  def r19
-    uses: r4_1 = (word64) Mem10[r19 + 0x1C<64>:word32]
+    uses: r4_1 = CONVERT(Mem10[r19 + 0x1C<64>:word32], word32, word64)
 r30: orig: r30
     def:  def r30
     uses: r9_1 = r30 & 0xFFFFFFFF<64>
 v30: orig: v30
     def:  v30 = 0x91691448<32>
 Mem10: orig: Mem0
-    uses: r4_1 = (word64) Mem10[r19 + 0x1C<64>:word32]
+    uses: r4_1 = CONVERT(Mem10[r19 + 0x1C<64>:word32], word32, word64)
 // SsaProcedureBuilder
 // Return size: 0
 define SsaProcedureBuilder
@@ -1365,7 +1366,7 @@ SsaProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	r11_1 = 0x91690000<64>
-	r4_1 = (word64) Mem10[r19 + 0x1C<64>:word32]
+	r4_1 = CONVERT(Mem10[r19 + 0x1C<64>:word32], word32, word64)
 	r10_1 = 0x42420000<64>
 	r11_2 = 0x91691448<64>
 	r10_2 = 0x42428DA6<64>
