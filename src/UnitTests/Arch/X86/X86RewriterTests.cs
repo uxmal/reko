@@ -1150,7 +1150,7 @@ namespace Reko.UnitTests.Arch.X86
             Run32bitTest(0x0f, 0x90, 0xc1);
             AssertCode(
                 "0|L--|10000000(3): 1 instructions",
-                "1|L--|cl = Test(OV,O)");
+                "1|L--|cl = CONVERT(Test(OV,O), bool, int8)");
         }
 
         [Test]
@@ -1180,15 +1180,13 @@ namespace Reko.UnitTests.Arch.X86
                 "1|L--|edx_eax = __xgetbv(ecx)");
         }
 
-
-
         [Test]
         public void X86rw_setc()
         {
             Run32bitTest(0x0F, 0x92, 0xC1);
             AssertCode(
                 "0|L--|10000000(3): 1 instructions",
-                "1|L--|cl = Test(ULT,C)");
+                "1|L--|cl = CONVERT(Test(ULT,C), bool, int8)");
         }
 
         [Test]

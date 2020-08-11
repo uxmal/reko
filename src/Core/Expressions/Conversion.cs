@@ -50,7 +50,7 @@ namespace Reko.Core.Expressions
             : base(dtTo)
         {
             if (dtFrom.BitSize != exp.DataType.BitSize)
-                throw new ArgumentException($"Argument size mismatch between {SourceDataType} and {exp.DataType}.");
+                throw new ArgumentException($"Argument size mismatch between {dtFrom} and {exp.DataType}.");
             this.SourceDataType = dtFrom;
             this.Expression = exp;
         }

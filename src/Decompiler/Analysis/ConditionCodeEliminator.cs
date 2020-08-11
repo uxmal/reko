@@ -331,7 +331,7 @@ namespace Reko.Analysis
             var oldSid = ssaIds[(Identifier)u];
             u = UseGrfConditionally(sidGrf, ConditionCode.ULT, false);
             if (c != null)
-                binUse.Right = new Cast(c.DataType, u);
+                binUse.Right = new Conversion(u, u.DataType, c.DataType);
             else
                 binUse.Right = u;
             oldSid.Uses.Remove(useStm!);

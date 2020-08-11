@@ -978,7 +978,11 @@ namespace Reko.Arch.X86
 
         private void RewriteSet(ConditionCode cc)
         {
-            m.Assign(SrcOp(instrCur.Operands[0]), CreateTestCondition(cc, instrCur.Mnemonic));
+            var dst = SrcOp(instrCur.Operands[0]);
+            m.Assign(dst, m.Convert(
+                CreateTestCondition(cc, instrCur.Mnemonic),
+                PrimitiveType.Bool,
+                PrimitiveType.Create(Domain.SignedInt, dst.DataType.BitSize)));
         }
 
         private void RewriteSetFlag(FlagM flagM, Constant value)

@@ -393,7 +393,7 @@ namespace Reko.Arch.X86
             m.Assign(
                 SrcOp(instrCur.Operands[0]),
                 new BinaryExpression(Operator.Shl, PrimitiveType.Word16,
-                        new Cast(PrimitiveType.Word16, orw.AluRegister(Registers.FPUF)),
+                        m.Convert(orw.AluRegister(Registers.FPUF), Registers.FPUF.DataType, PrimitiveType.Word16),
                         Constant.Int16(8)));
         }
 

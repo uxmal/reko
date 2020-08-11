@@ -492,7 +492,7 @@ namespace Reko.Typing
 
         public bool VisitConversion(Conversion conversion, TypeVariable tv)
         {
-            MeetDataType(conversion, tv.DataType);
+            MeetDataType(conversion, conversion.DataType);
             MeetDataType(conversion.Expression.TypeVariable!, conversion.SourceDataType);
             conversion.Expression.Accept(this, conversion.Expression.TypeVariable!);
             return false;
