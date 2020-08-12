@@ -33,6 +33,7 @@ using System.Linq;
 using ProcedureCharacteristics = Reko.Core.Serialization.ProcedureCharacteristics;
 using Reko.Analysis;
 using Reko.Core.Services;
+using System.ComponentModel;
 
 namespace Reko.Scanning
 {
@@ -431,6 +432,16 @@ namespace Reko.Scanning
                     blockCur!.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
                     return false;
                 }
+                var platformProc = program.Platform.LookupProcedureByAddress(addrTarget);
+                if (platformProc != null)
+                {
+                    site = state.OnBeforeCall(stackReg!, 0);
+                    EmitCall(CreateProcedureConstant(platformProc), platformProc.Signature, platformProc.Characteristics, site);
+                    Emit(new ReturnInstruction());
+                    blockCur!.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+                    return false;
+                }
+
                 if (!program.SegmentMap.IsValidAddress(addrTarget))
                 {
                     var jmpSite = state.OnBeforeCall(stackReg!, 0);
@@ -534,6 +545,12 @@ namespace Reko.Scanning
                     return OnAfterCall(sig, chr);
                 }
 
+                var platformProc = program.Platform.LookupProcedureByAddress(addr);
+                if (platformProc != null)
+                {
+                    EmitCall(CreateProcedureConstant(platformProc), platformProc.Signature, platformProc.Characteristics, site);
+                    return OnAfterCall(platformProc.Signature, chr);
+                }
                 if (!program.SegmentMap.IsValidAddress(addr))
                 {
                     return GenerateCallToOutsideProcedure(site, addr);

@@ -175,31 +175,8 @@ namespace Reko.Environments.C64
         /// <returns></returns>
         private static Program LoadPrg(IServiceProvider services, byte[] imageBytes)
         {
-            var stm = new MemoryStream();
-            ushort preferredAddress = MemoryArea.ReadLeUInt16(imageBytes, 0);
-            ushort alignedAddress = (ushort) (preferredAddress & ~0xF);
-            int pad = preferredAddress - alignedAddress;
-            while (pad-- > 0)
-                stm.WriteByte(0);
-            stm.Write(imageBytes, 2, imageBytes.Length - 2);
-            var loadedBytes = stm.ToArray();
-            var image = new MemoryArea(
-                Address.Ptr16(alignedAddress),
-                loadedBytes);
-            var rdr = new C64BasicReader(image, 0x0801);
-            var lines = rdr.ToSortedList(line => (ushort)line.Address.ToLinear(), line => line);
-            var cfgSvc = services.RequireService<IConfigurationService>();
-            var arch6502 = new Mos6502Architecture(services, "m6502");
-            var arch = new C64Basic(services, lines);
-            var platform = cfgSvc.GetEnvironment("c64").Load(services, arch);
-            var segMap = platform.CreateAbsoluteMemoryMap();
-            segMap.AddSegment(image, "code", AccessMode.ReadWriteExecute);
-            var program = new Program(segMap, arch, platform);
-            program.Architectures.Add(arch6502.Name, arch6502);
-            var addrBasic = Address.Ptr16(lines.Keys[0]);
-            var sym = ImageSymbol.Procedure(arch, addrBasic, state: arch.CreateProcessorState());
-            program.EntryPoints.Add(sym.Address, sym);
-            return program;
+            var prgLoader = new PrgLoader(services, "", imageBytes);
+            return prgLoader.Load(null);
         }
 
         public static Program LoadSeq(IServiceProvider services, Address addrPreferred, byte[] imageBytes)

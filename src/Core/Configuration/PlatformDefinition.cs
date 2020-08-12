@@ -76,6 +76,7 @@ namespace Reko.Core.Configuration
             {
                 platform.MemoryMap = MemoryMap_v1.LoadMemoryMapFromFile(services, MemoryMapFile!, platform)!;
             }
+            platform.PlatformProcedures = LoadPlatformProcedures(platform);
             platform.Description = this.Description!;
             platform.Heuristics = LoadHeuristics(this.Heuristics);
         }
@@ -158,12 +159,36 @@ namespace Reko.Core.Configuration
             }
             if (bytes.Count == 0)
                 return null;
+            return new MaskedPattern
+            {
+                Bytes = bytes.ToArray(),
+                Mask = mask.ToArray()
+            };
+        }
+
+        private Dictionary<Address, ExternalProcedure> LoadPlatformProcedures(Platform platform)
+        {
+            if (platform.MemoryMap != null && platform.MemoryMap.Segments != null)
+            {
+                platform.EnsureTypeLibraries(platform.Name);
+                var tser = new TypeLibraryDeserializer(platform, true, platform.Metadata);
+                var sser = new ProcedureSerializer(platform, tser, platform.DefaultCallingConvention);
+                return platform.MemoryMap.Segments.SelectMany(s => s.Procedures)
+                    .OfType<Procedure_v1>()
+                    .Where(p => p.Name != null)
+                    .Select(p =>
+                        (addr: platform.Architecture.TryParseAddress(p.Address, out var addr) ? addr : null,
+                         ext:  new ExternalProcedure(
+                             p.Name!,
+                             sser.Deserialize(p.Signature, platform.Architecture.CreateFrame())
+                                ?? new Types.FunctionType())))
+                    .Where(p => p.addr != null)
+                    .ToDictionary(p => p.addr!, p => p.ext);
+            }
             else
-                return new MaskedPattern
-                {
-                    Bytes = bytes.ToArray(),
-                    Mask = mask.ToArray()
-                };
+            {
+                return new Dictionary<Address, ExternalProcedure>();
+            }
         }
 
         public override string ToString()

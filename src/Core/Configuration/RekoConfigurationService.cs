@@ -342,7 +342,7 @@ namespace Reko.Core.Configuration
             if (elem == null)
                 return null;
 
-            Type t = Type.GetType(elem.TypeName, true);
+            Type t = Type.GetType(elem.TypeName, false);
             if (t == null)
                 return null;
             var arch = (IProcessorArchitecture)Activator.CreateInstance(t, this.services, elem.Name);

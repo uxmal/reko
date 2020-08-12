@@ -154,6 +154,19 @@ namespace Reko.Core
         void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter emitter);
 
         void LoadUserOptions(Dictionary<string, object> options);
+        
+        /// <summary>
+        /// Returns the platform-defined procedure at the address <paramref name="address"/>.
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns>If a procedure exists for this platform at the specified address, an instance of
+        /// <see cref="ExternalProcedure"/>. Otherwise, returns null.
+        /// </returns>
+        /// <remarks>
+        /// This is useful for platforms that have ROMs with system procedures att well-defined addresses.
+        /// </remarks>
+        ExternalProcedure? LookupProcedureByAddress(Address address);
+
         ExternalProcedure? LookupProcedureByName(string? moduleName, string procName);
         ExternalProcedure? LookupProcedureByOrdinal(string moduleName, int ordinal);
         Expression? ResolveImportByName(string? moduleName, string globalName);
@@ -202,6 +215,7 @@ namespace Reko.Core
             this.PlatformIdentifier = platformId;
             this.Heuristics = new PlatformHeuristics();
             this.DefaultTextEncoding = Encoding.ASCII;
+            this.PlatformProcedures = new Dictionary<Address, ExternalProcedure>();
         }
         #nullable enable
 
@@ -232,6 +246,15 @@ namespace Reko.Core
         public virtual Encoding DefaultTextEncoding { get; set; }
 
         public abstract string DefaultCallingConvention { get; }
+
+        /// <summary>
+        /// Procedures provided by this platform at well-known addresses.
+        /// </summary>
+        /// <remarks>
+        /// This is typically the case with microcomputer or embedded platforms, where calls to
+        /// well-known addresses in ROMs are made.
+        /// </remarks>
+        public Dictionary<Address, ExternalProcedure> PlatformProcedures { get; set; }
 
         /// <summary>
         /// Some architectures platforms (I'm looking at you ARM Thumb) will use addresses
@@ -458,8 +481,6 @@ namespace Reko.Core
             return Architecture.TryParseAddress(sAddress, out addr);
         }
 
-        public abstract ExternalProcedure? LookupProcedureByName(string? moduleName, string procName);
-
         /// <summary>
         /// If the platform can be customized by user, load those customizations here.
         /// </summary>
@@ -486,6 +507,15 @@ namespace Reko.Core
         {
             return null;
         }
+
+        public virtual ExternalProcedure? LookupProcedureByAddress(Address addr)
+        {
+            return this.PlatformProcedures.TryGetValue(addr, out var extProc)
+                ? extProc
+                : null;
+        }
+
+        public abstract ExternalProcedure? LookupProcedureByName(string? moduleName, string procName);
 
         public virtual ExternalProcedure? LookupProcedureByOrdinal(string moduleName, int ordinal)
         {

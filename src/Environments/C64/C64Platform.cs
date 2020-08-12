@@ -52,6 +52,7 @@ namespace Reko.Environments.C64
         {
             throw new NotImplementedException();
         }
+
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
             return new HashSet<RegisterStorage>
