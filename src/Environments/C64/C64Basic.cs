@@ -42,8 +42,8 @@ namespace Reko.Environments.C64
     {
         private static readonly RegisterStorage stackRegister = new RegisterStorage("sp", 1, 0, PrimitiveType.Ptr16);
 
-        private SortedList<ushort, C64BasicInstruction> program;
-        private BTreeDictionary<Address, C64BasicInstruction> mpAddrToInstr;
+        private readonly SortedList<ushort, C64BasicInstruction> program;
+        private readonly BTreeDictionary<Address, C64BasicInstruction> mpAddrToInstr;
 
         public C64Basic(IServiceProvider services, string archId) : base(services, archId)
         {

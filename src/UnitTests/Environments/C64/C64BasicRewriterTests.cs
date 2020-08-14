@@ -42,6 +42,7 @@ namespace Reko.UnitTests.Environments.C64
         private C64Basic arch;
         private Mos6502Architecture arch6502;
         private SortedList<ushort, C64BasicInstruction> lines;
+        private ServiceContainer sc;
         private Mock<ArchTestBase.RewriterHost> host;
 
         public override IProcessorArchitecture Architecture => arch;
@@ -50,7 +51,8 @@ namespace Reko.UnitTests.Environments.C64
 
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            var addr = Address.Ptr16(10);
+            var addr = Address.Ptr16(0x801);
+            arch = new C64Basic(sc, lines);
             return arch.CreateRewriter(
                 arch.CreateImageReader(mem, addr),
                 arch.CreateProcessorState(),
@@ -92,11 +94,11 @@ namespace Reko.UnitTests.Environments.C64
                 MemoryStream stm = new MemoryStream();
                 foreach (var instr in instrs)
                 {
-                    if (instr is Token)
-                        stm.WriteByte((byte)(Token)instr);
-                    else if (instr is string)
+                    if (instr is Token token)
+                        stm.WriteByte((byte)token);
+                    else if (instr is string str)
                     {
-                        var bytes = Encoding.ASCII.GetBytes((string)instr);
+                        var bytes = Encoding.ASCII.GetBytes(str);
                         stm.Write(bytes, 0, bytes.Length);
                     }
                     else
@@ -108,21 +110,21 @@ namespace Reko.UnitTests.Environments.C64
             public object Clr() { return Token.CLR; }
             public object End() { return Token.END; }
 
-            internal object Sys() { return Token.SYS; }
+            public object Sys() { return Token.SYS; }
         }
 
         [SetUp]
         public void Setup()
         {
             lines = new SortedList<ushort, C64BasicInstruction>();
-            var sc = CreateServiceContainer();
-            arch = new C64Basic(sc, lines);
+            sc = CreateServiceContainer();
+            arch = new C64Basic(sc, "c64");
             arch6502 = new Mos6502Architecture(sc, "m6502");
             m = new BasicProcessor(lines);
-            host = new Mock<RewriterTestBase.RewriterHost>(arch) { CallBase = true };
+            host = new Mock<RewriterHost>(arch) { CallBase = true };
             host.Setup(h => h.GetArchitecture("m6502"))
                 .Returns(arch6502);
-            base.Given_MemoryArea(new MemoryArea(Address.Ptr16(0x10), new byte[10]));
+            base.Given_MemoryArea(new MemoryArea(Address.Ptr16(0x800), new byte[10]));
         }
 
         [Test]
