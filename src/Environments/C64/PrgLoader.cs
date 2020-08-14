@@ -24,6 +24,7 @@ using Reko.Core.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Environments.C64
@@ -60,24 +61,50 @@ namespace Reko.Environments.C64
                 Address.Ptr16(alignedAddress),
                 loadedBytes);
             var rdr = new C64BasicReader(image, 0x0801);
-            var lines = rdr.ToSortedList(line => (ushort) line.Address.ToLinear(), line => line);
+            var lines = rdr.ToSortedList(line => line.LineNumber, line => line);
             var cfgSvc = Services.RequireService<IConfigurationService>();
             arch = new C64Basic(Services, lines);
             platform = cfgSvc.GetEnvironment("c64").Load(Services, arch);
-            var arch6502 = new Mos6502Architecture(Services, "m6502");
-            var segMap = platform.CreateAbsoluteMemoryMap();
-            segMap.AddSegment(image, "code", AccessMode.ReadWriteExecute);
+            var arch6502 = cfgSvc.GetArchitecture("m6502");
+            SegmentMap segMap = CreateSegmentMap(platform, image, lines);
             var program = new Program(segMap, arch, platform);
             program.Architectures.Add(arch6502.Name, arch6502);
-            var addrBasic = Address.Ptr16(lines.Keys[0]);
+            var addrBasic = lines.Values[0].Address;
             var sym = ImageSymbol.Procedure(arch, addrBasic, state: arch.CreateProcessorState());
             program.EntryPoints.Add(sym.Address, sym);
+            AddLineNumberSymbols(lines, program);
             return program;
+        }
+
+        private void AddLineNumberSymbols(SortedList<ushort, C64BasicInstruction> lines, Program program)
+        {
+            foreach (var line in lines.Values)
+            {
+                var sym = ImageSymbol.Location(program.Architecture, line.Address);
+                sym.Name = $"L{line.LineNumber}";
+                program.ImageSymbols.Add(line.Address, sym);
+            }
+        }
+
+        private SegmentMap CreateSegmentMap(IPlatform platform, MemoryArea image, IDictionary<ushort, C64BasicInstruction> lines)
+        {
+            var segMap = platform.CreateAbsoluteMemoryMap();
+            Address addrStart = image.BaseAddress;
+            if (lines.Count > 0)
+            {
+                segMap.AddSegment(new ImageSegment("basic", image.BaseAddress, image, AccessMode.ReadExecute));
+                var lastLine = lines.Values.OrderByDescending(l => l.Address).First();
+                addrStart = lastLine.Address + lastLine.Line.Length;
+            }
+            segMap.AddSegment(new ImageSegment("code", addrStart, image, AccessMode.ReadWriteExecute));
+            return segMap;
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            throw new NotImplementedException();
+            return new RelocationResults(
+                new List<ImageSymbol>(),
+                new SortedList<Address, ImageSymbol>());
         }
     }
 }

@@ -278,6 +278,7 @@ namespace Reko.Core
         public bool TryPeekBeUInt32(int offset, out uint value) { return MemoryArea.TryReadBeUInt32(bytes, offset + off, out value); }
         public bool TryPeekBeUInt64(int offset, out ulong value) { return MemoryArea.TryReadBeUInt64(bytes, offset + off, out value); }
 
+        public bool TryPeekLeUInt16(int offset, out ushort value) { return MemoryArea.TryReadLeUInt16(bytes, offset + off, out value); }
         public bool TryPeekLeUInt32(int offset, out uint value) { return MemoryArea.TryReadLeUInt32(bytes, offset + off, out value); }
         
         public uint ReadLeUInt32()

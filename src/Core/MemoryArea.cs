@@ -31,8 +31,8 @@ namespace Reko.Core
 	/// Contains the bytes that are present in memory after a program is loaded.
 	/// </summary>
     /// <remarks>
-    /// Loading sparse images should load multiple memory areas. Use SegmentMap
-    /// and ImageSegments to accomplish this.
+    /// Loading sparse images should load multiple memory areas. Use <see cref="SegmentMap"/>
+    /// and <see cref="ImageSegment"/>s to accomplish this.
     /// </remarks>
 	public class MemoryArea
 	{
@@ -587,7 +587,7 @@ namespace Reko.Core
             return (short)(abImage[offset] + (abImage[offset + 1] << 8));
         }
 
-        public static bool TryReadLeUInt16(byte[] abImage, uint offset, out ushort us)
+        public static bool TryReadLeUInt16(byte[] abImage, long offset, out ushort us)
         {
             if (offset + 1 >= abImage.Length)
             {

@@ -19,24 +19,21 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Rtl;
-using Reko.Core.Lib;
-using Reko.Core.Machine;
-using Reko.Core.Types;
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Reko.Core.Serialization;
-using Reko.Core.Operators;
-using Reko.Core.Assemblers;
 
 namespace Reko.Arch.Mos6502
 {
     public class Mos6502Architecture : ProcessorArchitecture
     {
-        private Dictionary<uint, FlagGroupStorage> flagGroups;
+        private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public Mos6502Architecture(IServiceProvider services, string archId) : base(services, archId)
         {
@@ -77,7 +74,11 @@ namespace Reko.Arch.Mos6502
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            throw new NotImplementedException();
+            var knownLinAddresses = knownAddresses
+                .Select(a => a.ToUInt16())
+                .ToHashSet();
+            return new Mos6502PointerScanner(rdr, knownLinAddresses, flags)
+                .Select(uAddr => Address.Ptr16(uAddr));
         }
 
         public override SortedList<string, int> GetMnemonicNames()
@@ -91,8 +92,7 @@ namespace Reko.Arch.Mos6502
 
         public override int? GetMnemonicNumber(string name)
         {
-            Mnemonic result;
-            if (!Enum.TryParse(name, true, out result))
+            if (!Enum.TryParse(name, true, out Mnemonic result))
                 return null;
             return (int)result;
         }

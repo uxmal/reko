@@ -36,9 +36,9 @@ namespace Reko.Core
     /// </remarks>
     public abstract class PointerScanner<T> : IEnumerable<T>
     {
-        private EndianImageReader rdr;
-        private HashSet<T> knownLinAddresses;
-        private PointerScannerFlags flags;
+        private readonly EndianImageReader rdr;
+        private readonly HashSet<T> knownLinAddresses;
+        private readonly PointerScannerFlags flags;
 
         public PointerScanner(EndianImageReader rdr, HashSet<T> knownLinAddresses, PointerScannerFlags flags)
         {
@@ -54,21 +54,23 @@ namespace Reko.Core
 
         IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
 
-        private class Enumerator : IEnumerator<T>
+        private struct Enumerator : IEnumerator<T>
         {
-            private PointerScanner<T> scanner;
-            private EndianImageReader r;
+            private readonly PointerScanner<T> scanner;
+            private readonly EndianImageReader r;
+            private T current;
 
 #nullable disable
             public Enumerator(PointerScanner<T> scanner, EndianImageReader rdr)
             {
                 this.scanner = scanner;
                 this.r = rdr;
+                this.current = default;
             }
 
-            public T Current { get; set; }
+            public T Current => current;
 
-            object System.Collections.IEnumerator.Current { get { return Current; } }
+            object IEnumerator.Current => current;
 #nullable enable
 
             public bool MoveNext()
@@ -76,10 +78,9 @@ namespace Reko.Core
                 while (r.IsValid)
                 {
                     var rdr = this.r;
-                    T linAddrInstr;
-                    if (scanner.ProbeForPointer(rdr, out linAddrInstr))
+                    if (scanner.ProbeForPointer(rdr, out T linAddrInstr))
                     {
-                        Current = linAddrInstr;
+                        current = linAddrInstr;
                         return true;
                     }
                 }

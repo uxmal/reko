@@ -77,7 +77,8 @@ namespace Reko.Environments.C64
             }
             return new C64BasicInstruction
             {
-                Address = Address.Ptr16(line),
+                LineNumber = line,
+                Address = addr,
                 Length = (int) (rdr.Address - addr),
                 NextAddress = next,
                 Line = mem.ToArray()

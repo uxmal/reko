@@ -463,6 +463,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             {
                 vScroll.Maximum = Math.Max(model.LineCount - 1, 0);
                 vScroll.LargeChange = Math.Max(visibleLines - 1, 0);
+                vScroll.SmallChange = 1;
                 vScroll.Enabled = visibleLines < model.LineCount;
             }
             else
@@ -495,11 +496,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 return cLines - 1;
             else
                 return cLines;
-        }
-
-        void model_ModelChanged(object sender, EventArgs e)
-        {
-            ChangeLayout();
         }
 
         void vScroll_ValueChanged(object sender, EventArgs e)
@@ -599,7 +595,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             var frac = model.GetPositionAsFraction();
             this.ignoreScroll = true;
-            if(frac.Item2 != 0)
+            if (frac.Item2 != 0)
                 vScroll.Value = (int)(Math.BigMul(frac.Item1, vScroll.Maximum) / frac.Item2);
             this.ignoreScroll = false;
         }

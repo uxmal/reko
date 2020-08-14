@@ -217,7 +217,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// </summary>
         public class InertTextSpan : TextSpan
         {
-            private string text;
+            private readonly string text;
 
             public InertTextSpan(string text, string style)
             {
