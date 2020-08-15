@@ -553,24 +553,17 @@
 	  </arg>
 	</signature>
   </service>
+
   <service name="msdos_get_system_time">
 	<syscallinfo>
 	  <vector>21</vector>
 	  <regvalue reg="ah">2C</regvalue>
 	</syscallinfo>
 	<signature>
-	  <return>
-		<reg>cl</reg>
-	  </return>
-	  <arg out="true">
-		<reg>ch</reg>
-	  </arg>
-	  <arg out="true">
-		<reg>dh</reg>
-	  </arg>
-	  <arg out="true">
-		<reg>dl</reg>
-	  </arg>
+	  <return><reg>cl</reg></return>
+	  <arg out="true"><reg>ch</reg></arg>
+	  <arg out="true"><reg>dh</reg></arg>
+	  <arg out="true"><reg>dl</reg></arg>
 	</signature>
   </service>
   <service name="msdos_get_disk_transfer_area_address">
@@ -936,20 +929,13 @@
 	  <regvalue reg="ah">4A</regvalue>
 	</syscallinfo>
 	<signature>
-	  <return>
-		<flag>C</flag>
-	  </return>
-	  <arg>
-		<reg>es</reg>
-	  </arg>
-	  <arg>
-		<reg>bx</reg>
-	  </arg>
-	  <arg out="true">
-		<reg>bx</reg>
-	  </arg>
+	  <return><flag>C</flag></return>
+	  <arg><reg>es</reg></arg>
+	  <arg><reg>bx</reg></arg>
+	  <arg out="true"><reg>bx</reg></arg>
 	</signature>
   </service>
+  
   <service name="msdos_exec">
     <syscallinfo>
       <vector>21</vector>
@@ -1333,6 +1319,20 @@
 	  </arg>
 	</signature>
   </service>
+
+  <!-- https://secondboyet.com/articles/publishedarticles/theslithytove.html -->
+  <!-- $TODO: lacking more information, we just have to stop the scanner here. -->
+  <service name="INT3F_OVERLAY_MANAGER">
+    <syscallinfo>
+      <vector>3F</vector>
+    </syscallinfo>
+    <signature>
+    </signature>
+    <characteristics>
+      <terminates>true</terminates>
+    </characteristics>
+  </service>
+  
   <service name="ems_get_manager_status">
 	<syscallinfo>
 	  <vector>67</vector>
