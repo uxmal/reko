@@ -66,6 +66,7 @@ namespace Reko.Evaluation
         private readonly IdProcConstRule idProcConstRule;
         private readonly ConvertConvertRule convertConvertRule;
         private readonly DistributedCastRule distributedCast;
+        private readonly DistributedConversionRule distrubutedConvert;
         private readonly DistributedSliceRule distributedSlice;
         private readonly MkSeqFromSlices_Rule mkSeqFromSlicesRule;
         private readonly ComparisonConstOnLeft constOnLeft;
@@ -100,6 +101,7 @@ namespace Reko.Evaluation
             this.constDiv = new ConstDivisionImplementedByMultiplication(ctx);
             this.idProcConstRule = new IdProcConstRule(ctx);
             this.convertConvertRule = new ConvertConvertRule(ctx);
+            this.distrubutedConvert = new DistributedConversionRule();
             this.distributedCast = new DistributedCastRule();
             this.distributedSlice = new DistributedSliceRule();
             this.mkSeqFromSlicesRule = new MkSeqFromSlices_Rule(ctx);
