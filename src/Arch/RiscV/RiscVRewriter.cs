@@ -208,7 +208,14 @@ namespace Reko.Arch.RiscV
             {
                 src = m.Convert(m.Slice(dt, src, 0), dt, arch.NaturalSignedInteger);
             }
-            m.Assign(dst, src);
+            if (dst.DataType.BitSize > src.DataType.BitSize && src is Constant cSrc)
+            {
+                m.Assign(dst, cSrc.ToInt32());
+            }
+            else
+            {
+                m.Assign(dst, src);
+            }
         }
 
         private Expression SllI(Expression a, Expression b)

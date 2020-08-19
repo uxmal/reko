@@ -723,15 +723,15 @@ namespace Reko.Arch.RiscV
             {
                 Instr(Mnemonic.addi, d,r1,i),
                 new ShiftDecoder(
-                    Instr(Mnemonic.slli, d,r1,z),
+                    Instr(Mnemonic.slli, d,r1,Z),
                     invalid),
                 Instr(Mnemonic.slti, d,r1,i),
                 Instr(Mnemonic.sltiu, d,r1,i),
 
                 Instr(Mnemonic.xori, d,r1,i),
                 new ShiftDecoder(
-                    Instr(Mnemonic.srli, d,r1,z),
-                    Instr(Mnemonic.srai, d,r1,z)),
+                    Instr(Mnemonic.srli, d,r1,Z),
+                    Instr(Mnemonic.srai, d,r1,Z)),
                 Instr(Mnemonic.ori, d,r1,i),
                 Instr(Mnemonic.andi, d,r1,i),
             };
@@ -775,21 +775,25 @@ namespace Reko.Arch.RiscV
 
             var op32 = new Decoder[]            // 0b01110
             {
-                new ShiftDecoder(
-                    Instr(Mnemonic.addw, d,r1,r2),
-                    Instr(Mnemonic.subw, d,r1,r2)),
-                new ShiftDecoder(
-                    Instr(Mnemonic.sllw, d,r1,r2),
-                    invalid),
+                Sparse(25, 7, "  000", Nyi(""),
+                    (0x00, Instr(Mnemonic.addw, d,r1,r2)),
+                    (0x01, Instr(Mnemonic.mulw, d,r1,r2)),
+                    (0x20, Instr(Mnemonic.subw, d,r1,r2))),
+                Sparse(25, 7, "  000", Nyi(""),
+                    (0x00, Instr(Mnemonic.sllw, d,r1,r2))),
                 Nyi(""),
                 Nyi(""),
 
-                Nyi(""),
-                new ShiftDecoder(
-                    Instr(Mnemonic.srlw, d,r1,r2),
-                    Instr(Mnemonic.sraw, d,r1,r2)),
-                Nyi(""),
-                Nyi(""),
+                Sparse(25, 7, "  100", Nyi(""),
+                    (0x01, Instr(Mnemonic.divw, d,r1,r2))),
+                Sparse(25, 7, "  101", Nyi(""),
+                    (0x00, Instr(Mnemonic.srlw, d,r1,r2)),
+                    (0x01, Instr(Mnemonic.divuw, d,r1,r2)),
+                    (0x20, Instr(Mnemonic.sraw, d,r1,r2))),
+                Sparse(25, 7, "  110", Nyi(""),
+                    (0x01, Instr(Mnemonic.remw, d,r1,r2))),
+                Sparse(25, 7, "  111", Nyi(""),
+                    (0x01, Instr(Mnemonic.remuw, d,r1,r2))),
             };
 
             var opfp = new(uint, Decoder)[]     // 0b10100
