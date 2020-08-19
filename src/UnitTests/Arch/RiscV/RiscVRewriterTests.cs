@@ -183,6 +183,15 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_addi_zero()
+        {
+            Given_RiscVInstructions(0xFFF00413); // addi s0,zero,-00000001
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s0 = 0xFFFFFFFFFFFFFFFF<64>");
+        }
+
+        [Test]
         public void RiscV_rw_addiw()
         {
             Given_RiscVInstructions(0x0087879Bu);    // addiw\ta5,a5,+00000008
@@ -190,6 +199,35 @@ namespace Reko.UnitTests.Arch.RiscV
                 "0|L--|0000000000010000(4): 1 instructions",
                 "1|L--|a5 = CONVERT(CONVERT(a5, word64, word32) + 8<i32>, word32, int64)");
         }
+
+        [Test]
+        public void RiscV_rw_addiw_sign_extend()
+        {
+            Given_RiscVInstructions(0x00002301);    // c.addiw\tt1,00000000
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|t1 = CONVERT(SLICE(t1, word32, 0), word32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_c_addiw()
+        {
+            Given_RiscVInstructions(0x00002405);    // c.addiw\ts0,00000001
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|s0 = CONVERT(SLICE(s0 + 1<64>, word32, 0), word32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_c_addiw_negative()
+        {
+            Given_RiscVInstructions(0x0000347D);    // c.addiw\ts0,FFFFFFFFFFFFFFFF
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|s0 = CONVERT(SLICE(s0 + 0xFFFFFFFFFFFFFFFF<64>, word32, 0), word32, int64)");
+        }
+
+
 
         [Test]
         public void RiscV_rw_x1()
@@ -278,7 +316,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x03492707u);    // flw\tfa4,s2,+00000034
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa4 = Mem0[s2 + 52<i64>:real32]");
+                "1|L--|fa4 = SEQ(0xFFFFFFFF<32>, Mem0[s2 + 52<i64>:real32])");
         }
 
         [Test]
@@ -287,7 +325,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0xF00007D3u);    // fmv.w.x\tfa5,zero
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa5 = CONVERT(0<64>, real64, real32)");
+                "1|L--|fa5 = SEQ(0xFFFFFFFF<32>, CONVERT(0<64>, real64, real32))");
         }
 
         [Test]
@@ -324,18 +362,11 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0xA0F727D3u);    // feq.s\ta5,fa4,fa5
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a5 = CONVERT(CONVERT(fa4, word64, real32) == CONVERT(fa5, word64, real32), bool, word64)");
+                "1|L--|a5 = CONVERT(SLICE(fa4, real32, 0) == SLICE(fa5, real32, 0), bool, word64)");
         }
 
 
-        [Test]
-        public void RiscV_rw_addiw_negative()
-        {
-            Given_RiscVInstructions(0x0000347D);    // c.addiw\ts0,FFFFFFFFFFFFFFFF
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|s0 = CONVERT(SLICE(s0 + 0xFFFFFFFFFFFFFFFF<64>, word32, 0), word32, int64)");
-        }
+
 
         [Test]
         public void RiscV_rw_c_sw()
@@ -473,17 +504,6 @@ namespace Reko.UnitTests.Arch.RiscV
                 "1|L--|sp = sp + 208<i64>");
         }
 
-
-
-        [Test]
-        public void RiscV_rw_addiw_sign_extend()
-        {
-            Given_RiscVInstructions(0x00002301);    // c.addiw\tt1,00000000
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|t1 = CONVERT(SLICE(t1, word32, 0), word32, int64)");
-        }
-
         [Test]
         public void RiscV_rw_li()
         {
@@ -518,15 +538,6 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode(
                 "0|T--|0000000000010000(2): 1 instructions",
                 "1|T--|if (a4 != 0<64>) branch 000000000000FF30");
-        }
-
-        [Test]
-        public void RiscV_rw_c_addiw()
-        {
-            Given_RiscVInstructions(0x00002405);    // c.addiw\ts0,00000001
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|s0 = CONVERT(SLICE(s0 + 1<64>, word32, 0), word32, int64)");
         }
 
         // Reko: a decoder for RiscV instruction 62696C2F at address 00100000 has not been implemented. (amo)

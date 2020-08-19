@@ -482,6 +482,12 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_dasm_slli()
+        {
+            AssertCode("slli\ta2,s2,00000020", 0x02091613);
+        }
+
+        [Test]
         public void RiscV_dasm_sltu()
         {
             AssertCode("sltu\ta0,zero,a0", 0x00A03533);
