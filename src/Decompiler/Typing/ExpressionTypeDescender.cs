@@ -432,6 +432,8 @@ namespace Reko.Typing
 
         public DataType MeetDataType(Expression exp, DataType dt)
         {
+            if (exp is Conversion || exp is Cast)
+                return exp.TypeVariable!.DataType;
             return MeetDataType(exp.TypeVariable!, dt);
         }
 
@@ -492,8 +494,8 @@ namespace Reko.Typing
 
         public bool VisitConversion(Conversion conversion, TypeVariable tv)
         {
-            MeetDataType(conversion, conversion.DataType);
-            MeetDataType(conversion.Expression.TypeVariable!, conversion.SourceDataType);
+     //       MeetDataType(conversion, conversion.DataType);
+            MeetDataType(conversion.Expression, conversion.SourceDataType);
             conversion.Expression.Accept(this, conversion.Expression.TypeVariable!);
             return false;
         }
