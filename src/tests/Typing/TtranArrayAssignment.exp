@@ -90,8 +90,8 @@ T_16: (in CONVERT(Mem0[rsi + rbx_18:byte], byte, word32) : word32)
   OrigDataType: word32
 T_17: (in CONVERT(CONVERT(Mem0[rsi + rbx_18:byte], byte, word32), word32, word64) : word64)
   Class: Eq_17
-  DataType: ui64
-  OrigDataType: ui64
+  DataType: word64
+  OrigDataType: word64
 T_18: (in 4<64> : word64)
   Class: Eq_18
   DataType: ui64

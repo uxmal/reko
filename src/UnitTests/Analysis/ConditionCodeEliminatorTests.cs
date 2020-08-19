@@ -651,7 +651,7 @@ m1Loop:
 	h_10 = a_8
 	v13_27 = SEQ(h_3, l_11) >>u 1<8>
 	a_8 = SLICE(v13_27, byte, 8)
-	a_13 = CONVERT(v13_27, uint16, byte)
+	a_13 = SLICE(v13_27, byte, 0)
 	l_15 = a_13
 	c_17 = c_16 - 1<8>
 	branch c_17 != 0<8> m1Loop
