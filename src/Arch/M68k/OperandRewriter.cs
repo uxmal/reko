@@ -122,7 +122,7 @@ namespace Reko.Arch.M68k
                 {
                     var idx = Combine(null, indop.Index, addrInstr);
                     if (indop.index_reg_width!.BitSize != 32)
-                        idx = m.Convert(idx, PrimitiveType.Int16, PrimitiveType.Int32);
+                        idx = m.Convert(m.Slice(PrimitiveType.Int16, idx, 0), PrimitiveType.Int16, PrimitiveType.Int32);
                     if (indop.IndexScale > 1)
                         idx = m.IMul(idx, indop.IndexScale);
                     ea = Combine(ea, idx);
