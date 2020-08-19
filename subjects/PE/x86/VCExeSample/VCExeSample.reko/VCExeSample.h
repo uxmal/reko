@@ -314,7 +314,7 @@ T_31: (in arg4 : real32)
   Class: Eq_31
   DataType: real32
   OrigDataType: real32
-T_32: (in (real64) arg4 : real64)
+T_32: (in CONVERT(arg4, real32, real64) : real64)
   Class: Eq_26
   DataType: real64
   OrigDataType: real64
@@ -914,7 +914,7 @@ T_181: (in Mem25[0x00403034<p32>:word32] : word32)
   Class: Eq_110
   DataType: (ptr32 Eq_110)
   OrigDataType: (ptr32 (union (thiscall_class u1)))
-T_182: (in (real64) rArg04 : real64)
+T_182: (in CONVERT(rArg04, real32, real64) : real64)
   Class: Eq_182
   DataType: real64
   OrigDataType: real64
@@ -922,7 +922,7 @@ T_183: (in gbl_thiscall->vtbl->modify_double(gbl_thiscall, dwLoc08_65, (real64) 
   Class: Eq_183
   DataType: real64
   OrigDataType: real64
-T_184: (in (real64) dwLoc08_65 : real64)
+T_184: (in CONVERT(dwLoc08_65, word32, real64) : real64)
   Class: Eq_183
   DataType: real64
   OrigDataType: real64
@@ -970,7 +970,7 @@ T_195: (in Mem48[0x00403034<p32>:word32] : word32)
   Class: Eq_110
   DataType: (ptr32 Eq_110)
   OrigDataType: (ptr32 (union (thiscall_class u1)))
-T_196: (in (real64) rArg04 : real64)
+T_196: (in CONVERT(rArg04, real32, real64) : real64)
   Class: Eq_196
   DataType: real64
   OrigDataType: real64
@@ -1130,7 +1130,7 @@ T_235: (in signature of loop_test9 : void)
   Class: Eq_234
   DataType: (ptr32 Eq_234)
   OrigDataType: 
-T_236: (in (real32) rArg04 : real32)
+T_236: (in CONVERT(rArg04, real64, real32) : real32)
   Class: Eq_169
   DataType: real32
   OrigDataType: real32

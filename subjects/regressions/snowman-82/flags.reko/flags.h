@@ -34,11 +34,11 @@ T_6: (in Mem0[rdi + 0<64>:word32] : word32)
   Class: Eq_6
   DataType: word32
   OrigDataType: word32
-T_7: (in (uint64) Mem0[rdi + 0<64>:word32] : uint64)
+T_7: (in CONVERT(Mem0[rdi + 0<64>:word32], word32, uint64) : uint64)
   Class: Eq_7
   DataType: uint64
   OrigDataType: uint64
-T_8: (in SLICE((uint64) Mem0[rdi + 0<64>:word32], word32, 0) : word32)
+T_8: (in SLICE(CONVERT(Mem0[rdi + 0<64>:word32], word32, uint64), word32, 0) : word32)
   Class: Eq_8
   DataType: uint32
   OrigDataType: uint32
@@ -50,11 +50,11 @@ T_10: (in (word32) (uint64) *rdi >> 0xA<32> : word32)
   Class: Eq_10
   DataType: uint32
   OrigDataType: uint32
-T_11: (in (uint64) (SLICE((uint64) Mem0[rdi + 0<64>:word32], word32, 0) >>u 0xA<32>) : uint64)
+T_11: (in CONVERT(SLICE(CONVERT(Mem0[rdi + 0<64>:word32], word32, uint64), word32, 0) >>u 0xA<32>, word32, uint64) : uint64)
   Class: Eq_11
   DataType: uint64
   OrigDataType: uint64
-T_12: (in SLICE((uint64) (SLICE((uint64) Mem0[rdi + 0<64>:word32], word32, 0) >>u 0xA<32>), byte, 0) : byte)
+T_12: (in SLICE(CONVERT(SLICE(CONVERT(Mem0[rdi + 0<64>:word32], word32, uint64), word32, 0) >>u 0xA<32>, word32, uint64), byte, 0) : byte)
   Class: Eq_12
   DataType: byte
   OrigDataType: byte

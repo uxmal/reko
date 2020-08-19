@@ -82,7 +82,7 @@ word32 verify(byte rdi[])
 		}
 		++dwLoc0C_n;
 	}
-	rax_n = (uint64) (word32) (dwLoc0C_n == 0x17);
+	rax_n = (uint64) (word32) (int8) (dwLoc0C_n == 0x17);
 	return (word32) rax_n;
 }
 
@@ -91,7 +91,7 @@ void main(struct Eq_n * rsi, word32 edi)
 {
 	if (edi != 0x02)
 		puts("You need to enter the secret key!");
-	else if ((word32) (uint64) (uint32) verify(rsi->ptr0008) != 0x00)
+	else if ((word32) (uint64) verify(rsi->ptr0008) != 0x00)
 		puts("Correct! that is the secret key!");
 	else
 		puts("I'm sorry, that's the wrong secret key!");

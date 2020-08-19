@@ -104,7 +104,7 @@ l000010B6:
 	word32 d0_234 = Mem172[(d0_173 << 2<32>) + 16<i32>:word32]
 	word32 a1_237 = Mem172[d0_109 + 8<i32>:word32]
 	word32 a0_242 = (d0_234 << 2<32>) + 1<i32>
-	word32 d0_244 = (uint32) (uint8) Mem172[d0_234 << 2<32>:byte]
+	word32 d0_244 = CONVERT(Mem172[d0_234 << 2<32>:byte], byte, uint32)
 	Mem245[a0_242 + d0_244:byte] = 0<8>
 	Mem246[d0_109 + 16<i32>:word32] = a0_242
 	word32 a6_247 = d0_109 + 20<i32>

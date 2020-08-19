@@ -1647,7 +1647,7 @@ l9534:
 	er4_16_16 = SLICE(er4_240, word16, 16) (alias)
 	er5_16_16 = SLICE(er5_241, word16, 16) (alias)
 	r5_1148 = 4<16>
-	word16 r0_253 = (uint16) (uint8) SLICE(er0_238, byte, 0)
+	word16 r0_253 = CONVERT(SLICE(er0_238, byte, 0), byte, uint16)
 	branch r0_253 != 4<16> l9546
 l9546:
 	branch r0_253 != 2<16> l9556

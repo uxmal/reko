@@ -284,7 +284,7 @@ T_55: (in Mem19[0x10AF0<32>:byte] : byte)
   Class: Eq_55
   DataType: byte
   OrigDataType: byte
-T_56: (in (word32) Mem19[0x10AF0<32>:byte] : word32)
+T_56: (in CONVERT(Mem19[0x10AF0<32>:byte], byte, word32) : word32)
   Class: Eq_56
   DataType: word32
   OrigDataType: word32
@@ -364,7 +364,7 @@ T_75: (in r2_40 < r16_42 : bool)
   Class: Eq_75
   DataType: bool
   OrigDataType: bool
-T_76: (in (word32) (r2_40 <u r16_42) : word32)
+T_76: (in CONVERT(r2_40 <u r16_42, bool, word32) : word32)
   Class: Eq_76
   DataType: word32
   OrigDataType: word32
@@ -496,7 +496,7 @@ T_108: (in r2_40 < r16_42 : bool)
   Class: Eq_108
   DataType: bool
   OrigDataType: bool
-T_109: (in (word32) (r2_40 <u r16_42) : word32)
+T_109: (in CONVERT(r2_40 <u r16_42, bool, word32) : word32)
   Class: Eq_109
   DataType: word32
   OrigDataType: word32
@@ -616,11 +616,11 @@ T_138: (in bLoc10 : byte)
   Class: Eq_138
   DataType: byte
   OrigDataType: byte
-T_139: (in (word32) bLoc10 : word32)
+T_139: (in CONVERT(bLoc10, byte, word32) : word32)
   Class: Eq_139
   DataType: word32
   OrigDataType: word32
-T_140: (in (byte) (word32) bLoc10 : byte)
+T_140: (in SLICE(CONVERT(bLoc10, byte, word32), byte, 0) : byte)
   Class: Eq_140
   DataType: byte
   OrigDataType: byte

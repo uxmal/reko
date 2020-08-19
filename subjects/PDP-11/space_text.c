@@ -492,7 +492,7 @@ void fn0AE6(word16 r3, <anonymous> ** r4, word16 wArg00, struct Eq_n * wArg02, s
 {
 	byte bArg00 = (byte) wArg00;
 	struct Eq_n * r3_n = g_ptr5424;
-	uint16 wLoc04_n = (uint16) (uint8) bArg00;
+	uint16 wLoc04_n = (uint16) bArg00;
 	if (bArg00 == 0x01)
 		fn0B02(r3_n, r4, wLoc04_n, r3, wArg00, wArg02, wArg04, wArg06);
 	else
@@ -561,7 +561,7 @@ void fn0B60(struct Eq_n * r0, word16 * r3, word16 wArg00, struct Eq_n * wArg02, 
 	struct Eq_n * r3_n = g_ptr5424;
 	if (bArg00 != 0x01)
 	{
-		wLoc04_n = (uint16) (uint8) bArg00;
+		wLoc04_n = (uint16) bArg00;
 		if (bArg00 != 0x08)
 			wLoc04_n += 0x03;
 	}

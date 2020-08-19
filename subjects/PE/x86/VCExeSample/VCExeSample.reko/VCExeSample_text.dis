@@ -24,7 +24,7 @@ void test1(char * arg1, int32 arg2, char * arg3, real32 arg4)
 // Preserved:
 test1_entry:
 l00401030:
-	printf(0x4020D0<32>, arg1, arg2, arg3, (real64) arg4)
+	printf(0x4020D0<32>, arg1, arg2, arg3, CONVERT(arg4, real32, real64))
 	return
 test1_exit:
 
@@ -159,12 +159,12 @@ loop_test9_entry:
 l00401230:
 	word32 dwLoc08_65 = 0<32>
 l00401248:
-	branch Mem25[Mem25[Mem25[0x00403034<p32>:word32]:word32] + 4<32>:word32](Mem25[0x00403034<p32>:word32], dwLoc08_65, (real64) rArg04) <= (real64) dwLoc08_65 l00401294
+	branch Mem25[Mem25[Mem25[0x00403034<p32>:word32]:word32] + 4<32>:word32](Mem25[0x00403034<p32>:word32], dwLoc08_65, CONVERT(rArg04, real32, real64)) <= CONVERT(dwLoc08_65, word32, real64) l00401294
 l00401294:
 	return
 loop_test9_exit:
 l00401278:
-	Mem48[Mem48[Mem48[0x00403034<p32>:word32]:word32]:word32](Mem48[0x00403034<p32>:word32], (real64) rArg04)
+	Mem48[Mem48[Mem48[0x00403034<p32>:word32]:word32]:word32](Mem48[0x00403034<p32>:word32], CONVERT(rArg04, real32, real64))
 l0040123F:
 	dwLoc08_65 = dwLoc08_65 + 1<32>
 
@@ -216,7 +216,7 @@ l004012F2:
 l0040130D:
 	nested_if_blocks_test8(rArg04)
 l004012F6:
-	loop_test9((real32) rArg04)
+	loop_test9(CONVERT(rArg04, real64, real32))
 l0040131E:
 	dwLoc08_100 = dwLoc08_100 - 1<32>
 

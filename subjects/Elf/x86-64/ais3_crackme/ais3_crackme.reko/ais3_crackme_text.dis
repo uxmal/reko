@@ -136,16 +136,16 @@ l0000000000400520:
 	word32 dwLoc0C_100 = 0<32>
 l00000000004005A1:
 	word64 rax_115
-	branch SLICE((uint64) (word32) Mem12[rdi + (int64) SLICE((uint64) dwLoc0C_100, word32, 0):byte], byte, 0) != 0<8> l0000000000400531
+	branch SLICE(CONVERT(CONVERT(Mem12[rdi + CONVERT(SLICE(CONVERT(dwLoc0C_100, word32, uint64), word32, 0), word32, int64):byte], byte, word32), word32, uint64), byte, 0) != 0<8> l0000000000400531
 l0000000000400531:
-	byte al_35 = SLICE((uint64) (SLICE((uint64) dwLoc0C_100, word32, 0) ^ SLICE((uint64) SLICE((uint64) ((word32) Mem12[rdi + (int64) SLICE((uint64) dwLoc0C_100, word32, 0):byte]), word32, 0), word32, 0)), byte, 0)
-	branch SLICE((uint64) (word32) Mem77[(int64) SLICE((uint64) dwLoc0C_100, word32, 0) + 0x601020<64>:byte], byte, 0) == SLICE((uint64) (SLICE((uint64) SLICE((uint64) (SLICE((uint64) ((word32) al_35), word32, 0) >> SLICE((uint64) SLICE((uint64) (8<32> - SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc0C_100, word32, 0) ^ 9<32>), word32, 0) & 3<32>), word32, 0), word32, 0)), word32, 0), byte, 0)), word32, 0), word32, 0) | SLICE((uint64) SLICE((uint64) SLICE((uint64) (SLICE((uint64) ((word32) al_35), word32, 0) << SLICE((uint64) SLICE((uint64) (SLICE((uint64) (SLICE((uint64) dwLoc0C_100, word32, 0) ^ 9<32>), word32, 0) & 3<32>), word32, 0), byte, 0)), word32, 0), word32, 0), word32, 0)), byte, 0) + 8<8> l000000000040059D
+	byte al_35 = SLICE(CONVERT(SLICE(CONVERT(dwLoc0C_100, word32, uint64), word32, 0) ^ SLICE(CONVERT(SLICE(CONVERT(CONVERT(Mem12[rdi + CONVERT(SLICE(CONVERT(dwLoc0C_100, word32, uint64), word32, 0), word32, int64):byte], byte, word32), word32, uint64), word32, 0), word32, uint64), word32, 0), word32, uint64), byte, 0)
+	branch SLICE(CONVERT(CONVERT(Mem77[CONVERT(SLICE(CONVERT(dwLoc0C_100, word32, uint64), word32, 0), word32, int64) + 0x601020<64>:byte], byte, word32), word32, uint64), byte, 0) == SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(CONVERT(al_35, byte, word32), word32, uint64), word32, 0) >> SLICE(CONVERT(SLICE(CONVERT(8<32> - SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(dwLoc0C_100, word32, uint64), word32, 0) ^ 9<32>, word32, uint64), word32, 0) & 3<32>, word32, uint64), word32, 0), word32, uint64), word32, 0), word32, uint64), word32, 0), word32, uint64), byte, 0), word32, uint64), word32, 0), word32, uint64), word32, 0) | SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(CONVERT(al_35, byte, word32), word32, uint64), word32, 0) << SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(dwLoc0C_100, word32, uint64), word32, 0) ^ 9<32>, word32, uint64), word32, 0) & 3<32>, word32, uint64), word32, 0), word32, uint64), byte, 0), word32, uint64), word32, 0), word32, uint64), word32, 0), word32, uint64), word32, 0), word32, uint64), byte, 0) + 8<8> l000000000040059D
 l000000000040059D:
 	dwLoc0C_100 = dwLoc0C_100 + 1<32>
 l0000000000400596:
 	rax_115 = 0<u64>
 l00000000004005B9:
-	rax_115 = (uint64) (word32) (dwLoc0C_100 == 0x17<32>)
+	rax_115 = CONVERT(CONVERT(CONVERT(dwLoc0C_100 == 0x17<32>, bool, int8), int8, word32), word32, uint64)
 l00000000004005C3:
 	return SLICE(rax_115, word32, 0)
 verify_exit:
@@ -162,7 +162,7 @@ main_entry:
 l00000000004005C5:
 	branch edi == 2<32> l00000000004005EB
 l00000000004005EB:
-	branch SLICE((uint64) (uint32) verify(Mem12[rsi + 8<64>:word64]), word32, 0) == 0<32> l000000000040060E
+	branch SLICE(CONVERT(verify(Mem12[rsi + 8<64>:word64]), uint32, uint64), word32, 0) == 0<32> l000000000040060E
 l000000000040060E:
 	puts(0x400718<u64>)
 l0000000000400602:
@@ -187,13 +187,13 @@ __libc_csu_init_entry:
 l0000000000400620:
 	_init()
 	word64 rbp_19 = 0x0000000000600E00<p64> - 0x0000000000600DF8<p64>
-	word32 r13d_72 = SLICE((uint64) edi, word32, 0)
+	word32 r13d_72 = SLICE(CONVERT(edi, word32, uint64), word32, 0)
 	branch rbp_19 >> 3<64> == 0<64> l0000000000400686
 l000000000040066A:
 	word64 rbx_36 = 0<u64>
 l0000000000400670:
 	call Mem17[0x0000000000600DF8<p64> + rbx_36 * 8<64>:word64] (retsize: 8;)
-		uses: rdi:(uint64) r13d_72,rdx:rdx,rsi:rsi
+		uses: rdi:CONVERT(r13d_72, word32, uint64),rdx:rdx,rsi:rsi
 	rbx_36 = rbx_36 + 1<64>
 	branch rbx_36 != rbp_19 >> 3<64> l0000000000400670
 l0000000000400686:

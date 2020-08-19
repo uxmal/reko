@@ -4,10 +4,6 @@
 
 #include "ls.h"
 
-Eq_n g_t9999E201;
-Eq_n g_tC0781999;
-Eq_n g_tC0987FFF;
-Eq_n g_tC6687FFF;
 byte g_bD832D703;
 Eq_n g_tFFFF0698;
 byte g_bFFFF9B5E;
@@ -215,11 +211,11 @@ ui32 g_dwD21A = ~0x27DD0000;
 ui32 g_dwD390 = ~0x7DC5;
 Eq_n g_tD636 = 
 	{
-		&g_tC0781999
+		0xC0
 	};
 Eq_n g_tD63A = 
 	{
-		&g_t9999E201
+		0x99
 	};
 word32 g_dwD856 = 0xD7038000;
 word32 g_dwD858 = 0x80000000;
@@ -227,11 +223,11 @@ word32 g_dwDAC4 = 0x80000000;
 word32 g_dwDCA8 = 805159112;
 Eq_n g_tE1B6 = 
 	{
-		&g_tC6687FFF
+		0xC6
 	};
 Eq_n g_tE556 = 
 	{
-		&g_tC0987FFF
+		0xC0
 	};
 ui32 g_dwEB26 = ~0x27D50000;
 ui32 g_dwEC88 = 2780351787;

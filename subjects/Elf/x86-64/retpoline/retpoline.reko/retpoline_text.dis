@@ -105,7 +105,7 @@ void my1(word32 esi, word32 edi)
 // Preserved: rbp rsp
 my1_entry:
 l0000000000400560:
-	calloc((int64) edi, (int64) esi)
+	calloc(CONVERT(edi, word32, int64), CONVERT(esi, word32, int64))
 	return
 my1_exit:
 
@@ -134,21 +134,21 @@ void branches(word32 esi, word32 edi)
 branches_entry:
 	word32 edi = SLICE(rdi, word32, 0)
 l00000000004005B0:
-	branch SLICE((uint64) edi, word32, 0) >= esi l000000000040064F
+	branch SLICE(CONVERT(edi, word32, uint64), word32, 0) >= esi l000000000040064F
 l00000000004005CA:
-	branch SLICE((uint64) (SLICE((uint64) edi, word32, 0) << 1<32>), word32, 0) >= SLICE((uint64) (SLICE((uint64) esi, word32, 0) << 1<32>), word32, 0) l000000000040064F
+	branch SLICE(CONVERT(SLICE(CONVERT(edi, word32, uint64), word32, 0) << 1<32>, word32, uint64), word32, 0) >= SLICE(CONVERT(SLICE(CONVERT(esi, word32, uint64), word32, 0) << 1<32>, word32, uint64), word32, 0) l000000000040064F
 l00000000004005DE:
-	branch SLICE((uint64) (edi *s 3<32>), word32, 0) >= SLICE((uint64) (esi *s 3<32>), word32, 0) l000000000040064F
+	branch SLICE(CONVERT(edi *s 3<32>, int32, uint64), word32, 0) >= SLICE(CONVERT(esi *s 3<32>, int32, uint64), word32, 0) l000000000040064F
 l00000000004005EE:
-	branch SLICE((uint64) (SLICE((uint64) edi, word32, 0) << 2<32>), word32, 0) >= SLICE((uint64) (SLICE((uint64) esi, word32, 0) << 2<32>), word32, 0) l000000000040064F
+	branch SLICE(CONVERT(SLICE(CONVERT(edi, word32, uint64), word32, 0) << 2<32>, word32, uint64), word32, 0) >= SLICE(CONVERT(SLICE(CONVERT(esi, word32, uint64), word32, 0) << 2<32>, word32, uint64), word32, 0) l000000000040064F
 l0000000000400602:
-	word64 rax_60 = (uint64) SLICE((uint64) esi, word32, 0)
-	word32 eax_67 = (int32) ((int64) SLICE(rax_60, word32, 0) / 2<32>)
+	word64 rax_60 = CONVERT(SLICE(CONVERT(esi, word32, uint64), word32, 0), word32, uint64)
+	word32 eax_67 = CONVERT(CONVERT(SLICE(rax_60, word32, 0), word32, int64) / 2<32>, word32, int32)
 	word64 rax_85 = SEQ(SLICE(rax_60, word32, 32), eax_67)
-	branch SLICE((uint64) (int32) ((int64) SLICE((uint64) SLICE((uint64) edi, word32, 0), word32, 0) / 2<32>), word32, 0) >= eax_67 l000000000040064F
+	branch SLICE(CONVERT(CONVERT(CONVERT(SLICE(CONVERT(SLICE(CONVERT(edi, word32, uint64), word32, 0), word32, uint64), word32, 0), word32, int64) / 2<32>, word32, int32), int32, uint64), word32, 0) >= eax_67 l000000000040064F
 l000000000040064F:
 l000000000040062B:
-	my1(SLICE((uint64) esi, word32, 0), SLICE((uint64) edi, word32, 0))
+	my1(SLICE(CONVERT(esi, word32, uint64), word32, 0), SLICE(CONVERT(edi, word32, uint64), word32, 0))
 	free(rax_85)
 l0000000000400656:
 	return
@@ -213,14 +213,14 @@ __libc_csu_init_entry:
 	word32 edi = SLICE(rdi, word32, 0)
 l0000000000400710:
 	_init()
-	word32 r15d_84 = SLICE((uint64) edi, word32, 0)
+	word32 r15d_84 = SLICE(CONVERT(edi, word32, uint64), word32, 0)
 	word64 rbp_30 = 0x0000000000600E18<p64> - 0x0000000000600E10<p64>
 	branch rbp_30 >> 3<64> == 0<64> l0000000000400766
 l0000000000400746:
 	word64 rbx_42 = 0<u64>
 l0000000000400750:
 	call Mem25[0x0000000000600E10<p64> + rbx_42 * 8<64>:word64] (retsize: 8;)
-		uses: rdi:(uint64) r15d_84,rdx:rdx,rsi:rsi
+		uses: rdi:CONVERT(r15d_84, word32, uint64),rdx:rdx,rsi:rsi
 	rbx_42 = rbx_42 + 1<64>
 	branch rbp_30 >> 3<64> != rbx_42 l0000000000400750
 l0000000000400766:

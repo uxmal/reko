@@ -1568,7 +1568,7 @@ word32 fn9478(word16 er0_16_n, word16 er1_16_n, word16 er2_16_n, word16 er3_16_n
 			er4_16_n = SLICE(er4_n, word16, 16);
 			er5_16_n = SLICE(er5_n, word16, 16);
 			r5_n = 0x04;
-			uint16 r0_n = (uint16) (uint8) (byte) er0_n;
+			uint16 r0_n = (uint16) (byte) er0_n;
 			if (r0_n == 0x04)
 				break;
 			if (r0_n != 0x02)

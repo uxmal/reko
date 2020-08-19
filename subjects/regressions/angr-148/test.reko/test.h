@@ -399,11 +399,11 @@ T_85: (in r15d_81 : word32)
   Class: Eq_85
   DataType: word32
   OrigDataType: word32
-T_86: (in (uint64) edi : uint64)
+T_86: (in CONVERT(edi, word32, uint64) : uint64)
   Class: Eq_86
   DataType: uint64
   OrigDataType: uint64
-T_87: (in SLICE((uint64) edi, word32, 0) : word32)
+T_87: (in SLICE(CONVERT(edi, word32, uint64), word32, 0) : word32)
   Class: Eq_85
   DataType: word32
   OrigDataType: word32

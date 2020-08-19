@@ -30,11 +30,6 @@ Eq_22: (fn void ())
 Eq_30: (fn void ())
 	T_30 (in __hlt : ptr64)
 	T_31 (in signature of __hlt : void)
-Eq_44: (union "Eq_44" (int64 u0) (size_t u1))
-	T_44 (in num : size_t)
-	T_45 (in size : size_t)
-	T_46 (in (int64) edi : int64)
-	T_47 (in (int64) esi : int64)
 Eq_49: (fn void ())
 	T_49 (in fn0000000000400700 : ptr64)
 	T_50 (in signature of fn0000000000400700 : void)
@@ -216,20 +211,20 @@ T_43: (in signature of calloc : void)
   OrigDataType: 
 T_44: (in num : size_t)
   Class: Eq_44
-  DataType: Eq_44
+  DataType: int64
   OrigDataType: 
 T_45: (in size : size_t)
   Class: Eq_44
-  DataType: Eq_44
+  DataType: int64
   OrigDataType: 
-T_46: (in (int64) edi : int64)
+T_46: (in CONVERT(edi, word32, int64) : int64)
   Class: Eq_44
-  DataType: Eq_44
-  OrigDataType: (union (int64 u0) (size_t u1))
-T_47: (in (int64) esi : int64)
+  DataType: int64
+  OrigDataType: int64
+T_47: (in CONVERT(esi, word32, int64) : int64)
   Class: Eq_44
-  DataType: Eq_44
-  OrigDataType: (union (int64 u0) (size_t u1))
+  DataType: int64
+  OrigDataType: int64
 T_48: (in calloc((int64) edi, (int64) esi) : (ptr64 void))
   Class: Eq_48
   DataType: (ptr64 void)
@@ -283,11 +278,6 @@ typedef void (Eq_21)();
 typedef void (Eq_22)();
 
 typedef void (Eq_30)();
-
-typedef union Eq_44 {
-	int64 u0;
-	size_t u1;
-} Eq_44;
 
 typedef void (Eq_49)();
 

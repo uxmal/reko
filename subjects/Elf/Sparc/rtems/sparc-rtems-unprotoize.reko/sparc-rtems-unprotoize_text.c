@@ -450,7 +450,7 @@ Eq_n in_system_include_dir(Eq_n o0)
 			{
 				if (strncmp(o0, l0_n, strlen(l0_n)) == 0x00)
 				{
-					if ((int32) Mem0[o0 + strlen(l1_n->dw0000):int8] == 0x2F)
+					if (CONVERT(Mem0[o0 + strlen(l1_n->dw0000):int8], int8, int32) == 0x2F)
 					{
 						i0_n.u0 = 0x01;
 						return i0_n;
@@ -517,7 +517,7 @@ Eq_n directory_specified_p(Eq_n o0)
 		{
 			if (strncmp(o0, l0_n, strlen(l0_n)) == 0x00)
 			{
-				if ((int32) Mem0[o0 + strlen(l1_n->t0000):int8] == 0x2F)
+				if (CONVERT(Mem0[o0 + strlen(l1_n->t0000):int8], int8, int32) == 0x2F)
 				{
 					word32 o0_n = o0 + strlen(l1_n->t0000);
 					if ((int32) o0_n->b0001 == 0x00)
@@ -568,7 +568,7 @@ Eq_n file_excluded_p(Eq_n o0)
 		{
 			if (strcmp(l2_n - strlen(l0_n->t0000), l0_n->t0000) == 0x00)
 			{
-				if ((int32) Mem0[o0_n - strlen(l0_n->t0000) + o0 + -1:int8] == 0x2F)
+				if (CONVERT(Mem0[o0_n - strlen(l0_n->t0000) + o0 + -1:int8], int8, int32) == 0x2F)
 				{
 					i0_n.u0 = 0x01;
 					return i0_n;
@@ -738,11 +738,11 @@ l00011DA0:
 		while (true)
 		{
 			Eq_n o0_n = strlen(l0_n);
-			if ((int32) (*i0_n - *l0_n) == 0x00)
+			if ((int32) *i0_n - (int32) (*l0_n) == 0x00)
 			{
 				if (strncmp(i0_n, l0_n, o0_n) == 0x00)
 				{
-					if (is_id_char((int32) Mem62[i0_n + o0_n:int8]) == 0x00)
+					if (is_id_char(CONVERT(Mem62[i0_n + o0_n:int8], int8, int32)) == 0x00)
 					{
 						Eq_n o0_n = strlen(l4_n->dw0004);
 						Eq_n o1_n = g_t27F50;
@@ -3216,11 +3216,11 @@ Eq_n choose_temp_base(union Eq_n & l1Out, size_t & i0Out, ptr32 & i6Out)
 	Eq_n l1_n = o0_n;
 	if (o0_n != 0x00)
 	{
-		if ((int32) Mem0[o0_n + (o0_n + 0x0A) + -1:int8] == 0x2F)
+		if (CONVERT(Mem0[o0_n + (o0_n + 0x0A) + -1:int8], int8, int32) == 0x2F)
 		{
 			o0_n = (word32) g_b17918;
 l00015A04:
-			Mem182[o0_n + 0x0A + l1_n:byte] = (byte) o0_n;
+			Mem182[o0_n + 0x0A + l1_n:byte] = SLICE(o0_n, byte, 0);
 			size_t o4_n = o0_n + 0x0A + l1_n;
 			*((word32) o4_n + 1) = (Eq_n) (byte) (word32) g_b17919;
 			*((word32) o4_n + 2) = (Eq_n) (byte) (word32) g_b1791A;
@@ -3277,7 +3277,7 @@ void make_temp_file(Eq_n o0)
 			l1_n = o0_n + 0x01;
 		}
 	}
-	Mem193[o0_n + 0x0A + l1_n:byte] = (byte) (word32) Mem188[0x00017918:byte];
+	Mem193[o0_n + 0x0A + l1_n:byte] = SLICE(CONVERT(Mem188[0x00017918:byte], byte, word32), byte, 0);
 	word32 o3_n = o0_n + 0x0A + l1_n;
 	(&o3_n->b0000)[1] = (byte) (word32) g_b17919;
 	(&o3_n->b0000)[2] = (byte) (word32) g_b1791A;

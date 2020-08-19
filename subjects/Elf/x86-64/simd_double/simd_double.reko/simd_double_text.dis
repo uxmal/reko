@@ -165,7 +165,7 @@ void vec_add(word64 rdi)
 vec_add_entry:
 l00000000000007A8:
 	__align(fp)
-	word64 rax_30 = (uint64) ((uint128) (uint64) rdi /u Mem23[0x0000000000000B00<p64>:word64])
+	word64 rax_30 = CONVERT(CONVERT(rdi, word64, uint128) /u Mem23[0x0000000000000B00<p64>:word64], word64, uint64)
 l0000000000000881:
 	branch rax_30 >u 0<64> l0000000000000820
 l0000000000000820:
@@ -194,11 +194,12 @@ l00000000000008FD:
 	word32 eax_62 = SLICE(qwLoc10_198, word32, 0)
 	branch qwLoc10_198 < 0<64> l0000000000000921
 l0000000000000921:
-	xmm0 = (uint128) (uint64) ((real64) (qwLoc10_198 >>u 1<64> | (uint64) (eax_62 & 1<32>)) + (real64) (qwLoc10_198 >>u 1<64> | (uint64) (eax_62 & 1<32>)))
+	real64 v26_67 = CONVERT(qwLoc10_198 >>u 1<64> | CONVERT(eax_62 & 1<32>, word32, uint64), word64, real64)
+	xmm0 = CONVERT(v26_67 + v26_67, real64, uint128)
 l000000000000091A:
-	xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) qwLoc10_198)
+	xmm0 = SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc10_198, word64, real64))
 l0000000000000936:
-	Mem76[rcx_55:real64] = (real64) xmm0
+	Mem76[rcx_55:real64] = SLICE(xmm0, real64, 0)
 	qwLoc10_198 = qwLoc10_198 + 1<64>
 l0000000000000949:
 	word64 qwLoc18_204 = 0<64>
@@ -209,11 +210,12 @@ l0000000000000953:
 	word64 rcx_92 = qwLoc18_204 * 8<64> + rax_27
 	branch qwLoc18_204 < 1<64> l000000000000097A
 l000000000000097A:
-	xmm0 = (uint128) (uint64) ((real64) (qwLoc18_204 + 1<64> >>u 1<64> | (uint64) (eax_98 & 1<32>)) + (real64) (qwLoc18_204 + 1<64> >>u 1<64> | (uint64) (eax_98 & 1<32>)))
+	real64 v19_103 = CONVERT(qwLoc18_204 + 1<64> >>u 1<64> | CONVERT(eax_98 & 1<32>, word32, uint64), word64, real64)
+	xmm0 = CONVERT(v19_103 + v19_103, real64, uint128)
 l0000000000000973:
-	xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) (qwLoc18_204 + 1<64>))
+	xmm0 = SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc18_204 + 1<64>, word64, real64))
 l000000000000098F:
-	Mem112[rcx_92:real64] = (real64) xmm0
+	Mem112[rcx_92:real64] = SLICE(xmm0, real64, 0)
 	qwLoc18_204 = qwLoc18_204 + 1<64>
 l00000000000009A2:
 	word64 qwLoc20_210 = 0<64>
@@ -221,7 +223,7 @@ l00000000000009CC:
 	branch qwLoc20_210 <u 0x400<64> l00000000000009AC
 l00000000000009AC:
 	xmm0 = __xorpd(xmm0, xmm0)
-	Mem131[rax_39 + qwLoc20_210 * 8<64>:real64] = (real64) xmm0
+	Mem131[rax_39 + qwLoc20_210 * 8<64>:real64] = SLICE(xmm0, real64, 0)
 	qwLoc20_210 = qwLoc20_210 + 1<64>
 l00000000000009D6:
 	vec_add(0x400<64>)
@@ -250,14 +252,14 @@ __libc_csu_init_entry:
 	word32 edi = SLICE(rdi, word32, 0)
 l0000000000000A70:
 	_init()
-	word32 r15d_84 = SLICE((uint64) edi, word32, 0)
+	word32 r15d_84 = SLICE(CONVERT(edi, word32, uint64), word32, 0)
 	word64 rbp_30 = 0x0000000000200DF0<p64> - 0x0000000000200DE8<p64>
 	branch rbp_30 >> 3<64> == 0<64> l0000000000000AC6
 l0000000000000AA6:
 	word64 rbx_42 = 0<u64>
 l0000000000000AB0:
 	call Mem25[0x0000000000200DE8<p64> + rbx_42 * 8<64>:word64] (retsize: 8;)
-		uses: rdi:(uint64) r15d_84,rdx:rdx,rsi:rsi
+		uses: rdi:CONVERT(r15d_84, word32, uint64),rdx:rdx,rsi:rsi
 	rbx_42 = rbx_42 + 1<64>
 	branch rbp_30 >> 3<64> != rbx_42 l0000000000000AB0
 l0000000000000AC6:

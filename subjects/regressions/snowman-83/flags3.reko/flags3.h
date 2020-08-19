@@ -27,11 +27,11 @@ T_5: (in Mem0[rdi + 0<64>:word32] : word32)
   Class: Eq_5
   DataType: word32
   OrigDataType: word32
-T_6: (in (uint64) Mem0[rdi + 0<64>:word32] : uint64)
+T_6: (in CONVERT(Mem0[rdi + 0<64>:word32], word32, uint64) : uint64)
   Class: Eq_6
   DataType: uint64
   OrigDataType: uint64
-T_7: (in SLICE((uint64) Mem0[rdi + 0<64>:word32], word32, 0) : word32)
+T_7: (in SLICE(CONVERT(Mem0[rdi + 0<64>:word32], word32, uint64), word32, 0) : word32)
   Class: Eq_7
   DataType: int32
   OrigDataType: int32

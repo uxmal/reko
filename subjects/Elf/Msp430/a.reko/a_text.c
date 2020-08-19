@@ -1790,7 +1790,7 @@ l5620:
 					else
 					{
 l564A:
-						Eq_n wLoc14_n = (uint16) (uint8) bLoc18_n;
+						Eq_n wLoc14_n = (uint16) bLoc18_n;
 						do
 						{
 							byte bLoc16_n = 0x00;
@@ -1876,7 +1876,7 @@ l54FC:
 				r8 = bLoc1E_n & 0x30;
 				if ((bLoc1E_n & 0x30) == 0x00)
 				{
-					Eq_n r13_n = (int16) (bLoc1D_n - (byte) r11_n);
+					Eq_n r13_n = (int16) bLoc1D_n - (int16) ((byte) r11_n);
 					if (r13_n >= 0x01 && __write_pad(r13_n, 0x20) < 0x00)
 						return;
 				}
@@ -1899,7 +1899,7 @@ l54FC:
 l5576:
 				if ((bLoc1E_n & 0x30) == 0x20)
 				{
-					Eq_n r13_n = (int16) (bLoc1D_n - (byte) r11_n);
+					Eq_n r13_n = (int16) bLoc1D_n - (int16) ((byte) r11_n);
 					if (r13_n >= 0x01 && __write_pad(r13_n, 0x30) < 0x00)
 						return;
 				}
@@ -1907,7 +1907,7 @@ l5576:
 					return;
 				if ((bLoc1E_n & 0x10) == 0x00)
 					goto l53A6;
-				Eq_n r13_n = (int16) (bLoc1D_n - (byte) r11_n);
+				Eq_n r13_n = (int16) bLoc1D_n - (int16) ((byte) r11_n);
 				if (r13_n >= 0x01 && __write_pad(r13_n, 0x20) < 0x00)
 					return;
 				goto l53A6;

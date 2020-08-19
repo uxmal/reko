@@ -167,13 +167,13 @@ Eq_2: (union "Eq_2" (int32 u0) (uint32 u1))
 	T_497 (in 0xB<32> : word32)
 	T_499 (in r6_472 : Eq_2)
 	T_501 (in r12_116 + 4<32> : word32)
-	T_504 (in r8_12 + (word32) (r6_472 <u r12_116) : word32)
+	T_504 (in r8_12 + CONVERT(r6_472 <u r12_116, bool, word32) : word32)
 	T_505 (in 0x7FF<32> : word32)
 	T_507 (in r6_435 : Eq_2)
 	T_510 (in (r4 << 3<32>) + (r6 << 3<32>) : word32)
 	T_511 (in 1<32> : word32)
 	T_513 (in r4 << 3<32> : word32)
-	T_516 (in r8_12 + r9_150 + (word32) (r6_435 <u r4 << 3<32>) : word32)
+	T_516 (in r8_12 + r9_150 + CONVERT(r6_435 <u r4 << 3<32>, bool, word32) : word32)
 	T_518 (in r10_14 + 1<32> : word32)
 	T_519 (in 0x7FF<32> : word32)
 	T_521 (in r6_453 : Eq_2)
@@ -205,7 +205,7 @@ Eq_2: (union "Eq_2" (int32 u0) (uint32 u1))
 	T_632 (in r6_304 : Eq_2)
 	T_635 (in (r4 << 3<32>) + (r6 << 3<32>) : word32)
 	T_637 (in r4 << 3<32> : word32)
-	T_640 (in r8_12 + r9_150 + (word32) (r6_304 <u r4 << 3<32>) : word32)
+	T_640 (in r8_12 + r9_150 + CONVERT(r6_304 <u r4 << 3<32>, bool, word32) : word32)
 	T_645 (in 0<32> : word32)
 	T_648 (in __ins(r8_12, 0<32>, 7<32>, 1<32>) : word32)
 	T_649 (in 1<32> : word32)
@@ -817,10 +817,10 @@ T_140: (in r4 << 3<32> < r6_200 : bool)
   Class: Eq_140
   DataType: bool
   OrigDataType: bool
-T_141: (in (word32) (r4 << 3<32> <u r6_200) : word32)
+T_141: (in CONVERT(r4 << 3<32> <u r6_200, bool, word32) : word32)
   Class: Eq_141
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: word32
+  OrigDataType: word32
 T_142: (in r8_12 - r9_150 - (word32) (r4 << 3<32> < r6_200) : word32)
   Class: Eq_2
   DataType: Eq_2
@@ -981,7 +981,7 @@ T_181: (in (r9_150 | r6 << 3<32>) > 0<32> : bool)
   Class: Eq_181
   DataType: bool
   OrigDataType: bool
-T_182: (in (word32) ((r9_150 | r6 << 3<32>) >u 0<32>) : word32)
+T_182: (in CONVERT((r9_150 | r6 << 3<32>) >u 0<32>, bool, word32) : word32)
   Class: Eq_161
   DataType: ui32
   OrigDataType: word32
@@ -1049,10 +1049,10 @@ T_198: (in r6 << 3<32> << r10_172 > 0<32> : bool)
   Class: Eq_198
   DataType: bool
   OrigDataType: bool
-T_199: (in (word32) (r6 << 3<32> << r10_172 >u 0<32>) : word32)
+T_199: (in CONVERT(r6 << 3<32> << r10_172 >u 0<32>, bool, word32) : word32)
   Class: Eq_199
-  DataType: ui32
-  OrigDataType: ui32
+  DataType: word32
+  OrigDataType: word32
 T_200: (in r9_150 << r10_172 : word32)
   Class: Eq_200
   DataType: ui32
@@ -1253,10 +1253,10 @@ T_249: (in r12_116 << r7_258 > 0<32> : bool)
   Class: Eq_249
   DataType: bool
   OrigDataType: bool
-T_250: (in (word32) (r12_116 << r7_258 >u 0<32>) : word32)
+T_250: (in CONVERT(r12_116 << r7_258 >u 0<32>, bool, word32) : word32)
   Class: Eq_250
-  DataType: ui32
-  OrigDataType: ui32
+  DataType: word32
+  OrigDataType: word32
 T_251: (in r8_227 << r7_258 | r12_116 >> r10_241 + 1<32> | (word32) (r12_116 << r7_258 > 0<32>) : word32)
   Class: Eq_2
   DataType: Eq_2
@@ -1289,10 +1289,10 @@ T_258: (in (r10_160 | r6 << 3<32>) > 0<32> : bool)
   Class: Eq_258
   DataType: bool
   OrigDataType: bool
-T_259: (in (word32) ((r10_160 | r6 << 3<32>) >u 0<32>) : word32)
+T_259: (in CONVERT((r10_160 | r6 << 3<32>) >u 0<32>, bool, word32) : word32)
   Class: Eq_259
-  DataType: ui32
-  OrigDataType: ui32
+  DataType: word32
+  OrigDataType: word32
 T_260: (in (word32) ((r10_160 | r6 << 3<32>) > 0<32>) | r4_159 : word32)
   Class: Eq_161
   DataType: ui32
@@ -1317,10 +1317,10 @@ T_265: (in (r12_116 | r7_244) > 0<32> : bool)
   Class: Eq_265
   DataType: bool
   OrigDataType: bool
-T_266: (in (word32) ((r12_116 | r7_244) >u 0<32>) : word32)
+T_266: (in CONVERT((r12_116 | r7_244) >u 0<32>, bool, word32) : word32)
   Class: Eq_266
-  DataType: ui32
-  OrigDataType: ui32
+  DataType: word32
+  OrigDataType: word32
 T_267: (in r10_245 | (word32) ((r12_116 | r7_244) > 0<32>) : word32)
   Class: Eq_2
   DataType: Eq_2
@@ -1365,10 +1365,10 @@ T_277: (in r4 << 3<32> < r6_185 : bool)
   Class: Eq_277
   DataType: bool
   OrigDataType: bool
-T_278: (in (word32) (r4 << 3<32> <u r6_185) : word32)
+T_278: (in CONVERT(r4 << 3<32> <u r6_185, bool, word32) : word32)
   Class: Eq_278
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: word32
+  OrigDataType: word32
 T_279: (in r8_12 - r7_169 - (word32) (r4 << 3<32> < r6_185) : word32)
   Class: Eq_2
   DataType: Eq_2
@@ -1665,10 +1665,10 @@ T_352: (in r4 << 3<32> < r11_209 : bool)
   Class: Eq_352
   DataType: bool
   OrigDataType: bool
-T_353: (in (word32) (r4 << 3<32> <u r11_209) : word32)
+T_353: (in CONVERT(r4 << 3<32> <u r11_209, bool, word32) : word32)
   Class: Eq_353
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: word32
+  OrigDataType: word32
 T_354: (in r8_12 - r9_150 - (word32) (r4 << 3<32> < r11_209) : word32)
   Class: Eq_2
   DataType: Eq_2
@@ -1765,7 +1765,7 @@ T_377: (in (r8_12 | r4 << 3<32>) > 0<32> : bool)
   Class: Eq_377
   DataType: bool
   OrigDataType: bool
-T_378: (in (word32) ((r8_12 | r4 << 3<32>) >u 0<32>) : word32)
+T_378: (in CONVERT((r8_12 | r4 << 3<32>) >u 0<32>, bool, word32) : word32)
   Class: Eq_344
   DataType: ui32
   OrigDataType: word32
@@ -1849,10 +1849,10 @@ T_398: (in r4 << 3<32> << r7_103 > 0<32> : bool)
   Class: Eq_398
   DataType: bool
   OrigDataType: bool
-T_399: (in (word32) (r4 << 3<32> << r7_103 >u 0<32>) : word32)
+T_399: (in CONVERT(r4 << 3<32> << r7_103 >u 0<32>, bool, word32) : word32)
   Class: Eq_399
-  DataType: ui32
-  OrigDataType: ui32
+  DataType: word32
+  OrigDataType: word32
 T_400: (in r8_12 << r7_103 | (r4 << 3<32>) >> r11_81 | (word32) ((r4 << 3<32>) << r7_103 > 0<32>) : word32)
   Class: Eq_344
   DataType: ui32
@@ -1869,10 +1869,10 @@ T_403: (in r6 << 3<32> < r12_116 : bool)
   Class: Eq_403
   DataType: bool
   OrigDataType: bool
-T_404: (in (word32) (r6 << 3<32> <u r12_116) : word32)
+T_404: (in CONVERT(r6 << 3<32> <u r12_116, bool, word32) : word32)
   Class: Eq_404
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: word32
+  OrigDataType: word32
 T_405: (in r8_122 - (word32) (r6 << 3<32> < r12_116) : word32)
   Class: Eq_2
   DataType: Eq_2
@@ -1893,10 +1893,10 @@ T_409: (in (r7_91 | r4 << 3<32>) > 0<32> : bool)
   Class: Eq_409
   DataType: bool
   OrigDataType: bool
-T_410: (in (word32) ((r7_91 | r4 << 3<32>) >u 0<32>) : word32)
+T_410: (in CONVERT((r7_91 | r4 << 3<32>) >u 0<32>, bool, word32) : word32)
   Class: Eq_410
-  DataType: ui32
-  OrigDataType: ui32
+  DataType: word32
+  OrigDataType: word32
 T_411: (in r5_90 | (word32) ((r7_91 | r4 << 3<32>) > 0<32>) : word32)
   Class: Eq_344
   DataType: ui32
@@ -1945,10 +1945,10 @@ T_422: (in r4 << 3<32> < r4_63 : bool)
   Class: Eq_422
   DataType: bool
   OrigDataType: bool
-T_423: (in (word32) (r4 << 3<32> <u r4_63) : word32)
+T_423: (in CONVERT(r4 << 3<32> <u r4_63, bool, word32) : word32)
   Class: Eq_423
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: word32
+  OrigDataType: word32
 T_424: (in r8_12 - r9_150 - (word32) (r4 << 3<32> < r4_63) : word32)
   Class: Eq_2
   DataType: Eq_2
@@ -2005,10 +2005,10 @@ T_437: (in r6 << 3<32> < r12_116 : bool)
   Class: Eq_437
   DataType: bool
   OrigDataType: bool
-T_438: (in (word32) (r6 << 3<32> <u r12_116) : word32)
+T_438: (in CONVERT(r6 << 3<32> <u r12_116, bool, word32) : word32)
   Class: Eq_438
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: word32
+  OrigDataType: word32
 T_439: (in r9_150 - r8_12 - (word32) (r6 << 3<32> < r12_116) : word32)
   Class: Eq_2
   DataType: Eq_2
@@ -2233,10 +2233,10 @@ T_494: (in r6 << 3<32> < r11_209 : bool)
   Class: Eq_494
   DataType: bool
   OrigDataType: bool
-T_495: (in (word32) (r6 << 3<32> <u r11_209) : word32)
+T_495: (in CONVERT(r6 << 3<32> <u r11_209, bool, word32) : word32)
   Class: Eq_495
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: word32
+  OrigDataType: word32
 T_496: (in r9_150 - r8_12 - (word32) (r6 << 3<32> < r11_209) : word32)
   Class: Eq_2
   DataType: Eq_2
@@ -2265,11 +2265,11 @@ T_502: (in r6_472 < r12_116 : bool)
   Class: Eq_502
   DataType: bool
   OrigDataType: bool
-T_503: (in (word32) (r6_472 <u r12_116) : word32)
+T_503: (in CONVERT(r6_472 <u r12_116, bool, word32) : word32)
   Class: Eq_503
   DataType: word32
   OrigDataType: word32
-T_504: (in r8_12 + (word32) (r6_472 <u r12_116) : word32)
+T_504: (in r8_12 + CONVERT(r6_472 <u r12_116, bool, word32) : word32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: uint32
@@ -2313,11 +2313,11 @@ T_514: (in r6_435 <u r4 << 3<32> : bool)
   Class: Eq_514
   DataType: bool
   OrigDataType: bool
-T_515: (in (word32) (r6_435 <u r4 << 3<32>) : word32)
+T_515: (in CONVERT(r6_435 <u r4 << 3<32>, bool, word32) : word32)
   Class: Eq_515
   DataType: word32
   OrigDataType: word32
-T_516: (in r8_12 + r9_150 + (word32) (r6_435 <u r4 << 3<32>) : word32)
+T_516: (in r8_12 + r9_150 + CONVERT(r6_435 <u r4 << 3<32>, bool, word32) : word32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: uint32
@@ -2433,7 +2433,7 @@ T_544: (in (r9_150 | r6 << 3<32>) > 0<32> : bool)
   Class: Eq_544
   DataType: bool
   OrigDataType: bool
-T_545: (in (word32) ((r9_150 | r6 << 3<32>) >u 0<32>) : word32)
+T_545: (in CONVERT((r9_150 | r6 << 3<32>) >u 0<32>, bool, word32) : word32)
   Class: Eq_538
   DataType: ui32
   OrigDataType: word32
@@ -2501,10 +2501,10 @@ T_561: (in r6 << 3<32> << r10_399 > 0<32> : bool)
   Class: Eq_561
   DataType: bool
   OrigDataType: bool
-T_562: (in (word32) (r6 << 3<32> << r10_399 >u 0<32>) : word32)
+T_562: (in CONVERT(r6 << 3<32> << r10_399 >u 0<32>, bool, word32) : word32)
   Class: Eq_562
-  DataType: ui32
-  OrigDataType: ui32
+  DataType: word32
+  OrigDataType: word32
 T_563: (in r9_150 << r10_399 : word32)
   Class: Eq_563
   DataType: ui32
@@ -2561,10 +2561,10 @@ T_576: (in (r10_387 | r6 << 3<32>) > 0<32> : bool)
   Class: Eq_576
   DataType: bool
   OrigDataType: bool
-T_577: (in (word32) ((r10_387 | r6 << 3<32>) >u 0<32>) : word32)
+T_577: (in CONVERT((r10_387 | r6 << 3<32>) >u 0<32>, bool, word32) : word32)
   Class: Eq_577
-  DataType: ui32
-  OrigDataType: ui32
+  DataType: word32
+  OrigDataType: word32
 T_578: (in (word32) ((r10_387 | r6 << 3<32>) > 0<32>) | r4_386 : word32)
   Class: Eq_538
   DataType: ui32
@@ -2601,7 +2601,7 @@ T_586: (in r6_412 < r4 << 3<32> : bool)
   Class: Eq_586
   DataType: bool
   OrigDataType: bool
-T_587: (in (word32) (r6_412 <u r4 << 3<32>) : word32)
+T_587: (in CONVERT(r6_412 <u r4 << 3<32>, bool, word32) : word32)
   Class: Eq_587
   DataType: word32
   OrigDataType: word32
@@ -2809,11 +2809,11 @@ T_638: (in r6_304 <u r4 << 3<32> : bool)
   Class: Eq_638
   DataType: bool
   OrigDataType: bool
-T_639: (in (word32) (r6_304 <u r4 << 3<32>) : word32)
+T_639: (in CONVERT(r6_304 <u r4 << 3<32>, bool, word32) : word32)
   Class: Eq_639
   DataType: word32
   OrigDataType: word32
-T_640: (in r8_12 + r9_150 + (word32) (r6_304 <u r4 << 3<32>) : word32)
+T_640: (in r8_12 + r9_150 + CONVERT(r6_304 <u r4 << 3<32>, bool, word32) : word32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: uint32
@@ -2913,11 +2913,11 @@ T_664: (in r6_268 <u r4 << 3<32> : bool)
   Class: Eq_664
   DataType: bool
   OrigDataType: bool
-T_665: (in (word32) (r6_268 <u r4 << 3<32>) : word32)
+T_665: (in CONVERT(r6_268 <u r4 << 3<32>, bool, word32) : word32)
   Class: Eq_665
   DataType: word32
   OrigDataType: word32
-T_666: (in r8_12 + r9_150 + (word32) (r6_268 <u r4 << 3<32>) : word32)
+T_666: (in r8_12 + r9_150 + CONVERT(r6_268 <u r4 << 3<32>, bool, word32) : word32)
   Class: Eq_661
   DataType: uint32
   OrigDataType: uint32
@@ -2965,7 +2965,7 @@ T_677: (in (r8_12 | r4 << 3<32>) > 0<32> : bool)
   Class: Eq_677
   DataType: bool
   OrigDataType: bool
-T_678: (in (word32) ((r8_12 | r4 << 3<32>) >u 0<32>) : word32)
+T_678: (in CONVERT((r8_12 | r4 << 3<32>) >u 0<32>, bool, word32) : word32)
   Class: Eq_654
   DataType: ui32
   OrigDataType: word32
@@ -3049,10 +3049,10 @@ T_698: (in r4 << 3<32> << r7_334 > 0<32> : bool)
   Class: Eq_698
   DataType: bool
   OrigDataType: bool
-T_699: (in (word32) (r4 << 3<32> << r7_334 >u 0<32>) : word32)
+T_699: (in CONVERT(r4 << 3<32> << r7_334 >u 0<32>, bool, word32) : word32)
   Class: Eq_699
-  DataType: ui32
-  OrigDataType: ui32
+  DataType: word32
+  OrigDataType: word32
 T_700: (in r8_12 << r7_334 | (r4 << 3<32>) >> r11_312 | (word32) ((r4 << 3<32>) << r7_334 > 0<32>) : word32)
   Class: Eq_654
   DataType: ui32
@@ -3065,7 +3065,7 @@ T_702: (in r12_116 < r6 << 3<32> : bool)
   Class: Eq_702
   DataType: bool
   OrigDataType: bool
-T_703: (in (word32) (r12_116 <u r6 << 3<32>) : word32)
+T_703: (in CONVERT(r12_116 <u r6 << 3<32>, bool, word32) : word32)
   Class: Eq_703
   DataType: word32
   OrigDataType: word32
@@ -3089,10 +3089,10 @@ T_708: (in (r7_322 | r4 << 3<32>) > 0<32> : bool)
   Class: Eq_708
   DataType: bool
   OrigDataType: bool
-T_709: (in (word32) ((r7_322 | r4 << 3<32>) >u 0<32>) : word32)
+T_709: (in CONVERT((r7_322 | r4 << 3<32>) >u 0<32>, bool, word32) : word32)
   Class: Eq_709
-  DataType: ui32
-  OrigDataType: ui32
+  DataType: word32
+  OrigDataType: word32
 T_710: (in r4_321 | (word32) ((r7_322 | r4 << 3<32>) > 0<32>) : word32)
   Class: Eq_654
   DataType: ui32

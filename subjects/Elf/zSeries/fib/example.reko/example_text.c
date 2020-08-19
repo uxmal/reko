@@ -11,7 +11,7 @@ void _start(Eq_n r14)
 	*((word64) r15_n - 0x00B0) = 0x00;
 	*((word64) r15_n - 16) = r14;
 	*((word64) r15_n - 8) = r15_n - 0x00B0;
-	__libc_start_main(*SEQ(SLICE(r2, word32, 32), 0x2040), qwLocA0, fp - 0x0098, SEQ(SLICE(r5, word32, 32), 0x0820), SEQ(SLICE(r6, word32, 32), 0x0888), *((word64) r15_n - 16), *((word64) r15_n - 8));
+	r2_n = (uint64) __libc_start_main(*SEQ(SLICE(r2, word32, 32), 0x2040), qwLocA0, fp - 0x0098, SEQ(SLICE(r5, word32, 32), 0x0820), SEQ(SLICE(r6, word32, 32), 0x0888), *((word64) r15_n - 16), *((word64) r15_n - 8));
 }
 
 // 00000648: Register word64 deregister_tm_clones(Register Eq_n r14)
@@ -137,7 +137,7 @@ Eq_n fib(Eq_n r2, union Eq_n & r10Out, union Eq_n & r11Out)
 		fib((int64) (dwLocA4_n - 1), out r10_n, out r11_n);
 		word64 r10_n;
 		word64 r2_n = fib((int64) (r11_n->dw00A4 - 2), out r10_n, out r11_n);
-		r1_n = SEQ(SLICE(r2_n, word32, 32), r2_n + r10_n);
+		r1_n = SEQ(SLICE(r2_n, word32, 32), (word32) r2_n + (word32) r10_n);
 	}
 	Eq_n v26_n = (word64) r11_n + 0x00F8;
 	int64 r1_n = (int64) (word32) r1_n;

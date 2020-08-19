@@ -90,7 +90,7 @@ void _mm_free(real64 (* rdi)[])
 void vec_add(word64 rdi)
 {
 	__align(fp);
-	uint64 rax_n = (uint64) ((uint128) (uint64) rdi /u g_qw0B00);
+	uint64 rax_n = (uint64) ((uint128) rdi /u g_qw0B00);
 	if (rax_n <= 0x00)
 		;
 }
@@ -109,7 +109,10 @@ void main(Eq_n xmm0)
 		if (qwLoc10_n >= 0x00)
 			xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) qwLoc10_n);
 		else
-			xmm0.u0 = (uint128) (uint64) ((real64) (qwLoc10_n >> 0x01 | (uint64) (eax_n & 0x01)) + (real64) (qwLoc10_n >> 0x01 | (uint64) (eax_n & 0x01)));
+		{
+			real64 v26_n = (real64) (qwLoc10_n >> 0x01 | (uint64) (eax_n & 0x01));
+			xmm0.u0 = (uint128) (v26_n + v26_n);
+		}
 		*rcx_n = (real64) xmm0;
 		qwLoc10_n = (word64) qwLoc10_n + 1;
 	}
@@ -121,7 +124,10 @@ void main(Eq_n xmm0)
 		if (qwLoc18_n >= 0x01)
 			xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) ((word64) qwLoc18_n + 1));
 		else
-			xmm0.u0 = (uint128) (uint64) ((real64) ((word64) qwLoc18_n + 1 >> 0x01 | (uint64) (eax_n & 0x01)) + (real64) ((word64) qwLoc18_n + 1 >> 0x01 | (uint64) (eax_n & 0x01)));
+		{
+			real64 v19_n = (real64) ((word64) qwLoc18_n + 1 >> 0x01 | (uint64) (eax_n & 0x01));
+			xmm0.u0 = (uint128) (v19_n + v19_n);
+		}
 		*rcx_n = (real64) xmm0;
 		qwLoc18_n = (word64) qwLoc18_n + 1;
 	}

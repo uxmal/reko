@@ -60,7 +60,7 @@ Eq_n Win32CrtStartup()
 	fn0040165E();
 	struct Eq_n * ebp_n = fn00401980(ebx, esi, edi, dwLoc0C, 0x14);
 	word32 * esp_n = fp - 8;
-	if ((byte) (uint32) (uint8) fn0040146F(edx, 0x01) == 0x00)
+	if ((byte) (uint32) fn0040146F(edx, 0x01) == 0x00)
 	{
 l00401172:
 		esp_n -= 4;
@@ -70,7 +70,7 @@ l00401172:
 	ebp_n->bFFFFFFE7 = 0x00;
 	ebp_n->dwFFFFFFFC = 0x00;
 	word32 edx_n;
-	ebp_n->tFFFFFFDC = (byte) (uint32) (uint8) fn0040143A(out edx_n);
+	ebp_n->tFFFFFFDC = (byte) (uint32) fn0040143A(out edx_n);
 	struct Eq_n * ebp_n = ebp_n;
 	uip32 eax_n = g_dw403334;
 	word32 ebx_n = SEQ(ebx_24_8_n, 0x00);
@@ -112,7 +112,7 @@ l00401172:
 			esp_n->t0000 = eax_n;
 			esp_n = (char *) &esp_n->t0000 + 4;
 			<anonymous> ** esi_n;
-			if ((byte) (uint32) (uint8) fn0040153F(ebx_n, eax_n, 0x00, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n) != 0x00)
+			if ((byte) (uint32) fn0040153F(ebx_n, eax_n, 0x00, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n) != 0x00)
 			{
 				esp_n->t0000 = edi_n;
 				esp_n->dwFFFFFFFC = 0x02;
@@ -129,7 +129,7 @@ l00401172:
 			*esp_n = (union Eq_n *) eax_n;
 			union Eq_n * esi_n;
 			word32 edi_n;
-			if ((byte) (uint32) (uint8) fn0040153F(ebx_n, eax_n, edi_n, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n) != 0x00)
+			if ((byte) (uint32) fn0040153F(ebx_n, eax_n, edi_n, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n) != 0x00)
 			{
 				*esp_n = *esi_n;
 				register_thread_local_exe_atexit_callback();
@@ -152,7 +152,7 @@ l00401172:
 		Eq_n eax_n = fn00401040(ecx_n);
 		byte bl_n = (byte) ebx_n;
 		struct Eq_n * esp_n = esp_n;
-		if ((byte) (uint32) (uint8) fn0040188B() == 0x00)
+		if ((byte) (uint32) fn0040188B() == 0x00)
 		{
 			esp_n->tFFFFFFFC = eax_n;
 			exit(esp_n->tFFFFFFFC);
@@ -368,19 +368,18 @@ void fn0040176D(word32 dwArg04)
 		__fastfail(dwArg04);
 }
 
-// 0040188B: Register byte fn0040188B()
+// 0040188B: Register int8 fn0040188B()
 // Called from:
 //      Win32CrtStartup
-byte fn0040188B()
+int8 fn0040188B()
 {
 	Eq_n eax_n = GetModuleHandleW(null);
 	if (eax_n == null || eax_n->unused != 23117)
 		return 0x00;
 	struct Eq_n * eax_n = eax_n + eax_n->dw003C / 64;
-	word24 eax_24_8_n = SLICE(eax_n, word24, 8);
 	if (eax_n->dw0000 != 0x4550 || (eax_n->w0018 != 0x010B || eax_n->dw0074 <= 0x0E))
 		return 0x00;
-	return (byte) SEQ(eax_24_8_n, eax_n->dw00E8 != 0x00);
+	return (int8) (eax_n->dw00E8 != 0x00);
 }
 
 // 00401972: void fn00401972()
@@ -477,7 +476,7 @@ void fn004019FE(word32 edx)
 //      fn004015C9
 uint32 fn00401B98()
 {
-	return (uint32) (uint8) (g_dw403014 != 0x00);
+	return (uint32) (int8) (g_dw403014 != 0x00);
 }
 
 // 00401C46: Register byte fn00401C46()

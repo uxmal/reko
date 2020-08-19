@@ -51,7 +51,7 @@ void __do_global_dtors_aux()
 __do_global_dtors_aux_entry:
 l0000839C:
 	word32 r5_10 = Mem8[0x000083F4<p32>:word32]
-	branch (word32) Mem8[r5_10:byte] == 0<32> l000083B0
+	branch CONVERT(Mem8[r5_10:byte], byte, word32) == 0<32> l000083B0
 l000083B0:
 	word32 r4_14 = Mem8[0x000083F8<p32>:word32]
 	word32 r2_16 = Mem8[Mem8[r4_14:word32]:word32]

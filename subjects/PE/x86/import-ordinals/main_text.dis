@@ -94,7 +94,7 @@ l004012C9:
 l0040115A:
 	word32 ebp_19 = fn00401980(ebx, esi, edi, dwLoc0C, 0x14<32>)
 	word32 esp_35 = fp - 8<i32>
-	branch SLICE((uint32) (uint8) fn0040146F(edx, 1<32>), byte, 0) != 0<8> l00401179
+	branch SLICE(CONVERT(fn0040146F(edx, 1<32>), uint8, uint32), byte, 0) != 0<8> l00401179
 l00401172:
 	esp_35 = esp_35 - 4<i32>
 	Mem42[esp_35:word32] = 7<32>
@@ -103,7 +103,7 @@ l00401179:
 	Mem53[ebp_19 - 0x19<32>:byte] = 0<8>
 	Mem55[ebp_19 - 4<32>:word32] = 0<32>
 	word32 edx_140
-	Mem68[ebp_19 - 0x24<32>:byte] = SLICE((uint32) (uint8) fn0040143A(out edx_140), byte, 0)
+	Mem68[ebp_19 - 0x24<32>:byte] = SLICE(CONVERT(fn0040143A(out edx_140), uint8, uint32), byte, 0)
 	word32 ebp_135 = ebp_19
 	word32 eax_69 = Mem68[0x00403334<p32>:word32]
 	word32 ebx_127 = SEQ(ebx_24_8_129, 0<8>)
@@ -139,7 +139,7 @@ l004011FE:
 	Mem125[esp_109:word32] = eax_119
 	esp_118 = esp_109 + 4<i32>
 	word32 esi_139
-	branch SLICE((uint32) (uint8) fn0040153F(ebx_127, eax_119, 0<32>, out edx_140, out ebx_127, out ebp_135, out esi_139, out edi_121), byte, 0) == 0<8> l00401218
+	branch SLICE(CONVERT(fn0040153F(ebx_127, eax_119, 0<32>, out edx_140, out ebx_127, out ebp_135, out esi_139, out edi_121), uint8, uint32), byte, 0) == 0<8> l00401218
 l00401209:
 	Mem152[esp_109:word32] = edi_121
 	Mem154[esp_109 - 4<i32>:word32] = 2<32>
@@ -157,7 +157,7 @@ l00401223:
 	Mem176[esp_175:word32] = eax_168
 	word32 esi_184
 	word32 edi_350
-	branch SLICE((uint32) (uint8) fn0040153F(ebx_127, eax_168, edi_121, out edx_140, out ebx_127, out ebp_135, out esi_184, out edi_350), byte, 0) == 0<8> l00401236
+	branch SLICE(CONVERT(fn0040153F(ebx_127, eax_168, edi_121, out edx_140, out ebx_127, out ebp_135, out esi_184, out edi_350), uint8, uint32), byte, 0) == 0<8> l00401236
 l0040122E:
 	Mem198[esp_175:word32] = Mem176[esi_184:word32]
 	call register_thread_local_exe_atexit_callback (retsize: 4;)
@@ -187,7 +187,7 @@ l00401236:
 	word32 eax_245 = fn00401040(ecx_232)
 	byte bl_264 = SLICE(ebx_127, byte, 0)
 	word32 esp_251 = esp_231
-	branch SLICE((uint32) (uint8) fn0040188B(), byte, 0) != 0<8> l00401267
+	branch SLICE(CONVERT(fn0040188B(), uint8, uint32), byte, 0) != 0<8> l00401267
 l00401267:
 	branch bl_264 != 0<8> l00401270
 l0040126B:
@@ -230,8 +230,8 @@ fn004013F6_entry:
 l004013F6:
 	word32 eax_32
 	word32 ecx_13 = Mem11[dwArg04 + 0x3C<32>:word32] + dwArg04
-	word32 edx_16 = ecx_13 + 0x18<32> + (word32) Mem11[ecx_13 + 0x14<32>:word16]
-	word32 esi_19 = (word32) Mem11[ecx_13 + 6<32>:word16] *s 0x28<32> + edx_16
+	word32 edx_16 = ecx_13 + 0x18<32> + CONVERT(Mem11[ecx_13 + 0x14<32>:word16], word16, word32)
+	word32 esi_19 = CONVERT(Mem11[ecx_13 + 6<32>:word16], word16, word32) *s 0x28<32> + edx_16
 	branch edx_16 == esi_19 l00401431
 l00401418:
 l0040141B:
@@ -495,7 +495,7 @@ l00401788:
 	SetUnhandledExceptionFilter(0<32>)
 	branch UnhandledExceptionFilter(fp - 0xC<32>) != 0<32> l00401882
 l00401875:
-	Mem108[0x00403368<p32>:word32] = Mem97[0x00403368<p32>:word32] & 0<32> - ((word32) (bl_90 + 1<8>) == 0<32>)
+	Mem108[0x00403368<p32>:word32] = Mem97[0x00403368<p32>:word32] & 0<32> - (CONVERT(bl_90 + 1<8>, byte, word32) == 0<32>)
 l00401882:
 	return
 fn0040176D_exit:
@@ -520,14 +520,13 @@ l0040189C:
 	branch Mem5[eax_6:word16] != 0x5A4D<16> l00401899
 l004018A6:
 	word32 eax_17 = Mem5[eax_6 + 0x3C<32>:word32] + eax_6
-	word24 eax_24_8_43 = SLICE(eax_17, word24, 8)
 	branch Mem5[eax_17:word32] != 0x4550<32> l00401899
 l004018B3:
 	branch Mem5[eax_17 + 0x18<32>:word16] != 0x10B<16> l00401899
 l004018BE:
 	branch Mem5[eax_17 + 0x74<32>:word32] <=u 0xE<32> l00401899
 l004018C4:
-	return SLICE(SEQ(eax_24_8_43, Mem5[eax_17 + 0xE8<32>:word32] != 0<32>), byte, 0)
+	return CONVERT(Mem5[eax_17 + 0xE8<32>:word32] != 0<32>, bool, int8)
 l00401899:
 	return 0<8>
 fn0040188B_exit:
@@ -679,7 +678,7 @@ word32 fn00401B98()
 // Preserved: esp
 fn00401B98_entry:
 l00401B98:
-	return (uint32) (uint8) (Mem0[0x00403014<p32>:word32] != 0<32>)
+	return CONVERT(CONVERT(Mem0[0x00403014<p32>:word32] != 0<32>, bool, int8), int8, uint32)
 fn00401B98_exit:
 
 

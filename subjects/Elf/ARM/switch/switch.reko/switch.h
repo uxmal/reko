@@ -391,7 +391,7 @@ T_59: (in Mem8[r5_10 + 0<32>:byte] : byte)
   Class: Eq_59
   DataType: byte
   OrigDataType: byte
-T_60: (in (word32) Mem8[r5_10 + 0<32>:byte] : word32)
+T_60: (in CONVERT(Mem8[r5_10 + 0<32>:byte], byte, word32) : word32)
   Class: Eq_60
   DataType: word32
   OrigDataType: word32

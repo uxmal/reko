@@ -144,7 +144,7 @@ l00008130:
 	branch r0_18 << 26<i32> >= 0<32> l0000813C
 l00008134:
 	word32 r2_49 = Mem48[0x0000817C<p32>:word32]
-	word32 r3_50 = (word32) Mem48[r2_49:byte]
+	word32 r3_50 = CONVERT(Mem48[r2_49:byte], byte, word32)
 	branch r3_50 <=u 0x7A<32> l0000814C
 l0000814C:
 	word32 r1_54 = Mem48[Mem48[0x00008178<p32>:word32]:word32]
@@ -154,7 +154,7 @@ l00008154_1:
 	r1_55 = Mem48[0x00008174<p32>:word32]
 l00008156:
 	Mem61[r1_55:word32] = r3_50
-	Mem65[r2_49:byte] = (byte) (r3_50 + 1<32>)
+	Mem65[r2_49:byte] = SLICE(r3_50 + 1<32>, byte, 0)
 l0000813C:
 	branch 0<32> == 0<32> l00008148
 l00008140:
@@ -720,12 +720,12 @@ l00008538:
 	r4_14 = r0
 l0000853A:
 	vPortEnterCritical(cpsr)
-	word32 r3_26 = (word32) Mem11[r4_14 + 100<i32>:byte]
+	word32 r3_26 = CONVERT(Mem11[r4_14 + 100<i32>:byte], byte, word32)
 	branch r3_26 != 2<32> l00008548
 l00008546_1:
 	r3_26 = 0<32>
 l00008548:
-	Mem33[r4_14 + 100<i32>:byte] = (byte) r3_26
+	Mem33[r4_14 + 100<i32>:byte] = SLICE(r3_26, byte, 0)
 	vPortExitCritical(cpsr)
 	return
 xTaskNotifyStateClear_exit:
@@ -889,7 +889,7 @@ void vParTestInitialise()
 vParTestInitialise_entry:
 l000085DC:
 	PDCInit()
-	word32 r1_18 = (word32) Mem7[Mem7[0x000085F0<p32>:word32]:byte]
+	word32 r1_18 = CONVERT(Mem7[Mem7[0x000085F0<p32>:word32]:byte], byte, word32)
 l000085EC_thunk_PDCWrite:
 	PDCWrite(5<32>, r1_18)
 	return
@@ -911,15 +911,15 @@ l000085F4:
 	branch r0 >u 7<32> l0000861C
 l00008602:
 	word32 r3_28 = Mem11[0x0000862C<p32>:word32]
-	word32 r0_29 = (uint32) (byte) (1<32> << r0)
-	word32 r2_30 = (word32) Mem11[r3_28:byte]
+	word32 r0_29 = CONVERT(SLICE(1<32> << r0, byte, 0), byte, uint32)
+	word32 r2_30 = CONVERT(Mem11[r3_28:byte], byte, word32)
 	branch r1 == 0<32> l00008624
 l00008624:
-	Mem32[r3_28:byte] = (byte) (r2_30 & ~r0_29)
+	Mem32[r3_28:byte] = SLICE(r2_30 & ~r0_29, byte, 0)
 l00008610:
-	Mem35[r3_28:byte] = (byte) (r0_29 | r2_30)
+	Mem35[r3_28:byte] = SLICE(r0_29 | r2_30, byte, 0)
 l00008614:
-	r0_17 = PDCWrite(5<32>, (word32) Mem37[r3_28:byte])
+	r0_17 = PDCWrite(5<32>, CONVERT(Mem37[r3_28:byte], byte, word32))
 l0000861C:
 l00008620_thunk_MPU_xTaskResumeAll:
 	MPU_xTaskResumeAll(cpsr)
@@ -943,14 +943,14 @@ l00008630:
 l0000863C:
 	word32 r3_21 = Mem7[0x0000866C<p32>:word32]
 	word32 r0_22 = 1<32> << r0
-	word32 r2_26 = (uint32) (byte) r0_22 + (word32) Mem7[r3_21:byte] + (r0 <u 7<32>)
+	word32 r2_26 = CONVERT(SLICE(r0_22, byte, 0), byte, uint32) + CONVERT(Mem7[r3_21:byte], byte, word32) + (r0 <u 7<32>)
 	branch r2_26 != 0<32> l00008662
 l00008662:
-	Mem31[r3_21:byte] = (byte) ((word32) Mem7[r3_21:byte] & ~r0_22)
+	Mem31[r3_21:byte] = SLICE(CONVERT(Mem7[r3_21:byte], byte, word32) & ~r0_22, byte, 0)
 l0000864C:
-	Mem35[r3_21:byte] = (byte) (r2_26 | (word32) Mem7[r3_21:byte])
+	Mem35[r3_21:byte] = SLICE(r2_26 | CONVERT(Mem7[r3_21:byte], byte, word32), byte, 0)
 l00008652:
-	PDCWrite(5<32>, (word32) Mem37[r3_21:byte])
+	PDCWrite(5<32>, CONVERT(Mem37[r3_21:byte], byte, word32))
 l0000865A:
 l0000865E_thunk_MPU_xTaskResumeAll:
 	MPU_xTaskResumeAll(cpsr)
@@ -970,7 +970,7 @@ l00008670:
 	word32 r5_107
 	word32 r6_105
 	word32 r0_26
-	word32 r3_13 = (word32) Mem11[r0 + 52<i32>:word16]
+	word32 r3_13 = CONVERT(Mem11[r0 + 52<i32>:word16], word16, word32)
 	branch r3_13 == 0x1C2<32> l000086B6
 l000086B6:
 	r5_107 = Mem11[0x000086E0<p32>:word32]
@@ -1018,7 +1018,7 @@ l000086E8:
 	bool Z_111
 	word32 r0_81
 	word32 r0_22
-	word32 r3_9 = (word32) Mem7[r0 + 52<i32>:word16]
+	word32 r3_9 = CONVERT(Mem7[r0 + 52<i32>:word16], word16, word32)
 	branch r3_9 == 0x182<32> l00008750
 l00008750:
 	Z_111 = xQueueCRSend(Mem14[Mem14[0x0000877C<p32>:word32]:word32], fp - 12<i32>, 0<32>, r7, lr, cpsr, out r0_22)
@@ -2187,7 +2187,7 @@ void GPIODirModeGet(word32 r0, word32 r1)
 // Preserved: r4 sp
 GPIODirModeGet_entry:
 l00009134:
-	word32 r1_11 = (uint32) (byte) (1<32> << r1)
+	word32 r1_11 = CONVERT(SLICE(1<32> << r1, byte, 0), byte, uint32)
 	word32 r2_12 = Mem6[r0 + 1056<i32>:word32]
 	word32 r4_14 = Mem6[r0 + 1024<i32>:word32] + r1_11 + C
 	branch r4_14 != 0<32> l0000914C
@@ -2240,7 +2240,7 @@ void GPIOIntTypeGet(word32 r0, word32 r1)
 // Preserved: sp
 GPIOIntTypeGet_entry:
 l00009194:
-	word32 r1_9 = (uint32) (byte) (1<32> << r1)
+	word32 r1_9 = CONVERT(SLICE(1<32> << r1, byte, 0), byte, uint32)
 	word32 r3_10 = Mem0[r0 + 1028<i32>:word32]
 	word32 r2_12 = Mem0[r0 + 1032<i32>:word32] + r1_9 + C
 	word32 r0_14 = Mem0[r0 + 1036<i32>:word32]
@@ -2334,7 +2334,7 @@ void GPIOPadConfigGet(word32 r0, word32 r1, word32 r2, word32 r3)
 // Preserved: r4 r5 r6 r7 sp
 GPIOPadConfigGet_entry:
 l0000925C:
-	word32 r1_17 = (uint32) (byte) (1<32> << r1)
+	word32 r1_17 = CONVERT(SLICE(1<32> << r1, byte, 0), byte, uint32)
 	word32 r4_18 = Mem11[r0 + 1284<i32>:word32]
 	word32 r5_20 = Mem11[r0 + 1280<i32>:word32] + r1_17 + C
 	word32 r5_22 = Mem11[r0 + 1288<i32>:word32]
@@ -3028,7 +3028,7 @@ l000096D0:
 	branch I2CMasterIntStatus(r4_20, 0<32>) == 0<32> l000096D0
 l000096DC:
 	OSRAMDelay(Mem16[r7_19:word32])
-	I2CMasterDataPut(r4_20, (word32) Mem16[r5_18:byte])
+	I2CMasterDataPut(r4_20, CONVERT(Mem16[r5_18:byte], byte, word32))
 	I2CMasterControl(r4_20, 1<32>)
 	r5_18 = r5_18 + 1<i32>
 	branch r6_21 != r5_18 l000096D0
@@ -3154,9 +3154,9 @@ l000097E0:
 	OSRAMWriteByte(0x80<32>)
 	OSRAMWriteByte(r1 + 0x24<32> & 0xF<32>)
 	OSRAMWriteByte(0x80<32>)
-	OSRAMWriteByte((uint32) SLICE(r1 + 0x24<32>, ui4, 4) | 0x10<32>)
+	OSRAMWriteByte(CONVERT(SLICE(r1 + 0x24<32>, ui4, 4), ui4, uint32) | 0x10<32>)
 	OSRAMWriteByte(0x40<32>)
-	word32 r3_117 = (word32) Mem11[r0:byte]
+	word32 r3_117 = CONVERT(Mem11[r0:byte], byte, word32)
 	branch r3_117 == 0<32> l00009876
 l00009876:
 	return
@@ -3169,10 +3169,10 @@ l00009830:
 l0000981C:
 	r5_104 = r5_104 + 1<i32>
 	r4_100 = r4_100 + 6<32>
-	branch (word32) Mem11[r5_104:byte] == 0<32> l00009846
+	branch CONVERT(Mem11[r5_104:byte], byte, word32) == 0<32> l00009846
 l00009824:
 	OSRAMWriteByte(0<32>)
-	r3_117 = (word32) Mem11[r5_104:byte]
+	r3_117 = CONVERT(Mem11[r5_104:byte], byte, word32)
 	branch r3_117 == 0<32> l00009874
 l00009874:
 	return
@@ -3186,8 +3186,8 @@ l0000981A:
 l0000984C:
 	word32 r4_144 = 0x5F<32> - r4_100
 	OSRAMWriteArray(r6_85 + (r3_117 - 0x20<32>) * 5<32>, r4_144)
-	word32 r3_156 = (word32) Mem11[r5_104:byte]
-	word32 r0_163 = (word32) Mem11[r3_156 - 0x20<32> + (r3_156 - 0x20<32> << 2<u32>) + Mem11[0x0000987C<p32>:word32] + r4_144 + 16<i32>:byte]
+	word32 r3_156 = CONVERT(Mem11[r5_104:byte], byte, word32)
+	word32 r0_163 = CONVERT(Mem11[r3_156 - 0x20<32> + (r3_156 - 0x20<32> << 2<u32>) + Mem11[0x0000987C<p32>:word32] + r4_144 + 16<i32>:byte], byte, word32)
 l00009872_thunk_OSRAMWriteFinal:
 	OSRAMWriteFinal(r0_163)
 	return
@@ -3207,7 +3207,7 @@ l00009880:
 l00009888:
 	word32 r5_103 = r0
 	word32 r4_112 = r2
-	word32 r8_29 = (uint32) SLICE(r1 + 0x24<32>, ui4, 4)
+	word32 r8_29 = CONVERT(SLICE(r1 + 0x24<32>, ui4, 4), ui4, uint32)
 	word32 r6_30 = dwArg00 + r2
 	word32 r7_33 = r1 + 0x24<32> & 0xF<32>
 l000098A2:
@@ -3223,7 +3223,7 @@ l000098AE:
 	OSRAMWriteByte(0x40<32>)
 	OSRAMWriteArray(r5_103, r3 + 0xFFFFFFFF<32>)
 	r5_103 = r5_103 + r3
-	OSRAMWriteFinal((word32) Mem19[r5_103 - 1<i32>:byte])
+	OSRAMWriteFinal(CONVERT(Mem19[r5_103 - 1<i32>:byte], byte, word32))
 	r4_112 = r4_112 + 1<32>
 	branch r6_30 != r4_112 l000098A2
 l000098EA:
@@ -3260,9 +3260,9 @@ l00009938:
 	word32 r3_88 = r7_51 + r5_55
 	branch r5_55 <=u 0x70<32> l0000992A
 l0000992A:
-	r4_53 = (word32) Mem56[r3_88 + 492<i32>:byte]
-	r0_54 = (word32) Mem56[r3_88 + 493<i32>:byte]
-	r6_52 = (word32) Mem56[r3_88 + r4_53 + 492<i32>:byte]
+	r4_53 = CONVERT(Mem56[r3_88 + 492<i32>:byte], byte, word32)
+	r0_54 = CONVERT(Mem56[r3_88 + 493<i32>:byte], byte, word32)
+	r6_52 = CONVERT(Mem56[r3_88 + r4_53 + 492<i32>:byte], byte, word32)
 l00009958:
 l0000995C_thunk_OSRAMClear:
 	OSRAMClear()
@@ -3292,9 +3292,9 @@ l00009996:
 	word32 r3_52 = r7_16 + r5_20
 	branch r5_20 <=u 0x70<32> l00009988
 l00009988:
-	r4_18 = (word32) Mem15[r3_52 + 492<i32>:byte]
-	r0_19 = (word32) Mem15[r3_52 + 493<i32>:byte]
-	r6_17 = (word32) Mem15[r3_52 + r4_18 + 492<i32>:byte]
+	r4_18 = CONVERT(Mem15[r3_52 + 492<i32>:byte], byte, word32)
+	r0_19 = CONVERT(Mem15[r3_52 + 493<i32>:byte], byte, word32)
+	r6_17 = CONVERT(Mem15[r3_52 + r4_18 + 492<i32>:byte], byte, word32)
 l000099B6:
 	return
 OSRAMDisplayOn_exit:
@@ -4046,12 +4046,12 @@ l00009E4A:
 l00009E00:
 	branch (r3_5 & 0x30<32>) == 0<32> l00009E06
 l00009E06:
-	r0_12 = Mem0[Mem0[0x00009E58<p32>:word32] + ((uint32) SLICE(r3_5, ui4, 6) << 2<u32>) + 48<i32>:word32]
+	r0_12 = Mem0[Mem0[0x00009E58<p32>:word32] + (CONVERT(SLICE(r3_5, ui4, 6), ui4, uint32) << 2<u32>) + 48<i32>:word32]
 l00009E12:
 	branch r3_5 << 20<i32> < 0<32> l00009E3A
 l00009E16:
 	word32 r2_23 = Mem0[Mem0[0x00009E5C<p32>:word32]:word32]
-	r0_12 = r0_12 * ((uint32) SLICE(r2_23, ui9, 5) + 2<32>) /u ((r2_23 & 0x1F<32>) + 2<32>)
+	r0_12 = r0_12 * (CONVERT(SLICE(r2_23, ui9, 5), ui9, uint32) + 2<32>) /u ((r2_23 & 0x1F<32>) + 2<32>)
 	branch r2_23 << 17<i32> >= 0<32> l00009E34
 l00009E32_1:
 	r0_12 = r0_12 >>u 1<i32>
@@ -4062,7 +4062,7 @@ l00009E38_1:
 l00009E3A:
 	branch r3_5 << 9<i32> >= 0<32> l00009E04
 l00009E3E:
-	return r0_12 /u ((uint32) SLICE(r3_5, ui4, 23) + 1<32>)
+	return r0_12 /u (CONVERT(SLICE(r3_5, ui4, 23), ui4, uint32) + 1<32>)
 l00009E02:
 	r0_12 = 0<32>
 l00009E04:

@@ -20,16 +20,16 @@ Eq_5: (union "Eq_5" (int16 u0) (uint16 u1) (ptr16 u2))
 	T_102 (in r0 : Eq_5)
 	T_103 (in r1 : Eq_5)
 	T_104 (in r2Out : Eq_5)
-	T_108 (in (int16) Mem0[r4 + 0<16>:byte] : int16)
+	T_108 (in CONVERT(Mem0[r4 + 0<16>:byte], byte, int16) : int16)
 	T_110 (in Mem0[0x004A<p16>:word16] : word16)
 	T_111 (in out r2_13 : ptr16)
-	T_118 (in (int16) Mem20[r4 + 1<16>:byte] : int16)
+	T_118 (in CONVERT(Mem20[r4 + 1<16>:byte], byte, int16) : int16)
 	T_120 (in Mem20[0x004C<p16>:word16] : word16)
 	T_121 (in out r2_27 : ptr16)
-	T_128 (in (int16) Mem34[r4 + 0<16>:byte] : int16)
+	T_128 (in CONVERT(Mem34[r4 + 0<16>:byte], byte, int16) : int16)
 	T_130 (in Mem34[0x004C<p16>:word16] : word16)
 	T_131 (in out r2_42 : ptr16)
-	T_137 (in (int16) Mem49[r4 + 1<16>:byte] : int16)
+	T_137 (in CONVERT(Mem49[r4 + 1<16>:byte], byte, int16) : int16)
 	T_139 (in Mem49[0x004A<p16>:word16] : word16)
 	T_140 (in out r2_58 : ptr16)
 	T_146 (in r4 : Eq_5)
@@ -1404,7 +1404,7 @@ T_107: (in Mem0[r4 + 0<16>:byte] : byte)
   Class: Eq_107
   DataType: byte
   OrigDataType: byte
-T_108: (in (int16) Mem0[r4 + 0<16>:byte] : int16)
+T_108: (in CONVERT(Mem0[r4 + 0<16>:byte], byte, int16) : int16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: int16
@@ -1444,7 +1444,7 @@ T_117: (in Mem20[r4 + 1<16>:byte] : byte)
   Class: Eq_117
   DataType: byte
   OrigDataType: byte
-T_118: (in (int16) Mem20[r4 + 1<16>:byte] : int16)
+T_118: (in CONVERT(Mem20[r4 + 1<16>:byte], byte, int16) : int16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: int16
@@ -1484,7 +1484,7 @@ T_127: (in Mem34[r4 + 0<16>:byte] : byte)
   Class: Eq_107
   DataType: byte
   OrigDataType: byte
-T_128: (in (int16) Mem34[r4 + 0<16>:byte] : int16)
+T_128: (in CONVERT(Mem34[r4 + 0<16>:byte], byte, int16) : int16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: int16
@@ -1520,7 +1520,7 @@ T_136: (in Mem49[r4 + 1<16>:byte] : byte)
   Class: Eq_117
   DataType: byte
   OrigDataType: byte
-T_137: (in (int16) Mem49[r4 + 1<16>:byte] : int16)
+T_137: (in CONVERT(Mem49[r4 + 1<16>:byte], byte, int16) : int16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: int16
@@ -2156,7 +2156,7 @@ T_295: (in Mem0[(Mem0[0x0064<p16>:word16] >> 3<i16>) + 0x2766<16>:byte] : byte)
   Class: Eq_295
   DataType: byte
   OrigDataType: byte
-T_296: (in (int16) Mem0[(Mem0[0x0064<p16>:word16] >> 3<i16>) + 0x2766<16>:byte] : int16)
+T_296: (in CONVERT(Mem0[(Mem0[0x0064<p16>:word16] >> 3<i16>) + 0x2766<16>:byte], byte, int16) : int16)
   Class: Eq_288
   DataType: int16
   OrigDataType: int16
@@ -2220,7 +2220,7 @@ T_311: (in Mem12[(Mem12[0x008A<p16>:word16] & ~0xFFE0<16>) + 0x2773<16>:byte] : 
   Class: Eq_311
   DataType: byte
   OrigDataType: byte
-T_312: (in (int16) Mem12[(Mem12[0x008A<p16>:word16] & ~0xFFE0<16>) + 0x2773<16>:byte] : int16)
+T_312: (in CONVERT(Mem12[(Mem12[0x008A<p16>:word16] & ~0xFFE0<16>) + 0x2773<16>:byte], byte, int16) : int16)
   Class: Eq_312
   DataType: int16
   OrigDataType: int16
@@ -5292,7 +5292,7 @@ T_1079: (in Mem29[r2_33 + 0x2766<16>:byte] : byte)
   Class: Eq_1079
   DataType: byte
   OrigDataType: byte
-T_1080: (in (int16) Mem29[r2_33 + 0x2766<16>:byte] : int16)
+T_1080: (in CONVERT(Mem29[r2_33 + 0x2766<16>:byte], byte, int16) : int16)
   Class: Eq_1080
   DataType: int16
   OrigDataType: int16
@@ -5368,7 +5368,7 @@ T_1098: (in Mem29[r2_24 + 0x2766<16>:byte] : byte)
   Class: Eq_1098
   DataType: byte
   OrigDataType: byte
-T_1099: (in (int16) Mem29[r2_24 + 0x2766<16>:byte] : int16)
+T_1099: (in CONVERT(Mem29[r2_24 + 0x2766<16>:byte], byte, int16) : int16)
   Class: Eq_1099
   DataType: int16
   OrigDataType: int16
@@ -8108,7 +8108,7 @@ T_1783: (in Mem20[r0_106 + 0x2773<16>:byte] : byte)
   Class: Eq_1783
   DataType: byte
   OrigDataType: byte
-T_1784: (in (int16) Mem20[r0_106 + 0x2773<16>:byte] : int16)
+T_1784: (in CONVERT(Mem20[r0_106 + 0x2773<16>:byte], byte, int16) : int16)
   Class: Eq_1784
   DataType: int16
   OrigDataType: int16

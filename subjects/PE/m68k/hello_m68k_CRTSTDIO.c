@@ -92,12 +92,11 @@ void fn000016D0(word32 d6, struct Eq_n * a5, byte * dwArg08)
 				d0_n = (int32) (a5->aFFFFF7E8[(int32) (byte) d6_n] & 0x0F);
 			else
 				d0_n = 0;
-			word32 d0_n = (int32) ((a5 + -2040 + dwLoc0C_n)[d0_n * 0x08] >> 0x04);
+			word32 d0_n = CONVERT((a5 + -2040 + dwLoc0C_n)[d0_n * 0x08] >> 0x04, byte, int32);
 			dwLoc0C_n = d0_n;
 			if (d0_n <= 7)
 			{
 				word16 v40_n = g_a1758[(int32) (int16) d0_n * 2];
-				uipr32 d0_n = SEQ(SLICE(d0_n, word16, 16), v40_n);
 				word32 d2_n;
 				(0x1758 + (int32) v40_n)();
 				return;
@@ -126,7 +125,7 @@ struct Eq_n * fn00001C40(struct Eq_n * a5, Eq_n bArg04, struct Eq_n * dwArg08, s
 	{
 		*dwArg08->ptr0000 = bArg07_n;
 		byte * a0_n = dwArg08->ptr0000;
-		d0_n = (int32) (int16) (uint32) (uint8) *a0_n;
+		d0_n = (int32) (int16) (uint32) *a0_n;
 		dwArg08->ptr0000 = a0_n + 1;
 	}
 	else

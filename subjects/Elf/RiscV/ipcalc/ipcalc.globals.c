@@ -4,7 +4,11 @@
 
 #include "ipcalc.h"
 
+void g_vFFFFFFFF;
 byte g_b0000;
+int32 g_dw0020;
+int32 g_dw0080;
+Eq_n g_t0100;
 void g_v10880 = ??void??;
 void g_v10898 = ??void??;
 void g_v108B0 = ??void??;
@@ -120,18 +124,9 @@ Eq_n g_t12B50 =
 		0x69
 	};
 word64 g_qw12B58 = 0x6F6E20646C756F63;
-Eq_n g_t12B60 = 
-	{
-		1768300660
-	};
-Eq_n g_t12B68 = 
-	{
-		0x6F626D79
-	};
-Eq_n g_t12B70 = 
-	{
-		0x696C206E
-	};
+FILE * g_ptr12B60 = &g_t69662074;
+ptr64 g_ptr12B68 = 7575181482799558009;
+ptr64 g_ptr12B70 = 8026900398858838126;
 int32 g_dw12B78 = 0x000A5049;
 char g_str12B80[] = "%f,%f";
 char g_str12B88[] = "%u.%u.%u.%u.in-addr.arpa.";
@@ -149,4 +144,5 @@ void g_t18378() = Unexpected function type (fn void ())
 ;
 <anonymous> * g_ptr19E18 = fn0000000000015F94;
 word64 g_qw19E28 = 0x00;
+Eq_n g_t69662074;
 

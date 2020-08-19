@@ -45,7 +45,7 @@ void fn00002264(byte * dwArg04)
 			byte * a2_n = dwArg04;
 			uint32 d0_n;
 			byte * a1_n = dwArg04 + 1;
-			for (d0_n = (uint32) (uint8) v10_n; d0_n != 0x00; --d0_n)
+			for (d0_n = (uint32) v10_n; d0_n != 0x00; --d0_n)
 			{
 				*a2_n = *a1_n;
 				++a1_n;

@@ -2056,7 +2056,7 @@ l0000532A:
 	word20 r11_28
 	word20 r15_30
 	call Mem16[0x09B2<p16>:word16] (retsize: 2;)
-		uses: r10:r10_15 + 1<16>,r11:r11_24,r14:r14_25,r15:(int16) Mem16[r10_15:byte]
+		uses: r10:r10_15 + 1<16>,r11:r11_24,r14:r14_25,r15:CONVERT(Mem16[r10_15:byte], byte, int16)
 		defs: r10:r10_29,r11:r11_28,r14:r14_31,r15:r15_30
 	branch r15_30 < 0<20> l00005342
 l00005342:
@@ -2089,7 +2089,7 @@ l0000534A:
 	word20 r11_15 = r14
 	branch r14 < 1<8> l00005370
 l00005358:
-	word20 r10_20 = (int16) SLICE(r15, byte, 0)
+	word20 r10_20 = CONVERT(SLICE(r15, byte, 0), byte, int16)
 l0000535C:
 	word20 r11_32
 	word20 r15_35
@@ -2273,7 +2273,7 @@ l5746:
 l574E:
 	r9_366 = r15_355 - bLoc20_1239
 l571E:
-	word20 r15_378 = memchr((int16) SLICE(r11_102, byte, 0), 0<16>, wLoc20_1210)
+	word20 r15_378 = memchr(CONVERT(SLICE(r11_102, byte, 0), byte, int16), 0<16>, wLoc20_1210)
 	branch r15_378 == 0<20> l573C
 l5732:
 	r9_366 = r15_378 - bLoc20_1239
@@ -2320,7 +2320,7 @@ l5644:
 	wLoc20_1286 = SLICE(fp - 0x24<32>, word16, 0) (alias)
 	branch r11_102 == 0<8> l56C6
 l564A:
-	word16 wLoc14_2367 = (uint16) (uint8) bLoc18_1202
+	word16 wLoc14_2367 = CONVERT(bLoc18_1202, byte, uint16)
 l5658:
 	byte bLoc16_1353 = 0<8>
 	branch wLoc1A_1130 - (wLoc1C_1128 - wLoc14_2367 <u 0<20>) >=u 0<20> l5672
@@ -2393,7 +2393,7 @@ l5510:
 	r8 = bLoc1E_1135 & 0x30<16>
 	branch (bLoc1E_1135 & 0x30<16>) != 0<8> l5542
 l551C:
-	word20 r13_673 = (int16) (bLoc1D_1145 - SLICE(r11_657, byte, 0))
+	word20 r13_673 = CONVERT(bLoc1D_1145, byte, int16) - CONVERT(SLICE(r11_657, byte, 0), byte, int16)
 	branch r13_673 < 1<16> l5542
 l552C:
 	branch __write_pad(r13_673, 0x20<16>) >= 0<20> l553E
@@ -2415,7 +2415,7 @@ l556A:
 l5576:
 	branch (bLoc1E_1135 & 0x30<16>) == 0x20<16> l55C4
 l55C4:
-	word20 r13_768 = (int16) (bLoc1D_1145 - SLICE(r11_657, byte, 0))
+	word20 r13_768 = CONVERT(bLoc1D_1145, byte, int16) - CONVERT(SLICE(r11_657, byte, 0), byte, int16)
 	branch r13_768 < 1<16> l557C
 l55D4:
 	branch __write_pad(r13_768, 0x30<16>) >= 0<20> l557C
@@ -2423,11 +2423,11 @@ l55E2:
 l557C:
 	branch __write_pad(r10_633, 0x30<16>) < 0<20> l5924
 l558A:
-	branch PRINT((int16) SLICE(r9_366, byte, 0), wLoc20_1492) < 0<20> l5924
+	branch PRINT(CONVERT(SLICE(r9_366, byte, 0), byte, int16), wLoc20_1492) < 0<20> l5924
 l559C:
 	branch (bLoc1E_1135 & 0x10<16>) == 0<8> l53A6
 l55A4:
-	word20 r13_833 = (int16) (bLoc1D_1145 - SLICE(r11_657, byte, 0))
+	word20 r13_833 = CONVERT(bLoc1D_1145, byte, int16) - CONVERT(SLICE(r11_657, byte, 0), byte, int16)
 	branch r13_833 < 1<16> l53A6
 l55B4:
 	branch __write_pad(r13_833, 0x20<16>) >= 0<20> l53A6
@@ -2441,7 +2441,7 @@ l5458:
 	word20 r13_849 = 0<16>
 l545A:
 	word20 r14_855 = r13_849 * 2<20>
-	word20 r13_864 = r13_849 * 4<20> + r14_855 + r14_855 + r14_855 + (int16) SLICE(r7_1042, byte, 0)
+	word20 r13_864 = r13_849 * 4<20> + r14_855 + r14_855 + r14_855 + CONVERT(SLICE(r7_1042, byte, 0), byte, int16)
 	byte v68_868 = Mem177[r6_106:byte]
 	r13_849 = r13_864 + 0xFFD0<16>
 	r7_1042 = v68_868
@@ -2476,7 +2476,7 @@ l5842:
 l5850:
 	word20 r14_916 = r13_906 * 2<20>
 	byte v63_929 = Mem177[r6_106:byte]
-	r13_906 = r13_906 * 4<20> + r14_916 + r14_916 + r14_916 + (int16) SLICE(r7_1042, byte, 0) + 0xFFD0<16>
+	r13_906 = r13_906 * 4<20> + r14_916 + r14_916 + r14_916 + CONVERT(SLICE(r7_1042, byte, 0), byte, int16) + 0xFFD0<16>
 	r7_1042 = v63_929
 	r6_106 = r6_106 + 1<16>
 	branch v63_929 >=u 0xFFC6<16> l5850

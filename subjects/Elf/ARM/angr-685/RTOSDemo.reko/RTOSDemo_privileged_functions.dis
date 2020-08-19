@@ -11,7 +11,7 @@ void prvUnlockQueue(word32 r0, word32 cpsr)
 prvUnlockQueue_entry:
 l00000058:
 	vPortEnterCritical(cpsr)
-	word32 r4_133 = (int32) (int8) (word32) Mem11[r0 + 69<i32>:byte]
+	word32 r4_133 = CONVERT(SLICE(CONVERT(Mem11[r0 + 69<i32>:byte], byte, word32), int8, 0), int8, int32)
 	branch r4_133 <= 0<32> l00000098
 l0000006A:
 	branch Mem11[r0 + 36<i32>:word32] == 0<32> l00000098
@@ -19,13 +19,13 @@ l0000006E:
 l00000080:
 	branch xTaskRemoveFromEventList(r0 + 0x24<32>) == 0<32> l00000074
 l00000074:
-	word32 r3_41 = (uint32) (byte) (r4_133 - 1<32>)
-	r4_133 = (int32) (int8) r3_41
+	word32 r3_41 = CONVERT(SLICE(r4_133 - 1<32>, byte, 0), byte, uint32)
+	r4_133 = CONVERT(SLICE(r3_41, int8, 0), int8, int32)
 	branch r3_41 == 0<32> l00000098
 l0000008A:
 	vTaskMissedYield()
-	word32 r3_47 = (uint32) (byte) (r4_133 - 1<32>)
-	r4_133 = (int32) (int8) r3_47
+	word32 r3_47 = CONVERT(SLICE(r4_133 - 1<32>, byte, 0), byte, uint32)
+	r4_133 = CONVERT(SLICE(r3_47, int8, 0), int8, int32)
 	branch r3_47 != 0<32> l0000007C
 l0000007C:
 	branch Mem11[r0 + 36<i32>:word32] == 0<32> l00000098
@@ -33,7 +33,7 @@ l00000098:
 	Mem58[r0 + 69<i32>:byte] = 0xFF<8>
 	vPortExitCritical(cpsr)
 	vPortEnterCritical(cpsr)
-	word32 r4_101 = (int32) (int8) (word32) Mem58[r0 + 68<i32>:byte]
+	word32 r4_101 = CONVERT(SLICE(CONVERT(Mem58[r0 + 68<i32>:byte], byte, word32), int8, 0), int8, int32)
 	branch r4_101 <= 0<32> l000000DE
 l000000B0:
 	branch Mem58[r0 + 16<i32>:word32] == 0<32> l000000DE
@@ -41,13 +41,13 @@ l000000B4:
 l000000C6:
 	branch xTaskRemoveFromEventList(r0 + 0x10<32>) == 0<32> l000000BA
 l000000BA:
-	word32 r3_94 = (uint32) (byte) (r4_101 - 1<32>)
-	r4_101 = (int32) (int8) r3_94
+	word32 r3_94 = CONVERT(SLICE(r4_101 - 1<32>, byte, 0), byte, uint32)
+	r4_101 = CONVERT(SLICE(r3_94, int8, 0), int8, int32)
 	branch r3_94 == 0<32> l000000DE
 l000000D0:
 	vTaskMissedYield()
-	word32 r3_100 = (uint32) (byte) (r4_101 - 1<32>)
-	r4_101 = (int32) (int8) r3_100
+	word32 r3_100 = CONVERT(SLICE(r4_101 - 1<32>, byte, 0), byte, uint32)
+	r4_101 = CONVERT(SLICE(r3_100, int8, 0), int8, int32)
 	branch r3_100 != 0<32> l000000C2
 l000000C2:
 	branch Mem58[r0 + 16<i32>:word32] == 0<32> l000000DE
@@ -245,11 +245,11 @@ l000001A8:
 	vPortExitCritical(cpsr)
 	vTaskSuspendAll()
 	vPortEnterCritical(cpsr)
-	branch (word32) Mem40[r0 + 68<i32>:byte] != 0xFF<32> l000001C0
+	branch CONVERT(Mem40[r0 + 68<i32>:byte], byte, word32) != 0xFF<32> l000001C0
 l000001BC_1:
 	Mem156[r0 + 68<i32>:byte] = 0<8>
 l000001C0:
-	branch (word32) Mem158[r0 + 69<i32>:byte] != 0xFF<32> l000001CC
+	branch CONVERT(Mem158[r0 + 69<i32>:byte], byte, word32) != 0xFF<32> l000001CC
 l000001C8_1:
 	Mem163[r0 + 69<i32>:byte] = 0<8>
 l000001CC:
@@ -370,11 +370,11 @@ l0000031E:
 	vPortExitCritical(cpsr)
 	vTaskSuspendAll()
 	vPortEnterCritical(cpsr)
-	branch (word32) Mem40[r0 + 68<i32>:byte] != 0xFF<32> l00000336
+	branch CONVERT(Mem40[r0 + 68<i32>:byte], byte, word32) != 0xFF<32> l00000336
 l00000332_1:
 	Mem164[r0 + 68<i32>:byte] = 0<8>
 l00000336:
-	branch (word32) Mem166[r0 + 69<i32>:byte] != 0xFF<32> l00000342
+	branch CONVERT(Mem166[r0 + 69<i32>:byte], byte, word32) != 0xFF<32> l00000342
 l0000033E_1:
 	Mem171[r0 + 69<i32>:byte] = 0<8>
 l00000342:
@@ -488,7 +488,7 @@ l00000458:
 l00000476:
 	branch r3 == 2<32> l00000482
 l00000482:
-	word32 r4_32 = (int32) (int8) (word32) Mem15[r0 + 69<i32>:byte]
+	word32 r4_32 = CONVERT(SLICE(CONVERT(Mem15[r0 + 69<i32>:byte], byte, word32), int8, 0), int8, int32)
 	word32 r0_162
 	word32 lr_39
 	word32 r7_44
@@ -502,7 +502,7 @@ l000004B8:
 l000004BC:
 	Mem66[r7_44:word32] = 1<32>
 l00000496:
-	Mem70[r0 + 69<i32>:byte] = (byte) (int32) (int8) (r4_32 + 1<32>)
+	Mem70[r0 + 69<i32>:byte] = SLICE(CONVERT(SLICE(r4_32 + 1<32>, int8, 0), int8, int32), byte, 0)
 l0000049E:
 	__msr(cpsr, r6_17)
 	return
@@ -532,7 +532,7 @@ l00000500:
 	__msr(cpsr, r4_13)
 	return
 l000004E2:
-	word32 r3_28 = (int32) (int8) (word32) Mem11[r0 + 69<i32>:byte]
+	word32 r3_28 = CONVERT(SLICE(CONVERT(Mem11[r0 + 69<i32>:byte], byte, word32), int8, 0), int8, int32)
 	Mem29[r0 + 56<i32>:word32] = r2_16 + 1<32>
 	branch r2_16 == 1<32> l00000508
 l00000508:
@@ -544,7 +544,7 @@ l0000051A:
 l0000051E:
 	Mem51[r1:word32] = 1<32>
 l000004F0:
-	Mem55[r0 + 69<i32>:byte] = (byte) (int32) (int8) (r3_28 + 1<32>)
+	Mem55[r0 + 69<i32>:byte] = SLICE(CONVERT(SLICE(r3_28 + 1<32>, int8, 0), int8, int32), byte, 0)
 l000004F8:
 l000004FA:
 	__msr(cpsr, r4_13)
@@ -571,7 +571,7 @@ l0000054A:
 	word32 lr_28
 	word32 r5_33
 	word32 r7_35
-	word32 r4_32 = prvCopyDataFromQueue(r0, r1, r4_20, (int32) (int8) (word32) Mem15[r0 + 68<i32>:byte], r6_17, r0, lr, out r5_33, out r6_17, out r7_35, out lr_28)
+	word32 r4_32 = prvCopyDataFromQueue(r0, r1, r4_20, CONVERT(SLICE(CONVERT(Mem15[r0 + 68<i32>:byte], byte, word32), int8, 0), int8, int32), r6_17, r0, lr, out r5_33, out r6_17, out r7_35, out lr_28)
 	Mem39[r7_35 + 56<i32>:word32] = r4_32 - 1<32>
 	branch r4_32 == 1<32> l00000572
 l00000572:
@@ -583,7 +583,7 @@ l00000584:
 l0000058A:
 	Mem57[r2:word32] = 1<32>
 l00000560:
-	Mem61[r7_35 + 68<i32>:byte] = (byte) (int32) (int8) (r5_33 + 1<32>)
+	Mem61[r7_35 + 68<i32>:byte] = SLICE(CONVERT(SLICE(r5_33 + 1<32>, int8, 0), int8, int32), byte, 0)
 l00000568:
 	__msr(cpsr, r6_17)
 	return
@@ -821,10 +821,10 @@ l00000700:
 	word32 r0_41 = dwArg08 + 0x54<32>
 	word32 r2_42 = dwArg00 & ~0x80000000<32>
 l0000072E:
-	Mem47[r0_41:byte] = (byte) (word32) Mem44[r3_36 + 0<i32>:byte]
+	Mem47[r0_41:byte] = SLICE(CONVERT(Mem44[r3_36 + 0<i32>:byte], byte, word32), byte, 0)
 	r3_36 = r3_36 + 1<i32>
 	r0_41 = r0_41 + 1<i32>
-	branch (word32) Mem47[r3_36:byte] == 0<32> l0000073E
+	branch CONVERT(Mem47[r3_36:byte], byte, word32) == 0<32> l0000073E
 l0000073A:
 	branch r3_36 != r1 + 2<32> l0000072E
 l0000073E:
@@ -1008,7 +1008,7 @@ l00000932:
 	word32 r1_35 = Mem17[r0 + 20<i32>:word32]
 	Mem36[r0_24 + 101<i32>:byte] = 1<8>
 	word32 r3_37 = Mem36[r0 + 12<i32>:word32]
-	word32 r2_38 = (word32) Mem36[r0 + 8<i32>:word16]
+	word32 r2_38 = CONVERT(Mem36[r0 + 8<i32>:word16], word16, word32)
 	word32 lr_39 = Mem36[r0 + 16<i32>:word32]
 	Mem40[r0_24 + 80<i32>:word32] = r1_35
 	prvInitialiseNewTask(Mem43[r0:word32], Mem40[r0 + 4<i32>:word32], r2_38, r3_37, lr_39, r1, r0_24, r0 + 24<i32>)
@@ -1193,9 +1193,9 @@ l00000A58:
 l00000A68:
 	Mem31[r3:word32] = Mem15[r0 + 96<i32>:word32]
 l00000A6C:
-	word32 r4_35 = (word32) Mem34[r0 + 100<i32>:byte]
+	word32 r4_35 = CONVERT(Mem34[r0 + 100<i32>:byte], byte, word32)
 	Mem38[r0 + 100<i32>:byte] = 2<8>
-	word32 r4_39 = (uint32) (byte) r4_35
+	word32 r4_39 = CONVERT(SLICE(r4_35, byte, 0), byte, uint32)
 	branch r2 >u 4<32> l00000A8C
 l00000A7E:
 	switch (r2 - 1<32>) { l00000AF6 l00000A9A l00000A8A l00000A86 }
@@ -1248,9 +1248,9 @@ l00000B0C:
 l00000B26:
 	Mem22[r3:word32] = Mem15[r0 + 96<i32>:word32]
 l00000B2A:
-	word32 r4_26 = (word32) Mem25[r0 + 100<i32>:byte]
+	word32 r4_26 = CONVERT(Mem25[r0 + 100<i32>:byte], byte, word32)
 	Mem30[r0 + 100<i32>:byte] = 2<8>
-	word32 r4_31 = (uint32) (byte) r4_26
+	word32 r4_31 = CONVERT(SLICE(r4_26, byte, 0), byte, uint32)
 	branch r2 >u 4<32> l00000B4A
 l00000B3C:
 	switch (r2 - 1<32>) { l00000B94 l00000B58 l00000B48 l00000B44 }
@@ -1306,7 +1306,7 @@ xTaskNotifyWait_entry:
 l00000BD4:
 	word32 r4_16 = Mem15[0x00000C58<p32>:word32]
 	vPortEnterCritical(cpsr)
-	branch (word32) Mem15[Mem15[r4_16 + 4<i32>:word32] + 100<i32>:byte] == 2<32> l00000C04
+	branch CONVERT(Mem15[Mem15[r4_16 + 4<i32>:word32] + 100<i32>:byte], byte, word32) == 2<32> l00000C04
 l00000BF0:
 	word32 r1_37 = Mem15[r4_16 + 4<i32>:word32]
 	Mem40[r1_37 + 96<i32>:word32] = Mem15[r1_37 + 96<i32>:word32] & ~r0
@@ -1324,7 +1324,7 @@ l00000C04:
 l00000C0E:
 	Mem73[r2:word32] = Mem70[Mem70[r4_16 + 4<i32>:word32] + 96<i32>:word32]
 l00000C14:
-	branch (word32) Mem75[Mem75[r4_16 + 4<i32>:word32] + 100<i32>:byte] == 1<32> l00000C54
+	branch CONVERT(Mem75[Mem75[r4_16 + 4<i32>:word32] + 100<i32>:byte], byte, word32) == 1<32> l00000C54
 l00000C54:
 l00000C1E:
 	word32 r3_82 = Mem75[r4_16 + 4<i32>:word32]
@@ -1349,10 +1349,10 @@ l00000C60:
 	__msr(cpsr, 0xBF<32>)
 	__isb_sy()
 	__dsb_sy()
-	word32 r5_25 = (word32) Mem19[r0 + 100<i32>:byte]
+	word32 r5_25 = CONVERT(Mem19[r0 + 100<i32>:byte], byte, word32)
 	Mem26[r0 + 100<i32>:byte] = 2<8>
 	Mem31[r0 + 96<i32>:word32] = Mem26[r0 + 96<i32>:word32] + 1<32>
-	word32 r5_28 = (uint32) (byte) r5_25
+	word32 r5_28 = CONVERT(SLICE(r5_25, byte, 0), byte, uint32)
 	branch r5_28 == 1<32> l00000C96
 l00000C96:
 	word32 r7_33 = Mem31[0x00000CFC<p32>:word32]
@@ -1768,7 +1768,7 @@ l00001112:
 l000010E0:
 	word32 r1_23
 	Mem8[r2_4 + 144<i32>:word32] = r3_5
-	word32 r0_15 = r2_4 + (0x1F<32> - (uint32) ((byte) __clz(Mem8[r2_4 + 124<i32>:word32]))) * 0x14<32>
+	word32 r0_15 = r2_4 + (0x1F<32> - CONVERT(SLICE(__clz(Mem8[r2_4 + 124<i32>:word32]), byte, 0), byte, uint32)) * 0x14<32>
 	word32 r1_19 = Mem8[Mem8[r0_15 + 12<i32>:word32] + 4<i32>:word32]
 	Mem21[r0_15 + 12<i32>:word32] = r1_19
 	r1_23 = r1_19
@@ -2062,7 +2062,7 @@ void prvSVCHandler(word32 r0, word32 cpsr)
 // Preserved: sp
 prvSVCHandler_entry:
 l00001334:
-	word32 r3_6 = (word32) Mem0[Mem0[r0 + 24<i32>:word32] - 2<i32>:byte]
+	word32 r3_6 = CONVERT(Mem0[Mem0[r0 + 24<i32>:word32] - 2<i32>:byte], byte, word32)
 	branch r3_6 == 1<32> l00001360
 l00001360:
 	Mem11[Mem0[0x00001378<p32>:word32]:word32] = 0x10000000<32>

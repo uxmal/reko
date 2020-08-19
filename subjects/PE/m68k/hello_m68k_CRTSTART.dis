@@ -49,7 +49,7 @@ l00002272:
 	branch v10_15 == 0<8> l0000228C
 l00002276:
 	word32 a2_21 = dwArg04
-	word32 d0_25 = (uint32) (uint8) v10_15
+	word32 d0_25 = CONVERT(v10_15, byte, uint32)
 	word32 a1_29 = dwArg04 + 1<i32>
 	branch d0_25 == 0<32> l0000228A
 l00002284:

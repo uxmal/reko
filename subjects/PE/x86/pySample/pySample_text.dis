@@ -46,7 +46,7 @@ l100010A0:
 	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002158<32>, fp - 8<32>, fp - 4<32>)
 	branch eax_17 != 0<32> l100010C8
 l100010C8:
-	return Py_BuildValue(0x1000214C<32>, (int32) ((int64) dwLoc08 / dwLoc04))
+	return Py_BuildValue(0x1000214C<32>, CONVERT(CONVERT(dwLoc08, word32, int64) / dwLoc04, word32, int32))
 l100010C4:
 	return eax_17
 fn100010A0_exit:
@@ -64,7 +64,7 @@ l100010F0:
 	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002160<32>, fp - 8<32>, fp - 4<32>)
 	branch eax_17 != 0<32> l10001118
 l10001118:
-	return Py_BuildValue(0x10002168<32>, (real64) rLoc08 / (real64) rLoc04)
+	return Py_BuildValue(0x10002168<32>, CONVERT(rLoc08, real32, real64) / rLoc04)
 l10001114:
 	return eax_17
 fn100010F0_exit:
@@ -506,7 +506,7 @@ l100016DE:
 	word32 eax_9 = Mem0[dwArg04 + 0x3C<32>:word32] + dwArg04
 	branch Mem0[eax_9:word32] != 0x4550<32> l100016DB
 l100016EB:
-	return (uint32) (uint8) (Mem0[eax_9 + 0x18<32>:word16] == 0x10B<16>)
+	return CONVERT(CONVERT(Mem0[eax_9 + 0x18<32>:word16] == 0x10B<16>, bool, int8), int8, uint32)
 l100016DB:
 	return 0<32>
 fn100016D0_exit:
@@ -524,9 +524,9 @@ word32 fn10001700(word32 dwArg04, word32 dwArg08, ptr32 & edxOut)
 fn10001700_entry:
 l10001700:
 	word32 ecx_7 = Mem0[dwArg04 + 0x3C<32>:word32] + dwArg04
-	word32 esi_15 = (word32) Mem14[ecx_7 + 6<32>:word16]
+	word32 esi_15 = CONVERT(Mem14[ecx_7 + 6<32>:word16], word16, word32)
 	word32 edx_16 = 0<32>
-	word32 eax_22 = (word32) Mem0[ecx_7 + 0x14<32>:word16] + 0x18<32> + ecx_7
+	word32 eax_22 = CONVERT(Mem0[ecx_7 + 0x14<32>:word16], word16, word32) + 0x18<32> + ecx_7
 	branch esi_15 <=u 0<32> l1000173C
 l1000171E:
 l10001722:

@@ -90,7 +90,7 @@ l000011F8:
 			ui32 d0_n = ((ui32[]) 16)[d0_n];
 			byte * a1_n = d0_n->ptr0008;
 			byte (* a0_n)[] = (d0_n << 0x02) + 1;
-			Eq_n d0_n = (uint32) (uint8) null[d0_n].b0000;
+			Eq_n d0_n = (uint32) null[d0_n].b0000;
 			Mem245[a0_n + d0_n:byte] = 0x00;
 			d0_n->ptr0010 = a0_n;
 			word32 * a6_n = (char *) &d0_n->ptr0010 + 4;

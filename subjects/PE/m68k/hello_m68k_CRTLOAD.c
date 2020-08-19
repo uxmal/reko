@@ -80,13 +80,13 @@ l00001556:
 		ui32 d0_n;
 		ci8 v18_n = a3_n->b0000;
 		++a3_n;
-		uint32 d0_n = (uint32) (uint8) v18_n;
+		uint32 d0_n = (uint32) v18_n;
 		if (v18_n <= 0x00)
 		{
 			if (v18_n >= 0x00)
 			{
 				byte v22_n = a3_n->b0000;
-				uint32 d0_n = (uint32) (uint8) v22_n;
+				uint32 d0_n = (uint32) v22_n;
 				if (v22_n != 0x00)
 				{
 					uip32 d0_n = SEQ(SLICE(__swap(SEQ(SLICE(SEQ(SLICE(d0_n, word16, 16), (word16) d0_n << 0x08), word24, 8), a3_n[1])), word24, 8), a3_n[2]);

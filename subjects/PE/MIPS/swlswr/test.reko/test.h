@@ -696,7 +696,7 @@ T_131: (in r6 << 0x18<8> >> 0x18<8> : word32)
   Class: Eq_131
   DataType: int32
   OrigDataType: int32
-T_132: (in (byte) (r6 << 0x18<8> >> 0x18<8>) : byte)
+T_132: (in SLICE(r6 << 0x18<8> >> 0x18<8>, byte, 0) : byte)
   Class: Eq_132
   DataType: byte
   OrigDataType: byte
@@ -828,7 +828,7 @@ T_164: (in g_t1303C < g_t13040 : bool)
   Class: Eq_164
   DataType: bool
   OrigDataType: bool
-T_165: (in (word32) (Mem39[0x1303C<32>:word32] <u Mem39[0x13040<32>:word32]) : word32)
+T_165: (in CONVERT(Mem39[0x1303C<32>:word32] <u Mem39[0x13040<32>:word32], bool, word32) : word32)
   Class: Eq_165
   DataType: word32
   OrigDataType: word32
@@ -1088,7 +1088,7 @@ T_229: (in dwArg00_33 < r5 : bool)
   Class: Eq_229
   DataType: bool
   OrigDataType: bool
-T_230: (in (word32) (dwArg00_33 <u r5) : word32)
+T_230: (in CONVERT(dwArg00_33 <u r5, bool, word32) : word32)
   Class: Eq_230
   DataType: word32
   OrigDataType: word32
@@ -1228,7 +1228,7 @@ T_264: (in sp_3->t0018 < sp_3->t0024 : bool)
   Class: Eq_264
   DataType: bool
   OrigDataType: bool
-T_265: (in (word32) (Mem35[sp_3 + 0x18<32>:word32] <u Mem35[sp_3 + 0x24<32>:word32]) : word32)
+T_265: (in CONVERT(Mem35[sp_3 + 0x18<32>:word32] <u Mem35[sp_3 + 0x24<32>:word32], bool, word32) : word32)
   Class: Eq_265
   DataType: word32
   OrigDataType: word32
@@ -1464,7 +1464,7 @@ T_323: (in sp_3->t0018 < 513<i32> : bool)
   Class: Eq_323
   DataType: bool
   OrigDataType: bool
-T_324: (in (word32) (Mem42[sp_3 + 0x18<32>:word32] <u 513<i32>) : word32)
+T_324: (in CONVERT(Mem42[sp_3 + 0x18<32>:word32] <u 513<i32>, bool, word32) : word32)
   Class: Eq_324
   DataType: word32
   OrigDataType: word32
@@ -1668,7 +1668,7 @@ T_374: (in sp_3->t0018 < sp_3->t0020 : bool)
   Class: Eq_374
   DataType: bool
   OrigDataType: bool
-T_375: (in (word32) (Mem49[sp_3 + 0x18<32>:word32] <u Mem49[sp_3 + 0x20<32>:word32]) : word32)
+T_375: (in CONVERT(Mem49[sp_3 + 0x18<32>:word32] <u Mem49[sp_3 + 0x20<32>:word32], bool, word32) : word32)
   Class: Eq_375
   DataType: word32
   OrigDataType: word32
@@ -1816,7 +1816,7 @@ T_411: (in sp_3->t0018 < sp_3->t0024 : bool)
   Class: Eq_411
   DataType: bool
   OrigDataType: bool
-T_412: (in (word32) (Mem58[sp_3 + 0x18<32>:word32] <u Mem58[sp_3 + 0x24<32>:word32]) : word32)
+T_412: (in CONVERT(Mem58[sp_3 + 0x18<32>:word32] <u Mem58[sp_3 + 0x24<32>:word32], bool, word32) : word32)
   Class: Eq_412
   DataType: word32
   OrigDataType: word32

@@ -60,7 +60,7 @@ void frame_dummy()
 word32 component(Eq_n ecx, word32 edx, word32 esi, word64 rdi, int32 r8d)
 {
 	Eq_n ecx = (word32) rcx;
-	ui32 eax_n = (word32) (uint64) ((word32) (uint64) (word32) (uint64) (edx + (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) & 0x3F)) *s r8d))) *s ecx);
+	ui32 eax_n = (word32) (uint64) ((word32) (uint64) (word32) ((uint64) edx + (uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) & 0x3F)) *s r8d)))) *s ecx);
 	struct Eq_n * v16_n = rdi + ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) >> 0x06)) *s r8d)) *s ecx))) << 0x03) + (uint64) ((word32) ((uint64) ((word32) ((uint64) eax_n) >> 0x03)));
 	if (ecx > 0x10)
 		goto l0000000000400EC1;
@@ -95,7 +95,7 @@ l0000000000400EC1:
 		rax_n = (uint64) (word32) (byte) (uint64) (word32) v16_n->b0000;
 		break;
 	case 0x10:
-		rax_n = (uint64) (word32) (uint64) ((word32) (byte) (uint64) (word32) v16_n->b0001 + (word32) ((uint64) ((word32) ((uint64) ((word32) ((byte) ((uint64) ((word32) v16_n->b0000))))) << 0x08)));
+		rax_n = (uint64) (word32) ((uint64) (word32) (byte) (uint64) (word32) v16_n->b0001 + (uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((byte) ((uint64) ((word32) v16_n->b0000))))) << 0x08))));
 		break;
 	}
 	return (word32) rax_n;
@@ -122,7 +122,7 @@ void print_pixel(word32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * f
 	switch (g_a401958[(uint64) eax_n])
 	{
 	case 0x00:
-		printf("GRAY %u\n", (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x01));
+		printf("GRAY %u\n", (uint64) (word32) (uint64) component((uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x01));
 		break;
 	case 0x01:
 	case 0x05:
@@ -130,10 +130,10 @@ l00000000004012C9:
 		png_error();
 		break;
 	case 0x02:
-		printf("RGB %u %u %u\n", (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x03), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x01, (word32) (uint64) ecx, rdx, 0x03), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x02, (word32) (uint64) ecx, rdx, 0x03));
+		printf("RGB %u %u %u\n", (uint64) (word32) (uint64) component((uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x03), (uint64) (word32) (uint64) (word32) (uint64) component((uint64) (word32) (uint64) eax_n, 0x01, (word32) (uint64) ecx, rdx, 0x03), (uint64) (word32) (uint64) (word32) (uint64) component((uint64) (word32) (uint64) eax_n, 0x02, (word32) (uint64) ecx, rdx, 0x03));
 		break;
 	case 0x03:
-		up32 eax_n = (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x01);
+		up32 eax_n = (word32) (uint64) component((uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x01);
 		word64 rax_n;
 		png_get_PLTE();
 		if ((word32) (uint64) ((word32) rax_n & 0x08) != 0x00 && (false && 0x00 != 0x00))
@@ -156,10 +156,10 @@ l00000000004012C9:
 			printf("INDEXED %u = invalid index\n", (uint64) (word32) (uint64) eax_n);
 		break;
 	case 0x04:
-		printf("GRAY+ALPHA %u %u\n", (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x02), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x01, (word32) (uint64) ecx, rdx, 0x02));
+		printf("GRAY+ALPHA %u %u\n", (uint64) (word32) (uint64) component((uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x02), (uint64) (word32) (uint64) (word32) (uint64) component((uint64) (word32) (uint64) eax_n, 0x01, (word32) (uint64) ecx, rdx, 0x02));
 		break;
 	case 0x06:
-		printf("RGBA %u %u %u %u\n", (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x04), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x01, (word32) (uint64) ecx, rdx, 0x04), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x02, (word32) (uint64) ecx, rdx, 0x04), (uint64) (word32) (uint64) (word32) (uint64) (uint32) component((uint64) (word32) (uint64) eax_n, 0x03, (word32) (uint64) ecx, rdx, 0x04));
+		printf("RGBA %u %u %u %u\n", (uint64) (word32) (uint64) component((uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x04), (uint64) (word32) (uint64) (word32) (uint64) component((uint64) (word32) (uint64) eax_n, 0x01, (word32) (uint64) ecx, rdx, 0x04), (uint64) (word32) (uint64) (word32) (uint64) component((uint64) (word32) (uint64) eax_n, 0x02, (word32) (uint64) ecx, rdx, 0x04), (uint64) (word32) (uint64) (word32) (uint64) component((uint64) (word32) (uint64) eax_n, 0x03, (word32) (uint64) ecx, rdx, 0x04));
 		break;
 	}
 	if ((rax_n ^ fs->qw0028) == 0x00)
@@ -251,7 +251,7 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 					else
 						eax_n = 0x07;
 					word32 eax_n;
-					uint32 edx_n = (word32) (uint64) (word32) (uint64) ((word32) (uint64) (eax_n - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_n))) & 0x01)) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x03 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_n) + 0x01)) >> 0x01)))))))))))) & 0x07))) + dwLoc88);
+					uint32 edx_n = (word32) (uint64) (word32) ((uint64) (word32) (uint64) (eax_n - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_n))) & 0x01)) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x03 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_n) + 0x01)) >> 0x01)))))))))))) & 0x07))) + (uint64) dwLoc88);
 					if (dwLoc68_n > 0x01)
 						eax_n = (word32) (uint64) ((word32) (uint64) (0x07 - dwLoc68_n) >> 0x01);
 					else
@@ -260,7 +260,7 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 						goto l000000000040166F;
 					word32 eax_n;
 					dwLoc60_n = (word32) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (uint64) dwLoc68_n & 0x01) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x03 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_n) + 0x01)) >> 0x01))))))))) & 0x07);
-					dwLoc64_n = (word32) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (uint64) (word32) ((word32) (uint64) ((word32) (uint64) dwLoc68_n & 0x01) == 0x00) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x03 - (word32) ((uint64) ((word32) ((uint64) dwLoc68_n) >> 0x01))))))))) & 0x07);
+					dwLoc64_n = (word32) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (uint64) (word32) (int8) ((word32) (uint64) ((word32) (uint64) dwLoc68_n & 0x01) == 0x00) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x03 - (word32) ((uint64) ((word32) ((uint64) dwLoc68_n) >> 0x01))))))))) & 0x07);
 					dwLoc58_n = (word32) (uint64) (word32) (uint64) (0x01 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x07 - dwLoc68_n)) >> 0x01)))));
 					if (dwLoc68_n > 0x02)
 						eax_n = (word32) (uint64) (word32) (uint64) (0x08 >> (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_n) - 0x01)) >> 0x01)))));

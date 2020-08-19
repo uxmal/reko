@@ -121,10 +121,10 @@ T_28: (in SEQ(SLICE(a4_56, word24, 8), Mem60[a0 + 4<i32> + a4_56:byte]) : uip32)
   Class: Eq_22
   DataType: ui32
   OrigDataType: uip32
-T_29: (in d0_77 : uipr32)
+T_29: (in v27_75 : cui16)
   Class: Eq_29
-  DataType: uipr32
-  OrigDataType: uipr32
+  DataType: cui16
+  OrigDataType: cui16
 T_30: (in 0xFF<32> : word32)
   Class: Eq_30
   DataType: ui32
@@ -133,39 +133,39 @@ T_31: (in d3_71 & 0xFF<32> : word32)
   Class: Eq_31
   DataType: ui32
   OrigDataType: ui32
-T_32: (in SLICE(d3_71 & 0xFF<32>, word16, 16) : word16)
+T_32: (in SLICE(d3_71 & 0xFF<32>, word16, 0) : word16)
   Class: Eq_32
-  DataType: word16
-  OrigDataType: word16
-T_33: (in d3_71 & 0xFF<32> : word32)
+  DataType: cui16
+  OrigDataType: cui16
+T_33: (in 0xF0<16> : word16)
   Class: Eq_33
-  DataType: ui32
-  OrigDataType: ui32
-T_34: (in SLICE(d3_71 & 0xFF<32>, word16, 0) : word16)
-  Class: Eq_34
   DataType: cui16
   OrigDataType: cui16
-T_35: (in 0xF0<16> : word16)
-  Class: Eq_35
-  DataType: cui16
-  OrigDataType: cui16
-T_36: (in (word16) (d3_71 & 0xFF<32>) & 0xF0<16> : word16)
-  Class: Eq_36
-  DataType: cui16
-  OrigDataType: cui16
-T_37: (in SEQ(SLICE(d3_71 & 0xFF<32>, word16, 16), SLICE(d3_71 & 0xFF<32>, word16, 0) & 0xF0<16>) : uipr32)
+T_34: (in (word16) (d3_71 & 0xFF<32>) & 0xF0<16> : word16)
   Class: Eq_29
-  DataType: uipr32
-  OrigDataType: uipr32
-T_38: (in d0_80 : uip32)
-  Class: Eq_38
+  DataType: cui16
+  OrigDataType: cui16
+T_35: (in d0_80 : uip32)
+  Class: Eq_35
   DataType: uip32
   OrigDataType: uip32
-T_39: (in SLICE(d0_77, word24, 8) : word24)
+T_36: (in d3_71 & 0xFF<32> : word32)
+  Class: Eq_36
+  DataType: ui32
+  OrigDataType: ui32
+T_37: (in SLICE(d3_71 & 0xFF<32>, word16, 16) : word16)
+  Class: Eq_37
+  DataType: word16
+  OrigDataType: word16
+T_38: (in SEQ(SLICE(d3_71 & 0xFF<32>, word16, 16), v27_75) : uipr32)
+  Class: Eq_38
+  DataType: uipr32
+  OrigDataType: uipr32
+T_39: (in SLICE(SEQ(SLICE(d3_71 & 0xFF<32>, word16, 16), v27_75), word24, 8) : word24)
   Class: Eq_39
   DataType: word24
   OrigDataType: word24
-T_40: (in SLICE(d0_77, byte, 0) : byte)
+T_40: (in SLICE(v27_75, byte, 0) : byte)
   Class: Eq_40
   DataType: bcu8
   OrigDataType: bcu8
@@ -173,12 +173,12 @@ T_41: (in 2<8> : byte)
   Class: Eq_41
   DataType: byte
   OrigDataType: byte
-T_42: (in (byte) d0_77 >> 2<8> : byte)
+T_42: (in (byte) v27_75 >> 2<8> : byte)
   Class: Eq_42
   DataType: uint8
   OrigDataType: uint8
-T_43: (in SEQ(SLICE(d0_77, word24, 8), SLICE(d0_77, byte, 0) >>u 2<8>) : uip32)
-  Class: Eq_38
+T_43: (in SEQ(SLICE(SEQ(SLICE(d3_71 & 0xFF<32>, word16, 16), v27_75), word24, 8), SLICE(v27_75, byte, 0) >>u 2<8>) : uip32)
+  Class: Eq_35
   DataType: uip32
   OrigDataType: uip32
 T_44: (in 1<i32> : int32)

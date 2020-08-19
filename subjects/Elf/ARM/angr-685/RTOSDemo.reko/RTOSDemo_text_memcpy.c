@@ -4,71 +4,71 @@
 
 #include "RTOSDemo_text_memcpy.h"
 
-// 0000A5C4: FlagGroup bool memcpy(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register Eq_n r7, Register Eq_n lr, Register out ptr32 r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 lrOut)
+// 0000A5C4: FlagGroup bool memcpy(Register Eq_2 r0, Register Eq_2 r1, Register Eq_122 r2, Register Eq_2 r4, Register Eq_2 r5, Register Eq_2 r6, Register Eq_2 r7, Register Eq_122 lr, Register out ptr32 r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 lrOut)
 // Called from:
 //      prvCopyDataToQueue
 //      prvCopyDataFromQueue
 //      xQueueCRReceive
 //      xQueueCRReceiveFromISR
-bool memcpy(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n lr, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & lrOut)
+bool memcpy(Eq_2 r0, Eq_2 r1, Eq_122 r2, Eq_2 r4, Eq_2 r5, Eq_2 r6, Eq_2 r7, Eq_122 lr, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & lrOut)
 {
-	Eq_n r5_n = r0;
+	Eq_2 r5_146 = r0;
 	if (r2 > 0x0F)
 	{
 		if ((r1 | r0) << 30 != 0x00)
 		{
-			r5_n = r0;
+			r5_146 = r0;
 l0000A630:
-			Eq_n r3_n = 0x00;
+			Eq_122 r3_101 = 0x00;
 			do
 			{
-				Mem100[r5_n + r3_n:byte] = (byte) (word32) Mem97[r1 + r3_n:byte];
+				Mem100[r5_n + r3_n:byte] = SLICE(CONVERT(Mem97[r1 + r3_n:byte], byte, word32), byte, 0);
 				r3_n = (word32) r3_n + 1;
 			} while (r3_n != r2);
 l0000A63C:
-			ptr32 r4_n;
-			ptr32 r5_n;
-			ptr32 r6_n;
-			ptr32 r7_n;
-			ptr32 lr_n;
-			byte NZCV_n;
+			ptr32 r4_133;
+			ptr32 r5_134;
+			ptr32 r6_135;
+			ptr32 r7_136;
+			ptr32 lr_137;
+			byte NZCV_142;
 			lr();
-			r4Out = r4_n;
-			r5Out = r5_n;
-			r6Out = r6_n;
-			r7Out = r7_n;
-			lrOut = lr_n;
-			return SLICE(NZCV_n, bool, 2);
+			r4Out = r4_133;
+			r5Out = r5_134;
+			r6Out = r6_135;
+			r7Out = r7_136;
+			lrOut = lr_137;
+			return SLICE(NZCV_142, bool, 2);
 		}
-		Eq_n r4_n = r1;
-		Eq_n r3_n = r0;
-		Eq_n r5_n = (word32) r0 + ((r2 - 0x10 >> 4) + 0x01 << 4);
+		Eq_2 r4_27 = r1;
+		Eq_2 r3_28 = r0;
+		Eq_2 r5_35 = (word32) r0 + ((r2 - 0x10 >> 4) + 0x01 << 4);
 		do
 		{
-			*r3_n = *r4_n;
-			*((word32) r3_n + 4) = *((word32) r4_n + 4);
-			*((word32) r3_n + 8) = *((word32) r4_n + 8);
-			*((word32) r3_n + 0x0C) = *((word32) r4_n + 0x0C);
-			r3_n = (word32) r3_n + 16;
-			r4_n = (word32) r4_n + 16;
-		} while (r5_n != r3_n);
-		ui32 r6_n = r2 - 0x10 & ~0x0F;
-		r5_n = (word32) r0 + (r6_n + 0x10);
-		r1 = (word32) r1 + (r6_n + 0x10);
+			*r3_28 = *r4_27;
+			*((word32) r3_28 + 4) = *((word32) r4_27 + 4);
+			*((word32) r3_28 + 8) = *((word32) r4_27 + 8);
+			*((word32) r3_28 + 0x0C) = *((word32) r4_27 + 0x0C);
+			r3_28 = (word32) r3_28 + 16;
+			r4_27 = (word32) r4_27 + 16;
+		} while (r5_35 != r3_28);
+		ui32 r6_54 = r2 - 0x10 & ~0x0F;
+		r5_146 = (word32) r0 + (r6_54 + 0x10);
+		r1 = (word32) r1 + (r6_54 + 0x10);
 		if ((r2 & 0x0F) > 0x03)
 		{
-			uint32 r6_n = (r2 & 0x0F) - 0x04;
-			int32 r3_n = 0x00;
-			uint32 r4_n = (r6_n >> 2) + 0x01;
+			uint32 r6_65 = (r2 & 0x0F) - 0x04;
+			int32 r3_66 = 0x00;
+			uint32 r4_68 = (r6_65 >> 2) + 0x01;
 			do
 			{
-				*((word32) r5_n + r3_n) = *((word32) r1 + r3_n);
-				r3_n += 0x04;
-			} while (r3_n != r4_n << 2);
-			union Eq_n * r6_n = r6_n & ~0x03;
+				*((word32) r5_146 + r3_66) = *((word32) r1 + r3_66);
+				r3_66 += 0x04;
+			} while (r3_66 != r4_68 << 2);
+			union Eq_2 * r6_84 = r6_65 & ~0x03;
 			r2 &= 0x03;
-			r1 += r6_n + 0x04;
-			r5_n += r6_n + 0x04;
+			r1 += r6_84 + 0x04;
+			r5_146 += r6_84 + 0x04;
 		}
 		else
 			r2 &= 0x0F;

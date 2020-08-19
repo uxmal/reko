@@ -223,7 +223,7 @@ l80000390:
 void sine_taylor(real64 rArg04, int32 dwArg0C)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  fp0:[0..79] Stack +0004:[0..63] Stack +000C:[0..31]
+// MayUse:  fp0:[0..95] Stack +0004:[0..63] Stack +000C:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -276,20 +276,20 @@ void _sin(real64 rArg04, real64 rArg0C, int32 & tArg14)
 _Z4_sinddRi_entry:
 l800004DE:
 	real64 rLoc0C_109 = rArg04
-	real64 v9_14 = (real64) ((real96) rArg04 * rArg04)
+	real64 v9_14 = CONVERT(CONVERT(rArg04, real64, real96) * rArg04, real96, real64)
 	word32 dwLoc20_115 = 2<32>
 	real64 rLoc14_117 = 0x3FF0000000000000<64>
 l8000051A:
-	branch (real64) ((real96) rLoc0C_109 / rLoc14_117) < rArg0C l8000060E
+	branch CONVERT(CONVERT(rLoc0C_109, real64, real96) / rLoc14_117, real96, real64) < rArg0C l8000060E
 l8000060E:
 	return
 _Z4_sinddRi_exit:
 l80000530:
 	Mem101[tArg14:word32] = Mem94[tArg14:word32] + 1<32>
 	word32 v18_53 = dwLoc20_115 + 0<32>
-	rLoc0C_109 = (real64) ((real96) (real64) ((real96) rLoc0C_109 * v9_14) * v9_14)
+	rLoc0C_109 = CONVERT(CONVERT(CONVERT(CONVERT(rLoc0C_109, real64, real96) * v9_14, real96, real64), real64, real96) * v9_14, real96, real64)
 	dwLoc20_115 = v18_53 + 3<32>
-	rLoc14_117 = (real64) ((real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_117 * (real80) ((real96) v18_53)) * (real80) ((real96) (v18_53 + 1<32>))) * (real80) ((real96) (v18_53 + 2<32>))) * (real80) ((real96) (v18_53 + 3<32>)))
+	rLoc14_117 = CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(rLoc14_117, real64, real96) * CONVERT(CONVERT(v18_53, word32, real96), real96, real80), real96, real64), real64, real96) * CONVERT(CONVERT(v18_53 + 1<32>, word32, real96), real96, real80), real96, real64), real64, real96) * CONVERT(CONVERT(v18_53 + 2<32>, word32, real96), real96, real80), real96, real64), real64, real96) * CONVERT(CONVERT(v18_53 + 3<32>, word32, real96), real96, real80), real96, real64)
 
 
 void __do_global_ctors_aux()
