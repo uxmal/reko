@@ -500,29 +500,41 @@ namespace Reko.Evaluation
             var exp = conversion.Expression.Accept(this);
             if (exp != Constant.Invalid)
             {
-                var ptCast = conversion.DataType.ResolveAs<PrimitiveType>();
-                if (exp is Constant c && ptCast != null)
+                var ptCvt = conversion.DataType.ResolveAs<PrimitiveType>();
+                var ptSrc = conversion.SourceDataType.ResolveAs<PrimitiveType>();
+                if (exp is Constant c && ptCvt != null)
                 {
-                    if (c.DataType is PrimitiveType ptSrc)
+                    if (ptSrc != null)
                     {
-                        if (ptCast.Domain == Domain.Real)
+                        if (ptCvt.Domain == Domain.Real)
                         {
                             if (ptSrc.Domain == Domain.Real &&
-                                ptCast.Size < ptSrc.Size)
+                                ptCvt.Size < ptSrc.Size)
                             {
                                 Changed = true;
-                                return ConstantReal.Create(ptCast, c.ToReal64());
+                                return ConstantReal.Create(ptCvt, c.ToReal64());
                             }
                             if (ptSrc.IsWord())
                             {
                                 Changed = true;
-                                return CastRawBitsToReal(ptCast, c);
+                                return CastRawBitsToReal(ptCvt, c);
                             }
                         }
                         else if ((ptSrc.Domain & Domain.Integer) != 0)
                         {
-                            Changed = true;
-                            return Constant.Create(ptCast, c.ToUInt64());
+                            if (ptSrc != null)
+                            {
+                                if (ptSrc.Domain == Domain.SignedInt)
+                                {
+                                    Changed = true;
+                                    return Constant.Create(ptCvt, c.ToInt64());
+                                }
+                                else if (ptSrc.Domain.HasFlag(Domain.SignedInt))
+                                {
+                                    Changed = true;
+                                    return Constant.Create(ptCvt, c.ToUInt64());
+                                }
+                            }
                         }
                     }
                 }
