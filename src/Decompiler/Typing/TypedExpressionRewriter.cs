@@ -357,7 +357,7 @@ namespace Reko.Typing
         public override Expression VisitConversion(Conversion conversion)
         {
             var exp = conversion.Expression.Accept(this);
-            return new Cast(DataTypeOf(conversion), exp);
+            return new Cast(conversion.DataType, exp);
         }
 
         private bool TypesAreCompatible(DataType dtSrc, DataType dtDst)
