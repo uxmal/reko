@@ -66,7 +66,7 @@ namespace Reko.Evaluation
         private readonly IdProcConstRule idProcConstRule;
         private readonly ConvertConvertRule convertConvertRule;
         private readonly DistributedCastRule distributedCast;
-        private readonly DistributedConversionRule distrubutedConvert;
+        private readonly DistributedConversionRule distributedConvert;
         private readonly DistributedSliceRule distributedSlice;
         private readonly MkSeqFromSlices_Rule mkSeqFromSlicesRule;
         private readonly ComparisonConstOnLeft constOnLeft;
@@ -101,7 +101,7 @@ namespace Reko.Evaluation
             this.constDiv = new ConstDivisionImplementedByMultiplication(ctx);
             this.idProcConstRule = new IdProcConstRule(ctx);
             this.convertConvertRule = new ConvertConvertRule(ctx);
-            this.distrubutedConvert = new DistributedConversionRule();
+            this.distributedConvert = new DistributedConversionRule();
             this.distributedCast = new DistributedCastRule();
             this.distributedSlice = new DistributedSliceRule();
             this.mkSeqFromSlicesRule = new MkSeqFromSlices_Rule(ctx);
@@ -213,6 +213,11 @@ namespace Reko.Evaluation
             {
                 Changed = true;
                 return binopWithSelf.Transform(ctx).Accept(this);
+            }
+            if (distributedConvert.Match(binExp))
+            {
+                Changed = true;
+                return distributedConvert.Transform(ctx).Accept(this);
             }
             if (distributedCast.Match(binExp))
             {
