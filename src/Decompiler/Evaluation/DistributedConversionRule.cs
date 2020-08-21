@@ -51,7 +51,7 @@ namespace Reko.Evaluation
                     if (cLeft.DataType == cRight.DataType && 
                         cLeft.SourceDataType.BitSize == cRight.SourceDataType.BitSize)
                     {
-                        this.dt = cLeft.DataType;
+                        this.dt = cLeft.Expression.DataType;
                         this.dtSrc = cLeft.SourceDataType;
                         this.eLeft = cLeft.Expression;
                         this.eRight = cRight.Expression;

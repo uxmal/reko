@@ -4385,13 +4385,13 @@ void fn00006814(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5
 	word32 r5_n;
 	struct Eq_n * r6_n;
 	word32 lr_n;
-	word32 r12_n;
+	Eq_n r12_n;
 	byte VNZC_n;
 	struct Eq_n * sp_n;
 	byte * r4_n;
 	byte * r2_n;
 	r6_n->ptr0018();
-	sp_n->dw0008 = r12_n;
+	sp_n->t0008 = r12_n;
 	if (!SLICE(VNZC_n, bool, 1))
 		return;
 	while (true)
@@ -4404,7 +4404,7 @@ void fn00006814(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5
 		++r4_n;
 		if ((byte) (r9_n - r8_n) != 0x00)
 		{
-			sp_n->dw0008 = r9_n - r8_n;
+			sp_n->t0008 = r9_n - r8_n;
 			return;
 		}
 	}
@@ -4473,7 +4473,7 @@ l000068EE:
 		}
 		word32 r7_n = r2_n + r0_n;
 		word32 r5_n = r4_n + r1_n;
-		word32 r3_n = 0x00;
+		Eq_n r3_n = 0x00;
 		while (true)
 		{
 			word32 r12_n = (word32) *r7_n;
@@ -4487,7 +4487,7 @@ l000068EE:
 			r0_n = (word32) r0_n + 1;
 			r1_n = (word32) r1_n + 1;
 			if (r3_n == 0x00)
-				r3_n = (word32) *r7_n - (word32) (*r5_n);
+				r3_n = *r7_n - *r5_n;
 			++r7_n;
 			++r5_n;
 		}
@@ -4495,20 +4495,20 @@ l000068EE:
 		fn0000BCDC();
 		if ((word32) (byte) r12_n != 0x00)
 		{
-			r3_n = 0x01;
+			r3_n.u1 = 0x01;
 			goto l0000698E;
 		}
 		word32 r12_n = CONVERT(Mem432[r4_n + r1_n:byte], byte, word32);
 		fn0000BCDC();
 		if ((word32) (byte) r12_n != 0x00)
 		{
-			r3_n = ~0x00;
+			r3_n.u1 = ~0x00;
 			goto l0000698E;
 		}
 		if (r3_n != 0x00)
 		{
 l0000698E:
-			sp_n->dw0008 = r3_n;
+			sp_n->t0008 = r3_n;
 			return;
 		}
 		goto l00006976;
@@ -4535,9 +4535,9 @@ l000068C2:
 		++r7_n;
 		if (r5_n != r12_n)
 		{
-			word32 r12_n = r5_n - r12_n;
+			Eq_n r12_n = r5_n - r12_n;
 			if (r12_n != 0x00)
-				sp_n->dw0008 = r12_n;
+				sp_n->t0008 = r12_n;
 			return;
 		}
 		r0_n = (word32) r0_n + 1;
