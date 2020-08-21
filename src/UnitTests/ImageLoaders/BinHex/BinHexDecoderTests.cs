@@ -59,7 +59,6 @@ namespace Reko.UnitTests.ImageLoaders.BinHex
             enc.Encode(bytes);
         }
 
-
         [Test]
         public void BinHex_DecodeOnes()
         {

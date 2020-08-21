@@ -194,6 +194,10 @@ namespace Reko.CmdLine
                     decompiler.Project.Programs[0].User.AggressiveBranchRemoval =
                         oAggressiveBranchRemoval is bool flag && flag;
                 }
+                if (pArgs.TryGetValue("debug-types", out var oProcRange))
+                {
+                    decompiler.Project.Programs[0].DebugProcedureRange = ((int, int)) oProcRange;
+                }
                 if (pArgs.TryGetValue("debug-trace-proc", out object oTraceProcs))
                 {
                     decompiler.Project.Programs[0].User.DebugTraceProcedures =
@@ -445,6 +449,13 @@ namespace Reko.CmdLine
                 {
                     parsedArgs["aggressive-branch-removal"] = true;
                 }
+                else if (args[i] == "--debug-types")
+                {
+                    if (i < args.Length - 1)
+                    {
+                        parsedArgs["debug-types"] = ParseIntRange(args[++i]);
+                    }
+                }
                 else if (args[i] == "--debug-trace-proc")
                 {
                     if (i < args.Length - 1)
@@ -464,6 +475,24 @@ namespace Reko.CmdLine
                 }
             }
             return parsedArgs;
+        }
+
+        private (int, int) ParseIntRange(string sRange)
+        {
+            int iColon = sRange.IndexOf(':');
+            if (iColon <= 0)
+            {
+                return (0, Convert.ToInt32(sRange));
+            }
+            else
+            {
+                var nStart = Convert.ToInt32(sRange.Remove(iColon));
+                ++iColon;
+                var nEnd = (iColon < sRange.Length)
+                    ? Convert.ToInt32(sRange.Substring(iColon))
+                    : 0;
+                return (nStart, nEnd);
+            }
         }
 
         /// <summary>

@@ -391,6 +391,14 @@ namespace Reko.Core
         /// </summary>
         public NamingPolicy NamingPolicy { get; set; }
 
+        /// <summary>
+        /// Range of procedures to use for typing.
+        /// </summary>
+        /// <remarks>
+        /// Used for debugging regressions in type inference.
+        /// </remarks>
+        public (int, int) DebugProcedureRange { get; set; }
+
         // Convenience functions.
         public EndianImageReader CreateImageReader(IProcessorArchitecture arch, Address addr)
         {
