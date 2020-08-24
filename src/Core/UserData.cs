@@ -116,6 +116,11 @@ namespace Reko.Core
         /// Selects the policy to use when generating output files.
         /// </summary>
         public string? OutputFilePolicy { get; set; }
+
+        /// <summary>
+        /// Makes Reko more aggressive in removing unused branches (like if (false) ...)
+        /// </summary>
+        public bool AggressiveBranchRemoval { get; set; }
     }
 
     public class Annotation

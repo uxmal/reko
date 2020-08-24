@@ -34,18 +34,21 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabGeneral = new System.Windows.Forms.TabPage();
+            this.ddlOutputPolicies = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.tabLoading = new System.Windows.Forms.TabPage();
             this.tabScanning = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.listHeuristics = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.ddlOutputPolicies = new System.Windows.Forms.ComboBox();
+            this.tabAnalysis = new System.Windows.Forms.TabPage();
+            this.chkAggressiveBranchRemoval = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.tabLoading.SuspendLayout();
             this.tabScanning.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.tabAnalysis.SuspendLayout();
             this.SuspendLayout();
             // 
             // chkRunScript
@@ -100,6 +103,7 @@
             this.tabControl1.Controls.Add(this.tabGeneral);
             this.tabControl1.Controls.Add(this.tabLoading);
             this.tabControl1.Controls.Add(this.tabScanning);
+            this.tabControl1.Controls.Add(this.tabAnalysis);
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -117,6 +121,24 @@
             this.tabGeneral.TabIndex = 0;
             this.tabGeneral.Text = "General";
             this.tabGeneral.UseVisualStyleBackColor = true;
+            // 
+            // ddlOutputPolicies
+            // 
+            this.ddlOutputPolicies.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlOutputPolicies.FormattingEnabled = true;
+            this.ddlOutputPolicies.Location = new System.Drawing.Point(10, 24);
+            this.ddlOutputPolicies.Name = "ddlOutputPolicies";
+            this.ddlOutputPolicies.Size = new System.Drawing.Size(360, 21);
+            this.ddlOutputPolicies.TabIndex = 1;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(7, 7);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(63, 13);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "&Output files:";
             // 
             // tabLoading
             // 
@@ -175,23 +197,25 @@
     "inary and resolving possible conflicts.  Different scanning heuristics give diff" +
     "erent results.";
             // 
-            // label2
+            // tabAnalysis
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(7, 7);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(63, 13);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "&Output files:";
+            this.tabAnalysis.Controls.Add(this.chkAggressiveBranchRemoval);
+            this.tabAnalysis.Location = new System.Drawing.Point(4, 22);
+            this.tabAnalysis.Name = "tabAnalysis";
+            this.tabAnalysis.Size = new System.Drawing.Size(378, 304);
+            this.tabAnalysis.TabIndex = 3;
+            this.tabAnalysis.Text = "Analysis";
+            this.tabAnalysis.UseVisualStyleBackColor = true;
             // 
-            // ddlOutputPolicies
+            // chkAggressiveBranchRemoval
             // 
-            this.ddlOutputPolicies.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ddlOutputPolicies.FormattingEnabled = true;
-            this.ddlOutputPolicies.Location = new System.Drawing.Point(10, 24);
-            this.ddlOutputPolicies.Name = "ddlOutputPolicies";
-            this.ddlOutputPolicies.Size = new System.Drawing.Size(360, 21);
-            this.ddlOutputPolicies.TabIndex = 1;
+            this.chkAggressiveBranchRemoval.AutoSize = true;
+            this.chkAggressiveBranchRemoval.Location = new System.Drawing.Point(8, 3);
+            this.chkAggressiveBranchRemoval.Name = "chkAggressiveBranchRemoval";
+            this.chkAggressiveBranchRemoval.Size = new System.Drawing.Size(154, 17);
+            this.chkAggressiveBranchRemoval.TabIndex = 0;
+            this.chkAggressiveBranchRemoval.Text = "Aggressive branch removal";
+            this.chkAggressiveBranchRemoval.UseVisualStyleBackColor = true;
             // 
             // ProgramPropertiesDialog
             // 
@@ -217,6 +241,8 @@
             this.tabLoading.PerformLayout();
             this.tabScanning.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
+            this.tabAnalysis.ResumeLayout(false);
+            this.tabAnalysis.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -236,5 +262,7 @@
         private System.Windows.Forms.ListBox listHeuristics;
         private System.Windows.Forms.ComboBox ddlOutputPolicies;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TabPage tabAnalysis;
+        private System.Windows.Forms.CheckBox chkAggressiveBranchRemoval;
     }
 }

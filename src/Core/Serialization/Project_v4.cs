@@ -174,6 +174,10 @@ namespace Reko.Core.Serialization
 
         [XmlElement("outputFilePolicy")]
         public string? OutputFilePolicy;
+
+        [XmlElement("aggressiveBlockRemoval")]
+        [DefaultValue(false)]
+        public bool AggressiveBranchRemoval;
     }
 
     public class PlatformOptions_v4

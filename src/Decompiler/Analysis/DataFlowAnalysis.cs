@@ -362,14 +362,15 @@ namespace Reko.Analysis
                 var ssa = sst.SsaState;
                 try
                 {
-#if UNREACHABLE_BLOCK_REMOVAL
-                    // This ends up being very aggressive and doesn't replicate the original
-                    // binary code. See discussion on https://github.com/uxmal/reko/issues/932
-                    DumpWatchedProcedure("Before unreachable block removal", ssa.Procedure);
+                    if (program.User.AggressiveBranchRemoval)
+                    {
+                        // This ends up being very aggressive and doesn't replicate the original
+                        // binary code. See discussion on https://github.com/uxmal/reko/issues/932
+                        DumpWatchedProcedure("Before unreachable block removal", ssa.Procedure);
+                        var urb = new UnreachableBlockRemover(ssa, eventListener);
+                        urb.Transform();
+                    }
 
-                    var urb = new UnreachableBlockRemover(ssa, eventListener);
-                    urb.Transform();
-#endif
                     DumpWatchedProcedure("Before expression coalescing", ssa.Procedure);
                     
                     // Procedures should be untangled from each other. Now process

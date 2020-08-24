@@ -189,6 +189,12 @@ namespace Reko.CmdLine
                 {
                     decompiler.Project.Programs[0].User.ShowBytesInDisassembly = true;
                 }
+                if (pArgs.TryGetValue("aggressive-branch-removal", out object oAggressiveBranchRemoval))
+                {
+                    decompiler.Project.Programs[0].User.AggressiveBranchRemoval =
+                        oAggressiveBranchRemoval is bool flag && flag;
+                }
+
                 decompiler.ExtractResources();
                 decompiler.ScanPrograms();
                 if (!pArgs.ContainsKey("scan-only"))
@@ -238,6 +244,11 @@ namespace Reko.CmdLine
                 if (pArgs.TryGetValue("heuristics", out object oHeur))
                 {
                     decompiler.Project.Programs[0].User.Heuristics = ((string[]) oHeur).ToSortedSet();
+                }
+                if (pArgs.TryGetValue("aggressive-branch-removal", out object oAggressiveBranchRemoval))
+                {
+                    decompiler.Project.Programs[0].User.AggressiveBranchRemoval =
+                        oAggressiveBranchRemoval is bool flag && flag;
                 }
                 decompiler.ScanPrograms();
                 decompiler.AnalyzeDataFlow();
@@ -426,6 +437,10 @@ namespace Reko.CmdLine
                         parsedArgs["extract-resources"] = "yes";
                     }
                 }
+                else if (args[i] == "--aggressive-branch-removal")
+                {
+                    parsedArgs["aggressive-branch-removal"] = true;
+                }
                 else if (arg.StartsWith("-"))
                 {
                     w.WriteLine("error: unrecognized option {0}", arg);
@@ -510,6 +525,7 @@ namespace Reko.CmdLine
             w.WriteLine(" --heuristic <h1>[,<h2>...]  Use one of the following heuristics to examine");
             w.WriteLine("                          the binary:");
             w.WriteLine("    shingle               Use shingle assembler to discard data ");
+            w.WriteLine(" --aggressive-branch-removal Be more aggressive in removing unused branches");
             w.WriteLine(" --metadata <filename>    Use the file <filename> as a source of metadata");
             w.WriteLine(" --scan-only              Only scans the binary to find instructions, forgoing");
             w.WriteLine("                          full decompilation.");

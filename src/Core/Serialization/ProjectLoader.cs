@@ -539,6 +539,7 @@ namespace Reko.Core.Serialization
             program.User.ExtractResources = sUser.ExtractResources;
             // Backwards compatibility: older versions used single file policy.
             program.User.OutputFilePolicy = sUser.OutputFilePolicy ?? Program.SingleFilePolicy;
+            program.User.AggressiveBranchRemoval = sUser.AggressiveBranchRemoval;
         }
 
         private Annotation LoadAnnotation(Annotation_v3 annotation)
