@@ -160,6 +160,7 @@
     <Compile Include="Analysis\SparseValuePropagationTests.cs" />
     <Compile Include="Analysis\SsaMutatorTests.cs" />
     <Compile Include="Analysis\StackPointerBackpropagatorTests.cs" />
+    <Compile Include="Analysis\UnreachableBlockRemoverTests.cs" />
     <Compile Include="Arch\Alpha\AlphaDisassemblerTests.cs" />
     <Compile Include="Arch\Alpha\AlphaRewriterTests.cs" />
     <Compile Include="Arch\Arc\ArcDisassemblerTests.cs" />

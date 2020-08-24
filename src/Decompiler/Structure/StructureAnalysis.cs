@@ -51,7 +51,7 @@ namespace Reko.Structure
         private Region entry;
         private DominatorGraph<Region> doms;
         private DominatorGraph<Region> postDoms;
-        private Queue<Tuple<Region, ISet<Region>>> unresolvedCycles;
+        private Queue<(Region, ISet<Region>)> unresolvedCycles;
         private Queue<Region> unresolvedSwitches;
         private readonly DecompilerEventListener eventListener;
 
@@ -137,11 +137,11 @@ namespace Reko.Structure
 
                 oldCount = regionGraph.Nodes.Count;
                 this.doms = new DominatorGraph<Region>(this.regionGraph, result.Item2);
-                this.unresolvedCycles = new Queue<Tuple<Region, ISet<Region>>>();
+                this.unresolvedCycles = new Queue<(Region, ISet<Region>)>();
                 this.unresolvedSwitches = new Queue<Region>();
                 var postOrder = new DfsIterator<Region>(regionGraph).PostOrder(entry).ToList();
 
-                bool didReduce = false;
+                bool didReduce;
                 foreach (var n in postOrder)
                 {
                     Probe();
@@ -194,7 +194,7 @@ namespace Reko.Structure
         /// </summary>
         /// <param name="proc"></param>
         /// <returns></returns>
-        public static Tuple<DirectedGraph<Region>, Region> BuildRegionGraph(Procedure proc)
+        public static (DirectedGraph<Region>, Region) BuildRegionGraph(Procedure proc)
         {
             var btor = new Dictionary<Block, Region>();
             var regs = new DiGraph<Region>();
@@ -234,7 +234,7 @@ namespace Reko.Structure
                     regs.Nodes.Remove(reg);
                 }
             }
-            return new Tuple<DirectedGraph<Region>, Region>(regs, btor[proc.EntryBlock]);
+            return (regs, btor[proc.EntryBlock]);
         }
 
         /// <summary>
@@ -292,7 +292,7 @@ namespace Reko.Structure
         {
             // Do not refine cycle if there are unresolved switches
             if (unresolvedSwitches.Count == 0)
-                this.unresolvedCycles.Enqueue(Tuple.Create(head, loop));
+                this.unresolvedCycles.Enqueue((head, loop));
         }
 
         public bool ProcessUnresolvedRegions()

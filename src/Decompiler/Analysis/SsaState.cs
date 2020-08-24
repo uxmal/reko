@@ -140,6 +140,11 @@ namespace Reko.Analysis
 			}
 		}
 
+        /// <summary>
+        /// Validates the SSA state for consistency. If found inconsisted, the <paramref name="error"/> 
+        /// callback is called, passing an error message suitable for a Debug.Assert call.
+        /// </summary>
+        /// <param name="error">Callback for raising errors.</param>
         public void Validate(Action<string> error)
         {
             ValidateUses(error);
