@@ -773,13 +773,12 @@ namespace Reko.Arch.X86
                     return;
                 }
             }
-            var imm = instrCur.Operands[0] as ImmediateOperand;
-            var value = SrcOp(dasm.Current.Operands[0], arch.StackRegister.DataType);
+            var value = SrcOp(dasm.Current.Operands[0], instrCur.dataWidth);
             Debug.Assert(
                 value.DataType.BitSize == 16 ||
                 value.DataType.BitSize == 32 ||
                 value.DataType.BitSize == 64,
-                string.Format("Unexpected size {0}", dasm.Current.dataWidth));
+                $"Unexpected size {dasm.Current.dataWidth}");
             RewritePush(PrimitiveType.CreateWord(value.DataType.BitSize), value);
         }
 
