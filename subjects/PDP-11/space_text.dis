@@ -864,14 +864,14 @@ l0E0E:
 	Mem9[r4_4 + 0x2A<16>:word16] = wArg00
 l0E6E:
 	word16 v18_24 = wArg02 - wArg06
-	bool C_52 = v18_24 >=u 0<16>
+	bool v24_50 = v18_24 >=u 0<16>
 	branch v18_24 != 0<16> l0E76
 l0E72:
 	word16 v20_27 = wArg04 - wArg08
-	C_52 = v20_27 >=u 0<16>
+	v24_50 = v20_27 >=u 0<16>
 	branch v20_27 == 0<16> l0E7C
 l0E76:
-	branch C_52 l0E7C
+	branch v24_50 l0E7C
 l0E7A:
 l0E7C:
 	call Mem9[r4_4 + 0x2A<16>:word16] (retsize: 0;)

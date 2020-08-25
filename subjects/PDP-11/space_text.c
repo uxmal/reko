@@ -682,11 +682,11 @@ void fn0E0E(<anonymous> * wArg00, word16 wArg02, word16 wArg04, word16 wArg06, w
 	struct Eq_n * r4_n = g_ptr5424;
 	r4_n->ptr002A = wArg00;
 	cup16 v18_n = wArg02 - wArg06;
-	bool C_n = v18_n >= 0x00;
+	bool v24_n = v18_n >= 0x00;
 	if (v18_n == 0x00)
 	{
 		cup16 v20_n = wArg04 - wArg08;
-		C_n = v20_n >= 0x00;
+		v24_n = v20_n >= 0x00;
 		if (v20_n == 0x00)
 		{
 l0E7C:

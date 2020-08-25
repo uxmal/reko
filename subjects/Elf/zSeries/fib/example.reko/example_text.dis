@@ -180,7 +180,7 @@ l00000792:
 	fib(CONVERT(dwLocA4_112 - 1<i32>, word32, int64), out r10_118, out r11_40)
 	word64 r10_61
 	word64 r2_66 = fib(CONVERT(Mem24[r11_40 + 164<i64>:word32] - 2<i32>, word32, int64), out r10_61, out r11_21)
-	r1_73 = SEQ(SLICE(r2_66, word32, 32), CONVERT(r2_66, word64, word32) + CONVERT(r10_61, word64, word32))
+	r1_73 = SEQ(SLICE(r2_66, word32, 32), r2_66 + r10_61)
 l0000078A:
 	r1_73 = r2
 l000007CA:

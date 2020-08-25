@@ -268,9 +268,10 @@ namespace Reko.Analysis
                 var id = (Identifier) UseGrfConditionally(sidArg, cc, true);
                 newArgs.Add(new PhiArgument(arg.Block, id));
             }
-            var newPhi = new PhiAssignment(sidDef.OriginalIdentifier, newArgs.ToArray());
+            var idNew = ssa.Procedure.Frame.CreateTemporary(newArgs[0].Value.DataType);
+            var newPhi = new PhiAssignment(idNew, newArgs.ToArray());
             var stmPhi = mutator.InsertStatementAfter(newPhi, sidDef.DefStatement!);
-            var sidPhi = ssaIds.Add(sidDef.OriginalIdentifier, stmPhi, newPhi.Src, false);
+            var sidPhi = ssaIds.Add(idNew, stmPhi, newPhi.Src, false);
             newPhi.Dst = sidPhi.Identifier;
             Use(newPhi.Src, stmPhi);
             generatedIds.Add((sidDef.Identifier, cc), sidPhi);

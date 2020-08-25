@@ -17327,11 +17327,11 @@ bool __avr32_f64_cmp_ge(Eq_n r8, ui32 r9, Eq_n r10, Eq_n r11, union Eq_n & r12Ou
 		v17_n = r10 == 0x00;
 	if (v17_n)
 	{
-		bool v19_n = r9 << 1 != 0x00;
+		bool v20_n = r9 << 1 != 0x00;
 		Eq_n r12_n = (word32) (r9 << 1 < 0x00);
 		if (r9 << 1 == 0x00)
-			v19_n = r8 != 0x00;
-		if (v19_n)
+			v20_n = r8 != 0x00;
+		if (v20_n)
 		{
 			r12Out = r12_n;
 			lrOut = lr;
@@ -17425,11 +17425,11 @@ bool __avr32_f64_cmp_lt(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, union Eq_n & r9Out
 		v17_n = r10 == 0x00;
 	if (v17_n)
 	{
-		bool v19_n = r9 << 1 != 0x00;
+		bool v20_n = r9 << 1 != 0x00;
 		Eq_n r12_n = (word32) (r9 << 1 >= 0x00);
 		if (r9 << 1 == 0x00)
-			v19_n = r8 != 0x00;
-		if (v19_n)
+			v20_n = r8 != 0x00;
+		if (v20_n)
 		{
 			r9Out.u0 = <invalid>;
 			r12Out = r12_n;

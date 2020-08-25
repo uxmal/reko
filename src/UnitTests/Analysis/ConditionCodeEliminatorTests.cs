@@ -731,24 +731,24 @@ l1:
 	// succ:  m0 m1
 m0:
 	r0_5 = r0 + r2
-	v10_18 = r0_5 == 0<32>
-	v8_15 = r0_5 <=u 0<32>
+	v12_18 = r0_5 == 0<32>
+	v9_15 = r0_5 <=u 0<32>
 	v6_12 = r0_5 >u 0<32>
 	goto m2
 	// succ:  m2
 m1:
 	r0_3 = r2 - r0
-	v11_19 = r0_3 == 0<32>
-	v9_16 = r0_3 <=u 0<32>
+	v13_19 = r0_3 == 0<32>
+	v10_16 = r0_3 <=u 0<32>
 	v7_13 = r0_3 >u 0<32>
 	// succ:  m2
 m2:
-	CZ_17 = PHI((v8_15, m0), (v9_16, m1))
-	CZ_14 = PHI((v6_12, m0), (v7_13, m1))
-	Z_20 = PHI((v10_18, m0), (v11_19, m1))
-	Mem8[0x123400<32>:int8] = (int8) CZ_14
-	Mem9[0x123402<32>:int8] = (int8) CZ_17
-	Mem11[0x123404<32>:int8] = (int8) Z_20
+	v11_17 = PHI((v9_15, m0), (v10_16, m1))
+	v8_14 = PHI((v6_12, m0), (v7_13, m1))
+	v14_20 = PHI((v12_18, m0), (v13_19, m1))
+	Mem8[0x123400<32>:int8] = CONVERT(v8_14, bool, int8)
+	Mem9[0x123402<32>:int8] = CONVERT(v11_17, bool, int8)
+	Mem11[0x123404<32>:int8] = CONVERT(v14_20, bool, int8)
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -779,6 +779,6 @@ ProcedureBuilder_exit:
                 m.MStore(m.Word32(0x00123404), m.Convert(m.Test(ConditionCode.EQ, Z), PrimitiveType.Bool, PrimitiveType.SByte));
                 m.Return();
             });
-    }
+        }
     }
 }

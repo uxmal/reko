@@ -24742,7 +24742,7 @@ T_5567: (in cpsr : ptr32)
   Class: Eq_3
   DataType: ptr32
   OrigDataType: word32
-T_5568: (in Z_111 : bool)
+T_5568: (in v18_111 : bool)
   Class: Eq_5568
   DataType: bool
   OrigDataType: bool

@@ -60,7 +60,7 @@ void frame_dummy()
 word32 component(Eq_n ecx, word32 edx, word32 esi, word64 rdi, int32 r8d)
 {
 	Eq_n ecx = (word32) rcx;
-	ui32 eax_n = (word32) (uint64) ((word32) (uint64) (word32) ((uint64) edx + (uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) & 0x3F)) *s r8d)))) *s ecx);
+	ui32 eax_n = (word32) (uint64) ((word32) (uint64) (edx + (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) & 0x3F)) *s r8d))) *s ecx);
 	struct Eq_n * v16_n = rdi + ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) >> 0x06)) *s r8d)) *s ecx))) << 0x03) + (uint64) ((word32) ((uint64) ((word32) ((uint64) eax_n) >> 0x03)));
 	if (ecx > 0x10)
 		goto l0000000000400EC1;
@@ -95,7 +95,7 @@ l0000000000400EC1:
 		rax_n = (uint64) (word32) (byte) (uint64) (word32) v16_n->b0000;
 		break;
 	case 0x10:
-		rax_n = (uint64) (word32) ((uint64) (word32) (byte) (uint64) (word32) v16_n->b0001 + (uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((byte) ((uint64) ((word32) v16_n->b0000))))) << 0x08))));
+		rax_n = (uint64) ((word32) (byte) (uint64) (word32) v16_n->b0001 + (word32) ((uint64) ((word32) ((uint64) ((word32) ((byte) ((uint64) ((word32) v16_n->b0000))))) << 0x08)));
 		break;
 	}
 	return (word32) rax_n;
@@ -251,7 +251,7 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 					else
 						eax_n = 0x07;
 					word32 eax_n;
-					uint32 edx_n = (word32) (uint64) (word32) ((uint64) (word32) (uint64) (eax_n - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_n))) & 0x01)) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x03 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_n) + 0x01)) >> 0x01)))))))))))) & 0x07))) + (uint64) dwLoc88);
+					uint32 edx_n = (word32) (uint64) ((word32) (uint64) (eax_n - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_n))) & 0x01)) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x03 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_n) + 0x01)) >> 0x01)))))))))))) & 0x07))) + dwLoc88);
 					if (dwLoc68_n > 0x01)
 						eax_n = (word32) (uint64) ((word32) (uint64) (0x07 - dwLoc68_n) >> 0x01);
 					else
