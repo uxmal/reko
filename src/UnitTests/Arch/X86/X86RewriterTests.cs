@@ -3787,6 +3787,18 @@ namespace Reko.UnitTests.Arch.X86
                 "2|L--|Mem0[esp:word16] = 0x1234<16>");
         }
 
+        [Test]
+        public void X86Rw_fld_st0()
+        {
+            // This is a 'duplicate top of stack' instruction.
+            Run32bitTest("D9 C0"); // fld st(0)");
+            AssertCode(
+              "0|L--|10000000(2): 3 instructions",
+              "1|L--|v3 = ST[Top:real64]",
+              "2|L--|Top = Top - 1<i8>",
+              "3|L--|ST[Top:real64] = v3");
+        }
+
         /*
         [Test]
         public void X86Rw_fstsw_and_cmp_jz()

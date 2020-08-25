@@ -221,9 +221,17 @@ namespace Reko.Arch.X86
 
         public void RewriteFld()
         {
+            var src = SrcOp(instrCur.Operands[0]);
+            if (instrCur.Operands[0] is FpuOperand)
+            {
+                // Because we are changing the layout of the FPU stack, we must copy the loaded
+                // value into a temp.
+                var tmp = binder.CreateTemporary(src.DataType);
+                m.Assign(tmp, src);
+                src = tmp;
+            }
             GrowFpuStack(1);
             var dst = FpuRegister(0);
-            var src = SrcOp(instrCur.Operands[0]);
             if (src.DataType.Size != dst.DataType.Size)
             {
                 src = m.Cast(

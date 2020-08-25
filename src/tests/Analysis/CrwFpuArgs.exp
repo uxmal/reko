@@ -8,8 +8,8 @@ void fn0C00_0000(Register selector ds)
 // Mem0:Mem
 // fp:fp
 // sp:sp
-// Top:Top
 // ds:ds
+// Top:Top
 // ss:ss
 // ax:ax
 // SCZO:SCZO
@@ -86,8 +86,8 @@ FpuStack real64 fn0C00_0031(Register selector ds, Stack word16 wArg02)
 // bp:bp
 // ss:ss
 // bx:bx
-// Top:Top
 // ds:ds
+// Top:Top
 // wLoc02:Local -0002
 // wArg02:Stack +0002
 // rLoc1:FPU -1

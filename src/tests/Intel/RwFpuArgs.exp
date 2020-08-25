@@ -3,8 +3,8 @@
 // Mem0:Mem
 // fp:fp
 // sp:sp
-// Top:Top
 // ds:ds
+// Top:Top
 // ss:ss
 // ax:ax
 // SCZO:SCZO
@@ -77,8 +77,8 @@ fn0C00_0024_exit:
 // bp:bp
 // ss:ss
 // bx:bx
-// Top:Top
 // ds:ds
+// Top:Top
 // return address size: 2
 define fn0C00_0031
 fn0C00_0031_entry:

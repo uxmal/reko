@@ -43,8 +43,8 @@ void fn0C00_0010(Register selector ds, Stack word16 wArg02, Stack word16 wArg04)
 // bp:bp
 // ss:ss
 // bx:bx
-// Top:Top
 // ds:ds
+// Top:Top
 // wLoc02:Local -0002
 // wArg02:Stack +0002
 // rLoc1:FPU -1
