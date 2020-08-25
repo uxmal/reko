@@ -1529,7 +1529,7 @@ l0800_n:
 						goto l0800_n;
 					case 0x11:
 						byte * es_di_n;
-						bool Z_n;
+						bool v70_n;
 						dx_n = ax_n;
 						if ((wLoc9A_n & 0x20) == 0x00)
 						{
@@ -1537,17 +1537,17 @@ l0800_n:
 							union Eq_n Eq_n::* sp_n = sp_n - 2;
 							ss->*sp_n = ds;
 							wArg02 = (word16) wArg02 + 2;
-							Z_n = SLICE(cond(di_n), bool, 2);
+							v70_n = di_n != 0x00;
 							es_di_n = SEQ(ss->*sp_n, di_n);
 						}
 						else
 						{
 							es_di_n = ds->*wArg02;
 							wArg02 = (word16) wArg02 + 4;
-							Z_n = SLICE(cond(SLICE(es_di_n, selector, 16) | (word16) es_di_n), bool, 2);
+							v70_n = (SLICE(es_di_n, selector, 16) | (word16) es_di_n) != 0x00;
 						}
 						byte * es_di_n = es_di_n;
-						if (!Z_n)
+						if (!v70_n)
 						{
 							union Eq_n Eq_n::* sp_n = sp_n - 2;
 							ss->*sp_n = ds;

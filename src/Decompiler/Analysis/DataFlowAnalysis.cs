@@ -383,7 +383,7 @@ namespace Reko.Analysis
                     coa.Transform();
                     DeadCode.Eliminate(ssa);
 
-                    var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, dynamicLinker, eventListener);
+                    var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, dynamicLinker,  eventListener);
                     vp.Transform();
 
                     DumpWatchedProcedure("After expression coalescing", ssa.Procedure);

@@ -47,10 +47,10 @@ word64 deregister_tm_clones(Eq_n r14)
 	}
 }
 
-// 00000680: void register_tm_clones(Register (ptr64 byte) r2, Register Eq_n r14)
+// 00000680: void register_tm_clones(Register (ptr64 ci8) r2, Register Eq_n r14)
 // Called from:
 //      frame_dummy
-void register_tm_clones(byte * r2, Eq_n r14)
+void register_tm_clones(ci8 * r2, Eq_n r14)
 {
 	int64 r3_n = SEQ(SLICE(r3, word32, 32), 0x2068) - SEQ(SLICE(r1, word32, 32), 0x2068);
 	uint64 r1_n = r3_n >> 3 >> 63;
@@ -93,16 +93,16 @@ void __do_global_dtors_aux(word64 r1, word64 r12)
 // 00000720: void frame_dummy()
 void frame_dummy()
 {
-	byte * r13_n = SEQ(SLICE(r13, word32, 32), 0x08D8);
-	byte * r2_n = SEQ(SLICE(r2, word32, 32), 0x1E18);
+	ci8 * r13_n = SEQ(SLICE(r13, word32, 32), 0x08D8);
+	ci8 * r2_n = SEQ(SLICE(r2, word32, 32), 0x1E18);
 	Eq_n r15_n = fp - 320;
-	Eq_n CC_n = cond(*r13_n - *r2_n);
+	Eq_n CC_n = *r13_n > *r2_n;
 	if (*r13_n == *r2_n)
 	{
 l00000740:
 		Mem18 = Mem10;
 		Eq_n v8_n = (word64) r15_n + 264;
-		r13_n = (byte *) *v8_n;
+		r13_n = (ci8 *) *v8_n;
 		Eq_n r14_n = *((word64) v8_n + 8);
 		r15_n = *((word64) v8_n + 16);
 		if (CC_n)
@@ -113,7 +113,7 @@ l00000740:
 	}
 	Eq_n r1_n = *SEQ(SLICE(r1, word32, 32), 0x2048);
 	r1 = r1_n;
-	CC_n.u0 = cond(r1_n);
+	CC_n = r1_n > 0x00;
 	if (r1_n != 0x00)
 		r1_n();
 	goto l00000740;

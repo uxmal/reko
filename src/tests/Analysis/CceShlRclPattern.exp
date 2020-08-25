@@ -1,26 +1,3 @@
-r1:r1
-    def:  def r1
-    uses: v7_11 = SEQ(r2, r1) << 1<8>
-r1_2: orig: r1
-    def:  r1_2 = (word32) v7_11
-    uses: Mem7[0x3000<32>:word32] = r1_2
-r2:r2
-    def:  def r2
-    uses: v7_11 = SEQ(r2, r1) << 1<8>
-r2_5: orig: r2
-    def:  r2_5 = SLICE(v7_11, word32, 32)
-    uses: Mem8[0x3004<32>:word32] = r2_5
-C_6: orig: C
-Mem7: orig: Mem0
-    def:  Mem7[0x3000<32>:word32] = r1_2
-Mem8: orig: Mem0
-    def:  Mem8[0x3004<32>:word32] = r2_5
-v5_9: orig: v5
-v6_10: orig: v6
-v7_11: orig: v7
-    def:  v7_11 = SEQ(r2, r1) << 1<8>
-    uses: r1_2 = (word32) v7_11
-          r2_5 = SLICE(v7_11, word32, 32)
 // main
 // Return size: 0
 define main

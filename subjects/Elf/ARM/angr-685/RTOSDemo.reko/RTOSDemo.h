@@ -333,7 +333,7 @@ Eq_2: (union "Eq_2" (byte u0) ((ptr32 Eq_9506) u1))
 	T_5555 (in out r6_105 : ptr32)
 	T_5556 (in out r7 : ptr32)
 	T_5565 (in r7 : Eq_2)
-	T_5568 (in r0_81 : Eq_2)
+	T_5569 (in r0_81 : Eq_2)
 	T_5584 (in Mem14[Mem14[0x0000877C<p32>:word32] + 0<32>:word32] : word32)
 	T_5587 (in fp - 12<i32> : word32)
 	T_5588 (in 0<32> : word32)
@@ -24742,14 +24742,14 @@ T_5567: (in cpsr : ptr32)
   Class: Eq_3
   DataType: ptr32
   OrigDataType: word32
-T_5568: (in r0_81 : Eq_2)
+T_5568: (in Z_111 : bool)
+  Class: Eq_5568
+  DataType: bool
+  OrigDataType: bool
+T_5569: (in r0_81 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: word32
-T_5569: (in Z_29 : bool)
-  Class: Eq_5569
-  DataType: bool
-  OrigDataType: bool
 T_5570: (in r0_22 : word32)
   Class: Eq_5570
   DataType: word32
@@ -24831,7 +24831,7 @@ T_5589: (in out r0_22 : ptr32)
   DataType: Eq_2
   OrigDataType: ptr32
 T_5590: (in xQueueCRSend(*g_ptr877C, fp - 12<i32>, 0<32>, r7, lr, cpsr, out r0_22) : bool)
-  Class: Eq_5569
+  Class: Eq_5568
   DataType: bool
   OrigDataType: bool
 T_5591: (in r3_9 <= 0x182<32> : bool)
@@ -24893,7 +24893,7 @@ T_5604: (in r0_81 != 0<32> : bool)
 T_5605: (in vCoRoutineAddToDelayedList : ptr32)
   Class: Eq_4993
   DataType: (ptr32 Eq_4993)
-  OrigDataType: (ptr32 (fn T_5607 (T_5568, T_5606)))
+  OrigDataType: (ptr32 (fn T_5607 (T_5569, T_5606)))
 T_5606: (in 0<32> : word32)
   Class: Eq_466
   DataType: (ptr32 Eq_466)
@@ -25035,7 +25035,7 @@ T_5640: (in out r0_22 : ptr32)
   DataType: Eq_2
   OrigDataType: ptr32
 T_5641: (in xQueueCRSend(*g_ptr877C, fp - 12<i32>, 0<32>, r7, lr, cpsr, out r0_22) : bool)
-  Class: Eq_5569
+  Class: Eq_5568
   DataType: bool
   OrigDataType: bool
 T_5642: (in 0x182<u16> : uint16)

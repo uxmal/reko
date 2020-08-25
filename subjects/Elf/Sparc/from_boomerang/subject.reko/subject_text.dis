@@ -189,8 +189,8 @@ l00010B6C_ds_f:
 l00010B74:
 	o1_49 = 0x10AEC<32>
 l00010B84:
+	bool v24_217
 	word32 i1_114
-	bool Z_122
 	branch o0_20 == 0<32> l00010B84_ds_t
 l00010B84_ds_t:
 l00010BE8:
@@ -232,14 +232,14 @@ l00010BC0:
 l00010BC0_ds_t:
 l00010BE0:
 	i1_114 = 0<32>
-	Z_122 = SLICE(cond(0<32>), bool, 2) (alias)
+	v24_217 = 0<32> == 0<32>
 l00010BC0_ds_f:
 l00010BD4:
 	i1_114 = 1<32>
 l00010C40:
-	Z_122 = SLICE(cond(i1_114), bool, 2) (alias)
+	v24_217 = i1_114 == 0<32>
 l00010C44:
-	branch Z_122 l00010C40_ds_t
+	branch v24_217 l00010C40_ds_t
 l00010C40_ds_t:
 l00010C5C:
 	printf(0x10D00<32>)

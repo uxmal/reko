@@ -380,14 +380,14 @@ T_84: (in 0x10AEC<32> : word32)
   Class: Eq_80
   DataType: word32
   OrigDataType: word32
-T_85: (in i1_114 : word32)
+T_85: (in v24_217 : bool)
   Class: Eq_85
-  DataType: word32
-  OrigDataType: word32
-T_86: (in Z_122 : bool)
-  Class: Eq_86
   DataType: bool
   OrigDataType: bool
+T_86: (in i1_114 : word32)
+  Class: Eq_86
+  DataType: word32
+  OrigDataType: word32
 T_87: (in 0<32> : word32)
   Class: Eq_60
   DataType: word32
@@ -421,19 +421,19 @@ T_94: (in o3_37 != 0x10A8C<32> : bool)
   DataType: bool
   OrigDataType: bool
 T_95: (in 0<32> : word32)
-  Class: Eq_85
+  Class: Eq_86
   DataType: word32
   OrigDataType: word32
 T_96: (in 0<32> : word32)
   Class: Eq_96
   DataType: word32
   OrigDataType: word32
-T_97: (in cond(0<32>) : byte)
-  Class: Eq_97
-  DataType: byte
-  OrigDataType: byte
-T_98: (in SLICE(cond(0<32>), bool, 2) : bool)
-  Class: Eq_86
+T_97: (in 0<32> : word32)
+  Class: Eq_96
+  DataType: word32
+  OrigDataType: word32
+T_98: (in 0<32> == 0<32> : bool)
+  Class: Eq_85
   DataType: bool
   OrigDataType: bool
 T_99: (in 0x10ABC<32> : word32)
@@ -453,19 +453,19 @@ T_102: (in o1_49 != 0x10AEC<32> : bool)
   DataType: bool
   OrigDataType: bool
 T_103: (in 1<32> : word32)
-  Class: Eq_85
+  Class: Eq_86
   DataType: word32
   OrigDataType: word32
-T_104: (in cond(i1_114) : byte)
-  Class: Eq_104
-  DataType: byte
-  OrigDataType: byte
-T_105: (in SLICE(cond(i1_114), bool, 2) : bool)
+T_104: (in 0<32> : word32)
   Class: Eq_86
+  DataType: word32
+  OrigDataType: word32
+T_105: (in i1_114 == 0<32> : bool)
+  Class: Eq_85
   DataType: bool
   OrigDataType: bool
 T_106: (in 0<32> : word32)
-  Class: Eq_85
+  Class: Eq_86
   DataType: word32
   OrigDataType: word32
 T_107: (in 0x10AA4<32> : word32)
@@ -493,7 +493,7 @@ T_112: (in o1_49 != 0x10B04<32> : bool)
   DataType: bool
   OrigDataType: bool
 T_113: (in 1<32> : word32)
-  Class: Eq_85
+  Class: Eq_86
   DataType: word32
   OrigDataType: word32
 T_114: (in printf : ptr32)
@@ -533,7 +533,7 @@ T_122: (in printf("Pass\n") : int32)
   DataType: int32
   OrigDataType: int32
 T_123: (in 0<32> : word32)
-  Class: Eq_85
+  Class: Eq_86
   DataType: word32
   OrigDataType: word32
 T_124: (in i1_114 == 0<32> : bool)

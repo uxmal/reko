@@ -681,12 +681,12 @@ void fn0E0E(<anonymous> * wArg00, word16 wArg02, word16 wArg04, word16 wArg06, w
 {
 	struct Eq_n * r4_n = g_ptr5424;
 	r4_n->ptr002A = wArg00;
-	word16 v18_n = wArg02 - wArg06;
-	bool C_n = (bool) cond(v18_n);
+	cup16 v18_n = wArg02 - wArg06;
+	bool C_n = v18_n >= 0x00;
 	if (v18_n == 0x00)
 	{
-		word16 v20_n = wArg04 - wArg08;
-		C_n = (bool) cond(v20_n);
+		cup16 v20_n = wArg04 - wArg08;
+		C_n = v20_n >= 0x00;
 		if (v20_n == 0x00)
 		{
 l0E7C:
@@ -881,8 +881,8 @@ void fn11A6(struct Eq_n * r0, word16 * r5)
 		++r0_n;
 		r5_n = (word16 **) ((char *) r5_n + 2);
 		Eq_n wLoc02_n = v24_n;
-		bool Z_n = SLICE(cond(v24_n), bool, 2);
-		while (!Z_n)
+		bool v36_n = v24_n == 0x00;
+		while (!v36_n)
 		{
 			Eq_n v27_n = __ror(wLoc02_n, wLoc02_n);
 			wLoc02_n = v27_n;
@@ -897,7 +897,7 @@ void fn11A6(struct Eq_n * r0, word16 * r5)
 			}
 			++r3_n;
 			r4_n = __ror(r4_n, r4_n);
-			Z_n = SLICE(cond(v27_n), bool, 2);
+			v36_n = v27_n == 0x00;
 		}
 	}
 }

@@ -1,15 +1,3 @@
-fp0_3: orig: fp0
-    def:  fp0_3 = (real80) Mem0[a6 - 0x10<32>:int32]
-    uses: branch (real96) fp0_3 == Mem0[a6 + 8<32>:real96] l1
-NZCV_4: orig: NZCV
-a6:a6
-    def:  def a6
-    uses: fp0_3 = (real80) Mem0[a6 - 0x10<32>:int32]
-          branch (real96) fp0_3 == Mem0[a6 + 8<32>:real96] l1
-Mem0:Mem
-    def:  def Mem0
-    uses: fp0_3 = (real80) Mem0[a6 - 0x10<32>:int32]
-          branch (real96) fp0_3 == Mem0[a6 + 8<32>:real96] l1
 // FCmpFragment
 // Return size: 0
 define FCmpFragment

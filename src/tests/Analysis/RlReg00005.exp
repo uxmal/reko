@@ -29,26 +29,24 @@ fn0C00_000C_entry:
 l0C00_000C:
 	di_7 = 0x7E0F<16>
 	cx_8 = 0xC<16>
-	SZO_10 = cond(0<8>)
-	Z_23 = SLICE(SZO_10, bool, 2) (alias)
+	v17_41 = 0<8> == 0<8>
 l0C00_0019:
-	Z_22 = PHI((Z_23, l0C00_000C), (Z_20, l0C00_0019_1))
+	Z_43 = PHI((v17_41, l0C00_000C), (v18_42, l0C00_0019_1))
 	di_15 = PHI((di_7, l0C00_000C), (di_18, l0C00_0019_1))
 	cx_12 = PHI((cx_8, l0C00_000C), (cx_19, l0C00_0019_1))
-	ch_51 = SLICE(cx_12, byte, 8) (alias)
+	ch_55 = SLICE(cx_12, byte, 8) (alias)
 	branch cx_12 == 0<16> l0C00_001B
 l0C00_0019_1:
-	SCZO_17 = cond(0<8> - Mem0[ds:di_15:byte])
-	Z_20 = SLICE(SCZO_17, bool, 2) (alias)
+	v18_42 = Mem0[ds:di_15:byte] == 0<8>
 	di_18 = di_15 + 1<i16>
 	cx_19 = cx_12 - 1<16>
-	ch_52 = SLICE(cx_19, byte, 8) (alias)
+	ch_56 = SLICE(cx_19, byte, 8) (alias)
 	branch Mem0[ds:di_15:byte] != 0<8> l0C00_0019
 l0C00_001B:
-	ch_50 = PHI((ch_51, l0C00_0019), (ch_52, l0C00_0019_1))
+	ch_54 = PHI((ch_55, l0C00_0019), (ch_56, l0C00_0019_1))
 	di_30 = PHI((di_15, l0C00_0019), (di_18, l0C00_0019_1))
-	Z_21 = PHI((Z_22, l0C00_0019), (Z_20, l0C00_0019_1))
-	branch Z_21 l0C00_002D
+	Z_44 = PHI((Z_43, l0C00_0019), (v18_42, l0C00_0019_1))
+	branch Z_44 l0C00_002D
 l0C00_001D:
 	ah_32 = Mem0[ds:di_30 + 1<16>:byte]
 	ax_34 = SEQ(ah_32, 0<8>) (alias)
@@ -58,10 +56,10 @@ l0C00_001D:
 	return
 l0C00_002D:
 	bx_24 = 0<16>
-	cx_53 = SEQ(ch_50, 0<8>) (alias)
+	cx_57 = SEQ(ch_54, 0<8>) (alias)
 	return
 fn0C00_000C_exit:
-	cx_49 = PHI((cx_36, l0C00_001D), (cx_53, l0C00_002D))
-	bx_46 = PHI((bx_38, l0C00_001D), (bx_24, l0C00_002D))
-	use bx_46
-	use cx_49
+	cx_53 = PHI((cx_36, l0C00_001D), (cx_57, l0C00_002D))
+	bx_50 = PHI((bx_38, l0C00_001D), (bx_24, l0C00_002D))
+	use bx_50
+	use cx_53

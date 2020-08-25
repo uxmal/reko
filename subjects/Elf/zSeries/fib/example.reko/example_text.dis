@@ -134,7 +134,7 @@ l00000720:
 	word64 r13_11 = SEQ(SLICE(r13, word32, 32), 0x000008D8<p32>)
 	word64 r2_14 = SEQ(SLICE(r2, word32, 32), 0x00001E18<p32>)
 	word64 r15_12 = fp - 320<i64>
-	byte CC_15 = cond(Mem10[r13_11:byte] - Mem10[r2_14:byte])
+	byte CC_49 = Mem10[r13_11:byte] > Mem10[r2_14:byte]
 	branch Mem10[r13_11:byte] != Mem10[r2_14:byte] l0000074C
 l00000740:
 	Mem18 = Mem10 (alias)
@@ -142,7 +142,7 @@ l00000740:
 	r13_11 = Mem18[v8_17:word64]
 	word64 r14_21 = Mem18[v8_17 + 8<i64>:word64]
 	r15_12 = Mem18[v8_17 + 16<i64>:word64]
-	branch CC_15 l00000680
+	branch CC_49 l00000680
 l00000746_thunk_register_tm_clones:
 	register_tm_clones(r2_14, r14_21)
 	return
@@ -150,7 +150,7 @@ frame_dummy_exit:
 l0000074C:
 	word64 r1_36 = Mem10[SEQ(SLICE(r1, word32, 32), 0x00002048<p32>):word64]
 	r1 = r1_36
-	CC_15 = cond(r1_36)
+	CC_49 = r1_36 > 0<64>
 	branch r1_36 == 0<64> l00000740
 l00000760:
 	call r1_36 (retsize: 0;)

@@ -227,11 +227,13 @@ Eq_5: (union "Eq_5" (char u0) ((ptr16 (ptr16 code)) u1) (Eq_3894 u2))
 	T_1505 (in Mem20[r0_34 + 0<16>:word16] : word16)
 	T_1517 (in v24_44 : Eq_5)
 	T_1520 (in Mem43[r1_10 + 0<16>:word16] : word16)
-	T_1525 (in wLoc02_92 : Eq_5)
+	T_1525 (in wLoc02_95 : Eq_5)
+	T_1527 (in 0<16> : word16)
 	T_1537 (in v27_51 : Eq_5)
-	T_1539 (in __ror(wLoc02_92, wLoc02_92) : word16)
+	T_1539 (in __ror(wLoc02_95, wLoc02_95) : word16)
 	T_1540 (in 0<16> : word16)
 	T_1545 (in __ror(r4_37, r4_37) : word16)
+	T_1546 (in 0<16> : word16)
 	T_1549 (in r4_37 & 1<16> : word16)
 	T_1550 (in 0<16> : word16)
 	T_1616 (in r0_23 : Eq_5)
@@ -5529,53 +5531,53 @@ T_1067: (in Mem9[r4_4 + 0x2A<16>:word16] : word16)
   Class: Eq_205
   DataType: (ptr16 code)
   OrigDataType: word16
-T_1068: (in v18_24 : word16)
+T_1068: (in v18_24 : cup16)
   Class: Eq_1068
-  DataType: word16
-  OrigDataType: word16
+  DataType: cup16
+  OrigDataType: cup16
 T_1069: (in wArg02 - wArg06 : word16)
   Class: Eq_1068
-  DataType: word16
+  DataType: cup16
   OrigDataType: word16
-T_1070: (in C_35 : bool)
+T_1070: (in C_52 : bool)
   Class: Eq_1070
   DataType: bool
   OrigDataType: bool
-T_1071: (in cond(v18_24) : byte)
-  Class: Eq_1071
-  DataType: byte
-  OrigDataType: byte
-T_1072: (in SLICE(cond(v18_24), bool, 0) : bool)
+T_1071: (in 0<16> : word16)
+  Class: Eq_1068
+  DataType: cup16
+  OrigDataType: cup16
+T_1072: (in v18_24 >= 0<16> : bool)
   Class: Eq_1070
   DataType: bool
   OrigDataType: bool
 T_1073: (in 0<16> : word16)
   Class: Eq_1068
-  DataType: word16
+  DataType: cup16
   OrigDataType: word16
 T_1074: (in v18_24 != 0<16> : bool)
   Class: Eq_1074
   DataType: bool
   OrigDataType: bool
-T_1075: (in v20_27 : word16)
+T_1075: (in v20_27 : cup16)
   Class: Eq_1075
-  DataType: word16
-  OrigDataType: word16
+  DataType: cup16
+  OrigDataType: cup16
 T_1076: (in wArg04 - wArg08 : word16)
   Class: Eq_1075
-  DataType: word16
+  DataType: cup16
   OrigDataType: word16
-T_1077: (in cond(v20_27) : byte)
-  Class: Eq_1077
-  DataType: byte
-  OrigDataType: byte
-T_1078: (in SLICE(cond(v20_27), bool, 0) : bool)
+T_1077: (in 0<16> : word16)
+  Class: Eq_1075
+  DataType: cup16
+  OrigDataType: cup16
+T_1078: (in v20_27 >= 0<16> : bool)
   Class: Eq_1070
   DataType: bool
   OrigDataType: bool
 T_1079: (in 0<16> : word16)
   Class: Eq_1075
-  DataType: word16
+  DataType: cup16
   OrigDataType: word16
 T_1080: (in v20_27 == 0<16> : bool)
   Class: Eq_1080
@@ -7357,19 +7359,19 @@ T_1524: (in r5_15 + 2<16> : word16)
   Class: Eq_1499
   DataType: (ptr16 (ptr16 word16))
   OrigDataType: ptr16
-T_1525: (in wLoc02_92 : Eq_5)
+T_1525: (in wLoc02_95 : Eq_5)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: word16
-T_1526: (in Z_48 : bool)
+T_1526: (in v36_90 : bool)
   Class: Eq_1526
   DataType: bool
   OrigDataType: bool
-T_1527: (in cond(v24_44) : byte)
-  Class: Eq_1527
-  DataType: byte
-  OrigDataType: byte
-T_1528: (in SLICE(cond(v24_44), bool, 2) : bool)
+T_1527: (in 0<16> : word16)
+  Class: Eq_5
+  DataType: char
+  OrigDataType: word16
+T_1528: (in v24_44 == 0<16> : bool)
   Class: Eq_1526
   DataType: bool
   OrigDataType: bool
@@ -7413,7 +7415,7 @@ T_1538: (in __ror : ptr16)
   Class: Eq_242
   DataType: (ptr16 Eq_242)
   OrigDataType: (ptr16 (fn T_1539 (T_1525, T_1525)))
-T_1539: (in __ror(wLoc02_92, wLoc02_92) : word16)
+T_1539: (in __ror(wLoc02_95, wLoc02_95) : word16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: word16
@@ -7441,11 +7443,11 @@ T_1545: (in __ror(r4_37, r4_37) : word16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: word16
-T_1546: (in cond(v27_51) : byte)
-  Class: Eq_1546
-  DataType: byte
-  OrigDataType: byte
-T_1547: (in SLICE(cond(v27_51), bool, 2) : bool)
+T_1546: (in 0<16> : word16)
+  Class: Eq_5
+  DataType: char
+  OrigDataType: word16
+T_1547: (in v27_51 == 0<16> : bool)
   Class: Eq_1526
   DataType: bool
   OrigDataType: bool

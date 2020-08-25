@@ -128,7 +128,6 @@ namespace Reko.UnitTests.Analysis
                 // are not testing interprocedural effects here.
                 DeadCode.Eliminate(ssa);
 
-                ssa.Write(writer);
                 ssa.Procedure.Write(false, writer);
                 writer.WriteLine();
 
@@ -509,17 +508,7 @@ done:
         {
             var sExp =
             #region Expected
-@"r2:r2
-    def:  def r2
-    uses: Mem5[0x00123400<p32>:word32] = r2
-          branch r2 >u 7<32> || r2 <u 2<32> mElse
-          branch r2 >u 7<32> || r2 <u 2<32> mElse
-r1_2: orig: r1
-SCZ_3: orig: SCZ
-CZ_4: orig: CZ
-Mem5: orig: Mem0
-    def:  Mem5[0x00123400<p32>:word32] = r2
-// ProcedureBuilder
+@"// ProcedureBuilder
 // Return size: 0
 define ProcedureBuilder
 ProcedureBuilder_entry:
@@ -597,16 +586,7 @@ ProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-@"rax:rax
-    def:  def rax
-    uses: branch rax >u 0x1FFFFFFFFFFFFFFF<64> || rax <u 1<64> mElse
-          branch rax >u 0x1FFFFFFFFFFFFFFF<64> || rax <u 1<64> mElse
-rdx_2: orig: rdx
-rax_3: orig: rax
-CZ_4: orig: CZ
-Mem5: orig: Mem0
-    def:  Mem5[0x00123400<p32>:word64] = 0x1FFFFFFFFFFFFFFE<64>
-// ProcedureBuilder
+@"// ProcedureBuilder
 // Return size: 0
 define ProcedureBuilder
 ProcedureBuilder_entry:
@@ -651,63 +631,7 @@ ProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-@"fp:fp
-sp_2: orig: sp
-h_3: orig: h
-    def:  h_3 = PHI((h, l1), (h_10, m1Loop))
-    uses: v13_27 = SEQ(h_3, l_11) >>u 1<8>
-a_4: orig: a
-a_5: orig: a
-SZC_6: orig: SZC
-C_7: orig: C
-a_8: orig: a
-    def:  a_8 = SLICE(v13_27, byte, 8)
-    uses: h_10 = a_8
-          Mem21[0x1001<32>:byte] = a_8
-h_10: orig: h
-    def:  h_10 = a_8
-    uses: h_3 = PHI((h, l1), (h_10, m1Loop))
-l_11: orig: l
-    def:  l_11 = PHI((l, l1), (l_15, m1Loop))
-    uses: v13_27 = SEQ(h_3, l_11) >>u 1<8>
-a_12: orig: a
-a_13: orig: a
-    def:  a_13 = (byte) v13_27
-    uses: l_15 = a_13
-          Mem20[0x1000<32>:byte] = a_13
-C_14: orig: C
-l_15: orig: l
-    def:  l_15 = a_13
-    uses: l_11 = PHI((l, l1), (l_15, m1Loop))
-c_16: orig: c
-    def:  c_16 = PHI((c, l1), (c_17, m1Loop))
-    uses: c_17 = c_16 - 1<8>
-c_17: orig: c
-    def:  c_17 = c_16 - 1<8>
-    uses: branch c_17 != 0<8> m1Loop
-          c_16 = PHI((c, l1), (c_17, m1Loop))
-SZP_18: orig: SZP
-Z_19: orig: Z
-Mem20: orig: Mem0
-    def:  Mem20[0x1000<32>:byte] = a_13
-Mem21: orig: Mem0
-    def:  Mem21[0x1001<32>:byte] = a_8
-h:h
-    def:  def h
-    uses: h_3 = PHI((h, l1), (h_10, m1Loop))
-l:l
-    def:  def l
-    uses: l_11 = PHI((l, l1), (l_15, m1Loop))
-c:c
-    def:  def c
-    uses: c_16 = PHI((c, l1), (c_17, m1Loop))
-v11_25: orig: v11
-v12_26: orig: v12
-v13_27: orig: v13
-    def:  v13_27 = SEQ(h_3, l_11) >>u 1<8>
-    uses: a_8 = SLICE(v13_27, byte, 8)
-          a_13 = (byte) v13_27
-// RorChainFragment
+@"// RorChainFragment
 // Return size: 0
 define RorChainFragment
 RorChainFragment_entry:
@@ -747,16 +671,7 @@ RorChainFragment_exit:
         {
             var sExp =
             #region Expected
-@"rArg0:FPU +0
-    def:  def rArg0
-    uses: branch !isunordered(rArg0, rArg1) m3Done
-rArg1:FPU +1
-    def:  def rArg1
-    uses: branch !isunordered(rArg0, rArg1) m3Done
-C_3: orig: C
-r0_4: orig: r0
-r0_5: orig: r0
-// ProcedureBuilder
+@"// ProcedureBuilder
 // Return size: 0
 define ProcedureBuilder
 ProcedureBuilder_entry:
@@ -791,6 +706,76 @@ ProcedureBuilder_exit:
                 m.Label("m3Done");
                 m.Assign(r0, 1);
                 m.Return(r0);
+            });
+        }
+
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        [Obsolete("Change this to use CONVERT")]
+        public void CceMultibitCcFromPhiNode()
+        {
+            var sExp =
+            #region Expected
+@"// ProcedureBuilder
+// Return size: 0
+define ProcedureBuilder
+ProcedureBuilder_entry:
+	def r0
+	def r2
+	// succ:  l1
+l1:
+	branch r0 <= r2 m1
+	// succ:  m0 m1
+m0:
+	r0_5 = r0 + r2
+	v10_18 = r0_5 == 0<32>
+	v8_15 = r0_5 <=u 0<32>
+	v6_12 = r0_5 >u 0<32>
+	goto m2
+	// succ:  m2
+m1:
+	r0_3 = r2 - r0
+	v11_19 = r0_3 == 0<32>
+	v9_16 = r0_3 <=u 0<32>
+	v7_13 = r0_3 >u 0<32>
+	// succ:  m2
+m2:
+	CZ_17 = PHI((v8_15, m0), (v9_16, m1))
+	CZ_14 = PHI((v6_12, m0), (v7_13, m1))
+	Z_20 = PHI((v10_18, m0), (v11_19, m1))
+	Mem8[0x123400<32>:int8] = (int8) CZ_14
+	Mem9[0x123402<32>:int8] = (int8) CZ_17
+	Mem11[0x123404<32>:int8] = (int8) Z_20
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+
+";
+            #endregion
+            RunStringTest(sExp, m =>
+            {
+                var r0 = m.Reg32("r0", 0);
+                var r2 = m.Reg32("r2", 2);
+                var CZ = m.Flags("CZ");
+                var Z = m.Flags("Z");
+                m.BranchIf(m.Le(r0, r2), "m1");
+
+                m.Label("m0");
+                m.Assign(r0, m.IAdd(r0, r2));
+                m.Assign(CZ, m.Cond(r0));
+                m.Goto("m2");
+
+                m.Label("m1");
+                m.Assign(r0, m.ISub(r2, r0));
+                m.Assign(CZ, m.Cond(r0));
+
+                m.Label("m2");
+                //m.Assign(tmp, m.Convert(m.Test(ConditionCode.UGT, CZ), PrimitiveType.Bool, PrimitiveType.SByte));
+                m.MStore(m.Word32(0x00123400), m.Cast(PrimitiveType.SByte, m.Test(ConditionCode.UGT, CZ)));
+                m.MStore(m.Word32(0x00123402), m.Cast(PrimitiveType.SByte, m.Test(ConditionCode.ULE, CZ)));
+                m.MStore(m.Word32(0x00123404), m.Cast(PrimitiveType.SByte, m.Test(ConditionCode.EQ, Z)));
+                m.Return();
             });
         }
     }

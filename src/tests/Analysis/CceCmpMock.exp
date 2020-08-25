@@ -1,22 +1,3 @@
-fp:fp
-r63_2: orig: r63
-r0:r0
-    def:  def r0
-    uses: r0_6 = r0 + r1
-          branch r0 == 0<i32> skip
-          r0_7 = PHI((r0, l1), (r0_6, l2))
-Z_4: orig: Z
-r1:r1
-    def:  def r1
-    uses: r0_6 = r0 + r1
-r0_6: orig: r0
-    def:  r0_6 = r0 + r1
-    uses: r0_7 = PHI((r0, l1), (r0_6, l2))
-r0_7: orig: r0
-    def:  r0_7 = PHI((r0, l1), (r0_6, l2))
-    uses: Mem8[0x10003000<32>:word32] = r0_7
-Mem8: orig: Mem0
-    def:  Mem8[0x10003000<32>:word32] = r0_7
 // CmpMock
 // Return size: 0
 define CmpMock

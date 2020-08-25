@@ -17322,17 +17322,17 @@ bool __avr32_f64_cmp_eq(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, struct Eq_n & r12O
 //      fn0000E868
 bool __avr32_f64_cmp_ge(Eq_n r8, ui32 r9, Eq_n r10, Eq_n r11, union Eq_n & r12Out, ptr32 & lrOut)
 {
-	bool Z_n = SLICE(cond(r11 << 1), bool, 1);
+	bool v17_n = r11 << 1 == 0x00;
 	Eq_n r12_n = (word32) (r11 << 1 < 0x00);
 	if (r11 << 1 == 0x00)
-		Z_n = SLICE(cond(r10), bool, 1);
-	if (Z_n)
+		v17_n = r10 == 0x00;
+	if (v17_n)
 	{
-		bool Z_n = SLICE(cond(r9 << 1), bool, 1);
+		bool v19_n = r9 << 1 != 0x00;
 		Eq_n r12_n = (word32) (r9 << 1 < 0x00);
 		if (r9 << 1 == 0x00)
-			Z_n = SLICE(cond(r8), bool, 1);
-		if (Z_n)
+			v19_n = r8 != 0x00;
+		if (v19_n)
 		{
 			r12Out = r12_n;
 			lrOut = lr;
@@ -17420,17 +17420,17 @@ bool __avr32_f64_cmp_ge(Eq_n r8, ui32 r9, Eq_n r10, Eq_n r11, union Eq_n & r12Ou
 //      fn0000F278
 bool __avr32_f64_cmp_lt(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, union Eq_n & r9Out, union Eq_n & r12Out, ptr32 & lrOut)
 {
-	bool Z_n = SLICE(cond(r11 << 1), bool, 1);
+	bool v17_n = r11 << 1 == 0x00;
 	Eq_n r12_n = (word32) (r11 << 1 < 0x00);
 	if (r11 << 1 == 0x00)
-		Z_n = SLICE(cond(r10), bool, 1);
-	if (Z_n)
+		v17_n = r10 == 0x00;
+	if (v17_n)
 	{
-		bool Z_n = SLICE(cond(r9 << 1), bool, 1);
+		bool v19_n = r9 << 1 != 0x00;
 		Eq_n r12_n = (word32) (r9 << 1 >= 0x00);
 		if (r9 << 1 == 0x00)
-			Z_n = SLICE(cond(r8), bool, 1);
-		if (Z_n)
+			v19_n = r8 != 0x00;
+		if (v19_n)
 		{
 			r9Out.u0 = <invalid>;
 			r12Out = r12_n;
@@ -17525,10 +17525,10 @@ bool __avr32_f64_cmp_lt(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, union Eq_n & r9Out
 //      fn000090C0
 bool fn0000F9D0(Eq_n r11, Eq_n r12, ptr32 & r8Out, union Eq_n & r9Out, union Eq_n & r10Out)
 {
-	bool Z_n = SLICE(cond(r11 << 0x01), bool, 1);
+	bool v17_n = r11 << 0x01 != 0x00;
 	if (r11 << 0x01 == 0x00)
-		Z_n = SLICE(cond(r12 << 0x01), bool, 1);
-	if (Z_n)
+		v17_n = r12 << 0x01 != 0x00;
+	if (v17_n)
 	{
 		if (r12 << 0x01 <= 0xFF000000)
 		{
@@ -17620,10 +17620,10 @@ bool fn0000F9D0(Eq_n r11, Eq_n r12, ptr32 & r8Out, union Eq_n & r9Out, union Eq_
 //      fn000090C0
 bool fn0000FA0E(Eq_n r11, Eq_n r12, ptr32 & r8Out, union Eq_n & r9Out, union Eq_n & r10Out)
 {
-	bool Z_n = SLICE(cond(r11 << 0x01), bool, 1);
+	bool v17_n = r11 << 0x01 != 0x00;
 	if (r11 << 0x01 == 0x00)
-		Z_n = SLICE(cond(r12 << 0x01), bool, 1);
-	if (Z_n)
+		v17_n = r12 << 0x01 != 0x00;
+	if (v17_n)
 	{
 		if (r12 << 0x01 <= 0xFF000000)
 		{

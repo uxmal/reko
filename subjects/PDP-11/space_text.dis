@@ -864,14 +864,14 @@ l0E0E:
 	Mem9[r4_4 + 0x2A<16>:word16] = wArg00
 l0E6E:
 	word16 v18_24 = wArg02 - wArg06
-	bool C_35 = SLICE(cond(v18_24), bool, 0)
+	bool C_52 = v18_24 >=u 0<16>
 	branch v18_24 != 0<16> l0E76
 l0E72:
 	word16 v20_27 = wArg04 - wArg08
-	C_35 = SLICE(cond(v20_27), bool, 0) (alias)
+	C_52 = v20_27 >=u 0<16>
 	branch v20_27 == 0<16> l0E7C
 l0E76:
-	branch C_35 l0E7C
+	branch C_52 l0E7C
 l0E7A:
 l0E7C:
 	call Mem9[r4_4 + 0x2A<16>:word16] (retsize: 0;)
@@ -1186,13 +1186,13 @@ l11C6:
 	word16 v24_44 = Mem43[r1_10:word16]
 	r0_34 = r0_34 + 2<16>
 	r5_15 = r5_15 + 2<16>
-	word16 wLoc02_92 = v24_44
-	bool Z_48 = SLICE(cond(v24_44), bool, 2)
+	word16 wLoc02_95 = v24_44
+	bool v36_90 = v24_44 == 0<16>
 l11CC:
-	branch Z_48 l11C2
+	branch v36_90 l11C2
 l11CE:
-	word16 v27_51 = __ror(wLoc02_92, wLoc02_92)
-	wLoc02_92 = v27_51
+	word16 v27_51 = __ror(wLoc02_95, wLoc02_95)
+	wLoc02_95 = v27_51
 	branch v27_51 >=u 0<16> l11DC
 l11D4:
 	r4_37 = r4_37 & 1<16>
@@ -1203,7 +1203,7 @@ l11DA:
 l11DC:
 	r3_21 = r3_21 + 2<16>
 	r4_37 = __ror(r4_37, r4_37)
-	Z_48 = SLICE(cond(v27_51), bool, 2) (alias)
+	v36_90 = v27_51 == 0<16>
 
 
 void fn12AC(word16 r2)

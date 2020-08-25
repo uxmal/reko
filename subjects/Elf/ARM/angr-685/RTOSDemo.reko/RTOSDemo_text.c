@@ -751,8 +751,8 @@ l00008690:
 // 000086E8: void prvFixedDelayCoRoutine(Register (ptr32 Eq_n) r0, Register ui32 r1, Register Eq_n r7, Register Eq_n lr, Register ptr32 cpsr)
 void prvFixedDelayCoRoutine(struct Eq_n * r0, ui32 r1, Eq_n r7, Eq_n lr, ptr32 cpsr)
 {
-	Eq_n r0_n;
 	bool Z_n;
+	Eq_n r0_n;
 	word32 r0_n;
 	up32 r3_n = (word32) r0->w0034;
 	if (r3_n != 0x0182)

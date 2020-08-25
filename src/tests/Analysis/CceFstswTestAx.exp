@@ -1,25 +1,3 @@
-fp:fp
-sp_2: orig: sp
-Top_3: orig: Top
-ST:x87Stack
-ds:ds
-    def:  def ds
-    uses: branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
-bx:bx
-    def:  def bx
-    uses: branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
-Mem0:Mem
-    def:  def Mem0
-    uses: branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
-FPUF_8: orig: FPUF
-Top_9: orig: Top
-SCZO_10: orig: SCZO
-ecx_11: orig: ecx
-SZO_12: orig: SZO
-C_13: orig: C
-rArg0:FPU +0
-    def:  def rArg0
-    uses: branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000

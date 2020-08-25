@@ -1015,13 +1015,13 @@ void prvFixedDelayCoRoutine(word32 r0, word32 r1, word32 r7, word32 lr, word32 c
 // Preserved: r4 sp
 prvFixedDelayCoRoutine_entry:
 l000086E8:
+	bool Z_111
 	word32 r0_81
-	bool Z_29
 	word32 r0_22
 	word32 r3_9 = (word32) Mem7[r0 + 52<i32>:word16]
 	branch r3_9 == 0x182<32> l00008750
 l00008750:
-	Z_29 = xQueueCRSend(Mem14[Mem14[0x0000877C<p32>:word32]:word32], fp - 12<i32>, 0<32>, r7, lr, cpsr, out r0_22)
+	Z_111 = xQueueCRSend(Mem14[Mem14[0x0000877C<p32>:word32]:word32], fp - 12<i32>, 0<32>, r7, lr, cpsr, out r0_22)
 l000086F8:
 	branch r3_9 <=u 0x182<32> l00008748
 l00008748:
@@ -1033,12 +1033,12 @@ l000086FA:
 l00008716:
 	branch r3_9 != 0x196<32> l00008712
 l0000871C:
-	Z_29 = xQueueCRSend(Mem14[Mem14[0x0000877C<p32>:word32]:word32], fp - 12<i32>, 0<32>, r7, lr, cpsr, out r0_22)
-	branch Z_29 l0000876E
+	Z_111 = xQueueCRSend(Mem14[Mem14[0x0000877C<p32>:word32]:word32], fp - 12<i32>, 0<32>, r7, lr, cpsr, out r0_22)
+	branch Z_111 l0000876E
 l0000876E:
 	Mem65[r0 + 52<i32>:word16] = 0x182<u16>
 l0000872C:
-	branch Z_29 l00008766
+	branch Z_111 l00008766
 l00008766:
 	Mem71[r0 + 52<i32>:word16] = 0x183<u16>
 l00008730:
