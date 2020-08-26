@@ -129,14 +129,14 @@ l0800_022E:
 l0800_01FA:
 	branch Mem80[es:bx_15:byte] == 0xFF<8> l0800_0218
 l0800_0200:
-	byte CZ_103
+	bool v16_101
 	branch si == 0x26FC<16> l0800_020C
 l0800_020C:
-	CZ_103 = Mem80[es:bx_15 + 1<16>:byte] >u ah_55
+	v16_101 = Mem80[es:bx_15 + 1<16>:byte] >u ah_55
 l0800_0206:
-	CZ_103 = ah_55 >u Mem80[es:bx_15 + 1<16>:byte]
+	v16_101 = ah_55 >u Mem80[es:bx_15 + 1<16>:byte]
 l0800_0210:
-	branch CZ_103 l0800_0218
+	branch v16_101 l0800_0218
 l0800_0212:
 	ah_55 = Mem80[es:bx_15 + 1<16>:byte]
 	dx_13 = bx_15
@@ -281,9 +281,9 @@ l0800_0338:
 	word16 sp_362 = <invalid>
 	Mem368[ss:sp_362 - 2<i16>:word16] = dx_361
 	Mem370[ss:sp_362 - 4<i16>:word16] = ax_358
-	Mem379[ss:sp_362 - 6<i16>:word16] = (uint16) ((uint32) (uint16) ax_244 % 0x64<16>)
-	word32 dx_ax_382 = (uint32) (uint16) ax_244
-	Mem388[ss:sp_362 - 8<i16>:word16] = (uint16) (dx_ax_382 /u 0x64<16>)
+	Mem379[ss:sp_362 - 6<i16>:word16] = CONVERT(CONVERT(ax_244, word16, uint32) % 0x64<16>, word32, uint16)
+	word32 dx_ax_382 = CONVERT(ax_244, word16, uint32)
+	Mem388[ss:sp_362 - 8<i16>:word16] = CONVERT(dx_ax_382 /u 0x64<16>, word16, uint16)
 	Mem391[ss:sp_362 - 10<i16>:word16] = Mem388[ds_126:0x29F1<16>:word16]
 	Mem394[ss:sp_362 - 12<i16>:word16] = Mem391[ds_126:0x29EF<16>:word16]
 	Mem397[ss:sp_362 - 14<i16>:word16] = Mem394[ds_126:0x29F5<16>:word16]
@@ -296,7 +296,7 @@ l0800_0338:
 	Mem416[ss:sp_362 - 28<i16>:word16] = 0x7EB<16>
 	word16 si_451
 	word16 di_452
-	fn0800_B2EF(cx_360, (uint16) (dx_ax_382 % 0x64<16>), 0x64<16>, ds_126, Mem416[ss:sp_362 - 28<i16>:word32], out si_451, out di_452)
+	fn0800_B2EF(cx_360, CONVERT(dx_ax_382 % 0x64<16>, word32, uint16), 0x64<16>, ds_126, Mem416[ss:sp_362 - 28<i16>:word32], out si_451, out di_452)
 	return
 main_exit:
 
@@ -401,16 +401,16 @@ l0800_0507_1:
 l0800_0509:
 	word16 cx_319 = ~cx_308
 	word16 di_322 = di_304 - cx_319
-	bool v40_435 = di_322 == 0<16>
+	bool v42_435 = di_322 == 0<16>
 l0800_0510:
 	branch cx_319 == 0<16> l0800_0512
 l0800_0510_2:
-	v40_435 = Mem303[ds:di_322:byte] == 0x5C<8>
+	v42_435 = Mem303[ds:di_322:byte] == 0x5C<8>
 	di_322 = di_322 + 1<i16>
 	cx_319 = cx_319 - 1<16>
 	branch Mem303[ds:di_322:byte] == 0x5C<8> l0800_0510
 l0800_0512:
-	branch v40_435 l0800_051B
+	branch v42_435 l0800_051B
 l0800_0514:
 	di_322 = 1<16>
 l0800_051B:
@@ -650,7 +650,7 @@ l0800_0606:
 	dx = Mem461[es_484:bx_482:word16]
 	ptrLoc06_1339 = SEQ(Mem461[es_484:bx_482 + 2<16>:word16], dx) (alias)
 l0800_063F:
-	branch (int16) Mem493[ptrLoc06_1339:byte] != 0<16> l0800_0659
+	branch CONVERT(Mem493[ptrLoc06_1339:byte], byte, int16) != 0<16> l0800_0659
 l0800_064A:
 	word16 bx_1727
 	word16 cx_1726
@@ -889,12 +889,12 @@ word16 fn0800_09A3(selector ds, ptr16 & bpOut, ptr16 & dsOut)
 // Preserved:
 fn0800_09A3_entry:
 l0800_09A3:
-	word16 ax_34 = ((int16) Mem27[ds:0xA74<16>:byte] << 8<8>) + (uint16) ((uint8) Mem27[ds:0xA75<16>:byte])
+	word16 ax_34 = (CONVERT(Mem27[ds:0xA74<16>:byte], byte, int16) << 8<8>) + CONVERT(Mem27[ds:0xA75<16>:byte], byte, uint16)
 	word16 bp_51
 	selector ds_55
 	word16 dx_56
 	word16 si_421
-	word16 ax_50 = fn0800_4311(ds, ax_34 + 0x20<16>, ((int16) Mem15[ds:0xA72<16>:byte] << 8<8>) + (uint16) ((uint8) Mem15[ds:0xA73<16>:byte]) + (ax_34 <u 0<16>) + (ax_34 <u 0x20<16>), out dx_56, out bp_51, out si_421, out ds_55)
+	word16 ax_50 = fn0800_4311(ds, ax_34 + 0x20<16>, (CONVERT(Mem15[ds:0xA72<16>:byte], byte, int16) << 8<8>) + CONVERT(Mem15[ds:0xA73<16>:byte], byte, uint16) + (ax_34 <u 0<16>) + (ax_34 <u 0x20<16>), out dx_56, out bp_51, out si_421, out ds_55)
 	Mem66[ss:bp_51 - 2<16>:word16] = dx_56
 	Mem67[ss:bp_51 - 4<16>:word16] = ax_50
 	Mem68[ss:bp_51 - 6<16>:word16] = dx_56
@@ -960,7 +960,7 @@ l0800_0A07_1:
 	branch Mem103[es_384:di_427:byte] == 0<8> l0800_0A07
 l0800_0A09:
 	word16 di_208 = Mem103[ss:bp_80 - 8<16>:word16]
-	Mem212[ss:sp_88 + 6<16>:word16] = (int16) Mem103[es_384:Mem103[ss:bp_80 - 8<16>:word16] + (~cx_182 - 1<16>) + 1<16>:byte] << 8<8>
+	Mem212[ss:sp_88 + 6<16>:word16] = CONVERT(Mem103[es_384:Mem103[ss:bp_80 - 8<16>:word16] + (~cx_182 - 1<16>) + 1<16>:byte], byte, int16) << 8<8>
 	word16 cx_216 = 0xFFFF<16>
 l0800_0A25:
 	branch cx_216 == 0<16> l0800_0A27
@@ -970,7 +970,7 @@ l0800_0A25_2:
 	di_428 = di_208
 	branch Mem212[es_384:di_428:byte] == 0<8> l0800_0A25
 l0800_0A27:
-	word16 dx_245 = Mem212[ss:sp_88 + 6<16>:word16] + (uint16) ((uint8) Mem212[es_384:(Mem212[ss:bp_80 - 8<16>:word16] + (~cx_216 - 1<16>)) + 2<16>:byte])
+	word16 dx_245 = Mem212[ss:sp_88 + 6<16>:word16] + CONVERT(Mem212[es_384:(Mem212[ss:bp_80 - 8<16>:word16] + (~cx_216 - 1<16>)) + 2<16>:byte], byte, uint16)
 	word16 di_246 = Mem212[ss:bp_80 - 8<16>:word16]
 	word16 cx_250 = 0xFFFF<16>
 l0800_0A42:
@@ -997,7 +997,7 @@ l0800_0A7A_1:
 l0800_0A7C:
 	Mem299[ss:bp_80 - 8<16>:word16] = Mem103[ss:bp_80 - 8<16>:word16] + ~cx_279
 	ptr32 es_bx_300 = Mem299[ss:bp_80 - 8<16>:segptr32]
-	Mem316[ss:sp_88 + 6<16>:word16] = ((int16) Mem299[es_bx_300:byte] << 8<8>) + (uint16) ((uint8) Mem299[es_bx_300 + 1<16>:byte]) + 2<16>
+	Mem316[ss:sp_88 + 6<16>:word16] = (CONVERT(Mem299[es_bx_300:byte], byte, int16) << 8<8>) + CONVERT(Mem299[es_bx_300 + 1<16>:byte], byte, uint16) + 2<16>
 	Mem319[ss:sp_88 + 4<16>:word16] = Mem316[ss:bp_80 - 6<16>:word16]
 	Mem321[ss:sp_88 + 2<16>:word16] = SLICE(es_bx_300, word16, 0)
 	Mem324[ss:sp_88:word16] = Mem321[ss:bp_80 + 0xA<16>:word16]
@@ -1033,7 +1033,7 @@ fn0800_0ABC_entry:
 l0800_0ABC:
 	fn0800_35A3(fp - 0x10<16>, ss, dwArg04)
 	word16 ax_50 = fn0800_0B79(SEQ(Mem43[ds:0x2A09<16>:word16], Mem46[ds:0x2A07<16>:word16]), SEQ(Mem25[ds:0x2A05<16>:word16], Mem40[ds:0x2A03<16>:word16]))
-	word16 dx_72 = (uint16) ((uint32) (uint16) ax_50 % 0x64<16>)
+	word16 dx_72 = CONVERT(CONVERT(ax_50, word16, uint32) % 0x64<16>, word32, uint16)
 	word16 si_106
 	word16 di_264
 	fn0800_B2EF(ax_50, dx_72, 0x64<16>, ds, SEQ(ds, 0x866<16>), out si_106, out di_264)
@@ -1163,7 +1163,7 @@ l0800_0C08:
 	word16 si_12 = wArg02
 	word16 cx_13 = 1<16>
 l0800_0C15:
-	word16 ax_21 = (uint16) ((uint32) (uint16) si_12 /u 2<16>)
+	word16 ax_21 = CONVERT(CONVERT(si_12, word16, uint32) /u 2<16>, word16, uint16)
 	si_12 = ax_21
 	branch ax_21 != 0<16> l0800_0C14
 l0800_0C14:
@@ -1187,7 +1187,7 @@ fn0800_0C29_entry:
 	word16 wArg02 = SLICE(dwArg02, word16, 0)
 l0800_0C29:
 	word16 dx_90
-	byte al_26 = SLICE((uint16) (uint8) fn0800_97CC(ds, (int16) bArg06, out dx_90), byte, 0)
+	byte al_26 = SLICE(CONVERT(fn0800_97CC(ds, CONVERT(bArg06, byte, int16), out dx_90), byte, uint16), byte, 0)
 	segptr32 ptrLoc06_66 = dwArg02
 l0800_0C4F:
 	word16 wLoc06_67 = SLICE(ptrLoc06_66, word16, 0)
@@ -1225,7 +1225,7 @@ l0800_0C88:
 	word16 wArg04_53 = SLICE(ptrArg02, word16, 16)
 	branch Mem11[ptrArg02:byte] != 0<8> l0800_0C71
 l0800_0C71:
-	Mem39[ptrArg02:byte] = SLICE((uint16) (uint8) fn0800_97CC(ds, (int16) Mem11[ptrArg02:byte], out dx), byte, 0)
+	Mem39[ptrArg02:byte] = SLICE(CONVERT(fn0800_97CC(ds, CONVERT(Mem11[ptrArg02:byte], byte, int16), out dx), uint8, uint16), byte, 0)
 	ptrArg02 = SEQ(wArg04_53, wArg02_49 + 1<16>) (alias)
 l0800_0C91:
 	return dx
@@ -1403,7 +1403,7 @@ l0800_0DA9:
 	branch (wArg02 | wArg04) == 0<16> l0800_0DCC
 l0800_0DB4:
 	word16 dx_90
-	dx = fn0800_8F7F(SLICE((uint16) (uint8) fn0800_A614(ds, dwArg02, out cx, out dx_90, out ds), byte, 0), ds, dwArg06)
+	dx = fn0800_8F7F(SLICE(CONVERT(fn0800_A614(ds, dwArg02, out cx, out dx_90, out ds), uint8, uint16), byte, 0), ds, dwArg06)
 l0800_0DCC:
 	dxOut = dx
 	dsOut = ds
@@ -1996,21 +1996,21 @@ l0800_14FD:
 	Mem555[ss:sp_524 - 2<i16>:word16] = Mem552[ss:bp_1752 - 8<16>:word16]
 	word16 sp_566 = <invalid>
 	word16 si_2025
-	ch_1757 = SLICE((uint16) (uint8) fn0800_23EC(ds_393, Mem555[ss:sp_524 - 2<i16>:segptr32], out bp_1752, out si_2025, out ds_393), byte, 8) (alias)
+	ch_1757 = SLICE(CONVERT(fn0800_23EC(ds_393, Mem555[ss:sp_524 - 2<i16>:segptr32], out bp_1752, out si_2025, out ds_393), byte, uint16), byte, 8) (alias)
 	sp_402 = sp_566 + 4<16>
 l0800_14E9:
 	Mem576[ss:sp_524:word16] = Mem545[ss:bp_1752 - 2<16>:word16]
 	Mem579[ss:sp_524 - 2<i16>:word16] = Mem576[ss:bp_1752 - 4<16>:word16]
 	Mem581[ss:sp_524 - 4<i16>:word16] = ss
 	Mem584[ss:sp_524 - 6<i16>:word16] = bp_1752 - 0x84<16>
-	ch_1757 = SLICE((uint16) (uint8) fn0800_2085(ds_393, Mem584[ss:sp_524 - 6<i16>:segptr32], Mem584[ss:sp_524 - 2<i16>:segptr32]), byte, 8) (alias)
+	ch_1757 = SLICE(CONVERT(fn0800_2085(ds_393, Mem584[ss:sp_524 - 6<i16>:segptr32], Mem584[ss:sp_524 - 2<i16>:segptr32]), byte, uint16), byte, 8) (alias)
 	sp_402 = sp_524 + 2<16>
 l0800_1509:
 	ptr32 es_bx_599 = Mem598[ds_393:0x2E51<16>:segptr32]
-	dx_394 = (uint16) (uint8) Mem598[es_bx_599 + 5<16>:byte] (alias)
+	dx_394 = CONVERT(Mem598[es_bx_599 + 5<16>:byte], byte, uint16) (alias)
 	si_403 = 1<16>
 	cx_1760 = SEQ(ch_1757, 8<8>) (alias)
-	branch ((uint16) (uint8) Mem598[es_bx_599 + 4<16>:byte] << 8<8>) + dx_394 >=u 0xFF8C<16> l0800_1539
+	branch (CONVERT(Mem598[es_bx_599 + 4<16>:byte], byte, uint16) << 8<8>) + dx_394 >=u 0xFF8C<16> l0800_1539
 l0800_1539:
 	branch si_403 != 0<16> l0800_1551
 l0800_1551:
@@ -2096,7 +2096,7 @@ l0800_15A3:
 	fn0800_4194(ds_1276, Mem869[ss:sp_715 - 2<i16>:word32])
 	Mem883[ds_1276:0x29E9<16>:word16] = dx_854 - (ax_851 <u 4<16>)
 	Mem884[ds_1276:0x29E7<16>:word16] = ax_851 - 4<16>
-	int32 dx_ax_886 = (int32) Mem884[ds_1276:0x29E9<16>:word16]
+	int32 dx_ax_886 = CONVERT(Mem884[ds_1276:0x29E9<16>:word16], word16, int32)
 	word16 dx_2036
 	word16 ax_890 = fn0800_8C8A(SLICE(dx_ax_886, word16, 0), 8<8>, SLICE(dx_ax_886, word16, 16), out dx_2036)
 	ptr32 es_di_899 = Mem884[ss:bp_1317 - 8<16>:segptr32]
@@ -2114,23 +2114,23 @@ l0800_1632_1:
 l0800_1634:
 	word16 cx_916 = ~cx_905
 	word16 di_2053 = di_1774 - cx_916
-	bool v97_1796 = di_2053 == 0<16>
+	bool v100_1799 = di_2053 == 0<16>
 l0800_163A:
 	branch cx_916 == 0<16> l0800_163C
 l0800_163A_2:
-	v97_1796 = Mem901[es_1773:di_2053:byte] == 0<8>
+	v100_1799 = Mem901[es_1773:di_2053:byte] == 0<8>
 	di_2053 = di_2053 + 1<i16>
 	cx_916 = cx_916 - 1<16>
 	branch Mem901[es_1773:di_2053:byte] == 0<8> l0800_163A
 l0800_163C:
-	branch v97_1796 l0800_1645
+	branch v100_1799 l0800_1645
 l0800_163E:
 	di_2053 = 1<16>
 	es_1773 = 0<16>
 l0800_1645:
 	Mem960[es_1773:di_2053:byte] = Mem901[ss:sp_894 + 2<16>:byte]
 	ptr32 es_di_973 = Mem960[ss:bp_1317 - 8<16>:segptr32]
-	Mem976[ss:sp_894 - 2<i16>:word16] = SLICE((int32) Mem960[ds_1276:0x29E9<16>:word16], word16, 0)
+	Mem976[ss:sp_894 - 2<i16>:word16] = SLICE(CONVERT(Mem960[ds_1276:0x29E9<16>:word16], word16, int32), word16, 0)
 	selector es_1012 = SLICE(es_di_973, selector, 16)
 	word16 di_1780 = SLICE(es_di_973, word16, 0)
 	word16 cx_980 = 0xFFFF<16>
@@ -2143,16 +2143,16 @@ l0800_165C_1:
 l0800_165E:
 	word16 cx_1003 = ~cx_980
 	word16 di_1002 = di_1780 - cx_1003
-	bool v100_1801 = di_1002 == 0<16>
+	bool v101_1800 = di_1002 == 0<16>
 l0800_1664:
 	branch cx_1003 == 0<16> l0800_1666
 l0800_1664_2:
-	v100_1801 = Mem976[es_1012:di_1002:byte] == 0<8>
+	v101_1800 = Mem976[es_1012:di_1002:byte] == 0<8>
 	di_1002 = di_1002 + 1<i16>
 	cx_1003 = cx_1003 - 1<16>
 	branch Mem976[es_1012:di_1002:byte] == 0<8> l0800_1664
 l0800_1666:
-	branch v100_1801 l0800_166F
+	branch v101_1800 l0800_166F
 l0800_1668:
 	di_1002 = 1<16>
 	es_1012 = 0<16>
@@ -2176,16 +2176,16 @@ l0800_168E_1:
 l0800_1690:
 	word16 cx_1076 = ~cx_1065
 	word16 di_1079 = di_1069 - cx_1076
-	bool v101_1804 = di_1079 == 0<16>
+	bool v105_1804 = di_1079 == 0<16>
 l0800_1696:
 	branch cx_1076 == 0<16> l0800_1698
 l0800_1696_2:
-	v101_1804 = Mem1061[es_1097:di_1079:byte] == 0<8>
+	v105_1804 = Mem1061[es_1097:di_1079:byte] == 0<8>
 	di_1079 = di_1079 + 1<i16>
 	cx_1076 = cx_1076 - 1<16>
 	branch Mem1061[es_1097:di_1079:byte] == 0<8> l0800_1696
 l0800_1698:
-	branch v101_1804 l0800_16A1
+	branch v105_1804 l0800_16A1
 l0800_169A:
 	di_1079 = 1<16>
 	es_1097 = 0<16>
@@ -2204,16 +2204,16 @@ l0800_16B3_1:
 l0800_16B5:
 	word16 cx_1141 = ~cx_1130
 	word16 di_1144 = di_1134 - cx_1141
-	bool v103_1808 = di_1144 == 0<16>
+	bool v109_1808 = di_1144 == 0<16>
 l0800_16BB:
 	branch cx_1141 == 0<16> l0800_16BD
 l0800_16BB_2:
-	v103_1808 = Mem1120[es_1162:di_1144:byte] == 0<8>
+	v109_1808 = Mem1120[es_1162:di_1144:byte] == 0<8>
 	di_1144 = di_1144 + 1<i16>
 	cx_1141 = cx_1141 - 1<16>
 	branch Mem1120[es_1162:di_1144:byte] == 0<8> l0800_16BB
 l0800_16BD:
-	branch v103_1808 l0800_16C6
+	branch v109_1808 l0800_16C6
 l0800_16BF:
 	di_1144 = 1<16>
 	es_1162 = 0<16>
@@ -2367,11 +2367,11 @@ l0800_183F:
 	word16 dx_2042
 	byte ch_1646 = SLICE(fn0800_0ABC(ds_1595, Mem1614[ss:sp_1559 - 2<i16>:word32], out dx_2042), byte, 8)
 	ptr32 es_bx_1627 = Mem1614[ds_1595:0x2E51<16>:segptr32]
-	dx_1637 = (uint16) (uint8) Mem1614[es_bx_1627 + 5<16>:byte] (alias)
+	dx_1637 = CONVERT(Mem1614[es_bx_1627 + 5<16>:byte], byte, uint16) (alias)
 	sp_1626 = sp_1559 + 2<16>
 	word16 bx_1629 = SLICE(es_bx_1627, word16, 0)
 	cx_1647 = SEQ(ch_1646, 8<8>) (alias)
-	branch ((uint16) (uint8) Mem1614[es_bx_1627 + 4<16>:byte] << 8<8>) + dx_1637 <u 0xFF8C<16> l0800_1897
+	branch (CONVERT(Mem1614[es_bx_1627 + 4<16>:byte], byte, uint16) << 8<8>) + dx_1637 <u 0xFF8C<16> l0800_1897
 l0800_188A:
 	Mem1642[ss:sp_1559:word16] = ds_1595
 	Mem1645[ss:sp_1559 - 2<i16>:word16] = 0x952<16>
@@ -2655,7 +2655,7 @@ l0800_1ADD:
 	es_1090 = 0<16>
 l0800_1AE4:
 	ptr32 es_di_358 = Mem300[ss:bp_1015 - 8<16>:segptr32]
-	Mem365[ss:sp_179 - 2<i16>:word16] = (int16) Mem300[es_1090:di_1278:byte] << 8<8>
+	Mem365[ss:sp_179 - 2<i16>:word16] = CONVERT(Mem300[es_1090:di_1278:byte], byte, int16) << 8<8>
 	selector es_1096 = SLICE(es_di_358, selector, 16)
 	word16 di_1097 = SLICE(es_di_358, word16, 0)
 	word16 cx_369 = 0xFFFF<16>
@@ -2668,22 +2668,22 @@ l0800_1AFB_1:
 l0800_1AFD:
 	word16 cx_380 = ~cx_369
 	word16 di_1280 = di_1097 - cx_380
-	bool v41_1141 = di_1280 == 0<16>
+	bool v43_1141 = di_1280 == 0<16>
 l0800_1B03:
 	branch cx_380 == 0<16> l0800_1B05
 l0800_1B03_2:
-	v41_1141 = Mem365[es_1096:di_1280:byte] == 0<8>
+	v43_1141 = Mem365[es_1096:di_1280:byte] == 0<8>
 	di_1280 = di_1280 + 1<i16>
 	cx_380 = cx_380 - 1<16>
 	branch Mem365[es_1096:di_1280:byte] == 0<8> l0800_1B03
 l0800_1B05:
-	branch v41_1141 l0800_1B0E
+	branch v43_1141 l0800_1B0E
 l0800_1B07:
 	di_1280 = 1<16>
 	es_1096 = 0<16>
 l0800_1B0E:
 	ptr32 es_di_435 = Mem365[ss:bp_1015 - 8<16>:segptr32]
-	Mem437[ss:sp_179 - 2<i16>:word16] = Mem365[ss:sp_179 - 2<i16>:word16] + (uint16) ((uint8) Mem365[es_1096:di_1280 + 1<16>:byte])
+	Mem437[ss:sp_179 - 2<i16>:word16] = Mem365[ss:sp_179 - 2<i16>:word16] + CONVERT(Mem365[es_1096:di_1280 + 1<16>:byte], byte, uint16)
 	Mem439[ss:sp_179 - 4<i16>:word16] = 0<16>
 	selector es_1102 = SLICE(es_di_435, selector, 16)
 	word16 di_1103 = SLICE(es_di_435, word16, 0)
@@ -2697,22 +2697,22 @@ l0800_1B26_1:
 l0800_1B28:
 	word16 cx_451 = ~cx_440
 	word16 di_1282 = di_1103 - cx_451
-	bool v43_1145 = di_1282 == 0<16>
+	bool v47_1145 = di_1282 == 0<16>
 l0800_1B2E:
 	branch cx_451 == 0<16> l0800_1B30
 l0800_1B2E_2:
-	v43_1145 = Mem439[es_1102:di_1282:byte] == 0<8>
+	v47_1145 = Mem439[es_1102:di_1282:byte] == 0<8>
 	di_1282 = di_1282 + 1<i16>
 	cx_451 = cx_451 - 1<16>
 	branch Mem439[es_1102:di_1282:byte] == 0<8> l0800_1B2E
 l0800_1B30:
-	branch v43_1145 l0800_1B39
+	branch v47_1145 l0800_1B39
 l0800_1B32:
 	di_1282 = 1<16>
 	es_1102 = 0<16>
 l0800_1B39:
 	ptr32 es_di_496 = Mem439[ss:bp_1015 - 8<16>:segptr32]
-	Mem503[ss:sp_179 - 6<i16>:word16] = (int16) Mem439[es_1102:di_1282 + 2<16>:byte] << 8<8>
+	Mem503[ss:sp_179 - 6<i16>:word16] = CONVERT(Mem439[es_1102:di_1282 + 2<16>:byte], byte, int16) << 8<8>
 	selector es_1108 = SLICE(es_di_496, selector, 16)
 	word16 di_1109 = SLICE(es_di_496, word16, 0)
 	word16 cx_507 = 0xFFFF<16>
@@ -2725,21 +2725,21 @@ l0800_1B50_1:
 l0800_1B52:
 	word16 cx_518 = ~cx_507
 	word16 di_1284 = di_1109 - cx_518
-	bool v45_1149 = di_1284 == 0<16>
+	bool v51_1149 = di_1284 == 0<16>
 l0800_1B58:
 	branch cx_518 == 0<16> l0800_1B5A
 l0800_1B58_2:
-	v45_1149 = Mem503[es_1108:di_1284:byte] == 0<8>
+	v51_1149 = Mem503[es_1108:di_1284:byte] == 0<8>
 	di_1284 = di_1284 + 1<i16>
 	cx_518 = cx_518 - 1<16>
 	branch Mem503[es_1108:di_1284:byte] == 0<8> l0800_1B58
 l0800_1B5A:
-	branch v45_1149 l0800_1B63
+	branch v51_1149 l0800_1B63
 l0800_1B5C:
 	di_1284 = 1<16>
 	es_1108 = 0<16>
 l0800_1B63:
-	word16 ax_567 = Mem503[ss:sp_179 - 4<i16>:word16] + (Mem503[ss:sp_179 - 6<i16>:word16] + (uint16) ((uint8) Mem503[es_1108:di_1284 + 3<16>:byte]))
+	word16 ax_567 = Mem503[ss:sp_179 - 4<i16>:word16] + (Mem503[ss:sp_179 - 6<i16>:word16] + CONVERT(Mem503[es_1108:di_1284 + 3<16>:byte], byte, uint16))
 	Mem575[ss:sp_179 - 2<i16>:word16] = Mem503[ss:sp_179 - 2<i16>:word16] + (ax_567 <u 0<16>)
 	Mem577[ss:sp_179 - 4<i16>:word16] = ax_567
 	Mem600[ss:sp_179 - 6<i16>:word16] = Mem577[ds_286:0x29D1<16>:word16]
@@ -2797,16 +2797,16 @@ l0800_1C0B_1:
 l0800_1C0D:
 	word16 cx_707 = ~cx_696
 	word16 di_1287 = di_1286 - cx_707
-	bool v47_1153 = di_1287 == 0<16>
+	bool v55_1153 = di_1287 == 0<16>
 l0800_1C13:
 	branch cx_707 == 0<16> l0800_1C15
 l0800_1C13_2:
-	v47_1153 = Mem689[es_690:di_1287:byte] == 0<8>
+	v55_1153 = Mem689[es_690:di_1287:byte] == 0<8>
 	di_1287 = di_1287 + 1<i16>
 	cx_707 = cx_707 - 1<16>
 	branch Mem689[es_690:di_1287:byte] == 0<8> l0800_1C13
 l0800_1C15:
-	branch v47_1153 l0800_1C1E
+	branch v55_1153 l0800_1C1E
 l0800_1C17:
 	di_1287 = 1<16>
 	es_690 = 0<16>
@@ -2831,16 +2831,16 @@ l0800_1BDC_1:
 l0800_1BDE:
 	word16 cx_785 = ~cx_774
 	word16 di_1289 = di_1288 - cx_785
-	bool v49_1157 = di_1289 == 0<16>
+	bool v59_1157 = di_1289 == 0<16>
 l0800_1BE4:
 	branch cx_785 == 0<16> l0800_1BE6
 l0800_1BE4_2:
-	v49_1157 = Mem767[es_768:di_1289:byte] == 0<8>
+	v59_1157 = Mem767[es_768:di_1289:byte] == 0<8>
 	di_1289 = di_1289 + 1<i16>
 	cx_785 = cx_785 - 1<16>
 	branch Mem767[es_768:di_1289:byte] == 0<8> l0800_1BE4
 l0800_1BE6:
-	branch v49_1157 l0800_1BEF
+	branch v59_1157 l0800_1BEF
 l0800_1BE8:
 	di_1289 = 1<16>
 	es_768 = 0<16>
@@ -2871,16 +2871,16 @@ l0800_1C43_1:
 l0800_1C45:
 	word16 cx_904 = ~cx_893
 	word16 di_1291 = di_1290 - cx_904
-	bool v51_1161 = di_1291 == 0<16>
+	bool v63_1161 = di_1291 == 0<16>
 l0800_1C4B:
 	branch cx_904 == 0<16> l0800_1C4D
 l0800_1C4B_2:
-	v51_1161 = Mem886[es_887:di_1291:byte] == 0<8>
+	v63_1161 = Mem886[es_887:di_1291:byte] == 0<8>
 	di_1291 = di_1291 + 1<i16>
 	cx_904 = cx_904 - 1<16>
 	branch Mem886[es_887:di_1291:byte] == 0<8> l0800_1C4B
 l0800_1C4D:
-	branch v51_1161 l0800_1C56
+	branch v63_1161 l0800_1C56
 l0800_1C4F:
 	di_1291 = 1<16>
 	es_887 = 0<16>
@@ -3037,7 +3037,7 @@ l0800_1DF8:
 	word16 di_344
 	word16 si_348
 	selector ds_345
-	byte ch_468 = SLICE((uint16) (uint8) fn0800_4110(ds_253, Mem340[ss:sp_295 - 10<i16>:word32], Mem340[ss:sp_295 - 6<i16>:word16], Mem340[ss:sp_295 - 4<i16>:word16], Mem340[ss:sp_295 - 2<i16>:word32], out si_348, out di_344, out ds_345), byte, 8)
+	byte ch_468 = SLICE(CONVERT(fn0800_4110(ds_253, Mem340[ss:sp_295 - 10<i16>:word32], Mem340[ss:sp_295 - 6<i16>:word16], Mem340[ss:sp_295 - 4<i16>:word16], Mem340[ss:sp_295 - 2<i16>:word32], out si_348, out di_344, out ds_345), uint8, uint16), byte, 8)
 	Mem356[ss:sp_295:word16] = 0<16>
 	Mem360[ss:sp_295 - 2<i16>:word16] = si_348 - 8<16>
 	word16 ax_361 = Mem360[ds_345:0x2E51<16>:word16]
@@ -3079,7 +3079,7 @@ word16 fn0800_1E5E(selector ds, ptr16 & dsOut)
 fn0800_1E5E_entry:
 l0800_1E5E:
 	ptr32 es_bx_9 = Mem7[ds:0x2E51<16>:segptr32]
-	word16 ax_20 = ((uint16) (uint8) Mem7[es_bx_9 + 4<16>:byte] << 8<8>) + (uint16) ((uint8) Mem7[es_bx_9 + 5<16>:byte])
+	word16 ax_20 = (CONVERT(Mem7[es_bx_9 + 4<16>:byte], byte, uint16) << 8<8>) + CONVERT(Mem7[es_bx_9 + 5<16>:byte], byte, uint16)
 	byte cl_330
 	word16 dx_331
 	word16 ax_37 = fn0800_2CCF(ds, SEQ(Mem28[ds:0x2E53<16>:word16], Mem28[ds:0x2E51<16>:word16] + 8<16>), ax_20 - 8<16>, 0<16>, out cl_330, out dx_331)
@@ -3171,16 +3171,16 @@ l0800_1F8F_1:
 l0800_1F91:
 	word16 cx_102 = ~cx_79
 	word16 di_101 = di_354 - cx_102
-	bool v32_375 = di_101 == 0<16>
+	bool v34_375 = di_101 == 0<16>
 l0800_1F98:
 	branch cx_102 == 0<16> l0800_1F9A
 l0800_1F98_2:
-	v32_375 = Mem15[es_111:di_101:byte] == 0x3A<8>
+	v34_375 = Mem15[es_111:di_101:byte] == 0x3A<8>
 	di_101 = di_101 + 1<i16>
 	cx_102 = cx_102 - 1<16>
 	branch Mem15[es_111:di_101:byte] == 0x3A<8> l0800_1F98
 l0800_1F9A:
-	branch v32_375 l0800_1FA3
+	branch v34_375 l0800_1FA3
 l0800_1F9C:
 	di_101 = 1<16>
 	es_111 = 0<16>
@@ -3188,7 +3188,7 @@ l0800_1FA3:
 	ptrArg02 = SEQ(es_111, di_101) (alias)
 l0800_1FAD:
 	ptr32 es_bx_145 = Mem144[ds:0x2E51<16>:segptr32]
-	word16 ax_156 = ((uint16) (uint8) Mem144[es_bx_145 + 4<16>:byte] << 8<8>) + (uint16) ((uint8) Mem144[es_bx_145 + 5<16>:byte])
+	word16 ax_156 = (CONVERT(Mem144[es_bx_145 + 4<16>:byte], byte, uint16) << 8<8>) + CONVERT(Mem144[es_bx_145 + 5<16>:byte], byte, uint16)
 	word16 wArg04_404 = SLICE(ptrArg02, word16, 16)
 	word16 wArg02_407 = SLICE(ptrArg02, word16, 0)
 	word16 ax_160 = Mem159[ds:0x2E53<16>:word16]
@@ -3278,7 +3278,7 @@ fn0800_2085_entry:
 	word16 wArg02_569 = SLICE(ptrArg02, word16, 0)
 l0800_2085:
 	ptr32 es_bx_17 = Mem15[ds:0x2E51<16>:segptr32]
-	word16 ax_28 = ((uint16) (uint8) Mem15[es_bx_17 + 4<16>:byte] << 8<8>) + (uint16) ((uint8) Mem15[es_bx_17 + 5<16>:byte])
+	word16 ax_28 = (CONVERT(Mem15[es_bx_17 + 4<16>:byte], byte, uint16) << 8<8>) + CONVERT(Mem15[es_bx_17 + 5<16>:byte], byte, uint16)
 	word16 dx_32 = Mem29[ds:0x2E51<16>:word16] + ax_28
 	selector es_490 = SLICE(ptrArg02, selector, 16)
 	word16 di_43 = SLICE(ptrArg02, word16, 0)
@@ -3291,7 +3291,7 @@ l0800_20BE_1:
 	di_802 = di_43
 	branch Mem34[es_490:di_802:byte] == 0<8> l0800_20BE
 l0800_20C0:
-	word16 bx_73 = Mem57[ds:0x2E51<16>:word16] + (((int16) Mem57[ptrArg06:byte] << 8<8>) + (uint16) ((uint8) Mem57[ptrArg06 + 1<16>:byte]))
+	word16 bx_73 = Mem57[ds:0x2E51<16>:word16] + ((CONVERT(Mem57[ptrArg06:byte], byte, int16) << 8<8>) + CONVERT(Mem57[ptrArg06 + 1<16>:byte], byte, uint16))
 	word16 cx_50 = ~cx_39
 	word16 dx_71 = Mem57[ds:0x2E53<16>:word16]
 	fn0800_B0F3(SEQ(Mem91[ds:0x2E53<16>:word16], bx_73 - 1<16> + (cx_50 + 4<16>)), SEQ(Mem86[ds:0x2E53<16>:word16], bx_73 - 1<16>), dx_32 - (bx_73 - 1<16>))
@@ -3356,16 +3356,16 @@ l0800_2164_1:
 l0800_2166:
 	word16 cx_237 = ~cx_226
 	word16 di_240 = di_230 - cx_237
-	bool v35_527 = di_240 == 0<16>
+	bool v37_527 = di_240 == 0<16>
 l0800_216C:
 	branch cx_237 == 0<16> l0800_216E
 l0800_216C_2:
-	v35_527 = Mem211[dx_71:di_240:byte] == 0<8>
+	v37_527 = Mem211[dx_71:di_240:byte] == 0<8>
 	di_240 = di_240 + 1<i16>
 	cx_237 = cx_237 - 1<16>
 	branch Mem211[dx_71:di_240:byte] == 0<8> l0800_216C
 l0800_216E:
-	branch v35_527 l0800_2177
+	branch v37_527 l0800_2177
 l0800_2170:
 	di_240 = 1<16>
 	es_258 = 0<16>
@@ -3383,16 +3383,16 @@ l0800_2189_1:
 l0800_218B:
 	word16 cx_292 = ~cx_281
 	word16 di_295 = di_285 - cx_292
-	bool v37_531 = di_295 == 0<16>
+	bool v41_531 = di_295 == 0<16>
 l0800_2191:
 	branch cx_292 == 0<16> l0800_2193
 l0800_2191_2:
-	v37_531 = Mem266[dx_71:di_295:byte] == 0<8>
+	v41_531 = Mem266[dx_71:di_295:byte] == 0<8>
 	di_295 = di_295 + 1<i16>
 	cx_292 = cx_292 - 1<16>
 	branch Mem266[dx_71:di_295:byte] == 0<8> l0800_2191
 l0800_2193:
-	branch v37_531 l0800_219C
+	branch v41_531 l0800_219C
 l0800_2195:
 	di_295 = 1<16>
 	es_313 = 0<16>
@@ -3410,18 +3410,18 @@ l0800_21AE_1:
 l0800_21B0:
 	word16 cx_347 = ~cx_336
 	word16 di_350 = di_340 - cx_347
-	bool v39_535 = di_350 == 0<16>
+	bool v45_535 = di_350 == 0<16>
 l0800_21B6:
 	byte ch_745 = SLICE(cx_347, byte, 8)
 	branch cx_347 == 0<16> l0800_21B8
 l0800_21B6_2:
 	cx_347 = cx_347 - 1<16>
-	v39_535 = Mem321[dx_71:di_350:byte] == 0<8>
+	v45_535 = Mem321[dx_71:di_350:byte] == 0<8>
 	di_350 = di_350 + 1<i16>
 	ch_745 = SLICE(cx_347, byte, 8) (alias)
 	branch Mem321[dx_71:di_350:byte] == 0<8> l0800_21B6
 l0800_21B8:
-	branch v39_535 l0800_21C1
+	branch v45_535 l0800_21C1
 l0800_21BA:
 	di_350 = 1<16>
 	es_368 = 0<16>
@@ -3430,7 +3430,7 @@ l0800_21C1:
 	ptr32 es_bx_411 = Mem376[ds:0x2E51<16>:segptr32]
 	Mem415[es_bx_411 + 4<16>:byte] = SLICE(ax_28 + (cx_50 + 4<16>) >>u 8<8>, byte, 0)
 	Mem418[es_bx_411 + 5<16>:byte] = bLoc0C_634 + bLoc0E_635
-	fn0800_2688(ds, (uint32) (uint16) (cx_50 + 4<16>), 0<16>, 0<16>)
+	fn0800_2688(ds, CONVERT(cx_50 + 4<16>, word16, uint32), 0<16>, 0<16>)
 	return ch_745
 fn0800_2085_exit:
 l0800_2134_1:
@@ -3459,8 +3459,8 @@ fn0800_2201_entry:
 	word16 wArg04_240 = SLICE(ptrArg02, word16, 16)
 l0800_2201:
 	ptr32 es_bx_14 = Mem12[ds:0x2E51<16>:segptr32]
-	word16 dx_45 = Mem31[ds:0x2E51<16>:word16] + (((int16) Mem31[ptrArg02:byte] << 8<8>) + (uint16) ((uint8) Mem31[ptrArg02 + 1<16>:byte])) - wArg02_236
-	word16 ax_25 = ((uint16) (uint8) Mem12[es_bx_14 + 4<16>:byte] << 8<8>) + (uint16) ((uint8) Mem12[es_bx_14 + 5<16>:byte])
+	word16 dx_45 = Mem31[ds:0x2E51<16>:word16] + ((CONVERT(Mem31[ptrArg02:byte], byte, int16) << 8<8>) + CONVERT(Mem31[ptrArg02 + 1<16>:byte], byte, uint16)) - wArg02_236
+	word16 ax_25 = (CONVERT(Mem12[es_bx_14 + 4<16>:byte], byte, uint16) << 8<8>) + CONVERT(Mem12[es_bx_14 + 5<16>:byte], byte, uint16)
 	word16 ax_51 = wArg02_236 + dx_45
 	fn0800_B0F3(ptrArg02, SEQ(wArg04_240, ax_51), Mem26[ds:0x2E51<16>:word16] + ax_25 - ax_51)
 	ptr32 es_bx_88 = Mem72[ds:0x2E51<16>:segptr32]
@@ -3525,7 +3525,7 @@ fn0800_22FE_entry:
 	word16 wArg04_243 = SLICE(ptrArg02, word16, 16)
 l0800_22FE:
 	ptr32 es_bx_14 = Mem12[ds:0x2E51<16>:segptr32]
-	word16 ax_25 = ((uint16) (uint8) Mem12[es_bx_14 + 4<16>:byte] << 8<8>) + (uint16) ((uint8) Mem12[es_bx_14 + 5<16>:byte])
+	word16 ax_25 = (CONVERT(Mem12[es_bx_14 + 4<16>:byte], byte, uint16) << 8<8>) + CONVERT(Mem12[es_bx_14 + 5<16>:byte], byte, uint16)
 	byte bLoc08_255 = SLICE(ax_25, byte, 0)
 	word16 dx_29 = Mem26[ds:0x2E51<16>:word16] + ax_25
 	selector es_209 = SLICE(ptrArg02, selector, 16)
@@ -3619,7 +3619,7 @@ l0800_2419:
 	di_54 = 1<16>
 	es_410 = 0<16>
 l0800_2420:
-	word16 ax_83 = (int16) Mem35[es_410:di_54:byte]
+	word16 ax_83 = CONVERT(Mem35[es_410:di_54:byte], byte, int16)
 	selector es_139 = wArg04
 	word16 di_111 = wArg02
 	word16 cx_107 = 0xFFFF<16>
@@ -3632,21 +3632,21 @@ l0800_2437_1:
 l0800_2439:
 	word16 cx_118 = ~cx_107
 	word16 di_121 = di_111 - cx_118
-	bool v36_439 = di_121 == 0<16>
+	bool v38_439 = di_121 == 0<16>
 l0800_243F:
 	branch cx_118 == 0<16> l0800_2441
 l0800_243F_2:
-	v36_439 = Mem103[wArg04:di_121:byte] == 0<8>
+	v38_439 = Mem103[wArg04:di_121:byte] == 0<8>
 	di_121 = di_121 + 1<i16>
 	cx_118 = cx_118 - 1<16>
 	branch Mem103[wArg04:di_121:byte] == 0<8> l0800_243F
 l0800_2441:
-	branch v36_439 l0800_244A
+	branch v38_439 l0800_244A
 l0800_2443:
 	di_121 = 1<16>
 	es_139 = 0<16>
 l0800_244A:
-	word16 dx_164 = (ax_83 << 8<8>) + (uint16) ((uint8) Mem103[es_139:di_121 + 1<16>:byte])
+	word16 dx_164 = (ax_83 << 8<8>) + CONVERT(Mem103[es_139:di_121 + 1<16>:byte], byte, uint16)
 	selector es_210 = wArg04
 	word16 di_182 = wArg02
 	word16 cx_178 = 0xFFFF<16>
@@ -3659,21 +3659,21 @@ l0800_2462_1:
 l0800_2464:
 	word16 cx_189 = ~cx_178
 	word16 di_192 = di_182 - cx_189
-	bool v38_443 = di_192 == 0<16>
+	bool v42_443 = di_192 == 0<16>
 l0800_246A:
 	branch cx_189 == 0<16> l0800_246C
 l0800_246A_2:
-	v38_443 = Mem177[wArg04:di_192:byte] == 0<8>
+	v42_443 = Mem177[wArg04:di_192:byte] == 0<8>
 	di_192 = di_192 + 1<i16>
 	cx_189 = cx_189 - 1<16>
 	branch Mem177[wArg04:di_192:byte] == 0<8> l0800_246A
 l0800_246C:
-	branch v38_443 l0800_2475
+	branch v42_443 l0800_2475
 l0800_246E:
 	di_192 = 1<16>
 	es_210 = 0<16>
 l0800_2475:
-	word16 ax_221 = (int16) Mem177[es_210:di_192 + 2<16>:byte]
+	word16 ax_221 = CONVERT(Mem177[es_210:di_192 + 2<16>:byte], byte, int16)
 	selector es_277 = wArg04
 	word16 di_249 = wArg02
 	word16 cx_245 = 0xFFFF<16>
@@ -3686,26 +3686,26 @@ l0800_248C_1:
 l0800_248E:
 	word16 cx_256 = ~cx_245
 	word16 di_259 = di_249 - cx_256
-	bool v40_447 = di_259 == 0<16>
+	bool v46_447 = di_259 == 0<16>
 l0800_2494:
 	branch cx_256 == 0<16> l0800_2496
 l0800_2494_2:
-	v40_447 = Mem241[wArg04:di_259:byte] == 0<8>
+	v46_447 = Mem241[wArg04:di_259:byte] == 0<8>
 	di_259 = di_259 + 1<i16>
 	cx_256 = cx_256 - 1<16>
 	branch Mem241[wArg04:di_259:byte] == 0<8> l0800_2494
 l0800_2496:
-	branch v40_447 l0800_249F
+	branch v46_447 l0800_249F
 l0800_2498:
 	di_259 = 1<16>
 	es_277 = 0<16>
 l0800_249F:
-	word16 dx_302 = (ax_221 << 8<8>) + (uint16) ((uint8) Mem241[es_277:di_259 + 3<16>:byte])
+	word16 dx_302 = (ax_221 << 8<8>) + CONVERT(Mem241[es_277:di_259 + 3<16>:byte], byte, uint16)
 	ui32 ax_dx_434 = SEQ(dx_164 + (dx_302 <u 0<16>), dx_302) - SEQ(Mem323[ds_24:0x45A8<16>:word16], Mem323[ds_24:0x45A6<16>:word16])
 	word16 bp_362
 	selector ds_366
 	word16 si_369
-	byte ch_560 = SLICE((uint16) (uint8) fn0800_3C99(ds_24, SEQ(Mem354[ds_24:0x29D1<16>:word16], Mem357[ds_24:0x29CF<16>:word16]), SLICE(ax_dx_434, word16, 0), SLICE(ax_dx_434, word16, 16), out bp_362, out si_369, out ds_366), byte, 8)
+	byte ch_560 = SLICE(CONVERT(fn0800_3C99(ds_24, SEQ(Mem354[ds_24:0x29D1<16>:word16], Mem357[ds_24:0x29CF<16>:word16]), SLICE(ax_dx_434, word16, 0), SLICE(ax_dx_434, word16, 16), out bp_362, out si_369, out ds_366), byte, uint16), byte, 8)
 	word16 sp_370 = <invalid>
 	Mem379[ss:sp_370 + 0xA<16>:word16] = Mem360[ss:bp_362 - 2<16>:word16]
 	Mem382[ss:sp_370 + 8<16>:word16] = Mem379[ss:bp_362 - 4<16>:word16]
@@ -3758,7 +3758,7 @@ l0800_2519:
 	di_31 = 1<16>
 	es_49 = 0<16>
 l0800_2520:
-	word16 ax_60 = (int16) Mem12[es_49:di_31:byte]
+	word16 ax_60 = CONVERT(Mem12[es_49:di_31:byte], byte, int16)
 	selector es_116 = SLICE(ptrArg02, selector, 16)
 	word16 di_514 = SLICE(ptrArg02, word16, 0)
 	word16 cx_84 = 0xFFFF<16>
@@ -3771,21 +3771,21 @@ l0800_2537_1:
 l0800_2539:
 	word16 cx_100 = ~cx_84
 	word16 di_103 = di_514 - cx_100
-	bool v40_536 = di_103 == 0<16>
+	bool v42_536 = di_103 == 0<16>
 l0800_253F:
 	branch cx_100 == 0<16> l0800_2541
 l0800_253F_2:
-	v40_536 = Mem80[es_116:di_103:byte] == 0<8>
+	v42_536 = Mem80[es_116:di_103:byte] == 0<8>
 	di_103 = di_103 + 1<i16>
 	cx_100 = cx_100 - 1<16>
 	branch Mem80[es_116:di_103:byte] == 0<8> l0800_253F
 l0800_2541:
-	branch v40_536 l0800_254A
+	branch v42_536 l0800_254A
 l0800_2543:
 	di_103 = 1<16>
 	es_116 = 0<16>
 l0800_254A:
-	word16 dx_141 = (ax_60 << 8<8>) + (uint16) ((uint8) Mem80[es_116:di_103 + 1<16>:byte])
+	word16 dx_141 = (ax_60 << 8<8>) + CONVERT(Mem80[es_116:di_103 + 1<16>:byte], byte, uint16)
 	selector es_187 = SLICE(ptrArg02, selector, 16)
 	word16 di_159 = SLICE(ptrArg02, word16, 0)
 	word16 cx_155 = 0xFFFF<16>
@@ -3798,21 +3798,21 @@ l0800_2562_1:
 l0800_2564:
 	word16 cx_166 = ~cx_155
 	word16 di_169 = di_159 - cx_166
-	bool v42_540 = di_169 == 0<16>
+	bool v46_540 = di_169 == 0<16>
 l0800_256A:
 	branch cx_166 == 0<16> l0800_256C
 l0800_256A_2:
-	v42_540 = Mem154[es_187:di_169:byte] == 0<8>
+	v46_540 = Mem154[es_187:di_169:byte] == 0<8>
 	di_169 = di_169 + 1<i16>
 	cx_166 = cx_166 - 1<16>
 	branch Mem154[es_187:di_169:byte] == 0<8> l0800_256A
 l0800_256C:
-	branch v42_540 l0800_2575
+	branch v46_540 l0800_2575
 l0800_256E:
 	di_169 = 1<16>
 	es_187 = 0<16>
 l0800_2575:
-	word16 ax_198 = (int16) Mem154[es_187:di_169 + 2<16>:byte]
+	word16 ax_198 = CONVERT(Mem154[es_187:di_169 + 2<16>:byte], byte, int16)
 	selector es_254 = SLICE(ptrArg02, selector, 16)
 	word16 di_226 = SLICE(ptrArg02, word16, 0)
 	word16 cx_222 = 0xFFFF<16>
@@ -3825,21 +3825,21 @@ l0800_258C_1:
 l0800_258E:
 	word16 cx_233 = ~cx_222
 	word16 di_236 = di_226 - cx_233
-	bool v44_544 = di_236 == 0<16>
+	bool v50_544 = di_236 == 0<16>
 l0800_2594:
 	branch cx_233 == 0<16> l0800_2596
 l0800_2594_2:
-	v44_544 = Mem218[es_254:di_236:byte] == 0<8>
+	v50_544 = Mem218[es_254:di_236:byte] == 0<8>
 	di_236 = di_236 + 1<i16>
 	cx_233 = cx_233 - 1<16>
 	branch Mem218[es_254:di_236:byte] == 0<8> l0800_2594
 l0800_2596:
-	branch v44_544 l0800_259F
+	branch v50_544 l0800_259F
 l0800_2598:
 	di_236 = 1<16>
 	es_254 = 0<16>
 l0800_259F:
-	word16 dx_279 = (ax_198 << 8<8>) + (uint16) ((uint8) Mem218[es_254:di_236 + 3<16>:byte])
+	word16 dx_279 = (ax_198 << 8<8>) + CONVERT(Mem218[es_254:di_236 + 3<16>:byte], byte, uint16)
 	word16 cx_730
 	word16 dx_731
 	word16 ax_337 = fn0800_ACB3(ds, SEQ(Mem330[ds:0x29D1<16>:word16], Mem333[ds:0x29CF<16>:word16]), SEQ(dx_141 + (dx_279 <u 0<16>), dx_279) - SEQ(Mem218[ds:0x45A8<16>:word16], Mem218[ds:0x45A6<16>:word16]), 0<16>, out cx_730, out dx_731)
@@ -3900,11 +3900,12 @@ void fn0800_2688(selector ds, ui32 dwArg02, word16 wArg06, word16 wArg08)
 // Trashed: SCZO ax bx cl dx es Top
 // Preserved: bp sp
 fn0800_2688_entry:
+	word16 wArg02 = SLICE(dwArg02, word16, 0)
 l0800_2688:
 	ptr32 es_bx_11 = Mem7[ds:0x2E51<16>:segptr32]
 	word16 sp_106 = fp - 0x12<16>
 	word16 dx_23 = Mem7[ds:0x2E53<16>:word16]
-	word16 bx_24 = SLICE(es_bx_11, word16, 0) + (((uint16) ((uint8) Mem7[es_bx_11 + 4<16>:byte]) << 8<8>) + (uint16) ((uint8) Mem7[es_bx_11 + 5<16>:byte]))
+	word16 bx_24 = SLICE(es_bx_11, word16, 0) + ((CONVERT(Mem7[es_bx_11 + 4<16>:byte], byte, uint16) << 8<8>) + CONVERT(Mem7[es_bx_11 + 5<16>:byte], byte, uint16))
 	segptr32 ptrLoc06_400 = SEQ(Mem26[ds:0x2E53<16>:word16], Mem26[ds:0x2E51<16>:word16] + 8<16>)
 l0800_27B3:
 	word16 wLoc06_264 = SLICE(ptrLoc06_400, word16, 0)
@@ -3933,7 +3934,7 @@ l0800_26D3:
 	branch Mem78[ptrLoc06_406:byte] != 0<8> l0800_26D3
 l0800_26DF:
 l0800_277D:
-	byte bArg02_303 = SLICE(dwArg02, byte, 0)
+	byte bArg02_303 = SLICE(wArg02, byte, 0)
 	word16 wLoc06_282 = SLICE(ptrLoc06_278, word16, 0)
 	word16 wLoc04_307 = SLICE(ptrLoc06_278, word16, 16)
 	branch Mem85[ptrLoc06_278:byte] == 0<8> l0800_2789
@@ -3953,8 +3954,8 @@ l0800_26E2:
 	branch Mem130[ptrLoc06_407:byte] != 0<8> l0800_26E2
 l0800_26EE:
 	word16 sp_149 = sp_106 - 2<i16>
-	Mem150[ss:sp_149:word16] = ((int16) Mem130[ptrLoc06_278:byte] << 8<8>) + (uint16) ((uint8) Mem130[ptrLoc06_278 + 1<16>:byte])
-	word16 ax_157 = ((int16) Mem150[ptrLoc06_278 + 2<16>:byte] << 8<8>) + (uint16) ((uint8) Mem150[ptrLoc06_278 + 3<16>:byte])
+	Mem150[ss:sp_149:word16] = (CONVERT(Mem130[ptrLoc06_278:byte], byte, int16) << 8<8>) + CONVERT(Mem130[ptrLoc06_278 + 1<16>:byte], byte, uint16)
+	word16 ax_157 = (CONVERT(Mem150[ptrLoc06_278 + 2<16>:byte], byte, int16) << 8<8>) + CONVERT(Mem150[ptrLoc06_278 + 3<16>:byte], byte, uint16)
 	sp_106 = sp_149 + 2<i16>
 	word16 ax_163 = Mem150[ss:sp_149:word16] + (ax_157 <u 0<16>)
 	byte bLoc12_302 = SLICE(ax_157, byte, 0)
@@ -3964,10 +3965,10 @@ l0800_2727:
 l0800_2729:
 	branch ax_157 <u wArg06 l0800_2779
 l0800_272E:
-	int32 dx_ax_182 = (int32) SLICE(SEQ(ax_163, ax_157) + dwArg02, word16, 16)
+	int32 dx_ax_182 = CONVERT(SLICE(SEQ(ax_163, ax_157) + dwArg02, word16, 16), word16, int32)
 	word16 dx_404
 	Mem199[ptrLoc06_278:byte] = SLICE(fn0800_8C8A(SLICE(dx_ax_182, word16, 0), 8<8>, SLICE(dx_ax_182, word16, 16), out dx_404), byte, 0)
-	Mem208[ptrLoc06_278 + 1<16>:byte] = SLICE((int32) SLICE(SEQ(ax_163, ax_157) + dwArg02, word16, 16), byte, 0)
+	Mem208[ptrLoc06_278 + 1<16>:byte] = SLICE(CONVERT(SLICE(SEQ(ax_163, ax_157) + dwArg02, word16, 16), word16, int32), byte, 0)
 	int32 dx_ax_257 = SEQ(ax_163, ax_157) + dwArg02
 	word16 dx_405
 	Mem230[ptrLoc06_278 + 2<16>:byte] = SLICE(fn0800_8C8A(SLICE(dx_ax_257, word16, 0), 8<8>, SLICE(dx_ax_257, word16, 16), out dx_405), byte, 0)
@@ -4028,16 +4029,16 @@ l0800_2870_1:
 l0800_2872:
 	word16 cx_102 = ~cx_79
 	word16 di_101 = di_306 - cx_102
-	bool v27_334 = di_101 == 0<16>
+	bool v29_334 = di_101 == 0<16>
 l0800_2879:
 	branch cx_102 == 0<16> l0800_287B
 l0800_2879_2:
-	v27_334 = Mem15[es_111:di_101:byte] == 0x3A<8>
+	v29_334 = Mem15[es_111:di_101:byte] == 0x3A<8>
 	di_101 = di_101 + 1<i16>
 	cx_102 = cx_102 - 1<16>
 	branch Mem15[es_111:di_101:byte] == 0x3A<8> l0800_2879
 l0800_287B:
-	branch v27_334 l0800_2884
+	branch v29_334 l0800_2884
 l0800_287D:
 	di_101 = 1<16>
 	es_111 = 0<16>
@@ -4046,7 +4047,7 @@ l0800_2884:
 l0800_288E:
 	ptr32 es_bx_145 = Mem144[ds:0x2E51<16>:segptr32]
 	word16 dx_157 = Mem144[ds:0x2E53<16>:word16]
-	word16 bx_158 = SLICE(es_bx_145, word16, 0) + (((uint16) ((uint8) Mem144[es_bx_145 + 4<16>:byte]) << 8<8>) + (uint16) ((uint8) Mem144[es_bx_145 + 5<16>:byte]))
+	word16 bx_158 = SLICE(es_bx_145, word16, 0) + ((CONVERT(Mem144[es_bx_145 + 4<16>:byte], byte, uint16) << 8<8>) + CONVERT(Mem144[es_bx_145 + 5<16>:byte], byte, uint16))
 	segptr32 ptrLoc0A_523 = SEQ(Mem162[ds:0x2E53<16>:word16], Mem162[ds:0x2E51<16>:word16] + 8<16>)
 l0800_2917:
 	word16 wLoc0A_358 = SLICE(ptrLoc0A_523, word16, 0)
@@ -4069,13 +4070,13 @@ l0800_28D6:
 	word16 cx_205 = ~cx_194
 	word16 di_207 = di_198 - cx_205
 	word16 ax_230 = 0<16>
-	bool v29_338 = di_207 == 0<16>
+	bool v33_338 = di_207 == 0<16>
 	di_214 = di_207
 l0800_28DA:
 	word16 di_214
 	branch cx_205 == 0<16> l0800_28DC
 l0800_28DA_2:
-	v29_338 = Mem188[wLoc08_357:si_533:byte] == Mem188[es_322:di_534:byte]
+	v33_338 = Mem188[wLoc08_357:si_533:byte] == Mem188[es_322:di_534:byte]
 	si_182 = si_533 + 1<i16>
 	di_214 = di_534 + 1<i16>
 	cx_205 = cx_205 - 1<16>
@@ -4083,14 +4084,14 @@ l0800_28DA_2:
 	di_534 = di_214
 	branch Mem188[wLoc08_357:si_533:byte] != Mem188[es_322:di_534:byte] l0800_28DA
 l0800_28DC:
-	branch v29_338 l0800_28E3
+	branch v33_338 l0800_28E3
 l0800_28DE:
 	word16 ax_227 = 0<16> - (di_207 <u 0<16>)
 	ax_230 = ax_227 - 0xFFFF<16> - (ax_227 <u 0<16>)
 l0800_28E3:
 	branch ax_230 != 0<16> l0800_28F4
 l0800_28F4:
-	ptrLoc0A_523 = SEQ(Mem188[ds:0x2E53<16>:word16], Mem188[ds:0x2E51<16>:word16] + (((int16) Mem188[ptrLoc0A_523:byte] << 8<8>) + (uint16) ((uint8) Mem188[ptrLoc0A_523 + 1<16>:byte]))) (alias)
+	ptrLoc0A_523 = SEQ(Mem188[ds:0x2E53<16>:word16], Mem188[ds:0x2E51<16>:word16] + ((CONVERT(Mem188[ptrLoc0A_523:byte], byte, int16) << 8<8>) + CONVERT(Mem188[ptrLoc0A_523 + 1<16>:byte], byte, uint16))) (alias)
 l0800_28E8:
 	dxOut = wLoc08_357
 	return wLoc0A_358
@@ -4159,13 +4160,13 @@ l0800_2971:
 	word16 cx_103 = ~cx_100
 	word16 di_105 = di_104 - cx_103
 	word16 ax_128 = 0<16>
-	bool v24_281 = di_105 == 0<16>
+	bool v26_281 = di_105 == 0<16>
 	di_112 = di_105
 l0800_2975:
 	word16 di_112
 	branch cx_103 == 0<16> l0800_2977
 l0800_2975_2:
-	v24_281 = Mem86[wArg08_298:si_435:byte] == Mem86[es_263:di_436:byte]
+	v26_281 = Mem86[wArg08_298:si_435:byte] == Mem86[es_263:di_436:byte]
 	si_109 = si_435 + 1<i16>
 	di_112 = di_436 + 1<i16>
 	cx_103 = cx_103 - 1<16>
@@ -4173,7 +4174,7 @@ l0800_2975_2:
 	di_436 = di_112
 	branch Mem86[wArg08_298:si_435:byte] != Mem86[es_263:di_436:byte] l0800_2975
 l0800_2977:
-	branch v24_281 l0800_297E
+	branch v26_281 l0800_297E
 l0800_2979:
 	word16 ax_125 = 0<16> - (di_105 <u 0<16>)
 	ax_128 = ax_125 - 0xFFFF<16> - (ax_125 <u 0<16>)
@@ -4192,16 +4193,16 @@ l0800_2995_1:
 l0800_2997:
 	word16 cx_176 = ~cx_165
 	word16 di_179 = di_169 - cx_176
-	bool v26_285 = di_179 == 0<16>
+	bool v30_285 = di_179 == 0<16>
 l0800_299D:
 	branch cx_176 == 0<16> l0800_299F
 l0800_299D_2:
-	v26_285 = Mem86[es_197:di_179:byte] == 0<8>
+	v30_285 = Mem86[es_197:di_179:byte] == 0<8>
 	di_179 = di_179 + 1<i16>
 	cx_176 = cx_176 - 1<16>
 	branch Mem86[es_197:di_179:byte] == 0<8> l0800_299D
 l0800_299F:
-	branch v26_285 l0800_29A8
+	branch v30_285 l0800_29A8
 l0800_29A1:
 	di_179 = 1<16>
 	es_197 = 0<16>
@@ -4253,7 +4254,7 @@ l0800_2A07:
 	fn0800_35A3(fp - 0x7A<16>, ss, SEQ(ds, 0x4541<16>))
 	ptr32 es_bx_102 = Mem91[ds:0x2E51<16>:segptr32]
 	word16 dx_114 = Mem91[ds:0x2E53<16>:word16]
-	word16 bx_115 = SLICE(es_bx_102, word16, 0) + (((uint16) ((uint8) Mem91[es_bx_102 + 4<16>:byte]) << 8<8>) + (uint16) ((uint8) Mem91[es_bx_102 + 5<16>:byte]))
+	word16 bx_115 = SLICE(es_bx_102, word16, 0) + ((CONVERT(Mem91[es_bx_102 + 4<16>:byte], byte, uint16) << 8<8>) + CONVERT(Mem91[es_bx_102 + 5<16>:byte], byte, uint16))
 	word16 cx_158 = SEQ(ch_830, 8<8>)
 l0800_2C53:
 	word16 dx_122 = Mem120[ds:0x45AE<16>:word16]
@@ -4278,7 +4279,7 @@ l0800_2B54:
 	branch Mem183[Mem183[ds:0x45AA<16>:segptr32]:byte] == 0<8> l0800_2B61
 l0800_2B61:
 	ptr32 es_bx_189 = Mem183[ds:0x45AE<16>:segptr32]
-	word16 bx_202 = Mem183[ds:0x2E51<16>:word16] + (((int16) Mem183[es_bx_189:byte] << 8<8>) + (uint16) ((uint8) Mem183[es_bx_189 + 1<16>:byte]))
+	word16 bx_202 = Mem183[ds:0x2E51<16>:word16] + ((CONVERT(Mem183[es_bx_189:byte], byte, int16) << 8<8>) + CONVERT(Mem183[es_bx_189 + 1<16>:byte], byte, uint16))
 	Mem204[ds:0x45B0<16>:word16] = Mem183[ds:0x2E53<16>:word16]
 	Mem205[ds:0x45AE<16>:word16] = bx_202
 l0800_2B5E:
@@ -4400,16 +4401,16 @@ l0800_2B34_1:
 l0800_2B36:
 	word16 cx_502 = ~cx_491
 	word16 di_1500 = di_1499 - cx_502
-	bool v45_933 = di_1500 == 0<16>
+	bool v47_933 = di_1500 == 0<16>
 l0800_2B3C:
 	branch cx_502 == 0<16> l0800_2B3E
 l0800_2B3C_2:
-	v45_933 = Mem219[es_523:di_1500:byte] == 0<8>
+	v47_933 = Mem219[es_523:di_1500:byte] == 0<8>
 	di_1500 = di_1500 + 1<i16>
 	cx_502 = cx_502 - 1<16>
 	branch Mem219[es_523:di_1500:byte] == 0<8> l0800_2B3C
 l0800_2B3E:
-	branch v45_933 l0800_2B47
+	branch v47_933 l0800_2B47
 l0800_2B40:
 	di_1500 = 1<16>
 	es_523 = 0<16>
@@ -4455,20 +4456,20 @@ l0800_2BDA:
 	word16 cx_647 = ~cx_636
 	word16 di_649 = di_1502 - cx_647
 	word16 ax_672 = 0<16>
-	bool v47_937 = di_649 == 0<16>
+	bool v51_937 = di_649 == 0<16>
 	di_656 = di_649
 l0800_2BDE:
 	word16 di_656
 	branch cx_647 == 0<16> l0800_2BE0
 l0800_2BDE_3:
-	v47_937 = Mem628[ds_626:si:byte] == Mem628[ss:di_1504:byte]
+	v51_937 = Mem628[ds_626:si:byte] == Mem628[ss:di_1504:byte]
 	si = si + 1<i16>
 	di_656 = di_1504 + 1<i16>
 	cx_647 = cx_647 - 1<16>
 	di_1504 = di_656
 	branch Mem628[ds_626:si:byte] != Mem628[ss:di_1504:byte] l0800_2BDE
 l0800_2BE0:
-	branch v47_937 l0800_2BE7
+	branch v51_937 l0800_2BE7
 l0800_2BE2:
 	word16 ax_669 = 0<16> - (di_649 <u 0<16>)
 	ax_672 = ax_669 - 0xFFFF<16> - (ax_669 <u 0<16>)
@@ -4488,16 +4489,16 @@ l0800_2C35_1:
 l0800_2C37:
 	cx_158 = ~cx_708
 	word16 di_1506 = di_1505 - cx_158
-	bool v49_941 = di_1506 == 0<16>
+	bool v55_941 = di_1506 == 0<16>
 l0800_2C3D:
 	branch cx_158 == 0<16> l0800_2C3F
 l0800_2C3D_2:
-	v49_941 = Mem701[es_740:di_1506:byte] == 0<8>
+	v55_941 = Mem701[es_740:di_1506:byte] == 0<8>
 	di_1506 = di_1506 + 1<i16>
 	cx_158 = cx_158 - 1<16>
 	branch Mem701[es_740:di_1506:byte] == 0<8> l0800_2C3D
 l0800_2C3F:
-	branch v49_941 l0800_2C48
+	branch v55_941 l0800_2C48
 l0800_2C41:
 	di_1506 = 1<16>
 	es_740 = 0<16>
@@ -4506,7 +4507,7 @@ l0800_2C48:
 	Mem755[ds:0x45AA<16>:word16] = di_1506
 l0800_2BEC:
 	ptr32 es_bx_758 = Mem757[ds:0x45AE<16>:segptr32]
-	word16 bx_771 = Mem757[ds:0x2E51<16>:word16] + (((int16) Mem757[es_bx_758:byte] << 8<8>) + (uint16) ((uint8) Mem757[es_bx_758 + 1<16>:byte]))
+	word16 bx_771 = Mem757[ds:0x2E51<16>:word16] + ((CONVERT(Mem757[es_bx_758:byte], byte, int16) << 8<8>) + CONVERT(Mem757[es_bx_758 + 1<16>:byte], byte, uint16))
 	Mem773[ds:0x45B0<16>:word16] = Mem757[ds:0x2E53<16>:word16]
 	Mem774[ds:0x45AE<16>:word16] = bx_771
 l0800_29EE:
@@ -4580,7 +4581,7 @@ l0800_2CFD:
 l0800_2CD8:
 	cl = 8<8>
 	dx = ax_38 >>u 8<8>
-	ax_38 = Mem22[ds:(((uint16) (uint8) (bArg08_55 ^ Mem22[ptrArg02:byte]) & 0xFF<16>) << 1<16>) + 0x2A29<16>:word16] ^ ax_38 >>u 8<8>
+	ax_38 = Mem22[ds:((CONVERT(bArg08_55 ^ Mem22[ptrArg02:byte], byte, uint16) & 0xFF<16>) << 1<16>) + 0x2A29<16>:word16] ^ ax_38 >>u 8<8>
 	ptrArg02 = SEQ(wArg04_64, wArg02_59 + 1<16>) (alias)
 l0800_2D04:
 	clOut = cl
@@ -4771,23 +4772,23 @@ l0800_2E6E_1:
 l0800_2E70:
 	word16 cx_168 = ~cx_157
 	word16 di_171 = di_153 - cx_168
-	bool v61_1411 = di_171 == 0<16>
+	bool v63_1411 = di_171 == 0<16>
 l0800_2E77:
 	branch cx_168 == 0<16> l0800_2E79
 l0800_2E77_2:
-	v61_1411 = Mem150[ds:di_171:byte] == 0xD<8>
+	v63_1411 = Mem150[ds:di_171:byte] == 0xD<8>
 	di_171 = di_171 + 1<i16>
 	cx_168 = cx_168 - 1<16>
 	branch Mem150[ds:di_171:byte] == 0xD<8> l0800_2E77
 l0800_2E79:
-	branch v61_1411 l0800_2E82
+	branch v63_1411 l0800_2E82
 l0800_2E7B:
 	di_171 = 1<16>
 	es_151 = 0<16>
 l0800_2E82:
 	Mem198[es_151:di_171 - 1<16>:byte] = 0<8>
 l0800_2E8B:
-	branch (int16) Mem205[ds:0x45B2<16>:byte] != 0<16> l0800_2EA5
+	branch CONVERT(Mem205[ds:0x45B2<16>:byte], byte, int16) != 0<16> l0800_2EA5
 l0800_2EA5:
 	word16 di_230 = 0x45B2<16>
 	word16 cx_234 = 0xFFFF<16>
@@ -5048,20 +5049,20 @@ l0800_315C:
 	word16 cx_1132 = ~cx_1121
 	word16 di_1134 = di_1114 - cx_1132
 	word16 ax_1157 = 0<16>
-	bool v63_1415 = di_1134 == 0<16>
+	bool v67_1415 = di_1134 == 0<16>
 	di_1141 = di_1134
 l0800_3160:
 	word16 di_1141
 	branch cx_1132 == 0<16> l0800_3162
 l0800_3160_2:
-	v63_1415 = Mem1116[wArg04_1477:si_1108:byte] == Mem1116[ds:di_1999:byte]
+	v67_1415 = Mem1116[wArg04_1477:si_1108:byte] == Mem1116[ds:di_1999:byte]
 	si_1108 = si_1108 + 1<i16>
 	di_1141 = di_1999 + 1<i16>
 	cx_1132 = cx_1132 - 1<16>
 	di_1999 = di_1141
 	branch Mem1116[wArg04_1477:si_1108:byte] != Mem1116[ds:di_1999:byte] l0800_3160
 l0800_3162:
-	branch v63_1415 l0800_3169
+	branch v67_1415 l0800_3169
 l0800_3164:
 	word16 ax_1154 = 0<16> - (di_1134 <u 0<16>)
 	ax_1157 = ax_1154 - 0xFFFF<16> - (ax_1154 <u 0<16>)
@@ -5081,20 +5082,20 @@ l0800_3183:
 	cx_1132 = ~cx_1203
 	word16 di_1216 = di_1196 - cx_1132
 	word16 ax_1239 = 0<16>
-	bool v65_1419 = di_1216 == 0<16>
+	bool v71_1419 = di_1216 == 0<16>
 	di_1223 = di_1216
 l0800_3187:
 	word16 di_1223
 	branch cx_1132 == 0<16> l0800_3189
 l0800_3187_2:
-	v65_1419 = Mem1198[wArg04_1477:si_1108:byte] == Mem1198[ds:di_2002:byte]
+	v71_1419 = Mem1198[wArg04_1477:si_1108:byte] == Mem1198[ds:di_2002:byte]
 	si_1108 = si_1108 + 1<i16>
 	di_1223 = di_2002 + 1<i16>
 	cx_1132 = cx_1132 - 1<16>
 	di_2002 = di_1223
 	branch Mem1198[wArg04_1477:si_1108:byte] != Mem1198[ds:di_2002:byte] l0800_3187
 l0800_3189:
-	branch v65_1419 l0800_3190
+	branch v71_1419 l0800_3190
 l0800_318B:
 	word16 ax_1236 = 0<16> - (di_1216 <u 0<16>)
 	ax_1239 = ax_1236 - 0xFFFF<16> - (ax_1236 <u 0<16>)
@@ -5411,11 +5412,11 @@ l0800_340B:
 	word16 si_106 = 0x4641<16>
 	word16 cx_100 = 3<16>
 	word16 ax_101 = 0<16>
-	bool v34_298 = 0<16> == 0<16>
+	bool v36_298 = 0<16> == 0<16>
 l0800_3418:
 	branch cx_100 == 0<16> l0800_341A
 l0800_3418_1:
-	v34_298 = Mem95[ds:si_486:byte] == Mem95[ds:di_487:byte]
+	v36_298 = Mem95[ds:si_486:byte] == Mem95[ds:di_487:byte]
 	si_106 = si_486 + 1<i16>
 	di_109 = di_487 + 1<i16>
 	cx_100 = cx_100 - 1<16>
@@ -5423,13 +5424,13 @@ l0800_3418_1:
 	di_487 = di_109
 	branch Mem95[ds:si_486:byte] != Mem95[ds:di_487:byte] l0800_3418
 l0800_341A:
-	branch v34_298 l0800_3421
+	branch v36_298 l0800_3421
 l0800_341C:
 	ax_101 = 1<16>
 l0800_3421:
 	branch ax_101 == 0<16> l0800_3431
 l0800_3425:
-	branch ((int16) Mem95[ds:0x4638<16>:byte] & wArg06) == wArg06 l0800_3444
+	branch (CONVERT(Mem95[ds:0x4638<16>:byte], byte, int16) & wArg06) == wArg06 l0800_3444
 l0800_3444:
 	branch (wArg02 | wArg04) == 0<16> l0800_3473
 l0800_344C:
@@ -5527,11 +5528,11 @@ l0800_34AE:
 	word16 si_104 = 0x4641<16>
 	word16 cx_106 = 3<16>
 	word16 ax_117 = 0<16>
-	bool v28_258 = 0<16> == 0<16>
+	bool v30_258 = 0<16> == 0<16>
 l0800_34BB:
 	branch cx_106 == 0<16> l0800_34BD
 l0800_34BB_1:
-	v28_258 = Mem88[ds:si_431:byte] == Mem88[ds:di_432:byte]
+	v30_258 = Mem88[ds:si_431:byte] == Mem88[ds:di_432:byte]
 	si_104 = si_431 + 1<i16>
 	di_102 = di_432 + 1<i16>
 	cx_106 = cx_106 - 1<16>
@@ -5539,13 +5540,13 @@ l0800_34BB_1:
 	di_432 = di_102
 	branch Mem88[ds:si_431:byte] != Mem88[ds:di_432:byte] l0800_34BB
 l0800_34BD:
-	branch v28_258 l0800_34C4
+	branch v30_258 l0800_34C4
 l0800_34BF:
 	ax_117 = 1<16>
 l0800_34C4:
 	branch ax_117 == 0<16> l0800_347E
 l0800_34C8:
-	branch ((int16) Mem88[ds:0x4638<16>:byte] & wArg06) != wArg06 l0800_347E
+	branch (CONVERT(Mem88[ds:0x4638<16>:byte], byte, int16) & wArg06) != wArg06 l0800_347E
 l0800_34D4:
 	branch (wArg02 | wArg04) == 0<16> l0800_3503
 l0800_34DC:
@@ -5849,16 +5850,16 @@ l0800_373A_1:
 l0800_373C:
 	word16 cx_118 = ~cx_107
 	word16 di_121 = di_111 - cx_118
-	bool v33_306 = di_121 == 0<16>
+	bool v35_306 = di_121 == 0<16>
 l0800_3743:
 	branch cx_118 == 0<16> l0800_3745
 l0800_3743_2:
-	v33_306 = Mem102[es_139:di_121:byte] == 0x5C<8>
+	v35_306 = Mem102[es_139:di_121:byte] == 0x5C<8>
 	di_121 = di_121 + 1<i16>
 	cx_118 = cx_118 - 1<16>
 	branch Mem102[es_139:di_121:byte] == 0x5C<8> l0800_3743
 l0800_3745:
-	branch v33_306 l0800_374E
+	branch v35_306 l0800_374E
 l0800_3747:
 	di_121 = 1<16>
 	es_139 = 0<16>
@@ -6629,7 +6630,7 @@ l0800_3DDE:
 	word16 ax_39 = Mem18[ptrArg02 + 0xE<16>:word16]
 	word16 si_40 = Mem18[ptrArg02 + 0xC<16>:word16]
 	Mem42[ptrArg02 + 0xC<16>:word16] = Mem18[ptrArg02 + 0xC<16>:word16] + 1<16>
-	ax_28 = (uint16) (uint8) Mem42[ax_39:si_40:byte] (alias)
+	ax_28 = CONVERT(Mem42[ax_39:si_40:byte], byte, uint16) (alias)
 l0800_3DFF:
 	byte ah_124 = SLICE(ax_28, byte, 8)
 	byte bLoc04_119 = SLICE(ax_28, byte, 0)
@@ -6680,7 +6681,7 @@ l0800_3E27:
 	word16 dx_88
 	word16 di_89
 	byte ch_90
-	word16 ax_60 = ((uint16) (uint8) SLICE(fn0800_3DCF(ds, dwArg02, out ch_87, out dx_88, out di_89, out ds_24), byte, 0) << 8<8>) + (uint16) ((uint8) SLICE(fn0800_3DCF(ds_24, dwArg02, out ch_90, out dx_44, out di_46, out ds_47), byte, 0))
+	word16 ax_60 = (CONVERT(SLICE(fn0800_3DCF(ds, dwArg02, out ch_87, out dx_88, out di_89, out ds_24), byte, 0), byte, uint16) << 8<8>) + CONVERT(SLICE(fn0800_3DCF(ds_24, dwArg02, out ch_90, out dx_44, out di_46, out ds_47), byte, 0), byte, uint16)
 	cxOut = SEQ(SLICE(cx_43, byte, 8), 8<8>)
 	dxOut = dx_44
 	diOut = di_46
@@ -6750,7 +6751,7 @@ l0800_3EA9:
 	word16 ax_39 = Mem18[ptrArg02 + 0xE<16>:word16]
 	word16 si_40 = Mem18[ptrArg02 + 0xC<16>:word16]
 	Mem42[ptrArg02 + 0xC<16>:word16] = Mem18[ptrArg02 + 0xC<16>:word16] + 1<16>
-	ax_28 = (uint16) (uint8) Mem42[ax_39:si_40:byte] (alias)
+	ax_28 = CONVERT(Mem42[ax_39:si_40:byte], byte, uint16) (alias)
 l0800_3ECA:
 	byte bLoc04_154 = SLICE(ax_28, byte, 0)
 	branch ax_28 != 0xFFFF<16> l0800_3EEA
@@ -6790,12 +6791,12 @@ l0800_3F0A:
 	byte ch_118
 	word16 dx_119
 	word16 di_120
-	word16 ax_33 = (uint16) (uint8) SLICE(fn0800_3DCF(ds, dwArg02, out ch_118, out dx_119, out di_120, out ds_24), byte, 0)
+	word16 ax_33 = CONVERT(SLICE(fn0800_3DCF(ds, dwArg02, out ch_118, out dx_119, out di_120, out ds_24), byte, 0), byte, uint16)
 	selector ds_47
 	byte ch_121
 	word16 dx_122
 	word16 di_123
-	word16 ax_56 = (uint16) (uint8) SLICE(fn0800_3DCF(ds_24, dwArg02, out ch_121, out dx_122, out di_123, out ds_47), byte, 0)
+	word16 ax_56 = CONVERT(SLICE(fn0800_3DCF(ds_24, dwArg02, out ch_121, out dx_122, out di_123, out ds_47), byte, 0), byte, uint16)
 	word16 cx_75
 	word16 dx_76
 	fn0800_ACB3(ds_47, dwArg02, 0xFFFFFFFE<32>, 1<16>, out cx_75, out dx_76)
@@ -6864,7 +6865,7 @@ l0800_3FAD:
 	word16 di_86
 	byte ch_87
 	word16 dx_88
-	word16 ax_59 = ((uint16) (uint8) SLICE(fn0800_3DCF(ds_24, dwArg02, out ch_87, out dx_88, out di_46, out ds_47), byte, 0) << 8<8>) + (uint16) ((uint8) SLICE(fn0800_3DCF(ds, dwArg02, out ch_84, out dx_85, out di_86, out ds_24), byte, 0))
+	word16 ax_59 = (CONVERT(SLICE(fn0800_3DCF(ds_24, dwArg02, out ch_87, out dx_88, out di_46, out ds_47), byte, 0), byte, uint16) << 8<8>) + CONVERT(SLICE(fn0800_3DCF(ds, dwArg02, out ch_84, out dx_85, out di_86, out ds_24), byte, 0), byte, uint16)
 	diOut = di_46
 	dsOut = ds_47
 	return ax_59
@@ -6945,7 +6946,7 @@ l0800_4056:
 	word16 si_43 = Mem17[ptrArg04 + 0xC<16>:word16]
 	Mem45[ptrArg04 + 0xC<16>:word16] = Mem17[ptrArg04 + 0xC<16>:word16] + 1<16>
 	Mem49[ax_42:si_43:byte] = bArg02
-	ax_127 = (uint16) (uint8) bArg02 (alias)
+	ax_127 = CONVERT(bArg02, byte, uint16) (alias)
 	cx_133 = SEQ(ch, bArg02) (alias)
 	dx_143 = SEQ(dh, bArg02) (alias)
 l0800_407C:
@@ -7024,13 +7025,13 @@ l0800_40BF:
 	word16 dx_94
 	word16 bx_95
 	word16 di_96
-	fn0800_4047(ds, bArg02, dwArg04, out cx_93, out dx_94, out bx_95, out di_96, out ds_30)
+	fn0800_4047(ds, bArg02 & 0xFF<8>, dwArg04, out cx_93, out dx_94, out bx_95, out di_96, out ds_30)
 	word16 dx_56
 	word16 di_58
 	selector ds_59
 	word16 cx_97
 	word16 bx_98
-	word16 ax_53 = fn0800_4047(ds_30, SLICE(wArg02 >>u 8<8>, byte, 0), dwArg04, out cx_97, out dx_56, out bx_98, out di_58, out ds_59)
+	word16 ax_53 = fn0800_4047(ds_30, SLICE(wArg02 >>u 8<8>, byte, 0) & 0xFF<8>, dwArg04, out cx_97, out dx_56, out bx_98, out di_58, out ds_59)
 	dxOut = dx_56
 	diOut = di_58
 	dsOut = ds_59
@@ -7336,7 +7337,7 @@ l0800_43B9:
 	branch Mem11[ptrArg06:byte] != 0<8> l0800_435C
 l0800_435C:
 	byte al_20 = Mem11[ptrArg06:byte]
-	word16 ax_22 = (int16) al_20
+	word16 ax_22 = CONVERT(al_20, byte, int16)
 	branch ax_22 == 0x2A<16> l0800_4379
 l0800_4379:
 	word16 wArg02_101 = SLICE(ptrArg02, word16, 0)
@@ -7691,7 +7692,7 @@ l0800_4761:
 	word16 dx_1577
 	word16 cx_1576
 	word16 di_1578
-	word16 ax_130 = fn0800_8CAA(fn0800_ACB3(ds_62, SEQ(Mem92[ds_62:0x29E5<16>:word16], Mem96[ds_62:0x29E3<16>:word16]), (uint32) (uint16) (ax_58 + 0x20<16>), 0<16>, out cx_1576, out dx_1577), 8<8>, fn0800_3F58(ds_62, SEQ(Mem99[ds_62:0x29E5<16>:word16], Mem113[ds_62:0x29E3<16>:word16]), out di_1578, out ds_120), out dx_133)
+	word16 ax_130 = fn0800_8CAA(fn0800_ACB3(ds_62, SEQ(Mem92[ds_62:0x29E5<16>:word16], Mem96[ds_62:0x29E3<16>:word16]), CONVERT(ax_58 + 0x20<16>, word16, uint32), 0<16>, out cx_1576, out dx_1577), 8<8>, fn0800_3F58(ds_62, SEQ(Mem99[ds_62:0x29E5<16>:word16], Mem113[ds_62:0x29E3<16>:word16]), out di_1578, out ds_120), out dx_133)
 	word16 sp_134 = <invalid>
 	branch dx_133 != 0x52<16> l0800_4798
 l0800_4793:
@@ -7888,7 +7889,7 @@ l0800_49B5:
 	byte ch_1629
 	word16 dx_1630
 	word16 di_1631
-	word16 ax_814 = (uint16) (uint8) SLICE(fn0800_3DCF(ds_1015, Mem799[ss:sp_248 - 4<i16>:segptr32], out ch_1629, out dx_1630, out di_1631, out ds_1015), byte, 0)
+	word16 ax_814 = CONVERT(SLICE(fn0800_3DCF(ds_1015, Mem799[ss:sp_248 - 4<i16>:segptr32], out ch_1629, out dx_1630, out di_1631, out ds_1015), byte, 0), byte, uint16)
 	word16 di_816 = ax_814
 	branch ax_814 == 0<16> l0800_4A22
 l0800_49CB:
@@ -7907,7 +7908,7 @@ l0800_49E3:
 	byte ch_1623
 	word16 dx_1624
 	word16 di_1625
-	si_840 = si_840 + (uint16) ((uint8) SLICE(fn0800_3DCF(ds_1015, Mem861[ss:sp_248 - 4<i16>:segptr32], out ch_1623, out dx_1624, out di_1625, out ds_868), byte, 0))
+	si_840 = si_840 + CONVERT(SLICE(fn0800_3DCF(ds_1015, Mem861[ss:sp_248 - 4<i16>:segptr32], out ch_1623, out dx_1624, out di_1625, out ds_868), byte, 0), byte, uint16)
 	Mem882[ss:sp_248 - 2<i16>:word16] = Mem861[ds_868:0x29E1<16>:word16]
 	Mem885[ss:sp_248 - 4<i16>:word16] = Mem882[ds_868:0x29DF<16>:word16]
 	Mem887[ss:sp_248 - 6<i16>:word16] = si_840
@@ -9079,19 +9080,19 @@ l0800_5677:
 l0800_5688:
 	ptr32 es_bx_259 = Mem258[ds:0x2E6D<16>:segptr32]
 	word16 sp_265 = sp_153 - 2<i16>
-	Mem268[ss:sp_265:word16] = (uint16) (uint8) Mem258[es_bx_259 + 2<16>:byte]
-	word16 dx_273 = (uint16) (uint8) Mem268[es_bx_259 + 1<16>:byte]
+	Mem268[ss:sp_265:word16] = CONVERT(Mem258[es_bx_259 + 2<16>:byte], byte, uint16)
+	word16 dx_273 = CONVERT(Mem268[es_bx_259 + 1<16>:byte], byte, uint16)
 	word16 dx_280 = Mem268[ss:sp_265:word16] + (dx_273 << 8<8> <u 0<16>)
 	byte bl_281 = Mem268[es_bx_259:byte]
 	Mem284[ss:sp_265:word16] = dx_273 << 8<8>
 	Mem288[ss:sp_265 - 2<i16>:word16] = dx_280
-	int32 dx_ax_435 = SEQ(Mem288[ss:sp_265 - 2<i16>:word16], Mem288[ss:sp_265:word16]) + (int32) ((uint16) ((uint8) bl_281))
+	int32 dx_ax_435 = SEQ(Mem288[ss:sp_265 - 2<i16>:word16], Mem288[ss:sp_265:word16]) + CONVERT(CONVERT(bl_281, byte, uint16), uint16, int32)
 	word16 sp_308 = <invalid>
 	word16 dx_307
 	Mem314[ss:sp_308 - 2<i16>:word16] = fn0800_8C69(SLICE(dx_ax_435, word16, 0), Mem288[ds:0x2E45<16>:byte], SLICE(dx_ax_435, word16, 16), out dx_307)
 	word16 ax_317 = 1<16> << Mem314[ds:0x2E45<16>:byte]
 	Mem320[ss:sp_308 - 4<i16>:word16] = dx_307
-	int32 dx_ax_321 = (int32) (ax_317 - 1<16>)
+	int32 dx_ax_321 = CONVERT(ax_317 - 1<16>, word16, int32)
 	ui32 ax_dx_438 = SEQ(Mem320[ss:sp_308 - 4<i16>:word16], Mem320[ss:sp_308 - 2<i16>:word16]) + SEQ(Mem320[ds:0x29FD<16>:word16] & SLICE(dx_ax_321, word16, 16), Mem320[ds:0x29FB<16>:word16] & SLICE(dx_ax_321, word16, 0))
 	Mem337[ds:0x29FD<16>:word16] = SLICE(ax_dx_438, word16, 16)
 	Mem338[ds:0x29FB<16>:word16] = SLICE(ax_dx_438, word16, 0)
@@ -9221,7 +9222,7 @@ l0800_580A:
 l0800_5820:
 	word16 si_495
 	word16 di_496
-	Mem350[ds_338:0x2E29<16>:word16] = (uint16) (uint8) SLICE(fn0800_5B15(ds_322, out si_495, out di_496, out ds_338), byte, 0) + 8<16>
+	Mem350[ds_338:0x2E29<16>:word16] = CONVERT(SLICE(fn0800_5B15(ds_322, out si_495, out di_496, out ds_338), byte, 0), byte, uint16) + 8<16>
 	ds_322 = ds_338
 	branch Mem350[ds_338:0x2E29<16>:word16] != 8<16> l0800_5835
 l0800_5832:
@@ -9235,7 +9236,7 @@ l0800_57F9:
 	Mem383[ds_304:0x2E29<16>:word16] = 2<16>
 	word16 di_494
 	word16 si_493
-	Mem401[ds_388:0x2E2B<16>:word16] = (uint16) (uint8) SLICE(fn0800_5B15(ds_304, out si_493, out di_494, out ds_388), byte, 0) + 1<16>
+	Mem401[ds_388:0x2E2B<16>:word16] = CONVERT(SLICE(fn0800_5B15(ds_304, out si_493, out di_494, out ds_388), byte, 0), byte, uint16) + 1<16>
 	ds = ds_388
 l0800_5838:
 	word16 v13_406 = Mem403[ds:0x29FF<16>:word16] + Mem403[ds:0x2E29<16>:word16]
@@ -9305,7 +9306,7 @@ l0800_59FA:
 	selector ds_142
 	word16 si_177
 	word16 di_178
-	Mem161[ds_142:0x2E2B<16>:word16] = (Mem151[ds_142:0x2E2B<16>:word16] << 8<8>) + (uint16) ((uint8) SLICE(fn0800_5B15(ds_105, out si_177, out di_178, out ds_142), byte, 0)) + 1<16>
+	Mem161[ds_142:0x2E2B<16>:word16] = (Mem151[ds_142:0x2E2B<16>:word16] << 8<8>) + CONVERT(SLICE(fn0800_5B15(ds_105, out si_177, out di_178, out ds_142), byte, 0), byte, uint16) + 1<16>
 	return ds_142
 fn0800_5975_exit:
 
@@ -9380,7 +9381,7 @@ l0800_5AA5:
 	byte bLoc04_131 = SLICE(wLoc04_121, byte, 0)
 	branch Mem21[psegArg04:di_18 + 0xA<16>:word16] == 0<16> l0800_5A9F
 l0800_5AAF:
-	int32 dx_ax_30 = (int32) ((1<16> << Mem21[psegArg04:di_18 + 0xA<16>:byte]) - 1<16>)
+	int32 dx_ax_30 = CONVERT((1<16> << Mem21[psegArg04:di_18 + 0xA<16>:byte]) - 1<16>, word16, int32)
 	word16 cx_35 = Mem21[ds:0x29FB<16>:word16] & SLICE(dx_ax_30, word16, 0)
 	branch (Mem21[ds:0x29FD<16>:word16] & SLICE(dx_ax_30, word16, 16)) != Mem21[psegArg04:di_18 + 8<16>:word16] l0800_5A9F
 l0800_5ACC:
@@ -9555,13 +9556,13 @@ l0800_5C54:
 	selector ds_45
 	word16 di_196
 	word16 si_195
-	word16 ax_55 = (uint16) (uint8) SLICE(fn0800_5B15(ds, out si_195, out di_196, out ds_45), byte, 0)
-	word16 ax_71 = (uint16) (uint8) SLICE(fn0800_5B15(ds_45, out si_150, out di_125, out ds), byte, 0)
+	word16 ax_55 = CONVERT(SLICE(fn0800_5B15(ds, out si_195, out di_196, out ds_45), byte, 0), byte, uint16)
+	word16 ax_71 = CONVERT(SLICE(fn0800_5B15(ds_45, out si_150, out di_125, out ds), byte, 0), byte, uint16)
 	word16 dx_86
-	word16 ax_83 = fn0800_8C69((uint16) (uint8) Mem72[Mem72[ds:0x2E6D<16>:segptr32] + 1<16>:byte], 0x18<8>, 0<16>, out dx_86)
+	word16 ax_83 = fn0800_8C69(CONVERT(Mem72[Mem72[ds:0x2E6D<16>:segptr32] + 1<16>:byte], byte, uint16), 0x18<8>, 0<16>, out dx_86)
 	word16 ax_105 = ax_83 + (ax_71 << 8<8>)
 	word16 ax_109 = ax_105 + ax_55
-	Mem114[ds:0x29FD<16>:word16] = dx_86 + (uint16) ((uint8) Mem72[Mem72[ds:0x2E6D<16>:segptr32]:byte]) + (ax_83 <u 0<16>) + (ax_105 <u 0<16>) + (ax_109 <u 0<16>)
+	Mem114[ds:0x29FD<16>:word16] = dx_86 + CONVERT(Mem72[Mem72[ds:0x2E6D<16>:segptr32]:byte], byte, uint16) + (ax_83 <u 0<16>) + (ax_105 <u 0<16>) + (ax_109 <u 0<16>)
 	Mem115[ds:0x29FB<16>:word16] = ax_109
 	Mem116[ds:0x2E45<16>:word16] = 0x10<16>
 	sp_13 = <invalid>
@@ -9604,7 +9605,7 @@ l0800_5CE5:
 l0800_5CEC:
 	byte al_43 = SLICE(fn0800_5B15(ds, out si_16, out di_20, out ds), byte, 0)
 	Mem42[ds:0x29FD<16>:word16] = 0<16>
-	Mem45[ds:0x29FB<16>:word16] = (uint16) (uint8) al_43
+	Mem45[ds:0x29FB<16>:word16] = CONVERT(al_43, byte, uint16)
 	Mem46[ds:0x2E45<16>:word16] = 8<16>
 l0800_5D00:
 	si_16 = si_16 << 1<16>
@@ -9650,7 +9651,7 @@ l0800_5D46:
 l0800_5D9E:
 	Mem96[Mem89[ds:0x2E55<16>:segptr32]:byte] = bArg02
 	Mem98[ds:0x2E55<16>:word16] = Mem96[ds:0x2E55<16>:word16] + 1<16>
-	Mem113[ds:0x2E4D<16>:word16] = Mem98[ds:(((uint16) (uint8) (Mem98[ds:0x2E4D<16>:byte] ^ bArg02) & 0xFF<16>) << 1<16>) + 0x2A29<16>:word16] ^ Mem98[ds:0x2E4D<16>:word16] >>u 8<8>
+	Mem113[ds:0x2E4D<16>:word16] = Mem98[ds:((CONVERT(Mem98[ds:0x2E4D<16>:byte] ^ bArg02, byte, uint16) & 0xFF<16>) << 1<16>) + 0x2A29<16>:word16] ^ Mem98[ds:0x2E4D<16>:word16] >>u 8<8>
 	return ds
 fn0800_5D2F_exit:
 
@@ -9775,7 +9776,7 @@ l0800_5EB3:
 	word16 sp_121 = <invalid>
 	sp_127 = sp_121 + 8<16>
 l0800_5EC3:
-	word16 ax_141 = ((uint16) (uint8) Mem130[ds:0x2E75<16>:byte] << 8<8>) + (uint16) ((uint8) Mem130[ds:0x2E76<16>:byte])
+	word16 ax_141 = (CONVERT(Mem130[ds:0x2E75<16>:byte], byte, uint16) << 8<8>) + CONVERT(Mem130[ds:0x2E76<16>:byte], byte, uint16)
 	branch Mem130[ds:0x2A09<16>:word16] >u 0<16> l0800_5EED
 l0800_5EDC:
 	branch Mem130[ds:0x2A09<16>:word16] != 0<16> l0800_5EE4
@@ -9889,14 +9890,14 @@ l0800_5F7E:
 	fn0800_3FAD(ds_480, Mem495[ss:sp_255 - 4<i16>:word32], out di_2465, out ds_500)
 	Mem510[ss:sp_255 - 2<i16>:word16] = Mem495[ds_500:0x29E1<16>:word16]
 	Mem513[ss:sp_255 - 4<i16>:word16] = Mem510[ds_500:0x29DF<16>:word16]
-	word16 ax_522 = ((uint16) (uint8) Mem513[ds_500:0x2E75<16>:byte] << 8<8>) + (uint16) ((uint8) Mem513[ds_500:0x2E76<16>:byte])
+	word16 ax_522 = (CONVERT(Mem513[ds_500:0x2E75<16>:byte], byte, uint16) << 8<8>) + CONVERT(Mem513[ds_500:0x2E76<16>:byte], byte, uint16)
 	Mem527[ss:sp_255 - 6<i16>:word16] = 0<16>
 	Mem529[ss:sp_255 - 8<i16>:word16] = ax_522
 	Mem531[ss:sp_255 - 10<i16>:word16] = ds_500
 	Mem534[ss:sp_255 - 12<i16>:word16] = 0x2E77<16>
 	word16 si_2466
 	selector ds_539
-	byte ah_997 = SLICE((uint16) (uint8) fn0800_4152(ds_500, Mem534[ss:sp_255 - 12<i16>:word32], Mem534[ss:sp_255 - 8<i16>:word16], Mem534[ss:sp_255 - 6<i16>:word16], Mem534[ss:sp_255 - 4<i16>:word32], out si_2466, out ds_539), byte, 8)
+	byte ah_997 = SLICE(CONVERT(fn0800_4152(ds_500, Mem534[ss:sp_255 - 12<i16>:word32], Mem534[ss:sp_255 - 8<i16>:word16], Mem534[ss:sp_255 - 6<i16>:word16], Mem534[ss:sp_255 - 4<i16>:word32], out si_2466, out ds_539), byte, uint16), byte, 8)
 	word16 sp_547 = sp_255
 	branch Mem534[ss:bp_1036 - 0x24<16>:word16] != 0<16> l0800_6064
 l0800_6064:
@@ -10297,7 +10298,7 @@ l0800_64B9:
 	fn0800_ACB3(ds_1614, Mem1712[ss:sp_1539 - 10<i16>:segptr32], Mem1712[ss:sp_1539 - 6<i16>:ui32], Mem1712[ss:sp_1539 - 2<i16>:word16], out cx_2532, out dx_2533)
 	Mem1725[ss:sp_1539 - 2<i16>:word16] = Mem1712[ds_1614:0x29E1<16>:word16]
 	Mem1728[ss:sp_1539 - 4<i16>:word16] = Mem1725[ds_1614:0x29DF<16>:word16]
-	Mem1741[ss:sp_1539 - 6<i16>:word16] = ((uint16) (uint8) Mem1728[ds_1614:0x2E75<16>:byte] << 8<8>) + (uint16) ((uint8) Mem1728[ds_1614:0x2E76<16>:byte]) - 0x20<16>
+	Mem1741[ss:sp_1539 - 6<i16>:word16] = (CONVERT(Mem1728[ds_1614:0x2E75<16>:byte], byte, uint16) << 8<8>) + CONVERT(Mem1728[ds_1614:0x2E76<16>:byte], byte, uint16) - 0x20<16>
 	selector ds_1746
 	word16 dx_2534
 	word16 di_2535
@@ -10512,7 +10513,7 @@ l0800_6715:
 	word16 sp_143 = sp_135 - 2<i16>
 	Mem145[ss:sp_143:word16] = Mem138[ds:0x29E1<16>:word16]
 	Mem148[ss:sp_143 - 2<i16>:word16] = Mem145[ds:0x29DF<16>:word16]
-	word16 ax_157 = ((uint16) (uint8) Mem148[ds:0x2E75<16>:byte] << 8<8>) + (uint16) ((uint8) Mem148[ds:0x2E76<16>:byte])
+	word16 ax_157 = (CONVERT(Mem148[ds:0x2E75<16>:byte], byte, uint16) << 8<8>) + CONVERT(Mem148[ds:0x2E76<16>:byte], byte, uint16)
 	Mem162[ss:sp_143 - 4<i16>:word16] = 0<16>
 	Mem164[ss:sp_143 - 6<i16>:word16] = ax_157
 	Mem166[ss:sp_143 - 8<i16>:word16] = ds
@@ -10520,7 +10521,7 @@ l0800_6715:
 	selector ds_174
 	word16 si_453
 	fn0800_4152(ds, Mem169[ss:sp_143 - 10<i16>:word32], Mem169[ss:sp_143 - 6<i16>:word16], Mem169[ss:sp_143 - 4<i16>:word16], Mem169[ss:sp_143 - 2<i16>:word32], out si_453, out ds_174)
-	word16 bx_194 = Mem169[ds_174:0x2A07<16>:word16] + (((uint16) ((uint8) Mem169[ds_174:0x2E75<16>:byte]) << 8<8>) + (uint16) ((uint8) Mem169[ds_174:0x2E76<16>:byte]))
+	word16 bx_194 = Mem169[ds_174:0x2A07<16>:word16] + ((CONVERT(Mem169[ds_174:0x2E75<16>:byte], byte, uint16) << 8<8>) + CONVERT(Mem169[ds_174:0x2E76<16>:byte], byte, uint16))
 	word16 dx_201 = Mem169[ds_174:0x2A09<16>:word16] + (bx_194 <u 0<16>) + (bx_194 <u 0x40<16>)
 	Mem208[ss:bp_121 - 2<16>:word16] = dx_201
 	Mem209[ss:bp_121 - 4<16>:word16] = bx_194 + 0x40<16>
@@ -10588,7 +10589,7 @@ word16 fn0800_67BF(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 // Preserved:
 fn0800_67BF_entry:
 l0800_67BF:
-	word16 ax_19 = ((uint16) (uint8) Mem7[ds:0x2E75<16>:byte] << 8<8>) + (uint16) ((uint8) Mem7[ds:0x2E76<16>:byte])
+	word16 ax_19 = (CONVERT(Mem7[ds:0x2E75<16>:byte], byte, uint16) << 8<8>) + CONVERT(Mem7[ds:0x2E76<16>:byte], byte, uint16)
 	branch Mem20[ds:0x2A09<16>:word16] >u 0<16> l0800_67F0
 l0800_67E1:
 	branch Mem20[ds:0x2A09<16>:word16] != 0<16> l0800_67E9
@@ -10815,7 +10816,7 @@ word16 fn0800_6AD4(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 // Preserved: sp
 fn0800_6AD4_entry:
 l0800_6AD4:
-	word16 ax_22 = ((uint16) (uint8) Mem12[ds:0x2E75<16>:byte] << 8<8>) + (uint16) ((uint8) Mem12[ds:0x2E76<16>:byte])
+	word16 ax_22 = (CONVERT(Mem12[ds:0x2E75<16>:byte], byte, uint16) << 8<8>) + CONVERT(Mem12[ds:0x2E76<16>:byte], byte, uint16)
 	branch Mem12[ds:0x2A09<16>:word16] >u 0<16> l0800_6B04
 l0800_6AF4:
 	branch Mem12[ds:0x2A09<16>:word16] != 0<16> l0800_6AFC
@@ -10868,7 +10869,7 @@ l0800_6B9E:
 	fn0800_409C(ds_312, ax_231 + 1<16>, dx_274 + (ax_231 <u 1<16>), SEQ(Mem307[ds_312:0x29E1<16>:word16], Mem322[ds_312:0x29DF<16>:word16]), out dx_863, out ds_341)
 	word16 dx_864
 	selector ds_381
-	fn0800_409C(ds_341, ((uint16) (uint8) Mem336[ds_341:0x2E75<16>:byte] << 8<8>) + (uint16) ((uint8) Mem336[ds_341:0x2E76<16>:byte]) - 0xC<16> >>u 2<16>, 0<16>, SEQ(Mem362[ds_341:0x29E1<16>:word16], Mem365[ds_341:0x29DF<16>:word16]), out dx_864, out ds_381)
+	fn0800_409C(ds_341, (CONVERT(Mem336[ds_341:0x2E75<16>:byte], byte, uint16) << 8<8>) + CONVERT(Mem336[ds_341:0x2E76<16>:byte], byte, uint16) - 0xC<16> >>u 2<16>, 0<16>, SEQ(Mem362[ds_341:0x29E1<16>:word16], Mem365[ds_341:0x29DF<16>:word16]), out dx_864, out ds_381)
 	word16 dx_399
 	word16 ax_396 = fn0800_AD2F(ds_381, SEQ(Mem376[ds_381:0x29E1<16>:word16], Mem392[ds_381:0x29DF<16>:word16]), out dx_399)
 	Mem407[ds_381:0x4E8E<16>:word16] = dx_399
@@ -10890,7 +10891,7 @@ l0800_6C89:
 l0800_6CB7:
 	selector ds_501
 	word16 si_866
-	fn0800_4152(ds_381, SEQ(ds_381, 0x2E77<16>), ((uint16) (uint8) Mem475[ds_381:0x2E75<16>:byte] << 8<8>) + (uint16) ((uint8) Mem475[ds_381:0x2E76<16>:byte]), 0<16>, SEQ(Mem415[ds_381:0x29E1<16>:word16], Mem472[ds_381:0x29DF<16>:word16]), out si_866, out ds_501)
+	fn0800_4152(ds_381, SEQ(ds_381, 0x2E77<16>), (CONVERT(Mem475[ds_381:0x2E75<16>:byte], byte, uint16) << 8<8>) + CONVERT(Mem475[ds_381:0x2E76<16>:byte], byte, uint16), 0<16>, SEQ(Mem415[ds_381:0x29E1<16>:word16], Mem472[ds_381:0x29DF<16>:word16]), out si_866, out ds_501)
 l0800_6E93:
 	word16 dx_522
 	word16 ax_519 = fn0800_AD2F(ds_501, SEQ(Mem496[ds_501:0x29E5<16>:word16], Mem515[ds_501:0x29E3<16>:word16]), out dx_522)
@@ -11391,7 +11392,7 @@ fn0800_73AC_entry:
 l0800_73AC:
 	selector ds_38
 	word16 si_158
-	fn0800_4152(ds, SEQ(ds, 0x2E77<16>), ((uint16) (uint8) Mem12[ds:0x2E75<16>:byte] << 8<8>) + (uint16) ((uint8) Mem12[ds:0x2E76<16>:byte]), 0<16>, SEQ(Mem0[ds:0x29E1<16>:word16], Mem9[ds:0x29DF<16>:word16]), out si_158, out ds_38)
+	fn0800_4152(ds, SEQ(ds, 0x2E77<16>), (CONVERT(Mem12[ds:0x2E75<16>:byte], byte, uint16) << 8<8>) + CONVERT(Mem12[ds:0x2E76<16>:byte], byte, uint16), 0<16>, SEQ(Mem0[ds:0x29E1<16>:word16], Mem9[ds:0x29DF<16>:word16]), out si_158, out ds_38)
 	word16 cx_159
 	word16 dx_160
 	fn0800_ACB3(ds_38, SEQ(Mem56[ds_38:0x29E1<16>:word16], Mem59[ds_38:0x29DF<16>:word16]), 0xFFFFFFFC<32>, 1<16>, out cx_159, out dx_160)
@@ -11719,7 +11720,7 @@ l0800_7634:
 	Mem242[ds_181:0x465E<16>:word16] = ax_231
 	Mem245[ss:sp_185 + 2<16>:word16] = Mem242[ds_181:0x29E1<16>:word16]
 	Mem248[ss:sp_185:word16] = Mem245[ds_181:0x29DF<16>:word16]
-	int32 dx_ax_250 = (int32) Mem248[ds_181:0x2A21<16>:word16]
+	int32 dx_ax_250 = CONVERT(Mem248[ds_181:0x2A21<16>:word16], word16, int32)
 	word16 ax_251 = SLICE(dx_ax_250, word16, 0)
 	Mem259[ss:sp_185 - 2<i16>:word16] = SLICE(dx_ax_250, word16, 16) + 0x524E<16> + (ax_251 <u 0x4300<16>)
 	Mem261[ss:sp_185 - 4<i16>:word16] = ax_251 + 0x4300<16>
@@ -11800,11 +11801,11 @@ l0800_7843:
 	byte ah_517 = SLICE(ax_475, byte, 8)
 	branch ax_475 == 1<16> l0800_7852
 l0800_7852:
-	ah_517 = SLICE((uint16) (uint8) fn0800_7A02(ds_385, out ds_385), byte, 8) (alias)
+	ah_517 = SLICE(CONVERT(fn0800_7A02(ds_385, out ds_385), uint8, uint16), byte, 8) (alias)
 l0800_784B:
 	branch ax_475 == 2<16> l0800_7857
 l0800_7857:
-	ah_517 = SLICE((uint16) (uint8) fn0800_7C78(ds_385, out ds_385), byte, 8) (alias)
+	ah_517 = SLICE(CONVERT(fn0800_7C78(ds_385, out ds_385), uint8, uint16), byte, 8) (alias)
 l0800_7850:
 l0800_785A:
 	word16 si_503 = 0x4682<16>
@@ -11813,7 +11814,7 @@ l0800_7870:
 l0800_785E:
 	Mem520[ss:sp_185 + 2<16>:word16] = SEQ(ah_517, Mem507[ds_385:si_503 + 0<16>:byte])
 	word16 di_1058
-	ah_517 = SLICE((uint16) (uint8) fn0800_8624(ds_385, Mem520[ss:sp_185 + 2<16>:byte], out di_1058, out ds_385), byte, 8) (alias)
+	ah_517 = SLICE(CONVERT(fn0800_8624(ds_385, Mem520[ss:sp_185 + 2<16>:byte], out di_1058, out ds_385), uint8, uint16), byte, 8) (alias)
 	Mem535[ds_385:0x4E82<16>:word16] = Mem520[ds_385:0x4E82<16>:word16] - 1<16>
 	si_503 = si_503 + 1<16>
 l0800_7877:
@@ -11996,14 +11997,14 @@ l0800_7C46:
 	branch Mem33[ds:0x4E82<16>:word16] == 0<16> l0800_7C57
 l0800_7C4D:
 	word16 di_57
-	ax_53 = (uint16) (uint8) fn0800_8624(ds, Mem33[ds:0x2E43<16>:byte], out di_57, out ds)
+	ax_53 = CONVERT(fn0800_8624(ds, Mem33[ds:0x2E43<16>:byte], out di_57, out ds), uint8, uint16)
 l0800_7C57:
 	branch Mem67[ds:0x2E45<16>:word16] >u 8<16> l0800_7C65
 l0800_7C5E:
 	branch Mem67[ds:0x4E82<16>:word16] == 0<16> l0800_7C73
 l0800_7C65:
 	word16 di_88
-	ax_53 = (uint16) (uint8) fn0800_8624(ds, SLICE(Mem67[ds:0x2E43<16>:word16] >>u 8<8>, byte, 0), out di_88, out ds)
+	ax_53 = CONVERT(fn0800_8624(ds, SLICE(Mem67[ds:0x2E43<16>:word16] >>u 8<8>, byte, 0), out di_88, out ds), uint8, uint16)
 l0800_7C73:
 	dsOut = ds
 	return SLICE(ax_53, byte, 8)
@@ -12070,7 +12071,7 @@ l0800_7B32:
 l0800_7B24:
 	selector ds_479
 	word16 di_872
-	fn0800_8624(ds_479, SLICE((uint16) (uint8) fn0800_8359(ds, out ds_479), byte, 0) ^ Mem469[ds_479:0x2E4F<16>:byte], out di_872, out ds)
+	fn0800_8624(ds_479, SLICE(CONVERT(fn0800_8359(ds, out ds_479), uint8, uint16), byte, 0) ^ Mem469[ds_479:0x2E4F<16>:byte], out di_872, out ds)
 l0800_7B02:
 l0800_7B17:
 	selector ds_522
@@ -12078,7 +12079,7 @@ l0800_7B17:
 	Mem512[ds:0x2E47<16>:word16] = Mem509[ds:0x2E47<16>:word16] - 1<16>
 	branch ax_510 != 0<16> l0800_7B04
 l0800_7B04:
-	Mem533[ds_522:Mem512[ds_522:0x4E82<16>:word16] + 0x4682<16>:byte] = SLICE((uint16) (uint8) fn0800_8359(ds, out ds_522), byte, 0) ^ Mem512[ds_522:0x2E4F<16>:byte]
+	Mem533[ds_522:Mem512[ds_522:0x4E82<16>:word16] + 0x4682<16>:byte] = SLICE(CONVERT(fn0800_8359(ds, out ds_522), uint8, uint16), byte, 0) ^ Mem512[ds_522:0x2E4F<16>:byte]
 	Mem535[ds_522:0x4E82<16>:word16] = Mem533[ds_522:0x4E82<16>:word16] + 1<16>
 	ds = ds_522
 l0800_7B22:
@@ -12145,7 +12146,7 @@ l0800_7E99:
 	branch Mem33[ds:0x4E82<16>:word16] == 0<16> l0800_7EAA
 l0800_7EA0:
 	word16 di_57
-	ax_53 = (uint16) (uint8) fn0800_8624(ds, Mem33[ds:0x2E43<16>:byte], out di_57, out ds)
+	ax_53 = CONVERT(fn0800_8624(ds, Mem33[ds:0x2E43<16>:byte], out di_57, out ds), uint8, uint16)
 l0800_7EAA:
 	dsOut = ds
 	return SLICE(ax_53, byte, 8)
@@ -12226,14 +12227,14 @@ l0800_7D68:
 	selector ds_391
 	fn0800_8600(ds_354, Mem372[ds_354:0x2E29<16>:byte] - 6<8>, out ds_391)
 	word16 bx_399 = Mem386[ds_391:0x2E2B<16>:word16]
-	fn0800_854B(ds_391, (uint16) (uint8) Mem408[ds_391:(bx_399 >>u 8<8>) + 0x21E2<16>:byte], (uint16) (uint8) Mem386[ds_391:(bx_399 >>u 8<8>) + 0x21F2<16>:byte])
-	fn0800_8600(ds_391, Mem413[ds_391:0x2E2B<16>:byte], out ds_121)
+	fn0800_854B(ds_391, CONVERT(Mem408[ds_391:(bx_399 >>u 8<8>) + 0x21E2<16>:byte], byte, uint16), CONVERT(Mem386[ds_391:(bx_399 >>u 8<8>) + 0x21F2<16>:byte], byte, uint16))
+	fn0800_8600(ds_391, Mem413[ds_391:0x2E2B<16>:byte] & 0xFF<8>, out ds_121)
 l0800_7D24:
 	word16 bx_442 = Mem362[ds_354:0x2E29<16>:word16]
-	fn0800_854B(ds_354, (uint16) (uint8) Mem447[ds_354:bx_442 + 0x21D4<16>:byte], (uint16) (uint8) Mem362[ds_354:bx_442 + 0x21DB<16>:byte])
+	fn0800_854B(ds_354, CONVERT(Mem447[ds_354:bx_442 + 0x21D4<16>:byte], byte, uint16), CONVERT(Mem362[ds_354:bx_442 + 0x21DB<16>:byte], byte, uint16))
 	word16 bx_460 = Mem452[ds_354:0x2E2B<16>:word16]
-	fn0800_854B(ds_354, (uint16) (uint8) Mem469[ds_354:(bx_460 >>u 8<8>) + 0x21E2<16>:byte], (uint16) (uint8) Mem452[ds_354:(bx_460 >>u 8<8>) + 0x21F2<16>:byte])
-	fn0800_8600(ds_354, Mem474[ds_354:0x2E2B<16>:byte], out ds_121)
+	fn0800_854B(ds_354, CONVERT(Mem469[ds_354:(bx_460 >>u 8<8>) + 0x21E2<16>:byte], byte, uint16), CONVERT(Mem452[ds_354:(bx_460 >>u 8<8>) + 0x21F2<16>:byte], byte, uint16))
+	fn0800_8600(ds_354, Mem474[ds_354:0x2E2B<16>:byte] & 0xFF<8>, out ds_121)
 l0800_7D02:
 	fn0800_854B(ds_354, 6<16>, 3<16>)
 	fn0800_8600(ds_354, Mem508[ds_354:0x2E2B<16>:byte], out ds_121)
@@ -12277,7 +12278,7 @@ l0800_7F32:
 l0800_7EFD:
 	fn0800_854B(ds, 0<16>, 1<16>)
 	selector ds_59
-	fn0800_8600(ds_59, SLICE((uint16) (uint8) fn0800_8359(ds, out ds_59), byte, 0) ^ Mem45[ds_59:0x2E4F<16>:byte], out ds)
+	fn0800_8600(ds_59, SLICE(CONVERT(fn0800_8359(ds, out ds_59), uint8, uint16), byte, 0) ^ Mem45[ds_59:0x2E4F<16>:byte], out ds)
 	branch (Mem73[ds:0x2E4F<16>:word16] & 1<16>) == 0<16> l0800_7F2D
 l0800_7F2D:
 	Mem90[ds:0x2E4F<16>:word16] = Mem73[ds:0x2E4F<16>:word16] >>u 1<16>
@@ -12295,7 +12296,7 @@ l0800_7FB4:
 	branch si_134 != 0<16> l0800_7FA5
 l0800_7FA5:
 	selector ds_145
-	fn0800_8600(ds_145, SLICE((uint16) (uint8) fn0800_8359(ds, out ds_145), byte, 0) ^ Mem153[ds_145:0x2E4F<16>:byte], out ds)
+	fn0800_8600(ds_145, SLICE(CONVERT(fn0800_8359(ds, out ds_145), uint8, uint16), byte, 0) ^ Mem153[ds_145:0x2E4F<16>:byte], out ds)
 	si_134 = si_134 - 1<16>
 l0800_7FB8:
 	branch (Mem153[ds:0x2E4F<16>:word16] & 1<16>) == 0<16> l0800_7FCD
@@ -12310,7 +12311,7 @@ l0800_7F6C:
 	branch di_202 != 0x48<16> l0800_7F5D
 l0800_7F5D:
 	selector ds_214
-	di_202 = fn0800_8600(ds_214, SLICE((uint16) (uint8) fn0800_8359(ds, out ds_214), byte, 0) ^ Mem222[ds_214:0x2E4F<16>:byte], out ds) + 1<16>
+	di_202 = fn0800_8600(ds_214, SLICE(CONVERT(fn0800_8359(ds, out ds_214), uint8, uint16), byte, 0) ^ Mem222[ds_214:0x2E4F<16>:byte], out ds) + 1<16>
 l0800_7F71:
 	branch (Mem222[ds:0x2E4F<16>:word16] & 1<16>) == 0<16> l0800_7F86
 l0800_7F86:
@@ -12326,7 +12327,7 @@ l0800_7EF6:
 l0800_7EC1:
 	fn0800_854B(ds, 0<16>, 1<16>)
 	selector ds_290
-	fn0800_8600(ds_290, SLICE((uint16) (uint8) fn0800_8359(ds, out ds_290), byte, 0) ^ Mem276[ds_290:0x2E4F<16>:byte], out ds)
+	fn0800_8600(ds_290, SLICE(CONVERT(fn0800_8359(ds, out ds_290), uint8, uint16), byte, 0) ^ Mem276[ds_290:0x2E4F<16>:byte], out ds)
 	branch (Mem304[ds:0x2E4F<16>:word16] & 1<16>) == 0<16> l0800_7EF1
 l0800_7EF1:
 	Mem321[ds:0x2E4F<16>:word16] = Mem304[ds:0x2E4F<16>:word16] >>u 1<16>
@@ -12618,7 +12619,7 @@ l0800_8359:
 	word16 dx_71
 	word16 di_72
 	byte al_30 = SLICE(fn0800_3DCF(ds, SEQ(Mem7[ds:0x29E5<16>:word16], Mem14[ds:0x29E3<16>:word16]), out ch_70, out dx_71, out di_72, out ds_24), byte, 0)
-	word16 ax_43 = Mem31[ds_24:(((uint16) (uint8) (Mem31[ds_24:0x2E4B<16>:byte] ^ al_30) & 0xFF<16>) << 1<16>) + 0x2A29<16>:word16] ^ Mem31[ds_24:0x2E4B<16>:word16] >>u 8<8>
+	word16 ax_43 = Mem31[ds_24:((CONVERT(Mem31[ds_24:0x2E4B<16>:byte] ^ al_30, byte, uint16) & 0xFF<16>) << 1<16>) + 0x2A29<16>:word16] ^ Mem31[ds_24:0x2E4B<16>:word16] >>u 8<8>
 	Mem44[ds_24:0x2E4B<16>:word16] = ax_43
 	word16 v17_45 = Mem44[ds_24:0x29FF<16>:word16] + 1<16>
 	Mem46[ds_24:0x29FF<16>:word16] = v17_45
@@ -12908,7 +12909,7 @@ l0800_863C:
 	word16 dx_114
 	word16 bx_115
 	fn0800_4047(ds, bArg02, SEQ(Mem7[ds:0x29E1<16>:word16], Mem23[ds:0x29DF<16>:word16]), out cx_36, out dx_114, out bx_115, out di, out ds)
-	ax_10 = Mem33[ds:(((uint16) (uint8) (Mem33[ds:0x2E49<16>:byte] ^ bArg02) & 0xFF<16>) << 1<16>) + 0x2A29<16>:word16] ^ Mem33[ds:0x2E49<16>:word16] >>u 8<8>
+	ax_10 = Mem33[ds:((CONVERT(Mem33[ds:0x2E49<16>:byte] ^ bArg02, byte, uint16) & 0xFF<16>) << 1<16>) + 0x2A29<16>:word16] ^ Mem33[ds:0x2E49<16>:word16] >>u 8<8>
 	Mem58[ds:0x2E49<16>:word16] = ax_10
 	word16 v18_59 = Mem58[ds:0x2A03<16>:word16] + 1<16>
 	Mem60[ds:0x2A03<16>:word16] = v18_59
@@ -12964,16 +12965,16 @@ l0800_8744:
 l0800_8753:
 	byte al_84 = al_116 * 2<8>
 	byte bh_168 = 0<8>
-	bool C_573 = al_84 >=u 0<8>
+	bool v33_571 = al_84 >=u 0<8>
 	branch al_84 == 0<8> l0800_879B
 l0800_879B:
 	al_84 = Mem62[ds_20:si_102:byte] * 2<8> + (al_84 <u 0<8>)
 	si_102 = si_102 + 1<i16>
-	C_573 = al_84 >=u 0<8>
+	v33_571 = al_84 >=u 0<8>
 l0800_875C:
 l0800_875F:
 	word16 cx_146 = 2<16>
-	branch C_573 l0800_86E6
+	branch v33_571 l0800_86E6
 l0800_86E6:
 	byte al_107 = al_84 * 2<8>
 	bool C_106 = SLICE(cond(al_107), bool, 1)
@@ -12984,15 +12985,15 @@ l0800_86BC:
 	C_106 = SLICE(cond(al_107), bool, 1) (alias)
 l0800_86EA:
 	al_116 = al_107 * 2<8>
-	bool C_576 = al_116 >=u 0<8>
-	cx_146 = (uint16) (uint8) (C_106 + 4<8>) (alias)
+	bool v36_574 = al_116 >=u 0<8>
+	cx_146 = CONVERT(C_106 + 4<8>, byte, uint16) (alias)
 	branch al_116 == 0<8> l0800_86C2
 l0800_86C2:
 	al_116 = Mem62[ds_20:si_102:byte] * 2<8> + (al_116 <u 0<8>)
 	si_102 = si_102 + 1<i16>
-	C_576 = al_116 >=u 0<8>
+	v36_574 = al_116 >=u 0<8>
 l0800_86F0:
-	branch C_576 l0800_8701
+	branch v36_574 l0800_8701
 l0800_86F2:
 	byte al_130 = al_116 * 2<8>
 	al_116 = al_130
@@ -13031,24 +13032,24 @@ l0800_86B7_1:
 	cx_180 = cx_180 - 1<16>
 l0800_8761:
 	al_116 = al_84 * 2<8>
-	bool C_579 = al_116 >=u 0<8>
+	bool v39_577 = al_116 >=u 0<8>
 	branch al_116 == 0<8> l0800_87A0
 l0800_87A0:
 	al_116 = Mem62[ds_20:si_102:byte] * 2<8> + (al_116 <u 0<8>)
 	si_102 = si_102 + 1<i16>
-	C_579 = al_116 >=u 0<8>
+	v39_577 = al_116 >=u 0<8>
 l0800_8765:
 l0800_8768:
-	branch C_579 l0800_8728
+	branch v39_577 l0800_8728
 l0800_876A:
 	byte al_205 = al_116 * 2<8>
-	bool C_582 = al_205 >=u 0<8>
+	bool v42_580 = al_205 >=u 0<8>
 	word16 ax_234 = SEQ(ah_239, al_205)
 	branch al_205 == 0<8> l0800_87A5
 l0800_87A5:
 	byte al_214 = Mem62[ds_20:si_102:byte] * 2<8> + (al_205 <u 0<8>)
 	si_102 = si_102 + 1<i16>
-	C_582 = al_214 >=u 0<8>
+	v42_580 = al_214 >=u 0<8>
 	ax_234 = SEQ(ah_239, al_214) (alias)
 l0800_876F:
 l0800_8772:
@@ -13057,11 +13058,11 @@ l0800_8772:
 	ah_239 = SLICE(ax_234, byte, 8) (alias)
 	ah_239 = SLICE(ax_234, byte, 8) (alias)
 	cx_146 = 3<16> (alias)
-	branch C_582 l0800_8701
+	branch v42_580 l0800_8701
 l0800_8774:
 	byte cl_221 = Mem62[ds_20:si_102:byte]
 	si_102 = si_102 + 1<16>
-	word16 cx_302 = (uint16) (uint8) cl_221
+	word16 cx_302 = CONVERT(cl_221, byte, uint16)
 	branch cl_221 == 0<8> l0800_87B4
 l0800_87B4:
 	word16 ax_270 = ds_20 + (si_102 >>u 4<8>)
@@ -13072,14 +13073,14 @@ l0800_87B4:
 	ds_20 = ax_270
 	ah_239 = SLICE(ax_234, byte, 8) (alias)
 	al_116 = al_274 * 2<8>
-	bool C_585 = al_274 * 2<8> >=u 0<8>
+	bool v45_583 = al_274 * 2<8> >=u 0<8>
 	branch al_274 * 2<8> != 0<8> l0800_87E3
 l0800_87DD:
 	al_116 = Mem248[ax_270:si_102 & 0xF<16>:byte] * 2<8> + (al_274 * 2<8> <u 0<8>)
 	si_102 = (si_102 & 0xF<16>) + 1<i16>
-	C_585 = al_116 >=u 0<8>
+	v45_583 = al_116 >=u 0<8>
 l0800_87E3:
-	branch C_585 l0800_87E8
+	branch v45_583 l0800_87E8
 l0800_87E8:
 	dsOut = psegLoc0A
 	return si
@@ -13089,14 +13090,14 @@ l0800_877B:
 	cx_146 = cx_302 + 8<16>
 l0800_8701:
 	al_116 = al_116 * 2<8>
-	bool C_588 = al_116 >=u 0<8>
+	bool v48_586 = al_116 >=u 0<8>
 	branch al_116 == 0<8> l0800_86CE
 l0800_86CE:
 	al_116 = Mem62[ds_20:si_102:byte] * 2<8> + (al_116 <u 0<8>)
 	si_102 = si_102 + 1<i16>
-	C_588 = al_116 >=u 0<8>
+	v48_586 = al_116 >=u 0<8>
 l0800_8705:
-	branch C_588 l0800_8728
+	branch v48_586 l0800_8728
 l0800_8707:
 	byte al_326 = al_116 * 2<8>
 	bool C_334 = SLICE(cond(al_326), bool, 1)
@@ -13107,14 +13108,14 @@ l0800_86D4:
 	C_334 = SLICE(cond(al_326), bool, 1) (alias)
 l0800_870E:
 	al_116 = al_326 * 2<8>
-	bool C_591 = al_116 <u 0<8>
+	bool v51_589 = al_116 <u 0<8>
 	branch al_116 == 0<8> l0800_86DA
 l0800_86DA:
 	al_116 = Mem62[ds_20:si_102:byte] * 2<8> + (al_116 <u 0<8>)
 	si_102 = si_102 + 1<i16>
-	C_591 = al_116 <u 0<8>
+	v51_589 = al_116 <u 0<8>
 l0800_8714:
-	branch C_591 l0800_8784
+	branch v51_589 l0800_8784
 l0800_8784:
 	byte al_373
 	byte al_364 = al_116 * 2<8>
@@ -13127,15 +13128,15 @@ l0800_8788:
 l0800_878B:
 	al_116 = al_373 * 2<8>
 	bh_168 = C_334 * 2<8> + (al_364 <u 0<8>) | 4<8>
-	bool C_594 = al_116 <u 0<8>
+	bool v54_592 = al_116 <u 0<8>
 	branch al_116 == 0<8> l0800_87AF
 l0800_87AF:
 	al_116 = Mem62[ds_20:si_102:byte] * 2<8> + (al_116 <u 0<8>)
 	si_102 = si_102 + 1<i16>
-	C_594 = al_116 <u 0<8>
+	v54_592 = al_116 <u 0<8>
 l0800_8794:
 l0800_8797:
-	branch C_594 l0800_8728
+	branch v54_592 l0800_8728
 l0800_8799:
 l0800_8716:
 	bh_168 = C_334
@@ -13373,13 +13374,13 @@ l0800_893E:
 	word16 ax_113 = Mem69[ds:0x4E94<16>:word16] - cx_100
 	selector es_215 = SLICE(es_di_106, selector, 16)
 	word16 si_111 = di_108 - bx_110
-	bool v24_220 = ax_113 == 0<16>
+	bool v26_220 = ax_113 == 0<16>
 	word16 cx_115 = ax_113
 	selector ds_124 = Mem123[ds:0x2E6F<16>:selector]
 l0800_8957:
 	branch cx_115 == 0<16> l0800_8959
 l0800_8957_1:
-	v24_220 = Mem123[ds_124:si_316:byte] == Mem123[es_215:di_317:byte]
+	v26_220 = Mem123[ds_124:si_316:byte] == Mem123[es_215:di_317:byte]
 	si_111 = si_316 + 1<i16>
 	di_108 = di_317 + 1<i16>
 	cx_115 = cx_115 - 1<16>
@@ -13387,7 +13388,7 @@ l0800_8957_1:
 	di_317 = di_108
 	branch Mem123[ds_124:si_316:byte] != Mem123[es_215:di_317:byte] l0800_8957
 l0800_8959:
-	branch v24_220 l0800_895C
+	branch v26_220 l0800_895C
 l0800_895B:
 	cx_115 = cx_115 + 1<16>
 l0800_895C:
@@ -13762,8 +13763,8 @@ l0800_8BF3:
 	branch wArg08 == 0<16> l0800_8C5C
 l0800_8C5C:
 	bx_146 = wArg08
-	word16 dx_38 = (uint16) (dwArg04 % wArg08)
-	ax_100 = (uint16) (dwArg04 /u wArg08)
+	word16 dx_38 = CONVERT(dwArg04 % wArg08, word32, uint16)
+	ax_100 = CONVERT(dwArg04 /u wArg08, word16, uint16)
 	branch (cx & 2<16>) == 0<16> l0800_8C65
 l0800_8C64:
 	ax_100 = dx_38
@@ -13876,7 +13877,7 @@ fn0800_8C8A_entry:
 l0800_8C8A:
 	branch cl >=u 0x10<8> l0800_8CA2
 l0800_8CA2:
-	int32 dx_ax_20 = (int32) dx
+	int32 dx_ax_20 = CONVERT(dx, word16, int32)
 	dxOut = SLICE(dx_ax_20, word16, 16)
 	return SLICE(dx_ax_20, word16, 0) >> cl - 0x10<8>
 l0800_8C92:
@@ -14003,7 +14004,7 @@ l0800_8D3B:
 	si_13 = 0x57<16>
 l0800_8D3E:
 	Mem28[ds:0x2516<16>:word16] = si_13
-	si_17 = (int16) Mem28[ds:si_13 + 0x2518<16>:byte]
+	si_17 = CONVERT(Mem28[ds:si_13 + 0x2518<16>:byte], byte, int16)
 l0800_8D58:
 	Mem34[ds:0x7F<16>:word16] = si_17
 	return 0xFFFF<16>
@@ -14076,20 +14077,20 @@ l0800_8DBC:
 	word16 si_106 = fp - 0x24<16>
 	branch cx_28 == 0<16> l0800_8DD1
 l0800_8DC1:
-	word32 dx_ax_52 = (uint32) (uint16) cx_28
-	word32 dx_ax_60 = SEQ((uint16) (dx_ax_52 % wArg06), ax_26)
-	Mem68[ss:si_106:byte] = SLICE((uint16) (dx_ax_60 % wArg06), byte, 0)
-	word16 ax_56 = (uint16) (dx_ax_52 /u wArg06)
+	word32 dx_ax_52 = CONVERT(cx_28, word16, uint32)
+	word32 dx_ax_60 = SEQ(CONVERT(dx_ax_52 % wArg06, word32, uint16), ax_26)
+	Mem68[ss:si_106:byte] = SLICE(CONVERT(dx_ax_60 % wArg06, word32, uint16), byte, 0)
+	word16 ax_56 = CONVERT(dx_ax_52 /u wArg06, word16, uint16)
 	cx_28 = ax_56
-	ax_26 = (uint16) (dx_ax_60 /u wArg06)
+	ax_26 = CONVERT(dx_ax_60 /u wArg06, word16, uint16)
 	si_106 = si_106 + 1<16>
 	branch ax_56 == 0<16> l0800_8DD9
 l0800_8DD9:
 	branch ax_26 != 0<16> l0800_8DD1
 l0800_8DD1:
-	word32 dx_ax_79 = (uint32) (uint16) ax_26
-	Mem95[ss:si_106:byte] = SLICE((uint16) (dx_ax_79 % wArg06), byte, 0)
-	ax_26 = (uint16) (dx_ax_79 /u wArg06)
+	word32 dx_ax_79 = CONVERT(ax_26, word16, uint32)
+	Mem95[ss:si_106:byte] = SLICE(CONVERT(dx_ax_79 % wArg06, word32, uint16), byte, 0)
+	ax_26 = CONVERT(dx_ax_79 /u wArg06, word16, uint16)
 	si_106 = si_106 + 1<16>
 l0800_8DDD:
 	word16 cx_103 = 0x24<16> - fp + si_106
@@ -14153,7 +14154,7 @@ l0800_8E29:
 	word16 dx_19 = wArg04
 	branch msdos_set_file_position(wArg02, dwArg04, bArg08, SEQ(wArg04, ax_21)) l0800_8E4B
 l0800_8E4B:
-	word32 dx_ax_32 = (word32) fn0800_8D2B(ds, ax_21)
+	word32 dx_ax_32 = CONVERT(fn0800_8D2B(ds, ax_21), word16, word32)
 	ax_21 = SLICE(dx_ax_32, word16, 0) (alias)
 	dx_19 = SLICE(dx_ax_32, word16, 16) (alias)
 l0800_8E49:
@@ -14412,7 +14413,7 @@ l0800_9051:
 	Mem80 = PHI((Mem77, l0800_9045), (Mem800, l0800_9078), (Mem482, l0800_9092), (Mem113, l0800_90AA), (Mem117, l0800_90A4), (Mem86, l0800_90BB), (Mem478, l0800_909E), (Mem474, l0800_9098), (Mem787, l0800_907E), (Mem797, l0800_9088))
 	si_79 = PHI((si_58, l0800_9045), (si_82, l0800_9078), (si_82, l0800_9092), (si_82, l0800_90AA), (si_82, l0800_90A4), (si_82, l0800_90BB), (si_82, l0800_909E), (si_82, l0800_9098), (si_82, l0800_907E), (si_82, l0800_9088))
 	si_82 = si_79 + 1<i16>
-	ax_83 = (int16) Mem80[ds:si_79:byte]
+	ax_83 = CONVERT(Mem80[ds:si_79:byte], byte, int16)
 	dh_1545 = SLICE(dx_1527, byte, 8) (alias)
 	wArg0A_1112 = si_82
 	di_91 = ax_83
@@ -14423,7 +14424,7 @@ l0800_9075_thunk_fn0800_93A6:
 	diOut = di_98
 	return dx_1527
 l0800_905C:
-	bx_107 = (uint16) (uint8) Mem86[ds:ax_83 + 0x257C<16>:byte] (alias)
+	bx_107 = CONVERT(Mem86[ds:ax_83 + 0x257C<16>:byte], byte, uint16) (alias)
 	branch bx_107 <=u 0x15<16> l0800_906A
 l0800_906A:
 	switch (bx_107 << 1<16>) { l0800_93BE l0800_93BE l0800_93BE l0800_9071 l0800_9078 l0800_907E l0800_926F l0800_90C2 l0800_90C2 l0800_90CC l0800_91A1 l0800_9092 l0800_909E l0800_9098 l0800_90BD l0800_920B l0800_92B1 l0800_90B0 l0800_90C7 l0800_9127 l0800_90A4 l0800_90AA }
@@ -14472,7 +14473,7 @@ l0800_92D2:
 	si_1043 = PHI((si_1044, l0800_92D0), (si_209, l0800_92EE), (si_209, l0800_92F2), (si_209, l0800_92F7))
 	Mem200 = PHI((Mem1039, l0800_92D0), (Mem207, l0800_92EE), (Mem207, l0800_92F2), (Mem207, l0800_92F7))
 	al_186 = PHI((al_1034, l0800_92D0), (al_208, l0800_92EE), (al_208, l0800_92F2), (al_208, l0800_92F7))
-	ax_189 = (uint16) (uint8) al_186 (alias)
+	ax_189 = CONVERT(al_186, byte, uint16) (alias)
 	ch_197 = 1<8> << (al_186 & 7<8>)
 	Mem202[ss:fp - 0x2C<16> + (ax_189 >>u 3<8>):byte] = Mem200[ss:fp - 0x2C<16> + (ax_189 >>u 3<8>):byte] | ch_197
 	dl_187 = al_186
@@ -14539,11 +14540,13 @@ l0800_93A3_thunk_fn0800_93A6:
 	return dx_264
 l0800_9341:
 	si_334 = si_239
-	al_353 = SLICE(ax_261, byte, 0) (alias)
-	branch (Mem257[ss:fp - 0x2C<16> + (ax_261 >>u 3<8>):byte] & 1<8> << (SLICE(ax_261, byte, 0) & 7<8>)) == 0<8> l0800_935E
+	al_353 = Mem257[ss:fp + 2<16>:byte] (alias)
+	branch (Mem257[ss:fp - 0x2C<16> + (ax_261 >>u 3<8>):byte] & 1<8> << (Mem257[ss:fp + 2<16>:byte] & 7<8>)) == 0<8> l0800_935E
 l0800_935E:
+	ax_374 = Mem257[ss:fp + 2<16>:word16] (alias)
 	branch (bLoc03_1287 & 0x10<8>) == 0<8> l0800_936D
 l0800_9356:
+	ax_373 = Mem257[ss:fp + 2<16>:word16] (alias)
 	branch (bLoc03_1287 & 0x10<8>) == 0<8> l0800_9364
 l0800_9364:
 	branch (bLoc03_1287 & 1<8>) != 0<8> l0800_932A
@@ -14552,9 +14555,10 @@ l0800_936A:
 	di_357 = di_258 + 1<i16>
 l0800_935C:
 l0800_936D:
+	ax_371 = PHI((ax_373, l0800_935C), (ax_374, l0800_935E))
 	call SEQ(0x800<16>, wArg04) (retsize: 2;)
-		uses: ax:ax_380,bx:bx_382,cx:cx_381,dx:dx_383,Stack +0000:wLoc0A,Stack +0002:ax_261,Stack +0004:wArg06,Stack +0006:wArg08,Stack +0008:es_250,Stack +000C:wArg02,Stack +000E:wArg04,Stack +0010:wArg06,Stack +0012:wArg08,Stack +0014:si_209,Stack +0016:psegArg0C
-		defs: ax:ax_380,bx:bx_382,cx:cx_381,dx:dx_383,sp:sp_379
+		uses: bx:bx_382,cx:cx_381,dx:dx_383,Stack +0000:wLoc0A,Stack +0002:ax_371,Stack +0004:wArg06,Stack +0006:wArg08,Stack +0008:es_250,Stack +000C:wArg02,Stack +000E:wArg04,Stack +0010:wArg06,Stack +0012:wArg08,Stack +0014:si_209,Stack +0016:psegArg0C
+		defs: bx:bx_382,cx:cx_381,dx:dx_383,sp:sp_379
 	es_387 = Mem375[ss:sp_379 + 6<16>:selector]
 	branch si_239 + 1<16> >= v64_224 l0800_938E
 l0800_9385:
@@ -14631,7 +14635,7 @@ l0800_9208_thunk_fn0800_93BE:
 	diOut = di_530
 	return dx_1527
 l0800_91CA:
-	branch ((int16) bLoc03_1113 & 1<16>) != 0<16> l0800_91FD
+	branch (CONVERT(bLoc03_1113, byte, int16) & 1<16>) != 0<16> l0800_91FD
 l0800_91FD:
 	fn0800_A2D8(ds)
 l0800_91D3:
@@ -14715,7 +14719,7 @@ l0800_9284:
 		uses: bx:bx_737,cx:wArg08,dx:dx_738,Stack +0000:v65_718,Stack +0002:wArg06,Stack +0004:wArg08,Stack +0006:es_1068,Stack +000A:wArg02,Stack +000C:wArg04,Stack +000E:wArg06,Stack +0010:wArg08,Stack +0012:si_82,Stack +0014:psegArg0C,Stack +FFFFFFFA:v65_718,Stack +FFFFFFFE:wLoc0A
 		defs: ax:ax_735,bx:bx_737,dx:dx_738
 	wLoc08_1188 = v65_718
-	al_764 = SLICE(ax_735, byte, 0) (alias)
+	al_764 = Mem730[ss:fp + 2<16>:byte] (alias)
 	branch ax_735 < 0<16> l0800_92AE
 l0800_92AE:
 l0800_92AE_thunk_fn0800_93A6:
@@ -14771,14 +14775,14 @@ l0800_8FD8:
 	call SEQ(0x800<16>, wArg02) (retsize: 2;)
 		uses: ax:di_829,bx:bx_856,cx:cx_862,dx:dx_857,Stack +0002:wArg06,Stack +0004:wArg08,Stack +0008:wArg02,Stack +000A:wArg04,Stack +000C:wArg06,Stack +000E:wArg08,Stack +0010:wArg0A_1615,Stack +0012:psegArg0C,Stack +FFFFFFFA:v17_837,Stack +FFFFFFFC:wLoc0A,Stack +FFFFFFFE:v17_837
 		defs: ax:ax_854,bx:bx_856,dx:dx_857,sp:sp_853
-	ax_828 = (int16) al_826
+	ax_828 = CONVERT(al_826, byte, int16)
 	wLoc08_1208 = v17_837
 	cx_862 = Mem847[ss:sp_853 + 2<i16>:word16]
 	sp_863 = sp_853 + 4<i16>
-	al_868 = SLICE(ax_854, byte, 0) (alias)
+	al_868 = Mem847[ss:fp + 2<16>:byte] (alias)
 	branch ax_854 < 0<16> l0800_9016
 l0800_8FEC:
-	ax_869 = (int16) al_868
+	ax_869 = CONVERT(al_868, byte, int16)
 	di_870 = ax_828
 	branch ax_828 < 0<16> l0800_902B
 l0800_8FF1:
@@ -14996,7 +15000,7 @@ l0800_93C5:
 	call SEQ(0x800<16>, Mem16[ss_bp + 4<16>:word16]) (retsize: 2;)
 		defs: ax:ax_21
 	sp_11 = fp - 2<i16>
-	byte al_44 = SLICE(ax_21, byte, 0)
+	byte al_44 = Mem16[ss_bp + 4<16>:byte]
 	branch ax_21 <= 0<16> l0800_93EA
 l0800_93EA:
 	branch ax_21 == 0<16> l0800_93E4
@@ -15007,9 +15011,10 @@ l0800_93ED_thunk_fn0800_93A6:
 	diOut = di_37
 	return bp_36
 l0800_93D7:
+	word16 ax_51 = Mem16[ss_bp + 4<16>:word16]
 	branch al_44 < 0<8> l0800_93E4
 l0800_93DB:
-	branch Mem16[ds:ax_21 + 0x257C<16>:byte] == 1<8> l0800_93C5
+	branch Mem16[ds:ax_51 + 0x257C<16>:byte] == 1<8> l0800_93C5
 l0800_93E4:
 	call wLoc02 + 3<16> (retsize: 0;)
 		uses: cx:wLoc02 + 3<16>
@@ -15054,7 +15059,7 @@ l0800_93F9:
 	cl_50 = Mem31[ss:sp_33 + 4<16>:byte] (alias)
 	word16 dx_45 = Mem31[ss:sp_33 + 6<i16>:word16]
 	sp_16 = sp_33 + 8<i16>
-	byte al_54 = SLICE(ax_36, byte, 0)
+	byte al_54 = Mem31[ss_bp + 4<16>:byte]
 	branch ax_36 <= 0<16> l0800_9444
 l0800_940F:
 	cl_50 = cl_50 - 1<8>
@@ -15126,7 +15131,7 @@ l0800_94AD:
 	C_40 = true
 l0800_94A6:
 	C_40 = false
-	bx_38 = (uint16) (uint8) bl_16 (alias)
+	bx_38 = CONVERT(bl_16, byte, uint16) (alias)
 l0800_94AF:
 	bxOut = bx_38
 	return C_40
@@ -15163,16 +15168,16 @@ l0800_94C6:
 	wLoc06_545 = v8_23
 	sp_119 = sp_36 + 4<i16>
 	word16 ax_120 = ax_38
-	byte al_51 = SLICE(ax_38, byte, 0)
+	byte al_51 = Mem32[ss:fp + 2<16>:byte]
 	branch ax_38 < 0<16> l0800_9549
 l0800_94D8:
-	word16 ax_111 = (int16) al_51
-	branch (SLICE(ax_111, byte, 0) & 0x80<8>) != 0<8> l0800_94E7
+	word16 ax_52 = CONVERT(al_51, byte, int16)
+	branch (SLICE(ax_52, byte, 0) & 0x80<8>) != 0<8> l0800_94E7
 l0800_94DF:
-	branch (Mem32[ds:ax_111 + 0x2251<16>:byte] & 1<8>) != 0<8> l0800_94C6
+	branch (Mem32[ds:ax_52 + 0x2251<16>:byte] & 1<8>) != 0<8> l0800_94C6
 l0800_94E7:
-	ax_120 = ax_111
-	byte al_77 = SLICE(ax_111, byte, 0)
+	ax_120 = ax_52
+	byte al_77 = SLICE(ax_52, byte, 0)
 	wArg0C = wArg0C - 1<16>
 	branch wArg0C < 1<16> l0800_9550
 l0800_94ED:
@@ -15182,25 +15187,27 @@ l0800_94F1:
 l0800_94F5:
 	bLoc03_544 = 1<8>
 l0800_94F8:
-	ax_120 = ax_111
+	ax_120 = ax_52
 	wArg0C = wArg0C - 2<16>
 	branch wArg0C < 2<16> l0800_9550
 l0800_94FD:
 	Mem99[ss:sp_36 + 2<i16>:word16] = wArg08
 	Mem102[ss:sp_36:word16] = wArg06
 	word16 sp_109
+	word16 ax_111
 	call SEQ(0x800<16>, wArg02) (retsize: 2;)
 		uses: Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08,Stack +000C:wArg0A,Stack +000E:wArg0C - 2<16>,Stack +0010:ptrArg0E,Stack +0014:ptrArg12,Stack +FFFFFFFC:v8_23 + 1<16>
 		defs: ax:ax_111,sp:sp_109
 	wLoc06_545 = v8_23 + 1<16>
 	sp_119 = sp_109 + 4<i16>
 	ax_120 = ax_111
+	ax_52 = SEQ(Mem102[ss:fp + 3<16>:byte], Mem102[ss:fp + 2<16>:byte]) (alias)
 	branch ax_111 < 0<16> l0800_9549
 l0800_9549:
 	wLoc08_572 = 0xFFFF<16>
 l0800_950F:
 	word16 ax_296
-	byte al_134 = SLICE(ax_111, byte, 0)
+	byte al_134 = SLICE(ax_52, byte, 0)
 	word16 si_127 = 0<16>
 	word16 di_129 = 0<16>
 	byte cl_176 = SLICE(wArg0A, byte, 0)
@@ -15223,27 +15230,27 @@ l0800_957C:
 		uses: Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08,Stack +000C:0xA<16>,Stack +000E:v70_139,Stack +0010:ptrArg0E,Stack +0014:ptrArg12,Stack +FFFFFFFC:v71_143
 		defs: ax:ax_156,sp:sp_154
 	wLoc06_545 = v71_143
-	byte al_166 = SLICE(ax_156, byte, 0)
+	byte al_166 = Mem152[ss:fp + 2<16>:byte]
 	sp_119 = sp_154 + 4<i16>
 	wArg0A = 8<16>
 	branch al_166 == 0x78<8> l0800_9597
 l0800_9593:
-	ax_296 = ax_156 (alias)
+	ax_296 = Mem152[ss:fp + 2<16>:word16] (alias)
 	branch al_166 != 0x58<8> l0800_95C8
 l0800_9597:
 	wArg0A = 0x10<16>
 l0800_9518:
-	ax_120 = ax_111 (alias)
+	ax_120 = ax_52 (alias)
 	branch wArg0A >u 0x24<16> l0800_9550
 l0800_951D:
-	ax_120 = ax_111 (alias)
+	ax_120 = ax_52 (alias)
 	branch cl_176 <u 2<8> l0800_9550
 l0800_9522:
 	branch al_134 != 0x30<8> l0800_959E
 l0800_959E:
 	ax_120 = bx_197
 	word16 bx_197
-	branch fn0800_9485(SLICE(wArg0A, byte, 0), ax_111, out bx_197) l0800_9550
+	branch fn0800_9485(SLICE(wArg0A, byte, 0), ax_52, out bx_197) l0800_9550
 l0800_9550:
 	wLoc08_572 = 0<16>
 l0800_9555:
@@ -15279,11 +15286,11 @@ l0800_9530:
 		uses: Stack +0004:wArg02,Stack +0006:wArg04,Stack +0008:wArg06,Stack +000A:wArg08,Stack +000C:wArg0A,Stack +000E:v31_261,Stack +0010:ptrArg0E,Stack +0014:ptrArg12,Stack +FFFFFFFC:v32_265
 		defs: ax:ax_276,sp:sp_274
 	wLoc06_545 = v32_265
-	byte al_285 = SLICE(ax_276, byte, 0)
+	byte al_285 = Mem273[ss:fp + 2<16>:byte]
 	sp_119 = sp_274 + 4<i16>
 	branch al_285 == 0x78<8> l0800_959C
 l0800_9542:
-	ax_296 = ax_276 (alias)
+	ax_296 = Mem273[ss:fp + 2<16>:word16] (alias)
 	branch al_285 == 0x58<8> l0800_959C
 l0800_959C:
 l0800_9546:
@@ -15465,11 +15472,11 @@ l0800_97CC:
 	byte dl_12 = SLICE(wArg02, byte, 0)
 	branch wArg02 != 0xFFFF<16> l0800_97DC
 l0800_97DC:
-	branch (Mem7[ds:(uint16) (uint8) dl_12 + 0x2251<16>:byte] & 8<8>) == 0<8> l0800_97F2
+	branch (Mem7[ds:CONVERT(dl_12, byte, uint16) + 0x2251<16>:byte] & 8<8>) == 0<8> l0800_97F2
 l0800_97F2:
-	ax_26 = (uint16) (uint8) dl_12 (alias)
+	ax_26 = CONVERT(dl_12, byte, uint16) (alias)
 l0800_97E9:
-	ax_26 = (uint16) (uint8) dl_12 + 0xFFE0<16>
+	ax_26 = CONVERT(dl_12, byte, uint16) + 0xFFE0<16>
 l0800_97D7:
 	ax_26 = 0xFFFF<16>
 l0800_97F6:
@@ -15599,7 +15606,7 @@ l0800_98BF:
 	word16 wLoc0A_1242 = 0xFFFF<16>
 	word16 wLoc0C_1243 = 0xFFFF<16>
 l0800_98DD:
-	word16 ax_65 = (uint16) (uint8) al_1062
+	word16 ax_65 = CONVERT(al_1062, byte, uint16)
 	byte bl_68 = SLICE(ax_65, byte, 0)
 	byte bh_73 = SLICE(ax_65, byte, 8)
 	byte dl_134 = SLICE(ax_65, byte, 0)
@@ -15650,7 +15657,7 @@ l0800_9C53:
 	wArg02 = wArg02 + 2<16>
 	es_110 = Mem109[ss:sp_108:selector]
 l0800_9C65:
-	Mem125[es_110:di_103:word16] = (uint16) (uint8) (0x50<8> - bLoc16_1444)
+	Mem125[es_110:di_103:word16] = CONVERT(0x50<8> - bLoc16_1444, byte, uint16)
 	branch (wLoc04_1240 & 0x10<16>) == 0<16> l0800_9C7F
 l0800_9C78:
 	Mem132[es_110:di_103 + 2<16>:word16] = 0<16>
@@ -15774,7 +15781,7 @@ l0800_99EA:
 	ax_356 = Mem354[ss:wArg02:word16]
 	bx_1972 = bx_1982 (alias)
 l0800_99FA:
-	int32 dx_ax_362 = (int32) Mem359[ss:wArg02:word16]
+	int32 dx_ax_362 = CONVERT(Mem359[ss:wArg02:word16], word16, int32)
 	bLoc08_1283 = 1<8>
 	ax_356 = SLICE(dx_ax_362, word16, 0) (alias)
 	dx_350 = SLICE(dx_ax_362, word16, 16) (alias)
@@ -15805,7 +15812,7 @@ l0800_9A36:
 	Mem421[ss:sp_413 - 2<i16>:word16] = ax_356
 	Mem423[ss:sp_413 - 4<i16>:word16] = ss
 	Mem427[ss:sp_413 - 6<i16>:word16] = fp - 0x47<16>
-	word16 ax_435 = (int16) bh_430
+	word16 ax_435 = CONVERT(bh_430, byte, int16)
 	Mem437[ss:sp_413 - 8<i16>:word16] = ax_435
 	Mem443[ss:sp_413 - 10<i16>:word16] = SEQ(SLICE(ax_435, byte, 8), bLoc08_1283)
 	Mem453[ss:sp_413 - 12<i16>:word16] = bx_1972
@@ -15967,7 +15974,7 @@ l0800_99C5:
 l0800_9931:
 	ch_1155 = 5<8>
 l0800_9987:
-	word16 ax_878 = (int16) (SLICE(ax_65, byte, 0) - 0x30<8>)
+	word16 ax_878 = CONVERT(SLICE(ax_65, byte, 0) - 0x30<8>, byte, int16)
 	branch ch_1155 >u 2<8> l0800_99A9
 l0800_99A9:
 	cx = SEQ(ch_1155, 0<8>) (alias)
@@ -16365,10 +16372,10 @@ l0800_9E9E:
 	branch (ax_16 & 0xF<16>) == 0<16> l0800_9EC7
 l0800_9EB3:
 	word16 dx_131
-	fn0800_A215(Mem15[0800:9D3B:selector], (uint32) (uint16) (0x10<16> - (ax_16 & 0xF<16>)), out dx_131)
+	fn0800_A215(Mem15[0800:9D3B:selector], CONVERT(0x10<16> - (ax_16 & 0xF<16>), word16, uint32), out dx_131)
 l0800_9EC7:
 	word16 dx_75
-	branch fn0800_A215(Mem57[0800:9D3B:selector], SEQ((uint16) (uint8) SLICE(ax, byte, 8) >>u 4<8>, ax << 4<8>), out dx_75) == 0xFFFF<16> l0800_9EFE
+	branch fn0800_A215(Mem57[0800:9D3B:selector], SEQ(CONVERT(SLICE(ax, byte, 8), byte, uint16) >>u 4<8>, ax << 4<8>), out dx_75) == 0xFFFF<16> l0800_9EFE
 l0800_9EFE:
 	dxOut = 0<16>
 	return 0<16>
@@ -16396,13 +16403,13 @@ fn0800_9F02_entry:
 l0800_9F02:
 	selector ds_17 = Mem7[0800:9D3B:selector]
 	word16 dx_25
-	word16 ax_22 = fn0800_A215(ds_17, SEQ((uint16) (uint8) ah_9 >>u 4<8>, ax << 4<8>), out dx_25)
+	word16 ax_22 = fn0800_A215(ds_17, SEQ(CONVERT(ah_9, byte, uint16) >>u 4<8>, ax << 4<8>), out dx_25)
 	branch ax_22 == 0xFFFF<16> l0800_9F58
 l0800_9F20:
 	branch (ax_22 & 0xF<16>) != 0<16> l0800_9F3D
 l0800_9F3D:
 	word16 dx_130
-	branch fn0800_A215(ds_17, (uint32) (uint16) (-(ax_22 & 0xF<16>) + 0x10<16>), out dx_130) == 0xFFFF<16> l0800_9F58
+	branch fn0800_A215(ds_17, CONVERT(-(ax_22 & 0xF<16>) + 0x10<16>, word16, uint32), out dx_130) == 0xFFFF<16> l0800_9F58
 l0800_9F58:
 	dxOut = 0<16>
 	return 0<16>
@@ -17018,13 +17025,13 @@ l0800_A471:
 l0800_A487:
 	byte bl_31 = Mem19[es_163:si_164:byte]
 	si_164 = si_164 + 1<16>
-	branch (Mem19[ds:(uint16) (uint8) bl_31 + 0x2251<16>:byte] & 1<8>) != 0<8> l0800_A487
+	branch (Mem19[ds:CONVERT(bl_31, byte, uint16) + 0x2251<16>:byte] & 1<8>) != 0<8> l0800_A487
 l0800_A490:
 	word16 bx_254
 	word16 bp_119 = 0<16>
 	branch bl_31 == 0x2B<8> l0800_A49E
 l0800_A498:
-	bx_254 = (uint16) (uint8) bl_31 (alias)
+	bx_254 = CONVERT(bl_31, byte, uint16) (alias)
 	branch bl_31 != 0x2D<8> l0800_A4A2
 l0800_A49D:
 	bp_119 = 1<16>
@@ -17141,7 +17148,7 @@ l0800_A559:
 	branch wArg02 <u Mem7[ds:0x24E8<16>:word16] l0800_A56E
 l0800_A56E:
 	Mem16[ds:(wArg02 << 1<16>) + 0x24EA<16>:word16] = 0<16>
-	ax_20 = (uint16) (uint8) fn0800_A57F(al, ds, wArg02)
+	ax_20 = CONVERT(fn0800_A57F(al, ds, wArg02), byte, uint16)
 l0800_A565:
 	ax_20 = fn0800_8D2B(ds, 6<16>)
 l0800_A57D:
@@ -17277,9 +17284,9 @@ l0800_A652:
 l0800_A65F:
 	branch Mem82[ptrArg02 + 4<16>:byte] < 0<8> l0800_A675
 l0800_A669:
-	word16 ax_89 = (int16) Mem82[ptrArg02 + 4<16>:byte]
+	word16 ax_89 = CONVERT(Mem82[ptrArg02 + 4<16>:byte], byte, int16)
 	cx = ax_89
-	si_105 = (uint16) (uint8) fn0800_A559(SLICE(ax_89, byte, 0), ds, ax_89, out dx)
+	si_105 = CONVERT(fn0800_A559(SLICE(ax_89, byte, 0), ds, ax_89, out dx), uint8, uint16)
 l0800_A675:
 	Mem112[ptrArg02 + 2<16>:word16] = 0<16>
 	Mem113[ptrArg02 + 6<16>:word16] = 0<16>
@@ -17334,7 +17341,7 @@ l0800_A732:
 	word16 dx_41 = Mem39[ptrArg02 + 8<16>:word16]
 	Mem42[ptrArg02 + 0xE<16>:word16] = ax_40
 	Mem43[ptrArg02 + 0xC<16>:word16] = dx_41
-	branch fn0800_C632(ds, (int16) Mem47[ptrArg02 + 4<16>:byte], SEQ(ax_40, dx_41), ax_32 + 1<16>, out dx, out bx_106) == ax_32 + 1<16> l0800_A778
+	branch fn0800_C632(ds, CONVERT(Mem47[ptrArg02 + 4<16>:byte], byte, int16), SEQ(ax_40, dx_41), ax_32 + 1<16>, out dx, out bx_106) == ax_32 + 1<16> l0800_A778
 l0800_A765:
 	bx_106 = wArg02 (alias)
 	branch (Mem51[ptrArg02 + 2<16>:word16] & 0x200<16>) != 0<16> l0800_A778
@@ -17408,7 +17415,7 @@ l0800_A7B1:
 	word16 ax_61 = Mem37[ptrArg08 + 0xE<16>:word16]
 	word16 si_62 = Mem37[ptrArg08 + 0xC<16>:word16]
 	Mem64[ptrArg08 + 0xC<16>:word16] = Mem37[ptrArg08 + 0xC<16>:word16] + 1<16>
-	ax_48 = (uint16) (uint8) Mem64[ax_61:si_62:byte] (alias)
+	ax_48 = CONVERT(Mem64[ax_61:si_62:byte], byte, uint16) (alias)
 l0800_A7D1:
 	cx_134 = ax_48
 	byte cl_78 = SLICE(ax_48, byte, 0)
@@ -17637,11 +17644,11 @@ l0800_A96D:
 l0800_A991:
 	branch Mem41[ptrArg0C + 4<16>:byte] >= 0<8> l0800_A9CD
 l0800_A998:
-	byte al_73 = SLICE((uint16) (uint8) fn0800_B140(ds, dwArg08, wLoc04 | wArg02, wLoc06, out cx_154), byte, 0)
+	byte al_73 = SLICE(CONVERT(fn0800_B140(ds, dwArg08, wLoc04 | wArg02, wLoc06, out cx_154), uint8, uint16), byte, 0)
 	Mem76[ptrArg0C + 4<16>:byte] = al_73
 	branch al_73 >= 0<8> l0800_A9CD
 l0800_A9CD:
-	branch fn0800_8D76((int16) Mem83[ptrArg0C + 4<16>:byte]) == 0<16> l0800_A9E7
+	branch fn0800_8D76(CONVERT(Mem83[ptrArg0C + 4<16>:byte], byte, int16)) == 0<16> l0800_A9E7
 l0800_A9DE:
 	Mem109[ptrArg0C + 2<16>:word16] = Mem91[ptrArg0C + 2<16>:word16] | 0x200<16>
 l0800_A9E7:
@@ -17797,7 +17804,7 @@ l0800_AB65:
 	word16 ax_93 = Mem69[ptrArg02 + 0xE<16>:word16]
 	word16 si_94 = Mem69[ptrArg02 + 0xC<16>:word16]
 	Mem96[ptrArg02 + 0xC<16>:word16] = Mem69[ptrArg02 + 0xC<16>:word16] + 1<16>
-	ax_101 = (uint16) (uint8) Mem96[ax_93:si_94:byte] (alias)
+	ax_101 = CONVERT(Mem96[ax_93:si_94:byte], byte, uint16) (alias)
 l0800_AB85:
 	dx = ax_101
 	byte dl_110 = SLICE(ax_101, byte, 0)
@@ -17819,7 +17826,7 @@ l0800_AB00:
 l0800_AB1A:
 	byte ch_342
 	word16 dx_343
-	word16 ax_166 = fn0800_8F50(ds, (int16) Mem158[ptrArg02 + 4<16>:byte], ptrArg08_234, di_127, out ch_342, out dx_343)
+	word16 ax_166 = fn0800_8F50(ds, CONVERT(Mem158[ptrArg02 + 4<16>:byte], byte, int16), ptrArg08_234, di_127, out ch_342, out dx_343)
 	dx = ax_166
 	ptrArg08_234 = SEQ(wArg0A_244, wArg08_248 + ax_166) (alias)
 	branch ax_166 == di_127 l0800_AB91
@@ -17886,7 +17893,7 @@ l0800_AC26:
 l0800_ABD3:
 	sp_100 = fp - 0xA<16>
 	byte ch_265
-	ax_113 = (uint16) ((uint32) (uint16) (ax_27 - fn0800_AAB3(dx_28, ds, dwArg0A, ax_27, dwArg02, out ch_265)) /u wArg06)
+	ax_113 = CONVERT(CONVERT(ax_27 - fn0800_AAB3(dx_28, ds, dwArg0A, ax_27, dwArg02, out ch_265), word16, uint32) /u wArg06, word16, uint16)
 l0800_ABB2:
 	ax_113 = 0<16>
 l0800_AC2B:
@@ -17915,7 +17922,7 @@ l0800_AC31:
 	word16 si_29
 	branch Mem12[ptrArg02:word16] >= 0<16> l0800_AC4D
 l0800_AC4D:
-	int32 dx_ax_22 = (int32) Mem12[ptrArg02:word16]
+	int32 dx_ax_22 = CONVERT(Mem12[ptrArg02:word16], word16, int32)
 	word16 dx_24 = SLICE(dx_ax_22, word16, 16)
 	word16 ax_26 = (SLICE(dx_ax_22, word16, 0) ^ dx_24) - dx_24
 	cx_108 = ax_26
@@ -18011,14 +18018,14 @@ l0800_ACCE:
 l0800_ACD3:
 	branch Mem18[ptrArg02:word16] <= 0<16> l0800_ACEA
 l0800_ACDC:
-	dwArg06 = dwArg06 - (int32) fn0800_AC31(ptrArg02) (alias)
+	dwArg06 = dwArg06 - CONVERT(fn0800_AC31(ptrArg02), word16, int32) (alias)
 l0800_ACEA:
 	Mem76[ptrArg02 + 2<16>:word16] = Mem71[ptrArg02 + 2<16>:word16] & 0xFE5F<16>
 	Mem79[ptrArg02:word16] = 0<16>
 	word16 dx_81 = Mem79[ptrArg02 + 8<16>:word16]
 	Mem82[ptrArg02 + 0xE<16>:word16] = Mem79[ptrArg02 + 0xA<16>:word16]
 	Mem83[ptrArg02 + 0xC<16>:word16] = dx_81
-	word16 ax_99 = fn0800_8E29(ds, (int16) Mem93[ptrArg02 + 4<16>:byte], dwArg06, SLICE(wArg0A, byte, 0), out cx_101, out dx_102)
+	word16 ax_99 = fn0800_8E29(ds, CONVERT(Mem93[ptrArg02 + 4<16>:byte], byte, int16), dwArg06, SLICE(wArg0A, byte, 0), out cx_101, out dx_102)
 	branch dx_102 != 0xFFFF<16> l0800_AD2A
 l0800_AD20:
 	branch ax_99 != 0xFFFF<16> l0800_AD2A
@@ -18062,7 +18069,7 @@ word16 fn0800_AD2F(selector ds, segptr32 ptrArg02, ptr16 & dxOut)
 // Preserved: bp sp
 fn0800_AD2F_entry:
 l0800_AD2F:
-	fn0800_97B6(ds, (int16) Mem7[ptrArg02 + 4<16>:byte])
+	fn0800_97B6(ds, CONVERT(Mem7[ptrArg02 + 4<16>:byte], byte, int16))
 	int32 dx_ax_163 = <invalid>
 	word16 dx_22 = SLICE(dx_ax_163, word16, 16)
 	word16 ax_19 = SLICE(dx_ax_163, word16, 0)
@@ -18074,11 +18081,11 @@ l0800_AD4D:
 l0800_AD52:
 	branch Mem30[ptrArg02:word16] >= 0<16> l0800_AD6B
 l0800_AD6B:
-	ui32 v23_v22_104 = dx_ax_163 - (int32) fn0800_AC31(ptrArg02)
+	ui32 v23_v22_104 = dx_ax_163 - CONVERT(fn0800_AC31(ptrArg02), word16, int32)
 	wLoc06_111 = SLICE(v23_v22_104, word16, 0)
 	wLoc04_110 = SLICE(v23_v22_104, word16, 16)
 l0800_AD5B:
-	ui32 v19_v17_106 = dx_ax_163 + (int32) fn0800_AC31(ptrArg02)
+	ui32 v19_v17_106 = dx_ax_163 + CONVERT(fn0800_AC31(ptrArg02), word16, int32)
 	wLoc06_111 = SLICE(v19_v17_106, word16, 0)
 	wLoc04_110 = SLICE(v19_v17_106, word16, 16)
 l0800_AD7B:
@@ -18143,7 +18150,7 @@ l0800_ADEA:
 	ax_110 = si_103
 l0800_ADB1:
 	sp_13 = fp - 0xA<16>
-	ax_110 = (uint16) ((uint32) (uint16) fn0800_B4BE(ds, dwArg0A, ax_27, dwArg02) /u wArg06)
+	ax_110 = CONVERT(CONVERT(fn0800_B4BE(ds, dwArg0A, ax_27, dwArg02), word16, uint32) /u wArg06, word16, uint16)
 l0800_AE0A:
 	siOut = Mem157[ss:sp_13 + 2<i16>:word16]
 	return ax_110
@@ -18204,7 +18211,7 @@ l0800_AE5D:
 	Mem37[ptrArg02 + 0xE<16>:word16] = ax_35
 	Mem38[ptrArg02 + 0xC<16>:word16] = dx_36
 	word16 dx_51
-	word16 ax_48 = fn0800_B97F(ds, (int16) Mem42[ptrArg02 + 4<16>:byte], SEQ(ax_35, dx_36), v11_31, out dx_51)
+	word16 ax_48 = fn0800_B97F(ds, CONVERT(Mem42[ptrArg02 + 4<16>:byte], byte, int16), SEQ(ax_35, dx_36), v11_31, out dx_51)
 	Mem62[ptrArg02:word16] = ax_48
 	branch ax_48 <= 0<16> l0800_AE95
 l0800_AE95:
@@ -18280,7 +18287,7 @@ l0800_AF43:
 l0800_AF4E:
 	fn0800_AE10(ds)
 l0800_AF51:
-	branch fn0800_B97F(ds, (int16) Mem71[ptrArg02 + 4<16>:byte], SEQ(ds, 0x4EE4<16>), 1<16>, out dx) != 0<16> l0800_AF9E
+	branch fn0800_B97F(ds, CONVERT(Mem71[ptrArg02 + 4<16>:byte], byte, int16), SEQ(ds, 0x4EE4<16>), 1<16>, out dx) != 0<16> l0800_AF9E
 l0800_AF9E:
 	branch Mem79[ds:0x4EE4<16>:byte] != 0xD<8> l0800_AFB0
 l0800_AFA5:
@@ -18289,7 +18296,7 @@ l0800_AFB0:
 	Mem110[ptrArg02 + 2<16>:word16] = Mem79[ptrArg02 + 2<16>:word16] & 0xFFDF<16>
 	al_114 = Mem110[ds:0x4EE4<16>:byte]
 l0800_AF6D:
-	branch fn0800_A59D(ds, (int16) Mem79[ptrArg02 + 4<16>:byte], out dx) == 1<16> l0800_AF8A
+	branch fn0800_A59D(ds, CONVERT(Mem79[ptrArg02 + 4<16>:byte], byte, int16), out dx) == 1<16> l0800_AF8A
 l0800_AF8A:
 	Mem142[ptrArg02 + 2<16>:word16] = Mem121[ptrArg02 + 2<16>:word16] & 0xFE7F<16> | 0x20<16>
 l0800_AF7F:
@@ -18304,7 +18311,7 @@ l0800_AEF1:
 	Mem185[ptrArg02 + 0xC<16>:word16] = Mem181[ptrArg02 + 0xC<16>:word16] + 1<16>
 	al_114 = Mem185[ax_182:si_183:byte]
 l0800_AFBB:
-	ax_190 = (uint16) (uint8) al_114 (alias)
+	ax_190 = CONVERT(al_114, byte, uint16) (alias)
 l0800_AEE2:
 	ax_190 = 0xFFFF<16>
 l0800_AFBD:
@@ -18803,7 +18810,7 @@ l0800_B30A:
 	word16 bx_26
 	word16 dx_27
 	word16 cx_29
-	word16 ax_25 = fn0800_B324(ds, SLICE((int16) bArg02, byte, 0), ptrArg04, out cx_29, out dx_27, out bx_26)
+	word16 ax_25 = fn0800_B324(ds, SLICE(CONVERT(bArg02, byte, int16), byte, 0), ptrArg04, out cx_29, out dx_27, out bx_26)
 	cxOut = cx_29
 	dxOut = dx_27
 	bxOut = bx_26
@@ -18842,11 +18849,11 @@ l0800_B3A6:
 	Mem33[ptrArg04 + 2<16>:word16] = Mem14[ptrArg04 + 2<16>:word16] | 0x100<16>
 	branch Mem33[ptrArg04 + 6<16>:word16] == 0<16> l0800_B421
 l0800_B421:
-	branch (Mem33[ds:((int16) Mem33[ptrArg04 + 4<16>:byte] << 1<16>) + 0x24EA<16>:word16] & 0x800<16>) == 0<16> l0800_B44C
+	branch (Mem33[ds:(CONVERT(Mem33[ptrArg04 + 4<16>:byte], byte, int16) << 1<16>) + 0x24EA<16>:word16] & 0x800<16>) == 0<16> l0800_B44C
 l0800_B435:
 	word16 dx_442
 	word16 cx_441
-	fn0800_8E29(ds, (int16) Mem56[ptrArg04 + 4<16>:byte], 0<32>, 2<8>, out cx_441, out dx_442)
+	fn0800_8E29(ds, CONVERT(Mem56[ptrArg04 + 4<16>:byte], byte, int16), 0<32>, 2<8>, out cx_441, out dx_442)
 	wArg06_330 = SLICE(ptrArg04, word16, 16) (alias)
 l0800_B44C:
 	branch Mem73[ds:0x4EE6<16>:byte] != 0xA<8> l0800_B478
@@ -18854,9 +18861,9 @@ l0800_B453:
 	branch (Mem73[ptrArg04 + 2<16>:word16] & 0x40<16>) != 0<16> l0800_B478
 l0800_B45E:
 	word16 bx_443
-	branch fn0800_C779(ds, (int16) Mem92[ptrArg04 + 4<16>:byte], SEQ(ds, 0x26AE<16>), 1<16>, out cx, out dx_100, out bx_443) != 1<16> l0800_B495
+	branch fn0800_C779(ds, CONVERT(Mem92[ptrArg04 + 4<16>:byte], byte, int16), SEQ(ds, 0x26AE<16>), 1<16>, out cx, out dx_100, out bx_443) != 1<16> l0800_B495
 l0800_B478:
-	branch fn0800_C779(ds, (int16) Mem118[ptrArg04 + 4<16>:byte], SEQ(ds, 0x4EE6<16>), 1<16>, out cx, out dx_100, out bx_128) == 1<16> l0800_B4A3
+	branch fn0800_C779(ds, CONVERT(Mem118[ptrArg04 + 4<16>:byte], byte, int16), SEQ(ds, 0x4EE6<16>), 1<16>, out cx, out dx_100, out bx_128) == 1<16> l0800_B4A3
 l0800_B495:
 	bx_128 = SLICE(ptrArg04, word16, 0) (alias)
 	branch (Mem140[ptrArg04 + 2<16>:word16] & 0x200<16>) != 0<16> l0800_B4A3
@@ -18913,7 +18920,7 @@ l0800_B37D:
 l0800_B36B:
 l0800_B35A:
 l0800_B4A3:
-	ax_280 = (uint16) (uint8) Mem283[ds:0x4EE6<16>:byte] (alias)
+	ax_280 = CONVERT(Mem283[ds:0x4EE6<16>:byte], byte, uint16) (alias)
 l0800_B4A8:
 	cxOut = cx
 	dxOut = dx_100
@@ -18965,30 +18972,30 @@ l0800_B528:
 	word16 dx_664
 	branch fn0800_A6B7(ds, ptrArg02, out dx_664, out bx_665) != 0<16> l0800_B4F5
 l0800_B535:
-	branch (Mem137[ds:((int16) Mem137[ptrArg02 + 4<16>:byte] << 1<16>) + 0x24EA<16>:word16] & 0x800<16>) == 0<16> l0800_B560
+	branch (Mem137[ds:(CONVERT(Mem137[ptrArg02 + 4<16>:byte], byte, int16) << 1<16>) + 0x24EA<16>:word16] & 0x800<16>) == 0<16> l0800_B560
 l0800_B549:
 	word16 cx_669
 	word16 dx_670
-	fn0800_8E29(ds, (int16) Mem159[ptrArg02 + 4<16>:byte], 0<32>, 2<8>, out cx_669, out dx_670)
+	fn0800_8E29(ds, CONVERT(Mem159[ptrArg02 + 4<16>:byte], byte, int16), 0<32>, 2<8>, out cx_669, out dx_670)
 l0800_B560:
 	word16 bx_668
 	word16 dx_667
 	word16 cx_666
-	branch fn0800_C779(ds, (int16) Mem187[ptrArg02 + 4<16>:byte], ptrArg08, wArg06, out cx_666, out dx_667, out bx_668) <u wArg06 l0800_B57D
+	branch fn0800_C779(ds, CONVERT(Mem187[ptrArg02 + 4<16>:byte], byte, int16), ptrArg08, wArg06, out cx_666, out dx_667, out bx_668) <u wArg06 l0800_B57D
 l0800_B57D:
 l0800_B57A:
 l0800_B519:
 l0800_B5DB:
-	branch (Mem17[ds:((int16) Mem17[ptrArg02 + 4<16>:byte] << 1<16>) + 0x24EA<16>:word16] & 0x800<16>) == 0<16> l0800_B606
+	branch (Mem17[ds:(CONVERT(Mem17[ptrArg02 + 4<16>:byte], byte, int16) << 1<16>) + 0x24EA<16>:word16] & 0x800<16>) == 0<16> l0800_B606
 l0800_B5EF:
 	word16 dx_663
 	word16 cx_662
-	fn0800_8E29(ds, (int16) Mem226[ptrArg02 + 4<16>:byte], 0<32>, 2<8>, out cx_662, out dx_663)
+	fn0800_8E29(ds, CONVERT(Mem226[ptrArg02 + 4<16>:byte], byte, int16), 0<32>, 2<8>, out cx_662, out dx_663)
 l0800_B606:
 	word16 cx_659
 	word16 dx_660
 	word16 bx_661
-	branch fn0800_C779(ds, (int16) Mem253[ptrArg02 + 4<16>:byte], ptrArg08, wArg06, out cx_659, out dx_660, out bx_661) >=u wArg06 l0800_B69D
+	branch fn0800_C779(ds, CONVERT(Mem253[ptrArg02 + 4<16>:byte], byte, int16), ptrArg08, wArg06, out cx_659, out dx_660, out bx_661) >=u wArg06 l0800_B69D
 l0800_B620:
 l0800_B50F:
 l0800_B625:
@@ -18997,7 +19004,7 @@ l0800_B625:
 l0800_B680:
 	word16 bx_294
 	word16 dx_295
-	branch fn0800_C632(ds, (int16) Mem285[ptrArg02 + 4<16>:byte], ptrArg08, wArg06, out dx_295, out bx_294) >=u wArg06 l0800_B69D
+	branch fn0800_C632(ds, CONVERT(Mem285[ptrArg02 + 4<16>:byte], byte, int16), ptrArg08, wArg06, out dx_295, out bx_294) >=u wArg06 l0800_B69D
 l0800_B69A:
 l0800_B62F:
 l0800_B677:
@@ -19022,7 +19029,7 @@ l0800_B639:
 	Mem355[ptrArg02 + 0xC<16>:word16] = Mem319[ptrArg02 + 0xC<16>:word16] + 1<16>
 	byte dl_362 = Mem358[ptrArg08_510:byte]
 	Mem364[ax_352:si_353:byte] = dl_362
-	ax_341 = (uint16) (uint8) dl_362 (alias)
+	ax_341 = CONVERT(dl_362, byte, uint16) (alias)
 	ptrArg08_510 = SEQ(wArg0A_569, wArg08_511 + 1<16>) (alias)
 l0800_B66F:
 	branch ax_341 != 0xFFFF<16> l0800_B677
@@ -19040,7 +19047,7 @@ l0800_B4D9:
 	word16 bx_400
 	word16 dx_401
 	word16 cx_403
-	branch fn0800_B324(ds, SLICE((int16) Mem390[ptrArg08_673:byte], byte, 0), ptrArg02, out cx_403, out dx_401, out bx_400) != 0xFFFF<16> l0800_B4FA
+	branch fn0800_B324(ds, SLICE(CONVERT(Mem390[ptrArg08_673:byte], byte, int16), byte, 0), ptrArg02, out cx_403, out dx_401, out bx_400) != 0xFFFF<16> l0800_B4FA
 l0800_B4F5:
 	ax_411 = 0<16>
 l0800_B501:
@@ -19641,7 +19648,7 @@ l0800_BBF9:
 	wArg02_61 = wArg02_61 - 1<16>
 l0800_BBFC:
 	segptr32 ptrArg02_67 = SEQ(wArg04_66, wArg02_61 - 1<16>)
-	word16 ax_28 = (int16) Mem22[ptrArg02_67:byte]
+	word16 ax_28 = CONVERT(Mem22[ptrArg02_67:byte], byte, int16)
 	word16 cx_30 = 4<16>
 	word16 bx_31 = 0xBC39<16>
 l0800_BC0F:
@@ -19720,7 +19727,7 @@ l0800_BCB9:
 l0800_BCE2:
 	word16 v24_153 = wLoc06_253 - 1<16>
 	wLoc06_253 = v24_153
-	word16 ax_160 = (int16) Mem154[SEQ(ss, v24_153):byte]
+	word16 ax_160 = CONVERT(Mem154[SEQ(ss, v24_153):byte], byte, int16)
 	word16 cx_162 = 7<16>
 	word16 bx_163 = 0xBE1F<16>
 l0800_BCF5:
@@ -19978,7 +19985,7 @@ l0800_C009_2:
 	cx_41 = cx_41 - 1<16>
 	branch Mem14[ds_97:si_152:byte] != Mem14[es_96:di_153:byte] l0800_C009
 l0800_C00B:
-	ax_123 = (uint16) (uint8) (Mem14[ds_97:si_152 - 1<16>:byte] - Mem14[es_96:di_153 - 1<16>:byte])
+	ax_123 = Mem14[ds_97:si_152 - 1<16>:byte] - Mem14[es_96:di_153 - 1<16>:byte]
 l0800_C018:
 	return ax_123
 fn0800_BFE6_exit:
@@ -20046,12 +20053,12 @@ l0800_C04F:
 	fn0800_C379(ds)
 	word16 si_36 = Mem32[ptrArg02:word16]
 	word16 dx_26 = Mem13[ds:0x26E2<16>:word16]
-	int32 dx_ax_42 = (int32) (si_36 + 0xF844<16> >> 2<16>)
+	int32 dx_ax_42 = CONVERT(si_36 + 0xF844<16> >> 2<16>, word16, int32)
 	word16 ax_30 = Mem13[ds:0x26E4<16>:word16] + 0x12CE<16> + (dx_26 <u 0xA600<16>)
 	byte ch_449
 	word16 dx_450
 	fn0800_8F18(0x1F80<16>, SLICE(dx_ax_42, word16, 16), 0x786<16>, SLICE(dx_ax_42, word16, 0), out ch_449, out dx_450)
-	int32 dx_ax_72 = (int32) (si_36 + 0xF844<16> & 3<16>)
+	int32 dx_ax_72 = CONVERT(si_36 + 0xF844<16> & 3<16>, word16, int32)
 	word16 dx_452
 	byte ch_451
 	fn0800_8F18(0x3380<16>, SLICE(dx_ax_72, word16, 16), 0x1E1<16>, SLICE(dx_ax_72, word16, 0), out ch_451, out dx_452)
@@ -20064,38 +20071,38 @@ l0800_C0B0:
 	dwLoc06_443 = v20_v19_308 + 0x15180<32> (alias)
 l0800_C0B9:
 	word16 cx_108 = 0<16>
-	word16 si_120 = (int16) Mem112[ptrArg02 + 3<16>:byte] - 1<16>
+	word16 si_120 = CONVERT(Mem112[ptrArg02 + 3<16>:byte], byte, int16) - 1<16>
 l0800_C0D0:
 	branch si_120 > 0<16> l0800_C0C8
 l0800_C0C8:
 	si_120 = si_120 - 1<16>
-	cx_108 = cx_108 + (int16) Mem112[ds:si_120 + 0x26B4<16>:byte]
+	cx_108 = cx_108 + CONVERT(Mem112[ds:si_120 + 0x26B4<16>:byte], byte, int16)
 l0800_C0D4:
-	word16 cx_141 = cx_108 + ((int16) Mem112[ptrArg02 + 2<16>:byte] - 1<16>)
+	word16 cx_141 = cx_108 + (CONVERT(Mem112[ptrArg02 + 2<16>:byte], byte, int16) - 1<16>)
 	branch Mem112[ptrArg02 + 3<16>:byte] <= 2<8> l0800_C0EE
 l0800_C0E6:
 	branch (Mem112[ptrArg02:word16] & 3<16>) != 0<16> l0800_C0EE
 l0800_C0ED:
 	cx_141 = cx_141 + 1<16>
 l0800_C0EE:
-	word16 ax_170 = SLICE(cx_141 *s 0x18<16>, word16, 0) + (uint16) ((uint8) Mem112[ptrArg06 + 1<16>:byte])
+	word16 ax_170 = SLICE(cx_141 *s 0x18<16>, word16, 0) + CONVERT(Mem112[ptrArg06 + 1<16>:byte], byte, uint16)
 	word16 si_171 = ax_170
 	branch Mem162[ds:0x26E6<16>:word16] == 0<16> l0800_C128
 l0800_C10B:
-	branch fn0800_C553(ds, Mem184[ptrArg02:word16] + 0xF84E<16>, 0<16>, cx_141, SLICE((uint16) (uint8) Mem162[ptrArg06 + 1<16>:byte], byte, 0)) == 0<16> l0800_C128
+	branch fn0800_C553(ds, Mem184[ptrArg02:word16] + 0xF84E<16>, 0<16>, cx_141, SLICE(CONVERT(Mem162[ptrArg06 + 1<16>:byte], byte, uint16), byte, 0)) == 0<16> l0800_C128
 l0800_C127:
 	si_171 = ax_170 - 1<16>
 l0800_C128:
-	int32 dx_ax_210 = (int32) si_171
+	int32 dx_ax_210 = CONVERT(si_171, word16, int32)
 	byte ch_453
 	word16 dx_454
 	fn0800_8F18(0xE10<16>, SLICE(dx_ax_210, word16, 16), 0<16>, SLICE(dx_ax_210, word16, 0), out ch_453, out dx_454)
-	int32 dx_ax_247 = (int32) (uint16) (uint8) Mem240[ptrArg06:byte]
+	int32 dx_ax_247 = CONVERT(CONVERT(Mem240[ptrArg06:byte], byte, uint16), uint16, int32)
 	word16 dx_456
 	byte ch_455
 	fn0800_8F18(0x3C<16>, SLICE(dx_ax_247, word16, 16), 0<16>, SLICE(dx_ax_247, word16, 0), out ch_455, out dx_456)
 	int32 dx_ax_446 = <invalid>
-	ui32 bx_cx_314 = dx_ax_446 + (int32) ((uint16) ((uint8) Mem253[ptrArg06 + 3<16>:byte]))
+	ui32 bx_cx_314 = dx_ax_446 + CONVERT(CONVERT(Mem253[ptrArg06 + 3<16>:byte], byte, uint16), uint16, int32)
 	cxOut = SLICE(bx_cx_314, word16, 0)
 	dxOut = <invalid>
 	int32 dx_ax_442 = <invalid>
@@ -20251,7 +20258,7 @@ l0800_C326:
 	ui32 dwArg02_716 = dwArg02_719
 l0800_C34D:
 	word16 wArg02_586 = SLICE(dwArg02_716, word16, 0)
-	int32 dx_ax_473 = (int32) (int16) Mem463[ds:(int16) Mem463[ptrArg06 + 3<16>:byte] + 0x26B4<16>:byte]
+	int32 dx_ax_473 = CONVERT(CONVERT(Mem463[ds:CONVERT(Mem463[ptrArg06 + 3<16>:byte], byte, int16) + 0x26B4<16>:byte], byte, int16), int16, int32)
 	byte bArg02_595 = SLICE(wArg02_586, byte, 0)
 	word16 wArg04_585 = SLICE(dwArg02_716, word16, 16)
 	word16 dx_474 = SLICE(dx_ax_473, word16, 16)
@@ -20262,7 +20269,7 @@ l0800_C362:
 l0800_C364:
 	branch ax_478 <u wArg02_586 l0800_C330
 l0800_C330:
-	ui32 v57_v56_535 = dwArg02_716 - (int32) ((int16) Mem463[ds:(int16) Mem463[ptrArg06 + 3<16>:byte] + 0x26B4<16>:byte])
+	ui32 v57_v56_535 = dwArg02_716 - CONVERT(CONVERT(Mem463[ds:CONVERT(Mem463[ptrArg06 + 3<16>:byte], byte, int16) + 0x26B4<16>:byte], byte, int16), int16, int32)
 	Mem505[ptrArg06 + 3<16>:byte] = Mem501[ptrArg06 + 3<16>:byte] + 1<8>
 	dwArg02_716 = v57_v56_535 (alias)
 l0800_C369:
@@ -20294,21 +20301,21 @@ l0800_C397:
 	word16 cx_510
 	branch fn0800_BFC7(dx_ax_509, out cx_510) >=u 4<16> l0800_C3AA
 l0800_C3AA:
-	branch ((int16) Mem45[ds:(int16) Mem45[dx_ax_509:byte] + 0x2251<16>:byte] & 0xC<16>) == 0<16> l0800_C42C
+	branch (CONVERT(Mem45[ds:CONVERT(Mem45[dx_ax_509:byte], byte, int16) + 0x2251<16>:byte], byte, int16) & 0xC<16>) == 0<16> l0800_C42C
 l0800_C3BD:
-	branch ((int16) Mem45[ds:(int16) Mem45[dx_ax_509 + 1<16>:byte] + 0x2251<16>:byte] & 0xC<16>) == 0<16> l0800_C42C
+	branch (CONVERT(Mem45[ds:CONVERT(Mem45[dx_ax_509 + 1<16>:byte], byte, int16) + 0x2251<16>:byte], byte, int16) & 0xC<16>) == 0<16> l0800_C42C
 l0800_C3D1:
-	branch ((int16) Mem45[ds:(int16) Mem45[dx_ax_509 + 2<16>:byte] + 0x2251<16>:byte] & 0xC<16>) == 0<16> l0800_C42C
+	branch (CONVERT(Mem45[ds:CONVERT(Mem45[dx_ax_509 + 2<16>:byte], byte, int16) + 0x2251<16>:byte], byte, int16) & 0xC<16>) == 0<16> l0800_C42C
 l0800_C3E5:
 	branch Mem45[dx_ax_509 + 3<16>:byte] == 0x2D<8> l0800_C404
 l0800_C3EF:
 	branch Mem45[dx_ax_509 + 3<16>:byte] == 0x2B<8> l0800_C404
 l0800_C3F6:
-	branch (Mem45[ds:(int16) Mem45[dx_ax_509 + 3<16>:byte] + 0x2251<16>:byte] & 2<8>) == 0<8> l0800_C42C
+	branch (Mem45[ds:CONVERT(Mem45[dx_ax_509 + 3<16>:byte], byte, int16) + 0x2251<16>:byte] & 2<8>) == 0<8> l0800_C42C
 l0800_C404:
-	branch ((int16) Mem45[ds:(int16) Mem45[dx_ax_509 + 3<16>:byte] + 0x2251<16>:byte] & 2<16>) != 0<16> l0800_C467
+	branch (CONVERT(Mem45[ds:CONVERT(Mem45[dx_ax_509 + 3<16>:byte], byte, int16) + 0x2251<16>:byte], byte, int16) & 2<16>) != 0<16> l0800_C467
 l0800_C418:
-	branch ((int16) Mem45[ds:(int16) Mem45[dx_ax_509 + 4<16>:byte] + 0x2251<16>:byte] & 2<16>) != 0<16> l0800_C467
+	branch (CONVERT(Mem45[ds:CONVERT(Mem45[dx_ax_509 + 4<16>:byte], byte, int16) + 0x2251<16>:byte], byte, int16) & 2<16>) != 0<16> l0800_C467
 l0800_C467:
 	fn0800_B083(SEQ(Mem134[ds:0x26E0<16>:word16], Mem138[ds:0x26DE<16>:word16]), 0<8>, 4<16>)
 	fn0800_C01E(SEQ(Mem162[ds:0x26DC<16>:word16], Mem165[ds:0x26DA<16>:word16]), dx_ax_509, 3<16>)
@@ -20326,16 +20333,16 @@ l0800_C542:
 	branch Mem228[dx_ax_509 + si_229:byte] == 0<8> l0800_C54E
 l0800_C54B:
 l0800_C4CA:
-	branch (Mem228[ds:(int16) Mem228[dx_ax_509 + si_229:byte] + 0x2251<16>:byte] & 0xC<8>) == 0<8> l0800_C541
+	branch (Mem228[ds:CONVERT(Mem228[dx_ax_509 + si_229:byte], byte, int16) + 0x2251<16>:byte] & 0xC<8>) == 0<8> l0800_C541
 l0800_C541:
 	si_229 = si_229 + 1<16>
 l0800_C4DA:
 	word16 cx_513
 	branch fn0800_BFC7(SEQ(dx_21, ax_20 + si_229), out cx_513) <u 3<16> l0800_C54E
 l0800_C4ED:
-	branch ((int16) Mem259[ds:(int16) Mem259[dx_21:ax_20 + 1<16> + si_229:byte] + 0x2251<16>:byte] & 0xC<16>) == 0<16> l0800_C54E
+	branch (CONVERT(Mem259[ds:CONVERT(Mem259[dx_21:ax_20 + 1<16> + si_229:byte], byte, int16) + 0x2251<16>:byte], byte, int16) & 0xC<16>) == 0<16> l0800_C54E
 l0800_C501:
-	branch ((int16) Mem259[ds:(int16) Mem259[dx_21:ax_20 + 2<16> + si_229:byte] + 0x2251<16>:byte] & 0xC<16>) == 0<16> l0800_C54E
+	branch (CONVERT(Mem259[ds:CONVERT(Mem259[dx_21:ax_20 + 2<16> + si_229:byte], byte, int16) + 0x2251<16>:byte], byte, int16) & 0xC<16>) == 0<16> l0800_C54E
 l0800_C515:
 	fn0800_C01E(SEQ(Mem304[ds:0x26E0<16>:word16], Mem307[ds:0x26DE<16>:word16]), SEQ(dx_21, ax_20 + si_229), 3<16>)
 	Mem326[Mem310[ds:0x26DE<16>:segptr32] + 3<16>:byte] = 0<8>
@@ -20411,7 +20418,7 @@ l0800_C5D8:
 l0800_C5E4:
 	cx_103 = cx_103 - 1<16>
 l0800_C5E5:
-	word16 cx_126 = cx_103 - (uint16) ((uint32) ((uint16) ((SLICE(wArg02 *u 0x16D<16>, word16, 0) + ((wArg02 + 1<16> >> 2<16>) + cx_103)) + 4<16>)) % 7<16>)
+	word16 cx_126 = cx_103 - CONVERT(CONVERT((SLICE(wArg02 *u 0x16D<16>, word16, 0) + ((wArg02 + 1<16> >> 2<16>) + cx_103)) + 4<16>, word16, uint32) % 7<16>, word32, uint16)
 	branch wArg04 != 4<16> l0800_C61A
 l0800_C61A:
 	branch wArg06 <u cx_126 l0800_C626

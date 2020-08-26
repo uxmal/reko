@@ -659,7 +659,7 @@ void fn0000000140001B24(struct Eq_n ** rcx)
 		return;
 	uint64 rcx_n = (uint64) rax_n->dw0020;
 	word32 ecx_n = (word32) rcx_n;
-	if (rcx_n > ~0x19930521 && ecx_n != 0x01994000)
+	if ((word32) (rcx_n + ~0x1993051F) > 0x02 && ecx_n != 0x01994000)
 		return;
 	api-ms-win-crt-runtime-l1-1-0.dll!terminate();
 	int3();

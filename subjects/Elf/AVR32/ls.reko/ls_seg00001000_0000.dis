@@ -13654,14 +13654,14 @@ l0000B48A:
 	fn0000A9CC(r11_1244, r12_1246)
 	bool N_1252 = <invalid>
 	bool V_1251 = <invalid>
-	VN_1258 = N_1252 | V_1251 (alias)
-	VN_1258 = N_1252 | V_1251 (alias)
+	bool v30_2454 = N_1252 | V_1251
+	v30_2454 = N_1252 | V_1251
 	branch N_1252 | V_1251 l0000B49E
 l0000B496_1:
 l0000B49A_1:
 	r12_1246 = 1<32>
 l0000B49E:
-	branch Test(GE,VN_1258) l0000B4A2
+	branch v30_2454 l0000B4A2
 l0000B49E_1:
 	r12_1246 = 0<32>
 l0000B42C:
@@ -13761,12 +13761,12 @@ l0000ADB8:
 	word32 sp_1431 = sp_109 - 4<i32>
 	Mem1432[sp_1431:word32] = Mem264[sp_109 + 16<i32>:word32]
 	Mem1438[sp_1431 - 4<i32>:word32] = Mem1432[sp_1431 + 24<i32>:word32]
-	word32 r3_3496
-	word32 r12_3497
-	word32 lr_3498
-	word32 r1_3494
-	word32 r2_3495
-	fn0000A9DE(r8, out r1_3494, out r2_3495, out r3_3496, out r12_3497, out lr_3498)
+	word32 r3_3499
+	word32 r12_3500
+	word32 lr_3501
+	word32 r1_3497
+	word32 r2_3498
+	fn0000A9DE(r8, out r1_3497, out r2_3498, out r3_3499, out r12_3500, out lr_3501)
 	word32 r2_1439 = Mem1438[sp_1431 + 32<i32>:word32]
 	lr = Mem1438[sp_1431 + 48<i32>:word32]
 	word32 r10_1442 = Mem1438[sp_1431 + 60<i32>:word32] - r12_1429
@@ -13797,12 +13797,12 @@ l0000AE10:
 	word32 sp_1495 = sp_109 - 4<i32>
 	Mem1496[sp_1495:word32] = Mem1438[sp_109 + 16<i32>:word32]
 	Mem1503[sp_1495 - 4<i32>:word32] = Mem1496[sp_1495 + 24<i32>:word32]
-	word32 r2_3500
-	word32 r12_3502
-	word32 lr_3503
-	word32 r3_3501
-	word32 r1_3499
-	fn0000A9DE(r8, out r1_3499, out r2_3500, out r3_3501, out r12_3502, out lr_3503)
+	word32 r2_3503
+	word32 r12_3505
+	word32 lr_3506
+	word32 r3_3504
+	word32 r1_3502
+	fn0000A9DE(r8, out r1_3502, out r2_3503, out r3_3504, out r12_3505, out lr_3506)
 	r7 = r7 + r5_1447
 	sp_109 = sp_1495 + 4<32>
 l0000AE2A:

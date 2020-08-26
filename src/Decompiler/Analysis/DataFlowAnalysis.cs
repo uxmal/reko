@@ -538,7 +538,7 @@ namespace Reko.Analysis
         {
             if (program.User.DebugTraceProcedures.Contains(proc.Name)
                 ||
-                proc.Name == "")
+                proc.Name == "GetNetInterface")
             {
                 Debug.Print("// {0}: {1} ==================", proc.Name, caption);
                 //MockGenerator.DumpMethod(proc);

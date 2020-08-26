@@ -269,7 +269,7 @@ l000000014000137F:
 	fn0000000140001BF4()
 	word64 r9_120
 	call rbx_96 (retsize: 8;)
-		uses: al:al_92,edx:2<64>,r8:0<u64>,r9:r9_120,rax_56_8:rax_56_8_114,rcx:0<u64>,Stack +0000:qwLoc40,Stack +0010:qwLoc30
+		uses: al:al_92,edx:2<32>,r8:0<u64>,r9:r9_120,rax_56_8:rax_56_8_114,rcx:0<u64>,Stack +0000:qwLoc40,Stack +0010:qwLoc30
 		defs: r9:r9_120,rax:rax_117
 l0000000140001395:
 	fn000000014000196C()
@@ -978,7 +978,7 @@ l0000000140001B33:
 l0000000140001B39:
 	word64 rcx_11 = CONVERT(Mem0[rax_6 + 0x20<64>:word32], word32, uint64)
 	word32 ecx_15 = SLICE(rcx_11, word32, 0)
-	branch rcx_11 <=u 0xFFFFFFFFE66CFADE<64> l0000000140001B56
+	branch SLICE(rcx_11 + 0xFFFFFFFFE66CFAE0<64>, word32, 0) <=u 2<32> l0000000140001B56
 l0000000140001B47:
 	branch ecx_15 == 0x1994000<32> l0000000140001B56
 l0000000140001B56:

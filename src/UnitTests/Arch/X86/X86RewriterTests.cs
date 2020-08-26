@@ -1701,7 +1701,7 @@ namespace Reko.UnitTests.Arch.X86
             Run64bitTest(0xD8, 0x0D, 0x89, 0x9F, 0x00, 0x00);
             AssertCode(     // fmul
               "0|L--|0000000140000000(6): 1 instructions",
-              "1|L--|ST[Top:real64] = ST[Top:real64] * (real64) Mem0[0x0000000140009F8F<p64>:real32]");
+              "1|L--|ST[Top:real64] = ST[Top:real64] * CONVERT(Mem0[0x0000000140009F8F<p64>:real32], real32, real64) ");
         }
 
         [Test]
@@ -3818,7 +3818,7 @@ namespace Reko.UnitTests.Arch.X86
             Run32bitTest("D8 AD 78 FF FF FF"); // fsubr dword ptr [ebp-00000088]
             AssertCode(
                 "0|L--|10000000(6): 1 instructions",
-                "1|L--|ST[Top:real64] = (real64) Mem0[ebp - 0x88<32>:real32] - ST[Top:real64]");
+                "1|L--|ST[Top:real64] = CONVERT(Mem0[ebp - 0x88<32>:real32], real32, real64) - ST[Top:real64]");
         }
 
         [Test]

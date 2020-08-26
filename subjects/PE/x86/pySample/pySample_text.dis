@@ -64,7 +64,7 @@ l100010F0:
 	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002160<32>, fp - 8<32>, fp - 4<32>)
 	branch eax_17 != 0<32> l10001118
 l10001118:
-	return Py_BuildValue(0x10002168<32>, CONVERT(rLoc08, real32, real64) / rLoc04)
+	return Py_BuildValue(0x10002168<32>, CONVERT(rLoc08, real32, real64) / CONVERT(rLoc04, real32, real64))
 l10001114:
 	return eax_17
 fn100010F0_exit:
