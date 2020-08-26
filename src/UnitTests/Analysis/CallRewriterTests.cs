@@ -28,6 +28,7 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
@@ -50,13 +51,14 @@ namespace Reko.UnitTests.Analysis
         private ProcedureFlow flow;
         ProgramBuilder pb;
         private List<SsaState> ssaStates;
+        private IServiceContainer sc;
         private FakeDecompilerEventListener eventListener;
 
         [SetUp]
         public void Setup()
         {
             program = new Program();
-            var sc = new ServiceContainer();
+            sc = new ServiceContainer();
             program.Architecture = new X86ArchitectureFlat32(sc, "x86-protected-32");
             program.Platform = new DefaultPlatform(sc, program.Architecture);
             crw = new CallRewriter(program.Platform, new ProgramDataFlow(), new FakeDecompilerEventListener());
@@ -66,7 +68,7 @@ namespace Reko.UnitTests.Analysis
             pb = new ProgramBuilder();
             ssaStates = new List<SsaState>();
             eventListener = new FakeDecompilerEventListener();
-
+            sc.AddService<DecompilerEventListener>(eventListener);
         }
 
         private class NestedProgram
@@ -104,7 +106,7 @@ namespace Reko.UnitTests.Analysis
         {
             var dynamicLinker = new Mock<IDynamicLinker>();
 
-            dfa = new DataFlowAnalysis(program, dynamicLinker.Object, eventListener);
+            dfa = new DataFlowAnalysis(program, dynamicLinker.Object, sc);
             var ssts = dfa.RewriteProceduresToSsa();
 
             // Discover ssaId's that are live out at each call site.

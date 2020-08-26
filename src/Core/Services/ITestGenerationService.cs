@@ -63,6 +63,20 @@ namespace Reko.Core.Services
         /// <param name="rdr">Image reader positioned after the end of the machine instruction.</param>
         /// <param name="message">Optional message that will be emitted as a comment.</param>
         void ReportMissingRewriter(string testPrefix, MachineInstruction instr, EndianImageReader rdr, string message);
+
+        /// <summary>
+        /// Remove files starting with the given <paramref name="filePrefix"/> from the output directory.
+        /// </summary>
+        /// <param name="filePrefix"></param>
+        void RemoveFiles(string filePrefix);
+
+        /// <summary>
+        /// Report the state of a procedure to a file determine by the filename.
+        /// </summary>
+        /// <param name="filePrefix"></param>
+        /// <param name="testCaption"></param>
+        /// <param name="proc"></param>
+        void ReportProcedure(string fileName, string testCaption, Procedure proc);
     }
 
     public class TestGenerationService : ITestGenerationService
@@ -226,6 +240,27 @@ namespace Reko.Core.Services
             {
                 return null;
             }
+        }
+
+        public void RemoveFiles(string filePrefix)
+        {
+            var fsSvc = services.RequireService<IFileSystemService>();
+            var dir = GetOutputDirectory(fsSvc);
+            foreach (var filename in fsSvc.GetFiles(dir, filePrefix + "*"))
+            {
+                fsSvc.DeleteFile(filename);
+            }
+        }
+
+        public void ReportProcedure(string fileName, string testCaption, Procedure proc)
+        {
+            var fsSvc = services.RequireService<IFileSystemService>();
+            var dir = GetOutputDirectory(fsSvc);
+            var absFileName = Path.Combine(dir, fileName);
+            using var w = fsSvc.CreateStreamWriter(absFileName, true, Encoding.UTF8);
+            w.WriteLine(testCaption);
+            proc.Write(false, w);
+            w.WriteLine();
         }
 
         private class InstrBytesComparer : IEqualityComparer<byte[]>

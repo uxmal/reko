@@ -48,13 +48,14 @@ namespace Reko.UnitTests.Analysis
 	{
         protected IPlatform platform;
         protected Mock<IPlatform> platformMock;
-        private ServiceContainer sc;
+        protected ServiceContainer sc;
 
         public AnalysisTestBase()
         {
             //$TODO: this is a hard dependency on the file system.
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
         }
 
         protected void DumpProcedureFlows(Program program, DataFlowAnalysis dfa, TextWriter w)
@@ -158,9 +159,8 @@ namespace Reko.UnitTests.Analysis
             return program;
         }
 
-        protected static Program RewriteMsdosAssembler(string relativePath, Action<Program> postLoad)
+        protected Program RewriteMsdosAssembler(string relativePath, Action<Program> postLoad)
         {
-            var sc = new ServiceContainer();
             var arch = new X86ArchitectureReal(sc, "x86-real-16");
             var cfgSvc = new Mock<IConfigurationService>();
             var env = new Mock<PlatformDefinition>();
@@ -168,7 +168,6 @@ namespace Reko.UnitTests.Analysis
             cfgSvc.Setup(c => c.GetEnvironment("ms-dos")).Returns(env.Object);
             env.Setup(e => e.TypeLibraries).Returns(new List<TypeLibraryDefinition>());
             env.Setup(e => e.CharacteristicsLibraries).Returns(new List<TypeLibraryDefinition>());
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             sc.AddService<IConfigurationService>(cfgSvc.Object);
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
             Program program;

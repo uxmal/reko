@@ -26,12 +26,14 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Evaluation;
 using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 
 namespace Reko.UnitTests.Analysis
@@ -53,6 +55,7 @@ namespace Reko.UnitTests.Analysis
         private FakeDecompilerEventListener listener;
         private SsaProcedureBuilder m;
         private SegmentMap segmentMap;
+        private ServiceContainer sc;
 
         [SetUp]
 		public void Setup()
@@ -68,6 +71,8 @@ namespace Reko.UnitTests.Analysis
                 Architecture = arch.Object,
                 SegmentMap = segmentMap,
             };
+            sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(listener);
         }
 
         private ExternalProcedure CreateExternalProcedure(
@@ -100,10 +105,10 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program program, TextWriter writer)
 		{
-			var dfa = new DataFlowAnalysis(
-                program, 
+            var dfa = new DataFlowAnalysis(
+                program,
                 dynamicLinker.Object,
-                new FakeDecompilerEventListener());
+                sc);
 			foreach (Procedure proc in ProceduresInSccOrder(program))
 			{
 				writer.WriteLine("= {0} ========================", proc.Name);

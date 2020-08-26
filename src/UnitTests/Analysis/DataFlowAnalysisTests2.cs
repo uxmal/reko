@@ -35,6 +35,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.ComponentModel.Design;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -46,15 +47,14 @@ namespace Reko.UnitTests.Analysis
     {
         private ProgramBuilder pb;
         private Mock<IDynamicLinker> dynamicLinker;
+        private ServiceContainer sc;
 
         [SetUp]
         public void Setup()
         {
             this.dynamicLinker = new Mock<IDynamicLinker>();
-        }
-
-        private void GivenProgram(ProgramBuilder pb)
-        {
+            this.sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
         }
 
         private void AssertProgram(string sExp, Program program)
@@ -95,7 +95,7 @@ namespace Reko.UnitTests.Analysis
 
         private void RunTest(Program program, TextWriter writer)
         {
-            var dfa = new DataFlowAnalysis(program, dynamicLinker.Object, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, dynamicLinker.Object, sc);
             dfa.AnalyzeProgram();
             foreach (var proc in program.Procedures.Values)
             {
@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Analysis
                     m.Return();
                 });
 
-            var dfa = new DataFlowAnalysis(pb.BuildProgram(), dynamicLinker.Object, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(pb.BuildProgram(), dynamicLinker.Object, sc);
             dfa.AnalyzeProgram();
             var sExp = @"// test
 // Return size: 0
@@ -151,7 +151,7 @@ test_exit:
                 m.MStore(m.Ptr32(0x010008), r1);
                 m.Return();
             });
-            var dfa = new DataFlowAnalysis(pb.BuildProgram(), dynamicLinker.Object, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(pb.BuildProgram(), dynamicLinker.Object, sc);
             dfa.AnalyzeProgram();
             var sExp = @"// test
 // Return size: 0
@@ -205,7 +205,7 @@ test_exit:
                 m.Return();
             });
 
-            var dfa = new DataFlowAnalysis(pb.BuildProgram(), null, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(pb.BuildProgram(), null, sc);
             dfa.AnalyzeProgram();
             var sExp = @"// test
 // Return size: 0
@@ -256,7 +256,7 @@ test_exit:
             program.Platform = platform.Object;
             var usb = new UserSignatureBuilder(program);
             usb.BuildSignatures(new FakeDecompilerEventListener());
-            var dfa = new DataFlowAnalysis(program, dynamicLinker, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, dynamicLinker, sc);
             dfa.AnalyzeProgram();
             var sExp = @"// test
 // Return size: 4
@@ -302,7 +302,7 @@ test_exit:
             });
             var program = pb.BuildProgram();
 
-            var dfa = new DataFlowAnalysis(program, dynamicLinker.Object, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, dynamicLinker.Object, sc);
             dfa.AnalyzeProgram();
 
             var sExp =
@@ -382,7 +382,7 @@ level2_exit:
             });
             var program = pb.BuildProgram();
 
-            var dfa = new DataFlowAnalysis(program, dynamicLinker.Object, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, dynamicLinker.Object, sc);
             dfa.AnalyzeProgram();
 
             var sExp =
@@ -445,7 +445,7 @@ level2_exit:
             });
             var program = pb.BuildProgram();
 
-            var dfa = new DataFlowAnalysis(program, dynamicLinker.Object, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, dynamicLinker.Object, sc);
             dfa.AnalyzeProgram();
 
             var sExp =

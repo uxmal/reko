@@ -105,10 +105,13 @@ namespace Reko.UnitTests.Analysis
 
         private void RunTest(string sExp, Program program)
         {
+            var sc = new ServiceContainer();
+            sc.AddService(eventListener.Object);
+
             var dfa = new DataFlowAnalysis(
-                program, 
-                import.Object, 
-                eventListener.Object);
+                program,
+                import.Object,
+                sc);
             var ssts = dfa.RewriteProceduresToSsa();
 
             var uvr = new UnusedOutValuesRemover(

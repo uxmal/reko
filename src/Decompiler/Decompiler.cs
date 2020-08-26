@@ -102,7 +102,8 @@ namespace Reko
                 if (eventListener.IsCanceled())
                     return;
                 var ir = new DynamicLinker(project, program, eventListener);
-                var dfa = new DataFlowAnalysis(program, ir, eventListener);
+                var dfa = new DataFlowAnalysis(program, ir, services);
+                dfa.ClearTestFiles();
                 if (program.NeedsSsaTransform)
                 {
                     eventListener.ShowStatus("Performing interprocedural analysis.");

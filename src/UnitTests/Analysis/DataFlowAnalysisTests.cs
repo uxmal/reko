@@ -33,6 +33,8 @@ using System.IO;
 using Reko.Core.Types;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
+using System.ComponentModel.Design;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -54,7 +56,9 @@ namespace Reko.UnitTests.Analysis
 		{
             SetCSignatures(program);
             var dynamicLinker = new Mock<IDynamicLinker>();
-			dfa = new DataFlowAnalysis(program, dynamicLinker.Object, new FakeDecompilerEventListener());
+            var sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            dfa = new DataFlowAnalysis(program, dynamicLinker.Object, sc);
 			dfa.AnalyzeProgram();
 			foreach (Procedure proc in program.Procedures.Values)
 			{

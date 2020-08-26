@@ -31,6 +31,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using System.ComponentModel.Design;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -97,7 +98,9 @@ namespace Reko.UnitTests.Analysis
         {
             var dynamicLinker = new Mock<IDynamicLinker>().Object;
             var listener = new FakeDecompilerEventListener();
-            var dfa = new DataFlowAnalysis(program, dynamicLinker, listener);
+            var sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(listener);
+            var dfa = new DataFlowAnalysis(program, dynamicLinker, sc);
             foreach (var proc in program.Procedures.Values)
             {
                 var sst = new SsaTransform(
