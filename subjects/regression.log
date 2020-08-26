@@ -26,15 +26,6 @@
 *** Elf\AVR32\ls.dcproject
 0000F196: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 0000F19C: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
-0000B49E: error: An error occurred while eliminating condition codes in procedure fn0000ACB0.
-    Unable to cast object of type 'Reko.Core.Expressions.BinaryExpression' to type 'Reko.Core.Expressions.Identifier'.
-       at Reko.Analysis.ConditionCodeEliminator.InsertNewPhi(SsaIdentifier sidDef, ConditionCode cc, PhiFunction phi) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 266
-   at Reko.Analysis.ConditionCodeEliminator.UseGrfConditionally(SsaIdentifier sid, ConditionCode cc, Boolean forceIdentifier) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 252
-   at Reko.Analysis.ConditionCodeEliminator.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 505
-   at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 61
-   at Reko.Core.Code.InstructionTransformer.TransformBranch(Branch b) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 57
-   at Reko.Core.Code.Branch.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 45
-   at Reko.Analysis.ConditionCodeEliminator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 98
 0000357C: error: An error occurred while processing the statement branch SLICE(r9_586 - r1_130, byte, 0) == 0<8> l000035F2.
     Pulling difference (union (byte u1) ((ptr32 (struct (FFFFFFEC T_2514 tFFFFFFEC) (70 T_2683 t0070))) u0)) and (ptr32 (struct (0 T_2418 t0000) (1 T_2494 t0001)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 292
@@ -48,7 +39,7 @@
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0000D648: error: An error occurred while processing the statement r1 = r9_1067 + (r11_1016 - 0x30<32>).
-    Not handling (ptr32 (struct 0001 (FFFFFFD8 T_27122 tFFFFFFD8) (FFFFFFEC word32 dwFFFFFFEC) (0 T_27342 t0000) (4 T_27348 t0004))) and (union ((ptr32 (struct 0001 (FFFFFFEC word32 dwFFFFFFEC))) u0) (ptr32 u1)) yet
+    Not handling (ptr32 (struct 0001 (FFFFFFD8 T_27121 tFFFFFFD8) (FFFFFFEC word32 dwFFFFFFEC) (0 T_27341 t0000) (4 T_27347 t0004))) and (union ((ptr32 (struct 0001 (FFFFFFEC word32 dwFFFFFFEC))) u0) (ptr32 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 424
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 257
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
@@ -58,7 +49,7 @@
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 54
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0000DCDE: error: An error occurred while processing the statement word32 r8_3109 = r5_1001 - r12_1006.
-    Pulling difference ui32 and (ptr32 (struct (0 T_27140 t0000) (4 T_27164 t0004)))
+    Pulling difference ui32 and (ptr32 (struct (0 T_27139 t0000) (4 T_27163 t0004)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 292
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 113
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 61
@@ -136,28 +127,6 @@ Parameter name: index
 00000000004025B0: warning: Unable to resolve imported reference __gmon_start__.
 000000000040E250: warning: x86 instruction 'vpsubsw' is not supported yet.
 000000000040FEF4: warning: x86 instruction 'vminpd' is not supported yet.
-000000000040D6EC: error: An error occurred while eliminating condition codes in procedure fn000000000040D6A0.
-    Unable to cast object of type 'Reko.Core.Expressions.BinaryExpression' to type 'Reko.Core.Expressions.Identifier'.
-       at Reko.Analysis.ConditionCodeEliminator.InsertNewPhi(SsaIdentifier sidDef, ConditionCode cc, PhiFunction phi) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 266
-   at Reko.Analysis.ConditionCodeEliminator.UseGrfConditionally(SsaIdentifier sid, ConditionCode cc, Boolean forceIdentifier) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 252
-   at Reko.Analysis.ConditionCodeEliminator.InsertNewPhi(SsaIdentifier sidDef, ConditionCode cc, PhiFunction phi) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 266
-   at Reko.Analysis.ConditionCodeEliminator.UseGrfConditionally(SsaIdentifier sid, ConditionCode cc, Boolean forceIdentifier) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 252
-   at Reko.Analysis.ConditionCodeEliminator.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 505
-   at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 61
-   at Reko.Analysis.ConditionCodeEliminator.TransformAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 294
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 44
-   at Reko.Analysis.ConditionCodeEliminator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 98
-000000000040D6F0: error: An error occurred while eliminating condition codes in procedure fn000000000040D6A0.
-    Unable to cast object of type 'Reko.Core.Expressions.BinaryExpression' to type 'Reko.Core.Expressions.Identifier'.
-       at Reko.Analysis.ConditionCodeEliminator.InsertNewPhi(SsaIdentifier sidDef, ConditionCode cc, PhiFunction phi) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 266
-   at Reko.Analysis.ConditionCodeEliminator.UseGrfConditionally(SsaIdentifier sid, ConditionCode cc, Boolean forceIdentifier) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 252
-   at Reko.Analysis.ConditionCodeEliminator.InsertNewPhi(SsaIdentifier sidDef, ConditionCode cc, PhiFunction phi) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 266
-   at Reko.Analysis.ConditionCodeEliminator.UseGrfConditionally(SsaIdentifier sid, ConditionCode cc, Boolean forceIdentifier) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 252
-   at Reko.Analysis.ConditionCodeEliminator.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 505
-   at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 61
-   at Reko.Analysis.ConditionCodeEliminator.TransformAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 294
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 44
-   at Reko.Analysis.ConditionCodeEliminator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 98
 0000000000406229: error: An error occurred while processing the statement rdx_109 = (uint64) (SLICE((uint64) SLICE(rax_65 - 3<64> - (dl_94 * 2<8> <u 0<8>), word32, 0), word32, 0) - ebx_108).
     Pulling difference ptr64 and bool
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 280
@@ -213,7 +182,7 @@ Parameter name: index
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 000000000040DBC3: error: An error occurred while processing the statement word64 rdx_1085 = qwLoc98_1434 - rbx_100.
-    Pulling difference (ptr64 (struct (0 T_14634 t0000))) and (union (int64 u1) (uint64 u0))
+    Pulling difference (ptr64 (struct (0 T_14639 t0000))) and (union (int64 u1) (uint64 u0))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 280
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 113
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 61
@@ -1015,4 +984,4 @@ error: An error occurred during decompilation. System.NullReferenceException: Ob
    at Reko.Decompiler.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 554
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 199
 Stripping SSA identifier numbers
-Decompiled 67 binaries in 68.71 seconds ---
+Decompiled 67 binaries in 80.07 seconds ---

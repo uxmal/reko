@@ -6974,19 +6974,21 @@ l000000000040D6D6:
 	bool C_65 = SLICE(C_63, bool, 1)
 	branch rcx_29 == 0<64> l000000000040D6D8
 l000000000040D6D6_1:
-	byte SCZO_34 = cond(Mem9[rsi_146:byte] - Mem9[rdi_147:byte])
+	byte SCZO_34 = cond(Mem9[rsi_154:byte] - Mem9[rdi_155:byte])
 	Z_38 = SLICE(SCZO_34, bool, 2) (alias)
-	v22_94 = Mem9[rsi_146:byte] != Mem9[rdi_147:byte]
+	v22_94 = Mem9[rsi_154:byte] != Mem9[rdi_155:byte]
 	C_63 = SLICE(SCZO_34, bool, 1) (alias)
 	C_65 = SLICE(SCZO_34, bool, 1) (alias)
-	rsi_27 = rsi_146 + 1<i64>
-	rdi_28 = rdi_147 + 1<i64>
+	rsi_27 = rsi_154 + 1<i64>
+	rdi_28 = rdi_155 + 1<i64>
 	rcx_29 = rcx_29 - 1<64>
-	rsi_146 = rsi_27
-	rdi_147 = rdi_28
-	branch Mem9[rsi_146:byte] != Mem9[rdi_147:byte] l000000000040D6D6
+	rsi_154 = rsi_27
+	rdi_155 = rdi_28
+	branch Mem9[rsi_154:byte] != Mem9[rdi_155:byte] l000000000040D6D6
 l000000000040D6D8:
-	byte CZ_59 = Z_38 | SLICE(C_65, bool, 2)
+	bool C_67 = SLICE(C_65, bool, 2)
+	bool C_105 = Z_38 | C_67
+	byte CZ_100 = Z_38 | C_67
 	branch v22_94 l000000000040D703
 l000000000040D6DA:
 	word64 rcx_42 = 3<u64>
@@ -6995,16 +6997,17 @@ l000000000040D6DA:
 l000000000040D6E7:
 	branch rcx_42 == 0<64> l000000000040D6E9
 l000000000040D6E7_2:
-	CZ_59 = SLICE(cond(Mem9[rsi_148:byte] - Mem9[rdi_149:byte]), bool, 2) (alias)
-	rsi_45 = rsi_148 + 1<i64>
-	rdi_46 = rdi_149 + 1<i64>
+	C_105 = Mem9[rsi_156:byte] <u Mem9[rdi_157:byte]
+	CZ_100 = Mem9[rsi_156:byte] >u Mem9[rdi_157:byte]
+	rsi_45 = rsi_156 + 1<i64>
+	rdi_46 = rdi_157 + 1<i64>
 	rcx_42 = rcx_42 - 1<64>
-	rsi_148 = rsi_45
-	rdi_149 = rdi_46
-	branch Mem9[rsi_148:byte] != Mem9[rdi_149:byte] l000000000040D6E7
+	rsi_156 = rsi_45
+	rdi_157 = rdi_46
+	branch Mem9[rsi_156:byte] != Mem9[rdi_157:byte] l000000000040D6E7
 l000000000040D6E9:
 	rbx_10 = rax_18 + 1<64>
-	branch Test(UGT,CZ_59) != Test(ULT,SLICE(CZ_59, bool, 1)) l000000000040D703
+	branch CZ_100 != C_105 l000000000040D703
 l000000000040D6F8:
 	Mem80[0x000000000061A600<p64>:word64] = rax_18 + 4<64>
 	rbx_10 = rax_18 + 4<64>

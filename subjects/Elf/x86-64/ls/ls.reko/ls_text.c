@@ -6752,7 +6752,7 @@ void fn000000000040D6A0(Eq_n rdi)
 			if (rcx_n > 0x06)
 			{
 				char * rsi_n = rax_n - (char *) 0x06;
-				byte * rdi_n = &g_b415FD8;
+				cu8 * rdi_n = &g_b415FD8;
 				uint64 rcx_n = 0x07;
 				do
 				{
@@ -6770,15 +6770,18 @@ void fn000000000040D6A0(Eq_n rdi)
 					rsi_n = rsi_n;
 					rdi_n = rdi_n;
 				} while (*rsi_n != *rdi_n);
-				Eq_n CZ_n = Z_n | SLICE(C_n, bool, 2);
+				bool C_n = SLICE(C_n, bool, 2);
+				Eq_n C_n = Z_n | C_n;
+				Eq_n CZ_n = Z_n | C_n;
 				if (!v22_n)
 				{
 					uint64 rcx_n = 0x03;
 					word64 rsi_n = rax_n + 0x01;
-					byte * rdi_n = &g_b415FE0;
+					cu8 * rdi_n = &g_b415FE0;
 					while (rcx_n != 0x00)
 					{
-						CZ_n.u0 = SLICE(cond(*rsi_n - *rdi_n), bool, 2);
+						C_n = *rsi_n < *rdi_n;
+						CZ_n = *rsi_n > *rdi_n;
 						rsi_n = rsi_n + 1;
 						rdi_n = rdi_n + 1;
 						--rcx_n;
@@ -6788,7 +6791,7 @@ void fn000000000040D6A0(Eq_n rdi)
 							break;
 					}
 					rbx_n = rax_n + 0x01;
-					if (Test(UGT,CZ_n) == Test(ULT,SLICE(CZ_n, bool, 1)))
+					if (CZ_n == C_n)
 					{
 						Mem80[0x000000000061A600<p64>:word64] = rax_n + 0x04;
 						rbx_n = rax_n + 0x04;

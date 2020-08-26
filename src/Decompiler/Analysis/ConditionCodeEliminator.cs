@@ -236,6 +236,10 @@ namespace Reko.Analysis
             case BinaryExpression _:
 				if (gf.IsNegated)
 					e = e.Invert();
+                if (forceIdentifier)
+                {
+                    e = InsertNewAssignment(e, cc, sid);
+                }
 				return e;
             case ConditionOf cof:
                 if (!(cof.Expression is BinaryExpression condBinDef))
