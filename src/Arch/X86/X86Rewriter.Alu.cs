@@ -644,7 +644,8 @@ namespace Reko.Arch.X86
                     src = orw.AddrOf(src);
                 }
             }
-            m.Assign(SrcOp(instrCur.Operands[0]), src);
+            var dst = SrcOp(instrCur.Operands[0]);
+            m.Assign(dst, MaybeSlice(dst.DataType, src));
         }
 
         private void RewriteLeave()

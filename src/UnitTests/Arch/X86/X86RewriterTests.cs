@@ -3821,6 +3821,15 @@ namespace Reko.UnitTests.Arch.X86
                 "1|L--|ST[Top:real64] = (real64) Mem0[ebp - 0x88<32>:real32] - ST[Top:real64]");
         }
 
+        [Test]
+        public void X86Rw_lea_short_dst()
+        {
+            Run64bitTest("8D 4C 09 01"); // lea ecx,[rcx+rcx+01]
+            AssertCode(
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|ecx = SLICE(rcx + 1<64> + rcx, word32, 0)");
+        }
+
         /*
         [Test]
         public void X86Rw_fstsw_and_cmp_jz()
