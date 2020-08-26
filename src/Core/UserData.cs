@@ -46,6 +46,7 @@ namespace Reko.Core
             this.Segments = new List<UserSegment>();
             this.ProcedureSourceFiles = new Dictionary<Address, string>();
             this.Patches = new Dictionary<Address, CodePatch>();
+            this.DebugTraceProcedures = new HashSet<string>();
         }
 
         // 'Oracular' information provided by the user.
@@ -121,6 +122,11 @@ namespace Reko.Core
         /// Makes Reko more aggressive in removing unused branches (like if (false) ...)
         /// </summary>
         public bool AggressiveBranchRemoval { get; set; }
+        
+        /// <summary>
+        /// For Reko debugging: procedures with these names will be traced.
+        /// </summary>
+        public HashSet<string> DebugTraceProcedures { get; set; }
     }
 
     public class Annotation
