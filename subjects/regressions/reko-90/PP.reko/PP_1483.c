@@ -15,7 +15,7 @@ void fn1483-0ADC(Eq_n ds_di, Eq_n ss_bp, Eq_n ax, Eq_n cx, ui16 dx, byte bl, byt
 	fn1483-0D3F(ds_di, ss_bp, ax, cx, dx, bl, bh, si, es, fs, FPUF, wArg00, wArg04, wArg0A, psegArg01A2, bArg02BF, bArg0F9E);
 	Eq_n Top_n = <invalid>;
 	Eq_n es_di_n = <invalid>;
-	*Top_n = *((word32) es_di_n + 57478) - *Top_n;
+	*Top_n = (real64) *((word32) es_di_n + 57478) - *Top_n;
 }
 
 // 1483:0C11: Register Eq_n fn1483-0C11(Sequence (ptr32 byte) ds_si, Sequence (ptr32 word16) es_di, Register Eq_n al, Register word16 cx, Register Eq_n bx, Register Eq_n bp)

@@ -11806,22 +11806,22 @@ l0000982C:
 	r3 = r4 + 1<32>
 	Mem0[r19 + 20<i32>:word32] = r3
 	r3 = 0x1F<32>
-	v59 = SLICE(r3, byte, 0)
-	Mem0[r4 + r5:byte] = v59
+	v62 = SLICE(r3, byte, 0)
+	Mem0[r4 + r5:byte] = v62
 	r3 = Mem0[r19 + 20<i32>:word32]
 	r4 = Mem0[r19 + 8<i32>:word32]
 	r5 = r3 + 1<32>
 	Mem0[r19 + 20<i32>:word32] = r5
 	r5 = 0xFFFFFF8B<32>
-	v60 = SLICE(r5, byte, 0)
-	Mem0[r3 + r4:byte] = v60
+	v63 = SLICE(r5, byte, 0)
+	Mem0[r3 + r4:byte] = v63
 	r3 = Mem0[r19 + 20<i32>:word32]
 	r4 = Mem0[r19 + 8<i32>:word32]
 	r5 = r3 + 1<32>
 	Mem0[r19 + 20<i32>:word32] = r5
 	r5 = 8<32>
-	v61 = SLICE(r5, byte, 0)
-	Mem0[r3 + r4:byte] = v61
+	v64 = SLICE(r5, byte, 0)
+	Mem0[r3 + r4:byte] = v64
 	r4 = Mem0[r19 + 28<i32>:word32]
 	branch Test(EQ,r4) l0000A5CC
 	// succ:  l00009890 l0000A5CC
@@ -11927,16 +11927,16 @@ l00009958:
 	r5 = Mem0[r19 + 8<i32>:word32]
 	r6 = r4 + 1<32>
 	Mem0[r19 + 20<i32>:word32] = r6
-	v62 = SLICE(r3, byte, 0)
-	Mem0[r4 + r5:byte] = v62
+	v65 = SLICE(r3, byte, 0)
+	Mem0[r4 + r5:byte] = v65
 	r5 = Mem0[r19 + 28<i32>:word32]
 	r3 = Mem0[r19 + 20<i32>:word32]
 	r4 = Mem0[r19 + 8<i32>:word32]
 	r5 = Mem0[r5 + 4<i32>:word32]
 	r6 = r3 + 1<32>
 	Mem0[r19 + 20<i32>:word32] = r6
-	v63 = SLICE(r5, byte, 0)
-	Mem0[r3 + r4:byte] = v63
+	v66 = SLICE(r5, byte, 0)
+	Mem0[r3 + r4:byte] = v66
 	r5 = Mem0[r19 + 28<i32>:word32]
 	r3 = Mem0[r19 + 20<i32>:word32]
 	r4 = Mem0[r19 + 8<i32>:word32]
@@ -11960,26 +11960,26 @@ l00009958:
 	C = cond(r5)
 	r5 = r5 >>u 1<i32>
 	C = cond(r5)
-	v64 = SLICE(r5, byte, 0)
-	Mem0[r3 + r4:byte] = v64
+	v67 = SLICE(r5, byte, 0)
+	Mem0[r3 + r4:byte] = v67
 	r5 = Mem0[r19 + 28<i32>:word32]
 	r3 = Mem0[r19 + 20<i32>:word32]
 	r4 = Mem0[r19 + 8<i32>:word32]
-	v65 = Mem0[r5 + 4<i32>:word16]
-	r5 = (word32) v65
+	v68 = Mem0[r5 + 4<i32>:word16]
+	r5 = (word32) v68
 	r6 = r3 + 1<32>
 	Mem0[r19 + 20<i32>:word32] = r6
-	v66 = SLICE(r5, byte, 0)
-	Mem0[r3 + r4:byte] = v66
+	v69 = SLICE(r5, byte, 0)
+	Mem0[r3 + r4:byte] = v69
 	r5 = Mem0[r19 + 28<i32>:word32]
 	r3 = Mem0[r19 + 20<i32>:word32]
 	r4 = Mem0[r19 + 8<i32>:word32]
-	v67 = Mem0[r5 + 4<i32>:byte]
-	r5 = (word32) v67
+	v70 = Mem0[r5 + 4<i32>:byte]
+	r5 = (word32) v70
 	r6 = r3 + 1<32>
 	Mem0[r19 + 20<i32>:word32] = r6
-	v68 = SLICE(r5, byte, 0)
-	Mem0[r3 + r4:byte] = v68
+	v71 = SLICE(r5, byte, 0)
+	Mem0[r3 + r4:byte] = v71
 	r3 = Mem0[r19 + 132<i32>:word32]
 	r4 = r3 ^ 9<32>
 	branch Test(EQ,r4) l00009958_ds_t
@@ -12025,32 +12025,32 @@ l0000A5CC:
 	r5 = Mem0[r19 + 8<i32>:word32]
 	r6 = r3 + 1<32>
 	Mem0[r19 + 20<i32>:word32] = r6
-	v69 = SLICE(r4, byte, 0)
-	Mem0[r3 + r5:byte] = v69
+	v76 = SLICE(r4, byte, 0)
+	Mem0[r3 + r5:byte] = v76
 	r3 = Mem0[r19 + 20<i32>:word32]
 	r5 = Mem0[r19 + 8<i32>:word32]
 	r6 = r3 + 1<32>
 	Mem0[r19 + 20<i32>:word32] = r6
-	v70 = SLICE(r4, byte, 0)
-	Mem0[r3 + r5:byte] = v70
+	v77 = SLICE(r4, byte, 0)
+	Mem0[r3 + r5:byte] = v77
 	r3 = Mem0[r19 + 20<i32>:word32]
 	r5 = Mem0[r19 + 8<i32>:word32]
 	r6 = r3 + 1<32>
 	Mem0[r19 + 20<i32>:word32] = r6
-	v71 = SLICE(r4, byte, 0)
-	Mem0[r3 + r5:byte] = v71
+	v78 = SLICE(r4, byte, 0)
+	Mem0[r3 + r5:byte] = v78
 	r3 = Mem0[r19 + 20<i32>:word32]
 	r5 = Mem0[r19 + 8<i32>:word32]
 	r6 = r3 + 1<32>
 	Mem0[r19 + 20<i32>:word32] = r6
-	v72 = SLICE(r4, byte, 0)
-	Mem0[r3 + r5:byte] = v72
+	v79 = SLICE(r4, byte, 0)
+	Mem0[r3 + r5:byte] = v79
 	r3 = Mem0[r19 + 20<i32>:word32]
 	r5 = Mem0[r19 + 8<i32>:word32]
 	r6 = r3 + 1<32>
 	Mem0[r19 + 20<i32>:word32] = r6
-	v73 = SLICE(r4, byte, 0)
-	Mem0[r3 + r5:byte] = v73
+	v80 = SLICE(r4, byte, 0)
+	Mem0[r3 + r5:byte] = v80
 	r3 = Mem0[r19 + 132<i32>:word32]
 	r5 = r3 ^ 9<32>
 	branch Test(EQ,r5) l0000A67C
@@ -12073,15 +12073,15 @@ l0000A680:
 	r5 = Mem0[r19 + 8<i32>:word32]
 	r6 = r3 + 1<32>
 	Mem0[r19 + 20<i32>:word32] = r6
-	v74 = SLICE(r4, byte, 0)
-	Mem0[r3 + r5:byte] = v74
+	v81 = SLICE(r4, byte, 0)
+	Mem0[r3 + r5:byte] = v81
 	r3 = Mem0[r19 + 20<i32>:word32]
 	r4 = Mem0[r19 + 8<i32>:word32]
 	r5 = r3 + 1<32>
 	Mem0[r19 + 20<i32>:word32] = r5
 	r5 = 3<32>
-	v75 = SLICE(r5, byte, 0)
-	Mem0[r3 + r4:byte] = v75
+	v82 = SLICE(r5, byte, 0)
+	Mem0[r3 + r4:byte] = v82
 	r25 = Mem0[r21 + 28<i32>:word32]
 	r3 = 0x71<32>
 	Mem0[r19 + 4<i32>:word32] = r3
@@ -13180,8 +13180,8 @@ l0000A148_ds_f:
 	goto l0000A170
 	// succ:  l0000A170
 l0000A148_ds_t:
-	v24 = SLICE(r3, byte, 0)
-	Mem0[r7 + r4:byte] = v24
+	v25 = SLICE(r3, byte, 0)
+	Mem0[r7 + r4:byte] = v25
 	goto l0000A254
 	// succ:  l0000A254
 l0000A170:
@@ -13352,20 +13352,20 @@ l0000A2B0:
 	r4 = Mem0[r19 + 8<i32>:word32]
 	r8 = r3 + 1<32>
 	Mem0[r19 + 32<i32>:word32] = r8
-	v25 = Mem0[r3 + r5:byte]
-	r3 = (word32) v25
+	v26 = Mem0[r3 + r5:byte]
+	r3 = (word32) v26
 	r5 = r7 + 1<32>
 	Mem0[r19 + 20<i32>:word32] = r5
 	branch Test(EQ,r3) l0000A2B0_ds_t
 	// succ:  l0000A2B0_ds_f l0000A2B0_ds_t
 l0000A2B0_ds_f:
-	v26 = SLICE(r3, byte, 0)
-	Mem0[r7 + r4:byte] = v26
+	v27 = SLICE(r3, byte, 0)
+	Mem0[r7 + r4:byte] = v27
 	goto l0000A2D8
 	// succ:  l0000A2D8
 l0000A2B0_ds_t:
-	v26 = SLICE(r3, byte, 0)
-	Mem0[r7 + r4:byte] = v26
+	v28 = SLICE(r3, byte, 0)
+	Mem0[r7 + r4:byte] = v28
 	goto l0000A3D4
 	// succ:  l0000A3D4
 l0000A2D8:
@@ -13611,8 +13611,8 @@ l0000A4C0:
 	r4 = Mem0[r19 + 8<i32>:word32]
 	r6 = r3 + 1<32>
 	Mem0[r19 + 20<i32>:word32] = r6
-	v25 = SLICE(r5, byte, 0)
-	Mem0[r3 + r4:byte] = v25
+	v29 = SLICE(r5, byte, 0)
+	Mem0[r3 + r4:byte] = v29
 	r3 = Mem0[r19 + 20<i32>:word32]
 	r9 = Mem0[r21 + 48<i32>:word32]
 	r7 = 0<32>
@@ -13639,8 +13639,8 @@ l0000A4C0:
 	r8 = r8 >>u 1<i32>
 	C = cond(r8)
 	r15 = 0x0000A51C<p32>
-	v26 = SLICE(r8, byte, 0)
-	Mem0[r3 + r4:byte] = v26
+	v31 = SLICE(r8, byte, 0)
+	Mem0[r3 + r4:byte] = v31
 	call fn00007044 (retsize: 0;)
 	Mem0[r21 + 48<i32>:word32] = r3
 	// succ:  l0000A528
@@ -13755,10 +13755,10 @@ l0000A7B4:
 	// succ:  l0000A7A8_ds_f l0000A7A8_ds_t
 l0000A7BC:
 	r4 = r7 + r3
-	v32 = Mem0[r3 + r7:byte]
-	r8 = (word32) v32
-	v33 = Mem0[r4 + 1<i32>:byte]
-	r3 = (word32) v33
+	v36 = Mem0[r3 + r7:byte]
+	r8 = (word32) v36
+	v37 = Mem0[r4 + 1<i32>:byte]
+	r3 = (word32) v37
 	r3 = r3 ^ r8
 	branch Test(EQ,r3) l0000A9C4
 	// succ:  l0000A7D0 l0000A9C4
@@ -13783,8 +13783,8 @@ l0000A7D4:
 	v26 = Mem0[r3 + 148<i32>:word16]
 	r4 = (word32) v26
 	r4 = r4 + 1<32>
-	v34 = SLICE(r4, word16, 0)
-	Mem0[r3 + 148<i32>:word16] = v34
+	v27 = SLICE(r4, word16, 0)
+	Mem0[r3 + 148<i32>:word16] = v27
 	r3 = Mem0[r19 + 5788<i32>:word32]
 	r5 = Mem0[r19 + 5792<i32>:word32]
 	r6 = Mem0[r19 + 116<i32>:word32]
@@ -13995,14 +13995,14 @@ l0000A9C0:
 	goto l0000A7B4
 	// succ:  l0000A7B4
 l0000A9C4:
-	v25 = Mem0[r4 + 2<i32>:byte]
-	r3 = (word32) v25
+	v39 = Mem0[r4 + 2<i32>:byte]
+	r3 = (word32) v39
 	r3 = r3 ^ r8
 	branch Test(NE,r3) l0000A7D0
 	// succ:  l0000A9D0 l0000A7D0
 l0000A9D0:
-	v26 = Mem0[r4 + 3<i32>:byte]
-	r3 = (word32) v26
+	v31 = Mem0[r4 + 3<i32>:byte]
+	r3 = (word32) v31
 	r3 = r3 ^ r8
 	branch Test(NE,r3) l0000A9D0_ds_t
 	// succ:  l0000A9D0_ds_f l0000A9D0_ds_t
@@ -14143,8 +14143,8 @@ l0000AAD8:
 	branch Test(EQ,r10) l0000AAF0
 	// succ:  l0000AADC l0000AAF0
 l0000AADC:
-	v32 = Mem0[r4 + 1<i32>:byte]
-	r9 = (word32) v32
+	v40 = Mem0[r4 + 1<i32>:byte]
+	r9 = (word32) v40
 	r9 = r9 ^ r8
 	branch Test(EQ,r9) l0000AADC_ds_t
 	// succ:  l0000AADC_ds_f l0000AADC_ds_t
@@ -14185,12 +14185,12 @@ l0000AB14:
 	r5 = Mem0[r19 + 5792<i32>:word32]
 	r3 = r3 & 0xFF<32>
 	r8 = Mem0[r19 + 5796<i32>:word32]
-	v37 = Mem0[r3 + r26:byte]
-	r4 = (word32) v37
+	v42 = Mem0[r3 + r26:byte]
+	r4 = (word32) v42
 	r6 = Mem0[r19 + 5784<i32>:word32]
 	r7 = r5 + r5
-	v38 = SLICE(r25, word16, 0)
-	Mem0[r7 + r8:word16] = v38
+	v36 = SLICE(r25, word16, 0)
+	Mem0[r7 + r8:word16] = v36
 	r4 = r4 + r4
 	r7 = r5 + 1<32>
 	Mem0[r19 + 5792<i32>:word32] = r7
@@ -14198,8 +14198,8 @@ l0000AB14:
 	v37 = SLICE(r3, byte, 0)
 	Mem0[r5 + r6:byte] = v37
 	r4 = r19 + r4
-	v38 = Mem0[r22:byte]
-	r3 = (word32) v38
+	v43 = Mem0[r22:byte]
+	r3 = (word32) v43
 	v39 = Mem0[r4 + 1176<i32>:word16]
 	r5 = (word32) v39
 	r3 = r3 + r3
@@ -14208,8 +14208,8 @@ l0000AB14:
 	v40 = SLICE(r5, word16, 0)
 	Mem0[r4 + 1176<i32>:word16] = v40
 	r3 = r19 + r3
-	v41 = Mem0[r3 + 2440<i32>:word16]
-	r4 = (word32) v41
+	v44 = Mem0[r3 + 2440<i32>:word16]
+	r4 = (word32) v44
 	r4 = r4 + 1<32>
 	v42 = SLICE(r4, word16, 0)
 	Mem0[r3 + 2440<i32>:word16] = v42
@@ -15024,8 +15024,8 @@ l0000B2B8_ds_f:
 	goto l0000B2C4
 	// succ:  l0000B2C4
 l0000B2B8_ds_t:
-	v13 = SLICE(r9, word16, 0)
-	Mem0[r4:word16] = v13
+	v20 = SLICE(r9, word16, 0)
+	Mem0[r4:word16] = v20
 	goto l0000B2A4
 	// succ:  l0000B2A4
 l0000B2C4:
@@ -15045,13 +15045,13 @@ l0000B2F8:
 	branch Test(NE,r8) l0000B2F8_ds_t
 	// succ:  l0000B2F8_ds_f l0000B2F8_ds_t
 l0000B2F8_ds_f:
-	v26 = SLICE(r0, word16, 0)
-	Mem0[r4:word16] = v26
+	v27 = SLICE(r0, word16, 0)
+	Mem0[r4:word16] = v27
 	goto l0000B304
 	// succ:  l0000B304
 l0000B2F8_ds_t:
-	v26 = SLICE(r0, word16, 0)
-	Mem0[r4:word16] = v26
+	v28 = SLICE(r0, word16, 0)
+	Mem0[r4:word16] = v28
 	goto l0000B2A4
 	// succ:  l0000B2A4
 l0000B304:
@@ -15150,8 +15150,8 @@ l0000B2E8_ds_f:
 	goto l0000B2F4
 	// succ:  l0000B2F4
 l0000B2E8_ds_t:
-	v10 = SLICE(r9, word16, 0)
-	Mem0[r4:word16] = v10
+	v22 = SLICE(r9, word16, 0)
+	Mem0[r4:word16] = v22
 	goto l0000B2D4
 	// succ:  l0000B2D4
 l0000B2F4:
@@ -15162,13 +15162,13 @@ l0000B30C:
 	branch Test(NE,r6) l0000B30C_ds_t
 	// succ:  l0000B30C_ds_f l0000B30C_ds_t
 l0000B30C_ds_f:
-	v22 = SLICE(r0, word16, 0)
-	Mem0[r4:word16] = v22
+	v23 = SLICE(r0, word16, 0)
+	Mem0[r4:word16] = v23
 	goto l0000B318
 	// succ:  l0000B318
 l0000B30C_ds_t:
-	v22 = SLICE(r0, word16, 0)
-	Mem0[r4:word16] = v22
+	v24 = SLICE(r0, word16, 0)
+	Mem0[r4:word16] = v24
 	goto l0000B2D4
 	// succ:  l0000B2D4
 l0000B318:
@@ -16801,8 +16801,8 @@ l0000CEB8_ds_f:
 	goto l0000CEE0_thunk_fn0000CEE4
 	// succ:  l0000CEE0_thunk_fn0000CEE4
 l0000CEB8_ds_t:
-	v17 = Mem0[r4 + 2<i32>:word16]
-	r4 = (word32) v17
+	v18 = Mem0[r4 + 2<i32>:word16]
+	r4 = (word32) v18
 	goto l0000CE88
 	// succ:  l0000CE88
 l0000CEE0_thunk_fn0000CEE4:
@@ -17107,8 +17107,8 @@ l0000F5CC:
 	r3 = r3 + r3
 	r3 = r3 + r3
 	r6 = r5 + r3
-	v73 = Mem0[r6 + 1<i32>:byte]
-	r8 = (word32) v73
+	v94 = Mem0[r6 + 1<i32>:byte]
+	r8 = (word32) v94
 	v74 = Mem0[r3 + r5:byte]
 	r3 = (word32) v74
 	r10 = r8 + r7
@@ -17647,8 +17647,8 @@ l0000D3CC_thunk_fn0000CE88:
 	// succ:  fn0000CEF4_exit
 l0000D3D0:
 	r24 = r24 + 1<32>
-	v44 = Mem0[r24 - 1<i32>:byte]
-	r5 = (word32) v44
+	v48 = Mem0[r24 - 1<i32>:byte]
+	r5 = (word32) v48
 	r21 = r21 + 0xFFFFFFFF<32>
 	r18 = r19 & 0x1F<32>
 	r4 = r5
@@ -17771,8 +17771,8 @@ l0000D474_thunk_fn0000CE88:
 	// succ:  fn0000CEF4_exit
 l0000D478:
 	r24 = r24 + 1<32>
-	v35 = Mem0[r24 - 1<i32>:byte]
-	r5 = (word32) v35
+	v37 = Mem0[r24 - 1<i32>:byte]
+	r5 = (word32) v37
 	r21 = r21 + 0xFFFFFFFF<32>
 	r18 = r19 & 0x1F<32>
 	r4 = r5
@@ -18063,20 +18063,20 @@ l0000ED3C:
 	branch Test(EQ,r6) l0000ED3C_ds_t
 	// succ:  l0000ED3C_ds_f l0000ED3C_ds_t
 l0000ED3C_ds_f:
-	v30 = SLICE(r9, byte, 0)
-	Mem0[r7 + 1<i32>:byte] = v30
+	v33 = SLICE(r9, byte, 0)
+	Mem0[r7 + 1<i32>:byte] = v33
 	goto l0000ED48
 	// succ:  l0000ED48
 l0000ED3C_ds_t:
-	v30 = SLICE(r9, byte, 0)
-	Mem0[r7 + 1<i32>:byte] = v30
+	v34 = SLICE(r9, byte, 0)
+	Mem0[r7 + 1<i32>:byte] = v34
 	goto l0000ED50
 	// succ:  l0000ED50
 l0000ED48:
-	v31 = Mem0[r8 + 2<i32>:byte]
-	r8 = (word32) v31
-	v32 = SLICE(r8, byte, 0)
-	Mem0[r7 + 2<i32>:byte] = v32
+	v34 = Mem0[r8 + 2<i32>:byte]
+	r8 = (word32) v34
+	v35 = SLICE(r8, byte, 0)
+	Mem0[r7 + 2<i32>:byte] = v35
 	// succ:  l0000ED50
 l0000ED50:
 	r4 = Mem0[r22 + 68<i32>:word32]
@@ -18192,23 +18192,23 @@ l0000F100:
 	r3 = r3 + r3
 	r3 = r3 + r3
 	r7 = r6 + r3
-	v36 = Mem0[r7 + 1<i32>:byte]
-	r5 = (word32) v36
+	v38 = Mem0[r7 + 1<i32>:byte]
+	r5 = (word32) v38
 	r9 = r10
-	v37 = Mem0[r3 + r6:byte]
-	r3 = (word32) v37
+	v39 = Mem0[r3 + r6:byte]
+	r3 = (word32) v39
 	r11 = r5 + r4
 	r18 = cond(r19 -u r11)
 	branch Test(GE,r18) l0000F100_ds_t
 	// succ:  l0000F100_ds_f l0000F100_ds_t
 l0000F100_ds_f:
-	v39 = Mem0[r7 + 2<i32>:word16]
-	r10 = (word32) v39
+	v41 = Mem0[r7 + 2<i32>:word16]
+	r10 = (word32) v41
 	goto l0000F12C
 	// succ:  l0000F12C
 l0000F100_ds_t:
-	v39 = Mem0[r7 + 2<i32>:word16]
-	r10 = (word32) v39
+	v47 = Mem0[r7 + 2<i32>:word16]
+	r10 = (word32) v47
 	goto l0000F1AC
 	// succ:  l0000F1AC
 l0000F12C:
@@ -18227,8 +18227,8 @@ l0000F130_thunk_fn0000CE88:
 	// succ:  fn0000CEF4_exit
 l0000F134:
 	r24 = r24 + 1<32>
-	v40 = Mem0[r24 - 1<i32>:byte]
-	r5 = (word32) v40
+	v42 = Mem0[r24 - 1<i32>:byte]
+	r5 = (word32) v42
 	r21 = r21 + 0xFFFFFFFF<32>
 	r18 = r19 & 0x1F<32>
 	r3 = r5
@@ -18288,23 +18288,23 @@ l0000F180:
 	r3 = r3 + r3
 	r3 = r3 + r3
 	r7 = r6 + r3
-	v41 = Mem0[r7 + 1<i32>:byte]
-	r5 = (word32) v41
+	v43 = Mem0[r7 + 1<i32>:byte]
+	r5 = (word32) v43
 	r19 = r19 + 8<32>
-	v42 = Mem0[r3 + r6:byte]
-	r3 = (word32) v42
+	v44 = Mem0[r3 + r6:byte]
+	r3 = (word32) v44
 	r11 = r5 + r4
 	r18 = cond(r19 -u r11)
 	branch Test(LT,r18) l0000F180_ds_t
 	// succ:  l0000F180_ds_f l0000F180_ds_t
 l0000F180_ds_f:
-	v43 = Mem0[r7 + 2<i32>:word16]
-	r10 = (word32) v43
+	v45 = Mem0[r7 + 2<i32>:word16]
+	r10 = (word32) v45
 	goto l0000F1AC
 	// succ:  l0000F1AC
 l0000F180_ds_t:
-	v43 = Mem0[r7 + 2<i32>:word16]
-	r10 = (word32) v43
+	v46 = Mem0[r7 + 2<i32>:word16]
+	r10 = (word32) v46
 	goto l0000F12C
 	// succ:  l0000F12C
 l0000F1AC:
@@ -18346,10 +18346,10 @@ l0000F1E0:
 	r4 = 0<32>
 	// succ:  l0000F1E4
 l0000F1E4:
-	v33 = Mem0[r4 + r5:byte]
-	r6 = (word32) v33
-	v34 = SLICE(r6, byte, 0)
-	Mem0[r4 + r28:byte] = v34
+	v36 = Mem0[r4 + r5:byte]
+	r6 = (word32) v36
+	v37 = SLICE(r6, byte, 0)
+	Mem0[r4 + r28:byte] = v37
 	r4 = r4 + 1<32>
 	r6 = r3 ^ r4
 	branch Test(NE,r6) l0000F1E4
@@ -20176,8 +20176,8 @@ l0000E724_ds_f:
 	goto l0000E740
 	// succ:  l0000E740
 l0000E724_ds_t:
-	v41 = SLICE(r0, word16, 0)
-	Mem0[r4 + r22:word16] = v41
+	v44 = SLICE(r0, word16, 0)
+	Mem0[r4 + r22:word16] = v44
 	goto l0000E724
 	// succ:  l0000E724
 l0000E740:
@@ -21134,22 +21134,22 @@ l0000CE5C:
 	r3 = r3 + r3
 	r3 = r3 + r3
 	r4 = r5 + r3
-	v40 = Mem0[r4 + 1<i32>:byte]
-	r7 = (word32) v40
+	v42 = Mem0[r4 + 1<i32>:byte]
+	r7 = (word32) v42
 	Mem0[r22 + 7112<i32>:word32] = r0
-	v37 = Mem0[r3 + r5:byte]
-	r3 = (word32) v37
+	v38 = Mem0[r3 + r5:byte]
+	r3 = (word32) v38
 	r18 = cond(r19 -u r7)
 	branch Test(GE,r18) l0000CE5C_ds_t
 	// succ:  l0000CE5C_ds_f l0000CE5C_ds_t
 l0000CE5C_ds_f:
-	v42 = Mem0[r4 + 2<i32>:word16]
-	r4 = (word32) v42
+	v39 = Mem0[r4 + 2<i32>:word16]
+	r4 = (word32) v39
 	goto l0000CE84_thunk_fn0000CE88
 	// succ:  l0000CE84_thunk_fn0000CE88
 l0000CE5C_ds_t:
-	v42 = Mem0[r4 + 2<i32>:word16]
-	r4 = (word32) v42
+	v44 = Mem0[r4 + 2<i32>:word16]
+	r4 = (word32) v44
 	goto l0000CE84_thunk_fn0000CEE4
 	// succ:  l0000CE84_thunk_fn0000CEE4
 l0000CE84_thunk_fn0000CE88:
@@ -21271,8 +21271,8 @@ l0000E88C_ds_f:
 	goto l0000E8B0
 	// succ:  l0000E8B0
 l0000E88C_ds_t:
-	v25 = Mem0[r3 + 2<i32>:word16]
-	r3 = (word32) v25
+	v38 = Mem0[r3 + 2<i32>:word16]
+	r3 = (word32) v38
 	goto l0000E904
 	// succ:  l0000E904
 l0000E8B0:
@@ -21330,8 +21330,8 @@ l0000E8DC_ds_f:
 	goto l0000E904
 	// succ:  l0000E904
 l0000E8DC_ds_t:
-	v30 = Mem0[r3 + 2<i32>:word16]
-	r3 = (word32) v30
+	v37 = Mem0[r3 + 2<i32>:word16]
+	r3 = (word32) v37
 	goto l0000E8B0
 	// succ:  l0000E8B0
 l0000E904:
@@ -21616,8 +21616,8 @@ l0000EF64_ds_f:
 	goto l0000EF74
 	// succ:  l0000EF74
 l0000EF64_ds_t:
-	v20 = SLICE(r9, word16, 0)
-	Mem0[r3 + r22:word16] = v20
+	v49 = SLICE(r9, word16, 0)
+	Mem0[r3 + r22:word16] = v49
 	goto l0000EFA8
 	// succ:  l0000EFA8
 l0000EF74:
@@ -21647,8 +21647,8 @@ l0000EF8C_ds_f:
 	goto l0000EF9C
 	// succ:  l0000EF9C
 l0000EF8C_ds_t:
-	v22 = SLICE(r9, word16, 0)
-	Mem0[r3 + r22:word16] = v22
+	v48 = SLICE(r9, word16, 0)
+	Mem0[r3 + r22:word16] = v48
 	goto l0000EFA8
 	// succ:  l0000EFA8
 l0000EF9C:
@@ -21885,8 +21885,8 @@ l0000F6E0:
 	goto l0000EEBC
 	// succ:  l0000EEBC
 l0000F7CC:
-	v37 = Mem0[r22 + 628<i32>:word16]
-	r3 = (word32) v37
+	v39 = Mem0[r22 + 628<i32>:word16]
+	r3 = (word32) v39
 	branch Test(NE,r3) l0000F7CC_ds_t
 	// succ:  l0000F7CC_ds_f l0000F7CC_ds_t
 l0000F7CC_ds_f:
@@ -21911,8 +21911,8 @@ l0000F88C:
 	r3 = Mem0[r1 + 56<i32>:word32]
 	r31 = r31 + 1<32>
 	r6 = r6 + 0xFFFFFFFE<32>
-	v46 = SLICE(r9, word16, 0)
-	Mem0[r3 + r22:word16] = v46
+	v50 = SLICE(r9, word16, 0)
+	Mem0[r3 + r22:word16] = v50
 	goto l0000EF64
 	// succ:  l0000EF64
 l0000F8F8:

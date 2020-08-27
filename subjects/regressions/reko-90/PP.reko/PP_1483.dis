@@ -23,7 +23,7 @@ l1483_0ADC:
 	fn1483_0D3F(ds_di, ss_bp, ax, cx, dx, bl, bh, si, es, fs, FPUF, wArg00, wArg04, wArg0A, psegArg01A2, bArg02BF, bArg0F9E)
 	int8 Top_30 = <invalid>
 	word32 es_di_77 = <invalid>
-	ST40[Top_30:real64] = Mem0[es_di_77 + 0xE086<16>:real32] - ST[Top_30:real64]
+	ST40[Top_30:real64] = (real64) Mem0[es_di_77 + 0xE086<16>:real32] - ST[Top_30:real64]
 	return
 fn1483_0ADC_exit:
 

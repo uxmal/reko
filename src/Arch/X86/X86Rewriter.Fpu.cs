@@ -54,7 +54,12 @@ namespace Reko.Arch.X86
                 {
                     // implicit st(0) operand.
                     var opLeft = FpuRegister(0);
-                    var opRight = MaybeCast(cast, SrcOp(instrCur.Operands[0]));
+                    var opRight = SrcOp(instrCur.Operands[0]);
+                    if (opRight.DataType.BitSize < opLeft.DataType.BitSize)
+                    {
+                        //                        opRight = m.Convert(opRight, opRight.DataType, opLeft.DataType);
+                        opRight = m.Cast(opLeft.DataType, opRight);
+                    }
                     m.Assign(
                         opLeft,
                         op(

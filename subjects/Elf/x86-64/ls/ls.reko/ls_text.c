@@ -5814,16 +5814,16 @@ l000000000040BE59:
 	}
 	else
 	{
-		rLoc1_n += g_t415F08;
+		rLoc1_n += (real64) g_t415F08;
 		rLoc2_n = (real64) rcx;
 		if (rcx >= 0x00)
 			goto l000000000040BE7D;
 	}
-	rLoc2_n += g_t415F08;
+	rLoc2_n += (real64) g_t415F08;
 l000000000040BE7D:
 	real64 rLoc3_n = (real64) r8;
 	if (r8 < 0x00)
-		rLoc3_n += g_t415F08;
+		rLoc3_n += (real64) g_t415F08;
 	Eq_n r14_n;
 	Eq_n r15_n;
 	Eq_n rLoc1_n = rLoc1_n * (rLoc2_n / rLoc3_n);
@@ -5872,7 +5872,7 @@ l000000000040BE7D:
 				{
 					Eq_n rLoc2_n = (real64) rax_n;
 					if (rax_n < 0x00)
-						rLoc2_n += g_t415F08;
+						rLoc2_n += (real64) g_t415F08;
 					rdx_n = 0x01;
 					uint64 rcx_n = (uint64) (uint8) PARITY_EVEN(rLoc2_n - rLoc1_n);
 					if (rLoc2_n == rLoc1_n)
@@ -5894,7 +5894,7 @@ l000000000040BE7D:
 		r14_n = (byte) r11_n.u0 + 1;
 		if (rax_n > ((byte) r11_n.u0 + 2) + (uint64) ((uint8) ((word32) ((uint64) eax_n) == 0x00)) || (bLocC8_n & 0x08) != 0x00 && Mem879[(rsi - 0x01) + rax_n:byte] == 0x30)
 		{
-			Eq_n rLoc1_n = rLoc2_n * g_r415F84;
+			Eq_n rLoc1_n = rLoc2_n * (real64) g_r415F84;
 			if (eax_n != 0x01 && (real64) g_r415F90 > rLoc1_n)
 			{
 				Eq_n rax_n;
@@ -5923,7 +5923,7 @@ l000000000040BE7D:
 				{
 					Eq_n rLoc2_n = (real64) rax_n;
 					if (rax_n < 0x00)
-						rLoc2_n += g_t415F08;
+						rLoc2_n += (real64) g_t415F08;
 					rdx_n.u1 = 0x01;
 					Eq_n rcx_n = (uint64) (uint8) PARITY_EVEN(rLoc2_n - rLoc1_n);
 					if (rLoc2_n == rLoc1_n)
@@ -5965,7 +5965,7 @@ l000000000040BE7D:
 			{
 				Eq_n rLoc2_n = (real64) rax_n;
 				if (rax_n < 0x00)
-					rLoc2_n += g_t415F08;
+					rLoc2_n += (real64) g_t415F08;
 				rdx_n.u1 = 0x01;
 				Eq_n rcx_n = (uint64) (uint8) PARITY_EVEN(rLoc2_n - rLoc1_n);
 				if (rLoc2_n == rLoc1_n)
