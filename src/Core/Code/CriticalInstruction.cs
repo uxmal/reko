@@ -140,6 +140,9 @@ namespace Reko.Core.Code
 
         public bool VisitConstant(Constant c) => false;
 
+        public bool VisitConversion(Conversion conversion) =>
+            conversion.Expression.Accept(this);
+
         public bool VisitDereference(Dereference deref) => true;
         
         public bool VisitFieldAccess(FieldAccess access) =>

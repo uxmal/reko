@@ -438,6 +438,15 @@ namespace Reko.UnitTests.Evaluation
             Given_ExpressionSimplifier();
             var expr = m.Convert(m.Word32(0x42), PrimitiveType.Word32, PrimitiveType.UInt64);
             Assert.AreEqual("0x42<u64>", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_SignExtension()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Convert(m.Word16(0xFFFF), PrimitiveType.Int16, PrimitiveType.Int32);
+            Assert.AreEqual("-1<i32>", expr.Accept(simplifier).ToString());
+        }
 
         [Test]
         public void Exs_Or_32_all_ones()
@@ -464,15 +473,6 @@ namespace Reko.UnitTests.Evaluation
             var tmp = Given_Tmp("tmp", m.Mem16(m.Word32(0x00123400)));
             var expr = m.Xor(tmp, Constant.Word16(0xFFFF));
             Assert.AreEqual("~tmp_2", expr.Accept(simplifier).ToString());
-        }
-    }
-
-        [Test]
-        public void Exs_SignExtension()
-        {
-            Given_ExpressionSimplifier();
-            var expr = m.Convert(m.Word16(0xFFFF), PrimitiveType.Int16, PrimitiveType.Int32);
-            Assert.AreEqual("-1<i32>", expr.Accept(simplifier).ToString());
         }
     }
 }
