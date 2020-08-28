@@ -39,13 +39,10 @@ namespace Reko.Analysis
         
         private readonly SsaState ssa;
 		private readonly WorkList<SsaIdentifier> liveIds;
-		private readonly CriticalInstruction critical;
-
 
 		private DeadCode(SsaState ssa) 
 		{
 			this.ssa = ssa;
-			this.critical = new CriticalInstruction();
             this.liveIds = new WorkList<SsaIdentifier>();
         }
 
@@ -149,7 +146,7 @@ namespace Reko.Analysis
 
             foreach (var stm in ssa.Procedure.Statements)
             {
-                if (critical.IsCritical(stm.Instruction))
+                if (CriticalInstruction.IsCritical(stm.Instruction))
                 {
                     if (trace.TraceInfo) Debug.WriteLineIf(trace.TraceInfo, string.Format("Critical: {0}", stm.Instruction));
                     marks.Add(stm);

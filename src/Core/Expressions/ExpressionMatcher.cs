@@ -369,6 +369,8 @@ namespace Reko.Core.Expressions
                 throw new InvalidOperationException();
             }
 
+            public override bool IsMaxUnsigned => throw new InvalidOperationException();
+
             public override byte ToByte()
             {
                 throw new InvalidOperationException();

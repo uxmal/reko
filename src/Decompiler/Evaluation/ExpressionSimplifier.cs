@@ -30,6 +30,8 @@ using System.Linq;
 using Reko.Core.Services;
 using System.Diagnostics;
 using System.Xml.Schema;
+using Reko.Core.Code;
+using Reko.Scanning;
 
 namespace Reko.Evaluation 
 {
@@ -43,31 +45,31 @@ namespace Reko.Evaluation
         private EvaluationContext ctx;
         private readonly ExpressionValueComparer cmp;
 
-        private AddTwoIdsRule add2ids;
-        private Add_e_c_cRule addEcc;
-        private Add_mul_id_c_id_Rule addMici;
-        private ConstConstBin_Rule constConstBin;
-        private IdConstant idConst;
-        private IdCopyPropagationRule idCopyPropagation;
-        private IdBinIdc_Rule idBinIdc;
-        private SliceConstant_Rule sliceConst;
-        private SliceMem_Rule sliceMem;
-        private SliceSegmentedPointer_Rule sliceSegPtr;
-        private SliceShift sliceShift;
-        private Shl_add_Rule shAdd;
-        private Shl_mul_e_Rule shMul;
-        private ShiftShift_c_c_Rule shiftShift;
-        private NegSub_Rule negSub;
-        private Mps_Constant_Rule mpsRule;
-        private BinOpWithSelf_Rule binopWithSelf;
-        private ConstDivisionImplementedByMultiplication constDiv;
-        private IdProcConstRule idProcConstRule;
-        private CastCastRule castCastRule;
-        private DistributedCastRule distributedCast;
-        private DistributedSliceRule distributedSlice;
-        private MkSeqFromSlices_Rule mkSeqFromSlicesRule;
-        private ComparisonConstOnLeft constOnLeft;
-        private SliceSequence sliceSeq;
+        private readonly AddTwoIdsRule add2ids;
+        private readonly Add_e_c_cRule addEcc;
+        private readonly Add_mul_id_c_id_Rule addMici;
+        private readonly ConstConstBin_Rule constConstBin;
+        private readonly IdConstant idConst;
+        private readonly IdCopyPropagationRule idCopyPropagation;
+        private readonly IdBinIdc_Rule idBinIdc;
+        private readonly SliceConstant_Rule sliceConst;
+        private readonly SliceMem_Rule sliceMem;
+        private readonly SliceSegmentedPointer_Rule sliceSegPtr;
+        private readonly SliceShift sliceShift;
+        private readonly Shl_add_Rule shAdd;
+        private readonly Shl_mul_e_Rule shMul;
+        private readonly ShiftShift_c_c_Rule shiftShift;
+        private readonly NegSub_Rule negSub;
+        private readonly Mps_Constant_Rule mpsRule;
+        private readonly BinOpWithSelf_Rule binopWithSelf;
+        private readonly ConstDivisionImplementedByMultiplication constDiv;
+        private readonly IdProcConstRule idProcConstRule;
+        private readonly CastCastRule castCastRule;
+        private readonly DistributedCastRule distributedCast;
+        private readonly DistributedSliceRule distributedSlice;
+        private readonly MkSeqFromSlices_Rule mkSeqFromSlicesRule;
+        private readonly ComparisonConstOnLeft constOnLeft;
+        private readonly SliceSequence sliceSeq;
         private readonly LogicalNotFollowedByNegRule logicalNotFollowedByNeg;
         private readonly LogicalNotFromArithmeticSequenceRule logicalNotFromBorrow;
         private readonly UnaryNegEqZeroRule unaryNegEqZero;
@@ -230,19 +232,60 @@ namespace Reko.Evaluation
                 cRight = cLeft; left = right; right = cLeft;
             }
 
-            // (- X 0) ==> X
-            // (+ X 0) ==> X
 
-            if (cRight != null && cRight.IsIntegerZero && IsAddOrSub(binExp.Operator))
+            if (cRight != null)
             {
-                Changed = true;
-                return left;
+                // (- X 0) ==> X
+                // (+ X 0) ==> X
+                if (cRight.IsIntegerZero && IsAddOrSub(binExp.Operator))
+                {
+                    Changed = true;
+                    return left;
+                }
+                if (binExp.Operator == Operator.Or)
+                {
+                    if (cRight.IsIntegerZero)
+                    {
+                        Changed = true;
+                        return left;
+                    }
+                    // (| X 0xFFFF...F) ==> 0xFFFF...F
+                    if (cRight.IsMaxUnsigned && !CriticalInstruction.IsCritical(left))
+                    {
+                        ctx.RemoveExpressionUse(left);
+                        Changed = true;
+                        return right;
+                    }
+                }
+                if (binExp.Operator == Operator.And)
+                {
+                    if (cRight.IsIntegerZero && !CriticalInstruction.IsCritical(left))
+                    {
+                        ctx.RemoveExpressionUse(left);
+                        Changed = true;
+                        return cRight;
+                    }
+                    if (cRight.IsMaxUnsigned)
+                    {
+                        Changed = true;
+                        return left;
+                    }
+                }
+                if (binExp.Operator == Operator.Xor)
+                {
+                    if (cRight.IsIntegerZero)
+                    {
+                        Changed = true;
+                        return left;
+                    }
+                    if (cRight.IsMaxUnsigned)
+                    {
+                        Changed = true;
+                        return new UnaryExpression(Operator.Comp, left.DataType, left).Accept(this);
+                    }
+                }
             }
-            else if (cRight != null && cRight.IsIntegerZero && binExp.Operator == Operator.Or)
-            {
-                Changed = true;
-                return left;
-            }
+
             //$REVIEW: this is evaluation! Shouldn't the be done by the evaluator?
             if (left == Constant.Invalid || right == Constant.Invalid)
                 return Constant.Invalid;

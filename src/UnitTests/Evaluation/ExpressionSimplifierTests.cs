@@ -71,7 +71,6 @@ namespace Reko.UnitTests.Evaluation
                 .Returns(new Func<Constant,Constant, Address>((seg, off) => Address.SegPtr(seg.ToUInt16(), off.ToUInt16())));
         }
 
-
         private void Given_ExpressionSimplifier()
         {
             this.ssaIds = BuildSsaIdentifiers();
@@ -426,6 +425,33 @@ namespace Reko.UnitTests.Evaluation
             expr = m.IAdd(m.ISub(m.Word32(0), m.Eq0(foo)), m.Word32(1));
             Assert.AreEqual("0<32> - (foo_1 == 0<32>) + 1<32>", expr.ToString());
             Assert.AreEqual("!foo_1", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_Or_32_all_ones()
+        {
+            Given_ExpressionSimplifier();
+            var tmp = Given_Tmp("tmp", m.Mem32(m.Word32(0x00123400)));
+            var expr = m.Or(tmp, Constant.Word32(0xFFFF_FFFF));
+            Assert.AreEqual("0xFFFFFFFF<32>", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_Or_64_all_ones()
+        {
+            Given_ExpressionSimplifier();
+            var tmp = Given_Tmp("tmp", m.Mem64(m.Word32(0x00123400)));
+            var expr = m.Or(tmp, Constant.Word64(0xFFFF_FFFF_FFFF_FFFF));
+            Assert.AreEqual("0xFFFFFFFFFFFFFFFF<64>", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_Xor_16_all_ones()
+        {
+            Given_ExpressionSimplifier();
+            var tmp = Given_Tmp("tmp", m.Mem16(m.Word32(0x00123400)));
+            var expr = m.Xor(tmp, Constant.Word16(0xFFFF));
+            Assert.AreEqual("~tmp_2", expr.Accept(simplifier).ToString());
         }
     }
 }

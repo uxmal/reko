@@ -78,7 +78,7 @@ namespace Reko.Structure
             var branch = block.Statements.Last;
             var condition = ((Branch)branch.Instruction).Condition;
             block.Statements.Remove(branch);
-            if (IsCritical(condition))
+            if (CriticalInstruction.IsCritical(condition))
             {
                 var linearAddr = branch.LinearAddress;
                 block.Statements.Add(linearAddr, new SideEffect(condition));
@@ -158,11 +158,5 @@ namespace Reko.Structure
 
 			proc.Dump(true);
 		}
-
-        private bool IsCritical(Expression e)
-        {
-            var ci = new CriticalInstruction();
-            return ci.IsCritical(e);
-        }
 	}
 }

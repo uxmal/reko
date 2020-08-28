@@ -165,12 +165,12 @@ namespace Reko.Typing
 			throw new NotImplementedException();
 		}
 
-		public void VisitConstant(Constant c)
-		{
-			// Globals has a field at offset C that is a tvField: [[g->c]] = ptr(tvField)
-			int v = StructureField.ToOffset(c);
+        public void VisitConstant(Constant c)
+        {
+            // Globals has a field at offset C that is a tvField: [[g->c]] = ptr(tvField)
+            int v = StructureField.ToOffset(c) ?? 0;
             HandleConstantOffset(c, v);
-		}
+        }
 
         private void HandleConstantOffset(Expression c, int v)
         {
@@ -219,7 +219,7 @@ namespace Reko.Typing
 		public void VisitInductionVariable(Identifier id, LinearInductionVariable iv, Constant? cOffset)
 		{
             int delta = iv.Delta!.ToInt32();
-            int offset = StructureField.ToOffset(cOffset);
+            int offset = StructureField.ToOffset(cOffset) ?? 0;
             var tvBase = basePointer ?? program.Globals;
             var stride = Math.Abs(delta);
             int init;

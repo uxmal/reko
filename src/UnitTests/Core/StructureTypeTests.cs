@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Core
         [Test]
         public void CreateField()
         {
-            int off = StructureField.ToOffset(Constant.Word16(4));
+            int off = StructureField.ToOffset(Constant.Word16(4)).Value;
             Assert.AreEqual(4, off);
         }
 
@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Core
         public void CreateFieldWithLargeOffset()
         {
             ushort s = 0xC004;
-            int off = StructureField.ToOffset(Constant.Word16(s));
+            int off = StructureField.ToOffset(Constant.Word16(s)).Value;
             Assert.AreEqual(0xC004, off);
         }
 

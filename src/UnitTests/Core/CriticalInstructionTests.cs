@@ -31,55 +31,48 @@ namespace Reko.UnitTests.Core
 	[TestFixture]
 	public class CriticalInstructionTests
 	{
-		private CriticalInstruction ci;
         private Identifier foo = new Identifier("foo", PrimitiveType.Word32, null);
-
-		[SetUp]
-		public void SetUp()
-		{
-			ci = new CriticalInstruction();
-		}
 
 		[Test]
 		public void ConstantTest()
 		{
-			Assert.IsFalse(ci.IsCritical(Constant.Word32(1)));
+			Assert.IsFalse(CriticalInstruction.IsCritical(Constant.Word32(1)));
 		}
 
 		[Test]
 		public void ApplicationTest()
 		{
-			Assert.IsTrue(ci.IsCritical(new Application(new Identifier("foo", PrimitiveType.Word32, null), PrimitiveType.Bool)));
+			Assert.IsTrue(CriticalInstruction.IsCritical(new Application(new Identifier("foo", PrimitiveType.Word32, null), PrimitiveType.Bool)));
 		}
 
 		[Test]
 		public void LoadTest()
 		{
-			Assert.IsFalse(ci.IsCritical(new MemoryAccess(MemoryIdentifier.GlobalMemory, Constant.Word32(1), PrimitiveType.Byte)));
+			Assert.IsFalse(CriticalInstruction.IsCritical(new MemoryAccess(MemoryIdentifier.GlobalMemory, Constant.Word32(1), PrimitiveType.Byte)));
 		}
 
 		[Test]
 		public void StoreTest()
 		{
-			Assert.IsTrue(ci.IsCritical(new Store(new MemoryAccess(MemoryIdentifier.GlobalMemory, foo, PrimitiveType.Byte), Constant.Word32(3))));
+			Assert.IsTrue(CriticalInstruction.IsCritical(new Store(new MemoryAccess(MemoryIdentifier.GlobalMemory, foo, PrimitiveType.Byte), Constant.Word32(3))));
 		}
 
 		[Test]
 		public void DereferenceTest()
 		{
-			Assert.IsTrue(ci.IsCritical(new Reko.Core.Expressions.Dereference(PrimitiveType.Ptr32, Id32("foo"))));
+			Assert.IsTrue(CriticalInstruction.IsCritical(new Reko.Core.Expressions.Dereference(PrimitiveType.Ptr32, Id32("foo"))));
 		}
 
         [Test]
         public void CommentTest()
         {
-            Assert.IsTrue(ci.IsCritical(new CodeComment("Comment")));
+            Assert.IsTrue(CriticalInstruction.IsCritical(new CodeComment("Comment")));
         }
 
         [Test]
 		public void BinOpTestTrue()
 		{
-			Assert.IsTrue(ci.IsCritical(new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, 
+			Assert.IsTrue(CriticalInstruction.IsCritical(new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, 
 				new Application(null, PrimitiveType.Word32),
 				Constant.Word32(1))));
 		}
@@ -87,7 +80,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void BinOpTestFalse()
 		{
-			Assert.IsFalse(ci.IsCritical(new BinaryExpression(
+			Assert.IsFalse(CriticalInstruction.IsCritical(new BinaryExpression(
                 Operator.IAdd, 
                 PrimitiveType.Word32, 
                 new Identifier("id", PrimitiveType.Word32, null), 
@@ -97,37 +90,37 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void TestReturn()
 		{
-			Assert.IsTrue(ci.IsCritical(new ReturnInstruction(null)));
+			Assert.IsTrue(CriticalInstruction.IsCritical(new ReturnInstruction(null)));
 		}
 
 		[Test]
 		public void TestBranch()
 		{
-			Assert.IsTrue(ci.IsCritical(new Branch(null, null)));
+			Assert.IsTrue(CriticalInstruction.IsCritical(new Branch(null, null)));
 		}
 
 		[Test]
 		public void TestCallInstruction()
 		{
-			Assert.IsTrue(ci.IsCritical(new CallInstruction(new ProcedureConstant(PrimitiveType.Ptr32, null), new CallSite(0, 0))));
+			Assert.IsTrue(CriticalInstruction.IsCritical(new CallInstruction(new ProcedureConstant(PrimitiveType.Ptr32, null), new CallSite(0, 0))));
 		}
 
 		[Test]
 		public void TestUse()
 		{
-			Assert.IsTrue(ci.IsCritical(new UseInstruction(null, null)));
+			Assert.IsTrue(CriticalInstruction.IsCritical(new UseInstruction(null, null)));
 		}
 
 		[Test]
 		public void TestSideEffect()
 		{
-			Assert.IsTrue(ci.IsCritical(new SideEffect(null)));
+			Assert.IsTrue(CriticalInstruction.IsCritical(new SideEffect(null)));
 		}
 
 		[Test]
 		public void TestAssignFalse()
 		{
-			Assert.IsFalse(ci.IsCritical(new Assignment(Id32("ax"), Constant.Word32(0))));
+			Assert.IsFalse(CriticalInstruction.IsCritical(new Assignment(Id32("ax"), Constant.Word32(0))));
 		}
 
         private Identifier Id16(string name)

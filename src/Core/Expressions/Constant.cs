@@ -271,6 +271,8 @@ namespace Reko.Core.Expressions
 			}
 		}
 
+        public abstract bool IsMaxUnsigned { get; }
+
 		public virtual bool IsNegative
 		{
 			get 
@@ -547,6 +549,8 @@ namespace Reko.Core.Expressions
             return new ConstantBool(DataType, !value);
         }
 
+        public override bool IsMaxUnsigned => value;
+
         public override bool ToBoolean()
         {
             return value;
@@ -618,6 +622,8 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
+        public override bool IsMaxUnsigned => value == -1;
+        
         public override byte ToByte()
         {
             return (byte)value;
@@ -683,6 +689,9 @@ namespace Reko.Core.Expressions
         {
             return value.GetHashCode();
         }
+
+        public override bool IsMaxUnsigned => value == 0xFFFF;
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -750,6 +759,8 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
+        public override bool IsMaxUnsigned => value == 0xFF;
+
         public override byte ToByte()
         {
             return value;
@@ -806,7 +817,6 @@ namespace Reko.Core.Expressions
             return new ConstantInt16(DataType, (short)~value);
         }
 
-
         public override object GetValue()
         {
             return value;
@@ -816,6 +826,8 @@ namespace Reko.Core.Expressions
         {
             return value.GetHashCode();
         }
+
+        public override bool IsMaxUnsigned => value == (short)-1;
 
         public override byte ToByte()
         {
@@ -883,6 +895,8 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
+        public override bool IsMaxUnsigned => value == 0xFFFFu;
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -948,6 +962,8 @@ namespace Reko.Core.Expressions
         {
             return value.GetHashCode();
         }
+
+        public override bool IsMaxUnsigned => value == -1;
 
         public override byte ToByte()
         {
@@ -1016,6 +1032,8 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
+        public override bool IsMaxUnsigned => value == ~0u;
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -1083,6 +1101,8 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
+        public override bool IsMaxUnsigned => value == -1L;
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -1148,6 +1168,8 @@ namespace Reko.Core.Expressions
         {
             return value.GetHashCode();
         }
+
+        public override bool IsMaxUnsigned => value == ~0UL;
 
         public override byte ToByte()
         {
@@ -1215,6 +1237,8 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
+        public override bool IsMaxUnsigned => throw new NotImplementedException();
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -1280,6 +1304,8 @@ namespace Reko.Core.Expressions
         {
             return value.GetHashCode();
         }
+
+        public override bool IsMaxUnsigned => throw new NotImplementedException();
 
         public override byte ToByte()
         {
@@ -1347,6 +1373,8 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
+        public override bool IsMaxUnsigned => throw new NotImplementedException();
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -1412,6 +1440,8 @@ namespace Reko.Core.Expressions
         {
             return value.GetHashCode();
         }
+
+        public override bool IsMaxUnsigned => throw new NotImplementedException();
 
         public override byte ToByte()
         {
@@ -1505,6 +1535,8 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
+        public override bool IsMaxUnsigned => false;
+
         public override Constant Negate()
         {
             return new ConstantReal16(this.DataType, -value);
@@ -1586,6 +1618,8 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
+        public override bool IsMaxUnsigned => false;
+
         public override Constant Negate()
         {
             return new ConstantReal32(DataType, -value);
@@ -1661,6 +1695,9 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
+        public override bool IsMaxUnsigned => false;
+
+
         public override Constant Negate()
         {
             return new ConstantReal80(DataType, -value);
@@ -1731,6 +1768,8 @@ namespace Reko.Core.Expressions
         {
             throw new NotSupportedException("Cannot complement a real value.");
         }
+
+        public override bool IsMaxUnsigned => false;
 
         public override Constant Negate()
         {
@@ -1803,6 +1842,8 @@ namespace Reko.Core.Expressions
         {
             return str.GetHashCode();
         }
+
+        public override bool IsMaxUnsigned => false;
 
         public override Constant Negate()
         {
