@@ -8999,9 +8999,8 @@ l000097C2:
 							word32 r8_n;
 							if (sp_n->dw0024 == 0x01)
 							{
-								word64 r11_r10_n = sp_n->qw002C;
-								uint32 r10_n = (bool) r4_n.u0 + ((word32) r11_r10_n & 0x01);
-								r8_n = (word32) ((word32) (((SLICE(r11_r10_n, word32, 32) & 0x00) + (r10_n < 0x00) | r10_n) != 0x00) + r3_n > 0x05);
+								Eq_n r10_n = (bool) r4_n.u0 + (sp_n->t002C & 0x01);
+								r8_n = (word32) ((word32) (((bool) cond(r10_n) | r10_n) != 0x00) + r3_n > 0x05);
 							}
 							else
 							{
@@ -9014,12 +9013,12 @@ l000097C2:
 							}
 							if (r8_n != 0x00)
 							{
-								word64 r11_r10_n = sp_n->qw002C;
+								Eq_n r11_r10_n = sp_n->t002C;
 								up32 r10_n = (word32) r11_r10_n;
-								sp_n->qw002C = SEQ((bool) (r10_n < 0x01) + SLICE(r11_r10_n, word32, 32), r10_n + 0x01);
+								sp_n->t002C = SEQ((bool) (r10_n < 0x01) + SLICE(r11_r10_n, word32, 32), r10_n + 0x01);
 								if (sp_n->dw0000 != 0x00)
 								{
-									word64 r11_r10_n = sp_n->qw002C;
+									Eq_n r11_r10_n = sp_n->t002C;
 									if (SLICE(r11_r10_n, word32, 32) == (bool) cond((word32) r11_r10_n - sp_n->dw0028))
 									{
 										int32 r10_n = sp_n->dw0034;
@@ -9027,7 +9026,7 @@ l000097C2:
 										{
 											ui32 r8_n = sp_n->dw0014;
 											sp_n->dw0034 = r10_n + 0x01;
-											word64 r3_r2_n = 0x01;
+											Eq_n r3_r2_n = 0x01;
 											if ((r8_n & 0x08) == 0x00)
 											{
 												ui32 r8_n = sp_n->dw0040;
@@ -9035,11 +9034,11 @@ l000097C2:
 												word32 r11_n = sp_n->dw003C;
 												*r9_n = 0x30;
 												ptr32 r5_n = r9_n - r8_n;
-												word64 r3_r2_n;
+												Eq_n r3_r2_n;
 												r6_n[3]();
 												r3_r2_n = r3_r2_n;
 											}
-											sp_n->qw002C = r3_r2_n;
+											sp_n->t002C = r3_r2_n;
 										}
 									}
 								}

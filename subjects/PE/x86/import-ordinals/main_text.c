@@ -68,7 +68,7 @@ l00401172:
 		fn0040176D(*esp_n);
 	}
 	ebp_n->bFFFFFFE7 = 0x00;
-	ebp_n->dwFFFFFFFC &= 0x00;
+	ebp_n->dwFFFFFFFC = 0x00;
 	word32 edx_n;
 	ebp_n->tFFFFFFDC = (byte) (uint32) (uint8) fn0040143A(out edx_n);
 	struct Eq_n * ebp_n = ebp_n;
@@ -252,7 +252,7 @@ byte fn0040153F(word32 ebx, Eq_n esi, Eq_n edi, ptr32 & edxOut, ptr32 & ebxOut, 
 {
 	word32 eax_n;
 	struct Eq_n * ebp_n = fn00401980(ebx, esi, edi, dwLoc0C, 0x08);
-	ebp_n->dwFFFFFFFC &= 0x00;
+	ebp_n->dwFFFFFFFC = 0x00;
 	word24 eax_24_8_n = 0x5A;
 	if (g_w400000 == 23117)
 	{
@@ -321,7 +321,7 @@ void fn0040165E()
 	else
 	{
 		GetSystemTimeAsFileTime(fp - 0x10);
-		ui32 v14_n = dwLoc0C & 0x00 ^ dwLoc10 & 0x00 ^ GetCurrentThreadId() ^ GetCurrentProcessId();
+		ui32 v14_n = GetCurrentThreadId() ^ GetCurrentProcessId();
 		QueryPerformanceCounter(fp - 0x18);
 		ui32 ecx_n = dwLoc14 ^ dwLoc18 ^ v14_n ^ fp - 0x08;
 		if (ecx_n == 0xBB40E64E)
@@ -427,7 +427,7 @@ word32 fn004019C6(struct Eq_n * ebp, Eq_n dwArg00, union Eq_n & ebpOut, ptr32 & 
 //      fn0040146F
 void fn004019FE(word32 edx)
 {
-	g_dw40336C &= 0x00;
+	g_dw40336C = 0x00;
 	g_dw403010 |= 0x01;
 	if (IsProcessorFeaturePresent(0x0A) != 0x00)
 	{
@@ -436,7 +436,7 @@ void fn004019FE(word32 edx)
 		g_dw40336C = 0x01;
 		__cpuid(0x00, 0x00, &0x00, &0x01, &0x00, &edx);
 		__cpuid(0x01, 0x00, &0x01, &0x01, &0x00, &edx);
-		byte bLoc14_n = (byte) (dwLoc14 & 0x00);
+		byte bLoc14_n = 0x00;
 		if ((edx ^ 0x49656E69 | 1818588270 | 0x756E6546) == 0x00 && (0x00 == 0x000106C0 || (0x00 == 0x00020660 || (0x00 == 0x00020670 || (0x00 == 0x00030650 || (0x00 == 0x00030660 || false))))))
 		{
 			ui32 edi_n = g_dw403370;

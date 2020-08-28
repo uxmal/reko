@@ -21,6 +21,6 @@ uip32 g_dw403334 = 0x00;
 word32 g_dw403338 = 0x00;
 byte g_b403354 = 0x00;
 ui32 g_dw403368 = 0x00;
-ui32 g_dw40336C = 0x00;
+word32 g_dw40336C = 0x00;
 ui32 g_dw403370 = 0x00;
 

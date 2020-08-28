@@ -1493,7 +1493,7 @@ word32 fn00002424(ptr32 & a1Out, ptr32 & a5Out)
 {
 	SetSignal(0, 0x1000);
 	word32 d1_n = 0x1000;
-	if (0x00 != 0x00)
+	if (0 != 0x00)
 		fn0000131C(0x14, out d1_n, out a1, out a5);
 	a1Out = a1;
 	a5Out = a5;

@@ -44,6 +44,6 @@ union _SLIST_HEADER g_u403358 =
 		}
 	};
 ui32 g_dw403368 = 0x00;
-ui32 g_dw40336C = 0x00;
+word32 g_dw40336C = 0x00;
 ui32 g_dw403370 = 0x00;
 

@@ -18049,15 +18049,15 @@ T_3788: (in 0x1000<32> : word32)
   Class: Eq_584
   DataType: word32
   OrigDataType: word32
-T_3789: (in 0<32> : word32)
+T_3789: (in 0<i32> : int32)
   Class: Eq_3789
-  DataType: word32
-  OrigDataType: word32
+  DataType: int32
+  OrigDataType: int32
 T_3790: (in 0<32> : word32)
   Class: Eq_3789
-  DataType: word32
+  DataType: int32
   OrigDataType: word32
-T_3791: (in 0<32> == 0<32> : bool)
+T_3791: (in 0<i32> == 0<32> : bool)
   Class: Eq_3791
   DataType: bool
   OrigDataType: bool

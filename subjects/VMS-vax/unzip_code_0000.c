@@ -1777,7 +1777,7 @@ ui32 fn0000CFBA(word32 ** r6, Eq_n ap, union Eq_n * fp, byte & r2Out, struct Eq_
 		word32 ** r6_n;
 		byte * r2_n;
 		word32 r0_n[] = fn0000D39E(r6, fp, out r2_n, out r3_n, out r6_n, out ap_n, out fp_n);
-		struct Eq_n * r3_n = r3_n ^ ~0x00;
+		struct Eq_n * r3_n = ~r3_n;
 		while (ap_n->dw000C >= 0x08)
 		{
 			struct Eq_n * r2_n = r2_n + 1;
@@ -1809,7 +1809,7 @@ ui32 fn0000CFBA(word32 ** r6, Eq_n ap, union Eq_n * fp, byte & r2Out, struct Eq_
 		r6Out = r6_n;
 		apOut = ap_n;
 		fpOut = fp_n;
-		return r3_n ^ ~0x00;
+		return ~r3_n;
 	}
 	else
 	{

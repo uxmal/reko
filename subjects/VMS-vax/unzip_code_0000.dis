@@ -2241,7 +2241,7 @@ l0000CFCA:
 	word32 r6_23
 	word32 r2_106
 	word32 r0_16 = fn0000D39E(r6, fp, out r2_106, out r3_20, out r6_23, out ap_14, out fp_15)
-	word32 r3_111 = r3_20 ^ 0xFFFFFFFF<32>
+	word32 r3_111 = ~r3_20
 	branch Mem0[ap_14 + 12<i32>:word32] >=u 8<32> l0000CFE4
 l0000CFE4:
 	word32 r2_35 = r2_106 + 1<32>
@@ -2274,7 +2274,7 @@ l0000D0C8:
 	r6Out = r6_23
 	apOut = ap_135
 	fpOut = fp_134
-	return r3_111 ^ 0xFFFFFFFF<32>
+	return ~r3_111
 l0000CFC7:
 	word32 fp_142 = Mem0[fp + 0xC<32>:word32]
 	word32 ap_143 = Mem0[fp + 8<32>:word32]

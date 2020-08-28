@@ -196,7 +196,7 @@ Eq_n fn10001388(Eq_n ecx, Eq_n edx, Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi,
 		if (ebp_n->tFFFFFFE4 == 0x00)
 		{
 l1000147A:
-			ebp_n->dwFFFFFFFC &= 0x00;
+			ebp_n->dwFFFFFFFC = 0x00;
 			ebp_n->dwFFFFFFFC = ~0x01;
 			fn10001493();
 			Eq_n eax_n = ebp_n->tFFFFFFE4;
@@ -307,7 +307,7 @@ Eq_n fn100015CF(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 		struct Eq_n * esp_n;
 		lock();
 		Eq_n ecx_n = esp_n->t0000;
-		ebp_n->dwFFFFFFFC &= 0x00;
+		ebp_n->dwFFFFFFFC = 0x00;
 		esp_n->t0000 = g_t100033B4;
 		ebp_n->tFFFFFFE4 = _decode_pointer(esp_n->t0000);
 		esp_n->tFFFFFFFC = g_t100033B0;
@@ -411,7 +411,7 @@ ui32 fn10001742(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi, ptr32 &
 {
 	ui32 eax_n;
 	struct Eq_n * ebp_n = fn100017E8(ebx, esi, edi, dwLoc0C, 0x08);
-	ebp_n->dwFFFFFFFC &= 0x00;
+	ebp_n->dwFFFFFFFC = 0x00;
 	ptr32 edx_n = 0x10000000;
 	Eq_n dwLoc0C_n = 0x10000000;
 	if (fn100016D0(&g_t10000000) != 0x00)
@@ -485,7 +485,7 @@ void fn10001864()
 	else
 	{
 		GetSystemTimeAsFileTime(fp - 0x0C);
-		ui32 esi_n = dwLoc08 & 0x00 ^ dwLoc0C & 0x00 ^ GetCurrentProcessId() ^ GetCurrentThreadId() ^ GetTickCount();
+		ui32 esi_n = GetCurrentProcessId() ^ GetCurrentThreadId() ^ GetTickCount();
 		QueryPerformanceCounter(fp - 0x14);
 		ui32 esi_n = esi_n ^ (dwLoc10 ^ dwLoc14);
 		if (esi_n == 0xBB40E64E)

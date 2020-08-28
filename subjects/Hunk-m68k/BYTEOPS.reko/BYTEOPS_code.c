@@ -1436,7 +1436,7 @@ void fn00002358(int32 d0, struct Eq_n * dwArg04)
 word32 fn000023C8()
 {
 	SetSignal(0, 0x1000);
-	if (0x00 != 0x00)
+	if (0 != 0x00)
 		a5 = fn0000131C(0x14);
 	return a5;
 }

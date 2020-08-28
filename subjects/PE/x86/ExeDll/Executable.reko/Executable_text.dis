@@ -84,7 +84,7 @@ l00401177:
 	fn00401774(Mem42[esp_35:word32])
 l0040117E:
 	Mem53[ebp_19 - 0x19<32>:byte] = 0<8>
-	Mem55[ebp_19 - 4<32>:word32] = Mem53[ebp_19 - 4<32>:word32] & 0<32>
+	Mem55[ebp_19 - 4<32>:word32] = 0<32>
 	word32 edx_140
 	Mem68[ebp_19 - 0x24<32>:byte] = SLICE((uint32) (uint8) fn0040143F(out edx_140), byte, 0)
 	word32 ebp_135 = ebp_19
@@ -339,8 +339,7 @@ l004014C0:
 l004014C9:
 	branch dwArg04 != 0<32> l004014F3
 l004014F3:
-	word32 eax_55 = Mem11[0x00403004<p32>:word32]
-	word32 eax_76 = __ror(eax_55 & 0x1F<32> | 0xFFFFFFFF<32>, SLICE(0x20<32> - (eax_55 & 0x1F<32>), byte, 0)) ^ Mem68[0x00403004<p32>:word32]
+	word32 eax_76 = __ror(0xFFFFFFFF<32>, SLICE(0x20<32> - (Mem11[0x00403004<p32>:word32] & 0x1F<32>), byte, 0)) ^ Mem68[0x00403004<p32>:word32]
 	Mem83[0x0040333C<p32>:word32] = eax_76
 	Mem87[0x00403340<p32>:word32] = eax_76
 	Mem91[0x00403344<p32>:word32] = eax_76
@@ -381,7 +380,7 @@ fn00401544_entry:
 l00401544:
 	word32 eax_84
 	word32 ebp_13 = fn00401980(ebx, esi, edi, dwLoc0C, 8<32>)
-	Mem19[ebp_13 - 4<32>:word32] = Mem7[ebp_13 - 4<32>:word32] & 0<32>
+	Mem19[ebp_13 - 4<32>:word32] = 0<32>
 	word24 eax_24_8_85 = 0x5A<24>
 	branch Mem19[0x00400000<p32>:word16] != 0x5A4D<16> l004015BF
 l00401562:
@@ -521,7 +520,7 @@ l00401686:
 	branch (eax_15 & 0xFFFF0000<32>) == 0<32> l00401693
 l00401693:
 	GetSystemTimeAsFileTime(fp - 0x10<32>)
-	word32 v14_43 = dwLoc0C & 0<32> ^ dwLoc10 & 0<32> ^ GetCurrentThreadId() ^ GetCurrentProcessId()
+	word32 v14_43 = GetCurrentThreadId() ^ GetCurrentProcessId()
 	QueryPerformanceCounter(fp - 0x18<32>)
 	word32 ecx_55 = dwLoc14 ^ dwLoc18 ^ v14_43 ^ fp - 8<32>
 	branch ecx_55 != 0xBB40E64E<32> l004016DB
@@ -875,7 +874,7 @@ void fn004019FE(word32 edx)
 // Preserved: ebp ebx edi esi esp
 fn004019FE_entry:
 l004019FE:
-	Mem9[0x0040336C<p32>:word32] = Mem6[0x0040336C<p32>:word32] & 0<32>
+	Mem9[0x0040336C<p32>:word32] = 0<32>
 	Mem18[0x00403010<p32>:word32] = Mem14[0x00403010<p32>:word32] | 1<32>
 	branch IsProcessorFeaturePresent(0xA<32>) == 0<32> l00401B91
 l00401A24:
@@ -884,7 +883,7 @@ l00401A24:
 	Mem41[0x0040336C<p32>:word32] = 1<32>
 	__cpuid(0<32>, 0<32>, &0<32>, &1<32>, &0<32>, &edx)
 	__cpuid(1<32>, 0<32>, &1<32>, &1<32>, &0<32>, &edx)
-	byte bLoc14_258 = SLICE(dwLoc14 & 0<32>, byte, 0)
+	byte bLoc14_257 = 0<8>
 	branch (edx ^ 0x49656E69<32> | 0x6C65746E<32> | 0x756E6546<32>) != 0<32> l00401ACE
 l00401A8B:
 	branch 0<32> == 0x106C0<32> l00401ABD
@@ -908,7 +907,7 @@ l00401AD4:
 	branch true l00401B1B
 l00401AE9:
 	__cpuid(7<32>, 0<32>, &7<32>, &1<32>, &0<32>, &edx)
-	bLoc14_258 = 1<8> (alias)
+	bLoc14_257 = 1<8> (alias)
 	branch 0<32> == 0<32> l00401B1B
 l00401B12:
 	Mem150[0x00403370<p32>:word32] = edi_101 | 2<32>
@@ -928,7 +927,7 @@ l00401B62:
 	word32 eax_187 = Mem177[0x00403010<p32>:word32]
 	Mem189[0x0040336C<p32>:word32] = 3<32>
 	Mem192[0x00403010<p32>:word32] = eax_187 | 8<32>
-	branch (bLoc14_258 & 0x20<8>) == 0<8> l00401B91
+	branch (bLoc14_257 & 0x20<8>) == 0<8> l00401B91
 l00401B7F:
 	Mem197[0x0040336C<p32>:word32] = 5<32>
 	Mem198[0x00403010<p32>:word32] = eax_187 | 8<32> | 0x20<32>

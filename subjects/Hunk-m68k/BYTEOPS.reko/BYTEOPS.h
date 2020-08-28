@@ -13800,15 +13800,15 @@ T_3172: (in SetSignal(0<i32>, 0x1000<32>) : void)
   Class: Eq_3172
   DataType: void
   OrigDataType: void
-T_3173: (in 0<32> : word32)
+T_3173: (in 0<i32> : int32)
   Class: Eq_3173
-  DataType: word32
-  OrigDataType: word32
+  DataType: int32
+  OrigDataType: int32
 T_3174: (in 0<32> : word32)
   Class: Eq_3173
-  DataType: word32
+  DataType: int32
   OrigDataType: word32
-T_3175: (in 0<32> == 0<32> : bool)
+T_3175: (in 0<i32> == 0<32> : bool)
   Class: Eq_3175
   DataType: bool
   OrigDataType: bool
