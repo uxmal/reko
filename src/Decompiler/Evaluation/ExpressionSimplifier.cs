@@ -232,7 +232,10 @@ namespace Reko.Evaluation
                 cRight = cLeft; left = right; right = cLeft;
             }
 
-
+            //$TODO: operands to binary operations appear to be
+            // mismatched in some processors. Change the ctor
+            // of BinaryExpression to catch this later.
+            var sameBitsize = left.DataType.BitSize == right.DataType.BitSize;
             if (cRight != null)
             {
                 // (- X 0) ==> X
@@ -250,7 +253,7 @@ namespace Reko.Evaluation
                         return left;
                     }
                     // (| X 0xFFFF...F) ==> 0xFFFF...F
-                    if (cRight.IsMaxUnsigned && !CriticalInstruction.IsCritical(left))
+                    if (cRight.IsMaxUnsigned && sameBitsize && !CriticalInstruction.IsCritical(left))
                     {
                         ctx.RemoveExpressionUse(left);
                         Changed = true;
@@ -259,13 +262,13 @@ namespace Reko.Evaluation
                 }
                 if (binExp.Operator == Operator.And)
                 {
-                    if (cRight.IsIntegerZero && !CriticalInstruction.IsCritical(left))
+                    if (cRight.IsIntegerZero && sameBitsize && !CriticalInstruction.IsCritical(left))
                     {
                         ctx.RemoveExpressionUse(left);
                         Changed = true;
                         return cRight;
                     }
-                    if (cRight.IsMaxUnsigned)
+                    if (cRight.IsMaxUnsigned && sameBitsize)
                     {
                         Changed = true;
                         return left;
@@ -278,7 +281,7 @@ namespace Reko.Evaluation
                         Changed = true;
                         return left;
                     }
-                    if (cRight.IsMaxUnsigned)
+                    if (cRight.IsMaxUnsigned && sameBitsize)
                     {
                         Changed = true;
                         return new UnaryExpression(Operator.Comp, left.DataType, left).Accept(this);

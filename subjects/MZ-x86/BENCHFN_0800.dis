@@ -610,7 +610,7 @@ word16 fn0800_04F9(selector ds, word16 wArg02)
 fn0800_04F9_entry:
 l0800_04F9:
 	word16 ax_43
-	word16 ax_23 = ___sbrk(ds, wArg02 & 0xFFFF<16>, 0<16>)
+	word16 ax_23 = ___sbrk(ds, wArg02, 0<16>)
 	branch ax_23 != 0xFFFF<16> l0800_051B
 l0800_051B:
 	Mem37[ds:ax_23 + 2<16>:word16] = Mem21[ds:0x628<16>:word16]
@@ -636,7 +636,7 @@ word16 fn0800_0536(selector ds, word16 wArg02)
 fn0800_0536_entry:
 l0800_0536:
 	word16 ax_42
-	word16 ax_23 = ___sbrk(ds, wArg02 & 0xFFFF<16>, 0<16>)
+	word16 ax_23 = ___sbrk(ds, wArg02, 0<16>)
 	branch ax_23 != 0xFFFF<16> l0800_0558
 l0800_0558:
 	Mem36[ds:0x62C<16>:word16] = ax_23

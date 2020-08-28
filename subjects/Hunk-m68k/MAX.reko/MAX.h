@@ -23615,15 +23615,15 @@ T_5245: (in 0x1000<32> : word32)
   Class: Eq_587
   DataType: word32
   OrigDataType: word32
-T_5246: (in 0<32> : word32)
+T_5246: (in 0<i32> : int32)
   Class: Eq_5246
-  DataType: word32
-  OrigDataType: word32
+  DataType: int32
+  OrigDataType: int32
 T_5247: (in 0<32> : word32)
   Class: Eq_5246
-  DataType: word32
+  DataType: int32
   OrigDataType: word32
-T_5248: (in 0<32> == 0<32> : bool)
+T_5248: (in 0<i32> == 0<32> : bool)
   Class: Eq_5248
   DataType: bool
   OrigDataType: bool

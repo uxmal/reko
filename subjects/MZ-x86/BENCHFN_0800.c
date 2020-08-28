@@ -459,7 +459,7 @@ struct Eq_n Eq_n::* fn0800-04BF(struct Eq_n * ds, Eq_n wArg02, Eq_n wArg04)
 word16 fn0800-04F9(struct Eq_n * ds, Eq_n wArg02)
 {
 	word16 ax_n;
-	Eq_n ax_n = ___sbrk(ds, wArg02 & ~0x00, 0x00);
+	Eq_n ax_n = ___sbrk(ds, wArg02, 0x00);
 	if (ax_n == ~0x00)
 		ax_n = 0x00;
 	else
@@ -478,7 +478,7 @@ word16 fn0800-04F9(struct Eq_n * ds, Eq_n wArg02)
 union Eq_n Eq_n::* fn0800-0536(struct Eq_n * ds, Eq_n wArg02)
 {
 	union Eq_n Eq_n::* ax_n;
-	Eq_n ax_n = ___sbrk(ds, wArg02 & ~0x00, 0x00);
+	Eq_n ax_n = ___sbrk(ds, wArg02, 0x00);
 	if (ax_n == ~0x00)
 		ax_n = &Eq_n::t0000;
 	else
@@ -544,14 +544,14 @@ void ___brk(struct Eq_n * ds, Eq_n wArg02)
 		ds->t0094.u0 = 0x08;
 }
 
-// 0800:0607: Register Eq_n ___sbrk(Register (ptr16 Eq_n) ds, Stack cui16 wArg02, Stack word16 wArg04)
+// 0800:0607: Register Eq_n ___sbrk(Register (ptr16 Eq_n) ds, Stack Eq_n wArg02, Stack word16 wArg04)
 // Called from:
 //      fn0800-04F9
 //      fn0800-0536
-Eq_n ___sbrk(struct Eq_n * ds, cui16 wArg02, word16 wArg04)
+Eq_n ___sbrk(struct Eq_n * ds, Eq_n wArg02, word16 wArg04)
 {
 	Eq_n ax_n;
-	Eq_n ax_n = (word16) ds->t009E + wArg02;
+	word16 ax_n = wArg02 + Mem7[ds:0x9E:word16];
 	if ((bool) (ax_n < 0x0100) + ((bool) (ax_n < 0x00) + wArg04) == 0x00 && (word16) ax_n.u0 + 0x0100 < fp - 2)
 	{
 		Eq_n v13_n = ds->t009E;

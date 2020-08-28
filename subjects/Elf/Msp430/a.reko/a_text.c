@@ -1647,7 +1647,7 @@ l53E8:
 				bLoc1D_n = v52_n;
 				if (v52_n >= 0x00)
 					goto l53E8;
-				bLoc1D_n = (v52_n ^ ~0x00) + 0x01;
+				bLoc1D_n = ~v52_n + 0x01;
 l58A8:
 				bLoc1E_n = (bLoc1E_n | 0x10) & ~0x20;
 				goto l53E8;
@@ -1715,13 +1715,13 @@ l57AE:
 						Eq_n v189_n = *r5_n;
 						r5_n += 0x02;
 						wLoc1C_n = v189_n;
-						wLoc1A_n = 0x00 - (v189_n * 0x02 < 0x00) ^ ~0x00;
+						wLoc1A_n = ~(0x00 - (v189_n * 0x02 < 0x00));
 					}
 					if (wLoc1A_n < 0x00)
 					{
-						Eq_n wLoc1C_n = wLoc1C_n ^ ~0x00;
-						wLoc1C_n = (word24) wLoc1C_n + 1;
-						wLoc1A_n = (wLoc1A_n ^ ~0x00) + (wLoc1C_n < 0x01);
+						Eq_n v184_n = ~wLoc1C_n;
+						wLoc1C_n = (word24) v184_n + 1;
+						wLoc1A_n = ~wLoc1A_n + (v184_n <u 0x01);
 						bLoc24_n.u2 = 0x2D;
 					}
 					bLoc18_n.u1 = 0x0A;

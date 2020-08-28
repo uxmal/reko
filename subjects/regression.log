@@ -1007,4 +1007,4 @@ error: An error occurred during decompilation. System.NullReferenceException: Ob
    at Reko.Decompiler.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 555
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 203
 Stripping SSA identifier numbers
-Decompiled 67 binaries in 73.73 seconds ---
+Decompiled 67 binaries in 106.78 seconds ---

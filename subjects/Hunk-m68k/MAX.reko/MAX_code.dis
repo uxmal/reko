@@ -2347,7 +2347,7 @@ fn00002BBC_entry:
 l00002BBC:
 	SetSignal(0<i32>, 0x1000<32>)
 	word32 d1_21 = 0x1000<32>
-	branch 0<32> == 0<32> l00002BE6
+	branch 0<i32> == 0<32> l00002BE6
 l00002BDA:
 	d1_21 = fn0000131C(0x00000014<p32>, out a1, out a5)
 l00002BE6:

@@ -1501,7 +1501,7 @@ byte fn00000000004049E0(Eq_n rcx, byte dl, char ** rsi, Eq_n rdi, union Eq_n & e
 						goto l0000000000404A65;
 					ecx_n = (word32) (rax_n - 0x30);
 				}
-				if ((r14_n & 0x00) == 0x00)
+				if (true)
 				{
 					r11_n = SEQ(SEQ(r11_32_32_n, r11d_24_8_n), r11b_n);
 					if ((r14d_n & 0x03FF) == 0x00)
@@ -3055,7 +3055,7 @@ l0000000000406D58:
 					{
 						uint64 rax_n = *((word32) rdi + 56);
 						int32 r13d_n = (word32) (uint64) ((word32) g_t61B154 + (word32) ((uint64) ((word32) ((uint64) (~0x01 - g_t61B15C)) - g_t61B158)));
-						Eq_n rax_n = fn000000000040CD70((word32) rsp_n + 112, (uint64) (SEQ(SLICE(rax_n >> 0x0C, word24, 8), (byte) (rax_n >> 0x0C) & 0x00) | (word32) ((uint64) ((word32) ((byte) rax_n)))));
+						Eq_n rax_n = fn000000000040CD70((word32) rsp_n + 112, (uint64) (SEQ(SLICE(rax_n >> 0x0C, word24, 8), 0x00) | (word32) ((uint64) ((word32) ((byte) rax_n)))));
 						uint64 rdx_n = *((word32) rdi + 56);
 						word32 r14d_n = (word32) (uint64) g_t61B158;
 						fn000000000040CD70((word32) rsp_n + 80, (uint64) ((word32) (uint64) ((word32) (rdx_n >> 0x20) & ~0x0FFF) | (word32) ((uint64) ((word32) ((uint64) ((word32) (rdx_n >> 0x08))) & 0x0FFF))));
@@ -3955,7 +3955,7 @@ l000000000040873F:
 												if (eax_n > g_t61B15C)
 													g_t61B15C = eax_n;
 												uint64 rax_n = r14_n[7];
-												Eq_n eax_n = strlen(fn000000000040CD70(fp - 0x02D8, (uint64) (SEQ(SLICE(rax_n >> 0x0C, word24, 8), (byte) (rax_n >> 0x0C) & 0x00) | (word32) ((uint64) ((word32) ((byte) rax_n))))));
+												Eq_n eax_n = strlen(fn000000000040CD70(fp - 0x02D8, (uint64) (SEQ(SLICE(rax_n >> 0x0C, word24, 8), 0x00) | (word32) ((uint64) ((word32) ((byte) rax_n))))));
 												uint64 rdx_n = (uint64) g_t61B158;
 												if (eax_n > (word32) rdx_n)
 												{
@@ -5096,7 +5096,7 @@ l000000000040B540:
 		{
 			real32 v30_n = v26_n - g_t415F0C;
 			xmm0 = SEQ(v27_n, v30_n);
-			r15_n = SEQ(r15_32_32_n, v30_n) ^ 0x00;
+			r15_n = SEQ(r15_32_32_n, v30_n);
 		}
 		else
 			r15_n = SEQ(r15_32_32_n, v26_n);
@@ -5234,7 +5234,7 @@ l000000000040B870:
 		{
 			real32 v20_n = v16_n - g_t415F0C;
 			xmm0 = SEQ(v17_n, v20_n);
-			rsi = SEQ(rsi_32_32_n, v20_n) ^ 0x00;
+			rsi = SEQ(rsi_32_32_n, v20_n);
 		}
 		else
 			rsi = SEQ(rsi_32_32_n, v16_n);
@@ -5388,7 +5388,7 @@ l000000000040BB2E:
 		if ((real32) xmm0 < g_t415F0C)
 			rsi_n = SEQ(rsi_32_32_n, (int32) xmm0);
 		else
-			rsi_n = SEQ(rsi_32_32_n, (real32) xmm0 - g_t415F0C) ^ 0x00;
+			rsi_n = SEQ(rsi_32_32_n, (real32) xmm0 - g_t415F0C);
 		if ((byte) (uint64) (uint32) fn000000000040B710(rsi_n, rdi, out xmm0, out xmm1) == 0x00)
 			goto l000000000040BB2E;
 		word64 rsi_n;
@@ -5483,7 +5483,7 @@ uint64 fn000000000040BB90(Eq_n rsi, Eq_n rdi, Eq_n xmm0, union Eq_n & xmm0Out, u
 				if ((real32) xmm0_n < g_t415F0C)
 					rsi_n = SEQ(rsi_32_32_n, (int32) xmm0_n);
 				else
-					rsi_n = SEQ(rsi_32_32_n, (real32) xmm0_n - g_t415F0C) ^ 0x00;
+					rsi_n = SEQ(rsi_32_32_n, (real32) xmm0_n - g_t415F0C);
 				if ((byte) (uint64) (word32) (uint64) (uint32) fn000000000040B710(rsi_n, rdi, out xmm0, out xmm1) == 0x00)
 				{
 					Eq_n rdi_n = *((word32) rdi + 72);
@@ -5865,7 +5865,7 @@ l000000000040BE7D:
 					__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
 					__fldcw(wLoc82_n);
 					rLoc1_n = rLoc1_n - rLoc2_n;
-					rax_n = (int64) rLoc2_n ^ 0x00;
+					rax_n = (int64) rLoc2_n;
 				}
 				uint64 rdx_n = 0x00;
 				if ((word32) (uint64) eax_n == 0x00)
@@ -5916,7 +5916,7 @@ l000000000040BE7D:
 					__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
 					__fldcw(wLoc82_n);
 					rLoc1_n = rLoc1_n - rLoc2_n;
-					rax_n = (int64) rLoc2_n ^ 0x00;
+					rax_n.u0 = (int64) rLoc2_n;
 				}
 				Eq_n rdx_n = 0x00;
 				if ((word32) (uint64) eax_n == 0x00)
@@ -5958,7 +5958,7 @@ l000000000040BE7D:
 				__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
 				__fldcw(wLoc82_n);
 				rLoc1_n = rLoc1_n - rLoc2_n;
-				rax_n = (int64) rLoc2_n ^ 0x00;
+				rax_n.u0 = (int64) rLoc2_n;
 			}
 			Eq_n rdx_n = 0x00;
 			if ((word32) (uint64) eax_n == 0x00)

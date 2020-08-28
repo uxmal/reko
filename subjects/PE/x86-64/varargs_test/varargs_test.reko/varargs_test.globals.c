@@ -21,7 +21,7 @@ word64 g_qw40003008;
 word32 g_dw40003014;
 word32 g_dw40003018;
 ui32 g_dw4000301C;
-ui64 g_qw40003020;
+word64 g_qw40003020;
 word32 g_dw40003030;
 word32 g_dw40003040;
 word32 g_dw40003044;
