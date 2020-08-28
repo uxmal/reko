@@ -39,7 +39,7 @@
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0000D648: error: An error occurred while processing the statement r1 = r9_1067 + (r11_1016 - 0x30<32>).
-    Not handling (ptr32 (struct 0001 (FFFFFFD8 T_27120 tFFFFFFD8) (FFFFFFEC word32 dwFFFFFFEC) (0 T_27340 t0000) (4 T_27346 t0004))) and (union ((ptr32 (struct 0001 (FFFFFFEC word32 dwFFFFFFEC))) u0) (ptr32 u1)) yet
+    Not handling (ptr32 (struct 0001 (FFFFFFD8 T_27107 tFFFFFFD8) (FFFFFFEC word32 dwFFFFFFEC) (0 T_27327 t0000) (4 T_27333 t0004))) and (union ((ptr32 (struct 0001 (FFFFFFEC word32 dwFFFFFFEC))) u0) (ptr32 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 424
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 257
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
@@ -49,7 +49,7 @@
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 54
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0000DCDE: error: An error occurred while processing the statement word32 r8_3109 = r5_1001 - r12_1006.
-    Pulling difference ui32 and (ptr32 (struct (0 T_27138 t0000) (4 T_27162 t0004)))
+    Pulling difference ui32 and (ptr32 (struct (0 T_27125 t0000) (4 T_27149 t0004)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 292
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 113
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 61
@@ -146,7 +146,7 @@ Parameter name: index
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 54
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0000000000406FC3: error: An error occurred while processing the statement word64 r13_992 = r13_960 - (fp - 0xE88<64>).
-    Pulling difference (ptr64 byte) and (union (bool u2) ((ptr64 char) u1) ((ptr64 (struct 0004 (FFFFFFFF byte bFFFFFFFF) (0 (union (byte u1) (word32 u0) (T_6741 u2) (T_6854 u3)) u0000) (10 T_59 t0010) (18 T_6837 t0018) (30 T_51 t0030) (38 T_62 t0038))) u0) ((ptr64 (struct 0001 (FFFFFFFF byte bFFFFFFFF) (0 char b0000))) u3))
+    Pulling difference (ptr64 byte) and (union (bool u2) ((ptr64 char) u1) ((ptr64 (struct 0004 (FFFFFFFF byte bFFFFFFFF) (0 (union (byte u1) (word32 u0) (T_6735 u2) (T_6848 u3)) u0000) (10 T_59 t0010) (18 T_6831 t0018) (30 T_51 t0030) (38 T_62 t0038))) u0) ((ptr64 (struct 0001 (FFFFFFFF byte bFFFFFFFF) (0 char b0000))) u3))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 280
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 113
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 61
@@ -174,7 +174,7 @@ Parameter name: index
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 54
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 000000000040D641: error: An error occurred while processing the statement word64 rdx_132 = qwLoc30_291 - qwLoc40_295.
-    Pulling difference (ptr64 (struct (0 T_13757 t0000))) and (union (uint64 u1) (ptr64 u0))
+    Pulling difference (ptr64 (struct (0 T_13734 t0000))) and (union (uint64 u1) (ptr64 u0))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 280
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 113
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 61
@@ -182,7 +182,7 @@ Parameter name: index
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 000000000040DBC3: error: An error occurred while processing the statement word64 rdx_1085 = qwLoc98_1434 - rbx_100.
-    Pulling difference (ptr64 (struct (0 T_14531 t0000))) and (union (int64 u1) (uint64 u0))
+    Pulling difference (ptr64 (struct (0 T_14508 t0000))) and (union (int64 u1) (uint64 u0))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 280
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 113
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 61
@@ -353,7 +353,7 @@ l0000000000400F4C: warning: Non-integral switch expression
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:1358: error: An error occurred while processing the statement word16 di_330 = di_315 - (fp - 0x8A<16>).
-    Not handling (memptr T_1998 (struct (0 T_2918 t0000))) and mp16 yet.
+    Not handling (memptr T_1994 (struct (0 T_2914 t0000))) and mp16 yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 411
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 255
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
@@ -966,7 +966,7 @@ fn0800_8F97: error: An internal error occurred while building the expressions of
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 396
 l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 0800:9A95: error: An error occurred while processing the statement word16 di_328 = di_314 - (fp - 0x48<16>).
-    Not handling (memptr T_34749 (struct (0 T_35450 t0000))) and mp16 yet.
+    Not handling (memptr T_34741 (struct (0 T_35442 t0000))) and mp16 yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 411
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 255
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
@@ -974,7 +974,7 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 1483:0C7D: error: An error occurred while processing the statement word16 ax_83 = bx_55 - 0x903<16> - (SLICE(dh_ax_143, byte, 16) <u 0<8>).
-    Not handling (memptr T_42205 (struct (0 T_42255 t0000) (3303 T_42249 t3303))) and bool yet.
+    Not handling (memptr T_42197 (struct (0 T_42247 t0000) (3303 T_42241 t3303))) and bool yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 411
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 255
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
@@ -1025,4 +1025,4 @@ error: An error occurred during decompilation. System.NullReferenceException: Ob
    at Reko.Decompiler.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 555
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 207
 Stripping SSA identifier numbers
-Decompiled 67 binaries in 62.68 seconds ---
+Decompiled 67 binaries in 91.27 seconds ---

@@ -7025,13 +7025,13 @@ l0800_40BF:
 	word16 dx_94
 	word16 bx_95
 	word16 di_96
-	fn0800_4047(ds, bArg02 & 0xFF<8>, dwArg04, out cx_93, out dx_94, out bx_95, out di_96, out ds_30)
+	fn0800_4047(ds, bArg02, dwArg04, out cx_93, out dx_94, out bx_95, out di_96, out ds_30)
 	word16 dx_56
 	word16 di_58
 	selector ds_59
 	word16 cx_97
 	word16 bx_98
-	word16 ax_53 = fn0800_4047(ds_30, SLICE(wArg02 >>u 8<8>, byte, 0) & 0xFF<8>, dwArg04, out cx_97, out dx_56, out bx_98, out di_58, out ds_59)
+	word16 ax_53 = fn0800_4047(ds_30, SLICE(wArg02 >>u 8<8>, byte, 0), dwArg04, out cx_97, out dx_56, out bx_98, out di_58, out ds_59)
 	dxOut = dx_56
 	diOut = di_58
 	dsOut = ds_59
@@ -12228,13 +12228,13 @@ l0800_7D68:
 	fn0800_8600(ds_354, Mem372[ds_354:0x2E29<16>:byte] - 6<8>, out ds_391)
 	word16 bx_399 = Mem386[ds_391:0x2E2B<16>:word16]
 	fn0800_854B(ds_391, CONVERT(Mem408[ds_391:(bx_399 >>u 8<8>) + 0x21E2<16>:byte], byte, uint16), CONVERT(Mem386[ds_391:(bx_399 >>u 8<8>) + 0x21F2<16>:byte], byte, uint16))
-	fn0800_8600(ds_391, Mem413[ds_391:0x2E2B<16>:byte] & 0xFF<8>, out ds_121)
+	fn0800_8600(ds_391, Mem413[ds_391:0x2E2B<16>:byte], out ds_121)
 l0800_7D24:
 	word16 bx_442 = Mem362[ds_354:0x2E29<16>:word16]
 	fn0800_854B(ds_354, CONVERT(Mem447[ds_354:bx_442 + 0x21D4<16>:byte], byte, uint16), CONVERT(Mem362[ds_354:bx_442 + 0x21DB<16>:byte], byte, uint16))
 	word16 bx_460 = Mem452[ds_354:0x2E2B<16>:word16]
 	fn0800_854B(ds_354, CONVERT(Mem469[ds_354:(bx_460 >>u 8<8>) + 0x21E2<16>:byte], byte, uint16), CONVERT(Mem452[ds_354:(bx_460 >>u 8<8>) + 0x21F2<16>:byte], byte, uint16))
-	fn0800_8600(ds_354, Mem474[ds_354:0x2E2B<16>:byte] & 0xFF<8>, out ds_121)
+	fn0800_8600(ds_354, Mem474[ds_354:0x2E2B<16>:byte], out ds_121)
 l0800_7D02:
 	fn0800_854B(ds_354, 6<16>, 3<16>)
 	fn0800_8600(ds_354, Mem508[ds_354:0x2E2B<16>:byte], out ds_121)

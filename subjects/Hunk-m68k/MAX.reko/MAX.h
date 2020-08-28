@@ -23389,15 +23389,15 @@ T_5190: (in 0x1000<32> : word32)
   Class: Eq_586
   DataType: word32
   OrigDataType: word32
-T_5191: (in 0<32> : word32)
+T_5191: (in 0<i32> : int32)
   Class: Eq_5191
-  DataType: word32
-  OrigDataType: word32
+  DataType: int32
+  OrigDataType: int32
 T_5192: (in 0<32> : word32)
   Class: Eq_5191
-  DataType: word32
+  DataType: int32
   OrigDataType: word32
-T_5193: (in 0<32> == 0<32> : bool)
+T_5193: (in 0<i32> == 0<32> : bool)
   Class: Eq_5193
   DataType: bool
   OrigDataType: bool

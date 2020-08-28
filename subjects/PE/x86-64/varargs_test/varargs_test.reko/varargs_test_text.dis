@@ -105,7 +105,7 @@ l00000001400011B0:
 	branch rcx != Mem0[0x0000000140003000<p64>:word64] l00000001400011CC
 l00000001400011BA:
 	word64 rcx_8 = __rol(rcx, 0x10<8>)
-	branch (SLICE(rcx_8, word16, 0) & 0xFFFF<16>) != 0<16> l00000001400011C8
+	branch SLICE(rcx_8, word16, 0) != 0<16> l00000001400011C8
 l00000001400011C8:
 	rcx = __ror(rcx_8, 0x10<8>)
 l00000001400011CC:
@@ -340,7 +340,7 @@ DWORD Win32CrtStartup()
 // Preserved:
 Win32CrtStartup_entry:
 l0000000140001434:
-	word64 rax_6 = fn000000014000186C(qwLoc20, qwLoc18)
+	word64 rax_6 = fn000000014000186C(qwLoc18)
 l0000000140001441_thunk_fn00000001400012BC:
 	return SLICE(CONVERT(fn00000001400012BC(rax_6), uint32, uint64), DWORD, 0)
 Win32CrtStartup_exit:
@@ -412,11 +412,9 @@ l000000014000156A:
 	word64 rax_25 = RtlLookupFunctionEntry(rsi_15, fp + 8<64>, 0<u64>)
 	branch rax_25 == 0<64> l00000001400015B9
 l0000000140001580:
-	word64 v16_30 = qwLoc20 & 0<64>
 	call KERNEL32.dll!RtlVirtualUnwind (retsize: 8;)
-		uses: r8:rsi_15,r9:rax_25,rcx:0<u64>,rdx:qwArg08,Stack +0028:rcx,Stack +0030:fp + 0x18<64>,Stack +0038:fp + 0x10<64>,Stack +0040:v16_30,Stack +0068:qwArg08
+		uses: r8:rsi_15,r9:rax_25,rcx:0<u64>,rdx:qwArg08,Stack +0028:rcx,Stack +0030:fp + 0x18<64>,Stack +0038:fp + 0x10<64>,Stack +0040:0<64>,Stack +0068:qwArg08
 	rdi_16 = CONVERT(edi_53 + 1<32>, word32, uint64)
-	qwLoc20 = v16_30
 	branch SLICE(rdi_16, word32, 0) < 2<32> l000000014000156A
 l00000001400015B9:
 	return
@@ -514,7 +512,7 @@ l000000014000166D:
 l0000000140001698:
 	word64 rdx_47 = Mem7[0x0000000140003000<p64>:word64]
 	word64 rax_55 = CONVERT(SLICE(CONVERT(SLICE(rdx_47, word32, 0), word32, uint64), word32, 0) & 0x3F<32>, word32, uint64)
-	r8_138 = __ror(r8 | 0xFFFFFFFFFFFFFFFF<64>, SLICE(CONVERT(0x40<32> - SLICE(rax_55, word32, 0), word32, uint64), byte, 0)) ^ rdx_47
+	r8_138 = __ror(0xFFFFFFFFFFFFFFFF<64>, SLICE(CONVERT(0x40<32> - SLICE(rax_55, word32, 0), word32, uint64), byte, 0)) ^ rdx_47
 	Mem72[0x00000001400035C0<p64>:word128] = SEQ(r8_138, r8_138)
 	Mem77[0x00000001400035D0<p64>:real64] = SLICE(CONVERT(r8_138, word64, uint128), real64, 0)
 	Mem79[0x00000001400035D8<p64>:word128] = SEQ(r8_138, r8_138)
@@ -700,12 +698,12 @@ l0000000140001854:
 fn0000000140001854_exit:
 
 
-word64 fn000000014000186C(word64 qwArg10, word64 qwArg18)
+word64 fn000000014000186C(word64 qwArg18)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      Win32CrtStartup
-// MayUse:  Stack +0010:[0..63] Stack +0018:[0..63]
+// MayUse:  Stack +0018:[0..63]
 // LiveOut: rax
 // Trashed: SCZO rax rcx
 // Preserved: rbp rbx rsp
@@ -716,7 +714,7 @@ l000000014000186C:
 	branch rax_14 != 0x2DDFA232<64> l0000000140001903
 l0000000140001894:
 	GetSystemTimeAsFileTime(fp + 0x10<64>)
-	word64 v14_28 = qwArg10 & 0<64> ^ CONVERT(GetCurrentThreadId(), DWORD, uint64) ^ CONVERT(GetCurrentProcessId(), DWORD, uint64)
+	word64 v14_28 = CONVERT(GetCurrentThreadId(), DWORD, uint64) ^ CONVERT(GetCurrentProcessId(), DWORD, uint64)
 	QueryPerformanceCounter(fp + 0x18<64>)
 	word64 rax_37 = CONVERT(dwArg18, word32, uint64) << 0x20<64> ^ qwArg18 ^ v14_28 ^ fp + 8<64>
 	rax_14 = rax_37 & 0xFFFFFFFF<64>
@@ -875,27 +873,27 @@ l0000000140001974:
 	word32 ebx_101 = SLICE(CONVERT(ecx, word32, uint64), word32, 0)
 	branch IsProcessorFeaturePresent(0x17<u64>) == 0<32> l000000014000199D
 l000000014000199D:
-	Mem18[0x0000000140003610<p64>:word32] = Mem7[0x0000000140003610<p64>:word32] & 0<32>
+	Mem18[0x0000000140003610<p64>:word32] = 0<32>
 	memset(fp - 0x4D8<64>, 0<u64>, 0x4D0<u64>)
 	RtlCaptureContext(fp - 0x4D8<64>)
 	word64 rax_29 = RtlLookupFunctionEntry(qwLoc03E0, fp + 0x10<64>, 0<u64>)
 	branch rax_29 == 0<64> l0000000140001A1A
 l00000001400019DE:
 	call KERNEL32.dll!RtlVirtualUnwind (retsize: 8;)
-		uses: r8:qwLoc03E0,r9:rax_29,rcx:0<u64>,rdx:qwArg10,Stack +0028:fp - 0x4D8<64>,Stack +0030:fp + 0x20<64>,Stack +0038:fp + 0x18<64>,Stack +0040:qwLoc0590 & 0<64>,Stack +01F0:qwLoc03E0,Stack +05D0:qwArg00,Stack +05E0:qwArg10
+		uses: r8:qwLoc03E0,r9:rax_29,rcx:0<u64>,rdx:qwArg10,Stack +0028:fp - 0x4D8<64>,Stack +0030:fp + 0x20<64>,Stack +0038:fp + 0x18<64>,Stack +0040:0<64>,Stack +01F0:qwLoc03E0,Stack +05D0:qwArg00,Stack +05E0:qwArg10
 l0000000140001A1A:
 	memset(fp - 0x578<64>, 0<u64>, 0x98<u64>)
 	byte bl_77 = CONVERT(IsDebuggerPresent() == 1<32>, bool, int8)
-	word32 rax_32_32_133 = SLICE(SetUnhandledExceptionFilter(0<u64>), word32, 32)
+	word32 rax_32_32_132 = SLICE(SetUnhandledExceptionFilter(0<u64>), word32, 32)
 	word32 eax_82 = UnhandledExceptionFilter(fp - 0x588<64>)
-	word64 rax_132 = SEQ(rax_32_32_133, eax_82)
+	word64 rax_131 = SEQ(rax_32_32_132, eax_82)
 	branch eax_82 != 0<32> l0000000140001AA8
 l0000000140001A9E:
-	rax_132 = CONVERT(0<32> - (bl_77 == 0<8>), word32, uint64)
-	Mem91[0x0000000140003610<p64>:word32] = Mem78[0x0000000140003610<p64>:word32] & SLICE(rax_132, word32, 0)
+	rax_131 = CONVERT(0<32> - (bl_77 == 0<8>), word32, uint64)
+	Mem91[0x0000000140003610<p64>:word32] = Mem78[0x0000000140003610<p64>:word32] & SLICE(rax_131, word32, 0)
 l0000000140001AA8:
 	rcxOut = fp - 0x588<64>
-	return rax_132
+	return rax_131
 fn0000000140001974_exit:
 l0000000140001999:
 	__fastfail(SLICE(CONVERT(ebx_101, word32, uint64), word32, 0))
@@ -1086,18 +1084,18 @@ l0000000140001BFC:
 	__cpuid(0<32>, 0<32>, &0<32>, &ebx_137, &0<32>, &edx)
 	Mem23[0x0000000140003018<p64>:word32] = 1<32>
 	word64 rdx_48 = CONVERT(SLICE(CONVERT(ebx_137, word32, uint64), word32, 0) ^ 0x756E6547<32>, word32, uint64)
-	word64 r8_298 = CONVERT(Mem23[0x0000000140003614<p64>:word32], word32, uint64)
+	word64 r8_297 = CONVERT(Mem23[0x0000000140003614<p64>:word32], word32, uint64)
 	word32 edx_52 = SLICE(rdx_48, word32, 0)
 	__cpuid(1<32>, 0<32>, &1<32>, &ebx_137, &0<32>, &edx_52)
-	byte bLoc20_227 = SLICE(dwLoc20 & 0<32>, byte, 0)
-	word32 r8d_71 = SLICE(r8_298, word32, 0)
+	byte bLoc20_226 = 0<8>
+	word32 r8d_71 = SLICE(r8_297, word32, 0)
 	word32 r11d_96 = SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(ebx_137, word32, uint64), word32, 0) ^ 0x68747541<32>, word32, uint64), word32, 0) | SLICE(CONVERT(SLICE(CONVERT(edx, word32, uint64), word32, 0) ^ 0x69746E65<32>, word32, uint64), word32, 0), word32, uint64), word32, 0) | 0x444D4163<32>, word32, uint64), word32, 0)
 	word32 rdx_32_32_164 = SLICE(rdx_48, word32, 32)
 	branch SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(edx, word32, uint64), word32, 0) ^ 0x49656E69<32>, word32, uint64), word32, 0) | 0x6C65746E<32>, word32, uint64), word32, 0) | edx_52, word32, uint64), word32, 0) != 0<32> l0000000140001CE9
 l0000000140001C97:
-	Mem69[0x0000000140003020<p64>:word64] = Mem63[0x0000000140003020<p64>:word64] | 0xFFFFFFFFFFFFFFFF<64>
-	r8_298 = CONVERT(r8d_71 | 4<32>, word32, uint64)
-	word32 r8d_74 = SLICE(r8_298, word32, 0)
+	Mem69[0x0000000140003020<p64>:word64] = 0xFFFFFFFFFFFFFFFF<64>
+	r8_297 = CONVERT(r8d_71 | 4<32>, word32, uint64)
+	word32 r8d_74 = SLICE(r8_297, word32, 0)
 	Mem75[0x0000000140003614<p64>:word32] = r8d_74
 	branch 0xFFFEF940<32> == 0<32> l0000000140001CDE
 l0000000140001CB6:
@@ -1110,14 +1108,14 @@ l0000000140001CCE:
 	ebx_137 = 0x10001<32> (alias)
 	branch __bt(0x10001<64>, 0xFFFCF9B0<u64>) l0000000140001CE9
 l0000000140001CDE:
-	r8_298 = CONVERT(r8d_74 | 1<32>, word32, uint64)
-	Mem94[0x0000000140003614<p64>:word32] = SLICE(r8_298, word32, 0)
+	r8_297 = CONVERT(r8d_74 | 1<32>, word32, uint64)
+	Mem94[0x0000000140003614<p64>:word32] = SLICE(r8_297, word32, 0)
 l0000000140001CE9:
-	word32 r8d_108 = SLICE(r8_298, word32, 0)
-	word64 r8_109 = r8_298
+	word32 r8d_108 = SLICE(r8_297, word32, 0)
+	word64 r8_109 = r8_297
 	branch r11d_96 != 0<32> l0000000140001D07
 l0000000140001CEE:
-	r8_109 = r8_298 (alias)
+	r8_109 = r8_297 (alias)
 	branch false l0000000140001D07
 l0000000140001CFC:
 	r8_109 = CONVERT(r8d_108 | 4<32>, word32, uint64)
@@ -1127,7 +1125,7 @@ l0000000140001D07:
 	branch true l0000000140001D3B
 l0000000140001D17:
 	__cpuid(7<32>, 0<32>, &7<32>, &ebx_137, &0<32>, &edx_52)
-	bLoc20_227 = SLICE(ebx_137, byte, 0) (alias)
+	bLoc20_226 = SLICE(ebx_137, byte, 0) (alias)
 	branch __bt(ebx_137, 9<8>) l0000000140001D3B
 l0000000140001D30:
 	Mem151[0x0000000140003614<p64>:word32] = SLICE(CONVERT(r8d_146 | 2<32>, word32, uint64), word32, 0)
@@ -1146,7 +1144,7 @@ l0000000140001D7E:
 	word32 eax_187 = SLICE(CONVERT(SLICE(CONVERT(Mem175[0x000000014000301C<p64>:word32], word32, uint64), word32, 0) | 8<32>, word32, uint64), word32, 0)
 	Mem184[0x0000000140003018<p64>:word32] = 3<32>
 	Mem188[0x000000014000301C<p64>:word32] = eax_187
-	branch (bLoc20_227 & 0x20<8>) == 0<8> l0000000140001DB0
+	branch (bLoc20_226 & 0x20<8>) == 0<8> l0000000140001DB0
 l0000000140001D9D:
 	Mem194[0x0000000140003018<p64>:word32] = 5<32>
 	Mem195[0x000000014000301C<p64>:word32] = SLICE(CONVERT(eax_187 | 0x20<32>, word32, uint64), word32, 0)

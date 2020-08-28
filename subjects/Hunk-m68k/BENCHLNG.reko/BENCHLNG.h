@@ -16561,15 +16561,15 @@ T_3470: (in 0x1000<32> : word32)
   Class: Eq_592
   DataType: word32
   OrigDataType: word32
-T_3471: (in 0<32> : word32)
+T_3471: (in 0<i32> : int32)
   Class: Eq_3471
-  DataType: word32
-  OrigDataType: word32
+  DataType: int32
+  OrigDataType: int32
 T_3472: (in 0<32> : word32)
   Class: Eq_3471
-  DataType: word32
+  DataType: int32
   OrigDataType: word32
-T_3473: (in 0<32> == 0<32> : bool)
+T_3473: (in 0<i32> == 0<32> : bool)
   Class: Eq_3473
   DataType: bool
   OrigDataType: bool

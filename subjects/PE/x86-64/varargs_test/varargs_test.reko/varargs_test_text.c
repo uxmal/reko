@@ -62,14 +62,14 @@ word64 fn00000001400011B0(ui64 rcx, word64 qwArg00)
 	if (rcx != g_qw40003000)
 		return fn000000014000147C(rcx, qwArg00);
 	ui64 rcx_n = __rol(rcx, 0x10);
-	if (((word16) rcx_n & ~0x00) == 0x00)
+	if ((word16) rcx_n == 0x00)
 		return rax;
 	rcx = __ror(rcx_n, 0x10);
 	return fn000000014000147C(rcx, qwArg00);
 }
 
-// 00000001400011D4: void fn00000001400011D4(Register word64 rbx, Register ui64 r8, Stack word64 qwArg08)
-void fn00000001400011D4(word64 rbx, ui64 r8, word64 qwArg08)
+// 00000001400011D4: void fn00000001400011D4(Register word64 rbx, Register word64 r8, Stack word64 qwArg08)
+void fn00000001400011D4(word64 rbx, word64 r8, word64 qwArg08)
 {
 	set_app_type();
 	_set_fmode((uint64) (word32) (uint64) fn0000000140001920());
@@ -238,7 +238,7 @@ word32 fn00000001400012BC(<anonymous> ** rax)
 // 0000000140001434: Register Eq_n Win32CrtStartup()
 Eq_n Win32CrtStartup()
 {
-	<anonymous> ** rax_n = fn000000014000186C(qwLoc20, qwLoc18);
+	<anonymous> ** rax_n = fn000000014000186C(qwLoc18);
 	return (DWORD) (uint64) fn00000001400012BC(rax_n);
 }
 
@@ -289,10 +289,8 @@ void fn0000000140001550(Eq_n rcx, word64 qwArg08)
 		Eq_n rax_n = RtlLookupFunctionEntry(rsi_n, fp + 0x08, null);
 		if (rax_n == null)
 			return;
-		ui64 v16_n = qwLoc20 & 0x00;
 		KERNEL32.dll!RtlVirtualUnwind();
 		rdi_n = (uint64) (edi_n + 0x01);
-		qwLoc20 = v16_n;
 	} while ((word32) rdi_n < 0x02);
 }
 
@@ -335,10 +333,10 @@ void fn0000000140001600(word32 ecx, word32 edx)
 	fn0000000140001938();
 }
 
-// 000000014000164C: Register byte fn000000014000164C(Register up32 ecx, Register ui64 r8, Register out Eq_n r8Out)
+// 000000014000164C: Register byte fn000000014000164C(Register up32 ecx, Register word64 r8, Register out Eq_n r8Out)
 // Called from:
 //      fn00000001400011D4
-byte fn000000014000164C(up32 ecx, ui64 r8, union Eq_n & r8Out)
+byte fn000000014000164C(up32 ecx, word64 r8, union Eq_n & r8Out)
 {
 	word32 ebx_n = (word32) (uint64) ecx;
 	if (ecx > 0x01)
@@ -378,7 +376,7 @@ byte fn000000014000164C(up32 ecx, ui64 r8, union Eq_n & r8Out)
 		{
 			ui64 rdx_n = g_qw40003000;
 			uint64 rax_n = (uint64) ((word32) (uint64) (word32) rdx_n & 0x3F);
-			r8_n = __ror(r8 | ~0x00, (byte) (uint64) (0x40 - (word32) rax_n)) ^ rdx_n;
+			r8_n = __ror(~0x00, (byte) (uint64) (0x40 - (word32) rax_n)) ^ rdx_n;
 			g_t400035C0 = SEQ(r8_n, r8_n);
 			g_r400035D0 = (real64) (uint128) r8_n;
 			g_ow400035D8 = SEQ(r8_n, r8_n);
@@ -498,17 +496,17 @@ void fn0000000140001854(Eq_n rcx)
 	fn0000000140001804(rcx);
 }
 
-// 000000014000186C: Register word64 fn000000014000186C(Stack ui64 qwArg10, Stack word64 qwArg18)
+// 000000014000186C: Register word64 fn000000014000186C(Stack word64 qwArg18)
 // Called from:
 //      Win32CrtStartup
-word64 fn000000014000186C(ui64 qwArg10, word64 qwArg18)
+word64 fn000000014000186C(word64 qwArg18)
 {
 	word32 dwArg18 = (word32) qwArg18;
 	ui64 rax_n = g_qw40003000;
 	if (rax_n == 769630770)
 	{
 		GetSystemTimeAsFileTime(fp + 0x10);
-		ui64 v14_n = qwArg10 & 0x00 ^ (uint64) GetCurrentThreadId() ^ (uint64) GetCurrentProcessId();
+		ui64 v14_n = (uint64) GetCurrentThreadId() ^ (uint64) GetCurrentProcessId();
 		QueryPerformanceCounter(fp + 0x18);
 		ui64 rax_n = (uint64) dwArg18 << 0x20 ^ qwArg18 ^ v14_n ^ fp + 0x08;
 		rax_n = rax_n & 0xFFFFFFFF;
@@ -598,7 +596,7 @@ uint64 fn0000000140001974(word32 ecx, word64 qwArg00, word64 qwArg10, ptr64 & rc
 	word32 ebx_n = (word32) (uint64) ecx;
 	if (IsProcessorFeaturePresent(0x17) == 0x00)
 	{
-		g_dw40003610 &= 0x00;
+		g_dw40003610 = 0x00;
 		memset(fp - 0x04D8, 0x00, 0x04D0);
 		RtlCaptureContext(fp - 0x04D8);
 		Eq_n rax_n = RtlLookupFunctionEntry(qwLoc03E0, fp + 0x10, null);
@@ -724,13 +722,13 @@ void fn0000000140001BFC(word32 edx, Eq_n ebx)
 	uint64 r8_n = (uint64) g_dw40003614;
 	ui32 edx_n = (word32) rdx_n;
 	__cpuid(0x01, 0x00, &0x01, &ebx_n, &0x00, &edx_n);
-	byte bLoc20_n = (byte) (dwLoc20 & 0x00);
+	byte bLoc20_n = 0x00;
 	ui32 r8d_n = (word32) r8_n;
 	word32 r11d_n = (word32) (uint64) ((word32) (uint64) ((word32) (uint64) ((word32) (uint64) ebx_n ^ 1752462657) | (word32) ((uint64) ((word32) ((uint64) edx) ^ 0x69746E65))) | 0x444D4163);
 	ui32 rdx_32_32_n = SLICE(rdx_n, word32, 32);
 	if ((word32) (uint64) ((word32) (uint64) ((word32) (uint64) ((word32) (uint64) edx ^ 0x49656E69) | 1818588270) | edx_n) == 0x00)
 	{
-		g_qw40003020 |= ~0x00;
+		g_qw40003020 = ~0x00;
 		r8_n = (uint64) (r8d_n | 0x04);
 		ui32 r8d_n = (word32) r8_n;
 		g_dw40003614 = r8d_n;
