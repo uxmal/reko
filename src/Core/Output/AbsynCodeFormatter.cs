@@ -41,7 +41,7 @@ namespace Reko.Core.Output
 
         public override void VisitConstant(Constant c)
         {
-            var pt = c.DataType as PrimitiveType;
+            var pt = c.DataType.ResolveAs<PrimitiveType>();
             if (pt != null)
             {
                 switch (pt.Domain)
