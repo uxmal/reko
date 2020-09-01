@@ -4954,7 +4954,7 @@ Eq_10986: (union "Eq_10986" (real32 u0) (up32 u1))
 	T_12434 (in Mem983[0x0000000000415F08<p64>:real32] : real32)
 	T_12646 (in Mem545[0x0000000000415F0C<p64>:real32] : real32)
 	T_12687 (in Mem630[0x0000000000415F08<p64>:real32] : real32)
-Eq_11213: (fn uint32 (Eq_10736, Eq_13, Eq_13))
+Eq_11213: (fn word32 (Eq_10736, Eq_13, Eq_13))
 	T_11213 (in fn000000000040AE40 : ptr64)
 	T_11214 (in signature of fn000000000040AE40 : void)
 	T_11258 (in fn000000000040AE40 : ptr64)
@@ -50648,9 +50648,9 @@ T_11218: (in fp - 0x68<64> : word64)
   OrigDataType: ptr64
 T_11219: (in fn000000000040AE40(0<u64>, rdi, fp - 0x68<64>) : word32)
   Class: Eq_11219
-  DataType: uint32
-  OrigDataType: uint32
-T_11220: (in CONVERT(fn000000000040AE40(0<u64>, rdi, fp - 0x68<64>), uint32, uint64) : uint64)
+  DataType: word32
+  OrigDataType: word32
+T_11220: (in CONVERT(fn000000000040AE40(0<u64>, rdi, fp - 0x68<64>), word32, uint64) : uint64)
   Class: Eq_11212
   DataType: uint64
   OrigDataType: uint64
@@ -50816,13 +50816,13 @@ T_11260: (in fp - 0x68<64> : word64)
   OrigDataType: ptr64
 T_11261: (in fn000000000040AE40(1<u64>, fp - 0x68<64>, rdi) : word32)
   Class: Eq_11219
-  DataType: uint32
-  OrigDataType: uint32
-T_11262: (in CONVERT(fn000000000040AE40(1<u64>, fp - 0x68<64>, rdi), uint32, uint64) : uint64)
+  DataType: word32
+  OrigDataType: word32
+T_11262: (in CONVERT(fn000000000040AE40(1<u64>, fp - 0x68<64>, rdi), word32, uint64) : uint64)
   Class: Eq_11262
   DataType: uint64
   OrigDataType: uint64
-T_11263: (in SLICE(CONVERT(fn000000000040AE40(1<u64>, fp - 0x68<64>, rdi), uint32, uint64), byte, 0) : byte)
+T_11263: (in SLICE(CONVERT(fn000000000040AE40(1<u64>, fp - 0x68<64>, rdi), word32, uint64), byte, 0) : byte)
   Class: Eq_11263
   DataType: byte
   OrigDataType: byte
@@ -50856,13 +50856,13 @@ T_11270: (in fp - 0x68<64> : word64)
   OrigDataType: ptr64
 T_11271: (in fn000000000040AE40(0<u64>, fp - 0x68<64>, rdi) : word32)
   Class: Eq_11219
-  DataType: uint32
-  OrigDataType: uint32
-T_11272: (in CONVERT(fn000000000040AE40(0<u64>, fp - 0x68<64>, rdi), uint32, uint64) : uint64)
+  DataType: word32
+  OrigDataType: word32
+T_11272: (in CONVERT(fn000000000040AE40(0<u64>, fp - 0x68<64>, rdi), word32, uint64) : uint64)
   Class: Eq_11272
   DataType: uint64
   OrigDataType: uint64
-T_11273: (in SLICE(CONVERT(fn000000000040AE40(0<u64>, fp - 0x68<64>, rdi), uint32, uint64), byte, 0) : byte)
+T_11273: (in SLICE(CONVERT(fn000000000040AE40(0<u64>, fp - 0x68<64>, rdi), word32, uint64), byte, 0) : byte)
   Class: Eq_11273
   DataType: byte
   OrigDataType: byte
@@ -51945,12 +51945,12 @@ T_11542: (in signature of fn000000000040B710 : void)
 T_11543: (in fn000000000040B710(rsi_195, rdi) : word32)
   Class: Eq_11543
   DataType: uint32
-  OrigDataType: uint32
-T_11544: (in CONVERT(fn000000000040B710(rsi_195, rdi), uint32, uint64) : uint64)
+  OrigDataType: word32
+T_11544: (in CONVERT(fn000000000040B710(rsi_195, rdi), word32, uint64) : uint64)
   Class: Eq_11544
   DataType: uint64
   OrigDataType: uint64
-T_11545: (in SLICE(CONVERT(fn000000000040B710(rsi_195, rdi), uint32, uint64), byte, 0) : byte)
+T_11545: (in SLICE(CONVERT(fn000000000040B710(rsi_195, rdi), word32, uint64), byte, 0) : byte)
   Class: Eq_11545
   DataType: byte
   OrigDataType: byte
@@ -76966,7 +76966,7 @@ typedef union Eq_10986 {
 	up32 u1;
 } Eq_10986;
 
-typedef uint32 (Eq_11213)(Eq_10736, Eq_13, Eq_13);
+typedef word32 (Eq_11213)(Eq_10736, Eq_13, Eq_13);
 
 typedef uint64 (Eq_11298)(Eq_10530, Eq_10539 * *, Eq_13, Eq_13, Eq_13);
 

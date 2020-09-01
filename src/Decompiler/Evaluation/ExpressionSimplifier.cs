@@ -944,16 +944,6 @@ namespace Reko.Evaluation
             // Is the slice the same size as the expression?
             if (slice.Offset == 0 && slice.DataType.BitSize == e.DataType.BitSize)
                 return e;
-            if (e is Constant c && c.IsValid)
-            {
-                var pt = slice.DataType.ResolveAs<PrimitiveType>();
-                if (pt != null && (pt.Domain & Domain.Integer) != 0 && pt.BitSize <= c.DataType.BitSize)
-                {
-                    var cNew =  Constant.Create(pt, c.ToUInt64() >> slice.Offset);
-                    cNew.DataType = slice.DataType;
-                    return cNew;
-                }
-            }
             slice = new Slice(slice.DataType, e, slice.Offset);
             if (sliceConst.Match(slice))
             {

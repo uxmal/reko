@@ -165,6 +165,32 @@ namespace Reko.UnitTests.Evaluation
         }
 
         [Test]
+        public void Exs_Slice32_LargeReal64()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Slice(
+                PrimitiveType.Word32,
+                // 0x4415AF1D78B58C40
+                Constant.Real64(1e20),
+                0);
+            Assert.AreEqual(
+                "0x78B58C40<32>",
+                expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_Slice16_Real32()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Slice(
+                PrimitiveType.Word16,
+                // 0x42280000
+                Constant.Real32(42.0F),
+                16);
+            Assert.AreEqual("0x4228<16>", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
         public void Exs_CastCast()
         {
             Given_ExpressionSimplifier();

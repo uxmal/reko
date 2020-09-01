@@ -30,6 +30,7 @@ namespace Reko.Evaluation
 	{
 		private Constant? c;
 		private Slice? slice;
+        private PrimitiveType? pt;
 
 		public bool Match(Slice slice)
 		{
@@ -39,10 +40,12 @@ namespace Reko.Evaluation
 			this.slice = slice;
             if (slice.Expression is Constant c && c != Constant.Invalid)
             {
-                if (pt != null && (pt.Domain & Domain.Integer) != 0 && pt.BitSize <= c.DataType.BitSize)
+                var ct = c.DataType.ResolveAs<PrimitiveType>();
+                if (ct != null && pt.BitSize <= ct.BitSize)
                 {
                     this.slice = slice;
                     this.c = c;
+                    this.pt = pt;
                     return true;
                 }
             }
@@ -51,13 +54,9 @@ namespace Reko.Evaluation
 
 		public Expression Transform()
 		{
-            return Constant.Create(slice!.DataType, Slice(c!.ToUInt64()));
-		}
-
-		public ulong Slice(ulong val)
-		{
-            ulong mask = Bits.Mask(slice!.Offset, slice.DataType.BitSize);
-			return (val & mask) >> slice.Offset;
+            var cSliced = this.c!.Slice(pt!, slice!.Offset);
+            cSliced.DataType = slice.DataType;
+            return cSliced;
 		}
 	}
 }
