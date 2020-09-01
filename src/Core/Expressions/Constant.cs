@@ -25,6 +25,7 @@ using System.IO;
 using System.Globalization;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Reko.Core.Expressions
 {
@@ -228,6 +229,13 @@ namespace Reko.Core.Expressions
             get { yield break; }
         }
 
+        protected virtual Constant DoSlice(DataType dt, int offset)
+        {
+            var val = this.ToUInt64();
+            ulong mask = Bits.Mask(offset, dt.BitSize);
+            return Create(dt, (val & mask) >> offset);
+        }
+
         public abstract object GetValue();
 
         // Get the hash code of the value. We do it this way to avoid incurring the
@@ -357,6 +365,24 @@ namespace Reko.Core.Expressions
             return Constant.Real64(0.30102999566398119521373889472449);
         }
        
+        /// <summary>
+        /// Return a bit slice of this constant, treating the contents as bits.
+        /// </summary>
+        /// <param name="dt">Data type of the slice</param>
+        /// <param name="offset">Bit offset from which to take the slice.</param>
+        /// <returns></returns>
+        public Constant Slice(DataType dt, int offset)
+        {
+            if (this.IsValid)
+            {
+                if (offset < 0 || offset + dt.BitSize > this.DataType.BitSize)
+                    throw new ArgumentException(nameof(dt), "Invalid bit size.");
+                return DoSlice(dt, offset);
+            }
+            else
+                return this;
+        }
+
         public virtual bool ToBoolean()
         {
             return Convert.ToBoolean(GetValue());
@@ -1526,6 +1552,11 @@ namespace Reko.Core.Expressions
             throw new NotSupportedException("Cannot complement a real value.");
         }
 
+        protected override Constant DoSlice(DataType dt, int offset)
+        {
+            throw new NotImplementedException();
+        }
+
         public override object GetValue()
         {
             throw new NotImplementedException();
@@ -1593,6 +1624,21 @@ namespace Reko.Core.Expressions
     {
         private readonly float value;
 
+        // .NET doesn't seem to have a way of doing this for 32-bit floats.
+        // Code from one of the answers to https://stackoverflow.com/questions/27237776/convert-int-bits-to-float-bits
+        [StructLayout(LayoutKind.Explicit)]
+        struct FloatToInt
+        {
+            [FieldOffset(0)] private float f;
+            [FieldOffset(0)] private int i;
+            private static FloatToInt inst = new FloatToInt();
+            public static int ConvertToBits(float value)
+            {
+                inst.f = value;
+                return inst.i;
+            }
+        }
+
         public ConstantReal32(DataType dt, float value)
             : base(dt)
         {
@@ -1607,6 +1653,13 @@ namespace Reko.Core.Expressions
         public override Constant Complement()
         {
             throw new NotSupportedException("Cannot complement a real value.");
+        }
+
+        protected override Constant DoSlice(DataType dt, int offset)
+        {
+            var bits = (uint) FloatToInt.ConvertToBits(this.value);
+            var mask = Bits.Mask(0, dt.BitSize);
+            return Constant.Create(dt, bits >> offset);
         }
 
         public override object GetValue()
@@ -1686,6 +1739,12 @@ namespace Reko.Core.Expressions
         {
             throw new NotSupportedException("Cannot complement a real value.");
         }
+
+        protected override Constant DoSlice(DataType dt, int offset)
+        {
+            throw new NotSupportedException();
+        }
+
         public override object GetValue()
         {
             return value;
@@ -1770,6 +1829,13 @@ namespace Reko.Core.Expressions
             throw new NotSupportedException("Cannot complement a real value.");
         }
 
+        protected override Constant DoSlice(DataType dt, int offset)
+        {
+            var bits = (ulong) BitConverter.DoubleToInt64Bits(this.value);
+            var mask = Bits.Mask(0, dt.BitSize);
+            return Constant.Create(dt, bits >> offset);
+        }
+
         public override bool IsMaxUnsigned => false;
 
         public override Constant Negate()
@@ -1833,6 +1899,11 @@ namespace Reko.Core.Expressions
         public override Constant Complement()
         {
             throw new NotSupportedException("Cannot complement a real value.");
+        }
+
+        protected override Constant DoSlice(DataType dt, int offset)
+        {
+            throw new NotSupportedException();
         }
 
         public override object GetValue()

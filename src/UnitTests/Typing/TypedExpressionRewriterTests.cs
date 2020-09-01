@@ -1330,7 +1330,7 @@ define test
 test_entry:
 	// succ:  l1
 l1:
-	Mem0[ds:0x118<16>:byte] = Mem0[ds:CONVERT(CONVERT(Mem0[ds:0x94<16>:byte], byte, uint8), uint8, uint16) + 0x95<16>:byte]
+	Mem0[ds:0x118<16>:byte] = Mem0[ds:CONVERT(CONVERT(Mem0[ds:0x94<16>:byte], byte, uint8), uint8, word16) + 0x95<16>:byte]
 test_exit:
 
 // After ///////
@@ -1340,7 +1340,7 @@ define test
 test_entry:
 	// succ:  l1
 l1:
-	ds->b0118 = ds->a0095[(uint16) (uint8) ds->b0094]
+	ds->b0118 = ds->a0095[(word16) (uint8) ds->b0094]
 test_exit:
 
 ";
