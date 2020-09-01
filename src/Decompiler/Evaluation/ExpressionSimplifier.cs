@@ -513,16 +513,26 @@ namespace Reko.Evaluation
                     {
                         if (ptCvt.Domain == Domain.Real)
                         {
-                            if (ptSrc.Domain == Domain.Real &&
-                                ptCvt.Size < ptSrc.Size)
+                            if (ptSrc.Domain == Domain.Real)
                             {
-                                Changed = true;
-                                return ConstantReal.Create(ptCvt, c.ToReal64());
+                                if (ptCvt.Size < ptSrc.Size)
+                                {
+                                    // Real-to-real conversion.
+                                    Changed = true;
+                                    return ConstantReal.Create(ptCvt, c.ToReal64());
+                                }
                             }
-                            if (ptSrc.IsWord())
+                            else if (ptSrc.IsWord)
                             {
+                                // Raw bit pattern reinterpretation.
                                 Changed = true;
                                 return CastRawBitsToReal(ptCvt, c);
+                            }
+                            else
+                            {
+                                // integer to real conversion
+                                Changed = true;
+                                return ConstantReal.Create(ptCvt, c.ToInt64());
                             }
                         }
                         else if ((ptSrc.Domain & Domain.Integer) != 0)
@@ -576,7 +586,7 @@ namespace Reko.Evaluation
                 if (exp.DataType.BitSize == conversion.DataType.BitSize)
                 {
                     // Redundant word-casts can be stripped.
-                    if (conversion.DataType.IsWord())
+                    if (conversion.DataType.IsWord)
                     {
                         return exp;
                     }

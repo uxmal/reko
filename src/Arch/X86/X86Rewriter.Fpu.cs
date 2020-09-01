@@ -44,7 +44,7 @@ namespace Reko.Arch.X86
             Func<Expression,Expression,Expression> op,
             bool fReversed,
             bool fPopStack,
-            DataType? cast)
+            Domain? cast)
         {
             switch (instrCur.Operands.Length)
             {
@@ -55,7 +55,12 @@ namespace Reko.Arch.X86
                     // implicit st(0) operand.
                     var opLeft = FpuRegister(0);
                     var opRight = SrcOp(instrCur.Operands[0]);
-                    if (opRight.DataType.BitSize < opLeft.DataType.BitSize)
+                    if (cast.HasValue)
+                    {
+                        opRight.DataType = PrimitiveType.Create(cast.Value, opRight.DataType.BitSize);
+                        opRight = m.Convert(opRight, opRight.DataType, opLeft.DataType);
+                    }
+                    else if (opRight.DataType.BitSize < opLeft.DataType.BitSize)
                     {
                         opRight = m.Convert(opRight, opRight.DataType, opLeft.DataType);
                     }
@@ -210,8 +215,9 @@ namespace Reko.Arch.X86
         private void RewriteFist(bool pop)
         {
             var src = orw.FpuRegister(0, state);
-            var dtDst = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
-            m.Assign(SrcOp(instrCur.Operands[0]), m.Convert(src, src.DataType, dtDst));
+            var dst = SrcOp(instrCur.Operands[0]);
+            dst.DataType = PrimitiveType.Create(Domain.SignedInt, dst.DataType.BitSize);
+            m.Assign(dst, m.Convert(src, src.DataType, dst.DataType));
             if (pop)
                 ShrinkFpuStack(1);
         }

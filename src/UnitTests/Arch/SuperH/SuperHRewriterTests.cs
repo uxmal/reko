@@ -981,7 +981,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("2DF4");    // float	fpul,dr4
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|dr4 = CONVERT(fpul, word32, real64)");
+                "1|L--|dr4 = CONVERT(fpul, int32, real64)");
         }
 
         [Test]
@@ -990,7 +990,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("2DF5");    // float	fpul,fr5
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|fr5 = CONVERT(fpul, word32, real32)");
+                "1|L--|fr5 = CONVERT(fpul, int32, real32)");
         }
 
         [Test]

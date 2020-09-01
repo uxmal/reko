@@ -3338,7 +3338,7 @@ proc_exit:
                 var r1 = m.Reg32("r1", 1);
                 var r2 = m.Reg32("r2", 2);
                 m.MStore(m.Word32(0x123400), m.Convert(r1, PrimitiveType.Word32, PrimitiveType.Byte));
-                m.MStore(m.Word32(0x123404), m.Convert(r2, PrimitiveType.Word32, PrimitiveType.Real32));
+                m.MStore(m.Word32(0x123404), m.Convert(r2, PrimitiveType.Int32, PrimitiveType.Real32));
                 m.Return();
             });
             proc.Signature = FunctionType.Action(
@@ -3355,7 +3355,7 @@ proc_exit:
 	r2_5 = r1
 l1:
 	Mem3[0x123400<32>:byte] = CONVERT(r1_2, word32, byte)
-	Mem6[0x123404<32>:real32] = CONVERT(r2_5, word32, real32)
+	Mem6[0x123404<32>:real32] = CONVERT(r2_5, int32, real32)
 	return
 test_exit:
 ";

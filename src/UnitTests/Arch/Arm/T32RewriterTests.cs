@@ -6903,12 +6903,13 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbRw_vcvt()
+        public void ThumbRw_vcvt_vector()
         {
             Given_HexString("FBFF2046");	// vcvt.f32.s32 d20, d16
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|d20 = CONVERT(d16, word64, real32)");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = d16",
+                "2|L--|d20 = __vcvt_f32_i32(v4)");
         }
 
         [Test]
