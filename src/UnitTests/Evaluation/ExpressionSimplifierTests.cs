@@ -368,12 +368,12 @@ namespace Reko.UnitTests.Evaluation
         }
 
         [Test]
-        public void Exs_Word32ConstantToReal32Convert()
+        public void Exs_Int32ConstantToReal32Convert()
         {
             Given_ExpressionSimplifier();
-            var value = Constant.Word32(0x1);
+            var value = Constant.Int32(0x1);
             var exp = m.Convert(
-                value, PrimitiveType.Word32, PrimitiveType.Real32);
+                value, PrimitiveType.Int32, PrimitiveType.Real32);
 
             var result = exp.Accept(simplifier);
 

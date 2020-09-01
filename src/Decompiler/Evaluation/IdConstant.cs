@@ -72,7 +72,7 @@ namespace Reko.Evaluation
             {
                 ctx.RemoveIdentifierUse(idDst!);
                 var cNew = src!.CloneExpression();
-                if (src.DataType.IsWord() &&
+                if (src.DataType.IsWord &&
                     src is Constant cSrc && 
                     idDst!.DataType is PrimitiveType pt &&
                     pt.Domain == Domain.Real)

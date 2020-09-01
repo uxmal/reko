@@ -517,7 +517,10 @@ namespace Reko.Arch.SuperH
         private void RewriteFloat()
         {
             var src = SrcOp(instr.Operands[0]);
-            var dst = DstOp(instr.Operands[1], src, (a, b) => m.Convert(b, b.DataType, PrimitiveType.Create(Domain.Real, a.DataType.BitSize)));
+            var dst = DstOp(instr.Operands[1], src, (a, b) => m.Convert(
+                b, 
+                PrimitiveType.Create(Domain.SignedInt, b.DataType.BitSize),
+                PrimitiveType.Create(Domain.Real, a.DataType.BitSize)));
         }
 
         private void RewriteFmac()

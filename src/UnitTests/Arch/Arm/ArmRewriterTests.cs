@@ -895,7 +895,7 @@ means
             Given_UInt32s(0xeef80be7);  // vcvt.f64.s32 d16, s15
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d16 = CONVERT(s15, word32, real64)");
+                "1|L--|d16 = CONVERT(s15, int32, real64)");
         }
 
         [Test]
@@ -1641,7 +1641,7 @@ means
             Given_UInt32s(0xEEF70AC7);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d16 = CONVERT(s14, word32, real64)");
+                "1|L--|d16 = CONVERT(s14, real32, real64)");
         }
 
         [Test]

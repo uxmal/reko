@@ -106,14 +106,7 @@ namespace Reko.Core.Types
             return dt as T;
         }
 
-        public bool IsWord()
-        {
-            if (BitSize == 0)
-                return false;
-            //$REFACTOR: CreateWord is inefficient.
-            var wordType = PrimitiveType.CreateWord(BitSize);
-            return wordType == this;
-        }
+        public virtual bool IsWord => false;
 
         protected void ThrowBadSize()
 		{

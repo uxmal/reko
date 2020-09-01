@@ -68,21 +68,20 @@ namespace Reko.Core.Types
 	/// </remarks>
 	public class PrimitiveType : DataType
 	{
-        private static Dictionary<PrimitiveType, PrimitiveType> cache;
+        private static Dictionary<(Domain,int), PrimitiveType> cache;
         private static Dictionary<string, PrimitiveType> lookupByName;
         private static Dictionary<int, Domain> mpBitWidthToAllowableDomain;
-
+        private static Dictionary<int, PrimitiveType> mpBitsizeToWord;
         private readonly int bitSize;
         private readonly int byteSize;
 		
-		private PrimitiveType(Domain dom, int bitSize, string? name)
+		private PrimitiveType(Domain dom, int bitSize, bool isWord, string? name)
 		{
-            if (bitSize == 24)
-                bitSize.ToString(); //$DEBUG
             this.Domain = dom;
 			this.bitSize = bitSize;
             this.byteSize = (bitSize + (BitsPerByte-1)) / BitsPerByte;
 			this.Name = name!;
+            this.IsWord = isWord;
 		}
 
         public Domain Domain { get; }
@@ -119,29 +118,34 @@ namespace Reko.Core.Types
 
         public static PrimitiveType CreateBitSlice(int bitlength)
         {
-            var p = new PrimitiveType(Domain.Integer, bitlength, null);
-            if (!cache.TryGetValue(p, out PrimitiveType shared))
+            if (!cache.TryGetValue((Domain.Integer, bitlength), out PrimitiveType shared))
             {
-                shared = p;
-                shared.Name = GenerateName(Domain.Integer, p.BitSize);
-                cache.Add(shared, shared);
+                var name = GenerateName(Domain.Integer, bitlength);
+                shared = new PrimitiveType(Domain.Integer, bitlength, false, name);
+                cache.Add((Domain.Integer, bitlength), shared);
                 lookupByName.Add(shared.Name, shared);
             }
             return shared;
         }
 
         private static PrimitiveType Create(Domain dom, int bitSize, string? name)
-		{
+        {
             if (mpBitWidthToAllowableDomain.TryGetValue(bitSize, out var domainMask))
             {
                 dom &= domainMask;
             }
-			var p = new PrimitiveType(dom, bitSize, null);
-            if (!cache.TryGetValue(p, out var shared))
+            if (cache.TryGetValue((dom, bitSize), out var shared))
+                return shared;
+            var p = new PrimitiveType(dom, bitSize, false, name ?? GenerateName(dom, bitSize));
+            return Cache(p, name);
+        }
+
+        private static PrimitiveType Cache(PrimitiveType p, string? name)
+        {
+            if (!cache.TryGetValue((p.Domain, p.BitSize), out var shared))
             {
                 shared = p;
-                shared.Name = name ?? GenerateName(dom, p.BitSize);
-                cache.Add(shared, shared);
+                cache.Add((p.Domain, p.bitSize), shared);
                 lookupByName.Add(shared.Name, shared);
             }
 			return shared;
@@ -151,6 +155,8 @@ namespace Reko.Core.Types
 		{
             if (bitSize <= 0)
                 throw new ArgumentOutOfRangeException(nameof(bitSize));
+            if (mpBitsizeToWord.TryGetValue(bitSize, out var ptWord))
+                return ptWord;
 			string name;
             if (bitSize == 1)
 			{
@@ -168,7 +174,10 @@ namespace Reko.Core.Types
             {
                 dom = Domain.Integer | Domain.Pointer;
             }
-			return Create(dom, bitSize, name);
+			ptWord = new PrimitiveType(dom, bitSize, true, name);
+            Cache(ptWord, name);
+            mpBitsizeToWord[bitSize] = ptWord;
+            return ptWord;
 		}
 
         public static PrimitiveType CreateWord(uint bitSize)
@@ -258,7 +267,9 @@ namespace Reko.Core.Types
         /// True if the type can only be some kind of integral numeric type
         /// </summary>
 		public override bool IsIntegral
-		    => (Domain & Domain.Integer) != 0 && (Domain & ~Domain.Integer) == 0; 
+		    => (Domain & Domain.Integer) != 0 && (Domain & ~Domain.Integer) == 0;
+
+        public override bool IsWord { get; }
 
         /// <summary>
         /// Creates a new primitive type, whose domain is the original domain ANDed 
@@ -291,7 +302,7 @@ namespace Reko.Core.Types
 
         static PrimitiveType()
         {
-            cache = new Dictionary<PrimitiveType, PrimitiveType>();
+            cache = new Dictionary<(Domain,int), PrimitiveType>();
             lookupByName = new Dictionary<string, PrimitiveType>();
             mpBitWidthToAllowableDomain = new Dictionary<int, Domain>
             {
@@ -306,6 +317,7 @@ namespace Reko.Core.Types
                 { 128, Domain.Integer | Domain.Real },
                 { 256, Domain.Integer | Domain.Real },
             };
+            mpBitsizeToWord = new Dictionary<int, PrimitiveType>();
 
             Bool = Create(Domain.Boolean, 1);
 

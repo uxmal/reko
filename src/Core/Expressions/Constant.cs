@@ -1486,7 +1486,7 @@ namespace Reko.Core.Expressions
         {
         }
 
-        public static ConstantReal Create(DataType dt, double value)
+        public static Constant Create(DataType dt, double value)
         {
             var pt = PrimitiveType.Create(Domain.Real, dt.BitSize);
             switch (dt.BitSize)
@@ -1495,7 +1495,8 @@ namespace Reko.Core.Expressions
             case 32: return new ConstantReal32(pt, (float)value);
             case 64: return new ConstantReal64(pt, value);
             }
-            throw new NotSupportedException(string.Format("Data type {0} not supported.", dt));
+            // Unsupported floating point constant sizes cannot be represented yet.
+            return Constant.Invalid;
         }
     }
 
@@ -1811,6 +1812,7 @@ namespace Reko.Core.Expressions
             return Convert.ToInt64(value);
         }
     }
+
     public class StringConstant : Constant
     {
         private string str;
