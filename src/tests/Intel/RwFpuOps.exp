@@ -93,7 +93,7 @@ l0C00_0037:
 	Top = Top + 1<i8>
 	Top = Top - 1<i8>
 	ST[Top:real64] = 1.0
-	Mem0[ds:0x408<16>:word32] = CONVERT(ST[Top:real64], real64, int32)
+	Mem0[ds:0x408<16>:int32] = CONVERT(ST[Top:real64], real64, int32)
 	Top = Top + 1<i8>
 	return
 	// succ:  fn0C00_0037_exit

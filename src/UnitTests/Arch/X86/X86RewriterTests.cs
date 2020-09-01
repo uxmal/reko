@@ -690,7 +690,7 @@ namespace Reko.UnitTests.Arch.X86
             });
             AssertCode(
                 "0|L--|0C00:0000(3): 1 instructions",
-                "1|L--|ST[Top:real64] = ST[Top:real64] + CONVERT(Mem0[ds:bx + 0<16>:word16], word16, real64)");
+                "1|L--|ST[Top:real64] = ST[Top:real64] + CONVERT(Mem0[ds:bx + 0<16>:int16], int16, real64)");
         }
 
         /// <summary>

@@ -1359,7 +1359,7 @@ test_exit:
                                 PrimitiveType.Byte,
                                 PrimitiveType.UInt8),
                             PrimitiveType.UInt8,
-                            PrimitiveType.UInt16),
+                            PrimitiveType.Word16),
                             m.Word16(0x95))));
             }, sExp);
 

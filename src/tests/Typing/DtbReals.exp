@@ -32,7 +32,7 @@ fn0C00_0037_entry:
 	// succ:  l0C00_0037
 l0C00_0037:
 	Mem7[ds:0x400<16>:real64] = 0.0
-	Mem11[ds:0x408<16>:word32] = CONVERT(1.0, real64, int32)
+	Mem11[ds:0x408<16>:int32] = CONVERT(1.0, real64, int32)
 	return
 	// succ:  fn0C00_0037_exit
 fn0C00_0037_exit:
@@ -118,7 +118,7 @@ Eq_45: real64
 	T_45 (in 1.0 : real64)
 Eq_46: int32
 	T_46 (in CONVERT(1.0, real64, int32) : int32)
-	T_48 (in Mem11[ds:0x408<16>:word32] : word32)
+	T_48 (in Mem11[ds:0x408<16>:int32] : int32)
 Eq_47: (memptr T_13 (struct (0 T_48 t0000)))
 	T_47 (in 0x408<16> : word16)
 // Type Variables ////////////
@@ -310,7 +310,7 @@ T_47: (in 0x408<16> : word16)
   Class: Eq_47
   DataType: (memptr T_13 (struct (0 T_48 t0000)))
   OrigDataType: (memptr T_13 (struct (0 T_48 t0000)))
-T_48: (in Mem11[ds:0x408<16>:word32] : word32)
+T_48: (in Mem11[ds:0x408<16>:int32] : int32)
   Class: Eq_46
   DataType: int32
-  OrigDataType: word32
+  OrigDataType: int32

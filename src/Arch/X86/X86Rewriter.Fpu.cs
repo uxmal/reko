@@ -118,7 +118,7 @@ namespace Reko.Arch.X86
         private void RewriteFbstp()
         {
             instrCur.Operands[0].Width = PrimitiveType.Bcd80;
-            var src = orw.FpuRegister(0, state);
+            var src = orw.FpuRegister(0);
             m.Assign(SrcOp(instrCur.Operands[0]), m.Convert(src, src.DataType, instrCur.Operands[0].Width));
             ShrinkFpuStack(1);
         }
@@ -126,8 +126,8 @@ namespace Reko.Arch.X86
         private void EmitFchs()
         {
             m.Assign(
-                orw.FpuRegister(0, state),
-                m.Neg(orw.FpuRegister(0, state)));		//$BUGBUG: should be Real, since we don't know the actual size.
+                orw.FpuRegister(0),
+                m.Neg(orw.FpuRegister(0)));		//$BUGBUG: should be Real, since we don't know the actual size.
         }
 
         private void RewriteFclex()
@@ -179,8 +179,8 @@ namespace Reko.Arch.X86
         private void RewriteFUnary(string name)
         {
             m.Assign(
-                orw.FpuRegister(0, state),
-                host.PseudoProcedure(name, PrimitiveType.Real64, orw.FpuRegister(0, state)));
+                orw.FpuRegister(0),
+                host.PseudoProcedure(name, PrimitiveType.Real64, orw.FpuRegister(0)));
         }
 
         private void RewriteFicom(bool pop)
@@ -191,7 +191,7 @@ namespace Reko.Arch.X86
                 orw.AluRegister(Registers.FPUF),
                 m.Cond(
                     m.FSub(
-                        orw.FpuRegister(0, state),
+                        orw.FpuRegister(0),
                         m.Convert(src, dtSrc, PrimitiveType.Real64))));
             if (pop)
                 ShrinkFpuStack(1);
@@ -202,7 +202,7 @@ namespace Reko.Arch.X86
             GrowFpuStack(1);
             var iType = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
             m.Assign(
-                orw.FpuRegister(0, state),
+                orw.FpuRegister(0),
                 m.Convert(SrcOp(instrCur.Operands[0], iType), iType, PrimitiveType.Real64));
         }
 
@@ -214,7 +214,7 @@ namespace Reko.Arch.X86
 
         private void RewriteFist(bool pop)
         {
-            var src = orw.FpuRegister(0, state);
+            var src = orw.FpuRegister(0);
             var dst = SrcOp(instrCur.Operands[0]);
             dst.DataType = PrimitiveType.Create(Domain.SignedInt, dst.DataType.BitSize);
             m.Assign(dst, m.Convert(src, src.DataType, dst.DataType));
@@ -226,7 +226,7 @@ namespace Reko.Arch.X86
         {
             var dtSrc = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
             instrCur.Operands[0].Width = dtSrc;
-            var fpuReg = orw.FpuRegister(0, state);
+            var fpuReg = orw.FpuRegister(0);
             var trunc = host.PseudoProcedure("trunc", fpuReg.DataType, fpuReg);
             m.Assign(SrcOp(instrCur.Operands[0]), m.Convert(trunc, trunc.DataType, dtSrc));
             if (pop)
@@ -706,7 +706,7 @@ namespace Reko.Arch.X86
 
         private Expression FpuRegister(int reg)
         {
-            return orw.FpuRegister(reg, state);
+            return orw.FpuRegister(reg);
         }
 
         public Expression MaybeConvert(DataType? type, Expression e)

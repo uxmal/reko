@@ -4,13 +4,13 @@
 *** Elf\ARM\angr-685\RTOSDemo.axf
 0000951A: error: An error occurred while processing the statement Mem21[r3_14 + 0<32>:word32] = Mem19[r3_14 - r4_11:word32].
     Not handling (ptr32 (struct (0 T_7405 t0000))) and (ptr32 (struct (0 (arr T_9499) a0000))) yet.
-       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 403
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 405
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 255
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 608
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 607
    at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 527
    at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
-   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 238
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 236
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 87
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0000A284: warning: Expected sizes of arrays to have been determined by now
@@ -35,17 +35,17 @@
    at Reko.Core.Expressions.Slice.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Slice.cs:line 64
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 61
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 152
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 151
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0000D648: error: An error occurred while processing the statement r1 = r9_1067 + (r11_1016 - 0x30<32>).
     Not handling (ptr32 (struct 0001 (FFFFFFD8 T_27107 tFFFFFFD8) (FFFFFFEC word32 dwFFFFFFEC) (0 T_27327 t0000) (4 T_27333 t0004))) and (union ((ptr32 (struct 0001 (FFFFFFEC word32 dwFFFFFFEC))) u0) (ptr32 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 422
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 424
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 257
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 355
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 354
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
-   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 143
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 141
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 54
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0000DCDE: error: An error occurred while processing the statement word32 r8_3109 = r5_1001 - r12_1006.
@@ -107,7 +107,7 @@ Parameter name: index
    at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 69
    at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
    at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 73
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 72
    at Reko.Decompiler.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 633
 00017540: warning: Expected sizes of arrays to have been determined by now
 0002B411: warning: Expected sizes of arrays to have been determined by now
@@ -346,18 +346,18 @@ l0000000000400F4C: warning: Non-integral switch expression
 0800:1AE8: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:0BA1: error: An error occurred while processing the statement word16 di_45 = si_102 - (fp - 0x84<16>).
     Not handling mp16 and mp16 yet.
-       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 409
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 411
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 255
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 181
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 179
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:1358: error: An error occurred while processing the statement word16 di_330 = di_315 - (fp - 0x8A<16>).
     Not handling (memptr T_1994 (struct (0 T_2914 t0000))) and mp16 yet.
-       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 409
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 411
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 255
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 181
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 179
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 l0800_112E: warning: Non-integral switch expression
@@ -366,17 +366,19 @@ l0800_17AE: warning: Non-integral switch expression
 === Microchip\C18\PIC18Extd\PIC18EggExtd.hex
 *** Microchip\C18\PIC18Extd\PIC18EggExtd.hex
 error: An error occurred during decompilation. System.InvalidOperationException: Missing PIC model user options.
-   at Reko.Arch.MicrochipPIC.Common.PICArchitecture.LoadUserOptions(Dictionary`2 options) in D:\dev\uxmal\reko\master\src\Arch\Microchip\Common\PICArchitecture.cs:line 303
-   at Reko.Loading.Loader.LoadRawImage(String filename, Byte[] image, Address addrLoad, LoadDetails details) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 166
+   at Reko.Arch.MicrochipPIC.Common.PICArchitecture.LoadUserOptions(Dictionary`2 options) in D:\dev\uxmal\reko\master\src\Arch\Microchip\Common\PICArchitecture.cs:line 304
+   at Reko.Loading.Loader.LoadRawImage(String filename, Byte[] image, Address addrLoad, LoadDetails details) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 164
    at Reko.Decompiler.LoadRawImage(String fileName, LoadDetails raw) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 258
-   at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs)
+   at Reko.CmdLine.CmdLineDriver.LoadProgram(Dictionary`2 pArgs, LoadDetails loadDetails) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 283
+   at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 250
 === Microchip\C18\PIC18\PIC18Legacy.hex
 *** Microchip\C18\PIC18\PIC18Legacy.hex
 error: An error occurred during decompilation. System.InvalidOperationException: Missing PIC model user options.
-   at Reko.Arch.MicrochipPIC.Common.PICArchitecture.LoadUserOptions(Dictionary`2 options) in D:\dev\uxmal\reko\master\src\Arch\Microchip\Common\PICArchitecture.cs:line 303
-   at Reko.Loading.Loader.LoadRawImage(String filename, Byte[] image, Address addrLoad, LoadDetails details) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 166
+   at Reko.Arch.MicrochipPIC.Common.PICArchitecture.LoadUserOptions(Dictionary`2 options) in D:\dev\uxmal\reko\master\src\Arch\Microchip\Common\PICArchitecture.cs:line 304
+   at Reko.Loading.Loader.LoadRawImage(String filename, Byte[] image, Address addrLoad, LoadDetails details) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 164
    at Reko.Decompiler.LoadRawImage(String fileName, LoadDetails raw) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 258
-   at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs)
+   at Reko.CmdLine.CmdLineDriver.LoadProgram(Dictionary`2 pArgs, LoadDetails loadDetails) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 283
+   at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 250
 === OpenRISC\sunxi\blob.dcproject
 === PDP-11\lunar.lda
 === PDP-11\space.dcproject
@@ -399,12 +401,12 @@ error: An error occurred during decompilation. System.InvalidOperationException:
 2B90: warning: Procedure fn2B90 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0D22: error: An error occurred while processing the statement word16 r1_53 = (fp - 6<16> << 1<i16>) + (fp - 6<16>).
     Not handling ptr16 and (union (cui16 u1) (ptr16 u0)) yet.
-       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 403
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 405
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 255
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 355
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 354
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 181
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 179
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 02DC: error: An error occurred while processing the statement branch r4_110 - 0x38<16> - r2_132 >u 0<16> l02D8.
@@ -414,7 +416,7 @@ error: An error occurred during decompilation. System.InvalidOperationException:
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 61
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 61
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 152
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 151
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 fn0EF8: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
@@ -443,7 +445,7 @@ fn0EF8: warning: Structure analysis stopped making progress, quitting. Please re
 1AA1: warning: Procedure fn1A20 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
 0038: warning: Procedure fn0038 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 error: An error occurred during decompilation. System.NullReferenceException: Object reference not set to an instance of an object.
-   at Reko.Analysis.ProjectionPropagator.ProjectionFilter.<>c.<FuseIdentifiers>b__16_0(SsaIdentifier a, SsaIdentifier b) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ProjectionPropagator.cs:line 204
+   at Reko.Analysis.ProjectionPropagator.ProjectionFilter.<>c.<FuseIdentifiers>b__16_3(SsaIdentifier a, SsaIdentifier b) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ProjectionPropagator.cs:line 204
    at Reko.Analysis.ProjectionPropagator.ProjectionFilter.AllSame[T](T[] items, Func`3 cmp) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ProjectionPropagator.cs:line 104
    at Reko.Analysis.ProjectionPropagator.ProjectionFilter.FuseIdentifiers(SsaIdentifier[] sids) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ProjectionPropagator.cs:line 203
    at Reko.Analysis.ProjectionPropagator.ProjectionFilter.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ProjectionPropagator.cs:line 188
@@ -455,9 +457,9 @@ error: An error occurred during decompilation. System.NullReferenceException: Ob
    at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 96
    at Reko.Core.Lib.SccFinder`1.FindAll() in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 118
    at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 169
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 128
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 130
    at Reko.Decompiler.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 110
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs)
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 210
 === Raw\H8\Tar\tar.dcproject
 === Raw\MicroBlaze\MicroBlaze.dcproject
 *** Raw\MicroBlaze\MicroBlaze.dcproject
@@ -480,7 +482,7 @@ error: An error occurred during decompilation. System.NullReferenceException: Ob
 error: An error occurred during decompilation. System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
    at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 125
+   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 126
    at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 447
    at System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
    at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
@@ -498,21 +500,23 @@ error: An error occurred during decompilation. System.Collections.Generic.KeyNot
    at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 79
    at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 79
    at Reko.Core.Lib.SccFinder`1.FindAll() in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 118
-   at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 170
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 128
-   at Reko.Decompiler.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 112
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs)
+   at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 169
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 130
+   at Reko.Decompiler.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 110
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 210
 === TLCS\900\ngp_iq\NGP_IQ.NGP
 *** TLCS\900\ngp_iq\NGP_IQ.NGP
 error: An error occurred during decompilation. System.ArgumentException: An item with the same key has already been added.
    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
    at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector, IEqualityComparer`1 comparer)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector)
    at Reko.Analysis.CallRewriter.MakeSignature(SsaState ssa, IStorageBinder frame, ProcedureFlow flow) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 135
-   at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 76
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 156
-   at Reko.Decompiler.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 112
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs)
+   at Reko.Analysis.CallRewriter.EnsureSignature(SsaState ssa, IStorageBinder frame, ProcedureFlow flow) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 108
+   at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 84
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 155
+   at Reko.Decompiler.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 110
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 210
 === TLCS\90\TLCS-90.corpus
 === VMS-vax\unzip.dcproject
 *** VMS-vax\unzip.dcproject
@@ -902,7 +906,7 @@ Parameter name: key
    at Reko.Core.Lib.DominatorGraph`1.CommonDominator(IEnumerable`1 blocks) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 99
    at Reko.Analysis.DeclarationInserter.InsertDeclaration(Web web) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeclarationInserter.cs:line 60
    at Reko.Analysis.WebBuilder.InsertDeclarations() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 86
-   at Reko.Analysis.WebBuilder.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 114
+   at Reko.Analysis.WebBuilder.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 112
 fn000125CA: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 === i8051\reko-825\ledwith8051.dcproject
 === i8051\rtl8188efw.dcproject
@@ -963,18 +967,18 @@ fn0800_8F97: error: An internal error occurred while building the expressions of
 l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 0800:9A95: error: An error occurred while processing the statement word16 di_328 = di_314 - (fp - 0x48<16>).
     Not handling (memptr T_34741 (struct (0 T_35442 t0000))) and mp16 yet.
-       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 409
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 411
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 255
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 181
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 179
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 1483:0C7D: error: An error occurred while processing the statement word16 ax_83 = bx_55 - 0x903<16> - (SLICE(dh_ax_143, byte, 16) <u 0<8>).
     Not handling (memptr T_42197 (struct (0 T_42247 t0000) (3303 T_42241 t3303))) and bool yet.
-       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 409
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 411
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 255
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 181
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 179
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 === regressions\snowman-51\switch.dcproject
@@ -988,11 +992,12 @@ error: An error occurred during decompilation. System.NullReferenceException: Ob
    at Reko.Core.Dumper.DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, Int64 cbBytes, Formatter stm) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 176
    at Reko.Core.Dumper.DumpItem(ImageSegment segment, ImageMapItem i, Formatter formatter) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 119
    at Reko.Core.Dumper.Dump(Dictionary`2 segmentItems, Formatter formatter) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 70
+   at Reko.Decompiler.DumpAssembler(Program program, String filename, Dictionary`2 segmentItems, Formatter wr) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 128
    at Reko.Decompiler.<>c__DisplayClass35_0.<ScanProgram>b__0(String n, Dictionary`2 items, Formatter w) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 573
    at Reko.DecompiledFileService.WriteDisassembly(Program program, Action`3 writer) in D:\dev\uxmal\reko\master\src\Decompiler\IDecompiledFileService.cs:line 129
    at Reko.Decompiler.ScanProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 573
    at Reko.Decompiler.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 555
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs)
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 207
 === wasm\nbody.wasm
 *** wasm\nbody.wasm
 error: An error occurred during decompilation. System.NullReferenceException: Object reference not set to an instance of an object.
@@ -1000,11 +1005,12 @@ error: An error occurred during decompilation. System.NullReferenceException: Ob
    at Reko.Core.Dumper.DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, Int64 cbBytes, Formatter stm) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 176
    at Reko.Core.Dumper.DumpItem(ImageSegment segment, ImageMapItem i, Formatter formatter) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 119
    at Reko.Core.Dumper.Dump(Dictionary`2 segmentItems, Formatter formatter) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 70
+   at Reko.Decompiler.DumpAssembler(Program program, String filename, Dictionary`2 segmentItems, Formatter wr) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 128
    at Reko.Decompiler.<>c__DisplayClass35_0.<ScanProgram>b__0(String n, Dictionary`2 items, Formatter w) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 573
    at Reko.DecompiledFileService.WriteDisassembly(Program program, Action`3 writer) in D:\dev\uxmal\reko\master\src\Decompiler\IDecompiledFileService.cs:line 129
    at Reko.Decompiler.ScanProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 573
    at Reko.Decompiler.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 555
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs)
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 207
 === wasm\sample.wasm
 *** wasm\sample.wasm
 error: An error occurred during decompilation. System.NullReferenceException: Object reference not set to an instance of an object.
@@ -1012,10 +1018,11 @@ error: An error occurred during decompilation. System.NullReferenceException: Ob
    at Reko.Core.Dumper.DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, Int64 cbBytes, Formatter stm) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 176
    at Reko.Core.Dumper.DumpItem(ImageSegment segment, ImageMapItem i, Formatter formatter) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 119
    at Reko.Core.Dumper.Dump(Dictionary`2 segmentItems, Formatter formatter) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 70
+   at Reko.Decompiler.DumpAssembler(Program program, String filename, Dictionary`2 segmentItems, Formatter wr) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 128
    at Reko.Decompiler.<>c__DisplayClass35_0.<ScanProgram>b__0(String n, Dictionary`2 items, Formatter w) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 573
    at Reko.DecompiledFileService.WriteDisassembly(Program program, Action`3 writer) in D:\dev\uxmal\reko\master\src\Decompiler\IDecompiledFileService.cs:line 129
    at Reko.Decompiler.ScanProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 573
    at Reko.Decompiler.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 555
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs)
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 207
 Stripping SSA identifier numbers
-Decompiled 67 binaries in 90.01 seconds ---
+Decompiled 67 binaries in 103.98 seconds ---

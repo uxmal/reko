@@ -47,14 +47,14 @@ namespace Reko.Arch.X86
             this.host = host;
         }
 
-        public Expression Transform(X86Instruction instr, MachineOperand op, DataType opWidth, X86State state)
+        public Expression Transform(X86Instruction instr, MachineOperand op, DataType opWidth)
         {
             switch (op)
             {
             case RegisterOperand reg: return AluRegister(reg);
-            case MemoryOperand mem: return CreateMemoryAccess(instr, mem, opWidth, state);
+            case MemoryOperand mem: return CreateMemoryAccess(instr, mem, opWidth);
             case ImmediateOperand imm: return CreateConstant(imm, (PrimitiveType) opWidth);
-            case FpuOperand fpu: return FpuRegister(fpu.StNumber, state);
+            case FpuOperand fpu: return FpuRegister(fpu.StNumber);
             case AddressOperand addr: return addr.Address;
             default: throw new NotImplementedException(string.Format("Operand {0}", op));
             }
@@ -83,9 +83,9 @@ namespace Reko.Arch.X86
                 return Constant.Create(imm.Width, imm.Value.ToUInt32());
         }
 
-        public Expression CreateMemoryAccess(X86Instruction instr, MemoryOperand mem, DataType dt, X86State state)
+        public Expression CreateMemoryAccess(X86Instruction instr, MemoryOperand mem, DataType dt)
         {
-            Expression expr = EffectiveAddressExpression(instr, mem, state);
+            Expression expr = EffectiveAddressExpression(instr, mem);
             //$REVIEW: perhaps the code below could be moved to Scanner since it is arch-independent?
             if (expr is Address addrThunk)
             {
@@ -130,7 +130,7 @@ namespace Reko.Arch.X86
 
         public Expression CreateMemoryAccess(X86Instruction instr, MemoryOperand memoryOperand, X86State state)
         {
-            return CreateMemoryAccess(instr, memoryOperand, memoryOperand.Width, state);
+            return CreateMemoryAccess(instr, memoryOperand, memoryOperand.Width);
         }
 
         public virtual MemoryAccess StackAccess(Expression expr, DataType dt)
@@ -142,7 +142,7 @@ namespace Reko.Arch.X86
         /// Memory accesses are translated into expressions, performing simplifications
         /// where possible.
         /// </summary>
-        public Expression EffectiveAddressExpression(X86Instruction instr, MemoryOperand mem, X86State state)
+        public Expression EffectiveAddressExpression(X86Instruction instr, MemoryOperand mem)
         {
             Expression? eIndex = null;
             Expression? eBase = null;
@@ -224,7 +224,7 @@ namespace Reko.Arch.X86
         /// </summary>
         /// <param name="reg"></param>
         /// <returns></returns>
-        public Expression FpuRegister(int reg, X86State state)
+        public Expression FpuRegister(int reg)
         {
             Expression idx = binder.EnsureRegister(Registers.Top);
             if (reg != 0)

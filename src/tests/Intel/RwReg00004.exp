@@ -185,7 +185,7 @@ fn1000010A_entry:
 	Top = 0<i8>
 	// succ:  l1000010A
 l1000010A:
-	Mem0[esp - 4<32>:word32] = CONVERT(ST[Top:real64], real64, int32)
+	Mem0[esp - 4<32>:int32] = CONVERT(ST[Top:real64], real64, int32)
 	Top = Top + 1<i8>
 	eax = Mem0[esp - 4<32>:word32]
 	return

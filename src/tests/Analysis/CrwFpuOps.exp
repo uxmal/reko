@@ -92,7 +92,7 @@ fn0C00_0037_entry:
 	// succ:  l0C00_0037
 l0C00_0037:
 	Mem7[ds:0x400<16>:real64] = 0.0
-	Mem11[ds:0x408<16>:word32] = CONVERT(1.0, real64, int32)
+	Mem11[ds:0x408<16>:int32] = CONVERT(1.0, real64, int32)
 	return
 	// succ:  fn0C00_0037_exit
 fn0C00_0037_exit:

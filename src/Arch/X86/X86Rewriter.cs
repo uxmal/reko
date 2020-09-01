@@ -652,12 +652,12 @@ namespace Reko.Arch.X86
 
         private Expression SrcOp(MachineOperand opSrc)
         {
-            return orw.Transform(instrCur, opSrc, opSrc.Width, state);
+            return orw.Transform(instrCur, opSrc, opSrc.Width);
         }
 
         private Expression SrcOp(MachineOperand opSrc, DataType dstWidth)
         {
-            return orw.Transform(instrCur, opSrc, dstWidth, state);
+            return orw.Transform(instrCur, opSrc, dstWidth);
         }
 
         private void EmitUnitTest()
