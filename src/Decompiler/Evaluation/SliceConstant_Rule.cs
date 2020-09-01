@@ -33,16 +33,25 @@ namespace Reko.Evaluation
 
 		public bool Match(Slice slice)
 		{
-            if (!(slice.DataType is PrimitiveType))//$TODO: remove this once varargs processing is complete.
+            var pt = slice.DataType.ResolveAs<PrimitiveType>();
+            if (pt is null)
                 return false;
 			this.slice = slice;
-			this.c = slice.Expression as Constant;
-            return c != null && c != Constant.Invalid;
-		}
+            if (slice.Expression is Constant c && c != Constant.Invalid)
+            {
+                if (pt != null && (pt.Domain & Domain.Integer) != 0 && pt.BitSize <= c.DataType.BitSize)
+                {
+                    this.slice = slice;
+                    this.c = c;
+                    return true;
+                }
+            }
+            return false;
+        }
 
 		public Expression Transform()
 		{
-			return Constant.Create(slice!.DataType, Slice(c!.ToUInt64()));
+            return Constant.Create(slice!.DataType, Slice(c!.ToUInt64()));
 		}
 
 		public ulong Slice(ulong val)
