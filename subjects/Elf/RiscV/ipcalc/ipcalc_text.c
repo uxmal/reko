@@ -626,7 +626,7 @@ void * fn00000000000164D0(void * a0, uint64 a1)
 	Eq_n a0_n = (uint64) open("/dev/urandom", 0x00);
 	if (a0_n >= 0x00)
 	{
-		uint64 a0_n = (uint64) read(a0_n, a0, a1 << 0x20 >> 0x20);
+		uint64 a0_n = (uint64) read(a0_n, a0, (word64) (word32) a1);
 		a0_n = (uint64) close(a0_n);
 		a0_n = (int64) (word32) (0x00 - (word64) ((int64) ((word32) (a0_n - a1)) != 0x00));
 	}
@@ -2021,25 +2021,25 @@ Eq_n fn0000000000018118(struct Eq_n * gp, Eq_n a0, Eq_n a1)
 			int64 a4_n = a1 & 3;
 			do
 			{
-				word64 a5_n = CONVERT(Mem54[a0 + ((a1_n << 0x20) >>u 0x20):byte], byte, word64);
+				uint64 a5_n = (word64) *((word64) a0 + (word64) ((word32) a1_n));
 				int64 a3_n = (int64) ((word32) a4_n + 1);
 				ui64 a6_n = (a5_n & 0x0F) + 87;
 				if ((a5_n & 0x0F) <= 0x09)
 					a6_n = (a5_n & 0x0F) + 48;
-				(word64) (a4_n << 0x20 >> 0x20) + ((word64) fp - 16) + 3832 = (ptr64) (byte) a6_n;
-				(word64) (a3_n << 0x20 >> 0x20) + ((word64) fp - 16) + 3832 = (ptr64) 0x2E;
+				((word64) fp - 16 + (word64) ((word32) a4_n))->b0EF8 = (byte) a6_n;
+				((word64) fp - 16 + (word64) ((word32) a3_n))->b0EF8 = 0x2E;
 				int64 a2_n = (int64) ((word32) a4_n + 2);
 				int64 a3_n = (int64) ((word32) a4_n + 3);
 				uint64 a6_n = (a5_n >> 0x04) + 48;
 				if (a5_n >> 0x04 > 0x09)
 					a6_n = (a5_n >> 0x04) + 87;
-				(word64) (a2_n << 0x20 >> 0x20) + ((word64) fp - 16) + 3832 = (byte) a6_n;
-				(word64) (a3_n << 0x20 >> 0x20) + ((word64) fp - 16) + 3832 = 0x2E;
+				*((word64) ((word64) fp - 16 + (word64) ((word32) a2_n)) + 3832) = (byte) a6_n;
+				*((word64) ((word64) fp - 16 + (word64) ((word32) a3_n)) + 3832) = 0x2E;
 				a1_n = (int64) ((word32) a1_n + -1);
 				a4_n = (int64) ((word32) a4_n + 4);
 			} while (a1_n != ~0x00);
 		}
-		struct Eq_n * t4_n = (word64) ((a1 & 3) << 0x20 >> 0x20) + ((word64) fp - 0x0118);
+		struct Eq_n * t4_n = (word64) fp - 0x0118 + (word64) ((word32) (a1 & 3));
 		t4_n->w0004 = 29281;
 		t4_n->w0000 = 28777;
 		t4_n->w0006 = 24944;

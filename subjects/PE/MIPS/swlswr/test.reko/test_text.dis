@@ -142,7 +142,7 @@ void fn000112A8(word32 r4, word32 r5, word32 r6)
 // Preserved: ra sp
 fn000112A8_entry:
 l000112A8:
-	Mem16[0x13038<32>:byte] = SLICE(r6 << 0x18<8> >> 0x18<8>, byte, 0)
+	Mem16[0x13038<32>:byte] = SLICE(CONVERT(SLICE(r6, byte, 0), byte, int32), byte, 0)
 	branch r5 != 0<32> l000112A8_ds_t
 l000112A8_ds_t:
 l0001138C:

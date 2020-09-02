@@ -711,7 +711,7 @@ word64 fn00000000000164D0(word64 a0, word64 a1)
 
 // Called from:
 //      fn0000000000015180
-// MayUse:  a0:[0..63] a1:[0..63]
+// MayUse:  a0:[0..63] a1:[0..31]
 // LiveOut: a0
 // Trashed: a0 a1 a2
 // Preserved: ra s0 s1 s2 sp
@@ -723,7 +723,7 @@ l00000000000164D0:
 l0000000000016544:
 	a0_20 = 0xFFFFFFFFFFFFFFFF<64>
 l0000000000016500:
-	word64 a0_25 = CONVERT(read(a0_19, a0, a1 << 0x20<u32> >>u 0x20<u32>), ssize_t, uint64)
+	word64 a0_25 = CONVERT(read(a0_19, a0, CONVERT(SLICE(a1, word32, 0), word32, word64)), ssize_t, uint64)
 	a0_28 = CONVERT(close(a0_19), int32, uint64)
 	a0_20 = CONVERT(SLICE(0<64> - CONVERT(CONVERT(SLICE(a0_25 - a1, word32, 0), word32, int64) != 0<64>, bool, word64), word32, 0), word32, int64)
 l000000000001652C:
@@ -1760,7 +1760,7 @@ l0000000000017BDC:
 	word64 t1_119
 	word64 fa3_120
 	call a5_95 (retsize: 0;)
-		uses: a0:a0_82,a1:s7_81 << 0x20<u32> >>u 0x20<u32>,a2:a2_84,a3:a3_85,a4:1<64>,fa3:fa3_120,fa4:fa4_117,fa5:fa5_118,gp:gp_88,ra:ra_78,s0:a0_82,s1:s1_74,s2:s2_75,s3:s3_76,s4:s4_77,s5:s5_79,s6:s6_80,s7:s7_81,t1:t1_119
+		uses: a0:a0_82,a1:CONVERT(SLICE(s7_81, word32, 0), word32, word64),a2:a2_84,a3:a3_85,a4:1<64>,fa3:fa3_120,fa4:fa4_117,fa5:fa5_118,gp:gp_88,ra:ra_78,s0:a0_82,s1:s1_74,s2:s2_75,s3:s3_76,s4:s4_77,s5:s5_79,s6:s6_80,s7:s7_81,t1:t1_119
 		defs: a0:a0_110,a2:a2_112,a3:a3_113,a4:a4_114,fa3:fa3_120,fa4:fa4_117,fa5:fa5_118,gp:gp_116,ra:ra_106,s0:s0_101,s1:s1_102,s2:s2_103,s3:s3_104,s4:s4_105,s5:s5_107,s7:s7_109,t1:t1_119
 	branch a0_110 < 0<64> l0000000000017B84
 l0000000000017BFC:
@@ -1874,7 +1874,7 @@ l0000000000017C54:
 	word64 a1_330
 	word64 a2_331
 	call a5_301 (retsize: 0;)
-		uses: a0:a0_315,a1:s7_303 << 0x20<u32> >>u 0x20<u32>,a2:a2_316,a3:a3_317,a4:1<64>,fa3:fa3_339,fa4:fa4_336,fa5:fa5_337,gp:gp_299,ra:ra_312,s0:s0_305,s1:s1_308,s2:s2_309,s3:s3_310,s4:s4_311,s5:s5_313,s6:s6_314,s7:s7_303,t1:t1_338
+		uses: a0:a0_315,a1:CONVERT(SLICE(s7_303, word32, 0), word32, word64),a2:a2_316,a3:a3_317,a4:1<64>,fa3:fa3_339,fa4:fa4_336,fa5:fa5_337,gp:gp_299,ra:ra_312,s0:s0_305,s1:s1_308,s2:s2_309,s3:s3_310,s4:s4_311,s5:s5_313,s6:s6_314,s7:s7_303,t1:t1_338
 		defs: a0:a0_329,a1:a1_330,a2:a2_331,a3:a3_332,a4:a4_333,fa3:fa3_339,fa4:fa4_336,fa5:fa5_337,gp:gp_335,s0:s0_320,s1:s1_321,s4:s4_324,sp:sp_319,t1:t1_338
 	branch a0_329 == 0<64> l0000000000017C94
 l0000000000017C74:
@@ -2240,7 +2240,7 @@ l0000000000018264:
 l0000000000018144:
 	branch t5_16 == 0<64> l00000000000181FC
 l00000000000181FC:
-	word64 t4_21 = fp + -280<i32> + (((a1 & 3<i32>) << 0x20<u32>) >>u 0x20<u32>)
+	word64 t4_21 = fp + -280<i32> + CONVERT(SLICE(a1 & 3<i32>, word32, 0), word32, word64)
 	Mem24[t4_21 + 4<i64>:word16] = 0x7261<16>
 	Mem27[t4_21:word16] = 0x7069<16>
 	Mem30[t4_21 + 6<i64>:word16] = 0x6170<16>
@@ -2258,15 +2258,15 @@ l0000000000018148:
 	word64 a1_101 = CONVERT(CONVERT(t5_16, word64, word32) + -1<i32>, word32, int64)
 	word64 a4_103 = a1 & 3<i32>
 l0000000000018190:
-	word64 a5_55 = CONVERT(Mem54[a0 + ((a1_101 << 0x20<u32>) >>u 0x20<u32>):byte], byte, word64)
+	word64 a5_55 = CONVERT(Mem54[a0 + CONVERT(SLICE(a1_101, word32, 0), word32, word64):byte], byte, word64)
 	word64 a3_57 = CONVERT(CONVERT(a4_103, word64, word32) + 1<i32>, word32, int64)
 	word64 a6_59 = (a5_55 & 15<i32>) + 87<i32>
 	branch (a5_55 & 15<i32>) >u 9<64> l00000000000181B4
 l00000000000181B0:
 	a6_59 = (a5_55 & 15<i32>) + 48<i32>
 l00000000000181B4:
-	Mem73[fp + -16<i32> + ((a4_103 << 0x20<u32>) >>u 0x20<u32>) + 3832<i64>:byte] = SLICE(a6_59, byte, 0)
-	Mem79[fp + -16<i32> + ((a3_57 << 0x20<u32>) >>u 0x20<u32>) + 3832<i64>:byte] = 0x2E<8>
+	Mem73[fp + -16<i32> + CONVERT(SLICE(a4_103, word32, 0), word32, word64) + 3832<i64>:byte] = SLICE(a6_59, byte, 0)
+	Mem79[fp + -16<i32> + CONVERT(SLICE(a3_57, word32, 0), word32, word64) + 3832<i64>:byte] = 0x2E<8>
 	word64 a2_80 = CONVERT(CONVERT(a4_103, word64, word32) + 2<i32>, word32, int64)
 	word64 a3_81 = CONVERT(CONVERT(a4_103, word64, word32) + 3<i32>, word32, int64)
 	word64 a6_82 = (a5_55 >>u 4<u32>) + 48<i32>
@@ -2274,8 +2274,8 @@ l00000000000181B4:
 l00000000000181EC:
 	a6_82 = (a5_55 >>u 4<u32>) + 87<i32>
 l0000000000018160:
-	Mem95[fp + -16<i32> + ((a2_80 << 0x20<u32>) >>u 0x20<u32>) + 3832<i64>:byte] = SLICE(a6_82, byte, 0)
-	Mem98[fp + -16<i32> + ((a3_81 << 0x20<u32>) >>u 0x20<u32>) + 3832<i64>:byte] = 0x2E<8>
+	Mem95[fp + -16<i32> + CONVERT(SLICE(a2_80, word32, 0), word32, word64) + 3832<i64>:byte] = SLICE(a6_82, byte, 0)
+	Mem98[fp + -16<i32> + CONVERT(SLICE(a3_81, word32, 0), word32, word64) + 3832<i64>:byte] = 0x2E<8>
 	a1_101 = CONVERT(CONVERT(a1_101, word64, word32) + -1<i32>, word32, int64)
 	a4_103 = CONVERT(CONVERT(a4_103, word64, word32) + 4<i32>, word32, int64)
 	branch a1_101 == 0xFFFFFFFFFFFFFFFF<64> l00000000000181F4

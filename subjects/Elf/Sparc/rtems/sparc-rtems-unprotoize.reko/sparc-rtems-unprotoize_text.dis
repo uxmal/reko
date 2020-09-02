@@ -1329,7 +1329,7 @@ l000121F8:
 l000121B8_ds_f:
 	word32 o1_93 = CONVERT(Mem0[i0_120:byte], byte, word32)
 l000121C4:
-	word32 o0_95 = o1_93 << 0x18<32> >> 0x18<32>
+	word32 o0_95 = CONVERT(SLICE(o1_93, byte, 0), byte, int32)
 	branch o0_95 == 0<32> l000121C4_ds_t
 l000121C4_ds_t:
 l000121C4_ds_f:
@@ -1722,7 +1722,7 @@ l000126B8:
 	word32 i1_1133
 	word32 i1_1134
 	word32 i1_1132
-	word32 i0_369 = check_aux_info(1<32> - (((CONVERT(Mem292[check_aux_info(1<32> - (((CONVERT(Mem292[check_aux_info(1<32> - (((CONVERT(Mem292[check_aux_info(1<32> - (((CONVERT(Mem292[i0_260 + 1<32>:byte], byte, word32) << 0x18<32>) >> 0x18<32> ^ 0x20<32>) >u 0<32>), out i1_1132) + 1<32>:byte], byte, word32) << 0x18<32>) >> 0x18<32> ^ 0x2A<32>) >u 0<32>), out i1_1133) + 1<32>:byte], byte, word32) << 0x18<32>) >> 0x18<32> ^ 0x2F<32>) >u 0<32>), out i1_1134) + 1<32>:byte], byte, word32) << 0x18<32>) >> 0x18<32> ^ 0x20<32>) >u 0<32>), out i1_1135)
+	word32 i0_369 = check_aux_info(1<32> - ((CONVERT(SLICE(CONVERT(Mem292[check_aux_info(1<32> - ((CONVERT(SLICE(CONVERT(Mem292[check_aux_info(1<32> - ((CONVERT(SLICE(CONVERT(Mem292[check_aux_info(1<32> - ((CONVERT(SLICE(CONVERT(Mem292[i0_260 + 1<32>:byte], byte, word32), byte, 0), byte, int32) ^ 0x20<32>) >u 0<32>), out i1_1132) + 1<32>:byte], byte, word32), byte, 0), byte, int32) ^ 0x2A<32>) >u 0<32>), out i1_1133) + 1<32>:byte], byte, word32), byte, 0), byte, int32) ^ 0x2F<32>) >u 0<32>), out i1_1134) + 1<32>:byte], byte, word32), byte, 0), byte, int32) ^ 0x20<32>) >u 0<32>), out i1_1135)
 	branch strncmp(i0_369 + 1<32>, 0x171C8<32>, 6<32>) == 0<32> l000126B8_ds_t
 l000126B8_ds_t:
 l000126B8_ds_f:
@@ -1963,7 +1963,7 @@ l00012C14:
 l00012C14_ds_t:
 l00012C14_ds_f:
 l00012C24:
-	branch CONVERT(Mem34[i0_111 + 1<i32>:byte], byte, word32) + 0xFFFFFFB1<32> << 0x18<32> >> 0x18<32> >=u 0x20<32> l00012C24_ds_t
+	branch CONVERT(SLICE(CONVERT(Mem34[i0_111 + 1<i32>:byte], byte, word32) + 0xFFFFFFB1<32>, byte, 0), byte, int32) >=u 0x20<32> l00012C24_ds_t
 l00012C24_ds_t:
 l00012CD4:
 l00012CD8:
@@ -2959,7 +2959,7 @@ l000140B4_ds_f:
 l000140C4:
 	word32 o1_26 = CONVERT(Mem0[o0:byte], byte, word32)
 l000140C8:
-	branch o1_26 + 0xFFFFFFF8<32> << 0x18<32> >> 0x18<32> >=u 0x54<32> l000140C4_ds_t
+	branch CONVERT(SLICE(o1_26 + 0xFFFFFFF8<32>, byte, 0), byte, int32) >=u 0x54<32> l000140C4_ds_t
 l000140C4_ds_t:
 l000143A8:
 	i0_36 = i0_36 + 1<32>
@@ -4193,7 +4193,7 @@ l00015C48:
 l00015C48_ds_t:
 	word32 g3_12 = CONVERT(Mem0[o0:byte], byte, word32)
 l00015C2C:
-	branch (g3_12 << 0x18<32> >> 0x18<32>) - o1 == 0<32> l00015C2C_ds_t
+	branch CONVERT(SLICE(g3_12, byte, 0), byte, int32) - o1 == 0<32> l00015C2C_ds_t
 l00015C2C_ds_t:
 l00015C2C_ds_f:
 l00015C40:
@@ -4665,7 +4665,7 @@ l000163F4_ds_t:
 l000164A0:
 	word32 i0_668 = CONVERT(Mem402[o1_405:byte], byte, word32)
 	Mem673[0x2B2C0<32>:word32] = o1_405 + 1<32>
-	l0_127 = i0_668 << 0x18<32> >> 0x18<32>
+	l0_127 = CONVERT(SLICE(i0_668, byte, 0), byte, int32)
 	word32 o0_678 = my_index(i2_164, l0_127)
 	word32 o3_683 = Mem673[0x2B2C0<32>:word32]
 	branch CONVERT(Mem673[o3_683:int8], int8, int32) != 0<32> l000164A0_ds_t
@@ -4718,14 +4718,14 @@ l00016900:
 	branch Mem707[0x28070<32>:word32] == 0<32> l00016900_ds_t
 l00016900_ds_t:
 l00016930:
-	Mem775[0x28074<32>:word32] = i0_668 << 0x18<32> >> 0x18<32>
+	Mem775[0x28074<32>:word32] = CONVERT(SLICE(i0_668, byte, 0), byte, int32)
 	branch CONVERT(Mem775[i2_164:int8], int8, int32) != 0x3A<32> l00016930_ds_t
 l00016930_ds_t:
 l00016930_ds_f:
 l00016950:
 l00016900_ds_f:
 l00016914:
-	fprintf(0x2B640<32>, 0x17A70<32>, Mem707[i1_156:word32], i0_668 << 0x18<32> >> 0x18<32>)
+	fprintf(0x2B640<32>, 0x17A70<32>, Mem707[i1_156:word32], CONVERT(SLICE(i0_668, byte, 0), byte, int32))
 l000168C8_ds_f:
 	o0_793 = Mem707[0x28068<32>:word32]
 l0001689C_ds_f:
@@ -4924,7 +4924,7 @@ l00016508_ds_f:
 l00016518:
 	fprintf(0x2B640<32>, 0x17A30<32>, Mem707[i1_156:word32], l0_127)
 l00016554:
-	Mem1220[0x28074<32>:word32] = i0_668 << 0x18<32> >> 0x18<32>
+	Mem1220[0x28074<32>:word32] = CONVERT(SLICE(i0_668, byte, 0), byte, int32)
 l000163F4_ds_f:
 l0001640C:
 	word32 o0_1231

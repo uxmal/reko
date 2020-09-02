@@ -1021,8 +1021,8 @@ l000121B8:
 	bool v31_n;
 	if (o0_n == 0x00)
 	{
-		ui32 o1_n = (word32) *i0_n;
-		int32 o0_n = o1_n << 0x18 >> 0x18;
+		word32 o1_n = (word32) *i0_n;
+		int32 o0_n = (int32) (byte) o1_n;
 		if (o0_n == 0x00 || o0_n == 0x2F)
 		{
 			if (o0_n == 0x00)
@@ -1335,7 +1335,7 @@ l00012688:
 					word32 i1_n;
 					word32 i1_n;
 					word32 i1_n;
-					struct Eq_n * i0_n = check_aux_info(0x01 - ((((word32) (check_aux_info)(0x01 - ((((word32) (check_aux_info)(0x01 - ((((word32) (check_aux_info)(0x01 - ((((word32) i0_n[1] << 0x18) >> 0x18 ^ 0x20) > 0x00), out i1_n)[1] << 0x18) >> 0x18 ^ 0x2A) > 0x00), out i1_n)[1] << 0x18) >> 0x18 ^ 0x2F) > 0x00), out i1_n)[1] << 0x18) >> 0x18 ^ 0x20) > 0x00), out i1_n);
+					struct Eq_n * i0_n = check_aux_info(0x01 - (((int32) ((byte) ((word32) (check_aux_info)(0x01 - (((int32) ((byte) ((word32) (check_aux_info)(0x01 - (((int32) ((byte) ((word32) (check_aux_info)(0x01 - (((int32) ((byte) ((word32) i0_n[1])) ^ 0x20) > 0x00), out i1_n)[1])) ^ 0x2A) > 0x00), out i1_n)[1])) ^ 0x2F) > 0x00), out i1_n)[1])) ^ 0x20) > 0x00), out i1_n);
 					if (strncmp(i0_n + 1, 94664, 0x06) != 0x00 && strncmp(i0_n + 1, 0x000171D0, 0x06) != 0x00)
 						o0_n = 0x00;
 					else
@@ -1546,7 +1546,7 @@ Eq_n munge_compile_params(Eq_n o0, ptr32 & i6Out)
 		}
 		else
 			i0_n = i0_n;
-		if ((int32) *i0_n == 0x2D && ((word32) (*((word32) i0_n + 1)) + ~0x4E << 0x18) >> 0x18 < 0x20)
+		if ((int32) *i0_n == 0x2D && (int32) ((byte) ((word32) (*((word32) i0_n + 1)) + ~0x4E)) < 0x20)
 		{
 			i6Out = i6_n;
 			return i0_n;
@@ -2362,7 +2362,7 @@ void do_cleaning(byte * o0, up32 o1)
 	if (o0 - o1 >= 0x00)
 		return;
 	word32 o1_n = (word32) *o0;
-	while (o1_n + ~0x07 << 0x18 >> 0x18 >= 0x54)
+	while ((int32) (byte) (o1_n + ~0x07) >= 0x54)
 	{
 		++i0_n;
 		if (i0_n - o1 >= 0x00)
@@ -3315,8 +3315,8 @@ int8 * my_index(int8 * o0, Eq_n o1)
 	int32 g2_n = (int32) *o0;
 	while (g2_n != 0x00)
 	{
-		ui32 g3_n = (word32) *o0;
-		if ((g3_n << 0x18 >> 0x18) - o1 == 0x00)
+		word32 g3_n = (word32) *o0;
+		if ((int32) (byte) g3_n - o1 == 0x00)
 			return o0;
 		++o0;
 		g2_n = (int32) *o0;
@@ -3719,9 +3719,9 @@ l0001640C:
 									goto l0001640C;
 								o1_n = g_t2B2C0;
 l000164A0:
-								ui32 i0_n = (word32) *o1_n;
+								word32 i0_n = (word32) *o1_n;
 								g_t2B2C0 = (word32) o1_n + 1;
-								l0_n = i0_n << 0x18 >> 0x18;
+								l0_n.u1 = (int32) (byte) i0_n;
 								struct Eq_n * o0_n = my_index(i2_n, l0_n);
 								Eq_n o3_n = g_t2B2C0;
 								if ((int32) *o3_n == 0x00)
@@ -3734,7 +3734,7 @@ l000164A0:
 											fprintf(&g_t2B640, "%s: invalid option -- %c\n", i1_n[0], l0_n);
 										fprintf(&g_t2B640, "%s: illegal option -- %c\n", i1_n[0], l0_n);
 									}
-									g_t28074 = i0_n << 0x18 >> 0x18;
+									g_t28074.u1 = (int32) (byte) i0_n;
 									goto l00016978;
 								}
 								int32 o0_n = (int32) o0_n->b0000;
@@ -3916,8 +3916,8 @@ l00016974:
 										if (o2_n - i6_n->ptr0044 == 0x00)
 										{
 											if (g_dw28070 != 0x00)
-												fprintf(&g_t2B640, "%s: option requires an argument -- %c\n", i1_n[0], i0_n << 0x18 >> 0x18);
-											g_t28074 = i0_n << 0x18 >> 0x18;
+												fprintf(&g_t2B640, "%s: option requires an argument -- %c\n", i1_n[0], (int32) (byte) i0_n);
+											g_t28074.u1 = (int32) (byte) i0_n;
 											(int32) *i2_n != 0x3A;
 										}
 										else

@@ -345,14 +345,14 @@ void fn00004A00(word32 r3, word32 r4, word32 r5)
 // Called from:
 //      fn00004A6C
 //      fn00004B44
-// MayUse:  r3:[0..31] r4:[0..31] r5:[0..31]
+// MayUse:  r3:[0..31] r4:[0..31] r5:[0..7]
 // LiveOut:
 // Trashed: CV r1 r2 r3 r5 r7
 // Preserved:
 fn00004A00_entry:
 l00004A00:
 	word32 r3_9 = (r3 << 4<32>) + 0x1700000<32>
-	Mem28[r3_9:word32] = r5 << 0x18<32> >> 0x18<32> << r4 + -24<i32> | (-1<i32> << r4 + -24<i32> ^ 0xFFFF<32>) & Mem6[r3_9:word32]
+	Mem28[r3_9:word32] = CONVERT(SLICE(r5, byte, 0), byte, int32) << r4 + -24<i32> | (-1<i32> << r4 + -24<i32> ^ 0xFFFF<32>) & Mem6[r3_9:word32]
 	return
 fn00004A00_exit:
 
@@ -2870,13 +2870,13 @@ word32 fn00008030(word32 r3, word32 r4, word32 r15)
 
 // Called from:
 //      fn00010570
-// MayUse:  r15:[0..31] r3:[0..31] r4:[0..31]
+// MayUse:  r15:[0..31] r3:[0..31] r4:[0..7]
 // LiveOut: r15
 // Trashed: CV r11 r12 r13 r14 r15 r17 r2 r3 r4 r5 r6 r7 r8
 // Preserved: r1 r9
 fn00008030_entry:
 l00008030:
-	Mem20[0x1C62094<32>:word32] = (-1<i32> << r3 ^ 0xFFFF<32>) & Mem0[0x1C62094<32>:word32] | ((r4 << 0x18<32>) >> 0x18<32>) << r3
+	Mem20[0x1C62094<32>:word32] = (-1<i32> << r3 ^ 0xFFFF<32>) & Mem0[0x1C62094<32>:word32] | CONVERT(SLICE(r4, byte, 0), byte, int32) << r3
 	word32 r15_34
 	word32 r14_49
 	fn0000C8A0(-10<i32>, r15, out r14_49, out r15_34)
@@ -6667,7 +6667,7 @@ fn0000CCA8_entry:
 l0000CCA8:
 	word32 r2_41
 	word32 r16_191 = r6
-	word32 r20_33 = CONVERT(Mem23[0x134C0<32>:byte], byte, word32) << 0x18<32> >> 0x18<32>
+	word32 r20_33 = CONVERT(SLICE(CONVERT(Mem23[0x134C0<32>:byte], byte, word32), byte, 0), byte, int32)
 	word32 r14_223 = r7
 	branch r20_33 != 0<32> l0000CCA8_ds_t
 l0000CCA8_ds_t:
@@ -7265,7 +7265,7 @@ word32 fn0000D628()
 // Preserved: r1
 fn0000D628_entry:
 l0000D628:
-	return CONVERT(Mem0[0x134C0<32>:byte], byte, word32) << 0x18<32> >> 0x18<32>
+	return CONVERT(SLICE(CONVERT(Mem0[0x134C0<32>:byte], byte, word32), byte, 0), byte, int32)
 fn0000D628_exit:
 
 
@@ -7336,7 +7336,7 @@ void fn0000D804(word32 r3)
 
 // Called from:
 //      fn0000D8D8
-// MayUse:  r3:[0..31]
+// MayUse:  r3:[0..7]
 // LiveOut:
 // Trashed: CV r11 r3 r4 r5
 // Preserved: r1
@@ -7345,7 +7345,7 @@ l0000D804:
 	branch Mem0[0x130DC<32>:word32] != 0<32> l0000D804_ds_t
 l0000D804_ds_t:
 l0000D804_ds_f:
-	word32 r3_13 = r3 << 0x18<32> >> 0x18<32>
+	word32 r3_13 = CONVERT(SLICE(r3, byte, 0), byte, int32)
 l0000D824:
 	branch Mem0[0x134C4<32>:word32] != 0<32> l0000D824_ds_t
 l0000D824_ds_t:

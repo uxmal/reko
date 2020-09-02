@@ -510,7 +510,7 @@ error: An error occurred during decompilation. System.ArgumentException: dt
 Parameter name: Invalid bit size.
    at Reko.Core.Expressions.Constant.Slice(DataType dt, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\Constant.cs:line 380
    at Reko.Evaluation.SliceConstant_Rule.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Evaluation\SliceConstant_Rule.cs:line 57
-   at Reko.Evaluation.ExpressionSimplifier.VisitSlice(Slice slice) in D:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 951
+   at Reko.Evaluation.ExpressionSimplifier.VisitSlice(Slice slice) in D:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 989
    at Reko.Core.Expressions.Slice.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Slice.cs:line 64
    at Reko.Analysis.TrashedRegisterFinder.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 329
    at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 49
@@ -1032,4 +1032,4 @@ error: An error occurred during decompilation. System.NullReferenceException: Ob
    at Reko.Decompiler.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 555
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 207
 Stripping SSA identifier numbers
-Decompiled 67 binaries in 108.97 seconds ---
+Decompiled 67 binaries in 104.18 seconds ---

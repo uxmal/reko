@@ -245,20 +245,20 @@ namespace Reko.Evaluation
             var sameBitsize = left.DataType.BitSize == right.DataType.BitSize;
             if (cRight != null)
             {
-            // (- X 0) ==> X
-            // (+ X 0) ==> X
+                // (- X 0) ==> X
+                // (+ X 0) ==> X
                 if (cRight.IsIntegerZero && IsAddOrSub(binExp.Operator))
-            {
-                Changed = true;
-                return left;
-            }
+                {
+                    Changed = true;
+                    return left;
+                }
                 if (binExp.Operator == Operator.Or)
-            {
+                {
                     if (cRight.IsIntegerZero)
                     {
-                Changed = true;
-                return left;
-            }
+                        Changed = true;
+                        return left;
+                    }
                     // (| X 0xFFFF...F) ==> 0xFFFF...F
                     if (cRight.IsMaxUnsigned && sameBitsize && !CriticalInstruction.IsCritical(left))
                     {
@@ -447,6 +447,12 @@ namespace Reko.Evaluation
                 Changed = true;
                 return shiftShift.Transform();
             }
+            var eNew = ShiftLeftShiftRight(binExp, cRight);
+            if (eNew != null)
+            {
+                Changed = true;
+                return eNew;
+            }
 
             // (-exp == 0) => (exp == 0)
             if (unaryNegEqZero.Match(binExp))
@@ -487,6 +493,38 @@ namespace Reko.Evaluation
                 cRight != null &&
                 cRight.DataType is PrimitiveType pt &&
                 pt.Domain != Domain.Real;
+        }
+
+        private Expression? ShiftLeftShiftRight(BinaryExpression bin, Constant? cRight)
+        {
+            if (cRight == null)
+                return null;
+            if (bin.Left is BinaryExpression binInner)
+            {
+                DataType dtConvert;
+                if (bin.Operator == Operator.Shr)
+                {
+                    dtConvert = binInner.DataType;
+                }
+                else if (bin.Operator == Operator.Sar)
+                {
+                    dtConvert = PrimitiveType.Create(Domain.SignedInt, binInner.DataType.BitSize);
+                }
+                else
+                {
+                    return null;
+                }
+
+                if (binInner.Operator == Operator.Shl &&
+                    binInner.Right is Constant cInnerRight &&
+                    cmp.Equals(cRight, cInnerRight))
+                {
+                    var dtSlice = PrimitiveType.CreateWord(binInner.Left.DataType.BitSize - cRight.ToInt32());
+                    var slice = new Slice(dtSlice, binInner.Left, 0);
+                    return new Conversion(slice, slice.DataType, dtConvert);
+                }
+            }
+            return null;
         }
 
         public static Constant SimplifyTwoConstants(Operator op, Constant l, Constant r)

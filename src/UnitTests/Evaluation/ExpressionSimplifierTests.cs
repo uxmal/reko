@@ -513,5 +513,21 @@ namespace Reko.UnitTests.Evaluation
             var expr = m.Xor(tmp, Constant.Word16(0xFFFF));
             Assert.AreEqual("~tmp_2", expr.Accept(simplifier).ToString());
         }
+
+        [Test]
+        public void Exs_Shl_shr()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Shr(m.Shl(foo, 24), 24);
+            Assert.AreEqual("CONVERT(SLICE(foo_1, byte, 0), byte, word32)", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_Shl_sar()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Sar(m.Shl(foo, 24), 24);
+            Assert.AreEqual("CONVERT(SLICE(foo_1, byte, 0), byte, int32)", expr.Accept(simplifier).ToString());
+        }
     }
 }
