@@ -4175,7 +4175,7 @@ string filename, data;
                 {
                     Host.AddSegmentReference(addr, (ushort) seg);
                     return true;
-    }
+                }
             }
             return false;
         }

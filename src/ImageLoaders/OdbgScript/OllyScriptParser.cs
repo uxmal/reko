@@ -41,17 +41,21 @@ namespace Reko.ImageLoaders.OdbgScript
     /// </summary>
     public class OllyScriptParser : IDisposable
     {
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(OllyScriptParser), "OLLYDBG parser")
+        {
+            Level = TraceLevel.Warning
+        };
         private static readonly UnknownType unk = new UnknownType();
         private static readonly ProcedureConstant interpolate = new ProcedureConstant(unk, new PseudoProcedure("Interpolate", unk, 1));
         private static readonly ProcedureConstant hexString = new ProcedureConstant(unk, new PseudoProcedure("HexString", unk, 1));
 
+        private readonly string currentDir;
+        private readonly IOdbgScriptHost host;
+        private readonly IFileSystemService fsSvc;
         private Lexer lexer;
         private Stack<Lexer> lexerStack;
         private Token tok;
-        private IOdbgScriptHost host;
-        private IFileSystemService fsSvc;
         private OllyScript script;
-        private readonly string currentDir;
 
         public OllyScriptParser(TextReader rdr, string currentDir, IOdbgScriptHost host, IFileSystemService fsSvc)
         {
@@ -808,7 +812,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 var tok = new Token(type, this.lineNumber, value);
                 Debug.Assert(type != TokenType.Newline);
-                Debug.Print("Olly: {0} ({1})", type, value);
+                trace.Verbose("Olly: {0} ({1})", type, value);
                 return tok;
             }
 
