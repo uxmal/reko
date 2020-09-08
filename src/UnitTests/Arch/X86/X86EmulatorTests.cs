@@ -375,10 +375,11 @@ namespace Reko.UnitTests.Arch.X86
                 m.Mov(m.eax, 0x7FFFFFFF);
                 m.Inc(m.eax);
             });
-
+            emu.Flags |= X86Emulator.Cmask;
             emu.Start();
 
             Assert.AreEqual(0x80000000u, emu.Registers[Registers.eax.Number]);
+            Assert.IsTrue((emu.Flags & X86Emulator.Cmask) != 0);
             Assert.IsTrue((emu.Flags & X86Emulator.Zmask) == 0);
             Assert.IsTrue((emu.Flags & X86Emulator.Omask) != 0);
         }
@@ -951,7 +952,7 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86emu_X86Emu_indexed_memory_16()
+        public void X86emu_indexed_memory_16()
         {
             Given_MsdosCode(m =>
             {
@@ -966,6 +967,42 @@ namespace Reko.UnitTests.Arch.X86
             emu.Start();
 
             Assert.AreEqual(0x42, emu.ReadRegister(Registers.al));
+        }
+
+        [Test]
+        public void X86emu_test_16()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Mov(m.cx, 0xABCD);
+                m.Mov(m.bx, 0x8123);
+                m.Stc();
+                m.Test(m.cx, m.bx);
+                m.Hlt();
+            });
+
+            emu.Start();
+            Assert.IsTrue((emu.Flags & X86Emulator.Cmask) == 0);    // should clear C
+            Assert.IsTrue((emu.Flags & X86Emulator.Smask) != 0);    // result is signed
+            Assert.IsTrue((emu.Flags & X86Emulator.Zmask) == 0);    // and not 0.
+        }
+
+        [Test]
+        public void X86emu_jcxz()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Clc();
+                m.Mov(m.cx, 0x0000);
+                m.Jcxz("cx_zero");
+                m.Hlt();
+                m.Label("cx_zero");
+                m.Stc();
+                m.Hlt();
+            });
+
+            emu.Start();
+            Assert.IsTrue((emu.Flags & X86Emulator.Cmask) != 0);    // should set C
         }
     }
 }

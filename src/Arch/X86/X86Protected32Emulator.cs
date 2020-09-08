@@ -58,6 +58,19 @@ namespace Reko.Arch.X86
             throw new NotImplementedException();
         }
 
+        protected override void Scas(PrimitiveType dt)
+        {
+            var mask = masks[dt.Size];
+            var a = ReadRegister(X86.Registers.eax) & mask.value;
+            var edi = ReadRegister(X86.Registers.edi);
+            var value = ReadMemory(edi, dt) & mask.value;
+            var delta = (long) dt.Size * (((Flags & Dmask) != 0) ? -1 : 1);
+            edi += (ulong) delta;
+            WriteRegister(X86.Registers.edi, edi);
+            Flags &= ~Zmask;
+            Flags |= (a == value ? Zmask : 0u);
+        }
+
         protected override void Stos(PrimitiveType dt)
         {
             throw new NotImplementedException();
