@@ -42,6 +42,7 @@ namespace Reko.Arch.X86
         public const uint Cmask = 1u << 0;
         public const uint Zmask = 1u << 6;
         public const uint Smask = 1u << 7;
+        public const uint Imask = 1u << 9;
         public const uint Dmask = 1u << 10;
         public const uint Omask = 1u << 11;
 
@@ -137,6 +138,13 @@ namespace Reko.Arch.X86
             {
                 sb.AppendFormat(" {0} {1:X8}", arch.GetRegister(i + StorageDomain.Register, new BitRange(0, 64))!.Name, Registers[i]);
             }
+            sb.Append(' ');
+            sb.Append((Flags & Cmask) != 0 ? 'C' : 'c');
+            sb.Append((Flags & Zmask) != 0 ? 'Z' : 'z');
+            sb.Append((Flags & Smask) != 0 ? 'S' : 's');
+            sb.Append((Flags & Imask) != 0 ? 'I' : 'i');
+            sb.Append((Flags & Dmask) != 0 ? 'D' : 'd');
+            sb.Append((Flags & Omask) != 0 ? 'O' : 'o');
             return sb;
         }
 
