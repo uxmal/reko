@@ -37,7 +37,7 @@ namespace Reko.ImageLoaders.MzExe
 	public class MsdosImageLoader : ImageLoader
 	{
         // "640k should be enough for anybody" -- consider making this configurable?
-        private ushort segMemTop = 0xA000;
+        private const ushort segMemTop = 0xA000;
 
         private readonly IProcessorArchitecture arch;
         private readonly IPlatform platform;
@@ -74,18 +74,17 @@ namespace Reko.ImageLoaders.MzExe
             int cbImageSize = ExeLoader.e_cpImage * ExeImageLoader.CbPageSize - iImageStart;
             // The +4 is room for a far return address at the top of the stack.
             int offsetStackTop = (int) (addrStackTop - addrLoad) + 4;
-            cbImageSize = Math.Max(cbImageSize, offsetStackTop);
+            int cbExtraBytes = ExeLoader.e_minalloc * 0x10;
+            cbImageSize = Math.Max(cbImageSize + cbExtraBytes, offsetStackTop);
             byte[] bytes = new byte[cbImageSize];
             int cbCopy = Math.Min(cbImageSize, RawImage.Length - iImageStart);
             Array.Copy(RawImage, iImageStart, bytes, 0, cbCopy);
             imgLoaded = new MemoryArea(addrLoad, bytes);
             var addrPsp = Address.SegPtr(segPsp, 0);
             var psp = MakeProgramSegmentPrefix(addrPsp, segMemTop);
-            var rest = MakeRestOfMemory(imgLoaded, segMemTop);
             this.segmentMap = new SegmentMap(
                 addrPsp,
-                psp,
-                rest);
+                psp);
             return new Program(segmentMap, arch, platform);
         }
 
@@ -107,22 +106,6 @@ namespace Reko.ImageLoaders.MzExe
             w.WriteLeUInt16(segMemTop); // Some unpackers rely on this value.
             
             return new ImageSegment("PSP", mem, AccessMode.ReadWriteExecute);
-        }
-
-        /// <summary>
-        /// Make a segment to consume the address space betweeen the end of the loaded image 
-        /// and the top of memory.
-        /// </summary>
-        /// <param name="imgLoaded">The loaded MS-DOS program.</param>
-        /// <param name="segMemTop">Segment (paragraph) address of the top of memory.</param>
-        /// <returns></returns>
-        private ImageSegment MakeRestOfMemory(MemoryArea imgLoaded, ushort segMemTop)
-        {
-            var segBase = imgLoaded.BaseAddress.Selector.Value;
-            var segRest = (ushort) (segBase + (imgLoaded.Length >> 4));
-            var offRest = (ushort) ((imgLoaded.BaseAddress.ToLinear() + (ulong)imgLoaded.Length) & 0xF);
-            var rest = new MemoryArea(Address.SegPtr(segRest, offRest), new byte[0x10 * (segMemTop - segRest)]);
-            return new ImageSegment("Memory", rest, AccessMode.ReadWriteExecute);
         }
 
         public override ImageSegment AddSegmentReference(Address addr, ushort seg)

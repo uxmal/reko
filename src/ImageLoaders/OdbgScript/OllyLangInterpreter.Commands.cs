@@ -881,7 +881,7 @@ rulong hwnd;
                     hFile.Close();
                 }
             }
-	return false;
+            return false;
         }
 
         private bool DoDPE(Expression[] args)
@@ -2996,10 +2996,6 @@ string filename;
                         else
                             v = Var.Create(0);
                     }
-                    else if (GetAddress(args[1], out Address addrSrc))
-                    {
-                        v = Var.Create(addrSrc);
-                    }
                     else if (maxsize <= sizeof(rulong) && GetRulong(args[1], out dw)) // rulong
                     {
                         // DW to DW/FLT var
@@ -3008,6 +3004,10 @@ string filename;
                         dw = Helper.resize(dw, (int) maxsize);
                         v = Var.Create(dw);
                         v.size = (int) maxsize;
+                    }
+                    else if (GetAddress(args[1], out Address addrSrc))
+                    {
+                        v = Var.Create(addrSrc);
                     }
                     else if (GetString(args[1], (int) maxsize, out str)) // string
                     {

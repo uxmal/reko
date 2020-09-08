@@ -103,7 +103,6 @@ namespace Reko.Arch.X86
             Flags |= (a == value ? Zmask : 0u);
         }
 
-
         protected override void Stos(PrimitiveType dt)
         {
             var es = (ushort) ReadRegister(X86.Registers.es);
