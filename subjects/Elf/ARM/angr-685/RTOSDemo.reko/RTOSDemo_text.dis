@@ -496,10 +496,10 @@ l00008388:
 	bool Z_157 = SLICE(cond(r2_65 - r3_66), bool, 2)
 	branch r2_65 <u r3_66 l000083C0
 l000083C0:
-	word32 lr_73
-	word32 r7_78
 	word32 r0_161
-	Z_157 = prvCopyDataToQueue(r0, r1, 0<32>, r7, lr, out r0_161, out r7_78, out lr_73)
+	word32 r7_162
+	word32 lr_163
+	Z_157 = prvCopyDataToQueue(r0, r1, 0<32>, r7, lr, out r0_161, out r7_162, out lr_163)
 	branch Mem11[r0 + 36<i32>:word32] != 0<32> l000083EE
 l000083EE:
 	word32 r0_85
@@ -619,16 +619,16 @@ xQueueCRSendFromISR_entry:
 l000084A0:
 	branch Mem11[r0 + 56<i32>:word32] <u Mem11[r0 + 60<i32>:word32] l000084B0
 l000084B0:
-	word32 lr_23
-	word32 r7_28
+	word32 lr_99
+	word32 r7_98
 	word32 r0_97
-	prvCopyDataToQueue(r0, r1, 0<32>, r7, lr, out r0_97, out r7_28, out lr_23)
+	prvCopyDataToQueue(r0, r1, 0<32>, r7, lr, out r0_97, out r7_98, out lr_99)
 	branch r2 != 0<32> l000084AC
 l000084BC:
 	branch Mem11[r0 + 36<i32>:word32] == 0<32> l000084AC
 l000084C2:
-	word32 r0_39
-	branch xCoRoutineRemoveFromEventList(r0 + 0x24<32>, out r0_39) l000084D0
+	word32 r0_100
+	branch xCoRoutineRemoveFromEventList(r0 + 0x24<32>, out r0_100) l000084D0
 l000084CE_1:
 l000084D0:
 l000084AC:

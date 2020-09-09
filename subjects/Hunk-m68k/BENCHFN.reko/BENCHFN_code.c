@@ -3363,8 +3363,8 @@ int32 fn00003DE0(byte * dwArg04, union Eq_n & d1Out, byte & a1Out)
 			}
 			else
 			{
-				word32 a5_n;
 				word32 a0_n;
+				word32 a5_n;
 				d1 = fn00001E6C((int32) (int16) *a2_n, *(struct Eq_n **) 16336, out a0_n, out a1, out a5_n);
 			}
 			if (d1 == -1)

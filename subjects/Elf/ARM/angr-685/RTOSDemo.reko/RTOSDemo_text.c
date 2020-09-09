@@ -345,9 +345,9 @@ bool xQueueCRSend(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r7, Eq_n lr, ptr32 cpsr, union
 	bool Z_n = SLICE(cond(r2_n - r3_n), bool, 2);
 	if (r2_n < r3_n)
 	{
-		word32 lr_n;
-		word32 r7_n;
 		word32 r0_n;
+		word32 r7_n;
+		word32 lr_n;
 		Z_n = prvCopyDataToQueue(r0, r1, 0x00, r7, lr, out r0_n, out r7_n, out lr_n);
 		if (*((word32) r0 + 36) != 0x00)
 		{

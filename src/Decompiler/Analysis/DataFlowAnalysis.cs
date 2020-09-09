@@ -179,6 +179,7 @@ namespace Reko.Analysis
         {
             if (eventListener.IsCanceled())
                 return;
+            Debug.Print("== SCC: {0} ===", string.Join(",",procs));
             this.sccProcs = procs.ToHashSet();
             flow.CreateFlowsFor(procs);
 

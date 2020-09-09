@@ -8076,7 +8076,7 @@ T_1470: (in -cx_112 : word16)
   Class: Eq_1469
   DataType: cup16
   OrigDataType: cup16
-T_1471: (in dx_96 : word16)
+T_1471: (in dx_304 : word16)
   Class: Eq_1471
   DataType: word16
   OrigDataType: word16
@@ -8108,11 +8108,11 @@ T_1478: (in 2<8> : byte)
   Class: Eq_1011
   DataType: byte
   OrigDataType: byte
-T_1479: (in out dx_96 : mp16)
+T_1479: (in out dx_304 : mp16)
   Class: Eq_1012
   DataType: ptr16
   OrigDataType: ptr16
-T_1480: (in _lseek(ds, wArg02, SEQ(0<16> - (cx_81 == 0<16>), cx_81), 2<8>, out dx_96) : word16)
+T_1480: (in _lseek(ds, wArg02, SEQ(0<16> - (cx_81 == 0<16>), cx_81), 2<8>, out dx_304) : word16)
   Class: Eq_1005
   DataType: word16
   OrigDataType: word16

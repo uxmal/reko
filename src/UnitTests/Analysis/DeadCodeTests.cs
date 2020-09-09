@@ -106,6 +106,7 @@ namespace Reko.UnitTests.Analysis
 
 				DeadCode.Eliminate(ssa);
 				ssa.Write(writer);
+                ssa.Validate(s => writer.WriteLine("*** SSA state invalid: {0}", s));
 				ssa.Procedure.Write(false, writer);
 			}
 		}

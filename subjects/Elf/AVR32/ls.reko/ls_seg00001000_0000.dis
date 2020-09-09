@@ -1309,10 +1309,10 @@ l00003120:
 	fn0000B95C(r12, r5, r6_31, r11, 0x10<32>, lr, out r9_161, out r11_155, out r12_44, out lr_148)
 	branch r11 != 0<32> l0000313C
 l0000313C:
-	word32 r10_59
 	word32 r8_162
 	word32 r9_163
-	r0 = fn0000B994(r0, r1, r2, r12, r12_44, r6_31, r11, r11, lr_148, out r1, out r2, out r8_162, out r9_163, out r10_59, out r11_155, out r12_61, out lr_148)
+	word32 r10_164
+	r0 = fn0000B994(r0, r1, r2, r12, r12_44, r6_31, r11, r11, lr_148, out r1, out r2, out r8_162, out r9_163, out r10_164, out r11_155, out r12_61, out lr_148)
 l00003138:
 	r12_61 = r11
 l00003142:
@@ -1320,12 +1320,12 @@ l00003142:
 	Mem72[r12_44 + 4<i32>:word32] = r12_61
 	branch r12 != 0<32> l0000314C
 l0000314C:
-	word32 r10_87
-	word32 r1_164
-	word32 r2_165
-	word32 r8_166
-	word32 r9_167
-	fn0000B994(r0, r1, r2, r12, r12_44, r6_31, r11, r12, lr_148, out r1_164, out r2_165, out r8_166, out r9_167, out r10_87, out r11_155, out r12_101, out lr_148)
+	word32 r1_165
+	word32 r2_166
+	word32 r8_167
+	word32 r9_168
+	word32 r10_169
+	fn0000B994(r0, r1, r2, r12, r12_44, r6_31, r11, r12, lr_148, out r1_165, out r2_166, out r8_167, out r9_168, out r10_169, out r11_155, out r12_101, out lr_148)
 l00003148:
 	r12_101 = r12
 l00003152:
@@ -1950,9 +1950,9 @@ l000035DC:
 	word32 lr_726
 	word32 r12_730
 	word32 r9_732
-	word32 r11_1896
-	word32 r10_1895
-	word32 r8_731 = fn0000A778(r2_1002, lr_1093, out r9_732, out r10_1895, out r11_1896, out r12_730, out lr_726)
+	word32 r11_1897
+	word32 r10_1896
+	word32 r8_731 = fn0000A778(r2_1002, lr_1093, out r9_732, out r10_1896, out r11_1897, out r12_730, out lr_726)
 	word32 r10_737 = Mem714[r6_1023 + 1144<i32>:word32]
 	Mem742[sp_1084 - 4<i32>:word32] = r12_730
 	word32 sp_756
@@ -2028,7 +2028,7 @@ l00003654:
 	word32 r8_927
 	word32 r9_928
 	call Mem816[r6_886 + 496<i32>:word32] (retsize: 0;)
-		uses: lr:lr_900,r0:r0_880,r1:r1_881,r10:r5_896,r11:r2_882,r12:r12_904,r2:r2_882,r3:r12_904,r4:r4_884,r5:r5_896,r6:r6_886,r7:r7_887,r8:fn0000B95C(r4_884, r5_896, r6_886, r7_887, r12_889 + 1<32> + r5_896, lr_888, out r9_906, out r11_1897, out r12_904, out lr_900),r9:r9_906,Stack +0000:dwArg00
+		uses: lr:lr_900,r0:r0_880,r1:r1_881,r10:r5_896,r11:r2_882,r12:r12_904,r2:r2_882,r3:r12_904,r4:r4_884,r5:r5_896,r6:r6_886,r7:r7_887,r8:fn0000B95C(r4_884, r5_896, r6_886, r7_887, r12_889 + 1<32> + r5_896, lr_888, out r9_906, out r11_1898, out r12_904, out lr_900),r9:r9_906,Stack +0000:dwArg00
 		defs: lr:lr_923,r0:r0_915,r1:r1_916,r10:r10_925,r2:r2_917,r3:r3_918,r4:r4_919,r5:r5_920,r6:r6_921,r7:r7_922,r8:r8_927,r9:r9_928
 	call Mem816[r6_921 + 128<i32>:word32] (retsize: 0;)
 		uses: lr:lr_923,r0:r0_915,r1:r1_916,r10:r10_925,r11:r1_916,r12:r3_918 + r5_920,r2:r2_917,r3:r3_918,r4:r4_919,r5:r5_920,r6:r6_921,r7:r7_922,r8:r8_927,r9:r9_928,Stack +0000:dwArg00
@@ -2109,9 +2109,9 @@ l0000373C:
 	word32 lr_1188
 	word32 r12_1194
 	word32 r5_1198
-	word32 r11_1904
-	word32 r10_1903
-	r0_1154 = fn000093B8(r0_1154, r1_1170, r2_1002, r3_1088, r4_1004, r5_1138, Mem1168[r5_1138 + -12<i32>:word32], r7_1024 - 0x2A4<32>, Mem1168[sp_1160 - 8<i32>:word64], Mem1168[sp_1160:word64], Mem1168[sp_1160 + 8<i32>:word32], Mem1168[sp_1160 + 12<i32>:word32], Mem1168[sp_1160 + 16<i32>:word64], Mem1168[sp_1160 + 28<i32>:word32], Mem1168[sp_1160 + 32<i32>:word32], Mem1168[sp_1160 + 48<i32>:word32], Mem1168[sp_1160 + 52<i32>:word32], Mem1168[sp_1160 + 56<i32>:word32], out r1_1170, out r2_1002, out r3_1088, out r4_1004, out r5_1198, out r6_1023, out r7_1024, out r10_1903, out r11_1904, out r12_1194, out lr_1188)
+	word32 r10_1904
+	word32 r11_1905
+	r0_1154 = fn000093B8(r0_1154, r1_1170, r2_1002, r3_1088, r4_1004, r5_1138, Mem1168[r5_1138 + -12<i32>:word32], r7_1024 - 0x2A4<32>, Mem1168[sp_1160 - 8<i32>:word64], Mem1168[sp_1160:word64], Mem1168[sp_1160 + 8<i32>:word32], Mem1168[sp_1160 + 12<i32>:word32], Mem1168[sp_1160 + 16<i32>:word64], Mem1168[sp_1160 + 28<i32>:word32], Mem1168[sp_1160 + 32<i32>:word32], Mem1168[sp_1160 + 48<i32>:word32], Mem1168[sp_1160 + 52<i32>:word32], Mem1168[sp_1160 + 56<i32>:word32], out r1_1170, out r2_1002, out r3_1088, out r4_1004, out r5_1198, out r6_1023, out r7_1024, out r10_1904, out r11_1905, out r12_1194, out lr_1188)
 	word32 r12_1211
 	r10_1095 = fn00006AA8(r0_1154, r1_1170, r2_1002, r3_1088, r4_1004, r5_1198, r6_1023, r7_1024, 0<32>, r12_1194, lr_1188, out r11_1096, out r12_1211, out lr_1093)
 	branch Mem1168[r5_1198 + 36<i32>:word32] >= r12_1211 l00003768
@@ -2205,12 +2205,12 @@ l0000387E:
 	word32 lr_1492
 	word32 r12_1498
 	word32 r5_1502
-	word32 r10_1905
-	word32 r11_1906
-	r0_1154 = fn000093B8(r0_1441, r1_1442, r2_1443, r3_1444, r4_1445, r5_1446, Mem1484[r5_1446 + -12<i32>:word32], r7_1448 - 0x2A4<32>, Mem1484[sp_1440 - 16<i32>:word64], Mem1484[sp_1440 - 8<i32>:word64], Mem1484[sp_1440:word32], Mem1484[sp_1440 + 4<i32>:word32], Mem1484[sp_1440 + 8<i32>:word64], Mem1484[sp_1440 + 20<i32>:word32], Mem1484[sp_1440 + 24<i32>:word32], Mem1484[sp_1440 + 40<i32>:word32], Mem1484[sp_1440 + 44<i32>:word32], Mem1484[sp_1440 + 48<i32>:word32], out r1_1170, out r2_1002, out r3_1088, out r4_1004, out r5_1502, out r6_1023, out r7_1024, out r10_1905, out r11_1906, out r12_1498, out lr_1492)
-	word32 r12_1515
 	word32 r11_1907
-	fn00006AA8(r0_1154, r1_1170, r2_1002, r3_1088, r4_1004, r5_1502, r6_1023, r7_1024, r3_1088, r12_1498, lr_1492, out r11_1907, out r12_1515, out lr_1093)
+	word32 r10_1906
+	r0_1154 = fn000093B8(r0_1441, r1_1442, r2_1443, r3_1444, r4_1445, r5_1446, Mem1484[r5_1446 + -12<i32>:word32], r7_1448 - 0x2A4<32>, Mem1484[sp_1440 - 16<i32>:word64], Mem1484[sp_1440 - 8<i32>:word64], Mem1484[sp_1440:word32], Mem1484[sp_1440 + 4<i32>:word32], Mem1484[sp_1440 + 8<i32>:word64], Mem1484[sp_1440 + 20<i32>:word32], Mem1484[sp_1440 + 24<i32>:word32], Mem1484[sp_1440 + 40<i32>:word32], Mem1484[sp_1440 + 44<i32>:word32], Mem1484[sp_1440 + 48<i32>:word32], out r1_1170, out r2_1002, out r3_1088, out r4_1004, out r5_1502, out r6_1023, out r7_1024, out r10_1906, out r11_1907, out r12_1498, out lr_1492)
+	word32 r12_1515
+	word32 r11_1908
+	fn00006AA8(r0_1154, r1_1170, r2_1002, r3_1088, r4_1004, r5_1502, r6_1023, r7_1024, r3_1088, r12_1498, lr_1492, out r11_1908, out r12_1515, out lr_1093)
 	branch Mem1484[r5_1502 + -60<i32>:word32] >= r12_1515 l000038B4
 l000038A8:
 	Mem1526[r5_1502 + 68<i32>:word32] = r12_1515
@@ -2274,28 +2274,28 @@ l000038C2:
 l000038D8:
 	Mem1710[r5_1651 + -32<i32>:word32] = r12_1700
 l000038DA:
-	word32 r8_1899
-	word32 r2_1898
-	word32 r11_1902
-	word32 r10_1901
-	word32 r9_1900
+	word32 r2_1899
+	word32 r11_1903
+	word32 r10_1902
+	word32 r9_1901
+	word32 r8_1900
 	word32 r1_1728
-	fn0000B994(r0_1154, r1_1170, r2_1002, r4_1004, r5_1651, r6_1023, r7_1024, Mem1712[r7_1024 + -680<i32>:word32], lr_1093, out r1_1728, out r2_1898, out r8_1899, out r9_1900, out r10_1901, out r11_1902, out r12_1731, out lr_1725)
+	fn0000B994(r0_1154, r1_1170, r2_1002, r4_1004, r5_1651, r6_1023, r7_1024, Mem1712[r7_1024 + -680<i32>:word32], lr_1093, out r1_1728, out r2_1899, out r8_1900, out r9_1901, out r10_1902, out r11_1903, out r12_1731, out lr_1725)
 	r9_1739 = Mem1712[r6_1023 + 8<i32>:word32]
 l0000353E:
-	word32 r11_1888
-	word32 r10_1887
-	word32 r9_1749
-	fn00003168(r0_1017, r1_130, r4_1004, r7_1024, r2_1002, Mem396[r6_1023 + 1148<i32>:word32], r0_1017, lr_1093, out r9_1749, out r10_1887, out r11_1888, out lr_1725)
+	word32 r10_1888
+	word32 r9_1887
+	word32 r11_1889
+	fn00003168(r0_1017, r1_130, r4_1004, r7_1024, r2_1002, Mem396[r6_1023 + 1148<i32>:word32], r0_1017, lr_1093, out r9_1887, out r10_1888, out r11_1889, out lr_1725)
 	branch r0_1017 == 0<32> l00003554
 l00003554:
-	word32 r8_1891
-	word32 r2_1890
-	word32 r1_1889
-	word32 r11_1894
-	word32 r10_1893
-	word32 r9_1892
-	fn0000B994(0<32>, r1_130, r2_1002, r4_1004, r5_1758, r6_1023, r7_1024, Mem396[r7_1024 + -680<i32>:word32], lr_1725, out r1_1889, out r2_1890, out r8_1891, out r9_1892, out r10_1893, out r11_1894, out r12_1731, out lr_1725)
+	word32 r2_1891
+	word32 r1_1890
+	word32 r10_1894
+	word32 r9_1893
+	word32 r8_1892
+	word32 r11_1895
+	fn0000B994(0<32>, r1_130, r2_1002, r4_1004, r5_1758, r6_1023, r7_1024, Mem396[r7_1024 + -680<i32>:word32], lr_1725, out r1_1890, out r2_1891, out r8_1892, out r9_1893, out r10_1894, out r11_1895, out r12_1731, out lr_1725)
 	r9_1739 = Mem396[r6_1023 + 8<i32>:word32]
 l000038E4:
 	Mem1778[r4_1004:word32] = r12_1731
@@ -2595,23 +2595,23 @@ l00003B74:
 	word32 r5_27
 	word32 r7_29
 	word32 lr_30
-	word32 r7_40
 	word32 r9_90
 	word32 r10_91
 	word32 r11_92
-	word32 r9_93
-	word32 r10_94
-	word32 r11_95
-	r4 = fn00003B2C(fn00003B2C(r4, r5, r7_20, lr, out r5_27, out r7_29, out r9_90, out r10_91, out r11_92, out lr_30), r5_27, r7_29 + 0x18<32>, lr_30, out r5, out r7_40, out r9_93, out r10_94, out r11_95, out lr)
+	word32 r7_93
+	word32 r9_94
+	word32 r10_95
+	word32 r11_96
+	r4 = fn00003B2C(fn00003B2C(r4, r5, r7_20, lr, out r5_27, out r7_29, out r9_90, out r10_91, out r11_92, out lr_30), r5_27, r7_29 + 0x18<32>, lr_30, out r5, out r7_93, out r9_94, out r10_95, out r11_96, out lr)
 l00003B6E:
 l00003B82:
 	word32 lr_60
-	word32 r5_97
-	word32 r7_98
-	word32 r9_99
-	word32 r10_100
-	word32 r11_101
-	fn00003B2C(r4, r5, r12, lr, out r5_97, out r7_98, out r9_99, out r10_100, out r11_101, out lr_60)
+	word32 r5_98
+	word32 r7_99
+	word32 r9_100
+	word32 r10_101
+	word32 r11_102
+	fn00003B2C(r4, r5, r12, lr, out r5_98, out r7_99, out r9_100, out r10_101, out r11_102, out lr_60)
 	r5Out = <invalid>
 	r6Out = <invalid>
 	r7Out = <invalid>
@@ -3007,17 +3007,17 @@ l00004416:
 l00004418:
 	word32 r5_217 = Mem156[r6_137 + 8<i32>:word32]
 	word32 lr_231
-	word32 r10_234
 	word32 r4_238
 	word32 r5_239
 	word32 r7_241
+	word32 r12_378
 	word32 r1_373
 	word32 r3_375
-	word32 r12_377
+	word32 r10_377
 	word32 r6_376
 	word32 r2_374
 	word32 r11_235
-	fn0000418C(r1, r5_217, fp - 0x28<32>, Mem156[r5_217 + 332<i32>:word32], Mem156[r7_138:word32], lr, out r1_373, out r2_374, out r3_375, out r4_238, out r5_239, out r6_376, out r7_241, out r10_234, out r11_235, out r12_377, out lr_231)
+	fn0000418C(r1, r5_217, fp - 0x28<32>, Mem156[r5_217 + 332<i32>:word32], Mem156[r7_138:word32], lr, out r1_373, out r2_374, out r3_375, out r4_238, out r5_239, out r6_376, out r7_241, out r10_377, out r11_235, out r12_378, out lr_231)
 	word32 r5_251 = r4_238 + dwLoc28
 	branch Mem156[r5_239 + 24<i32>:word32] == 0<32> l0000444C
 l00004436:
@@ -3591,13 +3591,13 @@ l00004930:
 l0000492C:
 	r11_265 = Mem254[r7_109 + -20<i32>:word32]
 l00004932:
-	word32 r12_294
+	word32 r12_437
 	word32 lr_291
-	word32 r10_292 = fn000045F0(r2, r3, lr_260, r9_263, r10_257, r11_265, Mem254[r7_109:word32], 0<32>, r5_259, r4_123, out r12_294, out lr_291)
+	word32 r10_292 = fn000045F0(r2, r3, lr_260, r9_263, r10_257, r11_265, Mem254[r7_109:word32], 0<32>, r5_259, r4_123, out r12_437, out lr_291)
 	branch Mem283[Mem283[r6_176 + 8<i32>:word32] + 24<i32>:word32] == 0<32> l0000495C
 l0000494C:
-	word32 r12_312
-	r10_292 = fn00002DB4(r4_123, r5_259, Mem283[r7_109 + -24<i32>:word32], Mem283[r7_109 + 24<i32>:word32], CONVERT(Mem283[r7_109 + 116<i32>:byte], byte, word32), lr_291, out r12_312, out lr_291)
+	word32 r12_438
+	r10_292 = fn00002DB4(r4_123, r5_259, Mem283[r7_109 + -24<i32>:word32], Mem283[r7_109 + 24<i32>:word32], CONVERT(Mem283[r7_109 + 116<i32>:byte], byte, word32), lr_291, out r12_438, out lr_291)
 l0000495C:
 	lrOut = lr_291
 	return r10_292
@@ -4437,9 +4437,9 @@ l0000518E:
 	word64 r1_r0_142 = Mem76[sp_102 + 20<i32>:word64]
 	word32 lr_147
 	word32 r12_151
-	word32 r9_1586
-	word32 r11_1587
-	fn0000B95C(r4_135, r5_108, r6_109, r7_110, 0x10<32>, lr_111, out r9_1586, out r11_1587, out r12_151, out lr_147)
+	word32 r9_1590
+	word32 r11_1591
+	fn0000B95C(r4_135, r5_108, r6_109, r7_110, 0x10<32>, lr_111, out r9_1590, out r11_1591, out r12_151, out lr_147)
 	word32 r7_158 = Mem76[r6_109 + 8<i32>:word32]
 	Mem162[r12_151:word64] = r3_r2_141
 	Mem166[r12_151 + 8<i32>:word64] = r1_r0_142
@@ -4453,9 +4453,9 @@ l0000518E:
 	word32 r10_169
 	branch fn000090C0(r0_165, r1_164, r3_160, r4_135, r12_151, r12_151, Mem166[r7_158 + 324<i32>:word32], lr_147, out r10_169, out r11_1048, out r12_173, out lr_168) l000051B8
 l000051B4:
-	word32 r9_1590
-	word32 r8_1589
-	r4_135 = fn00006CAC(r4_135, r12_151, r6_109, r7_158, lr_168, out r5_159, out r6_109, out r7_158, out r8_1589, out r9_1590, out r10_169, out r11_1048, out r12_173, out lr_168)
+	word32 r8_1593
+	word32 r9_1594
+	r4_135 = fn00006CAC(r4_135, r12_151, r6_109, r7_158, lr_168, out r5_159, out r6_109, out r7_158, out r8_1593, out r9_1594, out r10_169, out r11_1048, out r12_173, out lr_168)
 	sp_102 = <invalid>
 l000051B8:
 	branch r12_173 == r5_159 l000051E8
@@ -4494,9 +4494,9 @@ l0000522A:
 l000052EC:
 	branch Mem270[Mem270[sp_1058 + 12<i32>:word32]:word32] == 0<32> l00005308
 l000052F4:
-	word32 lr_1596
-	word32 r9_1595
-	fn00003168(r0_1032, r1_1035, r4_1028, r12_292, Mem270[sp_1058 + 8<i32>:word32], r3_1041, Mem270[sp_1058:word32], lr_1029, out r9_1595, out r10_1047, out r11_1048, out lr_1596)
+	word32 r9_1599
+	word32 lr_1600
+	fn00003168(r0_1032, r1_1035, r4_1028, r12_292, Mem270[sp_1058 + 8<i32>:word32], r3_1041, Mem270[sp_1058:word32], lr_1029, out r9_1599, out r10_1047, out r11_1048, out lr_1600)
 	lr_1029 = Mem270[sp_1058 + 12<i32>:word32]
 	branch Mem270[lr_1029:word32] == 0x4B<32> l0000522A
 l00005308:
@@ -4516,10 +4516,10 @@ l00005308:
 		defs: lr:lr_344,r0:r0_336,r1:r1_337,r2:r2_338,r3:r3_339,r4:r4_340,r5:r5_341,r6:r6_342,r7:r7_343,sp:sp_335,VNZC:VNZC_351
 	branch SLICE(VNZC_351, bool, 1) l0000531C
 l00005310:
-	word32 r11_1599
-	word32 r9_1597
-	word32 r10_1598
-	fn00003168(r0_336, r1_337, r4_340, r7_343, Mem270[sp_335 + 8<i32>:word32], Mem270[r6_342 + 1104<i32>:word32], Mem270[sp_335:word32], lr_344, out r9_1597, out r10_1598, out r11_1599, out lr_344)
+	word32 r9_1601
+	word32 r10_1602
+	word32 r11_1603
+	fn00003168(r0_336, r1_337, r4_340, r7_343, Mem270[sp_335 + 8<i32>:word32], Mem270[r6_342 + 1104<i32>:word32], Mem270[sp_335:word32], lr_344, out r9_1601, out r10_1602, out r11_1603, out lr_344)
 l0000531C:
 	word32 lr_377
 	word32 r10_373 = fn0000393C(r0_336, r1_337, r2_338, r4_340, r5_341, lr_344, out lr_377)
@@ -4578,7 +4578,7 @@ l000053E2_1:
 	r11_568 = r9_567
 l000053E6:
 	word32 r12_599
-	word32 r11_1603
+	word32 r11_1607
 	word32 r6_595
 	word32 r1_588
 	word32 r2_591
@@ -4588,7 +4588,7 @@ l000053E6:
 	word32 r7_596
 	word32 lr_586
 	word32 r10_589
-	word32 r0_587 = fn0000418C(r1_337, Mem562[r3_563 + -52<i32>:word32], 0<32>, r10_570, r11_568, lr_377, out r1_588, out r2_591, out r3_592, out r4_593, out r5_594, out r6_595, out r7_596, out r10_589, out r11_1603, out r12_599, out lr_586)
+	word32 r0_587 = fn0000418C(r1_337, Mem562[r3_563 + -52<i32>:word32], 0<32>, r10_570, r11_568, lr_377, out r1_588, out r2_591, out r3_592, out r4_593, out r5_594, out r6_595, out r7_596, out r10_589, out r11_1607, out r12_599, out lr_586)
 	word32 r9_604 = CONVERT(Mem562[r3_592 + 356<i32>:byte], byte, word32)
 	Mem607[r3_592 + 76<i32>:word32] = r12_599 + r5_594
 	branch SLICE(r9_604, byte, 0) == 0<8> l0000542C
@@ -4665,9 +4665,9 @@ l000054A6:
 	word32 r5_849
 	word32 r6_850
 	word32 r7_851
-	word32 r3_1601
-	word32 r11_1602
-	word32 r0_841 = fn000093B8(r0_767, r1_768, 0x200<32>, 0<32>, r4_771, r5_816, r9_823, sp_766 + 0x14<32>, Mem837[sp_824 - 8<i32>:word64], Mem837[sp_824:word64], Mem837[sp_824 + 8<i32>:word32], Mem837[sp_824 + 12<i32>:word32], Mem837[sp_824 + 16<i32>:word64], Mem837[sp_824 + 28<i32>:word32], Mem837[sp_824 + 32<i32>:word32], Mem837[sp_824 + 48<i32>:word32], Mem837[sp_824 + 52<i32>:word32], Mem837[sp_824 + 56<i32>:word32], out r1_842, out r2_846, out r3_1601, out r4_848, out r5_849, out r6_850, out r7_851, out r10_843, out r11_1602, out r12_845, out lr_839)
+	word32 r11_1606
+	word32 r3_1605
+	word32 r0_841 = fn000093B8(r0_767, r1_768, 0x200<32>, 0<32>, r4_771, r5_816, r9_823, sp_766 + 0x14<32>, Mem837[sp_824 - 8<i32>:word64], Mem837[sp_824:word64], Mem837[sp_824 + 8<i32>:word32], Mem837[sp_824 + 12<i32>:word32], Mem837[sp_824 + 16<i32>:word64], Mem837[sp_824 + 28<i32>:word32], Mem837[sp_824 + 32<i32>:word32], Mem837[sp_824 + 48<i32>:word32], Mem837[sp_824 + 52<i32>:word32], Mem837[sp_824 + 56<i32>:word32], out r1_842, out r2_846, out r3_1605, out r4_848, out r5_849, out r6_850, out r7_851, out r10_843, out r11_1606, out r12_845, out lr_839)
 	word32 r8_858 = Mem837[r6_850 + 40<i32>:word32]
 	word32 r0_862
 	word32 r1_863
@@ -4706,8 +4706,8 @@ l00005500:
 l0000550A:
 	branch Mem936[Mem936[r6_342 + 8<i32>:word32] + 12<i32>:word32] == 0<32> l0000556E
 l00005512:
-	word32 r11_1600
-	fn00004968(r0_336, r1_337, r2_338, r3_339, r4_340, r5_694, lr_377, out r11_1600)
+	word32 r11_1604
+	fn00004968(r0_336, r1_337, r2_338, r3_339, r4_340, r5_694, lr_377, out r11_1604)
 l0000523A:
 	r11_1048 = Mem270[r6_1020 + 8<i32>:word32]
 	r5_1025 = r12_292 + 0x13<32>
@@ -4742,8 +4742,8 @@ l00005270:
 l00005284:
 	word32 r12_1049
 	word32 r4_1052
-	word32 lr_1591
-	r0_1032 = fn00003BA4(r0_1032, r1_1035, r2_1038, r3_1041, r4_1028, r5_1025, Mem270[Mem270[r6_1020 + 8<i32>:word32] + -48<i32>:word32], lr_1029, out r1_1035, out r2_1038, out r3_1041, out r4_1052, out r5_1025, out r6_1020, out r7_1055, out r10_1047, out r11_1048, out r12_1049, out lr_1591)
+	word32 lr_1595
+	r0_1032 = fn00003BA4(r0_1032, r1_1035, r2_1038, r3_1041, r4_1028, r5_1025, Mem270[Mem270[r6_1020 + 8<i32>:word32] + -48<i32>:word32], lr_1029, out r1_1035, out r2_1038, out r3_1041, out r4_1052, out r5_1025, out r6_1020, out r7_1055, out r10_1047, out r11_1048, out r12_1049, out lr_1595)
 	sp_1058 = <invalid>
 	branch CONVERT(SLICE(r12_1049, byte, 0), byte, word32) != 0<32> l0000522A
 l00005292:
@@ -4824,10 +4824,10 @@ l000051BC:
 		defs: lr:lr_1174,r0:r0_1166,r1:r1_1167,r2:r2_1168,r3:r3_1169,r4:r4_1170,r5:r5_1171,r6:r6_1172,r7:r7_1173,sp:sp_1165
 	word32 lr_1183
 	word32 r12_1187
-	word32 r10_1593
-	word32 r11_1594
-	word32 r9_1592
-	fn0000A778(Mem166[sp_1165 + 8<i32>:word32], lr_1174, out r9_1592, out r10_1593, out r11_1594, out r12_1187, out lr_1183)
+	word32 r9_1596
+	word32 r10_1597
+	word32 r11_1598
+	fn0000A778(Mem166[sp_1165 + 8<i32>:word32], lr_1174, out r9_1596, out r10_1597, out r11_1598, out r12_1187, out lr_1183)
 	word32 r10_1194 = Mem166[r6_1172 + 1112<i32>:word32]
 	Mem1197[sp_1165 - 4<i32>:word32] = r12_1187
 	word32 sp_1199
@@ -4851,16 +4851,16 @@ l00005178:
 	word32 lr_1241
 	word32 r10_1243
 	word32 r11_1244
-	word32 r9_1588
-	fn00003168(r0_103, r1_104, r4_135, r7_110, Mem76[sp_102 + 8<i32>:word32], Mem76[r6_109 + 1116<i32>:word32], Mem76[sp_102:word32], lr_111, out r9_1588, out r10_1243, out r11_1244, out lr_1241)
+	word32 r9_1592
+	fn00003168(r0_103, r1_104, r4_135, r7_110, Mem76[sp_102 + 8<i32>:word32], Mem76[r6_109 + 1116<i32>:word32], Mem76[sp_102:word32], lr_111, out r9_1592, out r10_1243, out r11_1244, out lr_1241)
 	call Mem76[r6_109 + 232<i32>:word32] (retsize: 0;)
 		uses: lr:lr_1241,r0:r0_1239,r1:r1_1240,r10:r10_1243,r11:r11_1244,r12:Mem76[sp_139 + 16<i32>:word32],r2:r2_1253,r3:r3_1254,r4:r4_135,r5:r5_143,r6:r6_144,r7:r7_145
 l00005140:
-	word32 lr_1275
-	word32 r10_1277
-	word32 r11_1278
-	word32 r9_1281
-	fn00003168(r0_61, r1_62, r4_65, r7_68, Mem76[sp_60 + 8<i32>:word32], Mem76[r6_67 + 1120<i32>:word32], Mem76[sp_60:word32], lr_69, out r9_1281, out r10_1277, out r11_1278, out lr_1275)
+	word32 r9_1586
+	word32 r10_1587
+	word32 r11_1588
+	word32 lr_1589
+	fn00003168(r0_61, r1_62, r4_65, r7_68, Mem76[sp_60 + 8<i32>:word32], Mem76[r6_67 + 1120<i32>:word32], Mem76[sp_60:word32], lr_69, out r9_1586, out r10_1587, out r11_1588, out lr_1589)
 l0000556E:
 	return
 fn0000511C_exit:
@@ -6678,9 +6678,9 @@ l000076D2:
 	branch r5_335 != 0<32> l000076BE
 l000076BE:
 	word32 r5_377
-	word32 r6_378
-	word32 r12_1208
-	branch SLICE(fn00007754(r2_328, r3_1053, r8_339, r9_350, r2_328, r1_1055, r12_345, out r0_1050, out r1_1055, out r2_328, out r3_1053, out r4_1057, out r5_377, out r6_378, out r7_104, out r9_1089, out r10_1086, out r11_1093, out r12_1208, out lr_1043), bool, 1) l00007718
+	word32 r6_1211
+	word32 r12_1212
+	branch SLICE(fn00007754(r2_328, r3_1053, r8_339, r9_350, r2_328, r1_1055, r12_345, out r0_1050, out r1_1055, out r2_328, out r3_1053, out r4_1057, out r5_377, out r6_1211, out r7_104, out r9_1089, out r10_1086, out r11_1093, out r12_1212, out lr_1043), bool, 1) l00007718
 l000076C2:
 	r5_335 = Mem264[r5_377:word32]
 l000076E2:
@@ -6706,22 +6706,22 @@ l0000770A:
 l000076EC:
 	r9_412 = Mem264[r7_104 + -24<i32>:word32]
 l0000770C:
-	word32 r12_1211
-	word32 r5_1209
-	word32 r6_1210
-	branch SLICE(fn00007754(r2_328, r3_1053, r10_393, r9_412, r0_1050, r2_328, r4_1057, out r0_1050, out r1_1055, out r2_328, out r3_1053, out r4_1057, out r5_1209, out r6_1210, out r7_104, out r9_1089, out r10_1086, out r11_1093, out r12_1211, out lr_1043), bool, 1) l0000773A
+	word32 r12_1215
+	word32 r5_1213
+	word32 r6_1214
+	branch SLICE(fn00007754(r2_328, r3_1053, r10_393, r9_412, r0_1050, r2_328, r4_1057, out r0_1050, out r1_1055, out r2_328, out r3_1053, out r4_1057, out r5_1213, out r6_1214, out r7_104, out r9_1089, out r10_1086, out r11_1093, out r12_1215, out lr_1043), bool, 1) l0000773A
 l00007718:
 	r2_328 = r2_328 + 4<32>
 l00007720:
 l00007570:
 	branch r2_246 == 0x2A<32> l00007590
 l00007590:
-	word32 r4_491
-	word32 r6_493
-	word32 r12_1198
+	word32 r12_1200
+	word32 r5_1198
+	word32 r6_1199
 	word32 r2_1196
-	word32 r5_1197
-	branch SLICE(fn00007754(r2_246, r3_1053, r3_1053, Mem264[r7_104 + -24<i32>:word32], r0_1050, r1_1055, r4_1057, out r0_1050, out r1_1055, out r2_1196, out r3_1053, out r4_491, out r5_1197, out r6_493, out r7_104, out r9_1089, out r10_1086, out r11_1093, out r12_1198, out lr_1043), bool, 1) l0000773A
+	word32 r4_1197
+	branch SLICE(fn00007754(r2_246, r3_1053, r3_1053, Mem264[r7_104 + -24<i32>:word32], r0_1050, r1_1055, r4_1057, out r0_1050, out r1_1055, out r2_1196, out r3_1053, out r4_1197, out r5_1198, out r6_1199, out r7_104, out r9_1089, out r10_1086, out r11_1093, out r12_1200, out lr_1043), bool, 1) l0000773A
 l00007576:
 	branch r2_246 == 0x2B<32> l000075A2
 l000075A2:
@@ -6740,10 +6740,10 @@ l000075BC:
 	Mem532[r7_104 + -32<i32>:word32] = r9_518
 	word32 r2_548
 	word32 r4_550
-	word32 r6_552
-	word32 r12_1204
+	word32 r12_1207
+	word32 r6_1206
 	word32 r5_551
-	branch SLICE(fn00007754(r2_516, r3_1053, r8_517, r9_518, r5_506, r1_1055, r12_515 + 4<32>, out r0_1050, out r1_1055, out r2_548, out r3_1053, out r4_550, out r5_551, out r6_552, out r7_104, out r9_1089, out r10_1086, out r11_1093, out r12_1204, out lr_1043), bool, 1) l0000764A
+	branch SLICE(fn00007754(r2_516, r3_1053, r8_517, r9_518, r5_506, r1_1055, r12_515 + 4<32>, out r0_1050, out r1_1055, out r2_548, out r3_1053, out r4_550, out r5_551, out r6_1206, out r7_104, out r9_1089, out r10_1086, out r11_1093, out r12_1207, out lr_1043), bool, 1) l0000764A
 l000075CA:
 	branch r2_548 != 0<32> l000075D4
 l000075D0_1:
@@ -6765,10 +6765,10 @@ l000075F4:
 	Mem594[r7_104 + -32<i32>:word32] = CONVERT(SLICE(r9_586, byte, 0), byte, word32)
 l000075FA:
 	word32 r2_639
-	word32 r12_1207
-	word32 r6_1206
-	word32 r4_1205
-	branch SLICE(fn00007754(r2_548, r3_1053, r10_1086, Mem596[r7_104 + -32<i32>:word32], r0_1050, r5_551, r4_550, out r0_1050, out r1_1055, out r2_639, out r3_1053, out r4_1205, out r5_551, out r6_1206, out r7_104, out r9_1089, out r10_1086, out r11_1093, out r12_1207, out lr_1043), bool, 1) l0000773A
+	word32 r6_1209
+	word32 r12_1210
+	word32 r4_1208
+	branch SLICE(fn00007754(r2_548, r3_1053, r10_1086, Mem596[r7_104 + -32<i32>:word32], r0_1050, r5_551, r4_550, out r0_1050, out r1_1055, out r2_639, out r3_1053, out r4_1208, out r5_551, out r6_1209, out r7_104, out r9_1089, out r10_1086, out r11_1093, out r12_1210, out lr_1043), bool, 1) l0000773A
 l0000760C:
 	branch r5_551 == r1_1055 l0000764A
 l00007610:
@@ -6788,11 +6788,11 @@ l00007630:
 l00007628:
 	r9_673 = 0<32>
 l0000763A:
-	word32 r12_1215
-	word32 r4_1213
-	word32 r6_1214
-	word32 r2_1212
-	branch SLICE(fn00007754(r2_639, r3_1053, r10_1086, r9_673, r0_1050, r5_551, Mem596[r7_104 + -20<i32>:word32] - 4<32>, out r0_1050, out r1_1055, out r2_1212, out r3_1053, out r4_1213, out r5_551, out r6_1214, out r7_104, out r9_1089, out r10_1086, out r11_1093, out r12_1215, out lr_1043), bool, 1) l0000773A
+	word32 r4_1217
+	word32 r6_1218
+	word32 r12_1219
+	word32 r2_1216
+	branch SLICE(fn00007754(r2_639, r3_1053, r10_1086, r9_673, r0_1050, r5_551, Mem596[r7_104 + -20<i32>:word32] - 4<32>, out r0_1050, out r1_1055, out r2_1216, out r3_1053, out r4_1217, out r5_551, out r6_1218, out r7_104, out r9_1089, out r10_1086, out r11_1093, out r12_1219, out lr_1043), bool, 1) l0000773A
 l0000764A:
 	r5_506 = r5_551 + 4<32>
 l00007652:
@@ -6803,10 +6803,10 @@ l0000765C:
 l0000757C:
 	branch r2_246 == 0x3F<32> l00007662
 l00007662:
-	word32 r5_1200
-	word32 r12_1201
-	word32 r2_1199
-	branch SLICE(fn00007754(r2_246, r3_1053, r3_1053, Mem264[r7_104 + -24<i32>:word32], r0_1050, r1_1055, r4_1057, out r0_1050, out r1_1055, out r2_1199, out r3_1053, out r4_1057, out r5_1200, out r6_1083, out r7_104, out r9_1089, out r10_1086, out r11_1093, out r12_1201, out lr_1043), bool, 1) l0000773A
+	word32 r5_1202
+	word32 r12_1203
+	word32 r2_1201
+	branch SLICE(fn00007754(r2_246, r3_1053, r3_1053, Mem264[r7_104 + -24<i32>:word32], r0_1050, r1_1055, r4_1057, out r0_1050, out r1_1055, out r2_1201, out r3_1053, out r4_1057, out r5_1202, out r6_1083, out r7_104, out r9_1089, out r10_1086, out r11_1093, out r12_1203, out lr_1043), bool, 1) l0000773A
 l00007582:
 	branch r2_246 != 0x40<32> l00007722
 l00007722:
@@ -6842,9 +6842,9 @@ l00007696:
 	call Mem797[r6_1083 + 412<i32>:word32] (retsize: 0;)
 		uses: lr:lr_799,r0:r0_819,r1:r1_822,r10:r10_840,r11:r4_800,r12:r12_798 + 4<32>,r2:r2_810,r3:r3_802,r4:r4_800,r5:r5_828,r6:r6_814,r7:r7_796,r8:r8_846,r9:r9_843
 		defs: r0:r0_851,r1:r1_852,r12:r12_861,r2:r2_853,r3:r3_854,r5:r5_856,r7:r7_858
-	word32 r5_1202
-	word32 r12_1203
-	branch SLICE(fn00007754(r2_853, r3_854, r5_856, Mem797[r7_858 + -24<i32>:word32], r0_851, r1_852, r12_861, out r0_1050, out r1_1055, out r2_793, out r3_1053, out r4_1057, out r5_1202, out r6_1083, out r7_104, out r9_1089, out r10_1086, out r11_1093, out r12_1203, out lr_1043), bool, 1) l0000773A
+	word32 r5_1204
+	word32 r12_1205
+	branch SLICE(fn00007754(r2_853, r3_854, r5_856, Mem797[r7_858 + -24<i32>:word32], r0_851, r1_852, r12_861, out r0_1050, out r1_1055, out r2_793, out r3_1053, out r4_1057, out r5_1204, out r6_1083, out r7_104, out r9_1089, out r10_1086, out r11_1093, out r12_1205, out lr_1043), bool, 1) l0000773A
 l0000773A:
 	r12_1152 = 0<32>
 l000076A8:
@@ -7760,9 +7760,9 @@ l000080BC:
 	branch r5_334 != 0<32> l000080A8
 l000080A8:
 	word32 r5_376
-	word32 r6_377
-	word32 r12_1210
-	branch SLICE(fn00008144(r2_327, r8_338, r9_349, r2_327, r1_1062, r12_344, out r0_1057, out r1_1062, out r2_327, out r3_1060, out r4_1064, out r5_376, out r6_377, out r7_1002, out r8_101, out r9_100, out r10_1093, out r11_1098, out r12_1210, out lr_1049), bool, 1) l00008104
+	word32 r12_1214
+	word32 r6_1213
+	branch SLICE(fn00008144(r2_327, r8_338, r9_349, r2_327, r1_1062, r12_344, out r0_1057, out r1_1062, out r2_327, out r3_1060, out r4_1064, out r5_376, out r6_1213, out r7_1002, out r8_101, out r9_100, out r10_1093, out r11_1098, out r12_1214, out lr_1049), bool, 1) l00008104
 l000080AC:
 	r5_334 = Mem260[r5_376:word32]
 l000080CC:
@@ -7788,22 +7788,22 @@ l000080F6:
 l000080D6:
 	r9_412 = Mem260[r7_1002 + -24<i32>:word32]
 l000080F8:
-	word32 r5_1214
-	word32 r6_1215
-	word32 r12_1216
-	branch SLICE(fn00008144(r2_327, r10_392, r9_412, r0_1057, r2_327, r4_1064, out r0_1057, out r1_1062, out r2_327, out r3_1060, out r4_1064, out r5_1214, out r6_1215, out r7_1002, out r8_101, out r9_100, out r10_1093, out r11_1098, out r12_1216, out lr_1049), bool, 1) l00008128
+	word32 r12_1220
+	word32 r5_1218
+	word32 r6_1219
+	branch SLICE(fn00008144(r2_327, r10_392, r9_412, r0_1057, r2_327, r4_1064, out r0_1057, out r1_1062, out r2_327, out r3_1060, out r4_1064, out r5_1218, out r6_1219, out r7_1002, out r8_101, out r9_100, out r10_1093, out r11_1098, out r12_1220, out lr_1049), bool, 1) l00008128
 l00008104:
 	r2_327 = r2_327 + 1<32>
 l0000810C:
 l00007F58:
 	branch r2_241 == 0x2A<32> l00007F78
 l00007F78:
-	word32 r4_491
-	word32 r6_493
-	word32 r5_1201
-	word32 r12_1202
+	word32 r6_1203
+	word32 r12_1204
+	word32 r4_1201
+	word32 r5_1202
 	word32 r2_1200
-	branch SLICE(fn00008144(r2_241, r3_1060, Mem260[r7_1002 + -24<i32>:word32], r0_1057, r1_1062, r4_1064, out r0_1057, out r1_1062, out r2_1200, out r3_1060, out r4_491, out r5_1201, out r6_493, out r7_1002, out r8_101, out r9_100, out r10_1093, out r11_1098, out r12_1202, out lr_1049), bool, 1) l00008128
+	branch SLICE(fn00008144(r2_241, r3_1060, Mem260[r7_1002 + -24<i32>:word32], r0_1057, r1_1062, r4_1064, out r0_1057, out r1_1062, out r2_1200, out r3_1060, out r4_1201, out r5_1202, out r6_1203, out r7_1002, out r8_101, out r9_100, out r10_1093, out r11_1098, out r12_1204, out lr_1049), bool, 1) l00008128
 l00007F5E:
 	branch r2_241 == 0x2B<32> l00007F8A
 l00007F8A:
@@ -7822,11 +7822,11 @@ l00007FA4:
 	Mem532[r7_1002 + -32<i32>:word32] = r9_518
 	word32 r2_548
 	word32 r4_550
-	word32 r6_552
-	word32 r12_1209
-	word32 r8_1208
+	word32 r8_1211
+	word32 r12_1212
+	word32 r6_1210
 	word32 r5_551
-	branch SLICE(fn00008144(r2_516, r8_517, r9_518, r5_506, r1_1062, r12_515 + 4<32>, out r0_1057, out r1_1062, out r2_548, out r3_1060, out r4_550, out r5_551, out r6_552, out r7_1002, out r8_1208, out r9_100, out r10_1093, out r11_1098, out r12_1209, out lr_1049), bool, 1) l00008032
+	branch SLICE(fn00008144(r2_516, r8_517, r9_518, r5_506, r1_1062, r12_515 + 4<32>, out r0_1057, out r1_1062, out r2_548, out r3_1060, out r4_550, out r5_551, out r6_1210, out r7_1002, out r8_1211, out r9_100, out r10_1093, out r11_1098, out r12_1212, out lr_1049), bool, 1) l00008032
 l00007FB2:
 	branch r2_548 != 0<32> l00007FBC
 l00007FB8_1:
@@ -7848,10 +7848,10 @@ l00007FDE:
 	Mem595[r7_1002 + -32<i32>:word32] = CONVERT(SLICE(r9_587, byte, 0), byte, word32)
 l00007FE4:
 	word32 r2_640
-	word32 r4_1211
-	word32 r6_1212
-	word32 r12_1213
-	branch SLICE(fn00008144(r2_548, r10_1093, Mem597[r7_1002 + -32<i32>:word32], r0_1057, r5_551, r4_550, out r0_1057, out r1_1062, out r2_640, out r3_1060, out r4_1211, out r5_551, out r6_1212, out r7_1002, out r8_101, out r9_100, out r10_1093, out r11_1098, out r12_1213, out lr_1049), bool, 1) l00008128
+	word32 r12_1217
+	word32 r4_1215
+	word32 r6_1216
+	branch SLICE(fn00008144(r2_548, r10_1093, Mem597[r7_1002 + -32<i32>:word32], r0_1057, r5_551, r4_550, out r0_1057, out r1_1062, out r2_640, out r3_1060, out r4_1215, out r5_551, out r6_1216, out r7_1002, out r8_101, out r9_100, out r10_1093, out r11_1098, out r12_1217, out lr_1049), bool, 1) l00008128
 l00007FF6:
 	branch r5_551 == r1_1062 l00008032
 l00007FFA:
@@ -7871,11 +7871,11 @@ l00008018:
 l00008014:
 	r9_675 = 0<32>
 l00008022:
-	word32 r12_1220
-	word32 r2_1217
-	word32 r4_1218
-	word32 r6_1219
-	branch SLICE(fn00008144(r2_640, r10_1093, r9_675, r0_1057, r5_551, Mem597[r7_1002 + -20<i32>:word32] - 1<32>, out r0_1057, out r1_1062, out r2_1217, out r3_1060, out r4_1218, out r5_551, out r6_1219, out r7_1002, out r8_101, out r9_100, out r10_1093, out r11_1098, out r12_1220, out lr_1049), bool, 1) l00008128
+	word32 r12_1224
+	word32 r6_1223
+	word32 r2_1221
+	word32 r4_1222
+	branch SLICE(fn00008144(r2_640, r10_1093, r9_675, r0_1057, r5_551, Mem597[r7_1002 + -20<i32>:word32] - 1<32>, out r0_1057, out r1_1062, out r2_1221, out r3_1060, out r4_1222, out r5_551, out r6_1223, out r7_1002, out r8_101, out r9_100, out r10_1093, out r11_1098, out r12_1224, out lr_1049), bool, 1) l00008128
 l00008032:
 	r5_506 = r5_551 + 1<32>
 l0000803A:
@@ -7886,10 +7886,10 @@ l00008044:
 l00007F64:
 	branch r2_241 == 0x3F<32> l0000804C
 l0000804C:
-	word32 r12_1205
-	word32 r2_1203
-	word32 r5_1204
-	branch SLICE(fn00008144(r2_241, r3_1060, Mem260[r7_1002 + -24<i32>:word32], r0_1057, r1_1062, r4_1064, out r0_1057, out r1_1062, out r2_1203, out r3_1060, out r4_1064, out r5_1204, out r6_1090, out r7_1002, out r8_101, out r9_100, out r10_1093, out r11_1098, out r12_1205, out lr_1049), bool, 1) l00008128
+	word32 r12_1207
+	word32 r2_1205
+	word32 r5_1206
+	branch SLICE(fn00008144(r2_241, r3_1060, Mem260[r7_1002 + -24<i32>:word32], r0_1057, r1_1062, r4_1064, out r0_1057, out r1_1062, out r2_1205, out r3_1060, out r4_1064, out r5_1206, out r6_1090, out r7_1002, out r8_101, out r9_100, out r10_1093, out r11_1098, out r12_1207, out lr_1049), bool, 1) l00008128
 l00007F6A:
 	branch r2_241 != 0x40<32> l0000810E
 l0000810E:
@@ -7924,9 +7924,9 @@ l00008080:
 	call Mem800[r6_1090 + 512<i32>:word32] (retsize: 0;)
 		uses: lr:lr_837,r0:r0_822,r1:r1_825,r10:r10_844,r11:r4_803,r12:r12_801 + 4<32>,r2:r2_813,r3:r3_805,r4:r4_803,r5:r5_831,r6:r6_817,r7:r7_799,r8:r8_849,r9:r9_802
 		defs: r0:r0_854,r1:r1_855,r12:r12_864,r2:r2_856,r5:r5_859,r7:r7_861
-	word32 r12_1207
-	word32 r5_1206
-	branch SLICE(fn00008144(r2_856, r5_859, Mem800[r7_861 + -24<i32>:word32], r0_854, r1_855, r12_864, out r0_1057, out r1_1062, out r2_796, out r3_1060, out r4_1064, out r5_1206, out r6_1090, out r7_1002, out r8_101, out r9_100, out r10_1093, out r11_1098, out r12_1207, out lr_1049), bool, 1) l00008128
+	word32 r12_1209
+	word32 r5_1208
+	branch SLICE(fn00008144(r2_856, r5_859, Mem800[r7_861 + -24<i32>:word32], r0_854, r1_855, r12_864, out r0_1057, out r1_1062, out r2_796, out r3_1060, out r4_1064, out r5_1208, out r6_1090, out r7_1002, out r8_101, out r9_100, out r10_1093, out r11_1098, out r12_1209, out lr_1049), bool, 1) l00008128
 l00008128:
 	r12_1157 = 0<32>
 l00008092:
@@ -8778,9 +8778,6 @@ l0000890C:
 	call Mem165[r6_152 + 16<i32>:word32] (retsize: 0;)
 		uses: lr:lr_175,r0:r0_172,r1:r1_167,r10:r10_177,r11:r11_176,r12:r5_166,r2:r2_173,r3:SLICE(r1_167, bool, 2),r4:r4_174,r5:r5_166,r6:r6_171,r7:r7_164
 		defs: r0:r0_180,r1:r1_181,r12:r12_189,r2:r2_182,r3:r3_183,r5:r5_185,r7:r7_187
-	word32 r12_202
-	word32 r8_203
-	word32 r9_205
 	word32 r0_523
 	word32 r1_524
 	word32 r2_525
@@ -8789,7 +8786,10 @@ l0000890C:
 	word32 r5_528
 	word32 r6_529
 	word32 r7_530
-	fn00008144(r2_182, r1_181, r3_183, r5_185 + r12_189, r5_185, Mem165[r7_187 + -12<i32>:word32], out r0_523, out r1_524, out r2_525, out r3_526, out r4_527, out r5_528, out r6_529, out r7_530, out r8_203, out r9_205, out r10_204, out r11_206, out r12_202, out lr_201)
+	word32 r8_531
+	word32 r9_532
+	word32 r12_533
+	fn00008144(r2_182, r1_181, r3_183, r5_185 + r12_189, r5_185, Mem165[r7_187 + -12<i32>:word32], out r0_523, out r1_524, out r2_525, out r3_526, out r4_527, out r5_528, out r6_529, out r7_530, out r8_531, out r9_532, out r10_204, out r11_206, out r12_533, out lr_201)
 l00008834:
 	byte VNZC_228
 	word32 sp_213
@@ -8885,16 +8885,16 @@ l000088CC:
 		uses: lr:lr_420,r0:r0_417,r1:r1_418,r10:r2_408,r11:r7_410 - 0x10<32>,r12:r5_413,r2:r2_408,r3:r3_419,r4:r4_406,r5:r5_413,r6:r6_415,r7:r7_410,r9:r4_406
 		defs: r0:r0_423,r1:r1_424,r2:r2_425,r3:r3_426,r4:r4_427,r5:r5_428,r6:r6_429,r7:r7_430
 	word32 r12_446
-	word32 r0_531
-	word32 r1_532
-	word32 r2_533
-	word32 r3_534
-	word32 r4_535
-	word32 r5_536
-	word32 r6_537
-	word32 r7_538
-	word32 r9_539
-	fn00007754(r2_425, r3_426, r1_424, SLICE(r1_424, bool, 2), r5_428 + (r2_425 << 2<8>) - 4<32>, r5_428, r3_426, out r0_531, out r1_532, out r2_533, out r3_534, out r4_535, out r5_536, out r6_537, out r7_538, out r9_539, out r10_204, out r11_206, out r12_446, out lr_201)
+	word32 r0_534
+	word32 r1_535
+	word32 r2_536
+	word32 r3_537
+	word32 r4_538
+	word32 r5_539
+	word32 r6_540
+	word32 r7_541
+	word32 r9_542
+	fn00007754(r2_425, r3_426, r1_424, SLICE(r1_424, bool, 2), r5_428 + (r2_425 << 2<8>) - 4<32>, r5_428, r3_426, out r0_534, out r1_535, out r2_536, out r3_537, out r4_538, out r5_539, out r6_540, out r7_541, out r9_542, out r10_204, out r11_206, out r12_446, out lr_201)
 	branch Mem256[r7_430 + -20<i32>:word32] <=u 0x7CF<32> l0000892E
 l000088FC:
 	call Mem256[r6_429 + 12<i32>:word32] (retsize: 0;)
@@ -9785,10 +9785,10 @@ void fn0000901C(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5
 fn0000901C_entry:
 l0000901C:
 	word32 lr_39
-	word32 r10_40
-	word32 r11_41
-	word32 r12_42
-	branch fn00008CAA(r0, r1, r2, r3, r4, r5, 0x00009022<p32> - Mem29[0x000090BC<p32>:word32], r12, 1<32>, fp - 0x28<32>, r11, r12, lr, out r10_40, out r11_41, out r12_42, out lr_39) l000090B6
+	word32 r12_274
+	word32 r10_272
+	word32 r11_273
+	branch fn00008CAA(r0, r1, r2, r3, r4, r5, 0x00009022<p32> - Mem29[0x000090BC<p32>:word32], r12, 1<32>, fp - 0x28<32>, r11, r12, lr, out r10_272, out r11_273, out r12_274, out lr_39) l000090B6
 l00009030:
 	Mem53[r12 + 16<i32>:word32] = Mem29[r12 + 16<i32>:word32] - 1<32>
 	branch Mem53[dwLoc28:word32] != 0<32> l000090B6
@@ -9800,34 +9800,34 @@ l0000903E:
 	word32 r12_76
 	word32 r12_83
 	fn00010050(fn0001013A(Mem61[r12 + 8<i32>:word32], out r12_76), Mem61[Mem61[r12 + 20<i32>:word32]:word32], r12_76, out r12_83)
-	word32 r10_274
-	word32 r8_272
-	word32 r9_273
-	branch fn0000FA0E(r12_83, r12_65, out r8_272, out r9_273, out r10_274) l000090B6
+	word32 r9_276
+	word32 r10_277
+	word32 r8_275
+	branch fn0000FA0E(r12_83, r12_65, out r8_275, out r9_276, out r10_277) l000090B6
 l00009064:
 	word32 r2_109
 	word32 r7_114
-	word32 r12_284
-	word32 r10_282
-	word32 r11_283
-	word32 r8_280
-	word32 r9_281
-	word32 r5_278
-	word32 r6_279
-	word32 r3_276
-	word32 r4_277
-	word32 r1_275
-	fn00008BE0(r12, out r1_275, out r2_109, out r3_276, out r4_277, out r5_278, out r6_279, out r7_114, out r8_280, out r9_281, out r10_282, out r11_283, out r12_284)
+	word32 r11_286
+	word32 r12_287
+	word32 r9_284
+	word32 r10_285
+	word32 r6_282
+	word32 r8_283
+	word32 r4_280
+	word32 r5_281
+	word32 r1_278
+	word32 r3_279
+	fn00008BE0(r12, out r1_278, out r2_109, out r3_279, out r4_280, out r5_281, out r6_282, out r7_114, out r8_283, out r9_284, out r10_285, out r11_286, out r12_287)
 	word32 r3_120 = Mem61[r7_114 + 20<i32>:word32]
 	word32 r12_125
 	fn0001013A(Mem61[r7_114 + 8<i32>:word32], out r12_125)
 	word32 r12_135
 	word32 r12_144
 	fn00010050(fn0001013A(Mem61[r7_114 + 12<i32>:word32], out r12_135), Mem61[r3_120:word32], r12_125, out r12_144)
-	word32 r9_286
-	word32 r10_287
-	word32 r8_285
-	branch fn0000FA0E(r12_144, r12_135, out r8_285, out r9_286, out r10_287) l000090B6
+	word32 r8_288
+	word32 r9_289
+	word32 r10_290
+	branch fn0000FA0E(r12_144, r12_135, out r8_288, out r9_289, out r10_290) l000090B6
 l0000908E:
 	word32 r11_176
 	word32 r12_168
@@ -9844,11 +9844,11 @@ l000090A8:
 	fn00010050(r9_162, r11_176, r12_168, out r12_183)
 	word32 r12_192
 	fn000101B2(r12_183, out r12_192)
-	word32 r10_288
-	word32 r11_289
-	word32 r12_290
-	word32 lr_291
-	fn00008F68(r2_109, r7_114, r12_192, r7_114, lr_39, out r10_288, out r11_289, out r12_290, out lr_291)
+	word32 r10_291
+	word32 r11_292
+	word32 r12_293
+	word32 lr_294
+	fn00008F68(r2_109, r7_114, r12_192, r7_114, lr_39, out r10_291, out r11_292, out r12_293, out lr_294)
 l000090B6:
 	return
 fn0000901C_exit:
@@ -9895,21 +9895,21 @@ l00009104:
 	word32 r12_115
 	fn00010050(fn0001013A(Mem93[r7_36 + 8<i32>:word32], out r12_108), Mem93[Mem93[r7_36 + 20<i32>:word32] + 8<i32>:word32], r12_108, out r12_115)
 	r11_123 = r12_97
-	word32 r8_125
-	word32 r9_126
-	branch fn0000FA0E(r12_97, r12_115, out r8_125, out r9_126, out r10_124) l00009194
+	word32 r8_368
+	word32 r9_369
+	branch fn0000FA0E(r12_97, r12_115, out r8_368, out r9_369, out r10_124) l00009194
 l00009130:
 	word32 r7_145
-	word32 r12_376
-	word32 r8_372
-	word32 r11_375
-	word32 r9_373
-	word32 r10_374
-	word32 r3_368
-	word32 r6_371
-	word32 r4_369
-	word32 r5_370
-	fn00008BE0(r7_36, out r1_139, out r2_140, out r3_368, out r4_369, out r5_370, out r6_371, out r7_145, out r8_372, out r9_373, out r10_374, out r11_375, out r12_376)
+	word32 r10_376
+	word32 r11_377
+	word32 r12_378
+	word32 r5_372
+	word32 r9_375
+	word32 r6_373
+	word32 r8_374
+	word32 r4_371
+	word32 r3_370
+	fn00008BE0(r7_36, out r1_139, out r2_140, out r3_370, out r4_371, out r5_372, out r6_373, out r7_145, out r8_374, out r9_375, out r10_376, out r11_377, out r12_378)
 	word32 r3_151 = Mem93[r7_145 + 20<i32>:word32]
 	word32 r0_152 = Mem93[r3_151 + 8<i32>:word32]
 	word32 r12_157
@@ -9918,9 +9918,9 @@ l00009130:
 	word32 r12_176
 	fn00010050(fn0001013A(Mem93[r7_145 + 12<i32>:word32], out r12_167), r12_157, r0_152, out r12_176)
 	r11_123 = r12_167
-	word32 r8_377
-	word32 r9_378
-	branch fn0000FA0E(r12_167, r12_176, out r8_377, out r9_378, out r10_124) l00009194
+	word32 r9_380
+	word32 r8_379
+	branch fn0000FA0E(r12_167, r12_176, out r8_379, out r9_380, out r10_124) l00009194
 l0000915A:
 	word32 r11_207
 	word32 r12_199
@@ -9936,9 +9936,9 @@ l00009174:
 	word32 r12_214
 	fn00010050(r9_193, r11_207, r12_199, out r12_214)
 	r11_123 = Mem93[0x000091A0<p32>:word32]
-	word32 r9_380
-	word32 r8_379
-	branch fn0000F9D0(r11_123, r12_214, out r8_379, out r9_380, out r10_124) l00009196
+	word32 r8_381
+	word32 r9_382
+	branch fn0000F9D0(r11_123, r12_214, out r8_381, out r9_382, out r10_124) l00009196
 l00009182:
 	word32 r12_235
 	fn000101B2(r12_214, out r12_235)
@@ -16343,13 +16343,13 @@ void fn0000C2C8(word32 r0, word32 r8, word32 r10, word32 r11, word32 r12, word32
 // Preserved: sp
 fn0000C2C8_entry:
 l0000C2C8:
-	word32 r12_14
 	word32 r2_53
 	word32 r3_54
 	word32 r4_55
 	word32 r5_56
 	word32 r6_57
-	fn0000BFB8(r0, r8, 0x4F<32>, r10, r11, r12, lr, dwArg00, dwArg04, dwArg08, dwArg0C, dwArg10, out r2_53, out r3_54, out r4_55, out r5_56, out r6_57, out r12_14)
+	word32 r12_58
+	fn0000BFB8(r0, r8, 0x4F<32>, r10, r11, r12, lr, dwArg00, dwArg04, dwArg08, dwArg0C, dwArg10, out r2_53, out r3_54, out r4_55, out r5_56, out r6_57, out r12_58)
 l0000C2D2_thunk_fn0000C2D4:
 	fn0000C2D4()
 	return
@@ -19295,10 +19295,10 @@ l0000E73C:
 	branch r12_98 != 0<32> l0000E796
 l0000E796:
 	word64 r9_r8_114 = Mem72[pc + 118<i32>:word64]
-	word32 r12_123
-	word32 lr_124
+	word32 lr_540
 	word32 r9_538
-	branch __avr32_f64_cmp_lt(SLICE(r9_r8_114, word32, 0), SLICE(r9_r8_114, word32, 32), r4_115, r5_117, out r9_538, out r12_123, out lr_124) l0000E7EE
+	word32 r12_539
+	branch __avr32_f64_cmp_lt(SLICE(r9_r8_114, word32, 0), SLICE(r9_r8_114, word32, 32), r4_115, r5_117, out r9_538, out r12_539, out lr_540) l0000E7EE
 l0000E7A4:
 	word32 r7_133 = fp - 0x24<32> + (r1_141 << 3<8>) - 0x208<32>
 	word32 r9_136 = r0_135
@@ -19316,21 +19316,21 @@ l0000E7C6:
 	r5_117 = r11_157
 	r4_115 = r10_156
 	r9_136 = r0_135
-	word32 lr_542
-	word32 r12_541
-	branch __avr32_f64_cmp_ge(SLICE(r9_r8_167, word32, 0), SLICE(r9_r8_167, word32, 32), r10_156, r11_157, out r12_541, out lr_542) l0000E7EE
+	word32 lr_544
+	word32 r12_543
+	branch __avr32_f64_cmp_ge(SLICE(r9_r8_167, word32, 0), SLICE(r9_r8_167, word32, 32), r10_156, r11_157, out r12_543, out lr_544) l0000E7EE
 l0000E7E0:
 	r7_133 = r7_133 - 8<32>
 l0000E7EC:
 	r0_135 = r9_136
 l0000E75E:
-	word32 r11_539
-	__avr32_f64_mul(r8_106, r9_108, r8_106, r9_108, out r11_539)
+	word32 r11_541
+	__avr32_f64_mul(r8_106, r9_108, r8_106, r9_108, out r11_541)
 	word64 r11_r10_532 = <invalid>
 	word32 r8_211 = SLICE(qwLoc042C_426, word32, 0)
 	word32 r9_213 = SLICE(qwLoc042C_426, word32, 32)
-	word32 r11_540
-	__avr32_f64_mul(r8_211, r9_213, r8_211, r9_213, out r11_540)
+	word32 r11_542
+	__avr32_f64_mul(r8_211, r9_213, r8_211, r9_213, out r11_542)
 	word64 r11_r10_533 = <invalid>
 	r1_141 = r1_141 + 1<32>
 	qwLoc0440_425 = r11_r10_532
@@ -19358,8 +19358,8 @@ l0000E84E:
 l0000E824:
 	word64 r9_r8_281 = Mem411[r3_268:word64]
 	word32 r12_289
-	word32 lr_543
-	__avr32_f64_cmp_ge(SLICE(r9_r8_281, word32, 0), SLICE(r9_r8_281, word32, 32), r4_115, r5_117, out r12_289, out lr_543)
+	word32 lr_545
+	__avr32_f64_cmp_ge(SLICE(r9_r8_281, word32, 0), SLICE(r9_r8_281, word32, 32), r4_115, r5_117, out r12_289, out lr_545)
 	r1_141 = r1_141 - 1<32>
 	r3_268 = r3_268 - 8<32>
 	word32 lr_296 = 1<32> << r1_141
@@ -19440,10 +19440,10 @@ l0000E920:
 	branch r12_98 != 0<32> l0000E97A
 l0000E97A:
 	word64 r9_r8_114 = Mem72[pc + 118<i32>:word64]
-	word32 r12_123
-	word32 lr_124
+	word32 lr_540
 	word32 r9_538
-	branch __avr32_f64_cmp_lt(SLICE(r9_r8_114, word32, 0), SLICE(r9_r8_114, word32, 32), r4_115, r5_117, out r9_538, out r12_123, out lr_124) l0000E9D2
+	word32 r12_539
+	branch __avr32_f64_cmp_lt(SLICE(r9_r8_114, word32, 0), SLICE(r9_r8_114, word32, 32), r4_115, r5_117, out r9_538, out r12_539, out lr_540) l0000E9D2
 l0000E988:
 	word32 r7_133 = fp - 0x24<32> + (r1_141 << 3<8>) - 0x208<32>
 	word32 r9_136 = r0_135
@@ -19461,21 +19461,21 @@ l0000E9AA:
 	r5_117 = r11_157
 	r4_115 = r10_156
 	r9_136 = r0_135
-	word32 lr_542
-	word32 r12_541
-	branch __avr32_f64_cmp_ge(SLICE(r9_r8_167, word32, 0), SLICE(r9_r8_167, word32, 32), r10_156, r11_157, out r12_541, out lr_542) l0000E9D2
+	word32 lr_544
+	word32 r12_543
+	branch __avr32_f64_cmp_ge(SLICE(r9_r8_167, word32, 0), SLICE(r9_r8_167, word32, 32), r10_156, r11_157, out r12_543, out lr_544) l0000E9D2
 l0000E9C4:
 	r7_133 = r7_133 - 8<32>
 l0000E9D0:
 	r0_135 = r9_136
 l0000E942:
-	word32 r11_539
-	__avr32_f64_mul(r8_106, r9_108, r8_106, r9_108, out r11_539)
+	word32 r11_541
+	__avr32_f64_mul(r8_106, r9_108, r8_106, r9_108, out r11_541)
 	word64 r11_r10_532 = <invalid>
 	word32 r8_211 = SLICE(qwLoc042C_426, word32, 0)
 	word32 r9_213 = SLICE(qwLoc042C_426, word32, 32)
-	word32 r11_540
-	__avr32_f64_mul(r8_211, r9_213, r8_211, r9_213, out r11_540)
+	word32 r11_542
+	__avr32_f64_mul(r8_211, r9_213, r8_211, r9_213, out r11_542)
 	word64 r11_r10_533 = <invalid>
 	r1_141 = r1_141 + 1<32>
 	qwLoc0440_425 = r11_r10_532
@@ -19503,8 +19503,8 @@ l0000EA32:
 l0000EA08:
 	word64 r9_r8_281 = Mem411[r3_268:word64]
 	word32 r12_289
-	word32 lr_543
-	__avr32_f64_cmp_ge(SLICE(r9_r8_281, word32, 0), SLICE(r9_r8_281, word32, 32), r4_115, r5_117, out r12_289, out lr_543)
+	word32 lr_545
+	__avr32_f64_cmp_ge(SLICE(r9_r8_281, word32, 0), SLICE(r9_r8_281, word32, 32), r4_115, r5_117, out r12_289, out lr_545)
 	r1_141 = r1_141 - 1<32>
 	r3_268 = r3_268 - 8<32>
 	word32 lr_296 = 1<32> << r1_141
@@ -20352,17 +20352,17 @@ fn0000F278_entry:
 	word32 r11 = SLICE(r11_r10, word32, 32)
 l0000F278:
 	word32 r6_20 = 0x0000F27E<p32> - Mem17[0x0000F2C8<p32>:word32]
-	word32 lr_29
 	word32 r12_131
-	branch fn00010CFC(pc, out r12_131, out lr_29) l0000F2C4
+	word32 lr_132
+	branch fn00010CFC(pc, out r12_131, out lr_132) l0000F2C4
 l0000F28E:
-	word32 r9_44
 	word32 lr_46
-	word32 r12_132
-	branch __avr32_f64_cmp_lt(0<32>, 0<32>, r10, r11, out r9_44, out r12_132, out lr_46) l0000F2A0
+	word32 r9_133
+	word32 r12_134
+	branch __avr32_f64_cmp_lt(0<32>, 0<32>, r10, r11, out r9_133, out r12_134, out lr_46) l0000F2A0
 l0000F2A0:
-	word32 r12_133
-	branch __avr32_f64_cmp_eq(0<32>, 0<32>, r10, r11, out r12_133) l0000F2C4
+	word32 r12_135
+	branch __avr32_f64_cmp_eq(0<32>, 0<32>, r10, r11, out r12_135) l0000F2C4
 l0000F2C4:
 l0000F2AE:
 	call Mem67[r6_20 + 168<i32>:word32] (retsize: 0;)

@@ -2669,10 +2669,10 @@ l00007B24_ds_f:
 l00007B38:
 	word32 r11_62
 	word32 r16_67
-	word32 r18_69
-	word32 r20_72
+	word32 r18_425
+	word32 r20_426
 	word32 r14_424
-	word32 r2_71 = fn000073EC(r4, r14, r15, r16_14, r18, r20, out r11_62, out r14_424, out r15, out r16_67, out r18_69, out r20_72)
+	word32 r2_71 = fn000073EC(r4, r14, r15, r16_14, r18, r20, out r11_62, out r14_424, out r15, out r16_67, out r18_425, out r20_426)
 	branch r11_62 == 0<32> l00007B38_ds_t
 l00007B38_ds_t:
 l00007B38_ds_f:
@@ -4619,9 +4619,9 @@ l00009EF8:
 	word32 r22_212
 	word32 r28_213
 	fn0000D214(fp - 27<i32>, fp - 26<i32>, -1<i32>, VR, out r22_212, out r28_213)
-	word32 r22_141
-	word32 r24_142
-	fn0000D298(fp - 27<i32>, fp - 26<i32>, -1<i32>, VR, out r22_141, out r24_142)
+	word32 r22_214
+	word32 r24_215
+	fn0000D298(fp - 27<i32>, fp - 26<i32>, -1<i32>, VR, out r22_214, out r24_215)
 	branch r4 != 1<32> l00009EF8_ds_t
 l00009EF8_ds_t:
 l0000A050:
@@ -4693,9 +4693,9 @@ l0000A070_ds_f:
 l0000A088:
 	word32 r2_84 = (r3 << 3<32>) + 0x13010<32>
 	word32 r14_90 = CONVERT(Mem87[r2_84 + -4<i32>:word16], word16, word32)
-	word32 r22_93
-	word32 r28_96
-	fn0000D214(fp - 19<i32>, fp - 18<i32>, -1<i32>, VR, out r22_93, out r28_96)
+	word32 r28_192
+	word32 r22_191
+	fn0000D214(fp - 19<i32>, fp - 18<i32>, -1<i32>, VR, out r22_191, out r28_192)
 	word32 r11_105 = CONVERT(bLoc0E, byte, word32) >> r14_90
 	r11_106 = r11_105 & 1<32>
 	branch (r11_105 & 1<32>) == 0<32> l0000A088_ds_t
@@ -5028,9 +5028,9 @@ l0000A9B4:
 	word32 r22_286
 	word32 r28_287
 	fn0000D214(fp + 17<i32>, fp + 18<i32>, r2_88, VR, out r22_286, out r28_287)
-	word32 r22_222
-	word32 r24_223
-	fn0000D298(fp + 17<i32>, fp + 18<i32>, r2_88, VR, out r22_222, out r24_223)
+	word32 r22_288
+	word32 r24_289
+	fn0000D298(fp + 17<i32>, fp + 18<i32>, r2_88, VR, out r22_288, out r24_289)
 l0000AA6C:
 	return r15
 fn0000A92C_exit:

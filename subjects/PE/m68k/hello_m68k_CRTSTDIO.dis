@@ -65,23 +65,23 @@ l00001680:
 l000016B8:
 	branch __btst(Mem10[dwArg08 + 14<i32>:byte], 4<16>) l000016C8
 l000016C0:
-	word32 d3_120
-	word32 d4_121
-	word32 a2_122
-	word32 a5_123
-	word32 a6_124
-	fn00001D80(a5, dwArg08, out d3_120, out d4_121, out a2_122, out a5_123, out a6_124)
+	word32 d3_121
+	word32 d4_122
+	word32 a2_123
+	word32 a5_124
+	word32 a6_125
+	fn00001D80(a5, dwArg08, out d3_121, out d4_122, out a2_123, out a5_124, out a6_125)
 l00001690:
 	branch __btst(Mem10[dwArg08 + 14<i32>:byte], 4<16>) l000016C8
 l000016C8:
 	return
 l00001698:
 	word32 a2_48
-	word32 a6_54
 	word32 d3_117
 	word32 d4_118
 	word32 a5_119
-	fn00001D80(a5, dwArg08, out d3_117, out d4_118, out a2_48, out a5_119, out a6_54)
+	word32 a6_120
+	fn00001D80(a5, dwArg08, out d3_117, out d4_118, out a2_48, out a5_119, out a6_120)
 	Mem64[a2_48 + 14<i32>:word16] = Mem46[a2_48 + 14<i32>:word16] & 0xEEFF<16>
 	Mem66[a2_48 + 24<i32>:word32] = 0<i32>
 	Mem67[a2_48:word32] = 0<i32>
@@ -418,11 +418,11 @@ void fn00001DF4(word32 a5)
 // Preserved:
 fn00001DF4_entry:
 l00001DF4:
-	word32 a6_15
 	word32 d3_33
 	word32 d4_34
 	word32 a5_35
-	fn00001E04(a5, 1<i32>, out d3_33, out d4_34, out a5_35, out a6_15)
+	word32 a6_36
+	fn00001E04(a5, 1<i32>, out d3_33, out d4_34, out a5_35, out a6_36)
 	return
 fn00001DF4_exit:
 

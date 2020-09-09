@@ -4869,9 +4869,9 @@ l0001689E:
 	word32 fp_203
 	word32 r2_207
 	word32 r4_209
-	word32 pc_1119
-	word32 ap_1118
-	branch fn00015256(r0_172, r2_175, r4_177, ap_170, fp_171, pc_128, out r2_207, out r4_209, out ap_1118, out fp_203, out pc_1119) == 0<32> l000168B4
+	word32 pc_1121
+	word32 ap_1120
+	branch fn00015256(r0_172, r2_175, r4_177, ap_170, fp_171, pc_128, out r2_207, out r4_209, out ap_1120, out fp_203, out pc_1121) == 0<32> l000168B4
 l000168B4:
 	word32 ap_223 = CONVERT(Mem198[r4_209 + 0xC640<32>:word16], word16, uint32)
 	branch (ap_223 & 2<32>) == 0<32> l00016928
@@ -4883,14 +4883,14 @@ l00016928:
 	Mem240[sp_213 - 0x14<32>:word32] = 0<32>
 	Mem243[sp_213 - 0x18<32>:uint32] = 0x40<u32>
 	Mem246[sp_213 - 0x1C<32>:word32] = fp_203 + -1052<i32>
-	word32 r6_1125
-	word32 r5_1124
-	word32 r4_1123
-	word32 r3_1122
-	word32 r2_1121
+	word32 r6_1128
+	word32 r5_1127
+	word32 r4_1126
+	word32 r3_1125
+	word32 r2_1124
 	word32 fp_251
 	word32 ap_250
-	word32 r0_252 = fn0001878E(ap_223, fp_203, out r2_1121, out r3_1122, out r4_1123, out r5_1124, out r6_1125, out ap_250, out fp_251)
+	word32 r0_252 = fn0001878E(ap_223, fp_203, out r2_1124, out r3_1125, out r4_1126, out r5_1127, out r6_1128, out ap_250, out fp_251)
 	word32 sp_263 = <invalid>
 	branch r0_252 == 0<32> l00016973
 l00016973:
@@ -4914,9 +4914,9 @@ l0001695B:
 	fn00018BF6(ap_250, fp_251, out ap_323, out fp_324)
 	word32 sp_327 = <invalid>
 	Mem335[sp_327 - 4<32>:word32] = Mem318[fp_324 + -8<i32>:word32]
-	word32 fp_340
-	word32 ap_1132
-	fn00018BF6(ap_323, fp_324, out ap_1132, out fp_340)
+	word32 fp_1137
+	word32 ap_1136
+	fn00018BF6(ap_323, fp_324, out ap_1136, out fp_1137)
 	return
 l000168BF:
 	Mem358[sp_213 - 4<32>:word32] = fp_203 + -28<i32>
@@ -4926,14 +4926,14 @@ l000168BF:
 	Mem369[sp_213 - 0x14<32>:word32] = 0<32>
 	Mem372[sp_213 - 0x18<32>:uint32] = 0x40<u32>
 	Mem375[sp_213 - 0x1C<32>:word32] = fp_203 + -1052<i32>
-	word32 r6_1130
-	word32 r5_1129
-	word32 r4_1128
-	word32 r3_1127
-	word32 r2_1126
+	word32 r6_1133
+	word32 r5_1132
+	word32 r4_1131
+	word32 r3_1130
+	word32 r2_1129
 	word32 fp_380
 	word32 ap_379
-	word32 r0_381 = fn0001878E(ap_223, fp_203, out r2_1126, out r3_1127, out r4_1128, out r5_1129, out r6_1130, out ap_379, out fp_380)
+	word32 r0_381 = fn0001878E(ap_223, fp_203, out r2_1129, out r3_1130, out r4_1131, out r5_1132, out r6_1133, out ap_379, out fp_380)
 	word32 sp_392 = <invalid>
 	branch r0_381 == 0<32> l0001690A
 l0001690A:
@@ -4957,9 +4957,9 @@ l000168F2:
 	fn00018BF6(ap_379, fp_380, out ap_452, out fp_453)
 	word32 sp_456 = <invalid>
 	Mem464[sp_456 - 4<32>:word32] = Mem447[fp_453 + -8<i32>:word32]
-	word32 fp_469
-	word32 ap_1131
-	fn00018BF6(ap_452, fp_453, out ap_1131, out fp_469)
+	word32 fp_1135
+	word32 ap_1134
+	fn00018BF6(ap_452, fp_453, out ap_1134, out fp_1135)
 	return
 l000168B0:
 	return
@@ -4971,9 +4971,9 @@ l00016886:
 	sp_183 = <invalid>
 l00016890:
 	Mem516[sp_183 - 4<32>:word32] = Mem514[fp_171 + -8<i32>:word32]
-	word32 fp_522
-	word32 ap_1120
-	fn00018BF6(ap_170, fp_171, out ap_1120, out fp_522)
+	word32 fp_1123
+	word32 ap_1122
+	fn00018BF6(ap_170, fp_171, out ap_1122, out fp_1123)
 	return
 l00016859:
 	return
@@ -5060,9 +5060,9 @@ l00016A99:
 	sp_726 = <invalid>
 l00016AA3:
 	Mem775[sp_726 - 4<32>:word32] = Mem773[fp_714 + -12<i32>:word32]
-	word32 fp_781
-	word32 ap_1117
-	fn00018BF6(ap_713, fp_714, out ap_1117, out fp_781)
+	word32 fp_1119
+	word32 ap_1118
+	fn00018BF6(ap_713, fp_714, out ap_1118, out fp_1119)
 	return
 l00016A18:
 	Mem799[sp_676 - 4<32>:word32] = fp_666 + -28<i32>
@@ -5096,9 +5096,9 @@ l00016A41:
 	sp_833 = <invalid>
 l00016A4B:
 	Mem892[sp_833 - 4<32>:word32] = Mem890[fp_821 + -12<i32>:word32]
-	word32 fp_898
+	word32 fp_1117
 	word32 ap_1116
-	fn00018BF6(ap_820, fp_821, out ap_1116, out fp_898)
+	fn00018BF6(ap_820, fp_821, out ap_1116, out fp_1117)
 	return
 l00016A09:
 	return

@@ -64,10 +64,10 @@ void fn00001680(struct Eq_n * a5, word32 dwArg04, struct Eq_n * dwArg08)
 		if (__btst(dwArg08->b000E, 0x04))
 			return;
 		struct Eq_n * a2_n;
-		word32 a6_n;
 		word32 d3_n;
 		word32 d4_n;
 		word32 a5_n;
+		word32 a6_n;
 		fn00001D80(a5, dwArg08, out d3_n, out d4_n, out a2_n, out a5_n, out a6_n);
 		a2_n->w000E &= ~0x1100;
 		a2_n->dw0018 = 0;
@@ -355,10 +355,10 @@ int32 fn00001D80(struct Eq_n * a5, struct Eq_n * dwArg04, ptr32 & d3Out, ptr32 &
 // 00001DF4: void fn00001DF4(Register (ptr32 Eq_n) a5)
 void fn00001DF4(struct Eq_n * a5)
 {
-	word32 a6_n;
 	word32 d3_n;
 	word32 d4_n;
 	word32 a5_n;
+	word32 a6_n;
 	fn00001E04(a5, 1, out d3_n, out d4_n, out a5_n, out a6_n);
 }
 

@@ -55,7 +55,6 @@ l0C00_0004:
 	// succ:  l0C00_0009 l0C00_000F
 l0C00_0009:
 	dx_10 = fn0C00_0013(dx)
-	SCZO_13 = <invalid>
 	goto l0C00_0010
 	// succ:  l0C00_0010
 l0C00_000F:
@@ -97,13 +96,11 @@ l0C00_0013:
 	branch dx < 0x14<16> l0C00_001F
 	// succ:  l0C00_0018 l0C00_001F
 l0C00_0018:
-	ax_18 = fn0C00_0004(dx - 1<16>, out dx_17)
-	SCZO_20 = <invalid>
+	fn0C00_0004(dx - 1<16>, out dx_17)
 	goto l0C00_0025
 	// succ:  l0C00_0025
 l0C00_001F:
-	ax_11 = fn0C00_0004(dx - 0xA<16>, out dx_10)
-	SCZO_13 = <invalid>
+	fn0C00_0004(dx - 0xA<16>, out dx_10)
 	// succ:  l0C00_0025
 l0C00_0025:
 	dx_27 = PHI((dx_17, l0C00_0018), (dx_10, l0C00_001F))

@@ -490,9 +490,9 @@ l00000476:
 l00000482:
 	word32 r4_32 = CONVERT(SLICE(CONVERT(Mem15[r0 + 69<i32>:byte], byte, word32), int8, 0), int8, int32)
 	word32 r0_162
-	word32 lr_39
 	word32 r7_44
-	branch prvCopyDataToQueue(r0, r1, r3, r2, lr, out r0_162, out r7_44, out lr_39) l000004A6
+	word32 lr_163
+	branch prvCopyDataToQueue(r0, r1, r3, r2, lr, out r0_162, out r7_44, out lr_163) l000004A6
 l000004A6:
 	branch Mem15[r0 + 36<i32>:word32] == 0<32> l0000049E
 l000004AC:
@@ -568,10 +568,10 @@ l00000524:
 	word32 r4_20 = Mem15[r0 + 56<i32>:word32]
 	branch r4_20 != 0<32> l0000054A
 l0000054A:
-	word32 lr_28
 	word32 r5_33
 	word32 r7_35
-	word32 r4_32 = prvCopyDataFromQueue(r0, r1, r4_20, CONVERT(SLICE(CONVERT(Mem15[r0 + 68<i32>:byte], byte, word32), int8, 0), int8, int32), r6_17, r0, lr, out r5_33, out r6_17, out r7_35, out lr_28)
+	word32 lr_150
+	word32 r4_32 = prvCopyDataFromQueue(r0, r1, r4_20, CONVERT(SLICE(CONVERT(Mem15[r0 + 68<i32>:byte], byte, word32), int8, 0), int8, int32), r6_17, r0, lr, out r5_33, out r6_17, out r7_35, out lr_150)
 	Mem39[r7_35 + 56<i32>:word32] = r4_32 - 1<32>
 	branch r4_32 == 1<32> l00000572
 l00000572:

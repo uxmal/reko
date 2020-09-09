@@ -358,7 +358,7 @@ Eq_5: (union "Eq_5" (int16 u0) (uint16 u1) (ptr16 u2))
 	T_2283 (in -r1 : word16)
 	T_2284 (in r2_5 : Eq_5)
 	T_2286 (in r0_8 : Eq_5)
-	T_2291 (in fn123A(r0, r1, out r2_5, out r3_6) : word16)
+	T_2291 (in fn123A(r0, r1, out r2_5, out r3_23) : word16)
 	T_2292 (in r2_14 : Eq_5)
 	T_2294 (in __rol(r2_5, r2_5) : word16)
 	T_2296 (in __rol(r2_14, r2_14) : word16)
@@ -10112,7 +10112,7 @@ T_2284: (in r2_5 : Eq_5)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: word16
-T_2285: (in r3_6 : word16)
+T_2285: (in r3_23 : word16)
   Class: Eq_2285
   DataType: word16
   OrigDataType: word16
@@ -10132,11 +10132,11 @@ T_2289: (in out r2_5 : ptr16)
   Class: Eq_2258
   DataType: ptr16
   OrigDataType: ptr16
-T_2290: (in out r3_6 : ptr16)
+T_2290: (in out r3_23 : ptr16)
   Class: Eq_2259
   DataType: ptr16
   OrigDataType: ptr16
-T_2291: (in fn123A(r0, r1, out r2_5, out r3_6) : word16)
+T_2291: (in fn123A(r0, r1, out r2_5, out r3_23) : word16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: word16

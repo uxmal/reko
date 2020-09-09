@@ -286,12 +286,12 @@ Eq_2: (union "Eq_2" ((ptr32 Eq_5628) u0) ((ptr32 Eq_5629) u1))
 	T_4279 (in fn004035A0(fn00403B08(fn00403618(r2, 0xA<32>, r29, r30, r31, out r29_21, out r30_23, out r31_24), (struct Eq_2914 *) 0x16<32>, r29_21, r30_23, r31_24, out r29_41, out r30_35, out r31_36), (word32 *) 3<32>, r29_41, r30_35, r31_36, out r29_64, out r31_65) : word32)
 	T_4337 (in r2_115 : Eq_2)
 	T_4351 (in fn004004B4(r2, fp + 0xFFFFFFD8<32>, r4, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, fp + 0xFFFFFFD8<32>, lr, out r3_79, out r25_74, out r26_75, out r27_76, out r28_77, out r29_108, out r30_197, out r31_81) : word32)
-	T_4375 (in out r27_106 : ptr32)
-	T_4376 (in out r28_107 : ptr32)
+	T_4375 (in out r27_201 : ptr32)
+	T_4376 (in out r28_202 : ptr32)
 	T_4377 (in out r29_108 : ptr32)
 	T_4378 (in out r30_110 : ptr32)
-	T_4379 (in out r31_199 : ptr32)
-	T_4380 (in fn00401598(r2_115, 0<32>, r31_81, r25_74, r26_75, r27_76, r28_77, r29_108, r3_79, r31_81, out r3_198, out r25_122, out r26_121, out r27_106, out r28_107, out r29_108, out r30_110, out r31_199) : word32)
+	T_4379 (in out r31_203 : ptr32)
+	T_4380 (in fn00401598(r2_115, 0<32>, r31_81, r25_74, r26_75, r27_76, r28_77, r29_108, r3_79, r31_81, out r3_198, out r25_199, out r26_200, out r27_201, out r28_202, out r29_108, out r30_110, out r31_203) : word32)
 	T_4423 (in r2_124 : Eq_2)
 	T_4433 (in out r31_45 : ptr32)
 	T_4434 (in fn004002F8(r2, r3, r25, r26, r27, r28, r29, r30, r3, out r3_44, out r25_54, out r26_55, out r27_56, out r28_57, out r29_58, out r31_45) : word32)
@@ -19251,23 +19251,23 @@ T_4363: (in r4_95 <= 0<32> : bool)
   Class: Eq_4363
   DataType: bool
   OrigDataType: bool
-T_4364: (in r27_106 : word32)
+T_4364: (in r31_203 : word32)
   Class: Eq_4364
   DataType: word32
   OrigDataType: word32
-T_4365: (in r28_107 : word32)
+T_4365: (in r28_202 : word32)
   Class: Eq_4365
   DataType: word32
   OrigDataType: word32
-T_4366: (in r26_121 : word32)
+T_4366: (in r27_201 : word32)
   Class: Eq_4366
   DataType: word32
   OrigDataType: word32
-T_4367: (in r25_122 : word32)
+T_4367: (in r26_200 : word32)
   Class: Eq_4367
   DataType: word32
   OrigDataType: word32
-T_4368: (in r31_199 : word32)
+T_4368: (in r25_199 : word32)
   Class: Eq_4368
   DataType: word32
   OrigDataType: word32
@@ -19287,19 +19287,19 @@ T_4372: (in out r3_198 : ptr32)
   Class: Eq_599
   DataType: Eq_599
   OrigDataType: ptr32
-T_4373: (in out r25_122 : ptr32)
+T_4373: (in out r25_199 : ptr32)
   Class: Eq_15
   DataType: ptr32
   OrigDataType: ptr32
-T_4374: (in out r26_121 : ptr32)
+T_4374: (in out r26_200 : ptr32)
   Class: Eq_16
   DataType: ptr32
   OrigDataType: ptr32
-T_4375: (in out r27_106 : ptr32)
+T_4375: (in out r27_201 : ptr32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: ptr32
-T_4376: (in out r28_107 : ptr32)
+T_4376: (in out r28_202 : ptr32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: ptr32
@@ -19311,11 +19311,11 @@ T_4378: (in out r30_110 : ptr32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: ptr32
-T_4379: (in out r31_199 : ptr32)
+T_4379: (in out r31_203 : ptr32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: ptr32
-T_4380: (in fn00401598(r2_115, 0<32>, r31_81, r25_74, r26_75, r27_76, r28_77, r29_108, r3_79, r31_81, out r3_198, out r25_122, out r26_121, out r27_106, out r28_107, out r29_108, out r30_110, out r31_199) : word32)
+T_4380: (in fn00401598(r2_115, 0<32>, r31_81, r25_74, r26_75, r27_76, r28_77, r29_108, r3_79, r31_81, out r3_198, out r25_199, out r26_200, out r27_201, out r28_202, out r29_108, out r30_110, out r31_203) : word32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: word32

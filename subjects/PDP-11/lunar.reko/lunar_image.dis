@@ -1509,8 +1509,8 @@ word16 fn125E(word16 r0, word16 r1, ptr16 & r2Out)
 fn125E_entry:
 l125E:
 	word16 r2_5
-	word16 r3_6
-	word16 r0_8 = fn123A(r0, r1, out r2_5, out r3_6)
+	word16 r3_23
+	word16 r0_8 = fn123A(r0, r1, out r2_5, out r3_23)
 	word16 r2_14 = __rol(r2_5, r2_5)
 	r2Out = __rol(r2_14, r2_14)
 	return r0_8

@@ -111,10 +111,17 @@ namespace Reko.Analysis
         {
             var defs = new HashSet<SsaIdentifier>();
             var wl = new WorkList<SsaIdentifier>();
+            var visited = new HashSet<Statement>();
             wl.Add(sidUse);
             while (wl.GetWorkItem(out var sid))
             {
                 var def = sid.DefStatement;
+                if (def != null)
+                {
+                    if (visited.Contains(def))
+                        continue;
+                    visited.Add(def);
+                }
                 switch (def?.Instruction)
                 {
                 case Assignment ass:

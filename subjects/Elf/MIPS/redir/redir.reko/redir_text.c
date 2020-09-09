@@ -888,10 +888,10 @@ void client_new(struct Eq_n * r4, struct Eq_n * r5, int32 r6, int32 r7, word32 r
 	Eq_n r2_n = malloc(6100);
 	if (r2_n == 0x00)
 	{
-		word32 r25_n;
 		word32 r5_n;
 		word32 r6_n;
 		word32 r7_n;
+		word32 r25_n;
 		print_log(0x00, 0x00409F00, out r5_n, out r6_n, out r7_n, out r25_n);
 	}
 	else
@@ -1462,9 +1462,9 @@ struct Eq_n * clist_new(word32 ra, union Eq_n & r4Out, union Eq_n & r5Out)
 	Eq_n r4_n = (char *) <invalid>;
 	if (r2_n == null)
 	{
-		word32 r25_n;
 		word32 r6_n;
 		word32 r7_n;
+		word32 r25_n;
 		r4_n = print_log(0x00, 0x0040A2A0, out r5_n, out r6_n, out r7_n, out r25_n);
 		r2_n = null;
 	}
@@ -1582,10 +1582,10 @@ Eq_n request_new(ptr32 r4, word32 ra)
 	Eq_n r2_n = malloc(0x055C);
 	if (r2_n == 0x00)
 	{
-		word32 r25_n;
 		word32 r5_n;
 		word32 r6_n;
 		word32 r7_n;
+		word32 r25_n;
 		print_log(0x00, 0x0040A308, out r5_n, out r6_n, out r7_n, out r25_n);
 		r2_n.u0 = 0x00;
 	}
@@ -1634,10 +1634,10 @@ void request_save_line(Eq_n r4, void * r5, Eq_n r6, word32 ra)
 	byte bArg0B_n = (byte) r6;
 	if (r4 == 0x00)
 	{
-		word32 r25_n;
 		word32 r5_n;
 		word32 r6_n;
 		word32 r7_n;
+		word32 r25_n;
 		print_log(2, 0x0040A398, out r5_n, out r6_n, out r7_n, out r25_n);
 	}
 	else if ((word32) (*((word32) r4 + 0x0558) < 63) == 0x00)
@@ -1676,10 +1676,10 @@ void request_make_url(Eq_n r4, word32 ra)
 {
 	if (r4 == 0x00)
 	{
-		word32 r25_n;
 		word32 r5_n;
 		word32 r6_n;
 		word32 r7_n;
+		word32 r25_n;
 		print_log(2, 4236228, out r5_n, out r6_n, out r7_n, out r25_n);
 	}
 	else if (strncasecmp((word32) r4 + 0x0114, "http://", 7) == 0x00)
@@ -1775,10 +1775,10 @@ void request_get_host(Eq_n r4, union Eq_n * r5, word32 ra)
 {
 	if (r4 == 0x00 || r4 == -20)
 	{
-		word32 r25_n;
-		word32 r5_n;
-		word32 r6_n;
 		word32 r7_n;
+		word32 r6_n;
+		word32 r5_n;
+		word32 r25_n;
 		print_log(2, 0x0040A4F0, out r5_n, out r6_n, out r7_n, out r25_n);
 	}
 	else
@@ -1799,27 +1799,27 @@ void request_get_host(Eq_n r4, union Eq_n * r5, word32 ra)
 				}
 				else
 				{
-					word32 r6_n;
 					word32 r5_n;
-					word32 r25_n;
+					word32 r6_n;
 					word32 r7_n;
+					word32 r25_n;
 					print_log(2, 0x0040A4D0, out r5_n, out r6_n, out r7_n, out r25_n);
 				}
 			}
 			else
 			{
-				word32 r7_n;
-				word32 r6_n;
 				word32 r5_n;
+				word32 r6_n;
+				word32 r7_n;
 				word32 r25_n;
 				print_log(2, 0x0040A4AC, out r5_n, out r6_n, out r7_n, out r25_n);
 			}
 		}
 		else
 		{
-			word32 r25_n;
-			word32 r5_n;
 			word32 r6_n;
+			word32 r5_n;
+			word32 r25_n;
 			word32 r7_n;
 			print_log(2, 0x0040A470, out r5_n, out r6_n, out r7_n, out r25_n);
 		}
@@ -1833,10 +1833,10 @@ void request_get_content_length(Eq_n r4, union Eq_n * r5, word32 ra)
 {
 	if (r4 == 0x00 || r4 == -20)
 	{
-		word32 r25_n;
-		word32 r5_n;
-		word32 r6_n;
 		word32 r7_n;
+		word32 r6_n;
+		word32 r5_n;
+		word32 r25_n;
 		print_log(2, 4236600, out r5_n, out r6_n, out r7_n, out r25_n);
 	}
 	else
@@ -1854,27 +1854,27 @@ void request_get_content_length(Eq_n r4, union Eq_n * r5, word32 ra)
 					*((word32) r4 + 0x0554) = strtoul(dwLoc18_n, fp + -20, 0x0A);
 				else
 				{
-					word32 r6_n;
 					word32 r5_n;
-					word32 r25_n;
+					word32 r6_n;
 					word32 r7_n;
+					word32 r25_n;
 					print_log(2, 0x0040A4D0, out r5_n, out r6_n, out r7_n, out r25_n);
 				}
 			}
 			else
 			{
-				word32 r7_n;
-				word32 r6_n;
 				word32 r5_n;
+				word32 r6_n;
+				word32 r7_n;
 				word32 r25_n;
 				print_log(2, 0x0040A4AC, out r5_n, out r6_n, out r7_n, out r25_n);
 			}
 		}
 		else
 		{
-			word32 r25_n;
-			word32 r5_n;
 			word32 r6_n;
+			word32 r5_n;
+			word32 r25_n;
 			word32 r7_n;
 			print_log(2, 4236644, out r5_n, out r6_n, out r7_n, out r25_n);
 		}
@@ -1923,9 +1923,9 @@ void properties_parse_int(union Eq_n * r4, int8 * r5, word32 ra)
 	if ((word32) *dwLoc18 != 0x00 && dwLoc18 != r5)
 	{
 		word32 r25_n;
-		word32 r5_n;
-		word32 r6_n;
 		word32 r7_n;
+		word32 r6_n;
+		word32 r5_n;
 		print_log(2, 0x0040A590, out r5_n, out r6_n, out r7_n, out r25_n);
 	}
 }
@@ -2328,10 +2328,10 @@ struct Eq_n * server_new(word32 r4, word32 r5, word32 r6, int32 r7, word32 ra)
 	struct Eq_n * r2_n = malloc(36);
 	if (r2_n == null)
 	{
-		word32 r25_n;
 		word32 r5_n;
 		word32 r6_n;
 		word32 r7_n;
+		word32 r25_n;
 		print_log(0x00, 0x0040A770, out r5_n, out r6_n, out r7_n, out r25_n);
 		r2_n = null;
 	}
@@ -2370,9 +2370,9 @@ int32 server_open(Eq_n r4, word32 ra, ptr32 & r5Out)
 	{
 		__errno_location();
 		strerror(*__errno_location());
-		word32 r25_n;
 		word32 r6_n;
 		word32 r7_n;
+		word32 r25_n;
 		print_log(1, 4237212, out r5_n, out r6_n, out r7_n, out r25_n);
 		r2_n = 0x00;
 	}
@@ -2447,10 +2447,10 @@ struct Eq_n * slist_new(word32 ra)
 	struct Eq_n * r2_n = malloc(0x0C);
 	if (r2_n == null)
 	{
-		word32 r25_n;
 		word32 r5_n;
 		word32 r6_n;
 		word32 r7_n;
+		word32 r25_n;
 		print_log(0x00, 0x0040A850, out r5_n, out r6_n, out r7_n, out r25_n);
 		r2_n = null;
 	}

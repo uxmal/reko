@@ -26,7 +26,7 @@ l0C00_0004:
 l0C00_0009:
 	call fn0C00_0013 (retsize: 2;)
 		uses: dx:dx
-		defs: dx:dx_10,SCZO:SCZO_13
+		defs: dx:dx_10
 l0C00_000F:
 	dx_7 = dx - 1<16>
 l0C00_0010:
@@ -50,11 +50,11 @@ l0C00_0013:
 l0C00_0018:
 	call fn0C00_0004 (retsize: 2;)
 		uses: dx:dx - 1<16>
-		defs: ax:ax_18,dx:dx_17,SCZO:SCZO_20
+		defs: dx:dx_17
 l0C00_001F:
 	call fn0C00_0004 (retsize: 2;)
 		uses: dx:dx - 0xA<16>
-		defs: ax:ax_11,dx:dx_10,SCZO:SCZO_13
+		defs: dx:dx_10
 l0C00_0025:
 	dx_27 = PHI((dx_17, l0C00_0018), (dx_10, l0C00_001F))
 	return

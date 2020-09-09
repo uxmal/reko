@@ -202,8 +202,8 @@ Eq_n xfree(Eq_n o0)
 Eq_n savestring(Eq_n o0, Eq_n o1, union Eq_n & l0Out, ptr32 & i0Out, ptr32 & i1Out, ptr32 & i6Out)
 {
 	ptr32 i1_n;
-	word32 i2_n;
 	ptr32 i6_n;
+	word32 i2_n;
 	xmalloc((word32) o1 + 1, out i1_n, out i2_n, out i6_n);
 	strcpy((word32) o1 + 1, o0);
 	l0Out = o0;
@@ -246,8 +246,8 @@ void fancy_abort()
 Eq_n dupnstr(Eq_n o0, struct Eq_n * o1, union Eq_n & l0Out, struct Eq_n & i0Out, ptr32 & i6Out)
 {
 	int32 i1_n;
-	word32 i2_n;
 	ptr32 i6_n;
+	word32 i2_n;
 	xmalloc(o1->a0001, out i1_n, out i2_n, out i6_n);
 	strncpy(o1->a0001, o0, i1_n);
 	o1->a0001[i1_n] = 0x00;
@@ -591,8 +591,8 @@ Eq_n file_excluded_p(Eq_n o0)
 word32 string_list_cons(ptr32 & i6Out)
 {
 	word32 i1_n;
-	word32 i2_n;
 	ptr32 i6_n;
+	word32 i2_n;
 	*(union Eq_n *) 0x08 = xmalloc(0x08, out i1_n, out i2_n, out i6_n);
 	*(word32 *) 0x0C = i1_n;
 	i6Out = i6_n;
@@ -638,8 +638,8 @@ Eq_n add_symbol(Eq_n o0, Eq_n o1, ptr32 & i1Out)
 	(&(&(&(&(&o0.ptr0000->a0000[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000 = (struct Eq_n *) 0x00;
 	Eq_n i0_n;
 	ptr32 i1_n;
-	word32 i6_n;
 	struct Eq_n * l0_n;
+	word32 i6_n;
 	l0_n->dw0004 = savestring(o1, strlen(o1), out l0_n, out i0_n, out i1_n, out i6_n);
 	l0_n->dw0008 = 0x00;
 	i1Out = i1_n;
@@ -813,10 +813,10 @@ l00011EC8:
 		{
 			*l1_n = (Eq_n) 0x00;
 			Eq_n o0_n = g_t27F50;
+			word32 i0_n;
 			word32 i1_n;
 			word32 i6_n;
 			word32 l0_n;
-			word32 i0_n;
 			savestring(o0_n, l1_n - o0_n, out l0_n, out i0_n, out i1_n, out i6_n);
 		}
 		return;
@@ -934,9 +934,9 @@ l00012024:
 						o2_n += ~0x00;
 					if (o2_n - (sp_n + 0x60) <u 0x00)
 					{
+						word32 i6_n;
 						word32 i1_n;
 						word32 i2_n;
-						word32 i6_n;
 						notice(0x00017148, out i1_n, out i2_n, out i6_n);
 						exit(33);
 					}
@@ -996,8 +996,8 @@ Eq_n shortpath(Eq_n o0, Eq_n o1, union Eq_n & l0Out, struct Eq_n & l2Out, union 
 	word32 i6_n;
 	Eq_n l0_n = abspath(o0, o1, out i6_n);
 	Eq_n i1_n;
-	word32 i2_n;
 	word32 i6_n;
+	word32 i2_n;
 	Eq_n i0_n = xmalloc(o0_n, out i1_n, out i2_n, out i6_n);
 	struct Eq_n * l2_n = null;
 	int32 o1_n = (int32) *l0_n;
@@ -1470,10 +1470,10 @@ l00012AC0:
 									break;
 								++i0_n;
 							}
-							word32 i1_n;
-							word32 i6_n;
-							word32 l0_n;
 							word32 i0_n;
+							word32 i6_n;
+							word32 i1_n;
+							word32 l0_n;
 							dupnstr(i0_n + 1, check_aux_info(0x01 - (((int32) i0_n->bFFFFFFFF ^ 0x20) > 0x00), out i1_n) - (i0_n + 1), out l0_n, out i0_n, out i6_n);
 						}
 						word32 i1_n;
@@ -1569,9 +1569,9 @@ l00012D00:
 	sp_n->a0060[l0_n + 0x03] = 0x00;
 	sp_n->a0060[l0_n + 0x04] = 0x00;
 	Eq_n o0_n = l0_n + 0x06 << 0x02;
-	word32 i1_n;
-	word32 i2_n;
 	ptr32 i6_n;
+	word32 i2_n;
+	word32 i1_n;
 	Eq_n i0_n = xmalloc(o0_n, out i1_n, out i2_n, out i6_n);
 	g_t27F3C = o0_n;
 	memcpy(o0_n, sp_n->a0060, l0_n + 0x05 << 0x02);
@@ -1722,9 +1722,9 @@ l00013218:
 			{
 				Eq_n l0_n;
 				char * l2_n;
-				word32 i0_n;
-				word32 l3_n;
 				word32 l4_n;
+				word32 l3_n;
+				word32 i0_n;
 				shortpath(0x00, l4_n, out l0_n, out l2_n, out l3_n, out l4_n, out i0_n);
 				xstrerror(l2_n);
 				word32 i1_n;
@@ -1732,9 +1732,9 @@ l00013218:
 				word32 i6_n;
 				notice(l0_n, out i1_n, out i2_n, out i6_n);
 			}
+			word32 i1_n;
 			word32 i2_n;
 			word32 i6_n;
-			word32 i1_n;
 			xmalloc(l0 + 0x01, out i1_n, out i2_n, out i6_n);
 			Mem231[l0 + 0x01 + l0:byte] = 0x00;
 			word32 l2_n;
@@ -2274,9 +2274,9 @@ word32 find_rightmost_formals_list(int8 * o0)
 				ui32 o0_n = g_dw281E0;
 				while (true)
 				{
-					word32 i1_n;
 					word32 i2_n;
 					word32 i6_n;
+					word32 i1_n;
 					i0_n = check_source(SLICE(cond(o0_n - (i0_n + ~0x00)), bool, 0), 0x00, out i1_n, out i2_n, out i6_n);
 					if (((word32) g_a2B411[(word32) *i0_n] & 0x08) == 0x00)
 						break;
@@ -2287,8 +2287,8 @@ word32 find_rightmost_formals_list(int8 * o0)
 			else
 			{
 				word32 i2_n;
-				word32 i6_n;
 				word32 i1_n;
+				word32 i6_n;
 				i0_n = check_source(SLICE(cond(Mem0[0x000281E0:word32] - (i0_n + ~0x00)), bool, 0), 0x00, out i1_n, out i2_n, out i6_n);
 				o0_n = (int32) *i0_n;
 			}
@@ -2298,9 +2298,9 @@ word32 find_rightmost_formals_list(int8 * o0)
 		}
 	}
 	Eq_n o0_n = forward_to_next_token_char(i0_n);
-	word32 i1_n;
 	word32 i2_n;
 	word32 i6_n;
+	word32 i1_n;
 	check_source(0x01 - (((int32) (*o0_n) ^ 0x7B) > 0x00), o0_n, out i1_n, out i2_n, out i6_n);
 	return i6_n;
 }
@@ -2316,10 +2316,10 @@ void edit_fn_definition(int8 * o1)
 		word32 i2_n;
 		word32 i6_n;
 		notice(95440, out i1_n, out i2_n, out i6_n);
+		word32 l2_n;
 		word32 i0_n;
 		word32 i1_n;
 		word32 i2_n;
-		word32 l2_n;
 		output_up_to(i1_n, out l2_n, out i0_n, out i1_n, out i2_n);
 	}
 	else
@@ -2330,10 +2330,10 @@ void edit_fn_definition(int8 * o1)
 		{
 			if (g_dw27F2C != 0x00)
 			{
+				word32 l2_n;
 				word32 i0_n;
 				word32 i1_n;
 				word32 i2_n;
-				word32 l2_n;
 				output_up_to(i1_n, out l2_n, out i0_n, out i1_n, out i2_n);
 			}
 			else
@@ -2388,8 +2388,8 @@ l0001452C:
 		{
 			o0_n = g_t281C0;
 l00014550:
-			word32 i1_n;
 			word32 i2_n;
+			word32 i1_n;
 			struct Eq_n * i6_n;
 			i0_n = check_source(0x01 - (((word32) i0_n - 1) - o0_n < 0x00), 0x00, out i1_n, out i2_n, out i6_n);
 			if (l0_n == 0x00)
@@ -3208,9 +3208,9 @@ Eq_n choose_temp_base(union Eq_n & l1Out, size_t & i0Out, ptr32 & i6Out)
 		l0_n.u0 = 0x00017910;
 	word32 o0_n;
 	Eq_n o0_n = strlen(l0_n);
+	ptr32 i6_n;
 	word32 i1_n;
 	word32 i2_n;
-	ptr32 i6_n;
 	xmalloc(o0_n + 0x0A, out i1_n, out i2_n, out i6_n);
 	strcpy(o0_n + 0x0A, l0_n);
 	Eq_n l1_n = o0_n;
@@ -4036,9 +4036,9 @@ l00015F24:
 // 00016980: void getopt(Register (ptr32 (arr Eq_n)) o1, Register (ptr32 int8) o2)
 void getopt(Eq_n (* o1)[], int8 * o2)
 {
-	word32 i6_n;
 	word32 l6_n;
 	word32 l7_n;
+	word32 i6_n;
 	_getopt_internal(o1, o2, null, 0x00, out l6_n, out l7_n, out i6_n);
 }
 
@@ -4060,9 +4060,9 @@ word32 getopt_long(Eq_n (* o1)[], int8 * o2, ptr32 * o4, ptr32 & l6Out, ptr32 & 
 // 000169D0: void getopt_long_only(Register (ptr32 (arr Eq_n)) o1, Register (ptr32 int8) o2, Register (ptr32 ptr32) o4)
 void getopt_long_only(Eq_n (* o1)[], int8 * o2, ptr32 * o4)
 {
-	word32 i6_n;
 	word32 l6_n;
 	word32 l7_n;
+	word32 i6_n;
 	_getopt_internal(o1, o2, o4, 0x01, out l6_n, out l7_n, out i6_n);
 }
 

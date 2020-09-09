@@ -425,8 +425,8 @@ void xQueueGenericSendFromISR(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n lr, ptr32
 	{
 		int32 r4_n = (int32) (int8) (word32) *((word32) r0 + 69);
 		word32 r0_n;
-		word32 lr_n;
 		word32 * r7_n;
+		word32 lr_n;
 		if (!prvCopyDataToQueue(r0, r1, r3, r2, lr, out r0_n, out r7_n, out lr_n))
 			((word32) r0 + 69)->u0 = (byte) (int32) (int8) (r4_n + 0x01);
 		else if (*((word32) r0 + 36) != 0x00 && (xTaskRemoveFromEventList((word32) r0 + 36) != 0x00 && r7_n != null))
@@ -480,9 +480,9 @@ void xQueueReceiveFromISR(Eq_n r0, Eq_n r1, word32 * r2, Eq_n lr, ptr32 cpsr)
 	Eq_n r4_n = *((word32) r0 + 56);
 	if (r4_n != 0x00)
 	{
-		word32 lr_n;
 		word32 r5_n;
 		struct Eq_n * r7_n;
+		word32 lr_n;
 		struct Eq_n * r4_n = prvCopyDataFromQueue(r0, r1, r4_n, (int32) (int8) (word32) *((word32) r0 + 0x0044), r6_n, r0, lr, out r5_n, out r6_n, out r7_n, out lr_n);
 		r7_n->dw0038 = r4_n - &g_dw0001;
 		if (r4_n != &g_dw0001)

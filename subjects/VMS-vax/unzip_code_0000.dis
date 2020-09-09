@@ -1141,20 +1141,20 @@ l0000B21D:
 l0000B20E:
 	Mem115[sp_86 - 4<32>:word32] = r1_93
 	Mem118[sp_86 - 8<32>:word32] = r4_89 + 1011<i32>
-	word32 fp_123
 	word32 r3_188
 	word32 r4_189
 	word32 ap_190
-	fn0000C022(r3_90, ap_92, fp_94, out r3_188, out r4_189, out ap_190, out fp_123)
+	word32 fp_191
+	fn0000C022(r3_90, ap_92, fp_94, out r3_188, out r4_189, out ap_190, out fp_191)
 	return
 l0000B1CA:
 	Mem141[sp_21 - 4<32>:word32] = r3_31
 	Mem145[sp_21 - 8<32>:word32] = r4_24 + 968<i32>
-	word32 fp_151
-	word32 r3_191
-	word32 r4_192
-	word32 ap_193
-	fn0000C022(r3_31, ap, fp_29, out r3_191, out r4_192, out ap_193, out fp_151)
+	word32 r3_192
+	word32 r4_193
+	word32 ap_194
+	word32 fp_195
+	fn0000C022(r3_31, ap, fp_29, out r3_192, out r4_193, out ap_194, out fp_195)
 	return
 fn0000B192_exit:
 
@@ -1224,11 +1224,11 @@ l0000B8D1:
 	word32 r4_181
 	Mem135[sp_127 - 4<32>:word32] = Mem117[Mem117[fn0000C022(r3_94, ap_95, fp_96, out r3_125, out r4_181, out ap_121, out fp_122) + 312<i32>:word32] + 12<i32>:word32]
 	Mem138[sp_127 - 8<32>:word32] = r3_125 + 1258<i32>
-	word32 fp_143
 	word32 r3_182
 	word32 r4_183
 	word32 ap_184
-	fn0000C022(r3_125, ap_121, fp_122, out r3_182, out r4_183, out ap_184, out fp_143)
+	word32 fp_185
+	fn0000C022(r3_125, ap_121, fp_122, out r3_182, out r4_183, out ap_184, out fp_185)
 	return
 fn0000B86E_exit:
 
@@ -1301,11 +1301,11 @@ l0000B992:
 	word32 sp_126 = <invalid>
 	Mem134[sp_126 - 4<32>:word32] = Mem116[Mem116[r3_124 + 312<i32>:word32] + 12<i32>:word32]
 	Mem137[sp_126 - 8<32>:word32] = r4_125 + 1329<i32>
-	word32 fp_142
 	word32 r3_244
 	word32 r4_245
 	word32 ap_246
-	fn0000C022(r3_124, ap_120, fp_121, out r3_244, out r4_245, out ap_246, out fp_142)
+	word32 fp_247
+	fn0000C022(r3_124, ap_120, fp_121, out r3_244, out r4_245, out ap_246, out fp_247)
 	return
 l0000B913:
 	word32 r0_170 = Mem169[r2 + 0xC839<32>:word32]

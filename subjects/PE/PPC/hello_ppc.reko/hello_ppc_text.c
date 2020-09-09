@@ -2157,11 +2157,11 @@ Eq_n fn004032FC(Eq_n r2, byte * r4, word32 r13, word32 r14, word32 r15, word32 r
 	}
 	else
 	{
-		word32 r27_n;
+		word32 r31_n;
 		word32 r28_n;
+		word32 r27_n;
 		word32 r26_n;
 		word32 r25_n;
-		word32 r31_n;
 		word32 r3_n;
 		r2_n = fn00401598(r2_n, 0x00, r31_n, r25_n, r26_n, r27_n, r28_n, r29_n, r3_n, r31_n, out r3_n, out r25_n, out r26_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n);
 	}

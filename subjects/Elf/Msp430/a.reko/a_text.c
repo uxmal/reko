@@ -1043,8 +1043,8 @@ ui20 xQueueSend(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r15Out)
 		ui20 sr_n = xTaskResumeAll(prvUnlockQueue(sr_n & ~0x08, r15, out r15_n), out r15_n);
 		if (r15_n == 0x00)
 		{
-			word20 r8_n;
 			word20 r10_n;
+			word20 r8_n;
 			sr_n = vPortYield(sr_n, out r8_n, out r9_n, out r10_n, out r11_n);
 		}
 		sr_n = vTaskSuspendAll(sr_n) & ~0x08;
@@ -1172,8 +1172,8 @@ ui20 xQueueReceive(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r15Out)
 		ui20 sr_n = xTaskResumeAll(prvUnlockQueue(sr_n & ~0x08, r15, out r15_n), out r15_n);
 		if (r15_n == 0x00)
 		{
-			word20 r8_n;
 			word20 r10_n;
+			word20 r8_n;
 			sr_n = vPortYield(sr_n, out r8_n, out r9_n, out r10_n, out r11_n);
 		}
 		sr_n = vTaskSuspendAll(sr_n) & ~0x08;
@@ -2181,10 +2181,10 @@ Eq_n fn00005B04(Eq_n r10, Eq_n r11, Eq_n r12, Eq_n r13)
 		r11 = (r11 ^ ~0x00) + (r10 < 0x00);
 		r8_n |= 0x08;
 	}
+	Eq_n r8_n;
 	word20 r13_n;
 	word20 r14_n;
 	word20 r15_n;
-	Eq_n r8_n;
 	Eq_n r12_n;
 	Eq_n r8_n = __rcr(r8_n, 0x01, fn00005B4E(r8_n, r10, r11, r12, r13, out r8_n, out r12_n, out r13_n, out r14_n, out r15_n));
 	if ((r8_n & 0x04) != 0x00)

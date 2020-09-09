@@ -64,7 +64,6 @@ l0C00_0019:
 	// succ:  l0C00_001A_thunk_fn0C00_0020
 l0C00_001A_thunk_fn0C00_0020:
 	ax_13 = SEQ(0<8>, fn0C00_0020(ax - 1<16>))
-	SCZO_15 = <invalid>
 	return SLICE(ax_13, byte, 0)
 	// succ:  fn0C00_0015_exit
 l0C00_001D:
@@ -105,7 +104,6 @@ l0C00_0024:
 	// succ:  l0C00_0025_thunk_fn0C00_0015
 l0C00_0025_thunk_fn0C00_0015:
 	ax_15 = SEQ(0<8>, fn0C00_0015(ax - 1<16>))
-	SCZO_17 = <invalid>
 	return SLICE(ax_15, byte, 0)
 	// succ:  fn0C00_0020_exit
 l0C00_0028:

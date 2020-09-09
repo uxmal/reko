@@ -240,12 +240,12 @@ Eq_5: (union "Eq_5" (char u0) ((ptr16 (ptr16 code)) u1) (Eq_3892 u2))
 	T_1615 (in 0xA<16> : word16)
 	T_1646 (in 0xC<16> : word16)
 	T_1650 (in r0 : Eq_5)
-	T_1659 (in fn1366(r0_23, r3, r4_10, out r2_93, out r3, out r4_10) : word16)
+	T_1659 (in fn1366(r0_23, r3, r4_10, out r2_183, out r3, out r4_10) : word16)
 	T_1719 (in 0xA<16> : word16)
 	T_1723 (in fn1366(0xA<16>, r3, r4_10, out r2, out r3, out r4_10) : word16)
 	T_1727 (in r0 : Eq_5)
 	T_1736 (in CONVERT(Mem101[r1_11 + 0<16>:byte], byte, int16) : int16)
-	T_1740 (in fn1370((int16) *r1_11, r3, r4_10, out r2_183, out r3, out r4_10) : word16)
+	T_1740 (in fn1370((int16) *r1_11, r3, r4_10, out r2_184, out r3, out r4_10) : word16)
 	T_1751 (in r0_14 : Eq_5)
 	T_1756 (in fn1370(r0, r3, r4, out r2_13, out r3_15, out r4_16) : word16)
 	T_1770 (in Mem9[r2_6 + 0<16>:word16] : word16)
@@ -7847,7 +7847,7 @@ T_1646: (in 0xC<16> : word16)
   Class: Eq_5
   DataType: char
   OrigDataType: word16
-T_1647: (in r2_93 : word16)
+T_1647: (in r2_183 : word16)
   Class: Eq_1647
   DataType: word16
   OrigDataType: word16
@@ -7883,7 +7883,7 @@ T_1655: (in r4Out : (ptr16 Eq_1105))
   Class: Eq_1105
   DataType: (ptr16 Eq_1105)
   OrigDataType: ptr16
-T_1656: (in out r2_93 : ptr16)
+T_1656: (in out r2_183 : ptr16)
   Class: Eq_1653
   DataType: ptr16
   OrigDataType: ptr16
@@ -7895,7 +7895,7 @@ T_1658: (in out r4_10 : ptr16)
   Class: Eq_1105
   DataType: (ptr16 Eq_1105)
   OrigDataType: (ptr16 (struct (0 T_1602 t0000)))
-T_1659: (in fn1366(r0_23, r3, r4_10, out r2_93, out r3, out r4_10) : word16)
+T_1659: (in fn1366(r0_23, r3, r4_10, out r2_183, out r3, out r4_10) : word16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: word16
@@ -8155,7 +8155,7 @@ T_1723: (in fn1366(0xA<16>, r3, r4_10, out r2, out r3, out r4_10) : word16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: word16
-T_1724: (in r2_183 : word16)
+T_1724: (in r2_184 : word16)
   Class: Eq_1724
   DataType: word16
   OrigDataType: word16
@@ -8207,7 +8207,7 @@ T_1736: (in CONVERT(Mem101[r1_11 + 0<16>:byte], byte, int16) : int16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: int16
-T_1737: (in out r2_183 : ptr16)
+T_1737: (in out r2_184 : ptr16)
   Class: Eq_1730
   DataType: (ptr16 Eq_5)
   OrigDataType: ptr16
@@ -8219,7 +8219,7 @@ T_1739: (in out r4_10 : ptr16)
   Class: Eq_1105
   DataType: (ptr16 Eq_1105)
   OrigDataType: (ptr16 (struct (0 T_1602 t0000)))
-T_1740: (in fn1370((int16) *r1_11, r3, r4_10, out r2_183, out r3, out r4_10) : word16)
+T_1740: (in fn1370((int16) *r1_11, r3, r4_10, out r2_184, out r3, out r4_10) : word16)
   Class: Eq_5
   DataType: Eq_5
   OrigDataType: word16

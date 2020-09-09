@@ -67,12 +67,12 @@ void task_1(word20 sr)
 task_1_exit:
 task_1_entry:
 l4096:
-	word20 r15_6
-	word20 sr_22 = xTaskGetTickCount(sr, out r15_6)
+	word20 r15_50
+	word20 sr_22 = xTaskGetTickCount(sr, out r15_50)
 l40A0:
 	Mem19[0x0031<p16>:byte] = Mem16[0x0031<p16>:byte] ^ 1<8>
-	word20 r11_50
-	sr_22 = vTaskDelayUntil(putchar(sr_22, 0x58<16>, out r11_50), 0x1F4<16>, fp - 2<16>)
+	word20 r11_51
+	sr_22 = vTaskDelayUntil(putchar(sr_22, 0x58<16>, out r11_51), 0x1F4<16>, fp - 2<16>)
 
 
 void task_2(word20 sr)
@@ -86,12 +86,12 @@ void task_2(word20 sr)
 task_2_exit:
 task_2_entry:
 l40BC:
-	word20 r15_6
-	word20 sr_22 = xTaskGetTickCount(sr, out r15_6)
+	word20 r15_50
+	word20 sr_22 = xTaskGetTickCount(sr, out r15_50)
 l40C6:
 	Mem19[0x0031<p16>:byte] = Mem16[0x0031<p16>:byte] ^ 2<8>
-	word20 r11_50
-	sr_22 = vTaskDelayUntil(putchar(sr_22, 0x59<16>, out r11_50), 0xFA<16>, fp - 2<16>)
+	word20 r11_51
+	sr_22 = vTaskDelayUntil(putchar(sr_22, 0x59<16>, out r11_51), 0xFA<16>, fp - 2<16>)
 
 
 void task_3(word20 sr)
@@ -105,12 +105,12 @@ void task_3(word20 sr)
 task_3_exit:
 task_3_entry:
 l40E2:
-	word20 r15_6
-	word20 sr_22 = xTaskGetTickCount(sr, out r15_6)
+	word20 r15_50
+	word20 sr_22 = xTaskGetTickCount(sr, out r15_50)
 l40EC:
 	Mem19[0x0031<p16>:byte] = Mem16[0x0031<p16>:byte] ^ 4<8>
-	word20 r11_50
-	sr_22 = vTaskDelayUntil(putchar(sr_22, 0x5A<16>, out r11_50), 0x19<16>, fp - 2<16>)
+	word20 r11_51
+	sr_22 = vTaskDelayUntil(putchar(sr_22, 0x5A<16>, out r11_51), 0x19<16>, fp - 2<16>)
 
 
 void main(word20 sr, word20 r8)
@@ -1388,9 +1388,9 @@ l00004E26:
 	word20 sr_104 = xTaskResumeAll(prvUnlockQueue(sr_115 & ~8<16>, r15, out r15_385), out r15_83)
 	branch r15_83 == 0<20> l00004E74
 l00004E74:
-	word20 r8_101
-	word20 r10_390
-	sr_104 = vPortYield(sr_104, out r8_101, out r9_102, out r10_390, out r11_120)
+	word20 r10_391
+	word20 r8_390
+	sr_104 = vPortYield(sr_104, out r8_390, out r9_102, out r10_391, out r11_120)
 l00004E44:
 	sr_115 = vTaskSuspendAll(sr_104) & ~8<16>
 	Mem119[0x0218<p16>:word16] = Mem74[0x0218<p16>:word16] + 1<16>
@@ -1541,9 +1541,9 @@ l00004F96:
 	word20 sr_104 = xTaskResumeAll(prvUnlockQueue(sr_115 & ~8<16>, r15, out r15_383), out r15_83)
 	branch r15_83 == 0<20> l00004FE6
 l00004FE6:
-	word20 r8_101
-	word20 r10_388
-	sr_104 = vPortYield(sr_104, out r8_101, out r9_102, out r10_388, out r11_120)
+	word20 r10_389
+	word20 r8_388
+	sr_104 = vPortYield(sr_104, out r8_388, out r9_102, out r10_389, out r11_120)
 l00004FB6:
 	sr_115 = vTaskSuspendAll(sr_104) & ~8<16>
 	Mem119[0x0218<p16>:word16] = Mem74[0x0218<p16>:word16] + 1<16>
@@ -2804,12 +2804,12 @@ l00005B1C:
 	r11 = (r11 ^ 0xFFFF<16>) + (r10 <u 0<20>)
 	r8_18 = r8_18 | 8<16>
 l00005B26:
-	word20 r13_45
-	word20 r14_46
-	word20 r15_47
 	word20 r8_48
+	word20 r13_114
+	word20 r14_115
+	word20 r15_116
 	word20 r12_44
-	word20 r8_54 = __rcr(r8_48, 1<8>, fn00005B4E(r8_18, r10, r11, r12, r13, out r8_48, out r12_44, out r13_45, out r14_46, out r15_47))
+	word20 r8_54 = __rcr(r8_48, 1<8>, fn00005B4E(r8_18, r10, r11, r12, r13, out r8_48, out r12_44, out r13_114, out r14_115, out r15_116))
 	branch (r8_54 & 4<16>) == 0<20> l00005B40
 l00005B30:
 	r12_44 = (r12_44 ^ 0xFFFF<16>) + 1<16>

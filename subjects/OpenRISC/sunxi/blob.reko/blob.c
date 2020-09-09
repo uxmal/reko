@@ -3627,8 +3627,8 @@ Eq_n fn0000A070(Eq_n r3, word32 VR)
 	{
 		struct Eq_n * r2_n = (r3 << 0x03) + 0x00013010;
 		word32 r14_n = (word32) r2_n->wFFFFFFFC;
-		word32 r22_n;
 		word32 r28_n;
+		word32 r22_n;
 		fn0000D214(fp - 19, fp - 18, -1, VR, out r22_n, out r28_n);
 		int32 r11_n = (word32) bLoc0E >> r14_n;
 		r11_n = r11_n & 0x01;

@@ -272,19 +272,19 @@ Eq_391: (union "Eq_391" (byte u0) (ptr16 u1))
 	T_529 (in SEQ(b_29, Mem12[Mem12[0x166F<16>:word16] + CONVERT(Mem12[0x1671<16>:byte], byte, uint16):byte]) : word16)
 	T_530 (in out bc_32 : ptr16)
 	T_767 (in SEQ(b, Mem5[0x1681<16>:byte] + 0x30<8>) : word16)
-	T_768 (in out bc_17 : ptr16)
+	T_768 (in out bc_43 : ptr16)
 	T_776 (in SEQ(b, Mem5[0x1681<16>:byte] + 0x57<8>) : word16)
-	T_777 (in out bc_29 : ptr16)
+	T_777 (in out bc_44 : ptr16)
 	T_788 (in SEQ(b_12, 0x20<8>) : word16)
 	T_789 (in out bc_15 : ptr16)
 	T_832 (in SEQ(SLICE(CONVERT(fn06CE(SLICE(hl_48, byte, 8), (byte) hl_48), uint8, uint16), byte, 8), 0xD<8>) : word16)
 	T_833 (in out bc_65 : ptr16)
 	T_839 (in SEQ(SLICE(bc_65, byte, 8), 0xA<8>) : word16)
-	T_840 (in out bc_75 : ptr16)
+	T_840 (in out bc_127 : ptr16)
 	T_858 (in SEQ(b, 0xD<8>) : word16)
 	T_859 (in out bc_23 : ptr16)
 	T_865 (in SEQ(SLICE(bc_23, byte, 8), 0xA<8>) : word16)
-	T_866 (in out bc_127 : ptr16)
+	T_866 (in out bc_128 : ptr16)
 	T_897 (in SEQ(b, 0xD<8>) : word16)
 	T_898 (in out bc_12 : ptr16)
 	T_905 (in SEQ(b_126, 0xD<8>) : word16)
@@ -4004,7 +4004,7 @@ T_760: (in g_b1681 <= 9<8> : bool)
   Class: Eq_760
   DataType: bool
   OrigDataType: bool
-T_761: (in bc_17 : word16)
+T_761: (in bc_43 : word16)
   Class: Eq_761
   DataType: word16
   OrigDataType: word16
@@ -4032,15 +4032,15 @@ T_767: (in SEQ(b, Mem5[0x1681<16>:byte] + 0x30<8>) : word16)
   Class: Eq_391
   DataType: Eq_391
   OrigDataType: word16
-T_768: (in out bc_17 : ptr16)
+T_768: (in out bc_43 : ptr16)
   Class: Eq_391
   DataType: Eq_391
   OrigDataType: ptr16
-T_769: (in fn056B(SEQ(b, g_b1681 + 0x30<8>), out bc_17) : bool)
+T_769: (in fn056B(SEQ(b, g_b1681 + 0x30<8>), out bc_43) : bool)
   Class: Eq_489
   DataType: bool
   OrigDataType: bool
-T_770: (in bc_29 : word16)
+T_770: (in bc_44 : word16)
   Class: Eq_770
   DataType: word16
   OrigDataType: word16
@@ -4068,11 +4068,11 @@ T_776: (in SEQ(b, Mem5[0x1681<16>:byte] + 0x57<8>) : word16)
   Class: Eq_391
   DataType: Eq_391
   OrigDataType: word16
-T_777: (in out bc_29 : ptr16)
+T_777: (in out bc_44 : ptr16)
   Class: Eq_391
   DataType: Eq_391
   OrigDataType: ptr16
-T_778: (in fn056B(SEQ(b, g_b1681 + 0x57<8>), out bc_29) : bool)
+T_778: (in fn056B(SEQ(b, g_b1681 + 0x57<8>), out bc_44) : bool)
   Class: Eq_489
   DataType: bool
   OrigDataType: bool
@@ -4300,7 +4300,7 @@ T_834: (in fn056B(SEQ(SLICE((uint16) fn06CE(SLICE(hl_48, byte, 8), (byte) hl_48)
   Class: Eq_489
   DataType: bool
   OrigDataType: bool
-T_835: (in bc_75 : word16)
+T_835: (in bc_127 : word16)
   Class: Eq_835
   DataType: word16
   OrigDataType: word16
@@ -4320,11 +4320,11 @@ T_839: (in SEQ(SLICE(bc_65, byte, 8), 0xA<8>) : word16)
   Class: Eq_391
   DataType: Eq_391
   OrigDataType: word16
-T_840: (in out bc_75 : ptr16)
+T_840: (in out bc_127 : ptr16)
   Class: Eq_391
   DataType: Eq_391
   OrigDataType: ptr16
-T_841: (in fn056B(SEQ(SLICE(bc_65, byte, 8), 0xA<8>), out bc_75) : bool)
+T_841: (in fn056B(SEQ(SLICE(bc_65, byte, 8), 0xA<8>), out bc_127) : bool)
   Class: Eq_489
   DataType: bool
   OrigDataType: bool
@@ -4404,7 +4404,7 @@ T_860: (in fn056B(SEQ(b, 0xD<8>), out bc_23) : bool)
   Class: Eq_489
   DataType: bool
   OrigDataType: bool
-T_861: (in bc_127 : word16)
+T_861: (in bc_128 : word16)
   Class: Eq_861
   DataType: word16
   OrigDataType: word16
@@ -4424,11 +4424,11 @@ T_865: (in SEQ(SLICE(bc_23, byte, 8), 0xA<8>) : word16)
   Class: Eq_391
   DataType: Eq_391
   OrigDataType: word16
-T_866: (in out bc_127 : ptr16)
+T_866: (in out bc_128 : ptr16)
   Class: Eq_391
   DataType: Eq_391
   OrigDataType: ptr16
-T_867: (in fn056B(SEQ(SLICE(bc_23, byte, 8), 0xA<8>), out bc_127) : bool)
+T_867: (in fn056B(SEQ(SLICE(bc_23, byte, 8), 0xA<8>), out bc_128) : bool)
   Class: Eq_489
   DataType: bool
   OrigDataType: bool

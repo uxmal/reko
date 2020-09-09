@@ -447,8 +447,8 @@ int32 fn000029C8(Eq_n a0, struct Eq_n * a5, int32 dwArg04, up32 dwArg08, struct 
 		a1_n->t000C = a0;
 		a1_n->dw0008 = d4_n;
 		a1_n->dw0004 = 0;
-		word32 a2_n;
 		Eq_n d5_n;
+		word32 a2_n;
 		word32 d4_n;
 		word32 d3_n;
 		d0_n = fn00002A54(a5, dwArg04, dwArg08, out d3_n, out d4_n, out d5_n, out a2_n, out a5, out a6_n);

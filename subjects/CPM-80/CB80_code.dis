@@ -537,11 +537,11 @@ l0722:
 	Mem5[0x1681<16>:byte] = c
 	branch Mem5[0x1681<16>:byte] <=u 9<8> l073B
 l073B:
-	word16 bc_17
-	fn056B(SEQ(b, Mem5[0x1681<16>:byte] + 0x30<8>), out bc_17)
+	word16 bc_43
+	fn056B(SEQ(b, Mem5[0x1681<16>:byte] + 0x30<8>), out bc_43)
 l072F:
-	word16 bc_29
-	fn056B(SEQ(b, Mem5[0x1681<16>:byte] + 0x57<8>), out bc_29)
+	word16 bc_44
+	fn056B(SEQ(b, Mem5[0x1681<16>:byte] + 0x57<8>), out bc_44)
 l0744:
 	return
 fn0722_exit:
@@ -592,15 +592,15 @@ l075C:
 l0773:
 	word16 bc_23
 	fn056B(SEQ(b, 0xD<8>), out bc_23)
-	word16 bc_127
-	fn056B(SEQ(SLICE(bc_23, byte, 8), 0xA<8>), out bc_127)
+	word16 bc_128
+	fn056B(SEQ(SLICE(bc_23, byte, 8), 0xA<8>), out bc_128)
 l077D:
 	fn05CE(0x260<16>)
 	word16 hl_48 = Mem16[0x1683<16>:word16]
 	word16 bc_65
 	fn056B(SEQ(SLICE(CONVERT(fn06CE(SLICE(hl_48, byte, 8), SLICE(hl_48, byte, 0)), uint8, uint16), byte, 8), 0xD<8>), out bc_65)
-	word16 bc_75
-	fn056B(SEQ(SLICE(bc_65, byte, 8), 0xA<8>), out bc_75)
+	word16 bc_127
+	fn056B(SEQ(SLICE(bc_65, byte, 8), 0xA<8>), out bc_127)
 	byte l_86
 	branch (fn1353(0<8>, 0x1685<16>, out l_86) | l_86) == 0<8> l07AF
 l07A1:
