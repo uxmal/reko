@@ -318,6 +318,7 @@
     <Compile Include="Core\StridedIntervalTests.cs" />
     <Compile Include="Core\TypedDataDumperTests.cs" />
     <Compile Include="Core\Types\DataTypeComparerTests.cs" />
+    <Compile Include="Core\Types\StructureFieldCollectionTests.cs" />
     <Compile Include="DecompiledFileServiceTests.cs" />
     <Compile Include="Drivers\CmdLine\CmdLineDriverTests.cs" />
     <Compile Include="Environments\MacOS\Classic\A5RelocatorTests.cs" />

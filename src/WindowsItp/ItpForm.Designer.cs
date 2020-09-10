@@ -55,6 +55,7 @@
             this.rewriterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.suffixArrayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.decoderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.structureFieldsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -250,7 +251,8 @@
             this.performanceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.rewriterToolStripMenuItem,
             this.suffixArrayToolStripMenuItem,
-            this.decoderToolStripMenuItem});
+            this.decoderToolStripMenuItem,
+            this.structureFieldsToolStripMenuItem});
             this.performanceToolStripMenuItem.Name = "performanceToolStripMenuItem";
             this.performanceToolStripMenuItem.Size = new System.Drawing.Size(87, 20);
             this.performanceToolStripMenuItem.Text = "&Performance";
@@ -275,6 +277,13 @@
             this.decoderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.decoderToolStripMenuItem.Text = "&Decoder...";
             this.decoderToolStripMenuItem.Click += new System.EventHandler(this.decoderToolStripMenuItem_Click);
+            // 
+            // structureFieldsToolStripMenuItem
+            // 
+            this.structureFieldsToolStripMenuItem.Name = "structureFieldsToolStripMenuItem";
+            this.structureFieldsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.structureFieldsToolStripMenuItem.Text = "&Structure Fields...";
+            this.structureFieldsToolStripMenuItem.Click += new System.EventHandler(this.structureFieldsToolStripMenuItem_Click);
             // 
             // ItpForm
             // 
@@ -321,6 +330,7 @@
         private System.Windows.Forms.ToolStripMenuItem rewriterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem suffixArrayToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem decoderToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem structureFieldsToolStripMenuItem;
     }
 }
 

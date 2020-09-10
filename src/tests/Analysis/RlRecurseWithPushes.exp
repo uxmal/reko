@@ -36,7 +36,6 @@ l0C00_0016:
 	di_18 = Mem14[ds:di + 0x30<16>:word16]
 	call fn0C00_0004 (retsize: 2;)
 		uses: di:di_18,ds:ds,si:si
-		defs: SCZO:SCZO_22
 l0C00_001C:
 	return
 fn0C00_0004_exit:

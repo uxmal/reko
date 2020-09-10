@@ -179,6 +179,9 @@
       <DependentUpon>RtfDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="StructureFieldPerformanceDialog.resx">
+      <DependentUpon>StructureFieldPerformanceDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SuffixArrayPerformanceDialog.resx">
       <DependentUpon>SuffixArrayPerformanceDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -218,6 +221,12 @@
     </Compile>
     <Compile Include="RtfDialog.Designer.cs">
       <DependentUpon>RtfDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StructureFieldPerformanceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StructureFieldPerformanceDialog.Designer.cs">
+      <DependentUpon>StructureFieldPerformanceDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="SuffixArrayPerformanceDialog.cs">
       <SubType>Form</SubType>
