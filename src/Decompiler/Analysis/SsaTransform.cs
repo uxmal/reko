@@ -60,7 +60,8 @@ namespace Reko.Analysis
         private readonly HashSet<SsaIdentifier> incompletePhis;
         private readonly HashSet<Procedure> sccProcs;
         private readonly ExpressionEmitter m;
-        private HashSet<SsaIdentifier> sidsToRemove;
+        private readonly Dictionary<(SsaIdentifier, BitRange), SsaIdentifier> availableSlices;
+        private readonly HashSet<SsaIdentifier> sidsToRemove;
         private Block? block;
         private Statement? stmCur;
 
@@ -78,6 +79,7 @@ namespace Reko.Analysis
             this.sccProcs = sccProcs;
             this.ssa = new SsaState(proc);
             this.blockstates = ssa.Procedure.ControlGraph.Blocks.ToDictionary(k => k, v => new SsaBlockState(v));
+            this.availableSlices = new Dictionary<(SsaIdentifier, BitRange), SsaIdentifier>();
             this.factory = new TransformerFactory(this);
             this.incompletePhis = new HashSet<SsaIdentifier>();
             this.sidsToRemove = new HashSet<SsaIdentifier>();
@@ -1201,7 +1203,7 @@ namespace Reko.Analysis
         public class SsaBlockState
         {
             public readonly Block Block;
-            public readonly Dictionary<StorageDomain, AliasState> currentDef;
+            public readonly Dictionary<StorageDomain, AliasState> currentDef;       // Identifiers defined in this block
             public readonly IntervalTree<int, Alias> currentStackDef;
             public readonly Dictionary<StorageDomain, FlagAliasState> currentFlagDef;
             public readonly Dictionary<Storage, SsaIdentifier> currentSimpleDef;

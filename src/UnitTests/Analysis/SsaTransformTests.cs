@@ -103,14 +103,19 @@ namespace Reko.UnitTests.Analysis
             Given_Architecture(arch.Object);
         }
 
-
         private void RunTest(string sExp, Action<ProcedureBuilder> builder)
         {
             var proc = pb.Add("proc1", builder);
-            RunTest(sExp);
+            RunTest(sExp, false);
         }
 
-        private void RunTest(string sExp)
+        private void RunTestOld(string sExp, Action<ProcedureBuilder> builder)
+        {
+            var proc = pb.Add("proc1", builder);
+            RunTest(sExp, true);
+        }
+
+        private void RunTest(string sExp, bool dumpSsaState)
         {
             var program = pb.Program;
             var project = new Project
@@ -153,14 +158,20 @@ namespace Reko.UnitTests.Analysis
                     sst.AddUsesToExitBlock();
                     sst.RemoveDeadSsaIdentifiers();
                 }
-                sst.SsaState.Write(writer);
+                // Dumping the SSA state is verbose and redundant, as SSA.Validate will 
+                // perform the same job.
+                if (dumpSsaState)
+                    sst.SsaState.Write(writer);
                 proc.Write(false, writer);
                 writer.WriteLine("======");
                 ssa.Validate(s => { ssa.Dump(true); Assert.Fail(s); });
             }
             var sActual = writer.ToString();
             if (sActual != sExp)
+            {
                 Console.WriteLine(sActual);
+                Debug.Print(sActual);
+            }
             Assert.AreEqual(sExp, sActual);
         }
 
@@ -325,7 +336,7 @@ proc1_exit:
             #endregion
 
             addUseInstructions = true;
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var r1 = m.Register("r1");
                 var r2 = m.Register("r2");
@@ -737,7 +748,7 @@ proc1_exit:
             #endregion
 
             addUseInstructions = true;
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var r1 = m.Register("r1");
                 var r2 = m.Register("r2");
@@ -805,7 +816,7 @@ proc1_exit:
 ";
             #endregion
 
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var r1 = m.Register("r1");
                 var r2 = m.Register("r2");
@@ -1026,7 +1037,7 @@ proc1_exit:
 ";
             #endregion
 
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var sz = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SZ"));
                 var cz = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("CZ"));
@@ -1262,7 +1273,7 @@ proc1_exit:
 ";
             #endregion
 
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var regA = RegisterStorage.Reg32("a", 0);
                 var regB = RegisterStorage.Reg32("b", 1);
@@ -1300,7 +1311,7 @@ proc1_exit:
             #endregion
 
             this.addUseInstructions = true;
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var a = m.Reg32("a", 0);
                 m.MStore(m.Word32(0x123400), a);
@@ -1347,7 +1358,7 @@ proc1_exit:
 ";
             #endregion
 
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var regA = new RegisterStorage("a", 0, 0, PrimitiveType.Word32);
                 var regB = new RegisterStorage("b", 1, 0, PrimitiveType.Word32);
@@ -1472,7 +1483,7 @@ proc1_exit:
             #endregion
 
             Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16"));
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var ecx = m.Register(Registers.ecx);
                 var cl = m.Register(Registers.cl);
@@ -1531,7 +1542,7 @@ proc1_exit:
 ";
             #endregion
 
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var edx = m.Frame.EnsureRegister(new RegisterStorage("edx", 2, 0, PrimitiveType.Word32));
                 var eax = m.Frame.EnsureRegister(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
@@ -1589,7 +1600,7 @@ proc1_exit:
 ";
             #endregion
 
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var edx = m.Frame.EnsureRegister(new RegisterStorage("edx", 2, 0, PrimitiveType.Word32));
                 var dl = m.Frame.EnsureRegister(new RegisterStorage("dl", 2, 0, PrimitiveType.Byte));
@@ -1633,7 +1644,7 @@ proc1_exit:
 ";
             #endregion
 
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var ebx = m.Reg32("ebx", 2);
                 var C = m.Flags("C");
@@ -1746,7 +1757,7 @@ proc1_exit:
 ";
             #endregion
 
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var eax = m.Frame.EnsureRegister(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
                 var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 0, PrimitiveType.Byte));
@@ -1808,7 +1819,7 @@ proc1_exit:
                         "ImportedFunc",
                         FunctionType.Func(Reg(14), Reg(6)))));
 
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var r13 = m.Reg32("r13", 13);
                 var r12 = m.Reg32("r12", 12);
@@ -1885,7 +1896,7 @@ proc1_exit:
 ";
             #endregion
 
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var eax = m.Reg32("eax", 0);
                 var ebx = m.Reg32("ebx", 3);
@@ -2082,7 +2093,7 @@ proc1_exit:
 ";
             #endregion
             Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16"));
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var bx = m.Frame.EnsureRegister(Registers.bx);
                 var bh = m.Frame.EnsureRegister(Registers.bh);
@@ -2232,7 +2243,7 @@ proc1_exit:
             #endregion
 
             Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16"));
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var bl = m.Register(Registers.bl);
                 var bh = m.Register(Registers.bh);
@@ -2406,7 +2417,7 @@ proc1_exit:
 ";
             #endregion
 
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var r1 = m.Reg32("r1", 1);
 
@@ -2481,7 +2492,7 @@ proc1_exit:
             #endregion
 
             Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16"));
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var al = m.Register(Registers.al);
                 var bl = m.Register(Registers.bl);
@@ -2529,7 +2540,7 @@ l1:
 proc1_exit:
 ======
 ";
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var Z = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("Z"));
                 var r3 = m.Register("r3");
@@ -2568,7 +2579,7 @@ l1:
 proc1_exit:
 ======
 ";
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var CZ = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("CZ"));
                 var r3 = m.Register("r3");
@@ -2610,7 +2621,7 @@ l1:
 proc1_exit:
 ======
 ";
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var SCZ = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SCZ"));
                 var SZ = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SZ"));
@@ -2668,7 +2679,7 @@ proc1_exit:
 ======
 ";
 
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var SCZ = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SCZ"));
                 var Z = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("Z"));
@@ -2718,7 +2729,7 @@ proc1_exit:
 ";
             #endregion
 
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 0, PrimitiveType.Byte));
                 var ah = m.Frame.EnsureRegister(new RegisterStorage("ah", 0, 8, PrimitiveType.Byte));
@@ -4315,7 +4326,7 @@ proc1_exit:
 ";
             #endregion
 
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var al = m.Reg8("al", 0);
                 m.Procedure.Signature = FunctionType.Func(
@@ -4381,7 +4392,7 @@ proc1_exit:
 ======
 ";
             #endregion
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 var r1 = m.Reg32("r1", 1);
                 var r2 = m.Reg32("r2", 2);
@@ -4433,7 +4444,7 @@ proc1_exit:
 ";
             #endregion
 
-            RunTest(sExp, m =>
+            RunTestOld(sExp, m =>
             {
                 m.Frame.EnsureIdentifier(r1.Storage);
                 m.Frame.EnsureIdentifier(r2.Storage);
@@ -4542,8 +4553,8 @@ proc1_exit:
 ======
 ";
             #endregion
-            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16"));
-            RunTest(sExp, m =>
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-protected-32"));
+            RunTestOld(sExp, m =>
             {
                 var ax = m.Register(arch.GetRegister("ax"));
                 var ah = m.Register(arch.GetRegister("ah"));
@@ -4554,6 +4565,83 @@ proc1_exit:
                 m.MStore(m.Word16(0x1236), ax);
                 m.Return();
             });
+        }
+
+        [Test]
+        public void Ssa_RegisterSlicesInDifferentBlocks()
+        {
+            var sExp =
+            #region Expected
+@"// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def Mem0
+	// succ:  l1
+l1:
+	eax_2 = Mem0[0x123400<32>:word32]
+	ah_3 = SLICE(eax_2, byte, 8) (alias)
+	ax_5 = SLICE(eax_2, word16, 0) (alias)
+	// succ:  m1
+m1:
+	Mem4[0x123408<32>:byte] = ah_3
+	Mem6[0x12340C<32>:word16] = ax_5
+	return
+	// succ:  proc1_exit
+proc1_exit:
+======
+";
+            #endregion
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-protected-32"));
+            RunTest(sExp, m =>
+            {
+                var eax = m.Register(arch.GetRegister("eax"));
+                var ax = m.Register(arch.GetRegister("ax"));
+                var ah = m.Register(arch.GetRegister("ah"));
+
+                m.Assign(eax, m.Mem32(m.Word32(0x00123400)));
+                m.Label("m1");
+                m.MStore(m.Word32(0x00123408), ah);
+                m.MStore(m.Word32(0x0012340C), ax);
+                m.Return();
+            });
+        }
+
+        [Test]
+        [Ignore("Finish register work first")]
+        public void Ssa_StackSlicesInDifferentBlocks()
+        {
+            var sExp =
+            #region Expected
+@"SsaLocalStackSlice_entry:
+	def Mem0
+	def fp
+l1:
+	dwLoc04_6 = Mem0[0x123400<32>:word32]
+	bLoc03_7 = SLICE(dwLoc04_6, byte, 8) (alias)
+	wLoc04_9 = SLICE(dwLoc04_6, word, 0) (alias)
+m1:
+	Mem4[0x123408<32>:byte] = bLoc03_7
+	Mem5[0x12340C<32>:word16] = wLoc04_9
+	return
+SsaLocalStackSlice_exit:
+";
+            #endregion
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-protected-32"));
+            var proc = Given_Procedure(nameof(SsaLocalStackSlice), m =>
+            {
+                var fp = m.Frame.FramePointer;
+
+                m.MStore(m.ISubS(fp, 4), m.Mem32(m.Word32(0x00123400)));
+                m.Label("m1");
+                m.MStore(m.Word32(0x00123408), m.Mem8(m.ISubS(fp, 3)));
+                m.MStore(m.Word32(0x0012340C), m.Mem16(m.ISubS(fp, 4)));
+                m.Return();
+            });
+
+            When_RunSsaTransform();
+            When_RenameFrameAccesses();
+            AssertProcedureCode(sExp);
         }
     }
 }

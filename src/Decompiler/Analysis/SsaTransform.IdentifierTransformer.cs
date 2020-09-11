@@ -494,20 +494,24 @@ namespace Reko.Analysis
                     aliasState = new AliasState();
                     bs.currentDef.Add(id.Storage.Domain, aliasState);
                 }
-                var stgDef = id.Storage;
-                var defRange = stgDef.GetBitRange();
-                for (int i = 0; i < aliasState.Definitions.Count; ++i)
+                if (sid.DefStatement != null && !(sid.DefStatement.Instruction is AliasAssignment))
                 {
-                    var (sidPrev, prevRange, offset) = aliasState.Definitions[i];
-                    var stgPrev = sidPrev.Identifier.Storage;
-                    if (defRange.Covers(prevRange))
+                    // Only store a definition if it isn't an alias.
+                    var stgDef = id.Storage;
+                    var defRange = stgDef.GetBitRange();
+                    for (int i = 0; i < aliasState.Definitions.Count; ++i)
                     {
-                        DebugEx.Verbose(trace, "     overwriting: {0}", sidPrev.Identifier);
-                        aliasState.Definitions.RemoveAt(i);
-                        --i;
+                        var (sidPrev, prevRange, offset) = aliasState.Definitions[i];
+                        var stgPrev = sidPrev.Identifier.Storage;
+                        if (defRange.Covers(prevRange))
+                        {
+                            DebugEx.Verbose(trace, "     overwriting: {0}", sidPrev.Identifier);
+                            aliasState.Definitions.RemoveAt(i);
+                            --i;
+                        }
                     }
+                    aliasState.Definitions.Add((sid, defRange, this.Offset));
                 }
-                aliasState.Definitions.Add((sid, defRange, this.Offset));
                 DebugEx.Verbose(trace, "     writing: {0}", sid.Identifier);
 
                 var newDict = aliasState.ExactAliases
@@ -528,7 +532,7 @@ namespace Reko.Analysis
                 if (!bs.currentDef.TryGetValue(id.Storage.Domain, out var alias))
                     return null;
 
-                // Identifier id is defined locally in this block.
+                // Identifier id is available in this block.
                 // Has an exact alias already been calculated?
                 if (alias.ExactAliases.TryGetValue(id.Storage, out var sid))
                 {
@@ -536,7 +540,7 @@ namespace Reko.Analysis
                     return sid;
                 }
 
-                // At least some of the bits of 'id' are defined locally in this 
+                // At least some of the bits of 'id' are available locally in this 
                 // block. Walk across the bits of 'id', collecting all parts
                 // defined into a sequence.
                 int offsetLo = this.liveBits.Lsb;
@@ -636,10 +640,14 @@ namespace Reko.Analysis
             {
                 if (range.Covers(sidSrc.Identifier.Storage.GetBitRange()))
                     return sidSrc;
+                // Avoid creating an aliasing slice if it already exists.
+                if (outer.availableSlices.TryGetValue((sidSrc, range), out var sidAlias))
+                    return sidAlias;
                 var e = outer.m.Slice(idSlice.DataType, sidSrc.Identifier, range.Lsb);
                 var ass = new AliasAssignment(idSlice, e);
-                var sidAlias = InsertAfterDefinition(sidSrc.DefStatement!, ass);
+                sidAlias = InsertAfterDefinition(sidSrc.DefStatement!, ass);
                 sidSrc.Uses.Add(sidAlias.DefStatement!);
+                outer.availableSlices.Add((sidSrc, range), sidAlias);
                 return sidAlias;
             }
         }

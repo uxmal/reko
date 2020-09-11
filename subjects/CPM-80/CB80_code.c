@@ -143,13 +143,14 @@ word16 fn0483(byte b, Eq_n c, byte d, Eq_n e, word16 wArg02)
 	g_t1664 = e;
 	g_b1663 = b;
 	g_t1662 = c;
-	g_b1661 = SLICE(wArg02, byte, 8);
+	byte b_n = SLICE(wArg02, byte, 8);
+	g_b1661 = b_n;
 	g_t1660 = (byte) wArg02;
 	Eq_n hl_n = <invalid>;
 	byte l_n;
 	byte c_n = fn1326(0x07, (word16) g_t1664 + 0x007F, out l_n);
 	g_b1667 = (byte) hl_n;
-	word16 bc_n = SEQ(SLICE(wArg02, byte, 8), c_n);
+	word16 bc_n = SEQ(b_n, c_n);
 	while (true)
 	{
 		byte b_n = SLICE(bc_n, byte, 8);
@@ -996,6 +997,7 @@ void fn100A(word16 af)
 	while (true)
 	{
 		byte a_n = 0x00 - (g_b16A8 < 0x01);
+		Eq_n bc_n = SEQ(a_n, a_n);
 		if ((0x00 - (g_b16A8 < ~0x00) & a_n) >> 0x01 >= 0x00)
 			break;
 		if (g_b16A8 == 0x20)
@@ -1072,7 +1074,6 @@ void fn100A(word16 af)
 				g_b16A8 = fn045B();
 		}
 	}
-	Eq_n bc_n = SEQ(a_n, a_n);
 	if (g_b14F3 == 0x01)
 	{
 		fn056B(SEQ(a_n, 0x0C), out bc_n);

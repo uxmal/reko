@@ -72,7 +72,7 @@ l00401172:
 	word32 edx_n;
 	ebp_n->tFFFFFFDC = (byte) (uint32) fn0040143A(out edx_n);
 	struct Eq_n * ebp_n = ebp_n;
-	uip32 eax_n = g_dw403334;
+	word32 eax_n = g_dw403334;
 	word32 ebx_n = SEQ(ebx_24_8_n, 0x00);
 	if (eax_n != 0x01)
 	{
@@ -258,13 +258,11 @@ byte fn0040153F(word32 ebx, Eq_n esi, Eq_n edi, ptr32 & edxOut, ptr32 & ebxOut, 
 	{
 		struct Eq_n * eax_n = g_ptr40003C;
 		eax_24_8_n = SLICE(eax_n, word24, 8);
-		eax_24_8_n = SLICE(eax_n, word24, 8);
 		if (eax_n->dw400000 == 0x4550 && eax_n->w400018 == 0x010B)
 		{
 			ui32 eax_n = ebp_n->dw0008;
 			struct Eq_n * eax_n = fn004013F6(&g_w400000, eax_n - 0x00400000, out edx);
 			dwLoc0C = eax_n - 0x00400000;
-			eax_24_8_n = SLICE(eax_n, word24, 8);
 			eax_24_8_n = SLICE(eax_n, word24, 8);
 			if (eax_n != null && eax_n->dw0024 >= 0x00)
 			{

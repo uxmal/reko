@@ -213,12 +213,9 @@ word32 fn00000001400012BC(<anonymous> ** rax)
 	get_initial_narrow_environment();
 	word64 rax_n = fn0000000140001000();
 	fn0000000140001AC0();
-	uint64 rbx_n = (uint64) (word32) rax_n;
 	byte al_n = (byte) rax_n;
 	word56 rax_56_8_n = SLICE(rax_n, word56, 8);
-	word32 ebx_n = (word32) rbx_n;
-	ebx_n = (word32) rbx_n;
-	word32 ebx_n = (word32) rbx_n;
+	word32 ebx_n = (word32) (uint64) (word32) rax_n;
 	if (al_n != 0x00)
 	{
 		if (sil_n == 0x00)
