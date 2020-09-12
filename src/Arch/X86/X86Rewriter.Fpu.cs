@@ -659,6 +659,11 @@ namespace Reko.Arch.X86
             m.Assign(orw.AluRegister(Registers.FPUF), m.Cond(FpuRegister(0)));
         }
 
+        private void RewriteFxrstor()
+        {
+            m.SideEffect(host.PseudoProcedure("__fxrstor", VoidType.Instance));
+        }
+
         private void RewriteFxtract()
         {
             var fp = this.FpuRegister(0);

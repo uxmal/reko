@@ -54,6 +54,16 @@ namespace Reko.Arch.Sparc
             m.Assign(fdst, m.FAdd(fsrc1, fsrc2));
         }
 
+
+        private void RewriteFcmped()
+        {
+            var f1 = RewriteDoubleRegister(instrCur.Operands[0]);
+            var f2 = RewriteDoubleRegister(instrCur.Operands[1]);
+
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU"));
+            m.Assign(grf, m.Cond(m.FSub(f1, f2)));
+        }
+
         private void RewriteFcmpes()
         {
             var r1 = (RegisterOperand)instrCur.Operands[0];

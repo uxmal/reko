@@ -76,6 +76,8 @@ namespace Reko.Arch.Arm.AArch64
                     iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
+                case Mnemonic.adc: RewriteAdcSbc(m.IAdd); break;
+                case Mnemonic.adcs: RewriteAdcSbc(m.IAdd, this.NZCV); break;
                 case Mnemonic.add: RewriteMaybeSimdBinary(m.IAdd, "__add_{0}"); break;
                 case Mnemonic.adds: RewriteBinary(m.IAdd, this.NZCV); break;
                 case Mnemonic.addv: RewriteAddv(); break;
@@ -105,9 +107,12 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.dsb: RewriteDsb(); break;
                 case Mnemonic.dup: RewriteDup(); break;
                 case Mnemonic.eor: RewriteBinary(m.Xor); break;
+                case Mnemonic.eon: RewriteBinary((a, b) => m.Xor(a, m.Comp(b))); break;
+                case Mnemonic.extr: RewriteExtr(); break;
                 case Mnemonic.fabs: RewriteFabs(); break;
                 case Mnemonic.fadd: RewriteFadd(); break;
                 case Mnemonic.fcmp: RewriteFcmp(); break;
+                case Mnemonic.fcmpe: RewriteFcmp(); break;  //$REVIEW: this leaves out the 'e'xception part. 
                 case Mnemonic.fcsel: RewriteFcsel(); break;
                 case Mnemonic.fcvt: RewriteFcvt(); break;
                 case Mnemonic.fcvtms: RewriteFcvtms(); break;
@@ -168,6 +173,8 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.rev16: RewriteRev16(); break;
                 case Mnemonic.ror: RewriteRor(); break;
                 case Mnemonic.rorv: RewriteRor(); break;
+                case Mnemonic.sbc: RewriteAdcSbc(m.ISub); break;
+                case Mnemonic.sbcs: RewriteAdcSbc(m.ISub, NZCV); break;
                 case Mnemonic.sbfiz: RewriteSbfiz(); break;
                 case Mnemonic.sbfm: RewriteUSbfm("__sbfm"); break;
                 case Mnemonic.scvtf: RewriteScvtf(); break;
@@ -178,6 +185,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.smaxv: RewriteSmaxv(); break;
                 case Mnemonic.smc: RewriteSmc(); break;
                 case Mnemonic.smull: RewriteMull(PrimitiveType.Int32, PrimitiveType.Int64, m.SMul); break;
+                case Mnemonic.smulh: RewriteMulh(PrimitiveType.Int64, PrimitiveType.Int128, m.SMul); break;
                 case Mnemonic.st1: RewriteStN("__st1"); break;
                 case Mnemonic.st2: RewriteStN("__st2"); break;
                 case Mnemonic.st3: RewriteStN("__st3"); break;
@@ -235,8 +243,11 @@ namespace Reko.Arch.Arm.AArch64
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("A64Rw", this.instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("AArch64Rw", this.instr, rdr, "");
         }
+
+        //$TODO: prefer this RewriteOp
+        private Expression RewriteOp(int iop, bool maybe0 = false) => RewriteOp(instr.Operands[iop], maybe0);
 
         private Expression RewriteOp(MachineOperand op, bool maybe0 = false)
         {

@@ -30,7 +30,7 @@ namespace Reko.Core.Services
 {
     /// <summary>
     /// Reko calls methods on this interface when it encounters errors. The methods generate unit tests
-    /// that can be incorporated into the UnitTest projct.
+    /// that can be incorporated into the UnitTest project.
     /// </summary>
     public interface ITestGenerationService
     {

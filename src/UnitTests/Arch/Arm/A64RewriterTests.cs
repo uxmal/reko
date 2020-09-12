@@ -940,6 +940,24 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_eon_reg32()
+        {
+            Given_HexString("0000214A");
+            AssertCode( // eon
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|w0 = w0 ^ ~w1");
+        }
+
+        [Test]
+        public void AArch64Rw_eon_reg32_shifted()
+        {
+            Given_HexString("000C214A");
+            AssertCode( // eon
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|w0 = w0 ^ ~(w1 << 3<i32>)");
+        }
+
+        [Test]
         public void AArch64Rw_sub_reg_ext_64()
         {
             Given_Instruction(0xCB214F18);
@@ -1141,10 +1159,10 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Rw_sxtl()
         {
             Given_Instruction(0x0F10A673);
-            AssertCode(     // sxtl\tv19.4h,v19.4h
+            AssertCode(     // sxtl\tv19.4s,v19.4h
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v2 = d19",
-                "2|L--|q19 = __sxtl_i16(v2)");
+                "2|L--|q19 = __sxtl_i32(v2)");
         }
 
         [Test]
@@ -1489,7 +1507,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "2|L--|q1 = __movi_i64(v2)");
         }
 
-
         [Test]
         public void AArch64Rw_scvtf_fixed()
         {
@@ -1497,6 +1514,15 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // scvtf\ts8,w0,#&10
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|s8 = __scvtf_fixed(w0, 16<i32>)");
+        }
+
+        [Test]
+        public void AArch64Dis_scvtf_i64_f64()
+        {
+            Given_HexString("10D8615E");
+            AssertCode(     // scvtf\td16, d0
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|d16 = CONVERT(d0, int64, real64)");
         }
 
         [Test]
@@ -1940,5 +1966,77 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|x2 = CONVERT(w2 *u w14, uint32, uint64)");
         }
 
+        [Test]
+        public void AArch64Rw_fcmpe_reg()
+        {
+            Given_HexString("3020201E");
+            AssertCode(     // fcmpe	s1,s0
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|NZCV = cond(s1 - s0)");
+        }
+
+        [Test]
+        public void AArch64Rw_fcmpe_reg_exchanged()
+        {
+            Given_HexString("1020211E");
+            AssertCode(     // fcmpe	s0,s1
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|NZCV = cond(s0 - s1)");
+        }
+
+        [Test]
+        public void AArch64Rw_smulh()
+        {
+            Given_HexString("407C409B");
+            AssertCode(     // smulh	x0,w2,w0
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|x0 = SLICE(x2 *s x0, int64, 64)");
+        }
+
+        [Test]
+        public void AArch64Rw_fcmpe_real64_imm()
+        {
+            Given_HexString("1820601E");
+            AssertCode(     // fcmpe	d0,#0.0
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|NZCV = cond(d0 - 0.0)");
+        }
+
+        [Test]
+        public void AArch64Rw_sbc()
+        {
+            Given_HexString("630002DA");
+            AssertCode(     // sbc	x3,x3,x2
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|x3 = x3 - x2 - C");
+        }
+
+        [Test]
+        public void AArch64Rw_extr()
+        {
+            Given_HexString("410CC193");
+            AssertCode(     // extr	x1,x2,x1,#3
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|x1 = __ror(x2, 3<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_adc()
+        {
+            Given_HexString("6300029A");
+            AssertCode(     // adc	x3,x3,x2
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|x3 = x3 + x2 + C");
+        }
+
+        [Test]
+        public void AArch64Rw_adcs()
+        {
+            Given_HexString("630002BA");
+            AssertCode(     // adcs	x3,x3,x2
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|x3 = x3 + x2 + C",
+                "2|L--|NZCV = cond(x3)");
+        }
     }
 }

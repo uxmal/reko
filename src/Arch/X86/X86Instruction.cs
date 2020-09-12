@@ -145,10 +145,13 @@ namespace Reko.Arch.X86
 			{
 			case Mnemonic.aaa:
 			case Mnemonic.aas:
+            case Mnemonic.adcx:
 				return FlagM.CF;
 			case Mnemonic.aad:
 			case Mnemonic.aam:
 				return FlagM.SF|FlagM.ZF;
+            case Mnemonic.adox:
+                return FlagM.OF;
 			case Mnemonic.bt:
 			case Mnemonic.bts:
 			case Mnemonic.btc:
@@ -217,7 +220,8 @@ namespace Reko.Arch.X86
 			switch (mnemonic)
 			{
 			case Mnemonic.adc:
-			case Mnemonic.sbb:
+			case Mnemonic.adcx:
+            case Mnemonic.sbb:
 				return FlagM.CF;
 			case Mnemonic.daa:
 			case Mnemonic.das:

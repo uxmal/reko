@@ -125,8 +125,6 @@ Parameter name: index
 000000000040216C: warning: Unable to resolve imported reference __gmon_start__.
 0000000000402178: warning: Unable to resolve imported reference __gmon_start__.
 00000000004025B0: warning: Unable to resolve imported reference __gmon_start__.
-000000000040E250: warning: x86 instruction 'vpsubsw' is not supported yet.
-000000000040FEF4: warning: x86 instruction 'vminpd' is not supported yet.
 0000000000406229: error: An error occurred while processing the statement rdx_109 = CONVERT(SLICE(CONVERT(SLICE(rax_65 - 3<64> - (dl_94 * 2<8> <u 0<8>), word32, 0), word32, uint64), word32, 0) - ebx_108, word32, uint64).
     Pulling difference ptr64 and bool
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 280
@@ -1032,4 +1030,4 @@ error: An error occurred during decompilation. System.NullReferenceException: Ob
    at Reko.Decompiler.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 555
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 207
 Stripping SSA identifier numbers
-Decompiled 67 binaries in 54.64 seconds ---
+Decompiled 67 binaries in 84.43 seconds ---

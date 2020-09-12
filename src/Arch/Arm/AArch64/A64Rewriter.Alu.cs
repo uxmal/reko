@@ -35,6 +35,23 @@ namespace Reko.Arch.Arm.AArch64
 {
     public partial class A64Rewriter
     {
+        private void RewriteAdcSbc(Func<Expression,Expression,Expression> opr, Action<Expression> setFlags = null)
+        {
+            var opSrc1 = RewriteOp(instr.Operands[1]);
+            var opSrc2 = RewriteOp(instr.Operands[2]);
+            var opDst = RewriteOp(instr.Operands[0]);
+
+            // We do not take the trouble of widening the CF to the word size
+            // to simplify code analysis in later stages. 
+            var c = binder.EnsureFlagGroup(Registers.C);
+            m.Assign(
+                opDst,
+                opr(
+                    opr(opSrc1, opSrc2),
+                    c));
+            setFlags?.Invoke(m.Cond(opDst));
+        }
+
         private void RewriteAdrp()
         {
             var dst = RewriteOp(instr.Operands[0]);
@@ -389,12 +406,23 @@ namespace Reko.Arch.Arm.AArch64
                 RewriteSimdBinary("__mull_{0}", Domain.Integer);
                 return;
             }
-            var op1 = RewriteOp(instr.Operands[1]);
-            var op2 = RewriteOp(instr.Operands[2]);
-            var dst = RewriteOp(instr.Operands[0]);
+            var op1 = RewriteOp(1);
+            var op2 = RewriteOp(2);
+            var dst = RewriteOp(0);
 
             var product = mul(op1, op2);
             m.Assign(dst, m.Convert(product, dtFrom, dtTo));
+        }
+
+        private void RewriteMulh(PrimitiveType dtNarrow, PrimitiveType dtWide, Func<Expression, Expression, Expression> mul)
+        {
+            var op1 = RewriteOp(1);
+            var op2 = RewriteOp(2);
+            var dst = RewriteOp(0);
+
+            var product = mul(op1, op2);
+            product.DataType = dtWide;
+            m.Assign(dst, m.Slice(dtNarrow, product, dtWide.BitSize - dtNarrow.BitSize));
         }
 
         /// <summary>

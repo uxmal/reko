@@ -143,6 +143,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_and_vector()
+        {
+            AssertCode("and\tv0.16b,v0.16b,v2.16b", "001C224E");
+        }
+
+        [Test]
         public void AArch64Dis_ands_Xn_imm()
         {
             var instr = DisassembleBits("111 100100 0 010101 010101 00100 00111");
@@ -619,6 +625,18 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_cmeq()
+        {
+            AssertCode("cmeq\tv0.4s,v2.4s", "4098A04E");
+        }
+
+        [Test]
+        public void AArch64Dis_cmhs()
+        {
+            AssertCode("cmhs\tv1.16b,v1.16b,v2.16b,#0", "213C226E");
+        }
+
+        [Test]
         public void AArch64Dis_cmp_32_uxtb()
         {
             Given_Instruction(0x6B20001F);
@@ -767,6 +785,12 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("sdiv\tx2,x3,x2");
         }
 
+
+        [Test]
+        public void AArch64Dis_eon_reg_32()
+        {
+            AssertCode("eon\tw0,w0,w1", "0000214A");
+        }
         [Test]
         public void AArch64Dis_eor_reg_32()
         {
@@ -852,10 +876,22 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Dis_scvtf()
+        public void AArch64Dis_scvtf_x_to_s()
         {
             Given_Instruction(0x1E220120);
             Expect_Code("scvtf\ts0,w9");
+        }
+
+        [Test]
+        public void AArch64Dis_scvtf_x_to_d()
+        {
+            AssertCode("scvtf\td1,x0", "0100629E");
+        }
+
+        [Test]
+        public void AArch64Dis_scvtf_d_to_d()
+        {
+            AssertCode("scvtf\td16,d0", "10D8615E");
         }
 
         [Test]
@@ -870,6 +906,20 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0x5E21D82F);
             Expect_Code("scvtf\ts15,s1");
+        }
+
+
+        [Test]
+        public void AArch64Dis_scvtf_i32_to_f32()
+        {
+            Given_Instruction(0x1E6202E0);
+            Expect_Code("scvtf\td0,w23");
+        }
+
+        [Test]
+        public void AArch64Dis_scvtf_i64_to_f64()
+        {
+            AssertCode("scvtf\td0,x0", "0000629E");
         }
 
         [Test]
@@ -901,6 +951,13 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_adcs_64()
+        {
+            Given_Instruction(0xBA020063); // 630002BA");
+            Expect_Code("adcs\tx3,x3,x2");
+        }
+
+        [Test]
         public void AArch64Dis_add_32_ext()
         {
             Given_Instruction(0x0B20A1EF);
@@ -914,12 +971,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("add\twsp,wsp,w0,sxth #0");
         }
 
-        [Test]
-        public void AArch64Dis_scvtf_i32_to_f32()
-        {
-            Given_Instruction(0x1E6202E0);
-            Expect_Code("scvtf\td0,w23");
-        }
 
         [Test]
         public void AArch64Dis_fmov_f64_to_i64()
@@ -932,8 +983,14 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_sxtl()
         {
             Given_Instruction(0x0F10A673);
-            Expect_Code("sxtl\tv19.8h,v19.4h");
+            Expect_Code("sxtl\tv19.4s,v19.4h");
         }
+        [Test]
+        public void AArch64Dis_sxtl_v()
+        {
+            AssertCode("sxtl\tv16.2d,v3.2s", "70A4200F");
+        }
+
 
         [Test]
         public void AArch64Dis_fadd_vector_real32()
@@ -943,10 +1000,22 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_fcvtzs_d_to_w()
+        {
+            AssertCode("fcvtzs\tw1,d0", "0100781E");
+        }
+
+        [Test]
         public void AArch64Dis_fcvtzs_vector_real32()
         {
             Given_Instruction(0x4EA1BAB5);
             Expect_Code("fcvtzs\tv21.4s,v21.4s");
+        }
+
+        [Test]
+        public void AArch64Dis_fcvtzu_scalar()
+        {
+            AssertCode("fcvtzu\td31,d31", "FFFF7F7F");
         }
 
         [Test]
@@ -967,6 +1036,12 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_fcvtzs_i32_from_f64()
         {
             AssertCode("fcvtzs\tw8,d8", "0801789E");
+        }
+
+        [Test]
+        public void AArch64Dis_fcvtzs_i32_from_f64_2()
+        {
+            AssertCode("fcvtzs\tw15,d0", "0F00781E");
         }
 
         [Test]
@@ -1118,6 +1193,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_ushr()
+        {
+            AssertCode("ushr\tv5.4s,v0.4s,#1", "05043F6F");
+        }
+
+        [Test]
         public void AArch64Dis_uxtl()
         {
             Given_Instruction(0x2F08A400);
@@ -1144,6 +1225,12 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0x4F03F600);
             Expect_Code("fmov\tv0.4s,#1.0F");
+        }
+
+        [Test]
+        public void AArch64Dis_fmov_vector_element()
+        {
+            AssertCode("fmov\tx1,v0.d[1]", "0100AE9E");
         }
 
         [Test]
@@ -1188,6 +1275,23 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("mov\tv19.h[2],v17.h[5]");
         }
 
+        [Test]
+        public void AArch64Dis_mov_vector_element_to_w()
+        {
+            AssertCode("mov\tw0,v0.s[0]", "003C040E");
+        }
+
+        [Test]
+        public void AArch64Dis_mov_vector_element_to_x()
+        {
+            AssertCode("mov\tx16,v31.d[1]", "F03F184E");
+        }
+
+        [Test]
+        public void AArch64Dis_mov_velement_to_velement()
+        {
+            AssertCode("mov\tv0.s[3],v3.s[0]", "60041C6E");
+        }
         [Test]
         public void AArch64Dis_add_vector_i32()
         {
@@ -1309,6 +1413,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_bit_v()
+        {
+            AssertCode("bit\tv0.16b,v3.16b,v1.16b", "601CA16E");
+        }
+
+        [Test]
         public void AArch64Dis_mrs()
         {
             Given_Instruction(0xD538D081);
@@ -1387,6 +1497,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_bsl()
+        {
+            AssertCode("bsl\tv4.16b,v3.16b,v5.16b", "641C656E");
+        }
+
+        [Test]
         public void AArch64Dis_eret()
         {
             Given_Instruction(0xD69F03E0);
@@ -1457,8 +1573,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("ext\tv24.8b,v9.8b,v27.8b,#4");
         }
 
-
-
         [Test]
         public void AArch64Dis_ext_v()
         {
@@ -1498,10 +1612,28 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Dis_movi_v()
+        public void AArch64Dis_movi_vs()
         {
             Given_Instruction(0x0F020508);
             Expect_Code("movi\tv8.2s,#&48");
+        }
+
+        [Test]
+        public void AArch64Dis_movi_vs_v2()
+        {
+            AssertCode("movi\tv1.4s,#4", "8104004F");
+        }
+
+        [Test]
+        public void AArch64Dis_movi_vb()
+        {
+            AssertCode("movi\tv2.16b,#&E0E0E0E0", "02E4074F");
+        }
+
+        [Test]
+        public void AArch64Dis_movi_vs_shift()
+        {
+            AssertCode("movi\tv1.2s,#&800000,lsl #&10", "0144040F");
         }
 
         [Test]
@@ -1619,6 +1751,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_ldnp_D()
+        {
+            AssertCode("ldnp\td8,d25,[x10,#-&140]", "48656C6C");
+        }
+
+        [Test]
         public void AArch64Dis_ldp()
         {
             Given_Instruction(0x2D646C2F);
@@ -1657,6 +1795,222 @@ namespace Reko.UnitTests.Arch.Arm
         {
             AssertCode("umull\tx2,w2,w14", "427CAE9B");
         }
+
+        // Reko: a decoder for the instruction 013C040E at address 000000000000071C has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0000)
+
+
+        // Reko: a decoder for the instruction F7C6B03E at address 0000000000000D24 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=3)
+
+        // Reko: a decoder for the instruction 0144040F at address 00000000000012F8 has not been implemented. (AdvancedSimdModifiedImm cmode)
+
+
+        // Reko: a decoder for the instruction 2078DF4C at address 000000000000081C has not been implemented. (AdvancedSimdLdStMultiplePostIdx L:opcode=1:0111)
+
+        // Reko: a decoder for the instruction 4178DF4C at address 0000000000000820 has not been implemented. (AdvancedSimdLdStMultiplePostIdx L:opcode=1:0111)
+        [Test]
+        [Ignore("Advanced SIMD lanes")]
+        public void AArch64Dis_ld1_multireg()
+        {
+            AssertCode("ld1\t{v1.4s},[x2],#16", "4178DF4C");
+        }
+
+        // Reko: a decoder for the instruction 0004186E at address 0000000000000AB4 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=0011)
+        [Test]
+        public void AArch64Dis_mov_simd()
+        {
+            AssertCode("mov\tv0.d[1],v0.d[0]", "0004186E");
+        }
+
+        // Reko: a decoder for the instruction 0300AE9E at address 0000000000000AE0 has not been implemented. (ConversionBetweenFpAndInt sf:S=0b10 type=10)
+        [Test]
+        public void AArch64Dis_0300AE9E()
+        {
+            AssertCode("fmov\tx3,v0.d[1]", "0300AE9E");
+        }
+
+
+        // Reko: a decoder for the instruction 60041C6E at address 0000000000000B20 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=0011)
+
+        // Reko: a decoder for the instruction 00FC216E at address 0000000000000B30 has not been implemented. (AdvancedSimd3Same U=1 opcode=11111)
+        [Test]
+        public void AArch64Dis_fdiv()
+        {
+            AssertCode("fdiv\tv0.4s,v0.4s,v1.4s", "00FC216E");
+        }
+
+        // This file contains unit tests automatically generated by Reko decompiler.
+        // Please copy the contents of this file and report it on GitHub, using the 
+        // following URL: https://github.com/uxmal/reko/issues
+
+        // Reko: a decoder for the instruction 60059F4C at address 000000000040091C has not been implemented. (AdvancedSimdLdStMultiplePostIdx L:opcode=0:0000)
+        [Test]
+        [Ignore("Advanced SIMD lanes")]
+        public void AArch64Dis_st4()
+        {
+            AssertCode("st4 {v0.8h-v3.8h},[x11], #64", "60059F4C");
+        }
+        // This file contains unit tests automatically generated by Reko decompiler.
+        // Please copy the contents of this file and report it on GitHub, using the 
+        // following URL: https://github.com/uxmal/reko/issues
+
+        // Reko: a decoder for the instruction 60059F4C at address 000000000040091C has not been implemented. (AdvancedSimdLdStMultiplePostIdx L:opcode=0:0000)
+        // This file contains unit tests automatically generated by Reko decompiler.
+        // Please copy the contents of this file and report it on GitHub, using the 
+        // following URL: https://github.com/uxmal/reko/issues
+
+        // Reko: a decoder for the instruction 48656C6C at address 0000000000000210 has not been implemented. (ldnp - SIMD&FP 64-bit)
+
+        // This file contains unit tests automatically generated by Reko decompiler.
+        // Please copy the contents of this file and report it on GitHub, using the 
+        // following URL: https://github.com/uxmal/reko/issues
+
+        // Reko: a decoder for the instruction 48656C6C at address 0000000000000210 has not been implemented. (ldnp - SIMD&FP 64-bit)
+ 
+        // This file contains unit tests automatically generated by Reko decompiler.
+        // Please copy the contents of this file and report it on GitHub, using the 
+        // following URL: https://github.com/uxmal/reko/issues
+
+        // Reko: a decoder for the instruction 2104004F at address 0000000000400608 has not been implemented. (AdvancedSimdModifiedImm cmode=0000 Q:op:op2=100)
+
+        // Reko: a decoder for the instruction 641C214E at address 000000000040061C has not been implemented. (AdvancedSimd3Same U=0 opcode=00011 size=00)
+
+        // Reko: a decoder for the instruction 63043F6F at address 0000000000400620 has not been implemented. (AdvancedSimdShiftByImm U=1)
+
+        // Reko: a decoder for the instruction 8498A04E at address 0000000000400624 has not been implemented. (AdvancedSimd2RegMisc U=0 opcode=01001)
+
+        // Reko: a decoder for the instruction 641C656E at address 000000000040062C has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=1100)
+
+        // Reko: a decoder for the instruction 831C214E at address 0000000000400630 has not been implemented. (AdvancedSimd3Same U=0 opcode=00011 size=00)
+
+        // Reko: a decoder for the instruction 84043F6F at address 0000000000400634 has not been implemented. (AdvancedSimdShiftByImm U=1)
+
+        // Reko: a decoder for the instruction 6398A04E at address 0000000000400638 has not been implemented. (AdvancedSimd2RegMisc U=0 opcode=01001)
+
+        // Reko: a decoder for the instruction 831C656E at address 0000000000400640 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=1100)
+
+        // This file contains unit tests automatically generated by Reko decompiler.
+        // Please copy the contents of this file and report it on GitHub, using the 
+        // following URL: https://github.com/uxmal/reko/issues
+
+ 
+
+
+        // This file contains unit tests automatically generated by Reko decompiler.
+        // Please copy the contents of this file and report it on GitHub, using the 
+        // following URL: https://github.com/uxmal/reko/issues
+
+        // Reko: a decoder for the instruction 2104004F at address 0000000000400608 has not been implemented. (AdvancedSimdModifiedImm cmode=0000 Q:op:op2=100)
+      
+
+
+   
+        // This file contains unit tests automatically generated by Reko decompiler.
+        // Please copy the contents of this file and report it on GitHub, using the 
+        // following URL: https://github.com/uxmal/reko/issues
+
+        // Reko: a decoder for the instruction 2104004F at address 0000000000400608 has not been implemented. (AdvancedSimdModifiedImm cmode=0000 Q:op:op2=100)
+
+        // Reko: a decoder for the instruction 641C214E at address 0000000000400618 has not been implemented. (AdvancedSimd3Same U=0 opcode=00011 size=00)
+
+        // Reko: a decoder for the instruction 641C656E at address 0000000000400628 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=1100)
+
+        // Reko: a decoder for the instruction 6398A04E at address 0000000000400634 has not been implemented. (AdvancedSimd2RegMisc U=0 opcode=01001)
+
+
+        // Reko: a decoder for the instruction 8604004F at address 0000000000000890 has not been implemented. (AdvancedSimdModifiedImm cmode=0000 Q:op:op2=100)
+
+        // Reko: a decoder for the instruction 2204004F at address 0000000000000894 has not been implemented. (AdvancedSimdModifiedImm cmode=0000 Q:op:op2=100)
+
+        // Reko: a decoder for the instruction 85043F6F at address 0000000000000898 has not been implemented. (AdvancedSimdShiftByImm U=1)
+
+        // Reko: a decoder for the instruction 801C224E at address 000000000000089C has not been implemented. (AdvancedSimd3Same U=0 opcode=00011 size=00)
+
+        // Reko: a decoder for the instruction 0098A04E at address 00000000000008A8 has not been implemented. (AdvancedSimd2RegMisc U=0 opcode=01001)
+ 
+        // Reko: a decoder for the instruction A01C616E at address 00000000000008AC has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=1100)
+   
+        // Reko: a decoder for the instruction 05043F6F at address 00000000000008B0 has not been implemented. (AdvancedSimdShiftByImm U=1)
+   
+        // Reko: a decoder for the instruction 011C224E at address 00000000000008B4 has not been implemented. (AdvancedSimd3Same U=0 opcode=00011 size=00)
+
+        // Reko: a decoder for the instruction 2198A04E at address 00000000000008BC has not been implemented. (AdvancedSimd2RegMisc U=0 opcode=01001)
+
+        // Reko: a decoder for the instruction A11C606E at address 00000000000008C0 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=1100)
+
+        // Reko: a decoder for the instruction 25043F6F at address 00000000000008C4 has not been implemented. (AdvancedSimdShiftByImm U=1)
+
+        // Reko: a decoder for the instruction 201C224E at address 00000000000008C8 has not been implemented. (AdvancedSimd3Same U=0 opcode=00011 size=00)
+
+        // Reko: a decoder for the instruction 001C224E at address 000000000000092C has not been implemented. (AdvancedSimd3Same U=0 opcode=00011 size=00)
+
+
+        // Reko: a decoder for the instruction DB0F493E at address 00000000000008DC has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=3)
+
+
+        // Reko: a decoder for the instruction 2004004F at address 0000000000000C6C has not been implemented. (AdvancedSimdModifiedImm cmode=0000 Q:op:op2=100)
+  
+        // Reko: a decoder for the instruction 8204004F at address 0000000000000C78 has not been implemented. (AdvancedSimdModifiedImm cmode=0000 Q:op:op2=100)
+ 
+        // Reko: a decoder for the instruction 0104004F at address 0000000000000C90 has not been implemented. (AdvancedSimdModifiedImm cmode=0000 Q:op:op2=100)
+
+        // Reko: a decoder for the instruction 003C040E at address 0000000000000CAC has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0000)
+
+        
+
+                // Reko: a decoder for the instruction 0100AE9E at address 0000000000401A18 has not been implemented. (ConversionBetweenFpAndInt sf:S=0b10 type=10)
+
+        // Reko: a decoder for the instruction 2300AE9E at address 0000000000400B70 has not been implemented. (ConversionBetweenFpAndInt sf:S=0b10 type=10)
+ 
+        // Reko: a decoder for the instruction 0C00781E at address 0000000000400720 has not been implemented. (ConversionBetweenFpAndInt sf:S=0b00 type=01)
+        // Reko: a decoder for the instruction 2001629E at address 00000000004006B8 has not been implemented. (ConversionBetweenFpAndInt sf:S=0b10 type=01)
+
+        // Reko: a decoder for the instruction FFFF7F7F at address 0000000000402100 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=7 op1=10)
+
+  
+        // Reko: a decoder for the instruction 0900781E at address 000000000040066C has not been implemented. (ConversionBetweenFpAndInt sf:S=0b00 type=01)
+
+        // Reko: a decoder for the instruction 00A4200F at address 000000000040063C has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=0000 op1=10 op2=0100)
+
+        // Reko: a decoder for the instruction 00D8615E at address 0000000000400640 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=???)
+
+        // Reko: a decoder for the instruction 21D8615E at address 0000000000400648 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=???)
+ 
+        // Reko: a decoder for the instruction 61D8615E at address 0000000000400650 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=???)
+ 
+        // Reko: a decoder for the instruction 0000781E at address 0000000000000940 has not been implemented. (ConversionBetweenFpAndInt sf:S=0b00 type=01)
+        
+        // Reko: a decoder for the instruction 0000629E at address 00000000000008F4 has not been implemented. (ConversionBetweenFpAndInt sf:S=0b10 type=01)
+
+        // Reko: a decoder for the instruction 0100781E at address 0000000000000970 has not been implemented. (ConversionBetweenFpAndInt sf:S=0b00 type=01)
+      
+
+        // Reko: a decoder for the instruction 0100629E at address 00000000000008BC has not been implemented. (ConversionBetweenFpAndInt sf:S=0b10 type=01)
+
+        
+        // Reko: a decoder for the instruction 0300781E at address 0000000000000908 has not been implemented. (ConversionBetweenFpAndInt sf:S=0b00 type=01)
+ 
+        // Reko: a decoder for the instruction 2100629E at address 00000000000008D8 has not been implemented. (ConversionBetweenFpAndInt sf:S=0b10 type=01)
+ 
+        // Reko: a decoder for the instruction 4400629E at address 00000000000008E0 has not been implemented. (ConversionBetweenFpAndInt sf:S=0b10 type=01)
+
+ 
+        // Reko: a decoder for the instruction 02E4074F at address 0000000000000EA4 has not been implemented. (AdvancedSimdModifiedImm cmode=1110 Q:op:op2=100)
+
+        // Reko: a decoder for the instruction C1E7024F at address 0000000000000EAC has not been implemented. (AdvancedSimdModifiedImm cmode=1110 Q:op:op2=100)
+
+        // Reko: a decoder for the instruction C0E5014F at address 0000000000000EB4 has not been implemented. (AdvancedSimdModifiedImm cmode=1110 Q:op:op2=100)
+
+        // Reko: a decoder for the instruction 233C236E at address 0000000000000EC0 has not been implemented. (AdvancedSimd3Same U=1 opcode=00111)
+
+        // Reko: a decoder for the instruction 831C606E at address 0000000000000EC4 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=1100)
+
+        // Reko: a decoder for the instruction 213C226E at address 0000000000000F2C has not been implemented. (AdvancedSimd3Same U=1 opcode=00111)
+ 
+        // Reko: a decoder for the instruction 601CA16E at address 0000000000000F30 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=6 op1=01)
+
+        
+        // Reko: a decoder for the instruction 8104004F at address 0000000000000914 has not been implemented. (AdvancedSimdModifiedImm cmode=0000 Q:op:op2=100)
+
 
         /*
          * //$BORED: amuse yourself by making these tests pass.

@@ -237,7 +237,7 @@ namespace Reko.UnitTests.Arch.X86
         {
             arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
             Assert.AreEqual(
-                "aaa,aad,aam,aas,adc,add",
+                "aaa,aad,aam,aas,adc,adcx",
                 string.Join(",", arch.GetMnemonicNames().Keys.Take(6)));
         }
 

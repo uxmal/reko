@@ -2948,10 +2948,9 @@ movzx	ax,byte ptr [bp+04]
         }
 
         [Test]
-        [Ignore("Discovered by RekoSifter tool")]
         public void X86Dis_xabort()
         {
-            AssertCode64("xabort 0x49", "C6F849"); //  FF40273922B7AE692614BA62");
+            AssertCode64("xabort\t42", "C6F842");
         }
 
         [Test]
@@ -3135,6 +3134,18 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode32("endbr32", "F3 0F 1E FB");
             AssertCode32("endbr64", "F3 0F 1E FA");
+        }
+
+        [Test]
+        public void X86Dis_adcx()
+        {
+            AssertCode64("adcx\teax,ebx", "660F38F6C3");
+        }
+
+        [Test]
+        public void X86Dis_adox()
+        {
+            AssertCode64("adox\teax,esp", "F30F38F6C4");
         }
     }
 }

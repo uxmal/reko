@@ -76,6 +76,35 @@ namespace Reko.Arch.X86
                             orw.AddrOf(orw.AluRegister(Registers.ah))));
         }
 
+        public void RewriteAdcSbb(Func<Expression, Expression, Expression> opr)
+        {
+            // We do not take the trouble of widening the CF to the word size
+            // to simplify code analysis in later stages. 
+            var c = orw.FlagGroup(FlagM.CF);
+            EmitCopy(
+                instrCur.Operands[0],
+                opr(
+                    opr(
+                        SrcOp(instrCur.Operands[0]),
+                        SrcOp(instrCur.Operands[1], instrCur.Operands[0].Width)),
+                    c),
+                CopyFlags.EmitCc);
+        }
+
+        private void RewriteAdcx(FlagGroupStorage carry)
+        {
+            var cy = binder.EnsureFlagGroup(carry);
+            var dst = SrcOp(0);
+            m.Assign(
+                dst,
+                m.IAdd(
+                    m.IAdd(
+                        dst,
+                        SrcOp(instrCur.Operands[1], dst.DataType)),
+                    cy));
+            m.Assign(cy, m.Cond(dst));
+        }
+
         private void RewriteCli()
         {
             m.SideEffect(host.PseudoProcedure("__cli", VoidType.Instance));
@@ -106,21 +135,6 @@ namespace Reko.Arch.X86
                 instrCur.Operands[0].Width,
                 SrcOp(instrCur.Operands[0]),
                 SrcOp(instrCur.Operands[1]),
-                CopyFlags.EmitCc);
-        }
-
-        public void RewriteAdcSbb(Func<Expression,Expression,Expression> opr)
-        {
-            // We do not take the trouble of widening the CF to the word size
-            // to simplify code analysis in later stages. 
-            var c = orw.FlagGroup(FlagM.CF);
-            EmitCopy(
-                instrCur.Operands[0], 
-                opr(
-                    opr(
-                        SrcOp(instrCur.Operands[0]),
-                        SrcOp(instrCur.Operands[1], instrCur.Operands[0].Width)),
-                    c),
                 CopyFlags.EmitCc);
         }
 
@@ -671,6 +685,13 @@ namespace Reko.Arch.X86
             m.Assign(
                 binder.EnsureSequence(ptr, seg, reg.Register),
                 SrcOp(mem, segptr));
+        }
+
+        private void RewriteLeadingTrailingZeros(string fnName)
+        {
+            var src = SrcOp(1);
+            var dst = SrcOp(0);
+            m.Assign(dst, host.PseudoProcedure(fnName, PrimitiveType.Create(Domain.SignedInt, dst.DataType.BitSize), src));
         }
 
         private void RewriteMov()

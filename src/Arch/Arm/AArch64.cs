@@ -41,7 +41,7 @@ namespace Reko.Arch.Arm
         private Dictionary<string, RegisterStorage> regsByName;
         private RegisterStorage[] regsByNumber;
 #endif
-        private Dictionary<uint, FlagGroupStorage> flagGroups;
+        private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public Arm64Architecture(IServiceProvider services, string archId) : base(services, archId)
         {
@@ -50,7 +50,10 @@ namespace Reko.Arch.Arm
             this.FramePointerType = PrimitiveType.Ptr64;
             this.PointerType = PrimitiveType.Ptr64;
             this.WordWidth = PrimitiveType.Word64;
-            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
+            this.flagGroups = new Dictionary<uint, FlagGroupStorage>
+            {
+                { Registers.C.FlagGroupBits,  Registers.C }
+            };
             this.CarryFlagMask = 0;
 #if NATIVE
             var unk = CreateNativeArchitecture("arm-64");

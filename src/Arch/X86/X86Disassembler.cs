@@ -635,6 +635,22 @@ namespace Reko.Arch.X86
             return true;
         }
 
+        // B: The VEX.vvvv field of the VEX prefix selects a general purpose register
+        private static Mutator<X86Disassembler> B(OperandType opType)
+        {
+            return (u, d) =>
+            {
+                var width = d.OperandWidth(opType);
+                d.decodingContext.iWidth = width;
+                var op = d.GpRegFromBits(d.decodingContext.VexRegister, width);
+                if (op == null)
+                    return false;
+                d.decodingContext.ops.Add(new RegisterOperand(op));
+                return true;
+            };
+        }
+        private static readonly Mutator<X86Disassembler> By = B(OperandType.y);
+
         // Floating-point ST(x)
         private static bool F(uint op, X86Disassembler d)
         {
@@ -1054,6 +1070,20 @@ namespace Reko.Arch.X86
         private static bool DX(uint u, X86Disassembler dasm)
         {
             dasm.decodingContext.ops.Add(new RegisterOperand(Registers.dx));
+            return true;
+        }
+
+        private static bool rDX(uint u, X86Disassembler dasm)
+        {
+            RegisterStorage reg;
+            var bitsize = dasm.decodingContext.dataWidth.BitSize;
+            if (bitsize == 16)
+                reg = Registers.dx;
+            else if (bitsize == 32)
+                reg = Registers.edx;
+            else
+                reg = Registers.rdx;
+            dasm.decodingContext.ops.Add(new RegisterOperand(reg));
             return true;
         }
 
@@ -1480,7 +1510,8 @@ namespace Reko.Arch.X86
         private static Decoder [] Grp8;
         private static Decoder [] Grp9;
         private static Decoder [] Grp10;
-        private static Decoder [] Grp11;
+        private static Decoder [] Grp11b;
+        private static Decoder [] Grp11z;
         private static Decoder [] Grp12;
         private static Decoder [] Grp13;
         private static Decoder [] Grp14;

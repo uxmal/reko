@@ -133,11 +133,11 @@ namespace Reko.Arch.Sparc
                 //case Mnemonic.fbul  : on Unordered or Less L or U
                 //case Mnemonic.fblg  : on Less or Greater L or G
                 //case Mnemonic.fbne  : on Not Equal L or G or U
-                //case Mnemonic.fbe   : on Equal E
+                case Mnemonic.fbe  : RewriteBranch(m.Test(ConditionCode.EQ, Grf(FlagM.EF))); break;
                 case Mnemonic.fbue : RewriteBranch(m.Test(ConditionCode.EQ, Grf(FlagM.EF | FlagM.UF))); break;
                 case Mnemonic.fbuge: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.EF | FlagM.GF | FlagM.UF))); break;
 
-                //case Mnemonic.fble  : on Less or Equal E or L
+                case Mnemonic.fble  : RewriteBranch(m.Test(ConditionCode.LE, Grf(FlagM.EF | FlagM.LF))); break;
                 //case Mnemonic.fbule : on Unordered or Less or Equal E or L or U
                 case Mnemonic.fbule: RewriteBranch(m.Test(ConditionCode.LE, Grf(FlagM.EF | FlagM.LF | FlagM.UF))); break;
                 case Mnemonic.fbge: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.EF | FlagM.GF))); break;
@@ -145,6 +145,7 @@ namespace Reko.Arch.Sparc
 
 
                 case Mnemonic.fcmpes: RewriteFcmpes(); break;
+                case Mnemonic.fcmped: RewriteFcmped(); break;
                 case Mnemonic.fcmpd: RewriteFcmpd(); break;
                 case Mnemonic.fcmpq: RewriteFcmpq(); break;
                 case Mnemonic.fcmps: RewriteFcmps(); break;
@@ -173,6 +174,8 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.mulscc: RewriteMulscc(); break;
                 case Mnemonic.or: RewriteAlu(m.Or, false); break;
                 case Mnemonic.orcc: RewriteAluCc(m.Or, false); break;
+                case Mnemonic.orn: RewriteAlu(m.Or, true); break;
+                case Mnemonic.orncc: RewriteAlu(m.Or, true); break;
                 case Mnemonic.restore: RewriteRestore(); break;
                 case Mnemonic.rett: RewriteRett(); break;
                 case Mnemonic.save: RewriteSave(); break;

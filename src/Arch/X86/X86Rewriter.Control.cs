@@ -321,7 +321,14 @@ namespace Reko.Arch.X86
             var z = orw.FlagGroup(FlagM.ZF);
             m.Assign(z, host.PseudoProcedure(intrinsicName,
                 z.DataType,
-                SrcOp(instrCur.Operands[0])));
+                SrcOp(0)));
+        }
+
+        private void RewriteXabort()
+        {
+            var op = SrcOp(0);
+            m.SideEffect(host.PseudoProcedure("__xabort", VoidType.Instance, op),
+                InstrClass.Terminates);
         }
 
         /// <summary>
