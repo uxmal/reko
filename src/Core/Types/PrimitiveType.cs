@@ -324,6 +324,7 @@ namespace Reko.Core.Types
             Byte = CreateWord(8);
             Char = Create(Domain.Character, 8);
             SByte = Create(Domain.SignedInt, 8);
+            Int8 = SByte;
             UInt8 = Create(Domain.UnsignedInt, 8);
 
             Word16 = CreateWord(16);
@@ -368,6 +369,7 @@ namespace Reko.Core.Types
         // 8-bit character
         public static PrimitiveType Char { get; private set; }
 		public static PrimitiveType SByte { get; private set; }
+		public static PrimitiveType Int8 { get; private set; }
 		public static PrimitiveType UInt8 { get; private set; }
 
 		public static PrimitiveType Word16 { get; private set; }
