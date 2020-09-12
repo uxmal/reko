@@ -925,7 +925,9 @@ namespace Reko.Core.Output
                  return ("{0:X}", "p{0}");
             default:
                 if (!(value is ulong w))
-                    w = Convert.ToUInt64(value);
+                {
+                    w = (ulong) Convert.ToInt64(value);
+                }
                 if (w > 9)
                 {
                     format = "0x{0:X}";

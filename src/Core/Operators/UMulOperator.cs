@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,9 @@ namespace Reko.Core.Operators
                 return Constant.Invalid;
 			try
 			{
-				return BuildConstant(c1.DataType, c2.DataType, unchecked((int) (c1.ToUInt32() * c2.ToUInt32())));
+                //$BUG: we're truncating here. We need a way to pass in the expected result as a first parameter
+                // dtResult.
+				return BuildConstant(c1.DataType, c2.DataType, unchecked((long) (c1.ToUInt64() * c2.ToUInt64())));
 			}
 			catch	//$HACK: sometimes we get -ive numbers here, at which point .NET casts fail; attempt to use signed integers instead.
 			{

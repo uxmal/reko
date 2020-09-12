@@ -529,5 +529,16 @@ namespace Reko.UnitTests.Evaluation
             var expr = m.Sar(m.Shl(foo, 24), 24);
             Assert.AreEqual("CONVERT(SLICE(foo_1, byte, 0), byte, int32)", expr.Accept(simplifier).ToString());
         }
+
+        [Test]
+        [Ignore("This requires changes in BinaryOperator.ApplyConstants")]
+        public void Exs_Slice_Constant_Multiplication()
+        {
+            Given_ExpressionSimplifier();
+            var mul = m.UMul(m.Word32(0xAAAA_AAAA), m.Word32(0xBBBB_BBBB));
+            mul.DataType = PrimitiveType.UInt64;
+            var expr = m.Slice(PrimitiveType.Word32, mul, 32);
+            Assert.AreEqual("@@@", expr.Accept(simplifier).ToString());
+        }
     }
 }
