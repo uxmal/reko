@@ -90,7 +90,6 @@ namespace Reko.Core.Output
                 { Operator.Fge, "FGe" },
                 { Operator.Fgt, "FGt" },
 
-
                 { Operator.AddrOf, "AddrOf" },
                 { Operator.Comp, "Comp" },
                 { Operator.Neg, "Neg" },
@@ -383,22 +382,22 @@ namespace Reko.Core.Output
         {
             if (addr is Address16 addr16)
             {
-                writer.Write("Address.Ptr16(0x{0:X}", addr16.ToUInt16());
+                writer.Write("Address.Ptr16(0x{0:X})", addr16.ToUInt16());
                 return;
             }
             if (addr.Selector.HasValue)
             {
-                writer.Write("Address.SegPtr(0x{0:X}, 0x{1:X}", addr.Selector, addr.Offset);
+                writer.Write("Address.SegPtr(0x{0:X}, 0x{1:X})", addr.Selector, addr.Offset);
                 return;
             }
             if (addr is Address32 addr32)
             {
-                writer.Write("Address.Ptr32(0x{0:X}", addr32.ToUInt32());
+                writer.Write("Address.Ptr32(0x{0:X})", addr32.ToUInt32());
                 return;
             }
             if (addr is Address64 addr64)
             {
-                writer.Write("Address.Ptr64(0x{0:X}", addr64.ToLinear());
+                writer.Write("Address.Ptr64(0x{0:X})", addr64.ToLinear());
                 return;
             }
             throw new NotSupportedException();
@@ -444,11 +443,11 @@ namespace Reko.Core.Output
         void IExpressionVisitor.VisitConversion(Conversion conversion)
         {
             Method("Convert");
-            conversion.DataType.Accept(this);
+            conversion.Expression.Accept(this);
             writer.Write(", ");
             conversion.SourceDataType.Accept(this);
             writer.Write(", ");
-            conversion.Expression.Accept(this);
+            conversion.DataType.Accept(this);
             writer.Write(")");
         }
 
@@ -472,7 +471,7 @@ namespace Reko.Core.Output
             }
             else if (c.DataType==PrimitiveType.Int32)
             {
-                writer.Write("Constant.Create(Primitive.Int32, ");
+                Method("Constant.Int32");
             }
             else if (c.DataType == PrimitiveType.Word16)
             {
@@ -581,7 +580,7 @@ namespace Reko.Core.Output
         void IExpressionVisitor.VisitTestCondition(TestCondition tc)
         {
             Method("Test");
-            writer.Write($"ConditionCode.{tc}");
+            writer.Write($"ConditionCode.{tc.ConditionCode}");
             writer.Write(", ");
             tc.Expression.Accept(this);
             writer.Write(")");
