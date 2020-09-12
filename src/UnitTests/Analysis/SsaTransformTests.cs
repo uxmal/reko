@@ -4608,6 +4608,134 @@ proc1_exit:
         }
 
         [Test]
+        public void Ssa_RegisterSlicesInDifferentBlocks2()
+        {
+            var sExp =
+            #region Expected
+@"// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def Mem0
+	// succ:  l1
+l1:
+	eax_2 = Mem0[0x123400<32>:word32]
+	al_7 = SLICE(eax_2, byte, 0) (alias)
+	Mem3[0x123420<32>:word32] = eax_2
+	// succ:  m1
+m1:
+	branch Mem3[0x4400<32>:byte] m1else
+	goto m1then
+	// succ:  m1then m1else
+m1else:
+	Mem4[0x4404<32>:word16] = 0xFFFF<16>
+	goto m2
+	// succ:  m2
+m1then:
+	Mem5[0x4404<32>:word16] = 1<16>
+	// succ:  m2
+m2:
+	Mem8[0x123408<32>:byte] = al_7
+	// succ:  m3
+m3:
+	Mem12[0x123410<32>:word32] = eax_2
+	return
+	// succ:  proc1_exit
+proc1_exit:
+======
+";
+            #endregion
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-protected-32"));
+            RunTest(sExp, m =>
+            {
+                var eax = m.Register(arch.GetRegister("eax"));
+                var ax = m.Register(arch.GetRegister("ax"));
+                var al = m.Register(arch.GetRegister("al"));
+
+                m.Assign(eax, m.Mem32(m.Word32(0x00123400)));
+                m.MStore(m.Word32(0x00123420), eax);
+                m.Label("m1");
+                m.BranchIf(m.Mem8(m.Word32(0x004400)), "m1else");
+                m.Label("m1then");
+                m.MStore(m.Word32(0x004404), m.Word16(1));
+                m.Goto("m2");
+                m.Label("m1else");
+                m.MStore(m.Word32(0x004404), m.Word16(0xFFFF));
+
+                m.Label("m2");
+                m.MStore(m.Word32(0x00123408), al);
+                m.Label("m3");
+                m.MStore(m.Word32(0x00123410), eax);
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void Ssa_RegisterSlicesInDifferentBlocks3()
+        {
+            var sExp =
+            #region Expected
+@"// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def Mem0
+	// succ:  l1
+l1:
+	eax_2 = Mem0[0x123400<32>:word32]
+	al_7 = SLICE(eax_2, byte, 0) (alias)
+	Mem3[0x123420<32>:word32] = eax_2
+	// succ:  m1
+m1:
+	branch Mem3[0x4400<32>:byte] m1else
+	goto m1then
+	// succ:  m1then m1else
+m1else:
+	Mem4[0x4404<32>:word16] = 0xFFFF<16>
+	goto m2
+	// succ:  m2
+m1then:
+	Mem5[0x4404<32>:word16] = 1<16>
+	// succ:  m2
+m2:
+	Mem8[0x123408<32>:byte] = al_7
+	// succ:  m3
+m3:
+	Mem12[0x123410<32>:word32] = eax_2
+	return
+	// succ:  proc1_exit
+proc1_exit:
+======
+";
+            #endregion
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-protected-32"));
+            RunTest(sExp, m =>
+            {
+                var eax = m.Register(arch.GetRegister("eax"));
+                var ax = m.Register(arch.GetRegister("ax"));
+                var al = m.Register(arch.GetRegister("al"));
+
+                m.Assign(eax, m.Mem32(m.Word32(0x00123400)));
+                m.MStore(m.Word32(0x00123420), eax);
+                m.Label("m1");
+                m.BranchIf(m.Mem8(m.Word32(0x004400)), "m1else");
+                m.Label("m1then");
+                m.MStore(m.Word32(0x004404), m.Word16(1));
+                m.Goto("m2");
+                m.Label("m1else");
+                m.Assign(al, 1);
+                m.MStore(m.Word32(0x004404), m.Word16(0xFFFF));
+
+                m.Label("m2");
+                m.MStore(m.Word32(0x00123408), al);
+                m.Label("m3");
+                m.MStore(m.Word32(0x00123410), eax);
+                m.Return();
+            });
+        }
+
+
+        [Test]
         [Ignore("Finish register work first")]
         public void Ssa_StackSlicesInDifferentBlocks()
         {

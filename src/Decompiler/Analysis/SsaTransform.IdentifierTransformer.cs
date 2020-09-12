@@ -494,7 +494,7 @@ namespace Reko.Analysis
                     aliasState = new AliasState();
                     bs.currentDef.Add(id.Storage.Domain, aliasState);
                 }
-                if (sid.DefStatement != null && !(sid.DefStatement.Instruction is AliasAssignment))
+                if (sid.DefStatement != null && !(sid.DefStatement.Instruction is AliasAssignment || sid.DefStatement.Instruction is PhiAssignment))
                 {
                     // Only store a definition if it isn't an alias.
                     var stgDef = id.Storage;
