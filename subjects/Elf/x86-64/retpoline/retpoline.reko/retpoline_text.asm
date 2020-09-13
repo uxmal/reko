@@ -6,12 +6,12 @@ _start proc
 	mov	r9,rdx
 	pop	rsi
 	mov	rdx,rsp
-	and	rsp,F0
+	and	rsp,0F0h
 	push	rax
 	push	rsp
-	mov	r8,+00400780
-	mov	rcx,+00400710
-	mov	rdi,+00400660
+	mov	r8,+400780h
+	mov	rcx,+400710h
+	mov	rdi,+400660h
 	call	[0000000000600FF0]                                    ; [rip+00200B46]
 	hlt
 00000000004004AB                                  0F 1F 44 00 00            ..D..
@@ -21,19 +21,19 @@ _start proc
 ;;     000000000040052D (in __do_global_dtors_aux)
 deregister_tm_clones proc
 	push	rbp
-	mov	eax,00601040
-	cmp	rax,+00601040
+	mov	eax,601040h
+	cmp	rax,+601040h
 	mov	rbp,rsp
-	jz	00000000004004D8
+	jz	4004D8h
 
 l00000000004004C1:
-	mov	eax,00000000
+	mov	eax,0h
 	test	rax,rax
-	jz	00000000004004D8
+	jz	4004D8h
 
 l00000000004004CB:
 	pop	rbp
-	mov	edi,00601040
+	mov	edi,601040h
 	jmp	rax
 00000000004004D3          0F 1F 44 00 00                            ..D..       
 
@@ -46,25 +46,25 @@ l00000000004004D8:
 ;;   Called from:
 ;;     0000000000400555 (in frame_dummy)
 register_tm_clones proc
-	mov	esi,00601040
+	mov	esi,601040h
 	push	rbp
-	sub	rsi,+00601040
+	sub	rsi,+601040h
 	mov	rbp,rsp
-	sar	rsi,03
+	sar	rsi,3h
 	mov	rax,rsi
-	shr	rax,3F
+	shr	rax,3Fh
 	add	rsi,rax
-	sar	rsi,01
-	jz	0000000000400518
+	sar	rsi,1h
+	jz	400518h
 
 l0000000000400503:
-	mov	eax,00000000
+	mov	eax,0h
 	test	rax,rax
-	jz	0000000000400518
+	jz	400518h
 
 l000000000040050D:
 	pop	rbp
-	mov	edi,00601040
+	mov	edi,601040h
 	jmp	rax
 0000000000400515                0F 1F 00                              ...       
 
@@ -75,14 +75,14 @@ l0000000000400518:
 
 ;; __do_global_dtors_aux: 0000000000400520
 __do_global_dtors_aux proc
-	cmp	[0000000000601040],00                                  ; [rip+00200B19]
-	jnz	0000000000400540
+	cmp	[0000000000601040],0h                                  ; [rip+00200B19]
+	jnz	400540h
 
 l0000000000400529:
 	push	rbp
 	mov	rbp,rsp
-	call	00000000004004B0
-	mov	[0000000000601040],01                                  ; [rip+00200B07]
+	call	4004B0h
+	mov	[0000000000601040],1h                                  ; [rip+00200B07]
 	pop	rbp
 	ret
 000000000040053B                                  0F 1F 44 00 00            ..D..
@@ -96,7 +96,7 @@ frame_dummy proc
 	push	rbp
 	mov	rbp,rsp
 	pop	rbp
-	jmp	00000000004004E0
+	jmp	4004E0h
 0000000000400557                      66 0F 1F 84 00 00 00 00 00        f........
 
 ;; my1: 0000000000400560
@@ -105,15 +105,15 @@ frame_dummy proc
 my1 proc
 	push	rbp
 	mov	rbp,rsp
-	sub	rsp,10
-	mov	[rbp-04],edi
-	mov	[rbp-08],esi
-	movsxd	rdi,dword ptr [rbp-04]
-	movsxd	rsi,dword ptr [rbp-08]
-	call	0000000000400470
-	mov	[rbp-10],rax
-	mov	rax,[rbp-10]
-	add	rsp,10
+	sub	rsp,10h
+	mov	[rbp-4h],edi
+	mov	[rbp-8h],esi
+	movsxd	rdi,dword ptr [rbp-4h]
+	movsxd	rsi,dword ptr [rbp-8h]
+	call	400470h
+	mov	[rbp-10h],rax
+	mov	rax,[rbp-10h]
+	add	rsp,10h
 	pop	rbp
 	ret
 0000000000400589                            0F 1F 80 00 00 00 00          .......
@@ -123,11 +123,11 @@ my2 proc
 	push	rbp
 	mov	rbp,rsp
 	mov	al,sil
-	mov	esi,00000001
-	mov	[rbp-08],rdi
-	mov	[rbp-09],al
-	mov	rdi,[rbp-08]
-	mov	al,[rbp-09]
+	mov	esi,1h
+	mov	[rbp-8h],rdi
+	mov	[rbp-9h],al
+	mov	rdi,[rbp-8h]
+	mov	al,[rbp-9h]
 	mov	[rdi],al
 	mov	eax,esi
 	pop	rbp
@@ -137,68 +137,68 @@ my2 proc
 branches proc
 	push	rbp
 	mov	rbp,rsp
-	sub	rsp,20
-	mov	[rbp-08],edi
-	mov	[rbp-0C],esi
-	mov	esi,[rbp-08]
-	cmp	esi,[rbp-0C]
-	jge	000000000040064F
+	sub	rsp,20h
+	mov	[rbp-8h],edi
+	mov	[rbp-0Ch],esi
+	mov	esi,[rbp-8h]
+	cmp	esi,[rbp-0Ch]
+	jge	40064Fh
 
 l00000000004005CA:
-	mov	eax,[rbp-08]
-	shl	eax,01
-	mov	ecx,[rbp-0C]
-	shl	ecx,01
+	mov	eax,[rbp-8h]
+	shl	eax,1h
+	mov	ecx,[rbp-0Ch]
+	shl	ecx,1h
 	cmp	eax,ecx
-	jge	000000000040064F
+	jge	40064Fh
 
 l00000000004005DE:
-	imul	eax,[rbp-08],03
-	imul	ecx,[rbp-0C],03
+	imul	eax,[rbp-8h],3h
+	imul	ecx,[rbp-0Ch],3h
 	cmp	eax,ecx
-	jge	000000000040064F
+	jge	40064Fh
 
 l00000000004005EE:
-	mov	eax,[rbp-08]
-	shl	eax,02
-	mov	ecx,[rbp-0C]
-	shl	ecx,02
+	mov	eax,[rbp-8h]
+	shl	eax,2h
+	mov	ecx,[rbp-0Ch]
+	shl	ecx,2h
 	cmp	eax,ecx
-	jge	000000000040064F
+	jge	40064Fh
 
 l0000000000400602:
-	mov	eax,00000002
-	mov	ecx,[rbp-08]
-	mov	[rbp-1C],eax
+	mov	eax,2h
+	mov	ecx,[rbp-8h]
+	mov	[rbp-1Ch],eax
 	mov	eax,ecx
 	cdq
-	mov	ecx,[rbp-1C]
+	mov	ecx,[rbp-1Ch]
 	idiv	ecx
-	mov	esi,[rbp-0C]
-	mov	[rbp-20],eax
+	mov	esi,[rbp-0Ch]
+	mov	[rbp-20h],eax
 	mov	eax,esi
 	cdq
 	idiv	ecx
-	mov	esi,[rbp-20]
+	mov	esi,[rbp-20h]
 	cmp	esi,eax
-	jge	000000000040064F
+	jge	40064Fh
 
 l000000000040062B:
-	mov	edi,[rbp-08]
-	mov	esi,[rbp-0C]
-	call	0000000000400560
-	mov	[rbp-18],rax
-	mov	rdi,[rbp-18]
-	call	0000000000400450
-	mov	dword ptr [rbp-04],00000000
-	jmp	0000000000400656
+	mov	edi,[rbp-8h]
+	mov	esi,[rbp-0Ch]
+	call	400560h
+	mov	[rbp-18h],rax
+	mov	rdi,[rbp-18h]
+	call	400450h
+	mov	dword ptr [rbp-4h],0h
+	jmp	400656h
 
 l000000000040064F:
-	mov	dword ptr [rbp-04],FFFFFFFF
+	mov	dword ptr [rbp-4h],0FFFFFFFFh
 
 l0000000000400656:
-	mov	eax,[rbp-04]
-	add	rsp,20
+	mov	eax,[rbp-4h]
+	add	rsp,20h
 	pop	rbp
 	ret
 000000000040065F                                              90                .
@@ -207,36 +207,36 @@ l0000000000400656:
 main proc
 	push	rbp
 	mov	rbp,rsp
-	sub	rsp,40
-	lea	rax,[rbp-20]
-	mov	dword ptr [rbp-04],00000000
-	mov	[rbp-08],edi
-	mov	[rbp-10],rsi
-	mov	rsi,[00400798]
-	mov	[rbp-20],rsi
-	mov	rsi,[004007A0]
-	mov	[rbp-18],rsi
-	mov	[rbp-28],rax
-	mov	rax,[rbp-28]
+	sub	rsp,40h
+	lea	rax,[rbp-20h]
+	mov	dword ptr [rbp-4h],0h
+	mov	[rbp-8h],edi
+	mov	[rbp-10h],rsi
+	mov	rsi,[400798h]
+	mov	[rbp-20h],rsi
+	mov	rsi,[4007A0h]
+	mov	[rbp-18h],rsi
+	mov	[rbp-28h],rax
+	mov	rax,[rbp-28h]
 	mov	r11,[rax]
-	mov	edi,00000001
-	mov	esi,00000005
-	call	00000000004006F0
-	mov	[rbp-30],rax
-	mov	rax,[rbp-28]
-	mov	r11,[rax+08]
-	mov	rdi,[rbp-30]
-	mov	esi,00000078
-	call	00000000004006F0
-	mov	esi,004007A8
+	mov	edi,1h
+	mov	esi,5h
+	call	4006F0h
+	mov	[rbp-30h],rax
+	mov	rax,[rbp-28h]
+	mov	r11,[rax+8h]
+	mov	rdi,[rbp-30h]
+	mov	esi,78h
+	call	4006F0h
+	mov	esi,4007A8h
 	mov	edi,esi
-	mov	[rbp-34],eax
-	call	0000000000400460
-	mov	rdi,[rbp-30]
-	mov	[rbp-38],eax
-	call	0000000000400450
+	mov	[rbp-34h],eax
+	call	400460h
+	mov	rdi,[rbp-30h]
+	mov	[rbp-38h],eax
+	call	400450h
 	xor	eax,eax
-	add	rsp,40
+	add	rsp,40h
 	pop	rbp
 	ret
 00000000004006E9                            0F 1F 80 00 00 00 00          .......
@@ -246,11 +246,11 @@ main proc
 ;;     00000000004006A7 (in main)
 ;;     00000000004006C1 (in main)
 __llvm_retpoline_r11 proc
-	call	0000000000400700
+	call	400700h
 
 l00000000004006F5:
 	pause
-	jmp	00000000004006F5
+	jmp	4006F5h
 00000000004006FC                                     0F 1F 40 00             ..@.
 
 ;; fn0000000000400700: 0000000000400700
@@ -275,27 +275,27 @@ __libc_csu_init proc
 	mov	r14,rsi
 	mov	r13,rdx
 	sub	rbp,r12
-	sub	rsp,08
-	sar	rbp,03
-	call	0000000000400428
+	sub	rsp,8h
+	sar	rbp,3h
+	call	400428h
 	test	rbp,rbp
-	jz	0000000000400766
+	jz	400766h
 
 l0000000000400746:
 	xor	ebx,ebx
-	nop	dword ptr [rax+rax+00000000]
+	nop	dword ptr [rax+rax+0h]
 
 l0000000000400750:
 	mov	rdx,r13
 	mov	rsi,r14
 	mov	edi,r15d
 	call	qword ptr [r12+rbx*8]
-	add	rbx,01
+	add	rbx,1h
 	cmp	rbp,rbx
-	jnz	0000000000400750
+	jnz	400750h
 
 l0000000000400766:
-	add	rsp,08
+	add	rsp,8h
 	pop	rbx
 	pop	rbp
 	pop	r12

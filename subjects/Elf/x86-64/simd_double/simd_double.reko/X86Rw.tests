@@ -6,7 +6,7 @@
         public void X86Rw_vaddpd()
         {
             Given_HexString("C5FD588570FFFFFF");
-            AssertCode(     // vaddpd	ymm0,ymm0,[rbp-00000090]
+            AssertCode(     // vaddpd	ymm0,ymm0,[rbp-90h]
                 "0|L--|0000000000000870(8): 1 instructions",
                 "1|L--|@@@");
         }

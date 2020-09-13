@@ -6,13 +6,13 @@ _start proc
 	mov	r9,rdx
 	pop	rsi
 	mov	rdx,rsp
-	and	rsp,F0
+	and	rsp,0F0h
 	push	rax
 	push	rsp
-	mov	r8,+004017F0
-	mov	rcx,+00401780
-	mov	rdi,+004012F9
-	call	0000000000400BC0
+	mov	r8,+4017F0h
+	mov	rcx,+401780h
+	mov	rdi,+4012F9h
+	call	400BC0h
 	hlt
 0000000000400CFA                               66 0F 1F 44 00 00           f..D..
 
@@ -20,21 +20,21 @@ _start proc
 ;;   Called from:
 ;;     0000000000400D8D (in __do_global_dtors_aux)
 deregister_tm_clones proc
-	mov	eax,006020FF
+	mov	eax,6020FFh
 	push	rbp
-	sub	rax,+006020F8
-	cmp	rax,0E
+	sub	rax,+6020F8h
+	cmp	rax,0Eh
 	mov	rbp,rsp
-	jbe	0000000000400D30
+	jbe	400D30h
 
 l0000000000400D15:
-	mov	eax,00000000
+	mov	eax,0h
 	test	rax,rax
-	jz	0000000000400D30
+	jz	400D30h
 
 l0000000000400D1F:
 	pop	rbp
-	mov	edi,006020F8
+	mov	edi,6020F8h
 	jmp	rax
 0000000000400D27                      66 0F 1F 84 00 00 00 00 00        f........
 
@@ -48,25 +48,25 @@ l0000000000400D30:
 ;;     0000000000400DAB (in frame_dummy)
 ;;     0000000000400DC1 (in frame_dummy)
 register_tm_clones proc
-	mov	esi,006020F8
+	mov	esi,6020F8h
 	push	rbp
-	sub	rsi,+006020F8
-	sar	rsi,03
+	sub	rsi,+6020F8h
+	sar	rsi,3h
 	mov	rbp,rsp
 	mov	rax,rsi
-	shr	rax,3F
+	shr	rax,3Fh
 	add	rsi,rax
-	sar	rsi,01
-	jz	0000000000400D78
+	sar	rsi,1h
+	jz	400D78h
 
 l0000000000400D63:
-	mov	eax,00000000
+	mov	eax,0h
 	test	rax,rax
-	jz	0000000000400D78
+	jz	400D78h
 
 l0000000000400D6D:
 	pop	rbp
-	mov	edi,006020F8
+	mov	edi,6020F8h
 	jmp	rax
 0000000000400D75                0F 1F 00                              ...       
 
@@ -77,15 +77,15 @@ l0000000000400D78:
 
 ;; __do_global_dtors_aux: 0000000000400D80
 __do_global_dtors_aux proc
-	cmp	[0000000000602108],00                                  ; [rip+00201381]
-	jnz	0000000000400D9A
+	cmp	[0000000000602108],0h                                  ; [rip+00201381]
+	jnz	400D9Ah
 
 l0000000000400D89:
 	push	rbp
 	mov	rbp,rsp
-	call	0000000000400D00
+	call	400D00h
 	pop	rbp
-	mov	[0000000000602108],01                                  ; [rip+0020136E]
+	mov	[0000000000602108],1h                                  ; [rip+0020136E]
 
 l0000000000400D9A:
 	ret
@@ -93,25 +93,25 @@ l0000000000400D9A:
 
 ;; frame_dummy: 0000000000400DA0
 frame_dummy proc
-	mov	edi,00601E10
-	cmp	qword ptr [rdi],00
-	jnz	0000000000400DB0
+	mov	edi,601E10h
+	cmp	qword ptr [rdi],0h
+	jnz	400DB0h
 
 l0000000000400DAB:
-	jmp	0000000000400D40
+	jmp	400D40h
 0000000000400DAD                                        0F 1F 00              ...
 
 l0000000000400DB0:
-	mov	eax,00000000
+	mov	eax,0h
 	test	rax,rax
-	jz	0000000000400DAB
+	jz	400DABh
 
 l0000000000400DBA:
 	push	rbp
 	mov	rbp,rsp
 	call	rax
 	pop	rbp
-	jmp	0000000000400D40
+	jmp	400D40h
 
 ;; component: 0000000000400DC6
 ;;   Called from:
@@ -129,105 +129,105 @@ l0000000000400DBA:
 component proc
 	push	rbp
 	mov	rbp,rsp
-	sub	rsp,30
-	mov	[rbp-18],rdi
-	mov	[rbp-1C],esi
-	mov	[rbp-20],edx
-	mov	[rbp-24],ecx
-	mov	[rbp-28],r8d
-	mov	eax,[rbp-1C]
-	shr	eax,06
-	imul	eax,[rbp-28]
-	imul	eax,[rbp-24]
-	mov	[rbp-08],eax
-	mov	eax,[rbp-1C]
-	and	eax,3F
-	imul	eax,[rbp-28]
+	sub	rsp,30h
+	mov	[rbp-18h],rdi
+	mov	[rbp-1Ch],esi
+	mov	[rbp-20h],edx
+	mov	[rbp-24h],ecx
+	mov	[rbp-28h],r8d
+	mov	eax,[rbp-1Ch]
+	shr	eax,6h
+	imul	eax,[rbp-28h]
+	imul	eax,[rbp-24h]
+	mov	[rbp-8h],eax
+	mov	eax,[rbp-1Ch]
+	and	eax,3Fh
+	imul	eax,[rbp-28h]
 	mov	edx,eax
-	mov	eax,[rbp-20]
+	mov	eax,[rbp-20h]
 	add	eax,edx
-	imul	eax,[rbp-24]
-	mov	[rbp-04],eax
-	mov	eax,[rbp-08]
-	shl	rax,03
-	add	[rbp-18],rax
-	mov	eax,[rbp-04]
-	shr	eax,03
+	imul	eax,[rbp-24h]
+	mov	[rbp-4h],eax
+	mov	eax,[rbp-8h]
+	shl	rax,3h
+	add	[rbp-18h],rax
+	mov	eax,[rbp-4h]
+	shr	eax,3h
 	mov	eax,eax
-	add	[rbp-18],rax
-	and	dword ptr [rbp-04],07
-	cmp	dword ptr [rbp-24],10
-	ja	0000000000400EC1
+	add	[rbp-18h],rax
+	and	dword ptr [rbp-4h],7h
+	cmp	dword ptr [rbp-24h],10h
+	ja	400EC1h
 
 l0000000000400E2D:
-	mov	eax,[rbp-24]
-	mov	rax,[00401828+rax*8]
+	mov	eax,[rbp-24h]
+	mov	rax,[401828h+rax*8]
 	jmp	rax
 
 l0000000000400E3A:
-	mov	rax,[rbp-18]
+	mov	rax,[rbp-18h]
 	movzx	eax,byte ptr [rax]
 	movzx	edx,al
-	mov	eax,00000007
-	sub	eax,[rbp-04]
+	mov	eax,7h
+	sub	eax,[rbp-4h]
 	mov	ecx,eax
 	sar	edx,cl
 	mov	eax,edx
-	and	eax,01
-	jmp	0000000000400EE7
+	and	eax,1h
+	jmp	400EE7h
 
 l0000000000400E5A:
-	mov	rax,[rbp-18]
+	mov	rax,[rbp-18h]
 	movzx	eax,byte ptr [rax]
 	movzx	edx,al
-	mov	eax,00000006
-	sub	eax,[rbp-04]
+	mov	eax,6h
+	sub	eax,[rbp-4h]
 	mov	ecx,eax
 	sar	edx,cl
 	mov	eax,edx
-	and	eax,03
-	jmp	0000000000400EE7
+	and	eax,3h
+	jmp	400EE7h
 
 l0000000000400E77:
-	mov	rax,[rbp-18]
+	mov	rax,[rbp-18h]
 	movzx	eax,byte ptr [rax]
 	movzx	edx,al
-	mov	eax,00000004
-	sub	eax,[rbp-04]
+	mov	eax,4h
+	sub	eax,[rbp-4h]
 	mov	ecx,eax
 	sar	edx,cl
 	mov	eax,edx
-	and	eax,0F
-	jmp	0000000000400EE7
+	and	eax,0Fh
+	jmp	400EE7h
 
 l0000000000400E94:
-	mov	rax,[rbp-18]
+	mov	rax,[rbp-18h]
 	movzx	eax,byte ptr [rax]
 	movzx	eax,al
-	jmp	0000000000400EE7
+	jmp	400EE7h
 
 l0000000000400EA0:
-	mov	rax,[rbp-18]
+	mov	rax,[rbp-18h]
 	movzx	eax,byte ptr [rax]
 	movzx	eax,al
-	shl	eax,08
+	shl	eax,8h
 	mov	edx,eax
-	mov	rax,[rbp-18]
-	add	rax,01
+	mov	rax,[rbp-18h]
+	add	rax,1h
 	movzx	eax,byte ptr [rax]
 	movzx	eax,al
 	add	eax,edx
-	jmp	0000000000400EE7
+	jmp	400EE7h
 
 l0000000000400EC1:
 	mov	rax,[0000000000602100]                                 ; [rip+00201238]
-	mov	edx,[rbp-24]
-	mov	esi,00401808
+	mov	edx,[rbp-24h]
+	mov	esi,401808h
 	mov	rdi,rax
-	mov	eax,00000000
-	call	0000000000400BF0
-	mov	edi,00000001
-	call	0000000000400C70
+	mov	eax,0h
+	call	400BF0h
+	mov	edi,1h
+	call	400C70h
 
 l0000000000400EE7:
 	leave
@@ -242,321 +242,321 @@ print_pixel proc
 	push	r13
 	push	r12
 	push	rbx
-	sub	rsp,58
-	mov	[rbp-58],rdi
-	mov	[rbp-60],rsi
-	mov	[rbp-68],rdx
-	mov	[rbp-6C],ecx
-	mov	rax,fs:[00000028]
-	mov	[rbp-28],rax
+	sub	rsp,58h
+	mov	[rbp-58h],rdi
+	mov	[rbp-60h],rsi
+	mov	[rbp-68h],rdx
+	mov	[rbp-6Ch],ecx
+	mov	rax,fs:[0028h]
+	mov	[rbp-28h],rax
 	xor	eax,eax
-	mov	rdx,[rbp-60]
-	mov	rax,[rbp-58]
+	mov	rdx,[rbp-60h]
+	mov	rax,[rbp-58h]
 	mov	rsi,rdx
 	mov	rdi,rax
-	call	0000000000400B30
+	call	400B30h
 	movzx	eax,al
-	mov	[rbp-40],eax
-	mov	rdx,[rbp-60]
-	mov	rax,[rbp-58]
+	mov	[rbp-40h],eax
+	mov	rdx,[rbp-60h]
+	mov	rax,[rbp-58h]
 	mov	rsi,rdx
 	mov	rdi,rax
-	call	0000000000400BB0
+	call	400BB0h
 	movzx	eax,al
-	cmp	eax,06
-	ja	00000000004012C9
+	cmp	eax,6h
+	ja	4012C9h
 
 l0000000000400F4C:
 	mov	eax,eax
-	mov	rax,[00401958+rax*8]
+	mov	rax,[401958h+rax*8]
 	jmp	rax
 
 l0000000000400F58:
-	mov	edx,[rbp-40]
-	mov	esi,[rbp-6C]
-	mov	rax,[rbp-68]
-	mov	r8d,00000001
+	mov	edx,[rbp-40h]
+	mov	esi,[rbp-6Ch]
+	mov	rax,[rbp-68h]
+	mov	r8d,1h
 	mov	ecx,edx
-	mov	edx,00000000
+	mov	edx,0h
 	mov	rdi,rax
-	call	0000000000400DC6
+	call	400DC6h
 	mov	esi,eax
-	mov	edi,004018B0
-	mov	eax,00000000
-	call	0000000000400B70
-	jmp	00000000004012DA
+	mov	edi,4018B0h
+	mov	eax,0h
+	call	400B70h
+	jmp	4012DAh
 
 l0000000000400F8D:
-	mov	edx,[rbp-40]
-	mov	esi,[rbp-6C]
-	mov	rax,[rbp-68]
-	mov	r8d,00000001
+	mov	edx,[rbp-40h]
+	mov	esi,[rbp-6Ch]
+	mov	rax,[rbp-68h]
+	mov	r8d,1h
 	mov	ecx,edx
-	mov	edx,00000000
+	mov	edx,0h
 	mov	rdi,rax
-	call	0000000000400DC6
-	mov	[rbp-3C],eax
-	mov	qword ptr [rbp-38],+00000000
-	mov	dword ptr [rbp-48],00000000
-	lea	rcx,[rbp-48]
-	lea	rdx,[rbp-38]
-	mov	rsi,[rbp-60]
-	mov	rax,[rbp-58]
+	call	400DC6h
+	mov	[rbp-3Ch],eax
+	mov	qword ptr [rbp-38h],+0h
+	mov	dword ptr [rbp-48h],0h
+	lea	rcx,[rbp-48h]
+	lea	rdx,[rbp-38h]
+	mov	rsi,[rbp-60h]
+	mov	rax,[rbp-58h]
 	mov	rdi,rax
-	call	0000000000400CB0
-	and	eax,08
+	call	400CB0h
+	and	eax,8h
 	test	eax,eax
-	jz	0000000000401137
+	jz	401137h
 
 l0000000000400FE1:
-	mov	eax,[rbp-48]
+	mov	eax,[rbp-48h]
 	test	eax,eax
-	jle	0000000000401137
+	jle	401137h
 
 l0000000000400FEC:
-	mov	rax,[rbp-38]
+	mov	rax,[rbp-38h]
 	test	rax,rax
-	jz	0000000000401137
+	jz	401137h
 
 l0000000000400FF9:
-	mov	qword ptr [rbp-30],+00000000
-	mov	dword ptr [rbp-44],00000000
-	lea	rcx,[rbp-44]
-	lea	rdx,[rbp-30]
-	mov	rsi,[rbp-60]
-	mov	rax,[rbp-58]
-	mov	r8d,00000000
+	mov	qword ptr [rbp-30h],+0h
+	mov	dword ptr [rbp-44h],0h
+	lea	rcx,[rbp-44h]
+	lea	rdx,[rbp-30h]
+	mov	rsi,[rbp-60h]
+	mov	rax,[rbp-58h]
+	mov	r8d,0h
 	mov	rdi,rax
-	call	0000000000400B80
-	and	eax,10
+	call	400B80h
+	and	eax,10h
 	test	eax,eax
-	jz	00000000004010D1
+	jz	4010D1h
 
 l0000000000401031:
-	mov	eax,[rbp-44]
+	mov	eax,[rbp-44h]
 	test	eax,eax
-	jle	00000000004010D1
+	jle	4010D1h
 
 l000000000040103C:
-	mov	rax,[rbp-30]
+	mov	rax,[rbp-30h]
 	test	rax,rax
-	jz	00000000004010D1
+	jz	4010D1h
 
 l0000000000401049:
-	mov	eax,[rbp-44]
-	cmp	[rbp-3C],eax
-	jnc	0000000000401063
+	mov	eax,[rbp-44h]
+	cmp	[rbp-3Ch],eax
+	jnc	401063h
 
 l0000000000401051:
-	mov	rdx,[rbp-30]
-	mov	eax,[rbp-3C]
+	mov	rdx,[rbp-30h]
+	mov	eax,[rbp-3Ch]
 	add	rax,rdx
 	movzx	eax,byte ptr [rax]
 	movzx	esi,al
-	jmp	0000000000401068
+	jmp	401068h
 
 l0000000000401063:
-	mov	esi,000000FF
+	mov	esi,0FFh
 
 l0000000000401068:
-	mov	rcx,[rbp-38]
-	mov	edx,[rbp-3C]
+	mov	rcx,[rbp-38h]
+	mov	edx,[rbp-3Ch]
 	mov	rax,rdx
 	add	rax,rax
 	add	rax,rdx
 	add	rax,rcx
-	movzx	eax,byte ptr [rax+02]
+	movzx	eax,byte ptr [rax+2h]
 	movzx	edi,al
-	mov	rcx,[rbp-38]
-	mov	edx,[rbp-3C]
+	mov	rcx,[rbp-38h]
+	mov	edx,[rbp-3Ch]
 	mov	rax,rdx
 	add	rax,rax
 	add	rax,rdx
 	add	rax,rcx
-	movzx	eax,byte ptr [rax+01]
+	movzx	eax,byte ptr [rax+1h]
 	movzx	ecx,al
-	mov	r8,[rbp-38]
-	mov	edx,[rbp-3C]
+	mov	r8,[rbp-38h]
+	mov	edx,[rbp-3Ch]
 	mov	rax,rdx
 	add	rax,rax
 	add	rax,rdx
 	add	rax,r8
 	movzx	eax,byte ptr [rax]
 	movzx	edx,al
-	mov	eax,[rbp-3C]
+	mov	eax,[rbp-3Ch]
 	mov	r9d,esi
 	mov	r8d,edi
 	mov	esi,eax
-	mov	edi,004018B9
-	mov	eax,00000000
-	call	0000000000400B70
-	jmp	0000000000401150
+	mov	edi,4018B9h
+	mov	eax,0h
+	call	400B70h
+	jmp	401150h
 
 l00000000004010D1:
-	mov	rcx,[rbp-38]
-	mov	edx,[rbp-3C]
+	mov	rcx,[rbp-38h]
+	mov	edx,[rbp-3Ch]
 	mov	rax,rdx
 	add	rax,rax
 	add	rax,rdx
 	add	rax,rcx
-	movzx	eax,byte ptr [rax+02]
+	movzx	eax,byte ptr [rax+2h]
 	movzx	esi,al
-	mov	rcx,[rbp-38]
-	mov	edx,[rbp-3C]
+	mov	rcx,[rbp-38h]
+	mov	edx,[rbp-3Ch]
 	mov	rax,rdx
 	add	rax,rax
 	add	rax,rdx
 	add	rax,rcx
-	movzx	eax,byte ptr [rax+01]
+	movzx	eax,byte ptr [rax+1h]
 	movzx	ecx,al
-	mov	rdi,[rbp-38]
-	mov	edx,[rbp-3C]
+	mov	rdi,[rbp-38h]
+	mov	edx,[rbp-3Ch]
 	mov	rax,rdx
 	add	rax,rax
 	add	rax,rdx
 	add	rax,rdi
 	movzx	eax,byte ptr [rax]
 	movzx	edx,al
-	mov	eax,[rbp-3C]
+	mov	eax,[rbp-3Ch]
 	mov	r8d,esi
 	mov	esi,eax
-	mov	edi,004018D3
-	mov	eax,00000000
-	call	0000000000400B70
-	jmp	0000000000401150
+	mov	edi,4018D3h
+	mov	eax,0h
+	call	400B70h
+	jmp	401150h
 
 l0000000000401137:
-	mov	eax,[rbp-3C]
+	mov	eax,[rbp-3Ch]
 	mov	esi,eax
-	mov	edi,004018EA
-	mov	eax,00000000
-	call	0000000000400B70
-	jmp	00000000004012DA
+	mov	edi,4018EAh
+	mov	eax,0h
+	call	400B70h
+	jmp	4012DAh
 
 l0000000000401150:
-	jmp	00000000004012DA
+	jmp	4012DAh
 
 l0000000000401155:
-	mov	edx,[rbp-40]
-	mov	esi,[rbp-6C]
-	mov	rax,[rbp-68]
-	mov	r8d,00000003
+	mov	edx,[rbp-40h]
+	mov	esi,[rbp-6Ch]
+	mov	rax,[rbp-68h]
+	mov	r8d,3h
 	mov	ecx,edx
-	mov	edx,00000002
+	mov	edx,2h
 	mov	rdi,rax
-	call	0000000000400DC6
+	call	400DC6h
 	mov	r12d,eax
-	mov	edx,[rbp-40]
-	mov	esi,[rbp-6C]
-	mov	rax,[rbp-68]
-	mov	r8d,00000003
+	mov	edx,[rbp-40h]
+	mov	esi,[rbp-6Ch]
+	mov	rax,[rbp-68h]
+	mov	r8d,3h
 	mov	ecx,edx
-	mov	edx,00000001
+	mov	edx,1h
 	mov	rdi,rax
-	call	0000000000400DC6
+	call	400DC6h
 	mov	ebx,eax
-	mov	edx,[rbp-40]
-	mov	esi,[rbp-6C]
-	mov	rax,[rbp-68]
-	mov	r8d,00000003
+	mov	edx,[rbp-40h]
+	mov	esi,[rbp-6Ch]
+	mov	rax,[rbp-68h]
+	mov	r8d,3h
 	mov	ecx,edx
-	mov	edx,00000000
+	mov	edx,0h
 	mov	rdi,rax
-	call	0000000000400DC6
+	call	400DC6h
 	mov	ecx,r12d
 	mov	edx,ebx
 	mov	esi,eax
-	mov	edi,00401906
-	mov	eax,00000000
-	call	0000000000400B70
-	jmp	00000000004012DA
+	mov	edi,401906h
+	mov	eax,0h
+	call	400B70h
+	jmp	4012DAh
 
 l00000000004011D2:
-	mov	edx,[rbp-40]
-	mov	esi,[rbp-6C]
-	mov	rax,[rbp-68]
-	mov	r8d,00000002
+	mov	edx,[rbp-40h]
+	mov	esi,[rbp-6Ch]
+	mov	rax,[rbp-68h]
+	mov	r8d,2h
 	mov	ecx,edx
-	mov	edx,00000001
+	mov	edx,1h
 	mov	rdi,rax
-	call	0000000000400DC6
+	call	400DC6h
 	mov	ebx,eax
-	mov	edx,[rbp-40]
-	mov	esi,[rbp-6C]
-	mov	rax,[rbp-68]
-	mov	r8d,00000002
+	mov	edx,[rbp-40h]
+	mov	esi,[rbp-6Ch]
+	mov	rax,[rbp-68h]
+	mov	r8d,2h
 	mov	ecx,edx
-	mov	edx,00000000
+	mov	edx,0h
 	mov	rdi,rax
-	call	0000000000400DC6
+	call	400DC6h
 	mov	edx,ebx
 	mov	esi,eax
-	mov	edi,00401914
-	mov	eax,00000000
-	call	0000000000400B70
-	jmp	00000000004012DA
+	mov	edi,401914h
+	mov	eax,0h
+	call	400B70h
+	jmp	4012DAh
 
 l000000000040122A:
-	mov	edx,[rbp-40]
-	mov	esi,[rbp-6C]
-	mov	rax,[rbp-68]
-	mov	r8d,00000004
+	mov	edx,[rbp-40h]
+	mov	esi,[rbp-6Ch]
+	mov	rax,[rbp-68h]
+	mov	r8d,4h
 	mov	ecx,edx
-	mov	edx,00000003
+	mov	edx,3h
 	mov	rdi,rax
-	call	0000000000400DC6
+	call	400DC6h
 	mov	r13d,eax
-	mov	edx,[rbp-40]
-	mov	esi,[rbp-6C]
-	mov	rax,[rbp-68]
-	mov	r8d,00000004
+	mov	edx,[rbp-40h]
+	mov	esi,[rbp-6Ch]
+	mov	rax,[rbp-68h]
+	mov	r8d,4h
 	mov	ecx,edx
-	mov	edx,00000002
+	mov	edx,2h
 	mov	rdi,rax
-	call	0000000000400DC6
+	call	400DC6h
 	mov	r12d,eax
-	mov	edx,[rbp-40]
-	mov	esi,[rbp-6C]
-	mov	rax,[rbp-68]
-	mov	r8d,00000004
+	mov	edx,[rbp-40h]
+	mov	esi,[rbp-6Ch]
+	mov	rax,[rbp-68h]
+	mov	r8d,4h
 	mov	ecx,edx
-	mov	edx,00000001
+	mov	edx,1h
 	mov	rdi,rax
-	call	0000000000400DC6
+	call	400DC6h
 	mov	ebx,eax
-	mov	edx,[rbp-40]
-	mov	esi,[rbp-6C]
-	mov	rax,[rbp-68]
-	mov	r8d,00000004
+	mov	edx,[rbp-40h]
+	mov	esi,[rbp-6Ch]
+	mov	rax,[rbp-68h]
+	mov	r8d,4h
 	mov	ecx,edx
-	mov	edx,00000000
+	mov	edx,0h
 	mov	rdi,rax
-	call	0000000000400DC6
+	call	400DC6h
 	mov	r8d,r13d
 	mov	ecx,r12d
 	mov	edx,ebx
 	mov	esi,eax
-	mov	edi,00401926
-	mov	eax,00000000
-	call	0000000000400B70
-	jmp	00000000004012DA
+	mov	edi,401926h
+	mov	eax,0h
+	call	400B70h
+	jmp	4012DAh
 
 l00000000004012C9:
-	mov	rax,[rbp-58]
-	mov	esi,00401938
+	mov	rax,[rbp-58h]
+	mov	esi,401938h
 	mov	rdi,rax
-	call	0000000000400B50
+	call	400B50h
 
 l00000000004012DA:
-	mov	rax,[rbp-28]
-	xor	rax,fs:[00000028]
-	jz	00000000004012EE
+	mov	rax,[rbp-28h]
+	xor	rax,fs:[0028h]
+	jz	4012EEh
 
 l00000000004012E9:
-	call	0000000000400B40
+	call	400B40h
 
 l00000000004012EE:
-	add	rsp,58
+	add	rsp,58h
 	pop	rbx
 	pop	r12
 	pop	r13
@@ -567,405 +567,405 @@ l00000000004012EE:
 main proc
 	push	rbp
 	mov	rbp,rsp
-	sub	rsp,+000000A0
-	mov	[rbp-00000094],edi
-	mov	[rbp-000000A0],rsi
-	mov	rax,fs:[00000028]
-	mov	[rbp-08],rax
+	sub	rsp,+0A0h
+	mov	[rbp-94h],edi
+	mov	[rbp-0A0h],rsi
+	mov	rax,fs:[0028h]
+	mov	[rbp-8h],rax
 	xor	eax,eax
-	mov	dword ptr [rbp-00000084],00000001
-	cmp	dword ptr [rbp-00000094],04
-	jnz	000000000040173F
+	mov	dword ptr [rbp-84h],1h
+	cmp	dword ptr [rbp-94h],4h
+	jnz	40173Fh
 
 l0000000000401337:
-	mov	rax,[rbp-000000A0]
-	add	rax,08
+	mov	rax,[rbp-0A0h]
+	add	rax,8h
 	mov	rax,[rax]
 	mov	rdi,rax
-	call	0000000000400C30
-	mov	[rbp-28],rax
-	mov	rax,[rbp-000000A0]
-	add	rax,10
+	call	400C30h
+	mov	[rbp-28h],rax
+	mov	rax,[rbp-0A0h]
+	add	rax,10h
 	mov	rax,[rax]
 	mov	rdi,rax
-	call	0000000000400C30
-	mov	[rbp-20],rax
-	mov	rax,[rbp-000000A0]
-	add	rax,18
+	call	400C30h
+	mov	[rbp-20h],rax
+	mov	rax,[rbp-0A0h]
+	add	rax,18h
 	mov	rax,[rax]
-	mov	esi,00401990
+	mov	esi,401990h
 	mov	rdi,rax
-	call	0000000000400C40
-	mov	[rbp-18],rax
-	mov	qword ptr [rbp-40],+00000000
-	cmp	qword ptr [rbp-18],00
-	jz	0000000000401716
+	call	400C40h
+	mov	[rbp-18h],rax
+	mov	qword ptr [rbp-40h],+0h
+	cmp	qword ptr [rbp-18h],0h
+	jz	401716h
 
 l000000000040139D:
-	mov	ecx,00000000
-	mov	edx,00000000
-	mov	esi,00000000
-	mov	edi,00401993
-	call	0000000000400BD0
-	mov	[rbp-38],rax
-	mov	rax,[rbp-38]
+	mov	ecx,0h
+	mov	edx,0h
+	mov	esi,0h
+	mov	edi,401993h
+	call	400BD0h
+	mov	[rbp-38h],rax
+	mov	rax,[rbp-38h]
 	test	rax,rax
-	jz	00000000004016F6
+	jz	4016F6h
 
 l00000000004013C7:
-	mov	rax,[rbp-38]
+	mov	rax,[rbp-38h]
 	mov	rdi,rax
-	call	0000000000400CA0
-	mov	[rbp-30],rax
-	mov	rax,[rbp-30]
+	call	400CA0h
+	mov	[rbp-30h],rax
+	mov	rax,[rbp-30h]
 	test	rax,rax
-	jz	00000000004016C0
+	jz	4016C0h
 
 l00000000004013E4:
-	mov	rax,[rbp-38]
-	mov	rdx,[rbp-18]
+	mov	rax,[rbp-38h]
+	mov	rdx,[rbp-18h]
 	mov	rsi,rdx
 	mov	rdi,rax
-	call	0000000000400C90
-	mov	rdx,[rbp-30]
-	mov	rax,[rbp-38]
+	call	400C90h
+	mov	rdx,[rbp-30h]
+	mov	rax,[rbp-38h]
 	mov	rsi,rdx
 	mov	rdi,rax
-	call	0000000000400C10
-	mov	rdx,[rbp-30]
-	mov	rax,[rbp-38]
+	call	400C10h
+	mov	rdx,[rbp-30h]
+	mov	rax,[rbp-38h]
 	mov	rsi,rdx
 	mov	rdi,rax
-	call	0000000000400BE0
+	call	400BE0h
 	mov	rdx,rax
-	mov	rax,[rbp-38]
+	mov	rax,[rbp-38h]
 	mov	rsi,rdx
 	mov	rdi,rax
-	call	0000000000400C20
-	mov	[rbp-40],rax
-	mov	rax,[rbp-40]
-	mov	[rbp-10],rax
-	mov	rsi,[rbp-30]
-	mov	rax,[rbp-38]
-	lea	r9,[rbp-74]
-	lea	r8,[rbp-78]
-	lea	rcx,[rbp-7C]
-	lea	rdx,[rbp-80]
-	sub	rsp,08
-	lea	rdi,[rbp-68]
+	call	400C20h
+	mov	[rbp-40h],rax
+	mov	rax,[rbp-40h]
+	mov	[rbp-10h],rax
+	mov	rsi,[rbp-30h]
+	mov	rax,[rbp-38h]
+	lea	r9,[rbp-74h]
+	lea	r8,[rbp-78h]
+	lea	rcx,[rbp-7Ch]
+	lea	rdx,[rbp-80h]
+	sub	rsp,8h
+	lea	rdi,[rbp-68h]
 	push	rdi
-	lea	rdi,[rbp-6C]
+	lea	rdi,[rbp-6Ch]
 	push	rdi
-	lea	rdi,[rbp-70]
+	lea	rdi,[rbp-70h]
 	push	rdi
 	mov	rdi,rax
-	call	0000000000400C50
-	add	rsp,20
+	call	400C50h
+	add	rsp,20h
 	test	eax,eax
-	jz	00000000004016AF
+	jz	4016AFh
 
 l000000000040147A:
-	mov	eax,[rbp-70]
+	mov	eax,[rbp-70h]
 	test	eax,eax
-	jz	0000000000401488
+	jz	401488h
 
 l0000000000401481:
-	cmp	eax,01
-	jz	0000000000401491
+	cmp	eax,1h
+	jz	401491h
 
 l0000000000401486:
-	jmp	000000000040149A
+	jmp	40149Ah
 
 l0000000000401488:
-	mov	dword ptr [rbp-64],00000001
-	jmp	00000000004014AB
+	mov	dword ptr [rbp-64h],1h
+	jmp	4014ABh
 
 l0000000000401491:
-	mov	dword ptr [rbp-64],00000007
-	jmp	00000000004014AB
+	mov	dword ptr [rbp-64h],7h
+	jmp	4014ABh
 
 l000000000040149A:
-	mov	rax,[rbp-38]
-	mov	esi,0040199A
+	mov	rax,[rbp-38h]
+	mov	esi,40199Ah
 	mov	rdi,rax
-	call	0000000000400B50
+	call	400B50h
 
 l00000000004014AB:
-	mov	rax,[rbp-38]
+	mov	rax,[rbp-38h]
 	mov	rdi,rax
-	call	0000000000400B60
-	mov	dword ptr [rbp-60],00000000
-	jmp	0000000000401673
+	call	400B60h
+	mov	dword ptr [rbp-60h],0h
+	jmp	401673h
 
 l00000000004014C3:
-	mov	eax,[rbp-70]
-	cmp	eax,01
-	jnz	00000000004015CE
+	mov	eax,[rbp-70h]
+	cmp	eax,1h
+	jnz	4015CEh
 
 l00000000004014CF:
-	cmp	dword ptr [rbp-60],01
-	jle	00000000004014EF
+	cmp	dword ptr [rbp-60h],1h
+	jle	4014EFh
 
 l00000000004014D5:
-	mov	eax,00000007
-	sub	eax,[rbp-60]
-	sar	eax,01
-	mov	edx,00000001
+	mov	eax,7h
+	sub	eax,[rbp-60h]
+	sar	eax,1h
+	mov	edx,1h
 	mov	ecx,eax
 	shl	edx,cl
 	mov	eax,edx
-	sub	eax,01
-	jmp	00000000004014F4
+	sub	eax,1h
+	jmp	4014F4h
 
 l00000000004014EF:
-	mov	eax,00000007
+	mov	eax,7h
 
 l00000000004014F4:
-	mov	edx,[rbp-60]
+	mov	edx,[rbp-60h]
 	mov	esi,edx
-	and	esi,01
-	mov	edx,[rbp-60]
-	add	edx,01
-	sar	edx,01
-	mov	ecx,00000003
+	and	esi,1h
+	mov	edx,[rbp-60h]
+	add	edx,1h
+	sar	edx,1h
+	mov	ecx,3h
 	sub	ecx,edx
 	mov	edx,ecx
 	mov	ecx,edx
 	shl	esi,cl
 	mov	edx,esi
-	and	edx,07
+	and	edx,7h
 	sub	eax,edx
 	mov	edx,eax
-	mov	eax,[rbp-80]
+	mov	eax,[rbp-80h]
 	add	edx,eax
-	cmp	dword ptr [rbp-60],01
-	jle	0000000000401531
+	cmp	dword ptr [rbp-60h],1h
+	jle	401531h
 
 l0000000000401525:
-	mov	eax,00000007
-	sub	eax,[rbp-60]
-	sar	eax,01
-	jmp	0000000000401536
+	mov	eax,7h
+	sub	eax,[rbp-60h]
+	sar	eax,1h
+	jmp	401536h
 
 l0000000000401531:
-	mov	eax,00000003
+	mov	eax,3h
 
 l0000000000401536:
 	mov	ecx,eax
 	shr	edx,cl
 	mov	eax,edx
 	test	eax,eax
-	jz	000000000040166E
+	jz	40166Eh
 
 l0000000000401544:
-	mov	eax,[rbp-60]
-	and	eax,01
+	mov	eax,[rbp-60h]
+	and	eax,1h
 	mov	edx,eax
-	mov	eax,[rbp-60]
-	add	eax,01
-	sar	eax,01
-	mov	ecx,00000003
+	mov	eax,[rbp-60h]
+	add	eax,1h
+	sar	eax,1h
+	mov	ecx,3h
 	sub	ecx,eax
 	mov	eax,ecx
 	mov	ecx,eax
 	shl	edx,cl
 	mov	eax,edx
-	and	eax,07
-	mov	[rbp-58],eax
-	mov	eax,[rbp-60]
-	and	eax,01
+	and	eax,7h
+	mov	[rbp-58h],eax
+	mov	eax,[rbp-60h]
+	and	eax,1h
 	test	eax,eax
 	setz	al
 	movzx	edx,al
-	mov	eax,[rbp-60]
-	sar	eax,01
-	mov	ecx,00000003
+	mov	eax,[rbp-60h]
+	sar	eax,1h
+	mov	ecx,3h
 	sub	ecx,eax
 	mov	eax,ecx
 	mov	ecx,eax
 	shl	edx,cl
 	mov	eax,edx
-	and	eax,07
-	mov	[rbp-5C],eax
-	mov	eax,00000007
-	sub	eax,[rbp-60]
-	sar	eax,01
-	mov	edx,00000001
+	and	eax,7h
+	mov	[rbp-5Ch],eax
+	mov	eax,7h
+	sub	eax,[rbp-60h]
+	sar	eax,1h
+	mov	edx,1h
 	mov	ecx,eax
 	shl	edx,cl
 	mov	eax,edx
-	mov	[rbp-50],eax
-	cmp	dword ptr [rbp-60],02
-	jle	00000000004015C4
+	mov	[rbp-50h],eax
+	cmp	dword ptr [rbp-60h],2h
+	jle	4015C4h
 
 l00000000004015AF:
-	mov	eax,[rbp-60]
-	sub	eax,01
-	sar	eax,01
-	mov	edx,00000008
+	mov	eax,[rbp-60h]
+	sub	eax,1h
+	sar	eax,1h
+	mov	edx,8h
 	mov	ecx,eax
 	sar	edx,cl
 	mov	eax,edx
-	jmp	00000000004015C9
+	jmp	4015C9h
 
 l00000000004015C4:
-	mov	eax,00000008
+	mov	eax,8h
 
 l00000000004015C9:
-	mov	[rbp-54],eax
-	jmp	00000000004015E8
+	mov	[rbp-54h],eax
+	jmp	4015E8h
 
 l00000000004015CE:
-	mov	dword ptr [rbp-58],00000000
-	mov	eax,[rbp-58]
-	mov	[rbp-5C],eax
-	mov	dword ptr [rbp-50],00000001
-	mov	eax,[rbp-50]
-	mov	[rbp-54],eax
+	mov	dword ptr [rbp-58h],0h
+	mov	eax,[rbp-58h]
+	mov	[rbp-5Ch],eax
+	mov	dword ptr [rbp-50h],1h
+	mov	eax,[rbp-50h]
+	mov	[rbp-54h],eax
 
 l00000000004015E8:
-	mov	eax,[rbp-5C]
-	mov	[rbp-4C],eax
-	jmp	0000000000401664
+	mov	eax,[rbp-5Ch]
+	mov	[rbp-4Ch],eax
+	jmp	401664h
 
 l00000000004015F0:
-	mov	edi,004019B6
-	call	0000000000400B20
-	mov	rax,[rbp-38]
-	mov	rcx,[rbp-10]
-	mov	edx,00000000
+	mov	edi,4019B6h
+	call	400B20h
+	mov	rax,[rbp-38h]
+	mov	rcx,[rbp-10h]
+	mov	edx,0h
 	mov	rsi,rcx
 	mov	rdi,rax
-	call	0000000000400C00
-	mov	eax,[rbp-4C]
-	cmp	rax,[rbp-20]
-	jnz	000000000040165E
+	call	400C00h
+	mov	eax,[rbp-4Ch]
+	cmp	rax,[rbp-20h]
+	jnz	40165Eh
 
 l000000000040161B:
-	mov	eax,[rbp-58]
-	mov	[rbp-48],eax
-	mov	dword ptr [rbp-44],00000000
-	jmp	0000000000401656
+	mov	eax,[rbp-58h]
+	mov	[rbp-48h],eax
+	mov	dword ptr [rbp-44h],0h
+	jmp	401656h
 
 l000000000040162A:
-	mov	eax,[rbp-48]
-	cmp	rax,[rbp-28]
-	jnz	000000000040164C
+	mov	eax,[rbp-48h]
+	cmp	rax,[rbp-28h]
+	jnz	40164Ch
 
 l0000000000401633:
-	mov	rsi,[rbp-30]
-	mov	rax,[rbp-38]
-	mov	ecx,[rbp-44]
-	mov	rdx,[rbp-10]
+	mov	rsi,[rbp-30h]
+	mov	rax,[rbp-38h]
+	mov	ecx,[rbp-44h]
+	mov	rdx,[rbp-10h]
 	mov	rdi,rax
-	call	0000000000400EE9
-	jmp	000000000040167F
+	call	400EE9h
+	jmp	40167Fh
 
 l000000000040164C:
-	mov	eax,[rbp-50]
-	add	[rbp-48],eax
-	add	dword ptr [rbp-44],01
+	mov	eax,[rbp-50h]
+	add	[rbp-48h],eax
+	add	dword ptr [rbp-44h],1h
 
 l0000000000401656:
-	mov	eax,[rbp-80]
-	cmp	[rbp-48],eax
-	jc	000000000040162A
+	mov	eax,[rbp-80h]
+	cmp	[rbp-48h],eax
+	jc	40162Ah
 
 l000000000040165E:
-	mov	eax,[rbp-54]
-	add	[rbp-4C],eax
+	mov	eax,[rbp-54h]
+	add	[rbp-4Ch],eax
 
 l0000000000401664:
-	mov	eax,[rbp-7C]
-	cmp	[rbp-4C],eax
-	jc	00000000004015F0
+	mov	eax,[rbp-7Ch]
+	cmp	[rbp-4Ch],eax
+	jc	4015F0h
 
 l000000000040166C:
-	jmp	000000000040166F
+	jmp	40166Fh
 
 l000000000040166E:
 	nop
 
 l000000000040166F:
-	add	dword ptr [rbp-60],01
+	add	dword ptr [rbp-60h],1h
 
 l0000000000401673:
-	mov	eax,[rbp-60]
-	cmp	eax,[rbp-64]
-	jl	00000000004014C3
+	mov	eax,[rbp-60h]
+	cmp	eax,[rbp-64h]
+	jl	4014C3h
 
 l000000000040167F:
-	mov	qword ptr [rbp-40],+00000000
-	mov	rax,[rbp-38]
-	mov	rdx,[rbp-10]
+	mov	qword ptr [rbp-40h],+0h
+	mov	rax,[rbp-38h]
+	mov	rdx,[rbp-10h]
 	mov	rsi,rdx
 	mov	rdi,rax
-	call	0000000000400BA0
-	mov	rax,[rbp-38]
-	lea	rdx,[rbp-30]
+	call	400BA0h
+	mov	rax,[rbp-38h]
+	lea	rdx,[rbp-30h]
 	mov	rsi,rdx
 	mov	rdi,rax
-	call	0000000000400C60
-	jmp	00000000004016DE
+	call	400C60h
+	jmp	4016DEh
 
 l00000000004016AF:
-	mov	rax,[rbp-38]
-	mov	esi,004019C3
+	mov	rax,[rbp-38h]
+	mov	esi,4019C3h
 	mov	rdi,rax
-	call	0000000000400B50
+	call	400B50h
 
 l00000000004016C0:
 	mov	rax,[0000000000602100]                                 ; [rip+00200A39]
 	mov	rcx,rax
-	mov	edx,0000002C
-	mov	esi,00000001
-	mov	edi,004019E8
-	call	0000000000400C80
+	mov	edx,2Ch
+	mov	esi,1h
+	mov	edi,4019E8h
+	call	400C80h
 
 l00000000004016DE:
-	lea	rax,[rbp-38]
-	mov	edx,00000000
-	mov	esi,00000000
+	lea	rax,[rbp-38h]
+	mov	edx,0h
+	mov	esi,0h
 	mov	rdi,rax
-	call	0000000000400B90
-	jmp	000000000040175D
+	call	400B90h
+	jmp	40175Dh
 
 l00000000004016F6:
 	mov	rax,[0000000000602100]                                 ; [rip+00200A03]
 	mov	rcx,rax
-	mov	edx,0000002E
-	mov	esi,00000001
-	mov	edi,00401A18
-	call	0000000000400C80
-	jmp	000000000040175D
+	mov	edx,2Eh
+	mov	esi,1h
+	mov	edi,401A18h
+	call	400C80h
+	jmp	40175Dh
 
 l0000000000401716:
-	mov	rax,[rbp-000000A0]
-	add	rax,18
+	mov	rax,[rbp-0A0h]
+	add	rax,18h
 	mov	rdx,[rax]
 	mov	rax,[0000000000602100]                                 ; [rip+002009D5]
-	mov	esi,00401A48
+	mov	esi,401A48h
 	mov	rdi,rax
-	mov	eax,00000000
-	call	0000000000400BF0
-	jmp	000000000040175D
+	mov	eax,0h
+	call	400BF0h
+	jmp	40175Dh
 
 l000000000040173F:
 	mov	rax,[0000000000602100]                                 ; [rip+002009BA]
 	mov	rcx,rax
-	mov	edx,00000027
-	mov	esi,00000001
-	mov	edi,00401A70
-	call	0000000000400C80
+	mov	edx,27h
+	mov	esi,1h
+	mov	edi,401A70h
+	call	400C80h
 
 l000000000040175D:
-	mov	eax,[rbp-00000084]
-	mov	rdi,[rbp-08]
-	xor	rdi,fs:[00000028]
-	jz	0000000000401777
+	mov	eax,[rbp-84h]
+	mov	rdi,[rbp-8h]
+	xor	rdi,fs:[0028h]
+	jz	401777h
 
 l0000000000401772:
-	call	0000000000400B40
+	call	400B40h
 
 l0000000000401777:
 	leave
@@ -986,27 +986,27 @@ __libc_csu_init proc
 	mov	r14,rsi
 	mov	r13,rdx
 	sub	rbp,r12
-	sub	rsp,08
-	sar	rbp,03
-	call	0000000000400AE8
+	sub	rsp,8h
+	sar	rbp,3h
+	call	400AE8h
 	test	rbp,rbp
-	jz	00000000004017D6
+	jz	4017D6h
 
 l00000000004017B6:
 	xor	ebx,ebx
-	nop	dword ptr [rax+rax+00000000]
+	nop	dword ptr [rax+rax+0h]
 
 l00000000004017C0:
 	mov	rdx,r13
 	mov	rsi,r14
 	mov	edi,r15d
 	call	qword ptr [r12+rbx*8]
-	add	rbx,01
+	add	rbx,1h
 	cmp	rbx,rbp
-	jnz	00000000004017C0
+	jnz	4017C0h
 
 l00000000004017D6:
-	add	rsp,08
+	add	rsp,8h
 	pop	rbx
 	pop	rbp
 	pop	r12

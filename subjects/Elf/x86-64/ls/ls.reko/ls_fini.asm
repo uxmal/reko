@@ -2,6 +2,6 @@
 
 ;; _fini: 0000000000411EFC
 _fini proc
-	sub	rsp,08
-	add	rsp,08
+	sub	rsp,8h
+	add	rsp,8h
 	ret

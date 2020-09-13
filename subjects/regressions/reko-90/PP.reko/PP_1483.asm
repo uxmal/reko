@@ -176,8 +176,8 @@ fn1483_0ADB proc
 
 ;; fn1483_0ADC: 1483:0ADC
 fn1483_0ADC proc
-	call	0D3F
-	fsubr	dword ptr es:[di+E086]
+	call	0D3Fh
+	fsubr	dword ptr es:[di+0E086h]
 	pusha
 	ret
 1483:0AE6                   19 02 81 C7 80 64 00 06 04 87       .....d....
@@ -205,56 +205,56 @@ fn1483_0ADC proc
 ;;   Called from:
 ;;     1483:0C55 (in fn1483_0C55)
 fn1483_0C11 proc
-	mov	dx,8000
+	mov	dx,8000h
 	push	cx
 	push	si
 	cmp	al,ss:[si]
-	jnz	0C4D
+	jnz	0C4Dh
 
 l1483_0C1B:
 	push	ax
 	push	bx
-	sbb	al,8C
-	mov	ax,1955
-	loopne	0C6C
+	sbb	al,8Ch
+	mov	ax,1955h
+	loopne	0C6Ch
 
 l1483_0C24:
 	stosw
 	cmpsw
-	mov	cl,9B
+	mov	cl,9Bh
 	illegal
 	push	si
-	imul	dx,[bx+si],D7
+	imul	dx,[bx+si],0D7h
 	xchg	cl,dl
 	fcmovnbe	st(0),st(1)
-	shl	dl,01
+	shl	dl,1h
 	cli
 	stosw
 	mov	ax,si
 	sub	ax,sp
-	sub	ax,2EBC
-	mov	bh,ss:[di+24]
-	mov	es:[di+3C],ax
+	sub	ax,2EBCh
+	mov	bh,ss:[di+24h]
+	mov	es:[di+3Ch],ax
 	pop	cx
 	pop	bx
 	pop	ax
 	add	bx,dx
 	inc	si
-	loop	0C13
+	loop	0C13h
 
 l1483_0C4D:
 	pop	si
 	pop	cx
-	shr	dx,01
+	shr	dx,1h
 	inc	al
-	cmp	al,11
+	cmp	al,11h
 
 ;; fn1483_0C55: 1483:0C55
 ;;   Called from:
 ;;     1483:0C53 (in fn1483_0C11)
 ;;     1483:0C96 (in fn1483_0C91)
 fn1483_0C55 proc
-	jnz	0C11
+	jnz	0C11h
 
 l1483_0C57:
 	pop	si
@@ -268,15 +268,15 @@ l1483_0C57:
 l1483_0C6C:
 	cld
 	daa
-	call	1BB8
+	call	1BB8h
 	add	di,[bx]
-	add	ax,[bx+3303]
+	add	ax,[bx+3303h]
 	xchg	ebx,eax
-	adc	dh,[si+147C]
-	sbb	ax,0903
+	adc	dh,[si+147Ch]
+	sbb	ax,903h
 	pop	sp
-	add	[bx+di+020E],di
-	loopne	0CA0
+	add	[bx+di+20Eh],di
+	loopne	0CA0h
 
 l1483_0C87:
 	or	dx,cx
@@ -295,14 +295,14 @@ fn1483_0C91 proc
 	pop	es
 	adc	dx,ax
 	add	al,ch
-	jno	0C55
+	jno	0C55h
 
 l1483_0C98:
-	imul	dx,[bx+si],18
-	loope	0CA9
+	imul	dx,[bx+si],18h
+	loope	0CA9h
 
 l1483_0C9D:
-	add	[bx+si+2203],cx
+	add	[bx+si+2203h],cx
 
 ;; fn1483_0CA0: 1483:0CA0
 ;;   Called from:
@@ -310,37 +310,37 @@ l1483_0C9D:
 ;;     1483:0C9B (in fn1483_0C91)
 ;;     1483:0C9D (in fn1483_0C91)
 fn1483_0CA0 proc
-	and	al,[3101]
+	and	al,[3101h]
 	add	ah,[bx+si]
-	call	FD4E
+	call	0FD4Eh
 
 l1483_0CA9:
 	add	dl,[bx]
-	imul	dx,[si+173E],0C62
+	imul	dx,[si+173Eh],0C62h
 	add	[bx],dl
 	dec	bp
 	add	bl,ah
-	sub	ax,32AC
-	rol	byte ptr [bx+di-56],E2
+	sub	ax,32ACh
+	rol	byte ptr [bx+di-56h],0E2h
 	stc
-	ror	word ptr [bp+7C],01
+	ror	word ptr [bp+7Ch],1h
 	adc	[bx],bl
 	and	bl,[bx]
 	stosb
-	sbb	ax,8B1F
+	sbb	ax,8B1Fh
 	add	[bx],bx
 	mov	cx,di
 	sub	cx,si
-	xchg	[di+14],ax
-	call	4FE0
-	sub	[F7E3],dx
+	xchg	[di+14h],ax
+	call	4FE0h
+	sub	[0F7E3h],dx
 	sub	ax,sp
 	add	[bx+di],bp
 	push	si
 	push	cx
-	sbb	cl,[bp+di+027E]
+	sbb	cl,[bp+di+27Eh]
 	push	si
-	in	ax,8B
+	in	ax,8Bh
 
 l1483_0CE5:
 	mov	ax,bx
@@ -351,20 +351,20 @@ l1483_0CE5:
 ;;     1483:0D50 (in fn1483_0D3F)
 fn1483_0CED proc
 	add	si,[di]
-	add	[bx+si+F7E2],sp
+	add	[bx+si+0F7E2h],sp
 	stosw
 	inc	bl
-	jnz	0CE5
+	jnz	0CE5h
 
 l1483_0CF8:
 	pop	cx
-	rcr	byte ptr [bx+si],AC
+	rcr	byte ptr [bx+si],0ACh
 
 ;; fn1483_0CFA: 1483:0CFA
 ;;   Called from:
 ;;     1483:0D40 (in fn1483_0D3F)
 fn1483_0CFA proc
-	sbb	[si+D832],ch
+	sbb	[si+0D832h],ch
 
 ;; fn1483_0CFC: 1483:0CFC
 ;;   Called from:
@@ -373,32 +373,32 @@ fn1483_0CFA proc
 fn1483_0CFC proc
 	xor	bl,al
 	mov	al,[bx+di]
-	mov	word ptr [bp+si],D1FF
-	jcxz	0C91
+	mov	word ptr [bp+si],0D1FFh
+	jcxz	0C91h
 
 ;; fn1483_0D06: 1483:0D06
 ;;   Called from:
 ;;     1483:0D02 (in fn1483_0CFC)
 ;;     1483:0D04 (in fn1483_0CFC)
 fn1483_0D06 proc
-	sbb	[bx+E209],dx
-	sub	ax,5EF1
+	sbb	[bx+0E209h],dx
+	sub	ax,5EF1h
 	cmp	bx,dx
-	jz	0D2B
+	jz	0D2Bh
 
 l1483_0D11:
-	call	0D14
+	call	0D14h
 	pop	dx
-	add	dx,0D
-	mov	ah,09
-	int	21
-	mov	ax,4CFF
-	add	al,70
+	add	dx,0Dh
+	mov	ah,9h
+	int	21h
+	mov	ax,4CFFh
+	add	al,70h
 	inc	dx
 	popa
-	and	fs:[bp+di+52],al
+	and	fs:[bp+di+52h],al
 	inc	bx
-	or	ax,240A
+	or	ax,240Ah
 
 l1483_0D2B:
 	ret
@@ -410,101 +410,101 @@ l1483_0D2B:
 ;;     1483:0ADC (in fn1483_0ADC)
 fn1483_0D3F proc
 	push	ax
-	jpe	0CFA
+	jpe	0CFAh
 
 l1483_0D42:
 	add	al,ch
-	mov	bl,B4
-	sub	ch,[bx+si+02]
-	adc	ax,FC68
+	mov	bl,0B4h
+	sub	ch,[bx+si+2h]
+	adc	ax,0FC68h
 	push	si
-	xor	dh,17
-	jl	0CED
+	xor	dh,17h
+	jl	0CEDh
 
 l1483_0D52:
 	add	ah,[di]
-	push	0F5F
-	push	0C58
-	xchg	[bx+si+43],bp
-	shl	byte ptr [di],68
-	add	sp,12
+	push	0F5Fh
+	push	0C58h
+	xchg	[bx+si+43h],bp
+	shl	byte ptr [di],68h
+	add	sp,12h
 	clc
-	neg	word ptr [bp-06]
+	neg	word ptr [bp-6h]
 	push	es
 	into
 
 l1483_0D69:
-	mov	[si+5C87],ch
+	mov	[si+5C87h],ch
 	test	[si],dx
-	call	8A82
+	call	8A82h
 	pusha
-	adc	bx,[bx+di-79]
-	adc	[bp+di+F512],dh
-	and	[bx+007D],al
-	sbb	ax,8747
+	adc	bx,[bx+di-79h]
+	adc	[bp+di+0F512h],dh
+	and	[bx+7Dh],al
+	sbb	ax,8747h
 	adc	al,ch
 	xchg	si,ax
-	aad	08
-	xchg	[si+995D],si
+	aad	8h
+	xchg	[si+995Dh],si
 	push	sp
-	add	al,2A
+	add	al,2Ah
 	sbb	dh,bh
 	add	bx,[bx+si]
 	clc
 	add	al,ch
 	popf
-	loope	0D99
+	loope	0D99h
 
 l1483_0D97:
-	sbb	[bx+di+28],ah
+	sbb	[bx+di+28h],ah
 
 l1483_0D99:
 	sub	[bx+si],bl
 
 l1483_0D9A:
-	sbb	[si+5A],bh
+	sbb	[si+5Ah],bh
 
 l1483_0D9B:
-	jl	0DF7
+	jl	0DF7h
 
 l1483_0D9D:
-	or	al,3F
-	sbb	[di+2D],al
-	mov	dl,99
+	or	al,3Fh
+	sbb	[di+2Dh],al
+	mov	dl,99h
 	stosb
-	jns	0DB9
+	jns	0DB9h
 
 l1483_0DA7:
 	stosb
 
 l1483_0DA8:
-	jns	0DBE
+	jns	0DBEh
 
 l1483_0DAA:
 	clc
 	neg	word ptr [bp+si]
 	cli
 	dec	di
-	pop	word ptr [bx+di+45]
+	pop	word ptr [bx+di+45h]
 	pop	ax
 	inc	bp
-	add	[bx+si+C079],bp
+	add	[bx+si+0C079h],bp
 	dec	bp
 
 l1483_0DB9:
 	pop	dx
-	shr	byte ptr [bx+di],01
-	add	[bx+di+02],cl
+	shr	byte ptr [bx+di],1h
+	add	[bx+di+2h],cl
 
 l1483_0DBE:
-	add	al,[0047]
+	add	al,[0047h]
 
 l1483_0DBF:
 	push	es
 	inc	di
-	add	[03BC],cl
-	or	ax,[0E00]
-	add	[si+8ED3],cl
+	add	[03BCh],cl
+	or	ax,[0E00h]
+	add	[si+8ED3h],cl
 	ret
 	mov	dx,cs
 	mov	ds,dx
@@ -517,15 +517,15 @@ l1483_0DF3:
 	cmp	ax,bp
 
 l1483_0DF7:
-	jbe	0E14
+	jbe	0E14h
 
 l1483_0DF9:
 	lds	bp,[bp+di]
 	push	es
-	call	E62A
+	call	0E62Ah
 	sub	dx,ax
 	lds	si,cs:[si]
-	mov	cl,03
+	mov	cl,3h
 	ret
 1483:0E07                      D3 E0 8B C8 D1 E0 48 48 8B        ......HH.
 1483:0E10 F0 8B F8 0B                                     ....           
@@ -533,59 +533,59 @@ l1483_0DF9:
 l1483_0E14:
 	xor	[bp+di],cl
 	in	ax,dx
-	jnz	0DA8
+	jnz	0DA8h
 
 l1483_0E19:
 	frndint
 	pop	es
 	mov	ds,bx
-	sub	sp,1C
+	sub	sp,1Ch
 	mov	bp,sp
-	sub	sp,0180
+	sub	sp,180h
 	mov	ax,sp
 	inc	bx
 	push	bp
-	add	ax,8FA0
+	add	ax,8FA0h
 	inc	si
-	or	ah,[bp+si+0C05]
-	loope	0DF3
+	or	ah,[bp+si+0C05h]
+	loope	0DF3h
 
 l1483_0E35:
 	adc	[bx+si],ax
 	lodsb
-	mov	[bp+14],al
+	mov	[bp+14h],al
 	xor	di,di
-	mov	[bp+15],di
-	adc	[bp+0E16],dl
+	mov	[bp+15h],di
+	adc	[bp+0E16h],dl
 	push	es
-	mov	[bp+04],ss
-	adc	byte ptr [bp+di+0137],E8
-	xor	ah,[bx+si+01]
+	mov	[bp+4h],ss
+	adc	byte ptr [bp+di+137h],0E8h
+	xor	ah,[bx+si+1h]
 	push	cs
-	sbb	cl,[si+005E]
-	xor	[si+6346],cl
+	sbb	cl,[si+5Eh]
+	xor	[si+6346h],cl
 	push	si
 	or	al,ch
-	jz	0ED9
+	jz	0ED9h
 
 l1483_0E5E:
 	push	cs
 	lahf
 	or	ch,al
-	jnz	0E70
+	jnz	0E70h
 
 l1483_0E64:
-	add	ax,E80C
+	add	ax,0E80Ch
 	outsw
-	sbb	ax,E014
-	sbb	ax,EB12
-	and	al,[bp+si+D213]
+	sbb	ax,0E014h
+	sbb	ax,0EB12h
+	and	al,[bp+si+0D213h]
 
 l1483_0E70:
 	adc	dx,dx
 
 l1483_0E72:
-	and	bx,[bx+143E]
+	and	bx,[bx+143Eh]
 	retf
 1483:0E77                      04 0E 9F 8E 5E 9C 0D 04 00        ....^....
 1483:0E80 88 A5 C9 3B B0 55 BE 1A 55 BE 0F 1A 8A 4E 15 06 ...;.U..U....N..
@@ -600,32 +600,32 @@ l1483_0ED6:
 	mov	cl,al
 
 l1483_0ED9:
-	jcxz	0EEE
+	jcxz	0EEEh
 
 l1483_0EDB:
 	lodsw
 	add	ax,dx
-	mov	ch,2A
-	aad	C3
+	mov	ch,2Ah
+	aad	0C3h
 	xor	ah,ah
 
 l1483_0EE4:
 	lodsb
 	add	di,ax
 	add	es:[di],dx
-	loop	0EE4
+	loop	0EE4h
 
 l1483_0EEC:
-	jmp	0ED6
+	jmp	0ED6h
 
 l1483_0EEE:
-	or	al,20
-	mov	si,[9004]
-	add	ds:[0300],ax
+	or	al,20h
+	mov	si,[9004h]
+	add	ds:[0300h],ax
 	cli
-	add	[8602],dx
+	add	[8602h],dx
 	lodsw
-	jmp	far 3024:8E10
+	jmp	far 3024h:8E10h
 1483:0F04             DA 33 26 DB FA 8B 01 E6 8E D7 FB 2E     .3&.........
 1483:0F10 FF 2F F3 01 BE 12 10 16 CF BF 04 05 9E 13 7C CF ./............|.
 1483:0F20 1E 98 16 18 8B C5 8A 6E 7C 15 38 99 16 18 89 46 .......n|.8....F
@@ -662,38 +662,38 @@ l1483_0EEE:
 
 ;; fn1483_1104: 1483:1104
 fn1483_1104 proc
-	sub	ax,5D97
-	mov	dh,26
-	aam	B6
-	sbb	al,75
+	sub	ax,5D97h
+	mov	dh,26h
+	aam	0B6h
+	sbb	al,75h
 
 l1483_110D:
-	mov	dh,34
+	mov	dh,34h
 	std
-	adc	[bp+450F],si
+	adc	[bp+450Fh],si
 	add	ax,bp
 	inc	ax
 	push	es
-	mov	cl,1C
-	mov	[bp+si+5E],dx
-	sub	word ptr [bx+di+675E],7D
-	sbb	ax,CA22
-	add	bl,[bp-20]
+	mov	cl,1Ch
+	mov	[bp+si+5Eh],dx
+	sub	word ptr [bx+di+675Eh],7Dh
+	sbb	ax,0CA22h
+	add	bl,[bp-20h]
 	push	dx
 	pop	si
 	fyl2xp1	st(1),st(0)
-	adc	bl,[bp+7D]
-	mov	si,9F59
-	sbb	al,02
+	adc	bl,[bp+7Dh]
+	mov	si,9F59h
+	sbb	al,2h
 	xlat
 	les	bx,[si]
 	cmc
-	add	al,C4
+	add	al,0C4h
 	fscale	st(5),st(0)
-	test	sp,99FE
-	mov	di,BFC4
-	add	[bp+1EC4],bp
-	jmp	110D
+	test	sp,99FEh
+	mov	di,0BFC4h
+	add	[bp+1EC4h],bp
+	jmp	110Dh
 1483:1149                            D8 FA 0A C4 C9 FE 1C          .......
 1483:1150 85 C4 4D 43 36 38 BA C5 32 2E 48 E7 7B FF FF 41 ..MC68..2.H.{..A
 1483:1160 FA 02 30 4F EF FE 80 24 4F 20 18 47 E8 00 0A 4B ..0O...$O .G...K
@@ -798,8 +798,8 @@ l1483_110D:
 ;; fn1483_1777: 1483:1777
 fn1483_1777 proc
 	sbb	bl,al
-	call	467E
-	fsubr	dword ptr [di+61B8]
+	call	467Eh
+	fsubr	dword ptr [di+61B8h]
 	xchg	al,ah
 	ret
 1483:1783          8B F5 F9 AC 12 C0 02 C0 BF 4C E9 8B 00    .........L...
@@ -871,24 +871,24 @@ l1483_1B13:
 
 l1483_1B38:
 	dec	dx
-	jnz	1B7F
+	jnz	1B7Fh
 
 l1483_1B3B:
-	loope	1B6D
+	loope	1B6Dh
 
 l1483_1B3D:
 	clc
 	pop	es
 	xchg	si,ax
 	cmp	ax,bx
-	jz	1B51
+	jz	1B51h
 
 l1483_1B44:
 	dec	ax
-	mov	dx,02E2
+	mov	dx,2E2h
 	xchg	sp,ax
 	adc	al,bh
-	jz	1B13
+	jz	1B13h
 
 l1483_1B4E:
 	add	[si],ah
@@ -896,66 +896,66 @@ l1483_1B4E:
 
 l1483_1B51:
 	pop	es
-	mov	di,02FB
+	mov	di,2FBh
 	lodsb
 	stosb
-	call	1B91
+	call	1B91h
 	cli
 	dec	di
-	mov	ax,0A0D
+	mov	ax,0A0Dh
 	stosw
-	mov	al,24
+	mov	al,24h
 	popa
 	stosb
-	sbb	ax,ECBA
+	sbb	ax,0ECBAh
 	add	dh,bl
 	add	[bx+di],bx
 	rcl	[di],cl
 
 l1483_1B6D:
-	and	al,5C
+	and	al,5Ch
 	push	si
-	mov	si,7269
-	jnz	1BE8
+	mov	si,7269h
+	jnz	1BE8h
 
 l1483_1B75:
-	and	al,20
+	and	al,20h
 	inc	bx
-	push	6365
-	imul	sp,[bx+si],46
+	push	6365h
+	imul	sp,[bx+si],46h
 	popa
 
 l1483_1B7F:
-	imul	bp,[si+65],3A64
+	imul	bp,[si+65h],3A64h
 	and	[bp+si],al
-	mov	ch,AF
+	mov	ch,0AFh
 	xor	dh,[bx+di]
-	mov	bx,D909
-	in	ax,0C
-	xor	[2CF2],cl
+	mov	bx,0D909h
+	in	ax,0Ch
+	xor	[2CF2h],cl
 
 ;; fn1483_1B91: 1483:1B91
 ;;   Called from:
 ;;     1483:1B57 (in fn1483_1BB9)
 fn1483_1B91 proc
-	repne sub	al,28
-	xor	ax,2EF9
+	repne sub	al,28h
+	xor	ax,2EF9h
 	sub	al,bh
-	not	word ptr [bx+di+10F8]
+	not	word ptr [bx+di+10F8h]
 	xchg	cx,ax
 	push	sp
 	pop	dx
 	pop	ds
-	xchg	[bx+di+3201],di
-	adc	ax,A587
-	in	al,41
+	xchg	[bx+di+3201h],di
+	adc	ax,0A587h
+	in	al,41h
 	add	al,[ecx]
 	sti
 	test	ch,ah
-	inc	word ptr [FF1F]
+	inc	word ptr [0FF1Fh]
 	in	al,dx
-	sbb	al,F8
-	and	al,0A
+	sbb	al,0F8h
+	and	al,0Ah
 
 ;; fn1483_1BB8: 1483:1BB8
 ;;   Called from:
@@ -968,37 +968,37 @@ fn1483_1BB8 proc
 ;;     1483:1BB7 (in fn1483_1B91)
 ;;     1483:1BB8 (in fn1483_1BB8)
 fn1483_1BB9 proc
-	add	al,73
+	add	al,73h
 	add	bp,cx
 
 l1483_1BBC:
-	jmp	1B38
+	jmp	1B38h
 
 l1483_1BBF:
-	mov	ax,[E10D]
+	mov	ax,[0E10Dh]
 	icebp
 	cmp	[di],cx
 	aas
-	mov	di,4D25
+	mov	di,4D25h
 	mul	ax
-	and	ax,0EBA
+	and	ax,0EBAh
 	add	bp,cx
 	stc
 	xchg	di,ax
-	shl	word ptr [di],01
+	shl	word ptr [di],1h
 	cmp	ah,dh
-	and	ax,BE33
-	and	ax,972C
+	and	ax,0BE33h
+	and	ax,972Ch
 	iret
-	and	ax,018B
-	test	word ptr [bx+38AD],AD8F
+	and	ax,18Bh
+	test	word ptr [bx+38ADh],0AD8Fh
 	or	bl,bh
 
 l1483_1BE8:
 	dec	bp
-	sub	ax,85FE
+	sub	ax,85FEh
 	dec	bp
-	or	bh,[bx+03]
+	or	bh,[bx+3h]
 	push	es
 	iret
 1483:1BF2       4D 23 03 09 F9 4D 14 03 FF 24 4D 27 53 54   M#...M...$M'ST

@@ -7,14 +7,14 @@ main proc
 	push	ecx
 	fld1
 	fstp	dword ptr [esp]
-	push	004020C8
-	mov	eax,[ebp+08]
+	push	4020C8h
+	mov	eax,[ebp+8h]
 	push	eax
-	mov	ecx,[ebp+0C]
+	mov	ecx,[ebp+0Ch]
 	mov	edx,[ecx]
 	push	edx
-	call	00401030
-	add	esp,10
+	call	401030h
+	add	esp,10h
 	xor	eax,eax
 	pop	ebp
 	ret
@@ -28,18 +28,18 @@ main proc
 test1 proc
 	push	ebp
 	mov	ebp,esp
-	fld	dword ptr [ebp+14]
-	sub	esp,08
+	fld	dword ptr [ebp+14h]
+	sub	esp,8h
 	fstp	double ptr [esp]
-	mov	eax,[ebp+10]
+	mov	eax,[ebp+10h]
 	push	eax
-	mov	ecx,[ebp+0C]
+	mov	ecx,[ebp+0Ch]
 	push	ecx
-	mov	edx,[ebp+08]
+	mov	edx,[ebp+8h]
 	push	edx
-	push	004020D0
-	call	dword ptr [004020A0]
-	add	esp,18
+	push	4020D0h
+	call	dword ptr [4020A0h]
+	add	esp,18h
 	pop	ebp
 	ret
 00401058                         CC CC CC CC CC CC CC CC         ........
@@ -49,25 +49,25 @@ test2 proc
 	push	ebp
 	mov	ebp,esp
 	push	ecx
-	fld	dword ptr [004020F0]
+	fld	dword ptr [4020F0h]
 	fstp	dword ptr [esp]
-	push	004020DC
-	push	02
-	push	004020E0
-	call	00401030
-	add	esp,10
-	cmp	dword ptr [ebp+08],00
-	jnz	004010A5
+	push	4020DCh
+	push	2h
+	push	4020E0h
+	call	401030h
+	add	esp,10h
+	cmp	dword ptr [ebp+8h],0h
+	jnz	4010A5h
 
 l00401087:
 	push	ecx
-	fld	dword ptr [004020EC]
+	fld	dword ptr [4020ECh]
 	fstp	dword ptr [esp]
-	push	004020E4
-	push	06
-	push	004020E8
-	call	00401030
-	add	esp,10
+	push	4020E4h
+	push	6h
+	push	4020E8h
+	call	401030h
+	add	esp,10h
 
 l004010A5:
 	pop	ebp
@@ -78,14 +78,14 @@ l004010A5:
 indirect_call_test3 proc
 	push	ebp
 	mov	ebp,esp
-	push	000003E8
-	mov	eax,[ebp+08]
+	push	3E8h
+	mov	eax,[ebp+8h]
 	push	eax
-	mov	ecx,[ebp+08]
+	mov	ecx,[ebp+8h]
 	mov	edx,[ecx]
-	mov	eax,[edx+04]
+	mov	eax,[edx+4h]
 	call	eax
-	add	esp,08
+	add	esp,8h
 	pop	ebp
 	ret
 004010CB                                  CC CC CC CC CC            .....
@@ -94,13 +94,13 @@ indirect_call_test3 proc
 test4 proc
 	push	ebp
 	mov	ebp,esp
-	mov	eax,[00403018]
+	mov	eax,[403018h]
 	push	eax
-	mov	ecx,[00403018]
+	mov	ecx,[403018h]
 	mov	edx,[ecx]
 	mov	eax,[edx]
 	call	eax
-	add	esp,04
+	add	esp,4h
 	pop	ebp
 	ret
 004010EA                               CC CC CC CC CC CC           ......
@@ -110,16 +110,16 @@ test5 proc
 	push	ebp
 	mov	ebp,esp
 	push	ecx
-	fld	dword ptr [004020F4]
+	fld	dword ptr [4020F4h]
 	fstp	dword ptr [esp]
-	push	000003E7
-	mov	eax,[00403018]
+	push	3E7h
+	mov	eax,[403018h]
 	push	eax
-	mov	ecx,[00403018]
+	mov	ecx,[403018h]
 	mov	edx,[ecx]
-	mov	eax,[edx+04]
+	mov	eax,[edx+4h]
 	call	eax
-	add	esp,0C
+	add	esp,0Ch
 	pop	ebp
 	ret
 0040111A                               CC CC CC CC CC CC           ......
@@ -131,27 +131,27 @@ test6 proc
 	push	ebp
 	mov	ebp,esp
 	push	ecx
-	mov	eax,[ebp+10]
+	mov	eax,[ebp+10h]
 	push	eax
-	mov	ecx,[ebp+0C]
+	mov	ecx,[ebp+0Ch]
 	push	ecx
-	mov	edx,[ebp+08]
+	mov	edx,[ebp+8h]
 	push	edx
-	mov	eax,[ebp+08]
+	mov	eax,[ebp+8h]
 	mov	ecx,[eax]
-	mov	edx,[ecx+08]
+	mov	edx,[ecx+8h]
 	call	edx
-	add	esp,0C
-	mov	[ebp-04],eax
-	mov	eax,[ebp-04]
+	add	esp,0Ch
+	mov	[ebp-4h],eax
+	mov	eax,[ebp-4h]
 	push	eax
-	mov	ecx,[ebp+08]
+	mov	ecx,[ebp+8h]
 	push	ecx
-	mov	edx,[ebp+08]
+	mov	edx,[ebp+8h]
 	mov	eax,[edx]
-	mov	ecx,[eax+04]
+	mov	ecx,[eax+4h]
 	call	ecx
-	add	esp,08
+	add	esp,8h
 	mov	esp,ebp
 	pop	ebp
 	ret
@@ -162,30 +162,30 @@ test7 proc
 	push	ebp
 	mov	ebp,esp
 	fld1
-	fcomp	double ptr [ebp+08]
+	fcomp	double ptr [ebp+8h]
 	fstsw	ax
-	test	ah,05
-	jpe	00401189
+	test	ah,5h
+	jpe	401189h
 
 l0040116F:
-	sub	esp,08
-	fld	double ptr [ebp+08]
+	sub	esp,8h
+	fld	double ptr [ebp+8h]
 	fstp	double ptr [esp]
-	mov	eax,[00403034]
+	mov	eax,[403034h]
 	mov	edx,[eax]
-	mov	ecx,[00403034]
+	mov	ecx,[403034h]
 	mov	eax,[edx]
 	call	eax
 
 l00401189:
-	sub	esp,08
-	fld	double ptr [ebp+08]
+	sub	esp,8h
+	fld	double ptr [ebp+8h]
 	fstp	double ptr [esp]
-	push	0D
-	mov	ecx,[00403034]
+	push	0Dh
+	mov	ecx,[403034h]
 	mov	edx,[ecx]
-	mov	ecx,[00403034]
-	mov	eax,[edx+04]
+	mov	ecx,[403034h]
+	mov	eax,[edx+4h]
 	call	eax
 	pop	ebp
 	ret
@@ -197,46 +197,46 @@ l00401189:
 nested_if_blocks_test8 proc
 	push	ebp
 	mov	ebp,esp
-	sub	esp,08
-	fld	double ptr [ebp+08]
+	sub	esp,8h
+	fld	double ptr [ebp+8h]
 	fstp	double ptr [esp]
-	push	FF
-	mov	eax,[00403034]
+	push	0FFh
+	mov	eax,[403034h]
 	mov	edx,[eax]
-	mov	ecx,[00403034]
-	mov	eax,[edx+04]
+	mov	ecx,[403034h]
+	mov	eax,[edx+4h]
 	call	eax
 	fstp	st(0)
-	fld	double ptr [00402100]
-	fcomp	double ptr [ebp+08]
+	fld	double ptr [402100h]
+	fcomp	double ptr [ebp+8h]
 	fstsw	ax
-	test	ah,44
-	jpo	0040120D
+	test	ah,44h
+	jpo	40120Dh
 
 l004011E2:
-	fld	double ptr [004020F8]
-	fcomp	double ptr [ebp+08]
+	fld	double ptr [4020F8h]
+	fcomp	double ptr [ebp+8h]
 	fstsw	ax
-	test	ah,41
-	jnz	0040120D
+	test	ah,41h
+	jnz	40120Dh
 
 l004011F2:
-	sub	esp,08
-	fld	double ptr [ebp+08]
+	sub	esp,8h
+	fld	double ptr [ebp+8h]
 	fstp	double ptr [esp]
-	mov	ecx,[00403034]
+	mov	ecx,[403034h]
 	mov	edx,[ecx]
-	mov	ecx,[00403034]
+	mov	ecx,[403034h]
 	mov	eax,[edx]
 	call	eax
 
 l0040120D:
-	push	07
-	push	06
-	mov	ecx,[00403018]
+	push	7h
+	push	6h
+	mov	ecx,[403018h]
 	push	ecx
-	call	00401120
-	add	esp,0C
+	call	401120h
+	add	esp,0Ch
 	pop	ebp
 	ret
 00401222       CC CC CC CC CC CC CC CC CC CC CC CC CC CC   ..............
@@ -247,43 +247,43 @@ l0040120D:
 loop_test9 proc
 	push	ebp
 	mov	ebp,esp
-	sub	esp,0C
-	mov	dword ptr [ebp-04],00000000
-	jmp	00401248
+	sub	esp,0Ch
+	mov	dword ptr [ebp-4h],0h
+	jmp	401248h
 
 l0040123F:
-	mov	eax,[ebp-04]
-	add	eax,01
-	mov	[ebp-04],eax
+	mov	eax,[ebp-4h]
+	add	eax,1h
+	mov	[ebp-4h],eax
 
 l00401248:
-	fild	dword ptr [ebp-04]
-	fld	dword ptr [ebp+08]
-	sub	esp,08
+	fild	dword ptr [ebp-4h]
+	fld	dword ptr [ebp+8h]
+	sub	esp,8h
 	fstp	double ptr [esp]
-	mov	ecx,[ebp-04]
+	mov	ecx,[ebp-4h]
 	push	ecx
-	mov	edx,[00403034]
+	mov	edx,[403034h]
 	mov	eax,[edx]
-	mov	ecx,[00403034]
-	mov	edx,[eax+04]
-	fstp	double ptr [ebp-0C]
+	mov	ecx,[403034h]
+	mov	edx,[eax+4h]
+	fstp	double ptr [ebp-0Ch]
 	call	edx
-	fcomp	double ptr [ebp-0C]
+	fcomp	double ptr [ebp-0Ch]
 	fstsw	ax
-	test	ah,41
-	jnz	00401294
+	test	ah,41h
+	jnz	401294h
 
 l00401278:
-	fld	dword ptr [ebp+08]
-	sub	esp,08
+	fld	dword ptr [ebp+8h]
+	sub	esp,8h
 	fstp	double ptr [esp]
-	mov	eax,[00403034]
+	mov	eax,[403034h]
 	mov	edx,[eax]
-	mov	ecx,[00403034]
+	mov	ecx,[403034h]
 	mov	eax,[edx]
 	call	eax
-	jmp	0040123F
+	jmp	40123Fh
 
 l00401294:
 	mov	esp,ebp
@@ -295,11 +295,11 @@ l00401294:
 const_div_test10 proc
 	push	ebp
 	mov	ebp,esp
-	mov	eax,0000000A
-	mov	ecx,00000003
-	mov	edx,[ebp+08]
+	mov	eax,0Ah
+	mov	ecx,3h
+	mov	edx,[ebp+8h]
 	test	edx,edx
-	jz	004012BA
+	jz	4012BAh
 
 l004012B4:
 	xor	edx,edx
@@ -307,8 +307,8 @@ l004012B4:
 	mov	ecx,edx
 
 l004012BA:
-	mov	[0040302C],ecx
-	mov	[00403030],eax
+	mov	[40302Ch],ecx
+	mov	[403030h],eax
 	pop	ebp
 	ret
 004012C7                      CC CC CC CC CC CC CC CC CC        .........
@@ -317,49 +317,49 @@ l004012BA:
 loop_test11 proc
 	push	ebp
 	mov	ebp,esp
-	sub	esp,08
-	mov	dword ptr [ebp-04],00000005
+	sub	esp,8h
+	mov	dword ptr [ebp-4h],5h
 
 l004012DD:
-	cmp	dword ptr [ebp-04],00
-	jle	00401329
+	cmp	dword ptr [ebp-4h],0h
+	jle	401329h
 
 l004012E3:
-	mov	eax,[ebp-04]
-	and	eax,80000001
-	jns	004012F2
+	mov	eax,[ebp-4h]
+	and	eax,80000001h
+	jns	4012F2h
 
 l004012ED:
 	dec	eax
-	or	eax,FE
+	or	eax,0FEh
 	inc	eax
 
 l004012F2:
 	test	eax,eax
-	jnz	0040130D
+	jnz	40130Dh
 
 l004012F6:
-	fld	double ptr [ebp+08]
-	fstp	dword ptr [ebp-08]
-	fld	dword ptr [ebp-08]
+	fld	double ptr [ebp+8h]
+	fstp	dword ptr [ebp-8h]
+	fld	dword ptr [ebp-8h]
 	push	ecx
 	fstp	dword ptr [esp]
-	call	00401230
-	add	esp,04
-	jmp	0040131E
+	call	401230h
+	add	esp,4h
+	jmp	40131Eh
 
 l0040130D:
-	sub	esp,08
-	fld	double ptr [ebp+08]
+	sub	esp,8h
+	fld	double ptr [ebp+8h]
 	fstp	double ptr [esp]
-	call	004011B0
-	add	esp,08
+	call	4011B0h
+	add	esp,8h
 
 l0040131E:
-	mov	ecx,[ebp-04]
-	sub	ecx,01
-	mov	[ebp-04],ecx
-	jmp	004012DD
+	mov	ecx,[ebp-4h]
+	sub	ecx,1h
+	mov	[ebp-4h],ecx
+	jmp	4012DDh
 
 l00401329:
 	mov	esp,ebp
@@ -373,14 +373,14 @@ l00401329:
 nested_structs_test12 proc
 	push	ebp
 	mov	ebp,esp
-	mov	eax,[ebp+08]
-	mov	dword ptr [eax],00000001
-	mov	ecx,[ebp+08]
-	mov	dword ptr [ecx+04],00000002
-	mov	edx,[ebp+08]
-	mov	dword ptr [edx+08],00000003
-	mov	eax,[ebp+08]
-	mov	dword ptr [eax+0C],00000004
+	mov	eax,[ebp+8h]
+	mov	dword ptr [eax],1h
+	mov	ecx,[ebp+8h]
+	mov	dword ptr [ecx+4h],2h
+	mov	edx,[ebp+8h]
+	mov	dword ptr [edx+8h],3h
+	mov	eax,[ebp+8h]
+	mov	dword ptr [eax+0Ch],4h
 	pop	ebp
 	ret
 0040135C                                     CC CC CC CC             ....
@@ -389,10 +389,10 @@ nested_structs_test12 proc
 nested_structs_test13 proc
 	push	ebp
 	mov	ebp,esp
-	mov	eax,[ebp+08]
+	mov	eax,[ebp+8h]
 	push	eax
-	call	00401330
-	add	esp,04
+	call	401330h
+	add	esp,4h
 	pop	ebp
 	ret
 00401371    CC CC CC CC CC CC CC CC CC CC CC CC CC CC CC  ...............
@@ -401,10 +401,10 @@ nested_structs_test13 proc
 gbl_nested_structs_test14 proc
 	push	ebp
 	mov	ebp,esp
-	mov	dword ptr [0040301C],00000005
-	mov	dword ptr [00403020],00000006
-	mov	dword ptr [00403024],00000007
-	mov	dword ptr [00403028],00000008
+	mov	dword ptr [40301Ch],5h
+	mov	dword ptr [403020h],6h
+	mov	dword ptr [403024h],7h
+	mov	dword ptr [403028h],8h
 	pop	ebp
 	ret
 004013AD                                        CC CC CC              ...
@@ -413,7 +413,7 @@ gbl_nested_structs_test14 proc
 double_return_test15 proc
 	push	ebp
 	mov	ebp,esp
-	fld	double ptr [ebp+08]
+	fld	double ptr [ebp+8h]
 	pop	ebp
 	ret
 004013B8                         CC CC CC CC CC CC CC CC         ........

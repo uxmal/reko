@@ -10,16 +10,16 @@
 
 ;; _GetExceptDLLinfo: 00401071
 _GetExceptDLLinfo proc
-	jmp	004011FC
+	jmp	4011FCh
 00401076                   33 C0 A0 7D 20 40 00 C3 A1 93       3..} @....
 00401080 20 40 00 C3                                      @..           
 
 ;; fn00401084: 00401084
 fn00401084 proc
 	pusha
-	mov	ebx,BCB05000
+	mov	ebx,0BCB05000h
 	push	ebx
-	push	00000BAD
+	push	0BADh
 	ret
 00401091    B9 9C 00 00 00 0B C9 74 4D 83 3D 8B 20 40 00  .......tM.=. @.
 004010A0 00 73 0A B8 FE 00 00 00 E8 D7 FF FF FF B9 9C 00 .s..............
@@ -32,23 +32,23 @@ fn00401084 proc
 
 ;; fn0040110B: 0040110B
 fn0040110B proc
-	cmp	dword ptr [0040208B],00
-	jc	0040113C
+	cmp	dword ptr [40208Bh],0h
+	jc	40113Ch
 
 l00401114:
-	push	dword ptr [0040208B]
-	call	0040128A
+	push	dword ptr [40208Bh]
+	call	40128Ah
 	or	eax,eax
-	jz	0040113C
+	jz	40113Ch
 
 l00401123:
 	push	eax
-	push	08
-	call	00401258
+	push	8h
+	call	401258h
 	push	eax
-	call	00401264
-	push	dword ptr [0040208B]
-	call	0040127E
+	call	401264h
+	push	dword ptr [40208Bh]
+	call	40127Eh
 
 l0040113C:
 	ret
@@ -61,8 +61,8 @@ l0040113C:
 ;;     004011DD (in fn004011B0)
 ;;     00401203 (in fn004011FC)
 fn00401158 proc
-	mov	eax,[0040208B]
-	mov	edx,fs:[002C]
+	mov	eax,[40208Bh]
+	mov	edx,fs:[002Ch]
 	mov	eax,[edx+eax*4]
 	ret
 00401167                      90                                .       
@@ -71,8 +71,8 @@ fn00401158 proc
 main proc
 	push	ebp
 	mov	ebp,esp
-	push	004020A4
-	call	004012F0
+	push	4020A4h
+	call	4012F0h
 	pop	ecx
 	xor	eax,eax
 	pop	ebp
@@ -95,35 +95,35 @@ fn00401180 proc
 fn004011B0 proc
 	push	ebp
 	mov	ebp,esp
-	add	esp,F8
+	add	esp,0F8h
 	push	ebx
-	mov	ebx,[ebp+08]
+	mov	ebx,[ebp+8h]
 	test	ebx,ebx
 	setnz	al
-	and	eax,01
+	and	eax,1h
 	test	ebx,ebx
-	jnz	004011D7
+	jnz	4011D7h
 
 l004011C6:
 	test	ebx,ebx
-	jnz	004011D7
+	jnz	4011D7h
 
 l004011CA:
-	lea	edx,[ebp-08]
+	lea	edx,[ebp-8h]
 	push	edx
-	call	004011FC
+	call	4011FCh
 	pop	ecx
-	mov	ebx,[ebp-04]
+	mov	ebx,[ebp-4h]
 
 l004011D7:
-	push	0000009C
+	push	9Ch
 	push	ebx
-	call	00401158
-	add	eax,00000000
+	call	401158h
+	add	eax,0h
 	push	eax
-	call	004012EA
-	add	esp,0C
-	call	0040126C
+	call	4012EAh
+	add	esp,0Ch
+	call	40126Ch
 	pop	ebx
 	pop	ecx
 	pop	ecx
@@ -139,12 +139,12 @@ fn004011FC proc
 	push	ebp
 	mov	ebp,esp
 	push	ebx
-	mov	ebx,[ebp+08]
-	call	00401158
-	add	eax,0000001C
-	mov	[004020F8],eax
-	mov	dword ptr [ebx],82727349
-	mov	dword ptr [ebx+04],004020E4
+	mov	ebx,[ebp+8h]
+	call	401158h
+	add	eax,1Ch
+	mov	[4020F8h],eax
+	mov	dword ptr [ebx],82727349h
+	mov	dword ptr [ebx+4h],4020E4h
 	pop	ebx
 	pop	ebp
 	ret

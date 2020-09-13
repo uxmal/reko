@@ -23,27 +23,27 @@ test6 proc
 	push	ebp
 	mov	ebp,esp
 	push	ecx
-	mov	eax,[ebp+10]
+	mov	eax,[ebp+10h]
 	push	eax
-	mov	ecx,[ebp+0C]
+	mov	ecx,[ebp+0Ch]
 	push	ecx
-	mov	edx,[ebp+08]
+	mov	edx,[ebp+8h]
 	push	edx
-	mov	eax,[ebp+08]
+	mov	eax,[ebp+8h]
 	mov	ecx,[eax]
-	mov	edx,[ecx+08]
+	mov	edx,[ecx+8h]
 	call	edx
-	add	esp,0C
-	mov	[ebp-04],eax
-	mov	eax,[ebp-04]
+	add	esp,0Ch
+	mov	[ebp-4h],eax
+	mov	eax,[ebp-4h]
 	push	eax
-	mov	ecx,[ebp+08]
+	mov	ecx,[ebp+8h]
 	push	ecx
-	mov	edx,[ebp+08]
+	mov	edx,[ebp+8h]
 	mov	eax,[edx]
-	mov	ecx,[eax+04]
+	mov	ecx,[eax+4h]
 	call	ecx
-	add	esp,08
+	add	esp,8h
 	mov	esp,ebp
 	pop	ebp
 	ret

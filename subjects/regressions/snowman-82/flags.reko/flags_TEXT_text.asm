@@ -3,12 +3,12 @@
 ;; foo: 0000000000000F9E
 foo proc
 	mov	ecx,[rdi]
-	shr	ecx,0A
+	shr	ecx,0Ah
 	xor	cl,sil
-	jz	0000000000000FB4
+	jz	0FB4h
 
 l0000000000000FAC:
-	mov	rax,+00000001
+	mov	rax,+1h
 	ret
 
 ;; bar: 0000000000000FB4

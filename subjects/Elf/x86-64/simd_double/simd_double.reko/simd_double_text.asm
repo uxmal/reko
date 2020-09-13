@@ -6,7 +6,7 @@ _start proc
 	mov	r9,rdx
 	pop	rsi
 	mov	rdx,rsp
-	and	rsp,F0
+	and	rsp,0F0h
 	push	rax
 	push	rsp
 	lea	r8,[0000000000000AE0]                                  ; [rip+000004AA]
@@ -25,12 +25,12 @@ deregister_tm_clones proc
 	lea	rax,[0000000000201048]                                 ; [rip+002009E9]
 	cmp	rax,rdi
 	mov	rbp,rsp
-	jz	0000000000000680
+	jz	0680h
 
 l0000000000000667:
 	mov	rax,[0000000000200FD8]                                 ; [rip+0020096A]
 	test	rax,rax
-	jz	0000000000000680
+	jz	0680h
 
 l0000000000000673:
 	pop	rbp
@@ -51,17 +51,17 @@ register_tm_clones proc
 	push	rbp
 	sub	rsi,rdi
 	mov	rbp,rsp
-	sar	rsi,03
+	sar	rsi,3h
 	mov	rax,rsi
-	shr	rax,3F
+	shr	rax,3Fh
 	add	rsi,rax
-	sar	rsi,01
-	jz	00000000000006D0
+	sar	rsi,1h
+	jz	06D0h
 
 l00000000000006B8:
 	mov	rax,[0000000000200FF0]                                 ; [rip+00200931]
 	test	rax,rax
-	jz	00000000000006D0
+	jz	06D0h
 
 l00000000000006C4:
 	pop	rbp
@@ -75,22 +75,22 @@ l00000000000006D0:
 
 ;; __do_global_dtors_aux: 00000000000006E0
 __do_global_dtors_aux proc
-	cmp	[0000000000201048],00                                  ; [rip+00200961]
-	jnz	0000000000000718
+	cmp	[0000000000201048],0h                                  ; [rip+00200961]
+	jnz	0718h
 
 l00000000000006E9:
-	cmp	[0000000000200FF8],00                                  ; [rip+00200907]
+	cmp	[0000000000200FF8],0h                                  ; [rip+00200907]
 	push	rbp
 	mov	rbp,rsp
-	jz	0000000000000703
+	jz	0703h
 
 l00000000000006F7:
 	mov	rdi,[0000000000201040]                                 ; [rip+00200942]
-	call	0000000000000610
+	call	0610h
 
 l0000000000000703:
-	call	0000000000000650
-	mov	[0000000000201048],01                                  ; [rip+00200939]
+	call	0650h
+	mov	[0000000000201048],1h                                  ; [rip+00200939]
 	pop	rbp
 	ret
 0000000000000711    0F 1F 80 00 00 00 00                          .......       
@@ -104,7 +104,7 @@ frame_dummy proc
 	push	rbp
 	mov	rbp,rsp
 	pop	rbp
-	jmp	0000000000000690
+	jmp	0690h
 
 ;; _mm_malloc: 000000000000072A
 ;;   Called from:
@@ -114,45 +114,45 @@ frame_dummy proc
 _mm_malloc proc
 	push	rbp
 	mov	rbp,rsp
-	sub	rsp,20
-	mov	[rbp-18],rdi
-	mov	[rbp-20],rsi
-	cmp	qword ptr [rbp-20],01
-	jnz	000000000000074F
+	sub	rsp,20h
+	mov	[rbp-18h],rdi
+	mov	[rbp-20h],rsi
+	cmp	qword ptr [rbp-20h],1h
+	jnz	074Fh
 
 l0000000000000741:
-	mov	rax,[rbp-18]
+	mov	rax,[rbp-18h]
 	mov	rdi,rax
-	call	00000000000005F0
-	jmp	000000000000078B
+	call	05F0h
+	jmp	078Bh
 
 l000000000000074F:
-	cmp	qword ptr [rbp-20],02
-	jz	000000000000075D
+	cmp	qword ptr [rbp-20h],2h
+	jz	075Dh
 
 l0000000000000756:
-	cmp	qword ptr [rbp-20],04
-	jnz	0000000000000765
+	cmp	qword ptr [rbp-20h],4h
+	jnz	0765h
 
 l000000000000075D:
-	mov	qword ptr [rbp-20],+00000008
+	mov	qword ptr [rbp-20h],+8h
 
 l0000000000000765:
-	mov	rdx,[rbp-18]
-	mov	rcx,[rbp-20]
-	lea	rax,[rbp-08]
+	mov	rdx,[rbp-18h]
+	mov	rcx,[rbp-20h]
+	lea	rax,[rbp-8h]
 	mov	rsi,rcx
 	mov	rdi,rax
-	call	0000000000000600
+	call	0600h
 	test	eax,eax
-	jnz	0000000000000786
+	jnz	0786h
 
 l0000000000000780:
-	mov	rax,[rbp-08]
-	jmp	000000000000078B
+	mov	rax,[rbp-8h]
+	jmp	078Bh
 
 l0000000000000786:
-	mov	eax,00000000
+	mov	eax,0h
 
 l000000000000078B:
 	leave
@@ -166,11 +166,11 @@ l000000000000078B:
 _mm_free proc
 	push	rbp
 	mov	rbp,rsp
-	sub	rsp,10
-	mov	[rbp-08],rdi
-	mov	rax,[rbp-08]
+	sub	rsp,10h
+	mov	[rbp-8h],rdi
+	mov	rax,[rbp-8h]
 	mov	rdi,rax
-	call	00000000000005D0
+	call	05D0h
 	nop
 	leave
 	ret
@@ -179,218 +179,218 @@ _mm_free proc
 ;;   Called from:
 ;;     00000000000009E9 (in main)
 vec_add proc
-	lea	r10,[rsp+08]
-	and	rsp,E0
-	push	qword ptr [r10-08]
+	lea	r10,[rsp+8h]
+	and	rsp,0E0h
+	push	qword ptr [r10-8h]
 	push	rbp
 	mov	rbp,rsp
 	push	r10
-	sub	rsp,30
-	mov	[rbp-00000098],rdi
-	mov	[rbp-000000A0],rsi
-	mov	[rbp-000000A8],rdx
-	mov	[rbp-000000B0],rcx
+	sub	rsp,30h
+	mov	[rbp-98h],rdi
+	mov	[rbp-0A0h],rsi
+	mov	[rbp-0A8h],rdx
+	mov	[rbp-0B0h],rcx
 	mov	rcx,[0000000000000B00]                                 ; [rip+0000031E]
-	mov	rax,[rbp-00000098]
-	mov	edx,00000000
+	mov	rax,[rbp-98h]
+	mov	edx,0h
 	div	rcx
-	mov	[rbp-20],rax
-	mov	rax,[rbp-000000A0]
-	mov	[rbp-28],rax
-	mov	rax,[rbp-000000A8]
-	mov	[rbp-30],rax
-	mov	rax,[rbp-000000B0]
-	mov	[rbp-38],rax
-	mov	qword ptr [rbp-18],+00000000
-	jmp	0000000000000881
+	mov	[rbp-20h],rax
+	mov	rax,[rbp-0A0h]
+	mov	[rbp-28h],rax
+	mov	rax,[rbp-0A8h]
+	mov	[rbp-30h],rax
+	mov	rax,[rbp-0B0h]
+	mov	[rbp-38h],rax
+	mov	qword ptr [rbp-18h],+0h
+	jmp	0881h
 
 l0000000000000820:
-	mov	rax,[rbp-18]
-	shl	rax,05
+	mov	rax,[rbp-18h]
+	shl	rax,5h
 	mov	rdx,rax
-	mov	rax,[rbp-38]
+	mov	rax,[rbp-38h]
 	add	rax,rdx
 	vmovapd	ymm0,[rax]
-	mov	rax,[rbp-18]
-	shl	rax,05
+	mov	rax,[rbp-18h]
+	shl	rax,5h
 	mov	rdx,rax
-	mov	rax,[rbp-30]
+	mov	rax,[rbp-30h]
 	add	rax,rdx
 	vmovapd	ymm1,[rax]
-	mov	rax,[rbp-18]
-	shl	rax,05
+	mov	rax,[rbp-18h]
+	shl	rax,5h
 	mov	rdx,rax
-	mov	rax,[rbp-28]
+	mov	rax,[rbp-28h]
 	add	rax,rdx
-	vmovapd	[rbp-70],ymm1
-	vmovapd	[rbp-00000090],ymm0
-	vmovapd	ymm0,[rbp-70]
-	vaddpd	ymm0,ymm0,[rbp-00000090]
+	vmovapd	[rbp-70h],ymm1
+	vmovapd	[rbp-90h],ymm0
+	vmovapd	ymm0,[rbp-70h]
+	vaddpd	ymm0,ymm0,[rbp-90h]
 	vmovapd	[rax],ymm0
-	add	qword ptr [rbp-18],01
+	add	qword ptr [rbp-18h],1h
 
 l0000000000000881:
-	mov	rax,[rbp-18]
-	cmp	rax,[rbp-20]
-	jc	0000000000000820
+	mov	rax,[rbp-18h]
+	cmp	rax,[rbp-20h]
+	jc	0820h
 
 l000000000000088B:
 	nop
-	add	rsp,30
+	add	rsp,30h
 	pop	r10
 	pop	rbp
-	lea	rsp,[r10-08]
+	lea	rsp,[r10-8h]
 	ret
 
 ;; main: 0000000000000898
 main proc
 	push	rbp
 	mov	rbp,rsp
-	sub	rsp,50
-	mov	qword ptr [rbp-28],+00000400
-	mov	rax,[rbp-28]
-	shl	rax,03
-	mov	esi,00000020
+	sub	rsp,50h
+	mov	qword ptr [rbp-28h],+400h
+	mov	rax,[rbp-28h]
+	shl	rax,3h
+	mov	esi,20h
 	mov	rdi,rax
-	call	000000000000072A
-	mov	[rbp-30],rax
-	mov	rax,[rbp-28]
-	shl	rax,03
-	mov	esi,00000020
+	call	072Ah
+	mov	[rbp-30h],rax
+	mov	rax,[rbp-28h]
+	shl	rax,3h
+	mov	esi,20h
 	mov	rdi,rax
-	call	000000000000072A
-	mov	[rbp-38],rax
-	mov	rax,[rbp-28]
-	shl	rax,03
-	mov	esi,00000020
+	call	072Ah
+	mov	[rbp-38h],rax
+	mov	rax,[rbp-28h]
+	shl	rax,3h
+	mov	esi,20h
 	mov	rdi,rax
-	call	000000000000072A
-	mov	[rbp-40],rax
-	mov	qword ptr [rbp-08],+00000000
-	jmp	000000000000093F
+	call	072Ah
+	mov	[rbp-40h],rax
+	mov	qword ptr [rbp-8h],+0h
+	jmp	093Fh
 
 l00000000000008FD:
-	mov	rax,[rbp-08]
-	lea	rdx,[00000000+rax*8]
-	mov	rax,[rbp-30]
+	mov	rax,[rbp-8h]
+	lea	rdx,[0000h+rax*8]
+	mov	rax,[rbp-30h]
 	lea	rcx,[rdx+rax]
-	mov	rax,[rbp-08]
+	mov	rax,[rbp-8h]
 	test	rax,rax
-	js	0000000000000921
+	js	0921h
 
 l000000000000091A:
 	vcvtsi2sd	xmm0,xmm0,rax
-	jmp	0000000000000936
+	jmp	0936h
 
 l0000000000000921:
 	mov	rdx,rax
-	shr	rdx,01
-	and	eax,01
+	shr	rdx,1h
+	and	eax,1h
 	or	rdx,rax
 	vcvtsi2sd	xmm0,xmm0,rdx
 	vaddsd	xmm0,xmm0,xmm0
 
 l0000000000000936:
 	vmovsd	double ptr [rcx],xmm0
-	add	qword ptr [rbp-08],01
+	add	qword ptr [rbp-8h],1h
 
 l000000000000093F:
-	mov	rax,[rbp-08]
-	cmp	rax,[rbp-28]
-	jc	00000000000008FD
+	mov	rax,[rbp-8h]
+	cmp	rax,[rbp-28h]
+	jc	08FDh
 
 l0000000000000949:
-	mov	qword ptr [rbp-10],+00000000
-	jmp	0000000000000998
+	mov	qword ptr [rbp-10h],+0h
+	jmp	0998h
 
 l0000000000000953:
-	mov	rax,[rbp-10]
-	add	rax,01
-	mov	rdx,[rbp-10]
-	lea	rcx,[00000000+rdx*8]
-	mov	rdx,[rbp-38]
+	mov	rax,[rbp-10h]
+	add	rax,1h
+	mov	rdx,[rbp-10h]
+	lea	rcx,[0000h+rdx*8]
+	mov	rdx,[rbp-38h]
 	add	rcx,rdx
 	test	rax,rax
-	js	000000000000097A
+	js	097Ah
 
 l0000000000000973:
 	vcvtsi2sd	xmm0,xmm0,rax
-	jmp	000000000000098F
+	jmp	098Fh
 
 l000000000000097A:
 	mov	rdx,rax
-	shr	rdx,01
-	and	eax,01
+	shr	rdx,1h
+	and	eax,1h
 	or	rdx,rax
 	vcvtsi2sd	xmm0,xmm0,rdx
 	vaddsd	xmm0,xmm0,xmm0
 
 l000000000000098F:
 	vmovsd	double ptr [rcx],xmm0
-	add	qword ptr [rbp-10],01
+	add	qword ptr [rbp-10h],1h
 
 l0000000000000998:
-	mov	rax,[rbp-10]
-	cmp	rax,[rbp-28]
-	jc	0000000000000953
+	mov	rax,[rbp-10h]
+	cmp	rax,[rbp-28h]
+	jc	0953h
 
 l00000000000009A2:
-	mov	qword ptr [rbp-18],+00000000
-	jmp	00000000000009CC
+	mov	qword ptr [rbp-18h],+0h
+	jmp	09CCh
 
 l00000000000009AC:
-	mov	rax,[rbp-18]
-	lea	rdx,[00000000+rax*8]
-	mov	rax,[rbp-40]
+	mov	rax,[rbp-18h]
+	lea	rdx,[0000h+rax*8]
+	mov	rax,[rbp-40h]
 	add	rax,rdx
 	vxorpd	xmm0,xmm0,xmm0
 	vmovsd	double ptr [rax],xmm0
-	add	qword ptr [rbp-18],01
+	add	qword ptr [rbp-18h],1h
 
 l00000000000009CC:
-	mov	rax,[rbp-18]
-	cmp	rax,[rbp-28]
-	jc	00000000000009AC
+	mov	rax,[rbp-18h]
+	cmp	rax,[rbp-28h]
+	jc	09ACh
 
 l00000000000009D6:
-	mov	rcx,[rbp-38]
-	mov	rdx,[rbp-30]
-	mov	rsi,[rbp-40]
-	mov	rax,[rbp-28]
+	mov	rcx,[rbp-38h]
+	mov	rdx,[rbp-30h]
+	mov	rsi,[rbp-40h]
+	mov	rax,[rbp-28h]
 	mov	rdi,rax
-	call	00000000000007A8
-	mov	qword ptr [rbp-20],+00000000
-	jmp	0000000000000A2D
+	call	07A8h
+	mov	qword ptr [rbp-20h],+0h
+	jmp	0A2Dh
 
 l00000000000009F8:
-	mov	rax,[rbp-20]
-	lea	rdx,[00000000+rax*8]
-	mov	rax,[rbp-40]
+	mov	rax,[rbp-20h]
+	lea	rdx,[0000h+rax*8]
+	mov	rax,[rbp-40h]
 	add	rax,rdx
 	mov	rax,[rax]
-	mov	[rbp-48],rax
-	vmovsd	xmm0,double ptr [rbp-48]
+	mov	[rbp-48h],rax
+	vmovsd	xmm0,double ptr [rbp-48h]
 	lea	rdi,[0000000000000AF8]                                 ; [rip+000000DA]
-	mov	eax,00000001
-	call	00000000000005E0
-	add	qword ptr [rbp-20],01
+	mov	eax,1h
+	call	05E0h
+	add	qword ptr [rbp-20h],1h
 
 l0000000000000A2D:
-	mov	rax,[rbp-20]
-	cmp	rax,[rbp-28]
-	jc	00000000000009F8
+	mov	rax,[rbp-20h]
+	cmp	rax,[rbp-28h]
+	jc	09F8h
 
 l0000000000000A37:
-	mov	rax,[rbp-30]
+	mov	rax,[rbp-30h]
 	mov	rdi,rax
-	call	000000000000078D
-	mov	rax,[rbp-38]
+	call	078Dh
+	mov	rax,[rbp-38h]
 	mov	rdi,rax
-	call	000000000000078D
-	mov	rax,[rbp-40]
+	call	078Dh
+	mov	rax,[rbp-40h]
 	mov	rdi,rax
-	call	000000000000078D
-	mov	eax,00000000
+	call	078Dh
+	mov	eax,0h
 	leave
 	ret
 0000000000000A62       66 2E 0F 1F 84 00 00 00 00 00 0F 1F 40 00   f...........@.
@@ -409,27 +409,27 @@ __libc_csu_init proc
 	mov	r14,rsi
 	mov	r13,rdx
 	sub	rbp,r12
-	sub	rsp,08
-	sar	rbp,03
-	call	00000000000005A0
+	sub	rsp,8h
+	sar	rbp,3h
+	call	05A0h
 	test	rbp,rbp
-	jz	0000000000000AC6
+	jz	0AC6h
 
 l0000000000000AA6:
 	xor	ebx,ebx
-	nop	dword ptr [rax+rax+00000000]
+	nop	dword ptr [rax+rax+0h]
 
 l0000000000000AB0:
 	mov	rdx,r13
 	mov	rsi,r14
 	mov	edi,r15d
 	call	qword ptr [r12+rbx*8]
-	add	rbx,01
+	add	rbx,1h
 	cmp	rbp,rbx
-	jnz	0000000000000AB0
+	jnz	0AB0h
 
 l0000000000000AC6:
-	add	rsp,08
+	add	rsp,8h
 	pop	rbx
 	pop	rbp
 	pop	r12
