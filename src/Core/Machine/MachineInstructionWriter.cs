@@ -59,20 +59,42 @@ namespace Reko.Core.Machine
     }
 
 
+    /// <summary>
+    /// Describes options to control the rendering of assembly language instructions.
+    /// </summary>
     public class MachineInstructionWriterOptions
     {
-        public string? Syntax { get; set; }
-
-        public MachineInstructionWriterFlags Flags { get; set; }
-
-        public string? OperandSeparator { get; set; }
-
-        public static MachineInstructionWriterOptions Default { get; } = new MachineInstructionWriterOptions
+        public MachineInstructionWriterOptions(
+            string? syntax = "",
+            MachineInstructionWriterFlags flags = MachineInstructionWriterFlags.None,
+            string? operandSeparator = ",")
         {
-            Syntax = "",
-            Flags = MachineInstructionWriterFlags.None,
-            OperandSeparator = ","
-        };
+            this.Syntax = syntax;
+            this.Flags = flags;
+            this.OperandSeparator = operandSeparator;
+        }
+
+        /// <summary>
+        /// Select a particular output syntax by name, if supported.
+        /// </summary>
+        /// <remarks>
+        /// Each processor architecture may have different output syntaxes, including
+        /// a default syntax which should be the one used in the processor manufacturer's 
+        /// manuals. A null value for this property chooses that default syntax.
+        /// </remarks>
+        public string? Syntax { get; }
+
+        public MachineInstructionWriterFlags Flags { get; }
+
+        /// <summary>
+        /// Use this string to specify how assembly language operands shoud be separated.
+        /// </summary>
+        public string? OperandSeparator { get; }
+
+        public static MachineInstructionWriterOptions Default { get; } = new MachineInstructionWriterOptions(
+            syntax: "",
+            flags: MachineInstructionWriterFlags.None,
+            operandSeparator: ",");
     }
 
 

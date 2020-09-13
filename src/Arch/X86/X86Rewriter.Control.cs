@@ -340,7 +340,7 @@ namespace Reko.Arch.X86
         private bool IsRealModeReboot(X86Instruction instrCur)
         {
             bool isRealModeReboot = 
-                instrCur.Operands[0] is X86AddressOperand addrOp &&
+                instrCur.Operands[0] is AddressOperand addrOp &&
                 addrOp.Address.ToLinear() == 0xFFFF0;
             return isRealModeReboot;
         }

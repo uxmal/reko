@@ -3,18 +3,18 @@
 04000020 00 00 00 03 04 8C 41 83 F9 03 7E F7 8B 7C 24 10 ......A...~..|$.
 04000030 89 07 83 C4 0C C3                               ......         
 
-04000000 83 EC 0C        	sub	esp,0C
+04000000 83 EC 0C        	sub	esp,0Ch
 04000003 33 C0           	xor	eax,eax
 04000005 33 C9           	xor	ecx,ecx
-04000007 C7 04 24 01 00 00 00 	mov	dword ptr [esp],00000001
-0400000E C7 44 24 04 02 00 00 00 	mov	dword ptr [esp+04],00000002
-04000016 C7 44 24 08 03 00 00 00 	mov	dword ptr [esp+08],00000003
-0400001E E9 04 00 00 00  	jmp	04000027
+04000007 C7 04 24 01 00 00 00 	mov	dword ptr [esp],1h
+0400000E C7 44 24 04 02 00 00 00 	mov	dword ptr [esp+4h],2h
+04000016 C7 44 24 08 03 00 00 00 	mov	dword ptr [esp+8h],3h
+0400001E E9 04 00 00 00  	jmp	4000027h
 04000023 03 04 8C        	add	eax,[esp+ecx*4]
 04000026 41              	inc	ecx
-04000027 83 F9 03        	cmp	ecx,03
-0400002A 7E F7           	jle	04000023
-0400002C 8B 7C 24 10     	mov	edi,[esp+10]
+04000027 83 F9 03        	cmp	ecx,3h
+0400002A 7E F7           	jle	4000023h
+0400002C 8B 7C 24 10     	mov	edi,[esp+10h]
 04000030 89 07           	mov	[edi],eax
-04000032 83 C4 0C        	add	esp,0C
+04000032 83 C4 0C        	add	esp,0Ch
 04000035 C3              	ret

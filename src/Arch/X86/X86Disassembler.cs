@@ -564,7 +564,7 @@ namespace Reko.Arch.X86
             var addr = dasm.mode.CreateSegmentedAddress(seg, off);
             if (addr == null)
                 return false;
-            dasm.decodingContext.ops.Add(new X86AddressOperand(addr));
+            dasm.decodingContext.ops.Add(AddressOperand.Create(addr));
             return true;
         }
 
@@ -761,7 +761,9 @@ namespace Reko.Arch.X86
                 else if (d.defaultAddressWidth.BitSize == 32)
                     op = AddressOperand.Ptr32((uint) uAddr);
                 else
-                    op = new ImmediateOperand(Constant.Create(d.defaultAddressWidth, uAddr));
+                {
+                    op = new ImmediateOperand(Constant.Create(PrimitiveType.Offset16, uAddr));
+                }
                 d.decodingContext.ops.Add(op);
                 return true;
             };

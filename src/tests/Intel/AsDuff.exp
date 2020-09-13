@@ -4,15 +4,15 @@
 0C00:0130 26 01 25 01 24 01 23 01 22 01 21 01 40 40 00 00 &.%.$.#.".!.@@..
 0C00:0140 00 00 00 00                                     ....           
 
-0C00:0100 8B 1E 3E 01     	mov	bx,[013E]
-0C00:0104 8B 0E 3E 01     	mov	cx,[013E]
-0C00:0108 83 E3 07        	and	bx,07
-0C00:010B 8B 36 40 01     	mov	si,[0140]
+0C00:0100 8B 1E 3E 01     	mov	bx,[013Eh]
+0C00:0104 8B 0E 3E 01     	mov	cx,[013Eh]
+0C00:0108 83 E3 07        	and	bx,7h
+0C00:010B 8B 36 40 01     	mov	si,[0140h]
 0C00:010F 03 DB           	add	bx,bx
-0C00:0111 83 C1 07        	add	cx,07
-0C00:0114 8B 3E 42 01     	mov	di,[0142]
-0C00:0118 C1 E9 03        	shr	cx,03
-0C00:011B 2E FF A7 2C 01  	jmp	word ptr cs:[bx+012C]
+0C00:0111 83 C1 07        	add	cx,7h
+0C00:0114 8B 3E 42 01     	mov	di,[0142h]
+0C00:0118 C1 E9 03        	shr	cx,3h
+0C00:011B 2E FF A7 2C 01  	jmp	word ptr cs:[bx+12Ch]
 0C00:0120 A5              	movsw
 0C00:0121 A5              	movsw
 0C00:0122 A5              	movsw
@@ -22,16 +22,16 @@
 0C00:0126 A5              	movsw
 0C00:0127 A5              	movsw
 0C00:0128 49              	dec	cx
-0C00:0129 7F F5           	jg	0120
+0C00:0129 7F F5           	jg	0120h
 0C00:012B C3              	ret
 0C00:012C 20 01           	and	[bx+di],al
 0C00:012E 27              	daa
-0C00:012F 01 26 01 25     	add	[2501],sp
+0C00:012F 01 26 01 25     	add	[2501h],sp
 0C00:0133 01 24           	add	[si],sp
 0C00:0135 01 23           	add	[bp+di],sp
 0C00:0137 01 22           	add	[bp+si],sp
 0C00:0139 01 21           	add	[bx+di],sp
-0C00:013B 01 40 40        	add	[bx+si+40],ax
+0C00:013B 01 40 40        	add	[bx+si+40h],ax
 0C00:013E 00 00           	add	[bx+si],al
 0C00:0140 00 00           	add	[bx+si],al
 0C00:0142 00 00           	add	[bx+si],al

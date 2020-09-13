@@ -4,24 +4,24 @@
 0C00:0030 30 03 DE E1 DD 1E 38 03 DD 06 20 03 DD 06 30 03 0.....8... ...0.
 0C00:0040 DE F1 DD 1E 40 03 C3                            ....@..        
 
-0C00:0000 DD 06 00 03     	fld	double ptr [0300]
-0C00:0004 DD 06 10 03     	fld	double ptr [0310]
+0C00:0000 DD 06 00 03     	fld	double ptr [0300h]
+0C00:0004 DD 06 10 03     	fld	double ptr [0310h]
 0C00:0008 DE E9           	fsubp	st(1),st(0)
-0C00:000A DD 1E 00 04     	fstp	double ptr [0400]
-0C00:000E DD 06 20 03     	fld	double ptr [0320]
-0C00:0012 DD 06 30 03     	fld	double ptr [0330]
+0C00:000A DD 1E 00 04     	fstp	double ptr [0400h]
+0C00:000E DD 06 20 03     	fld	double ptr [0320h]
+0C00:0012 DD 06 30 03     	fld	double ptr [0330h]
 0C00:0016 DE F9           	fdivp	st(1),st(0)
-0C00:0018 DD 1E 38 03     	fstp	double ptr [0338]
-0C00:001C DD 06 28 03     	fld	double ptr [0328]
-0C00:0020 DD 06 20 03     	fld	double ptr [0320]
+0C00:0018 DD 1E 38 03     	fstp	double ptr [0338h]
+0C00:001C DD 06 28 03     	fld	double ptr [0328h]
+0C00:0020 DD 06 20 03     	fld	double ptr [0320h]
 0C00:0024 DE F9           	fdivp	st(1),st(0)
-0C00:0026 DD 1E 08 04     	fstp	double ptr [0408]
-0C00:002A DD 06 20 03     	fld	double ptr [0320]
-0C00:002E DD 06 30 03     	fld	double ptr [0330]
+0C00:0026 DD 1E 08 04     	fstp	double ptr [0408h]
+0C00:002A DD 06 20 03     	fld	double ptr [0320h]
+0C00:002E DD 06 30 03     	fld	double ptr [0330h]
 0C00:0032 DE E1           	fsubrp	st(1),st(0)
-0C00:0034 DD 1E 38 03     	fstp	double ptr [0338]
-0C00:0038 DD 06 20 03     	fld	double ptr [0320]
-0C00:003C DD 06 30 03     	fld	double ptr [0330]
+0C00:0034 DD 1E 38 03     	fstp	double ptr [0338h]
+0C00:0038 DD 06 20 03     	fld	double ptr [0320h]
+0C00:003C DD 06 30 03     	fld	double ptr [0330h]
 0C00:0040 DE F1           	fdivrp	st(1),st(0)
-0C00:0042 DD 1E 40 03     	fstp	double ptr [0340]
+0C00:0042 DD 1E 40 03     	fstp	double ptr [0340h]
 0C00:0046 C3              	ret

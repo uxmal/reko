@@ -250,11 +250,9 @@ namespace Reko.Core
             try
             {
                 var writer = new InstrWriter(program.Platform, addrStart, formatter);
-                var options = new MachineInstructionWriterOptions
-                {
-                    Flags = MachineInstructionWriterFlags.ResolvePcRelativeAddress,
-                    Syntax = "",
-                };
+                var options = new MachineInstructionWriterOptions(
+                    flags: MachineInstructionWriterFlags.ResolvePcRelativeAddress,
+                    syntax: "");
                 foreach (var instr in dasm)
                 {
                     writer.Address = instr.Address;

@@ -768,15 +768,16 @@ namespace Reko.Arch.X86
         {
             if (instrCur.Operands[0] is RegisterOperand reg && reg.Register == Registers.cs)
             {
+                // Is it a 'push cs;call near XXXX' sequence that simulates a far call?
                 if (dasm.Peek(1).Mnemonic == Mnemonic.call &&
-                    dasm.Peek(1).Operands[0].Width == PrimitiveType.Word16)
+                    dasm.Peek(1).Operands[0].Width.BitSize == 16)
                 {
                     dasm.MoveNext();
                     MachineOperand targetOperand = dasm.Current.Operands[0];
 
                     if (targetOperand is ImmediateOperand immOperand)
                     {
-                        targetOperand = new X86AddressOperand(orw.ImmediateAsAddress(instrCur.Address, immOperand));
+                        targetOperand = AddressOperand.Create(orw.ImmediateAsAddress(instrCur.Address, immOperand));
                     }
                     else
                     {
@@ -791,7 +792,7 @@ namespace Reko.Arch.X86
                 if (
                     dasm.Peek(1).Mnemonic == Mnemonic.push && (dasm.Peek(1).Operands[0] is ImmediateOperand) &&
                     dasm.Peek(2).Mnemonic == Mnemonic.push && (dasm.Peek(2).Operands[0] is ImmediateOperand) &&
-                    dasm.Peek(3).Mnemonic == Mnemonic.jmp && (dasm.Peek(3).Operands[0] is X86AddressOperand))
+                    dasm.Peek(3).Mnemonic == Mnemonic.jmp && (dasm.Peek(3).Operands[0] is AddressOperand))
                 {
                     // That's actually a far call, but the callee thinks its a near call.
                     RewriteCall(dasm.Peek(3).Operands[0], instrCur.Operands[0].Width);

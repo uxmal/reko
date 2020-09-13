@@ -3,10 +3,10 @@
 
 10000100 00 00           	add	[eax],al
 10000102 00 00           	add	[eax],al
-10000104 6A 08           	push	08
-10000106 E8 F5 FF FF FF  	call	10000100
-1000010B 83 C4 04        	add	esp,04
-1000010E C7 00 00 00 00 00 	mov	dword ptr [eax],00000000
-10000114 C7 40 04 00 00 00 00 	mov	dword ptr [eax+04],00000000
+10000104 6A 08           	push	8h
+10000106 E8 F5 FF FF FF  	call	10000100h
+1000010B 83 C4 04        	add	esp,4h
+1000010E C7 00 00 00 00 00 	mov	dword ptr [eax],0h
+10000114 C7 40 04 00 00 00 00 	mov	dword ptr [eax+4h],0h
 1000011B C3              	ret
 10000100: _malloc

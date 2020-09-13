@@ -53,10 +53,8 @@ namespace Reko.UnitTests.Arch.Pdp11
 
         private void Given_ResolvePcRelativeAddress()
         {
-            this.options = new MachineInstructionWriterOptions
-            {
-                Flags = MachineInstructionWriterFlags.ResolvePcRelativeAddress
-            };
+            this.options = new MachineInstructionWriterOptions(
+                flags: MachineInstructionWriterFlags.ResolvePcRelativeAddress);
         }
 
         private MachineInstruction RunTest(params ushort[] words)

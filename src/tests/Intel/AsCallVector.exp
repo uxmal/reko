@@ -3,25 +3,25 @@
 0B00:0020 06 C3 8B 44 02 2B 44 04 89 44 06 C3 8B 44 02 23 ...D.+D..D...D.#
 0B00:0030 47 04 89 44 06 C3                               G..D..         
 
-0B00:0000 E8 29 00        	call	002C
-0B00:0003 3D 02 00        	cmp	ax,0002
-0B00:0006 77 09           	ja	0011
+0B00:0000 E8 29 00        	call	002Ch
+0B00:0003 3D 02 00        	cmp	ax,2h
+0B00:0006 77 09           	ja	0011h
 0B00:0008 8B D8           	mov	bx,ax
 0B00:000A 03 DB           	add	bx,bx
-0B00:000C 2E FF 97 12 00  	call	word ptr cs:[bx+0012]
+0B00:000C 2E FF 97 12 00  	call	word ptr cs:[bx+12h]
 0B00:0011 C3              	ret
 0B00:0012 18 00           	sbb	[bx+si],al
 0B00:0014 22 00           	and	al,[bx+si]
-0B00:0016 2C 00           	sub	al,00
-0B00:0018 8B 44 02        	mov	ax,[si+02]
-0B00:001B 03 44 04        	add	ax,[si+04]
-0B00:001E 89 44 06        	mov	[si+06],ax
+0B00:0016 2C 00           	sub	al,0h
+0B00:0018 8B 44 02        	mov	ax,[si+2h]
+0B00:001B 03 44 04        	add	ax,[si+4h]
+0B00:001E 89 44 06        	mov	[si+6h],ax
 0B00:0021 C3              	ret
-0B00:0022 8B 44 02        	mov	ax,[si+02]
-0B00:0025 2B 44 04        	sub	ax,[si+04]
-0B00:0028 89 44 06        	mov	[si+06],ax
+0B00:0022 8B 44 02        	mov	ax,[si+2h]
+0B00:0025 2B 44 04        	sub	ax,[si+4h]
+0B00:0028 89 44 06        	mov	[si+6h],ax
 0B00:002B C3              	ret
-0B00:002C 8B 44 02        	mov	ax,[si+02]
-0B00:002F 23 47 04        	and	ax,[bx+04]
-0B00:0032 89 44 06        	mov	[si+06],ax
+0B00:002C 8B 44 02        	mov	ax,[si+2h]
+0B00:002F 23 47 04        	and	ax,[bx+4h]
+0B00:0032 89 44 06        	mov	[si+6h],ax
 0B00:0035 C3              	ret

@@ -4,27 +4,27 @@
 0B00:0130 E5 5D C3 59 2B E0 8B C4 51 C3 55 8B EC 8B 5E 04 .].Y+...Q.U...^.
 0B00:0140 C7 07 00 00 5D C2 02 00                         ....]...       
 
-0B00:0100 8B 06 00 03     	mov	ax,[0300]
+0B00:0100 8B 06 00 03     	mov	ax,[0300h]
 0B00:0104 50              	push	ax
-0B00:0105 E8 17 00        	call	011F
-0B00:0108 E8 01 00        	call	010C
+0B00:0105 E8 17 00        	call	011Fh
+0B00:0108 E8 01 00        	call	010Ch
 0B00:010B C3              	ret
 0B00:010C 55              	push	bp
 0B00:010D 8B EC           	mov	bp,sp
-0B00:010F B8 00 01        	mov	ax,0100
-0B00:0112 E8 1E 00        	call	0133
-0B00:0115 68 00 10        	push	1000
-0B00:0118 E8 1F 00        	call	013A
+0B00:010F B8 00 01        	mov	ax,100h
+0B00:0112 E8 1E 00        	call	0133h
+0B00:0115 68 00 10        	push	1000h
+0B00:0118 E8 1F 00        	call	013Ah
 0B00:011B 8B E5           	mov	sp,bp
 0B00:011D 5D              	pop	bp
 0B00:011E C3              	ret
 0B00:011F 55              	push	bp
 0B00:0120 8B EC           	mov	bp,sp
-0B00:0122 8B 5E 04        	mov	bx,[bp+04]
-0B00:0125 8B 47 02        	mov	ax,[bx+02]
-0B00:0128 E8 08 00        	call	0133
+0B00:0122 8B 5E 04        	mov	bx,[bp+4h]
+0B00:0125 8B 47 02        	mov	ax,[bx+2h]
+0B00:0128 E8 08 00        	call	0133h
 0B00:012B 50              	push	ax
-0B00:012C E8 0B 00        	call	013A
+0B00:012C E8 0B 00        	call	013Ah
 0B00:012F 8B E5           	mov	sp,bp
 0B00:0131 5D              	pop	bp
 0B00:0132 C3              	ret
@@ -35,7 +35,7 @@
 0B00:0139 C3              	ret
 0B00:013A 55              	push	bp
 0B00:013B 8B EC           	mov	bp,sp
-0B00:013D 8B 5E 04        	mov	bx,[bp+04]
-0B00:0140 C7 07 00 00     	mov	word ptr [bx],0000
+0B00:013D 8B 5E 04        	mov	bx,[bp+4h]
+0B00:0140 C7 07 00 00     	mov	word ptr [bx],0h
 0B00:0144 5D              	pop	bp
-0B00:0145 C2 02 00        	ret	0002
+0B00:0145 C2 02 00        	ret	2h

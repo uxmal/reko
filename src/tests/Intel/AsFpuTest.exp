@@ -4,32 +4,32 @@
 0C00:0030 DD 5F 28 8B E5 5D C3 D9 EE DD 1E 00 04 D9 E8 DB ._(..]..........
 0C00:0040 1E 08 04 C3                                     ....           
 
-0C00:0000 68 20 03        	push	0320
-0C00:0003 68 00 03        	push	0300
-0C00:0006 E8 07 00        	call	0010
-0C00:0009 E8 2B 00        	call	0037
-0C00:000C 83 C4 04        	add	sp,04
+0C00:0000 68 20 03        	push	320h
+0C00:0003 68 00 03        	push	300h
+0C00:0006 E8 07 00        	call	0010h
+0C00:0009 E8 2B 00        	call	0037h
+0C00:000C 83 C4 04        	add	sp,4h
 0C00:000F C3              	ret
 0C00:0010 55              	push	bp
 0C00:0011 8B EC           	mov	bp,sp
-0C00:0013 8B 5E 04        	mov	bx,[bp+04]
+0C00:0013 8B 5E 04        	mov	bx,[bp+4h]
 0C00:0016 DD 07           	fld	double ptr [bx]
 0C00:0018 D8 C8           	fmul	st(0),st(0)
-0C00:001A DD 47 08        	fld	double ptr [bx+08]
+0C00:001A DD 47 08        	fld	double ptr [bx+8h]
 0C00:001D D8 C8           	fmul	st(0),st(0)
 0C00:001F DE C1           	faddp	st(1),st(0)
-0C00:0021 DD 47 10        	fld	double ptr [bx+10]
+0C00:0021 DD 47 10        	fld	double ptr [bx+10h]
 0C00:0024 D8 C8           	fmul	st(0),st(0)
 0C00:0026 DE C1           	faddp	st(1),st(0)
-0C00:0028 8B 5E 06        	mov	bx,[bp+06]
+0C00:0028 8B 5E 06        	mov	bx,[bp+6h]
 0C00:002B DD 1F           	fstp	double ptr [bx]
-0C00:002D DF 47 20        	fild	word ptr [bx+20]
-0C00:0030 DD 5F 28        	fstp	double ptr [bx+28]
+0C00:002D DF 47 20        	fild	word ptr [bx+20h]
+0C00:0030 DD 5F 28        	fstp	double ptr [bx+28h]
 0C00:0033 8B E5           	mov	sp,bp
 0C00:0035 5D              	pop	bp
 0C00:0036 C3              	ret
 0C00:0037 D9 EE           	fldz
-0C00:0039 DD 1E 00 04     	fstp	double ptr [0400]
+0C00:0039 DD 1E 00 04     	fstp	double ptr [0400h]
 0C00:003D D9 E8           	fld1
-0C00:003F DB 1E 08 04     	fistp	dword ptr [0408]
+0C00:003F DB 1E 08 04     	fistp	dword ptr [0408h]
 0C00:0043 C3              	ret

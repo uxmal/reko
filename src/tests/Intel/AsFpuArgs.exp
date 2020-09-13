@@ -3,28 +3,28 @@
 0B00:0020 83 C4 04 C3 55 8B EC 8B 5E 04 D9 1F D9 5F 04 5D ....U...^...._.]
 0B00:0030 C3 55 8B EC 8B 5E 04 D9 07 5D C3                .U...^...].    
 
-0B00:0000 D9 06 00 03     	fld	dword ptr [0300]
-0B00:0004 D9 06 04 03     	fld	dword ptr [0304]
-0B00:0008 68 08 03        	push	0308
-0B00:000B E8 16 00        	call	0024
+0B00:0000 D9 06 00 03     	fld	dword ptr [0300h]
+0B00:0004 D9 06 04 03     	fld	dword ptr [0304h]
+0B00:0008 68 08 03        	push	308h
+0B00:000B E8 16 00        	call	0024h
 0B00:000E D9 EE           	fldz
-0B00:0010 D9 1E 0C 03     	fstp	dword ptr [030C]
-0B00:0014 8B 06 08 03     	mov	ax,[0308]
+0B00:0010 D9 1E 0C 03     	fstp	dword ptr [030Ch]
+0B00:0014 8B 06 08 03     	mov	ax,[0308h]
 0B00:0018 50              	push	ax
-0B00:0019 E8 15 00        	call	0031
-0B00:001C D9 1E 0C 03     	fstp	dword ptr [030C]
-0B00:0020 83 C4 04        	add	sp,04
+0B00:0019 E8 15 00        	call	0031h
+0B00:001C D9 1E 0C 03     	fstp	dword ptr [030Ch]
+0B00:0020 83 C4 04        	add	sp,4h
 0B00:0023 C3              	ret
 0B00:0024 55              	push	bp
 0B00:0025 8B EC           	mov	bp,sp
-0B00:0027 8B 5E 04        	mov	bx,[bp+04]
+0B00:0027 8B 5E 04        	mov	bx,[bp+4h]
 0B00:002A D9 1F           	fstp	dword ptr [bx]
-0B00:002C D9 5F 04        	fstp	dword ptr [bx+04]
+0B00:002C D9 5F 04        	fstp	dword ptr [bx+4h]
 0B00:002F 5D              	pop	bp
 0B00:0030 C3              	ret
 0B00:0031 55              	push	bp
 0B00:0032 8B EC           	mov	bp,sp
-0B00:0034 8B 5E 04        	mov	bx,[bp+04]
+0B00:0034 8B 5E 04        	mov	bx,[bp+4h]
 0B00:0037 D9 07           	fld	dword ptr [bx]
 0B00:0039 5D              	pop	bp
 0B00:003A C3              	ret

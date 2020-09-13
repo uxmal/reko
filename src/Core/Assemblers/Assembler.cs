@@ -39,7 +39,7 @@ namespace Reko.Core.Assemblers
         Program AssembleFragment(Address baseAddress, string asmFragment);
 
         /// <summary>
-        /// Assembles the assembler language program from <paramref name="reader"/> and mutates 
+        /// Assembles the assembly language program from <paramref name="reader"/> and mutates 
         /// the provided <paramref name="program"/> starting at <paramref name="address"/>. 
         /// </summary>
         /// <param name="program">The program to mutate.</param>

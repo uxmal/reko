@@ -6,14 +6,14 @@
 10000002 00 00           	add	[eax],al
 10000004 00 00           	add	[eax],al
 10000006 00 00           	add	[eax],al
-10000008 6A 08           	push	08
-1000000A FF 15 00 00 00 10 	call	dword ptr [10000000]
-10000010 83 C4 04        	add	esp,04
-10000013 C7 00 00 00 00 00 	mov	dword ptr [eax],00000000
-10000019 C7 40 04 24 10 00 00 	mov	dword ptr [eax+04],00001024
+10000008 6A 08           	push	8h
+1000000A FF 15 00 00 00 10 	call	dword ptr [10000000h]
+10000010 83 C4 04        	add	esp,4h
+10000013 C7 00 00 00 00 00 	mov	dword ptr [eax],0h
+10000019 C7 40 04 24 10 00 00 	mov	dword ptr [eax+4h],1024h
 10000020 50              	push	eax
-10000021 FF 15 04 00 00 10 	call	dword ptr [10000004]
-10000027 83 C4 04        	add	esp,04
+10000021 FF 15 04 00 00 10 	call	dword ptr [10000004h]
+10000027 83 C4 04        	add	esp,4h
 1000002A C3              	ret
 10000000: msvcrt!malloc
 10000004: msvcrt!free

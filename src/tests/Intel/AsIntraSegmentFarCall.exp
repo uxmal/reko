@@ -3,29 +3,29 @@
 0C00:0020 55 8B EC C4 5E 06 8B 46 0A 26 01 07 5D CB 55 8B U...^..F.&..].U.
 0C00:0030 EC C4 5E 06 8B 46 0A 26 29 07 5D CB             ..^..F.&).].   
 
-0C00:0000 68 00 0D        	push	0D00
-0C00:0003 68 00 03        	push	0300
-0C00:0006 6A 01           	push	01
+0C00:0000 68 00 0D        	push	0D00h
+0C00:0003 68 00 03        	push	300h
+0C00:0006 6A 01           	push	1h
 0C00:0008 0E              	push	cs
-0C00:0009 E8 14 00        	call	0020
-0C00:000C 83 C4 06        	add	sp,06
-0C00:000F 68 00 0D        	push	0D00
-0C00:0012 68 04 03        	push	0304
-0C00:0015 6A 02           	push	02
-0C00:0017 9A 2E 00 00 0C  	call	far 0C00:002E
-0C00:001C 83 C4 06        	add	sp,06
+0C00:0009 E8 14 00        	call	0020h
+0C00:000C 83 C4 06        	add	sp,6h
+0C00:000F 68 00 0D        	push	0D00h
+0C00:0012 68 04 03        	push	304h
+0C00:0015 6A 02           	push	2h
+0C00:0017 9A 2E 00 00 0C  	call	far 0C00h:002Eh
+0C00:001C 83 C4 06        	add	sp,6h
 0C00:001F C3              	ret
 0C00:0020 55              	push	bp
 0C00:0021 8B EC           	mov	bp,sp
-0C00:0023 C4 5E 06        	les	bx,[bp+06]
-0C00:0026 8B 46 0A        	mov	ax,[bp+0A]
+0C00:0023 C4 5E 06        	les	bx,[bp+6h]
+0C00:0026 8B 46 0A        	mov	ax,[bp+0Ah]
 0C00:0029 26 01 07        	add	es:[bx],ax
 0C00:002C 5D              	pop	bp
 0C00:002D CB              	retf
 0C00:002E 55              	push	bp
 0C00:002F 8B EC           	mov	bp,sp
-0C00:0031 C4 5E 06        	les	bx,[bp+06]
-0C00:0034 8B 46 0A        	mov	ax,[bp+0A]
+0C00:0031 C4 5E 06        	les	bx,[bp+6h]
+0C00:0034 8B 46 0A        	mov	ax,[bp+0Ah]
 0C00:0037 26 29 07        	sub	es:[bx],ax
 0C00:003A 5D              	pop	bp
 0C00:003B CB              	retf
