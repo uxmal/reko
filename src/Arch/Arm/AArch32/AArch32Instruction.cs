@@ -337,7 +337,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             var addr = ComputePcRelativeAddress(mem);
             if (mem.Index == null &&
-                (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                (options.Flags & MachineInstructionWriterFlags.ResolvePcRelativeAddress) != 0)
             {
                 writer.WriteChar('[');
                 writer.WriteAddress(addr.ToString(), addr);

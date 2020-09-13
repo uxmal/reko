@@ -95,14 +95,21 @@ namespace Reko.Core.Machine
         public sealed override string ToString()
         {
             var renderer = new StringRenderer(Address);
-            this.Render(renderer, MachineInstructionWriterOptions.None);
+            this.Render(renderer, MachineInstructionWriterOptions.Default);
             return renderer.ToString();
         }
 
         public string ToString(IPlatform platform)
         {
             var renderer = new StringRenderer(platform, Address);
-            this.Render(renderer, MachineInstructionWriterOptions.None);
+            this.Render(renderer, MachineInstructionWriterOptions.Default);
+            return renderer.ToString();
+        }
+
+        public string ToString(MachineInstructionWriterOptions options)
+        {
+            var renderer = new StringRenderer(Address);
+            this.Render(renderer, options);
             return renderer.ToString();
         }
 
@@ -119,7 +126,7 @@ namespace Reko.Core.Machine
             RenderOperand(Operands[0], writer, options);
             for (int i = 1; i < Operands.Length; ++i)
             {
-                writer.WriteChar(',');
+                writer.WriteString(options.OperandSeparator ?? ",");
                 RenderOperand(Operands[i], writer, options);
             }
         }

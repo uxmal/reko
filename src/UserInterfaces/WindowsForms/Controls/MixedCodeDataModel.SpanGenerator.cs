@@ -180,12 +180,16 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     return null;
                 var instr = instrs[offset];
                 ++offset;
+                var options = new MachineInstructionWriterOptions
+                {
+                    Flags = MachineInstructionWriterFlags.ResolvePcRelativeAddress
+                };
                 var asmLine = DisassemblyTextModel.RenderAsmLine(
                     position,
                     program,
                     arch,
                     instr,
-                    MachineInstructionWriterOptions.ResolvePcRelativeAddress);
+                    options);
                 if (offset == instrs.Length)
                 {
                     DecorateLastLine(asmLine);

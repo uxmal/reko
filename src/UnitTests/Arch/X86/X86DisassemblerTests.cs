@@ -3147,5 +3147,16 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode64("adox\teax,esp", "F30F38F6C4");
         }
+
+        [Test]
+        public void X86Dis_OperandRendering()
+        {
+            var options = new MachineInstructionWriterOptions
+            {
+                OperandSeparator = ", "
+            };
+            var instr = Disassemble16(0x33, 0xc0);
+            Assert.AreEqual("xor\tax, ax", instr.ToString(options));
+        }
     }
 }

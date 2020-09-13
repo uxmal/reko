@@ -72,7 +72,7 @@ namespace Reko.Arch.M68k
                 if (memOp.Offset != null)
                     uAddr = (uint)(uAddr +  memOp.Offset.ToInt32());
                 var addr = Address.Ptr32(uAddr);
-                if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                if ((options.Flags & MachineInstructionWriterFlags.ResolvePcRelativeAddress) != 0)
                 {
                     writer.WriteAddress(addr.ToString(), addr);
                     writer.AddAnnotation(op.ToString());

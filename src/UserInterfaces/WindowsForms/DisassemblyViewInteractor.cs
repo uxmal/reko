@@ -88,6 +88,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     dumper.ShowAddresses = true;
                     dumper.ShowCodeBytes = true;
                     ImageSegment segment;
+                    var options = Core.Machine.MachineInstructionWriterOptions.Default;
                     if (program.SegmentMap.TryFindSegment(StartAddress, out segment))
                     {
                         var formatter = new Dumper.InstrWriter(program.Platform, StartAddress, new TextFormatter(writer));
@@ -97,7 +98,7 @@ namespace Reko.UserInterfaces.WindowsForms
                             var instr = dasm.Current;
                             if (lines <= 0)
                                 break;
-                            dumper.DumpAssemblerLine(segment.MemoryArea, program.Architecture, instr, formatter);
+                            dumper.DumpAssemblerLine(segment.MemoryArea, program.Architecture, instr, formatter, options);
                             --lines;
                         }
                     }

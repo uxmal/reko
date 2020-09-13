@@ -55,7 +55,7 @@ namespace Reko.Arch.Vax
                 {
                     addr += mop.Offset.ToInt32();
                 }
-                if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                if ((options.Flags & MachineInstructionWriterFlags.ResolvePcRelativeAddress) != 0)
                 {
                     writer.WriteAddress(addr.ToString(), addr);
                     writer.AddAnnotation(op.ToString());

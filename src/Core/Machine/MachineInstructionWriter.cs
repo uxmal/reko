@@ -51,12 +51,30 @@ namespace Reko.Core.Machine
 
     [Flags]
     [NativeInterop]
-    public enum MachineInstructionWriterOptions
+    public enum MachineInstructionWriterFlags
     {
         None = 0,
         ExplicitOperandSize = 1,
         ResolvePcRelativeAddress = 2,
     }
+
+
+    public class MachineInstructionWriterOptions
+    {
+        public string? Syntax { get; set; }
+
+        public MachineInstructionWriterFlags Flags { get; set; }
+
+        public string? OperandSeparator { get; set; }
+
+        public static MachineInstructionWriterOptions Default { get; } = new MachineInstructionWriterOptions
+        {
+            Syntax = "",
+            Flags = MachineInstructionWriterFlags.None,
+            OperandSeparator = ","
+        };
+    }
+
 
     /// <summary>
     /// "Dumb" renderer that renders machine instructions as simple text.
@@ -104,9 +122,9 @@ namespace Reko.Core.Machine
             sb.Append(formattedAddress);
         }
 
-        public void WriteAddress(string formattedAddres, ulong uAddr)
+        public void WriteAddress(string formattedAddress, ulong uAddr)
         {
-            WriteAddress(formattedAddres, Address.Ptr64(uAddr));
+            WriteAddress(formattedAddress, Address.Ptr64(uAddr));
         }
 
         public void WriteChar(char c)

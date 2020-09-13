@@ -250,12 +250,17 @@ namespace Reko.Core
             try
             {
                 var writer = new InstrWriter(program.Platform, addrStart, formatter);
+                var options = new MachineInstructionWriterOptions
+                {
+                    Flags = MachineInstructionWriterFlags.ResolvePcRelativeAddress,
+                    Syntax = "",
+                };
                 foreach (var instr in dasm)
                 {
                     writer.Address = instr.Address;
                     if (instr.Address! >= addrLast)
                         break;
-                    if (!DumpAssemblerLine(segment.MemoryArea, arch, instr, writer))
+                    if (!DumpAssemblerLine(segment.MemoryArea, arch, instr, writer, options))
                         break;
                 }
             }
@@ -266,7 +271,12 @@ namespace Reko.Core
             }
         }
 
-        public bool DumpAssemblerLine(MemoryArea mem, IProcessorArchitecture arch, MachineInstruction instr, InstrWriter writer)
+        public bool DumpAssemblerLine(
+            MemoryArea mem, 
+            IProcessorArchitecture arch, 
+            MachineInstruction instr, 
+            InstrWriter writer,
+            MachineInstructionWriterOptions options)
         {
             var instrAddress = instr.Address;
             Address addrBegin = instrAddress;
@@ -283,7 +293,7 @@ namespace Reko.Core
             writer.WriteString("\t");
             writer.Address = addrBegin;
             writer.Address = instrAddress;
-            instr.Render(writer, MachineInstructionWriterOptions.ResolvePcRelativeAddress);
+            instr.Render(writer, options);
             writer.WriteLine();
             return true;
         }

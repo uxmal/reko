@@ -78,7 +78,7 @@ namespace Reko.Arch.X86
 
 		public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-			if ((options & MachineInstructionWriterOptions.ExplicitOperandSize) != 0)
+			if ((options.Flags & MachineInstructionWriterFlags.ExplicitOperandSize) != 0)
 			{
 				string s;
                 if (Width == PrimitiveType.Byte)

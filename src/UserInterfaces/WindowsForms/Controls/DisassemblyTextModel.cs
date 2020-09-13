@@ -83,10 +83,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     seg.MemoryArea != null &&
                     seg.MemoryArea.IsValidAddress(addr))
                 {
-                    var options = ShowPcRelative
-                        ? MachineInstructionWriterOptions.None
-                        : MachineInstructionWriterOptions.ResolvePcRelativeAddress;
-
+                    var options = new MachineInstructionWriterOptions
+                    {
+                        Flags = ShowPcRelative
+                            ? MachineInstructionWriterFlags.None
+                            : MachineInstructionWriterFlags.ResolvePcRelativeAddress
+                    };
                     var arch = GetArchitectureForAddress(addr);
                     var dasm = program.CreateDisassembler(arch, Align(position)).GetEnumerator();
                     while (count != 0 && dasm.MoveNext())
