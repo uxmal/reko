@@ -48,28 +48,28 @@ namespace Reko.Arch.X86
 
 
         public string ToString(string syntax)
-        {
+		{
             var options = new MachineInstructionRendererOptions(syntax: syntax);
             return base.ToString(options);
-        }
+		}
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             var syntax = ChooseSyntax(options);
             syntax.Render(this, renderer, options);
-		}
+            }
 
         private X86AssemblyRenderer ChooseSyntax(MachineInstructionRendererOptions options)
-        {
+			{
             if (string.IsNullOrEmpty(options.Syntax))
                 return X86AssemblyRenderer.Intel;
             switch (options.Syntax![0])
-            {
+				{
             case 'I': case 'i': return X86AssemblyRenderer.Intel;
             case 'N': case 'n': return X86AssemblyRenderer.Nasm;
             default: return X86AssemblyRenderer.Intel;
-            }
-        }
+				}
+			}
 
         /// <summary>
         /// Returns the condition codes that an instruction modifies.
@@ -157,7 +157,7 @@ namespace Reko.Arch.X86
 			{
 			case Mnemonic.adc:
 			case Mnemonic.adcx:
-            case Mnemonic.sbb:
+			case Mnemonic.sbb:
 				return FlagM.CF;
 			case Mnemonic.daa:
 			case Mnemonic.das:
@@ -250,5 +250,5 @@ namespace Reko.Arch.X86
 				return 0;
 			}
 		}
+		}
 	}
-}
