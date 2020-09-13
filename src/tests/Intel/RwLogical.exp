@@ -4,8 +4,9 @@
 // fp:fp
 // sp:sp
 // ax:ax
-// SZO:SZO
+// SZ:SZ
 // C:C
+// O:O
 // ebx:ebx
 // Z:Z
 // ds:ds
@@ -18,11 +19,13 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	ax = ax & 0xF<16>
-	SZO = cond(ax)
+	SZ = cond(ax)
 	C = false
+	O = false
 	ebx = ebx & ebx
-	SZO = cond(ebx)
+	SZ = cond(ebx)
 	C = false
+	O = false
 	branch Test(EQ,Z) l0C00_000C
 	// succ:  l0C00_0008 l0C00_000C
 l0C00_0008:

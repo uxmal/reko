@@ -4,8 +4,9 @@
 // fp:fp
 // sp:sp
 // ecx:ecx
-// SZO:SZO
+// SZ:SZ
 // C:C
+// O:O
 // ax:ax
 // bx:bx
 // SCZO:SCZO
@@ -22,8 +23,9 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	ecx = ecx ^ ecx
-	SZO = cond(ecx)
+	SZ = cond(ecx)
 	C = false
+	O = false
 	ax = ax - bx
 	SCZO = cond(ax)
 	cl = CONVERT(Test(EQ,Z), bool, int8)

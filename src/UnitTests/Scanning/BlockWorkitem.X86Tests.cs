@@ -432,8 +432,9 @@ namespace Reko.UnitTests.Scanning
             var sw = new StringWriter();
             block.WriteStatements(sw);
             string sExp = "\tbx = bx & 3<16>" + nl +
-                "\tSZO = cond(bx)" + nl +
+                "\tSZ = cond(bx)" + nl +
                 "\tC = false" + nl +
+                "\tO = false" + nl +
                 "\tbx = bx + bx" + nl + 
                 "\tSCZO = cond(bx)" + nl +
                 "\tswitch (bx) { foo1 foo2 foo3 foo4 }" + nl;
@@ -527,8 +528,9 @@ namespace Reko.UnitTests.Scanning
             var sExp =
                 "testblock:" + nl +
                 "\tesi = esi ^ esi" + nl +
-                "\tSZO = cond(esi)" + nl +
-                "\tC = false" + nl + 
+                "\tSZ = cond(esi)" + nl +
+                "\tC = false" + nl +
+                "\tO = false" + nl + 
                 "\tesi = esi + 1<32>" + nl +
                 "\tSZO = cond(esi)" + nl +
                  "\tgoto 0C00:0003" + nl;

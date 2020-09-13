@@ -4,8 +4,9 @@
 // fp:fp
 // sp:sp
 // ecx:ecx
-// SZO:SZO
+// SZ:SZ
 // C:C
+// O:O
 // ds:ds
 // Top:Top
 // return address size: 2
@@ -18,8 +19,9 @@ l0C00_0000:
 	call fn0C00_000F (retsize: 2;)
 	call fn0C00_0010 (retsize: 2;)
 	ecx = ecx ^ ecx
-	SZO = cond(ecx)
+	SZ = cond(ecx)
 	C = false
+	O = false
 	Mem0[ds:0x310<16>:word32] = ecx
 	return
 	// succ:  fn0C00_0000_exit
@@ -48,8 +50,9 @@ fn0C00_000F_exit:
 // fp:fp
 // sp:sp
 // ch:ch
-// SZO:SZO
+// SZ:SZ
 // C:C
+// O:O
 // cl:cl
 // ds:ds
 // cx:cx
@@ -62,8 +65,9 @@ fn0C00_0010_entry:
 	// succ:  l0C00_0010
 l0C00_0010:
 	ch = ch ^ ch
-	SZO = cond(ch)
+	SZ = cond(ch)
 	C = false
+	O = false
 	cl = Mem0[ds:0x300<16>:byte]
 	branch cx == 0<16> l0C00_001E
 	// succ:  l0C00_0018 l0C00_001E

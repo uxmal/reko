@@ -9,8 +9,10 @@
 // edi:edi
 // di:di
 // bl:bl
-// SZO:SZO
+// SZ:SZ
 // C:C
+// O:O
+// SZO:SZO
 // Z:Z
 // eax:eax
 // SCZO:SCZO
@@ -38,8 +40,9 @@ l10000000:
 	Mem0[esp:word32] = edi
 	di = Mem0[esp + 0x14<32>:word16]
 	bl = bl ^ bl
-	SZO = cond(bl)
+	SZ = cond(bl)
 	C = false
+	O = false
 	SZO = cond(di & di)
 	C = false
 	branch Test(NE,Z) l10000021
@@ -114,8 +117,9 @@ l1000006D:
 	call fn10000251 (retsize: 4;)
 	eax = Mem0[esi:word32]
 	ebp = ebp ^ ebp
-	SZO = cond(ebp)
+	SZ = cond(ebp)
 	C = false
+	O = false
 	esp = esp + 4<32>
 	SCZO = cond(esp)
 	SCZO = cond(Mem0[eax:word16] - bp)

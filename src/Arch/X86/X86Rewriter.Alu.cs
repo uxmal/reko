@@ -640,8 +640,9 @@ namespace Reko.Arch.X86
                     SrcOp(1),
                     0);
             }
-            EmitCcInstr(SrcOp(0), Registers.SZO);
+            EmitCcInstr(SrcOp(0), Registers.SZ);
             m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.O), Constant.False());
         }
 
         private void RewriteMultiply(Func<Expression,Expression,Expression> op, Domain resultDomain)

@@ -12,7 +12,9 @@
 // SCZO:SCZO
 // Z:Z
 // ax:ax
+// SZ:SZ
 // C:C
+// O:O
 // es:es
 // di:di
 // Top:Top
@@ -42,8 +44,9 @@ l0C00_000D:
 	ax = Mem0[ds:si:word16]
 	si = si + 2<i16>
 	al = al ^ al
-	SZO = cond(al)
+	SZ = cond(al)
 	C = false
+	O = false
 	// succ:  l0C00_0014
 l0C00_0014:
 	Mem0[es:di:byte] = al

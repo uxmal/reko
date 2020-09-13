@@ -5,9 +5,11 @@
 // esp:esp
 // SCZO:SCZO
 // eax:eax
-// SZO:SZO
+// SZ:SZ
 // C:C
+// O:O
 // ecx:ecx
+// SZO:SZO
 // edi:edi
 // Top:Top
 // return address size: 4
@@ -20,11 +22,13 @@ l10000000:
 	esp = esp - 0xC<32>
 	SCZO = cond(esp)
 	eax = eax ^ eax
-	SZO = cond(eax)
+	SZ = cond(eax)
 	C = false
+	O = false
 	ecx = ecx ^ ecx
-	SZO = cond(ecx)
+	SZ = cond(ecx)
 	C = false
+	O = false
 	Mem0[esp:word32] = 1<32>
 	Mem0[esp + 4<32>:word32] = 2<32>
 	Mem0[esp + 8<32>:word32] = 3<32>

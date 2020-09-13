@@ -42,14 +42,14 @@ fn0C00_000F_entry:
 l0C00_000F:
 	si_8 = 0<16>
 l0C00_0015:
-	si_15 = si_14 + dx_11
-	dx_17 = dx_11 - 1<16>
+	si_16 = si_15 + dx_12
+	dx_18 = dx_12 - 1<16>
 l0C00_0018:
-	si_14 = PHI((si_8, l0C00_000F), (si_15, l0C00_0015))
-	dx_11 = PHI((dx, l0C00_000F), (dx_17, l0C00_0015))
-	branch dx_11 >= 0<16> l0C00_0015
+	si_15 = PHI((si_8, l0C00_000F), (si_16, l0C00_0015))
+	dx_12 = PHI((dx, l0C00_000F), (dx_18, l0C00_0015))
+	branch dx_12 >= 0<16> l0C00_0015
 l0C00_001D:
-	ax_19 = si_14
+	ax_20 = si_15
 	return
 fn0C00_000F_exit:
-	use ax_19
+	use ax_20

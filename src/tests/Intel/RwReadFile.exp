@@ -9,8 +9,9 @@
 // bx:bx
 // cx:cx
 // ax:ax
-// SZO:SZO
+// SZ:SZ
 // C:C
+// O:O
 // SO:SO
 // al:al
 // Top:Top
@@ -30,8 +31,9 @@ l0C00_0000:
 	cx = 0x100<16>
 	call fn0C00_0023 (retsize: 2;)
 	ax = ax | ax
-	SZO = cond(ax)
+	SZ = cond(ax)
 	C = false
+	O = false
 	branch Test(GE,SO) l0C00_001A
 	// succ:  l0C00_0015 l0C00_001A
 l0C00_0015:

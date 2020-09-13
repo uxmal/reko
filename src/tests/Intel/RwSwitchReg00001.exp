@@ -9,8 +9,9 @@
 // CZ:CZ
 // edx:edx
 // ecx:ecx
-// SZO:SZO
+// SZ:SZ
 // C:C
+// O:O
 // cl:cl
 // Top:Top
 // return address size: 4
@@ -33,8 +34,9 @@ l10000000:
 l10000014:
 	edx = Mem0[ebp - 4<32>:word32]
 	ecx = ecx ^ ecx
-	SZO = cond(ecx)
+	SZ = cond(ecx)
 	C = false
+	O = false
 	cl = Mem0[edx + 0x10000026<32>:byte]
 	switch (Mem0[ebp - 4<32>:word32]) { l10000040 l10000036 l10000040 l1000004A }
 	// succ:  l10000040 l10000036 l10000040 l1000004A

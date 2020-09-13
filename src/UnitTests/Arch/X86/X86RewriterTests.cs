@@ -207,10 +207,11 @@ namespace Reko.UnitTests.Arch.X86
                 m.Or(m.ax, m.dx);
             });
             AssertCode(
-                "0|L--|0C00:0000(2): 3 instructions",
+                "0|L--|0C00:0000(2): 4 instructions",
                 "1|L--|ax = ax | dx",
-                "2|L--|SZO = cond(ax)",
-                "3|L--|C = false");
+                "2|L--|SZ = cond(ax)",
+                "3|L--|C = false",
+                "4|L--|O = false");
         }
 
         [Test]
@@ -221,10 +222,11 @@ namespace Reko.UnitTests.Arch.X86
                 m.And(m.si, m.Imm(0x32));
             });
             AssertCode(
-                "0|L--|0C00:0000(3): 3 instructions",
+                "0|L--|0C00:0000(3): 4 instructions",
                 "1|L--|si = si & 0x32<16>",
-                "2|L--|SZO = cond(si)",
-                "3|L--|C = false");
+                "2|L--|SZ = cond(si)",
+                "3|L--|C = false",
+                "4|L--|O = false");
         }
 
         [Test]
@@ -244,10 +246,11 @@ namespace Reko.UnitTests.Arch.X86
                 m.Xor(m.eax, m.eax);
             });
             AssertCode(
-                "0|L--|0C00:0000(3): 3 instructions",
+                "0|L--|0C00:0000(3): 4 instructions",
                 "1|L--|eax = eax ^ eax",
-                "2|L--|SZO = cond(eax)",
-                "3|L--|C = false");
+                "2|L--|SZ = cond(eax)",
+                "3|L--|C = false",
+                "4|L--|O = false");
         }
 
         [Test]
@@ -347,8 +350,11 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode(
                 "0|T--|0C00:0000(2): 1 instructions",
                 "1|T--|if (Test(NE,Z)) branch 0C00:0000",
-                "2|L--|0C00:0002(2): 3 instructions",
-                "3|L--|ax = ax ^ ax");
+                "2|L--|0C00:0002(2): 4 instructions",
+                "3|L--|ax = ax ^ ax",
+                "4|L--|SZ = cond(ax)",
+                "5|L--|C = false",
+                "6|L--|O = false");
         }
 
         [Test]
@@ -591,10 +597,11 @@ namespace Reko.UnitTests.Arch.X86
                 "3|L--|si = si + 2<i16>",
                 "4|L--|cx = cx - 1<16>",
                 "5|T--|goto 0C00:0000",
-                "6|L--|0C00:0002(2): 3 instructions",
+                "6|L--|0C00:0002(2): 4 instructions",
                 "7|L--|ax = ax ^ ax",
-                "8|L--|SZO = cond(ax)",
-                "9|L--|C = false");
+                "8|L--|SZ = cond(ax)",
+                "9|L--|C = false",
+                "10|L--|O = false");
         }
 
         [Test]
@@ -733,10 +740,11 @@ namespace Reko.UnitTests.Arch.X86
                 m.And(m.ax, m.Const(8));
             });
             AssertCode(
-                "0|L--|0C00:0000(3): 3 instructions",
+                "0|L--|0C00:0000(3): 4 instructions",
                 "1|L--|ax = ax & 8<16>",
-                "2|L--|SZO = cond(ax)",
-                "3|L--|C = false");
+                "2|L--|SZ = cond(ax)",
+                "3|L--|C = false",
+                "4|L--|O = false");
         }
 
         [Test]
@@ -1585,11 +1593,12 @@ namespace Reko.UnitTests.Arch.X86
         {
             Run64bitTest(0x33, 0xC0);
             AssertCode(
-               "0|L--|0000000140000000(2): 4 instructions",
+               "0|L--|0000000140000000(2): 5 instructions",
                "1|L--|eax = eax ^ eax",
                "2|L--|rax = CONVERT(eax, word32, uint64)",
                "3|L--|SZO = cond(eax)",
-               "4|L--|C = false");
+               "4|L--|C = false",
+               "5|L--|O = false");
         }
 
         [Test]
@@ -4044,10 +4053,11 @@ namespace Reko.UnitTests.Arch.X86
             Run64bitTest("48 25 44 EB 24 C4"); // and rax,0xffffffffc424eb44<64>
             //$REVIEW: and's should be unsigned masks no?
             AssertCode(
-                "0|L--|0000000140000000(6): 3 instructions",
+                "0|L--|0000000140000000(6): 4 instructions",
                 "1|L--|rax = rax & 0xFFFFFFFFC424EB44<64>",
-                "2|L--|SZO = cond(rax)",
-                "3|L--|C = false");
+                "2|L--|SZ = cond(rax)",
+                "3|L--|C = false",
+                "4|L--|O = false");
         }
 
         [Test]

@@ -31,8 +31,9 @@ fn0C00_0000_exit:
 // es:es
 // di:di
 // al:al
-// SZO:SZO
+// SZ:SZ
 // C:C
+// O:O
 // SCZO:SCZO
 // Z:Z
 // ah:ah
@@ -52,8 +53,9 @@ l0C00_000C:
 	di = 0x7E0F<16>
 	cx = 0xC<16>
 	al = al ^ al
-	SZO = cond(al)
+	SZ = cond(al)
 	C = false
+	O = false
 	// succ:  l0C00_0019
 l0C00_0019:
 	branch cx == 0<16> l0C00_001B
@@ -80,11 +82,13 @@ l0C00_001D:
 	// succ:  fn0C00_000C_exit
 l0C00_002D:
 	bx = bx ^ bx
-	SZO = cond(bx)
+	SZ = cond(bx)
 	C = false
+	O = false
 	cl = cl ^ cl
-	SZO = cond(cl)
+	SZ = cond(cl)
 	C = false
+	O = false
 	return
 	// succ:  fn0C00_000C_exit
 fn0C00_000C_exit:

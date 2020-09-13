@@ -6,11 +6,13 @@
 // edi:edi
 // esi:esi
 // ebx:ebx
-// SZO:SZO
+// SZ:SZ
 // C:C
+// O:O
 // Z:Z
-// v9:v9
+// v10:v10
 // eax:eax
+// SZO:SZO
 // SCZO:SCZO
 // Top:Top
 // return address size: 4
@@ -26,9 +28,9 @@ l10000000:
 	goto l10000027
 	// succ:  l10000027
 l10000016:
-	v9 = Mem0[edi:word32]
+	v10 = Mem0[edi:word32]
 	esp = esp - 4<i32>
-	Mem0[esp:word32] = v9
+	Mem0[esp:word32] = v10
 	eax = GetDC(Mem0[esp:HWND])
 	esp = esp + 4<32>
 	Mem0[edi:word32] = eax
@@ -44,8 +46,9 @@ l10000016:
 	// succ:  l10000027
 l10000027:
 	esi = esi | esi
-	SZO = cond(esi)
+	SZ = cond(esi)
 	C = false
+	O = false
 	branch Test(NE,Z) l10000016
 	// succ:  l1000002B l10000016
 l1000002B:

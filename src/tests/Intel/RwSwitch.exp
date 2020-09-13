@@ -16,8 +16,9 @@ l0C00_0000:
 	// succ:  l0C00_0009 l0C00_0023
 l0C00_0009:
 	bh = bh ^ bh
-	SZO = cond(bh)
+	SZ = cond(bh)
 	C = false
+	O = false
 	bx = bx + bx
 	SCZO = cond(bx)
 	switch (bl) { l0C00_0017 l0C00_001B l0C00_001F }

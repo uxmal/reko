@@ -35,10 +35,12 @@ fn10000000_exit:
 // SCZO:SCZO
 // Z:Z
 // ax:ax
-// SZO:SZO
+// SZ:SZ
 // C:C
+// O:O
 // eax:eax
 // edx:edx
+// SZO:SZO
 // SO:SO
 // cx:cx
 // Top:Top
@@ -60,8 +62,9 @@ l10000017:
 	// succ:  l10000027 l1000002F
 l10000027:
 	ax = ax ^ ax
-	SZO = cond(ax)
+	SZ = cond(ax)
 	C = false
+	O = false
 	goto l1000005E
 	// succ:  l1000005E
 l1000002F:

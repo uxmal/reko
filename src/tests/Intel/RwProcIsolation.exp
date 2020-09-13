@@ -54,9 +54,11 @@ fn0C00_000F_exit:
 // fp:fp
 // sp:sp
 // di:di
-// SZO:SZO
+// SZ:SZ
 // C:C
+// O:O
 // ax:ax
+// SZO:SZO
 // Top:Top
 // return address size: 2
 define fn0C00_0014
@@ -66,8 +68,9 @@ fn0C00_0014_entry:
 	// succ:  l0C00_0014
 l0C00_0014:
 	di = di ^ di
-	SZO = cond(di)
+	SZ = cond(di)
 	C = false
+	O = false
 	ax = ax - 1<16>
 	SZO = cond(ax)
 	return

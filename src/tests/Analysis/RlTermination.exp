@@ -32,11 +32,11 @@ l0C00_0015:
 l0C00_0019:
 	branch ax >=u Mem0[ds:bx + 2<16>:word16] l0C00_0023
 l0C00_001E:
-	bx_19 = bx + ax
-	ax_21 = Mem0[ds:bx_19:word16]
+	bx_20 = bx + ax
+	ax_22 = Mem0[ds:bx_20:word16]
 	return
 l0C00_0023:
-	Mem16[ds:0x232<16>:word16] = 0<16>
+	Mem17[ds:0x232<16>:word16] = 0<16>
 	msdos_terminate(0<8>)
 fn0C00_0015_exit:
-	use ax_21
+	use ax_22

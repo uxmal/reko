@@ -4,63 +4,63 @@ void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 ax_12 = 0<16>
+	word16 ax_14 = 0<16>
 	// succ:  l0C00_0002
 l0C00_0002:
 	branch bx == 0<16> l0C00_000D
 	// succ:  l0C00_0006 l0C00_000D
 l0C00_0006:
-	ax_12 = ax_12 + 1<16>
+	ax_14 = ax_14 + 1<16>
 	bx = Mem0[ds:bx + 4<16>:word16]
 	goto l0C00_0002
 	// succ:  l0C00_0002
 l0C00_000D:
-	Mem14[ds:0x200<16>:word16] = ax_12
+	Mem16[ds:0x200<16>:word16] = ax_14
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
 globals_t (in globals : (ptr32 (struct "Globals")))
 	trait_primitive((ptr32 (struct "Globals")))
-T_3 (in bx : word16)
+T_2 (in bx : word16)
 	trait_primitive(word16)
-	trait_mem(T_4:T_13, 4)
+	trait_mem(T_3:T_12, 4)
 	trait_primitive(word16)
+	trait_primitive(word16)
+	trait_equal(T_12)
 	trait_primitive(word16)
 	trait_equal(T_13)
-	trait_primitive(word16)
-	trait_equal(T_14)
-T_4 (in ds : selector)
+T_3 (in ds : selector)
 	trait_primitive(selector)
-	trait_mem(T_8, 200)
+	trait_mem(T_7, 200)
 	trait_primitive(selector)
-T_5 (in ax_12 : word16)
-	trait_primitive(word16)
-	trait_equal(T_6)
-	trait_primitive(word16)
-	trait_primitive(word16)
-	trait_primitive(word16)
-	trait_primitive(word16)
-	trait_equal(T_10)
-T_6 (in 0<16> : word16)
-	trait_primitive(word16)
-T_7 (in 0x200<16> : word16)
-	trait_primitive(word16)
-	trait_mem(T_4:T_8, 0)
-T_8 (in Mem14[ds:0x200<16>:word16] : word16)
+T_4 (in ax_14 : word16)
 	trait_primitive(word16)
 	trait_equal(T_5)
-T_9 (in 1<16> : word16)
 	trait_primitive(word16)
-T_10 (in ax_12 + 1<16> : word16)
 	trait_primitive(word16)
-T_11 (in 4<16> : word16)
 	trait_primitive(word16)
-T_12 (in bx + 4<16> : word16)
 	trait_primitive(word16)
-T_13 (in Mem0[ds:bx + 4<16>:word16] : word16)
+	trait_equal(T_9)
+T_5 (in 0<16> : word16)
 	trait_primitive(word16)
-T_14 (in 0<16> : word16)
+T_6 (in 0x200<16> : word16)
 	trait_primitive(word16)
-T_15 (in bx == 0<16> : bool)
+	trait_mem(T_3:T_7, 0)
+T_7 (in Mem16[ds:0x200<16>:word16] : word16)
+	trait_primitive(word16)
+	trait_equal(T_4)
+T_8 (in 1<16> : word16)
+	trait_primitive(word16)
+T_9 (in ax_14 + 1<16> : word16)
+	trait_primitive(word16)
+T_10 (in 4<16> : word16)
+	trait_primitive(word16)
+T_11 (in bx + 4<16> : word16)
+	trait_primitive(word16)
+T_12 (in Mem0[ds:bx + 4<16>:word16] : word16)
+	trait_primitive(word16)
+T_13 (in 0<16> : word16)
+	trait_primitive(word16)
+T_14 (in bx == 0<16> : bool)
 	trait_primitive(bool)

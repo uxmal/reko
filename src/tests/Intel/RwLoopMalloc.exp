@@ -6,11 +6,13 @@
 // edi:edi
 // esi:esi
 // ebx:ebx
-// SZO:SZO
+// SZ:SZ
 // C:C
+// O:O
 // Z:Z
 // eax:eax
 // SCZO:SCZO
+// SZO:SZO
 // Top:Top
 // return address size: 4
 define fn10000000
@@ -40,8 +42,9 @@ l10000015:
 	// succ:  l1000002F
 l1000002F:
 	esi = esi | esi
-	SZO = cond(esi)
+	SZ = cond(esi)
 	C = false
+	O = false
 	branch Test(NE,Z) l10000015
 	// succ:  l10000033 l10000015
 l10000033:
