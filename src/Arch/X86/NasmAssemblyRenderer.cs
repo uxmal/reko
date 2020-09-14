@@ -79,7 +79,7 @@ namespace Reko.Arch.X86
 
         protected override string FormatUnsignedValue(ulong n, string? format)
         {
-            return "0x" + string.Format(format, n);
+            return "0x" + string.Format(format ?? "{0:X}", n);
         }
     }
 }
