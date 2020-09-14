@@ -3189,7 +3189,6 @@ movzx	ax,byte ptr [bp+4h]
             AssertCode32("endbr64", "F3 0F 1E FA");
         }
 
-        [Test(Description = "Tests customizing operator separator.")]
         public void X86Dis_adcx()
         {
             AssertCode64("adcx\teax,ebx", "660F38F6C3");
@@ -3201,6 +3200,7 @@ movzx	ax,byte ptr [bp+4h]
             AssertCode64("adox\teax,esp", "F30F38F6C4");
         }
 
+        [Test(Description = "Tests customizing operator separator.")]
         [Test]
         public void X86Dis_OperandRendering()
         {
