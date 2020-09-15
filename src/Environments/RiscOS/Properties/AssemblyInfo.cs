@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Reko.Core;
@@ -22,14 +22,5 @@ using Reko.Core;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("b6e47724-850c-422f-b299-a4dfdc53ba1d")]
 
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
 [assembly: AssemblyVersion(Reko.AssemblyMetadata.AssemblyVersion)]
 [assembly: AssemblyFileVersion(Reko.AssemblyMetadata.AssemblyVersion)]

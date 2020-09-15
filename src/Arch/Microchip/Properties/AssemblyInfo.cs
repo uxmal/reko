@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work from:
@@ -45,15 +45,5 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("a959c1a2-a622-4600-81ad-29e08545b2f7")]
 
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion(AssemblyMetadata.AssemblyVersion)]
 [assembly: AssemblyFileVersion(AssemblyMetadata.AssemblyFileVersion)]
