@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Reko.Decompiler.Runtime</id>
+    <version>0.9.2.0</version>
+    <title>Reko Decompiler Runtime</title>
+    <authors>Reko Decompiler contributors</authors>
+    <owners>John Källén</owners>
+    <licenseUrl>https://github.com/uxmal/reko/blob/master/COPYING</licenseUrl>
+    <projectUrl>https://github.com/uxmal/reko</projectUrl>
+    <iconUrl>https://github.com/uxmal/reko/blob/master/web/images/reko.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Runtime components for the Reko decompiler toolchain</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright (C) 1999-2020 John Källén</copyright>
+    <tags>decompiler disassembler</tags>
+
+    <!-- Copy Reko metadata into output directory -->
+    <contentFiles>
+      <files include="any/any/reko/**/*" buildAction="None" copyToOutput="true" flatten="false"/>
+    </contentFiles>
+
+  </metadata>
+
+  <!-- These are the files that are packaged into the nupkg file -->
+  <files>
+  </files>
+</package>
