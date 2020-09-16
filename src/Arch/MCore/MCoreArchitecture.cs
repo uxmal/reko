@@ -34,11 +34,11 @@ namespace Reko.Arch.MCore
         public MCoreArchitecture(IServiceProvider services, string archId) : base(services, archId)
         {
             //this.CarryFlagMask = ???
-            //this.Endianness = ???
+            this.Endianness = EndianServices.Big;
             this.FramePointerType = PrimitiveType.Ptr32;
             this.InstructionBitSize = 16;
             this.PointerType = PrimitiveType.Ptr32;
-            //this.StackRegister = ???
+            this.StackRegister = Registers.R0;
             this.WordWidth = PrimitiveType.Word32;
         }
 
@@ -129,7 +129,7 @@ namespace Reko.Arch.MCore
 
         public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse32(txtAddr, out addr);
         }
     }
 }

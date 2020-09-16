@@ -183,6 +183,7 @@
     <Compile Include="Arch\IA64\IA64DisassemblerTests.cs" />
     <Compile Include="Arch\M68k\Assembler\M68kAssemblerTests.cs" />
     <Compile Include="Arch\M68k\Assembler\M68kTextAssemblerTests.cs" />
+    <Compile Include="Arch\MCore\MCoreDisassemblerTests.cs" />
     <Compile Include="Arch\Pdp11\Assembler\Pdp11TextAssemblerTests.cs" />
     <Compile Include="Arch\PowerPC\PowerPcDisassemblerTests.Xenon.cs" />
     <Compile Include="Arch\PowerPC\PowerPcEmulatorTests.cs" />
@@ -906,6 +907,10 @@
     <ProjectReference Include="..\Arch\M68k\M68k.csproj">
       <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>
       <Name>M68k</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\MCore\MCore.csproj">
+      <Project>{6a06542b-7bc0-44de-b983-039c8a0948f6}</Project>
+      <Name>MCore</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\MicroBlaze\MicroBlaze.csproj">
       <Project>{9E952B82-A52F-4221-BC4A-DD9D8B9F7854}</Project>

@@ -18,33 +18,33 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Reko.Arch.MCore
 {
-    public class MCoreInstruction : MachineInstruction
+    public class MemoryOperand : MachineOperand
     {
-        public Mnemonic Mnemonic { get; set; }
-        public override int MnemonicAsInteger => (int) Mnemonic;
-        public override string MnemonicAsString => Mnemonic.ToString();
-
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        public MemoryOperand(PrimitiveType width, RegisterStorage baseReg, int offset) : base(width)
         {
-            RenderMnemonic(writer);
-            base.RenderOperands(writer, options);
-            base.Render(writer, options);
+            this.Base = baseReg;
+            this.Offset = offset;
         }
 
-        private void RenderMnemonic(MachineInstructionWriter writer)
+        public RegisterStorage Base { get; }
+        public int Offset { get; }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var s = this.Mnemonic
-                .ToString()
-                .Replace('_', '.')
-                .Replace("..", "_");
-            writer.WriteMnemonic(s);
+            writer.WriteChar('(');
+            writer.WriteString(Base.Name);
+            writer.WriteChar(',');
+            writer.WriteFormat("${0:X}", Offset);
+            writer.WriteChar(')');
         }
     }
 }
