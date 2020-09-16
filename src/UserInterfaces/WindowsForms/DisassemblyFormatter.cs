@@ -38,6 +38,7 @@ namespace Reko.UserInterfaces.WindowsForms
         private StringBuilder sb = new StringBuilder();
         private List<TextSpan> line;
         private List<string> annotations;
+        private string mnemonicStyle;
 
         public DisassemblyFormatter(Program program, IProcessorArchitecture arch, MachineInstruction instr, List<TextSpan> line)
         {
@@ -47,6 +48,7 @@ namespace Reko.UserInterfaces.WindowsForms
             this.line = line;
             this.Platform = program.Platform;
             this.annotations = new List<string>();
+            this.mnemonicStyle = Gui.UiStyles.DisassemblerOpcode;
         }
 
         public IPlatform Platform { get; private set; }
@@ -54,7 +56,11 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void WriteMnemonic(string sMnemonic)
         {
-            line.Add(new DisassemblyTextModel.InstructionTextSpan(instr, sMnemonic + " ", Gui.UiStyles.DisassemblerOpcode));
+            TerminateSpan();
+            if (sMnemonic == "EQ")
+                sMnemonic.ToString();   //$DEBUG
+            line.Add(new DisassemblyTextModel.InstructionTextSpan(instr, sMnemonic + " ", this.mnemonicStyle));
+            TerminateSpan();
         }
 
         public void WriteAddress(string formattedAddress, Address addr)
@@ -80,6 +86,7 @@ namespace Reko.UserInterfaces.WindowsForms
         public void Tab()
         {
             TerminateSpan();
+            this.mnemonicStyle = Gui.UiStyles.DisassemblerOpcodeColor;
         }
 
         private void TerminateSpan()
