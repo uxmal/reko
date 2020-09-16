@@ -2948,7 +2948,7 @@ movzx	ax,byte ptr [bp+4h]
         [Test]
         public void X86Dis_xabort()
         {
-            AssertCode64("xabort\t42", "C6F842");
+            AssertCode64("xabort\t42h", "C6F842");
         }
 
         [Test]
