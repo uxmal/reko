@@ -25,13 +25,14 @@
         <var id="var.M6800.TargetPath" >../Arch/M6800/$TargetDir$/Reko.Arch.M6800.dll</var>
         <var id="var.M68k.Design.TargetPath" >../Arch/M68k.Design/$TargetFwk472Dir$/Reko.Arch.M68k.Design.dll</var>
         <var id="var.M68k.TargetPath" >../Arch/M68k/$TargetDir$/Reko.Arch.M68k.dll</var>
-        <var id="var.MSP430.TargetPath" >../Arch/MSP430/$TargetDir$/Reko.Arch.MSP430.dll</var>
-        <var id="var.MicroBlaze.TargetPath"          >../Arch/MicroBlaze/$TargetDir$/Reko.Arch.MicroBlaze.dll</var>
-        <var id="var.Microchip.Utils.TargetPath"     >../Libraries/Microchip/Utils/$TargetDir$/Reko.Libraries.Microchip.Utils.dll</var>
+        <var id="var.MCore.TargetPath" >../Arch/MCore/$TargetDir$/Reko.Arch.MCore.dll</var>
+        <var id="var.MicroBlaze.TargetPath" >../Arch/MicroBlaze/$TargetDir$/Reko.Arch.MicroBlaze.dll</var>
+        <var id="var.Microchip.Utils.TargetPath" >../Libraries/Microchip/Utils/$TargetDir$/Reko.Libraries.Microchip.Utils.dll</var>
         <var id="var.MicrochipPIC.Design.TargetPath" >../Arch/MicrochipPIC.Design/$TargetFwk472Dir$/Reko.Arch.MicrochipPIC.Design.dll</var>
         <var id="var.MicrochipPIC.TargetPath" >../Arch/Microchip/$TargetDir$/Reko.Arch.MicrochipPIC.dll</var>
         <var id="var.Mips.TargetPath" >../Arch/Mips/$TargetDir$/Reko.Arch.Mips.dll</var>
         <var id="var.Mos6502.TargetPath" >../Arch/Mos6502/$TargetDir$/Reko.Arch.Mos6502.dll</var>
+        <var id="var.MSP430.TargetPath" >../Arch/MSP430/$TargetDir$/Reko.Arch.MSP430.dll</var>
         <var id="var.OpenRISC.TargetPath" >../Arch/OpenRISC/$TargetDir$/Reko.Arch.OpenRISC.dll</var>
         <var id="var.PaRisc.TargetPath" >../Arch/PaRisc/$TargetDir$/Reko.Arch.PaRisc.dll</var>
         <var id="var.Pdp11.TargetPath" >../Arch/Pdp11/$TargetDir$/Reko.Arch.Pdp11.dll</var>

@@ -3201,7 +3201,6 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test(Description = "Tests customizing operator separator.")]
-        [Test]
         public void X86Dis_OperandRendering()
         {
             var options = new MachineInstructionRendererOptions(

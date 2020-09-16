@@ -27,6 +27,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\M6800\bin\$(Configuration)\netstandard2.0\Reko.Arch.M6800.*" />
     <Architectures Include="$(SolutionDir)Arch\M68k\bin\$(Configuration)\netstandard2.0\Reko.Arch.M68k.*" />
     <Architectures Include="$(SolutionDir)Arch\M68k.Design\bin\$(Configuration)\Reko.Arch.M68k.Design.*" />
+    <Architectures Include="$(SolutionDir)Arch\MCore\bin\$(Configuration)\netstandard2.0\Reko.Arch.MCore.*" />
     <Architectures Include="$(SolutionDir)Arch\MicroBlaze\bin\$(Configuration)\netstandard2.0\Reko.Arch.MicroBlaze.*" />
     <Architectures Include="$(SolutionDir)Arch\Microchip\bin\$(Configuration)\Reko.Arch.MicrochipPIC.*" />
     <Architectures Include="$(SolutionDir)Arch\Microchip.Design\bin\$(Configuration)\Reko.Arch.MicrochipPIC.Design.*" />

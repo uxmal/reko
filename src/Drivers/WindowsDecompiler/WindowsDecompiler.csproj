@@ -248,6 +248,10 @@
       <Project>{38a94634-b2b2-4a89-af02-2a2898b93343}</Project>
       <Name>M68k</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\MCore\MCore.csproj">
+      <Project>{6a06542b-7bc0-44de-b983-039c8a0948f6}</Project>
+      <Name>MCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\MicroBlaze\MicroBlaze.csproj">
       <Project>{9e952b82-a52f-4221-bc4a-dd9d8b9f7854}</Project>
       <Name>MicroBlaze</Name>
