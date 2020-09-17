@@ -130,8 +130,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             line.Add(new InstructionTextSpan(instr, BuildBytes(program, arch, instr), "dasm-bytes"));
             var dfmt = new DisassemblyFormatter(program, arch, instr, line);
             dfmt.Address = instr.Address;
-            if (instr.MnemonicAsString == "ccmp")
-                instr.ToString();
             instr.Render(dfmt, options);
             dfmt.NewLine();
             return new LineSpan(position, line.ToArray());

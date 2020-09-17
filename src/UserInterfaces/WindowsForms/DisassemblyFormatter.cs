@@ -57,8 +57,6 @@ namespace Reko.UserInterfaces.WindowsForms
         public void WriteMnemonic(string sMnemonic)
         {
             TerminateSpan();
-            if (sMnemonic == "EQ")
-                sMnemonic.ToString();   //$DEBUG
             line.Add(new DisassemblyTextModel.InstructionTextSpan(instr, sMnemonic + " ", this.mnemonicStyle));
             TerminateSpan();
         }
