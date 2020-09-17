@@ -1558,7 +1558,7 @@ l000038F4:
 				if (r5_n != 0x00)
 				{
 					r9_n = (word32) *((word32) r9_n + 112);
-					if (SLICE(r9_n - r1_n, byte, 0) == 0x00)
+					if ((byte) (r9_n - r1_n) == 0x00)
 						goto l000035F2;
 				}
 				word32 r8_n;

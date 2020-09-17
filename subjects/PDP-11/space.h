@@ -13945,16 +13945,16 @@ T_3170: (in r4_110 - 0x38<16> : word16)
   OrigDataType: cu16
 T_3171: (in r4_110 - 0x38<16> - r2_132 : word16)
   Class: Eq_3171
-  DataType: Eq_3171
-  OrigDataType: 
+  DataType: cup16
+  OrigDataType: cup16
 T_3172: (in 0<16> : word16)
   Class: Eq_3171
-  DataType: Eq_3171
-  OrigDataType: 
-T_3173: (in r4_110 - 0x38<16> - r2_132 >u 0<16> : bool)
+  DataType: cup16
+  OrigDataType: cup16
+T_3173: (in r4_110 - 0x38<16> - r2_132 > 0<16> : bool)
   Class: Eq_3173
-  DataType: Eq_3173
-  OrigDataType: 
+  DataType: bool
+  OrigDataType: bool
 T_3174: (in 0<16> : word16)
   Class: Eq_3174
   DataType: word16

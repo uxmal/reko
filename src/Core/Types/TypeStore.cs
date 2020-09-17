@@ -132,6 +132,14 @@ namespace Reko.Core.Types
             Debug.WriteLine(sw.ToString());
         }
 
+        [Conditional("DEBUG")]
+        public void Dump(string dir, string filename)
+        {
+            using var w = new StreamWriter(Path.Combine(dir, filename));
+            Write(w);
+            Debug.WriteLine(w.ToString());
+        }
+
         public Expression? ExpressionOf(TypeVariable tv)
         {
             if (tvSources.TryGetValue(tv, out Expression e))
@@ -198,8 +206,7 @@ namespace Reko.Core.Types
 
         public void WriteExpressionOf(TypeVariable tvMember, Formatter writer)
         {
-            Expression e;
-            if (tvSources.TryGetValue(tvMember, out e) && e != null)
+            if (tvSources.TryGetValue(tvMember, out Expression e) && e != null)
             {
                 writer.Write(" (in {0}", e);
                 if (e.DataType != null)

@@ -1660,7 +1660,7 @@ void fn1DAE()
 			{
 				r2_n -= 0x02;
 				r2_n->w0000 = 0x00;
-			} while (r4_n - 0x38 - r2_n >u 0x00);
+			} while (r4_n - 0x38 - r2_n > 0x00);
 			r4_n->tFFFFFFC2.u1 = 0x00;
 			r4_n->tFFFFFFC3.u1 = 0x00;
 			r4_n->wFFFFFF56 = sp_n->wFFFFFFE0;
