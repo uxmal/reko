@@ -32,21 +32,12 @@ Eq_n g_t28B1 =
 	};
 struct Eq_n * g_ptr3E94 = null;
 struct Eq_n * g_ptr3E98 = &g_t4000;
-struct Eq_n * g_ptr3E9C = null;
+word32 g_dw3E9C = 0x00;
 struct Eq_n * g_ptr3EA0 = &g_t10202;
 struct Eq_n * g_ptr3EA4 = &g_t3030303;
-Eq_n g_t3EA8 = 
-	{
-		0x04040404
-	};
-Eq_n g_t3EAC = 
-	{
-		0x04040404
-	};
-Eq_n g_t3EB0 = 
-	{
-		0x05050505
-	};
+ui32 g_dw3EA8 = 0x04040404;
+ui32 g_dw3EAC = 0x04040404;
+ui32 g_dw3EB0 = 0x05050505;
 word32 g_dw3EBC = 0x05050505;
 ptr32 g_ptr3EC0 = 0x06060606;
 int32 g_dw3EC4 = 0x06060606;

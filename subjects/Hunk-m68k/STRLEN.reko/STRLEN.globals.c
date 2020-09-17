@@ -11,15 +11,12 @@ ui32 g_a0010[];
 byte g_b13A4 = 116;
 struct Eq_n * g_ptr13C8 = null;
 struct Eq_n * g_ptr13CC = null;
-struct Eq_n * g_ptr13D0 = null;
+word32 g_dw13D0 = 0x00;
 struct Eq_n * g_ptr13D4 = null;
 struct Eq_n * g_ptr13D8 = null;
-Eq_n g_t13DC = 
-	{
-		0
-	};
-Eq_n g_t13E0;
-Eq_n g_t13E4;
+ui32 g_dw13DC = 0x00;
+ui32 g_dw13E0;
+ui32 g_dw13E4;
 word32 g_dw13F0;
 ptr32 g_ptr13F4;
 int32 g_dw13F8;

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -35,8 +35,8 @@ namespace Reko.Environments.AmigaOS
     /// </summary>
     public class FuncsFileParser
     {
-        private M68kArchitecture arch;
-        private TextReader streamReader;
+        private readonly M68kArchitecture arch;
+        private readonly TextReader streamReader;
         private Lexer lex;
 
         public FuncsFileParser(M68kArchitecture arch, TextReader streamReader)
@@ -73,7 +73,13 @@ namespace Reko.Environments.AmigaOS
             var name = (string) Expect(TokenType.Id);         // fn name
 
             var parameters = new List<Argument_v1>();
-            Argument_v1 returnValue = null;
+            // GitHub #941. Assume that all functions return something in d0. If they don't,
+            // calling code shouldn't be reading d0 after the call anyway, since d0 is a scratch
+            // register on AmigaOS.
+            Argument_v1 returnValue = new Argument_v1
+            {
+                Kind = new Register_v1 { Name = "d0" }
+            };
             Expect(TokenType.LPAREN);
             if (!PeekAndDiscard(TokenType.RPAREN))
             {
@@ -136,7 +142,7 @@ namespace Reko.Environments.AmigaOS
 
         private class Lexer
         {
-            private string line;
+            private readonly string line;
             private int pos;
             private Token token;
             private StringBuilder sb;
