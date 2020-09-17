@@ -295,7 +295,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // ccmp\tx28,#0,#4,EQ
                 "0|L--|00100000(4): 4 instructions",
                 "1|L--|v3 = Test(NE,Z)",
-                "2|L--|NZCV = 4<8>",
+                "2|L--|NZCV = 0x40000000<32>",
                 "3|T--|if (v3) branch 00100004",
                 "4|L--|NZCV = cond(x28 - 0<64>)");
         }
@@ -1424,7 +1424,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // ccmp\tw8,#3,#0,LT
                 "0|L--|00100000(4): 4 instructions",
                 "1|L--|v3 = Test(GE,NZV)",
-                "2|L--|NZCV = 0<8>",
+                "2|L--|NZCV = 0<32>",
                 "3|T--|if (v3) branch 00100004",
                 "4|L--|NZCV = cond(w8 - 3<32>)");
         }
@@ -1866,7 +1866,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // ccmp\tw1,w2,#0,LE
                 "0|L--|00100000(4): 4 instructions",
                 "1|L--|v3 = Test(GT,NZV)",
-                "2|L--|NZCV = 0<8>",
+                "2|L--|NZCV = 0<32>",
                 "3|T--|if (v3) branch 00100004",
                 "4|L--|NZCV = cond(w1 - w2)");
         }
@@ -1941,7 +1941,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 4 instructions",
                 "1|L--|v3 = Test(NE,Z)",
-                "2|L--|NZCV = 0<8>",
+                "2|L--|NZCV = 0<32>",
                 "3|T--|if (v3) branch 00100004",
                 "4|L--|NZCV = cond(w14 + 0xD<32>)");
         }

@@ -146,7 +146,8 @@ namespace Reko.Arch.Arm.AArch64
             var tmp = binder.CreateTemporary(PrimitiveType.Bool);
             var cond = Invert(((ConditionOperand) instr.Operands[3]).Condition);
             m.Assign(tmp, this.TestCond(cond));
-            m.Assign(nzcv, RewriteOp(instr.Operands[2]));
+            var c = ((ImmediateOperand) instr.Operands[2]).Value.ToUInt32();
+            m.Assign(nzcv, Constant.Word32(c << 28));
             m.BranchInMiddleOfInstruction(tmp, instr.Address + instr.Length, InstrClass.ConditionalTransfer);
             var left = RewriteOp(instr.Operands[0]);
             var right = RewriteOp(instr.Operands[1]);
@@ -159,7 +160,8 @@ namespace Reko.Arch.Arm.AArch64
             var tmp = binder.CreateTemporary(PrimitiveType.Bool);
             var cond = Invert(((ConditionOperand)instr.Operands[3]).Condition);
             m.Assign(tmp, this.TestCond(cond));
-            m.Assign(nzcv, RewriteOp(instr.Operands[2]));
+            var c = ((ImmediateOperand) instr.Operands[2]).Value.ToUInt32();
+            m.Assign(nzcv, Constant.Word32(c << 28));
             m.BranchInMiddleOfInstruction(tmp, instr.Address + instr.Length, InstrClass.ConditionalTransfer);
             var left = RewriteOp(instr.Operands[0]);
             var right = RewriteOp(instr.Operands[1]);

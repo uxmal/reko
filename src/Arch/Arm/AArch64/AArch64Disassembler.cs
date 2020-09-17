@@ -2724,14 +2724,14 @@ namespace Reko.Arch.Arm.AArch64
                 ConditionalCompareReg = Mask(Bf((10,1),(4,1)), "Conditional compare (register)",  // o2:o3
                     Mask(29, 3,
                         invalid,
-                        Instr(Mnemonic.ccmn, W_5,W_16,U(0,4,w8),C(12,4)),
+                        Instr(Mnemonic.ccmn, W_5,W_16,U(0,4,w32),C(12,4)),
                         invalid,
-                        Instr(Mnemonic.ccmp, W_5,W_16,U(0,4,w8),C(12,4)),
+                        Instr(Mnemonic.ccmp, W_5,W_16,U(0,4,w32),C(12,4)),
 
                         invalid,
-                        Instr(Mnemonic.ccmn, X_5,X_16,U(0,4,w8),C(12,4)),
+                        Instr(Mnemonic.ccmn, X_5,X_16,U(0,4,w32),C(12,4)),
                         invalid,
-                        Instr(Mnemonic.ccmp, X_5,X_16,U(0,4,w8),C(12,4))),
+                        Instr(Mnemonic.ccmp, X_5,X_16,U(0,4,w32),C(12,4))),
                     invalid,
                     invalid,
                     invalid);
@@ -2742,13 +2742,13 @@ namespace Reko.Arch.Arm.AArch64
                     invalid,
                     Mask(29, 3,
                         invalid,
-                        Instr(Mnemonic.ccmn, W_5, I(16,5,w32), U(0,4,w8), C(12,4)),
+                        Instr(Mnemonic.ccmn, W_5, I(16,5,w32), U(0,4,w32), C(12,4)),
                         invalid,
-                        Instr(Mnemonic.ccmp, W_5, I(16,5,w32), U(0,4,w8), C(12,4)),
+                        Instr(Mnemonic.ccmp, W_5, I(16,5,w32), U(0,4,w32), C(12,4)),
                         invalid,
-                        Instr(Mnemonic.ccmn, X_5, I(16,5,w64), U(0,4,w8), C(12,4)),
+                        Instr(Mnemonic.ccmn, X_5, I(16,5,w64), U(0,4,w32), C(12,4)),
                         invalid,
-                        Instr(Mnemonic.ccmp, X_5, I(16,5,w64), U(0,4,w8), C(12,4))));
+                        Instr(Mnemonic.ccmp, X_5, I(16,5,w64), U(0,4,w32), C(12,4))));
             }
 
             Decoder DataProcessing1source;

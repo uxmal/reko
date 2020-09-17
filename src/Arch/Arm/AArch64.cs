@@ -240,8 +240,8 @@ namespace Reko.Arch.Arm
                 return f;
             }
 
-            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var flagregister = Registers.ByName["pstate"];
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Word32;
+            var flagregister = Registers.pstate;
             var fl = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf), dt);
             flagGroups.Add(grf, fl);
             return fl;
