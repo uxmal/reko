@@ -688,7 +688,6 @@ namespace Reko.Gui.Forms
 
         public void ToolsKeyBindings()
         {
-            
             using (var dlg = dlgFactory.CreateKeyBindingsDialog(uiSvc.KeyBindings))
             {
                 if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)

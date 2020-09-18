@@ -70,6 +70,7 @@
   <group id="GrpBrowserToolbar" cmdSet="Reko" container="ProjectBrowserToolbar"/>
 
   <group id="GrpProcedure" cmdSet="Reko" container="CtxProcedure "/>
+  <group id="GrpProcedureListDebug" cmdSet="Reko" container="CtxProcedureList "/>
 
   <group id="GrpAddressSearchView" cmdSet="Reko" container="CtxAddressSearch" />
   <group id="GrpAddressSearch" cmdSet="Reko" container="CtxAddressSearch" />
@@ -150,6 +151,7 @@
   <cmd id="HelpAbout" cmdSet="Reko" container="GrpHelp">_About Decompiler...</cmd>
 
   <cmd id="ShowProcedureCallHierarchy" cmdSet="Reko" container="GrpProcedure">Show Call _Hierarchy</cmd>
+  <cmd id="ProcedureDebugTrace" cmdSet="Reko" container="GrpProcedureListDebug">_Debug procedure decompilation</cmd>
 
   <cmd id="CollapseAllNodes" cmdSet="Reko" container="GrpBrowserToolbar" imageKey="Collapse.ico" tip="Collapse All"></cmd>
   <cmd id="CreateUserSegment" cmdSet="Reko" container="GrpBrowserToolbar" imageKey="CreateSegment.ico" tip="Create Segment"></cmd>
@@ -168,6 +170,7 @@
 
   <placement item="GrpBrowserProc" container="CtxBrowser" />
   <placement item="GrpBrowserProc" container="CtxProcedureList" />
+<!--  <placement item="GrpProcedureListDebug" container="CtxProcedureList" /> -->
 
   <placement item="FileOpen" container="GrpToolbarFileOps"/>
   <placement item="FileSave" container="GrpToolbarFileOps"/>
