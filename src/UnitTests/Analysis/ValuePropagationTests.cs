@@ -55,7 +55,6 @@ namespace Reko.UnitTests.Analysis
         private FakeDecompilerEventListener listener;
         private SsaProcedureBuilder m;
         private SegmentMap segmentMap;
-        private ServiceContainer sc;
 
         [SetUp]
 		public void Setup()
@@ -1373,6 +1372,54 @@ l1:
 	r9_1 = r30 & 0xFFFFFFFF<64>
 	v30 = 0x91691448<32>
 	r11_3 = 0x42428DA691691448<64>
+SsaProcedureBuilder_exit:
+";
+            #endregion
+            AssertStringsEqual(sExp, m.Ssa);
+        }
+
+        [Test]
+        public void VpGitHub942()
+        {
+            var rax_6 = m.Reg64("rax_6");
+            var rbx_7 = m.Reg64("rbx_7");
+            var ax_8 = m.Reg16("ax_8");
+            var rax_10 = m.Reg64("rax_10");
+            var rax_48_16_9 = m.Temp(PrimitiveType.CreateWord(48), "rax_48_16_9");
+            m.Assign(rax_6, m.Word64(0x1A2A3A4A5A6A7A8A));
+            m.Assign(rax_48_16_9, m.Slice(rax_48_16_9.DataType, rax_6, 16));
+            m.Assign(rbx_7, m.Word64(0x1B2B3B4B5B6B7B8B));
+            m.Assign(ax_8, m.Slice(ax_8.DataType, rbx_7, 0));
+            m.Assign(rax_10, m.Seq(rax_48_16_9, ax_8));
+            m.MStore(m.Word32(0x123400), rax_10);
+
+            RunValuePropagator();
+            var sExp =
+            #region Expected
+@"rax_6: orig: rax_6
+    def:  rax_6 = 0x1A2A3A4A5A6A7A8A<64>
+rbx_7: orig: rbx_7
+    def:  rbx_7 = 0x1B2B3B4B5B6B7B8B<64>
+ax_8: orig: ax_8
+    def:  ax_8 = 0x7B8B<16>
+rax_10: orig: rax_10
+    def:  rax_10 = 0x1A2A3A4A5A6A7B8B<64>
+rax_48_16_9: orig: rax_48_16_9
+    def:  rax_48_16_9 = 0x1A2A3A4A5A6A<48>
+Mem5: orig: Mem0
+    def:  Mem5[0x123400<32>:word64] = 0x1A2A3A4A5A6A7B8B<64>
+// SsaProcedureBuilder
+// Return size: 0
+define SsaProcedureBuilder
+SsaProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	rax_6 = 0x1A2A3A4A5A6A7A8A<64>
+	rax_48_16_9 = 0x1A2A3A4A5A6A<48>
+	rbx_7 = 0x1B2B3B4B5B6B7B8B<64>
+	ax_8 = 0x7B8B<16>
+	rax_10 = 0x1A2A3A4A5A6A7B8B<64>
+	Mem5[0x123400<32>:word64] = 0x1A2A3A4A5A6A7B8B<64>
 SsaProcedureBuilder_exit:
 ";
             #endregion

@@ -1499,10 +1499,11 @@ namespace Reko.UnitTests.Arch.X86
         {
             Run64bitTest(0x33, 0xC0);
             AssertCode(
-               "0|L--|0000000140000000(2): 3 instructions",
-               "1|L--|rax = CONVERT(eax ^ eax, word32, uint64)",
-               "2|L--|SZO = cond(eax)",
-               "3|L--|C = false");
+               "0|L--|0000000140000000(2): 4 instructions",
+               "1|L--|eax = eax ^ eax",
+               "2|L--|rax = CONVERT(eax, word32, uint64)",
+               "3|L--|SZO = cond(eax)",
+               "4|L--|C = false");
         }
 
         [Test]
@@ -3861,8 +3862,65 @@ namespace Reko.UnitTests.Arch.X86
         {
             Run64bitTest("8D 4C 09 01"); // lea ecx,[rcx+rcx+01]
             AssertCode(
+                "0|L--|0000000140000000(4): 2 instructions",
+                "1|L--|ecx = SLICE(rcx + 1<64> + rcx, word32, 0)",
+                "2|L--|rcx = CONVERT(ecx, word32, uint64)");
+        }
+
+        [Test]
+        public void X86Rw_lea_16bit_dst()
+        {
+            Run64bitTest("668D03"); // lea\tax,[rbx]
+            AssertCode(
+                "0|L--|0000000140000000(3): 1 instructions",
+                "1|L--|ax = SLICE(rbx, word16, 0)");
+        }
+
+        [Test]
+        public void X86Rw_lea_16bit_dst_32bit_src()
+        {
+            Run64bitTest("67668D03"); // lea\tax,[ebx]
+            AssertCode(
                 "0|L--|0000000140000000(4): 1 instructions",
-                "1|L--|ecx = SLICE(rcx + 1<64> + rcx, word32, 0)");
+                "1|L--|ax = SLICE(ebx, word16, 0)");
+        }
+
+        [Test]
+        public void X86Rw_lea_32bit_dst_64bit_src()
+        {
+            Run64bitTest("8D03"); // lea\teax,[rbx]
+            AssertCode(
+                "0|L--|0000000140000000(2): 2 instructions",
+                "1|L--|eax = SLICE(rbx, word32, 0)",
+                "2|L--|rax = CONVERT(eax, word32, uint64)");
+        }
+
+        [Test]
+        public void X86Rw_lea_32bit_dst_32bit_src()
+        {
+            Run64bitTest("678D03"); // lea\teax,[ebx]
+            AssertCode(
+                "0|L--|0000000140000000(3): 2 instructions",
+                "1|L--|eax = ebx",
+                "2|L--|rax = CONVERT(eax, word32, uint64)");
+        }
+
+        [Test]
+        public void X86Rw_lea_64bit_dst_64bit_src()
+        {
+            Run64bitTest("488D03"); // lea\teax,[rbx]
+            AssertCode(
+                "0|L--|0000000140000000(3): 1 instructions",
+                "1|L--|rax = rbx");
+        }
+
+        [Test]
+        public void X86Rw_lea_64bit_dst_32bit_src()
+        {
+            Run64bitTest("67488D03"); // lea\trax,[ebx]
+            AssertCode(
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|rax = CONVERT(ebx, word32, word64)");
         }
 
         [Test]
@@ -3980,6 +4038,15 @@ namespace Reko.UnitTests.Arch.X86
                 "0|L--|10000000(5): 2 instructions",
                 "1|L--|eax = eax + esp + O",
                 "2|L--|O = cond(eax)");
+        }
+
+        [Test]
+        public void X86Rw_mov_imm_64()
+        {
+            Run64bitTest("48B88A7A6A5A4A3A2A1A");
+            AssertCode( // mov rax,1A2A3A4A5A6A7A8Ah
+                "0|L--|0000000140000000(10): 1 instructions",
+                "1|L--|rax = 0x1A2A3A4A5A6A7A8A<64>");
         }
 
         /*

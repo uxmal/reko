@@ -658,8 +658,13 @@ namespace Reko.Arch.X86
                     src = orw.AddrOf(src);
                 }
             }
-            var dst = SrcOp(instrCur.Operands[0]);
-            m.Assign(dst, MaybeSlice(dst.DataType, src));
+            var dst = (Identifier)SrcOp(instrCur.Operands[0]);
+            src = MaybeSlice(dst.DataType, src);
+            if (dst.DataType.BitSize > src.DataType.BitSize)
+            {
+                src = m.Convert(src, src.DataType, dst.DataType);
+            }
+            AssignToRegister(dst, src);
         }
 
         private void RewriteLeave()

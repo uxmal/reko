@@ -790,7 +790,7 @@ namespace Reko.Evaluation
                     else
                     {
                         t = PrimitiveType.Create(tHead.Domain, tHead.BitSize + tTail.BitSize);
-                        return Constant.Create(t, (c1.ToUInt64() << tHead.BitSize) | c2.ToUInt64());
+                        return Constant.Create(t, (c1.ToUInt64() << tTail.BitSize) | c2.ToUInt64());
                     }
                 }
             }

@@ -658,19 +658,17 @@ namespace Reko.Arch.X86
 
         private void AssignToRegister(Identifier idDst, Expression src)
         {
+            m.Assign(idDst, src);
             if (arch.WordWidth.BitSize == 64 && idDst.Storage.BitSize == 32)
             {
                 // Special case for X86-64: assignments to the 32-bit LSB of a 
                 // GP register clear the high bits of that register. We model
-                // this zero-extending the register to 64 bits. We rely on later 
+                // this by zero-extending the register to 64 bits. We rely on later 
                 // stages of decompilation to clean this up.
-                //$REVIEW: Arguably, this could be done better by clearing 
-                // the whole 64-bit register, then overwriting the bottom 32 bits. 
                 var reg = (RegisterStorage) idDst.Storage;
-                idDst = binder.EnsureRegister(Registers.Gp64BitRegisters[reg.Number]);
-                src = m.Convert(src, src.DataType, PrimitiveType.UInt64);
+                var idWide = binder.EnsureRegister(Registers.Gp64BitRegisters[reg.Number]);
+                m.Assign(idWide, m.Convert(idDst, idDst.DataType, PrimitiveType.UInt64));
             }
-            m.Assign(idDst, src);
         }
 
         private void VexAssign(bool isVex, Expression dst, Expression src)

@@ -80,7 +80,7 @@ namespace Reko.Arch.X86
             if (dataWidth.BitSize > imm.Width.BitSize)
                 return Constant.Create(dataWidth, imm.Value.ToInt64());
             else
-                return Constant.Create(imm.Width, imm.Value.ToUInt32());
+                return Constant.Create(imm.Width, imm.Value.ToUInt64());
         }
 
         public Expression CreateMemoryAccess(X86Instruction instr, MemoryOperand mem, DataType dt)

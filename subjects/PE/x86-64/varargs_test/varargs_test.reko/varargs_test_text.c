@@ -500,15 +500,15 @@ word64 fn000000014000186C(word64 qwArg18)
 {
 	word32 dwArg18 = (word32) qwArg18;
 	ui64 rax_n = g_qw40003000;
-	if (rax_n == 769630770)
+	if (rax_n == 0x2B992DDFA232)
 	{
 		GetSystemTimeAsFileTime(fp + 0x10);
 		ui64 v14_n = (uint64) GetCurrentThreadId() ^ (uint64) GetCurrentProcessId();
 		QueryPerformanceCounter(fp + 0x18);
 		ui64 rax_n = (uint64) dwArg18 << 0x20 ^ qwArg18 ^ v14_n ^ fp + 0x08;
-		rax_n = rax_n & 0xFFFFFFFF;
-		if ((rax_n & 0xFFFFFFFF) == 769630770)
-			rax_n = 769630771;
+		rax_n = rax_n & 0xFFFFFFFFFFFF;
+		if ((rax_n & 0xFFFFFFFFFFFF) == 0x2B992DDFA232)
+			rax_n = 0x2B992DDFA233;
 		g_qw40003000 = rax_n;
 	}
 	word64 rax_n = ~rax_n;
@@ -654,7 +654,7 @@ void fn0000000140001B24(struct Eq_n ** rcx)
 		return;
 	uint64 rcx_n = (uint64) rax_n->dw0020;
 	word32 ecx_n = (word32) rcx_n;
-	if ((word32) (rcx_n + ~0x1993051F) > 0x02 && ecx_n != 0x01994000)
+	if ((word32) (uint64) (word32) (rcx_n + ~0x1993051F) > 0x02 && ecx_n != 0x01994000)
 		return;
 	api-ms-win-crt-runtime-l1-1-0.dll!terminate();
 	int3();
@@ -739,7 +739,7 @@ l0000000140001CDE:
 		if (true)
 		{
 			ebx_n = 0x00010001;
-			if (!__bt(0x00010001, 0xFFFCF9B0))
+			if (!__bt(0x100010001, 0xFFFCF9B0))
 				goto l0000000140001CDE;
 		}
 	}

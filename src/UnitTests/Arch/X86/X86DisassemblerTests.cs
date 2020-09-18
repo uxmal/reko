@@ -1048,7 +1048,7 @@ movzx	ax,byte ptr [bp+4h]
         [Test]
         public void X86dis_64_lea()
         {
-            AssertCode64("lea\trdi,[rip+0DAh]", 0x48, 0x8D, 0x3D, 0xDA, 0x00, 0x00, 0x00);
+            AssertCode64("lea\trdi,[rip+0DAh]", "488D3DDA000000");
         }
 
         [Test]
