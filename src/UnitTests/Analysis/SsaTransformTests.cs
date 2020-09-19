@@ -4631,7 +4631,31 @@ SsaLocalStackSlice_exit:
         {
             var sExp =
             #region Expected
-                "";
+                @"Ssa_SliceSequence_entry:
+	def Mem0
+l1:
+	ebx_1 = 0<32>
+	bl_5 = SLICE(ebx_1, byte, 0) (alias)
+	ebx_24_8_8 = SLICE(ebx_1, word24, 8) (alias)
+	bh_13 = SLICE(ebx_24_8_8, byte, 0) (alias)
+	ebx_16_16_17 = SLICE(ebx_24_8_8, word16, 8) (alias)
+	branch Mem0[0x10000<32>:byte] m2Skip
+m1:
+	Mem3[0x10004<32>:word32] = 0x42<32>
+m2Skip:
+	Mem6[0x10008<32>:byte] = bl_5
+	ebx_9 = SEQ(ebx_24_8_8, bl_5) (alias)
+	Mem10[0x10020<32>:word32] = ebx_9
+	bx_14 = SEQ(bh_13, bl_5) (alias)
+	branch Mem10[0x100001<32>:byte] m4Skip
+m3:
+	Mem11[0x1000C<32>:word32] = 0x4711<32>
+m4Skip:
+	Mem15[0x10110<32>:word16] = bx_14
+	ebx_18 = SEQ(ebx_16_16_17, bx_14) (alias)
+	Mem19[0x10114<32>:word32] = ebx_18
+Ssa_SliceSequence_exit:
+";
             #endregion
             Given_X86_32_Architecture();
             var proc = Given_Procedure(nameof(Ssa_SliceSequence), m =>

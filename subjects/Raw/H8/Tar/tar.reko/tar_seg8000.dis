@@ -2000,7 +2000,7 @@ void fn9AF8(word16 er0_16_16, word16 er1_16_16, word16 er2_16_16, word16 er3_16_
 fn9AF8_entry:
 l9AF8:
 	word32 er2_10 = SEQ(er2_16_16, 0x9E90<16>)
-	branch 0xFF58<16> == 0<16> l9B0E
+	branch false l9B0E
 l9B04:
 l9B06:
 	Mem11[er2_10:byte] = 0<8>

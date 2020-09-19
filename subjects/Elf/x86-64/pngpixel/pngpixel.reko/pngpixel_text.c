@@ -17,7 +17,7 @@ void _start(void (* rdx)(), Eq_n qwArg00)
 //      __do_global_dtors_aux
 void deregister_tm_clones()
 {
-	if (false || 0x00 == 0x00)
+	if (false || true)
 		return;
 	null();
 }
@@ -27,7 +27,7 @@ void deregister_tm_clones()
 //      frame_dummy
 void register_tm_clones()
 {
-	if (0 == 0x00 || 0x00 == 0x00)
+	if (true || true)
 		return;
 	null();
 }
@@ -45,7 +45,7 @@ void __do_global_dtors_aux()
 // 0000000000400DA0: void frame_dummy()
 void frame_dummy()
 {
-	if (g_qw601E10 != 0x00 && 0x00 != 0x00)
+	if (g_qw601E10 != 0x00 && false)
 	{
 		fn0000000000000000();
 		register_tm_clones();
@@ -136,11 +136,11 @@ l00000000004012C9:
 		up32 eax_n = (word32) (uint64) component((uint64) (word32) (uint64) eax_n, 0x00, (word32) (uint64) ecx, rdx, 0x01);
 		word64 rax_n;
 		png_get_PLTE();
-		if ((word32) (uint64) ((word32) rax_n & 0x08) != 0x00 && (false && 0x00 != 0x00))
+		if ((word32) (uint64) ((word32) rax_n & 0x08) != 0x00 && (false && false))
 		{
 			word64 rax_n;
 			png_get_tRNS();
-			if ((word32) (uint64) ((word32) rax_n & 0x10) != 0x00 && (false && 0x00 != 0x00))
+			if ((word32) (uint64) ((word32) rax_n & 0x10) != 0x00 && (false && false))
 			{
 				word32 esi_n;
 				if (eax_n < 0x00)

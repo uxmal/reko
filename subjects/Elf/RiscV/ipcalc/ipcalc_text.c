@@ -42,7 +42,7 @@ void fn0000000000015180(word64 ra, struct Eq_n * gp, Eq_n a0, char ** a1, word64
 				a0_n = (uint64) __printf_chk(0x01, "ipcalc %s\n", 0x00);
 				goto l00000000000153DC;
 			}
-			if (0 != 0x00 && 0 != 0x00)
+			if (false && false)
 			{
 				if ((int64) gp->dwFFFFF814 != 0x00)
 					goto l00000000000153D8;
@@ -58,7 +58,7 @@ void fn0000000000015180(word64 ra, struct Eq_n * gp, Eq_n a0, char ** a1, word64
 			Eq_n a5_n;
 			Eq_n s2_n;
 			Eq_n qwLoc0188_n;
-			if (0x00 != 0x00)
+			if (false)
 			{
 				s2_n.u0 = 2;
 				word64 a2_n;
@@ -84,7 +84,7 @@ l0000000000015448:
 					goto l0000000000015458;
 				}
 l00000000000153CC:
-				if (0x00 != 0x00)
+				if (false)
 				{
 					if ((int64) gp->dwFFFFF814 == 0x00)
 						a0_n = (uint64) fwrite(&g_v11A08, 0x01, 0x25, gp->ptrFFFFF880);
@@ -100,7 +100,7 @@ l00000000000153CC:
 						goto l0000000000015964;
 					goto l0000000000015510;
 				}
-				if (0 != 0x00)
+				if (false)
 				{
 					Eq_n a0_n = fn00000000000169D8(gp, null);
 					s1_n = a0_n;
@@ -126,7 +126,7 @@ l0000000000015964:
 			}
 l0000000000015458:
 			a5_n = a0_n;
-			if (0x00 == 0x00)
+			if (true)
 			{
 				if (s1_n != 0x00)
 					goto l0000000000015510;
@@ -152,7 +152,7 @@ l0000000000015CB0:
 				a0_n = (uint64) __fprintf_chk(gp->ptrFFFFF880, 0x01, "ipcalc: cannot generate network with prefix: %u\n", 0x00);
 				goto l00000000000153DC;
 			}
-			if (0 != 0x00)
+			if (false)
 			{
 				qwLoc0188_n = SEQ(nLoc0187, (byte) (qwLoc0190 & 1 | -4));
 				if (fn00000000000164D0(fp + -391, 0x0F) >= 0x00 && inet_ntop(0x0A, fp + -0x0188, fp + -0x00B8, 0x40) != null)
@@ -170,7 +170,7 @@ l00000000000154DC:
 			if ((uint64) __asprintf_chk(fp + -416, 0x01, "%s/%u", 0x00) == ~0x00)
 				goto l0000000000015CB0;
 			s1_n.u0 = 0x00;
-			if (0x00 == 0x00)
+			if (true)
 				goto l0000000000015CB0;
 l0000000000015510:
 			if (true)
@@ -325,7 +325,7 @@ l0000000000015914:
 				goto l00000000000158B8;
 			}
 l0000000000015660:
-			if (0x00 != 0x00)
+			if (false)
 			{
 l0000000000015664:
 				goto l0000000000015668;
@@ -485,7 +485,7 @@ void fn0000000000015EB8(void (* a0)(), Eq_n qwArg00)
 //      fn0000000000015F64
 void fn0000000000015EF0()
 {
-	if (true || 0x00 == 0x00)
+	if (true || true)
 		return;
 	word64 t1_n;
 	word64 ra_n;
@@ -497,7 +497,7 @@ void fn0000000000015EF0()
 //      fn0000000000015F94
 void fn0000000000015F24()
 {
-	if (0 == 0x00 || 0x00 == 0x00)
+	if (true || true)
 		return;
 	word64 t1_n;
 	null();
@@ -516,7 +516,7 @@ void fn0000000000015F64(struct Eq_n * gp)
 // 0000000000015F94: void fn0000000000015F94(Register word64 ra)
 void fn0000000000015F94(word64 ra)
 {
-	if (g_qw19E28 != 0x00 && 0x00 != 0x00)
+	if (g_qw19E28 != 0x00 && false)
 	{
 		null();
 		fn0000000000015F24();
@@ -589,7 +589,7 @@ Eq_n fn00000000000163B0(struct Eq_n * gp)
 	int64 s0_n = 1;
 	a0_n = (uint64) __sprintf_chk(fp + -232, 0x01, 0x80, "%.2x", 0x00);
 	struct Eq_n * s1_n = fp + -0x00E6;
-	if (1 != 0x10)
+	if (true)
 	{
 		do
 		{
@@ -681,7 +681,7 @@ Eq_n fn0000000000016630(struct Eq_n * gp, Eq_n a0, word32 * a1)
 	int32 * a0_n = __errno_location();
 	*a0_n = 0x00;
 	Eq_n a0_n = (uint64) strtol(a0);
-	if (0x00 != 0x00 && (a0 != 0x00 && (word64) null == 0x00))
+	if (false && (a0 != 0x00 && (word64) null == 0x00))
 	{
 		a5_n = (int64) *a0_n;
 		if (a5_n == 0x00)

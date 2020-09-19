@@ -49,12 +49,12 @@ Eq_66: (fn void ())
 Eq_75: (fn void ())
 	T_75 (in register_tm_clones : ptr64)
 	T_76 (in signature of register_tm_clones : void)
-Eq_80: (union "Eq_80" (ui64 u0) (size_t u1))
+Eq_80: (union "Eq_80" (word64 u0) (size_t u1))
 	T_80 (in rdi : Eq_80)
 	T_89 (in size : size_t)
-	T_124 (in 0x2000<64> : ui64)
-	T_129 (in 0x2000<64> : ui64)
-	T_134 (in 0x2000<64> : ui64)
+	T_124 (in 0x2000<64> : word64)
+	T_129 (in 0x2000<64> : word64)
+	T_134 (in 0x2000<64> : word64)
 Eq_103: (fn void ((ptr64 (arr real64))))
 	T_103 (in free : ptr64)
 	T_104 (in signature of free : void)
@@ -613,10 +613,10 @@ T_123: (in 0x20<u64> : uint64)
   Class: Eq_79
   DataType: uint64
   OrigDataType: uint64
-T_124: (in 0x2000<64> : ui64)
+T_124: (in 0x2000<64> : word64)
   Class: Eq_80
-  DataType: ui64
-  OrigDataType: ui64
+  DataType: word64
+  OrigDataType: word64
 T_125: (in _mm_malloc(0x20<u64>, 0x2000<64>) : word64)
   Class: Eq_102
   DataType: (ptr64 (arr real64))
@@ -633,10 +633,10 @@ T_128: (in 0x20<u64> : uint64)
   Class: Eq_79
   DataType: uint64
   OrigDataType: uint64
-T_129: (in 0x2000<64> : ui64)
+T_129: (in 0x2000<64> : word64)
   Class: Eq_80
-  DataType: ui64
-  OrigDataType: ui64
+  DataType: word64
+  OrigDataType: word64
 T_130: (in _mm_malloc(0x20<u64>, 0x2000<64>) : word64)
   Class: Eq_102
   DataType: (ptr64 (arr real64))
@@ -653,10 +653,10 @@ T_133: (in 0x20<u64> : uint64)
   Class: Eq_79
   DataType: uint64
   OrigDataType: uint64
-T_134: (in 0x2000<64> : ui64)
+T_134: (in 0x2000<64> : word64)
   Class: Eq_80
-  DataType: ui64
-  OrigDataType: ui64
+  DataType: word64
+  OrigDataType: word64
 T_135: (in _mm_malloc(0x20<u64>, 0x2000<64>) : word64)
   Class: Eq_102
   DataType: (ptr64 (arr real64))
@@ -1265,7 +1265,7 @@ typedef void (Eq_66)();
 typedef void (Eq_75)();
 
 typedef union Eq_80 {
-	ui64 u0;
+	word64 u0;
 	size_t u1;
 } Eq_80;
 

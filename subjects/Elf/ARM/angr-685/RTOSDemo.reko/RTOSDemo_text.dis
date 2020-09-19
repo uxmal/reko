@@ -156,7 +156,7 @@ l00008156:
 	Mem61[r1_55:word32] = r3_50
 	Mem65[r2_49:byte] = SLICE(r3_50 + 1<32>, byte, 0)
 l0000813C:
-	branch 0<32> == 0<32> l00008148
+	branch true l00008148
 l00008140:
 	Mem73[Mem69[0x00008180<p32>:word32]:word32] = 0x10000000<32>
 l00008148:
@@ -1075,7 +1075,7 @@ l00008788_1:
 l0000878A:
 	MPU_xQueueGenericCreate(1<32>, 4<32>, cpsr)
 	Mem35[Mem20[0x000087C4<p32>:word32]:word32] = 1<32>
-	branch 1<32> == 0<32> l000087C2
+	branch false l000087C2
 l000087C2:
 	return
 l0000879E:
@@ -3996,7 +3996,7 @@ l00009D76:
 	branch r0 << 20<i32> < 0<32> l00009DBE
 l00009D94:
 	word32 dwLoc14_120 = 0x8000<32>
-	branch 0x8000<32> == 0<32> l00009DBA
+	branch false l00009DBA
 l00009D9E:
 	word32 r2_64 = Mem62[0x00009DEC<p32>:word32]
 	branch Mem62[r2_64:word32] << 25<i32> >= 0<32> l00009DAE

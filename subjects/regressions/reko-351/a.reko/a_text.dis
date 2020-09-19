@@ -34,7 +34,7 @@ void register_tm_clones()
 // Preserved:
 register_tm_clones_entry:
 l800000AE:
-	word32 d0_12 = 0<i32>
+	word32 d0_12 = 0<32>
 	branch false l800000C6
 l800000C4:
 	d0_12 = 1<32>

@@ -4924,7 +4924,7 @@ Eq_n fn0800-33CD(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, Eq_n dwArg08, union Eq_n 
 		word16 si_n = 0x4641;
 		word16 cx_n = 0x02;
 		word16 ax_n = 0x00;
-		bool v32_n = 0x00 == 0x00;
+		bool v32_n = true;
 		while (cx_n != 0x00)
 		{
 			v32_n = ds->*si_n == ds->*di_n;
@@ -4944,7 +4944,7 @@ Eq_n fn0800-33CD(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, Eq_n dwArg08, union Eq_n 
 			word16 si_n = 0x4641;
 			Eq_n cx_n = 0x03;
 			word16 ax_n = 0x00;
-			bool v36_n = 0x00 == 0x00;
+			bool v36_n = true;
 			while (cx_n != 0x00)
 			{
 				v36_n = ds->*si_n == ds->*di_n;
@@ -5031,7 +5031,7 @@ word16 fn0800-3479(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, union Eq_n & cxOut, uni
 		word16 si_n = 0x4641;
 		word16 cx_n = 0x02;
 		word16 ax_n = 0x00;
-		bool v26_n = 0x00 == 0x00;
+		bool v26_n = true;
 		while (cx_n != 0x00)
 		{
 			v26_n = ds->*si_n == ds->*di_n;
@@ -5051,7 +5051,7 @@ word16 fn0800-3479(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, union Eq_n & cxOut, uni
 		word16 si_n = 0x4641;
 		Eq_n cx_n = 0x03;
 		word16 ax_n = 0x00;
-		bool v30_n = 0x00 == 0x00;
+		bool v30_n = true;
 		while (cx_n != 0x00)
 		{
 			v30_n = ds->*si_n == ds->*di_n;
@@ -8737,7 +8737,7 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 	if (false)
 		cx_n = 0x03;
 	word16 ax_n = 0x00;
-	bool v190_n = 0x00 == 0x00;
+	bool v190_n = true;
 	while (cx_n != 0x00)
 	{
 		v190_n = ds->*si_n == ds->*di_n;
@@ -9418,7 +9418,7 @@ word16 fn0800-669C(Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 		if (false)
 			cx_n = 0x03;
 		word16 ax_n = 0x00;
-		bool v39_n = 0x00 == 0x00;
+		bool v39_n = true;
 		while (cx_n != 0x00)
 		{
 			v39_n = ds->*si_n == ds->*di_n;
@@ -14297,7 +14297,7 @@ l0800_nC96:
 		fn0800-9858(SEQ(ss, fp - 2), cx, dx, bx, di_n);
 	word16 ax_n;
 	struct Eq_n Eq_n::* sp_n = (char *) &sp_n->t0000 + 2;
-	if (0x00 != 0x00)
+	if (false)
 		ax_n = ~0x00;
 	else
 		ax_n = 0x00;

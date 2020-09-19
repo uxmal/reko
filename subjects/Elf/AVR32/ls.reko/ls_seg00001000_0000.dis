@@ -13640,9 +13640,9 @@ l0000B466:
 	word32 r8_1235
 	branch SLICE(r3_1214, word2, 0) == 0<32> l0000B470
 l0000B470:
-	branch 0x64<32> == 0<32> l0000B47E
+	branch false l0000B47E
 l0000B47E:
-	r8_1235 = CONVERT(0x190<32> == 0<32>, bool, word32)
+	r8_1235 = CONVERT(false, bool, word32)
 l0000B47A:
 	r8_1235 = 1<32>
 l0000B46C:
@@ -13667,9 +13667,9 @@ l0000B42C:
 	word32 r8_1274
 	branch SLICE(r3_1214 - 1<32>, word2, 0) == 0<32> l0000B43A
 l0000B43A:
-	branch 0x64<32> == 0<32> l0000B448
+	branch false l0000B448
 l0000B448:
-	r8_1274 = CONVERT(0x190<32> == 0<32>, bool, word32)
+	r8_1274 = CONVERT(false, bool, word32)
 l0000B444:
 	r8_1274 = 1<32>
 l0000B436:

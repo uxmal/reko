@@ -15,7 +15,7 @@ void fn0000000000400480(void (* rdx)(), Eq_n qwArg00)
 // 00000000004004B0: void fn00000000004004B0()
 void fn00000000004004B0()
 {
-	if (0x00 == 0x00 || 0x00 == 0x00)
+	if (true || true)
 		return;
 	null();
 }

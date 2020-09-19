@@ -9,7 +9,7 @@ void _start(void (* g1)(), word32 o2, word32 o3, word32 o4, word32 o5, struct Eq
 {
 	g_ptr20E60 = fp + 0x44;
 	g_ptr20E3C = fp + 0x44 + ((dwArg40 << 0x02) + 0x04);
-	if (0x00 != 0x00)
+	if (false)
 	{
 		g_dw20E58 = fsr;
 		g_dw20E58 &= 0x303FFFFF;
@@ -100,7 +100,7 @@ void main(int32 o0)
 		if (o0_n != 68188 || (o3_n != 68236 || (o2_n != 68284 || o1_n != 68332)))
 		{
 			i1_n = 0x00;
-			v24_n = 0x00 == 0x00;
+			v24_n = true;
 			goto l00010C44;
 		}
 		i1_n = 0x01;

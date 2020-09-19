@@ -1988,7 +1988,7 @@ word32 * fn0000D39E(word32 ** r6, union Eq_n * fp, union Eq_n & r2Out, word32 & 
 			{
 				r2 = r4_n;
 				word32 r1_n = 0x08;
-				if (0x08 != 0x00)
+				if (true)
 				{
 					do
 					{

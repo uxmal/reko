@@ -30,12 +30,12 @@ Eq_22: (fn void ())
 Eq_30: (fn void ())
 	T_30 (in __hlt : ptr64)
 	T_31 (in signature of __hlt : void)
-Eq_49: (fn void ())
-	T_49 (in fn0000000000400700 : ptr64)
-	T_50 (in signature of fn0000000000400700 : void)
-Eq_52: (fn void ())
-	T_52 (in __pause : ptr64)
-	T_53 (in signature of __pause : void)
+Eq_45: (fn void ())
+	T_45 (in fn0000000000400700 : ptr64)
+	T_46 (in signature of fn0000000000400700 : void)
+Eq_48: (fn void ())
+	T_48 (in __pause : ptr64)
+	T_49 (in signature of __pause : void)
 // Type Variables ////////////
 globals_t: (in globals : (ptr64 (struct "Globals")))
   Class: Eq_1
@@ -165,92 +165,76 @@ T_32: (in __hlt() : void)
   Class: Eq_32
   DataType: void
   OrigDataType: void
-T_33: (in 0<64> : word64)
+T_33: (in true : bool)
   Class: Eq_33
-  DataType: word64
-  OrigDataType: word64
-T_34: (in 0<64> : word64)
-  Class: Eq_33
-  DataType: word64
-  OrigDataType: word64
-T_35: (in 0<64> == 0<64> : bool)
+  DataType: bool
+  OrigDataType: bool
+T_34: (in true : bool)
+  Class: Eq_34
+  DataType: bool
+  OrigDataType: bool
+T_35: (in 0<u64> : uint64)
   Class: Eq_35
-  DataType: bool
-  OrigDataType: bool
-T_36: (in 0<u64> : uint64)
-  Class: Eq_36
-  DataType: uint64
-  OrigDataType: uint64
-T_37: (in 0<64> : word64)
-  Class: Eq_36
-  DataType: uint64
-  OrigDataType: word64
-T_38: (in 0<u64> == 0<64> : bool)
-  Class: Eq_38
-  DataType: bool
-  OrigDataType: bool
-T_39: (in 0<u64> : uint64)
-  Class: Eq_39
   DataType: (ptr64 code)
   OrigDataType: (ptr64 code)
-T_40: (in esi : word32)
-  Class: Eq_40
+T_36: (in esi : word32)
+  Class: Eq_36
   DataType: word32
   OrigDataType: word32
-T_41: (in edi : word32)
-  Class: Eq_41
+T_37: (in edi : word32)
+  Class: Eq_37
   DataType: word32
   OrigDataType: word32
-T_42: (in calloc : ptr64)
-  Class: Eq_42
+T_38: (in calloc : ptr64)
+  Class: Eq_38
   DataType: ptr64
   OrigDataType: ptr64
-T_43: (in signature of calloc : void)
-  Class: Eq_42
+T_39: (in signature of calloc : void)
+  Class: Eq_38
   DataType: ptr64
   OrigDataType: 
-T_44: (in num : size_t)
-  Class: Eq_44
+T_40: (in num : size_t)
+  Class: Eq_40
   DataType: int64
   OrigDataType: 
-T_45: (in size : size_t)
-  Class: Eq_44
+T_41: (in size : size_t)
+  Class: Eq_40
   DataType: int64
   OrigDataType: 
-T_46: (in CONVERT(edi, word32, int64) : int64)
-  Class: Eq_44
+T_42: (in CONVERT(edi, word32, int64) : int64)
+  Class: Eq_40
   DataType: int64
   OrigDataType: int64
-T_47: (in CONVERT(esi, word32, int64) : int64)
-  Class: Eq_44
+T_43: (in CONVERT(esi, word32, int64) : int64)
+  Class: Eq_40
   DataType: int64
   OrigDataType: int64
-T_48: (in calloc((int64) edi, (int64) esi) : (ptr64 void))
-  Class: Eq_48
+T_44: (in calloc((int64) edi, (int64) esi) : (ptr64 void))
+  Class: Eq_44
   DataType: (ptr64 void)
   OrigDataType: (ptr64 void)
-T_49: (in fn0000000000400700 : ptr64)
-  Class: Eq_49
-  DataType: (ptr64 Eq_49)
-  OrigDataType: (ptr64 (fn T_51 ()))
-T_50: (in signature of fn0000000000400700 : void)
-  Class: Eq_49
-  DataType: (ptr64 Eq_49)
+T_45: (in fn0000000000400700 : ptr64)
+  Class: Eq_45
+  DataType: (ptr64 Eq_45)
+  OrigDataType: (ptr64 (fn T_47 ()))
+T_46: (in signature of fn0000000000400700 : void)
+  Class: Eq_45
+  DataType: (ptr64 Eq_45)
   OrigDataType: 
-T_51: (in fn0000000000400700() : void)
-  Class: Eq_51
+T_47: (in fn0000000000400700() : void)
+  Class: Eq_47
   DataType: void
   OrigDataType: void
-T_52: (in __pause : ptr64)
-  Class: Eq_52
-  DataType: (ptr64 Eq_52)
-  OrigDataType: (ptr64 (fn T_54 ()))
-T_53: (in signature of __pause : void)
-  Class: Eq_52
-  DataType: (ptr64 Eq_52)
+T_48: (in __pause : ptr64)
+  Class: Eq_48
+  DataType: (ptr64 Eq_48)
+  OrigDataType: (ptr64 (fn T_50 ()))
+T_49: (in signature of __pause : void)
+  Class: Eq_48
+  DataType: (ptr64 Eq_48)
   OrigDataType: 
-T_54: (in __pause() : void)
-  Class: Eq_54
+T_50: (in __pause() : void)
+  Class: Eq_50
   DataType: void
   OrigDataType: void
 */
@@ -279,7 +263,7 @@ typedef void (Eq_22)();
 
 typedef void (Eq_30)();
 
-typedef void (Eq_49)();
+typedef void (Eq_45)();
 
-typedef void (Eq_52)();
+typedef void (Eq_48)();
 

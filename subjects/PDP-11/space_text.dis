@@ -416,7 +416,7 @@ l07DC:
 	r0_107 = __rol(r0_107, r0_107)
 	branch r0_107 >=u 0<16> l07DC
 l07E0:
-	branch 0xA<16> == 0<16> l07FE
+	branch false l07FE
 l07E6:
 l07C6:
 	r3_128 = r3_128 - wArg04
@@ -985,7 +985,7 @@ l0F28:
 	branch r2_50 != 0<16> l0F22
 l0F2C:
 	Mem79[r3_17 + 0x74<16>:byte] = 0<8>
-	branch 0<8> == 0<8> l0F34
+	branch true l0F34
 l0F34:
 	call r4 + 2<16> (retsize: 2;)
 		uses: r0:r0_85,Stack +000A:wArg00_124
@@ -1629,12 +1629,12 @@ l15D6:
 	FnSubfn(fp - 4<16>)
 	__syscall(0x88FC<16>)
 	word16 r2_22 = 0xA00<16>
-	branch 0xA00<16> == 0<16> l15FA
+	branch false l15FA
 l15F4:
 	r2_22 = (~0xFFE0<16> & 0xA00<16>) + 0x48<16>
 l15FA:
-	Mem46[Mem13[r5 + 2<16>:word16]:ptr16] = __swab(640<i16>) & ~0xFFE0<16>
-	Mem48[Mem46[r5 + 4<16>:word16]:ptr16] = ~0xFFE0<16> & 80<i16>
+	Mem46[Mem13[r5 + 2<16>:word16]:ptr16] = __swab(0x280<16>) & ~0xFFE0<16>
+	Mem48[Mem46[r5 + 4<16>:word16]:ptr16] = ~0xFFE0<16> & 0x50<16>
 	Mem51[Mem48[r5 + 6<16>:word16]:ptr16] = r2_22
 l15D2:
 	__syscall(0x8990<16>)
@@ -2121,7 +2121,7 @@ l0222:
 	branch Mem34[0x1DAA<p16>:word16] != 0<16> l028E
 l0252:
 	FnSubfn(0x3B8<16>)
-	branch 0<16> == 0<16> l0264
+	branch true l0264
 l025E:
 	Mem47[0x001E<p16>:word16] = 0xF000<16>
 l0264:

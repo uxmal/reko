@@ -1914,7 +1914,7 @@ l9740:
 void fn9AF8(word16 er0_16_n, word16 er1_16_n, word16 er2_16_n, word16 er3_16_n, word16 er4_16_n, word16 er5_16_n, Eq_n r6)
 {
 	byte * er2_n = SEQ(er2_16_n, 0x9E90);
-	if (~0xA7 != 0x00)
+	if (true)
 	{
 		do
 		{

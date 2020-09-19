@@ -108,10 +108,10 @@ T_16: (in d0_12 : int32)
   Class: Eq_16
   DataType: int32
   OrigDataType: int32
-T_17: (in 0<i32> : int32)
+T_17: (in 0<32> : word32)
   Class: Eq_16
   DataType: int32
-  OrigDataType: int32
+  OrigDataType: word32
 T_18: (in false : bool)
   Class: Eq_18
   DataType: bool

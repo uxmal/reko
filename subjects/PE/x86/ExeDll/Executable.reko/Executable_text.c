@@ -583,7 +583,7 @@ void fn004019FE(word32 edx)
 		__cpuid(0x00, 0x00, &0x00, &0x01, &0x00, &edx);
 		__cpuid(0x01, 0x00, &0x01, &0x01, &0x00, &edx);
 		byte bLoc14_n = 0x00;
-		if ((edx ^ 0x49656E69 | 1818588270 | 0x756E6546) == 0x00 && (0x00 == 0x000106C0 || (0x00 == 0x00020660 || (0x00 == 0x00020670 || (0x00 == 0x00030650 || (0x00 == 0x00030660 || false))))))
+		if ((edx ^ 0x49656E69 | 1818588270 | 0x756E6546) == 0x00 && (false || (false || (false || (false || (false || false))))))
 		{
 			ui32 edi_n = g_dw403370;
 			g_dw403370 = edi_n | 0x01;
@@ -595,14 +595,14 @@ void fn004019FE(word32 edx)
 		{
 			__cpuid(0x07, 0x00, &0x07, &0x01, &0x00, &edx);
 			bLoc14_n = 0x01;
-			if (0x00 != 0x00)
+			if (false)
 				g_dw403370 = edi_n | 0x02;
 		}
-		if (0x00 != 0x00)
+		if (false)
 		{
 			g_dw403010 |= 0x04;
 			g_dw40336C = 0x02;
-			if (0x00 != 0x00 && (0x00 != 0x00 && (((word32) __xgetbv(0x00) & 0x06) == 0x06 && true)))
+			if (false && (false && (((word32) __xgetbv(0x00) & 0x06) == 0x06 && true)))
 			{
 				ui32 eax_n = g_dw403010;
 				g_dw40336C = 0x03;

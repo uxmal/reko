@@ -1685,7 +1685,7 @@ Eq_n process_aux_info_file(Eq_n o0, word32 o2, union Eq_n & l1Out)
 				i0_n = notice(94928, out i1_n, out i2_n, out i6_n);
 				goto l000135B8;
 			}
-			v34_n = 0x01 == 0x00;
+			v34_n = false;
 		}
 		else
 			v34_n = l2_n == 0x00;

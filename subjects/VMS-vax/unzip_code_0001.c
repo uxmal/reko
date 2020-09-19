@@ -722,7 +722,7 @@ void fn00012702(struct Eq_n * r2, struct Eq_n * ap)
 		}
 	}
 	int32 v27_n = dwLoc10_n - 0x01;
-	if (dwLoc10_n == 0x00 || 0x00 != 0x00)
+	if (dwLoc10_n == 0x00 || false)
 	{
 		*ap->ptr0004 = v27_n;
 		*ap->ptr0008 = (struct Eq_n **) dwLoc0C_n;
@@ -1650,9 +1650,9 @@ void fn0001325E(word32 r4, struct Eq_n * r5, word32 r6, word32 r8, word32 r9, wo
 	sp_n->dwFFFFFFFC = 0x00;
 	word32 r1_n = 0x00;
 	uint32 r0_n = (uint32) fp_n->wFFFFFFFA;
-	if (0x0A != 0x00)
+	if (true)
 	{
-		if (0x09 == 0x00)
+		if (false)
 		{
 l00013435:
 			sp_n->dwFFFFFFF8 = (uint32) (word16) r1_n;
@@ -1738,9 +1738,9 @@ l00013435:
 			sp_n->dwFFFFFFFC = 0x00;
 			word32 r1_n = 0x00;
 			uint32 r0_n = (uint32) (word16) r10_n;
-			if (0x0A != 0x00)
+			if (true)
 			{
-				if (0x09 == 0x00)
+				if (false)
 				{
 l000134E9:
 					sp_n->dwFFFFFFF8 = (uint32) (word16) r1_n;
@@ -3898,9 +3898,9 @@ struct Eq_n * fn00015106(word32 r3, struct Eq_n * r4, word32 r6, word32 r7, word
 	sp_n->dwFFFFFFFC = (uint32) (word16) r8_n;
 	word32 r1_n = 0x00;
 	uint32 r0_n = (uint32) (word16) r11_n;
-	if (100 != 0x00)
+	if (true)
 	{
-		if (99 == 0x00)
+		if (false)
 		{
 l00015239:
 			sp_n->dwFFFFFFF8 = (uint32) (word16) r1_n;
@@ -5449,7 +5449,7 @@ int32 fn0001878E(Eq_n ap, union Eq_n * fp, struct Eq_n & r2Out, struct Eq_n & r3
 		if (r2_n->dw0000 < r10_n)
 			r2_n->dw0000 = r10_n;
 		struct Eq_n * r11_n = (struct Eq_n *) 0x10;
-		if (0x10 != 0x00)
+		if (true)
 		{
 			while (fp_n->aFFFFFFB8[r11_n] == 0x00)
 			{

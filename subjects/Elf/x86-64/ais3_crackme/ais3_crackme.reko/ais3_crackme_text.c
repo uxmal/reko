@@ -26,7 +26,7 @@ void call_gmon_start()
 //      __do_global_dtors_aux
 void deregister_tm_clones()
 {
-	if (true || 0x00 == 0x00)
+	if (true || true)
 		return;
 	null();
 }
@@ -36,7 +36,7 @@ void deregister_tm_clones()
 //      frame_dummy
 void register_tm_clones()
 {
-	if (true || 0x00 == 0x00)
+	if (true || true)
 		return;
 	null();
 }
@@ -54,7 +54,7 @@ void __do_global_dtors_aux()
 // 00000000004004F0: void frame_dummy()
 void frame_dummy()
 {
-	if (g_qw600E08 == 0x00 || 0x00 == 0x00)
+	if (g_qw600E08 == 0x00 || true)
 		register_tm_clones();
 	else
 	{

@@ -1483,7 +1483,7 @@ Eq_n fn00402404(Eq_n r2, struct Eq_n * r29, word32 * r30, ptr32 * r31, ptr32 & r
 	word32 r31_n;
 	fn00404044(fn0040262C(r2_n, *((word32) r2_n + 0x00B0), *((word32) r2_n + 0x00B4), r29_n, r30_n, r31_n, out r29_n, out r30_n, out r31_n));
 	fn00404044(dwLoc2C);
-	if (~0x06F1 != 0x00)
+	if (true)
 	{
 		fn00403F9C(dwLoc2C);
 		if (false)

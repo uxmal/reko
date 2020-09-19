@@ -617,7 +617,7 @@ void xQueueGenericCreate(ui32 r0, ui32 r1, ptr32 cpsr)
 void xQueueCreateMutex(Eq_n lr, ptr32 cpsr)
 {
 	xQueueGenericCreate(0x01, 0x00, cpsr);
-	if (0x01 != 0x00)
+	if (true)
 	{
 		g_dw0005 = 0x00;
 		g_dw0001 = 0x00;

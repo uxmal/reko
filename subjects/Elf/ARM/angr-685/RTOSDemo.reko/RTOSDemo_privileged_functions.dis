@@ -793,7 +793,7 @@ void xQueueCreateMutex(word32 lr, word32 cpsr)
 xQueueCreateMutex_entry:
 l000006DC:
 	xQueueGenericCreate(1<32>, 0<32>, cpsr)
-	branch 1<32> == 0<32> l000006FC
+	branch false l000006FC
 l000006EC:
 	Mem22[5<32>:word32] = 0<32>
 	Mem23[1<32>:word32] = 0<32>

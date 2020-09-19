@@ -27,7 +27,7 @@ deregister_tm_clones_entry:
 l0000000000400D00:
 	branch false l0000000000400D30
 l0000000000400D15:
-	branch 0<u64> == 0<64> l0000000000400D30
+	branch true l0000000000400D30
 l0000000000400D30:
 	return
 l0000000000400D1F:
@@ -48,9 +48,9 @@ void register_tm_clones()
 // Preserved: rbp rsp
 register_tm_clones_entry:
 l0000000000400D40:
-	branch 0<i64> == 0<64> l0000000000400D78
+	branch true l0000000000400D78
 l0000000000400D63:
-	branch 0<u64> == 0<64> l0000000000400D78
+	branch true l0000000000400D78
 l0000000000400D78:
 	return
 l0000000000400D6D:
@@ -89,7 +89,7 @@ frame_dummy_entry:
 l0000000000400DA0:
 	branch Mem0[0x601E10<u64>:word64] != 0<64> l0000000000400DB0
 l0000000000400DB0:
-	branch 0<u64> == 0<64> l0000000000400DAB
+	branch true l0000000000400DAB
 l0000000000400DBA:
 	call fn0000000000000000 (retsize: 8;)
 l0000000000400DC1_thunk_register_tm_clones:
@@ -181,7 +181,7 @@ l0000000000400F8D:
 l0000000000400FE1:
 	branch true l0000000000401137
 l0000000000400FEC:
-	branch 0<64> == 0<64> l0000000000401137
+	branch true l0000000000401137
 l0000000000401137:
 	printf(0x4018EA<u64>, CONVERT(SLICE(CONVERT(eax_275, word32, uint64), word32, 0), word32, uint64))
 l0000000000400FF9:
@@ -193,7 +193,7 @@ l0000000000400FF9:
 l0000000000401031:
 	branch true l00000000004010D1
 l000000000040103C:
-	branch 0<64> == 0<64> l00000000004010D1
+	branch true l00000000004010D1
 l00000000004010D1:
 	printf(0x4018D3<u64>, CONVERT(SLICE(CONVERT(eax_275, word32, uint64), word32, 0), word32, uint64), CONVERT(CONVERT(SLICE(CONVERT(CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64>:byte], byte, word32), word32, uint64), byte, 0), byte, word32), word32, uint64), CONVERT(CONVERT(SLICE(CONVERT(CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 1<64>:byte], byte, word32), word32, uint64), byte, 0), byte, word32), word32, uint64), CONVERT(SLICE(CONVERT(CONVERT(SLICE(CONVERT(CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 2<64>:byte], byte, word32), word32, uint64), byte, 0), byte, word32), word32, uint64), word32, 0), word32, uint64))
 l0000000000401049:

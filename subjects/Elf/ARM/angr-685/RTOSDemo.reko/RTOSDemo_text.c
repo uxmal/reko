@@ -106,7 +106,7 @@ void vUART_ISR(Eq_n lr, ptr32 cpsr)
 			*r2_n = (byte) (r3_n + 0x01);
 		}
 	}
-	if (0x00 != 0x00)
+	if (false)
 		*g_ptr8180 = 0x10000000;
 }
 
@@ -808,7 +808,7 @@ void vStartFlashCoRoutines(struct Eq_n * r0, ptr32 cpsr)
 		r0 = &g_t0008;
 	MPU_xQueueGenericCreate(0x01, 0x04, cpsr);
 	*g_ptr87C4 = 0x01;
-	if (0x01 == 0x00)
+	if (false)
 		return;
 	if (r0 != null)
 	{
@@ -2476,7 +2476,7 @@ void SysCtlClockSet(ui32 r0)
 	if (r0 << 20 >= 0x00)
 	{
 		word32 dwLoc14_n = 0x8000;
-		if (0x8000 != 0x00)
+		if (true)
 		{
 			ui32 * r2_n = g_ptr9DEC;
 			if (*r2_n << 25 >= 0x00)

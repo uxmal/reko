@@ -17,7 +17,7 @@ void _start(void (* rdx)(), Eq_n qwArg00)
 //      __do_global_dtors_aux
 void deregister_tm_clones()
 {
-	if (true || 0x00 == 0x00)
+	if (true || true)
 		return;
 	null();
 }
@@ -27,7 +27,7 @@ void deregister_tm_clones()
 //      frame_dummy
 void register_tm_clones()
 {
-	if (true || 0x00 == 0x00)
+	if (true || true)
 		return;
 	null();
 }
@@ -45,7 +45,7 @@ void __do_global_dtors_aux()
 // 0000000000400500: void frame_dummy()
 void frame_dummy()
 {
-	if (g_qw600E20 == 0x00 || 0x00 == 0x00)
+	if (g_qw600E20 == 0x00 || true)
 		register_tm_clones();
 	else
 	{

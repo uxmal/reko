@@ -23,7 +23,7 @@ word32 deregister_tm_clones()
 //      frame_dummy
 void register_tm_clones()
 {
-	int32 d0_n = 0;
+	int32 d0_n = 0x00;
 	if (true)
 		d0_n = 0x01;
 	int32 d0_n = d0_n >> 0x01;

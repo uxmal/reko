@@ -5208,10 +5208,10 @@ T_1058: (in Mem23[0x00B0<p16>:word16] : word16)
   Class: Eq_1056
   DataType: (ptr16 Eq_1056)
   OrigDataType: word16
-T_1059: (in 600<i16> : int16)
+T_1059: (in 0x258<16> : word16)
   Class: Eq_1051
   DataType: int16
-  OrigDataType: int16
+  OrigDataType: word16
 T_1060: (in r2_33 : (ptr16 Eq_1060))
   Class: Eq_1060
   DataType: (ptr16 Eq_1060)
@@ -11428,14 +11428,14 @@ T_2613: (in 0x182A<16> : word16)
   Class: Eq_2612
   DataType: (ptr16 word16)
   OrigDataType: word16
-T_2614: (in r1_44 : int16)
+T_2614: (in r1_44 : ci16)
   Class: Eq_2614
-  DataType: int16
-  OrigDataType: int16
-T_2615: (in 500<i16> : int16)
+  DataType: ci16
+  OrigDataType: ci16
+T_2615: (in 0x1F4<16> : word16)
   Class: Eq_2614
-  DataType: int16
-  OrigDataType: int16
+  DataType: ci16
+  OrigDataType: word16
 T_2616: (in 0xF700<16> : word16)
   Class: Eq_2616
   DataType: word16
@@ -11490,15 +11490,15 @@ T_2628: (in r0_48 + 2<16> : word16)
   OrigDataType: ptr16
 T_2629: (in 1<16> : word16)
   Class: Eq_2629
-  DataType: int16
-  OrigDataType: int16
+  DataType: word16
+  OrigDataType: word16
 T_2630: (in r1_44 - 1<16> : word16)
   Class: Eq_2614
-  DataType: int16
-  OrigDataType: int16
+  DataType: ci16
+  OrigDataType: word16
 T_2631: (in 0<16> : word16)
   Class: Eq_2614
-  DataType: int16
+  DataType: ci16
   OrigDataType: ci16
 T_2632: (in r1_44 > 0<16> : bool)
   Class: Eq_2632
@@ -11512,14 +11512,14 @@ T_2634: (in 0x34E0<16> : word16)
   Class: Eq_2633
   DataType: (ptr16 word16)
   OrigDataType: word16
-T_2635: (in r1_59 : int16)
+T_2635: (in r1_59 : ci16)
   Class: Eq_2635
-  DataType: int16
-  OrigDataType: int16
-T_2636: (in 711<i16> : int16)
+  DataType: ci16
+  OrigDataType: ci16
+T_2636: (in 0x2C7<16> : word16)
   Class: Eq_2635
-  DataType: int16
-  OrigDataType: int16
+  DataType: ci16
+  OrigDataType: word16
 T_2637: (in 0xF700<16> : word16)
   Class: Eq_2637
   DataType: word16
@@ -11574,15 +11574,15 @@ T_2649: (in r0_63 + 2<16> : word16)
   OrigDataType: ptr16
 T_2650: (in 1<16> : word16)
   Class: Eq_2650
-  DataType: int16
-  OrigDataType: int16
+  DataType: word16
+  OrigDataType: word16
 T_2651: (in r1_59 - 1<16> : word16)
   Class: Eq_2635
-  DataType: int16
-  OrigDataType: int16
+  DataType: ci16
+  OrigDataType: word16
 T_2652: (in 0<16> : word16)
   Class: Eq_2635
-  DataType: int16
+  DataType: ci16
   OrigDataType: ci16
 T_2653: (in r1_59 > 0<16> : bool)
   Class: Eq_2653

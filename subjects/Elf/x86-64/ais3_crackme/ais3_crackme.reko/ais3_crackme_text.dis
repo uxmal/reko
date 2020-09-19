@@ -46,7 +46,7 @@ deregister_tm_clones_entry:
 l0000000000400460:
 	branch false l0000000000400477
 l0000000000400477:
-	branch 0<u64> == 0<64> l0000000000400475
+	branch true l0000000000400475
 l0000000000400481:
 	call 0<u64> (retsize: 0;)
 		uses: rdi:0x601038<u64>
@@ -69,10 +69,10 @@ register_tm_clones_entry:
 l0000000000400490:
 	branch false l00000000004004B4
 l00000000004004B4:
-	branch 0<u64> == 0<64> l00000000004004B2
+	branch true l00000000004004B2
 l00000000004004BE:
 	call 0<u64> (retsize: 0;)
-		uses: rdi:0x601038<u64>,rsi:0<i64>
+		uses: rdi:0x601038<u64>,rsi:0<64>
 	return
 l00000000004004B2:
 	return
@@ -108,7 +108,7 @@ frame_dummy_entry:
 l00000000004004F0:
 	branch Mem0[0x0000000000600E08<p64>:word64] == 0<64> l0000000000400518
 l00000000004004FA:
-	branch 0<u64> == 0<64> l0000000000400518
+	branch true l0000000000400518
 l0000000000400518:
 l0000000000400518_thunk_register_tm_clones:
 	register_tm_clones()

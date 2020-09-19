@@ -2500,7 +2500,7 @@ l0000D3BD:
 l0000D3C4:
 	r2 = r4_32
 	word32 r1_39 = 8<32>
-	branch 8<32> == 0<32> l0000D3EC
+	branch false l0000D3EC
 l0000D3CC:
 	word32 r0_45
 	branch (r2 & 1<32>) == 0<32> l0000D3E0

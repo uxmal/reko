@@ -642,7 +642,7 @@ l0A98:
 	word16 wLoc02_77 = r3 >> 1<i16>
 	branch r3 >> 1<i16> >=u 0x258<16> l0AA8
 l0AA6:
-	wLoc02_77 = 600<i16>
+	wLoc02_77 = 0x258<16>
 l0AA8:
 	word16 r2_24 = Mem23[0x00B0<p16>:word16]
 l0AB0:
@@ -1736,7 +1736,7 @@ l13DA:
 l00DC:
 	__reset()
 	word16 r0_40 = 0x182A<16>
-	word16 r1_44 = 500<i16>
+	word16 r1_44 = 0x1F4<16>
 l00EC:
 	Mem47[r0_40:word16] = 0xF700<16>
 	word16 r0_48 = r0_40 + 2<16>
@@ -1746,7 +1746,7 @@ l00EC:
 	branch r1_44 > 0<16> l00EC
 l00F6:
 	word16 r0_55 = 0x34E0<16>
-	word16 r1_59 = 711<i16>
+	word16 r1_59 = 0x2C7<16>
 l0104:
 	Mem62[r0_55:word16] = 0xF700<16>
 	word16 r0_63 = r0_55 + 2<16>

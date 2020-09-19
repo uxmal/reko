@@ -13,7 +13,7 @@ void fn00001000(int32 d0, byte * a0)
 	if (a6_n->t0014 < 0x24)
 	{
 		word32 * a0_n = &g_ptr2B88;
-		uint32 d0_n;
+		word32 d0_n;
 		for (d0_n = 0x0C; d0_n != 0x00; --d0_n)
 		{
 			*a0_n = 0x00;
@@ -258,7 +258,7 @@ struct Eq_n * fn0000127C()
 //      fn0000131C
 word32 fn000012D0(ptr32 dwArg04)
 {
-	if (0x2CD0 != 0x00)
+	if (true)
 	{
 		int32 d2_n = 1;
 		if (*(word32 *) 11476 != 0x00)
@@ -300,7 +300,7 @@ word32 fn0000131C(ptr32 dwArg04)
 void fn00001354(int32 d2, int32 dwArg04, struct Eq_n * dwArg08)
 {
 	<anonymous> ** a3_n = (<anonymous> **) 11464;
-	if (0x2CC4 != 0x00 && *((word32 *) 11464) != 0x00)
+	if (true && *((word32 *) 11464) != 0x00)
 	{
 		do
 		{

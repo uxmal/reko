@@ -614,15 +614,15 @@ l00401A24:
 	byte bLoc14_257 = 0<8>
 	branch (edx ^ 0x49656E69<32> | 0x6C65746E<32> | 0x756E6546<32>) != 0<32> l00401ACE
 l00401A8B:
-	branch 0<32> == 0x106C0<32> l00401ABD
+	branch false l00401ABD
 l00401A9A:
-	branch 0<32> == 0x20660<32> l00401ABD
+	branch false l00401ABD
 l00401AA1:
-	branch 0<32> == 0x20670<32> l00401ABD
+	branch false l00401ABD
 l00401AA8:
-	branch 0<32> == 0x30650<32> l00401ABD
+	branch false l00401ABD
 l00401AAF:
-	branch 0<32> == 0x30660<32> l00401ABD
+	branch false l00401ABD
 l00401AB6:
 	branch true l00401ACE
 l00401ACE:
@@ -636,17 +636,17 @@ l00401AD4:
 l00401AE9:
 	__cpuid(7<32>, 0<32>, &7<32>, &1<32>, &0<32>, &edx)
 	bLoc14_257 = 1<8> (alias)
-	branch 0<32> == 0<32> l00401B1B
+	branch true l00401B1B
 l00401B12:
 	Mem150[0x00403370<p32>:word32] = edi_101 | 2<32>
 l00401B1B:
-	branch 0<32> == 0<32> l00401B91
+	branch true l00401B91
 l00401B24:
 	Mem162[0x00403010<p32>:word32] = Mem152[0x00403010<p32>:word32] | 4<32>
 	Mem164[0x0040336C<p32>:word32] = 2<32>
-	branch 0<32> == 0<32> l00401B91
+	branch true l00401B91
 l00401B3C:
-	branch 0<32> == 0<32> l00401B91
+	branch true l00401B91
 l00401B43:
 	branch (SLICE(__xgetbv(0<32>), word32, 0) & 6<32>) != 6<32> l00401B91
 l00401B5E:

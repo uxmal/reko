@@ -387,7 +387,7 @@ l07B6:
 							do
 								r0_n = __rol(r0_n, r0_n);
 							while (r0_n >= 0x00);
-							if (0x0A != 0x00)
+							if (true)
 								goto l07E6;
 							goto l07FE;
 						}
@@ -1248,10 +1248,10 @@ void fn15CC(struct Eq_n * r5)
 		FnSubfn(fp - 0x04);
 		__syscall(0x88FC);
 		Eq_n r2_n = 0x0A00;
-		if (0x0A00 != 0x00)
+		if (true)
 			r2_n = (~~0x1F & 0x0A00) + 0x48;
-		*r5->ptr0002 = (union Eq_n *) (__swab(640) & ~~0x1F);
-		*r5->ptr0004 = (union Eq_n *) (~~0x1F & 80);
+		*r5->ptr0002 = (union Eq_n *) (__swab(0x0280) & ~~0x1F);
+		*r5->ptr0004 = (union Eq_n *) (~~0x1F & 0x50);
 		*r5->ptr0006 = (union Eq_n *) r2_n;
 	}
 }
@@ -1615,7 +1615,7 @@ void fn1DAE()
 	if (g_ptr1DAA == null)
 	{
 		FnSubfn(&g_b03B8);
-		if (0x00 != 0x00)
+		if (false)
 			g_w001E = 0xF000;
 		if (true)
 		{

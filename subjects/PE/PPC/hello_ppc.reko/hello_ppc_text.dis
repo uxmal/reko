@@ -1746,7 +1746,7 @@ l00402404:
 	word32 r31_89
 	fn00404044(fn0040262C(r2_23, Mem13[r2_23 + 176<i32>:word32], Mem13[r2_23 + 180<i32>:word32], r29_17, r30_18, r31_19, out r29_28, out r30_29, out r31_89))
 	fn00404044(dwLoc2C)
-	branch 0xFFFFF90E<32> == 0<32> l00402480
+	branch false l00402480
 l00402458:
 	fn00403F9C(dwLoc2C)
 	branch true l00402480

@@ -921,7 +921,7 @@ l0001295D:
 	word32 v27_74 = dwLoc10_185 - 1<32>
 	branch dwLoc10_185 == 0<32> l0001296B
 l00012966:
-	branch 0<32> == 0<32> l0001297F
+	branch true l0001297F
 l0001297F:
 	branch Mem75[r2 + 44<i32>:word32] == 0<32> l00012994
 l00012984:
@@ -1995,9 +1995,9 @@ l000133E2:
 	Mem452[sp_435 - 4<32>:word32] = 0<32>
 	word32 r1_453 = 0<32>
 	word32 r0_454 = CONVERT(Mem452[fp_442 + -6<i32>:word16], word16, uint32)
-	branch 0xA<u32> == 0<32> l00013430
+	branch false l00013430
 l00013417:
-	branch 9<32> == 0<32> l00013435
+	branch false l00013435
 l0001341C:
 	branch true l00013430
 l00013430:
@@ -2106,9 +2106,9 @@ l0001349A:
 	Mem683[sp_666 - 4<32>:word32] = 0<32>
 	word32 r1_684 = 0<32>
 	word32 r0_685 = CONVERT(SLICE(r10_676, word16, 0), word16, uint32)
-	branch 0xA<u32> == 0<32> l000134E4
+	branch false l000134E4
 l000134CE:
-	branch 9<32> == 0<32> l000134E9
+	branch false l000134E9
 l000134D3:
 	branch true l000134E4
 l000134E4:
@@ -4571,9 +4571,9 @@ l0001520C:
 	Mem122[sp_115 - 4<32>:uint32] = CONVERT(SLICE(r8_120, word16, 0), word16, uint32)
 	word32 r1_123 = 0<32>
 	word32 r0_125 = CONVERT(SLICE(r11_124, word16, 0), word16, uint32)
-	branch 0x64<u32> == 0<32> l00015234
+	branch false l00015234
 l0001521E:
-	branch 0x63<32> == 0<32> l00015239
+	branch false l00015239
 l00015223:
 	branch true l00015234
 l00015234:
@@ -6342,7 +6342,7 @@ l00018811:
 	Mem97[r2_92:word32] = r10_158
 l00018814:
 	word32 r11_101 = 0x10<32>
-	branch 0x10<32> == 0<32> l00018826
+	branch false l00018826
 l00018819:
 l0001881C:
 	branch Mem707[fp_39 + -72<i32> + r11_101 * 4<i32>:word32] != 0<32> l00018826

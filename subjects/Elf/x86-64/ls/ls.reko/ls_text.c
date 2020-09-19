@@ -1426,7 +1426,7 @@ void fn0000000000404890(void (* rdx)(), Eq_n qwArg00)
 // 00000000004048C0: void fn00000000004048C0()
 void fn00000000004048C0()
 {
-	if (true || 0x00 == 0x00)
+	if (true || true)
 		return;
 	null();
 }
@@ -1449,7 +1449,7 @@ byte fn00000000004049E0(Eq_n rcx, byte dl, char ** rsi, Eq_n rdi, union Eq_n & e
 		word32 eax_n;
 		byte al_n;
 		word32 r11_32_32_n = SLICE(r11_n, word32, 32);
-		if (~0x01 == 0x00)
+		if (false)
 		{
 			while (true)
 			{
@@ -1463,7 +1463,7 @@ byte fn00000000004049E0(Eq_n rcx, byte dl, char ** rsi, Eq_n rdi, union Eq_n & e
 		}
 		if (true)
 		{
-			if (~0x02 != 0x00)
+			if (true)
 			{
 				if (true)
 					goto l0000000000404A70;

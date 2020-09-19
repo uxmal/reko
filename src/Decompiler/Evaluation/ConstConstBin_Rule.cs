@@ -44,14 +44,17 @@ namespace Reko.Evaluation
 			cRight = binExp.Right as Constant;
             dtResult = binExp.DataType;
 			op = binExp.Operator;
-			if (cLeft != null && cRight != null && binExp.Operator != Operator.Eq)
+			if (cLeft != null && cRight != null)
 			{
+                if (op is ConditionalOperator)
+                    return true;
 				if (!cLeft.IsReal && !cRight.IsReal)
 				{
                     if (cLeft.DataType.IsPointer)
                     {
                         dtResult = cLeft.DataType;
-                    } else if (cRight.DataType.IsPointer)
+                    }
+                    else if (cRight.DataType.IsPointer)
                     {
                         dtResult = cRight.DataType;
                     }

@@ -729,7 +729,7 @@ void fn0000000140001BFC(word32 edx, Eq_n ebx)
 		r8_n = (uint64) (r8d_n | 0x04);
 		ui32 r8d_n = (word32) r8_n;
 		g_dw40003614 = r8d_n;
-		if (~0x000106BF == 0x00 || (~0x0002065F == 0x00 || ~0x0002066F == 0x00))
+		if (false || (false || false))
 		{
 l0000000140001CDE:
 			r8_n = (uint64) (r8d_n | 0x01);

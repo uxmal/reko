@@ -67,7 +67,9 @@ namespace Reko.Core.Types
         {
             if (offset == null)
                 return 0;
-            PrimitiveType pt = (PrimitiveType) offset.DataType;
+            PrimitiveType? pt = offset.DataType.ResolveAs<PrimitiveType>();
+            if (pt is null)
+                return null;
             if (pt.Domain == Domain.SignedInt)
                 return (int) offset.ToInt32();
             else if (pt.Domain == Domain.Real)

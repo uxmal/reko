@@ -14,7 +14,7 @@ l0000100A:
 	branch Mem0[a6_9 + 20<i32>:word16] >=u 0x24<16> l00001036
 l00001020:
 	word32 a0_13 = 0x00002B88<p32>
-	word32 d0_16 = 0xC<u32>
+	word32 d0_16 = 0xC<32>
 l00001030:
 	Mem19[a0_13:word32] = 0<32>
 	a0_13 = a0_13 + 4<i32>
@@ -295,7 +295,7 @@ word32 fn000012D0(word32 dwArg04)
 // Preserved: a2 a3 a7 d2
 fn000012D0_entry:
 l000012D0:
-	branch 0x2CD0<32> == 0<32> l00001308
+	branch false l00001308
 l000012E2:
 	word32 d2_16 = 1<i32>
 	branch Mem11[0x00002CD4<p32>:word32] == 0<32> l000012F6
@@ -357,7 +357,7 @@ void fn00001354(word32 d2, word32 dwArg04, word32 dwArg08)
 fn00001354_entry:
 l00001354:
 	word32 a3_17 = 0x00002CC8<p32>
-	branch 0x2CC4<32> == 0<32> l00001372
+	branch false l00001372
 l00001366:
 	branch Mem8[0x00002CC8<p32>:word32] == 0<32> l00001372
 l0000136A:
