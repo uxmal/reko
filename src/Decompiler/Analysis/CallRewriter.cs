@@ -476,7 +476,7 @@ namespace Reko.Analysis
                 var stm = block.Statements[i];
                 if (stm.Instruction is ReturnInstruction ret)
                 {
-                    if (idRet.DataType.BitSize < e.DataType.BitSize)
+                    if (idStg != null && idRet.DataType.BitSize < e.DataType.BitSize)
                     {
                         int offset = idStg!.Storage.OffsetOf(idRet.Storage);
                         e = new Slice(idRet.DataType, e, offset);

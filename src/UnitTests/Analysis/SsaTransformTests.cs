@@ -94,6 +94,11 @@ namespace Reko.UnitTests.Analysis
             this.importReferences = pb.Program.ImportReferences;
         }
 
+        private void Given_X86_32_Architecture()
+        {
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-protected-32"));
+        }
+
         private void Given_BigEndianArchitecture()
         {
             var arch = new Mock<IProcessorArchitecture>();
@@ -2443,30 +2448,7 @@ proc1_exit:
         {
             var sExp =
             #region Expected
-@"Mem0:Mem
-    def:  def Mem0
-    uses: ax_2 = Mem0[0x2000<32>:word16]
-          bx_3 = Mem0[0x2002<32>:word16]
-ax_2: orig: ax
-    def:  ax_2 = Mem0[0x2000<32>:word16]
-bx_3: orig: bx
-    def:  bx_3 = Mem0[0x2002<32>:word16]
-    uses: bh_8 = SLICE(bx_3, byte, 8) (alias)
-          bl_9 = SLICE(bx_3, byte, 0) (alias)
-al_5: orig: al
-    def:  al_5 = bh_8
-    uses: return al_5
-bx_7: orig: bx
-    def:  bx_7 = SEQ(bh_8, bl_9) (alias)
-    uses: branch bx_7 >= 0<16> m0
-bh_8: orig: bh
-    def:  bh_8 = SLICE(bx_3, byte, 8) (alias)
-    uses: al_5 = bh_8
-          bx_7 = SEQ(bh_8, bl_9) (alias)
-bl_9: orig: bl
-    def:  bl_9 = SLICE(bx_3, byte, 0) (alias)
-    uses: bx_7 = SEQ(bh_8, bl_9) (alias)
-// proc1
+@"// proc1
 // Return size: 0
 define proc1
 proc1_entry:
@@ -2492,7 +2474,7 @@ proc1_exit:
             #endregion
 
             Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16"));
-            RunTestOld(sExp, m =>
+            RunTest(sExp, m =>
             {
                 var al = m.Register(Registers.al);
                 var bl = m.Register(Registers.bl);
@@ -4608,134 +4590,6 @@ proc1_exit:
         }
 
         [Test]
-        public void Ssa_RegisterSlicesInDifferentBlocks2()
-        {
-            var sExp =
-            #region Expected
-@"// proc1
-// Return size: 0
-define proc1
-proc1_entry:
-	def Mem0
-	// succ:  l1
-l1:
-	eax_2 = Mem0[0x123400<32>:word32]
-	al_7 = SLICE(eax_2, byte, 0) (alias)
-	Mem3[0x123420<32>:word32] = eax_2
-	// succ:  m1
-m1:
-	branch Mem3[0x4400<32>:byte] m1else
-	goto m1then
-	// succ:  m1then m1else
-m1else:
-	Mem4[0x4404<32>:word16] = 0xFFFF<16>
-	goto m2
-	// succ:  m2
-m1then:
-	Mem5[0x4404<32>:word16] = 1<16>
-	// succ:  m2
-m2:
-	Mem8[0x123408<32>:byte] = al_7
-	// succ:  m3
-m3:
-	Mem12[0x123410<32>:word32] = eax_2
-	return
-	// succ:  proc1_exit
-proc1_exit:
-======
-";
-            #endregion
-            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-protected-32"));
-            RunTest(sExp, m =>
-            {
-                var eax = m.Register(arch.GetRegister("eax"));
-                var ax = m.Register(arch.GetRegister("ax"));
-                var al = m.Register(arch.GetRegister("al"));
-
-                m.Assign(eax, m.Mem32(m.Word32(0x00123400)));
-                m.MStore(m.Word32(0x00123420), eax);
-                m.Label("m1");
-                m.BranchIf(m.Mem8(m.Word32(0x004400)), "m1else");
-                m.Label("m1then");
-                m.MStore(m.Word32(0x004404), m.Word16(1));
-                m.Goto("m2");
-                m.Label("m1else");
-                m.MStore(m.Word32(0x004404), m.Word16(0xFFFF));
-
-                m.Label("m2");
-                m.MStore(m.Word32(0x00123408), al);
-                m.Label("m3");
-                m.MStore(m.Word32(0x00123410), eax);
-                m.Return();
-            });
-        }
-
-        [Test]
-        public void Ssa_RegisterSlicesInDifferentBlocks3()
-        {
-            var sExp =
-            #region Expected
-@"// proc1
-// Return size: 0
-define proc1
-proc1_entry:
-	def Mem0
-	// succ:  l1
-l1:
-	eax_2 = Mem0[0x123400<32>:word32]
-	al_7 = SLICE(eax_2, byte, 0) (alias)
-	Mem3[0x123420<32>:word32] = eax_2
-	// succ:  m1
-m1:
-	branch Mem3[0x4400<32>:byte] m1else
-	goto m1then
-	// succ:  m1then m1else
-m1else:
-	Mem4[0x4404<32>:word16] = 0xFFFF<16>
-	goto m2
-	// succ:  m2
-m1then:
-	Mem5[0x4404<32>:word16] = 1<16>
-	// succ:  m2
-m2:
-	Mem8[0x123408<32>:byte] = al_7
-	// succ:  m3
-m3:
-	Mem12[0x123410<32>:word32] = eax_2
-	return
-	// succ:  proc1_exit
-proc1_exit:
-======
-";
-            #endregion
-            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-protected-32"));
-            RunTest(sExp, m =>
-            {
-                var eax = m.Register(arch.GetRegister("eax"));
-                var ax = m.Register(arch.GetRegister("ax"));
-                var al = m.Register(arch.GetRegister("al"));
-
-                m.Assign(eax, m.Mem32(m.Word32(0x00123400)));
-                m.MStore(m.Word32(0x00123420), eax);
-                m.Label("m1");
-                m.BranchIf(m.Mem8(m.Word32(0x004400)), "m1else");
-                m.Label("m1then");
-                m.MStore(m.Word32(0x004404), m.Word16(1));
-                m.Goto("m2");
-                m.Label("m1else");
-                m.Assign(al, 1);
-                m.MStore(m.Word32(0x004404), m.Word16(0xFFFF));
-
-                m.Label("m2");
-                m.MStore(m.Word32(0x00123408), al);
-                m.Label("m3");
-                m.MStore(m.Word32(0x00123410), eax);
-                m.Return();
-            });
-        }
-
-
-        [Test]
         [Ignore("Finish register work first")]
         public void Ssa_StackSlicesInDifferentBlocks()
         {
@@ -4755,8 +4609,8 @@ m1:
 SsaLocalStackSlice_exit:
 ";
             #endregion
-            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-protected-32"));
-            var proc = Given_Procedure(nameof(SsaLocalStackSlice), m =>
+            Given_X86_32_Architecture();
+            var proc = Given_Procedure(nameof(Ssa_StackSlicesInDifferentBlocks), m =>
             {
                 var fp = m.Frame.FramePointer;
 
@@ -4769,6 +4623,41 @@ SsaLocalStackSlice_exit:
 
             When_RunSsaTransform();
             When_RenameFrameAccesses();
+            AssertProcedureCode(sExp);
+        }
+
+        [Test]
+        public void Ssa_SliceSequence()
+        {
+            var sExp =
+            #region Expected
+                "";
+            #endregion
+            Given_X86_32_Architecture();
+            var proc = Given_Procedure(nameof(Ssa_SliceSequence), m =>
+            {
+                var ebx = m.Frame.EnsureRegister(Registers.ebx);
+                var bl = m.Frame.EnsureRegister(Registers.bl);
+                var bx = m.Frame.EnsureRegister(Registers.bx);
+                m.Assign(ebx, 0);
+                m.BranchIf(m.Mem8(m.Word32(0x0010000)), "m2Skip");
+                m.Label("m1");
+                m.MStore(m.Word32(0x0010004), m.Word32(0x42));
+
+                m.Label("m2Skip");
+                m.MStore(m.Word32(0x0010008), bl);
+                m.MStore(m.Word32(0x0010020), ebx);
+                m.BranchIf(m.Mem8(m.Word32(0x00100001)), "m4Skip");
+                m.Label("m3");
+                m.MStore(m.Word32(0x001000C), m.Word32(0x4711));
+
+                m.Label("m4Skip");
+                m.MStore(m.Word32(0x0010110), bx);
+                m.MStore(m.Word32(0x0010114), ebx);
+
+            });
+
+            When_RunSsaTransform();
             AssertProcedureCode(sExp);
         }
     }

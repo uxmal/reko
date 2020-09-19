@@ -494,7 +494,7 @@ namespace Reko.Analysis
                     aliasState = new AliasState();
                     bs.currentDef.Add(id.Storage.Domain, aliasState);
                 }
-                if (sid.DefStatement != null && !(sid.DefStatement.Instruction is AliasAssignment || sid.DefStatement.Instruction is PhiAssignment))
+                if (sid.DefStatement != null && !(sid.DefStatement.Instruction is AliasAssignment))
                 {
                     // Only store a definition if it isn't an alias.
                     var stgDef = id.Storage;
@@ -643,7 +643,7 @@ namespace Reko.Analysis
                 // Avoid creating an aliasing slice if it already exists.
                 if (outer.availableSlices.TryGetValue((sidSrc, range), out var sidAlias))
                     return sidAlias;
-                var e = outer.m.Slice(idSlice.DataType, sidSrc.Identifier, range.Lsb);
+                var e = outer.m.Slice(idSlice.DataType, sidSrc.Identifier, range.Lsb - (int)sidSrc.Identifier.Storage.BitAddress);
                 var ass = new AliasAssignment(idSlice, e);
                 sidAlias = InsertAfterDefinition(sidSrc.DefStatement!, ass);
                 sidSrc.Uses.Add(sidAlias.DefStatement!);
