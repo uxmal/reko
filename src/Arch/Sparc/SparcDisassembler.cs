@@ -97,7 +97,7 @@ namespace Reko.Arch.Sparc
         {
             return (wInstr, dasm) =>
             {
-                var reg = Registers.GetRegister((wInstr >> pos) & 0x1F);
+                var reg = dasm.arch.Registers.GetRegister((wInstr >> pos) & 0x1F);
                 dasm.ops.Add(new RegisterOperand(reg));
                 return true;
             };
@@ -106,24 +106,24 @@ namespace Reko.Arch.Sparc
         private static readonly Mutator<SparcDisassembler> r14 = r(14);
         private static readonly Mutator<SparcDisassembler> r25 = r(25);
 
-        private static Mutator<SparcDisassembler> r(RegisterStorage reg)
+        private static Mutator<SparcDisassembler> r(Func<SparcArchitecture, RegisterStorage> getreg)
         {
             return (u, d) =>
             {
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(new RegisterOperand(getreg(d.arch)));
                 return true;
             };
         }
 
-        private static readonly Mutator<SparcDisassembler> rfsr = r(Registers.fsr);
-        private static readonly Mutator<SparcDisassembler> ry = r(Registers.y);
+        private static readonly Mutator<SparcDisassembler> rfsr = r(a => a.Registers.fsr);
+        private static readonly Mutator<SparcDisassembler> ry = r(a => a.Registers.y);
 
         // FPU register
         private static Mutator<SparcDisassembler> f(int pos)
         {
             return (u, d) =>
             {
-                var freg = Registers.GetFpuRegister((int) (u >> pos) & 0x1F);
+                var freg = d.arch.Registers.GetFpuRegister((int) (u >> pos) & 0x1F);
                 d.ops.Add(new RegisterOperand(freg));
                 return true;
             };
@@ -138,7 +138,7 @@ namespace Reko.Arch.Sparc
         {
             return (u, d) =>
             {
-                var dreg = GetDoubleRegisterOperand(u, pos);
+                var dreg = GetDoubleRegisterOperand(d.arch.Registers, u, pos);
                 if (dreg == null)
                     return false;
                 d.ops.Add(dreg);
@@ -154,7 +154,7 @@ namespace Reko.Arch.Sparc
         {
             return (u, d) =>
             {
-                var qreg = GetQuadRegisterOperand(u, pos);
+                var qreg = GetQuadRegisterOperand(d.arch.Registers, u, pos);
                 if (qreg == null)
                     return false;
                 d.ops.Add(qreg);
@@ -169,7 +169,7 @@ namespace Reko.Arch.Sparc
         {
             return (u, d) =>
             {
-                d.ops.Add(GetAlternateSpaceOperand(u, size));
+                d.ops.Add(GetAlternateSpaceOperand(d.arch.Registers, u, size));
                 return true;
             };
         }
@@ -202,7 +202,7 @@ namespace Reko.Arch.Sparc
         {
             return (u, d) =>
             {
-                d.ops.Add(GetMemoryOperand(u, size));
+                d.ops.Add(GetMemoryOperand(d.arch.Registers, u, size));
                 return true;
             };
         }
@@ -219,7 +219,7 @@ namespace Reko.Arch.Sparc
             return (u, d) =>
             {
                 // if 's', return a signed immediate operand where relevant.
-                d.ops.Add(GetRegImmOperand(u, signed, 13));
+                d.ops.Add(GetRegImmOperand(d.arch.Registers, u, signed, 13));
                 return true;
             };
         }
@@ -229,14 +229,14 @@ namespace Reko.Arch.Sparc
         // Register or uimm5
         private static bool S(uint wInstr, SparcDisassembler dasm)
         {
-            dasm.ops.Add(GetRegImmOperand(wInstr, false, 6));
+            dasm.ops.Add(GetRegImmOperand(dasm.arch.Registers, wInstr, false, 6));
             return true;
         }
 
         // trap number
         private static bool T(uint wInstr, SparcDisassembler dasm)
         {
-            dasm.ops.Add(GetRegImmOperand(wInstr, false, 7));
+            dasm.ops.Add(GetRegImmOperand(dasm.arch.Registers, wInstr, false, 7));
             return true;
         }
 
@@ -261,45 +261,45 @@ namespace Reko.Arch.Sparc
             return new AddressOperand(addr + (offset - 4));
         }
 
-        private static MachineOperand GetAlternateSpaceOperand(uint wInstr, PrimitiveType type)
+        private static MachineOperand GetAlternateSpaceOperand(Registers registers, uint wInstr, PrimitiveType type)
         {
-            RegisterStorage b = Registers.GetRegister(wInstr >> 14);
-            RegisterStorage idx = Registers.GetRegister(wInstr);
+            RegisterStorage b = registers.GetRegister(wInstr >> 14);
+            RegisterStorage idx = registers.GetRegister(wInstr);
             var asi = (wInstr >> 4) & 0xFF;
             return new MemoryOperand(b, Constant.Int32((int) asi), type);
         }
 
-        private static MachineOperand GetMemoryOperand(uint wInstr, PrimitiveType type)
+        private static MachineOperand GetMemoryOperand(Registers registers, uint wInstr, PrimitiveType type)
         {
-            RegisterStorage b = Registers.GetRegister(wInstr >> 14);
+            RegisterStorage b = registers.GetRegister(wInstr >> 14);
             if ((wInstr & (1 << 13)) != 0)
             {
                 return new MemoryOperand(b, Constant.Int32(SignExtend(wInstr, 13)), type);
             }
             else
             {
-                RegisterStorage idx = Registers.GetRegister(wInstr);
+                RegisterStorage idx = registers.GetRegister(wInstr);
                 return new IndexedMemoryOperand(b, idx, type);
             }
         }
 
-        private static RegisterOperand GetDoubleRegisterOperand(uint wInstr, int offset)
+        private static RegisterOperand GetDoubleRegisterOperand(Registers registers, uint wInstr, int offset)
         {
             int encodedReg = (int) (wInstr >> offset) & 0x1F;
             int reg = ((encodedReg & 1) << 5) | (encodedReg & ~1);
-            return new RegisterOperand(Registers.GetFpuRegister(reg));
+            return new RegisterOperand(registers.GetFpuRegister(reg));
         }
 
-        private static RegisterOperand GetQuadRegisterOperand(uint wInstr, int offset)
+        private static RegisterOperand GetQuadRegisterOperand(Registers registers, uint wInstr, int offset)
         {
             int encodedReg = (int) (wInstr >> offset) & 0x1F;
             int reg = ((encodedReg & 1) << 5) | (encodedReg & ~1);
             if ((reg & 0x3) != 0)
                 return null;
-            return new RegisterOperand(Registers.GetFpuRegister(reg));
+            return new RegisterOperand(registers.GetFpuRegister(reg));
         }
 
-        private static MachineOperand GetRegImmOperand(uint wInstr, bool signed, int bits)
+        private static MachineOperand GetRegImmOperand(Registers registers, uint wInstr, bool signed, int bits)
         {
             if ((wInstr & (1 << 13)) != 0)
             {
@@ -314,7 +314,7 @@ namespace Reko.Arch.Sparc
             }
             else
             {
-                return new RegisterOperand(Registers.GetRegister(wInstr & 0x1Fu));
+                return new RegisterOperand(registers.GetRegister(wInstr & 0x1Fu));
             }
         }
 

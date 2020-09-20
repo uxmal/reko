@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Arch.Sparc
     [TestFixture]
     public class SparcRewriterTests : RewriterTestBase
     {
-        private SparcArchitecture arch = new SparcArchitecture(CreateServiceContainer(), "sparc", PrimitiveType.Word32);
+        private SparcArchitecture arch = new SparcArchitecture32(CreateServiceContainer(), "sparc");
         private Address baseAddr = Address.Ptr32(0x00100000);
         private SparcProcessorState state;
         private Mock<IRewriterHost> host;
@@ -94,13 +94,12 @@ namespace Reko.UnitTests.Arch.Sparc
 
         private MachineOperand Op(object o)
         {
-            var reg = o as RegisterStorage;
-            if (reg != null)
-                return new RegisterOperand(reg);
-            var c = o as Constant;
-            if (c != null)
-                return new ImmediateOperand(c);
-            throw new NotImplementedException(string.Format("Unsupported: {0} ({1})", o, o.GetType().Name));
+            switch (o)
+            {
+            case RegisterStorage reg: return new RegisterOperand(reg);
+            case Constant c: return new ImmediateOperand(c);
+            default: throw new NotImplementedException(string.Format("Unsupported: {0} ({1})", o, o.GetType().Name));
+            }
         }
 
         [Test]
@@ -383,7 +382,7 @@ namespace Reko.UnitTests.Arch.Sparc
         public void SparcRw_or_imm_g0()
         {
             Rewrite_UInt32s(
-                Instr(Mnemonic.or, Registers.g0, Constant.Word32(3), Registers.IntegerRegisters[1]));
+                Instr(Mnemonic.or, arch.Registers.g0, Constant.Word32(3), arch.Registers.IntegerRegisters[1]));
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|g1 = 0<32> | 3<32>");      // Simplification happens later in the decompiler.

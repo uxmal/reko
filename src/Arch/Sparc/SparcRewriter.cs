@@ -232,7 +232,7 @@ namespace Reko.Arch.Sparc
         {
             m.Assign(
                 binder.EnsureFlagGroup(
-                    Registers.psr,
+                    arch.Registers.psr,
                     0xF, "NZVC",
                     PrimitiveType.Byte),
                 m.Cond(dst));
@@ -247,7 +247,7 @@ namespace Reko.Arch.Sparc
         {
             if (op is RegisterOperand r)
             {
-                if (r.Register == Registers.g0)
+                if (r.Register == arch.Registers.g0)
                 {
                     if (g0_becomes_null)
                         return null;
@@ -270,18 +270,18 @@ namespace Reko.Arch.Sparc
         private Expression RewriteDoubleRegister(MachineOperand op)
         {
             var reg = ((RegisterOperand)op).Register;
-            var iReg = reg.Number - Registers.FloatRegisters[0].Number;
-            var regLo = Registers.FloatRegisters[iReg + 1];
+            var iReg = reg.Number - arch.Registers.FloatRegisters[0].Number;
+            var regLo = arch.Registers.FloatRegisters[iReg + 1];
             return binder.EnsureSequence(PrimitiveType.Word64, reg, regLo);
         }
 
         private Expression RewriteQuadRegister(MachineOperand op)
         {
             var reg3 = ((RegisterOperand) op).Register;
-            var iReg = reg3.Number - Registers.FloatRegisters[0].Number;
-            var reg2 = Registers.FloatRegisters[iReg + 1];
-            var reg1 = Registers.FloatRegisters[iReg + 2];
-            var reg0 = Registers.FloatRegisters[iReg + 3];
+            var iReg = reg3.Number - arch.Registers.FloatRegisters[0].Number;
+            var reg2 = arch.Registers.FloatRegisters[iReg + 1];
+            var reg1 = arch.Registers.FloatRegisters[iReg + 2];
+            var reg0 = arch.Registers.FloatRegisters[iReg + 3];
             return binder.EnsureSequence(PrimitiveType.Word128, reg3, reg2, reg1, reg0);
         }
 
@@ -292,15 +292,15 @@ namespace Reko.Arch.Sparc
             Expression offset;
             if (op is MemoryOperand mem)
             {
-                baseReg = mem.Base == Registers.g0 ? null : binder.EnsureRegister(mem.Base);
+                baseReg = mem.Base == arch.Registers.g0 ? null : binder.EnsureRegister(mem.Base);
                 offset = mem.Offset.IsIntegerZero ? null : mem.Offset;
             }
             else
             {
                 if (op is IndexedMemoryOperand i)
                 {
-                    baseReg = i.Base == Registers.g0 ? null : binder.EnsureRegister(i.Base);
-                    offset = i.Index == Registers.g0 ? null : binder.EnsureRegister(i.Index);
+                    baseReg = i.Base == arch.Registers.g0 ? null : binder.EnsureRegister(i.Base);
+                    offset = i.Index == arch.Registers.g0 ? null : binder.EnsureRegister(i.Index);
                 }
                 else
                     throw new NotImplementedException(string.Format("Unknown memory operand {0} ({1})", op, op.GetType().Name));

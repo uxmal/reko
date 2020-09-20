@@ -35,9 +35,9 @@ namespace Reko.Arch.Sparc
     public class SparcArchitecture : ProcessorArchitecture
     {
         private Dictionary<uint, FlagGroupStorage> flagGroups;
-
-        public SparcArchitecture(IServiceProvider services, string archId, PrimitiveType wordWidth) : base(services, archId)
+        public SparcArchitecture(IServiceProvider services, string archId, Registers registers, PrimitiveType wordWidth) : base(services, archId)
         {
+            this.Registers = registers;
             this.Endianness = EndianServices.Big;
             this.WordWidth = wordWidth;
             this.PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.BitSize);
@@ -46,6 +46,8 @@ namespace Reko.Arch.Sparc
             this.InstructionBitSize = 32;
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
+
+        public Registers Registers { get; }
 
         #region IProcessorArchitecture Members
 
@@ -220,14 +222,20 @@ namespace Reko.Arch.Sparc
 
     public class SparcArchitecture32 : SparcArchitecture
     {
-        public SparcArchitecture32(IServiceProvider services, string archId) : base(services, archId, PrimitiveType.Word32)
+        private static readonly Registers registers = new Registers(PrimitiveType.Word32);
+
+        public SparcArchitecture32(IServiceProvider services, string archId) : 
+            base(services, archId, registers, PrimitiveType.Word32)
         {
         }
     }
 
     public class SparcArchitecture64 : SparcArchitecture
     {
-        public SparcArchitecture64(IServiceProvider services, string archId) : base(services, archId, PrimitiveType.Word64)
+        private static readonly Registers registers = new Registers(PrimitiveType.Word64);
+
+        public SparcArchitecture64(IServiceProvider services, string archId) : 
+            base(services, archId, registers, PrimitiveType.Word64)
         {
         }
     }

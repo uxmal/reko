@@ -65,7 +65,7 @@ namespace Reko.Arch.Sparc
 
         public override Constant GetRegister(RegisterStorage reg)
         {
-            if (Registers.IsGpRegister(reg) && valid[reg.Number])
+            if (arch.Registers.IsGpRegister(reg) && valid[reg.Number])
                 return Constant.Create(reg.DataType, regs[reg.Number]);
             else
                 return Constant.Invalid;
@@ -73,7 +73,7 @@ namespace Reko.Arch.Sparc
 
         public override void SetRegister(RegisterStorage reg, Constant v)
         {
-            if (v.IsValid && Registers.IsGpRegister(reg))
+            if (v.IsValid && arch.Registers.IsGpRegister(reg))
             {
                 valid[reg.Number] = true;
                 regs[reg.Number] = v.ToUInt64();
