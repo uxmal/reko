@@ -37,7 +37,7 @@ namespace Reko.Arch.Sparc
             var dst = RewriteRegister(instrCur.Operands[2]);
             var src1 = RewriteOp(instrCur.Operands[0]);
             var src2 = RewriteOp(instrCur.Operands[1]);
-            var C = binder.EnsureFlagGroup(Registers.C);
+            var C = binder.EnsureFlagGroup(arch.Registers.C);
             m.Assign(
                 dst,
                 op(op(src1, src2), C));
@@ -112,14 +112,14 @@ namespace Reko.Arch.Sparc
             var src1 = RewriteOp(instrCur.Operands[0]);
             var src2 = RewriteOp(instrCur.Operands[1]);
             Identifier tmp = null;
-            if (dst is Identifier && ((Identifier)dst).Storage != Registers.g0)
+            if (dst is Identifier identifier && identifier.Storage != arch.Registers.g0)
             {
                 tmp = binder.CreateTemporary(dst.DataType);
                 m.Assign(tmp, m.IAdd(src1, src2));
             }
-            for (int i = 0; i < Registers.OutRegisters.Length; ++i)
+            for (int i = 0; i < arch.Registers.OutRegisters.Length; ++i)
             {
-                Copy(Registers.InRegisters[i], Registers.OutRegisters[i]);
+                Copy(arch.Registers.InRegisters[i], arch.Registers.OutRegisters[i]);
             }
 
             if (tmp != null)
@@ -134,14 +134,14 @@ namespace Reko.Arch.Sparc
             var src1 = RewriteOp(instrCur.Operands[0]);
             var src2 = RewriteOp(instrCur.Operands[1]);
             Identifier tmp = null;
-            if (((Identifier)dst).Storage != Registers.g0)
+            if (((Identifier)dst).Storage != arch.Registers.g0)
             {
                 tmp = binder.CreateTemporary(dst.DataType);
                 m.Assign(tmp, m.IAdd(src1, src2));
             }
-            for (int i = 0; i < Registers.InRegisters.Length; ++i)
+            for (int i = 0; i < arch.Registers.InRegisters.Length; ++i)
             {
-                Copy(Registers.OutRegisters[i], Registers.InRegisters[i]);
+                Copy(arch.Registers.OutRegisters[i], arch.Registers.InRegisters[i]);
             }
             if (tmp != null)
             {
@@ -160,7 +160,7 @@ namespace Reko.Arch.Sparc
         private void RewriteSethi()
         {
             var rDst = (RegisterOperand)instrCur.Operands[1];
-            if (rDst.Register == Registers.g0)
+            if (rDst.Register == arch.Registers.g0)
             {
                 m.Nop();
             }

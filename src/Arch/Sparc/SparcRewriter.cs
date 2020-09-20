@@ -61,7 +61,7 @@ namespace Reko.Arch.Sparc
 
         private IEnumerable<SparcInstruction> CreateDisassemblyStream(EndianImageReader rdr)
         {
-            return new SparcDisassembler(arch, rdr);
+            return new SparcDisassembler(arch, arch.Decoder, rdr);
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

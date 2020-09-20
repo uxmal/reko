@@ -32,12 +32,16 @@ using System.Text;
 
 namespace Reko.Arch.Sparc
 {
+    using Decoder = Decoder<SparcDisassembler, Mnemonic, SparcInstruction>;
+
     public class SparcArchitecture : ProcessorArchitecture
     {
-        private Dictionary<uint, FlagGroupStorage> flagGroups;
-        public SparcArchitecture(IServiceProvider services, string archId, Registers registers, PrimitiveType wordWidth) : base(services, archId)
+        private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
+
+        public SparcArchitecture(IServiceProvider services, string archId, Registers registers, Decoder rootDecoder, PrimitiveType wordWidth) : base(services, archId)
         {
             this.Registers = registers;
+            this.Decoder = rootDecoder;
             this.Endianness = EndianServices.Big;
             this.WordWidth = wordWidth;
             this.PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.BitSize);
@@ -49,11 +53,13 @@ namespace Reko.Arch.Sparc
 
         public Registers Registers { get; }
 
+        public Decoder Decoder { get; }
+
         #region IProcessorArchitecture Members
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new SparcDisassembler(this, imageReader);
+            return new SparcDisassembler(this, Decoder, imageReader);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
@@ -223,9 +229,10 @@ namespace Reko.Arch.Sparc
     public class SparcArchitecture32 : SparcArchitecture
     {
         private static readonly Registers registers = new Registers(PrimitiveType.Word32);
+        private static readonly Decoder rootDecoder = InstructionSet.Create32BitDecoder();
 
-        public SparcArchitecture32(IServiceProvider services, string archId) : 
-            base(services, archId, registers, PrimitiveType.Word32)
+        public SparcArchitecture32(IServiceProvider services, string archId) :
+            base(services, archId, registers, rootDecoder, PrimitiveType.Word32)
         {
         }
     }
@@ -233,9 +240,10 @@ namespace Reko.Arch.Sparc
     public class SparcArchitecture64 : SparcArchitecture
     {
         private static readonly Registers registers = new Registers(PrimitiveType.Word64);
+        private static readonly Decoder rootDecoder = InstructionSet.Create64BitDecoder();
 
         public SparcArchitecture64(IServiceProvider services, string archId) : 
-            base(services, archId, registers, PrimitiveType.Word64)
+            base(services, archId, registers, rootDecoder, PrimitiveType.Word64)
         {
         }
     }

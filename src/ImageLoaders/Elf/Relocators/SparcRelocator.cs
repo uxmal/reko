@@ -28,11 +28,11 @@ using System.Text;
 namespace Reko.ImageLoaders.Elf.Relocators
 {
     // https://docs.oracle.com/cd/E23824_01/html/819-0690/chapter6-1235.html
-    public class SparcRelocator : ElfRelocator32
+    public class Sparc32Relocator : ElfRelocator32
     {
         private Dictionary<Address,ImportReference> importReferences;
 
-        public SparcRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
+        public Sparc32Relocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
         }
 
