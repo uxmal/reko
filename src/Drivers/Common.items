@@ -184,6 +184,7 @@ by the PreBuild.targets file.
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Nro\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.Nro.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\OdbgScript\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.OdbgScript.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Omf\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.Omf.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Pef\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.Pef.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Srec\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.Srec.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\VmsExe\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.VmsExe.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\WebAssembly\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.WebAssembly.*" />

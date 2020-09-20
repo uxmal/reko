@@ -1153,6 +1153,10 @@
       <Project>{0e00ed86-372c-4497-85bb-428bdd1c5ccf}</Project>
       <Name>Omf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\Pef\Pef.csproj">
+      <Project>{dc73a1d4-b90a-46ad-8b70-e1712c7ce8a3}</Project>
+      <Name>Pef</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\Srec\Srec.csproj">
       <Project>{6feaf3bb-48d3-4301-9ce5-a1a274db97f5}</Project>
       <Name>Srec</Name>
