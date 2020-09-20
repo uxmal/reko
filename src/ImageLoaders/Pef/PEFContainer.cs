@@ -1,4 +1,5 @@
 using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,17 +9,23 @@ namespace Reko.ImageLoaders.Pef
 {
     public class PEFContainer
     {
-        private readonly ImageReader rdr;
-
         public readonly PEFContainerHeader ContainerHeader;
         private readonly PEFSectionHeader[] sectionHeaders;
         private readonly string?[] sectionNameTable;
 
+        public PEFContainer(PEFContainerHeader hdr, PEFSectionHeader[] secHdrs, string[] sectionNameTable)
+        {
+            this.ContainerHeader = hdr;
+            this.sectionHeaders = secHdrs;
+            this.sectionNameTable = sectionNameTable;
+        }
+
         /////
 
-        public IEnumerable<ImageSegment> GetImageSegments()
+        public IEnumerable<ImageSegment> GetImageSegments(EndianImageReader rdr, Address addrLoad)
         {
-            for(int i=0; i<ContainerHeader.sectionCount; i++)
+            var addr = addrLoad;
+            for (int i=0; i<ContainerHeader.sectionCount; i++)
             {
                 PEFSectionHeader sectionHeader = sectionHeaders[i];
                 
@@ -30,44 +37,49 @@ namespace Reko.ImageLoaders.Pef
                     throw new NotImplementedException();
                 }
 
-                yield return new ImageSegment(
+                if (sectionHeader.defaultAddress != 0)
+                    addr = Address.Ptr32(sectionHeader.defaultAddress);
+                else
+                    addr = addrLoad;
+                var segment = new ImageSegment(
                     sectionNameTable[i] ?? $"seg{sectionHeader.defaultAddress:X8}",
-                    new MemoryArea(new Address32(sectionHeader.defaultAddress), containerData),
-                    sectionHeader.GetAccessMode()
-                );
+                    new MemoryArea(addr, containerData),
+                    sectionHeader.GetAccessMode());
+                yield return segment;
+
+                addrLoad = (segment.Address + containerData.Length).Align(0x1000);
             }
         }
 
-        private PEFContainerHeader ReadContainerHeader() => rdr.ReadStruct<PEFContainerHeader>();
-        private IEnumerable<PEFSectionHeader> ReadSections()
+        private static IEnumerable<PEFSectionHeader> ReadSections(PEFContainerHeader containerHeader, EndianImageReader rdr)
         {
-            for (int i = 0; i < ContainerHeader.sectionCount; i++)
+            for (int i = 0; i < containerHeader.sectionCount; i++)
             {
                 yield return rdr.ReadStruct<PEFSectionHeader>();
             }       
         }
 
-        private IEnumerable<string?> ReadSectionNameTable()
+        private static IEnumerable<string> ReadSectionNameTable(IEnumerable<PEFSectionHeader> sectionHeaders, EndianImageReader rdr)
         {
             long start = rdr.Offset;
 
             return sectionHeaders.Select(hdr =>
             {
                 return hdr.nameOffset == -1
-                    ? null
-                    : rdr.ReadAt(start + hdr.nameOffset, rdr => rdr.ReadCString());
+                    ? "(unnamed)"
+                    : rdr.ReadAt(start + hdr.nameOffset, rdr => rdr.ReadCString(PrimitiveType.Char, Encoding.ASCII).ToString());
             });
         }
 
-        public PEFContainer(ImageReader rdr)
+        public static PEFContainer Load(EndianImageReader rdr)
         {
-            this.rdr = rdr;
-
-            this.ContainerHeader = ReadContainerHeader();
-            if (ContainerHeader.sectionCount == 0)
+            var hdr = rdr.ReadStruct<PEFContainerHeader>();
+            if (hdr.sectionCount == 0)
                 throw new BadImageFormatException($"Binary image has 0 sections.");
-            this.sectionHeaders = ReadSections().ToArray();
-            this.sectionNameTable = ReadSectionNameTable().ToArray();
+            var secHdrs = ReadSections(hdr, rdr).ToArray();
+            var sectionNameTable = ReadSectionNameTable(secHdrs, rdr).ToArray();
+            var result = new PEFContainer(hdr, secHdrs, sectionNameTable);
+            return result;
         }
     }
 }

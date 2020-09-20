@@ -12,18 +12,18 @@ namespace Reko.ImageLoaders.Pef
     /// </summary>
     public class PefLoader : ImageLoader
     {
-        private ImageReader rdr;
         private PEFContainer container;
 
-        public PefLoader(IServiceProvider services, string filename, byte[]rawImage) : base(services, filename, rawImage)
+        public PefLoader(IServiceProvider services, string filename, byte[]rawImage) :
+            base(services, filename, rawImage)
         {
         }
 
-        public override Address PreferredBaseAddress
+        public override Address? PreferredBaseAddress
         {
             get
             {
-                return null;
+                return Address.Ptr32(0x0010_0000);
             }
             set
             {
@@ -31,30 +31,29 @@ namespace Reko.ImageLoaders.Pef
             }
         }
 
-        private void LoadSections()
-        {
-            //this.header.sectionCount
-        }
 
-        private void LoadHeader()
+        private PEFContainer LoadContainer(EndianImageReader rdr)
         {
-            this.container = new PEFContainer(rdr);
+            return PEFContainer.Load(rdr);
         }
 
         public override Program Load(Address? addrLoad)
         {
+            var rdr = new BeImageReader(RawImage, 0);
+            this.container = this.LoadContainer(rdr);
+            Program program = MakeProgram(rdr);
+            return program;
+        }
+
+        private Program MakeProgram(EndianImageReader rdr)
+        {
             var cfgSvc = Services.RequireService<IConfigurationService>();
-
-            rdr = new BeImageReader(RawImage, 0);
-            this.LoadHeader();
-            this.LoadSections();
-
             var arch = GetArchitecture(cfgSvc);
             var platform = GetPlatform(cfgSvc, arch);
 
-            var segments = container.GetImageSegments().ToArray();
+            var segments = container.GetImageSegments(rdr, PreferredBaseAddress!).ToArray();
             var addrBase = segments.Min(s => s.Address);
-            var program = new Program(new SegmentMap(addrBase, container.GetImageSegments().ToArray()), arch, platform);
+            var program = new Program(new SegmentMap(addrBase, segments), arch, platform);
             return program;
         }
 

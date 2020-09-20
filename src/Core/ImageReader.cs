@@ -143,19 +143,6 @@ namespace Reko.Core
             return (sbyte)ReadByte();
         }
 
-        public string ReadCString()
-        {
-            StringBuilder sb = new StringBuilder();
-            byte b;
-            while (true)
-            {
-                b = ReadByte();
-                if (b == 0) break;
-                sb.Append((char)b);
-            }
-            return sb.ToString();
-        }
-
         public byte PeekByte(int offset)
         {
             return bytes[(long)off + offset];
