@@ -362,7 +362,6 @@
     <Compile Include="ImageLoaders\OdbgScript\OllyLangInterpreterTests.cs" />
     <Compile Include="ImageLoaders\OdbgScript\OllyScriptParserTests.cs" />
     <Compile Include="ImageLoaders\Omf\OmfLoaderTests.cs" />
-    <Compile Include="ImageLoaders\Pef\PefLoaderTests.cs" />
     <Compile Include="ImageLoaders\Srec\SrecLoaderTests.cs" />
     <Compile Include="Loading\NullImageLoaderTests.cs" />
     <Compile Include="Loading\SymbolLoadingServiceTests.cs" />
@@ -1225,6 +1224,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\Machine\" />
+    <Folder Include="ImageLoaders\Pef\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

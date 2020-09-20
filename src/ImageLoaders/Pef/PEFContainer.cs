@@ -64,6 +64,8 @@ namespace Reko.ImageLoaders.Pef
             this.rdr = rdr;
 
             this.ContainerHeader = ReadContainerHeader();
+            if (ContainerHeader.sectionCount == 0)
+                throw new BadImageFormatException($"Binary image has 0 sections.");
             this.sectionHeaders = ReadSections().ToArray();
             this.sectionNameTable = ReadSectionNameTable().ToArray();
         }

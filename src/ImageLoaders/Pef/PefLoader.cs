@@ -44,18 +44,47 @@ namespace Reko.ImageLoaders.Pef
         public override Program Load(Address? addrLoad)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            var arch = cfgSvc.GetArchitecture("ppc-be-32");
-            var platform = cfgSvc.GetEnvironment("macOs").Load(Services, arch);
 
             rdr = new BeImageReader(RawImage, 0);
             this.LoadHeader();
             this.LoadSections();
 
-            Address32 addrBase = new Address32(0xdeadbeef);
+            var arch = GetArchitecture(cfgSvc);
+            var platform = GetPlatform(cfgSvc, arch);
 
-
+            var segments = container.GetImageSegments().ToArray();
+            var addrBase = segments.Min(s => s.Address);
             var program = new Program(new SegmentMap(addrBase, container.GetImageSegments().ToArray()), arch, platform);
             return program;
+        }
+
+        private IProcessorArchitecture GetArchitecture(IConfigurationService cfgSvc)
+        {
+            string sArch;
+            switch (this.container.ContainerHeader.architecture)
+            {
+            case OSType.kPowerPCCFragArch: sArch = "ppc-be-32"; break;
+            case OSType.kMotorola68KCFragArch: sArch = "m68k"; break;
+            default: throw new NotSupportedException($"Architecture type {container.ContainerHeader.architecture:X8} is not supported.");
+            }
+            var arch = cfgSvc.GetArchitecture(sArch);
+            if (arch is null)
+                throw new InvalidOperationException($"Unable to load {sArch} architecture.");
+            return arch;
+        }
+
+        private IPlatform GetPlatform(IConfigurationService cfgSvc, IProcessorArchitecture arch)
+        {
+            string sPlatform;
+            switch (this.container.ContainerHeader.architecture)
+            {
+            case OSType.kPowerPCCFragArch: sPlatform = "macOsPpc"; break;
+            case OSType.kMotorola68KCFragArch: sPlatform = "macOs"; break;
+            default: throw new NotSupportedException($"Environment type {container.ContainerHeader.architecture:X8} is not supported.");
+            }
+            var platform = cfgSvc.GetEnvironment(sPlatform).Load(Services, arch);
+            return platform;
+
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)

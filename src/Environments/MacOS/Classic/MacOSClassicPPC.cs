@@ -28,7 +28,8 @@ namespace Reko.Environments.MacOS.Classic
 {
     public class MacOSClassicPPC : Platform
     {
-        public MacOSClassicPPC(IServiceProvider services, IProcessorArchitecture arch, string platformId) : base(services, arch, platformId)
+        public MacOSClassicPPC(IServiceProvider services, IProcessorArchitecture arch) :
+            base(services, arch, "macOsPpc")
         {
         }
 
