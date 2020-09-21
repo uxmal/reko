@@ -178,6 +178,10 @@ namespace Reko.Arch.Sparc
         internal static readonly Mutator<SparcDisassembler> Ah = A(PrimitiveType.Word16);
         internal static readonly Mutator<SparcDisassembler> Aw = A(PrimitiveType.Word32);
         internal static readonly Mutator<SparcDisassembler> Ad = A(PrimitiveType.Word64);
+        internal static readonly Mutator<SparcDisassembler> Asb = A(PrimitiveType.SByte);
+        internal static readonly Mutator<SparcDisassembler> Ash = A(PrimitiveType.Int16);
+        internal static readonly Mutator<SparcDisassembler> Asw = A(PrimitiveType.Int32);
+
 
         // 22-bit immediate value
         internal static bool I(uint wInstr, SparcDisassembler dasm)
@@ -211,8 +215,10 @@ namespace Reko.Arch.Sparc
         internal static readonly Mutator<SparcDisassembler> Mh = M(PrimitiveType.Word16);
         internal static readonly Mutator<SparcDisassembler> Mw = M(PrimitiveType.Word32);
         internal static readonly Mutator<SparcDisassembler> Md = M(PrimitiveType.Word64);
+        internal static readonly Mutator<SparcDisassembler> Mq = M(PrimitiveType.Word128);
         internal static readonly Mutator<SparcDisassembler> Msb = M(PrimitiveType.SByte);
         internal static readonly Mutator<SparcDisassembler> Msh = M(PrimitiveType.Int16);
+        internal static readonly Mutator<SparcDisassembler> Msw = M(PrimitiveType.Int32);
 
         // Register or simm13.
         private static Mutator<SparcDisassembler> R(bool signed)
@@ -227,7 +233,7 @@ namespace Reko.Arch.Sparc
         internal static readonly Mutator<SparcDisassembler> R0 = R(false);
         internal static readonly Mutator<SparcDisassembler> Rs = R(true);
 
-        // Register or uimm5
+        // Register or uimm5/6
         internal static bool S(uint wInstr, SparcDisassembler dasm)
         {
             dasm.ops.Add(GetRegImmOperand(dasm.arch.Registers, wInstr, false, 6));

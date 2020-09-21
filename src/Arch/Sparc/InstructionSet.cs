@@ -49,7 +49,7 @@ namespace Reko.Arch.Sparc
 
         public static Decoder Create64BitDecoder()
         {
-            var iset = new InstructionSet(false);
+            var iset = new InstructionSet(true);
             return iset.CreateDecoder();
         }
 
@@ -58,53 +58,62 @@ namespace Reko.Arch.Sparc
             return new InstrDecoder<SparcDisassembler, Mnemonic, SparcInstruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
-        internal static Decoder Instr(InstrClass iclass, Mnemonic mnemonic, params Mutator<SparcDisassembler>[] mutators)
+        internal static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<SparcDisassembler>[] mutators)
         {
             return new InstrDecoder<SparcDisassembler, Mnemonic, SparcInstruction>(iclass, mnemonic, mutators);
         }
+
+        /// <summary>
+        /// Build a 32- or 64-bit decoder depending on the current 64-bitness.
+        /// </summary>
+        private Decoder Instr64(Decoder decoder64, Decoder decoder32)
+        {
+            return this.is64Bit ? decoder64 : decoder32;
+        }
+
         Decoder CreateDecoder()
         {
-            Decoder invalid = Instr(InstrClass.Invalid, Mnemonic.illegal, nyi);
+            Decoder invalid = Instr(Mnemonic.illegal, InstrClass.Invalid, nyi);
 
             var branchOps = new Decoder[]
             {
                 // 00
-                Instr(CondTransfer, Mnemonic.bn, J),
-                Instr(CondTransfer, Mnemonic.be, J),
-                Instr(CondTransfer, Mnemonic.ble, J),
-                Instr(CondTransfer, Mnemonic.bl, J),
-                Instr(CondTransfer, Mnemonic.bleu, J),
-                Instr(CondTransfer, Mnemonic.bcs, J),
-                Instr(CondTransfer, Mnemonic.bneg, J),
-                Instr(CondTransfer, Mnemonic.bvs, J),
+                Instr(Mnemonic.bn, CondTransfer, J),
+                Instr(Mnemonic.be, CondTransfer, J),
+                Instr(Mnemonic.ble, CondTransfer, J),
+                Instr(Mnemonic.bl, CondTransfer, J),
+                Instr(Mnemonic.bleu, CondTransfer, J),
+                Instr(Mnemonic.bcs, CondTransfer, J),
+                Instr(Mnemonic.bneg, CondTransfer, J),
+                Instr(Mnemonic.bvs, CondTransfer, J),
 
-                Instr(CondTransfer, Mnemonic.ba, J),
-                Instr(CondTransfer, Mnemonic.bne, J),
-                Instr(CondTransfer, Mnemonic.bg, J),
-                Instr(CondTransfer, Mnemonic.bge, J),
-                Instr(CondTransfer, Mnemonic.bgu, J),
-                Instr(CondTransfer, Mnemonic.bcc, J),
-                Instr(CondTransfer, Mnemonic.bpos, J),
-                Instr(CondTransfer, Mnemonic.bvc, J),
+                Instr(Mnemonic.ba, CondTransfer, J),
+                Instr(Mnemonic.bne, CondTransfer, J),
+                Instr(Mnemonic.bg, CondTransfer, J),
+                Instr(Mnemonic.bge, CondTransfer, J),
+                Instr(Mnemonic.bgu, CondTransfer, J),
+                Instr(Mnemonic.bcc, CondTransfer, J),
+                Instr(Mnemonic.bpos, CondTransfer, J),
+                Instr(Mnemonic.bvc, CondTransfer, J),
 
                 // 10
-                Instr(CondTransfer, Mnemonic.fbn, J),
-                Instr(CondTransfer, Mnemonic.fbne, J),
-                Instr(CondTransfer, Mnemonic.fblg, J),
-                Instr(CondTransfer, Mnemonic.fbul, J),
-                Instr(CondTransfer, Mnemonic.fbug, J),
-                Instr(CondTransfer, Mnemonic.fbg, J),
-                Instr(CondTransfer, Mnemonic.fbu, J),
-                Instr(CondTransfer, Mnemonic.fbug, J),
+                Instr(Mnemonic.fbn, CondTransfer, J),
+                Instr(Mnemonic.fbne, CondTransfer, J),
+                Instr(Mnemonic.fblg, CondTransfer, J),
+                Instr(Mnemonic.fbul, CondTransfer, J),
+                Instr(Mnemonic.fbug, CondTransfer, J),
+                Instr(Mnemonic.fbg, CondTransfer, J),
+                Instr(Mnemonic.fbu, CondTransfer, J),
+                Instr(Mnemonic.fbug, CondTransfer, J),
 
-                Instr(CondTransfer, Mnemonic.fba, J),
-                Instr(CondTransfer, Mnemonic.fbe, J),
-                Instr(CondTransfer, Mnemonic.fbue, J),
-                Instr(CondTransfer, Mnemonic.fbge, J),
-                Instr(CondTransfer, Mnemonic.fbuge, J),
-                Instr(CondTransfer, Mnemonic.fble, J),
-                Instr(CondTransfer, Mnemonic.fbule, J),
-                Instr(CondTransfer, Mnemonic.fbo, J),
+                Instr(Mnemonic.fba, CondTransfer, J),
+                Instr(Mnemonic.fbe, CondTransfer, J),
+                Instr(Mnemonic.fbue, CondTransfer, J),
+                Instr(Mnemonic.fbge, CondTransfer, J),
+                Instr(Mnemonic.fbuge, CondTransfer, J),
+                Instr(Mnemonic.fble, CondTransfer, J),
+                Instr(Mnemonic.fbule, CondTransfer, J),
+                Instr(Mnemonic.fbo, CondTransfer, J),
 
                 // 20
                 Instr(Mnemonic.cbn, J),
@@ -147,13 +156,13 @@ namespace Reko.Arch.Sparc
 
             var decoders_0 = new Decoder[]
             {
-                Instr(InstrClass.Invalid, Mnemonic.unimp),
-                Instr(InstrClass.Invalid, Mnemonic.illegal),
+                Instr(Mnemonic.unimp, InstrClass.Invalid),
+                Instr(Mnemonic.illegal, InstrClass.Invalid),
                 new BranchDecoder(branchOps, 0x00),
-                Instr(InstrClass.Invalid, Mnemonic.illegal),
+                Instr(Mnemonic.illegal, InstrClass.Invalid),
 
                 Instr(Mnemonic.sethi, I,r25),
-                Instr(InstrClass.Invalid, Mnemonic.illegal),
+                Instr(Mnemonic.illegal, InstrClass.Invalid),
                 new BranchDecoder(branchOps, 0x10),
                 new BranchDecoder(branchOps, 0x20)
             };
@@ -218,12 +227,20 @@ namespace Reko.Arch.Sparc
                 Instr(Mnemonic.orn, r14,R0,r25),
                 Instr(Mnemonic.xnor, r14,R0,r25),
 
-                Instr(Mnemonic.addx, r14,R0,r25),
-                invalid,
+                Instr64(
+                    Instr(Mnemonic.addc, r14,R0,r25),
+                    Instr(Mnemonic.addx, r14,R0,r25)),
+                Instr64(
+                    Instr(Mnemonic.mulx, r14,R0,r25),
+                    invalid),
                 Instr(Mnemonic.umul, r14,R0,r25),
                 Instr(Mnemonic.smul, r14,R0,r25),
-                Instr(Mnemonic.subx, r14,R0,r25),
-                invalid,
+                Instr64(
+                    Instr(Mnemonic.subc, r14,R0,r25),
+                    Instr(Mnemonic.subx, r14,R0,r25)),
+                Instr64(
+                    Instr(Mnemonic.udivx, r14,R0,r25),
+                    invalid),
                 Instr(Mnemonic.udiv, r14,R0,r25),
                 Instr(Mnemonic.sdiv, r14,R0,r25),
 
@@ -237,11 +254,15 @@ namespace Reko.Arch.Sparc
                 Instr(Mnemonic.orncc, r14,R0,r25),
                 Instr(Mnemonic.xnorcc, r14,R0,r25),
 
-                Instr(Mnemonic.addxcc, r14,R0,r25),
+                Instr64(
+                    Instr(Mnemonic.addccc, r14,R0,r25),
+                    Instr(Mnemonic.addxcc, r14,R0,r25)),
                 invalid,
                 Instr(Mnemonic.umulcc, r14,R0,r25),
                 Instr(Mnemonic.smulcc, r14,R0,r25),
-                Instr(Mnemonic.subxcc, r14,R0,r25),
+                Instr64(
+                    Instr(Mnemonic.subxcc, r14,R0,r25),
+                    Instr(Mnemonic.subxcc, r14,R0,r25)),
                 invalid,
                 Instr(Mnemonic.udivcc, r14,R0,r25),
                 Instr(Mnemonic.sdivcc, r14,R0,r25),
@@ -252,87 +273,160 @@ namespace Reko.Arch.Sparc
                 Instr(Mnemonic.taddcctv, r14,R0,r25),
                 Instr(Mnemonic.tsubcctv, r14,R0,r25),
                 Instr(Mnemonic.mulscc, r14,R0,r25),
-                Instr(Mnemonic.sll, r14,S,r25),
-                Instr(Mnemonic.srl, r14,S,r25),
-                Instr(Mnemonic.sra, r14,S,r25),
+                Instr64(
+                    SparcDisassembler.Mask(12, 1, "  sll",
+                        Instr(Mnemonic.sll, r14,S,r25),
+                        Instr(Mnemonic.sllx, r14,S,r25)),
+                    Instr(Mnemonic.sll, r14,S,r25)),
+                Instr64(
+                    SparcDisassembler.Mask(12, 1, "  srl",
+                        Instr(Mnemonic.srl, r14,S,r25),
+                        Instr(Mnemonic.srlx, r14,S,r25)),
+                    Instr(Mnemonic.srl, r14,S,r25)),
+                Instr64(
+                    SparcDisassembler.Mask(12, 1, "  sra",
+                        Instr(Mnemonic.sra, r14,S,r25),
+                        Instr(Mnemonic.srax, r14,S,r25)),
+                    Instr(Mnemonic.sra, r14,S,r25)),
 
-                Instr(Mnemonic.rd, ry,r25),
-                Instr(Mnemonic.rdpsr, nyi),
-                Instr(Mnemonic.rdtbr, nyi),
-                invalid,
-                invalid,
-                invalid,
-                invalid,
-                invalid,
+                Instr64(
+                    Instr(Mnemonic.rd, ry,r25), // ****
+                    Instr(Mnemonic.rd, ry,r25)),
+                Instr64(
+                    invalid,
+                    Instr(Mnemonic.rdpsr, nyi)),
+                Instr64(
+                    Instr(Mnemonic.rdpr, InstrClass.System, nyi),
+                    Instr(Mnemonic.rdtbr, nyi)),
+                Instr64(
+                    Instr(Mnemonic.flushw, nyi),
+                    invalid),
+
+                Instr64(
+                    Instr(Mnemonic.movcc, nyi),
+                    invalid),
+                Instr64(
+                    Instr(Mnemonic.sdivx, r14,R0,r25),
+                    invalid),
+                Instr64(
+                    Instr(Mnemonic.popc, R0,r25),
+                    invalid),
+                Instr64(
+                    Instr(Mnemonic.movr, nyi),
+                    invalid),
 
                 // 30
-                Instr(Mnemonic.wrasr, nyi),
-                Instr(Mnemonic.wrpsr, nyi),
-                Instr(Mnemonic.wrwim, nyi),
-                Instr(Mnemonic.wrtbr, nyi),
+                Instr(Mnemonic.wrasr, nyi), // ****
+                Instr64(
+                    SparcDisassembler.Sparse(25, 5, "  31", invalid,
+                        (0, Instr(Mnemonic.saved, nyi)),
+                        (1, Instr(Mnemonic.restored, nyi))),
+                    Instr(Mnemonic.wrpsr, nyi)),
+                Instr64(
+                    Instr(Mnemonic.wrpr, InstrClass.System, nyi),
+                    Instr(Mnemonic.wrwim, nyi)),
+                Instr64(
+                    invalid,
+                    Instr(Mnemonic.wrtbr, nyi)),
+
                 SparcDisassembler.Sparse(5, 9, "  FOp1", invalid, fpDecoders),
                 SparcDisassembler.Sparse(5, 9, "  FOp2", invalid, fpDecoders),
                 SparcDisassembler.Sparse(4, 9, "  CPop1", invalid, fpDecoders),
                 SparcDisassembler.Sparse(4, 9, "  CPop2", invalid, fpDecoders),
 
                 Instr(Mnemonic.jmpl, r14,Rs,r25),
-                Instr(Mnemonic.rett, r14,Rs ),
+                Instr64(
+                    Instr(Mnemonic.@return, nyi),
+                    Instr(Mnemonic.rett, r14,Rs)),
                 new BranchDecoder(branchOps, 0x30),
                 Instr(Mnemonic.flush),
                 Instr(Mnemonic.save, r14,R0,r25),
                 Instr(Mnemonic.restore, r14,R0,r25),
-                invalid,
+                Instr64(
+                    SparcDisassembler.Sparse(25, 5, "  31", invalid,
+                        (0, Instr(Mnemonic.done, nyi)),
+                        (1, Instr(Mnemonic.retry, nyi))),
+                    invalid),
                 invalid,
             };
 
             var decoders_3 = new Decoder[]
             {
                 // 00
-                Instr(Mnemonic.ld, Mw,r25),
+                Instr64(
+                    Instr(Mnemonic.lduw, Mw,r25),
+                    Instr(Mnemonic.ld, Mw,r25)),
                 Instr(Mnemonic.ldub, Mb,r25),
                 Instr(Mnemonic.lduh, Mh,r25),
                 Instr(Mnemonic.ldd, Md,r25),
-                Instr(Mnemonic.st, r25,Mw),
+                Instr64(
+                    Instr(Mnemonic.stw, r25,Mw),
+                    Instr(Mnemonic.st, r25,Mw)),
                 Instr(Mnemonic.stb, r25,Mb),
                 Instr(Mnemonic.sth, r25,Mh),
                 Instr(Mnemonic.std, r25,Md),
 
-                invalid,
+                Instr64(
+                    Instr(Mnemonic.ldsw, Msw,r25),
+                    invalid),
                 Instr(Mnemonic.ldsb, Msb,r25),
                 Instr(Mnemonic.ldsh, Msh,r25),
-                invalid,
+                Instr64(
+                    Instr(Mnemonic.ldx, Md,r25),
+                    invalid),
                 invalid,
                 Instr(Mnemonic.ldstub, nyi),
-                invalid,
+                Instr64(
+                    Instr(Mnemonic.stx, r25,Md),
+                    invalid),
                 Instr(Mnemonic.swap, Mw,r25),
 
                 // 10
-                Instr(Mnemonic.lda, Aw,r25),
+                Instr64(
+                    Instr(Mnemonic.ldua, Aw,r25),
+                    Instr(Mnemonic.lda, Aw,r25)),
                 Instr(Mnemonic.lduba, Ab,r25),
                 Instr(Mnemonic.lduha, Ah,r25),
                 Instr(Mnemonic.ldda, Ad,r25),
-                Instr(Mnemonic.sta, r25,Aw),
+                Instr64(
+                    Instr(Mnemonic.stwa, r25,Aw),
+                    Instr(Mnemonic.sta, r25,Aw)),
                 Instr(Mnemonic.stba, r25,Ab),
                 Instr(Mnemonic.stha, r25,Ah),
                 Instr(Mnemonic.stda, r25,Ad),
 
-                invalid,
-                Instr(Mnemonic.ldsba, r25,Ab),
-                Instr(Mnemonic.ldsha, r25,Ah),
-                invalid,
+                Instr64(
+                    Instr(Mnemonic.ldswa, r25,Asw),
+                    invalid),
+                Instr(Mnemonic.ldsba, r25,Asb),
+                Instr(Mnemonic.ldsha, r25,Ash),
+                Instr64(
+                    Instr(Mnemonic.ldxa, r25,Ad),
+                    invalid),
+                
                 invalid,
                 Instr(Mnemonic.ldstuba, Ab,r25),
-                invalid,
+                Instr64(
+                    Instr(Mnemonic.stxa, r25,Ad),
+                    invalid),
                 Instr(Mnemonic.swapa, Aw,r25),
 
                 // 20
                 Instr(Mnemonic.ldf,   Mw,f24),
-                Instr(Mnemonic.ldfsr, Mw,rfsr),
-                invalid,
+                Instr64(
+                    Instr(Mnemonic.ldxfsr, Md,rfsr),
+                    Instr(Mnemonic.ldfsr, Mw,rfsr)),
+                Instr64(
+                    Instr(Mnemonic.ldqf, Mq,f24),
+                    invalid),
                 Instr(Mnemonic.lddf, Md,f24),
                 Instr(Mnemonic.stf, f24,Mw),
-                Instr(Mnemonic.stfsr, rfsr,Mw),
-                Instr(Mnemonic.stdfq),
+                Instr64(
+                    Instr(Mnemonic.stxfsr, rfsr,Md),
+                    Instr(Mnemonic.stfsr, rfsr,Mw)),
+                Instr64(
+                    Instr(Mnemonic.stqf, f24,Mq),
+                    Instr(Mnemonic.stdfq, nyi)),
                 Instr(Mnemonic.stdf, f24,Md),
 
                 invalid,
@@ -340,27 +434,51 @@ namespace Reko.Arch.Sparc
                 invalid,
                 invalid,
                 invalid,
-                invalid,
+                Instr64(
+                    Instr(Mnemonic.prefetch, nyi),
+                    invalid),
                 invalid,
                 invalid,
 
                 // 30
-                Instr(Mnemonic.ldc),
-                Instr(Mnemonic.ldcsr),
-                invalid,
-                Instr(Mnemonic.lddc, nyi),
-                Instr(Mnemonic.stc, nyi),
-                Instr(Mnemonic.stcsr, nyi),
-                Instr(Mnemonic.stdcq, nyi),
-                Instr(Mnemonic.stdc, nyi),
+                Instr64(
+                    Instr(Mnemonic.ldfa, nyi),
+                    Instr(Mnemonic.ldc)),
+                Instr64(
+                    invalid,
+                    Instr(Mnemonic.ldcsr)),
+                Instr64(
+                    Instr(Mnemonic.ldqfa, nyi),
+                    invalid),
+                Instr64(
+                    Instr(Mnemonic.lddfa, nyi),
+                    Instr(Mnemonic.lddc, nyi)),
+                Instr64(
+                    Instr(Mnemonic.stfa, nyi),
+                    Instr(Mnemonic.stc, nyi)),
+                Instr64(
+                    invalid,
+                    Instr(Mnemonic.stcsr, nyi)),
+                Instr64(
+                    Instr(Mnemonic.stqfa, nyi),
+                    Instr(Mnemonic.stdcq, nyi)),
+                Instr64(
+                    Instr(Mnemonic.stdfa, nyi),
+                    Instr(Mnemonic.stdc, nyi)),
 
                 invalid,
                 invalid,
                 invalid,
                 invalid,
-                invalid,
-                invalid,
-                invalid,
+                Instr64(
+                    Instr(Mnemonic.casa, nyi),
+                    invalid),
+                Instr64(
+                    Instr(Mnemonic.prefetcha, nyi),
+                    invalid),
+                Instr64(
+                    Instr(Mnemonic.casxa, nyi),
+                    invalid),
                 invalid,
             };
 
@@ -390,7 +508,7 @@ namespace Reko.Arch.Sparc
 
             return SparcDisassembler.Mask(30, 2, "SPARC",
                 SparcDisassembler.Mask(22, 3, "  Format 0", decoders_0),
-                Instr(LinkTransfer, Mnemonic.call, JJ),
+                Instr(Mnemonic.call, LinkTransfer, JJ),
                 SparcDisassembler.Mask(19, 6, "  Format 2", decoders_2),
                 SparcDisassembler.Mask(19, 6, "  Format 3", decoders_3));
         }
