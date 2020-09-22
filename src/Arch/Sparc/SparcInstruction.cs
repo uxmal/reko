@@ -31,19 +31,40 @@ namespace Reko.Arch.Sparc
     {
         public Mnemonic Mnemonic { get; set; }
 
-        public override int MnemonicAsInteger => (int)Mnemonic; 
+        public override int MnemonicAsInteger => (int) Mnemonic;
 
         public override string MnemonicAsString => Mnemonic.ToString();
 
         public bool Annul => (InstructionClass & InstrClass.Annul) != 0;
 
+        public Prediction Prediction { get; set; }
+
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteMnemonic(
-                string.Format("{0}{1}",
-                Mnemonic.ToString(),
-                Annul ? ",a" : ""));
-            RenderOperands(writer, options);
+            RenderMnemonic(writer);
+            if (Mnemonic == Mnemonic.@return)
+            {
+                writer.Tab();
+                RenderOperand(Operands[0], writer, options);
+                RenderOperand(Operands[1], writer, options);
+            }
+            else
+            {
+                RenderOperands(writer, options);
+            }
+        }
+
+        private void RenderMnemonic(MachineInstructionWriter writer)
+        {
+            var sb = new StringBuilder();
+            sb.Append(Mnemonic.ToString());
+            if (Annul)
+                sb.Append(",a");
+            if (Prediction == Prediction.NotTaken)
+                sb.Append(",pn");
+            if (Prediction == Prediction.Taken)
+                sb.Append(",pt");
+            writer.WriteMnemonic(sb.ToString());
         }
 
         protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
@@ -58,11 +79,13 @@ namespace Reko.Arch.Sparc
                 return;
             }
         }
+    }
 
-        [Flags]
-        public enum Flags
-        {
-            Annul = 1,
-        }
+    [Flags]
+    public enum Prediction
+    {
+        None = 0,
+        NotTaken = 1,
+        Taken = 2,
     }
 }

@@ -89,7 +89,7 @@ namespace Reko.Arch.Sparc
             var src = RewriteMemOp(instrCur.Operands[0], size);
             if (size.Size < dst.DataType.Size)
             {
-                size = (size.Domain == Domain.SignedInt) ? PrimitiveType.Int32 : PrimitiveType.Word32;
+                size = PrimitiveType.Create(size.Domain, dst.DataType.BitSize);
                 src = m.Convert(src, src.DataType, size);
             }
             m.Assign(dst, src);

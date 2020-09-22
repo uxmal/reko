@@ -44,6 +44,7 @@ namespace Reko.Arch.Sparc
             this.Decoder = rootDecoder;
             this.Endianness = EndianServices.Big;
             this.WordWidth = wordWidth;
+            this.SignedWord = PrimitiveType.Create(Domain.SignedInt, wordWidth.BitSize);
             this.PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.BitSize);
             this.StackRegister = Registers.sp;
             this.FramePointerType = PointerType;
@@ -89,6 +90,8 @@ namespace Reko.Arch.Sparc
 
         // Sparc uses a link register
         public override int ReturnAddressOnStack => 0;
+
+        public DataType SignedWord { get; }
 
         public override SortedList<string, int> GetMnemonicNames()
         {

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -42,6 +43,7 @@ namespace Reko.Arch.Sparc
         private readonly List<MachineOperand> ops;
         private Address addr;
         private SparcInstruction instrCur;
+        private Prediction pred;
 
         public SparcDisassembler(SparcArchitecture arch, Decoder rootDecoder, EndianImageReader imageReader)
         {
@@ -57,6 +59,7 @@ namespace Reko.Arch.Sparc
             if (!imageReader.TryReadBeUInt32(out uint wInstr))
                 return null;
             ops.Clear();
+            pred = Prediction.None;
             instrCur = rootDecoder.Decode(wInstr, this);
             instrCur.Address = addr;
             instrCur.Length = 4;
@@ -70,6 +73,7 @@ namespace Reko.Arch.Sparc
             {
                 InstructionClass = iclass,
                 Mnemonic = mnemonic,
+                Prediction = pred,
                 Operands = this.ops.ToArray()
             };
         }
@@ -190,10 +194,23 @@ namespace Reko.Arch.Sparc
             return true;
         }
 
-        internal static bool J(uint wInstr, SparcDisassembler dasm)
+        internal static bool J22(uint wInstr, SparcDisassembler dasm)
         {
+            dasm.ops.Add(GetAddressOperand(dasm.imageReader.Address, wInstr, 22));
+            return true;
+        }
 
-            dasm.ops.Add(GetAddressOperand(dasm.imageReader.Address, wInstr));
+        internal static bool J19(uint wInstr, SparcDisassembler dasm)
+        {
+            dasm.ops.Add(GetAddressOperand(dasm.imageReader.Address, wInstr, 19));
+            return true;
+        }
+
+        private static readonly Bitfield[] bf20_2_0_16 = Bf((20, 2), (0, 16));
+        internal static bool J2_16(uint wInstr, SparcDisassembler dasm)
+        {
+            int offset = Bitfield.ReadSignedFields(bf20_2_0_16, wInstr) << 2;
+            dasm.ops.Add(new AddressOperand(dasm.imageReader.Address + (offset - 4)));
             return true;
         }
 
@@ -226,7 +243,7 @@ namespace Reko.Arch.Sparc
             return (u, d) =>
             {
                 // if 's', return a signed immediate operand where relevant.
-                d.ops.Add(GetRegImmOperand(d.arch.Registers, u, signed, 13));
+                d.ops.Add(d.GetRegImmOperand(d.arch.Registers, u, signed, 13));
                 return true;
             };
         }
@@ -236,14 +253,14 @@ namespace Reko.Arch.Sparc
         // Register or uimm5/6
         internal static bool S(uint wInstr, SparcDisassembler dasm)
         {
-            dasm.ops.Add(GetRegImmOperand(dasm.arch.Registers, wInstr, false, 6));
+            dasm.ops.Add(dasm.GetRegUImmOperand(dasm.arch.Registers, wInstr, 6));
             return true;
         }
 
         // trap number
         internal static bool T(uint wInstr, SparcDisassembler dasm)
         {
-            dasm.ops.Add(GetRegImmOperand(dasm.arch.Registers, wInstr, false, 7));
+            dasm.ops.Add(dasm.GetRegImmOperand(dasm.arch.Registers, wInstr, false, 7));
             return true;
         }
 
@@ -262,9 +279,9 @@ namespace Reko.Arch.Sparc
             return imm | mask;
         }
 
-        private static AddressOperand GetAddressOperand(Address addr, uint wInstr)
+        private static AddressOperand GetAddressOperand(Address addr, uint wInstr, int bitLength)
         {
-            int offset = SignExtend(wInstr, 22) << 2;
+            int offset = SignExtend(wInstr, bitLength) << 2;
             return new AddressOperand(addr + (offset - 4));
         }
 
@@ -306,7 +323,7 @@ namespace Reko.Arch.Sparc
             return new RegisterOperand(registers.GetFpuRegister(reg));
         }
 
-        private static MachineOperand GetRegImmOperand(Registers registers, uint wInstr, bool signed, int bits)
+        private MachineOperand GetRegImmOperand(Registers registers, uint wInstr, bool signed, int bits)
         {
             if ((wInstr & (1 << 13)) != 0)
             {
@@ -314,10 +331,24 @@ namespace Reko.Arch.Sparc
                 int imm = (int) wInstr & ((1 << bits) - 1);
                 int mask = (0 - (imm & (1 << (bits - 1)))) << 1;
                 imm |= mask;
-                return new ImmediateOperand(
-                    signed
-                        ? Constant.Int32(imm)
-                        : Constant.Word32(imm));
+                Constant c = signed
+                    ? Constant.Create(arch.SignedWord, (long) imm)
+                    : Constant.Create(arch.WordWidth, (long) imm);
+                return new ImmediateOperand(c);
+            }
+            else
+            {
+                return new RegisterOperand(registers.GetRegister(wInstr & 0x1Fu));
+            }
+        }
+        
+        private MachineOperand GetRegUImmOperand(Registers registers, uint wInstr, int bits)
+        {
+            if ((wInstr & (1 << 13)) != 0)
+            {
+                // Sign-extend the bastard.
+                uint imm = wInstr & ((1u << bits) - 1);
+                return new ImmediateOperand(Constant.Create(this.arch.WordWidth, imm));
             }
             else
             {
@@ -331,5 +362,12 @@ namespace Reko.Arch.Sparc
             return new ImmediateOperand(Constant.Word32(imm));
         }
 
+        internal static bool Pred(uint wInstr, SparcDisassembler dasm)
+        {
+            dasm.pred = Bits.IsBitSet(wInstr, 19)
+                ? Prediction.Taken
+                : Prediction.NotTaken;
+            return true;
+        }
     }
 }

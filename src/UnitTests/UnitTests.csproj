@@ -184,6 +184,8 @@
     <Compile Include="Arch\Pdp11\Assembler\Pdp11TextAssemblerTests.cs" />
     <Compile Include="Arch\PowerPC\PowerPcDisassemblerTests.Xenon.cs" />
     <Compile Include="Arch\PowerPC\PowerPcEmulatorTests.cs" />
+    <Compile Include="Arch\Sparc\Sparc64DisassemblerTests.cs" />
+    <Compile Include="Arch\Sparc\Sparc64RewriterTests.cs" />
     <Compile Include="Arch\SuperH\SuperHArchitectureTests.cs" />
     <Compile Include="Arch\UnitTestGenerationService.cs" />
     <Compile Include="Arch\X86\Assembler\AssembleFragmentTests.cs" />

@@ -57,6 +57,14 @@ namespace Reko.Arch.Sparc
             }
         }
 
+        private void RewriteBranchReg(Func<Expression, Expression> fn)
+        {
+            var rtlClass = instrCur.InstructionClass;
+            this.iclass = rtlClass;
+            var reg = RewriteRegister(instrCur.Operands[0]);
+            m.Branch(fn(reg), ((AddressOperand) instrCur.Operands[1]).Address, rtlClass);
+        }
+
         private void RewriteCall()
         {
             iclass = InstrClass.Transfer | InstrClass.Call;

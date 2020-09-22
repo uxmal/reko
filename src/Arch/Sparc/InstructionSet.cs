@@ -78,63 +78,165 @@ namespace Reko.Arch.Sparc
             var branchOps = new Decoder[]
             {
                 // 00
-                Instr(Mnemonic.bn, CondTransfer, J),
-                Instr(Mnemonic.be, CondTransfer, J),
-                Instr(Mnemonic.ble, CondTransfer, J),
-                Instr(Mnemonic.bl, CondTransfer, J),
-                Instr(Mnemonic.bleu, CondTransfer, J),
-                Instr(Mnemonic.bcs, CondTransfer, J),
-                Instr(Mnemonic.bneg, CondTransfer, J),
-                Instr(Mnemonic.bvs, CondTransfer, J),
+                Instr(Mnemonic.bn, CondTransfer, J22),
+                Instr(Mnemonic.be, CondTransfer, J22),
+                Instr(Mnemonic.ble, CondTransfer, J22),
+                Instr(Mnemonic.bl, CondTransfer, J22),
+                Instr(Mnemonic.bleu, CondTransfer, J22),
+                Instr(Mnemonic.bcs, CondTransfer, J22),
+                Instr(Mnemonic.bneg, CondTransfer, J22),
+                Instr(Mnemonic.bvs, CondTransfer, J22),
 
-                Instr(Mnemonic.ba, CondTransfer, J),
-                Instr(Mnemonic.bne, CondTransfer, J),
-                Instr(Mnemonic.bg, CondTransfer, J),
-                Instr(Mnemonic.bge, CondTransfer, J),
-                Instr(Mnemonic.bgu, CondTransfer, J),
-                Instr(Mnemonic.bcc, CondTransfer, J),
-                Instr(Mnemonic.bpos, CondTransfer, J),
-                Instr(Mnemonic.bvc, CondTransfer, J),
+                Instr(Mnemonic.ba, CondTransfer, J22),
+                Instr(Mnemonic.bne, CondTransfer, J22),
+                Instr(Mnemonic.bg, CondTransfer, J22),
+                Instr(Mnemonic.bge, CondTransfer, J22),
+                Instr(Mnemonic.bgu, CondTransfer, J22),
+                Instr(Mnemonic.bcc, CondTransfer, J22),
+                Instr(Mnemonic.bpos, CondTransfer, J22),
+                Instr(Mnemonic.bvc, CondTransfer, J22),
 
                 // 10
-                Instr(Mnemonic.fbn, CondTransfer, J),
-                Instr(Mnemonic.fbne, CondTransfer, J),
-                Instr(Mnemonic.fblg, CondTransfer, J),
-                Instr(Mnemonic.fbul, CondTransfer, J),
-                Instr(Mnemonic.fbug, CondTransfer, J),
-                Instr(Mnemonic.fbg, CondTransfer, J),
-                Instr(Mnemonic.fbu, CondTransfer, J),
-                Instr(Mnemonic.fbug, CondTransfer, J),
+                Instr(Mnemonic.fbn, CondTransfer, J22),
+                Instr(Mnemonic.fbne, CondTransfer, J22),
+                Instr(Mnemonic.fblg, CondTransfer, J22),
+                Instr(Mnemonic.fbul, CondTransfer, J22),
+                Instr(Mnemonic.fbug, CondTransfer, J22),
+                Instr(Mnemonic.fbg, CondTransfer, J22),
+                Instr(Mnemonic.fbu, CondTransfer, J22),
+                Instr(Mnemonic.fbug, CondTransfer, J22),
 
-                Instr(Mnemonic.fba, CondTransfer, J),
-                Instr(Mnemonic.fbe, CondTransfer, J),
-                Instr(Mnemonic.fbue, CondTransfer, J),
-                Instr(Mnemonic.fbge, CondTransfer, J),
-                Instr(Mnemonic.fbuge, CondTransfer, J),
-                Instr(Mnemonic.fble, CondTransfer, J),
-                Instr(Mnemonic.fbule, CondTransfer, J),
-                Instr(Mnemonic.fbo, CondTransfer, J),
+                Instr(Mnemonic.fba, CondTransfer, J22),
+                Instr(Mnemonic.fbe, CondTransfer, J22),
+                Instr(Mnemonic.fbue, CondTransfer, J22),
+                Instr(Mnemonic.fbge, CondTransfer, J22),
+                Instr(Mnemonic.fbuge, CondTransfer, J22),
+                Instr(Mnemonic.fble, CondTransfer, J22),
+                Instr(Mnemonic.fbule, CondTransfer, J22),
+                Instr(Mnemonic.fbo, CondTransfer, J22),
 
                 // 20
-                Instr(Mnemonic.cbn, J),
-                Instr(Mnemonic.cb123, J),
-                Instr(Mnemonic.cb12, J),
-                Instr(Mnemonic.cb13, J),
-                Instr(Mnemonic.cb1, J),
-                Instr(Mnemonic.cb23, J),
-                Instr(Mnemonic.cb2, J),
-                Instr(Mnemonic.cb3, J),
+                Instr(Mnemonic.cbn, J22),
+                Instr(Mnemonic.cb123, J22),
+                Instr(Mnemonic.cb12, J22),
+                Instr(Mnemonic.cb13, J22),
+                Instr(Mnemonic.cb1, J22),
+                Instr(Mnemonic.cb23, J22),
+                Instr(Mnemonic.cb2, J22),
+                Instr(Mnemonic.cb3, J22),
 
-                Instr(Mnemonic.cba, J),
-                Instr(Mnemonic.cb0, J),
-                Instr(Mnemonic.cb03, J),
-                Instr(Mnemonic.cb02, J),
-                Instr(Mnemonic.cb023, J),
-                Instr(Mnemonic.cb01, J),
-                Instr(Mnemonic.cb013, J),
-                Instr(Mnemonic.cb012, J),
+                Instr(Mnemonic.cba, J22),
+                Instr(Mnemonic.cb0, J22),
+                Instr(Mnemonic.cb03, J22),
+                Instr(Mnemonic.cb02, J22),
+                Instr(Mnemonic.cb023, J22),
+                Instr(Mnemonic.cb01, J22),
+                Instr(Mnemonic.cb013, J22),
+                Instr(Mnemonic.cb012, J22),
 
                 // 30
+                Instr(Mnemonic.tn, r14,T),
+                Instr(Mnemonic.te, r14,T),
+                Instr(Mnemonic.tle, r14,T),
+                Instr(Mnemonic.tl, r14,T),
+                Instr(Mnemonic.tleu, r14,T),
+                Instr(Mnemonic.tcs, r14,T),
+                Instr(Mnemonic.tneg, r14,T),
+                Instr(Mnemonic.tvs, r14,T),
+
+                Instr(Mnemonic.ta, r14,T),
+                Instr(Mnemonic.tne, r14,T),
+                Instr(Mnemonic.tg, r14,T),
+                Instr(Mnemonic.tge, r14,T),
+                Instr(Mnemonic.tgu, r14,T),
+                Instr(Mnemonic.tcc, r14,T),
+                Instr(Mnemonic.tpos, r14,T),
+                Instr(Mnemonic.tvc, r14,T),
+            };
+            var bp_cc = new Decoder[]
+            {
+                // 00
+                Instr(Mnemonic.bn, CondTransfer, Pred, J19),
+                Instr(Mnemonic.be, CondTransfer, Pred, J19),
+                Instr(Mnemonic.ble, CondTransfer, Pred, J19),
+                Instr(Mnemonic.bl, CondTransfer, Pred, J19),
+                Instr(Mnemonic.bleu, CondTransfer, Pred, J19),
+                Instr(Mnemonic.bcs, CondTransfer, Pred, J19),
+                Instr(Mnemonic.bneg, CondTransfer, Pred, J19),
+                Instr(Mnemonic.bvs, CondTransfer, Pred, J19),
+
+                Instr(Mnemonic.ba, CondTransfer, Pred, J19),
+                Instr(Mnemonic.bne, CondTransfer, Pred, J19),
+                Instr(Mnemonic.bg, CondTransfer, Pred, J19),
+                Instr(Mnemonic.bge, CondTransfer, Pred, J19),
+                Instr(Mnemonic.bgu, CondTransfer, Pred, J19),
+                Instr(Mnemonic.bcc, CondTransfer, Pred, J19),
+                Instr(Mnemonic.bpos, CondTransfer, Pred, J19),
+                Instr(Mnemonic.bvc, CondTransfer, Pred, J19),
+            };
+            var bp_bicc = new Decoder[]
+            {
+                Instr(Mnemonic.bn, CondTransfer, J22),
+                Instr(Mnemonic.be, CondTransfer, J22),
+                Instr(Mnemonic.ble, CondTransfer, J22),
+                Instr(Mnemonic.bl, CondTransfer, J22),
+                Instr(Mnemonic.bleu, CondTransfer, J22),
+                Instr(Mnemonic.bcs, CondTransfer, J22),
+                Instr(Mnemonic.bneg, CondTransfer, J22),
+                Instr(Mnemonic.bvs, CondTransfer, J22),
+
+                Instr(Mnemonic.ba, CondTransfer, J22),
+                Instr(Mnemonic.bne, CondTransfer, J22),
+                Instr(Mnemonic.bg, CondTransfer, J22),
+                Instr(Mnemonic.bge, CondTransfer, J22),
+                Instr(Mnemonic.bgu, CondTransfer, J22),
+                Instr(Mnemonic.bcc, CondTransfer, J22),
+                Instr(Mnemonic.bpos, CondTransfer, J22),
+                Instr(Mnemonic.bvc, CondTransfer, J22),
+            };
+            var bp_r = new Decoder[]
+            {
+                invalid,
+                Instr(Mnemonic.brz, CondTransfer, Pred, r14, J2_16),
+                Instr(Mnemonic.brlez, CondTransfer, Pred, r14, J2_16),
+                Instr(Mnemonic.brlz, CondTransfer, Pred, r14, J2_16),
+                invalid,
+                Instr(Mnemonic.brnz, CondTransfer, Pred, r14, J2_16),
+                Instr(Mnemonic.brgz, CondTransfer, Pred, r14, J2_16),
+                Instr(Mnemonic.brgez, CondTransfer, Pred, r14, J2_16),
+
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+                invalid
+            };
+            var fbp_fcc = new Decoder[]
+            {
+                Instr(Mnemonic.fbn, CondTransfer, Pred, J19),
+                Instr(Mnemonic.fbne, CondTransfer, Pred, J19),
+                Instr(Mnemonic.fblg, CondTransfer, Pred, J19),
+                Instr(Mnemonic.fbul, CondTransfer, Pred, J19),
+                Instr(Mnemonic.fbl, CondTransfer, Pred, J19),
+                Instr(Mnemonic.fbug, CondTransfer, Pred, J19),
+                Instr(Mnemonic.fbg, CondTransfer, Pred, J19),
+                Instr(Mnemonic.fbu, CondTransfer, Pred, J19),
+
+                Instr(Mnemonic.fba, CondTransfer, Pred, J19),
+                Instr(Mnemonic.fbe, CondTransfer, Pred, J19),
+                Instr(Mnemonic.fbue, CondTransfer, Pred, J19),
+                Instr(Mnemonic.fbge, CondTransfer, Pred, J19),
+                Instr(Mnemonic.fbuge, CondTransfer, Pred, J19),
+                Instr(Mnemonic.fble, CondTransfer, Pred, J19),
+                Instr(Mnemonic.bpos, CondTransfer, Pred, J19),
+                Instr(Mnemonic.fbo, CondTransfer, Pred, J19),
+            };
+
+            var fb_fcc = new Decoder[]
+            {
                 Instr(Mnemonic.tn, r14,T),
                 Instr(Mnemonic.te, r14,T),
                 Instr(Mnemonic.tle, r14,T),
@@ -157,14 +259,26 @@ namespace Reko.Arch.Sparc
             var decoders_0 = new Decoder[]
             {
                 Instr(Mnemonic.unimp, InstrClass.Invalid),
-                Instr(Mnemonic.illegal, InstrClass.Invalid),
-                new BranchDecoder(branchOps, 0x00),
-                Instr(Mnemonic.illegal, InstrClass.Invalid),
+                Instr64(
+                    new BranchDecoder(bp_cc, 0x00),
+                    invalid),
+                Instr64(
+                    new BranchDecoder(bp_bicc, 0x00),
+                    new BranchDecoder(branchOps, 0x00)),
+                Instr64(
+                    new BranchDecoder(bp_r, 0x00),
+                    invalid),
 
                 Instr(Mnemonic.sethi, I,r25),
-                Instr(Mnemonic.illegal, InstrClass.Invalid),
-                new BranchDecoder(branchOps, 0x10),
-                new BranchDecoder(branchOps, 0x20)
+                Instr64(
+                    new BranchDecoder(fbp_fcc, 0x00),
+                    invalid),
+                Instr64(
+                    new BranchDecoder(fb_fcc, 0x00),
+                    new BranchDecoder(branchOps, 0x10)),
+                Instr64(
+                    invalid,
+                    new BranchDecoder(branchOps, 0x20))
             };
 
             var fpDecoders = new (uint, Decoder)[]
@@ -336,7 +450,7 @@ namespace Reko.Arch.Sparc
 
                 Instr(Mnemonic.jmpl, r14,Rs,r25),
                 Instr64(
-                    Instr(Mnemonic.@return, nyi),
+                    Instr(Mnemonic.@return, r14,Rs),
                     Instr(Mnemonic.rett, r14,Rs)),
                 new BranchDecoder(branchOps, 0x30),
                 Instr(Mnemonic.flush),

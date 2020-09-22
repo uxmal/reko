@@ -172,6 +172,7 @@ namespace Reko.Arch.Sparc
         cbn,
         fbo,
         fbule,
+        fbl,
         fble,
         fbuge,
         fbge,
@@ -265,5 +266,11 @@ namespace Reko.Arch.Sparc
         @return,
         done,
         retry,
+        brz,
+        brlez,
+        brlz,
+        brnz,
+        brgz,
+        brgez,
     }
 }
