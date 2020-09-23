@@ -450,8 +450,8 @@ namespace Reko.Arch.Sparc
 
                 Instr(Mnemonic.jmpl, r14,Rs,r25),
                 Instr64(
-                    Instr(Mnemonic.@return, r14,Rs),
-                    Instr(Mnemonic.rett, r14,Rs)),
+                    Instr(Mnemonic.@return, Transfer|InstrClass.Delay, r14,Rs),
+                    Instr(Mnemonic.rett, Transfer|InstrClass.Delay, r14,Rs)),
                 new BranchDecoder(branchOps, 0x30),
                 Instr(Mnemonic.flush),
                 Instr(Mnemonic.save, r14,R0,r25),

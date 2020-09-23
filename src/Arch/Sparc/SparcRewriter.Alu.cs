@@ -111,6 +111,11 @@ namespace Reko.Arch.Sparc
             var dst = RewriteOp(instrCur.Operands[2]);
             var src1 = RewriteOp(instrCur.Operands[0]);
             var src2 = RewriteOp(instrCur.Operands[1]);
+            RestoreRegisterWindow(dst, src1, src2);
+        }
+
+        private void RestoreRegisterWindow(Expression dst, Expression src1, Expression src2)
+        {
             Identifier tmp = null;
             if (dst is Identifier identifier && identifier.Storage != arch.Registers.g0)
             {

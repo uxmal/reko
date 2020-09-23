@@ -101,6 +101,15 @@ namespace Reko.Arch.Sparc
         {
         }
 
+        private void RewriteReturn()
+        {
+            var dst = RewriteOp(instrCur.Operands[0]);
+            var src1 = RewriteOp(instrCur.Operands[0]);
+            var src2 = RewriteOp(instrCur.Operands[1]);
+            RestoreRegisterWindow(dst, src1, src2);
+            m.Return(0, 0, instrCur.InstructionClass);
+        }
+
         private void RewriteTrap(Expression cond)
         {
             //$REVIEW: does a SPARC trap instruction have a delay slot?

@@ -188,6 +188,7 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.orncc: RewriteAlu(m.Or, true); break;
                 case Mnemonic.restore: RewriteRestore(); break;
                 case Mnemonic.rett: RewriteRett(); break;
+                case Mnemonic.@return: RewriteReturn(); break;
                 case Mnemonic.save: RewriteSave(); break;
                 case Mnemonic.sethi: RewriteSethi(); break;
                 case Mnemonic.sdiv: RewriteAlu(m.SDiv, false); break;
