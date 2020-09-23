@@ -105,28 +105,31 @@ namespace Reko.Scanning
             // $TODO: Issue #471: what about non-x86 architectures, like Sparc or PowerPC,
             // there can be varargs functions where the first N parameters are
             // passed in registers and the remaining are passed on the stack.
-            var stackStorage = formatParam.Storage as StackStorage;
-            if (stackStorage == null)
+            if (formatParam.Storage is StackStorage stackStorage)
+            {
+                var stackAccess = arch.CreateStackAccess(
+                    frame,
+                    stackStorage.StackOffset,
+                    stackStorage.DataType);
+                if (GetValue(stackAccess) is Constant c && c.IsValid)
+                {
+                    var str = ReadCString(c);
+                    if (str != null)
+                        return str;
+                }
+            }
+            else
             {
                 var reg = GetValue(formatParam) as Address;
                 if (reg != null)
                 {
-                    return ReadCString(reg);
+                    var str = ReadCString(reg);
+                    if (str != null)
+                        return str;
                 }
-                WarnUnableToDetermineFormatString(addrInstr, callee);
-                return null;
             }
-            var stackAccess = arch.CreateStackAccess(
-                frame,
-                stackStorage.StackOffset,
-                stackStorage.DataType);
-            var c = GetValue(stackAccess) as Constant;
-            if (c == null || !c.IsValid)
-            {
-                WarnUnableToDetermineFormatString(addrInstr, callee);
-                return null;
-            }
-            return ReadCString(c);
+            WarnUnableToDetermineFormatString(addrInstr, callee);
+            return null;
         }
 
         private void WarnUnableToDetermineFormatString(Address addrInstr, Expression callee)
@@ -139,17 +142,18 @@ namespace Reko.Scanning
                 callee);
         }
 
-        private string ReadCString(Constant cAddr)
+        private string? ReadCString(Constant cAddr)
         {
             var addr = program.Platform.MakeAddressFromConstant(cAddr, false)!;
             return ReadCString(addr);
         }
 
-        private string ReadCString(Address addr)
+        private string? ReadCString(Address addr)
         {
             if (!program.SegmentMap.IsValidAddress(addr))
-                throw new ApplicationException(
-                    string.Format("Varargs: invalid address: {0}", addr));
+            {
+                return null;
+            }
             var rdr = program.CreateImageReader(program.Architecture, addr);
             var c = rdr.ReadCString(PrimitiveType.Char, program.TextEncoding);
             return c.ToString();
