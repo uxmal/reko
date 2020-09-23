@@ -215,8 +215,9 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_NONE: return null; // No machine
             case ElfMachine.EM_SPARC:
             case ElfMachine.EM_SPARC32PLUS:
-            case ElfMachine.EM_SPARCV9:
                 arch = "sparc32"; break;
+            case ElfMachine.EM_SPARCV9:
+                arch = "sparc64"; break;
             case ElfMachine.EM_386: arch = "x86-protected-32"; break;
             case ElfMachine.EM_X86_64: arch = "x86-protected-64"; break;
             case ElfMachine.EM_68K: arch = "m68k"; break;

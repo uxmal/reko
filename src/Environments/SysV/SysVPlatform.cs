@@ -71,6 +71,7 @@ namespace Reko.Environments.SysV
             case "ppc-le-64":
                 return new PowerPc64CallingConvention(Architecture);
             case "sparc32":
+            case "sparc64":
                 return new SparcCallingConvention(Architecture);
             case "x86-protected-32":
                 if (this.ccX86 == null)

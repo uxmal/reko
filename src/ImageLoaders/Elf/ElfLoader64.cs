@@ -141,6 +141,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_ALPHA: return new AlphaRelocator(this, symbols);
             case ElfMachine.EM_S390: return new zSeriesRelocator(this, symbols);
             case ElfMachine.EM_PARISC: return new PaRiscRelocator(this, symbols);
+            case ElfMachine.EM_SPARCV9: return new Sparc64Relocator(this, symbols);
             }
             return base.CreateRelocator(machine, symbols);
         }

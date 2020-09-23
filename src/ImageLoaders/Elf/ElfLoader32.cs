@@ -152,7 +152,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_MSP430: return new Msp430Relocator(this, imageSymbols);
             case ElfMachine.EM_PPC: return new PpcRelocator(this, imageSymbols);
             case ElfMachine.EM_SPARC32PLUS:
-            case ElfMachine.EM_SPARC: return new SparcRelocator(this, imageSymbols);
+            case ElfMachine.EM_SPARC: return new Sparc32Relocator(this, imageSymbols);
             case ElfMachine.EM_XTENSA: return new XtensaRelocator(this, imageSymbols);
             case ElfMachine.EM_68K: return new M68kRelocator(this, imageSymbols);
             case ElfMachine.EM_AVR: return new AvrRelocator(this, imageSymbols);
