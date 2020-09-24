@@ -350,6 +350,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             arch.Setup(a => a.Name).Returns("FakeArchBe");
             this.tlSvc = new Mock<ITypeLibraryLoaderService>(); 
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
             cfgSvc.Setup(d => d.GetArchitecture("x86-protected-32")).Returns(arch.Object);
             cfgSvc.Setup(d => d.GetEnvironment("elf-neutral")).Returns(new PlatformDefinition
             {

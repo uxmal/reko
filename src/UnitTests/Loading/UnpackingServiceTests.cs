@@ -72,6 +72,7 @@ namespace Reko.UnitTests.Loading
             diagSvc = new Mock<IDiagnosticsService>();
             sc.AddService<IFileSystemService>(fsSvc.Object);
             sc.AddService<IDiagnosticsService>(diagSvc.Object);
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
         }
 
         void Given_File(string name, byte[] content)

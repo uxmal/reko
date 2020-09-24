@@ -32,7 +32,7 @@ namespace Reko.Core.Services
         public Type GetType(string fullyQualifiedTypeName)
         {
             var components = fullyQualifiedTypeName.Split(',');
-            if (components.Length != 2)
+            if (components.Length < 2)
                 throw new ApplicationException($"reko.config contains malformed type name {fullyQualifiedTypeName}.");
             var dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var asmName = Path.Combine(dir, (components[1].Trim() + ".dll"));

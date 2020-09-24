@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Loading
             sc.AddService<IConfigurationService>(cfgSvc.Object);
             sc.AddService<IFileSystemService>(fsSvc.Object);
             sc.AddService<DecompilerEventListener>(eventListener.Object);
-
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
         }
 
         [Test]
