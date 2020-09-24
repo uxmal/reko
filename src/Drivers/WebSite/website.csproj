@@ -1,21 +1,20 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(ProjectDir)..\Common.items" />
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
   <PropertyGroup>
-    <ProjectGuid>{0D35C524-CA16-4C68-80CD-538897144B47}</ProjectGuid>
-    <AssemblyName>Reko.WebSite</AssemblyName>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <OutputType>Library</OutputType>
     <RootNamespace>Reko.WebSite</RootNamespace>
-    <TargetFrameworkVersion>netcoreapp3.1</TargetFrameworkVersion>
-    <Platforms>x86;x64</Platforms>
-    <Configurations>Debug;Release;UnixRelease</Configurations>
-    <Use64BitIISExpress />
+    <AssemblyName>Reko.WebSite</AssemblyName>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Resources.Extensions" Version="4.7.1" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj" />
     <ProjectReference Include="..\..\Decompiler\Decompiler.csproj" />
-    <ProjectReference Include="..\..\Native\NativeProxy.csproj" />
   </ItemGroup>
-  <Import Project="$(ProjectDir)..\PreBuild.targets" />
+
+
 </Project>
