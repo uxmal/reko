@@ -24,10 +24,6 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.IO.Compression.FileSystem" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
     <None Include="genPICdb.licenseheader" />
     <None Include="picdb.zip" />

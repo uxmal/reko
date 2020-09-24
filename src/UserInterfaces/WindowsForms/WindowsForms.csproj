@@ -27,22 +27,12 @@
   <ItemGroup>
     <None Remove=".gitignore" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Resources.Extensions" Version="4.7.1" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj" />
     <ProjectReference Include="..\..\Gui\Gui.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-<!-- MSAGL is not compatible with netcoreapp3.1
-    <Reference Include="Microsoft.Msagl">
-      <HintPath>..\..\..\external\Msagl\Microsoft.Msagl.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Msagl.Drawing">
-      <HintPath>..\..\..\external\Msagl\Microsoft.Msagl.Drawing.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Msagl.GraphViewerGdi">
-      <HintPath>..\..\..\external\Msagl\Microsoft.Msagl.GraphViewerGdi.dll</HintPath>
-    </Reference>
--->
-    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 </Project>

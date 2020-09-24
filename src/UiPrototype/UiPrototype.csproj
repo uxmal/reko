@@ -14,6 +14,9 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="System.Resources.Extensions" Version="4.7.1" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Resources.Extensions" />
   </ItemGroup>
   <ItemGroup>

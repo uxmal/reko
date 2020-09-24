@@ -16,10 +16,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Arch\Alpha\Alpha.csproj" />
     <ProjectReference Include="..\..\Arch\Arc\Arc.csproj" />
     <ProjectReference Include="..\..\Arch\Arm\Arm.csproj" />
