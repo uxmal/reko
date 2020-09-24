@@ -46,7 +46,7 @@ l100010A0:
 	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002158<32>, fp - 8<32>, fp - 4<32>)
 	branch eax_17 != 0<32> l100010C8
 l100010C8:
-	return Py_BuildValue(0x1000214C<32>, (int32) ((int64) dwLoc08 / dwLoc04))
+	return Py_BuildValue(0x1000214C<32>, CONVERT(CONVERT(dwLoc08, word32, int64) / dwLoc04, word32, int32))
 l100010C4:
 	return eax_17
 fn100010A0_exit:
@@ -64,7 +64,7 @@ l100010F0:
 	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002160<32>, fp - 8<32>, fp - 4<32>)
 	branch eax_17 != 0<32> l10001118
 l10001118:
-	return Py_BuildValue(0x10002168<32>, (real64) rLoc08 / rLoc04)
+	return Py_BuildValue(0x10002168<32>, CONVERT(rLoc08, real32, real64) / CONVERT(rLoc04, real32, real64))
 l10001114:
 	return eax_17
 fn100010F0_exit:
@@ -334,7 +334,7 @@ l10001455:
 l100013BB:
 	Mem248[ebp_13 - 0x1C<32>:word32] = 0<32>
 l1000147A:
-	Mem253[ebp_13 - 4<32>:word32] = Mem250[ebp_13 - 4<32>:word32] & 0<32>
+	Mem253[ebp_13 - 4<32>:word32] = 0<32>
 	Mem256[ebp_13 - 4<32>:word32] = 0xFFFFFFFE<32>
 	fn10001493()
 	word32 eax_257 = Mem256[ebp_13 - 0x1C<32>:word32]
@@ -399,7 +399,7 @@ l100015FE:
 		uses: Stack +0004:8<32>
 		defs: esp:esp_30
 	word32 ecx_35 = Mem29[esp_30:word32]
-	Mem38[ebp_13 - 4<32>:word32] = Mem29[ebp_13 - 4<32>:word32] & 0<32>
+	Mem38[ebp_13 - 4<32>:word32] = 0<32>
 	Mem43[esp_30:word32] = Mem38[0x100033B4<p32>:word32]
 	Mem45[ebp_13 - 0x1C<32>:word32] = _decode_pointer(Mem43[esp_30:(ptr32 void)])
 	Mem48[esp_30 - 4<i32>:word32] = Mem45[0x100033B0<p32>:word32]
@@ -506,7 +506,7 @@ l100016DE:
 	word32 eax_9 = Mem0[dwArg04 + 0x3C<32>:word32] + dwArg04
 	branch Mem0[eax_9:word32] != 0x4550<32> l100016DB
 l100016EB:
-	return (uint32) (uint8) (Mem0[eax_9 + 0x18<32>:word16] == 0x10B<16>)
+	return CONVERT(CONVERT(Mem0[eax_9 + 0x18<32>:word16] == 0x10B<16>, bool, int8), int8, uint32)
 l100016DB:
 	return 0<32>
 fn100016D0_exit:
@@ -524,9 +524,9 @@ word32 fn10001700(word32 dwArg04, word32 dwArg08, ptr32 & edxOut)
 fn10001700_entry:
 l10001700:
 	word32 ecx_7 = Mem0[dwArg04 + 0x3C<32>:word32] + dwArg04
-	word32 esi_15 = (word32) Mem14[ecx_7 + 6<32>:word16]
+	word32 esi_15 = CONVERT(Mem14[ecx_7 + 6<32>:word16], word16, word32)
 	word32 edx_16 = 0<32>
-	word32 eax_22 = (word32) Mem0[ecx_7 + 0x14<32>:word16] + 0x18<32> + ecx_7
+	word32 eax_22 = CONVERT(Mem0[ecx_7 + 0x14<32>:word16], word16, word32) + 0x18<32> + ecx_7
 	branch esi_15 <=u 0<32> l1000173C
 l1000171E:
 l10001722:
@@ -559,7 +559,7 @@ fn10001742_entry:
 l10001742:
 	word32 eax_59
 	word32 ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, 8<32>)
-	Mem19[ebp_13 - 4<32>:word32] = Mem7[ebp_13 - 4<32>:word32] & 0<32>
+	Mem19[ebp_13 - 4<32>:word32] = 0<32>
 	word32 edx_22 = 0x10000000<p32>
 	word32 dwLoc0C_84 = 0x10000000<p32>
 	branch fn100016D0(0x10000000<p32>) == 0<32> l1000179F
@@ -663,7 +663,7 @@ l10001887:
 	branch (eax_9 & 0xFFFF0000<32>) == 0<32> l10001894
 l10001894:
 	GetSystemTimeAsFileTime(fp - 0xC<32>)
-	word32 esi_46 = dwLoc08 & 0<32> ^ dwLoc0C & 0<32> ^ GetCurrentProcessId() ^ GetCurrentThreadId() ^ GetTickCount()
+	word32 esi_46 = GetCurrentProcessId() ^ GetCurrentThreadId() ^ GetTickCount()
 	QueryPerformanceCounter(fp - 0x14<32>)
 	word32 esi_54 = esi_46 ^ (dwLoc10 ^ dwLoc14)
 	branch esi_54 != 0xBB40E64E<32> l100018DA

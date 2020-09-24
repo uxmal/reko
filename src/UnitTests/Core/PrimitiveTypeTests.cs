@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Core
             var x1 = PrimitiveType.CreateWord(1);
             var x2 = PrimitiveType.CreateWord(1);
 
-            for (int i = 64; i > 0; i--)
+             for (int i = 64; i > 0; i--)
              {
                  try
                  {
@@ -77,10 +77,18 @@ namespace Reko.UnitTests.Core
                  }
                  catch (Exception ex)
                  {
-                     Assert.IsTrue(false, $"CreateWord({i}) failed. Exception={ex.Message}");
+                     Assert.Fail($"CreateWord({i}) failed. Exception={ex.Message}");
                      throw;
                  }
              }
          }
+
+        [Test]
+        public void Pt_SameWord()
+        {
+            var w1 = PrimitiveType.CreateWord(32);
+            var w2 = PrimitiveType.CreateWord(32);
+            Assert.AreSame(w1, w2);
+        }
 	}
 }

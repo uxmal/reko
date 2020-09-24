@@ -49,90 +49,28 @@ namespace Reko.Arch.X86
         public override int MnemonicAsInteger => (int) Mnemonic;
         public override string MnemonicAsString => Mnemonic.ToString();
 
-        private bool NeedsExplicitMemorySize()
-		{
-			if (Mnemonic == Mnemonic.movsx ||
-                Mnemonic == Mnemonic.movzx ||
-                Mnemonic == Mnemonic.movsxd)
-				return true;
-            if (Mnemonic == Mnemonic.lea ||
-                Mnemonic == Mnemonic.lds ||
-                Mnemonic == Mnemonic.les ||
-                Mnemonic == Mnemonic.lfs || 
-                Mnemonic == Mnemonic.lgs || 
-                Mnemonic == Mnemonic.lss)
-                return false;
-            if (Operands.Length >= 2 && Operands[0].Width.Size != Operands[1].Width.Size)
-                return true;
-			return 
-				 (Operands.Length < 1 || !ImplicitWidth(Operands[0])) &&
-				 (Operands.Length < 2 || !ImplicitWidth(Operands[1])) &&
-				 (Operands.Length < 3 || !ImplicitWidth(Operands[2]));
-		}
+
+        public string ToString(string syntax)
+        {
+            var options = new MachineInstructionWriterOptions(syntax: syntax);
+            return base.ToString(options);
+        }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (repPrefix == 3)
-            {
-                writer.WriteMnemonic("rep");
-                writer.WriteChar(' ');
-            }
-            else if (repPrefix == 2)
-            {
-                writer.WriteMnemonic("repne");
-                writer.WriteChar(' ');
-            }
-
-            var s = new StringBuilder(Mnemonic.ToString());
-			switch (Mnemonic)
-			{
-			case Mnemonic.ins:
-			case Mnemonic.outs:
-			case Mnemonic.movs:
-			case Mnemonic.cmps:
-			case Mnemonic.stos:
-			case Mnemonic.lods:
-			case Mnemonic.scas:
-				switch (dataWidth.Size)
-				{
-				case 1: s.Append('b'); break;
-				case 2: s.Append('w'); break;
-				case 4: s.Append('d'); break;
-				case 8: s.Append('q'); break;
-                default: throw new ArgumentOutOfRangeException();
-				}
-				break;
-			}
-			writer.WriteMnemonic(s.ToString());
-
-            if (NeedsExplicitMemorySize())
-            {
-                options |= MachineInstructionWriterOptions.ExplicitOperandSize;
-            }
-            RenderOperands(writer, options);
+            var syntax = ChooseSyntax(options);
+            syntax.Render(this, writer, options);
 		}
 
-        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        private X86AssemblyRenderer ChooseSyntax(MachineInstructionWriterOptions options)
         {
-            if (op is MemoryOperand memOp && memOp.Base == Registers.rip)
+            if (string.IsNullOrEmpty(options.Syntax))
+                return X86AssemblyRenderer.Intel;
+            switch (options.Syntax![0])
             {
-                var addr = this.Address + this.Length + memOp.Offset.ToInt32();
-                if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
-                {
-                    writer.WriteString("[");
-                    writer.WriteAddress(addr.ToString(), addr);
-                    writer.WriteString("]");
-                    writer.AddAnnotation(op.ToString());
-                }
-                else
-                {
-                    op.Write(writer, options);
-                    writer.AddAnnotation(addr.ToString());
-                }
-            }
-            else
-            {
-                op.Write(writer, options);
+            case 'I': case 'i': return X86AssemblyRenderer.Intel;
+            case 'N': case 'n': return X86AssemblyRenderer.Nasm;
+            default: return X86AssemblyRenderer.Intel;
             }
         }
 
@@ -145,10 +83,13 @@ namespace Reko.Arch.X86
 			{
 			case Mnemonic.aaa:
 			case Mnemonic.aas:
+            case Mnemonic.adcx:
 				return FlagM.CF;
 			case Mnemonic.aad:
 			case Mnemonic.aam:
 				return FlagM.SF|FlagM.ZF;
+            case Mnemonic.adox:
+                return FlagM.OF;
 			case Mnemonic.bt:
 			case Mnemonic.bts:
 			case Mnemonic.btc:
@@ -217,7 +158,8 @@ namespace Reko.Arch.X86
 			switch (mnemonic)
 			{
 			case Mnemonic.adc:
-			case Mnemonic.sbb:
+			case Mnemonic.adcx:
+            case Mnemonic.sbb:
 				return FlagM.CF;
 			case Mnemonic.daa:
 			case Mnemonic.das:
@@ -309,11 +251,6 @@ namespace Reko.Arch.X86
 			default:
 				return 0;
 			}
-		}
-
-		private bool ImplicitWidth(MachineOperand op)
-		{
-			return op is RegisterOperand || op is X86AddressOperand || op is FpuOperand;
 		}
 	}
 }

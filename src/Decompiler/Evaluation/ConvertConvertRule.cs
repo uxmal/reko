@@ -24,25 +24,22 @@ using Reko.Core.Types;
 
 namespace Reko.Evaluation
 {
-    public class CastCastRule
+    public class ConvertConvertRule
     {
         private EvaluationContext ctx;
-        private Cast? c;
         private Expression? origExp;
         private PrimitiveType? ptC;
         private PrimitiveType? ptCc;
         private PrimitiveType? ptExp;
 
-        public CastCastRule(EvaluationContext ctx)
+        public ConvertConvertRule(EvaluationContext ctx)
         {
             this.ctx = ctx;
         }
 
-        public bool Match(Cast c)
+        public bool Match(Conversion c)
         {
-            this.c = c;
-            var cc = c.Expression as Cast;
-            if (cc == null)
+            if (!(c.Expression is Conversion cc))
                 return false;
             this.origExp = cc.Expression;
 
@@ -59,10 +56,6 @@ namespace Reko.Evaluation
                 return true;
             }
             // Only match widening / narrowing. 
-            //$TODO: the Cast() class should really not appear
-            // until after type analysis. It should be replaced
-            // by a Convert(dtFrom, dtTo) expression which more
-            // accurately models what is going on.
             if (ptC.Domain != ptCc.Domain || ptC.Domain != ptExp.Domain)
                 return false;
             //$TODO: for now, only eliminate the casts if the 

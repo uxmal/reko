@@ -147,7 +147,7 @@ namespace Reko.UnitTests.Arch.H8
             Given_HexString("1773");
             AssertCode(     // extu.l	er3
                 "0|L--|8000(2): 4 instructions",
-                "1|L--|er3 = (uint32) r3",
+                "1|L--|er3 = CONVERT(r3, word16, uint32)",
                 "2|L--|Z = cond(er3)",
                 "3|L--|N = false",
                 "4|L--|V = false");

@@ -98,7 +98,7 @@ namespace Reko.Arch.SuperH
                     }
                     uAddr += (uint)(memOp.disp + 4);
                     var addr = Core.Address.Ptr32(uAddr);
-                    if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                    if ((options.Flags & MachineInstructionWriterFlags.ResolvePcRelativeAddress) != 0)
                     {
                         writer.WriteChar('(');
                         writer.WriteAddress(addr.ToString(), addr);

@@ -40,8 +40,8 @@ namespace Reko.Environments.C64
     public class C64BasicRewriter : IEnumerable<RtlInstructionCluster> 
     {
         private readonly C64Basic arch;
+        private readonly IDictionary<Address, C64BasicInstruction> instrs;
         private readonly Address address;
-        private readonly SortedList<ushort, C64BasicInstruction> program;
         private readonly IRewriterHost host;
         private readonly StringType strType;
         private RtlEmitter m;
@@ -50,23 +50,33 @@ namespace Reko.Environments.C64
         private byte[] line;
         private int i;
 
-        public C64BasicRewriter(C64Basic arch, Address address, SortedList<ushort, C64BasicInstruction> program, IRewriterHost host)
+        public C64BasicRewriter(
+            C64Basic arch, 
+            Address address, 
+            SortedList<ushort, C64BasicInstruction> lines, 
+            IDictionary<Address, C64BasicInstruction> instrs,
+            IRewriterHost host)
         {
             this.arch = arch;
             this.address = address;
-            this.program = program;
+            this.Lines = lines;
+            this.instrs = instrs; 
             this.host = host;
             this.strType = StringType.LengthPrefixedStringType(PrimitiveType.Char, PrimitiveType.Byte);
         }
 
+        public SortedList<ushort, C64BasicInstruction> Lines { get; }
+
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
-            int i = program.IndexOfKey((ushort)address.ToLinear());
+            if (!instrs.TryGetValue(address, out var instr))
+                yield break;
+            int i = Lines.IndexOfKey(instr.LineNumber);
             if (i < 0)
                 yield break;
-            for (; i < program.Count; ++i)
+            for (; i < Lines.Count; ++i)
             {
-                var line = program.Values[i];
+                var line = Lines.Values[i];
                 yield return GetRtl(line);
             }
         }
@@ -484,7 +494,8 @@ namespace Reko.Environments.C64
                 !GetInteger(out lineNumber))
                 SyntaxError();
             iclass = InstrClass.Transfer | InstrClass.Call;
-            m.Call(Address.Ptr16((ushort)lineNumber), 2);
+            var addr = Lines[(ushort) lineNumber].Address;
+            m.Call(addr, 2);
         }
 
         private void RewriteGoto()
@@ -494,7 +505,8 @@ namespace Reko.Environments.C64
                 !GetInteger(out lineNumber))
                 SyntaxError();
             iclass = InstrClass.Transfer;
-            m.Goto(Address.Ptr16((ushort)lineNumber));
+            var addr = Lines[(ushort) lineNumber].Address;
+            m.Goto(addr);
         }
 
         private void RewriteIf()
@@ -512,7 +524,7 @@ namespace Reko.Environments.C64
                     if (!GetInteger(out int lineNumber))
                         SyntaxError();
                     iclass = InstrClass.ConditionalTransfer;
-                    m.Branch(expr, Address.Ptr16((ushort)lineNumber), InstrClass.ConditionalTransfer);
+                    m.Branch(expr, Lines[(ushort)lineNumber].Address, InstrClass.ConditionalTransfer);
                     return;
                 }
                 var cl = rtlInstructions;
@@ -530,7 +542,7 @@ namespace Reko.Environments.C64
                 if (!GetInteger(out int lineNumber))
                     SyntaxError();
                 iclass = InstrClass.ConditionalTransfer;
-                m.Branch(expr, Address.Ptr16((ushort)lineNumber), InstrClass.ConditionalTransfer);
+                m.Branch(expr, Lines[(ushort) lineNumber].Address, InstrClass.ConditionalTransfer);
                 return;
             }
             throw new NotImplementedException();

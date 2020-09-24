@@ -33,6 +33,8 @@ using System.IO;
 using Reko.Core.Types;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
+using System.ComponentModel.Design;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -54,7 +56,9 @@ namespace Reko.UnitTests.Analysis
 		{
             SetCSignatures(program);
             var dynamicLinker = new Mock<IDynamicLinker>();
-			dfa = new DataFlowAnalysis(program, dynamicLinker.Object, new FakeDecompilerEventListener());
+            var sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            dfa = new DataFlowAnalysis(program, dynamicLinker.Object, sc);
 			dfa.AnalyzeProgram();
 			foreach (Procedure proc in program.Procedures.Values)
 			{
@@ -315,16 +319,16 @@ done:
 
         [Test]
         [Category(Categories.UnitTests)]
-        public void DfaCastCast()
+        public void DfaConvertConvert()
         {
             var m = new ProcedureBuilder();
             var r1 = m.Register("r1");
-            var r2 = m.Register("r2");
+            var r2 = m.Reg64("r2", 2);
             m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
             r1.DataType = PrimitiveType.Real32;
-            r2.DataType = PrimitiveType.Real32;
-            m.Assign(r2, m.Cast(PrimitiveType.Real64, r1));
-            m.MStore(m.Word32(0x123408), m.Cast(PrimitiveType.Real32, r2));
+            r2.DataType = PrimitiveType.Real64;
+            m.Assign(r2, m.Convert(r1, PrimitiveType.Real32, PrimitiveType.Real64));
+            m.MStore(m.Word32(0x123408), m.Convert(r2, PrimitiveType.Real64, PrimitiveType.Real32));
             m.Return();
 
             RunFileTest(m, "Analysis/DfaCastCast.txt");

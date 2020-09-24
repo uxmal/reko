@@ -343,7 +343,7 @@ namespace Reko.UnitTests.Arch.Msp430
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
                 "1|L--|v3 = SLICE(r15, byte, 0)",
-                "2|L--|r15 = (int16) v3",
+                "2|L--|r15 = CONVERT(v3, byte, int16)",
                 "3|L--|V = false",
                 "4|L--|NZC = cond(r15)");
         }

@@ -88,7 +88,7 @@ namespace Reko.Environments.C64
                 Address.Ptr16(selectedFile.LoadAddress),
                 selectedFile.GetBytes());
             var rdr = new C64BasicReader(image, 0x0801);
-            var lines = rdr.ToSortedList(line => (ushort) line.Address.ToLinear(), line => line);
+            var lines = rdr.ToSortedList(line => (ushort) line.LineNumber, line => line);
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch6502 = cfgSvc.GetArchitecture("m6502");
             var arch = new C64Basic(Services, lines);

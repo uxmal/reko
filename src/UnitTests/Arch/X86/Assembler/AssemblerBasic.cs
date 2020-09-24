@@ -365,7 +365,7 @@ foo		endp
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
                 false);
-            Assert.AreEqual("mov\tword ptr [0400],1234", dasm.First().ToString());
+            Assert.AreEqual("mov\tword ptr [0400h],1234h", dasm.First().ToString());
         }
 
         [Test]

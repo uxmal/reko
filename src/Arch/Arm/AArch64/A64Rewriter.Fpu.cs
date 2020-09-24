@@ -32,11 +32,6 @@ namespace Reko.Arch.Arm.AArch64
 {
     public partial class A64Rewriter
     {
-        private Expression Convert(DataType dtDst, DataType dtSrc, Expression src)
-        {
-            return m.Cast(dtDst, m.Cast(dtSrc, src));
-        }
-
         private static PrimitiveType MakeReal(DataType dt)
         {
             return PrimitiveType.Create(Domain.Real, dt.BitSize);
@@ -122,7 +117,7 @@ namespace Reko.Arch.Arm.AArch64
             var src = RewriteOp(instr.Operands[1]);
             var dtDst = MakeReal(dst.DataType);
             var dtSrc = MakeReal(src.DataType);
-            m.Assign(dst, Convert(dtDst, dtSrc, src));
+            m.Assign(dst, m.Convert(src, dtSrc, dtDst));
         }
 
         private Expression RewriteFcvt(Expression src, Domain domain, string f32name, string f64name)
@@ -130,10 +125,9 @@ namespace Reko.Arch.Arm.AArch64
             //$TODO: #include <math.h>
             var dtSrc = MakeReal(src.DataType);
             var dtDst = MakeInteger(domain, instr.Operands[0].Width);
-            var tmp = binder.CreateTemporary(dtSrc);
-            m.Assign(tmp, src);
             var fn = dtSrc.BitSize == 32 ? f32name : f64name;
-            return m.Cast(dtDst, host.PseudoProcedure(fn, dtDst, tmp));
+            src = host.PseudoProcedure(fn, dtDst, src);
+            return m.Convert(src, dtSrc, dtDst);
         }
 
         private void RewriteFcvtms()
@@ -238,7 +232,7 @@ namespace Reko.Arch.Arm.AArch64
                 var src = RewriteOp(instr.Operands[1]);
                 var dtSrc = MakeInteger(domain, src.DataType);
                 var dtDst = MakeReal(dst.DataType);
-                m.Assign(dst, Convert(dtDst, dtSrc, src));
+                m.Assign(dst, m.Convert(src, dtSrc, dtDst));
             }
         }
     }

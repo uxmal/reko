@@ -352,7 +352,7 @@ namespace Reko.Arch.OpenRISC
             Expression mem = Mem(instrCur.Operands[1]);
             if (mem.DataType.BitSize < dtDst.BitSize)
             {
-                mem = m.Cast(dtDst, mem);
+                mem = m.Convert(mem, mem.DataType, dtDst);
             }
             m.Assign(dst, mem);
         }
@@ -369,7 +369,7 @@ namespace Reko.Arch.OpenRISC
             var e = host.CallIntrinsic("__atomic_load_w32", fnType, ea);
             if (mem.DataType.BitSize < dtDst.BitSize)
             {
-                e = m.Cast(dtDst, e);
+                e = m.Convert(e, e.DataType, dtDst);
             }
             m.Assign(dst, e);
         }

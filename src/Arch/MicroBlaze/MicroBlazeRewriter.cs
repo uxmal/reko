@@ -188,7 +188,7 @@ namespace Reko.Arch.MicroBlaze
             {
                 var tmp = binder.CreateTemporary(src.DataType);
                 m.Assign(tmp, src);
-                m.Assign(dst, m.Cast(dst.DataType, tmp));
+                m.Assign(dst, m.Convert(tmp, tmp.DataType, dst.DataType));
             }
             else
             {
@@ -296,12 +296,12 @@ namespace Reko.Arch.MicroBlaze
                 if (regB == Registers.GpRegs[0])
                 {
                     setCy = false;
-                    src = m.Cast(dst.DataType, cy);
+                    src = m.Convert(cy, PrimitiveType.Bool, dst.DataType);
                 }
                 else
                 {
                     src = binder.EnsureRegister(regB);
-                    src = m.IAdd(src, m.Cast(dst.DataType, cy));
+                    src = m.IAdd(src, m.Convert(cy, PrimitiveType.Bool, dst.DataType));
                 }
             }
             else
@@ -309,7 +309,7 @@ namespace Reko.Arch.MicroBlaze
                 if (regB == Registers.GpRegs[0])
                 {
                     src = binder.EnsureRegister(regA);
-                    src = m.IAdd(src, m.Cast(dst.DataType, cy));
+                    src = m.IAdd(src, m.Convert(cy, PrimitiveType.Bool, dst.DataType));
                 }
                 else
                 {
@@ -632,7 +632,7 @@ namespace Reko.Arch.MicroBlaze
         {
             var tmp = binder.CreateTemporary(dt);
             m.Assign(tmp, m.Slice(dt, Reg0(1), 0));
-            m.Assign(Reg(0), m.Cast(PrimitiveType.Int32, tmp));
+            m.Assign(Reg(0), m.Convert(tmp, tmp.DataType, PrimitiveType.Int32));
         }
 
         private void RewriteShift1(Func<Expression, Expression, Expression> fn)

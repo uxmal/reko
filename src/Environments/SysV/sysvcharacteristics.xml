@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <characteristics xmlns="http://schemata.jklnet.org/Decompiler">
   <entry name="abort">
     <characteristics>
@@ -54,5 +54,37 @@
     <characterictics>
       <varargs>Reko.Libraries.Libc.PrintfFormatParser,Reko.Libraries.Libc</varargs>
     </characterictics>
+  </entry>
+  
+  <entry name="scanf">
+    <characteristics>
+      <varargs>Reko.Libraries.Libc.ScanfFormatParser,Reko.Libraries.Libc</varargs>
+    </characteristics>
+  </entry>
+  <entry name="fscanf">
+    <characteristics>
+      <varargs>Reko.Libraries.Libc.ScanfFormatParser,Reko.Libraries.Libc</varargs>
+    </characteristics>
+  </entry>
+  <entry name="sscanf">
+    <characteristics>
+      <varargs>Reko.Libraries.Libc.ScanfFormatParser,Reko.Libraries.Libc</varargs>
+    </characteristics>
+  </entry>
+  <entry name="__isoc99_scanf">
+    <characteristics>
+      <varargs>Reko.Libraries.Libc.ScanfFormatParser,Reko.Libraries.Libc</varargs>
+    </characteristics>
+  </entry>
+
+  <entry name="malloc">
+    <characteristics>
+      <allocator>true</allocator>
+    </characteristics>
+  </entry>
+  <entry name="calloc">
+    <characteristics>
+      <allocator>true</allocator>
+    </characteristics>
   </entry>
 </characteristics>

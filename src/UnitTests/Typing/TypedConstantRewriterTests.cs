@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Typing
 			store.EnsureExpressionTypeVariable(factory, c);
 			c.TypeVariable.DataType = PrimitiveType.Word32;
 			c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
-			Expression e = tcr.Rewrite(c, false);
+			Expression e = tcr.Rewrite(c, null, false);
 			Assert.AreEqual("0x131230<32>" , e.ToString());
 		}
 
@@ -116,7 +116,7 @@ namespace Reko.UnitTests.Typing
 			store.EnsureExpressionTypeVariable(factory, c);
 			c.TypeVariable.DataType = PrimitiveType.Real32;
 			c.TypeVariable.OriginalDataType = c.DataType;
-			Expression e = tcr.Rewrite(c, false);
+			Expression e = tcr.Rewrite(c, null, false);
 			Assert.AreEqual("1.0F", e.ToString());
 		}
 
@@ -128,7 +128,7 @@ namespace Reko.UnitTests.Typing
 			store.EnsureExpressionTypeVariable(factory, c);
 			c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
 			c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
-			Expression e = tcr.Rewrite(c, false);
+			Expression e = tcr.Rewrite(c, null, false);
 			Assert.AreEqual("&g_dw100000", e.ToString());
 		}
 
@@ -140,7 +140,7 @@ namespace Reko.UnitTests.Typing
             store.EnsureExpressionTypeVariable(factory, c);
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
             c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
-            Expression e = tcr.Rewrite(c, false);
+            Expression e = tcr.Rewrite(c, null, false);
             Assert.AreEqual("00000000", e.ToString());
         }
 
@@ -152,7 +152,7 @@ namespace Reko.UnitTests.Typing
             store.EnsureExpressionTypeVariable(factory, c);
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
             c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
-            Expression e = tcr.Rewrite(c, false);
+            Expression e = tcr.Rewrite(c, null, false);
             Assert.AreEqual("(word32 *) 0xFFFFFFFF<32>", e.ToString());
         }
 
@@ -173,7 +173,7 @@ namespace Reko.UnitTests.Typing
             store.EnsureExpressionTypeVariable(factory, c);
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
             c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
-            var e = tcr.Rewrite(c, false);
+            var e = tcr.Rewrite(c, null, false);
             Assert.AreEqual("&g_t100100.r0004", e.ToString());
         }
 
@@ -194,7 +194,7 @@ namespace Reko.UnitTests.Typing
             store.EnsureExpressionTypeVariable(factory, c);
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
             c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
-            var e = tcr.Rewrite(c, true);
+            var e = tcr.Rewrite(c, null, true);
             Assert.AreEqual("g_t100100.dw0000", e.ToString());
         }
 
@@ -235,7 +235,7 @@ namespace Reko.UnitTests.Typing
             var charPtr = new Pointer(PrimitiveType.Char, 32);
             c.TypeVariable.DataType = charPtr;
             c.TypeVariable.OriginalDataType = charPtr;
-            var e = tcr.Rewrite(c, false);
+            var e = tcr.Rewrite(c, null, false);
             Assert.AreEqual("Hello", e.ToString());
             Assert.AreEqual(
                 "(struct (100000 (str char) str100000))",
@@ -257,7 +257,7 @@ namespace Reko.UnitTests.Typing
             var arrayCharPtr = new Pointer(new ArrayType(PrimitiveType.Char, 32), 6);
             c.TypeVariable.DataType = arrayCharPtr;
             c.TypeVariable.OriginalDataType = arrayCharPtr;
-            var e = tcr.Rewrite(c, false);
+            var e = tcr.Rewrite(c, null, false);
             Assert.AreEqual("Hello", e.ToString());
             Assert.AreEqual(
                 "(struct (100000 (str char) str100000))",
@@ -276,7 +276,7 @@ namespace Reko.UnitTests.Typing
             var charPtr = new Pointer(PrimitiveType.Char, 32);
             c.TypeVariable.DataType = charPtr;
             c.TypeVariable.OriginalDataType = charPtr;
-            var e = tcr.Rewrite(c, false);
+            var e = tcr.Rewrite(c, null, false);
             Assert.AreEqual("&g_dw100000", e.ToString());
         }
 
@@ -291,7 +291,7 @@ namespace Reko.UnitTests.Typing
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Real32, 32);
             c.TypeVariable.OriginalDataType = new Pointer(PrimitiveType.Real32, 32);
 
-            var e = tcr.Rewrite(c, false);
+            var e = tcr.Rewrite(c, null, false);
             Assert.AreEqual("&g_r100040", e.ToString());
         }
 
@@ -306,7 +306,7 @@ namespace Reko.UnitTests.Typing
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Char, 32);
             c.TypeVariable.OriginalDataType = new Pointer(PrimitiveType.Char, 32);
 
-            var e = tcr.Rewrite(c, false);
+            var e = tcr.Rewrite(c, null, false);
             Assert.AreEqual("&seg0C00->b0124", e.ToString());
         }
     }

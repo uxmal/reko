@@ -79,7 +79,7 @@ void __do_global_dtors_aux()
 // Preserved: r16 r17 r18 r19 ra sp
 __do_global_dtors_aux_entry:
 l000006F4:
-	branch (word32) Mem19[0x10AF0<32>:byte] != 0<32> l000006F4_ds_t
+	branch CONVERT(Mem19[0x10AF0<32>:byte], byte, word32) != 0<32> l000006F4_ds_t
 l000006F4_ds_t:
 l000006F4_ds_f:
 l0000072C:
@@ -96,7 +96,7 @@ l00000734:
 l00000744:
 	word32 r2_40 = Mem19[0x10AF4<32>:word32]
 	word32 r16_42 = (Mem19[0x10AB0<32>:word32] - 0x10A68<32> >> 2<8>) + -1<i32>
-	branch (word32) (r2_40 <u r16_42) == 0<32> l00000744_ds_t
+	branch CONVERT(r2_40 <u r16_42, bool, word32) == 0<32> l00000744_ds_t
 l00000744_ds_t:
 l00000744_ds_f:
 l00000774:
@@ -108,7 +108,7 @@ l00000774:
 		uses: r2:r2_52,r3:r2_47 << 2<8>,r4:r4_60
 		defs: r4:r4_60
 	r2_40 = Mem50[0x10AF4<32>:word32]
-	branch (word32) (r2_40 <u r16_42) != 0<32> l00000774_ds_t
+	branch CONVERT(r2_40 <u r16_42, bool, word32) != 0<32> l00000774_ds_t
 l00000774_ds_t:
 l00000774_ds_f:
 l000007A0:
@@ -147,7 +147,7 @@ l000007F0:
 	memset(fp + -20<i32>, 0<32>, 5<i32>)
 	word32 r2_38 = calloc(1<i32>, 5<i32>)
 	Mem45[r2_38:word32] = dwLoc14
-	Mem48[r2_38 + 4<32>:byte] = (byte) (word32) bLoc10
+	Mem48[r2_38 + 4<32>:byte] = SLICE(CONVERT(bLoc10, byte, word32), byte, 0)
 	Mem51[r2_38:byte] = 0xC<8>
 	Mem53[r2_38 + 1<32>:word32] = 0<32>
 	r2_43 = r2_38

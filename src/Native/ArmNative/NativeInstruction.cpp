@@ -80,7 +80,7 @@ STDMETHODIMP NativeInstruction::GetInfo(NativeInstructionInfo * info)
 	return S_OK;
 }
 
-STDMETHODIMP NativeInstruction::Render(INativeInstructionWriter * w, MachineInstructionWriterOptions options)
+STDMETHODIMP NativeInstruction::Render(INativeInstructionWriter * w, MachineInstructionWriterFlags options)
 {
 	auto & writer = *w;
 	if (this->instr == nullptr)
@@ -128,7 +128,7 @@ bool NativeInstruction::WriteRegisterSetInstruction(const cs_insn & instr, INati
 	case ARM_INS_LDM:
 	case ARM_INS_STM:
 	case ARM_INS_STMDB:
-		Write(instr, instr.detail->arm.operands[0], writer, MachineInstructionWriterOptions::None);
+		Write(instr, instr.detail->arm.operands[0], writer, MachineInstructionWriterFlags::None);
 		if (instr.detail->arm.writeback)
 			writer.WriteString("!");
 		iStart = 1;
@@ -180,7 +180,7 @@ bool NativeInstruction::WriteRegisterSetInstruction(const cs_insn & instr, INati
 
 static const char *  nosuffixRequired = ".Ee";
 
-void NativeInstruction::Write(const cs_insn & insn, const cs_arm_op & op, INativeInstructionWriter & writer, MachineInstructionWriterOptions options)
+void NativeInstruction::Write(const cs_insn & insn, const cs_arm_op & op, INativeInstructionWriter & writer, MachineInstructionWriterFlags options)
 {
 	char risky[40];
 	switch (op.type)
@@ -222,7 +222,7 @@ void NativeInstruction::Write(const cs_insn & insn, const cs_arm_op & op, INativ
 		{
 			auto uAddr = static_cast<uint32_t>(insn.address + op.mem.disp) + 8u;
 			if (op.mem.index == ARM_REG_INVALID &&
-				((int)options & (int)MachineInstructionWriterOptions::ResolvePcRelativeAddress))
+				((int)options & (int)MachineInstructionWriterFlags::ResolvePcRelativeAddress))
 			{
 				snprintf(risky, sizeof(risky), "%08X", uAddr);
 				writer.WriteChar('[');

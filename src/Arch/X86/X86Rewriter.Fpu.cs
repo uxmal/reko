@@ -44,7 +44,7 @@ namespace Reko.Arch.X86
             Func<Expression,Expression,Expression> op,
             bool fReversed,
             bool fPopStack,
-            DataType cast)
+            Domain? cast)
         {
             switch (instrCur.Operands.Length)
             {
@@ -54,7 +54,16 @@ namespace Reko.Arch.X86
                 {
                     // implicit st(0) operand.
                     var opLeft = FpuRegister(0);
-                    var opRight = MaybeCast(cast, SrcOp(instrCur.Operands[0]));
+                    var opRight = SrcOp(instrCur.Operands[0]);
+                    if (cast.HasValue)
+                    {
+                        opRight.DataType = PrimitiveType.Create(cast.Value, opRight.DataType.BitSize);
+                        opRight = m.Convert(opRight, opRight.DataType, opLeft.DataType);
+                    }
+                    else if (opRight.DataType.BitSize < opLeft.DataType.BitSize)
+                    {
+                        opRight = m.Convert(opRight, opRight.DataType, opLeft.DataType);
+                    }
                     m.Assign(
                         opLeft,
                         op(
@@ -109,15 +118,16 @@ namespace Reko.Arch.X86
         private void RewriteFbstp()
         {
             instrCur.Operands[0].Width = PrimitiveType.Bcd80;
-            m.Assign(SrcOp(instrCur.Operands[0]), m.Cast(instrCur.Operands[0].Width, orw.FpuRegister(0, state)));
+            var src = orw.FpuRegister(0);
+            m.Assign(SrcOp(instrCur.Operands[0]), m.Convert(src, src.DataType, instrCur.Operands[0].Width));
             ShrinkFpuStack(1);
         }
 
         private void EmitFchs()
         {
             m.Assign(
-                orw.FpuRegister(0, state),
-                m.Neg(orw.FpuRegister(0, state)));		//$BUGBUG: should be Real, since we don't know the actual size.
+                orw.FpuRegister(0),
+                m.Neg(orw.FpuRegister(0)));		//$BUGBUG: should be Real, since we don't know the actual size.
         }
 
         private void RewriteFclex()
@@ -169,19 +179,20 @@ namespace Reko.Arch.X86
         private void RewriteFUnary(string name)
         {
             m.Assign(
-                orw.FpuRegister(0, state),
-                host.PseudoProcedure(name, PrimitiveType.Real64, orw.FpuRegister(0, state)));
+                orw.FpuRegister(0),
+                host.PseudoProcedure(name, PrimitiveType.Real64, orw.FpuRegister(0)));
         }
 
         private void RewriteFicom(bool pop)
         {
+            var src = SrcOp(instrCur.Operands[0]);
+            var dtSrc = PrimitiveType.Create(Domain.SignedInt, src.DataType.BitSize);
             m.Assign(
                 orw.AluRegister(Registers.FPUF),
                 m.Cond(
                     m.FSub(
-                        orw.FpuRegister(0, state),
-                        m.Cast(PrimitiveType.Real64,
-                            SrcOp(instrCur.Operands[0])))));
+                        orw.FpuRegister(0),
+                        m.Convert(src, dtSrc, PrimitiveType.Real64))));
             if (pop)
                 ShrinkFpuStack(1);
         }
@@ -191,8 +202,8 @@ namespace Reko.Arch.X86
             GrowFpuStack(1);
             var iType = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
             m.Assign(
-                orw.FpuRegister(0, state),
-                m.Cast(PrimitiveType.Real64, SrcOp(instrCur.Operands[0], iType)));
+                orw.FpuRegister(0),
+                m.Convert(SrcOp(instrCur.Operands[0], iType), iType, PrimitiveType.Real64));
         }
 
         private void RewriteFincstp()
@@ -203,32 +214,44 @@ namespace Reko.Arch.X86
 
         private void RewriteFist(bool pop)
         {
-            instrCur.Operands[0].Width = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
-            m.Assign(SrcOp(instrCur.Operands[0]), m.Cast(instrCur.Operands[0].Width, orw.FpuRegister(0, state)));
+            var src = orw.FpuRegister(0);
+            var dst = SrcOp(instrCur.Operands[0]);
+            dst.DataType = PrimitiveType.Create(Domain.SignedInt, dst.DataType.BitSize);
+            m.Assign(dst, m.Convert(src, src.DataType, dst.DataType));
             if (pop)
                 ShrinkFpuStack(1);
         }
 
         private void RewriteFistt(bool pop)
         {
-            instrCur.Operands[0].Width = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
-            var fpuReg = orw.FpuRegister(0, state);
+            var dtSrc = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
+            instrCur.Operands[0].Width = dtSrc;
+            var fpuReg = orw.FpuRegister(0);
             var trunc = host.PseudoProcedure("trunc", fpuReg.DataType, fpuReg);
-            m.Assign(SrcOp(instrCur.Operands[0]), m.Cast(instrCur.Operands[0].Width, trunc));
+            m.Assign(SrcOp(instrCur.Operands[0]), m.Convert(trunc, trunc.DataType, dtSrc));
             if (pop)
                 ShrinkFpuStack(1);
         }
 
         public void RewriteFld()
         {
+            var src = SrcOp(instrCur.Operands[0]);
+            if (instrCur.Operands[0] is FpuOperand)
+            {
+                // Because we are changing the layout of the FPU stack, we must copy the loaded
+                // value into a temp.
+                var tmp = binder.CreateTemporary(src.DataType);
+                m.Assign(tmp, src);
+                src = tmp;
+            }
             GrowFpuStack(1);
             var dst = FpuRegister(0);
-            var src = SrcOp(instrCur.Operands[0]);
             if (src.DataType.Size != dst.DataType.Size)
             {
-                src = m.Cast(
-                    PrimitiveType.Create(Domain.Real, dst.DataType.BitSize),
-                    src);
+                src = m.Convert(
+                    src,
+                    src.DataType,
+                    PrimitiveType.Create(Domain.Real, dst.DataType.BitSize));
             }
             m.Assign(dst, src);
         }
@@ -316,9 +339,10 @@ namespace Reko.Arch.X86
             Expression dst = SrcOp(instrCur.Operands[0]);
             if (src.DataType.Size != dst.DataType.Size)
             {
-                src = m.Cast(
-                    PrimitiveType.Create(Domain.Real, dst.DataType.BitSize),
-                    src);
+                src = m.Convert(
+                    src,
+                    src.DataType,
+                    PrimitiveType.Create(Domain.Real, dst.DataType.BitSize));
             }
             m.Assign(dst, src);
             if (pop)
@@ -375,7 +399,7 @@ namespace Reko.Arch.X86
             m.Assign(
                 SrcOp(instrCur.Operands[0]),
                 new BinaryExpression(Operator.Shl, PrimitiveType.Word16,
-                        new Cast(PrimitiveType.Word16, orw.AluRegister(Registers.FPUF)),
+                        m.Convert(orw.AluRegister(Registers.FPUF), Registers.FPUF.DataType, PrimitiveType.Word16),
                         Constant.Int16(8)));
         }
 
@@ -391,10 +415,52 @@ namespace Reko.Arch.X86
                     orw.AluRegister(Registers.FPUF));
                 return true;
             }
+            if (nextInstr.Mnemonic == Mnemonic.and)
+            {
+                var acc = nextInstr.Operands[0] as RegisterOperand;
+                var imm = nextInstr.Operands[1] as ImmediateOperand;
+                if (imm == null || acc == null)
+                    return false;
+                int mask = imm.Value.ToInt32();
+                if (acc.Register == Registers.ax || acc.Register == Registers.eax)
+                    mask >>= 8;
+                else if (acc.Register != Registers.ah)
+                    return false;
+                dasm.Skip(1);       // over the 'and'
+                if (!dasm.MoveNext())
+                    return false;
+                nextInstr = dasm.Current;
+                var nextOp = nextInstr.Mnemonic;
+                if (nextOp != Mnemonic.cmp && nextOp != Mnemonic.xor)
+                    return false;
+                acc = nextInstr.Operands[0] as RegisterOperand;
+                imm = nextInstr.Operands[1] as ImmediateOperand;
+                if (imm == null || acc == null)
+                    return false;
+                mask = imm.Value.ToInt32() & mask;
+                if (acc.Register == Registers.ax || acc.Register == Registers.eax)
+                    mask >>= 8;
+                else if (acc.Register != Registers.ah)
+                    return false;
+                dasm.Skip(1);       // over the 'cmp'
+                if (!IgnoreIntermediateInstructions())
+                {
+                    host.Warn(instrCur.Address, "Expected branch instruction after fstsw;and {0},{1}.", acc.Register, imm.Value);
+                    return false;
+                }
+                if (nextOp == Mnemonic.cmp)
+                {
+                    return EvaluateFstswCmpInstructions(acc, imm, mask);
+                }
+                else
+                {
+                    return EvaluateFstswXorInstructions(acc, imm, mask);
+                }
+            }
             if (nextInstr.Mnemonic == Mnemonic.test)
             {
-                RegisterOperand acc = nextInstr.Operands[0] as RegisterOperand;
-                ImmediateOperand imm = nextInstr.Operands[1] as ImmediateOperand;
+                var acc = nextInstr.Operands[0] as RegisterOperand;
+                var imm = nextInstr.Operands[1] as ImmediateOperand;
                 if (imm == null || acc == null)
                     return false;
                 int mask = imm.Value.ToInt32();
@@ -409,92 +475,166 @@ namespace Reko.Arch.X86
 
                 // Advance past the 'test' instruction.
                 dasm.Skip(1);
-                while (dasm.MoveNext())
+                if (!IgnoreIntermediateInstructions())
                 {
-                    instrCur = dasm.Current;
-                    this.len += instrCur.Length;
-
-                    /* fcom/fcomp/fcompp Results:
-                        Condition      C3  C2  C0
-                        ST(0) > SRC     0   0   0
-                        ST(0) < SRC     0   0   1
-                        ST(0) = SRC     1   0   0
-                        Unordered       1   1   1
-
-                       Masks:
-                        Mask   Flags
-                        0x01   C0
-                        0x04   C2
-                        0x40   C3
-                        0x05   C2 and C0
-                        0x41   C3 and C0
-                        0x44   C3 and C2
-
-                      Masks && jump operations:
-                        Mnem   Mask Condition
-                        jpe    0x05    >=
-                        jpe    0x41    >
-                        jpe    0x44    !=
-                        jpo    0x05    <
-                        jpo    0x41    <=
-                        jpo    0x44    =
-                        jz     0x01    >=
-                        jz     0x40    !=
-                        jz     0x41    >
-                        jnz    0x01    <
-                        jnz    0x40    =
-                        jnz    0x41    <=
-                    */
-
-                    switch (instrCur.Mnemonic)
-                    {
-                    //$TODO The following instructions are being added on an ad-hoc
-                    // basis, since they don't affect the x86 flags register.
-                    // The long term fix is to implement an architecture-specific
-                    // condition code elimination pass as described elsewhere.
-                    case Mnemonic.mov: RewriteMov(); break;
-                    case Mnemonic.fstp: RewriteFst(true); break;
-                    case Mnemonic.push: RewritePush(); break;
-                    case Mnemonic.lea: RewriteLea(); break;
-
-                    case Mnemonic.jpe:
-                        if (mask == 0x05) { Branch(ConditionCode.GE, instrCur.Operands[0]); return true; }
-                        if (mask == 0x41) { Branch(ConditionCode.GT, instrCur.Operands[0]); return true; }
-                        if (mask == 0x44) { Branch(ConditionCode.NE, instrCur.Operands[0]); return true; }
-                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} mnemonic.", mask, instrCur.Mnemonic);
-                    case Mnemonic.jpo:
-                        if (mask == 0x44) { Branch(ConditionCode.EQ, instrCur.Operands[0]); return true; }
-                        if (mask == 0x41) { Branch(ConditionCode.LE, instrCur.Operands[0]); return true; }
-                        if (mask == 0x05) { Branch(ConditionCode.LT, instrCur.Operands[0]); return true; }
-                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} mnemonic.", mask, instrCur.Mnemonic);
-                    case Mnemonic.jz:
-                        if (mask == 0x40) { Branch(ConditionCode.NE, instrCur.Operands[0]); return true; }
-                        if (mask == 0x41) { Branch(ConditionCode.GT, instrCur.Operands[0]); return true; }
-                        if (mask == 0x01) { Branch(ConditionCode.GE, instrCur.Operands[0]); return true; }
-                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} mnemonic.", mask, instrCur.Mnemonic);
-                    case Mnemonic.jnz:
-                        if (mask == 0x40) { Branch(ConditionCode.EQ, instrCur.Operands[0]); return true; }
-                        if (mask == 0x41) { Branch(ConditionCode.LE, instrCur.Operands[0]); return true; }
-                        if (mask == 0x01) { Branch(ConditionCode.LT, instrCur.Operands[0]); return true; }
-                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} mnemonic.", mask, instrCur.Mnemonic);
-                    default:
-                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected instruction {0} after fstsw", instrCur);
-                    }
+                    host.Warn(instrCur.Address, "Expected branch instruction after fstsw;test {0},{1}.", acc.Register, imm.Value);
+                    return false;
                 }
-                throw new AddressCorrelatedException(instrCur.Address, "Expected branch instruction after fstsw;test {0},{1}.", acc.Register, imm.Value);
+                return EvaluateFstswTestInstructions(acc, imm, mask);
             }
             return false;
+        }
+
+        private bool IgnoreIntermediateInstructions()
+        {
+            while (dasm.MoveNext())
+            {
+                instrCur = dasm.Current;
+                this.len += instrCur.Length;
+                switch (instrCur.Mnemonic)
+                {
+                //$TODO The following instructions are being added on an ad-hoc
+                // basis, since they don't affect the x86 flags register.
+                // The long term fix is to implement an architecture-specific
+                // condition code elimination pass as described elsewhere.
+                case Mnemonic.mov: RewriteMov(); break;
+                case Mnemonic.fstp: RewriteFst(true); break;
+                case Mnemonic.push: RewritePush(); break;
+                case Mnemonic.lea: RewriteLea(); break;
+                default:
+                    return instrCur.InstructionClass.HasFlag(InstrClass.ConditionalTransfer);
+                }
+            }
+            return false;
+        }
+
+        private bool EvaluateFstswCmpInstructions(RegisterOperand acc, ImmediateOperand imm, int mask)
+        {
+            switch (instrCur.Mnemonic)
+            {
+            case Mnemonic.jz:
+                switch (mask)
+                {
+                case 0x40: Branch(ConditionCode.EQ, instrCur.Operands[0]); return true;
+                }
+                break;
+            }
+            this.host.Warn(instrCur.Address, "Unexpected {0} fstsw;cmp mask for {1} mnemonic.", mask, instrCur.Mnemonic);
+            return false;
+        }
+
+        private bool EvaluateFstswXorInstructions(RegisterOperand acc, ImmediateOperand imm, int mask)
+        {
+            switch (instrCur.Mnemonic)
+            {
+            case Mnemonic.jz:
+                switch (mask)
+                {
+                case 0x40: Branch(ConditionCode.NE, instrCur.Operands[0]); return true;
+                }
+                break;
+            }
+            this.host.Warn(instrCur.Address, "Unexpected {0} fstsw;xor mask for {1} mnemonic.", mask, instrCur.Mnemonic);
+            return false;
+        }
+
+        private bool EvaluateFstswTestInstructions(RegisterOperand acc, ImmediateOperand imm, int mask)
+        {
+            /* fcom/fcomp/fcompp Results:
+                Condition      C3  C2  C0
+                ST(0) > SRC     0   0   0
+                ST(0) < SRC     0   0   1
+                ST(0) = SRC     1   0   0
+                Unordered       1   1   1
+
+               Masks:
+                Mask   Flags
+                0x01   C0
+                0x04   C2
+                0x40   C3
+                0x05   C2 and C0
+                0x41   C3 and C0
+                0x44   C3 and C2
+
+              Masks && jump operations:
+                Mnem   Mask Condition
+                jpe    0x05    >=
+                jpe    0x41    >
+                jpe    0x44    !=
+                jpo    0x05    <
+                jpo    0x41    <=
+                jpo    0x44    =
+                jz     0x01    >=
+                jz     0x40    !=
+                jz     0x41    >
+                jnz    0x01    <
+                jnz    0x40    =
+                jnz    0x41    <=
+            */
+
+
+            switch (instrCur.Mnemonic)
+            {
+            case Mnemonic.jpe:
+                switch (mask)
+                {
+                case 0x05: { Branch(ConditionCode.GE, instrCur.Operands[0]); return true; }
+                case 0x41: { Branch(ConditionCode.GT, instrCur.Operands[0]); return true; }
+                case 0x44: { Branch(ConditionCode.NE, instrCur.Operands[0]); return true; }
+                default:
+                    this.host.Warn(instrCur.Address, "Unexpected {0} fstsw mask for {1} mnemonic.", mask, instrCur.Mnemonic);
+                    return false;
+                }
+            case Mnemonic.jpo:
+                switch (mask)
+                {
+                case 0x44: { Branch(ConditionCode.EQ, instrCur.Operands[0]); return true; }
+                case 0x41: { Branch(ConditionCode.LE, instrCur.Operands[0]); return true; }
+                case 0x05: { Branch(ConditionCode.LT, instrCur.Operands[0]); return true; }
+                default:
+                    this.host.Warn(instrCur.Address, "Unexpected {0} fstsw mask for {1} mnemonic.", mask, instrCur.Mnemonic);
+                    return false;
+                }
+            case Mnemonic.jz:
+                switch (mask)
+                {
+                case 0x40: { Branch(ConditionCode.NE, instrCur.Operands[0]); return true; }
+                case 0x41: { Branch(ConditionCode.GT, instrCur.Operands[0]); return true; }
+                case 0x45: { Branch(ConditionCode.GT, instrCur.Operands[0]); return true; } //$TODO: or unordered.
+                case 0x01: { Branch(ConditionCode.GE, instrCur.Operands[0]); return true; }
+                case 0x05: { Branch(ConditionCode.GE, instrCur.Operands[0]); return true; }   //$TODO: or unordered
+                default:
+                    this.host.Warn(instrCur.Address, "Unexpected {0} fstsw mask for {1} mnemonic.", mask, instrCur.Mnemonic);
+                    return false;
+                }
+            case Mnemonic.jnz:
+                switch (mask)
+                {
+                case 0x40: { Branch(ConditionCode.EQ, instrCur.Operands[0]); return true; }
+                case 0x41: { Branch(ConditionCode.LE, instrCur.Operands[0]); return true; }
+                case 0x45: { Branch(ConditionCode.LE, instrCur.Operands[0]); return true; }  //$TODO: or unordered
+                case 0x01: { Branch(ConditionCode.LT, instrCur.Operands[0]); return true; }
+                case 0x05: { Branch(ConditionCode.LT, instrCur.Operands[0]); return true; }   //$TODO: or unordered
+                default:
+                    this.host.Warn(instrCur.Address, "Unexpected {0} fstsw mask for {1} mnemonic.", mask, instrCur.Mnemonic);
+                    return false;
+                }
+            default:
+                this.host.Warn(instrCur.Address, "Unexpected instruction {0} after fstsw", instrCur);
+                return false;
+            }
         }
 
         private void Branch(ConditionCode code, MachineOperand op)
         {
             this.iclass = InstrClass.ConditionalTransfer;
-            m.Branch(m.Test(code, orw.AluRegister(Registers.FPUF)), OperandAsCodeAddress( op), InstrClass.ConditionalTransfer);
+            m.Branch(m.Test(code, orw.AluRegister(Registers.FPUF)), OperandAsCodeAddress(op)!, InstrClass.ConditionalTransfer);
         }
 
         private void RewriteFtst()
         {
-            m.Assign(orw.FlagGroup(FlagM.CF),
+            m.Assign(
+                orw.FlagGroup(FlagM.CF),
                 m.ISub(FpuRegister(0), Constant.Real64(0.0)));
         }
 
@@ -517,6 +657,11 @@ namespace Reko.Arch.X86
         private void RewriteFxam()
         {
             m.Assign(orw.AluRegister(Registers.FPUF), m.Cond(FpuRegister(0)));
+        }
+
+        private void RewriteFxrstor()
+        {
+            m.SideEffect(host.PseudoProcedure("__fxrstor", VoidType.Instance));
         }
 
         private void RewriteFxtract()
@@ -566,13 +711,21 @@ namespace Reko.Arch.X86
 
         private Expression FpuRegister(int reg)
         {
-            return orw.FpuRegister(reg, state);
+            return orw.FpuRegister(reg);
         }
 
-        public Expression MaybeCast(DataType type, Expression e)
+        public Expression MaybeConvert(DataType? type, Expression e)
         {
             if (type != null)
-                return new Cast(type, e);
+                return m.Convert(e, e.DataType, type);
+            else
+                return e;
+        }
+
+        public Expression MaybeSlice(DataType type, Expression e)
+        {
+            if (type.BitSize < e.DataType.BitSize)
+                return m.Slice(type, e, 0);
             else
                 return e;
         }

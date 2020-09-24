@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -127,6 +127,24 @@ namespace Reko.Arch.Arm.AArch64
             RewriteSimdExpand("__dup_{0}");
         }
 
+        private void RewriteExtr()
+        {
+            var rHi = ((RegisterOperand) instr.Operands[1]).Register;
+            var rLo = ((RegisterOperand) instr.Operands[1]).Register;
+            var opDst = RewriteOp(0);
+            var lsb = ((ImmediateOperand) instr.Operands[3]).Value;
+            if (rHi == rLo) // ROR
+            {
+                var op = binder.EnsureRegister(rHi);
+                m.Assign(opDst, host.PseudoProcedure(PseudoProcedure.Ror, opDst.DataType, op, lsb));
+            }
+            else
+            {
+                var seq = binder.EnsureSequence(PrimitiveType.Word128, rHi, rLo);
+                m.Assign(opDst, m.Slice(opDst.DataType, seq, lsb.ToInt32()));
+            }
+        }
+
         private void RewriteLdN(string fnName)
         {
             var (ea,_) = RewriteEffectiveAddress((MemoryOperand)instr.Operands[1]);
@@ -201,12 +219,12 @@ namespace Reko.Arch.Arm.AArch64
             else if (Registers.IsIntegerRegister(srcReg))
             {
                 var intType = PrimitiveType.Create(Domain.SignedInt, (int)srcReg.BitSize);
-                m.Assign(dst, m.Cast(realType, m.Cast(intType, src)));
+                m.Assign(dst, m.Convert(src, intType, realType));
             }
             else if (instr.vectorData == VectorData.Invalid)
             {
                 var intType = PrimitiveType.Create(Domain.SignedInt, (int)srcReg.BitSize);
-                m.Assign(dst, m.Cast(realType, m.Cast(intType, src)));
+                m.Assign(dst, m.Convert(src, intType, realType));
             }
             else
             {

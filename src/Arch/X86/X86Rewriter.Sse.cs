@@ -62,10 +62,34 @@ namespace Reko.Arch.X86
         {
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ZCP"));
             m.Assign(grf, m.Cond(m.FSub(
-                m.Cast(size, SrcOp(instrCur.Operands[0])),
-                SrcOp(instrCur.Operands[1]))));
+                MaybeSlice(size, SrcOp(instrCur.Operands[0])),
+                MaybeSlice(size, SrcOp(instrCur.Operands[1])))));
             m.Assign(orw.FlagGroup(FlagM.OF), Constant.False());
             m.Assign(orw.FlagGroup(FlagM.SF), Constant.False());
+        }
+
+
+        private void RewriteCmpsd(PrimitiveType size)
+        {
+            var fourOps = instrCur.Operands.Length == 4;
+            var op1 = MaybeSlice(size, SrcOp(fourOps ? 1 : 0));
+            var op2 = MaybeSlice(size, SrcOp(fourOps ? 2 : 1));
+            var opc = ((ImmediateOperand) instrCur.Operands[fourOps ? 3 : 2]).Value.ToUInt32();
+            var dst = SrcOp(0);
+            Expression cmp;
+            switch (opc)
+            {
+            case 0: cmp = m.FEq(op1, op2);break;
+            case 1: cmp = m.FLt(op1, op2); break;
+            case 2: cmp = m.FLe(op1, op2); break;
+            case 3: cmp = host.PseudoProcedure("isunordered", PrimitiveType.Bool, op1, op2); break;
+            default: EmitUnitTest(); iclass = InstrClass.Invalid; m.Invalid(); return;
+            }
+            m.Assign(dst, m.Conditional(
+                dst.DataType, 
+                cmp,
+                Constant.Create(dst.DataType, -1), 
+                Constant.Zero(dst.DataType)));
         }
 
         private void RewriteCvtPackedToReal(PrimitiveType type)
@@ -75,37 +99,51 @@ namespace Reko.Arch.X86
             var src = SrcOp(instrCur.Operands[1]);
 
             var tmp1 = binder.CreateTemporary(dtSrc);
-            m.Assign(tmp1, m.Cast(dtDst, m.Slice(dtSrc, src, 0)));
+            m.Assign(tmp1, m.Convert(m.Slice(dtSrc, src, 0), dtSrc, dtDst));
 
             var tmp2 = binder.CreateTemporary(dtSrc);
-            m.Assign(tmp2, m.Cast(dtDst, m.Slice(dtSrc, src, 32)));
+            m.Assign(tmp2, m.Convert(m.Slice(dtSrc, src, 32), dtSrc, dtDst));
 
             m.Assign(SrcOp(instrCur.Operands[0]), m.Seq(tmp2, tmp1));
         }
-
 
         private void RewriteCvts2si(PrimitiveType floatType)
         {
             instrCur.Operands[0].Width = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
             var src = SrcOp(instrCur.Operands[instrCur.Operands.Length == 3 ? 2 : 1]);
-            m.Assign(SrcOp(instrCur.Operands[0]), m.Cast(instrCur.Operands[0].Width, src));
+            if (src.DataType.BitSize != floatType.BitSize)
+            {
+                src = m.Slice(floatType, src, 0);
+            }
+            m.Assign(SrcOp(instrCur.Operands[0]), m.Convert(src, floatType, instrCur.Operands[0].Width));
         }
 
         private void RewriteCvtts2si(PrimitiveType floatType)
         {
             instrCur.Operands[0].Width = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
-            var src = SrcOp(instrCur.Operands[instrCur.Operands.Length == 3 ? 2 : 1]);
-            m.Assign(SrcOp(instrCur.Operands[0]), m.Cast(instrCur.Operands[0].Width, src));
+            var src = MaybeSlice(floatType, SrcOp(instrCur.Operands[instrCur.Operands.Length == 3 ? 2 : 1]));
+            m.Assign(SrcOp(instrCur.Operands[0]), m.Convert(src, floatType, instrCur.Operands[0].Width));
         }
 
-        private void RewriteCvtToReal(PrimitiveType size)
+        private void RewriteCvtToReal(PrimitiveType dtFrom, PrimitiveType dtTo)
+        {
+            var src = MaybeSlice(dtFrom, SrcOp(instrCur.Operands[instrCur.Operands.Length == 3 ? 2 : 1]));
+            var dst = (Identifier) SrcOp(instrCur.Operands[0]);
+            var tmp = binder.CreateTemporary(dtTo);
+            m.Assign(tmp, m.Convert(src, dtFrom, dtTo));
+            m.Assign(dst, m.Dpb(dst, tmp, 0));
+        }
+
+        private void RewriteCvtIntToReal(PrimitiveType dtDst)
         {
             var src = SrcOp(instrCur.Operands[instrCur.Operands.Length == 3 ? 2 : 1]);
             var dst = (Identifier) SrcOp(instrCur.Operands[0]);
-            var tmp = binder.CreateTemporary(size);
-            m.Assign(tmp, m.Cast(size, src));
+            var tmp = binder.CreateTemporary(dtDst);
+            var dtSrc = PrimitiveType.Create(Domain.SignedInt, src.DataType.BitSize);
+            m.Assign(tmp, m.Convert(src, dtSrc, dtDst));
             m.Assign(dst, m.Dpb(dst, tmp, 0));
         }
+
 
         private void RewriteCvtps2pi(string fnName, DataType dtSrcElem, DataType dtDstElem)
         {
@@ -145,10 +183,10 @@ namespace Reko.Arch.X86
             var src = SrcOp(instrCur.Operands[instrCur.Operands.Length == 3 ? 2 : 1]);
 
             var tmp1 = binder.CreateTemporary(dtDst);
-            m.Assign(tmp1, m.Cast(dtDst, m.Slice(dtSrc, src, 0)));
+            m.Assign(tmp1, m.Convert(m.Slice(dtSrc, src, 0), dtSrc, dtDst));
 
             var tmp2 = binder.CreateTemporary(dtDst);
-            m.Assign(tmp2, m.Cast(dtDst, m.Slice(dtSrc, src, 32)));
+            m.Assign(tmp2, m.Convert(m.Slice(dtSrc, src, 32), dtSrc, dtDst));
 
             m.Assign(SrcOp(instrCur.Operands[0]), m.Seq(tmp2, tmp1));
         }
@@ -172,6 +210,23 @@ namespace Reko.Arch.X86
             m.Assign(dst,
                 host.PseudoProcedure("__maskmovq", dst.DataType,
                     dst, src));
+        }
+
+        private void RewriteMaxMinsd(string fnName, PrimitiveType size, bool zeroExtend)
+        {
+            Expression src1;
+            Expression src2;
+            if (instrCur.Operands.Length == 3)
+            {
+                src1 = MaybeSlice(size, SrcOp(1));
+                src2 = MaybeSlice(size, SrcOp(2));
+            }
+            else
+            {
+                src1 = MaybeSlice(size, SrcOp(0));
+                src2 = MaybeSlice(size, SrcOp(1));
+            }
+            VexAssign(zeroExtend, SrcOp(0), host.PseudoProcedure(fnName, size, src1, src2));
         }
 
         private void RewriteMovlps()
@@ -348,6 +403,17 @@ namespace Reko.Arch.X86
                     SrcOp(instrCur.Operands[1])));
         }
 
+        private void RewritePunpcklqdq()
+        {
+            m.Assign(
+                SrcOp(instrCur.Operands[0]),
+                host.PseudoProcedure(
+                    "__punpcklqdq",
+                    instrCur.Operands[0].Width,
+                    SrcOp(instrCur.Operands[0]),
+                    SrcOp(instrCur.Operands[1])));
+        }
+
         private void RewritePunpcklwd()
         {
             m.Assign(
@@ -388,9 +454,9 @@ namespace Reko.Arch.X86
                 src2 = SrcOp(instrCur.Operands[1]);
             }
             if (src1.DataType.BitSize != size.BitSize)
-                src1 = m.Cast(size, src1);
+                src1 = m.Slice(size, src1, 0);
             if (src2.DataType.BitSize != size.BitSize)
-                src2 = m.Cast(size, src2);
+                src2 = m.Slice(size, src2, 0);
             m.Assign(tmp, fn(src1, src2));
 
             //$REVIEW: this does a DPB-ish operation.
@@ -444,11 +510,11 @@ namespace Reko.Arch.X86
             m.Assign(dst, src);
         }
 
-        private void RewritePackedBinop(string fnName, PrimitiveType elementType, DataType dstType = null)
+        private void RewritePackedBinop(string fnName, PrimitiveType elementType, DataType? dstType = null)
         {
             var dst = SrcOp(instrCur.Operands[0]);
             ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
-            if (dstType == null)
+            if (dstType is null)
                 dstType = arrayType;
             Expression src1;
             Expression src2;
@@ -469,11 +535,11 @@ namespace Reko.Arch.X86
             m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1, tmp2));
         }
 
-        private void RewritePackedShift(string fnName, PrimitiveType elementType, DataType dstType = null)
+        private void RewritePackedShift(string fnName, PrimitiveType elementType, DataType? dstType = null)
         {
             var dst = SrcOp(instrCur.Operands[0]);
             ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
-            if (dstType == null)
+            if (dstType is null)
                 dstType = arrayType;
             Expression src1;
             Expression src2;
@@ -492,11 +558,11 @@ namespace Reko.Arch.X86
             m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1, src2));
         }
 
-        private void RewritePackedTernaryop(string fnName, PrimitiveType elementType, DataType dstType = null)
+        private void RewritePackedTernaryop(string fnName, PrimitiveType elementType, DataType? dstType = null)
         {
             var dst = SrcOp(instrCur.Operands[0]);
             ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
-            if (dstType == null)
+            if (dstType is null)
                 dstType = arrayType;
             Expression src1;
             Expression src2;
@@ -520,7 +586,7 @@ namespace Reko.Arch.X86
             m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1, tmp2, src3));
         }
 
-        private void RewritePackedUnaryop(string fnName, PrimitiveType elementType, DataType dstType = null)
+        private void RewritePackedUnaryop(string fnName, PrimitiveType elementType, DataType? dstType = null)
         {
             var dst = SrcOp(instrCur.Operands[0]);
             ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
@@ -565,6 +631,14 @@ namespace Reko.Arch.X86
         {
             var bitsize = instrCur.Operands[0].Width.BitSize;
             RewritePackedBinop($"__unpckhps{bitsize}", PrimitiveType.Real32);
+        }
+
+        private void RewriteAesenc(bool isVex)
+        {
+            var state = SrcOp(isVex ? 1 : 0);
+            var roundKey = SrcOp(isVex ? 2 : 1);
+            var newState = SrcOp(0);
+            VexAssign(isVex, newState, host.PseudoProcedure("__aesenc", newState.DataType, state, roundKey));
         }
     }
 }

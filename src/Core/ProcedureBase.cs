@@ -48,7 +48,7 @@ namespace Reko.Core
 
 		public abstract FunctionType Signature { get; set; }
 
-		public ProcedureCharacteristics? Characteristics { get; set; }
+		public ProcedureCharacteristics Characteristics { get; set; }
 
         /// <summary>
         /// If this is a member function of a class or struct, this property

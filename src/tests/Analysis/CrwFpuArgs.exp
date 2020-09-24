@@ -8,8 +8,8 @@ void fn0C00_0000(Register selector ds)
 // Mem0:Mem
 // fp:fp
 // sp:sp
-// Top:Top
 // ds:ds
+// Top:Top
 // ss:ss
 // ax:ax
 // SCZO:SCZO
@@ -30,18 +30,18 @@ fn0C00_0000_entry:
 	def Mem0
 	// succ:  l0C00_0000
 l0C00_0000:
-	rLoc1_30 = (real64) Mem0[ds:0x300<16>:real32]
-	rLoc2_31 = (real64) Mem0[ds:0x304<16>:real32]
+	rLoc1_30 = CONVERT(Mem0[ds:0x300<16>:real32], real32, real64)
+	rLoc2_31 = CONVERT(Mem0[ds:0x304<16>:real32], real32, real64)
 	fn0C00_0024(ds, 0x308<16>, rLoc2_31, rLoc1_30)
 	Mem17[ds:0x30C<16>:real32] = 0.0F
 	ax_19 = Mem17[ds:0x308<16>:word16]
 	rRet0_23 = fn0C00_0031(ds, ax_19)
-	Mem26[ds:0x30C<16>:real32] = (real32) rRet0_23
+	Mem26[ds:0x30C<16>:real32] = CONVERT(rRet0_23, word64, real32)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 void fn0C00_0024(Register selector ds, Stack word16 wArg02, FpuStack real64 rArg0, FpuStack real64 rArg1)
-// MayUse:  ds:[0..15] FPU +0:[0..31] FPU +1:[0..31] Stack +0002:[0..15]
+// MayUse:  ds:[0..15] FPU +0:[0..63] FPU +1:[0..63] Stack +0002:[0..15]
 // LiveOut:
 // Trashed: bx Top
 // Preserved: bp sp
@@ -68,8 +68,8 @@ fn0C00_0024_entry:
 	def rArg1
 	// succ:  l0C00_0024
 l0C00_0024:
-	Mem12[ds:wArg02:real32] = (real32) rArg0
-	Mem14[ds:wArg02 + 4<16>:real32] = (real32) rArg1
+	Mem12[ds:wArg02:real32] = CONVERT(rArg0, real64, real32)
+	Mem14[ds:wArg02 + 4<16>:real32] = CONVERT(rArg1, real64, real32)
 	return
 	// succ:  fn0C00_0024_exit
 fn0C00_0024_exit:
@@ -86,8 +86,8 @@ FpuStack real64 fn0C00_0031(Register selector ds, Stack word16 wArg02)
 // bp:bp
 // ss:ss
 // bx:bx
-// Top:Top
 // ds:ds
+// Top:Top
 // wLoc02:Local -0002
 // wArg02:Stack +0002
 // rLoc1:FPU -1
@@ -98,7 +98,7 @@ fn0C00_0031_entry:
 	def wArg02
 	// succ:  l0C00_0031
 l0C00_0031:
-	rLoc1_17 = (real64) Mem7[ds:wArg02:real32]
+	rLoc1_17 = CONVERT(Mem7[ds:wArg02:real32], real32, real64)
 	return rLoc1_17
 	// succ:  fn0C00_0031_exit
 fn0C00_0031_exit:

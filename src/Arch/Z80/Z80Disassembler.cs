@@ -44,31 +44,41 @@ namespace Reko.Arch.Z80
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
         private Address addr;
-        private Z80Instruction instr;
-        private RegisterStorage IndexRegister;
+        //private Z80Instruction instr;
+        private RegisterStorage? IndexRegister;
 
         public Z80Disassembler(Z80ProcessorArchitecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;
+            this.addr = rdr.Address;
             this.ops = new List<MachineOperand>();
         }
 
-        public override Z80Instruction DisassembleInstruction()
+        public override Z80Instruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadByte(out byte op))
                 return null;
 
-            this.instr = new Z80Instruction();
             this.ops.Clear();
             this.IndexRegister = null;
             var decoder = decoders[op];
-            instr = decoder.Decode(op, this);
-            if (instr == null)
-                return CreateInvalidInstruction();
+            var instr = decoder.Decode(op, this);
             instr.Address = this.addr;
             instr.Length = (int)(rdr.Address - addr);
+            this.addr = rdr.Address;
+            return instr;
+        }
+
+        public override Z80Instruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            var instr = new Z80Instruction
+            {
+                InstructionClass = iclass,
+                Mnemonic = mnemonic,
+                Operands = ops.ToArray(),
+            };
             return instr;
         }
 
@@ -131,16 +141,12 @@ namespace Reko.Arch.Z80
 
             public override Z80Instruction Decode(uint op, Z80Disassembler disasm)
             {
-                var instr = disasm.instr;
                 foreach (var m in mutators)
                 {
                     if (!m(op, disasm))
                         return disasm.CreateInvalidInstruction();
                 }
-                instr.InstructionClass = IClass;
-                instr.Mnemonic = Z80mnemonic;
-                instr.Operands = disasm.ops.ToArray();
-                return instr;
+                return disasm.MakeInstruction(IClass, Z80mnemonic);
             }
         }
 
@@ -158,7 +164,6 @@ namespace Reko.Arch.Z80
                 dasm.IndexRegister = this.IndexRegister;
                 if (!dasm.rdr.TryReadByte(out byte op))
                     return dasm.CreateInvalidInstruction();
-                var instr = dasm.instr;
                 if (op == 0xCB)
                 {
                     var offset = dasm.rdr.ReadSByte();
@@ -167,26 +172,17 @@ namespace Reko.Arch.Z80
                     {
                     default: throw new NotImplementedException();
                     case 1:
-                        instr.Mnemonic = Mnemonic.bit;
-                        instr.Operands = new MachineOperand[] {
-                            new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07))),
-                            new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte)
-                        };
-                        return instr;
+                        dasm.ops.Add(new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07))));
+                        dasm.ops.Add(new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte));
+                        return dasm.MakeInstruction(InstrClass.Linear, Mnemonic.bit);
                     case 2:
-                        instr.Mnemonic = Mnemonic.res;
-                        instr.Operands = new MachineOperand[] {
-                            new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07))),
-                            new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte)
-                        };
-                        return instr;
+                        dasm.ops.Add(new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07))));
+                        dasm.ops.Add(new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte));
+                        return dasm.MakeInstruction(InstrClass.Linear, Mnemonic.res);
                     case 3:
-                        instr.Mnemonic = Mnemonic.set;
-                        instr.Operands = new MachineOperand[] {
-                            new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07))),
-                            new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte)
-                        };
-                        return instr;
+                        dasm.ops.Add(new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07))));
+                        dasm.ops.Add(new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte));
+                        return dasm.MakeInstruction(InstrClass.Linear, Mnemonic.set);
                     }
                 }
                 else
@@ -218,31 +214,30 @@ namespace Reko.Arch.Z80
                 if (!dasm.rdr.TryReadByte(out var op))
                     return dasm.CreateInvalidInstruction();
 
-                dasm.instr.InstructionClass = InstrClass.Linear;
+                Mnemonic mnemonic;
                 var y = (byte) ((op >> 3) & 0x07);
                 switch (op >> 6)
                 {
                 default: throw new InvalidOperationException();
                 case 0:
-                    dasm.instr.Mnemonic = cbMnemonics[y];
+                    mnemonic = cbMnemonics[y];
                     break;
                 case 1:
-                    dasm.instr.Mnemonic = Mnemonic.bit;
+                    mnemonic = Mnemonic.bit;
                     dasm.ops.Add(ImmediateOperand.Byte(y));
                     break;
                 case 2:
-                    dasm.instr.Mnemonic = Mnemonic.res;
+                    mnemonic = Mnemonic.res;
                     dasm.ops.Add(ImmediateOperand.Byte(y));
                     break;
                 case 3:
-                    dasm.instr.Mnemonic = Mnemonic.set;
+                    mnemonic = Mnemonic.set;
                     dasm.ops.Add(ImmediateOperand.Byte(y));
                     break;
                 }
                 if (!cbFormats[op & 0x07](op, dasm))
                     return dasm.CreateInvalidInstruction();
-                dasm.instr.Operands = dasm.ops.ToArray();
-                return dasm.instr;
+                return dasm.MakeInstruction(InstrClass.Linear, mnemonic);
             }
         }
 

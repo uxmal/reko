@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -60,7 +60,7 @@ namespace Reko.Arch.Pdp11
             case AddressMode.AutoDecrDef: fmt = "@-({0})"; break;
             case AddressMode.Indexed:
                 if (Register == Registers.pc &&
-                    (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                    (options.Flags & MachineInstructionWriterFlags.ResolvePcRelativeAddress) != 0)
                 {
                     var ea = writer.Address + 4 + EffectiveAddress;
                     writer.WriteAddress("@#" + ea.ToString(), ea);
@@ -70,7 +70,7 @@ namespace Reko.Arch.Pdp11
                 break;
             case AddressMode.IndexedDef:
                 if (Register == Registers.pc &&
-                    (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                    (options.Flags & MachineInstructionWriterFlags.ResolvePcRelativeAddress) != 0)
                 {
                     writer.WriteString("@(");
                     var ea = writer.Address + 4 + EffectiveAddress;

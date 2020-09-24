@@ -1061,6 +1061,11 @@ namespace Reko.ImageLoaders.OdbgScript
                     value = v.str;
                     return true;
                 }
+                else if (v.Address is Address addr)
+                {
+                    value = addr.ToString();
+                    return true;
+                }
                 else if (v.IsInteger())
                 {
                     if (hex8forExec) //For Assemble Command (EXEC/ENDE) ie. "0DEADBEEF"
@@ -1083,6 +1088,16 @@ namespace Reko.ImageLoaders.OdbgScript
                 if (hex8forExec && !char.IsDigit(value[0]))
                     value = '0' + value;
                 return true;
+            }
+            else if (op is Application app && app.Procedure is ProcedureConstant pc)
+            {
+                if (pc.Procedure.Name == "Interpolate")
+                {
+                    value = InterpolateVariables(((StringConstant) app.Arguments[0]).ToString(), false);
+                    return true;
+                }
+                value = null;
+                return false;
             }
             //$TODO: more values.
             /*

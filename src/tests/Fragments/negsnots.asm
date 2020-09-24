@@ -23,4 +23,10 @@
 	neg cx
 	mov [0x306],cx
 	
+	mov eax, [0x310]
+	neg eax
+	sbb eax,eax
+	inc eax
+	mov [0x30C],eax
+
 	ret

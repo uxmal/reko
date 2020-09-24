@@ -34,6 +34,12 @@ namespace Reko.UnitTests.Arch
             this.services = services;
         }
 
+        public string OutputDirectory { get; set; }
+
+        public void RemoveFiles(string filePrefix)
+        {
+        }
+
         public void ReportMissingDecoder(string testPrefix, Address addrStart, EndianImageReader rdr, string message)
         {
             var test = TestGenerationService.GenerateDecoderUnitTest(testPrefix, addrStart, rdr, message);
@@ -44,6 +50,10 @@ namespace Reko.UnitTests.Arch
         {
             var test = TestGenerationService.GenerateRewriterUnitTest(testPrefix, instr, rdr, message);
             Console.WriteLine(test);
+        }
+
+        public void ReportProcedure(string fileName, string testCaption, Procedure proc)
+        {
         }
     }
 }

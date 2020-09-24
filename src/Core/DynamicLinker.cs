@@ -83,7 +83,8 @@ namespace Reko.Core
             if (sProc != null)
             {
                 var loader = program.CreateTypeLibraryDeserializer();
-                ep = loader.LoadExternalProcedure(sProc);
+                var chr = program.LookupCharacteristicsByName(importName);
+                ep = loader.LoadExternalProcedure(sProc, chr);
                 if (ep is null)
                     return null;
                 if (!ep.Signature.ParametersValid)
@@ -124,11 +125,8 @@ namespace Reko.Core
             {
                 if (program.EnvironmentMetadata.Signatures.TryGetValue(importName, out var sig))
                 {
-                    var chr = platform.LookupCharacteristicsByName(importName);
-                    if (chr != null)
-                        return new ExternalProcedure(importName, sig, chr);
-                    else
-                        return new ExternalProcedure(importName, sig);
+                    var chr = program.LookupCharacteristicsByName(importName);
+                    return new ExternalProcedure(importName, sig, chr);
                 }
             }
             if (project.LoadedMetadata.Signatures.TryGetValue(importName, out var signature))

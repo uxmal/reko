@@ -165,6 +165,11 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
+        public ExternalProcedure LookupProcedureByAddress(Address addr)
+        {
+            return null;
+        }
+
         public ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();

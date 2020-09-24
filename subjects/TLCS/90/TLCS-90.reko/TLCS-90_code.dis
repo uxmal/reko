@@ -1002,7 +1002,7 @@ l22A6:
 	Mem7[ix + -4<i16>:byte] = Mem0[ix + -9<i16>:byte]
 	Mem8[ix + -3<i16>:byte] = 0<8>
 	byte v15_21 = Mem8[wArg10 + (wArg05 + 1<i16>):byte]
-	word16 hl_33 = (uint16) (uint8) v15_21 * 8<16> + (uint16) ((uint8) v15_21) + bc
+	word16 hl_33 = CONVERT(v15_21, byte, uint16) * 8<16> + CONVERT(v15_21, byte, uint16) + bc
 	Mem41[ix + -8<i16>:byte] = Mem34[hl_33 + 2<i16>:byte]
 	Mem45[ix + -7<i16>:byte] = Mem41[hl_33 + 3<i16>:byte]
 	fn03AA()
@@ -1022,7 +1022,7 @@ l3E2D:
 	Mem7[ix + -4<i16>:byte] = Mem0[ix + -9<i16>:byte]
 	Mem8[ix + -3<i16>:byte] = 0<8>
 	byte v15_21 = Mem8[wArg10 + (wArg05 + 1<i16>):byte]
-	word16 hl_33 = (uint16) (uint8) v15_21 * 8<16> + (uint16) ((uint8) v15_21) + bc
+	word16 hl_33 = CONVERT(v15_21, byte, uint16) * 8<16> + CONVERT(v15_21, byte, uint16) + bc
 	Mem41[ix + -8<i16>:byte] = Mem34[hl_33 + 2<i16>:byte]
 	Mem45[ix + -7<i16>:byte] = Mem41[hl_33 + 3<i16>:byte]
 	fn03AA()

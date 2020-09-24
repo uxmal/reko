@@ -33,9 +33,9 @@ namespace Reko.Arch.M68k
     public class M68kState : ProcessorState
     {
         const int RegisterCount = 32;
-        private M68kArchitecture arch;
-        private Constant[] values;
-        private bool[] isValid;
+        private readonly M68kArchitecture arch;
+        private readonly Constant[] values;
+        private readonly bool[] isValid;
 
         public M68kState(M68kArchitecture arch)
         {
@@ -98,7 +98,7 @@ namespace Reko.Arch.M68k
             return new CallSite(returnAddressSize, 0);
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
 

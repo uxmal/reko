@@ -519,5 +519,65 @@ namespace Reko.UnitTests.Structure
                 });
             });
         }
+
+        [Test]
+        public void Flr_ConvertingLoopVariable()
+        {
+            var sExp =
+            #region Expected
+@"test()
+{
+    for (i = 0; CONVERT(i, int32, real32) <= arg; i = i + 1)
+        foo(i);
+}
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var i = Id("i", PrimitiveType.Int32);
+                var arg = Id("arg", PrimitiveType.Real32);
+                var foo = Id("foo", PrimitiveType.Ptr32);
+                m.Assign(i, m.Int32(0));
+                m.While(m.Le(m.Convert(i, PrimitiveType.Int32, PrimitiveType.Real32), arg), b =>
+                {
+                    b.SideEffect(b.Fn(foo, i));
+                    b.Assign(i, b.IAddS(i, 1));
+                });
+            });
+        }
+
+        [Test]
+        public void Flr_GitHub_908()
+        {
+            var sExp =
+            #region Expected
+@"test()
+{
+    int32 i = SEQ(x, 0x17);
+    do
+    {
+        foo(i);
+        i = i - 1;
+    } while (i != 0);
+}
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var i = Id("i", PrimitiveType.Int32);
+                var x = Id("x", PrimitiveType.Int16);
+                var arg = Id("arg", PrimitiveType.Real32);
+                var foo = Id("foo", PrimitiveType.Ptr32);
+                m.Declare(i, m.Seq(x, Constant.Word16(23)));
+                m.DoWhile(b =>
+                {
+                    b.SideEffect(b.Fn(foo, i));
+                    b.Assign(i, b.ISubS(i, 1));
+                },
+                m.Ne(i, 0));
+            });
+        }
     }
 }

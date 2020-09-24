@@ -1,0 +1,14 @@
+// Equivalence classes ////////////
+// Type Variables ////////////
+globals_t: (in globals : (ptr32 (struct "Globals")))
+  Class: Eq_1
+  DataType: 
+  OrigDataType: 
+T_2: (in id : byte)
+  Class: Eq_2
+  DataType: int8
+  OrigDataType: int8
+T_3: (in CONVERT(id, int8, int32) : int32)
+  Class: Eq_3
+  DataType: int32
+  OrigDataType: int32

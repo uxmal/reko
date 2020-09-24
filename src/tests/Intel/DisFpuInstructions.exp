@@ -1,29 +1,29 @@
-push	0320
-push	0300
-call	0010
-call	0037
-add	sp,04
+push	320h
+push	300h
+call	0010h
+call	0037h
+add	sp,4h
 ret
 push	bp
 mov	bp,sp
-mov	bx,[bp+04]
+mov	bx,[bp+4h]
 fld	double ptr [bx]
 fmul	st(0),st(0)
-fld	double ptr [bx+08]
+fld	double ptr [bx+8h]
 fmul	st(0),st(0)
 faddp	st(1),st(0)
-fld	double ptr [bx+10]
+fld	double ptr [bx+10h]
 fmul	st(0),st(0)
 faddp	st(1),st(0)
-mov	bx,[bp+06]
+mov	bx,[bp+6h]
 fstp	double ptr [bx]
-fild	word ptr [bx+20]
-fstp	double ptr [bx+28]
+fild	word ptr [bx+20h]
+fstp	double ptr [bx+28h]
 mov	sp,bp
 pop	bp
 ret
 fldz
-fstp	double ptr [0400]
+fstp	double ptr [0400h]
 fld1
-fistp	dword ptr [0408]
+fistp	dword ptr [0408h]
 ret

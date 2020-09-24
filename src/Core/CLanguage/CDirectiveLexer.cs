@@ -135,7 +135,7 @@ namespace Reko.Core.CLanguage
             {
                 Expect(CTokenType.LParen);
                 var value = (string) Expect(CTokenType.Id);
-                if (value == "disable")
+                if (value == "disable" || value == "default")
                 {
                     Expect(CTokenType.Colon);
                     Expect(CTokenType.NumericLiteral);
@@ -168,7 +168,16 @@ namespace Reko.Core.CLanguage
             {
                 Expect(CTokenType.LParen);
                 Expect(CTokenType.Id);
-                Expect(CTokenType.RParen);
+                for (; ;)
+                {
+                    var tok = lexer.Read();
+                    if (tok.Type != CTokenType.Comma)
+                    {
+                        Expect(CTokenType.RParen, tok);
+                        break;
+                    }
+                    Expect(CTokenType.Id);
+                }
                 return lexer.Read();
             }
             else if (pragma == "pack")
@@ -188,9 +197,13 @@ namespace Reko.Core.CLanguage
                     var verb = (string) token.Value;
                     if (verb == "push")
                     {
-                        Expect(CTokenType.Comma);
-                        this.state.PushAlignment((int) Expect(CTokenType.NumericLiteral));
-                        Expect(CTokenType.RParen);
+                        token = lexer.Read();
+                        if (token.Type == CTokenType.Comma)
+                        {
+                            this.state.PushAlignment((int) Expect(CTokenType.NumericLiteral));
+                            token = lexer.Read();
+                        }
+                        Expect(CTokenType.RParen, token);
                     }
                     else if (verb == "pop")
                     {
@@ -244,7 +257,7 @@ namespace Reko.Core.CLanguage
         private object Expect(CTokenType expected, CToken actualToken)
         {
             if (actualToken.Type != expected)
-                throw new FormatException(string.Format("Expected '{0}' but got '{1}'.", expected, actualToken.Type));
+                throw new FormatException(string.Format("Expected '{0}' but got '{1}' on line {2}.", expected, actualToken.Type, lexer.LineNumber));
             return actualToken.Value;
         }
 

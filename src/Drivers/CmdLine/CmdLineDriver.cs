@@ -26,6 +26,7 @@ using Reko.Loading;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -89,6 +90,10 @@ namespace Reko.CmdLine
             var pArgs = ProcessArguments(Console.Out, args);
             if (pArgs == null)
                 return;
+
+            if(pArgs.TryGetValue("--locale", out var localeName)){
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo((string)localeName);
+            }
 
             if (pArgs.TryGetValue("--default-to", out var defaultTo))
             {
@@ -185,6 +190,20 @@ namespace Reko.CmdLine
                 {
                     decompiler.Project.Programs[0].User.ShowBytesInDisassembly = true;
                 }
+                if (pArgs.TryGetValue("aggressive-branch-removal", out object oAggressiveBranchRemoval))
+                {
+                    decompiler.Project.Programs[0].User.AggressiveBranchRemoval =
+                        oAggressiveBranchRemoval is bool flag && flag;
+                }
+                if (pArgs.TryGetValue("debug-types", out var oProcRange))
+                {
+                    decompiler.Project.Programs[0].DebugProcedureRange = ((int, int)) oProcRange;
+                }
+                if (pArgs.TryGetValue("debug-trace-proc", out object oTraceProcs))
+                {
+                    decompiler.Project.Programs[0].User.DebugTraceProcedures =
+                        (HashSet<string>) oTraceProcs;
+                }
                 decompiler.ExtractResources();
                 decompiler.ScanPrograms();
                 if (!pArgs.ContainsKey("scan-only"))
@@ -234,6 +253,11 @@ namespace Reko.CmdLine
                 if (pArgs.TryGetValue("heuristics", out object oHeur))
                 {
                     decompiler.Project.Programs[0].User.Heuristics = ((string[]) oHeur).ToSortedSet();
+                }
+                if (pArgs.TryGetValue("aggressive-branch-removal", out object oAggressiveBranchRemoval))
+                {
+                    decompiler.Project.Programs[0].User.AggressiveBranchRemoval =
+                        oAggressiveBranchRemoval is bool flag && flag;
                 }
                 decompiler.ScanPrograms();
                 decompiler.AnalyzeDataFlow();
@@ -304,6 +328,11 @@ namespace Reko.CmdLine
                 {
                     ShowVersion(w);
                     return null;
+                }
+                else if (args[i] == "--locale")
+                {
+                    if (i < args.Length - 1)
+                        parsedArgs["--locale"] = args[++i];
                 }
                 else if (args[i] == "--arch")
                 {
@@ -417,6 +446,25 @@ namespace Reko.CmdLine
                         parsedArgs["extract-resources"] = "yes";
                     }
                 }
+                else if (args[i] == "--aggressive-branch-removal")
+                {
+                    parsedArgs["aggressive-branch-removal"] = true;
+                }
+                else if (args[i] == "--debug-types")
+                {
+                    if (i < args.Length - 1)
+                    {
+                        parsedArgs["debug-types"] = ParseIntRange(args[++i]);
+                    }
+                }
+                else if (args[i] == "--debug-trace-proc")
+                {
+                    if (i < args.Length - 1)
+                    {
+                        ++i;
+                        parsedArgs["debug-trace-proc"] = new HashSet<string>(args[i].Split(','));
+                    }
+                }
                 else if (arg.StartsWith("-"))
                 {
                     w.WriteLine("error: unrecognized option {0}", arg);
@@ -428,6 +476,24 @@ namespace Reko.CmdLine
                 }
             }
             return parsedArgs;
+        }
+
+        private (int, int) ParseIntRange(string sRange)
+        {
+            int iColon = sRange.IndexOf(':');
+            if (iColon <= 0)
+            {
+                return (0, Convert.ToInt32(sRange));
+            }
+            else
+            {
+                var nStart = Convert.ToInt32(sRange.Remove(iColon));
+                ++iColon;
+                var nEnd = (iColon < sRange.Length)
+                    ? Convert.ToInt32(sRange.Substring(iColon))
+                    : 0;
+                return (nStart, nEnd);
+            }
         }
 
         /// <summary>
@@ -501,10 +567,13 @@ namespace Reko.CmdLine
             w.WriteLine(" --heuristic <h1>[,<h2>...]  Use one of the following heuristics to examine");
             w.WriteLine("                          the binary:");
             w.WriteLine("    shingle               Use shingle assembler to discard data ");
+            w.WriteLine(" --aggressive-branch-removal Be more aggressive in removing unused branches");
             w.WriteLine(" --metadata <filename>    Use the file <filename> as a source of metadata");
             w.WriteLine(" --scan-only              Only scans the binary to find instructions, forgoing");
             w.WriteLine("                          full decompilation.");
             w.WriteLine(" --time-limit <s>         Limit execution time to s seconds");
+            w.WriteLine(" --debug-trace-proc <p1>[,<p2>...]  Debug: trace Reko analysis phases of the");
+            w.WriteLine("                          given procedure names p1, p2 etc.");
             //           01234567890123456789012345678901234567890123456789012345678901234567890123456789
         }
 

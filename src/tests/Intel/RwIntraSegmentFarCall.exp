@@ -19,8 +19,7 @@ l0C00_0000:
 	Mem0[ss:sp:word16] = 0x300<16>
 	sp = sp - 2<i16>
 	Mem0[ss:sp:word16] = 1<16>
-	sp = sp - 2<i16>
-	call fn0C00_0020 (retsize: 2;)
+	call fn0C00_0020 (retsize: 4;)
 	sp = sp + 6<16>
 	SCZO = cond(sp)
 	sp = sp - 2<i16>

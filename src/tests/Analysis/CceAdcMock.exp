@@ -1,20 +1,3 @@
-Mem0:Mem
-    def:  def Mem0
-    uses: r0_2 = Mem0[0x1001000<32>:word32]
-r0_2: orig: r0
-    def:  r0_2 = Mem0[0x1001000<32>:word32]
-    uses: r0_7 = r0_2 * 2<32> + (r1 <u 2<i32>)
-r1:r1
-    def:  def r1
-    uses: r0_7 = r0_2 * 2<32> + (r1 <u 2<i32>)
-SZC_4: orig: SZC
-C_5: orig: C
-r0_6: orig: r0
-r0_7: orig: r0
-    def:  r0_7 = r0_2 * 2<32> + (r1 <u 2<i32>)
-    uses: Mem8[0x1001004<32>:word32] = r0_7
-Mem8: orig: Mem0
-    def:  Mem8[0x1001004<32>:word32] = r0_7
 // AdcMock
 // Return size: 0
 define AdcMock

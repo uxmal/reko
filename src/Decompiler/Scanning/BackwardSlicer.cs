@@ -725,7 +725,7 @@ namespace Reko.Scanning
                     // register BX was done by issuing XOR BH,BH
                     var seXor = new SlicerResult
                     {
-                        SrcExpr = new Cast(regDst.DataType, new Cast(PrimitiveType.Byte, this.assignLhs!)),
+                        SrcExpr = new Conversion(new Slice(PrimitiveType.Byte, this.assignLhs!, 0), PrimitiveType.Byte, regDst.DataType),
                         LiveExprs = new Dictionary<Expression, BackwardSlicerContext>
                         {
                             {
@@ -879,6 +879,12 @@ namespace Reko.Scanning
                 LiveExprs = new Dictionary<Expression, BackwardSlicerContext>(),
                 SrcExpr = c,
             };
+        }
+
+        public SlicerResult? VisitConversion(Conversion conversion, BackwardSlicerContext ctx)
+        {
+            var range = new BitRange(0, (short) conversion.DataType.BitSize);
+            return conversion.Expression.Accept(this, new BackwardSlicerContext(ctx.Type, range));
         }
 
         public SlicerResult VisitDereference(Dereference deref, BackwardSlicerContext ctx)

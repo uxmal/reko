@@ -231,7 +231,7 @@ Architecture */
             {
                 // If the source is smaller than the destination register,
                 // perform a sign/zero extension/conversion.
-                src = m.Cast(arch.WordWidth, src);
+                src = m.Convert(src, src.DataType, arch.WordWidth);
             }
             m.Assign(dst, src);
         }
@@ -285,7 +285,7 @@ Architecture */
             var src = Rewrite(instr.Operands[0]);
             var dst = Rewrite(instr.Operands[1]);
             if (dst.DataType.Size < src.DataType.Size)
-                src = m.Cast(dst.DataType, src);
+                src = m.Slice(dst.DataType, src, 0);
             m.Assign(dst, src);
         }
 

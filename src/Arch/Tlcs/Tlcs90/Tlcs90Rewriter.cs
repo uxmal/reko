@@ -212,7 +212,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                         var idx = binder.EnsureRegister(mem.Index);
                         ea = m.IAdd(
                             ea,
-                            m.Cast(PrimitiveType.Int16, idx));
+                            m.Convert(idx, idx.DataType, PrimitiveType.Int16));
                     }
                     else if (mem.Offset != null)
                     {
@@ -258,7 +258,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                         var idx = binder.EnsureRegister(mem.Index);
                         ea = m.IAdd(
                             ea,
-                            m.Cast(PrimitiveType.Int16, idx));
+                            m.Convert(idx, idx.DataType, PrimitiveType.Int16));
                     }
                     else if (mem.Offset != null)
                     {

@@ -30,10 +30,16 @@ namespace Reko.Core.Services
 {
     /// <summary>
     /// Reko calls methods on this interface when it encounters errors. The methods generate unit tests
-    /// that can be incorporated into the UnitTest projct.
+    /// that can be incorporated into the UnitTest project.
     /// </summary>
     public interface ITestGenerationService
     {
+        /// <summary>
+        /// Users can optionally override the output directory for more control 
+        /// of where the output goes.
+        /// </summary>
+        string? OutputDirectory { get; set; }
+
         /// <summary>
         /// This method is called when an incomplete disassembler can't decode a byte sequence.
         /// </summary>
@@ -57,6 +63,20 @@ namespace Reko.Core.Services
         /// <param name="rdr">Image reader positioned after the end of the machine instruction.</param>
         /// <param name="message">Optional message that will be emitted as a comment.</param>
         void ReportMissingRewriter(string testPrefix, MachineInstruction instr, EndianImageReader rdr, string message);
+
+        /// <summary>
+        /// Remove files starting with the given <paramref name="filePrefix"/> from the output directory.
+        /// </summary>
+        /// <param name="filePrefix"></param>
+        void RemoveFiles(string filePrefix);
+
+        /// <summary>
+        /// Report the state of a procedure to a file determine by the filename.
+        /// </summary>
+        /// <param name="filePrefix"></param>
+        /// <param name="testCaption"></param>
+        /// <param name="proc"></param>
+        void ReportProcedure(string fileName, string testCaption, Procedure proc);
     }
 
     public class TestGenerationService : ITestGenerationService
@@ -71,6 +91,8 @@ namespace Reko.Core.Services
             this.emittedRewriterTests = new Dictionary<string, HashSet<int>>();
             this.emittedDecoderTests = new Dictionary<string, HashSet<byte[]>>();
         }
+
+        public string? OutputDirectory { get; set; }
 
         public void ReportMissingDecoder(string testPrefix, Address addrStart, EndianImageReader rdr, string message)
         {
@@ -195,6 +217,8 @@ namespace Reko.Core.Services
 
         private string? GetOutputDirectory(IFileSystemService fsSvc)
         {
+            if (OutputDirectory != null)
+                return OutputDirectory;
             var dcSvc = this.services.GetService<IDecompilerService>();
             if (dcSvc == null)
                 return null;
@@ -216,6 +240,27 @@ namespace Reko.Core.Services
             {
                 return null;
             }
+        }
+
+        public void RemoveFiles(string filePrefix)
+        {
+            var fsSvc = services.RequireService<IFileSystemService>();
+            var dir = GetOutputDirectory(fsSvc);
+            foreach (var filename in fsSvc.GetFiles(dir, filePrefix + "*"))
+            {
+                fsSvc.DeleteFile(filename);
+            }
+        }
+
+        public void ReportProcedure(string fileName, string testCaption, Procedure proc)
+        {
+            var fsSvc = services.RequireService<IFileSystemService>();
+            var dir = GetOutputDirectory(fsSvc);
+            var absFileName = Path.Combine(dir, fileName);
+            using var w = fsSvc.CreateStreamWriter(absFileName, true, Encoding.UTF8);
+            w.WriteLine(testCaption);
+            proc.Write(false, w);
+            w.WriteLine();
         }
 
         private class InstrBytesComparer : IEqualityComparer<byte[]>

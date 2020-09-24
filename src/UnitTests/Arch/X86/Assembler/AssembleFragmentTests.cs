@@ -52,25 +52,25 @@ namespace Reko.UnitTests.Arch.X86.Assembler
         public void AsfFactorial()
         {
             RunTest(new Factorial(), 
-                "0C00:0000	mov	cx,0100" + nl +
+                "0C00:0000	mov	cx,100h" + nl +
                 "0C00:0003	push	cx" + nl +
-                "0C00:0004	call	000F" + nl +
-                "0C00:0007	add	sp,02" + nl +
-                "0C00:000A	mov	[0100],ax" + nl +
+                "0C00:0004	call	000Fh" + nl +
+                "0C00:0007	add	sp,2h" + nl +
+                "0C00:000A	mov	[0100h],ax" + nl +
                 "0C00:000E	ret" + nl +
                 "0C00:000F	push	bp" + nl +
                 "0C00:0010	mov	bp,sp" + nl +
-                "0C00:0012	mov	ax,[bp+04]" + nl +
+                "0C00:0012	mov	ax,[bp+4h]" + nl +
                 "0C00:0015	dec	ax" + nl +
-                "0C00:0016	jz	0026" + nl +
+                "0C00:0016	jz	0026h" + nl +
                 "0C00:0018	push	ax" + nl +
-                "0C00:0019	call	000F" + nl +
+                "0C00:0019	call	000Fh" + nl +
                 "0C00:001C	inc	sp" + nl +
                 "0C00:001D	inc	sp" + nl +
-                "0C00:001E	mov	dx,[bp+04]" + nl +
+                "0C00:001E	mov	dx,[bp+4h]" + nl +
                 "0C00:0021	imul	dx" + nl +
-                "0C00:0023	jmp	0029" + nl +
-                "0C00:0026	mov	ax,0001" + nl +
+                "0C00:0023	jmp	0029h" + nl +
+                "0C00:0026	mov	ax,1h" + nl +
                 "0C00:0029	pop	bp" + nl +
                 "0C00:002A	ret" + nl);
         }

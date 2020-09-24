@@ -5,7 +5,7 @@ define fn
 fn_entry:
 	// succ:  l1
 l1:
-	Mem0[0x00001028<p32>:real32] = (real32) Mem0[0x00001020<p32>:real64]
+	Mem0[0x00001028<p32>:real32] = CONVERT(Mem0[0x00001020<p32>:real64], real64, real32)
 	return
 	// succ:  fn_exit
 fn_exit:
@@ -38,7 +38,7 @@ T_3: (in Mem0[0x00001020<p32>:real64] : real64)
   Class: Eq_3
   DataType: real64
   OrigDataType: real64
-T_4: (in (real32) Mem0[0x00001020<p32>:real64] : real32)
+T_4: (in CONVERT(Mem0[0x00001020<p32>:real64], real64, real32) : real32)
   Class: Eq_4
   DataType: real32
   OrigDataType: real32

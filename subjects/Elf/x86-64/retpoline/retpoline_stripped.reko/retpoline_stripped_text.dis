@@ -23,9 +23,9 @@ void fn00000000004004B0()
 // Preserved: rbp rsp
 fn00000000004004B0_entry:
 l00000000004004B0:
-	branch 0<64> == 0<64> l00000000004004D8
+	branch true l00000000004004D8
 l00000000004004C1:
-	branch 0<u64> == 0<64> l00000000004004D8
+	branch true l00000000004004D8
 l00000000004004D8:
 	return
 l00000000004004CB:
@@ -44,7 +44,7 @@ void fn0000000000400560(word32 esi, word32 edi)
 // Preserved: rbp rsp
 fn0000000000400560_entry:
 l0000000000400560:
-	calloc((int64) edi, (int64) esi)
+	calloc(CONVERT(edi, word32, int64), CONVERT(esi, word32, int64))
 	return
 fn0000000000400560_exit:
 

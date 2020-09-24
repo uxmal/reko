@@ -197,7 +197,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("E4F4");
             AssertCode(     // andb\ta,sp
                 "0|L--|0000(2): 3 instructions",
-                "1|L--|b = b & Mem0[sp + (uint16) a:byte]",
+                "1|L--|b = b & Mem0[sp + CONVERT(a, byte, uint16):byte]",
                 "2|L--|NZ = cond(b)",
                 "3|L--|V = false");
         }

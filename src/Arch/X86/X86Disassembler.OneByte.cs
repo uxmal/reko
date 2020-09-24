@@ -320,10 +320,10 @@ namespace Reko.Arch.X86
                     new VexDecoder2()),
                 Amd64Instr(
                     Instr(Mnemonic.mov, Eb,Ib),
-                    new GroupDecoder(Grp11, Eb,Ib)),
+                    new GroupDecoder(Grp11b)),
                 Amd64Instr(
                     Instr(Mnemonic.mov, Ev,Iz),
-                    new GroupDecoder(Grp11, Ev,Iz)),
+                    new GroupDecoder(Grp11z)),
 
                 Instr(Mnemonic.enter, Iw,Ib),
 				Instr(Mnemonic.leave),

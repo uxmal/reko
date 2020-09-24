@@ -188,6 +188,11 @@ namespace Reko.Core.Code
 		{
 		}
 
+        public virtual void VisitConversion(Conversion conversion)
+        {
+            conversion.Expression.Accept(this);
+        }
+
 		public virtual void VisitDereference(Dereference deref)
 		{
 			deref.Expression.Accept(this);

@@ -458,7 +458,7 @@ namespace Reko.Arch.Msp430
             var src = RewriteOp(instr.Operands[0]);
             var tmp = binder.CreateTemporary(PrimitiveType.Byte);
             m.Assign(tmp, m.Slice(PrimitiveType.Byte, src, 0));
-            var dst = RewriteDst(instr.Operands[0], tmp, (a, b) => m.Cast(PrimitiveType.Int16, b));
+            var dst = RewriteDst(instr.Operands[0], tmp, (a, b) => m.Convert(b, b.DataType, PrimitiveType.Int16));
             EmitCc(dst, flags);
         }
 

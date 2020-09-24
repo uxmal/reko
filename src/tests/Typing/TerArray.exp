@@ -5,7 +5,7 @@ void proc1(word32 eax, word32 ecx)
 proc1_entry:
 	// succ:  l1
 l1:
-	Mem7[0x10000<32>:word32] = (int32) Mem0[ecx + (eax * 2<32> + 0x64<32>):int16]
+	Mem7[0x10000<32>:word32] = CONVERT(Mem0[ecx + (eax * 2<32> + 0x64<32>):int16], int16, int32)
 proc1_exit:
 
 // After ///////
@@ -56,7 +56,7 @@ T_8: (in (ecx + 0x64<32>)[eax * 2<32>] : int16)
   Class: Eq_8
   DataType: int16
   OrigDataType: int16
-T_9: (in (int32) (ecx + 0x64<32>)[eax * 2<32>] : int32)
+T_9: (in CONVERT((ecx + 0x64<32>)[eax * 2<32>], int16, int32) : int32)
   Class: Eq_9
   DataType: int32
   OrigDataType: int32

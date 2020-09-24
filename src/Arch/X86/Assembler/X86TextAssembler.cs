@@ -34,14 +34,16 @@ namespace Reko.Arch.X86.Assembler
     /// </summary>
     public class X86TextAssembler : IAssembler
 	{
-		private Lexer lexer;
+        private readonly IntelArchitecture arch;
+        private readonly List<ImageSymbol> entryPoints;
+#nullable disable
+        private Lexer lexer;
 		private Address addrBase;
 		private Address addrStart;
-        private List<ImageSymbol> entryPoints;
         private X86Assembler asm;
-        private IntelArchitecture arch;
+#nullable enable
 
-		public X86TextAssembler(IntelArchitecture arch)
+        public X86TextAssembler(IntelArchitecture arch)
 		{
             this.entryPoints = new List<ImageSymbol>();
             this.ImageSymbols = new List<ImageSymbol>();
@@ -150,12 +152,12 @@ namespace Reko.Arch.X86.Assembler
 				Error(msg);
 		}
 
-		public ParsedOperand [] ParseOperandList(int count)
+		public ParsedOperand []? ParseOperandList(int count)
 		{
 			return ParseOperandList(count, count);
 		}
 
-		public ParsedOperand [] ParseOperandList(int min, int max)
+		public ParsedOperand []? ParseOperandList(int min, int max)
 		{
             OperandParser opp = asm.CreateOperandParser(lexer);
             List<ParsedOperand> ops = new List<ParsedOperand>();
@@ -163,7 +165,9 @@ namespace Reko.Arch.X86.Assembler
 			asm.AddressWidth = asm.SegmentAddressWidth;
 			if (lexer.PeekToken() != Token.EOL)
 			{
-				ops.Add(opp.ParseOperand());
+                var op = opp.ParseOperand();
+                if (op != null)
+                    ops.Add(op);
 				if (opp.SegmentOverride != RegisterStorage.None)
 					asm.SegmentOverride = opp.SegmentOverride;
 				if (opp.AddressWidth != null)
@@ -173,7 +177,9 @@ namespace Reko.Arch.X86.Assembler
 				{
 					lexer.DiscardToken();
 					opp.DataWidth = ops[0].Operand.Width;
-					ops.Add(opp.ParseOperand());
+                    op = opp.ParseOperand();
+                    if (op != null)
+                        ops.Add(op);
 					if (opp.SegmentOverride != RegisterStorage.None)
 					{
 						if (asm.SegmentOverride != RegisterStorage.None)
@@ -208,19 +214,25 @@ namespace Reko.Arch.X86.Assembler
 
 		private void ProcessBinop(int binop)
 		{
-			ParsedOperand [] ops = ParseOperandList(2);
+			ParsedOperand []? ops = ParseOperandList(2);
+            if (ops is null)
+                return;
             asm.ProcessBinop(binop, ops);
         }
 		
 		private void ProcessBitOp()
 		{
-			ParsedOperand [] ops = ParseOperandList(2);
+			ParsedOperand []? ops = ParseOperandList(2);
+            if (ops is null)
+                return;
             asm.ProcessBitOp(ops);
 		}
 
 		private void ProcessBitScan(byte opCode)
 		{
-			ParsedOperand [] ops = ParseOperandList(2);
+			ParsedOperand []? ops = ParseOperandList(2);
+            if (ops is null)
+                return;
             asm.ProcessBitScan(opCode, ops[0], ops[1]);
 		}
 
@@ -288,6 +300,8 @@ namespace Reko.Arch.X86.Assembler
                     ? (far ? 0x03 : 0x02)
                     : (far ? 0x05 : 0x04);
 				var ops = ParseOperandList(1);
+                if (ops is null)
+                    return;
                 asm.ProcessCallJmp(far, indirect, ops[0]);
 				break;
 			case Token.ID:
@@ -297,6 +311,8 @@ namespace Reko.Arch.X86.Assembler
                 {
                     var opp = asm.CreateOperandParser(lexer);
                     var target = opp.ParseIdOperand(str);
+                    if (target is null)
+                        return;
                     int indir = isCall
                         ? (far ? 0x03 : 0x02)
                         : (far ? 0x05 : 0x04);
@@ -372,7 +388,9 @@ namespace Reko.Arch.X86.Assembler
 		}
         private void ProcessTest()
         {
-            ParsedOperand[] ops = ParseOperandList(2);
+            ParsedOperand[]? ops = ParseOperandList(2);
+            if (ops is null)
+                return;
             asm.ProcessTest(ops);
         }
 
@@ -443,7 +461,9 @@ namespace Reko.Arch.X86.Assembler
 
 		private void ProcessIncDec(bool fDec)
 		{
-			ParsedOperand [] ops = ParseOperandList(1);
+			ParsedOperand []? ops = ParseOperandList(1);
+            if (ops is null)
+                return;
             asm.ProcessIncDec(fDec, ops[0]);
         }
 
@@ -459,7 +479,9 @@ namespace Reko.Arch.X86.Assembler
 
 		private void ProcessDiv(int operation)
 		{
-			ParsedOperand [] ops = ParseOperandList(1);
+			ParsedOperand []? ops = ParseOperandList(1);
+            if (ops is null)
+                return;
             asm.ProcessDiv(operation, ops[0]);
 		}
 
@@ -473,13 +495,17 @@ namespace Reko.Arch.X86.Assembler
 
 		private void ProcessFild()
 		{
-			ParsedOperand [] ops = ParseOperandList(1);
+			ParsedOperand []? ops = ParseOperandList(1);
+            if (ops is null)
+                return;
             asm.Fild(ops[0]);
 		}
 
 		private void ProcessFistp()
 		{
-			ParsedOperand [] ops = ParseOperandList(1);
+			ParsedOperand []? ops = ParseOperandList(1);
+            if (ops is null)
+                return;
             asm.Fistp(ops[0]);
 		}
 
@@ -492,13 +518,17 @@ namespace Reko.Arch.X86.Assembler
 		/// <param name="fixedOrder">true for FSUB... and FDIV... since order is important</param>
 		private void ProcessFpuCommon(int opcodeFreg, int opcodeMem, int fpuOperation, bool isPop, bool fixedOrder)
 		{
-			ParsedOperand [] ops = ParseOperandList(0,2);
+			ParsedOperand []? ops = ParseOperandList(0,2);
+            if (ops is null)
+                return;
             asm.ProcessFpuCommon(opcodeFreg, opcodeMem, fpuOperation, isPop, fixedOrder, ops);
         }
 
 		private void ProcessFst(bool pop)
 		{
-			ParsedOperand [] ops = ParseOperandList(1);
+			ParsedOperand []? ops = ParseOperandList(1);
+            if (ops is null)
+                return;
             asm.ProcessFst(pop, ops[0]);
 		}
 
@@ -515,19 +545,25 @@ namespace Reko.Arch.X86.Assembler
 
 		private void ProcessImul()
 		{
-			ParsedOperand [] ops = ParseOperandList(1, 3);
+			ParsedOperand []? ops = ParseOperandList(1, 3);
+            if (ops is null)
+                return;
             asm.ProcessImul(ops);
         }
 
 		private void ProcessInOut(bool fOut)
 		{
-			ParsedOperand [] ops = ParseOperandList(2);
+			ParsedOperand []? ops = ParseOperandList(2);
+            if (ops is null)
+                return;
             asm.ProcessInOut(fOut, ops);
         }
 
 		private void ProcessInt()
 		{
-			ParsedOperand [] ops = ParseOperandList(1);
+			ParsedOperand []? ops = ParseOperandList(1);
+            if (ops is null)
+                return;
             asm.ProcessInt(ops[0]);
 		}
 
@@ -602,7 +638,9 @@ namespace Reko.Arch.X86.Assembler
 
 		private void ProcessLea()
 		{
-			ParsedOperand [] ops = ParseOperandList(2);
+			ParsedOperand []? ops = ParseOperandList(2);
+            if (ops is null)
+                return;
             asm.Lea(ops[0], ops[1]);
 		}
 
@@ -1038,10 +1076,11 @@ namespace Reko.Arch.X86.Assembler
 
 		private void ProcessLxs(int prefix, int b)
 		{
-			ParsedOperand [] ops = ParseOperandList(2);
+			ParsedOperand []? ops = ParseOperandList(2);
+            if (ops is null)
+                return;
             asm.ProcessLxs(prefix, b, ops);
         }
-
 
 		public void ProcessModel()
 		{
@@ -1050,24 +1089,33 @@ namespace Reko.Arch.X86.Assembler
 
 		private void ProcessMov()
 		{
-            asm.ProcessMov(ParseOperandList(2));
+            var ops = ParseOperandList(2);
+            if (ops is null)
+                return;
+            asm.ProcessMov(ops);
         }
 
 		private void ProcessMovx(int opcode)
 		{
-			ParsedOperand [] ops = ParseOperandList(2);
+			ParsedOperand []? ops = ParseOperandList(2);
+            if (ops is null)
+                return;
             asm.ProcessMovx(opcode, ops);
 		}
 
 		private void ProcessMul()
 		{
-			ParsedOperand [] ops = ParseOperandList(1);
+			ParsedOperand []? ops = ParseOperandList(1);
+            if (ops is null)
+                return;
             asm.Mul(ops[0]);
 		}
 
 		private void ProcessUnary(int operation)
 		{
-			ParsedOperand [] ops = ParseOperandList(1);
+			ParsedOperand []? ops = ParseOperandList(1);
+            if (ops is null)
+                return;
             asm.ProcessUnary(operation, ops[0]);
 		}
 
@@ -1078,7 +1126,9 @@ namespace Reko.Arch.X86.Assembler
 
 		private void ProcessPushPop(bool fPop)
 		{
-			ParsedOperand [] ops = ParseOperandList(1);
+			ParsedOperand []? ops = ParseOperandList(1);
+            if (ops is null)
+                return;
             asm.ProcessPushPop(fPop, ops[0]);
         }
 
@@ -1107,31 +1157,41 @@ namespace Reko.Arch.X86.Assembler
 
         private void ProcessSetCc(byte bits)
         {
-            ParsedOperand[] ops = ParseOperandList(1);
+            ParsedOperand[]? ops = ParseOperandList(1);
+            if (ops is null)
+                return;
             asm.ProcessSetCc(bits, ops[0]);
         }
 
 		private void ProcessShiftRotation(byte bits)
 		{
-			ParsedOperand [] ops = ParseOperandList(2);
+			ParsedOperand []? ops = ParseOperandList(2);
+            if (ops is null)
+                return;
             asm.ProcessShiftRotation(bits, ops[0], ops[1]);
         }
 
 		private void ProcessDoubleShift(byte bits)
 		{
-			ParsedOperand [] ops = ParseOperandList(3);
+			ParsedOperand[]? ops = ParseOperandList(3);
+            if (ops is null)
+                return;
             asm.ProcessDoubleShift(bits, ops[0], ops[1], ops[2]);
 		}
 
 		private void ProcessFstsw()
 		{
-			ParsedOperand [] ops = ParseOperandList(1);
+			ParsedOperand []? ops = ParseOperandList(1);
+            if (ops is null)
+                return;
             asm.Fstsw(ops[0]);
         }
 
         private void ProcessXchg()
         {
-            ParsedOperand[] ops = ParseOperandList(2);
+            ParsedOperand[]? ops = ParseOperandList(2);
+            if (ops is null)
+                return;
             asm.Xchg(ops);
         }
     }

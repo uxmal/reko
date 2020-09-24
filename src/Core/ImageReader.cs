@@ -34,29 +34,29 @@ namespace Reko.Core
     /// </summary>
     public class ImageReader
     {
-        protected MemoryArea? image;
+        protected MemoryArea? mem;
         protected byte[] bytes;
 		protected long offStart;
 		protected long offEnd;
 		protected long off;
 		protected Address? addrStart;
 
-		protected ImageReader(MemoryArea img, Address addr)
+		protected ImageReader(MemoryArea mem, Address addr)
         {
-            this.image = img ?? throw new ArgumentNullException(nameof(img));
+            this.mem = mem ?? throw new ArgumentNullException(nameof(mem));
             this.addrStart = addr ?? throw new ArgumentNullException(nameof(addr));
-            long o = addr - img.BaseAddress;
-            if (o >= img.Length)
+            long o = addr - mem.BaseAddress;
+            if (o >= mem.Length)
                 throw new ArgumentOutOfRangeException(nameof(addr), $"Address {addr} is outside of image.");
             this.offStart = o;
-            this.offEnd = img.Bytes.Length;
+            this.offEnd = mem.Bytes.Length;
             this.off = offStart;
-            this.bytes = img.Bytes;
+            this.bytes = mem.Bytes;
         }
 
         protected ImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
         {
-            this.image = img ?? throw new ArgumentNullException(nameof(img));
+            this.mem = img ?? throw new ArgumentNullException(nameof(img));
             this.addrStart = addrBegin ?? throw new ArgumentNullException(nameof(addrBegin));
             if (addrEnd is null)
                 throw new ArgumentNullException(nameof(addrEnd));
@@ -67,40 +67,40 @@ namespace Reko.Core
             this.bytes = img.Bytes;
         }
 
-        protected ImageReader(MemoryArea img, ulong off)
+        protected ImageReader(MemoryArea mem, long off)
         {
-            this.image = img ?? throw new ArgumentNullException(nameof(img));
-            this.bytes = img.Bytes;
-            this.addrStart = img.BaseAddress + off;
-            this.offStart = (long) off;
-            this.offEnd = img.Bytes.Length;
+            this.mem = mem ?? throw new ArgumentNullException(nameof(mem));
+            this.bytes = mem.Bytes;
+            this.addrStart = mem.BaseAddress + off;
+            this.offStart = off;
+            this.offEnd = mem.Bytes.Length;
             this.off = offStart;
         }
 
-        protected ImageReader(byte[] img, ulong off)
+        protected ImageReader(MemoryArea mem, long offStart, long offEnd)
+        {
+            this.mem = mem ?? throw new ArgumentNullException(nameof(mem));
+            this.bytes = mem.Bytes;
+            this.addrStart = mem.BaseAddress + offStart;
+            if (offStart < 0 || offStart >= mem.Length)
+                throw new ArgumentOutOfRangeException(nameof(offStart), $"Starting offset {offStart} is outside of memory area.");
+            this.offStart = offStart;
+            this.offEnd = Math.Min(Math.Max(offEnd, offStart), mem.Length);
+            this.Offset = offStart;
+        }
+
+        protected ImageReader(byte[] img, long off)
         {
             this.bytes = img;
-            this.offStart =(long) off;
+            this.offStart = off;
             this.offEnd = img.Length;
             this.off = offStart;
         }
 
 		public ImageReader(byte[] img) : this(img, 0) { }
 
-		public LeImageReader CreateLeReader()
-        {
-            return new LeImageReader(bytes, (ulong)off)
-            {
-                image = this.image,
-                addrStart = this.addrStart,
-                offStart = this.offStart,
-                offEnd = this.offEnd,
-            };
-        }
-
         public Address Address { get { return addrStart! + (off - offStart); } }
         public byte[] Bytes { get { return bytes; } }
-        public MemoryArea Image { get { return image!; } }
         public long Offset { get { return off; } set { off = value; } }
         public bool IsValid { get { return IsValidOffset(Offset); } }
         public bool IsValidOffset(long offset) { return 0 <= offset && offset < offEnd; }
@@ -175,20 +175,13 @@ namespace Reko.Core
         /// </summary>
         /// <param name="type">Enough bytes read </param>
         /// <returns>The read value as a <see cref="Constant"/>.</returns>
-        public Constant ReadLe(PrimitiveType type)
-        {
-            Constant c;
-            if (image != null)
-                c = image.ReadLe(off, type);
-            else
-                c = MemoryArea.ReadLe(bytes, Offset, type);
-            off += (uint)type.Size;
-            return c;
-        }
-
         public bool TryReadLe(PrimitiveType dataType, out Constant c)
         {
-            bool ret = image!.TryReadLe(off, dataType, out c);
+            bool ret;
+            if (mem is null)
+                ret = MemoryArea.TryReadLe(bytes, Offset, dataType, out c);
+            else 
+                ret = mem.TryReadLe(off, dataType, out c);
             if (ret)
                 off += (uint)dataType.Size;
             return ret;
@@ -199,31 +192,35 @@ namespace Reko.Core
         /// </summary>
         /// <param name="type">Enough bytes read </param>
         /// <returns>The read value as a <see cref="Constant"/>.</returns>
-        public Constant ReadBe(PrimitiveType type)
-        {
-            Constant c = image!.ReadBe(off, type);
-            off += (uint)type.Size;
-            return c;
-        }
-
         public bool TryReadBe(PrimitiveType dataType, out Constant c)
         {
-            bool ret = image!.TryReadBe(off, dataType, out c);
+            bool ret = mem!.TryReadBe(off, dataType, out c);
             if (ret)
                 off += (uint)dataType.Size;
             return ret;
         }
 
-        public long ReadLeSigned(PrimitiveType w)
+        public bool TryReadLeSigned(PrimitiveType w, out long value)
         {
             if ((w.Domain & Domain.Integer) != 0)
             {
+                bool retval;
                 switch (w.Size)
                 {
-                case 1: return (sbyte)ReadByte();
-                case 2: return ReadLeInt16();
-                case 4: return ReadLeInt32();
-                case 8: return ReadLeInt64();
+                case 1:
+                    retval = TryReadByte(out var b);
+                    value = (sbyte) b;
+                    return retval;
+                case 2: 
+                    retval = TryReadLeInt16(out var s);
+                    value = s;
+                    return retval;
+                case 4:
+                    retval = TryReadLeInt32(out var i);
+                    value = i;
+                    return retval;
+                case 8:
+                    return TryReadLeInt64(out value);
                 default: throw new ArgumentOutOfRangeException();
                 }
             }
@@ -281,6 +278,7 @@ namespace Reko.Core
         public bool TryPeekBeUInt32(int offset, out uint value) { return MemoryArea.TryReadBeUInt32(bytes, offset + off, out value); }
         public bool TryPeekBeUInt64(int offset, out ulong value) { return MemoryArea.TryReadBeUInt64(bytes, offset + off, out value); }
 
+        public bool TryPeekLeUInt16(int offset, out ushort value) { return MemoryArea.TryReadLeUInt16(bytes, offset + off, out value); }
         public bool TryPeekLeUInt32(int offset, out uint value) { return MemoryArea.TryReadLeUInt32(bytes, offset + off, out value); }
         
         public uint ReadLeUInt32()
@@ -413,7 +411,7 @@ namespace Reko.Core
             case SeekOrigin.End:
                 off = offEnd + offset;
                 break;
-            }
+        }
             return off;
         }
 
@@ -424,7 +422,6 @@ namespace Reko.Core
             off += ab.Length;
             return ab;
         }
-
         public int Read(byte[] buffer, int offset, int count)
         {
             int bytesRead = (int)Math.Min(buffer.Length - offset, count);
@@ -432,6 +429,6 @@ namespace Reko.Core
             Array.Copy(bytes, this.off, buffer, offset, bytesRead);
             off += bytesRead;
             return bytesRead;
-        }
+    }
     }
 }

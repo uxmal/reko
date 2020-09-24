@@ -89,6 +89,17 @@ namespace Reko.Core.Expressions
                     Cast c = (Cast)obj;
                     return GetHashCodeImpl(c.Expression) * 43;
                 });
+            Add(typeof(Conversion),
+                (ea, eb) =>
+                {
+                    Conversion a = (Conversion) ea, b = (Conversion) eb;
+                    return EqualsImpl(a.Expression, b.Expression);
+                },
+                obj =>
+                {
+                    Conversion c = (Conversion) obj;
+                    return GetHashCodeImpl(c.Expression) * 47;
+                });
             Add(typeof(ConditionOf),
                 (ea, eb) =>
                 {

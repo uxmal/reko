@@ -110,6 +110,14 @@ namespace Reko.Core.Expressions
                 return c;
         }
 
+        public Expression VisitConversion(Conversion conversion)
+        {
+            if (cmp.Equals(conversion, original))
+                return replacement;
+            var expr = conversion.Expression.Accept(this);
+            return new Conversion(expr, conversion.SourceDataType, conversion.DataType);
+        }
+
         public Expression VisitDereference(Dereference deref)
         {
             throw new NotImplementedException();

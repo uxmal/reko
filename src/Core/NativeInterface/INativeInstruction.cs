@@ -36,7 +36,7 @@ namespace Reko.Core.NativeInterface
     public interface INativeInstruction
     {
         [PreserveSig] void GetInfo(out NativeInstructionInfo info);
-        [PreserveSig] void Render(INativeInstructionWriter writer, MachineInstructionWriterOptions options);
+        [PreserveSig] void Render(INativeInstructionWriter writer, MachineInstructionWriterFlags options);
     }
 
     [StructLayout(LayoutKind.Sequential)]

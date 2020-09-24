@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 
 namespace Reko.Evaluation
@@ -34,17 +35,29 @@ namespace Reko.Evaluation
 		private Constant? cRight;
 		private Operator? op;
         private Address? addr;
+        private DataType? dtResult;
 
 		public bool Match(BinaryExpression binExp)
 		{
             addr = null;
 			cLeft = binExp.Left as Constant; 
 			cRight = binExp.Right as Constant;
+            dtResult = binExp.DataType;
 			op = binExp.Operator;
-			if (cLeft != null && cRight != null && binExp.Operator != Operator.Eq)
+			if (cLeft != null && cRight != null)
 			{
+                if (op is ConditionalOperator)
+                    return true;
 				if (!cLeft.IsReal && !cRight.IsReal)
 				{
+                    if (cLeft.DataType.IsPointer)
+                    {
+                        dtResult = cLeft.DataType;
+                    }
+                    else if (cRight.DataType.IsPointer)
+                    {
+                        dtResult = cRight.DataType;
+                    }
 					return true;
 				}
 			}
@@ -52,6 +65,7 @@ namespace Reko.Evaluation
                 (op == Operator.IAdd || op == Operator.ISub))
             {
                 addr = a;
+                dtResult = a.DataType;
                 return true;
             }
 			return false;
@@ -59,14 +73,17 @@ namespace Reko.Evaluation
 
 		public Expression Transform()
 		{
+            Expression result;
             if (addr is null)
             {
-                return op!.ApplyConstants(cLeft!, cRight!);
+                result = op!.ApplyConstants(cLeft!, cRight!);
             }
             else
             {
-                return addr + cRight!.ToInt32();
+                result = addr + cRight!.ToInt32();
             }
+            result.DataType = dtResult!;
+            return result;
 		}
 	}
 }

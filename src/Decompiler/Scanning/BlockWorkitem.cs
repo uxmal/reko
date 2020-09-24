@@ -33,6 +33,7 @@ using System.Linq;
 using ProcedureCharacteristics = Reko.Core.Serialization.ProcedureCharacteristics;
 using Reko.Analysis;
 using Reko.Core.Services;
+using System.ComponentModel;
 
 namespace Reko.Scanning
 {
@@ -426,11 +427,21 @@ namespace Reko.Scanning
                     var chr = impProc.Characteristics;
                     if (chr != null && chr.IsAlloca)
                         return ProcessAlloca(site, impProc);
-                    EmitCall(CreateProcedureConstant(impProc), sig, chr!, site);
+                    EmitCall(CreateProcedureConstant(impProc), sig, chr, site);
                     Emit(new ReturnInstruction());
                     blockCur!.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
                     return false;
                 }
+                var platformProc = program.Platform.LookupProcedureByAddress(addrTarget);
+                if (platformProc != null)
+                {
+                    site = state.OnBeforeCall(stackReg!, 0);
+                    EmitCall(CreateProcedureConstant(platformProc), platformProc.Signature, platformProc.Characteristics, site);
+                    Emit(new ReturnInstruction());
+                    blockCur!.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+                    return false;
+                }
+
                 if (!program.SegmentMap.IsValidAddress(addrTarget))
                 {
                     var jmpSite = state.OnBeforeCall(stackReg!, 0);
@@ -449,7 +460,7 @@ namespace Reko.Scanning
                     }
                     var sig = trampoline.Signature;
                     var chr = trampoline.Characteristics;
-                    EmitCall(CreateProcedureConstant(trampoline), sig, chr!, jmpSite);
+                    EmitCall(CreateProcedureConstant(trampoline), sig, chr, jmpSite);
                     Emit(new ReturnInstruction());
                     blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
                     return false;
@@ -534,6 +545,12 @@ namespace Reko.Scanning
                     return OnAfterCall(sig, chr);
                 }
 
+                var platformProc = program.Platform.LookupProcedureByAddress(addr);
+                if (platformProc != null)
+                {
+                    EmitCall(CreateProcedureConstant(platformProc), platformProc.Signature, platformProc.Characteristics, site);
+                    return OnAfterCall(platformProc.Signature, chr);
+                }
                 if (!program.SegmentMap.IsValidAddress(addr))
                 {
                     return GenerateCallToOutsideProcedure(site, addr);
@@ -552,7 +569,7 @@ namespace Reko.Scanning
                 }
                 var pcCallee = CreateProcedureConstant(callee);
                 sig = callee.Signature;
-                chr = callee.Characteristics!;
+                chr = callee.Characteristics;
                 EmitCall(pcCallee, sig, chr, site);
                 if (callee is Procedure pCallee)
                 {
@@ -857,7 +874,7 @@ namespace Reko.Scanning
                 Emit(new SideEffect(side.Expression));
                 if (side.Expression is Application appl &&
                     appl.Procedure is ProcedureConstant fn &&
-                    fn.Procedure.Characteristics!.Terminates)
+                    fn.Procedure.Characteristics.Terminates)
                 {
                     scanner.TerminateBlock(blockCur!, ric!.Address + ric.Length);
                     return false;
@@ -1066,7 +1083,7 @@ namespace Reko.Scanning
                 if (!program.SegmentMap.IsValidAddress(addr))
                     break;
                 var st = state.Clone();
-                blocks.Add(BlockFromAddress(ric!.Address, addr, blockCur!.Procedure, state));
+                blocks.Add(BlockFromAddress(ric!.Address, addr, blockCur!.Procedure, st));
             }
             return blocks;
         }
@@ -1182,7 +1199,7 @@ namespace Reko.Scanning
             {
                 if (!(mem.EffectiveAddress is Constant offset))
                     return null;
-                addrTarget = program.Platform.MakeAddressFromConstant(offset, true);
+                addrTarget = program.Platform.MakeAddressFromConstant(offset, true)!;
             }
             var impEp = scanner.GetImportedProcedure(this.arch, addrTarget, ric!.Address);
             //if (impEp != null)

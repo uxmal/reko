@@ -48,17 +48,7 @@ namespace Reko.Core
         /// <summary>
         /// The storage domain for this storage. 
         /// </summary>
-        public StorageDomain Domain
-        {
-            get { return dom; }
-            set
-            {
-                dom = value;
-                if ((int) dom == 0x00010002)
-                    value.ToString();   //$DEBUG
-            }
-        }
-        private StorageDomain dom;
+        public StorageDomain Domain { get; protected set; }
 
         /// <summary>
         /// The starting bit position of this storage.
@@ -340,7 +330,11 @@ namespace Reko.Core
 
         public override int OffsetOf(Storage stgSub)
         {
-            return -1;
+            if (!(stgSub is FpuStackStorage that))
+                return -1;
+            if (that.FpuStackOffset != this.FpuStackOffset)
+                return -1;
+            return 0;
         }
 
         public override bool OverlapsWith(Storage sThat)
@@ -490,8 +484,6 @@ namespace Reko.Core
         {
             this.Name = regName;
             this.Number = number;
-            if (number == 0x00010002)
-                number.ToString();
             this.BitAddress = bitAddress;
             this.Domain = (StorageDomain)(number + (int)StorageDomain.Register);
             int bitSize = dataType.BitSize;

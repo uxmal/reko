@@ -94,7 +94,7 @@ namespace Reko.Arch.Mos6502
             return new CallSite(returnAddressSize, 0);
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
     }

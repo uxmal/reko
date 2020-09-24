@@ -118,6 +118,18 @@ namespace Reko.Evaluation
             return c;
         }
 
+        public Expression VisitConversion(Conversion conversion)
+        {
+            var exp = conversion.Expression.Accept(this);
+            if (exp == Constant.Invalid)
+                return exp;
+            if (exp is Constant ||
+                exp is Identifier)
+                return new Conversion(exp, conversion.SourceDataType, conversion.DataType);
+            return Constant.Invalid;
+        }
+
+
         public Expression VisitDereference(Dereference deref)
         {
             throw new NotImplementedException();

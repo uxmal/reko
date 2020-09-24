@@ -43,8 +43,8 @@ namespace Reko.Environments.Windows
     {
         private const byte WILD = 0xF4;
 
-        private Address addrStart;
-        private Program program;
+        private readonly Address addrStart;
+        private readonly Program program;
 
         public X86StartFinder(Program program, Address addrStart)
         {
@@ -138,11 +138,12 @@ namespace Reko.Environments.Windows
             // Start at program entry point
             if (!program.SegmentMap.TryFindSegment(this.addrStart, out ImageSegment seg))
                 return null;
-            var addrMax = Address.Min(seg.MemoryArea.EndAddress, addrStart + MaxDistanceFromEntry);
+            var offsetStart = this.addrStart - seg.MemoryArea.BaseAddress;
+            var offsetMax = Math.Min(seg.MemoryArea.Length, offsetStart + MaxDistanceFromEntry);
             var rdr = program.Architecture.CreateImageReader(
                 seg.MemoryArea,
-                addrStart,
-                addrMax);
+                offsetStart,
+                offsetMax);
             var dasm = program.Architecture.CreateDisassembler(rdr);
             var p = dasm.GetEnumerator();
             if (!p.MoveNext())
@@ -150,28 +151,25 @@ namespace Reko.Environments.Windows
 
             var instr = p.Current;
             var op0 = instr.Operands.Length > 0 ? instr.Operands[0] : null;
-            var addrOp0 = op0 as AddressOperand;
             if (instr.InstructionClass == InstrClass.Transfer)
             {
-                if (addrOp0 != null && addrOp0.Address > instr.Address)
+                if (op0 is AddressOperand addrOp0 && addrOp0.Address > instr.Address)
                 {
-                    p.Dispose();
                     // Forward jump (appears in Borland binaries)
-                    dasm = program.CreateDisassembler(program.Architecture, addrOp0.Address);
+                    p.Dispose();
 
                     // Search for this pattern.
                     if (!LocatePattern(
                         seg.MemoryArea.Bytes,
-                        (uint)(addrOp0.Address - seg.MemoryArea.BaseAddress),
-                        (uint)(addrMax - seg.MemoryArea.BaseAddress),
+                        (uint) (addrOp0.Address - seg.MemoryArea.BaseAddress),
+                        (uint) (offsetMax),
                         borlandPattern,
                         out idx))
                         return null;
                     var iMainInfo = idx + 0x0E;
                     var addrMainInfo = Address.Ptr32(
                         seg.MemoryArea.ReadLeUInt32(iMainInfo));
-                    ImageSegment segMainInfo;
-                    if (!program.SegmentMap.TryFindSegment(addrMainInfo, out segMainInfo))
+                    if (!program.SegmentMap.TryFindSegment(addrMainInfo, out ImageSegment segMainInfo))
                         return null;
                     var addrMain = Address.Ptr32(
                         segMainInfo.MemoryArea.ReadLeUInt32(addrMainInfo + 0x18));
@@ -185,7 +183,7 @@ namespace Reko.Environments.Windows
             if (LocatePattern(
                    seg.MemoryArea.Bytes,
                    (uint)(addrStart - seg.MemoryArea.BaseAddress),
-                   (uint)(addrMax - seg.MemoryArea.BaseAddress),
+                   (uint)(offsetMax),
                    msvcDebugCrt,
                    out idx))
             {
@@ -212,9 +210,8 @@ namespace Reko.Environments.Windows
             byte[] pattern,
             out uint index)
         {
-            index = 0;
             uint i, j;
-            uint pSrc = 0;                             /* Pointer to start of considered source */
+            uint pSrc;                             /* Pointer to start of considered source */
             uint iLast;
 
             iLast = iMax - (uint)pattern.Length;                 /* Last source uint8_t to consider */

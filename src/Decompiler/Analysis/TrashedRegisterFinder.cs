@@ -36,7 +36,6 @@ namespace Reko.Analysis
     {
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(TrashedRegisterFinder), "Trashed value propagation") { Level = TraceLevel.Error };
 
-        private readonly IProcessorArchitecture arch;
         private readonly SegmentMap segmentMap;
         private readonly ProgramDataFlow flow;
         private readonly HashSet<SsaTransform> sccGroup;
@@ -51,6 +50,7 @@ namespace Reko.Analysis
             private Dictionary<Block, Context>? blockCtx;
             private Context? ctx;       //$R
             private ExpressionSimplifier? eval;
+        private IProcessorArchitecture arch;
         private bool propagateToCallers;
         private bool selfRecursiveCalls;
 
@@ -94,6 +94,7 @@ namespace Reko.Analysis
             Block block;
             while (worklist.GetWorkItem(out block))
             {
+                arch = block.Procedure.Architecture;
                 ProcessBlock(block);
             }
             

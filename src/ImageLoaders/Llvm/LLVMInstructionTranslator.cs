@@ -188,24 +188,24 @@ namespace Reko.ImageLoaders.LLVM
             {
             default:
                 throw new NotImplementedException(string.Format("TranslateConversion({0},{1},{2})", conv.Operator, srcType, dstType));
-            case TokenType.bitcast:     // reinterpret_cast
-                e = m.Cast(dstType, src);
+            case TokenType.bitcast:     // reinterpret_cast requires no convert
+                e = src;
                 break;
             case TokenType.inttoptr:
                 dstType = PrimitiveType.Create(IrDomain.Pointer, srcType.BitSize);
-                e = m.Cast(dstType, src);
+                e = m.Convert(src, src.DataType, dstType);
                 break;
             case TokenType.sext:
                 dstType = PrimitiveType.Create(IrDomain.SignedInt, dstType.BitSize);
-                e = m.Cast(dstType, src);
+                e = m.Convert(src, src.DataType, dstType);
                 break;
             case TokenType.zext:
                 dstType = PrimitiveType.Create(IrDomain.UnsignedInt, dstType.BitSize);
-                e = m.Cast(dstType, src);
+                e = m.Convert(src, src.DataType, dstType);
                 break;
             case TokenType.ptrtoint:
             case TokenType.trunc:
-                e = m.Cast(dstType, src);
+                e = m.Convert(src, src.DataType, dstType);
                 break;
             }
             m.Assign(dst, e);
@@ -298,7 +298,6 @@ namespace Reko.ImageLoaders.LLVM
             foreach (var de in unresolvedPhis)
             {
                 var args = new List<PhiArgument>(de.Value.Arguments.Count);
-                var block = de.Key.Block;
                 var type = builder.TranslateType(de.Value.Type);
                 foreach (var arg in de.Value.Arguments)
                 {

@@ -34,13 +34,15 @@ namespace Reko.Scanning
     /// </summary>
     public class IdentifierRelocator : InstructionTransformer, StorageVisitor<Identifier>
     {
-        private readonly Frame frame;
+        private readonly Frame frameOld;
+        private readonly Frame frameNew;
         private readonly Dictionary<Identifier, Identifier> mapIds;
         private Identifier? id; //$TODO: use 'id' as context?
 
-        public IdentifierRelocator(Frame frame)
+        public IdentifierRelocator(Frame frameOld, Frame frameNew)
         {
-            this.frame = frame;
+            this.frameOld  = frameOld;
+            this.frameNew = frameNew;
             this.mapIds = new Dictionary<Identifier, Identifier>();
         }
 
@@ -62,51 +64,54 @@ namespace Reko.Scanning
 
         public Identifier VisitFlagGroupStorage(FlagGroupStorage flags)
         {
-            return frame.EnsureFlagGroup(flags.FlagRegister, flags.FlagGroupBits, flags.Name, id!.DataType);
+            return frameNew.EnsureFlagGroup(flags.FlagRegister, flags.FlagGroupBits, flags.Name, id!.DataType);
         }
 
         public Identifier VisitFpuStackStorage(FpuStackStorage fpu)
         {
-            return frame.EnsureFpuStackVariable(fpu.FpuStackOffset, id!.DataType);
+            return frameNew.EnsureFpuStackVariable(fpu.FpuStackOffset, id!.DataType);
         }
 
         public Identifier VisitRegisterStorage(RegisterStorage reg)
         {
-            return frame.EnsureRegister(reg);
+            return frameNew.EnsureRegister(reg);
         }
 
         public Identifier VisitMemoryStorage(MemoryStorage mem)
         {
-            return frame.Memory;
+            if (id! == frameOld.Memory)
+                return frameNew.Memory;
+            else
+                return id!;
         }
 
         public Identifier VisitStackArgumentStorage(StackArgumentStorage arg)
         {
-            return frame.EnsureStackArgument(arg.StackOffset, arg.DataType);
+            return frameNew.EnsureStackArgument(arg.StackOffset, arg.DataType);
         }
 
         public Identifier VisitStackLocalStorage(StackLocalStorage loc)
         {
-            return frame.EnsureStackLocal(loc.StackOffset, loc.DataType);
+            return frameNew.EnsureStackLocal(loc.StackOffset, loc.DataType);
         }
 
         public Identifier VisitTemporaryStorage(TemporaryStorage tmp)
         {
-            var tmp2 = frame.FindTemporary(tmp.Name);
+            var tmp2 = frameNew.FindTemporary(tmp.Name);
             if (tmp2 != null)
                 return tmp2;
-            return frame.CreateTemporary(id!.DataType);
+            return frameNew.CreateTemporary(id!.DataType);
         }
 
         public Identifier VisitSequenceStorage(SequenceStorage seq)
         {
-            return frame.EnsureSequence(id!.DataType, seq.Elements);
+            return frameNew.EnsureSequence(id!.DataType, seq.Elements);
         }
 
         public Identifier VisitOutArgumentStorage(OutArgumentStorage ost)
         {
             var idOut = id;
-            return frame.EnsureOutArgument((Identifier) VisitIdentifier(ost.OriginalIdentifier), idOut!.DataType);
+            return frameNew.EnsureOutArgument((Identifier) VisitIdentifier(ost.OriginalIdentifier), idOut!.DataType);
         }
     }
 }

@@ -186,10 +186,6 @@ namespace Reko.ImageLoaders.MzExe
 		{
 			return GetDeferredLoader().Relocate(program, addrLoad);
 		}
-
-		void RelocateNewExe(object neHeader)
-		{
-		}
 	}
 }
 /*

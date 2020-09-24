@@ -26,7 +26,8 @@ using System.Text;
 namespace Reko.Core.Types
 {
     /// <summary>
-    /// Refers to another type by name
+    /// Refers to another type by name; think of C's "typedef"
+    /// type builder.
     /// </summary>
     public class TypeReference : DataType
     {

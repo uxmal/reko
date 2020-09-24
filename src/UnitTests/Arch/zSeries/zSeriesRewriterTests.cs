@@ -158,7 +158,7 @@ namespace Reko.UnitTests.Arch.zSeries
             Given_HexString("5010B0A4");
             AssertCode(     // st	r1,164(r11)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r11 + 164<i64>:word32] = (word32) r1");
+                "1|L--|Mem0[r11 + 164<i64>:word32] = SLICE(r1, word32, 0)");
         }
 
         [Test]
@@ -321,8 +321,8 @@ namespace Reko.UnitTests.Arch.zSeries
             Given_HexString("B9140011");
             AssertCode(     // lgfr	r1,r1
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v3 = (word32) r1",
-                "2|L--|r1 = (int64) v3");
+                "1|L--|v3 = CONVERT(r1, word64, word32)",
+                "2|L--|r1 = CONVERT(v3, word32, int64)");
         }
 
         [Test]
@@ -380,7 +380,7 @@ namespace Reko.UnitTests.Arch.zSeries
             Given_HexString("A71AFFFF");
             AssertCode(     // ahi	r1,-00000001
                 "0|L--|00100000(4): 4 instructions",
-                "1|L--|v3 = (word32) r1 - 1<i32>",
+                "1|L--|v3 = CONVERT(r1, word64, word32) - 1<i32>",
                 "2|L--|v4 = SLICE(r1, word32, 32)",
                 "3|L--|r1 = SEQ(v4, v3)",
                 "4|L--|CC = cond(v3)");
@@ -411,7 +411,7 @@ namespace Reko.UnitTests.Arch.zSeries
             Given_HexString("1A12");
             AssertCode( // ar\tr1,r2
                 "0|L--|00100000(2): 4 instructions",
-                "1|L--|v4 = (word32) r1 + (word32) r2",
+                "1|L--|v4 = CONVERT(r1, word64, word32) + CONVERT(r2, word64, word32)",
                 "2|L--|v5 = SLICE(r1, word32, 32)",
                 "3|L--|r1 = SEQ(v5, v4)",
                 "4|L--|CC = cond(v4)");
@@ -454,7 +454,7 @@ namespace Reko.UnitTests.Arch.zSeries
             Given_HexString("E314F15C0014");
             AssertCode(     // lgf	r1,348(r15)
                 "0|L--|00100000(6): 1 instructions",
-                "1|L--|r1 = (int64) Mem0[r15 + r4 + 348<i64>:int32]");
+                "1|L--|r1 = CONVERT(Mem0[r15 + r4 + 348<i64>:int32], int32, int64)");
         }
 
         [Test]

@@ -66,11 +66,11 @@ namespace Reko.Core.Output
 		{
             this.InnerFormatter = writer;
             this.typeWriter = new TypeGraphWriter(writer);
-        }
+		}
 
         public Formatter InnerFormatter { get; }
 
-        static CodeFormatter()
+		static CodeFormatter()
 		{
             precedences = new Dictionary<Operator, int>
             {
@@ -171,9 +171,9 @@ namespace Reko.Core.Output
                 if (!s.Contains(':'))
                 {
                     s = string.Format("0x{0}<p{1}>", s, addr.DataType.BitSize);
-                }
-                InnerFormatter.Write(s);
             }
+                InnerFormatter.Write(s);
+        }
         }
 
 		public void VisitApplication(Application appl)
@@ -248,33 +248,7 @@ namespace Reko.Core.Output
                 InnerFormatter.Write('"');
                 foreach (var ch in (string) s.GetValue())
                 {
-                    switch (ch)
-                    {
-                    case '\0': InnerFormatter.Write("\\0"); break;
-                    case '\a': InnerFormatter.Write("\\a"); break;
-                    case '\b': InnerFormatter.Write("\\b"); break;
-                    case '\f': InnerFormatter.Write("\\f"); break;
-                    case '\n': InnerFormatter.Write("\\n"); break;
-                    case '\r': InnerFormatter.Write("\\r"); break;
-                    case '\t': InnerFormatter.Write("\\t"); break;
-                    case '\v': InnerFormatter.Write("\\v"); break;
-                    case '\"': InnerFormatter.Write("\\\""); break;
-                    case '\\': InnerFormatter.Write("\\\\"); break;
-                    default:
-                        // The awful hack allows us to reuse .NET encodings
-                        // while encoding the original untranslateable 
-                        // code points into the Private use area.
-                        //$TODO: Clearly if the string was UTF8 or 
-                        // UTF-16 to begin with, we want to preserve the
-                        // private use area points.
-                        if (0xE000 <= ch && ch <= 0xE100)
-                            InnerFormatter.Write("\\x{0:X2}", (ch - 0xE000));
-                        else if (0 <= ch && ch < ' ' || ch >= 0x7F)
-                            InnerFormatter.Write("\\x{0:X2}", (int) ch);
-                        else
-                            InnerFormatter.Write(ch);
-                        break;
-                    }
+                    WriteEscapedCharacter(ch);
                 }
                 InnerFormatter.Write('"');
                 return;
@@ -283,11 +257,12 @@ namespace Reko.Core.Output
             var pt = c.DataType.ResolveAs<PrimitiveType>();
             if (pt != null)
             {
-                if (pt.Domain == Domain.Boolean)
+                switch (pt.Domain)
                 {
+                case Domain.Boolean:
                     InnerFormatter.Write(Convert.ToBoolean(c.GetValue()) ? "true" : "false");
-                }
-                else if (pt.Domain == Domain.Real)
+                    break;
+                case Domain.Real:
                 {
                     string sr;
 
@@ -308,28 +283,72 @@ namespace Reko.Core.Output
                         sr += "F";
                     }
                     InnerFormatter.Write(sr);
+                    break;
                 }
-                else 
-                {
+                case Domain.Character:
+                    if (pt.Size == 1)
+                    {
+                        InnerFormatter.Write("'");
+                    }
+                    else
+                    {
+                        InnerFormatter.Write("L'"); 
+                    }
+                    WriteEscapedCharacter(Convert.ToChar(c.GetValue()));
+                    InnerFormatter.Write("'");
+                    break;
+                default:
                     object v = c.GetValue();
                     var (fmtNumber, fmtSigil) = FormatStrings(pt, v);
                     InnerFormatter.Write(fmtNumber, v);
                     InnerFormatter.Write(fmtSigil, pt.BitSize);
+                    break;
                 }
                 return;
             }
         }
 
-		public void VisitMkSequence(MkSequence seq)
-		{
-			InnerFormatter.Write("SEQ(");
-            var sep = "";
-            foreach (var e in seq.Expressions)
+
+        private void WriteEscapedCharacter(char ch)
+        {
+            switch (ch)
             {
-                InnerFormatter.Write(sep);
-                sep = ", ";
-                WriteExpression(e);
+            case '\0': InnerFormatter.Write("\\0"); break;
+            case '\a': InnerFormatter.Write("\\a"); break;
+            case '\b': InnerFormatter.Write("\\b"); break;
+            case '\f': InnerFormatter.Write("\\f"); break;
+            case '\n': InnerFormatter.Write("\\n"); break;
+            case '\r': InnerFormatter.Write("\\r"); break;
+            case '\t': InnerFormatter.Write("\\t"); break;
+            case '\v': InnerFormatter.Write("\\v"); break;
+            case '\"': InnerFormatter.Write("\\\""); break;
+            case '\\': InnerFormatter.Write("\\\\"); break;
+            default:
+                // The awful hack allows us to reuse .NET encodings
+                // while encoding the original untranslateable 
+                // code points into the Private use area.
+                //$TODO: Clearly if the string was UTF8 or 
+                // UTF-16 to begin with, we want to preserve the
+                // private use area points.
+                if (0xE000 <= ch && ch <= 0xE100)
+                    InnerFormatter.Write("\\x{0:X2}", (ch - 0xE000));
+                else if (0 <= ch && ch < ' ' || ch >= 0x7F)
+                    InnerFormatter.Write("\\x{0:X2}", (int) ch);
+                else
+                    InnerFormatter.Write(ch);
+                break;
             }
+        }
+
+        public void VisitConversion(Conversion conversion)
+		{
+            InnerFormatter.Write("CONVERT(");
+            var trf = new TypeReferenceFormatter(InnerFormatter);
+            WriteExpression(conversion.Expression);
+            InnerFormatter.Write(", ");
+            trf.WriteTypeReference(conversion.SourceDataType);
+            InnerFormatter.Write(", ");
+            trf.WriteTypeReference(conversion.DataType);
 			InnerFormatter.Write(")");
 		}
 
@@ -411,6 +430,19 @@ namespace Reko.Core.Output
             Debug.Assert(access.DataType != null);
             InnerFormatter.Write(access.DataType?.ToString() ?? "");
             InnerFormatter.Write("]");
+        }
+
+        public void VisitMkSequence(MkSequence seq)
+        {
+            InnerFormatter.Write("SEQ(");
+            var sep = "";
+            foreach (var e in seq.Expressions)
+            {
+                InnerFormatter.Write(sep);
+                sep = ", ";
+                WriteExpression(e);
+            }
+            InnerFormatter.Write(")");
         }
 
         public void VisitOutArgument(OutArgument outArg)
@@ -913,15 +945,17 @@ namespace Reko.Core.Output
                  return ("{0:X}", "p{0}");
             default:
                 if (!(value is ulong w))
-                    w = Convert.ToUInt64(value);
+                {
+                    w = (ulong) Convert.ToInt64(value);
+                }
                 if (w > 9)
                 {
                     format = "0x{0:X}";
-                }
+            }
                 else
                 {
                     format = "{0}";
-                }
+        }
                 return (format, "<{0}>");
             }
         }

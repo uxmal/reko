@@ -25,15 +25,16 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Reko.Core.CLanguage
 {
     public class CLexer 
     {
-        private TextReader rdr;
-        private StringBuilder sb;
-        private Dictionary<string, CTokenType> keywordHash;
+        private readonly TextReader rdr;
+        private readonly StringBuilder sb;
+        private readonly Dictionary<string, CTokenType> keywordHash;
 
         public CLexer(TextReader rdr, Dictionary<string, CTokenType> keywords)
         {
@@ -81,6 +82,9 @@ namespace Reko.Core.CLanguage
             LineComment,
             MultiLineComment,
             MultiLineCommentStar,
+            HexNumberSuffix,
+            DecimalNumberSuffix,
+            L,
         }
 
         public int LineNumber { get; private set; }
@@ -100,6 +104,10 @@ namespace Reko.Core.CLanguage
         /// </summary>
         public static Dictionary<string, CTokenType> MsvcKeywords { get; }
 
+        /// <summary>
+        /// Keywords used by the MSVC compiler for Windows CE.
+        /// </summary>
+        public static Dictionary<string, CTokenType> MsvcCeKeywords { get; }
 
         public CToken Peek()
         {
@@ -112,6 +120,7 @@ namespace Reko.Core.CLanguage
                 return Tok(CTokenType.EOF);
 
             State state = State.Start;
+            bool wideLiteral = false;
             ClearBuffer();
             for (; ; )
             {
@@ -173,10 +182,10 @@ namespace Reko.Core.CLanguage
                             sb.Append(ch);
                             state = State.DecimalNumber;
                         }
-                        else if (Char.IsLetter(ch) | ch == '_')
+                        else if (Char.IsLetter(ch) || ch == '_')
                         {
                             sb.Append(ch);
-                            state = State.Id;
+                            state = ch == 'L' ? State.L : State.Id;
                         }
                         else
                         {
@@ -213,7 +222,13 @@ namespace Reko.Core.CLanguage
                         state = State.DecimalNumber;
                         break;
                     default:
-                        //$BUG: L, u, F suffixes.
+                        if (IsIntegerSuffix(ch))
+                        {
+                            rdr.Read();
+                            state = State.DecimalNumberSuffix;
+                            break;
+                        }
+                        //$BUG: F suffix.
                         return Tok(CTokenType.NumericLiteral, Convert.ToInt32(sb.ToString()));
                     }
                     break;
@@ -222,7 +237,7 @@ namespace Reko.Core.CLanguage
                         return Tok(CTokenType.NumericLiteral, Convert.ToInt32(sb.ToString(), 8));
                     switch (c)
                     {
-                    case '0': case '1': case '2': case '3': 
+                    case '0': case '1': case '2': case '3':
                     case '4': case '5': case '6': case '7':
                         rdr.Read();
                         sb.Append(ch);
@@ -254,12 +269,25 @@ namespace Reko.Core.CLanguage
                             sb.Append(ch);
                             break;
                         }
+                        else if (IsIntegerSuffix(ch))
+                        {
+                            rdr.Read();
+                            state = State.DecimalNumberSuffix;
+                            break;
+                        }
                         else
                         {
                             return Tok(CTokenType.NumericLiteral, Convert.ToInt32(sb.ToString()));
                         }
                     }
                     break;
+                case State.DecimalNumberSuffix:
+                    if (c >= 0 && IsIntegerSuffix(ch))
+                    {
+                        rdr.Read();
+                        break;
+                    }
+                    return Tok(CTokenType.NumericLiteral, Convert.ToInt32(sb.ToString()));
                 case State.RealDecimalPoint:
                     if (c < 0 || !Char.IsDigit(ch))
                         throw new FormatException("Expected digits after decimal point.");
@@ -339,7 +367,14 @@ namespace Reko.Core.CLanguage
                         return Tok(CTokenType.RealLiteral, Convert.ToDouble(sb.ToString(), CultureInfo.InvariantCulture));
                     }
                 case State.HexNumber:
-                    if (c >= 0 && IsHexDigit(ch))
+                    if (c < 0)
+                        return Tok(CTokenType.NumericLiteral, Convert.ToInt32(sb.ToString(), 16));
+                    if (IsIntegerSuffix(ch))
+                    {
+                        rdr.Read();
+                        state = State.HexNumberSuffix;
+                    }
+                    else if (IsHexDigit(ch))
                     {
                         rdr.Read();
                         sb.Append(ch);
@@ -349,6 +384,13 @@ namespace Reko.Core.CLanguage
                         return Tok(CTokenType.NumericLiteral, Convert.ToInt32(sb.ToString(), 16));
                     }
                     break;
+                case State.HexNumberSuffix:
+                    if (c >= 0 && IsIntegerSuffix(ch))
+                    {
+                        rdr.Read();
+                        break;
+                    }
+                    return Tok(CTokenType.NumericLiteral, Convert.ToInt32(sb.ToString(), 16));
                 case State.Id:
                     if (c >= 0 && Char.IsLetter(ch) || Char.IsDigit(ch) || ch == '_')
                     {
@@ -393,7 +435,7 @@ namespace Reko.Core.CLanguage
                     if (c < 0 || ch != '\'')
                         throw new FormatException("Character constant wasn't terminated.");
                     rdr.Read();
-                    return Tok(CTokenType.CharLiteral, sb[0]);
+                    return Tok(wideLiteral ? CTokenType.WideCharLiteral : CTokenType.CharLiteral, sb[0]);
                 case State.StringLiteral:
                     if (c < 0)
                         throw new FormatException("String constant wasn't terminated.");
@@ -401,7 +443,7 @@ namespace Reko.Core.CLanguage
                     switch (ch)
                     {
                     case '\"':
-                        return Tok(CTokenType.StringLiteral, sb.ToString());
+                        return Tok(wideLiteral ? CTokenType.WideStringLiteral : CTokenType.StringLiteral, sb.ToString());
                     case '\\':
                         state = State.StringEscape;
                         break;
@@ -619,13 +661,15 @@ namespace Reko.Core.CLanguage
                 case State.Pipe:
                     if (c < 0)
                         return Tok(CTokenType.Pipe);
-                    if (ch == '=')
+                    switch (ch)
                     {
+                    case '=':
                         rdr.Read();
                         return Tok(CTokenType.OrAssign);
-                    }
-                    else
-                    {
+                    case '|':
+                        rdr.Read();
+                        return Tok(CTokenType.LogicalOr);
+                    default:
                         return Tok(CTokenType.Pipe);
                     }
                 case State.Caret:
@@ -693,6 +737,37 @@ namespace Reko.Core.CLanguage
                         break;
                     default:
                         rdr.Read(); break;
+                    }
+                    break;
+                case State.L:
+                    if (c < 0)
+                        return LookupId();
+                    switch (ch)
+                    {
+                    case '\'':
+                        wideLiteral = true;
+                        sb.Clear();
+                        rdr.Read();
+                        state = State.CharLiteral;
+                        break;
+                    case '\"':
+                        wideLiteral = true;
+                        sb.Clear();
+                        rdr.Read();
+                        state = State.StringLiteral;
+                        break;
+                    default:
+                        if (Char.IsLetter(ch) || Char.IsDigit(ch) || ch == '_')
+                        {
+                            rdr.Read();
+                            sb.Append(ch);
+                            state = State.Id;
+                        }
+                        else
+                        {
+                            return LookupId();
+                        }
+                        break;
                     }
                     break;
                 default:
@@ -763,6 +838,15 @@ namespace Reko.Core.CLanguage
             }
         }
 
+        private bool IsIntegerSuffix(char ch)
+        {
+            switch (ch)
+            {
+            case 'u': case 'U': case 'l': case 'L': return true;
+            default: return false;
+            }
+        }
+
         public void SkipToNextLine()
         {
             for (; ; )
@@ -802,9 +886,11 @@ namespace Reko.Core.CLanguage
                 { "const", CTokenType.Const },
                 { "do", CTokenType.Do },
                 { "double", CTokenType.Double },
+                { "else", CTokenType.Else },
                 { "enum", CTokenType.Enum },
                 { "extern", CTokenType.Extern },
                 { "float", CTokenType.Float },
+                { "if", CTokenType.If },
                 { "int", CTokenType.Int },
                 { "long", CTokenType.Long },
                 { "register", CTokenType.Register },
@@ -864,6 +950,7 @@ namespace Reko.Core.CLanguage
                 { "_Bool", CTokenType._Bool },
                 { "_cdecl", CTokenType.__Cdecl },
                 { "_far", CTokenType._Far },
+                { "_inline", CTokenType.__Inline },
                 { "_near", CTokenType._Near },
                 { "__asm", CTokenType.__Asm },
                 { "__asm__", CTokenType.__Asm },
@@ -889,9 +976,14 @@ namespace Reko.Core.CLanguage
                 { "__stdcall", CTokenType.__Stdcall },
                 { "__success", CTokenType.__Success },
                 { "__thiscall", CTokenType.__Thiscall },
+                { "__unaligned", CTokenType.__Unaligned },
                 { "__w64", CTokenType.__W64 },
             }.Concat(StdKeywords)
             .ToDictionary(de => de.Key, de => de.Value);
+
+            MsvcCeKeywords = MsvcKeywords
+                .Where(de => de.Key != "__asm")
+                .ToDictionary(de => de.Key, de => de.Value);
         }
     }
 
@@ -921,8 +1013,10 @@ namespace Reko.Core.CLanguage
         None = 0,
         NumericLiteral,
         StringLiteral,
+        WideStringLiteral,
         RealLiteral,
         CharLiteral,
+        WideCharLiteral,
 
         Id,
         LineDirective,
@@ -1027,6 +1121,7 @@ namespace Reko.Core.CLanguage
         __Stdcall,
         __Success,
         __Thiscall,
+        __Unaligned,
         __W64,
         Switch,
         While,

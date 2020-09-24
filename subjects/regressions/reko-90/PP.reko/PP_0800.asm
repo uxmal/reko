@@ -25,12 +25,12 @@
 ;;   Called from:
 ;;     0800:8B2F (in fn0800_8B0D)
 fn0800_0150 proc
-	mov	es,cs:[025A]
+	mov	es,cs:[025Ah]
 	push	si
 	push	di
-	mov	si,2714
-	mov	di,2714
-	call	01E6
+	mov	si,2714h
+	mov	di,2714h
+	call	01E6h
 	pop	di
 	pop	si
 	ret
@@ -46,36 +46,36 @@ fn0800_0163 proc
 ;;     0800:8B51 (in fn0800_8B0D)
 fn0800_0164 proc
 	mov	bp,sp
-	mov	ah,4C
-	mov	al,[bp+02]
-	int	21
+	mov	ah,4Ch
+	mov	al,[bp+2h]
+	int	21h
 0800:016D                                        B9 0E 00              ...
 0800:0170 BA 2F 00 E9 D5 00                               ./....         
 
 ;; fn0800_0176: 0800:0176
 fn0800_0176 proc
 	push	ds
-	mov	ax,3500
-	int	21
-	mov	[005B],bx
-	mov	[005D],es
-	mov	ax,3504
-	int	21
-	mov	[005F],bx
-	mov	[0061],es
-	mov	ax,3505
-	int	21
-	mov	[0063],bx
-	mov	[0065],es
-	mov	ax,3506
-	int	21
-	mov	[0067],bx
-	mov	[0069],es
-	mov	ax,2500
+	mov	ax,3500h
+	int	21h
+	mov	[005Bh],bx
+	mov	[005Dh],es
+	mov	ax,3504h
+	int	21h
+	mov	[005Fh],bx
+	mov	[0061h],es
+	mov	ax,3505h
+	int	21h
+	mov	[0063h],bx
+	mov	[0065h],es
+	mov	ax,3506h
+	int	21h
+	mov	[0067h],bx
+	mov	[0069h],es
+	mov	ax,2500h
 	mov	dx,cs
 	mov	ds,dx
-	mov	dx,016D
-	int	21
+	mov	dx,16Dh
+	int	21h
 	pop	ds
 	ret
 
@@ -84,24 +84,24 @@ fn0800_0176 proc
 ;;     0800:8B36 (in fn0800_8B0D)
 fn0800_01B9 proc
 	push	ds
-	mov	ax,2500
-	lds	dx,[005B]
-	int	21
+	mov	ax,2500h
+	lds	dx,[005Bh]
+	int	21h
 	pop	ds
 	push	ds
-	mov	ax,2504
-	lds	dx,[005F]
-	int	21
+	mov	ax,2504h
+	lds	dx,[005Fh]
+	int	21h
 	pop	ds
 	push	ds
-	mov	ax,2505
-	lds	dx,[0063]
-	int	21
+	mov	ax,2505h
+	lds	dx,[0063h]
+	int	21h
 	pop	ds
 	push	ds
-	mov	ax,2506
-	lds	dx,[0067]
-	int	21
+	mov	ax,2506h
+	lds	dx,[0067h]
+	int	21h
 	pop	ds
 	ret
 
@@ -109,15 +109,15 @@ fn0800_01B9 proc
 ;;   Called from:
 ;;     0800:015D (in fn0800_0150)
 fn0800_01E6 proc
-	cmp	si,26FC
-	jz	01F0
+	cmp	si,26FCh
+	jz	01F0h
 
 l0800_01EC:
 	xor	ah,ah
-	jmp	01F2
+	jmp	01F2h
 
 l0800_01F0:
-	mov	ah,FF
+	mov	ah,0FFh
 
 l0800_01F2:
 	mov	dx,di
@@ -125,63 +125,63 @@ l0800_01F2:
 
 l0800_01F6:
 	cmp	bx,di
-	jz	021D
+	jz	021Dh
 
 l0800_01FA:
-	cmp	byte ptr es:[bx],FF
-	jz	0218
+	cmp	byte ptr es:[bx],0FFh
+	jz	0218h
 
 l0800_0200:
-	cmp	si,26FC
-	jz	020C
+	cmp	si,26FCh
+	jz	020Ch
 
 l0800_0206:
-	cmp	ah,es:[bx+01]
-	jmp	0210
+	cmp	ah,es:[bx+1h]
+	jmp	0210h
 
 l0800_020C:
-	cmp	es:[bx+01],ah
+	cmp	es:[bx+1h],ah
 
 l0800_0210:
-	ja	0218
+	ja	0218h
 
 l0800_0212:
-	mov	ah,es:[bx+01]
+	mov	ah,es:[bx+1h]
 	mov	dx,bx
 
 l0800_0218:
-	add	bx,06
-	jmp	01F6
+	add	bx,6h
+	jmp	01F6h
 
 l0800_021D:
 	cmp	dx,di
-	jz	023C
+	jz	023Ch
 
 l0800_0221:
 	mov	bx,dx
-	cmp	byte ptr es:[bx],00
-	mov	byte ptr es:[bx],FF
+	cmp	byte ptr es:[bx],0h
+	mov	byte ptr es:[bx],0FFh
 	push	es
-	jz	0235
+	jz	0235h
 
 l0800_022E:
-	call	dword ptr es:[bx+02]
+	call	dword ptr es:[bx+2h]
 	pop	es
-	jmp	01E6
+	jmp	01E6h
 
 l0800_0235:
-	call	word ptr es:[bx+02]
+	call	word ptr es:[bx+2h]
 	pop	es
-	jmp	01E6
+	jmp	01E6h
 
 l0800_023C:
 	ret
 
 ;; fn0800_023D: 0800:023D
 fn0800_023D proc
-	mov	ah,40
-	mov	bx,0002
-	int	21
+	mov	ah,40h
+	mov	bx,2h
+	int	21h
 	ret
 0800:0245                B9 1E 00 BA 3D 00 2E 8E 1E 5A 02      ....=....Z.
 0800:0250 E8 EA FF B8 03 00 50 E8 0F 89 00 00 03 40       ......P......@ 
@@ -190,136 +190,136 @@ fn0800_023D proc
 main proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
+	sub	sp,4h
 	push	si
-	mov	word ptr [2A27],0001
-	mov	word ptr [2E4D],0000
-	mov	word ptr [2A1F],0000
-	mov	word ptr [2E4F],0000
-	mov	word ptr [2A1D],0000
-	mov	word ptr [2A17],0000
-	mov	word ptr [2A1B],0000
-	mov	word ptr [2A11],0000
-	mov	word ptr [2A0F],0000
-	mov	word ptr [2A0D],0000
-	mov	word ptr [2A0B],3000
-	mov	word ptr [2E31],8000
-	mov	word ptr [2E2F],1000
-	mov	word ptr [2A21],0001
-	mov	word ptr [29F5],0000
-	mov	word ptr [29F3],0000
-	mov	word ptr [29F1],0000
-	mov	word ptr [29EF],0000
-	mov	word ptr [2A13],0000
-	mov	word ptr [2A23],0001
-	call	2C9A
+	mov	word ptr [2A27h],1h
+	mov	word ptr [2E4Dh],0h
+	mov	word ptr [2A1Fh],0h
+	mov	word ptr [2E4Fh],0h
+	mov	word ptr [2A1Dh],0h
+	mov	word ptr [2A17h],0h
+	mov	word ptr [2A1Bh],0h
+	mov	word ptr [2A11h],0h
+	mov	word ptr [2A0Fh],0h
+	mov	word ptr [2A0Dh],0h
+	mov	word ptr [2A0Bh],3000h
+	mov	word ptr [2E31h],8000h
+	mov	word ptr [2E2Fh],1000h
+	mov	word ptr [2A21h],1h
+	mov	word ptr [29F5h],0h
+	mov	word ptr [29F3h],0h
+	mov	word ptr [29F1h],0h
+	mov	word ptr [29EFh],0h
+	mov	word ptr [2A13h],0h
+	mov	word ptr [2A23h],1h
+	call	2C9Ah
 	push	ds
-	mov	ax,0094
+	mov	ax,94h
 	push	ax
 	push	ds
-	mov	ax,07E8
+	mov	ax,7E8h
 	push	ax
-	call	B2EF
-	add	sp,08
-	call	0402
-	call	0541
-	mov	ax,0001
+	call	0B2EFh
+	add	sp,8h
+	call	0402h
+	call	0541h
+	mov	ax,1h
 	push	ax
 	push	ax
-	call	2DBF
-	add	sp,04
+	call	2DBFh
+	add	sp,4h
 	xor	ax,ax
 	push	ax
 	push	ax
-	call	9764
-	add	sp,04
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	mov	bx,[2A25]
-	cmp	bx,08
-	ja	0338
+	call	9764h
+	add	sp,4h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	mov	bx,[2A25h]
+	cmp	bx,8h
+	ja	0338h
 
 l0800_031A:
-	shl	bx,01
-	jmp	word ptr cs:[bx+03F0]
+	shl	bx,1h
+	jmp	word ptr cs:[bx+3F0h]
 
 l0800_0321:
-	call	0DE8
-	jmp	0338
+	call	0DE8h
+	jmp	0338h
 
 l0800_0326:
-	call	12E2
-	jmp	0338
+	call	12E2h
+	jmp	0338h
 
 l0800_032B:
-	call	18D9
-	jmp	0338
+	call	18D9h
+	jmp	0338h
 
 l0800_0330:
-	call	112D
-	jmp	0338
+	call	112Dh
+	jmp	0338h
 
 l0800_0335:
-	call	19EE
+	call	19EEh
 
 l0800_0338:
 	xor	ax,ax
 	push	ax
 	push	ax
-	call	9764
-	add	sp,04
-	sub	ax,[bp-04]
-	sbb	dx,[bp-02]
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	push	word ptr [29F1]
-	push	word ptr [29EF]
-	push	word ptr [29F5]
-	push	word ptr [29F3]
-	call	0B79
-	add	sp,08
+	call	9764h
+	add	sp,4h
+	sub	ax,[bp-4h]
+	sbb	dx,[bp-2h]
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	push	word ptr [29F1h]
+	push	word ptr [29EFh]
+	push	word ptr [29F5h]
+	push	word ptr [29F3h]
+	call	0B79h
+	add	sp,8h
 	mov	si,ax
 	xor	ax,ax
-	mov	dx,003C
+	mov	dx,3Ch
 	push	ax
 	push	dx
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	8BCA
-	push	dx
-	push	ax
-	xor	ax,ax
-	mov	dx,003C
-	push	ax
-	push	dx
-	mov	dx,0E10
-	push	ax
-	push	dx
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	8BCA
-	push	dx
-	push	ax
-	call	8BBB
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	8BCAh
 	push	dx
 	push	ax
 	xor	ax,ax
-	mov	dx,0E10
+	mov	dx,3Ch
 	push	ax
 	push	dx
-	mov	dx,5180
+	mov	dx,0E10h
 	push	ax
 	push	dx
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	8BCA
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	8BCAh
 	push	dx
 	push	ax
-	call	8BBB
+	call	8BBBh
+	push	dx
+	push	ax
+	xor	ax,ax
+	mov	dx,0E10h
+	push	ax
+	push	dx
+	mov	dx,5180h
+	push	ax
+	push	dx
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	8BCAh
+	push	dx
+	push	ax
+	call	8BBBh
 	push	dx
 	push	ax
 	mov	ax,si
-	mov	bx,0064
+	mov	bx,64h
 	xor	dx,dx
 	div	bx
 	push	dx
@@ -327,21 +327,21 @@ l0800_0338:
 	xor	dx,dx
 	div	bx
 	push	ax
-	push	word ptr [29F1]
-	push	word ptr [29EF]
-	push	word ptr [29F5]
-	push	word ptr [29F3]
+	push	word ptr [29F1h]
+	push	word ptr [29EFh]
+	push	word ptr [29F5h]
+	push	word ptr [29F3h]
 	push	ds
-	mov	ax,05DC
+	mov	ax,5DCh
 	push	ax
-	mov	ax,0008
+	mov	ax,8h
 	push	ax
-	push	word ptr [2A13]
+	push	word ptr [2A13h]
 	push	ds
-	mov	ax,07EB
+	mov	ax,7EBh
 	push	ax
-	call	B2EF
-	add	sp,24
+	call	0B2EFh
+	add	sp,24h
 	xor	ax,ax
 	pop	si
 	mov	sp,bp
@@ -363,117 +363,117 @@ l0800_0400	dw	0x0335
 fn0800_0402 proc
 	push	si
 	push	di
-	mov	ax,[2A27]
-	cmp	ax,[269A]
-	jnz	0410
+	mov	ax,[2A27h]
+	cmp	ax,[269Ah]
+	jnz	0410h
 
 l0800_040D:
-	call	0DCE
+	call	0DCEh
 
 l0800_0410:
-	mov	ax,[2A27]
-	shl	ax,01
-	shl	ax,01
-	les	bx,[269C]
+	mov	ax,[2A27h]
+	shl	ax,1h
+	shl	ax,1h
+	les	bx,[269Ch]
 	add	bx,ax
-	push	word ptr es:[bx+02]
+	push	word ptr es:[bx+2h]
 	push	word ptr es:[bx]
-	call	BFC7
-	add	sp,04
-	cmp	ax,0001
-	jbe	044D
+	call	0BFC7h
+	add	sp,4h
+	cmp	ax,1h
+	jbe	044Dh
 
 l0800_042F:
-	mov	ax,[2A27]
-	shl	ax,01
-	shl	ax,01
-	les	bx,[269C]
+	mov	ax,[2A27h]
+	shl	ax,1h
+	shl	ax,1h
+	les	bx,[269Ch]
 	add	bx,ax
-	push	word ptr es:[bx+02]
+	push	word ptr es:[bx+2h]
 	push	word ptr es:[bx]
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_044D:
-	mov	ax,[2A27]
-	shl	ax,01
-	shl	ax,01
-	les	bx,[269C]
+	mov	ax,[2A27h]
+	shl	ax,1h
+	shl	ax,1h
+	les	bx,[269Ch]
 	add	bx,ax
 	les	bx,es:[bx]
 	mov	al,es:[bx]
 	push	ax
 	push	ds
-	mov	ax,0829
+	mov	ax,829h
 	push	ax
-	call	0C29
-	add	sp,06
-	mov	[2A25],ax
-	cmp	ax,0009
-	jl	0492
+	call	0C29h
+	add	sp,6h
+	mov	[2A25h],ax
+	cmp	ax,9h
+	jl	0492h
 
 l0800_0474:
-	mov	ax,[2A27]
-	shl	ax,01
-	shl	ax,01
-	les	bx,[269C]
+	mov	ax,[2A27h]
+	shl	ax,1h
+	shl	ax,1h
+	les	bx,[269Ch]
 	add	bx,ax
-	push	word ptr es:[bx+02]
+	push	word ptr es:[bx+2h]
 	push	word ptr es:[bx]
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_0492:
-	inc	word ptr [2A27]
-	cmp	word ptr [2A25],02
-	jg	04A0
+	inc	word ptr [2A27h]
+	cmp	word ptr [2A25h],2h
+	jg	04A0h
 
 l0800_049D:
-	jmp	053E
+	jmp	053Eh
 
 l0800_04A0:
-	mov	ax,[2A27]
-	cmp	ax,[269A]
-	jnz	04AC
+	mov	ax,[2A27h]
+	cmp	ax,[269Ah]
+	jnz	04ACh
 
 l0800_04A9:
-	call	0DCE
+	call	0DCEh
 
 l0800_04AC:
-	mov	ax,[2A27]
-	inc	word ptr [2A27]
-	shl	ax,01
-	shl	ax,01
-	les	bx,[269C]
+	mov	ax,[2A27h]
+	inc	word ptr [2A27h]
+	shl	ax,1h
+	shl	ax,1h
+	les	bx,[269Ch]
 	add	bx,ax
-	push	word ptr es:[bx+02]
+	push	word ptr es:[bx+2h]
 	push	word ptr es:[bx]
 	push	ds
-	mov	ax,4348
+	mov	ax,4348h
 	push	ax
-	call	BF9E
-	add	sp,08
+	call	0BF9Eh
+	add	sp,8h
 	push	ds
-	mov	ax,4348
+	mov	ax,4348h
 	push	ax
-	call	0C6C
-	add	sp,04
+	call	0C6Ch
+	add	sp,4h
 	push	ds
 	pop	es
-	mov	di,4348
+	mov	di,4348h
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_04E4:
 	repne scasb
 
 l0800_04E6:
 	not	cx
-	mov	ax,002E
+	mov	ax,2Eh
 	dec	di
 	std
 
@@ -481,10 +481,10 @@ l0800_04ED:
 	repne scasb
 
 l0800_04EF:
-	jz	04F8
+	jz	04F8h
 
 l0800_04F1:
-	mov	di,FFFF
+	mov	di,0FFFFh
 	xor	ax,ax
 	mov	es,ax
 
@@ -495,26 +495,26 @@ l0800_04F8:
 	push	ds
 	pop	es
 	push	di
-	mov	di,4348
+	mov	di,4348h
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_0507:
 	repne scasb
 
 l0800_0509:
 	not	cx
-	mov	ax,005C
+	mov	ax,5Ch
 	sub	di,cx
 
 l0800_0510:
 	repne scasb
 
 l0800_0512:
-	jz	051B
+	jz	051Bh
 
 l0800_0514:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -523,14 +523,14 @@ l0800_051B:
 	mov	ax,es
 	pop	ax
 	cmp	ax,di
-	ja	0538
+	ja	0538h
 
 l0800_0523:
 	push	ds
 	pop	es
-	mov	di,4348
-	mov	si,0833
-	mov	cx,FFFF
+	mov	di,4348h
+	mov	si,833h
+	mov	cx,0FFFFh
 	xor	ax,ax
 
 l0800_0530:
@@ -538,13 +538,13 @@ l0800_0530:
 
 l0800_0532:
 	dec	di
-	mov	cx,0005
+	mov	cx,5h
 
 l0800_0536:
 	rep movsb
 
 l0800_0538:
-	mov	word ptr [2A19],0001
+	mov	word ptr [2A19h],1h
 
 l0800_053E:
 	pop	di
@@ -557,40 +557,40 @@ l0800_053E:
 fn0800_0541 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
+	sub	sp,4h
 	push	si
 	push	di
-	mov	ax,[2A27]
-	cmp	ax,[269A]
-	jnz	0555
+	mov	ax,[2A27h]
+	cmp	ax,[269Ah]
+	jnz	0555h
 
 l0800_0552:
-	jmp	0987
+	jmp	0987h
 
 l0800_0555:
-	shl	ax,01
-	shl	ax,01
-	les	bx,[269C]
+	shl	ax,1h
+	shl	ax,1h
+	les	bx,[269Ch]
 	add	bx,ax
 	les	bx,es:[bx]
-	cmp	byte ptr es:[bx],2D
-	jnz	056B
+	cmp	byte ptr es:[bx],2Dh
+	jnz	056Bh
 
 l0800_0568:
-	jmp	086D
+	jmp	086Dh
 
 l0800_056B:
-	mov	ax,[2A27]
-	shl	ax,01
-	shl	ax,01
-	les	bx,[269C]
+	mov	ax,[2A27h]
+	shl	ax,1h
+	shl	ax,1h
+	les	bx,[269Ch]
 	add	bx,ax
 	les	bx,es:[bx]
-	cmp	byte ptr es:[bx],2F
-	jnz	0584
+	cmp	byte ptr es:[bx],2Fh
+	jnz	0584h
 
 l0800_0581:
-	jmp	086D
+	jmp	086Dh
 
 l0800_0584:
 	pop	di
@@ -600,149 +600,149 @@ l0800_0584:
 	ret
 
 l0800_058A:
-	mov	ax,[2A27]
-	shl	ax,01
-	shl	ax,01
-	les	bx,[269C]
+	mov	ax,[2A27h]
+	shl	ax,1h
+	shl	ax,1h
+	les	bx,[269Ch]
 	add	bx,ax
 	les	bx,es:[bx]
-	mov	al,es:[bx+01]
+	mov	al,es:[bx+1h]
 	push	ax
 	push	ds
-	mov	ax,0838
+	mov	ax,838h
 	push	ax
-	call	0C29
-	add	sp,06
+	call	0C29h
+	add	sp,6h
 	mov	si,ax
-	cmp	ax,000B
-	jl	05CF
+	cmp	ax,0Bh
+	jl	05CFh
 
 l0800_05B1:
-	mov	ax,[2A27]
-	shl	ax,01
-	shl	ax,01
-	les	bx,[269C]
+	mov	ax,[2A27h]
+	shl	ax,1h
+	shl	ax,1h
+	les	bx,[269Ch]
 	add	bx,ax
-	push	word ptr es:[bx+02]
+	push	word ptr es:[bx+2h]
 	push	word ptr es:[bx]
-	mov	ax,0002
+	mov	ax,2h
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_05CF:
-	cmp	si,06
-	jl	05D7
+	cmp	si,6h
+	jl	05D7h
 
 l0800_05D4:
-	jmp	0659
+	jmp	0659h
 
 l0800_05D7:
-	mov	ax,[2A27]
-	shl	ax,01
-	shl	ax,01
-	les	bx,[269C]
+	mov	ax,[2A27h]
+	shl	ax,1h
+	shl	ax,1h
+	les	bx,[269Ch]
 	add	bx,ax
-	push	word ptr es:[bx+02]
+	push	word ptr es:[bx+2h]
 	push	word ptr es:[bx]
-	call	BFC7
-	add	sp,04
-	cmp	ax,0002
-	jnz	0622
+	call	0BFC7h
+	add	sp,4h
+	cmp	ax,2h
+	jnz	0622h
 
 l0800_05F6:
-	inc	word ptr [2A27]
-	mov	ax,[2A27]
-	cmp	ax,[269A]
-	jnz	0606
+	inc	word ptr [2A27h]
+	mov	ax,[2A27h]
+	cmp	ax,[269Ah]
+	jnz	0606h
 
 l0800_0603:
-	call	0DCE
+	call	0DCEh
 
 l0800_0606:
-	mov	ax,[2A27]
-	shl	ax,01
-	shl	ax,01
-	les	bx,[269C]
+	mov	ax,[2A27h]
+	shl	ax,1h
+	shl	ax,1h
+	les	bx,[269Ch]
 	add	bx,ax
-	mov	ax,es:[bx+02]
+	mov	ax,es:[bx+2h]
 	mov	dx,es:[bx]
-	mov	[bp-02],ax
-	mov	[bp-04],dx
-	jmp	063F
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
+	jmp	063Fh
 
 l0800_0622:
-	mov	ax,[2A27]
-	shl	ax,01
-	shl	ax,01
-	les	bx,[269C]
+	mov	ax,[2A27h]
+	shl	ax,1h
+	shl	ax,1h
+	les	bx,[269Ch]
 	add	bx,ax
-	mov	ax,es:[bx+02]
+	mov	ax,es:[bx+2h]
 	mov	dx,es:[bx]
-	add	dx,02
-	mov	[bp-02],ax
-	mov	[bp-04],dx
+	add	dx,2h
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
 
 l0800_063F:
-	les	bx,[bp-04]
+	les	bx,[bp-4h]
 	mov	al,es:[bx]
 	cbw
 	or	ax,ax
-	jnz	0659
+	jnz	0659h
 
 l0800_064A:
 	push	ds
-	mov	ax,05DC
+	mov	ax,5DCh
 	push	ax
-	mov	ax,0002
+	mov	ax,2h
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_0659:
 	mov	bx,si
-	cmp	bx,0A
-	jbe	0663
+	cmp	bx,0Ah
+	jbe	0663h
 
 l0800_0660:
-	jmp	0869
+	jmp	0869h
 
 l0800_0663:
-	shl	bx,01
-	jmp	word ptr cs:[bx+098D]
+	shl	bx,1h
+	jmp	word ptr cs:[bx+98Dh]
 
 l0800_066A:
-	mov	word ptr [2A1F],0001
-	mov	word ptr [2E4F],0000
-	jmp	0869
+	mov	word ptr [2A1Fh],1h
+	mov	word ptr [2E4Fh],0h
+	jmp	0869h
 
 l0800_0679:
-	mov	word ptr [2A1D],0001
-	jmp	0869
+	mov	word ptr [2A1Dh],1h
+	jmp	0869h
 
 l0800_0682:
-	mov	word ptr [2A1B],0001
-	jmp	0869
+	mov	word ptr [2A1Bh],1h
+	jmp	0869h
 
 l0800_068B:
-	mov	word ptr [2A17],0001
-	jmp	0869
+	mov	word ptr [2A17h],1h
+	jmp	0869h
 
 l0800_0694:
-	mov	word ptr [2A15],0001
-	jmp	0869
+	mov	word ptr [2A15h],1h
+	jmp	0869h
 
 l0800_069D:
-	cmp	word ptr [2A19],00
-	jz	06A7
+	cmp	word ptr [2A19h],0h
+	jz	06A7h
 
 l0800_06A4:
-	jmp	0869
+	jmp	0869h
 
 l0800_06A7:
-	les	di,[bp-04]
+	les	di,[bp-4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_06AF:
 	repne scasb
@@ -750,140 +750,140 @@ l0800_06AF:
 l0800_06B1:
 	not	cx
 	dec	cx
-	cmp	cx,01
-	jbe	06C9
+	cmp	cx,1h
+	jbe	06C9h
 
 l0800_06B9:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	mov	ax,0003
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	mov	ax,3h
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_06C9:
-	les	bx,[bp-04]
+	les	bx,[bp-4h]
 	mov	al,es:[bx]
 	push	ax
 	push	ds
-	mov	ax,0844
+	mov	ax,844h
 	push	ax
-	call	0C29
-	add	sp,06
-	mov	[2A23],ax
-	cmp	ax,0006
-	jl	06F3
+	call	0C29h
+	add	sp,6h
+	mov	[2A23h],ax
+	cmp	ax,6h
+	jl	06F3h
 
 l0800_06E3:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	mov	ax,0003
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	mov	ax,3h
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_06F3:
-	mov	bx,[2A23]
-	shl	bx,01
-	shl	bx,01
-	push	word ptr [bx+0547]
-	push	word ptr [bx+0545]
+	mov	bx,[2A23h]
+	shl	bx,1h
+	shl	bx,1h
+	push	word ptr [bx+547h]
+	push	word ptr [bx+545h]
 	push	ds
-	mov	ax,084B
+	mov	ax,84Bh
 	push	ax
 	push	ds
-	mov	ax,4271
+	mov	ax,4271h
 	push	ax
-	call	BEA2
-	add	sp,0C
-	jmp	0869
+	call	0BEA2h
+	add	sp,0Ch
+	jmp	0869h
 
 l0800_0716:
 	push	ds
-	mov	ax,2E4F
+	mov	ax,2E4Fh
 	push	ax
 	push	ds
-	mov	ax,084F
+	mov	ax,84Fh
 	push	ax
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	BF18
-	add	sp,0C
-	cmp	word ptr [2E4F],00
-	jnz	0743
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	0BF18h
+	add	sp,0Ch
+	cmp	word ptr [2E4Fh],0h
+	jnz	0743h
 
 l0800_0733:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	mov	ax,0004
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	mov	ax,4h
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_0743:
-	mov	word ptr [2A1F],0000
-	jmp	0869
+	mov	word ptr [2A1Fh],0h
+	jmp	0869h
 
 l0800_074C:
 	push	ds
-	mov	ax,2A0F
+	mov	ax,2A0Fh
 	push	ax
 	push	ds
-	mov	ax,0853
+	mov	ax,853h
 	push	ax
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	BF18
-	add	sp,0C
-	jmp	0869
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	0BF18h
+	add	sp,0Ch
+	jmp	0869h
 
 l0800_0765:
 	push	ds
-	mov	ax,2A21
+	mov	ax,2A21h
 	push	ax
 	push	ds
-	mov	ax,0856
+	mov	ax,856h
 	push	ax
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	BF18
-	add	sp,0C
-	cmp	word ptr [2A21],02
-	jg	0796
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	0BF18h
+	add	sp,0Ch
+	cmp	word ptr [2A21h],2h
+	jg	0796h
 
 l0800_0782:
-	cmp	word ptr [2A21],00
-	jz	078C
+	cmp	word ptr [2A21h],0h
+	jz	078Ch
 
 l0800_0789:
-	jmp	0869
+	jmp	0869h
 
 l0800_078C:
-	cmp	word ptr [2A25],00
-	jz	0796
+	cmp	word ptr [2A25h],0h
+	jz	0796h
 
 l0800_0793:
-	jmp	0869
+	jmp	0869h
 
 l0800_0796:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	mov	ax,0005
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	mov	ax,5h
 	push	ax
-	call	0D24
-	add	sp,06
-	jmp	0869
+	call	0D24h
+	add	sp,6h
+	jmp	0869h
 
 l0800_07A9:
 	push	ds
 	pop	es
-	mov	di,42E3
+	mov	di,42E3h
 	push	es
-	mov	es,[bp-02]
+	mov	es,[bp-2h]
 	push	di
-	mov	di,[bp-04]
+	mov	di,[bp-4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_07BB:
 	repne scasb
@@ -891,7 +891,7 @@ l0800_07BB:
 l0800_07BD:
 	not	cx
 	sub	di,cx
-	shr	cx,01
+	shr	cx,1h
 	mov	si,di
 	pop	di
 	mov	ax,es
@@ -911,15 +911,15 @@ l0800_07D0:
 l0800_07D2:
 	pop	ds
 	push	ds
-	mov	ax,42E3
+	mov	ax,42E3h
 	push	ax
-	call	0C6C
-	add	sp,04
+	call	0C6Ch
+	add	sp,4h
 	push	ds
 	pop	es
-	mov	di,42E3
+	mov	di,42E3h
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_07E8:
 	repne scasb
@@ -929,37 +929,37 @@ l0800_07EA:
 	dec	cx
 	dec	cx
 	mov	bx,cx
-	cmp	byte ptr [bx+42E3],5C
-	jz	0869
+	cmp	byte ptr [bx+42E3h],5Ch
+	jz	0869h
 
 l0800_07F7:
-	mov	di,42E3
-	mov	si,0859
-	mov	cx,FFFF
+	mov	di,42E3h
+	mov	si,859h
+	mov	cx,0FFFFh
 
 l0800_0800:
 	repne scasb
 
 l0800_0802:
 	dec	di
-	mov	cx,0002
+	mov	cx,2h
 
 l0800_0806:
 	rep movsb
 
 l0800_0808:
-	jmp	0869
+	jmp	0869h
 
 l0800_080A:
 	push	ds
 	pop	es
-	mov	di,427E
+	mov	di,427Eh
 	push	es
-	mov	es,[bp-02]
+	mov	es,[bp-2h]
 	push	di
-	mov	di,[bp-04]
+	mov	di,[bp-4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_081C:
 	repne scasb
@@ -967,7 +967,7 @@ l0800_081C:
 l0800_081E:
 	not	cx
 	sub	di,cx
-	shr	cx,01
+	shr	cx,1h
 	mov	si,di
 	pop	di
 	mov	ax,es
@@ -987,15 +987,15 @@ l0800_0831:
 l0800_0833:
 	pop	ds
 	push	ds
-	mov	ax,427E
+	mov	ax,427Eh
 	push	ax
-	call	0C6C
-	add	sp,04
+	call	0C6Ch
+	add	sp,4h
 	push	ds
 	pop	es
-	mov	di,427E
+	mov	di,427Eh
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_0849:
 	repne scasb
@@ -1005,71 +1005,71 @@ l0800_084B:
 	dec	cx
 	dec	cx
 	mov	bx,cx
-	cmp	byte ptr [bx+427E],5C
-	jz	0869
+	cmp	byte ptr [bx+427Eh],5Ch
+	jz	0869h
 
 l0800_0858:
-	mov	di,427E
-	mov	si,0859
-	mov	cx,FFFF
+	mov	di,427Eh
+	mov	si,859h
+	mov	cx,0FFFFh
 
 l0800_0861:
 	repne scasb
 
 l0800_0863:
 	dec	di
-	mov	cx,0002
+	mov	cx,2h
 
 l0800_0867:
 	rep movsb
 
 l0800_0869:
-	inc	word ptr [2A27]
+	inc	word ptr [2A27h]
 
 l0800_086D:
-	mov	ax,[2A27]
-	shl	ax,01
-	shl	ax,01
-	les	bx,[269C]
+	mov	ax,[2A27h]
+	shl	ax,1h
+	shl	ax,1h
+	les	bx,[269Ch]
 	add	bx,ax
 	les	bx,es:[bx]
-	cmp	byte ptr es:[bx],2D
-	jnz	0886
+	cmp	byte ptr es:[bx],2Dh
+	jnz	0886h
 
 l0800_0883:
-	jmp	058A
+	jmp	058Ah
 
 l0800_0886:
-	mov	ax,[2A27]
-	shl	ax,01
-	shl	ax,01
-	les	bx,[269C]
+	mov	ax,[2A27h]
+	shl	ax,1h
+	shl	ax,1h
+	les	bx,[269Ch]
 	add	bx,ax
 	les	bx,es:[bx]
-	cmp	byte ptr es:[bx],2F
-	jnz	089F
+	cmp	byte ptr es:[bx],2Fh
+	jnz	089Fh
 
 l0800_089C:
-	jmp	058A
+	jmp	058Ah
 
 l0800_089F:
-	mov	ax,[2A21]
-	cmp	ax,0001
-	jz	08AE
+	mov	ax,[2A21h]
+	cmp	ax,1h
+	jz	08AEh
 
 l0800_08A7:
-	cmp	ax,0002
-	jz	08D9
+	cmp	ax,2h
+	jz	08D9h
 
 l0800_08AC:
-	jmp	0902
+	jmp	0902h
 
 l0800_08AE:
 	push	ds
 	pop	es
-	mov	di,4271
-	mov	si,085B
-	mov	cx,FFFF
+	mov	di,4271h
+	mov	si,85Bh
+	mov	cx,0FFFFh
 	xor	ax,ax
 
 l0800_08BB:
@@ -1077,28 +1077,28 @@ l0800_08BB:
 
 l0800_08BD:
 	dec	di
-	mov	cx,0002
+	mov	cx,2h
 
 l0800_08C1:
 	rep movsb
 
 l0800_08C3:
-	cmp	word ptr [2E31],8000
-	jbe	08D1
+	cmp	word ptr [2E31h],8000h
+	jbe	08D1h
 
 l0800_08CB:
-	mov	word ptr [2E31],8000
+	mov	word ptr [2E31h],8000h
 
 l0800_08D1:
-	mov	word ptr [2E2F],1000
-	jmp	0902
+	mov	word ptr [2E2Fh],1000h
+	jmp	0902h
 
 l0800_08D9:
 	push	ds
 	pop	es
-	mov	di,4271
-	mov	si,085D
-	mov	cx,FFFF
+	mov	di,4271h
+	mov	si,85Dh
+	mov	cx,0FFFFh
 	xor	ax,ax
 
 l0800_08E6:
@@ -1106,40 +1106,40 @@ l0800_08E6:
 
 l0800_08E8:
 	dec	di
-	mov	cx,0002
+	mov	cx,2h
 
 l0800_08EC:
 	rep movsb
 
 l0800_08EE:
-	cmp	word ptr [2E31],1000
-	jbe	08FC
+	cmp	word ptr [2E31h],1000h
+	jbe	08FCh
 
 l0800_08F6:
-	mov	word ptr [2E31],1000
+	mov	word ptr [2E31h],1000h
 
 l0800_08FC:
-	mov	word ptr [2E2F],00FF
+	mov	word ptr [2E2Fh],0FFh
 
 l0800_0902:
-	cmp	word ptr [2A23],02
-	jnz	0911
+	cmp	word ptr [2A23h],2h
+	jnz	0911h
 
 l0800_0909:
 	xor	ax,ax
-	mov	[2A1D],ax
-	mov	[2E4F],ax
+	mov	[2A1Dh],ax
+	mov	[2E4Fh],ax
 
 l0800_0911:
-	cmp	word ptr [2E4F],00
-	jz	092D
+	cmp	word ptr [2E4Fh],0h
+	jz	092Dh
 
 l0800_0918:
 	push	ds
 	pop	es
-	mov	di,4271
-	mov	si,0653
-	mov	cx,FFFF
+	mov	di,4271h
+	mov	si,653h
+	mov	cx,0FFFFh
 	xor	ax,ax
 
 l0800_0925:
@@ -1147,21 +1147,21 @@ l0800_0925:
 
 l0800_0927:
 	dec	di
-	mov	cx,0002
+	mov	cx,2h
 
 l0800_092B:
 	rep movsb
 
 l0800_092D:
-	cmp	word ptr [2A1D],00
-	jz	0949
+	cmp	word ptr [2A1Dh],0h
+	jz	0949h
 
 l0800_0934:
 	push	ds
 	pop	es
-	mov	di,4271
-	mov	si,085F
-	mov	cx,FFFF
+	mov	di,4271h
+	mov	si,85Fh
+	mov	cx,0FFFFh
 	xor	ax,ax
 
 l0800_0941:
@@ -1169,7 +1169,7 @@ l0800_0941:
 
 l0800_0943:
 	dec	di
-	mov	cx,0002
+	mov	cx,2h
 
 l0800_0947:
 	rep movsb
@@ -1177,9 +1177,9 @@ l0800_0947:
 l0800_0949:
 	push	ds
 	pop	es
-	mov	di,4271
-	mov	si,0861
-	mov	cx,FFFF
+	mov	di,4271h
+	mov	si,861h
+	mov	cx,0FFFFh
 	xor	ax,ax
 
 l0800_0956:
@@ -1187,32 +1187,32 @@ l0800_0956:
 
 l0800_0958:
 	dec	di
-	mov	cx,0005
+	mov	cx,5h
 
 l0800_095C:
 	rep movsb
 
 l0800_095E:
-	cmp	word ptr [2A25],00
-	jnz	0987
+	cmp	word ptr [2A25h],0h
+	jnz	0987h
 
 l0800_0965:
-	mov	bx,[2A23]
-	shl	bx,01
-	shl	bx,01
-	les	bx,[bx+0545]
-	cmp	byte ptr es:[bx],00
-	jz	0987
+	mov	bx,[2A23h]
+	shl	bx,1h
+	shl	bx,1h
+	les	bx,[bx+545h]
+	cmp	byte ptr es:[bx],0h
+	jz	0987h
 
 l0800_0977:
 	push	ds
-	mov	ax,2E75
+	mov	ax,2E75h
 	push	ax
 	push	ds
-	mov	ax,4271
+	mov	ax,4271h
 	push	ax
-	call	09A3
-	add	sp,08
+	call	09A3h
+	add	sp,8h
 
 l0800_0987:
 	pop	di
@@ -1240,52 +1240,52 @@ l0800_09A1	dw	0x0694
 fn0800_09A3 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,08
+	sub	sp,8h
 	push	si
 	push	di
-	mov	al,[0A72]
+	mov	al,[0A72h]
 	cbw
-	mov	cl,08
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,[0A73]
-	mov	dh,00
+	mov	dl,[0A73h]
+	mov	dh,0h
 	add	ax,dx
 	xor	dx,dx
 	push	ax
-	mov	al,[0A74]
+	mov	al,[0A74h]
 	cbw
 	shl	ax,cl
-	mov	bl,[0A75]
-	mov	bh,00
+	mov	bl,[0A75h]
+	mov	bh,0h
 	add	ax,bx
 	add	dx,ax
 	pop	ax
-	adc	ax,0000
-	add	dx,20
-	adc	ax,0000
+	adc	ax,0h
+	add	dx,20h
+	adc	ax,0h
 	push	ax
 	push	dx
-	call	4311
-	add	sp,04
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	mov	[bp-06],dx
-	mov	[bp-08],ax
-	push	word ptr [bp-02]
+	call	4311h
+	add	sp,4h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	mov	[bp-6h],dx
+	mov	[bp-8h],ax
+	push	word ptr [bp-2h]
 	push	ax
 	push	ds
-	mov	ax,0A6E
+	mov	ax,0A6Eh
 	push	ax
 	nop
 	push	cs
-	call	867A
-	add	sp,08
-	jmp	0A4F
+	call	867Ah
+	add	sp,8h
+	jmp	0A4Fh
 
 l0800_09FF:
-	les	di,[bp-08]
+	les	di,[bp-8h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_0A07:
 	repne scasb
@@ -1293,17 +1293,17 @@ l0800_0A07:
 l0800_0A09:
 	not	cx
 	dec	cx
-	mov	ax,[bp-08]
+	mov	ax,[bp-8h]
 	add	ax,cx
 	mov	bx,ax
-	mov	al,es:[bx+01]
+	mov	al,es:[bx+1h]
 	cbw
-	mov	cl,08
+	mov	cl,8h
 	shl	ax,cl
-	mov	di,[bp-08]
+	mov	di,[bp-8h]
 	push	ax
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_0A25:
 	repne scasb
@@ -1311,16 +1311,16 @@ l0800_0A25:
 l0800_0A27:
 	not	cx
 	dec	cx
-	mov	ax,[bp-08]
+	mov	ax,[bp-8h]
 	add	ax,cx
 	mov	bx,ax
-	mov	al,es:[bx+02]
-	mov	ah,00
+	mov	al,es:[bx+2h]
+	mov	ah,0h
 	pop	dx
 	add	dx,ax
-	mov	di,[bp-08]
+	mov	di,[bp-8h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_0A42:
 	repne scasb
@@ -1329,16 +1329,16 @@ l0800_0A44:
 	not	cx
 	dec	cx
 	add	dx,cx
-	add	dx,03
-	add	[bp-08],dx
+	add	dx,3h
+	add	[bp-8h],dx
 
 l0800_0A4F:
-	mov	si,[bp+04]
+	mov	si,[bp+4h]
 	push	ds
-	mov	ds,[bp+06]
-	les	di,[bp-08]
+	mov	ds,[bp+6h]
+	les	di,[bp-8h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_0A5E:
 	repne scasb
@@ -1351,21 +1351,21 @@ l0800_0A64:
 	rep cmpsb
 
 l0800_0A66:
-	jz	0A6D
+	jz	0A6Dh
 
 l0800_0A68:
 	sbb	ax,ax
-	sbb	ax,FFFF
+	sbb	ax,0FFFFh
 
 l0800_0A6D:
 	pop	ds
 	or	ax,ax
-	jnz	09FF
+	jnz	09FFh
 
 l0800_0A72:
-	les	di,[bp-08]
+	les	di,[bp-8h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_0A7A:
 	repne scasb
@@ -1374,27 +1374,27 @@ l0800_0A7C:
 	not	cx
 	dec	cx
 	inc	cx
-	add	[bp-08],cx
-	les	bx,[bp-08]
+	add	[bp-8h],cx
+	les	bx,[bp-8h]
 	mov	al,es:[bx]
 	cbw
-	mov	cl,08
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,es:[bx+01]
-	mov	dh,00
+	mov	dl,es:[bx+1h]
+	mov	dh,0h
 	add	ax,dx
-	add	ax,0002
+	add	ax,2h
 	push	ax
-	push	word ptr [bp-06]
+	push	word ptr [bp-6h]
 	push	bx
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	call	B0F3
-	add	sp,0A
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	4346
-	add	sp,04
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	call	0B0F3h
+	add	sp,0Ah
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	4346h
+	add	sp,4h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -1411,24 +1411,24 @@ l0800_0A7C:
 fn0800_0ABC proc
 	push	bp
 	mov	bp,sp
-	sub	sp,0E
+	sub	sp,0Eh
 	push	si
-	mov	si,[bp+04]
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
+	mov	si,[bp+4h]
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
 	push	ss
-	lea	ax,[bp-0E]
+	lea	ax,[bp-0Eh]
 	push	ax
-	call	35A3
-	add	sp,08
-	push	word ptr [2A05]
-	push	word ptr [2A03]
-	push	word ptr [2A09]
-	push	word ptr [2A07]
-	call	0B79
-	add	sp,08
+	call	35A3h
+	add	sp,8h
+	push	word ptr [2A05h]
+	push	word ptr [2A03h]
+	push	word ptr [2A09h]
+	push	word ptr [2A07h]
+	call	0B79h
+	add	sp,8h
 	mov	cx,ax
-	mov	bx,0064
+	mov	bx,64h
 	xor	dx,dx
 	div	bx
 	push	dx
@@ -1436,55 +1436,55 @@ fn0800_0ABC proc
 	xor	dx,dx
 	div	bx
 	push	ax
-	push	word ptr [2A05]
-	push	word ptr [2A03]
-	push	word ptr [2A09]
-	push	word ptr [2A07]
+	push	word ptr [2A05h]
+	push	word ptr [2A03h]
+	push	word ptr [2A09h]
+	push	word ptr [2A07h]
 	push	ss
-	lea	ax,[bp-0E]
+	lea	ax,[bp-0Eh]
 	push	ax
-	mov	ax,0014
+	mov	ax,14h
 	push	ax
 	push	ax
 	push	ds
-	mov	ax,0866
+	mov	ax,866h
 	push	ax
-	call	B2EF
-	add	sp,18
-	cmp	word ptr [2A25],02
-	jz	0B2E
+	call	0B2EFh
+	add	sp,18h
+	cmp	word ptr [2A25h],2h
+	jz	0B2Eh
 
 l0800_0B2A:
 	or	si,si
-	jz	0B47
+	jz	0B47h
 
 l0800_0B2E:
 	mov	bx,si
-	shl	bx,01
-	shl	bx,01
-	push	word ptr [bx+059B]
-	push	word ptr [bx+0599]
+	shl	bx,1h
+	shl	bx,1h
+	push	word ptr [bx+59Bh]
+	push	word ptr [bx+599h]
 	push	ds
-	mov	ax,0889
+	mov	ax,889h
 	push	ax
-	call	B2EF
-	add	sp,08
+	call	0B2EFh
+	add	sp,8h
 
 l0800_0B47:
 	push	ds
-	mov	ax,0827
+	mov	ax,827h
 	push	ax
-	call	B2EF
-	add	sp,04
-	mov	ax,[2A09]
-	mov	dx,[2A07]
-	add	[29F3],dx
-	adc	[29F5],ax
-	mov	ax,[2A05]
-	mov	dx,[2A03]
-	add	[29EF],dx
-	adc	[29F1],ax
-	inc	word ptr [2A13]
+	call	0B2EFh
+	add	sp,4h
+	mov	ax,[2A09h]
+	mov	dx,[2A07h]
+	add	[29F3h],dx
+	adc	[29F5h],ax
+	mov	ax,[2A05h]
+	mov	dx,[2A03h]
+	add	[29EFh],dx
+	adc	[29F1h],ax
+	inc	word ptr [2A13h]
 	pop	si
 	mov	sp,bp
 	pop	bp
@@ -1497,27 +1497,27 @@ l0800_0B47:
 fn0800_0B79 proc
 	push	bp
 	mov	bp,sp
-	mov	ax,[bp+04]
-	or	ax,[bp+06]
-	jz	0B9E
+	mov	ax,[bp+4h]
+	or	ax,[bp+6h]
+	jz	0B9Eh
 
 l0800_0B84:
-	mov	ax,[bp+08]
-	or	ax,[bp+0A]
-	jz	0B9E
+	mov	ax,[bp+8h]
+	or	ax,[bp+0Ah]
+	jz	0B9Eh
 
 l0800_0B8C:
-	mov	ax,[bp+06]
-	mov	dx,[bp+04]
-	cmp	ax,[bp+0A]
-	ja	0BCE
+	mov	ax,[bp+6h]
+	mov	dx,[bp+4h]
+	cmp	ax,[bp+0Ah]
+	ja	0BCEh
 
 l0800_0B97:
-	jnz	0B9E
+	jnz	0B9Eh
 
 l0800_0B99:
-	cmp	dx,[bp+08]
-	ja	0BCE
+	cmp	dx,[bp+8h]
+	ja	0BCEh
 
 l0800_0B9E:
 	xor	ax,ax
@@ -1526,52 +1526,52 @@ l0800_0B9E:
 
 l0800_0BA2:
 	xor	ax,ax
-	mov	dx,000A
+	mov	dx,0Ah
 	push	ax
 	push	dx
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	8BC2
-	mov	[bp+06],dx
-	mov	[bp+04],ax
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	8BC2h
+	mov	[bp+6h],dx
+	mov	[bp+4h],ax
 	xor	ax,ax
-	mov	dx,000A
+	mov	dx,0Ah
 	push	ax
 	push	dx
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	call	8BC2
-	mov	[bp+0A],dx
-	mov	[bp+08],ax
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	call	8BC2h
+	mov	[bp+0Ah],dx
+	mov	[bp+8h],ax
 
 l0800_0BCE:
-	mov	ax,[bp+06]
-	mov	dx,[bp+04]
-	sub	dx,[bp+08]
-	sbb	ax,[bp+0A]
-	cmp	ax,0006
-	ja	0BA2
+	mov	ax,[bp+6h]
+	mov	dx,[bp+4h]
+	sub	dx,[bp+8h]
+	sbb	ax,[bp+0Ah]
+	cmp	ax,6h
+	ja	0BA2h
 
 l0800_0BDF:
-	jnz	0BE7
+	jnz	0BE7h
 
 l0800_0BE1:
-	cmp	dx,8DB8
-	ja	0BA2
+	cmp	dx,8DB8h
+	ja	0BA2h
 
 l0800_0BE7:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	mov	cx,[bp+06]
-	mov	bx,[bp+04]
-	sub	bx,[bp+08]
-	sbb	cx,[bp+0A]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	mov	cx,[bp+6h]
+	mov	bx,[bp+4h]
+	sub	bx,[bp+8h]
+	sbb	cx,[bp+0Ah]
 	xor	dx,dx
-	mov	ax,2710
-	call	8F18
+	mov	ax,2710h
+	call	8F18h
 	push	dx
 	push	ax
-	call	8BC2
+	call	8BC2h
 	pop	bp
 	ret
 
@@ -1583,21 +1583,21 @@ fn0800_0C08 proc
 	push	bp
 	mov	bp,sp
 	push	si
-	mov	si,[bp+04]
-	mov	cx,0001
-	jmp	0C15
+	mov	si,[bp+4h]
+	mov	cx,1h
+	jmp	0C15h
 
 l0800_0C14:
 	inc	cx
 
 l0800_0C15:
-	mov	bx,0002
+	mov	bx,2h
 	mov	ax,si
 	xor	dx,dx
 	div	bx
 	mov	si,ax
 	or	ax,ax
-	jnz	0C14
+	jnz	0C14h
 
 l0800_0C24:
 	mov	ax,cx
@@ -1613,37 +1613,37 @@ l0800_0C24:
 fn0800_0C29 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
-	mov	cl,[bp+08]
+	sub	sp,4h
+	mov	cl,[bp+8h]
 	mov	al,cl
 	cbw
 	push	ax
-	call	97CC
-	add	sp,02
+	call	97CCh
+	add	sp,2h
 	mov	cl,al
-	mov	ax,[bp+06]
-	mov	dx,[bp+04]
-	mov	[bp-02],ax
-	mov	[bp-04],dx
-	jmp	0C4F
+	mov	ax,[bp+6h]
+	mov	dx,[bp+4h]
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
+	jmp	0C4Fh
 
 l0800_0C4C:
-	inc	word ptr [bp-04]
+	inc	word ptr [bp-4h]
 
 l0800_0C4F:
-	les	bx,[bp-04]
-	cmp	byte ptr es:[bx],00
-	jz	0C5D
+	les	bx,[bp-4h]
+	cmp	byte ptr es:[bx],0h
+	jz	0C5Dh
 
 l0800_0C58:
 	cmp	es:[bx],cl
-	jnz	0C4C
+	jnz	0C4Ch
 
 l0800_0C5D:
-	mov	ax,[bp-04]
+	mov	ax,[bp-4h]
 	xor	dx,dx
-	sub	ax,[bp+04]
-	sbb	dx,00
+	sub	ax,[bp+4h]
+	sbb	dx,0h
 	mov	sp,bp
 	pop	bp
 	ret
@@ -1659,23 +1659,23 @@ l0800_0C5D:
 fn0800_0C6C proc
 	push	bp
 	mov	bp,sp
-	jmp	0C88
+	jmp	0C88h
 
 l0800_0C71:
-	les	bx,[bp+04]
+	les	bx,[bp+4h]
 	mov	al,es:[bx]
 	cbw
 	push	ax
-	call	97CC
-	add	sp,02
-	les	bx,[bp+04]
+	call	97CCh
+	add	sp,2h
+	les	bx,[bp+4h]
 	mov	es:[bx],al
-	inc	word ptr [bp+04]
+	inc	word ptr [bp+4h]
 
 l0800_0C88:
-	les	bx,[bp+04]
-	cmp	byte ptr es:[bx],00
-	jnz	0C71
+	les	bx,[bp+4h]
+	cmp	byte ptr es:[bx],0h
+	jnz	0C71h
 
 l0800_0C91:
 	pop	bp
@@ -1691,22 +1691,22 @@ l0800_0C91:
 fn0800_0C93 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,66
+	sub	sp,66h
 	push	si
 	push	di
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
 	push	ss
-	lea	ax,[bp-66]
+	lea	ax,[bp-66h]
 	push	ax
-	call	3509
-	add	sp,08
-	mov	si,2714
+	call	3509h
+	add	sp,8h
+	mov	si,2714h
 	push	ss
 	pop	es
-	lea	di,[bp-66]
+	lea	di,[bp-66h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_0CB9:
 	repne scasb
@@ -1719,33 +1719,33 @@ l0800_0CBF:
 	rep cmpsb
 
 l0800_0CC1:
-	jz	0CC8
+	jz	0CC8h
 
 l0800_0CC3:
 	sbb	ax,ax
-	sbb	ax,FFFF
+	sbb	ax,0FFFFh
 
 l0800_0CC8:
 	or	ax,ax
-	jz	0D0D
+	jz	0D0Dh
 
 l0800_0CCC:
 	push	ss
-	lea	ax,[bp-66]
+	lea	ax,[bp-66h]
 	push	ax
 	push	ds
-	mov	ax,088F
+	mov	ax,88Fh
 	push	ax
-	call	B2EF
-	add	sp,08
+	call	0B2EFh
+	add	sp,8h
 	push	ss
 	pop	es
-	lea	di,[bp-66]
+	lea	di,[bp-66h]
 	push	es
 	push	ds
 	pop	es
 	push	di
-	mov	di,2714
+	mov	di,2714h
 	mov	ax,di
 	pop	di
 	mov	dx,es
@@ -1753,7 +1753,7 @@ l0800_0CCC:
 	push	dx
 	push	ax
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_0CF5:
 	repne scasb
@@ -1761,7 +1761,7 @@ l0800_0CF5:
 l0800_0CF7:
 	not	cx
 	sub	di,cx
-	shr	cx,01
+	shr	cx,1h
 	mov	si,di
 	pop	di
 	mov	ax,es
@@ -1782,13 +1782,13 @@ l0800_0D0C:
 	pop	ds
 
 l0800_0D0D:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
 	push	ds
-	mov	ax,089E
+	mov	ax,89Eh
 	push	ax
-	call	B2EF
-	add	sp,08
+	call	0B2EFh
+	add	sp,8h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -1826,59 +1826,59 @@ fn0800_0D24 proc
 	push	bp
 	mov	bp,sp
 	push	ds
-	mov	ax,4477
+	mov	ax,4477h
 	push	ax
-	push	word ptr [29DD]
-	push	word ptr [29DB]
-	call	0DA9
-	add	sp,08
+	push	word ptr [29DDh]
+	push	word ptr [29DBh]
+	call	0DA9h
+	add	sp,8h
 	push	ds
-	mov	ax,4412
+	mov	ax,4412h
 	push	ax
-	push	word ptr [29D9]
-	push	word ptr [29D7]
-	call	0DA9
-	add	sp,08
+	push	word ptr [29D9h]
+	push	word ptr [29D7h]
+	call	0DA9h
+	add	sp,8h
 	push	ds
-	mov	ax,43AD
+	mov	ax,43ADh
 	push	ax
-	push	word ptr [29D5]
-	push	word ptr [29D3]
-	call	0DA9
-	add	sp,08
-	mov	bx,[bp+04]
-	shl	bx,01
-	shl	bx,01
-	push	word ptr [bx+055F]
-	push	word ptr [bx+055D]
+	push	word ptr [29D5h]
+	push	word ptr [29D3h]
+	call	0DA9h
+	add	sp,8h
+	mov	bx,[bp+4h]
+	shl	bx,1h
+	shl	bx,1h
+	push	word ptr [bx+55Fh]
+	push	word ptr [bx+55Dh]
 	push	ds
-	mov	ax,08A2
+	mov	ax,8A2h
 	push	ax
-	call	B2EF
-	add	sp,08
-	les	bx,[bp+06]
-	cmp	byte ptr es:[bx],00
-	jz	0D92
+	call	0B2EFh
+	add	sp,8h
+	les	bx,[bp+6h]
+	cmp	byte ptr es:[bx],0h
+	jz	0D92h
 
 l0800_0D83:
-	push	word ptr [bp+08]
+	push	word ptr [bp+8h]
 	push	bx
 	push	ds
-	mov	ax,08A6
+	mov	ax,8A6h
 	push	ax
-	call	B2EF
-	add	sp,08
+	call	0B2EFh
+	add	sp,8h
 
 l0800_0D92:
 	push	ds
-	mov	ax,0827
+	mov	ax,827h
 	push	ax
-	call	B2EF
-	add	sp,04
-	mov	ax,0001
+	call	0B2EFh
+	add	sp,4h
+	mov	ax,1h
 	push	ax
-	call	8B5A
-	add	sp,02
+	call	8B5Ah
+	add	sp,2h
 	pop	bp
 	ret
 
@@ -1890,19 +1890,19 @@ l0800_0D92:
 fn0800_0DA9 proc
 	push	bp
 	mov	bp,sp
-	mov	ax,[bp+04]
-	or	ax,[bp+06]
-	jz	0DCC
+	mov	ax,[bp+4h]
+	or	ax,[bp+6h]
+	jz	0DCCh
 
 l0800_0DB4:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	A614
-	add	sp,04
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	call	8F7F
-	add	sp,04
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0A614h
+	add	sp,4h
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	call	8F7Fh
+	add	sp,4h
 
 l0800_0DCC:
 	pop	bp
@@ -1915,17 +1915,17 @@ l0800_0DCC:
 ;;     0800:0603 (in fn0800_0541)
 fn0800_0DCE proc
 	push	ds
-	mov	ax,0121
+	mov	ax,121h
 	push	ax
 	push	ds
-	mov	ax,07E8
+	mov	ax,7E8h
 	push	ax
-	call	B2EF
-	add	sp,08
+	call	0B2EFh
+	add	sp,8h
 	xor	ax,ax
 	push	ax
-	call	8B5A
-	add	sp,02
+	call	8B5Ah
+	add	sp,2h
 	ret
 
 ;; fn0800_0DE8: 0800:0DE8
@@ -1933,403 +1933,403 @@ fn0800_0DCE proc
 ;;     0800:0321 (in main)
 fn0800_0DE8 proc
 	push	si
-	mov	bx,[2A23]
-	shl	bx,01
-	shl	bx,01
-	push	word ptr [bx+052F]
-	push	word ptr [bx+052D]
-	mov	bx,[2A25]
-	shl	bx,01
-	shl	bx,01
-	push	word ptr [bx+050B]
-	push	word ptr [bx+0509]
+	mov	bx,[2A23h]
+	shl	bx,1h
+	shl	bx,1h
+	push	word ptr [bx+52Fh]
+	push	word ptr [bx+52Dh]
+	mov	bx,[2A25h]
+	shl	bx,1h
+	shl	bx,1h
+	push	word ptr [bx+50Bh]
+	push	word ptr [bx+509h]
 	push	ds
-	mov	ax,08AC
+	mov	ax,8ACh
 	push	ax
-	call	B2EF
-	add	sp,0C
-	cmp	word ptr [2E4F],00
-	jz	0E2A
+	call	0B2EFh
+	add	sp,0Ch
+	cmp	word ptr [2E4Fh],0h
+	jz	0E2Ah
 
 l0800_0E1B:
-	push	word ptr [2E4F]
+	push	word ptr [2E4Fh]
 	push	ds
-	mov	ax,08BA
+	mov	ax,8BAh
 	push	ax
-	call	B2EF
-	add	sp,06
+	call	0B2EFh
+	add	sp,6h
 
 l0800_0E2A:
-	cmp	word ptr [2A1F],00
-	jz	0E3C
+	cmp	word ptr [2A1Fh],0h
+	jz	0E3Ch
 
 l0800_0E31:
 	push	ds
-	mov	ax,08CF
+	mov	ax,8CFh
 	push	ax
-	call	B2EF
-	add	sp,04
+	call	0B2EFh
+	add	sp,4h
 
 l0800_0E3C:
 	push	ds
-	mov	ax,08DC
+	mov	ax,8DCh
 	push	ax
-	call	B2EF
-	add	sp,04
+	call	0B2EFh
+	add	sp,4h
 	push	ds
-	mov	ax,427E
+	mov	ax,427Eh
 	push	ax
-	call	3678
-	add	sp,04
+	call	3678h
+	add	sp,4h
 	push	ds
-	mov	ax,08DF
-	push	ax
-	push	ds
-	mov	ax,4477
-	push	ax
-	call	37BE
-	add	sp,08
-	push	ds
-	mov	ax,08EC
+	mov	ax,8DFh
 	push	ax
 	push	ds
-	mov	ax,4477
+	mov	ax,4477h
 	push	ax
-	call	4234
-	add	sp,08
-	mov	[29DD],dx
-	mov	[29DB],ax
-	jmp	10F4
+	call	37BEh
+	add	sp,8h
+	push	ds
+	mov	ax,8ECh
+	push	ax
+	push	ds
+	mov	ax,4477h
+	push	ax
+	call	4234h
+	add	sp,8h
+	mov	[29DDh],dx
+	mov	[29DBh],ax
+	jmp	10F4h
 
 l0800_0E7C:
-	call	3764
-	call	388C
+	call	3764h
+	call	388Ch
 	or	ax,ax
-	jnz	0E89
+	jnz	0E89h
 
 l0800_0E86:
-	jmp	10F4
+	jmp	10F4h
 
 l0800_0E89:
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
-	call	0C93
-	add	sp,04
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	4194
-	add	sp,04
-	mov	[2A09],dx
-	mov	[2A07],ax
-	mov	[2A05],dx
-	mov	[2A03],ax
+	call	0C93h
+	add	sp,4h
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	4194h
+	add	sp,4h
+	mov	[2A09h],dx
+	mov	[2A07h],ax
+	mov	[2A05h],dx
+	mov	[2A03h],ax
 	xor	si,si
-	cmp	word ptr [2A09],00
-	ja	0ECF
+	cmp	word ptr [2A09h],0h
+	ja	0ECFh
 
 l0800_0EB9:
-	jnz	0EC2
+	jnz	0EC2h
 
 l0800_0EBB:
-	cmp	word ptr [2A07],12
-	ja	0ECF
+	cmp	word ptr [2A07h],12h
+	ja	0ECFh
 
 l0800_0EC2:
-	cmp	word ptr [2A15],00
-	jnz	0ECF
+	cmp	word ptr [2A15h],0h
+	jnz	0ECFh
 
 l0800_0EC9:
-	mov	si,0003
-	jmp	105C
+	mov	si,3h
+	jmp	105Ch
 
 l0800_0ECF:
-	call	3992
+	call	3992h
 	or	ax,ax
-	jz	0EDC
+	jz	0EDCh
 
 l0800_0ED6:
-	mov	si,000E
-	jmp	105C
+	mov	si,0Eh
+	jmp	105Ch
 
 l0800_0EDC:
-	mov	bx,[2A23]
-	cmp	bx,05
-	jbe	0EE8
+	mov	bx,[2A23h]
+	cmp	bx,5h
+	jbe	0EE8h
 
 l0800_0EE5:
-	jmp	1007
+	jmp	1007h
 
 l0800_0EE8:
-	shl	bx,01
-	jmp	word ptr cs:[bx+1121]
+	shl	bx,1h
+	jmp	word ptr cs:[bx+1121h]
 
 l0800_0EEF:
-	cmp	word ptr [2A09],00
-	jc	0F1F
+	cmp	word ptr [2A09h],0h
+	jc	0F1Fh
 
 l0800_0EF6:
-	jnz	0EFF
+	jnz	0EFFh
 
 l0800_0EF8:
-	cmp	word ptr [2A07],12
-	jc	0F1F
+	cmp	word ptr [2A07h],12h
+	jc	0F1Fh
 
 l0800_0EFF:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3F58
-	add	sp,04
-	mov	cl,08
-	call	8CAA
-	cmp	dx,52
-	jnz	0F1F
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3F58h
+	add	sp,4h
+	mov	cl,8h
+	call	8CAAh
+	cmp	dx,52h
+	jnz	0F1Fh
 
 l0800_0F17:
-	cmp	ax,4E43
-	jnz	0F1F
+	cmp	ax,4E43h
+	jnz	0F1Fh
 
 l0800_0F1C:
-	mov	si,0004
+	mov	si,4h
 
 l0800_0F1F:
 	or	si,si
-	jz	0F26
+	jz	0F26h
 
 l0800_0F23:
-	jmp	1007
+	jmp	1007h
 
 l0800_0F26:
-	push	word ptr [2A09]
-	push	word ptr [2A07]
-	push	word ptr [2A09]
-	push	word ptr [2A07]
-	call	75EA
-	add	sp,08
-	mov	ax,[2A05]
-	mov	dx,[2A03]
-	cmp	ax,[2A09]
-	jnc	0F4C
+	push	word ptr [2A09h]
+	push	word ptr [2A07h]
+	push	word ptr [2A09h]
+	push	word ptr [2A07h]
+	call	75EAh
+	add	sp,8h
+	mov	ax,[2A05h]
+	mov	dx,[2A03h]
+	cmp	ax,[2A09h]
+	jnc	0F4Ch
 
 l0800_0F49:
-	jmp	1007
+	jmp	1007h
 
 l0800_0F4C:
-	jnz	0F57
+	jnz	0F57h
 
 l0800_0F4E:
-	cmp	dx,[2A07]
-	jnc	0F57
+	cmp	dx,[2A07h]
+	jnc	0F57h
 
 l0800_0F54:
-	jmp	1007
+	jmp	1007h
 
 l0800_0F57:
-	cmp	word ptr [2A15],00
-	jnz	0F61
+	cmp	word ptr [2A15h],0h
+	jnz	0F61h
 
 l0800_0F5E:
-	jmp	1007
+	jmp	1007h
 
 l0800_0F61:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	BA67
-	add	sp,04
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	BA67
-	add	sp,04
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	ax,524E
-	mov	dx,4300
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0BA67h
+	add	sp,4h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0BA67h
+	add	sp,4h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	ax,524Eh
+	mov	dx,4300h
 	push	ax
 	push	dx
-	call	409C
-	add	sp,08
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [2A09]
-	push	word ptr [2A07]
-	call	409C
-	add	sp,08
-	push	word ptr [2A09]
-	push	word ptr [2A07]
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3B0A
-	add	sp,0C
-	mov	si,0002
-	jmp	1007
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [2A09h]
+	push	word ptr [2A07h]
+	call	409Ch
+	add	sp,8h
+	push	word ptr [2A09h]
+	push	word ptr [2A07h]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3B0Ah
+	add	sp,0Ch
+	mov	si,2h
+	jmp	1007h
 
 l0800_0FCC:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3F0A
-	add	sp,04
-	cmp	ax,4D5A
-	jnz	0FE6
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3F0Ah
+	add	sp,4h
+	cmp	ax,4D5Ah
+	jnz	0FE6h
 
 l0800_0FDF:
-	call	5E64
+	call	5E64h
 	mov	si,ax
-	jmp	1007
+	jmp	1007h
 
 l0800_0FE6:
-	call	669C
+	call	669Ch
 	mov	si,ax
-	jmp	1007
+	jmp	1007h
 
 l0800_0FED:
-	call	67BF
+	call	67BFh
 	mov	si,ax
-	jmp	1007
+	jmp	1007h
 
 l0800_0FF4:
-	call	6AD4
+	call	6AD4h
 	mov	si,ax
-	jmp	1007
+	jmp	1007h
 
 l0800_0FFB:
-	call	73AC
+	call	73ACh
 	mov	si,ax
-	jmp	1007
+	jmp	1007h
 
 l0800_1002:
-	call	741D
+	call	741Dh
 	mov	si,ax
 
 l0800_1007:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	4194
-	add	sp,04
-	mov	[2A05],dx
-	mov	[2A03],ax
-	mov	ax,[2A05]
-	mov	dx,[2A03]
-	cmp	ax,[2A09]
-	jc	1049
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	4194h
+	add	sp,4h
+	mov	[2A05h],dx
+	mov	[2A03h],ax
+	mov	ax,[2A05h]
+	mov	dx,[2A03h]
+	cmp	ax,[2A09h]
+	jc	1049h
 
 l0800_1029:
-	jnz	1031
+	jnz	1031h
 
 l0800_102B:
-	cmp	dx,[2A07]
-	jc	1049
+	cmp	dx,[2A07h]
+	jc	1049h
 
 l0800_1031:
-	cmp	word ptr [2A15],00
-	jnz	1049
+	cmp	word ptr [2A15h],0h
+	jnz	1049h
 
 l0800_1038:
-	mov	ax,[2A09]
-	mov	dx,[2A07]
-	mov	[2A05],ax
-	mov	[2A03],dx
-	mov	si,0003
+	mov	ax,[2A09h]
+	mov	dx,[2A07h]
+	mov	[2A05h],ax
+	mov	[2A03h],dx
+	mov	si,3h
 
 l0800_1049:
-	cmp	si,04
-	jnz	105C
+	cmp	si,4h
+	jnz	105Ch
 
 l0800_104E:
-	mov	ax,[2A09]
-	mov	dx,[2A07]
-	mov	[2A05],ax
-	mov	[2A03],dx
+	mov	ax,[2A09h]
+	mov	dx,[2A07h]
+	mov	[2A05h],ax
+	mov	[2A03h],dx
 
 l0800_105C:
-	cmp	byte ptr [427E],00
-	jz	10B7
+	cmp	byte ptr [427Eh],0h
+	jz	10B7h
 
 l0800_1063:
-	cmp	si,03
-	jz	106D
+	cmp	si,3h
+	jz	106Dh
 
 l0800_1068:
-	cmp	si,04
-	jnz	10B7
+	cmp	si,4h
+	jnz	10B7h
 
 l0800_106D:
-	mov	ax,[2A09]
-	mov	dx,[2A07]
-	mov	[2A05],ax
-	mov	[2A03],dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	BA67
-	add	sp,04
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	BA67
-	add	sp,04
-	push	word ptr [2A09]
-	push	word ptr [2A07]
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3B0A
-	add	sp,0C
+	mov	ax,[2A09h]
+	mov	dx,[2A07h]
+	mov	[2A05h],ax
+	mov	[2A03h],dx
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0BA67h
+	add	sp,4h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0BA67h
+	add	sp,4h
+	push	word ptr [2A09h]
+	push	word ptr [2A07h]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3B0Ah
+	add	sp,0Ch
 	xor	si,si
 
 l0800_10B7:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	A614
-	add	sp,04
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	A614
-	add	sp,04
-	cmp	si,02
-	jle	10E5
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0A614h
+	add	sp,4h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0A614h
+	add	sp,4h
+	cmp	si,2h
+	jle	10E5h
 
 l0800_10D8:
 	push	ds
-	mov	ax,44DC
+	mov	ax,44DCh
 	push	ax
-	call	8F7F
-	add	sp,04
-	jmp	10E8
+	call	8F7Fh
+	add	sp,4h
+	jmp	10E8h
 
 l0800_10E5:
-	call	37DF
+	call	37DFh
 
 l0800_10E8:
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
 	push	si
-	call	0ABC
-	add	sp,06
+	call	0ABCh
+	add	sp,6h
 
 l0800_10F4:
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
-	call	2DE2
-	add	sp,04
+	call	2DE2h
+	add	sp,4h
 	or	ax,ax
-	jz	1106
+	jz	1106h
 
 l0800_1103:
-	jmp	0E7C
+	jmp	0E7Ch
 
 l0800_1106:
-	push	word ptr [29DD]
-	push	word ptr [29DB]
-	call	A614
-	add	sp,04
+	push	word ptr [29DDh]
+	push	word ptr [29DBh]
+	call	0A614h
+	add	sp,4h
 	push	ds
-	mov	ax,4477
+	mov	ax,4477h
 	push	ax
-	call	8F7F
-	add	sp,04
+	call	8F7Fh
+	add	sp,4h
 	pop	si
 	ret
 l0800_1121	dw	0x0FF4
@@ -2344,224 +2344,224 @@ l0800_112B	dw	0x0FED
 ;;     0800:0330 (in main)
 fn0800_112D proc
 	push	si
-	mov	bx,[2A23]
-	shl	bx,01
-	shl	bx,01
-	push	word ptr [bx+052F]
-	push	word ptr [bx+052D]
-	mov	bx,[2A25]
-	shl	bx,01
-	shl	bx,01
-	push	word ptr [bx+050B]
-	push	word ptr [bx+0509]
+	mov	bx,[2A23h]
+	shl	bx,1h
+	shl	bx,1h
+	push	word ptr [bx+52Fh]
+	push	word ptr [bx+52Dh]
+	mov	bx,[2A25h]
+	shl	bx,1h
+	shl	bx,1h
+	push	word ptr [bx+50Bh]
+	push	word ptr [bx+509h]
 	push	ds
-	mov	ax,08F0
+	mov	ax,8F0h
 	push	ax
-	call	B2EF
-	add	sp,0C
-	cmp	word ptr [2E4F],00
-	jz	116F
+	call	0B2EFh
+	add	sp,0Ch
+	cmp	word ptr [2E4Fh],0h
+	jz	116Fh
 
 l0800_1160:
-	push	word ptr [2E4F]
+	push	word ptr [2E4Fh]
 	push	ds
-	mov	ax,08FE
+	mov	ax,8FEh
 	push	ax
-	call	B2EF
-	add	sp,06
+	call	0B2EFh
+	add	sp,6h
 
 l0800_116F:
 	push	ds
-	mov	ax,0913
+	mov	ax,913h
 	push	ax
-	call	B2EF
-	add	sp,04
-	cmp	word ptr [2A25],01
-	jz	1184
+	call	0B2EFh
+	add	sp,4h
+	cmp	word ptr [2A25h],1h
+	jz	1184h
 
 l0800_1181:
-	jmp	12C2
+	jmp	12C2h
 
 l0800_1184:
 	push	ds
-	mov	ax,427E
+	mov	ax,427Eh
 	push	ax
-	call	3678
-	add	sp,04
-	jmp	12C2
+	call	3678h
+	add	sp,4h
+	jmp	12C2h
 
 l0800_1192:
-	call	3764
-	call	388C
+	call	3764h
+	call	388Ch
 	or	ax,ax
-	jnz	119F
+	jnz	119Fh
 
 l0800_119C:
-	jmp	12C2
+	jmp	12C2h
 
 l0800_119F:
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
-	call	0C93
-	add	sp,04
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	4194
-	add	sp,04
-	mov	[2A05],dx
-	mov	[2A03],ax
+	call	0C93h
+	add	sp,4h
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	4194h
+	add	sp,4h
+	mov	[2A05h],dx
+	mov	[2A03h],ax
 	or	dx,dx
-	ja	11CF
+	ja	11CFh
 
 l0800_11C3:
-	jc	11CA
+	jc	11CAh
 
 l0800_11C5:
-	cmp	ax,0012
-	jnc	11CF
+	cmp	ax,12h
+	jnc	11CFh
 
 l0800_11CA:
-	mov	si,0007
-	jmp	1243
+	mov	si,7h
+	jmp	1243h
 
 l0800_11CF:
-	mov	bx,[2A23]
-	cmp	bx,05
-	ja	1243
+	mov	bx,[2A23h]
+	cmp	bx,5h
+	ja	1243h
 
 l0800_11D8:
-	shl	bx,01
-	jmp	word ptr cs:[bx+12D6]
+	shl	bx,1h
+	jmp	word ptr cs:[bx+12D6h]
 
 l0800_11DF:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3F58
-	add	sp,04
-	mov	cl,08
-	call	8CAA
-	cmp	dx,52
-	jnz	1203
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3F58h
+	add	sp,4h
+	mov	cl,8h
+	call	8CAAh
+	cmp	dx,52h
+	jnz	1203h
 
 l0800_11F7:
-	cmp	ax,4E43
-	jnz	1203
+	cmp	ax,4E43h
+	jnz	1203h
 
 l0800_11FC:
-	call	5374
+	call	5374h
 	mov	si,ax
-	jmp	1243
+	jmp	1243h
 
 l0800_1203:
-	mov	si,0007
-	jmp	1243
+	mov	si,7h
+	jmp	1243h
 
 l0800_1208:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3F0A
-	add	sp,04
-	cmp	ax,4D5A
-	jnz	1222
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3F0Ah
+	add	sp,4h
+	cmp	ax,4D5Ah
+	jnz	1222h
 
 l0800_121B:
-	call	46FE
+	call	46FEh
 	mov	si,ax
-	jmp	1243
+	jmp	1243h
 
 l0800_1222:
-	call	4B97
+	call	4B97h
 	mov	si,ax
-	jmp	1243
+	jmp	1243h
 
 l0800_1229:
-	call	4BB1
+	call	4BB1h
 	mov	si,ax
-	jmp	1243
+	jmp	1243h
 
 l0800_1230:
-	call	4C55
+	call	4C55h
 	mov	si,ax
-	jmp	1243
+	jmp	1243h
 
 l0800_1237:
-	call	518F
+	call	518Fh
 	mov	si,ax
-	jmp	1243
+	jmp	1243h
 
 l0800_123E:
-	call	51A9
+	call	51A9h
 	mov	si,ax
 
 l0800_1243:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	4194
-	add	sp,04
-	mov	[2A09],dx
-	mov	[2A07],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	4194
-	add	sp,04
-	mov	[2A05],dx
-	mov	[2A03],ax
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	4194h
+	add	sp,4h
+	mov	[2A09h],dx
+	mov	[2A07h],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	4194h
+	add	sp,4h
+	mov	[2A05h],dx
+	mov	[2A03h],ax
 	or	si,si
-	jz	127F
+	jz	127Fh
 
 l0800_1271:
-	mov	ax,[2A05]
-	mov	dx,[2A03]
-	mov	[2A09],ax
-	mov	[2A07],dx
+	mov	ax,[2A05h]
+	mov	dx,[2A03h]
+	mov	[2A09h],ax
+	mov	[2A07h],dx
 
 l0800_127F:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	A614
-	add	sp,04
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	A614
-	add	sp,04
-	cmp	word ptr [2A25],02
-	jz	12A6
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0A614h
+	add	sp,4h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0A614h
+	add	sp,4h
+	cmp	word ptr [2A25h],2h
+	jz	12A6h
 
 l0800_12A2:
 	or	si,si
-	jz	12B3
+	jz	12B3h
 
 l0800_12A6:
 	push	ds
-	mov	ax,44DC
+	mov	ax,44DCh
 	push	ax
-	call	8F7F
-	add	sp,04
-	jmp	12B6
+	call	8F7Fh
+	add	sp,4h
+	jmp	12B6h
 
 l0800_12B3:
-	call	37DF
+	call	37DFh
 
 l0800_12B6:
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
 	push	si
-	call	0ABC
-	add	sp,06
+	call	0ABCh
+	add	sp,6h
 
 l0800_12C2:
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
-	call	2DE2
-	add	sp,04
+	call	2DE2h
+	add	sp,4h
 	or	ax,ax
-	jz	12D4
+	jz	12D4h
 
 l0800_12D1:
-	jmp	1192
+	jmp	1192h
 
 l0800_12D4:
 	pop	si
@@ -2579,290 +2579,290 @@ l0800_12E0	dw	0x1229
 fn0800_12E2 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,0084
+	sub	sp,84h
 	push	si
 	push	di
 	push	ds
-	mov	ax,4348
+	mov	ax,4348h
 	push	ax
-	mov	bx,[2A25]
-	shl	bx,01
-	shl	bx,01
-	push	word ptr [bx+050B]
-	push	word ptr [bx+0509]
+	mov	bx,[2A25h]
+	shl	bx,1h
+	shl	bx,1h
+	push	word ptr [bx+50Bh]
+	push	word ptr [bx+509h]
 	push	ds
-	mov	ax,0916
+	mov	ax,916h
 	push	ax
-	call	B2EF
-	add	sp,0C
-	cmp	word ptr [2E4F],00
-	jz	1321
+	call	0B2EFh
+	add	sp,0Ch
+	cmp	word ptr [2E4Fh],0h
+	jz	1321h
 
 l0800_1312:
-	push	word ptr [2E4F]
+	push	word ptr [2E4Fh]
 	push	ds
-	mov	ax,0925
+	mov	ax,925h
 	push	ax
-	call	B2EF
-	add	sp,06
+	call	0B2EFh
+	add	sp,6h
 
 l0800_1321:
 	push	ds
-	mov	ax,093A
+	mov	ax,93Ah
 	push	ax
-	call	B2EF
-	add	sp,04
+	call	0B2EFh
+	add	sp,4h
 	push	ds
-	mov	ax,093D
+	mov	ax,93Dh
 	push	ax
 	push	ds
-	mov	ax,4348
+	mov	ax,4348h
 	push	ax
-	call	AA7E
-	add	sp,08
-	mov	[29D1],dx
-	mov	[29CF],ax
-	mov	ax,[2A25]
-	cmp	ax,0003
-	jz	1353
+	call	0AA7Eh
+	add	sp,8h
+	mov	[29D1h],dx
+	mov	[29CFh],ax
+	mov	ax,[2A25h]
+	cmp	ax,3h
+	jz	1353h
 
 l0800_134B:
-	cmp	ax,0004
-	jz	1371
+	cmp	ax,4h
+	jz	1371h
 
 l0800_1350:
-	jmp	1478
+	jmp	1478h
 
 l0800_1353:
-	mov	ax,[29CF]
-	or	ax,[29D1]
-	jz	135F
+	mov	ax,[29CFh]
+	or	ax,[29D1h]
+	jz	135Fh
 
 l0800_135C:
-	jmp	1478
+	jmp	1478h
 
 l0800_135F:
 	push	ds
-	mov	ax,4348
+	mov	ax,4348h
 	push	ax
-	mov	ax,0007
+	mov	ax,7h
 	push	ax
-	call	0D24
-	add	sp,06
-	jmp	1478
+	call	0D24h
+	add	sp,6h
+	jmp	1478h
 
 l0800_1371:
-	mov	ax,[29CF]
-	or	ax,[29D1]
-	jz	13C6
+	mov	ax,[29CFh]
+	or	ax,[29D1h]
+	jz	13C6h
 
 l0800_137A:
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	3E27
-	add	sp,04
-	cmp	ax,4D5A
-	jnz	13BA
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	3E27h
+	add	sp,4h
+	cmp	ax,4D5Ah
+	jnz	13BAh
 
 l0800_138D:
-	mov	ax,0002
+	mov	ax,2h
 	push	ax
 	xor	ax,ax
 	push	ax
 	push	ax
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	AD2F
-	add	sp,04
-	mov	[29ED],dx
-	mov	[29EB],ax
-	jmp	13C6
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	0AD2Fh
+	add	sp,4h
+	mov	[29EDh],dx
+	mov	[29EBh],ax
+	jmp	13C6h
 
 l0800_13BA:
-	mov	word ptr [29D1],0000
-	mov	word ptr [29CF],0000
+	mov	word ptr [29D1h],0h
+	mov	word ptr [29CFh],0h
 
 l0800_13C6:
-	mov	ax,[29CF]
-	or	ax,[29D1]
-	jnz	13F2
+	mov	ax,[29CFh]
+	or	ax,[29D1h]
+	jnz	13F2h
 
 l0800_13CF:
 	push	ds
-	mov	ax,0941
+	mov	ax,941h
 	push	ax
 	push	ds
-	mov	ax,4348
+	mov	ax,4348h
 	push	ax
-	call	4234
-	add	sp,08
-	mov	[29D1],dx
-	mov	[29CF],ax
-	mov	word ptr [29ED],0000
-	mov	word ptr [29EB],0000
+	call	4234h
+	add	sp,8h
+	mov	[29D1h],dx
+	mov	[29CFh],ax
+	mov	word ptr [29EDh],0h
+	mov	word ptr [29EBh],0h
 
 l0800_13F2:
-	mov	byte ptr [bp-6E],52
-	mov	byte ptr [bp-6D],4E
-	mov	byte ptr [bp-6C],43
-	mov	byte ptr [bp-6B],41
-	mov	byte ptr [bp-6A],00
-	mov	byte ptr [bp-69],0C
-	mov	byte ptr [bp-66],00
-	mov	byte ptr [bp-65],0C
-	mov	byte ptr [bp-64],00
-	mov	byte ptr [bp-63],00
+	mov	byte ptr [bp-6Eh],52h
+	mov	byte ptr [bp-6Dh],4Eh
+	mov	byte ptr [bp-6Ch],43h
+	mov	byte ptr [bp-6Bh],41h
+	mov	byte ptr [bp-6Ah],0h
+	mov	byte ptr [bp-69h],0Ch
+	mov	byte ptr [bp-66h],0h
+	mov	byte ptr [bp-65h],0Ch
+	mov	byte ptr [bp-64h],0h
+	mov	byte ptr [bp-63h],0h
 	xor	ax,ax
 	push	ax
-	mov	ax,0004
+	mov	ax,4h
 	push	ax
 	push	ss
-	lea	ax,[bp-66]
+	lea	ax,[bp-66h]
 	push	ax
-	call	2CCF
-	add	sp,08
-	mov	cl,08
+	call	2CCFh
+	add	sp,8h
+	mov	cl,8h
 	shr	ax,cl
-	mov	[bp-68],al
+	mov	[bp-68h],al
 	xor	ax,ax
 	push	ax
-	mov	ax,0004
+	mov	ax,4h
 	push	ax
 	push	ss
-	lea	ax,[bp-66]
+	lea	ax,[bp-66h]
 	push	ax
-	call	2CCF
-	add	sp,08
-	mov	[bp-67],al
-	push	word ptr [29D1]
-	push	word ptr [29CF]
+	call	2CCFh
+	add	sp,8h
+	mov	[bp-67h],al
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
 	xor	ax,ax
-	mov	dx,000C
+	mov	dx,0Ch
 	push	ax
 	push	dx
 	push	ss
-	lea	ax,[bp-6E]
+	lea	ax,[bp-6Eh]
 	push	ax
-	call	4152
-	add	sp,0C
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	push	word ptr [29ED]
-	push	word ptr [29EB]
-	call	409C
-	add	sp,08
+	call	4152h
+	add	sp,0Ch
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	push	word ptr [29EDh]
+	push	word ptr [29EBh]
+	call	409Ch
+	add	sp,8h
 
 l0800_1478:
 	xor	ax,ax
 	push	ax
-	call	1CF6
-	add	sp,02
+	call	1CF6h
+	add	sp,2h
 	xor	si,si
-	jmp	1527
+	jmp	1527h
 
 l0800_1486:
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
 	push	ss
-	lea	ax,[bp-6E]
+	lea	ax,[bp-6Eh]
 	push	ax
-	call	3509
-	add	sp,08
+	call	3509h
+	add	sp,8h
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
 	push	ss
-	lea	ax,[bp+FF7C]
+	lea	ax,[bp+0FF7Ch]
 	push	ax
-	call	35A3
-	add	sp,08
+	call	35A3h
+	add	sp,8h
 	push	ss
-	lea	ax,[bp-6E]
+	lea	ax,[bp-6Eh]
 	push	ax
-	call	283D
-	add	sp,04
-	mov	[bp-02],dx
-	mov	[bp-04],ax
+	call	283Dh
+	add	sp,4h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
 	or	ax,dx
-	jnz	14CD
+	jnz	14CDh
 
 l0800_14BC:
 	push	ss
-	lea	ax,[bp-6E]
+	lea	ax,[bp-6Eh]
 	push	ax
-	call	1F5C
-	add	sp,04
-	mov	[bp-02],dx
-	mov	[bp-04],ax
+	call	1F5Ch
+	add	sp,4h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
 
 l0800_14CD:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
 	push	ss
-	lea	ax,[bp+FF7C]
+	lea	ax,[bp+0FF7Ch]
 	push	ax
-	call	2931
-	add	sp,08
-	mov	[bp-06],dx
-	mov	[bp-08],ax
+	call	2931h
+	add	sp,8h
+	mov	[bp-6h],dx
+	mov	[bp-8h],ax
 	or	ax,dx
-	jnz	14FD
+	jnz	14FDh
 
 l0800_14E9:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
 	push	ss
-	lea	ax,[bp+FF7C]
+	lea	ax,[bp+0FF7Ch]
 	push	ax
-	call	2085
-	add	sp,08
-	jmp	1509
+	call	2085h
+	add	sp,8h
+	jmp	1509h
 
 l0800_14FD:
-	push	word ptr [bp-06]
-	push	word ptr [bp-08]
-	call	23EC
-	add	sp,04
+	push	word ptr [bp-6h]
+	push	word ptr [bp-8h]
+	call	23ECh
+	add	sp,4h
 
 l0800_1509:
-	mov	si,0001
-	les	bx,[2E51]
-	mov	al,es:[bx+04]
-	mov	ah,00
-	mov	cl,08
+	mov	si,1h
+	les	bx,[2E51h]
+	mov	al,es:[bx+4h]
+	mov	ah,0h
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,es:[bx+05]
-	mov	dh,00
+	mov	dl,es:[bx+5h]
+	mov	dh,0h
 	add	ax,dx
-	cmp	ax,FF8C
-	jnc	1539
+	cmp	ax,0FF8Ch
+	jnc	1539h
 
 l0800_1527:
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
-	call	2DE2
-	add	sp,04
+	call	2DE2h
+	add	sp,4h
 	or	ax,ax
-	jz	1539
+	jz	1539h
 
 l0800_1536:
-	jmp	1486
+	jmp	1486h
 
 l0800_1539:
 	or	si,si
-	jnz	1551
+	jnz	1551h
 
 l0800_153D:
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	A614
-	add	sp,04
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	0A614h
+	add	sp,4h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -2870,103 +2870,103 @@ l0800_153D:
 	ret
 
 l0800_1551:
-	call	1E5E
-	mov	ax,0001
+	call	1E5Eh
+	mov	ax,1h
 	push	ax
-	call	1CF6
-	add	sp,02
-	mov	ax,0001
+	call	1CF6h
+	add	sp,2h
+	mov	ax,1h
 	push	ax
 	xor	ax,ax
 	push	ax
-	call	2DBF
-	add	sp,04
-	mov	ax,[29D1]
-	mov	dx,[29CF]
-	mov	[29E1],ax
-	mov	[29DF],dx
+	call	2DBFh
+	add	sp,4h
+	mov	ax,[29D1h]
+	mov	dx,[29CFh]
+	mov	[29E1h],ax
+	mov	[29DFh],dx
 	push	ds
-	mov	ax,0945
+	mov	ax,945h
 	push	ax
 	push	ds
-	mov	ax,4477
+	mov	ax,4477h
 	push	ax
-	call	37BE
-	add	sp,08
+	call	37BEh
+	add	sp,8h
 	push	ds
-	mov	ax,0941
+	mov	ax,941h
 	push	ax
 	push	ds
-	mov	ax,4477
+	mov	ax,4477h
 	push	ax
-	call	4234
-	add	sp,08
-	mov	[29DD],dx
-	mov	[29DB],ax
-	jmp	1897
+	call	4234h
+	add	sp,8h
+	mov	[29DDh],dx
+	mov	[29DBh],ax
+	jmp	1897h
 
 l0800_15A3:
 	push	ds
-	mov	ax,093D
+	mov	ax,93Dh
 	push	ax
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
-	call	4234
-	add	sp,08
-	mov	[29E5],dx
-	mov	[29E3],ax
+	call	4234h
+	add	sp,8h
+	mov	[29E5h],dx
+	mov	[29E3h],ax
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
 	push	ss
-	lea	ax,[bp-6E]
+	lea	ax,[bp-6Eh]
 	push	ax
-	call	3509
-	add	sp,08
+	call	3509h
+	add	sp,8h
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
 	push	ss
-	lea	ax,[bp+FF7C]
+	lea	ax,[bp+0FF7Ch]
 	push	ax
-	call	35A3
-	add	sp,08
+	call	35A3h
+	add	sp,8h
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
-	call	0C93
-	add	sp,04
+	call	0C93h
+	add	sp,4h
 	push	ss
-	lea	ax,[bp-6E]
+	lea	ax,[bp-6Eh]
 	push	ax
-	call	283D
-	add	sp,04
+	call	283Dh
+	add	sp,4h
 	push	dx
 	push	ax
 	push	ss
-	lea	ax,[bp+FF7C]
+	lea	ax,[bp+0FF7Ch]
 	push	ax
-	call	2931
-	add	sp,08
-	mov	[bp-06],dx
-	mov	[bp-08],ax
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	4194
-	add	sp,04
-	sub	ax,0004
-	sbb	dx,00
-	mov	[29E9],dx
-	mov	[29E7],ax
-	mov	ax,[29E9]
+	call	2931h
+	add	sp,8h
+	mov	[bp-6h],dx
+	mov	[bp-8h],ax
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	4194h
+	add	sp,4h
+	sub	ax,4h
+	sbb	dx,0h
+	mov	[29E9h],dx
+	mov	[29E7h],ax
+	mov	ax,[29E9h]
 	cwd
-	mov	cl,08
-	call	8C8A
-	les	di,[bp-08]
+	mov	cl,8h
+	call	8C8Ah
+	les	di,[bp-8h]
 	push	ax
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_1632:
 	repne scasb
@@ -2980,10 +2980,10 @@ l0800_163A:
 	repne scasb
 
 l0800_163C:
-	jz	1645
+	jz	1645h
 
 l0800_163E:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -2992,13 +2992,13 @@ l0800_1645:
 	mov	ax,es
 	mov	es,ax
 	pop	ax
-	mov	es:[di+01],al
-	mov	ax,[29E9]
+	mov	es:[di+1h],al
+	mov	ax,[29E9h]
 	cwd
-	les	di,[bp-08]
+	les	di,[bp-8h]
 	push	ax
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_165C:
 	repne scasb
@@ -3012,10 +3012,10 @@ l0800_1664:
 	repne scasb
 
 l0800_1666:
-	jz	166F
+	jz	166Fh
 
 l0800_1668:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -3024,15 +3024,15 @@ l0800_166F:
 	mov	ax,es
 	mov	es,ax
 	pop	ax
-	mov	es:[di+02],al
-	mov	dx,[29E9]
-	mov	ax,[29E7]
-	mov	cl,08
-	call	8C8A
-	les	di,[bp-08]
+	mov	es:[di+2h],al
+	mov	dx,[29E9h]
+	mov	ax,[29E7h]
+	mov	cl,8h
+	call	8C8Ah
+	les	di,[bp-8h]
 	push	ax
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_168E:
 	repne scasb
@@ -3046,10 +3046,10 @@ l0800_1696:
 	repne scasb
 
 l0800_1698:
-	jz	16A1
+	jz	16A1h
 
 l0800_169A:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -3058,10 +3058,10 @@ l0800_16A1:
 	mov	ax,es
 	mov	es,ax
 	pop	ax
-	mov	es:[di+03],al
-	les	di,[bp-08]
+	mov	es:[di+3h],al
+	les	di,[bp-8h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_16B3:
 	repne scasb
@@ -3075,91 +3075,91 @@ l0800_16BB:
 	repne scasb
 
 l0800_16BD:
-	jz	16C6
+	jz	16C6h
 
 l0800_16BF:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
 l0800_16C6:
 	dec	di
 	mov	ax,es
-	mov	dl,[29E7]
+	mov	dl,[29E7h]
 	mov	es,ax
-	mov	es:[di+04],dl
-	mov	di,0001
+	mov	es:[di+4h],dl
+	mov	di,1h
 	xor	ax,ax
-	mov	word ptr [2A05],0000
-	mov	[2A03],ax
+	mov	word ptr [2A05h],0h
+	mov	[2A03h],ax
 	mov	si,ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	4194
-	add	sp,04
-	mov	[2A09],dx
-	mov	[2A07],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	4194h
+	add	sp,4h
+	mov	[2A09h],dx
+	mov	[2A07h],ax
 	xor	ax,ax
 	push	ax
-	push	word ptr [29E9]
-	push	word ptr [29E7]
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	cmp	word ptr [2A09],00
-	jnc	171B
+	push	word ptr [29E9h]
+	push	word ptr [29E7h]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	cmp	word ptr [2A09h],0h
+	jnc	171Bh
 
 l0800_1718:
-	jmp	17A2
+	jmp	17A2h
 
 l0800_171B:
-	ja	1724
+	ja	1724h
 
 l0800_171D:
-	cmp	word ptr [2A07],12
-	jbe	17A2
+	cmp	word ptr [2A07h],12h
+	jbe	17A2h
 
 l0800_1724:
-	cmp	word ptr [2A21],00
-	jz	17A2
+	cmp	word ptr [2A21h],0h
+	jz	17A2h
 
 l0800_172B:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3F58
-	add	sp,04
-	mov	cl,08
-	call	8CAA
-	cmp	dx,52
-	jnz	1748
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3F58h
+	add	sp,4h
+	mov	cl,8h
+	call	8CAAh
+	cmp	dx,52h
+	jnz	1748h
 
 l0800_1743:
-	cmp	ax,4E43
-	jz	17A2
+	cmp	ax,4E43h
+	jz	17A2h
 
 l0800_1748:
-	push	word ptr [2A09]
-	push	word ptr [2A07]
-	push	word ptr [2A09]
-	push	word ptr [2A07]
-	call	75EA
-	add	sp,08
-	mov	ax,[2A05]
-	mov	dx,[2A03]
-	cmp	ax,[2A09]
-	jc	1778
+	push	word ptr [2A09h]
+	push	word ptr [2A07h]
+	push	word ptr [2A09h]
+	push	word ptr [2A07h]
+	call	75EAh
+	add	sp,8h
+	mov	ax,[2A05h]
+	mov	dx,[2A03h]
+	cmp	ax,[2A09h]
+	jc	1778h
 
 l0800_176B:
-	jnz	1773
+	jnz	1773h
 
 l0800_176D:
-	cmp	dx,[2A07]
-	jc	1778
+	cmp	dx,[2A07h]
+	jc	1778h
 
 l0800_1773:
-	mov	ax,0001
-	jmp	177A
+	mov	ax,1h
+	jmp	177Ah
 
 l0800_1778:
 	xor	ax,ax
@@ -3167,153 +3167,153 @@ l0800_1778:
 l0800_177A:
 	mov	di,ax
 	or	ax,ax
-	jz	17A2
+	jz	17A2h
 
 l0800_1780:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	mov	ax,[2A05]
-	mov	dx,[2A03]
+	mov	ax,[2A05h]
+	mov	dx,[2A03h]
 	neg	ax
 	neg	dx
-	sbb	ax,0000
+	sbb	ax,0h
 	push	ax
 	push	dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
 
 l0800_17A2:
 	or	di,di
-	jnz	17A9
+	jnz	17A9h
 
 l0800_17A6:
-	jmp	183F
+	jmp	183Fh
 
 l0800_17A9:
-	mov	ax,[2A09]
-	mov	dx,[2A07]
-	mov	[2A05],ax
-	mov	[2A03],dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	BA67
-	add	sp,04
-	cmp	word ptr [2A09],00
-	jc	17F2
+	mov	ax,[2A09h]
+	mov	dx,[2A07h]
+	mov	[2A05h],ax
+	mov	[2A03h],dx
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0BA67h
+	add	sp,4h
+	cmp	word ptr [2A09h],0h
+	jc	17F2h
 
 l0800_17CC:
-	jnz	17D5
+	jnz	17D5h
 
 l0800_17CE:
-	cmp	word ptr [2A07],12
-	jc	17F2
+	cmp	word ptr [2A07h],12h
+	jc	17F2h
 
 l0800_17D5:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3F58
-	add	sp,04
-	mov	cl,08
-	call	8CAA
-	cmp	dx,52
-	jnz	17F2
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3F58h
+	add	sp,4h
+	mov	cl,8h
+	call	8CAAh
+	cmp	dx,52h
+	jnz	17F2h
 
 l0800_17ED:
-	cmp	ax,4E43
-	jz	181E
+	cmp	ax,4E43h
+	jz	181Eh
 
 l0800_17F2:
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	mov	ax,524E
-	mov	dx,4300
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	mov	ax,524Eh
+	mov	dx,4300h
 	push	ax
 	push	dx
-	call	409C
-	add	sp,08
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	push	word ptr [2A09]
-	push	word ptr [2A07]
-	call	409C
-	add	sp,08
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	push	word ptr [2A09h]
+	push	word ptr [2A07h]
+	call	409Ch
+	add	sp,8h
 
 l0800_181E:
-	push	word ptr [2A09]
-	push	word ptr [2A07]
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3B0A
-	add	sp,0C
-	mov	si,0002
+	push	word ptr [2A09h]
+	push	word ptr [2A07h]
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3B0Ah
+	add	sp,0Ch
+	mov	si,2h
 
 l0800_183F:
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	push	word ptr [29ED]
-	push	word ptr [29EB]
-	call	409C
-	add	sp,08
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	A614
-	add	sp,04
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	push	word ptr [29EDh]
+	push	word ptr [29EBh]
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0A614h
+	add	sp,4h
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
 	push	si
-	call	0ABC
-	add	sp,06
-	les	bx,[2E51]
-	mov	al,es:[bx+04]
-	mov	ah,00
-	mov	cl,08
+	call	0ABCh
+	add	sp,6h
+	les	bx,[2E51h]
+	mov	al,es:[bx+4h]
+	mov	ah,0h
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,es:[bx+05]
-	mov	dh,00
+	mov	dl,es:[bx+5h]
+	mov	dh,0h
 	add	ax,dx
-	cmp	ax,FF8C
-	jc	1897
+	cmp	ax,0FF8Ch
+	jc	1897h
 
 l0800_188A:
 	push	ds
-	mov	ax,0952
+	mov	ax,952h
 	push	ax
-	call	B2EF
-	add	sp,04
-	jmp	18A9
+	call	0B2EFh
+	add	sp,4h
+	jmp	18A9h
 
 l0800_1897:
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
-	call	2DE2
-	add	sp,04
+	call	2DE2h
+	add	sp,4h
 	or	ax,ax
-	jz	18A9
+	jz	18A9h
 
 l0800_18A6:
-	jmp	15A3
+	jmp	15A3h
 
 l0800_18A9:
-	push	word ptr [29DD]
-	push	word ptr [29DB]
-	call	A614
-	add	sp,04
+	push	word ptr [29DDh]
+	push	word ptr [29DBh]
+	call	0A614h
+	add	sp,4h
 	push	ds
-	mov	ax,4477
+	mov	ax,4477h
 	push	ax
-	call	8F7F
-	add	sp,04
-	call	1E5E
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	A614
-	add	sp,04
+	call	8F7Fh
+	add	sp,4h
+	call	1E5Eh
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	0A614h
+	add	sp,4h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -3326,73 +3326,73 @@ l0800_18A9:
 fn0800_18D9 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,6E
+	sub	sp,6Eh
 	push	di
 	push	ds
-	mov	ax,4348
+	mov	ax,4348h
 	push	ax
-	mov	bx,[2A25]
-	shl	bx,01
-	shl	bx,01
-	push	word ptr [bx+050B]
-	push	word ptr [bx+0509]
+	mov	bx,[2A25h]
+	shl	bx,1h
+	shl	bx,1h
+	push	word ptr [bx+50Bh]
+	push	word ptr [bx+509h]
 	push	ds
-	mov	ax,096C
+	mov	ax,96Ch
 	push	ax
-	call	B2EF
-	add	sp,0C
+	call	0B2EFh
+	add	sp,0Ch
 	push	ds
-	mov	ax,097D
+	mov	ax,97Dh
 	push	ax
 	push	ds
-	mov	ax,4348
+	mov	ax,4348h
 	push	ax
-	call	AA7E
-	add	sp,08
-	mov	[29D1],dx
-	mov	[29CF],ax
+	call	0AA7Eh
+	add	sp,8h
+	mov	[29D1h],dx
+	mov	[29CFh],ax
 	or	ax,dx
-	jnz	192A
+	jnz	192Ah
 
 l0800_191B:
 	push	ds
-	mov	ax,4348
+	mov	ax,4348h
 	push	ax
-	mov	ax,0007
+	mov	ax,7h
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_192A:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	call	1CF6
-	add	sp,02
+	call	1CF6h
+	add	sp,2h
 	xor	ax,ax
 	push	ax
 	push	ax
-	call	2DBF
-	add	sp,04
-	jmp	19BC
+	call	2DBFh
+	add	sp,4h
+	jmp	19BCh
 
 l0800_1940:
 	push	ss
-	lea	ax,[bp-6E]
+	lea	ax,[bp-6Eh]
 	push	ax
-	call	0C93
-	add	sp,04
-	push	word ptr [bp-06]
-	push	word ptr [bp-08]
-	call	23EC
-	add	sp,04
-	push	word ptr [bp-06]
-	push	word ptr [bp-08]
-	call	22FE
-	add	sp,04
-	les	di,[bp-04]
-	add	di,02
+	call	0C93h
+	add	sp,4h
+	push	word ptr [bp-6h]
+	push	word ptr [bp-8h]
+	call	23ECh
+	add	sp,4h
+	push	word ptr [bp-6h]
+	push	word ptr [bp-8h]
+	call	22FEh
+	add	sp,4h
+	les	di,[bp-4h]
+	add	di,2h
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_196E:
 	repne scasb
@@ -3406,10 +3406,10 @@ l0800_1976:
 	repne scasb
 
 l0800_1978:
-	jz	1981
+	jz	1981h
 
 l0800_197A:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -3417,59 +3417,59 @@ l0800_1981:
 	dec	di
 	mov	ax,es
 	mov	es,ax
-	cmp	byte ptr es:[di+01],00
-	jnz	19AD
+	cmp	byte ptr es:[di+1h],0h
+	jnz	19ADh
 
 l0800_198D:
-	mov	ax,[2E53]
-	mov	dx,[2E51]
-	add	dx,08
-	cmp	ax,[bp-02]
-	jnz	19A1
+	mov	ax,[2E53h]
+	mov	dx,[2E51h]
+	add	dx,8h
+	cmp	ax,[bp-2h]
+	jnz	19A1h
 
 l0800_199C:
-	cmp	dx,[bp-04]
-	jz	19AD
+	cmp	dx,[bp-4h]
+	jz	19ADh
 
 l0800_19A1:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	2201
-	add	sp,04
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	2201h
+	add	sp,4h
 
 l0800_19AD:
 	push	ss
-	lea	ax,[bp-6E]
+	lea	ax,[bp-6Eh]
 	push	ax
-	mov	ax,000D
+	mov	ax,0Dh
 	push	ax
-	call	0ABC
-	add	sp,06
+	call	0ABCh
+	add	sp,6h
 
 l0800_19BC:
 	push	ss
-	lea	ax,[bp-6E]
+	lea	ax,[bp-6Eh]
 	push	ax
 	push	ss
-	lea	ax,[bp-08]
+	lea	ax,[bp-8h]
 	push	ax
 	push	ss
-	lea	ax,[bp-04]
+	lea	ax,[bp-4h]
 	push	ax
-	call	29C5
-	add	sp,0C
+	call	29C5h
+	add	sp,0Ch
 	or	ax,ax
-	jz	19D8
+	jz	19D8h
 
 l0800_19D5:
-	jmp	1940
+	jmp	1940h
 
 l0800_19D8:
-	call	1E5E
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	A614
-	add	sp,04
+	call	1E5Eh
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	0A614h
+	add	sp,4h
 	pop	di
 	mov	sp,bp
 	pop	bp
@@ -3481,106 +3481,106 @@ l0800_19D8:
 fn0800_19EE proc
 	push	bp
 	mov	bp,sp
-	sub	sp,72
+	sub	sp,72h
 	push	si
 	push	di
 	push	ds
-	mov	ax,4348
+	mov	ax,4348h
 	push	ax
-	mov	bx,[2A25]
-	shl	bx,01
-	shl	bx,01
-	push	word ptr [bx+050B]
-	push	word ptr [bx+0509]
+	mov	bx,[2A25h]
+	shl	bx,1h
+	shl	bx,1h
+	push	word ptr [bx+50Bh]
+	push	word ptr [bx+509h]
 	push	ds
-	mov	ax,0986
+	mov	ax,986h
 	push	ax
-	call	B2EF
-	add	sp,0C
+	call	0B2EFh
+	add	sp,0Ch
 	push	ds
-	mov	ax,0997
+	mov	ax,997h
 	push	ax
 	push	ds
-	mov	ax,4348
+	mov	ax,4348h
 	push	ax
-	call	AA7E
-	add	sp,08
-	mov	[29D1],dx
-	mov	[29CF],ax
+	call	0AA7Eh
+	add	sp,8h
+	mov	[29D1h],dx
+	mov	[29CFh],ax
 	or	ax,dx
-	jnz	1A40
+	jnz	1A40h
 
 l0800_1A31:
 	push	ds
-	mov	ax,4348
+	mov	ax,4348h
 	push	ax
-	mov	ax,0007
+	mov	ax,7h
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_1A40:
-	mov	ax,[2A27]
-	cmp	ax,[269A]
-	jnz	1A7D
+	mov	ax,[2A27h]
+	cmp	ax,[269Ah]
+	jnz	1A7Dh
 
 l0800_1A49:
-	mov	ax,[0984]
-	mov	dx,[0982]
-	mov	[bp-0A],ax
-	mov	[bp-0C],dx
-	mov	ax,[bp-0C]
-	mov	dx,0004
-	les	bx,[269C]
-	lea	ax,[bp-0C]
-	mov	es:[bx+06],ss
-	mov	es:[bx+04],ax
-	mov	word ptr [2A27],0001
-	mov	word ptr [269A],0002
-	mov	word ptr [2A1B],0001
+	mov	ax,[0984h]
+	mov	dx,[0982h]
+	mov	[bp-0Ah],ax
+	mov	[bp-0Ch],dx
+	mov	ax,[bp-0Ch]
+	mov	dx,4h
+	les	bx,[269Ch]
+	lea	ax,[bp-0Ch]
+	mov	es:[bx+6h],ss
+	mov	es:[bx+4h],ax
+	mov	word ptr [2A27h],1h
+	mov	word ptr [269Ah],2h
+	mov	word ptr [2A1Bh],1h
 
 l0800_1A7D:
 	xor	ax,ax
 	push	ax
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	call	2DBF
-	add	sp,04
-	mov	ax,0001
+	call	2DBFh
+	add	sp,4h
+	mov	ax,1h
 	push	ax
-	call	1CF6
-	add	sp,02
-	cmp	word ptr [2A25],07
-	jz	1A9E
+	call	1CF6h
+	add	sp,2h
+	cmp	word ptr [2A25h],7h
+	jz	1A9Eh
 
 l0800_1A9B:
-	jmp	1CB4
+	jmp	1CB4h
 
 l0800_1A9E:
 	push	ds
-	mov	ax,099B
+	mov	ax,99Bh
 	push	ax
 	push	ds
-	mov	ax,44DC
+	mov	ax,44DCh
 	push	ax
-	call	37BE
-	add	sp,08
-	jmp	1CB4
+	call	37BEh
+	add	sp,8h
+	jmp	1CB4h
 
 l0800_1AB1:
 	push	ss
-	lea	ax,[bp-72]
+	lea	ax,[bp-72h]
 	push	ax
-	call	0C93
-	add	sp,04
-	push	word ptr [bp-06]
-	push	word ptr [bp-08]
-	call	24FE
-	add	sp,04
+	call	0C93h
+	add	sp,4h
+	push	word ptr [bp-6h]
+	push	word ptr [bp-8h]
+	call	24FEh
+	add	sp,4h
 	xor	ax,ax
 	push	ax
-	les	di,[bp-08]
-	mov	cx,FFFF
+	les	di,[bp-8h]
+	mov	cx,0FFFFh
 
 l0800_1AD1:
 	repne scasb
@@ -3594,10 +3594,10 @@ l0800_1AD9:
 	repne scasb
 
 l0800_1ADB:
-	jz	1AE4
+	jz	1AE4h
 
 l0800_1ADD:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -3605,14 +3605,14 @@ l0800_1AE4:
 	dec	di
 	mov	ax,es
 	mov	es,ax
-	mov	al,es:[di+01]
+	mov	al,es:[di+1h]
 	cbw
-	mov	cl,08
+	mov	cl,8h
 	shl	ax,cl
-	les	di,[bp-08]
+	les	di,[bp-8h]
 	push	ax
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_1AFB:
 	repne scasb
@@ -3626,10 +3626,10 @@ l0800_1B03:
 	repne scasb
 
 l0800_1B05:
-	jz	1B0E
+	jz	1B0Eh
 
 l0800_1B07:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -3637,15 +3637,15 @@ l0800_1B0E:
 	dec	di
 	mov	ax,es
 	mov	es,ax
-	mov	al,es:[di+02]
-	mov	ah,00
+	mov	al,es:[di+2h]
+	mov	ah,0h
 	pop	dx
 	add	dx,ax
 	xor	ax,ax
-	les	di,[bp-08]
+	les	di,[bp-8h]
 	push	dx
 	push	ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_1B26:
 	repne scasb
@@ -3659,10 +3659,10 @@ l0800_1B2E:
 	repne scasb
 
 l0800_1B30:
-	jz	1B39
+	jz	1B39h
 
 l0800_1B32:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -3670,14 +3670,14 @@ l0800_1B39:
 	dec	di
 	mov	ax,es
 	mov	es,ax
-	mov	al,es:[di+03]
+	mov	al,es:[di+3h]
 	cbw
-	mov	cl,08
+	mov	cl,8h
 	shl	ax,cl
-	les	di,[bp-08]
+	les	di,[bp-8h]
 	push	ax
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_1B50:
 	repne scasb
@@ -3691,10 +3691,10 @@ l0800_1B58:
 	repne scasb
 
 l0800_1B5A:
-	jz	1B63
+	jz	1B63h
 
 l0800_1B5C:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -3702,35 +3702,35 @@ l0800_1B63:
 	dec	di
 	mov	ax,es
 	mov	es,ax
-	mov	al,es:[di+04]
-	mov	ah,00
+	mov	al,es:[di+4h]
+	mov	ah,0h
 	pop	dx
 	add	dx,ax
 	pop	ax
 	add	ax,dx
 	pop	dx
-	adc	dx,00
+	adc	dx,0h
 	push	dx
 	push	ax
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	ACB3
-	add	sp,0A
-	cmp	word ptr [2A25],07
-	jnz	1B92
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	0ACB3h
+	add	sp,0Ah
+	cmp	word ptr [2A25h],7h
+	jnz	1B92h
 
 l0800_1B8F:
-	jmp	1C61
+	jmp	1C61h
 
 l0800_1B92:
 	push	ds
 	pop	es
-	mov	di,44DC
+	mov	di,44DCh
 	push	es
 	push	di
-	mov	di,427E
+	mov	di,427Eh
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_1BA1:
 	repne scasb
@@ -3738,7 +3738,7 @@ l0800_1BA1:
 l0800_1BA3:
 	not	cx
 	sub	di,cx
-	shr	cx,01
+	shr	cx,1h
 	mov	si,di
 	pop	di
 	mov	ax,es
@@ -3757,26 +3757,26 @@ l0800_1BB6:
 
 l0800_1BB8:
 	pop	ds
-	cmp	word ptr [2A25],08
-	jnz	1C29
+	cmp	word ptr [2A25h],8h
+	jnz	1C29h
 
 l0800_1BC0:
-	cmp	byte ptr [427E],00
-	jz	1BFC
+	cmp	byte ptr [427Eh],0h
+	jz	1BFCh
 
 l0800_1BC7:
-	cmp	byte ptr [bp-72],5C
-	jnz	1BFC
+	cmp	byte ptr [bp-72h],5Ch
+	jnz	1BFCh
 
 l0800_1BCD:
 	push	ss
-	lea	ax,[bp-71]
+	lea	ax,[bp-71h]
 	push	ax
 	push	ds
 	pop	es
-	mov	di,44DC
+	mov	di,44DCh
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_1BDC:
 	repne scasb
@@ -3790,10 +3790,10 @@ l0800_1BE4:
 	repne scasb
 
 l0800_1BE6:
-	jz	1BEF
+	jz	1BEFh
 
 l0800_1BE8:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -3802,19 +3802,19 @@ l0800_1BEF:
 	mov	ax,es
 	push	ax
 	push	di
-	call	3509
-	add	sp,08
-	jmp	1C29
+	call	3509h
+	add	sp,8h
+	jmp	1C29h
 
 l0800_1BFC:
 	push	ss
-	lea	ax,[bp-72]
+	lea	ax,[bp-72h]
 	push	ax
 	push	ds
 	pop	es
-	mov	di,44DC
+	mov	di,44DCh
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_1C0B:
 	repne scasb
@@ -3828,10 +3828,10 @@ l0800_1C13:
 	repne scasb
 
 l0800_1C15:
-	jz	1C1E
+	jz	1C1Eh
 
 l0800_1C17:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -3840,23 +3840,23 @@ l0800_1C1E:
 	mov	ax,es
 	push	ax
 	push	di
-	call	3509
-	add	sp,08
+	call	3509h
+	add	sp,8h
 
 l0800_1C29:
 	push	ds
-	mov	ax,44DC
+	mov	ax,44DCh
 	push	ax
-	call	3678
-	add	sp,04
+	call	3678h
+	add	sp,4h
 	push	ss
-	lea	ax,[bp-72]
+	lea	ax,[bp-72h]
 	push	ax
 	push	ds
 	pop	es
-	mov	di,44DC
+	mov	di,44DCh
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_1C43:
 	repne scasb
@@ -3870,10 +3870,10 @@ l0800_1C4B:
 	repne scasb
 
 l0800_1C4D:
-	jz	1C56
+	jz	1C56h
 
 l0800_1C4F:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -3882,80 +3882,80 @@ l0800_1C56:
 	mov	ax,es
 	push	ax
 	push	di
-	call	35A3
-	add	sp,08
+	call	35A3h
+	add	sp,8h
 
 l0800_1C61:
 	push	ds
-	mov	ax,09A8
+	mov	ax,9A8h
 	push	ax
 	push	ds
-	mov	ax,44DC
+	mov	ax,44DCh
 	push	ax
-	call	4234
-	add	sp,08
-	mov	[29E1],dx
-	mov	[29DF],ax
-	mov	ax,[29D1]
-	mov	dx,[29CF]
-	mov	[29E5],ax
-	mov	[29E3],dx
-	call	5374
+	call	4234h
+	add	sp,8h
+	mov	[29E1h],dx
+	mov	[29DFh],ax
+	mov	ax,[29D1h]
+	mov	dx,[29CFh]
+	mov	[29E5h],ax
+	mov	[29E3h],dx
+	call	5374h
 	mov	si,ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	A614
-	add	sp,04
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0A614h
+	add	sp,4h
 	or	si,si
-	jz	1CA8
+	jz	1CA8h
 
 l0800_1C9D:
 	push	ds
-	mov	ax,44DC
+	mov	ax,44DCh
 	push	ax
-	call	8F7F
-	add	sp,04
+	call	8F7Fh
+	add	sp,4h
 
 l0800_1CA8:
 	push	ss
-	lea	ax,[bp-72]
+	lea	ax,[bp-72h]
 	push	ax
 	push	si
-	call	0ABC
-	add	sp,06
+	call	0ABCh
+	add	sp,6h
 
 l0800_1CB4:
 	push	ss
-	lea	ax,[bp-72]
+	lea	ax,[bp-72h]
 	push	ax
 	push	ss
-	lea	ax,[bp-08]
+	lea	ax,[bp-8h]
 	push	ax
 	push	ss
-	lea	ax,[bp-04]
+	lea	ax,[bp-4h]
 	push	ax
-	call	29C5
-	add	sp,0C
+	call	29C5h
+	add	sp,0Ch
 	or	ax,ax
-	jz	1CD0
+	jz	1CD0h
 
 l0800_1CCD:
-	jmp	1AB1
+	jmp	1AB1h
 
 l0800_1CD0:
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	A614
-	add	sp,04
-	cmp	word ptr [2A25],07
-	jnz	1CF0
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	0A614h
+	add	sp,4h
+	cmp	word ptr [2A25h],7h
+	jnz	1CF0h
 
 l0800_1CE5:
 	push	ds
-	mov	ax,44DC
+	mov	ax,44DCh
 	push	ax
-	call	8F7F
-	add	sp,04
+	call	8F7Fh
+	add	sp,4h
 
 l0800_1CF0:
 	pop	di
@@ -3973,156 +3973,156 @@ l0800_1CF0:
 fn0800_1CF6 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,02
+	sub	sp,2h
 	push	si
 	xor	ax,ax
 	xor	dx,dx
-	mov	[45A8],ax
-	mov	[45A6],dx
-	mov	[29ED],ax
-	mov	[29EB],dx
-	mov	ax,0002
+	mov	[45A8h],ax
+	mov	[45A6h],dx
+	mov	[29EDh],ax
+	mov	[29EBh],dx
+	mov	ax,2h
 	push	ax
-	mov	ax,FFFF
-	mov	dx,FFFC
+	mov	ax,0FFFFh
+	mov	dx,0FFFCh
 	push	ax
 	push	dx
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	3E5D
-	add	sp,04
-	mov	[29ED],dx
-	mov	[29EB],ax
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	4194
-	add	sp,04
-	cmp	dx,[29ED]
-	ja	1D69
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	3E5Dh
+	add	sp,4h
+	mov	[29EDh],dx
+	mov	[29EBh],ax
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	4194h
+	add	sp,4h
+	cmp	dx,[29EDh]
+	ja	1D69h
 
 l0800_1D52:
-	jc	1D5A
+	jc	1D5Ah
 
 l0800_1D54:
-	cmp	ax,[29EB]
-	jnc	1D69
+	cmp	ax,[29EBh]
+	jnc	1D69h
 
 l0800_1D5A:
 	push	ds
-	mov	ax,4348
+	mov	ax,4348h
 	push	ax
-	mov	ax,000B
+	mov	ax,0Bh
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_1D69:
 	xor	ax,ax
 	push	ax
-	push	word ptr [29ED]
-	push	word ptr [29EB]
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	3E5D
-	add	sp,04
-	cmp	dx,524E
-	jnz	1D9B
+	push	word ptr [29EDh]
+	push	word ptr [29EBh]
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	3E5Dh
+	add	sp,4h
+	cmp	dx,524Eh
+	jnz	1D9Bh
 
 l0800_1D96:
-	cmp	ax,4341
-	jz	1DAA
+	cmp	ax,4341h
+	jz	1DAAh
 
 l0800_1D9B:
 	push	ds
-	mov	ax,4348
+	mov	ax,4348h
 	push	ax
-	mov	ax,000B
+	mov	ax,0Bh
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_1DAA:
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	3E27
-	add	sp,04
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	3E27h
+	add	sp,4h
 	mov	si,ax
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	3E27
-	add	sp,04
-	mov	[bp-02],ax
-	cmp	word ptr [bp+04],00
-	jz	1DE4
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	3E27h
+	add	sp,4h
+	mov	[bp-2h],ax
+	cmp	word ptr [bp+4h],0h
+	jz	1DE4h
 
 l0800_1DD1:
 	xor	ax,ax
 	push	ax
 	push	si
-	call	4311
-	add	sp,04
-	mov	[2E53],dx
-	mov	[2E51],ax
-	jmp	1DF8
+	call	4311h
+	add	sp,4h
+	mov	[2E53h],dx
+	mov	[2E51h],ax
+	jmp	1DF8h
 
 l0800_1DE4:
 	xor	ax,ax
-	mov	dx,FFF0
+	mov	dx,0FFF0h
 	push	ax
 	push	dx
-	call	4311
-	add	sp,04
-	mov	[2E53],dx
-	mov	[2E51],ax
+	call	4311h
+	add	sp,4h
+	mov	[2E53h],dx
+	mov	[2E51h],ax
 
 l0800_1DF8:
 	xor	ax,ax
 	push	ax
-	push	word ptr [29ED]
-	push	word ptr [29EB]
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29D1]
-	push	word ptr [29CF]
+	push	word ptr [29EDh]
+	push	word ptr [29EBh]
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
 	xor	ax,ax
 	push	ax
 	push	si
-	push	word ptr [2E53]
-	push	word ptr [2E51]
-	call	4110
-	add	sp,0C
+	push	word ptr [2E53h]
+	push	word ptr [2E51h]
+	call	4110h
+	add	sp,0Ch
 	xor	ax,ax
 	push	ax
 	mov	ax,si
-	sub	ax,0008
+	sub	ax,8h
 	push	ax
-	mov	ax,[2E51]
-	add	ax,0008
-	push	word ptr [2E53]
+	mov	ax,[2E51h]
+	add	ax,8h
+	push	word ptr [2E53h]
 	push	ax
-	call	2CCF
-	add	sp,08
-	cmp	ax,[bp-02]
-	jz	1E59
+	call	2CCFh
+	add	sp,8h
+	cmp	ax,[bp-2h]
+	jz	1E59h
 
 l0800_1E4A:
 	push	ds
-	mov	ax,4348
+	mov	ax,4348h
 	push	ax
-	mov	ax,000D
+	mov	ax,0Dh
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_1E59:
 	pop	si
@@ -4137,51 +4137,51 @@ l0800_1E59:
 ;;     0800:19D8 (in fn0800_18D9)
 fn0800_1E5E proc
 	push	si
-	les	bx,[2E51]
-	mov	al,es:[bx+04]
-	mov	ah,00
-	mov	cl,08
+	les	bx,[2E51h]
+	mov	al,es:[bx+4h]
+	mov	ah,0h
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,es:[bx+05]
-	mov	dh,00
+	mov	dl,es:[bx+5h]
+	mov	dh,0h
 	add	ax,dx
 	mov	si,ax
 	xor	ax,ax
 	push	ax
 	mov	ax,si
-	sub	ax,0008
+	sub	ax,8h
 	push	ax
-	mov	ax,[2E51]
-	add	ax,0008
-	push	word ptr [2E53]
+	mov	ax,[2E51h]
+	add	ax,8h
+	push	word ptr [2E53h]
 	push	ax
-	call	2CCF
-	add	sp,08
+	call	2CCFh
+	add	sp,8h
 	mov	dx,ax
-	mov	cl,08
+	mov	cl,8h
 	shr	ax,cl
-	les	bx,[2E51]
-	mov	es:[bx+06],al
-	mov	es:[bx+07],dl
+	les	bx,[2E51h]
+	mov	es:[bx+6h],al
+	mov	es:[bx+7h],dl
 	xor	ax,ax
 	push	ax
-	mov	ax,[29ED]
-	mov	dx,[29EB]
-	add	dx,04
-	adc	ax,0000
+	mov	ax,[29EDh]
+	mov	dx,[29EBh]
+	add	dx,4h
+	adc	ax,0h
 	push	ax
 	push	dx
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	3E27
-	add	sp,04
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	3E27h
+	add	sp,4h
 	mov	dx,ax
 	cmp	si,dx
-	jbe	1EF7
+	jbe	1EF7h
 
 l0800_1ED7:
 	mov	ax,si
@@ -4189,17 +4189,17 @@ l0800_1ED7:
 	xor	dx,dx
 	push	dx
 	push	ax
-	push	word ptr [29ED]
-	push	word ptr [29EB]
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	3BC3
-	add	sp,0C
-	jmp	1F19
+	push	word ptr [29EDh]
+	push	word ptr [29EBh]
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	3BC3h
+	add	sp,0Ch
+	jmp	1F19h
 
 l0800_1EF7:
 	cmp	si,dx
-	jnc	1F19
+	jnc	1F19h
 
 l0800_1EFB:
 	mov	ax,dx
@@ -4207,35 +4207,35 @@ l0800_1EFB:
 	xor	dx,dx
 	push	dx
 	push	ax
-	push	word ptr [29ED]
-	push	word ptr [29EB]
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	3C99
-	add	sp,0C
+	push	word ptr [29EDh]
+	push	word ptr [29EBh]
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	3C99h
+	add	sp,0Ch
 
 l0800_1F19:
 	xor	ax,ax
 	push	ax
-	push	word ptr [29ED]
-	push	word ptr [29EB]
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29D1]
-	push	word ptr [29CF]
+	push	word ptr [29EDh]
+	push	word ptr [29EBh]
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
 	xor	ax,ax
 	push	ax
 	push	si
-	push	word ptr [2E53]
-	push	word ptr [2E51]
-	call	4152
-	add	sp,0C
-	push	word ptr [2E53]
-	push	word ptr [2E51]
-	call	4346
-	add	sp,04
+	push	word ptr [2E53h]
+	push	word ptr [2E51h]
+	call	4152h
+	add	sp,0Ch
+	push	word ptr [2E53h]
+	push	word ptr [2E51h]
+	call	4346h
+	add	sp,4h
 	pop	si
 	ret
 
@@ -4245,29 +4245,29 @@ l0800_1F19:
 fn0800_1F5C proc
 	push	bp
 	mov	bp,sp
-	sub	sp,08
+	sub	sp,8h
 	push	si
 	push	di
-	les	di,[bp+04]
+	les	di,[bp+4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_1F6C:
 	repne scasb
 
 l0800_1F6E:
 	not	cx
-	mov	ax,003A
+	mov	ax,3Ah
 	sub	di,cx
 
 l0800_1F75:
 	repne scasb
 
 l0800_1F77:
-	jz	1F80
+	jz	1F80h
 
 l0800_1F79:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -4275,29 +4275,29 @@ l0800_1F80:
 	dec	di
 	mov	ax,es
 	or	di,ax
-	jz	1FAD
+	jz	1FADh
 
 l0800_1F87:
-	les	di,[bp+04]
+	les	di,[bp+4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_1F8F:
 	repne scasb
 
 l0800_1F91:
 	not	cx
-	mov	ax,003A
+	mov	ax,3Ah
 	sub	di,cx
 
 l0800_1F98:
 	repne scasb
 
 l0800_1F9A:
-	jz	1FA3
+	jz	1FA3h
 
 l0800_1F9C:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -4305,27 +4305,27 @@ l0800_1FA3:
 	dec	di
 	mov	ax,es
 	inc	di
-	mov	[bp+06],ax
-	mov	[bp+04],di
+	mov	[bp+6h],ax
+	mov	[bp+4h],di
 
 l0800_1FAD:
-	les	bx,[2E51]
-	mov	al,es:[bx+04]
-	mov	ah,00
-	mov	cl,08
+	les	bx,[2E51h]
+	mov	al,es:[bx+4h]
+	mov	ah,0h
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,es:[bx+05]
-	mov	dh,00
+	mov	dl,es:[bx+5h]
+	mov	dh,0h
 	add	ax,dx
-	mov	[bp-06],ax
-	mov	ax,[2E53]
-	mov	dx,[2E51]
-	add	dx,[bp-06]
-	mov	[bp-02],ax
-	mov	[bp-04],dx
-	les	di,[bp+04]
+	mov	[bp-6h],ax
+	mov	ax,[2E53h]
+	mov	dx,[2E51h]
+	add	dx,[bp-6h]
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
+	les	di,[bp+4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_1FDE:
 	repne scasb
@@ -4333,32 +4333,32 @@ l0800_1FDE:
 l0800_1FE0:
 	not	cx
 	dec	cx
-	add	cx,04
-	mov	[bp-08],cx
-	mov	ax,[bp-04]
+	add	cx,4h
+	mov	[bp-8h],cx
+	mov	ax,[bp-4h]
 	xor	dx,dx
-	sub	ax,[2E51]
-	sbb	dx,00
-	add	ax,[bp-08]
-	adc	dx,00
-	mov	cl,08
-	call	8C8A
-	les	bx,[bp-04]
+	sub	ax,[2E51h]
+	sbb	dx,0h
+	add	ax,[bp-8h]
+	adc	dx,0h
+	mov	cl,8h
+	call	8C8Ah
+	les	bx,[bp-4h]
 	mov	es:[bx],al
-	mov	ax,[bp-04]
+	mov	ax,[bp-4h]
 	xor	dx,dx
-	sub	ax,[2E51]
-	sbb	dx,00
-	add	al,[bp-08]
-	mov	es:[bx+01],al
-	mov	di,[bp-04]
-	add	di,02
+	sub	ax,[2E51h]
+	sbb	dx,0h
+	add	al,[bp-8h]
+	mov	es:[bx+1h],al
+	mov	di,[bp-4h]
+	add	di,2h
 	push	es
-	mov	es,[bp+06]
+	mov	es,[bp+6h]
 	push	di
-	mov	di,[bp+04]
+	mov	di,[bp+4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_202C:
 	repne scasb
@@ -4366,7 +4366,7 @@ l0800_202C:
 l0800_202E:
 	not	cx
 	sub	di,cx
-	shr	cx,01
+	shr	cx,1h
 	mov	si,di
 	pop	di
 	mov	ax,es
@@ -4385,27 +4385,27 @@ l0800_2041:
 
 l0800_2043:
 	pop	ds
-	mov	es,[bp-02]
-	add	bx,[bp-08]
-	mov	byte ptr es:[bx-01],00
-	mov	ax,[bp-06]
-	add	ax,[bp-08]
-	mov	cl,08
+	mov	es,[bp-2h]
+	add	bx,[bp-8h]
+	mov	byte ptr es:[bx-1h],0h
+	mov	ax,[bp-6h]
+	add	ax,[bp-8h]
+	mov	cl,8h
 	shr	ax,cl
-	les	bx,[2E51]
-	mov	es:[bx+04],al
-	mov	al,[bp-06]
-	add	al,[bp-08]
-	mov	es:[bx+05],al
+	les	bx,[2E51h]
+	mov	es:[bx+4h],al
+	mov	al,[bp-6h]
+	add	al,[bp-8h]
+	mov	es:[bx+5h],al
 	xor	ax,ax
 	push	ax
 	push	ax
 	push	ax
-	push	word ptr [bp-08]
-	call	2688
-	add	sp,08
-	mov	dx,[bp-02]
-	mov	ax,[bp-04]
+	push	word ptr [bp-8h]
+	call	2688h
+	add	sp,8h
+	mov	dx,[bp-2h]
+	mov	ax,[bp-4h]
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -4418,26 +4418,26 @@ l0800_2043:
 fn0800_2085 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,0C
+	sub	sp,0Ch
 	push	si
 	push	di
-	les	bx,[2E51]
-	mov	al,es:[bx+04]
-	mov	ah,00
-	mov	cl,08
+	les	bx,[2E51h]
+	mov	al,es:[bx+4h]
+	mov	ah,0h
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,es:[bx+05]
-	mov	dh,00
+	mov	dl,es:[bx+5h]
+	mov	dh,0h
 	add	ax,dx
-	mov	[bp-0A],ax
-	mov	ax,[2E53]
-	mov	dx,[2E51]
-	add	dx,[bp-0A]
-	mov	[bp-06],ax
-	mov	[bp-08],dx
-	les	di,[bp+04]
+	mov	[bp-0Ah],ax
+	mov	ax,[2E53h]
+	mov	dx,[2E51h]
+	add	dx,[bp-0Ah]
+	mov	[bp-6h],ax
+	mov	[bp-8h],dx
+	les	di,[bp+4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_20BE:
 	repne scasb
@@ -4445,42 +4445,42 @@ l0800_20BE:
 l0800_20C0:
 	not	cx
 	dec	cx
-	add	cx,05
-	mov	[bp-0C],cx
-	les	bx,[bp+08]
+	add	cx,5h
+	mov	[bp-0Ch],cx
+	les	bx,[bp+8h]
 	mov	al,es:[bx]
 	cbw
-	mov	cl,08
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,es:[bx+01]
-	mov	dh,00
+	mov	dl,es:[bx+1h]
+	mov	dh,0h
 	add	ax,dx
-	mov	dx,[2E53]
-	mov	bx,[2E51]
+	mov	dx,[2E53h]
+	mov	bx,[2E51h]
 	add	bx,ax
 	dec	bx
-	mov	[bp-02],dx
-	mov	[bp-04],bx
-	mov	ax,[bp-08]
+	mov	[bp-2h],dx
+	mov	[bp-4h],bx
+	mov	ax,[bp-8h]
 	xor	dx,dx
-	sub	ax,[bp-04]
-	sbb	dx,00
+	sub	ax,[bp-4h]
+	sbb	dx,0h
 	push	ax
-	push	word ptr [2E53]
+	push	word ptr [2E53h]
 	push	bx
-	mov	ax,[bp-04]
-	add	ax,[bp-0C]
-	push	word ptr [2E53]
+	mov	ax,[bp-4h]
+	add	ax,[bp-0Ch]
+	push	word ptr [2E53h]
 	push	ax
-	call	B0F3
-	add	sp,0A
-	les	di,[bp-04]
+	call	0B0F3h
+	add	sp,0Ah
+	les	di,[bp-4h]
 	push	es
-	mov	es,[bp+06]
+	mov	es,[bp+6h]
 	push	di
-	mov	di,[bp+04]
+	mov	di,[bp+4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_211F:
 	repne scasb
@@ -4488,7 +4488,7 @@ l0800_211F:
 l0800_2121:
 	not	cx
 	sub	di,cx
-	shr	cx,01
+	shr	cx,1h
 	mov	si,di
 	pop	di
 	mov	ax,es
@@ -4507,9 +4507,9 @@ l0800_2134:
 
 l0800_2136:
 	pop	ds
-	les	di,[bp-04]
+	les	di,[bp-4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_213F:
 	repne scasb
@@ -4523,10 +4523,10 @@ l0800_2147:
 	repne scasb
 
 l0800_2149:
-	jz	2152
+	jz	2152h
 
 l0800_214B:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -4534,10 +4534,10 @@ l0800_2152:
 	dec	di
 	mov	ax,es
 	mov	es,ax
-	mov	byte ptr es:[di+01],00
-	les	di,[bp-04]
+	mov	byte ptr es:[di+1h],0h
+	les	di,[bp-4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_2164:
 	repne scasb
@@ -4551,10 +4551,10 @@ l0800_216C:
 	repne scasb
 
 l0800_216E:
-	jz	2177
+	jz	2177h
 
 l0800_2170:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -4562,10 +4562,10 @@ l0800_2177:
 	dec	di
 	mov	ax,es
 	mov	es,ax
-	mov	byte ptr es:[di+02],00
-	les	di,[bp-04]
+	mov	byte ptr es:[di+2h],0h
+	les	di,[bp-4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_2189:
 	repne scasb
@@ -4579,10 +4579,10 @@ l0800_2191:
 	repne scasb
 
 l0800_2193:
-	jz	219C
+	jz	219Ch
 
 l0800_2195:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -4590,10 +4590,10 @@ l0800_219C:
 	dec	di
 	mov	ax,es
 	mov	es,ax
-	mov	byte ptr es:[di+03],00
-	les	di,[bp-04]
+	mov	byte ptr es:[di+3h],0h
+	les	di,[bp-4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_21AE:
 	repne scasb
@@ -4607,10 +4607,10 @@ l0800_21B6:
 	repne scasb
 
 l0800_21B8:
-	jz	21C1
+	jz	21C1h
 
 l0800_21BA:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -4618,25 +4618,25 @@ l0800_21C1:
 	dec	di
 	mov	ax,es
 	mov	es,ax
-	mov	byte ptr es:[di+04],00
-	mov	ax,[bp-0A]
-	add	ax,[bp-0C]
-	mov	cl,08
+	mov	byte ptr es:[di+4h],0h
+	mov	ax,[bp-0Ah]
+	add	ax,[bp-0Ch]
+	mov	cl,8h
 	shr	ax,cl
-	les	bx,[2E51]
-	mov	es:[bx+04],al
-	mov	al,[bp-0A]
-	add	al,[bp-0C]
-	mov	es:[bx+05],al
+	les	bx,[2E51h]
+	mov	es:[bx+4h],al
+	mov	al,[bp-0Ah]
+	add	al,[bp-0Ch]
+	mov	es:[bx+5h],al
 	xor	ax,ax
 	push	ax
 	push	ax
 	push	ax
-	push	word ptr [bp-0C]
-	call	2688
-	add	sp,08
-	mov	dx,[bp-02]
-	mov	ax,[bp-04]
+	push	word ptr [bp-0Ch]
+	call	2688h
+	add	sp,8h
+	mov	dx,[bp-2h]
+	mov	ax,[bp-4h]
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -4649,84 +4649,84 @@ l0800_21C1:
 fn0800_2201 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,0A
+	sub	sp,0Ah
 	push	di
-	les	bx,[2E51]
-	mov	al,es:[bx+04]
-	mov	ah,00
-	mov	cl,08
+	les	bx,[2E51h]
+	mov	al,es:[bx+4h]
+	mov	ah,0h
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,es:[bx+05]
-	mov	dh,00
+	mov	dl,es:[bx+5h]
+	mov	dh,0h
 	add	ax,dx
-	mov	[bp-06],ax
-	mov	ax,[2E53]
-	mov	dx,[2E51]
-	add	dx,[bp-06]
-	mov	[bp-02],ax
-	mov	[bp-04],dx
-	les	bx,[bp+04]
+	mov	[bp-6h],ax
+	mov	ax,[2E53h]
+	mov	dx,[2E51h]
+	add	dx,[bp-6h]
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
+	les	bx,[bp+4h]
 	mov	al,es:[bx]
 	cbw
 	shl	ax,cl
-	mov	dl,es:[bx+01]
-	mov	dh,00
+	mov	dl,es:[bx+1h]
+	mov	dh,0h
 	add	ax,dx
-	mov	dx,[2E51]
+	mov	dx,[2E51h]
 	add	dx,ax
 	xor	ax,ax
-	sub	dx,[bp+04]
-	sbb	ax,0000
-	mov	[bp-08],dx
-	mov	ax,[bp+04]
-	add	ax,[bp-08]
-	mov	[bp-0A],ax
-	mov	dx,[bp-04]
+	sub	dx,[bp+4h]
+	sbb	ax,0h
+	mov	[bp-8h],dx
+	mov	ax,[bp+4h]
+	add	ax,[bp-8h]
+	mov	[bp-0Ah],ax
+	mov	dx,[bp-4h]
 	xor	bx,bx
 	sub	dx,ax
-	sbb	bx,00
+	sbb	bx,0h
 	push	dx
-	push	word ptr [bp+06]
+	push	word ptr [bp+6h]
 	push	ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	B0F3
-	add	sp,0A
-	mov	ax,[bp-06]
-	sub	ax,[bp-08]
-	mov	cl,08
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0B0F3h
+	add	sp,0Ah
+	mov	ax,[bp-6h]
+	sub	ax,[bp-8h]
+	mov	cl,8h
 	shr	ax,cl
-	les	bx,[2E51]
-	mov	es:[bx+04],al
-	mov	al,[bp-06]
-	sub	al,[bp-08]
-	mov	es:[bx+05],al
+	les	bx,[2E51h]
+	mov	es:[bx+4h],al
+	mov	al,[bp-6h]
+	sub	al,[bp-8h]
+	mov	es:[bx+5h],al
 	xor	ax,ax
 	push	ax
 	push	ax
-	mov	ax,[bp-08]
+	mov	ax,[bp-8h]
 	xor	dx,dx
 	neg	dx
 	neg	ax
-	sbb	dx,00
+	sbb	dx,0h
 	push	dx
 	push	ax
-	call	2688
-	add	sp,08
-	mov	ax,[45B0]
-	mov	dx,[45AE]
-	cmp	ax,[bp+06]
-	jnz	22EA
+	call	2688h
+	add	sp,8h
+	mov	ax,[45B0h]
+	mov	dx,[45AEh]
+	cmp	ax,[bp+6h]
+	jnz	22EAh
 
 l0800_22B7:
-	cmp	dx,[bp+04]
-	jnz	22EA
+	cmp	dx,[bp+4h]
+	jnz	22EAh
 
 l0800_22BC:
-	les	di,[bp+04]
-	add	di,02
+	les	di,[bp+4h]
+	add	di,2h
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_22C7:
 	repne scasb
@@ -4740,10 +4740,10 @@ l0800_22CF:
 	repne scasb
 
 l0800_22D1:
-	jz	22DA
+	jz	22DAh
 
 l0800_22D3:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -4751,21 +4751,21 @@ l0800_22DA:
 	dec	di
 	mov	ax,es
 	inc	di
-	mov	[45AC],ax
-	mov	[45AA],di
+	mov	[45ACh],ax
+	mov	[45AAh],di
 	pop	di
 	mov	sp,bp
 	pop	bp
 	ret
 
 l0800_22EA:
-	mov	ax,[45AE]
-	cmp	ax,[bp+04]
-	jbe	22F9
+	mov	ax,[45AEh]
+	cmp	ax,[bp+4h]
+	jbe	22F9h
 
 l0800_22F2:
-	mov	ax,[bp-08]
-	sub	[45AA],ax
+	mov	ax,[bp-8h]
+	sub	[45AAh],ax
 
 l0800_22F9:
 	pop	di
@@ -4779,25 +4779,25 @@ l0800_22F9:
 fn0800_22FE proc
 	push	bp
 	mov	bp,sp
-	sub	sp,0A
+	sub	sp,0Ah
 	push	di
-	les	bx,[2E51]
-	mov	al,es:[bx+04]
-	mov	ah,00
-	mov	cl,08
+	les	bx,[2E51h]
+	mov	al,es:[bx+4h]
+	mov	ah,0h
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,es:[bx+05]
-	mov	dh,00
+	mov	dl,es:[bx+5h]
+	mov	dh,0h
 	add	ax,dx
-	mov	[bp-06],ax
-	mov	ax,[2E53]
-	mov	dx,[2E51]
-	add	dx,[bp-06]
-	mov	[bp-02],ax
-	mov	[bp-04],dx
-	les	di,[bp+04]
+	mov	[bp-6h],ax
+	mov	ax,[2E53h]
+	mov	dx,[2E51h]
+	add	dx,[bp-6h]
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
+	les	di,[bp+4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_2336:
 	repne scasb
@@ -4811,82 +4811,82 @@ l0800_233E:
 	repne scasb
 
 l0800_2340:
-	jz	2349
+	jz	2349h
 
 l0800_2342:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
 l0800_2349:
 	dec	di
 	mov	ax,es
-	add	di,05
+	add	di,5h
 	xor	ax,ax
-	sub	di,[bp+04]
-	sbb	ax,0000
-	mov	[bp-08],di
-	mov	ax,[bp+04]
-	add	ax,[bp-08]
-	mov	[bp-0A],ax
-	mov	dx,[bp-04]
+	sub	di,[bp+4h]
+	sbb	ax,0h
+	mov	[bp-8h],di
+	mov	ax,[bp+4h]
+	add	ax,[bp-8h]
+	mov	[bp-0Ah],ax
+	mov	dx,[bp-4h]
 	xor	bx,bx
 	sub	dx,ax
-	sbb	bx,00
+	sbb	bx,0h
 	push	dx
-	push	word ptr [bp+06]
+	push	word ptr [bp+6h]
 	push	ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	B0F3
-	add	sp,0A
-	mov	ax,[bp-06]
-	sub	ax,[bp-08]
-	mov	cl,08
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0B0F3h
+	add	sp,0Ah
+	mov	ax,[bp-6h]
+	sub	ax,[bp-8h]
+	mov	cl,8h
 	shr	ax,cl
-	les	bx,[2E51]
-	mov	es:[bx+04],al
-	mov	al,[bp-06]
-	sub	al,[bp-08]
-	mov	es:[bx+05],al
+	les	bx,[2E51h]
+	mov	es:[bx+4h],al
+	mov	al,[bp-6h]
+	sub	al,[bp-8h]
+	mov	es:[bx+5h],al
 	xor	ax,ax
 	push	ax
 	push	ax
-	mov	ax,[bp-08]
+	mov	ax,[bp-8h]
 	xor	dx,dx
 	neg	dx
 	neg	ax
-	sbb	dx,00
+	sbb	dx,0h
 	push	dx
 	push	ax
-	call	2688
-	add	sp,08
-	mov	ax,[bp+06]
-	mov	dx,[bp+04]
-	add	dx,[bp-08]
-	mov	[45AC],ax
-	mov	[45AA],dx
+	call	2688h
+	add	sp,8h
+	mov	ax,[bp+6h]
+	mov	dx,[bp+4h]
+	add	dx,[bp-8h]
+	mov	[45ACh],ax
+	mov	[45AAh],dx
 	or	dx,ax
-	jz	23D8
+	jz	23D8h
 
 l0800_23C6:
-	mov	ax,[bp+06]
-	mov	dx,[bp+04]
-	mov	[45AC],ax
-	mov	[45AA],dx
+	mov	ax,[bp+6h]
+	mov	dx,[bp+4h]
+	mov	[45ACh],ax
+	mov	[45AAh],dx
 	pop	di
 	mov	sp,bp
 	pop	bp
 	ret
 
 l0800_23D8:
-	mov	ax,[45AA]
-	cmp	ax,[bp+04]
-	jbe	23E7
+	mov	ax,[45AAh]
+	cmp	ax,[bp+4h]
+	jbe	23E7h
 
 l0800_23E0:
-	mov	ax,[bp-08]
-	sub	[45AA],ax
+	mov	ax,[bp-8h]
+	sub	[45AAh],ax
 
 l0800_23E7:
 	pop	di
@@ -4901,17 +4901,17 @@ l0800_23E7:
 fn0800_23EC proc
 	push	bp
 	mov	bp,sp
-	sub	sp,08
+	sub	sp,8h
 	push	di
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	24FE
-	add	sp,04
-	mov	[bp-06],dx
-	mov	[bp-08],ax
-	les	di,[bp+04]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	24FEh
+	add	sp,4h
+	mov	[bp-6h],dx
+	mov	[bp-8h],ax
+	les	di,[bp+4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_240D:
 	repne scasb
@@ -4925,10 +4925,10 @@ l0800_2415:
 	repne scasb
 
 l0800_2417:
-	jz	2420
+	jz	2420h
 
 l0800_2419:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -4936,14 +4936,14 @@ l0800_2420:
 	dec	di
 	mov	ax,es
 	mov	es,ax
-	mov	al,es:[di+01]
+	mov	al,es:[di+1h]
 	cbw
-	mov	cl,08
+	mov	cl,8h
 	shl	ax,cl
-	les	di,[bp+04]
+	les	di,[bp+4h]
 	push	ax
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_2437:
 	repne scasb
@@ -4957,10 +4957,10 @@ l0800_243F:
 	repne scasb
 
 l0800_2441:
-	jz	244A
+	jz	244Ah
 
 l0800_2443:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -4968,15 +4968,15 @@ l0800_244A:
 	dec	di
 	mov	ax,es
 	mov	es,ax
-	mov	al,es:[di+02]
-	mov	ah,00
+	mov	al,es:[di+2h]
+	mov	ah,0h
 	pop	dx
 	add	dx,ax
 	xor	ax,ax
-	les	di,[bp+04]
+	les	di,[bp+4h]
 	push	dx
 	push	ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_2462:
 	repne scasb
@@ -4990,10 +4990,10 @@ l0800_246A:
 	repne scasb
 
 l0800_246C:
-	jz	2475
+	jz	2475h
 
 l0800_246E:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -5001,14 +5001,14 @@ l0800_2475:
 	dec	di
 	mov	ax,es
 	mov	es,ax
-	mov	al,es:[di+03]
+	mov	al,es:[di+3h]
 	cbw
-	mov	cl,08
+	mov	cl,8h
 	shl	ax,cl
-	les	di,[bp+04]
+	les	di,[bp+4h]
 	push	ax
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_248C:
 	repne scasb
@@ -5022,10 +5022,10 @@ l0800_2494:
 	repne scasb
 
 l0800_2496:
-	jz	249F
+	jz	249Fh
 
 l0800_2498:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -5033,39 +5033,39 @@ l0800_249F:
 	dec	di
 	mov	ax,es
 	mov	es,ax
-	mov	al,es:[di+04]
-	mov	ah,00
+	mov	al,es:[di+4h]
+	mov	ah,0h
 	pop	dx
 	add	dx,ax
 	pop	ax
 	add	ax,dx
 	pop	dx
-	adc	dx,00
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	push	word ptr [bp-06]
-	push	word ptr [bp-08]
-	mov	ax,[bp-02]
-	mov	dx,[bp-04]
-	sub	dx,[45A6]
-	sbb	ax,[45A8]
+	adc	dx,0h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	push	word ptr [bp-6h]
+	push	word ptr [bp-8h]
+	mov	ax,[bp-2h]
+	mov	dx,[bp-4h]
+	sub	dx,[45A6h]
+	sbb	ax,[45A8h]
 	push	ax
 	push	dx
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	3C99
-	add	sp,0C
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	mov	ax,[bp-06]
-	mov	dx,[bp-08]
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	3C99h
+	add	sp,0Ch
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	mov	ax,[bp-6h]
+	mov	dx,[bp-8h]
 	neg	ax
 	neg	dx
-	sbb	ax,0000
+	sbb	ax,0h
 	push	ax
 	push	dx
-	call	2688
-	add	sp,08
+	call	2688h
+	add	sp,8h
 	pop	di
 	mov	sp,bp
 	pop	bp
@@ -5078,11 +5078,11 @@ l0800_249F:
 fn0800_24FE proc
 	push	bp
 	mov	bp,sp
-	sub	sp,0C
+	sub	sp,0Ch
 	push	di
-	les	di,[bp+04]
+	les	di,[bp+4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_250D:
 	repne scasb
@@ -5096,10 +5096,10 @@ l0800_2515:
 	repne scasb
 
 l0800_2517:
-	jz	2520
+	jz	2520h
 
 l0800_2519:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -5107,14 +5107,14 @@ l0800_2520:
 	dec	di
 	mov	ax,es
 	mov	es,ax
-	mov	al,es:[di+01]
+	mov	al,es:[di+1h]
 	cbw
-	mov	cl,08
+	mov	cl,8h
 	shl	ax,cl
-	les	di,[bp+04]
+	les	di,[bp+4h]
 	push	ax
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_2537:
 	repne scasb
@@ -5128,10 +5128,10 @@ l0800_253F:
 	repne scasb
 
 l0800_2541:
-	jz	254A
+	jz	254Ah
 
 l0800_2543:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -5139,15 +5139,15 @@ l0800_254A:
 	dec	di
 	mov	ax,es
 	mov	es,ax
-	mov	al,es:[di+02]
-	mov	ah,00
+	mov	al,es:[di+2h]
+	mov	ah,0h
 	pop	dx
 	add	dx,ax
 	xor	ax,ax
-	les	di,[bp+04]
+	les	di,[bp+4h]
 	push	dx
 	push	ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_2562:
 	repne scasb
@@ -5161,10 +5161,10 @@ l0800_256A:
 	repne scasb
 
 l0800_256C:
-	jz	2575
+	jz	2575h
 
 l0800_256E:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -5172,14 +5172,14 @@ l0800_2575:
 	dec	di
 	mov	ax,es
 	mov	es,ax
-	mov	al,es:[di+03]
+	mov	al,es:[di+3h]
 	cbw
-	mov	cl,08
+	mov	cl,8h
 	shl	ax,cl
-	les	di,[bp+04]
+	les	di,[bp+4h]
 	push	ax
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_258C:
 	repne scasb
@@ -5193,10 +5193,10 @@ l0800_2594:
 	repne scasb
 
 l0800_2596:
-	jz	259F
+	jz	259Fh
 
 l0800_2598:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -5204,94 +5204,94 @@ l0800_259F:
 	dec	di
 	mov	ax,es
 	mov	es,ax
-	mov	al,es:[di+04]
-	mov	ah,00
+	mov	al,es:[di+4h]
+	mov	ah,0h
 	pop	dx
 	add	dx,ax
 	pop	ax
 	add	ax,dx
 	pop	dx
-	adc	dx,00
-	sub	ax,[45A6]
-	sbb	dx,[45A8]
-	mov	[bp-02],dx
-	mov	[bp-04],ax
+	adc	dx,0h
+	sub	ax,[45A6h]
+	sbb	dx,[45A8h]
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
 	xor	ax,ax
 	push	ax
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	3E5D
-	add	sp,04
-	mov	[bp-06],dx
-	mov	[bp-08],ax
-	mov	cl,08
-	call	8C8A
-	cmp	dx,52
-	jnz	25FC
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	3E5Dh
+	add	sp,4h
+	mov	[bp-6h],dx
+	mov	[bp-8h],ax
+	mov	cl,8h
+	call	8C8Ah
+	cmp	dx,52h
+	jnz	25FCh
 
 l0800_25F7:
-	cmp	ax,4E43
-	jz	260B
+	cmp	ax,4E43h
+	jz	260Bh
 
 l0800_25FC:
 	push	ds
-	mov	ax,4348
+	mov	ax,4348h
 	push	ax
-	mov	ax,000C
+	mov	ax,0Ch
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_260B:
-	mov	ax,[bp-08]
-	and	ax,00FF
-	or	ax,0000
-	jz	2655
+	mov	ax,[bp-8h]
+	and	ax,0FFh
+	or	ax,0h
+	jz	2655h
 
 l0800_2616:
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	3E5D
-	add	sp,04
-	mov	[2A09],dx
-	mov	[2A07],ax
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	3E5D
-	add	sp,04
-	mov	[2A05],dx
-	mov	[2A03],ax
-	mov	ax,[2A05]
-	mov	dx,[2A03]
-	add	dx,12
-	adc	ax,0000
-	mov	[bp-0A],ax
-	mov	[bp-0C],dx
-	jmp	267D
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	3E5Dh
+	add	sp,4h
+	mov	[2A09h],dx
+	mov	[2A07h],ax
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	3E5Dh
+	add	sp,4h
+	mov	[2A05h],dx
+	mov	[2A03h],ax
+	mov	ax,[2A05h]
+	mov	dx,[2A03h]
+	add	dx,12h
+	adc	ax,0h
+	mov	[bp-0Ah],ax
+	mov	[bp-0Ch],dx
+	jmp	267Dh
 
 l0800_2655:
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	3E5D
-	add	sp,04
-	mov	[2A05],dx
-	mov	[2A03],ax
-	mov	[2A09],dx
-	mov	[2A07],ax
-	add	ax,0008
-	adc	dx,00
-	mov	[bp-0A],dx
-	mov	[bp-0C],ax
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	3E5Dh
+	add	sp,4h
+	mov	[2A05h],dx
+	mov	[2A03h],ax
+	mov	[2A09h],dx
+	mov	[2A07h],ax
+	add	ax,8h
+	adc	dx,0h
+	mov	[bp-0Ah],dx
+	mov	[bp-0Ch],ax
 
 l0800_267D:
-	mov	dx,[bp-0A]
-	mov	ax,[bp-0C]
+	mov	dx,[bp-0Ah]
+	mov	ax,[bp-0Ch]
 	pop	di
 	mov	sp,bp
 	pop	bp
@@ -5307,162 +5307,162 @@ l0800_267D:
 fn0800_2688 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,10
-	les	bx,[2E51]
-	mov	al,es:[bx+04]
-	mov	ah,00
-	mov	cl,08
+	sub	sp,10h
+	les	bx,[2E51h]
+	mov	al,es:[bx+4h]
+	mov	ah,0h
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,es:[bx+05]
-	mov	dh,00
+	mov	dl,es:[bx+5h]
+	mov	dh,0h
 	add	ax,dx
-	mov	dx,[2E53]
+	mov	dx,[2E53h]
 	add	bx,ax
-	mov	[bp-06],dx
-	mov	[bp-08],bx
-	mov	ax,[2E53]
-	mov	dx,[2E51]
-	add	dx,08
-	mov	[bp-02],ax
-	mov	[bp-04],dx
-	jmp	27B3
+	mov	[bp-6h],dx
+	mov	[bp-8h],bx
+	mov	ax,[2E53h]
+	mov	dx,[2E51h]
+	add	dx,8h
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
+	jmp	27B3h
 
 l0800_26C3:
-	mov	ax,[bp-02]
-	mov	dx,[bp-04]
-	mov	[bp-0A],ax
-	mov	[bp-0C],dx
-	add	word ptr [bp-04],02
+	mov	ax,[bp-2h]
+	mov	dx,[bp-4h]
+	mov	[bp-0Ah],ax
+	mov	[bp-0Ch],dx
+	add	word ptr [bp-4h],2h
 
 l0800_26D3:
-	les	bx,[bp-04]
-	inc	word ptr [bp-04]
-	cmp	byte ptr es:[bx],00
-	jnz	26D3
+	les	bx,[bp-4h]
+	inc	word ptr [bp-4h]
+	cmp	byte ptr es:[bx],0h
+	jnz	26D3h
 
 l0800_26DF:
-	jmp	277D
+	jmp	277Dh
 
 l0800_26E2:
-	les	bx,[bp-04]
-	inc	word ptr [bp-04]
-	cmp	byte ptr es:[bx],00
-	jnz	26E2
+	les	bx,[bp-4h]
+	inc	word ptr [bp-4h]
+	cmp	byte ptr es:[bx],0h
+	jnz	26E2h
 
 l0800_26EE:
-	les	bx,[bp-04]
+	les	bx,[bp-4h]
 	mov	al,es:[bx]
 	cbw
-	mov	cl,08
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,es:[bx+01]
-	mov	dh,00
+	mov	dl,es:[bx+1h]
+	mov	dh,0h
 	add	ax,dx
 	xor	dx,dx
 	push	ax
-	mov	al,es:[bx+02]
+	mov	al,es:[bx+2h]
 	cbw
 	shl	ax,cl
-	mov	bl,es:[bx+03]
-	mov	bh,00
+	mov	bl,es:[bx+3h]
+	mov	bh,0h
 	add	ax,bx
 	add	dx,ax
 	pop	ax
-	adc	ax,0000
-	mov	[bp-0E],ax
-	mov	[bp-10],dx
-	mov	ax,[bp-0E]
-	cmp	ax,[bp+0A]
-	jl	2779
+	adc	ax,0h
+	mov	[bp-0Eh],ax
+	mov	[bp-10h],dx
+	mov	ax,[bp-0Eh]
+	cmp	ax,[bp+0Ah]
+	jl	2779h
 
 l0800_2727:
-	jnz	272E
+	jnz	272Eh
 
 l0800_2729:
-	cmp	dx,[bp+08]
-	jc	2779
+	cmp	dx,[bp+8h]
+	jc	2779h
 
 l0800_272E:
-	mov	ax,[bp-0E]
-	mov	dx,[bp-10]
-	add	dx,[bp+04]
-	adc	ax,[bp+06]
+	mov	ax,[bp-0Eh]
+	mov	dx,[bp-10h]
+	add	dx,[bp+4h]
+	adc	ax,[bp+6h]
 	cwd
-	mov	cl,08
-	call	8C8A
-	les	bx,[bp-04]
+	mov	cl,8h
+	call	8C8Ah
+	les	bx,[bp-4h]
 	mov	es:[bx],al
-	mov	ax,[bp-0E]
-	mov	dx,[bp-10]
-	add	dx,[bp+04]
-	adc	ax,[bp+06]
+	mov	ax,[bp-0Eh]
+	mov	dx,[bp-10h]
+	add	dx,[bp+4h]
+	adc	ax,[bp+6h]
 	cwd
-	mov	es:[bx+01],al
-	mov	dx,[bp-0E]
-	mov	ax,[bp-10]
-	add	ax,[bp+04]
-	adc	dx,[bp+06]
-	mov	cl,08
-	call	8C8A
-	les	bx,[bp-04]
-	mov	es:[bx+02],al
-	mov	al,[bp-10]
-	add	al,[bp+04]
-	mov	es:[bx+03],al
+	mov	es:[bx+1h],al
+	mov	dx,[bp-0Eh]
+	mov	ax,[bp-10h]
+	add	ax,[bp+4h]
+	adc	dx,[bp+6h]
+	mov	cl,8h
+	call	8C8Ah
+	les	bx,[bp-4h]
+	mov	es:[bx+2h],al
+	mov	al,[bp-10h]
+	add	al,[bp+4h]
+	mov	es:[bx+3h],al
 
 l0800_2779:
-	add	word ptr [bp-04],04
+	add	word ptr [bp-4h],4h
 
 l0800_277D:
-	les	bx,[bp-04]
-	cmp	byte ptr es:[bx],00
-	jz	2789
+	les	bx,[bp-4h]
+	cmp	byte ptr es:[bx],0h
+	jz	2789h
 
 l0800_2786:
-	jmp	26E2
+	jmp	26E2h
 
 l0800_2789:
-	inc	word ptr [bp-04]
-	mov	ax,[bp-04]
+	inc	word ptr [bp-4h]
+	mov	ax,[bp-4h]
 	xor	dx,dx
-	sub	ax,[2E51]
-	sbb	dx,00
-	mov	cl,08
-	call	8C8A
-	les	bx,[bp-0C]
+	sub	ax,[2E51h]
+	sbb	dx,0h
+	mov	cl,8h
+	call	8C8Ah
+	les	bx,[bp-0Ch]
 	mov	es:[bx],al
-	mov	ax,[bp-04]
+	mov	ax,[bp-4h]
 	xor	dx,dx
-	sub	ax,[2E51]
-	sbb	dx,00
-	mov	es:[bx+01],al
+	sub	ax,[2E51h]
+	sbb	dx,0h
+	mov	es:[bx+1h],al
 
 l0800_27B3:
-	mov	ax,[bp-02]
-	mov	dx,[bp-04]
-	cmp	ax,[bp-06]
-	jz	27C1
+	mov	ax,[bp-2h]
+	mov	dx,[bp-4h]
+	cmp	ax,[bp-6h]
+	jz	27C1h
 
 l0800_27BE:
-	jmp	26C3
+	jmp	26C3h
 
 l0800_27C1:
-	cmp	dx,[bp-08]
-	jz	27C9
+	cmp	dx,[bp-8h]
+	jz	27C9h
 
 l0800_27C6:
-	jmp	26C3
+	jmp	26C3h
 
 l0800_27C9:
-	mov	ax,[bp+08]
-	or	ax,[bp+0A]
-	jnz	27DF
+	mov	ax,[bp+8h]
+	or	ax,[bp+0Ah]
+	jnz	27DFh
 
 l0800_27D1:
-	mov	ax,[bp+06]
-	mov	dx,[bp+04]
-	add	[45A6],dx
-	adc	[45A8],ax
+	mov	ax,[bp+6h]
+	mov	dx,[bp+4h]
+	add	[45A6h],dx
+	adc	[45A8h],ax
 
 l0800_27DF:
 	mov	sp,bp
@@ -5482,29 +5482,29 @@ l0800_27DF:
 fn0800_283D proc
 	push	bp
 	mov	bp,sp
-	sub	sp,08
+	sub	sp,8h
 	push	si
 	push	di
-	les	di,[bp+04]
+	les	di,[bp+4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_284D:
 	repne scasb
 
 l0800_284F:
 	not	cx
-	mov	ax,003A
+	mov	ax,3Ah
 	sub	di,cx
 
 l0800_2856:
 	repne scasb
 
 l0800_2858:
-	jz	2861
+	jz	2861h
 
 l0800_285A:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -5512,29 +5512,29 @@ l0800_2861:
 	dec	di
 	mov	ax,es
 	or	di,ax
-	jz	288E
+	jz	288Eh
 
 l0800_2868:
-	les	di,[bp+04]
+	les	di,[bp+4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_2870:
 	repne scasb
 
 l0800_2872:
 	not	cx
-	mov	ax,003A
+	mov	ax,3Ah
 	sub	di,cx
 
 l0800_2879:
 	repne scasb
 
 l0800_287B:
-	jz	2884
+	jz	2884h
 
 l0800_287D:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -5542,37 +5542,37 @@ l0800_2884:
 	dec	di
 	mov	ax,es
 	inc	di
-	mov	[bp+06],ax
-	mov	[bp+04],di
+	mov	[bp+6h],ax
+	mov	[bp+4h],di
 
 l0800_288E:
-	les	bx,[2E51]
-	mov	al,es:[bx+04]
-	mov	ah,00
-	mov	cl,08
+	les	bx,[2E51h]
+	mov	al,es:[bx+4h]
+	mov	ah,0h
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,es:[bx+05]
-	mov	dh,00
+	mov	dl,es:[bx+5h]
+	mov	dh,0h
 	add	ax,dx
-	mov	dx,[2E53]
+	mov	dx,[2E53h]
 	add	bx,ax
-	mov	[bp-02],dx
-	mov	[bp-04],bx
-	mov	ax,[2E53]
-	mov	dx,[2E51]
-	add	dx,08
-	mov	[bp-06],ax
-	mov	[bp-08],dx
-	jmp	2917
+	mov	[bp-2h],dx
+	mov	[bp-4h],bx
+	mov	ax,[2E53h]
+	mov	dx,[2E51h]
+	add	dx,8h
+	mov	[bp-6h],ax
+	mov	[bp-8h],dx
+	jmp	2917h
 
 l0800_28C2:
-	mov	si,[bp-08]
-	add	si,02
+	mov	si,[bp-8h]
+	add	si,2h
 	push	ds
-	mov	ds,[bp-06]
-	les	di,[bp+04]
+	mov	ds,[bp-6h]
+	les	di,[bp+4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_28D4:
 	repne scasb
@@ -5585,20 +5585,20 @@ l0800_28DA:
 	rep cmpsb
 
 l0800_28DC:
-	jz	28E3
+	jz	28E3h
 
 l0800_28DE:
 	sbb	ax,ax
-	sbb	ax,FFFF
+	sbb	ax,0FFFFh
 
 l0800_28E3:
 	pop	ds
 	or	ax,ax
-	jnz	28F4
+	jnz	28F4h
 
 l0800_28E8:
-	mov	dx,[bp-06]
-	mov	ax,[bp-08]
+	mov	dx,[bp-6h]
+	mov	ax,[bp-8h]
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -5606,29 +5606,29 @@ l0800_28E8:
 	ret
 
 l0800_28F4:
-	les	bx,[bp-08]
+	les	bx,[bp-8h]
 	mov	al,es:[bx]
 	cbw
-	mov	cl,08
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,es:[bx+01]
-	mov	dh,00
+	mov	dl,es:[bx+1h]
+	mov	dh,0h
 	add	ax,dx
-	mov	dx,[2E53]
-	mov	bx,[2E51]
+	mov	dx,[2E53h]
+	mov	bx,[2E51h]
 	add	bx,ax
-	mov	[bp-06],dx
-	mov	[bp-08],bx
+	mov	[bp-6h],dx
+	mov	[bp-8h],bx
 
 l0800_2917:
-	mov	ax,[bp-06]
-	mov	dx,[bp-08]
-	cmp	ax,[bp-02]
-	jnz	28C2
+	mov	ax,[bp-6h]
+	mov	dx,[bp-8h]
+	cmp	ax,[bp-2h]
+	jnz	28C2h
 
 l0800_2922:
-	cmp	dx,[bp-04]
-	jnz	28C2
+	cmp	dx,[bp-4h]
+	jnz	28C2h
 
 l0800_2927:
 	xor	dx,dx
@@ -5648,10 +5648,10 @@ fn0800_2931 proc
 	mov	bp,sp
 	push	si
 	push	di
-	les	di,[bp+08]
-	add	di,02
+	les	di,[bp+8h]
+	add	di,2h
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_2941:
 	repne scasb
@@ -5665,10 +5665,10 @@ l0800_2949:
 	repne scasb
 
 l0800_294B:
-	jz	2954
+	jz	2954h
 
 l0800_294D:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -5676,17 +5676,17 @@ l0800_2954:
 	dec	di
 	mov	ax,es
 	inc	di
-	mov	[bp+0A],ax
-	mov	[bp+08],di
-	jmp	29B4
+	mov	[bp+0Ah],ax
+	mov	[bp+8h],di
+	jmp	29B4h
 
 l0800_2960:
-	mov	si,[bp+08]
+	mov	si,[bp+8h]
 	push	ds
-	mov	ds,[bp+0A]
-	les	di,[bp+04]
+	mov	ds,[bp+0Ah]
+	les	di,[bp+4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_296F:
 	repne scasb
@@ -5699,29 +5699,29 @@ l0800_2975:
 	rep cmpsb
 
 l0800_2977:
-	jz	297E
+	jz	297Eh
 
 l0800_2979:
 	sbb	ax,ax
-	sbb	ax,FFFF
+	sbb	ax,0FFFFh
 
 l0800_297E:
 	pop	ds
 	or	ax,ax
-	jnz	298D
+	jnz	298Dh
 
 l0800_2983:
-	mov	dx,[bp+0A]
-	mov	ax,[bp+08]
+	mov	dx,[bp+0Ah]
+	mov	ax,[bp+8h]
 	pop	di
 	pop	si
 	pop	bp
 	ret
 
 l0800_298D:
-	les	di,[bp+08]
+	les	di,[bp+8h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_2995:
 	repne scasb
@@ -5735,24 +5735,24 @@ l0800_299D:
 	repne scasb
 
 l0800_299F:
-	jz	29A8
+	jz	29A8h
 
 l0800_29A1:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
 l0800_29A8:
 	dec	di
 	mov	ax,es
-	add	di,05
-	mov	[bp+0A],ax
-	mov	[bp+08],di
+	add	di,5h
+	mov	[bp+0Ah],ax
+	mov	[bp+8h],di
 
 l0800_29B4:
-	les	bx,[bp+08]
-	cmp	byte ptr es:[bx],00
-	jnz	2960
+	les	bx,[bp+8h]
+	cmp	byte ptr es:[bx],0h
+	jnz	2960h
 
 l0800_29BD:
 	xor	dx,dx
@@ -5770,26 +5770,26 @@ l0800_29BD:
 fn0800_29C5 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,78
+	sub	sp,78h
 	push	si
 	push	di
-	mov	ax,[45AE]
-	or	ax,[45B0]
-	jnz	2A07
+	mov	ax,[45AEh]
+	or	ax,[45B0h]
+	jnz	2A07h
 
 l0800_29D6:
-	mov	ax,[45AA]
-	or	ax,[45AC]
-	jnz	2A07
+	mov	ax,[45AAh]
+	or	ax,[45ACh]
+	jnz	2A07h
 
 l0800_29DF:
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
-	call	2DE2
-	add	sp,04
+	call	2DE2h
+	add	sp,4h
 	or	ax,ax
-	jnz	29F6
+	jnz	29F6h
 
 l0800_29EE:
 	xor	ax,ax
@@ -5800,85 +5800,85 @@ l0800_29EE:
 	ret
 
 l0800_29F6:
-	mov	ax,[2E53]
-	mov	dx,[2E51]
-	add	dx,08
-	mov	[45B0],ax
-	mov	[45AE],dx
+	mov	ax,[2E53h]
+	mov	dx,[2E51h]
+	add	dx,8h
+	mov	[45B0h],ax
+	mov	[45AEh],dx
 
 l0800_2A07:
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
 	push	ss
-	lea	ax,[bp-6A]
+	lea	ax,[bp-6Ah]
 	push	ax
-	call	3509
-	add	sp,08
+	call	3509h
+	add	sp,8h
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
 	push	ss
-	lea	ax,[bp-78]
+	lea	ax,[bp-78h]
 	push	ax
-	call	35A3
-	add	sp,08
-	les	bx,[2E51]
-	mov	al,es:[bx+04]
-	mov	ah,00
-	mov	cl,08
+	call	35A3h
+	add	sp,8h
+	les	bx,[2E51h]
+	mov	al,es:[bx+4h]
+	mov	ah,0h
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,es:[bx+05]
-	mov	dh,00
+	mov	dl,es:[bx+5h]
+	mov	dh,0h
 	add	ax,dx
-	mov	dx,[2E53]
+	mov	dx,[2E53h]
 	add	bx,ax
-	mov	[bp-02],dx
-	mov	[bp-04],bx
-	jmp	2C53
+	mov	[bp-2h],dx
+	mov	[bp-4h],bx
+	jmp	2C53h
 
 l0800_2A4C:
-	mov	ax,[45AA]
-	or	ax,[45AC]
-	jnz	2A58
+	mov	ax,[45AAh]
+	or	ax,[45ACh]
+	jnz	2A58h
 
 l0800_2A55:
-	jmp	2C12
+	jmp	2C12h
 
 l0800_2A58:
-	jmp	2B54
+	jmp	2B54h
 
 l0800_2A5B:
 	push	ss
-	lea	ax,[bp-78]
+	lea	ax,[bp-78h]
 	push	ax
-	push	word ptr [45AC]
-	push	word ptr [45AA]
-	call	4357
-	add	sp,08
+	push	word ptr [45ACh]
+	push	word ptr [45AAh]
+	call	4357h
+	add	sp,8h
 	or	ax,ax
-	jnz	2A75
+	jnz	2A75h
 
 l0800_2A72:
-	jmp	2B2B
+	jmp	2B2Bh
 
 l0800_2A75:
-	les	bx,[bp+04]
-	mov	ax,[45B0]
-	mov	dx,[45AE]
-	mov	es:[bx+02],ax
+	les	bx,[bp+4h]
+	mov	ax,[45B0h]
+	mov	dx,[45AEh]
+	mov	es:[bx+2h],ax
 	mov	es:[bx],dx
-	les	bx,[bp+08]
-	mov	ax,[45AC]
-	mov	dx,[45AA]
-	mov	es:[bx+02],ax
+	les	bx,[bp+8h]
+	mov	ax,[45ACh]
+	mov	dx,[45AAh]
+	mov	es:[bx+2h],ax
 	mov	es:[bx],dx
-	les	di,[45AE]
-	add	di,02
+	les	di,[45AEh]
+	add	di,2h
 	push	es
-	mov	es,[bp+0E]
+	mov	es,[bp+0Eh]
 	push	di
-	mov	di,[bp+0C]
+	mov	di,[bp+0Ch]
 	mov	ax,di
 	pop	di
 	mov	dx,es
@@ -5886,7 +5886,7 @@ l0800_2A75:
 	push	dx
 	push	ax
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_2AB3:
 	repne scasb
@@ -5894,7 +5894,7 @@ l0800_2AB3:
 l0800_2AB5:
 	not	cx
 	sub	di,cx
-	shr	cx,01
+	shr	cx,1h
 	mov	si,di
 	pop	di
 	mov	ax,es
@@ -5913,13 +5913,13 @@ l0800_2AC8:
 
 l0800_2ACA:
 	pop	ds
-	les	di,[bp+0C]
+	les	di,[bp+0Ch]
 	push	es
-	mov	es,[45AC]
+	mov	es,[45ACh]
 	push	di
-	mov	di,[45AA]
+	mov	di,[45AAh]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_2ADD:
 	repne scasb
@@ -5934,7 +5934,7 @@ l0800_2ADF:
 	mov	dx,ds
 	mov	ds,ax
 	push	cx
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 	xor	ax,ax
 
 l0800_2AF3:
@@ -5949,8 +5949,8 @@ l0800_2AF7:
 
 l0800_2AF9:
 	mov	ds,dx
-	les	di,[45AA]
-	mov	cx,FFFF
+	les	di,[45AAh]
+	mov	cx,0FFFFh
 
 l0800_2B02:
 	repne scasb
@@ -5964,20 +5964,20 @@ l0800_2B0A:
 	repne scasb
 
 l0800_2B0C:
-	jz	2B15
+	jz	2B15h
 
 l0800_2B0E:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
 l0800_2B15:
 	dec	di
 	mov	ax,es
-	add	di,05
-	mov	[45AC],ax
-	mov	[45AA],di
-	mov	ax,0001
+	add	di,5h
+	mov	[45ACh],ax
+	mov	[45AAh],di
+	mov	ax,1h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -5985,9 +5985,9 @@ l0800_2B15:
 	ret
 
 l0800_2B2B:
-	les	di,[45AA]
+	les	di,[45AAh]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_2B34:
 	repne scasb
@@ -6001,54 +6001,54 @@ l0800_2B3C:
 	repne scasb
 
 l0800_2B3E:
-	jz	2B47
+	jz	2B47h
 
 l0800_2B40:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
 l0800_2B47:
 	dec	di
 	mov	ax,es
-	add	di,05
-	mov	[45AC],ax
-	mov	[45AA],di
+	add	di,5h
+	mov	[45ACh],ax
+	mov	[45AAh],di
 
 l0800_2B54:
-	les	bx,[45AA]
-	cmp	byte ptr es:[bx],00
-	jz	2B61
+	les	bx,[45AAh]
+	cmp	byte ptr es:[bx],0h
+	jz	2B61h
 
 l0800_2B5E:
-	jmp	2A5B
+	jmp	2A5Bh
 
 l0800_2B61:
-	les	bx,[45AE]
+	les	bx,[45AEh]
 	mov	al,es:[bx]
 	cbw
-	mov	cl,08
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,es:[bx+01]
-	mov	dh,00
+	mov	dl,es:[bx+1h]
+	mov	dh,0h
 	add	ax,dx
-	mov	dx,[2E53]
-	mov	bx,[2E51]
+	mov	dx,[2E53h]
+	mov	bx,[2E51h]
 	add	bx,ax
-	mov	[45B0],dx
-	mov	[45AE],bx
-	jmp	2C12
+	mov	[45B0h],dx
+	mov	[45AEh],bx
+	jmp	2C12h
 
 l0800_2B8A:
-	cmp	word ptr [2A1B],00
-	jz	2BBB
+	cmp	word ptr [2A1Bh],0h
+	jz	2BBBh
 
 l0800_2B91:
 	push	ss
 	pop	es
-	lea	di,[bp-6A]
+	lea	di,[bp-6Ah]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_2B9B:
 	repne scasb
@@ -6058,31 +6058,31 @@ l0800_2B9D:
 	dec	cx
 	push	cx
 	push	ss
-	lea	ax,[bp-6A]
+	lea	ax,[bp-6Ah]
 	push	ax
-	mov	ax,[45AE]
-	add	ax,0002
-	push	word ptr [45B0]
+	mov	ax,[45AEh]
+	add	ax,2h
+	push	word ptr [45B0h]
 	push	ax
-	call	BFE6
-	add	sp,0A
+	call	0BFE6h
+	add	sp,0Ah
 	or	ax,ax
-	jz	2C29
+	jz	2C29h
 
 l0800_2BBB:
-	cmp	word ptr [2A1B],00
-	jnz	2BEC
+	cmp	word ptr [2A1Bh],0h
+	jnz	2BECh
 
 l0800_2BC2:
-	mov	si,[45AE]
-	add	si,02
+	mov	si,[45AEh]
+	add	si,2h
 	push	ds
-	mov	ds,[45B0]
+	mov	ds,[45B0h]
 	push	ss
 	pop	es
-	lea	di,[bp-6A]
+	lea	di,[bp-6Ah]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_2BD8:
 	repne scasb
@@ -6095,53 +6095,53 @@ l0800_2BDE:
 	rep cmpsb
 
 l0800_2BE0:
-	jz	2BE7
+	jz	2BE7h
 
 l0800_2BE2:
 	sbb	ax,ax
-	sbb	ax,FFFF
+	sbb	ax,0FFFFh
 
 l0800_2BE7:
 	pop	ds
 	or	ax,ax
-	jz	2C29
+	jz	2C29h
 
 l0800_2BEC:
-	les	bx,[45AE]
+	les	bx,[45AEh]
 	mov	al,es:[bx]
 	cbw
-	mov	cl,08
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,es:[bx+01]
-	mov	dh,00
+	mov	dl,es:[bx+1h]
+	mov	dh,0h
 	add	ax,dx
-	mov	dx,[2E53]
-	mov	bx,[2E51]
+	mov	dx,[2E53h]
+	mov	bx,[2E51h]
 	add	bx,ax
-	mov	[45B0],dx
-	mov	[45AE],bx
+	mov	[45B0h],dx
+	mov	[45AEh],bx
 
 l0800_2C12:
-	mov	ax,[45B0]
-	mov	dx,[45AE]
-	cmp	ax,[bp-02]
-	jz	2C21
+	mov	ax,[45B0h]
+	mov	dx,[45AEh]
+	cmp	ax,[bp-2h]
+	jz	2C21h
 
 l0800_2C1E:
-	jmp	2B8A
+	jmp	2B8Ah
 
 l0800_2C21:
-	cmp	dx,[bp-04]
-	jz	2C29
+	cmp	dx,[bp-4h]
+	jz	2C29h
 
 l0800_2C26:
-	jmp	2B8A
+	jmp	2B8Ah
 
 l0800_2C29:
-	les	di,[45AE]
-	add	di,02
+	les	di,[45AEh]
+	add	di,2h
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_2C35:
 	repne scasb
@@ -6155,10 +6155,10 @@ l0800_2C3D:
 	repne scasb
 
 l0800_2C3F:
-	jz	2C48
+	jz	2C48h
 
 l0800_2C41:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -6166,40 +6166,40 @@ l0800_2C48:
 	dec	di
 	mov	ax,es
 	inc	di
-	mov	[45AC],ax
-	mov	[45AA],di
+	mov	[45ACh],ax
+	mov	[45AAh],di
 
 l0800_2C53:
-	mov	ax,[45B0]
-	mov	dx,[45AE]
-	cmp	ax,[bp-02]
-	jz	2C62
+	mov	ax,[45B0h]
+	mov	dx,[45AEh]
+	cmp	ax,[bp-2h]
+	jz	2C62h
 
 l0800_2C5F:
-	jmp	2A4C
+	jmp	2A4Ch
 
 l0800_2C62:
-	cmp	dx,[bp-04]
-	jz	2C6A
+	cmp	dx,[bp-4h]
+	jz	2C6Ah
 
 l0800_2C67:
-	jmp	2A4C
+	jmp	2A4Ch
 
 l0800_2C6A:
 	xor	ax,ax
 	xor	dx,dx
-	mov	[45AC],ax
-	mov	[45AA],dx
-	mov	[45B0],ax
-	mov	[45AE],dx
-	push	word ptr [bp+0E]
-	push	word ptr [bp+0C]
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	29C5
-	add	sp,0C
+	mov	[45ACh],ax
+	mov	[45AAh],dx
+	mov	[45B0h],ax
+	mov	[45AEh],dx
+	push	word ptr [bp+0Eh]
+	push	word ptr [bp+0Ch]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	29C5h
+	add	sp,0Ch
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -6212,26 +6212,26 @@ l0800_2C6A:
 fn0800_2C9A proc
 	push	si
 	xor	cx,cx
-	mov	si,2A29
+	mov	si,2A29h
 
 l0800_2CA0:
 	mov	dx,cx
-	mov	bx,0008
-	jmp	2CBD
+	mov	bx,8h
+	jmp	2CBDh
 
 l0800_2CA7:
-	test	dx,0001
-	jz	2CB6
+	test	dx,1h
+	jz	2CB6h
 
 l0800_2CAD:
 	mov	ax,dx
-	shr	ax,01
-	xor	ax,A001
-	jmp	2CBA
+	shr	ax,1h
+	xor	ax,0A001h
+	jmp	2CBAh
 
 l0800_2CB6:
 	mov	ax,dx
-	shr	ax,01
+	shr	ax,1h
 
 l0800_2CBA:
 	mov	dx,ax
@@ -6239,14 +6239,14 @@ l0800_2CBA:
 
 l0800_2CBD:
 	or	bx,bx
-	jnz	2CA7
+	jnz	2CA7h
 
 l0800_2CC1:
 	mov	[si],dx
-	add	si,02
+	add	si,2h
 	inc	cx
-	cmp	cx,0100
-	jc	2CA0
+	cmp	cx,100h
+	jc	2CA0h
 
 l0800_2CCD:
 	pop	si
@@ -6263,33 +6263,33 @@ fn0800_2CCF proc
 	push	bp
 	mov	bp,sp
 	push	si
-	mov	si,[bp+08]
-	jmp	2CFD
+	mov	si,[bp+8h]
+	jmp	2CFDh
 
 l0800_2CD8:
-	les	bx,[bp+04]
-	mov	al,[bp+0A]
+	les	bx,[bp+4h]
+	mov	al,[bp+0Ah]
 	xor	al,es:[bx]
-	mov	ah,00
-	and	ax,00FF
-	shl	ax,01
+	mov	ah,0h
+	and	ax,0FFh
+	shl	ax,1h
 	mov	bx,ax
-	mov	ax,[bx+2A29]
-	mov	dx,[bp+0A]
-	mov	cl,08
+	mov	ax,[bx+2A29h]
+	mov	dx,[bp+0Ah]
+	mov	cl,8h
 	shr	dx,cl
 	xor	ax,dx
-	mov	[bp+0A],ax
-	inc	word ptr [bp+04]
+	mov	[bp+0Ah],ax
+	inc	word ptr [bp+4h]
 
 l0800_2CFD:
 	mov	ax,si
 	dec	si
 	or	ax,ax
-	jnz	2CD8
+	jnz	2CD8h
 
 l0800_2D04:
-	mov	ax,[bp+0A]
+	mov	ax,[bp+0Ah]
 	pop	si
 	pop	bp
 	ret
@@ -6300,86 +6300,86 @@ l0800_2D04:
 fn0800_2D0A proc
 	push	bp
 	mov	bp,sp
-	sub	sp,0C
+	sub	sp,0Ch
 	push	si
 	xor	ax,ax
-	mov	dx,FFF0
+	mov	dx,0FFF0h
 	push	ax
 	push	dx
-	call	4311
-	add	sp,04
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	AD2F
-	add	sp,04
-	mov	[bp-0A],dx
-	mov	[bp-0C],ax
+	call	4311h
+	add	sp,4h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0AD2Fh
+	add	sp,4h
+	mov	[bp-0Ah],dx
+	mov	[bp-0Ch],ax
 	xor	si,si
-	jmp	2D8F
+	jmp	2D8Fh
 
 l0800_2D3A:
-	cmp	word ptr [bp+0A],00
-	jc	2D4F
+	cmp	word ptr [bp+0Ah],0h
+	jc	2D4Fh
 
 l0800_2D40:
-	ja	2D48
+	ja	2D48h
 
 l0800_2D42:
-	cmp	word ptr [bp+08],F0
-	jbe	2D4F
+	cmp	word ptr [bp+8h],0F0h
+	jbe	2D4Fh
 
 l0800_2D48:
 	xor	dx,dx
-	mov	ax,FFF0
-	jmp	2D55
+	mov	ax,0FFF0h
+	jmp	2D55h
 
 l0800_2D4F:
-	mov	dx,[bp+0A]
-	mov	ax,[bp+08]
+	mov	dx,[bp+0Ah]
+	mov	ax,[bp+8h]
 
 l0800_2D55:
-	mov	[bp-06],dx
-	mov	[bp-08],ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	push	word ptr [bp-06]
+	mov	[bp-6h],dx
+	mov	[bp-8h],ax
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	push	word ptr [bp-6h]
 	push	ax
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	4110
-	add	sp,0C
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	4110h
+	add	sp,0Ch
 	push	si
-	push	word ptr [bp-08]
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	2CCF
-	add	sp,08
+	push	word ptr [bp-8h]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	2CCFh
+	add	sp,8h
 	mov	si,ax
-	mov	ax,[bp-06]
-	mov	dx,[bp-08]
-	sub	[bp+08],dx
-	sbb	[bp+0A],ax
+	mov	ax,[bp-6h]
+	mov	dx,[bp-8h]
+	sub	[bp+8h],dx
+	sbb	[bp+0Ah],ax
 
 l0800_2D8F:
-	mov	ax,[bp+08]
-	or	ax,[bp+0A]
-	jnz	2D3A
+	mov	ax,[bp+8h]
+	or	ax,[bp+0Ah]
+	jnz	2D3Ah
 
 l0800_2D97:
 	xor	ax,ax
 	push	ax
-	push	word ptr [bp-0A]
-	push	word ptr [bp-0C]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	4346
-	add	sp,04
+	push	word ptr [bp-0Ah]
+	push	word ptr [bp-0Ch]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	4346h
+	add	sp,4h
 	mov	ax,si
 	pop	si
 	mov	sp,bp
@@ -6395,14 +6395,14 @@ l0800_2D97:
 fn0800_2DBF proc
 	push	bp
 	mov	bp,sp
-	mov	word ptr [4656],FFFF
-	mov	word ptr [4654],0000
-	mov	ax,[2A27]
-	mov	[4652],ax
-	mov	ax,[bp+04]
-	mov	[4650],ax
-	mov	ax,[bp+06]
-	mov	[464E],ax
+	mov	word ptr [4656h],0FFFFh
+	mov	word ptr [4654h],0h
+	mov	ax,[2A27h]
+	mov	[4652h],ax
+	mov	ax,[bp+4h]
+	mov	[4650h],ax
+	mov	ax,[bp+6h]
+	mov	[464Eh],ax
 	pop	bp
 	ret
 
@@ -6421,78 +6421,78 @@ fn0800_2DBF proc
 fn0800_2DE2 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,10
+	sub	sp,10h
 	push	si
 	push	di
-	cmp	word ptr [4654],00
-	jnz	2E11
+	cmp	word ptr [4654h],0h
+	jnz	2E11h
 
 l0800_2DF1:
-	mov	ax,[4652]
-	cmp	ax,[4656]
-	jnz	2E11
+	mov	ax,[4652h]
+	cmp	ax,[4656h]
+	jnz	2E11h
 
 l0800_2DFA:
-	cmp	word ptr [464E],00
-	jz	2E11
+	cmp	word ptr [464Eh],0h
+	jz	2E11h
 
 l0800_2E01:
 	xor	ax,ax
 	push	ax
 	push	ss
-	lea	ax,[bp-10]
+	lea	ax,[bp-10h]
 	push	ax
-	call	3479
-	add	sp,06
+	call	3479h
+	add	sp,6h
 	mov	si,ax
 
 l0800_2E11:
-	cmp	word ptr [4654],00
-	jnz	2E1B
+	cmp	word ptr [4654h],0h
+	jnz	2E1Bh
 
 l0800_2E18:
-	jmp	2F51
+	jmp	2F51h
 
 l0800_2E1B:
-	mov	word ptr [4617],0000
-	push	word ptr [461D]
-	push	word ptr [461B]
-	mov	ax,0065
+	mov	word ptr [4617h],0h
+	push	word ptr [461Dh]
+	push	word ptr [461Bh]
+	mov	ax,65h
 	push	ax
 	push	ds
-	mov	ax,45B2
+	mov	ax,45B2h
 	push	ax
-	call	A77D
-	add	sp,0A
+	call	0A77Dh
+	add	sp,0Ah
 	or	ax,dx
-	jnz	2E3F
+	jnz	2E3Fh
 
 l0800_2E3C:
-	jmp	2F1B
+	jmp	2F1Bh
 
 l0800_2E3F:
 	push	ds
 	pop	es
-	mov	di,45B2
+	mov	di,45B2h
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_2E49:
 	repne scasb
 
 l0800_2E4B:
 	not	cx
-	mov	ax,000D
+	mov	ax,0Dh
 	sub	di,cx
 
 l0800_2E52:
 	repne scasb
 
 l0800_2E54:
-	jz	2E5D
+	jz	2E5Dh
 
 l0800_2E56:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -6500,31 +6500,31 @@ l0800_2E5D:
 	dec	di
 	mov	ax,es
 	or	di,ax
-	jz	2E8B
+	jz	2E8Bh
 
 l0800_2E64:
 	push	ds
 	pop	es
-	mov	di,45B2
+	mov	di,45B2h
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_2E6E:
 	repne scasb
 
 l0800_2E70:
 	not	cx
-	mov	ax,000D
+	mov	ax,0Dh
 	sub	di,cx
 
 l0800_2E77:
 	repne scasb
 
 l0800_2E79:
-	jz	2E82
+	jz	2E82h
 
 l0800_2E7B:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -6532,19 +6532,19 @@ l0800_2E82:
 	dec	di
 	mov	ax,es
 	mov	es,ax
-	mov	byte ptr es:[di],00
+	mov	byte ptr es:[di],0h
 
 l0800_2E8B:
-	mov	al,[45B2]
+	mov	al,[45B2h]
 	cbw
 	or	ax,ax
-	jnz	2EA5
+	jnz	2EA5h
 
 l0800_2E93:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	2DE2
-	add	sp,04
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	2DE2h
+	add	sp,4h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -6554,9 +6554,9 @@ l0800_2E93:
 l0800_2EA5:
 	push	ds
 	pop	es
-	mov	di,45B2
+	mov	di,45B2h
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_2EAF:
 	repne scasb
@@ -6564,24 +6564,24 @@ l0800_2EAF:
 l0800_2EB1:
 	not	cx
 	dec	cx
-	mov	[4619],cx
+	mov	[4619h],cx
 	push	ds
-	mov	ax,45B2
+	mov	ax,45B2h
 	push	ax
-	call	0C6C
-	add	sp,04
-	cmp	word ptr [464E],00
-	jnz	2EFE
+	call	0C6Ch
+	add	sp,4h
+	cmp	word ptr [464Eh],0h
+	jnz	2EFEh
 
 l0800_2ECA:
-	les	di,[bp+04]
+	les	di,[bp+4h]
 	push	es
 	push	ds
 	pop	es
 	push	di
-	mov	di,45B2
+	mov	di,45B2h
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_2ED9:
 	repne scasb
@@ -6589,7 +6589,7 @@ l0800_2ED9:
 l0800_2EDB:
 	not	cx
 	sub	di,cx
-	shr	cx,01
+	shr	cx,1h
 	mov	si,di
 	pop	di
 	mov	ax,es
@@ -6608,8 +6608,8 @@ l0800_2EEE:
 
 l0800_2EF0:
 	pop	ds
-	inc	word ptr [4617]
-	mov	ax,0001
+	inc	word ptr [4617h]
+	mov	ax,1h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -6618,32 +6618,32 @@ l0800_2EF0:
 
 l0800_2EFE:
 	push	ds
-	mov	ax,45B2
+	mov	ax,45B2h
 	push	ax
 	xor	ax,ax
 	push	ax
 	push	ss
-	lea	ax,[bp-10]
+	lea	ax,[bp-10h]
 	push	ax
-	call	33CD
-	add	sp,0A
+	call	33CDh
+	add	sp,0Ah
 	mov	si,ax
-	mov	word ptr [4654],0000
-	jmp	2F51
+	mov	word ptr [4654h],0h
+	jmp	2F51h
 
 l0800_2F1B:
-	push	word ptr [461D]
-	push	word ptr [461B]
-	call	A614
-	add	sp,04
-	mov	word ptr [4654],0000
-	mov	word ptr [461D],0000
-	mov	word ptr [461B],0000
-	inc	word ptr [4652]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	2DE2
-	add	sp,04
+	push	word ptr [461Dh]
+	push	word ptr [461Bh]
+	call	0A614h
+	add	sp,4h
+	mov	word ptr [4654h],0h
+	mov	word ptr [461Dh],0h
+	mov	word ptr [461Bh],0h
+	inc	word ptr [4652h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	2DE2h
+	add	sp,4h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -6651,16 +6651,16 @@ l0800_2F1B:
 	ret
 
 l0800_2F51:
-	mov	ax,[4652]
-	cmp	ax,[4656]
-	jnz	2F5D
+	mov	ax,[4652h]
+	cmp	ax,[4656h]
+	jnz	2F5Dh
 
 l0800_2F5A:
-	jmp	3066
+	jmp	3066h
 
 l0800_2F5D:
-	cmp	ax,[269A]
-	jnz	2F6B
+	cmp	ax,[269Ah]
+	jnz	2F6Bh
 
 l0800_2F63:
 	xor	ax,ax
@@ -6671,23 +6671,23 @@ l0800_2F63:
 	ret
 
 l0800_2F6B:
-	mov	ax,[4652]
-	shl	ax,01
-	shl	ax,01
-	les	bx,[269C]
+	mov	ax,[4652h]
+	shl	ax,1h
+	shl	ax,1h
+	les	bx,[269Ch]
 	add	bx,ax
-	push	word ptr es:[bx+02]
+	push	word ptr es:[bx+2h]
 	push	word ptr es:[bx]
 	push	ds
-	mov	ax,45B2
+	mov	ax,45B2h
 	push	ax
-	call	BF9E
-	add	sp,08
+	call	0BF9Eh
+	add	sp,8h
 	push	ds
 	pop	es
-	mov	di,45B2
+	mov	di,45B2h
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_2F94:
 	repne scasb
@@ -6695,45 +6695,45 @@ l0800_2F94:
 l0800_2F96:
 	not	cx
 	dec	cx
-	mov	[4619],cx
+	mov	[4619h],cx
 	push	ds
-	mov	ax,45B2
+	mov	ax,45B2h
 	push	ax
-	call	0C6C
-	add	sp,04
-	mov	ax,[4652]
-	mov	[4656],ax
-	mov	word ptr [4617],0000
-	shl	ax,01
-	shl	ax,01
-	les	bx,[269C]
+	call	0C6Ch
+	add	sp,4h
+	mov	ax,[4652h]
+	mov	[4656h],ax
+	mov	word ptr [4617h],0h
+	shl	ax,1h
+	shl	ax,1h
+	les	bx,[269Ch]
 	add	bx,ax
 	les	bx,es:[bx]
-	cmp	byte ptr es:[bx],40
-	jnz	3007
+	cmp	byte ptr es:[bx],40h
+	jnz	3007h
 
 l0800_2FC7:
 	push	ds
-	mov	ax,0A13
+	mov	ax,0A13h
 	push	ax
-	mov	ax,[4652]
-	shl	ax,01
-	shl	ax,01
-	les	bx,[269C]
+	mov	ax,[4652h]
+	shl	ax,1h
+	shl	ax,1h
+	les	bx,[269Ch]
 	add	bx,ax
 	mov	ax,es:[bx]
 	inc	ax
-	push	word ptr es:[bx+02]
+	push	word ptr es:[bx+2h]
 	push	ax
-	call	4234
-	add	sp,08
-	mov	[461D],dx
-	mov	[461B],ax
-	mov	word ptr [4654],0001
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	2DE2
-	add	sp,04
+	call	4234h
+	add	sp,8h
+	mov	[461Dh],dx
+	mov	[461Bh],ax
+	mov	word ptr [4654h],1h
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	2DE2h
+	add	sp,4h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -6742,22 +6742,22 @@ l0800_2FC7:
 
 l0800_3007:
 	push	ds
-	mov	ax,45B2
+	mov	ax,45B2h
 	push	ax
-	call	335C
-	add	sp,04
-	cmp	word ptr [464E],00
-	jnz	3051
+	call	335Ch
+	add	sp,4h
+	cmp	word ptr [464Eh],0h
+	jnz	3051h
 
 l0800_3019:
-	les	di,[bp+04]
+	les	di,[bp+4h]
 	push	es
 	push	ds
 	pop	es
 	push	di
-	mov	di,45B2
+	mov	di,45B2h
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_3028:
 	repne scasb
@@ -6765,7 +6765,7 @@ l0800_3028:
 l0800_302A:
 	not	cx
 	sub	di,cx
-	shr	cx,01
+	shr	cx,1h
 	mov	si,di
 	pop	di
 	mov	ax,es
@@ -6784,9 +6784,9 @@ l0800_303D:
 
 l0800_303F:
 	pop	ds
-	inc	word ptr [4617]
-	inc	word ptr [4652]
-	mov	ax,0001
+	inc	word ptr [4617h]
+	inc	word ptr [4652h]
+	mov	ax,1h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -6795,98 +6795,98 @@ l0800_303F:
 
 l0800_3051:
 	push	ds
-	mov	ax,45B2
+	mov	ax,45B2h
 	push	ax
 	xor	ax,ax
 	push	ax
 	push	ss
-	lea	ax,[bp-10]
+	lea	ax,[bp-10h]
 	push	ax
-	call	33CD
-	add	sp,0A
+	call	33CDh
+	add	sp,0Ah
 	mov	si,ax
 
 l0800_3066:
 	or	si,si
-	jnz	306D
+	jnz	306Dh
 
 l0800_306A:
-	jmp	30F0
+	jmp	30F0h
 
 l0800_306D:
-	cmp	word ptr [2A1B],00
-	jz	309E
+	cmp	word ptr [2A1Bh],0h
+	jz	309Eh
 
 l0800_3074:
-	jmp	309A
+	jmp	309Ah
 
 l0800_3076:
 	push	ds
-	mov	ax,45B2
+	mov	ax,45B2h
 	push	ax
-	call	31B4
-	add	sp,04
+	call	31B4h
+	add	sp,4h
 	or	ax,ax
-	jz	309E
+	jz	309Eh
 
 l0800_3085:
 	push	ds
-	mov	ax,45B2
+	mov	ax,45B2h
 	push	ax
 	xor	ax,ax
 	push	ax
 	push	ss
-	lea	ax,[bp-10]
+	lea	ax,[bp-10h]
 	push	ax
-	call	33CD
-	add	sp,0A
+	call	33CDh
+	add	sp,0Ah
 	mov	si,ax
 
 l0800_309A:
 	or	si,si
-	jnz	3076
+	jnz	3076h
 
 l0800_309E:
 	or	si,si
-	jz	30F0
+	jz	30F0h
 
 l0800_30A2:
-	mov	bx,[4619]
-	mov	byte ptr [bx+45B2],00
-	cmp	word ptr [4617],00
-	jnz	30C9
+	mov	bx,[4619h]
+	mov	byte ptr [bx+45B2h],0h
+	cmp	word ptr [4617h],0h
+	jnz	30C9h
 
 l0800_30B2:
-	cmp	word ptr [4650],00
-	jz	30C9
+	cmp	word ptr [4650h],0h
+	jz	30C9h
 
 l0800_30B9:
 	push	ds
-	mov	ax,45B2
+	mov	ax,45B2h
 	push	ax
 	push	ds
-	mov	ax,0A17
+	mov	ax,0A17h
 	push	ax
-	call	B2EF
-	add	sp,08
+	call	0B2EFh
+	add	sp,8h
 
 l0800_30C9:
-	mov	ax,[461B]
-	or	ax,[461D]
-	jz	30DA
+	mov	ax,[461Bh]
+	or	ax,[461Dh]
+	jz	30DAh
 
 l0800_30D2:
-	mov	word ptr [4654],0001
-	jmp	30DE
+	mov	word ptr [4654h],1h
+	jmp	30DEh
 
 l0800_30DA:
-	inc	word ptr [4652]
+	inc	word ptr [4652h]
 
 l0800_30DE:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	2DE2
-	add	sp,04
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	2DE2h
+	add	sp,4h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -6895,19 +6895,19 @@ l0800_30DE:
 
 l0800_30F0:
 	push	ds
-	mov	ax,45B2
+	mov	ax,45B2h
 	push	ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	3509
-	add	sp,08
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	3509h
+	add	sp,8h
 	push	ss
 	pop	es
-	lea	di,[bp-10]
+	lea	di,[bp-10h]
 	push	es
-	mov	es,[bp+06]
+	mov	es,[bp+6h]
 	push	di
-	mov	di,[bp+04]
+	mov	di,[bp+4h]
 	mov	ax,di
 	pop	di
 	mov	dx,es
@@ -6915,7 +6915,7 @@ l0800_30F0:
 	push	dx
 	push	ax
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_311B:
 	repne scasb
@@ -6927,10 +6927,10 @@ l0800_311D:
 	pop	di
 	mov	ax,es
 	pop	es
-	mov	[bp-02],ds
+	mov	[bp-2h],ds
 	mov	ds,ax
 	push	cx
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 	xor	ax,ax
 
 l0800_3132:
@@ -6944,20 +6944,20 @@ l0800_3136:
 	rep movsb
 
 l0800_3138:
-	mov	ds,[bp-02]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	0C6C
-	add	sp,04
-	mov	si,[bp+04]
-	mov	cx,[bp+06]
+	mov	ds,[bp-2h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0C6Ch
+	add	sp,4h
+	mov	si,[bp+4h]
+	mov	cx,[bp+6h]
 	push	ds
 	pop	es
-	mov	di,4348
+	mov	di,4348h
 	push	ds
 	mov	ds,cx
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_315A:
 	repne scasb
@@ -6970,27 +6970,27 @@ l0800_3160:
 	rep cmpsb
 
 l0800_3162:
-	jz	3169
+	jz	3169h
 
 l0800_3164:
 	sbb	ax,ax
-	sbb	ax,FFFF
+	sbb	ax,0FFFFh
 
 l0800_3169:
 	pop	ds
 	or	ax,ax
-	jz	3195
+	jz	3195h
 
 l0800_316E:
-	mov	si,[bp+04]
-	mov	cx,[bp+06]
+	mov	si,[bp+4h]
+	mov	cx,[bp+6h]
 	push	ds
 	pop	es
-	mov	di,4477
+	mov	di,4477h
 	push	ds
 	mov	ds,cx
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_3181:
 	repne scasb
@@ -7003,22 +7003,22 @@ l0800_3187:
 	rep cmpsb
 
 l0800_3189:
-	jz	3190
+	jz	3190h
 
 l0800_318B:
 	sbb	ax,ax
-	sbb	ax,FFFF
+	sbb	ax,0FFFFh
 
 l0800_3190:
 	pop	ds
 	or	ax,ax
-	jnz	31A7
+	jnz	31A7h
 
 l0800_3195:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	2DE2
-	add	sp,04
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	2DE2h
+	add	sp,4h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -7026,8 +7026,8 @@ l0800_3195:
 	ret
 
 l0800_31A7:
-	inc	word ptr [4617]
-	mov	ax,0001
+	inc	word ptr [4617h]
+	mov	ax,1h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -7040,64 +7040,64 @@ l0800_31A7:
 fn0800_31B4 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,0082
+	sub	sp,82h
 	push	si
 	push	di
 
 l0800_31BD:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
 	push	ss
-	lea	ax,[bp+FF7E]
+	lea	ax,[bp+0FF7Eh]
 	push	ax
-	call	3509
-	add	sp,08
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
+	call	3509h
+	add	sp,8h
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
 	push	ss
-	lea	ax,[bp-0E]
+	lea	ax,[bp-0Eh]
 	push	ax
-	call	35A3
-	add	sp,08
-	mov	bx,[09AC]
-	shl	bx,01
-	push	word ptr [bx+09AE]
+	call	35A3h
+	add	sp,8h
+	mov	bx,[09ACh]
+	shl	bx,1h
+	push	word ptr [bx+9AEh]
 	push	ss
-	lea	ax,[bp+FF7E]
+	lea	ax,[bp+0FF7Eh]
 	push	ax
 	push	ss
-	lea	ax,[bp-1C]
+	lea	ax,[bp-1Ch]
 	push	ax
-	call	32CD
-	add	sp,0A
+	call	32CDh
+	add	sp,0Ah
 	or	ax,ax
-	jnz	323E
+	jnz	323Eh
 
 l0800_31FF:
 	push	ss
-	lea	ax,[bp-0E]
+	lea	ax,[bp-0Eh]
 	push	ax
 	push	ds
-	mov	ax,0A30
+	mov	ax,0A30h
 	push	ax
 	push	ss
-	lea	ax,[bp-1C]
+	lea	ax,[bp-1Ch]
 	push	ax
 	push	ss
-	lea	ax,[bp+FF7E]
+	lea	ax,[bp+0FF7Eh]
 	push	ax
 	push	ds
-	mov	ax,0A27
+	mov	ax,0A27h
 	push	ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	BEA2
-	add	sp,18
-	inc	word ptr [09AC]
-	mov	bx,[09AC]
-	shl	bx,01
-	mov	word ptr [bx+09AE],0000
-	mov	ax,0001
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0BEA2h
+	add	sp,18h
+	inc	word ptr [09ACh]
+	mov	bx,[09ACh]
+	shl	bx,1h
+	mov	word ptr [bx+9AEh],0h
+	mov	ax,1h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -7105,11 +7105,11 @@ l0800_31FF:
 	ret
 
 l0800_323E:
-	cmp	word ptr [09AC],00
-	jnz	3253
+	cmp	word ptr [09ACh],0h
+	jnz	3253h
 
 l0800_3245:
-	mov	word ptr [09AE],0000
+	mov	word ptr [09AEh],0h
 	xor	ax,ax
 	pop	di
 	pop	si
@@ -7120,9 +7120,9 @@ l0800_3245:
 l0800_3253:
 	push	ss
 	pop	es
-	lea	di,[bp+FF7E]
+	lea	di,[bp+0FF7Eh]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_325E:
 	repne scasb
@@ -7131,23 +7131,23 @@ l0800_3260:
 	not	cx
 	dec	cx
 	dec	cx
-	lea	ax,[bp+FF7E]
+	lea	ax,[bp+0FF7Eh]
 	add	cx,ax
 	mov	bx,cx
-	mov	byte ptr ss:[bx],00
+	mov	byte ptr ss:[bx],0h
 	push	ss
 	push	ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	3509
-	add	sp,08
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	3509h
+	add	sp,8h
 	push	ss
 	pop	es
-	lea	di,[bp-0E]
+	lea	di,[bp-0Eh]
 	push	es
-	mov	es,[bp+06]
+	mov	es,[bp+6h]
 	push	di
-	mov	di,[bp+04]
+	mov	di,[bp+4h]
 	mov	ax,di
 	pop	di
 	mov	dx,es
@@ -7155,7 +7155,7 @@ l0800_3260:
 	push	dx
 	push	ax
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_3298:
 	repne scasb
@@ -7170,7 +7170,7 @@ l0800_329A:
 	mov	dx,ds
 	mov	ds,ax
 	push	cx
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 	xor	ax,ax
 
 l0800_32AE:
@@ -7185,11 +7185,11 @@ l0800_32B2:
 
 l0800_32B4:
 	mov	ds,dx
-	dec	word ptr [09AC]
-	mov	bx,[09AC]
-	shl	bx,01
-	inc	word ptr [bx+09AE]
-	jmp	31BD
+	dec	word ptr [09ACh]
+	mov	bx,[09ACh]
+	shl	bx,1h
+	inc	word ptr [bx+9AEh]
+	jmp	31BDh
 0800:32C7                      5F 5E 8B E5 5D C3                 _^..].  
 
 ;; fn0800_32CD: 0800:32CD
@@ -7198,18 +7198,18 @@ l0800_32B4:
 fn0800_32CD proc
 	push	bp
 	mov	bp,sp
-	sub	sp,66
+	sub	sp,66h
 	push	si
 	push	di
 	push	ss
 	pop	es
-	lea	di,[bp-66]
+	lea	di,[bp-66h]
 	push	es
-	mov	es,[bp+0A]
+	mov	es,[bp+0Ah]
 	push	di
-	mov	di,[bp+08]
+	mov	di,[bp+8h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_32E7:
 	repne scasb
@@ -7217,7 +7217,7 @@ l0800_32E7:
 l0800_32E9:
 	not	cx
 	sub	di,cx
-	shr	cx,01
+	shr	cx,1h
 	mov	si,di
 	pop	di
 	mov	ax,es
@@ -7238,9 +7238,9 @@ l0800_32FE:
 	pop	ds
 	push	ss
 	pop	es
-	lea	di,[bp-66]
-	mov	si,0A32
-	mov	cx,FFFF
+	lea	di,[bp-66h]
+	mov	si,0A32h
+	mov	cx,0FFFFh
 	xor	ax,ax
 
 l0800_330C:
@@ -7248,26 +7248,26 @@ l0800_330C:
 
 l0800_330E:
 	dec	di
-	mov	cx,0004
+	mov	cx,4h
 
 l0800_3312:
 	rep movsb
 
 l0800_3314:
 	push	ss
-	lea	ax,[bp-66]
+	lea	ax,[bp-66h]
 	push	ax
-	mov	ax,0010
+	mov	ax,10h
 	push	ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	33CD
-	add	sp,0A
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	33CDh
+	add	sp,0Ah
 	or	ax,ax
-	jz	334D
+	jz	334Dh
 
 l0800_332D:
-	mov	ax,0001
+	mov	ax,1h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -7275,24 +7275,24 @@ l0800_332D:
 	ret
 
 l0800_3336:
-	mov	ax,0010
+	mov	ax,10h
 	push	ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	3479
-	add	sp,06
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	3479h
+	add	sp,6h
 	or	ax,ax
-	jnz	3353
+	jnz	3353h
 
 l0800_334A:
-	dec	word ptr [bp+0C]
+	dec	word ptr [bp+0Ch]
 
 l0800_334D:
-	cmp	word ptr [bp+0C],00
-	jnz	3336
+	cmp	word ptr [bp+0Ch],0h
+	jnz	3336h
 
 l0800_3353:
-	mov	ax,[bp+0C]
+	mov	ax,[bp+0Ch]
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -7305,38 +7305,38 @@ l0800_3353:
 fn0800_335C proc
 	push	bp
 	mov	bp,sp
-	sub	sp,1C
+	sub	sp,1Ch
 	push	si
 	push	di
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	mov	ax,0010
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	mov	ax,10h
 	push	ax
 	push	ss
-	lea	ax,[bp-0E]
+	lea	ax,[bp-0Eh]
 	push	ax
-	call	33CD
-	add	sp,0A
+	call	33CDh
+	add	sp,0Ah
 	or	ax,ax
-	jnz	33C7
+	jnz	33C7h
 
 l0800_337D:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
 	push	ss
-	lea	ax,[bp-1C]
+	lea	ax,[bp-1Ch]
 	push	ax
-	call	35A3
-	add	sp,08
+	call	35A3h
+	add	sp,8h
 	mov	ax,ss
-	lea	si,[bp-0E]
+	lea	si,[bp-0Eh]
 	push	ds
 	mov	ds,ax
 	push	ss
 	pop	es
-	lea	di,[bp-1C]
+	lea	di,[bp-1Ch]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_33A0:
 	repne scasb
@@ -7349,21 +7349,21 @@ l0800_33A6:
 	rep cmpsb
 
 l0800_33A8:
-	jz	33AF
+	jz	33AFh
 
 l0800_33AA:
 	sbb	ax,ax
-	sbb	ax,FFFF
+	sbb	ax,0FFFFh
 
 l0800_33AF:
 	pop	ds
 	or	ax,ax
-	jnz	33C7
+	jnz	33C7h
 
 l0800_33B4:
-	les	di,[bp+04]
-	mov	si,0A36
-	mov	cx,FFFF
+	les	di,[bp+4h]
+	mov	si,0A36h
+	mov	cx,0FFFFh
 	xor	ax,ax
 
 l0800_33BF:
@@ -7371,7 +7371,7 @@ l0800_33BF:
 
 l0800_33C1:
 	dec	di
-	mov	cx,0005
+	mov	cx,5h
 
 l0800_33C5:
 	rep movsb
@@ -7396,19 +7396,19 @@ fn0800_33CD proc
 	mov	bp,sp
 	push	si
 	push	di
-	push	word ptr [bp+08]
+	push	word ptr [bp+8h]
 	push	ds
-	mov	ax,4623
+	mov	ax,4623h
 	push	ax
-	push	word ptr [bp+0C]
-	push	word ptr [bp+0A]
-	call	A817
-	add	sp,0A
+	push	word ptr [bp+0Ch]
+	push	word ptr [bp+0Ah]
+	call	0A817h
+	add	sp,0Ah
 	or	ax,ax
-	jz	33F1
+	jz	33F1h
 
 l0800_33EA:
-	mov	ax,0001
+	mov	ax,1h
 	pop	di
 	pop	si
 	pop	bp
@@ -7417,79 +7417,79 @@ l0800_33EA:
 l0800_33F1:
 	push	ds
 	pop	es
-	mov	di,0A3B
-	mov	si,4641
-	mov	cx,0002
+	mov	di,0A3Bh
+	mov	si,4641h
+	mov	cx,2h
 	xor	ax,ax
 
 l0800_33FE:
 	rep cmpsb
 
 l0800_3400:
-	jz	3407
+	jz	3407h
 
 l0800_3402:
 	sbb	ax,ax
-	sbb	ax,FFFF
+	sbb	ax,0FFFFh
 
 l0800_3407:
 	or	ax,ax
-	jz	3431
+	jz	3431h
 
 l0800_340B:
 	push	ds
 	pop	es
-	mov	di,0A3D
-	mov	si,4641
-	mov	cx,0003
+	mov	di,0A3Dh
+	mov	si,4641h
+	mov	cx,3h
 	xor	ax,ax
 
 l0800_3418:
 	rep cmpsb
 
 l0800_341A:
-	jz	3421
+	jz	3421h
 
 l0800_341C:
 	sbb	ax,ax
-	sbb	ax,FFFF
+	sbb	ax,0FFFFh
 
 l0800_3421:
 	or	ax,ax
-	jz	3431
+	jz	3431h
 
 l0800_3425:
-	mov	al,[4638]
+	mov	al,[4638h]
 	cbw
-	and	ax,[bp+08]
-	cmp	ax,[bp+08]
-	jz	3444
+	and	ax,[bp+8h]
+	cmp	ax,[bp+8h]
+	jz	3444h
 
 l0800_3431:
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	3479
-	add	sp,06
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	3479h
+	add	sp,6h
 	pop	di
 	pop	si
 	pop	bp
 	ret
 
 l0800_3444:
-	mov	ax,[bp+04]
-	or	ax,[bp+06]
-	jz	3473
+	mov	ax,[bp+4h]
+	or	ax,[bp+6h]
+	jz	3473h
 
 l0800_344C:
-	les	di,[bp+04]
+	les	di,[bp+4h]
 	push	es
 	push	ds
 	pop	es
 	push	di
-	mov	di,4641
+	mov	di,4641h
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_345B:
 	repne scasb
@@ -7497,7 +7497,7 @@ l0800_345B:
 l0800_345D:
 	not	cx
 	sub	di,cx
-	shr	cx,01
+	shr	cx,1h
 	mov	si,di
 	pop	di
 	mov	ax,es
@@ -7537,15 +7537,15 @@ fn0800_3479 proc
 
 l0800_347E:
 	push	ds
-	mov	ax,4623
+	mov	ax,4623h
 	push	ax
-	call	A84A
-	add	sp,04
+	call	0A84Ah
+	add	sp,4h
 	or	ax,ax
-	jz	3494
+	jz	3494h
 
 l0800_348D:
-	mov	ax,0001
+	mov	ax,1h
 	pop	di
 	pop	si
 	pop	bp
@@ -7554,68 +7554,68 @@ l0800_348D:
 l0800_3494:
 	push	ds
 	pop	es
-	mov	di,0A3B
-	mov	si,4641
-	mov	cx,0002
+	mov	di,0A3Bh
+	mov	si,4641h
+	mov	cx,2h
 	xor	ax,ax
 
 l0800_34A1:
 	rep cmpsb
 
 l0800_34A3:
-	jz	34AA
+	jz	34AAh
 
 l0800_34A5:
 	sbb	ax,ax
-	sbb	ax,FFFF
+	sbb	ax,0FFFFh
 
 l0800_34AA:
 	or	ax,ax
-	jz	347E
+	jz	347Eh
 
 l0800_34AE:
 	push	ds
 	pop	es
-	mov	di,0A3D
-	mov	si,4641
-	mov	cx,0003
+	mov	di,0A3Dh
+	mov	si,4641h
+	mov	cx,3h
 	xor	ax,ax
 
 l0800_34BB:
 	rep cmpsb
 
 l0800_34BD:
-	jz	34C4
+	jz	34C4h
 
 l0800_34BF:
 	sbb	ax,ax
-	sbb	ax,FFFF
+	sbb	ax,0FFFFh
 
 l0800_34C4:
 	or	ax,ax
-	jz	347E
+	jz	347Eh
 
 l0800_34C8:
-	mov	al,[4638]
+	mov	al,[4638h]
 	cbw
-	and	ax,[bp+08]
-	cmp	ax,[bp+08]
-	jnz	347E
+	and	ax,[bp+8h]
+	cmp	ax,[bp+8h]
+	jnz	347Eh
 
 l0800_34D4:
-	mov	ax,[bp+04]
-	or	ax,[bp+06]
-	jz	3503
+	mov	ax,[bp+4h]
+	or	ax,[bp+6h]
+	jz	3503h
 
 l0800_34DC:
-	les	di,[bp+04]
+	les	di,[bp+4h]
 	push	es
 	push	ds
 	pop	es
 	push	di
-	mov	di,4641
+	mov	di,4641h
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_34EB:
 	repne scasb
@@ -7623,7 +7623,7 @@ l0800_34EB:
 l0800_34ED:
 	not	cx
 	sub	di,cx
-	shr	cx,01
+	shr	cx,1h
 	mov	si,di
 	pop	di
 	mov	ax,es
@@ -7668,32 +7668,32 @@ l0800_3503:
 fn0800_3509 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,58
+	sub	sp,58h
 	push	si
 	push	di
 	push	ss
-	lea	ax,[bp-14]
+	lea	ax,[bp-14h]
 	push	ax
 	push	ss
-	lea	ax,[bp-0E]
+	lea	ax,[bp-0Eh]
 	push	ax
 	push	ss
-	lea	ax,[bp-58]
+	lea	ax,[bp-58h]
 	push	ax
 	push	ss
-	lea	ax,[bp-04]
+	lea	ax,[bp-4h]
 	push	ax
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	call	BE3B
-	add	sp,14
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	call	0BE3Bh
+	add	sp,14h
 	push	ss
 	pop	es
-	lea	di,[bp-04]
+	lea	di,[bp-4h]
 	push	es
-	mov	es,[bp+06]
+	mov	es,[bp+6h]
 	push	di
-	mov	di,[bp+04]
+	mov	di,[bp+4h]
 	mov	ax,di
 	pop	di
 	mov	dx,es
@@ -7701,7 +7701,7 @@ fn0800_3509 proc
 	push	dx
 	push	ax
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_354B:
 	repne scasb
@@ -7709,7 +7709,7 @@ l0800_354B:
 l0800_354D:
 	not	cx
 	sub	di,cx
-	shr	cx,01
+	shr	cx,1h
 	mov	si,di
 	pop	di
 	mov	ax,es
@@ -7730,11 +7730,11 @@ l0800_3562:
 	pop	ds
 	push	ss
 	pop	es
-	lea	di,[bp-58]
+	lea	di,[bp-58h]
 	push	es
-	mov	es,[bp+06]
+	mov	es,[bp+6h]
 	push	di
-	mov	di,[bp+04]
+	mov	di,[bp+4h]
 	mov	ax,di
 	pop	di
 	mov	dx,es
@@ -7742,7 +7742,7 @@ l0800_3562:
 	push	dx
 	push	ax
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_357D:
 	repne scasb
@@ -7754,10 +7754,10 @@ l0800_357F:
 	pop	di
 	mov	ax,es
 	pop	es
-	mov	[bp-16],ds
+	mov	[bp-16h],ds
 	mov	ds,ax
 	push	cx
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 	xor	ax,ax
 
 l0800_3594:
@@ -7771,7 +7771,7 @@ l0800_3598:
 	rep movsb
 
 l0800_359A:
-	mov	ds,[bp-16]
+	mov	ds,[bp-16h]
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -7792,32 +7792,32 @@ l0800_359A:
 fn0800_35A3 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,58
+	sub	sp,58h
 	push	si
 	push	di
 	push	ss
-	lea	ax,[bp-14]
+	lea	ax,[bp-14h]
 	push	ax
 	push	ss
-	lea	ax,[bp-0E]
+	lea	ax,[bp-0Eh]
 	push	ax
 	push	ss
-	lea	ax,[bp-58]
+	lea	ax,[bp-58h]
 	push	ax
 	push	ss
-	lea	ax,[bp-04]
+	lea	ax,[bp-4h]
 	push	ax
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	call	BE3B
-	add	sp,14
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	call	0BE3Bh
+	add	sp,14h
 	push	ss
 	pop	es
-	lea	di,[bp-0E]
+	lea	di,[bp-0Eh]
 	push	es
-	mov	es,[bp+06]
+	mov	es,[bp+6h]
 	push	di
-	mov	di,[bp+04]
+	mov	di,[bp+4h]
 	mov	ax,di
 	pop	di
 	mov	dx,es
@@ -7825,7 +7825,7 @@ fn0800_35A3 proc
 	push	dx
 	push	ax
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_35E5:
 	repne scasb
@@ -7833,7 +7833,7 @@ l0800_35E5:
 l0800_35E7:
 	not	cx
 	sub	di,cx
-	shr	cx,01
+	shr	cx,1h
 	mov	si,di
 	pop	di
 	mov	ax,es
@@ -7854,11 +7854,11 @@ l0800_35FC:
 	pop	ds
 	push	ss
 	pop	es
-	lea	di,[bp-14]
+	lea	di,[bp-14h]
 	push	es
-	mov	es,[bp+06]
+	mov	es,[bp+6h]
 	push	di
-	mov	di,[bp+04]
+	mov	di,[bp+4h]
 	mov	ax,di
 	pop	di
 	mov	dx,es
@@ -7866,7 +7866,7 @@ l0800_35FC:
 	push	dx
 	push	ax
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_3617:
 	repne scasb
@@ -7878,10 +7878,10 @@ l0800_3619:
 	pop	di
 	mov	ax,es
 	pop	es
-	mov	[bp-16],ds
+	mov	[bp-16h],ds
 	mov	ds,ax
 	push	cx
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 	xor	ax,ax
 
 l0800_362E:
@@ -7895,7 +7895,7 @@ l0800_3632:
 	rep movsb
 
 l0800_3634:
-	mov	ds,[bp-16]
+	mov	ds,[bp-16h]
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -7911,31 +7911,31 @@ l0800_3634:
 fn0800_363D proc
 	push	bp
 	mov	bp,sp
-	sub	sp,2C
+	sub	sp,2Ch
 	xor	ax,ax
 	push	ax
 	push	ss
-	lea	ax,[bp-2C]
+	lea	ax,[bp-2Ch]
 	push	ax
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	call	A817
-	add	sp,0A
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	call	0A817h
+	add	sp,0Ah
 	or	ax,ax
-	jz	3662
+	jz	3662h
 
 l0800_365B:
-	mov	ax,0001
+	mov	ax,1h
 	mov	sp,bp
 	pop	bp
 	ret
 
 l0800_3662:
-	les	bx,[bp+04]
-	mov	ax,[bp-16]
+	les	bx,[bp+4h]
+	mov	ax,[bp-16h]
 	mov	es:[bx],ax
-	mov	ax,[bp-14]
-	mov	es:[bx+02],ax
+	mov	ax,[bp-14h]
+	mov	es:[bx+2h],ax
 	xor	ax,ax
 	mov	sp,bp
 	pop	bp
@@ -7949,139 +7949,139 @@ l0800_3662:
 fn0800_3678 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,08
+	sub	sp,8h
 	push	di
-	mov	ax,[bp+06]
-	mov	dx,[bp+04]
-	mov	[bp-02],ax
-	mov	[bp-04],dx
-	les	di,[bp+04]
+	mov	ax,[bp+6h]
+	mov	dx,[bp+4h]
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
+	les	di,[bp+4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_3693:
 	repne scasb
 
 l0800_3695:
 	not	cx
-	mov	ax,005C
+	mov	ax,5Ch
 	sub	di,cx
 
 l0800_369C:
 	repne scasb
 
 l0800_369E:
-	jz	36A7
+	jz	36A7h
 
 l0800_36A0:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
 l0800_36A7:
 	dec	di
 	mov	ax,es
-	mov	[bp-06],ax
-	mov	[bp-08],di
+	mov	[bp-6h],ax
+	mov	[bp-8h],di
 	mov	dx,di
 	or	dx,ax
-	jz	3732
+	jz	3732h
 
 l0800_36B6:
-	mov	ax,[bp-06]
-	mov	dx,[bp-08]
-	cmp	ax,[bp+06]
-	jnz	36C6
+	mov	ax,[bp-6h]
+	mov	dx,[bp-8h]
+	cmp	ax,[bp+6h]
+	jnz	36C6h
 
 l0800_36C1:
-	cmp	dx,[bp+04]
-	jz	36D0
+	cmp	dx,[bp+4h]
+	jz	36D0h
 
 l0800_36C6:
-	les	bx,[bp-08]
-	cmp	byte ptr es:[bx-01],3A
-	jnz	3732
+	les	bx,[bp-8h]
+	cmp	byte ptr es:[bx-1h],3Ah
+	jnz	3732h
 
 l0800_36D0:
-	mov	ax,[bp-06]
-	mov	dx,[bp-08]
+	mov	ax,[bp-6h]
+	mov	dx,[bp-8h]
 	inc	dx
-	mov	[bp-02],ax
-	mov	[bp-04],dx
-	jmp	3732
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
+	jmp	3732h
 
 l0800_36DF:
-	les	bx,[bp-08]
-	mov	byte ptr es:[bx],00
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	mov	ax,0010
+	les	bx,[bp-8h]
+	mov	byte ptr es:[bx],0h
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	mov	ax,10h
 	push	ax
 	xor	ax,ax
 	push	ax
 	push	ax
-	call	33CD
-	add	sp,0A
+	call	33CDh
+	add	sp,0Ah
 	or	ax,ax
-	jz	371E
+	jz	371Eh
 
 l0800_36FE:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	8E52
-	add	sp,04
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	8E52h
+	add	sp,4h
 	or	ax,ax
-	jz	371E
+	jz	371Eh
 
 l0800_370E:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	mov	ax,000E
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	mov	ax,0Eh
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_371E:
-	les	bx,[bp-08]
-	mov	byte ptr es:[bx],5C
-	mov	ax,[bp-06]
-	mov	dx,[bp-08]
+	les	bx,[bp-8h]
+	mov	byte ptr es:[bx],5Ch
+	mov	ax,[bp-6h]
+	mov	dx,[bp-8h]
 	inc	dx
-	mov	[bp-02],ax
-	mov	[bp-04],dx
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
 
 l0800_3732:
-	les	di,[bp-04]
+	les	di,[bp-4h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_373A:
 	repne scasb
 
 l0800_373C:
 	not	cx
-	mov	ax,005C
+	mov	ax,5Ch
 	sub	di,cx
 
 l0800_3743:
 	repne scasb
 
 l0800_3745:
-	jz	374E
+	jz	374Eh
 
 l0800_3747:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
 l0800_374E:
 	dec	di
 	mov	ax,es
-	mov	[bp-06],ax
-	mov	[bp-08],di
+	mov	[bp-6h],ax
+	mov	[bp-8h],di
 	mov	dx,di
 	or	dx,ax
-	jnz	36DF
+	jnz	36DFh
 
 l0800_375D:
 	xor	ax,ax
@@ -8097,18 +8097,18 @@ l0800_375D:
 fn0800_3764 proc
 	push	si
 	push	di
-	cmp	byte ptr [427E],00
-	jz	3796
+	cmp	byte ptr [427Eh],0h
+	jz	3796h
 
 l0800_376D:
 	push	ds
 	pop	es
-	mov	di,44DC
+	mov	di,44DCh
 	push	es
 	push	di
-	mov	di,427E
+	mov	di,427Eh
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_377C:
 	repne scasb
@@ -8116,7 +8116,7 @@ l0800_377C:
 l0800_377E:
 	not	cx
 	sub	di,cx
-	shr	cx,01
+	shr	cx,1h
 	mov	si,di
 	pop	di
 	mov	ax,es
@@ -8135,24 +8135,24 @@ l0800_3791:
 
 l0800_3793:
 	pop	ds
-	jmp	37A6
+	jmp	37A6h
 
 l0800_3796:
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
 	push	ds
-	mov	ax,44DC
+	mov	ax,44DCh
 	push	ax
-	call	3509
-	add	sp,08
+	call	3509h
+	add	sp,8h
 
 l0800_37A6:
 	push	ds
 	pop	es
-	mov	di,44DC
-	mov	si,0A40
-	mov	cx,FFFF
+	mov	di,44DCh
+	mov	si,0A40h
+	mov	cx,0FFFFh
 	xor	ax,ax
 
 l0800_37B3:
@@ -8160,7 +8160,7 @@ l0800_37B3:
 
 l0800_37B5:
 	dec	di
-	mov	cx,000D
+	mov	cx,0Dh
 
 l0800_37B9:
 	rep movsb
@@ -8179,18 +8179,18 @@ l0800_37BB:
 fn0800_37BE proc
 	push	bp
 	mov	bp,sp
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
 	push	ds
-	mov	ax,42E3
+	mov	ax,42E3h
 	push	ax
 	push	ds
-	mov	ax,0A2B
+	mov	ax,0A2Bh
 	push	ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	BEA2
-	add	sp,10
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0BEA2h
+	add	sp,10h
 	pop	bp
 	ret
 
@@ -8201,24 +8201,24 @@ fn0800_37BE proc
 fn0800_37DF proc
 	push	bp
 	mov	bp,sp
-	sub	sp,6A
+	sub	sp,6Ah
 	push	di
 	push	ds
-	mov	ax,44DC
+	mov	ax,44DCh
 	push	ax
 	push	ss
-	lea	ax,[bp-6A]
+	lea	ax,[bp-6Ah]
 	push	ax
-	call	3509
-	add	sp,08
+	call	3509h
+	add	sp,8h
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
 	push	ss
 	pop	es
-	lea	di,[bp-6A]
+	lea	di,[bp-6Ah]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_3805:
 	repne scasb
@@ -8232,10 +8232,10 @@ l0800_380D:
 	repne scasb
 
 l0800_380F:
-	jz	3818
+	jz	3818h
 
 l0800_3811:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -8244,59 +8244,59 @@ l0800_3818:
 	mov	ax,es
 	push	ax
 	push	di
-	call	35A3
-	add	sp,08
+	call	35A3h
+	add	sp,8h
 	push	ds
-	mov	ax,0A4D
+	mov	ax,0A4Dh
 	push	ax
 	push	ss
-	lea	ax,[bp-6A]
+	lea	ax,[bp-6Ah]
 	push	ax
-	call	AA7E
-	add	sp,08
-	mov	[bp-02],dx
-	mov	[bp-04],ax
+	call	0AA7Eh
+	add	sp,8h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
 	or	ax,dx
-	jz	3863
+	jz	3863h
 
 l0800_383D:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	A614
-	add	sp,04
-	mov	ax,0180
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	0A614h
+	add	sp,4h
+	mov	ax,180h
 	push	ax
 	push	ss
-	lea	ax,[bp-6A]
+	lea	ax,[bp-6Ah]
 	push	ax
-	call	A4F6
-	add	sp,06
+	call	0A4F6h
+	add	sp,6h
 	push	ss
-	lea	ax,[bp-6A]
+	lea	ax,[bp-6Ah]
 	push	ax
-	call	8F7F
-	add	sp,04
+	call	8F7Fh
+	add	sp,4h
 
 l0800_3863:
 	push	ss
-	lea	ax,[bp-6A]
+	lea	ax,[bp-6Ah]
 	push	ax
 	push	ds
-	mov	ax,44DC
+	mov	ax,44DCh
 	push	ax
-	call	BA4A
-	add	sp,08
-	cmp	ax,FFFF
-	jnz	3887
+	call	0BA4Ah
+	add	sp,8h
+	cmp	ax,0FFFFh
+	jnz	3887h
 
 l0800_3878:
 	push	ds
-	mov	ax,44DC
+	mov	ax,44DCh
 	push	ax
-	mov	ax,000A
+	mov	ax,0Ah
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_3887:
 	pop	di
@@ -8311,101 +8311,101 @@ l0800_3887:
 fn0800_388C proc
 	push	bp
 	mov	bp,sp
-	sub	sp,08
+	sub	sp,8h
 	push	ds
-	mov	ax,0A13
+	mov	ax,0A13h
 	push	ax
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
-	call	4234
-	add	sp,08
-	mov	[29E5],dx
-	mov	[29E3],ax
+	call	4234h
+	add	sp,8h
+	mov	[29E5h],dx
+	mov	[29E3h],ax
 	push	ds
-	mov	ax,0A50
+	mov	ax,0A50h
 	push	ax
 	push	ds
-	mov	ax,44DC
+	mov	ax,44DCh
 	push	ax
-	call	4234
-	add	sp,08
-	mov	[29E1],dx
-	mov	[29DF],ax
+	call	4234h
+	add	sp,8h
+	mov	[29E1h],dx
+	mov	[29DFh],ax
 	push	ds
-	mov	ax,44DC
+	mov	ax,44DCh
 	push	ax
 	push	ss
-	lea	ax,[bp-04]
+	lea	ax,[bp-4h]
 	push	ax
-	call	363D
-	add	sp,08
-	cmp	byte ptr [0A12],00
-	jnz	38EF
+	call	363Dh
+	add	sp,8h
+	cmp	byte ptr [0A12h],0h
+	jnz	38EFh
 
 l0800_38D7:
-	mov	ax,[bp-02]
-	mov	[4621],ax
-	mov	ax,[bp-04]
-	mov	[461F],ax
-	mov	byte ptr [0A12],01
-	mov	ax,0001
+	mov	ax,[bp-2h]
+	mov	[4621h],ax
+	mov	ax,[bp-4h]
+	mov	[461Fh],ax
+	mov	byte ptr [0A12h],1h
+	mov	ax,1h
 	mov	sp,bp
 	pop	bp
 	ret
 
 l0800_38EF:
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
 	push	ss
-	lea	ax,[bp-08]
+	lea	ax,[bp-8h]
 	push	ax
-	call	363D
-	add	sp,08
+	call	363Dh
+	add	sp,8h
 	push	ds
-	mov	ax,461F
+	mov	ax,461Fh
 	push	ax
 	push	ss
-	lea	ax,[bp-08]
+	lea	ax,[bp-8h]
 	push	ax
-	call	395B
-	add	sp,08
+	call	395Bh
+	add	sp,8h
 	or	ax,ax
-	jl	3927
+	jl	3927h
 
 l0800_3913:
 	push	ss
-	lea	ax,[bp-04]
+	lea	ax,[bp-4h]
 	push	ax
 	push	ss
-	lea	ax,[bp-08]
+	lea	ax,[bp-8h]
 	push	ax
-	call	395B
-	add	sp,08
+	call	395Bh
+	add	sp,8h
 	or	ax,ax
-	jle	392E
+	jle	392Eh
 
 l0800_3927:
-	mov	ax,0001
+	mov	ax,1h
 	mov	sp,bp
 	pop	bp
 	ret
 
 l0800_392E:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	A614
-	add	sp,04
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	A614
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0A614h
+	add	sp,4h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0A614h
+	add	sp,4h
 	push	ds
-	mov	ax,44DC
+	mov	ax,44DCh
 	push	ax
-	call	8F7F
-	add	sp,04
+	call	8F7Fh
+	add	sp,4h
 	xor	ax,ax
 	mov	sp,bp
 	pop	bp
@@ -8419,27 +8419,27 @@ l0800_392E:
 fn0800_395B proc
 	push	bp
 	mov	bp,sp
-	sub	sp,02
-	les	bx,[bp+04]
-	mov	ax,es:[bx+02]
-	mov	[bp-02],ax
-	les	bx,[bp+08]
-	cmp	ax,es:[bx+02]
-	jnz	3984
+	sub	sp,2h
+	les	bx,[bp+4h]
+	mov	ax,es:[bx+2h]
+	mov	[bp-2h],ax
+	les	bx,[bp+8h]
+	cmp	ax,es:[bx+2h]
+	jnz	3984h
 
 l0800_3974:
-	les	bx,[bp+04]
+	les	bx,[bp+4h]
 	mov	ax,es:[bx]
-	les	bx,[bp+08]
+	les	bx,[bp+8h]
 	sub	ax,es:[bx]
 	mov	sp,bp
 	pop	bp
 	ret
 
 l0800_3984:
-	mov	ax,[bp-02]
-	les	bx,[bp+08]
-	sub	ax,es:[bx+02]
+	mov	ax,[bp-2h]
+	les	bx,[bp+8h]
+	sub	ax,es:[bx+2h]
 	mov	sp,bp
 	pop	bp
 	ret
@@ -8450,18 +8450,18 @@ l0800_3984:
 fn0800_3992 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,72
+	sub	sp,72h
 	push	di
-	cmp	byte ptr [427E],00
-	jz	39AE
+	cmp	byte ptr [427Eh],0h
+	jz	39AEh
 
 l0800_39A0:
-	cmp	word ptr [2A23],01
-	jnz	39AE
+	cmp	word ptr [2A23h],1h
+	jnz	39AEh
 
 l0800_39A7:
-	cmp	word ptr [2A17],00
-	jnz	39B5
+	cmp	word ptr [2A17h],0h
+	jnz	39B5h
 
 l0800_39AE:
 	xor	ax,ax
@@ -8472,21 +8472,21 @@ l0800_39AE:
 
 l0800_39B5:
 	push	ds
-	mov	ax,44DC
+	mov	ax,44DCh
 	push	ax
 	push	ss
-	lea	ax,[bp-72]
+	lea	ax,[bp-72h]
 	push	ax
-	call	3509
-	add	sp,08
+	call	3509h
+	add	sp,8h
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
 	push	ss
 	pop	es
-	lea	di,[bp-72]
+	lea	di,[bp-72h]
 	xor	ax,ax
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_39D4:
 	repne scasb
@@ -8500,10 +8500,10 @@ l0800_39DC:
 	repne scasb
 
 l0800_39DE:
-	jz	39E7
+	jz	39E7h
 
 l0800_39E0:
-	mov	di,0001
+	mov	di,1h
 	xor	ax,ax
 	mov	es,ax
 
@@ -8512,20 +8512,20 @@ l0800_39E7:
 	mov	ax,es
 	push	ax
 	push	di
-	call	35A3
-	add	sp,08
+	call	35A3h
+	add	sp,8h
 	push	ds
-	mov	ax,0A4D
+	mov	ax,0A4Dh
 	push	ax
 	push	ss
-	lea	ax,[bp-72]
+	lea	ax,[bp-72h]
 	push	ax
-	call	AA7E
-	add	sp,08
-	mov	[bp-02],dx
-	mov	[bp-04],ax
+	call	0AA7Eh
+	add	sp,8h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
 	or	ax,dx
-	jnz	3A13
+	jnz	3A13h
 
 l0800_3A0C:
 	xor	ax,ax
@@ -8535,25 +8535,25 @@ l0800_3A0C:
 	ret
 
 l0800_3A13:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	4194
-	add	sp,04
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	4194h
+	add	sp,4h
 	or	dx,dx
-	ja	3A3D
+	ja	3A3Dh
 
 l0800_3A23:
-	jnz	3A2A
+	jnz	3A2Ah
 
 l0800_3A25:
-	cmp	ax,0012
-	ja	3A3D
+	cmp	ax,12h
+	ja	3A3Dh
 
 l0800_3A2A:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	A614
-	add	sp,04
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	0A614h
+	add	sp,4h
 	xor	ax,ax
 	pop	di
 	mov	sp,bp
@@ -8561,24 +8561,24 @@ l0800_3A2A:
 	ret
 
 l0800_3A3D:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	3E5D
-	add	sp,04
-	mov	cl,08
-	call	8CAA
-	cmp	dx,52
-	jnz	3A58
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	3E5Dh
+	add	sp,4h
+	mov	cl,8h
+	call	8CAAh
+	cmp	dx,52h
+	jnz	3A58h
 
 l0800_3A53:
-	cmp	ax,4E43
-	jz	3A6B
+	cmp	ax,4E43h
+	jz	3A6Bh
 
 l0800_3A58:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	A614
-	add	sp,04
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	0A614h
+	add	sp,4h
 	xor	ax,ax
 	pop	di
 	mov	sp,bp
@@ -8586,22 +8586,22 @@ l0800_3A58:
 	ret
 
 l0800_3A6B:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	3E5D
-	add	sp,04
-	cmp	dx,[2A09]
-	jnz	3A83
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	3E5Dh
+	add	sp,4h
+	cmp	dx,[2A09h]
+	jnz	3A83h
 
 l0800_3A7D:
-	cmp	ax,[2A07]
-	jz	3A96
+	cmp	ax,[2A07h]
+	jz	3A96h
 
 l0800_3A83:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	A614
-	add	sp,04
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	0A614h
+	add	sp,4h
 	xor	ax,ax
 	pop	di
 	mov	sp,bp
@@ -8610,37 +8610,37 @@ l0800_3A83:
 
 l0800_3A96:
 	push	ss
-	lea	ax,[bp-72]
+	lea	ax,[bp-72h]
 	push	ax
 	push	ss
-	lea	ax,[bp-0C]
+	lea	ax,[bp-0Ch]
 	push	ax
-	call	363D
-	add	sp,08
+	call	363Dh
+	add	sp,8h
 	push	ds
-	mov	ax,4541
+	mov	ax,4541h
 	push	ax
 	push	ss
-	lea	ax,[bp-08]
+	lea	ax,[bp-8h]
 	push	ax
-	call	363D
-	add	sp,08
+	call	363Dh
+	add	sp,8h
 	push	ss
-	lea	ax,[bp-08]
+	lea	ax,[bp-8h]
 	push	ax
 	push	ss
-	lea	ax,[bp-0C]
+	lea	ax,[bp-0Ch]
 	push	ax
-	call	395B
-	add	sp,08
+	call	395Bh
+	add	sp,8h
 	or	ax,ax
-	jge	3ADD
+	jge	3ADDh
 
 l0800_3ACA:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	A614
-	add	sp,04
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	0A614h
+	add	sp,4h
 	xor	ax,ax
 	pop	di
 	mov	sp,bp
@@ -8648,19 +8648,19 @@ l0800_3ACA:
 	ret
 
 l0800_3ADD:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	3E5D
-	add	sp,04
-	add	ax,0012
-	adc	dx,00
-	mov	[2A05],dx
-	mov	[2A03],ax
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	A614
-	add	sp,04
-	mov	ax,0001
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	3E5Dh
+	add	sp,4h
+	add	ax,12h
+	adc	dx,0h
+	mov	[2A05h],dx
+	mov	[2A03h],ax
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	0A614h
+	add	sp,4h
+	mov	ax,1h
 	pop	di
 	mov	sp,bp
 	pop	bp
@@ -8691,99 +8691,99 @@ l0800_3ADD:
 fn0800_3B0A proc
 	push	bp
 	mov	bp,sp
-	sub	sp,08
-	mov	ax,[bp+0C]
-	or	ax,[bp+0E]
-	jnz	3B1B
+	sub	sp,8h
+	mov	ax,[bp+0Ch]
+	or	ax,[bp+0Eh]
+	jnz	3B1Bh
 
 l0800_3B18:
-	jmp	3BBF
+	jmp	3BBFh
 
 l0800_3B1B:
-	cmp	word ptr [bp+0E],00
-	jl	3B31
+	cmp	word ptr [bp+0Eh],0h
+	jl	3B31h
 
 l0800_3B21:
-	jg	3B2A
+	jg	3B2Ah
 
 l0800_3B23:
-	cmp	word ptr [bp+0C],FDE8
-	jbe	3B31
+	cmp	word ptr [bp+0Ch],0FDE8h
+	jbe	3B31h
 
 l0800_3B2A:
 	xor	dx,dx
-	mov	ax,FDE8
-	jmp	3B37
+	mov	ax,0FDE8h
+	jmp	3B37h
 
 l0800_3B31:
-	mov	dx,[bp+0E]
-	mov	ax,[bp+0C]
+	mov	dx,[bp+0Eh]
+	mov	ax,[bp+0Ch]
 
 l0800_3B37:
-	mov	[bp-06],dx
-	mov	[bp-08],ax
-	push	word ptr [bp-06]
+	mov	[bp-6h],dx
+	mov	[bp-8h],ax
+	push	word ptr [bp-6h]
 	push	ax
-	call	4311
-	add	sp,04
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	jmp	3BAB
+	call	4311h
+	add	sp,4h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	jmp	3BABh
 
 l0800_3B4F:
-	cmp	word ptr [bp+0E],00
-	jl	3B65
+	cmp	word ptr [bp+0Eh],0h
+	jl	3B65h
 
 l0800_3B55:
-	jg	3B5E
+	jg	3B5Eh
 
 l0800_3B57:
-	cmp	word ptr [bp+0C],FDE8
-	jbe	3B65
+	cmp	word ptr [bp+0Ch],0FDE8h
+	jbe	3B65h
 
 l0800_3B5E:
 	xor	dx,dx
-	mov	ax,FDE8
-	jmp	3B6B
+	mov	ax,0FDE8h
+	jmp	3B6Bh
 
 l0800_3B65:
-	mov	dx,[bp+0E]
-	mov	ax,[bp+0C]
+	mov	dx,[bp+0Eh]
+	mov	ax,[bp+0Ch]
 
 l0800_3B6B:
-	mov	[bp-06],dx
-	mov	[bp-08],ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	push	word ptr [bp-06]
+	mov	[bp-6h],dx
+	mov	[bp-8h],ax
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	push	word ptr [bp-6h]
 	push	ax
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	4110
-	add	sp,0C
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	push	word ptr [bp-06]
-	push	word ptr [bp-08]
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	4152
-	add	sp,0C
-	mov	ax,[bp-06]
-	mov	dx,[bp-08]
-	sub	[bp+0C],dx
-	sbb	[bp+0E],ax
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	4110h
+	add	sp,0Ch
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	push	word ptr [bp-6h]
+	push	word ptr [bp-8h]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	4152h
+	add	sp,0Ch
+	mov	ax,[bp-6h]
+	mov	dx,[bp-8h]
+	sub	[bp+0Ch],dx
+	sbb	[bp+0Eh],ax
 
 l0800_3BAB:
-	mov	ax,[bp+0C]
-	or	ax,[bp+0E]
-	jnz	3B4F
+	mov	ax,[bp+0Ch]
+	or	ax,[bp+0Eh]
+	jnz	3B4Fh
 
 l0800_3BB3:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	4346
-	add	sp,04
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	4346h
+	add	sp,4h
 
 l0800_3BBF:
 	mov	sp,bp
@@ -8796,82 +8796,82 @@ l0800_3BBF:
 fn0800_3BC3 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
+	sub	sp,4h
 	push	ds
-	mov	ax,0A54
+	mov	ax,0A54h
 	push	ax
 	push	ds
-	mov	ax,43AD
+	mov	ax,43ADh
 	push	ax
-	call	37BE
-	add	sp,08
+	call	37BEh
+	add	sp,8h
 	push	ds
-	mov	ax,0A61
+	mov	ax,0A61h
 	push	ax
 	push	ds
-	mov	ax,43AD
+	mov	ax,43ADh
 	push	ax
-	call	4234
-	add	sp,08
-	mov	[29D5],dx
-	mov	[29D3],ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	4194
-	add	sp,04
-	sub	ax,[bp+08]
-	sbb	dx,[bp+0A]
-	mov	[bp-02],dx
-	mov	[bp-04],ax
+	call	4234h
+	add	sp,8h
+	mov	[29D5h],dx
+	mov	[29D3h],ax
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	4194h
+	add	sp,4h
+	sub	ax,[bp+8h]
+	sbb	dx,[bp+0Ah]
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
 	xor	ax,ax
 	push	ax
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	push	word ptr [29D5]
-	push	word ptr [29D3]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	3B0A
-	add	sp,0C
-	push	word ptr [29D5]
-	push	word ptr [29D3]
-	call	BA67
-	add	sp,04
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	push	word ptr [29D5h]
+	push	word ptr [29D3h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	3B0Ah
+	add	sp,0Ch
+	push	word ptr [29D5h]
+	push	word ptr [29D3h]
+	call	0BA67h
+	add	sp,4h
 	xor	ax,ax
 	push	ax
-	mov	ax,[bp+0A]
-	mov	dx,[bp+08]
-	add	dx,[bp+0C]
-	adc	ax,[bp+0E]
+	mov	ax,[bp+0Ah]
+	mov	dx,[bp+8h]
+	add	dx,[bp+0Ch]
+	adc	ax,[bp+0Eh]
 	push	ax
 	push	dx
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	push	word ptr [29D5]
-	push	word ptr [29D3]
-	call	3B0A
-	add	sp,0C
-	push	word ptr [29D5]
-	push	word ptr [29D3]
-	call	A614
-	add	sp,04
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	push	word ptr [29D5h]
+	push	word ptr [29D3h]
+	call	3B0Ah
+	add	sp,0Ch
+	push	word ptr [29D5h]
+	push	word ptr [29D3h]
+	call	0A614h
+	add	sp,4h
 	push	ds
-	mov	ax,43AD
+	mov	ax,43ADh
 	push	ax
-	call	8F7F
-	add	sp,04
+	call	8F7Fh
+	add	sp,4h
 	mov	sp,bp
 	pop	bp
 	ret
@@ -8883,22 +8883,22 @@ fn0800_3BC3 proc
 fn0800_3C99 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,6A
+	sub	sp,6Ah
 	push	si
 	push	di
 	push	ds
-	mov	ax,4348
+	mov	ax,4348h
 	push	ax
 	push	ss
-	lea	ax,[bp-6A]
+	lea	ax,[bp-6Ah]
 	push	ax
-	call	3509
-	add	sp,08
+	call	3509h
+	add	sp,8h
 	push	ss
 	pop	es
-	lea	di,[bp-6A]
-	mov	si,0A54
-	mov	cx,FFFF
+	lea	di,[bp-6Ah]
+	mov	si,0A54h
+	mov	cx,0FFFFh
 	xor	ax,ax
 
 l0800_3CBE:
@@ -8906,121 +8906,121 @@ l0800_3CBE:
 
 l0800_3CC0:
 	dec	di
-	mov	cx,000D
+	mov	cx,0Dh
 
 l0800_3CC4:
 	rep movsb
 
 l0800_3CC6:
 	push	ds
-	mov	ax,0A61
+	mov	ax,0A61h
 	push	ax
 	push	ss
-	lea	ax,[bp-6A]
+	lea	ax,[bp-6Ah]
 	push	ax
-	call	4234
-	add	sp,08
-	mov	[bp-02],dx
-	mov	[bp-04],ax
+	call	4234h
+	add	sp,8h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
 	xor	ax,ax
 	push	ax
 	push	ax
 	push	ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	3B0A
-	add	sp,0C
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	3B0Ah
+	add	sp,0Ch
 	xor	ax,ax
 	push	ax
-	mov	ax,[bp+0A]
-	mov	dx,[bp+08]
-	add	dx,[bp+0C]
-	adc	ax,[bp+0E]
+	mov	ax,[bp+0Ah]
+	mov	dx,[bp+8h]
+	add	dx,[bp+0Ch]
+	adc	ax,[bp+0Eh]
 	push	ax
 	push	dx
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	4194
-	add	sp,04
-	mov	bx,[bp+0A]
-	mov	cx,[bp+08]
-	add	cx,[bp+0C]
-	adc	bx,[bp+0E]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	4194h
+	add	sp,4h
+	mov	bx,[bp+0Ah]
+	mov	cx,[bp+8h]
+	add	cx,[bp+0Ch]
+	adc	bx,[bp+0Eh]
 	sub	ax,cx
 	sbb	dx,bx
-	mov	[bp+0E],dx
-	mov	[bp+0C],ax
-	push	word ptr [bp+0E]
+	mov	[bp+0Eh],dx
+	mov	[bp+0Ch],ax
+	push	word ptr [bp+0Eh]
 	push	ax
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	3B0A
-	add	sp,0C
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	A614
-	add	sp,04
-	push	word ptr [29D1]
-	push	word ptr [29CF]
-	call	A614
-	add	sp,04
-	mov	ax,0180
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	3B0Ah
+	add	sp,0Ch
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	0A614h
+	add	sp,4h
+	push	word ptr [29D1h]
+	push	word ptr [29CFh]
+	call	0A614h
+	add	sp,4h
+	mov	ax,180h
 	push	ax
 	push	ds
-	mov	ax,4348
+	mov	ax,4348h
 	push	ax
-	call	A4F6
-	add	sp,06
+	call	0A4F6h
+	add	sp,6h
 	push	ds
-	mov	ax,4348
+	mov	ax,4348h
 	push	ax
-	call	8F7F
-	add	sp,04
+	call	8F7Fh
+	add	sp,4h
 	push	ds
-	mov	ax,4348
+	mov	ax,4348h
 	push	ax
 	push	ss
-	lea	ax,[bp-6A]
+	lea	ax,[bp-6Ah]
 	push	ax
-	call	BA4A
-	add	sp,08
-	cmp	ax,FFFF
-	jnz	3DB2
+	call	0BA4Ah
+	add	sp,8h
+	cmp	ax,0FFFFh
+	jnz	3DB2h
 
 l0800_3DA3:
 	push	ss
-	lea	ax,[bp-6A]
+	lea	ax,[bp-6Ah]
 	push	ax
-	mov	ax,000A
+	mov	ax,0Ah
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_3DB2:
 	push	ds
-	mov	ax,0A65
+	mov	ax,0A65h
 	push	ax
 	push	ds
-	mov	ax,4348
+	mov	ax,4348h
 	push	ax
-	call	4234
-	add	sp,08
-	mov	[29D1],dx
-	mov	[29CF],ax
+	call	4234h
+	add	sp,8h
+	mov	[29D1h],dx
+	mov	[29CFh],ax
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -9045,46 +9045,46 @@ l0800_3DB2:
 fn0800_3DCF proc
 	push	bp
 	mov	bp,sp
-	sub	sp,02
+	sub	sp,2h
 	push	si
-	les	bx,[bp+04]
+	les	bx,[bp+4h]
 	dec	word ptr es:[bx]
-	jl	3DF3
+	jl	3DF3h
 
 l0800_3DDE:
-	mov	ax,es:[bx+0E]
-	mov	si,es:[bx+0C]
-	inc	word ptr es:[bx+0C]
+	mov	ax,es:[bx+0Eh]
+	mov	si,es:[bx+0Ch]
+	inc	word ptr es:[bx+0Ch]
 	mov	es,ax
 	mov	al,es:[si]
-	mov	ah,00
-	jmp	3DFF
+	mov	ah,0h
+	jmp	3DFFh
 
 l0800_3DF3:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	AEC2
-	add	sp,04
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0AEC2h
+	add	sp,4h
 
 l0800_3DFF:
-	mov	[bp-02],ax
-	cmp	ax,FFFF
-	jnz	3E1F
+	mov	[bp-2h],ax
+	cmp	ax,0FFFFh
+	jnz	3E1Fh
 
 l0800_3E07:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	4271
-	add	sp,04
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	4271h
+	add	sp,4h
 	push	dx
 	push	ax
-	mov	ax,0008
+	mov	ax,8h
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_3E1F:
-	mov	al,[bp-02]
+	mov	al,[bp-2h]
 	pop	si
 	mov	sp,bp
 	pop	bp
@@ -9117,23 +9117,23 @@ l0800_3E1F:
 fn0800_3E27 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	3DCF
-	add	sp,04
-	mov	ah,00
-	mov	[bp-02],ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	3DCF
-	add	sp,04
-	mov	ah,00
-	mov	[bp-04],ax
-	mov	ax,[bp-02]
-	mov	cl,08
+	sub	sp,4h
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	3DCFh
+	add	sp,4h
+	mov	ah,0h
+	mov	[bp-2h],ax
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	3DCFh
+	add	sp,4h
+	mov	ah,0h
+	mov	[bp-4h],ax
+	mov	ax,[bp-2h]
+	mov	cl,8h
 	shl	ax,cl
-	add	ax,[bp-04]
+	add	ax,[bp-4h]
 	mov	sp,bp
 	pop	bp
 	ret
@@ -9187,23 +9187,23 @@ fn0800_3E27 proc
 fn0800_3E5D proc
 	push	bp
 	mov	bp,sp
-	sub	sp,08
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	3E27
-	add	sp,04
-	mov	word ptr [bp-02],0000
-	mov	[bp-04],ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	3E27
-	add	sp,04
-	mov	word ptr [bp-06],0000
-	mov	[bp-08],ax
-	mov	dx,[bp-04]
+	sub	sp,8h
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	3E27h
+	add	sp,4h
+	mov	word ptr [bp-2h],0h
+	mov	[bp-4h],ax
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	3E27h
+	add	sp,4h
+	mov	word ptr [bp-6h],0h
+	mov	[bp-8h],ax
+	mov	dx,[bp-4h]
 	xor	ax,ax
-	add	ax,[bp-08]
-	adc	dx,00
+	add	ax,[bp-8h]
+	adc	dx,0h
 	mov	sp,bp
 	pop	bp
 	ret
@@ -9215,56 +9215,56 @@ fn0800_3E5D proc
 fn0800_3E9A proc
 	push	bp
 	mov	bp,sp
-	sub	sp,02
+	sub	sp,2h
 	push	si
-	les	bx,[bp+04]
+	les	bx,[bp+4h]
 	dec	word ptr es:[bx]
-	jl	3EBE
+	jl	3EBEh
 
 l0800_3EA9:
-	mov	ax,es:[bx+0E]
-	mov	si,es:[bx+0C]
-	inc	word ptr es:[bx+0C]
+	mov	ax,es:[bx+0Eh]
+	mov	si,es:[bx+0Ch]
+	inc	word ptr es:[bx+0Ch]
 	mov	es,ax
 	mov	al,es:[si]
-	mov	ah,00
-	jmp	3ECA
+	mov	ah,0h
+	jmp	3ECAh
 
 l0800_3EBE:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	AEC2
-	add	sp,04
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0AEC2h
+	add	sp,4h
 
 l0800_3ECA:
-	mov	[bp-02],ax
-	cmp	ax,FFFF
-	jnz	3EEA
+	mov	[bp-2h],ax
+	cmp	ax,0FFFFh
+	jnz	3EEAh
 
 l0800_3ED2:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	4271
-	add	sp,04
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	4271h
+	add	sp,4h
 	push	dx
 	push	ax
-	mov	ax,0008
+	mov	ax,8h
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_3EEA:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	mov	ax,FFFF
-	mov	dx,FFFF
+	mov	ax,0FFFFh
+	mov	dx,0FFFFh
 	push	ax
 	push	dx
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	ACB3
-	add	sp,0A
-	mov	al,[bp-02]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0ACB3h
+	add	sp,0Ah
+	mov	al,[bp-2h]
 	pop	si
 	mov	sp,bp
 	pop	bp
@@ -9278,33 +9278,33 @@ l0800_3EEA:
 fn0800_3F0A proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	3DCF
-	add	sp,04
-	mov	ah,00
-	mov	[bp-02],ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	3DCF
-	add	sp,04
-	mov	ah,00
-	mov	[bp-04],ax
-	mov	ax,0001
+	sub	sp,4h
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	3DCFh
+	add	sp,4h
+	mov	ah,0h
+	mov	[bp-2h],ax
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	3DCFh
+	add	sp,4h
+	mov	ah,0h
+	mov	[bp-4h],ax
+	mov	ax,1h
 	push	ax
-	mov	ax,FFFF
-	mov	dx,FFFE
+	mov	ax,0FFFFh
+	mov	dx,0FFFEh
 	push	ax
 	push	dx
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	ACB3
-	add	sp,0A
-	mov	ax,[bp-02]
-	mov	cl,08
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0ACB3h
+	add	sp,0Ah
+	mov	ax,[bp-2h]
+	mov	cl,8h
 	shl	ax,cl
-	add	ax,[bp-04]
+	add	ax,[bp-4h]
 	mov	sp,bp
 	pop	bp
 	ret
@@ -9325,33 +9325,33 @@ fn0800_3F0A proc
 fn0800_3F58 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,08
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	3E27
-	add	sp,04
-	mov	word ptr [bp-02],0000
-	mov	[bp-04],ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	3E27
-	add	sp,04
-	mov	word ptr [bp-06],0000
-	mov	[bp-08],ax
-	mov	ax,0001
+	sub	sp,8h
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	3E27h
+	add	sp,4h
+	mov	word ptr [bp-2h],0h
+	mov	[bp-4h],ax
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	3E27h
+	add	sp,4h
+	mov	word ptr [bp-6h],0h
+	mov	[bp-8h],ax
+	mov	ax,1h
 	push	ax
-	mov	ax,FFFF
-	mov	dx,FFFC
+	mov	ax,0FFFFh
+	mov	dx,0FFFCh
 	push	ax
 	push	dx
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	ACB3
-	add	sp,0A
-	mov	dx,[bp-04]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0ACB3h
+	add	sp,0Ah
+	mov	dx,[bp-4h]
 	xor	ax,ax
-	add	ax,[bp-08]
-	adc	dx,[bp-06]
+	add	ax,[bp-8h]
+	adc	dx,[bp-6h]
 	mov	sp,bp
 	pop	bp
 	ret
@@ -9391,22 +9391,22 @@ fn0800_3F58 proc
 fn0800_3FAD proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	3DCF
-	add	sp,04
-	mov	ah,00
-	mov	[bp-02],ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	3DCF
-	add	sp,04
-	mov	ah,00
-	mov	[bp-04],ax
-	mov	cl,08
+	sub	sp,4h
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	3DCFh
+	add	sp,4h
+	mov	ah,0h
+	mov	[bp-2h],ax
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	3DCFh
+	add	sp,4h
+	mov	ah,0h
+	mov	[bp-4h],ax
+	mov	cl,8h
 	shl	ax,cl
-	add	ax,[bp-02]
+	add	ax,[bp-2h]
 	mov	sp,bp
 	pop	bp
 	ret
@@ -9435,20 +9435,20 @@ fn0800_3FAD proc
 fn0800_401E proc
 	push	bp
 	mov	bp,sp
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	mov	ax,[bp+04]
-	mov	cl,08
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	mov	ax,[bp+4h]
+	mov	cl,8h
 	shr	ax,cl
 	push	ax
-	call	4047
-	add	sp,06
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	mov	al,[bp+04]
+	call	4047h
+	add	sp,6h
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	mov	al,[bp+4h]
 	push	ax
-	call	4047
-	add	sp,06
+	call	4047h
+	add	sp,6h
 	pop	bp
 	ret
 
@@ -9477,44 +9477,44 @@ fn0800_4047 proc
 	push	bp
 	mov	bp,sp
 	push	si
-	mov	cl,[bp+04]
-	les	bx,[bp+06]
+	mov	cl,[bp+4h]
+	les	bx,[bp+6h]
 	inc	word ptr es:[bx]
-	jge	406F
+	jge	406Fh
 
 l0800_4056:
-	mov	ax,es:[bx+0E]
-	mov	si,es:[bx+0C]
-	inc	word ptr es:[bx+0C]
+	mov	ax,es:[bx+0Eh]
+	mov	si,es:[bx+0Ch]
+	inc	word ptr es:[bx+0Ch]
 	mov	dl,cl
 	mov	es,ax
 	mov	es:[si],dl
 	mov	al,dl
-	mov	ah,00
-	jmp	407C
+	mov	ah,0h
+	jmp	407Ch
 
 l0800_406F:
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
 	push	cx
-	call	B30A
-	add	sp,06
+	call	0B30Ah
+	add	sp,6h
 
 l0800_407C:
-	cmp	ax,FFFF
-	jnz	4099
+	cmp	ax,0FFFFh
+	jnz	4099h
 
 l0800_4081:
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	call	4271
-	add	sp,04
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	call	4271h
+	add	sp,4h
 	push	dx
 	push	ax
-	mov	ax,0009
+	mov	ax,9h
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_4099:
 	pop	si
@@ -9578,16 +9578,16 @@ l0800_4099:
 fn0800_409C proc
 	push	bp
 	mov	bp,sp
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	call	401E
-	add	sp,06
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	push	word ptr [bp+04]
-	call	401E
-	add	sp,06
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	call	401Eh
+	add	sp,6h
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	push	word ptr [bp+4h]
+	call	401Eh
+	add	sp,6h
 	pop	bp
 	ret
 
@@ -9632,22 +9632,22 @@ fn0800_409C proc
 fn0800_40BF proc
 	push	bp
 	mov	bp,sp
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	mov	al,[bp+04]
-	and	al,FF
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	mov	al,[bp+4h]
+	and	al,0FFh
 	push	ax
-	call	4047
-	add	sp,06
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	mov	ax,[bp+04]
-	mov	cl,08
+	call	4047h
+	add	sp,6h
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	mov	ax,[bp+4h]
+	mov	cl,8h
 	shr	ax,cl
-	and	al,FF
+	and	al,0FFh
 	push	ax
-	call	4047
-	add	sp,06
+	call	4047h
+	add	sp,6h
 	pop	bp
 	ret
 0800:40EC                                     55 8B EC FF             U...
@@ -9665,34 +9665,34 @@ fn0800_40BF proc
 fn0800_4110 proc
 	push	bp
 	mov	bp,sp
-	push	word ptr [bp+0E]
-	push	word ptr [bp+0C]
-	push	word ptr [bp+08]
-	mov	ax,0001
+	push	word ptr [bp+0Eh]
+	push	word ptr [bp+0Ch]
+	push	word ptr [bp+8h]
+	mov	ax,1h
 	push	ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	ABA3
-	add	sp,0C
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0ABA3h
+	add	sp,0Ch
 	xor	dx,dx
-	cmp	dx,[bp+0A]
-	jnz	4138
+	cmp	dx,[bp+0Ah]
+	jnz	4138h
 
 l0800_4133:
-	cmp	ax,[bp+08]
-	jz	4150
+	cmp	ax,[bp+8h]
+	jz	4150h
 
 l0800_4138:
-	push	word ptr [bp+0E]
-	push	word ptr [bp+0C]
-	call	4271
-	add	sp,04
+	push	word ptr [bp+0Eh]
+	push	word ptr [bp+0Ch]
+	call	4271h
+	add	sp,4h
 	push	dx
 	push	ax
-	mov	ax,0008
+	mov	ax,8h
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_4150:
 	pop	bp
@@ -9714,34 +9714,34 @@ l0800_4150:
 fn0800_4152 proc
 	push	bp
 	mov	bp,sp
-	push	word ptr [bp+0E]
-	push	word ptr [bp+0C]
-	push	word ptr [bp+08]
-	mov	ax,0001
+	push	word ptr [bp+0Eh]
+	push	word ptr [bp+0Ch]
+	push	word ptr [bp+8h]
+	mov	ax,1h
 	push	ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	AD85
-	add	sp,0C
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0AD85h
+	add	sp,0Ch
 	xor	dx,dx
-	cmp	dx,[bp+0A]
-	jnz	417A
+	cmp	dx,[bp+0Ah]
+	jnz	417Ah
 
 l0800_4175:
-	cmp	ax,[bp+08]
-	jz	4192
+	cmp	ax,[bp+8h]
+	jz	4192h
 
 l0800_417A:
-	push	word ptr [bp+0E]
-	push	word ptr [bp+0C]
-	call	4271
-	add	sp,04
+	push	word ptr [bp+0Eh]
+	push	word ptr [bp+0Ch]
+	call	4271h
+	add	sp,4h
 	push	dx
 	push	ax
-	mov	ax,0009
+	mov	ax,9h
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_4192:
 	pop	bp
@@ -9770,38 +9770,38 @@ l0800_4192:
 fn0800_4194 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,08
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	AD2F
-	add	sp,04
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	mov	ax,0002
+	sub	sp,8h
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0AD2Fh
+	add	sp,4h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	mov	ax,2h
 	push	ax
 	xor	ax,ax
 	push	ax
 	push	ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	AD2F
-	add	sp,04
-	mov	[bp-06],dx
-	mov	[bp-08],ax
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0AD2Fh
+	add	sp,4h
+	mov	[bp-6h],dx
+	mov	[bp-8h],ax
 	xor	ax,ax
 	push	ax
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	ACB3
-	add	sp,0A
-	mov	dx,[bp-06]
-	mov	ax,[bp-08]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0ACB3h
+	add	sp,0Ah
+	mov	dx,[bp-6h]
+	mov	ax,[bp-8h]
 	mov	sp,bp
 	pop	bp
 	ret
@@ -9827,29 +9827,29 @@ fn0800_4194 proc
 fn0800_4234 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	AA7E
-	add	sp,08
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	or	ax,[bp-02]
-	jnz	4267
+	sub	sp,4h
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0AA7Eh
+	add	sp,8h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	or	ax,[bp-2h]
+	jnz	4267h
 
 l0800_4257:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	mov	ax,0007
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	mov	ax,7h
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_4267:
-	mov	dx,[bp-02]
-	mov	ax,[bp-04]
+	mov	dx,[bp-2h]
+	mov	ax,[bp-4h]
 	mov	sp,bp
 	pop	bp
 	ret
@@ -9864,104 +9864,104 @@ l0800_4267:
 fn0800_4271 proc
 	push	bp
 	mov	bp,sp
-	mov	ax,[bp+06]
-	mov	dx,[bp+04]
-	cmp	ax,[29E5]
-	jnz	428D
+	mov	ax,[bp+6h]
+	mov	dx,[bp+4h]
+	cmp	ax,[29E5h]
+	jnz	428Dh
 
 l0800_4280:
-	cmp	dx,[29E3]
-	jnz	428D
+	cmp	dx,[29E3h]
+	jnz	428Dh
 
 l0800_4286:
 	mov	dx,ds
-	mov	ax,4541
+	mov	ax,4541h
 	pop	bp
 	ret
 
 l0800_428D:
-	mov	ax,[bp+06]
-	mov	dx,[bp+04]
-	cmp	ax,[29E1]
-	jnz	42A6
+	mov	ax,[bp+6h]
+	mov	dx,[bp+4h]
+	cmp	ax,[29E1h]
+	jnz	42A6h
 
 l0800_4299:
-	cmp	dx,[29DF]
-	jnz	42A6
+	cmp	dx,[29DFh]
+	jnz	42A6h
 
 l0800_429F:
 	mov	dx,ds
-	mov	ax,44DC
+	mov	ax,44DCh
 	pop	bp
 	ret
 
 l0800_42A6:
-	mov	ax,[bp+06]
-	mov	dx,[bp+04]
-	cmp	ax,[29D1]
-	jnz	42BF
+	mov	ax,[bp+6h]
+	mov	dx,[bp+4h]
+	cmp	ax,[29D1h]
+	jnz	42BFh
 
 l0800_42B2:
-	cmp	dx,[29CF]
-	jnz	42BF
+	cmp	dx,[29CFh]
+	jnz	42BFh
 
 l0800_42B8:
 	mov	dx,ds
-	mov	ax,4348
+	mov	ax,4348h
 	pop	bp
 	ret
 
 l0800_42BF:
-	mov	ax,[bp+06]
-	mov	dx,[bp+04]
-	cmp	ax,[29DD]
-	jnz	42D8
+	mov	ax,[bp+6h]
+	mov	dx,[bp+4h]
+	cmp	ax,[29DDh]
+	jnz	42D8h
 
 l0800_42CB:
-	cmp	dx,[29DB]
-	jnz	42D8
+	cmp	dx,[29DBh]
+	jnz	42D8h
 
 l0800_42D1:
 	mov	dx,ds
-	mov	ax,4477
+	mov	ax,4477h
 	pop	bp
 	ret
 
 l0800_42D8:
-	mov	ax,[bp+06]
-	mov	dx,[bp+04]
-	cmp	ax,[29D9]
-	jnz	42F1
+	mov	ax,[bp+6h]
+	mov	dx,[bp+4h]
+	cmp	ax,[29D9h]
+	jnz	42F1h
 
 l0800_42E4:
-	cmp	dx,[29D7]
-	jnz	42F1
+	cmp	dx,[29D7h]
+	jnz	42F1h
 
 l0800_42EA:
 	mov	dx,ds
-	mov	ax,4412
+	mov	ax,4412h
 	pop	bp
 	ret
 
 l0800_42F1:
-	mov	ax,[bp+06]
-	mov	dx,[bp+04]
-	cmp	ax,[29D5]
-	jnz	430A
+	mov	ax,[bp+6h]
+	mov	dx,[bp+4h]
+	cmp	ax,[29D5h]
+	jnz	430Ah
 
 l0800_42FD:
-	cmp	dx,[29D3]
-	jnz	430A
+	cmp	dx,[29D3h]
+	jnz	430Ah
 
 l0800_4303:
 	mov	dx,ds
-	mov	ax,43AD
+	mov	ax,43ADh
 	pop	bp
 	ret
 
 l0800_430A:
 	mov	dx,ds
-	mov	ax,0A60
+	mov	ax,0A60h
 	pop	bp
 	ret
 
@@ -9983,28 +9983,28 @@ l0800_430A:
 fn0800_4311 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	9F89
-	add	sp,04
-	mov	[bp-02],dx
-	mov	[bp-04],ax
+	sub	sp,4h
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	9F89h
+	add	sp,4h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
 	or	ax,dx
-	jnz	433C
+	jnz	433Ch
 
 l0800_432D:
 	push	ds
-	mov	ax,0A6C
+	mov	ax,0A6Ch
 	push	ax
-	mov	ax,0006
+	mov	ax,6h
 	push	ax
-	call	0D24
-	add	sp,06
+	call	0D24h
+	add	sp,6h
 
 l0800_433C:
-	mov	dx,[bp-02]
-	mov	ax,[bp-04]
+	mov	dx,[bp-2h]
+	mov	ax,[bp-4h]
 	mov	sp,bp
 	pop	bp
 	ret
@@ -10026,10 +10026,10 @@ l0800_433C:
 fn0800_4346 proc
 	push	bp
 	mov	bp,sp
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	9E75
-	add	sp,04
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	9E75h
+	add	sp,4h
 	pop	bp
 	ret
 
@@ -10039,64 +10039,64 @@ fn0800_4346 proc
 fn0800_4357 proc
 	push	bp
 	mov	bp,sp
-	jmp	43B9
+	jmp	43B9h
 
 l0800_435C:
-	les	bx,[bp+08]
+	les	bx,[bp+8h]
 	mov	al,es:[bx]
 	mov	dl,al
 	cbw
-	cmp	ax,002A
-	jz	4379
+	cmp	ax,2Ah
+	jz	4379h
 
 l0800_436A:
-	cmp	ax,002E
-	jz	439E
+	cmp	ax,2Eh
+	jz	439Eh
 
 l0800_436F:
-	cmp	ax,003F
-	jz	438A
+	cmp	ax,3Fh
+	jz	438Ah
 
 l0800_4374:
-	jmp	43A7
+	jmp	43A7h
 
 l0800_4376:
-	inc	word ptr [bp+04]
+	inc	word ptr [bp+4h]
 
 l0800_4379:
-	les	bx,[bp+04]
-	cmp	byte ptr es:[bx],2E
-	jz	43B6
+	les	bx,[bp+4h]
+	cmp	byte ptr es:[bx],2Eh
+	jz	43B6h
 
 l0800_4382:
-	cmp	byte ptr es:[bx],00
-	jnz	4376
+	cmp	byte ptr es:[bx],0h
+	jnz	4376h
 
 l0800_4388:
-	jmp	43B6
+	jmp	43B6h
 
 l0800_438A:
-	les	bx,[bp+04]
-	cmp	byte ptr es:[bx],2E
-	jz	43B6
+	les	bx,[bp+4h]
+	cmp	byte ptr es:[bx],2Eh
+	jz	43B6h
 
 l0800_4393:
-	cmp	byte ptr es:[bx],00
-	jz	43B6
+	cmp	byte ptr es:[bx],0h
+	jz	43B6h
 
 l0800_4399:
-	inc	word ptr [bp+04]
-	jmp	43B6
+	inc	word ptr [bp+4h]
+	jmp	43B6h
 
 l0800_439E:
-	les	bx,[bp+04]
-	cmp	byte ptr es:[bx],00
-	jz	43B6
+	les	bx,[bp+4h]
+	cmp	byte ptr es:[bx],0h
+	jz	43B6h
 
 l0800_43A7:
-	les	bx,[bp+04]
+	les	bx,[bp+4h]
 	cmp	dl,es:[bx]
-	jz	43B3
+	jz	43B3h
 
 l0800_43AF:
 	xor	ax,ax
@@ -10104,24 +10104,24 @@ l0800_43AF:
 	ret
 
 l0800_43B3:
-	inc	word ptr [bp+04]
+	inc	word ptr [bp+4h]
 
 l0800_43B6:
-	inc	word ptr [bp+08]
+	inc	word ptr [bp+8h]
 
 l0800_43B9:
-	les	bx,[bp+08]
-	cmp	byte ptr es:[bx],00
-	jnz	435C
+	les	bx,[bp+8h]
+	cmp	byte ptr es:[bx],0h
+	jnz	435Ch
 
 l0800_43C2:
-	les	bx,[bp+04]
-	cmp	byte ptr es:[bx],00
-	jnz	43D0
+	les	bx,[bp+4h]
+	cmp	byte ptr es:[bx],0h
+	jnz	43D0h
 
 l0800_43CB:
-	mov	ax,0001
-	jmp	43D2
+	mov	ax,1h
+	jmp	43D2h
 
 l0800_43D0:
 	xor	ax,ax
@@ -10140,29 +10140,29 @@ fn0800_43D4 proc
 	push	bp
 	mov	bp,sp
 	push	si
-	mov	cx,[bp+08]
-	mov	si,[bp+04]
+	mov	cx,[bp+8h]
+	mov	si,[bp+4h]
 	mov	ax,cx
-	mov	dx,000C
+	mov	dx,0Ch
 	imul	dx
 	add	si,ax
-	jmp	440F
+	jmp	440Fh
 
 l0800_43E9:
-	mov	es,[bp+06]
-	mov	word ptr es:[si+02],0000
-	mov	word ptr es:[si],0000
-	mov	word ptr es:[si+04],FFFF
-	mov	word ptr es:[si+08],0000
-	mov	word ptr es:[si+06],0000
-	mov	word ptr es:[si+0A],0000
+	mov	es,[bp+6h]
+	mov	word ptr es:[si+2h],0h
+	mov	word ptr es:[si],0h
+	mov	word ptr es:[si+4h],0FFFFh
+	mov	word ptr es:[si+8h],0h
+	mov	word ptr es:[si+6h],0h
+	mov	word ptr es:[si+0Ah],0h
 
 l0800_440F:
-	sub	si,0C
+	sub	si,0Ch
 	mov	ax,cx
 	dec	cx
 	or	ax,ax
-	jnz	43E9
+	jnz	43E9h
 
 l0800_4419:
 	pop	si
@@ -10177,56 +10177,56 @@ l0800_4419:
 fn0800_441C proc
 	push	bp
 	mov	bp,sp
-	sub	sp,02
+	sub	sp,2h
 	push	si
 	push	di
 	xor	di,di
 	mov	cx,di
-	mov	si,[bp+04]
+	mov	si,[bp+4h]
 	mov	ax,cx
-	mov	dx,000C
+	mov	dx,0Ch
 	imul	dx
 	add	si,ax
-	cmp	cx,[bp+08]
-	jnc	4452
+	cmp	cx,[bp+8h]
+	jnc	4452h
 
 l0800_4439:
-	mov	es,[bp+06]
+	mov	es,[bp+6h]
 	mov	ax,es:[si]
-	or	ax,es:[si+02]
-	jz	4449
+	or	ax,es:[si+2h]
+	jz	4449h
 
 l0800_4445:
 	inc	di
-	mov	[bp-02],cx
+	mov	[bp-2h],cx
 
 l0800_4449:
-	add	si,0C
+	add	si,0Ch
 	inc	cx
-	cmp	cx,[bp+08]
-	jc	4439
+	cmp	cx,[bp+8h]
+	jc	4439h
 
 l0800_4452:
 	or	di,di
-	jnz	4459
+	jnz	4459h
 
 l0800_4456:
-	jmp	454A
+	jmp	454Ah
 
 l0800_4459:
-	cmp	di,01
-	jz	4461
+	cmp	di,1h
+	jz	4461h
 
 l0800_445E:
-	jmp	4525
+	jmp	4525h
 
 l0800_4461:
-	mov	ax,[bp-02]
-	mov	dx,000C
+	mov	ax,[bp-2h]
+	mov	dx,0Ch
 	imul	dx
-	les	bx,[bp+04]
+	les	bx,[bp+4h]
 	add	bx,ax
-	inc	word ptr es:[bx+0A]
+	inc	word ptr es:[bx+0Ah]
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -10234,97 +10234,97 @@ l0800_4461:
 	ret
 
 l0800_4478:
-	mov	ax,[4658]
-	mov	dx,000C
+	mov	ax,[4658h]
+	mov	dx,0Ch
 	imul	dx
 	mov	cx,ax
-	les	bx,[bp+04]
+	les	bx,[bp+4h]
 	add	bx,ax
-	mov	ax,es:[bx+02]
+	mov	ax,es:[bx+2h]
 	mov	dx,es:[bx]
 	push	ax
-	mov	ax,[465A]
-	mov	bx,000C
+	mov	ax,[465Ah]
+	mov	bx,0Ch
 	push	dx
 	imul	bx
 	mov	dx,ax
-	mov	bx,[bp+04]
+	mov	bx,[bp+4h]
 	add	bx,ax
 	pop	ax
 	add	es:[bx],ax
 	pop	ax
-	adc	es:[bx+02],ax
-	mov	bx,[bp+04]
+	adc	es:[bx+2h],ax
+	mov	bx,[bp+4h]
 	add	bx,cx
-	mov	word ptr es:[bx+02],0000
-	mov	word ptr es:[bx],0000
-	mov	bx,[bp+04]
+	mov	word ptr es:[bx+2h],0h
+	mov	word ptr es:[bx],0h
+	mov	bx,[bp+4h]
 	add	bx,dx
-	inc	word ptr es:[bx+0A]
-	jmp	44DD
+	inc	word ptr es:[bx+0Ah]
+	jmp	44DDh
 
 l0800_44C3:
-	mov	es,[bp+06]
-	mov	ax,es:[si+04]
-	mov	[465A],ax
-	mov	dx,000C
+	mov	es,[bp+6h]
+	mov	ax,es:[si+4h]
+	mov	[465Ah],ax
+	mov	dx,0Ch
 	imul	dx
 	mov	dx,ax
-	mov	bx,[bp+04]
+	mov	bx,[bp+4h]
 	add	bx,ax
-	inc	word ptr es:[bx+0A]
+	inc	word ptr es:[bx+0Ah]
 
 l0800_44DD:
-	les	bx,[bp+04]
+	les	bx,[bp+4h]
 	add	bx,dx
 	mov	si,bx
-	cmp	word ptr es:[bx+04],FF
-	jnz	44C3
+	cmp	word ptr es:[bx+4h],0FFh
+	jnz	44C3h
 
 l0800_44EB:
-	mov	ax,[4658]
-	mov	es:[si+04],ax
-	mov	bx,[bp+04]
+	mov	ax,[4658h]
+	mov	es:[si+4h],ax
+	mov	bx,[bp+4h]
 	add	bx,cx
-	inc	word ptr es:[bx+0A]
-	jmp	4517
+	inc	word ptr es:[bx+0Ah]
+	jmp	4517h
 
 l0800_44FD:
-	mov	es,[bp+06]
-	mov	ax,es:[si+04]
-	mov	[4658],ax
-	mov	dx,000C
+	mov	es,[bp+6h]
+	mov	ax,es:[si+4h]
+	mov	[4658h],ax
+	mov	dx,0Ch
 	imul	dx
 	mov	cx,ax
-	mov	bx,[bp+04]
+	mov	bx,[bp+4h]
 	add	bx,ax
-	inc	word ptr es:[bx+0A]
+	inc	word ptr es:[bx+0Ah]
 
 l0800_4517:
-	les	bx,[bp+04]
+	les	bx,[bp+4h]
 	add	bx,cx
 	mov	si,bx
-	cmp	word ptr es:[bx+04],FF
-	jnz	44FD
+	cmp	word ptr es:[bx+4h],0FFh
+	jnz	44FDh
 
 l0800_4525:
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	463B
-	add	sp,06
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	463Bh
+	add	sp,6h
 	or	ax,ax
-	jz	453B
+	jz	453Bh
 
 l0800_4538:
-	jmp	4478
+	jmp	4478h
 
 l0800_453B:
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	4550
-	add	sp,06
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	4550h
+	add	sp,6h
 
 l0800_454A:
 	pop	di
@@ -10340,65 +10340,65 @@ l0800_454A:
 fn0800_4550 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,0A
+	sub	sp,0Ah
 	push	si
 	push	di
-	mov	word ptr [bp-02],0000
-	mov	word ptr [bp-04],0000
-	mov	word ptr [bp-06],8000
-	mov	word ptr [bp-08],0000
-	mov	word ptr [bp-0A],0001
-	jmp	45D6
+	mov	word ptr [bp-2h],0h
+	mov	word ptr [bp-4h],0h
+	mov	word ptr [bp-6h],8000h
+	mov	word ptr [bp-8h],0h
+	mov	word ptr [bp-0Ah],1h
+	jmp	45D6h
 
 l0800_4573:
 	xor	di,di
-	mov	si,[bp+04]
-	cmp	di,[bp+08]
-	jnc	45C3
+	mov	si,[bp+4h]
+	cmp	di,[bp+8h]
+	jnc	45C3h
 
 l0800_457D:
-	mov	es,[bp+06]
-	mov	ax,es:[si+0A]
-	cmp	ax,[bp-0A]
-	jnz	45BA
+	mov	es,[bp+6h]
+	mov	ax,es:[si+0Ah]
+	cmp	ax,[bp-0Ah]
+	jnz	45BAh
 
 l0800_4589:
-	push	word ptr [bp-0A]
-	push	word ptr [bp-06]
-	push	word ptr [bp-08]
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	8BC2
+	push	word ptr [bp-0Ah]
+	push	word ptr [bp-6h]
+	push	word ptr [bp-8h]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	8BC2h
 	push	dx
 	push	ax
-	call	45E2
-	add	sp,06
-	mov	es,[bp+06]
-	mov	es:[si+08],dx
-	mov	es:[si+06],ax
-	mov	ax,[bp-06]
-	mov	dx,[bp-08]
-	add	[bp-04],dx
-	adc	[bp-02],ax
+	call	45E2h
+	add	sp,6h
+	mov	es,[bp+6h]
+	mov	es:[si+8h],dx
+	mov	es:[si+6h],ax
+	mov	ax,[bp-6h]
+	mov	dx,[bp-8h]
+	add	[bp-4h],dx
+	adc	[bp-2h],ax
 
 l0800_45BA:
-	add	si,0C
+	add	si,0Ch
 	inc	di
-	cmp	di,[bp+08]
-	jc	457D
+	cmp	di,[bp+8h]
+	jc	457Dh
 
 l0800_45C3:
-	inc	word ptr [bp-0A]
-	mov	ax,[bp-06]
-	mov	dx,[bp-08]
-	shr	ax,01
-	rcr	dx,01
-	mov	[bp-06],ax
-	mov	[bp-08],dx
+	inc	word ptr [bp-0Ah]
+	mov	ax,[bp-6h]
+	mov	dx,[bp-8h]
+	shr	ax,1h
+	rcr	dx,1h
+	mov	[bp-6h],ax
+	mov	[bp-8h],dx
 
 l0800_45D6:
-	cmp	word ptr [bp-0A],10
-	jbe	4573
+	cmp	word ptr [bp-0Ah],10h
+	jbe	4573h
 
 l0800_45DC:
 	pop	di
@@ -10413,45 +10413,45 @@ l0800_45DC:
 fn0800_45E2 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
-	mov	bx,[bp+08]
-	mov	word ptr [bp-02],0000
-	mov	word ptr [bp-04],0000
-	jmp	462A
+	sub	sp,4h
+	mov	bx,[bp+8h]
+	mov	word ptr [bp-2h],0h
+	mov	word ptr [bp-4h],0h
+	jmp	462Ah
 
 l0800_45F7:
-	mov	ax,[bp-02]
-	mov	dx,[bp-04]
-	shl	dx,01
-	rcl	ax,01
-	mov	[bp-02],ax
-	mov	[bp-04],dx
-	mov	ax,[bp+04]
-	and	ax,0001
-	or	ax,0000
-	jz	461A
+	mov	ax,[bp-2h]
+	mov	dx,[bp-4h]
+	shl	dx,1h
+	rcl	ax,1h
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
+	mov	ax,[bp+4h]
+	and	ax,1h
+	or	ax,0h
+	jz	461Ah
 
 l0800_4612:
-	or	word ptr [bp-04],01
-	or	word ptr [bp-02],00
+	or	word ptr [bp-4h],1h
+	or	word ptr [bp-2h],0h
 
 l0800_461A:
-	mov	ax,[bp+06]
-	mov	dx,[bp+04]
-	shr	ax,01
-	rcr	dx,01
-	mov	[bp+06],ax
-	mov	[bp+04],dx
+	mov	ax,[bp+6h]
+	mov	dx,[bp+4h]
+	shr	ax,1h
+	rcr	dx,1h
+	mov	[bp+6h],ax
+	mov	[bp+4h],dx
 
 l0800_462A:
 	mov	ax,bx
 	dec	bx
 	or	ax,ax
-	jnz	45F7
+	jnz	45F7h
 
 l0800_4631:
-	mov	dx,[bp-02]
-	mov	ax,[bp-04]
+	mov	dx,[bp-2h]
+	mov	ax,[bp-4h]
 	mov	sp,bp
 	pop	bp
 	ret
@@ -10462,98 +10462,98 @@ l0800_4631:
 fn0800_463B proc
 	push	bp
 	mov	bp,sp
-	sub	sp,0C
+	sub	sp,0Ch
 	push	si
 	push	di
-	mov	di,[bp+08]
-	mov	ax,FFFF
-	mov	dx,FFFF
-	mov	[bp-0A],ax
-	mov	[bp-0C],dx
-	mov	[bp-06],ax
-	mov	[bp-08],dx
+	mov	di,[bp+8h]
+	mov	ax,0FFFFh
+	mov	dx,0FFFFh
+	mov	[bp-0Ah],ax
+	mov	[bp-0Ch],dx
+	mov	[bp-6h],ax
+	mov	[bp-8h],dx
 	xor	cx,cx
-	mov	si,[bp+04]
+	mov	si,[bp+4h]
 	cmp	cx,di
-	jnc	46D5
+	jnc	46D5h
 
 l0800_4661:
-	mov	es,[bp+06]
-	mov	ax,es:[si+02]
+	mov	es,[bp+6h]
+	mov	ax,es:[si+2h]
 	mov	dx,es:[si]
-	mov	[bp-02],ax
-	mov	[bp-04],dx
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
 	or	dx,ax
-	jz	46CD
+	jz	46CDh
 
 l0800_4675:
-	mov	ax,[bp-02]
-	mov	dx,[bp-04]
-	cmp	ax,[bp-06]
-	ja	46AB
+	mov	ax,[bp-2h]
+	mov	dx,[bp-4h]
+	cmp	ax,[bp-6h]
+	ja	46ABh
 
 l0800_4680:
-	jc	4687
+	jc	4687h
 
 l0800_4682:
-	cmp	dx,[bp-08]
-	jnc	46AB
+	cmp	dx,[bp-8h]
+	jnc	46ABh
 
 l0800_4687:
-	mov	ax,[bp-06]
-	mov	dx,[bp-08]
-	mov	[bp-0A],ax
-	mov	[bp-0C],dx
-	mov	ax,[465A]
-	mov	[4658],ax
-	mov	ax,[bp-02]
-	mov	dx,[bp-04]
-	mov	[bp-06],ax
-	mov	[bp-08],dx
-	mov	[465A],cx
-	jmp	46CD
+	mov	ax,[bp-6h]
+	mov	dx,[bp-8h]
+	mov	[bp-0Ah],ax
+	mov	[bp-0Ch],dx
+	mov	ax,[465Ah]
+	mov	[4658h],ax
+	mov	ax,[bp-2h]
+	mov	dx,[bp-4h]
+	mov	[bp-6h],ax
+	mov	[bp-8h],dx
+	mov	[465Ah],cx
+	jmp	46CDh
 
 l0800_46AB:
-	mov	ax,[bp-02]
-	mov	dx,[bp-04]
-	cmp	ax,[bp-0A]
-	ja	46CD
+	mov	ax,[bp-2h]
+	mov	dx,[bp-4h]
+	cmp	ax,[bp-0Ah]
+	ja	46CDh
 
 l0800_46B6:
-	jc	46BD
+	jc	46BDh
 
 l0800_46B8:
-	cmp	dx,[bp-0C]
-	jnc	46CD
+	cmp	dx,[bp-0Ch]
+	jnc	46CDh
 
 l0800_46BD:
-	mov	ax,[bp-02]
-	mov	dx,[bp-04]
-	mov	[bp-0A],ax
-	mov	[bp-0C],dx
-	mov	[4658],cx
+	mov	ax,[bp-2h]
+	mov	dx,[bp-4h]
+	mov	[bp-0Ah],ax
+	mov	[bp-0Ch],dx
+	mov	[4658h],cx
 
 l0800_46CD:
-	add	si,0C
+	add	si,0Ch
 	inc	cx
 	cmp	cx,di
-	jc	4661
+	jc	4661h
 
 l0800_46D5:
-	cmp	word ptr [bp-06],FF
-	jnz	46E1
+	cmp	word ptr [bp-6h],0FFh
+	jnz	46E1h
 
 l0800_46DB:
-	cmp	word ptr [bp-08],FF
-	jz	46ED
+	cmp	word ptr [bp-8h],0FFh
+	jz	46EDh
 
 l0800_46E1:
-	cmp	word ptr [bp-0A],FF
-	jnz	46F5
+	cmp	word ptr [bp-0Ah],0FFh
+	jnz	46F5h
 
 l0800_46E7:
-	cmp	word ptr [bp-0C],FF
-	jnz	46F5
+	cmp	word ptr [bp-0Ch],0FFh
+	jnz	46F5h
 
 l0800_46ED:
 	xor	ax,ax
@@ -10564,7 +10564,7 @@ l0800_46ED:
 	ret
 
 l0800_46F5:
-	mov	ax,0001
+	mov	ax,1h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -10577,21 +10577,21 @@ l0800_46F5:
 fn0800_46FE proc
 	push	bp
 	mov	bp,sp
-	sub	sp,20
+	sub	sp,20h
 	push	si
 	push	di
-	cmp	word ptr [2A05],00
-	ja	471F
+	cmp	word ptr [2A05h],0h
+	ja	471Fh
 
 l0800_470D:
-	jc	4716
+	jc	4716h
 
 l0800_470F:
-	cmp	word ptr [2A03],2A
-	jnc	471F
+	cmp	word ptr [2A03h],2Ah
+	jnc	471Fh
 
 l0800_4716:
-	mov	ax,0007
+	mov	ax,7h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -10601,32 +10601,32 @@ l0800_4716:
 l0800_471F:
 	xor	ax,ax
 	push	ax
-	mov	dx,0028
+	mov	dx,28h
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
 	mov	di,ax
-	add	ax,0024
+	add	ax,24h
 	xor	dx,dx
-	cmp	dx,[2A05]
-	jc	4761
+	cmp	dx,[2A05h]
+	jc	4761h
 
 l0800_4750:
-	ja	4758
+	ja	4758h
 
 l0800_4752:
-	cmp	ax,[2A03]
-	jbe	4761
+	cmp	ax,[2A03h]
+	jbe	4761h
 
 l0800_4758:
-	mov	ax,0007
+	mov	ax,7h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -10637,29 +10637,29 @@ l0800_4761:
 	xor	ax,ax
 	push	ax
 	mov	ax,di
-	add	ax,0020
+	add	ax,20h
 	xor	dx,dx
 	push	dx
 	push	ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3F58
-	add	sp,04
-	mov	cl,08
-	call	8CAA
-	cmp	dx,52
-	jnz	4798
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3F58h
+	add	sp,4h
+	mov	cl,8h
+	call	8CAAh
+	cmp	dx,52h
+	jnz	4798h
 
 l0800_4793:
-	cmp	ax,4E43
-	jz	47A1
+	cmp	ax,4E43h
+	jz	47A1h
 
 l0800_4798:
-	mov	ax,0007
+	mov	ax,7h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -10667,306 +10667,306 @@ l0800_4798:
 	ret
 
 l0800_47A1:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	AD2F
-	add	sp,04
-	mov	[bp-06],dx
-	mov	[bp-08],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0AD2Fh
+	add	sp,4h
+	mov	[bp-6h],dx
+	mov	[bp-8h],ax
 	xor	ax,ax
 	push	ax
-	mov	dx,0002
+	mov	dx,2h
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
 	mov	di,ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	[bp-0A],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	[bp-0Ah],ax
 	or	di,di
-	jz	47F3
+	jz	47F3h
 
 l0800_47F0:
-	dec	word ptr [bp-0A]
+	dec	word ptr [bp-0Ah]
 
 l0800_47F3:
-	mov	ax,[bp-0A]
+	mov	ax,[bp-0Ah]
 	xor	dx,dx
-	mov	cl,09
-	call	8C69
+	mov	cl,9h
+	call	8C69h
 	add	ax,di
-	adc	dx,00
-	mov	[bp-02],dx
-	mov	[bp-04],ax
+	adc	dx,0h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
 	xor	ax,ax
 	push	ax
-	mov	dx,0016
+	mov	dx,16h
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	[bp-1C],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	[bp-1E],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	[bp-10],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	[bp-12],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	[bp-18],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	[bp-1A],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	[bp-16],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	[bp-14],ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	ax,4D5A
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	[bp-1Ch],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	[bp-1Eh],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	[bp-10h],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	[bp-12h],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	[bp-18h],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	[bp-1Ah],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	[bp-16h],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	[bp-14h],ax
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	ax,4D5Ah
 	push	ax
-	call	401E
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	call	401Eh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	xor	ax,ax
 	push	ax
 	push	ax
-	call	409C
-	add	sp,08
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	xor	ax,ax
 	push	ax
 	push	ax
-	call	409C
-	add	sp,08
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-10]
-	call	40BF
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-12]
-	call	40BF
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-14]
-	call	40BF
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-16]
-	call	40BF
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-10h]
+	call	40BFh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-12h]
+	call	40BFh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-14h]
+	call	40BFh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-16h]
+	call	40BFh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	xor	ax,ax
 	push	ax
-	call	401E
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-18]
-	call	40BF
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-1A]
-	call	40BF
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	ax,001E
+	call	401Eh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-18h]
+	call	40BFh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-1Ah]
+	call	40BFh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	ax,1Eh
 	push	ax
-	call	40BF
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-1E]
-	call	40BF
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	call	40BFh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-1Eh]
+	call	40BFh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	xor	ax,ax
 	push	ax
-	call	401E
-	add	sp,06
+	call	401Eh
+	add	sp,6h
 	xor	ax,ax
 	push	ax
-	mov	ax,[bp-1C]
-	add	ax,0020
+	mov	ax,[bp-1Ch]
+	add	ax,20h
 	xor	dx,dx
 	push	dx
 	push	ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	mov	word ptr [bp-0C],0000
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	mov	word ptr [bp-0Ch],0h
 
 l0800_49B5:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3DCF
-	add	sp,04
-	mov	ah,00
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3DCFh
+	add	sp,4h
+	mov	ah,0h
 	mov	di,ax
 	or	di,di
-	jz	4A22
+	jz	4A22h
 
 l0800_49CB:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	[bp-20],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	[bp-20h],ax
 	xor	si,si
-	mov	[bp-0A],di
-	jmp	4A15
+	mov	[bp-0Ah],di
+	jmp	4A15h
 
 l0800_49E3:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3DCF
-	add	sp,04
-	mov	ah,00
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3DCFh
+	add	sp,4h
+	mov	ah,0h
 	add	si,ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	push	si
-	call	40BF
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-20]
-	call	40BF
-	add	sp,06
+	call	40BFh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-20h]
+	call	40BFh
+	add	sp,6h
 
 l0800_4A15:
-	mov	ax,[bp-0A]
-	dec	word ptr [bp-0A]
+	mov	ax,[bp-0Ah]
+	dec	word ptr [bp-0Ah]
 	or	ax,ax
-	jnz	49E3
+	jnz	49E3h
 
 l0800_4A1F:
-	add	[bp-0C],di
+	add	[bp-0Ch],di
 
 l0800_4A22:
 	or	di,di
-	jnz	49B5
+	jnz	49B5h
 
 l0800_4A26:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	AD2F
-	add	sp,04
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0AD2Fh
+	add	sp,4h
 	or	dx,dx
-	jg	4A56
+	jg	4A56h
 
 l0800_4A38:
-	jl	4A3F
+	jl	4A3Fh
 
 l0800_4A3A:
-	cmp	ax,0200
-	jnc	4A56
+	cmp	ax,200h
+	jnc	4A56h
 
 l0800_4A3F:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	AD2F
-	add	sp,04
-	mov	dx,0200
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0AD2Fh
+	add	sp,4h
+	mov	dx,200h
 	sub	dx,ax
 	mov	di,dx
-	jmp	4A81
+	jmp	4A81h
 
 l0800_4A56:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	AD2F
-	add	sp,04
-	mov	dx,0010
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0AD2Fh
+	add	sp,4h
+	mov	dx,10h
 	sub	dx,ax
-	and	dx,0F
+	and	dx,0Fh
 	mov	di,dx
-	jmp	4A81
+	jmp	4A81h
 
 l0800_4A70:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	al,00
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	al,0h
 	push	ax
-	call	4047
-	add	sp,06
+	call	4047h
+	add	sp,6h
 
 l0800_4A81:
 	mov	ax,di
 	dec	di
 	or	ax,ax
-	jnz	4A70
+	jnz	4A70h
 
 l0800_4A88:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	AD2F
-	add	sp,04
-	mov	cl,04
-	call	8C8A
-	mov	[bp-0E],ax
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0AD2Fh
+	add	sp,4h
+	mov	cl,4h
+	call	8C8Ah
+	mov	[bp-0Eh],ax
 	xor	ax,ax
 	push	ax
-	push	word ptr [bp-06]
-	push	word ptr [bp-08]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	call	5374
+	push	word ptr [bp-6h]
+	push	word ptr [bp-8h]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	call	5374h
 	mov	dx,ax
 	or	dx,dx
-	jz	4AC4
+	jz	4AC4h
 
 l0800_4ABE:
 	pop	di
@@ -10976,77 +10976,77 @@ l0800_4ABE:
 	ret
 
 l0800_4AC4:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	AD2F
-	add	sp,04
-	mov	[bp-06],dx
-	mov	[bp-08],ax
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0AD2Fh
+	add	sp,4h
+	mov	[bp-6h],dx
+	mov	[bp-8h],ax
 	xor	ax,ax
 	push	ax
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	4194
-	add	sp,04
-	sub	ax,[bp-04]
-	sbb	dx,[bp-02]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	4194h
+	add	sp,4h
+	sub	ax,[bp-4h]
+	sbb	dx,[bp-2h]
 	push	dx
 	push	ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3B0A
-	add	sp,0C
-	mov	di,[bp-08]
-	and	di,01FF
-	mov	dx,[bp-06]
-	mov	ax,[bp-08]
-	mov	cl,09
-	call	8CAA
-	mov	[bp-0A],ax
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3B0Ah
+	add	sp,0Ch
+	mov	di,[bp-8h]
+	and	di,1FFh
+	mov	dx,[bp-6h]
+	mov	ax,[bp-8h]
+	mov	cl,9h
+	call	8CAAh
+	mov	[bp-0Ah],ax
 	or	di,di
-	jz	4B37
+	jz	4B37h
 
 l0800_4B34:
-	inc	word ptr [bp-0A]
+	inc	word ptr [bp-0Ah]
 
 l0800_4B37:
 	xor	ax,ax
 	push	ax
-	mov	dx,0002
+	mov	dx,2h
 	push	ax
 	push	dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	push	di
-	call	40BF
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-0A]
-	call	40BF
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-0C]
-	call	40BF
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-0E]
-	call	40BF
-	add	sp,06
+	call	40BFh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-0Ah]
+	call	40BFh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-0Ch]
+	call	40BFh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-0Eh]
+	call	40BFh
+	add	sp,6h
 	xor	ax,ax
 	pop	di
 	pop	si
@@ -11058,87 +11058,87 @@ l0800_4B37:
 ;;   Called from:
 ;;     0800:1222 (in fn0800_112D)
 fn0800_4B97 proc
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	5DCE
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	5DCEh
+	add	sp,4h
 	or	ax,ax
-	jnz	4BAD
+	jnz	4BADh
 
 l0800_4BA9:
-	mov	ax,0007
+	mov	ax,7h
 	ret
 
 l0800_4BAD:
-	call	5374
+	call	5374h
 	ret
 
 ;; fn0800_4BB1: 0800:4BB1
 ;;   Called from:
 ;;     0800:1229 (in fn0800_112D)
 fn0800_4BB1 proc
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	5DCE
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	5DCEh
+	add	sp,4h
 	or	ax,ax
-	jnz	4BC7
+	jnz	4BC7h
 
 l0800_4BC3:
-	mov	ax,0007
+	mov	ax,7h
 	ret
 
 l0800_4BC7:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	mov	ax,FFFF
-	mov	dx,FFEE
-	push	ax
-	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	ax,601A
-	push	ax
-	call	401E
-	add	sp,06
-	xor	ax,ax
-	mov	dx,0010
+	mov	ax,0FFFFh
+	mov	dx,0FFEEh
 	push	ax
 	push	dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3B0A
-	add	sp,0C
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	ax,601Ah
+	push	ax
+	call	401Eh
+	add	sp,6h
+	xor	ax,ax
+	mov	dx,10h
+	push	ax
+	push	dx
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3B0Ah
+	add	sp,0Ch
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	xor	ax,ax
 	push	ax
 	push	ax
-	call	409C
-	add	sp,08
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	xor	ax,ax
 	push	ax
 	push	ax
-	call	409C
-	add	sp,08
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E27
-	add	sp,04
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E27h
+	add	sp,4h
 	push	ax
-	call	401E
-	add	sp,06
-	call	5374
+	call	401Eh
+	add	sp,6h
+	call	5374h
 	ret
 
 ;; fn0800_4C55: 0800:4C55
@@ -11147,237 +11147,237 @@ l0800_4BC7:
 fn0800_4C55 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,18
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
+	sub	sp,18h
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
 	or	dx,dx
-	jnz	4C72
+	jnz	4C72h
 
 l0800_4C6D:
-	cmp	ax,03F3
-	jz	4C79
+	cmp	ax,3F3h
+	jz	4C79h
 
 l0800_4C72:
-	mov	ax,0007
+	mov	ax,7h
 	mov	sp,bp
 	pop	bp
 	ret
 
 l0800_4C79:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	xor	ax,ax
-	mov	dx,03F3
+	mov	dx,3F3h
 	push	ax
 	push	dx
-	call	409C
-	add	sp,08
+	call	409Ch
+	add	sp,8h
 
 l0800_4C8E:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	mov	[bp-06],dx
-	mov	[bp-08],ax
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-02]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	mov	[bp-6h],dx
+	mov	[bp-8h],ax
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-2h]
 	push	ax
-	call	409C
-	add	sp,08
-	jmp	4CDA
+	call	409Ch
+	add	sp,8h
+	jmp	4CDAh
 
 l0800_4CBC:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
 	push	dx
 	push	ax
-	call	409C
-	add	sp,08
+	call	409Ch
+	add	sp,8h
 
 l0800_4CDA:
-	mov	ax,[bp-08]
-	mov	dx,[bp-06]
-	sub	word ptr [bp-08],01
-	sbb	word ptr [bp-06],00
+	mov	ax,[bp-8h]
+	mov	dx,[bp-6h]
+	sub	word ptr [bp-8h],1h
+	sbb	word ptr [bp-6h],0h
 	or	ax,dx
-	jnz	4CBC
+	jnz	4CBCh
 
 l0800_4CEC:
-	mov	ax,[bp-04]
-	or	ax,[bp-02]
-	jnz	4C8E
+	mov	ax,[bp-4h]
+	or	ax,[bp-2h]
+	jnz	4C8Eh
 
 l0800_4CF4:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	sub	ax,0001
-	sbb	dx,00
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	sub	ax,1h
+	sbb	dx,0h
 	push	dx
 	push	ax
-	call	409C
-	add	sp,08
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	mov	[bp-0A],dx
-	mov	[bp-0C],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	mov	[bp-0E],dx
-	mov	[bp-10],ax
-	mov	ax,[bp-0E]
-	mov	dx,[bp-10]
-	sub	dx,[bp-0C]
-	sbb	ax,[bp-0A]
-	mov	[bp-12],ax
-	mov	[bp-14],dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-0A]
-	push	word ptr [bp-0C]
-	call	409C
-	add	sp,08
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	ax,[bp-0E]
-	mov	dx,[bp-10]
-	sub	dx,01
-	sbb	ax,0000
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	mov	[bp-0Ah],dx
+	mov	[bp-0Ch],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	mov	[bp-0Eh],dx
+	mov	[bp-10h],ax
+	mov	ax,[bp-0Eh]
+	mov	dx,[bp-10h]
+	sub	dx,[bp-0Ch]
+	sbb	ax,[bp-0Ah]
+	mov	[bp-12h],ax
+	mov	[bp-14h],dx
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-0Ah]
+	push	word ptr [bp-0Ch]
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	ax,[bp-0Eh]
+	mov	dx,[bp-10h]
+	sub	dx,1h
+	sbb	ax,0h
 	push	ax
 	push	dx
-	call	409C
-	add	sp,08
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	AD2F
-	add	sp,04
-	mov	[4E8E],dx
-	mov	[4E8C],ax
-	mov	ax,0001
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0AD2Fh
+	add	sp,4h
+	mov	[4E8Eh],dx
+	mov	[4E8Ch],ax
+	mov	ax,1h
 	push	ax
 	xor	ax,ax
-	mov	dx,0004
+	mov	dx,4h
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	mov	ax,[bp-12]
-	mov	dx,[bp-14]
-	mov	[bp-02],ax
-	mov	[bp-04],dx
-	jmp	4DE4
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	mov	ax,[bp-12h]
+	mov	dx,[bp-14h]
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
+	jmp	4DE4h
 
 l0800_4DBE:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
 	push	dx
 	push	ax
-	call	409C
-	add	sp,08
-	sub	word ptr [bp-04],01
-	sbb	word ptr [bp-02],00
+	call	409Ch
+	add	sp,8h
+	sub	word ptr [bp-4h],1h
+	sbb	word ptr [bp-2h],0h
 
 l0800_4DE4:
-	mov	ax,[bp-04]
-	or	ax,[bp-02]
-	jnz	4DBE
+	mov	ax,[bp-4h]
+	or	ax,[bp-2h]
+	jnz	4DBEh
 
 l0800_4DEC:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
 	xor	ax,ax
-	mov	dx,0004
+	mov	dx,4h
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	add	ax,0001
-	adc	dx,00
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	mov	ax,0001
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	add	ax,1h
+	adc	dx,0h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	mov	ax,1h
 	push	ax
-	mov	dx,[bp-02]
-	mov	ax,[bp-04]
-	mov	cl,02
-	call	8C69
+	mov	dx,[bp-2h]
+	mov	ax,[bp-4h]
+	mov	cl,2h
+	call	8C69h
 	push	dx
 	push	ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	jmp	4EDE
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	jmp	4EDEh
 
 l0800_4E41:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	mov	[bp-06],dx
-	mov	[bp-08],ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-06]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	mov	[bp-6h],dx
+	mov	[bp-8h],ax
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-6h]
 	push	ax
-	call	409C
-	add	sp,08
-	mov	ax,[bp-06]
-	mov	dx,[bp-08]
-	and	ax,3FFF
-	mov	[bp-18],dx
-	mov	[bp-16],ax
-	mov	cx,0004
-	mov	bx,4F14
+	call	409Ch
+	add	sp,8h
+	mov	ax,[bp-6h]
+	mov	dx,[bp-8h]
+	and	ax,3FFFh
+	mov	[bp-18h],dx
+	mov	[bp-16h],ax
+	mov	cx,4h
+	mov	bx,4F14h
 
 l0800_4E7C:
 	mov	ax,cs:[bx]
-	cmp	ax,[bp-08]
-	jnz	4E8D
+	cmp	ax,[bp-8h]
+	jnz	4E8Dh
 
 l0800_4E84:
-	mov	ax,cs:[bx+08]
-	cmp	ax,[bp-16]
-	jz	4E94
+	mov	ax,cs:[bx+8h]
+	cmp	ax,[bp-16h]
+	jz	4E94h
 
 l0800_4E8D:
-	add	bx,02
-	loop	4E7C
+	add	bx,2h
+	loop	4E7Ch
 
 l0800_4E92:
-	jmp	4ED7
+	jmp	4ED7h
 
 l0800_4E94:
-	jmp	word ptr cs:[bx+10]
+	jmp	word ptr cs:[bx+10h]
 0800:4E98                         E8 91 00 8B D0 0B D2 74         .......t
 0800:4EA0 3D 8B E5 5D C3 FF 36 E5 29 FF 36 E3 29 E8 AD EF =..]..6.).6.)...
 0800:4EB0 83 C4 04 89 56 FE 89 46 FC FF 36 E1 29 FF 36 DF ....V..F..6.).6.
@@ -11385,39 +11385,39 @@ l0800_4E94:
 0800:4ED0 83 16 8E 4E 00 EB 07                            ...N...        
 
 l0800_4ED7:
-	mov	ax,0009
+	mov	ax,9h
 	mov	sp,bp
 	pop	bp
 	ret
 
 l0800_4EDE:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	AD2F
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0AD2Fh
+	add	sp,4h
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	4194
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	4194h
+	add	sp,4h
 	pop	bx
 	cmp	bx,dx
 	pop	dx
-	jnc	4F05
+	jnc	4F05h
 
 l0800_4F02:
-	jmp	4E41
+	jmp	4E41h
 
 l0800_4F05:
-	jnz	4F0E
+	jnz	4F0Eh
 
 l0800_4F07:
 	cmp	dx,ax
-	jnc	4F0E
+	jnc	4F0Eh
 
 l0800_4F0B:
-	jmp	4E41
+	jmp	4E41h
 
 l0800_4F0E:
 	xor	ax,ax
@@ -11431,243 +11431,243 @@ l0800_4F0E:
 fn0800_4F2C proc
 	push	bp
 	mov	bp,sp
-	sub	sp,1A
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	mov	cl,02
-	call	8C69
-	mov	[bp-10],dx
-	mov	[bp-12],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	AD2F
-	add	sp,04
-	mov	[bp-18],dx
-	mov	[bp-1A],ax
-	cmp	word ptr [bp-10],00
-	jc	4F95
+	sub	sp,1Ah
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	mov	cl,2h
+	call	8C69h
+	mov	[bp-10h],dx
+	mov	[bp-12h],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0AD2Fh
+	add	sp,4h
+	mov	[bp-18h],dx
+	mov	[bp-1Ah],ax
+	cmp	word ptr [bp-10h],0h
+	jc	4F95h
 
 l0800_4F65:
-	ja	4F6D
+	ja	4F6Dh
 
 l0800_4F67:
-	cmp	word ptr [bp-12],12
-	jbe	4F95
+	cmp	word ptr [bp-12h],12h
+	jbe	4F95h
 
 l0800_4F6D:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	mov	[bp-14],dx
-	mov	[bp-16],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	mov	[bp-0C],dx
-	mov	[bp-0E],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	mov	[bp-14h],dx
+	mov	[bp-16h],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	mov	[bp-0Ch],dx
+	mov	[bp-0Eh],ax
 
 l0800_4F95:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3F58
-	add	sp,04
-	mov	cl,08
-	call	8CAA
-	cmp	dx,52
-	jnz	4FB5
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3F58h
+	add	sp,4h
+	mov	cl,8h
+	call	8CAAh
+	cmp	dx,52h
+	jnz	4FB5h
 
 l0800_4FAD:
-	cmp	ax,4E43
-	jnz	4FB5
+	cmp	ax,4E43h
+	jnz	4FB5h
 
 l0800_4FB2:
-	jmp	50E6
+	jmp	50E6h
 
 l0800_4FB5:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	dx,[bp-10]
-	mov	ax,[bp-12]
-	mov	cl,02
-	call	8CAA
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	dx,[bp-10h]
+	mov	ax,[bp-12h]
+	mov	cl,2h
+	call	8CAAh
 	push	dx
 	push	ax
-	call	409C
-	add	sp,08
+	call	409Ch
+	add	sp,8h
 	xor	ax,ax
 	push	ax
-	push	word ptr [bp-18]
-	push	word ptr [bp-1A]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [bp-10]
-	push	word ptr [bp-12]
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3B0A
-	add	sp,0C
-	jmp	50BC
+	push	word ptr [bp-18h]
+	push	word ptr [bp-1Ah]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [bp-10h]
+	push	word ptr [bp-12h]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3B0Ah
+	add	sp,0Ch
+	jmp	50BCh
 
 l0800_5006:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
 	xor	ax,ax
-	mov	dx,0004
+	mov	dx,4h
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	xor	ax,ax
-	mov	dx,03EC
+	mov	dx,3ECh
 	push	ax
 	push	dx
-	call	409C
-	add	sp,08
+	call	409Ch
+	add	sp,8h
 
 l0800_5034:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	mov	[bp-04],dx
-	mov	[bp-06],ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-04]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	mov	[bp-4h],dx
+	mov	[bp-6h],ax
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-4h]
 	push	ax
-	call	409C
-	add	sp,08
-	mov	ax,[bp-06]
-	or	ax,[bp-04]
-	jz	50B1
+	call	409Ch
+	add	sp,8h
+	mov	ax,[bp-6h]
+	or	ax,[bp-4h]
+	jz	50B1h
 
 l0800_5062:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	sub	ax,0001
-	sbb	dx,00
-	mov	[bp-08],dx
-	mov	[bp-0A],ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-08]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	sub	ax,1h
+	sbb	dx,0h
+	mov	[bp-8h],dx
+	mov	[bp-0Ah],ax
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-8h]
 	push	ax
-	call	409C
-	add	sp,08
-	mov	dx,[bp-04]
-	mov	ax,[bp-06]
-	mov	cl,02
-	call	8C69
+	call	409Ch
+	add	sp,8h
+	mov	dx,[bp-4h]
+	mov	ax,[bp-6h]
+	mov	cl,2h
+	call	8C69h
 	push	dx
 	push	ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3B0A
-	add	sp,0C
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3B0Ah
+	add	sp,0Ch
 
 l0800_50B1:
-	mov	ax,[bp-06]
-	or	ax,[bp-04]
-	jz	50BC
+	mov	ax,[bp-6h]
+	or	ax,[bp-4h]
+	jz	50BCh
 
 l0800_50B9:
-	jmp	5034
+	jmp	5034h
 
 l0800_50BC:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3F58
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3F58h
+	add	sp,4h
 	or	dx,dx
-	jnz	50D6
+	jnz	50D6h
 
 l0800_50CE:
-	cmp	ax,03EC
-	jnz	50D6
+	cmp	ax,3ECh
+	jnz	50D6h
 
 l0800_50D3:
-	jmp	5006
+	jmp	5006h
 
 l0800_50D6:
-	add	word ptr [4E8C],04
-	adc	word ptr [4E8E],00
+	add	word ptr [4E8Ch],4h
+	adc	word ptr [4E8Eh],0h
 	xor	ax,ax
 	mov	sp,bp
 	pop	bp
 	ret
 
 l0800_50E6:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	dx,[bp-14]
-	mov	ax,[bp-16]
-	mov	cl,02
-	call	8CAA
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	dx,[bp-14h]
+	mov	ax,[bp-16h]
+	mov	cl,2h
+	call	8CAAh
 	push	dx
 	push	ax
-	call	409C
-	add	sp,08
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	AD2F
-	add	sp,04
-	mov	[bp-04],dx
-	mov	[bp-06],ax
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0AD2Fh
+	add	sp,4h
+	mov	[bp-4h],dx
+	mov	[bp-6h],ax
 	xor	ax,ax
 	push	ax
-	push	word ptr [4E8E]
-	push	word ptr [4E8C]
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-0C]
-	push	word ptr [bp-0E]
-	call	409C
-	add	sp,08
-	add	word ptr [4E8C],04
-	adc	word ptr [4E8E],00
+	push	word ptr [4E8Eh]
+	push	word ptr [4E8Ch]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-0Ch]
+	push	word ptr [bp-0Eh]
+	call	409Ch
+	add	sp,8h
+	add	word ptr [4E8Ch],4h
+	adc	word ptr [4E8Eh],0h
 	xor	ax,ax
 	push	ax
-	push	word ptr [bp-04]
-	push	word ptr [bp-06]
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	call	5374
-	mov	[bp-02],ax
+	push	word ptr [bp-4h]
+	push	word ptr [bp-6h]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	call	5374h
+	mov	[bp-2h],ax
 	xor	ax,ax
 	push	ax
-	mov	ax,[bp-18]
-	mov	dx,[bp-1A]
-	add	dx,[bp-12]
-	adc	ax,[bp-10]
+	mov	ax,[bp-18h]
+	mov	dx,[bp-1Ah]
+	add	dx,[bp-12h]
+	adc	ax,[bp-10h]
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	mov	ax,[bp-02]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	mov	ax,[bp-2h]
 	mov	sp,bp
 	pop	bp
 	ret
@@ -11676,19 +11676,19 @@ l0800_50E6:
 ;;   Called from:
 ;;     0800:1237 (in fn0800_112D)
 fn0800_518F proc
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	5DCE
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	5DCEh
+	add	sp,4h
 	or	ax,ax
-	jnz	51A5
+	jnz	51A5h
 
 l0800_51A1:
-	mov	ax,0007
+	mov	ax,7h
 	ret
 
 l0800_51A5:
-	call	5374
+	call	5374h
 	ret
 
 ;; fn0800_51A9: 0800:51A9
@@ -11697,84 +11697,84 @@ l0800_51A5:
 fn0800_51A9 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
+	sub	sp,4h
 	push	si
-	jmp	533D
+	jmp	533Dh
 
 l0800_51B3:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E9A
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E9Ah
+	add	sp,4h
 	or	ax,ax
-	jz	51D5
+	jz	51D5h
 
 l0800_51C5:
-	cmp	ax,0001
-	jz	51F5
+	cmp	ax,1h
+	jz	51F5h
 
 l0800_51CA:
-	cmp	ax,0003
-	jnz	51D2
+	cmp	ax,3h
+	jnz	51D2h
 
 l0800_51CF:
-	jmp	52D8
+	jmp	52D8h
 
 l0800_51D2:
-	jmp	5301
+	jmp	5301h
 
 l0800_51D5:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3DCF
-	add	sp,04
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3DCFh
+	add	sp,4h
 	push	ax
-	call	4047
-	add	sp,06
-	jmp	533D
+	call	4047h
+	add	sp,6h
+	jmp	533Dh
 
 l0800_51F5:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
 	push	dx
 	push	ax
-	call	409C
-	add	sp,08
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	word ptr [bp-02],0000
-	mov	[bp-04],ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	word ptr [bp-2h],0h
+	mov	[bp-4h],ax
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	push	ax
-	call	40BF
-	add	sp,06
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3F58
-	add	sp,04
-	mov	cl,08
-	call	8CAA
-	cmp	dx,52
-	jnz	52BA
+	call	40BFh
+	add	sp,6h
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3F58h
+	add	sp,4h
+	mov	cl,8h
+	call	8CAAh
+	cmp	dx,52h
+	jnz	52BAh
 
 l0800_5250:
-	cmp	ax,4E43
-	jnz	52BA
+	cmp	ax,4E43h
+	jnz	52BAh
 
 l0800_5255:
-	call	5374
+	call	5374h
 	mov	si,ax
 	or	si,si
-	jz	5263
+	jz	5263h
 
 l0800_525E:
 	pop	si
@@ -11783,122 +11783,122 @@ l0800_525E:
 	ret
 
 l0800_5263:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	mov	ax,[2A09]
-	mov	dx,[2A07]
-	add	dx,02
-	adc	ax,0000
+	mov	ax,[2A09h]
+	mov	dx,[2A07h]
+	add	dx,2h
+	adc	ax,0h
 	neg	ax
 	neg	dx
-	sbb	ax,0000
+	sbb	ax,0h
 	push	ax
 	push	dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [2A07]
-	call	40BF
-	add	sp,06
-	mov	ax,0001
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [2A07h]
+	call	40BFh
+	add	sp,6h
+	mov	ax,1h
 	push	ax
-	push	word ptr [2A09]
-	push	word ptr [2A07]
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	jmp	533D
+	push	word ptr [2A09h]
+	push	word ptr [2A07h]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	jmp	533Dh
 
 l0800_52BA:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3B0A
-	add	sp,0C
-	jmp	533D
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3B0Ah
+	add	sp,0Ch
+	jmp	533Dh
 
 l0800_52D8:
 	xor	si,si
-	jmp	52FA
+	jmp	52FAh
 
 l0800_52DC:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3DCF
-	add	sp,04
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3DCFh
+	add	sp,4h
 	push	ax
-	call	4047
-	add	sp,06
+	call	4047h
+	add	sp,6h
 	inc	si
 
 l0800_52FA:
-	cmp	si,03
-	jnz	52DC
+	cmp	si,3h
+	jnz	52DCh
 
 l0800_52FF:
-	jmp	533D
+	jmp	533Dh
 
 l0800_5301:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	4194
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	4194h
+	add	sp,4h
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	AD2F
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0AD2Fh
+	add	sp,4h
 	pop	bx
 	pop	cx
 	sub	cx,ax
 	sbb	bx,dx
 	push	bx
 	push	cx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3B0A
-	add	sp,0C
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3B0Ah
+	add	sp,0Ch
 
 l0800_533D:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	AD2F
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0AD2Fh
+	add	sp,4h
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	4194
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	4194h
+	add	sp,4h
 	pop	bx
 	cmp	bx,dx
 	pop	dx
-	jnc	5364
+	jnc	5364h
 
 l0800_5361:
-	jmp	51B3
+	jmp	51B3h
 
 l0800_5364:
-	jnz	536D
+	jnz	536Dh
 
 l0800_5366:
 	cmp	dx,ax
-	jnc	536D
+	jnc	536Dh
 
 l0800_536A:
-	jmp	51B3
+	jmp	51B3h
 
 l0800_536D:
 	xor	ax,ax
@@ -11920,42 +11920,42 @@ l0800_536D:
 fn0800_5374 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,0E
+	sub	sp,0Eh
 	push	si
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	AD2F
-	add	sp,04
-	mov	[bp-0A],dx
-	mov	[bp-0C],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	and	ax,0003
-	mov	[2A21],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	mov	[2A09],dx
-	mov	[2A07],ax
-	cmp	word ptr [2A21],00
-	jnz	53EF
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0AD2Fh
+	add	sp,4h
+	mov	[bp-0Ah],dx
+	mov	[bp-0Ch],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	and	ax,3h
+	mov	[2A21h],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	mov	[2A09h],dx
+	mov	[2A07h],ax
+	cmp	word ptr [2A21h],0h
+	jnz	53EFh
 
 l0800_53BF:
-	push	word ptr [2A09]
+	push	word ptr [2A09h]
 	push	ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3B0A
-	add	sp,0C
-	mov	ax,[2A09]
-	mov	dx,[2A07]
-	mov	[2A05],ax
-	mov	[2A03],dx
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3B0Ah
+	add	sp,0Ch
+	mov	ax,[2A09h]
+	mov	dx,[2A07h]
+	mov	[2A05h],ax
+	mov	[2A03h],dx
 	xor	ax,ax
 	pop	si
 	mov	sp,bp
@@ -11963,208 +11963,208 @@ l0800_53BF:
 	ret
 
 l0800_53EF:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	mov	[2A05],dx
-	mov	[2A03],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E27
-	add	sp,04
-	mov	[2E4B],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E27
-	add	sp,04
-	mov	[2E49],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E27
-	add	sp,04
-	push	word ptr [2A05]
-	push	word ptr [2A03]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	2D0A
-	add	sp,08
-	cmp	ax,[2E49]
-	jz	5458
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	mov	[2A05h],dx
+	mov	[2A03h],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E27h
+	add	sp,4h
+	mov	[2E4Bh],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E27h
+	add	sp,4h
+	mov	[2E49h],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E27h
+	add	sp,4h
+	push	word ptr [2A05h]
+	push	word ptr [2A03h]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	2D0Ah
+	add	sp,8h
+	cmp	ax,[2E49h]
+	jz	5458h
 
 l0800_5450:
-	mov	ax,0005
+	mov	ax,5h
 	pop	si
 	mov	sp,bp
 	pop	bp
 	ret
 
 l0800_5458:
-	mov	ax,0001
-	mov	dx,000F
+	mov	ax,1h
+	mov	dx,0Fh
 	push	ax
 	push	dx
-	call	4311
-	add	sp,04
-	mov	[bp-06],dx
-	mov	[bp-08],ax
+	call	4311h
+	add	sp,4h
+	mov	[bp-6h],dx
+	mov	[bp-8h],ax
 	inc	dx
-	mov	[2E73],dx
-	mov	word ptr [2E71],0000
-	mov	ax,0001
-	mov	dx,000F
+	mov	[2E73h],dx
+	mov	word ptr [2E71h],0h
+	mov	ax,1h
+	mov	dx,0Fh
 	push	ax
 	push	dx
-	call	4311
-	add	sp,04
-	mov	[bp-02],dx
-	mov	[bp-04],ax
+	call	4311h
+	add	sp,4h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
 	inc	dx
-	mov	[2E5B],dx
-	mov	word ptr [2E59],0000
-	mov	ax,[2E73]
-	mov	dx,[2E71]
-	add	dx,FD
-	mov	[2E6F],ax
-	mov	[2E6D],dx
-	mov	ax,[2E5B]
-	mov	dx,[2E59]
-	add	dx,[2E31]
-	mov	[2E57],ax
-	mov	[2E55],dx
-	mov	word ptr [2E4D],0000
+	mov	[2E5Bh],dx
+	mov	word ptr [2E59h],0h
+	mov	ax,[2E73h]
+	mov	dx,[2E71h]
+	add	dx,0FDh
+	mov	[2E6Fh],ax
+	mov	[2E6Dh],dx
+	mov	ax,[2E5Bh]
+	mov	dx,[2E59h]
+	add	dx,[2E31h]
+	mov	[2E57h],ax
+	mov	[2E55h],dx
+	mov	word ptr [2E4Dh],0h
 	xor	si,si
-	mov	word ptr [2E45],0000
-	mov	word ptr [29FD],0000
-	mov	word ptr [29FB],0000
-	mov	word ptr [2A01],0000
-	mov	word ptr [29FF],0000
-	mov	ax,[2E4F]
-	mov	[bp-0E],ax
-	mov	ax,0001
+	mov	word ptr [2E45h],0h
+	mov	word ptr [29FDh],0h
+	mov	word ptr [29FBh],0h
+	mov	word ptr [2A01h],0h
+	mov	word ptr [29FFh],0h
+	mov	ax,[2E4Fh]
+	mov	[bp-0Eh],ax
+	mov	ax,1h
 	push	ax
-	call	5C1A
-	add	sp,02
+	call	5C1Ah
+	add	sp,2h
 	or	ax,ax
-	jz	5504
+	jz	5504h
 
 l0800_54F3:
-	cmp	word ptr [2A25],02
-	jz	5504
+	cmp	word ptr [2A25h],2h
+	jz	5504h
 
 l0800_54FA:
-	cmp	word ptr [2A25],07
-	jz	5504
+	cmp	word ptr [2A25h],7h
+	jz	5504h
 
 l0800_5501:
-	mov	si,000A
+	mov	si,0Ah
 
 l0800_5504:
 	or	si,si
-	jnz	555D
+	jnz	555Dh
 
 l0800_5508:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	call	5C1A
-	add	sp,02
+	call	5C1Ah
+	add	sp,2h
 	or	ax,ax
-	jz	5557
+	jz	5557h
 
 l0800_5516:
-	cmp	word ptr [2A23],01
-	jz	554B
+	cmp	word ptr [2A23h],1h
+	jz	554Bh
 
 l0800_551D:
-	mov	ax,0010
+	mov	ax,10h
 	push	ax
-	call	5C1A
-	add	sp,02
+	call	5C1Ah
+	add	sp,2h
 	mov	dx,ax
-	cmp	word ptr [2A25],02
-	jnz	553B
+	cmp	word ptr [2A25h],2h
+	jnz	553Bh
 
 l0800_5530:
-	cmp	word ptr [2E4F],00
-	jnz	553B
+	cmp	word ptr [2E4Fh],0h
+	jnz	553Bh
 
 l0800_5537:
-	mov	[2E4F],dx
+	mov	[2E4Fh],dx
 
 l0800_553B:
-	cmp	[2E4F],dx
-	jz	554B
+	cmp	[2E4Fh],dx
+	jz	554Bh
 
 l0800_5541:
-	cmp	word ptr [2E4F],00
-	jz	554B
+	cmp	word ptr [2E4Fh],0h
+	jz	554Bh
 
 l0800_5548:
-	mov	si,000C
+	mov	si,0Ch
 
 l0800_554B:
-	cmp	word ptr [2E4F],00
-	jnz	555D
+	cmp	word ptr [2E4Fh],0h
+	jnz	555Dh
 
 l0800_5552:
-	mov	si,000B
-	jmp	555D
+	mov	si,0Bh
+	jmp	555Dh
 
 l0800_5557:
-	mov	word ptr [2E4F],0000
+	mov	word ptr [2E4Fh],0h
 
 l0800_555D:
 	or	si,si
-	jnz	557C
+	jnz	557Ch
 
 l0800_5561:
-	mov	ax,[2A21]
-	cmp	ax,0001
-	jz	5570
+	mov	ax,[2A21h]
+	cmp	ax,1h
+	jz	5570h
 
 l0800_5569:
-	cmp	ax,0002
-	jz	5577
+	cmp	ax,2h
+	jz	5577h
 
 l0800_556E:
-	jmp	557C
+	jmp	557Ch
 
 l0800_5570:
-	call	55E8
+	call	55E8h
 	mov	si,ax
-	jmp	557C
+	jmp	557Ch
 
 l0800_5577:
-	call	579B
+	call	579Bh
 	mov	si,ax
 
 l0800_557C:
-	mov	ax,[bp-0E]
-	mov	[2E4F],ax
-	push	word ptr [bp-06]
-	push	word ptr [bp-08]
-	call	4346
-	add	sp,04
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	4346
-	add	sp,04
-	add	word ptr [2A03],12
-	adc	word ptr [2A05],00
+	mov	ax,[bp-0Eh]
+	mov	[2E4Fh],ax
+	push	word ptr [bp-6h]
+	push	word ptr [bp-8h]
+	call	4346h
+	add	sp,4h
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	4346h
+	add	sp,4h
+	add	word ptr [2A03h],12h
+	adc	word ptr [2A05h],0h
 	xor	ax,ax
 	push	ax
-	mov	ax,[bp-0A]
-	mov	dx,[bp-0C]
-	add	dx,[2A03]
-	adc	ax,[2A05]
+	mov	ax,[bp-0Ah]
+	mov	dx,[bp-0Ch]
+	add	dx,[2A03h]
+	adc	ax,[2A05h]
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
 	or	si,si
-	jz	55D0
+	jz	55D0h
 
 l0800_55C9:
 	mov	ax,si
@@ -12174,12 +12174,12 @@ l0800_55C9:
 	ret
 
 l0800_55D0:
-	mov	ax,[2E4D]
-	cmp	ax,[2E4B]
-	jz	55E1
+	mov	ax,[2E4Dh]
+	cmp	ax,[2E4Bh]
+	jz	55E1h
 
 l0800_55D9:
-	mov	ax,0006
+	mov	ax,6h
 	pop	si
 	mov	sp,bp
 	pop	bp
@@ -12198,99 +12198,99 @@ l0800_55E1:
 fn0800_55E8 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
-	jmp	574B
+	sub	sp,4h
+	jmp	574Bh
 
 l0800_55F1:
-	mov	ax,0010
+	mov	ax,10h
 	push	ax
 	push	ds
-	mov	ax,290F
+	mov	ax,290Fh
 	push	ax
-	call	5A24
-	add	sp,06
-	mov	ax,0010
-	push	ax
-	push	ds
-	mov	ax,284F
-	push	ax
-	call	5A24
-	add	sp,06
-	mov	ax,0010
+	call	5A24h
+	add	sp,6h
+	mov	ax,10h
 	push	ax
 	push	ds
-	mov	ax,278F
+	mov	ax,284Fh
 	push	ax
-	call	5A24
-	add	sp,06
-	mov	ax,0010
+	call	5A24h
+	add	sp,6h
+	mov	ax,10h
 	push	ax
-	call	5C39
-	add	sp,02
-	mov	word ptr [bp-02],0000
-	mov	[bp-04],ax
-	jmp	5736
+	push	ds
+	mov	ax,278Fh
+	push	ax
+	call	5A24h
+	add	sp,6h
+	mov	ax,10h
+	push	ax
+	call	5C39h
+	add	sp,2h
+	mov	word ptr [bp-2h],0h
+	mov	[bp-4h],ax
+	jmp	5736h
 
 l0800_5633:
 	push	ds
-	mov	ax,290F
+	mov	ax,290Fh
 	push	ax
-	call	5A8D
-	add	sp,04
-	mov	[2E47],ax
-	add	[29FF],ax
-	adc	word ptr [2A01],00
-	cmp	word ptr [2E47],00
-	jnz	5654
+	call	5A8Dh
+	add	sp,4h
+	mov	[2E47h],ax
+	add	[29FFh],ax
+	adc	word ptr [2A01h],0h
+	cmp	word ptr [2E47h],0h
+	jnz	5654h
 
 l0800_5651:
-	jmp	56E6
+	jmp	56E6h
 
 l0800_5654:
-	jmp	5664
+	jmp	5664h
 
 l0800_5656:
-	call	5B15
-	xor	al,[2E4F]
+	call	5B15h
+	xor	al,[2E4Fh]
 	push	ax
-	call	5D2F
-	add	sp,02
+	call	5D2Fh
+	add	sp,2h
 
 l0800_5664:
-	mov	ax,[2E47]
-	dec	word ptr [2E47]
+	mov	ax,[2E47h]
+	dec	word ptr [2E47h]
 	or	ax,ax
-	jnz	5656
+	jnz	5656h
 
 l0800_566F:
-	test	word ptr [2E4F],0001
-	jz	5684
+	test	word ptr [2E4Fh],1h
+	jz	5684h
 
 l0800_5677:
-	mov	ax,[2E4F]
-	shr	ax,01
-	or	ax,8000
-	mov	[2E4F],ax
-	jmp	5688
+	mov	ax,[2E4Fh]
+	shr	ax,1h
+	or	ax,8000h
+	mov	[2E4Fh],ax
+	jmp	5688h
 
 l0800_5684:
-	shr	word ptr [2E4F],01
+	shr	word ptr [2E4Fh],1h
 
 l0800_5688:
-	les	bx,[2E6D]
-	mov	al,es:[bx+02]
-	mov	ah,00
+	les	bx,[2E6Dh]
+	mov	al,es:[bx+2h]
+	mov	ah,0h
 	push	ax
 	xor	ax,ax
-	mov	dl,es:[bx+01]
-	mov	dh,00
-	mov	cl,08
+	mov	dl,es:[bx+1h]
+	mov	dh,0h
+	mov	cl,8h
 	shl	dx,cl
 	add	ax,dx
 	pop	dx
-	adc	dx,00
+	adc	dx,0h
 	mov	bl,es:[bx]
-	mov	bh,00
+	mov	bh,0h
 	push	ax
 	mov	ax,bx
 	push	dx
@@ -12301,111 +12301,111 @@ l0800_5688:
 	pop	ax
 	add	ax,cx
 	adc	dx,bx
-	mov	cl,[2E45]
-	call	8C69
+	mov	cl,[2E45h]
+	call	8C69h
 	push	ax
-	mov	ax,0001
-	mov	cl,[2E45]
+	mov	ax,1h
+	mov	cl,[2E45h]
 	shl	ax,cl
 	dec	ax
 	push	dx
 	cwd
-	mov	bx,[29FD]
-	mov	cx,[29FB]
+	mov	bx,[29FDh]
+	mov	cx,[29FBh]
 	and	cx,ax
 	and	bx,dx
 	pop	ax
 	pop	dx
 	add	dx,cx
 	adc	ax,bx
-	mov	[29FD],ax
-	mov	[29FB],dx
+	mov	[29FDh],ax
+	mov	[29FBh],dx
 
 l0800_56E6:
-	mov	ax,[bp-04]
-	or	ax,[bp-02]
-	jz	574B
+	mov	ax,[bp-4h]
+	or	ax,[bp-2h]
+	jz	574Bh
 
 l0800_56EE:
 	push	ds
-	mov	ax,284F
+	mov	ax,284Fh
 	push	ax
-	call	5A8D
-	add	sp,04
+	call	5A8Dh
+	add	sp,4h
 	inc	ax
-	mov	[2E2B],ax
+	mov	[2E2Bh],ax
 	push	ds
-	mov	ax,278F
+	mov	ax,278Fh
 	push	ax
-	call	5A8D
-	add	sp,04
-	add	ax,0002
-	mov	[2E29],ax
-	add	[29FF],ax
-	adc	word ptr [2A01],00
-	jmp	572B
+	call	5A8Dh
+	add	sp,4h
+	add	ax,2h
+	mov	[2E29h],ax
+	add	[29FFh],ax
+	adc	word ptr [2A01h],0h
+	jmp	572Bh
 
 l0800_5719:
-	les	bx,[2E55]
-	sub	bx,[2E2B]
+	les	bx,[2E55h]
+	sub	bx,[2E2Bh]
 	mov	al,es:[bx]
 	push	ax
-	call	5D2F
-	add	sp,02
+	call	5D2Fh
+	add	sp,2h
 
 l0800_572B:
-	mov	ax,[2E29]
-	dec	word ptr [2E29]
+	mov	ax,[2E29h]
+	dec	word ptr [2E29h]
 	or	ax,ax
-	jnz	5719
+	jnz	5719h
 
 l0800_5736:
-	mov	ax,[bp-04]
-	mov	dx,[bp-02]
-	sub	word ptr [bp-04],01
-	sbb	word ptr [bp-02],00
+	mov	ax,[bp-4h]
+	mov	dx,[bp-2h]
+	sub	word ptr [bp-4h],1h
+	sbb	word ptr [bp-2h],0h
 	or	ax,dx
-	jz	574B
+	jz	574Bh
 
 l0800_5748:
-	jmp	5633
+	jmp	5633h
 
 l0800_574B:
-	mov	ax,[2A01]
-	mov	dx,[29FF]
-	cmp	ax,[2A09]
-	jnc	575B
+	mov	ax,[2A01h]
+	mov	dx,[29FFh]
+	cmp	ax,[2A09h]
+	jnc	575Bh
 
 l0800_5758:
-	jmp	55F1
+	jmp	55F1h
 
 l0800_575B:
-	jnz	5766
+	jnz	5766h
 
 l0800_575D:
-	cmp	dx,[2A07]
-	jnc	5766
+	cmp	dx,[2A07h]
+	jnc	5766h
 
 l0800_5763:
-	jmp	55F1
+	jmp	55F1h
 
 l0800_5766:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	ax,[2E55]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	ax,[2E55h]
 	xor	dx,dx
-	sub	ax,[2E59]
-	sbb	dx,00
-	sub	ax,[2E31]
-	sbb	dx,00
+	sub	ax,[2E59h]
+	sbb	dx,0h
+	sub	ax,[2E31h]
+	sbb	dx,0h
 	push	dx
 	push	ax
-	mov	ax,[2E59]
-	add	ax,[2E31]
-	push	word ptr [2E5B]
+	mov	ax,[2E59h]
+	add	ax,[2E31h]
+	push	word ptr [2E5Bh]
 	push	ax
-	call	4152
-	add	sp,0C
+	call	4152h
+	add	sp,0Ch
 	xor	ax,ax
 	mov	sp,bp
 	pop	bp
@@ -12415,218 +12415,218 @@ l0800_5766:
 ;;   Called from:
 ;;     0800:5577 (in fn0800_5374)
 fn0800_579B proc
-	jmp	58F2
+	jmp	58F2h
 
 l0800_579E:
-	call	5B15
-	xor	al,[2E4F]
+	call	5B15h
+	xor	al,[2E4Fh]
 	push	ax
-	call	5D2F
-	add	sp,02
-	test	word ptr [2E4F],0001
-	jz	57C1
+	call	5D2Fh
+	add	sp,2h
+	test	word ptr [2E4Fh],1h
+	jz	57C1h
 
 l0800_57B4:
-	mov	ax,[2E4F]
-	shr	ax,01
-	or	ax,8000
-	mov	[2E4F],ax
-	jmp	57C5
+	mov	ax,[2E4Fh]
+	shr	ax,1h
+	or	ax,8000h
+	mov	[2E4Fh],ax
+	jmp	57C5h
 
 l0800_57C1:
-	shr	word ptr [2E4F],01
+	shr	word ptr [2E4Fh],1h
 
 l0800_57C5:
-	add	word ptr [29FF],01
-	adc	word ptr [2A01],00
+	add	word ptr [29FFh],1h
+	adc	word ptr [2A01h],0h
 
 l0800_57CF:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	call	5CD9
-	add	sp,02
+	call	5CD9h
+	add	sp,2h
 	or	ax,ax
-	jz	579E
+	jz	579Eh
 
 l0800_57DD:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	call	5CD9
-	add	sp,02
+	call	5CD9h
+	add	sp,2h
 	or	ax,ax
-	jz	5866
+	jz	5866h
 
 l0800_57EB:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	call	5CD9
-	add	sp,02
+	call	5CD9h
+	add	sp,2h
 	or	ax,ax
-	jnz	580A
+	jnz	580Ah
 
 l0800_57F9:
-	mov	word ptr [2E29],0002
-	call	5B15
-	mov	ah,00
+	mov	word ptr [2E29h],2h
+	call	5B15h
+	mov	ah,0h
 	inc	ax
-	mov	[2E2B],ax
-	jmp	5838
+	mov	[2E2Bh],ax
+	jmp	5838h
 
 l0800_580A:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	call	5CD9
-	add	sp,02
+	call	5CD9h
+	add	sp,2h
 	or	ax,ax
-	jnz	5820
+	jnz	5820h
 
 l0800_5818:
-	mov	word ptr [2E29],0003
-	jmp	5835
+	mov	word ptr [2E29h],3h
+	jmp	5835h
 
 l0800_5820:
-	call	5B15
-	mov	ah,00
-	add	ax,0008
-	mov	[2E29],ax
-	cmp	word ptr [2E29],08
-	jnz	5835
+	call	5B15h
+	mov	ah,0h
+	add	ax,8h
+	mov	[2E29h],ax
+	cmp	word ptr [2E29h],8h
+	jnz	5835h
 
 l0800_5832:
-	jmp	58E8
+	jmp	58E8h
 
 l0800_5835:
-	call	5975
+	call	5975h
 
 l0800_5838:
-	mov	ax,[2E29]
-	add	[29FF],ax
-	adc	word ptr [2A01],00
-	jmp	5858
+	mov	ax,[2E29h]
+	add	[29FFh],ax
+	adc	word ptr [2A01h],0h
+	jmp	5858h
 
 l0800_5846:
-	les	bx,[2E55]
-	sub	bx,[2E2B]
+	les	bx,[2E55h]
+	sub	bx,[2E2Bh]
 	mov	al,es:[bx]
 	push	ax
-	call	5D2F
-	add	sp,02
+	call	5D2Fh
+	add	sp,2h
 
 l0800_5858:
-	mov	ax,[2E29]
-	dec	word ptr [2E29]
+	mov	ax,[2E29h]
+	dec	word ptr [2E29h]
 	or	ax,ax
-	jnz	5846
+	jnz	5846h
 
 l0800_5863:
-	jmp	57CF
+	jmp	57CFh
 
 l0800_5866:
-	call	593F
-	cmp	word ptr [2E29],09
-	jnz	58B7
+	call	593Fh
+	cmp	word ptr [2E29h],9h
+	jnz	58B7h
 
 l0800_5870:
-	call	5A0F
-	mov	ax,[2E47]
-	add	[29FF],ax
-	adc	word ptr [2A01],00
-	jmp	588F
+	call	5A0Fh
+	mov	ax,[2E47h]
+	add	[29FFh],ax
+	adc	word ptr [2A01h],0h
+	jmp	588Fh
 
 l0800_5881:
-	call	5B15
-	xor	al,[2E4F]
+	call	5B15h
+	xor	al,[2E4Fh]
 	push	ax
-	call	5D2F
-	add	sp,02
+	call	5D2Fh
+	add	sp,2h
 
 l0800_588F:
-	mov	ax,[2E47]
-	dec	word ptr [2E47]
+	mov	ax,[2E47h]
+	dec	word ptr [2E47h]
 	or	ax,ax
-	jnz	5881
+	jnz	5881h
 
 l0800_589A:
-	test	word ptr [2E4F],0001
-	jz	58B0
+	test	word ptr [2E4Fh],1h
+	jz	58B0h
 
 l0800_58A2:
-	mov	ax,[2E4F]
-	shr	ax,01
-	or	ax,8000
-	mov	[2E4F],ax
-	jmp	57CF
+	mov	ax,[2E4Fh]
+	shr	ax,1h
+	or	ax,8000h
+	mov	[2E4Fh],ax
+	jmp	57CFh
 
 l0800_58B0:
-	shr	word ptr [2E4F],01
-	jmp	57CF
+	shr	word ptr [2E4Fh],1h
+	jmp	57CFh
 
 l0800_58B7:
-	call	5975
-	mov	ax,[2E29]
-	add	[29FF],ax
-	adc	word ptr [2A01],00
-	jmp	58DA
+	call	5975h
+	mov	ax,[2E29h]
+	add	[29FFh],ax
+	adc	word ptr [2A01h],0h
+	jmp	58DAh
 
 l0800_58C8:
-	les	bx,[2E55]
-	sub	bx,[2E2B]
+	les	bx,[2E55h]
+	sub	bx,[2E2Bh]
 	mov	al,es:[bx]
 	push	ax
-	call	5D2F
-	add	sp,02
+	call	5D2Fh
+	add	sp,2h
 
 l0800_58DA:
-	mov	ax,[2E29]
-	dec	word ptr [2E29]
+	mov	ax,[2E29h]
+	dec	word ptr [2E29h]
 	or	ax,ax
-	jnz	58C8
+	jnz	58C8h
 
 l0800_58E5:
-	jmp	57CF
+	jmp	57CFh
 
 l0800_58E8:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	call	5CD9
-	add	sp,02
+	call	5CD9h
+	add	sp,2h
 
 l0800_58F2:
-	mov	ax,[2A01]
-	mov	dx,[29FF]
-	cmp	ax,[2A09]
-	jnc	5902
+	mov	ax,[2A01h]
+	mov	dx,[29FFh]
+	cmp	ax,[2A09h]
+	jnc	5902h
 
 l0800_58FF:
-	jmp	57CF
+	jmp	57CFh
 
 l0800_5902:
-	jnz	590D
+	jnz	590Dh
 
 l0800_5904:
-	cmp	dx,[2A07]
-	jnc	590D
+	cmp	dx,[2A07h]
+	jnc	590Dh
 
 l0800_590A:
-	jmp	57CF
+	jmp	57CFh
 
 l0800_590D:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	ax,[2E55]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	ax,[2E55h]
 	xor	dx,dx
-	sub	ax,[2E59]
-	sbb	dx,00
-	sub	ax,[2E31]
-	sbb	dx,00
+	sub	ax,[2E59h]
+	sbb	dx,0h
+	sub	ax,[2E31h]
+	sbb	dx,0h
 	push	dx
 	push	ax
-	mov	ax,[2E59]
-	add	ax,[2E31]
-	push	word ptr [2E5B]
+	mov	ax,[2E59h]
+	add	ax,[2E31h]
+	push	word ptr [2E5Bh]
 	push	ax
-	call	4152
-	add	sp,0C
+	call	4152h
+	add	sp,0Ch
 	xor	ax,ax
 	ret
 
@@ -12634,29 +12634,29 @@ l0800_590D:
 ;;   Called from:
 ;;     0800:5866 (in fn0800_579B)
 fn0800_593F proc
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	call	5CD9
-	add	sp,02
-	add	ax,0004
-	mov	[2E29],ax
-	mov	ax,0001
+	call	5CD9h
+	add	sp,2h
+	add	ax,4h
+	mov	[2E29h],ax
+	mov	ax,1h
 	push	ax
-	call	5CD9
-	add	sp,02
+	call	5CD9h
+	add	sp,2h
 	or	ax,ax
-	jz	5974
+	jz	5974h
 
 l0800_595D:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	call	5CD9
-	add	sp,02
-	mov	dx,[2E29]
+	call	5CD9h
+	add	sp,2h
+	mov	dx,[2E29h]
 	dec	dx
-	shl	dx,01
+	shl	dx,1h
 	add	dx,ax
-	mov	[2E29],dx
+	mov	[2E29h],dx
 
 l0800_5974:
 	ret
@@ -12666,90 +12666,90 @@ l0800_5974:
 ;;     0800:5835 (in fn0800_579B)
 ;;     0800:58B7 (in fn0800_579B)
 fn0800_5975 proc
-	mov	word ptr [2E2B],0000
-	mov	ax,0001
+	mov	word ptr [2E2Bh],0h
+	mov	ax,1h
 	push	ax
-	call	5CD9
-	add	sp,02
+	call	5CD9h
+	add	sp,2h
 	or	ax,ax
-	jz	59FA
+	jz	59FAh
 
 l0800_5989:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	call	5CD9
-	add	sp,02
-	mov	[2E2B],ax
-	mov	ax,0001
+	call	5CD9h
+	add	sp,2h
+	mov	[2E2Bh],ax
+	mov	ax,1h
 	push	ax
-	call	5CD9
-	add	sp,02
+	call	5CD9h
+	add	sp,2h
 	or	ax,ax
-	jz	59E3
+	jz	59E3h
 
 l0800_59A4:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	call	5CD9
-	add	sp,02
-	mov	dx,[2E2B]
-	shl	dx,01
+	call	5CD9h
+	add	sp,2h
+	mov	dx,[2E2Bh]
+	shl	dx,1h
 	add	dx,ax
-	or	dx,04
-	mov	[2E2B],dx
-	mov	ax,0001
+	or	dx,4h
+	mov	[2E2Bh],dx
+	mov	ax,1h
 	push	ax
-	call	5CD9
-	add	sp,02
+	call	5CD9h
+	add	sp,2h
 	or	ax,ax
-	jnz	59FA
+	jnz	59FAh
 
 l0800_59CB:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	call	5CD9
-	add	sp,02
-	mov	dx,[2E2B]
-	shl	dx,01
+	call	5CD9h
+	add	sp,2h
+	mov	dx,[2E2Bh]
+	shl	dx,1h
 	add	dx,ax
-	mov	[2E2B],dx
-	jmp	59FA
+	mov	[2E2Bh],dx
+	jmp	59FAh
 
 l0800_59E3:
-	cmp	word ptr [2E2B],00
-	jnz	59FA
+	cmp	word ptr [2E2Bh],0h
+	jnz	59FAh
 
 l0800_59EA:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	call	5CD9
-	add	sp,02
-	add	ax,0002
-	mov	[2E2B],ax
+	call	5CD9h
+	add	sp,2h
+	add	ax,2h
+	mov	[2E2Bh],ax
 
 l0800_59FA:
-	call	5B15
-	mov	ah,00
-	mov	dx,[2E2B]
-	mov	cl,08
+	call	5B15h
+	mov	ah,0h
+	mov	dx,[2E2Bh]
+	mov	cl,8h
 	shl	dx,cl
 	add	dx,ax
 	inc	dx
-	mov	[2E2B],dx
+	mov	[2E2Bh],dx
 	ret
 
 ;; fn0800_5A0F: 0800:5A0F
 ;;   Called from:
 ;;     0800:5870 (in fn0800_579B)
 fn0800_5A0F proc
-	mov	ax,0004
+	mov	ax,4h
 	push	ax
-	call	5CD9
-	add	sp,02
-	shl	ax,01
-	shl	ax,01
-	add	ax,000C
-	mov	[2E47],ax
+	call	5CD9h
+	add	sp,2h
+	shl	ax,1h
+	shl	ax,1h
+	add	ax,0Ch
+	mov	[2E47h],ax
 	ret
 
 ;; fn0800_5A24: 0800:5A24
@@ -12762,51 +12762,51 @@ fn0800_5A24 proc
 	mov	bp,sp
 	push	si
 	push	di
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	43D4
-	add	sp,06
-	mov	ax,0005
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	43D4h
+	add	sp,6h
+	mov	ax,5h
 	push	ax
-	call	5C39
-	add	sp,02
-	mov	[bp+08],ax
+	call	5C39h
+	add	sp,2h
+	mov	[bp+8h],ax
 	or	ax,ax
-	jz	5A89
+	jz	5A89h
 
 l0800_5A49:
-	cmp	word ptr [bp+08],10
-	jbe	5A54
+	cmp	word ptr [bp+8h],10h
+	jbe	5A54h
 
 l0800_5A4F:
-	mov	word ptr [bp+08],0010
+	mov	word ptr [bp+8h],10h
 
 l0800_5A54:
 	xor	di,di
-	mov	si,[bp+04]
-	add	si,0A
-	cmp	di,[bp+08]
-	jnc	5A7A
+	mov	si,[bp+4h]
+	add	si,0Ah
+	cmp	di,[bp+8h]
+	jnc	5A7Ah
 
 l0800_5A61:
-	mov	ax,0004
+	mov	ax,4h
 	push	ax
-	call	5C39
-	add	sp,02
-	mov	es,[bp+06]
+	call	5C39h
+	add	sp,2h
+	mov	es,[bp+6h]
 	mov	es:[si],ax
-	add	si,0C
+	add	si,0Ch
 	inc	di
-	cmp	di,[bp+08]
-	jc	5A61
+	cmp	di,[bp+8h]
+	jc	5A61h
 
 l0800_5A7A:
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	4550
-	add	sp,06
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	4550h
+	add	sp,6h
 
 l0800_5A89:
 	pop	di
@@ -12822,53 +12822,53 @@ l0800_5A89:
 fn0800_5A8D proc
 	push	bp
 	mov	bp,sp
-	sub	sp,02
+	sub	sp,2h
 	push	si
 	push	di
-	mov	word ptr [bp-02],0000
-	mov	di,[bp+04]
-	jmp	5AA5
+	mov	word ptr [bp-2h],0h
+	mov	di,[bp+4h]
+	jmp	5AA5h
 
 l0800_5A9F:
-	add	di,0C
-	inc	word ptr [bp-02]
+	add	di,0Ch
+	inc	word ptr [bp-2h]
 
 l0800_5AA5:
-	mov	es,[bp+06]
-	cmp	word ptr es:[di+0A],00
-	jz	5A9F
+	mov	es,[bp+6h]
+	cmp	word ptr es:[di+0Ah],0h
+	jz	5A9Fh
 
 l0800_5AAF:
-	mov	cl,es:[di+0A]
-	mov	ax,0001
+	mov	cl,es:[di+0Ah]
+	mov	ax,1h
 	shl	ax,cl
 	dec	ax
 	cwd
-	mov	bx,[29FD]
-	mov	cx,[29FB]
+	mov	bx,[29FDh]
+	mov	cx,[29FBh]
 	and	cx,ax
 	and	bx,dx
-	cmp	bx,es:[di+08]
-	jnz	5A9F
+	cmp	bx,es:[di+8h]
+	jnz	5A9Fh
 
 l0800_5ACC:
-	cmp	cx,es:[di+06]
-	jnz	5A9F
+	cmp	cx,es:[di+6h]
+	jnz	5A9Fh
 
 l0800_5AD2:
-	mov	ax,[bp-02]
-	mov	dx,000C
+	mov	ax,[bp-2h]
+	mov	dx,0Ch
 	imul	dx
-	mov	bx,[bp+04]
+	mov	bx,[bp+4h]
 	add	bx,ax
-	push	word ptr es:[bx+0A]
-	call	5C39
-	add	sp,02
-	cmp	word ptr [bp-02],02
-	jnc	5AF8
+	push	word ptr es:[bx+0Ah]
+	call	5C39h
+	add	sp,2h
+	cmp	word ptr [bp-2h],2h
+	jnc	5AF8h
 
 l0800_5AEF:
-	mov	ax,[bp-02]
+	mov	ax,[bp-2h]
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -12876,14 +12876,14 @@ l0800_5AEF:
 	ret
 
 l0800_5AF8:
-	mov	ax,[bp-02]
+	mov	ax,[bp-2h]
 	dec	ax
 	push	ax
-	call	5C39
-	add	sp,02
-	mov	cl,[bp-02]
+	call	5C39h
+	add	sp,2h
+	mov	cl,[bp-2h]
 	dec	cl
-	mov	dx,0001
+	mov	dx,1h
 	shl	dx,cl
 	or	ax,dx
 	pop	di
@@ -12906,122 +12906,122 @@ l0800_5AF8:
 fn0800_5B15 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,08
-	mov	ax,[2E73]
-	mov	dx,[2E71]
-	add	dx,FD
-	cmp	ax,[2E6F]
-	jz	5B2E
+	sub	sp,8h
+	mov	ax,[2E73h]
+	mov	dx,[2E71h]
+	add	dx,0FDh
+	cmp	ax,[2E6Fh]
+	jz	5B2Eh
 
 l0800_5B2B:
-	jmp	5C0B
+	jmp	5C0Bh
 
 l0800_5B2E:
-	cmp	dx,[2E6D]
-	jz	5B37
+	cmp	dx,[2E6Dh]
+	jz	5B37h
 
 l0800_5B34:
-	jmp	5C0B
+	jmp	5C0Bh
 
 l0800_5B37:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	4194
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	4194h
+	add	sp,4h
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	AD2F
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0AD2Fh
+	add	sp,4h
 	pop	bx
 	pop	cx
 	sub	cx,ax
 	sbb	bx,dx
-	mov	[bp-02],bx
-	mov	[bp-04],cx
-	cmp	word ptr [bp-02],00
-	jc	5B76
+	mov	[bp-2h],bx
+	mov	[bp-4h],cx
+	cmp	word ptr [bp-2h],0h
+	jc	5B76h
 
 l0800_5B67:
-	ja	5B6F
+	ja	5B6Fh
 
 l0800_5B69:
-	cmp	word ptr [bp-04],FD
-	jbe	5B76
+	cmp	word ptr [bp-4h],0FDh
+	jbe	5B76h
 
 l0800_5B6F:
 	xor	dx,dx
-	mov	ax,FFFD
-	jmp	5B7C
+	mov	ax,0FFFDh
+	jmp	5B7Ch
 
 l0800_5B76:
-	mov	dx,[bp-02]
-	mov	ax,[bp-04]
+	mov	dx,[bp-2h]
+	mov	ax,[bp-4h]
 
 l0800_5B7C:
-	mov	[bp-06],dx
-	mov	[bp-08],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	push	word ptr [bp-06]
+	mov	[bp-6h],dx
+	mov	[bp-8h],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	push	word ptr [bp-6h]
 	push	ax
-	mov	ax,[2E73]
-	mov	dx,[2E71]
-	mov	[2E6F],ax
-	mov	[2E6D],dx
+	mov	ax,[2E73h]
+	mov	dx,[2E71h]
+	mov	[2E6Fh],ax
+	mov	[2E6Dh],dx
 	push	ax
 	push	dx
-	call	4110
-	add	sp,0C
-	mov	ax,[bp-06]
-	mov	dx,[bp-08]
-	sub	[bp-04],dx
-	mov	dx,[bp-04]
-	sbb	[bp-02],ax
-	mov	ax,[bp-02]
+	call	4110h
+	add	sp,0Ch
+	mov	ax,[bp-6h]
+	mov	dx,[bp-8h]
+	sub	[bp-4h],dx
+	mov	dx,[bp-4h]
+	sbb	[bp-2h],ax
+	mov	ax,[bp-2h]
 	or	ax,ax
-	jc	5BCB
+	jc	5BCBh
 
 l0800_5BBA:
-	ja	5BC1
+	ja	5BC1h
 
 l0800_5BBC:
-	cmp	dx,02
-	jbe	5BCB
+	cmp	dx,2h
+	jbe	5BCBh
 
 l0800_5BC1:
-	mov	word ptr [bp-02],0000
-	mov	word ptr [bp-04],0002
+	mov	word ptr [bp-2h],0h
+	mov	word ptr [bp-4h],2h
 
 l0800_5BCB:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	mov	ax,[2E71]
-	add	ax,[bp-08]
-	push	word ptr [2E73]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	mov	ax,[2E71h]
+	add	ax,[bp-8h]
+	push	word ptr [2E73h]
 	push	ax
-	call	4110
-	add	sp,0C
-	mov	ax,0001
+	call	4110h
+	add	sp,0Ch
+	mov	ax,1h
 	push	ax
-	mov	ax,[bp-02]
-	mov	dx,[bp-04]
+	mov	ax,[bp-2h]
+	mov	dx,[bp-4h]
 	neg	ax
 	neg	dx
-	sbb	ax,0000
+	sbb	ax,0h
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
 
 l0800_5C0B:
-	les	bx,[2E6D]
-	inc	word ptr [2E6D]
+	les	bx,[2E6Dh]
+	inc	word ptr [2E6Dh]
 	mov	al,es:[bx]
 	mov	sp,bp
 	pop	bp
@@ -13035,21 +13035,21 @@ l0800_5C0B:
 fn0800_5C1A proc
 	push	bp
 	mov	bp,sp
-	mov	ax,[bp+04]
-	cmp	word ptr [2A21],02
-	jnz	5C30
+	mov	ax,[bp+4h]
+	cmp	word ptr [2A21h],2h
+	jnz	5C30h
 
 l0800_5C27:
 	push	ax
-	call	5CD9
-	add	sp,02
+	call	5CD9h
+	add	sp,2h
 	pop	bp
 	ret
 
 l0800_5C30:
 	push	ax
-	call	5C39
-	add	sp,02
+	call	5C39h
+	add	sp,2h
 	pop	bp
 	ret
 
@@ -13064,73 +13064,73 @@ l0800_5C30:
 fn0800_5C39 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,06
+	sub	sp,6h
 	push	si
 	push	di
-	mov	si,[bp+04]
+	mov	si,[bp+4h]
 	xor	di,di
-	mov	word ptr [bp-06],0001
-	jmp	5CCA
+	mov	word ptr [bp-6h],1h
+	jmp	5CCAh
 
 l0800_5C4D:
-	cmp	word ptr [2E45],00
-	jnz	5CA2
+	cmp	word ptr [2E45h],0h
+	jnz	5CA2h
 
 l0800_5C54:
-	call	5B15
-	mov	ah,00
-	mov	[bp-02],ax
-	call	5B15
-	mov	ah,00
-	mov	[bp-04],ax
-	les	bx,[2E6D]
-	mov	al,es:[bx+01]
-	mov	ah,00
+	call	5B15h
+	mov	ah,0h
+	mov	[bp-2h],ax
+	call	5B15h
+	mov	ah,0h
+	mov	[bp-4h],ax
+	les	bx,[2E6Dh]
+	mov	al,es:[bx+1h]
+	mov	ah,0h
 	xor	dx,dx
-	mov	cl,18
-	call	8C69
-	les	bx,[2E6D]
+	mov	cl,18h
+	call	8C69h
+	les	bx,[2E6Dh]
 	mov	bl,es:[bx]
-	mov	bh,00
-	add	ax,0000
+	mov	bh,0h
+	add	ax,0h
 	adc	dx,bx
-	mov	bx,[bp-04]
-	mov	cl,08
+	mov	bx,[bp-4h]
+	mov	cl,8h
 	shl	bx,cl
 	add	ax,bx
-	adc	dx,00
-	add	ax,[bp-02]
-	adc	dx,00
-	mov	[29FD],dx
-	mov	[29FB],ax
-	mov	word ptr [2E45],0010
+	adc	dx,0h
+	add	ax,[bp-2h]
+	adc	dx,0h
+	mov	[29FDh],dx
+	mov	[29FBh],ax
+	mov	word ptr [2E45h],10h
 
 l0800_5CA2:
-	mov	ax,[29FB]
-	and	ax,0001
-	or	ax,0000
-	jz	5CB0
+	mov	ax,[29FBh]
+	and	ax,1h
+	or	ax,0h
+	jz	5CB0h
 
 l0800_5CAD:
-	or	di,[bp-06]
+	or	di,[bp-6h]
 
 l0800_5CB0:
-	mov	ax,[29FD]
-	mov	dx,[29FB]
-	shr	ax,01
-	rcr	dx,01
-	mov	[29FD],ax
-	mov	[29FB],dx
-	shl	word ptr [bp-06],01
-	dec	word ptr [2E45]
+	mov	ax,[29FDh]
+	mov	dx,[29FBh]
+	shr	ax,1h
+	rcr	dx,1h
+	mov	[29FDh],ax
+	mov	[29FBh],dx
+	shl	word ptr [bp-6h],1h
+	dec	word ptr [2E45h]
 	dec	si
 
 l0800_5CCA:
 	or	si,si
-	jz	5CD1
+	jz	5CD1h
 
 l0800_5CCE:
-	jmp	5C4D
+	jmp	5C4Dh
 
 l0800_5CD1:
 	mov	ax,di
@@ -13164,44 +13164,44 @@ fn0800_5CD9 proc
 	mov	bp,sp
 	push	si
 	push	di
-	mov	di,[bp+04]
+	mov	di,[bp+4h]
 	xor	si,si
-	jmp	5D25
+	jmp	5D25h
 
 l0800_5CE5:
-	cmp	word ptr [2E45],00
-	jnz	5D00
+	cmp	word ptr [2E45h],0h
+	jnz	5D00h
 
 l0800_5CEC:
-	call	5B15
-	mov	ah,00
-	mov	word ptr [29FD],0000
-	mov	[29FB],ax
-	mov	word ptr [2E45],0008
+	call	5B15h
+	mov	ah,0h
+	mov	word ptr [29FDh],0h
+	mov	[29FBh],ax
+	mov	word ptr [2E45h],8h
 
 l0800_5D00:
-	shl	si,01
-	mov	ax,[29FB]
-	and	ax,0080
-	or	ax,0000
-	jz	5D0E
+	shl	si,1h
+	mov	ax,[29FBh]
+	and	ax,80h
+	or	ax,0h
+	jz	5D0Eh
 
 l0800_5D0D:
 	inc	si
 
 l0800_5D0E:
-	mov	ax,[29FD]
-	mov	dx,[29FB]
-	shl	dx,01
-	rcl	ax,01
-	mov	[29FD],ax
-	mov	[29FB],dx
-	dec	word ptr [2E45]
+	mov	ax,[29FDh]
+	mov	dx,[29FBh]
+	shl	dx,1h
+	rcl	ax,1h
+	mov	[29FDh],ax
+	mov	[29FBh],dx
+	dec	word ptr [2E45h]
 	dec	di
 
 l0800_5D25:
 	or	di,di
-	jnz	5CE5
+	jnz	5CE5h
 
 l0800_5D29:
 	mov	ax,si
@@ -13221,63 +13221,63 @@ l0800_5D29:
 fn0800_5D2F proc
 	push	bp
 	mov	bp,sp
-	mov	ax,[2E5B]
-	mov	dx,[2E59]
+	mov	ax,[2E5Bh]
+	mov	dx,[2E59h]
 	dec	dx
-	cmp	ax,[2E57]
-	jnz	5D9E
+	cmp	ax,[2E57h]
+	jnz	5D9Eh
 
 l0800_5D40:
-	cmp	dx,[2E55]
-	jnz	5D9E
+	cmp	dx,[2E55h]
+	jnz	5D9Eh
 
 l0800_5D46:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	xor	ax,ax
-	mov	dx,FFFF
-	sub	dx,[2E31]
-	sbb	ax,0000
+	mov	dx,0FFFFh
+	sub	dx,[2E31h]
+	sbb	ax,0h
 	push	ax
 	push	dx
-	mov	ax,[2E59]
-	add	ax,[2E31]
-	push	word ptr [2E5B]
+	mov	ax,[2E59h]
+	add	ax,[2E31h]
+	push	word ptr [2E5Bh]
 	push	ax
-	call	4152
-	add	sp,0C
-	push	word ptr [2E31]
-	mov	ax,[2E55]
-	sub	ax,[2E31]
-	push	word ptr [2E57]
+	call	4152h
+	add	sp,0Ch
+	push	word ptr [2E31h]
+	mov	ax,[2E55h]
+	sub	ax,[2E31h]
+	push	word ptr [2E57h]
 	push	ax
-	push	word ptr [2E5B]
-	push	word ptr [2E59]
-	call	B0F3
-	add	sp,0A
-	mov	ax,[2E5B]
-	mov	dx,[2E59]
-	add	dx,[2E31]
-	mov	[2E57],ax
-	mov	[2E55],dx
+	push	word ptr [2E5Bh]
+	push	word ptr [2E59h]
+	call	0B0F3h
+	add	sp,0Ah
+	mov	ax,[2E5Bh]
+	mov	dx,[2E59h]
+	add	dx,[2E31h]
+	mov	[2E57h],ax
+	mov	[2E55h],dx
 
 l0800_5D9E:
-	les	bx,[2E55]
-	mov	al,[bp+04]
+	les	bx,[2E55h]
+	mov	al,[bp+4h]
 	mov	es:[bx],al
-	inc	word ptr [2E55]
-	mov	al,[2E4D]
-	xor	al,[bp+04]
-	mov	ah,00
-	and	ax,00FF
-	shl	ax,01
+	inc	word ptr [2E55h]
+	mov	al,[2E4Dh]
+	xor	al,[bp+4h]
+	mov	ah,0h
+	and	ax,0FFh
+	shl	ax,1h
 	mov	bx,ax
-	mov	ax,[bx+2A29]
-	mov	dx,[2E4D]
-	mov	cl,08
+	mov	ax,[bx+2A29h]
+	mov	dx,[2E4Dh]
+	mov	cl,8h
 	shr	dx,cl
 	xor	ax,dx
-	mov	[2E4D],ax
+	mov	[2E4Dh],ax
 	pop	bp
 	ret
 
@@ -13290,83 +13290,83 @@ fn0800_5DCE proc
 	push	bp
 	mov	bp,sp
 	push	si
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	4194
-	add	sp,04
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	4194h
+	add	sp,4h
 	or	dx,dx
-	jc	5DEE
+	jc	5DEEh
 
 l0800_5DE2:
-	jnz	5DE9
+	jnz	5DE9h
 
 l0800_5DE4:
-	cmp	ax,0400
-	jc	5DEE
+	cmp	ax,400h
+	jc	5DEEh
 
 l0800_5DE9:
-	mov	ax,0400
-	jmp	5DFD
+	mov	ax,400h
+	jmp	5DFDh
 
 l0800_5DEE:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	4194
-	add	sp,04
-	and	ax,FFFC
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	4194h
+	add	sp,4h
+	and	ax,0FFFCh
 
 l0800_5DFD:
 	mov	si,ax
-	jmp	5E5B
+	jmp	5E5Bh
 
 l0800_5E01:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	3E27
-	add	sp,04
-	cmp	ax,524E
-	jnz	5E58
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	3E27h
+	add	sp,4h
+	cmp	ax,524Eh
+	jnz	5E58h
 
 l0800_5E12:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	3E27
-	add	sp,04
-	and	ax,FF00
-	cmp	ax,4300
-	jnz	5E40
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	3E27h
+	add	sp,4h
+	and	ax,0FF00h
+	cmp	ax,4300h
+	jnz	5E40h
 
 l0800_5E26:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	mov	ax,FFFF
-	mov	dx,FFFC
+	mov	ax,0FFFFh
+	mov	dx,0FFFCh
 	push	ax
 	push	dx
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	ACB3
-	add	sp,0A
-	jmp	5E5F
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0ACB3h
+	add	sp,0Ah
+	jmp	5E5Fh
 
 l0800_5E40:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	mov	ax,FFFF
-	mov	dx,FFFE
+	mov	ax,0FFFFh
+	mov	dx,0FFFEh
 	push	ax
 	push	dx
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	ACB3
-	add	sp,0A
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0ACB3h
+	add	sp,0Ah
 
 l0800_5E58:
-	sub	si,02
+	sub	si,2h
 
 l0800_5E5B:
 	or	si,si
-	jnz	5E01
+	jnz	5E01h
 
 l0800_5E5F:
 	mov	ax,si
@@ -13380,17 +13380,17 @@ l0800_5E5F:
 fn0800_5E64 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,38
+	sub	sp,38h
 	push	si
 	push	di
 	push	ds
 	pop	es
-	mov	di,2202
-	mov	si,4271
-	mov	cx,0004
-	mov	dx,0003
+	mov	di,2202h
+	mov	si,4271h
+	mov	cx,4h
+	mov	dx,3h
 	cmp	dx,cx
-	jnc	5E80
+	jnc	5E80h
 
 l0800_5E7E:
 	mov	cx,dx
@@ -13402,32 +13402,32 @@ l0800_5E82:
 	rep cmpsb
 
 l0800_5E84:
-	jz	5E8B
+	jz	5E8Bh
 
 l0800_5E86:
 	sbb	ax,ax
-	sbb	ax,FFFF
+	sbb	ax,0FFFFh
 
 l0800_5E8B:
 	or	ax,ax
-	jz	5EC3
+	jz	5EC3h
 
 l0800_5E8F:
 	push	ds
 	pop	es
-	mov	di,4271
-	mov	si,2202
-	mov	dx,0003
-	mov	cx,0004
+	mov	di,4271h
+	mov	si,2202h
+	mov	dx,3h
+	mov	cx,4h
 	sub	dx,cx
-	jnc	5EA5
+	jnc	5EA5h
 
 l0800_5EA1:
 	add	cx,dx
 	xor	dx,dx
 
 l0800_5EA5:
-	shr	cx,01
+	shr	cx,1h
 
 l0800_5EA7:
 	rep movsw
@@ -13447,35 +13447,35 @@ l0800_5EB1:
 
 l0800_5EB3:
 	push	ds
-	mov	ax,2E75
+	mov	ax,2E75h
 	push	ax
 	push	ds
-	mov	ax,4271
+	mov	ax,4271h
 	push	ax
-	call	09A3
-	add	sp,08
+	call	09A3h
+	add	sp,8h
 
 l0800_5EC3:
-	mov	al,[2E75]
-	mov	ah,00
-	mov	cl,08
+	mov	al,[2E75h]
+	mov	ah,0h
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,[2E76]
-	mov	dh,00
+	mov	dl,[2E76h]
+	mov	dh,0h
 	add	ax,dx
 	xor	dx,dx
-	cmp	dx,[2A09]
-	jc	5EED
+	cmp	dx,[2A09h]
+	jc	5EEDh
 
 l0800_5EDC:
-	jnz	5EE4
+	jnz	5EE4h
 
 l0800_5EDE:
-	cmp	ax,[2A07]
-	jc	5EED
+	cmp	ax,[2A07h]
+	jc	5EEDh
 
 l0800_5EE4:
-	mov	ax,0003
+	mov	ax,3h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -13483,42 +13483,42 @@ l0800_5EE4:
 	ret
 
 l0800_5EED:
-	cmp	word ptr [2A0D],00
-	jc	5F0A
+	cmp	word ptr [2A0Dh],0h
+	jc	5F0Ah
 
 l0800_5EF4:
-	ja	5EFE
+	ja	5EFEh
 
 l0800_5EF6:
-	cmp	word ptr [2A0B],7FF0
-	jbe	5F0A
+	cmp	word ptr [2A0Bh],7FF0h
+	jbe	5F0Ah
 
 l0800_5EFE:
-	mov	word ptr [2A0D],0000
-	mov	word ptr [2A0B],7FF0
+	mov	word ptr [2A0Dh],0h
+	mov	word ptr [2A0Bh],7FF0h
 
 l0800_5F0A:
 	xor	ax,ax
 	push	ax
-	mov	dx,0002
+	mov	dx,2h
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	[bp-22],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	[bp-22h],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
 	mov	di,ax
-	cmp	word ptr [bp-22],00
-	jz	5F48
+	cmp	word ptr [bp-22h],0h
+	jz	5F48h
 
 l0800_5F47:
 	dec	di
@@ -13526,504 +13526,504 @@ l0800_5F47:
 l0800_5F48:
 	mov	ax,di
 	xor	dx,dx
-	mov	cl,09
-	call	8C69
-	add	ax,[bp-22]
-	adc	dx,00
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	mov	ax,[bp-02]
-	mov	dx,[bp-04]
-	cmp	ax,[2A09]
-	jc	5F7E
+	mov	cl,9h
+	call	8C69h
+	add	ax,[bp-22h]
+	adc	dx,0h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	mov	ax,[bp-2h]
+	mov	dx,[bp-4h]
+	cmp	ax,[2A09h]
+	jc	5F7Eh
 
 l0800_5F69:
-	ja	5F71
+	ja	5F71h
 
 l0800_5F6B:
-	cmp	dx,[2A07]
-	jbe	5F7E
+	cmp	dx,[2A07h]
+	jbe	5F7Eh
 
 l0800_5F71:
-	mov	ax,[2A09]
-	mov	dx,[2A07]
-	mov	[bp-02],ax
-	mov	[bp-04],dx
+	mov	ax,[2A09h]
+	mov	dx,[2A07h]
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
 
 l0800_5F7E:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	[bp-24],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	[bp-26],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	[bp-28],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	[bp-2A],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	[bp-2C],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	[bp-2E],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	[bp-30],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	[bp-32],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	[bp-34],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	al,[2E75]
-	mov	ah,00
-	mov	cl,08
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	[bp-24h],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	[bp-26h],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	[bp-28h],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	[bp-2Ah],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	[bp-2Ch],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	[bp-2Eh],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	[bp-30h],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	[bp-32h],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	[bp-34h],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	al,[2E75h]
+	mov	ah,0h
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,[2E76]
-	mov	dh,00
+	mov	dl,[2E76h]
+	mov	dh,0h
 	add	ax,dx
 	xor	dx,dx
 	push	dx
 	push	ax
 	push	ds
-	mov	ax,2E77
+	mov	ax,2E77h
 	push	ax
-	call	4152
-	add	sp,0C
-	cmp	word ptr [bp-24],00
-	jnz	6064
+	call	4152h
+	add	sp,0Ch
+	cmp	word ptr [bp-24h],0h
+	jnz	6064h
 
 l0800_6061:
-	jmp	6220
+	jmp	6220h
 
 l0800_6064:
 	xor	ax,ax
-	mov	dx,FFFF
+	mov	dx,0FFFFh
 	push	ax
 	push	dx
-	call	4311
-	add	sp,04
-	mov	[bp-0A],dx
-	mov	[bp-0C],ax
+	call	4311h
+	add	sp,4h
+	mov	[bp-0Ah],dx
+	mov	[bp-0Ch],ax
 	xor	ax,ax
 	push	ax
 	push	ax
-	push	word ptr [bp-34]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
+	push	word ptr [bp-34h]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
 	xor	si,si
-	mov	ax,[bp-0C]
-	mov	[bp-36],ax
-	jmp	60D6
+	mov	ax,[bp-0Ch]
+	mov	[bp-36h],ax
+	jmp	60D6h
 
 l0800_6096:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	[bp-22],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	[bp-22h],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
 	mov	di,ax
 	xor	dx,dx
-	mov	cl,04
-	call	8C69
-	add	ax,[bp-22]
-	adc	dx,00
-	mov	es,[bp-0A]
-	mov	bx,[bp-36]
-	mov	es:[bx+02],dx
+	mov	cl,4h
+	call	8C69h
+	add	ax,[bp-22h]
+	adc	dx,0h
+	mov	es,[bp-0Ah]
+	mov	bx,[bp-36h]
+	mov	es:[bx+2h],dx
 	mov	es:[bx],ax
-	add	word ptr [bp-36],04
+	add	word ptr [bp-36h],4h
 	inc	si
 
 l0800_60D6:
-	cmp	si,[bp-24]
-	jnz	6096
+	cmp	si,[bp-24h]
+	jnz	6096h
 
 l0800_60DB:
-	mov	ax,667B
+	mov	ax,667Bh
 	push	ax
-	mov	ax,0004
+	mov	ax,4h
 	push	ax
-	push	word ptr [bp-24]
-	push	word ptr [bp-0A]
-	push	word ptr [bp-0C]
-	call	B95E
-	add	sp,0A
+	push	word ptr [bp-24h]
+	push	word ptr [bp-0Ah]
+	push	word ptr [bp-0Ch]
+	call	0B95Eh
+	add	sp,0Ah
 	xor	si,si
-	mov	di,[bp-0C]
+	mov	di,[bp-0Ch]
 	xor	ax,ax
-	adc	ax,0000
+	adc	ax,0h
 	neg	ax
-	mov	[bp-38],ax
-	jmp	620C
+	mov	[bp-38h],ax
+	jmp	620Ch
 
 l0800_6104:
-	mov	es,[bp-0A]
-	mov	ax,es:[di+02]
+	mov	es,[bp-0Ah]
+	mov	ax,es:[di+2h]
 	mov	dx,es:[di]
-	mov	[bp-12],ax
-	mov	[bp-14],dx
-	and	dx,F0
-	and	ax,000F
-	mov	[bp-0E],ax
-	mov	[bp-10],dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	al,00
+	mov	[bp-12h],ax
+	mov	[bp-14h],dx
+	and	dx,0F0h
+	and	ax,0Fh
+	mov	[bp-0Eh],ax
+	mov	[bp-10h],dx
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	al,0h
 	push	ax
-	call	4047
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	dx,[bp-0E]
-	mov	ax,[bp-10]
-	mov	cl,04
-	call	8CAA
+	call	4047h
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	dx,[bp-0Eh]
+	mov	ax,[bp-10h]
+	mov	cl,4h
+	call	8CAAh
 	push	ax
-	call	40BF
-	add	sp,06
-	mov	word ptr [bp-22],0000
+	call	40BFh
+	add	sp,6h
+	mov	word ptr [bp-22h],0h
 
 l0800_6150:
-	mov	es,[bp-0A]
-	mov	ax,es:[di+02]
+	mov	es,[bp-0Ah]
+	mov	ax,es:[di+2h]
 	mov	dx,es:[di]
-	sub	dx,[bp-10]
-	sbb	ax,[bp-0E]
-	mov	[bp-16],ax
-	mov	[bp-18],dx
-	add	[bp-10],dx
-	adc	[bp-0E],ax
-	cmp	word ptr [bp-16],00
-	ja	61B9
+	sub	dx,[bp-10h]
+	sbb	ax,[bp-0Eh]
+	mov	[bp-16h],ax
+	mov	[bp-18h],dx
+	add	[bp-10h],dx
+	adc	[bp-0Eh],ax
+	cmp	word ptr [bp-16h],0h
+	ja	61B9h
 
 l0800_6172:
-	jnz	617B
+	jnz	617Bh
 
 l0800_6174:
-	cmp	word ptr [bp-18],00FF
-	ja	61B9
+	cmp	word ptr [bp-18h],0FFh
+	ja	61B9h
 
 l0800_617B:
-	mov	ax,[bp-0E]
-	mov	dx,[bp-10]
-	sub	dx,[bp-14]
-	sbb	ax,[bp-12]
+	mov	ax,[bp-0Eh]
+	mov	dx,[bp-10h]
+	sub	dx,[bp-14h]
+	sbb	ax,[bp-12h]
 	or	ax,ax
-	ja	61B9
+	ja	61B9h
 
 l0800_618B:
-	jc	6192
+	jc	6192h
 
 l0800_618D:
-	cmp	dx,F0
-	jnc	61B9
+	cmp	dx,0F0h
+	jnc	61B9h
 
 l0800_6192:
-	cmp	word ptr [bp-22],00FF
-	jz	61B9
+	cmp	word ptr [bp-22h],0FFh
+	jz	61B9h
 
 l0800_6199:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	al,[bp-18]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	al,[bp-18h]
 	push	ax
-	call	4047
-	add	sp,06
-	inc	word ptr [bp-22]
-	add	di,04
+	call	4047h
+	add	sp,6h
+	inc	word ptr [bp-22h]
+	add	di,4h
 	inc	si
 	mov	ax,si
-	cmp	ax,[bp-24]
-	jnz	6150
+	cmp	ax,[bp-24h]
+	jnz	6150h
 
 l0800_61B9:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	mov	ax,[bp-22]
-	add	ax,0003
-	mov	dx,[bp-38]
+	mov	ax,[bp-22h]
+	add	ax,3h
+	mov	dx,[bp-38h]
 	neg	ax
-	sbb	dx,00
+	sbb	dx,0h
 	push	dx
 	push	ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	al,[bp-22]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	al,[bp-22h]
 	push	ax
-	call	4047
-	add	sp,06
-	mov	ax,0001
+	call	4047h
+	add	sp,6h
+	mov	ax,1h
 	push	ax
-	mov	ax,[bp-22]
+	mov	ax,[bp-22h]
 	xor	dx,dx
-	add	ax,0002
-	adc	dx,00
+	add	ax,2h
+	adc	dx,0h
 	push	dx
 	push	ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
 
 l0800_620C:
-	cmp	si,[bp-24]
-	jz	6214
+	cmp	si,[bp-24h]
+	jz	6214h
 
 l0800_6211:
-	jmp	6104
+	jmp	6104h
 
 l0800_6214:
-	push	word ptr [bp-0A]
-	push	word ptr [bp-0C]
-	call	4346
-	add	sp,04
+	push	word ptr [bp-0Ah]
+	push	word ptr [bp-0Ch]
+	call	4346h
+	add	sp,4h
 
 l0800_6220:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	al,00
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	al,0h
 	push	ax
-	call	4047
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	AD2F
-	add	sp,04
-	add	ax,FFE0
-	adc	dx,FF
-	mov	[bp-1A],dx
-	mov	[bp-1C],ax
-	jmp	6266
+	call	4047h
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0AD2Fh
+	add	sp,4h
+	add	ax,0FFE0h
+	adc	dx,0FFh
+	mov	[bp-1Ah],dx
+	mov	[bp-1Ch],ax
+	jmp	6266h
 
 l0800_624D:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	al,00
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	al,0h
 	push	ax
-	call	4047
-	add	sp,06
-	add	word ptr [bp-1C],01
-	adc	word ptr [bp-1A],00
+	call	4047h
+	add	sp,6h
+	add	word ptr [bp-1Ch],1h
+	adc	word ptr [bp-1Ah],0h
 
 l0800_6266:
-	mov	ax,[bp-1C]
-	and	ax,000F
-	or	ax,0000
-	jnz	624D
+	mov	ax,[bp-1Ch]
+	and	ax,0Fh
+	or	ax,0h
+	jnz	624Dh
 
 l0800_6271:
-	mov	ax,[bp-26]
-	mov	cl,04
+	mov	ax,[bp-26h]
+	mov	cl,4h
 	shl	ax,cl
-	sub	[bp-04],ax
-	sbb	word ptr [bp-02],00
+	sub	[bp-4h],ax
+	sbb	word ptr [bp-2h],0h
 	xor	ax,ax
 	push	ax
-	mov	ax,[bp-26]
+	mov	ax,[bp-26h]
 	shl	ax,cl
 	xor	dx,dx
 	push	dx
 	push	ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	75EA
-	add	sp,08
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	75EAh
+	add	sp,8h
 	xor	ax,ax
 	push	ax
-	mov	dx,0020
+	mov	dx,20h
 	push	ax
 	push	dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-30]
-	call	40BF
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-32]
-	call	40BF
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-2E]
-	call	40BF
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-2C]
-	call	40BF
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-1C]
-	call	40BF
-	add	sp,06
-	mov	dx,[2A05]
-	mov	ax,[2A03]
-	mov	cl,04
-	call	8CAA
-	mov	[bp-22],ax
-	mov	ax,[2A03]
-	and	ax,000F
-	or	ax,0000
-	jz	6333
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-30h]
+	call	40BFh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-32h]
+	call	40BFh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-2Eh]
+	call	40BFh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-2Ch]
+	call	40BFh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-1Ch]
+	call	40BFh
+	add	sp,6h
+	mov	dx,[2A05h]
+	mov	ax,[2A03h]
+	mov	cl,4h
+	call	8CAAh
+	mov	[bp-22h],ax
+	mov	ax,[2A03h]
+	and	ax,0Fh
+	or	ax,0h
+	jz	6333h
 
 l0800_6330:
-	inc	word ptr [bp-22]
+	inc	word ptr [bp-22h]
 
 l0800_6333:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-22]
-	call	40BF
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	dx,[bp-1A]
-	mov	ax,[bp-1C]
-	mov	cl,04
-	call	8CAA
-	mov	dx,[bp-22]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-22h]
+	call	40BFh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	dx,[bp-1Ah]
+	mov	ax,[bp-1Ch]
+	mov	cl,4h
+	call	8CAAh
+	mov	dx,[bp-22h]
 	add	dx,ax
 	push	dx
-	call	40BF
-	add	sp,06
-	mov	ax,[bp-02]
-	mov	dx,[bp-04]
-	sub	dx,[2A03]
-	sbb	ax,[2A05]
-	add	dx,[4E88]
-	adc	ax,[4E8A]
-	add	dx,0080
-	adc	ax,0000
-	mov	[bp-06],ax
-	mov	[bp-08],dx
-	cmp	word ptr [2A1D],00
-	jz	6398
+	call	40BFh
+	add	sp,6h
+	mov	ax,[bp-2h]
+	mov	dx,[bp-4h]
+	sub	dx,[2A03h]
+	sbb	ax,[2A05h]
+	add	dx,[4E88h]
+	adc	ax,[4E8Ah]
+	add	dx,80h
+	adc	ax,0h
+	mov	[bp-6h],ax
+	mov	[bp-8h],dx
+	cmp	word ptr [2A1Dh],0h
+	jz	6398h
 
 l0800_638D:
-	add	word ptr [bp-08],0200
-	adc	word ptr [bp-06],00
-	jmp	63A8
+	add	word ptr [bp-8h],200h
+	adc	word ptr [bp-6h],0h
+	jmp	63A8h
 
 l0800_6398:
-	cmp	word ptr [2A21],01
-	jnz	63A8
+	cmp	word ptr [2A21h],1h
+	jnz	63A8h
 
 l0800_639F:
-	add	word ptr [bp-08],0180
-	adc	word ptr [bp-06],00
+	add	word ptr [bp-8h],180h
+	adc	word ptr [bp-6h],0h
 
 l0800_63A8:
 	xor	ax,ax
 	push	ax
-	mov	ax,[bp-26]
-	mov	cl,04
+	mov	ax,[bp-26h]
+	mov	cl,4h
 	shl	ax,cl
-	mov	dx,[bp-02]
-	mov	bx,[bp-04]
+	mov	dx,[bp-2h]
+	mov	bx,[bp-4h]
 	add	bx,ax
-	adc	dx,00
+	adc	dx,0h
 	push	dx
 	push	bx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	mov	ax,0002
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	mov	ax,2h
 	push	ax
 	xor	ax,ax
 	push	ax
 	push	ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	AD2F
-	add	sp,04
-	mov	[bp-1E],dx
-	mov	[bp-20],ax
-	mov	ax,[bp-26]
-	mov	cl,04
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0AD2Fh
+	add	sp,4h
+	mov	[bp-1Eh],dx
+	mov	[bp-20h],ax
+	mov	ax,[bp-26h]
+	mov	cl,4h
 	shl	ax,cl
-	mov	dx,[2A09]
-	mov	bx,[2A07]
-	sub	bx,[bp-04]
-	sbb	dx,[bp-02]
+	mov	dx,[2A09h]
+	mov	bx,[2A07h]
+	sub	bx,[bp-4h]
+	sbb	dx,[bp-2h]
 	sub	bx,ax
-	sbb	dx,00
+	sbb	dx,0h
 	push	dx
 	push	bx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3B0A
-	add	sp,0C
-	mov	ax,[bp-20]
-	and	ax,01FF
-	mov	[bp-22],ax
-	mov	dx,[bp-1E]
-	mov	ax,[bp-20]
-	mov	cl,09
-	call	8CAA
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3B0Ah
+	add	sp,0Ch
+	mov	ax,[bp-20h]
+	and	ax,1FFh
+	mov	[bp-22h],ax
+	mov	dx,[bp-1Eh]
+	mov	ax,[bp-20h]
+	mov	cl,9h
+	call	8CAAh
 	mov	di,ax
-	cmp	word ptr [bp-22],00
-	jz	6446
+	cmp	word ptr [bp-22h],0h
+	jz	6446h
 
 l0800_6445:
 	inc	di
@@ -14031,223 +14031,223 @@ l0800_6445:
 l0800_6446:
 	xor	ax,ax
 	push	ax
-	mov	dx,0002
+	mov	dx,2h
 	push	ax
 	push	dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-22]
-	call	40BF
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-22h]
+	call	40BFh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	push	di
-	call	40BF
-	add	sp,06
-	cmp	word ptr [2A1D],00
-	jz	64B9
+	call	40BFh
+	add	sp,6h
+	cmp	word ptr [2A1Dh],0h
+	jz	64B9h
 
 l0800_6483:
 	xor	ax,ax
 	push	ax
-	mov	dx,002E
+	mov	dx,2Eh
 	push	ax
 	push	dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-22]
-	call	40BF
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-22h]
+	call	40BFh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	push	di
-	call	40BF
-	add	sp,06
+	call	40BFh
+	add	sp,6h
 
 l0800_64B9:
 	xor	ax,ax
 	push	ax
-	mov	dx,0018
+	mov	dx,18h
 	push	ax
 	push	dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	al,[2E75]
-	mov	ah,00
-	mov	cl,08
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	al,[2E75h]
+	mov	ah,0h
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,[2E76]
-	mov	dh,00
+	mov	dl,[2E76h]
+	mov	dh,0h
 	add	ax,dx
-	sub	ax,0020
+	sub	ax,20h
 	push	ax
-	call	40BF
-	add	sp,06
+	call	40BFh
+	add	sp,6h
 	xor	ax,ax
 	push	ax
-	mov	dx,001C
+	mov	dx,1Ch
 	push	ax
 	push	dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-28]
-	call	40BF
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-2A]
-	call	40BF
-	add	sp,06
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-28h]
+	call	40BFh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-2Ah]
+	call	40BFh
+	add	sp,6h
 	xor	ax,ax
 	push	ax
-	mov	dx,000A
+	mov	dx,0Ah
 	push	ax
 	push	dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	mov	ax,[bp-28]
-	mov	cl,04
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	mov	ax,[bp-28h]
+	mov	cl,4h
 	shl	ax,cl
-	mov	dx,[bp-02]
-	mov	bx,[bp-04]
+	mov	dx,[bp-2h]
+	mov	bx,[bp-4h]
 	add	bx,ax
-	adc	dx,00
-	mov	ax,[bp-1E]
-	mov	cx,[bp-20]
-	sub	cx,20
-	sbb	ax,0000
-	add	cx,[bp-08]
-	adc	ax,[bp-06]
+	adc	dx,0h
+	mov	ax,[bp-1Eh]
+	mov	cx,[bp-20h]
+	sub	cx,20h
+	sbb	ax,0h
+	add	cx,[bp-8h]
+	adc	ax,[bp-6h]
 	cmp	dx,ax
-	jc	659C
+	jc	659Ch
 
 l0800_6568:
-	ja	656E
+	ja	656Eh
 
 l0800_656A:
 	cmp	bx,cx
-	jbe	659C
+	jbe	659Ch
 
 l0800_656E:
-	mov	ax,[bp-28]
-	mov	cl,04
+	mov	ax,[bp-28h]
+	mov	cl,4h
 	shl	ax,cl
-	mov	dx,[bp-02]
-	mov	bx,[bp-04]
+	mov	dx,[bp-2h]
+	mov	bx,[bp-4h]
 	add	bx,ax
-	adc	dx,00
-	mov	ax,[bp-1E]
-	mov	cx,[bp-20]
-	sub	cx,20
-	sbb	ax,0000
-	add	cx,[bp-08]
-	adc	ax,[bp-06]
+	adc	dx,0h
+	mov	ax,[bp-1Eh]
+	mov	cx,[bp-20h]
+	sub	cx,20h
+	sbb	ax,0h
+	add	cx,[bp-8h]
+	adc	ax,[bp-6h]
 	sub	bx,cx
 	sbb	dx,ax
-	add	[bp-08],bx
-	adc	[bp-06],dx
+	add	[bp-8h],bx
+	adc	[bp-6h],dx
 
 l0800_659C:
 	xor	ax,ax
-	mov	dx,0010
-	sub	dx,[bp-08]
-	sbb	ax,[bp-06]
-	and	dx,0F
-	add	[bp-08],dx
-	adc	word ptr [bp-06],00
-	mov	dx,[bp-06]
-	mov	ax,[bp-08]
-	mov	cl,04
-	call	8CAA
-	mov	[bp-28],ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	mov	dx,10h
+	sub	dx,[bp-8h]
+	sbb	ax,[bp-6h]
+	and	dx,0Fh
+	add	[bp-8h],dx
+	adc	word ptr [bp-6h],0h
+	mov	dx,[bp-6h]
+	mov	ax,[bp-8h]
+	mov	cl,4h
+	call	8CAAh
+	mov	[bp-28h],ax
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	push	ax
-	call	40BF
-	add	sp,06
-	mov	ax,[bp-2A]
-	cmp	ax,[bp-28]
-	jnc	65DC
+	call	40BFh
+	add	sp,6h
+	mov	ax,[bp-2Ah]
+	cmp	ax,[bp-28h]
+	jnc	65DCh
 
 l0800_65D6:
-	mov	ax,[bp-28]
-	mov	[bp-2A],ax
+	mov	ax,[bp-28h]
+	mov	[bp-2Ah],ax
 
 l0800_65DC:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-2A]
-	call	40BF
-	add	sp,06
-	mov	dx,[bp-02]
-	mov	ax,[bp-04]
-	add	ax,[4E88]
-	adc	dx,[4E8A]
-	add	ax,0020
-	adc	dx,00
-	mov	cl,04
-	call	8CAA
-	mov	[bp-2C],ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-2Ah]
+	call	40BFh
+	add	sp,6h
+	mov	dx,[bp-2h]
+	mov	ax,[bp-4h]
+	add	ax,[4E88h]
+	adc	dx,[4E8Ah]
+	add	ax,20h
+	adc	dx,0h
+	mov	cl,4h
+	call	8CAAh
+	mov	[bp-2Ch],ax
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	push	ax
-	call	40BF
-	add	sp,06
-	mov	ax,[bp-1C]
-	add	ax,0080
-	mov	[bp-2E],ax
-	cmp	word ptr [2A1D],00
-	jz	662F
+	call	40BFh
+	add	sp,6h
+	mov	ax,[bp-1Ch]
+	add	ax,80h
+	mov	[bp-2Eh],ax
+	cmp	word ptr [2A1Dh],0h
+	jz	662Fh
 
 l0800_6628:
-	add	word ptr [bp-2E],0200
-	jmp	663B
+	add	word ptr [bp-2Eh],200h
+	jmp	663Bh
 
 l0800_662F:
-	cmp	word ptr [2A21],01
-	jnz	663B
+	cmp	word ptr [2A21h],1h
+	jnz	663Bh
 
 l0800_6636:
-	add	word ptr [bp-2E],0180
+	add	word ptr [bp-2Eh],180h
 
 l0800_663B:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-2E]
-	call	40BF
-	add	sp,06
-	mov	ax,[bp-26]
-	mov	cl,04
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-2Eh]
+	call	40BFh
+	add	sp,6h
+	mov	ax,[bp-26h]
+	mov	cl,4h
 	shl	ax,cl
-	mov	dx,[2A09]
-	mov	bx,[2A07]
-	sub	bx,[bp-04]
-	sbb	dx,[bp-02]
+	mov	dx,[2A09h]
+	mov	bx,[2A07h]
+	sub	bx,[bp-4h]
+	sbb	dx,[bp-2h]
 	sub	bx,ax
-	sbb	dx,00
+	sbb	dx,0h
 	or	bx,dx
-	jz	6673
+	jz	6673h
 
 l0800_666A:
-	mov	ax,0001
+	mov	ax,1h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -14271,21 +14271,21 @@ l0800_6673:
 fn0800_669C proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
+	sub	sp,4h
 	push	si
 	push	di
-	cmp	word ptr [2A09],00
-	jc	66BE
+	cmp	word ptr [2A09h],0h
+	jc	66BEh
 
 l0800_66AB:
-	ja	66B5
+	ja	66B5h
 
 l0800_66AD:
-	cmp	word ptr [2A07],FEFE
-	jbe	66BE
+	cmp	word ptr [2A07h],0FEFEh
+	jbe	66BEh
 
 l0800_66B5:
-	mov	ax,0003
+	mov	ax,3h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -14295,12 +14295,12 @@ l0800_66B5:
 l0800_66BE:
 	push	ds
 	pop	es
-	mov	di,2206
-	mov	si,4271
-	mov	cx,0004
-	mov	dx,0003
+	mov	di,2206h
+	mov	si,4271h
+	mov	cx,4h
+	mov	dx,3h
 	cmp	dx,cx
-	jnc	66D2
+	jnc	66D2h
 
 l0800_66D0:
 	mov	cx,dx
@@ -14312,32 +14312,32 @@ l0800_66D4:
 	rep cmpsb
 
 l0800_66D6:
-	jz	66DD
+	jz	66DDh
 
 l0800_66D8:
 	sbb	ax,ax
-	sbb	ax,FFFF
+	sbb	ax,0FFFFh
 
 l0800_66DD:
 	or	ax,ax
-	jz	6715
+	jz	6715h
 
 l0800_66E1:
 	push	ds
 	pop	es
-	mov	di,4271
-	mov	si,2206
-	mov	dx,0003
-	mov	cx,0004
+	mov	di,4271h
+	mov	si,2206h
+	mov	dx,3h
+	mov	cx,4h
 	sub	dx,cx
-	jnc	66F7
+	jnc	66F7h
 
 l0800_66F3:
 	add	cx,dx
 	xor	dx,dx
 
 l0800_66F7:
-	shr	cx,01
+	shr	cx,1h
 
 l0800_66F9:
 	rep movsw
@@ -14357,76 +14357,76 @@ l0800_6703:
 
 l0800_6705:
 	push	ds
-	mov	ax,2E75
+	mov	ax,2E75h
 	push	ax
 	push	ds
-	mov	ax,4271
+	mov	ax,4271h
 	push	ax
-	call	09A3
-	add	sp,08
+	call	09A3h
+	add	sp,8h
 
 l0800_6715:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	al,[2E75]
-	mov	ah,00
-	mov	cl,08
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	al,[2E75h]
+	mov	ah,0h
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,[2E76]
-	mov	dh,00
+	mov	dl,[2E76h]
+	mov	dh,0h
 	add	ax,dx
 	xor	dx,dx
 	push	dx
 	push	ax
 	push	ds
-	mov	ax,2E77
+	mov	ax,2E77h
 	push	ax
-	call	4152
-	add	sp,0C
-	mov	al,[2E75]
-	mov	ah,00
-	mov	cl,08
+	call	4152h
+	add	sp,0Ch
+	mov	al,[2E75h]
+	mov	ah,0h
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,[2E76]
-	mov	dh,00
+	mov	dl,[2E76h]
+	mov	dh,0h
 	add	ax,dx
-	mov	dx,[2A09]
-	mov	bx,[2A07]
+	mov	dx,[2A09h]
+	mov	bx,[2A07h]
 	add	bx,ax
-	adc	dx,00
-	add	bx,40
-	adc	dx,00
-	mov	[bp-02],dx
-	mov	[bp-04],bx
-	cmp	word ptr [2A1D],00
-	jz	6779
+	adc	dx,0h
+	add	bx,40h
+	adc	dx,0h
+	mov	[bp-2h],dx
+	mov	[bp-4h],bx
+	cmp	word ptr [2A1Dh],0h
+	jz	6779h
 
 l0800_676E:
-	add	word ptr [bp-04],0200
-	adc	word ptr [bp-02],00
-	jmp	6789
+	add	word ptr [bp-4h],200h
+	adc	word ptr [bp-2h],0h
+	jmp	6789h
 
 l0800_6779:
-	cmp	word ptr [2A21],01
-	jnz	6789
+	cmp	word ptr [2A21h],1h
+	jnz	6789h
 
 l0800_6780:
-	add	word ptr [bp-04],0180
-	adc	word ptr [bp-02],00
+	add	word ptr [bp-4h],180h
+	adc	word ptr [bp-2h],0h
 
 l0800_6789:
-	cmp	word ptr [bp-02],00
-	jc	67A1
+	cmp	word ptr [bp-2h],0h
+	jc	67A1h
 
 l0800_678F:
-	ja	6798
+	ja	6798h
 
 l0800_6791:
-	cmp	word ptr [bp-04],FEFE
-	jbe	67A1
+	cmp	word ptr [bp-4h],0FEFEh
+	jbe	67A1h
 
 l0800_6798:
-	mov	ax,0003
+	mov	ax,3h
 	pop	di
 	pop	si
 	mov	sp,bp
@@ -14434,12 +14434,12 @@ l0800_6798:
 	ret
 
 l0800_67A1:
-	push	word ptr [2A09]
-	push	word ptr [2A07]
-	push	word ptr [2A09]
-	push	word ptr [2A07]
-	call	75EA
-	add	sp,08
+	push	word ptr [2A09h]
+	push	word ptr [2A07h]
+	push	word ptr [2A09h]
+	push	word ptr [2A07h]
+	call	75EAh
+	add	sp,8h
 	xor	ax,ax
 	pop	di
 	pop	si
@@ -14453,309 +14453,309 @@ l0800_67A1:
 fn0800_67BF proc
 	push	bp
 	mov	bp,sp
-	sub	sp,0E
-	mov	al,[2E75]
-	mov	ah,00
-	mov	cl,08
+	sub	sp,0Eh
+	mov	al,[2E75h]
+	mov	ah,0h
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,[2E76]
-	mov	dh,00
+	mov	dl,[2E76h]
+	mov	dh,0h
 	add	ax,dx
-	mov	[bp-0E],ax
+	mov	[bp-0Eh],ax
 	xor	dx,dx
-	cmp	dx,[2A09]
-	jc	67F0
+	cmp	dx,[2A09h]
+	jc	67F0h
 
 l0800_67E1:
-	jnz	67E9
+	jnz	67E9h
 
 l0800_67E3:
-	cmp	ax,[2A07]
-	jc	67F0
+	cmp	ax,[2A07h]
+	jc	67F0h
 
 l0800_67E9:
-	mov	ax,0003
+	mov	ax,3h
 	mov	sp,bp
 	pop	bp
 	ret
 
 l0800_67F0:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	xor	ax,ax
 	push	ax
-	push	word ptr [bp-0E]
+	push	word ptr [bp-0Eh]
 	push	ds
-	mov	ax,2E77
+	mov	ax,2E77h
 	push	ax
-	call	4152
-	add	sp,0C
-	mov	ax,0001
+	call	4152h
+	add	sp,0Ch
+	mov	ax,1h
 	push	ax
-	mov	ax,FFFF
-	mov	dx,FFEE
+	mov	ax,0FFFFh
+	mov	dx,0FFEEh
 	push	ax
 	push	dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3F0A
-	add	sp,04
-	cmp	ax,601A
-	jz	6839
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3F0Ah
+	add	sp,4h
+	cmp	ax,601Ah
+	jz	6839h
 
 l0800_6836:
-	jmp	68F1
+	jmp	68F1h
 
 l0800_6839:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
 	xor	ax,ax
-	mov	dx,0002
+	mov	dx,2h
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
 	xor	ax,ax
-	mov	dx,0010
+	mov	dx,10h
 	push	ax
 	push	dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3B0A
-	add	sp,0C
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3B0Ah
+	add	sp,0Ch
 	xor	ax,ax
 	push	ax
-	mov	dx,001A
+	mov	dx,1Ah
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E27
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E27h
+	add	sp,4h
 	push	ax
-	call	401E
-	add	sp,06
-	mov	ax,[2A09]
-	mov	dx,[2A07]
-	sub	dx,1C
-	sbb	ax,0000
-	push	ax
-	push	dx
-	mov	ax,[2A09]
-	mov	dx,[2A07]
-	sub	dx,1C
-	sbb	ax,0000
+	call	401Eh
+	add	sp,6h
+	mov	ax,[2A09h]
+	mov	dx,[2A07h]
+	sub	dx,1Ch
+	sbb	ax,0h
 	push	ax
 	push	dx
-	call	75EA
-	add	sp,08
-	mov	ax,[2A09]
-	mov	dx,[2A07]
-	sub	dx,1C
-	sbb	ax,0000
-	sub	dx,[2A03]
-	sbb	ax,[2A05]
-	add	dx,[4E88]
-	adc	ax,[4E8A]
-	add	dx,0E
-	adc	ax,0000
-	mov	[bp-06],ax
-	mov	[bp-08],dx
-	jmp	6959
+	mov	ax,[2A09h]
+	mov	dx,[2A07h]
+	sub	dx,1Ch
+	sbb	ax,0h
+	push	ax
+	push	dx
+	call	75EAh
+	add	sp,8h
+	mov	ax,[2A09h]
+	mov	dx,[2A07h]
+	sub	dx,1Ch
+	sbb	ax,0h
+	sub	dx,[2A03h]
+	sbb	ax,[2A05h]
+	add	dx,[4E88h]
+	adc	ax,[4E8Ah]
+	add	dx,0Eh
+	adc	ax,0h
+	mov	[bp-6h],ax
+	mov	[bp-8h],dx
+	jmp	6959h
 
 l0800_68F1:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [2A09]
-	push	word ptr [2A07]
-	call	409C
-	add	sp,08
-	mov	ax,0001
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [2A09h]
+	push	word ptr [2A07h]
+	call	409Ch
+	add	sp,8h
+	mov	ax,1h
 	push	ax
 	xor	ax,ax
-	mov	dx,000E
+	mov	dx,0Eh
 	push	ax
 	push	dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [2A09]
-	push	word ptr [2A07]
-	push	word ptr [2A09]
-	push	word ptr [2A07]
-	call	75EA
-	add	sp,08
-	mov	ax,[2A09]
-	mov	dx,[2A07]
-	sub	dx,[2A03]
-	sbb	ax,[2A05]
-	add	dx,[4E88]
-	adc	ax,[4E8A]
-	add	dx,0E
-	adc	ax,0000
-	mov	[bp-06],ax
-	mov	[bp-08],dx
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [2A09h]
+	push	word ptr [2A07h]
+	push	word ptr [2A09h]
+	push	word ptr [2A07h]
+	call	75EAh
+	add	sp,8h
+	mov	ax,[2A09h]
+	mov	dx,[2A07h]
+	sub	dx,[2A03h]
+	sbb	ax,[2A05h]
+	add	dx,[4E88h]
+	adc	ax,[4E8Ah]
+	add	dx,0Eh
+	adc	ax,0h
+	mov	[bp-6h],ax
+	mov	[bp-8h],dx
 
 l0800_6959:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	AD2F
-	add	sp,04
-	and	ax,0001
-	or	ax,0000
-	jz	6988
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0AD2Fh
+	add	sp,4h
+	and	ax,1h
+	or	ax,0h
+	jz	6988h
 
 l0800_696F:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	al,90
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	al,90h
 	push	ax
-	call	4047
-	add	sp,06
-	add	word ptr [bp-08],01
-	adc	word ptr [bp-06],00
+	call	4047h
+	add	sp,6h
+	add	word ptr [bp-8h],1h
+	adc	word ptr [bp-6h],0h
 
 l0800_6988:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	xor	ax,ax
 	push	ax
 	push	ax
-	call	409C
-	add	sp,08
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	AD2F
-	add	sp,04
-	add	ax,FFE0
-	adc	dx,FF
-	mov	[2A05],dx
-	mov	[2A03],ax
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0AD2Fh
+	add	sp,4h
+	add	ax,0FFE0h
+	adc	dx,0FFh
+	mov	[2A05h],dx
+	mov	[2A03h],ax
 	xor	ax,ax
 	push	ax
-	mov	dx,0002
+	mov	dx,2h
 	push	ax
 	push	dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	3F58
-	add	sp,04
-	sub	[bp-08],ax
-	sbb	[bp-06],dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [2A05]
-	push	word ptr [2A03]
-	call	409C
-	add	sp,08
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	3F58h
+	add	sp,4h
+	sub	[bp-8h],ax
+	sbb	[bp-6h],dx
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [2A05h]
+	push	word ptr [2A03h]
+	call	409Ch
+	add	sp,8h
 	xor	ax,ax
 	push	ax
 	push	ax
 	push	ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E27
-	add	sp,04
-	cmp	ax,601A
-	jz	6A1E
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E27h
+	add	sp,4h
+	cmp	ax,601Ah
+	jz	6A1Eh
 
 l0800_6A1B:
-	jmp	6AA4
+	jmp	6AA4h
 
 l0800_6A1E:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
 	pop	bx
 	pop	cx
 	add	cx,ax
 	adc	bx,dx
-	mov	[bp-02],bx
-	mov	[bp-04],cx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	mov	[bp-0A],dx
-	mov	[bp-0C],ax
-	mov	ax,[bp-02]
-	mov	dx,[bp-04]
-	add	dx,[bp-0C]
-	adc	ax,[bp-0A]
-	mov	bx,[2A05]
-	mov	cx,[2A03]
-	add	cx,[bp-08]
-	adc	bx,[bp-06]
+	mov	[bp-2h],bx
+	mov	[bp-4h],cx
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	mov	[bp-0Ah],dx
+	mov	[bp-0Ch],ax
+	mov	ax,[bp-2h]
+	mov	dx,[bp-4h]
+	add	dx,[bp-0Ch]
+	adc	ax,[bp-0Ah]
+	mov	bx,[2A05h]
+	mov	cx,[2A03h]
+	add	cx,[bp-8h]
+	adc	bx,[bp-6h]
 	cmp	ax,bx
-	jc	6AA4
+	jc	6AA4h
 
 l0800_6A7A:
-	ja	6A80
+	ja	6A80h
 
 l0800_6A7C:
 	cmp	dx,cx
-	jbe	6AA4
+	jbe	6AA4h
 
 l0800_6A80:
-	mov	ax,[bp-02]
-	mov	dx,[bp-04]
-	add	dx,[bp-0C]
-	adc	ax,[bp-0A]
-	mov	bx,[2A05]
-	mov	cx,[2A03]
-	add	cx,[bp-08]
-	adc	bx,[bp-06]
+	mov	ax,[bp-2h]
+	mov	dx,[bp-4h]
+	add	dx,[bp-0Ch]
+	adc	ax,[bp-0Ah]
+	mov	bx,[2A05h]
+	mov	cx,[2A03h]
+	add	cx,[bp-8h]
+	adc	bx,[bp-6h]
 	sub	dx,cx
 	sbb	ax,bx
-	add	[bp-08],dx
-	adc	[bp-06],ax
+	add	[bp-8h],dx
+	adc	[bp-6h],ax
 
 l0800_6AA4:
 	xor	ax,ax
 	push	ax
-	mov	dx,000A
+	mov	dx,0Ah
 	push	ax
 	push	dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-06]
-	push	word ptr [bp-08]
-	call	409C
-	add	sp,08
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-6h]
+	push	word ptr [bp-8h]
+	call	409Ch
+	add	sp,8h
 	xor	ax,ax
 	mov	sp,bp
 	pop	bp
@@ -14767,258 +14767,258 @@ l0800_6AA4:
 fn0800_6AD4 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,18
+	sub	sp,18h
 	push	si
-	mov	al,[2E75]
-	mov	ah,00
-	mov	cl,08
+	mov	al,[2E75h]
+	mov	ah,0h
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,[2E76]
-	mov	dh,00
+	mov	dl,[2E76h]
+	mov	dh,0h
 	add	ax,dx
 	xor	dx,dx
-	cmp	dx,[2A09]
-	jc	6B04
+	cmp	dx,[2A09h]
+	jc	6B04h
 
 l0800_6AF4:
-	jnz	6AFC
+	jnz	6AFCh
 
 l0800_6AF6:
-	cmp	ax,[2A07]
-	jc	6B04
+	cmp	ax,[2A07h]
+	jc	6B04h
 
 l0800_6AFC:
-	mov	ax,0003
+	mov	ax,3h
 	pop	si
 	mov	sp,bp
 	pop	bp
 	ret
 
 l0800_6B04:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
 	or	dx,dx
-	jnz	6B1B
+	jnz	6B1Bh
 
 l0800_6B16:
-	cmp	ax,03F3
-	jz	6B23
+	cmp	ax,3F3h
+	jz	6B23h
 
 l0800_6B1B:
-	mov	ax,0003
+	mov	ax,3h
 	pop	si
 	mov	sp,bp
 	pop	bp
 	ret
 
 l0800_6B23:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	xor	ax,ax
-	mov	dx,03F3
+	mov	dx,3F3h
 	push	ax
 	push	dx
-	call	409C
-	add	sp,08
+	call	409Ch
+	add	sp,8h
 
 l0800_6B38:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	mov	[bp-06],dx
-	mov	[bp-08],ax
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-02]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	mov	[bp-6h],dx
+	mov	[bp-8h],ax
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-2h]
 	push	ax
-	call	409C
-	add	sp,08
-	jmp	6B84
+	call	409Ch
+	add	sp,8h
+	jmp	6B84h
 
 l0800_6B66:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
 	push	dx
 	push	ax
-	call	409C
-	add	sp,08
+	call	409Ch
+	add	sp,8h
 
 l0800_6B84:
-	mov	ax,[bp-08]
-	mov	dx,[bp-06]
-	sub	word ptr [bp-08],01
-	sbb	word ptr [bp-06],00
+	mov	ax,[bp-8h]
+	mov	dx,[bp-6h]
+	sub	word ptr [bp-8h],1h
+	sbb	word ptr [bp-6h],0h
 	or	ax,dx
-	jnz	6B66
+	jnz	6B66h
 
 l0800_6B96:
-	mov	ax,[bp-04]
-	or	ax,[bp-02]
-	jnz	6B38
+	mov	ax,[bp-4h]
+	or	ax,[bp-2h]
+	jnz	6B38h
 
 l0800_6B9E:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	add	ax,0001
-	adc	dx,00
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	add	ax,1h
+	adc	dx,0h
 	push	dx
 	push	ax
-	call	409C
-	add	sp,08
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	mov	[bp-0A],dx
-	mov	[bp-0C],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	mov	[bp-0E],dx
-	mov	[bp-10],ax
-	mov	ax,[bp-0E]
-	mov	dx,[bp-10]
-	sub	dx,[bp-0C]
-	sbb	ax,[bp-0A]
-	add	dx,01
-	adc	ax,0000
-	mov	[bp-12],ax
-	mov	[bp-14],dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-0A]
-	push	word ptr [bp-0C]
-	call	409C
-	add	sp,08
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	ax,[bp-0E]
-	mov	dx,[bp-10]
-	add	dx,01
-	adc	ax,0000
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	mov	[bp-0Ah],dx
+	mov	[bp-0Ch],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	mov	[bp-0Eh],dx
+	mov	[bp-10h],ax
+	mov	ax,[bp-0Eh]
+	mov	dx,[bp-10h]
+	sub	dx,[bp-0Ch]
+	sbb	ax,[bp-0Ah]
+	add	dx,1h
+	adc	ax,0h
+	mov	[bp-12h],ax
+	mov	[bp-14h],dx
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-0Ah]
+	push	word ptr [bp-0Ch]
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	ax,[bp-0Eh]
+	mov	dx,[bp-10h]
+	add	dx,1h
+	adc	ax,0h
 	push	ax
 	push	dx
-	call	409C
-	add	sp,08
-	mov	al,[2E75]
-	mov	ah,00
-	mov	cl,08
+	call	409Ch
+	add	sp,8h
+	mov	al,[2E75h]
+	mov	ah,0h
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,[2E76]
-	mov	dh,00
+	mov	dl,[2E76h]
+	mov	dh,0h
 	add	ax,dx
-	sub	ax,000C
-	shr	ax,01
-	shr	ax,01
-	mov	word ptr [bp-02],0000
-	mov	[bp-04],ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	sub	ax,0Ch
+	shr	ax,1h
+	shr	ax,1h
+	mov	word ptr [bp-2h],0h
+	mov	[bp-4h],ax
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	xor	ax,ax
 	push	ax
-	push	word ptr [bp-04]
-	call	409C
-	add	sp,08
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	AD2F
-	add	sp,04
-	mov	[4E8E],dx
-	mov	[4E8C],ax
-	mov	ax,[bp-12]
-	mov	dx,[bp-14]
-	mov	[bp-02],ax
-	mov	[bp-04],dx
-	jmp	6CAF
+	push	word ptr [bp-4h]
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0AD2Fh
+	add	sp,4h
+	mov	[4E8Eh],dx
+	mov	[4E8Ch],ax
+	mov	ax,[bp-12h]
+	mov	dx,[bp-14h]
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
+	jmp	6CAFh
 
 l0800_6C89:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
 	push	dx
 	push	ax
-	call	409C
-	add	sp,08
-	sub	word ptr [bp-04],01
-	sbb	word ptr [bp-02],00
+	call	409Ch
+	add	sp,8h
+	sub	word ptr [bp-4h],1h
+	sbb	word ptr [bp-2h],0h
 
 l0800_6CAF:
-	mov	ax,[bp-04]
-	or	ax,[bp-02]
-	jnz	6C89
+	mov	ax,[bp-4h]
+	or	ax,[bp-2h]
+	jnz	6C89h
 
 l0800_6CB7:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	al,[2E75]
-	mov	ah,00
-	mov	cl,08
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	al,[2E75h]
+	mov	ah,0h
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,[2E76]
-	mov	dh,00
+	mov	dl,[2E76h]
+	mov	dh,0h
 	add	ax,dx
 	xor	dx,dx
 	push	dx
 	push	ax
 	push	ds
-	mov	ax,2E77
+	mov	ax,2E77h
 	push	ax
-	call	4152
-	add	sp,0C
+	call	4152h
+	add	sp,0Ch
 	xor	si,si
-	jmp	6E93
+	jmp	6E93h
 
 l0800_6CE4:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	mov	[bp-06],dx
-	mov	[bp-08],ax
-	mov	ax,[bp-06]
-	mov	dx,[bp-08]
-	and	ax,3FFF
-	mov	[bp-18],dx
-	mov	[bp-16],ax
-	mov	cx,0007
-	mov	bx,6EBC
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	mov	[bp-6h],dx
+	mov	[bp-8h],ax
+	mov	ax,[bp-6h]
+	mov	dx,[bp-8h]
+	and	ax,3FFFh
+	mov	[bp-18h],dx
+	mov	[bp-16h],ax
+	mov	cx,7h
+	mov	bx,6EBCh
 
 l0800_6D0D:
 	mov	ax,cs:[bx]
-	cmp	ax,[bp-08]
-	jnz	6D1E
+	cmp	ax,[bp-8h]
+	jnz	6D1Eh
 
 l0800_6D15:
-	mov	ax,cs:[bx+0E]
-	cmp	ax,[bp-16]
-	jz	6D26
+	mov	ax,cs:[bx+0Eh]
+	cmp	ax,[bp-16h]
+	jz	6D26h
 
 l0800_6D1E:
-	add	bx,02
-	loop	6D0D
+	add	bx,2h
+	loop	6D0Dh
 
 l0800_6D23:
-	jmp	6E8B
+	jmp	6E8Bh
 
 l0800_6D26:
-	jmp	word ptr cs:[bx+1C]
+	jmp	word ptr cs:[bx+1Ch]
 0800:6D2A                               1E B8 0A 22 50 56           ..."PV
 0800:6D30 E8 B3 01 83 C4 06 FF 76 FA FF 76 F8 E8 E1 01 83 .......v..v.....
 0800:6D40 C4 04 56 E8 B9 01 83 C4 02 46 E9 46 01 1E B8 0F ..V......F.F....
@@ -15044,32 +15044,32 @@ l0800_6D26:
 0800:6E80 03 50 52 E8 16 D2 83 C4 08 EB 08                .PR........    
 
 l0800_6E8B:
-	mov	ax,0009
+	mov	ax,9h
 	pop	si
 	mov	sp,bp
 	pop	bp
 	ret
 
 l0800_6E93:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	AD2F
-	add	sp,04
-	cmp	dx,[2A09]
-	jnc	6EAA
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0AD2Fh
+	add	sp,4h
+	cmp	dx,[2A09h]
+	jnc	6EAAh
 
 l0800_6EA7:
-	jmp	6CE4
+	jmp	6CE4h
 
 l0800_6EAA:
-	jnz	6EB5
+	jnz	6EB5h
 
 l0800_6EAC:
-	cmp	ax,[2A07]
-	jnc	6EB5
+	cmp	ax,[2A07h]
+	jnc	6EB5h
 
 l0800_6EB2:
-	jmp	6CE4
+	jmp	6CE4h
 
 l0800_6EB5:
 	xor	ax,ax
@@ -15086,14 +15086,14 @@ l0800_6EB5:
 fn0800_6EE6 proc
 	push	bp
 	mov	bp,sp
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
 	push	ds
-	mov	ax,2223
+	mov	ax,2223h
 	push	ax
-	call	B2EF
-	add	sp,0A
+	call	0B2EFh
+	add	sp,0Ah
 	pop	bp
 	ret
 
@@ -15102,19 +15102,19 @@ fn0800_6EFF proc
 	push	bp
 	mov	bp,sp
 	push	ds
-	mov	ax,2231
+	mov	ax,2231h
 	push	ax
-	call	B2EF
-	add	sp,04
-	cmp	word ptr [bp+04],09
-	jbe	6F1E
+	call	0B2EFh
+	add	sp,4h
+	cmp	word ptr [bp+4h],9h
+	jbe	6F1Eh
 
 l0800_6F13:
 	push	ds
-	mov	ax,223E
+	mov	ax,223Eh
 	push	ax
-	call	B2EF
-	add	sp,04
+	call	0B2EFh
+	add	sp,4h
 
 l0800_6F1E:
 	pop	bp
@@ -15124,476 +15124,476 @@ l0800_6F1E:
 fn0800_6F20 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,1A
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	mov	cl,02
-	call	8C69
-	mov	[bp-0E],dx
-	mov	[bp-10],ax
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	AD2F
-	add	sp,04
-	mov	[bp-12],dx
-	mov	[bp-14],ax
-	mov	ax,0001
+	sub	sp,1Ah
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	mov	cl,2h
+	call	8C69h
+	mov	[bp-0Eh],dx
+	mov	[bp-10h],ax
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0AD2Fh
+	add	sp,4h
+	mov	[bp-12h],dx
+	mov	[bp-14h],ax
+	mov	ax,1h
 	push	ax
-	push	word ptr [bp-0E]
-	push	word ptr [bp-10]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	jmp	6FCC
+	push	word ptr [bp-0Eh]
+	push	word ptr [bp-10h]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	jmp	6FCCh
 
 l0800_6F6D:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
 	xor	ax,ax
-	mov	dx,0004
+	mov	dx,4h
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
 
 l0800_6F86:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	mov	cl,02
-	call	8C69
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	or	ax,[bp-02]
-	jz	6FC4
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	mov	cl,2h
+	call	8C69h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	or	ax,[bp-2h]
+	jz	6FC4h
 
 l0800_6FA4:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	mov	ax,[bp-02]
-	mov	dx,[bp-04]
-	add	dx,04
-	adc	ax,0000
+	mov	ax,[bp-2h]
+	mov	dx,[bp-4h]
+	add	dx,4h
+	adc	ax,0h
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
 
 l0800_6FC4:
-	mov	ax,[bp-04]
-	or	ax,[bp-02]
-	jnz	6F86
+	mov	ax,[bp-4h]
+	or	ax,[bp-2h]
+	jnz	6F86h
 
 l0800_6FCC:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3F58
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3F58h
+	add	sp,4h
 	or	dx,dx
-	jnz	6FE3
+	jnz	6FE3h
 
 l0800_6FDE:
-	cmp	ax,03EC
-	jz	6F6D
+	cmp	ax,3ECh
+	jz	6F6Dh
 
 l0800_6FE3:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	AD2F
-	add	sp,04
-	sub	ax,[bp-14]
-	sbb	dx,[bp-12]
-	mov	[bp-16],dx
-	mov	[bp-18],ax
-	mov	[2A05],dx
-	mov	[2A03],ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	409C
-	add	sp,08
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	AD2F
-	add	sp,04
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	cmp	word ptr [bp-16],00
-	jnc	7035
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0AD2Fh
+	add	sp,4h
+	sub	ax,[bp-14h]
+	sbb	dx,[bp-12h]
+	mov	[bp-16h],dx
+	mov	[bp-18h],ax
+	mov	[2A05h],dx
+	mov	[2A03h],ax
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0AD2Fh
+	add	sp,4h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	cmp	word ptr [bp-16h],0h
+	jnc	7035h
 
 l0800_7032:
-	jmp	70F9
+	jmp	70F9h
 
 l0800_7035:
-	ja	7040
+	ja	7040h
 
 l0800_7037:
-	cmp	word ptr [bp-18],12
-	ja	7040
+	cmp	word ptr [bp-18h],12h
+	ja	7040h
 
 l0800_703D:
-	jmp	70F9
+	jmp	70F9h
 
 l0800_7040:
 	xor	ax,ax
 	push	ax
-	push	word ptr [4E8E]
-	push	word ptr [4E8C]
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	3E5D
-	add	sp,04
-	mov	[bp-0A],dx
-	mov	[bp-0C],ax
+	push	word ptr [4E8Eh]
+	push	word ptr [4E8Ch]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	3E5Dh
+	add	sp,4h
+	mov	[bp-0Ah],dx
+	mov	[bp-0Ch],ax
 	xor	ax,ax
 	push	ax
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	xor	ax,ax
 	push	ax
 	push	ax
-	call	409C
-	add	sp,08
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-0E]
-	push	word ptr [bp-10]
-	call	409C
-	add	sp,08
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-0A]
-	push	word ptr [bp-0C]
-	call	409C
-	add	sp,08
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-0Eh]
+	push	word ptr [bp-10h]
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-0Ah]
+	push	word ptr [bp-0Ch]
+	call	409Ch
+	add	sp,8h
 	xor	ax,ax
 	push	ax
-	push	word ptr [bp-12]
-	push	word ptr [bp-14]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	mov	ax,[bp-16]
-	mov	dx,[bp-18]
-	sub	dx,08
-	sbb	ax,0000
+	push	word ptr [bp-12h]
+	push	word ptr [bp-14h]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	mov	ax,[bp-16h]
+	mov	dx,[bp-18h]
+	sub	dx,8h
+	sbb	ax,0h
 	push	ax
 	push	dx
-	push	word ptr [bp-16]
-	push	word ptr [bp-18]
-	call	75EA
-	add	sp,08
-	add	word ptr [2A03],08
-	adc	word ptr [2A05],00
+	push	word ptr [bp-16h]
+	push	word ptr [bp-18h]
+	call	75EAh
+	add	sp,8h
+	add	word ptr [2A03h],8h
+	adc	word ptr [2A05h],0h
 
 l0800_70F9:
-	mov	ax,[2A05]
-	mov	dx,[2A03]
-	cmp	ax,[bp-16]
-	jnc	7108
+	mov	ax,[2A05h]
+	mov	dx,[2A03h]
+	cmp	ax,[bp-16h]
+	jnc	7108h
 
 l0800_7105:
-	jmp	724D
+	jmp	724Dh
 
 l0800_7108:
-	jnz	7112
+	jnz	7112h
 
 l0800_710A:
-	cmp	dx,[bp-18]
-	jnc	7112
+	cmp	dx,[bp-18h]
+	jnc	7112h
 
 l0800_710F:
-	jmp	724D
+	jmp	724Dh
 
 l0800_7112:
 	xor	ax,ax
 	push	ax
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
 	xor	ax,ax
 	push	ax
-	mov	ax,[bp-12]
-	mov	dx,[bp-14]
-	sub	dx,04
-	sbb	ax,0000
+	mov	ax,[bp-12h]
+	mov	dx,[bp-14h]
+	sub	dx,4h
+	sbb	ax,0h
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	mov	ax,[bp-0E]
-	mov	dx,[bp-10]
-	add	dx,04
-	adc	ax,0000
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	mov	ax,[bp-0Eh]
+	mov	dx,[bp-10h]
+	add	dx,4h
+	adc	ax,0h
 	push	ax
 	push	dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3B0A
-	add	sp,0C
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3F58
-	add	sp,04
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3B0Ah
+	add	sp,0Ch
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3F58h
+	add	sp,4h
 	or	dx,dx
-	jz	7181
+	jz	7181h
 
 l0800_717E:
-	jmp	723F
+	jmp	723Fh
 
 l0800_7181:
-	cmp	ax,03EC
-	jz	7189
+	cmp	ax,3ECh
+	jz	7189h
 
 l0800_7186:
-	jmp	723F
+	jmp	723Fh
 
 l0800_7189:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
 	xor	ax,ax
-	mov	dx,0004
+	mov	dx,4h
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	xor	ax,ax
-	mov	dx,03EC
+	mov	dx,3ECh
 	push	ax
 	push	dx
-	call	409C
-	add	sp,08
+	call	409Ch
+	add	sp,8h
 
 l0800_71B7:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-02]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-2h]
 	push	ax
-	call	409C
-	add	sp,08
-	mov	ax,[bp-04]
-	or	ax,[bp-02]
-	jz	7234
+	call	409Ch
+	add	sp,8h
+	mov	ax,[bp-4h]
+	or	ax,[bp-2h]
+	jz	7234h
 
 l0800_71E5:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
-	add	ax,0001
-	adc	dx,00
-	mov	[bp-06],dx
-	mov	[bp-08],ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-06]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
+	add	ax,1h
+	adc	dx,0h
+	mov	[bp-6h],dx
+	mov	[bp-8h],ax
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-6h]
 	push	ax
-	call	409C
-	add	sp,08
-	mov	dx,[bp-02]
-	mov	ax,[bp-04]
-	mov	cl,02
-	call	8C69
+	call	409Ch
+	add	sp,8h
+	mov	dx,[bp-2h]
+	mov	ax,[bp-4h]
+	mov	cl,2h
+	call	8C69h
 	push	dx
 	push	ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3B0A
-	add	sp,0C
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3B0Ah
+	add	sp,0Ch
 
 l0800_7234:
-	mov	ax,[bp-04]
-	or	ax,[bp-02]
-	jz	723F
+	mov	ax,[bp-4h]
+	or	ax,[bp-2h]
+	jz	723Fh
 
 l0800_723C:
-	jmp	71B7
+	jmp	71B7h
 
 l0800_723F:
-	add	word ptr [4E8C],04
-	adc	word ptr [4E8E],00
+	add	word ptr [4E8Ch],4h
+	adc	word ptr [4E8Eh],0h
 	mov	sp,bp
 	pop	bp
 	ret
 
 l0800_724D:
-	mov	ax,[bp-16]
-	mov	dx,[bp-18]
-	add	dx,[4E88]
-	adc	ax,[4E8A]
-	mov	[bp-02],ax
-	mov	[bp-04],dx
-	mov	ax,[2A03]
-	and	ax,0003
-	or	ax,0000
-	jz	7274
+	mov	ax,[bp-16h]
+	mov	dx,[bp-18h]
+	add	dx,[4E88h]
+	adc	ax,[4E8Ah]
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
+	mov	ax,[2A03h]
+	and	ax,3h
+	or	ax,0h
+	jz	7274h
 
 l0800_726C:
-	add	word ptr [bp-04],02
-	adc	word ptr [bp-02],00
+	add	word ptr [bp-4h],2h
+	adc	word ptr [bp-2h],0h
 
 l0800_7274:
-	mov	ax,[bp-04]
-	and	ax,0003
-	or	ax,0000
-	jz	7298
+	mov	ax,[bp-4h]
+	and	ax,3h
+	or	ax,0h
+	jz	7298h
 
 l0800_727F:
-	mov	dx,[bp-02]
-	mov	ax,[bp-04]
-	mov	cl,02
-	call	8CAA
-	add	ax,0001
-	adc	dx,00
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	jmp	72C6
+	mov	dx,[bp-2h]
+	mov	ax,[bp-4h]
+	mov	cl,2h
+	call	8CAAh
+	add	ax,1h
+	adc	dx,0h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	jmp	72C6h
 
 l0800_7298:
-	mov	dx,[bp-02]
-	mov	ax,[bp-04]
-	mov	cl,02
-	call	8CAA
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	jmp	72C6
+	mov	dx,[bp-2h]
+	mov	ax,[bp-4h]
+	mov	cl,2h
+	call	8CAAh
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	jmp	72C6h
 
 l0800_72AB:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	al,00
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	al,0h
 	push	ax
-	call	4047
-	add	sp,06
-	add	word ptr [2A03],01
-	adc	word ptr [2A05],00
+	call	4047h
+	add	sp,6h
+	add	word ptr [2A03h],1h
+	adc	word ptr [2A05h],0h
 
 l0800_72C6:
-	mov	ax,[2A03]
-	and	ax,0003
-	or	ax,0000
-	jnz	72AB
+	mov	ax,[2A03h]
+	and	ax,3h
+	or	ax,0h
+	jnz	72ABh
 
 l0800_72D1:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	AD2F
-	add	sp,04
-	mov	[bp-06],dx
-	mov	[bp-08],ax
-	mov	ax,0001
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0AD2Fh
+	add	sp,4h
+	mov	[bp-6h],dx
+	mov	[bp-8h],ax
+	mov	ax,1h
 	push	ax
-	mov	ax,[2A05]
-	mov	dx,[2A03]
+	mov	ax,[2A05h]
+	mov	dx,[2A03h]
 	neg	ax
 	neg	dx
-	sbb	ax,0000
-	sub	dx,04
-	sbb	ax,0000
+	sbb	ax,0h
+	sub	dx,4h
+	sbb	ax,0h
 	push	ax
 	push	dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	dx,[2A05]
-	mov	ax,[2A03]
-	mov	cl,02
-	call	8CAA
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	dx,[2A05h]
+	mov	ax,[2A03h]
+	mov	cl,2h
+	call	8CAAh
 	push	dx
 	push	ax
-	call	409C
-	add	sp,08
-	mov	ax,[bp-0A]
-	mov	dx,[bp-0C]
-	and	ax,3FFF
-	mov	[bp-1A],ax
-	cmp	ax,[bp-02]
-	jc	734D
+	call	409Ch
+	add	sp,8h
+	mov	ax,[bp-0Ah]
+	mov	dx,[bp-0Ch]
+	and	ax,3FFFh
+	mov	[bp-1Ah],ax
+	cmp	ax,[bp-2h]
+	jc	734Dh
 
 l0800_733A:
-	ja	7341
+	ja	7341h
 
 l0800_733C:
-	cmp	dx,[bp-04]
-	jbe	734D
+	cmp	dx,[bp-4h]
+	jbe	734Dh
 
 l0800_7341:
-	mov	ax,[bp-0C]
-	mov	dx,[bp-1A]
-	mov	[bp-02],dx
-	mov	[bp-04],ax
+	mov	ax,[bp-0Ch]
+	mov	dx,[bp-1Ah]
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
 
 l0800_734D:
-	mov	ax,[bp-0A]
-	and	ax,C000
-	or	word ptr [bp-04],00
-	or	[bp-02],ax
+	mov	ax,[bp-0Ah]
+	and	ax,0C000h
+	or	word ptr [bp-4h],0h
+	or	[bp-2h],ax
 	xor	ax,ax
 	push	ax
-	push	word ptr [4E8E]
-	push	word ptr [4E8C]
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	409C
-	add	sp,08
+	push	word ptr [4E8Eh]
+	push	word ptr [4E8Ch]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	409Ch
+	add	sp,8h
 	xor	ax,ax
 	push	ax
-	push	word ptr [bp-06]
-	push	word ptr [bp-08]
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	add	word ptr [4E8C],04
-	adc	word ptr [4E8E],00
+	push	word ptr [bp-6h]
+	push	word ptr [bp-8h]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	add	word ptr [4E8Ch],4h
+	adc	word ptr [4E8Eh],0h
 	mov	sp,bp
 	pop	bp
 	ret
@@ -15602,45 +15602,45 @@ l0800_734D:
 ;;   Called from:
 ;;     0800:0FFB (in fn0800_0DE8)
 fn0800_73AC proc
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	al,[2E75]
-	mov	ah,00
-	mov	cl,08
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	al,[2E75h]
+	mov	ah,0h
+	mov	cl,8h
 	shl	ax,cl
-	mov	dl,[2E76]
-	mov	dh,00
+	mov	dl,[2E76h]
+	mov	dh,0h
 	add	ax,dx
 	xor	dx,dx
 	push	dx
 	push	ax
 	push	ds
-	mov	ax,2E77
+	mov	ax,2E77h
 	push	ax
-	call	4152
-	add	sp,0C
-	mov	ax,0001
+	call	4152h
+	add	sp,0Ch
+	mov	ax,1h
 	push	ax
-	mov	ax,FFFF
-	mov	dx,FFFC
+	mov	ax,0FFFFh
+	mov	dx,0FFFCh
 	push	ax
 	push	dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [2A11]
-	push	word ptr [2A0F]
-	call	409C
-	add	sp,08
-	push	word ptr [2A09]
-	push	word ptr [2A07]
-	push	word ptr [2A09]
-	push	word ptr [2A07]
-	call	75EA
-	add	sp,08
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [2A11h]
+	push	word ptr [2A0Fh]
+	call	409Ch
+	add	sp,8h
+	push	word ptr [2A09h]
+	push	word ptr [2A07h]
+	push	word ptr [2A09h]
+	push	word ptr [2A07h]
+	call	75EAh
+	add	sp,8h
 	xor	ax,ax
 	ret
 
@@ -15650,198 +15650,198 @@ fn0800_73AC proc
 fn0800_741D proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
+	sub	sp,4h
 	push	si
-	jmp	75C1
+	jmp	75C1h
 
 l0800_7427:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E9A
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E9Ah
+	add	sp,4h
 	or	ax,ax
-	jz	7449
+	jz	7449h
 
 l0800_7439:
-	cmp	ax,0001
-	jz	7469
+	cmp	ax,1h
+	jz	7469h
 
 l0800_743E:
-	cmp	ax,0003
-	jnz	7446
+	cmp	ax,3h
+	jnz	7446h
 
 l0800_7443:
-	jmp	7566
+	jmp	7566h
 
 l0800_7446:
-	jmp	758F
+	jmp	758Fh
 
 l0800_7449:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3DCF
-	add	sp,04
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3DCFh
+	add	sp,4h
 	push	ax
-	call	4047
-	add	sp,06
-	jmp	75C1
+	call	4047h
+	add	sp,6h
+	jmp	75C1h
 
 l0800_7469:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3E5D
-	add	sp,04
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3E5Dh
+	add	sp,4h
 	push	dx
 	push	ax
-	call	409C
-	add	sp,08
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3FAD
-	add	sp,04
-	mov	word ptr [bp-02],0000
-	mov	[bp-04],ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3FADh
+	add	sp,4h
+	mov	word ptr [bp-2h],0h
+	mov	[bp-4h],ax
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	xor	ax,ax
 	push	ax
-	call	401E
-	add	sp,06
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	75EA
-	add	sp,08
-	mov	ax,0001
+	call	401Eh
+	add	sp,6h
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	75EAh
+	add	sp,8h
+	mov	ax,1h
 	push	ax
-	mov	ax,[2A05]
-	mov	dx,[2A03]
-	add	dx,02
-	adc	ax,0000
+	mov	ax,[2A05h]
+	mov	dx,[2A03h]
+	add	dx,2h
+	adc	ax,0h
 	neg	ax
 	neg	dx
-	sbb	ax,0000
+	sbb	ax,0h
 	push	ax
 	push	dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [2A03]
-	call	40BF
-	add	sp,06
-	mov	ax,[2A05]
-	mov	dx,[2A03]
-	cmp	ax,[bp-02]
-	jnz	754A
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [2A03h]
+	call	40BFh
+	add	sp,6h
+	mov	ax,[2A05h]
+	mov	dx,[2A03h]
+	cmp	ax,[bp-2h]
+	jnz	754Ah
 
 l0800_7506:
-	cmp	dx,[bp-04]
-	jnz	754A
+	cmp	dx,[bp-4h]
+	jnz	754Ah
 
 l0800_750B:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	mov	ax,[bp-02]
-	mov	dx,[bp-04]
+	mov	ax,[bp-2h]
+	mov	dx,[bp-4h]
 	neg	ax
 	neg	dx
-	sbb	ax,0000
+	sbb	ax,0h
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3B0A
-	add	sp,0C
-	jmp	75C1
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3B0Ah
+	add	sp,0Ch
+	jmp	75C1h
 
 l0800_754A:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	push	word ptr [2A05]
-	push	word ptr [2A03]
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	jmp	75C1
+	push	word ptr [2A05h]
+	push	word ptr [2A03h]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	jmp	75C1h
 
 l0800_7566:
 	xor	si,si
-	jmp	7588
+	jmp	7588h
 
 l0800_756A:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3DCF
-	add	sp,04
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3DCFh
+	add	sp,4h
 	push	ax
-	call	4047
-	add	sp,06
+	call	4047h
+	add	sp,6h
 	inc	si
 
 l0800_7588:
-	cmp	si,03
-	jnz	756A
+	cmp	si,3h
+	jnz	756Ah
 
 l0800_758D:
-	jmp	75C1
+	jmp	75C1h
 
 l0800_758F:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	AD2F
-	add	sp,04
-	mov	bx,[2A09]
-	mov	cx,[2A07]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0AD2Fh
+	add	sp,4h
+	mov	bx,[2A09h]
+	mov	cx,[2A07h]
 	sub	cx,ax
 	sbb	bx,dx
 	push	bx
 	push	cx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3B0A
-	add	sp,0C
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3B0Ah
+	add	sp,0Ch
 
 l0800_75C1:
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	AD2F
-	add	sp,04
-	cmp	dx,[2A09]
-	jnc	75D8
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0AD2Fh
+	add	sp,4h
+	cmp	dx,[2A09h]
+	jnc	75D8h
 
 l0800_75D5:
-	jmp	7427
+	jmp	7427h
 
 l0800_75D8:
-	jnz	75E3
+	jnz	75E3h
 
 l0800_75DA:
-	cmp	ax,[2A07]
-	jnc	75E3
+	cmp	ax,[2A07h]
+	jnc	75E3h
 
 l0800_75E0:
-	jmp	7427
+	jmp	7427h
 
 l0800_75E3:
 	xor	ax,ax
@@ -15864,395 +15864,395 @@ l0800_75E3:
 fn0800_75EA proc
 	push	bp
 	mov	bp,sp
-	sub	sp,16
+	sub	sp,16h
 	push	si
-	mov	ax,[bp+06]
-	mov	dx,[bp+04]
-	mov	[4680],ax
-	mov	[467E],dx
-	mov	[2A05],ax
-	mov	[2A03],dx
-	mov	[4678],ax
-	mov	[4676],dx
-	mov	ax,[bp+0A]
-	mov	dx,[bp+08]
-	sub	dx,12
-	sbb	ax,0000
-	mov	[4E86],ax
-	mov	[4E84],dx
-	cmp	word ptr [4680],00
-	ja	7634
+	mov	ax,[bp+6h]
+	mov	dx,[bp+4h]
+	mov	[4680h],ax
+	mov	[467Eh],dx
+	mov	[2A05h],ax
+	mov	[2A03h],dx
+	mov	[4678h],ax
+	mov	[4676h],dx
+	mov	ax,[bp+0Ah]
+	mov	dx,[bp+8h]
+	sub	dx,12h
+	sbb	ax,0h
+	mov	[4E86h],ax
+	mov	[4E84h],dx
+	cmp	word ptr [4680h],0h
+	ja	7634h
 
 l0800_7626:
-	jz	762B
+	jz	762Bh
 
 l0800_7628:
-	jmp	79FD
+	jmp	79FDh
 
 l0800_762B:
-	cmp	word ptr [bp+04],12
-	ja	7634
+	cmp	word ptr [bp+4h],12h
+	ja	7634h
 
 l0800_7631:
-	jmp	79FD
+	jmp	79FDh
 
 l0800_7634:
-	mov	word ptr [2E4B],0000
-	mov	word ptr [2E49],0000
-	mov	word ptr [465C],0000
-	mov	word ptr [4668],0000
-	mov	word ptr [4666],0000
-	mov	word ptr [2A05],0000
-	mov	word ptr [2A03],0000
-	mov	word ptr [2A01],0000
-	mov	word ptr [29FF],0000
-	mov	word ptr [467C],0000
-	mov	word ptr [467A],0000
-	mov	word ptr [4674],0000
-	mov	word ptr [4672],0000
-	mov	word ptr [2E43],0000
-	mov	word ptr [2E45],0000
-	mov	word ptr [4E82],0000
-	mov	word ptr [4E8A],0000
-	mov	word ptr [4E88],0000
-	mov	word ptr [29F9],0000
-	mov	word ptr [29F7],0000
-	mov	ax,0001
-	mov	dx,000F
+	mov	word ptr [2E4Bh],0h
+	mov	word ptr [2E49h],0h
+	mov	word ptr [465Ch],0h
+	mov	word ptr [4668h],0h
+	mov	word ptr [4666h],0h
+	mov	word ptr [2A05h],0h
+	mov	word ptr [2A03h],0h
+	mov	word ptr [2A01h],0h
+	mov	word ptr [29FFh],0h
+	mov	word ptr [467Ch],0h
+	mov	word ptr [467Ah],0h
+	mov	word ptr [4674h],0h
+	mov	word ptr [4672h],0h
+	mov	word ptr [2E43h],0h
+	mov	word ptr [2E45h],0h
+	mov	word ptr [4E82h],0h
+	mov	word ptr [4E8Ah],0h
+	mov	word ptr [4E88h],0h
+	mov	word ptr [29F9h],0h
+	mov	word ptr [29F7h],0h
+	mov	ax,1h
+	mov	dx,0Fh
 	push	ax
 	push	dx
-	call	4311
-	add	sp,04
-	mov	[bp-14],dx
-	mov	[bp-16],ax
+	call	4311h
+	add	sp,4h
+	mov	[bp-14h],dx
+	mov	[bp-16h],ax
 	inc	dx
-	mov	[2E73],dx
-	mov	word ptr [2E71],0000
-	mov	ax,0001
-	mov	dx,0010
+	mov	[2E73h],dx
+	mov	word ptr [2E71h],0h
+	mov	ax,1h
+	mov	dx,10h
 	push	ax
 	push	dx
-	call	4311
-	add	sp,04
-	mov	[bp-10],dx
-	mov	[bp-12],ax
+	call	4311h
+	add	sp,4h
+	mov	[bp-10h],dx
+	mov	[bp-12h],ax
 	inc	dx
-	mov	[2E39],dx
-	mov	word ptr [2E37],0000
-	mov	ax,0001
-	mov	dx,0010
+	mov	[2E39h],dx
+	mov	word ptr [2E37h],0h
+	mov	ax,1h
+	mov	dx,10h
 	push	ax
 	push	dx
-	call	4311
-	add	sp,04
-	mov	[bp-0C],dx
-	mov	[bp-0E],ax
+	call	4311h
+	add	sp,4h
+	mov	[bp-0Ch],dx
+	mov	[bp-0Eh],ax
 	inc	dx
-	mov	[2E35],dx
-	mov	word ptr [2E33],0000
-	mov	ax,0001
-	mov	dx,0010
+	mov	[2E35h],dx
+	mov	word ptr [2E33h],0h
+	mov	ax,1h
+	mov	dx,10h
 	push	ax
 	push	dx
-	call	4311
-	add	sp,04
-	mov	[bp-08],dx
-	mov	[bp-0A],ax
+	call	4311h
+	add	sp,4h
+	mov	[bp-8h],dx
+	mov	[bp-0Ah],ax
 	inc	dx
-	mov	[2E41],dx
-	mov	word ptr [2E3F],0000
-	mov	ax,0001
-	mov	dx,0010
+	mov	[2E41h],dx
+	mov	word ptr [2E3Fh],0h
+	mov	ax,1h
+	mov	dx,10h
 	push	ax
 	push	dx
-	call	4311
-	add	sp,04
-	mov	[bp-04],dx
-	mov	[bp-06],ax
+	call	4311h
+	add	sp,4h
+	mov	[bp-4h],dx
+	mov	[bp-6h],ax
 	inc	dx
-	mov	[2E3D],dx
-	mov	word ptr [2E3B],0000
-	call	87F8
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	AD2F
-	add	sp,04
-	mov	[4664],dx
-	mov	[4662],ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	AD2F
-	add	sp,04
-	mov	[4660],dx
-	mov	[465E],ax
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	ax,[2A21]
+	mov	[2E3Dh],dx
+	mov	word ptr [2E3Bh],0h
+	call	87F8h
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0AD2Fh
+	add	sp,4h
+	mov	[4664h],dx
+	mov	[4662h],ax
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0AD2Fh
+	add	sp,4h
+	mov	[4660h],dx
+	mov	[465Eh],ax
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	ax,[2A21h]
 	cwd
-	add	ax,4300
-	adc	dx,524E
+	add	ax,4300h
+	adc	dx,524Eh
 	push	dx
 	push	ax
-	call	409C
-	add	sp,08
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [4680]
-	push	word ptr [467E]
-	call	409C
-	add	sp,08
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [4680h]
+	push	word ptr [467Eh]
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	xor	ax,ax
 	push	ax
 	push	ax
-	call	409C
-	add	sp,08
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	xor	ax,ax
 	push	ax
-	call	401E
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	call	401Eh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	xor	ax,ax
 	push	ax
-	call	401E
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
+	call	401Eh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
 	xor	ax,ax
 	push	ax
-	call	401E
-	add	sp,06
+	call	401Eh
+	add	sp,6h
 	push	ds
-	mov	ax,2240
+	mov	ax,2240h
 	push	ax
-	call	B2EF
-	add	sp,04
-	mov	ax,[2E4F]
-	mov	[bp-02],ax
-	mov	ax,0001
+	call	0B2EFh
+	add	sp,4h
+	mov	ax,[2E4Fh]
+	mov	[bp-2h],ax
+	mov	ax,1h
 	push	ax
-	cmp	word ptr [2A1F],00
-	jz	7808
+	cmp	word ptr [2A1Fh],0h
+	jz	7808h
 
 l0800_7806:
-	jmp	780A
+	jmp	780Ah
 
 l0800_7808:
 	xor	ax,ax
 
 l0800_780A:
 	push	ax
-	call	8465
-	add	sp,04
-	mov	ax,0001
+	call	8465h
+	add	sp,4h
+	mov	ax,1h
 	push	ax
-	cmp	word ptr [2E4F],00
-	jz	781E
+	cmp	word ptr [2E4Fh],0h
+	jz	781Eh
 
 l0800_781C:
-	jmp	7820
+	jmp	7820h
 
 l0800_781E:
 	xor	ax,ax
 
 l0800_7820:
 	push	ax
-	call	8465
-	add	sp,04
-	cmp	word ptr [2A23],01
-	jz	7843
+	call	8465h
+	add	sp,4h
+	cmp	word ptr [2A23h],1h
+	jz	7843h
 
 l0800_782E:
-	cmp	word ptr [2E4F],00
-	jz	7843
+	cmp	word ptr [2E4Fh],0h
+	jz	7843h
 
 l0800_7835:
-	mov	ax,0010
+	mov	ax,10h
 	push	ax
-	push	word ptr [2E4F]
-	call	8465
-	add	sp,04
+	push	word ptr [2E4Fh]
+	call	8465h
+	add	sp,4h
 
 l0800_7843:
-	mov	ax,[2A21]
-	cmp	ax,0001
-	jz	7852
+	mov	ax,[2A21h]
+	cmp	ax,1h
+	jz	7852h
 
 l0800_784B:
-	cmp	ax,0002
-	jz	7857
+	cmp	ax,2h
+	jz	7857h
 
 l0800_7850:
-	jmp	785A
+	jmp	785Ah
 
 l0800_7852:
-	call	7A02
-	jmp	785A
+	call	7A02h
+	jmp	785Ah
 
 l0800_7857:
-	call	7C78
+	call	7C78h
 
 l0800_785A:
 	xor	si,si
-	jmp	7870
+	jmp	7870h
 
 l0800_785E:
 	mov	bx,si
 	inc	si
-	mov	al,[bx+4682]
+	mov	al,[bx+4682h]
 	push	ax
-	call	8624
-	add	sp,02
-	dec	word ptr [4E82]
+	call	8624h
+	add	sp,2h
+	dec	word ptr [4E82h]
 
 l0800_7870:
-	cmp	word ptr [4E82],00
-	jnz	785E
+	cmp	word ptr [4E82h],0h
+	jnz	785Eh
 
 l0800_7877:
-	mov	ax,[bp-02]
-	mov	[2E4F],ax
-	mov	ax,[4680]
-	mov	dx,[467E]
-	sub	dx,[2A03]
-	sbb	ax,[2A05]
-	cmp	ax,[4E8A]
-	ja	78B3
+	mov	ax,[bp-2h]
+	mov	[2E4Fh],ax
+	mov	ax,[4680h]
+	mov	dx,[467Eh]
+	sub	dx,[2A03h]
+	sbb	ax,[2A05h]
+	cmp	ax,[4E8Ah]
+	ja	78B3h
 
 l0800_7892:
-	jc	789A
+	jc	789Ah
 
 l0800_7894:
-	cmp	dx,[4E88]
-	jnc	78B3
+	cmp	dx,[4E88h]
+	jnc	78B3h
 
 l0800_789A:
-	mov	ax,[4680]
-	mov	dx,[467E]
-	sub	dx,[2A03]
-	sbb	ax,[2A05]
-	sub	[4E88],dx
-	sbb	[4E8A],ax
-	jmp	78BF
+	mov	ax,[4680h]
+	mov	dx,[467Eh]
+	sub	dx,[2A03h]
+	sbb	ax,[2A05h]
+	sub	[4E88h],dx
+	sbb	[4E8Ah],ax
+	jmp	78BFh
 
 l0800_78B3:
-	mov	word ptr [4E8A],0000
-	mov	word ptr [4E88],0000
+	mov	word ptr [4E8Ah],0h
+	mov	word ptr [4E88h],0h
 
 l0800_78BF:
-	cmp	word ptr [2A21],02
-	jnz	78D0
+	cmp	word ptr [2A21h],2h
+	jnz	78D0h
 
 l0800_78C6:
-	add	word ptr [4E88],02
-	adc	word ptr [4E8A],00
+	add	word ptr [4E88h],2h
+	adc	word ptr [4E8Ah],0h
 
 l0800_78D0:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	AD2F
-	add	sp,04
-	sub	ax,[465E]
-	sbb	dx,[4660]
-	mov	[2A05],dx
-	mov	[2A03],ax
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0AD2Fh
+	add	sp,4h
+	sub	ax,[465Eh]
+	sbb	dx,[4660h]
+	mov	[2A05h],dx
+	mov	[2A03h],ax
 	xor	ax,ax
 	push	ax
-	mov	ax,[4660]
-	mov	dx,[465E]
-	add	dx,08
-	adc	ax,0000
+	mov	ax,[4660h]
+	mov	dx,[465Eh]
+	add	dx,8h
+	adc	ax,0h
 	push	ax
 	push	dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	ax,[2A05]
-	mov	dx,[2A03]
-	sub	dx,12
-	sbb	ax,0000
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	ax,[2A05h]
+	mov	dx,[2A03h]
+	sub	dx,12h
+	sbb	ax,0h
 	push	ax
 	push	dx
-	call	409C
-	add	sp,08
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [2E4B]
-	call	401E
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	push	word ptr [2E49]
-	call	401E
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	al,[4E88]
+	call	409Ch
+	add	sp,8h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [2E4Bh]
+	call	401Eh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	push	word ptr [2E49h]
+	call	401Eh
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	al,[4E88h]
 	push	ax
-	call	4047
-	add	sp,06
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	al,[29F7]
+	call	4047h
+	add	sp,6h
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	al,[29F7h]
 	push	ax
-	call	4047
-	add	sp,06
+	call	4047h
+	add	sp,6h
 	xor	ax,ax
 	push	ax
-	mov	ax,[4660]
-	mov	dx,[465E]
-	add	dx,[2A03]
-	adc	ax,[2A05]
+	mov	ax,[4660h]
+	mov	dx,[465Eh]
+	add	dx,[2A03h]
+	adc	ax,[2A05h]
 	push	ax
 	push	dx
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	call	ACB3
-	add	sp,0A
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	call	0ACB3h
+	add	sp,0Ah
 	xor	ax,ax
 	push	ax
-	mov	ax,[4664]
-	mov	dx,[4662]
-	add	dx,[467E]
-	adc	ax,[4680]
+	mov	ax,[4664h]
+	mov	dx,[4662h]
+	add	dx,[467Eh]
+	adc	ax,[4680h]
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	push	word ptr [bp-14]
-	push	word ptr [bp-16]
-	call	4346
-	add	sp,04
-	push	word ptr [bp-10]
-	push	word ptr [bp-12]
-	call	4346
-	add	sp,04
-	push	word ptr [bp-0C]
-	push	word ptr [bp-0E]
-	call	4346
-	add	sp,04
-	push	word ptr [bp-08]
-	push	word ptr [bp-0A]
-	call	4346
-	add	sp,04
-	push	word ptr [bp-04]
-	push	word ptr [bp-06]
-	call	4346
-	add	sp,04
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	push	word ptr [bp-14h]
+	push	word ptr [bp-16h]
+	call	4346h
+	add	sp,4h
+	push	word ptr [bp-10h]
+	push	word ptr [bp-12h]
+	call	4346h
+	add	sp,4h
+	push	word ptr [bp-0Ch]
+	push	word ptr [bp-0Eh]
+	call	4346h
+	add	sp,4h
+	push	word ptr [bp-8h]
+	push	word ptr [bp-0Ah]
+	call	4346h
+	add	sp,4h
+	push	word ptr [bp-4h]
+	push	word ptr [bp-6h]
+	call	4346h
+	add	sp,4h
 	push	ds
-	mov	ax,223C
+	mov	ax,223Ch
 	push	ax
-	call	B2EF
-	add	sp,04
+	call	0B2EFh
+	add	sp,4h
 
 l0800_79FD:
 	pop	si
@@ -16266,297 +16266,297 @@ l0800_79FD:
 fn0800_7A02 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
+	sub	sp,4h
 	push	si
-	mov	ax,[4664]
-	mov	dx,[4662]
-	mov	[bp-02],ax
-	mov	[bp-04],dx
-	jmp	7C1A
+	mov	ax,[4664h]
+	mov	dx,[4662h]
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
+	jmp	7C1Ah
 
 l0800_7A19:
-	mov	ax,0010
+	mov	ax,10h
 	push	ax
 	push	ds
-	mov	ax,284F
+	mov	ax,284Fh
 	push	ax
-	call	43D4
-	add	sp,06
-	mov	ax,0010
-	push	ax
-	push	ds
-	mov	ax,278F
-	push	ax
-	call	43D4
-	add	sp,06
-	mov	ax,0010
+	call	43D4h
+	add	sp,6h
+	mov	ax,10h
 	push	ax
 	push	ds
-	mov	ax,290F
+	mov	ax,278Fh
 	push	ax
-	call	43D4
-	add	sp,06
-	call	7FDC
+	call	43D4h
+	add	sp,6h
+	mov	ax,10h
+	push	ax
+	push	ds
+	mov	ax,290Fh
+	push	ax
+	call	43D4h
+	add	sp,6h
+	call	7FDCh
 	xor	ax,ax
 	push	ax
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	mov	ax,0010
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	mov	ax,10h
 	push	ax
 	push	ds
-	mov	ax,290F
+	mov	ax,290Fh
 	push	ax
-	call	441C
-	add	sp,06
-	mov	ax,0010
-	push	ax
-	push	ds
-	mov	ax,284F
-	push	ax
-	call	441C
-	add	sp,06
-	mov	ax,0010
+	call	441Ch
+	add	sp,6h
+	mov	ax,10h
 	push	ax
 	push	ds
-	mov	ax,278F
+	mov	ax,284Fh
 	push	ax
-	call	441C
-	add	sp,06
-	mov	ax,0010
-	push	ax
-	push	ds
-	mov	ax,290F
-	push	ax
-	call	83A1
-	add	sp,06
-	mov	ax,0010
+	call	441Ch
+	add	sp,6h
+	mov	ax,10h
 	push	ax
 	push	ds
-	mov	ax,284F
+	mov	ax,278Fh
 	push	ax
-	call	83A1
-	add	sp,06
-	mov	ax,0010
+	call	441Ch
+	add	sp,6h
+	mov	ax,10h
 	push	ax
 	push	ds
-	mov	ax,278F
+	mov	ax,290Fh
 	push	ax
-	call	83A1
-	add	sp,06
-	mov	ax,0010
+	call	83A1h
+	add	sp,6h
+	mov	ax,10h
 	push	ax
-	push	word ptr [466A]
-	call	8489
-	add	sp,04
-	jmp	7BC0
+	push	ds
+	mov	ax,284Fh
+	push	ax
+	call	83A1h
+	add	sp,6h
+	mov	ax,10h
+	push	ax
+	push	ds
+	mov	ax,278Fh
+	push	ax
+	call	83A1h
+	add	sp,6h
+	mov	ax,10h
+	push	ax
+	push	word ptr [466Ah]
+	call	8489h
+	add	sp,4h
+	jmp	7BC0h
 
 l0800_7ACB:
-	push	word ptr [29DD]
-	push	word ptr [29DB]
-	call	3E27
-	add	sp,04
-	mov	[2E47],ax
-	add	[467A],ax
-	adc	word ptr [467C],00
+	push	word ptr [29DDh]
+	push	word ptr [29DBh]
+	call	3E27h
+	add	sp,4h
+	mov	[2E47h],ax
+	add	[467Ah],ax
+	adc	word ptr [467Ch],0h
 	push	ds
-	mov	ax,290F
+	mov	ax,290Fh
 	push	ax
-	push	word ptr [2E47]
-	call	8407
-	add	sp,06
-	cmp	word ptr [2E47],00
-	jz	7B56
+	push	word ptr [2E47h]
+	call	8407h
+	add	sp,6h
+	cmp	word ptr [2E47h],0h
+	jz	7B56h
 
 l0800_7AFB:
-	cmp	word ptr [2E45],00
-	jz	7B32
+	cmp	word ptr [2E45h],0h
+	jz	7B32h
 
 l0800_7B02:
-	jmp	7B17
+	jmp	7B17h
 
 l0800_7B04:
-	call	8359
-	xor	al,[2E4F]
-	mov	bx,[4E82]
-	mov	[bx+4682],al
-	inc	word ptr [4E82]
+	call	8359h
+	xor	al,[2E4Fh]
+	mov	bx,[4E82h]
+	mov	[bx+4682h],al
+	inc	word ptr [4E82h]
 
 l0800_7B17:
-	mov	ax,[2E47]
-	dec	word ptr [2E47]
+	mov	ax,[2E47h]
+	dec	word ptr [2E47h]
 	or	ax,ax
-	jnz	7B04
+	jnz	7B04h
 
 l0800_7B22:
-	jmp	7B3D
+	jmp	7B3Dh
 
 l0800_7B24:
-	call	8359
-	xor	al,[2E4F]
+	call	8359h
+	xor	al,[2E4Fh]
 	push	ax
-	call	8624
-	add	sp,02
+	call	8624h
+	add	sp,2h
 
 l0800_7B32:
-	mov	ax,[2E47]
-	dec	word ptr [2E47]
+	mov	ax,[2E47h]
+	dec	word ptr [2E47h]
 	or	ax,ax
-	jnz	7B24
+	jnz	7B24h
 
 l0800_7B3D:
-	test	word ptr [2E4F],0001
-	jz	7B52
+	test	word ptr [2E4Fh],1h
+	jz	7B52h
 
 l0800_7B45:
-	mov	ax,[2E4F]
-	shr	ax,01
-	or	ax,8000
-	mov	[2E4F],ax
-	jmp	7B56
+	mov	ax,[2E4Fh]
+	shr	ax,1h
+	or	ax,8000h
+	mov	[2E4Fh],ax
+	jmp	7B56h
 
 l0800_7B52:
-	shr	word ptr [2E4F],01
+	shr	word ptr [2E4Fh],1h
 
 l0800_7B56:
-	mov	ax,[466A]
-	or	ax,[466C]
-	jz	7BC0
+	mov	ax,[466Ah]
+	or	ax,[466Ch]
+	jz	7BC0h
 
 l0800_7B5F:
-	push	word ptr [29DD]
-	push	word ptr [29DB]
-	call	3E27
-	add	sp,04
-	mov	[2E29],ax
-	push	word ptr [29DD]
-	push	word ptr [29DB]
-	call	3E27
-	add	sp,04
-	mov	[2E2B],ax
+	push	word ptr [29DDh]
+	push	word ptr [29DBh]
+	call	3E27h
+	add	sp,4h
+	mov	[2E29h],ax
+	push	word ptr [29DDh]
+	push	word ptr [29DBh]
+	call	3E27h
+	add	sp,4h
+	mov	[2E2Bh],ax
 	push	ds
-	mov	ax,284F
+	mov	ax,284Fh
 	push	ax
-	push	word ptr [2E2B]
-	call	8407
-	add	sp,06
+	push	word ptr [2E2Bh]
+	call	8407h
+	add	sp,6h
 	push	ds
-	mov	ax,278F
+	mov	ax,278Fh
 	push	ax
-	push	word ptr [2E29]
-	call	8407
-	add	sp,06
-	add	word ptr [2E29],02
-	mov	ax,[2E29]
-	add	[467A],ax
-	adc	word ptr [467C],00
-	jmp	7BB5
+	push	word ptr [2E29h]
+	call	8407h
+	add	sp,6h
+	add	word ptr [2E29h],2h
+	mov	ax,[2E29h]
+	add	[467Ah],ax
+	adc	word ptr [467Ch],0h
+	jmp	7BB5h
 
 l0800_7BB2:
-	call	8359
+	call	8359h
 
 l0800_7BB5:
-	mov	ax,[2E29]
-	dec	word ptr [2E29]
+	mov	ax,[2E29h]
+	dec	word ptr [2E29h]
 	or	ax,ax
-	jnz	7BB2
+	jnz	7BB2h
 
 l0800_7BC0:
-	mov	ax,[466A]
-	mov	dx,[466C]
-	sub	word ptr [466A],01
-	sbb	word ptr [466C],00
+	mov	ax,[466Ah]
+	mov	dx,[466Ch]
+	sub	word ptr [466Ah],1h
+	sbb	word ptr [466Ch],0h
 	or	ax,dx
-	jz	7BD8
+	jz	7BD8h
 
 l0800_7BD5:
-	jmp	7ACB
+	jmp	7ACBh
 
 l0800_7BD8:
-	cmp	word ptr [2E45],00
-	jnz	7BFC
+	cmp	word ptr [2E45h],0h
+	jnz	7BFCh
 
 l0800_7BDF:
 	xor	si,si
-	jmp	7BF5
+	jmp	7BF5h
 
 l0800_7BE3:
 	mov	bx,si
 	inc	si
-	mov	al,[bx+4682]
+	mov	al,[bx+4682h]
 	push	ax
-	call	8624
-	add	sp,02
-	dec	word ptr [4E82]
+	call	8624h
+	add	sp,2h
+	dec	word ptr [4E82h]
 
 l0800_7BF5:
-	cmp	word ptr [4E82],00
-	jnz	7BE3
+	cmp	word ptr [4E82h],0h
+	jnz	7BE3h
 
 l0800_7BFC:
-	add	word ptr [29F7],01
-	adc	word ptr [29F9],00
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	AD2F
-	add	sp,04
-	mov	[bp-02],dx
-	mov	[bp-04],ax
+	add	word ptr [29F7h],1h
+	adc	word ptr [29F9h],0h
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0AD2Fh
+	add	sp,4h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
 
 l0800_7C1A:
-	mov	ax,[467C]
-	mov	dx,[467A]
-	cmp	ax,[4680]
-	jnc	7C2A
+	mov	ax,[467Ch]
+	mov	dx,[467Ah]
+	cmp	ax,[4680h]
+	jnc	7C2Ah
 
 l0800_7C27:
-	jmp	7A19
+	jmp	7A19h
 
 l0800_7C2A:
-	jnz	7C35
+	jnz	7C35h
 
 l0800_7C2C:
-	cmp	dx,[467E]
-	jnc	7C35
+	cmp	dx,[467Eh]
+	jnc	7C35h
 
 l0800_7C32:
-	jmp	7A19
+	jmp	7A19h
 
 l0800_7C35:
-	mov	cl,10
-	sub	cl,[2E45]
-	shr	word ptr [2E43],cl
-	cmp	word ptr [2E45],00
-	jnz	7C4D
+	mov	cl,10h
+	sub	cl,[2E45h]
+	shr	word ptr [2E43h],cl
+	cmp	word ptr [2E45h],0h
+	jnz	7C4Dh
 
 l0800_7C46:
-	cmp	word ptr [4E82],00
-	jz	7C57
+	cmp	word ptr [4E82h],0h
+	jz	7C57h
 
 l0800_7C4D:
-	mov	al,[2E43]
+	mov	al,[2E43h]
 	push	ax
-	call	8624
-	add	sp,02
+	call	8624h
+	add	sp,2h
 
 l0800_7C57:
-	cmp	word ptr [2E45],08
-	ja	7C65
+	cmp	word ptr [2E45h],8h
+	ja	7C65h
 
 l0800_7C5E:
-	cmp	word ptr [4E82],00
-	jz	7C73
+	cmp	word ptr [4E82h],0h
+	jz	7C73h
 
 l0800_7C65:
-	mov	ax,[2E43]
-	mov	cl,08
+	mov	ax,[2E43h]
+	mov	cl,8h
 	shr	ax,cl
 	push	ax
-	call	8624
-	add	sp,02
+	call	8624h
+	add	sp,2h
 
 l0800_7C73:
 	pop	si
@@ -16570,266 +16570,266 @@ l0800_7C73:
 fn0800_7C78 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
+	sub	sp,4h
 	push	si
-	mov	ax,[4664]
-	mov	dx,[4662]
-	mov	[bp-02],ax
-	mov	[bp-04],dx
-	jmp	7E6D
+	mov	ax,[4664h]
+	mov	dx,[4662h]
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
+	jmp	7E6Dh
 
 l0800_7C8F:
-	call	7FDC
+	call	7FDCh
 	xor	ax,ax
 	push	ax
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
-	jmp	7DCD
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
+	jmp	7DCDh
 
 l0800_7CAC:
-	push	word ptr [29DD]
-	push	word ptr [29DB]
-	call	3E27
-	add	sp,04
-	mov	[2E47],ax
-	add	[467A],ax
-	adc	word ptr [467C],00
+	push	word ptr [29DDh]
+	push	word ptr [29DBh]
+	call	3E27h
+	add	sp,4h
+	mov	[2E47h],ax
+	add	[467Ah],ax
+	adc	word ptr [467Ch],0h
 	push	ax
-	call	7EAF
-	add	sp,02
-	mov	ax,[466A]
-	or	ax,[466C]
-	jnz	7CD9
+	call	7EAFh
+	add	sp,2h
+	mov	ax,[466Ah]
+	or	ax,[466Ch]
+	jnz	7CD9h
 
 l0800_7CD6:
-	jmp	7DCD
+	jmp	7DCDh
 
 l0800_7CD9:
-	push	word ptr [29DD]
-	push	word ptr [29DB]
-	call	3E27
-	add	sp,04
-	mov	[2E29],ax
-	push	word ptr [29DD]
-	push	word ptr [29DB]
-	call	3E27
-	add	sp,04
-	mov	[2E2B],ax
-	cmp	word ptr [2E29],00
-	jnz	7D1D
+	push	word ptr [29DDh]
+	push	word ptr [29DBh]
+	call	3E27h
+	add	sp,4h
+	mov	[2E29h],ax
+	push	word ptr [29DDh]
+	push	word ptr [29DBh]
+	call	3E27h
+	add	sp,4h
+	mov	[2E2Bh],ax
+	cmp	word ptr [2E29h],0h
+	jnz	7D1Dh
 
 l0800_7D02:
-	mov	ax,0003
+	mov	ax,3h
 	push	ax
-	mov	ax,0006
+	mov	ax,6h
 	push	ax
-	call	854B
-	add	sp,04
-	mov	al,[2E2B]
+	call	854Bh
+	add	sp,4h
+	mov	al,[2E2Bh]
 	push	ax
-	call	8600
-	add	sp,02
-	jmp	7DAC
+	call	8600h
+	add	sp,2h
+	jmp	7DACh
 
 l0800_7D1D:
-	cmp	word ptr [2E29],07
-	jnc	7D68
+	cmp	word ptr [2E29h],7h
+	jnc	7D68h
 
 l0800_7D24:
-	mov	bx,[2E29]
-	mov	al,[bx+21DB]
-	mov	ah,00
+	mov	bx,[2E29h]
+	mov	al,[bx+21DBh]
+	mov	ah,0h
 	push	ax
-	mov	al,[bx+21D4]
-	mov	ah,00
+	mov	al,[bx+21D4h]
+	mov	ah,0h
 	push	ax
-	call	854B
-	add	sp,04
-	mov	bx,[2E2B]
-	mov	cl,08
+	call	854Bh
+	add	sp,4h
+	mov	bx,[2E2Bh]
+	mov	cl,8h
 	shr	bx,cl
 	mov	si,bx
-	mov	al,[bx+21F2]
-	mov	ah,00
+	mov	al,[bx+21F2h]
+	mov	ah,0h
 	push	ax
-	mov	al,[si+21E2]
-	mov	ah,00
+	mov	al,[si+21E2h]
+	mov	ah,0h
 	push	ax
-	call	854B
-	add	sp,04
-	mov	al,[2E2B]
-	and	al,FF
+	call	854Bh
+	add	sp,4h
+	mov	al,[2E2Bh]
+	and	al,0FFh
 	push	ax
-	call	8600
-	add	sp,02
-	jmp	7DAC
+	call	8600h
+	add	sp,2h
+	jmp	7DACh
 
 l0800_7D68:
-	mov	ax,0004
+	mov	ax,4h
 	push	ax
-	mov	ax,000F
+	mov	ax,0Fh
 	push	ax
-	call	854B
-	add	sp,04
-	mov	al,[2E29]
-	sub	al,06
+	call	854Bh
+	add	sp,4h
+	mov	al,[2E29h]
+	sub	al,6h
 	push	ax
-	call	8600
-	add	sp,02
-	mov	bx,[2E2B]
-	mov	cl,08
+	call	8600h
+	add	sp,2h
+	mov	bx,[2E2Bh]
+	mov	cl,8h
 	shr	bx,cl
 	mov	si,bx
-	mov	al,[bx+21F2]
-	mov	ah,00
+	mov	al,[bx+21F2h]
+	mov	ah,0h
 	push	ax
-	mov	al,[si+21E2]
-	mov	ah,00
+	mov	al,[si+21E2h]
+	mov	ah,0h
 	push	ax
-	call	854B
-	add	sp,04
-	mov	al,[2E2B]
-	and	al,FF
+	call	854Bh
+	add	sp,4h
+	mov	al,[2E2Bh]
+	and	al,0FFh
 	push	ax
-	call	8600
-	add	sp,02
+	call	8600h
+	add	sp,2h
 
 l0800_7DAC:
-	add	word ptr [2E29],02
-	mov	ax,[2E29]
-	add	[467A],ax
-	adc	word ptr [467C],00
-	jmp	7DC2
+	add	word ptr [2E29h],2h
+	mov	ax,[2E29h]
+	add	[467Ah],ax
+	adc	word ptr [467Ch],0h
+	jmp	7DC2h
 
 l0800_7DBF:
-	call	8359
+	call	8359h
 
 l0800_7DC2:
-	mov	ax,[2E29]
-	dec	word ptr [2E29]
+	mov	ax,[2E29h]
+	dec	word ptr [2E29h]
 	or	ax,ax
-	jnz	7DBF
+	jnz	7DBFh
 
 l0800_7DCD:
-	mov	ax,[466A]
-	mov	dx,[466C]
-	sub	word ptr [466A],01
-	sbb	word ptr [466C],00
+	mov	ax,[466Ah]
+	mov	dx,[466Ch]
+	sub	word ptr [466Ah],1h
+	sbb	word ptr [466Ch],0h
 	or	ax,dx
-	jz	7DE5
+	jz	7DE5h
 
 l0800_7DE2:
-	jmp	7CAC
+	jmp	7CACh
 
 l0800_7DE5:
-	mov	ax,0004
+	mov	ax,4h
 	push	ax
-	mov	ax,000F
+	mov	ax,0Fh
 	push	ax
-	call	854B
-	add	sp,04
-	mov	al,00
+	call	854Bh
+	add	sp,4h
+	mov	al,0h
 	push	ax
-	call	8600
-	add	sp,02
-	mov	ax,[467C]
-	mov	dx,[467A]
-	cmp	ax,[4680]
-	ja	7E1E
+	call	8600h
+	add	sp,2h
+	mov	ax,[467Ch]
+	mov	dx,[467Ah]
+	cmp	ax,[4680h]
+	ja	7E1Eh
 
 l0800_7E09:
-	jc	7E11
+	jc	7E11h
 
 l0800_7E0B:
-	cmp	dx,[467E]
-	jnc	7E1E
+	cmp	dx,[467Eh]
+	jnc	7E1Eh
 
 l0800_7E11:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
 	push	ax
-	call	854B
-	add	sp,04
-	jmp	7E2B
+	call	854Bh
+	add	sp,4h
+	jmp	7E2Bh
 
 l0800_7E1E:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
 	xor	ax,ax
 	push	ax
-	call	854B
-	add	sp,04
+	call	854Bh
+	add	sp,4h
 
 l0800_7E2B:
-	cmp	word ptr [2E45],00
-	jnz	7E4F
+	cmp	word ptr [2E45h],0h
+	jnz	7E4Fh
 
 l0800_7E32:
 	xor	si,si
-	jmp	7E48
+	jmp	7E48h
 
 l0800_7E36:
 	mov	bx,si
 	inc	si
-	mov	al,[bx+4682]
+	mov	al,[bx+4682h]
 	push	ax
-	call	8624
-	add	sp,02
-	dec	word ptr [4E82]
+	call	8624h
+	add	sp,2h
+	dec	word ptr [4E82h]
 
 l0800_7E48:
-	cmp	word ptr [4E82],00
-	jnz	7E36
+	cmp	word ptr [4E82h],0h
+	jnz	7E36h
 
 l0800_7E4F:
-	add	word ptr [29F7],01
-	adc	word ptr [29F9],00
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	AD2F
-	add	sp,04
-	mov	[bp-02],dx
-	mov	[bp-04],ax
+	add	word ptr [29F7h],1h
+	adc	word ptr [29F9h],0h
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0AD2Fh
+	add	sp,4h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
 
 l0800_7E6D:
-	mov	ax,[467C]
-	mov	dx,[467A]
-	cmp	ax,[4680]
-	jnc	7E7D
+	mov	ax,[467Ch]
+	mov	dx,[467Ah]
+	cmp	ax,[4680h]
+	jnc	7E7Dh
 
 l0800_7E7A:
-	jmp	7C8F
+	jmp	7C8Fh
 
 l0800_7E7D:
-	jnz	7E88
+	jnz	7E88h
 
 l0800_7E7F:
-	cmp	dx,[467E]
-	jnc	7E88
+	cmp	dx,[467Eh]
+	jnc	7E88h
 
 l0800_7E85:
-	jmp	7C8F
+	jmp	7C8Fh
 
 l0800_7E88:
-	mov	cl,08
-	sub	cl,[2E45]
-	shl	word ptr [2E43],cl
-	cmp	word ptr [2E45],00
-	jnz	7EA0
+	mov	cl,8h
+	sub	cl,[2E45h]
+	shl	word ptr [2E43h],cl
+	cmp	word ptr [2E45h],0h
+	jnz	7EA0h
 
 l0800_7E99:
-	cmp	word ptr [4E82],00
-	jz	7EAA
+	cmp	word ptr [4E82h],0h
+	jz	7EAAh
 
 l0800_7EA0:
-	mov	al,[2E43]
+	mov	al,[2E43h]
 	push	ax
-	call	8624
-	add	sp,02
+	call	8624h
+	add	sp,2h
 
 l0800_7EAA:
 	pop	si
@@ -16845,177 +16845,177 @@ fn0800_7EAF proc
 	mov	bp,sp
 	push	si
 	push	di
-	mov	si,[bp+04]
-	jmp	7FD1
+	mov	si,[bp+4h]
+	jmp	7FD1h
 
 l0800_7EBA:
-	cmp	si,0C
-	jnc	7F32
+	cmp	si,0Ch
+	jnc	7F32h
 
 l0800_7EBF:
-	jmp	7EF6
+	jmp	7EF6h
 
 l0800_7EC1:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
 	xor	ax,ax
 	push	ax
-	call	854B
-	add	sp,04
-	call	8359
-	xor	al,[2E4F]
+	call	854Bh
+	add	sp,4h
+	call	8359h
+	xor	al,[2E4Fh]
 	push	ax
-	call	8600
-	add	sp,02
-	test	word ptr [2E4F],0001
-	jz	7EF1
+	call	8600h
+	add	sp,2h
+	test	word ptr [2E4Fh],1h
+	jz	7EF1h
 
 l0800_7EE4:
-	mov	ax,[2E4F]
-	shr	ax,01
-	or	ax,8000
-	mov	[2E4F],ax
-	jmp	7EF5
+	mov	ax,[2E4Fh]
+	shr	ax,1h
+	or	ax,8000h
+	mov	[2E4Fh],ax
+	jmp	7EF5h
 
 l0800_7EF1:
-	shr	word ptr [2E4F],01
+	shr	word ptr [2E4Fh],1h
 
 l0800_7EF5:
 	dec	si
 
 l0800_7EF6:
 	or	si,si
-	jnz	7EC1
+	jnz	7EC1h
 
 l0800_7EFA:
-	jmp	7FD1
+	jmp	7FD1h
 
 l0800_7EFD:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
 	xor	ax,ax
 	push	ax
-	call	854B
-	add	sp,04
-	call	8359
-	xor	al,[2E4F]
+	call	854Bh
+	add	sp,4h
+	call	8359h
+	xor	al,[2E4Fh]
 	push	ax
-	call	8600
-	add	sp,02
-	test	word ptr [2E4F],0001
-	jz	7F2D
+	call	8600h
+	add	sp,2h
+	test	word ptr [2E4Fh],1h
+	jz	7F2Dh
 
 l0800_7F20:
-	mov	ax,[2E4F]
-	shr	ax,01
-	or	ax,8000
-	mov	[2E4F],ax
-	jmp	7F31
+	mov	ax,[2E4Fh]
+	shr	ax,1h
+	or	ax,8000h
+	mov	[2E4Fh],ax
+	jmp	7F31h
 
 l0800_7F2D:
-	shr	word ptr [2E4F],01
+	shr	word ptr [2E4Fh],1h
 
 l0800_7F31:
 	dec	si
 
 l0800_7F32:
-	test	si,0003
-	jnz	7EFD
+	test	si,3h
+	jnz	7EFDh
 
 l0800_7F38:
-	mov	ax,0005
+	mov	ax,5h
 	push	ax
-	mov	ax,0017
+	mov	ax,17h
 	push	ax
-	call	854B
-	add	sp,04
-	cmp	si,48
-	jc	7F8F
+	call	854Bh
+	add	sp,4h
+	cmp	si,48h
+	jc	7F8Fh
 
 l0800_7F4B:
-	mov	ax,0004
+	mov	ax,4h
 	push	ax
-	mov	ax,000F
+	mov	ax,0Fh
 	push	ax
-	call	854B
-	add	sp,04
+	call	854Bh
+	add	sp,4h
 	xor	di,di
-	jmp	7F6C
+	jmp	7F6Ch
 
 l0800_7F5D:
-	call	8359
-	xor	al,[2E4F]
+	call	8359h
+	xor	al,[2E4Fh]
 	push	ax
-	call	8600
-	add	sp,02
+	call	8600h
+	add	sp,2h
 	inc	di
 
 l0800_7F6C:
-	cmp	di,48
-	jnz	7F5D
+	cmp	di,48h
+	jnz	7F5Dh
 
 l0800_7F71:
-	test	word ptr [2E4F],0001
-	jz	7F86
+	test	word ptr [2E4Fh],1h
+	jz	7F86h
 
 l0800_7F79:
-	mov	ax,[2E4F]
-	shr	ax,01
-	or	ax,8000
-	mov	[2E4F],ax
-	jmp	7F8A
+	mov	ax,[2E4Fh]
+	shr	ax,1h
+	or	ax,8000h
+	mov	[2E4Fh],ax
+	jmp	7F8Ah
 
 l0800_7F86:
-	shr	word ptr [2E4F],01
+	shr	word ptr [2E4Fh],1h
 
 l0800_7F8A:
-	sub	si,48
-	jmp	7FD1
+	sub	si,48h
+	jmp	7FD1h
 
 l0800_7F8F:
-	mov	ax,0004
+	mov	ax,4h
 	push	ax
 	mov	ax,si
-	sub	ax,000C
-	shr	ax,01
-	shr	ax,01
+	sub	ax,0Ch
+	shr	ax,1h
+	shr	ax,1h
 	push	ax
-	call	854B
-	add	sp,04
-	jmp	7FB4
+	call	854Bh
+	add	sp,4h
+	jmp	7FB4h
 
 l0800_7FA5:
-	call	8359
-	xor	al,[2E4F]
+	call	8359h
+	xor	al,[2E4Fh]
 	push	ax
-	call	8600
-	add	sp,02
+	call	8600h
+	add	sp,2h
 	dec	si
 
 l0800_7FB4:
 	or	si,si
-	jnz	7FA5
+	jnz	7FA5h
 
 l0800_7FB8:
-	test	word ptr [2E4F],0001
-	jz	7FCD
+	test	word ptr [2E4Fh],1h
+	jz	7FCDh
 
 l0800_7FC0:
-	mov	ax,[2E4F]
-	shr	ax,01
-	or	ax,8000
-	mov	[2E4F],ax
-	jmp	7FD1
+	mov	ax,[2E4Fh]
+	shr	ax,1h
+	or	ax,8000h
+	mov	[2E4Fh],ax
+	jmp	7FD1h
 
 l0800_7FCD:
-	shr	word ptr [2E4F],01
+	shr	word ptr [2E4Fh],1h
 
 l0800_7FD1:
 	or	si,si
-	jz	7FD8
+	jz	7FD8h
 
 l0800_7FD5:
-	jmp	7EBA
+	jmp	7EBAh
 
 l0800_7FD8:
 	pop	di
@@ -17030,361 +17030,361 @@ l0800_7FD8:
 fn0800_7FDC proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
-	mov	word ptr [466C],0000
-	mov	word ptr [466A],0000
-	mov	word ptr [2E47],0000
-	mov	ax,[2A0D]
-	mov	dx,[2A0B]
-	mov	[4670],ax
-	mov	[466E],dx
+	sub	sp,4h
+	mov	word ptr [466Ch],0h
+	mov	word ptr [466Ah],0h
+	mov	word ptr [2E47h],0h
+	mov	ax,[2A0Dh]
+	mov	dx,[2A0Bh]
+	mov	[4670h],ax
+	mov	[466Eh],dx
 	xor	ax,ax
 	push	ax
-	mov	ax,[4664]
-	mov	dx,[4662]
-	add	dx,[467A]
-	adc	ax,[467C]
-	add	dx,[4672]
-	adc	ax,[4674]
+	mov	ax,[4664h]
+	mov	dx,[4662h]
+	add	dx,[467Ah]
+	adc	ax,[467Ch]
+	add	dx,[4672h]
+	adc	ax,[4674h]
 	push	ax
 	push	dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	ACB3
-	add	sp,0A
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	0ACB3h
+	add	sp,0Ah
 	xor	ax,ax
 	push	ax
 	push	ax
 	push	ax
-	push	word ptr [29DD]
-	push	word ptr [29DB]
-	call	ACB3
-	add	sp,0A
-	jmp	82A1
+	push	word ptr [29DDh]
+	push	word ptr [29DBh]
+	call	0ACB3h
+	add	sp,0Ah
+	jmp	82A1h
 
 l0800_8042:
 	xor	ax,ax
-	mov	dx,FFFF
-	sub	dx,[2E31]
-	sbb	ax,0000
-	sub	dx,[4672]
-	sbb	ax,[4674]
-	mov	[bp-02],ax
-	mov	[bp-04],dx
-	mov	ax,[4678]
-	mov	dx,[4676]
-	cmp	ax,[bp-02]
-	ja	807C
+	mov	dx,0FFFFh
+	sub	dx,[2E31h]
+	sbb	ax,0h
+	sub	dx,[4672h]
+	sbb	ax,[4674h]
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
+	mov	ax,[4678h]
+	mov	dx,[4676h]
+	cmp	ax,[bp-2h]
+	ja	807Ch
 
 l0800_8068:
-	jc	806F
+	jc	806Fh
 
 l0800_806A:
-	cmp	dx,[bp-04]
-	jnc	807C
+	cmp	dx,[bp-4h]
+	jnc	807Ch
 
 l0800_806F:
-	mov	ax,[4678]
-	mov	dx,[4676]
-	mov	[bp-02],ax
-	mov	[bp-04],dx
+	mov	ax,[4678h]
+	mov	dx,[4676h]
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
 
 l0800_807C:
-	mov	ax,[2E73]
-	mov	dx,[2E71]
-	add	dx,[2E31]
-	mov	[2E6F],ax
-	mov	[2E6D],dx
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	mov	ax,[2E6D]
-	add	ax,[4672]
-	push	word ptr [2E73]
+	mov	ax,[2E73h]
+	mov	dx,[2E71h]
+	add	dx,[2E31h]
+	mov	[2E6Fh],ax
+	mov	[2E6Dh],dx
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	mov	ax,[2E6Dh]
+	add	ax,[4672h]
+	push	word ptr [2E73h]
 	push	ax
-	call	4110
-	add	sp,0C
-	mov	ax,[bp-02]
-	mov	dx,[bp-04]
-	sub	[4676],dx
-	sbb	[4678],ax
-	add	[4672],dx
-	adc	[4674],ax
-	mov	ax,[2E6F]
-	mov	dx,[2E6D]
-	add	dx,[4672]
-	mov	[2E67],ax
-	mov	[2E65],dx
-	mov	[2E6B],ax
-	mov	[2E69],dx
-	mov	ax,[4670]
-	mov	dx,[466E]
-	cmp	ax,[4674]
-	jbe	80ED
+	call	4110h
+	add	sp,0Ch
+	mov	ax,[bp-2h]
+	mov	dx,[bp-4h]
+	sub	[4676h],dx
+	sbb	[4678h],ax
+	add	[4672h],dx
+	adc	[4674h],ax
+	mov	ax,[2E6Fh]
+	mov	dx,[2E6Dh]
+	add	dx,[4672h]
+	mov	[2E67h],ax
+	mov	[2E65h],dx
+	mov	[2E6Bh],ax
+	mov	[2E69h],dx
+	mov	ax,[4670h]
+	mov	dx,[466Eh]
+	cmp	ax,[4674h]
+	jbe	80EDh
 
 l0800_80EA:
-	jmp	81E9
+	jmp	81E9h
 
 l0800_80ED:
-	jc	80F8
+	jc	80F8h
 
 l0800_80EF:
-	cmp	dx,[4672]
-	jc	80F8
+	cmp	dx,[4672h]
+	jc	80F8h
 
 l0800_80F5:
-	jmp	81E9
+	jmp	81E9h
 
 l0800_80F8:
-	mov	ax,[2E6F]
-	mov	dx,[2E6D]
-	add	dx,[466E]
-	mov	[2E67],ax
-	mov	[2E65],dx
-	jmp	81E9
+	mov	ax,[2E6Fh]
+	mov	dx,[2E6Dh]
+	add	dx,[466Eh]
+	mov	[2E67h],ax
+	mov	[2E65h],dx
+	jmp	81E9h
 
 l0800_810D:
-	call	8832
-	cmp	word ptr [2E29],02
-	jc	8193
+	call	8832h
+	cmp	word ptr [2E29h],2h
+	jc	8193h
 
 l0800_8117:
-	mov	ax,[2E6D]
-	add	ax,[2E29]
-	cmp	ax,[2E65]
-	jbe	813F
+	mov	ax,[2E6Dh]
+	add	ax,[2E29h]
+	cmp	ax,[2E65h]
+	jbe	813Fh
 
 l0800_8124:
-	mov	ax,[466A]
-	or	ax,[466C]
-	jz	8130
+	mov	ax,[466Ah]
+	or	ax,[466Ch]
+	jz	8130h
 
 l0800_812D:
-	jmp	8209
+	jmp	8209h
 
 l0800_8130:
-	mov	ax,[2E65]
+	mov	ax,[2E65h]
 	xor	dx,dx
-	sub	ax,[2E6D]
-	sbb	dx,00
-	mov	[2E29],ax
+	sub	ax,[2E6Dh]
+	sbb	dx,0h
+	mov	[2E29h],ax
 
 l0800_813F:
 	push	ds
-	mov	ax,290F
+	mov	ax,290Fh
 	push	ax
-	push	word ptr [2E47]
-	call	831D
-	add	sp,06
+	push	word ptr [2E47h]
+	call	831Dh
+	add	sp,6h
 	push	ds
-	mov	ax,278F
+	mov	ax,278Fh
 	push	ax
-	mov	ax,[2E29]
-	sub	ax,0002
+	mov	ax,[2E29h]
+	sub	ax,2h
 	push	ax
-	call	831D
-	add	sp,06
+	call	831Dh
+	add	sp,6h
 	push	ds
-	mov	ax,284F
+	mov	ax,284Fh
 	push	ax
-	mov	ax,[2E2B]
+	mov	ax,[2E2Bh]
 	dec	ax
 	push	ax
-	call	831D
-	add	sp,06
-	push	word ptr [2E29]
-	call	89A8
-	add	sp,02
-	add	word ptr [466A],01
-	adc	word ptr [466C],00
-	mov	word ptr [2E47],0000
-	mov	ax,[2E29]
-	add	[465C],ax
-	jmp	81A5
+	call	831Dh
+	add	sp,6h
+	push	word ptr [2E29h]
+	call	89A8h
+	add	sp,2h
+	add	word ptr [466Ah],1h
+	adc	word ptr [466Ch],0h
+	mov	word ptr [2E47h],0h
+	mov	ax,[2E29h]
+	add	[465Ch],ax
+	jmp	81A5h
 
 l0800_8193:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	call	89A8
-	add	sp,02
-	inc	word ptr [2E47]
-	inc	word ptr [465C]
+	call	89A8h
+	add	sp,2h
+	inc	word ptr [2E47h]
+	inc	word ptr [465Ch]
 
 l0800_81A5:
-	cmp	word ptr [465C],0400
-	jc	81E9
+	cmp	word ptr [465Ch],400h
+	jc	81E9h
 
 l0800_81AD:
-	mov	ax,[465C]
-	add	[4666],ax
-	adc	word ptr [4668],00
-	push	word ptr [4680]
-	push	word ptr [467E]
-	mov	cx,[4668]
-	mov	bx,[4666]
+	mov	ax,[465Ch]
+	add	[4666h],ax
+	adc	word ptr [4668h],0h
+	push	word ptr [4680h]
+	push	word ptr [467Eh]
+	mov	cx,[4668h]
+	mov	bx,[4666h]
 	xor	dx,dx
-	mov	ax,0063
-	call	8F18
+	mov	ax,63h
+	call	8F18h
 	push	dx
 	push	ax
-	call	8BC2
+	call	8BC2h
 	push	dx
 	push	ax
 	push	ds
-	mov	ax,2244
+	mov	ax,2244h
 	push	ax
-	call	B2EF
-	add	sp,08
-	mov	word ptr [465C],0000
+	call	0B2EFh
+	add	sp,8h
+	mov	word ptr [465Ch],0h
 
 l0800_81E9:
-	mov	ax,[2E65]
+	mov	ax,[2E65h]
 	dec	ax
-	cmp	ax,[2E6D]
-	jbe	8209
+	cmp	ax,[2E6Dh]
+	jbe	8209h
 
 l0800_81F3:
-	cmp	word ptr [466C],00
-	jnc	81FD
+	cmp	word ptr [466Ch],0h
+	jnc	81FDh
 
 l0800_81FA:
-	jmp	810D
+	jmp	810Dh
 
 l0800_81FD:
-	jnz	8209
+	jnz	8209h
 
 l0800_81FF:
-	cmp	word ptr [466A],FE
-	jnc	8209
+	cmp	word ptr [466Ah],0FEh
+	jnc	8209h
 
 l0800_8206:
-	jmp	810D
+	jmp	810Dh
 
 l0800_8209:
-	mov	ax,[2E69]
+	mov	ax,[2E69h]
 	xor	dx,dx
-	sub	ax,[2E6D]
-	sbb	dx,00
-	mov	[4674],dx
-	mov	[4672],ax
-	mov	ax,[2E6D]
+	sub	ax,[2E6Dh]
+	sbb	dx,0h
+	mov	[4674h],dx
+	mov	[4672h],ax
+	mov	ax,[2E6Dh]
 	xor	dx,dx
-	sub	ax,[2E71]
-	sbb	dx,00
-	sub	ax,[2E31]
-	sbb	dx,00
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	mov	ax,[2E71]
-	add	ax,[bp-04]
+	sub	ax,[2E71h]
+	sbb	dx,0h
+	sub	ax,[2E31h]
+	sbb	dx,0h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	mov	ax,[2E71h]
+	add	ax,[bp-4h]
 	mov	cx,ax
-	mov	dx,[2E6D]
+	mov	dx,[2E6Dh]
 	xor	bx,bx
 	sub	dx,ax
-	sbb	bx,00
-	add	dx,[4672]
+	sbb	bx,0h
+	add	dx,[4672h]
 	push	dx
-	push	word ptr [2E73]
+	push	word ptr [2E73h]
 	push	ax
-	push	word ptr [2E73]
-	push	word ptr [2E71]
-	call	B0F3
-	add	sp,0A
-	mov	ax,[2E65]
-	cmp	ax,[2E69]
-	jc	82B9
+	push	word ptr [2E73h]
+	push	word ptr [2E71h]
+	call	0B0F3h
+	add	sp,0Ah
+	mov	ax,[2E65h]
+	cmp	ax,[2E69h]
+	jc	82B9h
 
 l0800_8269:
-	mov	ax,[2E67]
-	mov	dx,[2E65]
-	cmp	ax,[2E6B]
-	jnz	8285
+	mov	ax,[2E67h]
+	mov	dx,[2E65h]
+	cmp	ax,[2E6Bh]
+	jnz	8285h
 
 l0800_8276:
-	cmp	dx,[2E69]
-	jnz	8285
+	cmp	dx,[2E69h]
+	jnz	8285h
 
 l0800_827C:
-	mov	ax,[4676]
-	or	ax,[4678]
-	jz	82B9
+	mov	ax,[4676h]
+	or	ax,[4678h]
+	jz	82B9h
 
 l0800_8285:
-	cmp	word ptr [466C],00
-	jnz	8293
+	cmp	word ptr [466Ch],0h
+	jnz	8293h
 
 l0800_828C:
-	cmp	word ptr [466A],FE
-	jz	82B9
+	cmp	word ptr [466Ah],0FEh
+	jz	82B9h
 
 l0800_8293:
-	mov	ax,[bp-02]
-	mov	dx,[bp-04]
-	sub	[466E],dx
-	sbb	[4670],ax
+	mov	ax,[bp-2h]
+	mov	dx,[bp-4h]
+	sub	[466Eh],dx
+	sbb	[4670h],ax
 
 l0800_82A1:
-	mov	ax,[4676]
-	or	ax,[4678]
-	jz	82AD
+	mov	ax,[4676h]
+	or	ax,[4678h]
+	jz	82ADh
 
 l0800_82AA:
-	jmp	8042
+	jmp	8042h
 
 l0800_82AD:
-	mov	ax,[4672]
-	or	ax,[4674]
-	jz	82B9
+	mov	ax,[4672h]
+	or	ax,[4674h]
+	jz	82B9h
 
 l0800_82B6:
-	jmp	8042
+	jmp	8042h
 
 l0800_82B9:
-	mov	ax,[2E67]
-	mov	dx,[2E65]
-	cmp	ax,[2E6B]
-	jnz	82ED
+	mov	ax,[2E67h]
+	mov	dx,[2E65h]
+	cmp	ax,[2E6Bh]
+	jnz	82EDh
 
 l0800_82C6:
-	cmp	dx,[2E69]
-	jnz	82ED
+	cmp	dx,[2E69h]
+	jnz	82EDh
 
 l0800_82CC:
-	mov	ax,[4676]
-	or	ax,[4678]
-	jnz	82ED
+	mov	ax,[4676h]
+	or	ax,[4678h]
+	jnz	82EDh
 
 l0800_82D5:
-	cmp	word ptr [466C],00
-	jnz	82E3
+	cmp	word ptr [466Ch],0h
+	jnz	82E3h
 
 l0800_82DC:
-	cmp	word ptr [466A],FE
-	jz	82ED
+	cmp	word ptr [466Ah],0FEh
+	jz	82EDh
 
 l0800_82E3:
-	mov	ax,[2E47]
-	add	ax,[4672]
-	mov	[2E47],ax
+	mov	ax,[2E47h]
+	add	ax,[4672h]
+	mov	[2E47h],ax
 
 l0800_82ED:
 	push	ds
-	mov	ax,290F
+	mov	ax,290Fh
 	push	ax
-	push	word ptr [2E47]
-	call	831D
-	add	sp,06
-	add	word ptr [466A],01
-	adc	word ptr [466C],00
+	push	word ptr [2E47h]
+	call	831Dh
+	add	sp,6h
+	add	word ptr [466Ah],1h
+	adc	word ptr [466Ch],0h
 	xor	ax,ax
 	push	ax
 	push	ax
 	push	ax
-	push	word ptr [29DD]
-	push	word ptr [29DB]
-	call	ACB3
-	add	sp,0A
+	push	word ptr [29DDh]
+	push	word ptr [29DBh]
+	call	0ACB3h
+	add	sp,0Ah
 	mov	sp,bp
 	pop	bp
 	ret
@@ -17399,31 +17399,31 @@ fn0800_831D proc
 	push	bp
 	mov	bp,sp
 	push	si
-	mov	si,[bp+04]
-	cmp	si,01
-	jbe	8332
+	mov	si,[bp+4h]
+	cmp	si,1h
+	jbe	8332h
 
 l0800_8329:
 	push	si
-	call	0C08
-	add	sp,02
-	jmp	8334
+	call	0C08h
+	add	sp,2h
+	jmp	8334h
 
 l0800_8332:
 	mov	ax,si
 
 l0800_8334:
-	mov	dx,000C
+	mov	dx,0Ch
 	imul	dx
-	les	bx,[bp+06]
+	les	bx,[bp+6h]
 	add	bx,ax
-	add	word ptr es:[bx],01
-	adc	word ptr es:[bx+02],00
-	push	word ptr [29DD]
-	push	word ptr [29DB]
+	add	word ptr es:[bx],1h
+	adc	word ptr es:[bx+2h],0h
+	push	word ptr [29DDh]
+	push	word ptr [29DBh]
 	push	si
-	call	401E
-	add	sp,06
+	call	401Eh
+	add	sp,6h
 	pop	si
 	pop	bp
 	ret
@@ -17441,27 +17441,27 @@ l0800_8334:
 fn0800_8359 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,02
-	push	word ptr [29E5]
-	push	word ptr [29E3]
-	call	3DCF
-	add	sp,04
-	mov	[bp-01],al
-	mov	al,[2E4B]
-	xor	al,[bp-01]
-	mov	ah,00
-	and	ax,00FF
-	shl	ax,01
+	sub	sp,2h
+	push	word ptr [29E5h]
+	push	word ptr [29E3h]
+	call	3DCFh
+	add	sp,4h
+	mov	[bp-1h],al
+	mov	al,[2E4Bh]
+	xor	al,[bp-1h]
+	mov	ah,0h
+	and	ax,0FFh
+	shl	ax,1h
 	mov	bx,ax
-	mov	ax,[bx+2A29]
-	mov	dx,[2E4B]
-	mov	cl,08
+	mov	ax,[bx+2A29h]
+	mov	dx,[2E4Bh]
+	mov	cl,8h
 	shr	dx,cl
 	xor	ax,dx
-	mov	[2E4B],ax
-	add	word ptr [29FF],01
-	adc	word ptr [2A01],00
-	mov	al,[bp-01]
+	mov	[2E4Bh],ax
+	add	word ptr [29FFh],1h
+	adc	word ptr [2A01h],0h
+	mov	al,[bp-1h]
 	mov	sp,bp
 	pop	bp
 	ret
@@ -17474,21 +17474,21 @@ fn0800_8359 proc
 fn0800_83A1 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,02
+	sub	sp,2h
 	push	si
 	push	di
-	mov	di,[bp+08]
+	mov	di,[bp+8h]
 	mov	si,di
-	jmp	83C4
+	jmp	83C4h
 
 l0800_83B0:
 	mov	ax,si
-	mov	dx,000C
+	mov	dx,0Ch
 	imul	dx
-	les	bx,[bp+04]
+	les	bx,[bp+4h]
 	add	bx,ax
-	cmp	word ptr es:[bx+0A],00
-	jnz	83CB
+	cmp	word ptr es:[bx+0Ah],0h
+	jnz	83CBh
 
 l0800_83C3:
 	dec	di
@@ -17497,33 +17497,33 @@ l0800_83C4:
 	mov	ax,si
 	dec	si
 	or	ax,ax
-	jnz	83B0
+	jnz	83B0h
 
 l0800_83CB:
-	mov	ax,0005
+	mov	ax,5h
 	push	ax
 	push	di
-	call	8489
-	add	sp,04
+	call	8489h
+	add	sp,4h
 	xor	si,si
-	mov	ax,[bp+04]
-	add	ax,000A
-	mov	[bp-02],ax
+	mov	ax,[bp+4h]
+	add	ax,0Ah
+	mov	[bp-2h],ax
 	cmp	si,di
-	jnc	8401
+	jnc	8401h
 
 l0800_83E5:
-	mov	ax,0004
+	mov	ax,4h
 	push	ax
-	mov	es,[bp+06]
-	mov	bx,[bp-02]
+	mov	es,[bp+6h]
+	mov	bx,[bp-2h]
 	push	word ptr es:[bx]
-	call	8489
-	add	sp,04
-	add	word ptr [bp-02],0C
+	call	8489h
+	add	sp,4h
+	add	word ptr [bp-2h],0Ch
 	inc	si
 	cmp	si,di
-	jc	83E5
+	jc	83E5h
 
 l0800_8401:
 	pop	di
@@ -17540,49 +17540,49 @@ l0800_8401:
 fn0800_8407 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,02
+	sub	sp,2h
 	push	si
 	push	di
-	mov	si,[bp+04]
-	cmp	si,01
-	jbe	8420
+	mov	si,[bp+4h]
+	cmp	si,1h
+	jbe	8420h
 
 l0800_8417:
 	push	si
-	call	0C08
-	add	sp,02
-	jmp	8422
+	call	0C08h
+	add	sp,2h
+	jmp	8422h
 
 l0800_8420:
 	mov	ax,si
 
 l0800_8422:
-	mov	[bp-02],ax
-	mov	dx,000C
+	mov	[bp-2h],ax
+	mov	dx,0Ch
 	imul	dx
-	les	bx,[bp+06]
+	les	bx,[bp+6h]
 	add	bx,ax
 	mov	di,bx
-	push	word ptr es:[bx+0A]
-	push	word ptr es:[di+06]
-	call	8489
-	add	sp,04
-	cmp	word ptr [bp-02],01
-	jbe	845F
+	push	word ptr es:[bx+0Ah]
+	push	word ptr es:[di+6h]
+	call	8489h
+	add	sp,4h
+	cmp	word ptr [bp-2h],1h
+	jbe	845Fh
 
 l0800_8445:
-	mov	ax,[bp-02]
+	mov	ax,[bp-2h]
 	dec	ax
 	push	ax
-	mov	cl,[bp-02]
+	mov	cl,[bp-2h]
 	dec	cl
-	mov	ax,0001
+	mov	ax,1h
 	shl	ax,cl
 	mov	dx,si
 	sub	dx,ax
 	push	dx
-	call	8489
-	add	sp,04
+	call	8489h
+	add	sp,4h
 
 l0800_845F:
 	pop	di
@@ -17599,24 +17599,24 @@ l0800_845F:
 fn0800_8465 proc
 	push	bp
 	mov	bp,sp
-	mov	ax,[bp+04]
-	mov	dx,[bp+06]
-	cmp	word ptr [2A21],02
-	jnz	847F
+	mov	ax,[bp+4h]
+	mov	dx,[bp+6h]
+	cmp	word ptr [2A21h],2h
+	jnz	847Fh
 
 l0800_8475:
 	push	dx
 	push	ax
-	call	854B
-	add	sp,04
+	call	854Bh
+	add	sp,4h
 	pop	bp
 	ret
 
 l0800_847F:
 	push	dx
 	push	ax
-	call	8489
-	add	sp,04
+	call	8489h
+	add	sp,4h
 	pop	bp
 	ret
 
@@ -17633,103 +17633,103 @@ fn0800_8489 proc
 	mov	bp,sp
 	push	si
 	push	di
-	mov	di,[bp+04]
-	jmp	853A
+	mov	di,[bp+4h]
+	jmp	853Ah
 
 l0800_8494:
-	shr	word ptr [2E43],01
-	test	di,0001
-	jz	84A4
+	shr	word ptr [2E43h],1h
+	test	di,1h
+	jz	84A4h
 
 l0800_849E:
-	or	word ptr [2E43],8000
+	or	word ptr [2E43h],8000h
 
 l0800_84A4:
-	shr	di,01
-	inc	word ptr [2E45]
-	mov	ax,[2E45]
-	cmp	ax,0010
-	jz	84B5
+	shr	di,1h
+	inc	word ptr [2E45h]
+	mov	ax,[2E45h]
+	cmp	ax,10h
+	jz	84B5h
 
 l0800_84B2:
-	jmp	853A
+	jmp	853Ah
 
 l0800_84B5:
-	mov	al,[2E43]
+	mov	al,[2E43h]
 	push	ax
-	call	8624
-	add	sp,02
-	mov	ax,[2E43]
-	mov	cl,08
+	call	8624h
+	add	sp,2h
+	mov	ax,[2E43h]
+	mov	cl,8h
 	shr	ax,cl
 	push	ax
-	call	8624
-	add	sp,02
+	call	8624h
+	add	sp,2h
 	xor	si,si
-	jmp	84E3
+	jmp	84E3h
 
 l0800_84D1:
 	mov	bx,si
 	inc	si
-	mov	al,[bx+4682]
+	mov	al,[bx+4682h]
 	push	ax
-	call	8624
-	add	sp,02
-	dec	word ptr [4E82]
+	call	8624h
+	add	sp,2h
+	dec	word ptr [4E82h]
 
 l0800_84E3:
-	cmp	word ptr [4E82],00
-	jnz	84D1
+	cmp	word ptr [4E82h],0h
+	jnz	84D1h
 
 l0800_84EA:
-	mov	ax,[2A01]
-	mov	dx,[29FF]
-	cmp	ax,[2A05]
-	jc	8532
+	mov	ax,[2A01h]
+	mov	dx,[29FFh]
+	cmp	ax,[2A05h]
+	jc	8532h
 
 l0800_84F7:
-	ja	84FF
+	ja	84FFh
 
 l0800_84F9:
-	cmp	dx,[2A03]
-	jbe	8532
+	cmp	dx,[2A03h]
+	jbe	8532h
 
 l0800_84FF:
-	mov	ax,[2A01]
-	mov	dx,[29FF]
-	sub	dx,[2A03]
-	sbb	ax,[2A05]
-	cmp	ax,[4E8A]
-	jc	8532
+	mov	ax,[2A01h]
+	mov	dx,[29FFh]
+	sub	dx,[2A03h]
+	sbb	ax,[2A05h]
+	cmp	ax,[4E8Ah]
+	jc	8532h
 
 l0800_8514:
-	ja	851C
+	ja	851Ch
 
 l0800_8516:
-	cmp	dx,[4E88]
-	jbe	8532
+	cmp	dx,[4E88h]
+	jbe	8532h
 
 l0800_851C:
-	mov	ax,[2A01]
-	mov	dx,[29FF]
-	sub	dx,[2A03]
-	sbb	ax,[2A05]
-	mov	[4E8A],ax
-	mov	[4E88],dx
+	mov	ax,[2A01h]
+	mov	dx,[29FFh]
+	sub	dx,[2A03h]
+	sbb	ax,[2A05h]
+	mov	[4E8Ah],ax
+	mov	[4E88h],dx
 
 l0800_8532:
 	xor	ax,ax
-	mov	[2E45],ax
-	mov	[2E43],ax
+	mov	[2E45h],ax
+	mov	[2E43h],ax
 
 l0800_853A:
-	mov	ax,[bp+06]
-	dec	word ptr [bp+06]
+	mov	ax,[bp+6h]
+	dec	word ptr [bp+6h]
 	or	ax,ax
-	jz	8547
+	jz	8547h
 
 l0800_8544:
-	jmp	8494
+	jmp	8494h
 
 l0800_8547:
 	pop	di
@@ -17758,97 +17758,97 @@ fn0800_854B proc
 	mov	bp,sp
 	push	si
 	push	di
-	mov	cl,[bp+06]
+	mov	cl,[bp+6h]
 	dec	cl
-	mov	di,0001
+	mov	di,1h
 	shl	di,cl
-	jmp	85EF
+	jmp	85EFh
 
 l0800_855D:
-	shl	word ptr [2E43],01
-	test	[bp+04],di
-	jz	856A
+	shl	word ptr [2E43h],1h
+	test	[bp+4h],di
+	jz	856Ah
 
 l0800_8566:
-	inc	word ptr [2E43]
+	inc	word ptr [2E43h]
 
 l0800_856A:
-	shr	di,01
-	inc	word ptr [2E45]
-	mov	ax,[2E45]
-	cmp	ax,0008
-	jnz	85EF
+	shr	di,1h
+	inc	word ptr [2E45h]
+	mov	ax,[2E45h]
+	cmp	ax,8h
+	jnz	85EFh
 
 l0800_8578:
-	mov	al,[2E43]
+	mov	al,[2E43h]
 	push	ax
-	call	8624
-	add	sp,02
+	call	8624h
+	add	sp,2h
 	xor	si,si
-	jmp	8598
+	jmp	8598h
 
 l0800_8586:
 	mov	bx,si
 	inc	si
-	mov	al,[bx+4682]
+	mov	al,[bx+4682h]
 	push	ax
-	call	8624
-	add	sp,02
-	dec	word ptr [4E82]
+	call	8624h
+	add	sp,2h
+	dec	word ptr [4E82h]
 
 l0800_8598:
-	cmp	word ptr [4E82],00
-	jnz	8586
+	cmp	word ptr [4E82h],0h
+	jnz	8586h
 
 l0800_859F:
-	mov	ax,[2A01]
-	mov	dx,[29FF]
-	cmp	ax,[2A05]
-	jc	85E7
+	mov	ax,[2A01h]
+	mov	dx,[29FFh]
+	cmp	ax,[2A05h]
+	jc	85E7h
 
 l0800_85AC:
-	ja	85B4
+	ja	85B4h
 
 l0800_85AE:
-	cmp	dx,[2A03]
-	jbe	85E7
+	cmp	dx,[2A03h]
+	jbe	85E7h
 
 l0800_85B4:
-	mov	ax,[2A01]
-	mov	dx,[29FF]
-	sub	dx,[2A03]
-	sbb	ax,[2A05]
-	cmp	ax,[4E8A]
-	jc	85E7
+	mov	ax,[2A01h]
+	mov	dx,[29FFh]
+	sub	dx,[2A03h]
+	sbb	ax,[2A05h]
+	cmp	ax,[4E8Ah]
+	jc	85E7h
 
 l0800_85C9:
-	ja	85D1
+	ja	85D1h
 
 l0800_85CB:
-	cmp	dx,[4E88]
-	jbe	85E7
+	cmp	dx,[4E88h]
+	jbe	85E7h
 
 l0800_85D1:
-	mov	ax,[2A01]
-	mov	dx,[29FF]
-	sub	dx,[2A03]
-	sbb	ax,[2A05]
-	mov	[4E8A],ax
-	mov	[4E88],dx
+	mov	ax,[2A01h]
+	mov	dx,[29FFh]
+	sub	dx,[2A03h]
+	sbb	ax,[2A05h]
+	mov	[4E8Ah],ax
+	mov	[4E88h],dx
 
 l0800_85E7:
 	xor	ax,ax
-	mov	[2E45],ax
-	mov	[2E43],ax
+	mov	[2E45h],ax
+	mov	[2E43h],ax
 
 l0800_85EF:
-	mov	ax,[bp+06]
-	dec	word ptr [bp+06]
+	mov	ax,[bp+6h]
+	dec	word ptr [bp+6h]
 	or	ax,ax
-	jz	85FC
+	jz	85FCh
 
 l0800_85F9:
-	jmp	855D
+	jmp	855Dh
 
 l0800_85FC:
 	pop	di
@@ -17870,21 +17870,21 @@ l0800_85FC:
 fn0800_8600 proc
 	push	bp
 	mov	bp,sp
-	mov	dl,[bp+04]
-	cmp	word ptr [2E45],00
-	jz	861B
+	mov	dl,[bp+4h]
+	cmp	word ptr [2E45h],0h
+	jz	861Bh
 
 l0800_860D:
-	mov	bx,[4E82]
-	mov	[bx+4682],dl
-	inc	word ptr [4E82]
+	mov	bx,[4E82h]
+	mov	[bx+4682h],dl
+	inc	word ptr [4E82h]
 	pop	bp
 	ret
 
 l0800_861B:
 	push	dx
-	call	8624
-	add	sp,02
+	call	8624h
+	add	sp,2h
 	pop	bp
 	ret
 
@@ -17906,39 +17906,39 @@ l0800_861B:
 fn0800_8624 proc
 	push	bp
 	mov	bp,sp
-	mov	ax,[2A05]
-	mov	dx,[2A03]
-	cmp	ax,[4E86]
-	ja	8678
+	mov	ax,[2A05h]
+	mov	dx,[2A03h]
+	cmp	ax,[4E86h]
+	ja	8678h
 
 l0800_8634:
-	jc	863C
+	jc	863Ch
 
 l0800_8636:
-	cmp	dx,[4E84]
-	jnc	8678
+	cmp	dx,[4E84h]
+	jnc	8678h
 
 l0800_863C:
-	push	word ptr [29E1]
-	push	word ptr [29DF]
-	mov	al,[bp+04]
+	push	word ptr [29E1h]
+	push	word ptr [29DFh]
+	mov	al,[bp+4h]
 	push	ax
-	call	4047
-	add	sp,06
-	mov	al,[2E49]
-	xor	al,[bp+04]
-	mov	ah,00
-	and	ax,00FF
-	shl	ax,01
+	call	4047h
+	add	sp,6h
+	mov	al,[2E49h]
+	xor	al,[bp+4h]
+	mov	ah,0h
+	and	ax,0FFh
+	shl	ax,1h
 	mov	bx,ax
-	mov	ax,[bx+2A29]
-	mov	dx,[2E49]
-	mov	cl,08
+	mov	ax,[bx+2A29h]
+	mov	dx,[2E49h]
+	mov	cl,8h
 	shr	dx,cl
 	xor	ax,dx
-	mov	[2E49],ax
-	add	word ptr [2A03],01
-	adc	word ptr [2A05],00
+	mov	[2E49h],ax
+	add	word ptr [2A03h],1h
+	adc	word ptr [2A05h],0h
 
 l0800_8678:
 	pop	bp
@@ -17954,40 +17954,40 @@ fn0800_867A proc
 	push	di
 	push	ds
 	cld
-	mov	si,[bp+06]
-	mov	ds,[bp+08]
-	mov	di,[bp+0A]
-	mov	es,[bp+0C]
-	add	si,04
-	call	87EF
+	mov	si,[bp+6h]
+	mov	ds,[bp+8h]
+	mov	di,[bp+0Ah]
+	mov	es,[bp+0Ch]
+	add	si,4h
+	call	87EFh
 	push	ax
 	push	bx
-	add	si,0A
+	add	si,0Ah
 	stc
 	lodsb
 	adc	al,al
 	add	al,al
-	jmp	8745
+	jmp	8745h
 
 l0800_86A1:
 	lodsb
 	adc	al,al
-	jmp	86AD
+	jmp	86ADh
 0800:86A6                   90                                  .        
 
 l0800_86A7:
-	mov	cl,04
+	mov	cl,4h
 
 l0800_86A9:
 	add	al,al
-	jz	86A1
+	jz	86A1h
 
 l0800_86AD:
 	adc	bh,bh
-	loop	86A9
+	loop	86A9h
 
 l0800_86B1:
-	mov	cl,03
+	mov	cl,3h
 	add	cl,bh
 	add	cl,cl
 
@@ -17995,103 +17995,103 @@ l0800_86B7:
 	rep movsw
 
 l0800_86B9:
-	jmp	8745
+	jmp	8745h
 
 l0800_86BC:
 	lodsb
 	adc	al,al
-	jmp	86EA
+	jmp	86EAh
 0800:86C1    90                                            .             
 
 l0800_86C2:
 	lodsb
 	adc	al,al
-	jmp	86F0
+	jmp	86F0h
 0800:86C7                      90                                .       
 
 l0800_86C8:
 	lodsb
 	adc	al,al
-	jmp	86F9
+	jmp	86F9h
 0800:86CD                                        90                    . 
 
 l0800_86CE:
 	lodsb
 	adc	al,al
-	jmp	8705
+	jmp	8705h
 0800:86D3          90                                        .           
 
 l0800_86D4:
 	lodsb
 	adc	al,al
-	jmp	870E
+	jmp	870Eh
 0800:86D9                            90                            .     
 
 l0800_86DA:
 	lodsb
 	adc	al,al
-	jmp	8714
+	jmp	8714h
 0800:86DF                                              90                .
 
 l0800_86E0:
 	lodsb
 	adc	al,al
-	jmp	8726
+	jmp	8726h
 0800:86E5                90                                    .         
 
 l0800_86E6:
 	add	al,al
-	jz	86BC
+	jz	86BCh
 
 l0800_86EA:
 	adc	cl,cl
 	add	al,al
-	jz	86C2
+	jz	86C2h
 
 l0800_86F0:
-	jnc	8701
+	jnc	8701h
 
 l0800_86F2:
 	nop
 	nop
 	nop
 	add	al,al
-	jz	86C8
+	jz	86C8h
 
 l0800_86F9:
 	dec	cx
 	adc	cl,cl
-	cmp	cl,09
-	jz	86A7
+	cmp	cl,9h
+	jz	86A7h
 
 l0800_8701:
 	add	al,al
-	jz	86CE
+	jz	86CEh
 
 l0800_8705:
-	jnc	8728
+	jnc	8728h
 
 l0800_8707:
 	nop
 	nop
 	nop
 	add	al,al
-	jz	86D4
+	jz	86D4h
 
 l0800_870E:
 	adc	bh,bh
 	add	al,al
-	jz	86DA
+	jz	86DAh
 
 l0800_8714:
-	jc	8784
+	jc	8784h
 
 l0800_8716:
 	nop
 	nop
 	nop
 	or	bh,bh
-	jnz	8728
+	jnz	8728h
 
 l0800_871D:
 	nop
@@ -18101,7 +18101,7 @@ l0800_871D:
 
 l0800_8722:
 	add	al,al
-	jz	86E0
+	jz	86E0h
 
 l0800_8726:
 	adc	bh,bh
@@ -18121,13 +18121,13 @@ l0800_8733:
 l0800_8736:
 	sti
 	mov	si,bp
-	jmp	8745
+	jmp	8745h
 0800:873B                                  90                        .   
 
 l0800_873C:
 	lodsb
 	adc	al,al
-	jc	8753
+	jc	8753h
 
 l0800_8741:
 	nop
@@ -18139,7 +18139,7 @@ l0800_8744:
 
 l0800_8745:
 	add	al,al
-	jc	8751
+	jc	8751h
 
 l0800_8749:
 	nop
@@ -18147,16 +18147,16 @@ l0800_8749:
 	nop
 	movsb
 	add	al,al
-	jnc	8744
+	jnc	8744h
 
 l0800_8751:
-	jz	873C
+	jz	873Ch
 
 l0800_8753:
-	mov	cx,0002
+	mov	cx,2h
 	sub	bh,bh
 	add	al,al
-	jz	879B
+	jz	879Bh
 
 l0800_875C:
 	nop
@@ -18164,11 +18164,11 @@ l0800_875C:
 	nop
 
 l0800_875F:
-	jnc	86E6
+	jnc	86E6h
 
 l0800_8761:
 	add	al,al
-	jz	87A0
+	jz	87A0h
 
 l0800_8765:
 	nop
@@ -18176,12 +18176,12 @@ l0800_8765:
 	nop
 
 l0800_8768:
-	jnc	8728
+	jnc	8728h
 
 l0800_876A:
 	inc	cx
 	add	al,al
-	jz	87A5
+	jz	87A5h
 
 l0800_876F:
 	nop
@@ -18189,24 +18189,24 @@ l0800_876F:
 	nop
 
 l0800_8772:
-	jnc	8701
+	jnc	8701h
 
 l0800_8774:
 	mov	cl,[si]
 	inc	si
 	or	cl,cl
-	jz	87B4
+	jz	87B4h
 
 l0800_877B:
 	nop
 	nop
 	nop
-	add	cx,08
-	jmp	8701
+	add	cx,8h
+	jmp	8701h
 
 l0800_8784:
 	add	al,al
-	jz	87AA
+	jz	87AAh
 
 l0800_8788:
 	nop
@@ -18215,9 +18215,9 @@ l0800_8788:
 
 l0800_878B:
 	adc	bh,bh
-	or	bh,04
+	or	bh,4h
 	add	al,al
-	jz	87AF
+	jz	87AFh
 
 l0800_8794:
 	nop
@@ -18225,56 +18225,56 @@ l0800_8794:
 	nop
 
 l0800_8797:
-	jc	8728
+	jc	8728h
 
 l0800_8799:
-	jmp	8722
+	jmp	8722h
 
 l0800_879B:
 	lodsb
 	adc	al,al
-	jmp	875F
+	jmp	875Fh
 
 l0800_87A0:
 	lodsb
 	adc	al,al
-	jmp	8768
+	jmp	8768h
 
 l0800_87A5:
 	lodsb
 	adc	al,al
-	jmp	8772
+	jmp	8772h
 
 l0800_87AA:
 	lodsb
 	adc	al,al
-	jmp	878B
+	jmp	878Bh
 
 l0800_87AF:
 	lodsb
 	adc	al,al
-	jmp	8797
+	jmp	8797h
 
 l0800_87B4:
 	push	ax
 	mov	bx,di
-	and	di,0F
-	add	di,8000
-	mov	cl,04
+	and	di,0Fh
+	add	di,8000h
+	mov	cl,4h
 	shr	bx,cl
 	mov	ax,es
 	add	ax,bx
-	sub	ax,0800
+	sub	ax,800h
 	mov	es,ax
 	mov	bx,si
-	and	si,0F
+	and	si,0Fh
 	shr	bx,cl
 	mov	ax,ds
 	add	ax,bx
 	mov	ds,ax
 	pop	ax
 	add	al,al
-	jnz	87E3
+	jnz	87E3h
 
 l0800_87DD:
 	nop
@@ -18284,10 +18284,10 @@ l0800_87DD:
 	adc	al,al
 
 l0800_87E3:
-	jnc	87E8
+	jnc	87E8h
 
 l0800_87E5:
-	jmp	8745
+	jmp	8745h
 
 l0800_87E8:
 	pop	dx
@@ -18302,7 +18302,7 @@ l0800_87E8:
 ;;   Called from:
 ;;     0800:8690 (in fn0800_867A)
 fn0800_87EF proc
-	call	87F4
+	call	87F4h
 	mov	bx,ax
 
 ;; fn0800_87F4: 0800:87F4
@@ -18320,41 +18320,41 @@ fn0800_87F4 proc
 fn0800_87F8 proc
 	push	di
 	cld
-	les	di,[2E37]
-	mov	ax,[2E31]
-	mov	cx,8000
+	les	di,[2E37h]
+	mov	ax,[2E31h]
+	mov	cx,8000h
 
 l0800_8804:
 	rep stosw
 
 l0800_8806:
-	les	di,[2E33]
-	mov	ax,[2E31]
-	mov	cx,8000
+	les	di,[2E33h]
+	mov	ax,[2E31h]
+	mov	cx,8000h
 
 l0800_8810:
 	rep stosw
 
 l0800_8812:
-	les	di,[2E3B]
-	mov	cx,[2E31]
+	les	di,[2E3Bh]
+	mov	cx,[2E31h]
 	xor	ax,ax
 
 l0800_881C:
 	rep stosw
 
 l0800_881E:
-	les	di,[2E3F]
+	les	di,[2E3Fh]
 	xor	ax,ax
-	mov	cx,[2E31]
+	mov	cx,[2E31h]
 
 l0800_8828:
 	stosw
 	inc	ax
-	loop	8828
+	loop	8828h
 
 l0800_882C:
-	mov	[2E2D],cx
+	mov	[2E2Dh],cx
 	pop	di
 	ret
 
@@ -18364,55 +18364,55 @@ l0800_882C:
 fn0800_8832 proc
 	push	si
 	push	di
-	call	889A
-	cmp	word ptr [2E29],02
-	jc	8897
+	call	889Ah
+	cmp	word ptr [2E29h],2h
+	jc	8897h
 
 l0800_883E:
 	nop
 	nop
 	nop
-	mov	ax,[2E65]
-	sub	ax,[2E6D]
-	cmp	ax,0003
-	jc	8897
+	mov	ax,[2E65h]
+	sub	ax,[2E6Dh]
+	cmp	ax,3h
+	jc	8897h
 
 l0800_884D:
 	nop
 	nop
 	nop
-	mov	si,[2E29]
-	mov	di,[2E2B]
-	mov	ax,[2E2D]
+	mov	si,[2E29h]
+	mov	di,[2E2Bh]
+	mov	ax,[2E2Dh]
 	push	ax
 	inc	ax
-	cmp	ax,[2E31]
-	jnz	8865
+	cmp	ax,[2E31h]
+	jnz	8865h
 
 l0800_8863:
 	xor	ax,ax
 
 l0800_8865:
-	mov	[2E2D],ax
-	inc	word ptr [2E6D]
-	call	889A
-	dec	word ptr [2E6D]
-	pop	word ptr [2E2D]
-	cmp	[2E29],si
-	jbe	888F
+	mov	[2E2Dh],ax
+	inc	word ptr [2E6Dh]
+	call	889Ah
+	dec	word ptr [2E6Dh]
+	pop	word ptr [2E2Dh]
+	cmp	[2E29h],si
+	jbe	888Fh
 
 l0800_887D:
 	nop
 	nop
 	nop
-	mov	word ptr [2E29],0001
-	mov	word ptr [2E2B],0000
-	jmp	8897
+	mov	word ptr [2E29h],1h
+	mov	word ptr [2E2Bh],0h
+	jmp	8897h
 0800:888E                                           90                  .
 
 l0800_888F:
-	mov	[2E29],si
-	mov	[2E2B],di
+	mov	[2E29h],si
+	mov	[2E2Bh],di
 
 l0800_8897:
 	pop	di
@@ -18427,13 +18427,13 @@ fn0800_889A proc
 	push	si
 	push	di
 	cld
-	mov	word ptr [2E2B],0000
-	mov	word ptr [2E29],0001
-	les	di,[2E6D]
+	mov	word ptr [2E2Bh],0h
+	mov	word ptr [2E29h],1h
+	les	di,[2E6Dh]
 	mov	ax,es:[di]
-	mov	[4E90],ax
+	mov	[4E90h],ax
 	inc	di
-	mov	dx,[2E69]
+	mov	dx,[2E69h]
 	sub	dx,di
 	mov	cx,dx
 
@@ -18441,74 +18441,74 @@ l0800_88BC:
 	rep scasb
 
 l0800_88BE:
-	jnz	88C1
+	jnz	88C1h
 
 l0800_88C0:
 	dec	cx
 
 l0800_88C1:
 	sub	dx,cx
-	les	di,[2E6D]
-	mov	ax,[2E69]
+	les	di,[2E6Dh]
+	mov	ax,[2E69h]
 	sub	ax,di
-	mov	[4E94],ax
-	mov	di,[4E90]
-	shl	di,01
-	mov	es,[2E39]
+	mov	[4E94h],ax
+	mov	di,[4E90h]
+	shl	di,1h
+	mov	es,[2E39h]
 	mov	ax,es:[di]
 
 l0800_88DC:
-	cmp	ax,[2E31]
-	jnz	88E5
+	cmp	ax,[2E31h]
+	jnz	88E5h
 
 l0800_88E2:
-	jmp	8984
+	jmp	8984h
 
 l0800_88E5:
 	mov	di,ax
-	shl	di,01
-	mov	es,[2E41]
+	shl	di,1h
+	mov	es,[2E41h]
 	mov	bx,es:[di]
-	mov	[4E92],bx
-	mov	bx,[2E2D]
+	mov	[4E92h],bx
+	mov	bx,[2E2Dh]
 	cmp	bx,ax
-	ja	8903
+	ja	8903h
 
 l0800_88FC:
 	nop
 	nop
 	nop
-	add	bx,[2E31]
+	add	bx,[2E31h]
 
 l0800_8903:
 	sub	bx,ax
-	les	si,[2E6D]
+	les	si,[2E6Dh]
 	sub	si,bx
 	mov	ax,es:[si]
-	cmp	[4E90],ax
-	jnz	897E
+	cmp	[4E90h],ax
+	jnz	897Eh
 
 l0800_8914:
 	nop
 	nop
 	nop
-	mov	es,[2E3D]
+	mov	es,[2E3Dh]
 	mov	cx,es:[di]
 	cmp	cx,bx
-	jbe	892D
+	jbe	892Dh
 
 l0800_8922:
 	nop
 	nop
 	nop
-	mov	bx,0001
+	mov	bx,1h
 	mov	cx,dx
-	jmp	8963
+	jmp	8963h
 0800:892C                                     90                      .  
 
 l0800_892D:
 	cmp	cx,dx
-	jbe	893A
+	jbe	893Ah
 
 l0800_8931:
 	nop
@@ -18520,27 +18520,27 @@ l0800_8931:
 
 l0800_893A:
 	cmp	cx,dx
-	jnz	8963
+	jnz	8963h
 
 l0800_893E:
 	nop
 	nop
 	nop
-	les	di,[2E6D]
+	les	di,[2E6Dh]
 	add	di,cx
 	mov	si,di
 	sub	si,bx
-	mov	ax,[4E94]
+	mov	ax,[4E94h]
 	sub	ax,cx
 	mov	cx,ax
 	push	ds
-	mov	ds,[2E6F]
+	mov	ds,[2E6Fh]
 
 l0800_8957:
 	rep cmpsb
 
 l0800_8959:
-	jz	895C
+	jz	895Ch
 
 l0800_895B:
 	inc	cx
@@ -18552,44 +18552,44 @@ l0800_895C:
 	add	cx,ax
 
 l0800_8963:
-	cmp	cx,[2E2F]
-	jbe	896D
+	cmp	cx,[2E2Fh]
+	jbe	896Dh
 
 l0800_8969:
-	mov	cx,[2E2F]
+	mov	cx,[2E2Fh]
 
 l0800_896D:
-	cmp	cx,[2E29]
-	jc	897E
+	cmp	cx,[2E29h]
+	jc	897Eh
 
 l0800_8973:
 	nop
 	nop
 	nop
-	mov	[2E29],cx
-	mov	[2E2B],bx
+	mov	[2E29h],cx
+	mov	[2E2Bh],bx
 
 l0800_897E:
-	mov	ax,[4E92]
-	jmp	88DC
+	mov	ax,[4E92h]
+	jmp	88DCh
 
 l0800_8984:
-	cmp	word ptr [2E29],02
-	jnz	89A5
+	cmp	word ptr [2E29h],2h
+	jnz	89A5h
 
 l0800_898B:
 	nop
 	nop
 	nop
-	cmp	word ptr [2E2B],0100
-	jbe	89A5
+	cmp	word ptr [2E2Bh],100h
+	jbe	89A5h
 
 l0800_8996:
 	nop
 	nop
 	nop
-	mov	word ptr [2E29],0001
-	mov	word ptr [2E2B],0000
+	mov	word ptr [2E29h],1h
+	mov	word ptr [2E2Bh],0h
 
 l0800_89A5:
 	pop	di
@@ -18604,69 +18604,69 @@ fn0800_89A8 proc
 	push	bp
 	mov	bp,sp
 	push	di
-	mov	dx,[2E31]
+	mov	dx,[2E31h]
 	cld
 
 l0800_89B1:
-	mov	di,[2E2D]
-	shl	di,01
-	mov	es,[2E41]
+	mov	di,[2E2Dh]
+	shl	di,1h
+	mov	es,[2E41h]
 	mov	ax,es:[di]
 	mov	es:[di],dx
-	cmp	[2E2D],ax
-	jz	89EA
+	cmp	[2E2Dh],ax
+	jz	89EAh
 
 l0800_89C7:
 	nop
 	nop
 	nop
-	les	di,[2E6D]
+	les	di,[2E6Dh]
 	sub	di,dx
 	mov	di,es:[di]
-	shl	di,01
-	mov	es,[2E39]
+	shl	di,1h
+	mov	es,[2E39h]
 	mov	es:[di],ax
 	cmp	ax,dx
-	jnz	89EA
+	jnz	89EAh
 
 l0800_89E0:
 	nop
 	nop
 	nop
-	mov	es,[2E35]
+	mov	es,[2E35h]
 	mov	es:[di],dx
 
 l0800_89EA:
-	les	di,[2E6D]
+	les	di,[2E6Dh]
 	mov	di,es:[di]
-	shl	di,01
-	mov	ax,[2E2D]
-	mov	es,[2E39]
+	shl	di,1h
+	mov	ax,[2E2Dh]
+	mov	es,[2E39h]
 	cmp	es:[di],dx
-	jnz	8A08
+	jnz	8A08h
 
 l0800_89FF:
 	nop
 	nop
 	nop
 	mov	es:[di],ax
-	jmp	8A18
+	jmp	8A18h
 0800:8A07                      90                                .       
 
 l0800_8A08:
-	mov	es,[2E35]
+	mov	es,[2E35h]
 	mov	bx,es:[di]
-	shl	bx,01
-	mov	es,[2E41]
+	shl	bx,1h
+	mov	es,[2E41h]
 	mov	es:[bx],ax
 
 l0800_8A18:
-	mov	es,[2E35]
+	mov	es,[2E35h]
 	mov	es:[di],ax
-	les	di,[2E6D]
+	les	di,[2E6Dh]
 	mov	al,es:[di]
 	inc	di
-	mov	bx,[2E69]
+	mov	bx,[2E69h]
 	sub	bx,di
 	mov	cx,bx
 
@@ -18674,76 +18674,76 @@ l0800_8A2F:
 	rep scasb
 
 l0800_8A31:
-	jnz	8A34
+	jnz	8A34h
 
 l0800_8A33:
 	dec	cx
 
 l0800_8A34:
 	sub	bx,cx
-	mov	di,[2E2D]
-	shl	di,01
-	mov	es,[2E3D]
+	mov	di,[2E2Dh]
+	shl	di,1h
+	mov	es,[2E3Dh]
 	mov	es:[di],bx
-	jmp	8A86
+	jmp	8A86h
 0800:8A45                90                                    .         
 
 l0800_8A46:
-	mov	di,[2E2D]
-	shl	di,01
-	mov	es,[2E3D]
+	mov	di,[2E2Dh]
+	shl	di,1h
+	mov	es,[2E3Dh]
 	mov	es:[di],bx
-	mov	es,[2E41]
-	mov	ax,[2E2D]
+	mov	es,[2E41h]
+	mov	ax,[2E2Dh]
 	xchg	es:[di],ax
-	cmp	[2E2D],ax
-	jz	8A86
+	cmp	[2E2Dh],ax
+	jz	8A86h
 
 l0800_8A63:
 	nop
 	nop
 	nop
-	les	di,[2E6D]
+	les	di,[2E6Dh]
 	sub	di,dx
 	mov	di,es:[di]
-	shl	di,01
-	mov	es,[2E39]
+	shl	di,1h
+	mov	es,[2E39h]
 	mov	es:[di],ax
 	cmp	ax,dx
-	jnz	8A86
+	jnz	8A86h
 
 l0800_8A7C:
 	nop
 	nop
 	nop
-	mov	es,[2E35]
+	mov	es,[2E35h]
 	mov	es:[di],dx
 
 l0800_8A86:
-	mov	ax,[2E2D]
+	mov	ax,[2E2Dh]
 	inc	ax
 	cmp	ax,dx
-	jnz	8A90
+	jnz	8A90h
 
 l0800_8A8E:
 	xor	ax,ax
 
 l0800_8A90:
-	mov	[2E2D],ax
-	inc	word ptr [2E6D]
-	dec	word ptr [bp+04]
-	jz	8AA8
+	mov	[2E2Dh],ax
+	inc	word ptr [2E6Dh]
+	dec	word ptr [bp+4h]
+	jz	8AA8h
 
 l0800_8A9C:
 	nop
 	nop
 	nop
 	dec	bx
-	cmp	bx,01
-	ja	8A46
+	cmp	bx,1h
+	ja	8A46h
 
 l0800_8AA5:
-	jmp	89B1
+	jmp	89B1h
 
 l0800_8AA8:
 	pop	di
@@ -18758,22 +18758,22 @@ fn0800_8ACF proc
 	push	bp
 	mov	bp,sp
 	push	ds
-	mov	ah,43
+	mov	ah,43h
 	xor	al,al
-	lds	dx,[bp+04]
-	int	21
+	lds	dx,[bp+4h]
+	int	21h
 	pop	ds
-	jc	8AE9
+	jc	8AE9h
 
 l0800_8ADF:
-	les	bx,[bp+08]
+	les	bx,[bp+8h]
 	mov	es:[bx],cx
 	xor	ax,ax
-	jmp	8AED
+	jmp	8AEDh
 
 l0800_8AE9:
 	push	ax
-	call	8D64
+	call	8D64h
 
 l0800_8AED:
 	pop	bp
@@ -18790,50 +18790,50 @@ fn0800_8B0D proc
 	push	bp
 	mov	bp,sp
 	push	si
-	mov	si,[bp+08]
+	mov	si,[bp+8h]
 	or	si,si
-	jnz	8B36
+	jnz	8B36h
 
 l0800_8B18:
-	jmp	8B28
+	jmp	8B28h
 
 l0800_8B1A:
-	dec	word ptr [224E]
-	mov	bx,[224E]
-	shl	bx,01
-	call	word ptr [bx+4E96]
+	dec	word ptr [224Eh]
+	mov	bx,[224Eh]
+	shl	bx,1h
+	call	word ptr [bx+4E96h]
 
 l0800_8B28:
-	cmp	word ptr [224E],00
-	jnz	8B1A
+	cmp	word ptr [224Eh],0h
+	jnz	8B1Ah
 
 l0800_8B2F:
-	call	0150
-	call	word ptr [2352]
+	call	0150h
+	call	word ptr [2352h]
 
 l0800_8B36:
-	call	01B9
-	call	0163
-	cmp	word ptr [bp+06],00
-	jnz	8B55
+	call	01B9h
+	call	0163h
+	cmp	word ptr [bp+6h],0h
+	jnz	8B55h
 
 l0800_8B42:
 	or	si,si
-	jnz	8B4E
+	jnz	8B4Eh
 
 l0800_8B46:
-	call	word ptr [2354]
-	call	word ptr [2356]
+	call	word ptr [2354h]
+	call	word ptr [2356h]
 
 l0800_8B4E:
-	push	word ptr [bp+04]
-	call	0164
+	push	word ptr [bp+4h]
+	call	0164h
 	pop	cx
 
 l0800_8B55:
 	pop	si
 	pop	bp
-	ret	0006
+	ret	6h
 
 ;; fn0800_8B5A: 0800:8B5A
 ;;   Called from:
@@ -18845,8 +18845,8 @@ fn0800_8B5A proc
 	xor	ax,ax
 	push	ax
 	push	ax
-	push	word ptr [bp+04]
-	call	8B0D
+	push	word ptr [bp+4h]
+	call	8B0Dh
 	pop	bp
 	ret
 
@@ -18854,12 +18854,12 @@ fn0800_8B5A proc
 fn0800_8B69 proc
 	push	bp
 	mov	bp,sp
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
 	xor	ax,ax
 	push	ax
-	push	word ptr [bp+04]
-	call	8B0D
+	push	word ptr [bp+4h]
+	call	8B0Dh
 	pop	bp
 	ret
 0800:8B7B                                  33 C0 50 B8 01            3.P..
@@ -18872,11 +18872,11 @@ fn0800_8B69 proc
 fn0800_8B95 proc
 	push	bp
 	mov	bp,sp
-	mov	ah,2A
-	int	21
-	les	bx,[bp+04]
+	mov	ah,2Ah
+	int	21h
+	les	bx,[bp+4h]
 	mov	es:[bx],cx
-	mov	es:[bx+02],dx
+	mov	es:[bx+2h],dx
 	pop	bp
 	ret
 
@@ -18886,11 +18886,11 @@ fn0800_8B95 proc
 fn0800_8BA8 proc
 	push	bp
 	mov	bp,sp
-	mov	ah,2C
-	int	21
-	les	bx,[bp+04]
+	mov	ah,2Ch
+	int	21h
+	les	bx,[bp+4h]
 	mov	es:[bx],cx
-	mov	es:[bx+02],dx
+	mov	es:[bx+2h],dx
 	pop	bp
 	ret
 
@@ -18911,7 +18911,7 @@ fn0800_8BBB proc
 	push	cs
 	push	cx
 	xor	cx,cx
-	jmp	8BD8
+	jmp	8BD8h
 
 ;; fn0800_8BC2: 0800:8BC2
 ;;   Called from:
@@ -18924,8 +18924,8 @@ fn0800_8BC2 proc
 	pop	cx
 	push	cs
 	push	cx
-	mov	cx,0001
-	jmp	8BD8
+	mov	cx,1h
+	jmp	8BD8h
 
 ;; fn0800_8BCA: 0800:8BCA
 ;;   Called from:
@@ -18942,8 +18942,8 @@ fn0800_8BCA proc
 	pop	cx
 	push	cs
 	push	cx
-	mov	cx,0002
-	jmp	8BD8
+	mov	cx,2h
+	jmp	8BD8h
 0800:8BD2       59 0E 51 B9 03 00                           Y.Q...       
 
 ;; fn0800_8BD8: 0800:8BD8
@@ -18957,66 +18957,66 @@ fn0800_8BD8 proc
 	push	di
 	mov	bp,sp
 	mov	di,cx
-	mov	ax,[bp+0A]
-	mov	dx,[bp+0C]
-	mov	bx,[bp+0E]
-	mov	cx,[bp+10]
+	mov	ax,[bp+0Ah]
+	mov	dx,[bp+0Ch]
+	mov	bx,[bp+0Eh]
+	mov	cx,[bp+10h]
 	or	cx,cx
-	jnz	8BF7
+	jnz	8BF7h
 
 l0800_8BEF:
 	or	dx,dx
-	jz	8C5C
+	jz	8C5Ch
 
 l0800_8BF3:
 	or	bx,bx
-	jz	8C5C
+	jz	8C5Ch
 
 l0800_8BF7:
-	test	di,0001
-	jnz	8C19
+	test	di,1h
+	jnz	8C19h
 
 l0800_8BFD:
 	or	dx,dx
-	jns	8C0B
+	jns	8C0Bh
 
 l0800_8C01:
 	neg	dx
 	neg	ax
-	sbb	dx,00
-	or	di,0C
+	sbb	dx,0h
+	or	di,0Ch
 
 l0800_8C0B:
 	or	cx,cx
-	jns	8C19
+	jns	8C19h
 
 l0800_8C0F:
 	neg	cx
 	neg	bx
-	sbb	cx,00
-	xor	di,04
+	sbb	cx,0h
+	xor	di,4h
 
 l0800_8C19:
 	mov	bp,cx
-	mov	cx,0020
+	mov	cx,20h
 	push	di
 	xor	di,di
 	xor	si,si
 
 l0800_8C23:
-	shl	ax,01
-	rcl	dx,01
-	rcl	si,01
-	rcl	di,01
+	shl	ax,1h
+	rcl	dx,1h
+	rcl	si,1h
+	rcl	di,1h
 	cmp	di,bp
-	jc	8C3A
+	jc	8C3Ah
 
 l0800_8C2F:
-	ja	8C35
+	ja	8C35h
 
 l0800_8C31:
 	cmp	si,bx
-	jc	8C3A
+	jc	8C3Ah
 
 l0800_8C35:
 	sub	si,bx
@@ -19024,44 +19024,44 @@ l0800_8C35:
 	inc	ax
 
 l0800_8C3A:
-	loop	8C23
+	loop	8C23h
 
 l0800_8C3C:
 	pop	bx
-	test	bx,0002
-	jz	8C49
+	test	bx,2h
+	jz	8C49h
 
 l0800_8C43:
 	mov	ax,si
 	mov	dx,di
-	shr	bx,01
+	shr	bx,1h
 
 l0800_8C49:
-	test	bx,0004
-	jz	8C56
+	test	bx,4h
+	jz	8C56h
 
 l0800_8C4F:
 	neg	dx
 	neg	ax
-	sbb	dx,00
+	sbb	dx,0h
 
 l0800_8C56:
 	pop	di
 	pop	si
 	pop	bp
-	retf	0008
+	retf	8h
 
 l0800_8C5C:
 	div	bx
-	test	di,0002
-	jz	8C65
+	test	di,2h
+	jz	8C65h
 
 l0800_8C64:
 	xchg	dx,ax
 
 l0800_8C65:
 	xor	dx,dx
-	jmp	8C56
+	jmp	8C56h
 
 ;; fn0800_8C69: 0800:8C69
 ;;   Called from:
@@ -19081,21 +19081,21 @@ fn0800_8C69 proc
 	pop	bx
 	push	cs
 	push	bx
-	cmp	cl,10
-	jnc	8C81
+	cmp	cl,10h
+	jnc	8C81h
 
 l0800_8C71:
 	mov	bx,ax
 	shl	ax,cl
 	shl	dx,cl
 	neg	cl
-	add	cl,10
+	add	cl,10h
 	shr	bx,cl
 	or	dx,bx
 	retf
 
 l0800_8C81:
-	sub	cl,10
+	sub	cl,10h
 	xchg	dx,ax
 	xor	ax,ax
 	shl	dx,cl
@@ -19115,21 +19115,21 @@ fn0800_8C8A proc
 	pop	bx
 	push	cs
 	push	bx
-	cmp	cl,10
-	jnc	8CA2
+	cmp	cl,10h
+	jnc	8CA2h
 
 l0800_8C92:
 	mov	bx,dx
 	shr	ax,cl
 	sar	dx,cl
 	neg	cl
-	add	cl,10
+	add	cl,10h
 	shl	bx,cl
 	or	ax,bx
 	retf
 
 l0800_8CA2:
-	sub	cl,10
+	sub	cl,10h
 	xchg	dx,ax
 	cwd
 	sar	ax,cl
@@ -19161,21 +19161,21 @@ fn0800_8CAA proc
 	pop	bx
 	push	cs
 	push	bx
-	cmp	cl,10
-	jnc	8CC2
+	cmp	cl,10h
+	jnc	8CC2h
 
 l0800_8CB2:
 	mov	bx,dx
 	shr	ax,cl
 	shr	dx,cl
 	neg	cl
-	add	cl,10
+	add	cl,10h
 	shl	bx,cl
 	or	ax,bx
 	retf
 
 l0800_8CC2:
-	sub	cl,10
+	sub	cl,10h
 	xchg	dx,ax
 	xor	dx,dx
 	shr	ax,cl
@@ -19191,46 +19191,46 @@ fn0800_8CCB proc
 	push	cs
 	push	es
 	or	cx,cx
-	jge	8CDE
+	jge	8CDEh
 
 l0800_8CD2:
 	not	bx
 	not	cx
-	add	bx,01
-	adc	cx,00
-	jmp	8D0D
+	add	bx,1h
+	adc	cx,0h
+	jmp	8D0Dh
 
 l0800_8CDE:
 	add	ax,bx
-	jnc	8CE6
+	jnc	8CE6h
 
 l0800_8CE2:
-	add	dx,1000
+	add	dx,1000h
 
 l0800_8CE6:
 	mov	ch,cl
-	mov	cl,04
+	mov	cl,4h
 	shl	ch,cl
 	add	dh,ch
 	mov	ch,al
 	shr	ax,cl
 	add	dx,ax
 	mov	al,ch
-	and	ax,000F
+	and	ax,0Fh
 	retf
 0800:8CFA                               07 0E 06 0B C9 7D           .....}
 0800:8D00 0C F7 D3 F7 D1 83 C3 01 83 D1 00 EB D1          .............  
 
 l0800_8D0D:
 	sub	ax,bx
-	jnc	8D15
+	jnc	8D15h
 
 l0800_8D11:
-	sub	dx,1000
+	sub	dx,1000h
 
 l0800_8D15:
 	mov	bh,cl
-	mov	cl,04
+	mov	cl,4h
 	shl	bh,cl
 	xor	bl,bl
 	sub	dx,bx
@@ -19238,7 +19238,7 @@ l0800_8D15:
 	shr	ax,cl
 	add	dx,ax
 	mov	al,ch
-	and	ax,000F
+	and	ax,0Fh
 	retf
 
 ;; fn0800_8D2B: 0800:8D2B
@@ -19269,38 +19269,38 @@ fn0800_8D2B proc
 	push	bp
 	mov	bp,sp
 	push	si
-	mov	si,[bp+04]
+	mov	si,[bp+4h]
 	or	si,si
-	jl	8D4B
+	jl	8D4Bh
 
 l0800_8D36:
-	cmp	si,58
-	jle	8D3E
+	cmp	si,58h
+	jle	8D3Eh
 
 l0800_8D3B:
-	mov	si,0057
+	mov	si,57h
 
 l0800_8D3E:
-	mov	[2516],si
-	mov	al,[si+2518]
+	mov	[2516h],si
+	mov	al,[si+2518h]
 	cbw
 	mov	si,ax
-	jmp	8D58
+	jmp	8D58h
 
 l0800_8D4B:
 	neg	si
-	cmp	si,23
-	jg	8D3B
+	cmp	si,23h
+	jg	8D3Bh
 
 l0800_8D52:
-	mov	word ptr [2516],FFFF
+	mov	word ptr [2516h],0FFFFh
 
 l0800_8D58:
-	mov	[007F],si
-	mov	ax,FFFF
+	mov	[007Fh],si
+	mov	ax,0FFFFh
 	pop	si
 	pop	bp
-	ret	0002
+	ret	2h
 
 ;; fn0800_8D64: 0800:8D64
 ;;   Called from:
@@ -19309,13 +19309,13 @@ fn0800_8D64 proc
 	push	bp
 	mov	bp,sp
 	push	si
-	mov	si,[bp+04]
+	mov	si,[bp+4h]
 	push	si
-	call	8D2B
+	call	8D2Bh
 	mov	ax,si
 	pop	si
 	pop	bp
-	ret	0002
+	ret	2h
 
 ;; fn0800_8D76: 0800:8D76
 ;;   Called from:
@@ -19323,11 +19323,11 @@ fn0800_8D64 proc
 fn0800_8D76 proc
 	push	bp
 	mov	bp,sp
-	mov	ax,4400
-	mov	bx,[bp+04]
-	int	21
+	mov	ax,4400h
+	mov	bx,[bp+4h]
+	int	21h
 	xchg	dx,ax
-	and	ax,0080
+	and	ax,80h
 	pop	bp
 	ret
 
@@ -19338,39 +19338,39 @@ fn0800_8D76 proc
 fn0800_8D87 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,22
+	sub	sp,22h
 	push	si
 	push	di
 	push	es
-	les	di,[bp+0A]
-	mov	bx,[bp+08]
-	cmp	bx,24
-	ja	8DF7
+	les	di,[bp+0Ah]
+	mov	bx,[bp+8h]
+	cmp	bx,24h
+	ja	8DF7h
 
 l0800_8D9B:
-	cmp	bl,02
-	jc	8DF7
+	cmp	bl,2h
+	jc	8DF7h
 
 l0800_8DA0:
-	mov	ax,[bp+0E]
-	mov	cx,[bp+10]
+	mov	ax,[bp+0Eh]
+	mov	cx,[bp+10h]
 	or	cx,cx
-	jge	8DBC
+	jge	8DBCh
 
 l0800_8DAA:
-	cmp	byte ptr [bp+06],00
-	jz	8DBC
+	cmp	byte ptr [bp+6h],0h
+	jz	8DBCh
 
 l0800_8DB0:
-	mov	byte ptr es:[di],2D
+	mov	byte ptr es:[di],2Dh
 	inc	di
 	neg	cx
 	neg	ax
-	sbb	cx,00
+	sbb	cx,0h
 
 l0800_8DBC:
-	lea	si,[bp-22]
-	jcxz	8DD1
+	lea	si,[bp-22h]
+	jcxz	8DD1h
 
 l0800_8DC1:
 	xchg	cx,ax
@@ -19380,10 +19380,10 @@ l0800_8DC1:
 	div	bx
 	mov	ss:[si],dl
 	inc	si
-	jcxz	8DD9
+	jcxz	8DD9h
 
 l0800_8DCF:
-	jmp	8DC1
+	jmp	8DC1h
 
 l0800_8DD1:
 	sub	dx,dx
@@ -19393,10 +19393,10 @@ l0800_8DD1:
 
 l0800_8DD9:
 	or	ax,ax
-	jnz	8DD1
+	jnz	8DD1h
 
 l0800_8DDD:
-	lea	cx,[bp-22]
+	lea	cx,[bp-22h]
 	neg	cx
 	add	cx,si
 	cld
@@ -19404,31 +19404,31 @@ l0800_8DDD:
 l0800_8DE5:
 	dec	si
 	mov	al,ss:[si]
-	sub	al,0A
-	jnc	8DF1
+	sub	al,0Ah
+	jnc	8DF1h
 
 l0800_8DED:
-	add	al,3A
-	jmp	8DF4
+	add	al,3Ah
+	jmp	8DF4h
 
 l0800_8DF1:
-	add	al,[bp+04]
+	add	al,[bp+4h]
 
 l0800_8DF4:
 	stosb
-	loop	8DE5
+	loop	8DE5h
 
 l0800_8DF7:
-	mov	al,00
+	mov	al,0h
 	stosb
 	pop	es
-	mov	dx,[bp+0C]
-	mov	ax,[bp+0A]
+	mov	dx,[bp+0Ch]
+	mov	ax,[bp+0Ah]
 	pop	di
 	pop	si
 	mov	sp,bp
 	pop	bp
-	ret	000E
+	ret	0Eh
 
 ;; fn0800_8E09: 0800:8E09
 ;;   Called from:
@@ -19438,18 +19438,18 @@ fn0800_8E09 proc
 	mov	bp,sp
 	xor	ax,ax
 	push	ax
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	mov	ax,000A
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	mov	ax,0Ah
 	push	ax
-	mov	al,00
+	mov	al,0h
 	push	ax
-	mov	al,61
+	mov	al,61h
 	push	ax
-	call	8D87
+	call	8D87h
 	pop	bp
-	ret	0006
+	ret	6h
 
 ;; fn0800_8E29: 0800:8E29
 ;;   Called from:
@@ -19463,23 +19463,23 @@ fn0800_8E09 proc
 fn0800_8E29 proc
 	push	bp
 	mov	bp,sp
-	mov	bx,[bp+04]
-	shl	bx,01
-	and	word ptr [bx+24EA],FDFF
-	mov	ah,42
-	mov	al,[bp+0A]
-	mov	bx,[bp+04]
-	mov	cx,[bp+08]
-	mov	dx,[bp+06]
-	int	21
-	jc	8E4B
+	mov	bx,[bp+4h]
+	shl	bx,1h
+	and	word ptr [bx+24EAh],0FDFFh
+	mov	ah,42h
+	mov	al,[bp+0Ah]
+	mov	bx,[bp+4h]
+	mov	cx,[bp+8h]
+	mov	dx,[bp+6h]
+	int	21h
+	jc	8E4Bh
 
 l0800_8E49:
-	jmp	8E50
+	jmp	8E50h
 
 l0800_8E4B:
 	push	ax
-	call	8D2B
+	call	8D2Bh
 	cwd
 
 l0800_8E50:
@@ -19493,19 +19493,19 @@ fn0800_8E52 proc
 	push	bp
 	mov	bp,sp
 	push	ds
-	mov	ah,39
-	lds	dx,[bp+04]
-	int	21
+	mov	ah,39h
+	lds	dx,[bp+4h]
+	int	21h
 	pop	ds
-	jc	8E64
+	jc	8E64h
 
 l0800_8E60:
 	xor	ax,ax
-	jmp	8E68
+	jmp	8E68h
 
 l0800_8E64:
 	push	ax
-	call	8D2B
+	call	8D2Bh
 
 l0800_8E68:
 	pop	bp
@@ -19517,50 +19517,50 @@ l0800_8E68:
 fn0800_8E6A proc
 	push	bp
 	mov	bp,sp
-	mov	ax,[bp+0A]
-	or	ax,[bp+0C]
-	jnz	8E7D
+	mov	ax,[bp+0Ah]
+	or	ax,[bp+0Ch]
+	jnz	8E7Dh
 
 l0800_8E75:
-	mov	[bp+0C],ds
-	mov	word ptr [bp+0A],4ED6
+	mov	[bp+0Ch],ds
+	mov	word ptr [bp+0Ah],4ED6h
 
 l0800_8E7D:
-	push	word ptr [bp+04]
-	mov	ax,[bp+06]
-	or	ax,[bp+08]
-	jnz	8E8F
+	push	word ptr [bp+4h]
+	mov	ax,[bp+6h]
+	or	ax,[bp+8h]
+	jnz	8E8Fh
 
 l0800_8E88:
 	mov	dx,ds
-	mov	ax,2572
-	jmp	8E95
+	mov	ax,2572h
+	jmp	8E95h
 
 l0800_8E8F:
-	mov	dx,[bp+08]
-	mov	ax,[bp+06]
+	mov	dx,[bp+8h]
+	mov	ax,[bp+6h]
 
 l0800_8E95:
 	push	dx
 	push	ax
-	push	word ptr [bp+0C]
-	push	word ptr [bp+0A]
-	call	9CE6
-	add	sp,08
+	push	word ptr [bp+0Ch]
+	push	word ptr [bp+0Ah]
+	call	9CE6h
+	add	sp,8h
 	push	dx
 	push	ax
-	call	8E09
+	call	8E09h
 	push	ds
-	mov	ax,2576
+	mov	ax,2576h
 	push	ax
-	push	word ptr [bp+0C]
-	push	word ptr [bp+0A]
-	call	BF5F
-	add	sp,08
-	mov	dx,[bp+0C]
-	mov	ax,[bp+0A]
+	push	word ptr [bp+0Ch]
+	push	word ptr [bp+0Ah]
+	call	0BF5Fh
+	add	sp,8h
+	mov	dx,[bp+0Ch]
+	mov	ax,[bp+0Ah]
 	pop	bp
-	ret	000A
+	ret	0Ah
 0800:8EC3          55 8B EC 83 EC 02 FF 76 0A FF 76 08 33    U......v..v.3
 0800:8ED0 C0 50 50 C4 5E 04 26 83 3F FF 75 05 B8 02 00 EB .PP.^.&.?.u.....
 0800:8EE0 03 B8 01 00 C4 5E 04 26 01 07 26 8B 07 50 E8 79 .....^.&..&..P.y
@@ -19584,13 +19584,13 @@ fn0800_8F18 proc
 	xchg	si,ax
 	xchg	dx,ax
 	test	ax,ax
-	jz	8F21
+	jz	8F21h
 
 l0800_8F1F:
 	mul	bx
 
 l0800_8F21:
-	jcxz	8F28
+	jcxz	8F28h
 
 l0800_8F23:
 	xchg	cx,ax
@@ -19614,7 +19614,7 @@ l0800_8F28:
 fn0800_8F2F proc
 	push	cx
 	mov	ch,al
-	mov	cl,04
+	mov	cl,4h
 	shr	ax,cl
 	add	dx,ax
 	mov	al,ch
@@ -19623,10 +19623,10 @@ fn0800_8F2F proc
 	pop	cx
 	add	cx,bx
 	mov	bl,ah
-	and	ax,000F
-	and	bx,0F
+	and	ax,0Fh
+	and	bx,0Fh
 	cmp	dx,cx
-	jnz	8F4F
+	jnz	8F4Fh
 
 l0800_8F4D:
 	cmp	ax,bx
@@ -19642,34 +19642,34 @@ l0800_8F4F:
 fn0800_8F50 proc
 	push	bp
 	mov	bp,sp
-	mov	bx,[bp+04]
-	shl	bx,01
-	test	word ptr [bx+24EA],0002
-	jz	8F66
+	mov	bx,[bp+4h]
+	shl	bx,1h
+	test	word ptr [bx+24EAh],2h
+	jz	8F66h
 
 l0800_8F60:
-	mov	ax,0005
+	mov	ax,5h
 	push	ax
-	jmp	8F7A
+	jmp	8F7Ah
 
 l0800_8F66:
 	push	ds
-	mov	ah,3F
-	mov	bx,[bp+04]
-	mov	cx,[bp+0A]
-	lds	dx,[bp+06]
-	int	21
+	mov	ah,3Fh
+	mov	bx,[bp+4h]
+	mov	cx,[bp+0Ah]
+	lds	dx,[bp+6h]
+	int	21h
 	pop	ds
-	jc	8F79
+	jc	8F79h
 
 l0800_8F77:
-	jmp	8F7D
+	jmp	8F7Dh
 
 l0800_8F79:
 	push	ax
 
 l0800_8F7A:
-	call	8D2B
+	call	8D2Bh
 
 l0800_8F7D:
 	pop	bp
@@ -19692,19 +19692,19 @@ fn0800_8F7F proc
 	push	bp
 	mov	bp,sp
 	push	ds
-	mov	ah,41
-	lds	dx,[bp+04]
-	int	21
+	mov	ah,41h
+	lds	dx,[bp+4h]
+	int	21h
 	pop	ds
-	jc	8F91
+	jc	8F91h
 
 l0800_8F8D:
 	xor	ax,ax
-	jmp	8F95
+	jmp	8F95h
 
 l0800_8F91:
 	push	ax
-	call	8D2B
+	call	8D2Bh
 
 l0800_8F95:
 	pop	bp
@@ -19716,12 +19716,12 @@ l0800_8F95:
 fn0800_8F97 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,2A
+	sub	sp,2Ah
 	push	si
 	push	di
-	mov	word ptr [bp-04],0000
-	mov	word ptr [bp-06],0000
-	jmp	8FC6
+	mov	word ptr [bp-4h],0h
+	mov	word ptr [bp-6h],0h
+	jmp	8FC6h
 
 ;; fn0800_8FAB: 0800:8FAB
 ;;   Called from:
@@ -19730,20 +19730,20 @@ fn0800_8F97 proc
 ;;     0800:9275 (in fn0800_8F97)
 ;;     0800:9327 (in fn0800_8F97)
 fn0800_8FAB proc
-	les	di,[bp+10]
-	test	byte ptr [bp-01],20
-	jz	8FBC
+	les	di,[bp+10h]
+	test	byte ptr [bp-1h],20h
+	jz	8FBCh
 
 l0800_8FB4:
 	les	di,es:[di]
-	add	word ptr [bp+10],04
+	add	word ptr [bp+10h],4h
 	ret
 
 l0800_8FBC:
 	mov	di,es:[di]
 	push	ds
 	pop	es
-	add	word ptr [bp+10],02
+	add	word ptr [bp+10h],2h
 	ret
 
 l0800_8FC6:
@@ -19751,312 +19751,312 @@ l0800_8FC6:
 	cld
 
 l0800_8FC8:
-	mov	si,[bp+0C]
+	mov	si,[bp+0Ch]
 
 l0800_8FCB:
-	mov	es,[bp+0E]
+	mov	es,[bp+0Eh]
 	lodsb
 	or	al,al
-	jz	9042
+	jz	9042h
 
 l0800_8FD4:
-	cmp	al,25
-	jz	9045
+	cmp	al,25h
+	jz	9045h
 
 l0800_8FD8:
 	cbw
 	xchg	di,ax
-	inc	word ptr [bp-06]
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	call	word ptr [bp+04]
+	inc	word ptr [bp-6h]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	call	word ptr [bp+4h]
 	pop	cx
 	pop	cx
 	or	ax,ax
-	jl	9016
+	jl	9016h
 
 l0800_8FEC:
 	cbw
 	or	di,di
-	js	902B
+	js	902Bh
 
 l0800_8FF1:
-	cmp	byte ptr [di+257C],01
-	jnz	902B
+	cmp	byte ptr [di+257Ch],1h
+	jnz	902Bh
 
 l0800_8FF8:
 	xchg	bx,ax
 	or	bl,bl
-	js	9019
+	js	9019h
 
 l0800_8FFD:
-	cmp	byte ptr [bx+257C],01
-	jnz	9019
+	cmp	byte ptr [bx+257Ch],1h
+	jnz	9019h
 
 l0800_9004:
-	inc	word ptr [bp-06]
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	call	word ptr [bp+04]
+	inc	word ptr [bp-6h]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	call	word ptr [bp+4h]
 	pop	cx
 	pop	cx
 	or	ax,ax
-	jg	8FF8
+	jg	8FF8h
 
 l0800_9016:
-	jmp	93A6
+	jmp	93A6h
 
 l0800_9019:
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
 	push	bx
-	call	word ptr [bp+06]
-	add	sp,06
-	dec	word ptr [bp-06]
-	jmp	8FCB
+	call	word ptr [bp+6h]
+	add	sp,6h
+	dec	word ptr [bp-6h]
+	jmp	8FCBh
 
 l0800_902B:
 	cmp	ax,di
-	jz	8FCB
+	jz	8FCBh
 
 l0800_902F:
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
 	push	ax
-	call	word ptr [bp+06]
-	add	sp,06
-	dec	word ptr [bp-06]
-	jmp	93BE
+	call	word ptr [bp+6h]
+	add	sp,6h
+	dec	word ptr [bp-6h]
+	jmp	93BEh
 
 l0800_9042:
-	jmp	93BE
+	jmp	93BEh
 
 l0800_9045:
-	mov	word ptr [bp-0A],FFFF
-	mov	es,[bp+0E]
-	mov	byte ptr [bp-01],20
+	mov	word ptr [bp-0Ah],0FFFFh
+	mov	es,[bp+0Eh]
+	mov	byte ptr [bp-1h],20h
 
 l0800_9051:
 	lodsb
 	cbw
-	mov	[bp+0C],si
+	mov	[bp+0Ch],si
 	xchg	di,ax
 	or	di,di
-	jl	9075
+	jl	9075h
 
 l0800_905C:
-	mov	bl,[di+257C]
+	mov	bl,[di+257Ch]
 	xor	bh,bh
-	cmp	bx,15
-	jbe	906A
+	cmp	bx,15h
+	jbe	906Ah
 
 l0800_9067:
-	jmp	93A6
+	jmp	93A6h
 
 l0800_906A:
-	shl	bx,01
-	jmp	word ptr cs:[bx+9459]
+	shl	bx,1h
+	jmp	word ptr cs:[bx+9459h]
 
 l0800_9071:
 	xchg	di,ax
-	jmp	8FD8
+	jmp	8FD8h
 
 l0800_9075:
-	jmp	93BE
+	jmp	93BEh
 
 l0800_9078:
-	or	byte ptr [bp-01],01
-	jmp	9051
+	or	byte ptr [bp-1h],1h
+	jmp	9051h
 
 l0800_907E:
-	sub	di,30
-	xchg	[bp-0A],di
+	sub	di,30h
+	xchg	[bp-0Ah],di
 	or	di,di
-	jl	9051
+	jl	9051h
 
 l0800_9088:
-	mov	ax,000A
+	mov	ax,0Ah
 	mul	di
-	add	[bp-0A],ax
-	jmp	9051
+	add	[bp-0Ah],ax
+	jmp	9051h
 
 l0800_9092:
-	or	byte ptr [bp-01],08
-	jmp	9051
+	or	byte ptr [bp-1h],8h
+	jmp	9051h
 
 l0800_9098:
-	or	byte ptr [bp-01],04
-	jmp	9051
+	or	byte ptr [bp-1h],4h
+	jmp	9051h
 
 l0800_909E:
-	or	byte ptr [bp-01],02
-	jmp	9051
+	or	byte ptr [bp-1h],2h
+	jmp	9051h
 
 l0800_90A4:
-	and	byte ptr [bp-01],DF
-	jmp	9051
+	and	byte ptr [bp-1h],0DFh
+	jmp	9051h
 
 l0800_90AA:
-	or	byte ptr [bp-01],20
-	jmp	9051
+	or	byte ptr [bp-1h],20h
+	jmp	9051h
 
 l0800_90B0:
-	mov	ax,[bp-06]
+	mov	ax,[bp-6h]
 	sub	dx,dx
-	test	byte ptr [bp-01],01
-	jz	9110
+	test	byte ptr [bp-1h],1h
+	jz	9110h
 
 l0800_90BB:
-	jmp	9051
+	jmp	9051h
 
 l0800_90BD:
-	mov	si,0008
-	jmp	90CE
+	mov	si,8h
+	jmp	90CEh
 
 l0800_90C2:
-	mov	si,000A
-	jmp	90CE
+	mov	si,0Ah
+	jmp	90CEh
 
 l0800_90C7:
-	mov	si,0010
-	jmp	90CE
+	mov	si,10h
+	jmp	90CEh
 
 l0800_90CC:
 	xor	si,si
 
 l0800_90CE:
-	test	di,0020
-	jnz	90DD
+	test	di,20h
+	jnz	90DDh
 
 l0800_90D4:
-	cmp	di,58
-	jz	90DD
+	cmp	di,58h
+	jz	90DDh
 
 l0800_90D9:
-	or	byte ptr [bp-01],04
+	or	byte ptr [bp-1h],4h
 
 l0800_90DD:
 	push	ss
-	lea	ax,[bp-08]
+	lea	ax,[bp-8h]
 	push	ax
 	push	ss
-	lea	ax,[bp-06]
+	lea	ax,[bp-6h]
 	push	ax
-	mov	ax,[bp-0A]
-	and	ax,7FFF
+	mov	ax,[bp-0Ah]
+	and	ax,7FFFh
 	push	ax
 	push	si
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	94B0
-	add	sp,14
-	cmp	word ptr [bp-08],00
-	jle	911F
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	94B0h
+	add	sp,14h
+	cmp	word ptr [bp-8h],0h
+	jle	911Fh
 
 l0800_9107:
-	test	byte ptr [bp-01],01
-	jnz	911C
+	test	byte ptr [bp-1h],1h
+	jnz	911Ch
 
 l0800_910D:
-	inc	word ptr [bp-04]
+	inc	word ptr [bp-4h]
 
 l0800_9110:
-	call	8FAB
+	call	8FABh
 	stosw
-	test	byte ptr [bp-01],04
-	jz	911C
+	test	byte ptr [bp-1h],4h
+	jz	911Ch
 
 l0800_911A:
 	xchg	dx,ax
 	stosw
 
 l0800_911C:
-	jmp	8FC8
+	jmp	8FC8h
 
 l0800_911F:
-	jl	9124
+	jl	9124h
 
 l0800_9121:
-	jmp	93BE
+	jmp	93BEh
 
 l0800_9124:
-	jmp	93A6
+	jmp	93A6h
 
 l0800_9127:
-	call	912A
+	call	912Ah
 
 ;; fn0800_912A: 0800:912A
 ;;   Called from:
 ;;     0800:9127 (in fn0800_8F97)
 ;;     0800:9127 (in fn0800_8F97)
 fn0800_912A proc
-	jmp	93C5
+	jmp	93C5h
 0800:912D                                        FF 76 0A              .v.
 0800:9130 FF 76 08 50 FF 56 06 83 C4 06 FF 4E FA 81 66 F6 .v.P.V.....N..f.
 0800:9140 FF 7F E8 00 00                                  .....          
 
 ;; fn0800_9145: 0800:9145
 fn0800_9145 proc
-	jmp	93EF
+	jmp	93EFh
 0800:9148                         52 3C 3A 74 19 0B C0 7E         R<:t...~
 0800:9150 10 FF 76 0A FF 76 08 50 FF 56 06 83 C4 06 FF 4E ..v..v.P.V.....N
 0800:9160 FA 5A 8C DB EB 1F E8 00 00                      .Z.......      
 
 ;; fn0800_9169: 0800:9169
 fn0800_9169 proc
-	jmp	93EF
+	jmp	93EFh
 0800:916C                                     5B 0B C0 7E             [..~
 0800:9170 14 52 53 FF 76 0A FF 76 08 50 FF 56 06 83 C4 06 .RS.v..v.P.V....
 0800:9180 FF 4E FA 5B 5A F6 46 FF 01 75 10 E8 1D FE FF 46 .N.[Z.F..u.....F
 0800:9190 FC 92 AB F6 46 FF 20 74 02 93 AB E9 2A FE       ....F. t....*. 
 
 l0800_919E:
-	jmp	93A6
+	jmp	93A6h
 
 l0800_91A1:
 	push	ss
-	lea	ax,[bp-08]
+	lea	ax,[bp-8h]
 	push	ax
 	push	ss
-	lea	ax,[bp-06]
+	lea	ax,[bp-6h]
 	push	ax
-	mov	ax,7FFF
-	and	ax,[bp-0A]
+	mov	ax,7FFFh
+	and	ax,[bp-0Ah]
 	push	ax
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	A2D0
-	add	sp,12
-	cmp	word ptr [bp-08],00
-	jle	9203
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0A2D0h
+	add	sp,12h
+	cmp	word ptr [bp-8h],0h
+	jle	9203h
 
 l0800_91CA:
-	mov	al,[bp-01]
+	mov	al,[bp-1h]
 	cbw
-	test	ax,0001
-	jnz	91FD
+	test	ax,1h
+	jnz	91FDh
 
 l0800_91D3:
-	call	8FAB
-	inc	word ptr [bp-04]
-	test	byte ptr [bp-01],04
-	jz	91E4
+	call	8FABh
+	inc	word ptr [bp-4h]
+	test	byte ptr [bp-1h],4h
+	jz	91E4h
 
 l0800_91DF:
-	mov	ax,0004
-	jmp	91F1
+	mov	ax,4h
+	jmp	91F1h
 
 l0800_91E4:
-	test	byte ptr [bp-01],08
-	jz	91EF
+	test	byte ptr [bp-1h],8h
+	jz	91EFh
 
 l0800_91EA:
-	mov	ax,0008
-	jmp	91F1
+	mov	ax,8h
+	jmp	91F1h
 
 l0800_91EF:
 	xor	ax,ax
@@ -20065,30 +20065,30 @@ l0800_91F1:
 	push	ax
 	push	es
 	push	di
-	call	A2D4
-	add	sp,06
-	jmp	8FC8
+	call	0A2D4h
+	add	sp,6h
+	jmp	8FC8h
 
 l0800_91FD:
-	call	A2D8
-	jmp	8FC8
+	call	0A2D8h
+	jmp	8FC8h
 
 l0800_9203:
-	call	A2D8
-	jl	919E
+	call	0A2D8h
+	jl	919Eh
 
 l0800_9208:
-	jmp	93BE
+	jmp	93BEh
 
 l0800_920B:
-	call	920E
+	call	920Eh
 
 ;; fn0800_920E: 0800:920E
 ;;   Called from:
 ;;     0800:920B (in fn0800_8F97)
 ;;     0800:920B (in fn0800_8F97)
 fn0800_920E proc
-	jmp	93C5
+	jmp	93C5h
 0800:9211    F6 46 FF 01 75 06 E8 91 FD FF 46 FC 81 66 F6  .F..u.....F..f.
 0800:9220 FF 7F 74 2D F6 46 FF 01 75 01 AA FF 46 FA 06 FF ..t-.F..u...F...
 0800:9230 76 0A FF 76 08 FF 56 04 59 59 07 0B C0 7E 12 0A v..v..V.YY...~..
@@ -20097,58 +20097,58 @@ fn0800_920E proc
 0800:9260 FF 4E FA F6 46 FF 01 75 03 B0 00 AA E9 59 FD    .N..F..u.....Y.
 
 l0800_926F:
-	test	byte ptr [bp-01],01
-	jnz	9278
+	test	byte ptr [bp-1h],1h
+	jnz	9278h
 
 l0800_9275:
-	call	8FAB
+	call	8FABh
 
 l0800_9278:
-	mov	si,[bp-0A]
+	mov	si,[bp-0Ah]
 	or	si,si
-	jge	9282
+	jge	9282h
 
 l0800_927F:
-	mov	si,0001
+	mov	si,1h
 
 l0800_9282:
-	jz	92A2
+	jz	92A2h
 
 l0800_9284:
-	inc	word ptr [bp-06]
+	inc	word ptr [bp-6h]
 	push	es
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	call	word ptr [bp+04]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	call	word ptr [bp+4h]
 	pop	cx
 	pop	cx
 	pop	es
 	or	ax,ax
-	jl	92AE
+	jl	92AEh
 
 l0800_9298:
-	test	byte ptr [bp-01],01
-	jnz	929F
+	test	byte ptr [bp-1h],1h
+	jnz	929Fh
 
 l0800_929E:
 	stosb
 
 l0800_929F:
 	dec	si
-	jg	9284
+	jg	9284h
 
 l0800_92A2:
-	test	byte ptr [bp-01],01
-	jnz	92AB
+	test	byte ptr [bp-1h],1h
+	jnz	92ABh
 
 l0800_92A8:
-	inc	word ptr [bp-04]
+	inc	word ptr [bp-4h]
 
 l0800_92AB:
-	jmp	8FC8
+	jmp	8FC8h
 
 l0800_92AE:
-	jmp	93A6
+	jmp	93A6h
 
 l0800_92B1:
 	push	es
@@ -20156,8 +20156,8 @@ l0800_92B1:
 	cld
 	push	ss
 	pop	es
-	lea	di,[bp-2A]
-	mov	cx,0010
+	lea	di,[bp-2Ah]
+	mov	cx,10h
 
 l0800_92BD:
 	rep stosw
@@ -20165,167 +20165,167 @@ l0800_92BD:
 l0800_92BF:
 	pop	es
 	lodsb
-	and	byte ptr [bp-01],EF
-	cmp	al,5E
-	jnz	92D0
+	and	byte ptr [bp-1h],0EFh
+	cmp	al,5Eh
+	jnz	92D0h
 
 l0800_92CA:
-	or	byte ptr [bp-01],10
+	or	byte ptr [bp-1h],10h
 	lodsb
 
 l0800_92D0:
-	mov	ah,00
+	mov	ah,0h
 
 l0800_92D2:
 	mov	dl,al
 	mov	di,ax
-	mov	cl,03
+	mov	cl,3h
 	shr	di,cl
-	mov	cx,0107
+	mov	cx,107h
 	and	cl,dl
 	shl	ch,cl
-	or	[bp+di-2A],ch
+	or	[bp+di-2Ah],ch
 
 l0800_92E4:
 	lodsb
-	cmp	al,00
-	jz	9313
+	cmp	al,0h
+	jz	9313h
 
 l0800_92EA:
-	cmp	al,5D
-	jz	9316
+	cmp	al,5Dh
+	jz	9316h
 
 l0800_92EE:
-	cmp	al,2D
-	jnz	92D2
+	cmp	al,2Dh
+	jnz	92D2h
 
 l0800_92F2:
 	cmp	dl,es:[si]
-	ja	92D2
+	ja	92D2h
 
 l0800_92F7:
-	cmp	byte ptr es:[si],5D
-	jz	92D2
+	cmp	byte ptr es:[si],5Dh
+	jz	92D2h
 
 l0800_92FD:
 	lodsb
 	sub	al,dl
-	jz	92E4
+	jz	92E4h
 
 l0800_9303:
 	add	dl,al
 
 l0800_9305:
-	rol	ch,01
-	adc	di,00
-	or	[bp+di-2A],ch
+	rol	ch,1h
+	adc	di,0h
+	or	[bp+di-2Ah],ch
 	dec	al
-	jnz	9305
+	jnz	9305h
 
 l0800_9311:
-	jmp	92E4
+	jmp	92E4h
 
 l0800_9313:
-	jmp	93BE
+	jmp	93BEh
 
 l0800_9316:
-	mov	[bp+0C],si
-	and	word ptr [bp-0A],7FFF
-	mov	si,[bp-0A]
-	test	byte ptr [bp-01],01
-	jnz	932A
+	mov	[bp+0Ch],si
+	and	word ptr [bp-0Ah],7FFFh
+	mov	si,[bp-0Ah]
+	test	byte ptr [bp-1h],1h
+	jnz	932Ah
 
 l0800_9327:
-	call	8FAB
+	call	8FABh
 
 l0800_932A:
 	dec	si
-	jl	9385
+	jl	9385h
 
 l0800_932D:
-	inc	word ptr [bp-06]
+	inc	word ptr [bp-6h]
 	push	es
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	call	word ptr [bp+04]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	call	word ptr [bp+4h]
 	pop	cx
 	pop	cx
 	pop	es
 	or	ax,ax
-	jl	9394
+	jl	9394h
 
 l0800_9341:
 	xchg	si,ax
 	mov	bx,si
-	mov	cl,03
+	mov	cl,3h
 	shr	si,cl
-	mov	cx,0107
+	mov	cx,107h
 	and	cl,bl
 	shl	ch,cl
-	test	[bp+si-2A],ch
+	test	[bp+si-2Ah],ch
 	xchg	si,ax
 	xchg	bx,ax
-	jz	935E
+	jz	935Eh
 
 l0800_9356:
-	test	byte ptr [bp-01],10
-	jz	9364
+	test	byte ptr [bp-1h],10h
+	jz	9364h
 
 l0800_935C:
-	jmp	936D
+	jmp	936Dh
 
 l0800_935E:
-	test	byte ptr [bp-01],10
-	jz	936D
+	test	byte ptr [bp-1h],10h
+	jz	936Dh
 
 l0800_9364:
-	test	byte ptr [bp-01],01
-	jnz	932A
+	test	byte ptr [bp-1h],1h
+	jnz	932Ah
 
 l0800_936A:
 	stosb
-	jmp	932A
+	jmp	932Ah
 
 l0800_936D:
 	push	es
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
 	push	ax
-	call	word ptr [bp+06]
-	add	sp,06
+	call	word ptr [bp+6h]
+	add	sp,6h
 	pop	es
-	dec	word ptr [bp-06]
+	dec	word ptr [bp-6h]
 	inc	si
-	cmp	si,[bp-0A]
-	jge	938E
+	cmp	si,[bp-0Ah]
+	jge	938Eh
 
 l0800_9385:
-	test	byte ptr [bp-01],01
-	jnz	9391
+	test	byte ptr [bp-1h],1h
+	jnz	9391h
 
 l0800_938B:
-	inc	word ptr [bp-04]
+	inc	word ptr [bp-4h]
 
 l0800_938E:
-	mov	al,00
+	mov	al,0h
 	stosb
 
 l0800_9391:
-	jmp	8FC8
+	jmp	8FC8h
 
 l0800_9394:
 	inc	si
-	cmp	si,[bp-0A]
-	jge	93A6
+	cmp	si,[bp-0Ah]
+	jge	93A6h
 
 l0800_939A:
-	test	byte ptr [bp-01],01
-	jnz	93A6
+	test	byte ptr [bp-1h],1h
+	jnz	93A6h
 
 l0800_93A0:
-	mov	al,00
+	mov	al,0h
 	stosb
-	inc	word ptr [bp-04]
+	inc	word ptr [bp-4h]
 
 ;; fn0800_93A6: 0800:93A6
 ;;   Called from:
@@ -20346,14 +20346,14 @@ l0800_93A0:
 ;;     0800:93ED (in fn0800_93C5)
 ;;     0800:9450 (in fn0800_93EF)
 fn0800_93A6 proc
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	mov	ax,FFFF
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	mov	ax,0FFFFh
 	push	ax
-	call	word ptr [bp+06]
-	add	sp,06
-	cmp	word ptr [bp-04],01
-	sbb	word ptr [bp-04],00
+	call	word ptr [bp+6h]
+	add	sp,6h
+	cmp	word ptr [bp-4h],1h
+	sbb	word ptr [bp-4h],0h
 
 ;; fn0800_93BE: 0800:93BE
 ;;   Called from:
@@ -20363,44 +20363,44 @@ fn0800_93A6 proc
 ;;     0800:93BA (in fn0800_93A6)
 fn0800_93BE proc
 	pop	es
-	mov	ax,[bp-04]
-	jmp	9453
+	mov	ax,[bp-4h]
+	jmp	9453h
 
 ;; fn0800_93C5: 0800:93C5
 ;;   Called from:
 ;;     0800:912A (in fn0800_912A)
 ;;     0800:920E (in fn0800_920E)
 fn0800_93C5 proc
-	inc	word ptr [bp-06]
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	call	word ptr [bp+04]
+	inc	word ptr [bp-6h]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	call	word ptr [bp+4h]
 	pop	cx
 	pop	cx
 	or	ax,ax
-	jle	93EA
+	jle	93EAh
 
 l0800_93D7:
 	or	al,al
-	js	93E4
+	js	93E4h
 
 l0800_93DB:
 	xchg	bx,ax
-	cmp	byte ptr [bx+257C],01
+	cmp	byte ptr [bx+257Ch],1h
 	xchg	bx,ax
-	jz	93C5
+	jz	93C5h
 
 l0800_93E4:
 	pop	cx
-	add	cx,03
+	add	cx,3h
 	jmp	cx
 
 l0800_93EA:
-	jz	93E4
+	jz	93E4h
 
 l0800_93EC:
 	pop	cx
-	jmp	93A6
+	jmp	93A6h
 
 ;; fn0800_93EF: 0800:93EF
 ;;   Called from:
@@ -20408,81 +20408,81 @@ l0800_93EC:
 ;;     0800:9169 (in fn0800_9169)
 fn0800_93EF proc
 	sub	dx,dx
-	mov	cx,0004
+	mov	cx,4h
 
 l0800_93F4:
-	dec	word ptr [bp-0A]
-	jl	9442
+	dec	word ptr [bp-0Ah]
+	jl	9442h
 
 l0800_93F9:
 	push	dx
 	push	cx
-	inc	word ptr [bp-06]
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	call	word ptr [bp+04]
+	inc	word ptr [bp-6h]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	call	word ptr [bp+4h]
 	pop	cx
 	pop	cx
 	pop	cx
 	pop	dx
 	or	ax,ax
-	jle	9444
+	jle	9444h
 
 l0800_940F:
 	dec	cl
-	jl	9444
+	jl	9444h
 
 l0800_9413:
 	mov	ch,al
-	sub	ch,30
-	jc	9444
+	sub	ch,30h
+	jc	9444h
 
 l0800_941A:
-	cmp	ch,0A
-	jc	9436
+	cmp	ch,0Ah
+	jc	9436h
 
 l0800_941F:
-	sub	ch,11
-	jc	9444
+	sub	ch,11h
+	jc	9444h
 
 l0800_9424:
-	cmp	ch,06
-	jc	9433
+	cmp	ch,6h
+	jc	9433h
 
 l0800_9429:
-	sub	ch,20
-	jc	9444
+	sub	ch,20h
+	jc	9444h
 
 l0800_942E:
-	cmp	ch,06
-	jnc	9444
+	cmp	ch,6h
+	jnc	9444h
 
 l0800_9433:
-	add	ch,0A
+	add	ch,0Ah
 
 l0800_9436:
-	shl	dx,01
-	shl	dx,01
-	shl	dx,01
-	shl	dx,01
+	shl	dx,1h
+	shl	dx,1h
+	shl	dx,1h
+	shl	dx,1h
 	add	dl,ch
-	jmp	93F4
+	jmp	93F4h
 
 l0800_9442:
 	sub	ax,ax
 
 l0800_9444:
-	cmp	cl,04
-	jz	944F
+	cmp	cl,4h
+	jz	944Fh
 
 l0800_9449:
 	pop	cx
-	add	cx,03
+	add	cx,3h
 	jmp	cx
 
 l0800_944F:
 	pop	cx
-	jmp	93A6
+	jmp	93A6h
 
 l0800_9453:
 	pop	di
@@ -20520,38 +20520,38 @@ l0800_9483	dw	0x90AA
 ;;     0800:95FC (in fn0800_94B0)
 fn0800_9485 proc
 	push	bx
-	sub	bl,30
-	jc	94AD
+	sub	bl,30h
+	jc	94ADh
 
 l0800_948B:
-	cmp	bl,09
-	jbe	94A2
+	cmp	bl,9h
+	jbe	94A2h
 
 l0800_9490:
-	cmp	bl,2A
-	ja	949A
+	cmp	bl,2Ah
+	ja	949Ah
 
 l0800_9495:
-	sub	bl,07
-	jmp	949D
+	sub	bl,7h
+	jmp	949Dh
 
 l0800_949A:
-	sub	bl,27
+	sub	bl,27h
 
 l0800_949D:
-	cmp	bl,09
-	jbe	94AD
+	cmp	bl,9h
+	jbe	94ADh
 
 l0800_94A2:
 	cmp	bl,cl
-	jnc	94AD
+	jnc	94ADh
 
 l0800_94A6:
 	inc	sp
 	inc	sp
 	clc
-	mov	bh,00
-	jmp	94AF
+	mov	bh,0h
+	jmp	94AFh
 
 l0800_94AD:
 	pop	bx
@@ -20566,197 +20566,197 @@ l0800_94AF:
 fn0800_94B0 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,06
+	sub	sp,6h
 	push	si
 	push	di
-	mov	byte ptr [bp-01],00
-	mov	word ptr [bp-04],0000
-	mov	word ptr [bp-06],0001
+	mov	byte ptr [bp-1h],0h
+	mov	word ptr [bp-4h],0h
+	mov	word ptr [bp-6h],1h
 
 l0800_94C6:
-	inc	word ptr [bp-04]
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	call	word ptr [bp+04]
+	inc	word ptr [bp-4h]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	call	word ptr [bp+4h]
 	pop	cx
 	pop	cx
 	or	ax,ax
-	jl	9549
+	jl	9549h
 
 l0800_94D8:
 	cbw
 	xchg	bx,ax
-	test	bl,80
-	jnz	94E7
+	test	bl,80h
+	jnz	94E7h
 
 l0800_94DF:
-	mov	di,2251
-	test	byte ptr [bx+di],01
-	jnz	94C6
+	mov	di,2251h
+	test	byte ptr [bx+di],1h
+	jnz	94C6h
 
 l0800_94E7:
 	xchg	bx,ax
-	dec	word ptr [bp+0E]
-	jl	9550
+	dec	word ptr [bp+0Eh]
+	jl	9550h
 
 l0800_94ED:
-	cmp	al,2B
-	jz	94F8
+	cmp	al,2Bh
+	jz	94F8h
 
 l0800_94F1:
-	cmp	al,2D
-	jnz	950F
+	cmp	al,2Dh
+	jnz	950Fh
 
 l0800_94F5:
-	inc	byte ptr [bp-01]
+	inc	byte ptr [bp-1h]
 
 l0800_94F8:
-	dec	word ptr [bp+0E]
-	jl	9550
+	dec	word ptr [bp+0Eh]
+	jl	9550h
 
 l0800_94FD:
-	inc	word ptr [bp-04]
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	call	word ptr [bp+04]
+	inc	word ptr [bp-4h]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	call	word ptr [bp+4h]
 	pop	cx
 	pop	cx
 	or	ax,ax
-	jl	9549
+	jl	9549h
 
 l0800_950F:
 	sub	si,si
 	mov	di,si
-	mov	cx,[bp+0C]
-	jcxz	956E
+	mov	cx,[bp+0Ch]
+	jcxz	956Eh
 
 l0800_9518:
-	cmp	cx,24
-	ja	9550
+	cmp	cx,24h
+	ja	9550h
 
 l0800_951D:
-	cmp	cl,02
-	jc	9550
+	cmp	cl,2h
+	jc	9550h
 
 l0800_9522:
-	cmp	al,30
-	jnz	959E
+	cmp	al,30h
+	jnz	959Eh
 
 l0800_9526:
-	cmp	cl,10
-	jnz	959C
+	cmp	cl,10h
+	jnz	959Ch
 
 l0800_952B:
-	dec	word ptr [bp+0E]
-	jl	956B
+	dec	word ptr [bp+0Eh]
+	jl	956Bh
 
 l0800_9530:
-	inc	word ptr [bp-04]
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	call	word ptr [bp+04]
+	inc	word ptr [bp-4h]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	call	word ptr [bp+4h]
 	pop	cx
 	pop	cx
-	cmp	al,78
-	jz	959C
+	cmp	al,78h
+	jz	959Ch
 
 l0800_9542:
-	cmp	al,58
-	jz	959C
+	cmp	al,58h
+	jz	959Ch
 
 l0800_9546:
-	jmp	95C8
+	jmp	95C8h
 
 l0800_9549:
-	mov	word ptr [bp-06],FFFF
-	jmp	9555
+	mov	word ptr [bp-6h],0FFFFh
+	jmp	9555h
 
 l0800_9550:
-	mov	word ptr [bp-06],0000
+	mov	word ptr [bp-6h],0h
 
 l0800_9555:
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
 	push	ax
-	call	word ptr [bp+06]
-	add	sp,06
-	dec	word ptr [bp-04]
+	call	word ptr [bp+6h]
+	add	sp,6h
+	dec	word ptr [bp-4h]
 	sub	ax,ax
 	cwd
-	jmp	9622
+	jmp	9622h
 
 l0800_956B:
-	jmp	9612
+	jmp	9612h
 
 l0800_956E:
-	cmp	al,30
-	mov	word ptr [bp+0C],000A
-	jnz	959E
+	cmp	al,30h
+	mov	word ptr [bp+0Ch],0Ah
+	jnz	959Eh
 
 l0800_9577:
-	dec	word ptr [bp+0E]
-	jl	956B
+	dec	word ptr [bp+0Eh]
+	jl	956Bh
 
 l0800_957C:
-	inc	word ptr [bp-04]
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	call	word ptr [bp+04]
+	inc	word ptr [bp-4h]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	call	word ptr [bp+4h]
 	pop	cx
 	pop	cx
-	mov	word ptr [bp+0C],0008
-	cmp	al,78
-	jz	9597
+	mov	word ptr [bp+0Ch],8h
+	cmp	al,78h
+	jz	9597h
 
 l0800_9593:
-	cmp	al,58
-	jnz	95C8
+	cmp	al,58h
+	jnz	95C8h
 
 l0800_9597:
-	mov	word ptr [bp+0C],0010
+	mov	word ptr [bp+0Ch],10h
 
 l0800_959C:
-	jmp	95B5
+	jmp	95B5h
 
 l0800_959E:
-	mov	cx,[bp+0C]
+	mov	cx,[bp+0Ch]
 	xchg	bx,ax
-	call	9485
+	call	9485h
 	xchg	bx,ax
-	jc	9550
+	jc	9550h
 
 l0800_95A8:
 	xchg	si,ax
-	jmp	95B5
+	jmp	95B5h
 
 l0800_95AB:
 	xchg	si,ax
-	mul	word ptr [bp+0C]
+	mul	word ptr [bp+0Ch]
 	add	si,ax
 	adc	di,dx
-	jnz	95E5
+	jnz	95E5h
 
 l0800_95B5:
-	dec	word ptr [bp+0E]
-	jl	9612
+	dec	word ptr [bp+0Eh]
+	jl	9612h
 
 l0800_95BA:
-	inc	word ptr [bp-04]
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	call	word ptr [bp+04]
+	inc	word ptr [bp-4h]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	call	word ptr [bp+4h]
 	pop	cx
 	pop	cx
 
 l0800_95C8:
-	mov	cx,[bp+0C]
+	mov	cx,[bp+0Ch]
 	xchg	bx,ax
-	call	9485
+	call	9485h
 	xchg	bx,ax
-	jnc	95AB
+	jnc	95ABh
 
 l0800_95D2:
-	jmp	9602
+	jmp	9602h
 
 l0800_95D4:
 	xchg	si,ax
@@ -20768,61 +20768,61 @@ l0800_95D4:
 	adc	ax,cx
 	xchg	di,ax
 	adc	dl,dh
-	jnz	9636
+	jnz	9636h
 
 l0800_95E5:
-	dec	word ptr [bp+0E]
-	jl	9612
+	dec	word ptr [bp+0Eh]
+	jl	9612h
 
 l0800_95EA:
-	inc	word ptr [bp-04]
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	call	word ptr [bp+04]
+	inc	word ptr [bp-4h]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	call	word ptr [bp+4h]
 	pop	cx
 	pop	cx
-	mov	cx,[bp+0C]
+	mov	cx,[bp+0Ch]
 	xchg	bx,ax
-	call	9485
+	call	9485h
 	xchg	bx,ax
-	jnc	95D4
+	jnc	95D4h
 
 l0800_9602:
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
 	push	ax
-	call	word ptr [bp+06]
-	add	sp,06
-	dec	word ptr [bp-04]
+	call	word ptr [bp+6h]
+	add	sp,6h
+	dec	word ptr [bp-4h]
 
 l0800_9612:
 	mov	dx,di
 	xchg	si,ax
-	cmp	byte ptr [bp-01],00
-	jz	9622
+	cmp	byte ptr [bp-1h],0h
+	jz	9622h
 
 l0800_961B:
 	neg	dx
 	neg	ax
-	sbb	dx,00
+	sbb	dx,0h
 
 l0800_9622:
-	les	di,[bp+10]
-	mov	bx,[bp-04]
+	les	di,[bp+10h]
+	mov	bx,[bp-4h]
 	add	es:[di],bx
-	les	di,[bp+14]
-	mov	bx,[bp-06]
+	les	di,[bp+14h]
+	mov	bx,[bp-6h]
 	mov	es:[di],bx
-	jmp	964C
+	jmp	964Ch
 
 l0800_9636:
-	mov	ax,FFFF
-	mov	dx,7FFF
-	add	al,[bp-01]
-	adc	ah,00
-	adc	dx,00
-	mov	word ptr [bp-06],0002
-	jmp	9622
+	mov	ax,0FFFFh
+	mov	dx,7FFFh
+	add	al,[bp-1h]
+	adc	ah,0h
+	adc	dx,0h
+	mov	word ptr [bp-6h],2h
+	jmp	9622h
 
 l0800_964C:
 	pop	di
@@ -20836,11 +20836,11 @@ fn0800_9652 proc
 	push	bp
 	mov	bp,sp
 	push	si
-	mov	ah,2B
-	les	si,[bp+04]
+	mov	ah,2Bh
+	les	si,[bp+4h]
 	mov	cx,es:[si]
-	mov	dx,es:[si+02]
-	int	21
+	mov	dx,es:[si+2h]
+	int	21h
 	pop	si
 	pop	bp
 	ret
@@ -20850,11 +20850,11 @@ fn0800_9667 proc
 	push	bp
 	mov	bp,sp
 	push	si
-	mov	ah,2D
-	les	si,[bp+04]
+	mov	ah,2Dh
+	les	si,[bp+4h]
 	mov	cx,es:[si]
-	mov	dx,es:[si+02]
-	int	21
+	mov	dx,es:[si+2h]
+	int	21h
 	pop	si
 	pop	bp
 	ret
@@ -20882,43 +20882,43 @@ fn0800_9667 proc
 fn0800_9764 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,0C
+	sub	sp,0Ch
 	push	ss
-	lea	ax,[bp-04]
+	lea	ax,[bp-4h]
 	push	ax
-	call	8B95
+	call	8B95h
 	pop	cx
 	pop	cx
 	push	ss
-	lea	ax,[bp-08]
+	lea	ax,[bp-8h]
 	push	ax
-	call	8BA8
+	call	8BA8h
 	pop	cx
 	pop	cx
 	push	ss
-	lea	ax,[bp-08]
+	lea	ax,[bp-8h]
 	push	ax
 	push	ss
-	lea	ax,[bp-04]
+	lea	ax,[bp-4h]
 	push	ax
-	call	C04F
-	add	sp,08
-	mov	[bp-0A],dx
-	mov	[bp-0C],ax
-	mov	ax,[bp+04]
-	or	ax,[bp+06]
-	jz	97AC
+	call	0C04Fh
+	add	sp,8h
+	mov	[bp-0Ah],dx
+	mov	[bp-0Ch],ax
+	mov	ax,[bp+4h]
+	or	ax,[bp+6h]
+	jz	97ACh
 
 l0800_979C:
-	les	bx,[bp+04]
-	mov	ax,[bp-0A]
-	mov	dx,[bp-0C]
-	mov	es:[bx+02],ax
+	les	bx,[bp+4h]
+	mov	ax,[bp-0Ah]
+	mov	dx,[bp-0Ch]
+	mov	es:[bx+2h],ax
 	mov	es:[bx],dx
 
 l0800_97AC:
-	mov	dx,[bp-0A]
-	mov	ax,[bp-0C]
+	mov	dx,[bp-0Ah]
+	mov	ax,[bp-0Ch]
 	mov	sp,bp
 	pop	bp
 	ret
@@ -20929,14 +20929,14 @@ l0800_97AC:
 fn0800_97B6 proc
 	push	bp
 	mov	bp,sp
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
 	xor	ax,ax
 	push	ax
 	push	ax
-	push	word ptr [bp+04]
-	call	8E29
-	add	sp,08
+	push	word ptr [bp+4h]
+	call	8E29h
+	add	sp,8h
 	pop	bp
 	ret
 
@@ -20947,30 +20947,30 @@ fn0800_97B6 proc
 fn0800_97CC proc
 	push	bp
 	mov	bp,sp
-	mov	dx,[bp+04]
-	cmp	dx,FF
-	jnz	97DC
+	mov	dx,[bp+4h]
+	cmp	dx,0FFh
+	jnz	97DCh
 
 l0800_97D7:
-	mov	ax,FFFF
-	jmp	97F6
+	mov	ax,0FFFFh
+	jmp	97F6h
 
 l0800_97DC:
 	mov	al,dl
-	mov	ah,00
+	mov	ah,0h
 	mov	bx,ax
-	test	byte ptr [bx+2251],08
-	jz	97F2
+	test	byte ptr [bx+2251h],8h
+	jz	97F2h
 
 l0800_97E9:
 	mov	al,dl
-	mov	ah,00
-	add	ax,FFE0
-	jmp	97F6
+	mov	ah,0h
+	add	ax,0FFE0h
+	jmp	97F6h
 
 l0800_97F2:
 	mov	al,dl
-	mov	ah,00
+	mov	ah,0h
 
 l0800_97F6:
 	pop	bp
@@ -20983,19 +20983,19 @@ fn0800_97F8 proc
 	push	bp
 	mov	bp,sp
 	push	ds
-	mov	ah,41
-	lds	dx,[bp+04]
-	int	21
+	mov	ah,41h
+	lds	dx,[bp+4h]
+	int	21h
 	pop	ds
-	jc	980A
+	jc	980Ah
 
 l0800_9806:
 	xor	ax,ax
-	jmp	980E
+	jmp	980Eh
 
 l0800_980A:
 	push	ax
-	call	8D2B
+	call	8D2Bh
 
 l0800_980E:
 	pop	bp
@@ -21007,7 +21007,7 @@ l0800_980E:
 ;;     0800:9A83 (in fn0800_9828)
 fn0800_9810 proc
 	mov	al,dh
-	call	9817
+	call	9817h
 	mov	al,dl
 
 ;; fn0800_9817: 0800:9817
@@ -21015,9 +21015,9 @@ fn0800_9810 proc
 ;;     0800:9812 (in fn0800_9810)
 ;;     0800:9815 (in fn0800_9810)
 fn0800_9817 proc
-	aam	10
+	aam	10h
 	xchg	al,ah
-	call	9820
+	call	9820h
 	xchg	al,ah
 
 ;; fn0800_9820: 0800:9820
@@ -21025,9 +21025,9 @@ fn0800_9817 proc
 ;;     0800:981B (in fn0800_9817)
 ;;     0800:981E (in fn0800_9817)
 fn0800_9820 proc
-	add	al,90
+	add	al,90h
 	daa
-	adc	al,40
+	adc	al,40h
 	daa
 	stosb
 	ret
@@ -21039,13 +21039,13 @@ fn0800_9820 proc
 fn0800_9828 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,0096
+	sub	sp,96h
 	push	si
 	push	di
-	mov	word ptr [bp-12],0000
-	mov	word ptr [bp-14],0050
-	mov	word ptr [bp-16],0000
-	jmp	988C
+	mov	word ptr [bp-12h],0h
+	mov	word ptr [bp-14h],50h
+	mov	word ptr [bp-16h],0h
+	jmp	988Ch
 
 ;; fn0800_9842: 0800:9842
 ;;   Called from:
@@ -21054,7 +21054,7 @@ fn0800_9828 proc
 ;;     0800:9B86 (in fn0800_9828)
 fn0800_9842 proc
 	push	di
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 	xor	al,al
 
 l0800_9848:
@@ -21078,8 +21078,8 @@ l0800_984A:
 fn0800_984F proc
 	mov	ss:[di],al
 	inc	di
-	dec	byte ptr [bp-14]
-	jnz	988B
+	dec	byte ptr [bp-14h]
+	jnz	988Bh
 
 ;; fn0800_9858: 0800:9858
 ;;   Called from:
@@ -21092,25 +21092,25 @@ fn0800_9858 proc
 	push	cx
 	push	dx
 	push	es
-	lea	ax,[bp+FF6A]
+	lea	ax,[bp+0FF6Ah]
 	sub	di,ax
 	push	ss
-	lea	ax,[bp+FF6A]
+	lea	ax,[bp+0FF6Ah]
 	push	ax
 	push	di
-	push	word ptr [bp+0C]
-	push	word ptr [bp+0A]
-	call	word ptr [bp+0E]
+	push	word ptr [bp+0Ch]
+	push	word ptr [bp+0Ah]
+	call	word ptr [bp+0Eh]
 	or	ax,ax
-	jnz	987B
+	jnz	987Bh
 
 l0800_9876:
-	mov	word ptr [bp-16],0001
+	mov	word ptr [bp-16h],1h
 
 l0800_987B:
-	mov	word ptr [bp-14],0050
-	add	[bp-12],di
-	lea	di,[bp+FF6A]
+	mov	word ptr [bp-14h],50h
+	add	[bp-12h],di
+	lea	di,[bp+0FF6Ah]
 	pop	es
 	pop	dx
 	pop	cx
@@ -21122,52 +21122,52 @@ l0800_988B:
 l0800_988C:
 	push	es
 	cld
-	lea	di,[bp+FF6A]
-	mov	[bp-04],di
+	lea	di,[bp+0FF6Ah]
+	mov	[bp-4h],di
 
 l0800_9895:
-	mov	di,[bp-04]
+	mov	di,[bp-4h]
 
 l0800_9898:
-	les	si,[bp+06]
+	les	si,[bp+6h]
 
 l0800_989B:
 	lodsb
 	or	al,al
-	jz	98B3
+	jz	98B3h
 
 l0800_98A1:
-	cmp	al,25
-	jz	98B6
+	cmp	al,25h
+	jz	98B6h
 
 l0800_98A5:
 	mov	ss:[di],al
 	inc	di
-	dec	byte ptr [bp-14]
-	jg	989B
+	dec	byte ptr [bp-14h]
+	jg	989Bh
 
 l0800_98AE:
-	call	9858
-	jmp	989B
+	call	9858h
+	jmp	989Bh
 
 l0800_98B3:
-	jmp	9C96
+	jmp	9C96h
 
 l0800_98B6:
-	mov	[bp-10],si
+	mov	[bp-10h],si
 	lodsb
-	cmp	al,25
-	jz	98A5
+	cmp	al,25h
+	jz	98A5h
 
 l0800_98BF:
-	mov	[bp-04],di
+	mov	[bp-4h],di
 	xor	cx,cx
-	mov	[bp-0E],cx
-	mov	word ptr [bp-02],0020
-	mov	[bp-0B],cl
-	mov	word ptr [bp-08],FFFF
-	mov	word ptr [bp-0A],FFFF
-	jmp	98DD
+	mov	[bp-0Eh],cx
+	mov	word ptr [bp-2h],20h
+	mov	[bp-0Bh],cl
+	mov	word ptr [bp-8h],0FFFFh
+	mov	word ptr [bp-0Ah],0FFFFh
+	jmp	98DDh
 
 l0800_98DB:
 	lodsb
@@ -21176,211 +21176,211 @@ l0800_98DD:
 	xor	ah,ah
 	mov	dx,ax
 	mov	bx,ax
-	sub	bl,20
-	cmp	bl,60
-	jnc	98FE
+	sub	bl,20h
+	cmp	bl,60h
+	jnc	98FEh
 
 l0800_98EB:
-	mov	bl,[bx+2605]
-	cmp	bx,17
-	jbe	98F7
+	mov	bl,[bx+2605h]
+	cmp	bx,17h
+	jbe	98F7h
 
 l0800_98F4:
-	jmp	9C82
+	jmp	9C82h
 
 l0800_98F7:
-	shl	bx,01
-	jmp	word ptr cs:[bx+9CB6]
+	shl	bx,1h
+	jmp	word ptr cs:[bx+9CB6h]
 
 l0800_98FE:
-	jmp	9C82
+	jmp	9C82h
 
 l0800_9901:
-	cmp	ch,00
-	ja	98FE
+	cmp	ch,0h
+	ja	98FEh
 
 l0800_9906:
-	or	word ptr [bp-02],01
-	jmp	98DB
+	or	word ptr [bp-2h],1h
+	jmp	98DBh
 
 l0800_990C:
-	cmp	ch,00
-	ja	98FE
+	cmp	ch,0h
+	ja	98FEh
 
 l0800_9911:
-	or	word ptr [bp-02],02
-	jmp	98DB
+	or	word ptr [bp-2h],2h
+	jmp	98DBh
 
 l0800_9917:
-	cmp	ch,00
-	ja	98FE
+	cmp	ch,0h
+	ja	98FEh
 
 l0800_991C:
-	cmp	byte ptr [bp-0B],2B
-	jz	9925
+	cmp	byte ptr [bp-0Bh],2Bh
+	jz	9925h
 
 l0800_9922:
-	mov	[bp-0B],dl
+	mov	[bp-0Bh],dl
 
 l0800_9925:
-	jmp	98DB
+	jmp	98DBh
 
 l0800_9927:
-	and	word ptr [bp-02],DF
-	jmp	9931
+	and	word ptr [bp-2h],0DFh
+	jmp	9931h
 
 l0800_992D:
-	or	word ptr [bp-02],20
+	or	word ptr [bp-2h],20h
 
 l0800_9931:
-	mov	ch,05
-	jmp	98DB
+	mov	ch,5h
+	jmp	98DBh
 
 l0800_9935:
-	cmp	ch,00
-	ja	9987
+	cmp	ch,0h
+	ja	9987h
 
 l0800_993A:
-	test	word ptr [bp-02],0002
-	jnz	996A
+	test	word ptr [bp-2h],2h
+	jnz	996Ah
 
 l0800_9941:
-	or	word ptr [bp-02],08
-	mov	ch,01
-	jmp	98DB
+	or	word ptr [bp-2h],8h
+	mov	ch,1h
+	jmp	98DBh
 
 l0800_9949:
-	jmp	9C82
+	jmp	9C82h
 
 l0800_994C:
-	mov	di,[bp+04]
+	mov	di,[bp+4h]
 	mov	ax,ss:[di]
-	add	word ptr [bp+04],02
-	cmp	ch,02
-	jnc	996D
+	add	word ptr [bp+4h],2h
+	cmp	ch,2h
+	jnc	996Dh
 
 l0800_995B:
 	or	ax,ax
-	jns	9965
+	jns	9965h
 
 l0800_995F:
 	neg	ax
-	or	word ptr [bp-02],02
+	or	word ptr [bp-2h],2h
 
 l0800_9965:
-	mov	[bp-08],ax
-	mov	ch,03
+	mov	[bp-8h],ax
+	mov	ch,3h
 
 l0800_996A:
-	jmp	98DB
+	jmp	98DBh
 
 l0800_996D:
-	cmp	ch,04
-	jnz	9949
+	cmp	ch,4h
+	jnz	9949h
 
 l0800_9972:
-	mov	[bp-0A],ax
+	mov	[bp-0Ah],ax
 	inc	ch
-	jmp	98DB
+	jmp	98DBh
 
 l0800_997A:
-	cmp	ch,04
-	jnc	9949
+	cmp	ch,4h
+	jnc	9949h
 
 l0800_997F:
-	mov	ch,04
-	inc	word ptr [bp-0A]
-	jmp	98DB
+	mov	ch,4h
+	inc	word ptr [bp-0Ah]
+	jmp	98DBh
 
 l0800_9987:
 	xchg	dx,ax
-	sub	al,30
+	sub	al,30h
 	cbw
-	cmp	ch,02
-	ja	99A9
+	cmp	ch,2h
+	ja	99A9h
 
 l0800_9990:
-	mov	ch,02
-	xchg	[bp-08],ax
+	mov	ch,2h
+	xchg	[bp-8h],ax
 	or	ax,ax
-	jl	996A
+	jl	996Ah
 
 l0800_9999:
-	shl	ax,01
+	shl	ax,1h
 	mov	dx,ax
-	shl	ax,01
-	shl	ax,01
+	shl	ax,1h
+	shl	ax,1h
 	add	ax,dx
-	add	[bp-08],ax
-	jmp	98DB
+	add	[bp-8h],ax
+	jmp	98DBh
 
 l0800_99A9:
-	cmp	ch,04
-	jnz	9949
+	cmp	ch,4h
+	jnz	9949h
 
 l0800_99AE:
-	xchg	[bp-0A],ax
+	xchg	[bp-0Ah],ax
 	or	ax,ax
-	jz	996A
+	jz	996Ah
 
 l0800_99B5:
-	shl	ax,01
+	shl	ax,1h
 	mov	dx,ax
-	shl	ax,01
-	shl	ax,01
+	shl	ax,1h
+	shl	ax,1h
 	add	ax,dx
-	add	[bp-0A],ax
-	jmp	98DB
+	add	[bp-0Ah],ax
+	jmp	98DBh
 
 l0800_99C5:
-	or	word ptr [bp-02],10
-	jmp	9931
+	or	word ptr [bp-2h],10h
+	jmp	9931h
 
 l0800_99CC:
-	or	word ptr [bp-02],0100
+	or	word ptr [bp-2h],100h
 
 l0800_99D1:
-	and	word ptr [bp-02],EF
-	jmp	9931
+	and	word ptr [bp-2h],0EFh
+	jmp	9931h
 
 l0800_99D8:
-	mov	bh,08
-	jmp	99E6
+	mov	bh,8h
+	jmp	99E6h
 
 l0800_99DC:
-	mov	bh,0A
-	jmp	99EA
+	mov	bh,0Ah
+	jmp	99EAh
 
 l0800_99E0:
-	mov	bh,10
-	mov	bl,E9
+	mov	bh,10h
+	mov	bl,0E9h
 	add	bl,dl
 
 l0800_99E6:
-	mov	byte ptr [bp-0B],00
+	mov	byte ptr [bp-0Bh],0h
 
 l0800_99EA:
-	mov	[bp-05],dl
+	mov	[bp-5h],dl
 	xor	dx,dx
-	mov	[bp-06],dl
-	mov	di,[bp+04]
+	mov	[bp-6h],dl
+	mov	di,[bp+4h]
 	mov	ax,ss:[di]
-	jmp	9A0A
+	jmp	9A0Ah
 
 l0800_99FA:
-	mov	bh,0A
-	mov	byte ptr [bp-06],01
-	mov	[bp-05],dl
-	mov	di,[bp+04]
+	mov	bh,0Ah
+	mov	byte ptr [bp-6h],1h
+	mov	[bp-5h],dl
+	mov	di,[bp+4h]
 	mov	ax,ss:[di]
 	cwd
 
 l0800_9A0A:
 	inc	di
 	inc	di
-	mov	[bp+06],si
-	test	word ptr [bp-02],0010
-	jz	9A1B
+	mov	[bp+6h],si
+	test	word ptr [bp-2h],10h
+	jz	9A1Bh
 
 l0800_9A16:
 	mov	dx,ss:[di]
@@ -21388,24 +21388,24 @@ l0800_9A16:
 	inc	di
 
 l0800_9A1B:
-	mov	[bp+04],di
-	lea	di,[bp-45]
+	mov	[bp+4h],di
+	lea	di,[bp-45h]
 	or	ax,ax
-	jnz	9A32
+	jnz	9A32h
 
 l0800_9A25:
 	or	dx,dx
-	jnz	9A32
+	jnz	9A32h
 
 l0800_9A29:
-	cmp	word ptr [bp-0A],00
-	jnz	9A36
+	cmp	word ptr [bp-0Ah],0h
+	jnz	9A36h
 
 l0800_9A2F:
-	jmp	9895
+	jmp	9895h
 
 l0800_9A32:
-	or	word ptr [bp-02],04
+	or	word ptr [bp-2h],4h
 
 l0800_9A36:
 	push	dx
@@ -21415,323 +21415,323 @@ l0800_9A36:
 	mov	al,bh
 	cbw
 	push	ax
-	mov	al,[bp-06]
+	mov	al,[bp-6h]
 	push	ax
 	push	bx
-	call	8D87
+	call	8D87h
 	push	ss
 	pop	es
-	mov	dx,[bp-0A]
+	mov	dx,[bp-0Ah]
 	or	dx,dx
-	jge	9A52
+	jge	9A52h
 
 l0800_9A4F:
-	jmp	9B46
+	jmp	9B46h
 
 l0800_9A52:
-	jmp	9B54
+	jmp	9B54h
 
 l0800_9A55:
-	mov	[bp-05],dl
-	mov	[bp+06],si
-	lea	di,[bp-46]
-	mov	bx,[bp+04]
+	mov	[bp-5h],dl
+	mov	[bp+6h],si
+	lea	di,[bp-46h]
+	mov	bx,[bp+4h]
 	push	word ptr ss:[bx]
 	inc	bx
 	inc	bx
-	mov	[bp+04],bx
-	test	word ptr [bp-02],0020
-	jz	9A80
+	mov	[bp+4h],bx
+	test	word ptr [bp-2h],20h
+	jz	9A80h
 
 l0800_9A70:
 	mov	dx,ss:[bx]
 	inc	bx
 	inc	bx
-	mov	[bp+04],bx
+	mov	[bp+4h],bx
 	push	ss
 	pop	es
-	call	9810
-	mov	al,3A
+	call	9810h
+	mov	al,3Ah
 	stosb
 
 l0800_9A80:
 	push	ss
 	pop	es
 	pop	dx
-	call	9810
-	mov	byte ptr ss:[di],00
-	mov	byte ptr [bp-06],00
-	and	word ptr [bp-02],FB
-	lea	cx,[bp-46]
+	call	9810h
+	mov	byte ptr ss:[di],0h
+	mov	byte ptr [bp-6h],0h
+	and	word ptr [bp-2h],0FBh
+	lea	cx,[bp-46h]
 	sub	di,cx
 	xchg	di,cx
-	mov	dx,[bp-0A]
+	mov	dx,[bp-0Ah]
 	cmp	dx,cx
-	jg	9AA2
+	jg	9AA2h
 
 l0800_9AA0:
 	mov	dx,cx
 
 l0800_9AA2:
-	jmp	9B46
+	jmp	9B46h
 
 l0800_9AA5:
-	mov	[bp+06],si
-	mov	[bp-05],dl
-	mov	di,[bp+04]
+	mov	[bp+6h],si
+	mov	[bp-5h],dl
+	mov	di,[bp+4h]
 	mov	ax,ss:[di]
-	add	word ptr [bp+04],02
+	add	word ptr [bp+4h],2h
 	push	ss
 	pop	es
-	lea	di,[bp-45]
+	lea	di,[bp-45h]
 	xor	ah,ah
 	mov	ss:[di],ax
-	mov	cx,0001
-	jmp	9B89
+	mov	cx,1h
+	jmp	9B89h
 
 l0800_9AC5:
-	mov	[bp+06],si
-	mov	[bp-05],dl
-	mov	di,[bp+04]
-	test	word ptr [bp-02],0020
-	jnz	9AE2
+	mov	[bp+6h],si
+	mov	[bp-5h],dl
+	mov	di,[bp+4h]
+	test	word ptr [bp-2h],20h
+	jnz	9AE2h
 
 l0800_9AD5:
 	mov	di,ss:[di]
-	add	word ptr [bp+04],02
+	add	word ptr [bp+4h],2h
 	push	ds
 	pop	es
 	or	di,di
-	jmp	9AED
+	jmp	9AEDh
 
 l0800_9AE2:
 	les	di,ss:[di]
-	add	word ptr [bp+04],04
+	add	word ptr [bp+4h],4h
 	mov	ax,es
 	or	ax,di
 
 l0800_9AED:
-	jnz	9AF4
+	jnz	9AF4h
 
 l0800_9AEF:
 	push	ds
 	pop	es
-	mov	di,25FE
+	mov	di,25FEh
 
 l0800_9AF4:
-	call	9842
-	cmp	cx,[bp-0A]
-	jbe	9AFF
+	call	9842h
+	cmp	cx,[bp-0Ah]
+	jbe	9AFFh
 
 l0800_9AFC:
-	mov	cx,[bp-0A]
+	mov	cx,[bp-0Ah]
 
 l0800_9AFF:
-	jmp	9B89
+	jmp	9B89h
 
 l0800_9B02:
-	mov	[bp+06],si
-	mov	[bp-05],dl
-	mov	di,[bp+04]
-	mov	cx,[bp-0A]
+	mov	[bp+6h],si
+	mov	[bp-5h],dl
+	mov	di,[bp+4h]
+	mov	cx,[bp-0Ah]
 	or	cx,cx
-	jge	9B15
+	jge	9B15h
 
 l0800_9B12:
-	mov	cx,0006
+	mov	cx,6h
 
 l0800_9B15:
 	push	ss
 	push	di
 	push	cx
 	push	ss
-	lea	bx,[bp-45]
+	lea	bx,[bp-45h]
 	push	bx
 	push	dx
-	mov	ax,0001
-	and	ax,[bp-02]
+	mov	ax,1h
+	and	ax,[bp-2h]
 	push	ax
-	mov	ax,[bp-02]
-	test	ax,0100
-	jz	9B36
+	mov	ax,[bp-2h]
+	test	ax,100h
+	jz	9B36h
 
 l0800_9B2D:
-	mov	ax,0008
-	add	word ptr [bp+04],0A
-	jmp	9B3D
+	mov	ax,8h
+	add	word ptr [bp+4h],0Ah
+	jmp	9B3Dh
 
 l0800_9B36:
-	add	word ptr [bp+04],08
-	mov	ax,0006
+	add	word ptr [bp+4h],8h
+	mov	ax,6h
 
 l0800_9B3D:
 	push	ax
-	call	A2CC
+	call	0A2CCh
 	push	ss
 	pop	es
-	lea	di,[bp-45]
+	lea	di,[bp-45h]
 
 l0800_9B46:
-	test	word ptr [bp-02],0008
-	jz	9B65
+	test	word ptr [bp-2h],8h
+	jz	9B65h
 
 l0800_9B4D:
-	mov	dx,[bp-08]
+	mov	dx,[bp-8h]
 	or	dx,dx
-	jle	9B65
+	jle	9B65h
 
 l0800_9B54:
-	call	9842
-	cmp	byte ptr es:[di],2D
-	jnz	9B5E
+	call	9842h
+	cmp	byte ptr es:[di],2Dh
+	jnz	9B5Eh
 
 l0800_9B5D:
 	dec	cx
 
 l0800_9B5E:
 	sub	dx,cx
-	jle	9B65
+	jle	9B65h
 
 l0800_9B62:
-	mov	[bp-0E],dx
+	mov	[bp-0Eh],dx
 
 l0800_9B65:
-	cmp	byte ptr es:[di],2D
-	jz	9B76
+	cmp	byte ptr es:[di],2Dh
+	jz	9B76h
 
 l0800_9B6B:
-	mov	al,[bp-0B]
+	mov	al,[bp-0Bh]
 	or	al,al
-	jz	9B86
+	jz	9B86h
 
 l0800_9B72:
 	dec	di
 	mov	es:[di],al
 
 l0800_9B76:
-	cmp	word ptr [bp-0E],00
-	jle	9B86
+	cmp	word ptr [bp-0Eh],0h
+	jle	9B86h
 
 l0800_9B7C:
-	mov	cx,[bp-0A]
+	mov	cx,[bp-0Ah]
 	or	cx,cx
-	jge	9B86
+	jge	9B86h
 
 l0800_9B83:
-	dec	word ptr [bp-0E]
+	dec	word ptr [bp-0Eh]
 
 l0800_9B86:
-	call	9842
+	call	9842h
 
 l0800_9B89:
 	mov	si,di
-	mov	di,[bp-04]
-	mov	bx,[bp-08]
-	mov	ax,0005
-	and	ax,[bp-02]
-	cmp	ax,0005
-	jnz	9BAF
+	mov	di,[bp-4h]
+	mov	bx,[bp-8h]
+	mov	ax,5h
+	and	ax,[bp-2h]
+	cmp	ax,5h
+	jnz	9BAFh
 
 l0800_9B9C:
-	mov	ah,[bp-05]
-	cmp	ah,6F
-	jnz	9BB1
+	mov	ah,[bp-5h]
+	cmp	ah,6Fh
+	jnz	9BB1h
 
 l0800_9BA4:
-	cmp	word ptr [bp-0E],00
-	jg	9BAF
+	cmp	word ptr [bp-0Eh],0h
+	jg	9BAFh
 
 l0800_9BAA:
-	mov	word ptr [bp-0E],0001
+	mov	word ptr [bp-0Eh],1h
 
 l0800_9BAF:
-	jmp	9BCC
+	jmp	9BCCh
 
 l0800_9BB1:
-	cmp	ah,78
-	jz	9BBB
+	cmp	ah,78h
+	jz	9BBBh
 
 l0800_9BB6:
-	cmp	ah,58
-	jnz	9BCC
+	cmp	ah,58h
+	jnz	9BCCh
 
 l0800_9BBB:
-	or	word ptr [bp-02],40
+	or	word ptr [bp-2h],40h
 	dec	bx
 	dec	bx
-	sub	word ptr [bp-0E],02
-	jge	9BCC
+	sub	word ptr [bp-0Eh],2h
+	jge	9BCCh
 
 l0800_9BC7:
-	mov	word ptr [bp-0E],0000
+	mov	word ptr [bp-0Eh],0h
 
 l0800_9BCC:
-	add	cx,[bp-0E]
-	test	word ptr [bp-02],0002
-	jnz	9BE2
+	add	cx,[bp-0Eh]
+	test	word ptr [bp-2h],2h
+	jnz	9BE2h
 
 l0800_9BD6:
-	jmp	9BDE
+	jmp	9BDEh
 
 l0800_9BD8:
-	mov	al,20
-	call	984F
+	mov	al,20h
+	call	984Fh
 	dec	bx
 
 l0800_9BDE:
 	cmp	bx,cx
-	jg	9BD8
+	jg	9BD8h
 
 l0800_9BE2:
-	test	word ptr [bp-02],0040
-	jz	9BF4
+	test	word ptr [bp-2h],40h
+	jz	9BF4h
 
 l0800_9BE9:
-	mov	al,30
-	call	984F
-	mov	al,[bp-05]
-	call	984F
+	mov	al,30h
+	call	984Fh
+	mov	al,[bp-5h]
+	call	984Fh
 
 l0800_9BF4:
-	mov	dx,[bp-0E]
+	mov	dx,[bp-0Eh]
 	or	dx,dx
-	jle	9C22
+	jle	9C22h
 
 l0800_9BFB:
 	sub	cx,dx
 	sub	bx,dx
 	mov	al,es:[si]
-	cmp	al,2D
-	jz	9C0E
+	cmp	al,2Dh
+	jz	9C0Eh
 
 l0800_9C06:
-	cmp	al,20
-	jz	9C0E
+	cmp	al,20h
+	jz	9C0Eh
 
 l0800_9C0A:
-	cmp	al,2B
-	jnz	9C15
+	cmp	al,2Bh
+	jnz	9C15h
 
 l0800_9C0E:
 	lodsb
-	call	984F
+	call	984Fh
 	dec	cx
 	dec	bx
 
 l0800_9C15:
 	xchg	dx,cx
-	jcxz	9C20
+	jcxz	9C20h
 
 l0800_9C19:
-	mov	al,30
-	call	984F
-	loop	9C19
+	mov	al,30h
+	call	984Fh
+	loop	9C19h
 
 l0800_9C20:
 	xchg	dx,cx
 
 l0800_9C22:
-	jcxz	9C36
+	jcxz	9C36h
 
 l0800_9C24:
 	sub	bx,cx
@@ -21740,100 +21740,100 @@ l0800_9C26:
 	lodsb
 	mov	ss:[di],al
 	inc	di
-	dec	byte ptr [bp-14]
-	jg	9C34
+	dec	byte ptr [bp-14h]
+	jg	9C34h
 
 l0800_9C31:
-	call	9858
+	call	9858h
 
 l0800_9C34:
-	loop	9C26
+	loop	9C26h
 
 l0800_9C36:
 	or	bx,bx
-	jle	9C43
+	jle	9C43h
 
 l0800_9C3A:
 	mov	cx,bx
 
 l0800_9C3C:
-	mov	al,20
-	call	984F
-	loop	9C3C
+	mov	al,20h
+	call	984Fh
+	loop	9C3Ch
 
 l0800_9C43:
-	jmp	9898
+	jmp	9898h
 
 l0800_9C46:
-	mov	[bp+06],si
-	mov	di,[bp+04]
-	test	word ptr [bp-02],0020
-	jnz	9C5E
+	mov	[bp+6h],si
+	mov	di,[bp+4h]
+	test	word ptr [bp-2h],20h
+	jnz	9C5Eh
 
 l0800_9C53:
 	mov	di,ss:[di]
-	add	word ptr [bp+04],02
+	add	word ptr [bp+4h],2h
 	push	ds
 	pop	es
-	jmp	9C65
+	jmp	9C65h
 
 l0800_9C5E:
 	les	di,ss:[di]
-	add	word ptr [bp+04],04
+	add	word ptr [bp+4h],4h
 
 l0800_9C65:
-	mov	ax,0050
-	sub	al,[bp-14]
-	add	ax,[bp-12]
+	mov	ax,50h
+	sub	al,[bp-14h]
+	add	ax,[bp-12h]
 	mov	es:[di],ax
-	test	word ptr [bp-02],0010
-	jz	9C7F
+	test	word ptr [bp-2h],10h
+	jz	9C7Fh
 
 l0800_9C78:
 	inc	di
 	inc	di
-	mov	word ptr es:[di],0000
+	mov	word ptr es:[di],0h
 
 l0800_9C7F:
-	jmp	9895
+	jmp	9895h
 
 l0800_9C82:
-	mov	si,[bp-10]
-	mov	es,[bp+08]
-	mov	di,[bp-04]
-	mov	al,25
+	mov	si,[bp-10h]
+	mov	es,[bp+8h]
+	mov	di,[bp-4h]
+	mov	al,25h
 
 l0800_9C8D:
-	call	984F
+	call	984Fh
 	lodsb
 	or	al,al
-	jnz	9C8D
+	jnz	9C8Dh
 
 l0800_9C96:
-	cmp	byte ptr [bp-14],50
-	jge	9C9F
+	cmp	byte ptr [bp-14h],50h
+	jge	9C9Fh
 
 l0800_9C9C:
-	call	9858
+	call	9858h
 
 l0800_9C9F:
 	pop	es
-	cmp	word ptr [bp-16],00
-	jz	9CAB
+	cmp	word ptr [bp-16h],0h
+	jz	9CABh
 
 l0800_9CA6:
-	mov	ax,FFFF
-	jmp	9CAE
+	mov	ax,0FFFFh
+	jmp	9CAEh
 
 l0800_9CAB:
-	mov	ax,[bp-12]
+	mov	ax,[bp-12h]
 
 l0800_9CAE:
 	pop	di
 	pop	si
 	mov	sp,bp
 	pop	bp
-	ret	000C
+	ret	0Ch
 l0800_9CB6	dw	0x9917
 l0800_9CB8	dw	0x9901
 l0800_9CBA	dw	0x994C
@@ -21866,22 +21866,22 @@ fn0800_9CE6 proc
 	push	bp
 	mov	bp,sp
 	push	si
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	call	BFC7
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	call	0BFC7h
 	pop	cx
 	pop	cx
 	mov	si,ax
 	inc	ax
 	push	ax
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	B03B
-	add	sp,0A
-	mov	dx,[bp+06]
-	mov	ax,[bp+04]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0B03Bh
+	add	sp,0Ah
+	mov	dx,[bp+6h]
+	mov	ax,[bp+4h]
 	add	ax,si
 	pop	si
 	pop	bp
@@ -21895,51 +21895,51 @@ fn0800_9CE6 proc
 ;;   Called from:
 ;;     0800:9E8D (in fn0800_9E75)
 fn0800_9D41 proc
-	cmp	dx,cs:[9D35]
-	jz	9D7F
+	cmp	dx,cs:[9D35h]
+	jz	9D7Fh
 
 l0800_9D48:
 	mov	ds,dx
-	mov	ds,[0002]
-	cmp	word ptr [0002],00
-	jz	9D5C
+	mov	ds,[0002h]
+	cmp	word ptr [0002h],0h
+	jz	9D5Ch
 
 l0800_9D55:
-	mov	cs:[9D37],ds
-	jmp	9D94
+	mov	cs:[9D37h],ds
+	jmp	9D94h
 
 l0800_9D5C:
 	mov	ax,ds
-	cmp	ax,cs:[9D35]
-	jz	9D7A
+	cmp	ax,cs:[9D35h]
+	jz	9D7Ah
 
 l0800_9D65:
-	mov	ax,[0008]
-	mov	cs:[9D37],ax
+	mov	ax,[0008h]
+	mov	cs:[9D37h],ax
 	push	ds
 	xor	ax,ax
 	push	ax
-	call	9E15
-	mov	ds,cs:[9D3B]
-	jmp	9D9D
+	call	9E15h
+	mov	ds,cs:[9D3Bh]
+	jmp	9D9Dh
 
 l0800_9D7A:
-	mov	dx,cs:[9D35]
+	mov	dx,cs:[9D35h]
 
 l0800_9D7F:
-	mov	word ptr cs:[9D35],0000
-	mov	word ptr cs:[9D37],0000
-	mov	word ptr cs:[9D39],0000
+	mov	word ptr cs:[9D35h],0h
+	mov	word ptr cs:[9D37h],0h
+	mov	word ptr cs:[9D39h],0h
 
 l0800_9D94:
-	mov	ds,cs:[9D3B]
+	mov	ds,cs:[9D3Bh]
 	push	dx
 	xor	ax,ax
 	push	ax
 
 l0800_9D9D:
-	call	A1D6
-	add	sp,04
+	call	0A1D6h
+	add	sp,4h
 	ret
 
 ;; fn0800_9DA4: 0800:9DA4
@@ -21948,57 +21948,57 @@ l0800_9D9D:
 fn0800_9DA4 proc
 	mov	ds,dx
 	push	ds
-	mov	es,[0002]
-	mov	word ptr [0002],0000
-	mov	[0008],es
-	cmp	dx,cs:[9D35]
-	jz	9DEA
+	mov	es,[0002h]
+	mov	word ptr [0002h],0h
+	mov	[0008h],es
+	cmp	dx,cs:[9D35h]
+	jz	9DEAh
 
 l0800_9DBC:
-	cmp	word ptr es:[0002],00
-	jnz	9DEA
+	cmp	word ptr es:[0002h],0h
+	jnz	9DEAh
 
 l0800_9DC4:
-	mov	ax,[0000]
+	mov	ax,[0000h]
 	pop	bx
 	push	es
-	add	es:[0000],ax
+	add	es:[0000h],ax
 	mov	cx,es
 	add	dx,ax
 	mov	es,dx
-	cmp	word ptr es:[0002],00
-	jnz	9DE3
+	cmp	word ptr es:[0002h],0h
+	jnz	9DE3h
 
 l0800_9DDC:
-	mov	es:[0008],cx
-	jmp	9DED
+	mov	es:[0008h],cx
+	jmp	9DEDh
 
 l0800_9DE3:
-	mov	es:[0002],cx
-	jmp	9DED
+	mov	es:[0002h],cx
+	jmp	9DEDh
 
 l0800_9DEA:
-	call	9E3E
+	call	9E3Eh
 
 l0800_9DED:
 	pop	es
 	mov	ax,es
-	add	ax,es:[0000]
+	add	ax,es:[0000h]
 	mov	ds,ax
-	cmp	word ptr [0002],00
-	jz	9DFF
+	cmp	word ptr [0002h],0h
+	jz	9DFFh
 
 l0800_9DFE:
 	ret
 
 l0800_9DFF:
-	mov	ax,[0000]
-	add	es:[0000],ax
+	mov	ax,[0000h]
+	add	es:[0000h],ax
 	mov	ax,es
 	mov	bx,ds
-	add	bx,[0000]
+	add	bx,[0000h]
 	mov	es,bx
-	mov	es:[0002],ax
+	mov	es:[0002h],ax
 
 ;; fn0800_9E15: 0800:9E15
 ;;   Called from:
@@ -22007,48 +22007,48 @@ l0800_9DFF:
 ;;     0800:9FEF (in fn0800_9F9F)
 fn0800_9E15 proc
 	mov	bx,ds
-	cmp	bx,[0006]
-	jz	9E36
+	cmp	bx,[0006h]
+	jz	9E36h
 
 l0800_9E1D:
-	mov	es,[0006]
-	mov	ds,[0004]
-	mov	[0006],es
-	mov	es:[0004],ds
-	mov	cs:[9D39],ds
+	mov	es,[0006h]
+	mov	ds,[0004h]
+	mov	[0006h],es
+	mov	es:[0004h],ds
+	mov	cs:[9D39h],ds
 	mov	ds,bx
 	ret
 
 l0800_9E36:
-	mov	word ptr cs:[9D39],0000
+	mov	word ptr cs:[9D39h],0h
 	ret
 
 ;; fn0800_9E3E: 0800:9E3E
 ;;   Called from:
 ;;     0800:9DEA (in fn0800_9DA4)
 fn0800_9E3E proc
-	mov	ax,cs:[9D39]
+	mov	ax,cs:[9D39h]
 	or	ax,ax
-	jz	9E67
+	jz	9E67h
 
 l0800_9E46:
 	mov	bx,ss
 	pushf
 	cli
 	mov	ss,ax
-	mov	es,ss:[0006]
-	mov	ss:[0006],ds
-	mov	[0004],ss
+	mov	es,ss:[0006h]
+	mov	ss:[0006h],ds
+	mov	[0004h],ss
 	mov	ss,bx
 	popf
-	mov	es:[0004],ds
-	mov	[0006],es
+	mov	es:[0004h],ds
+	mov	[0006h],es
 	ret
 
 l0800_9E67:
-	mov	cs:[9D39],ds
-	mov	[0004],ds
-	mov	[0006],ds
+	mov	cs:[9D39h],ds
+	mov	[0004h],ds
+	mov	[0006h],ds
 	ret
 
 ;; fn0800_9E75: 0800:9E75
@@ -22063,24 +22063,24 @@ fn0800_9E75 proc
 	mov	bp,sp
 	push	si
 	push	di
-	mov	cs:[9D3B],ds
-	mov	dx,[bp+06]
+	mov	cs:[9D3Bh],ds
+	mov	dx,[bp+6h]
 	or	dx,dx
-	jz	9E95
+	jz	9E95h
 
 l0800_9E86:
-	cmp	dx,cs:[9D37]
-	jnz	9E92
+	cmp	dx,cs:[9D37h]
+	jnz	9E92h
 
 l0800_9E8D:
-	call	9D41
-	jmp	9E95
+	call	9D41h
+	jmp	9E95h
 
 l0800_9E92:
-	call	9DA4
+	call	9DA4h
 
 l0800_9E95:
-	mov	ds,cs:[9D3B]
+	mov	ds,cs:[9D3Bh]
 	pop	di
 	pop	si
 	pop	bp
@@ -22091,49 +22091,49 @@ l0800_9E95:
 ;;     0800:9FDE (in fn0800_9F9F)
 fn0800_9E9E proc
 	push	ax
-	mov	ds,cs:[9D3B]
+	mov	ds,cs:[9D3Bh]
 	xor	ax,ax
 	push	ax
 	push	ax
-	call	A215
-	add	sp,04
-	and	ax,000F
-	jz	9EC7
+	call	0A215h
+	add	sp,4h
+	and	ax,0Fh
+	jz	9EC7h
 
 l0800_9EB3:
-	mov	dx,0010
+	mov	dx,10h
 	sub	dx,ax
 	xor	ax,ax
-	mov	ds,cs:[9D3B]
+	mov	ds,cs:[9D3Bh]
 	push	ax
 	push	dx
-	call	A215
-	add	sp,04
+	call	0A215h
+	add	sp,4h
 
 l0800_9EC7:
 	pop	ax
 	push	ax
 	xor	bx,bx
 	mov	bl,ah
-	mov	cl,04
+	mov	cl,4h
 	shr	bx,cl
 	shl	ax,cl
-	mov	ds,cs:[9D3B]
+	mov	ds,cs:[9D3Bh]
 	push	bx
 	push	ax
-	call	A215
-	add	sp,04
+	call	0A215h
+	add	sp,4h
 	pop	bx
-	cmp	ax,FFFF
-	jz	9EFE
+	cmp	ax,0FFFFh
+	jz	9EFEh
 
 l0800_9EE6:
-	mov	cs:[9D35],dx
-	mov	cs:[9D37],dx
+	mov	cs:[9D35h],dx
+	mov	cs:[9D37h],dx
 	mov	ds,dx
-	mov	[0000],bx
-	mov	[0002],dx
-	mov	ax,0004
+	mov	[0000h],bx
+	mov	[0002h],dx
+	mov	ax,4h
 	ret
 
 l0800_9EFE:
@@ -22148,49 +22148,49 @@ fn0800_9F02 proc
 	push	ax
 	xor	bx,bx
 	mov	bl,ah
-	mov	cl,04
+	mov	cl,4h
 	shr	bx,cl
 	shl	ax,cl
-	mov	ds,cs:[9D3B]
+	mov	ds,cs:[9D3Bh]
 	push	bx
 	push	ax
-	call	A215
-	add	sp,04
+	call	0A215h
+	add	sp,4h
 	pop	bx
-	cmp	ax,FFFF
-	jz	9F58
+	cmp	ax,0FFFFh
+	jz	9F58h
 
 l0800_9F20:
-	and	ax,000F
-	jnz	9F3D
+	and	ax,0Fh
+	jnz	9F3Dh
 
 l0800_9F25:
-	mov	cx,cs:[9D37]
-	mov	cs:[9D37],dx
+	mov	cx,cs:[9D37h]
+	mov	cs:[9D37h],dx
 	mov	ds,dx
-	mov	[0000],bx
-	mov	[0002],cx
-	mov	ax,0004
+	mov	[0000h],bx
+	mov	[0002h],cx
+	mov	ax,4h
 	ret
 
 l0800_9F3D:
 	push	bx
 	push	dx
 	neg	ax
-	add	ax,0010
+	add	ax,10h
 	xor	bx,bx
 	push	bx
 	push	ax
-	call	A215
-	add	sp,04
+	call	0A215h
+	add	sp,4h
 	pop	dx
 	pop	bx
-	cmp	ax,FFFF
-	jz	9F58
+	cmp	ax,0FFFFh
+	jz	9F58h
 
 l0800_9F55:
 	inc	dx
-	jmp	9F25
+	jmp	9F25h
 
 l0800_9F58:
 	xor	ax,ax
@@ -22202,16 +22202,16 @@ l0800_9F58:
 ;;     0800:9FE3 (in fn0800_9F9F)
 fn0800_9F5C proc
 	mov	bx,dx
-	sub	[0000],ax
-	add	dx,[0000]
+	sub	[0000h],ax
+	add	dx,[0000h]
 	mov	ds,dx
-	mov	[0000],ax
-	mov	[0002],bx
+	mov	[0000h],ax
+	mov	[0002h],bx
 	mov	bx,dx
-	add	bx,[0000]
+	add	bx,[0000h]
 	mov	ds,bx
-	mov	[0002],dx
-	mov	ax,0004
+	mov	[0002h],dx
+	mov	ax,4h
 	ret
 
 ;; fn0800_9F7F: 0800:9F7F
@@ -22221,8 +22221,8 @@ fn0800_9F7F proc
 	push	bp
 	mov	bp,sp
 	xor	dx,dx
-	mov	ax,[bp+04]
-	jmp	9F92
+	mov	ax,[bp+4h]
+	jmp	9F92h
 
 ;; fn0800_9F89: 0800:9F89
 ;;   Called from:
@@ -22231,8 +22231,8 @@ fn0800_9F7F proc
 fn0800_9F89 proc
 	push	bp
 	mov	bp,sp
-	mov	dx,[bp+06]
-	mov	ax,[bp+04]
+	mov	dx,[bp+6h]
+	mov	ax,[bp+4h]
 
 ;; fn0800_9F92: 0800:9F92
 ;;   Called from:
@@ -22243,8 +22243,8 @@ fn0800_9F92 proc
 	or	cx,dx
 	push	si
 	push	di
-	mov	cs:[9D3B],ds
-	jz	9FFD
+	mov	cs:[9D3Bh],ds
+	jz	9FFDh
 
 ;; fn0800_9F9F: 0800:9F9F
 ;;   Called from:
@@ -22252,69 +22252,69 @@ fn0800_9F92 proc
 ;;     0800:9F9D (in fn0800_9F92)
 ;;     0800:9F9D (in fn0800_9F92)
 fn0800_9F9F proc
-	add	ax,0013
-	adc	dx,00
-	jc	9FE8
+	add	ax,13h
+	adc	dx,0h
+	jc	9FE8h
 
 l0800_9FA7:
-	test	dx,FFF0
-	jnz	9FE8
+	test	dx,0FFF0h
+	jnz	9FE8h
 
 l0800_9FAD:
-	mov	cl,04
+	mov	cl,4h
 	shr	ax,cl
 	shl	dx,cl
 	or	ah,dl
-	mov	dx,cs:[9D35]
+	mov	dx,cs:[9D35h]
 	or	dx,dx
-	jz	9FDE
+	jz	9FDEh
 
 l0800_9FBE:
-	mov	dx,cs:[9D39]
+	mov	dx,cs:[9D39h]
 	or	dx,dx
-	jz	9FD9
+	jz	9FD9h
 
 l0800_9FC7:
 	mov	bx,dx
 
 l0800_9FC9:
 	mov	ds,dx
-	cmp	[0000],ax
-	jnc	9FED
+	cmp	[0000h],ax
+	jnc	9FEDh
 
 l0800_9FD1:
-	mov	dx,[0006]
+	mov	dx,[0006h]
 	cmp	dx,bx
-	jnz	9FC9
+	jnz	9FC9h
 
 l0800_9FD9:
-	call	9F02
-	jmp	9FFD
+	call	9F02h
+	jmp	9FFDh
 
 l0800_9FDE:
-	call	9E9E
-	jmp	9FFD
+	call	9E9Eh
+	jmp	9FFDh
 
 l0800_9FE3:
-	call	9F5C
-	jmp	9FFD
+	call	9F5Ch
+	jmp	9FFDh
 
 l0800_9FE8:
 	xor	ax,ax
 	cwd
-	jmp	9FFD
+	jmp	9FFDh
 
 l0800_9FED:
-	ja	9FE3
+	ja	9FE3h
 
 l0800_9FEF:
-	call	9E15
-	mov	bx,[0008]
-	mov	[0002],bx
-	mov	ax,0004
+	call	9E15h
+	mov	bx,[0008h]
+	mov	[0002h],bx
+	mov	ax,4h
 
 l0800_9FFD:
-	mov	ds,cs:[9D3B]
+	mov	ds,cs:[9D3Bh]
 	pop	di
 	pop	si
 	pop	bp
@@ -22323,14 +22323,14 @@ l0800_9FFD:
 ;; fn0800_A006: 0800:A006
 fn0800_A006 proc
 	push	bx
-	mov	si,cs:[9D3D]
+	mov	si,cs:[9D3Dh]
 	push	si
-	mov	si,cs:[9D3F]
+	mov	si,cs:[9D3Fh]
 	push	si
-	call	9F89
-	add	sp,04
+	call	9F89h
+	add	sp,4h
 	or	dx,dx
-	jnz	A01F
+	jnz	0A01Fh
 
 l0800_A01D:
 	pop	bx
@@ -22342,19 +22342,19 @@ l0800_A01F:
 	push	es
 	push	ds
 	push	bx
-	mov	dx,[0000]
+	mov	dx,[0000h]
 	cld
 	dec	dx
-	mov	di,0004
+	mov	di,4h
 	mov	si,di
-	mov	cx,0006
+	mov	cx,6h
 
 l0800_A033:
 	rep movsw
 
 l0800_A035:
 	or	dx,dx
-	jz	A070
+	jz	0A070h
 
 l0800_A039:
 	mov	ax,es
@@ -22368,45 +22368,45 @@ l0800_A043:
 	xor	di,di
 	mov	si,di
 	mov	cx,dx
-	cmp	cx,1000
-	jbe	A052
+	cmp	cx,1000h
+	jbe	0A052h
 
 l0800_A04F:
-	mov	cx,1000
+	mov	cx,1000h
 
 l0800_A052:
-	shl	cx,01
-	shl	cx,01
-	shl	cx,01
+	shl	cx,1h
+	shl	cx,1h
+	shl	cx,1h
 
 l0800_A058:
 	rep movsw
 
 l0800_A05A:
-	sub	dx,1000
-	jbe	A070
+	sub	dx,1000h
+	jbe	0A070h
 
 l0800_A060:
 	mov	ax,es
-	add	ax,1000
+	add	ax,1000h
 	mov	es,ax
 	mov	ax,ds
-	add	ax,1000
+	add	ax,1000h
 	mov	ds,ax
-	jmp	A043
+	jmp	0A043h
 
 l0800_A070:
-	mov	ds,cs:[9D3B]
-	call	9E75
-	add	sp,04
+	mov	ds,cs:[9D3Bh]
+	call	9E75h
+	add	sp,4h
 	pop	dx
-	mov	ax,0004
+	mov	ax,4h
 	ret
 
 ;; fn0800_A080: 0800:A080
 fn0800_A080 proc
-	cmp	bx,cs:[9D37]
-	jz	A0CB
+	cmp	bx,cs:[9D37h]
+	jz	0A0CBh
 
 l0800_A087:
 	mov	di,bx
@@ -22414,45 +22414,45 @@ l0800_A087:
 	mov	es,di
 	mov	si,cx
 	sub	si,ax
-	mov	es:[0000],si
-	mov	es:[0002],bx
+	mov	es:[0000h],si
+	mov	es:[0002h],bx
 	push	es
 	push	ax
 	mov	es,bx
-	mov	es:[0000],ax
+	mov	es:[0000h],ax
 	mov	dx,bx
 	add	dx,cx
 	mov	es,dx
-	cmp	word ptr es:[0002],00
-	jz	A0B8
+	cmp	word ptr es:[0002h],0h
+	jz	0A0B8h
 
 l0800_A0B1:
-	mov	es:[0002],di
-	jmp	A0BD
+	mov	es:[0002h],di
+	jmp	0A0BDh
 
 l0800_A0B8:
-	mov	es:[0008],di
+	mov	es:[0008h],di
 
 l0800_A0BD:
 	mov	si,bx
-	call	9E75
-	add	sp,04
+	call	9E75h
+	add	sp,4h
 	mov	dx,si
-	mov	ax,0004
+	mov	ax,4h
 	ret
 
 l0800_A0CB:
 	push	bx
 	mov	es,bx
-	mov	es:[0000],ax
+	mov	es:[0000h],ax
 	add	bx,ax
 	push	bx
 	xor	ax,ax
 	push	ax
-	call	A1D6
-	add	sp,04
+	call	0A1D6h
+	add	sp,4h
 	pop	dx
-	mov	ax,0004
+	mov	ax,4h
 	ret
 0800:A0E3          55 8B EC 33 D2 EB 06 55 8B EC 8B 56 0A    U..3...U...V.
 0800:A0F0 8B 46 08 8B 5E 06 56 57 2E 8C 1E 3B 9D 2E 89 16 .F..^.VW...;....
@@ -22472,64 +22472,64 @@ fn0800_A162 proc
 	push	bp
 	mov	bp,sp
 	push	si
-	mov	si,[bp+06]
+	mov	si,[bp+6h]
 	inc	si
-	sub	si,[007B]
-	add	si,3F
-	mov	cl,06
+	sub	si,[007Bh]
+	add	si,3Fh
+	mov	cl,6h
 	shr	si,cl
-	cmp	si,[2698]
-	jnz	A18D
+	cmp	si,[2698h]
+	jnz	0A18Dh
 
 l0800_A17B:
-	mov	ax,[bp+06]
-	mov	dx,[bp+04]
-	mov	[008D],ax
-	mov	[008B],dx
-	mov	ax,0001
-	jmp	A1D1
+	mov	ax,[bp+6h]
+	mov	dx,[bp+4h]
+	mov	[008Dh],ax
+	mov	[008Bh],dx
+	mov	ax,1h
+	jmp	0A1D1h
 
 l0800_A18D:
-	mov	cl,06
+	mov	cl,6h
 	shl	si,cl
-	mov	dx,[0091]
+	mov	dx,[0091h]
 	mov	ax,si
-	add	ax,[007B]
+	add	ax,[007Bh]
 	cmp	ax,dx
-	jbe	A1A5
+	jbe	0A1A5h
 
 l0800_A19F:
 	mov	si,dx
-	sub	si,[007B]
+	sub	si,[007Bh]
 
 l0800_A1A5:
 	push	si
-	push	word ptr [007B]
-	call	A401
+	push	word ptr [007Bh]
+	call	0A401h
 	pop	cx
 	pop	cx
 	mov	dx,ax
-	cmp	dx,FF
-	jnz	A1C1
+	cmp	dx,0FFh
+	jnz	0A1C1h
 
 l0800_A1B6:
 	mov	ax,si
-	mov	cl,06
+	mov	cl,6h
 	shr	ax,cl
-	mov	[2698],ax
-	jmp	A17B
+	mov	[2698h],ax
+	jmp	0A17Bh
 
 l0800_A1C1:
-	mov	ax,[007B]
+	mov	ax,[007Bh]
 	add	ax,dx
-	mov	[0091],ax
-	mov	word ptr [008F],0000
+	mov	[0091h],ax
+	mov	word ptr [008Fh],0h
 	xor	ax,ax
 
 l0800_A1D1:
 	pop	si
 	pop	bp
-	ret	0004
+	ret	4h
 
 ;; fn0800_A1D6: 0800:A1D6
 ;;   Called from:
@@ -22538,31 +22538,31 @@ l0800_A1D1:
 fn0800_A1D6 proc
 	push	bp
 	mov	bp,sp
-	mov	cx,[0089]
-	mov	bx,[0087]
-	mov	dx,[bp+06]
-	mov	ax,[bp+04]
-	call	8F2F
-	jc	A20C
+	mov	cx,[0089h]
+	mov	bx,[0087h]
+	mov	dx,[bp+6h]
+	mov	ax,[bp+4h]
+	call	8F2Fh
+	jc	0A20Ch
 
 l0800_A1EC:
-	mov	cx,[0091]
-	mov	bx,[008F]
-	mov	dx,[bp+06]
-	mov	ax,[bp+04]
-	call	8F2F
-	ja	A20C
+	mov	cx,[0091h]
+	mov	bx,[008Fh]
+	mov	dx,[bp+6h]
+	mov	ax,[bp+4h]
+	call	8F2Fh
+	ja	0A20Ch
 
 l0800_A1FF:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	A162
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0A162h
 	or	ax,ax
-	jnz	A211
+	jnz	0A211h
 
 l0800_A20C:
-	mov	ax,FFFF
-	jmp	A213
+	mov	ax,0FFFFh
+	jmp	0A213h
 
 l0800_A211:
 	xor	ax,ax
@@ -22581,66 +22581,66 @@ l0800_A213:
 fn0800_A215 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,08
-	mov	ax,[008D]
+	sub	sp,8h
+	mov	ax,[008Dh]
 	xor	dx,dx
-	mov	cl,04
-	call	8C69
-	add	ax,[008B]
-	adc	dx,00
-	add	ax,[bp+04]
-	adc	dx,[bp+06]
-	cmp	dx,0F
-	jl	A246
+	mov	cl,4h
+	call	8C69h
+	add	ax,[008Bh]
+	adc	dx,0h
+	add	ax,[bp+4h]
+	adc	dx,[bp+6h]
+	cmp	dx,0Fh
+	jl	0A246h
 
 l0800_A237:
-	jg	A23E
+	jg	0A23Eh
 
 l0800_A239:
-	cmp	ax,FFFF
-	jbe	A246
+	cmp	ax,0FFFFh
+	jbe	0A246h
 
 l0800_A23E:
-	mov	dx,FFFF
-	mov	ax,FFFF
-	jmp	A29F
+	mov	dx,0FFFFh
+	mov	ax,0FFFFh
+	jmp	0A29Fh
 
 l0800_A246:
-	mov	dx,[008D]
-	mov	ax,[008B]
-	mov	cx,[bp+06]
-	mov	bx,[bp+04]
-	call	8CCB
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	mov	cx,[0089]
-	mov	bx,[0087]
-	mov	dx,[bp-02]
-	call	8F2F
-	jc	A23E
+	mov	dx,[008Dh]
+	mov	ax,[008Bh]
+	mov	cx,[bp+6h]
+	mov	bx,[bp+4h]
+	call	8CCBh
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	mov	cx,[0089h]
+	mov	bx,[0087h]
+	mov	dx,[bp-2h]
+	call	8F2Fh
+	jc	0A23Eh
 
 l0800_A26C:
-	mov	cx,[0091]
-	mov	bx,[008F]
-	mov	dx,[bp-02]
-	mov	ax,[bp-04]
-	call	8F2F
-	ja	A23E
+	mov	cx,[0091h]
+	mov	bx,[008Fh]
+	mov	dx,[bp-2h]
+	mov	ax,[bp-4h]
+	call	8F2Fh
+	ja	0A23Eh
 
 l0800_A27F:
-	mov	ax,[008D]
-	mov	dx,[008B]
-	mov	[bp-06],ax
-	mov	[bp-08],dx
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	A162
+	mov	ax,[008Dh]
+	mov	dx,[008Bh]
+	mov	[bp-6h],ax
+	mov	[bp-8h],dx
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	0A162h
 	or	ax,ax
-	jz	A23E
+	jz	0A23Eh
 
 l0800_A299:
-	mov	dx,[bp-06]
-	mov	ax,[bp-08]
+	mov	dx,[bp-6h]
+	mov	ax,[bp-8h]
 
 l0800_A29F:
 	mov	sp,bp
@@ -22655,29 +22655,29 @@ fn0800_A2A3 proc
 	push	bp
 	mov	bp,sp
 	push	ds
-	lds	dx,[bp+08]
-	mov	ah,44
-	mov	al,[bp+06]
-	mov	bx,[bp+04]
-	mov	cx,[bp+0C]
-	int	21
+	lds	dx,[bp+8h]
+	mov	ah,44h
+	mov	al,[bp+6h]
+	mov	bx,[bp+4h]
+	mov	cx,[bp+0Ch]
+	int	21h
 	pop	ds
-	jc	A2C6
+	jc	0A2C6h
 
 l0800_A2BA:
-	cmp	word ptr [bp+06],00
-	jnz	A2C4
+	cmp	word ptr [bp+6h],0h
+	jnz	0A2C4h
 
 l0800_A2C0:
 	mov	ax,dx
-	jmp	A2CA
+	jmp	0A2CAh
 
 l0800_A2C4:
-	jmp	A2CA
+	jmp	0A2CAh
 
 l0800_A2C6:
 	push	ax
-	call	8D2B
+	call	8D2Bh
 
 l0800_A2CA:
 	pop	bp
@@ -22687,26 +22687,26 @@ l0800_A2CA:
 ;;   Called from:
 ;;     0800:9B3E (in fn0800_9828)
 fn0800_A2CC proc
-	jmp	word ptr [26F4]
+	jmp	word ptr [26F4h]
 
 ;; fn0800_A2D0: 0800:A2D0
 ;;   Called from:
 ;;     0800:91BE (in fn0800_8F97)
 fn0800_A2D0 proc
-	jmp	word ptr [26F6]
+	jmp	word ptr [26F6h]
 
 ;; fn0800_A2D4: 0800:A2D4
 ;;   Called from:
 ;;     0800:91F4 (in fn0800_8F97)
 fn0800_A2D4 proc
-	jmp	word ptr [26F8]
+	jmp	word ptr [26F8h]
 
 ;; fn0800_A2D8: 0800:A2D8
 ;;   Called from:
 ;;     0800:91FD (in fn0800_8F97)
 ;;     0800:9203 (in fn0800_8F97)
 fn0800_A2D8 proc
-	jmp	word ptr [26FA]
+	jmp	word ptr [26FAh]
 0800:A2DC                                     00 00 8F 06             ....
 0800:A2E0 A0 26 8F 06 A2 26 8F 06 A4 26 2E 8C 1E DC A2 89 .&...&...&......
 0800:A2F0 36 A6 26 89 3E A8 26 FC 8E 06 7B 00 BE 80 00 32 6.&.>.&...{....2
@@ -22721,13 +22721,13 @@ fn0800_A2D8 proc
 ;; fn0800_A36D: 0800:A36D
 fn0800_A36D proc
 	or	ax,ax
-	jz	A378
+	jz	0A378h
 
 l0800_A371:
 	inc	dx
 	stosb
 	or	al,al
-	jnz	A378
+	jnz	0A378h
 
 l0800_A377:
 	inc	bx
@@ -22736,22 +22736,22 @@ l0800_A378:
 	xchg	al,ah
 	xor	al,al
 	stc
-	jcxz	A394
+	jcxz	0A394h
 
 l0800_A37F:
 	lodsb
 	dec	cx
-	sub	al,22
-	jz	A394
+	sub	al,22h
+	jz	0A394h
 
 l0800_A385:
-	add	al,22
-	cmp	al,5C
-	jnz	A392
+	add	al,22h
+	cmp	al,5Ch
+	jnz	0A392h
 
 l0800_A38B:
-	cmp	byte ptr [si],22
-	jnz	A392
+	cmp	byte ptr [si],22h
+	jnz	0A392h
 
 l0800_A390:
 	lodsb
@@ -22777,20 +22777,20 @@ l0800_A394:
 fn0800_A401 proc
 	push	bp
 	mov	bp,sp
-	mov	ah,4A
-	mov	bx,[bp+06]
-	mov	es,[bp+04]
-	int	21
-	jc	A415
+	mov	ah,4Ah
+	mov	bx,[bp+6h]
+	mov	es,[bp+4h]
+	int	21h
+	jc	0A415h
 
 l0800_A410:
-	mov	ax,FFFF
-	jmp	A41B
+	mov	ax,0FFFFh
+	jmp	0A41Bh
 
 l0800_A415:
 	push	bx
 	push	ax
-	call	8D2B
+	call	8D2Bh
 	pop	ax
 
 l0800_A41B:
@@ -22814,28 +22814,28 @@ fn0800_A471 proc
 	push	di
 	push	es
 	push	bp
-	les	si,[bp+04]
+	les	si,[bp+4h]
 	cld
 	sub	ax,ax
 	cwd
-	mov	cx,000A
-	mov	bh,00
-	mov	di,2251
+	mov	cx,0Ah
+	mov	bh,0h
+	mov	di,2251h
 
 l0800_A487:
 	mov	bl,es:[si]
 	inc	si
-	test	byte ptr [bx+di],01
-	jnz	A487
+	test	byte ptr [bx+di],1h
+	jnz	0A487h
 
 l0800_A490:
-	mov	bp,0000
-	cmp	bl,2B
-	jz	A49E
+	mov	bp,0h
+	cmp	bl,2Bh
+	jz	0A49Eh
 
 l0800_A498:
-	cmp	bl,2D
-	jnz	A4A2
+	cmp	bl,2Dh
+	jnz	0A4A2h
 
 l0800_A49D:
 	inc	bp
@@ -22845,25 +22845,25 @@ l0800_A49E:
 	inc	si
 
 l0800_A4A2:
-	cmp	bl,39
-	ja	A4D6
+	cmp	bl,39h
+	ja	0A4D6h
 
 l0800_A4A7:
-	sub	bl,30
-	jc	A4D6
+	sub	bl,30h
+	jc	0A4D6h
 
 l0800_A4AC:
 	mul	cx
 	add	ax,bx
 	adc	dl,dh
-	jz	A49E
+	jz	0A49Eh
 
 l0800_A4B4:
-	jmp	A4C8
+	jmp	0A4C8h
 
 l0800_A4B6:
 	mov	di,dx
-	mov	cx,000A
+	mov	cx,0Ah
 	mul	cx
 	xchg	di,ax
 	xchg	cx,dx
@@ -22876,21 +22876,21 @@ l0800_A4B6:
 l0800_A4C8:
 	mov	bl,es:[si]
 	inc	si
-	cmp	bl,39
-	ja	A4D6
+	cmp	bl,39h
+	ja	0A4D6h
 
 l0800_A4D1:
-	sub	bl,30
-	jnc	A4B6
+	sub	bl,30h
+	jnc	0A4B6h
 
 l0800_A4D6:
 	dec	bp
-	jl	A4E0
+	jl	0A4E0h
 
 l0800_A4D9:
 	neg	dx
 	neg	ax
-	sbb	dx,00
+	sbb	dx,0h
 
 l0800_A4E0:
 	pop	bp
@@ -22911,37 +22911,37 @@ fn0800_A4F6 proc
 	mov	bp,sp
 	xor	ax,ax
 	push	ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	A53C
-	add	sp,06
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0A53Ch
+	add	sp,6h
 	mov	dx,ax
-	cmp	dx,FF
-	jnz	A513
+	cmp	dx,0FFh
+	jnz	0A513h
 
 l0800_A50F:
 	mov	ax,dx
-	jmp	A53A
+	jmp	0A53Ah
 
 l0800_A513:
-	and	dx,FE
-	test	word ptr [bp+08],0080
-	jnz	A520
+	and	dx,0FEh
+	test	word ptr [bp+8h],80h
+	jnz	0A520h
 
 l0800_A51D:
-	or	dx,01
+	or	dx,1h
 
 l0800_A520:
 	push	dx
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	A53C
-	add	sp,08
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0A53Ch
+	add	sp,8h
 	mov	dx,ax
-	cmp	dx,FF
-	jz	A50F
+	cmp	dx,0FFh
+	jz	0A50Fh
 
 l0800_A538:
 	xor	ax,ax
@@ -22960,21 +22960,21 @@ fn0800_A53C proc
 	push	bp
 	mov	bp,sp
 	push	ds
-	mov	cx,[bp+0A]
-	mov	ah,43
-	mov	al,[bp+08]
-	lds	dx,[bp+04]
-	int	21
+	mov	cx,[bp+0Ah]
+	mov	ah,43h
+	mov	al,[bp+8h]
+	lds	dx,[bp+4h]
+	int	21h
 	pop	ds
-	jc	A553
+	jc	0A553h
 
 l0800_A550:
 	xchg	cx,ax
-	jmp	A557
+	jmp	0A557h
 
 l0800_A553:
 	push	ax
-	call	8D2B
+	call	8D2Bh
 
 l0800_A557:
 	pop	bp
@@ -22986,22 +22986,22 @@ l0800_A557:
 fn0800_A559 proc
 	push	bp
 	mov	bp,sp
-	mov	dx,[bp+04]
-	cmp	dx,[24E8]
-	jc	A56E
+	mov	dx,[bp+4h]
+	cmp	dx,[24E8h]
+	jc	0A56Eh
 
 l0800_A565:
-	mov	ax,0006
+	mov	ax,6h
 	push	ax
-	call	8D2B
-	jmp	A57D
+	call	8D2Bh
+	jmp	0A57Dh
 
 l0800_A56E:
 	mov	bx,dx
-	shl	bx,01
-	mov	word ptr [bx+24EA],0000
+	shl	bx,1h
+	mov	word ptr [bx+24EAh],0h
 	push	dx
-	call	A57F
+	call	0A57Fh
 	pop	cx
 
 l0800_A57D:
@@ -23015,20 +23015,20 @@ l0800_A57D:
 fn0800_A57F proc
 	push	bp
 	mov	bp,sp
-	mov	ah,3E
-	mov	bx,[bp+04]
-	int	21
-	jc	A597
+	mov	ah,3Eh
+	mov	bx,[bp+4h]
+	int	21h
+	jc	0A597h
 
 l0800_A58B:
-	shl	bx,01
-	mov	word ptr [bx+24EA],0000
+	shl	bx,1h
+	mov	word ptr [bx+24EAh],0h
 	xor	ax,ax
-	jmp	A59B
+	jmp	0A59Bh
 
 l0800_A597:
 	push	ax
-	call	8D2B
+	call	8D2Bh
 
 l0800_A59B:
 	pop	bp
@@ -23040,84 +23040,84 @@ l0800_A59B:
 fn0800_A59D proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
-	mov	ax,[bp+04]
-	cmp	ax,[24E8]
-	jc	A5B2
+	sub	sp,4h
+	mov	ax,[bp+4h]
+	cmp	ax,[24E8h]
+	jc	0A5B2h
 
 l0800_A5AC:
-	mov	ax,0006
+	mov	ax,6h
 	push	ax
-	jmp	A60D
+	jmp	0A60Dh
 
 l0800_A5B2:
-	mov	bx,[bp+04]
-	shl	bx,01
-	test	word ptr [bx+24EA],0200
-	jz	A5C4
+	mov	bx,[bp+4h]
+	shl	bx,1h
+	test	word ptr [bx+24EAh],200h
+	jz	0A5C4h
 
 l0800_A5BF:
-	mov	ax,0001
-	jmp	A610
+	mov	ax,1h
+	jmp	0A610h
 
 l0800_A5C4:
-	mov	ax,4400
-	mov	bx,[bp+04]
-	int	21
-	jc	A60C
+	mov	ax,4400h
+	mov	bx,[bp+4h]
+	int	21h
+	jc	0A60Ch
 
 l0800_A5CE:
-	test	dl,80
-	jnz	A608
+	test	dl,80h
+	jnz	0A608h
 
 l0800_A5D3:
-	mov	ax,4201
+	mov	ax,4201h
 	xor	cx,cx
 	mov	dx,cx
-	int	21
-	jc	A60C
+	int	21h
+	jc	0A60Ch
 
 l0800_A5DE:
 	push	dx
 	push	ax
-	mov	ax,4202
+	mov	ax,4202h
 	xor	cx,cx
 	mov	dx,cx
-	int	21
-	mov	[bp-04],ax
-	mov	[bp-02],dx
+	int	21h
+	mov	[bp-4h],ax
+	mov	[bp-2h],dx
 	pop	dx
 	pop	cx
-	jc	A60C
+	jc	0A60Ch
 
 l0800_A5F3:
-	mov	ax,4200
-	int	21
-	jc	A60C
+	mov	ax,4200h
+	int	21h
+	jc	0A60Ch
 
 l0800_A5FA:
-	cmp	dx,[bp-02]
-	jc	A608
+	cmp	dx,[bp-2h]
+	jc	0A608h
 
 l0800_A5FF:
-	ja	A606
+	ja	0A606h
 
 l0800_A601:
-	cmp	ax,[bp-04]
-	jc	A608
+	cmp	ax,[bp-4h]
+	jc	0A608h
 
 l0800_A606:
-	jmp	A5BF
+	jmp	0A5BFh
 
 l0800_A608:
 	xor	ax,ax
-	jmp	A610
+	jmp	0A610h
 
 l0800_A60C:
 	push	ax
 
 l0800_A60D:
-	call	8D2B
+	call	8D2Bh
 
 l0800_A610:
 	mov	sp,bp
@@ -23156,66 +23156,66 @@ fn0800_A614 proc
 	push	bp
 	mov	bp,sp
 	push	si
-	mov	si,FFFF
-	les	bx,[bp+04]
-	mov	ax,es:[bx+12]
-	cmp	ax,[bp+04]
-	jz	A62A
+	mov	si,0FFFFh
+	les	bx,[bp+4h]
+	mov	ax,es:[bx+12h]
+	cmp	ax,[bp+4h]
+	jz	0A62Ah
 
 l0800_A627:
-	jmp	A6B2
+	jmp	0A6B2h
 
 l0800_A62A:
-	les	bx,[bp+04]
-	cmp	word ptr es:[bx+06],00
-	jz	A65F
+	les	bx,[bp+4h]
+	cmp	word ptr es:[bx+6h],0h
+	jz	0A65Fh
 
 l0800_A634:
-	cmp	word ptr es:[bx],00
-	jge	A647
+	cmp	word ptr es:[bx],0h
+	jge	0A647h
 
 l0800_A63A:
-	push	word ptr [bp+06]
+	push	word ptr [bp+6h]
 	push	bx
-	call	A6B7
+	call	0A6B7h
 	pop	cx
 	pop	cx
 	or	ax,ax
-	jnz	A6B2
+	jnz	0A6B2h
 
 l0800_A647:
-	les	bx,[bp+04]
-	test	word ptr es:[bx+02],0004
-	jz	A65F
+	les	bx,[bp+4h]
+	test	word ptr es:[bx+2h],4h
+	jz	0A65Fh
 
 l0800_A652:
-	push	word ptr es:[bx+0A]
-	push	word ptr es:[bx+08]
-	call	9E75
+	push	word ptr es:[bx+0Ah]
+	push	word ptr es:[bx+8h]
+	call	9E75h
 	pop	cx
 	pop	cx
 
 l0800_A65F:
-	les	bx,[bp+04]
-	cmp	byte ptr es:[bx+04],00
-	jl	A675
+	les	bx,[bp+4h]
+	cmp	byte ptr es:[bx+4h],0h
+	jl	0A675h
 
 l0800_A669:
-	mov	al,es:[bx+04]
+	mov	al,es:[bx+4h]
 	cbw
 	push	ax
-	call	A559
+	call	0A559h
 	pop	cx
 	mov	si,ax
 
 l0800_A675:
-	les	bx,[bp+04]
-	mov	word ptr es:[bx+02],0000
-	mov	word ptr es:[bx+06],0000
-	mov	word ptr es:[bx],0000
-	mov	byte ptr es:[bx+04],FF
-	cmp	word ptr es:[bx+10],00
-	jz	A6B2
+	les	bx,[bp+4h]
+	mov	word ptr es:[bx+2h],0h
+	mov	word ptr es:[bx+6h],0h
+	mov	word ptr es:[bx],0h
+	mov	byte ptr es:[bx+4h],0FFh
+	cmp	word ptr es:[bx+10h],0h
+	jz	0A6B2h
 
 l0800_A695:
 	xor	ax,ax
@@ -23223,15 +23223,15 @@ l0800_A695:
 	push	ax
 	push	ax
 	push	ax
-	push	word ptr es:[bx+10]
-	call	8E6A
+	push	word ptr es:[bx+10h]
+	call	8E6Ah
 	push	dx
 	push	ax
-	call	97F8
+	call	97F8h
 	pop	cx
 	pop	cx
-	les	bx,[bp+04]
-	mov	word ptr es:[bx+10],0000
+	les	bx,[bp+4h]
+	mov	word ptr es:[bx+10h],0h
 
 l0800_A6B2:
 	mov	ax,si
@@ -23254,95 +23254,95 @@ fn0800_A6B7 proc
 	push	bp
 	mov	bp,sp
 	push	si
-	mov	ax,[bp+04]
-	or	ax,[bp+06]
-	jnz	A6C9
+	mov	ax,[bp+4h]
+	or	ax,[bp+6h]
+	jnz	0A6C9h
 
 l0800_A6C3:
-	call	A877
-	jmp	A778
+	call	0A877h
+	jmp	0A778h
 
 l0800_A6C9:
-	les	bx,[bp+04]
-	mov	ax,es:[bx+12]
-	cmp	ax,[bp+04]
-	jz	A6DB
+	les	bx,[bp+4h]
+	mov	ax,es:[bx+12h]
+	cmp	ax,[bp+4h]
+	jz	0A6DBh
 
 l0800_A6D5:
-	mov	ax,FFFF
-	jmp	A77A
+	mov	ax,0FFFFh
+	jmp	0A77Ah
 
 l0800_A6DB:
-	les	bx,[bp+04]
-	cmp	word ptr es:[bx],00
-	jl	A732
+	les	bx,[bp+4h]
+	cmp	word ptr es:[bx],0h
+	jl	0A732h
 
 l0800_A6E4:
-	test	word ptr es:[bx+02],0008
-	jnz	A701
+	test	word ptr es:[bx+2h],8h
+	jnz	0A701h
 
 l0800_A6EC:
-	mov	ax,es:[bx+0E]
-	mov	dx,[bp+04]
-	add	dx,05
-	cmp	ax,[bp+06]
-	jnz	A778
+	mov	ax,es:[bx+0Eh]
+	mov	dx,[bp+4h]
+	add	dx,5h
+	cmp	ax,[bp+6h]
+	jnz	0A778h
 
 l0800_A6FB:
-	cmp	es:[bx+0C],dx
-	jnz	A778
+	cmp	es:[bx+0Ch],dx
+	jnz	0A778h
 
 l0800_A701:
-	les	bx,[bp+04]
-	mov	word ptr es:[bx],0000
-	mov	ax,es:[bx+0E]
-	mov	dx,[bp+04]
-	add	dx,05
-	cmp	ax,[bp+06]
-	jnz	A778
+	les	bx,[bp+4h]
+	mov	word ptr es:[bx],0h
+	mov	ax,es:[bx+0Eh]
+	mov	dx,[bp+4h]
+	add	dx,5h
+	cmp	ax,[bp+6h]
+	jnz	0A778h
 
 l0800_A718:
-	cmp	es:[bx+0C],dx
-	jnz	A778
+	cmp	es:[bx+0Ch],dx
+	jnz	0A778h
 
 l0800_A71E:
-	mov	ax,es:[bx+0A]
-	mov	dx,es:[bx+08]
-	mov	es:[bx+0E],ax
-	mov	es:[bx+0C],dx
-	jmp	A778
+	mov	ax,es:[bx+0Ah]
+	mov	dx,es:[bx+8h]
+	mov	es:[bx+0Eh],ax
+	mov	es:[bx+0Ch],dx
+	jmp	0A778h
 0800:A730 EB 46                                           .F             
 
 l0800_A732:
-	les	bx,[bp+04]
-	mov	ax,es:[bx+06]
+	les	bx,[bp+4h]
+	mov	ax,es:[bx+6h]
 	add	ax,es:[bx]
 	inc	ax
 	mov	si,ax
 	sub	es:[bx],si
 	push	ax
-	mov	ax,es:[bx+0A]
-	mov	dx,es:[bx+08]
-	mov	es:[bx+0E],ax
-	mov	es:[bx+0C],dx
+	mov	ax,es:[bx+0Ah]
+	mov	dx,es:[bx+8h]
+	mov	es:[bx+0Eh],ax
+	mov	es:[bx+0Ch],dx
 	push	ax
 	push	dx
-	mov	al,es:[bx+04]
+	mov	al,es:[bx+4h]
 	cbw
 	push	ax
-	call	C632
-	add	sp,08
+	call	0C632h
+	add	sp,8h
 	cmp	ax,si
-	jz	A778
+	jz	0A778h
 
 l0800_A765:
-	les	bx,[bp+04]
-	test	word ptr es:[bx+02],0200
-	jnz	A778
+	les	bx,[bp+4h]
+	test	word ptr es:[bx+2h],200h
+	jnz	0A778h
 
 l0800_A770:
-	or	word ptr es:[bx+02],10
-	jmp	A6D5
+	or	word ptr es:[bx+2h],10h
+	jmp	0A6D5h
 
 l0800_A778:
 	xor	ax,ax
@@ -23358,90 +23358,90 @@ l0800_A77A:
 fn0800_A77D proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
+	sub	sp,4h
 	push	si
 	push	di
-	mov	di,[bp+08]
+	mov	di,[bp+8h]
 	xor	cx,cx
-	mov	ax,[bp+06]
-	mov	dx,[bp+04]
-	mov	[bp-02],ax
-	mov	[bp-04],dx
-	jmp	A7A1
+	mov	ax,[bp+6h]
+	mov	dx,[bp+4h]
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
+	jmp	0A7A1h
 
 l0800_A798:
-	les	bx,[bp-04]
+	les	bx,[bp-4h]
 	mov	es:[bx],cl
-	inc	word ptr [bp-04]
+	inc	word ptr [bp-4h]
 
 l0800_A7A1:
-	cmp	cx,0A
-	jz	A7D8
+	cmp	cx,0Ah
+	jz	0A7D8h
 
 l0800_A7A6:
 	dec	di
-	jle	A7D8
+	jle	0A7D8h
 
 l0800_A7A9:
-	les	bx,[bp+0A]
+	les	bx,[bp+0Ah]
 	dec	word ptr es:[bx]
-	jl	A7C6
+	jl	0A7C6h
 
 l0800_A7B1:
-	mov	ax,es:[bx+0E]
-	mov	si,es:[bx+0C]
-	inc	word ptr es:[bx+0C]
+	mov	ax,es:[bx+0Eh]
+	mov	si,es:[bx+0Ch]
+	inc	word ptr es:[bx+0Ch]
 	mov	es,ax
 	mov	al,es:[si]
-	mov	ah,00
-	jmp	A7D1
+	mov	ah,0h
+	jmp	0A7D1h
 
 l0800_A7C6:
-	push	word ptr [bp+0C]
-	push	word ptr [bp+0A]
-	call	AEC2
+	push	word ptr [bp+0Ch]
+	push	word ptr [bp+0Ah]
+	call	0AEC2h
 	pop	cx
 	pop	cx
 
 l0800_A7D1:
 	mov	cx,ax
-	cmp	ax,FFFF
-	jnz	A798
+	cmp	ax,0FFFFh
+	jnz	0A798h
 
 l0800_A7D8:
-	cmp	cx,FF
-	jnz	A7F3
+	cmp	cx,0FFh
+	jnz	0A7F3h
 
 l0800_A7DD:
-	mov	ax,[bp-02]
-	mov	dx,[bp-04]
-	cmp	ax,[bp+06]
-	jnz	A7F3
+	mov	ax,[bp-2h]
+	mov	dx,[bp-4h]
+	cmp	ax,[bp+6h]
+	jnz	0A7F3h
 
 l0800_A7E8:
-	cmp	dx,[bp+04]
-	jnz	A7F3
+	cmp	dx,[bp+4h]
+	jnz	0A7F3h
 
 l0800_A7ED:
 	xor	dx,dx
 	xor	ax,ax
-	jmp	A811
+	jmp	0A811h
 
 l0800_A7F3:
-	les	bx,[bp-04]
-	mov	byte ptr es:[bx],00
-	les	bx,[bp+0A]
-	test	word ptr es:[bx+02],0010
-	jz	A80B
+	les	bx,[bp-4h]
+	mov	byte ptr es:[bx],0h
+	les	bx,[bp+0Ah]
+	test	word ptr es:[bx+2h],10h
+	jz	0A80Bh
 
 l0800_A805:
 	xor	dx,dx
 	xor	ax,ax
-	jmp	A811
+	jmp	0A811h
 
 l0800_A80B:
-	mov	dx,[bp+06]
-	mov	ax,[bp+04]
+	mov	dx,[bp+6h]
+	mov	ax,[bp+4h]
 
 l0800_A811:
 	pop	di
@@ -23458,36 +23458,36 @@ fn0800_A817 proc
 	push	bp
 	mov	bp,sp
 	push	ds
-	mov	ah,2F
-	int	21
+	mov	ah,2Fh
+	int	21h
 	push	es
 	push	bx
-	mov	ah,1A
-	lds	dx,[bp+08]
-	int	21
-	mov	ah,4E
-	mov	cx,[bp+0C]
-	lds	dx,[bp+04]
-	int	21
+	mov	ah,1Ah
+	lds	dx,[bp+8h]
+	int	21h
+	mov	ah,4Eh
+	mov	cx,[bp+0Ch]
+	lds	dx,[bp+4h]
+	int	21h
 	pushf
 	pop	cx
 	xchg	bx,ax
-	mov	ah,1A
+	mov	ah,1Ah
 	pop	dx
 	pop	ds
-	int	21
+	int	21h
 	push	cx
 	popf
 	pop	ds
-	jc	A844
+	jc	0A844h
 
 l0800_A840:
 	xor	ax,ax
-	jmp	A848
+	jmp	0A848h
 
 l0800_A844:
 	push	bx
-	call	8D2B
+	call	8D2Bh
 
 l0800_A848:
 	pop	bp
@@ -23500,34 +23500,34 @@ fn0800_A84A proc
 	push	bp
 	mov	bp,sp
 	push	ds
-	mov	ah,2F
-	int	21
+	mov	ah,2Fh
+	int	21h
 	push	es
 	push	bx
-	mov	ah,1A
-	lds	dx,[bp+04]
-	int	21
-	mov	ah,4F
-	int	21
+	mov	ah,1Ah
+	lds	dx,[bp+4h]
+	int	21h
+	mov	ah,4Fh
+	int	21h
 	pushf
 	pop	cx
 	xchg	bx,ax
-	mov	ah,1A
+	mov	ah,1Ah
 	pop	dx
 	pop	ds
-	int	21
+	int	21h
 	push	cx
 	popf
 	pop	ds
-	jc	A871
+	jc	0A871h
 
 l0800_A86D:
 	xor	ax,ax
-	jmp	A875
+	jmp	0A875h
 
 l0800_A871:
 	push	bx
-	call	8D2B
+	call	8D2Bh
 
 l0800_A875:
 	pop	bp
@@ -23539,36 +23539,36 @@ l0800_A875:
 fn0800_A877 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
+	sub	sp,4h
 	push	si
 	push	di
 	xor	di,di
-	mov	si,[24E8]
-	mov	[bp-02],ds
-	mov	word ptr [bp-04],2358
-	jmp	A8A8
+	mov	si,[24E8h]
+	mov	[bp-2h],ds
+	mov	word ptr [bp-4h],2358h
+	jmp	0A8A8h
 
 l0800_A88F:
-	les	bx,[bp-04]
-	test	word ptr es:[bx+02],0003
-	jz	A8A4
+	les	bx,[bp-4h]
+	test	word ptr es:[bx+2h],3h
+	jz	0A8A4h
 
 l0800_A89A:
-	push	word ptr [bp-02]
+	push	word ptr [bp-2h]
 	push	bx
-	call	A6B7
+	call	0A6B7h
 	pop	cx
 	pop	cx
 	inc	di
 
 l0800_A8A4:
-	add	word ptr [bp-04],14
+	add	word ptr [bp-4h],14h
 
 l0800_A8A8:
 	mov	ax,si
 	dec	si
 	or	ax,ax
-	jnz	A88F
+	jnz	0A88Fh
 
 l0800_A8AF:
 	mov	ax,di
@@ -23587,108 +23587,108 @@ fn0800_A8B7 proc
 	push	si
 	push	di
 	xor	di,di
-	les	bx,[bp+0C]
-	inc	word ptr [bp+0C]
+	les	bx,[bp+0Ch]
+	inc	word ptr [bp+0Ch]
 	mov	cl,es:[bx]
 	mov	al,cl
-	cmp	al,72
-	jnz	A8D5
+	cmp	al,72h
+	jnz	0A8D5h
 
 l0800_A8CD:
-	mov	dx,0001
-	mov	si,0001
-	jmp	A8F3
+	mov	dx,1h
+	mov	si,1h
+	jmp	0A8F3h
 
 l0800_A8D5:
-	cmp	cl,77
-	jnz	A8DF
+	cmp	cl,77h
+	jnz	0A8DFh
 
 l0800_A8DA:
-	mov	dx,0302
-	jmp	A8E7
+	mov	dx,302h
+	jmp	0A8E7h
 
 l0800_A8DF:
-	cmp	cl,61
-	jnz	A8EF
+	cmp	cl,61h
+	jnz	0A8EFh
 
 l0800_A8E4:
-	mov	dx,0902
+	mov	dx,902h
 
 l0800_A8E7:
-	mov	di,0080
-	mov	si,0002
-	jmp	A8F3
+	mov	di,80h
+	mov	si,2h
+	jmp	0A8F3h
 
 l0800_A8EF:
 	xor	ax,ax
-	jmp	A967
+	jmp	0A967h
 
 l0800_A8F3:
-	les	bx,[bp+0C]
+	les	bx,[bp+0Ch]
 	mov	cl,es:[bx]
-	inc	word ptr [bp+0C]
-	cmp	cl,2B
-	jz	A914
+	inc	word ptr [bp+0Ch]
+	cmp	cl,2Bh
+	jz	0A914h
 
 l0800_A901:
-	les	bx,[bp+0C]
-	cmp	byte ptr es:[bx],2B
-	jnz	A92B
+	les	bx,[bp+0Ch]
+	cmp	byte ptr es:[bx],2Bh
+	jnz	0A92Bh
 
 l0800_A90A:
-	cmp	cl,74
-	jz	A914
+	cmp	cl,74h
+	jz	0A914h
 
 l0800_A90F:
-	cmp	cl,62
-	jnz	A92B
+	cmp	cl,62h
+	jnz	0A92Bh
 
 l0800_A914:
-	cmp	cl,2B
-	jnz	A91F
+	cmp	cl,2Bh
+	jnz	0A91Fh
 
 l0800_A919:
-	les	bx,[bp+0C]
+	les	bx,[bp+0Ch]
 	mov	cl,es:[bx]
 
 l0800_A91F:
-	and	dx,FC
-	or	dx,04
-	mov	di,0180
-	mov	si,0003
+	and	dx,0FCh
+	or	dx,4h
+	mov	di,180h
+	mov	si,3h
 
 l0800_A92B:
-	cmp	cl,74
-	jnz	A936
+	cmp	cl,74h
+	jnz	0A936h
 
 l0800_A930:
-	or	dx,4000
-	jmp	A953
+	or	dx,4000h
+	jmp	0A953h
 
 l0800_A936:
-	cmp	cl,62
-	jnz	A941
+	cmp	cl,62h
+	jnz	0A941h
 
 l0800_A93B:
-	or	dx,8000
-	jmp	A950
+	or	dx,8000h
+	jmp	0A950h
 
 l0800_A941:
-	mov	ax,[2512]
-	and	ax,C000
+	mov	ax,[2512h]
+	and	ax,0C000h
 	or	dx,ax
 	mov	ax,dx
-	test	ax,8000
-	jz	A953
+	test	ax,8000h
+	jz	0A953h
 
 l0800_A950:
-	or	si,40
+	or	si,40h
 
 l0800_A953:
-	mov	word ptr [2354],C7B5
-	les	bx,[bp+08]
+	mov	word ptr [2354h],0C7B5h
+	les	bx,[bp+8h]
 	mov	es:[bx],dx
-	les	bx,[bp+04]
+	les	bx,[bp+4h]
 	mov	es:[bx],di
 	mov	ax,si
 
@@ -23696,7 +23696,7 @@ l0800_A967:
 	pop	di
 	pop	si
 	pop	bp
-	ret	000C
+	ret	0Ch
 
 ;; fn0800_A96D: 0800:A96D
 ;;   Called from:
@@ -23704,73 +23704,73 @@ l0800_A967:
 fn0800_A96D proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
+	sub	sp,4h
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
 	push	ss
-	lea	ax,[bp-02]
+	lea	ax,[bp-2h]
 	push	ax
 	push	ss
-	lea	ax,[bp-04]
+	lea	ax,[bp-4h]
 	push	ax
-	call	A8B7
-	les	bx,[bp+0E]
-	mov	es:[bx+02],ax
+	call	0A8B7h
+	les	bx,[bp+0Eh]
+	mov	es:[bx+2h],ax
 	or	ax,ax
-	jz	A9B9
+	jz	0A9B9h
 
 l0800_A991:
-	cmp	byte ptr es:[bx+04],00
-	jge	A9CD
+	cmp	byte ptr es:[bx+4h],0h
+	jge	0A9CDh
 
 l0800_A998:
-	push	word ptr [bp-04]
-	mov	ax,[bp-02]
-	or	ax,[bp+04]
+	push	word ptr [bp-4h]
+	mov	ax,[bp-2h]
+	or	ax,[bp+4h]
 	push	ax
-	push	word ptr [bp+0C]
-	push	word ptr [bp+0A]
-	call	B140
-	add	sp,08
-	les	bx,[bp+0E]
-	mov	es:[bx+04],al
+	push	word ptr [bp+0Ch]
+	push	word ptr [bp+0Ah]
+	call	0B140h
+	add	sp,8h
+	les	bx,[bp+0Eh]
+	mov	es:[bx+4h],al
 	or	al,al
-	jge	A9CD
+	jge	0A9CDh
 
 l0800_A9B9:
-	les	bx,[bp+0E]
-	mov	byte ptr es:[bx+04],FF
-	mov	word ptr es:[bx+02],0000
+	les	bx,[bp+0Eh]
+	mov	byte ptr es:[bx+4h],0FFh
+	mov	word ptr es:[bx+2h],0h
 
 l0800_A9C7:
 	xor	dx,dx
 	xor	ax,ax
-	jmp	AA2E
+	jmp	0AA2Eh
 
 l0800_A9CD:
-	les	bx,[bp+0E]
-	mov	al,es:[bx+04]
+	les	bx,[bp+0Eh]
+	mov	al,es:[bx+4h]
 	cbw
 	push	ax
-	call	8D76
+	call	8D76h
 	pop	cx
 	or	ax,ax
-	jz	A9E7
+	jz	0A9E7h
 
 l0800_A9DE:
-	les	bx,[bp+0E]
-	or	word ptr es:[bx+02],0200
+	les	bx,[bp+0Eh]
+	or	word ptr es:[bx+2h],200h
 
 l0800_A9E7:
-	mov	ax,0200
+	mov	ax,200h
 	push	ax
-	les	bx,[bp+0E]
-	test	word ptr es:[bx+02],0200
-	jz	A9FB
+	les	bx,[bp+0Eh]
+	test	word ptr es:[bx+2h],200h
+	jz	0A9FBh
 
 l0800_A9F6:
-	mov	ax,0001
-	jmp	A9FD
+	mov	ax,1h
+	jmp	0A9FDh
 
 l0800_A9FB:
 	xor	ax,ax
@@ -23780,31 +23780,31 @@ l0800_A9FD:
 	xor	ax,ax
 	push	ax
 	push	ax
-	push	word ptr [bp+10]
-	push	word ptr [bp+0E]
-	call	BA89
-	add	sp,0C
+	push	word ptr [bp+10h]
+	push	word ptr [bp+0Eh]
+	call	0BA89h
+	add	sp,0Ch
 	or	ax,ax
-	jz	AA1F
+	jz	0AA1Fh
 
 l0800_AA12:
-	push	word ptr [bp+10]
-	push	word ptr [bp+0E]
-	call	A614
+	push	word ptr [bp+10h]
+	push	word ptr [bp+0Eh]
+	call	0A614h
 	pop	cx
 	pop	cx
-	jmp	A9C7
+	jmp	0A9C7h
 
 l0800_AA1F:
-	les	bx,[bp+0E]
-	mov	word ptr es:[bx+10],0000
-	mov	dx,[bp+10]
-	mov	ax,[bp+0E]
+	les	bx,[bp+0Eh]
+	mov	word ptr es:[bx+10h],0h
+	mov	dx,[bp+10h]
+	mov	ax,[bp+0Eh]
 
 l0800_AA2E:
 	mov	sp,bp
 	pop	bp
-	ret	000E
+	ret	0Eh
 
 ;; fn0800_AA34: 0800:AA34
 ;;   Called from:
@@ -23812,40 +23812,40 @@ l0800_AA2E:
 fn0800_AA34 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
-	mov	[bp-02],ds
-	mov	word ptr [bp-04],2358
+	sub	sp,4h
+	mov	[bp-2h],ds
+	mov	word ptr [bp-4h],2358h
 
 l0800_AA42:
-	les	bx,[bp-04]
-	cmp	byte ptr es:[bx+04],00
-	jl	AA64
+	les	bx,[bp-4h]
+	cmp	byte ptr es:[bx+4h],0h
+	jl	0AA64h
 
 l0800_AA4C:
-	mov	ax,[bp-04]
-	add	word ptr [bp-04],14
+	mov	ax,[bp-4h]
+	add	word ptr [bp-4h],14h
 	push	ax
-	mov	ax,[24E8]
-	mov	dx,0014
+	mov	ax,[24E8h]
+	mov	dx,14h
 	imul	dx
-	add	ax,2358
+	add	ax,2358h
 	pop	dx
 	cmp	dx,ax
-	jc	AA42
+	jc	0AA42h
 
 l0800_AA64:
-	les	bx,[bp-04]
-	cmp	byte ptr es:[bx+04],00
-	jl	AA74
+	les	bx,[bp-4h]
+	cmp	byte ptr es:[bx+4h],0h
+	jl	0AA74h
 
 l0800_AA6E:
 	xor	dx,dx
 	xor	ax,ax
-	jmp	AA7A
+	jmp	0AA7Ah
 
 l0800_AA74:
-	mov	dx,[bp-02]
-	mov	ax,[bp-04]
+	mov	dx,[bp-2h]
+	mov	ax,[bp-4h]
 
 l0800_AA7A:
 	mov	sp,bp
@@ -23863,28 +23863,28 @@ l0800_AA7A:
 fn0800_AA7E proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
-	call	AA34
-	mov	[bp-02],dx
-	mov	[bp-04],ax
+	sub	sp,4h
+	call	0AA34h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
 	or	ax,dx
-	jnz	AA97
+	jnz	0AA97h
 
 l0800_AA91:
 	xor	dx,dx
 	xor	ax,ax
-	jmp	AAAF
+	jmp	0AAAFh
 
 l0800_AA97:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
 	xor	ax,ax
 	push	ax
-	call	A96D
+	call	0A96Dh
 
 l0800_AAAF:
 	mov	sp,bp
@@ -23900,141 +23900,141 @@ fn0800_AAB3 proc
 	mov	bp,sp
 	push	si
 	push	di
-	jmp	AB91
+	jmp	0AB91h
 
 l0800_AABB:
-	inc	word ptr [bp+08]
-	les	bx,[bp+04]
-	mov	ax,es:[bx+06]
-	cmp	ax,[bp+08]
-	jbe	AACF
+	inc	word ptr [bp+8h]
+	les	bx,[bp+4h]
+	mov	ax,es:[bx+6h]
+	cmp	ax,[bp+8h]
+	jbe	0AACFh
 
 l0800_AACA:
-	mov	ax,[bp+08]
-	jmp	AAD6
+	mov	ax,[bp+8h]
+	jmp	0AAD6h
 
 l0800_AACF:
-	les	bx,[bp+04]
-	mov	ax,es:[bx+06]
+	les	bx,[bp+4h]
+	mov	ax,es:[bx+6h]
 
 l0800_AAD6:
 	mov	di,ax
-	les	bx,[bp+04]
-	test	word ptr es:[bx+02],0040
-	jz	AB50
+	les	bx,[bp+4h]
+	test	word ptr es:[bx+2h],40h
+	jz	0AB50h
 
 l0800_AAE3:
-	cmp	word ptr es:[bx+06],00
-	jz	AB50
+	cmp	word ptr es:[bx+6h],0h
+	jz	0AB50h
 
 l0800_AAEA:
-	mov	ax,es:[bx+06]
-	cmp	ax,[bp+08]
-	jnc	AB50
+	mov	ax,es:[bx+6h]
+	cmp	ax,[bp+8h]
+	jnc	0AB50h
 
 l0800_AAF3:
-	cmp	word ptr es:[bx],00
-	jnz	AB50
+	cmp	word ptr es:[bx],0h
+	jnz	0AB50h
 
 l0800_AAF9:
-	dec	word ptr [bp+08]
+	dec	word ptr [bp+8h]
 	xor	di,di
-	jmp	AB0E
+	jmp	0AB0Eh
 
 l0800_AB00:
-	les	bx,[bp+04]
-	add	di,es:[bx+06]
-	mov	ax,es:[bx+06]
-	sub	[bp+08],ax
+	les	bx,[bp+4h]
+	add	di,es:[bx+6h]
+	mov	ax,es:[bx+6h]
+	sub	[bp+8h],ax
 
 l0800_AB0E:
-	les	bx,[bp+04]
-	mov	ax,es:[bx+06]
-	cmp	ax,[bp+08]
-	jbe	AB00
+	les	bx,[bp+4h]
+	mov	ax,es:[bx+6h]
+	cmp	ax,[bp+8h]
+	jbe	0AB00h
 
 l0800_AB1A:
 	push	di
-	push	word ptr [bp+0C]
-	push	word ptr [bp+0A]
-	mov	al,es:[bx+04]
+	push	word ptr [bp+0Ch]
+	push	word ptr [bp+0Ah]
+	mov	al,es:[bx+4h]
 	cbw
 	push	ax
-	call	8F50
-	add	sp,08
+	call	8F50h
+	add	sp,8h
 	mov	dx,ax
-	add	[bp+0A],dx
+	add	[bp+0Ah],dx
 	cmp	dx,di
-	jz	AB91
+	jz	0AB91h
 
 l0800_AB36:
 	mov	ax,di
 	sub	ax,dx
-	add	[bp+08],ax
+	add	[bp+8h],ax
 
 l0800_AB3D:
-	les	bx,[bp+04]
-	or	word ptr es:[bx+02],20
-	jmp	AB9A
+	les	bx,[bp+4h]
+	or	word ptr es:[bx+2h],20h
+	jmp	0AB9Ah
 
 l0800_AB47:
-	les	bx,[bp+0A]
+	les	bx,[bp+0Ah]
 	mov	es:[bx],dl
-	inc	word ptr [bp+0A]
+	inc	word ptr [bp+0Ah]
 
 l0800_AB50:
-	dec	word ptr [bp+08]
-	mov	ax,[bp+08]
+	dec	word ptr [bp+8h]
+	mov	ax,[bp+8h]
 	or	ax,ax
-	jz	AB8C
+	jz	0AB8Ch
 
 l0800_AB5A:
 	dec	di
-	jz	AB8C
+	jz	0AB8Ch
 
 l0800_AB5D:
-	les	bx,[bp+04]
+	les	bx,[bp+4h]
 	dec	word ptr es:[bx]
-	jl	AB7A
+	jl	0AB7Ah
 
 l0800_AB65:
-	mov	ax,es:[bx+0E]
-	mov	si,es:[bx+0C]
-	inc	word ptr es:[bx+0C]
+	mov	ax,es:[bx+0Eh]
+	mov	si,es:[bx+0Ch]
+	inc	word ptr es:[bx+0Ch]
 	mov	es,ax
 	mov	al,es:[si]
-	mov	ah,00
-	jmp	AB85
+	mov	ah,0h
+	jmp	0AB85h
 
 l0800_AB7A:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	AEC2
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0AEC2h
 	pop	cx
 	pop	cx
 
 l0800_AB85:
 	mov	dx,ax
-	cmp	ax,FFFF
-	jnz	AB47
+	cmp	ax,0FFFFh
+	jnz	0AB47h
 
 l0800_AB8C:
-	cmp	dx,FF
-	jz	AB3D
+	cmp	dx,0FFh
+	jz	0AB3Dh
 
 l0800_AB91:
-	cmp	word ptr [bp+08],00
-	jz	AB9A
+	cmp	word ptr [bp+8h],0h
+	jz	0AB9Ah
 
 l0800_AB97:
-	jmp	AABB
+	jmp	0AABBh
 
 l0800_AB9A:
-	mov	ax,[bp+08]
+	mov	ax,[bp+8h]
 	pop	di
 	pop	si
 	pop	bp
-	ret	000A
+	ret	0Ah
 
 ;; fn0800_ABA3: 0800:ABA3
 ;;   Called from:
@@ -24042,82 +24042,82 @@ l0800_AB9A:
 fn0800_ABA3 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
+	sub	sp,4h
 	push	si
 	push	di
-	mov	di,[bp+08]
+	mov	di,[bp+8h]
 	or	di,di
-	jnz	ABB6
+	jnz	0ABB6h
 
 l0800_ABB2:
 	xor	ax,ax
-	jmp	AC2B
+	jmp	0AC2Bh
 
 l0800_ABB6:
 	mov	bx,di
 	xor	cx,cx
-	mov	ax,[bp+0A]
+	mov	ax,[bp+0Ah]
 	xor	dx,dx
-	call	8F18
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	cmp	dx,01
-	ja	ABF2
+	call	8F18h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	cmp	dx,1h
+	ja	0ABF2h
 
 l0800_ABCD:
-	jc	ABD3
+	jc	0ABD3h
 
 l0800_ABCF:
 	or	ax,ax
-	jnc	ABF2
+	jnc	0ABF2h
 
 l0800_ABD3:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	push	word ptr [bp-04]
-	push	word ptr [bp+0E]
-	push	word ptr [bp+0C]
-	call	AAB3
-	mov	dx,[bp-04]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	push	word ptr [bp-4h]
+	push	word ptr [bp+0Eh]
+	push	word ptr [bp+0Ch]
+	call	0AAB3h
+	mov	dx,[bp-4h]
 	sub	dx,ax
 	push	dx
 	xor	dx,dx
 	pop	ax
 	div	di
-	jmp	AC2B
+	jmp	0AC2Bh
 
 l0800_ABF2:
-	mov	si,[bp+0A]
+	mov	si,[bp+0Ah]
 	inc	si
-	jmp	AC0B
+	jmp	0AC0Bh
 
 l0800_ABF8:
 	mov	bx,di
 	xor	cx,cx
-	mov	dx,[bp+06]
-	mov	ax,[bp+04]
-	call	8CCB
-	mov	[bp+06],dx
-	mov	[bp+04],ax
+	mov	dx,[bp+6h]
+	mov	ax,[bp+4h]
+	call	8CCBh
+	mov	[bp+6h],dx
+	mov	[bp+4h],ax
 
 l0800_AC0B:
 	dec	si
 	mov	ax,si
 	or	ax,ax
-	jz	AC26
+	jz	0AC26h
 
 l0800_AC12:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
 	push	di
-	push	word ptr [bp+0E]
-	push	word ptr [bp+0C]
-	call	AAB3
+	push	word ptr [bp+0Eh]
+	push	word ptr [bp+0Ch]
+	call	0AAB3h
 	or	ax,ax
-	jz	ABF8
+	jz	0ABF8h
 
 l0800_AC26:
-	mov	ax,[bp+0A]
+	mov	ax,[bp+0Ah]
 	sub	ax,si
 
 l0800_AC2B:
@@ -24135,21 +24135,21 @@ l0800_AC2B:
 fn0800_AC31 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
+	sub	sp,4h
 	push	si
-	les	bx,[bp+04]
-	cmp	word ptr es:[bx],00
-	jge	AC4D
+	les	bx,[bp+4h]
+	cmp	word ptr es:[bx],0h
+	jge	0AC4Dh
 
 l0800_AC41:
-	mov	cx,es:[bx+06]
+	mov	cx,es:[bx+6h]
 	add	cx,es:[bx]
 	inc	cx
 	mov	si,cx
-	jmp	AC5C
+	jmp	0AC5Ch
 
 l0800_AC4D:
-	les	bx,[bp+04]
+	les	bx,[bp+4h]
 	mov	ax,es:[bx]
 	cwd
 	xor	ax,dx
@@ -24158,27 +24158,27 @@ l0800_AC4D:
 	mov	si,ax
 
 l0800_AC5C:
-	les	bx,[bp+04]
-	test	word ptr es:[bx+02],0040
-	jnz	ACAA
+	les	bx,[bp+4h]
+	test	word ptr es:[bx+2h],40h
+	jnz	0ACAAh
 
 l0800_AC67:
-	les	bx,[bp+04]
-	mov	ax,es:[bx+0E]
-	mov	dx,es:[bx+0C]
-	mov	[bp-02],ax
-	mov	[bp-04],dx
-	cmp	word ptr es:[bx],00
-	jge	ACA3
+	les	bx,[bp+4h]
+	mov	ax,es:[bx+0Eh]
+	mov	dx,es:[bx+0Ch]
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
+	cmp	word ptr es:[bx],0h
+	jge	0ACA3h
 
 l0800_AC7E:
-	jmp	AC8D
+	jmp	0AC8Dh
 
 l0800_AC80:
-	dec	word ptr [bp-04]
-	les	bx,[bp-04]
-	cmp	byte ptr es:[bx],0A
-	jnz	AC8D
+	dec	word ptr [bp-4h]
+	les	bx,[bp-4h]
+	cmp	byte ptr es:[bx],0Ah
+	jnz	0AC8Dh
 
 l0800_AC8C:
 	inc	si
@@ -24187,16 +24187,16 @@ l0800_AC8D:
 	mov	ax,cx
 	dec	cx
 	or	ax,ax
-	jnz	AC80
+	jnz	0AC80h
 
 l0800_AC94:
-	jmp	ACAA
+	jmp	0ACAAh
 
 l0800_AC96:
-	les	bx,[bp-04]
-	inc	word ptr [bp-04]
-	cmp	byte ptr es:[bx],0A
-	jnz	ACA3
+	les	bx,[bp-4h]
+	inc	word ptr [bp-4h]
+	cmp	byte ptr es:[bx],0Ah
+	jnz	0ACA3h
 
 l0800_ACA2:
 	inc	si
@@ -24205,14 +24205,14 @@ l0800_ACA3:
 	mov	ax,cx
 	dec	cx
 	or	ax,ax
-	jnz	AC96
+	jnz	0AC96h
 
 l0800_ACAA:
 	mov	ax,si
 	pop	si
 	mov	sp,bp
 	pop	bp
-	ret	0004
+	ret	4h
 
 ;; fn0800_ACB3: 0800:ACB3
 ;;   Called from:
@@ -24309,62 +24309,62 @@ fn0800_ACB3 proc
 	push	bp
 	mov	bp,sp
 	push	si
-	mov	si,[bp+0C]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	A6B7
+	mov	si,[bp+0Ch]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0A6B7h
 	pop	cx
 	pop	cx
 	or	ax,ax
-	jz	ACCE
+	jz	0ACCEh
 
 l0800_ACC9:
-	mov	ax,FFFF
-	jmp	AD2C
+	mov	ax,0FFFFh
+	jmp	0AD2Ch
 
 l0800_ACCE:
-	cmp	si,01
-	jnz	ACEA
+	cmp	si,1h
+	jnz	0ACEAh
 
 l0800_ACD3:
-	les	bx,[bp+04]
-	cmp	word ptr es:[bx],00
-	jle	ACEA
+	les	bx,[bp+4h]
+	cmp	word ptr es:[bx],0h
+	jle	0ACEAh
 
 l0800_ACDC:
-	push	word ptr [bp+06]
+	push	word ptr [bp+6h]
 	push	bx
-	call	AC31
+	call	0AC31h
 	cwd
-	sub	[bp+08],ax
-	sbb	[bp+0A],dx
+	sub	[bp+8h],ax
+	sbb	[bp+0Ah],dx
 
 l0800_ACEA:
-	les	bx,[bp+04]
-	and	word ptr es:[bx+02],FE5F
-	mov	word ptr es:[bx],0000
-	mov	ax,es:[bx+0A]
-	mov	dx,es:[bx+08]
-	mov	es:[bx+0E],ax
-	mov	es:[bx+0C],dx
+	les	bx,[bp+4h]
+	and	word ptr es:[bx+2h],0FE5Fh
+	mov	word ptr es:[bx],0h
+	mov	ax,es:[bx+0Ah]
+	mov	dx,es:[bx+8h]
+	mov	es:[bx+0Eh],ax
+	mov	es:[bx+0Ch],dx
 	push	si
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	mov	al,es:[bx+04]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	mov	al,es:[bx+4h]
 	cbw
 	push	ax
-	call	8E29
-	add	sp,08
-	cmp	dx,FF
-	jnz	AD2A
+	call	8E29h
+	add	sp,8h
+	cmp	dx,0FFh
+	jnz	0AD2Ah
 
 l0800_AD20:
-	cmp	ax,FFFF
-	jnz	AD2A
+	cmp	ax,0FFFFh
+	jnz	0AD2Ah
 
 l0800_AD25:
-	mov	ax,FFFF
-	jmp	AD2C
+	mov	ax,0FFFFh
+	jmp	0AD2Ch
 
 l0800_AD2A:
 	xor	ax,ax
@@ -24414,47 +24414,47 @@ l0800_AD2C:
 fn0800_AD2F proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
-	les	bx,[bp+04]
-	mov	al,es:[bx+04]
+	sub	sp,4h
+	les	bx,[bp+4h]
+	mov	al,es:[bx+4h]
 	cbw
 	push	ax
-	call	97B6
+	call	97B6h
 	pop	cx
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	cmp	dx,FF
-	jnz	AD52
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	cmp	dx,0FFh
+	jnz	0AD52h
 
 l0800_AD4D:
-	cmp	ax,FFFF
-	jz	AD7B
+	cmp	ax,0FFFFh
+	jz	0AD7Bh
 
 l0800_AD52:
-	les	bx,[bp+04]
-	cmp	word ptr es:[bx],00
-	jge	AD6B
+	les	bx,[bp+4h]
+	cmp	word ptr es:[bx],0h
+	jge	0AD6Bh
 
 l0800_AD5B:
-	push	word ptr [bp+06]
+	push	word ptr [bp+6h]
 	push	bx
-	call	AC31
+	call	0AC31h
 	cwd
-	add	[bp-04],ax
-	adc	[bp-02],dx
-	jmp	AD7B
+	add	[bp-4h],ax
+	adc	[bp-2h],dx
+	jmp	0AD7Bh
 
 l0800_AD6B:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	AC31
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0AC31h
 	cwd
-	sub	[bp-04],ax
-	sbb	[bp-02],dx
+	sub	[bp-4h],ax
+	sbb	[bp-2h],dx
 
 l0800_AD7B:
-	mov	dx,[bp-02]
-	mov	ax,[bp-04]
+	mov	dx,[bp-2h]
+	mov	ax,[bp-4h]
 	mov	sp,bp
 	pop	bp
 	ret
@@ -24465,80 +24465,80 @@ l0800_AD7B:
 fn0800_AD85 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
+	sub	sp,4h
 	push	si
 	push	di
-	mov	di,[bp+08]
+	mov	di,[bp+8h]
 	or	di,di
-	jz	AE07
+	jz	0AE07h
 
 l0800_AD94:
 	mov	bx,di
 	xor	cx,cx
-	mov	ax,[bp+0A]
+	mov	ax,[bp+0Ah]
 	xor	dx,dx
-	call	8F18
-	mov	[bp-02],dx
-	mov	[bp-04],ax
-	cmp	dx,01
-	ja	ADC9
+	call	8F18h
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
+	cmp	dx,1h
+	ja	0ADC9h
 
 l0800_ADAB:
-	jc	ADB1
+	jc	0ADB1h
 
 l0800_ADAD:
 	or	ax,ax
-	jnc	ADC9
+	jnc	0ADC9h
 
 l0800_ADB1:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	push	word ptr [bp-04]
-	push	word ptr [bp+0E]
-	push	word ptr [bp+0C]
-	call	B4BE
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	push	word ptr [bp-4h]
+	push	word ptr [bp+0Eh]
+	push	word ptr [bp+0Ch]
+	call	0B4BEh
 	xor	dx,dx
 	div	di
-	jmp	AE0A
+	jmp	0AE0Ah
 
 l0800_ADC9:
 	xor	si,si
-	cmp	si,[bp+0A]
-	jnc	AE07
+	cmp	si,[bp+0Ah]
+	jnc	0AE07h
 
 l0800_ADD0:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
 	push	di
-	push	word ptr [bp+0E]
-	push	word ptr [bp+0C]
-	call	B4BE
+	push	word ptr [bp+0Eh]
+	push	word ptr [bp+0Ch]
+	call	0B4BEh
 	xor	dx,dx
 	or	dx,dx
-	jnz	ADEA
+	jnz	0ADEAh
 
 l0800_ADE6:
 	cmp	ax,di
-	jz	ADEE
+	jz	0ADEEh
 
 l0800_ADEA:
 	mov	ax,si
-	jmp	AE0A
+	jmp	0AE0Ah
 
 l0800_ADEE:
 	mov	bx,di
 	xor	cx,cx
-	mov	dx,[bp+06]
-	mov	ax,[bp+04]
-	call	8CCB
-	mov	[bp+06],dx
-	mov	[bp+04],ax
+	mov	dx,[bp+6h]
+	mov	ax,[bp+4h]
+	call	8CCBh
+	mov	[bp+6h],dx
+	mov	[bp+4h],ax
 	inc	si
-	cmp	si,[bp+0A]
-	jc	ADD0
+	cmp	si,[bp+0Ah]
+	jc	0ADD0h
 
 l0800_AE07:
-	mov	ax,[bp+0A]
+	mov	ax,[bp+0Ah]
 
 l0800_AE0A:
 	pop	di
@@ -24554,35 +24554,35 @@ l0800_AE0A:
 fn0800_AE10 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
+	sub	sp,4h
 	push	si
-	mov	si,0014
-	mov	[bp-02],ds
-	mov	word ptr [bp-04],2358
-	jmp	AE40
+	mov	si,14h
+	mov	[bp-2h],ds
+	mov	word ptr [bp-4h],2358h
+	jmp	0AE40h
 
 l0800_AE24:
-	les	bx,[bp-04]
-	mov	ax,es:[bx+02]
-	and	ax,0300
-	cmp	ax,0300
-	jnz	AE3C
+	les	bx,[bp-4h]
+	mov	ax,es:[bx+2h]
+	and	ax,300h
+	cmp	ax,300h
+	jnz	0AE3Ch
 
 l0800_AE33:
-	push	word ptr [bp-02]
+	push	word ptr [bp-2h]
 	push	bx
-	call	A6B7
+	call	0A6B7h
 	pop	cx
 	pop	cx
 
 l0800_AE3C:
-	add	word ptr [bp-04],14
+	add	word ptr [bp-4h],14h
 
 l0800_AE40:
 	mov	ax,si
 	dec	si
 	or	ax,ax
-	jnz	AE24
+	jnz	0AE24h
 
 l0800_AE47:
 	pop	si
@@ -24596,60 +24596,60 @@ l0800_AE47:
 fn0800_AE4C proc
 	push	bp
 	mov	bp,sp
-	les	bx,[bp+04]
-	test	word ptr es:[bx+02],0200
-	jz	AE5D
+	les	bx,[bp+4h]
+	test	word ptr es:[bx+2h],200h
+	jz	0AE5Dh
 
 l0800_AE5A:
-	call	AE10
+	call	0AE10h
 
 l0800_AE5D:
-	les	bx,[bp+04]
-	push	word ptr es:[bx+06]
-	mov	ax,es:[bx+0A]
-	mov	dx,es:[bx+08]
-	mov	es:[bx+0E],ax
-	mov	es:[bx+0C],dx
+	les	bx,[bp+4h]
+	push	word ptr es:[bx+6h]
+	mov	ax,es:[bx+0Ah]
+	mov	dx,es:[bx+8h]
+	mov	es:[bx+0Eh],ax
+	mov	es:[bx+0Ch],dx
 	push	ax
 	push	dx
-	mov	al,es:[bx+04]
+	mov	al,es:[bx+4h]
 	cbw
 	push	ax
-	call	B97F
-	add	sp,08
-	les	bx,[bp+04]
+	call	0B97Fh
+	add	sp,8h
+	les	bx,[bp+4h]
 	mov	es:[bx],ax
 	or	ax,ax
-	jle	AE95
+	jle	0AE95h
 
 l0800_AE8C:
-	and	word ptr es:[bx+02],DF
+	and	word ptr es:[bx+2h],0DFh
 	xor	ax,ax
-	jmp	AEBE
+	jmp	0AEBEh
 
 l0800_AE95:
-	les	bx,[bp+04]
-	cmp	word ptr es:[bx],00
-	jnz	AEAE
+	les	bx,[bp+4h]
+	cmp	word ptr es:[bx],0h
+	jnz	0AEAEh
 
 l0800_AE9E:
-	mov	ax,es:[bx+02]
-	and	ax,FE7F
-	or	ax,0020
-	mov	es:[bx+02],ax
-	jmp	AEBB
+	mov	ax,es:[bx+2h]
+	and	ax,0FE7Fh
+	or	ax,20h
+	mov	es:[bx+2h],ax
+	jmp	0AEBBh
 
 l0800_AEAE:
-	les	bx,[bp+04]
-	mov	word ptr es:[bx],0000
-	or	word ptr es:[bx+02],10
+	les	bx,[bp+4h]
+	mov	word ptr es:[bx],0h
+	or	word ptr es:[bx+2h],10h
 
 l0800_AEBB:
-	mov	ax,FFFF
+	mov	ax,0FFFFh
 
 l0800_AEBE:
 	pop	bp
-	ret	0004
+	ret	4h
 
 ;; fn0800_AEC2: 0800:AEC2
 ;;   Called from:
@@ -24660,11 +24660,11 @@ l0800_AEBE:
 fn0800_AEC2 proc
 	push	bp
 	mov	bp,sp
-	les	bx,[bp+04]
+	les	bx,[bp+4h]
 	inc	word ptr es:[bx]
-	push	word ptr [bp+06]
+	push	word ptr [bp+6h]
 	push	bx
-	call	AED6
+	call	0AED6h
 	pop	cx
 	pop	cx
 	pop	bp
@@ -24677,121 +24677,121 @@ fn0800_AED6 proc
 	push	bp
 	mov	bp,sp
 	push	si
-	mov	ax,[bp+04]
-	or	ax,[bp+06]
-	jnz	AEE8
+	mov	ax,[bp+4h]
+	or	ax,[bp+6h]
+	jnz	0AEE8h
 
 l0800_AEE2:
-	mov	ax,FFFF
-	jmp	AFBD
+	mov	ax,0FFFFh
+	jmp	0AFBDh
 
 l0800_AEE8:
-	les	bx,[bp+04]
-	cmp	word ptr es:[bx],00
-	jle	AF0B
+	les	bx,[bp+4h]
+	cmp	word ptr es:[bx],0h
+	jle	0AF0Bh
 
 l0800_AEF1:
-	les	bx,[bp+04]
+	les	bx,[bp+4h]
 	dec	word ptr es:[bx]
-	mov	ax,es:[bx+0E]
-	mov	si,es:[bx+0C]
-	inc	word ptr es:[bx+0C]
+	mov	ax,es:[bx+0Eh]
+	mov	si,es:[bx+0Ch]
+	inc	word ptr es:[bx+0Ch]
 	mov	es,ax
 	mov	al,es:[si]
-	jmp	AFBB
+	jmp	0AFBBh
 
 l0800_AF0B:
-	les	bx,[bp+04]
-	cmp	word ptr es:[bx],00
-	jl	AF7F
+	les	bx,[bp+4h]
+	cmp	word ptr es:[bx],0h
+	jl	0AF7Fh
 
 l0800_AF14:
-	test	word ptr es:[bx+02],0110
-	jnz	AF7F
+	test	word ptr es:[bx+2h],110h
+	jnz	0AF7Fh
 
 l0800_AF1C:
-	test	word ptr es:[bx+02],0001
-	jz	AF7F
+	test	word ptr es:[bx+2h],1h
+	jz	0AF7Fh
 
 l0800_AF24:
-	les	bx,[bp+04]
-	or	word ptr es:[bx+02],0080
-	cmp	word ptr es:[bx+06],00
-	jz	AF43
+	les	bx,[bp+4h]
+	or	word ptr es:[bx+2h],80h
+	cmp	word ptr es:[bx+6h],0h
+	jz	0AF43h
 
 l0800_AF34:
-	push	word ptr [bp+06]
+	push	word ptr [bp+6h]
 	push	bx
-	call	AE4C
+	call	0AE4Ch
 	or	ax,ax
-	jz	AEF1
+	jz	0AEF1h
 
 l0800_AF3F:
-	jmp	AEE2
+	jmp	0AEE2h
 0800:AF41    EB AE                                         ..            
 
 l0800_AF43:
-	les	bx,[bp+04]
-	test	word ptr es:[bx+02],0200
-	jz	AF51
+	les	bx,[bp+4h]
+	test	word ptr es:[bx+2h],200h
+	jz	0AF51h
 
 l0800_AF4E:
-	call	AE10
+	call	0AE10h
 
 l0800_AF51:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
 	push	ds
-	mov	ax,4EE4
+	mov	ax,4EE4h
 	push	ax
-	les	bx,[bp+04]
-	mov	al,es:[bx+04]
+	les	bx,[bp+4h]
+	mov	al,es:[bx+4h]
 	cbw
 	push	ax
-	call	B97F
-	add	sp,08
+	call	0B97Fh
+	add	sp,8h
 	or	ax,ax
-	jnz	AF9E
+	jnz	0AF9Eh
 
 l0800_AF6D:
-	les	bx,[bp+04]
-	mov	al,es:[bx+04]
+	les	bx,[bp+4h]
+	mov	al,es:[bx+4h]
 	cbw
 	push	ax
-	call	A59D
+	call	0A59Dh
 	pop	cx
-	cmp	ax,0001
-	jz	AF8A
+	cmp	ax,1h
+	jz	0AF8Ah
 
 l0800_AF7F:
-	les	bx,[bp+04]
-	or	word ptr es:[bx+02],10
-	jmp	AEE2
+	les	bx,[bp+4h]
+	or	word ptr es:[bx+2h],10h
+	jmp	0AEE2h
 
 l0800_AF8A:
-	les	bx,[bp+04]
-	mov	ax,es:[bx+02]
-	and	ax,FE7F
-	or	ax,0020
-	mov	es:[bx+02],ax
-	jmp	AEE2
+	les	bx,[bp+4h]
+	mov	ax,es:[bx+2h]
+	and	ax,0FE7Fh
+	or	ax,20h
+	mov	es:[bx+2h],ax
+	jmp	0AEE2h
 
 l0800_AF9E:
-	cmp	byte ptr [4EE4],0D
-	jnz	AFB0
+	cmp	byte ptr [4EE4h],0Dh
+	jnz	0AFB0h
 
 l0800_AFA5:
-	les	bx,[bp+04]
-	test	word ptr es:[bx+02],0040
-	jz	AF43
+	les	bx,[bp+4h]
+	test	word ptr es:[bx+2h],40h
+	jz	0AF43h
 
 l0800_AFB0:
-	les	bx,[bp+04]
-	and	word ptr es:[bx+02],DF
-	mov	al,[4EE4]
+	les	bx,[bp+4h]
+	and	word ptr es:[bx+2h],0DFh
+	mov	al,[4EE4h]
 
 l0800_AFBB:
-	mov	ah,00
+	mov	ah,0h
 
 l0800_AFBD:
 	pop	si
@@ -24805,18 +24805,18 @@ l0800_AFBD:
 fn0800_AFCB proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
+	sub	sp,4h
 	push	si
 	push	di
-	les	di,[bp+04]
+	les	di,[bp+4h]
 	mov	ax,es
 	or	ax,di
-	jz	AFFC
+	jz	0AFFCh
 
 l0800_AFDC:
-	mov	al,00
+	mov	al,0h
 	mov	ah,es:[di]
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 	cld
 
 l0800_AFE5:
@@ -24825,48 +24825,48 @@ l0800_AFE5:
 l0800_AFE7:
 	not	cx
 	dec	cx
-	jz	AFFC
+	jz	0AFFCh
 
 l0800_AFEC:
-	les	di,[26AA]
-	mov	[bp-02],es
+	les	di,[26AAh]
+	mov	[bp-2h],es
 	mov	bx,es
 	or	bx,di
-	mov	[bp-04],di
-	jnz	B009
+	mov	[bp-4h],di
+	jnz	0B009h
 
 l0800_AFFC:
 	xor	dx,dx
 	xor	ax,ax
-	jmp	B035
+	jmp	0B035h
 
 l0800_B002:
-	add	word ptr [bp-04],04
-	les	di,[bp-04]
+	add	word ptr [bp-4h],4h
+	les	di,[bp-4h]
 
 l0800_B009:
 	les	di,es:[di]
 	mov	bx,es
 	or	bx,di
-	jz	AFFC
+	jz	0AFFCh
 
 l0800_B012:
 	mov	al,es:[di]
 	or	al,al
-	jz	AFFC
+	jz	0AFFCh
 
 l0800_B019:
 	cmp	ah,al
-	jnz	B002
+	jnz	0B002h
 
 l0800_B01D:
 	mov	bx,cx
-	cmp	byte ptr es:[bx+di],3D
-	jnz	B002
+	cmp	byte ptr es:[bx+di],3Dh
+	jnz	0B002h
 
 l0800_B025:
 	push	ds
-	lds	si,[bp+04]
+	lds	si,[bp+4h]
 
 l0800_B029:
 	rep cmpsb
@@ -24874,7 +24874,7 @@ l0800_B029:
 l0800_B02B:
 	pop	ds
 	xchg	bx,cx
-	jnz	B002
+	jnz	0B002h
 
 l0800_B030:
 	inc	di
@@ -24898,25 +24898,25 @@ fn0800_B03B proc
 	push	si
 	push	di
 	mov	dx,ds
-	les	di,[bp+04]
-	lds	si,[bp+08]
-	mov	cx,[bp+0C]
-	shr	cx,01
+	les	di,[bp+4h]
+	lds	si,[bp+8h]
+	mov	cx,[bp+0Ch]
+	shr	cx,1h
 	cld
 
 l0800_B04E:
 	rep movsw
 
 l0800_B050:
-	jnc	B053
+	jnc	0B053h
 
 l0800_B052:
 	movsb
 
 l0800_B053:
 	mov	ds,dx
-	mov	dx,[bp+06]
-	mov	ax,[bp+04]
+	mov	dx,[bp+6h]
+	mov	ax,[bp+4h]
 	pop	di
 	pop	si
 	pop	bp
@@ -24929,29 +24929,29 @@ fn0800_B05F proc
 	push	bp
 	mov	bp,sp
 	push	di
-	les	di,[bp+04]
-	mov	cx,[bp+08]
-	mov	al,[bp+0A]
+	les	di,[bp+4h]
+	mov	cx,[bp+8h]
+	mov	al,[bp+0Ah]
 	mov	ah,al
 	cld
-	test	di,0001
-	jz	B079
+	test	di,1h
+	jz	0B079h
 
 l0800_B075:
-	jcxz	B080
+	jcxz	0B080h
 
 l0800_B077:
 	stosb
 	dec	cx
 
 l0800_B079:
-	shr	cx,01
+	shr	cx,1h
 
 l0800_B07B:
 	rep stosw
 
 l0800_B07D:
-	jnc	B080
+	jnc	0B080h
 
 l0800_B07F:
 	stosb
@@ -24967,15 +24967,15 @@ l0800_B080:
 fn0800_B083 proc
 	push	bp
 	mov	bp,sp
-	mov	al,[bp+08]
+	mov	al,[bp+8h]
 	push	ax
-	push	word ptr [bp+0A]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	B05F
-	add	sp,08
-	mov	dx,[bp+06]
-	mov	ax,[bp+04]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0B05Fh
+	add	sp,8h
+	mov	dx,[bp+6h]
+	mov	ax,[bp+4h]
 	pop	bp
 	ret
 
@@ -24988,28 +24988,28 @@ fn0800_B0A1 proc
 	push	si
 	push	di
 	push	ds
-	mov	cx,[bp+0A]
-	mov	bx,[bp+08]
-	mov	dx,[bp+06]
-	mov	ax,[bp+04]
-	call	8F2F
-	jnc	B0BE
+	mov	cx,[bp+0Ah]
+	mov	bx,[bp+8h]
+	mov	dx,[bp+6h]
+	mov	ax,[bp+4h]
+	call	8F2Fh
+	jnc	0B0BEh
 
 l0800_B0B8:
 	std
-	mov	ax,0001
-	jmp	B0C1
+	mov	ax,1h
+	jmp	0B0C1h
 
 l0800_B0BE:
 	cld
 	xor	ax,ax
 
 l0800_B0C1:
-	lds	si,[bp+04]
-	les	di,[bp+08]
-	mov	cx,[bp+0C]
+	lds	si,[bp+4h]
+	les	di,[bp+8h]
+	mov	cx,[bp+0Ch]
 	or	ax,ax
-	jz	B0D4
+	jz	0B0D4h
 
 l0800_B0CE:
 	add	si,cx
@@ -25018,11 +25018,11 @@ l0800_B0CE:
 	dec	di
 
 l0800_B0D4:
-	test	di,0001
-	jz	B0DE
+	test	di,1h
+	jz	0B0DEh
 
 l0800_B0DA:
-	jcxz	B0ED
+	jcxz	0B0EDh
 
 l0800_B0DC:
 	movsb
@@ -25031,13 +25031,13 @@ l0800_B0DC:
 l0800_B0DE:
 	sub	si,ax
 	sub	di,ax
-	shr	cx,01
+	shr	cx,1h
 
 l0800_B0E4:
 	rep movsw
 
 l0800_B0E6:
-	jnc	B0ED
+	jnc	0B0EDh
 
 l0800_B0E8:
 	add	si,ax
@@ -25063,15 +25063,15 @@ l0800_B0ED:
 fn0800_B0F3 proc
 	push	bp
 	mov	bp,sp
-	push	word ptr [bp+0C]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	call	B0A1
-	add	sp,0A
-	mov	dx,[bp+06]
-	mov	ax,[bp+04]
+	push	word ptr [bp+0Ch]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	call	0B0A1h
+	add	sp,0Ah
+	mov	dx,[bp+6h]
+	mov	ax,[bp+4h]
 	pop	bp
 	ret
 
@@ -25083,23 +25083,23 @@ fn0800_B113 proc
 	push	bp
 	mov	bp,sp
 	push	ds
-	mov	cx,[bp+04]
-	mov	ah,3C
-	lds	dx,[bp+06]
-	int	21
+	mov	cx,[bp+4h]
+	mov	ah,3Ch
+	lds	dx,[bp+6h]
+	int	21h
 	pop	ds
-	jc	B126
+	jc	0B126h
 
 l0800_B124:
-	jmp	B12A
+	jmp	0B12Ah
 
 l0800_B126:
 	push	ax
-	call	8D2B
+	call	8D2Bh
 
 l0800_B12A:
 	pop	bp
-	ret	0006
+	ret	6h
 
 ;; fn0800_B12E: 0800:B12E
 ;;   Called from:
@@ -25107,13 +25107,13 @@ l0800_B12A:
 fn0800_B12E proc
 	push	bp
 	mov	bp,sp
-	mov	bx,[bp+04]
+	mov	bx,[bp+4h]
 	sub	cx,cx
 	sub	dx,dx
-	mov	ah,40
-	int	21
+	mov	ah,40h
+	int	21h
 	pop	bp
-	ret	0002
+	ret	2h
 
 ;; fn0800_B140: 0800:B140
 ;;   Called from:
@@ -25121,219 +25121,219 @@ fn0800_B12E proc
 fn0800_B140 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
+	sub	sp,4h
 	push	si
 	push	di
-	mov	si,[bp+08]
-	mov	di,[bp+0A]
-	test	si,C000
-	jnz	B15C
+	mov	si,[bp+8h]
+	mov	di,[bp+0Ah]
+	test	si,0C000h
+	jnz	0B15Ch
 
 l0800_B154:
-	mov	ax,[2512]
-	and	ax,C000
+	mov	ax,[2512h]
+	and	ax,0C000h
 	or	si,ax
 
 l0800_B15C:
 	xor	ax,ax
 	push	ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	A53C
-	add	sp,06
-	mov	[bp-02],ax
-	test	si,0100
-	jz	B1F2
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0A53Ch
+	add	sp,6h
+	mov	[bp-2h],ax
+	test	si,100h
+	jz	0B1F2h
 
 l0800_B174:
-	and	di,[2514]
+	and	di,[2514h]
 	mov	ax,di
-	test	ax,0180
-	jnz	B186
+	test	ax,180h
+	jnz	0B186h
 
 l0800_B17F:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	call	8D2B
+	call	8D2Bh
 
 l0800_B186:
-	cmp	word ptr [bp-02],FF
-	jnz	B1AF
+	cmp	word ptr [bp-2h],0FFh
+	jnz	0B1AFh
 
 l0800_B18C:
-	cmp	word ptr [2516],02
-	jz	B19D
+	cmp	word ptr [2516h],2h
+	jz	0B19Dh
 
 l0800_B193:
-	push	word ptr [2516]
+	push	word ptr [2516h]
 
 l0800_B197:
-	call	8D2B
-	jmp	B29A
+	call	8D2Bh
+	jmp	0B29Ah
 
 l0800_B19D:
-	test	di,0080
-	jz	B1A7
+	test	di,80h
+	jz	0B1A7h
 
 l0800_B1A3:
 	xor	ax,ax
-	jmp	B1AA
+	jmp	0B1AAh
 
 l0800_B1A7:
-	mov	ax,0001
+	mov	ax,1h
 
 l0800_B1AA:
-	mov	[bp-02],ax
-	jmp	B1BB
+	mov	[bp-2h],ax
+	jmp	0B1BBh
 
 l0800_B1AF:
-	test	si,0400
-	jz	B1F2
+	test	si,400h
+	jz	0B1F2h
 
 l0800_B1B5:
-	mov	ax,0050
+	mov	ax,50h
 	push	ax
-	jmp	B197
+	jmp	0B197h
 
 l0800_B1BB:
-	test	si,00F0
-	jz	B1DD
+	test	si,0F0h
+	jz	0B1DDh
 
 l0800_B1C1:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
 	xor	ax,ax
 	push	ax
-	call	B113
+	call	0B113h
 	mov	di,ax
 	or	ax,ax
-	jge	B1D6
+	jge	0B1D6h
 
 l0800_B1D3:
-	jmp	B298
+	jmp	0B298h
 
 l0800_B1D6:
 	push	di
-	call	A57F
+	call	0A57Fh
 	pop	cx
-	jmp	B1F2
+	jmp	0B1F2h
 
 l0800_B1DD:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	push	word ptr [bp-02]
-	call	B113
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	push	word ptr [bp-2h]
+	call	0B113h
 	mov	di,ax
 	or	ax,ax
-	jge	B265
+	jge	0B265h
 
 l0800_B1EF:
-	jmp	B298
+	jmp	0B298h
 
 l0800_B1F2:
 	push	si
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	B2A0
-	add	sp,06
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0B2A0h
+	add	sp,6h
 	mov	di,ax
 	or	ax,ax
-	jl	B265
+	jl	0B265h
 
 l0800_B205:
 	xor	ax,ax
 	push	ax
 	push	di
-	call	A2A3
+	call	0A2A3h
 	pop	cx
 	pop	cx
-	mov	[bp-04],ax
-	test	ax,0080
-	jz	B237
+	mov	[bp-4h],ax
+	test	ax,80h
+	jz	0B237h
 
 l0800_B216:
-	or	si,2000
-	test	si,8000
-	jz	B241
+	or	si,2000h
+	test	si,8000h
+	jz	0B241h
 
 l0800_B220:
-	and	ax,00FF
-	or	ax,0020
+	and	ax,0FFh
+	or	ax,20h
 	xor	dx,dx
 	push	dx
 	push	ax
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
 	push	di
-	call	A2A3
-	add	sp,08
-	jmp	B241
+	call	0A2A3h
+	add	sp,8h
+	jmp	0B241h
 
 l0800_B237:
-	test	si,0200
-	jz	B241
+	test	si,200h
+	jz	0B241h
 
 l0800_B23D:
 	push	di
-	call	B12E
+	call	0B12Eh
 
 l0800_B241:
-	test	word ptr [bp-02],0001
-	jz	B265
+	test	word ptr [bp-2h],1h
+	jz	0B265h
 
 l0800_B248:
-	test	si,0100
-	jz	B265
+	test	si,100h
+	jz	0B265h
 
 l0800_B24E:
-	test	si,00F0
-	jz	B265
+	test	si,0F0h
+	jz	0B265h
 
 l0800_B254:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
 	push	ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	A53C
-	add	sp,08
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0A53Ch
+	add	sp,8h
 
 l0800_B265:
 	or	di,di
-	jl	B298
+	jl	0B298h
 
 l0800_B269:
-	test	si,0300
-	jz	B274
+	test	si,300h
+	jz	0B274h
 
 l0800_B26F:
-	mov	ax,1000
-	jmp	B276
+	mov	ax,1000h
+	jmp	0B276h
 
 l0800_B274:
 	xor	ax,ax
 
 l0800_B276:
 	mov	dx,si
-	and	dx,F8FF
+	and	dx,0F8FFh
 	or	dx,ax
 	push	dx
-	test	word ptr [bp-02],0001
-	jz	B28A
+	test	word ptr [bp-2h],1h
+	jz	0B28Ah
 
 l0800_B286:
 	xor	ax,ax
-	jmp	B28D
+	jmp	0B28Dh
 
 l0800_B28A:
-	mov	ax,0100
+	mov	ax,100h
 
 l0800_B28D:
 	pop	dx
 	or	dx,ax
 	mov	bx,di
-	shl	bx,01
-	mov	[bx+24EA],dx
+	shl	bx,1h
+	mov	[bx+24EAh],dx
 
 l0800_B298:
 	mov	ax,di
@@ -25351,45 +25351,45 @@ l0800_B29A:
 fn0800_B2A0 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,02
-	mov	al,01
-	mov	cx,[bp+08]
-	test	cx,0002
-	jnz	B2BB
+	sub	sp,2h
+	mov	al,1h
+	mov	cx,[bp+8h]
+	test	cx,2h
+	jnz	0B2BBh
 
 l0800_B2B1:
-	mov	al,02
-	test	cx,0004
-	jnz	B2BB
+	mov	al,2h
+	test	cx,4h
+	jnz	0B2BBh
 
 l0800_B2B9:
-	mov	al,00
+	mov	al,0h
 
 l0800_B2BB:
 	push	ds
-	lds	dx,[bp+04]
-	mov	cl,F0
-	and	cl,[bp+08]
+	lds	dx,[bp+4h]
+	mov	cl,0F0h
+	and	cl,[bp+8h]
 	or	al,cl
-	mov	ah,3D
-	int	21
+	mov	ah,3Dh
+	int	21h
 	pop	ds
-	jc	B2E7
+	jc	0B2E7h
 
 l0800_B2CD:
-	mov	[bp-02],ax
-	mov	ax,[bp+08]
-	and	ax,B8FF
-	or	ax,8000
-	mov	bx,[bp-02]
-	shl	bx,01
-	mov	[bx+24EA],ax
-	mov	ax,[bp-02]
-	jmp	B2EB
+	mov	[bp-2h],ax
+	mov	ax,[bp+8h]
+	and	ax,0B8FFh
+	or	ax,8000h
+	mov	bx,[bp-2h]
+	shl	bx,1h
+	mov	[bx+24EAh],ax
+	mov	ax,[bp-2h]
+	jmp	0B2EBh
 
 l0800_B2E7:
 	push	ax
-	call	8D2B
+	call	8D2Bh
 
 l0800_B2EB:
 	mov	sp,bp
@@ -25432,16 +25432,16 @@ l0800_B2EB:
 fn0800_B2EF proc
 	push	bp
 	mov	bp,sp
-	mov	ax,B4BE
+	mov	ax,0B4BEh
 	push	ax
 	push	ds
-	mov	ax,236C
+	mov	ax,236Ch
 	push	ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	lea	ax,[bp+08]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	lea	ax,[bp+8h]
 	push	ax
-	call	9828
+	call	9828h
 	pop	bp
 	ret
 
@@ -25452,15 +25452,15 @@ fn0800_B2EF proc
 fn0800_B30A proc
 	push	bp
 	mov	bp,sp
-	les	bx,[bp+06]
+	les	bx,[bp+6h]
 	dec	word ptr es:[bx]
-	push	word ptr [bp+08]
+	push	word ptr [bp+8h]
 	push	bx
-	mov	al,[bp+04]
+	mov	al,[bp+4h]
 	cbw
 	push	ax
-	call	B324
-	add	sp,06
+	call	0B324h
+	add	sp,6h
 	pop	bp
 	ret
 
@@ -25472,205 +25472,205 @@ fn0800_B324 proc
 	push	bp
 	mov	bp,sp
 	push	si
-	mov	al,[bp+04]
-	mov	[4EE6],al
-	les	bx,[bp+06]
-	cmp	word ptr es:[bx],FF
-	jge	B389
+	mov	al,[bp+4h]
+	mov	[4EE6h],al
+	les	bx,[bp+6h]
+	cmp	word ptr es:[bx],0FFh
+	jge	0B389h
 
 l0800_B337:
 	inc	word ptr es:[bx]
-	mov	ax,es:[bx+0E]
-	mov	si,es:[bx+0C]
-	inc	word ptr es:[bx+0C]
-	mov	dl,[4EE6]
+	mov	ax,es:[bx+0Eh]
+	mov	si,es:[bx+0Ch]
+	inc	word ptr es:[bx+0Ch]
+	mov	dl,[4EE6h]
 	mov	es,ax
 	mov	es:[si],dl
-	mov	es,[bp+08]
-	test	word ptr es:[bx+02],0008
-	jnz	B35D
+	mov	es,[bp+8h]
+	test	word ptr es:[bx+2h],8h
+	jnz	0B35Dh
 
 l0800_B35A:
-	jmp	B4A3
+	jmp	0B4A3h
 
 l0800_B35D:
-	cmp	byte ptr [4EE6],0A
-	jz	B36E
+	cmp	byte ptr [4EE6h],0Ah
+	jz	0B36Eh
 
 l0800_B364:
-	cmp	byte ptr [4EE6],0D
-	jz	B36E
+	cmp	byte ptr [4EE6h],0Dh
+	jz	0B36Eh
 
 l0800_B36B:
-	jmp	B4A3
+	jmp	0B4A3h
 
 l0800_B36E:
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	call	A6B7
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	call	0A6B7h
 	pop	cx
 	pop	cx
 	or	ax,ax
-	jnz	B380
+	jnz	0B380h
 
 l0800_B37D:
-	jmp	B4A3
+	jmp	0B4A3h
 
 l0800_B380:
-	mov	ax,FFFF
-	jmp	B4A8
+	mov	ax,0FFFFh
+	jmp	0B4A8h
 0800:B386                   E9 1A 01                            ...      
 
 l0800_B389:
-	les	bx,[bp+06]
-	test	word ptr es:[bx+02],0090
-	jnz	B39C
+	les	bx,[bp+6h]
+	test	word ptr es:[bx+2h],90h
+	jnz	0B39Ch
 
 l0800_B394:
-	test	word ptr es:[bx+02],0002
-	jnz	B3A6
+	test	word ptr es:[bx+2h],2h
+	jnz	0B3A6h
 
 l0800_B39C:
-	les	bx,[bp+06]
-	or	word ptr es:[bx+02],10
-	jmp	B380
+	les	bx,[bp+6h]
+	or	word ptr es:[bx+2h],10h
+	jmp	0B380h
 
 l0800_B3A6:
-	les	bx,[bp+06]
-	or	word ptr es:[bx+02],0100
-	cmp	word ptr es:[bx+06],00
-	jz	B421
+	les	bx,[bp+6h]
+	or	word ptr es:[bx+2h],100h
+	cmp	word ptr es:[bx+6h],0h
+	jz	0B421h
 
 l0800_B3B6:
-	cmp	word ptr es:[bx],00
-	jz	B3C9
+	cmp	word ptr es:[bx],0h
+	jz	0B3C9h
 
 l0800_B3BC:
-	push	word ptr [bp+08]
+	push	word ptr [bp+8h]
 	push	bx
-	call	A6B7
+	call	0A6B7h
 	pop	cx
 	pop	cx
 	or	ax,ax
-	jnz	B380
+	jnz	0B380h
 
 l0800_B3C9:
-	les	bx,[bp+06]
-	mov	ax,es:[bx+06]
+	les	bx,[bp+6h]
+	mov	ax,es:[bx+6h]
 	neg	ax
 	mov	es:[bx],ax
-	mov	ax,es:[bx+0E]
-	mov	si,es:[bx+0C]
-	inc	word ptr es:[bx+0C]
-	mov	dl,[4EE6]
+	mov	ax,es:[bx+0Eh]
+	mov	si,es:[bx+0Ch]
+	inc	word ptr es:[bx+0Ch]
+	mov	dl,[4EE6h]
 	mov	es,ax
 	mov	es:[si],dl
-	mov	es,[bp+08]
-	test	word ptr es:[bx+02],0008
-	jnz	B3F8
+	mov	es,[bp+8h]
+	test	word ptr es:[bx+2h],8h
+	jnz	0B3F8h
 
 l0800_B3F5:
-	jmp	B4A3
+	jmp	0B4A3h
 
 l0800_B3F8:
-	cmp	byte ptr [4EE6],0A
-	jz	B409
+	cmp	byte ptr [4EE6h],0Ah
+	jz	0B409h
 
 l0800_B3FF:
-	cmp	byte ptr [4EE6],0D
-	jz	B409
+	cmp	byte ptr [4EE6h],0Dh
+	jz	0B409h
 
 l0800_B406:
-	jmp	B4A3
+	jmp	0B4A3h
 
 l0800_B409:
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	call	A6B7
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	call	0A6B7h
 	pop	cx
 	pop	cx
 	or	ax,ax
-	jnz	B41B
+	jnz	0B41Bh
 
 l0800_B418:
-	jmp	B4A3
+	jmp	0B4A3h
 
 l0800_B41B:
-	jmp	B380
+	jmp	0B380h
 0800:B41E                                           E9 82               ..
 0800:B420 00                                              .              
 
 l0800_B421:
-	les	bx,[bp+06]
-	mov	al,es:[bx+04]
+	les	bx,[bp+6h]
+	mov	al,es:[bx+4h]
 	cbw
-	shl	ax,01
+	shl	ax,1h
 	mov	bx,ax
-	test	word ptr [bx+24EA],0800
-	jz	B44C
+	test	word ptr [bx+24EAh],800h
+	jz	0B44Ch
 
 l0800_B435:
-	mov	ax,0002
+	mov	ax,2h
 	push	ax
 	xor	ax,ax
 	push	ax
 	push	ax
-	mov	bx,[bp+06]
-	mov	al,es:[bx+04]
+	mov	bx,[bp+6h]
+	mov	al,es:[bx+4h]
 	cbw
 	push	ax
-	call	8E29
-	add	sp,08
+	call	8E29h
+	add	sp,8h
 
 l0800_B44C:
-	cmp	byte ptr [4EE6],0A
-	jnz	B478
+	cmp	byte ptr [4EE6h],0Ah
+	jnz	0B478h
 
 l0800_B453:
-	les	bx,[bp+06]
-	test	word ptr es:[bx+02],0040
-	jnz	B478
+	les	bx,[bp+6h]
+	test	word ptr es:[bx+2h],40h
+	jnz	0B478h
 
 l0800_B45E:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
 	push	ds
-	mov	ax,26AE
+	mov	ax,26AEh
 	push	ax
-	mov	al,es:[bx+04]
+	mov	al,es:[bx+4h]
 	cbw
 	push	ax
-	call	C779
-	add	sp,08
-	cmp	ax,0001
-	jnz	B495
+	call	0C779h
+	add	sp,8h
+	cmp	ax,1h
+	jnz	0B495h
 
 l0800_B478:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
 	push	ds
-	mov	ax,4EE6
+	mov	ax,4EE6h
 	push	ax
-	les	bx,[bp+06]
-	mov	al,es:[bx+04]
+	les	bx,[bp+6h]
+	mov	al,es:[bx+4h]
 	cbw
 	push	ax
-	call	C779
-	add	sp,08
-	cmp	ax,0001
-	jz	B4A3
+	call	0C779h
+	add	sp,8h
+	cmp	ax,1h
+	jz	0B4A3h
 
 l0800_B495:
-	les	bx,[bp+06]
-	test	word ptr es:[bx+02],0200
-	jnz	B4A3
+	les	bx,[bp+6h]
+	test	word ptr es:[bx+2h],200h
+	jnz	0B4A3h
 
 l0800_B4A0:
-	jmp	B39C
+	jmp	0B39Ch
 
 l0800_B4A3:
-	mov	al,[4EE6]
-	mov	ah,00
+	mov	al,[4EE6h]
+	mov	ah,0h
 
 l0800_B4A8:
 	pop	si
@@ -25686,278 +25686,278 @@ l0800_B4A8:
 fn0800_B4BE proc
 	push	bp
 	mov	bp,sp
-	sub	sp,02
+	sub	sp,2h
 	push	si
 	push	di
-	mov	di,[bp+08]
-	mov	[bp-02],di
-	les	bx,[bp+04]
-	test	word ptr es:[bx+02],0008
-	jz	B504
+	mov	di,[bp+8h]
+	mov	[bp-2h],di
+	les	bx,[bp+4h]
+	test	word ptr es:[bx+2h],8h
+	jz	0B504h
 
 l0800_B4D7:
-	jmp	B4FA
+	jmp	0B4FAh
 
 l0800_B4D9:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	les	bx,[bp+0A]
-	inc	word ptr [bp+0A]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	les	bx,[bp+0Ah]
+	inc	word ptr [bp+0Ah]
 	mov	al,es:[bx]
 	cbw
 	push	ax
-	call	B324
-	add	sp,06
-	cmp	ax,FFFF
-	jnz	B4FA
+	call	0B324h
+	add	sp,6h
+	cmp	ax,0FFFFh
+	jnz	0B4FAh
 
 l0800_B4F5:
 	xor	ax,ax
-	jmp	B6A0
+	jmp	0B6A0h
 
 l0800_B4FA:
 	mov	ax,di
 	dec	di
 	or	ax,ax
-	jnz	B4D9
+	jnz	0B4D9h
 
 l0800_B501:
-	jmp	B69D
+	jmp	0B69Dh
 
 l0800_B504:
-	les	bx,[bp+04]
-	test	word ptr es:[bx+02],0040
-	jnz	B512
+	les	bx,[bp+4h]
+	test	word ptr es:[bx+2h],40h
+	jnz	0B512h
 
 l0800_B50F:
-	jmp	B625
+	jmp	0B625h
 
 l0800_B512:
-	cmp	word ptr es:[bx+06],00
-	jnz	B51C
+	cmp	word ptr es:[bx+6h],0h
+	jnz	0B51Ch
 
 l0800_B519:
-	jmp	B5DB
+	jmp	0B5DBh
 
 l0800_B51C:
-	cmp	es:[bx+06],di
-	jnc	B583
+	cmp	es:[bx+6h],di
+	jnc	0B583h
 
 l0800_B522:
-	cmp	word ptr es:[bx],00
-	jz	B535
+	cmp	word ptr es:[bx],0h
+	jz	0B535h
 
 l0800_B528:
-	push	word ptr [bp+06]
+	push	word ptr [bp+6h]
 	push	bx
-	call	A6B7
+	call	0A6B7h
 	pop	cx
 	pop	cx
 	or	ax,ax
-	jnz	B4F5
+	jnz	0B4F5h
 
 l0800_B535:
-	les	bx,[bp+04]
-	mov	al,es:[bx+04]
+	les	bx,[bp+4h]
+	mov	al,es:[bx+4h]
 	cbw
-	shl	ax,01
+	shl	ax,1h
 	mov	bx,ax
-	test	word ptr [bx+24EA],0800
-	jz	B560
+	test	word ptr [bx+24EAh],800h
+	jz	0B560h
 
 l0800_B549:
-	mov	ax,0002
+	mov	ax,2h
 	push	ax
 	xor	ax,ax
 	push	ax
 	push	ax
-	mov	bx,[bp+04]
-	mov	al,es:[bx+04]
+	mov	bx,[bp+4h]
+	mov	al,es:[bx+4h]
 	cbw
 	push	ax
-	call	8E29
-	add	sp,08
+	call	8E29h
+	add	sp,8h
 
 l0800_B560:
 	push	di
-	push	word ptr [bp+0C]
-	push	word ptr [bp+0A]
-	les	bx,[bp+04]
-	mov	al,es:[bx+04]
+	push	word ptr [bp+0Ch]
+	push	word ptr [bp+0Ah]
+	les	bx,[bp+4h]
+	mov	al,es:[bx+4h]
 	cbw
 	push	ax
-	call	C779
-	add	sp,08
+	call	0C779h
+	add	sp,8h
 	cmp	ax,di
-	jc	B57D
+	jc	0B57Dh
 
 l0800_B57A:
-	jmp	B69D
+	jmp	0B69Dh
 
 l0800_B57D:
-	jmp	B4F5
+	jmp	0B4F5h
 0800:B580 E9 1A 01                                        ...            
 
 l0800_B583:
-	les	bx,[bp+04]
+	les	bx,[bp+4h]
 	mov	ax,es:[bx]
 	add	ax,di
-	jl	B5B1
+	jl	0B5B1h
 
 l0800_B58D:
-	cmp	word ptr es:[bx],00
-	jnz	B59F
+	cmp	word ptr es:[bx],0h
+	jnz	0B59Fh
 
 l0800_B593:
-	mov	ax,FFFF
-	sub	ax,es:[bx+06]
+	mov	ax,0FFFFh
+	sub	ax,es:[bx+6h]
 	mov	es:[bx],ax
-	jmp	B5B1
+	jmp	0B5B1h
 
 l0800_B59F:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	A6B7
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0A6B7h
 	pop	cx
 	pop	cx
 	or	ax,ax
-	jz	B5B1
+	jz	0B5B1h
 
 l0800_B5AE:
-	jmp	B4F5
+	jmp	0B4F5h
 
 l0800_B5B1:
 	push	di
-	push	word ptr [bp+0C]
-	push	word ptr [bp+0A]
-	les	bx,[bp+04]
-	push	word ptr es:[bx+0E]
-	push	word ptr es:[bx+0C]
-	call	B03B
-	add	sp,0A
-	les	bx,[bp+04]
+	push	word ptr [bp+0Ch]
+	push	word ptr [bp+0Ah]
+	les	bx,[bp+4h]
+	push	word ptr es:[bx+0Eh]
+	push	word ptr es:[bx+0Ch]
+	call	0B03Bh
+	add	sp,0Ah
+	les	bx,[bp+4h]
 	mov	ax,es:[bx]
 	add	ax,di
 	mov	es:[bx],ax
-	add	es:[bx+0C],di
-	jmp	B69D
+	add	es:[bx+0Ch],di
+	jmp	0B69Dh
 
 l0800_B5DB:
-	les	bx,[bp+04]
-	mov	al,es:[bx+04]
+	les	bx,[bp+4h]
+	mov	al,es:[bx+4h]
 	cbw
-	shl	ax,01
+	shl	ax,1h
 	mov	bx,ax
-	test	word ptr [bx+24EA],0800
-	jz	B606
+	test	word ptr [bx+24EAh],800h
+	jz	0B606h
 
 l0800_B5EF:
-	mov	ax,0002
+	mov	ax,2h
 	push	ax
 	xor	ax,ax
 	push	ax
 	push	ax
-	mov	bx,[bp+04]
-	mov	al,es:[bx+04]
+	mov	bx,[bp+4h]
+	mov	al,es:[bx+4h]
 	cbw
 	push	ax
-	call	8E29
-	add	sp,08
+	call	8E29h
+	add	sp,8h
 
 l0800_B606:
 	push	di
-	push	word ptr [bp+0C]
-	push	word ptr [bp+0A]
-	les	bx,[bp+04]
-	mov	al,es:[bx+04]
+	push	word ptr [bp+0Ch]
+	push	word ptr [bp+0Ah]
+	les	bx,[bp+4h]
+	mov	al,es:[bx+4h]
 	cbw
 	push	ax
-	call	C779
-	add	sp,08
+	call	0C779h
+	add	sp,8h
 	cmp	ax,di
-	jnc	B69D
+	jnc	0B69Dh
 
 l0800_B620:
-	jmp	B4F5
+	jmp	0B4F5h
 0800:B623          EB 78                                     .x          
 
 l0800_B625:
-	les	bx,[bp+04]
-	cmp	word ptr es:[bx+06],00
-	jz	B680
+	les	bx,[bp+4h]
+	cmp	word ptr es:[bx+6h],0h
+	jz	0B680h
 
 l0800_B62F:
-	jmp	B677
+	jmp	0B677h
 
 l0800_B631:
-	les	bx,[bp+04]
+	les	bx,[bp+4h]
 	inc	word ptr es:[bx]
-	jge	B659
+	jge	0B659h
 
 l0800_B639:
-	mov	ax,es:[bx+0E]
-	mov	si,es:[bx+0C]
-	inc	word ptr es:[bx+0C]
-	les	bx,[bp+0A]
-	inc	word ptr [bp+0A]
+	mov	ax,es:[bx+0Eh]
+	mov	si,es:[bx+0Ch]
+	inc	word ptr es:[bx+0Ch]
+	les	bx,[bp+0Ah]
+	inc	word ptr [bp+0Ah]
 	mov	dl,es:[bx]
 	mov	es,ax
 	mov	es:[si],dl
 	mov	al,dl
-	mov	ah,00
-	jmp	B66F
+	mov	ah,0h
+	jmp	0B66Fh
 
 l0800_B659:
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	les	bx,[bp+0A]
-	inc	word ptr [bp+0A]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	les	bx,[bp+0Ah]
+	inc	word ptr [bp+0Ah]
 	mov	al,es:[bx]
 	push	ax
-	call	B30A
-	add	sp,06
+	call	0B30Ah
+	add	sp,6h
 
 l0800_B66F:
-	cmp	ax,FFFF
-	jnz	B677
+	cmp	ax,0FFFFh
+	jnz	0B677h
 
 l0800_B674:
-	jmp	B4F5
+	jmp	0B4F5h
 
 l0800_B677:
 	mov	ax,di
 	dec	di
 	or	ax,ax
-	jnz	B631
+	jnz	0B631h
 
 l0800_B67E:
-	jmp	B69D
+	jmp	0B69Dh
 
 l0800_B680:
 	push	di
-	push	word ptr [bp+0C]
-	push	word ptr [bp+0A]
-	les	bx,[bp+04]
-	mov	al,es:[bx+04]
+	push	word ptr [bp+0Ch]
+	push	word ptr [bp+0Ah]
+	les	bx,[bp+4h]
+	mov	al,es:[bx+4h]
 	cbw
 	push	ax
-	call	C632
-	add	sp,08
+	call	0C632h
+	add	sp,8h
 	cmp	ax,di
-	jnc	B69D
+	jnc	0B69Dh
 
 l0800_B69A:
-	jmp	B4F5
+	jmp	0B4F5h
 
 l0800_B69D:
-	mov	ax,[bp-02]
+	mov	ax,[bp-2h]
 
 l0800_B6A0:
 	pop	di
 	pop	si
 	mov	sp,bp
 	pop	bp
-	ret	000A
+	ret	0Ah
 
 ;; fn0800_B6A8: 0800:B6A8
 ;;   Called from:
@@ -25974,30 +25974,30 @@ fn0800_B6A8 proc
 	push	di
 	push	ds
 	cld
-	mov	cx,[4EE8]
-	les	di,[bp+04]
-	lds	si,[bp+08]
-	shr	cx,01
-	jnc	B6C6
+	mov	cx,[4EE8h]
+	les	di,[bp+4h]
+	lds	si,[bp+8h]
+	shr	cx,1h
+	jnc	0B6C6h
 
 l0800_B6BD:
 	mov	al,es:[di]
 	movsb
-	mov	[si-01],al
-	jz	B6CF
+	mov	[si-1h],al
+	jz	0B6CFh
 
 l0800_B6C6:
 	mov	ax,es:[di]
 	movsw
-	mov	[si-02],ax
-	loop	B6C6
+	mov	[si-2h],ax
+	loop	0B6C6h
 
 l0800_B6CF:
 	pop	ds
 	pop	di
 	pop	si
 	pop	bp
-	ret	0008
+	ret	8h
 
 ;; fn0800_B6D6: 0800:B6D6
 ;;   Called from:
@@ -26007,322 +26007,322 @@ l0800_B6CF:
 fn0800_B6D6 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,14
+	sub	sp,14h
 	push	si
 	push	di
-	mov	si,[bp+04]
+	mov	si,[bp+4h]
 
 l0800_B6E1:
-	cmp	si,02
-	ja	B726
+	cmp	si,2h
+	ja	0B726h
 
 l0800_B6E6:
-	cmp	si,02
-	jz	B6EE
+	cmp	si,2h
+	jz	0B6EEh
 
 l0800_B6EB:
-	jmp	B956
+	jmp	0B956h
 
 l0800_B6EE:
-	mov	ax,[bp+08]
-	mov	dx,[bp+06]
-	add	dx,[4EE8]
-	mov	[bp-06],ax
-	mov	[bp-08],dx
+	mov	ax,[bp+8h]
+	mov	dx,[bp+6h]
+	add	dx,[4EE8h]
+	mov	[bp-6h],ax
+	mov	[bp-8h],dx
 	push	ax
 	push	dx
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	call	word ptr [4EEA]
-	add	sp,08
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	call	word ptr [4EEAh]
+	add	sp,8h
 	or	ax,ax
-	jg	B714
+	jg	0B714h
 
 l0800_B711:
-	jmp	B956
+	jmp	0B956h
 
 l0800_B714:
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp-06]
-	push	word ptr [bp-08]
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp-6h]
+	push	word ptr [bp-8h]
 
 l0800_B720:
-	call	B6A8
-	jmp	B956
+	call	0B6A8h
+	jmp	0B956h
 
 l0800_B726:
 	mov	ax,si
 	dec	ax
-	imul	word ptr [4EE8]
-	mov	dx,[bp+08]
-	mov	bx,[bp+06]
+	imul	word ptr [4EE8h]
+	mov	dx,[bp+8h]
+	mov	bx,[bp+6h]
 	add	bx,ax
-	mov	[bp-06],dx
-	mov	[bp-08],bx
+	mov	[bp-6h],dx
+	mov	[bp-8h],bx
 	mov	ax,si
-	shr	ax,01
-	imul	word ptr [4EE8]
-	mov	dx,[bp+08]
-	mov	bx,[bp+06]
+	shr	ax,1h
+	imul	word ptr [4EE8h]
+	mov	dx,[bp+8h]
+	mov	bx,[bp+6h]
 	add	bx,ax
-	mov	[bp-02],dx
-	mov	[bp-04],bx
-	push	word ptr [bp-06]
-	push	word ptr [bp-08]
-	push	word ptr [bp-02]
+	mov	[bp-2h],dx
+	mov	[bp-4h],bx
+	push	word ptr [bp-6h]
+	push	word ptr [bp-8h]
+	push	word ptr [bp-2h]
 	push	bx
-	call	word ptr [4EEA]
-	add	sp,08
+	call	word ptr [4EEAh]
+	add	sp,8h
 	or	ax,ax
-	jle	B775
+	jle	0B775h
 
 l0800_B766:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	push	word ptr [bp-06]
-	push	word ptr [bp-08]
-	call	B6A8
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	push	word ptr [bp-6h]
+	push	word ptr [bp-8h]
+	call	0B6A8h
 
 l0800_B775:
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	word ptr [4EEA]
-	add	sp,08
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	word ptr [4EEAh]
+	add	sp,8h
 	or	ax,ax
-	jle	B79A
+	jle	0B79Ah
 
 l0800_B78C:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	jmp	B7BD
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	jmp	0B7BDh
 
 l0800_B79A:
-	push	word ptr [bp-06]
-	push	word ptr [bp-08]
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	call	word ptr [4EEA]
-	add	sp,08
+	push	word ptr [bp-6h]
+	push	word ptr [bp-8h]
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	call	word ptr [4EEAh]
+	add	sp,8h
 	or	ax,ax
-	jle	B7C0
+	jle	0B7C0h
 
 l0800_B7B1:
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp-06]
-	push	word ptr [bp-08]
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp-6h]
+	push	word ptr [bp-8h]
 
 l0800_B7BD:
-	call	B6A8
+	call	0B6A8h
 
 l0800_B7C0:
-	cmp	si,03
-	jnz	B7D4
+	cmp	si,3h
+	jnz	0B7D4h
 
 l0800_B7C5:
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	jmp	B720
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	jmp	0B720h
 
 l0800_B7D4:
-	mov	ax,[bp+08]
-	mov	dx,[bp+06]
-	add	dx,[4EE8]
-	mov	[bp-0A],ax
-	mov	[bp-0C],dx
-	mov	[bp-02],ax
-	mov	[bp-04],dx
-	jmp	B813
+	mov	ax,[bp+8h]
+	mov	dx,[bp+6h]
+	add	dx,[4EE8h]
+	mov	[bp-0Ah],ax
+	mov	[bp-0Ch],dx
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
+	jmp	0B813h
 
 l0800_B7EC:
 	or	di,di
-	jnz	B805
+	jnz	0B805h
 
 l0800_B7F0:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	push	word ptr [bp-0A]
-	push	word ptr [bp-0C]
-	call	B6A8
-	mov	ax,[4EE8]
-	add	[bp-0C],ax
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	push	word ptr [bp-0Ah]
+	push	word ptr [bp-0Ch]
+	call	0B6A8h
+	mov	ax,[4EE8h]
+	add	[bp-0Ch],ax
 
 l0800_B805:
-	mov	ax,[bp-04]
-	cmp	ax,[bp-08]
-	jnc	B883
+	mov	ax,[bp-4h]
+	cmp	ax,[bp-8h]
+	jnc	0B883h
 
 l0800_B80D:
-	mov	ax,[4EE8]
-	add	[bp-04],ax
+	mov	ax,[4EE8h]
+	add	[bp-4h],ax
 
 l0800_B813:
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	word ptr [4EEA]
-	add	sp,08
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	word ptr [4EEAh]
+	add	sp,8h
 	mov	di,ax
 	or	ax,ax
-	jle	B7EC
+	jle	0B7ECh
 
 l0800_B82C:
-	mov	ax,[bp-04]
-	cmp	ax,[bp-08]
-	jnc	B87B
+	mov	ax,[bp-4h]
+	cmp	ax,[bp-8h]
+	jnc	0B87Bh
 
 l0800_B834:
-	push	word ptr [bp-06]
-	push	word ptr [bp-08]
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	call	word ptr [4EEA]
-	add	sp,08
+	push	word ptr [bp-6h]
+	push	word ptr [bp-8h]
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	call	word ptr [4EEAh]
+	add	sp,8h
 	mov	di,ax
 	or	ax,ax
-	jge	B855
+	jge	0B855h
 
 l0800_B84D:
-	mov	ax,[4EE8]
-	sub	[bp-08],ax
-	jmp	B873
+	mov	ax,[4EE8h]
+	sub	[bp-8h],ax
+	jmp	0B873h
 
 l0800_B855:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	push	word ptr [bp-06]
-	push	word ptr [bp-08]
-	call	B6A8
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	push	word ptr [bp-6h]
+	push	word ptr [bp-8h]
+	call	0B6A8h
 	or	di,di
-	jz	B87B
+	jz	0B87Bh
 
 l0800_B868:
-	mov	ax,[4EE8]
-	add	[bp-04],ax
-	sub	[bp-08],ax
-	jmp	B87B
+	mov	ax,[4EE8h]
+	add	[bp-4h],ax
+	sub	[bp-8h],ax
+	jmp	0B87Bh
 
 l0800_B873:
-	mov	ax,[bp-04]
-	cmp	ax,[bp-08]
-	jc	B834
+	mov	ax,[bp-4h]
+	cmp	ax,[bp-8h]
+	jc	0B834h
 
 l0800_B87B:
-	mov	ax,[bp-04]
-	cmp	ax,[bp-08]
-	jc	B813
+	mov	ax,[bp-4h]
+	cmp	ax,[bp-8h]
+	jc	0B813h
 
 l0800_B883:
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	word ptr [4EEA]
-	add	sp,08
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	word ptr [4EEAh]
+	add	sp,8h
 	or	ax,ax
-	jg	B8AA
+	jg	0B8AAh
 
 l0800_B89A:
-	mov	ax,[bp-02]
-	mov	dx,[bp-04]
-	add	dx,[4EE8]
-	mov	[bp-02],ax
-	mov	[bp-04],dx
+	mov	ax,[bp-2h]
+	mov	dx,[bp-4h]
+	add	dx,[4EE8h]
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
 
 l0800_B8AA:
-	mov	ax,[bp-02]
-	mov	dx,[bp-04]
-	sub	dx,[4EE8]
-	mov	[bp-12],ax
-	mov	[bp-14],dx
-	mov	ax,[bp+08]
-	mov	dx,[bp+06]
-	mov	[bp-0E],ax
-	mov	[bp-10],dx
-	jmp	B8E0
+	mov	ax,[bp-2h]
+	mov	dx,[bp-4h]
+	sub	dx,[4EE8h]
+	mov	[bp-12h],ax
+	mov	[bp-14h],dx
+	mov	ax,[bp+8h]
+	mov	dx,[bp+6h]
+	mov	[bp-0Eh],ax
+	mov	[bp-10h],dx
+	jmp	0B8E0h
 
 l0800_B8C8:
-	push	word ptr [bp-0E]
-	push	word ptr [bp-10]
-	push	word ptr [bp-12]
-	push	word ptr [bp-14]
-	call	B6A8
-	mov	ax,[4EE8]
-	add	[bp-10],ax
-	sub	[bp-14],ax
+	push	word ptr [bp-0Eh]
+	push	word ptr [bp-10h]
+	push	word ptr [bp-12h]
+	push	word ptr [bp-14h]
+	call	0B6A8h
+	mov	ax,[4EE8h]
+	add	[bp-10h],ax
+	sub	[bp-14h],ax
 
 l0800_B8E0:
-	mov	ax,[bp-10]
-	cmp	ax,[bp-0C]
-	jnc	B8F0
+	mov	ax,[bp-10h]
+	cmp	ax,[bp-0Ch]
+	jnc	0B8F0h
 
 l0800_B8E8:
-	mov	ax,[bp-14]
-	cmp	ax,[bp-0C]
-	jnc	B8C8
+	mov	ax,[bp-14h]
+	cmp	ax,[bp-0Ch]
+	jnc	0B8C8h
 
 l0800_B8F0:
 	xor	ax,ax
 	push	ax
-	push	word ptr [4EE8]
-	mov	ax,[bp-04]
+	push	word ptr [4EE8h]
+	mov	ax,[bp-4h]
 	xor	dx,dx
-	sub	ax,[bp-0C]
-	sbb	dx,00
+	sub	ax,[bp-0Ch]
+	sbb	dx,0h
 	push	dx
 	push	ax
-	call	8BBB
+	call	8BBBh
 	mov	di,ax
 	xor	ax,ax
 	push	ax
-	push	word ptr [4EE8]
+	push	word ptr [4EE8h]
 	mov	ax,si
-	imul	word ptr [4EE8]
-	mov	dx,[bp+06]
+	imul	word ptr [4EE8h]
+	mov	dx,[bp+6h]
 	add	dx,ax
 	xor	ax,ax
-	sub	dx,[bp-04]
-	sbb	ax,0000
+	sub	dx,[bp-4h]
+	sbb	ax,0h
 	push	ax
 	push	dx
-	call	8BBB
+	call	8BBBh
 	mov	si,ax
 	cmp	si,di
-	jnc	B93D
+	jnc	0B93Dh
 
 l0800_B92E:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
 	push	ax
-	call	B6D6
+	call	0B6D6h
 	mov	si,di
-	jmp	B6E1
+	jmp	0B6E1h
 
 l0800_B93D:
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
 	push	di
-	call	B6D6
-	mov	ax,[bp-02]
-	mov	dx,[bp-04]
-	mov	[bp+08],ax
-	mov	[bp+06],dx
-	jmp	B6E1
+	call	0B6D6h
+	mov	ax,[bp-2h]
+	mov	dx,[bp-4h]
+	mov	[bp+8h],ax
+	mov	[bp+6h],dx
+	jmp	0B6E1h
 
 l0800_B956:
 	pop	di
 	pop	si
 	mov	sp,bp
 	pop	bp
-	ret	0006
+	ret	6h
 
 ;; fn0800_B95E: 0800:B95E
 ;;   Called from:
@@ -26330,18 +26330,18 @@ l0800_B956:
 fn0800_B95E proc
 	push	bp
 	mov	bp,sp
-	mov	ax,[bp+0A]
-	mov	[4EE8],ax
+	mov	ax,[bp+0Ah]
+	mov	[4EE8h],ax
 	or	ax,ax
-	jz	B97D
+	jz	0B97Dh
 
 l0800_B96B:
-	mov	ax,[bp+0C]
-	mov	[4EEA],ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	push	word ptr [bp+08]
-	call	B6D6
+	mov	ax,[bp+0Ch]
+	mov	[4EEAh],ax
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	push	word ptr [bp+8h]
+	call	0B6D6h
 
 l0800_B97D:
 	pop	bp
@@ -26354,124 +26354,124 @@ l0800_B97D:
 fn0800_B97F proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
+	sub	sp,4h
 	push	si
 	push	di
-	mov	ax,[bp+04]
-	cmp	ax,[24E8]
-	jc	B99A
+	mov	ax,[bp+4h]
+	cmp	ax,[24E8h]
+	jc	0B99Ah
 
 l0800_B990:
-	mov	ax,0006
+	mov	ax,6h
 	push	ax
-	call	8D2B
-	jmp	BA44
+	call	8D2Bh
+	jmp	0BA44h
 
 l0800_B99A:
-	mov	ax,[bp+0A]
+	mov	ax,[bp+0Ah]
 	inc	ax
-	cmp	ax,0002
-	jc	B9B0
+	cmp	ax,2h
+	jc	0B9B0h
 
 l0800_B9A3:
-	mov	bx,[bp+04]
-	shl	bx,01
-	test	word ptr [bx+24EA],0200
-	jz	B9B5
+	mov	bx,[bp+4h]
+	shl	bx,1h
+	test	word ptr [bx+24EAh],200h
+	jz	0B9B5h
 
 l0800_B9B0:
 	xor	ax,ax
-	jmp	BA44
+	jmp	0BA44h
 
 l0800_B9B5:
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	8F50
-	add	sp,08
-	mov	[bp-02],ax
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	8F50h
+	add	sp,8h
+	mov	[bp-2h],ax
 	inc	ax
-	cmp	ax,0002
-	jc	B9DD
+	cmp	ax,2h
+	jc	0B9DDh
 
 l0800_B9D0:
-	mov	bx,[bp+04]
-	shl	bx,01
-	test	word ptr [bx+24EA],4000
-	jnz	B9E2
+	mov	bx,[bp+4h]
+	shl	bx,1h
+	test	word ptr [bx+24EAh],4000h
+	jnz	0B9E2h
 
 l0800_B9DD:
-	mov	ax,[bp-02]
-	jmp	BA44
+	mov	ax,[bp-2h]
+	jmp	0BA44h
 
 l0800_B9E2:
-	mov	cx,[bp-02]
-	les	si,[bp+06]
+	mov	cx,[bp-2h]
+	les	si,[bp+6h]
 	mov	di,si
 	mov	bx,si
 	cld
 
 l0800_B9ED:
 	lodsb
-	cmp	al,1A
-	jz	BA21
+	cmp	al,1Ah
+	jz	0BA21h
 
 l0800_B9F3:
-	cmp	al,0D
-	jz	B9FC
+	cmp	al,0Dh
+	jz	0B9FCh
 
 l0800_B9F7:
 	stosb
-	loop	B9ED
+	loop	0B9EDh
 
 l0800_B9FA:
-	jmp	BA19
+	jmp	0BA19h
 
 l0800_B9FC:
-	loop	B9ED
+	loop	0B9EDh
 
 l0800_B9FE:
 	push	es
 	push	bx
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
-	lea	ax,[bp-03]
+	lea	ax,[bp-3h]
 	push	ss
 	push	ax
-	push	word ptr [bp+04]
-	call	8F50
-	add	sp,08
+	push	word ptr [bp+4h]
+	call	8F50h
+	add	sp,8h
 	pop	bx
 	pop	es
 	cld
-	mov	al,[bp-03]
+	mov	al,[bp-3h]
 	stosb
 
 l0800_BA19:
 	cmp	di,bx
-	jnz	BA1F
+	jnz	0BA1Fh
 
 l0800_BA1D:
-	jmp	B9B5
+	jmp	0B9B5h
 
 l0800_BA1F:
-	jmp	BA41
+	jmp	0BA41h
 
 l0800_BA21:
 	push	bx
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
 	neg	cx
 	sbb	ax,ax
 	push	ax
 	push	cx
-	push	word ptr [bp+04]
-	call	8E29
-	add	sp,08
-	mov	bx,[bp+04]
-	shl	bx,01
-	or	word ptr [bx+24EA],0200
+	push	word ptr [bp+4h]
+	call	8E29h
+	add	sp,8h
+	mov	bx,[bp+4h]
+	shl	bx,1h
+	or	word ptr [bx+24EAh],200h
 	pop	bx
 
 l0800_BA41:
@@ -26494,20 +26494,20 @@ fn0800_BA4A proc
 	mov	bp,sp
 	push	di
 	push	ds
-	mov	ah,56
-	lds	dx,[bp+04]
-	les	di,[bp+08]
-	int	21
+	mov	ah,56h
+	lds	dx,[bp+4h]
+	les	di,[bp+8h]
+	int	21h
 	pop	ds
-	jc	BA60
+	jc	0BA60h
 
 l0800_BA5C:
 	xor	ax,ax
-	jmp	BA64
+	jmp	0BA64h
 
 l0800_BA60:
 	push	ax
-	call	8D2B
+	call	8D2Bh
 
 l0800_BA64:
 	pop	di
@@ -26529,16 +26529,16 @@ fn0800_BA67 proc
 	push	ax
 	push	ax
 	push	ax
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	ACB3
-	add	sp,0A
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0ACB3h
+	add	sp,0Ah
 	or	ax,ax
-	jnz	BA87
+	jnz	0BA87h
 
 l0800_BA7F:
-	les	bx,[bp+04]
-	and	word ptr es:[bx+02],EF
+	les	bx,[bp+4h]
+	and	word ptr es:[bx+2h],0EFh
 
 l0800_BA87:
 	pop	bp
@@ -26552,132 +26552,132 @@ fn0800_BA89 proc
 	mov	bp,sp
 	push	si
 	push	di
-	mov	di,[bp+0C]
-	mov	si,[bp+0E]
-	les	bx,[bp+04]
-	mov	ax,es:[bx+12]
-	cmp	ax,[bp+04]
-	jnz	BAAB
+	mov	di,[bp+0Ch]
+	mov	si,[bp+0Eh]
+	les	bx,[bp+4h]
+	mov	ax,es:[bx+12h]
+	cmp	ax,[bp+4h]
+	jnz	0BAABh
 
 l0800_BAA0:
-	cmp	di,02
-	jg	BAAB
+	cmp	di,2h
+	jg	0BAABh
 
 l0800_BAA5:
-	cmp	si,7FFF
-	jbe	BAB1
+	cmp	si,7FFFh
+	jbe	0BAB1h
 
 l0800_BAAB:
-	mov	ax,FFFF
-	jmp	BB94
+	mov	ax,0FFFFh
+	jmp	0BB94h
 
 l0800_BAB1:
-	cmp	word ptr [26B2],00
-	jnz	BAC7
+	cmp	word ptr [26B2h],0h
+	jnz	0BAC7h
 
 l0800_BAB8:
-	cmp	word ptr [bp+04],236C
-	jnz	BAC7
+	cmp	word ptr [bp+4h],236Ch
+	jnz	0BAC7h
 
 l0800_BABF:
-	mov	word ptr [26B2],0001
-	jmp	BADB
+	mov	word ptr [26B2h],1h
+	jmp	0BADBh
 
 l0800_BAC7:
-	cmp	word ptr [26B0],00
-	jnz	BADB
+	cmp	word ptr [26B0h],0h
+	jnz	0BADBh
 
 l0800_BACE:
-	cmp	word ptr [bp+04],2358
-	jnz	BADB
+	cmp	word ptr [bp+4h],2358h
+	jnz	0BADBh
 
 l0800_BAD5:
-	mov	word ptr [26B0],0001
+	mov	word ptr [26B0h],1h
 
 l0800_BADB:
-	les	bx,[bp+04]
-	cmp	word ptr es:[bx],00
-	jz	BAF6
+	les	bx,[bp+4h]
+	cmp	word ptr es:[bx],0h
+	jz	0BAF6h
 
 l0800_BAE4:
-	mov	ax,0001
+	mov	ax,1h
 	push	ax
 	xor	ax,ax
 	push	ax
 	push	ax
-	push	word ptr [bp+06]
+	push	word ptr [bp+6h]
 	push	bx
-	call	ACB3
-	add	sp,0A
+	call	0ACB3h
+	add	sp,0Ah
 
 l0800_BAF6:
-	les	bx,[bp+04]
-	test	word ptr es:[bx+02],0004
-	jz	BB0E
+	les	bx,[bp+4h]
+	test	word ptr es:[bx+2h],4h
+	jz	0BB0Eh
 
 l0800_BB01:
-	push	word ptr es:[bx+0A]
-	push	word ptr es:[bx+08]
-	call	9E75
+	push	word ptr es:[bx+0Ah]
+	push	word ptr es:[bx+8h]
+	call	9E75h
 	pop	cx
 	pop	cx
 
 l0800_BB0E:
-	les	bx,[bp+04]
-	and	word ptr es:[bx+02],F3
-	mov	word ptr es:[bx+06],0000
-	mov	ax,[bp+06]
-	mov	dx,[bp+04]
-	add	dx,05
-	mov	es:[bx+0A],ax
-	mov	es:[bx+08],dx
-	mov	es:[bx+0E],ax
-	mov	es:[bx+0C],dx
-	cmp	di,02
-	jz	BB92
+	les	bx,[bp+4h]
+	and	word ptr es:[bx+2h],0F3h
+	mov	word ptr es:[bx+6h],0h
+	mov	ax,[bp+6h]
+	mov	dx,[bp+4h]
+	add	dx,5h
+	mov	es:[bx+0Ah],ax
+	mov	es:[bx+8h],dx
+	mov	es:[bx+0Eh],ax
+	mov	es:[bx+0Ch],dx
+	cmp	di,2h
+	jz	0BB92h
 
 l0800_BB3A:
 	or	si,si
-	jbe	BB92
+	jbe	0BB92h
 
 l0800_BB3E:
-	mov	word ptr [2352],C7F0
-	mov	ax,[bp+08]
-	or	ax,[bp+0A]
-	jnz	BB6B
+	mov	word ptr [2352h],0C7F0h
+	mov	ax,[bp+8h]
+	or	ax,[bp+0Ah]
+	jnz	0BB6Bh
 
 l0800_BB4C:
 	push	si
-	call	9F7F
+	call	9F7Fh
 	pop	cx
-	mov	[bp+0A],dx
-	mov	[bp+08],ax
+	mov	[bp+0Ah],dx
+	mov	[bp+8h],ax
 	or	ax,dx
-	jnz	BB5E
+	jnz	0BB5Eh
 
 l0800_BB5B:
-	jmp	BAAB
+	jmp	0BAABh
 
 l0800_BB5E:
-	les	bx,[bp+04]
-	or	word ptr es:[bx+02],04
-	jmp	BB6B
+	les	bx,[bp+4h]
+	or	word ptr es:[bx+2h],4h
+	jmp	0BB6Bh
 0800:BB68                         E9 40 FF                        .@.    
 
 l0800_BB6B:
-	les	bx,[bp+04]
-	mov	ax,[bp+0A]
-	mov	dx,[bp+08]
-	mov	es:[bx+0E],ax
-	mov	es:[bx+0C],dx
-	mov	es:[bx+0A],ax
-	mov	es:[bx+08],dx
-	mov	es:[bx+06],si
-	cmp	di,01
-	jnz	BB92
+	les	bx,[bp+4h]
+	mov	ax,[bp+0Ah]
+	mov	dx,[bp+8h]
+	mov	es:[bx+0Eh],ax
+	mov	es:[bx+0Ch],dx
+	mov	es:[bx+0Ah],ax
+	mov	es:[bx+8h],dx
+	mov	es:[bx+6h],si
+	cmp	di,1h
+	jnz	0BB92h
 
 l0800_BB8D:
-	or	word ptr es:[bx+02],08
+	or	word ptr es:[bx+2h],8h
 
 l0800_BB92:
 	xor	ax,ax
@@ -26693,80 +26693,80 @@ fn0800_BB98 proc
 	push	bp
 	mov	bp,sp
 	push	si
-	mov	si,[bp+04]
-	mov	ax,[bp+0A]
-	or	ax,[bp+0C]
-	jz	BBE4
+	mov	si,[bp+4h]
+	mov	ax,[bp+0Ah]
+	or	ax,[bp+0Ch]
+	jz	0BBE4h
 
 l0800_BBA7:
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	call	BFC7
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	call	0BFC7h
 	pop	cx
 	pop	cx
 	cmp	ax,si
-	jc	BBD2
+	jc	0BBD2h
 
 l0800_BBB6:
 	push	si
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp+0C]
-	push	word ptr [bp+0A]
-	call	C01E
-	add	sp,0A
-	les	bx,[bp+0A]
-	mov	byte ptr es:[bx+si],00
-	jmp	BBE4
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+0Ch]
+	push	word ptr [bp+0Ah]
+	call	0C01Eh
+	add	sp,0Ah
+	les	bx,[bp+0Ah]
+	mov	byte ptr es:[bx+si],0h
+	jmp	0BBE4h
 
 l0800_BBD2:
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp+0C]
-	push	word ptr [bp+0A]
-	call	BF9E
-	add	sp,08
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+0Ch]
+	push	word ptr [bp+0Ah]
+	call	0BF9Eh
+	add	sp,8h
 
 l0800_BBE4:
 	pop	si
 	pop	bp
-	ret	000A
+	ret	0Ah
 
 ;; fn0800_BBE9: 0800:BBE9
 fn0800_BBE9 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,02
-	les	bx,[bp+04]
-	cmp	byte ptr es:[bx-01],2E
-	jnz	BBFC
+	sub	sp,2h
+	les	bx,[bp+4h]
+	cmp	byte ptr es:[bx-1h],2Eh
+	jnz	0BBFCh
 
 l0800_BBF9:
-	dec	word ptr [bp+04]
+	dec	word ptr [bp+4h]
 
 l0800_BBFC:
-	dec	word ptr [bp+04]
-	les	bx,[bp+04]
+	dec	word ptr [bp+4h]
+	les	bx,[bp+4h]
 	mov	al,es:[bx]
 	cbw
-	mov	[bp-02],ax
-	mov	cx,0004
-	mov	bx,BC39
+	mov	[bp-2h],ax
+	mov	cx,4h
+	mov	bx,0BC39h
 
 l0800_BC0F:
 	mov	ax,cs:[bx]
-	cmp	ax,[bp-02]
-	jz	BC1E
+	cmp	ax,[bp-2h]
+	jz	0BC1Eh
 
 l0800_BC17:
-	add	bx,02
-	loop	BC0F
+	add	bx,2h
+	loop	0BC0Fh
 
 l0800_BC1C:
-	jmp	BC31
+	jmp	0BC31h
 
 l0800_BC1E:
-	jmp	word ptr cs:[bx+08]
+	jmp	word ptr cs:[bx+8h]
 0800:BC22       C4 5E 04 26 80 7F FE 00 75 05 B8 01 00 EB   .^.&....u.....
 0800:BC30 02                                              .              
 
@@ -26774,7 +26774,7 @@ l0800_BC31:
 	xor	ax,ax
 	mov	sp,bp
 	pop	bp
-	ret	0004
+	ret	4h
 0800:BC39                            00 00 2F 00 3A 00 5C          ../.:.\
 0800:BC40 00 2C BC 2C BC 22 BC 2C BC                      .,.,.".,.      
 
@@ -26784,111 +26784,111 @@ l0800_BC31:
 fn0800_BC49 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,58
+	sub	sp,58h
 	push	si
 	push	di
 	xor	di,di
-	mov	ax,[bp+08]
-	or	ax,[bp+0A]
-	jz	BC62
+	mov	ax,[bp+8h]
+	or	ax,[bp+0Ah]
+	jz	0BC62h
 
 l0800_BC5B:
-	les	bx,[bp+08]
-	mov	byte ptr es:[bx],00
+	les	bx,[bp+8h]
+	mov	byte ptr es:[bx],0h
 
 l0800_BC62:
-	mov	ax,[bp+0C]
-	or	ax,[bp+0E]
-	jz	BC71
+	mov	ax,[bp+0Ch]
+	or	ax,[bp+0Eh]
+	jz	0BC71h
 
 l0800_BC6A:
-	les	bx,[bp+0C]
-	mov	byte ptr es:[bx],00
+	les	bx,[bp+0Ch]
+	mov	byte ptr es:[bx],0h
 
 l0800_BC71:
-	mov	ax,[bp+10]
-	or	ax,[bp+12]
-	jz	BC80
+	mov	ax,[bp+10h]
+	or	ax,[bp+12h]
+	jz	0BC80h
 
 l0800_BC79:
-	les	bx,[bp+10]
-	mov	byte ptr es:[bx],00
+	les	bx,[bp+10h]
+	mov	byte ptr es:[bx],0h
 
 l0800_BC80:
-	mov	ax,[bp+14]
-	or	ax,[bp+16]
-	jz	BC8F
+	mov	ax,[bp+14h]
+	or	ax,[bp+16h]
+	jz	0BC8Fh
 
 l0800_BC88:
-	les	bx,[bp+14]
-	mov	byte ptr es:[bx],00
+	les	bx,[bp+14h]
+	mov	byte ptr es:[bx],0h
 
 l0800_BC8F:
-	lea	ax,[bp-58]
-	mov	[bp-02],ss
-	mov	[bp-04],ax
-	jmp	BC9D
+	lea	ax,[bp-58h]
+	mov	[bp-2h],ss
+	mov	[bp-4h],ax
+	jmp	0BC9Dh
 
 l0800_BC9A:
-	inc	word ptr [bp+04]
+	inc	word ptr [bp+4h]
 
 l0800_BC9D:
-	les	bx,[bp+04]
-	cmp	byte ptr es:[bx],20
-	jz	BC9A
+	les	bx,[bp+4h]
+	cmp	byte ptr es:[bx],20h
+	jz	0BC9Ah
 
 l0800_BCA6:
-	push	word ptr [bp+06]
+	push	word ptr [bp+6h]
 	push	bx
-	call	BFC7
+	call	0BFC7h
 	pop	cx
 	pop	cx
 	mov	si,ax
-	cmp	ax,0050
-	jle	BCB9
+	cmp	ax,50h
+	jle	0BCB9h
 
 l0800_BCB6:
-	mov	si,0050
+	mov	si,50h
 
 l0800_BCB9:
-	les	bx,[bp-04]
-	mov	byte ptr es:[bx],00
-	inc	word ptr [bp-04]
+	les	bx,[bp-4h]
+	mov	byte ptr es:[bx],0h
+	inc	word ptr [bp-4h]
 	push	si
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	C01E
-	add	sp,0A
-	add	[bp-04],si
-	les	bx,[bp-04]
-	mov	byte ptr es:[bx],00
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	0C01Eh
+	add	sp,0Ah
+	add	[bp-4h],si
+	les	bx,[bp-4h]
+	mov	byte ptr es:[bx],0h
 	xor	si,si
 
 l0800_BCE2:
-	dec	word ptr [bp-04]
-	les	bx,[bp-04]
+	dec	word ptr [bp-4h]
+	les	bx,[bp-4h]
 	mov	al,es:[bx]
 	cbw
-	mov	[bp-06],ax
-	mov	cx,0007
-	mov	bx,BE1F
+	mov	[bp-6h],ax
+	mov	cx,7h
+	mov	bx,0BE1Fh
 
 l0800_BCF5:
 	mov	ax,cs:[bx]
-	cmp	ax,[bp-06]
-	jz	BD04
+	cmp	ax,[bp-6h]
+	jz	0BD04h
 
 l0800_BCFD:
-	add	bx,02
-	loop	BCF5
+	add	bx,2h
+	loop	0BCF5h
 
 l0800_BD02:
-	jmp	BCE2
+	jmp	0BCE2h
 
 l0800_BD04:
-	jmp	word ptr cs:[bx+0E]
+	jmp	word ptr cs:[bx+0Eh]
 0800:BD08                         0B F6 75 13 C4 5E FC 26         ..u..^.&
 0800:BD10 80 7F 01 00 75 09 FF 76 FE 53 E8 CC FE 8B F0 0B ....u..v.S......
 0800:BD20 F6 75 BF F7 C7 02 00 75 B9 83 CF 02 FF 76 16 FF .u.....u.....v..
@@ -26917,18 +26917,18 @@ l0800_BD04:
 fn0800_BE3B proc
 	push	bp
 	mov	bp,sp
-	push	word ptr [bp+16]
-	push	word ptr [bp+14]
-	push	word ptr [bp+12]
-	push	word ptr [bp+10]
-	push	word ptr [bp+0E]
-	push	word ptr [bp+0C]
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	BC49
-	add	sp,14
+	push	word ptr [bp+16h]
+	push	word ptr [bp+14h]
+	push	word ptr [bp+12h]
+	push	word ptr [bp+10h]
+	push	word ptr [bp+0Eh]
+	push	word ptr [bp+0Ch]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	0BC49h
+	add	sp,14h
 	pop	bp
 	ret
 0800:BE64             55 8B EC 56 8B 76 08 56 FF 76 0C FF     U..V.v.V.v..
@@ -26945,18 +26945,18 @@ fn0800_BE3B proc
 fn0800_BEA2 proc
 	push	bp
 	mov	bp,sp
-	les	bx,[bp+04]
-	mov	byte ptr es:[bx],00
-	mov	ax,BE64
+	les	bx,[bp+4h]
+	mov	byte ptr es:[bx],0h
+	mov	ax,0BE64h
 	push	ax
 	push	ss
-	lea	ax,[bp+04]
+	lea	ax,[bp+4h]
 	push	ax
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	lea	ax,[bp+0C]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	lea	ax,[bp+0Ch]
 	push	ax
-	call	9828
+	call	9828h
 	pop	bp
 	ret
 0800:BEC4             55 8B EC C4 5E 04 26 C6 07 00 B8 64     U...^.&....d
@@ -26975,19 +26975,19 @@ fn0800_BF18 proc
 	push	bp
 	mov	bp,sp
 	push	ss
-	lea	ax,[bp+0C]
+	lea	ax,[bp+0Ch]
 	push	ax
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
 	push	ss
-	lea	ax,[bp+04]
+	lea	ax,[bp+4h]
 	push	ax
-	mov	ax,BF0D
+	mov	ax,0BF0Dh
 	push	ax
-	mov	ax,BEE5
+	mov	ax,0BEE5h
 	push	ax
-	call	8F97
-	add	sp,10
+	call	8F97h
+	add	sp,10h
 	pop	bp
 	ret
 0800:BF3B                                  55 8B EC FF 76            U...v
@@ -27004,19 +27004,19 @@ fn0800_BF5F proc
 	push	di
 	cld
 	push	ds
-	les	di,[bp+04]
+	les	di,[bp+4h]
 	mov	dx,di
 	xor	al,al
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_BF70:
 	repne scasb
 
 l0800_BF72:
 	push	es
-	lea	si,[di-01]
-	les	di,[bp+08]
-	mov	cx,FFFF
+	lea	si,[di-1h]
+	les	di,[bp+8h]
+	mov	cx,0FFFFh
 
 l0800_BF7C:
 	repne scasb
@@ -27028,21 +27028,21 @@ l0800_BF7E:
 	pop	ds
 	pop	es
 	xchg	di,si
-	test	si,0001
-	jz	BF8F
+	test	si,1h
+	jz	0BF8Fh
 
 l0800_BF8D:
 	movsb
 	dec	cx
 
 l0800_BF8F:
-	shr	cx,01
+	shr	cx,1h
 
 l0800_BF91:
 	rep movsw
 
 l0800_BF93:
-	jnc	BF96
+	jnc	0BF96h
 
 l0800_BF95:
 	movsb
@@ -27069,10 +27069,10 @@ fn0800_BF9E proc
 	push	si
 	push	di
 	cld
-	les	di,[bp+08]
+	les	di,[bp+8h]
 	mov	si,di
 	xor	al,al
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_BFAE:
 	repne scasb
@@ -27082,15 +27082,15 @@ l0800_BFB0:
 	push	ds
 	mov	ax,es
 	mov	ds,ax
-	les	di,[bp+04]
+	les	di,[bp+4h]
 
 l0800_BFBA:
 	rep movsb
 
 l0800_BFBC:
 	pop	ds
-	mov	dx,[bp+06]
-	mov	ax,[bp+04]
+	mov	dx,[bp+6h]
+	mov	ax,[bp+4h]
 	pop	di
 	pop	si
 	pop	bp
@@ -27109,18 +27109,18 @@ fn0800_BFC7 proc
 	push	bp
 	mov	bp,sp
 	push	di
-	les	di,[bp+04]
+	les	di,[bp+4h]
 	xor	ax,ax
-	cmp	ax,[bp+06]
-	jnz	BFD9
+	cmp	ax,[bp+6h]
+	jnz	0BFD9h
 
 l0800_BFD5:
 	cmp	ax,di
-	jz	BFE3
+	jz	0BFE3h
 
 l0800_BFD9:
 	cld
-	mov	cx,FFFF
+	mov	cx,0FFFFh
 
 l0800_BFDD:
 	repne scasb
@@ -27145,11 +27145,11 @@ fn0800_BFE6 proc
 	push	di
 	mov	dx,ds
 	cld
-	les	di,[bp+08]
+	les	di,[bp+8h]
 	mov	si,di
-	mov	ax,[bp+0C]
+	mov	ax,[bp+0Ch]
 	mov	cx,ax
-	jcxz	C018
+	jcxz	0C018h
 
 l0800_BFFA:
 	mov	bx,ax
@@ -27162,14 +27162,14 @@ l0800_C000:
 	sub	bx,cx
 	mov	cx,bx
 	mov	di,si
-	lds	si,[bp+04]
+	lds	si,[bp+4h]
 
 l0800_C009:
 	rep cmpsb
 
 l0800_C00B:
-	mov	al,[si-01]
-	mov	bl,es:[di-01]
+	mov	al,[si-1h]
+	mov	bl,es:[di-1h]
 	xor	ah,ah
 	mov	bh,ah
 	sub	ax,bx
@@ -27193,10 +27193,10 @@ fn0800_C01E proc
 	push	si
 	push	di
 	cld
-	les	di,[bp+08]
+	les	di,[bp+8h]
 	mov	si,di
 	xor	al,al
-	mov	bx,[bp+0C]
+	mov	bx,[bp+0Ch]
 	mov	cx,bx
 
 l0800_C030:
@@ -27207,7 +27207,7 @@ l0800_C032:
 	push	ds
 	mov	di,es
 	mov	ds,di
-	les	di,[bp+04]
+	les	di,[bp+4h]
 	xchg	bx,cx
 
 l0800_C03E:
@@ -27221,8 +27221,8 @@ l0800_C042:
 
 l0800_C044:
 	pop	ds
-	mov	dx,[bp+06]
-	mov	ax,[bp+04]
+	mov	dx,[bp+6h]
+	mov	ax,[bp+4h]
 	pop	di
 	pop	si
 	pop	bp
@@ -27234,113 +27234,113 @@ l0800_C044:
 fn0800_C04F proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
+	sub	sp,4h
 	push	si
-	call	C379
-	mov	ax,[26E4]
-	mov	dx,[26E2]
-	add	dx,A600
-	adc	ax,12CE
-	mov	[bp-02],ax
-	mov	[bp-04],dx
-	les	bx,[bp+04]
+	call	0C379h
+	mov	ax,[26E4h]
+	mov	dx,[26E2h]
+	add	dx,0A600h
+	adc	ax,12CEh
+	mov	[bp-2h],ax
+	mov	[bp-4h],dx
+	les	bx,[bp+4h]
 	mov	si,es:[bx]
-	add	si,F844
+	add	si,0F844h
 	mov	ax,si
-	sar	ax,01
-	sar	ax,01
+	sar	ax,1h
+	sar	ax,1h
 	cwd
 	push	ax
 	push	dx
-	mov	dx,0786
-	mov	ax,1F80
+	mov	dx,786h
+	mov	ax,1F80h
 	pop	cx
 	pop	bx
-	call	8F18
-	add	[bp-04],ax
-	adc	[bp-02],dx
+	call	8F18h
+	add	[bp-4h],ax
+	adc	[bp-2h],dx
 	mov	ax,si
-	and	ax,0003
+	and	ax,3h
 	cwd
 	push	ax
 	push	dx
-	mov	dx,01E1
-	mov	ax,3380
+	mov	dx,1E1h
+	mov	ax,3380h
 	pop	cx
 	pop	bx
-	call	8F18
-	add	[bp-04],ax
-	adc	[bp-02],dx
-	test	si,0003
-	jz	C0B9
+	call	8F18h
+	add	[bp-4h],ax
+	adc	[bp-2h],dx
+	test	si,3h
+	jz	0C0B9h
 
 l0800_C0B0:
-	add	word ptr [bp-04],5180
-	adc	word ptr [bp-02],01
+	add	word ptr [bp-4h],5180h
+	adc	word ptr [bp-2h],1h
 
 l0800_C0B9:
 	xor	cx,cx
-	les	bx,[bp+04]
-	mov	al,es:[bx+03]
+	les	bx,[bp+4h]
+	mov	al,es:[bx+3h]
 	cbw
 	dec	ax
 	mov	si,ax
-	jmp	C0D0
+	jmp	0C0D0h
 
 l0800_C0C8:
 	dec	si
-	mov	al,[si+26B4]
+	mov	al,[si+26B4h]
 	cbw
 	add	cx,ax
 
 l0800_C0D0:
 	or	si,si
-	jg	C0C8
+	jg	0C0C8h
 
 l0800_C0D4:
-	les	bx,[bp+04]
-	mov	al,es:[bx+02]
+	les	bx,[bp+4h]
+	mov	al,es:[bx+2h]
 	cbw
 	dec	ax
 	add	cx,ax
-	cmp	byte ptr es:[bx+03],02
-	jle	C0EE
+	cmp	byte ptr es:[bx+3h],2h
+	jle	0C0EEh
 
 l0800_C0E6:
-	test	word ptr es:[bx],0003
-	jnz	C0EE
+	test	word ptr es:[bx],3h
+	jnz	0C0EEh
 
 l0800_C0ED:
 	inc	cx
 
 l0800_C0EE:
-	les	bx,[bp+08]
-	mov	al,es:[bx+01]
-	mov	ah,00
+	les	bx,[bp+8h]
+	mov	al,es:[bx+1h]
+	mov	ah,0h
 	push	ax
 	mov	ax,cx
-	mov	dx,0018
+	mov	dx,18h
 	imul	dx
 	pop	dx
 	add	ax,dx
 	mov	si,ax
-	cmp	word ptr [26E6],00
-	jz	C128
+	cmp	word ptr [26E6h],0h
+	jz	0C128h
 
 l0800_C10B:
-	mov	al,es:[bx+01]
-	mov	ah,00
+	mov	al,es:[bx+1h]
+	mov	ah,0h
 	push	ax
 	push	cx
 	xor	ax,ax
 	push	ax
-	les	bx,[bp+04]
+	les	bx,[bp+4h]
 	mov	ax,es:[bx]
-	add	ax,F84E
+	add	ax,0F84Eh
 	push	ax
-	call	C553
+	call	0C553h
 	or	ax,ax
-	jz	C128
+	jz	0C128h
 
 l0800_C127:
 	dec	si
@@ -27351,26 +27351,26 @@ l0800_C128:
 	push	ax
 	push	dx
 	xor	dx,dx
-	mov	ax,0E10
+	mov	ax,0E10h
 	pop	cx
 	pop	bx
-	call	8F18
-	add	[bp-04],ax
-	adc	[bp-02],dx
-	les	bx,[bp+08]
+	call	8F18h
+	add	[bp-4h],ax
+	adc	[bp-2h],dx
+	les	bx,[bp+8h]
 	mov	al,es:[bx]
-	mov	ah,00
+	mov	ah,0h
 	cwd
 	push	ax
 	push	dx
 	xor	dx,dx
-	mov	ax,003C
+	mov	ax,3Ch
 	pop	cx
 	pop	bx
-	call	8F18
-	les	bx,[bp+08]
-	mov	bl,es:[bx+03]
-	mov	bh,00
+	call	8F18h
+	les	bx,[bp+8h]
+	mov	bl,es:[bx+3h]
+	mov	bh,0h
 	push	ax
 	mov	ax,bx
 	push	dx
@@ -27379,10 +27379,10 @@ l0800_C128:
 	pop	cx
 	add	cx,ax
 	adc	bx,dx
-	add	[bp-04],cx
-	adc	[bp-02],bx
-	mov	dx,[bp-02]
-	mov	ax,[bp-04]
+	add	[bp-4h],cx
+	adc	[bp-2h],bx
+	mov	dx,[bp-2h]
+	mov	ax,[bp-4h]
 	pop	si
 	mov	sp,bp
 	pop	bp
@@ -27392,237 +27392,237 @@ l0800_C128:
 fn0800_C177 proc
 	push	bp
 	mov	bp,sp
-	call	C379
-	mov	ax,[26E4]
-	mov	dx,[26E2]
-	add	dx,A600
-	adc	ax,12CE
-	sub	[bp+04],dx
-	sbb	[bp+06],ax
-	les	bx,[bp+0C]
-	mov	byte ptr es:[bx+02],00
+	call	0C379h
+	mov	ax,[26E4h]
+	mov	dx,[26E2h]
+	add	dx,0A600h
+	adc	ax,12CEh
+	sub	[bp+4h],dx
+	sbb	[bp+6h],ax
+	les	bx,[bp+0Ch]
+	mov	byte ptr es:[bx+2h],0h
 	xor	ax,ax
-	mov	dx,003C
+	mov	dx,3Ch
 	push	ax
 	push	dx
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	8BCA
-	les	bx,[bp+0C]
-	mov	es:[bx+03],al
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	8BCAh
+	les	bx,[bp+0Ch]
+	mov	es:[bx+3h],al
 	xor	ax,ax
-	mov	dx,003C
+	mov	dx,3Ch
 	push	ax
 	push	dx
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	8BBB
-	mov	[bp+06],dx
-	mov	[bp+04],ax
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	8BBBh
+	mov	[bp+6h],dx
+	mov	[bp+4h],ax
 	xor	ax,ax
-	mov	dx,003C
+	mov	dx,3Ch
 	push	ax
 	push	dx
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	8BCA
-	les	bx,[bp+0C]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	8BCAh
+	les	bx,[bp+0Ch]
 	mov	es:[bx],al
 	xor	ax,ax
-	mov	dx,003C
+	mov	dx,3Ch
 	push	ax
 	push	dx
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	8BBB
-	mov	[bp+06],dx
-	mov	[bp+04],ax
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	8BBBh
+	mov	[bp+6h],dx
+	mov	[bp+4h],ax
 	xor	ax,ax
-	mov	dx,88F8
+	mov	dx,88F8h
 	push	ax
 	push	dx
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	8BBB
-	shl	ax,01
-	shl	ax,01
-	add	ax,07BC
-	les	bx,[bp+08]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	8BBBh
+	shl	ax,1h
+	shl	ax,1h
+	add	ax,7BCh
+	les	bx,[bp+8h]
 	mov	es:[bx],ax
 	xor	ax,ax
-	mov	dx,88F8
+	mov	dx,88F8h
 	push	ax
 	push	dx
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	8BCA
-	mov	[bp+06],dx
-	mov	[bp+04],ax
-	cmp	word ptr [bp+06],00
-	jl	C26F
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	8BCAh
+	mov	[bp+6h],dx
+	mov	[bp+4h],ax
+	cmp	word ptr [bp+6h],0h
+	jl	0C26Fh
 
 l0800_C22B:
-	jnz	C234
+	jnz	0C234h
 
 l0800_C22D:
-	cmp	word ptr [bp+04],2250
-	jc	C26F
+	cmp	word ptr [bp+4h],2250h
+	jc	0C26Fh
 
 l0800_C234:
-	sub	word ptr [bp+04],2250
-	sbb	word ptr [bp+06],00
-	les	bx,[bp+08]
+	sub	word ptr [bp+4h],2250h
+	sbb	word ptr [bp+6h],0h
+	les	bx,[bp+8h]
 	inc	word ptr es:[bx]
 	xor	ax,ax
-	mov	dx,2238
+	mov	dx,2238h
 	push	ax
 	push	dx
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	8BBB
-	les	bx,[bp+08]
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	8BBBh
+	les	bx,[bp+8h]
 	add	es:[bx],ax
 	xor	ax,ax
-	mov	dx,2238
+	mov	dx,2238h
 	push	ax
 	push	dx
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	8BCA
-	mov	[bp+06],dx
-	mov	[bp+04],ax
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	8BCAh
+	mov	[bp+6h],dx
+	mov	[bp+4h],ax
 
 l0800_C26F:
-	cmp	word ptr [26E6],00
-	jz	C2B4
+	cmp	word ptr [26E6h],0h
+	jz	0C2B4h
 
 l0800_C276:
 	xor	ax,ax
-	mov	dx,0018
+	mov	dx,18h
 	push	ax
 	push	dx
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	8BCA
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	8BCAh
 	push	ax
 	xor	ax,ax
-	mov	dx,0018
+	mov	dx,18h
 	push	ax
 	push	dx
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	8BBB
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	8BBBh
 	push	ax
 	xor	ax,ax
 	push	ax
-	les	bx,[bp+08]
+	les	bx,[bp+8h]
 	mov	ax,es:[bx]
-	add	ax,F84E
+	add	ax,0F84Eh
 	push	ax
-	call	C553
+	call	0C553h
 	or	ax,ax
-	jz	C2B4
+	jz	0C2B4h
 
 l0800_C2AC:
-	add	word ptr [bp+04],01
-	adc	word ptr [bp+06],00
+	add	word ptr [bp+4h],1h
+	adc	word ptr [bp+6h],0h
 
 l0800_C2B4:
 	xor	ax,ax
-	mov	dx,0018
+	mov	dx,18h
 	push	ax
 	push	dx
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	8BCA
-	les	bx,[bp+0C]
-	mov	es:[bx+01],al
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	8BCAh
+	les	bx,[bp+0Ch]
+	mov	es:[bx+1h],al
 	xor	ax,ax
-	mov	dx,0018
+	mov	dx,18h
 	push	ax
 	push	dx
-	push	word ptr [bp+06]
-	push	word ptr [bp+04]
-	call	8BBB
-	mov	[bp+06],dx
-	mov	[bp+04],ax
-	add	word ptr [bp+04],01
-	adc	word ptr [bp+06],00
-	les	bx,[bp+08]
-	test	word ptr es:[bx],0003
-	jnz	C326
+	push	word ptr [bp+6h]
+	push	word ptr [bp+4h]
+	call	8BBBh
+	mov	[bp+6h],dx
+	mov	[bp+4h],ax
+	add	word ptr [bp+4h],1h
+	adc	word ptr [bp+6h],0h
+	les	bx,[bp+8h]
+	test	word ptr es:[bx],3h
+	jnz	0C326h
 
 l0800_C2F3:
-	cmp	word ptr [bp+06],00
-	jl	C30B
+	cmp	word ptr [bp+6h],0h
+	jl	0C30Bh
 
 l0800_C2F9:
-	jg	C301
+	jg	0C301h
 
 l0800_C2FB:
-	cmp	word ptr [bp+04],3C
-	jbe	C30B
+	cmp	word ptr [bp+4h],3Ch
+	jbe	0C30Bh
 
 l0800_C301:
-	sub	word ptr [bp+04],01
-	sbb	word ptr [bp+06],00
-	jmp	C326
+	sub	word ptr [bp+4h],1h
+	sbb	word ptr [bp+6h],0h
+	jmp	0C326h
 
 l0800_C30B:
-	cmp	word ptr [bp+06],00
-	jnz	C326
+	cmp	word ptr [bp+6h],0h
+	jnz	0C326h
 
 l0800_C311:
-	cmp	word ptr [bp+04],3C
-	jnz	C326
+	cmp	word ptr [bp+4h],3Ch
+	jnz	0C326h
 
 l0800_C317:
-	les	bx,[bp+08]
-	mov	byte ptr es:[bx+03],02
-	mov	byte ptr es:[bx+02],1D
-	jmp	C377
+	les	bx,[bp+8h]
+	mov	byte ptr es:[bx+3h],2h
+	mov	byte ptr es:[bx+2h],1Dh
+	jmp	0C377h
 
 l0800_C326:
-	les	bx,[bp+08]
-	mov	byte ptr es:[bx+03],00
-	jmp	C34D
+	les	bx,[bp+8h]
+	mov	byte ptr es:[bx+3h],0h
+	jmp	0C34Dh
 
 l0800_C330:
-	les	bx,[bp+08]
-	mov	al,es:[bx+03]
+	les	bx,[bp+8h]
+	mov	al,es:[bx+3h]
 	cbw
 	mov	bx,ax
-	mov	al,[bx+26B4]
+	mov	al,[bx+26B4h]
 	cbw
 	cwd
-	sub	[bp+04],ax
-	sbb	[bp+06],dx
-	mov	bx,[bp+08]
-	inc	byte ptr es:[bx+03]
+	sub	[bp+4h],ax
+	sbb	[bp+6h],dx
+	mov	bx,[bp+8h]
+	inc	byte ptr es:[bx+3h]
 
 l0800_C34D:
-	les	bx,[bp+08]
-	mov	al,es:[bx+03]
+	les	bx,[bp+8h]
+	mov	al,es:[bx+3h]
 	cbw
 	mov	bx,ax
-	mov	al,[bx+26B4]
+	mov	al,[bx+26B4h]
 	cbw
 	cwd
-	cmp	dx,[bp+06]
-	jl	C330
+	cmp	dx,[bp+6h]
+	jl	0C330h
 
 l0800_C362:
-	jnz	C369
+	jnz	0C369h
 
 l0800_C364:
-	cmp	ax,[bp+04]
-	jc	C330
+	cmp	ax,[bp+4h]
+	jc	0C330h
 
 l0800_C369:
-	les	bx,[bp+08]
-	inc	byte ptr es:[bx+03]
-	mov	al,[bp+04]
-	mov	es:[bx+02],al
+	les	bx,[bp+8h]
+	inc	byte ptr es:[bx+3h]
+	mov	al,[bp+4h]
+	mov	es:[bx+2h],al
 
 l0800_C377:
 	pop	bp
@@ -27635,224 +27635,224 @@ l0800_C377:
 fn0800_C379 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,04
+	sub	sp,4h
 	push	si
 	push	ds
-	mov	ax,26E8
+	mov	ax,26E8h
 	push	ax
-	call	AFCB
+	call	0AFCBh
 	pop	cx
 	pop	cx
-	mov	[bp-02],dx
-	mov	[bp-04],ax
+	mov	[bp-2h],dx
+	mov	[bp-4h],ax
 	or	ax,dx
-	jnz	C397
+	jnz	0C397h
 
 l0800_C394:
-	jmp	C42C
+	jmp	0C42Ch
 
 l0800_C397:
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	call	BFC7
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	call	0BFC7h
 	pop	cx
 	pop	cx
-	cmp	ax,0004
-	jnc	C3AA
+	cmp	ax,4h
+	jnc	0C3AAh
 
 l0800_C3A7:
-	jmp	C42C
+	jmp	0C42Ch
 
 l0800_C3AA:
-	les	bx,[bp-04]
+	les	bx,[bp-4h]
 	mov	al,es:[bx]
 	cbw
 	mov	bx,ax
-	mov	al,[bx+2251]
+	mov	al,[bx+2251h]
 	cbw
-	test	ax,000C
-	jz	C42C
+	test	ax,0Ch
+	jz	0C42Ch
 
 l0800_C3BD:
-	mov	bx,[bp-04]
-	mov	al,es:[bx+01]
+	mov	bx,[bp-4h]
+	mov	al,es:[bx+1h]
 	cbw
 	mov	bx,ax
-	mov	al,[bx+2251]
+	mov	al,[bx+2251h]
 	cbw
-	test	ax,000C
-	jz	C42C
+	test	ax,0Ch
+	jz	0C42Ch
 
 l0800_C3D1:
-	mov	bx,[bp-04]
-	mov	al,es:[bx+02]
+	mov	bx,[bp-4h]
+	mov	al,es:[bx+2h]
 	cbw
 	mov	bx,ax
-	mov	al,[bx+2251]
+	mov	al,[bx+2251h]
 	cbw
-	test	ax,000C
-	jz	C42C
+	test	ax,0Ch
+	jz	0C42Ch
 
 l0800_C3E5:
-	mov	bx,[bp-04]
-	cmp	byte ptr es:[bx+03],2D
-	jz	C404
+	mov	bx,[bp-4h]
+	cmp	byte ptr es:[bx+3h],2Dh
+	jz	0C404h
 
 l0800_C3EF:
-	cmp	byte ptr es:[bx+03],2B
-	jz	C404
+	cmp	byte ptr es:[bx+3h],2Bh
+	jz	0C404h
 
 l0800_C3F6:
-	mov	al,es:[bx+03]
+	mov	al,es:[bx+3h]
 	cbw
 	mov	bx,ax
-	test	byte ptr [bx+2251],02
-	jz	C42C
+	test	byte ptr [bx+2251h],2h
+	jz	0C42Ch
 
 l0800_C404:
-	les	bx,[bp-04]
-	mov	al,es:[bx+03]
+	les	bx,[bp-4h]
+	mov	al,es:[bx+3h]
 	cbw
 	mov	bx,ax
-	mov	al,[bx+2251]
+	mov	al,[bx+2251h]
 	cbw
-	test	ax,0002
-	jnz	C467
+	test	ax,2h
+	jnz	0C467h
 
 l0800_C418:
-	mov	bx,[bp-04]
-	mov	al,es:[bx+04]
+	mov	bx,[bp-4h]
+	mov	al,es:[bx+4h]
 	cbw
 	mov	bx,ax
-	mov	al,[bx+2251]
+	mov	al,[bx+2251h]
 	cbw
-	test	ax,0002
-	jnz	C467
+	test	ax,2h
+	jnz	0C467h
 
 l0800_C42C:
-	mov	word ptr [26E6],0001
-	mov	word ptr [26E4],0000
-	mov	word ptr [26E2],4650
+	mov	word ptr [26E6h],1h
+	mov	word ptr [26E4h],0h
+	mov	word ptr [26E2h],4650h
 	push	ds
-	mov	ax,26EB
+	mov	ax,26EBh
 	push	ax
-	push	word ptr [26DC]
-	push	word ptr [26DA]
-	call	BF9E
-	add	sp,08
+	push	word ptr [26DCh]
+	push	word ptr [26DAh]
+	call	0BF9Eh
+	add	sp,8h
 	push	ds
-	mov	ax,26EF
+	mov	ax,26EFh
 	push	ax
-	push	word ptr [26E0]
-	push	word ptr [26DE]
-	call	BF9E
-	add	sp,08
-	jmp	C54E
+	push	word ptr [26E0h]
+	push	word ptr [26DEh]
+	call	0BF9Eh
+	add	sp,8h
+	jmp	0C54Eh
 
 l0800_C467:
-	mov	ax,0004
+	mov	ax,4h
 	push	ax
 	xor	ax,ax
 	push	ax
-	push	word ptr [26E0]
-	push	word ptr [26DE]
-	call	B083
-	add	sp,08
-	mov	ax,0003
+	push	word ptr [26E0h]
+	push	word ptr [26DEh]
+	call	0B083h
+	add	sp,8h
+	mov	ax,3h
 	push	ax
-	push	word ptr [bp-02]
-	push	word ptr [bp-04]
-	push	word ptr [26DC]
-	push	word ptr [26DA]
-	call	C01E
-	add	sp,0A
-	les	bx,[26DA]
-	mov	byte ptr es:[bx+03],00
-	mov	ax,[bp-04]
-	add	ax,0003
-	push	word ptr [bp-02]
+	push	word ptr [bp-2h]
+	push	word ptr [bp-4h]
+	push	word ptr [26DCh]
+	push	word ptr [26DAh]
+	call	0C01Eh
+	add	sp,0Ah
+	les	bx,[26DAh]
+	mov	byte ptr es:[bx+3h],0h
+	mov	ax,[bp-4h]
+	add	ax,3h
+	push	word ptr [bp-2h]
 	push	ax
-	call	A471
+	call	0A471h
 	pop	cx
 	pop	cx
 	push	ax
 	push	dx
 	xor	dx,dx
-	mov	ax,0E10
+	mov	ax,0E10h
 	pop	cx
 	pop	bx
-	call	8F18
-	mov	[26E4],dx
-	mov	[26E2],ax
-	mov	word ptr [26E6],0000
-	mov	si,0003
-	jmp	C542
+	call	8F18h
+	mov	[26E4h],dx
+	mov	[26E2h],ax
+	mov	word ptr [26E6h],0h
+	mov	si,3h
+	jmp	0C542h
 
 l0800_C4CA:
-	les	bx,[bp-04]
+	les	bx,[bp-4h]
 	mov	al,es:[bx+si]
 	cbw
 	mov	bx,ax
-	test	byte ptr [bx+2251],0C
-	jz	C541
+	test	byte ptr [bx+2251h],0Ch
+	jz	0C541h
 
 l0800_C4DA:
-	mov	ax,[bp-04]
+	mov	ax,[bp-4h]
 	add	ax,si
-	push	word ptr [bp-02]
+	push	word ptr [bp-2h]
 	push	ax
-	call	BFC7
+	call	0BFC7h
 	pop	cx
 	pop	cx
-	cmp	ax,0003
-	jc	C54E
+	cmp	ax,3h
+	jc	0C54Eh
 
 l0800_C4ED:
-	les	bx,[bp-04]
-	mov	al,es:[bx+si+01]
+	les	bx,[bp-4h]
+	mov	al,es:[bx+si+1h]
 	cbw
 	mov	bx,ax
-	mov	al,[bx+2251]
+	mov	al,[bx+2251h]
 	cbw
-	test	ax,000C
-	jz	C54E
+	test	ax,0Ch
+	jz	0C54Eh
 
 l0800_C501:
-	mov	bx,[bp-04]
-	mov	al,es:[bx+si+02]
+	mov	bx,[bp-4h]
+	mov	al,es:[bx+si+2h]
 	cbw
 	mov	bx,ax
-	mov	al,[bx+2251]
+	mov	al,[bx+2251h]
 	cbw
-	test	ax,000C
-	jz	C54E
+	test	ax,0Ch
+	jz	0C54Eh
 
 l0800_C515:
-	mov	ax,0003
+	mov	ax,3h
 	push	ax
-	mov	ax,[bp-04]
+	mov	ax,[bp-4h]
 	add	ax,si
-	push	word ptr [bp-02]
+	push	word ptr [bp-2h]
 	push	ax
-	push	word ptr [26E0]
-	push	word ptr [26DE]
-	call	C01E
-	add	sp,0A
-	les	bx,[26DE]
-	mov	byte ptr es:[bx+03],00
-	mov	word ptr [26E6],0001
-	jmp	C54E
+	push	word ptr [26E0h]
+	push	word ptr [26DEh]
+	call	0C01Eh
+	add	sp,0Ah
+	les	bx,[26DEh]
+	mov	byte ptr es:[bx+3h],0h
+	mov	word ptr [26E6h],1h
+	jmp	0C54Eh
 
 l0800_C541:
 	inc	si
 
 l0800_C542:
-	les	bx,[bp-04]
-	cmp	byte ptr es:[bx+si],00
-	jz	C54E
+	les	bx,[bp-4h]
+	cmp	byte ptr es:[bx+si],0h
+	jz	0C54Eh
 
 l0800_C54B:
-	jmp	C4CA
+	jmp	0C4CAh
 
 l0800_C54E:
 	pop	si
@@ -27868,146 +27868,146 @@ fn0800_C553 proc
 	push	bp
 	mov	bp,sp
 	push	si
-	cmp	word ptr [bp+06],00
-	jnz	C589
+	cmp	word ptr [bp+6h],0h
+	jnz	0C589h
 
 l0800_C55D:
-	mov	si,[bp+08]
-	cmp	word ptr [bp+08],3B
-	jc	C572
+	mov	si,[bp+8h]
+	cmp	word ptr [bp+8h],3Bh
+	jc	0C572h
 
 l0800_C566:
-	mov	ax,[bp+04]
-	add	ax,0046
-	test	ax,0003
-	jnz	C572
+	mov	ax,[bp+4h]
+	add	ax,46h
+	test	ax,3h
+	jnz	0C572h
 
 l0800_C571:
 	dec	si
 
 l0800_C572:
-	mov	word ptr [bp+06],0000
-	jmp	C57C
+	mov	word ptr [bp+6h],0h
+	jmp	0C57Ch
 
 l0800_C579:
-	inc	word ptr [bp+06]
+	inc	word ptr [bp+6h]
 
 l0800_C57C:
-	mov	bx,[bp+06]
-	shl	bx,01
-	cmp	[bx+26C0],si
-	jbe	C579
+	mov	bx,[bp+6h]
+	shl	bx,1h
+	cmp	[bx+26C0h],si
+	jbe	0C579h
 
 l0800_C587:
-	jmp	C5AA
+	jmp	0C5AAh
 
 l0800_C589:
-	cmp	word ptr [bp+06],03
-	jc	C59A
+	cmp	word ptr [bp+6h],3h
+	jc	0C59Ah
 
 l0800_C58F:
-	mov	ax,[bp+04]
-	add	ax,0046
-	test	ax,0003
-	jz	C59D
+	mov	ax,[bp+4h]
+	add	ax,46h
+	test	ax,3h
+	jz	0C59Dh
 
 l0800_C59A:
-	dec	word ptr [bp+08]
+	dec	word ptr [bp+8h]
 
 l0800_C59D:
-	mov	bx,[bp+06]
+	mov	bx,[bp+6h]
 	dec	bx
-	shl	bx,01
-	mov	ax,[bx+26C0]
-	add	[bp+08],ax
+	shl	bx,1h
+	mov	ax,[bx+26C0h]
+	add	[bp+8h],ax
 
 l0800_C5AA:
-	cmp	word ptr [bp+06],04
-	jc	C62B
+	cmp	word ptr [bp+6h],4h
+	jc	0C62Bh
 
 l0800_C5B0:
-	jz	C5BA
+	jz	0C5BAh
 
 l0800_C5B2:
-	cmp	word ptr [bp+06],0A
-	ja	C62B
+	cmp	word ptr [bp+6h],0Ah
+	ja	0C62Bh
 
 l0800_C5B8:
-	jnz	C626
+	jnz	0C626h
 
 l0800_C5BA:
-	mov	bx,[bp+06]
-	shl	bx,01
-	cmp	word ptr [bp+04],10
-	jle	C5D4
+	mov	bx,[bp+6h]
+	shl	bx,1h
+	cmp	word ptr [bp+4h],10h
+	jle	0C5D4h
 
 l0800_C5C5:
-	cmp	word ptr [bp+06],04
-	jnz	C5D4
+	cmp	word ptr [bp+6h],4h
+	jnz	0C5D4h
 
 l0800_C5CB:
-	mov	cx,[bx+26BE]
-	add	cx,07
-	jmp	C5D8
+	mov	cx,[bx+26BEh]
+	add	cx,7h
+	jmp	0C5D8h
 
 l0800_C5D4:
-	mov	cx,[bx+26C0]
+	mov	cx,[bx+26C0h]
 
 l0800_C5D8:
-	mov	bx,[bp+04]
-	add	bx,07B2
-	test	bl,03
-	jz	C5E5
+	mov	bx,[bp+4h]
+	add	bx,7B2h
+	test	bl,3h
+	jz	0C5E5h
 
 l0800_C5E4:
 	dec	cx
 
 l0800_C5E5:
-	mov	bx,[bp+04]
+	mov	bx,[bp+4h]
 	inc	bx
-	sar	bx,01
-	sar	bx,01
+	sar	bx,1h
+	sar	bx,1h
 	add	bx,cx
-	mov	ax,016D
-	mul	word ptr [bp+04]
+	mov	ax,16Dh
+	mul	word ptr [bp+4h]
 	add	ax,bx
-	add	ax,0004
+	add	ax,4h
 	xor	dx,dx
-	mov	bx,0007
+	mov	bx,7h
 	div	bx
 	sub	cx,dx
-	mov	ax,[bp+08]
-	cmp	word ptr [bp+06],04
-	jnz	C61A
+	mov	ax,[bp+8h]
+	cmp	word ptr [bp+6h],4h
+	jnz	0C61Ah
 
 l0800_C60C:
 	cmp	ax,cx
-	ja	C626
+	ja	0C626h
 
 l0800_C610:
-	jnz	C62B
+	jnz	0C62Bh
 
 l0800_C612:
-	cmp	byte ptr [bp+0A],02
-	jc	C62B
+	cmp	byte ptr [bp+0Ah],2h
+	jc	0C62Bh
 
 l0800_C618:
-	jmp	C626
+	jmp	0C626h
 
 l0800_C61A:
 	cmp	ax,cx
-	jc	C626
+	jc	0C626h
 
 l0800_C61E:
-	jnz	C62B
+	jnz	0C62Bh
 
 l0800_C620:
-	cmp	byte ptr [bp+0A],01
-	ja	C62B
+	cmp	byte ptr [bp+0Ah],1h
+	ja	0C62Bh
 
 l0800_C626:
-	mov	ax,0001
-	jmp	C62D
+	mov	ax,1h
+	jmp	0C62Dh
 
 l0800_C62B:
 	xor	ax,ax
@@ -28015,7 +28015,7 @@ l0800_C62B:
 l0800_C62D:
 	pop	si
 	pop	bp
-	ret	0008
+	ret	8h
 
 ;; fn0800_C632: 0800:C632
 ;;   Called from:
@@ -28024,185 +28024,185 @@ l0800_C62D:
 fn0800_C632 proc
 	push	bp
 	mov	bp,sp
-	sub	sp,008E
+	sub	sp,8Eh
 	push	si
 	push	di
-	mov	di,[bp+04]
-	cmp	di,[24E8]
-	jc	C64E
+	mov	di,[bp+4h]
+	cmp	di,[24E8h]
+	jc	0C64Eh
 
 l0800_C644:
-	mov	ax,0006
+	mov	ax,6h
 	push	ax
-	call	8D2B
-	jmp	C773
+	call	8D2Bh
+	jmp	0C773h
 
 l0800_C64E:
-	mov	ax,[bp+0A]
+	mov	ax,[bp+0Ah]
 	inc	ax
-	cmp	ax,0002
-	jnc	C65C
+	cmp	ax,2h
+	jnc	0C65Ch
 
 l0800_C657:
 	xor	ax,ax
-	jmp	C773
+	jmp	0C773h
 
 l0800_C65C:
 	mov	bx,di
-	shl	bx,01
-	test	word ptr [bx+24EA],0800
-	jz	C677
+	shl	bx,1h
+	test	word ptr [bx+24EAh],800h
+	jz	0C677h
 
 l0800_C668:
-	mov	ax,0002
+	mov	ax,2h
 	push	ax
 	xor	ax,ax
 	push	ax
 	push	ax
 	push	di
-	call	8E29
-	add	sp,08
+	call	8E29h
+	add	sp,8h
 
 l0800_C677:
 	mov	bx,di
-	shl	bx,01
-	test	word ptr [bx+24EA],4000
-	jnz	C696
+	shl	bx,1h
+	test	word ptr [bx+24EAh],4000h
+	jnz	0C696h
 
 l0800_C683:
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	push	word ptr [bp+06]
+	push	word ptr [bp+0Ah]
+	push	word ptr [bp+8h]
+	push	word ptr [bp+6h]
 	push	di
-	call	C779
-	add	sp,08
-	jmp	C773
+	call	0C779h
+	add	sp,8h
+	jmp	0C773h
 
 l0800_C696:
 	mov	bx,di
-	shl	bx,01
-	and	word ptr [bx+24EA],FDFF
-	mov	ax,[bp+08]
-	mov	dx,[bp+06]
-	mov	[bp-0A],ax
-	mov	[bp-0C],dx
-	mov	ax,[bp+0A]
-	mov	[bp-06],ax
-	jmp	C727
+	shl	bx,1h
+	and	word ptr [bx+24EAh],0FDFFh
+	mov	ax,[bp+8h]
+	mov	dx,[bp+6h]
+	mov	[bp-0Ah],ax
+	mov	[bp-0Ch],dx
+	mov	ax,[bp+0Ah]
+	mov	[bp-6h],ax
+	jmp	0C727h
 
 l0800_C6B4:
-	dec	word ptr [bp-06]
-	les	bx,[bp-0C]
-	inc	word ptr [bp-0C]
+	dec	word ptr [bp-6h]
+	les	bx,[bp-0Ch]
+	inc	word ptr [bp-0Ch]
 	mov	al,es:[bx]
-	mov	[bp-07],al
-	cmp	al,0A
-	jnz	C6D1
+	mov	[bp-7h],al
+	cmp	al,0Ah
+	jnz	0C6D1h
 
 l0800_C6C7:
-	les	bx,[bp-04]
-	mov	byte ptr es:[bx],0D
-	inc	word ptr [bp-04]
+	les	bx,[bp-4h]
+	mov	byte ptr es:[bx],0Dh
+	inc	word ptr [bp-4h]
 
 l0800_C6D1:
-	les	bx,[bp-04]
-	mov	al,[bp-07]
+	les	bx,[bp-4h]
+	mov	al,[bp-7h]
 	mov	es:[bx],al
-	inc	word ptr [bp-04]
-	lea	ax,[bp+FF72]
-	mov	dx,[bp-04]
+	inc	word ptr [bp-4h]
+	lea	ax,[bp+0FF72h]
+	mov	dx,[bp-4h]
 	xor	bx,bx
 	sub	dx,ax
-	sbb	bx,00
+	sbb	bx,0h
 	or	bx,bx
-	jl	C731
+	jl	0C731h
 
 l0800_C6EF:
-	jnz	C6F7
+	jnz	0C6F7h
 
 l0800_C6F1:
-	cmp	dx,0080
-	jc	C731
+	cmp	dx,80h
+	jc	0C731h
 
 l0800_C6F7:
-	lea	ax,[bp+FF72]
-	mov	si,[bp-04]
+	lea	ax,[bp+0FF72h]
+	mov	si,[bp-4h]
 	xor	dx,dx
 	sub	si,ax
-	sbb	dx,00
+	sbb	dx,0h
 	push	si
 	push	ss
 	push	ax
 	push	di
-	call	C779
-	add	sp,08
+	call	0C779h
+	add	sp,8h
 	mov	dx,ax
 	cmp	ax,si
-	jz	C727
+	jz	0C727h
 
 l0800_C715:
-	cmp	dx,FF
-	jnz	C71F
+	cmp	dx,0FFh
+	jnz	0C71Fh
 
 l0800_C71A:
-	mov	ax,FFFF
-	jmp	C76E
+	mov	ax,0FFFFh
+	jmp	0C76Eh
 
 l0800_C71F:
-	mov	ax,[bp+0A]
-	sub	ax,[bp-06]
-	jmp	C76A
+	mov	ax,[bp+0Ah]
+	sub	ax,[bp-6h]
+	jmp	0C76Ah
 
 l0800_C727:
-	lea	ax,[bp+FF72]
-	mov	[bp-02],ss
-	mov	[bp-04],ax
+	lea	ax,[bp+0FF72h]
+	mov	[bp-2h],ss
+	mov	[bp-4h],ax
 
 l0800_C731:
-	cmp	word ptr [bp-06],00
-	jz	C73A
+	cmp	word ptr [bp-6h],0h
+	jz	0C73Ah
 
 l0800_C737:
-	jmp	C6B4
+	jmp	0C6B4h
 
 l0800_C73A:
-	lea	ax,[bp+FF72]
-	mov	si,[bp-04]
+	lea	ax,[bp+0FF72h]
+	mov	si,[bp-4h]
 	xor	dx,dx
 	sub	si,ax
-	sbb	dx,00
+	sbb	dx,0h
 	mov	ax,si
 	or	ax,ax
-	jbe	C770
+	jbe	0C770h
 
 l0800_C74E:
 	push	si
 	push	ss
-	lea	ax,[bp+FF72]
+	lea	ax,[bp+0FF72h]
 	push	ax
 	push	di
-	call	C779
-	add	sp,08
+	call	0C779h
+	add	sp,8h
 	mov	dx,ax
 	cmp	ax,si
-	jz	C770
+	jz	0C770h
 
 l0800_C762:
-	cmp	dx,FF
-	jz	C71A
+	cmp	dx,0FFh
+	jz	0C71Ah
 
 l0800_C767:
-	mov	ax,[bp+0A]
+	mov	ax,[bp+0Ah]
 
 l0800_C76A:
 	add	ax,dx
 	sub	ax,si
 
 l0800_C76E:
-	jmp	C773
+	jmp	0C773h
 
 l0800_C770:
-	mov	ax,[bp+0A]
+	mov	ax,[bp+0Ah]
 
 l0800_C773:
 	pop	di
@@ -28223,39 +28223,39 @@ l0800_C773:
 fn0800_C779 proc
 	push	bp
 	mov	bp,sp
-	mov	bx,[bp+04]
-	shl	bx,01
-	test	word ptr [bx+24EA],0001
-	jz	C78F
+	mov	bx,[bp+4h]
+	shl	bx,1h
+	test	word ptr [bx+24EAh],1h
+	jz	0C78Fh
 
 l0800_C789:
-	mov	ax,0005
+	mov	ax,5h
 	push	ax
-	jmp	C7B0
+	jmp	0C7B0h
 
 l0800_C78F:
 	push	ds
-	mov	ah,40
-	mov	bx,[bp+04]
-	mov	cx,[bp+0A]
-	lds	dx,[bp+06]
-	int	21
+	mov	ah,40h
+	mov	bx,[bp+4h]
+	mov	cx,[bp+0Ah]
+	lds	dx,[bp+6h]
+	int	21h
 	pop	ds
-	jc	C7AF
+	jc	0C7AFh
 
 l0800_C7A0:
 	push	ax
-	mov	bx,[bp+04]
-	shl	bx,01
-	or	word ptr [bx+24EA],1000
+	mov	bx,[bp+4h]
+	shl	bx,1h
+	or	word ptr [bx+24EAh],1000h
 	pop	ax
-	jmp	C7B3
+	jmp	0C7B3h
 
 l0800_C7AF:
 	push	ax
 
 l0800_C7B0:
-	call	8D2B
+	call	8D2Bh
 
 l0800_C7B3:
 	pop	bp

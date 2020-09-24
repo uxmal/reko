@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -32,8 +32,8 @@ namespace Reko.Arch.Mos6502
     public class Operand : MachineOperand
     {
         public AddressMode Mode;
-        public RegisterStorage Register;
-        public Constant Offset;
+        public RegisterStorage? Register;
+        public Constant? Offset;
 
         public Operand(PrimitiveType size)
             : base(size)
@@ -78,5 +78,21 @@ namespace Reko.Arch.Mos6502
         IndexedIndirect,    // $(AA,x)
         IndirectIndexed,    // $(AA),y
         Accumulator,        // a
+
+        // New 65816 modes
+        DirectPage,                     // $AA
+        DirectPageX,                    // $AA,X
+        DirectPageY,                    // $AA,Y
+        DirectPageIndirect,             // ($AA)
+        DirectPageIndexedIndirectX,     // ($AA,X)
+        DirectPageIndirectIndexedY,     // ($AA),Y
+        DirectPageIndirectLong,         // [$AA]
+        DirectPageIndirectLongIndexedY, // [$AA],Y
+        AbsoluteLong,                   // $AABBCC
+        AbsoluteLongX,                  // $AABBCC,X
+        AbsoluteIndexedIndirect,        // $(AABB,X)
+        AbsoluteIndirectLong,           // [$AABBCC]
+        StackRelative,                  // $AA,S
+        StackRelativeIndirectIndexedY,  // ($AA,S),Y
     }
 }

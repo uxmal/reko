@@ -29,10 +29,10 @@ public:
 	STDMETHODIMP_(ULONG) Release() override { return ComBase::Release(); }
 
 	STDMETHODIMP GetInfo(NativeInstructionInfo * info) override;
-	STDMETHODIMP Render(INativeInstructionWriter * w, MachineInstructionWriterOptions options) override;
+	STDMETHODIMP Render(INativeInstructionWriter * w, MachineInstructionWriterFlags options) override;
 private:
 	bool WriteRegisterSetInstruction(const cs_insn & instr, INativeInstructionWriter & writer);
-	void Write(const cs_insn & insn, const cs_arm_op & op, INativeInstructionWriter & writer, MachineInstructionWriterOptions options);
+	void Write(const cs_insn & insn, const cs_arm_op & op, INativeInstructionWriter & writer, MachineInstructionWriterFlags options);
 	void WriteShift(const cs_arm_op & op, INativeInstructionWriter & writer);
 	void WriteMemoryOperand(const cs_insn & insn, const cs_arm_op & op, INativeInstructionWriter & writer);
 	static bool IsLastOperand(const cs_insn & instr, const cs_arm_op * op)

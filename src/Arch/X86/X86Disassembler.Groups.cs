@@ -247,16 +247,31 @@ namespace Reko.Arch.X86
             };
 
             // C6/C7
-            Grp11 = new Decoder[8]
+            Grp11b = new Decoder[8]
             {
-                Instr(Mnemonic.mov),
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+                Instr(Mnemonic.mov, Eb,Ib),
+                s_invalid,
+                s_invalid,      // Some of these appear to be "secret" instructions.
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                new Group7Decoder(
+                    s_invalid,
+                    Instr(Mnemonic.xabort, InstrClass.Terminates, Ib))
+            };
+            Grp11z = new Decoder[8]
+            {
+                Instr(Mnemonic.mov, Ev,Iz),
+                s_invalid,
+                s_invalid,
+                s_invalid,      // Some of these appear to be "secret" instructions.
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                new Group7Decoder(
+                    s_invalid,
+                    Instr(Mnemonic.xabort, InstrClass.Terminates, Ib))
             };
 
             // 0F 71
@@ -386,9 +401,9 @@ namespace Reko.Arch.X86
             Grp17 = new Decoder[8]
             {
                 s_invalid,
-				s_nyi,
-				s_nyi,
-				s_nyi,
+				VexInstr(Mnemonic.illegal, Mnemonic.blsr, By, Ey),
+                VexInstr(Mnemonic.illegal, Mnemonic.blsmsk, By, Ey),
+                VexInstr(Mnemonic.illegal, Mnemonic.blsi, By, Ey),
 				s_invalid,
 				s_invalid,
 				s_invalid,

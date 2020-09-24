@@ -80,7 +80,7 @@ namespace Reko.Core.Emulation
         public void StepOver(Action callback)
         {
             var instr = CurrentInstruction;
-            stepOverAddress = instr.Address!.ToLinear() + (uint)instr.Length;
+            stepOverAddress = instr.Address.ToLinear() + (uint)instr.Length;
             stepAction = callback;
         }
 

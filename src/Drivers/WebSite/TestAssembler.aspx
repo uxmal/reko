@@ -10,7 +10,7 @@
   <body>
 	<form id="Form1" method="post" runat="server">
 	  <r:navbar runat="server" id=Navbar1 /><br>
-	  Enter your assembler language code (or pick one of the preset examples). Then try decompiling it!
+	  Enter your assembly language code (or pick one of the preset examples). Then try decompiling it!
 	  <p>
 	  Samples:<br>	  
 	  <asp:DropDownList ID="ddlSamples" Runat=server width="528px" autopostback=True></asp:DropDownList><br>

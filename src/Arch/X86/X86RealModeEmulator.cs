@@ -39,7 +39,7 @@ namespace Reko.Arch.X86
         {
             if (op.Width.Size == 4)
             {
-                Push(InstructionPointer.Selector.Value, PrimitiveType.Word16);
+                Push(InstructionPointer.Selector!.Value, PrimitiveType.Word16);
             }
             var nextIp = InstructionPointer.Offset + (uint) dasm.Current.Length;   // Push return value on stack
             Push(nextIp, PrimitiveType.Word16);
@@ -87,6 +87,20 @@ namespace Reko.Arch.X86
             di += delta;
             WriteRegister(X86.Registers.si, si);
             WriteRegister(X86.Registers.di, di);
+        }
+
+        protected override void Scas(PrimitiveType dt)
+        {
+            var mask = masks[dt.Size];
+            var a = ReadRegister(X86.Registers.eax) & mask.value;
+            var es = (ushort) ReadRegister(X86.Registers.es);
+            var di = (uint) ReadRegister(X86.Registers.di);
+            var value = ReadMemory(ToLinear(es, di), dt) & mask.value;
+            var delta = dt.Size * (((Flags & Dmask) != 0) ? -1 : 1);
+            di +=  (uint) delta;
+            WriteRegister(X86.Registers.di, di);
+            Flags &= ~Zmask;
+            Flags |= (a == value ? Zmask : 0u);
         }
 
         protected override void Stos(PrimitiveType dt)

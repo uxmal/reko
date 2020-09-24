@@ -1,7 +1,7 @@
 0B00:0000 C8 00 00 00 8B 5E 04 C6 07 00 C9 C3             .....^......   
 
-0B00:0000 C8 00 00 00     	enter	0000,00
-0B00:0004 8B 5E 04        	mov	bx,[bp+04]
-0B00:0007 C6 07 00        	mov	byte ptr [bx],00
+0B00:0000 C8 00 00 00     	enter	0h,0h
+0B00:0004 8B 5E 04        	mov	bx,[bp+4h]
+0B00:0007 C6 07 00        	mov	byte ptr [bx],0h
 0B00:000A C9              	leave
 0B00:000B C3              	ret

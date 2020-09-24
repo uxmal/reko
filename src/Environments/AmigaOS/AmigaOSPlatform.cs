@@ -152,8 +152,7 @@ namespace Reko.Environments.AmigaOS
                 return null;
             if (funcs == null)
                 funcs = LoadLibraryDef("exec", 33, Metadata);
-            SystemService svc;
-            return funcs.TryGetValue(offset, out svc) ? svc : null;
+            return funcs.TryGetValue(offset, out SystemService svc) ? svc : null;
         }
 
         private string GetLibraryBaseName(string name_with_version) 

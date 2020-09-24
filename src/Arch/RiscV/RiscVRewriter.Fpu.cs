@@ -29,19 +29,58 @@ namespace Reko.Arch.RiscV
 {
     public partial class RiscVRewriter
     {
+        /// <summary>
+        /// If the bit size of the expression is less than the target register, pad it with 
+        /// an IEEE NaN as specified by the RiscV manual.
+        /// </summary>
+        /// <param name="exp"></param>
+        private Expression MaybeNanBox(Expression exp, DataType dtDst)
+        {
+            int cbNanBox = dtDst.BitSize - exp.DataType.BitSize;
+            if (cbNanBox > 0)
+            {
+                var dtNan = PrimitiveType.CreateWord(cbNanBox);
+                var nan = Constant.Create(dtNan, -1L);
+                return m.Seq(nan, exp);
+            }
+            else
+            {
+                return exp;
+            }
+        }
+
+        private Expression MaybeSlice(Expression exp, DataType dtUsed)
+        {
+            if (exp.DataType.BitSize > dtUsed.BitSize)
+            {
+                return m.Slice(dtUsed, exp, 0);
+            }
+            else
+            {
+                return exp;
+            }
+        }
+
         private void RewriteFcmp(PrimitiveType dt, Func<Expression, Expression,Expression> fn)
         {
             var dst = RewriteOp(instr.Operands[0]);
             var left = RewriteOp(instr.Operands[1]);
             var right = RewriteOp(instr.Operands[2]);
-            m.Assign(dst, m.Cast(dst.DataType, fn(m.Cast(dt, left), m.Cast(dt, right))));
+            var result = fn(
+                MaybeSlice(left, dt), 
+                MaybeSlice(right, dt));
+            m.Assign(dst, m.Convert(result, result.DataType, dst.DataType));
         }
 
-        private void RewriteFcvt(PrimitiveType dt)
+        private void RewriteFcvt(PrimitiveType dtFrom, PrimitiveType dtTo)
         {
-            var dst = RewriteOp(instr.Operands[0]);
             var src = RewriteOp(instr.Operands[1]);
-            m.Assign(dst, m.Cast(dt, src));
+            if (src.DataType.BitSize > dtFrom.BitSize)
+            {
+                src = m.Slice(dtFrom, src, 0);
+            }
+            var dst = RewriteOp(instr.Operands[0]);
+            m.Assign(dst, MaybeNanBox(m.Convert(src, dtFrom, dtTo), dst.DataType));
         }
 
         private void RewriteFload(PrimitiveType dt)
@@ -68,7 +107,7 @@ namespace Reko.Arch.RiscV
                     ea = m.IAdd(ea, offset);
                 }
             }
-            m.Assign(dst, m.Mem(dt, ea));
+            m.Assign(dst, MaybeNanBox(m.Mem(dt, ea), dst.DataType));
         }
 
         private void RewriteFmadd(PrimitiveType dt, Func<Expression,Expression,Expression> addsub)
@@ -77,7 +116,7 @@ namespace Reko.Arch.RiscV
             var factor1 = RewriteOp(instr.Operands[1]);
             var factor2 = RewriteOp(instr.Operands[2]);
             var summand = RewriteOp(instr.Operands[3]);
-            m.Assign(dst, addsub(m.FMul(factor1, factor2), summand));
+            m.Assign(dst, MaybeNanBox(addsub(m.FMul(factor1, factor2), summand), dst.DataType));
         }
     }
 }

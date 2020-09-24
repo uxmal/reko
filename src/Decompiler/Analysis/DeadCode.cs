@@ -39,13 +39,10 @@ namespace Reko.Analysis
         
         private readonly SsaState ssa;
 		private readonly WorkList<SsaIdentifier> liveIds;
-		private readonly CriticalInstruction critical;
-
 
 		private DeadCode(SsaState ssa) 
 		{
 			this.ssa = ssa;
-			this.critical = new CriticalInstruction();
             this.liveIds = new WorkList<SsaIdentifier>();
         }
 
@@ -149,9 +146,9 @@ namespace Reko.Analysis
 
             foreach (var stm in ssa.Procedure.Statements)
             {
-                if (critical.IsCritical(stm.Instruction))
+                if (CriticalInstruction.IsCritical(stm.Instruction))
                 {
-                    if (trace.TraceInfo) Debug.WriteLineIf(trace.TraceInfo, string.Format("Critical: {0}", stm.Instruction));
+                    trace.Inform("Critical: {0}", stm.Instruction);
                     marks.Add(stm);
                     stm.Instruction.Accept(this);		// mark all used identifiers as live.
                 }
@@ -166,32 +163,43 @@ namespace Reko.Analysis
 				{
 					if (!marks.Contains(def))
 					{
-						if (trace.TraceInfo) Debug.WriteLine(string.Format("Marked: {0}", def.Instruction));
+						trace.Inform("Marked: {0}", def.Instruction);
                         marks.Add(def);
 						sid.DefStatement?.Instruction.Accept(this);
 					}
 				}
 			}
 
-			// We have now marked all the useful instructions in the code. Any non-marked
-			// instruction is now useless and should be deleted.
-
-			foreach (Block b in ssa.Procedure.ControlGraph.Blocks)
+            // We have now marked all the useful instructions in the code. Any non-marked
+            // instruction is now useless and should be deleted. Now remove all uses; 
+            // we just proved that no-one uses the non-marked instructions.
+            foreach (var sid in ssa.Identifiers)
+            {
+                sid.Uses.RemoveAll(u => !marks.Contains(u));
+                if (sid.DefStatement != null && !marks.Contains(sid.DefStatement))
+                    sid.DefStatement = null;
+            }
+            foreach (Block b in ssa.Procedure.ControlGraph.Blocks)
 			{
-				for (int iStm = 0; iStm < b.Statements.Count; ++iStm)
-				{
-					Statement stm = b.Statements[iStm];
+                int iTo = 0;
+                for (int iStm = 0; iStm < b.Statements.Count; ++iStm)
+                {
+                    Statement stm = b.Statements[iStm];
                     if (stm.Instruction is CallInstruction call)
                     {
                         AdjustCallWithDeadDefinitions(call);
                     }
-					if (!marks.Contains(stm))
-					{
-						if (trace.TraceInfo) Debug.WriteLineIf(trace.TraceInfo, string.Format("Deleting: {0}", stm.Instruction));
-						ssa.DeleteStatement(stm);
-						--iStm;
-					}
-				}
+                    if (marks.Contains(stm))
+                    {
+                        b.Statements[iTo] = stm;
+                        ++iTo;
+                    }
+                    else
+                    {
+                        trace.Inform("Deleting: {0}", stm.Instruction);
+                    }
+                }
+                b.Statements.RemoveRange(iTo, b.Statements.Count - iTo);
 			}
 
 			AdjustApplicationsWithDeadReturnValues();

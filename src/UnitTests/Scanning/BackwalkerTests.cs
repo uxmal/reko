@@ -211,15 +211,15 @@ namespace Reko.UnitTests.Scanning
             var CVZNX = m.Flags("CVZNX");
             m.Assign(d0, d3);
             m.Assign(CVZN, m.Cond(d0));
-            m.Assign(v38, m.And(m.Cast(PrimitiveType.Word16, d0), 0xF0));
+            m.Assign(v38, m.And(m.Slice(PrimitiveType.Word16, d0, 0), 0xF0));
             m.Assign(d0, m.Dpb(d0, v38, 0));
             m.Assign(ZN, m.Cond(v38));
             m.Assign(C, false);
             m.Assign(V, false);
-            m.Assign(v39, m.Shl(m.Cast(PrimitiveType.Byte, d0), 2));
+            m.Assign(v39, m.Shl(m.Slice(PrimitiveType.Byte, d0, 0), 2));
             m.Assign(d0, m.Dpb(d0, v39, 0));
             m.Assign(CVZNX, m.Cond(v39));
-            m.Assign(v40, m.ISub(m.Cast(PrimitiveType.Word16, d0), 44));
+            m.Assign(v40, m.ISub(m.Slice(PrimitiveType.Word16, d0, 0), 44));
             m.Assign(CVZN, m.Cond(v40));
             m.BranchIf(m.Test(ConditionCode.GT, VZN), "lDefault");
             m.Assign(a5, m.Mem32(m.IAdd(Address.Ptr32(0x0000C046), d0)));
@@ -259,7 +259,7 @@ namespace Reko.UnitTests.Scanning
             m.Assign(eax, m.Mem8(rax));
             m.Assign(CZ, m.Cond(m.ISub(al, 0x78)));
             m.BranchIf(m.Test(ConditionCode.UGT, CZ), "ldefault");
-            m.Assign(ecx, m.Cast(PrimitiveType.Word32, al));
+            m.Assign(ecx, m.Convert(al, al.DataType, PrimitiveType.Word32));
             var xfer = new RtlGoto(m.Mem32(m.IAdd(Constant.Word32(0x00411F40), m.IMul(ecx, 8))), InstrClass.Transfer);
 
             var bw = new Backwalker<Block, Instruction>(host, xfer, expSimp);

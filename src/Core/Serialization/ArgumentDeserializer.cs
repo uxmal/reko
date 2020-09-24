@@ -112,11 +112,18 @@ namespace Reko.Core.Serialization
 
         public Identifier Deserialize(FpuStackVariable_v1 _)
         {
+            if (procSer.FpuStackShrinking)
+            {
+                --procSer.FpuStackOffset;
+            }
             var idArg = procSer.CreateId(
                 argCur!.Name ?? "fpArg" + procSer.FpuStackOffset, 
                 PrimitiveType.Real64,
                 new FpuStackStorage(procSer.FpuStackOffset, PrimitiveType.Real64));
-            ++procSer.FpuStackOffset;
+            if (procSer.FpuStackGrowing)
+            {
+                ++procSer.FpuStackOffset;
+            }
             return idArg;
         }
 

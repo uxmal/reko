@@ -115,5 +115,20 @@ namespace Reko.UnitTests.Evaluation
             Assert.AreEqual("00123400", e.ToString());
             Assert.AreEqual("(ptr32 int32)", e.DataType.ToString());
         }
+
+        [Test]
+        public void Idc_FloatingPointConstants()
+        {
+            Identifier edx = new Identifier("edx", PrimitiveType.Real32, Registers.edx);
+
+            var ctx = new Mock<EvaluationContext>();
+            ctx.Setup(c => c.GetValue(edx)).Returns(Constant.Word32(0x3E400000));
+
+            var ic = new IdConstant(ctx.Object, new Unifier(null, null), listener);
+            Assert.IsTrue(ic.Match(edx));
+            var e = ic.Transform();
+            Assert.AreEqual("0.1875F", e.ToString());
+            Assert.AreEqual("real32", e.DataType.ToString());
+        }
     }
 }

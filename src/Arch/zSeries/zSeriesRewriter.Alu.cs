@@ -21,7 +21,7 @@ namespace Reko.Arch.zSeries
             Expression src;
             if (reg.DataType.BitSize > dt.BitSize)
             {
-                src = m.Cast(dt, reg);
+                src = m.Convert(reg, reg.DataType, dt);
                 dst = binder.CreateTemporary(dt);
             }
             else
@@ -64,7 +64,7 @@ namespace Reko.Arch.zSeries
             var dt = PrimitiveType.Word32;
             var tmp = binder.CreateTemporary(dt);
             var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(src.DataType.BitSize - dt.BitSize));
-            m.Assign(tmp, m.IAdd(m.Cast(dt,dst), m.Cast(dt,src)));
+            m.Assign(tmp, m.IAdd(m.Convert(dst, dst.DataType, dt), m.Convert(src, src.DataType, dt)));
             m.Assign(tmpHi, m.Slice(tmpHi.DataType, dst, dt.BitSize));
             m.Assign(dst, m.Seq(tmpHi, tmp));
             var cc = binder.EnsureFlagGroup(Registers.CC);
@@ -145,16 +145,16 @@ namespace Reko.Arch.zSeries
         {
             var src = m.Mem(PrimitiveType.Int32, EffectiveAddress(instr.Operands[1]));
             var dst = Reg(instr.Operands[0]);
-            m.Assign(dst, m.Cast(PrimitiveType.Int64, src));
+            m.Assign(dst, m.Convert(src, PrimitiveType.Int32, PrimitiveType.Int64));
         }
 
         private void RewriteLgfr()
         {
             var src = Reg(instr.Operands[1]);
             var tmp = binder.CreateTemporary(PrimitiveType.Word32);
-            m.Assign(tmp, m.Cast(tmp.DataType, src));
+            m.Assign(tmp, m.Convert(src, src.DataType, tmp.DataType));
             var dst = Reg(instr.Operands[0]);
-            m.Assign(dst, m.Cast(PrimitiveType.Int64, tmp));
+            m.Assign(dst, m.Convert(tmp, tmp.DataType, PrimitiveType.Int64));
         }
 
         private void RewriteLghi()
@@ -296,7 +296,7 @@ namespace Reko.Arch.zSeries
             Expression src = Reg(instr.Operands[0]);
             if (dt.BitSize < 64)
             {
-                src = m.Cast(dt, src);
+                src = m.Slice(dt, src, 0);
             }
             var ea = EffectiveAddress(instr.Operands[1]);
             m.Assign(m.Mem(dt, ea), src);

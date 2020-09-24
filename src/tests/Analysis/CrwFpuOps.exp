@@ -43,8 +43,8 @@ void fn0C00_0010(Register selector ds, Stack word16 wArg02, Stack word16 wArg04)
 // bp:bp
 // ss:ss
 // bx:bx
-// Top:Top
 // ds:ds
+// Top:Top
 // wLoc02:Local -0002
 // wArg02:Stack +0002
 // rLoc1:FPU -1
@@ -67,7 +67,7 @@ l0C00_0010:
 	rLoc2_42 = rLoc2_41 * rLoc2_41
 	rLoc1_43 = rLoc1_40 + rLoc2_42
 	Mem25[ds:wArg04:real64] = rLoc1_43
-	rLoc1_45 = (real64) Mem25[ds:wArg04 + 0x20<16>:int16]
+	rLoc1_45 = CONVERT(Mem25[ds:wArg04 + 0x20<16>:int16], int16, real64)
 	Mem29[ds:wArg04 + 0x28<16>:real64] = rLoc1_45
 	return
 	// succ:  fn0C00_0010_exit
@@ -92,7 +92,7 @@ fn0C00_0037_entry:
 	// succ:  l0C00_0037
 l0C00_0037:
 	Mem7[ds:0x400<16>:real64] = 0.0
-	Mem11[ds:0x408<16>:int32] = (int32) 1.0
+	Mem11[ds:0x408<16>:int32] = CONVERT(1.0, real64, int32)
 	return
 	// succ:  fn0C00_0037_exit
 fn0C00_0037_exit:

@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -54,6 +54,8 @@ namespace Reko.Arch.Arm.AArch64
 
         public static readonly Dictionary<string, RegisterStorage> ByName;
         public static readonly RegisterStorage[][] SubRegisters;
+
+        public static readonly FlagGroupStorage C;
 
         internal static bool IsIntegerRegister(RegisterStorage reg)
         {
@@ -172,6 +174,8 @@ namespace Reko.Arch.Arm.AArch64
                     new [] { fpcr },
                     new [] { fpsr },
                 }).ToArray();
+
+            C = new FlagGroupStorage(pstate, (uint) FlagM.CF, "C", PrimitiveType.Bool);
         }
     }
 }

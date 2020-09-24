@@ -300,7 +300,7 @@ namespace Reko.Arch.M6800.M6812
                     Expression idx = binder.EnsureRegister(memop.Index);
                     if (idx.DataType.BitSize < ea.DataType.BitSize)
                     {
-                        idx = m.Cast(PrimitiveType.UInt16, idx);
+                        idx = m.Convert(idx, idx.DataType, PrimitiveType.UInt16);
                     }
                     ea = m.IAdd(baseReg, idx);
                 }
@@ -597,7 +597,6 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteEmacs()
         {
-            var w16 = PrimitiveType.Word16;
             var left = m.Mem16(binder.EnsureRegister(Registers.x));
             var right = m.Mem16(binder.EnsureRegister(Registers.y));
             var tmp = binder.CreateTemporary(PrimitiveType.Word32);
@@ -651,7 +650,7 @@ namespace Reko.Arch.M6800.M6812
             var d = binder.EnsureRegister(Registers.d);
             var x = binder.EnsureRegister(Registers.x);
             var tmp = binder.CreateTemporary(PrimitiveType.UInt32);
-            m.Assign(tmp, m.Shl(m.Cast(tmp.DataType, d), 16));
+            m.Assign(tmp, m.Shl(m.Convert(d, d.DataType, tmp.DataType), 16));
             m.Assign(d, m.Remainder(tmp, x));
             m.Assign(x, m.UDiv(tmp, x));
             _ZVC(x);
@@ -843,7 +842,7 @@ namespace Reko.Arch.M6800.M6812
         {
             var mem = RewriteOp(instr.Operands[0]);
             var dst = RewriteOp(instr.Operands[1]);
-            m.Assign(dst, m.Cast(PrimitiveType.Int16, m.Cast(PrimitiveType.SByte, mem)));
+            m.Assign(dst, m.Convert(mem, PrimitiveType.SByte, PrimitiveType.Int16));
         }
 
         private void RewriteSt(RegisterStorage reg)

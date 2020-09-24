@@ -96,6 +96,7 @@ namespace Reko.UnitTests.Environments.Windows
                 false,
                 types, 
                 new Dictionary<string, FunctionType>(),
+                new Dictionary<string, ProcedureCharacteristics>(),
                 new Dictionary<string, DataType>());
 
             Expect_TypeLibraryLoaderService_LoadLibrary(

@@ -21,6 +21,7 @@
 using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Core
@@ -32,6 +33,21 @@ namespace Reko.Core
         public BlockGraph(IList<Block> blocks)
         {
             this.blocks = blocks;
+        }
+
+        public void RemoveBlock(Block block)
+        {
+            var preds = block.Pred.ToList();
+            foreach (var p in preds)
+            {
+                RemoveEdge(p, block);
+            }
+            var succs = block.Succ.ToList();
+            foreach (var p in succs)
+            {
+                RemoveEdge(block, p);
+            }
+            blocks.Remove(block);
         }
 
         #region DirectedGraph<Block> Members

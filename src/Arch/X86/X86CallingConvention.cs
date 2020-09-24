@@ -59,7 +59,7 @@ namespace Reko.Arch.X86
             this.reverseArguments = reverseArguments;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(stackAlignment, retAddressOnStack);
             SetReturnStorage(ccr, dtRet, stackAlignment);
@@ -93,7 +93,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        public static void SetReturnStorage(ICallingConventionEmitter ccr, DataType dtRet, int stackAlignment)
+        public static void SetReturnStorage(ICallingConventionEmitter ccr, DataType? dtRet, int stackAlignment)
         {
             if (dtRet == null)
                 return;
@@ -110,7 +110,7 @@ namespace Reko.Arch.X86
                 var pt = dtRet.ResolveAs<PrimitiveType>();
                 if (pt != null && pt.Domain == Domain.Real)
                 {
-                    ccr.FpuReturn(0, PrimitiveType.Real64);
+                    ccr.FpuReturn(-1, PrimitiveType.Real64);
                     return;
                 }
                 if (retSize > 4)

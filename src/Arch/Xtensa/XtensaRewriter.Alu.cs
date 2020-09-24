@@ -255,7 +255,7 @@ namespace Reko.Arch.Xtensa
                         RewriteOp(instr.Operands[1]),
                         Constant.UInt32(
                         ((ImmediateOperand)instr.Operands[2]).Value.ToUInt32()))));
-            m.Assign(dst, m.Cast(PrimitiveType.Int32, tmp));
+            m.Assign(dst, m.Convert(tmp, tmp.DataType, PrimitiveType.Int32));
         }
 
         private void RewriteLsiu()
@@ -293,7 +293,7 @@ namespace Reko.Arch.Xtensa
                         RewriteOp(instr.Operands[1]),
                         Constant.UInt32(
                         ((ImmediateOperand)instr.Operands[2]).Value.ToUInt32()))));
-            m.Assign(dst, m.Cast(PrimitiveType.UInt32, tmp));
+            m.Assign(dst, m.Convert(tmp, tmp.DataType, PrimitiveType.UInt32));
         }
 
         private void RewriteMaddSub(Func<Expression, Expression, Expression> fn)
@@ -372,8 +372,8 @@ namespace Reko.Arch.Xtensa
             var dst = RewriteOp(instr.Operands[0]);
             var tmp1 = binder.CreateTemporary(PrimitiveType.Create(dom, 16));
             var tmp2 = binder.CreateTemporary(PrimitiveType.Create(dom, 16));
-            m.Assign(tmp1, m.Cast(tmp1.DataType, src1));
-            m.Assign(tmp2, m.Cast(tmp2.DataType, src2));
+            m.Assign(tmp1, m.Convert(src1, src1.DataType, tmp1.DataType));
+            m.Assign(tmp2, m.Convert(src2, src2.DataType, tmp2.DataType));
             m.Assign(dst, mul(tmp1, tmp2));
         }
 
@@ -441,9 +441,10 @@ namespace Reko.Arch.Xtensa
                 PrimitiveType.CreateWord(src1.DataType.BitSize + src2.DataType.BitSize),
                 src1.Storage,
                 src2.Storage);
+            var shifted = m.Shr(cat, sa);
             m.Assign(
                 dst,
-                m.Cast(dst.DataType, m.Shr(cat, sa)));
+                m.Convert(shifted, shifted.DataType, dst.DataType));
         }
 
         private void RewriteSsa()
@@ -482,7 +483,7 @@ namespace Reko.Arch.Xtensa
             var u = binder.CreateTemporary(dt);
             m.Assign(u, src);
 
-            src = m.Cast(PrimitiveType.Real32, u);
+            src = m.Convert(u, dt, PrimitiveType.Real32);
             if (scale.GetValue() is float rScale && rScale != 1.0F)
             {
                 src = m.FDiv(src, scale);

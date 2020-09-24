@@ -245,7 +245,7 @@ namespace Reko.Arch.PowerPC
             var src = RewriteOperand(instr.Operands[1]);
             if (dt.Size < arch.WordWidth.Size)
             {
-                src = m.Cast(dt, src);
+                src = m.Convert(src, src.DataType, dt);
             }
             m.Assign(dst, host.PseudoProcedure(name, PrimitiveType.UInt32, src));
         }
@@ -313,13 +313,9 @@ namespace Reko.Arch.PowerPC
         {
             var opS = RewriteOperand(instr.Operands[1]);
             var opD = RewriteOperand(instr.Operands[0]);
-            var tmp = binder.CreateTemporary(size);
-            m.Assign(tmp, m.Cast(tmp.DataType, opS));
-            m.Assign(
-                opD, 
-                m.Cast(
-                    PrimitiveType.Create(Domain.SignedInt, opD.DataType.BitSize),
-                    tmp));
+            var dtDst = PrimitiveType.Create(Domain.SignedInt, opD.DataType.BitSize);
+
+            m.Assign(opD, m.Convert(m.Slice(size, opS, 0), size, dtDst));
             MaybeEmitCr0(opD);
         }
 
@@ -533,7 +529,7 @@ namespace Reko.Arch.PowerPC
                 {
                     //$TODO: check this logic.
                     var dtSlice = PrimitiveType.CreateWord(extBitsize);
-                    m.Assign(rd, m.Cast(rd.DataType, m.Slice(dtSlice, rs, 63 - beExtBitpos)));
+                    m.Assign(rd, m.Convert(m.Slice(dtSlice, rs, 63 - beExtBitpos), dtSlice, rd.DataType));
                 }
                 else if (sh == 0x39 && mb == 0x38)
                 {
@@ -665,7 +661,7 @@ namespace Reko.Arch.PowerPC
                 var wordSize = me - 1;
                 var bitpos = 63 - sh;   // convert to reko's little endian bit positions.
                 var dt = PrimitiveType.CreateWord(wordSize);
-                var slice = m.Cast(rd.DataType, m.Slice(dt, rs, bitpos));
+                var slice = m.Convert(m.Slice(dt, rs, bitpos), dt, rd.DataType);
 
                 m.Assign(
                     rd,

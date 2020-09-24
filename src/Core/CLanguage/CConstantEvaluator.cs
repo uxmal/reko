@@ -51,6 +51,11 @@ namespace Reko.Core.CLanguage
             throw new NotImplementedException();
         }
 
+        public object VisitArrayAccess(CArrayAccess aref)
+        {
+            throw new NotFiniteNumberException();
+        }
+
         public object VisitMember(MemberExpression memberExpression)
         {
             throw new NotImplementedException();

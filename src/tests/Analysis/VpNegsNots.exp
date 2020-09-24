@@ -37,6 +37,8 @@ ds:ds
           Mem27[ds:0x204<16>:word16] = v11_26
           cx_28 = Mem27[ds:0x304<16>:word16]
           Mem34[ds:0x306<16>:word16] = cx_31
+          eax_35 = Mem34[ds:0x310<16>:word32]
+          Mem43[ds:0x30C<16>:word32] = eax_41
 Mem11: orig: Mem0
     def:  Mem11[ds:0x300<16>:word32] = eax_8
     uses: v7_12 = -Mem11[ds:0x202<16>:word16]
@@ -107,6 +109,33 @@ C_33: orig: C
     def:  C_33 = cx_31 == 0<16>
 Mem34: orig: Mem0
     def:  Mem34[ds:0x306<16>:word16] = cx_31
+    uses: eax_35 = Mem34[ds:0x310<16>:word32]
+eax_35: orig: eax
+    def:  eax_35 = Mem34[ds:0x310<16>:word32]
+    uses: eax_36 = -eax_35
+eax_36: orig: eax
+    def:  eax_36 = -eax_35
+    uses: SCZO_37 = cond(eax_36)
+          C_38 = eax_36 == 0<32>
+          eax_39 = 0<32> - (eax_36 == 0<32>)
+SCZO_37: orig: SCZO
+    def:  SCZO_37 = cond(eax_36)
+C_38: orig: C
+    def:  C_38 = eax_36 == 0<32>
+eax_39: orig: eax
+    def:  eax_39 = 0<32> - (eax_36 == 0<32>)
+    uses: SCZO_40 = cond(eax_39)
+          eax_41 = eax_39 + 1<32>
+SCZO_40: orig: SCZO
+    def:  SCZO_40 = cond(eax_39)
+eax_41: orig: eax
+    def:  eax_41 = eax_39 + 1<32>
+    uses: SZO_42 = cond(eax_41)
+          Mem43[ds:0x30C<16>:word32] = eax_41
+SZO_42: orig: SZO
+    def:  SZO_42 = cond(eax_41)
+Mem43: orig: Mem0
+    def:  Mem43[ds:0x30C<16>:word32] = eax_41
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
@@ -147,6 +176,15 @@ l0C00_0000:
 	SCZO_32 = cond(cx_31)
 	C_33 = cx_31 == 0<16>
 	Mem34[ds:0x306<16>:word16] = cx_31
+	eax_35 = Mem34[ds:0x310<16>:word32]
+	eax_36 = -eax_35
+	SCZO_37 = cond(eax_36)
+	C_38 = eax_36 == 0<32>
+	eax_39 = 0<32> - (eax_36 == 0<32>)
+	SCZO_40 = cond(eax_39)
+	eax_41 = eax_39 + 1<32>
+	SZO_42 = cond(eax_41)
+	Mem43[ds:0x30C<16>:word32] = eax_41
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -189,6 +227,8 @@ ds:ds
           Mem27[ds:0x204<16>:word16] = v11_26
           cx_28 = Mem27[ds:0x304<16>:word16]
           Mem34[ds:0x306<16>:word16] = cx_31
+          eax_35 = Mem34[ds:0x310<16>:word32]
+          Mem43[ds:0x30C<16>:word32] = eax_39 + 1<32>
 Mem11: orig: Mem0
     def:  Mem11[ds:0x300<16>:word32] = eax_8
     uses: v7_12 = -Mem11[ds:0x202<16>:word16]
@@ -259,6 +299,33 @@ C_33: orig: C
     def:  C_33 = cx_31 == 0<16>
 Mem34: orig: Mem0
     def:  Mem34[ds:0x306<16>:word16] = cx_31
+    uses: eax_35 = Mem34[ds:0x310<16>:word32]
+eax_35: orig: eax
+    def:  eax_35 = Mem34[ds:0x310<16>:word32]
+    uses: eax_36 = -eax_35
+eax_36: orig: eax
+    def:  eax_36 = -eax_35
+    uses: SCZO_37 = cond(eax_36)
+          C_38 = eax_36 == 0<32>
+          eax_39 = 0<32> - (eax_36 == 0<32>)
+SCZO_37: orig: SCZO
+    def:  SCZO_37 = cond(eax_36)
+C_38: orig: C
+    def:  C_38 = eax_36 == 0<32>
+eax_39: orig: eax
+    def:  eax_39 = 0<32> - (eax_36 == 0<32>)
+    uses: SCZO_40 = cond(eax_39)
+          eax_41 = eax_39 + 1<32>
+          SZO_42 = cond(eax_39 + 1<32>)
+          Mem43[ds:0x30C<16>:word32] = eax_39 + 1<32>
+SCZO_40: orig: SCZO
+    def:  SCZO_40 = cond(eax_39)
+eax_41: orig: eax
+    def:  eax_41 = eax_39 + 1<32>
+SZO_42: orig: SZO
+    def:  SZO_42 = cond(eax_39 + 1<32>)
+Mem43: orig: Mem0
+    def:  Mem43[ds:0x30C<16>:word32] = eax_39 + 1<32>
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
@@ -299,6 +366,15 @@ l0C00_0000:
 	SCZO_32 = cond(cx_31)
 	C_33 = cx_31 == 0<16>
 	Mem34[ds:0x306<16>:word16] = cx_31
+	eax_35 = Mem34[ds:0x310<16>:word32]
+	eax_36 = -eax_35
+	SCZO_37 = cond(eax_36)
+	C_38 = eax_36 == 0<32>
+	eax_39 = 0<32> - (eax_36 == 0<32>)
+	SCZO_40 = cond(eax_39)
+	eax_41 = eax_39 + 1<32>
+	SZO_42 = cond(eax_39 + 1<32>)
+	Mem43[ds:0x30C<16>:word32] = eax_39 + 1<32>
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

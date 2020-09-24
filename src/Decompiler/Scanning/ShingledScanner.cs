@@ -603,7 +603,9 @@ namespace Reko.Scanning
             var rdr = program.CreateImageReader(arch, seg.Address);
             while (rdr.TryRead(program.Platform.PointerType, out Constant c))
             {
-                yield return program.Architecture.MakeAddressFromConstant(c, false);
+                var addr = program.Architecture.MakeAddressFromConstant(c, false);
+                if (addr != null)
+                    yield return addr;
             }
         }
 

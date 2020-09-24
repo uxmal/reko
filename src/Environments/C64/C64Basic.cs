@@ -21,9 +21,11 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -38,9 +40,10 @@ namespace Reko.Environments.C64
     /// </summary>
     public class C64Basic : ProcessorArchitecture
     {
-        private static RegisterStorage stackRegister = new RegisterStorage("sp", 1, 0, PrimitiveType.Ptr16);
+        private static readonly RegisterStorage stackRegister = new RegisterStorage("sp", 1, 0, PrimitiveType.Ptr16);
 
-        private SortedList<ushort, C64BasicInstruction> program;
+        private readonly SortedList<ushort, C64BasicInstruction> program;
+        private readonly BTreeDictionary<Address, C64BasicInstruction> mpAddrToInstr;
 
         public C64Basic(IServiceProvider services, string archId) : base(services, archId)
         {
@@ -50,16 +53,24 @@ namespace Reko.Environments.C64
             this.InstructionBitSize = 8;
             this.StackRegister = stackRegister;
             this.FramePointerType = PrimitiveType.Ptr16;
+            program = new SortedList<ushort, C64BasicInstruction>();
+            mpAddrToInstr = new BTreeDictionary<Address, C64BasicInstruction>();
         }
 
         public C64Basic(IServiceProvider services, SortedList<ushort, C64BasicInstruction> program) : this(services, "c64Basic")
         {
             this.program = program;
+            foreach (var instr in program.Values)
+            {
+                mpAddrToInstr[instr.Address] = instr;
+            }
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            int i = program.IndexOfKey(imageReader.Address.ToUInt16());
+            if (!mpAddrToInstr.TryGetLowerBound(imageReader.Address, out var instr))
+                yield break;
+            int i = program.IndexOfKey(instr.LineNumber);
             if (i < 0)
                 yield break;
             for (; i < program.Count; ++i)
@@ -85,7 +96,7 @@ namespace Reko.Environments.C64
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new C64BasicRewriter(this, rdr.Address, program, host);
+            return new C64BasicRewriter(this, rdr.Address, program, this.mpAddrToInstr, host);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
@@ -95,6 +106,7 @@ namespace Reko.Environments.C64
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
+
             throw new NotImplementedException();
         }
 
@@ -142,7 +154,11 @@ namespace Reko.Environments.C64
 
         public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
-            throw new NotSupportedException("Basic doesn't have the notion of a parameter stack.");
+            Services.RequireService<DecompilerEventListener>().Warn(
+                new NullCodeLocation(""),
+                "Basic doesn't have the notion of a parameter stack.");
+            var stg = new TemporaryStorage("sp" + cbOffset, 0, dataType);
+            return new Identifier("sp" + cbOffset, dataType, stg);
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)

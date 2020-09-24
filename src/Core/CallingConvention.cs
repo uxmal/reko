@@ -230,7 +230,7 @@ namespace Reko.Core
 
         public void FpuReturn(int depth, DataType dt)
         {
-            this.Return = new FpuStackStorage(0, dt);
+            this.Return = new FpuStackStorage(depth, dt);
             this.FpuStackDelta = 1;
         }
 

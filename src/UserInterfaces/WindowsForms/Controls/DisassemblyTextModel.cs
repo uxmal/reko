@@ -83,10 +83,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     seg.MemoryArea != null &&
                     seg.MemoryArea.IsValidAddress(addr))
                 {
-                    var options = ShowPcRelative
-                        ? MachineInstructionWriterOptions.None
-                        : MachineInstructionWriterOptions.ResolvePcRelativeAddress;
-
+                    var options = new MachineInstructionWriterOptions(
+                        flags: ShowPcRelative
+                            ? MachineInstructionWriterFlags.None
+                            : MachineInstructionWriterFlags.ResolvePcRelativeAddress);
                     var arch = GetArchitectureForAddress(addr);
                     var dasm = program.CreateDisassembler(arch, Align(position)).GetEnumerator();
                     while (count != 0 && dasm.MoveNext())
@@ -156,8 +156,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             var rdr = program.CreateImageReader(arch, instr.Address);
             for (int i = 0; i < instr.Length; i += byteSize)
             {
-                var v = rdr.Read(instrByteSize);
-                sb.AppendFormat(instrByteFormat, v.ToUInt64());
+                if (rdr.TryRead(instrByteSize, out var v))
+                {
+                    sb.AppendFormat(instrByteFormat, v.ToUInt64());
+                }
             }
             return sb.ToString();
         }
@@ -215,7 +217,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// </summary>
         public class InertTextSpan : TextSpan
         {
-            private string text;
+            private readonly string text;
 
             public InertTextSpan(string text, string style)
             {

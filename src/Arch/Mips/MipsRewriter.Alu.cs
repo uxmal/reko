@@ -177,7 +177,7 @@ namespace Reko.Arch.Mips
             {
                 // If the source is smaller than the destination register,
                 // perform a sign/zero extension/conversion.
-                opSrc = m.Cast(arch.WordWidth, opSrc);
+                opSrc = m.Convert(opSrc, opSrc.DataType, arch.WordWidth);
             }
             m.Assign(opDst, opSrc);
         }
@@ -312,7 +312,7 @@ namespace Reko.Arch.Mips
                 // If the source is smaller than the destination register,
                 // perform a sign/zero extension.
                 src.DataType = dt;
-                src = m.Cast(dst.DataType, src);
+                src = m.Convert(src, src.DataType, dst.DataType);
             }
             m.Assign(dst, src);
         }
@@ -558,7 +558,7 @@ namespace Reko.Arch.Mips
             var tmp = binder.CreateTemporary(dt);
             var dtDst = PrimitiveType.Create(Domain.SignedInt, opDst.DataType.BitSize);
             m.Assign(tmp, m.Slice(dt, opSrc, 0));
-            m.Assign(opDst, m.Cast(dtDst, tmp));
+            m.Assign(opDst, m.Convert(tmp, tmp.DataType, dtDst));
         }
 
         private void RewriteSll(MipsInstruction instr)
@@ -590,7 +590,7 @@ namespace Reko.Arch.Mips
             var opSrc = RewriteOperand0(instr.Operands[0]);
             var opDst = RewriteOperand0(instr.Operands[1]);
             if (opDst.DataType.Size < opSrc.DataType.Size)
-                opSrc = m.Cast(opDst.DataType, opSrc);
+                opSrc = m.Slice(opDst.DataType, opSrc, 0);
             m.Assign(opDst, opSrc);
         }
 
@@ -637,9 +637,10 @@ namespace Reko.Arch.Mips
             var dst = RewriteOperand0(instr.Operands[0]);
             var src1 = RewriteOperand0(instr.Operands[1]);
             var src2 = RewriteOperand0(instr.Operands[2]);
+            var result = op(src1, src2);
             m.Assign(
                 dst,
-                m.Cast(dst.DataType, op(src1,src2)));
+                m.Convert(result, result.DataType, dst.DataType));
         }
 
         private void RewriteXor(MipsInstruction instr)

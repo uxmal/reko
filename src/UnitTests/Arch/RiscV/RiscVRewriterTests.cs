@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x87010183u);
             AssertCode(
                "0|L--|0000000000010000(4): 1 instructions",
-               "1|L--|gp = (int64) Mem0[sp + -1936<i32>:int8]");    //$LIT: sign-extend
+               "1|L--|gp = CONVERT(Mem0[sp + -1936<i32>:int8], int8, int64)");
         }
 
         [Test]
@@ -161,7 +161,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x03131083u);   // lh
             AssertCode(
                  "0|L--|0000000000010000(4): 1 instructions",
-                 "1|L--|ra = (int64) Mem0[t1 + 49<i32>:int16]");
+                 "1|L--|ra = CONVERT(Mem0[t1 + 49<i32>:int16], int16, int64)");
         }
 
         [Test]
@@ -183,13 +183,51 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_addi_zero()
+        {
+            Given_RiscVInstructions(0xFFF00413); // addi s0,zero,-00000001
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s0 = 0xFFFFFFFFFFFFFFFF<64>");
+        }
+
+        [Test]
         public void RiscV_rw_addiw()
         {
             Given_RiscVInstructions(0x0087879Bu);    // addiw\ta5,a5,+00000008
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a5 = (int64) ((word32) a5 + 8<i32>)");
+                "1|L--|a5 = CONVERT(CONVERT(a5, word64, word32) + 8<i32>, word32, int64)");
         }
+
+        [Test]
+        public void RiscV_rw_addiw_sign_extend()
+        {
+            Given_RiscVInstructions(0x00002301);    // c.addiw\tt1,00000000
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|t1 = CONVERT(SLICE(t1, word32, 0), word32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_c_addiw()
+        {
+            Given_RiscVInstructions(0x00002405);    // c.addiw\ts0,00000001
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|s0 = CONVERT(SLICE(s0 + 1<64>, word32, 0), word32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_c_addiw_negative()
+        {
+            Given_RiscVInstructions(0x0000347D);    // c.addiw\ts0,FFFFFFFFFFFFFFFF
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|s0 = CONVERT(SLICE(s0 + 0xFFFFFFFFFFFFFFFF<64>, word32, 0), word32, int64)");
+        }
+
+
 
         [Test]
         public void RiscV_rw_x1()
@@ -242,7 +280,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x40F686BBu);    // subw\ta3,a3,a5
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a3 = (int64) (word32) (a3 - a5)");
+                "1|L--|a3 = CONVERT(SLICE(a3 - a5, word32, 0), word32, int64)");
         }
 
         [Test]
@@ -251,7 +289,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x0017D71Bu);    // srliw\ta4,a5,00000001
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a4 = (int64) (word32) (a5 >>u 1<i32>)");
+                "1|L--|a4 = CONVERT(SLICE(a5, word32, 0) >>u 1<i32>, word32, int64)");
         }
 
         [Test]
@@ -260,7 +298,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x00094703u);    // lbu\ta4,s2,+00000000
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a4 = (int64) Mem0[s2:byte]");
+                "1|L--|a4 = CONVERT(Mem0[s2:byte], byte, word64)");
         }
 
         [Test]
@@ -278,7 +316,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x03492707u);    // flw\tfa4,s2,+00000034
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa4 = Mem0[s2 + 52<i64>:real32]");
+                "1|L--|fa4 = SEQ(0xFFFFFFFF<32>, Mem0[s2 + 52<i64>:real32])");
         }
 
         [Test]
@@ -287,7 +325,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0xF00007D3u);    // fmv.w.x\tfa5,zero
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa5 = (real32) 0<64>");
+                "1|L--|fa5 = SEQ(0xFFFFFFFF<32>, CONVERT(0<64>, real64, real32))");
         }
 
         [Test]
@@ -296,7 +334,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0xE2070753u);    // fmv.d.x\tfa4,a4
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa4 = (real64) a4");
+                "1|L--|fa4 = CONVERT(a4, int64, real64)");
         }
 
         [Test]
@@ -305,7 +343,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x00446703u);    // lwu\ta4,s0,+00000004
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a4 = (int64) Mem0[s0 + 4<i32>:uint32]");
+                "1|L--|a4 = CONVERT(Mem0[s0 + 4<i32>:uint32], uint32, word64)");
         }
 
         [Test]
@@ -314,7 +352,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x42070753u);    // fcvt.d.s\tfa4,fa4
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa4 = (real64) fa4");
+                "1|L--|fa4 = CONVERT(SLICE(fa4, real32, 0), real32, real64)");
         }
 
         [Test]
@@ -324,18 +362,11 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0xA0F727D3u);    // feq.s\ta5,fa4,fa5
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a5 = (word64) ((real32) fa4 == (real32) fa5)");
+                "1|L--|a5 = CONVERT(SLICE(fa4, real32, 0) == SLICE(fa5, real32, 0), bool, word64)");
         }
 
 
-        [Test]
-        public void RiscV_rw_addiw_negative()
-        {
-            Given_RiscVInstructions(0x0000347D);    // c.addiw\ts0,FFFFFFFFFFFFFFFF
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|s0 = (int64) (word32) (s0 + 0xFFFFFFFFFFFFFFFF<64>)");
-        }
+
 
         [Test]
         public void RiscV_rw_c_sw()
@@ -343,7 +374,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0xC29C);    // c.sw\ta3,0(a5)
             AssertCode(
                 "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|Mem0[a5:word32] = (word32) a3");
+                "1|L--|Mem0[a5:word32] = SLICE(a3, word32, 0)");
         }
 
         [Test]
@@ -397,7 +428,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x02C8783B);    // remuw\ta6,a6,a2
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a6 = (int64) (word32) (a6 % a2)");
+                "1|L--|a6 = CONVERT(SLICE(a6 % a2, word32, 0), word32, int64)");
         }
 
         [Test]
@@ -425,7 +456,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0xC22A);    // c.swsp\ta0,00000080
             AssertCode(
                 "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|Mem0[sp + 128<i64>:word32] = (word32) a0");
+                "1|L--|Mem0[sp + 128<i64>:word32] = SLICE(a0, word32, 0)");
         }
 
         [Test]
@@ -434,7 +465,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x00004512);    // c.lwsp\ttp,00000044
             AssertCode(
                 "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|tp = (int64) Mem0[sp + 68<i64>:word32]");
+                "1|L--|tp = CONVERT(Mem0[sp + 68<i64>:word32], word32, int64)");
         }
 
         [Test]
@@ -452,7 +483,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x000043F4);    // c.lw\ta5,68(a3)
             AssertCode(
                 "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|a5 = (int64) Mem0[a3 + 68<i64>:word32]");
+                "1|L--|a5 = CONVERT(Mem0[a3 + 68<i64>:word32], word32, int64)");
         }
 
         [Test]
@@ -461,7 +492,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x02B4443B);    // divw\ts0,s0,a1
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|s0 = (int64) (word32) (s0 / a1)");
+                "1|L--|s0 = CONVERT(SLICE(s0 / a1, word32, 0), word32, int64)");
         }
 
         [Test]
@@ -471,17 +502,6 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode(
                 "0|L--|0000000000010000(2): 1 instructions",
                 "1|L--|sp = sp + 208<i64>");
-        }
-
-
-
-        [Test]
-        public void RiscV_rw_addiw_sign_extend()
-        {
-            Given_RiscVInstructions(0x00002301);    // c.addiw\tt1,00000000
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|t1 = (int64) (word32) t1");
         }
 
         [Test]
@@ -518,15 +538,6 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode(
                 "0|T--|0000000000010000(2): 1 instructions",
                 "1|T--|if (a4 != 0<64>) branch 000000000000FF30");
-        }
-
-        [Test]
-        public void RiscV_rw_c_addiw()
-        {
-            Given_RiscVInstructions(0x00002405);    // c.addiw\ts0,00000001
-            AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|s0 = (int64) (word32) (s0 + 1<64>)");
         }
 
         // Reko: a decoder for RiscV instruction 62696C2F at address 00100000 has not been implemented. (amo)
@@ -670,7 +681,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x00009D1D);    // c.subw\ta0,a5
             AssertCode(
                 "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|a0 = (int64) (word32) (a0 - a5)");
+                "1|L--|a0 = CONVERT(SLICE(a0 - a5, word32, 0), word32, int64)");
         }
 
         [Test]
@@ -688,7 +699,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x00009FB5);    // c.addw\ta5,a3
             AssertCode(
                 "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|a5 = (int64) (word32) (a5 + a3)");
+                "1|L--|a5 = CONVERT(SLICE(a5 + a3, word32, 0), word32, int64)");
         }
 
         [Test]
@@ -760,7 +771,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x0014B493);	// sltiu	s1,s1,+00000001
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|s1 = (word64) (s1 <u 1<i32>)");
+                "1|L--|s1 = CONVERT(s1 <u 1<i32>, bool, word64)");
         }
 
         [Test]
@@ -769,7 +780,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x8963A3A7);	// fsw	fs6,8732(a5)
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|Mem0[a5 + 8732<i64>:real32] = (real32) fs6");
+                "1|L--|Mem0[a5 + 8732<i64>:real32] = SLICE(fs6, real32, 0)");
         }
 
         [Test]
@@ -796,7 +807,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x00A03533);    // sltu\ta0,zero,a0
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a0 = (word64) (a0 != 0<64>)");
+                "1|L--|a0 = CONVERT(a0 != 0<64>, bool, word64)");
         }
 
         [Test]
@@ -805,7 +816,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x00A7A533);    // slt\ta0,a5,a0
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a0 = (word64) (a5 < a0)");
+                "1|L--|a0 = CONVERT(a5 < a0, bool, word64)");
         }
 
         [Test]
@@ -814,7 +825,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x02D7E6BB);    // remw\ta3,a5,a3
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a3 = (int64) (word32) (a5 % a3)");
+                "1|L--|a3 = CONVERT(SLICE(a5 % a3, word32, 0), word32, int64)");
         }
 
         [Test]
@@ -853,7 +864,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x02C857BB);    // divuw\ta5,a6,a2
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a5 = (int64) (word32) (a6 /u a2)");
+                "1|L--|a5 = CONVERT(SLICE(a6 /u a2, word32, 0), word32, int64)");
         }
 
         [Test]

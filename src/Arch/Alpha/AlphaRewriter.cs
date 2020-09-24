@@ -188,7 +188,7 @@ namespace Reko.Arch.Alpha
                 case Mnemonic.src: RewriteInstrinsic("__src"); break;
                 case Mnemonic.srl: RewriteBin(srl); break;
                 case Mnemonic.stb: RewriteSt(PrimitiveType.Byte); break;
-                case Mnemonic.stf: RewriteSt(PrimitiveType.Real32); break;
+                case Mnemonic.stf: RewriteSt(PrimitiveType.Real64, PrimitiveType.Real32); break;
                 case Mnemonic.stl: RewriteSt(PrimitiveType.Word32); break;
                 case Mnemonic.stl_c: RewriteStoreInstrinsic("__stl_c", PrimitiveType.Word32); break;
                 case Mnemonic.stq_c: RewriteStoreInstrinsic("__stq_c", PrimitiveType.Word64); break;

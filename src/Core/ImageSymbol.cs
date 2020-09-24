@@ -206,6 +206,8 @@ namespace Reko.Core
         Code,               // executable code, not necessarily the entry point of a procedure.
         Data,               // non-executable data
         Procedure,          // Something that is called.
-        ExternalProcedure   // A procedure outside of the binary
+        ExternalProcedure,   // A procedure outside of the binary
+        AddressSpace,
+        Table
     }
 }

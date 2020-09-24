@@ -322,9 +322,9 @@ ret
 word32 fn0010000C(word32 dwArg04, word32 dwArg08)
 {
 	word32 ecx_11 = Mem7[dwArg04 + 0x3C<32>:word32] + dwArg04;
-	word32 esi_19 = (word32) Mem18[ecx_11 + 6<32>:word16];
+	word32 esi_19 = CONVERT(Mem18[ecx_11 + 6<32>:word16], word16, word32);
 	word32 edx_20 = 0<32>;
-	word32 eax_23 = (word32) Mem7[ecx_11 + 0x14<32>:word16] + 0x12<32> + ecx_11;
+	word32 eax_23 = CONVERT(Mem7[ecx_11 + 0x14<32>:word16], word16, word32) + 0x12<32> + ecx_11;
 	if (esi_19 >u 0<32>)
 	{
 		do

@@ -144,12 +144,14 @@ namespace Reko.Arch.X86
             public List<MachineOperand> ops;
             public PrimitiveType iWidth;
 
+#nullable disable
             internal X86InstructionDecodeInfo()
             {
                 this.registerExtension = new X86LegacyCodeRegisterExtension(0);
                 this.ops = new List<MachineOperand>();
                 this.Reset();
             }
+#nullable enable
 
             internal void Reset()
             {
@@ -293,6 +295,7 @@ namespace Reko.Arch.X86
             this.services = services;
             this.mode = mode;
 			this.rdr = rdr;
+            this.addr = rdr.Address;
 			this.defaultDataWidth = defaultWordSize;
 			this.defaultAddressWidth = defaultAddressSize;
             this.isRegisterExtensionEnabled = useRexPrefix;
@@ -309,7 +312,7 @@ namespace Reko.Arch.X86
         /// to point at the first address after the instruction and returned to the caller.
         /// </summary>
         /// <returns>A single disassembled instruction.</returns>
-        public override X86Instruction DisassembleInstruction()
+        public override X86Instruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadByte(out byte op))
@@ -561,7 +564,7 @@ namespace Reko.Arch.X86
             var addr = dasm.mode.CreateSegmentedAddress(seg, off);
             if (addr == null)
                 return false;
-            dasm.decodingContext.ops.Add(new X86AddressOperand(addr));
+            dasm.decodingContext.ops.Add(AddressOperand.Create(addr));
             return true;
         }
 
@@ -626,9 +629,27 @@ namespace Reko.Arch.X86
             else
                 width = PrimitiveType.Word16;
             var op = dasm.DecodeModRM(width, dasm.decodingContext.SegmentOverride, dasm.GpRegFromBits);
+            if (op is null)
+                return false;
             dasm.decodingContext.ops.Add(op);
             return true;
         }
+
+        // B: The VEX.vvvv field of the VEX prefix selects a general purpose register
+        private static Mutator<X86Disassembler> B(OperandType opType)
+        {
+            return (u, d) =>
+            {
+                var width = d.OperandWidth(opType);
+                d.decodingContext.iWidth = width;
+                var op = d.GpRegFromBits(d.decodingContext.VexRegister, width);
+                if (op == null)
+                    return false;
+                d.decodingContext.ops.Add(new RegisterOperand(op));
+                return true;
+            };
+        }
+        private static readonly Mutator<X86Disassembler> By = B(OperandType.y);
 
         // Floating-point ST(x)
         private static bool F(uint op, X86Disassembler d)
@@ -740,7 +761,9 @@ namespace Reko.Arch.X86
                 else if (d.defaultAddressWidth.BitSize == 32)
                     op = AddressOperand.Ptr32((uint) uAddr);
                 else
-                    op = new ImmediateOperand(Constant.Create(d.defaultAddressWidth, uAddr));
+                {
+                    op = new ImmediateOperand(Constant.Create(PrimitiveType.Offset16, uAddr));
+                }
                 d.decodingContext.ops.Add(op);
                 return true;
             };
@@ -1052,6 +1075,20 @@ namespace Reko.Arch.X86
             return true;
         }
 
+        private static bool rDX(uint u, X86Disassembler dasm)
+        {
+            RegisterStorage reg;
+            var bitsize = dasm.decodingContext.dataWidth.BitSize;
+            if (bitsize == 16)
+                reg = Registers.dx;
+            else if (bitsize == 32)
+                reg = Registers.edx;
+            else
+                reg = Registers.rdx;
+            dasm.decodingContext.ops.Add(new RegisterOperand(reg));
+            return true;
+        }
+
         private static bool n1(uint u, X86Disassembler d)
         {
             var op = new ImmediateOperand(Constant.Byte(1));
@@ -1134,9 +1171,9 @@ namespace Reko.Arch.X86
         }
 
         public static AddrWidthDecoder AddrWidthDependent(
-            Decoder bit16 = null,
-            Decoder bit32 = null, 
-            Decoder bit64 = null)
+            Decoder? bit16 = null,
+            Decoder? bit32 = null, 
+            Decoder? bit64 = null)
         {
             return new AddrWidthDecoder(
                 bit16 ?? s_invalid,
@@ -1145,9 +1182,9 @@ namespace Reko.Arch.X86
         }
 
         public static DataWidthDecoder DataWidthDependent(
-            Decoder bit16 = null,
-            Decoder bit32 = null,
-            Decoder bit64 = null)
+            Decoder? bit16 = null,
+            Decoder? bit32 = null,
+            Decoder? bit64 = null)
         {
             return new DataWidthDecoder(
                 bit16 ?? s_invalid,
@@ -1318,14 +1355,14 @@ namespace Reko.Arch.X86
 			RegisterStorage.None,
 		};
 
-		public ImmediateOperand CreateImmediateOperand(PrimitiveType immWidth)
+		public ImmediateOperand? CreateImmediateOperand(PrimitiveType immWidth)
 		{
             if (!rdr.TryReadLe(immWidth, out Constant c))
                 return null;
 			return new ImmediateOperand(c);
 		}
 
-		private MachineOperand DecodeModRM(PrimitiveType dataWidth, RegisterStorage segOverride, Func<int, PrimitiveType, RegisterStorage> regFn)
+		private MachineOperand? DecodeModRM(PrimitiveType dataWidth, RegisterStorage segOverride, Func<int, PrimitiveType, RegisterStorage> regFn)
 		{
             if (!TryEnsureModRM(out byte modRm))
                 return null;
@@ -1336,7 +1373,7 @@ namespace Reko.Arch.X86
 			RegisterStorage b;
             RegisterStorage idx;
 			byte scale = 1;
-			PrimitiveType offsetWidth = null;
+			PrimitiveType? offsetWidth = null;
 
 			if (decodingContext.addressWidth == PrimitiveType.Word16)
 			{
@@ -1475,7 +1512,8 @@ namespace Reko.Arch.X86
         private static Decoder [] Grp8;
         private static Decoder [] Grp9;
         private static Decoder [] Grp10;
-        private static Decoder [] Grp11;
+        private static Decoder [] Grp11b;
+        private static Decoder [] Grp11z;
         private static Decoder [] Grp12;
         private static Decoder [] Grp13;
         private static Decoder [] Grp14;
@@ -1484,6 +1522,7 @@ namespace Reko.Arch.X86
         private static Decoder [] Grp17;
         private static Decoder [] s_fpuDecoders;
 
+#nullable disable
         static X86Disassembler()
 		{
             s_invalid = Instr(Mnemonic.illegal, InstrClass.Invalid);
@@ -1497,5 +1536,6 @@ namespace Reko.Arch.X86
             s_fpuDecoders = CreateFpuDecoders();
             Debug.Assert(s_fpuDecoders.Length == 8 * 0x48);
 		}
+#nullable enable
     }
 }

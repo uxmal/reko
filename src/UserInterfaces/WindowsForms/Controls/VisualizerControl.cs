@@ -325,7 +325,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 this.vscroll.Maximum = mem.Bytes.Length;// - bytesOnScreen;
                 this.vscroll.LargeChange = bytesOnScreen;
                 this.vscroll.SmallChange = LineLength;
-                Debug.WriteLine(trace.TraceVerbose, $"VisCtrl: mem bytes {mem.Bytes.Length}, small = {LineLength}, large = {bytesOnScreen}, max={vscroll.Maximum}");
+                trace.Verbose($"VisCtrl: mem bytes {mem.Bytes.Length}, small = {LineLength}, large = {bytesOnScreen}, max={vscroll.Maximum}");
             }
         }
 

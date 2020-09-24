@@ -315,6 +315,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     case CmdIds.EditDeclaration:
                     case CmdIds.EditComment:
                     case CmdIds.ViewCfgGraph:
+                    case CmdIds.OpenInNewTab:
                         status.Status = MenuStatus.Visible;
                         return true;
                     }
@@ -341,6 +342,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     return true;
                 case CmdIds.EditDeclaration:
                 case CmdIds.EditComment:
+                case CmdIds.OpenInNewTab:
                     status.Status = GetAnchorAddress() == null 
                         ? MenuStatus.Visible
                         : MenuStatus.Enabled | MenuStatus.Visible;
@@ -372,6 +374,9 @@ namespace Reko.UserInterfaces.WindowsForms
                     return true;
                 case CmdIds.EditComment:
                     EditComment();
+                    return true;
+                case CmdIds.OpenInNewTab:
+                    OpenInNewTab();
                     return true;
                 }
             }
@@ -475,6 +480,16 @@ namespace Reko.UserInterfaces.WindowsForms
             var anchorPt = FocusedTextView.GetAnchorTopPoint();
             var screenPoint = FocusedTextView.PointToScreen(anchorPt);
             commentFormInteractor.Show(screenPoint, program, addr);
+        }
+
+        private void OpenInNewTab()
+        {
+            var addr = GetAnchorAddress();
+            if (addr == null)
+                return;
+
+            if (program.Procedures.TryGetValue(addr, out var proc))
+                services.RequireService<ICodeViewerService>().DisplayProcedure(program, proc, program.NeedsScanning);
         }
 
         private void MixedCodeDataView_MouseDown(object sender, MouseEventArgs e)

@@ -51,12 +51,52 @@ namespace Reko.Core.Machine
 
     [Flags]
     [NativeInterop]
-    public enum MachineInstructionWriterOptions
+    public enum MachineInstructionWriterFlags
     {
         None = 0,
         ExplicitOperandSize = 1,
         ResolvePcRelativeAddress = 2,
     }
+
+
+    /// <summary>
+    /// Describes options to control the rendering of assembly language instructions.
+    /// </summary>
+    public class MachineInstructionWriterOptions
+    {
+        public MachineInstructionWriterOptions(
+            string? syntax = "",
+            MachineInstructionWriterFlags flags = MachineInstructionWriterFlags.None,
+            string? operandSeparator = ",")
+        {
+            this.Syntax = syntax;
+            this.Flags = flags;
+            this.OperandSeparator = operandSeparator;
+        }
+
+        /// <summary>
+        /// Select a particular output syntax by name, if supported.
+        /// </summary>
+        /// <remarks>
+        /// Each processor architecture may have different output syntaxes, including
+        /// a default syntax which should be the one used in the processor manufacturer's 
+        /// manuals. A null value for this property chooses that default syntax.
+        /// </remarks>
+        public string? Syntax { get; }
+
+        public MachineInstructionWriterFlags Flags { get; }
+
+        /// <summary>
+        /// Use this string to specify how assembly language operands shoud be separated.
+        /// </summary>
+        public string? OperandSeparator { get; }
+
+        public static MachineInstructionWriterOptions Default { get; } = new MachineInstructionWriterOptions(
+            syntax: "",
+            flags: MachineInstructionWriterFlags.None,
+            operandSeparator: ",");
+    }
+
 
     /// <summary>
     /// "Dumb" renderer that renders machine instructions as simple text.
@@ -104,9 +144,9 @@ namespace Reko.Core.Machine
             sb.Append(formattedAddress);
         }
 
-        public void WriteAddress(string formattedAddres, ulong uAddr)
+        public void WriteAddress(string formattedAddress, ulong uAddr)
         {
-            WriteAddress(formattedAddres, Address.Ptr64(uAddr));
+            WriteAddress(formattedAddress, Address.Ptr64(uAddr));
         }
 
         public void WriteChar(char c)

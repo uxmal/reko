@@ -4,22 +4,22 @@
 ;;   Called from:
 ;;     00401253 (in Win32CrtStartup)
 fn00401000 proc
-	push	dword ptr [00402004]
-	call	dword ptr [00402010]
-	mov	eax,[00402008]
+	push	dword ptr [402004h]
+	call	dword ptr [402010h]
+	mov	eax,[402008h]
 	push	dword ptr [eax]
-	push	00402108
-	call	00401060
-	push	01
-	call	dword ptr [00402000]
+	push	402108h
+	call	401060h
+	push	1h
+	call	dword ptr [402000h]
 	push	eax
-	push	00402108
-	call	00401060
-	mov	eax,[00402008]
+	push	402108h
+	call	401060h
+	mov	eax,[402008h]
 	push	dword ptr [eax]
-	push	00402108
-	call	00401060
-	add	esp,1C
+	push	402108h
+	call	401060h
+	add	esp,1Ch
 	xor	eax,eax
 	ret
 00401047                      CC CC CC CC CC CC CC CC CC        .........
@@ -29,7 +29,7 @@ fn00401000 proc
 ;;     0040107A (in fn00401060)
 ;;     0040173F (in fn0040173F)
 fn00401050 proc
-	mov	eax,00403378
+	mov	eax,403378h
 	ret
 00401056                   CC CC CC CC CC CC CC CC CC CC       ..........
 
@@ -42,20 +42,20 @@ fn00401060 proc
 	push	ebp
 	mov	ebp,esp
 	push	esi
-	mov	esi,[ebp+08]
-	push	01
-	call	dword ptr [004020C8]
-	add	esp,04
-	lea	ecx,[ebp+0C]
+	mov	esi,[ebp+8h]
+	push	1h
+	call	dword ptr [4020C8h]
+	add	esp,4h
+	lea	ecx,[ebp+0Ch]
 	push	ecx
-	push	00
+	push	0h
 	push	esi
 	push	eax
-	call	00401050
-	push	dword ptr [eax+04]
+	call	401050h
+	push	dword ptr [eax+4h]
 	push	dword ptr [eax]
-	call	dword ptr [004020C4]
-	add	esp,18
+	call	dword ptr [4020C4h]
+	add	esp,18h
 	pop	esi
 	pop	ebp
 	ret
@@ -74,143 +74,143 @@ fn00401060 proc
 00401150 00 00 E8 B2 05 00 00 50 E8 BB 0A 00 00 59 C3    .......P.....Y.
 
 l0040115F:
-	push	14
-	push	004024D8
-	call	00401980
-	push	01
-	call	00401474
+	push	14h
+	push	4024D8h
+	call	401980h
+	push	1h
+	call	401474h
 	pop	ecx
 	test	al,al
-	jnz	0040117E
+	jnz	40117Eh
 
 l00401177:
-	push	07
-	call	00401774
+	push	7h
+	call	401774h
 
 l0040117E:
 	xor	bl,bl
-	mov	[ebp-19],bl
-	and	dword ptr [ebp-04],00
-	call	0040143F
-	mov	[ebp-24],al
-	mov	eax,[00403334]
+	mov	[ebp-19h],bl
+	and	dword ptr [ebp-4h],0h
+	call	40143Fh
+	mov	[ebp-24h],al
+	mov	eax,[403334h]
 	xor	ecx,ecx
 	inc	ecx
 	cmp	eax,ecx
-	jz	00401177
+	jz	401177h
 
 l0040119B:
 	test	eax,eax
-	jnz	004011E8
+	jnz	4011E8h
 
 l0040119F:
-	mov	[00403334],ecx
-	push	004020EC
-	push	004020E0
-	call	00401BDC
+	mov	[403334h],ecx
+	push	4020ECh
+	push	4020E0h
+	call	401BDCh
 	pop	ecx
 	pop	ecx
 	test	eax,eax
-	jz	004011CB
+	jz	4011CBh
 
 l004011BA:
-	mov	dword ptr [ebp-04],FFFFFFFE
-	mov	eax,000000FF
-	jmp	004012C8
+	mov	dword ptr [ebp-4h],0FFFFFFFEh
+	mov	eax,0FFh
+	jmp	4012C8h
 
 l004011CB:
-	push	004020DC
-	push	004020D4
-	call	00401BD6
+	push	4020DCh
+	push	4020D4h
+	call	401BD6h
 	pop	ecx
 	pop	ecx
-	mov	dword ptr [00403334],00000002
-	jmp	004011ED
+	mov	dword ptr [403334h],2h
+	jmp	4011EDh
 
 l004011E8:
 	mov	bl,cl
-	mov	[ebp-19],bl
+	mov	[ebp-19h],bl
 
 l004011ED:
-	push	dword ptr [ebp-24]
-	call	004015CE
+	push	dword ptr [ebp-24h]
+	call	4015CEh
 	pop	ecx
-	call	00401768
+	call	401768h
 	mov	esi,eax
 	xor	edi,edi
 	cmp	[esi],edi
-	jz	0040121D
+	jz	40121Dh
 
 l00401203:
 	push	esi
-	call	00401544
+	call	401544h
 	pop	ecx
 	test	al,al
-	jz	0040121D
+	jz	40121Dh
 
 l0040120E:
 	push	edi
-	push	02
+	push	2h
 	push	edi
 	mov	esi,[esi]
 	mov	ecx,esi
-	call	00401976
+	call	401976h
 	call	esi
 
 l0040121D:
-	call	0040176E
+	call	40176Eh
 	mov	esi,eax
 	cmp	[esi],edi
-	jz	0040123B
+	jz	40123Bh
 
 l00401228:
 	push	esi
-	call	00401544
+	call	401544h
 	pop	ecx
 	test	al,al
-	jz	0040123B
+	jz	40123Bh
 
 l00401233:
 	push	dword ptr [esi]
-	call	00401C0C
+	call	401C0Ch
 	pop	ecx
 
 l0040123B:
-	call	00401BFA
+	call	401BFAh
 	mov	edi,eax
-	call	00401BF4
+	call	401BF4h
 	mov	esi,eax
-	call	00401BD0
+	call	401BD0h
 	push	eax
 	push	dword ptr [edi]
 	push	dword ptr [esi]
-	call	00401000
-	add	esp,0C
+	call	401000h
+	add	esp,0Ch
 	mov	esi,eax
-	call	0040188F
+	call	40188Fh
 	test	al,al
-	jnz	0040126C
+	jnz	40126Ch
 
 l00401266:
 	push	esi
-	call	00401BE2
+	call	401BE2h
 
 l0040126C:
 	test	bl,bl
-	jnz	00401275
+	jnz	401275h
 
 l00401270:
-	call	00401C00
+	call	401C00h
 
 l00401275:
-	push	00
-	push	01
-	call	004015EB
+	push	0h
+	push	1h
+	call	4015EBh
 	pop	ecx
 	pop	ecx
-	mov	dword ptr [ebp-04],FFFFFFFE
+	mov	dword ptr [ebp-4h],0FFFFFFFEh
 	mov	eax,esi
-	jmp	004012C8
+	jmp	4012C8h
 0040128B                                  8B 4D EC 8B 01            .M...
 00401290 8B 00 89 45 E0 51 50 E8 16 09 00 00 59 59 C3 8B ...E.QP.....YY..
 004012A0 65 E8 E8 E8 05 00 00 84 C0 75 08 FF 75 E0 E8 35 e........u..u..5
@@ -218,26 +218,26 @@ l00401275:
 004012C0 FC FE FF FF FF 8B 45 E0                         ......E.       
 
 l004012C8:
-	call	004019C6
+	call	4019C6h
 	ret
 
 ;; Win32CrtStartup: 004012CE
 Win32CrtStartup proc
-	call	00401663
-	jmp	0040115F
+	call	401663h
+	jmp	40115Fh
 
 ;; fn004012D8: 004012D8
 fn004012D8 proc
 	push	ebp
 	mov	ebp,esp
-	push	00
-	call	dword ptr [00402038]
-	push	dword ptr [ebp+08]
-	call	dword ptr [0040203C]
-	push	C0000409
-	call	dword ptr [00402034]
+	push	0h
+	call	dword ptr [402038h]
+	push	dword ptr [ebp+8h]
+	call	dword ptr [40203Ch]
+	push	0C0000409h
+	call	dword ptr [402034h]
 	push	eax
-	call	dword ptr [00402030]
+	call	dword ptr [402030h]
 	pop	ebp
 	ret
 00401300 55 8B EC 81 EC 24 03 00 00 6A 17 E8 32 09 00 00 U....$...j..2...
@@ -263,36 +263,36 @@ fn004012D8 proc
 fn004013FB proc
 	push	ebp
 	mov	ebp,esp
-	mov	eax,[ebp+08]
+	mov	eax,[ebp+8h]
 	push	esi
-	mov	ecx,[eax+3C]
+	mov	ecx,[eax+3Ch]
 	add	ecx,eax
-	movzx	eax,word ptr [ecx+14]
-	lea	edx,[ecx+18]
+	movzx	eax,word ptr [ecx+14h]
+	lea	edx,[ecx+18h]
 	add	edx,eax
-	movzx	eax,word ptr [ecx+06]
-	imul	esi,eax,28
+	movzx	eax,word ptr [ecx+6h]
+	imul	esi,eax,28h
 	add	esi,edx
 	cmp	edx,esi
-	jz	00401436
+	jz	401436h
 
 l0040141D:
-	mov	ecx,[ebp+0C]
+	mov	ecx,[ebp+0Ch]
 
 l00401420:
-	cmp	ecx,[edx+0C]
-	jc	0040142F
+	cmp	ecx,[edx+0Ch]
+	jc	40142Fh
 
 l00401425:
-	mov	eax,[edx+08]
-	add	eax,[edx+0C]
+	mov	eax,[edx+8h]
+	add	eax,[edx+0Ch]
 	cmp	ecx,eax
-	jc	0040143B
+	jc	40143Bh
 
 l0040142F:
-	add	edx,28
+	add	edx,28h
 	cmp	edx,esi
-	jnz	00401420
+	jnz	401420h
 
 l00401436:
 	xor	eax,eax
@@ -304,30 +304,30 @@ l00401438:
 
 l0040143B:
 	mov	eax,edx
-	jmp	00401438
+	jmp	401438h
 
 ;; fn0040143F: 0040143F
 ;;   Called from:
 ;;     00401187 (in Win32CrtStartup)
 fn0040143F proc
-	call	00401B98
+	call	401B98h
 	test	eax,eax
-	jnz	0040144B
+	jnz	40144Bh
 
 l00401448:
 	xor	al,al
 	ret
 
 l0040144B:
-	mov	eax,fs:[00000018]
+	mov	eax,fs:[0018h]
 	push	esi
-	mov	esi,00403338
-	mov	edx,[eax+04]
-	jmp	00401460
+	mov	esi,403338h
+	mov	edx,[eax+4h]
+	jmp	401460h
 
 l0040145C:
 	cmp	edx,eax
-	jz	00401470
+	jz	401470h
 
 l00401460:
 	xor	eax,eax
@@ -335,7 +335,7 @@ l00401460:
 	lock
 	cmpxchg	[esi],ecx
 	test	eax,eax
-	jnz	0040145C
+	jnz	40145Ch
 
 l0040146C:
 	xor	al,al
@@ -343,7 +343,7 @@ l0040146C:
 	ret
 
 l00401470:
-	mov	al,01
+	mov	al,1h
 	pop	esi
 	ret
 
@@ -353,17 +353,17 @@ l00401470:
 fn00401474 proc
 	push	ebp
 	mov	ebp,esp
-	cmp	dword ptr [ebp+08],00
-	jnz	00401484
+	cmp	dword ptr [ebp+8h],0h
+	jnz	401484h
 
 l0040147D:
-	mov	byte ptr [00403354],01
+	mov	byte ptr [403354h],1h
 
 l00401484:
-	call	004019FE
-	call	00401C48
+	call	4019FEh
+	call	401C48h
 	test	al,al
-	jnz	00401496
+	jnz	401496h
 
 l00401492:
 	xor	al,al
@@ -371,18 +371,18 @@ l00401492:
 	ret
 
 l00401496:
-	call	00401C48
+	call	401C48h
 	test	al,al
-	jnz	004014A9
+	jnz	4014A9h
 
 l0040149F:
-	push	00
-	call	00401C48
+	push	0h
+	call	401C48h
 	pop	ecx
-	jmp	00401492
+	jmp	401492h
 
 l004014A9:
-	mov	al,01
+	mov	al,1h
 	pop	ebp
 	ret
 
@@ -390,69 +390,69 @@ l004014A9:
 fn004014AD proc
 	push	ebp
 	mov	ebp,esp
-	sub	esp,0C
+	sub	esp,0Ch
 	push	esi
-	mov	esi,[ebp+08]
+	mov	esi,[ebp+8h]
 	test	esi,esi
-	jz	004014C0
+	jz	4014C0h
 
 l004014BB:
-	cmp	esi,01
-	jnz	0040153C
+	cmp	esi,1h
+	jnz	40153Ch
 
 l004014C0:
-	call	00401B98
+	call	401B98h
 	test	eax,eax
-	jz	004014F3
+	jz	4014F3h
 
 l004014C9:
 	test	esi,esi
-	jnz	004014F3
+	jnz	4014F3h
 
 l004014CD:
-	push	0040333C
-	call	00401C24
+	push	40333Ch
+	call	401C24h
 	pop	ecx
 	test	eax,eax
-	jz	004014E0
+	jz	4014E0h
 
 l004014DC:
 	xor	al,al
-	jmp	00401537
+	jmp	401537h
 
 l004014E0:
-	push	00403348
-	call	00401C24
+	push	403348h
+	call	401C24h
 	neg	eax
 	pop	ecx
 	sbb	al,al
 	inc	al
-	jmp	00401537
+	jmp	401537h
 
 l004014F3:
-	mov	eax,[00403004]
-	lea	esi,[ebp-0C]
+	mov	eax,[403004h]
+	lea	esi,[ebp-0Ch]
 	push	edi
-	and	eax,1F
-	mov	edi,0040333C
-	push	20
+	and	eax,1Fh
+	mov	edi,40333Ch
+	push	20h
 	pop	ecx
 	sub	ecx,eax
-	or	eax,FF
+	or	eax,0FFh
 	ror	eax,cl
-	xor	eax,[00403004]
-	mov	[ebp-0C],eax
-	mov	[ebp-08],eax
-	mov	[ebp-04],eax
+	xor	eax,[403004h]
+	mov	[ebp-0Ch],eax
+	mov	[ebp-8h],eax
+	mov	[ebp-4h],eax
 	movsd
 	movsd
 	movsd
-	mov	edi,00403348
-	mov	[ebp-0C],eax
-	mov	[ebp-08],eax
-	lea	esi,[ebp-0C]
-	mov	[ebp-04],eax
-	mov	al,01
+	mov	edi,403348h
+	mov	[ebp-0Ch],eax
+	mov	[ebp-8h],eax
+	lea	esi,[ebp-0Ch]
+	mov	[ebp-4h],eax
+	mov	al,1h
 	movsd
 	movsd
 	movsd
@@ -465,9 +465,9 @@ l00401537:
 	ret
 
 l0040153C:
-	push	05
-	call	00401774
-	int	03
+	push	5h
+	call	401774h
+	int	3h
 
 ;; fn00401544: 00401544
 ;;   Called from:
@@ -475,53 +475,53 @@ l0040153C:
 ;;     00401229 (in Win32CrtStartup)
 ;;     00401543 (in fn004014AD)
 fn00401544 proc
-	push	08
-	push	004024F8
-	call	00401980
-	and	dword ptr [ebp-04],00
-	mov	eax,00005A4D
-	cmp	[00400000],ax
-	jnz	004015BF
+	push	8h
+	push	4024F8h
+	call	401980h
+	and	dword ptr [ebp-4h],0h
+	mov	eax,5A4Dh
+	cmp	[400000h],ax
+	jnz	4015BFh
 
 l00401562:
-	mov	eax,[0040003C]
-	cmp	dword ptr [eax+00400000],00004550
-	jnz	004015BF
+	mov	eax,[40003Ch]
+	cmp	dword ptr [eax+400000h],4550h
+	jnz	4015BFh
 
 l00401573:
-	mov	ecx,0000010B
-	cmp	[eax+00400018],cx
-	jnz	004015BF
+	mov	ecx,10Bh
+	cmp	[eax+400018h],cx
+	jnz	4015BFh
 
 l00401581:
-	mov	eax,[ebp+08]
-	mov	ecx,00400000
+	mov	eax,[ebp+8h]
+	mov	ecx,400000h
 	sub	eax,ecx
 	push	eax
 	push	ecx
-	call	004013FB
+	call	4013FBh
 	pop	ecx
 	pop	ecx
 	test	eax,eax
-	jz	004015BF
+	jz	4015BFh
 
 l00401598:
-	cmp	dword ptr [eax+24],00
-	jl	004015BF
+	cmp	dword ptr [eax+24h],0h
+	jl	4015BFh
 
 l0040159E:
-	mov	dword ptr [ebp-04],FFFFFFFE
-	mov	al,01
-	jmp	004015C8
+	mov	dword ptr [ebp-4h],0FFFFFFFEh
+	mov	al,1h
+	jmp	4015C8h
 004015A9                            8B 45 EC 8B 00 33 C9          .E...3.
 004015B0 81 38 05 00 00 C0 0F 94 C1 8B C1 C3 8B 65 E8    .8...........e.
 
 l004015BF:
-	mov	dword ptr [ebp-04],FFFFFFFE
+	mov	dword ptr [ebp-4h],0FFFFFFFEh
 	xor	al,al
 
 l004015C8:
-	call	004019C6
+	call	4019C6h
 	ret
 
 ;; fn004015CE: 004015CE
@@ -530,17 +530,17 @@ l004015C8:
 fn004015CE proc
 	push	ebp
 	mov	ebp,esp
-	call	00401B98
+	call	401B98h
 	test	eax,eax
-	jz	004015E9
+	jz	4015E9h
 
 l004015DA:
-	cmp	byte ptr [ebp+08],00
-	jnz	004015E9
+	cmp	byte ptr [ebp+8h],0h
+	jnz	4015E9h
 
 l004015E0:
 	xor	eax,eax
-	mov	ecx,00403338
+	mov	ecx,403338h
 	xchg	[ecx],eax
 
 l004015E9:
@@ -553,23 +553,23 @@ l004015E9:
 fn004015EB proc
 	push	ebp
 	mov	ebp,esp
-	cmp	byte ptr [00403354],00
-	jz	004015FD
+	cmp	byte ptr [403354h],0h
+	jz	4015FDh
 
 l004015F7:
-	cmp	byte ptr [ebp+0C],00
-	jnz	0040160F
+	cmp	byte ptr [ebp+0Ch],0h
+	jnz	40160Fh
 
 l004015FD:
-	push	dword ptr [ebp+08]
-	call	00401C48
-	push	dword ptr [ebp+08]
-	call	00401C48
+	push	dword ptr [ebp+8h]
+	call	401C48h
+	push	dword ptr [ebp+8h]
+	call	401C48h
 	pop	ecx
 	pop	ecx
 
 l0040160F:
-	mov	al,01
+	mov	al,1h
 	pop	ebp
 	ret
 
@@ -579,22 +579,22 @@ l0040160F:
 fn00401613 proc
 	push	ebp
 	mov	ebp,esp
-	mov	eax,[00403004]
+	mov	eax,[403004h]
 	mov	ecx,eax
-	xor	eax,[0040333C]
-	and	ecx,1F
-	push	dword ptr [ebp+08]
+	xor	eax,[40333Ch]
+	and	ecx,1Fh
+	push	dword ptr [ebp+8h]
 	ror	eax,cl
-	cmp	eax,FF
-	jnz	00401637
+	cmp	eax,0FFh
+	jnz	401637h
 
 l00401630:
-	call	00401C30
-	jmp	00401642
+	call	401C30h
+	jmp	401642h
 
 l00401637:
-	push	0040333C
-	call	00401C2A
+	push	40333Ch
+	call	401C2Ah
 	pop	ecx
 
 l00401642:
@@ -602,7 +602,7 @@ l00401642:
 	pop	ecx
 	sbb	eax,eax
 	not	eax
-	and	eax,[ebp+08]
+	and	eax,[ebp+8h]
 	pop	ebp
 	ret
 
@@ -610,8 +610,8 @@ l00401642:
 fn0040164E proc
 	push	ebp
 	mov	ebp,esp
-	push	dword ptr [ebp+08]
-	call	00401613
+	push	dword ptr [ebp+8h]
+	call	401613h
 	neg	eax
 	pop	ecx
 	sbb	eax,eax
@@ -626,66 +626,66 @@ fn0040164E proc
 fn00401663 proc
 	push	ebp
 	mov	ebp,esp
-	sub	esp,14
-	and	dword ptr [ebp-0C],00
-	and	dword ptr [ebp-08],00
-	mov	eax,[00403004]
+	sub	esp,14h
+	and	dword ptr [ebp-0Ch],0h
+	and	dword ptr [ebp-8h],0h
+	mov	eax,[403004h]
 	push	esi
 	push	edi
-	mov	edi,BB40E64E
-	mov	esi,FFFF0000
+	mov	edi,0BB40E64Eh
+	mov	esi,0FFFF0000h
 	cmp	eax,edi
-	jz	00401693
+	jz	401693h
 
 l00401686:
 	test	esi,eax
-	jz	00401693
+	jz	401693h
 
 l0040168A:
 	not	eax
-	mov	[00403000],eax
-	jmp	004016F9
+	mov	[403000h],eax
+	jmp	4016F9h
 
 l00401693:
-	lea	eax,[ebp-0C]
+	lea	eax,[ebp-0Ch]
 	push	eax
-	call	dword ptr [0040201C]
-	mov	eax,[ebp-08]
-	xor	eax,[ebp-0C]
-	mov	[ebp-04],eax
-	call	dword ptr [00402020]
-	xor	[ebp-04],eax
-	call	dword ptr [00402024]
-	xor	[ebp-04],eax
-	lea	eax,[ebp-14]
+	call	dword ptr [40201Ch]
+	mov	eax,[ebp-8h]
+	xor	eax,[ebp-0Ch]
+	mov	[ebp-4h],eax
+	call	dword ptr [402020h]
+	xor	[ebp-4h],eax
+	call	dword ptr [402024h]
+	xor	[ebp-4h],eax
+	lea	eax,[ebp-14h]
 	push	eax
-	call	dword ptr [00402028]
-	mov	ecx,[ebp-10]
-	lea	eax,[ebp-04]
-	xor	ecx,[ebp-14]
-	xor	ecx,[ebp-04]
+	call	dword ptr [402028h]
+	mov	ecx,[ebp-10h]
+	lea	eax,[ebp-4h]
+	xor	ecx,[ebp-14h]
+	xor	ecx,[ebp-4h]
 	xor	ecx,eax
 	cmp	ecx,edi
-	jnz	004016DB
+	jnz	4016DBh
 
 l004016D4:
-	mov	ecx,BB40E64F
-	jmp	004016EB
+	mov	ecx,0BB40E64Fh
+	jmp	4016EBh
 
 l004016DB:
 	test	esi,ecx
-	jnz	004016EB
+	jnz	4016EBh
 
 l004016DF:
 	mov	eax,ecx
-	or	eax,00004711
-	shl	eax,10
+	or	eax,4711h
+	shl	eax,10h
 	or	ecx,eax
 
 l004016EB:
-	mov	[00403004],ecx
+	mov	[403004h],ecx
 	not	ecx
-	mov	[00403000],ecx
+	mov	[403000h],ecx
 
 l004016F9:
 	pop	edi
@@ -702,7 +702,7 @@ fn004016FF proc
 
 ;; fn00401703: 00401703
 fn00401703 proc
-	mov	eax,00004000
+	mov	eax,4000h
 	ret
 
 ;; fn00401709: 00401709
@@ -712,52 +712,52 @@ fn00401709 proc
 
 ;; fn0040170C: 0040170C
 fn0040170C proc
-	push	00403358
-	call	dword ptr [00402018]
+	push	403358h
+	call	dword ptr [402018h]
 	ret
 
 ;; fn00401718: 00401718
 fn00401718 proc
-	push	00030000
-	push	00010000
-	push	00
-	call	00401C36
-	add	esp,0C
+	push	30000h
+	push	10000h
+	push	0h
+	call	401C36h
+	add	esp,0Ch
 	test	eax,eax
-	jnz	00401731
+	jnz	401731h
 
 l00401730:
 	ret
 
 l00401731:
-	push	07
-	call	00401774
-	int	03
+	push	7h
+	call	401774h
+	int	3h
 
 ;; fn00401739: 00401739
 ;;   Called from:
 ;;     00401738 (in fn00401718)
 ;;     0040174D (in fn0040173F)
 fn00401739 proc
-	mov	eax,00403360
+	mov	eax,403360h
 	ret
 
 ;; fn0040173F: 0040173F
 fn0040173F proc
-	call	00401050
-	mov	ecx,[eax+04]
-	or	dword ptr [eax],04
-	mov	[eax+04],ecx
-	call	00401739
-	mov	ecx,[eax+04]
-	or	dword ptr [eax],02
-	mov	[eax+04],ecx
+	call	401050h
+	mov	ecx,[eax+4h]
+	or	dword ptr [eax],4h
+	mov	[eax+4h],ecx
+	call	401739h
+	mov	ecx,[eax+4h]
+	or	dword ptr [eax],2h
+	mov	[eax+4h],ecx
 	ret
 
 ;; fn0040175C: 0040175C
 fn0040175C proc
 	xor	eax,eax
-	cmp	[0040300C],eax
+	cmp	[40300Ch],eax
 	setz	al
 	ret
 
@@ -765,14 +765,14 @@ fn0040175C proc
 ;;   Called from:
 ;;     004011F6 (in Win32CrtStartup)
 fn00401768 proc
-	mov	eax,00403388
+	mov	eax,403388h
 	ret
 
 ;; fn0040176E: 0040176E
 ;;   Called from:
 ;;     0040121D (in Win32CrtStartup)
 fn0040176E proc
-	mov	eax,00403384
+	mov	eax,403384h
 	ret
 
 ;; fn00401774: 00401774
@@ -783,80 +783,80 @@ fn0040176E proc
 fn00401774 proc
 	push	ebp
 	mov	ebp,esp
-	sub	esp,00000324
+	sub	esp,324h
 	push	ebx
 	push	esi
-	push	17
-	call	00401C42
+	push	17h
+	call	401C42h
 	test	eax,eax
-	jz	0040178F
+	jz	40178Fh
 
 l0040178A:
-	mov	ecx,[ebp+08]
-	int	29
+	mov	ecx,[ebp+8h]
+	int	29h
 
 l0040178F:
 	xor	esi,esi
-	lea	eax,[ebp-00000324]
-	push	000002CC
+	lea	eax,[ebp-324h]
+	push	2CCh
 	push	esi
 	push	eax
-	mov	[00403368],esi
-	call	00401BA6
-	add	esp,0C
-	mov	[ebp-00000274],eax
-	mov	[ebp-00000278],ecx
-	mov	[ebp-0000027C],edx
-	mov	[ebp-00000280],ebx
-	mov	[ebp-00000284],esi
-	mov	[ebp-00000288],edi
-	mov	[ebp-0000025C],ss
-	mov	[ebp-00000268],cs
-	mov	[ebp-0000028C],ds
-	mov	[ebp-00000290],es
-	mov	[ebp-00000294],fs
-	mov	[ebp-00000298],gs
+	mov	[403368h],esi
+	call	401BA6h
+	add	esp,0Ch
+	mov	[ebp-274h],eax
+	mov	[ebp-278h],ecx
+	mov	[ebp-27Ch],edx
+	mov	[ebp-280h],ebx
+	mov	[ebp-284h],esi
+	mov	[ebp-288h],edi
+	mov	[ebp-25Ch],ss
+	mov	[ebp-268h],cs
+	mov	[ebp-28Ch],ds
+	mov	[ebp-290h],es
+	mov	[ebp-294h],fs
+	mov	[ebp-298h],gs
 	pushf
-	pop	dword ptr [ebp-00000264]
-	mov	eax,[ebp+04]
-	mov	[ebp-0000026C],eax
-	lea	eax,[ebp+04]
-	mov	[ebp-00000260],eax
-	mov	dword ptr [ebp-00000324],00010001
-	mov	eax,[eax-04]
-	push	50
-	mov	[ebp-00000270],eax
-	lea	eax,[ebp-58]
+	pop	dword ptr [ebp-264h]
+	mov	eax,[ebp+4h]
+	mov	[ebp-26Ch],eax
+	lea	eax,[ebp+4h]
+	mov	[ebp-260h],eax
+	mov	dword ptr [ebp-324h],10001h
+	mov	eax,[eax-4h]
+	push	50h
+	mov	[ebp-270h],eax
+	lea	eax,[ebp-58h]
 	push	esi
 	push	eax
-	call	00401BA6
-	mov	eax,[ebp+04]
-	add	esp,0C
-	mov	dword ptr [ebp-58],40000015
-	mov	dword ptr [ebp-54],00000001
-	mov	[ebp-4C],eax
-	call	dword ptr [00402014]
+	call	401BA6h
+	mov	eax,[ebp+4h]
+	add	esp,0Ch
+	mov	dword ptr [ebp-58h],40000015h
+	mov	dword ptr [ebp-54h],1h
+	mov	[ebp-4Ch],eax
+	call	dword ptr [402014h]
 	push	esi
-	lea	ebx,[eax-01]
+	lea	ebx,[eax-1h]
 	neg	ebx
-	lea	eax,[ebp-58]
-	mov	[ebp-08],eax
-	lea	eax,[ebp-00000324]
+	lea	eax,[ebp-58h]
+	mov	[ebp-8h],eax
+	lea	eax,[ebp-324h]
 	sbb	bl,bl
-	mov	[ebp-04],eax
+	mov	[ebp-4h],eax
 	inc	bl
-	call	dword ptr [00402038]
-	lea	eax,[ebp-08]
+	call	dword ptr [402038h]
+	lea	eax,[ebp-8h]
 	push	eax
-	call	dword ptr [0040203C]
+	call	dword ptr [40203Ch]
 	test	eax,eax
-	jnz	00401889
+	jnz	401889h
 
 l0040187C:
 	movzx	eax,bl
 	neg	eax
 	sbb	eax,eax
-	and	[00403368],eax
+	and	[403368h],eax
 
 l00401889:
 	pop	esi
@@ -869,45 +869,45 @@ l00401889:
 ;;   Called from:
 ;;     0040125D (in Win32CrtStartup)
 fn0040188F proc
-	push	00
-	call	dword ptr [00402040]
+	push	0h
+	call	dword ptr [402040h]
 	mov	ecx,eax
 	test	ecx,ecx
-	jnz	004018A0
+	jnz	4018A0h
 
 l0040189D:
 	xor	al,al
 	ret
 
 l004018A0:
-	mov	eax,00005A4D
+	mov	eax,5A4Dh
 	cmp	[ecx],ax
-	jnz	0040189D
+	jnz	40189Dh
 
 l004018AA:
-	mov	eax,[ecx+3C]
+	mov	eax,[ecx+3Ch]
 	add	eax,ecx
-	cmp	dword ptr [eax],00004550
-	jnz	0040189D
+	cmp	dword ptr [eax],4550h
+	jnz	40189Dh
 
 l004018B7:
-	mov	ecx,0000010B
-	cmp	[eax+18],cx
-	jnz	0040189D
+	mov	ecx,10Bh
+	cmp	[eax+18h],cx
+	jnz	40189Dh
 
 l004018C2:
-	cmp	dword ptr [eax+74],0E
-	jbe	0040189D
+	cmp	dword ptr [eax+74h],0Eh
+	jbe	40189Dh
 
 l004018C8:
-	cmp	dword ptr [eax+000000E8],00
+	cmp	dword ptr [eax+0E8h],0h
 	setnz	al
 	ret
 
 ;; fn004018D3: 004018D3
 fn004018D3 proc
-	push	004018DF
-	call	dword ptr [00402038]
+	push	4018DFh
+	call	dword ptr [402038h]
 	ret
 004018DF                                              55                U
 004018E0 8B EC 8B 45 08 8B 00 81 38 63 73 6D E0 75 25 83 ...E....8csm.u%.
@@ -919,10 +919,10 @@ fn004018D3 proc
 fn00401920 proc
 	push	ebx
 	push	esi
-	mov	esi,004024C8
-	mov	ebx,004024C8
+	mov	esi,4024C8h
+	mov	ebx,4024C8h
 	cmp	esi,ebx
-	jnc	00401948
+	jnc	401948h
 
 l00401930:
 	push	edi
@@ -930,17 +930,17 @@ l00401930:
 l00401931:
 	mov	edi,[esi]
 	test	edi,edi
-	jz	00401940
+	jz	401940h
 
 l00401937:
 	mov	ecx,edi
-	call	00401976
+	call	401976h
 	call	edi
 
 l00401940:
-	add	esi,04
+	add	esi,4h
 	cmp	esi,ebx
-	jc	00401931
+	jc	401931h
 
 l00401947:
 	pop	edi
@@ -959,7 +959,7 @@ l00401948:
 ;;     00401216 (in Win32CrtStartup)
 ;;     00401939 (in fn00401920)
 fn00401976 proc
-	jmp	dword ptr [004020D0]
+	jmp	dword ptr [4020D0h]
 0040197C                                     CC CC CC CC             ....
 
 ;; fn00401980: 00401980
@@ -967,26 +967,26 @@ fn00401976 proc
 ;;     00401166 (in Win32CrtStartup)
 ;;     0040154B (in fn00401544)
 fn00401980 proc
-	push	004019DB
-	push	dword ptr fs:[00000000]
-	mov	eax,[esp+10]
-	mov	[esp+10],ebp
-	lea	ebp,[esp+10]
+	push	4019DBh
+	push	dword ptr fs:[0000h]
+	mov	eax,[esp+10h]
+	mov	[esp+10h],ebp
+	lea	ebp,[esp+10h]
 	sub	esp,eax
 	push	ebx
 	push	esi
 	push	edi
-	mov	eax,[00403004]
-	xor	[ebp-04],eax
+	mov	eax,[403004h]
+	xor	[ebp-4h],eax
 	xor	eax,ebp
 	push	eax
-	mov	[ebp-18],esp
-	push	dword ptr [ebp-08]
-	mov	eax,[ebp-04]
-	mov	dword ptr [ebp-04],FFFFFFFE
-	mov	[ebp-08],eax
-	lea	eax,[ebp-10]
-	mov	fs:[00000000],eax
+	mov	[ebp-18h],esp
+	push	dword ptr [ebp-8h]
+	mov	eax,[ebp-4h]
+	mov	dword ptr [ebp-4h],0FFFFFFFEh
+	mov	[ebp-8h],eax
+	lea	eax,[ebp-10h]
+	mov	fs:[0000h],eax
 	repne ret
 
 ;; fn004019C6: 004019C6
@@ -994,8 +994,8 @@ fn00401980 proc
 ;;     004012C8 (in Win32CrtStartup)
 ;;     004015C8 (in fn00401544)
 fn004019C6 proc
-	mov	ecx,[ebp-10]
-	mov	fs:[00000000],ecx
+	mov	ecx,[ebp-10h]
+	mov	fs:[0000h],ecx
 	pop	ecx
 	pop	edi
 	pop	edi
@@ -1015,169 +1015,169 @@ fn004019C6 proc
 fn004019FE proc
 	push	ebp
 	mov	ebp,esp
-	and	dword ptr [0040336C],00
-	sub	esp,28
+	and	dword ptr [40336Ch],0h
+	sub	esp,28h
 	push	ebx
 	xor	ebx,ebx
 	inc	ebx
-	or	[00403010],ebx
-	push	0A
-	call	00401C42
+	or	[403010h],ebx
+	push	0Ah
+	call	401C42h
 	test	eax,eax
-	jz	00401B91
+	jz	401B91h
 
 l00401A24:
-	and	dword ptr [ebp-10],00
+	and	dword ptr [ebp-10h],0h
 	xor	eax,eax
-	or	dword ptr [00403010],02
+	or	dword ptr [403010h],2h
 	xor	ecx,ecx
 	push	esi
 	push	edi
-	mov	[0040336C],ebx
-	lea	edi,[ebp-28]
+	mov	[40336Ch],ebx
+	lea	edi,[ebp-28h]
 	push	ebx
 	cpuid
 	mov	esi,ebx
 	pop	ebx
 	mov	[edi],eax
-	mov	[edi+04],esi
-	mov	[edi+08],ecx
-	mov	[edi+0C],edx
-	mov	eax,[ebp-28]
-	mov	ecx,[ebp-1C]
-	mov	[ebp-08],eax
-	xor	ecx,49656E69
-	mov	eax,[ebp-20]
-	xor	eax,6C65746E
+	mov	[edi+4h],esi
+	mov	[edi+8h],ecx
+	mov	[edi+0Ch],edx
+	mov	eax,[ebp-28h]
+	mov	ecx,[ebp-1Ch]
+	mov	[ebp-8h],eax
+	xor	ecx,49656E69h
+	mov	eax,[ebp-20h]
+	xor	eax,6C65746Eh
 	or	ecx,eax
-	mov	eax,[ebp-24]
-	push	01
-	xor	eax,756E6547
+	mov	eax,[ebp-24h]
+	push	1h
+	xor	eax,756E6547h
 	or	ecx,eax
 	pop	eax
-	push	00
+	push	0h
 	pop	ecx
 	push	ebx
 	cpuid
 	mov	esi,ebx
 	pop	ebx
 	mov	[edi],eax
-	mov	[edi+04],esi
-	mov	[edi+08],ecx
-	mov	[edi+0C],edx
-	jnz	00401ACE
+	mov	[edi+4h],esi
+	mov	[edi+8h],ecx
+	mov	[edi+0Ch],edx
+	jnz	401ACEh
 
 l00401A8B:
-	mov	eax,[ebp-28]
-	and	eax,0FFF3FF0
-	cmp	eax,000106C0
-	jz	00401ABD
+	mov	eax,[ebp-28h]
+	and	eax,0FFF3FF0h
+	cmp	eax,106C0h
+	jz	401ABDh
 
 l00401A9A:
-	cmp	eax,00020660
-	jz	00401ABD
+	cmp	eax,20660h
+	jz	401ABDh
 
 l00401AA1:
-	cmp	eax,00020670
-	jz	00401ABD
+	cmp	eax,20670h
+	jz	401ABDh
 
 l00401AA8:
-	cmp	eax,00030650
-	jz	00401ABD
+	cmp	eax,30650h
+	jz	401ABDh
 
 l00401AAF:
-	cmp	eax,00030660
-	jz	00401ABD
+	cmp	eax,30660h
+	jz	401ABDh
 
 l00401AB6:
-	cmp	eax,00030670
-	jnz	00401ACE
+	cmp	eax,30670h
+	jnz	401ACEh
 
 l00401ABD:
-	mov	edi,[00403370]
-	or	edi,01
-	mov	[00403370],edi
-	jmp	00401AD4
+	mov	edi,[403370h]
+	or	edi,1h
+	mov	[403370h],edi
+	jmp	401AD4h
 
 l00401ACE:
-	mov	edi,[00403370]
+	mov	edi,[403370h]
 
 l00401AD4:
-	cmp	dword ptr [ebp-08],07
-	mov	eax,[ebp-1C]
-	mov	[ebp-18],eax
-	mov	eax,[ebp-20]
-	mov	[ebp-04],eax
-	mov	[ebp-14],eax
-	jl	00401B1B
+	cmp	dword ptr [ebp-8h],7h
+	mov	eax,[ebp-1Ch]
+	mov	[ebp-18h],eax
+	mov	eax,[ebp-20h]
+	mov	[ebp-4h],eax
+	mov	[ebp-14h],eax
+	jl	401B1Bh
 
 l00401AE9:
-	push	07
+	push	7h
 	pop	eax
 	xor	ecx,ecx
 	push	ebx
 	cpuid
 	mov	esi,ebx
 	pop	ebx
-	lea	ebx,[ebp-28]
+	lea	ebx,[ebp-28h]
 	mov	[ebx],eax
-	mov	[ebx+04],esi
-	mov	[ebx+08],ecx
-	mov	[ebx+0C],edx
-	mov	eax,[ebp-24]
-	test	eax,00000200
-	mov	[ebp-10],eax
-	mov	eax,[ebp-04]
-	jz	00401B1B
+	mov	[ebx+4h],esi
+	mov	[ebx+8h],ecx
+	mov	[ebx+0Ch],edx
+	mov	eax,[ebp-24h]
+	test	eax,200h
+	mov	[ebp-10h],eax
+	mov	eax,[ebp-4h]
+	jz	401B1Bh
 
 l00401B12:
-	or	edi,02
-	mov	[00403370],edi
+	or	edi,2h
+	mov	[403370h],edi
 
 l00401B1B:
 	pop	edi
 	pop	esi
-	test	eax,00100000
-	jz	00401B91
+	test	eax,100000h
+	jz	401B91h
 
 l00401B24:
-	or	dword ptr [00403010],04
-	mov	dword ptr [0040336C],00000002
-	test	eax,08000000
-	jz	00401B91
+	or	dword ptr [403010h],4h
+	mov	dword ptr [40336Ch],2h
+	test	eax,8000000h
+	jz	401B91h
 
 l00401B3C:
-	test	eax,10000000
-	jz	00401B91
+	test	eax,10000000h
+	jz	401B91h
 
 l00401B43:
 	xor	ecx,ecx
 	xgetbv
-	mov	[ebp-0C],eax
-	mov	[ebp-08],edx
-	mov	eax,[ebp-0C]
-	mov	ecx,[ebp-08]
-	and	eax,06
+	mov	[ebp-0Ch],eax
+	mov	[ebp-8h],edx
+	mov	eax,[ebp-0Ch]
+	mov	ecx,[ebp-8h]
+	and	eax,6h
 	xor	ecx,ecx
-	cmp	eax,06
-	jnz	00401B91
+	cmp	eax,6h
+	jnz	401B91h
 
 l00401B5E:
 	test	ecx,ecx
-	jnz	00401B91
+	jnz	401B91h
 
 l00401B62:
-	mov	eax,[00403010]
-	or	eax,08
-	mov	dword ptr [0040336C],00000003
-	test	byte ptr [ebp-10],20
-	mov	[00403010],eax
-	jz	00401B91
+	mov	eax,[403010h]
+	or	eax,8h
+	mov	dword ptr [40336Ch],3h
+	test	byte ptr [ebp-10h],20h
+	mov	[403010h],eax
+	jz	401B91h
 
 l00401B7F:
-	or	eax,20
-	mov	dword ptr [0040336C],00000005
-	mov	[00403010],eax
+	or	eax,20h
+	mov	dword ptr [40336Ch],5h
+	mov	[403010h],eax
 
 l00401B91:
 	xor	eax,eax
@@ -1193,7 +1193,7 @@ l00401B91:
 ;;     004015D1 (in fn004015CE)
 fn00401B98 proc
 	xor	eax,eax
-	cmp	[00403014],eax
+	cmp	[403014h],eax
 	setnz	al
 	ret
 
@@ -1221,5 +1221,5 @@ fn00401BA4 proc
 ;;     00401600 (in fn004015EB)
 ;;     00401608 (in fn004015EB)
 fn00401C48 proc
-	mov	al,01
+	mov	al,1h
 	ret

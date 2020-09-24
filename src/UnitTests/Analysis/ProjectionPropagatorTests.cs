@@ -125,7 +125,7 @@ SsaProcedureBuilder_exit:
 @"SsaProcedureBuilder_entry:
 l1:
 	def hl
-	l = (byte) hl
+	l = SLICE(hl, ui8, 0)
 	h = SLICE(hl, ui8, 8)
 	de_1 = hl
 	return
@@ -142,7 +142,7 @@ SsaProcedureBuilder_exit:
                 var de_1 = m.Reg("de_1", Z80Registers.de);
 
                 m.Def(hl);
-                m.Assign(l, m.Cast(PrimitiveType.Byte, hl));
+                m.Assign(l, m.Slice(hl, 0, 8));
                 m.Assign(h, m.Slice(hl, 8, 8));
                 m.Assign(de_1, m.Seq(h, l));
                 m.Return();
@@ -256,7 +256,7 @@ loop:
 	l_5 = SLICE(hl_9, byte, 0) (alias)
 	hl_1 = hl_9 << 1<8>
 	h_2 = SLICE(hl_1, byte, 8)
-	l_3 = (byte) hl_1
+	l_3 = SLICE(hl_1, byte, 0)
 	goto loop
 xit:
 	return
@@ -283,7 +283,7 @@ SsaProcedureBuilder_exit:
                 m.Phi(l_5, (l, "l1"), (l_3, "loop"));
                 m.Assign(hl_1, m.Shl(m.Seq(h_4, l_5), 1));
                 m.Assign(h_2, m.Slice(PrimitiveType.Byte, hl_1, 8));
-                m.Assign(l_3, m.Cast(PrimitiveType.Byte, hl_1));
+                m.Assign(l_3, m.Slice(PrimitiveType.Byte, hl_1, 0));
                 m.Goto("loop");
 
                 m.Label("xit");
@@ -559,7 +559,7 @@ SsaProcedureBuilder_exit:
                 var es_3 = m.Reg("es_3", X86Registers.es);
                 m.AddDefToEntryBlock(ds);
                 m.Assign(es_ax_1, m.SegMem(PrimitiveType.Word32, ds, m.Word16(0x1234)));
-                m.Alias(ax_2, m.Cast(PrimitiveType.Word16, es_ax_1));
+                m.Alias(ax_2, m.Slice(PrimitiveType.Word16, es_ax_1, 0));
                 m.Alias(es_3, m.Slice(PrimitiveType.Word16, es_ax_1, 16));
                 m.Return();
                 m.AddUseToExitBlock(ax_2);

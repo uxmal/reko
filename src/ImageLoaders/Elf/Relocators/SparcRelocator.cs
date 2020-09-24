@@ -28,17 +28,17 @@ using System.Text;
 namespace Reko.ImageLoaders.Elf.Relocators
 {
     // https://docs.oracle.com/cd/E23824_01/html/819-0690/chapter6-1235.html
-    public class SparcRelocator : ElfRelocator32
+    public class Sparc32Relocator : ElfRelocator32
     {
         private Dictionary<Address,ImportReference> importReferences;
 
-        public SparcRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
+        public Sparc32Relocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
         }
 
         public override void Relocate(Program program)
         {
-            this.importReferences=  program.ImportReferences;
+            this.importReferences =  program.ImportReferences;
             base.Relocate(program);
         }
 
@@ -201,5 +201,17 @@ namespace Reko.ImageLoaders.Elf.Relocators
         R_SPARC_L44 = 52,       // T-imm13      (S + A) & 0xfff
         R_SPARC_REGISTER = 53,  // V-word32     S + A
         R_SPARC_UA16 = 55,      // V-half16     S + A
+
+        // On Sparc64:
+        //R_SPARC_HI22 9 V-imm22 (S + A) >> 10
+        //R_SPARC_GLOB_DAT 20 V-xword64 S + A
+        //R_SPARC_RELATIVE 22 V-xword64 B + A
+        //R_SPARC_64 32 V-xword64 S + A
+        //R_SPARC_OLO10 33 V-simm13 ((S + A) & 0x3ff) + O
+        //R_SPARC_DISP64 46 V-xword64 S+A-P
+        //R_SPARC_PLT64 47 V-xword64 L + A
+        //R_SPARC_REGISTER 53 V-xword64 S + A
+        //R_SPARC_UA64 54 V-xword64 S + A
+        //R_SPARC_H34 85 V-imm22
     }
 }

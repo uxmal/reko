@@ -6,7 +6,7 @@ _f proc
 	add	[eax],al
 	add	[eax],al
 	pop	eax
-	mov	eax,[eax+0000000B]
+	mov	eax,[eax+0Bh]
 	mov	eax,[eax]
 	pop	ebp
 	ret

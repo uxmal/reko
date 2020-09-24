@@ -303,7 +303,7 @@ namespace Reko.Arch.Rl78
                 }
                 else
                 {
-                    fn = (a, b) => m.IAdd(a, m.Cast(PrimitiveType.Word16, b));
+                    fn = (a, b) => m.IAdd(a, m.Convert(b, b.DataType, PrimitiveType.UInt16));
                 }
             }
             else
@@ -446,7 +446,7 @@ namespace Reko.Arch.Rl78
             Expression val = m.Mem16(sp);
             if (dst.DataType.BitSize < 16)
             {
-                val = m.Cast(dst.DataType, val);
+                val = m.Convert(val, val.DataType, dst.DataType);
             }
             m.Assign(dst, val);
             m.Assign(sp, m.IAddS(sp, 2));
@@ -459,7 +459,7 @@ namespace Reko.Arch.Rl78
             var src = RewriteSrc(instr.Operands[0]);
             if (src.DataType.BitSize < 16)
             {
-                src = m.Cast(PrimitiveType.Word16, src);
+                src = m.Convert(src, src.DataType, PrimitiveType.Word16);
             }
             m.Assign(m.Mem16(sp), src);
         }
@@ -545,7 +545,7 @@ namespace Reko.Arch.Rl78
                 }
                 else
                 {
-                    fn = (a, b) => m.ISub(a, m.Cast(PrimitiveType.Word16, b));
+                    fn = (a, b) => m.ISub(a, m.Convert(b, b.DataType, PrimitiveType.Word16));
                 }
             }
             else

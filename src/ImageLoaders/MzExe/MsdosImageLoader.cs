@@ -36,6 +36,9 @@ namespace Reko.ImageLoaders.MzExe
 	/// </summary>
 	public class MsdosImageLoader : ImageLoader
 	{
+        // "640k should be enough for anybody" -- consider making this configurable?
+        private const ushort segMemTop = 0xA000;
+
         private readonly IProcessorArchitecture arch;
         private readonly IPlatform platform;
 		private MemoryArea imgLoaded;
@@ -63,22 +66,46 @@ namespace Reko.ImageLoaders.MzExe
 
         public override Program Load(Address addrLoad)
         {
-            //$TODO: no space allocated for the PSP!
-            this.segPsp = (ushort)(addrLoad.Selector.Value - 0x10);
+            this.segPsp = (ushort) (addrLoad.Selector.Value - 0x10);
             var ss = (ushort) (ExeLoader.e_ss + addrLoad.Selector.Value);
             this.addrStackTop = Address.SegPtr(ss, ExeLoader.e_sp);
 
             int iImageStart = (ExeLoader.e_cparHeader * 0x10);
             int cbImageSize = ExeLoader.e_cpImage * ExeImageLoader.CbPageSize - iImageStart;
             // The +4 is room for a far return address at the top of the stack.
-            int offsetStackTop = (int)(addrStackTop - addrLoad) + 4;
-            cbImageSize = Math.Max(cbImageSize, offsetStackTop);
+            int offsetStackTop = (int) (addrStackTop - addrLoad) + 4;
+            int cbExtraBytes = ExeLoader.e_minalloc * 0x10;
+            cbImageSize = Math.Max(cbImageSize + cbExtraBytes, offsetStackTop);
             byte[] bytes = new byte[cbImageSize];
             int cbCopy = Math.Min(cbImageSize, RawImage.Length - iImageStart);
             Array.Copy(RawImage, iImageStart, bytes, 0, cbCopy);
             imgLoaded = new MemoryArea(addrLoad, bytes);
-            this.segmentMap = new SegmentMap(addrLoad);
+            var addrPsp = Address.SegPtr(segPsp, 0);
+            var psp = MakeProgramSegmentPrefix(addrPsp, segMemTop);
+            this.segmentMap = new SegmentMap(
+                addrPsp,
+                psp);
             return new Program(segmentMap, arch, platform);
+        }
+
+        /// <summary>
+        /// Create a segment for the MS-DOS program segment prefix (PSP).
+        /// </summary>
+        /// <param name="addrPsp">The address of the PSP</param>
+        /// <param name="segMemTop">The segment address (paragraph) of the first byte
+        /// beyond the image.</param>
+        /// <returns>
+        /// An <see cref="ImageSegment"/> that can be added to a <see cref="SegmentMap"/>.
+        /// </returns>
+        private ImageSegment MakeProgramSegmentPrefix(Address addrPsp, ushort segMemTop)
+        {
+            var mem = new MemoryArea(addrPsp, new byte[0x100]);
+            var w = new LeImageWriter(mem, 0);
+            w.WriteByte(0xCD);
+            w.WriteByte(0x20);
+            w.WriteLeUInt16(segMemTop); // Some unpackers rely on this value.
+            
+            return new ImageSegment("PSP", mem, AccessMode.ReadWriteExecute);
         }
 
         public override ImageSegment AddSegmentReference(Address addr, ushort seg)
@@ -186,6 +213,7 @@ namespace Reko.ImageLoaders.MzExe
             state.SetRegister(Registers.ss, Constant.UInt16((ushort) addrStackTop.Selector.Value));
             state.SetRegister(Registers.sp, Constant.UInt16((ushort) addrStackTop.Offset));
             state.SetRegister(Registers.ds, Constant.UInt16(segPsp));
+            state.SetRegister(Registers.es, Constant.UInt16(segPsp));
             var ep = ImageSymbol.Procedure(arch, addrStart, state: state);
             return ep;
         }
@@ -212,7 +240,7 @@ namespace Reko.ImageLoaders.MzExe
                 foreach (var sym in syms)
                 {
                     symbols[sym.Key] = sym.Value;
-        }
+                }
             }
         }
 

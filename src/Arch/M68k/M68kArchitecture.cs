@@ -156,7 +156,7 @@ namespace Reko.Arch.M68k
                 case 'Z': grf |= FlagM.ZF; break;
                 case 'N': grf |= FlagM.NF; break;
                 case 'X': grf |= FlagM.XF; break;
-                default: return null;
+                default: throw new ArgumentException($"Flag bit '{name[i]}' is unrecognized.");
                 }
             }
             return GetFlagGroup(Registers.ccr, (uint)grf);
@@ -175,7 +175,7 @@ namespace Reko.Arch.M68k
             return Address.Ptr32(uAddr);
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             if (rdr.TryReadBeUInt32(out var uaddr))
             {
@@ -210,7 +210,7 @@ namespace Reko.Arch.M68k
             return sb.ToString();
         }
 
-        public override bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
         }

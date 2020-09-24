@@ -127,5 +127,13 @@ namespace Reko.UnitTests.Core
         {
             Assert.AreEqual(tmpWord32.BitSize, 32);
         }
+
+        [Test]
+        public void Stg_FpuStackStorageOffsetOf()
+        {
+            Assert.AreEqual(0, fpu0.OffsetOf(fpu0));
+            Assert.AreEqual(-1, fpu0.OffsetOf(fpu1));
+            Assert.AreEqual(-1, fpu1.OffsetOf(fpu0));
+        }
     }
 }

@@ -173,7 +173,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|r1 = r1 + 1<i32>",
-                "2|L--|r2 = (word32) Mem0[r1:int8]");
+                "2|L--|r2 = CONVERT(Mem0[r1:int8], int8, word32)");
         }
 
         [Test]
@@ -218,7 +218,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_UInt32s(0xE4D43001);// ldrb r3,[r4],#1
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v4 = (word32) Mem0[r4:byte]",
+                "1|L--|v4 = CONVERT(Mem0[r4:byte], byte, word32)",
                 "2|L--|r4 = r4 + 1<i32>",
                 "3|L--|r3 = v4");
         }
@@ -249,11 +249,11 @@ namespace Reko.UnitTests.Arch.Arm
             Given_UInt32s(0xE6EF2071);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = (uint32) (byte) r1");
+                "1|L--|r2 = CONVERT(SLICE(r1, byte, 0), byte, uint32)");
             Given_UInt32s(0xE6EF2471);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = (uint32) (byte) (r1 >>u 8<i32>)");
+                "1|L--|r2 = CONVERT(SLICE(r1 >>u 8<i32>, byte, 0), byte, uint32)");
         }
 
         [Test]
@@ -389,7 +389,7 @@ means
             Given_UInt32s(0xE7F01252);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = (uint32) SLICE(r2, ui17, 4)");
+                "1|L--|r1 = CONVERT(SLICE(r2, ui17, 4), ui17, uint32)");
         }
 
         [Test]
@@ -398,7 +398,7 @@ means
             Given_UInt32s(0xE6AF1472);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = (int32) (int8) (r2 >>u 8<i32>)");
+                "1|L--|r1 = CONVERT(SLICE(r2 >>u 8<i32>, int8, 0), int8, int32)");
         }
 
         [Test]
@@ -407,7 +407,7 @@ means
             Given_UInt32s(0xE6FF1472);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = (uint32) (uint16) (r2 >>u 8<i32>)");
+                "1|L--|r1 = CONVERT(SLICE(r2 >>u 8<i32>, uint16, 0), uint16, uint32)");
         }
 
         [Test]
@@ -532,7 +532,7 @@ means
             Given_UInt32s(0xE1600380); //  smulbb r0, r0, r3
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = (int16) r0 *s (int16) r3");
+                "1|L--|r0 = CONVERT(r0, word32, int16) *s CONVERT(r3, word32, int16)");
         }
 
         [Test]
@@ -550,7 +550,7 @@ means
             Given_UInt32s(0xE7A9C35C); // sbfx ip,ip,#6,#&A
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|ip = (int32) SLICE(ip, ui10, 6)");
+                "1|L--|ip = CONVERT(SLICE(ip, ui10, 6), ui10, int32)");
         }
 
         [Test]
@@ -578,7 +578,7 @@ means
             Given_UInt32s(0xE6E10070);  // uxtab r0, r1, r0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = r1 + (byte) r0");
+                "1|L--|r0 = r1 + CONVERT(SLICE(r0, byte, 0), byte, word32)");
         }
 
         [Test]
@@ -587,7 +587,7 @@ means
             Given_UInt32s(0xE6A55078);  // sxtab r5, r5, r8
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5 = r5 + (int8) r8");
+                "1|L--|r5 = r5 + CONVERT(SLICE(r8, int8, 0), int8, word32)");
         }
 
         [Test]
@@ -596,7 +596,7 @@ means
             Given_UInt32s(0xE6B6A07A);  // sxtah r10,r6,r10
             AssertCode(
              "0|L--|00100000(4): 1 instructions",
-             "1|L--|r10 = r6 + (int16) r10");
+             "1|L--|r10 = r6 + CONVERT(SLICE(r10, int16, 0), int16, word32)");
         }
 
         [Test]
@@ -614,7 +614,7 @@ means
             Given_UInt32s(0xE6F30072);  // uxtah r0,r3,r2
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = r3 + (uint16) r2");
+                "1|L--|r0 = r3 + CONVERT(SLICE(r2, uint16, 0), uint16, word32)");
         }
 
         [Test]
@@ -680,7 +680,7 @@ means
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00100004",
-                "2|L--|sp = (ip *s (int16) (r6 >> 16<i32>) >> 16<i32>) + r0");
+                "2|L--|sp = (ip *s CONVERT(r6 >> 16<i32>, word32, int16) >> 16<i32>) + r0");
             //74 EC 0A 01 ????
             //﻿90 41 E0 00 smlaleqr4,r0,r0,r1
             // B0 44 E0 00 strhteqr4,[r0],#&40
@@ -702,7 +702,7 @@ means
             Given_UInt32s(0xE0e051b0);	// strht r5, [r0], #0x10
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|Mem0[r0:word16] = (uint16) r5");
+                "1|L--|Mem0[r0:word16] = SLICE(r5, uint16, 0)");
         }
 
         [Test]
@@ -720,7 +720,7 @@ means
             Given_UInt32s(0xE12e5ba8);	// smulwb lr, r8, fp
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|lr = r8 *s (int16) fp >> 16<i32>");
+                "1|L--|lr = r8 *s CONVERT(fp, word32, int16) >> 16<i32>");
         }
 
         [Test]
@@ -729,7 +729,7 @@ means
             Given_UInt32s(0xE168dbcc);	// smulbt r8, ip, fp
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = (int16) ip *s (int16) (fp >> 16<i32>)");
+                "1|L--|r8 = CONVERT(ip, word32, int16) *s CONVERT(fp >> 16<i32>, word32, int16)");
         }
 
         [Test]
@@ -748,7 +748,7 @@ means
             Given_UInt32s(0xE0fe50fc);	// ldrsht r5, [lr], #0xc
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v4 = (word32) Mem0[lr:int16]",
+                "1|L--|v4 = CONVERT(Mem0[lr:int16], int16, word32)",
                 "2|L--|lr = lr + 12<i32>",
                 "3|L--|r5 = v4");
         }
@@ -759,7 +759,7 @@ means
             Given_UInt32s(0xE168dbe0);	// smultt r8, r0, fp
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = (int16) (r0 >> 16<i32>) *s (int16) (fp >> 16<i32>)");
+                "1|L--|r8 = CONVERT(r0 >> 16<i32>, word32, int16) *s CONVERT(fp >> 16<i32>, word32, int16)");
         }
 
         [Test]
@@ -788,7 +788,7 @@ means
             Given_UInt32s(0xE10c6ca0);	// smlatb ip, r0, ip, r6
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|ip = (int16) (r0 >> 16<i32>) *s (int16) ip + r6",
+                "1|L--|ip = CONVERT(r0 >> 16<i32>, word32, int16) *s CONVERT(ip, word32, int16) + r6",
                 "2|L--|Q = cond(ip)");
         }
 
@@ -798,7 +798,7 @@ means
             Given_UInt32s(0xE0fd52b4);	// ldrht r5, [sp], #0x24
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v4 = (word32) Mem0[sp:word16]",
+                "1|L--|v4 = CONVERT(Mem0[sp:word16], uint16, word32)",
                 "2|L--|sp = sp + 36<i32>",
                 "3|L--|r5 = v4");
         }
@@ -808,7 +808,7 @@ means
         {
             Given_UInt32s(0xE1206aec);	// smulwt r0, ip, sl
             AssertCode("0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = ip *s (int16) (r10 >> 16<i32>) >> 16<i32>");
+                "1|L--|r0 = ip *s CONVERT(r10 >> 16<i32>, word32, int16) >> 16<i32>");
         }
 
         [Test]
@@ -817,7 +817,7 @@ means
             Given_UInt32s(0xE12d5980);	// smlawb sp, r0, sb, r5
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|sp = (r0 *s (int16) r9 >> 16<i32>) + r5");
+                "1|L--|sp = (r0 *s CONVERT(r9, word32, int16) >> 16<i32>) + r5");
         }
 
         [Test]
@@ -827,7 +827,7 @@ means
             AssertCode(
                 "0|L--|00100000(4): 4 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00100004",
-                "2|L--|v5 = (word32) Mem0[r7:int8]",
+                "2|L--|v5 = CONVERT(Mem0[r7:int8], int8, word32)",
                 "3|L--|r7 = r7 + 112<i32>",
                 "4|L--|r0 = v5");
         }
@@ -838,7 +838,7 @@ means
             Given_UInt32s(0xE16c69ac);	// smultb ip, ip, sb
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|ip = (int16) (ip >> 16<i32>) *s (int16) r9");
+                "1|L--|ip = CONVERT(ip >> 16<i32>, word32, int16) *s CONVERT(r9, word32, int16)");
         }
 
         [Test]
@@ -885,7 +885,7 @@ means
             Given_UInt32s(0xE10f54cc);  // smlabt pc, ip, r4, r5
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|pc = (int16) ip *s (int16) (r4 >> 16<i32>) + r5",
+                "1|L--|pc = CONVERT(ip, word32, int16) *s CONVERT(r4 >> 16<i32>, word32, int16) + r5",
                 "2|L--|Q = cond(pc)");
         }
 
@@ -895,7 +895,7 @@ means
             Given_UInt32s(0xeef80be7);  // vcvt.f64.s32 d16, s15
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d16 = (real64) s15");
+                "1|L--|d16 = CONVERT(s15, int32, real64)");
         }
 
         [Test]
@@ -990,7 +990,7 @@ means
             AssertCode(
                 "0|L--|00100000(4): 4 instructions",
                 "1|T--|if (Test(LE,NZV)) branch 00100004",
-                "2|L--|v5 = (word32) Mem0[r10:byte]",
+                "2|L--|v5 = CONVERT(Mem0[r10:byte], byte, word32)",
                 "3|L--|r10 = r10 + 0<i32>",
                 "4|L--|r0 = v5");
         }
@@ -1046,7 +1046,7 @@ means
             Given_UInt32s(0xE10e3b88);  // smlabb lr, r8, fp, r3
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|lr = (int16) r8 *s (int16) fp + r3");
+                "1|L--|lr = CONVERT(r8, word32, int16) *s CONVERT(fp, word32, int16) + r3");
         }
 
         [Test]
@@ -1142,7 +1142,7 @@ means
             Given_UInt32s(0xE6666666);  // strbt r6, [r6], -r6, ror #12
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|Mem0[r6:byte] = (byte) r6",
+                "1|L--|Mem0[r6:byte] = SLICE(r6, byte, 0)",
                 "2|L--|r6 = r6 - __ror(r6, 12<i32>)");
         }
 
@@ -1281,8 +1281,8 @@ means
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|v2 = r0 *u r5",
-                "2|L--|v2 = v2 + (uint64) r0",
-                "3|L--|r0_r10 = v2 + (uint64) r10");
+                "2|L--|v2 = v2 + CONVERT(r0, word32, uint64)",
+                "3|L--|r0_r10 = v2 + CONVERT(r10, word32, uint64)");
         }
 
         [Test]
@@ -1292,7 +1292,7 @@ means
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00100004",
-                "2|L--|fp = (int16) (r4 >> 16<i32>) *s (int16) (r10 >> 16<i32>) + sp",
+                "2|L--|fp = CONVERT(r4 >> 16<i32>, word32, int16) *s CONVERT(r10 >> 16<i32>, word32, int16) + sp",
                 "3|L--|Q = cond(fp)");
         }
 
@@ -1312,7 +1312,7 @@ means
             Given_UInt32s(0xE14090c0);  // smlalbt sb, r0, r0, r0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r9_r0 = (int16) r0 *s (int16) (r0 >> 16<i32>) + r9_r0");
+                "1|L--|r9_r0 = CONVERT(r0, word32, int16) *s CONVERT(r0 >> 16<i32>, word32, int16) + r9_r0");
         }
 
         [Test]
@@ -1330,7 +1330,7 @@ means
             Given_UInt32s(0xE14091a0);  // smlaltb sb, r0, r0, r1
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r9_r0 = (int16) (r0 >> 16<i32>) *s (int16) r1 + r9_r0");
+                "1|L--|r9_r0 = CONVERT(r0 >> 16<i32>, word32, int16) *s CONVERT(r1, word32, int16) + r9_r0");
         }
 
         [Test]
@@ -1361,7 +1361,7 @@ means
             Given_UInt32s(0xE1409280);  // smlalbb sb, r0, r0, r2
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r9_r0 = (int16) r0 *s (int16) r2 + r9_r0");
+                "1|L--|r9_r0 = CONVERT(r0, word32, int16) *s CONVERT(r2, word32, int16) + r9_r0");
         }
 
         [Test]
@@ -1370,7 +1370,7 @@ means
             Given_UInt32s(0xE140abec);  // smlaltt sl, r0, ip, fp
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r10_r0 = (int16) (ip >> 16<i32>) *s (int16) (fp >> 16<i32>) + r10_r0");
+                "1|L--|r10_r0 = CONVERT(ip >> 16<i32>, word32, int16) *s CONVERT(fp >> 16<i32>, word32, int16) + r10_r0");
         }
 
         [Test]
@@ -1407,7 +1407,7 @@ means
             Given_UInt32s(0xE19120D3);  // ldrsb\tr2,[r1,-r3]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = (word32) Mem0[r1 + r3:int8]");
+                "1|L--|r2 = CONVERT(Mem0[r1 + r3:int8], int8, word32)");
         }
 
         [Test]
@@ -1416,7 +1416,7 @@ means
             Given_UInt32s(0xE11120D3); // ldrsb\tr2,[r1, r3]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = (word32) Mem0[r1 - r3:int8]");
+                "1|L--|r2 = CONVERT(Mem0[r1 - r3:int8], int8, word32)");
         }
 
         [Test]
@@ -1461,7 +1461,7 @@ means
             Given_UInt32s(0xE1C320B0);        // strh\tr2,[r3]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r3:word16] = (uint16) r2");
+                "1|L--|Mem0[r3:word16] = SLICE(r2, uint16, 0)");
         }
 
         [Test]
@@ -1470,7 +1470,7 @@ means
             Given_UInt32s(0xE1D041BC);        // ldrh\tr4,[r0,#&1C]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = (word32) Mem0[r0 + 28<i32>:word16]");
+                "1|L--|r4 = CONVERT(Mem0[r0 + 28<i32>:word16], uint16, word32)");
         }
 
         [Test]
@@ -1480,7 +1480,7 @@ means
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|r2 = r2 - 2<i32>",
-                "2|L--|Mem0[r2:word16] = (uint16) r3");
+                "2|L--|Mem0[r2:word16] = SLICE(r3, uint16, 0)");
         }
 
         [Test]
@@ -1546,7 +1546,7 @@ means
             Given_UInt32s(0xE7434774);        // smlsldx\tr3,r4,r7,r4
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4_r3 = r4_r3 + ((int16) r7 *s (r4 >> 16<i32>) - (r7 >> 16<i32>) *s (int16) r4)");
+                "1|L--|r4_r3 = r4_r3 + (CONVERT(r7, word32, int16) *s (r4 >> 16<i32>) - (r7 >> 16<i32>) *s CONVERT(r4, word32, int16))");
         }
 
         [Test]
@@ -1556,7 +1556,7 @@ means
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|r7 = r7 - 144<i32>",
-                "2|L--|ip = (word32) Mem0[r7:int16]");
+                "2|L--|ip = CONVERT(Mem0[r7:int16], int16, word32)");
         }
 
         [Test]
@@ -1592,7 +1592,7 @@ means
             Given_UInt32s(0xE0DA85B8);        // ldrheq\tr8,[r10],#&58
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v4 = (word32) Mem0[r10:word16]",
+                "1|L--|v4 = CONVERT(Mem0[r10:word16], uint16, word32)",
                 "2|L--|r10 = r10 + 88<i32>",
                 "3|L--|r8 = v4");
         }
@@ -1603,7 +1603,7 @@ means
             Given_UInt32s(0xE0DAC7F0);        // ldrsh\tip,[r10],#&70
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v4 = (word32) Mem0[r10:int16]",
+                "1|L--|v4 = CONVERT(Mem0[r10:int16], int16, word32)",
                 "2|L--|r10 = r10 + 112<i32>",
                 "3|L--|ip = v4");
         }
@@ -1636,12 +1636,12 @@ means
         }
 
         [Test]
-        public void ArmRw_vcvt()
+        public void ArmRw_vcvt_f64_f32()
         {
             Given_UInt32s(0xEEF70AC7);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d16 = (real64) s14");
+                "1|L--|d16 = CONVERT(s14, real32, real64)");
         }
 
         [Test]
@@ -1650,7 +1650,7 @@ means
             Given_UInt32s(0xEEFD9AE9);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|s19 = (int32) trunc(s19)");
+                "1|L--|s19 = CONVERT(trunc(s19), word32, int32)");
         }
 
         [Test]

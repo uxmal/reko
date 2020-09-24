@@ -211,7 +211,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("91610002");	// l.lbs	r11,2(r1)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r11 = (int32) Mem0[r1 + 2<i32>:int8]");
+                "1|L--|r11 = CONVERT(Mem0[r1 + 2<i32>:int8], int8, int32)");
         }
 
         [Test]
@@ -220,7 +220,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("8C620000");	// l.lbz	r3,0(r2)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = (word32) Mem0[r2:byte]");
+                "1|L--|r3 = CONVERT(Mem0[r2:byte], byte, word32)");
         }
 
         [Test]
@@ -229,7 +229,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("8C62FFFF");	// l.lbz	r3,-1(r2)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = (word32) Mem0[r2 - 1<i32>:byte]");
+                "1|L--|r3 = CONVERT(Mem0[r2 - 1<i32>:byte], byte, word32)");
         }
 
         [Test]
@@ -247,7 +247,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("97DC0018");	// l.lhz	r30,24(r28)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r30 = (word32) Mem0[r28 + 24<i32>:word16]");
+                "1|L--|r30 = CONVERT(Mem0[r28 + 24<i32>:word16], word16, word32)");
         }
 
         [Test]

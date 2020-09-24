@@ -98,6 +98,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             {
                 dlg.Program.User.OutputFilePolicy = (string) optPolicy.Value;
             }
+            dlg.Program.User.AggressiveBranchRemoval = dlg.AggressiveBranchRemoval.Checked;
         }
 
         void OutputPolicies_SelectedIndexChanged(object sender, EventArgs e)

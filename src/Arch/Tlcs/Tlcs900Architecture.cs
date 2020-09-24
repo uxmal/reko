@@ -132,7 +132,7 @@ namespace Reko.Arch.Tlcs
                 return null;
             int key = (range.Extent * 4) + range.Lsb;
             if (subs.TryGetValue(key, out var subreg))
-                return subreg;
+            return subreg;
             else
                 return Registers.regs[regDomain - StorageDomain.Register];
         }

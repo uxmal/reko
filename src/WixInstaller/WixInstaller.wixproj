@@ -6,7 +6,7 @@
     <ProductVersion>3.7</ProductVersion>
     <ProjectGuid>b1916638-ef20-4692-8c95-1c5ad6c67d30</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>reko-0.9.1.0</OutputName>
+    <OutputName>reko-0.9.2.0</OutputName>
     <OutputType>Package</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
@@ -369,6 +369,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Environments\BbcMicro\BbcMicro.csproj">
+      <Name>BbcMicro</Name>
+      <Project>{1a75d9c8-f708-4b8e-8f2d-f909ed1c0ad8}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Environments\C64\C64.csproj">
       <Name>C64</Name>
       <Project>{fdfe3507-e8ce-4930-b9b5-8fb647cfc6dc}</Project>
@@ -468,6 +476,14 @@
     <ProjectReference Include="..\Environments\SegaGenesis\SegaGenesis.csproj">
       <Name>SegaGenesis</Name>
       <Project>{46d47ac5-dec2-44e6-942a-f1d9b77bb514}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Environments\Snes\Snes.csproj">
+      <Name>Snes</Name>
+      <Project>{b4704089-c5bd-42ed-b509-8f2c0a528ba1}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
@@ -636,6 +652,14 @@
     <ProjectReference Include="..\ImageLoaders\Xbe\Xbe.csproj">
       <Name>Xbe</Name>
       <Project>{4078724e-b5d2-494b-b56a-b8693db2d5ff}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\WebAssembly\WebAssembly.csproj">
+      <Name>WebAssembly</Name>
+      <Project>{5b8c1889-5de4-43c0-9bd6-34ddcf0e2136}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>

@@ -464,6 +464,13 @@ namespace Reko.Typing
 			return handler.DataTypeTrait(cof, cof.DataType);
 		}
 
+        public DataType VisitConversion(Conversion conversion)
+        {
+            conversion.Expression.Accept(this);
+            handler.DataTypeTrait(conversion.Expression, conversion.SourceDataType);
+            return handler.DataTypeTrait(conversion, conversion.DataType);
+        }
+
         public DataType VisitAddress(Address addr)
         {
             return handler.DataTypeTrait(addr, addr.DataType);

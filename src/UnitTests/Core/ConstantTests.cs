@@ -156,5 +156,20 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual("0x8000000000000000<u64>", Constant.UInt64(0x7FFFFFFFFFFFFFFF).Complement().ToString());
         }
 
+        [Test]
+        public void ConIsMaxUnsigned()
+        {
+            Assert.IsTrue(Constant.SByte(-1).IsMaxUnsigned);
+            Assert.IsTrue(Constant.Byte(0xFF).IsMaxUnsigned);
+            Assert.IsTrue(Constant.Int16(-1).IsMaxUnsigned);
+            Assert.IsTrue(Constant.UInt16(0xFFFF).IsMaxUnsigned);
+            Assert.IsTrue(Constant.Int32(-1).IsMaxUnsigned);
+            Assert.IsTrue(Constant.UInt32(~0u).IsMaxUnsigned);
+            Assert.IsTrue(Constant.Int32(-1).IsMaxUnsigned);
+            Assert.IsTrue(Constant.UInt32(~0u).IsMaxUnsigned);
+            Assert.IsTrue(Constant.Int64(-1L).IsMaxUnsigned);
+            Assert.IsTrue(Constant.UInt64(~0UL).IsMaxUnsigned);
+        }
+
     }
 }

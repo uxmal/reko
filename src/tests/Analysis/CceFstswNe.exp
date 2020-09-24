@@ -1,38 +1,3 @@
-fp:fp
-sp_2: orig: sp
-Top_3: orig: Top
-Top_4: orig: Top
-ds:ds
-    def:  def ds
-    uses: rLoc1_17 = Mem0[ds:si:real64]
-          Mem15[ds:di:word16] = 0<16>
-          Mem16[ds:di:word16] = 1<16>
-si:si
-    def:  def si
-    uses: rLoc1_17 = Mem0[ds:si:real64]
-Mem0:Mem
-    def:  def Mem0
-    uses: rLoc1_17 = Mem0[ds:si:real64]
-ST8: orig: ST
-Top_9: orig: Top
-ST10: orig: ST
-FPUF_11: orig: FPUF
-Top_12: orig: Top
-SCZO_13: orig: SCZO
-di:di
-    def:  def di
-    uses: Mem15[ds:di:word16] = 0<16>
-          Mem16[ds:di:word16] = 1<16>
-Mem15: orig: Mem0
-    def:  Mem15[ds:di:word16] = 0<16>
-Mem16: orig: Mem0
-    def:  Mem16[ds:di:word16] = 1<16>
-rLoc1_17: orig: rLoc1
-    def:  rLoc1_17 = Mem0[ds:si:real64]
-    uses: branch rLoc2_18 == rLoc1_17 l0C00_0012
-rLoc2_18: orig: rLoc2
-    def:  rLoc2_18 = 0.0
-    uses: branch rLoc2_18 == rLoc1_17 l0C00_0012
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000

@@ -25,9 +25,11 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 
@@ -70,7 +72,9 @@ namespace Reko.UnitTests.Analysis
 		private void Build(Program program)
 		{
             var eventListener = new FakeDecompilerEventListener();
-            var dfa = new DataFlowAnalysis(program, null, eventListener);
+            var sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(eventListener);
+            var dfa = new DataFlowAnalysis(program, null, sc);
 			var ssts = dfa.UntangleProcedures();
 			foreach (Procedure proc in program.Procedures.Values)
 			{

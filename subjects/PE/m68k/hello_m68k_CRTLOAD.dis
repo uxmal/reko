@@ -89,7 +89,7 @@ l00001556:
 	word32 d0_100
 	byte v18_81 = Mem80[a3_131:byte]
 	a3_131 = a3_131 + 1<i32>
-	word32 d0_84 = (uint32) (uint8) v18_81
+	word32 d0_84 = CONVERT(v18_81, byte, uint32)
 	branch v18_81 > 0<8> l00001576
 l0000155C:
 	branch v18_81 < 0<8> l00001572
@@ -100,7 +100,7 @@ l00001576:
 	d0_100 = SEQ(SLICE(d0_84, word16, 16), SLICE(d0_84 * 2<32>, word16, 0))
 l0000155E:
 	byte v22_102 = Mem80[a3_131:byte]
-	word32 d0_105 = (uint32) (uint8) v22_102
+	word32 d0_105 = CONVERT(v22_102, byte, uint32)
 	branch v22_102 == 0<8> l0000159A
 l0000159A:
 	__syscall(0xA9A3<16>)

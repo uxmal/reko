@@ -141,6 +141,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_ALPHA: return new AlphaRelocator(this, symbols);
             case ElfMachine.EM_S390: return new zSeriesRelocator(this, symbols);
             case ElfMachine.EM_PARISC: return new PaRiscRelocator(this, symbols);
+            case ElfMachine.EM_SPARCV9: return new Sparc64Relocator(this, symbols);
             }
             return base.CreateRelocator(machine, symbols);
         }
@@ -254,15 +255,8 @@ namespace Reko.ImageLoaders.Elf
             return (int) (Sections[Header64.e_shstrndx].FileOffset + idxString);
         }
 
-        public string GetSymbol64(int iSymbolSection, ulong symbolNo)
-        {
-            var symSection = Sections[iSymbolSection];
-            return GetSymbol64(iSymbolSection, symbolNo);
-        }
-
         public string GetSymbol64(ElfSection symSection, ulong symbolNo)
         {
-            var strSection = symSection.LinkedSection;
             ulong offset = symSection.FileOffset + symbolNo * symSection.EntrySize;
             var rdr = imgLoader.CreateReader(offset);
             rdr.TryReadUInt64(out offset);
@@ -298,7 +292,7 @@ namespace Reko.ImageLoaders.Elf
                     if (section.Name == null || section.Address == null)
                         continue;
                     if (segMap.TryGetLowerBound(section.Address, out var mem) &&
-                        section.Address < mem.EndAddress)
+                        mem.IsValidAddress(section.Address))
                     {
                         AccessMode mode = AccessModeOf(section.Flags);
                         var seg = segmentMap.AddSegment(new ImageSegment(

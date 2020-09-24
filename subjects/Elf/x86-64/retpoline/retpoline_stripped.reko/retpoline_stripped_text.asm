@@ -6,12 +6,12 @@ fn0000000000400480 proc
 	mov	r9,rdx
 	pop	rsi
 	mov	rdx,rsp
-	and	rsp,F0
+	and	rsp,0F0h
 	push	rax
 	push	rsp
-	mov	r8,+00400780
-	mov	rcx,+00400710
-	mov	rdi,+00400660
+	mov	r8,+400780h
+	mov	rcx,+400710h
+	mov	rdi,+400660h
 	call	[0000000000600FF0]                                    ; [rip+00200B46]
 	hlt
 00000000004004AB                                  0F 1F 44 00 00            ..D..
@@ -19,19 +19,19 @@ fn0000000000400480 proc
 ;; fn00000000004004B0: 00000000004004B0
 fn00000000004004B0 proc
 	push	rbp
-	mov	eax,00601040
-	cmp	rax,+00601040
+	mov	eax,601040h
+	cmp	rax,+601040h
 	mov	rbp,rsp
-	jz	00000000004004D8
+	jz	4004D8h
 
 l00000000004004C1:
-	mov	eax,00000000
+	mov	eax,0h
 	test	rax,rax
-	jz	00000000004004D8
+	jz	4004D8h
 
 l00000000004004CB:
 	pop	rbp
-	mov	edi,00601040
+	mov	edi,601040h
 	jmp	rax
 00000000004004D3          0F 1F 44 00 00                            ..D..       
 
@@ -52,15 +52,15 @@ l00000000004004D8:
 fn0000000000400560 proc
 	push	rbp
 	mov	rbp,rsp
-	sub	rsp,10
-	mov	[rbp-04],edi
-	mov	[rbp-08],esi
-	movsxd	rdi,dword ptr [rbp-04]
-	movsxd	rsi,dword ptr [rbp-08]
-	call	0000000000400470
-	mov	[rbp-10],rax
-	mov	rax,[rbp-10]
-	add	rsp,10
+	sub	rsp,10h
+	mov	[rbp-4h],edi
+	mov	[rbp-8h],esi
+	movsxd	rdi,dword ptr [rbp-4h]
+	movsxd	rsi,dword ptr [rbp-8h]
+	call	400470h
+	mov	[rbp-10h],rax
+	mov	rax,[rbp-10h]
+	add	rsp,10h
 	pop	rbp
 	ret
 0000000000400589                            0F 1F 80 00 00 00 00          .......
@@ -89,11 +89,11 @@ fn0000000000400560 proc
 
 ;; fn00000000004006F0: 00000000004006F0
 fn00000000004006F0 proc
-	call	0000000000400700
+	call	400700h
 
 l00000000004006F5:
 	pause
-	jmp	00000000004006F5
+	jmp	4006F5h
 00000000004006FC                                     0F 1F 40 00             ..@.
 
 ;; fn0000000000400700: 0000000000400700

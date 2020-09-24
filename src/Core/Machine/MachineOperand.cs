@@ -42,7 +42,7 @@ namespace Reko.Core.Machine
 
         public sealed override string ToString()
         {
-            return ToString(MachineInstructionWriterOptions.None);
+            return ToString(MachineInstructionWriterOptions.Default);
         }
 
 		public string ToString(MachineInstructionWriterOptions options)

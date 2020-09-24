@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Arch.Pdp11
             Given_UInt16s(0x92C2);
             AssertCode(
                 "0|L--|0200(2): 3 instructions",
-                "1|L--|r2 = (int16) Mem0[r3:byte]",
+                "1|L--|r2 = CONVERT(Mem0[r3:byte], byte, int16)",
                 "2|L--|NZ = cond(r2)",
                 "3|L--|V = false");
         }

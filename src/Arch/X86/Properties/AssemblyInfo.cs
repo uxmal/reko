@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,17 +34,6 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCopyright(Reko.AssemblyMetadata.Copyright)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
-
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
 
 [assembly: AssemblyVersion(Reko.AssemblyMetadata.AssemblyVersion)]
 [assembly: AssemblyFileVersion(Reko.AssemblyMetadata.AssemblyFileVersion)]

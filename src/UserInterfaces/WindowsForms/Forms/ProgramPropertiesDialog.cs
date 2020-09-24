@@ -54,5 +54,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public Button OkButton { get { return btnOk; } }
 
         public ComboBox OutputPolicies { get { return ddlOutputPolicies; } }
+
+        public CheckBox AggressiveBranchRemoval {  get { return chkAggressiveBranchRemoval; } }
     }
 }

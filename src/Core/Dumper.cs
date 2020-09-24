@@ -250,12 +250,15 @@ namespace Reko.Core
             try
             {
                 var writer = new InstrWriter(program.Platform, addrStart, formatter);
+                var options = new MachineInstructionWriterOptions(
+                    flags: MachineInstructionWriterFlags.ResolvePcRelativeAddress,
+                    syntax: "");
                 foreach (var instr in dasm)
                 {
-                    writer.Address = instr.Address!;
+                    writer.Address = instr.Address;
                     if (instr.Address! >= addrLast)
                         break;
-                    if (!DumpAssemblerLine(segment.MemoryArea, arch, instr, writer))
+                    if (!DumpAssemblerLine(segment.MemoryArea, arch, instr, writer, options))
                         break;
                 }
             }
@@ -266,9 +269,14 @@ namespace Reko.Core
             }
         }
 
-        public bool DumpAssemblerLine(MemoryArea mem, IProcessorArchitecture arch, MachineInstruction instr, InstrWriter writer)
+        public bool DumpAssemblerLine(
+            MemoryArea mem, 
+            IProcessorArchitecture arch, 
+            MachineInstruction instr, 
+            InstrWriter writer,
+            MachineInstructionWriterOptions options)
         {
-            var instrAddress = instr.Address!;
+            var instrAddress = instr.Address;
             Address addrBegin = instrAddress;
             if (ShowAddresses)
                 writer.WriteFormat("{0} ", addrBegin);
@@ -283,7 +291,7 @@ namespace Reko.Core
             writer.WriteString("\t");
             writer.Address = addrBegin;
             writer.Address = instrAddress;
-            instr.Render(writer, MachineInstructionWriterOptions.ResolvePcRelativeAddress);
+            instr.Render(writer, options);
             writer.WriteLine();
             return true;
         }
@@ -325,8 +333,8 @@ namespace Reko.Core
 
             while (rdr.Address < addrEnd)
 			{
-                var v = rdr.Read(instrByteSize);
-                writer.WriteFormat(instrByteFormat, v.ToUInt64());
+                if (rdr.TryRead(instrByteSize, out var v))
+                    writer.WriteFormat(instrByteFormat, v.ToUInt64());
 			}
 		}
 

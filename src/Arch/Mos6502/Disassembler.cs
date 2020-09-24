@@ -46,18 +46,19 @@ namespace Reko.Arch.Mos6502
         {
             this.arch = arch;
             this.rdr = rdr;
+            this.addr = rdr.Address;
             this.ops = new List<Operand>();
         }
 
-        public override Instruction DisassembleInstruction()
+        public override Instruction? DisassembleInstruction()
         {
-            this.addr = rdr.Address;
             if (!rdr.TryReadByte(out byte op))
                 return null;
             ops.Clear();
             var instr = decoders[op].Decode(op, this);
             instr.Address = addr;
             instr.Length = (int) (rdr.Address - addr);
+            this.addr = rdr.Address;
             return instr;
         }
 

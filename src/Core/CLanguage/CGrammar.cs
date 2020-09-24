@@ -62,7 +62,11 @@ namespace Reko.Core.CLanguage
 
         public CExpression ArrayAccess(CExpression e, CExpression idx)
         {
-            throw new NotImplementedException();
+            return new CArrayAccess
+            {
+                Expression = e,
+                Index = idx,
+            };
         }
 
         public CExpression MemberAccess(CExpression e, string fieldName)
@@ -152,7 +156,12 @@ namespace Reko.Core.CLanguage
 
         public Stat IfStatement(CExpression expr, Stat consequence, Stat alternative)
         {
-            throw new NotImplementedException();
+            return new IfStat
+            {
+                Expression = expr,
+                Consequence = consequence,
+                Alternative = alternative,
+            };
         }
 
         public Stat SwitchStatement(CExpression expr, Stat switchBody)

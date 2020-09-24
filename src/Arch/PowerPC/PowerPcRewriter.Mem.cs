@@ -73,15 +73,17 @@ namespace Reko.Arch.PowerPC
         {
             var op1 = RewriteOperand(instr.Operands[0]);
             var ea = EffectiveAddress(dasm.Current.Operands[1], m);
-            m.Assign(op1, m.Cast(PrimitiveType.Real64,
-                m.Mem(PrimitiveType.Real32, ea)));
+            m.Assign(op1, m.Convert(
+                m.Mem(PrimitiveType.Real32, ea),
+                PrimitiveType.Real32,
+                PrimitiveType.Real64));
         }
 
         private void RewriteLa(PrimitiveType dtSrc, PrimitiveType dtDst)
         {
             var op1 = RewriteOperand(instr.Operands[0]);
             var ea = EffectiveAddress_r0(dasm.Current.Operands[1], m);
-            m.Assign(op1, m.Cast(dtDst, m.Mem(dtSrc, ea)));
+            m.Assign(op1, m.Convert(m.Mem(dtSrc, ea), dtSrc, dtDst));
         }
 
         private void RewriteLax(PrimitiveType dtSrc, PrimitiveType dtDst)
@@ -90,7 +92,7 @@ namespace Reko.Arch.PowerPC
             var ea = m.IAdd(
                 RewriteOperand(instr.Operands[1], true),
                 RewriteOperand(instr.Operands[2]));
-            m.Assign(op1, m.Cast(dtDst, m.Mem(dtSrc, ea)));
+            m.Assign(op1, m.Convert(m.Mem(dtSrc, ea), dtSrc, dtDst));
         }
 
         private void RewriteLau(PrimitiveType dtSrc, PrimitiveType dtDst)
@@ -98,7 +100,7 @@ namespace Reko.Arch.PowerPC
             var opD = RewriteOperand(instr.Operands[0]);
             var opA = EffectiveAddress(instr.Operands[1], m);
             var ea = opA;
-            m.Assign(opD, m.Cast(dtDst, m.Mem(dtSrc, ea)));
+            m.Assign(opD, m.Convert(m.Mem(dtSrc, ea), dtSrc, dtDst));
             m.Assign(opD, ea);
         }
 
@@ -112,8 +114,7 @@ namespace Reko.Arch.PowerPC
             {
                 ea = m.IAdd(opA, opB);
             }
-            //$TODO: should be convert...
-            m.Assign(opD, m.Cast(dtDst, m.Mem(dtSrc, ea)));
+            m.Assign(opD, m.Convert(m.Mem(dtSrc, ea), dtSrc, dtDst));
             m.Assign(opD, ea);
         }
 
@@ -123,10 +124,9 @@ namespace Reko.Arch.PowerPC
             var ea = EffectiveAddress_r0(instr.Operands[1], instr.Operands[2]);
             var tmp = binder.CreateTemporary(PrimitiveType.Word16);
             m.Assign(tmp, m.Mem16(ea));
-            m.Assign(opD, m.Cast(opD.DataType, host.PseudoProcedure(
-                "__swap16", tmp.DataType, tmp)));
+            var swap = host.PseudoProcedure("__swap16", tmp.DataType, tmp);
+            m.Assign(opD, m.Convert(swap, PrimitiveType.Word16, opD.DataType));
         }
-
 
         private void RewriteLmw()
         {
@@ -137,7 +137,6 @@ namespace Reko.Arch.PowerPC
             while (r <= 31)
             {
                 var reg = binder.EnsureRegister(arch.GetRegister(r));
-                Expression w = reg;
                 if (reg.DataType.BitSize > 32)
                 {
                     var tmp2 = binder.CreateTemporary(PrimitiveType.Word32);
@@ -257,7 +256,7 @@ namespace Reko.Arch.PowerPC
             Expression src = m.Mem(dtSrc, ea);
             if (dtDst != dtSrc)
             {
-                src = m.Cast(op1.DataType, src);
+                src = m.Convert(src, src.DataType, op1.DataType);
             }
             m.Assign(op1, src);
         }
@@ -269,7 +268,7 @@ namespace Reko.Arch.PowerPC
             Expression src = m.Mem(dtSrc, ea);
             if (dtDst != dtSrc)
             {
-                src = m.Cast(dtDst, src);
+                src = m.Convert(src, src.DataType, dtDst);
             }
             m.Assign(op1, src);
             m.Assign(UpdatedRegister(ea), ea);
@@ -284,7 +283,7 @@ namespace Reko.Arch.PowerPC
             Expression src = m.Mem(dtSrc, ea);
             if (dtDst != dtSrc)
             {
-                src = m.Cast(dtDst, src);
+                src = m.Convert(src, src.DataType, dtDst);
             }
             m.Assign(op1, src);
             m.Assign(a, m.IAdd(a, b));
@@ -301,7 +300,7 @@ namespace Reko.Arch.PowerPC
             Expression src = m.Mem(dtSrc, ea);
             if (dtDst != dtSrc)
             {
-                src = m.Cast(dtDst, src);
+                src = m.Convert(src, src.DataType, dtDst);
             }
             m.Assign(op1, src);
         }
@@ -343,9 +342,20 @@ namespace Reko.Arch.PowerPC
         private Expression MaybeNarrow(PrimitiveType pt, Expression e)
         {
             if (e.DataType.Size != pt.Size)
-                return m.Cast(pt, e);
+            {
+                if (pt.Domain == Domain.Real)
+                {
+                    return m.Convert(e, PrimitiveType.Create(Domain.Real, e.DataType.BitSize), pt);
+                }
+                else
+                {
+                    return m.Slice(pt, e, 0);
+                }
+            }
             else
+            {
                 return e;
+            }
         }
 
         private void RewriteStux(PrimitiveType dataType)

@@ -121,12 +121,14 @@ namespace Reko.Typing
             if (!c.IsValid)
                 return;
 			DataType dt = c.TypeVariable!.DataType;
-            int offset = StructureField.ToOffset(c);
+            int? offset = StructureField.ToOffset(c);
+            if (offset == null)
+                return;
             switch (dt)
             {
             case Pointer ptr:
 				// C is a constant pointer.
-				if (offset == 0)
+				if (offset.Value == 0)
 					return;				// null pointer is null (//$REVIEW: except for some platforms + archs)
 
                 var pointee = ptr.Pointee;
@@ -137,12 +139,12 @@ namespace Reko.Typing
                     return;
                 }
                 var strGlobals = Globals.TypeVariable!.Class.ResolveAs<StructureType>();
-                if (strGlobals!.Fields.AtOffset(offset) == null)
+                if (strGlobals!.Fields.AtOffset(offset.Value) == null)
                 {
-                    if (!IsInsideArray(strGlobals, offset, pointee) &&
-                        !IsInsideStruct(strGlobals, offset))
+                    if (!IsInsideArray(strGlobals, offset.Value, pointee) &&
+                        !IsInsideStruct(strGlobals, offset.Value))
                     {
-                        strGlobals.Fields.Add(offset, pointee);
+                        strGlobals.Fields.Add(offset.Value, pointee);
                     }
                 }
 				return;
@@ -150,9 +152,9 @@ namespace Reko.Typing
                 // C is a constant offset into a segment.
                 var seg = ((Pointer) mptr.BasePointer).Pointee.ResolveAs<StructureType>();
                 if (seg != null && //$DEBUG
-                    seg.Fields.AtOffset(offset) == null)
+                    seg.Fields.AtOffset(offset.Value) == null)
                 {
-                    seg.Fields.Add(offset, mptr.Pointee);
+                    seg.Fields.Add(offset.Value, mptr.Pointee);
                 }
                 //				VisitConstantMemberPointer(offset, mptr);
                 return;

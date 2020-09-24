@@ -21,14 +21,8 @@
 using NUnit.Framework;
 using Reko.Arch.M6800;
 using Reko.Core;
-using Reko.Core.Configuration;
 using Reko.Core.Rtl;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.M6800
 {
@@ -41,7 +35,7 @@ namespace Reko.UnitTests.Arch.M6800
         [SetUp]
         public void Setup()
         {
-            this.arch = new Reko.Arch.M6800.M6809Architecture(CreateServiceContainer(), "m6809");
+            this.arch = new M6809Architecture(CreateServiceContainer(), "m6809");
             this.addr = Address.Ptr16(0x0100);
         }
 
@@ -64,7 +58,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("3A"); // abx
             AssertCode(
                 "0|L--|0100(1): 1 instructions",
-                "1|L--|x = x + (uint16) b");
+                "1|L--|x = x + CONVERT(b, byte, uint16)");
         }
 
         [Test]
@@ -158,8 +152,8 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("68A6"); // asl a,y
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
-                "1|L--|v4 = Mem0[y + (int16) a:byte] << 1<8>",
-                "2|L--|Mem0[y + (int16) a:byte] = v4",
+                "1|L--|v4 = Mem0[y + CONVERT(a, byte, int16):byte] << 1<8>",
+                "2|L--|Mem0[y + CONVERT(a, byte, int16):byte] = v4",
                 "3|L--|NZVC = cond(v4)");
         }
 
@@ -606,7 +600,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("1D"); // sex
             AssertCode(
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|d = (int16) b",
+                "1|L--|d = CONVERT(b, byte, int16)",
                 "2|L--|NZ = cond(d)");
         }
 

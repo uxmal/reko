@@ -171,7 +171,7 @@ namespace Reko.UnitTests.Scanning
 l00010001:  // pred: l00010000
     mov ebp,esp
 l00010003:  // pred: l00010001
-    mov eax,[121A1232]
+    mov eax,[121A1232h]
 l00010008:  // pred: l00010003
     pop ebp
 l00010009:  // pred: l00010008

@@ -18,15 +18,11 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.Sparc;
 using Reko.Core;
-using Reko.Core.Types;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel.Design;
+using System.Linq;
 
 namespace Reko.UnitTests.Arch.Sparc
 {
@@ -44,8 +40,8 @@ namespace Reko.UnitTests.Arch.Sparc
         private static SparcInstruction Disassemble(MemoryArea img)
         {
             var sc = new ServiceContainer();
-            var arch = new SparcArchitecture(sc, "sparc", PrimitiveType.Word32);
-            var dasm = new SparcDisassembler(arch, img.CreateBeReader(0U));
+            var arch = new SparcArchitecture32(sc, "sparc");
+            var dasm = new SparcDisassembler(arch, arch.Decoder, img.CreateBeReader(0U));
             return dasm.First();
         }
 

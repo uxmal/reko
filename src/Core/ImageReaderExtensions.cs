@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,11 +37,6 @@ namespace Reko.Core
 		public static BinaryReader CreateBinaryReader(this ImageReader @rdr)
 		{
             return new BinaryReader(new MemoryStream(rdr.Bytes));
-		}
-
-		public static BinaryReader CreateBinaryImageReader(this ImageReader @rdr)
-		{
-			return new BinaryReader(new ImageStream(rdr.Image));
 		}
 	}
 }

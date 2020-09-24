@@ -1,16 +1,16 @@
 0C00:0000 8B 36 00 01 8B 0C 46 46 AC 3A C4 E0 FB 8B 36 00 .6....FF.:....6.
 0C00:0010 01 AD 32 C0 AA E2 FD C3                         ..2.....       
 
-0C00:0000 8B 36 00 01     	mov	si,[0100]
+0C00:0000 8B 36 00 01     	mov	si,[0100h]
 0C00:0004 8B 0C           	mov	cx,[si]
 0C00:0006 46              	inc	si
 0C00:0007 46              	inc	si
 0C00:0008 AC              	lodsb
 0C00:0009 3A C4           	cmp	al,ah
-0C00:000B E0 FB           	loopne	0008
-0C00:000D 8B 36 00 01     	mov	si,[0100]
+0C00:000B E0 FB           	loopne	0008h
+0C00:000D 8B 36 00 01     	mov	si,[0100h]
 0C00:0011 AD              	lodsw
 0C00:0012 32 C0           	xor	al,al
 0C00:0014 AA              	stosb
-0C00:0015 E2 FD           	loop	0014
+0C00:0015 E2 FD           	loop	0014h
 0C00:0017 C3              	ret

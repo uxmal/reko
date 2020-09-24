@@ -24,7 +24,7 @@
 #include "Arm64Instruction.h"
 #include "Arm64Architecture.h"
 
-STDMETHODIMP Arm64Instruction::Render(INativeInstructionWriter * w, MachineInstructionWriterOptions options)
+STDMETHODIMP Arm64Instruction::Render(INativeInstructionWriter * w, MachineInstructionWriterFlags options)
 {
 	auto & writer = *w;
 	if (this->instr == nullptr)
@@ -54,7 +54,7 @@ STDMETHODIMP Arm64Instruction::Render(INativeInstructionWriter * w, MachineInstr
 	return S_OK;
 }
 
-void Arm64Instruction::Write(const cs_insn & instruction, const cs_arm64_op & op, INativeInstructionWriter & writer, MachineInstructionWriterOptions options)
+void Arm64Instruction::Write(const cs_insn & instruction, const cs_arm64_op & op, INativeInstructionWriter & writer, MachineInstructionWriterFlags options)
 {
 	char risky[120];
 	switch (op.type)

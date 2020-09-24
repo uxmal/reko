@@ -44,21 +44,25 @@ namespace Reko.Analysis
 	public class DataFlowAnalysis
 	{
 		private readonly Program program;
+        private readonly IServiceProvider services;
 		private readonly DecompilerEventListener eventListener;
         private readonly IDynamicLinker dynamicLinker;
 		private readonly ProgramDataFlow flow;
         private List<SsaTransform>? ssts;
         private HashSet<Procedure>? sccProcs;
+        private Dictionary<string, int> phaseNumbering;
 
         public DataFlowAnalysis(
             Program program,
             IDynamicLinker dynamicLinker,
-            DecompilerEventListener eventListener)
+            IServiceProvider services)
 		{
 			this.program = program;
             this.dynamicLinker = dynamicLinker;
-            this.eventListener = eventListener;
+            this.services = services;
+            this.eventListener = services.RequireService<DecompilerEventListener>();
 			this.flow = new ProgramDataFlow(program);
+            this.phaseNumbering = new Dictionary<string, int>();
 		}
 
 		public void DumpProgram()
@@ -100,6 +104,7 @@ namespace Reko.Analysis
         /// </summary>
         public void AnalyzeProgram()
         {
+            ClearTestFiles();
             UntangleProcedures();
             if (eventListener.IsCanceled()) return;
             BuildExpressionTrees();
@@ -174,14 +179,16 @@ namespace Reko.Analysis
         {
             if (eventListener.IsCanceled())
                 return;
+            Debug.Print("== SCC: {0} ===", string.Join(",",procs));
             this.sccProcs = procs.ToHashSet();
             flow.CreateFlowsFor(procs);
 
             // Convert all procedures in the SCC to SSA form and perform
             // value propagation.
+            DumpWatchedProcedure("scc", "Before SSA", procs);
             var ssts = procs.Select(ConvertToSsa).ToArray();
             this.ssts!.AddRange(ssts);
-            DumpWatchedProcedure("After extra stack vars", ssts);
+            DumpWatchedProcedure("esv", "After extra stack vars", ssts);
             if (eventListener.IsCanceled()) return;
 
             // At this point, the computation of ProcedureFlow is possible.
@@ -198,7 +205,7 @@ namespace Reko.Analysis
                 vp.Transform();
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
-                DumpWatchedProcedure("After extra stack vars 2", sst.SsaState.Procedure);
+                DumpWatchedProcedure("esv2", "After extra stack vars 2", sst.SsaState.Procedure);
             }
 
             foreach (var sst in ssts)
@@ -211,7 +218,7 @@ namespace Reko.Analysis
                 sac.Classify();
                 var prj = new ProjectionPropagator(ssa, sac);
                 prj.Transform();
-                DumpWatchedProcedure("After projection propagation", ssa.Procedure);
+                DumpWatchedProcedure("prpr", "After projection propagation", ssa.Procedure);
             }
 
             var uid = new UsedRegisterFinder(flow, procs, this.eventListener);
@@ -225,7 +232,7 @@ namespace Reko.Analysis
                 uid.ComputeLiveIn(ssa, true);
                 var procFlow = flow[ssa.Procedure];
                 RemoveDeadArgumentsFromCalls(ssa.Procedure, procFlow, ssts);
-                DumpWatchedProcedure("After dead call argument removal", ssa.Procedure);
+                DumpWatchedProcedure("dcar", "After dead call argument removal", ssa.Procedure);
             }
             eventListener.Advance(procs.Count);
         }
@@ -362,8 +369,17 @@ namespace Reko.Analysis
                 var ssa = sst.SsaState;
                 try
                 {
-                    DumpWatchedProcedure("Before expression coalescing", ssa.Procedure);
+                    if (program.User.AggressiveBranchRemoval)
+                    {
+                        // This ends up being very aggressive and doesn't replicate the original
+                        // binary code. See discussion on https://github.com/uxmal/reko/issues/932
+                        DumpWatchedProcedure("urb", "Before unreachable block removal", ssa.Procedure);
+                        var urb = new UnreachableBlockRemover(ssa, eventListener);
+                        urb.Transform();
+                    }
 
+                    DumpWatchedProcedure("precoa", "Before expression coalescing", ssa.Procedure);
+                    
                     // Procedures should be untangled from each other. Now process
                     // each one separately.
                     DeadCode.Eliminate(ssa);
@@ -377,7 +393,7 @@ namespace Reko.Analysis
                     var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, dynamicLinker,  eventListener);
                     vp.Transform();
 
-                    DumpWatchedProcedure("After expression coalescing", ssa.Procedure);
+                    DumpWatchedProcedure("postcoa", "After expression coalescing", ssa.Procedure);
 
                     var liv = new LinearInductionVariableFinder(
                         ssa,
@@ -393,14 +409,14 @@ namespace Reko.Analysis
                         str.ModifyUses();
                     }
                     DeadCode.Eliminate(ssa);
-                    DumpWatchedProcedure("After strength reduction", ssa.Procedure);
+                    DumpWatchedProcedure("sr", "After strength reduction", ssa.Procedure);
 
                     // Definitions with multiple uses and variables joined by PHI functions become webs.
                     var web = new WebBuilder(program, ssa, program.InductionVariables, eventListener);
                     web.Transform();
                     ssa.ConvertBack(false);
 
-                    DumpWatchedProcedure("After data flow analysis", ssa.Procedure);
+                    DumpWatchedProcedure("dfa", "After data flow analysis", ssa.Procedure);
                 }
                 catch (Exception ex)
                 {
@@ -431,7 +447,7 @@ namespace Reko.Analysis
                 // which case the the SSA treats the call as a "hell node".
                 var sst = new SsaTransform(program, proc, sccProcs!, dynamicLinker, this.ProgramDataFlow);
                 var ssa = sst.Transform();
-                DumpWatchedProcedure("After SSA", ssa.Procedure);
+                DumpWatchedProcedure("ssa", "After SSA", ssa.Procedure);
 
                 // Merge unaligned memory accesses.
                 var fuser = new UnalignedMemoryAccessFuser(ssa);
@@ -444,18 +460,18 @@ namespace Reko.Analysis
                 // sites.
                 var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, dynamicLinker, eventListener);
                 vp.Transform();
-                DumpWatchedProcedure("After first VP", ssa.Procedure);
+                DumpWatchedProcedure("vp", "After first VP", ssa.Procedure);
 
                 // Fuse additions and subtractions that are linked by the carry flag.
                 var larw = new LongAddRewriter(ssa, eventListener);
                 larw.Transform();
 
                 // Propagate condition codes and registers. 
-                var cce = new ConditionCodeEliminator(ssa, program.Platform, eventListener);
+                var cce = new ConditionCodeEliminator(program, ssa, eventListener);
                 cce.Transform();
 
                 vp.Transform();
-                DumpWatchedProcedure("After CCE", ssa.Procedure);
+                DumpWatchedProcedure("cce", "After CCE", ssa.Procedure);
 
                 // Now compute SSA for the stack-based variables as well. That is:
                 // mem[fp - 30] becomes wLoc30, while 
@@ -463,7 +479,7 @@ namespace Reko.Analysis
                 // This allows us to compute the dataflow of this procedure.
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
-                DumpWatchedProcedure("After SSA frame accesses", ssa.Procedure);
+                DumpWatchedProcedure("ssaframe", "After SSA frame accesses", ssa.Procedure);
 
                 var icrw = new IndirectCallRewriter(program, ssa, eventListener);
                 while (!eventListener.IsCanceled() && icrw.Rewrite())
@@ -484,11 +500,11 @@ namespace Reko.Analysis
                 // Backpropagate stack pointer from procedure return.
                 var spBackpropagator = new StackPointerBackpropagator(ssa, eventListener);
                 spBackpropagator.BackpropagateStackPointer();
-                DumpWatchedProcedure("After SP BP", ssa.Procedure);
+                DumpWatchedProcedure("spbp", "After SP BP", ssa.Procedure);
 
                 // Propagate those newly created stack-based identifiers.
                 vp.Transform();
-                DumpWatchedProcedure("After VP2", ssa.Procedure);
+                DumpWatchedProcedure("vp2", "After VP2", ssa.Procedure);
 
                 return sst;
             }
@@ -501,22 +517,53 @@ namespace Reko.Analysis
         }
 
         [Conditional("DEBUG")]
-        public static void DumpWatchedProcedure(string caption, IEnumerable<SsaTransform> ssts)
+        public void ClearTestFiles()
         {
-            foreach (var sst in ssts)
+            var testSvc = this.services.GetService<ITestGenerationService>();
+            if (testSvc != null)
             {
-                DumpWatchedProcedure(caption, sst.SsaState.Procedure);
+                testSvc.RemoveFiles("analysis_");
             }
         }
 
         [Conditional("DEBUG")]
-        public static void DumpWatchedProcedure(string caption, Procedure proc)
+        public void DumpWatchedProcedure(string phase, string caption, IEnumerable<Procedure> procs)
         {
-            if (proc.Name == "fn00404134")
+            foreach(var proc in procs)
+            {
+                DumpWatchedProcedure(phase, caption, proc);
+            }
+        }
+
+        [Conditional("DEBUG")]
+        public void DumpWatchedProcedure(string phase, string caption, IEnumerable<SsaTransform> ssts)
+        {
+            foreach (var sst in ssts)
+            {
+                DumpWatchedProcedure(phase, caption, sst.SsaState.Procedure);
+            }
+        }
+
+        [Conditional("DEBUG")]
+        public void DumpWatchedProcedure(string phase, string caption, Procedure proc)
+        {
+            if (program.User.DebugTraceProcedures.Contains(proc.Name)
+                ||
+                proc.Name == "")
             {
                 Debug.Print("// {0}: {1} ==================", proc.Name, caption);
                 //MockGenerator.DumpMethod(proc);
                 proc.Dump(true);
+                var testSvc = this.services.GetService<ITestGenerationService>();
+                if (testSvc != null)
+                {
+                    if (!this.phaseNumbering.TryGetValue(phase, out int n))
+                    {
+                        n = phaseNumbering.Count + 1;
+                        phaseNumbering.Add(phase, n);
+                    }
+                    testSvc.ReportProcedure($"analysis_{n:00}_{phase}.txt", $"// {proc.Name} ===========", proc);
+                }
             }
         }
     }

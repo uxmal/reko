@@ -29,6 +29,8 @@ using System.IO;
 using System.Collections.Generic;
 using Reko.Core.Expressions;
 using System.Linq;
+using Reko.Core.Services;
+using NUnit.Framework.Constraints;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -58,8 +60,8 @@ namespace Reko.UnitTests.Analysis
         protected override void RunTest(Program program, TextWriter fut)
         {
             IDynamicLinker dynamicLinker = null;
-            var listener = new FakeDecompilerEventListener();
-            DataFlowAnalysis dfa = new DataFlowAnalysis(program, dynamicLinker, listener);
+            var listener = sc.RequireService<DecompilerEventListener>();
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, dynamicLinker, sc);
             var ssts = dfa.UntangleProcedures();
 
             foreach (Procedure proc in program.Procedures.Values)
@@ -67,7 +69,7 @@ namespace Reko.UnitTests.Analysis
                 var sst = ssts.Single(s => s.SsaState.Procedure == proc);
                 SsaState ssa = sst.SsaState;
 
-                ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform, listener);
+                ConditionCodeEliminator cce = new ConditionCodeEliminator(program, ssa, listener);
                 cce.Transform();
                 DeadCode.Eliminate(ssa);
 

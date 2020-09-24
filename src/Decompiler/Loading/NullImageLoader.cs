@@ -77,11 +77,7 @@ namespace Reko.Loading
 
         public SegmentMap CreatePlatformSegmentMap(IPlatform platform, Address loadAddr, byte[] rawBytes)
         {
-            var segmentMap = platform.CreateAbsoluteMemoryMap();
-            if (segmentMap == null)
-            {
-                segmentMap = new SegmentMap(loadAddr);
-            }
+            var segmentMap = platform.CreateAbsoluteMemoryMap() ?? new SegmentMap(loadAddr);
             var mem = new MemoryArea(loadAddr, rawBytes);
             segmentMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
             return segmentMap;

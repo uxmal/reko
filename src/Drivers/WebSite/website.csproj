@@ -246,6 +246,7 @@
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\MachO\$(OutDir)Reko.ImageLoaders.MachO.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\OdbgScript\$(OutDir)Reko.ImageLoaders.OdbgScript.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\VmsExe\$(OutDir)Reko.ImageLoaders.VmsExe.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\WebAssembly\$(OutDir)Reko.ImageLoaders.WebAssembly.*" />
     <Environments Include="$(SolutionDir)Environments\AmigaOS\$(OutDir)Reko.Environments.AmigaOS.*" />
     <Environments Include="$(SolutionDir)Environments\AmigaOS.Design\$(OutDir)Reko.Environments.AmigaOS.Design.*" />
     <Environments Include="$(SolutionDir)Environments\AtariTOS\$(OutDir)Reko.Environments.AtariTOS.*" />

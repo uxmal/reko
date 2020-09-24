@@ -263,6 +263,16 @@ namespace Reko.Core
             return new TypeLibraryDeserializer(Platform, true, EnvironmentMetadata.Clone());
         }
 
+        public virtual ProcedureCharacteristics? LookupCharacteristicsByName(string procName)
+        {
+            if (EnvironmentMetadata.Characteristics.TryGetValue(
+                procName,
+                out var chr)
+            )
+                return chr;
+            return Platform.LookupCharacteristicsByName(procName);
+        }
+
         /// <summary>
         /// The processor architectures that exist in the Program. 
         /// </summary>
@@ -380,6 +390,14 @@ namespace Reko.Core
         /// Policy to use when giving names to things.
         /// </summary>
         public NamingPolicy NamingPolicy { get; set; }
+
+        /// <summary>
+        /// Range of procedures to use for typing.
+        /// </summary>
+        /// <remarks>
+        /// Used for debugging regressions in type inference.
+        /// </remarks>
+        public (int, int) DebugProcedureRange { get; set; }
 
         // Convenience functions.
         public EndianImageReader CreateImageReader(IProcessorArchitecture arch, Address addr)

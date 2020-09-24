@@ -48,7 +48,7 @@ namespace Reko.Arch.X86
         public void RewriteClts()
         {
             iclass = InstrClass.System;
-            var cr0 = binder.EnsureRegister(arch.GetControlRegister(0));
+            var cr0 = binder.EnsureRegister(arch.GetControlRegister(0)!);
             m.Assign(cr0, host.PseudoProcedure("__clts", cr0.DataType, cr0));
         }
 

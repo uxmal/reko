@@ -176,6 +176,13 @@ namespace Reko.Core.Expressions
             return (c.ToInt64() == cP.ToInt64());
         }
 
+        bool ExpressionVisitor<bool>.VisitConversion(Conversion conversion)
+        {
+            return
+                p is Conversion convP &&
+                Match(convP.Expression, conversion.Expression);
+        }
+
         bool ExpressionVisitor<bool>.VisitDereference(Dereference deref)
         {
             throw new NotImplementedException();
@@ -368,6 +375,8 @@ namespace Reko.Core.Expressions
             {
                 throw new InvalidOperationException();
             }
+
+            public override bool IsMaxUnsigned => throw new InvalidOperationException();
 
             public override byte ToByte()
             {

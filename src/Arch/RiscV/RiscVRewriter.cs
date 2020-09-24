@@ -40,9 +40,11 @@ namespace Reko.Arch.RiscV
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly ProcessorState state;
+#nullable disable
         private RiscVInstruction instr;
         private RtlEmitter m;
         private InstrClass iclass;
+#nullable enable
 
         public RiscVRewriter(RiscVArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -69,7 +71,7 @@ namespace Reko.Arch.RiscV
                 {
                 default:
                     host.Warn(
-                        instr.Address, 
+                        addr, 
                         "Risc-V instruction '{0}' not supported yet.",
                         instr.Mnemonic);
                     EmitUnitTest();
@@ -107,11 +109,11 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.c_j: RewriteCompressedJ(); break;
                 case Mnemonic.c_jalr: RewriteCompressedJalr(); break;
                 case Mnemonic.c_jr: RewriteCompressedJr(); break;
-                case Mnemonic.c_ld: RewriteLoad(PrimitiveType.Word64); break;
+                case Mnemonic.c_ld: RewriteLoad(PrimitiveType.Word64, arch.WordWidth); break;
                 case Mnemonic.c_li: RewriteLi(); break;
                 case Mnemonic.c_ldsp: RewriteLxsp(PrimitiveType.Word64); break;
                 case Mnemonic.c_lui: RewriteLui(); break;
-                case Mnemonic.c_lw: RewriteLoad(PrimitiveType.Word32); break;
+                case Mnemonic.c_lw: RewriteLoad(PrimitiveType.Word32, arch.NaturalSignedInteger); break;
                 case Mnemonic.c_lwsp: RewriteLxsp(PrimitiveType.Word32); break;
                 case Mnemonic.c_mv: RewriteCompressedMv(); break;
                 case Mnemonic.c_or: RewriteCompressedBinOp(m.Or); break;
@@ -127,25 +129,25 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.c_xor: RewriteCompressedBinOp(m.Xor); break;
                 case Mnemonic.divuw: RewriteBinOp(m.UDiv, PrimitiveType.Word32); break;
                 case Mnemonic.divw: RewriteBinOp(m.SDiv, PrimitiveType.Word32); break;
-                case Mnemonic.fcvt_d_s: RewriteFcvt(PrimitiveType.Real64); break;
+                case Mnemonic.fcvt_d_s: RewriteFcvt(PrimitiveType.Real32, PrimitiveType.Real64); break;
                 case Mnemonic.feq_s: RewriteFcmp(PrimitiveType.Real32, m.FEq); break;
                 case Mnemonic.fmadd_s: RewriteFmadd(PrimitiveType.Real32, m.FAdd); break;
-                case Mnemonic.fmv_d_x: RewriteFcvt(PrimitiveType.Real64); break;
-                case Mnemonic.fmv_w_x: RewriteFcvt(PrimitiveType.Real32); break;
+                case Mnemonic.fmv_d_x: RewriteFcvt(PrimitiveType.Int64, PrimitiveType.Real64); break;
+                case Mnemonic.fmv_w_x: RewriteFcvt(PrimitiveType.Real64, PrimitiveType.Real32); break;
                 case Mnemonic.fld: RewriteFload(PrimitiveType.Real64); break;
                 case Mnemonic.flw: RewriteFload(PrimitiveType.Real32); break;
                 case Mnemonic.fsd: RewriteStore(PrimitiveType.Real64); break;
                 case Mnemonic.fsw: RewriteStore(PrimitiveType.Real32); break;
                 case Mnemonic.jal: RewriteJal(); break;
                 case Mnemonic.jalr: RewriteJalr(); break;
-                case Mnemonic.lb: RewriteLoad(PrimitiveType.SByte); break;
-                case Mnemonic.lbu: RewriteLoad(PrimitiveType.Byte); break;
-                case Mnemonic.ld: RewriteLoad(PrimitiveType.Word64); break;
-                case Mnemonic.lh: RewriteLoad(PrimitiveType.Int16); break;
-                case Mnemonic.lhu: RewriteLoad(PrimitiveType.UInt16); break;
+                case Mnemonic.lb: RewriteLoad(PrimitiveType.SByte, arch.NaturalSignedInteger); break;
+                case Mnemonic.lbu: RewriteLoad(PrimitiveType.Byte, arch.WordWidth); break;
+                case Mnemonic.ld: RewriteLoad(PrimitiveType.Word64, arch.WordWidth); break;
+                case Mnemonic.lh: RewriteLoad(PrimitiveType.Int16, arch.NaturalSignedInteger); break;
+                case Mnemonic.lhu: RewriteLoad(PrimitiveType.UInt16, arch.WordWidth); break;
                 case Mnemonic.lui: RewriteLui(); break;
-                case Mnemonic.lw: RewriteLoad(PrimitiveType.Int32); break;
-                case Mnemonic.lwu: RewriteLoad(PrimitiveType.UInt32); break;
+                case Mnemonic.lw: RewriteLoad(PrimitiveType.Int32, arch.NaturalSignedInteger); break;
+                case Mnemonic.lwu: RewriteLoad(PrimitiveType.UInt32, arch.WordWidth); break;
                 case Mnemonic.mulw: RewriteBinOp(m.IMul, PrimitiveType.Word32); break;
                 case Mnemonic.or: RewriteOr(); break;
                 case Mnemonic.ori: RewriteOr(); break;
@@ -200,13 +202,20 @@ namespace Reko.Arch.RiscV
             throw new NotImplementedException($"Rewriting RiscV addressing mode {op.GetType().Name} is not implemented yet.");
         }
 
-        private void MaybeSignExtend(Expression dst, Expression src, DataType dt)
+        private void MaybeSignExtend(Expression dst, Expression src, DataType? dt)
         {
             if (dt != null && dt.BitSize < dst.DataType.BitSize)
             {
-                src = m.Cast(arch.NaturalSignedInteger, m.Cast(dt, src));
+                src = m.Convert(m.Slice(dt, src, 0), dt, arch.NaturalSignedInteger);
             }
-            m.Assign(dst, src);
+            if (dst.DataType.BitSize > src.DataType.BitSize && src is Constant cSrc)
+            {
+                m.Assign(dst, cSrc.ToInt32());
+            }
+            else
+            {
+                m.Assign(dst, src);
+            }
         }
 
         private Expression SllI(Expression a, Expression b)

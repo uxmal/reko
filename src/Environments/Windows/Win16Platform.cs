@@ -47,6 +47,20 @@ namespace Reko.Environments.Windows
 
         public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
         {
+            // https://devblogs.microsoft.com/oldnewthing/20071203-00/?p=24323
+/*
+AX	zero (used to contain even geekier information in Windows 2)
+BX	stack size
+CX	heap size
+DX	unused (reserved)
+SI	previous instance handle
+DI	instance handle
+BP	zero (for stack walking)
+DS	application data segment
+ES	selector of program segment prefix
+SS	application data segment (SS=DS)
+SP	top of stack
+*/
             throw new NotImplementedException();
         }
 

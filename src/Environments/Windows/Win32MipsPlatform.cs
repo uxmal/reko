@@ -174,6 +174,7 @@ namespace Reko.Environments.Windows
             case CBasicType.Double: return 8;
             case CBasicType.LongDouble: return 8;
             case CBasicType.Int64: return 8;
+            case CBasicType.WChar_t: return 2;
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }
         }
@@ -181,11 +182,9 @@ namespace Reko.Environments.Windows
         public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
             EnsureTypeLibraries(PlatformIdentifier);
-            ModuleDescriptor mod;
-            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
+            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor mod))
                 return null;
-            SystemService svc;
-            if (mod.ServicesByOrdinal.TryGetValue(ordinal, out svc))
+            if (mod.ServicesByOrdinal.TryGetValue(ordinal, out SystemService svc))
             {
                 return new ExternalProcedure(svc.Name, svc.Signature);
             }
@@ -196,16 +195,14 @@ namespace Reko.Environments.Windows
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             EnsureTypeLibraries(PlatformIdentifier);
-            ModuleDescriptor mod;
-            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
+            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor mod))
                 return null;
-            SystemService svc;
-            if (mod.ServicesByName.TryGetValue(moduleName, out svc))
+            if (mod.ServicesByName.TryGetValue(moduleName, out SystemService svc))
             {
                 return new ExternalProcedure(svc.Name, svc.Signature);
             }
             else
-                throw new NotImplementedException();
+                return null;
         }
     }
 }

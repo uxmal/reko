@@ -293,14 +293,14 @@ namespace Reko.Arch.Vax
         private void RewriteMovz(PrimitiveType from, PrimitiveType to)
         {
             var opFrom = RewriteSrcOp(0, from);
-            var dst = RewriteDstOp(1, to, e => m.Cast(to, opFrom));
+            var dst = RewriteDstOp(1, to, e => m.Convert(opFrom, from, to));
             NZ00(dst);
         }
 
         private void RewriteCvt(PrimitiveType from, PrimitiveType to)
         {
             var src = RewriteSrcOp(0, from);
-            var dst = RewriteDstOp(1, to, e => m.Cast(to, src));
+            var dst = RewriteDstOp(1, to, e => m.Convert(src, from, to));
             NZV0(dst);
         }
 
@@ -321,9 +321,10 @@ namespace Reko.Arch.Vax
         private void RewriteCvtr(PrimitiveType from, PrimitiveType to)
         {
             var src = RewriteSrcOp(0, from);
-            var dst = RewriteDstOp(1, to, e => m.Cast(
-                to,
-                host.PseudoProcedure("round", to, src)));
+            var dst = RewriteDstOp(1, to, e => m.Convert(
+                host.PseudoProcedure("round", from, src),
+                from,
+                to));
             NZV0(dst);
         }
 
@@ -357,9 +358,13 @@ namespace Reko.Arch.Vax
                 {
                     var bas = RewriteSrcOp(2, PrimitiveType.Word32);
                     Expression dst = RewriteDstOp(3, PrimitiveType.Word32, e =>
-                        m.Cast(
-                            PrimitiveType.Create(domain, 32),
-                            m.Slice(bas, cPos.ToInt32(), cSize.ToInt32())));
+                    {
+                        var slice = m.Slice(bas, cPos.ToInt32(), cSize.ToInt32());
+                        return m.Convert(
+                            slice,
+                            slice.DataType,
+                            PrimitiveType.Create(domain, 32));
+                    });
                     this.NZ0(dst);
                     return;
                 }

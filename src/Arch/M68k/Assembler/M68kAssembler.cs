@@ -84,7 +84,7 @@ namespace Reko.Arch.M68k.Assembler
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 arch, 
-                new DefaultPlatform(null, arch));
+                new DefaultPlatform(arch.Services, arch));
         }
 
         internal void Cnop(int extra, int align)
@@ -169,13 +169,13 @@ namespace Reko.Arch.M68k.Assembler
         public MachineOperand Mem(RegisterOperand rop)
         {
             var a = (AddressRegister) rop.Register;
-            return new MemoryOperand(null, a);
+            return new MemoryOperand(null!, a);
         }
 
         public MemoryOperand Mem(int offset, RegisterOperand rop)
         {
             var a = (AddressRegister) rop.Register;
-            return new MemoryOperand(null, a, Constant.Int16((short)offset));
+            return new MemoryOperand(null!, a, Constant.Int16((short)offset));
             throw new NotImplementedException();
         }
 
@@ -210,12 +210,12 @@ namespace Reko.Arch.M68k.Assembler
 
         public PostIncrementMemoryOperand Post(RegisterOperand a)
         {
-            return new PostIncrementMemoryOperand(null, (AddressRegister) a.Register);
+            return new PostIncrementMemoryOperand(null!, (AddressRegister) a.Register);
         }
 
         public PredecrementMemoryOperand Pre(RegisterOperand a)
         {
-            return new PredecrementMemoryOperand(null, (AddressRegister) a.Register);
+            return new PredecrementMemoryOperand(null!, (AddressRegister) a.Register);
         }
 
         private void EmitConstants()

@@ -171,7 +171,7 @@ namespace Reko.Arch.Tms7000
                     {
                         ea = m.IAdd(
                             mem.Address,
-                            m.Cast(PrimitiveType.UInt16, binder.EnsureRegister(mem.Register)));
+                            m.Convert(binder.EnsureRegister(mem.Register), mem.Register.DataType, PrimitiveType.UInt16));
                     }
                     else
                     {
@@ -414,7 +414,7 @@ namespace Reko.Arch.Tms7000
         {
             var sp = binder.EnsureRegister(arch.sp);
             var dst = Operand(instr.Operands[0]);
-            m.Assign(dst, m.Mem8(m.Cast(PrimitiveType.Ptr16, sp)));
+            m.Assign(dst, m.Mem8(sp));
             m.Assign(sp, m.ISub(sp, 1));
             if (!(instr.Operands[0] is RegisterOperand reg &&
                 reg.Register == arch.st))
@@ -428,7 +428,7 @@ namespace Reko.Arch.Tms7000
             var sp = binder.EnsureRegister(arch.sp);
             var src = Operand(instr.Operands[0]);
             m.Assign(sp, m.IAdd(sp, 1));
-            m.Assign(m.Mem8(m.Cast(PrimitiveType.Ptr16, sp)), src);
+            m.Assign(m.Mem8(sp), src);
         }
 
         private void RewriteReti()

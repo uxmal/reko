@@ -35,9 +35,14 @@
         <address>00401360</address>
         <CSignature>void nested_structs_test13(nested_structs_type *str)</CSignature>
       </procedure>
+      <procedure name="double_return_test15">
+        <characteristics />
+        <address>004013B0</address>
+        <CSignature>double double_return_test15(double d)</CSignature>
+      </procedure>
       <procedure name="Win32CrtStartup">
         <characteristics />
-        <address>0040164F</address>
+        <address>0040165F</address>
         <decompile>false</decompile>
         <CSignature>DWORD Win32CrtStartup()</CSignature>
       </procedure>

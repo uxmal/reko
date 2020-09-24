@@ -41,17 +41,21 @@ namespace Reko.ImageLoaders.OdbgScript
     /// </summary>
     public class OllyScriptParser : IDisposable
     {
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(OllyScriptParser), "OLLYDBG parser")
+        {
+            Level = TraceLevel.Warning
+        };
         private static readonly UnknownType unk = new UnknownType();
         private static readonly ProcedureConstant interpolate = new ProcedureConstant(unk, new PseudoProcedure("Interpolate", unk, 1));
         private static readonly ProcedureConstant hexString = new ProcedureConstant(unk, new PseudoProcedure("HexString", unk, 1));
 
+        private readonly string currentDir;
+        private readonly IOdbgScriptHost host;
+        private readonly IFileSystemService fsSvc;
         private Lexer lexer;
         private Stack<Lexer> lexerStack;
         private Token tok;
-        private IOdbgScriptHost host;
-        private IFileSystemService fsSvc;
         private OllyScript script;
-        private readonly string currentDir;
 
         public OllyScriptParser(TextReader rdr, string currentDir, IOdbgScriptHost host, IFileSystemService fsSvc)
         {
@@ -455,9 +459,9 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public class Lexer : IDisposable
         {
+            private readonly StringBuilder sb;
             private TextReader rdr;
             private int lineNumber;
-            private StringBuilder sb;
 
             public Lexer(TextReader rdr)
             {
@@ -595,7 +599,7 @@ namespace Reko.ImageLoaders.OdbgScript
                         }
                         break;
                     case State.Identifier:
-                        if (c == -1 || !char.IsLetterOrDigit(ch))
+                        if (c == -1 || !(char.IsLetterOrDigit(ch) || ch == '_' || ch == '.'))
                             return MakeToken(TokenType.Id, sb.ToString());
                         rdr.Read();
                         sb.Append(ch);
@@ -669,6 +673,7 @@ namespace Reko.ImageLoaders.OdbgScript
                         {
                         case -1: return MakeToken(TokenType.Slash);
                         case '*': rdr.Read(); state = State.BlockComment; break;
+                        case '/': rdr.Read(); state = State.LineComment; break;
                         default: rdr.Read(); return MakeToken(TokenType.Slash);
                         }
                         break;
@@ -807,6 +812,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 var tok = new Token(type, this.lineNumber, value);
                 Debug.Assert(type != TokenType.Newline);
+                trace.Verbose("Olly: {0} ({1})", type, value);
                 return tok;
             }
 

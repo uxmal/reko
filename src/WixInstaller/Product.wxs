@@ -68,24 +68,21 @@
       </Component>
     </DirectoryRef>
 
-    <ComponentGroup
-        Id="ProductComponents"
-        Directory="INSTALLFOLDER">
-      <Component
-        Id="ProductComponent"
-        Guid="9C3E003B-43CB-47B3-B5B8-DC6373A38AE1">
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
         <!-- Insert files, registry keys, and other resources here. -->
+      <Component Id="ProductComponent" Guid="9C3E003B-43CB-47B3-B5B8-DC6373A38AE1">
+<!-- Caution! Do not edit these values, they are generated automatically
+     by a script. Edit reko-files.xml instead. -->
         
         <!-- Core binaries -->
         <File Source="$(var.Core.TargetPath)" />
         <File Source="$(var.Decompiler.TargetPath)" />
+<File Source="$(var.WindowsDecompiler.ProjectDir)..\reko.config" Name="reko.config" />
         <File Source="$(var.Gui.TargetPath)" />
         <File Source="$(var.WindowsForms.TargetPath)" />
         <File Source="$(var.WindowsDecompiler.TargetPath)" Id="F_DecompilerExecutable"/>
         <File Source="$(var.WindowsDecompiler.TargetPath).config" Id="F_WindowsDecompilerConfig" />
         <File Source="$(var.WindowsDecompiler.ProjectDir)app.config" Name="decompile.exe.config" />
-        <File Source="$(var.WindowsDecompiler.ProjectDir)..\reko.config" Name="reko.config" />
-
         <File Source="$(var.CmdLine.TargetPath)" />
         
         <!-- Image loaders -->
@@ -102,6 +99,7 @@
         <File Source="$(var.OdbgScript.TargetPath)" />
         <File Source="$(var.Srec.TargetPath)" />
         <File Source="$(var.VmsExe.TargetPath)" />
+<File Source="$(var.WebAssembly.TargetPath)" />
         <File Source="$(var.Xbe.TargetPath)" />
         <File Source="$(var.Xex.TargetPath)" />
 
@@ -111,6 +109,7 @@
         <File Source="$(var.AmigaOS_Design.TargetPath)" />
         <File Source="$(var.AtariTOS.TargetPath)" />
         <File Source="$(var.AtariTOS.ProjectDir)atariTOS.xml" />
+<File Source="$(var.BbcMicro.TargetPath)" />
         <File Source="$(var.C64.TargetPath)" />
         <File Source="$(var.C64.ProjectDir)C64.xml" />
         <File Source="$(var.Cpm.TargetPath)" />
@@ -118,7 +117,7 @@
         <File Source="$(var.Dreamcast.TargetPath)" />
         <File Source="$(var.Hpux.TargetPath)" />
         <File Source="$(var.MacOS.TargetPath)" />
-        <File Source="$(var.MacOS.ProjectDir)/Classic/macos_classic.xml" />
+<File Source="$(var.MacOS.ProjectDir)Classic/macos_classic.xml" />
         <File Source="$(var.MorphOS.TargetPath)" />
         <File Source="$(var.Msdos.TargetPath)" />
         <File Source="$(var.Msdos.ProjectDir)realmodeintservices.xml" />
@@ -130,6 +129,7 @@
         <File Source="$(var.RT11.ProjectDir)rt11_services.xml" />
         <File Source="$(var.SegaGenesis.TargetPath)" />
         <File Source="$(var.SegaGenesis.ProjectDir)SegaGenesis.xml" />
+<File Source="$(var.Snes.TargetPath)" />
         <File Source="$(var.Switch.TargetPath)" />
         <File Source="$(var.SysV.TargetPath)" />
         <File Source="$(var.SysV.ProjectDir)lp32.xml" />
@@ -159,8 +159,8 @@
         <File Source="$(var.Windows.ProjectDir)winspool.xml" />
         <File Source="$(var.Windows.ProjectDir)wsock32.xml" />
         <File Source="$(var.Xbox.TargetPath)" />
-        <File Source="$(var.Xbox.ProjectDir)/Xbox/xboxkernel.def" />
-        <File Source="$(var.Xbox.ProjectDir)/Xbox360/xbox360krnl.def" />
+<File Source="$(var.Xbox.ProjectDir)Xbox/xboxkernel.def" />
+<File Source="$(var.Xbox.ProjectDir)Xbox360/xbox360krnl.def" />
         <File Source="$(var.ZX81.TargetPath)" />
 
         <!-- Architectures -->
@@ -217,8 +217,9 @@
         <File Source="$(var.Decompiler.ProjectDir)Loading\Signatures\PLATFORM_INDEPENDENT.xml" />
         
         <!-- Unpacker scripts -->
+<File Source="$(var.OdbgScript.ProjectDir)PkLite-1.50-unpacker.osc" />
+<File Source="$(var.OdbgScript.ProjectDir)RekoUnpacker_823.osc" />
         <File Source="$(var.OdbgScript.ProjectDir)upx_ultimate.osc" />
-        <File Source="$(var.OdbgScript.ProjectDir)RekoUnpacker_823.osc" />
         
         <!-- External files -->
         <File Source="$(var.SolutionDir)..\external\Capstone\$(var.Platform)\capstone.dll" />
@@ -236,53 +237,54 @@
         <File Source="$(var.SolutionDir)..\COPYING" Id="F_License" />
         
         <!-- PIC definition files -->
-        <File Source="$(var.SolutionDir)tools\genPICdb\picdb.zip" />
-        
+<File Source="$(var.SolutionDir)..\src\tools\genPICdb\picdb.zip" />
       </Component>
     </ComponentGroup>
 
     <Component Id="Comp_Os2_16" Directory="Os2_16Folder" Guid="0444AAFF-1B7C-4182-AEEF-7DFCCDBC426C">
+<!-- Caution! Do not edit these values, they are generated automatically
+     by a script. Edit reko-files.xml instead. -->
       <File Source="$(var.OS2.ProjectDir)os2-16.xml" />
-      <File Id="File_Os2_16_ANSICALL" Source="$(var.OS2.ProjectDir)16\ANSICALL.def" />
-      <File Id="File_Os2_16_BKSCALLS" Source="$(var.OS2.ProjectDir)16\BKSCALLS.def" />
-      <File Id="File_Os2_16_BMSCALLS" Source="$(var.OS2.ProjectDir)16\BMSCALLS.def" />
-      <File Id="File_Os2_16_BVH8514A" Source="$(var.OS2.ProjectDir)16\BVH8514A.def" />
-      <File Id="File_Os2_16_BVHCGA" Source="$(var.OS2.ProjectDir)16\BVHCGA.def" />
-      <File Id="File_Os2_16_BVHEGA" Source="$(var.OS2.ProjectDir)16\BVHEGA.def" />
-      <File Id="File_Os2_16_BVHINIT" Source="$(var.OS2.ProjectDir)16\BVHINIT.def" />
-      <File Id="File_Os2_16_BVHMPA" Source="$(var.OS2.ProjectDir)16\BVHMPA.def" />
-      <File Id="File_Os2_16_BVHVGA" Source="$(var.OS2.ProjectDir)16\BVHVGA.def" />
-      <File Id="File_Os2_16_BVHWNDW" Source="$(var.OS2.ProjectDir)16\BVHWNDW.def" />
-      <File Id="File_Os2_16_BVHXGA" Source="$(var.OS2.ProjectDir)16\BVHXGA.def" />
-      <File Id="File_Os2_16_BVSCALLS" Source="$(var.OS2.ProjectDir)16\BVSCALLS.def" />
-      <File Id="File_Os2_16_DOSCALLS" Source="$(var.OS2.ProjectDir)16\DOSCALLS.def" />
-      <File Id="File_Os2_16_DOSRFICO" Source="$(var.OS2.ProjectDir)16\DOSRFICO.def" />
-      <File Id="File_Os2_16_HELPMGR" Source="$(var.OS2.ProjectDir)16\HELPMGR.def" />
-      <File Id="File_Os2_16_KBDCALLS" Source="$(var.OS2.ProjectDir)16\KBDCALLS.def" />
-      <File Id="File_Os2_16_LOCKDLL" Source="$(var.OS2.ProjectDir)16\LOCKDLL.def" />
-      <File Id="File_Os2_16_MONCALLS" Source="$(var.OS2.ProjectDir)16\MONCALLS.def" />
-      <File Id="File_Os2_16_MOUCALLS" Source="$(var.OS2.ProjectDir)16\MOUCALLS.def" />
-      <File Id="File_Os2_16_MSG" Source="$(var.OS2.ProjectDir)16\MSG.def" />
-      <File Id="File_Os2_16_NAMPIPES" Source="$(var.OS2.ProjectDir)16\NAMPIPES.def" />
-      <File Id="File_Os2_16_NLS" Source="$(var.OS2.ProjectDir)16\NLS.def" />
-      <File Id="File_Os2_16_OS2SM" Source="$(var.OS2.ProjectDir)16\OS2SM.def" />
-      <File Id="File_Os2_16_OS2SMDUM" Source="$(var.OS2.ProjectDir)16\OS2SMDUM.def" />
-      <File Id="File_Os2_16_PMDRAG" Source="$(var.OS2.ProjectDir)16\PMDRAG.def" />
-      <File Id="File_Os2_16_PMGPI" Source="$(var.OS2.ProjectDir)16\PMGPI.def" />
-      <File Id="File_Os2_16_PMSHAPI" Source="$(var.OS2.ProjectDir)16\PMSHAPI.def" />
-      <File Id="File_Os2_16_PMSHLTKT" Source="$(var.OS2.ProjectDir)16\PMSHLTKT.def" />
-      <File Id="File_Os2_16_PMSPL" Source="$(var.OS2.ProjectDir)16\PMSPL.def" />
-      <File Id="File_Os2_16_PMTKT" Source="$(var.OS2.ProjectDir)16\PMTKT.def" />
-      <File Id="File_Os2_16_PMTRACE" Source="$(var.OS2.ProjectDir)16\PMTRACE.def" />
-      <File Id="File_Os2_16_PMVIOP" Source="$(var.OS2.ProjectDir)16\PMVIOP.def" />
-      <File Id="File_Os2_16_PMWIN" Source="$(var.OS2.ProjectDir)16\PMWIN.def" />
-      <File Id="File_Os2_16_PMWINDUM" Source="$(var.OS2.ProjectDir)16\PMWINDUM.def" />
-      <File Id="File_Os2_16_QUECALLS" Source="$(var.OS2.ProjectDir)16\QUECALLS.def" />
-      <File Id="File_Os2_16_REXX" Source="$(var.OS2.ProjectDir)16\REXX.def" />
-      <File Id="File_Os2_16_REXXAPI" Source="$(var.OS2.ProjectDir)16\REXXAPI.def" />
-      <File Id="File_Os2_16_SESMGR" Source="$(var.OS2.ProjectDir)16\SESMGR.def" />
-      <File Id="File_Os2_16_SPOOLCP" Source="$(var.OS2.ProjectDir)16\SPOOLCP.def" />
-      <File Id="File_Os2_16_VIOCALLS" Source="$(var.OS2.ProjectDir)16\VIOCALLS.def" />
+<File Source="$(var.OS2.ProjectDir)16\ANSICALL.def" Id="File_Os2_16_ANSICALL" />
+<File Source="$(var.OS2.ProjectDir)16\BKSCALLS.def" Id="File_Os2_16_BKSCALLS" />
+<File Source="$(var.OS2.ProjectDir)16\BMSCALLS.def" Id="File_Os2_16_BMSCALLS" />
+<File Source="$(var.OS2.ProjectDir)16\BVH8514A.def" Id="File_Os2_16_BVH8514A" />
+<File Source="$(var.OS2.ProjectDir)16\BVHCGA.def" Id="File_Os2_16_BVHCGA" />
+<File Source="$(var.OS2.ProjectDir)16\BVHEGA.def" Id="File_Os2_16_BVHEGA" />
+<File Source="$(var.OS2.ProjectDir)16\BVHINIT.def" Id="File_Os2_16_BVHINIT" />
+<File Source="$(var.OS2.ProjectDir)16\BVHMPA.def" Id="File_Os2_16_BVHMPA" />
+<File Source="$(var.OS2.ProjectDir)16\BVHVGA.def" Id="File_Os2_16_BVHVGA" />
+<File Source="$(var.OS2.ProjectDir)16\BVHWNDW.def" Id="File_Os2_16_BVHWNDW" />
+<File Source="$(var.OS2.ProjectDir)16\BVHXGA.def" Id="File_Os2_16_BVHXGA" />
+<File Source="$(var.OS2.ProjectDir)16\BVSCALLS.def" Id="File_Os2_16_BVSCALLS" />
+<File Source="$(var.OS2.ProjectDir)16\DOSCALLS.def" Id="File_Os2_16_DOSCALLS" />
+<File Source="$(var.OS2.ProjectDir)16\DOSRFICO.def" Id="File_Os2_16_DOSRFICO" />
+<File Source="$(var.OS2.ProjectDir)16\HELPMGR.def" Id="File_Os2_16_HELPMGR" />
+<File Source="$(var.OS2.ProjectDir)16\KBDCALLS.def" Id="File_Os2_16_KBDCALLS" />
+<File Source="$(var.OS2.ProjectDir)16\LOCKDLL.def" Id="File_Os2_16_LOCKDLL" />
+<File Source="$(var.OS2.ProjectDir)16\MONCALLS.def" Id="File_Os2_16_MONCALLS" />
+<File Source="$(var.OS2.ProjectDir)16\MOUCALLS.def" Id="File_Os2_16_MOUCALLS" />
+<File Source="$(var.OS2.ProjectDir)16\MSG.def" Id="File_Os2_16_MSG" />
+<File Source="$(var.OS2.ProjectDir)16\NAMPIPES.def" Id="File_Os2_16_NAMPIPES" />
+<File Source="$(var.OS2.ProjectDir)16\NLS.def" Id="File_Os2_16_NLS" />
+<File Source="$(var.OS2.ProjectDir)16\OS2SM.def" Id="File_Os2_16_OS2SM" />
+<File Source="$(var.OS2.ProjectDir)16\OS2SMDUM.def" Id="File_Os2_16_OS2SMDUM" />
+<File Source="$(var.OS2.ProjectDir)16\PMDRAG.def" Id="File_Os2_16_PMDRAG" />
+<File Source="$(var.OS2.ProjectDir)16\PMGPI.def" Id="File_Os2_16_PMGPI" />
+<File Source="$(var.OS2.ProjectDir)16\PMSHAPI.def" Id="File_Os2_16_PMSHAPI" />
+<File Source="$(var.OS2.ProjectDir)16\PMSHLTKT.def" Id="File_Os2_16_PMSHLTKT" />
+<File Source="$(var.OS2.ProjectDir)16\PMSPL.def" Id="File_Os2_16_PMSPL" />
+<File Source="$(var.OS2.ProjectDir)16\PMTKT.def" Id="File_Os2_16_PMTKT" />
+<File Source="$(var.OS2.ProjectDir)16\PMTRACE.def" Id="File_Os2_16_PMTRACE" />
+<File Source="$(var.OS2.ProjectDir)16\PMVIOP.def" Id="File_Os2_16_PMVIOP" />
+<File Source="$(var.OS2.ProjectDir)16\PMWIN.def" Id="File_Os2_16_PMWIN" />
+<File Source="$(var.OS2.ProjectDir)16\PMWINDUM.def" Id="File_Os2_16_PMWINDUM" />
+<File Source="$(var.OS2.ProjectDir)16\QUECALLS.def" Id="File_Os2_16_QUECALLS" />
+<File Source="$(var.OS2.ProjectDir)16\REXX.def" Id="File_Os2_16_REXX" />
+<File Source="$(var.OS2.ProjectDir)16\REXXAPI.def" Id="File_Os2_16_REXXAPI" />
+<File Source="$(var.OS2.ProjectDir)16\SESMGR.def" Id="File_Os2_16_SESMGR" />
+<File Source="$(var.OS2.ProjectDir)16\SPOOLCP.def" Id="File_Os2_16_SPOOLCP" />
+<File Source="$(var.OS2.ProjectDir)16\VIOCALLS.def" Id="File_Os2_16_VIOCALLS" />
       <File Source="$(var.OS2.ProjectDir)fsd.xml" />
       <File Source="$(var.OS2.ProjectDir)fsh.xml" />
       <File Source="$(var.OS2.ProjectDir)fsu.xml" />
@@ -290,6 +292,8 @@
     </Component>
 
     <Component Id="Comp_Os2_32" Directory="Os2_32Folder" Guid="17698BD8-9701-44F7-8D05-F42F450334C6">
+<!-- Caution! Do not edit these values, they are generated automatically
+     by a script. Edit reko-files.xml instead. -->
       <File Source="$(var.OS2.ProjectDir)32\bdcalls.def" />
       <File Source="$(var.OS2.ProjectDir)32\dive.def" />
       <File Source="$(var.OS2.ProjectDir)32\DOSCALLS.def" />

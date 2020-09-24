@@ -34,11 +34,11 @@ namespace Reko.Arch.X86.Assembler
 	/// </summary>
 	public class ModRmBuilder
 	{
-		public event ErrorEventHandler Error;
+		public event ErrorEventHandler? Error;
 
-		private IEmitter emitter;
-		private PrimitiveType defaultWordSize;
-		private Constant offset;
+		private readonly IEmitter emitter;
+		private readonly PrimitiveType defaultWordSize;
+		private Constant? offset;
 
 		public ModRmBuilder(PrimitiveType defaultWordSize, IEmitter emitter)
 		{
@@ -48,18 +48,18 @@ namespace Reko.Arch.X86.Assembler
 
 		private Constant EmitDirectAddress(int reg, MemoryOperand memOp)
 		{
-			Debug.Assert(memOp.Offset.IsValid);
+			Debug.Assert(memOp.Offset != null && memOp.Offset.IsValid);
 			if (defaultWordSize == PrimitiveType.Word16)
 			{
 				reg |= 0x6;
 				emitter.EmitByte(reg);
-				return Constant.Create(PrimitiveType.Word16, memOp.Offset.ToUInt32());
+				return Constant.Create(PrimitiveType.Word16, memOp.Offset!.ToUInt32());
 			}
 			else
 			{
 				reg |= 0x5;
 				emitter.EmitByte(reg);
-				return Constant.Word32(memOp.Offset.ToUInt32());
+				return Constant.Word32(memOp.Offset!.ToUInt32());
 			}
 		}
 
@@ -82,8 +82,8 @@ namespace Reko.Arch.X86.Assembler
 		/// </summary>
 		/// <param name="reg"></param>
 		/// <param name="memOp"></param>
-		/// <returns>The offset value to be emitted as the last piece of the instructon</returns>
-		public Constant EmitModRMPrefix(int reg, MemoryOperand memOp)
+		/// <returns>The offset value to be emitted as the last piece of the instruction</returns>
+		public Constant? EmitModRMPrefix(int reg, MemoryOperand memOp)
 		{
 			offset = null;
 			reg <<= 3;
@@ -231,8 +231,7 @@ namespace Reko.Arch.X86.Assembler
 
 		private void OnError(string message)
 		{
-			if (Error != null)
-				Error(this, new ErrorEventArgs(message));
-		}
+            Error?.Invoke(this, new ErrorEventArgs(message));
+        }
 	}
 }

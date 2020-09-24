@@ -26,12 +26,14 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Evaluation;
 using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 
 namespace Reko.UnitTests.Analysis
@@ -68,6 +70,8 @@ namespace Reko.UnitTests.Analysis
                 Architecture = arch.Object,
                 SegmentMap = segmentMap,
             };
+            sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(listener);
         }
 
         private ExternalProcedure CreateExternalProcedure(
@@ -100,10 +104,10 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program program, TextWriter writer)
 		{
-			var dfa = new DataFlowAnalysis(
-                program, 
+            var dfa = new DataFlowAnalysis(
+                program,
                 dynamicLinker.Object,
-                new FakeDecompilerEventListener());
+                sc);
 			foreach (Procedure proc in ProceduresInSccOrder(program))
 			{
 				writer.WriteLine("= {0} ========================", proc.Name);
@@ -115,7 +119,7 @@ namespace Reko.UnitTests.Analysis
                     dfa.ProgramDataFlow);
                 sst.Transform();
 				SsaState ssa = sst.SsaState;
-                var cce = new ConditionCodeEliminator(ssa, program.Platform, listener);
+                var cce = new ConditionCodeEliminator(program, ssa, listener);
                 cce.Transform();
 				ssa.Write(writer);
 				proc.Write(false, writer);
@@ -640,7 +644,7 @@ namespace Reko.UnitTests.Analysis
 
             m.Assign(tmp, m.Mem8(a2));
             m.Assign(d3, m.Dpb(d3, tmp, 0));
-            m.MStore(m.IAdd(a2, 4), m.Cast(PrimitiveType.Byte, d3));
+            m.MStore(m.IAdd(a2, 4), m.Slice(PrimitiveType.Byte, d3, 0));
 
             SsaState ssa = RunTest(m);
 
@@ -662,7 +666,6 @@ d3:d3
     uses: d3_5 = SEQ(SLICE(d3, word24, 8), tmp_3)
 d3_5: orig: d3
     def:  d3_5 = SEQ(SLICE(d3, word24, 8), tmp_3)
-    uses: Mem6[a2 + 4<32>:byte] = tmp_3
 Mem6: orig: Mem0
     def:  Mem6[a2 + 4<32>:byte] = tmp_3
 // ProcedureBuilder
@@ -695,7 +698,7 @@ ProcedureBuilder_exit:
 
             m.Assign(tmp, m.Mem16(a2));
             m.Assign(d3, m.Dpb(d3, tmp, 0));
-            m.MStore(m.IAdd(a2, 4), m.Cast(PrimitiveType.Byte, d3));
+            m.MStore(m.IAdd(a2, 4), m.Slice(PrimitiveType.Byte, d3, 0));
 
             SsaState ssa = RunTest(m);
 
@@ -704,22 +707,22 @@ ProcedureBuilder_exit:
 @"a2:a2
     def:  def a2
     uses: tmp_3 = Mem0[a2:word16]
-          Mem6[a2 + 4<32>:byte] = (byte) tmp_3
+          Mem6[a2 + 4<32>:byte] = SLICE(tmp_3, byte, 0)
 Mem0:Mem
     def:  def Mem0
     uses: tmp_3 = Mem0[a2:word16]
 tmp_3: orig: tmp
     def:  tmp_3 = Mem0[a2:word16]
     uses: d3_5 = SEQ(SLICE(d3, word16, 16), tmp_3)
-          Mem6[a2 + 4<32>:byte] = (byte) tmp_3
+          Mem6[a2 + 4<32>:byte] = SLICE(tmp_3, byte, 0)
 d3:d3
     def:  def d3
     uses: d3_5 = SEQ(SLICE(d3, word16, 16), tmp_3)
 d3_5: orig: d3
     def:  d3_5 = SEQ(SLICE(d3, word16, 16), tmp_3)
-    uses: Mem6[a2 + 4<32>:byte] = (byte) tmp_3
+    uses: Mem6[a2 + 4<32>:byte] = SLICE(tmp_3, byte, 0)
 Mem6: orig: Mem0
-    def:  Mem6[a2 + 4<32>:byte] = (byte) tmp_3
+    def:  Mem6[a2 + 4<32>:byte] = SLICE(tmp_3, byte, 0)
 // ProcedureBuilder
 // Return size: 0
 define ProcedureBuilder
@@ -731,7 +734,7 @@ ProcedureBuilder_entry:
 l1:
 	tmp_3 = Mem0[a2:word16]
 	d3_5 = SEQ(SLICE(d3, word16, 16), tmp_3)
-	Mem6[a2 + 4<32>:byte] = (byte) tmp_3
+	Mem6[a2 + 4<32>:byte] = SLICE(tmp_3, byte, 0)
 ProcedureBuilder_exit:
 ";
             #endregion
@@ -746,7 +749,7 @@ ProcedureBuilder_exit:
             var m = new ProcedureBuilder();
             var r1 = m.Reg32("r1", 1);
 
-            m.Assign(r1, m.Cast(PrimitiveType.Real32, ConstantReal.Real64(1)));
+            m.Assign(r1, m.Convert(Constant.Real64(1), PrimitiveType.Real64, PrimitiveType.Real32));
 
             var ssa = RunTest(m);
             var sExp =
@@ -976,11 +979,13 @@ ProcedureBuilder_exit:
             var m = new ProcedureBuilder();
             m.MStore(
                 m.Word32(0x1234000),
-                m.Cast(
-                    PrimitiveType.Real32,
-                    m.Cast(
-                        PrimitiveType.Real64, 
-                        m.Mem(PrimitiveType.Real32, m.Word32(0x123400)))));
+                m.Convert(
+                    m.Convert(
+                        m.Mem(PrimitiveType.Real32, m.Word32(0x123400)),
+                        PrimitiveType.Real32,
+                        PrimitiveType.Real64),
+                    PrimitiveType.Real64,
+                    PrimitiveType.Real32));
             m.Return();
 
             Assert.IsNotNull(dynamicLinker);
@@ -1154,7 +1159,7 @@ SsaProcedureBuilder_exit:
             var d3_5 = m.Reg32("d3_5", 3);
             var d3_6 = m.Reg32("d3_6", 3);
 
-            m.Assign(wLoc02_2, m.Cast(PrimitiveType.Word16, d3));
+            m.Assign(wLoc02_2, m.Slice(PrimitiveType.Word16, d3, 0));
             m.Label("m1");
             m.Assign(d3_3, m.Dpb(d3, m.Word16(3), 0));
             m.Goto("m3");
@@ -1169,11 +1174,11 @@ SsaProcedureBuilder_exit:
             var sExp =
             #region Expected
 @"d3: orig: d3
-    uses: wLoc02_2 = (word16) d3
+    uses: wLoc02_2 = SLICE(d3, word16, 0)
           d3_3 = SEQ(SLICE(d3, word16, 16), 3<16>)
           d3_4 = SEQ(SLICE(d3, word16, 16), 4<16>)
 wLoc02_2: orig: wLoc04
-    def:  wLoc02_2 = (word16) d3
+    def:  wLoc02_2 = SLICE(d3, word16, 0)
     uses: d3_6 = SEQ(SLICE(d3_5, word16, 16), wLoc02_2)
 d3_3: orig: d3_3
     def:  d3_3 = SEQ(SLICE(d3, word16, 16), 3<16>)
@@ -1192,7 +1197,7 @@ define SsaProcedureBuilder
 SsaProcedureBuilder_entry:
 	// succ:  l1
 l1:
-	wLoc02_2 = (word16) d3
+	wLoc02_2 = SLICE(d3, word16, 0)
 	// succ:  m1
 m1:
 	d3_3 = SEQ(SLICE(d3, word16, 16), 3<16>)
@@ -1315,7 +1320,7 @@ SsaProcedureBuilder_exit:
             m.AddDefToEntryBlock(r19);
             m.AddDefToEntryBlock(r30);
             m.Assign(r11_1, m.Word64(0x91690000));
-            m.Assign(r4_1, m.Cast(PrimitiveType.Word64, m.Mem32(m.IAdd(r19, 28))));
+            m.Assign(r4_1, m.Convert(m.Mem32(m.IAdd(r19, 28)), PrimitiveType.Word32, PrimitiveType.Word64));
             m.Assign(r10_1, m.Word64(0x42420000));
             m.Assign(r11_2, m.Or(r11_1, 0x1448));
             m.Assign(r10_2, m.Or(r10_1, 0x8DA6));
@@ -1340,17 +1345,17 @@ r11_2: orig: r11_2
 r11_3: orig: r11_3
     def:  r11_3 = 0x42428DA691691448<64>
 r4_1: orig: r4_1
-    def:  r4_1 = (word64) Mem10[r19 + 0x1C<64>:word32]
+    def:  r4_1 = CONVERT(Mem10[r19 + 0x1C<64>:word32], word32, word64)
 r19: orig: r19
     def:  def r19
-    uses: r4_1 = (word64) Mem10[r19 + 0x1C<64>:word32]
+    uses: r4_1 = CONVERT(Mem10[r19 + 0x1C<64>:word32], word32, word64)
 r30: orig: r30
     def:  def r30
     uses: r9_1 = r30 & 0xFFFFFFFF<64>
 v30: orig: v30
     def:  v30 = 0x91691448<32>
 Mem10: orig: Mem0
-    uses: r4_1 = (word64) Mem10[r19 + 0x1C<64>:word32]
+    uses: r4_1 = CONVERT(Mem10[r19 + 0x1C<64>:word32], word32, word64)
 // SsaProcedureBuilder
 // Return size: 0
 define SsaProcedureBuilder
@@ -1360,13 +1365,61 @@ SsaProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	r11_1 = 0x91690000<64>
-	r4_1 = (word64) Mem10[r19 + 0x1C<64>:word32]
+	r4_1 = CONVERT(Mem10[r19 + 0x1C<64>:word32], word32, word64)
 	r10_1 = 0x42420000<64>
 	r11_2 = 0x91691448<64>
 	r10_2 = 0x42428DA6<64>
 	r9_1 = r30 & 0xFFFFFFFF<64>
 	v30 = 0x91691448<32>
 	r11_3 = 0x42428DA691691448<64>
+SsaProcedureBuilder_exit:
+";
+            #endregion
+            AssertStringsEqual(sExp, m.Ssa);
+        }
+
+        [Test]
+        public void VpGitHub942()
+        {
+            var rax_6 = m.Reg64("rax_6");
+            var rbx_7 = m.Reg64("rbx_7");
+            var ax_8 = m.Reg16("ax_8");
+            var rax_10 = m.Reg64("rax_10");
+            var rax_48_16_9 = m.Temp(PrimitiveType.CreateWord(48), "rax_48_16_9");
+            m.Assign(rax_6, m.Word64(0x1A2A3A4A5A6A7A8A));
+            m.Assign(rax_48_16_9, m.Slice(rax_48_16_9.DataType, rax_6, 16));
+            m.Assign(rbx_7, m.Word64(0x1B2B3B4B5B6B7B8B));
+            m.Assign(ax_8, m.Slice(ax_8.DataType, rbx_7, 0));
+            m.Assign(rax_10, m.Seq(rax_48_16_9, ax_8));
+            m.MStore(m.Word32(0x123400), rax_10);
+
+            RunValuePropagator();
+            var sExp =
+            #region Expected
+@"rax_6: orig: rax_6
+    def:  rax_6 = 0x1A2A3A4A5A6A7A8A<64>
+rbx_7: orig: rbx_7
+    def:  rbx_7 = 0x1B2B3B4B5B6B7B8B<64>
+ax_8: orig: ax_8
+    def:  ax_8 = 0x7B8B<16>
+rax_10: orig: rax_10
+    def:  rax_10 = 0x1A2A3A4A5A6A7B8B<64>
+rax_48_16_9: orig: rax_48_16_9
+    def:  rax_48_16_9 = 0x1A2A3A4A5A6A<48>
+Mem5: orig: Mem0
+    def:  Mem5[0x123400<32>:word64] = 0x1A2A3A4A5A6A7B8B<64>
+// SsaProcedureBuilder
+// Return size: 0
+define SsaProcedureBuilder
+SsaProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	rax_6 = 0x1A2A3A4A5A6A7A8A<64>
+	rax_48_16_9 = 0x1A2A3A4A5A6A<48>
+	rbx_7 = 0x1B2B3B4B5B6B7B8B<64>
+	ax_8 = 0x7B8B<16>
+	rax_10 = 0x1A2A3A4A5A6A7B8B<64>
+	Mem5[0x123400<32>:word64] = 0x1A2A3A4A5A6A7B8B<64>
 SsaProcedureBuilder_exit:
 ";
             #endregion

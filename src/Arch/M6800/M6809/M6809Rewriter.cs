@@ -450,7 +450,7 @@ namespace Reko.Arch.M6800.M6809
                     idx = binder.EnsureRegister(mem.Index);
                     if (idx.DataType.BitSize < ea.DataType.BitSize)
                     {
-                        idx = m.Cast(PrimitiveType.Int16, idx);
+                        idx = m.Convert(idx, idx.DataType, PrimitiveType.Int16);
                     }
                     ea = m.IAdd(ea, idx);
                     tmp = memFn(bin, dst, ea, mem);
@@ -509,7 +509,7 @@ namespace Reko.Arch.M6800.M6809
         {
             var b = binder.EnsureRegister(Registers.B);
             var x = binder.EnsureRegister(Registers.X);
-            m.Assign(x, m.IAdd(x, m.Cast(PrimitiveType.UInt16, b)));
+            m.Assign(x, m.IAdd(x, m.Convert(b, b.DataType, PrimitiveType.UInt16)));
         }
 
         private void RewriteModifyCc(Func<Expression, Expression, Expression> fn)
@@ -643,7 +643,7 @@ namespace Reko.Arch.M6800.M6809
         {
             var b = binder.EnsureRegister(Registers.B);
             var d = binder.EnsureRegister(Registers.D);
-            m.Assign(d, m.Cast(PrimitiveType.Int16, b));
+            m.Assign(d, m.Convert(b, PrimitiveType.Byte, PrimitiveType.Int16));
             NZ__(d);
         }
 

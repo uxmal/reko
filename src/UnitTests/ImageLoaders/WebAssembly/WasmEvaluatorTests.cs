@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,28 +18,31 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Core;
-using Reko.Core.Machine;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Arch.X86
+namespace Reko.ImageLoaders.WebAssembly
 {
-    public class X86AddressOperand : AddressOperand
+    [TestFixture]
+    public class WasmEvaluatorTests
     {
-        public X86AddressOperand(Address a)
-            : base(a, PrimitiveType.Ptr32)	//$BUGBUG: P6 pointers?
-        {
-        }
+        private WasmEvaluator eval;
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        private void Create_Eval(params byte[] bytes)
         {
-            writer.WriteString("far");
-            writer.WriteString(" ");
-            writer.WriteAddress(Address.ToString(), Address);
+            this.eval = new WasmEvaluator(new WasmImageReader(bytes));
+        }
+        
+        [Test]
+        public void WasmEval_const()
+        {
+            Create_Eval(0x41, 0x12, 0x0B);
+            Assert.AreEqual(0x12u, eval.Run());
         }
     }
 }

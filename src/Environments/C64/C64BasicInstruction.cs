@@ -49,9 +49,10 @@ namespace Reko.Environments.C64
 
         public override string MnemonicAsString => throw new NotImplementedException();
 
+        public ushort LineNumber { get; set; }
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteFormat("{0} ", Address.ToLinear());
+            writer.WriteFormat("{0} ", LineNumber);
             bool inString = false;
             for (int i = 0; i < Line.Length; ++i)
             {
@@ -78,7 +79,7 @@ namespace Reko.Environments.C64
 
         public void Write(TextWriter writer)
         {
-            writer.Write("{0} ", Address.ToLinear());
+            writer.Write("{0} ", LineNumber);
             bool inString = false;
             for (int i = 0; i < Line.Length; ++i)
             {

@@ -443,7 +443,7 @@ namespace Reko.UnitTests.Scanning
             // jmp [eax + 0x12000]
 
             m.Assign(edx, m.Mem32(m.ISub(ebp, 0xC4)));
-            m.Assign(eax, m.Cast(PrimitiveType.Word32, m.Mem8(m.IAdd(edx, 0x10000))));
+            m.Assign(eax, m.Convert(m.Mem8(m.IAdd(edx, 0x10000)), PrimitiveType.Byte, PrimitiveType.Word32));
             var xfer = new RtlGoto(m.Mem32(m.IAdd(eax, 0x12000)), InstrClass.Transfer);
 
             var block1 = m.CurrentBlock;

@@ -93,7 +93,7 @@ namespace Reko.UnitTests.Typing
             Verify(outputFileName);
         }
 
-        private void RunTest(string outputFileName, params Tuple<Expression, DataType>[] tests)
+        private void RunTest(string outputFileName, params (Expression, DataType)[] tests)
         {
             var listener = new FakeDecompilerEventListener();
             foreach (var t in tests)
@@ -109,11 +109,6 @@ namespace Reko.UnitTests.Typing
                 t.Item1.Accept(exd, t.Item1.TypeVariable);
             }
             Verify(outputFileName);
-        }
-
-        private Tuple<Expression, DataType> Test(Expression e, DataType dt)
-        {
-            return Tuple.Create(e, dt);
         }
 
         [Test]
@@ -204,8 +199,8 @@ namespace Reko.UnitTests.Typing
             var p = Id("p", PrimitiveType.Word32);
             RunTest(
                 "Typing/ExdTwoFieldAccesses.txt",
-                Test(m.Mem32(m.IAdd(p, 8)), PrimitiveType.Int32),
-                Test(m.Mem32(m.IAdd(p, 12)), PrimitiveType.Real32));
+                (m.Mem32(m.IAdd(p, 8)), PrimitiveType.Int32),
+                (m.Mem32(m.IAdd(p, 12)), PrimitiveType.Real32));
         }
 
         [Test]
@@ -214,8 +209,8 @@ namespace Reko.UnitTests.Typing
             var p = Id("p", PrimitiveType.Word32);
             RunTest(
                 "Typing/ExdUnion.txt",
-                Test(m.Mem32(m.IAdd(p, 12)), PrimitiveType.Int32),
-                Test(m.Mem32(m.IAdd(p, 12)), PrimitiveType.Real32));
+                (m.Mem32(m.IAdd(p, 12)), PrimitiveType.Int32),
+                (m.Mem32(m.IAdd(p, 12)), PrimitiveType.Real32));
         }
 
         [Test]
@@ -224,7 +219,7 @@ namespace Reko.UnitTests.Typing
             var p = Id("p", PrimitiveType.Word32);
             RunTest(
                 "Typing/ExdFloatCmp.txt",
-                Test(m.FGe(p, Constant.Real32(-5.5F)), PrimitiveType.Bool));
+                (m.FGe(p, Constant.Real32(-5.5F)), PrimitiveType.Bool));
         }
 
         [Test]
@@ -233,7 +228,7 @@ namespace Reko.UnitTests.Typing
             var p = Id("p", PrimitiveType.Word32);
             RunTest(
                 "Typing/ExdFloatSub.txt",
-                Test(m.FSub(p, Constant.Real32(-5.5F)), PrimitiveType.Real32));
+                (m.FSub(p, Constant.Real32(-5.5F)), PrimitiveType.Real32));
         }
 
         [Test]
@@ -243,7 +238,7 @@ namespace Reko.UnitTests.Typing
             var ep = new ExternalProcedure("test", sig);
             RunTest(
                 "Typing/ExdApplication.txt",
-                Test(m.Fn(ep, m.Mem(PrimitiveType.Word32, m.Word32(0x0300400))), VoidType.Instance));
+                (m.Fn(ep, m.Mem(PrimitiveType.Word32, m.Word32(0x0300400))), VoidType.Instance));
         }
 
         [Test]
@@ -256,7 +251,7 @@ namespace Reko.UnitTests.Typing
             p.TypeVariable.DataType = PointerTo(sig);
             RunTest(
                 "Typing/ExdIndirectCall.txt",
-                Test(
+                (
                     m.Fn(
                         p,
                         VoidType.Instance,
@@ -318,6 +313,16 @@ namespace Reko.UnitTests.Typing
             var fmul = m.FMul(idLeft, idRight);
             fmul.DataType = PrimitiveType.Real96;
             RunTest(fmul, PrimitiveType.Real96, "Typing/ExdWideningFMul.txt");
+        }
+
+        [Test]
+        public void ExdDonotDescentTypeIntoConvert()
+        {
+            var id = Id("id", PrimitiveType.Byte);
+            RunTest(
+                m.Convert(id, PrimitiveType.SByte, PrimitiveType.Int32),
+                PrimitiveType.Real32,
+                $"Typing/{nameof(ExdDonotDescentTypeIntoConvert)}.txt");
         }
     }
 }

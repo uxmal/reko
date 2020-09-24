@@ -229,7 +229,13 @@ namespace Reko.Typing
 			EnsureTypeVariable(cof);
 		}
 
-		public override void VisitDeclaration(Declaration decl)
+        public override void VisitConversion(Conversion conversion)
+        {
+            conversion.Expression.Accept(this);
+            EnsureTypeVariable(conversion);
+        }
+
+        public override void VisitDeclaration(Declaration decl)
 		{
 			decl.Identifier.Accept(this);
 			if (decl.Expression != null)

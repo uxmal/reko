@@ -19,7 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
-using System;
+using System.Linq;
 
 namespace Reko.Core.Code
 {
@@ -28,82 +28,162 @@ namespace Reko.Core.Code
     /// instructions are candidates for dead code elimination, if the
     /// decompiler can prove they are not used.
 	/// </summary>
-	public class CriticalInstruction : InstructionVisitorBase
+	public class CriticalInstruction : InstructionVisitor<bool>, ExpressionVisitor<bool>
 	{
+        private static readonly CriticalInstruction instance = new CriticalInstruction();
+
 		private bool isCritical;
 
-		public bool IsCritical(Instruction instr)
+		public static bool IsCritical(Instruction instr)
 		{
-			isCritical = false;
-			instr.Accept(this);
-			return isCritical;
+            return instr.Accept(instance);
 		}
 
-		public bool IsCritical(Expression expr)
+		public static bool IsCritical(Expression expr)
 		{
-			expr.Accept(this);
-			return isCritical;
+            return expr.Accept(instance);
 		}
 
 		#region InstructionVisitor //////////////////////////////////
 
-		public override void VisitBranch(Branch b)
-		{
-			isCritical = true;
-		}
-
-		public override void VisitCallInstruction(CallInstruction ci)
-		{
-			isCritical = true;
-		}
-
-        public override void VisitComment(CodeComment comment)
+        public bool VisitAssignment(Assignment ass)
         {
-            isCritical = true;
+            return ass.Src.Accept(this);
+        }
+            
+		public bool VisitBranch(Branch b)
+		{
+			return true;
+		}
+
+		public bool VisitCallInstruction(CallInstruction ci)
+		{
+			return true;
+		}
+
+        public bool VisitComment(CodeComment comment)
+        {
+            return true;
         }
 
-        public override void VisitReturnInstruction(ReturnInstruction ret)
+        public bool VisitDeclaration(Declaration decl)
+        {
+            return decl.Expression != null
+                ? decl.Expression.Accept(this)
+                : false;
+        }
+
+        public bool VisitDefInstruction(DefInstruction def)
+        {
+            return false;
+        }
+
+        public bool VisitGotoInstruction(GotoInstruction g)
+        {
+            return true;
+        }
+
+        public bool VisitPhiAssignment(PhiAssignment phi)
+        {
+            return false;
+        }
+
+        public bool VisitReturnInstruction(ReturnInstruction ret)
 		{
-			isCritical = true;
+			return true;
 		}
 
-		public override void VisitSideEffect(SideEffect side)
+		public bool VisitSideEffect(SideEffect side)
 		{
-			isCritical = true;
+			return true;
 		}
 
-		public override void VisitStore(Store store)
+		public bool VisitStore(Store store)
 		{
-			isCritical = true;
+			return true;
 		}
 
-		public override void VisitSwitchInstruction(SwitchInstruction si)
+		public bool VisitSwitchInstruction(SwitchInstruction si)
 		{
-			isCritical = true;
+			return true;
 		}
 
-		public override void VisitUseInstruction(UseInstruction u)
+		public bool VisitUseInstruction(UseInstruction u)
 		{
-			isCritical = true;
-		}
-		#endregion 
-
-		#region ExpressionVisitor /////////////////////////////
-
-		public override void VisitApplication(Application appl)
-		{
-			isCritical = true;
+			return true;
 		}
 
-		public override void VisitMemoryAccess(MemoryAccess access)
-		{
-			isCritical = IsCritical(access.EffectiveAddress);
-		}
+        #endregion
 
-		public override void VisitDereference(Dereference deref)
-		{
-			isCritical = true;
-		}
+        #region ExpressionVisitor /////////////////////////////
+
+        public bool VisitAddress(Address addr) => false;
+
+        public bool VisitApplication(Application appl) => true;
+
+        public bool VisitArrayAccess(ArrayAccess arr) =>
+            arr.Array.Accept(this) || arr.Index.Accept(this);
+
+        public bool VisitBinaryExpression(BinaryExpression bin) =>
+            bin.Left.Accept(this) || bin.Right.Accept(this);
+
+        public bool VisitCast(Cast cast) =>
+            cast.Expression.Accept(this);
+
+        public bool VisitConditionalExpression(ConditionalExpression cond) =>
+            cond.Condition.Accept(this) ||
+            cond.ThenExp.Accept(this) ||
+            cond.FalseExp.Accept(this);
+
+        public bool VisitConditionOf(ConditionOf cond) =>
+            cond.Expression.Accept(this);
+
+        public bool VisitConstant(Constant c) => false;
+
+        public bool VisitConversion(Conversion conversion) =>
+            conversion.Expression.Accept(this);
+
+        public bool VisitDereference(Dereference deref) => true;
+        
+        public bool VisitFieldAccess(FieldAccess access) =>
+            access.Structure.Accept(this);
+
+        public bool VisitIdentifier(Identifier id) => false;
+
+        public bool VisitMemberPointerSelector(MemberPointerSelector mps) =>
+            mps.BasePointer.Accept(this) ||
+            mps.MemberPointer.Accept(this);
+
+        public bool VisitMkSequence(MkSequence seq) =>
+            seq.Expressions.Any(e => e.Accept(this));
+
+        public bool VisitOutArgument(OutArgument outArgument) => false;
+
+        public bool VisitMemoryAccess(MemoryAccess access) =>
+            access.EffectiveAddress.Accept(this);
+
+        public bool VisitPhiFunction(PhiFunction phi) => false;
+        
+        public bool VisitPointerAddition(PointerAddition pa) =>
+            pa.Pointer.Accept(this);
+
+        public bool VisitProcedureConstant(ProcedureConstant pc) => false;
+
+        public bool VisitScopeResolution(ScopeResolution sc) => false;
+
+        public bool VisitSegmentedAccess(SegmentedAccess segmem) =>
+            segmem.BasePointer.Accept(this) ||
+            segmem.EffectiveAddress.Accept(this);
+
+        public bool VisitSlice(Slice slice) =>
+            slice.Expression.Accept(this);
+
+        public bool VisitTestCondition(TestCondition test) =>
+            test.Expression.Accept(this);
+
+        public bool VisitUnaryExpression(UnaryExpression unary) =>
+            unary.Expression.Accept(this);
+
 		#endregion
 	}
 }

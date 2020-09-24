@@ -36,7 +36,6 @@ namespace Reko.UnitTests.Arch.X86
 	{
 		private OperandRewriter orw;
 		private IntelArchitecture arch;
-		private X86State state;
 		private Procedure proc;
         private Program program;
         private X86Instruction instr;
@@ -68,7 +67,6 @@ namespace Reko.UnitTests.Arch.X86
                 Address = procAddress,
             };
             proc = Procedure.Create(arch, procAddress, arch.CreateFrame());
-			state = (X86State) arch.CreateProcessorState();
 			orw = new OperandRewriter32(arch, new ExpressionEmitter(), proc.Frame, new FakeRewriterHost(program));
 		}
 
@@ -76,7 +74,7 @@ namespace Reko.UnitTests.Arch.X86
 		public void X86Orw32_Register()
 		{
 			var r = new RegisterOperand(Registers.ebp);
-			var id = (Identifier) orw.Transform(null, r, r.Width, state);
+			var id = (Identifier) orw.Transform(null, r, r.Width);
 			Assert.AreEqual("ebp", id.Name);
 			Assert.IsNotNull(proc.Frame.FramePointer);
 		}
@@ -85,7 +83,7 @@ namespace Reko.UnitTests.Arch.X86
 		public void X86Orw32_Immediate()
 		{
 			var imm = new ImmediateOperand(Constant.Word16(0x0003));
-			var c = (Constant) orw.Transform(null, imm, imm.Width, state);
+			var c = (Constant) orw.Transform(null, imm, imm.Width);
 			Assert.AreEqual("3<16>", c.ToString());
 		}
 
@@ -93,7 +91,7 @@ namespace Reko.UnitTests.Arch.X86
 		public void X86Orw32_ImmediateExtend()
 		{
 			var imm = new ImmediateOperand(Constant.SByte(-1));
-			var c = (Constant) orw.Transform(null, imm, PrimitiveType.Word16, state);
+			var c = (Constant) orw.Transform(null, imm, PrimitiveType.Word16);
 			Assert.AreEqual("0xFFFF<16>", c.ToString());
 		}
 
@@ -101,7 +99,7 @@ namespace Reko.UnitTests.Arch.X86
 		public void X86Orw32_Fpu()
 		{
 			FpuOperand f = new FpuOperand(3);
-			var id = orw.Transform(instr, f, PrimitiveType.Real64,  state);
+			var id = orw.Transform(instr, f, PrimitiveType.Real64);
 			Assert.AreEqual(PrimitiveType.Real64, id.DataType);
 		}
 
@@ -111,7 +109,7 @@ namespace Reko.UnitTests.Arch.X86
 			MemoryOperand mem = new MemoryOperand(PrimitiveType.Word32);
 			mem.Base = Registers.ecx;
 			mem.Offset = Constant.Word32(4);
-			Expression expr = orw.Transform(instr, mem, PrimitiveType.Word32, state);
+			Expression expr = orw.Transform(instr, mem, PrimitiveType.Word32);
 			Assert.AreEqual("Mem0[ecx + 4<32>:word32]", expr.ToString());
 		}
 
@@ -119,7 +117,7 @@ namespace Reko.UnitTests.Arch.X86
 		public void X86Orw32_IndexedAccess()
 		{
 			MemoryOperand mem = new MemoryOperand(PrimitiveType.Word32, Registers.eax, Registers.edx, 4, Constant.Word32(0x24));
-			Expression expr = orw.Transform(instr, mem, PrimitiveType.Word32, state);
+			Expression expr = orw.Transform(instr, mem, PrimitiveType.Word32);
 			Assert.AreEqual("Mem0[eax + 0x24<32> + edx * 4<32>:word32]", expr.ToString());
 		}
 

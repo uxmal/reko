@@ -315,5 +315,13 @@ namespace Reko.WindowsItp
                 dlg.ShowDialog(this);
             }
         }
+
+        private void structureFieldsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new StructureFieldPerformanceDialog())
+            {
+                dlg.ShowDialog(this);
+            }
+        }
     }
 }

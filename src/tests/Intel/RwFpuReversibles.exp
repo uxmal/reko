@@ -3,8 +3,8 @@
 // Mem0:Mem
 // fp:fp
 // sp:sp
-// Top:Top
 // ds:ds
+// Top:Top
 // return address size: 2
 define fn0C00_0000
 fn0C00_0000_entry:

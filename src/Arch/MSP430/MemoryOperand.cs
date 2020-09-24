@@ -42,7 +42,7 @@ namespace Reko.Arch.Msp430
             }
             if (Offset > 0)
             {
-                if (Base == Registers.pc && (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                if (Base == Registers.pc && (options.Flags & MachineInstructionWriterFlags.ResolvePcRelativeAddress) != 0)
                 {
                     var addr = writer.Address + 4 + Offset;
                     writer.WriteAddress(addr.ToString(), addr);
@@ -54,7 +54,7 @@ namespace Reko.Arch.Msp430
             }
             else if (Offset < 0)
             {
-                if (Base == Registers.pc && (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                if (Base == Registers.pc && (options.Flags & MachineInstructionWriterFlags.ResolvePcRelativeAddress) != 0)
                 {
                     var addr = writer.Address + 4 + Offset;
                     writer.WriteAddress(addr.ToString(), addr);

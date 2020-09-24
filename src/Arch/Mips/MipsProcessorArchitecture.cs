@@ -210,7 +210,7 @@ namespace Reko.Arch.Mips
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)

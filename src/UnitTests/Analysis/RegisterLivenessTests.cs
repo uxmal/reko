@@ -23,8 +23,10 @@ using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.UnitTests.Mocks;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 
@@ -51,10 +53,12 @@ namespace Reko.UnitTests.Analysis
 		protected override void RunTest(Program program, TextWriter writer)
 		{
 			var eventListener = new FakeDecompilerEventListener();
+            var sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(eventListener);
 			var dfa = new DataFlowAnalysis(
                 program, 
                 dynamicLinker.Object, 
-                eventListener);
+                sc);
             program.User.Procedures = userSigs;
             var usb = new UserSignatureBuilder(program);
             usb.BuildSignatures(eventListener);

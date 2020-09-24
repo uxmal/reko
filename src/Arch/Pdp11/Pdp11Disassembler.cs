@@ -407,7 +407,10 @@ namespace Reko.Arch.Pdp11
                     if (!this.rdr.TryReadLeUInt16(out u))
                         return null;
                     return ImmediateOperand.Word16(u);
-                case 3: return new MemoryOperand(this.rdr.ReadLeUInt16(), this.dataWidth);
+                case 3:
+                    if (!this.rdr.TryReadLeUInt16(out u))
+                        return null;
+                    return new MemoryOperand(u, this.dataWidth);
                 case 6:
                     if (!this.rdr.TryReadLeUInt16(out u))
                         return null;

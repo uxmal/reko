@@ -153,6 +153,11 @@ namespace Reko.Analysis
                 return true;
             }
 
+            public bool VisitConversion(Conversion conversion)
+            {
+                return conversion.Expression.Accept(this);
+            }
+
             public bool VisitDereference(Dereference deref)
             {
                 throw new NotImplementedException();

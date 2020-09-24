@@ -36,9 +36,9 @@ namespace Reko.Arch.Sparc
         private Identifier Grf(FlagM grf)
         {
             return binder.EnsureFlagGroup(
-                Registers.psr,
+                arch.Registers.psr,
                 (uint) grf, 
-                arch.GrfToString(Registers.psr, "", (uint) grf),
+                arch.GrfToString(arch.Registers.psr, "", (uint) grf),
                 Bits.IsSingleBitSet((uint)grf) ? PrimitiveType.Bool: PrimitiveType.Byte);
         }
 
@@ -57,6 +57,14 @@ namespace Reko.Arch.Sparc
             }
         }
 
+        private void RewriteBranchReg(Func<Expression, Expression> fn)
+        {
+            var rtlClass = instrCur.InstructionClass;
+            this.iclass = rtlClass;
+            var reg = RewriteRegister(instrCur.Operands[0]);
+            m.Branch(fn(reg), ((AddressOperand) instrCur.Operands[1]).Address, rtlClass);
+        }
+
         private void RewriteCall()
         {
             iclass = InstrClass.Transfer | InstrClass.Call;
@@ -69,17 +77,17 @@ namespace Reko.Arch.Sparc
             var rDst = instrCur.Operands[2] as RegisterOperand;
             var src1 = RewriteOp(instrCur.Operands[0]);
             var src2 = RewriteOp(instrCur.Operands[1]);
-            if (rDst.Register != Registers.g0)
+            if (rDst.Register != arch.Registers.g0)
             {
                 var dst = RewriteOp(instrCur.Operands[2]);
                 m.Assign(dst, instrCur.Address);
             }
             var target = SimplifySum(src1, src2);
-            if (rDst.Register == Registers.o7)
+            if (rDst.Register == arch.Registers.o7)
             {
                 m.CallD(target, 0);
             }
-            else if (rDst.Register == Registers.g0)
+            else if (rDst.Register == arch.Registers.g0)
             {
                 m.ReturnD(0, 0);
             }
@@ -91,6 +99,15 @@ namespace Reko.Arch.Sparc
 
         private void RewriteRett()
         {
+        }
+
+        private void RewriteReturn()
+        {
+            var dst = RewriteOp(instrCur.Operands[0]);
+            var src1 = RewriteOp(instrCur.Operands[0]);
+            var src2 = RewriteOp(instrCur.Operands[1]);
+            RestoreRegisterWindow(dst, src1, src2);
+            m.Return(0, 0, instrCur.InstructionClass);
         }
 
         private void RewriteTrap(Expression cond)

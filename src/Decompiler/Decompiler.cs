@@ -102,7 +102,8 @@ namespace Reko
                 if (eventListener.IsCanceled())
                     return;
                 var ir = new DynamicLinker(project, program, eventListener);
-                var dfa = new DataFlowAnalysis(program, ir, eventListener);
+                var dfa = new DataFlowAnalysis(program, ir, services);
+                dfa.ClearTestFiles();
                 if (program.NeedsSsaTransform)
                 {
                     eventListener.ShowStatus("Performing interprocedural analysis.");
@@ -143,7 +144,7 @@ namespace Reko
                         proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
                     output.WriteLine();
                     WriteProcedureCallers(program, proc, output);
-                    flow.Emit(program.Architecture, output);
+                    flow.Emit(proc.Architecture, output);
                     foreach (Block block in new DfsIterator<Block>(proc.ControlGraph).PostOrder().Reverse())
                     {
                         if (block == null)

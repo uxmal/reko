@@ -23,10 +23,12 @@ using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -92,16 +94,19 @@ namespace Reko.UnitTests.Analysis
 		protected override void RunTest(Program program, TextWriter writer)
 		{
             var listener = new FakeDecompilerEventListener();
-            DataFlowAnalysis dfa = new DataFlowAnalysis(program, dynamicLinker.Object, listener);
+            var sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(listener);
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, dynamicLinker.Object, sc);
 			var ssts = dfa.UntangleProcedures();
 			foreach (var sst in ssts)
 			{
 				SsaState ssa = sst.SsaState;
-				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform, listener);
+				ConditionCodeEliminator cce = new ConditionCodeEliminator(program, ssa, listener);
 				cce.Transform();
 
 				DeadCode.Eliminate(ssa);
 				ssa.Write(writer);
+                ssa.Validate(s => writer.WriteLine("*** SSA state invalid: {0}", s));
 				ssa.Procedure.Write(false, writer);
 			}
 		}

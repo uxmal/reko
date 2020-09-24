@@ -25,6 +25,7 @@ using System.IO;
 using System.Globalization;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Reko.Core.Expressions
 {
@@ -105,7 +106,7 @@ namespace Reko.Core.Expressions
                 switch (p.Domain)
                 {
                 case Domain.SignedInt: return new ConstantInt32(p, (int) value);
-                case Domain.Real: return new ConstantUInt32(p,  (uint) value);
+                case Domain.Real: return new ConstantReal32(p,  (uint) value);
                 default: return new ConstantUInt32(p, (uint) value);
                 }
             case 36:        // PDP-10 <3
@@ -117,7 +118,7 @@ namespace Reko.Core.Expressions
                 switch (p.Domain)
                 {
                 case Domain.SignedInt: return new ConstantInt64(p, (long) value);
-                case Domain.Real: return new ConstantUInt64(p, (ulong) value);
+                case Domain.Real: return new ConstantReal64(p, (ulong) value);
                 default: return new ConstantUInt64(p, (ulong) value);
                 }
             case 96:
@@ -127,6 +128,8 @@ namespace Reko.Core.Expressions
                 case Domain.SignedInt: return new ConstantInt128(p, (long)value);
                 default: return new ConstantUInt128(p, (ulong)value);
                 }
+            case 192:
+            case 224:
             case 256:
                 switch (p.Domain)
                 {
@@ -172,15 +175,20 @@ namespace Reko.Core.Expressions
 
 		public static Constant FloatFromBitpattern(long bits)
 		{
-			long mant = bits & 0x007FFFFF;
-			int exp =  (int) (bits >> 23) & 0xFF;
-			float sign = (bits < 0) ? -1.0F : 1.0F;
-			if (mant == 0 && exp == 0)
-				return Constant.Real32(0.0F);
-			return Constant.Real32(sign * (float) MakeReal(exp, 0x7F, mant, 23));
+            return Constant.Real32(Int32BitsToFloat((int)bits));
 		}
 
-		public static Constant DoubleFromBitpattern(long bits)
+        public static float Int32BitsToFloat(int bits)
+        {
+            long mant = bits & 0x007FFFFF;
+            int exp = (int)(bits >> 23) & 0xFF;
+            float sign = (bits < 0) ? -1.0F : 1.0F;
+            if (mant == 0 && exp == 0)
+                return 0.0F;
+            return sign * (float)MakeReal(exp, 0x7F, mant, 23);
+        }
+
+        public static Constant DoubleFromBitpattern(long bits)
 		{
             return Constant.Real64(BitConverter.Int64BitsToDouble(bits));
 		}
@@ -219,6 +227,13 @@ namespace Reko.Core.Expressions
         public override IEnumerable<Expression> Children
         {
             get { yield break; }
+        }
+
+        protected virtual Constant DoSlice(DataType dt, int offset)
+        {
+            var val = this.ToUInt64();
+            ulong mask = Bits.Mask(offset, dt.BitSize);
+            return Create(dt, (val & mask) >> offset);
         }
 
         public abstract object GetValue();
@@ -263,6 +278,8 @@ namespace Reko.Core.Expressions
                 return ToInt64() == 0;
 			}
 		}
+
+        public abstract bool IsMaxUnsigned { get; }
 
 		public virtual bool IsNegative
 		{
@@ -348,6 +365,24 @@ namespace Reko.Core.Expressions
             return Constant.Real64(0.30102999566398119521373889472449);
         }
        
+        /// <summary>
+        /// Return a bit slice of this constant, treating the contents as bits.
+        /// </summary>
+        /// <param name="dt">Data type of the slice</param>
+        /// <param name="offset">Bit offset from which to take the slice.</param>
+        /// <returns></returns>
+        public Constant Slice(DataType dt, int offset)
+        {
+            if (this.IsValid)
+            {
+                if (offset < 0 || offset + dt.BitSize > this.DataType.BitSize)
+                    throw new ArgumentException(nameof(dt), "Invalid bit size.");
+                return DoSlice(dt, offset);
+            }
+            else
+                return this;
+        }
+
         public virtual bool ToBoolean()
         {
             return Convert.ToBoolean(GetValue());
@@ -540,6 +575,8 @@ namespace Reko.Core.Expressions
             return new ConstantBool(DataType, !value);
         }
 
+        public override bool IsMaxUnsigned => value;
+
         public override bool ToBoolean()
         {
             return value;
@@ -611,6 +648,8 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
+        public override bool IsMaxUnsigned => value == -1;
+        
         public override byte ToByte()
         {
             return (byte)value;
@@ -676,6 +715,9 @@ namespace Reko.Core.Expressions
         {
             return value.GetHashCode();
         }
+
+        public override bool IsMaxUnsigned => value == 0xFFFF;
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -743,6 +785,8 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
+        public override bool IsMaxUnsigned => value == 0xFF;
+
         public override byte ToByte()
         {
             return value;
@@ -799,7 +843,6 @@ namespace Reko.Core.Expressions
             return new ConstantInt16(DataType, (short)~value);
         }
 
-
         public override object GetValue()
         {
             return value;
@@ -809,6 +852,8 @@ namespace Reko.Core.Expressions
         {
             return value.GetHashCode();
         }
+
+        public override bool IsMaxUnsigned => value == (short)-1;
 
         public override byte ToByte()
         {
@@ -876,6 +921,8 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
+        public override bool IsMaxUnsigned => value == 0xFFFFu;
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -941,6 +988,8 @@ namespace Reko.Core.Expressions
         {
             return value.GetHashCode();
         }
+
+        public override bool IsMaxUnsigned => value == -1;
 
         public override byte ToByte()
         {
@@ -1009,6 +1058,8 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
+        public override bool IsMaxUnsigned => value == ~0u;
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -1076,6 +1127,8 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
+        public override bool IsMaxUnsigned => value == -1L;
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -1141,6 +1194,8 @@ namespace Reko.Core.Expressions
         {
             return value.GetHashCode();
         }
+
+        public override bool IsMaxUnsigned => value == ~0UL;
 
         public override byte ToByte()
         {
@@ -1208,6 +1263,8 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
+        public override bool IsMaxUnsigned => throw new NotImplementedException();
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -1273,6 +1330,8 @@ namespace Reko.Core.Expressions
         {
             return value.GetHashCode();
         }
+
+        public override bool IsMaxUnsigned => throw new NotImplementedException();
 
         public override byte ToByte()
         {
@@ -1340,6 +1399,8 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
+        public override bool IsMaxUnsigned => throw new NotImplementedException();
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -1406,6 +1467,8 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
+        public override bool IsMaxUnsigned => throw new NotImplementedException();
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -1449,7 +1512,7 @@ namespace Reko.Core.Expressions
         {
         }
 
-        public static ConstantReal Create(DataType dt, double value)
+        public static Constant Create(DataType dt, double value)
         {
             var pt = PrimitiveType.Create(Domain.Real, dt.BitSize);
             switch (dt.BitSize)
@@ -1458,7 +1521,8 @@ namespace Reko.Core.Expressions
             case 32: return new ConstantReal32(pt, (float)value);
             case 64: return new ConstantReal64(pt, value);
             }
-            throw new NotSupportedException(string.Format("Data type {0} not supported.", dt));
+            // Unsupported floating point constant sizes cannot be represented yet.
+            return Constant.Invalid;
         }
     }
 
@@ -1488,6 +1552,11 @@ namespace Reko.Core.Expressions
             throw new NotSupportedException("Cannot complement a real value.");
         }
 
+        protected override Constant DoSlice(DataType dt, int offset)
+        {
+            throw new NotImplementedException();
+        }
+
         public override object GetValue()
         {
             throw new NotImplementedException();
@@ -1497,6 +1566,8 @@ namespace Reko.Core.Expressions
         {
             return value.GetHashCode();
         }
+
+        public override bool IsMaxUnsigned => false;
 
         public override Constant Negate()
         {
@@ -1553,6 +1624,21 @@ namespace Reko.Core.Expressions
     {
         private readonly float value;
 
+        // .NET doesn't seem to have a way of doing this for 32-bit floats.
+        // Code from one of the answers to https://stackoverflow.com/questions/27237776/convert-int-bits-to-float-bits
+        [StructLayout(LayoutKind.Explicit)]
+        struct FloatToInt
+        {
+            [FieldOffset(0)] private float f;
+            [FieldOffset(0)] private int i;
+            private static FloatToInt inst = new FloatToInt();
+            public static int ConvertToBits(float value)
+            {
+                inst.f = value;
+                return inst.i;
+            }
+        }
+
         public ConstantReal32(DataType dt, float value)
             : base(dt)
         {
@@ -1569,6 +1655,13 @@ namespace Reko.Core.Expressions
             throw new NotSupportedException("Cannot complement a real value.");
         }
 
+        protected override Constant DoSlice(DataType dt, int offset)
+        {
+            var bits = (uint) FloatToInt.ConvertToBits(this.value);
+            var mask = Bits.Mask(0, dt.BitSize);
+            return Constant.Create(dt, bits >> offset);
+        }
+
         public override object GetValue()
         {
             return value;
@@ -1578,6 +1671,8 @@ namespace Reko.Core.Expressions
         {
             return value.GetHashCode();
         }
+
+        public override bool IsMaxUnsigned => false;
 
         public override Constant Negate()
         {
@@ -1644,6 +1739,12 @@ namespace Reko.Core.Expressions
         {
             throw new NotSupportedException("Cannot complement a real value.");
         }
+
+        protected override Constant DoSlice(DataType dt, int offset)
+        {
+            throw new NotSupportedException();
+        }
+
         public override object GetValue()
         {
             return value;
@@ -1653,6 +1754,9 @@ namespace Reko.Core.Expressions
         {
             return value.GetHashCode();
         }
+
+        public override bool IsMaxUnsigned => false;
+
 
         public override Constant Negate()
         {
@@ -1725,6 +1829,15 @@ namespace Reko.Core.Expressions
             throw new NotSupportedException("Cannot complement a real value.");
         }
 
+        protected override Constant DoSlice(DataType dt, int offset)
+        {
+            var bits = (ulong) BitConverter.DoubleToInt64Bits(this.value);
+            var mask = Bits.Mask(0, dt.BitSize);
+            return Constant.Create(dt, bits >> offset);
+        }
+
+        public override bool IsMaxUnsigned => false;
+
         public override Constant Negate()
         {
             return new ConstantReal64(DataType, -value);
@@ -1765,6 +1878,7 @@ namespace Reko.Core.Expressions
             return Convert.ToInt64(value);
         }
     }
+
     public class StringConstant : Constant
     {
         private string str;
@@ -1787,6 +1901,11 @@ namespace Reko.Core.Expressions
             throw new NotSupportedException("Cannot complement a real value.");
         }
 
+        protected override Constant DoSlice(DataType dt, int offset)
+        {
+            throw new NotSupportedException();
+        }
+
         public override object GetValue()
         {
             return str;
@@ -1796,6 +1915,8 @@ namespace Reko.Core.Expressions
         {
             return str.GetHashCode();
         }
+
+        public override bool IsMaxUnsigned => false;
 
         public override Constant Negate()
         {

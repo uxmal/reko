@@ -168,18 +168,6 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Generates a cast expression which coerces the <paramref name="expr"/> to
-        /// the data type <paramref name="dataType"/>.
-        /// </summary>
-        /// <param name="dataType">Type to coerce to.</param>
-        /// <param name="expr">Value to coerce.</param>
-        /// <returns>A cast expression.</returns>
-        public Cast Cast(DataType dataType, Expression expr)
-        {
-            return new Cast(dataType, expr);
-        }
-
-        /// <summary>
         /// Generates the bitwise complement of <paramref name="expr"/> (the '~' 
         /// operator in the C language family).
         /// </summary>
@@ -234,6 +222,20 @@ namespace Reko.Core.Expressions
         {
             return new BinaryExpression(Operator.Cor, PrimitiveType.Bool, a, b);
         }
+
+        /// <summary>
+        /// Generates a <see cref="Conversion"/> expression which converts the <paramref name="expr"/> from 
+        /// the data type <paramref name="dataTypeFrom" /> to the data type <paramref name="dataTypeTo"/>.
+        /// </summary>
+        /// <param name="expr">Value to convert.</param>
+        /// <param name="dataTypeFrom">Type to convert from.</param>
+        /// <param name="dataTypeTo">Type to convert to.</param>
+        /// <returns>A <see cref="Conversion"/> expression.</returns>
+        public Conversion Convert(Expression expr, DataType dataTypeFrom, DataType dataTypeTo)
+        {
+            return new Conversion(expr, dataTypeFrom, dataTypeTo);
+        }
+
 
         /// <summary>
         /// Generates a simple Dereference operation ('*a' in the C language

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ProjectGuid>{B4704089-C5BD-42ED-B509-8F2C0A528BA1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Reko.Environments.Snes</RootNamespace>
+    <AssemblyName>Reko.Environments.Snes</AssemblyName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>8.0</LangVersion>
+    <nullable>enable</nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Arch\Mos6502\Mos6502.csproj" />
+    <ProjectReference Include="..\..\Core\Core.csproj" />
+  </ItemGroup>
+</Project>

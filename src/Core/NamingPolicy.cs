@@ -33,7 +33,7 @@ namespace Reko.Core
     /// variables, and types.
     /// </summary>
     /// <remarks>
-    /// The intent is that this class can be subclassed and  modified to suit
+    /// The intent is that this class can be subclassed and modified to suit
     /// the user's preferences.
     /// </remarks>
     public class NamingPolicy

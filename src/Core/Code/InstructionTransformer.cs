@@ -189,6 +189,12 @@ namespace Reko.Core.Code
 			return c;
 		}
 
+        public virtual Expression VisitConversion(Conversion conversion)
+        {
+            var e = conversion.Expression.Accept(this);
+            return new Conversion(e, conversion.SourceDataType, conversion.DataType);
+        }
+
 		public virtual Expression VisitDereference(Dereference deref)
 		{
 			var e = deref.Expression.Accept(this);

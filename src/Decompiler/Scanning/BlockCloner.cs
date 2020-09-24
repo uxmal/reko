@@ -225,6 +225,14 @@ namespace Reko.Scanning
             return c.CloneExpression();
         }
 
+        public Expression VisitConversion(Conversion conversion)
+        {
+            return new Conversion(
+                conversion.Expression.Accept(this),
+                conversion.SourceDataType,
+                conversion.DataType);
+        }
+
         public Expression VisitDereference(Dereference deref)
         {
             throw new NotImplementedException();

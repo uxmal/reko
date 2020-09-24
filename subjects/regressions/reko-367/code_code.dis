@@ -29,7 +29,7 @@ l80000132:
 	word32 dwLoc14_53 = 0<32>
 l8000014A:
 	real96 rLoc10_65 = SEQ(SLICE(fp0_11, word32, 0), SLICE(fp0_11, word32, 32), SLICE(fp0_11, word32, 64))
-	branch (real96) dwLoc14_53 >= rArg10 l80000172
+	branch CONVERT(dwLoc14_53, word32, real96) >= rArg10 l80000172
 l80000172:
 	return fp0_11
 fn80000132_exit:
@@ -55,12 +55,12 @@ l8000018E:
 	word32 dwLoc14_52 = 1<i32>
 l800001A8:
 	real96 rLoc10_64 = SEQ(SLICE(fp0_11, word32, 0), SLICE(fp0_11, word32, 32), SLICE(fp0_11, word32, 64))
-	branch (real96) dwLoc14_52 > rArg04 l800001D4
+	branch CONVERT(dwLoc14_52, word32, real96) > rArg04 l800001D4
 l800001D4:
 	return fp0_11
 fn8000018E_exit:
 l800001B8:
-	fp0_11 = rLoc10_64 * (real80) ((real96) dwLoc14_52)
+	fp0_11 = rLoc10_64 * CONVERT(CONVERT(dwLoc14_52, word32, real96), real96, real80)
 	dwLoc14_52 = dwLoc14_52 + 1<32>
 
 
@@ -87,8 +87,8 @@ l8000028A:
 	return fp1_83
 fn800001F2_exit:
 l80000224:
-	real96 fp0_81 = (real96) (real80) ((real96) (real80) fn80000132(rArg04, (real96) dwLoc20_119) / (real80) fn8000018E((real96) dwLoc20_119)) * rLoc1C_114
-	fp1_83 = rLoc10_115 + (real80) fp0_81
+	real96 fp0_81 = CONVERT(CONVERT(CONVERT(CONVERT(fn80000132(rArg04, CONVERT(dwLoc20_119, word32, real96)), real96, real80), real80, real96) / CONVERT(fn8000018E(CONVERT(dwLoc20_119, word32, real96)), real96, real80), real96, real80), real80, real96) * rLoc1C_114
+	fp1_83 = rLoc10_115 + CONVERT(fp0_81, real96, real80)
 	rLoc1C_114 = fp0_81
 	dwLoc20_119 = dwLoc20_119 + 2<32>
 
@@ -115,8 +115,8 @@ l80000348:
 	return fp0_14
 fn800002AE_exit:
 l800002E2:
-	real96 fp0_81 = (real96) (real80) ((real96) (real80) fn80000132(rArg04, (real96) dwLoc20_118) / (real80) fn8000018E((real96) dwLoc20_118)) * rLoc1C_113
-	fp0_14 = rLoc10_114 + (real80) fp0_81
+	real96 fp0_81 = CONVERT(CONVERT(CONVERT(CONVERT(fn80000132(rArg04, CONVERT(dwLoc20_118, word32, real96)), real96, real80), real80, real96) / CONVERT(fn8000018E(CONVERT(dwLoc20_118, word32, real96)), real96, real80), real96, real80), real80, real96) * rLoc1C_113
+	fp0_14 = rLoc10_114 + CONVERT(fp0_81, real96, real80)
 	rLoc1C_113 = fp0_81
 	dwLoc20_118 = dwLoc20_118 + 2<32>
 

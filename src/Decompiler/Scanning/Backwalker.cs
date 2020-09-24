@@ -219,9 +219,9 @@ namespace Reko.Scanning
                 //$BUG: this is rubbish, the simplifier should _just_
                 // perform simplification, no substitutions.
                 var src = assSrc == Constant.Invalid ? ass.Item2 : assSrc;
-                var castSrc = src as Cast;
-                if (castSrc != null)
-                    src = castSrc.Expression;
+                var cvtSrc = src as Conversion;
+                if (cvtSrc != null)
+                    src = cvtSrc.Expression;
                 var regDst = RegisterOf(assDst);
                 if (src is MemoryAccess memSrc &&
                     (regDst == Index ||
@@ -230,7 +230,7 @@ namespace Reko.Scanning
                     // R = Mem[xxx]
                     var rIdx = Index;
                     var rDst = RegisterOf(assDst);
-                    if ((rDst != host.GetSubregister(rIdx, 0, 8) && castSrc == null) &&
+                    if ((rDst != host.GetSubregister(rIdx, 0, 8) && cvtSrc == null) &&
                         rDst != rIdx)
                     {
                         Index = RegisterStorage.None;
@@ -238,8 +238,7 @@ namespace Reko.Scanning
                         return true;
                     }
 
-                    var binEa = memSrc.EffectiveAddress as BinaryExpression;
-                    if (binEa == null)
+                    if (!(memSrc.EffectiveAddress is BinaryExpression binEa))
                     {
                         Index = RegisterStorage.None;
                         IndexExpression = null;
@@ -341,7 +340,7 @@ namespace Reko.Scanning
 
         private RegisterStorage RegisterOf(Expression? e)
         {
-            if (e is Cast c)
+            if (e is Conversion c)
                 e = c.Expression;
             if (e is Identifier id && id.Storage is RegisterStorage reg)
                 return reg;

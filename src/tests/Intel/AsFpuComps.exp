@@ -5,7 +5,7 @@
 0B00:0002 D9 E8           	fld1
 0B00:0004 D8 D9           	fcomp	st(0),st(1)
 0B00:0006 DF E0           	fstsw	ax
-0B00:0008 F7 C0 00 40     	test	ax,4000
-0B00:000C 75 04           	jnz	0012
-0B00:000E C6 47 08 03     	mov	byte ptr [bx+08],03
+0B00:0008 F7 C0 00 40     	test	ax,4000h
+0B00:000C 75 04           	jnz	0012h
+0B00:000E C6 47 08 03     	mov	byte ptr [bx+8h],3h
 0B00:0012 C3              	ret

@@ -124,11 +124,6 @@ namespace Reko.Analysis
 			defExpr = phi;
 		}
 
-        public override void VisitSlice(Slice slice)
-        {
-            base.VisitSlice(slice);
-        }
-
         public override void VisitUnaryExpression(UnaryExpression unary)
 		{
 			if (unary != null && unary.Operator == Operator.Not && unary.Expression is Identifier id)

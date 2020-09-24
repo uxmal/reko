@@ -2,14 +2,14 @@
 
 ;; fn0C00_0000: 0C00:0000
 fn0C00_0000 proc
-	call	002C
-	cmp	ax,0002
-	ja	0011
+	call	002Ch
+	cmp	ax,2h
+	ja	0011h
 
 l0C00_0008:
 	mov	bx,ax
 	add	bx,bx
-	call	word ptr cs:[bx+0012]
+	call	word ptr cs:[bx+12h]
 
 l0C00_0011:
 	ret
@@ -21,18 +21,18 @@ l0C00_0016	dw	0x002C
 ;;   Called from:
 ;;     0C00:000A (in fn0C00_0000)
 fn0C00_0018 proc
-	mov	ax,[si+02]
-	add	ax,[si+04]
-	mov	[si+06],ax
+	mov	ax,[si+2h]
+	add	ax,[si+4h]
+	mov	[si+6h],ax
 	ret
 
 ;; fn0C00_0022: 0C00:0022
 ;;   Called from:
 ;;     0C00:000A (in fn0C00_0000)
 fn0C00_0022 proc
-	mov	ax,[si+02]
-	sub	ax,[si+04]
-	mov	[si+06],ax
+	mov	ax,[si+2h]
+	sub	ax,[si+4h]
+	mov	[si+6h],ax
 	ret
 
 ;; fn0C00_002C: 0C00:002C
@@ -40,9 +40,9 @@ fn0C00_0022 proc
 ;;     0C00:0000 (in fn0C00_0000)
 ;;     0C00:000A (in fn0C00_0000)
 fn0C00_002C proc
-	mov	ax,[si+02]
-	and	ax,[bx+04]
-	mov	[si+06],ax
+	mov	ax,[si+2h]
+	and	ax,[bx+4h]
+	mov	[si+6h],ax
 	ret
 
 Procedure fn0C00_0000 calls:

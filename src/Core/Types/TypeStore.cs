@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Reko.Core.Types
 {
@@ -107,6 +108,8 @@ namespace Reko.Core.Types
                 if (dtOld != null)
                 {
                     dt = u.Unify(dt, dtOld)!;
+                    if (tv.Class.ClassMembers.Count == 4)
+                        tv.ToString();
                 }
                 else if (dt != null)
                 {
@@ -127,6 +130,14 @@ namespace Reko.Core.Types
             var sw = new StringWriter();
             Write(sw);
             Debug.WriteLine(sw.ToString());
+        }
+
+        [Conditional("DEBUG")]
+        public void Dump(string dir, string filename)
+        {
+            using var w = new StreamWriter(Path.Combine(dir, filename));
+            Write(w);
+            Debug.WriteLine(w.ToString());
         }
 
         public Expression? ExpressionOf(TypeVariable tv)
@@ -195,8 +206,7 @@ namespace Reko.Core.Types
 
         public void WriteExpressionOf(TypeVariable tvMember, Formatter writer)
         {
-            Expression e;
-            if (tvSources.TryGetValue(tvMember, out e) && e != null)
+            if (tvSources.TryGetValue(tvMember, out Expression e) && e != null)
             {
                 writer.Write(" (in {0}", e);
                 if (e.DataType != null)

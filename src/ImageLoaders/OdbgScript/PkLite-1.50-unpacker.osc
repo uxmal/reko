@@ -1,0 +1,35 @@
+var addrFarjmp
+var addrUnpacker
+var selector
+
+; Run until the RETF.
+bp cs:0053
+run
+
+; Execute the RETF.
+sti
+
+; Break at the instruction after relocation is done.
+bp cs:01E3
+
+; Break at the far JMP into the original code.
+bp cs:0209
+
+relocation_loop:
+run
+
+cmp ip,0209
+je relocation_done
+
+; Read the relocation
+mov selector,[es:di],2
+msg $"Relocation at {es}:{di} = {selector}"
+reko.addseg es:bx,selector
+jmp relocation_loop
+
+relocation_done:
+; Single step into the original code.
+sti
+msg $"Entry point at {cs}:{ip}"
+dpe "dontcare",cs:ip
+ret

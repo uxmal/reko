@@ -21,6 +21,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Reko.Arch.Arm.AArch32
@@ -70,14 +71,27 @@ namespace Reko.Arch.Arm.AArch32
             var src = Operand(Src1());
             var dst = Operand(Dst(), PrimitiveType.Word32, true);
             DataType dstType;
+            DataType srcType;
             switch (instr.vector_data)
             {
-            case ArmVectorData.F32S32: dstType = PrimitiveType.Real32; break;
-            case ArmVectorData.F64S32: dstType = PrimitiveType.Real64; break;
-            case ArmVectorData.F64F32: dstType = PrimitiveType.Real64; break;
+            case ArmVectorData.F32S32: dstType = PrimitiveType.Real32; srcType = PrimitiveType.Int32; break;
+            case ArmVectorData.F64S32: dstType = PrimitiveType.Real64; srcType = PrimitiveType.Int32; break;
+            case ArmVectorData.F64F32: dstType = PrimitiveType.Real64; srcType = PrimitiveType.Real32; break;
             default: NotImplementedYet(); return;
             }
-            m.Assign(dst, m.Cast(dstType, src));
+            if (dst.DataType.BitSize == dstType.BitSize && src.DataType.BitSize == srcType.BitSize)
+            {
+                m.Assign(dst, m.Convert(src, srcType, dstType));
+            }
+            else
+            {
+                var cElems = dst.DataType.BitSize / dstType.BitSize;
+                var aSrc = new ArrayType(srcType, cElems);
+                var aDst = new ArrayType(dstType, cElems);
+                var tmpSrc = binder.CreateTemporary(aSrc);
+                m.Assign(tmpSrc, src);
+                m.Assign(dst, host.PseudoProcedure($"__vcvt_{vectorConversionNames[instr.vector_data]}", aDst, tmpSrc));
+            }
         }
 
         private void RewriteVcvtr()
@@ -90,7 +104,8 @@ namespace Reko.Arch.Arm.AArch32
             case ArmVectorData.S32F32: dstType = PrimitiveType.Int32; break;
             default: NotImplementedYet(); return;
             }
-            m.Assign(dst, m.Cast(dstType, host.PseudoProcedure("trunc", src.DataType, src)));
+            src = host.PseudoProcedure("trunc", src.DataType, src);
+            m.Assign(dst, m.Convert(src, src.DataType, dstType));
         }
 
         private void RewriteVext()
@@ -162,7 +177,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 if (dst.DataType.BitSize != src.DataType.BitSize)
                 {
-                    src = m.Cast(dst.DataType, src);
+                    src = m.Convert(src, src.DataType, dst.DataType);
                 }
                 m.Assign(dst, src);
             }
@@ -408,5 +423,34 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
+        private static readonly Dictionary<ArmVectorData, string> vectorConversionNames = new Dictionary<ArmVectorData, string>
+        {
+            { ArmVectorData.S16F16, "i16_f16" },
+            { ArmVectorData.S32F16, "i32_f16" },
+            { ArmVectorData.S32F32, "i32_f32" },
+            { ArmVectorData.S32F64, "i32_f64" },
+
+            { ArmVectorData.U16F16, "u16_f16" },
+            { ArmVectorData.U32F16, "u32_f16" },
+            { ArmVectorData.U32F32, "u32_f32" },
+            { ArmVectorData.U32F64, "u32_f64" },
+
+            { ArmVectorData.F16F32, "f16_f32" },
+            { ArmVectorData.F16F64, "f16_f64" },
+            { ArmVectorData.F16S16, "f16_i16" },
+            { ArmVectorData.F16S32, "f16_i32" },
+            { ArmVectorData.F16U16, "f16_i16" },
+            { ArmVectorData.F16U32, "f16_i32" },
+
+            { ArmVectorData.F32S32, "f32_i32" },
+            { ArmVectorData.F32F16, "f32_f16" },
+            { ArmVectorData.F32F64, "f32_f64" },
+            { ArmVectorData.F32U32, "f32_u32" },
+
+            { ArmVectorData.F64S32, "f64_i32" },
+            { ArmVectorData.F64U32, "f64_u32" },
+            { ArmVectorData.F64F16, "f64_f16" },
+            { ArmVectorData.F64F32, "f64_f32" },
+        };
     }
 }

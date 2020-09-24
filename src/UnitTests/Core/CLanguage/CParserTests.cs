@@ -27,6 +27,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Reko.Libraries.Microchip.V1;
 
 namespace Reko.UnitTests.Core.CLanguage
 {
@@ -46,6 +47,12 @@ namespace Reko.UnitTests.Core.CLanguage
         private void Lex(string str)
         {
             lexer = new CLexer(new StringReader(str), CLexer.GccKeywords);
+            parser = new CParser(parserState, lexer);
+        }
+
+        private void MsvcLex(string str)
+        {
+            lexer = new CLexer(new StringReader(str), CLexer.MsvcKeywords);
             parser = new CParser(parserState, lexer);
         }
 
@@ -1435,6 +1442,113 @@ extern int myfunc() __asm__ ("""" ""__flub"");");
             Lex("typedef _Atomic char atomic_char;");
             var decl = parser.Parse()[0];
             Assert.AreEqual("(decl Typedef _Atomic Char ((init-decl atomic_char)))", decl.ToString());
+        }
+
+        [Test]
+        public void CParser_declspec_restrict()
+        {
+            Lex("  __declspec(noalias) __declspec(restrict)      void * __cdecl test();");
+            var decl = parser.Parse()[0];
+            
+            Assert.AreEqual("(decl (__declspec noalias) (__declspec restrict) Void ((init-decl (ptr (__Cdecl (func test)))))))", decl.ToString());
+        }
+
+        [Test]
+        public void CParser_pragma_function_many_args()
+        {
+            Lex("  #pragma function(floor, floorf, ceil, ceilf)");
+            parser.Parse();
+        }
+
+        [Test]
+        public void CParser_pragma_pack2()
+        {
+            Lex(
+@"#pragma pack(push)
+#pragma pack(push,4)
+");
+            parser.Parse();
+        }
+
+        [Test]
+        public void CParser_pragma_warning_disable()
+        {
+            Lex("#pragma warning(default : 4200)\r\n");
+            parser.Parse();
+        }
+
+        [Test]
+        public void CParser_inline_function()
+        {
+            MsvcLex(
+@"_inline bool IsDebuggerPresent(void) {
+    bool bIsDebuggerPresent;
+    if (CheckRemoteDebuggerPresent(GetCurrentProcess(), &bIsDebuggerPresent)) {
+        return bIsDebuggerPresent;
+    }
+    return 0;
+}");
+            var decl = parser.Parse()[0];
+        }
+
+        [Test]
+        public void CParser_If()
+        {
+            Lex(
+@"{
+    HRESULT hr;
+    if (cchDest > 2147483647)
+    {
+        hr = ((HRESULT)0x80070057L);
+    }
+    else
+    {
+        hr = StringCopyWorkerA(pszDest, cchDest, pszSrc);
+    }
+    return hr;
+}");
+            parser.ParserState.Typedefs.Add("HRESULT");
+            var stm = parser.Parse_Stat();
+        }
+
+        [Test]
+        public void CParser_Parenthesized_Statements()
+        {
+            Lex(@" {
+  	(hKey);    
+	(SecurityInformation);    
+	(pSecurityDescriptor);    
+	return 0L;
+}");
+            var stm = parser.Parse_Stat();
+        }
+
+        [Test]
+        public void CParser_cdecl_declaration()
+        {
+            Lex(@"size_t  __cdecl _msize(     void * _Memory);");
+            parser.Parse();
+        }
+
+        [Test]
+        public void CParser_const_before_ptr()
+        {
+            Lex("typedef struct _REGINI const *LPCREGINI;");
+            var decl = parser.Parse()[0];
+            Assert.AreEqual("(decl Typedef (Struct _REGINI) ((init-decl (ptr Const LPCREGINI))))", decl.ToString());
+        }
+
+        [Test]
+        public void CParser_forward_decl()
+        {
+            Lex(@"
+            typedef unsigned int Request;
+            struct test {
+                int Request[42];
+            };
+            ");
+            var decl = parser.Parse()[1];
+
         }
     }
 }

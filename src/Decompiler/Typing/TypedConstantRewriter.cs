@@ -36,21 +36,19 @@ namespace Reko.Typing
 	{
         private readonly Program program;
         private readonly IPlatform platform;
-		private readonly TypeStore store;
 		private readonly Identifier globals;
-		private Constant? c;
+        private readonly Dictionary<ushort, Identifier> mpSelectorToSegId;
+        private readonly DecompilerEventListener eventListener;
+        private Constant? c;
+        private Expression? basePtr;
 		private PrimitiveType? pOrig;
 		private bool dereferenced;
-        private Dictionary<ushort, Identifier> mpSelectorToSegId;
-        private DecompilerEventListener eventListener;
-        private FictitiousGlobalEliminator fge;
 
         public TypedConstantRewriter(Program program, DecompilerEventListener eventListener)
 		{
             this.eventListener = eventListener;
             this.program = program;
             this.platform = program.Platform;
-            this.store = program.TypeStore;
             this.globals = program.Globals;
             if (program.SegmentMap != null)
             {
@@ -62,7 +60,6 @@ namespace Reko.Typing
             {
                 this.mpSelectorToSegId = new Dictionary<ushort, Identifier>();
             }
-            this.fge = new FictitiousGlobalEliminator(program);
         }
 
         /// <summary>
@@ -71,9 +68,10 @@ namespace Reko.Typing
         /// <param name="c"></param>
         /// <param name="dereferenced"></param>
         /// <returns></returns>
-        public Expression Rewrite(Constant c, bool dereferenced)
+        public Expression Rewrite(Constant c, Expression? basePtr, bool dereferenced)
         {
             this.c = c;
+            this.basePtr = basePtr;
             DataType dtInferred = c.DataType;
             if (dtInferred == null)
             {
@@ -95,7 +93,7 @@ namespace Reko.Typing
             return dt.Accept(this);
         }
 
-        public Expression Rewrite(Address addr, bool dereferenced)
+        public Expression Rewrite(Address addr, Expression? basePtr, bool dereferenced)
         {
             if (addr.Selector.HasValue)
             {
@@ -219,7 +217,9 @@ namespace Reko.Typing
 			Pointer p = (Pointer) memptr.BasePointer;
 			EquivalenceClass eq = (EquivalenceClass) p.Pointee;
 			StructureType baseType = (StructureType) eq.DataType;
-			Expression baseExpr = new ScopeResolution(baseType);
+			Expression baseExpr = this.basePtr != null
+				? new Dereference(this.basePtr.DataType, this.basePtr)
+                : (Expression) new ScopeResolution(baseType);
 
             var dt = memptr.Pointee.ResolveAs<DataType>()!;
             var f = EnsureFieldAtOffset(baseType, dt, c!.ToInt32());
@@ -286,7 +286,6 @@ namespace Reko.Typing
                     return ReadNullTerminatedString(c, charType);
                 }
                 e = RewriteGlobalFieldAccess(dt, c.ToInt32());
-                //e = e.Accept(fge);
             }
 			return e;
 		}
