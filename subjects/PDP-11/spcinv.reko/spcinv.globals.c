@@ -34,7 +34,7 @@ Eq_n g_t000D =
 	{
 		
 		{
-			L'\x00'
+			L'\0'
 		},
 	};
 cui16 g_w0024 = 0x00;
@@ -250,7 +250,7 @@ Eq_n g_t0F0C =
 cui16 g_w0F0E = 0x00;
 ci16 g_w0F10 = 0x00;
 ci16 g_w0F12 = 0x00;
-wchar_t g_w0F14 = L'\x00';
+wchar_t g_w0F14 = L'\0';
 word16 g_w0F16 = 0x00;
 ci16 g_w0F18 = 0x00;
 struct Eq_n * g_ptr0F1A = null;
@@ -267,8 +267,8 @@ Eq_n g_t0F28 =
 Eq_n g_a0F2A[] = 
 	{
 	};
-char g_b0F9A = '\x0D';
-char g_b0FDA = '\x0D';
+char g_b0F9A = '\r';
+char g_b0FDA = '\r';
 byte g_b1111 = 0x1B;
 byte g_b1116 = 0x1B;
 byte g_b111B = 0x0A;
