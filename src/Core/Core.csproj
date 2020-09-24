@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/uxmal/reko</RepositoryUrl>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;ALWAYS_SHOW_SIGIL</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Serialization\DecompilerDiscoveries.cs" />
