@@ -424,16 +424,25 @@ namespace Reko.Arch.X86
                 // F0
                 Instr(Mnemonic.movbe, Gv,Ev),
                 Instr(Mnemonic.movbe, Ev,Gv),
-                s_nyi,
-                new GroupDecoder(Grp17, Eb,Ib),
+                new PrefixedDecoder(
+                    dec:VexInstr(Mnemonic.illegal, Mnemonic.andn, Gy,By,Ey),
+                    dec66:s_nyi),
+                new GroupDecoder(Grp17),
 
                 s_invalid,
-                s_nyi,
+                VexInstr(s_invalid, new PrefixedDecoder(
+                    dec:   Instr(Mnemonic.bzhi, Gy,Ey,By),
+                    decF3: Instr(Mnemonic.pext, Gy,By,Ey),
+                    decF2: Instr(Mnemonic.pdep, Gy,By,Ey))),
                 new PrefixedDecoder(
                     dec66:Instr(Mnemonic.adcx, Gy,Ey),
                     decF3:Instr(Mnemonic.adox, Gy,Ey),
-                    decF2:VexInstr(Mnemonic.illegal, Mnemonic.mulx, By,Gy,rDX,Ey)),
-                s_nyi,
+                    decF2:VexInstr(Mnemonic.illegal, Mnemonic.mulx, Gy,By,rDX,Ey)),
+                VexInstr(s_invalid, new PrefixedDecoder(
+                    dec:   Instr(Mnemonic.bextr, Gy,Ey,By),
+                    dec66: Instr(Mnemonic.shlx, Gy,Ey,By),
+                    decF3: Instr(Mnemonic.sarx, Gy,Ey,By),
+                    decF2: Instr(Mnemonic.shrx, Gy,Ey,By))),
 
                 s_invalid,
                 s_invalid,

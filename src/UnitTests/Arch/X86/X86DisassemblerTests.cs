@@ -249,6 +249,12 @@ foo:
         }
 
         [Test]
+        public void X86Dis_rorx()
+        {
+            AssertCode64("rorx\trax,r10,2h", "C4C3FBF0C202");
+        }
+
+        [Test]
         public void X86Dis_Extensions()
         {
             var arch = new X86ArchitectureReal(sc, "x86-real-16");
@@ -625,15 +631,18 @@ movzx	ax,byte ptr [bp+4h]
             var instr = Disassemble32(0x66, 0x0F, 0x6F, 0x06, 0x12, 0x34, 0x56);
             Assert.AreEqual("movdqa\txmm0,[esi]", instr.ToString());
         }
-        //$TOD: copy only gives me n-1 bytes rathern than n. bytes
-        //   0048D4A8 
-
-        // 66 0F 6F 06                    f.o    
+       
         [Test]
         public void X86Dis_bts()
         {
             var instr = Disassemble32(0x0F, 0xAB, 0x04, 0x24, 0xEB);
             Assert.AreEqual("bts\t[esp],eax", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_bzhi()
+        {
+            AssertCode64("bzhi\trax,rdx,r9", "C4E2B0F5C2");
         }
 
         [Test]
@@ -1241,6 +1250,12 @@ movzx	ax,byte ptr [bp+4h]
             AssertCode32("vpmovzxbw\txmm0,qword ptr [edx+42h]", 0x66, 0x0F, 0x38, 0x30, 0x42, 0x42);
         }
 
+        [Test]
+        public void X86Dis_pdep()
+        {
+            AssertCode64("pdep\trax,r10,r10", "C4C2ABF5C2");
+        }
+
 
         [Test]
         public void X86dis_permq()
@@ -1275,6 +1290,12 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_andn()
+        {
+            AssertCode64("andn\teax,eax,ebx", "C4E278F2C3");
+        }
+
+        [Test]
         public void X86dis_andps()
         {
             AssertCode32("andps\txmm0,[edx+42h]", 0x0F, 0x54, 0x42, 0x42);
@@ -1292,6 +1313,12 @@ movzx	ax,byte ptr [bp+4h]
             AssertCode32("orps\txmm0,[edx+42h]", 0x0F, 0x56, 0x42, 0x42);
         }
 
+        [Test]
+        public void X86Dis_cvtss2si()
+        { 
+            AssertCode32("cvtss2si\teax,xmm3", "F30F2DC3");
+        }
+        
         [Test]
         public void X86dis_cvtps2pd()
         {
@@ -1388,11 +1415,16 @@ movzx	ax,byte ptr [bp+4h]
             AssertCode32("vmread\t[edx+42h],eax", 0x0F, 0x78, 0x42, 0x42);
         }
 
-
         [Test]
         public void X86dis_vmwrite()
         {
             AssertCode32("vmwrite\teax,[edx+42h]", 0x0F, 0x79, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86Dis_bextr()
+        {
+            AssertCode64("bextr\teax,r11d,r10d", "C4C228F7C3");
         }
 
         [Test]
@@ -1401,11 +1433,16 @@ movzx	ax,byte ptr [bp+4h]
             AssertCode32("btc\teax,[edx+42h]", 0x0F, 0xBB, 0x42, 0x42);
         }
 
-
         [Test]
         public void X86dis_bsf()
         {
             AssertCode32("bsf\teax,[edx+42h]", 0x0F, 0xBC, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_bsf_w16()
+        {
+            AssertCode64("bsf\tr11w,r15w", "66450FBCDFBD");
         }
 
         [Test]
@@ -1428,9 +1465,21 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_pext()
+        {
+            AssertCode64("pext\tr8,r10,r10", "C442AAF5C2");
+        }
+
+        [Test]
         public void X86dis_pextrw()
         {
             AssertCode32("pextrw\teax,mm2,42h", 0x0F, 0xC5, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86Dis_shrx()
+        {
+            AssertCode64("shrx\teax,r11d,r8d", "C4C23BF7C3");
         }
 
         [Test]
@@ -1807,6 +1856,12 @@ movzx	ax,byte ptr [bp+4h]
         {
             var instr = Disassemble64(0x0f, 0x01, 0xC9);
             Assert.AreEqual("mwait", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_mulx()
+        {
+            AssertCode64("mulx\tr12,rax,rdx,r10", "C442FBF6E2");
         }
 
         [Test]

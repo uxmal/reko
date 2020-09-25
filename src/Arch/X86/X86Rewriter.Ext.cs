@@ -40,8 +40,8 @@ namespace Reko.Arch.X86
     {
         public void RewriteAesimc()
         {
-            var dst = SrcOp(instrCur.Operands[0]);
-            var src = SrcOp(instrCur.Operands[1]);
+            var dst = SrcOp(0);
+            var src = SrcOp(1);
             m.Assign(dst, host.PseudoProcedure("__aesimc", dst.DataType, src));
         }
 
@@ -73,7 +73,7 @@ namespace Reko.Arch.X86
 
         private void RewriteInvlpg()
         {
-            var op = SrcOp(instrCur.Operands[0]);
+            var op = SrcOp(0);
             m.SideEffect(host.PseudoProcedure("__invlpg", VoidType.Instance,
                 op));
 
@@ -82,11 +82,11 @@ namespace Reko.Arch.X86
         private void RewriteLar()
         {
             m.Assign(
-                SrcOp(instrCur.Operands[0]),
+                SrcOp(0),
                 host.PseudoProcedure(
                     "__lar",
                     instrCur.Operands[0].Width,
-                    SrcOp(instrCur.Operands[1])));
+                    SrcOp(1)));
             m.Assign(
                 orw.FlagGroup(FlagM.ZF),
                 Constant.True());
@@ -94,17 +94,17 @@ namespace Reko.Arch.X86
 
         private void RewriteLmsw()
         {
-            m.SideEffect(host.PseudoProcedure("__lmsw", VoidType.Instance, SrcOp(instrCur.Operands[0])));
+            m.SideEffect(host.PseudoProcedure("__lmsw", VoidType.Instance, SrcOp(0)));
         }
 
         private void RewriteLsl()
         {
             m.Assign(
-                SrcOp(instrCur.Operands[0]),
+                SrcOp(0),
                 host.PseudoProcedure(
                     "__lsl",
                     instrCur.Operands[0].Width,
-                    SrcOp(instrCur.Operands[1])));
+                    SrcOp(1)));
         }
 
         private void RewriteLxdt(string intrinsicName)
@@ -114,14 +114,14 @@ namespace Reko.Arch.X86
                 host.PseudoProcedure(
                     intrinsicName,
                     VoidType.Instance,
-                    SrcOp(instrCur.Operands[0])));
+                    SrcOp(0)));
         }
 
         private void RewriteSxdt(string intrinsicName)
         {
             iclass = InstrClass.System;
             m.Assign(
-                SrcOp(instrCur.Operands[0]),
+                SrcOp(0),
                 host.PseudoProcedure(
                     intrinsicName,
                     instrCur.Operands[0].Width));
@@ -144,12 +144,12 @@ namespace Reko.Arch.X86
 
         public void RewritePrefetch(string name)
         {
-            m.SideEffect(host.PseudoProcedure(name, VoidType.Instance, SrcOp(instrCur.Operands[0])));
+            m.SideEffect(host.PseudoProcedure(name, VoidType.Instance, SrcOp(0)));
         }
 
         private void RewriteSmsw()
         {
-            var dst = SrcOp(instrCur.Operands[0]);
+            var dst = SrcOp(0);
             m.Assign(dst, host.PseudoProcedure("__smsw", dst.DataType));
         }
 
@@ -161,15 +161,15 @@ namespace Reko.Arch.X86
         public void RewriteVmread()
         {
             m.Assign(
-                SrcOp(instrCur.Operands[0]),
-                host.PseudoProcedure("__vmread", instrCur.Operands[0].Width, SrcOp(instrCur.Operands[1])));
+                SrcOp(0),
+                host.PseudoProcedure("__vmread", instrCur.Operands[0].Width, SrcOp(1)));
         }
 
         public void RewriteVmwrite()
         {
             m.SideEffect(host.PseudoProcedure("__vmwrite", VoidType.Instance,
-                SrcOp(instrCur.Operands[0]),
-                SrcOp(instrCur.Operands[1])));
+                SrcOp(0),
+                SrcOp(1)));
         }
 
 

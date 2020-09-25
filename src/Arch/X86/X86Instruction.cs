@@ -21,9 +21,6 @@
 using Reko.Core;
 using Reko.Core.Types;
 using Reko.Core.Machine;
-using System;
-using System.Text;
-using System.Collections.Generic;
 
 namespace Reko.Arch.X86
 {
@@ -139,6 +136,7 @@ namespace Reko.Arch.X86
 			case Mnemonic.bsr:
 				return FlagM.ZF;
 			case Mnemonic.and:
+			case Mnemonic.andn:
 			case Mnemonic.or:
             case Mnemonic.sahf:
             case Mnemonic.test:

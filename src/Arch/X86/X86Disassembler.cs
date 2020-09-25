@@ -187,7 +187,6 @@ namespace Reko.Arch.X86
                 };
             }
 
-
             internal bool IsSegmentOverrideActive()
             {
                 return this.isSegmentOverrideActive;
@@ -1080,11 +1079,16 @@ namespace Reko.Arch.X86
             RegisterStorage reg;
             var bitsize = dasm.decodingContext.dataWidth.BitSize;
             if (bitsize == 16)
+            {
                 reg = Registers.dx;
-            else if (bitsize == 32)
-                reg = Registers.edx;
+            }
             else
-                reg = Registers.rdx;
+            {
+                if (dasm.decodingContext.RegisterExtension.FlagWideValue)
+                    reg = Registers.rdx;
+                else
+                    reg = Registers.edx;
+            }
             dasm.decodingContext.ops.Add(new RegisterOperand(reg));
             return true;
         }
@@ -1160,7 +1164,9 @@ namespace Reko.Arch.X86
 
         public static VexInstructionDecoder VexInstr(Mnemonic legacy, Mnemonic vex, params Mutator<X86Disassembler> [] mutators)
         {
-            var legDec = Instr(legacy, mutators);
+            var legDec = legacy != Mnemonic.illegal
+                    ? Instr(legacy, mutators)
+                    : s_invalid;
             var vexDec = Instr(vex, mutators);
             return new VexInstructionDecoder(legDec, vexDec);
         }
