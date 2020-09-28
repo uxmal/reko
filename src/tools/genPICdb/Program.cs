@@ -70,7 +70,7 @@ namespace Reko.Tools.genPICdb
         private static readonly HashSet<string> acceptedPICArchitectures =
             new HashSet<string>() { "16xxxx", "16Exxx", "18xxxx" };
 
-        private static Regex picFilterRegex = new Regex(@"PIC1[68][CF][1-9]\w*", RegexOptions.Compiled);
+        private static readonly Regex picFilterRegex = new Regex(@"PIC1[68][CF][1-9]\w*", RegexOptions.Compiled);
 
 
         // XML elements we are ignoring from the Microchip PIC Device definition.
@@ -102,22 +102,23 @@ namespace Reko.Tools.genPICdb
             return location is null ? null : new FileInfo(location.LocalPath).Directory.FullName;
         }
 
-        private static string _workingDir
+        private static string workingDir
         {
             get
             {
-                if (workingDir is null)
-                    workingDir = getExecutingDirectoryName();
-                return workingDir;
+                if (workDir is null)
+                    workDir = getExecutingDirectoryName();
+                return workDir;
             }
         }
-        private static string workingDir = null;
+        private static string workDir = null;
 
-        private static string _picLocalDBFilePath { get; set; }
-            = Path.Combine(_workingDir, PICConstants.LocalDBFilename);
+        private static string picLocalDBFilePath { get; set; }
+            = Path.Combine(workingDir, PICConstants.LocalDBFilename);
 
 
         // Prunes the PIC XML document of unwanted/unnecessary information.
+        // Adds bit position information for DCRField and SFRField.
         private static XDocument pruneAndPatch(XDocument xdoc)
         {
             XNamespace edc = edcNamespace;
@@ -159,7 +160,7 @@ namespace Reko.Tools.genPICdb
             // Must be done only after the addition of the bit locations on the bit fields.
             xdoc.Descendants().Where(p => p.Name.LocalName == "AdjustPoint").Remove();
 
-            // Remove useless/confusing attributes in 'JoinedSFR' elements.
+            // Remove optional but useless/confusing attributes in 'JoinedSFRDef' elements.
             foreach (var xjoined in xroot.Descendants().Where(p => p.Name.LocalName == "JoinedSFRDef"))
             {
                 xjoined.Attribute("_modsrc")?.Remove();
@@ -170,11 +171,12 @@ namespace Reko.Tools.genPICdb
             xdoc = removeRedundantFieldDef(xdoc, "DCR");
             xdoc = removeRedundantFieldDef(xdoc, "SFR");
 
+            // Finally returns the edulcorated XML document.
             return xdoc;
         }
 
         /// <summary>
-        /// Adds a bit position attribute to each bitfield definition.
+        /// Adds a bit position attribute to each bitfield definition (DCRFieldDef, SFRFieldDef).
         /// </summary>
         /// <param name="xdoc">The XML document.</param>
         /// <param name="prefix">The prefix to bitfield definition.</param>
@@ -183,23 +185,21 @@ namespace Reko.Tools.genPICdb
             var mode = prefix + "Mode";
             var fielddef = prefix + "FieldDef";
 
-            foreach (var xelem in xdoc.Root.Descendants().Where(p => p.Name.LocalName == mode))
+            foreach (var xfieldmode in xdoc.Root.Descendants().Where(p => p.Name.LocalName == mode))
             {
                 var bitpos = 0;
-                foreach (var xdesc in xelem.Elements())
+                foreach (var xfielddef in xfieldmode.Elements())
                 {
-                    var name = xdesc.Name.LocalName;
+                    var name = xfielddef.Name.LocalName;
                     if (name.Equals(fielddef))
                     {
-                        xdesc.SetAttributeValue("bitpos", bitpos);
-                        var nzwidth = xdesc.Attribute("nzwidth").Value.ToInt32Ex();
-                        bitpos += nzwidth;
+                        xfielddef.SetAttributeValue("bitpos", bitpos);
+                        bitpos += xfielddef.Attribute("nzwidth").Value.ToInt32Ex();
                         continue;
                     }
                     if (name.Equals("AdjustPoint"))
                     {
-                        var offset = xdesc.Attribute("offset").Value.ToInt32Ex();
-                        bitpos += offset;
+                        bitpos += xfielddef.Attribute("offset").Value.ToInt32Ex();
                         continue;
                     }
                     throw new NotImplementedException($"Unexpected XElement descendant '{name}' for {mode}.");
@@ -211,10 +211,10 @@ namespace Reko.Tools.genPICdb
         }
 
         /// <summary>
-        /// Removes the redundant register field definitions. Those whose width is equal to that of parent register.
+        /// Removes the redundant register field definitions. Those whose bit width is equal to that of parent register.
         /// </summary>
-        /// <param name="xdoc">The xdoc.</param>
-        /// <param name="prefix">The prefix.</param>
+        /// <param name="xdoc">The XML document.</param>
+        /// <param name="prefix">The prefix to register definition.</param>
         private static XDocument removeRedundantFieldDef(XDocument xdoc, string prefix)
         {
             var def = prefix + "Def";
@@ -224,14 +224,14 @@ namespace Reko.Tools.genPICdb
 
             var xelem2remove = new List<XElement>();
 
-            foreach (var xdef in xdoc.Root.Descendants().Where(p => p.Name.LocalName == def))
+            foreach (var xregdef in xdoc.Root.Descendants().Where(p => p.Name.LocalName == def))
             {
-                xdef.Attribute("_modsrc")?.Remove();
-                xdef.Attribute("_refcount")?.Remove();
+                xregdef.Attribute("_modsrc")?.Remove();
+                xregdef.Attribute("_refcount")?.Remove();
 
-                var defnzwidth = xdef.Attribute("nzwidth").Value.ToUInt32Ex(); // Size of main register
+                var defnzwidth = xregdef.Attribute("nzwidth").Value.ToUInt32Ex(); // Size of main register
 
-                foreach (var xfielddef in xdef.Descendants().Where(p => p.Name.LocalName == fielddef))
+                foreach (var xfielddef in xregdef.Descendants().Where(p => p.Name.LocalName == fielddef))
                 {
                     var fldnzwidth = xfielddef.Attribute("nzwidth").Value.ToUInt16Ex(); // Size of bit field
                     if (fldnzwidth == defnzwidth)
@@ -242,18 +242,18 @@ namespace Reko.Tools.genPICdb
                 xelem2remove.ForEach(xelem => xelem.Remove());
                 xelem2remove.Clear();
 
-                foreach (var xmode in xdef.Descendants().Where(p => p.Name.LocalName == fieldmode))
+                foreach (var xregmode in xregdef.Descendants().Where(p => p.Name.LocalName == fieldmode))
                 {
-                    if (!xmode.HasElements)
-                        xelem2remove.Add(xmode);
+                    if (!xregmode.HasElements)
+                        xelem2remove.Add(xregmode);
                 }
                 xelem2remove.ForEach(xelem => xelem.Remove());
                 xelem2remove.Clear();
 
-                foreach (var xmodelist in xdef.Descendants().Where(p => p.Name.LocalName == fieldmodelist))
+                foreach (var xfieldmodelist in xregdef.Descendants().Where(p => p.Name.LocalName == fieldmodelist))
                 {
-                    if (!xmodelist.HasElements)
-                        xelem2remove.Add(xmodelist);
+                    if (!xfieldmodelist.HasElements)
+                        xelem2remove.Add(xfieldmodelist);
                 }
                 xelem2remove.ForEach(xelem => xelem.Remove());
                 xelem2remove.Clear();
@@ -264,14 +264,14 @@ namespace Reko.Tools.genPICdb
             return xdoc;
         }
 
-        // Filters acceptable PIC12, PIC16 and PIC18 by their names.
+        // Filters acceptable PIC16 and PIC18 by their names.
         private static bool filterPICName(string s)
         {
             var res = picFilterRegex.Match(s);
             return res.Success && !s.Contains("J") && !s.Contains("Q");
         }
 
-        // Writes a PIC XML document to the PIC compact database. Keeps note of the PIC processor ID for COFF decoding.
+        // Writes a PIC XML document to the compressed PIC database. Keeps note of the PIC processor ID for COFF decoding.
         private static void writePICEntry(XDocument xdoc, string subdir, ZipArchive zout)
         {
             var xroot = xdoc?.Root;
@@ -287,13 +287,13 @@ namespace Reko.Tools.genPICdb
                 xdoc.Save(picw);
         }
 
-        // Accepts only desired PIC16 and PIC18 from the more general (huge) Crownking JAR database.
+        // Accepts only desired PIC16 and PIC18 from the more general (huge) Microchip JAR database.
         private static bool acceptPICEntry(ZipArchiveEntry picentry, Func<string, bool> filter)
             => ((picentry.FullName.StartsWith(PICConstants.ContentPIC16Path + "/PIC16", true, CultureInfo.InvariantCulture) ||
                  picentry.FullName.StartsWith(PICConstants.ContentPIC18Path + "/PIC18", true, CultureInfo.InvariantCulture))
                 && filter(picentry.Name));
 
-        // Writes the list of PIC parts information to the PIC compact database.
+        // Writes the list of PIC parts information to the compressed PIC database.
         private static void writePartsInfo(ZipArchive zout)
         {
             if (picPartsInfo.Parts.Count() <= 0)
@@ -310,7 +310,7 @@ namespace Reko.Tools.genPICdb
         }
 
         /// <summary>
-        /// Generate the PIC definition database using older Microchip MPLAB X database (crownking.edc.jar)
+        /// Generate the PIC definition database using older Microchip MPLAB X database (huge file 'crownking.edc.jar')
         /// </summary>
         /// <returns>
         /// Error code or 0.
@@ -363,7 +363,7 @@ namespace Reko.Tools.genPICdb
             catch (Exception ex)
             {
                 Console.WriteLine($"Got exception: {ex.Message}");
-                Trace.TraceError($"Update DB : {ex.StackTrace}");
+                Trace.TraceError($"Generate PIC DB : {ex.StackTrace}");
                 throw;
             }
         }
@@ -426,7 +426,7 @@ namespace Reko.Tools.genPICdb
             catch (Exception ex)
             {
                 Console.WriteLine($"Got exception: {ex.Message}");
-                Trace.TraceError($"Update DB : {ex.StackTrace}");
+                Trace.TraceError($"Generate PIC DB : {ex.StackTrace}");
                 throw;
             }
         }
@@ -478,10 +478,11 @@ namespace Reko.Tools.genPICdb
             if (args.Count() > 0)
             {
                 var filePath = args[0];
-                _picLocalDBFilePath = Path.Combine(_workingDir, filePath);
-                if (!Directory.Exists(Path.GetDirectoryName(_picLocalDBFilePath)))
+                picLocalDBFilePath = Path.Combine(workingDir, filePath);
+                var newdir = Path.GetDirectoryName(picLocalDBFilePath);
+                if (!Directory.Exists(newdir))
                 {
-                    Console.WriteLine("Target directory does not exist!");
+                    Console.WriteLine($"Target directory '{newdir}' does not exist!");
                     return -1;
                 }
             }
@@ -494,14 +495,14 @@ namespace Reko.Tools.genPICdb
             }
 
             if (mplabLoc.UsePacks)
-                success = (post410Database(_picLocalDBFilePath) == 0);
+                success = (post410Database(picLocalDBFilePath) == 0);
             else
-                success = (before410Database(_picLocalDBFilePath) == 0);
+                success = (before410Database(picLocalDBFilePath) == 0);
 
             if (success)
                 return 0;
 
-            Console.WriteLine("Unable to find a properly formatted Microchip PIC Device Definitions nor a default PIC database.");
+            Console.WriteLine("Unable to find a properly formatted Microchip PIC Device Definitions nor a legacy PIC database.");
             return -1;
         }
 
