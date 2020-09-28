@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,10 +30,13 @@ namespace Reko.Arch.Pdp11
         illegal = -1,
 
         adc,
+        adcb,
         add,
         addb,
         asl,
+        aslb,
         asr,
+        asrb,
         bcc,
         bcs,
         beq,
@@ -41,6 +44,7 @@ namespace Reko.Arch.Pdp11
         bgt,
         bhi,
         bic,
+        bicb,
         bis,
         bisb,
         bit,
@@ -58,13 +62,17 @@ namespace Reko.Arch.Pdp11
         clr,
         clrflags,
         cmp,
+        cmpb,
         com,
+        comb,
         dec,
+        decb,
         div,
 
         emt,
         halt,
         inc,
+        incb,
         iot,
         ash,
         clrb,
@@ -82,16 +90,20 @@ namespace Reko.Arch.Pdp11
         mtpi,
         mtpd,
         neg,
+        negb,
         nop,
 
         reset,
         rol,
+        rolb,
         ror,
+        rorb,
 
         rti,
         rtt,
         rts,
         sbc,
+        sbcb,
         setflags,
         sob,
         spl,

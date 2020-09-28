@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -109,7 +109,7 @@ namespace Reko.UnitTests.Analysis
         {
             var m = new ProgramBuilder();
             var pb = new ProcedureBuilder();
-            pb.ProgramMock = m;
+            pb.ProgramBuilder = m;
             buildProc(pb);
             m.Add(pb);
             var program = m.BuildProgram();
@@ -121,7 +121,7 @@ namespace Reko.UnitTests.Analysis
         {
             var m = new ProgramBuilder(arch);
             var pb = new ProcedureBuilder(arch);
-            pb.ProgramMock = m;
+            pb.ProgramBuilder = m;
             buildProc(pb);
             m.Add(pb);
             var program = m.BuildProgram();
@@ -244,7 +244,7 @@ namespace Reko.UnitTests.Analysis
                 : new ProjectLoader(sc, loader, eventListener).LoadProject(FileUnitTester.MapTestPath(configFile));
             var scan = new Scanner(
                 program,
-                new ImportResolver(project, program, eventListener),
+                new DynamicLinker(project, program, eventListener),
                 sc);
 
             scan.EnqueueImageSymbol(ImageSymbol.Procedure(program.Architecture, asm.StartAddress), true);
@@ -277,7 +277,7 @@ namespace Reko.UnitTests.Analysis
             postLoad(program);
             var scan = new Scanner(
                 program,
-                new ImportResolver(project, program, eventListener),
+                new DynamicLinker(project, program, eventListener),
                 sc);
 
             scan.EnqueueImageSymbol(ImageSymbol.Location(program.Architecture, asm.StartAddress), true);

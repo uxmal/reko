@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ using System.Text;
 
 namespace Reko.Arch.Cil
 {
-    public class CilDisassembler : DisassemblerBase<CilInstruction>
+    public class CilDisassembler : DisassemblerBase<CilInstruction, OpCode>
     {
         private EndianImageReader rdr;
         private CilInstruction instr;
@@ -894,7 +894,7 @@ namespace Reko.Arch.Cil
             return instr;
         }
 
-        protected override CilInstruction CreateInvalidInstruction()
+        public override CilInstruction CreateInvalidInstruction()
         {
             return new CilInstruction
             {

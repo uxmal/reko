@@ -1,8 +1,8 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 2017-2019 Christian Hostelet.
+ * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work from:
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,6 +51,15 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// The new disassembler.
         /// </returns>
         PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr);
+
+        /// <summary>
+        /// Creates an emulator for the target processor.
+        /// </summary>
+        /// <param name="arch">The architecture of the processor.</param>
+        /// <param name="segmentMap">The memory of the program to be emulated.</param>
+        /// <param name="envEmulator">Emulated environment.</param>
+        /// <returns>The created emulator.</returns>
+        IProcessorEmulator CreateEmulator(PICArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator);
 
         /// <summary>
         /// Creates the registers for the PIC.
@@ -118,7 +127,5 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <param name="program">The program.</param>
         /// <param name="arch">The architecture of the processor.</param>
         void PostprocessProgram(Program program, PICArchitecture arch);
-
     }
-
 }

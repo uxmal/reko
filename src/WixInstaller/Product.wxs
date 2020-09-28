@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 /*
-* Copyright (C) 1999-2019 John Källén.
+* Copyright (C) 1999-2020 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -134,13 +134,24 @@
         <File Source="$(var.Trs80.ProjectDir)Trs80Rom.xml" />
         <File Source="$(var.Wii.TargetPath)" />
         <File Source="$(var.Windows.TargetPath)" />
-        <File Source="$(var.Windows.ProjectDir)windows32.xml" />
-        <File Source="$(var.Windows.ProjectDir)windows_CE.xml" />
-        <File Source="$(var.Windows.ProjectDir)windows64.xml" />
+        <File Source="$(var.Windows.ProjectDir)advapi32.xml" />
+        <File Source="$(var.Windows.ProjectDir)comdlg32.xml" />
         <File Source="$(var.Windows.ProjectDir)commctrl.xml" />
+        <File Source="$(var.Windows.ProjectDir)gdi32.xml" />
+        <File Source="$(var.Windows.ProjectDir)kernel32.xml" />
+        <File Source="$(var.Windows.ProjectDir)msvcrt.xml" />
         <File Source="$(var.Windows.ProjectDir)ntoskrnl.xml" />
         <File Source="$(var.Windows.ProjectDir)oleaut32.xml" />
+        <File Source="$(var.Windows.ProjectDir)shell32.xml" />
+        <File Source="$(var.Windows.ProjectDir)user32.xml" />
         <File Source="$(var.Windows.ProjectDir)win32characteristics.xml" />
+        <File Source="$(var.Windows.ProjectDir)win64characteristics.xml" />
+        <File Source="$(var.Windows.ProjectDir)windows_CE.xml" />
+        <File Source="$(var.Windows.ProjectDir)windows32.xml" />
+        <File Source="$(var.Windows.ProjectDir)windows64.xml" />
+        <File Source="$(var.Windows.ProjectDir)wininet.xml" />
+        <File Source="$(var.Windows.ProjectDir)winspool.xml" />
+        <File Source="$(var.Windows.ProjectDir)wsock32.xml" />
         <File Source="$(var.Xbox360.TargetPath)" />
         <File Source="$(var.ZX81.TargetPath)" />
 
@@ -151,6 +162,8 @@
         <File Source="$(var.Avr.TargetPath)" />
         <File Source="$(var.Blackfin.TargetPath)" />
         <File Source="$(var.Cray.TargetPath)" />
+        <File Source="$(var.i8051.TargetPath)" />
+        <File Source="$(var.LatticeMico.TargetPath)" />
         <File Source="$(var.M6800.TargetPath)" />
         <File Source="$(var.M68k.TargetPath)" />
         <File Source="$(var.M68k.Design.TargetPath)" />
@@ -171,6 +184,7 @@
         <File Source="$(var.SuperH.TargetPath)" />
         <File Source="$(var.Tlcs.TargetPath)" />
         <File Source="$(var.Vax.TargetPath)" />
+        <File Source="$(var.WE32100.TargetPath)" />
         <File Source="$(var.X86.TargetPath)" />
         <File Source="$(var.X86.Design.TargetPath)" />
         <File Source="$(var.Xtensa.TargetPath)" />
@@ -200,6 +214,7 @@
         
         <!-- Unpacker scripts -->
         <File Source="$(var.OdbgScript.ProjectDir)upx_ultimate.osc" />
+        <File Source="$(var.OdbgScript.ProjectDir)RekoUnpacker_823.osc" />
         
         <!-- External files -->
         <File Source="$(var.SolutionDir)..\external\Capstone\$(var.Platform)\capstone.dll" />

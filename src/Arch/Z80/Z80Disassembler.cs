@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ namespace Reko.Arch.Z80
     /// <summary>
     /// Disassembles both 8080 and Z80 instructions, with respective syntax.
     /// </summary>
-    public class Z80Disassembler : DisassemblerBase<Z80Instruction>
+    public class Z80Disassembler : DisassemblerBase<Z80Instruction, Mnemonic>
     {
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
@@ -67,7 +67,7 @@ namespace Reko.Arch.Z80
             return instr;
         }
 
-        protected override Z80Instruction CreateInvalidInstruction()
+        public override Z80Instruction CreateInvalidInstruction()
         {
             return new Z80Instruction
             {

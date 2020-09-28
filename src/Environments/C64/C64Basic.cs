@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,18 +38,23 @@ namespace Reko.Environments.C64
     /// </summary>
     public class C64Basic : ProcessorArchitecture
     {
-        private SortedList<ushort, C64BasicInstruction> program;
-        private RegisterStorage stackRegister = new RegisterStorage("sp", 1, 0, PrimitiveType.Ptr16);
+        private static RegisterStorage stackRegister = new RegisterStorage("sp", 1, 0, PrimitiveType.Ptr16);
 
-        public C64Basic(SortedList<ushort, C64BasicInstruction> program) : base("c64Basic")
+        private SortedList<ushort, C64BasicInstruction> program;
+
+        public C64Basic(string archId) : base(archId)
         {
             this.Description = "Commodore 64 Basic";
             this.Endianness = EndianServices.Little;
-            this.program = program;
             this.PointerType = PrimitiveType.Ptr16;
             this.InstructionBitSize = 8;
             this.StackRegister = stackRegister;
             this.FramePointerType = PrimitiveType.Ptr16;
+        }
+
+        public C64Basic(SortedList<ushort, C64BasicInstruction> program) : this("c64Basic")
+        {
+            this.program = program;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
@@ -61,6 +66,11 @@ namespace Reko.Environments.C64
             {
                 yield return program.Values[i];
             }
+        }
+
+        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)

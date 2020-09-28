@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,9 +29,10 @@ using System.Linq;
 
 namespace Reko.Arch.zSeries
 {
-    using Mutator = Func<ulong, zSeriesDisassembler, bool>;
+    using Decoder = WideDecoder<zSeriesDisassembler, Mnemonic, zSeriesInstruction>;
+    using WideInstrDecoder = WideInstrDecoder<zSeriesDisassembler, Mnemonic, zSeriesInstruction>;
 
-    public class zSeriesDisassembler : DisassemblerBase<zSeriesInstruction>
+    public class zSeriesDisassembler : DisassemblerBase<zSeriesInstruction, Mnemonic>
     {
         private readonly static Decoder[] decoders;
         private readonly static Decoder invalid;
@@ -61,7 +62,19 @@ namespace Reko.Arch.zSeries
             return instr;
         }
 
-        protected override zSeriesInstruction CreateInvalidInstruction()
+        public override zSeriesInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            var instr = new zSeriesInstruction
+            {
+                InstructionClass = iclass,
+                Mnemonic = mnemonic,
+                Operands = state.ops.ToArray(),
+            };
+            return instr;
+        }
+
+
+        public override zSeriesInstruction CreateInvalidInstruction()
         {
             return new zSeriesInstruction
             {
@@ -140,20 +153,8 @@ namespace Reko.Arch.zSeries
 
             public void Reset()
             {
-                this.iclass = InstrClass.Invalid;
                 this.mnemonic = Mnemonic.invalid;
                 this.ops.Clear();
-            }
-
-            public zSeriesInstruction MakeInstruction()
-            {
-                var instr = new zSeriesInstruction
-                {
-                    InstructionClass = this.iclass,
-                    Mnemonic = this.mnemonic,
-                    Operands = this.ops.ToArray(),
-                };
-                return instr;
             }
         }
 
@@ -430,37 +431,6 @@ namespace Reko.Arch.zSeries
 
         #endregion
 
-        public abstract class Decoder
-        {
-            public abstract zSeriesInstruction Decode(ulong uInstr, zSeriesDisassembler dasm);
-        }
-
-        public class InstrDecoder : Decoder
-        {
-            private readonly InstrClass iclass;
-            private readonly Mnemonic mnemonic;
-            private readonly Mutator[] mutators;
-
-            public InstrDecoder(InstrClass iclass, Mnemonic mnemonic, params Mutator[] mutators)
-            {
-                this.iclass = iclass;
-                this.mnemonic = mnemonic;
-                this.mutators = mutators;
-            }
-
-            public override zSeriesInstruction Decode(ulong uInstr, zSeriesDisassembler dasm)
-            {
-                dasm.state.iclass = iclass;
-                dasm.state.mnemonic = mnemonic;
-                foreach (var m in mutators)
-                {
-                    if (!m(uInstr, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-                return dasm.state.MakeInstruction();
-            }
-        }
-
         public class NyiDecoder : Decoder
         {
             private readonly string msg;
@@ -477,9 +447,10 @@ namespace Reko.Arch.zSeries
             }
         }
 
-        public class ExtendDecoder32 : InstrDecoder
+        public class ExtendDecoder32 : WideInstrDecoder
         {
-            public ExtendDecoder32(InstrClass iclass, Mnemonic opcode, params Mutator [] mutators) : base(iclass, opcode, mutators)
+            public ExtendDecoder32(InstrClass iclass, Mnemonic mnemonic, params WideMutator<zSeriesDisassembler>[] mutators)
+                : base(iclass, mnemonic, mutators)
             {
             }
 
@@ -492,9 +463,9 @@ namespace Reko.Arch.zSeries
             }
         }
 
-        public class ExtendDecoder48 : InstrDecoder
+        public class ExtendDecoder48 : WideInstrDecoder
         {
-            public ExtendDecoder48(InstrClass iclass, Mnemonic opcode, params Mutator[] mutators) : base(iclass, opcode, mutators)
+            public ExtendDecoder48(InstrClass iclass, Mnemonic mnemonic, params WideMutator<zSeriesDisassembler>[] mutators) : base(iclass, mnemonic, mutators)
             {
             }
 
@@ -617,24 +588,24 @@ namespace Reko.Arch.zSeries
             }
         }
 
-        public static InstrDecoder Instr(Mnemonic opcode, params Mutator[] mutators)
+        public static WideInstrDecoder Instr(Mnemonic mnemonic, params WideMutator<zSeriesDisassembler>[] mutators)
         {
-            return new InstrDecoder(InstrClass.Linear, opcode, mutators);
+            return new WideInstrDecoder(InstrClass.Linear, mnemonic, mutators);
         }
 
-        public static InstrDecoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator[] mutators)
+        public static WideInstrDecoder Instr(Mnemonic mnemonic, InstrClass iclass, params WideMutator<zSeriesDisassembler>[] mutators)
         {
-            return new InstrDecoder(iclass, opcode, mutators);
+            return new WideInstrDecoder(iclass, mnemonic, mutators);
         }
 
-        public static ExtendDecoder32 Instr32(Mnemonic opcode, params Mutator[] mutators)
+        public static ExtendDecoder32 Instr32(Mnemonic mnemonic, params WideMutator<zSeriesDisassembler>[] mutators)
         {
-            return new ExtendDecoder32(InstrClass.Linear, opcode, mutators);
+            return new ExtendDecoder32(InstrClass.Linear, mnemonic, mutators);
         }
 
-        public static ExtendDecoder48 Instr48(Mnemonic opcode, params Mutator[] mutators)
+        public static ExtendDecoder48 Instr48(Mnemonic mnemonic, params WideMutator<zSeriesDisassembler>[] mutators)
         {
-            return new ExtendDecoder48(InstrClass.Linear, opcode, mutators);
+            return new ExtendDecoder48(InstrClass.Linear, mnemonic, mutators);
         }
 
         public static MaskDecoder Mask(int pos, int len, params Decoder[] decoders)

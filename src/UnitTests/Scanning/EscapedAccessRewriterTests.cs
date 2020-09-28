@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Scanning
             var project = new Project { Programs = { program } };
 			var scan = new Scanner(
                 program, 
-                new ImportResolver(project, program, null), null);
+                new DynamicLinker(project, program, null), null);
 			foreach (ImageSymbol ep in program.EntryPoints.Values)
 			{
 				scan.EnqueueImageSymbol(ep, true);

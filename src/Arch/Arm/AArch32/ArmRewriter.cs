@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -113,7 +113,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.qsub8:
                 case Mnemonic.rbit:
                 case Mnemonic.rev16:
-                case Mnemonic.revsh:
                 case Mnemonic.rfeda:
                 case Mnemonic.rfedb:
                 case Mnemonic.rfeia:
@@ -169,7 +168,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vacge:
                 case Mnemonic.vacgt:
                 case Mnemonic.vaddhn:
-                case Mnemonic.vbic:
                 case Mnemonic.vbsl:
                 case Mnemonic.vcls:
                 case Mnemonic.vclz:
@@ -350,6 +348,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.ror: RewriteShift(Ror); break;
                 case Mnemonic.rrx: RewriteShift(Rrx); break;
                 case Mnemonic.rev: RewriteRev(); break;
+                case Mnemonic.revsh: RewriteRevsh(); break;
                 case Mnemonic.rsb: RewriteRevBinOp(m.ISub, instr.SetFlags); break;
                 case Mnemonic.rsc: RewriteAdcSbc(m.ISub, true); break;
                 case Mnemonic.sadd16: RewriteVectorBinOp("__sadd_{0}", ArmVectorData.S16); break;
@@ -463,6 +462,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vaddl: RewriteVectorBinOp("__vaddl_{0}"); break;
                 case Mnemonic.vaddw: RewriteVectorBinOp("__vaddw_{0}"); break;
                 case Mnemonic.vand: RewriteVecBinOp(m.And); break;
+                case Mnemonic.vbic: RewriteVectorBinOp("__vbic_{0}"); break;
                 case Mnemonic.vcmp: RewriteVcmp(); break;
                 case Mnemonic.vbif: RewriteIntrinsic("__vbif", Domain.UnsignedInt); break;
                 case Mnemonic.vbit: RewriteIntrinsic("__vbit", Domain.UnsignedInt); break;

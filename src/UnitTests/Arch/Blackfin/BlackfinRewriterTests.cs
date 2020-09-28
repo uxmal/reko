@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,11 +30,10 @@ using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.Blackfin
 {
-    [Ignore("Not ready yet")]
+    [TestFixture]
     public class BlackfinRewriterTests : RewriterTestBase
     {
         private BlackfinArchitecture arch;
-        private MemoryArea image;
 
         [SetUp]
         public void Setup()
@@ -46,18 +45,11 @@ namespace Reko.UnitTests.Arch.Blackfin
 
         public override Address LoadAddress => Address.Ptr32(0x00100000);
 
-        protected override MemoryArea RewriteCode(string hexBytes)
-        {
-            var bytes = HexStringToBytes(hexBytes);
-            this.image = new MemoryArea(LoadAddress, bytes);
-            return image;
-        }
-
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
             var state = new BlackfinProcessorState(arch);
             return arch.CreateRewriter(
-                arch.CreateImageReader(image, image.BaseAddress),
+                arch.CreateImageReader(mem, mem.BaseAddress),
                 state,
                 binder,
                 host);
@@ -66,104 +58,99 @@ namespace Reko.UnitTests.Arch.Blackfin
         [Test]
         public void BlackfinRw_mov()
         {
-            RewriteCode("0EE1EC0F");
+            Given_HexString("0EE1EC0F");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|SP.L = 0x0FEC");
         }
 
         [Test]
         public void BlackfinRw_RTN()
         {
-            RewriteCode("1300");
+            Given_HexString("1300");
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|return (0,0)");
         }
 
         [Test]
         public void BlackfinRw_mov_x()
         {
-            RewriteCode("20E1E803");
+            Given_HexString("20E1E803");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void BlackfinRw_invalid()
-        {
-            RewriteCode("A100");
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|R0 = (word32) 0x03E8");
         }
 
         [Test]
         public void BlackfinRw_xor3()
         {
-            RewriteCode("C858");
+            Given_HexString("C858");
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|R3 = R0 ^ R1");
         }
 
         [Test]
         public void BlackfinRw_JUMP_L()
         {
-            RewriteCode("FFE2D05C");
+            Given_HexString("FFE2D05C");
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|goto 000EB9A0");
         }
 
         [Test]
         public void BlackfinRw_RTS()
         {
-            RewriteCode("1000");
+            Given_HexString("1000");
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|return (0,0)");
         }
+
         [Test]
         public void BlackfinRw_mul()
         {
-            RewriteCode("CA40");
+            Given_HexString("CA40");
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|R2 = R2 * R1");
         }
+
         [Test]
         public void BlackfinRw_mov_zb()
         {
-            RewriteCode("4043");
+            Given_HexString("4043");
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|R0 = (word32) SLICE(R0, byte, 0)");
         }
 
         [Test]
         public void BlackfinRw_mov_xb()
         {
-            RewriteCode("0143");
+            Given_HexString("0143");
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|R1 = (int32) SLICE(R0, int8, 0)");
         }
 
         [Test]
+        [Ignore("Need an actual binary")]
         public void BlackfinRw_mov_cc_eq()
         {
-            RewriteCode("010C");
+            Given_HexString("010C");
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|@@@");
         }
 
         [Test]
+        [Ignore("Need an actual binary")]
         public void BlackfinRw_mov_cc_n_bittest()
         {
-            RewriteCode("3948");
+            Given_HexString("3948");
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|@@@");
@@ -172,32 +159,36 @@ namespace Reko.UnitTests.Arch.Blackfin
         [Test]
         public void BlackfinRw_sub3()
         {
-            RewriteCode("4152");
+            Given_HexString("4152");
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|R1 = R1 - R0");
         }
+
         [Test]
+        [Ignore("Need an actual binary")]
         public void BlackfinRw_mov_cc_le()
         {
-            RewriteCode("020D");
+            Given_HexString("020D");
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|@@@");
         }
+
         [Test]
         public void BlackfinRw_CLI()
         {
-            RewriteCode("3000");
+            Given_HexString("3000");
             AssertCode(
                 "0|S--|00100000(2): 1 instructions",
                 "1|L--|__cli()");
         }
 
         [Test]
+        [Ignore("Decoder NYI")]
         public void BlackfinRw_lsr3()
         {
-            RewriteCode("82C6F885");
+            Given_HexString("82C6F885");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|@@@");

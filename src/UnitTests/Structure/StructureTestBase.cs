@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -109,10 +109,10 @@ namespace Reko.UnitTests.Structure
         private Program RewriteProgram()
         {
             var eventListener = new FakeDecompilerEventListener();
-            var importResolver = new Mock<IImportResolver>();
+            var dynamicLinker = new Mock<IDynamicLinker>();
             var scan = new Scanner(
                 program,
-                importResolver.Object,
+                dynamicLinker.Object,
                 sc);
             foreach (ImageSymbol ep in program.EntryPoints.Values)
             {
@@ -120,7 +120,7 @@ namespace Reko.UnitTests.Structure
             }
             scan.ScanImage();
 
-            var dfa = new DataFlowAnalysis(program, importResolver.Object, eventListener);
+            var dfa = new DataFlowAnalysis(program, dynamicLinker.Object, eventListener);
             dfa.AnalyzeProgram();
 
             return program;

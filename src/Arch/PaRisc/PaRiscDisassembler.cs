@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,13 +34,13 @@ namespace Reko.Arch.PaRisc
 {
     using Decoder = Decoder<PaRiscDisassembler, Mnemonic, PaRiscInstruction>;
 
-    public class PaRiscDisassembler : DisassemblerBase<PaRiscInstruction>
+    public class PaRiscDisassembler : DisassemblerBase<PaRiscInstruction, Mnemonic>
     {
         private const InstrClass TD = InstrClass.Transfer | InstrClass.Delay;
         private const InstrClass CTD = InstrClass.ConditionalTransfer | InstrClass.Delay;
 
         private static readonly MaskDecoder rootDecoder;
-        private static readonly InstrDecoder invalid;
+        private static readonly Decoder invalid;
 
         private readonly PaRiscArchitecture arch;
         private readonly EndianImageReader rdr;
@@ -91,7 +91,26 @@ namespace Reko.Arch.PaRisc
             return instr;
         }
 
-        protected override PaRiscInstruction CreateInvalidInstruction()
+        public override PaRiscInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            return new PaRiscInstruction
+            {
+                InstructionClass = iclass,
+                Mnemonic = mnemonic,
+                Coprocessor = this.coprocessor,
+                Condition = this.cond,
+                Operands = this.ops.ToArray(),
+                Annul = this.annul,
+                Zero = this.zero,
+                Sign = this.signExtend,
+                BaseReg = this.addrMod,
+                FpFmt = this.fpFormat,
+                FpFmtDst = this.fpFormatDst,
+                CacheHint = this.cacheHint
+            };
+        }
+
+        public override PaRiscInstruction CreateInvalidInstruction()
         {
             return invalid.Decode(0, this);
         }
@@ -1270,47 +1289,6 @@ namespace Reko.Arch.PaRisc
         private static readonly Func<bool, uint, Bitfield[], uint> low_sign_ext5 = low_sign_ext(5);
         private static readonly Func<bool, uint, Bitfield[], uint> low_sign_ext11 = low_sign_ext(11);
 
-        private class InstrDecoder : Decoder
-        {
-            private readonly InstrClass iclass;
-            private readonly Mnemonic mnemonic;
-            private readonly Mutator<PaRiscDisassembler>[] mutators;
-
-            public InstrDecoder(InstrClass iclass, Mnemonic mnemonic, params Mutator<PaRiscDisassembler> [] mutators)
-            {
-                this.iclass = iclass;
-                this.mnemonic = mnemonic;
-                this.mutators = mutators;
-            }
-
-            public override PaRiscInstruction Decode(uint uInstr, PaRiscDisassembler dasm)
-            {
-                foreach (var m in mutators)
-                {
-                    if (!m(uInstr, dasm))
-                    {
-                        dasm.coprocessor = -1;
-                        return invalid.Decode(uInstr, dasm);
-                    }
-                }
-                return new PaRiscInstruction
-                {
-                    InstructionClass = iclass,
-                    Mnemonic = mnemonic,
-                    Coprocessor = dasm.coprocessor,
-                    Condition = dasm.cond,
-                    Operands = dasm.ops.ToArray(),
-                    Annul = dasm.annul,
-                    Zero = dasm.zero,
-                    Sign = dasm.signExtend,
-                    BaseReg = dasm.addrMod,
-                    FpFmt = dasm.fpFormat,
-                    FpFmtDst = dasm.fpFormatDst,
-                    CacheHint = dasm.cacheHint
-                };
-            }
-        }
-
         private class MaskDecoder : Decoder
         {
             private readonly Bitfield bitfield;
@@ -1403,14 +1381,14 @@ namespace Reko.Arch.PaRisc
         }
 
 
-        private static InstrDecoder Instr(Mnemonic opcode, params Mutator<PaRiscDisassembler> [] mutators)
+        private static Decoder Instr(Mnemonic opcode, params Mutator<PaRiscDisassembler> [] mutators)
         {
-            return new InstrDecoder(InstrClass.Linear, opcode, mutators);
+            return new InstrDecoder<PaRiscDisassembler,Mnemonic,PaRiscInstruction>(InstrClass.Linear, opcode, mutators);
         }
 
-        private static InstrDecoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<PaRiscDisassembler>[] mutators)
+        private static Decoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<PaRiscDisassembler>[] mutators)
         {
-            return new InstrDecoder(iclass, opcode, mutators);
+            return new InstrDecoder<PaRiscDisassembler, Mnemonic, PaRiscInstruction>(iclass, opcode, mutators);
         }
 
         // Note: the bit positions are big-endian to follow the PA-RISC manual.

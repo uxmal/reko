@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,13 +34,13 @@ namespace Reko.UnitTests.Analysis
 	{
         protected override void RunTest(Program program, TextWriter writer)
         {
-            var importResolver = new Mock<IImportResolver>();
+            var dynamicLinker = new Mock<IDynamicLinker>();
             var flow = new ProgramDataFlow(program);
             var sst = new SsaTransform(
                 program, 
                 program.Procedures.Values[0],
                 new HashSet<Procedure>(),
-                importResolver.Object,
+                dynamicLinker.Object,
                 flow);
             var ssa = sst.Transform();
             var grfd = new GrfDefinitionFinder(ssa.Identifiers);

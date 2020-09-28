@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Types;
 
 namespace Reko.Arch.Blackfin
 {
@@ -68,6 +72,17 @@ namespace Reko.Arch.Blackfin
                     this.iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
+                case Mnemonic.CLI: RewriteCli(); break;
+                case Mnemonic.mov: RewriteMov(); break;
+                case Mnemonic.mov_x: RewriteMovx(); break;
+                case Mnemonic.mov_xb: RewriteMovxb(); break;
+                case Mnemonic.mov_zb: RewriteMovzb(); break;
+                case Mnemonic.mul: RewriteMul(); break;
+                case Mnemonic.JUMP_L: RewriteJump(); break;
+                case Mnemonic.RTN: RewriteRtn(); break;
+                case Mnemonic.RTS: RewriteRts(); break;
+                case Mnemonic.sub3: RewriteBinop(m.ISub); break;
+                case Mnemonic.xor3: RewriteBinop(m.Xor); break;
                 }
                 yield return new RtlInstructionCluster(instr.Address, instr.Length, rtls.ToArray())
                 {
@@ -110,5 +125,87 @@ namespace Reko.Arch.Blackfin
             Console.WriteLine("        }");
         }
 
+        private Address Addr(int iOperand)
+        {
+            return ((AddressOperand) instr.Operands[iOperand]).Address;
+        }
+
+        private Expression Operand(int iOperand)
+        {
+            switch (instr.Operands[iOperand])
+            {
+            case RegisterOperand rop:
+                return binder.EnsureRegister(rop.Register);
+            case ImmediateOperand imm:
+                return imm.Value;
+            default:
+                throw new NotImplementedException($"Operand type {instr.Operands[iOperand].GetType().Name}.");
+            }
+        }
+
+        private Identifier Reg(int iOperand)
+        {
+            return binder.EnsureRegister(((RegisterOperand) instr.Operands[iOperand]).Register);
+        }
+
+        private void RewriteCli()
+        {
+            m.SideEffect(host.PseudoProcedure("__cli", VoidType.Instance));
+        }
+
+        private void RewriteJump()
+        {
+            var addrDst = Addr(0);
+            m.Goto(addrDst);
+        }
+
+        private void RewriteRts()
+        {
+            // A more accurate rewriter would assign PC = RETS
+            m.Return(0, 0);
+        }
+
+        private void RewriteMov()
+        {
+            m.Assign(Reg(0), Operand(1));
+        }
+
+        private void RewriteMovx()
+        {
+            var src = Operand(1);
+            m.Assign(Reg(0), m.Cast(PrimitiveType.Word32, src));
+        }
+
+        private void RewriteMovxb()
+        {
+            m.Assign(Reg(0), m.Cast(PrimitiveType.Int32, m.Slice(PrimitiveType.SByte, Reg(1), 0)));
+        }
+
+        private void RewriteMovzb()
+        {
+            m.Assign(Reg(0), m.Cast(PrimitiveType.Word32, m.Slice(PrimitiveType.Byte, Reg(1), 0)));
+        }
+
+        private void RewriteMul()
+        {
+            Debug.Assert(instr.Operands.Length == 2);
+            var dst = Reg(0);
+            var src = Reg(1);
+            m.Assign(dst, m.IMul(dst, src));
+        }
+
+        private void RewriteRtn()
+        {
+            // A more accurate rewriter would assign PC = RETN
+            m.Return(0, 0);
+        }
+
+        private void RewriteBinop(Func<Expression,Expression,Expression> binop)
+        {
+            var src1 = Reg(1);
+            var src2 = Reg(2);
+            var dst = Reg(0);
+            m.Assign(dst, binop(src1, src2));
+        }
     }
 }

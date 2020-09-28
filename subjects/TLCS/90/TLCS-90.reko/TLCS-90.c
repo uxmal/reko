@@ -10,16 +10,16 @@ void fn0000(byte a)
 	null = (byte *) a;
 }
 
-// 02F4: Register word16 fn02F4(Register byte a, Register cu8 c, Register byte b, Register Eq_n de, Register byte h, Register (ptr16 Eq_n) ix, Stack Eq_n wArg24, Register out Eq_n deOut, Register out Eq_n hlOut, Register out Eq_n ixOut)
-word16 fn02F4(byte a, cu8 c, byte b, Eq_n de, byte h, struct Eq_n * ix, Eq_n wArg24, union Eq_n & deOut, union Eq_n & hlOut, union Eq_n & ixOut)
+// 02F4: Register word16 fn02F4(Register byte a, Register byte c, Register byte b, Register Eq_n de, Register byte h, Register (ptr16 Eq_n) ix, Stack Eq_n wArg24, Register out Eq_n deOut, Register out Eq_n hlOut, Register out Eq_n ixOut)
+word16 fn02F4(byte a, byte c, byte b, Eq_n de, byte h, struct Eq_n * ix, Eq_n wArg24, union Eq_n & deOut, union Eq_n & hlOut, union Eq_n & ixOut)
 {
 	cu8 a_n = (bool) C + (a + ix->bFFFFFFE4);
-	ui8 a_n = b ^ ix->bFFFFFFFB;
+	ui16 a_a_n = SEQ(v22_n, ix->bFFFFFFF6) + SEQ(b ^ ix->bFFFFFFFB, c ^ ix->bFFFFFFFA);
 	ui8 a_n = a_n ^ ix->bFFFFFFFC;
 	ui8 a_n = (bool) (a_n < 0x00) + (h + ix->bFFFFFFE5) ^ ix->bFFFFFFFD;
-	uint8 a_n = ix->bFFFFFFF6 + (c ^ ix->bFFFFFFFA);
-	ix->bFFFFFFF6 = a_n;
-	uint8 a_n = (bool) (a_n < 0x00) + (ix->bFFFFFFF7 + a_n);
+	ix->bFFFFFFF6 = (byte) a_a_n;
+	uint8 a_n = SLICE(a_a_n, byte, 8);
+	uint8 v22_n = ix->bFFFFFFF7;
 	ix->bFFFFFFF7 = a_n;
 	uint8 a_n = (bool) (a_n < 0x00) + (ix->bFFFFFFF8 + a_n);
 	ix->bFFFFFFF8 = a_n;
@@ -103,18 +103,21 @@ void fn04EE(Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 		byte l_n = (byte) hl_n;
 		byte h_n = SLICE(hl_n, byte, 8);
 	}
-	uint8 a_n = c_n + ix->bFFFFFFF6;
-	ix->bFFFFFFFC = a_n;
-	uint8 a_n = (bool) (a_n < 0x00) + (b_n + ix->bFFFFFFF7);
+	ui16 a_a_n = SEQ(b_n, c_n) + SEQ(v23_n, ix->bFFFFFFF6);
+	ix->bFFFFFFFC = (byte) a_a_n;
+	uint8 a_n = SLICE(a_a_n, byte, 8);
+	uint8 v23_n = ix->bFFFFFFF7;
 	ix->bFFFFFFFD = a_n;
 	uint8 a_n = (bool) (a_n < 0x00) + (l_n + ix->bFFFFFFF8);
 	ix->bFFFFFFFE = a_n;
 	ix->bFFFFFFFF = (ui8) ((bool) (a_n < 0x00) + (h_n + ix->bFFFFFFF9));
-	cu8 a_n = ix->bFFFFFFE6 + ix->bFFFFFFDA;
-	cu8 a_n = (bool) (a_n < 0x00) + (ix->bFFFFFFE7 + ix->bFFFFFFDB);
+	ui16 a_a_n = SEQ(v28_n, ix->bFFFFFFE6) + SEQ(v29_n, ix->bFFFFFFDA);
+	cu8 a_n = SLICE(a_a_n, byte, 8);
 	cu8 a_n = (bool) (a_n < 0x00) + (ix->bFFFFFFE8 + ix->bFFFFFFDC);
+	uint8 v28_n = ix->bFFFFFFE7;
+	uint8 v29_n = ix->bFFFFFFDB;
 	byte a_n = (bool) (a_n < 0x00) + (ix->bFFFFFFE9 + ix->bFFFFFFDD);
-	ix->bFFFFFFFC = ix->bFFFFFFFC ^ a_n;
+	ix->bFFFFFFFC = ix->bFFFFFFFC ^ (byte) a_a_n;
 	ix->bFFFFFFFD = ix->bFFFFFFFD ^ a_n;
 	ix->bFFFFFFFE = ix->bFFFFFFFE ^ a_n;
 	ix->bFFFFFFFF = ix->bFFFFFFFF ^ a_n;
@@ -130,15 +133,16 @@ void fn04EE(Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 		b_n = __rcr(b_n, 0x01, (bool) cond(l_n));
 		c_n = __rcr(c_n, 0x01, (bool) cond(b_n));
 	}
-	uint8 a_n = c_n + ix->bFFFFFFEA;
-	cu8 a_n = (bool) (a_n < 0x00) + (b_n + ix->bFFFFFFEB);
+	ui16 a_a_n = SEQ(b_n, c_n) + SEQ(v45_n, ix->bFFFFFFEA);
+	cu8 a_n = SLICE(a_a_n, byte, 8);
 	cu8 a_n = (bool) (a_n < 0x00) + (l_n + ix->bFFFFFFEC);
-	ui8 a_n = a_n ^ ix->bFFFFFFFD;
+	ui16 a_a_n = SEQ(v53_n, ix->bFFFFFFDE) - SEQ(a_n ^ ix->bFFFFFFFD, (byte) a_a_n ^ ix->bFFFFFFFC);
+	uint8 v45_n = ix->bFFFFFFEB;
 	ui8 a_n = a_n ^ ix->bFFFFFFFE;
 	ui8 a_n = h_n + ix->bFFFFFFED + (a_n < 0x00) ^ ix->bFFFFFFFF;
-	uint8 a_n = ix->bFFFFFFDE - (a_n ^ ix->bFFFFFFFC);
-	ix->bFFFFFFDE = a_n;
-	uint8 a_n = ix->bFFFFFFDF - a_n - (a_n < 0x00);
+	ix->bFFFFFFDE = (byte) a_a_n;
+	uint8 a_n = SLICE(a_a_n, byte, 8);
+	uint8 v53_n = ix->bFFFFFFDF;
 	ix->bFFFFFFDF = a_n;
 	uint8 a_n = ix->bFFFFFFE0 - a_n - (a_n < 0x00);
 	ix->bFFFFFFE0 = a_n;
@@ -155,14 +159,15 @@ void fn04EE(Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 		byte l_n = (byte) hl_n;
 		byte h_n = SLICE(hl_n, byte, 8);
 	}
-	uint8 a_n = c_n + ix->bFFFFFFEE;
-	ix->bFFFFFFFC = a_n;
-	uint8 a_n = (bool) (a_n < 0x00) + (b_n + ix->bFFFFFFEF);
+	uint16 a_a_n = SEQ(b_n, c_n) + SEQ(v61_n, ix->bFFFFFFEE);
+	ix->bFFFFFFFC = (byte) a_a_n;
+	uint8 a_n = SLICE(a_a_n, byte, 8);
+	ui8 v61_n = ix->bFFFFFFEF;
 	ix->bFFFFFFFD = a_n;
 	uint8 a_n = (bool) (a_n < 0x00) + (l_n + ix->bFFFFFFF0);
 	ix->bFFFFFFFE = a_n;
 	ix->bFFFFFFFF = (ui8) ((bool) (a_n < 0x00) + (h_n + ix->bFFFFFFF1));
-	cu8 a_n = ix->bFFFFFFDE + ix->bFFFFFFDA;
+	uint8 a_n = ix->bFFFFFFDE + ix->bFFFFFFDA;
 	uint8 v66_n = ix->bFFFFFFDF;
 	fn060E(v66_n, a_n, de, ix, wArg20);
 }
@@ -170,13 +175,13 @@ void fn04EE(Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 // 0607: void fn0607(Register byte a, Register Eq_n de, Register (ptr16 Eq_n) ix, Stack Eq_n wArg20)
 void fn0607(byte a, Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 {
-	cu8 a_n = a + ix->bFFFFFFDA;
+	uint8 a_n = a + ix->bFFFFFFDA;
 	uint8 v9_n = ix->bFFFFFFDF;
 	fn060E(v9_n, a_n, de, ix, wArg20);
 }
 
-// 060E: void fn060E(Register uint8 a, Register cu8 c, Register Eq_n de, Register (ptr16 Eq_n) ix, Stack Eq_n wArg20)
-void fn060E(uint8 a, cu8 c, Eq_n de, struct Eq_n * ix, Eq_n wArg20)
+// 060E: void fn060E(Register uint8 a, Register uint8 c, Register Eq_n de, Register (ptr16 Eq_n) ix, Stack Eq_n wArg20)
+void fn060E(uint8 a, uint8 c, Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 {
 	do
 	{
@@ -199,27 +204,28 @@ void fn060E(uint8 a, cu8 c, Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 			b_n = __rcr(b_n, 0x01, (bool) cond(l_n));
 			c_n = __rcr(c_n, 0x01, (bool) cond(b_n));
 		}
-		cu8 a_n = c_n + ix->bFFFFFFF2;
-		cu8 a_n = (bool) (a_n < 0x00) + (b_n + ix->bFFFFFFF3);
+		ui16 a_a_n = SEQ(b_n, c_n) + SEQ(v33_n, ix->bFFFFFFF2);
+		cu8 a_n = SLICE(a_a_n, byte, 8);
 		cu8 a_n = (bool) (a_n < 0x00) + (l_n + ix->bFFFFFFF4);
-		ui8 a_n = a_n ^ ix->bFFFFFFFD;
+		ui16 a_a_n = SEQ(v41_n, ix->bFFFFFFE6) - SEQ(a_n ^ ix->bFFFFFFFD, (byte) a_a_n ^ ix->bFFFFFFFC);
+		uint8 v33_n = ix->bFFFFFFF3;
 		ui8 a_n = a_n ^ ix->bFFFFFFFE;
 		ui8 a_n = h_n + ix->bFFFFFFF5 + (a_n < 0x00) ^ ix->bFFFFFFFF;
-		uint8 a_n = ix->bFFFFFFE6 - (a_n ^ ix->bFFFFFFFC);
-		ix->bFFFFFFE6 = a_n;
-		uint8 a_n = ix->bFFFFFFE7 - a_n - (a_n < 0x00);
+		ix->bFFFFFFE6 = (byte) a_a_n;
+		uint8 a_n = SLICE(a_a_n, byte, 8);
+		uint8 v41_n = ix->bFFFFFFE7;
 		ix->bFFFFFFE7 = a_n;
 		uint8 a_n = ix->bFFFFFFE8 - a_n - (a_n < 0x00);
 		ix->bFFFFFFE8 = a_n;
 		ix->bFFFFFFE9 = ix->bFFFFFFE9 - a_n - (a_n < 0x00);
-		cu8 v44_n = ix->bFFFFFFDA;
+		uint8 v44_n = ix->bFFFFFFDA;
 		ix->bFFFFFFDA = v44_n + 0x47;
-		cu8 a_n = (bool) (v44_n < 0x47) + (ix->bFFFFFFDB + 0x86);
+		uint8 a_n = (bool) (v44_n < 0x47) + (ix->bFFFFFFDB + 0x86);
 		ix->bFFFFFFDB = a_n;
 		cu8 a_n = (bool) (a_n < 0x00) + (ix->bFFFFFFDC + 200);
 		ix->bFFFFFFDC = a_n;
 		ix->bFFFFFFDD = (bool) (a_n < 0x00) + (ix->bFFFFFFDD + 0x61);
-		cu8 v48_n = ix->bFFFFFFE2;
+		uint8 v48_n = ix->bFFFFFFE2;
 		cu8 a_n = (bool) (v48_n < ~0x00) + (ix->bFFFFFFE3 + ~0x00);
 		cu8 a_n = (bool) (a_n < 0x00) + (ix->bFFFFFFE4 + ~0x00);
 		byte a_n = (bool) (a_n < 0x00) + (ix->bFFFFFFE5 + ~0x00);
@@ -274,34 +280,39 @@ void fn0C1D(Eq_n de, struct Eq_n * ix, Eq_n wArg22)
 {
 	uint8 c_n = ix->bFFFFFFE6;
 	uint8 b_n = ix->bFFFFFFE7;
-	byte a_n;
+	byte a_n = 0x04;
 	ui16 hl_n = SEQ(ix->bFFFFFFE9, ix->bFFFFFFE8);
-	for (a_n = 0x04; a_n != 0x00; --a_n)
+	do
 	{
 		c_n <<= 0x01;
 		b_n = __rcl(b_n, 0x01, (bool) cond(c_n));
 		hl_n = hl_n * 0x02 + (b_n < 0x00);
 		byte l_n = (byte) hl_n;
 		byte h_n = SLICE(hl_n, byte, 8);
-	}
-	fn0C35(c_n, b_n, de, l_n, h_n, ix, wArg22);
+		--a_n;
+		word16 bc_n = SEQ(b_n, c_n);
+	} while (a_n != 0x00);
+	fn0C35(bc_n, de, l_n, h_n, ix, wArg22);
 }
 
-// 0C35: void fn0C35(Register uint8 c, Register uint8 b, Register Eq_n de, Register byte l, Register byte h, Register (ptr16 Eq_n) ix, Stack Eq_n wArg20)
-void fn0C35(uint8 c, uint8 b, Eq_n de, byte l, byte h, struct Eq_n * ix, Eq_n wArg20)
+// 0C35: void fn0C35(Register word16 bc, Register Eq_n de, Register byte l, Register byte h, Register (ptr16 Eq_n) ix, Stack Eq_n wArg20)
+void fn0C35(word16 bc, Eq_n de, byte l, byte h, struct Eq_n * ix, Eq_n wArg20)
 {
-	uint8 a_n = c + ix->bFFFFFFF6;
-	ix->bFFFFFFFC = a_n;
-	uint8 a_n = (bool) (a_n < 0x00) + (b + ix->bFFFFFFF7);
+	ui16 a_a_n = bc + SEQ(v10_n, ix->bFFFFFFF6);
+	ix->bFFFFFFFC = (byte) a_a_n;
+	uint8 a_n = SLICE(a_a_n, byte, 8);
+	uint8 v10_n = ix->bFFFFFFF7;
 	ix->bFFFFFFFD = a_n;
 	uint8 a_n = (bool) (a_n < 0x00) + (l + ix->bFFFFFFF8);
 	ix->bFFFFFFFE = a_n;
 	ix->bFFFFFFFF = (ui8) ((bool) (a_n < 0x00) + (h + ix->bFFFFFFF9));
-	cu8 a_n = ix->bFFFFFFE6 + ix->bFFFFFFDA;
-	cu8 a_n = (bool) (a_n < 0x00) + (ix->bFFFFFFE7 + ix->bFFFFFFDB);
+	ui16 a_a_n = SEQ(v18_n, ix->bFFFFFFE6) + SEQ(v19_n, ix->bFFFFFFDA);
+	cu8 a_n = SLICE(a_a_n, byte, 8);
 	cu8 a_n = (bool) (a_n < 0x00) + (ix->bFFFFFFE8 + ix->bFFFFFFDC);
+	uint8 v18_n = ix->bFFFFFFE7;
+	uint8 v19_n = ix->bFFFFFFDB;
 	byte a_n = (bool) (a_n < 0x00) + (ix->bFFFFFFE9 + ix->bFFFFFFDD);
-	ix->bFFFFFFFC = ix->bFFFFFFFC ^ a_n;
+	ix->bFFFFFFFC = ix->bFFFFFFFC ^ (byte) a_a_n;
 	ix->bFFFFFFFD = ix->bFFFFFFFD ^ a_n;
 	ix->bFFFFFFFE = ix->bFFFFFFFE ^ a_n;
 	ix->bFFFFFFFF = ix->bFFFFFFFF ^ a_n;
@@ -321,11 +332,13 @@ void fn0C39(uint8 a, byte b, Eq_n de, byte l, byte h, struct Eq_n * ix, Eq_n wAr
 	uint8 a_n = (bool) (a_n < 0x00) + (l + ix->bFFFFFFF8);
 	ix->bFFFFFFFE = a_n;
 	ix->bFFFFFFFF = (ui8) ((bool) (a_n < 0x00) + (h + ix->bFFFFFFF9));
-	cu8 a_n = ix->bFFFFFFE6 + ix->bFFFFFFDA;
-	cu8 a_n = (bool) (a_n < 0x00) + (ix->bFFFFFFE7 + ix->bFFFFFFDB);
+	ui16 a_a_n = SEQ(v17_n, ix->bFFFFFFE6) + SEQ(v18_n, ix->bFFFFFFDA);
+	cu8 a_n = SLICE(a_a_n, byte, 8);
 	cu8 a_n = (bool) (a_n < 0x00) + (ix->bFFFFFFE8 + ix->bFFFFFFDC);
+	uint8 v17_n = ix->bFFFFFFE7;
+	uint8 v18_n = ix->bFFFFFFDB;
 	byte a_n = (bool) (a_n < 0x00) + (ix->bFFFFFFE9 + ix->bFFFFFFDD);
-	ix->bFFFFFFFC = ix->bFFFFFFFC ^ a_n;
+	ix->bFFFFFFFC = ix->bFFFFFFFC ^ (byte) a_a_n;
 	ix->bFFFFFFFD = ix->bFFFFFFFD ^ a_n;
 	uint8 v28_n = ix->bFFFFFFFE;
 	fn0C80(v28_n, de, a_n, a_n, ix, wArg20);
@@ -354,15 +367,16 @@ void fn0C9D(byte a, uint8 b, uint8 c, Eq_n de, uint8 h, uint8 l, struct Eq_n * i
 		c = __rcr(c, 0x01, (bool) cond(b));
 		--a;
 	} while (a != 0x00);
-	cu8 a_n = c + ix->bFFFFFFEA;
-	cu8 a_n = (bool) (a_n < 0x00) + (b + ix->bFFFFFFEB);
+	ui16 a_a_n = SEQ(b, c) + SEQ(v17_n, ix->bFFFFFFEA);
+	cu8 a_n = SLICE(a_a_n, byte, 8);
 	cu8 a_n = (bool) (a_n < 0x00) + (l + ix->bFFFFFFEC);
-	ui8 a_n = a_n ^ ix->bFFFFFFFD;
+	ui16 a_a_n = SEQ(v27_n, ix->bFFFFFFDE) - SEQ(a_n ^ ix->bFFFFFFFD, (byte) a_a_n ^ ix->bFFFFFFFC);
+	uint8 v17_n = ix->bFFFFFFEB;
 	ui8 a_n = a_n ^ ix->bFFFFFFFE;
 	ui8 a_n = h + ix->bFFFFFFED + (a_n < 0x00) ^ ix->bFFFFFFFF;
-	uint8 a_n = ix->bFFFFFFDE - (a_n ^ ix->bFFFFFFFC);
-	ix->bFFFFFFDE = a_n;
-	uint8 a_n = ix->bFFFFFFDF - a_n - (a_n < 0x00);
+	ix->bFFFFFFDE = (byte) a_a_n;
+	uint8 a_n = SLICE(a_a_n, byte, 8);
+	uint8 v27_n = ix->bFFFFFFDF;
 	ix->bFFFFFFDF = a_n;
 	uint8 a_n = ix->bFFFFFFE0 - a_n - (a_n < 0x00);
 	ix->bFFFFFFE0 = a_n;
@@ -376,12 +390,12 @@ void fn0C9D(byte a, uint8 b, uint8 c, Eq_n de, uint8 h, uint8 l, struct Eq_n * i
 // 0CB7: void fn0CB7(Register byte c, Register byte b, Register Eq_n de, Register byte h, Register byte l, Register (ptr16 Eq_n) ix, Stack Eq_n wArg20)
 void fn0CB7(byte c, byte b, Eq_n de, byte h, byte l, struct Eq_n * ix, Eq_n wArg20)
 {
-	ui8 a_n = b ^ ix->bFFFFFFFD;
+	ui16 a_a_n = SEQ(v21_n, ix->bFFFFFFDE) - SEQ(b ^ ix->bFFFFFFFD, c ^ ix->bFFFFFFFC);
 	ui8 a_n = l ^ ix->bFFFFFFFE;
 	ui8 a_n = (bool) C + (h + ix->bFFFFFFED) ^ ix->bFFFFFFFF;
-	uint8 a_n = ix->bFFFFFFDE - (c ^ ix->bFFFFFFFC);
-	ix->bFFFFFFDE = a_n;
-	uint8 a_n = ix->bFFFFFFDF - a_n - (a_n < 0x00);
+	ix->bFFFFFFDE = (byte) a_a_n;
+	uint8 a_n = SLICE(a_a_n, byte, 8);
+	uint8 v21_n = ix->bFFFFFFDF;
 	ix->bFFFFFFDF = a_n;
 	uint8 a_n = ix->bFFFFFFE0 - a_n - (a_n < 0x00);
 	ix->bFFFFFFE0 = a_n;
@@ -404,18 +418,21 @@ void fn0D00(byte a, uint8 c, uint8 b, Eq_n de, ui16 hl, struct Eq_n * ix, Eq_n w
 		byte h_n = SLICE(hl, byte, 8);
 		--a;
 	} while (a != 0x00);
-	uint8 a_n = c + ix->bFFFFFFEE;
-	ix->bFFFFFFFC = a_n;
-	uint8 a_n = (bool) (a_n < 0x00) + (b + ix->bFFFFFFEF);
+	ui16 a_a_n = SEQ(b, c) + SEQ(v16_n, ix->bFFFFFFEE);
+	ix->bFFFFFFFC = (byte) a_a_n;
+	uint8 a_n = SLICE(a_a_n, byte, 8);
+	ui8 v16_n = ix->bFFFFFFEF;
 	ix->bFFFFFFFD = a_n;
 	uint8 a_n = (bool) (a_n < 0x00) + (l_n + ix->bFFFFFFF0);
 	ix->bFFFFFFFE = a_n;
 	ix->bFFFFFFFF = (ui8) ((bool) (a_n < 0x00) + (h_n + ix->bFFFFFFF1));
-	cu8 a_n = ix->bFFFFFFDE + ix->bFFFFFFDA;
-	cu8 a_n = (bool) (a_n < 0x00) + (ix->bFFFFFFDF + ix->bFFFFFFDB);
+	ui16 a_a_n = SEQ(v23_n, ix->bFFFFFFDE) + SEQ(v24_n, ix->bFFFFFFDA);
+	cu8 a_n = SLICE(a_a_n, byte, 8);
 	cu8 a_n = (bool) (a_n < 0x00) + (ix->bFFFFFFE0 + ix->bFFFFFFDC);
+	uint8 v23_n = ix->bFFFFFFDF;
+	uint8 v24_n = ix->bFFFFFFDB;
 	byte a_n = (bool) (a_n < 0x00) + (ix->bFFFFFFE1 + ix->bFFFFFFDD);
-	ix->bFFFFFFFC = ix->bFFFFFFFC ^ a_n;
+	ix->bFFFFFFFC = ix->bFFFFFFFC ^ (byte) a_a_n;
 	ix->bFFFFFFFD = ix->bFFFFFFFD ^ a_n;
 	ix->bFFFFFFFE = ix->bFFFFFFFE ^ a_n;
 	ix->bFFFFFFFF = ix->bFFFFFFFF ^ a_n;
@@ -431,27 +448,28 @@ void fn0D00(byte a, uint8 c, uint8 b, Eq_n de, ui16 hl, struct Eq_n * ix, Eq_n w
 		b_n = __rcr(b_n, 0x01, (bool) cond(l_n));
 		c_n = __rcr(c_n, 0x01, (bool) cond(b_n));
 	}
-	cu8 a_n = c_n + ix->bFFFFFFF2;
-	cu8 a_n = (bool) (a_n < 0x00) + (b_n + ix->bFFFFFFF3);
+	ui16 a_a_n = SEQ(b_n, c_n) + SEQ(v41_n, ix->bFFFFFFF2);
+	cu8 a_n = SLICE(a_a_n, byte, 8);
 	cu8 a_n = (bool) (a_n < 0x00) + (l_n + ix->bFFFFFFF4);
-	ui8 a_n = a_n ^ ix->bFFFFFFFD;
+	ui16 a_a_n = SEQ(v49_n, ix->bFFFFFFE6) - SEQ(a_n ^ ix->bFFFFFFFD, (byte) a_a_n ^ ix->bFFFFFFFC);
+	uint8 v41_n = ix->bFFFFFFF3;
 	ui8 a_n = a_n ^ ix->bFFFFFFFE;
 	ui8 a_n = h_n + ix->bFFFFFFF5 + (a_n < 0x00) ^ ix->bFFFFFFFF;
-	uint8 a_n = ix->bFFFFFFE6 - (a_n ^ ix->bFFFFFFFC);
-	ix->bFFFFFFE6 = a_n;
-	uint8 a_n = ix->bFFFFFFE7 - a_n - (a_n < 0x00);
+	ix->bFFFFFFE6 = (byte) a_a_n;
+	uint8 a_n = SLICE(a_a_n, byte, 8);
+	uint8 v49_n = ix->bFFFFFFE7;
 	ix->bFFFFFFE7 = a_n;
 	uint8 a_n = ix->bFFFFFFE8 - a_n - (a_n < 0x00);
 	ix->bFFFFFFE8 = a_n;
 	ix->bFFFFFFE9 = ix->bFFFFFFE9 - a_n - (a_n < 0x00);
-	cu8 v52_n = ix->bFFFFFFDA;
+	uint8 v52_n = ix->bFFFFFFDA;
 	ix->bFFFFFFDA = v52_n + 0x47;
-	cu8 a_n = (bool) (v52_n < 0x47) + (ix->bFFFFFFDB + 0x86);
+	uint8 a_n = (bool) (v52_n < 0x47) + (ix->bFFFFFFDB + 0x86);
 	ix->bFFFFFFDB = a_n;
 	cu8 a_n = (bool) (a_n < 0x00) + (ix->bFFFFFFDC + 200);
 	ix->bFFFFFFDC = a_n;
 	ix->bFFFFFFDD = (bool) (a_n < 0x00) + (ix->bFFFFFFDD + 0x61);
-	cu8 v56_n = ix->bFFFFFFE2;
+	uint8 v56_n = ix->bFFFFFFE2;
 	cu8 a_n = (bool) (v56_n < ~0x00) + (ix->bFFFFFFE3 + ~0x00);
 	cu8 a_n = (bool) (a_n < 0x00) + (ix->bFFFFFFE4 + ~0x00);
 	byte a_n = (bool) (a_n < 0x00) + (ix->bFFFFFFE5 + ~0x00);
@@ -466,8 +484,8 @@ void fn0D00(byte a, uint8 c, uint8 b, Eq_n de, ui16 hl, struct Eq_n * ix, Eq_n w
 		fn0E13(de, wArg20);
 }
 
-// 0DFC: void fn0DFC(Register cu8 c, Register cu8 b, Register Eq_n de, Register cu8 l, Register byte h, Register (ptr16 Eq_n) ix, Stack Eq_n wArg20)
-void fn0DFC(cu8 c, cu8 b, Eq_n de, cu8 l, byte h, struct Eq_n * ix, Eq_n wArg20)
+// 0DFC: void fn0DFC(Register uint8 c, Register cu8 b, Register Eq_n de, Register cu8 l, Register byte h, Register (ptr16 Eq_n) ix, Stack Eq_n wArg20)
+void fn0DFC(uint8 c, cu8 b, Eq_n de, cu8 l, byte h, struct Eq_n * ix, Eq_n wArg20)
 {
 	ix->bFFFFFFE2 = c;
 	ix->bFFFFFFE3 = b;
@@ -507,8 +525,8 @@ void fn0F9A()
 {
 }
 
-// 164F: void fn164F(Register cu8 a, Register byte c, Register byte b, Register byte h, Register (ptr16 Eq_n) ix, Stack (ptr16 Eq_n) wArg0C, Stack byte bArg0F, Stack Eq_n wArg13, Stack (ptr16 Eq_n) wArg15, Stack byte bArg18, Stack (ptr16 Eq_n) wArg19, Stack (ptr16 Eq_n) wArg1B, Stack byte bArg1D, Stack byte bArg1E, Stack (ptr16 Eq_n) wArg1F, Stack (ptr16 Eq_n) wArg23)
-void fn164F(cu8 a, byte c, byte b, byte h, struct Eq_n * ix, struct Eq_n * wArg0C, byte bArg0F, Eq_n wArg13, struct Eq_n * wArg15, byte bArg18, struct Eq_n * wArg19, struct Eq_n * wArg1B, byte bArg1D, byte bArg1E, struct Eq_n * wArg1F, struct Eq_n * wArg23)
+// 164F: void fn164F(Register uint8 a, Register word16 bc, Register byte h, Register (ptr16 Eq_n) ix, Stack (ptr16 Eq_n) wArg0C, Stack byte bArg0F, Stack Eq_n wArg13, Stack (ptr16 Eq_n) wArg15, Stack byte bArg18, Stack (ptr16 Eq_n) wArg19, Stack (ptr16 Eq_n) wArg1B, Stack byte bArg1D, Stack byte bArg1E, Stack (ptr16 Eq_n) wArg1F, Stack (ptr16 Eq_n) wArg23)
+void fn164F(uint8 a, word16 bc, byte h, struct Eq_n * ix, struct Eq_n * wArg0C, byte bArg0F, Eq_n wArg13, struct Eq_n * wArg15, byte bArg18, struct Eq_n * wArg19, struct Eq_n * wArg1B, byte bArg1D, byte bArg1E, struct Eq_n * wArg1F, struct Eq_n * wArg23)
 {
 	byte bArg1B_n = (byte) wArg1B;
 	byte bArg1C_n = SLICE(wArg1B, byte, 8);
@@ -517,57 +535,52 @@ void fn164F(cu8 a, byte c, byte b, byte h, struct Eq_n * ix, struct Eq_n * wArg0
 	byte bArg19 = (byte) wArg19;
 	ix->bFFFFFFEC = a;
 	ix->bFFFFFFED = ix->bFFFFFFF9 - h - C;
-	cu8 a_n = c - wArg1B->b0000;
-	byte a_n = ix->bFFFFFFF9 - ix->bFFFFFFFD - (ix->bFFFFFFF8 - ix->bFFFFFFFC < 0x00);
+	ui16 a_a_n = bc - SEQ(wArg1B->b0001, wArg1B->b0000);
+	byte a_n = SLICE(SEQ(ix->bFFFFFFF9, ix->bFFFFFFF8) - SEQ(ix->bFFFFFFFD, ix->bFFFFFFFC), byte, 8);
 	Eq_n de_n;
 	word16 hl_n;
 	struct Eq_n * ix_n;
-	word16 bc_n = fn02F4(a_n, a_n, b - wArg1B->b0001 - (a_n < 0x00), wArg13, a_n, ix, SEQ(bArg1B_n, bArg1A), out de_n, out hl_n, out ix_n);
-	uint8 c_n = (byte) bc_n;
-	uint8 b_n = SLICE(bc_n, byte, 8);
+	word16 bc_n = fn02F4(a_n, (byte) a_a_n, SLICE(a_a_n, byte, 8), wArg13, a_n, ix, SEQ(bArg1B_n, bArg1A), out de_n, out hl_n, out ix_n);
 	byte h_n = SLICE(hl_n, byte, 8);
 	Eq_n wArg1C_n = SEQ(bArg1D, bArg1C_n);
 	Eq_n wArg1E_n = SEQ(bArg1F_n, bArg1E);
 	if ((byte) hl_n != 0x00)
 	{
-		byte v31_n = wArg15->b0000;
-		byte v32_n = wArg15->b0001;
-		byte v36_n = *((word32) wArg13 + 0x01);
-		cu8 a_n = v31_n - *wArg13;
-		ix_n->bFFFFFFEC = a_n;
-		ix_n->bFFFFFFED = v32_n - v36_n - (a_n < 0x00);
-		byte v39_n = wArg1F->b0000;
-		byte v40_n = wArg1F->b0001;
-		byte v43_n = wArg0C->b0001;
-		cu8 a_n = v39_n - wArg0C->b0000;
-		ix_n->bFFFFFFEA = a_n;
-		ix_n->bFFFFFFEB = v40_n - v43_n - (a_n < 0x00);
-		cu8 a_n = v39_n - wArg23->b0000;
-		cu8 a_n = v31_n - wArg19->b0000;
-		byte a_n = v40_n - wArg23->b0001 - (a_n < 0x00);
+		uint8 v31_n = wArg15->b0000;
+		ui8 v32_n = wArg15->b0001;
+		ui16 a_a_n = SEQ(v32_n, v31_n) - SEQ(*((word32) wArg13 + 0x01), *wArg13);
+		ix_n->bFFFFFFEC = (byte) a_a_n;
+		ix_n->bFFFFFFED = SLICE(a_a_n, byte, 8);
+		uint8 v39_n = wArg1F->b0000;
+		ui8 v40_n = wArg1F->b0001;
+		ui16 a_a_n = SEQ(v40_n, v39_n) - SEQ(wArg0C->b0001, wArg0C->b0000);
+		ix_n->bFFFFFFEA = (byte) a_a_n;
+		ix_n->bFFFFFFEB = SLICE(a_a_n, byte, 8);
+		ui16 a_a_n = SEQ(v32_n, v31_n) - SEQ(wArg19->b0001, wArg19->b0000);
+		Eq_n a_a_n = SEQ(v40_n, v39_n) - SEQ(wArg23->b0001, wArg23->b0000);
 		Eq_n de_n;
 		word16 hl_n;
 		struct Eq_n * ix_n;
-		word16 bc_n = fn02F4(a_n, a_n, v32_n - wArg19->b0001 - (a_n < 0x00), SEQ(a_n, a_n), SLICE(wArg0F, byte, 8), ix_n, SEQ(bArg19, bArg18), out de_n, out hl_n, out ix_n);
-		uint8 c_n = (byte) bc_n;
-		uint8 b_n = SLICE(bc_n, byte, 8);
+		word16 bc_n = fn02F4(SLICE(a_a_n, byte, 8), (byte) a_a_n, SLICE(a_a_n, byte, 8), a_a_n, SLICE(wArg0F, byte, 8), ix_n, SEQ(bArg19, bArg18), out de_n, out hl_n, out ix_n);
 		byte h_n = SLICE(hl_n, byte, 8);
 		if ((byte) hl_n != 0x00)
-			fn0C35(c_n, b_n, de_n, 0x00, h_n, ix_n, wArg1C_n);
+			fn0C35(bc_n, de_n, 0x00, h_n, ix_n, wArg1C_n);
 		else
-			fn0C35(c_n, b_n, de_n, 0x03, h_n, ix_n, wArg1C_n);
+			fn0C35(bc_n, de_n, 0x03, h_n, ix_n, wArg1C_n);
 	}
 	else
-		fn0C35(c_n, b_n, de_n, 0x03, h_n, ix_n, wArg1E_n);
+		fn0C35(bc_n, de_n, 0x03, h_n, ix_n, wArg1E_n);
 }
 
-// 1873: void fn1873(Register uint8 c, Register uint8 b, Register Eq_n de, Register (ptr16 Eq_n) ix, Stack (ptr16 Eq_n) wArg13, Stack Eq_n wArg20)
-void fn1873(uint8 c, uint8 b, Eq_n de, struct Eq_n * ix, struct Eq_n * wArg13, Eq_n wArg20)
+// 1873: void fn1873(Register word16 bc, Register Eq_n de, Register (ptr16 Eq_n) ix, Stack (ptr16 Eq_n) wArg13, Stack Eq_n wArg20)
+void fn1873(word16 bc, Eq_n de, struct Eq_n * ix, struct Eq_n * wArg13, Eq_n wArg20)
 {
+	byte c = (byte) bc;
+	byte b = SLICE(bc, byte, 8);
 	wArg13->b0000 = c;
 	wArg13->b0001 = b;
 	byte h_n = SLICE(&wArg13->b0001, byte, 8);
-	fn0C35(c, b, de, 0x02, h_n, ix, wArg20);
+	fn0C35(bc, de, 0x02, h_n, ix, wArg20);
 }
 
 // 1BA4: void fn1BA4()

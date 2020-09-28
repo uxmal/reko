@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,63 +30,19 @@ using static Reko.Arch.Mips.MipsDisassembler;
 
 namespace Reko.Arch.Mips
 {
-    using Decoder = Reko.Core.Machine.Decoder<MipsDisassembler, Mnemonic, MipsInstruction>;
+    using Decoder = Decoder<MipsDisassembler, Mnemonic, MipsInstruction>;
 
     public partial class MipsDisassembler
     {
-        public class InstrDecoder : Decoder
-        {
-            private readonly InstrClass iclass;
-            private readonly Mnemonic mnemonic;
-            private readonly Mutator<MipsDisassembler>[] mutators;
-
-            public InstrDecoder(Mnemonic opcode, params Mutator<MipsDisassembler>[] mutators)
-            {
-                this.iclass = InstrClass.Linear;
-                this.mnemonic = opcode;
-                this.mutators = mutators;
-            }
-
-            public InstrDecoder(InstrClass iclass, Mnemonic opcode, params Mutator<MipsDisassembler>[] mutators)
-            {
-                this.iclass = iclass;
-                this.mnemonic = opcode;
-                this.mutators = mutators;
-            }
-
-            public override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
-            {
-                foreach (var m in mutators)
-                {
-                    if (!m(wInstr, dasm))
-                    {
-                        return new MipsInstruction
-                        {
-                            InstructionClass = InstrClass.Invalid,
-                            Mnemonic = Mnemonic.illegal
-                        };
-                    }
-                }
-                return new MipsInstruction
-                {
-                    Mnemonic = mnemonic,
-                    InstructionClass = iclass,
-                    Address = dasm.addr,
-                    Length = 4,
-                    Operands = dasm.ops.ToArray()
-                };
-            }
-        }
-
         /// <summary>
         /// This instruction encoding is only valid on 64-bit MIPS architecture.
         /// </summary>
-        class A64Decoder : InstrDecoder
+        class A64Decoder : InstrDecoder<MipsDisassembler, Mnemonic, MipsInstruction>
         {
             private readonly Mnemonic mnemonic;
             private readonly Mutator<MipsDisassembler>[] mutators;
 
-            public A64Decoder(Mnemonic mnemonic, params Mutator<MipsDisassembler>[] mutators) : base(mnemonic, mutators)
+            public A64Decoder(Mnemonic mnemonic, params Mutator<MipsDisassembler>[] mutators) : base(InstrClass.Linear, mnemonic, mutators)
             {
                 this.mnemonic = mnemonic;
                 this.mutators = mutators;

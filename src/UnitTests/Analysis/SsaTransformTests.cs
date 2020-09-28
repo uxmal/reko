@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Analysis
         private Dictionary<Address, ImportReference> importReferences;
         private ProgramDataFlow programFlow;
         private bool addUseInstructions;
-        private Mock<IImportResolver> importResolver;
+        private Mock<IDynamicLinker> dynamicLinker;
         private SsaTransform sst;
         private CallingConvention fakeCc;
         private HashSet<RegisterStorage> trashedRegs;
@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Analysis
         public void Setup()
         {
             this.addUseInstructions = false;
-            this.importResolver = new Mock<IImportResolver>();
+            this.dynamicLinker = new Mock<IDynamicLinker>();
             this.r1 = new Identifier("r1", PrimitiveType.Word32, new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
             this.r2 = new Identifier("r2", PrimitiveType.Word32, new RegisterStorage("r2", 2, 0, PrimitiveType.Word32));
             this.r3 = new Identifier("r3", PrimitiveType.Word32, new RegisterStorage("r3", 3, 0, PrimitiveType.Word32));
@@ -142,7 +142,7 @@ namespace Reko.UnitTests.Analysis
                     this.pb.Program,
                     proc,
                     new HashSet<Procedure>(),
-                    importResolver.Object,
+                    dynamicLinker.Object,
                     programFlow);
                 var ssa = sst.Transform();
                 if (this.addUseInstructions)
@@ -164,7 +164,7 @@ namespace Reko.UnitTests.Analysis
         private void RunTest_FrameAccesses(string sExp, Action<ProcedureBuilder> builder)
         {
             pb.Add("proc1", builder);
-            var importResolver = new Mock<IImportResolver>();
+            var dynamicLinker = new Mock<IDynamicLinker>();
 
             var program = this.pb.Program;
             RunTest_FrameAccesses(sExp);
@@ -196,7 +196,7 @@ namespace Reko.UnitTests.Analysis
                     this.pb.Program,
                     proc,
                     new HashSet<Procedure>(),
-                    importResolver.Object,
+                    dynamicLinker.Object,
                     programFlow);
                 sst.Transform();
 
@@ -212,7 +212,7 @@ namespace Reko.UnitTests.Analysis
                     this.pb.Program.SegmentMap,
                     sst.SsaState,
                     program.CallGraph,
-                    importResolver.Object,
+                    dynamicLinker.Object,
                     listener);
                 vp.Transform();
 
@@ -257,7 +257,7 @@ namespace Reko.UnitTests.Analysis
                 program,
                 proc,
                 new HashSet<Procedure>(),
-                importResolver.Object,
+                dynamicLinker.Object,
                 programFlow);
             sst.Transform();
             sst.SsaState.Validate(s => Assert.Fail(s));
@@ -1796,7 +1796,7 @@ proc1_exit:
             var addr = Address.Ptr32(0x00031234);
             importReferences.Add(addr, new NamedImportReference(
                 addr, "COREDLL.DLL", "fnFoo", SymbolType.ExternalProcedure));
-            importResolver.Setup(i => i.ResolveToImportedValue(
+            dynamicLinker.Setup(i => i.ResolveToImportedValue(
                 It.IsAny<Statement>(),
                 It.Is<Constant>(c => c.ToUInt32() == 0x00031234)))
                 .Returns(new ProcedureConstant(
@@ -3942,7 +3942,7 @@ SsaLocalStackCommonSequence_exit:
         public void SsaDoNotSearchImportedProcInFpuStack()
         {
             // ResolveToImportedValue always throws exception in X86 real mode
-            importResolver.Setup(
+            dynamicLinker.Setup(
                 i => i.ResolveToImportedValue(
                     It.IsAny<Statement>(),
                     It.IsAny<Constant>()))

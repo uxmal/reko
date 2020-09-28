@@ -1,12 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.Net.SDK">
   <PropertyGroup>
+    <ProjectGuid>{FDFE3507-E8CE-4930-B9B5-8FB647CFC6DC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Reko.Environments.C64</RootNamespace>
+    <AssemblyName>Reko.Environments.C64</AssemblyName>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  <RootNamespace>Reko.Environments.C64</RootNamespace><AssemblyName>Reko.Environments.C64</AssemblyName></PropertyGroup>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Mos6502\Mos6502.csproj" />
+    <ProjectReference Include="..\..\Core\Core.csproj" />
   </ItemGroup>
 </Project>

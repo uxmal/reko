@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ namespace Reko.Arch.i8051
     using Decoder = Decoder<i8051Disassembler, Mnemonic, i8051Instruction>;
 
     // http://www.keil.com/support/man/docs/is51/is51_instructions.htm
-    public class i8051Disassembler : DisassemblerBase<i8051Instruction>
+    public class i8051Disassembler : DisassemblerBase<i8051Instruction, Mnemonic>
     {
         private readonly i8051Architecture arch;
         private readonly EndianImageReader rdr;
@@ -53,15 +53,28 @@ namespace Reko.Arch.i8051
             if (!rdr.TryReadByte(out var b))
                 return null;
             ops.Clear();
-            return decoders[b].Decode(b, this);
+            var instr = decoders[b].Decode(b, this);
+            instr.Address = this.addr;
+            instr.Length = (int) (rdr.Address - this.addr);
+            return instr;
         }
 
-        protected override i8051Instruction CreateInvalidInstruction()
+        public override i8051Instruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
         {
             return new i8051Instruction
             {
-                Mnemonic = Mnemonic.Invalid,
+                InstructionClass = iclass,
+                Mnemonic = mnemonic,
+                Operands = ops.ToArray()
+            };
+        }
+
+        public override i8051Instruction CreateInvalidInstruction()
+        {
+            return new i8051Instruction
+            {
                 InstructionClass = InstrClass.Invalid,
+                Mnemonic = Mnemonic.Invalid,
                 Operands = MachineInstruction.NoOperands
             };
         }
@@ -207,6 +220,7 @@ namespace Reko.Arch.i8051
         }
         
         #endregion
+
         private RegisterOperand Reg(int r)
         {
             return new RegisterOperand(Registers.GetRegister(r));
@@ -230,47 +244,14 @@ $@"    [Test]
 ");
         }
 
-        private class InstrDecoder : Decoder
+        private static Decoder Instr(Mnemonic mnemonic, params Mutator<i8051Disassembler>[] mutators)
         {
-            private readonly Mnemonic mnemonic;
-            private readonly InstrClass iclass;
-            private readonly Mutator<i8051Disassembler>[] mutators;
-
-            public InstrDecoder(Mnemonic mnemonic, InstrClass iclass, params Mutator<i8051Disassembler>[] mutators)
-            {
-                this.mnemonic = mnemonic;
-                this.iclass = iclass;
-                this.mutators = mutators;
-            }
-
-            public override i8051Instruction Decode(uint op, i8051Disassembler dasm)
-            {
-                foreach (var m in mutators)
-                {
-                    if (!m(op, dasm))
-                    {
-                        return dasm.CreateInvalidInstruction();
-                    }
-                }
-                return new i8051Instruction
-                {
-                    Mnemonic = mnemonic,
-                    Address = dasm.addr,
-                    Length = (int) (dasm.rdr.Address - dasm.addr),
-                    Operands = dasm.ops.ToArray()
-                };
-            }
-
+            return new InstrDecoder<i8051Disassembler, Mnemonic, i8051Instruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
-        private static InstrDecoder Instr(Mnemonic opcode, params Mutator<i8051Disassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<i8051Disassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, InstrClass.Linear, mutators);
-        }
-
-        private static InstrDecoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<i8051Disassembler>[] mutators)
-        {
-            return new InstrDecoder(opcode, iclass, mutators);
+            return new InstrDecoder<i8051Disassembler, Mnemonic, i8051Instruction>(iclass, mnemonic, mutators);
         }
 
         private static readonly Decoder[] decoders = new Decoder[256] {

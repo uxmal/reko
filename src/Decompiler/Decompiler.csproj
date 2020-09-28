@@ -1,17 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Reko</AssemblyName>
+    <RootNamespace>Reko</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-    <RootNamespace>Reko</RootNamespace>
-    <AssemblyName>Reko</AssemblyName>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="Scanning\BapScanner.cs" />
+    <Compile Remove="Scanning\IdentifierReplacer.cs" />
   </ItemGroup>
 
   <ItemGroup>

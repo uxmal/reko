@@ -35,6 +35,7 @@
     <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Cil.dll" target="lib\netstandard2.0" />
     <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.Cray.dll" target="lib\netstandard2.0" />
     <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.i8051.dll" target="lib\netstandard2.0" />
+    <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.LatticeMico.dll" target="lib\netstandard2.0" />
     <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.M6800.dll" target="lib\netstandard2.0" />
     <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.M68k.Design.dll" target="lib\netstandard2.0" />
     <file src="..\Drivers\WindowsDecompiler\bin\x64\$Configuration$\Reko.Arch.M68k.dll" target="lib\netstandard2.0" />

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -112,11 +112,7 @@ namespace Reko.ImageLoaders.MzExe
                 {
                     var peLdr = new PeImageLoader(services, Filename, base.RawImage, e_lfanew.Value);
                     uint peEntryPointOffset = peLdr.ReadEntryPointRva();
-
-                    var peUnpacker = loaderSvc.FindUnpackerBySignature(Filename, base.RawImage, peEntryPointOffset);
-                    if (peUnpacker != null)
-                        return peUnpacker;
-                    return peLdr;
+                    return loaderSvc.FindUnpackerBySignature(peLdr, peEntryPointOffset);
                 }
                 else if (IsNewExecutable(e_lfanew.Value))
                 {
@@ -127,11 +123,9 @@ namespace Reko.ImageLoaders.MzExe
             }
 
             // Fall back to loading real-mode MS-DOS program.
+            var msdosLoader = new MsdosImageLoader(this);
             var msdosEntryPointOffset = (((e_cparHeader + e_cs) << 4) + e_ip) & 0xFFFFF;
-            var msdosUnpacker = loaderSvc.FindUnpackerBySignature(Filename, base.RawImage, (uint) msdosEntryPointOffset);
-            if (msdosUnpacker != null)
-                return msdosUnpacker;
-            return new MsdosImageLoader(services, Filename, this);
+            return loaderSvc.FindUnpackerBySignature(msdosLoader, (uint) msdosEntryPointOffset);
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,22 +43,15 @@ namespace Reko.UnitTests.Environments.C64
         private SortedList<ushort, C64BasicInstruction> lines;
         private Mock<ArchTestBase.RewriterHost> host;
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
+        public override IProcessorArchitecture Architecture => arch;
 
-        public override Address LoadAddress
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public override Address LoadAddress => Address.Ptr16(0x800);
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
             var addr = Address.Ptr16(10);
-            var image = new MemoryArea(addr, new byte[1]);
             return arch.CreateRewriter(
-                arch.CreateImageReader(image, addr),
+                arch.CreateImageReader(mem, addr),
                 arch.CreateProcessorState(),
                 binder,
                 host);
@@ -123,6 +116,7 @@ namespace Reko.UnitTests.Environments.C64
             host = new Mock<RewriterTestBase.RewriterHost>(arch) { CallBase = true };
             host.Setup(h => h.GetArchitecture("m6502"))
                 .Returns(arch6502);
+            base.Given_MemoryArea(new MemoryArea(Address.Ptr16(0x10), new byte[10]));
         }
 
         [Test]

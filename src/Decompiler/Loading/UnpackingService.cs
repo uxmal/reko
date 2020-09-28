@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -84,29 +84,33 @@ namespace Reko.Loading
 
         /// <summary>
         /// Using the image of the program under investigation, find an 
-        /// unpacker capable of unpacking it.
+        /// unpacker capable of unpacking it, and returns a new <see cref="ImageLoader"/>
+        /// instance.
         /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="image">The image prior to packing it.</param>
-        /// <param name="entryPointOffset"></param>
-        /// <returns></returns>
-        public ImageLoader FindUnpackerBySignature(string filename, byte[] image, uint entryPointOffset)
+        /// <param name="loader">Raw image loader.</param>
+        /// <param name="entryPointOffset">Offset of the program entry point.</param>
+        /// <returns>If an unpacker was found, returns a new wrapping ImageLoader. Otherwise 
+        /// the original loader is returned.</returns>
+        public ImageLoader FindUnpackerBySignature(ImageLoader loader, uint entryPointOffset)
         {
             // $TODO: the code below triggers the creation of the suffix array
             // The suffix array is currently unused but the algorithm that generates it scales poorly
             // making Reko unable to load certain EXE files (due to the endless wait times)
             // EnsureSuffixArray(filename + ".sufa-raw.ubj", image);
-            var signature = Signatures.Where(s => Matches(s, image, entryPointOffset)).FirstOrDefault();
+            var signature = Signatures.Where(s => Matches(s, loader.RawImage, entryPointOffset)).FirstOrDefault();
             if (signature == null)
-                return null;
+                return loader;
             var le = Services.RequireService<IConfigurationService>().GetImageLoader(signature.Name);  //$REVIEW: all of themn?
             if (le == null)
-                return null;
-            var loader = Loader.CreateImageLoader<ImageLoader>(Services, le.TypeName, filename, image);
-            if (loader == null)
-                return null;
-            loader.Argument = le.Argument;
-            return loader;
+            {
+                //$TODO: warn if loader is missing?
+                return loader;
+            }
+            var unpacker = Loader.CreateOuterImageLoader<ImageLoader>(le.TypeName, loader);
+            if (unpacker == null)
+                return loader;
+            unpacker.Argument = le.Argument;
+            return unpacker;
         }
 
         //$PERF: of course we should compile pattern files into a trie for super performance.

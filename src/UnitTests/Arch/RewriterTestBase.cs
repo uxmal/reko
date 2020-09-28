@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,33 +26,64 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.Core.Assemblers;
 
 namespace Reko.UnitTests.Arch
 {
     public abstract class RewriterTestBase : ArchTestBase
     {
-        private MemoryArea instructions;
+        private MemoryArea mem;
 
-        public void Rewrite(params uint [] words)
+        public void Given_MemoryArea(MemoryArea mem)
         {
-            instructions = RewriteCode(words);
+            this.mem = mem;
         }
 
-        public void Rewrite(string hexbytes)
+        protected void Given_Bytes(params byte[] bytes)
         {
-            instructions = RewriteCode(hexbytes);
+            this.mem = new MemoryArea(LoadAddress, bytes);
         }
 
-        protected virtual MemoryArea RewriteCode(string hexBytes)
+        public void Given_HexString(string hexbytes)
         {
-            Assert.Fail($"RewriteCode not implemented for {this.GetType().Name}");
-            return null;
+            var bytes = BytePattern.FromHexBytes(hexbytes).ToArray();
+            this.mem = new MemoryArea(LoadAddress, bytes);
         }
 
-        protected virtual MemoryArea RewriteCode(uint [] words)
+        public void Given_OctalBytes(string octalBytes)
         {
-            Assert.Fail();
-            return null;
+            var bytes = BytePattern.FromHexBytes(octalBytes).ToArray();
+            this.mem = new MemoryArea(LoadAddress, bytes);
+        }
+
+        public void Given_UInt16s(params ushort[] opcodes)
+        {
+            byte[] bytes = new byte[opcodes.Length * 2];
+            var mem = new MemoryArea(LoadAddress, bytes);
+            var writer = Architecture.CreateImageWriter(mem, mem.BaseAddress);
+            foreach (ushort opcode in opcodes)
+            {
+                writer.WriteUInt16(opcode);
+            }
+            this.mem = mem;
+        }
+
+        public void Given_UInt32s(params uint[] opcodes)
+        {
+            byte[] bytes = new byte[opcodes.Length * 4];
+            var mem = new MemoryArea(LoadAddress, bytes);
+            var writer = Architecture.CreateImageWriter(mem, mem.BaseAddress);
+            foreach (uint opcode in opcodes)
+            {
+                writer.WriteUInt32(opcode);
+            }
+            this.mem = mem;
+        }
+
+        public void Given_BitStrings(params string[] bitStrings)
+        {
+            var words = bitStrings.Select(bits => base.BitStringToUInt32(bits)).ToArray();
+            Given_UInt32s(words);
         }
 
         protected virtual IRewriterHost CreateHost()
@@ -65,7 +96,7 @@ namespace Reko.UnitTests.Arch
             int i = 0;
             var frame = Architecture.CreateFrame();
             var host = CreateRewriterHost();
-            var rewriter = GetRtlStream(frame, host).GetEnumerator();
+            var rewriter = GetRtlStream(mem, frame, host).GetEnumerator();
             while (i < expected.Length && rewriter.MoveNext())
             {
                 Assert.AreEqual(expected[i], string.Format("{0}|{1}|{2}", i, RtlInstruction.FormatClass(rewriter.Current.Class), rewriter.Current));

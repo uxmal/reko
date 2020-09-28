@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,15 +52,15 @@ namespace Reko.ImageLoaders.MzExe
 
         private MemoryArea imgU;
 
-        public ExePackLoader(IServiceProvider services, string filename, byte[] imgRaw)
-            : base(services, filename, imgRaw)
+        public ExePackLoader(MsdosImageLoader loader)
+            : base(loader.Services, loader.Filename, loader.RawImage)
         {
-            var cfgSvc = services.RequireService<IConfigurationService>();
+            var cfgSvc = Services.RequireService<IConfigurationService>();
             arch = cfgSvc.GetArchitecture("x86-real-16");
             platform =cfgSvc.GetEnvironment("ms-dos")
                 .Load(Services, arch);
 
-            var exe = new ExeImageLoader(services, filename, imgRaw);
+            var exe = loader.ExeLoader;
             this.exeHdrSize = (uint)(exe.e_cparHeader * 0x10U);
             this.hdrOffset = (uint)(exe.e_cparHeader + exe.e_cs) * 0x10U;
             EndianImageReader rdr = new LeImageReader(RawImage, hdrOffset);
@@ -72,12 +72,12 @@ namespace Reko.ImageLoaders.MzExe
             this.ss = rdr.ReadLeUInt16();
             this.cpUncompressed = rdr.ReadLeUInt16();
 
-            int offset = ExePackHeaderOffset(exe);
-            if (MemoryArea.CompareArrays(imgRaw, offset, signature, signature.Length))
+            int offset = ExePackHeaderOffset(loader.ExeLoader);
+            if (MemoryArea.CompareArrays(loader.RawImage, offset, signature, signature.Length))
             {
                 relocationsOffset = 0x012D;
             }
-            else if (MemoryArea.CompareArrays(imgRaw, offset, signature2, signature2.Length))
+            else if (MemoryArea.CompareArrays(loader.RawImage, offset, signature2, signature2.Length))
             {
                 relocationsOffset = 0x0125;
             }

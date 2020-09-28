@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,7 +78,9 @@ namespace Reko.Arch.Pdp11
                 case Mnemonic.ash: RewriteShift(); break;
                 case Mnemonic.ashc: RewriteAshc(); break;
                 case Mnemonic.asl: RewriteAsl(); break;
+                case Mnemonic.aslb: RewriteAsl(); break;
                 case Mnemonic.asr: RewriteAsr(); break;
+                case Mnemonic.asrb: RewriteAsr(); break;
                 case Mnemonic.bcc: RewriteBxx(ConditionCode.UGE, FlagM.CF); break;
                 case Mnemonic.bcs: RewriteBxx(ConditionCode.ULT, FlagM.CF); break;
                 case Mnemonic.beq: RewriteBxx(ConditionCode.EQ, FlagM.ZF); break;
@@ -87,6 +89,7 @@ namespace Reko.Arch.Pdp11
                 case Mnemonic.bhi: RewriteBxx(ConditionCode.UGT, FlagM.ZF|FlagM.CF); break;
                 case Mnemonic.bvs: RewriteBxx(ConditionCode.OV, FlagM.VF); break;
                 case Mnemonic.bic: RewriteBic(); break;
+                case Mnemonic.bicb: RewriteBic(); break;
                 case Mnemonic.bis: RewriteBis(); break;
                 case Mnemonic.bisb: RewriteBis(); break;
                 case Mnemonic.bit: RewriteBit(); break;
@@ -103,13 +106,17 @@ namespace Reko.Arch.Pdp11
                 case Mnemonic.clrb: RewriteClr(instr, m.Byte(0)); break;
                 case Mnemonic.clrflags: RewriteClrSetFlags(Constant.False); break;
                 case Mnemonic.cmp: RewriteCmp(); break;
+                case Mnemonic.cmpb: RewriteCmp(); break;
                 case Mnemonic.com: RewriteCom(); break;
+                case Mnemonic.comb: RewriteCom(); break;
                 case Mnemonic.dec: RewriteIncDec(m.ISub); break;
+                case Mnemonic.decb: RewriteIncDec(m.ISub); break;
                 case Mnemonic.div: RewriteDiv(); break;
                 case Mnemonic.emt: RewriteEmt(); break;
                 case Mnemonic.halt: RewriteHalt(); break;
                 case Mnemonic.iot: RewriteIot(); break;
                 case Mnemonic.inc: RewriteIncDec(m.IAdd); break;
+                case Mnemonic.incb: RewriteIncDec(m.IAdd); break;
                 case Mnemonic.jmp: RewriteJmp(); break;
                 case Mnemonic.jsr: RewriteJsr(); break;
                 case Mnemonic.mark: RewriteMark(); break;
@@ -120,14 +127,18 @@ namespace Reko.Arch.Pdp11
                 case Mnemonic.mtpi: RewriteMtpi(); break;
                 case Mnemonic.mul: RewriteMul(); break;
                 case Mnemonic.neg: RewriteNeg(); break;
+                case Mnemonic.negb: RewriteNeg(); break;
                 case Mnemonic.nop: m.Nop(); break;
                 case Mnemonic.reset: RewriteReset(); break;
                 case Mnemonic.rol: RewriteRotate(PseudoProcedure.Rol); break;
+                case Mnemonic.rolb: RewriteRotate(PseudoProcedure.Rol); break;
                 case Mnemonic.ror: RewriteRotate(PseudoProcedure.Ror); break;
+                case Mnemonic.rorb: RewriteRotate(PseudoProcedure.Ror); break;
                 case Mnemonic.rti: RewriteRti(); break;
                 case Mnemonic.rts: RewriteRts(); break;
                 case Mnemonic.rtt: RewriteRtt(); break;
                 case Mnemonic.sbc: RewriteAdcSbc(m.ISub); break;
+                case Mnemonic.sbcb: RewriteAdcSbc(m.ISub); break;
                 case Mnemonic.setflags: RewriteClrSetFlags(Constant.True); break;
                 case Mnemonic.stcdi: RewriteStcdi(); break;
                 case Mnemonic.sob: RewriteSob(); break;

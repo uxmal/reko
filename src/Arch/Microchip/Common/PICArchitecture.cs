@@ -1,8 +1,8 @@
 #region License
 /* 
- * Copyright (C) 2017-2019 Christian Hostelet.
+ * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work from:
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -321,6 +321,9 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
             => CreateDisassemblerImpl(imageReader);
+
+        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
+            => ProcessorModel.CreateEmulator(this, segmentMap, envEmulator);
 
         public override ProcessorState CreateProcessorState()
             => ProcessorModel.CreateProcessorState(this);

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -158,16 +158,9 @@ namespace Reko.Environments.C64
             switch (selectedFile.FileType & FileType.FileTypeMask)
             {
             case FileType.PRG:
-                return LoadPrg(imageBytes);
+                return LoadPrg(Services, imageBytes);
             case FileType.SEQ:
-                var mem = new MemoryArea(addrPreferred, imageBytes);
-                var arch = new Mos6502ProcessorArchitecture("mos6502");
-                return new Program(
-                    new SegmentMap(
-                        mem.BaseAddress,
-                        new ImageSegment("c64", mem, AccessMode.ReadWriteExecute)),
-                    arch,
-                    new DefaultPlatform(Services, arch));
+                return LoadSeq(Services, addrPreferred, imageBytes);
             default:
                 throw new NotImplementedException();
             }
@@ -178,7 +171,7 @@ namespace Reko.Environments.C64
         /// </summary>
         /// <param name="imageBytes"></param>
         /// <returns></returns>
-        private Program LoadPrg(byte[] imageBytes)
+        private static Program LoadPrg(IServiceProvider services, byte[] imageBytes)
         {
             var stm = new MemoryStream();
             ushort preferredAddress = MemoryArea.ReadLeUInt16(imageBytes, 0);
@@ -193,10 +186,10 @@ namespace Reko.Environments.C64
                 loadedBytes);
             var rdr = new C64BasicReader(image, 0x0801);
             var lines = rdr.ToSortedList(line => (ushort)line.Address.ToLinear(), line => line);
-            var cfgSvc = Services.RequireService<IConfigurationService>();
-            var arch6502 = (Mos6502ProcessorArchitecture) cfgSvc.GetArchitecture("m6502");
+            var cfgSvc = services.RequireService<IConfigurationService>();
+            var arch6502 = new Mos6502ProcessorArchitecture("m6502");
             var arch = new C64Basic(lines);
-            var platform = cfgSvc.GetEnvironment("c64").Load(Services, arch);
+            var platform = cfgSvc.GetEnvironment("c64").Load(services, arch);
             var segMap = platform.CreateAbsoluteMemoryMap();
             segMap.AddSegment(image, "code", AccessMode.ReadWriteExecute);
             var program = new Program(segMap, arch, platform);
@@ -206,6 +199,20 @@ namespace Reko.Environments.C64
             program.EntryPoints.Add(sym.Address, sym);
             return program;
         }
+
+        public static Program LoadSeq(IServiceProvider services, Address addrPreferred, byte[] imageBytes)
+        {
+            var mem = new MemoryArea(addrPreferred, imageBytes);
+            var arch = new Mos6502ProcessorArchitecture("mos6502");
+            return new Program(
+                new SegmentMap(
+                    mem.BaseAddress,
+                    new ImageSegment("c64", mem, AccessMode.ReadWriteExecute)),
+                arch,
+                new DefaultPlatform(services, arch));
+        }
+
+
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Analysis
         private IProcessorArchitecture arch;
         private ProgramBuilder builder;
         private Program program;
-        private Mock<IImportResolver> importResolver;
+        private Mock<IDynamicLinker> dynamicLinker;
         private Mock<IPlatform> platform;
         private ProgramDataFlow dataFlow;
         private StringBuilder sbExpected;
@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Analysis
             this.platform = new Mock<IPlatform>();
             this.arch = new FakeArchitecture();
             this.builder = new ProgramBuilder(arch);
-            this.importResolver = new Mock<IImportResolver>();
+            this.dynamicLinker = new Mock<IDynamicLinker>();
             this.sbExpected = new StringBuilder();
             this.fnExit = new ExternalProcedure(
                 "exit",
@@ -121,7 +121,7 @@ namespace Reko.UnitTests.Analysis
                     program,
                     proc,
                     procSet,
-                    importResolver.Object,
+                    dynamicLinker.Object,
                     dataFlow);
                 sst.Transform();
                 sst.AddUsesToExitBlock();
@@ -129,7 +129,7 @@ namespace Reko.UnitTests.Analysis
                     program.SegmentMap, 
                     sst.SsaState,
                     program.CallGraph,
-                    importResolver.Object,
+                    dynamicLinker.Object,
                     NullDecompilerEventListener.Instance);
                 vp.Transform();
                 sstSet.Add(sst);

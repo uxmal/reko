@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,9 +57,9 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program program, TextWriter fut)
         {
-            IImportResolver importResolver = null;
+            IDynamicLinker dynamicLinker = null;
             var listener = new FakeDecompilerEventListener();
-            DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, listener);
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, dynamicLinker, listener);
             var ssts = dfa.UntangleProcedures();
 
             foreach (Procedure proc in program.Procedures.Values)
@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Analysis
                 cce.Transform();
                 DeadCode.Eliminate(ssa);
 
-                ValuePropagator vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver, listener);
+                ValuePropagator vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, dynamicLinker, listener);
                 vp.Transform();
                 DeadCode.Eliminate(ssa);
                 Coalescer co = new Coalescer(ssa);

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 Pavel Tomin.
+ * Copyright (C) 1999-2020 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -272,7 +272,7 @@ namespace Reko.UnitTests.Analysis
                 }
             };
             InitProgram(program);
-            IImportResolver importResolver = null;
+            IDynamicLinker dynamicLinker = null;
             var eventListener = new FakeDecompilerEventListener();
 
             var programFlow = new ProgramDataFlow();
@@ -282,10 +282,10 @@ namespace Reko.UnitTests.Analysis
                 program, 
                 proc,
                 new HashSet<Procedure>(),
-                importResolver,
+                dynamicLinker,
                 programFlow);
             var ssa = sst.Transform();
-            var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver, eventListener);
+            var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, dynamicLinker, eventListener);
             vp.Transform();
             sst.RenameFrameAccesses = true;
             sst.Transform();

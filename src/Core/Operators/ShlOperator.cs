@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,6 +34,8 @@ namespace Reko.Core.Operators
             var dom = Domain.Integer;
             if (pt != null)
                 dom = pt.Domain & Domain.Integer;
+            if (dom == 0)
+                dom = Domain.Integer;
             pt = PrimitiveType.Create(dom, c1.DataType.BitSize);
             return Constant.Create(
                 pt, 

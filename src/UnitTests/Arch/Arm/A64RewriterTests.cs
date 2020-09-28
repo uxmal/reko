@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,19 +36,12 @@ namespace Reko.UnitTests.Arch.Arm
     {
         private Arm64Architecture arch = new Arm64Architecture("aarch64");
         private Address baseAddress = Address.Ptr64(0x00100000);
-        private MemoryArea mem;
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
+        public override IProcessorArchitecture Architecture => arch;
 
-        public override Address LoadAddress
-        {
-            get { return baseAddress; }
-        }
+        public override Address LoadAddress => baseAddress;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
             return arch.CreateRewriter(new LeImageReader(mem, 0), new Arm64State(arch), binder, host);
         }
@@ -58,19 +51,16 @@ namespace Reko.UnitTests.Arch.Arm
             var bytes = bitStrings.Select(bits => base.BitStringToUInt32(bits))
                 .SelectMany(u => new byte[] { (byte)u, (byte)(u >> 8), (byte)(u >> 16), (byte)(u >> 24) })
                 .ToArray();
-            mem = new MemoryArea(Address.Ptr32(0x00100000), bytes);
+            base.Given_MemoryArea(new MemoryArea(Address.Ptr32(0x00100000), bytes));
         }
-
-
 
         private void Given_Instruction(params uint[] words)
         {
             var bytes = words
                 .SelectMany(u => new byte[] { (byte)u, (byte)(u >> 8), (byte)(u >> 16), (byte)(u >> 24) })
                 .ToArray();
-            mem = new MemoryArea(Address.Ptr32(0x00100000), bytes);
+            Given_MemoryArea(new MemoryArea(Address.Ptr32(0x00100000), bytes));
         }
-
 
         [Test]
         public void A64Rw_b_label()

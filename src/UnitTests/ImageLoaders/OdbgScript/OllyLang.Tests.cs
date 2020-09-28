@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Text;
 
@@ -30,9 +32,18 @@ namespace Reko.ImageLoaders.OdbgScript
     public class OllyLangTests
     {
         private Mock<IHost> host;
+        private Mock<IProcessorEmulator> emu;
+        private Mock<IProcessorArchitecture> arch;
         private OllyLang engine;
         private MemoryArea mem;
         private SegmentMap imageMap;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.emu = new Mock<IProcessorEmulator>();
+            this.arch = new Mock<IProcessorArchitecture>();
+        }
 
         [Test]
         public void Ose_var()
@@ -47,16 +58,38 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private void Given_Script(string script)
         {
-            engine.script.Clear();
-            engine.script.LoadScriptFromString(script, ".");
+            engine.Script.Clear();
+            engine.Script.LoadScriptFromString(script, ".");
         }
 
         private void Given_Engine()
         {
             this.host = new Mock<IHost>();
-            engine = new OllyLang(null);
+            arch.Setup(a => a.MakeAddressFromConstant(
+                It.IsAny<Constant>(),
+                It.IsAny<bool>()))
+                .Returns(new Func<Constant, bool, Address>((c, f) => Address.Ptr32((uint) c.ToUInt64())));
+            engine = new OllyLang(null, arch.Object);
             engine.Host = host.Object;
-            engine.Debugger = new Debugger(null);
+            engine.Debugger = new Debugger(emu.Object);
+        }
+
+        private void Given_ArchRegister(RegisterStorage reg)
+        {
+            arch.Setup(a => a.TryGetRegister(reg.Name, out reg)).Returns(true);
+        }
+
+        private void Given_MakeSegmentedAddress()
+        {
+            arch.Setup(a => a.MakeSegmentedAddress(
+                It.IsNotNull<Constant>(),
+                It.IsNotNull<Constant>())).
+                Returns(new Func<Constant, Constant, Address>((s, o) =>
+                {
+                    var seg = s.ToUInt16();
+                    var off = o.ToUInt32();
+                    return Address.SegPtr(seg, off);
+                }));
         }
 
         private void Given_Image(uint addr, params byte[] bytes)
@@ -68,12 +101,12 @@ namespace Reko.ImageLoaders.OdbgScript
             host.Setup(h => h.SegmentMap).Returns(imageMap);
             var meminfo = new MEMORY_BASIC_INFORMATION
             {
-                BaseAddress = mem.BaseAddress.ToLinear(),
+                BaseAddress = mem.BaseAddress,
                 RegionSize = (uint) mem.Length,
                 AllocationBase = mem.BaseAddress.ToLinear()
             };
             host.Setup(h => h.TE_GetMemoryInfo(
-                It.IsAny<ulong>(),
+                It.IsAny<Address>(),
                 out meminfo)).Returns(true);
         }
 
@@ -111,12 +144,13 @@ namespace Reko.ImageLoaders.OdbgScript
             Given_Engine();
             Given_Image(0x001000, new byte[] { 0x2a, 0x2a, 0x2a, 0x21, 0x23, 0x21, 0x23 });
             host.Setup(h => h.WriteMemory(
-                It.IsAny<ulong>(),
+                It.IsAny<Address>(),
                 3,
                 It.IsNotNull<byte[]>()))
-                .Returns((ulong a, int l, byte[] b) =>
+                .Returns((Address a, int l, byte[] b) =>
             {
-                MemoryArea.WriteBytes(b, (long) a - (long) mem.BaseAddress.ToLinear(), l, mem.Bytes);
+                var offset = a - mem.BaseAddress;
+                MemoryArea.WriteBytes(b, offset, l, mem.Bytes);
                 return true;
             });
 
@@ -141,6 +175,66 @@ namespace Reko.ImageLoaders.OdbgScript
             //Assert.AreEqual("foo 0xa", engine.FormatAsmDwords("foo a"));
             //Assert.AreEqual("foo [0xa]", engine.FormatAsmDwords("foo [a]"));
             Assert.AreEqual("foo [0xa],0xb", engine.FormatAsmDwords("foo [a],b"));
+        }
+
+        [Test]
+        public void Ose_Breakpoint()
+        {
+            emu.Setup(e => e.SetBreakpoint(
+                0x00123400u,
+                It.IsNotNull<Action>()))
+                .Verifiable();
+            arch.Setup(a => a.MakeAddressFromConstant(
+                It.IsNotNull<Constant>(),
+                false))
+                .Returns(Address.Ptr32(0x00123400));
+
+            Given_Engine();
+            Given_Script("bp 00123400");
+            engine.Run();
+
+            emu.Verify();
+        }
+
+        [Test]
+        public void Ose_Breakpoint_SegmentedAddress()
+        {
+            emu.Setup(e => e.SetBreakpoint(
+                0x00008010,
+                It.IsNotNull<Action>()))
+                .Verifiable();
+            var addr = Address.SegPtr(0x800, 0x10);
+            arch.Setup(a => a.MakeSegmentedAddress(
+                It.IsNotNull<Constant>(),
+                It.IsNotNull<Constant>()))
+                .Returns(addr);
+
+            Given_Engine();
+            Given_Script("bp 0800:0010");
+            engine.Run();
+
+            emu.Verify();
+        }
+
+        [Test]
+        public void Ose_Add_Address()
+        {
+            Given_Engine();
+            Given_Script(
+                "var q\r\n" +
+                "mov q,cs:ip\r\n" +
+                "add q,2\r\n");
+            Given_ArchRegister(new RegisterStorage("cs", 3, 0, PrimitiveType.SegmentSelector));
+            Given_ArchRegister(new RegisterStorage("ip", 4, 0, PrimitiveType.Word16));
+            emu.Setup(e => e.ReadRegister(
+                It.Is<RegisterStorage>(r => r.Name == "cs"))).Returns(0x800);
+            emu.Setup(e => e.ReadRegister(
+                It.Is<RegisterStorage>(r => r.Name == "ip"))).Returns(0x800);
+
+            Given_MakeSegmentedAddress();
+
+            engine.Run();
+            Assert.AreEqual("0800:0802", engine.variables["q"].Address.ToString());
         }
     }
 

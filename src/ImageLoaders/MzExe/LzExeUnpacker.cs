@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,24 +46,15 @@ namespace Reko.ImageLoaders.MzExe
 
 		// Code inspired by unlzexe utility (unlzexe ver 0.8 (PC-VAN UTJ44266 Kou )
 
-		public LzExeUnpacker(IServiceProvider services, string filename, byte [] rawImg) : base(services, filename, rawImg)
+		public LzExeUnpacker(MsdosImageLoader loader)
+            : base(loader.Services, loader.Filename, loader.RawImage)
         {
-            var exe = new ExeImageLoader(services, filename, rawImg);
-            var cfgSvc = services.RequireService<IConfigurationService>();
+            var cfgSvc = Services.RequireService<IConfigurationService>();
             this.arch = cfgSvc.GetArchitecture("x86-real-16");
             this.platform = cfgSvc.GetEnvironment("ms-dos")
-                .Load(services, arch);
-            Validate(exe);
+                .Load(Services, arch);
+            Validate(loader.ExeLoader);
         }
-
-		public LzExeUnpacker(IServiceProvider services, ExeImageLoader exe, string filename, byte [] rawImg) : base(services, filename, rawImg)
-		{
-            var cfgSvc = services.RequireService<IConfigurationService>();
-            this.arch = cfgSvc.GetArchitecture("x86-real-16");
-            this.platform = cfgSvc.GetEnvironment("ms-dos")
-                .Load(services, arch);
-            Validate(exe);
-		}
 
         private void Validate(ExeImageLoader exe)
         {

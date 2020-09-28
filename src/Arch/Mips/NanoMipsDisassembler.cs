@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,12 +32,13 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Mips
 {
-    using Decoder = Reko.Core.Machine.Decoder<NanoMipsDisassembler, Mnemonic, MipsInstruction>;
+    using Decoder = Decoder<NanoMipsDisassembler, Mnemonic, MipsInstruction>;
+    using WideDecoder = WideDecoder<NanoMipsDisassembler, Mnemonic, MipsInstruction>;
 
     /// <summary>
     /// Disassembler for the nanoMips instruction set encoding.
     /// </summary>
-    public class NanoMipsDisassembler : DisassemblerBase<MipsInstruction>
+    public class NanoMipsDisassembler : DisassemblerBase<MipsInstruction, Mnemonic>
     {
         private static readonly Decoder rootDecoder;
 
@@ -69,7 +70,19 @@ namespace Reko.Arch.Mips
             return instr;
         }
 
-        protected override MipsInstruction CreateInvalidInstruction()
+        public override MipsInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            //$REVIEW: this is shared code btw InstrDecoder and WideInstrDecoder
+            var instr = new MipsInstruction
+            {
+                InstructionClass = iclass,
+                Mnemonic = mnemonic,
+                Operands = this.ops.ToArray()
+            };
+            return instr;
+        }
+
+        public override MipsInstruction CreateInvalidInstruction()
         {
             return new MipsInstruction
             {
@@ -568,37 +581,6 @@ namespace Reko.Arch.Mips
 
         #region Decoder subclasses
 
-        private class InstrDecoder : Decoder<NanoMipsDisassembler, Mnemonic, MipsInstruction>
-        {
-            private readonly InstrClass iclass;
-            private readonly Mnemonic mnemonic;
-            private readonly Mutator<NanoMipsDisassembler>[] mutators;
-
-            public InstrDecoder(InstrClass iclass, Mnemonic mnemonic, Mutator<NanoMipsDisassembler>[] mutators)
-            {
-                this.iclass = iclass;
-                this.mnemonic = mnemonic;
-                this.mutators = mutators;
-            }
-
-            public override MipsInstruction Decode(uint wInstr, NanoMipsDisassembler dasm)
-            {
-                foreach (var m in mutators)
-                {
-                    if (!m(wInstr, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-                //$REVIEW: this is shared code btw InstrDecoder and WideInstrDecoder
-                var instr = new MipsInstruction
-                {
-                    InstructionClass = this.iclass,
-                    Mnemonic = this.mnemonic,
-                    Operands = dasm.ops.ToArray()
-                };
-                return instr;
-            }
-        }
-
         /// <summary>
         /// This decoder is used to read the second 16-bit chunk of a 32-bit instruction;
         /// the previously read bits are then concatenated with the read chunk and 
@@ -647,66 +629,23 @@ namespace Reko.Arch.Mips
             }
         }
 
-        //$REVIEW: consider moving the 'wide' classes and delegates to Reko.Core for other architectures like Risc-V
-        public delegate bool WideMutator<TDasm>(ulong ulInstr, TDasm dasm);
-
-        private abstract class WideDecoder : Decoder
-        {
-            public override MipsInstruction Decode(uint wInstr, NanoMipsDisassembler dasm)
-            {
-                throw new InvalidOperationException("32-bit decoding is not allowed with wide decoders.");
-            }
-
-            public abstract MipsInstruction Decode(ulong ulInstr, NanoMipsDisassembler dasm);
-        }
-
-
-        private class WideInstrDecoder : WideDecoder
-        {
-            private readonly InstrClass iclass;
-            private readonly Mnemonic mnemonic;
-            private readonly WideMutator<NanoMipsDisassembler>[] mutators;
-
-            public WideInstrDecoder(InstrClass iclass, Mnemonic mnemonic, WideMutator<NanoMipsDisassembler>[] mutators)
-            {
-                this.iclass = iclass;
-                this.mnemonic = mnemonic;
-                this.mutators = mutators;
-            }
-
-            public override MipsInstruction Decode(ulong ulInstr, NanoMipsDisassembler dasm)
-            {
-                foreach (var m in mutators)
-                {
-                    if (!m(ulInstr, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-                //$REVIEW: this code is copied from InstrDecoder
-                var instr = new MipsInstruction
-                {
-                    InstructionClass = this.iclass,
-                    Mnemonic = this.mnemonic,
-                    Operands = dasm.ops.ToArray()
-                };
-                return instr;
-            }
-        }
         #endregion
 
         #region Factory methods
+
         private static Decoder Instr(Mnemonic mnemonic,  params Mutator<NanoMipsDisassembler>[] mutators)
         {
-            return new InstrDecoder(InstrClass.Linear, mnemonic, mutators);
+            return new InstrDecoder<NanoMipsDisassembler, Mnemonic, MipsInstruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
         private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<NanoMipsDisassembler> [] mutators)
         {
-            return new InstrDecoder(iclass, mnemonic, mutators);
+            return new InstrDecoder<NanoMipsDisassembler, Mnemonic, MipsInstruction>(iclass, mnemonic, mutators);
         }
 
         private static WideDecoder WInstr(Mnemonic mnemonic, params WideMutator<NanoMipsDisassembler>[] mutators)
         {
-            return new WideInstrDecoder(InstrClass.Linear, mnemonic, mutators);
+            return new WideInstrDecoder<NanoMipsDisassembler, Mnemonic, MipsInstruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
         private static Decoder Nyi(string message)

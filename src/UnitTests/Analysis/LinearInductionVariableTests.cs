@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -343,13 +343,13 @@ namespace Reko.UnitTests.Analysis
 		private void Prepare(Procedure proc)
 		{
             var listener = new FakeDecompilerEventListener();
-            var importResolver = new Mock<IImportResolver>().Object;
+            var dynamicLinker = new Mock<IDynamicLinker>().Object;
             doms = proc.CreateBlockDominatorGraph();
             SsaTransform sst = new SsaTransform(
                 new Program(),
                 proc,
                 new HashSet<Procedure>(),
-                importResolver,
+                dynamicLinker,
                 new ProgramDataFlow());
             sst.Transform();
 			this.ssa = sst.SsaState;
@@ -361,7 +361,7 @@ namespace Reko.UnitTests.Analysis
 			DeadCode.Eliminate(ssa);
 
             var segmentMap = new SegmentMap(Address.Ptr32(0x00123400));
-			var vp = new ValuePropagator(segmentMap, ssa, new CallGraph(), importResolver, listener);
+			var vp = new ValuePropagator(segmentMap, ssa, new CallGraph(), dynamicLinker, listener);
 			vp.Transform();
 
 			DeadCode.Eliminate(ssa);

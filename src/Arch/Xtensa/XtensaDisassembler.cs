@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ using Reko.Core.Expressions;
 
 namespace Reko.Arch.Xtensa
 {
-    public class XtensaDisassembler : DisassemblerBase<XtensaInstruction>
+    public class XtensaDisassembler : DisassemblerBase<XtensaInstruction, Mnemonic>
     {
         private static readonly Decoder[] deocders;
         private static readonly int[] b4const;
@@ -117,7 +117,7 @@ namespace Reko.Arch.Xtensa
             return instr;
         }
 
-        protected override XtensaInstruction CreateInvalidInstruction()
+        public override XtensaInstruction CreateInvalidInstruction()
         {
             return new XtensaInstruction
             {

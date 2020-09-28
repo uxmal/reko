@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ namespace Reko.Analysis
         private readonly IProcessorArchitecture arch;
         private readonly Program program;
         private readonly ProgramDataFlow programFlow;
-        private readonly IImportResolver importResolver;
+        private readonly IDynamicLinker dynamicLinker;
         private readonly Dictionary<Block, SsaBlockState> blockstates;
         private readonly SsaState ssa;
         private readonly TransformerFactory factory;
@@ -68,13 +68,13 @@ namespace Reko.Analysis
             Program program,
             Procedure proc,
             HashSet<Procedure> sccProcs,
-            IImportResolver importResolver,
+            IDynamicLinker dynamicLinker,
             ProgramDataFlow programFlow)
         {
             this.arch = proc.Architecture;
             this.program = program;
             this.programFlow = programFlow;
-            this.importResolver = importResolver;
+            this.dynamicLinker = dynamicLinker;
             this.sccProcs = sccProcs;
             this.ssa = new SsaState(proc);
             this.blockstates = ssa.Procedure.ControlGraph.Blocks.ToDictionary(k => k, v => new SsaBlockState(v));
@@ -1103,7 +1103,7 @@ namespace Reko.Analysis
                 // Search imported procedures only in Global Memory
                 access.MemoryId.Storage == MemoryStorage.Instance)
             {
-                var e = importResolver.ResolveToImportedValue(stmCur, c);
+                var e = dynamicLinker.ResolveToImportedValue(stmCur, c);
                 if (e != null)
                     return e;
                 ea = c;

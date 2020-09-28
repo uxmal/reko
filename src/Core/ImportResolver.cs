@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ using Reko.Core.Operators;
 
 namespace Reko.Core
 {
-    public interface IImportResolver
+    public interface IDynamicLinker
     {
         ExternalProcedure ResolveProcedure(string moduleName, string importName, IPlatform platform);
         ExternalProcedure ResolveProcedure(string moduleName, int ordinal, IPlatform platform);
@@ -40,19 +40,19 @@ namespace Reko.Core
     }
 
     /// <summary>
-    /// An import resolver tries to resolve a reference to external code or
+    /// The dynamic linker tries to resolve a reference to external code or
     /// data by consulting the current project first hand, and the platform
     /// in second hand. Doing it that way allows users to override platform
     /// definitions as the need arises.
     /// </summary>
-    public class ImportResolver : IImportResolver
+    public class DynamicLinker : IDynamicLinker
     {
         private readonly Project project;
         private readonly Program program;
         private readonly DecompilerEventListener eventListener;
         private readonly Dictionary<string, ImageSymbol> localProcs;
 
-        public ImportResolver(Project project, Program program, DecompilerEventListener eventListener)
+        public DynamicLinker(Project project, Program program, DecompilerEventListener eventListener)
         {
             this.project = project ?? throw new ArgumentNullException("project");
             this.program = program;

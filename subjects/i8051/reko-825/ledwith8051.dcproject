@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>8051</arch>
+  <input>
+    <filename>ledwith8051.hex</filename>
+    <asmDir>ledwith8051.reko</asmDir>
+    <srcDir>ledwith8051.reko</srcDir>
+    <includeDir>ledwith8051.reko</includeDir>
+    <resources>ledwith8051.reko\resources</resources>
+    <user>
+      <address>0000</address>
+      <loader>IntelHex</loader>
+      <processor name="8051" />
+      <procedure name="fn0000">
+        <address>0000</address>
+      </procedure>
+      <registerValues />
+      <extractResources>false</extractResources>
+    </user>
+  </input>
+</project>

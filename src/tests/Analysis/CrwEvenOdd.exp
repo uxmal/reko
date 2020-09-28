@@ -23,11 +23,11 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	ax_5 = SEQ(0x00, fn0C00_0015(0x0003))
-	al_11 = SLICE(ax_5, byte, 0) (alias)
-	Mem13[ds:0x0300:byte] = al_11
-	ax_15 = SEQ(0x00, fn0C00_0020(0x0003))
-	al_21 = SLICE(ax_15, byte, 0) (alias)
-	Mem22[ds:0x0301:byte] = al_21
+	al_10 = SLICE(ax_5, byte, 0) (alias)
+	Mem12[ds:0x0300:byte] = al_10
+	ax_14 = SEQ(0x00, fn0C00_0020(0x0003))
+	al_19 = SLICE(ax_14, byte, 0) (alias)
+	Mem20[ds:0x0301:byte] = al_19
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

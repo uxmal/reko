@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -178,6 +178,9 @@ namespace Reko.Arch.X86
         public static readonly RegisterStorage mm15;
 
         public static readonly RegisterStorage rip;     
+        public static readonly RegisterStorage eip;     
+        public static readonly RegisterStorage ip;
+        
         public static readonly RegisterStorage Top;     // The x87 stack pointer is modelled explicitly.
         public static readonly MemoryIdentifier ST;
 
@@ -196,37 +199,58 @@ namespace Reko.Arch.X86
 
         static Registers()
         {
-            eax = new RegisterStorage("eax", 0, 0, PrimitiveType.Word32);
-            ecx = new RegisterStorage("ecx", 1, 0, PrimitiveType.Word32);
-            edx = new RegisterStorage("edx", 2, 0, PrimitiveType.Word32);
-            ebx = new RegisterStorage("ebx", 3, 0, PrimitiveType.Word32);
-            esp = new RegisterStorage("esp", 4, 0, PrimitiveType.Word32);
-            ebp = new RegisterStorage("ebp", 5, 0, PrimitiveType.Word32);
-            esi = new RegisterStorage("esi", 6, 0, PrimitiveType.Word32);
-            edi = new RegisterStorage("edi", 7, 0, PrimitiveType.Word32);
-            ax = new RegisterStorage("ax", 0, 0, PrimitiveType.Word16);
-            cx = new RegisterStorage("cx", 1, 0, PrimitiveType.Word16);
-            dx = new RegisterStorage("dx", 2, 0, PrimitiveType.Word16);
-            bx = new RegisterStorage("bx", 3, 0, PrimitiveType.Word16);
-            sp = new RegisterStorage("sp", 4, 0, PrimitiveType.Word16);
-            bp = new RegisterStorage("bp", 5, 0, PrimitiveType.Word16);
-            si = new RegisterStorage("si", 6, 0, PrimitiveType.Word16);
-            di = new RegisterStorage("di", 7, 0, PrimitiveType.Word16);
-            al = new RegisterStorage("al", 0, 0, PrimitiveType.Byte);
-            cl = new RegisterStorage("cl", 1, 0, PrimitiveType.Byte);
-            dl = new RegisterStorage("dl", 2, 0, PrimitiveType.Byte);
-            bl = new RegisterStorage("bl", 3, 0, PrimitiveType.Byte);
-            ah = new RegisterStorage("ah", 0, 8, PrimitiveType.Byte);
-            ch = new RegisterStorage("ch", 1, 8, PrimitiveType.Byte);
-            dh = new RegisterStorage("dh", 2, 8, PrimitiveType.Byte);
-            bh = new RegisterStorage("bh", 3, 8, PrimitiveType.Byte);
-            es = SegmentRegister("es", 24);
-            cs = SegmentRegister("cs", 25);
-            ss = SegmentRegister("ss", 26);
-            ds = SegmentRegister("ds", 27);
-            fs = SegmentRegister("fs", 28);
-            gs = SegmentRegister("gs", 29);
-            eflags = new RegisterStorage("eflags", 32, 0, PrimitiveType.Word32);
+            var factory = new StorageFactory();
+            rax = factory.Reg64("rax");
+            rcx = factory.Reg64("rcx");
+            rdx = factory.Reg64("rdx");
+            rbx = factory.Reg64("rbx");
+            rsp = factory.Reg64("rsp");
+            rbp = factory.Reg64("rbp");
+            rsi = factory.Reg64("rsi");
+            rdi = factory.Reg64("rdi");
+            r8 =  factory.Reg64("r8");
+            r9 =  factory.Reg64("r9");
+            r10 = factory.Reg64("r10");
+            r11 = factory.Reg64("r11");
+            r12 = factory.Reg64("r12");
+            r13 = factory.Reg64("r13");
+            r14 = factory.Reg64("r14");
+            r15 = factory.Reg64("r15");
+
+            eax = new RegisterStorage("eax", rax.Number, 0, PrimitiveType.Word32);
+            ecx = new RegisterStorage("ecx", rcx.Number, 0, PrimitiveType.Word32);
+            edx = new RegisterStorage("edx", rdx.Number, 0, PrimitiveType.Word32);
+            ebx = new RegisterStorage("ebx", rbx.Number, 0, PrimitiveType.Word32);
+            esp = new RegisterStorage("esp", rsp.Number, 0, PrimitiveType.Word32);
+            ebp = new RegisterStorage("ebp", rbp.Number, 0, PrimitiveType.Word32);
+            esi = new RegisterStorage("esi", rsi.Number, 0, PrimitiveType.Word32);
+            edi = new RegisterStorage("edi", rdi.Number, 0, PrimitiveType.Word32);
+            ax = new RegisterStorage("ax", rax.Number, 0, PrimitiveType.Word16);
+            cx = new RegisterStorage("cx", rcx.Number, 0, PrimitiveType.Word16);
+            dx = new RegisterStorage("dx", rdx.Number, 0, PrimitiveType.Word16);
+            bx = new RegisterStorage("bx", rbx.Number, 0, PrimitiveType.Word16);
+            sp = new RegisterStorage("sp", rsp.Number, 0, PrimitiveType.Word16);
+            bp = new RegisterStorage("bp", rbp.Number, 0, PrimitiveType.Word16);
+            si = new RegisterStorage("si", rsi.Number, 0, PrimitiveType.Word16);
+            di = new RegisterStorage("di", rdi.Number, 0, PrimitiveType.Word16);
+            al = new RegisterStorage("al", rax.Number, 0, PrimitiveType.Byte);
+            cl = new RegisterStorage("cl", rcx.Number, 0, PrimitiveType.Byte);
+            dl = new RegisterStorage("dl", rdx.Number, 0, PrimitiveType.Byte);
+            bl = new RegisterStorage("bl", rbx.Number, 0, PrimitiveType.Byte);
+            ah = new RegisterStorage("ah", rax.Number, 8, PrimitiveType.Byte);
+            ch = new RegisterStorage("ch", rcx.Number, 8, PrimitiveType.Byte);
+            dh = new RegisterStorage("dh", rdx.Number, 8, PrimitiveType.Byte);
+            bh = new RegisterStorage("bh", rbx.Number, 8, PrimitiveType.Byte);
+            es = factory.Reg("es", PrimitiveType.SegmentSelector);
+            cs = factory.Reg("cs", PrimitiveType.SegmentSelector);
+            ss = factory.Reg("ss", PrimitiveType.SegmentSelector);
+            ds = factory.Reg("ds", PrimitiveType.SegmentSelector);
+            fs = factory.Reg("fs", PrimitiveType.SegmentSelector);
+            gs = factory.Reg("gs", PrimitiveType.SegmentSelector);
+            rip = factory.Reg64("rip");
+            eip = new RegisterStorage("eip", rip.Number, 0, PrimitiveType.Word32);
+            ip = new RegisterStorage("ip", rip.Number, 0, PrimitiveType.Word32);
+            eflags = factory.Reg32("eflags");
             S = FlagRegister("S", eflags, FlagM.SF);
             C = FlagRegister("C", eflags, FlagM.CF);
             Z = FlagRegister("Z", eflags, FlagM.ZF);
@@ -235,119 +259,100 @@ namespace Reko.Arch.X86
             P = FlagRegister("P", eflags, FlagM.PF);
             EflagsBits = new FlagGroupStorage[] { S, C, Z, D, O, P };
 
-            FPUF = new RegisterStorage("FPUF", 38, 0, PrimitiveType.Byte);
-            FPST = new RegisterStorage("FPST", 39, 0, PrimitiveType.Byte); 
+            FPUF = factory.Reg("FPUF", PrimitiveType.Byte);
+            FPST = factory.Reg("FPST", PrimitiveType.Byte); 
 
-            rax = new RegisterStorage("rax", 0, 0, PrimitiveType.Word64);
-            rcx = new RegisterStorage("rcx", 1, 0, PrimitiveType.Word64);
-            rdx = new RegisterStorage("rdx", 2, 0, PrimitiveType.Word64);
-            rbx = new RegisterStorage("rbx", 3, 0, PrimitiveType.Word64);
-            rsp = new RegisterStorage("rsp", 4, 0, PrimitiveType.Word64);
-            rbp = new RegisterStorage("rbp", 5, 0, PrimitiveType.Word64);
-            rsi = new RegisterStorage("rsi", 6, 0, PrimitiveType.Word64);
-            rdi = new RegisterStorage("rdi", 7, 0, PrimitiveType.Word64);
-            r8 = new RegisterStorage("r8",   8, 0, PrimitiveType.Word64);
-            r9 = new RegisterStorage("r9", 9, 0, PrimitiveType.Word64);
-            r10 = new RegisterStorage("r10", 10, 0, PrimitiveType.Word64);
-            r11 = new RegisterStorage("r11", 11, 0, PrimitiveType.Word64);
-            r12 = new RegisterStorage("r12", 12, 0, PrimitiveType.Word64);
-            r13 = new RegisterStorage("r13", 13, 0, PrimitiveType.Word64);
-            r14 = new RegisterStorage("r14", 14, 0, PrimitiveType.Word64);
-            r15 = new RegisterStorage("r15", 15, 0, PrimitiveType.Word64);
-            r8d = new RegisterStorage("r8d", 8, 0, PrimitiveType.Word32);
-            r9d = new RegisterStorage("r9d", 9, 0, PrimitiveType.Word32);
-            r10d = new RegisterStorage("r10d", 10, 0, PrimitiveType.Word32);
-            r11d = new RegisterStorage("r11d", 11, 0, PrimitiveType.Word32);
-            r12d = new RegisterStorage("r12d", 12, 0, PrimitiveType.Word32);
-            r13d = new RegisterStorage("r13d", 13, 0, PrimitiveType.Word32);
-            r14d = new RegisterStorage("r14d", 14, 0, PrimitiveType.Word32);
-            r15d = new RegisterStorage("r15d", 15, 0, PrimitiveType.Word32);
-            r8w = new RegisterStorage("r8w", 8, 0, PrimitiveType.Word16);
-            r9w = new RegisterStorage("r9w", 9, 0, PrimitiveType.Word16);
-            r10w = new RegisterStorage("r10w", 10, 0, PrimitiveType.Word16);
-            r11w = new RegisterStorage("r11w", 11, 0, PrimitiveType.Word16);
-            r12w = new RegisterStorage("r12w", 12, 0, PrimitiveType.Word16);
-            r13w = new RegisterStorage("r13w", 13, 0, PrimitiveType.Word16);
-            r14w = new RegisterStorage("r14w", 14, 0, PrimitiveType.Word16);
-            r15w = new RegisterStorage("r15w", 15, 0, PrimitiveType.Word16);
+            r8d = new RegisterStorage("r8d", r8.Number, 0, PrimitiveType.Word32);
+            r9d = new RegisterStorage("r9d", r9.Number, 0, PrimitiveType.Word32);
+            r10d = new RegisterStorage("r10d", r10.Number, 0, PrimitiveType.Word32);
+            r11d = new RegisterStorage("r11d", r11.Number, 0, PrimitiveType.Word32);
+            r12d = new RegisterStorage("r12d", r12.Number, 0, PrimitiveType.Word32);
+            r13d = new RegisterStorage("r13d", r13.Number, 0, PrimitiveType.Word32);
+            r14d = new RegisterStorage("r14d", r14.Number, 0, PrimitiveType.Word32);
+            r15d = new RegisterStorage("r15d", r15.Number, 0, PrimitiveType.Word32);
+            r8w = new RegisterStorage("r8w", r8.Number, 0, PrimitiveType.Word16);
+            r9w = new RegisterStorage("r9w", r9.Number, 0, PrimitiveType.Word16);
+            r10w = new RegisterStorage("r10w", r10.Number, 0, PrimitiveType.Word16);
+            r11w = new RegisterStorage("r11w", r11.Number, 0, PrimitiveType.Word16);
+            r12w = new RegisterStorage("r12w", r12.Number, 0, PrimitiveType.Word16);
+            r13w = new RegisterStorage("r13w", r13.Number, 0, PrimitiveType.Word16);
+            r14w = new RegisterStorage("r14w", r14.Number, 0, PrimitiveType.Word16);
+            r15w = new RegisterStorage("r15w", r15.Number, 0, PrimitiveType.Word16);
 
-            spl = new RegisterStorage("spl", 4, 0, PrimitiveType.Byte);
-            bpl = new RegisterStorage("bpl", 5, 0, PrimitiveType.Byte);
-            sil = new RegisterStorage("sil", 6, 0, PrimitiveType.Byte);
-            dil = new RegisterStorage("dil", 7, 0, PrimitiveType.Byte);
+            spl = new RegisterStorage("spl", rsp.Number, 0, PrimitiveType.Byte);
+            bpl = new RegisterStorage("bpl", rbp.Number, 0, PrimitiveType.Byte);
+            sil = new RegisterStorage("sil", rsi.Number, 0, PrimitiveType.Byte);
+            dil = new RegisterStorage("dil", rdi.Number, 0, PrimitiveType.Byte);
 
-            rip = new RegisterStorage("rip", 23, 0, PrimitiveType.Ptr64);
+            r8b = new RegisterStorage("r8b",    r8.Number, 0, PrimitiveType.Byte);
+            r9b = new RegisterStorage("r9b",    r9.Number, 0, PrimitiveType.Byte);
+            r10b = new RegisterStorage("r10b", r10.Number, 0, PrimitiveType.Byte);
+            r11b = new RegisterStorage("r11b", r11.Number, 0, PrimitiveType.Byte);
+            r12b = new RegisterStorage("r12b", r12.Number, 0, PrimitiveType.Byte);
+            r13b = new RegisterStorage("r13b", r13.Number, 0, PrimitiveType.Byte);
+            r14b = new RegisterStorage("r14b", r14.Number, 0, PrimitiveType.Byte);
+            r15b = new RegisterStorage("r15b", r15.Number, 0, PrimitiveType.Byte);
 
-            r8b = new RegisterStorage("r8b",    8, 0, PrimitiveType.Byte);
-            r9b = new RegisterStorage("r9b",    9, 0, PrimitiveType.Byte);
-            r10b = new RegisterStorage("r10b", 10, 0, PrimitiveType.Byte);
-            r11b = new RegisterStorage("r11b", 11, 0, PrimitiveType.Byte);
-            r12b = new RegisterStorage("r12b", 12, 0, PrimitiveType.Byte);
-            r13b = new RegisterStorage("r13b", 13, 0, PrimitiveType.Byte);
-            r14b = new RegisterStorage("r14b", 14, 0, PrimitiveType.Byte);
-            r15b = new RegisterStorage("r15b", 15, 0, PrimitiveType.Byte);
+            mm0 = factory.Reg64("mm0");
+            mm1 = factory.Reg64("mm1");
+            mm2 = factory.Reg64("mm2");
+            mm3 = factory.Reg64("mm3");
+            mm4 = factory.Reg64("mm4");
+            mm5 = factory.Reg64("mm5");
+            mm6 = factory.Reg64("mm6");
+            mm7 = factory.Reg64("mm7");
+            mm8 = factory.Reg64("mm8");
+            mm9 = factory.Reg64("mm9");
+            mm10 = factory.Reg64("mm10");
+            mm11 = factory.Reg64("mm11");
+            mm12 = factory.Reg64("mm12");
+            mm13 = factory.Reg64("mm13");
+            mm14 = factory.Reg64("mm14");
+            mm15 = factory.Reg64("mm15");
 
-            mm0 = new  RegisterStorage("mm0", 40, 0, PrimitiveType.Word64);
-            mm1 = new  RegisterStorage("mm1", 41, 0, PrimitiveType.Word64);
-            mm2 = new  RegisterStorage("mm2", 42, 0, PrimitiveType.Word64);
-            mm3 = new  RegisterStorage("mm3", 43, 0, PrimitiveType.Word64);
-            mm4 = new  RegisterStorage("mm4", 44, 0, PrimitiveType.Word64);
-            mm5 = new  RegisterStorage("mm5", 45, 0, PrimitiveType.Word64);
-            mm6 = new  RegisterStorage("mm6", 46, 0, PrimitiveType.Word64);
-            mm7 = new  RegisterStorage("mm7", 47, 0, PrimitiveType.Word64);
-            mm8 = new  RegisterStorage("mm8", 48, 0, PrimitiveType.Word64);
-            mm9 = new  RegisterStorage("mm9", 49, 0, PrimitiveType.Word64);
-            mm10 = new RegisterStorage("mm10", 50, 0, PrimitiveType.Word64);
-            mm11 = new RegisterStorage("mm11", 51, 0, PrimitiveType.Word64);
-            mm12 = new RegisterStorage("mm12", 52, 0, PrimitiveType.Word64);
-            mm13 = new RegisterStorage("mm13", 53, 0, PrimitiveType.Word64);
-            mm14 = new RegisterStorage("mm14", 54, 0, PrimitiveType.Word64);
-            mm15 = new RegisterStorage("mm15", 55, 0, PrimitiveType.Word64);
-                       
-            xmm0 = new RegisterStorage("xmm0", 60, 0, PrimitiveType.Word128);
-            xmm1 = new RegisterStorage("xmm1", 61, 0, PrimitiveType.Word128);
-            xmm2 = new RegisterStorage("xmm2", 62, 0, PrimitiveType.Word128);
-            xmm3 = new RegisterStorage("xmm3", 63, 0, PrimitiveType.Word128);
-            xmm4 = new RegisterStorage("xmm4", 64, 0, PrimitiveType.Word128);
-            xmm5 = new RegisterStorage("xmm5", 65, 0, PrimitiveType.Word128);
-            xmm6 = new RegisterStorage("xmm6", 66, 0, PrimitiveType.Word128);
-            xmm7 = new RegisterStorage("xmm7", 67, 0, PrimitiveType.Word128);
-            xmm8 = new RegisterStorage("xmm8", 68, 0, PrimitiveType.Word128);
-            xmm9 = new RegisterStorage("xmm9", 69, 0, PrimitiveType.Word128);
-            xmm10 = new RegisterStorage("xmm10", 70, 0, PrimitiveType.Word128);
-            xmm11 = new RegisterStorage("xmm11", 71, 0, PrimitiveType.Word128);
-            xmm12 = new RegisterStorage("xmm12", 72, 0, PrimitiveType.Word128);
-            xmm13 = new RegisterStorage("xmm13", 73, 0, PrimitiveType.Word128);
-            xmm14 = new RegisterStorage("xmm14", 74, 0, PrimitiveType.Word128);
-            xmm15 = new RegisterStorage("xmm15", 75, 0, PrimitiveType.Word128);
+            ymm0 = factory.Reg("ymm0", PrimitiveType.Word256);
+            ymm1 = factory.Reg("ymm1", PrimitiveType.Word256);
+            ymm2 = factory.Reg("ymm2", PrimitiveType.Word256);
+            ymm3 = factory.Reg("ymm3", PrimitiveType.Word256);
+            ymm4 = factory.Reg("ymm4", PrimitiveType.Word256);
+            ymm5 = factory.Reg("ymm5", PrimitiveType.Word256);
+            ymm6 = factory.Reg("ymm6", PrimitiveType.Word256);
+            ymm7 = factory.Reg("ymm7", PrimitiveType.Word256);
+            ymm8 = factory.Reg("ymm8", PrimitiveType.Word256);
+            ymm9 = factory.Reg("ymm9", PrimitiveType.Word256);
+            ymm10 = factory.Reg("ymm10", PrimitiveType.Word256);
+            ymm11 = factory.Reg("ymm11", PrimitiveType.Word256);
+            ymm12 = factory.Reg("ymm12", PrimitiveType.Word256);
+            ymm13 = factory.Reg("ymm13", PrimitiveType.Word256);
+            ymm14 = factory.Reg("ymm14", PrimitiveType.Word256);
+            ymm15 = factory.Reg("ymm15", PrimitiveType.Word256);
 
-            ymm0 = new RegisterStorage("ymm0", 60, 0, PrimitiveType.Word256);
-            ymm1 = new RegisterStorage("ymm1", 61, 0, PrimitiveType.Word256);
-            ymm2 = new RegisterStorage("ymm2", 62, 0, PrimitiveType.Word256);
-            ymm3 = new RegisterStorage("ymm3", 63, 0, PrimitiveType.Word256);
-            ymm4 = new RegisterStorage("ymm4", 64, 0, PrimitiveType.Word256);
-            ymm5 = new RegisterStorage("ymm5", 65, 0, PrimitiveType.Word256);
-            ymm6 = new RegisterStorage("ymm6", 66, 0, PrimitiveType.Word256);
-            ymm7 = new RegisterStorage("ymm7", 67, 0, PrimitiveType.Word256);
-            ymm8 = new RegisterStorage("ymm8", 68, 0, PrimitiveType.Word256);
-            ymm9 = new RegisterStorage("ymm9", 69, 0, PrimitiveType.Word256);
-            ymm10 = new RegisterStorage("ymm10", 70, 0, PrimitiveType.Word256);
-            ymm11 = new RegisterStorage("ymm11", 71, 0, PrimitiveType.Word256);
-            ymm12 = new RegisterStorage("ymm12", 72, 0, PrimitiveType.Word256);
-            ymm13 = new RegisterStorage("ymm13", 73, 0, PrimitiveType.Word256);
-            ymm14 = new RegisterStorage("ymm14", 74, 0, PrimitiveType.Word256);
-            ymm15 = new RegisterStorage("ymm15", 75, 0, PrimitiveType.Word256);
-
+            xmm0 = new RegisterStorage("xmm0", ymm0.Number, 0, PrimitiveType.Word128);
+            xmm1 = new RegisterStorage("xmm1", ymm1.Number, 0, PrimitiveType.Word128);
+            xmm2 = new RegisterStorage("xmm2", ymm2.Number, 0, PrimitiveType.Word128);
+            xmm3 = new RegisterStorage("xmm3", ymm3.Number, 0, PrimitiveType.Word128);
+            xmm4 = new RegisterStorage("xmm4", ymm4.Number, 0, PrimitiveType.Word128);
+            xmm5 = new RegisterStorage("xmm5", ymm5.Number, 0, PrimitiveType.Word128);
+            xmm6 = new RegisterStorage("xmm6", ymm6.Number, 0, PrimitiveType.Word128);
+            xmm7 = new RegisterStorage("xmm7", ymm7.Number, 0, PrimitiveType.Word128);
+            xmm8 = new RegisterStorage("xmm8", ymm8.Number, 0, PrimitiveType.Word128);
+            xmm9 = new RegisterStorage("xmm9", ymm9.Number, 0, PrimitiveType.Word128);
+            xmm10 = new RegisterStorage("xmm10", ymm10.Number, 0, PrimitiveType.Word128);
+            xmm11 = new RegisterStorage("xmm11", ymm11.Number, 0, PrimitiveType.Word128);
+            xmm12 = new RegisterStorage("xmm12", ymm12.Number, 0, PrimitiveType.Word128);
+            xmm13 = new RegisterStorage("xmm13", ymm13.Number, 0, PrimitiveType.Word128);
+            xmm14 = new RegisterStorage("xmm14", ymm14.Number, 0, PrimitiveType.Word128);
+            xmm15 = new RegisterStorage("xmm15", ymm15.Number, 0, PrimitiveType.Word128);
 
             // Pseudo registers used to reify the x87 FPU stack. Top is the 
             // index into the FPU stack, while ST is the memory identifier that
             // identifies the address space that the FPU stack constitutes.
-            Top = new RegisterStorage("Top", 76, 0, PrimitiveType.SByte);
+            Top = factory.Reg("Top", PrimitiveType.SByte);
             ST = new MemoryIdentifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
-            
+
             // Control registers: 80 - 88
             // Debug registers: 89 - 96
-            mxcsr = new RegisterStorage("mxcsr", 93, 0, PrimitiveType.Word32);
+            mxcsr = factory.Reg32("mxcsr");
 
             All = new RegisterStorage[] {
 				eax,
@@ -384,21 +389,12 @@ namespace Reko.Arch.X86
 				ds ,
 				fs ,
 				gs ,
-				null,
-				null,
 
-                // 32
 				eflags,
-				null ,
-				null,
-				null,
-
-				null,
-                null,
+				rip,
+				eip,
+				ip,
                 FPUF,
-                null,
-
-                // 40
                 rax,
                 rcx,
                 rdx,
@@ -545,18 +541,6 @@ namespace Reko.Arch.X86
         private static FlagGroupStorage FlagRegister(string name, RegisterStorage freg, FlagM grf)
         {
             return new FlagGroupStorage(freg, (uint)grf, name, PrimitiveType.Bool);
-        }
-
-        private static RegisterStorage SegmentRegister(string name, int reg)
-        {
-            return new RegisterStorage(name, reg, 0, PrimitiveType.SegmentSelector);
-        }
-
-        public static RegisterStorage GetRegister(int i)
-        {
-            return (0 <= i && i < All.Length)
-                ? All[i]
-                : null;
         }
 
         public static RegisterStorage GetRegister(string name)

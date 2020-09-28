@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Gui.Forms
                 {
                     program.ToString();
                 });
-            decSvc.Decompiler = new DecompilerDriver(ldr.Object, sc);
+            decSvc.Decompiler = new Decompiler(ldr.Object, sc);
             decSvc.Decompiler.Load("test.exe");
 
             interactor = new ScannedPageInteractor(sc);

@@ -15,7 +15,6 @@ namespace Reko.UnitTests.Arch.M6800
     {
         private Reko.Arch.M6800.M6812Architecture arch;
         private Address addr;
-        private MemoryArea image;
 
         public M6812RewriterTests()
         {
@@ -23,34 +22,14 @@ namespace Reko.UnitTests.Arch.M6800
             this.addr = Address.Ptr16(0);
         }
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
+        public override IProcessorArchitecture Architecture => arch;
 
-        public override Address LoadAddress
-        {
-            get { return addr; }
-        }
+        public override Address LoadAddress => addr;
 
-
-        private void Given_Code(string hex)
-        {
-            base.Rewrite(hex);
-        }
-
-        protected override MemoryArea RewriteCode(string hexBytes)
-        {
-            var bytes = BytePattern.FromHexBytes(hexBytes)
-                .ToArray();
-            this.image = new MemoryArea(LoadAddress, bytes);
-            return image;
-        }
-
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
             return arch.CreateRewriter(
-                new BeImageReader(image, image.BaseAddress),
+                new BeImageReader(mem, mem.BaseAddress),
                 arch.CreateProcessorState(),
                 binder,
                 host);
@@ -59,7 +38,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6812Rw_pshd()
         {
-            Given_Code("3B");
+            Given_HexString("3B");
             AssertCode(     // pshd
                 "0|L--|0000(1): 2 instructions",
                 "1|L--|sp = sp - 2",
@@ -69,7 +48,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6812Rw_clr()
         {
-            Given_Code("6980");
+            Given_HexString("6980");
             AssertCode(     // clr\t$0000,sp
                 "0|L--|0000(2): 5 instructions",
                 "1|L--|Mem0[sp + 0x0000:byte] = 0x00",
@@ -82,7 +61,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6812Rw_suba_imm()
         {
-            Given_Code("8042");
+            Given_HexString("8042");
             AssertCode(     // suba\t#$42
                 "0|L--|0000(2): 2 instructions",
                 "1|L--|a = a - 0x42",
@@ -92,7 +71,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6812Rw_cmpa_imm()
         {
-            Given_Code("8142");
+            Given_HexString("8142");
             AssertCode(     // cmpa\t#$42
                 "0|L--|0000(2): 1 instructions",
                 "1|L--|NZVC = cond(a - 0x42)");
@@ -101,7 +80,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6812Rw_ldab_direct()
         {
-            Given_Code("F64242");
+            Given_HexString("F64242");
             AssertCode(     // ldab\t$4242
                 "0|L--|0000(3): 3 instructions",
                 "1|L--|b = Mem0[0x4242:byte]",
@@ -112,7 +91,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6812Rw_aba()
         {
-            Given_Code("1806");
+            Given_HexString("1806");
             AssertCode(     // aba
                 "0|L--|0000(2): 2 instructions",
                 "1|L--|a = a + b",
@@ -122,7 +101,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6812Rw_adca_immediate()
         {
-            Given_Code("8942");
+            Given_HexString("8942");
             AssertCode(     // adca\t#$42
                 "0|L--|0000(2): 2 instructions",
                 "1|L--|a = a + 0x42 + C");
@@ -131,7 +110,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6812Rw_adca_direct()
         {
-            Given_Code("9942");
+            Given_HexString("9942");
             AssertCode(     // adca\t$42
                 "0|L--|0000(2): 2 instructions",
                 "1|L--|a = a + Mem0[0x0042:byte] + C",
@@ -141,7 +120,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6812Rw_addd_imm()
         {
-            Given_Code("C31234");
+            Given_HexString("C31234");
             AssertCode(     // addd\t#$1234
                 "0|L--|0000(3): 2 instructions",
                 "1|L--|d = d + 0x1234",
@@ -151,7 +130,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6812Rw_bcc()
         {
-            Given_Code("24FE");
+            Given_HexString("24FE");
             AssertCode(     // bcc\t0000
                 "0|T--|0000(2): 1 instructions",
                 "1|T--|if (Test(UGE,C)) branch 0000");
@@ -160,7 +139,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6812Rw_lbcc()
         {
-            Given_Code("1824FFFC");
+            Given_HexString("1824FFFC");
             AssertCode(     // lbcc\t0000
                 "0|T--|0000(4): 1 instructions",
                 "1|T--|if (Test(UGE,C)) branch 0000");
@@ -169,7 +148,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6812Rw_dbeq()
         {
-            Given_Code("041403");
+            Given_HexString("041403");
             AssertCode(     // dbeq\td,0000
                 "0|T--|0000(3): 2 instructions",
                 "1|L--|d = d - 0x0001",
@@ -179,7 +158,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6812Rw_oraa_predec()
         {
-            Given_Code("AA2C");
+            Given_HexString("AA2C");
             AssertCode(     // oraa\t$04,-x
                 "0|L--|0000(2): 4 instructions",
                 "1|L--|x = x + -4",
@@ -191,7 +170,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6812Rw_suba_postinc()
         {
-            Given_Code("A033");
+            Given_HexString("A033");
             AssertCode(     // suba\t$04,x+
                 "0|L--|0000(2): 4 instructions",
                 "1|L--|v4 = x",
@@ -203,7 +182,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6812Rw_eora_9_bit_offset()
         {
-            Given_Code("A8E1FF");
+            Given_HexString("A8E1FF");
             AssertCode(     // eora\t$FFFF,x
                 "0|L--|0000(3): 3 instructions",
                 "1|L--|a = a ^ Mem0[x + 0xFFFF:byte]",
@@ -214,7 +193,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6812Rw_andb_accumulator_offset()
         {
-            Given_Code("E4F4");
+            Given_HexString("E4F4");
             AssertCode(     // andb\ta,sp
                 "0|L--|0000(2): 3 instructions",
                 "1|L--|b = b & Mem0[sp + (uint16) a:byte]",
@@ -225,7 +204,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6812Rw_jmp_indirect()
         {
-            Given_Code("05FF");
+            Given_HexString("05FF");
             AssertCode(     // jmp\t[d,pc]
                 "0|T--|0000(2): 1 instructions",
                 "1|T--|goto Mem0[0x0002 + d:ptr16]");
@@ -234,7 +213,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6812Rw_asr_post()
         {
-            Given_Code("6730");
+            Given_HexString("6730");
             AssertCode(    // asr
                 "0|L--|0000(2): 5 instructions",
                 "1|L--|v3 = x",
@@ -247,7 +226,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6812Rw_bclr_pre()
         {
-            Given_Code("0D6002");
+            Given_HexString("0D6002");
             AssertCode(    // bclr
                 "0|L--|0000(3): 5 instructions",
                 "1|L--|y = y + 1",
@@ -260,7 +239,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6812Rw_bra()
         {
-            Given_Code("20FE");
+            Given_HexString("20FE");
             AssertCode(    // bra
                 "0|T--|0000(2): 1 instructions",
                 "1|T--|goto 0000");

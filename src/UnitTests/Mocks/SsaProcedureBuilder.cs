@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 Pavel Tomin.
+ * Copyright (C) 1999-2020 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -226,10 +226,36 @@ namespace Reko.UnitTests.Mocks
         {
             if (Ssa.Identifiers.Contains(idOld))
                 return idOld;
-            var idNew = new MemoryIdentifier(Ssa.Identifiers.Count, idOld.DataType);
+            MemoryIdentifier idNew;
+            if (idOld.Storage == MemoryStorage.Instance)
+            {
+                idNew = new MemoryIdentifier(
+                    Ssa.Identifiers.Count,
+                    idOld.DataType);
+            }
+            else
+            {
+                idNew = new MemoryIdentifier(
+                    idOld.Name,
+                    idOld.DataType,
+                    idOld.Storage);
+            }
             var sid = new SsaIdentifier(idNew, idOld, null, null, false);
             Ssa.Identifiers.Add(idNew, sid);
             return idNew;
+        }
+
+        public override MemoryAccess Mem(
+            MemoryIdentifier mid,
+            DataType dt,
+            Expression ea)
+        {
+            var access = base.Mem(mid, dt, ea);
+            var memId = AddMemIdToSsa(access.MemoryId);
+            return new MemoryAccess(
+                memId,
+                access.EffectiveAddress,
+                access.DataType);
         }
 
         public override MemoryAccess Mem8(Expression ea)

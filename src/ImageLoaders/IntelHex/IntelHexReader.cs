@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 2017-2019 Christian Hostelet.
+ * Copyright (C) 2017-2020 Christian Hostelet.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,12 +46,14 @@ namespace Reko.ImageLoaders.IntelHex
         /// Constructs instance of an <see cref="IntelHexReader" />.
         /// </summary>
         /// <param name="str">The source stream of the hex file.</param>
+        /// <param name="addressBase">The default base address to use.</param>
         /// <exception cref="ArgumentNullException">If the <paramref name="str" /> is null.</exception>
-        public IntelHexReader(Stream str)
+        public IntelHexReader(Stream str, Address addressBase)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
             streamReader = new StreamReader(str);
+            AddressBase = addressBase; 
             lineNum = 0;
         }
 
@@ -92,7 +94,7 @@ namespace Reko.ImageLoaders.IntelHex
         /// <summary>
         /// Gets or sets the base address for loading/dumping the 16-bit IHex32 records.
         /// </summary>
-        public uint AddressBase { get; set; } = 0;
+        public Address AddressBase { get; set; }
 
         /// <summary>
         /// Gets the start address (program entry point).
@@ -113,11 +115,10 @@ namespace Reko.ImageLoaders.IntelHex
         /// An address value may be read without corresponding data bytes. This occurs for record
         /// types 02, 04, 05.
         /// </remarks>
-        public bool TryReadRecord(out uint address, out byte[] data)
+        public bool TryReadRecord(out Address address, out byte[] data)
         {
             data = null;
-            address = 0;
-
+            address = null;
             string hexLine = null;
             while (!streamReader.EndOfStream && string.IsNullOrWhiteSpace(hexLine))
             {
@@ -140,7 +141,7 @@ namespace Reko.ImageLoaders.IntelHex
             return false;
         }
 
-        private uint HandleAddress(IntelHexRecord hexRecord)
+        private Address HandleAddress(IntelHexRecord hexRecord)
         {
             switch (hexRecord.RecordType)
             {
@@ -151,14 +152,15 @@ namespace Reko.ImageLoaders.IntelHex
                     if (IsLinear)
                         throw new IntelHexException($"Mixed segmented/linear address.", lineNum);
                     IsSegmented = true;
-                    AddressBase = (((uint)hexRecord.Data[0] << 8) | hexRecord.Data[1]) << 4;
+                    var seg = ((uint) hexRecord.Data[0] << 8) | hexRecord.Data[1];
+                    AddressBase = Address.SegPtr((ushort)seg, 0);
                     return AddressBase;
 
                 case IntelHexRecordType.ExtendedLinearAddress:
                     if (IsSegmented)
                         throw new IntelHexException($"Mixed segmented/linear address.", lineNum);
                     IsLinear = true;
-                    AddressBase = (((uint)hexRecord.Data[0] << 8) | hexRecord.Data[1]) << 16;
+                AddressBase = Address.Ptr32((((uint) hexRecord.Data[0] << 8) | hexRecord.Data[1]) << 16);
                     return AddressBase;
 
                 case IntelHexRecordType.StartSegmentAddress:

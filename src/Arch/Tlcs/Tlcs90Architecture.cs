@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -144,6 +144,7 @@ namespace Reko.Arch.Tlcs
 
         public Tlcs90Architecture(string archId) : base(archId)
         {
+            base.CarryFlagMask = Registers.C.FlagGroupBits;
             base.Endianness = EndianServices.Little;
             base.InstructionBitSize = 8;
             this.FramePointerType = PrimitiveType.Ptr32;
@@ -156,6 +157,12 @@ namespace Reko.Arch.Tlcs
         {
             return new Tlcs90Disassembler(this, rdr);
         }
+
+        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            throw new NotImplementedException();
+        }
+
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             return new Tlcs90InstructionComparer(norm);

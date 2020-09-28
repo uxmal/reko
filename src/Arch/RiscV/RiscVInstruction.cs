@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,7 +83,6 @@ namespace Reko.Arch.RiscV
                 { Mnemonic.fnmsub_s, "fnmsub.s" },
                 { Mnemonic.fnmadd_s, "fnmadd.s" },
                 { Mnemonic.fmv_d_x, "fmv.d.x" },
-                { Mnemonic.fmv_s_x, "fmv.s.x" },
             };
         }
 
@@ -91,12 +90,18 @@ namespace Reko.Arch.RiscV
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
+            RenderMnemonic(writer);
+            RenderOperands(writer, options);
+        }
+
+        private void RenderMnemonic(MachineInstructionWriter writer)
+        {
             if (!opcodeNames.TryGetValue(Mnemonic, out string name))
             {
                 name = Mnemonic.ToString();
+                name = name.Replace('_', '.');
             }
             writer.WriteOpcode(name);
-            RenderOperands(writer, options);
         }
 
         protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)

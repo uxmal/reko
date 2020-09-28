@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -85,6 +85,7 @@ namespace Reko.Assemblers.x86
             SetDefaultWordWidth(defaultWordSize);
         }
 
+
         public IPlatform Platform { get; set; }
 
         public Dictionary<Address, ImportReference> ImportReferences
@@ -137,6 +138,11 @@ namespace Reko.Assemblers.x86
             }
         }
 
+        public void Align(int alignment)
+        {
+            emitter.Align(0, alignment);
+        }
+
         public void Mov(ParsedOperand op, int constant)
         {
             ProcessMov(
@@ -150,9 +156,24 @@ namespace Reko.Assemblers.x86
             ProcessMov(dst, src);
         }
 
+        public void Rcl(ParsedOperand dst, byte c)
+        {
+            ProcessShiftRotation(0x02, dst, new ParsedOperand(new ImmediateOperand(Constant.Byte(c))));
+        }
+
+        public void Rcr(ParsedOperand dst, byte c)
+        {
+            ProcessShiftRotation(0x03, dst, new ParsedOperand(new ImmediateOperand(Constant.Byte(c))));
+        }
+
         public void Rol(ParsedOperand dst, byte c)
         {
             ProcessShiftRotation(0x00, dst, new ParsedOperand(new ImmediateOperand(Constant.Byte(c))));
+        }
+
+        public void Ror(ParsedOperand dst, byte c)
+        {
+            ProcessShiftRotation(0x01, dst, new ParsedOperand(new ImmediateOperand(Constant.Byte(c))));
         }
 
         public void Sahf()
@@ -178,6 +199,11 @@ namespace Reko.Assemblers.x86
         public void Shr(ParsedOperand dst, byte c)
         {
             ProcessShiftRotation(0x05, dst, new ParsedOperand(new ImmediateOperand(Constant.Byte(c))));
+        }
+
+        public void Shr(ParsedOperand dst, ParsedOperand sh)
+        {
+            ProcessShiftRotation(0x05, dst, sh);
         }
 
         public void Shld(ParsedOperand op1, ParsedOperand op2, ParsedOperand op3)
@@ -209,6 +235,7 @@ namespace Reko.Assemblers.x86
         {
             ProcessTest(op1, Imm(imm));
         }
+
         public ParsedOperand BytePtr(int offset)
         {
             AddressWidth = SegmentAddressWidth;
@@ -678,32 +705,31 @@ namespace Reko.Assemblers.x86
         }
 
 
-        internal void ProcessShiftRotation(byte bits, ParsedOperand dst, ParsedOperand count)
+        internal void ProcessShiftRotation(byte subOpcode, ParsedOperand dst, ParsedOperand count)
         {
             PrimitiveType dataWidth = EnsureValidOperandSize(dst);
 
-            ImmediateOperand immOp = count.Operand as ImmediateOperand;
-            if (immOp != null)
+            if (count.Operand is ImmediateOperand immOp)
             {
                 int imm = immOp.Value.ToInt32();
                 if (imm == 1)
                 {
                     EmitOpcode(0xD0 | IsWordWidth(dataWidth), dataWidth);
-                    EmitModRM(bits, dst);
+                    EmitModRM(subOpcode, dst);
                 }
                 else
                 {
                     EmitOpcode(0xC0 | IsWordWidth(dataWidth), dataWidth);
-                    EmitModRM(bits, dst, (byte) immOp.Value.ToInt32());
+                    EmitModRM(subOpcode, dst, (byte) immOp.Value.ToInt32());
                 }
                 return;
             }
 
-            RegisterOperand regOp = count.Operand as RegisterOperand;
-            if (regOp != null && regOp.Register == Registers.cl)
+            if (count.Operand is RegisterOperand regOp &&
+                regOp.Register == Registers.cl)
             {
                 EmitOpcode(0xD2 | IsWordWidth(dataWidth), dataWidth);
-                EmitModRM(bits, dst);
+                EmitModRM(subOpcode, dst);
                 return;
             }
 
@@ -1475,6 +1501,11 @@ namespace Reko.Assemblers.x86
             EmitRelativeTarget(destination, PrimitiveType.Byte);
         }
 
+        public void Jns(string destination)
+        {
+            ProcessShortBranch(0x09, destination);
+        }
+
         public void Jnz(string destination)
         {
             ProcessShortBranch(0x05, destination);
@@ -1797,7 +1828,7 @@ namespace Reko.Assemblers.x86
             }
         }
 
-        internal void Db(int b)
+        public void Db(int b)
         {
             emitter.EmitByte(b);
         }
@@ -2108,6 +2139,11 @@ namespace Reko.Assemblers.x86
         public ParsedOperand ds
         {
             get { return new ParsedOperand(new RegisterOperand(Registers.ds)); }
+        }
+
+        public ParsedOperand es
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.es)); }
         }
 
         public ParsedOperand Const(int n)

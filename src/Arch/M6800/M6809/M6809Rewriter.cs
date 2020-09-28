@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -227,8 +227,6 @@ namespace Reko.Arch.M6800.M6809
             Debug.WriteLine(sb.ToString());
             Console.WriteLine(sb.ToString());
         }
-
-
 
         private Expression Clr(Expression e)
         {

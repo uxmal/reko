@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,14 +38,13 @@ namespace Reko.UnitTests.Arch.PowerPC
         private IEnumerable<PowerPcInstruction> ppcInstrs;
         private Address addr;
 
-
         [SetUp]
         public void Setup()
         {
             this.arch = new PowerPcBe32Architecture("ppc-be-32");
             this.addr = Address.Ptr32(0x00100000);
+            this.ppcInstrs = null;
         }
-
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
@@ -53,28 +52,17 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         private void RunTest(Action<InstructionBuilder> m)
         {
-            b = new InstructionBuilder(arch, Address.Ptr32(0x01000000));
+            b = new InstructionBuilder(arch, Address.Ptr32(0x00100000));
             m(b);
             ppcInstrs = b.Instructions;
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            return new PowerPcRewriter(arch, ppcInstrs, binder, host);
-        }
-
-        protected override MemoryArea RewriteCode(uint[] words)
-        {
-            byte[] bytes = words.SelectMany(w => new byte[]
-            {
-                (byte) (w >> 24),
-                (byte) (w >> 16),
-                (byte) (w >> 8),
-                (byte) w
-            }).ToArray();
-            var image = new MemoryArea(LoadAddress, bytes);
-            ppcInstrs = (IEnumerable<PowerPcInstruction>)arch.CreateDisassembler(image.CreateBeReader(LoadAddress));
-            return image;
+            if (ppcInstrs != null)
+                return new PowerPcRewriter(arch, ppcInstrs, binder, host);
+            var rdr = arch.CreateImageReader(mem, 0);
+            return arch.CreateRewriter(rdr, arch.CreateProcessorState(), binder, host);
         }
 
         private void Given_PowerPcBe64()
@@ -98,38 +86,38 @@ namespace Reko.UnitTests.Arch.PowerPC
 
 
         [Test]
-        public void PPCRW_Oris()
+        public void PPCRw_Oris()
         {
             RunTest((m) =>
             {
                 m.Oris(m.r4, m.r0, 0x1234);
             });
             AssertCode(
-                "0|L--|01000000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|r4 = r0 | 0x12340000");
         }
 
         [Test]
-        public void PPCRW_Add()
+        public void PPCRw_Add()
         {
             RunTest((m) =>
             {
                 m.Add(m.r4, m.r1, m.r3);
             });
             AssertCode(
-                "0|L--|01000000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|r4 = r1 + r3");
         }
 
         [Test]
-        public void PPCRW_Add_()
+        public void PPCRw_Add_()
         {
             RunTest((m) =>
             {
                 m.Add_(m.r4, m.r1, m.r3);
             });
             AssertCode(
-                "0|L--|01000000(4): 2 instructions",
+                "0|L--|00100000(4): 2 instructions",
                 "1|L--|r4 = r1 + r3",
                 "2|L--|cr0 = cond(r4)");
         }
@@ -142,7 +130,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                 m.Lwzu(m.r2, 4, m.r1);
             });
             AssertCode(
-                "0|L--|01000000(4): 2 instructions",
+                "0|L--|00100000(4): 2 instructions",
                 "1|L--|r2 = Mem0[r1 + 4:word32]",
                 "2|L--|r1 = r1 + 4"
                 );
@@ -156,7 +144,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                 m.Lwz(m.r2, -4, m.r0);
             });
             AssertCode(
-                "0|L--|01000000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|r2 = Mem0[0xFFFFFFFC:word32]"
                 );
         }
@@ -168,7 +156,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                 m.Stbu(m.r2, 18, m.r3);
             });
             AssertCode(
-                "0|L--|01000000(4): 2 instructions",
+                "0|L--|00100000(4): 2 instructions",
                 "1|L--|Mem0[r3 + 18:byte] = (byte) r2",
                 "2|L--|r3 = r3 + 18"
                 );
@@ -182,16 +170,16 @@ namespace Reko.UnitTests.Arch.PowerPC
                 m.Stbux(m.r2, m.r3, m.r0);
             });
             AssertCode(
-                "0|L--|01000000(4): 2 instructions",
+                "0|L--|00100000(4): 2 instructions",
                 "1|L--|Mem0[r3 + r0:byte] = (byte) r2",
                 "2|L--|r3 = r3 + r0"
                 );
         }
 
         [Test]
-        public void PPCRW_mflr()
+        public void PPCRw_mflr()
         {
-            Rewrite(0x7C0802A6);
+            Given_UInt32s(0x7C0802A6);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r0 = lr");
@@ -200,20 +188,21 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCRw_mfcr()
         {
-            AssertCode(0x7d800026,
+            Given_UInt32s(0x7d800026);
+            AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r12 = cr");
         }
 
         private void AssertCode(uint instr, params string[] sExp)
         {
-            Rewrite(instr);
+            Given_UInt32s(instr);
             AssertCode(sExp);
         }
 
         private void AssertCode64(uint instr, params string[] sExp)
         {
-            Rewrite(instr);
+            Given_UInt32s(instr);
             AssertCode(sExp);
         }
 
@@ -993,7 +982,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPcRw_regression_3()
+        public void PPCRw_regression_3()
         {
             AssertCode(0x4200fff8, // bdnz+   0xfffffffffffffff8	
                         "0|T--|00100000(4): 2 instructions",

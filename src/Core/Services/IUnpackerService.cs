@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,15 +28,14 @@ namespace Reko.Core.Services
     public interface IUnpackerService
     {
         /// <summary>
-        /// Given a filename, the contents of the file it refers to, and the offset into
+        /// Given an original <see cref="ImageLoader"/> and the offset into
         /// the image where the main execution point is, searches the signature database
         /// to find an unpacker that matches.
         /// </summary>
-        /// <param name="filename">The name of the file that is to be analyzed</param>
-        /// <param name="image">The contents of the file as an array of bytes</param>
+        /// <param name="imageLoader">The image loader that contains the raw bytes of the image.</param>
         /// <param name="entryPointOffset">The offset from the beginning of the image</param>
-        /// <returns>An image loader that can unpack the image, or null if no
-        /// unpacker could be found.</returns>
-        ImageLoader FindUnpackerBySignature(string filename, byte[] image, uint entryPointOffset);
+        /// <returns>An image loader that can unpack the image, or the original
+        /// ImageLoader if no unpacker could be found.</returns>
+        ImageLoader FindUnpackerBySignature(ImageLoader imageLoader, uint entryPointOffset);
     }
 }

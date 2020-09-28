@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -489,8 +489,7 @@ namespace Reko.Evaluation
                 if (exp.DataType.BitSize == cast.DataType.BitSize)
                 {
                     // Redundant word-casts can be stripped.
-                    var wordType = PrimitiveType.CreateWord(exp.DataType.BitSize);
-                    if (wordType == cast.DataType)
+                    if (cast.DataType.IsWord())
                     {
                         return exp;
                     }

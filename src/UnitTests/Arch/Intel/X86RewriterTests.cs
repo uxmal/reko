@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,6 @@ namespace Reko.UnitTests.Arch.Intel
     [TestFixture]
     partial class X86RewriterTests : Arch.RewriterTestBase
     {
-        private MemoryArea image;
         private IntelArchitecture arch;
         private IntelArchitecture arch16;
         private IntelArchitecture arch32;
@@ -64,20 +63,14 @@ namespace Reko.UnitTests.Arch.Intel
             baseAddr64 = Address.Ptr64(0x140000000ul);
         }
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
+        public override IProcessorArchitecture Architecture => arch;
 
-        public override Address LoadAddress
-        {
-            get { return baseAddr; }
-        }
+        public override Address LoadAddress => baseAddr;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
             return arch.CreateRewriter(
-                new LeImageReader(image, 0),
+                new LeImageReader(mem, 0),
                 arch.CreateProcessorState(),
                 binder,
                 this.host);
@@ -126,41 +119,41 @@ namespace Reko.UnitTests.Arch.Intel
         {
             var m = Create16bitAssembler();
             fn(m);
-            image = m.GetImage().SegmentMap.Segments.Values.First().MemoryArea;
+            Given_MemoryArea(m.GetImage().SegmentMap.Segments.Values.First().MemoryArea);
         }
 
         private void Run32bitTest(Action<X86Assembler> fn)
         {
             var m = Create32bitAssembler();
             fn(m);
-            image = m.GetImage().SegmentMap.Segments.Values.First().MemoryArea;
+            Given_MemoryArea(m.GetImage().SegmentMap.Segments.Values.First().MemoryArea);
         }
 
         private void Run16bitTest(params byte[] bytes)
         {
             arch = arch16;
-            image = new MemoryArea(baseAddr16, bytes);
+            Given_MemoryArea(new MemoryArea(baseAddr16, bytes));
             host = new RewriterHost(null);
         }
 
         private void Run32bitTest(params byte[] bytes)
         {
             arch = arch32;
-            image = new MemoryArea(baseAddr32, bytes);
+            Given_MemoryArea(new MemoryArea(baseAddr32, bytes));
             host = new RewriterHost(null);
         }
 
         private void Run64bitTest(params byte[] bytes)
         {
             arch = arch64;
-            image = new MemoryArea(baseAddr64, bytes);
+            Given_MemoryArea(new MemoryArea(baseAddr64, bytes));
             host = new RewriterHost(null);
         }
 
         private void Run64bitTest(string hexBytes)
         {
             arch = arch64;
-            image = new MemoryArea(baseAddr64, BytePattern.FromHexBytes(hexBytes).ToArray());
+            Given_MemoryArea(new MemoryArea(baseAddr64, BytePattern.FromHexBytes(hexBytes).ToArray()));
             host = new RewriterHost(null);
         }
 
@@ -186,18 +179,6 @@ namespace Reko.UnitTests.Arch.Intel
                 state,
                 program.SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(0),
                 new Frame(arch32.WordWidth));
-        }
-
-        private X86Rewriter CreateRewriter32(byte[] bytes)
-        {
-            state = new X86State(arch32);
-            return new X86Rewriter(arch32, host, state, new LeImageReader(image, 0), new Frame(arch32.WordWidth));
-        }
-
-        private X86Rewriter CreateRewriter64(byte[] bytes)
-        {
-            state = new X86State(arch64);
-            return new X86Rewriter(arch64, host, state, new LeImageReader(image, 0), new Frame(arch64.WordWidth));
         }
 
         [Test]

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Mocks
         /// </summary>
         public Block Block { get; private set; }
         public Procedure Procedure { get; private set; }
-        public ProgramBuilder ProgramMock { get; set; }
+        public ProgramBuilder ProgramBuilder { get; set; }
         public IProcessorArchitecture Architecture { get; private set; }
         public int InstructionSize { get; set; }
 

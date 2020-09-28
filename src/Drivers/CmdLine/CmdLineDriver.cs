@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ namespace Reko.CmdLine
             services.AddService<IFileSystemService>(fsSvc);
             services.AddService<IDecompiledFileService>(new DecompiledFileService(fsSvc));
             var ldr = new Loader(services);
-            var decompiler = new DecompilerDriver(ldr, services);
+            var decompiler = new Decompiler(ldr, services);
             var driver = new CmdLineDriver(services, ldr, decompiler, listener);
             driver.Execute(args);
         }

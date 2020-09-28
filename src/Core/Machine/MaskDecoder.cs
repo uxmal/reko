@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 namespace Reko.Core.Machine
 {
     public class MaskDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
-        where TDasm : DisassemblerBase<TInstr>
+        where TDasm : DisassemblerBase<TInstr, TMnemonic>
         where TInstr : MachineInstruction
     {
         private readonly Bitfield bitfield;

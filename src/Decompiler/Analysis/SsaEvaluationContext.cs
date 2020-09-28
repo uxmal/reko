@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,16 +33,16 @@ namespace Reko.Analysis
     {
         private readonly IProcessorArchitecture arch;
         private readonly SsaIdentifierCollection ssaIds;
-        private readonly IImportResolver importResolver;
+        private readonly IDynamicLinker dynamicLinker;
 
         public SsaEvaluationContext(
             IProcessorArchitecture arch, 
             SsaIdentifierCollection ssaIds, 
-            IImportResolver importResolver)
+            IDynamicLinker dynamicLinker)
         {
             this.arch = arch;
             this.ssaIds = ssaIds;
-            this.importResolver = importResolver;
+            this.dynamicLinker = dynamicLinker;
         }
 
         public Statement Statement { get; set; }
@@ -76,7 +76,7 @@ namespace Reko.Analysis
                 // Search imported procedures only in Global Memory
                 access.MemoryId.Storage == MemoryStorage.Instance)
             {
-                var pc = importResolver.ResolveToImportedValue(this.Statement, c);
+                var pc = dynamicLinker.ResolveToImportedValue(this.Statement, c);
                 if (pc != null)
                     return pc;
             }

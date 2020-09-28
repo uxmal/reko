@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Gui
             var host = new Mock<IDecompiledFileService>();
             sc.AddService<IDecompiledFileService>(host.Object);
 
-            DecompilerDriver d = new DecompilerDriver(loader.Object, sc);
+            var d = new Decompiler(loader.Object, sc);
             bool decompilerChangedEventFired = true;
             svc.DecompilerChanged += delegate(object o, EventArgs e)
             {
@@ -90,7 +90,7 @@ namespace Reko.UnitTests.Gui
             platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
             loader.Setup(l => l.LoadImageBytes(fileName, 0)).Returns(bytes);
             loader.Setup(l => l.LoadExecutable(fileName, bytes, null, null)).Returns(program);
-            var dec = new DecompilerDriver(loader.Object, sc);
+            var dec = new Decompiler(loader.Object, sc);
 
             svc.Decompiler = dec;
             svc.Decompiler.Load(fileName);

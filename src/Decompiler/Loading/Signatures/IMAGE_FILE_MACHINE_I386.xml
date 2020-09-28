@@ -19726,4 +19726,12 @@
     <ENTIREPE>
     </ENTIREPE>
   </ENTRY>
+  <ENTRY>
+    <NAME>RekoUnpacker #823</NAME>
+    <COMMENTS>Unknown unpacker from a binary in https://github.com/uxmal/reko/issues/823
+    </COMMENTS>
+    <ENTRYPOINT>FC061E0E8CC80106????BA????03C28BD805????8EDB</ENTRYPOINT>
+    <ENTIREPE>
+    </ENTIREPE>
+  </ENTRY>
 </SIGNATURES>

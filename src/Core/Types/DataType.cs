@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -102,6 +102,15 @@ namespace Reko.Core.Types
                 typeRef = dt as TypeReference;
             }
             return dt as T;
+        }
+
+        public bool IsWord()
+        {
+            if (BitSize == 0)
+                return false;
+            //$REFACTOR: CreateWord is inefficient.
+            var wordType = PrimitiveType.CreateWord(BitSize);
+            return wordType == this;
         }
 
         protected void ThrowBadSize()

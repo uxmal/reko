@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,16 +89,16 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program program, TextWriter writer)
         {
-            var importResolver = new Mock<IImportResolver>().Object;
+            var dynamicLinker = new Mock<IDynamicLinker>().Object;
             var listener = new FakeDecompilerEventListener();
-            var dfa = new DataFlowAnalysis(program, importResolver, listener);
+            var dfa = new DataFlowAnalysis(program, dynamicLinker, listener);
             foreach (var proc in program.Procedures.Values)
             {
                 var sst = new SsaTransform(
                     program,
                     proc,
                     new HashSet<Procedure>(),
-                    importResolver, 
+                    dynamicLinker, 
                     new ProgramDataFlow());
                 var ssa = sst.Transform();
 
@@ -109,7 +109,7 @@ namespace Reko.UnitTests.Analysis
                 cce.Transform();
                 ssa.Validate(s => { ssa.Dump(true); Assert.Fail(s); });
 
-                var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver, listener);
+                var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, dynamicLinker, listener);
                 vp.Transform();
                 ssa.Validate(s => { ssa.Dump(true); Assert.Fail(s); });
 

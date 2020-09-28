@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
 {
     using Decoder = Decoder<Tlcs90Disassembler, Mnemonic, Tlcs90Instruction>;
 
-    public partial class Tlcs90Disassembler : DisassemblerBase<Tlcs90Instruction>
+    public partial class Tlcs90Disassembler : DisassemblerBase<Tlcs90Instruction, Mnemonic>
     {
         private readonly EndianImageReader rdr;
         private readonly Tlcs90Architecture arch;
@@ -70,7 +70,17 @@ namespace Reko.Arch.Tlcs.Tlcs90
             return instr;
         }
 
-        protected override Tlcs90Instruction CreateInvalidInstruction()
+        public override Tlcs90Instruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            return new Tlcs90Instruction
+            {
+                Mnemonic = mnemonic,
+                InstructionClass = iclass,
+                Operands = this.ops.ToArray()
+            };
+        }
+
+        public override Tlcs90Instruction CreateInvalidInstruction()
         {
             return new Tlcs90Instruction
             {
@@ -257,35 +267,6 @@ namespace Reko.Arch.Tlcs.Tlcs90
             else if (v == 'w')
                 return PrimitiveType.Word16;
             throw new NotImplementedException();
-        }
-
-        private class InstrDecoder : Decoder
-        {
-            private Mnemonic mnemonic;
-            private InstrClass iclass;
-            private Mutator<Tlcs90Disassembler>[] mutators;
-
-            public InstrDecoder(Mnemonic mnemonic, InstrClass iclass, Mutator<Tlcs90Disassembler> [] mutators)
-            {
-                this.mnemonic = mnemonic;
-                this.iclass = iclass;
-                this.mutators = mutators;
-            }
-
-            public override Tlcs90Instruction Decode(uint b, Tlcs90Disassembler dasm)
-            {
-                foreach (var m in mutators)
-                {
-                    if (!m(b, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-                return new Tlcs90Instruction
-                {
-                    Mnemonic = mnemonic,
-                    InstructionClass = iclass,
-                    Operands = dasm.ops.ToArray()
-                };
-            }
         }
 
         private class RegDecoder : Decoder
@@ -516,14 +497,14 @@ namespace Reko.Arch.Tlcs.Tlcs90
             }
         }
 
-        private static InstrDecoder Instr(Mnemonic opcode, params Mutator<Tlcs90Disassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, params Mutator<Tlcs90Disassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, InstrClass.Linear, mutators);
+            return new InstrDecoder<Tlcs90Disassembler, Mnemonic, Tlcs90Instruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
-        private static InstrDecoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<Tlcs90Disassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<Tlcs90Disassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, iclass, mutators);
+            return new InstrDecoder<Tlcs90Disassembler, Mnemonic, Tlcs90Instruction>(iclass, mnemonic, mutators);
         }
 
         private static Decoder invalid = Instr(Mnemonic.invalid, InstrClass.Invalid);

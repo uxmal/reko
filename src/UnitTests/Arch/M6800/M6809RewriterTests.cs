@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,6 @@ namespace Reko.UnitTests.Arch.M6800
     {
         private M6809Architecture arch;
         private Address addr;
-        private MemoryArea image;
 
         [SetUp]
         public void Setup()
@@ -49,18 +48,10 @@ namespace Reko.UnitTests.Arch.M6800
 
         public override Address LoadAddress => addr;
 
-        protected override MemoryArea RewriteCode(string hexBytes)
-        {
-            var bytes = BytePattern.FromHexBytes(hexBytes)
-                .ToArray();
-            this.image = new MemoryArea(LoadAddress, bytes);
-            return image;
-        }
-
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
             return arch.CreateRewriter(
-                new BeImageReader(image, image.BaseAddress),
+                new BeImageReader(mem, mem.BaseAddress),
                 arch.CreateProcessorState(),
                 binder,
                 host);
@@ -69,7 +60,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_abx()
         {
-            RewriteCode("3A"); // abx
+            Given_HexString("3A"); // abx
             AssertCode(
                 "0|L--|0100(1): 1 instructions",
                 "1|L--|x = x + (uint16) b");
@@ -78,7 +69,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_adca()
         {
-            RewriteCode("A928"); // adca	$08,y
+            Given_HexString("A928"); // adca	$08,y
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
                 "1|L--|a = a + Mem0[y + 8:byte] + C",
@@ -88,7 +79,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_adcb()
         {
-            RewriteCode("C91F"); // adcb	#$1F
+            Given_HexString("C91F"); // adcb	#$1F
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
                 "1|L--|b = b + 0x1F + C",
@@ -98,7 +89,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_adda_postinc2()
         {
-            RewriteCode("AB81"); // adda ,x++
+            Given_HexString("AB81"); // adda ,x++
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
                 "1|L--|a = a + Mem0[x:byte]",
@@ -109,7 +100,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_addb_postinc1()
         {
-            RewriteCode("EBA0"); // addb ,y+
+            Given_HexString("EBA0"); // addb ,y+
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
                 "1|L--|b = b + Mem0[y:byte]",
@@ -120,7 +111,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_addd_predec2()
         {
-            RewriteCode("E3C3"); // addd ,--u
+            Given_HexString("E3C3"); // addd ,--u
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
                 "1|L--|u = u - 2",
@@ -131,7 +122,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_anda_predec1()
         {
-            RewriteCode("A4E2"); // anda ,-s
+            Given_HexString("A4E2"); // anda ,-s
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
                 "1|L--|s = s - 1",
@@ -143,7 +134,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_andb_const_offset()
         {
-            RewriteCode("E48880"); // andb -$80,x
+            Given_HexString("E48880"); // andb -$80,x
             AssertCode(
                 "0|L--|0100(3): 3 instructions",
                 "1|L--|b = b & Mem0[x - 128:byte]",
@@ -154,7 +145,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_andcc()
         {
-            RewriteCode("1CFE"); // andcc #$FE
+            Given_HexString("1CFE"); // andcc #$FE
             AssertCode(
                 "0|L--|0100(2): 1 instructions",
                 "1|L--|cc = cc & 0xFE");
@@ -163,7 +154,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_asl_acc_offset()
         {
-            RewriteCode("68A6"); // asl a,y
+            Given_HexString("68A6"); // asl a,y
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
                 "1|L--|v4 = Mem0[y + (int16) a:byte] << 0x01",
@@ -174,7 +165,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_asr_pc_offset()
         {
-            RewriteCode("678CFC"); // asr -$04,pc
+            Given_HexString("678CFC"); // asr -$04,pc
             AssertCode(
                 "0|L--|0100(3): 3 instructions",
                 "1|L--|v2 = Mem0[0x00FF:byte] << 0x01",
@@ -185,7 +176,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_bcc()
         {
-            RewriteCode("24FC"); // bcc $00FE
+            Given_HexString("24FC"); // bcc $00FE
             AssertCode(
                 "0|T--|0100(2): 1 instructions",
                 "1|T--|if (Test(UGE,C)) branch 00FE");
@@ -194,7 +185,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_bita_indirect_extended()
         {
-            RewriteCode("A59F1234"); // bita [$1234]
+            Given_HexString("A59F1234"); // bita [$1234]
             AssertCode(
                 "0|L--|0100(4): 4 instructions",
                 "1|L--|v3 = Mem0[Mem0[0x1234:ptr16]:byte]",
@@ -206,7 +197,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_bra()
         {
-            RewriteCode("20FE"); // bra $0100
+            Given_HexString("20FE"); // bra $0100
             AssertCode(
                 "0|T--|0100(2): 1 instructions",
                 "1|T--|goto 0100");
@@ -215,7 +206,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_bsr()
         {
-            RewriteCode("8D80"); // bsr $0100
+            Given_HexString("8D80"); // bsr $0100
             AssertCode(
                 "0|T--|0100(2): 1 instructions",
                 "1|T--|call 0082 (2)");
@@ -224,7 +215,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_clra()
         {
-            RewriteCode("4F"); // bsr $0100
+            Given_HexString("4F"); // bsr $0100
             AssertCode(
                 "0|L--|0100(1): 5 instructions",
                 "1|L--|a = 0x00",
@@ -237,7 +228,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_clr_postInc_indirect()
         {
-            RewriteCode("6FB1"); // clr [,y++]
+            Given_HexString("6FB1"); // clr [,y++]
             AssertCode(
                 "0|L--|0100(2): 7 instructions",
                 "1|L--|v3 = 0x00",
@@ -252,7 +243,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_cmpa_preDec_indirect()
         {
-            RewriteCode("A1D3"); // cmpa [,--u]
+            Given_HexString("A1D3"); // cmpa [,--u]
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
                 "1|L--|u = u - 2",
@@ -264,7 +255,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_com_indexed_indirect()
         {
-            RewriteCode("639B"); // com [d,x]
+            Given_HexString("639B"); // com [d,x]
             AssertCode(
                 "0|L--|0100(2): 5 instructions",
                 "1|L--|v4 = ~Mem0[Mem0[x + d:ptr16]:byte]",
@@ -277,7 +268,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_cwai()
         {
-            RewriteCode("3C26"); // cwai	#$26
+            Given_HexString("3C26"); // cwai	#$26
             AssertCode(
                 "0|L--|0100(2): 17 instructions",
                 "1|L--|cc = cc & 0x26",
@@ -302,7 +293,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_daa()
         {
-            RewriteCode("19"); // daa
+            Given_HexString("19"); // daa
             AssertCode(
                 "0|L--|0100(1): 2 instructions",
                 "1|L--|a = __daa(a)");
@@ -311,7 +302,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_deca()
         {
-            RewriteCode("4A"); // deca
+            Given_HexString("4A"); // deca
             AssertCode(
                 "0|L--|0100(1): 2 instructions",
                 "1|L--|a = a - 1",
@@ -321,7 +312,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_dec_extend()
         {
-            RewriteCode("7A1234"); // dec $1234
+            Given_HexString("7A1234"); // dec $1234
             AssertCode(
                 "0|L--|0100(3): 3 instructions",
                 "1|L--|v2 = Mem0[0x1234:byte] - 1",
@@ -332,7 +323,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_inc_postInc_1()
         {
-            RewriteCode("6CA0"); //inc ,y+
+            Given_HexString("6CA0"); //inc ,y+
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
                 "1|L--|v3 = Mem0[y:byte] + 1",
@@ -344,7 +335,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_jmp()
         {
-            RewriteCode("6E84"); // jmp	,x
+            Given_HexString("6E84"); // jmp	,x
             AssertCode(
                 "0|T--|0100(2): 1 instructions",
                 "1|T--|goto x");
@@ -353,7 +344,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_jsr()
         {
-            RewriteCode("BDA928"); // jsr	$A928
+            Given_HexString("BDA928"); // jsr	$A928
             AssertCode(
                 "0|T--|0100(3): 1 instructions",
                 "1|T--|call A928 (2)");
@@ -362,7 +353,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_ldy()
         {
-            RewriteCode("10AE04"); // ldy 4,x
+            Given_HexString("10AE04"); // ldy 4,x
             AssertCode(
                 "0|L--|0100(3): 3 instructions",
                 "1|L--|y = Mem0[x + 4:word16]",
@@ -373,7 +364,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_leas()
         {
-            RewriteCode("320D"); // leas	$0D,x
+            Given_HexString("320D"); // leas	$0D,x
             AssertCode(
                 "0|L--|0100(2): 1 instructions",
                 "1|L--|s = x + 13");
@@ -382,7 +373,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_leau()
         {
-            RewriteCode("335E"); // leau	-$02,u
+            Given_HexString("335E"); // leau	-$02,u
             AssertCode(
                 "0|L--|0100(2): 1 instructions",
                 "1|L--|u = u - 2");
@@ -391,7 +382,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_leax()
         {
-            RewriteCode("3001"); // leax	$01,x
+            Given_HexString("3001"); // leax	$01,x
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
                 "1|L--|x = x + 1",
@@ -401,7 +392,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_leay()
         {
-            RewriteCode("318CE4"); // leay	-$1C,pcr
+            Given_HexString("318CE4"); // leay	-$1C,pcr
             AssertCode(
                 "0|L--|0100(3): 2 instructions",
                 "1|L--|y = 00E7",
@@ -411,7 +402,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_lsl_predec2()
         {
-            RewriteCode("68E3"); // lsl ,--s
+            Given_HexString("68E3"); // lsl ,--s
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
                 "1|L--|s = s - 2",
@@ -423,7 +414,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_lsr()
         {
-            RewriteCode("0412"); // lsr	>$12
+            Given_HexString("0412"); // lsr	>$12
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
                 "1|L--|v3 = Mem0[dp + 0x12:byte] >>u 0x01",
@@ -434,7 +425,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_mul()
         {
-            RewriteCode("3D"); // mul
+            Given_HexString("3D"); // mul
             AssertCode(
                 "0|L--|0100(1): 2 instructions",
                 "1|L--|d = a *u b",
@@ -444,7 +435,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_neg_dir()
         {
-            RewriteCode("0042");
+            Given_HexString("0042");
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
                 "1|L--|v3 = -Mem0[dp + 0x42:byte]",
@@ -455,7 +446,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_ora()
         {
-            RewriteCode("9ACE"); // ora	>$CE
+            Given_HexString("9ACE"); // ora	>$CE
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
                 "1|L--|a = a | Mem0[dp + 0xCE:byte]",
@@ -466,7 +457,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_orcc()
         {
-            RewriteCode("1A7E"); // orcc	#$7E
+            Given_HexString("1A7E"); // orcc	#$7E
             AssertCode(
                 "0|L--|0100(2): 1 instructions",
                 "1|L--|cc = cc | 0x7E");
@@ -475,7 +466,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_puls()
         {
-            RewriteCode("35AA"); // puls	pcr,y,dp,a
+            Given_HexString("35AA"); // puls	pcr,y,dp,a
             AssertCode(
                 "0|L--|0100(2): 7 instructions",
                 "1|L--|a = Mem0[s:byte]",
@@ -490,7 +481,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_pulu()
         {
-            RewriteCode("37B7"); // pulu	pcr,y,x,b,a,cc
+            Given_HexString("37B7"); // pulu	pcr,y,x,b,a,cc
             AssertCode(
                 "0|L--|0100(2): 11 instructions",
                 "1|L--|cc = Mem0[u:byte]",
@@ -509,7 +500,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_pshs()
         {
-            RewriteCode("34A7"); // pshs	pcr,y,b,a,cc
+            Given_HexString("34A7"); // pshs	pcr,y,b,a,cc
             AssertCode(
                 "0|L--|0100(2): 10 instructions",
                 "1|L--|s = s - 2",
@@ -527,7 +518,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_pshu()
         {
-            RewriteCode("3602"); // pshu	a
+            Given_HexString("3602"); // pshu	a
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
                 "1|L--|u = u - 1",
@@ -537,7 +528,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_rol()
         {
-            RewriteCode("59"); // rol	b
+            Given_HexString("59"); // rol	b
             AssertCode(
                 "0|L--|0100(1): 2 instructions",
                 "1|L--|b = __rol(b, 0x01)",
@@ -547,7 +538,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_ror()
         {
-            RewriteCode("0630"); // ror	>$30
+            Given_HexString("0630"); // ror	>$30
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
                 "1|L--|v3 = __ror(Mem0[dp + 0x30:byte], 0x01)",
@@ -558,7 +549,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_rti()
         {
-            RewriteCode("3B"); // rti
+            Given_HexString("3B"); // rti
             AssertCode(
                 "0|T--|0100(1): 15 instructions",
                 "1|L--|cc = Mem0[s:byte]",
@@ -581,7 +572,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_rts()
         {
-            RewriteCode("39"); // rts
+            Given_HexString("39"); // rts
             AssertCode(
                 "0|T--|0100(1): 1 instructions",
                 "1|T--|return (2,0)");
@@ -590,7 +581,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_sbca()
         {
-            RewriteCode("A282"); // sbca	,-x
+            Given_HexString("A282"); // sbca	,-x
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
                 "1|L--|x = x - 1",
@@ -601,7 +592,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_sbcb()
         {
-            RewriteCode("E227"); // sbcb	$07,y
+            Given_HexString("E227"); // sbcb	$07,y
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
                 "1|L--|b = b - Mem0[y + 7:byte] - C",
@@ -611,7 +602,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_sex()
         {
-            RewriteCode("1D"); // sex
+            Given_HexString("1D"); // sex
             AssertCode(
                 "0|L--|0100(1): 2 instructions",
                 "1|L--|d = (int16) b",
@@ -621,7 +612,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_sta()
         {
-            RewriteCode("B7FF23"); // sta $FF23
+            Given_HexString("B7FF23"); // sta $FF23
             AssertCode(
                 "0|L--|0100(3): 4 instructions",
                 "1|L--|v3 = a",
@@ -633,7 +624,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_std()
         {
-            RewriteCode("EDC1"); // std ,u++
+            Given_HexString("EDC1"); // std ,u++
             AssertCode(
                 "0|L--|0100(2): 5 instructions",
                 "1|L--|v4 = d",
@@ -646,7 +637,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_subd_imm()
         {
-            RewriteCode("831234"); // subd #$1234
+            Given_HexString("831234"); // subd #$1234
             AssertCode(
                 "0|L--|0100(3): 2 instructions",
                 "1|L--|d = d - 0x1234",
@@ -656,7 +647,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_swi()
         {
-            RewriteCode("3F"); // swi
+            Given_HexString("3F"); // swi
             AssertCode(
                 "0|L--|0100(1): 17 instructions",
                 "1|L--|s = s - 2",
@@ -681,7 +672,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_sync()
         {
-            RewriteCode("13"); // sync
+            Given_HexString("13"); // sync
             AssertCode(
                 "0|L--|0100(1): 1 instructions",
                 "1|L--|__sync()");
@@ -690,7 +681,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_tfr()
         {
-            RewriteCode("1F9B"); // tfr	b,dp
+            Given_HexString("1F9B"); // tfr	b,dp
             AssertCode(
                 "0|L--|0100(2): 1 instructions",
                 "1|L--|dp = b");
@@ -699,7 +690,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_tst()
         {
-            RewriteCode("5D"); // tst	b
+            Given_HexString("5D"); // tst	b
             AssertCode(
                 "0|L--|0100(1): 3 instructions",
                 "1|L--|b = b - 0x00",
@@ -710,7 +701,7 @@ namespace Reko.UnitTests.Arch.M6800
         [Test]
         public void M6809Rw_tst_mem()
         {
-            RewriteCode("7EB593"); // tst	$B593
+            Given_HexString("7EB593"); // tst	$B593
             AssertCode(
                 "0|L--|0100(3): 4 instructions",
                 "1|L--|v2 = Mem0[0xB593:byte]",

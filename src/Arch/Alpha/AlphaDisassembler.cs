@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ namespace Reko.Arch.Alpha
 {
     using Decoder = Decoder<AlphaDisassembler, Mnemonic, AlphaInstruction>;
 
-    public class AlphaDisassembler : DisassemblerBase<AlphaInstruction>
+    public class AlphaDisassembler : DisassemblerBase<AlphaInstruction, Mnemonic>
     {
         private readonly AlphaArchitecture arch;
         private readonly EndianImageReader rdr;
@@ -64,7 +64,7 @@ namespace Reko.Arch.Alpha
             return new RegisterOperand(Registers.FpuRegisters[n & 0x1F]);
         }
 
-        protected override AlphaInstruction CreateInvalidInstruction()
+        public override AlphaInstruction CreateInvalidInstruction()
         {
             return new AlphaInstruction {
                 Mnemonic = Mnemonic.invalid,

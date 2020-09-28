@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -186,7 +186,7 @@ namespace Reko.WindowsItp
             var program = peLdr.Load(addr);
             var rr = peLdr.Relocate(program, addr);
             var win32 = new Win32Emulator(program.SegmentMap, program.Platform, program.ImportReferences);
-            var emu = new X86Emulator((IntelArchitecture)program.Architecture, program.SegmentMap, win32);
+            var emu = program.Architecture.CreateEmulator(program.SegmentMap, win32);
             emu.InstructionPointer = rr.EntryPoints[0].Address;
             emu.ExceptionRaised += delegate { throw new Exception(); };
             emu.WriteRegister(Registers.esp, (uint)peLdr.PreferredBaseAddress.ToLinear() + 0x0FFC);
@@ -201,7 +201,7 @@ namespace Reko.WindowsItp
             var size = fs.Length;
             var abImage = new byte[size];
             fs.Read(abImage, 0, abImage.Length);
-            var ldr = new OdbgScriptLoader(sc, "foo.exe", abImage);
+            var ldr = new OdbgScriptLoader(new Reko.Loading.NullImageLoader(sc, "foo.exe", abImage));
             ldr.Argument = @"D:\dev\jkl\dec\halsten\decompiler_paq\upx\upx_ultimate.txt";
             var addr = ldr.PreferredBaseAddress;
             var program = ldr.Load(addr);

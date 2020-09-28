@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,12 +44,12 @@ namespace Reko.UnitTests.Analysis
     public class DataFlowAnalysisTests2
     {
         private ProgramBuilder pb;
-        private Mock<IImportResolver> importResolver;
+        private Mock<IDynamicLinker> dynamicLinker;
 
         [SetUp]
         public void Setup()
         {
-            this.importResolver = new Mock<IImportResolver>();
+            this.dynamicLinker = new Mock<IDynamicLinker>();
         }
 
         private void GivenProgram(ProgramBuilder pb)
@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Analysis
 
         private void RunTest(Program program, TextWriter writer)
         {
-            var dfa = new DataFlowAnalysis(program, importResolver.Object, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, dynamicLinker.Object, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram();
             foreach (var proc in program.Procedures.Values)
             {
@@ -118,7 +118,7 @@ namespace Reko.UnitTests.Analysis
                     m.Return();
                 });
 
-            var dfa = new DataFlowAnalysis(pb.BuildProgram(), importResolver.Object, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(pb.BuildProgram(), dynamicLinker.Object, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram();
             var sExp = @"// test
 // Return size: 0
@@ -150,7 +150,7 @@ test_exit:
                 m.MStore(m.Word32(0x010008), r1);
                 m.Return();
             });
-            var dfa = new DataFlowAnalysis(pb.BuildProgram(), importResolver.Object, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(pb.BuildProgram(), dynamicLinker.Object, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram();
             var sExp = @"// test
 // Return size: 0
@@ -251,11 +251,11 @@ test_exit:
                 .Returns(new X86CallingConvention(4, 4, 4, true, false));
             platform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Returns(4);
 
-            var importResolver = new Mock<IImportResolver>().Object;
+            var dynamicLinker = new Mock<IDynamicLinker>().Object;
             program.Platform = platform.Object;
             var usb = new UserSignatureBuilder(program);
             usb.BuildSignatures(new FakeDecompilerEventListener());
-            var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, dynamicLinker, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram();
             var sExp = @"// test
 // Return size: 4
@@ -301,7 +301,7 @@ test_exit:
             });
             var program = pb.BuildProgram();
 
-            var dfa = new DataFlowAnalysis(program, importResolver.Object, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, dynamicLinker.Object, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram();
 
             var sExp =
@@ -381,7 +381,7 @@ level2_exit:
             });
             var program = pb.BuildProgram();
 
-            var dfa = new DataFlowAnalysis(program, importResolver.Object, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, dynamicLinker.Object, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram();
 
             var sExp =
@@ -444,7 +444,7 @@ level2_exit:
             });
             var program = pb.BuildProgram();
 
-            var dfa = new DataFlowAnalysis(program, importResolver.Object, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, dynamicLinker.Object, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram();
 
             var sExp =

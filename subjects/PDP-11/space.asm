@@ -178,7 +178,7 @@ l0332:
 	mov	#0202,@#0020
 	bis	#2000,@#0024
 	jsr	pc,@#1CFA
-	tst	0075(r3)
+	tstb	0075(r3)
 	beq	03B2
 
 l0370:
@@ -187,7 +187,7 @@ l0370:
 l0372:
 	mov	#0397,r0
 	emt	#E9
-	bis	#0008,@#002B
+	bisb	#0008,@#002B
 	emt	#E8
 0380 3F 45 72 72 20 35 39 20 55 53 52 20 6E 6F 74 20 ?Err 59 USR not 
 0390 6C 6F 63 6B 65 64 00 3F 45 72 72 20 36 32 20 46 locked.?Err 62 F
@@ -263,11 +263,11 @@ l04B2:
 	jsr	pc,@#04FA
 
 l04B6:
-	cmp	r1,#003D
+	cmpb	r1,#003D
 	beq	04C2
 
 l04BC:
-	cmp	r1,#003F
+	cmpb	r1,#003F
 	bne	04F2
 
 l04C2:
@@ -279,7 +279,7 @@ l04C2:
 
 l04D4:
 	rol	r1
-	rol	r0
+	rolb	r0
 
 l04D8:
 	emt	#E1
@@ -293,7 +293,7 @@ l04E0:
 	beq	04EA
 
 l04E4:
-	rol	r0
+	rolb	r0
 	bcs	04E0
 
 l04E8:
@@ -457,11 +457,11 @@ l0644:
 l0648:
 	movb	r1,0005(sp)
 	clrb	r1
-	bis	r2,r1
+	bisb	r2,r1
 	swab	r1
 	ror	(sp)+
 	ror	r1
-	ror	0003(sp)
+	rorb	0003(sp)
 	mov	r1,@sp
 
 l065C:
@@ -534,18 +534,18 @@ l06BE:
 	ror	r5
 	ror	r4
 	mov	r4,-(sp)
-	ror	r2
+	rorb	r2
 	swab	r3
 	swab	r2
 	clrb	r2
-	bis	r3,r2
+	bisb	r3,r2
 	clrb	r3
 	ror	r2
 	ror	r3
 	swab	r1
 	swab	r0
 	clrb	r0
-	bis	r1,r0
+	bisb	r1,r0
 	clrb	r1
 	mov	r2,r4
 	mov	r3,r5
@@ -599,10 +599,10 @@ l0720:
 	sub	#0080,r4
 
 l0724:
-	rol	r3
+	rolb	r3
 	rol	r1
 	clrb	r3
-	bis	r2,r3
+	bisb	r2,r3
 	swab	r3
 	clrb	r2
 	swab	r2
@@ -662,10 +662,10 @@ l078C:
 l078E:
 	add	#7F01,r2
 	setflags	#01
-	ror	r4
+	rorb	r4
 	ror	(sp)+
 	ror	r2
-	ror	r5
+	rorb	r5
 	mov	#0100,r0
 	cmp	r4,r5
 	bhi	07AC
@@ -691,11 +691,11 @@ l07B6:
 
 l07BA:
 	asl	r3
-	rol	r4
+	rolb	r4
 	bcs	07C6
 
 l07C0:
-	cmp	r5,r4
+	cmpb	r5,r4
 	bhi	07CE
 
 l07C4:
@@ -856,7 +856,7 @@ fn0AE6 proc
 	mov	@#5426,r3
 	clr	-(sp)
 	movb	0004(sp),@sp
-	cmp	@sp,#0001
+	cmpb	@sp,#0001
 	beq	0B02
 
 ;; fn0AF8: 0AF8
@@ -864,7 +864,7 @@ fn0AE6 proc
 ;;     0AF6 (in fn0AE6)
 ;;     0AF6 (in fn0AE6)
 fn0AF8 proc
-	cmp	@sp,#0008
+	cmpb	@sp,#0008
 	beq	0B02
 
 l0AFE:
@@ -877,10 +877,10 @@ l0AFE:
 ;;     0AFC (in fn0AF8)
 ;;     0AFE (in fn0AF8)
 fn0B02 proc
-	cmp	0004(sp),0005(sp)
+	cmpb	0004(sp),0005(sp)
 	adc	@sp
 	mov	(sp)+,00A4(r3)
-	tst	0074(r3)
+	tstb	0074(r3)
 	beq	0B22
 
 l0B14:
@@ -920,21 +920,21 @@ fn0B60 proc
 	mov	@#5426,r3
 	clr	-(sp)
 	movb	0004(sp),@sp
-	cmp	@sp,#0001
+	cmpb	@sp,#0001
 	beq	0B7C
 
 l0B72:
-	cmp	@sp,#0008
+	cmpb	@sp,#0008
 	beq	0B7C
 
 l0B78:
 	add	#0003,@sp
 
 l0B7C:
-	cmp	0004(sp),0005(sp)
+	cmpb	0004(sp),0005(sp)
 	adc	@sp
 	mov	(sp)+,00A4(r3)
-	tst	0074(r3)
+	tstb	0074(r3)
 	beq	0BA4
 
 l0B8E:
@@ -1034,7 +1034,7 @@ l0C64:
 
 ;; fn0CF4: 0CF4
 fn0CF4 proc
-	cmp	#0001,@r5
+	cmpb	#0001,@r5
 	beq	0CFE
 
 l0CFA:
@@ -1152,7 +1152,7 @@ l0E92:
 	mov	0064(r3),sp
 	mov	#0EF4,-(sp)
 	mov	r3,-(sp)
-	tst	0074(r3)
+	tstb	0074(r3)
 	bne	0EDA
 
 l0EA2:
@@ -1164,7 +1164,7 @@ fn0EA8 proc
 	mov	r3,-(sp)
 	mov	@#5426,r3
 	clr	0044(r3)
-	tst	0074(r3)
+	tstb	0074(r3)
 	bne	0EC2
 
 l0EB8:
@@ -1177,7 +1177,7 @@ l0EC2:
 	mov	#0EF4,-(sp)
 	mov	r3,-(sp)
 	mov	@#5426,r3
-	tst	0074(r3)
+	tstb	0074(r3)
 	bne	0EDA
 
 l0ED4:
@@ -1263,7 +1263,7 @@ l0F34:
 
 ;; fn0F48: 0F48
 fn0F48 proc
-	cmp	@r5,#0002
+	cmpb	@r5,#0002
 	bne	0F98
 
 l0F4E:
@@ -1302,10 +1302,10 @@ l0F7A:
 
 l0F7E:
 	clrb	r1
-	bis	r0,r1
+	bisb	r0,r1
 	swab	r1
 	clrb	r0
-	bis	r2,r0
+	bisb	r2,r0
 	swab	r0
 	ror	r0
 	ror	r1
@@ -1375,7 +1375,7 @@ l1040:
 	asl	r0
 	ror	r3
 	setflags	#01
-	ror	r0
+	rorb	r0
 	mov	r0,r2
 	clrb	r2
 	bic	r2,r0
@@ -1546,7 +1546,7 @@ fn12CA proc
 	mov	r4,-(sp)
 	mov	0014(r3),r4
 	mov	001A(r3),r1
-	tst	@r4
+	tstb	@r4
 	bpl	12E8
 
 l12DA:
@@ -1562,7 +1562,7 @@ l12E8:
 
 l12F2:
 	movb	(r1)+,r5
-	cmp	#0031,r5
+	cmpb	#0031,r5
 	bne	12FE
 
 l12FA:
@@ -1570,11 +1570,11 @@ l12FA:
 	br	1326
 
 l12FE:
-	cmp	#002B,r5
+	cmpb	#002B,r5
 	beq	132A
 
 l1304:
-	cmp	#0024,r5
+	cmpb	#0024,r5
 	bne	1314
 
 l130A:
@@ -1583,14 +1583,14 @@ l130A:
 	br	131E
 
 l1314:
-	cmp	#0030,r5
+	cmpb	#0030,r5
 	bne	131E
 
 l131A:
 	jsr	pc,@#1366
 
 l131E:
-	tst	@r4
+	tstb	@r4
 	bpl	1326
 
 l1322:
@@ -1601,7 +1601,7 @@ l1326:
 	jsr	pc,@#1366
 
 l132A:
-	tst	@r4
+	tstb	@r4
 	bpl	134C
 
 l132E:
@@ -1636,7 +1636,7 @@ l1352:
 ;;     131A (in fn12CA)
 ;;     1326 (in fn12CA)
 fn1366 proc
-	tst	@r4
+	tstb	@r4
 	bpl	1370
 
 l136A:
@@ -1666,7 +1666,7 @@ l1386:
 13A0 C0 15 F4 13 E9 88 00 15 E9 88                   ..........     
 
 l13AA:
-	bis	#0001,@#002B
+	bisb	#0001,@#002B
 	mov	@#5426,r3
 	inc	0066(r3)
 	mov	0004(r3),r4
@@ -1755,7 +1755,7 @@ l142C:
 	mov	@sp,r1
 
 l1432:
-	cmp	r2,(r1)+
+	cmpb	r2,(r1)+
 	beq	144A
 
 l1436:
@@ -1766,7 +1766,7 @@ l143C:
 	mov	@sp,r1
 
 l143E:
-	tst	(r1)+
+	tstb	(r1)+
 	beq	144A
 
 l1442:
@@ -1836,7 +1836,7 @@ fn14A8 proc
 	beq	15A0
 
 l14C4:
-	tst	@r0
+	tstb	@r0
 	bmi	15C4
 
 l14C8:
@@ -1871,7 +1871,7 @@ l14F6:
 
 l14FC:
 	mov	#1520,0070(r3)
-	tst	0074(r3)
+	tstb	0074(r3)
 	beq	150E
 
 l1508:
@@ -1920,7 +1920,7 @@ l155A:
 
 l155E:
 	movb	0011(r4),r1
-	bis	r1,r0
+	bisb	r1,r0
 	emt	#FC
 	clr	r0
 	setflags	#01
@@ -1972,7 +1972,7 @@ l15AA:
 	mov	(sp)+,r2
 
 l15B0:
-	cmp	(r0)+,r2
+	cmpb	(r0)+,r2
 	bne	15B0
 
 l15B4:
@@ -1992,7 +1992,7 @@ l15C4:
 ;;   Called from:
 ;;     0D16 (in fn0CF4)
 fn15CC proc
-	cmp	#0003,@r5
+	cmpb	#0003,@r5
 	beq	15D6
 
 l15D2:
@@ -2181,7 +2181,7 @@ l1860:
 	jsr	pc,@#1900
 	mov	#099E,-(sp)
 	mov	#8890,-(sp)
-	bis	0011(r4),@sp
+	bisb	0011(r4),@sp
 	mov	#1888,-(sp)
 	mov	#0001,-(sp)
 	mov	#0100,-(sp)
@@ -2209,7 +2209,7 @@ l18CE:
 	jsr	pc,@#1900
 	mov	#099E,-(sp)
 	mov	#8880,-(sp)
-	bis	0011(r4),@sp
+	bisb	0011(r4),@sp
 	mov	#18F4,-(sp)
 	clr	-(sp)
 	mov	#0100,-(sp)
@@ -2233,7 +2233,7 @@ l18FE:
 fn1900 proc
 	mov	#099E,-(sp)
 	mov	#88A0,-(sp)
-	bis	0011(r4),@sp
+	bisb	0011(r4),@sp
 	jsr	pc,@sp
 	bcc	18FE
 
@@ -2246,7 +2246,7 @@ l191A:
 	mov	#FFFF,0016(r4)
 
 l1920:
-	tst	@#002A
+	tstb	@#002A
 	beq	1932
 
 l1926:
@@ -2283,7 +2283,7 @@ l194A:
 ;; fn194E: 194E
 fn194E proc
 	clr	r1
-	bis	@0012(r3),r1
+	bisb	@0012(r3),r1
 	inc	0012(r3)
 	rts	pc
 195A                               F7 09 0C 00 00 92           ......
@@ -2330,7 +2330,7 @@ l1992:
 l199E:
 	jsr	pc,@0060(r3)
 	clr	0056(r3)
-	tst	@0014(r3)
+	tstb	@0014(r3)
 	bpl	19B0
 
 l19AC:
@@ -3301,7 +3301,7 @@ l466E:
 
 l4672:
 	movb	r1,000B(r5)
-	dec	000B(r5)
+	decb	000B(r5)
 	setflags	#01
 
 l467C:
@@ -3416,7 +3416,7 @@ l476A:
 
 l4772:
 	mov	(r4)+,r2
-	cmp	#0004,r2
+	cmpb	#0004,r2
 	beq	47D6
 
 l477A:
@@ -3448,7 +3448,7 @@ l47A6:
 
 l47AE:
 	mov	r1,-(sp)
-	bis	000B(r1),r0
+	bisb	000B(r1),r0
 	mov	r0,-(sp)
 	mov	sp,r0
 	emt	#FD

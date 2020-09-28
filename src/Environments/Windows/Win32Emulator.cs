@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ namespace Reko.Environments.Windows
     /// Emulates the Win32 operating environment. In particular, intercepts calls to GetProcAddress
     /// so that the procedures used by the decompiled program can be gleaned. 
     /// </summary>
-    public class Win32Emulator : IPlatformEmulator, IImportResolver
+    public class Win32Emulator : IPlatformEmulator, IDynamicLinker
     {
         private Dictionary<string, Module> modules;
         private TWord uPseudoFn;
@@ -48,7 +48,7 @@ namespace Reko.Environments.Windows
             this.map = map;
             this.platform = platform;
             this.uPseudoFn = 0xDEAD0000u;   // unlikely to be a real pointer to a function
-            this.InterceptedCalls = new Dictionary<uint, ExternalProcedure>();
+            this.InterceptedCalls = new Dictionary<Address, ExternalProcedure>();
 
             modules = new Dictionary<string, Module>(StringComparer.InvariantCultureIgnoreCase);
             AddWellKnownProcedures();
@@ -91,13 +91,13 @@ namespace Reko.Environments.Windows
                 if (chars != null)
                     proc.Characteristics = chars;
                 proc.uFakedAddress = ++this.uPseudoFn;
-                InterceptedCalls[proc.uFakedAddress] = proc;
+                InterceptedCalls[Address.Ptr32(proc.uFakedAddress)] = proc;
                 module.Procedures.Add(procName, proc);
             }
             return proc;
         }
 
-        public Dictionary<TWord, ExternalProcedure> InterceptedCalls { get; private set; }
+        public Dictionary<Address, ExternalProcedure> InterceptedCalls { get; private set; }
 
         private void InterceptCallsToImports(Dictionary<Address, ImportReference> importReferences)
         {
@@ -108,13 +108,13 @@ namespace Reko.Environments.Windows
             }
         }
 
-        ExternalProcedure IImportResolver.ResolveProcedure(string moduleName, string importName, IPlatform platform)
+        ExternalProcedure IDynamicLinker.ResolveProcedure(string moduleName, string importName, IPlatform platform)
         {
             Module module = EnsureModule(moduleName);
             return EnsureProc(module, importName, NYI);
         }
 
-        ExternalProcedure IImportResolver.ResolveProcedure(string moduleName, int ordinal, IPlatform platform)
+        ExternalProcedure IDynamicLinker.ResolveProcedure(string moduleName, int ordinal, IPlatform platform)
         {
             throw new NotImplementedException();
         }
@@ -258,9 +258,22 @@ namespace Reko.Environments.Windows
             return Encoding.ASCII.GetString(ab.ToArray());
         }
 
+        public ImageSegment InitializeStack(IProcessorEmulator emu, ProcessorState state)
+        {
+            var stack = new MemoryArea(Address.Ptr32(0x7FE00000), new byte[1024 * 1024]);
+            var stackSeg = this.map.AddSegment(stack, "stack", AccessMode.ReadWrite);
+            emu.WriteRegister(Registers.esp, (uint) stack.EndAddress.ToLinear() - 4u);
+            return stackSeg;
+        }
+
+        public void TearDownStack(ImageSegment stackSeg)
+        {
+            this.map.Segments.Remove(stackSeg.Address);
+        }
+
         public bool InterceptCall(IProcessorEmulator emu, TWord l)
         {
-            if (!this.InterceptedCalls.TryGetValue(l, out ExternalProcedure epProc))
+            if (!this.InterceptedCalls.TryGetValue(Address.Ptr32(l), out ExternalProcedure epProc))
                 return false;
             ((SimulatedProc)epProc).Emulator(emu);
             return true;

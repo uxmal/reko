@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -76,13 +76,13 @@ namespace Reko.UnitTests.Typing
             var project = new Project { Programs = { program } };
             var scan = new Scanner(
                 program,
-                new ImportResolver(project, program, eventListener),
+                new DynamicLinker(project, program, eventListener),
                 sc);
 			scan.EnqueueImageSymbol(ep, true);
 			scan.ScanImage();
 
-            var importResolver = new ImportResolver(project, program, eventListener);
-            var dfa = new DataFlowAnalysis(program, importResolver, eventListener);
+            var dynamicLinker = new DynamicLinker(project, program, eventListener);
+            var dfa = new DataFlowAnalysis(program, dynamicLinker, eventListener);
 			dfa.AnalyzeProgram();
             return program;
 		}
@@ -100,8 +100,8 @@ namespace Reko.UnitTests.Typing
             var program = imgLoader.Load(null);
             var project = new Project { Programs = { program } };
             var ep = ImageSymbol.Procedure(program.Architecture, program.ImageMap.BaseAddress);
-            var importResolver = new ImportResolver(project, program, eventListener);
-            var scan = new Scanner(program, importResolver, svc);
+            var dynamicLinker = new DynamicLinker(project, program, eventListener);
+            var scan = new Scanner(program, dynamicLinker, svc);
             scan.EnqueueImageSymbol(ep, true);
             scan.ScanImage();
 
@@ -123,8 +123,8 @@ namespace Reko.UnitTests.Typing
         protected void RunTest(ProgramBuilder mock, string outputFile)
         {
             Program program = mock.BuildProgram();
-            var importResolver = new Mock<IImportResolver>();
-            DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver.Object, new FakeDecompilerEventListener());
+            var dynamicLinker = new Mock<IDynamicLinker>();
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, dynamicLinker.Object, new FakeDecompilerEventListener());
             dfa.UntangleProcedures();
             dfa.BuildExpressionTrees();
             RunTest(program, outputFile);

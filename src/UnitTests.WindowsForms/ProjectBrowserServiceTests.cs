@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -182,31 +182,8 @@ namespace Reko.UnitTests.Gui.Windows
             public bool ShowRootLines { get; set; }
             public bool ShowNodeToolTips { get; set; }
 
-            public Color ForeColor
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public Color BackColor
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
+            public Color ForeColor { get; set; }
+            public Color BackColor { get; set; }
 
             public void CollapseAll()
             {

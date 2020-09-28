@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -132,12 +132,12 @@ namespace Reko.UnitTests.Analysis
         private void RunTest(Action<ProcedureBuilder> builder)
         {
             builder(m);
-            var importResolver = new Mock<IImportResolver>();
+            var dynamicLinker = new Mock<IDynamicLinker>();
             var sst = new SsaTransform(
                 program, 
                 m.Procedure,
                 new HashSet<Procedure>(),
-                importResolver.Object,
+                dynamicLinker.Object,
                 new ProgramDataFlow());
             sst.Transform();
             sst.RenameFrameAccesses = true;
@@ -152,12 +152,12 @@ namespace Reko.UnitTests.Analysis
         private void RunTest(string sExp, Action<ProcedureBuilder> builder)
         {
             builder(m);
-            var importResolver = new Mock<IImportResolver>();
+            var dynamicLinker = new Mock<IDynamicLinker>();
             var sst = new SsaTransform(
                 program,
                 m.Procedure,
                 new HashSet<Procedure>(),
-                importResolver.Object,
+                dynamicLinker.Object,
                 new ProgramDataFlow());
             sst.Transform();
             sst.RenameFrameAccesses = true;

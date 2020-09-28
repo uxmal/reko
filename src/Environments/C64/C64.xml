@@ -395,7 +395,7 @@
   </segment>
 
   <segment name="stack_page" addr="0100" size="0100"></segment>
-
   <segment name="os_data" addr="0200" size="0200"></segment>
+  <segment name="screen" addr="0400" size="0400"></segment>
 
 </memory>

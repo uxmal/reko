@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ namespace Reko.Arch.Tms7000
 {
     using Decoder = Decoder<Tms7000Disassembler, Mnemonic, Tms7000Instruction>;
 
-    public class Tms7000Disassembler : DisassemblerBase<Tms7000Instruction>
+    public class Tms7000Disassembler : DisassemblerBase<Tms7000Instruction, Mnemonic>
     {
         private readonly Tms7000Architecture arch;
         private readonly EndianImageReader rdr;
@@ -141,10 +141,21 @@ namespace Reko.Arch.Tms7000
             dasm.ops.Add(MemoryOperand.Indirect(dasm.arch.GpRegs[b]));
             return true;
         }
-        
+
         #endregion
 
-        protected override Tms7000Instruction CreateInvalidInstruction()
+        public override Tms7000Instruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            var instr = new Tms7000Instruction
+            {
+                Mnemonic = mnemonic,
+                InstructionClass = iclass,
+                Operands = this.ops.ToArray()
+            };
+            return instr;
+        }
+
+        public override Tms7000Instruction CreateInvalidInstruction()
         {
             return new Tms7000Instruction
             {
@@ -154,38 +165,14 @@ namespace Reko.Arch.Tms7000
             };
         }
 
-        private class InstrDecoder : Decoder
+        private static Decoder Instr(Mnemonic mnemonic, params Mutator<Tms7000Disassembler> [] mutators)
         {
-            private readonly Mnemonic mnemonic;
-            private readonly InstrClass iclass;
-            private readonly Mutator<Tms7000Disassembler>[] mutators;
+            return new InstrDecoder<Tms7000Disassembler, Mnemonic, Tms7000Instruction>(InstrClass.Linear, mnemonic, mutators);
+        }
 
-            public InstrDecoder(Mnemonic opcode, params Mutator<Tms7000Disassembler>[] mutators) : this(opcode, InstrClass.Linear, mutators)
-            {
-            }
-
-            public InstrDecoder(Mnemonic mnemonic, InstrClass iclass, params Mutator<Tms7000Disassembler>[] mutators)
-            {
-                this.mnemonic = mnemonic;
-                this.iclass = iclass;
-                this.mutators = mutators;
-            }
-
-            public override Tms7000Instruction Decode(uint b, Tms7000Disassembler dasm)
-            {
-                foreach (var m in mutators)
-                {
-                    if (!m(b, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-                var instr = new Tms7000Instruction
-                {
-                    Mnemonic = mnemonic,
-                    InstructionClass = iclass,
-                    Operands = dasm.ops.ToArray()
-                };
-                return instr;
-            }
+        private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<Tms7000Disassembler>[] mutators)
+        {
+            return new InstrDecoder<Tms7000Disassembler, Mnemonic, Tms7000Instruction>(iclass, mnemonic, mutators);
         }
 
         private static readonly Mutator<Tms7000Disassembler>[]  F_None = {};
@@ -237,283 +224,283 @@ namespace Reko.Arch.Tms7000
 
         static Dictionary<uint, Decoder> decoders = new Dictionary<uint, Decoder>
         {
-            { 0x69, new InstrDecoder(Mnemonic.adc, F_B_A) },
-            { 0x19, new InstrDecoder(Mnemonic.adc, F_Rn_A) },
-            { 0x39, new InstrDecoder(Mnemonic.adc, F_Rn_B) },
-            { 0x49, new InstrDecoder(Mnemonic.adc, F_Rn_Rn) },
-            { 0x29, new InstrDecoder(Mnemonic.adc, F_iop_A) },
-            { 0x59, new InstrDecoder(Mnemonic.adc, F_iop_B) },
-            { 0x79, new InstrDecoder(Mnemonic.adc, F_iop_Rn) },
+            { 0x69, Instr(Mnemonic.adc, F_B_A) },
+            { 0x19, Instr(Mnemonic.adc, F_Rn_A) },
+            { 0x39, Instr(Mnemonic.adc, F_Rn_B) },
+            { 0x49, Instr(Mnemonic.adc, F_Rn_Rn) },
+            { 0x29, Instr(Mnemonic.adc, F_iop_A) },
+            { 0x59, Instr(Mnemonic.adc, F_iop_B) },
+            { 0x79, Instr(Mnemonic.adc, F_iop_Rn) },
 
-            { 0x68, new InstrDecoder(Mnemonic.add, F_B_A) },
-            { 0x18, new InstrDecoder(Mnemonic.add, F_Rn_A) },
-            { 0x38, new InstrDecoder(Mnemonic.add, F_Rn_B) },
-            { 0x48, new InstrDecoder(Mnemonic.add, F_Rn_Rn) },
-            { 0x28, new InstrDecoder(Mnemonic.add, F_iop_A) },
-            { 0x58, new InstrDecoder(Mnemonic.add, F_iop_B) },
-            { 0x78, new InstrDecoder(Mnemonic.add, F_iop_Rn) },
+            { 0x68, Instr(Mnemonic.add, F_B_A) },
+            { 0x18, Instr(Mnemonic.add, F_Rn_A) },
+            { 0x38, Instr(Mnemonic.add, F_Rn_B) },
+            { 0x48, Instr(Mnemonic.add, F_Rn_Rn) },
+            { 0x28, Instr(Mnemonic.add, F_iop_A) },
+            { 0x58, Instr(Mnemonic.add, F_iop_B) },
+            { 0x78, Instr(Mnemonic.add, F_iop_Rn) },
 
-            { 0x63, new InstrDecoder(Mnemonic.and, F_B_A) },
-            { 0x13, new InstrDecoder(Mnemonic.and, F_Rn_A) },
-            { 0x33, new InstrDecoder(Mnemonic.and, F_Rn_B) },
-            { 0x43, new InstrDecoder(Mnemonic.and, F_Rn_Rn) },
-            { 0x23, new InstrDecoder(Mnemonic.and, F_iop_A) },
-            { 0x53, new InstrDecoder(Mnemonic.and, F_iop_B) },
-            { 0x73, new InstrDecoder(Mnemonic.and, F_iop_Rn) },
+            { 0x63, Instr(Mnemonic.and, F_B_A) },
+            { 0x13, Instr(Mnemonic.and, F_Rn_A) },
+            { 0x33, Instr(Mnemonic.and, F_Rn_B) },
+            { 0x43, Instr(Mnemonic.and, F_Rn_Rn) },
+            { 0x23, Instr(Mnemonic.and, F_iop_A) },
+            { 0x53, Instr(Mnemonic.and, F_iop_B) },
+            { 0x73, Instr(Mnemonic.and, F_iop_Rn) },
 
-            { 0x83, new InstrDecoder(Mnemonic.andp, F_A_Pn) },
-            { 0x93, new InstrDecoder(Mnemonic.andp, F_B_Pn) },
-            { 0xA3, new InstrDecoder(Mnemonic.andp, F_iop_Pn) },
+            { 0x83, Instr(Mnemonic.andp, F_A_Pn) },
+            { 0x93, Instr(Mnemonic.andp, F_B_Pn) },
+            { 0xA3, Instr(Mnemonic.andp, F_iop_Pn) },
 
-            { 0x8c, new InstrDecoder(Mnemonic.br, F_iop16) },
-            { 0xac, new InstrDecoder(Mnemonic.br, F_iop16idxB) },
-            { 0x9c, new InstrDecoder(Mnemonic.br, F_starRn) },
+            { 0x8c, Instr(Mnemonic.br, F_iop16) },
+            { 0xac, Instr(Mnemonic.br, F_iop16idxB) },
+            { 0x9c, Instr(Mnemonic.br, F_starRn) },
 
-            { 0x66, new InstrDecoder(Mnemonic.btjo, F_B_A_offst) },
-            { 0x16, new InstrDecoder(Mnemonic.btjo, F_Rn_A_offst) },
-            { 0x36, new InstrDecoder(Mnemonic.btjo, F_Rn_B_offst) },
-            { 0x46, new InstrDecoder(Mnemonic.btjo, F_Rn_Rn_offst) },
-            { 0x26, new InstrDecoder(Mnemonic.btjo, F_iop_A_offst) },
-            { 0x56, new InstrDecoder(Mnemonic.btjo, F_iop_B_offst) },
-            { 0x76, new InstrDecoder(Mnemonic.btjo, F_iop_Rn_offst) },
+            { 0x66, Instr(Mnemonic.btjo, F_B_A_offst) },
+            { 0x16, Instr(Mnemonic.btjo, F_Rn_A_offst) },
+            { 0x36, Instr(Mnemonic.btjo, F_Rn_B_offst) },
+            { 0x46, Instr(Mnemonic.btjo, F_Rn_Rn_offst) },
+            { 0x26, Instr(Mnemonic.btjo, F_iop_A_offst) },
+            { 0x56, Instr(Mnemonic.btjo, F_iop_B_offst) },
+            { 0x76, Instr(Mnemonic.btjo, F_iop_Rn_offst) },
 
-            { 0x86, new InstrDecoder(Mnemonic.btjop, F_A_Pn_offst) },
-            { 0x96, new InstrDecoder(Mnemonic.btjop, F_B_Pn_offst) },
-            { 0xA6, new InstrDecoder(Mnemonic.btjop, F_iop_Pn_offst) },
+            { 0x86, Instr(Mnemonic.btjop, F_A_Pn_offst) },
+            { 0x96, Instr(Mnemonic.btjop, F_B_Pn_offst) },
+            { 0xA6, Instr(Mnemonic.btjop, F_iop_Pn_offst) },
 
-            { 0x67, new InstrDecoder(Mnemonic.btjz, F_B_A_offst) },
-            { 0x17, new InstrDecoder(Mnemonic.btjz, F_Rn_A_offst) },
-            { 0x37, new InstrDecoder(Mnemonic.btjz, F_Rn_B_offst) },
-            { 0x47, new InstrDecoder(Mnemonic.btjz, F_Rn_Rn_offst) },
-            { 0x27, new InstrDecoder(Mnemonic.btjz, F_iop_A_offst) },
-            { 0x57, new InstrDecoder(Mnemonic.btjz, F_iop_B_offst) },
-            { 0x77, new InstrDecoder(Mnemonic.btjz, F_iop_Rn_offst) },
+            { 0x67, Instr(Mnemonic.btjz, F_B_A_offst) },
+            { 0x17, Instr(Mnemonic.btjz, F_Rn_A_offst) },
+            { 0x37, Instr(Mnemonic.btjz, F_Rn_B_offst) },
+            { 0x47, Instr(Mnemonic.btjz, F_Rn_Rn_offst) },
+            { 0x27, Instr(Mnemonic.btjz, F_iop_A_offst) },
+            { 0x57, Instr(Mnemonic.btjz, F_iop_B_offst) },
+            { 0x77, Instr(Mnemonic.btjz, F_iop_Rn_offst) },
 
-            { 0x87, new InstrDecoder(Mnemonic.btjzp, F_A_Pn_offst) },
-            { 0x97, new InstrDecoder(Mnemonic.btjzp, F_B_Pn_offst) },
-            { 0xA7, new InstrDecoder(Mnemonic.btjzp, F_iop_Pn_offst) },
+            { 0x87, Instr(Mnemonic.btjzp, F_A_Pn_offst) },
+            { 0x97, Instr(Mnemonic.btjzp, F_B_Pn_offst) },
+            { 0xA7, Instr(Mnemonic.btjzp, F_iop_Pn_offst) },
 
-            { 0x8e, new InstrDecoder(Mnemonic.call, F_iop16) },
-            { 0xae, new InstrDecoder(Mnemonic.call, F_iop16idxB) },
-            { 0x9e, new InstrDecoder(Mnemonic.call, F_starRn) },
+            { 0x8e, Instr(Mnemonic.call, F_iop16) },
+            { 0xae, Instr(Mnemonic.call, F_iop16idxB) },
+            { 0x9e, Instr(Mnemonic.call, F_starRn) },
 
-            { 0xb5, new InstrDecoder(Mnemonic.clr, F_A) },
-            { 0xc5, new InstrDecoder(Mnemonic.clr, F_B) },
-            { 0xd5, new InstrDecoder(Mnemonic.clr, F_Rn) },
+            { 0xb5, Instr(Mnemonic.clr, F_A) },
+            { 0xc5, Instr(Mnemonic.clr, F_B) },
+            { 0xd5, Instr(Mnemonic.clr, F_Rn) },
 
-            { 0x6d, new InstrDecoder(Mnemonic.cmp, F_B_A) },
-            { 0x1d, new InstrDecoder(Mnemonic.cmp, F_Rn_A) },
-            { 0x3d, new InstrDecoder(Mnemonic.cmp, F_Rn_B) },
-            { 0x4d, new InstrDecoder(Mnemonic.cmp, F_Rn_Rn) },
-            { 0x2d, new InstrDecoder(Mnemonic.cmp, F_iop_A) },
-            { 0x5d, new InstrDecoder(Mnemonic.cmp, F_iop_B) },
-            { 0x7d, new InstrDecoder(Mnemonic.cmp, F_iop_Rn) },
+            { 0x6d, Instr(Mnemonic.cmp, F_B_A) },
+            { 0x1d, Instr(Mnemonic.cmp, F_Rn_A) },
+            { 0x3d, Instr(Mnemonic.cmp, F_Rn_B) },
+            { 0x4d, Instr(Mnemonic.cmp, F_Rn_Rn) },
+            { 0x2d, Instr(Mnemonic.cmp, F_iop_A) },
+            { 0x5d, Instr(Mnemonic.cmp, F_iop_B) },
+            { 0x7d, Instr(Mnemonic.cmp, F_iop_Rn) },
 
-            { 0x8d, new InstrDecoder(Mnemonic.cmpa, F_iop16) },
-            { 0xad, new InstrDecoder(Mnemonic.cmpa, F_iop16idxB) },
-            { 0x9d, new InstrDecoder(Mnemonic.cmpa, F_starRn) },
+            { 0x8d, Instr(Mnemonic.cmpa, F_iop16) },
+            { 0xad, Instr(Mnemonic.cmpa, F_iop16idxB) },
+            { 0x9d, Instr(Mnemonic.cmpa, F_starRn) },
 
-            { 0x6e, new InstrDecoder(Mnemonic.dac, F_A_B) },
-            { 0x1e, new InstrDecoder(Mnemonic.dac, F_Rn_A) },
-            { 0x3e, new InstrDecoder(Mnemonic.dac, F_Rn_B) },
-            { 0x4e, new InstrDecoder(Mnemonic.dac, F_Rn_Rn) },
-            { 0x2e, new InstrDecoder(Mnemonic.dac, F_iop_A) },
-            { 0x5e, new InstrDecoder(Mnemonic.dac, F_iop_B) },
-            { 0x7e, new InstrDecoder(Mnemonic.dac, F_iop_Rn) },
+            { 0x6e, Instr(Mnemonic.dac, F_A_B) },
+            { 0x1e, Instr(Mnemonic.dac, F_Rn_A) },
+            { 0x3e, Instr(Mnemonic.dac, F_Rn_B) },
+            { 0x4e, Instr(Mnemonic.dac, F_Rn_Rn) },
+            { 0x2e, Instr(Mnemonic.dac, F_iop_A) },
+            { 0x5e, Instr(Mnemonic.dac, F_iop_B) },
+            { 0x7e, Instr(Mnemonic.dac, F_iop_Rn) },
 
-            { 0xb2, new InstrDecoder(Mnemonic.dec, F_A) },
-            { 0xc2, new InstrDecoder(Mnemonic.dec, F_B) },
-            { 0xd2, new InstrDecoder(Mnemonic.dec, F_Rn) },
+            { 0xb2, Instr(Mnemonic.dec, F_A) },
+            { 0xc2, Instr(Mnemonic.dec, F_B) },
+            { 0xd2, Instr(Mnemonic.dec, F_Rn) },
 
-            { 0xba, new InstrDecoder(Mnemonic.djnz, F_A_offst) },
-            { 0xca, new InstrDecoder(Mnemonic.djnz, F_B_offst) },
-            { 0xda, new InstrDecoder(Mnemonic.djnz, F_Rn_offst) },
+            { 0xba, Instr(Mnemonic.djnz, F_A_offst) },
+            { 0xca, Instr(Mnemonic.djnz, F_B_offst) },
+            { 0xda, Instr(Mnemonic.djnz, F_Rn_offst) },
 
-            { 0x06, new InstrDecoder(Mnemonic.dint, F_None) },
+            { 0x06, Instr(Mnemonic.dint, F_None) },
 
-            { 0xbb, new InstrDecoder(Mnemonic.decd, F_A) },
-            { 0xcb, new InstrDecoder(Mnemonic.decd, F_B) },
-            { 0xdb, new InstrDecoder(Mnemonic.decd, F_Rn) },
+            { 0xbb, Instr(Mnemonic.decd, F_A) },
+            { 0xcb, Instr(Mnemonic.decd, F_B) },
+            { 0xdb, Instr(Mnemonic.decd, F_Rn) },
 
-            { 0x6f, new InstrDecoder(Mnemonic.dsb, F_B_A) },
-            { 0x1f, new InstrDecoder(Mnemonic.dsb, F_Rn_A) },
-            { 0x3f, new InstrDecoder(Mnemonic.dsb, F_Rn_B) },
-            { 0x4f, new InstrDecoder(Mnemonic.dsb, F_Rn_Rn) },
-            { 0x2f, new InstrDecoder(Mnemonic.dsb, F_iop_A) },
-            { 0x5f, new InstrDecoder(Mnemonic.dsb, F_iop_B) },
-            { 0x7f, new InstrDecoder(Mnemonic.dsb, F_iop_Rn) },
+            { 0x6f, Instr(Mnemonic.dsb, F_B_A) },
+            { 0x1f, Instr(Mnemonic.dsb, F_Rn_A) },
+            { 0x3f, Instr(Mnemonic.dsb, F_Rn_B) },
+            { 0x4f, Instr(Mnemonic.dsb, F_Rn_Rn) },
+            { 0x2f, Instr(Mnemonic.dsb, F_iop_A) },
+            { 0x5f, Instr(Mnemonic.dsb, F_iop_B) },
+            { 0x7f, Instr(Mnemonic.dsb, F_iop_Rn) },
 
-            { 0x05, new InstrDecoder(Mnemonic.eint, F_None) },
+            { 0x05, Instr(Mnemonic.eint, F_None) },
 
-            { 0x01, new InstrDecoder(Mnemonic.idle, F_None) },
+            { 0x01, Instr(Mnemonic.idle, F_None) },
 
-            { 0xb3, new InstrDecoder(Mnemonic.inc, F_A) },
-            { 0xc3, new InstrDecoder(Mnemonic.inc, F_B) },
-            { 0xd3, new InstrDecoder(Mnemonic.inc, F_Rn) },
+            { 0xb3, Instr(Mnemonic.inc, F_A) },
+            { 0xc3, Instr(Mnemonic.inc, F_B) },
+            { 0xd3, Instr(Mnemonic.inc, F_Rn) },
 
-            { 0xb4, new InstrDecoder(Mnemonic.inv, F_A) },
-            { 0xc4, new InstrDecoder(Mnemonic.inv, F_B) },
-            { 0xd4, new InstrDecoder(Mnemonic.inv, F_Rn) },
+            { 0xb4, Instr(Mnemonic.inv, F_A) },
+            { 0xc4, Instr(Mnemonic.inv, F_B) },
+            { 0xd4, Instr(Mnemonic.inv, F_Rn) },
 
-            { 0xe0, new InstrDecoder(Mnemonic.jmp, F_offst) },
-            { 0xe2, new InstrDecoder(Mnemonic.jeq, F_offst) },
-            { 0xe5, new InstrDecoder(Mnemonic.jge, F_offst) },
-            { 0xe4, new InstrDecoder(Mnemonic.jgt, F_offst) },
-            { 0xe3, new InstrDecoder(Mnemonic.jhs, F_offst) },
-            { 0xe7, new InstrDecoder(Mnemonic.jl, F_offst) },
-            { 0xe6, new InstrDecoder(Mnemonic.jne, F_offst) },
+            { 0xe0, Instr(Mnemonic.jmp, F_offst) },
+            { 0xe2, Instr(Mnemonic.jeq, F_offst) },
+            { 0xe5, Instr(Mnemonic.jge, F_offst) },
+            { 0xe4, Instr(Mnemonic.jgt, F_offst) },
+            { 0xe3, Instr(Mnemonic.jhs, F_offst) },
+            { 0xe7, Instr(Mnemonic.jl, F_offst) },
+            { 0xe6, Instr(Mnemonic.jne, F_offst) },
 
-            { 0x8a, new InstrDecoder(Mnemonic.lda, F_iop16) },
-            { 0xaa, new InstrDecoder(Mnemonic.lda, F_iop16idxB) },
-            { 0x9a, new InstrDecoder(Mnemonic.lda, F_starRn) },
+            { 0x8a, Instr(Mnemonic.lda, F_iop16) },
+            { 0xaa, Instr(Mnemonic.lda, F_iop16idxB) },
+            { 0x9a, Instr(Mnemonic.lda, F_starRn) },
 
-            { 0x0d, new InstrDecoder(Mnemonic.ldsp, F_None) },
+            { 0x0d, Instr(Mnemonic.ldsp, F_None) },
 
-            { 0xc0, new InstrDecoder(Mnemonic.mov, F_A_B) },
-            { 0xd0, new InstrDecoder(Mnemonic.mov, F_A_Rn) },
-            { 0x62, new InstrDecoder(Mnemonic.mov, F_B_A) },
-            { 0xd1, new InstrDecoder(Mnemonic.mov, F_B_Rn) },
-            { 0x12, new InstrDecoder(Mnemonic.mov, F_Rn_A) },
-            { 0x32, new InstrDecoder(Mnemonic.mov, F_Rn_B) },
-            { 0x42, new InstrDecoder(Mnemonic.mov, F_Rn_Rn) },
-            { 0x22, new InstrDecoder(Mnemonic.mov, F_iop_A) },
-            { 0x52, new InstrDecoder(Mnemonic.mov, F_iop_B) },
-            { 0x72, new InstrDecoder(Mnemonic.mov, F_iop_Rn) },
+            { 0xc0, Instr(Mnemonic.mov, F_A_B) },
+            { 0xd0, Instr(Mnemonic.mov, F_A_Rn) },
+            { 0x62, Instr(Mnemonic.mov, F_B_A) },
+            { 0xd1, Instr(Mnemonic.mov, F_B_Rn) },
+            { 0x12, Instr(Mnemonic.mov, F_Rn_A) },
+            { 0x32, Instr(Mnemonic.mov, F_Rn_B) },
+            { 0x42, Instr(Mnemonic.mov, F_Rn_Rn) },
+            { 0x22, Instr(Mnemonic.mov, F_iop_A) },
+            { 0x52, Instr(Mnemonic.mov, F_iop_B) },
+            { 0x72, Instr(Mnemonic.mov, F_iop_Rn) },
 
-            { 0x88, new InstrDecoder(Mnemonic.movd, F_iop16_Rn) },
-            { 0xa8, new InstrDecoder(Mnemonic.movd, F_iop16idxB_Rn) },
-            { 0x98, new InstrDecoder(Mnemonic.movd, F_Rn_Rn) },
+            { 0x88, Instr(Mnemonic.movd, F_iop16_Rn) },
+            { 0xa8, Instr(Mnemonic.movd, F_iop16idxB_Rn) },
+            { 0x98, Instr(Mnemonic.movd, F_Rn_Rn) },
 
-            { 0x82, new InstrDecoder(Mnemonic.movp, F_A_Pn) },
-            { 0x92, new InstrDecoder(Mnemonic.movp, F_B_Pn) },
-            { 0xA2, new InstrDecoder(Mnemonic.movp, F_iop_Pn) },
-            { 0x80, new InstrDecoder(Mnemonic.movp, F_Pn_A) },
-            { 0x91, new InstrDecoder(Mnemonic.movp, F_Pn_B) },
+            { 0x82, Instr(Mnemonic.movp, F_A_Pn) },
+            { 0x92, Instr(Mnemonic.movp, F_B_Pn) },
+            { 0xA2, Instr(Mnemonic.movp, F_iop_Pn) },
+            { 0x80, Instr(Mnemonic.movp, F_Pn_A) },
+            { 0x91, Instr(Mnemonic.movp, F_Pn_B) },
 
-            { 0x6c, new InstrDecoder(Mnemonic.mpy, F_B_A) },
-            { 0x1c, new InstrDecoder(Mnemonic.mpy, F_Rn_A) },
-            { 0x3c, new InstrDecoder(Mnemonic.mpy, F_Rn_B) },
-            { 0x4c, new InstrDecoder(Mnemonic.mpy, F_Rn_Rn) },
-            { 0x2c, new InstrDecoder(Mnemonic.mpy, F_iop_A) },
-            { 0x5c, new InstrDecoder(Mnemonic.mpy, F_iop_B) },
-            { 0x7c, new InstrDecoder(Mnemonic.mpy, F_iop_Rn) },
+            { 0x6c, Instr(Mnemonic.mpy, F_B_A) },
+            { 0x1c, Instr(Mnemonic.mpy, F_Rn_A) },
+            { 0x3c, Instr(Mnemonic.mpy, F_Rn_B) },
+            { 0x4c, Instr(Mnemonic.mpy, F_Rn_Rn) },
+            { 0x2c, Instr(Mnemonic.mpy, F_iop_A) },
+            { 0x5c, Instr(Mnemonic.mpy, F_iop_B) },
+            { 0x7c, Instr(Mnemonic.mpy, F_iop_Rn) },
 
-            { 0x00, new InstrDecoder(Mnemonic.nop, InstrClass.Padding|InstrClass.Zero, F_None) },
+            { 0x00, Instr(Mnemonic.nop, InstrClass.Padding|InstrClass.Zero, F_None) },
 
-            { 0x64, new InstrDecoder(Mnemonic.or, F_A_B) },
-            { 0x14, new InstrDecoder(Mnemonic.or, F_Rn_A) },
-            { 0x34, new InstrDecoder(Mnemonic.or, F_Rn_B) },
-            { 0x44, new InstrDecoder(Mnemonic.or, F_Rn_Rn) },
-            { 0x24, new InstrDecoder(Mnemonic.or, F_iop_A) },
-            { 0x54, new InstrDecoder(Mnemonic.or, F_iop_B) },
-            { 0x74, new InstrDecoder(Mnemonic.or, F_iop_Rn) },
+            { 0x64, Instr(Mnemonic.or, F_A_B) },
+            { 0x14, Instr(Mnemonic.or, F_Rn_A) },
+            { 0x34, Instr(Mnemonic.or, F_Rn_B) },
+            { 0x44, Instr(Mnemonic.or, F_Rn_Rn) },
+            { 0x24, Instr(Mnemonic.or, F_iop_A) },
+            { 0x54, Instr(Mnemonic.or, F_iop_B) },
+            { 0x74, Instr(Mnemonic.or, F_iop_Rn) },
 
-            { 0x84, new InstrDecoder(Mnemonic.orp, F_A_Pn) },
-            { 0x94, new InstrDecoder(Mnemonic.orp, F_B_Pn) },
-            { 0xA4, new InstrDecoder(Mnemonic.orp, F_iop_Pn) },
+            { 0x84, Instr(Mnemonic.orp, F_A_Pn) },
+            { 0x94, Instr(Mnemonic.orp, F_B_Pn) },
+            { 0xA4, Instr(Mnemonic.orp, F_iop_Pn) },
 
-            { 0xb9, new InstrDecoder(Mnemonic.pop, F_A) },
-            { 0xc9, new InstrDecoder(Mnemonic.pop, F_B) },
-            { 0xd9, new InstrDecoder(Mnemonic.pop, F_Rn) },
-            { 0x08, new InstrDecoder(Mnemonic.pop, F_ST) },
+            { 0xb9, Instr(Mnemonic.pop, F_A) },
+            { 0xc9, Instr(Mnemonic.pop, F_B) },
+            { 0xd9, Instr(Mnemonic.pop, F_Rn) },
+            { 0x08, Instr(Mnemonic.pop, F_ST) },
 
-            { 0xb8, new InstrDecoder(Mnemonic.push, F_A) },
-            { 0xc8, new InstrDecoder(Mnemonic.push, F_B) },
-            { 0xd8, new InstrDecoder(Mnemonic.push, F_Rn) },
-            { 0x0e, new InstrDecoder(Mnemonic.push, F_ST) },
+            { 0xb8, Instr(Mnemonic.push, F_A) },
+            { 0xc8, Instr(Mnemonic.push, F_B) },
+            { 0xd8, Instr(Mnemonic.push, F_Rn) },
+            { 0x0e, Instr(Mnemonic.push, F_ST) },
 
-            { 0x0b, new InstrDecoder(Mnemonic.reti, F_None) },
+            { 0x0b, Instr(Mnemonic.reti, F_None) },
 
-            { 0x0a, new InstrDecoder(Mnemonic.rets, F_None) },
+            { 0x0a, Instr(Mnemonic.rets, F_None) },
 
-            { 0xbe, new InstrDecoder(Mnemonic.rl, F_A) },
-            { 0xce, new InstrDecoder(Mnemonic.rl, F_B) },
-            { 0xde, new InstrDecoder(Mnemonic.rl, F_Rn) },
+            { 0xbe, Instr(Mnemonic.rl, F_A) },
+            { 0xce, Instr(Mnemonic.rl, F_B) },
+            { 0xde, Instr(Mnemonic.rl, F_Rn) },
 
-            { 0xbf, new InstrDecoder(Mnemonic.rlc, F_A) },
-            { 0xcf, new InstrDecoder(Mnemonic.rlc, F_B) },
-            { 0xdf, new InstrDecoder(Mnemonic.rlc, F_Rn) },
+            { 0xbf, Instr(Mnemonic.rlc, F_A) },
+            { 0xcf, Instr(Mnemonic.rlc, F_B) },
+            { 0xdf, Instr(Mnemonic.rlc, F_Rn) },
 
-            { 0xbc, new InstrDecoder(Mnemonic.rr, F_A) },
-            { 0xcc, new InstrDecoder(Mnemonic.rr, F_B) },
-            { 0xdc, new InstrDecoder(Mnemonic.rr, F_Rn) },
+            { 0xbc, Instr(Mnemonic.rr, F_A) },
+            { 0xcc, Instr(Mnemonic.rr, F_B) },
+            { 0xdc, Instr(Mnemonic.rr, F_Rn) },
 
-            { 0xbd, new InstrDecoder(Mnemonic.rrc, F_A) },
-            { 0xcd, new InstrDecoder(Mnemonic.rrc, F_B) },
-            { 0xdd, new InstrDecoder(Mnemonic.rrc, F_Rn) },
+            { 0xbd, Instr(Mnemonic.rrc, F_A) },
+            { 0xcd, Instr(Mnemonic.rrc, F_B) },
+            { 0xdd, Instr(Mnemonic.rrc, F_Rn) },
 
-            { 0x6b, new InstrDecoder(Mnemonic.sbb, F_B_A) },
-            { 0x1b, new InstrDecoder(Mnemonic.sbb, F_Rn_A) },
-            { 0x3b, new InstrDecoder(Mnemonic.sbb, F_Rn_B) },
-            { 0x4b, new InstrDecoder(Mnemonic.sbb, F_Rn_Rn) },
-            { 0x2b, new InstrDecoder(Mnemonic.sbb, F_iop_A) },
-            { 0x5b, new InstrDecoder(Mnemonic.sbb, F_iop_B) },
-            { 0x7b, new InstrDecoder(Mnemonic.sbb, F_iop_Rn) },
+            { 0x6b, Instr(Mnemonic.sbb, F_B_A) },
+            { 0x1b, Instr(Mnemonic.sbb, F_Rn_A) },
+            { 0x3b, Instr(Mnemonic.sbb, F_Rn_B) },
+            { 0x4b, Instr(Mnemonic.sbb, F_Rn_Rn) },
+            { 0x2b, Instr(Mnemonic.sbb, F_iop_A) },
+            { 0x5b, Instr(Mnemonic.sbb, F_iop_B) },
+            { 0x7b, Instr(Mnemonic.sbb, F_iop_Rn) },
 
-            { 0x07, new InstrDecoder(Mnemonic.setc, F_None) },
+            { 0x07, Instr(Mnemonic.setc, F_None) },
 
-            { 0x8b, new InstrDecoder(Mnemonic.sta, F_iop16) },
-            { 0xab, new InstrDecoder(Mnemonic.sta, F_iop16idxB) },
-            { 0x9b, new InstrDecoder(Mnemonic.sta, F_starRn) },
+            { 0x8b, Instr(Mnemonic.sta, F_iop16) },
+            { 0xab, Instr(Mnemonic.sta, F_iop16idxB) },
+            { 0x9b, Instr(Mnemonic.sta, F_starRn) },
 
-            { 0x09, new InstrDecoder(Mnemonic.stsp, F_None) },
+            { 0x09, Instr(Mnemonic.stsp, F_None) },
 
-            { 0x6a, new InstrDecoder(Mnemonic.sub, F_B_A) },
-            { 0x1a, new InstrDecoder(Mnemonic.sub, F_Rn_A) },
-            { 0x3a, new InstrDecoder(Mnemonic.sub, F_Rn_B) },
-            { 0x4a, new InstrDecoder(Mnemonic.sub, F_Rn_Rn) },
-            { 0x2a, new InstrDecoder(Mnemonic.sub, F_iop_A) },
-            { 0x5a, new InstrDecoder(Mnemonic.sub, F_iop_B) },
-            { 0x7a, new InstrDecoder(Mnemonic.sub, F_iop_Rn) },
+            { 0x6a, Instr(Mnemonic.sub, F_B_A) },
+            { 0x1a, Instr(Mnemonic.sub, F_Rn_A) },
+            { 0x3a, Instr(Mnemonic.sub, F_Rn_B) },
+            { 0x4a, Instr(Mnemonic.sub, F_Rn_Rn) },
+            { 0x2a, Instr(Mnemonic.sub, F_iop_A) },
+            { 0x5a, Instr(Mnemonic.sub, F_iop_B) },
+            { 0x7a, Instr(Mnemonic.sub, F_iop_Rn) },
 
-            { 0xb7, new InstrDecoder(Mnemonic.swap, F_A) },
-            { 0xc7, new InstrDecoder(Mnemonic.swap, F_B) },
-            { 0xd7, new InstrDecoder(Mnemonic.swap, F_Rn) },
+            { 0xb7, Instr(Mnemonic.swap, F_A) },
+            { 0xc7, Instr(Mnemonic.swap, F_B) },
+            { 0xd7, Instr(Mnemonic.swap, F_Rn) },
 
-            { 0xe8, new InstrDecoder(Mnemonic.trap_0, F_None) },
-            { 0xe9, new InstrDecoder(Mnemonic.trap_1, F_None) },
-            { 0xea, new InstrDecoder(Mnemonic.trap_2, F_None) },
-            { 0xeb, new InstrDecoder(Mnemonic.trap_3, F_None) },
-            { 0xec, new InstrDecoder(Mnemonic.trap_4, F_None) },
-            { 0xed, new InstrDecoder(Mnemonic.trap_5, F_None) },
-            { 0xee, new InstrDecoder(Mnemonic.trap_6, F_None) },
-            { 0xef, new InstrDecoder(Mnemonic.trap_7, F_None) },
-            { 0xf0, new InstrDecoder(Mnemonic.trap_8, F_None) },
-            { 0xf1, new InstrDecoder(Mnemonic.trap_9, F_None) },
-            { 0xf2, new InstrDecoder(Mnemonic.trap_10, F_None) },
-            { 0xf3, new InstrDecoder(Mnemonic.trap_11, F_None) },
-            { 0xf4, new InstrDecoder(Mnemonic.trap_12, F_None) },
-            { 0xf5, new InstrDecoder(Mnemonic.trap_13, F_None) },
-            { 0xf6, new InstrDecoder(Mnemonic.trap_14, F_None) },
-            { 0xf7, new InstrDecoder(Mnemonic.trap_15, F_None) },
-            { 0xf8, new InstrDecoder(Mnemonic.trap_16, F_None) },
-            { 0xf9, new InstrDecoder(Mnemonic.trap_17, F_None) },
-            { 0xfa, new InstrDecoder(Mnemonic.trap_18, F_None) },
-            { 0xfb, new InstrDecoder(Mnemonic.trap_19, F_None) },
-            { 0xfc, new InstrDecoder(Mnemonic.trap_20, F_None) },
-            { 0xfd, new InstrDecoder(Mnemonic.trap_21, F_None) },
-            { 0xfe, new InstrDecoder(Mnemonic.trap_22, F_None) },
-            { 0xff, new InstrDecoder(Mnemonic.trap_23, F_None) },
+            { 0xe8, Instr(Mnemonic.trap_0, F_None) },
+            { 0xe9, Instr(Mnemonic.trap_1, F_None) },
+            { 0xea, Instr(Mnemonic.trap_2, F_None) },
+            { 0xeb, Instr(Mnemonic.trap_3, F_None) },
+            { 0xec, Instr(Mnemonic.trap_4, F_None) },
+            { 0xed, Instr(Mnemonic.trap_5, F_None) },
+            { 0xee, Instr(Mnemonic.trap_6, F_None) },
+            { 0xef, Instr(Mnemonic.trap_7, F_None) },
+            { 0xf0, Instr(Mnemonic.trap_8, F_None) },
+            { 0xf1, Instr(Mnemonic.trap_9, F_None) },
+            { 0xf2, Instr(Mnemonic.trap_10, F_None) },
+            { 0xf3, Instr(Mnemonic.trap_11, F_None) },
+            { 0xf4, Instr(Mnemonic.trap_12, F_None) },
+            { 0xf5, Instr(Mnemonic.trap_13, F_None) },
+            { 0xf6, Instr(Mnemonic.trap_14, F_None) },
+            { 0xf7, Instr(Mnemonic.trap_15, F_None) },
+            { 0xf8, Instr(Mnemonic.trap_16, F_None) },
+            { 0xf9, Instr(Mnemonic.trap_17, F_None) },
+            { 0xfa, Instr(Mnemonic.trap_18, F_None) },
+            { 0xfb, Instr(Mnemonic.trap_19, F_None) },
+            { 0xfc, Instr(Mnemonic.trap_20, F_None) },
+            { 0xfd, Instr(Mnemonic.trap_21, F_None) },
+            { 0xfe, Instr(Mnemonic.trap_22, F_None) },
+            { 0xff, Instr(Mnemonic.trap_23, F_None) },
 
-            { 0xb0, new InstrDecoder(Mnemonic.tsta, F_None) },
+            { 0xb0, Instr(Mnemonic.tsta, F_None) },
 
-            { 0xc1, new InstrDecoder(Mnemonic.tstb, F_None) },
+            { 0xc1, Instr(Mnemonic.tstb, F_None) },
 
-            { 0xb6, new InstrDecoder(Mnemonic.xchb, F_A) },
-            { 0xc6, new InstrDecoder(Mnemonic.xchb, F_B) },
-            { 0xd6, new InstrDecoder(Mnemonic.xchb, F_Rn) },
+            { 0xb6, Instr(Mnemonic.xchb, F_A) },
+            { 0xc6, Instr(Mnemonic.xchb, F_B) },
+            { 0xd6, Instr(Mnemonic.xchb, F_Rn) },
 
-            { 0x65, new InstrDecoder(Mnemonic.xor, F_B_A) },
-            { 0x15, new InstrDecoder(Mnemonic.xor, F_Rn_A) },
-            { 0x35, new InstrDecoder(Mnemonic.xor, F_Rn_B) },
-            { 0x45, new InstrDecoder(Mnemonic.xor, F_Rn_Rn) },
-            { 0x25, new InstrDecoder(Mnemonic.xor, F_iop_A) },
-            { 0x55, new InstrDecoder(Mnemonic.xor, F_iop_B) },
-            { 0x75, new InstrDecoder(Mnemonic.xor, F_iop_Rn) },
+            { 0x65, Instr(Mnemonic.xor, F_B_A) },
+            { 0x15, Instr(Mnemonic.xor, F_Rn_A) },
+            { 0x35, Instr(Mnemonic.xor, F_Rn_B) },
+            { 0x45, Instr(Mnemonic.xor, F_Rn_Rn) },
+            { 0x25, Instr(Mnemonic.xor, F_iop_A) },
+            { 0x55, Instr(Mnemonic.xor, F_iop_B) },
+            { 0x75, Instr(Mnemonic.xor, F_iop_Rn) },
 
-            { 0x85, new InstrDecoder(Mnemonic.xorp, F_A_Pn) },
-            { 0x95, new InstrDecoder(Mnemonic.xorp, F_B_Pn) },
-            { 0xA5, new InstrDecoder(Mnemonic.xorp, F_iop_Pn) },
+            { 0x85, Instr(Mnemonic.xorp, F_A_Pn) },
+            { 0x95, Instr(Mnemonic.xorp, F_B_Pn) },
+            { 0xA5, Instr(Mnemonic.xorp, F_iop_Pn) },
         };
     }
 }

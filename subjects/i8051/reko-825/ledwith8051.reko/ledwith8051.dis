@@ -1,0 +1,58 @@
+void fn0000()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0000_exit:
+fn0000_entry:
+l0000:
+l002C:
+	byte R0_3 = 0x7F
+l002F:
+	Mem8[R0_3:byte] = 0x00
+	R0_3 = R0_3 - 0x01
+	branch R0_3 != 0x00 l002F
+l0032:
+l0020:
+	fn0003()
+	fn0003()
+
+
+void fn0003()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: P A R4 R5 R6 R7
+// Preserved: SP
+fn0003_entry:
+l0003:
+	byte R7_21 = 0x00
+	byte R6_26 = 0x00
+l0006:
+	byte R5_11 = 0x00
+	byte R4_10 = 0x00
+l0009:
+	R5_11 = R5_11 + 0x01
+	branch R5_11 != 0x00 l000E
+l000D:
+	R4_10 = R4_10 + 0x01
+l000E:
+	branch R4_10 != 0x27 l0009
+l0011:
+	branch R5_11 != 0x10 l0009
+l0014:
+	R7_21 = R7_21 + 0x01
+	branch R7_21 != 0x00 l0019
+l0018:
+	R6_26 = R6_26 + 0x01
+l0019:
+	branch (R7_21 ^ 0x0A | R6_26) != 0x00 l0006
+l001F:
+	return
+fn0003_exit:
+
+

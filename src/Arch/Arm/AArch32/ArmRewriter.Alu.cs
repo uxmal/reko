@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2019 John Källén.
+* Copyright (C) 1999-2020 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -149,6 +149,13 @@ namespace Reko.Arch.Arm.AArch32
         {
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var intrinsic = host.PseudoProcedure("__rev", PrimitiveType.Word32, this.Operand(Src1()));
+            m.Assign(opDst, intrinsic);
+        }
+
+        private void RewriteRevsh()
+        {
+            var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
+            var intrinsic = m.Cast(PrimitiveType.Int32, host.PseudoProcedure("__rev_16", PrimitiveType.Word16, m.Slice(PrimitiveType.Word16, this.Operand(Src1()), 0)));
             m.Assign(opDst, intrinsic);
         }
 

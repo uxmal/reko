@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -81,48 +81,6 @@ namespace Reko.UnitTests.Arch.Intel
         {
             Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
         }
-
-        [Test]
-        public void IaGetRegisterFromNumber()
-		{
-			Assert.AreEqual("eax", arch.GetRegister(0).Name);
-			Assert.AreEqual("ecx", arch.GetRegister(1).Name);
-			Assert.AreEqual("edx", arch.GetRegister(2).Name);
-			Assert.AreEqual("ebx", arch.GetRegister(3).Name);
-			Assert.AreEqual("esp", arch.GetRegister(4).Name);
-			Assert.AreEqual("ebp", arch.GetRegister(5).Name);
-			Assert.AreEqual("esi", arch.GetRegister(6).Name);
-			Assert.AreEqual("edi", arch.GetRegister(7).Name);
-			Assert.AreEqual("ax", arch.GetRegister(8).Name);
-			Assert.AreEqual("cx", arch.GetRegister(9).Name);
-			Assert.AreEqual("dx", arch.GetRegister(10).Name);
-			Assert.AreEqual("bx", arch.GetRegister(11).Name);
-			Assert.AreEqual("sp", arch.GetRegister(12).Name);
-			Assert.AreEqual("bp", arch.GetRegister(13).Name);
-			Assert.AreEqual("si", arch.GetRegister(14).Name);
-			Assert.AreEqual("di", arch.GetRegister(15).Name);
-			Assert.AreEqual("al", arch.GetRegister(16).Name);
-			Assert.AreEqual("cl", arch.GetRegister(17).Name);
-			Assert.AreEqual("dl", arch.GetRegister(18).Name);
-			Assert.AreEqual("bl", arch.GetRegister(19).Name);
-			Assert.AreEqual("ah", arch.GetRegister(20).Name);
-			Assert.AreEqual("ch", arch.GetRegister(21).Name);
-			Assert.AreEqual("dh", arch.GetRegister(22).Name);
-			Assert.AreEqual("bh", arch.GetRegister(23).Name);
-			Assert.AreEqual("es", arch.GetRegister(24).Name);
-			Assert.AreEqual("cs", arch.GetRegister(25).Name);
-			Assert.AreEqual("ss", arch.GetRegister(26).Name);
-			Assert.AreEqual("ds", arch.GetRegister(27).Name);
-			Assert.AreEqual("fs", arch.GetRegister(28).Name);
-			Assert.AreEqual("gs", arch.GetRegister(29).Name);
-		}	
-
-		[Test]
-		public void IaGetInvalidRegisterFromNumber()
-		{
-			Assert.IsNull(arch.GetRegister(-1));
-			Assert.IsNull(arch.GetRegister(30));
-		}
 
 		[Test]
 		public void IaGetRegisterFromName()

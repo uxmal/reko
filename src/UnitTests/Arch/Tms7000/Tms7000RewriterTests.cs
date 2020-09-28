@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,9 +33,7 @@ namespace Reko.UnitTests.Arch.Tms7000
     [TestFixture]
     public class Tms7000RewriterTests : RewriterTestBase
     {
-        private Tms7000Architecture arch;
-        private MemoryArea image;
-        private Tms7000Disassembler dasm;
+        private readonly Tms7000Architecture arch;
 
         public Tms7000RewriterTests()
         {
@@ -46,22 +44,15 @@ namespace Reko.UnitTests.Arch.Tms7000
 
         public override Address LoadAddress => Address.Ptr16(0x0100);
 
-        private MemoryArea RewriteBytes(params byte[] bytes)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            this.image = new MemoryArea(LoadAddress, bytes);
-            this.dasm = new Tms7000Disassembler(arch, image.CreateBeReader(LoadAddress));
-            return image;
-        }
-
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
-        {
-            return new Tms7000Rewriter(arch, new BeImageReader(this.image, 0), new Tms7000State(arch), binder, host);
+            return new Tms7000Rewriter(arch, new BeImageReader(mem, 0), new Tms7000State(arch), binder, host);
         }
 
         [Test]
         public void Tms7000Rw_nop()
         {
-            RewriteBytes(0x00);
+            Given_Bytes(0x00);
             AssertCode(
                 "0|L--|0100(1): 1 instructions",
                 "1|L--|nop");
@@ -70,7 +61,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000rw_and()
         {
-            RewriteBytes(0x63);
+            Given_Bytes(0x63);
             AssertCode(
                 "0|L--|0100(1): 3 instructions",
                 "1|L--|a = a & b",
@@ -81,7 +72,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000rw_add()
         {
-            RewriteBytes(0x58, 0x32);
+            Given_Bytes(0x58, 0x32);
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
                 "1|L--|b = b + 0x32",
@@ -91,7 +82,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000rw_andp()
         {
-            RewriteBytes(0xA3, 0x03, 0x44);
+            Given_Bytes(0xA3, 0x03, 0x44);
             AssertCode(
                 "0|L--|0100(3): 3 instructions",
                 "1|L--|p68 = p68 & 0x03",
@@ -102,7 +93,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000rw_btjz()
         {
-            RewriteBytes(0x27, 0x0F, 0x44);
+            Given_Bytes(0x27, 0x0F, 0x44);
             AssertCode(
                 "0|T--|0100(3): 3 instructions",
                 "1|L--|NZ = cond(a & ~0x0F)",
@@ -113,7 +104,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000rw_br_direct()
         {
-            RewriteBytes(0x8C, 0x12, 0x34);
+            Given_Bytes(0x8C, 0x12, 0x34);
             AssertCode(
                 "0|T--|0100(3): 1 instructions",
                 "1|T--|goto 1234");
@@ -122,7 +113,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000rw_br_indexed()
         {
-            RewriteBytes(0xAC, 0x12, 0x34);
+            Given_Bytes(0xAC, 0x12, 0x34);
             AssertCode(
                 "0|T--|0100(3): 1 instructions",
                 "1|T--|goto 0x1234 + (uint16) b");
@@ -131,7 +122,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000rw_br_indirect()
         {
-            RewriteBytes(0x9C, 0x12);
+            Given_Bytes(0x9C, 0x12);
             AssertCode(
                 "0|T--|0100(2): 1 instructions",
                 "1|T--|goto r18_r17");
@@ -140,7 +131,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000rw_call()
         {
-            RewriteBytes(0x8E, 0x12, 0x34);
+            Given_Bytes(0x8E, 0x12, 0x34);
             AssertCode(
                 "0|T--|0100(3): 1 instructions",
                 "1|T--|call 1234 (2)");
@@ -149,7 +140,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000rw_clr()
         {
-            RewriteBytes(0xC5);
+            Given_Bytes(0xC5);
             AssertCode(
                 "0|L--|0100(1): 4 instructions",
                 "1|L--|b = 0x00",
@@ -161,7 +152,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000rw_tsta()
         {
-            RewriteBytes(0xB0);
+            Given_Bytes(0xB0);
             AssertCode(
                 "0|L--|0100(1): 2 instructions",
                 "1|L--|NZ = cond(a)",
@@ -171,7 +162,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000rw_dec()
         {
-            RewriteBytes(0xB2);
+            Given_Bytes(0xB2);
             AssertCode(
                 "0|L--|0100(1): 2 instructions",
                 "1|L--|a = a - 0x01",
@@ -181,7 +172,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000rw_decd()
         {
-            RewriteBytes(0xDB, 0x12);
+            Given_Bytes(0xDB, 0x12);
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
                 "1|L--|r18_r17 = r18_r17 - 0x0001",
@@ -191,7 +182,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000rw_dint()
         {
-            RewriteBytes(0x06);
+            Given_Bytes(0x06);
             AssertCode(
                 "0|L--|0100(1): 4 instructions",
                 "1|L--|__dint()",
@@ -203,7 +194,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000rw_djnz()
         {
-            RewriteBytes(0xCA, 0xFE);
+            Given_Bytes(0xCA, 0xFE);
             AssertCode(
                 "0|T--|0100(2): 2 instructions",
                 "1|L--|b = b - 0x01",
@@ -213,7 +204,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000Rw_jmp()
         {
-            RewriteBytes(0xE0, 0xC0);
+            Given_Bytes(0xE0, 0xC0);
             AssertCode(
                 "0|T--|0100(2): 1 instructions",
                 "1|T--|goto 00C2");
@@ -223,7 +214,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000Rw_jl()
         {
-            RewriteBytes(0xE7, 0xC0);
+            Given_Bytes(0xE7, 0xC0);
             AssertCode(
                 "0|T--|0100(2): 1 instructions",
                 "1|T--|if (Test(ULT,C)) branch 00C2");
@@ -232,7 +223,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000Rw_lda()
         {
-            RewriteBytes(0x8A, 0x12, 0x34);
+            Given_Bytes(0x8A, 0x12, 0x34);
             AssertCode(
                  "0|L--|0100(3): 3 instructions",
                  "1|L--|a = Mem0[0x1234:byte]",
@@ -243,7 +234,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000Rw_ldsp()
         {
-            RewriteBytes(0x0D);
+            Given_Bytes(0x0D);
             AssertCode(
                  "0|L--|0100(1): 1 instructions",
                  "1|L--|sp = b");
@@ -252,7 +243,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000Rw_mov()
         {
-            RewriteBytes(0x52, 0x52);
+            Given_Bytes(0x52, 0x52);
             AssertCode(
                  "0|L--|0100(2): 3 instructions",
                  "1|L--|b = 0x52",
@@ -263,7 +254,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000Rw_movd_imm()
         {
-            RewriteBytes(0x88, 0x12, 0x34, 0x0A);
+            Given_Bytes(0x88, 0x12, 0x34, 0x0A);
             AssertCode(
                  "0|L--|0100(4): 3 instructions",
                  "1|L--|r10_r9 = 0x1234",
@@ -274,7 +265,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000Rw_movd_idx()
         {
-            RewriteBytes(0xA8, 0x12, 0x34, 0x0A);
+            Given_Bytes(0xA8, 0x12, 0x34, 0x0A);
             AssertCode(
                  "0|L--|0100(4): 3 instructions",
                  "1|L--|r10_r9 = 0x1234 + (uint16) b",
@@ -285,7 +276,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000Rw_pop()
         {
-            RewriteBytes(0xB9);
+            Given_Bytes(0xB9);
             AssertCode(
                  "0|L--|0100(1): 4 instructions",
                  "1|L--|a = Mem0[(ptr16) sp:byte]",
@@ -297,7 +288,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000Rw_push_st()
         {
-            RewriteBytes(0x0E);
+            Given_Bytes(0x0E);
             AssertCode(
                  "0|L--|0100(1): 2 instructions",
                  "1|L--|sp = sp + 0x01",
@@ -307,7 +298,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000Rw_reti()
         {
-            RewriteBytes(0x0B);
+            Given_Bytes(0x0B);
             AssertCode(
                  "0|T--|0100(1): 1 instructions",
                  "1|T--|return (2,1)");
@@ -316,7 +307,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000Rw_rets()
         {
-            RewriteBytes(0x0A);
+            Given_Bytes(0x0A);
             AssertCode(
                  "0|T--|0100(1): 1 instructions",
                  "1|T--|return (2,0)");
@@ -325,7 +316,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000Rw_rl()
         {
-            RewriteBytes(0xBE);
+            Given_Bytes(0xBE);
             AssertCode(
                  "0|L--|0100(1): 2 instructions",
                  "1|L--|a = __rol(a)",
@@ -335,7 +326,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000Rw_rlc()
         {
-            RewriteBytes(0xBF);
+            Given_Bytes(0xBF);
             AssertCode(
                  "0|L--|0100(1): 2 instructions",
                  "1|L--|a = __rcl(a, C)",
@@ -345,7 +336,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000Rw_sbb()
         {
-            RewriteBytes(0x1B, 0x03);
+            Given_Bytes(0x1B, 0x03);
             AssertCode(
                  "0|L--|0100(2): 2 instructions",
                  "1|L--|r3 = r3 - a - C",
@@ -355,7 +346,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000Rw_setc()
         {
-            RewriteBytes(0x07);
+            Given_Bytes(0x07);
             AssertCode(
                  "0|L--|0100(1): 3 instructions",
                  "1|L--|C = true",
@@ -367,7 +358,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000Rw_sta()
         {
-            RewriteBytes(0xAB, 0x12, 0x34);
+            Given_Bytes(0xAB, 0x12, 0x34);
             AssertCode(
                  "0|L--|0100(3): 1 instructions",
                  "1|L--|Mem0[0x1234 + (uint16) b:byte] = a");
@@ -377,7 +368,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000Rw_stsp()
         {
-            RewriteBytes(0x09);
+            Given_Bytes(0x09);
             AssertCode(
                  "0|L--|0100(1): 1 instructions",
                  "1|L--|b = sp");
@@ -386,7 +377,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000Rw_tstb()
         {
-            RewriteBytes(0xC1);
+            Given_Bytes(0xC1);
             AssertCode(
                    "0|L--|0100(1): 2 instructions",
                    "1|L--|NZ = cond(b)",
@@ -396,7 +387,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         [Test]
         public void Tms7000Rw_xchb()
         {
-            RewriteBytes(0xD6, 0x05);
+            Given_Bytes(0xD6, 0x05);
             AssertCode(
                    "0|L--|0100(2): 3 instructions",
                    "1|L--|v4 = r5",

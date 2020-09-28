@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ namespace Reko.Arch.OpenRISC
 {
     using Decoder = Decoder<OpenRISCDisassembler, Mnemonic, OpenRISCInstruction>;
 
-    public class OpenRISCDisassembler : DisassemblerBase<OpenRISCInstruction>
+    public class OpenRISCDisassembler : DisassemblerBase<OpenRISCInstruction, Mnemonic>
     {
         private const InstrClass TD = InstrClass.Transfer | InstrClass.Delay;
         private const InstrClass TDC = InstrClass.Transfer | InstrClass.Delay | InstrClass.Call;
@@ -64,7 +64,7 @@ namespace Reko.Arch.OpenRISC
             return instr;
         }
 
-        protected override OpenRISCInstruction CreateInvalidInstruction()
+        public override OpenRISCInstruction CreateInvalidInstruction()
         {
             return new OpenRISCInstruction
             {
@@ -74,6 +74,16 @@ namespace Reko.Arch.OpenRISC
             };
         }
 
+        public override OpenRISCInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            var instr = new OpenRISCInstruction
+            {
+                InstructionClass = iclass,
+                Mnemonic = mnemonic,
+                Operands = this.ops.ToArray()
+            };
+            return instr;
+        }
 
         public override OpenRISCInstruction NotYetImplemented(uint wInstr, string message)
         {
@@ -232,36 +242,6 @@ namespace Reko.Arch.OpenRISC
 
         #region Decoders
 
-        private class InstrDecoder : Decoder
-        {
-            private readonly InstrClass iclass;
-            private readonly Mnemonic mnemonic;
-            private readonly Mutator<OpenRISCDisassembler>[] mutators;
-
-            public InstrDecoder(InstrClass iclass, Mnemonic mnemonic, params Mutator<OpenRISCDisassembler> [] mutators)
-            {
-                this.iclass = iclass;
-                this.mnemonic = mnemonic;
-                this.mutators = mutators;
-            }
-
-            public override OpenRISCInstruction Decode(uint wInstr, OpenRISCDisassembler dasm)
-            {
-                foreach (var m in mutators)
-                {
-                    if (!m(wInstr, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-                var instr = new OpenRISCInstruction
-                {
-                    InstructionClass = iclass,
-                    Mnemonic = mnemonic,
-                    Operands = dasm.ops.ToArray()
-                };
-                return instr;
-            }
-        }
-
         private class Instr64Decoder : Decoder
         {
             private Decoder<OpenRISCDisassembler, Mnemonic, OpenRISCInstruction> dec32bit;
@@ -282,14 +262,14 @@ namespace Reko.Arch.OpenRISC
             }
         }
 
-        private static InstrDecoder Instr(Mnemonic mnemonic, params Mutator<OpenRISCDisassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, params Mutator<OpenRISCDisassembler>[] mutators)
         {
-            return new InstrDecoder(InstrClass.Linear, mnemonic, mutators);
+            return new InstrDecoder<OpenRISCDisassembler, Mnemonic, OpenRISCInstruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
-        private static InstrDecoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<OpenRISCDisassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<OpenRISCDisassembler>[] mutators)
         {
-            return new InstrDecoder(iclass, mnemonic, mutators);
+            return new InstrDecoder<OpenRISCDisassembler, Mnemonic, OpenRISCInstruction>(iclass, mnemonic, mutators);
         }
 
         private static Instr64Decoder Instr64(Decoder dec32bit, Decoder dec64bit)

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ namespace Reko.Arch.X86
 	/// <summary>
 	/// Intel x86 opcode disassembler 
 	/// </summary>
-	public partial class X86Disassembler : DisassemblerBase<X86Instruction>
+	public partial class X86Disassembler : DisassemblerBase<X86Instruction, Mnemonic>
 	{
         private class X86LegacyCodeRegisterExtension
         {
@@ -328,7 +328,7 @@ namespace Reko.Arch.X86
             return instr;
         }
 
-        protected override X86Instruction CreateInvalidInstruction()
+        public override X86Instruction CreateInvalidInstruction()
         {
             return new X86Instruction(Mnemonic.illegal, InstrClass.Invalid, decodingContext.dataWidth, decodingContext.addressWidth);
         }

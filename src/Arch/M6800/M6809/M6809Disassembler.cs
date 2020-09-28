@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ namespace Reko.Arch.M6800.M6809
 {
     using Decoder = Decoder<M6809Disassembler, Mnemonic, M6809Instruction>;
 
-    public class M6809Disassembler : DisassemblerBase<M6809Instruction>
+    public class M6809Disassembler : DisassemblerBase<M6809Instruction, Mnemonic>
     {
         private readonly static Decoder<M6809Disassembler, Mnemonic, M6809Instruction>[] rootDecoders;
 
@@ -56,7 +56,7 @@ namespace Reko.Arch.M6800.M6809
             return instr;
         }
 
-        protected override M6809Instruction CreateInvalidInstruction()
+        public override M6809Instruction CreateInvalidInstruction()
         {
             return new M6809Instruction
             {

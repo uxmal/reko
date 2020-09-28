@@ -4,7 +4,7 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem13[ds:0x0064:word16] = fn0C00_000B(0x0005)
+	Mem12[ds:0x0064:word16] = fn0C00_000B(0x0005)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -72,7 +72,7 @@ T_8: (in 0x0064 : word16)
   Class: Eq_8
   DataType: (memptr (ptr16 Eq_2) int16)
   OrigDataType: (memptr T_2 (struct (0 T_9 t0000)))
-T_9: (in Mem13[ds:0x0064:word16] : word16)
+T_9: (in Mem12[ds:0x0064:word16] : word16)
   Class: Eq_7
   DataType: int16
   OrigDataType: word16

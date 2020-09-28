@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,14 +63,14 @@ namespace Reko.UnitTests.Analysis
         protected override void RunTest(Program program, TextWriter writer)
 		{
             var flow = new ProgramDataFlow();
-            var importResolver = new Mock<IImportResolver>();
+            var dynamicLinker = new Mock<IDynamicLinker>();
             foreach (Procedure proc in program.Procedures.Values)
             {
                 var sst = new SsaTransform(
                     program,
                     proc, 
                     new HashSet<Procedure>(),
-                    importResolver.Object,
+                    dynamicLinker.Object,
                     flow);
                 sst.Transform();
                 sst.AddUsesToExitBlock();
@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Analysis
         private void RunUnitTest(ProcedureBuilder m, string outfile)
         {
             var flow = new ProgramDataFlow();
-            var importResolver = new Mock<IImportResolver>();
+            var dynamicLinker = new Mock<IDynamicLinker>();
 
             var proc = m.Procedure;
             var platform = new FakePlatform(null, m.Architecture)
@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Analysis
                 program,
                 proc, 
                 new HashSet<Procedure>(),
-                importResolver.Object,
+                dynamicLinker.Object,
                 flow);
             sst.Transform();
             ssa = sst.SsaState;

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,9 +47,9 @@ namespace Reko.Core
 
         public SymbolType SymbolType { get; }
 
-        public abstract Expression ResolveImport(IImportResolver importResolver, IPlatform platform, AddressContext ctx);
+        public abstract Expression ResolveImport(IDynamicLinker dynamicLinker, IPlatform platform, AddressContext ctx);
 
-        public abstract ExternalProcedure ResolveImportedProcedure(IImportResolver importResolver, IPlatform platform, AddressContext ctx);
+        public abstract ExternalProcedure ResolveImportedProcedure(IDynamicLinker dynamicLinker, IPlatform platform, AddressContext ctx);
 
         public abstract int CompareTo(ImportReference that);
     }
@@ -94,7 +94,7 @@ namespace Reko.Core
         }
 
         public override Expression ResolveImport(
-            IImportResolver resolver,
+            IDynamicLinker resolver,
             IPlatform platform,
             AddressContext ctx)
         {
@@ -102,7 +102,7 @@ namespace Reko.Core
         }
 
         public override ExternalProcedure ResolveImportedProcedure(
-            IImportResolver resolver, 
+            IDynamicLinker resolver, 
             IPlatform platform, 
             AddressContext ctx)
         {
@@ -155,16 +155,16 @@ namespace Reko.Core
             return cmp;
         }
 
-        public override Expression ResolveImport(IImportResolver importResolver, IPlatform platform, AddressContext ctx)
+        public override Expression ResolveImport(IDynamicLinker dynamicLinker, IPlatform platform, AddressContext ctx)
         {
-            var imp = importResolver.ResolveImport(ModuleName, Ordinal, platform);
+            var imp = dynamicLinker.ResolveImport(ModuleName, Ordinal, platform);
             if (imp != null)
                 return imp;
             ctx.Warn("Unable to resolve imported reference {0}.", this);
             return null;
         }
 
-        public override ExternalProcedure ResolveImportedProcedure(IImportResolver resolver, IPlatform platform, AddressContext ctx)
+        public override ExternalProcedure ResolveImportedProcedure(IDynamicLinker resolver, IPlatform platform, AddressContext ctx)
         {
             var ep = resolver.ResolveProcedure(ModuleName, Ordinal, platform);
             if (ep != null)

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ namespace Reko.Arch.SuperH
 
     // http://www.shared-ptr.com/sh_insns.html
 
-    public class SuperHDisassembler : DisassemblerBase<SuperHInstruction>
+    public class SuperHDisassembler : DisassemblerBase<SuperHInstruction, Mnemonic>
     {
         private readonly EndianImageReader rdr;
         private readonly DasmState state;
@@ -59,7 +59,18 @@ namespace Reko.Arch.SuperH
             return instr;
         }
 
-        protected override SuperHInstruction CreateInvalidInstruction()
+        public override SuperHInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            var instr = new SuperHInstruction
+            {
+                Mnemonic = mnemonic,
+                InstructionClass = iclass,
+                Operands = state.ops.ToArray()
+            };
+            return instr;
+        }
+
+        public override SuperHInstruction CreateInvalidInstruction()
         {
             return new SuperHInstruction
             {
@@ -79,17 +90,6 @@ namespace Reko.Arch.SuperH
             public void Clear()
             {
                 ops.Clear();
-            }
-
-            internal SuperHInstruction MakeInstruction()
-            {
-                var instr = new SuperHInstruction
-                {
-                    Mnemonic = this.mnemonic,
-                    InstructionClass = iclass,
-                    Operands = ops.ToArray()
-                };
-                return instr;
             }
         }
 
@@ -145,12 +145,14 @@ namespace Reko.Arch.SuperH
             dasm.state.ops.Add(new RegisterOperand(Registers.fpregs[reg]));
             return true;
         }
+
         private static bool f2(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = (uInstr >> 4) & 0xF;
             dasm.state.ops.Add(new RegisterOperand(Registers.fpregs[reg]));
             return true;
         }
+
         private static bool F0(uint uInstr, SuperHDisassembler dasm)
         {
             dasm.state.ops.Add(new RegisterOperand(Registers.fr0));
@@ -163,6 +165,7 @@ namespace Reko.Arch.SuperH
             dasm.state.ops.Add(new RegisterOperand(Registers.dfpregs[reg]));
             return true;
         }
+
         private static bool d2(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = (uInstr >> (1 + 4)) & 0x7;
@@ -176,6 +179,7 @@ namespace Reko.Arch.SuperH
             dasm.state.ops.Add(new RegisterOperand(Registers.vfpregs[reg]));
             return true;
         }
+
         private static bool v2(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = (uInstr >> 8) & 0x3;
@@ -248,11 +252,13 @@ namespace Reko.Arch.SuperH
             dasm.state.ops.Add(new RegisterOperand(Registers.mach));
             return true;
         }
+
         private static bool ml(uint uInstr, SuperHDisassembler dasm)
         {
             dasm.state.ops.Add(new RegisterOperand(Registers.macl));
             return true;
         }
+
         private static bool fpul(uint uInstr, SuperHDisassembler dasm)
         {
             dasm.state.ops.Add(new RegisterOperand(Registers.fpul));
@@ -264,16 +270,19 @@ namespace Reko.Arch.SuperH
             dasm.state.ops.Add(new RegisterOperand(Registers.xmtrx));
             return true;
         }
+
         private static bool dsr(uint uInstr, SuperHDisassembler dasm)
         {
             dasm.state.ops.Add(new RegisterOperand(Registers.dsr));
             return true;
         }
+
         private static bool dbr(uint uInstr, SuperHDisassembler dasm)
         {
             dasm.state.ops.Add(new RegisterOperand(Registers.dbr));
             return true;
         }
+
         private static bool sgr(uint uInstr, SuperHDisassembler dasm)
         {
             dasm.state.ops.Add(new RegisterOperand(Registers.sgr));
@@ -292,6 +301,7 @@ namespace Reko.Arch.SuperH
             dasm.state.ops.Add(AddressOperand.Create(dasm.rdr.Address + (2 + 2 * (sbyte)uInstr)));
             return true;
         }
+
         private static bool J(uint uInstr, SuperHDisassembler dasm)
         {
             int offset = ((int)uInstr << 20) >> 19;
@@ -299,25 +309,27 @@ namespace Reko.Arch.SuperH
             return true;
         }
 
-
         private static bool Ind1b(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = Registers.gpregs[(uInstr >> 8) & 0x0F];
             dasm.state.ops.Add(MemoryOperand.Indirect(PrimitiveType.Byte, reg));
             return true;
         }
+
         private static bool Ind1w(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = Registers.gpregs[(uInstr >> 8) & 0x0F];
             dasm.state.ops.Add(MemoryOperand.Indirect(PrimitiveType.Word16, reg));
             return true;
         }
+
         private static bool Ind1l(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = Registers.gpregs[(uInstr >> 8) & 0x0F];
             dasm.state.ops.Add(MemoryOperand.Indirect(PrimitiveType.Word32, reg));
             return true;
         }
+
         private static bool Ind1d(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = Registers.gpregs[(uInstr >> 8) & 0x0F];
@@ -331,18 +343,21 @@ namespace Reko.Arch.SuperH
             dasm.state.ops.Add(MemoryOperand.Indirect(PrimitiveType.Byte, reg));
             return true;
         }
+
         private static bool Ind2w(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = Registers.gpregs[(uInstr >> 4) & 0x0F];
             dasm.state.ops.Add(MemoryOperand.Indirect(PrimitiveType.Word16, reg));
             return true;
         }
+
         private static bool Ind2l(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = Registers.gpregs[(uInstr >> 4) & 0x0F];
             dasm.state.ops.Add(MemoryOperand.Indirect(PrimitiveType.Word32, reg));
             return true;
         }
+
         private static bool Pre1b(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = Registers.gpregs[(uInstr >> 8) & 0x0F];
@@ -377,36 +392,42 @@ namespace Reko.Arch.SuperH
             dasm.state.ops.Add(MemoryOperand.IndirectPostIncr(PrimitiveType.Word16, reg));
             return true;
         }
+
         private static bool Post1l(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = Registers.gpregs[(uInstr >> 8) & 0x0F];
             dasm.state.ops.Add(MemoryOperand.IndirectPostIncr(PrimitiveType.Word32, reg));
             return true;
         }
+
         private static bool Post2b(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = Registers.gpregs[(uInstr >> 4) & 0x0F];
             dasm.state.ops.Add(MemoryOperand.IndirectPostIncr(PrimitiveType.Byte, reg));
             return true;
         }
+
         private static bool Post2w(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = Registers.gpregs[(uInstr >> 4) & 0x0F];
             dasm.state.ops.Add(MemoryOperand.IndirectPostIncr(PrimitiveType.Word16, reg));
             return true;
         }
+
         private static bool Post2l(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = Registers.gpregs[(uInstr >> 4) & 0x0F];
             dasm.state.ops.Add(MemoryOperand.IndirectPostIncr(PrimitiveType.Word32, reg));
             return true;
         }
+
         private static bool Post15l(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = Registers.r15;
             dasm.state.ops.Add(MemoryOperand.IndirectPostIncr(PrimitiveType.Word32, reg));
             return true;
         }
+
         // Indirect indexed
         private static bool X1b(uint uInstr, SuperHDisassembler dasm)
         {
@@ -414,36 +435,42 @@ namespace Reko.Arch.SuperH
             dasm.state.ops.Add(MemoryOperand.IndexedIndirect(PrimitiveType.Byte, Registers.gpregs[iReg]));
             return true;
         }
+
         private static bool X1w(uint uInstr, SuperHDisassembler dasm)
         {
             var iReg = (uInstr >> 8) & 0xF;
             dasm.state.ops.Add(MemoryOperand.IndexedIndirect(PrimitiveType.Word16, Registers.gpregs[iReg]));
             return true;
         }
+
         private static bool X1l(uint uInstr, SuperHDisassembler dasm)
         {
             var iReg = (uInstr >> 8) & 0xF;
             dasm.state.ops.Add(MemoryOperand.IndexedIndirect(PrimitiveType.Word32, Registers.gpregs[iReg]));
             return true;
         }
+
         private static bool X1d(uint uInstr, SuperHDisassembler dasm)
         {
             var iReg = (uInstr >> 8) & 0xF;
             dasm.state.ops.Add(MemoryOperand.IndexedIndirect(PrimitiveType.Word64, Registers.gpregs[iReg]));
             return true;
         }
+
         private static bool X2b(uint uInstr, SuperHDisassembler dasm)
         {
             var iReg = (uInstr >> 4) & 0xF;
             dasm.state.ops.Add(MemoryOperand.IndexedIndirect(PrimitiveType.Byte, Registers.gpregs[iReg]));
             return true;
         }
+
         private static bool X2w(uint uInstr, SuperHDisassembler dasm)
         {
             var iReg = (uInstr >> 4) & 0xF;
             dasm.state.ops.Add(MemoryOperand.IndexedIndirect(PrimitiveType.Word16, Registers.gpregs[iReg]));
             return true;
         }
+
         private static bool X2l(uint uInstr, SuperHDisassembler dasm)
         {
             var iReg = (uInstr >> 4) & 0xF;
@@ -460,6 +487,7 @@ namespace Reko.Arch.SuperH
             dasm.state.ops.Add(MemoryOperand.IndirectDisplacement(width, reg, (int)(uInstr & 0xF) * width.Size));
             return true;
         }
+
         private static bool D2b(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = Registers.gpregs[(uInstr >> 4) & 0xF];
@@ -467,6 +495,7 @@ namespace Reko.Arch.SuperH
             dasm.state.ops.Add(MemoryOperand.IndirectDisplacement(width, reg, (int)(uInstr & 0xF) * width.Size));
             return true;
         }
+
         private static bool D2w(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = Registers.gpregs[(uInstr >> 4) & 0xF];
@@ -474,6 +503,7 @@ namespace Reko.Arch.SuperH
             dasm.state.ops.Add(MemoryOperand.IndirectDisplacement(width, reg, (int)(uInstr & 0xF) * width.Size));
             return true;
         }
+
         private static bool D2l(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = Registers.gpregs[(uInstr >> 4) & 0xF];
@@ -491,13 +521,13 @@ namespace Reko.Arch.SuperH
             dasm.state.ops.Add(MemoryOperand.PcRelativeDisplacement(width, width.Size * (byte)uInstr));
             return true;
         }
+
         private static bool Pl(uint uInstr, SuperHDisassembler dasm)
         {
             var width = PrimitiveType.Word32;
             dasm.state.ops.Add(MemoryOperand.PcRelativeDisplacement(width, width.Size * (byte)uInstr));
             return true;
         }
-
 
         private static bool Gb(uint uInstr, SuperHDisassembler dasm)
         {
@@ -507,14 +537,14 @@ namespace Reko.Arch.SuperH
 
         // Factory methods
 
-        private static InstrDecoder Instr(Mnemonic opcode, params Mutator<SuperHDisassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, params Mutator<SuperHDisassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, InstrClass.Linear, mutators);
+            return new InstrDecoder<SuperHDisassembler, Mnemonic, SuperHInstruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
-        private static InstrDecoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<SuperHDisassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<SuperHDisassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, iclass, mutators);
+            return new InstrDecoder<SuperHDisassembler, Mnemonic, SuperHInstruction>(iclass, mnemonic, mutators);
         }
 
         // Predicates
@@ -525,32 +555,6 @@ namespace Reko.Arch.SuperH
         }
 
         // Decoders
-
-        private class InstrDecoder : Decoder
-        {
-            private readonly Mnemonic mnemonic;
-            private readonly InstrClass iclass;
-            private readonly Mutator<SuperHDisassembler>[] mutators;
-
-            public InstrDecoder(Mnemonic opcode, InstrClass iclass, Mutator<SuperHDisassembler>[] mutators)
-            {
-                this.mnemonic = opcode;
-                this.iclass = iclass;
-                this.mutators = mutators;
-            }
-
-            public override SuperHInstruction Decode(uint uInstr, SuperHDisassembler dasm)
-            {
-                dasm.state.mnemonic = this.mnemonic;
-                dasm.state.iclass = this.iclass;
-                foreach (var mutator in this.mutators)
-                {
-                    if (!mutator(uInstr, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-                return dasm.state.MakeInstruction();
-            }
-        }
 
         private static readonly Decoder invalid = Instr(Mnemonic.invalid);
 

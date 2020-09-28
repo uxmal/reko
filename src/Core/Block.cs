@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ namespace Reko.Core
         /// to have a starting address. 
         /// </summary>
         public Address Address { get; set; }
-        public string Name { get; private set; }
+        public string Name { get; }
         public Procedure Procedure { get; set; }
 
         /// <summary>

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,13 +71,13 @@ namespace Reko.Arch.M68k
                 rtlc = instr.InstructionClass;
                 m = new RtlEmitter(rtlInstructions);
                 orw = new OperandRewriter(arch, this.m, this.binder, instr.dataWidth);
-                switch (instr.code)
+                switch (instr.Mnemonic)
                 {
                 default:
                     host.Warn(
                         instr.Address,
                         "M68k instruction '{0}' is not supported yet.",
-                        instr.code);
+                        instr.Mnemonic);
                     m.Invalid();
                     break;
                 case Mnemonic.illegal: RewriteIllegal(); break;

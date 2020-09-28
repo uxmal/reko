@@ -2,7 +2,7 @@
 <stylesheet version="1.0" xmlns="http://www.w3.org/1999/XSL/Transform" xmlns:c="urn:Decompiler.Schemata.MenuDefinitions">
   <template match="/c:menu-definitions">#region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

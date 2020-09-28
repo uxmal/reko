@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,13 +22,13 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Services;
-using Reko.Gui;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Reko.ImageLoaders.OdbgScript
 {
@@ -41,8 +41,8 @@ namespace Reko.ImageLoaders.OdbgScript
         int AssembleEx(string asm, ulong addr);
         bool DialogASK(string title, out string returned);
         bool DialogMSG(string msg, out int input);
-        bool DialogMSGYN(string msg, out int input);
-        string Disassemble(byte[] buffer, ulong addr, out int opsize);
+        bool DialogMSGYN(string msg, out DialogResult input);
+        string Disassemble(byte[] buffer, Address addr, out int opsize);
         MachineInstruction DisassembleEx(Address addr);
         ulong FindHandle(ulong var, string sClassName, ulong x, ulong y);
         bool TE_FreeMemory(ulong pmemforexec);
@@ -52,7 +52,7 @@ namespace Reko.ImageLoaders.OdbgScript
         List<string> getlines_file(string p);
         ulong TE_GetMainThreadId();
         ulong TE_GetMainThreadHandle();
-        bool TE_GetMemoryInfo(ulong addr, out MEMORY_BASIC_INFORMATION MemInfo);
+        bool TE_GetMemoryInfo(Address addr, out MEMORY_BASIC_INFORMATION MemInfo);
         bool TE_GetModules(List<MODULEENTRY32> Modules);
         object TE_GetProcessHandle();
         ulong TE_GetProcessId();
@@ -65,21 +65,18 @@ namespace Reko.ImageLoaders.OdbgScript
         void TE_Log(string message);
         void TE_Log(string message, object p);
         void MsgError(string message);
-        void SetOriginalEntryPoint(ulong ep);
-        bool TryReadBytes(ulong addr, ulong memlen, byte[] membuf);
-        bool WriteMemory(ulong addr, int length, byte[] membuf);
-        bool WriteMemory(ulong addr, ulong qw);
-        bool WriteMemory(ulong addr, uint dw);
-        bool WriteMemory(ulong addr, ushort w);
-        bool WriteMemory(ulong addr, byte b);
-        bool WriteMemory(ulong target, double value);
+        void SetOriginalEntryPoint(Address ep);
+        bool TryReadBytes(Address addr, int memlen, byte[] membuf);
+        bool WriteMemory(Address addr, int length, byte[] membuf);
+        bool WriteMemory(Address addr, ulong qw);
+        bool WriteMemory(Address addr, uint dw);
+        bool WriteMemory(Address addr, ushort w);
+        bool WriteMemory(Address addr, byte b);
+        bool WriteMemory(Address target, double value);
     }
 
     public class Host : IHost
     {
-        public const int Cancel = 0;
-        public const int OK = 1;
-
         private OdbgScriptLoader loader;
 
 		public Host(OdbgScriptLoader loader, SegmentMap segmentMap)
@@ -98,12 +95,12 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public virtual bool DialogMSG(string msg, out int input)
         {
-            loader.Services.RequireService<IDiagnosticsService>().Warn(msg);
+            loader.Services.RequireService<IDiagnosticsService>().Inform(msg);
             input = 0;
             return true;
         }
 
-        public virtual bool DialogMSGYN(string msg, out int input)
+        public virtual bool DialogMSGYN(string msg, out DialogResult input)
         {
             throw new NotImplementedException();
         }
@@ -143,16 +140,15 @@ namespace Reko.ImageLoaders.OdbgScript
             loader.Services.RequireService<IDiagnosticsService>().Error(message);
         }
 
-        public virtual bool TE_GetMemoryInfo(ulong addr, out MEMORY_BASIC_INFORMATION MemInfo)
+        public virtual bool TE_GetMemoryInfo(Address addr, out MEMORY_BASIC_INFORMATION MemInfo)
         {
             SegmentMap map = loader.ImageMap;
-            ImageSegment segment;
-            if (map.TryFindSegment(Address.Ptr32((uint)addr), out segment))
+            if (map.TryFindSegment(addr, out ImageSegment segment))
             {
                 MemInfo = new MEMORY_BASIC_INFORMATION
                 {
                     AllocationBase = segment.Address.ToLinear(),
-                    BaseAddress = segment.Address.ToLinear(),
+                    BaseAddress = segment.Address,
                     RegionSize = segment.Size,
                 };
                 return true;
@@ -164,13 +160,11 @@ namespace Reko.ImageLoaders.OdbgScript
             }
         }
 
-        public virtual bool TryReadBytes(ulong addr, ulong memlen, byte[] membuf)
+        public virtual bool TryReadBytes(Address addr, int memlen, byte[] membuf)
         {
-            ImageSegment seg;
-            var ea= Address.Ptr32((uint)addr);
-            if (!SegmentMap.TryFindSegment(ea, out seg))
+            if (!SegmentMap.TryFindSegment(addr, out ImageSegment seg))
                 return false;
-            return seg.MemoryArea.TryReadBytes(ea, (int)memlen, membuf);
+            return seg.MemoryArea.TryReadBytes(addr, (int)memlen, membuf);
         }
 
         public virtual object TE_GetProcessHandle()
@@ -228,7 +222,7 @@ namespace Reko.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual bool WriteMemory(ulong addr, int p, byte[] membuf)
+        public virtual bool WriteMemory(Address addr, int p, byte[] membuf)
         {
             throw new NotImplementedException();
         }
@@ -250,8 +244,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public virtual MachineInstruction DisassembleEx(Address addr)
         {
-            ImageSegment segment;
-            if (!SegmentMap.TryFindSegment(addr, out segment))
+            if (!SegmentMap.TryFindSegment(addr, out ImageSegment segment))
                 throw new AccessViolationException();
             var rdr = loader.Architecture.CreateImageReader(segment.MemoryArea, addr);
             var dasm = (X86Disassembler)loader.Architecture.CreateDisassembler(rdr);
@@ -263,28 +256,32 @@ namespace Reko.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual string Disassemble(byte[] buffer, ulong addr, out int opsize)
+        public virtual string Disassemble(byte[] buffer, Address addr, out int opsize)
         {
             throw new NotImplementedException();
         }
 
-        public virtual bool WriteMemory(ulong target, double d)
+        public virtual bool WriteMemory(Address target, double d)
         {
             throw new NotImplementedException();
         }
-        public virtual bool WriteMemory(ulong target, ulong qw)
+
+        public virtual bool WriteMemory(Address target, ulong qw)
         {
             throw new NotImplementedException();
         }
-        public virtual bool WriteMemory(ulong target, uint dw)
+
+        public virtual bool WriteMemory(Address target, uint dw)
         {
             throw new NotImplementedException();
         }
-        public virtual bool WriteMemory(ulong target, ushort w)
+
+        public virtual bool WriteMemory(Address target, ushort w)
         {
             throw new NotImplementedException();
         }
-        public virtual bool WriteMemory(ulong target, byte b)
+
+        public virtual bool WriteMemory(Address target, byte b)
         {
             throw new NotImplementedException();
         }
@@ -299,9 +296,9 @@ namespace Reko.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual void SetOriginalEntryPoint(ulong ep)
+        public virtual void SetOriginalEntryPoint(Address ep)
         {
-            loader.OriginalEntryPoint = Address.Ptr32((uint)ep);
+            loader.OriginalEntryPoint = ep;
         }
     }
 }

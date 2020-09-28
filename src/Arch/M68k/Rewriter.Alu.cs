@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -366,7 +366,7 @@ namespace Reko.Arch.M68k
                 {
                     rem = binder.EnsureRegister(dreg.Register1);
                     quot = binder.EnsureRegister(dreg.Register2);
-                    if (instr.code == Mnemonic.divsl)
+                    if (instr.Mnemonic == Mnemonic.divsl)
                     {
                         dividend = quot;
                     }

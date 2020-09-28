@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ namespace Reko.Arch.Arm.AArch64
 {
     using Decoder = Reko.Core.Machine.Decoder<AArch64Disassembler, Mnemonic, AArch64Instruction>;
 
-    public partial class AArch64Disassembler : DisassemblerBase<AArch64Instruction>
+    public partial class AArch64Disassembler : DisassemblerBase<AArch64Instruction, Mnemonic>
     {
         private const uint RegisterMask = 0b11111;
 
@@ -1533,7 +1533,7 @@ namespace Reko.Arch.Arm.AArch64
             return CreateInvalidInstruction();
         }
 
-        protected override AArch64Instruction CreateInvalidInstruction()
+        public override AArch64Instruction CreateInvalidInstruction()
         {
             return new AArch64Instruction
             {

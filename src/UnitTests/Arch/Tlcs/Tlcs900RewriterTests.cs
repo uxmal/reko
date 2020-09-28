@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,30 +36,14 @@ namespace Reko.UnitTests.Arch.Tlcs
     {
         private Tlcs900Architecture arch = new Tlcs900Architecture("tlcs900");
         private Address baseAddr = Address.Ptr32(0x0010000);
-        private MemoryArea image;
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
+        public override IProcessorArchitecture Architecture => arch;
+        public override Address LoadAddress => baseAddr;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
             var state = (Tlcs900ProcessorState)arch.CreateProcessorState();
-            return new Tlcs900Rewriter(arch, new LeImageReader(image, 0), state, binder, host);
-        }
-
-        public override Address LoadAddress
-        {
-            get { return baseAddr; }
-        }
-
-        protected override MemoryArea RewriteCode(string hexBytes)
-        {
-            var bytes = BytePattern.FromHexBytes(hexBytes)
-                .ToArray();
-            this.image = new MemoryArea(LoadAddress, bytes);
-            return image;
+            return new Tlcs900Rewriter(arch, new LeImageReader(mem, 0), state, binder, host);
         }
 
 
@@ -71,7 +55,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_ld()
         {
-            RewriteCode("9F1621");
+            Given_HexString("9F1621");
             AssertCode(
                 "0|L--|00010000(3): 2 instructions",
                 "1|L--|v3 = Mem0[xsp + 22:word16]",
@@ -81,7 +65,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_add()
         {
-            RewriteCode("E9C8FFFFFFFF");
+            Given_HexString("E9C8FFFFFFFF");
             AssertCode(
                 "0|L--|00010000(6): 3 instructions",
                 "1|L--|xbc = xbc + 0xFFFFFFFF",
@@ -92,7 +76,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_inc_predec()
         {
-            RewriteCode("E40961"); // inc\t00000001,(-xde)
+            Given_HexString("E40961"); // inc\t00000001,(-xde)
             AssertCode(
                 "0|L--|00010000(3): 5 instructions",
                 "1|L--|xde = xde - 0x00000004",
@@ -105,7 +89,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_sub_postinc()
         {
-            RewriteCode("E509A8"); // sub\t,(xde+),xwa
+            Given_HexString("E509A8"); // sub\t,(xde+),xwa
             AssertCode(
                 "0|L--|00010000(3): 5 instructions",
                 "1|L--|v4 = Mem0[xde:word32] - xwa",
@@ -120,7 +104,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             //$REVIEW: not sure if I agree here. Shouldn't this be
             // simply if (Test(GE,SV) goto xwa?
-            RewriteCode("B0D9"); // jp\tGE,(xwa)
+            Given_HexString("B0D9"); // jp\tGE,(xwa)
             AssertCode(
                 "0|T--|00010000(2): 3 instructions",
                 "1|L--|v4 = Mem0[xwa:word32]",
@@ -131,7 +115,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_call()
         {
-            RewriteCode("1D563412"); // call\t123456
+            Given_HexString("1D563412"); // call\t123456
             AssertCode(
                 "0|T--|00010000(4): 1 instructions",
                 "1|T--|call 00123456 (4)");
@@ -140,7 +124,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_djnz()
         {
-            RewriteCode("D91CED");      // djnz\tbc,0000FFF0
+            Given_HexString("D91CED");      // djnz\tbc,0000FFF0
             AssertCode(
                 "0|T--|00010000(3): 2 instructions",
                 "1|L--|bc = bc - 0x0001",
@@ -150,7 +134,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_daa()
         {
-            RewriteCode("CA10");    // daa\tb
+            Given_HexString("CA10");    // daa\tb
             AssertCode(
                 "0|L--|00010000(2): 2 instructions",
                 "1|L--|b = __daa(b)",
@@ -160,7 +144,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_calr()
         {
-            RewriteCode("1E8005");    // calr 10583
+            Given_HexString("1E8005");    // calr 10583
             AssertCode(
                 "0|T--|00010000(3): 1 instructions",
                 "1|T--|call 00010583 (4)");
@@ -169,7 +153,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_cp()
         {
-            RewriteCode("C1916F3F00"); // cp (00006F91),00
+            Given_HexString("C1916F3F00"); // cp (00006F91),00
             AssertCode(
                 "0|L--|00010000(5): 3 instructions",
                 "1|L--|v2 = Mem0[0x00006F91:byte]",
@@ -180,7 +164,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_jr()
         {
-            RewriteCode("6E09");	// jr	NZ,0020061C
+            Given_HexString("6E09");	// jr	NZ,0020061C
             AssertCode(
                 "0|T--|00010000(2): 1 instructions",
                 "1|T--|if (Test(NE,Z)) branch 0001000B");
@@ -189,7 +173,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_set()
         {
-            RewriteCode("F1866FBE");	// set	06,(00006F86)
+            Given_HexString("F1866FBE");	// set	06,(00006F86)
             AssertCode(
                 "0|L--|00010000(4): 2 instructions",
                 "1|L--|v2 = Mem0[0x00006F86:byte] | 1 << 0x06",
@@ -199,7 +183,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_res()
         {
-            RewriteCode("F1836FB3");	// res	03,(00006F83)
+            Given_HexString("F1836FB3");	// res	03,(00006F83)
             AssertCode(
                 "0|L--|00010000(4): 2 instructions",
                 "1|L--|v2 = Mem0[0x00006F83:byte] & ~(1 << 0x03)",
@@ -209,7 +193,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_ret()
         {
-            RewriteCode("0E");	// ret
+            Given_HexString("0E");	// ret
             AssertCode(
                 "0|T--|00010000(1): 1 instructions",
                 "1|T--|return (4,0)");
@@ -218,7 +202,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_lda()
         {
-            RewriteCode("F240002034");	// lda	xix,(00200040)
+            Given_HexString("F240002034");	// lda	xix,(00200040)
             AssertCode(
                 "0|L--|00010000(5): 1 instructions",
                 "1|L--|xix = 00200040");
@@ -227,7 +211,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_ldir()
         {
-            RewriteCode("8311");    // ldirw
+            Given_HexString("8311");    // ldirw
             AssertCode(
                 "0|L--|00010000(2): 9 instructions",
                 "1|L--|v2 = Mem0[xhl:byte]",
@@ -244,7 +228,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_ldirw()
         {
-            RewriteCode("9311");	// ldirw
+            Given_HexString("9311");	// ldirw
             AssertCode(
                 "0|L--|00010000(2): 9 instructions",
                 "1|L--|v2 = Mem0[xhl:word16]",
@@ -261,7 +245,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_ei()
         {
-            RewriteCode("0600");	// ei	00
+            Given_HexString("0600");	// ei	00
             AssertCode(
                 "0|L--|00010000(2): 1 instructions",
                 "1|L--|__ei(0x00)");
@@ -270,7 +254,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_push()
         {
-            RewriteCode("38");	// push	xwa
+            Given_HexString("38");	// push	xwa
             AssertCode(
                 "0|L--|00010000(1): 2 instructions",
                 "1|L--|xsp = xsp - 4",
@@ -280,7 +264,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_sll()
         {
-            RewriteCode("CCEE01");	// sll	01,d
+            Given_HexString("CCEE01");	// sll	01,d
             AssertCode(
                 "0|L--|00010000(3): 4 instructions",
                 "1|L--|d = d << 0x01",
@@ -292,7 +276,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_pop()
         {
-            RewriteCode("58");	// pop	xwa
+            Given_HexString("58");	// pop	xwa
             AssertCode(
                 "0|L--|00010000(1): 2 instructions",
                 "1|L--|xwa = Mem0[xsp:word32]",
@@ -302,7 +286,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_and()
         {
-            RewriteCode("C9CCF0");	// and	a,F0
+            Given_HexString("C9CCF0");	// and	a,F0
             AssertCode(
                 "0|L--|00010000(3): 5 instructions",
                 "1|L--|a = a & 0xF0",
@@ -315,7 +299,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_mul()
         {
-            RewriteCode("D9084000");	// mul	bc,0040
+            Given_HexString("D9084000");	// mul	bc,0040
             AssertCode(
                 "0|L--|00010000(4): 1 instructions",
                 "1|L--|xbc = bc *u 0x0040");
@@ -324,7 +308,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_srl()
         {
-            RewriteCode("C9EF04");	// srl	04,a
+            Given_HexString("C9EF04");	// srl	04,a
             AssertCode(
                 "0|L--|00010000(3): 4 instructions",
                 "1|L--|a = a >>u 0x04",
@@ -336,7 +320,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_dec()
         {
-            RewriteCode("C869");	// dec	01,w
+            Given_HexString("C869");	// dec	01,w
             AssertCode(
                 "0|L--|00010000(2): 3 instructions",
                 "1|L--|w = w - 0x01",
@@ -347,7 +331,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_bit()
         {
-            RewriteCode("C93302");	// bit	02,a
+            Given_HexString("C93302");	// bit	02,a
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
                 "1|L--|Z = (a & 1 << 0x02) == 0x00",
@@ -358,7 +342,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_div()
         {
-            RewriteCode("D90A0A00");	// div	bc,000A
+            Given_HexString("D90A0A00");	// div	bc,000A
             AssertCode(
                 "0|L--|00010000(4): 4 instructions",
                 "1|L--|v3 = xbc",
@@ -370,7 +354,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_rcf()
         {
-            RewriteCode("10");	// rcf
+            Given_HexString("10");	// rcf
             AssertCode(
                 "0|L--|00010000(1): 1 instructions",
                 "1|L--|C = false");
@@ -379,7 +363,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_scf()
         {
-            RewriteCode("11");	// scf
+            Given_HexString("11");	// scf
             AssertCode(
                 "0|L--|00010000(1): 1 instructions",
                 "1|L--|C = true");
@@ -388,7 +372,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_or()
         {
-            RewriteCode("CAE0");	// or	w,b
+            Given_HexString("CAE0");	// or	w,b
             AssertCode(
                 "0|L--|00010000(2): 5 instructions",
                 "1|L--|w = w | b",
@@ -401,7 +385,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_push_a()
         {
-            RewriteCode("14");	// push a
+            Given_HexString("14");	// push a
             AssertCode(
                 "0|L--|00010000(1): 2 instructions",
                 "1|L--|xsp = xsp - 1",
@@ -411,7 +395,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_ld_r3()
         {
-            RewriteCode("D7E6A8");
+            Given_HexString("D7E6A8");
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
                 "1|L--|bc = 0x0000");
@@ -420,7 +404,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_halt()
         {
-            RewriteCode("05");
+            Given_HexString("05");
             AssertCode(
                 "0|L--|00010000(1): 1 instructions",
                 "1|L--|__halt()");
@@ -429,7 +413,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_reti()
         {
-            RewriteCode("07"); // reti
+            Given_HexString("07"); // reti
             AssertCode(
                 "0|T--|00010000(1): 3 instructions",
                 "1|L--|sr = Mem0[xsp:word16]",
@@ -440,7 +424,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_ccf()
         {
-            RewriteCode("12"); // ccf
+            Given_HexString("12"); // ccf
             AssertCode(
                 "0|L--|00010000(1): 1 instructions",
                 "1|L--|C = !C");
@@ -449,7 +433,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_swi()
         {
-            RewriteCode("FA"); // swi
+            Given_HexString("FA"); // swi
             AssertCode(
                 "0|T--|00010000(1): 3 instructions",
                 "1|L--|xsp = xsp - 2",
@@ -460,7 +444,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_decf()
         {
-            RewriteCode("0D"); // decf
+            Given_HexString("0D"); // decf
             AssertCode(
                 "0|L--|00010000(1): 1 instructions",
                 "1|L--|__decf()");
@@ -469,7 +453,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_ex()
         {
-            RewriteCode("D8B9"); // ex
+            Given_HexString("D8B9"); // ex
             AssertCode(
                 "0|L--|00010000(2): 3 instructions",
                 "1|L--|v4 = bc",
@@ -480,7 +464,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_retd()
         {
-            RewriteCode("0F0400"); // retd
+            Given_HexString("0F0400"); // retd
             AssertCode(
                 "0|T--|00010000(3): 1 instructions",
                 "1|T--|return (4,4)");
@@ -489,7 +473,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_ldf()
         {
-            RewriteCode("1703"); // ldf
+            Given_HexString("1703"); // ldf
             AssertCode(
                 "0|L--|00010000(2): 1 instructions",
                 "1|L--|__ldf(0x03)");
@@ -498,7 +482,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_incf()
         {
-            RewriteCode("0C"); // incf
+            Given_HexString("0C"); // incf
             AssertCode(
                 "0|L--|00010000(1): 1 instructions",
                 "1|L--|__incf()");
@@ -507,7 +491,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_bs1b()
         {
-            RewriteCode("D80F"); // bs1b
+            Given_HexString("D80F"); // bs1b
             AssertCode(
                 "0|L--|00010000(2): 2 instructions",
                 "1|L--|a = __bs1b(wa)",
@@ -517,7 +501,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_zcf()
         {
-            RewriteCode("13"); // zcf
+            Given_HexString("13"); // zcf
             AssertCode(
                 "0|L--|00010000(1): 2 instructions",
                 "1|L--|C = !Z",
@@ -527,7 +511,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_divs()
         {
-            RewriteCode("D85B"); // divs
+            Given_HexString("D85B"); // divs
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
                 "1|L--|v4 = xhl",
@@ -539,7 +523,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_muls()
         {
-            RewriteCode("DE4A"); // muls
+            Given_HexString("DE4A"); // muls
             AssertCode(
                 "0|L--|00010000(2): 1 instructions",
                 "1|L--|xde = de *s iz");
@@ -548,7 +532,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_chg()
         {
-            RewriteCode("DE32C6"); // chg
+            Given_HexString("DE32C6"); // chg
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
                 "1|L--|iz = iz ^ 0x0040");
@@ -557,7 +541,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_xor()
         {
-            RewriteCode("EECD12345678"); // xor
+            Given_HexString("EECD12345678"); // xor
             AssertCode(
                 "0|L--|00010000(6): 5 instructions",
                 "1|L--|xiz = xiz ^ 0x78563412",
@@ -571,7 +555,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Ignore("This is probably best left as an instrinsic.")]
         public void Tlcs900_rw_rrd()
         {
-            RewriteCode("E1830007");	// rrd	a,(00000083)
+            Given_HexString("E1830007");	// rrd	a,(00000083)
             AssertCode(
                 "0|L--|00010000(4): 1 instructions",
                 "1|L--|@@@");
@@ -580,7 +564,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_sll_mem()
         {
-            RewriteCode("817E");	// sll	(xbc)
+            Given_HexString("817E");	// sll	(xbc)
             AssertCode(
                 "0|L--|00010000(2): 5 instructions",
                 "1|L--|v3 = Mem0[xbc:byte] << 1",
@@ -593,7 +577,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_sbc()
         {
-            RewriteCode("82B2");	// sbc	b,(xde)
+            Given_HexString("82B2");	// sbc	b,(xde)
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
                 "1|L--|v4 = Mem0[xde:byte]",
@@ -605,7 +589,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_sbc_mem()
         {
-            RewriteCode("C004B1");	// sbc	a,(00000004)
+            Given_HexString("C004B1");	// sbc	a,(00000004)
             AssertCode(
                 "0|L--|00010000(3): 4 instructions",
                 "1|L--|v3 = Mem0[0x00000004:byte]",
@@ -617,7 +601,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_ret_cc()
         {
-            RewriteCode("B3F1");	// ret	LT
+            Given_HexString("B3F1");	// ret	LT
             AssertCode(
                 "0|T--|00010000(2): 2 instructions",
                 "1|T--|if (Test(GE,SV)) branch 00010002",
@@ -626,7 +610,7 @@ namespace Reko.UnitTests.Arch.Tlcs
 
         public void Tlcs900_rw_sla()
         {
-            RewriteCode("CFFC");	// sla	a,l
+            Given_HexString("CFFC");	// sla	a,l
             AssertCode(
                 "0|L--|00010000(2): 1 instructions",
                 "1|L--|@@@");
@@ -635,7 +619,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_sla_r()
         {
-            RewriteCode("CCFC");	// sla	a,d
+            Given_HexString("CCFC");	// sla	a,d
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
                 "1|L--|d = d << a",
@@ -647,7 +631,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_rw_scc()
         {
-            RewriteCode("DD77");	// scc	C,iy
+            Given_HexString("DD77");	// scc	C,iy
             AssertCode(
                 "0|L--|00010000(2): 1 instructions",
                 "1|L--|iy = Test(ULT,Z)");

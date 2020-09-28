@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Analysis
 	public class ValuePropagationTests : AnalysisTestBase
 	{
         private Mock<IProcessorArchitecture> arch;
-        private Mock<IImportResolver> importResolver;
+        private Mock<IDynamicLinker> dynamicLinker;
         private Program program;
         private FakeDecompilerEventListener listener;
         private SsaProcedureBuilder m;
@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Analysis
 		{
             arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("FakeArch");
-            importResolver = new Mock<IImportResolver>();
+            dynamicLinker = new Mock<IDynamicLinker>();
             listener = new FakeDecompilerEventListener();
             m = new SsaProcedureBuilder();
             segmentMap = new SegmentMap(Address.Ptr32(0));
@@ -105,7 +105,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			var dfa = new DataFlowAnalysis(
                 program, 
-                importResolver.Object,
+                dynamicLinker.Object,
                 new FakeDecompilerEventListener());
 			foreach (Procedure proc in ProceduresInSccOrder(program))
 			{
@@ -114,7 +114,7 @@ namespace Reko.UnitTests.Analysis
                     program, 
                     proc, 
                     new HashSet<Procedure>(),
-                    importResolver.Object, 
+                    dynamicLinker.Object, 
                     dfa.ProgramDataFlow);
                 sst.Transform();
 				SsaState ssa = sst.SsaState;
@@ -124,7 +124,7 @@ namespace Reko.UnitTests.Analysis
 				proc.Write(false, writer);
 				writer.WriteLine();
 
-				var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver.Object, listener);
+				var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, dynamicLinker.Object, listener);
 				vp.Transform();
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
@@ -156,12 +156,12 @@ namespace Reko.UnitTests.Analysis
                 program,
                 proc,
                 new HashSet<Procedure>(),
-                importResolver.Object,
+                dynamicLinker.Object,
                 new ProgramDataFlow());
             var ssa = sst.SsaState;
             sst.Transform();
 
-            var vp = new ValuePropagator(segmentMap, ssa, program.CallGraph, importResolver.Object, listener);
+            var vp = new ValuePropagator(segmentMap, ssa, program.CallGraph, dynamicLinker.Object, listener);
             vp.Transform();
             return ssa;
         }
@@ -181,7 +181,7 @@ namespace Reko.UnitTests.Analysis
 
         private void RunValuePropagator()
         {
-            var vp = new ValuePropagator(segmentMap, m.Ssa, program.CallGraph, importResolver.Object, listener);
+            var vp = new ValuePropagator(segmentMap, m.Ssa, program.CallGraph, dynamicLinker.Object, listener);
             vp.Transform();
             m.Ssa.Validate(s => { m.Ssa.Dump(true); Assert.Fail(s); });
         }
@@ -262,7 +262,7 @@ namespace Reko.UnitTests.Analysis
                 program,
                 proc,
                 new HashSet<Procedure>(),
-                importResolver.Object, 
+                dynamicLinker.Object, 
                 new ProgramDataFlow());
             sst.Transform();
             SsaState ssa = sst.SsaState;
@@ -271,7 +271,7 @@ namespace Reko.UnitTests.Analysis
                 segmentMap, 
                 ssa,
                 program.CallGraph,
-                importResolver.Object,
+                dynamicLinker.Object,
                 listener);
 			vp.Transform();
 
@@ -303,7 +303,7 @@ namespace Reko.UnitTests.Analysis
 
         private ExpressionSimplifier CreatePropagatorWithDummyStatement()
         {
-            var ctx = new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, importResolver.Object);
+            var ctx = new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, dynamicLinker.Object);
             ctx.Statement = new Statement(0, new SideEffect(Constant.Word32(32)), null);
             return new ExpressionSimplifier(segmentMap, ctx, listener);
         }
@@ -315,7 +315,7 @@ namespace Reko.UnitTests.Analysis
 			Identifier r = m.Reg32("r");
 
             var sub = new BinaryExpression(Operator.ISub, PrimitiveType.Word32, new MemoryAccess(MemoryIdentifier.GlobalMemory, r, PrimitiveType.Word32), Constant.Word32(0));
-            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, importResolver.Object), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, dynamicLinker.Object), listener);
 			var exp = sub.Accept(vp);
 			Assert.AreEqual("Mem0[r:word32]", exp.ToString());
 		}
@@ -376,7 +376,7 @@ namespace Reko.UnitTests.Analysis
         [Category(Categories.UnitTests)]
 		public void VpSliceConstant()
 		{
-            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, null, importResolver.Object), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, null, dynamicLinker.Object), listener);
             Expression c = new Slice(PrimitiveType.Byte, Constant.Word32(0x10FF), 0).Accept(vp);
 			Assert.AreEqual("0xFF", c.ToString());
 		}
@@ -387,7 +387,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			Identifier x = m.Reg32("x");
 			Identifier y = m.Reg32("y");
-            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, importResolver.Object), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, dynamicLinker.Object), listener);
 			Expression e = vp.VisitUnaryExpression(
 				new UnaryExpression(Operator.Neg, PrimitiveType.Word32, new BinaryExpression(
 				Operator.ISub, PrimitiveType.Word32, x, y)));
@@ -402,7 +402,7 @@ namespace Reko.UnitTests.Analysis
 		public void VpMulAddShift()
 		{
 			Identifier id = m.Reg32("id");
-            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, importResolver.Object), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, dynamicLinker.Object), listener);
 			PrimitiveType t = PrimitiveType.Int32;
 			BinaryExpression b = new BinaryExpression(Operator.Shl, t, 
 				new BinaryExpression(Operator.IAdd, t, 
@@ -419,7 +419,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			Identifier id = m.Reg32("id");
 			Expression e = m.Shl(m.Shl(id, 1), 4);
-            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, importResolver.Object), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, dynamicLinker.Object), listener);
 			e = e.Accept(vp);
 			Assert.AreEqual("id << 0x05", e.ToString());
 		}
@@ -430,7 +430,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			ProcedureBuilder m = new ProcedureBuilder();
 			Expression e = m.Shl(1, m.ISub(Constant.Byte(32), 1));
-            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, null, importResolver.Object), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, null, dynamicLinker.Object), listener);
 			e = e.Accept(vp);
 			Assert.AreEqual("0x80000000", e.ToString());
 		}
@@ -442,7 +442,7 @@ namespace Reko.UnitTests.Analysis
 			Constant pre = Constant.Word16(0x0001);
 			Constant fix = Constant.Word16(0x0002);
 			Expression e = new MkSequence(PrimitiveType.Word32, pre, fix);
-            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, null, importResolver.Object), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, null, dynamicLinker.Object), listener);
 			e = e.Accept(vp);
 			Assert.AreEqual("0x00010002", e.ToString());
 		}
@@ -454,7 +454,7 @@ namespace Reko.UnitTests.Analysis
             Constant eight = Constant.Word16(8);
             Identifier C = m.Reg8("C");
             Expression e = new Slice(PrimitiveType.Byte, new BinaryExpression(Operator.Shl, PrimitiveType.Word16, C, eight), 8);
-            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, importResolver.Object), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, dynamicLinker.Object), listener);
             e = e.Accept(vp);
             Assert.AreEqual("C", e.ToString());
         }
@@ -470,7 +470,7 @@ namespace Reko.UnitTests.Analysis
                 .Verifiable();
 
             Expression e = new MkSequence(PrimitiveType.Word32, seg, off);
-            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, null, importResolver.Object), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, null, dynamicLinker.Object), listener);
             e = e.Accept(vp);
             Assert.IsInstanceOf(typeof(Address), e);
             Assert.AreEqual("4711:4111", e.ToString());
@@ -611,17 +611,17 @@ namespace Reko.UnitTests.Analysis
 
 			Procedure proc = m.Procedure;
 			var gr = proc.CreateBlockDominatorGraph();
-            var importResolver = new Mock<IImportResolver>();
+            var dynamicLinker = new Mock<IDynamicLinker>();
 			var sst = new SsaTransform(
                 program,
                 proc, 
                 new HashSet<Procedure>(),
-                importResolver.Object,
+                dynamicLinker.Object,
                 new ProgramDataFlow());
             sst.Transform();
 			var ssa = sst.SsaState;
 
-			var vp = new ValuePropagator(segmentMap, ssa, program.CallGraph, importResolver.Object, listener);
+			var vp = new ValuePropagator(segmentMap, ssa, program.CallGraph, dynamicLinker.Object, listener);
 			vp.Transform();
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDpbDpb.txt"))
@@ -984,7 +984,7 @@ ProcedureBuilder_exit:
                         m.Mem(PrimitiveType.Real32, m.Word32(0x123400)))));
             m.Return();
 
-            Assert.IsNotNull(importResolver);
+            Assert.IsNotNull(dynamicLinker);
             RunFileTest(m, "Analysis/VpCastCast.txt");
         }
 
@@ -1119,7 +1119,7 @@ SsaProcedureBuilder_exit:
             m.Return();
 
             // Initially we don't know what r2_2 is pointing to.
-            var vp = new ValuePropagator(segmentMap, m.Ssa, program.CallGraph, importResolver.Object, listener);
+            var vp = new ValuePropagator(segmentMap, m.Ssa, program.CallGraph, dynamicLinker.Object, listener);
             vp.Transform();
 
             // Later, Reko discovers information about the pointer in 0x00400000!
@@ -1130,7 +1130,7 @@ SsaProcedureBuilder_exit:
                 PrimitiveType.Ptr32,
                 new ExternalProcedure("callee", sigCallee));
             // Add our new found knowledge to the import resolver.
-            importResolver.Setup(i => i.ResolveToImportedValue(
+            dynamicLinker.Setup(i => i.ResolveToImportedValue(
                 It.IsNotNull<Statement>(),
                 uAddrGotSlot)).
                 Returns(callee);

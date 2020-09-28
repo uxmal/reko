@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -93,7 +93,7 @@ namespace Reko.UnitTests.Arch.Intel
             project.Programs.Add(this.program);
             scanner = new Scanner(
                 this.program, 
-                new ImportResolver(project, this.program, eventListener),
+                new DynamicLinker(project, this.program, eventListener),
                 sc);
             var ep = ImageSymbol.Procedure(this.program.Architecture, baseAddress);
             this.program.EntryPoints.Add(ep.Address, ep);

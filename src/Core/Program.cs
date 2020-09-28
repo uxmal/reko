@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,6 @@ namespace Reko.Core
         private IProcessorArchitecture archDefault;
         private Identifier globals;
         private Encoding encoding;
-
 
         public Program()
         {
@@ -238,8 +237,9 @@ namespace Reko.Core
             return new TypeLibraryDeserializer(Platform, true, EnvironmentMetadata.Clone());
         }
 
-
+        /// <summary>
         /// The processor architectures that exist in the Program. 
+        /// </summary>
         /// <remarks>
         /// Normally there is only one architecture. But there are examples
         /// of binaries that have two or more processor architectures. E.g.

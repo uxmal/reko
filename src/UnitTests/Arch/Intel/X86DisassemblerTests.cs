@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -2303,7 +2303,6 @@ movzx	ax,byte ptr [bp+04]
 
         [Test]
         [Ignore("addressing mode is off")]
-
         public void X86Dis_vpmovsxbq()
         {
             var instr = Disassemble64(0xc4, 0x02, 0x75, 0x22, 0x41, 0x8b);

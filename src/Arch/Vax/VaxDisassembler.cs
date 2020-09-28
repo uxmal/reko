@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ namespace Reko.Arch.Vax
     using Decoder = Decoder<VaxDisassembler, Mnemonic, VaxInstruction>;
     using Mutator = Mutator<VaxDisassembler>;
 
-    public partial class VaxDisassembler : DisassemblerBase<VaxInstruction>
+    public partial class VaxDisassembler : DisassemblerBase<VaxInstruction, Mnemonic>
     {
         private VaxArchitecture arch;
         private EndianImageReader rdr;
@@ -67,7 +67,18 @@ namespace Reko.Arch.Vax
             return instr;
         }
 
-        protected override VaxInstruction CreateInvalidInstruction()
+        public override VaxInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            var instr = new VaxInstruction
+            {
+                Mnemonic = mnemonic,
+                InstructionClass = iclass,
+                Operands = this.ops.ToArray()
+            };
+            return instr;
+        }
+
+        public override VaxInstruction CreateInvalidInstruction()
         {
             return new VaxInstruction
             {
@@ -230,52 +241,20 @@ namespace Reko.Arch.Vax
             return new ImmediateOperand(c);
         }
 
-        private class InstrDecoder : Decoder
+
+        public static Decoder Instr(Mnemonic mnemonic, params Mutator<VaxDisassembler> [] mutators)
         {
-            private readonly Mnemonic mnemonic;
-            private readonly InstrClass iclass;
-            private readonly Mutator[] mutators;
-
-            public InstrDecoder(Mnemonic op, InstrClass iclass, params Mutator [] mutators)
-            {
-                this.mnemonic = op;
-                this.iclass = iclass;
-                this.mutators = mutators;
-            }
-
-
-            public override VaxInstruction Decode(uint uInstr, VaxDisassembler dasm)
-            {
-                foreach (var m in mutators)
-                {
-                    if (!m(uInstr, dasm))
-                    {
-                        return dasm.CreateInvalidInstruction();
-                    }
-                }
-                var instr = new VaxInstruction
-                {
-                    Mnemonic = this.mnemonic,
-                    InstructionClass = this.iclass,
-                    Operands = dasm.ops.ToArray()
-                };
-                return instr;
-            }
+            return new InstrDecoder<VaxDisassembler, Mnemonic, VaxInstruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
-        public static Decoder Instr(Mnemonic opcode, params Mutator<VaxDisassembler> [] mutators)
+        public static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<VaxDisassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, InstrClass.Linear, mutators);
+            return new InstrDecoder<VaxDisassembler, Mnemonic, VaxInstruction>(iclass, mnemonic, mutators);
         }
 
-        public static Decoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<VaxDisassembler>[] mutators)
+        public static Decoder Instr(Mnemonic mnemonic, int ignored)
         {
-            return new InstrDecoder(opcode, iclass, mutators);
-        }
-
-        public static Decoder Instr(Mnemonic opcode, int ignored)
-        {
-            return new InstrDecoder(opcode, InstrClass.Linear);
+            return new InstrDecoder<VaxDisassembler, Mnemonic, VaxInstruction>(InstrClass.Linear, mnemonic);
         }
 
         private static Mutator a(PrimitiveType dt)

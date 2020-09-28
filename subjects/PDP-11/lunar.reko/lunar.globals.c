@@ -129,10 +129,7 @@ Eq_n g_t1F96 =
 word16 g_w25AA = 0x0000;
 Eq_n g_t25B8 = 
 	{
-		
-		{
-			0x20
-		},
+		0x20,
 		0x20,
 	};
 word16 g_w25C0 = 0xF700;
@@ -144,10 +141,7 @@ cui16 g_w27A8 = 0x0000;
 Eq_n g_a27B0[] = 
 	{
 	};
-Eq_n g_t2814 = 
-	{
-		0x30
-	};
+byte g_b2814 = 0x30;
 ci16 g_w28F0 = 0x030C;
 word16 g_a28F2[] = 
 	{

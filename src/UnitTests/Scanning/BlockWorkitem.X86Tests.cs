@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Scanning
             BuildTest(arch, Address.SegPtr(0x0C00, 0x000), new MsdosPlatform(sc, arch), m);
         }
 
-        private class RewriterHost : IRewriterHost, IImportResolver
+        private class RewriterHost : IRewriterHost, IDynamicLinker
         {
             Dictionary<string, PseudoProcedure> pprocs = new Dictionary<string, PseudoProcedure>();
             Dictionary<ulong, FunctionType> sigs = new Dictionary<ulong, FunctionType>();

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,6 @@ namespace Reko.UnitTests.Arch.Cray.Ymp
     {
         private IProcessorArchitecture arch;
         private Address addr;
-        private MemoryArea image;
 
         [SetUp]
         public void Setup()
@@ -48,23 +47,22 @@ namespace Reko.UnitTests.Arch.Cray.Ymp
 
         public override Address LoadAddress => addr;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
             var state = new CrayProcessorState(arch);
-            return arch.CreateRewriter(new BeImageReader(image, 0), state, binder, host);
+            return arch.CreateRewriter(new BeImageReader(mem, 0), state, binder, host);
         }
 
-        protected override MemoryArea RewriteCode(string octalBytes)
+        protected void Given_OctalString(string octalBytes)
         {
             var bytes = YmpDisassemblerTests.OctalStringToBytes(octalBytes);
-            this.image = new MemoryArea(LoadAddress, bytes);
-            return image;
+            Given_MemoryArea(new MemoryArea(LoadAddress, bytes));
         }
 
         [Test]
         public void YmpRw_S_and()
         {
-            RewriteCode("043123");
+            Given_OctalString("043123");
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|S1 = S2 & S3");
@@ -73,7 +71,7 @@ namespace Reko.UnitTests.Arch.Cray.Ymp
         [Test]
         public void YmpRw_mov_Ai_Sj()
         {
-            RewriteCode("023710");  // A7 S1
+            Given_OctalString("023710");  // A7 S1
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|A7 = S1");
@@ -82,7 +80,7 @@ namespace Reko.UnitTests.Arch.Cray.Ymp
         [Test]
         public void YmpRw_mov_Si_Vj_Ak()
         {
-            RewriteCode("076123");  // S1 V2,A3
+            Given_OctalString("076123");  // S1 V2,A3
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|S1 = V2[A3]");
@@ -91,7 +89,7 @@ namespace Reko.UnitTests.Arch.Cray.Ymp
         [Test]
         public void YmpRw_fmul_Sj_Sk()
         {
-            RewriteCode("064123");  // S1\tS2*FS3
+            Given_OctalString("064123");  // S1\tS2*FS3
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|S1 = S2 * S3");
@@ -100,7 +98,7 @@ namespace Reko.UnitTests.Arch.Cray.Ymp
         [Test]
         public void YmpRw_j_Bjk()
         {
-            RewriteCode("005077");  // J B63
+            Given_OctalString("005077");  // J B63
             AssertCode(
                 "0|T--|00100000(2): 1 instructions",
                 "1|T--|goto B63");

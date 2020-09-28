@@ -1,8 +1,8 @@
 #region License
 /* 
- * Copyright (C) 2017-2019 Christian Hostelet.
+ * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work of:
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -95,20 +95,20 @@ namespace Reko.ImageLoaders.IntelHex
             /// </remarks>
             /// <param name="address">The address from the decoded IHex32 record.</param>
             /// <param name="data">The binary bytes contained in the IHex32 record.</param>
-            public void AddData(uint address, byte[] data)
+            public void AddData(Address address, byte[] data)
             {
                 if (data == null || data.Length < 1)
                     return;
 
                 if (currAddr == null)
                 {
-                    currAddr = Address.Ptr32(address);
+                    currAddr = address;
                     currMemChunk = new MemoryChunk(currAddr);
                     memChunks.Add(currAddr, currMemChunk);
                 }
                 else
                 {
-                    currAddr = Address.Ptr32(address);
+                    currAddr = address;
                     if (nextAddr != currAddr)
                     {
                         currMemChunk = GetPredChunk(currAddr);
@@ -182,14 +182,14 @@ namespace Reko.ImageLoaders.IntelHex
             listener = Services.RequireService<DecompilerEventListener>();
             var memChunks = new MemoryChunksList();
             Address addrEp = null;
-
-            using (var rdr = new IntelHexReader(new MemoryStream(RawImage)))
+            Address addrBase = MakeZeroAddress(arch);
+            using (var rdr = new IntelHexReader(new MemoryStream(RawImage), addrBase))
             {
                 try
                 {
                     for (; ; )
                     {
-                        if (!rdr.TryReadRecord(out uint address, out byte[] data))
+                        if (!rdr.TryReadRecord(out Address address, out byte[] data))
                             break;
                         if (data != null)
                         {
@@ -225,6 +225,24 @@ namespace Reko.ImageLoaders.IntelHex
             }
             return program;
 
+        }
+
+        /// <summary>
+        /// Generate a zero address for the given architecture.
+        /// </summary>
+        /// <param name="arch">Processor architecture to use</param>
+        /// <returns>An address with linear offset 0.
+        /// </returns>
+        private Address MakeZeroAddress(IProcessorArchitecture arch)
+        {
+            if (!arch.TryParseAddress("0", out Address addr) &&
+                !arch.TryParseAddress("0:0", out addr))
+            {
+                // Something's wrong with your architecture's TryParseAddress
+                // method.
+                throw new InvalidOperationException("Unable to create start address.");
+            }
+            return addr;
         }
 
         /// <summary>

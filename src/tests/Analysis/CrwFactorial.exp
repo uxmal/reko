@@ -27,7 +27,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	ax_8 = fn0C00_000F(0x0064)
-	Mem18[ds:0x0064:word16] = ax_8
+	Mem17[ds:0x0064:word16] = ax_8
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

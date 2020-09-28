@@ -1,5 +1,5 @@
 #region License
-/* Copyright (C) 1999-2019 John Källén.
+/* Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Assemblers;
+using Reko.Core.Configuration;
 using Reko.Core.Lib;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
@@ -56,11 +57,7 @@ namespace Reko
 	/// <summary>
 	/// The main driver class for decompilation of binaries. 
 	/// </summary>
-	/// <remarks>
-	/// This class is named this way as the previous name 'Decompiler' causes C# to get confused
-	/// between the namespace and the class name.
-	/// </remarks>
-	public class DecompilerDriver : IDecompiler
+	public class Decompiler : IDecompiler
 	{
 		private IDecompiledFileService host;
 		private readonly ILoader loader;
@@ -68,7 +65,7 @@ namespace Reko
         private DecompilerEventListener eventListener;
         private IServiceProvider services;
 
-        public DecompilerDriver(ILoader ldr, IServiceProvider services)
+        public Decompiler(ILoader ldr, IServiceProvider services)
         {
             this.loader = ldr ?? throw new ArgumentNullException("ldr");
             this.services = services ?? throw new ArgumentNullException("services");
@@ -119,7 +116,7 @@ namespace Reko
             {
                 if (eventListener.IsCanceled())
                     return;
-                var ir = new ImportResolver(project, program, eventListener);
+                var ir = new DynamicLinker(project, program, eventListener);
                 var dfa = new DataFlowAnalysis(program, ir, eventListener);
                 if (program.NeedsSsaTransform)
                 {
@@ -198,7 +195,7 @@ namespace Reko
                 var program = loader.LoadExecutable(fileName, image, loaderName, null);
                 if (program == null)
                     return false;
-                this.Project = CreateDefaultProject(fileName, program);
+                this.Project = AddProgramToProject(fileName, program);
                 this.Project.LoadedMetadata = program.Platform.CreateMetadata();
                 program.EnvironmentMetadata = this.Project.LoadedMetadata;
             }
@@ -251,7 +248,7 @@ namespace Reko
         {
             eventListener.ShowStatus("Assembling program.");
             var program = loader.AssembleExecutable(fileName, asm, null);
-            Project = CreateDefaultProject(fileName, program);
+            Project = AddProgramToProject(fileName, program);
             eventListener.ShowStatus("Assembled program.");
         }
 
@@ -268,20 +265,22 @@ namespace Reko
             raw.ArchitectureOptions = raw.ArchitectureOptions ?? new Dictionary<string, object>();
             byte[] image = loader.LoadImageBytes(fileName, 0);
             var program = loader.LoadRawImage(fileName, image, null, raw);
-            Project = CreateDefaultProject(fileName, program);
+            Project = AddProgramToProject(fileName, program);
             eventListener.ShowStatus("Raw bytes loaded.");
             return program;
         }
 
-        protected Project CreateDefaultProject(string fileNameWithPath, Program program)
+        protected Project AddProgramToProject(string fileNameWithPath, Program program)
         {
+            if (this.project == null)
+            {
+                this.project = new Project();
+            }
             program.Filename = fileNameWithPath;
             program.EnsureDirectoryNames(fileNameWithPath);
             program.User.ExtractResources = true;
-            var project = new Project
-            {
-                Programs = { program },
-            };
+
+            project.Programs.Add(program);
             return project;
         }
 
@@ -391,8 +390,6 @@ namespace Reko
             return true;
         }
 
-
-
         /// <summary>
         /// Extracts type information from the typeless rewritten programs.
         /// </summary>
@@ -402,17 +399,14 @@ namespace Reko
         {
             foreach (var program in Project.Programs.Where(p => p.NeedsTypeReconstruction))
             {
-                TypeAnalyzer analyzer = new TypeAnalyzer(eventListener);
+                var analyzer = new TypeAnalyzer(eventListener);
                 try
                 {
-                    try
-                    {
-                        analyzer.RewriteProgram(program);
-                    }
-                    catch (Exception ex)
-                    {
-                        eventListener.Error(new NullCodeLocation(""), ex, "Error when reconstructing types.");
-                    }
+                    analyzer.RewriteProgram(program);
+                }
+                catch (Exception ex)
+                {
+                    eventListener.Error(new NullCodeLocation(""), ex, "Error when reconstructing types.");
                 } 
                 finally
                 {
@@ -559,7 +553,7 @@ namespace Reko
         {
             return new Scanner(
                 program,
-                new ImportResolver(project, program, eventListener),
+                new DynamicLinker(project, program, eventListener),
                 services);
         }
 

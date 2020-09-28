@@ -1,8 +1,8 @@
 #region License
 /* 
- * Copyright (C) 2017-2019 Christian Hostelet.
+ * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work from:
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// A Microchip 8-bit MCU disassembler frame. Must be inherited.
     /// Valid for most of program memory regions (code, eeprom, config, ...).
     /// </summary>
-    public abstract class PICDisassemblerBase : DisassemblerBase<PICInstruction>
+    public abstract class PICDisassemblerBase : DisassemblerBase<PICInstruction, Mnemonic>
     {
         public readonly PICArchitecture arch;
         public readonly EndianImageReader rdr;
@@ -45,7 +45,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// Instantiates a base PIC disassembler.
         /// </summary>
         /// <param name="arch">The PIC architecture.</param>
-        /// <param name="rdr">The memory reader.</param>
+        /// <param name="rdr">The memory reader.</param, Mnemonic>
         protected PICDisassemblerBase(PICArchitecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
@@ -128,7 +128,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             }
         }
 
-        protected override PICInstruction CreateInvalidInstruction()
+        public override PICInstruction CreateInvalidInstruction()
         {
             return new PICInstructionNoOpnd(Mnemonic.invalid)
             {

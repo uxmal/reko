@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ namespace Reko.Scanning
         private PriorityQueue<WorkItem> procQueue;
         private SegmentMap segmentMap;
         private ImageMap imageMap;
-        private IImportResolver importResolver;
+        private IDynamicLinker dynamicLinker;
         private BTreeDictionary<Address, BlockRange> blocks;
         private Dictionary<Block, Address> blockStarts;
         private Dictionary<Address, ImportReference> importReferences;
@@ -75,12 +75,12 @@ namespace Reko.Scanning
         
         public Scanner(
             Program program,
-            IImportResolver importResolver,
+            IDynamicLinker dynamicLinker,
             IServiceProvider services)
             : base(program, services.RequireService<DecompilerEventListener>())
         {
             this.segmentMap = program.SegmentMap;
-            this.importResolver = importResolver;
+            this.dynamicLinker = dynamicLinker;
             this.Services = services;
             this.eventListener = services.RequireService<DecompilerEventListener>();
             this.cancelSvc = services.GetService<CancellationTokenSource>();
@@ -651,7 +651,7 @@ namespace Reko.Scanning
             if (importReferences.TryGetValue(addrImportThunk, out var impref))
             {
                 var global = impref.ResolveImport(
-                    importResolver,
+                    dynamicLinker,
                     Program.Platform,
                     new AddressContext(Program, addrInstruction, this.eventListener));
                 return global;
@@ -673,7 +673,7 @@ namespace Reko.Scanning
             if (importReferences.TryGetValue(addrImportThunk, out var impref))
             {
                 var extProc = impref.ResolveImportedProcedure(
-                    importResolver,
+                    dynamicLinker,
                     Program.Platform,
                     new AddressContext(Program, addrInstruction, this.eventListener));
                 return extProc;

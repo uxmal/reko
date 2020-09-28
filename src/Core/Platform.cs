@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,6 +62,15 @@ namespace Reko.Core
         IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> addr, PointerScannerFlags flags);
         CallingConvention GetCallingConvention(string ccName);
         TypeLibrary CreateMetadata();
+
+        /// <summary>
+        /// Creates a platform emulator for this platform.
+        /// </summary>
+        /// <param name="segmentMap">Loaded program image.</param>
+        /// <param name="importReferences">Imported procedures.</param>
+        /// <returns>The created platform emulators.
+        /// </returns>
+        IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences);
 
         /// <summary>
         /// Creates an empty SegmentMap based on the absolute memory map. It is 
@@ -224,6 +233,8 @@ namespace Reko.Core
         {
             return addr;
         }
+
+        public abstract IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences);
 
         /// <summary>
         /// Creates a set that represents those registers that are never used
@@ -542,6 +553,11 @@ namespace Reko.Core
         public override string DefaultCallingConvention
         {
             get { return ""; }
+        }
+
+        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        {
+            throw new NotSupportedException();
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

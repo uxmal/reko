@@ -17,7 +17,7 @@ loaded dynamically (using the services provided by IConfigurationService).
     <Copy SourceFiles="@(Environments)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying Libraries to $(TargetDir)" />
     <Copy SourceFiles="@(Libraries)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Message Importance="high" Text="Copying Odbg scripts to $(TargetDir)" />
+    <Message Importance="high" Text="Copying Odbg scripts @(OdbgScripts) to $(TargetDir)" />
     <Copy SourceFiles="@(OdbgScripts)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying external binaries to $(TargetDir)" />
     <Copy SourceFiles="@(ExternalComponents)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />

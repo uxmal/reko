@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
     /// <summary>
     /// Disassembler for the 32-bit Toshiba TLCS-900 processor.
     /// </summary>
-    public partial class Tlcs900Disassembler : DisassemblerBase<Tlcs900Instruction>
+    public partial class Tlcs900Disassembler : DisassemblerBase<Tlcs900Instruction, Mnemonic>
     {
         private readonly Tlcs900Architecture arch;
         private readonly ImageReader rdr;
@@ -62,11 +62,23 @@ namespace Reko.Arch.Tlcs.Tlcs900
             {
                 instr = CreateInvalidInstruction();
             }
+            instr.Address = this.addr;
             instr.Length = (int) (rdr.Address - instr.Address);
             return instr;
         }
 
-        protected override Tlcs900Instruction CreateInvalidInstruction()
+        public override Tlcs900Instruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            var instr = new Tlcs900Instruction
+            {
+                Mnemonic = mnemonic,
+                InstructionClass = iclass,
+                Operands = this.ops.ToArray()
+            };
+            return instr;
+        }
+
+        public override Tlcs900Instruction CreateInvalidInstruction()
         {
             return new Tlcs900Instruction {
                 Address = this.addr,
@@ -76,6 +88,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             };
 
         }
+
         #region Mutators 
 
         private static bool BW(uint b, Tlcs900Disassembler dasm)
@@ -498,37 +511,6 @@ namespace Reko.Arch.Tlcs.Tlcs900
             return null;
         }
 
-        private class InstrDecoder : Decoder
-        {
-            private readonly Mnemonic mnemonic;
-            private readonly InstrClass iclass;
-            private readonly Mutator<Tlcs900Disassembler>[] mutators;
-
-            public InstrDecoder(Mnemonic mnemonic, InstrClass iclass, Mutator<Tlcs900Disassembler>[] mutators)
-            {
-                this.mnemonic = mnemonic;
-                this.iclass = iclass;
-                this.mutators = mutators;
-            }
-
-            public override Tlcs900Instruction Decode(uint b, Tlcs900Disassembler dasm)
-            {
-                foreach (var m in mutators)
-                {
-                    if (!m(b, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-                var instr = new Tlcs900Instruction
-                {
-                    Mnemonic = mnemonic,
-                    InstructionClass = iclass,
-                    Address = dasm.addr,
-                    Operands = dasm.ops.ToArray()
-                };
-                return instr;
-            }
-        }
-
         private class RegDecoder : Decoder
         {
             private readonly Mutator<Tlcs900Disassembler> mutator;
@@ -692,14 +674,14 @@ namespace Reko.Arch.Tlcs.Tlcs900
             }
         }
 
-        private static InstrDecoder Instr(Mnemonic opcode, params Mutator<Tlcs900Disassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, params Mutator<Tlcs900Disassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, InstrClass.Linear, mutators);
+            return new InstrDecoder<Tlcs900Disassembler, Mnemonic, Tlcs900Instruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
-        private static InstrDecoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<Tlcs900Disassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<Tlcs900Disassembler>[] mutators)
         {
-            return new InstrDecoder(opcode, iclass, mutators);
+            return new InstrDecoder<Tlcs900Disassembler, Mnemonic, Tlcs900Instruction>(iclass, mnemonic, mutators);
         }
 
         private static int[] imm3Const = new int[8]

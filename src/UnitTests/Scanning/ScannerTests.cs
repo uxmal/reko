@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Scanning
         private Program program;
         private TestScanner scan;
         private Identifier reg1;
-        private Mock<IImportResolver> importResolver;
+        private Mock<IDynamicLinker> dynamicLinker;
         private IDictionary<Address, FunctionType> callSigs;
         private ServiceContainer sc;
         private Project project;
@@ -57,9 +57,9 @@ namespace Reko.UnitTests.Scanning
 
         public class TestScanner : Scanner
         {
-            public TestScanner(Program program, IImportResolver importResolver,
+            public TestScanner(Program program, IDynamicLinker dynamicLinker,
                 IServiceProvider services)
-                : base(program, importResolver, services)
+                : base(program, dynamicLinker, services)
             {
             }
 
@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Scanning
         public void Setup()
         {
             fakeArch = new FakeArchitecture();
-            importResolver = new Mock<IImportResolver>();
+            dynamicLinker = new Mock<IDynamicLinker>();
             callSigs = new Dictionary<Address, FunctionType>();
             this.eventListener = new FakeDecompilerEventListener();
             arch = fakeArch;
@@ -162,7 +162,7 @@ namespace Reko.UnitTests.Scanning
 
             var sc = new Scanner(
                 this.program,
-                new ImportResolver(project, program, eventListener),
+                new DynamicLinker(project, program, eventListener),
                 this.sc);
             sc.EnqueueImageSymbol(ImageSymbol.Procedure(arch, Address.Ptr32(0x12314)), true);
             sc.ScanImage();
@@ -223,7 +223,7 @@ namespace Reko.UnitTests.Scanning
             };
             return new TestScanner(
                 program,
-                importResolver.Object,
+                dynamicLinker.Object,
                 sc);
         }
 
@@ -232,7 +232,7 @@ namespace Reko.UnitTests.Scanning
             this.program = program;
             return new TestScanner(
                 program, 
-                importResolver.Object,
+                dynamicLinker.Object,
                 sc);
         }
 
@@ -245,7 +245,7 @@ namespace Reko.UnitTests.Scanning
             program.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("progseg", this.mem, AccessMode.ReadExecute));
-            return new TestScanner(program, importResolver.Object, sc);
+            return new TestScanner(program, dynamicLinker.Object, sc);
         }
 
         private DataScanner CreateDataScanner(Program program)
@@ -347,7 +347,7 @@ namespace Reko.UnitTests.Scanning
 
             var scan = new Scanner(
                 program, 
-                new ImportResolver(project, program, eventListener),
+                new DynamicLinker(project, program, eventListener),
                 sc);
             var sym = ImageSymbol.Procedure(arch, addr);
             scan.EnqueueImageSymbol(sym, true);
@@ -422,7 +422,7 @@ fn0C00_0000_exit:
             var groxSig = CreateSignature("ax", "bx");
             var grox = new ExternalProcedure("grox", groxSig);
 
-            importResolver.Setup(i => i.ResolveProcedure(
+            dynamicLinker.Setup(i => i.ResolveProcedure(
                 "module",
                 "grox",
                 It.IsNotNull<IPlatform>())).Returns(grox);
@@ -905,7 +905,7 @@ fn00001200_exit:
 
             var sc = new Scanner(
                 this.program,
-                new ImportResolver(project, program, eventListener),
+                new DynamicLinker(project, program, eventListener),
                 this.sc
             );
 
@@ -971,7 +971,7 @@ fn00001200_exit:
 
             var sc = new Scanner(
                 this.program,
-                new ImportResolver(project, program, eventListener),
+                new DynamicLinker(project, program, eventListener),
                 this.sc
             );
 
@@ -1025,7 +1025,7 @@ fn00001200_exit:
 
             var scanner = new Scanner(
                 this.program,
-                new ImportResolver(project, program, eventListener),
+                new DynamicLinker(project, program, eventListener),
                 this.sc);
             scanner.EnqueueUserGlobalData(Address.Ptr32(0x43210000), str, null);
             scanner.ScanImage();
@@ -1048,7 +1048,7 @@ fn00001200_exit:
 
             var scanner = new Scanner(
                 this.program,
-                new ImportResolver(project, program, eventListener),
+                new DynamicLinker(project, program, eventListener),
                 this.sc);
             var proc = scanner.ScanProcedure(
                 program.Architecture,
@@ -1085,7 +1085,7 @@ fn00001200_exit:
             var sym = ImageSymbol.DataObject(arch, Address.Ptr32(0x00100000), "data_blob", dt);
             program.ImageSymbols.Add(sym.Address, sym);
 
-            var scanner = new Scanner(program, importResolver.Object, sc);
+            var scanner = new Scanner(program, dynamicLinker.Object, sc);
             var sr = scanner.ScanDataItems();
             Assert.AreEqual(1, sr.KnownProcedures.Count);
             Assert.AreEqual("00100010", sr.KnownProcedures.First().ToString());

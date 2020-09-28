@@ -44,6 +44,10 @@ namespace Reko.Core.NativeInterface
 			throw new NotImplementedException();
 		}
 
+        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            throw new NotImplementedException();
+        }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
 		{

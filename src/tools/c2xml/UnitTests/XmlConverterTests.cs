@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,6 +46,11 @@ namespace Reko.Tools.C2Xml.UnitTests
             }
 
             public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
             {
                 throw new NotImplementedException();
             }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ namespace Reko.Arch.Sparc
 {
     using Decoder = Decoder<SparcDisassembler, Mnemonic, SparcInstruction>;
 
-    public class SparcDisassembler : DisassemblerBase<SparcInstruction>
+    public class SparcDisassembler : DisassemblerBase<SparcInstruction, Mnemonic>
     {
         private const InstrClass Transfer = InstrClass.Delay | InstrClass.Transfer;
         private const InstrClass CondTransfer = InstrClass.Delay | InstrClass.Transfer | InstrClass.Conditional;
@@ -65,31 +65,19 @@ namespace Reko.Arch.Sparc
             return instrCur;
         }
 
-        protected override SparcInstruction CreateInvalidInstruction()
+        public override SparcInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
         {
-            return invalid.Decode(0, this);
+            return new SparcInstruction
+            {
+                InstructionClass = iclass,
+                Mnemonic = mnemonic,
+                Operands = this.ops.ToArray()
+            };
         }
 
-        private sealed class InstrDecoder : Decoder
+        public override SparcInstruction CreateInvalidInstruction()
         {
-            public Mnemonic code;
-            public InstrClass iclass = InstrClass.Linear;
-            public Mutator<SparcDisassembler>[] mutators;
-
-            public override SparcInstruction Decode(uint wInstr, SparcDisassembler dasm)
-            {
-                foreach (var m in mutators)
-                {
-                    if (!m(wInstr, dasm))
-                        return invalid.Decode(wInstr, dasm);
-                }
-                return new SparcInstruction
-                {
-                    Mnemonic = code,
-                    InstructionClass = iclass,
-                    Operands = dasm.ops.ToArray()
-                };
-            }
+            return invalid.Decode(0, this);
         }
 
         #region Mutators
@@ -104,9 +92,9 @@ namespace Reko.Arch.Sparc
                 return true;
             };
         }
-        private static Mutator<SparcDisassembler> r0 = r(0);
-        private static Mutator<SparcDisassembler> r14 = r(14);
-        private static Mutator<SparcDisassembler> r25 = r(25);
+        private static readonly Mutator<SparcDisassembler> r0 = r(0);
+        private static readonly Mutator<SparcDisassembler> r14 = r(14);
+        private static readonly Mutator<SparcDisassembler> r25 = r(25);
 
         private static Mutator<SparcDisassembler> r(RegisterStorage reg)
         {
@@ -117,8 +105,8 @@ namespace Reko.Arch.Sparc
             };
         }
 
-        private static Mutator<SparcDisassembler> rfsr = r(Registers.fsr);
-        private static Mutator<SparcDisassembler> ry = r(Registers.y);
+        private static readonly Mutator<SparcDisassembler> rfsr = r(Registers.fsr);
+        private static readonly Mutator<SparcDisassembler> ry = r(Registers.y);
 
         // FPU register
         private static Mutator<SparcDisassembler> f(int pos)
@@ -147,9 +135,9 @@ namespace Reko.Arch.Sparc
                 return true;
             };
         }
-        private static Mutator<SparcDisassembler> d0 = d(0);
-        private static Mutator<SparcDisassembler> d14 = d(14);
-        private static Mutator<SparcDisassembler> d25 = d(25);
+        private static readonly Mutator<SparcDisassembler> d0 = d(0);
+        private static readonly Mutator<SparcDisassembler> d14 = d(14);
+        private static readonly Mutator<SparcDisassembler> d25 = d(25);
 
         // quad FPU register encoding
         private static Mutator<SparcDisassembler> q(int pos)
@@ -163,9 +151,9 @@ namespace Reko.Arch.Sparc
                 return true;
             };
         }
-        private static Mutator<SparcDisassembler> q0 = q(0);
-        private static Mutator<SparcDisassembler> q14 = q(14);
-        private static Mutator<SparcDisassembler> q25 = q(25);
+        private static readonly Mutator<SparcDisassembler> q0 = q(0);
+        private static readonly Mutator<SparcDisassembler> q14 = q(14);
+        private static readonly Mutator<SparcDisassembler> q25 = q(25);
 
         private static Mutator<SparcDisassembler> A(PrimitiveType size)
         {
@@ -208,12 +196,12 @@ namespace Reko.Arch.Sparc
                 return true;
             };
         }
-        private static Mutator<SparcDisassembler> Mb = M(PrimitiveType.Byte);
-        private static Mutator<SparcDisassembler> Mh = M(PrimitiveType.Word16);
-        private static Mutator<SparcDisassembler> Mw = M(PrimitiveType.Word32);
-        private static Mutator<SparcDisassembler> Md = M(PrimitiveType.Word64);
-        private static Mutator<SparcDisassembler> Msb = M(PrimitiveType.SByte);
-        private static Mutator<SparcDisassembler> Msh = M(PrimitiveType.Int16);
+        private static readonly Mutator<SparcDisassembler> Mb = M(PrimitiveType.Byte);
+        private static readonly Mutator<SparcDisassembler> Mh = M(PrimitiveType.Word16);
+        private static readonly Mutator<SparcDisassembler> Mw = M(PrimitiveType.Word32);
+        private static readonly Mutator<SparcDisassembler> Md = M(PrimitiveType.Word64);
+        private static readonly Mutator<SparcDisassembler> Msb = M(PrimitiveType.SByte);
+        private static readonly Mutator<SparcDisassembler> Msh = M(PrimitiveType.Int16);
 
         // Register or simm13.
         private static Mutator<SparcDisassembler> R(bool signed)
@@ -225,8 +213,8 @@ namespace Reko.Arch.Sparc
                 return true;
             };
         }
-        private static Mutator<SparcDisassembler> R0 = R(false);
-        private static Mutator<SparcDisassembler> Rs = R(true);
+        private static readonly Mutator<SparcDisassembler> R0 = R(false);
+        private static readonly Mutator<SparcDisassembler> Rs = R(true);
 
         // Register or uimm5
         private static bool S(uint wInstr, SparcDisassembler dasm)
@@ -241,7 +229,13 @@ namespace Reko.Arch.Sparc
             dasm.ops.Add(GetRegImmOperand(wInstr, false, 7));
             return true;
         }
-        
+
+        private static bool nyi(uint wInstr, SparcDisassembler dasm)
+        {
+            dasm.NotYetImplemented(wInstr, "NYI");
+            return false;
+        }
+
         #endregion
 
         private static int SignExtend(uint word, int bits)
@@ -320,15 +314,15 @@ namespace Reko.Arch.Sparc
             return new ImmediateOperand(Constant.Word32(imm));
         }
 
-        private static Decoder[] decoders_0 = new Decoder[]
+        private static readonly Decoder[] decoders_0 = new Decoder[]
         {
-            Instr(Mnemonic.unimp, InstrClass.Invalid),
-            Instr(Mnemonic.illegal, InstrClass.Invalid),
+            Instr(InstrClass.Invalid, Mnemonic.unimp),
+            Instr(InstrClass.Invalid, Mnemonic.illegal),
             new BranchDecoder { offset = 0x00 },
-            Instr(Mnemonic.illegal, InstrClass.Invalid),
+            Instr(InstrClass.Invalid, Mnemonic.illegal),
 
             Instr(Mnemonic.sethi, I,r25),
-            Instr(Mnemonic.illegal, InstrClass.Invalid),
+            Instr(InstrClass.Invalid, Mnemonic.illegal),
             new BranchDecoder { offset = 0x10 },
             new BranchDecoder { offset = 0x20 },
         };
@@ -346,59 +340,59 @@ namespace Reko.Arch.Sparc
             }
         }
 
-        private static InstrDecoder Instr(Mnemonic opcode, params Mutator<SparcDisassembler>[] mutators)
+        private static Decoder Instr(Mnemonic mnemonic, params Mutator<SparcDisassembler>[] mutators)
         {
-            return new InstrDecoder { code = opcode, iclass = InstrClass.Linear, mutators = mutators };
+            return new InstrDecoder<SparcDisassembler, Mnemonic, SparcInstruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
-        private static InstrDecoder Instr(Mnemonic opcode, InstrClass iclass, params Mutator<SparcDisassembler>[] mutators)
+        private static Decoder Instr(InstrClass iclass, Mnemonic mnemonic, params Mutator<SparcDisassembler>[] mutators)
         {
-            return new InstrDecoder { code = opcode, iclass = iclass, mutators = mutators };
+            return new InstrDecoder<SparcDisassembler, Mnemonic, SparcInstruction>(iclass, mnemonic, mutators);
         }
 
-        private static InstrDecoder invalid = Instr(Mnemonic.illegal, InstrClass.Invalid);
+        private static Decoder invalid = Instr(InstrClass.Invalid, Mnemonic.illegal);
 
         static SparcDisassembler()
         {
             branchOps = new Decoder[]
             {
                 // 00
-                Instr(Mnemonic.bn, CondTransfer, J),
-                Instr(Mnemonic.be, CondTransfer, J),
-                Instr(Mnemonic.ble, CondTransfer, J),
-                Instr(Mnemonic.bl, CondTransfer, J),
-                Instr(Mnemonic.bleu, CondTransfer, J),
-                Instr(Mnemonic.bcs, CondTransfer, J),
-                Instr(Mnemonic.bneg, CondTransfer, J),
-                Instr(Mnemonic.bvs, CondTransfer, J),
+                Instr(CondTransfer, Mnemonic.bn, J),
+                Instr(CondTransfer, Mnemonic.be, J),
+                Instr(CondTransfer, Mnemonic.ble, J),
+                Instr(CondTransfer, Mnemonic.bl, J),
+                Instr(CondTransfer, Mnemonic.bleu, J),
+                Instr(CondTransfer, Mnemonic.bcs, J),
+                Instr(CondTransfer, Mnemonic.bneg, J),
+                Instr(CondTransfer, Mnemonic.bvs, J),
 
-                Instr(Mnemonic.ba, CondTransfer, J),
-                Instr(Mnemonic.bne, CondTransfer, J),
-                Instr(Mnemonic.bg, CondTransfer, J),
-                Instr(Mnemonic.bge, CondTransfer, J),
-                Instr(Mnemonic.bgu, CondTransfer, J),
-                Instr(Mnemonic.bcc, CondTransfer, J),
-                Instr(Mnemonic.bpos, CondTransfer, J),
-                Instr(Mnemonic.bvc, CondTransfer, J),
+                Instr(CondTransfer, Mnemonic.ba, J),
+                Instr(CondTransfer, Mnemonic.bne, J),
+                Instr(CondTransfer, Mnemonic.bg, J),
+                Instr(CondTransfer, Mnemonic.bge, J),
+                Instr(CondTransfer, Mnemonic.bgu, J),
+                Instr(CondTransfer, Mnemonic.bcc, J),
+                Instr(CondTransfer, Mnemonic.bpos, J),
+                Instr(CondTransfer, Mnemonic.bvc, J),
 
                 // 10
-                Instr(Mnemonic.fbn, CondTransfer, J),
-                Instr(Mnemonic.fbne, CondTransfer, J),
-                Instr(Mnemonic.fblg, CondTransfer, J),
-                Instr(Mnemonic.fbul, CondTransfer, J),
-                Instr(Mnemonic.fbug, CondTransfer, J),
-                Instr(Mnemonic.fbg, CondTransfer, J),
-                Instr(Mnemonic.fbu, CondTransfer, J),
-                Instr(Mnemonic.fbug, CondTransfer, J),
+                Instr(CondTransfer, Mnemonic.fbn, J),
+                Instr(CondTransfer, Mnemonic.fbne, J),
+                Instr(CondTransfer, Mnemonic.fblg, J),
+                Instr(CondTransfer, Mnemonic.fbul, J),
+                Instr(CondTransfer, Mnemonic.fbug, J),
+                Instr(CondTransfer, Mnemonic.fbg, J),
+                Instr(CondTransfer, Mnemonic.fbu, J),
+                Instr(CondTransfer, Mnemonic.fbug, J),
 
-                Instr(Mnemonic.fba, CondTransfer, J),
-                Instr(Mnemonic.fbe, CondTransfer, J),
-                Instr(Mnemonic.fbue, CondTransfer, J),
-                Instr(Mnemonic.fbge, CondTransfer, J),
-                Instr(Mnemonic.fbuge, CondTransfer, J),
-                Instr(Mnemonic.fble, CondTransfer, J),
-                Instr(Mnemonic.fbule, CondTransfer, J),
-                Instr(Mnemonic.fbo, CondTransfer, J),
+                Instr(CondTransfer, Mnemonic.fba, J),
+                Instr(CondTransfer, Mnemonic.fbe, J),
+                Instr(CondTransfer, Mnemonic.fbue, J),
+                Instr(CondTransfer, Mnemonic.fbge, J),
+                Instr(CondTransfer, Mnemonic.fbuge, J),
+                Instr(CondTransfer, Mnemonic.fble, J),
+                Instr(CondTransfer, Mnemonic.fbule, J),
+                Instr(CondTransfer, Mnemonic.fbo, J),
 
                 // 20
                 Instr(Mnemonic.cbn, J),
@@ -481,7 +475,7 @@ namespace Reko.Arch.Sparc
 
                 (0x51, Instr(Mnemonic.fcmps, f14, f0)),
                 (0x52, Instr(Mnemonic.fcmpd, d14, d0)),
-                (0x53, Instr(Mnemonic.fcmpq, f14, f0)),
+                (0x53, Instr(Mnemonic.fcmpq, q14, q0)),
                 (0x55, Instr(Mnemonic.fcmpes, f14, f0)),
                 (0x56, Instr(Mnemonic.fcmped, d14, d0)),
                 (0x57, Instr(Mnemonic.fcmpeq, q14, q0))
@@ -538,8 +532,8 @@ namespace Reko.Arch.Sparc
                 Instr(Mnemonic.sra, r14,S,r25),
 
                 Instr(Mnemonic.rd, ry,r25),
-                new InstrDecoder { code=Mnemonic.rdpsr, },
-                new InstrDecoder { code=Mnemonic.rdtbr, },
+                Instr(Mnemonic.rdpsr, nyi),
+                Instr(Mnemonic.rdtbr, nyi),
                 invalid,
                 invalid,
                 invalid,
@@ -547,10 +541,10 @@ namespace Reko.Arch.Sparc
                 invalid,
 
                 // 30
-                new InstrDecoder { code=Mnemonic.wrasr, },
-                new InstrDecoder { code=Mnemonic.wrpsr, },
-                new InstrDecoder { code=Mnemonic.wrwim, },
-                new InstrDecoder { code=Mnemonic.wrtbr, },
+                Instr(Mnemonic.wrasr, nyi),
+                Instr(Mnemonic.wrpsr, nyi),
+                Instr(Mnemonic.wrwim, nyi),
+                Instr(Mnemonic.wrtbr, nyi),
                 Sparse(5, 9, "  FOp1", invalid, fpDecoders),
                 Sparse(5, 9, "  FOp2", invalid, fpDecoders),
                 Sparse(4, 9, "  CPop1", invalid, fpDecoders),
@@ -566,7 +560,7 @@ namespace Reko.Arch.Sparc
                 invalid,
             };
 
-            var decoders_3 = new InstrDecoder[]
+            var decoders_3 = new Decoder[]
             {
                 // 00
                 Instr(Mnemonic.ld, Mw,r25),
@@ -583,7 +577,7 @@ namespace Reko.Arch.Sparc
                 Instr(Mnemonic.ldsh, Msh,r25),
                 invalid,
                 invalid,
-                new InstrDecoder { code=Mnemonic.ldstub,  iclass=InstrClass.Invalid },
+                Instr(Mnemonic.ldstub, nyi),
                 invalid,
                 Instr(Mnemonic.swap, Mw,r25),
 
@@ -626,14 +620,14 @@ namespace Reko.Arch.Sparc
                 invalid,
 
                 // 30
-                new InstrDecoder { code=Mnemonic.ldc, },
-                new InstrDecoder { code=Mnemonic.ldcsr, },
+                Instr(Mnemonic.ldc),
+                Instr(Mnemonic.ldcsr),
                 invalid,
-                new InstrDecoder { code=Mnemonic.lddc, },
-                new InstrDecoder { code=Mnemonic.stc, },
-                new InstrDecoder { code=Mnemonic.stcsr, },
-                new InstrDecoder { code=Mnemonic.stdcq, },
-                new InstrDecoder { code=Mnemonic.stdc, },
+                Instr(Mnemonic.lddc, nyi),
+                Instr(Mnemonic.stc, nyi),
+                Instr(Mnemonic.stcsr, nyi),
+                Instr(Mnemonic.stdcq, nyi),
+                Instr(Mnemonic.stdc, nyi),
 
                 invalid,
                 invalid,
@@ -671,7 +665,7 @@ namespace Reko.Arch.Sparc
 
             rootDecoder = Mask(30, 2, "SPARC",
                 Mask(22, 3, "  Format 0", decoders_0),
-                Instr(Mnemonic.call, LinkTransfer, JJ),
+                Instr(LinkTransfer, Mnemonic.call, JJ),
                 Mask(19, 6, "  Format 2", decoders_2),
                 Mask(19, 6, "  Format 3", decoders_3));
         }

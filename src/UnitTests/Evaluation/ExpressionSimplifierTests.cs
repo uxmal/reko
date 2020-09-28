@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,8 +65,8 @@ namespace Reko.UnitTests.Evaluation
             this.ssaIds = BuildSsaIdentifiers();
             var listener = new FakeDecompilerEventListener();
             var segmentMap = new SegmentMap(Address.Ptr32(0));
-            var importResolver = new Mock<IImportResolver>();
-            var ssaCtx = new SsaEvaluationContext(arch?.Object, ssaIds, importResolver.Object);
+            var dynamicLinker = new Mock<IDynamicLinker>();
+            var ssaCtx = new SsaEvaluationContext(arch?.Object, ssaIds, dynamicLinker.Object);
             simplifier = new ExpressionSimplifier(segmentMap, ssaCtx, listener);
         }
 
@@ -336,6 +336,19 @@ namespace Reko.UnitTests.Evaluation
 
             var exp = m.Cast(PrimitiveType.Word32, value);
             Assert.AreEqual("0x00123400", exp.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_cast_of_unknown_type()
+        {
+            Given_ExpressionSimplifier();
+            var value = foo;
+            value.DataType = new UnknownType();
+            var exp = m.Cast(new UnknownType(), value);
+
+            var result = exp.Accept(simplifier);
+
+            Assert.AreEqual("(<type-error>) foo_1", result.ToString());
         }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -76,6 +76,11 @@ namespace Reko.Arch.X86
         public X86Disassembler CreateDisassemblerImpl(EndianImageReader imageReader)
         {
             return mode.CreateDisassembler(imageReader, Options);
+        }
+
+        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            return mode.CreateEmulator(this, segmentMap, envEmulator);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -204,11 +209,6 @@ namespace Reko.Arch.X86
 			}
 			return GetFlagGroup(Registers.eflags, (uint) grf);
 		}
-
-        public RegisterStorage GetRegister(int i)
-        {
-            return Registers.GetRegister(i);
-        }
 
         public override RegisterStorage GetRegister(string name)
 		{

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -95,7 +95,7 @@ namespace Reko.UnitTests.Analysis
             {
                 Programs = { this.progBuilder.Program }
             };
-            var importResolver = new Mock<IImportResolver>();
+            var dynamicLinker = new Mock<IDynamicLinker>();
             var platform = new Mock<IPlatform>();
             platform.Setup(p => p.CreateTrashedRegisters()).Returns(new HashSet<RegisterStorage>());
             progBuilder.Program.Platform = platform.Object;
@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Analysis
                 progBuilder.Program,
                 proc,
                 new HashSet<Procedure>(),
-                importResolver.Object,
+                dynamicLinker.Object,
                 new ProgramDataFlow());
             sst.Transform();
 
@@ -112,7 +112,7 @@ namespace Reko.UnitTests.Analysis
                 segmentMap,
                 sst.SsaState,
                 new CallGraph(),
-                importResolver.Object,
+                dynamicLinker.Object,
                 NullDecompilerEventListener.Instance);
             vp.Transform();
 

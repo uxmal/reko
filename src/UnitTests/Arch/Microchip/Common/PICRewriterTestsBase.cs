@@ -1,8 +1,8 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 2017-2019 Christian Hostelet.
+ * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work of:
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,28 +35,27 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         protected IPICProcessorModel picModel;
         protected PICArchitecture arch;
         protected Address baseAddr = PICProgAddress.Ptr(0x200);
-        protected MemoryArea image;
+        protected MemoryArea mem;
 
         public override IProcessorArchitecture Architecture => arch;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder frame, IRewriterHost host)
         {
-            var disasm = picModel.CreateDisassembler(arch, new LeImageReader(image, 0));
+            var disasm = picModel.CreateDisassembler(arch, new LeImageReader(mem, 0));
             var rwtr = picModel.CreateRewriter(arch, disasm, (PICProcessorState)arch.CreateProcessorState(), frame, host);
             return rwtr;
         }
 
         public override Address LoadAddress => baseAddr;
 
-        protected override MemoryArea RewriteCode(uint[] words)
+        protected void Given_UInt16s(uint[] words)
         {
             byte[] bytes = words.SelectMany(w => new byte[]
             {
                 (byte) w,
                 (byte) (w >> 8),
             }).ToArray();
-            image = new MemoryArea(LoadAddress, bytes);
-            return image;
+            this.mem = new MemoryArea(LoadAddress, bytes);
         }
 
         protected string _fmtBinary(uint[] words)
@@ -82,7 +81,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
             int i = 0;
             var frame = Architecture.CreateFrame();
             var host = CreateRewriterHost();
-            var rewriter = GetRtlStream(frame, host).GetEnumerator();
+            var rewriter = GetRtlStream(mem, frame, host).GetEnumerator();
             while (i < expected.Length && rewriter.MoveNext())
             {
                 Assert.AreEqual(expected[i], $"{i}|{RtlInstruction.FormatClass(rewriter.Current.Class)}|{rewriter.Current}", mesg);
@@ -107,10 +106,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 
         public void ExecTest(uint[] words, params string[] expected)
         {
-            RewriteCode(words);
+            Given_UInt16s(words);
             AssertCode(_fmtBinary(words), expected);
         }
-
     }
-
 }

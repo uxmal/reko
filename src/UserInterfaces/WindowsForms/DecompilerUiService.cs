@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,10 +73,10 @@ namespace Reko.UserInterfaces.WindowsForms
             Thread ownthr = null;
 #endif
             return (Gui.DialogResult)
-                form.Invoke(new Func<Form, Gui.DialogResult>(delegate(Form dlgToShow)
+                form.Invoke(new Func<Gui.DialogResult>(delegate()
                 {
-                    return (Gui.DialogResult)dlgToShow.ShowDialog(form);
-                }), dlg);
+                    return (Gui.DialogResult)dlg.ShowDialog(form);
+                }));
         }
 
         public virtual Gui.DialogResult ShowModalDialog(IDialog dlg)

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,7 +54,6 @@ namespace Reko.Arch.Arm
 
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
 #if NATIVE
-
             var unk = CreateNativeArchitecture("arm-thumb");
             this.native = (INativeArchitecture)Marshal.GetObjectForIUnknown(unk);
             GetRegistersFromNative();
@@ -127,6 +126,11 @@ namespace Reko.Arch.Arm
                     hBytes.Free();
                 }
             }*/
+        }
+
+        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            throw new NotImplementedException();
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)

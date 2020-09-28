@@ -1,7 +1,7 @@
 
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -100,9 +100,9 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program program, TextWriter writer)
         {
-            var importResolver = new Mock<IImportResolver>();
+            var dynamicLinker = new Mock<IDynamicLinker>();
 
-            dfa = new DataFlowAnalysis(program, importResolver.Object, eventListener);
+            dfa = new DataFlowAnalysis(program, dynamicLinker.Object, eventListener);
             var ssts = dfa.RewriteProceduresToSsa();
 
             // Discover ssaId's that are live out at each call site.
@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Analysis
                 program,
                 ssts.Select(sst => sst.SsaState),
                 dfa.ProgramDataFlow,
-                importResolver.Object,
+                dynamicLinker.Object,
                 eventListener);
             uvr.Transform();
 

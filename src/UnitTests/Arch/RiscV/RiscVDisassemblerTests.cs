@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Arch.RiscV
             var i = DisassembleWord(uInstr);
             Assert.AreEqual(sExp, i.ToString());
         }
-
+         
         private void DumpWord(uint uInstr)
         {
             var sb = new StringBuilder();
@@ -189,9 +189,9 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
-        public void RiscV_dasm_fmv_s_x()
+        public void RiscV_dasm_fmv_w_x()
         {
-            AssertCode("fmv.s.x\tfa5,zero", 0xF00007D3u);
+            AssertCode("fmv.w.x\tfa5,zero", 0xF00007D3u);
         }
 
         [Test]
@@ -371,14 +371,6 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode("@@@", 0x62696C2F);
         }
 
-        // Reko: a decoder for RiscV instruction 2D646C2F at address 00100000 has not been implemented. (amo)
-        [Test]
-        [Ignore("ASCII code decoded as text")]
-
-        public void RiscV_dasm_2D646C2F()
-        {
-            AssertCode("@@@", 0x2D646C2F);
-        }
 
         // Reko: a decoder for RiscV instruction 36766373 at address 00100000 has not been implemented. (system)
         [Test]
@@ -392,14 +384,6 @@ namespace Reko.UnitTests.Arch.RiscV
         public void RiscV_dasm_c_fldsp()
         {
             AssertCode("c.fldsp\tfa3,00000228", 0x00003436);
-        }
-
-        // Reko: a decoder for RiscV instruction 312E6F73 at address 00100000 has not been implemented. (system)
-        [Test]
-        [Ignore("ASCII code decoded as text")]
-        public void RiscV_dasm_312E6F73()
-        {
-            AssertCode("@@@", 0x312E6F73);
         }
 
         [Test]

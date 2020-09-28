@@ -81,6 +81,22 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\i8051\i8051.csproj">
+      <Name>i8051</Name>
+      <Project>{ab5ddeb2-87c0-42c7-8cd3-72cb2b1282fb}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\LatticeMico\LatticeMico.csproj">
+      <Name>LatticeMico</Name>
+      <Project>{75d6bc51-64d8-4f1c-bffd-ee2debfd83ba}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\M6800\M6800.csproj">
       <Name>M6800</Name>
       <Project>{54944b1e-7c12-4fb1-a208-996ad6d04b80}</Project>
@@ -236,6 +252,14 @@
     <ProjectReference Include="..\Arch\Vax\Vax.csproj">
       <Name>Vax</Name>
       <Project>{82777964-b370-431a-ac97-733c594c02b5}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\WE32100\WE32100.csproj">
+      <Name>WE32100</Name>
+      <Project>{a3d277db-5f5d-41f7-80f1-1c84a5026b90}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>

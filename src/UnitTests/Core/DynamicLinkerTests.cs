@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ using System.ComponentModel.Design;
 namespace Reko.UnitTests.Core
 {
     [TestFixture]
-    public class ImportResolverTests
+    public class DynamicLinkerTests
     {
         private CommonMockFactory mockFactory;
         private Mock<IPlatform> platform;
@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Core
             };
             program.EnvironmentMetadata.Modules.Add("foo", module);
 
-            var impres = new ImportResolver(proj, program, new FakeDecompilerEventListener());
+            var impres = new DynamicLinker(proj, program, new FakeDecompilerEventListener());
             var ep = impres.ResolveProcedure("foo", "bar@4", platform.Object);
             Assert.AreEqual("bar", ep.Name);
         }
@@ -123,7 +123,7 @@ namespace Reko.UnitTests.Core
             };
             program.EnvironmentMetadata.Modules.Add(module.ModuleName, module);
 
-            var impres = new ImportResolver(proj, program, new FakeDecompilerEventListener());
+            var impres = new DynamicLinker(proj, program, new FakeDecompilerEventListener());
             var ep = impres.ResolveProcedure("foo", 9, platform.Object);
             Assert.AreEqual("bar", ep.Name);
         }
@@ -177,7 +177,7 @@ namespace Reko.UnitTests.Core
                 }
             });
 
-            var impres = new ImportResolver(proj, program, new FakeDecompilerEventListener());
+            var impres = new DynamicLinker(proj, program, new FakeDecompilerEventListener());
             var ep = impres.ResolveProcedure("foo", "bar", platform.Object);
             Assert.AreEqual("bar", ep.Name);
 
@@ -229,7 +229,7 @@ namespace Reko.UnitTests.Core
             };
             program.EnvironmentMetadata.Modules.Add(module.ModuleName, module);
 
-            var impres = new ImportResolver(proj, program, new FakeDecompilerEventListener());
+            var impres = new DynamicLinker(proj, program, new FakeDecompilerEventListener());
             var dt = impres.ResolveImport("foo", "bar", platform.Object);
             Assert.AreEqual("&bar", dt.ToString());
         }
@@ -238,7 +238,7 @@ namespace Reko.UnitTests.Core
         public void Impres_VtblFromMsMangledName()
         {
             var proj = new Project();
-            var impres = new ImportResolver(proj, program, new FakeDecompilerEventListener());
+            var impres = new DynamicLinker(proj, program, new FakeDecompilerEventListener());
             platform.Setup(p => p.ResolveImportByName(
                 It.IsAny<string>(),
                 It.IsAny<string>()))
@@ -289,7 +289,7 @@ namespace Reko.UnitTests.Core
                 new NamedImportReference(
                     Address.Ptr32(0x00200000), null, "my_global_var", SymbolType.Data));
 
-            var impres = new ImportResolver(project, program, new FakeDecompilerEventListener());
+            var impres = new DynamicLinker(project, program, new FakeDecompilerEventListener());
 
             var m = new ExpressionEmitter();
             var proc = program.EnsureProcedure(program.Architecture, Address.Ptr64(0x00123000), "foo_proc");

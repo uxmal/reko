@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -70,9 +70,11 @@ namespace Reko.Arch.X86
             get { return Registers.sp; }
         }
 
-        public abstract IEnumerable<Address> CreateInstructionScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
-
         public abstract X86Disassembler CreateDisassembler(EndianImageReader rdr, X86Options options);
+
+        public abstract IProcessorEmulator CreateEmulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator);
+
+        public abstract IEnumerable<Address> CreateInstructionScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
 
         public abstract OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host);
 
@@ -179,6 +181,11 @@ namespace Reko.Arch.X86
             return dasm;
         }
 
+        public override IProcessorEmulator CreateEmulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            return new X86RealModeEmulator(arch, segmentMap, envEmulator);
+        }
+
         public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host)
         {
             return new OperandRewriter16(arch, m, binder, host);
@@ -215,6 +222,11 @@ namespace Reko.Arch.X86
         public override X86Disassembler CreateDisassembler(EndianImageReader rdr, X86Options options)
         {
             return new X86Disassembler(this, rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
+        }
+
+        public override IProcessorEmulator CreateEmulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            throw new NotImplementedException();
         }
 
         public override IEnumerable<Address> CreateInstructionScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
@@ -302,7 +314,7 @@ namespace Reko.Arch.X86
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            return Address.Ptr32(c.ToUInt32());
+            return Address.Ptr32((uint)c.ToUInt64());
         }
 
         public override Address MakeAddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
@@ -323,6 +335,11 @@ namespace Reko.Arch.X86
         public override X86Disassembler CreateDisassembler(EndianImageReader rdr, X86Options options)
         {
             return new X86Disassembler(this, rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
+        }
+
+        public override IProcessorEmulator CreateEmulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            return new X86Protected32Emulator(arch, segmentMap, envEmulator);
         }
 
         public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host)
@@ -390,15 +407,20 @@ namespace Reko.Arch.X86
             return Address.Ptr64(offset);
         }
 
+        public override X86Disassembler CreateDisassembler(EndianImageReader rdr, X86Options options)
+        {
+            return new X86Disassembler(this, rdr, PrimitiveType.Word32, PrimitiveType.Word64, true);
+        }
+
+        public override IProcessorEmulator CreateEmulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            throw new NotImplementedException();
+        }
+
         public override IEnumerable<Address> CreateInstructionScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             var knownLinAddresses = knownAddresses.Select(a => (ulong)a.ToLinear()).ToHashSet();
             return new X86PointerScanner64(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
-        }
-
-        public override X86Disassembler CreateDisassembler(EndianImageReader rdr, X86Options options)
-        {
-            return new X86Disassembler(this, rdr, PrimitiveType.Word32, PrimitiveType.Word64, true);
         }
 
         public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host)

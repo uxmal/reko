@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ namespace Reko.Arch.Cray.Cray1
 {
     using Decoder = Reko.Core.Machine.Decoder<Cray1Disassembler, Mnemonic, CrayInstruction>;
 
-    public class Cray1Disassembler : DisassemblerBase<CrayInstruction>
+    public class Cray1Disassembler : DisassemblerBase<CrayInstruction, Mnemonic>
     {
         private static readonly Decoder rootDecoder;
 
@@ -57,7 +57,18 @@ namespace Reko.Arch.Cray.Cray1
             return instr;
         }
 
-        protected override CrayInstruction CreateInvalidInstruction()
+        public override CrayInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            var instr = new CrayInstruction
+            {
+                InstructionClass = iclass,
+                Mnemonic = mnemonic,
+                Operands = this.ops.ToArray(),
+            };
+            return instr;
+        }
+
+        public override CrayInstruction CreateInvalidInstruction()
         {
             return new CrayInstruction
             {
@@ -69,39 +80,9 @@ namespace Reko.Arch.Cray.Cray1
 
         #region Decoders
 
-        private class InstrDecoder : Decoder
+        private static Decoder Instr(Mnemonic mnemonic, params Mutator<Cray1Disassembler> [] mutators)
         {
-            private readonly InstrClass iclass;
-            private readonly Mnemonic mnemonic;
-            private readonly Mutator<Cray1Disassembler>[] mutators;
-
-            public InstrDecoder(InstrClass iclass, Mnemonic mnemonic, Mutator<Cray1Disassembler>[] mutators)
-            {
-                this.iclass = iclass;
-                this.mnemonic = mnemonic;
-                this.mutators = mutators;
-            }
-
-            public override CrayInstruction Decode(uint wInstr, Cray1Disassembler dasm)
-            {
-                foreach (var m in mutators)
-                {
-                    if (!m(wInstr, dasm))
-                        return dasm.CreateInvalidInstruction();
-                }
-                var instr = new CrayInstruction
-                {
-                    InstructionClass = this.iclass,
-                    Mnemonic = this.mnemonic,
-                    Operands = dasm.ops.ToArray(),
-                };
-                return instr;
-            }
-        }
-
-        private static InstrDecoder Instr(Mnemonic mn, params Mutator<Cray1Disassembler> [] mutators)
-        {
-            return new InstrDecoder(InstrClass.Linear, mn, mutators);
+            return new InstrDecoder<Cray1Disassembler, Mnemonic, CrayInstruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
         #endregion

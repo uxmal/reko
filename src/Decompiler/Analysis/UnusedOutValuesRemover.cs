@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,20 +44,20 @@ namespace Reko.Analysis
         private readonly Program program;
         private readonly Dictionary<Procedure, SsaState> procToSsa;
         private readonly ProgramDataFlow dataFlow;
-        private readonly IImportResolver importResolver;
+        private readonly IDynamicLinker dynamicLinker;
         private readonly DecompilerEventListener eventListener;
 
         public UnusedOutValuesRemover(
             Program program,
             IEnumerable<SsaState> ssaStates,
             ProgramDataFlow dataFlow,
-            IImportResolver importResolver,
+            IDynamicLinker dynamicLinker,
             DecompilerEventListener eventListener)
         {
             this.dataFlow = dataFlow;
             this.program = program;
             this.ssaStates = ssaStates;
-            this.importResolver = importResolver;
+            this.dynamicLinker = dynamicLinker;
             this.eventListener = eventListener;
             this.wl = new WorkList<SsaState>();
             this.procToSsa = ssaStates
@@ -79,7 +79,7 @@ namespace Reko.Analysis
                 {
                     if (this.eventListener.IsCanceled())
                         return;
-                    var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver, eventListener);
+                    var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, dynamicLinker, eventListener);
                     vp.Transform();
                     change |= RemoveUnusedDefinedValues(ssa, wl);
                     DataFlowAnalysis.DumpWatchedProcedure("After RemoveUnusedDefinedValues", ssa.Procedure);

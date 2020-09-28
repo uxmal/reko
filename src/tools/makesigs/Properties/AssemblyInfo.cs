@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Reko decompiler")]
-[assembly: AssemblyCopyright("Copyright © 1999-2019 John Källén")]
+[assembly: AssemblyCopyright("Copyright © 1999-2020 John Källén")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

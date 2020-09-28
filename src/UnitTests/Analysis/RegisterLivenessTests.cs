@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,13 +39,13 @@ namespace Reko.UnitTests.Analysis
 	public class RegisterLivenessTests : AnalysisTestBase
 	{
         private SortedList<Address, Procedure_v1> userSigs;
-        private Mock<IImportResolver> importResolver;
+        private Mock<IDynamicLinker> dynamicLinker;
 
         [SetUp]
         public void Setup()
         {
             userSigs = new SortedList<Address, Procedure_v1>();
-            this.importResolver = new Mock<IImportResolver>();
+            this.dynamicLinker = new Mock<IDynamicLinker>();
         }
 
 		protected override void RunTest(Program program, TextWriter writer)
@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Analysis
 			var eventListener = new FakeDecompilerEventListener();
 			var dfa = new DataFlowAnalysis(
                 program, 
-                importResolver.Object, 
+                dynamicLinker.Object, 
                 eventListener);
             program.User.Procedures = userSigs;
             var usb = new UserSignatureBuilder(program);
@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Analysis
                 program,
                 ssts.Select(sst => sst.SsaState),
                 dfa.ProgramDataFlow,
-                importResolver.Object,
+                dynamicLinker.Object,
                 eventListener);
             uvr.Transform();
             DumpProcedureFlows(program, dfa, writer);

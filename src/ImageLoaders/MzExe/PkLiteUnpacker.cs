@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,15 +48,15 @@ namespace Reko.ImageLoaders.MzExe
 		private const uint signatureOffset = 0x1C;
 		private const uint PspSize = 0x0100;
 
-		public PkLiteUnpacker(IServiceProvider services, string filename, byte [] rawImg) : base(services, filename, rawImg)
+		public PkLiteUnpacker(MsdosImageLoader loader) 
+            : base(loader.Services, loader.Filename, loader.RawImage)
 		{
-            var exe = new ExeImageLoader(services, filename, rawImg);
-            var cfgSvc = services.RequireService<IConfigurationService>();
+            var cfgSvc = Services.RequireService<IConfigurationService>();
             this.arch = cfgSvc.GetArchitecture("x86-real-16");
             platform = cfgSvc.GetEnvironment("ms-dos")
-                .Load(services, arch);
+                .Load(Services, arch);
 
-			uint pkLiteHdrOffset = (uint) (exe.e_cparHeader * 0x10);
+			uint pkLiteHdrOffset = (uint) (loader.ExeLoader.e_cparHeader * 0x10);
 
 			if (RawImage[pkLiteHdrOffset] != 0xB8)
 				throw new ApplicationException(string.Format("Expected MOV AX,XXXX at offset 0x{0:X4}.", pkLiteHdrOffset));

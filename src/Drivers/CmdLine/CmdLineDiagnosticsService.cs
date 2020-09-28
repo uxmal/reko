@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -81,7 +81,7 @@ namespace Reko.CmdLine
 
         public void Warn(string message)
         {
-            throw new NotImplementedException();
+            writer.WriteLine("warning: {0}", message);
         }
 
         public void Warn(string message, params object[] args)
@@ -91,7 +91,7 @@ namespace Reko.CmdLine
 
         public void Warn(ICodeLocation location, string message)
         {
-            throw new NotImplementedException();
+            writer.WriteLine("{0}: warning: {1}", location, message);
         }
 
         public void Warn(ICodeLocation location, string message, params object[] args)

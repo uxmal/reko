@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -92,18 +92,18 @@ namespace Reko.ImageLoaders.OdbgScript
                         }
                         else
                         {
-                            int min = -1, tmp;
+                            int min = scriptline.Length, tmp;
                             tmp = scriptline.IndexOf("//", curpos);
-                            if (tmp < min)
+                            if (tmp >= 0 && tmp < min)
                                 min = linecmt = tmp;
                             tmp = scriptline.IndexOf(';', curpos);
-                            if (tmp < min)
+                            if (tmp >= 0 && tmp < min)
                                 min = linecmt = tmp;
                             tmp = scriptline.IndexOf("/*", curpos);
-                            if (tmp < min)
+                            if (tmp >= 0 && tmp < min)
                                 min = spancmt = tmp;
                             tmp = scriptline.IndexOf('\"', curpos);
-                            if (tmp < min)
+                            if (tmp >= 0 && tmp < min)
                                 min = strdel = tmp;
 
                             curpos = min;

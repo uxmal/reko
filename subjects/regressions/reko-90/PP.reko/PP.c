@@ -433,8 +433,8 @@ Eq_n fn0800-0541(Eq_n di, Eq_n ds, ptr16 & bpOut, union Eq_n & dsOut)
 				}
 				if ((int16) *ptrLoc06_n == 0x00)
 				{
-					word16 cx_n;
 					word16 bx_n;
+					word16 cx_n;
 					fn0800-0D24(ds, 0x02, SEQ(ds, 1500), out cx_n, out dx, out bx_n, out si_n, out di, out ds);
 				}
 			}
@@ -461,11 +461,11 @@ Eq_n fn0800-0541(Eq_n di, Eq_n ds, ptr16 & bpOut, union Eq_n & dsOut)
 						byte ch_n = SLICE(cx_n - 0x01, byte, 8);
 						if (cx_n > 0x02)
 						{
+							word16 di_n;
 							word16 cx_n;
+							word16 dx_n;
 							word16 bx_n;
 							word16 si_n;
-							word16 di_n;
-							word16 dx_n;
 							fn0800-0D24(ds, 0x03, ptrLoc06_n, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out ds);
 							ch_n = SLICE(cx_n, byte, 8);
 						}
@@ -488,9 +488,9 @@ Eq_n fn0800-0541(Eq_n di, Eq_n ds, ptr16 & bpOut, union Eq_n & dsOut)
 					dx = fn0800_BF18(di, ds, 2127, ds, out di);
 					if (*((word32) ds + 11855) == 0x00)
 					{
+						word16 cx_n;
 						word16 bx_n;
 						word16 si_n;
-						word16 cx_n;
 						fn0800-0D24(ds, 0x04, ptrLoc06_n, out cx_n, out dx, out bx_n, out si_n, out di, out ds);
 					}
 					*((word32) ds + 0x00002A1F) = 0x00;
@@ -1409,8 +1409,8 @@ Eq_n fn0800-0DE8(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 			union Eq_n Eq_n::* sp_n = sp_n - 0x02;
 			ss->*sp_n = *((word32) ds_n + 0x000029E5);
 			ss->*(sp_n - 0x02) = *((word32) ds_n + 0x000029E3);
-			Eq_n ds_n;
 			word16 cx_n;
+			Eq_n ds_n;
 			word16 dx_n;
 			fn0800_A614(ds_n, ss->*(sp_n - 0x02), out cx_n, out dx_n, out ds_n);
 			ss->*sp_n = *((word32) ds_n + 10721);
@@ -1587,8 +1587,8 @@ Eq_n fn0800-112D(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 Eq_n fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & bpOut, struct Eq_n & dsOut)
 {
 	Eq_n bx_n = *((word32) ds + 0x00002A25);
-	word16 di_n;
 	word16 si_n;
+	word16 di_n;
 	fn0800_B2EF(cx, dx, bx_n << 0x02, ds, SEQ(ds, 2326), out si_n, out di_n);
 	if (*((word32) ds + 11855) != 0x00)
 	{
@@ -1612,12 +1612,12 @@ Eq_n fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & bpOut, struct Eq_n & ds
 		{
 			if ((*((word32) ds_n + 10703) | *((word32) ds_n + 10705)) != 0x00)
 			{
-				word16 di_n;
 				word16 cx_n;
+				word16 di_n;
 				if (fn0800-3E27(ds_n, SEQ(*((word32) ds_n + 10705), *((word32) ds_n + 10703)), out cx_n, out dx_n, out di_n, out ds_n) == 0x4D5A)
 				{
-					word16 cx_n;
 					word16 dx_n;
+					word16 cx_n;
 					fn0800_ACB3(ds_n, SEQ(*((word32) ds_n + 10705), *((word32) ds_n + 10703)), 0x00, 0x02, out cx_n, out dx_n);
 					Eq_n ax_n = fn0800_AD2F(ds_n, SEQ(*((word32) ds_n + 10705), *((word32) ds_n + 10703)), out dx_n);
 					*((word32) ds_n + 10733) = dx_n;
@@ -1638,11 +1638,11 @@ Eq_n fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & bpOut, struct Eq_n & ds
 				((word32) ds_n + 10733)->u0 = 0x00;
 				((word32) ds_n + 10731)->u0 = 0x00;
 			}
-			byte cl_n;
 			word16 dx_n;
+			byte cl_n;
 			fn0800-2CCF(ds_n, SEQ(ss, fp - 0x68), 0x04, 0x00, out cl_n, out dx_n);
-			byte cl_n;
 			word16 dx_n;
+			byte cl_n;
 			fn0800-2CCF(ds_n, SEQ(ss, fp - 0x68), 0x04, 0x00, out cl_n, out dx_n);
 			Eq_n ds_n;
 			word16 si_n;
@@ -1653,8 +1653,8 @@ Eq_n fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & bpOut, struct Eq_n & ds
 	}
 	else if ((*((word32) ds_n + 10703) | *((word32) ds_n + 10705)) == 0x00)
 	{
-		word16 cx_n;
 		word16 dx_n;
+		word16 cx_n;
 		word16 bx_n;
 		word16 si_n;
 		word16 di_n;
@@ -1995,8 +1995,8 @@ Eq_n fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & bpOut, struct Eq_n & ds
 						ss->*((word32) sp_n + 0x02) = dx_n;
 						ss->*sp_n = *((word32) ds_n + 10721);
 						(ss->*(sp_n - 0x02)).t0000 = *((word32) ds_n + 10719);
-						word16 cx_n;
 						word16 dx_n;
+						word16 cx_n;
 						fn0800_ACB3(ds_n, (ss->*(sp_n - 0x02)).t0000, ss->*((word32) sp_n + 0x02), ss->*((word32) sp_n + 0x06), out cx_n, out dx_n);
 						sp_n = (word32) sp_n + 0x08;
 					}
@@ -2064,8 +2064,8 @@ l0800_nE:
 			fn0800-409C(ds_n, (ss->*(sp_n - 0x06)).t0000, (ss->*(sp_n - 0x04)).t0000, (ss->*(sp_n - 0x02)).t0000, out dx_n, out ds_n);
 			(ss->*sp_n).t0000 = *((word32) ds_n + 0x000029E5);
 			(ss->*(sp_n - 0x02)).t0000 = *((word32) ds_n + 0x000029E3);
-			word16 cx_n;
 			word16 dx_n;
+			word16 cx_n;
 			fn0800_A614(ds_n, (ss->*(sp_n - 0x02)).t0000, out cx_n, out dx_n, out ds_n);
 			(ss->*sp_n).t0000 = ds_n;
 			(ss->*(sp_n - 0x02)).t0000.u0 = 0x4541;
@@ -2080,8 +2080,8 @@ l0800_nE:
 		} while ((word32) dx_n + ((uint16) ((uint8) (*((word32) es_bx_n + 0x04))) << 0x08) < ~0x73);
 		(ss->*sp_n).t0000 = ds_n;
 		(ss->*(sp_n - 0x02)).t0000.u0 = 0x0952;
-		word16 si_n;
 		word16 di_n;
+		word16 si_n;
 		fn0800_B2EF(cx_n, dx_n, bx_n, ds_n, (ss->*(sp_n - 0x02)).t0000, out si_n, out di_n);
 		sp_n = (struct Eq_n Eq_n::*) &sp_n->t0002;
 l0800_nA9:
@@ -2125,8 +2125,8 @@ l0800_nA9:
 // 0800:18D9: Register Eq_n fn0800-18D9(Register Eq_n cx, Register Eq_n dx, Register Eq_n ds, Register out Eq_n bpOut, Register out (ptr16 Eq_n) dsOut)
 Eq_n fn0800-18D9(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & bpOut, struct Eq_n & dsOut)
 {
-	word16 di_n;
 	word16 si_n;
+	word16 di_n;
 	fn0800_B2EF(cx, dx, *((word32) ds + 0x00002A25) << 0x02, ds, SEQ(ds, 2412), out si_n, out di_n);
 	Eq_n dx_n;
 	word16 cx_n;
@@ -2136,11 +2136,11 @@ Eq_n fn0800-18D9(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & bpOut, struct Eq_n & ds
 	*((word32) ds_n + 10703) = ax_n;
 	if ((ax_n | dx_n) == 0x00)
 	{
-		word16 cx_n;
 		word16 dx_n;
 		word16 bx_n;
-		word16 si_n;
 		word16 di_n;
+		word16 cx_n;
+		word16 si_n;
 		fn0800-0D24(ds_n, 0x07, SEQ(ds_n, 0x4348), out cx_n, out dx_n, out bx_n, out si_n, out di_n, out ds_n);
 	}
 	union Eq_n Eq_n::* bp_n;
@@ -2247,10 +2247,10 @@ Eq_n fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & bpOut, union Eq_n & dsO
 	if ((ax_n | dx_n) == 0x00)
 	{
 		word16 di_n;
-		word16 si_n;
 		word16 bx_n;
 		word16 dx_n;
 		word16 cx_n;
+		word16 si_n;
 		fn0800-0D24(ds_n, 0x07, SEQ(ds_n, 0x4348), out cx_n, out dx_n, out bx_n, out si_n, out di_n, out ds_n);
 	}
 	if (*((word32) ds_n + 0x00002A27) == *((word32) ds_n + 9882))
@@ -2412,7 +2412,7 @@ Eq_n fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & bpOut, union Eq_n & dsO
 			es_n = 0x00;
 		}
 		Eq_n ax_n = (word16) (ss->*(sp_n - 0x04)) + ((word16) (ss->*(sp_n - 0x06)) + (uint16) ((uint8) di_n[0x03]));
-		Mem577[ss:sp_n - 0x02 + 0x00:word16] = Mem505[ss:sp_n - 0x02 + 0x00:word16] + (ax_n <u 0x00);
+		Mem575[ss:sp_n - 0x02 + 0x00:word16] = Mem503[ss:sp_n - 0x02 + 0x00:word16] + (ax_n <u 0x00);
 		ss->*(sp_n - 0x04) = ax_n;
 		ss->*(sp_n - 0x06) = *((word32) ds_n + 10705);
 		ss->*(sp_n - 0x08) = *((word32) ds_n + 10703);
@@ -2532,8 +2532,8 @@ Eq_n fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & bpOut, union Eq_n & dsO
 			union Eq_n Eq_n::* sp_n = sp_n - 0x02;
 			ss->*sp_n = ds_n;
 			(ss->*(sp_n - 0x02)).u0 = 0x44DC;
-			word16 dx_n;
 			word16 si_n;
+			word16 dx_n;
 			fn0800-3678(ds_n, ss->*(sp_n - 0x02), out dx_n, out si_n, out ds_n);
 			ss->*sp_n = ss;
 			ss->*(sp_n - 0x02) = bp_n - 114;
@@ -4574,7 +4574,7 @@ word16 fn0800-31B4(Eq_n ds, Eq_n dwArg02, union Eq_n & cxOut, union Eq_n & dxOut
 		fn0800-35A3(fp - 0x10, ss, dwArg02);
 		Eq_n cx_n;
 		Eq_n dx_n;
-		if (fn0800-32CD(ds, SEQ(ss, fp - 0x1E), fp - 0x84, ss, SEQ(ds, 0x09AE)[Mem54[ds:0x09AC:word16] * 0x02], out cx_n, out dx_n) == 0x00)
+		if (fn0800-32CD(ds, SEQ(ss, fp - 0x1E), fp - 0x84, ss, SEQ(ds, 0x09AE)[Mem53[ds:0x09AC:word16] * 0x02], out cx_n, out dx_n) == 0x00)
 			break;
 		if (*((word32) ds + 0x09AC) == 0x00)
 		{
@@ -4593,7 +4593,7 @@ word16 fn0800-31B4(Eq_n ds, Eq_n dwArg02, union Eq_n & cxOut, union Eq_n & dxOut
 			if (ss->*di_n != 0x00)
 				break;
 		}
-		Mem131[ss:~cx_n - 0x02 + (fp - 0x84):byte] = 0x00;
+		Mem129[ss:~cx_n - 0x02 + (fp - 0x84):byte] = 0x00;
 		word16 bx_n;
 		fn0800-3509(wArg02, wArg04, SEQ(ss, fp - 0x84), out bx_n);
 		Eq_n di_n = fp - 0x10;
@@ -4631,7 +4631,7 @@ word16 fn0800-31B4(Eq_n ds, Eq_n dwArg02, union Eq_n & cxOut, union Eq_n & dxOut
 	word16 di_n;
 	fn0800_BEA2(cx_n, dx_n, ds, dwArg02, SEQ(ds, 2599), out di_n);
 	++*((word32) ds + 0x09AC);
-	SEQ(ds, 0x09AE)[Mem310[ds:0x09AC:word16] * 0x02] = 0x00;
+	SEQ(ds, 0x09AE)[Mem307[ds:0x09AC:word16] * 0x02] = 0x00;
 	cxOut.u0 = <invalid>;
 	dxOut.u0 = <invalid>;
 	return 0x01;
@@ -5296,10 +5296,10 @@ word16 fn0800-37DF(Eq_n ds, union Eq_n & dsOut)
 	word16 dx_n;
 	if (fn0800_BA4A(ds_n, SEQ(ds_n, 0x44DC), SEQ(ss, fp - 0x6C), out dx_n) == ~0x00)
 	{
-		word16 bx_n;
-		word16 cx_n;
 		word16 dx_n;
+		word16 bx_n;
 		word16 di_n;
+		word16 cx_n;
 		fn0800-0D24(ds_n, 0x0A, SEQ(ds_n, 0x44DC), out cx_n, out dx_n, out bx_n, out si, out di_n, out ds_n);
 	}
 	dsOut = ds_n;
@@ -5484,7 +5484,7 @@ word16 fn0800-3992(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 							ss->*(sp_n - 0x02) = dx_n;
 							ss->*(sp_n - 0x04) = ax_n;
 							Eq_n ds_n;
-							Mem328[ds_n:0x2A05:word16] = fn0800-3E5D(ds_n, ss->*(sp_n - 0x04), out ds_n) + (ax_n <u 0x12);
+							Mem326[ds_n:0x2A05:word16] = fn0800-3E5D(ds_n, ss->*(sp_n - 0x04), out ds_n) + (ax_n <u 0x12);
 							*((word32) ds_n + 10755) = ax_n + 0x12;
 							ss->*(sp_n - 0x02) = dx_n;
 							ss->*(sp_n - 0x04) = ax_n;
@@ -7040,8 +7040,8 @@ Eq_n fn0800-4C55(Eq_n ax, Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 			wLoc06_n = v56_n;
 			wLoc04_n -= v56_n < 0x00;
 		}
-		word16 dx_n;
 		word16 cx_n;
+		word16 dx_n;
 		Eq_n ax_n = fn0800_ACB3(ds_n, SEQ(*((word32) ds_n + 0x000029E5), *((word32) ds_n + 0x000029E3)), 0x04, 0x01, out cx_n, out dx_n);
 		Eq_n ds_n;
 		Eq_n dx_n;
@@ -8642,7 +8642,7 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 			fn0800-4047(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n, out di_n, out ds_n);
 			Eq_n v163_n = (word16) (ss->*(bp_n - 0x1C)) + 0x01;
 			ss->*(bp_n - 0x1C) = v163_n;
-			Mem1079[ss:bp_n - 0x1A + 0x00:word16] = Mem1075[ss:bp_n - 0x1A + 0x00:word16] + (v163_n <u 0x00);
+			Mem1078[ss:bp_n - 0x1A + 0x00:word16] = Mem1074[ss:bp_n - 0x1A + 0x00:word16] + (v163_n <u 0x00);
 		}
 		Eq_n v64_n = ss->*(bp_n - 0x04) - (ss->*(bp_n - 0x26) << 0x04);
 		ss->*(bp_n - 0x04) = v64_n;
@@ -8725,7 +8725,7 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 		ss->*(sp_n - 0x04) = *((word32) ds_n + 10719);
 		Eq_n sp_n = <invalid>;
 		word16 dx_n;
-		Mem1354[ss:sp_n - 0x02 + 0x00:word16] = Mem1337[ss:bp_n - 0x22 + 0x00:word16] + fn0800-8CAA(ss->*(bp_n - 0x1C), 0x04, ss->*(bp_n - 0x1A), out dx_n);
+		Mem1353[ss:sp_n - 0x02 + 0x00:word16] = Mem1336[ss:bp_n - 0x22 + 0x00:word16] + fn0800-8CAA(ss->*(bp_n - 0x1C), 0x04, ss->*(bp_n - 0x1A), out dx_n);
 		Eq_n ds_n;
 		word16 dx_n;
 		word16 di_n;
@@ -8738,17 +8738,17 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 		{
 			Eq_n v95_n = (word16) (ss->*(bp_n - 0x08)) + 0x0200;
 			ss->*(bp_n - 0x08) = v95_n;
-			Mem1399[ss:bp_n - 0x06 + 0x00:word16] = Mem1395[ss:bp_n - 0x06 + 0x00:word16] + (v95_n <u 0x00);
+			Mem1398[ss:bp_n - 0x06 + 0x00:word16] = Mem1394[ss:bp_n - 0x06 + 0x00:word16] + (v95_n <u 0x00);
 		}
 		else if (*((word32) ds_n + 0x00002A21) == 0x01)
 		{
 			Eq_n v153_n = (word16) (ss->*(bp_n - 0x08)) + 0x0180;
 			ss->*(bp_n - 0x08) = v153_n;
-			Mem1392[ss:bp_n - 0x06 + 0x00:word16] = Mem1388[ss:bp_n - 0x06 + 0x00:word16] + (v153_n <u 0x00);
+			Mem1391[ss:bp_n - 0x06 + 0x00:word16] = Mem1387[ss:bp_n - 0x06 + 0x00:word16] + (v153_n <u 0x00);
 		}
 		(ss->*((word32) sp_n + 0x02)).u0 = 0x00;
 		Eq_n bx_n = (word16) (ss->*(bp_n - 0x04)) + (ss->*(bp_n - 0x26) << 0x04);
-		Mem1418[ss:sp_n + 0x00:word16] = Mem1405[ss:bp_n - 0x02 + 0x00:word16] + (bx_n <u 0x00);
+		Mem1417[ss:sp_n + 0x00:word16] = Mem1404[ss:bp_n - 0x02 + 0x00:word16] + (bx_n <u 0x00);
 		(ss->*(sp_n - 0x02)).t0000 = bx_n;
 		(ss->*(sp_n - 0x04)).t0000 = *((word32) ds_n + 0x000029E5);
 		(ss->*(sp_n - 0x06)).t0000 = *((word32) ds_n + 0x000029E3);
@@ -8881,7 +8881,7 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 		Eq_n cx_n = ss->*(bp_n - 0x20);
 		cup16 bx_n = (word16) (ss->*(bp_n - 0x04)) + (ss->*(bp_n - 0x28) << 0x04);
 		cup16 cx_n = (word16) (ss->*(bp_n - 0x08)) + (cx_n - 0x20);
-		word16 dx_n = Mem1841[ss:bp_n - 0x02 + 0x00:word16] + (bx_n <u 0x00);
+		word16 dx_n = Mem1840[ss:bp_n - 0x02 + 0x00:word16] + (bx_n <u 0x00);
 		cup16 ax_n = (bool) (cx_n < 0x00) + ((word16) (ss->*(bp_n - 0x06)) + (ss->*(bp_n - 0x1E) - (cx_n < 0x20)));
 		if (dx_n >= ax_n && (dx_n > ax_n || bx_n > cx_n))
 		{
@@ -8894,7 +8894,7 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 		}
 		Eq_n v157_n = (word16) (ss->*(bp_n - 0x08)) + ((word16) (0x10 - SEQ(ss->*(bp_n - 0x06), ss->*(bp_n - 0x08))) & 0x0F);
 		ss->*(bp_n - 0x08) = v157_n;
-		Mem1924[ss:bp_n - 0x06 + 0x00:word16] = Mem1920[ss:bp_n - 0x06 + 0x00:word16] + (v157_n <u 0x00);
+		Mem1923[ss:bp_n - 0x06 + 0x00:word16] = Mem1919[ss:bp_n - 0x06 + 0x00:word16] + (v157_n <u 0x00);
 		word16 dx_n;
 		Eq_n ax_n = fn0800-8CAA(ss->*(bp_n - 0x08), 0x04, ss->*(bp_n - 0x06), out dx_n);
 		ss->*(bp_n - 0x28) = ax_n;
@@ -12141,7 +12141,7 @@ l0800_nFC8:
 	wLoc08_n = ϕ(wLoc08_n, wLoc08_n, wLoc08_n, wLoc08_n, wLoc08_n, wLoc08_n);
 	wArg0A_n = ϕ(wArg0A, wArg0A_n, wArg0A_n, wArg0A_n, wArg0A_n, wArg0A_n);
 	di_n = ϕ(di, di_n, di_n, di_n, di_n, di_n);
-	Mem51 = ϕ(Mem47, Mem1037, Mem1038, Mem1039, Mem584, Mem523);
+	Mem49 = ϕ(Mem45, Mem1014, Mem1015, Mem1016, Mem569, Mem512);
 	si_n = wArg0A_n;
 	do
 	{
@@ -12151,7 +12151,7 @@ l0800_nFCB:
 		wLoc08_n = ϕ(wLoc08_n, wLoc08_n, wLoc08_n);
 		di_n = ϕ(di_n, di_n, di_n);
 		si_n = ϕ(si_n, si_n, si_n);
-		Mem55 = ϕ(Mem990, Mem868, Mem51);
+		Mem53 = ϕ(Mem968, Mem847, Mem49);
 		al_n = (ds->*si_n).b0000;
 		si_n = &&(SLICE(ptrArg02, selector, 16)->*(SLICE(ptrArg02, selector, 16)->*si_n).b0001);
 		al_n = al_n;
@@ -12172,7 +12172,7 @@ l0800_nFCB:
 				wLoc0C_n = ϕ(wLoc0C_n, wLoc0C_n, wLoc0C_n, wLoc0C_n, wLoc0C_n, wLoc0C_n, wLoc0C_n, wLoc0C_n, wLoc0C_n, wLoc0C_n);
 				bLoc03_n = ϕ(bLoc03_n, bLoc03_n, bLoc03_n, bLoc03_n, bLoc03_n, bLoc03_n, bLoc03_n, bLoc03_n, bLoc03_n, bLoc03_n);
 				di_n = ϕ(di_n, di_n, di_n, di_n, di_n, di_n, di_n, di_n, di_n, di_n);
-				Mem83 = ϕ(Mem80, Mem819, Mem493, Mem117, Mem121, Mem89, Mem489, Mem485, Mem806, Mem816);
+				Mem80 = ϕ(Mem77, Mem800, Mem482, Mem113, Mem117, Mem86, Mem478, Mem474, Mem787, Mem797);
 				si_n = ϕ(si_n, si_n, si_n, si_n, si_n, si_n, si_n, si_n, si_n, si_n);
 				si_n = &&(SLICE(ptrArg02, selector, 16)->*(SLICE(ptrArg02, selector, 16)->*si_n).b0001);
 				ax_n.u0 = (int16) (ds->*si_n).b0000;
@@ -12244,15 +12244,15 @@ l0800_nFCB:
 								di_n = (word16) di_n + 0x01;
 							}
 							di_n = ϕ(di_n, di_n);
-							Mem797 = ϕ(Mem748, Mem784);
+							Mem778 = ϕ(Mem730, Mem765);
 							si_n = si_n - 0x01;
 						} while (si_n > 0x00);
 					}
 					dx_n = ϕ(dx_n, dx_n);
 					wLoc08_n = ϕ(wLoc08_n, wLoc08_n);
 					di_n = ϕ(di_n, di_n);
-					Mem795 = ϕ(Mem89, Mem797);
-					Mem1038 = ϕ(Mem795, Mem802);
+					Mem776 = ϕ(Mem86, Mem778);
+					Mem1015 = ϕ(Mem776, Mem783);
 					goto l0800_nFC8;
 				case 0x07:
 				case 0x08:
@@ -12310,7 +12310,7 @@ l0800_nFCB:
 					while (true)
 					{
 						di_n = ϕ(di_n, di_n);
-						Mem172 = ϕ(Mem164, Mem454);
+						Mem166 = ϕ(Mem158, Mem445);
 						cx_n = ϕ(cx_n, cx_n);
 						if (cx_n == 0x00)
 							break;
@@ -12331,15 +12331,15 @@ l0800_nFCB:
 					}
 					bLoc03_n = ϕ(bLoc03_n, bLoc03_n);
 					si_n = ϕ(si_n, si_n);
-					Mem1062 = ϕ(Mem181, Mem186);
+					Mem1039 = ϕ(Mem175, Mem180);
 					al_n = ϕ(al_n, al_n);
 l0800_nD2:
 					si_n = ϕ(si_n, si_n, si_n, si_n);
-					Mem206 = ϕ(Mem1062, Mem213, Mem213, Mem213);
+					Mem200 = ϕ(Mem1039, Mem207, Mem207, Mem207);
 					al_n = ϕ(al_n, al_n, al_n, al_n);
 					ax_n = (uint16) (uint8) al_n;
 					ch_n = 0x01 << (al_n & 0x07);
-					Mem208[ss:fp - 44 + (ax_n >>u 0x03):byte] = Mem206[ss:fp - 44 + (ax_n >>u 0x03):byte] | ch_n;
+					Mem202[ss:fp - 44 + (ax_n >>u 0x03):byte] = Mem200[ss:fp - 44 + (ax_n >>u 0x03):byte] | ch_n;
 					dl_n = al_n;
 					di_n = ax_n >> 0x03;
 					while (true)
@@ -12347,7 +12347,7 @@ l0800_nD2:
 						ch_n = ϕ(ch_n, ch_n, ch_n);
 						di_n = ϕ(di_n, di_n, di_n);
 						dl_n = ϕ(dl_n, dl_n, dl_n);
-						Mem213 = ϕ(Mem208, Mem213, Mem444);
+						Mem207 = ϕ(Mem202, Mem207, Mem435);
 						si_n = ϕ(si_n, si_n, si_n);
 						al_n = (ds->*si_n).b0000;
 						si_n = &&(ss->*(ss->*si_n).b0001);
@@ -12368,7 +12368,7 @@ l0800_nD2:
 								wLoc08_n = ϕ(wLoc08_n, wLoc08_n, wLoc08_n, wLoc08_n);
 								di_n = ϕ(di_n, di_n, di_n, di_n);
 								es_n = ϕ(es_n, es_n, es_n, es_n);
-								Mem250 = ϕ(Mem231, Mem231, Mem263, Mem365);
+								Mem244 = ϕ(Mem225, Mem225, Mem257, Mem356);
 								si_n = ϕ(si_n, si_n, si_n, si_n);
 								si_n = si_n - 0x01;
 								if (si_n < 0x00)
@@ -12401,7 +12401,7 @@ l0800_nD2:
 								}
 								si_n = si_n;
 								al_n = (byte) ax_n;
-								if ((Mem263[ss:fp - 44 + (ax_n >>u 0x03):byte] & 0x01 << (SLICE(ax_n, byte, 0) & 0x07)) != 0x00)
+								if ((Mem257[ss:fp - 44 + (ax_n >>u 0x03):byte] & 0x01 << (SLICE(ax_n, byte, 0) & 0x07)) != 0x00)
 								{
 									if ((bLoc03_n & 0x10) != 0x00)
 										goto l0800_nD;
@@ -12423,7 +12423,7 @@ l0800_nD:
 							}
 							dx_n = ϕ(dx_n, dx_n);
 							es_n = ϕ(es_n, es_n);
-							Mem405 = ϕ(Mem250, Mem399);
+							Mem396 = ϕ(Mem244, Mem390);
 							if ((bLoc03_n & 0x01) == 0x00)
 							{
 l0800_nE:
@@ -12434,7 +12434,7 @@ l0800_nE:
 							}
 							dx_n = ϕ(dx_n, dx_n);
 							di_n = ϕ(di_n, di_n);
-							Mem1039 = ϕ(Mem405, Mem417);
+							Mem1016 = ϕ(Mem396, Mem408);
 							wLoc08_n = wLoc08_n;
 							goto l0800_nFC8;
 						}
@@ -12448,12 +12448,12 @@ l0800_nE:
 							do
 							{
 								al_n = ϕ(al_n, al_n);
-								Mem442 = ϕ(Mem213, Mem444);
+								Mem433 = ϕ(Mem207, Mem435);
 								di_n = ϕ(di_n, di_n);
 								ch_n = ϕ(ch_n, ch_n);
 								ch_n = __rol(ch_n, 0x01);
 								di_n = di_n + ((ch_n & 0x80) != 0x00);
-								Mem444[ss:fp - 44 + di_n:byte] = Mem442[ss:fp - 44 + di_n:byte] | ch_n;
+								Mem435[ss:fp - 44 + di_n:byte] = Mem433[ss:fp - 44 + di_n:byte] | ch_n;
 								al_n = al_n - 0x01;
 							} while (al_n != 0x00);
 						}
@@ -12497,7 +12497,7 @@ l0800_n:
 						}
 						dx_n = ϕ(dx_n, dx_n, dx_n);
 						di_n = ϕ(di_n, di_n, di_n);
-						Mem1037 = ϕ(Mem701, Mem710, Mem646);
+						Mem1014 = ϕ(Mem683, Mem692, Mem630);
 						goto l0800_nFC8;
 					}
 					if (wLoc0A < 0x00)
@@ -12557,7 +12557,7 @@ l0800_n:
 			{
 				wLoc08_n = ϕ(wLoc08_n, wLoc08_n);
 				sp_n = ϕ(sp_n, sp_n);
-				Mem953 = ϕ(Mem868, Mem1000);
+				Mem931 = ϕ(Mem847, Mem978);
 				ax_n = ϕ(ax_n, ax_n);
 				if ((byte) ax_n < 0x00 || ds->*((word16) ax_n + 9596) != 0x01)
 				{
@@ -16107,8 +16107,8 @@ l0800_B7BD:
 		Eq_n ax_n = wLoc06_n - wLoc0E_n;
 		(ss->*sp_n).t0002 = 0x00 - (ax_n < 0x00);
 		(ss->*sp_n).t0000 = ax_n;
-		word16 cx_n;
 		word16 dx_n;
+		word16 cx_n;
 		Eq_n ax_n = fn0800-8BBB((ss->*sp_n).t0000, (ss->*sp_n).t0004, (ss->*sp_n).t0006, out cx_n, out dx_n);
 		Eq_n sp_n = <invalid>;
 		(ss->*(sp_n - 0x02)).u0 = 0x00;
@@ -16116,8 +16116,8 @@ l0800_B7BD:
 		Eq_n dx_n = (word32) wArg04 + (word16) (*((word32) ds + 20200) *s si_n) - wLoc06_n;
 		ss->*(sp_n - 0x06) = 0x00 - (dx_n < 0x00);
 		ss->*(sp_n - 0x08) = dx_n;
-		word16 dx_n;
 		word16 cx_n;
+		word16 dx_n;
 		Eq_n ax_n = fn0800-8BBB(ss->*(sp_n - 0x08), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n);
 		Eq_n sp_n = <invalid>;
 		si_n = ax_n;
@@ -17126,7 +17126,7 @@ Eq_n fn1483-0C11(byte * ds_si, word16 * es_di, Eq_n al, word16 cx, Eq_n bx, Eq_n
 		Eq_n di_n = di_n + (ds_n->*bx_n).w0000;
 		struct Eq_n Eq_n::* ax_n = (word16) dh_ax_n;
 		word16 v23_n = Mem35[ds_n:ax_n + 0x020E + di_n:word16] + di_n;
-		Mem89[ds_n:ax_n + 0x020E + di_n:word16] = v23_n;
+		Mem88[ds_n:ax_n + 0x020E + di_n:word16] = v23_n;
 		Eq_n ss_bp_n = <invalid>;
 		Eq_n ecx_n = <invalid>;
 		struct Eq_n Eq_n::* ax_n = bx_n - 0x0903 - (SLICE(dh_ax_n, byte, 16) < 0x00);
@@ -17155,13 +17155,13 @@ Eq_n fn1483-0C11(byte * ds_si, word16 * es_di, Eq_n al, word16 cx, Eq_n bx, Eq_n
 		*es_di = 0x1955;
 }
 
-// 1483:0C55: Register Eq_n fn1483-0C55()
-Eq_n fn1483-0C55()
+// 1483:0C55: Register word32 fn1483-0C55()
+word32 fn1483-0C55()
 {
 	if (!Z)
-		return ;
+		return;
 	Eq_n ax_n = fn1483-0C11(si, di, ax_n, cx, bx, bp);
-	return <invalid>;
+	return;
 }
 
 // 1483:0C91: Register Eq_n fn1483-0C91(Sequence ptr32 ds_bx, Sequence Eq_n ss_bp, Register Eq_n ax, Register Eq_n cx, Register Eq_n si, Register Eq_n di, Stack Eq_n psegArg00, Register out Eq_n diOut, Register out Eq_n esOut)
@@ -17190,7 +17190,7 @@ Eq_n fn1483-0C91(ptr32 ds_bx, Eq_n ss_bp, Eq_n ax, Eq_n cx, Eq_n si, Eq_n di, Eq
 	}
 	else
 	{
-		Mem51[ds:bx + 0x2203 + si:word16] = Mem0[ds:bx + 0x2203 + si:word16] + (cx - 0x01);
+		Mem50[ds:bx + 0x2203 + si:word16] = Mem0[ds:bx + 0x2203 + si:word16] + (cx - 0x01);
 		Eq_n di_n;
 		Eq_n ax_n = fn1483-0CA0(SEQ(psegArg00, di), ss_bp, al_n, ah_n, bx, si, ds, out di_n);
 		diOut = di_n;
@@ -17280,7 +17280,7 @@ Eq_n fn1483-0CFC(Eq_n ds_di, Eq_n ss_bp, byte al, byte ah, Eq_n cx, ui16 dx, byt
 	Eq_n di = (word16) ds_di;
 	ptr16 bx_n = SEQ(bh, bl ^ al);
 	byte al_n = *((word32) ds_di + bx_n);
-	Mem64[ss_bp + si:word16] = ~0x2E00;
+	Mem63[ss_bp + si:word16] = ~0x2E00;
 	Eq_n ax_n = SEQ(ah, al_n);
 	if (cx == 0x00)
 	{
@@ -17348,8 +17348,8 @@ void fn1483-0D3F(Eq_n ds_di, Eq_n ss_bp, Eq_n ax, Eq_n cx, ui16 dx, byte bl, byt
 		return;
 	}
 	byte ah_n = (word32) *ds_di + ah_n;
-	word16 v19_n = Mem75[ds:bx_n + 0x43 + si:word16];
-	Mem77[ds:bx_n + 0x43 + si:word16] = bp;
+	word16 v19_n = Mem73[ds:bx_n + 0x43 + si:word16];
+	Mem75[ds:bx_n + 0x43 + si:word16] = bp;
 	*ds_di <<= 0x68;
 	Eq_n v22_n = -(ss->*(v19_n - 0x06));
 	ss->*(v19_n - 0x06) = v22_n;
@@ -17357,21 +17357,21 @@ void fn1483-0D3F(Eq_n ds_di, Eq_n ss_bp, Eq_n ax, Eq_n cx, ui16 dx, byte bl, byt
 	word16 ax_n = SEQ(ah_n, al_n);
 	if (OVERFLOW(v22_n))
 		__syscall(0x04);
-	int32 ds_bx_n;
-	word16 cx_n;
 	word16 cx_n;
 	int32 ds_bx_n;
+	word16 cx_n;
 	struct Eq_n * ds_n;
 	Eq_n di_n;
 	bool S_n;
+	int32 ds_bx_n;
 	ds->*((word32) si + 0x00005C87) = ch_n;
 	Eq_n sp_n;
 	Eq_n ax_n;
 	Eq_n cx_n;
 	Eq_n bx_n;
 	Eq_n dx_n;
-	real64 * Top_n;
 	Eq_n SCZDOP_n;
+	real64 rRet0;
 	fn1483-8A82();
 	ss->*(sp_n - 0x02) = ax_n;
 	ss->*(sp_n - 0x04) = cx_n;
@@ -17381,7 +17381,7 @@ void fn1483-0D3F(Eq_n ds_di, Eq_n ss_bp, Eq_n ax, Eq_n cx, ui16 dx, byte bl, byt
 	ss->*(sp_n - 0x0C) = v19_n;
 	ss->*(sp_n - 0x0E) = si;
 	ss->*(sp_n - 0x0010) = di;
-	word16 bx_n = bx_n + Mem136[ds:(bx_n - 121) + di:word16] + SCZDOP_n;
+	word16 bx_n = bx_n + Mem134[ds:(bx_n - 121) + di:word16] + SCZDOP_n;
 	ss->*((word32) di + ((word16) v19_n + 0x0000F512)) = (bool) (bx_n < 0x00) + ((word32) (ss->*((word32) di + ((word16) v19_n + 0x0000F512))) + SLICE(dx_n, byte, 8));
 	ds->*((word16) bx_n + 0x007D) &= (byte) ax_n;
 	byte ch_n = SLICE(cx_n, byte, 8);
@@ -17390,9 +17390,10 @@ void fn1483-0D3F(Eq_n ds_di, Eq_n ss_bp, Eq_n ax, Eq_n cx, ui16 dx, byte bl, byt
 	Eq_n v31_n = ds->*((word32) ax_n + 0x0000995D);
 	ds->*((word32) ax_n + 0x0000995D) = ax_n;
 	ss->*(sp_n - 0x0012) = sp_n - 0x0010;
-	word16 bx_n = bx_n + Mem166[ds:bx_n + v31_n:word16];
+	word16 bx_n = bx_n + Mem164[ds:bx_n + v31_n:word16];
 	byte ah_n = SLICE(ax_n, byte, 8);
 	byte al_n = (byte) ax_n + 0x2A + ch_n;
+	real64 rLoc1_n = rRet0;
 	Eq_n si_n = v31_n;
 	byte bl_n = (byte) bx_n;
 	byte bh_n = SLICE(bx_n, byte, 8);
@@ -17406,8 +17407,8 @@ void fn1483-0D3F(Eq_n ds_di, Eq_n ss_bp, Eq_n ax, Eq_n cx, ui16 dx, byte bl, byt
 	}
 	else
 	{
-		byte v37_n = Mem166[ds:bx_n + v31_n:byte] - bl_n;
-		Mem181[ds:bx_n + v31_n:byte] = v37_n;
+		byte v37_n = Mem164[ds:bx_n + v31_n:byte] - bl_n;
+		Mem179[ds:bx_n + v31_n:byte] = v37_n;
 		Eq_n CZ_n = SLICE(cond(v37_n), bool, 2);
 		cx_n = cx_n - 0x01;
 		int32 ds_bx_n = bx_n;
@@ -17423,13 +17424,13 @@ void fn1483-0D3F(Eq_n ds_di, Eq_n ss_bp, Eq_n ax, Eq_n cx, ui16 dx, byte bl, byt
 				byte cl_n = (byte) cx_n;
 				if (!CZ_n)
 					break;
-				Mem191[ss:bp_n + di:byte] = Mem188[ss:bp_n + di:byte] ^ cl_n;
-				S_n = SLICE(cond(Mem191[ss:bp_n + di:byte]), bool, 0);
+				Mem189[ss:bp_n + di:byte] = Mem186[ss:bp_n + di:byte] ^ cl_n;
+				S_n = SLICE(cond(Mem189[ss:bp_n + di:byte]), bool, 0);
 				__inw(dx_n);
 				ds_bx_n = ds_bx_n;
-				if (Mem191[ss:bp_n + di:byte] != 0x00)
+				if (Mem189[ss:bp_n + di:byte] != 0x00)
 					goto l1483_nDA8;
-				*Top_n = __rndint(*Top_n);
+				rLoc1_n = __rndint(rLoc1_n);
 				si_n = (word32) si_n + 0x01;
 				es = psegArg01A4;
 				bp_n = (char *) fp + 0x018A;
@@ -17440,12 +17441,12 @@ void fn1483-0D3F(Eq_n ds_di, Eq_n ss_bp, Eq_n ax, Eq_n cx, ui16 dx, byte bl, byt
 				byte ah_n = SLICE((char *) fp + 0x00008FAA, byte, 8);
 				byte cl_n = (byte) (cx_n - 0x01);
 				byte ch_n = SLICE(cx_n - 0x01, byte, 8);
-				if ((SLICE(fp + ~0x7055, byte, 8) | Mem211[ss:(fp + 0x0D8F) + si_n:byte]) != 0x00 || cx_n == 0x01)
+				if ((SLICE(fp + ~0x7055, byte, 8) | Mem209[ss:(fp + 0x0D8F) + si_n:byte]) != 0x00 || cx_n == 0x01)
 				{
-					Mem228[bx_n:bx_n + 0x01 + si_n:word16] = Mem211[bx_n:bx_n + 0x01 + si_n:word16] + (fp + ~0x7055);
+					Mem226[bx_n:bx_n + 0x01 + si_n:word16] = Mem209[bx_n:bx_n + 0x01 + si_n:word16] + (fp + ~0x7055);
 					byte cl_n = cl_n - bx_n->*((word32) si_n + 0x005F);
 					byte al_n = bx_n->*si_n;
-					byte ah_n = ah_n ^ Mem244[bx_n:(bx_n + 0x02) + (si_n + 0x01):byte];
+					byte ah_n = ah_n ^ Mem242[bx_n:(bx_n + 0x02) + (si_n + 0x01):byte];
 					bx_n->*((word32) si_n + 25415) = bx_n->*((word32) si_n + 25415) ^ cl_n;
 					ui16 v57_v56_n = SEQ(bArg02C1, bArg0FA0) + SEQ(232, dl_n);
 					word16 si_n = si_n + 0x01;
@@ -17492,7 +17493,7 @@ void fn1483-0D3F(Eq_n ds_di, Eq_n ss_bp, Eq_n ax, Eq_n cx, ui16 dx, byte bl, byt
 						return;
 					}
 				}
-				Mem225[bx_n:bx_n + 0x01 + si_n:byte] = Mem211[bx_n:bx_n + 0x01 + si_n:byte] + bl_n;
+				Mem223[bx_n:bx_n + 0x01 + si_n:byte] = Mem209[bx_n:bx_n + 0x01 + si_n:byte] + bl_n;
 				CZ_n.u0 = SLICE(cond((char *) fp + 0x00008FAA - ((char *) fp + 0x018A)), bool, 2);
 				--cx_n;
 				ds_bx_n = SEQ(bx_n, bx_n + 0x01);
@@ -17528,12 +17529,12 @@ l1483_nDBF:
 			ss->*((word32) bp_n + 0x00008CC3) = __ror(ss->*((word32) bp_n + 0x00008CC3), cl_n);
 			return;
 		}
-		Mem425[ss:bp_n + si_n:word16] = -Mem415[ss:bp_n + si_n:word16];
+		Mem423[ss:bp_n + si_n:word16] = -Mem413[ss:bp_n + si_n:word16];
 		__cli();
 		di_n = di - 0x01;
-		Mem434[ds_n:bx_n + 0x45 + di_n:word16] = Mem425[ss:sp_n + 0x00:word16];
+		Mem432[ds_n:bx_n + 0x45 + di_n:word16] = Mem423[ss:sp_n + 0x00:word16];
 		union Eq_n Eq_n::* bp_n = (word32) bp_n + 0x01;
-		Mem440[ds_n:bx_n + 0xC079 + si_n:word16] = Mem434[ds_n:bx_n + 0xC079 + si_n:word16] + bp_n;
+		Mem438[ds_n:bx_n + 0xC079 + si_n:word16] = Mem432[ds_n:bx_n + 0xC079 + si_n:word16] + bp_n;
 		sp_n = (union Eq_n Eq_n::*) ((char *) sp_n + 0x04);
 		bp_n = bp_n - 0x01;
 		ds_bx_n = ds_bx_n;
@@ -17541,7 +17542,7 @@ l1483_nDBF:
 	*((word32) di_n + ds_bx_n) >>= 0x01;
 	<type-error> Eq_n::* bx_n = (word16) ds_bx_n;
 	ds_n = SLICE(ds_bx_n, selector, 16);
-	Mem459[ds_n:bx_n + 0x02 + di_n:byte] = Mem453[ds_n:bx_n + 0x02 + di_n:byte] + SLICE(cx_n, byte, 0);
+	Mem457[ds_n:bx_n + 0x02 + di_n:byte] = Mem451[ds_n:bx_n + 0x02 + di_n:byte] + SLICE(cx_n, byte, 0);
 	sp_n = (union Eq_n Eq_n::*) ((char *) sp_n + 0x02);
 	cx_n = cx_n;
 	goto l1483_nDBF;
@@ -17573,6 +17574,12 @@ void fn1483-1104(cup16 ax, byte dl, struct Eq_n Eq_n::* bx, struct Eq_n Eq_n::* 
 		bx = (word16) es_bx_n;
 		di = 49092;
 	}
+}
+
+// 1483:1777: void fn1483-1777(Register byte al, Register byte bl, Register byte bh, Register Eq_n si, Register (ptr16 Eq_n) ds)
+void fn1483-1777(byte al, byte bl, byte bh, Eq_n si, struct Eq_n * ds)
+{
+	fn1483-467E(SEQ(bh, bl - al - C), al, si);
 }
 
 // 1483:1B91: FlagGroup Eq_n fn1483-1B91(Register Eq_n al, Register Eq_n cx, Register Eq_n bx, Register Eq_n di, Register Eq_n ds, Stack Eq_n psegArg00)
@@ -17762,5 +17769,1165 @@ void fn1483-1C50(byte ah, mp16 dx)
 {
 	byte al_n = __inb(dx);
 	SEQ(ah, al_n)();
+}
+
+// 1483:467E: void fn1483-467E(Sequence (ptr32 byte) ds_bx, Register byte al, Register Eq_n si)
+void fn1483-467E(byte * ds_bx, byte al, Eq_n si)
+{
+	Mem10[ds_bx + si:byte] = Mem0[ds_bx + si:byte] + al;
+	Mem12[ds_bx + si:byte] = Mem10[ds_bx + si:byte] + al;
+	Mem14[ds_bx + si:byte] = Mem12[ds_bx + si:byte] + al;
+	Mem16[ds_bx + si:byte] = Mem14[ds_bx + si:byte] + al;
+	Mem18[ds_bx + si:byte] = Mem16[ds_bx + si:byte] + al;
+	Mem20[ds_bx + si:byte] = Mem18[ds_bx + si:byte] + al;
+	Mem22[ds_bx + si:byte] = Mem20[ds_bx + si:byte] + al;
+	Mem24[ds_bx + si:byte] = Mem22[ds_bx + si:byte] + al;
+	Mem26[ds_bx + si:byte] = Mem24[ds_bx + si:byte] + al;
+	Mem28[ds_bx + si:byte] = Mem26[ds_bx + si:byte] + al;
+	Mem30[ds_bx + si:byte] = Mem28[ds_bx + si:byte] + al;
+	Mem32[ds_bx + si:byte] = Mem30[ds_bx + si:byte] + al;
+	Mem34[ds_bx + si:byte] = Mem32[ds_bx + si:byte] + al;
+	Mem36[ds_bx + si:byte] = Mem34[ds_bx + si:byte] + al;
+	Mem38[ds_bx + si:byte] = Mem36[ds_bx + si:byte] + al;
+	Mem40[ds_bx + si:byte] = Mem38[ds_bx + si:byte] + al;
+	Mem42[ds_bx + si:byte] = Mem40[ds_bx + si:byte] + al;
+	Mem44[ds_bx + si:byte] = Mem42[ds_bx + si:byte] + al;
+	Mem46[ds_bx + si:byte] = Mem44[ds_bx + si:byte] + al;
+	Mem48[ds_bx + si:byte] = Mem46[ds_bx + si:byte] + al;
+	Mem50[ds_bx + si:byte] = Mem48[ds_bx + si:byte] + al;
+	Mem52[ds_bx + si:byte] = Mem50[ds_bx + si:byte] + al;
+	Mem54[ds_bx + si:byte] = Mem52[ds_bx + si:byte] + al;
+	Mem56[ds_bx + si:byte] = Mem54[ds_bx + si:byte] + al;
+	Mem58[ds_bx + si:byte] = Mem56[ds_bx + si:byte] + al;
+	Mem60[ds_bx + si:byte] = Mem58[ds_bx + si:byte] + al;
+	Mem62[ds_bx + si:byte] = Mem60[ds_bx + si:byte] + al;
+	Mem64[ds_bx + si:byte] = Mem62[ds_bx + si:byte] + al;
+	Mem66[ds_bx + si:byte] = Mem64[ds_bx + si:byte] + al;
+	Mem68[ds_bx + si:byte] = Mem66[ds_bx + si:byte] + al;
+	Mem70[ds_bx + si:byte] = Mem68[ds_bx + si:byte] + al;
+	Mem72[ds_bx + si:byte] = Mem70[ds_bx + si:byte] + al;
+	Mem74[ds_bx + si:byte] = Mem72[ds_bx + si:byte] + al;
+	Mem76[ds_bx + si:byte] = Mem74[ds_bx + si:byte] + al;
+	Mem78[ds_bx + si:byte] = Mem76[ds_bx + si:byte] + al;
+	Mem80[ds_bx + si:byte] = Mem78[ds_bx + si:byte] + al;
+	Mem82[ds_bx + si:byte] = Mem80[ds_bx + si:byte] + al;
+	Mem84[ds_bx + si:byte] = Mem82[ds_bx + si:byte] + al;
+	Mem86[ds_bx + si:byte] = Mem84[ds_bx + si:byte] + al;
+	Mem88[ds_bx + si:byte] = Mem86[ds_bx + si:byte] + al;
+	Mem90[ds_bx + si:byte] = Mem88[ds_bx + si:byte] + al;
+	Mem92[ds_bx + si:byte] = Mem90[ds_bx + si:byte] + al;
+	Mem94[ds_bx + si:byte] = Mem92[ds_bx + si:byte] + al;
+	Mem96[ds_bx + si:byte] = Mem94[ds_bx + si:byte] + al;
+	Mem98[ds_bx + si:byte] = Mem96[ds_bx + si:byte] + al;
+	Mem100[ds_bx + si:byte] = Mem98[ds_bx + si:byte] + al;
+	Mem102[ds_bx + si:byte] = Mem100[ds_bx + si:byte] + al;
+	Mem104[ds_bx + si:byte] = Mem102[ds_bx + si:byte] + al;
+	Mem106[ds_bx + si:byte] = Mem104[ds_bx + si:byte] + al;
+	Mem108[ds_bx + si:byte] = Mem106[ds_bx + si:byte] + al;
+	Mem110[ds_bx + si:byte] = Mem108[ds_bx + si:byte] + al;
+	Mem112[ds_bx + si:byte] = Mem110[ds_bx + si:byte] + al;
+	Mem114[ds_bx + si:byte] = Mem112[ds_bx + si:byte] + al;
+	Mem116[ds_bx + si:byte] = Mem114[ds_bx + si:byte] + al;
+	Mem118[ds_bx + si:byte] = Mem116[ds_bx + si:byte] + al;
+	Mem120[ds_bx + si:byte] = Mem118[ds_bx + si:byte] + al;
+	Mem122[ds_bx + si:byte] = Mem120[ds_bx + si:byte] + al;
+	Mem124[ds_bx + si:byte] = Mem122[ds_bx + si:byte] + al;
+	Mem126[ds_bx + si:byte] = Mem124[ds_bx + si:byte] + al;
+	Mem128[ds_bx + si:byte] = Mem126[ds_bx + si:byte] + al;
+	Mem130[ds_bx + si:byte] = Mem128[ds_bx + si:byte] + al;
+	Mem132[ds_bx + si:byte] = Mem130[ds_bx + si:byte] + al;
+	Mem134[ds_bx + si:byte] = Mem132[ds_bx + si:byte] + al;
+	Mem136[ds_bx + si:byte] = Mem134[ds_bx + si:byte] + al;
+	Mem138[ds_bx + si:byte] = Mem136[ds_bx + si:byte] + al;
+	Mem140[ds_bx + si:byte] = Mem138[ds_bx + si:byte] + al;
+	Mem142[ds_bx + si:byte] = Mem140[ds_bx + si:byte] + al;
+	Mem144[ds_bx + si:byte] = Mem142[ds_bx + si:byte] + al;
+	Mem146[ds_bx + si:byte] = Mem144[ds_bx + si:byte] + al;
+	Mem148[ds_bx + si:byte] = Mem146[ds_bx + si:byte] + al;
+	Mem150[ds_bx + si:byte] = Mem148[ds_bx + si:byte] + al;
+	Mem152[ds_bx + si:byte] = Mem150[ds_bx + si:byte] + al;
+	Mem154[ds_bx + si:byte] = Mem152[ds_bx + si:byte] + al;
+	Mem156[ds_bx + si:byte] = Mem154[ds_bx + si:byte] + al;
+	Mem158[ds_bx + si:byte] = Mem156[ds_bx + si:byte] + al;
+	Mem160[ds_bx + si:byte] = Mem158[ds_bx + si:byte] + al;
+	Mem162[ds_bx + si:byte] = Mem160[ds_bx + si:byte] + al;
+	Mem164[ds_bx + si:byte] = Mem162[ds_bx + si:byte] + al;
+	Mem166[ds_bx + si:byte] = Mem164[ds_bx + si:byte] + al;
+	Mem168[ds_bx + si:byte] = Mem166[ds_bx + si:byte] + al;
+	Mem170[ds_bx + si:byte] = Mem168[ds_bx + si:byte] + al;
+	Mem172[ds_bx + si:byte] = Mem170[ds_bx + si:byte] + al;
+	Mem174[ds_bx + si:byte] = Mem172[ds_bx + si:byte] + al;
+	Mem176[ds_bx + si:byte] = Mem174[ds_bx + si:byte] + al;
+	Mem178[ds_bx + si:byte] = Mem176[ds_bx + si:byte] + al;
+	Mem180[ds_bx + si:byte] = Mem178[ds_bx + si:byte] + al;
+	Mem182[ds_bx + si:byte] = Mem180[ds_bx + si:byte] + al;
+	Mem184[ds_bx + si:byte] = Mem182[ds_bx + si:byte] + al;
+	Mem186[ds_bx + si:byte] = Mem184[ds_bx + si:byte] + al;
+	Mem188[ds_bx + si:byte] = Mem186[ds_bx + si:byte] + al;
+	Mem190[ds_bx + si:byte] = Mem188[ds_bx + si:byte] + al;
+	Mem192[ds_bx + si:byte] = Mem190[ds_bx + si:byte] + al;
+	Mem194[ds_bx + si:byte] = Mem192[ds_bx + si:byte] + al;
+	Mem196[ds_bx + si:byte] = Mem194[ds_bx + si:byte] + al;
+	Mem198[ds_bx + si:byte] = Mem196[ds_bx + si:byte] + al;
+	Mem200[ds_bx + si:byte] = Mem198[ds_bx + si:byte] + al;
+	Mem202[ds_bx + si:byte] = Mem200[ds_bx + si:byte] + al;
+	Mem204[ds_bx + si:byte] = Mem202[ds_bx + si:byte] + al;
+	Mem206[ds_bx + si:byte] = Mem204[ds_bx + si:byte] + al;
+	Mem208[ds_bx + si:byte] = Mem206[ds_bx + si:byte] + al;
+	Mem210[ds_bx + si:byte] = Mem208[ds_bx + si:byte] + al;
+	Mem212[ds_bx + si:byte] = Mem210[ds_bx + si:byte] + al;
+	Mem214[ds_bx + si:byte] = Mem212[ds_bx + si:byte] + al;
+	Mem216[ds_bx + si:byte] = Mem214[ds_bx + si:byte] + al;
+	Mem218[ds_bx + si:byte] = Mem216[ds_bx + si:byte] + al;
+	Mem220[ds_bx + si:byte] = Mem218[ds_bx + si:byte] + al;
+	Mem222[ds_bx + si:byte] = Mem220[ds_bx + si:byte] + al;
+	Mem224[ds_bx + si:byte] = Mem222[ds_bx + si:byte] + al;
+	Mem226[ds_bx + si:byte] = Mem224[ds_bx + si:byte] + al;
+	Mem228[ds_bx + si:byte] = Mem226[ds_bx + si:byte] + al;
+	Mem230[ds_bx + si:byte] = Mem228[ds_bx + si:byte] + al;
+	Mem232[ds_bx + si:byte] = Mem230[ds_bx + si:byte] + al;
+	Mem234[ds_bx + si:byte] = Mem232[ds_bx + si:byte] + al;
+	Mem236[ds_bx + si:byte] = Mem234[ds_bx + si:byte] + al;
+	Mem238[ds_bx + si:byte] = Mem236[ds_bx + si:byte] + al;
+	Mem240[ds_bx + si:byte] = Mem238[ds_bx + si:byte] + al;
+	Mem242[ds_bx + si:byte] = Mem240[ds_bx + si:byte] + al;
+	Mem244[ds_bx + si:byte] = Mem242[ds_bx + si:byte] + al;
+	Mem246[ds_bx + si:byte] = Mem244[ds_bx + si:byte] + al;
+	Mem248[ds_bx + si:byte] = Mem246[ds_bx + si:byte] + al;
+	Mem250[ds_bx + si:byte] = Mem248[ds_bx + si:byte] + al;
+	Mem252[ds_bx + si:byte] = Mem250[ds_bx + si:byte] + al;
+	Mem254[ds_bx + si:byte] = Mem252[ds_bx + si:byte] + al;
+	Mem256[ds_bx + si:byte] = Mem254[ds_bx + si:byte] + al;
+	Mem258[ds_bx + si:byte] = Mem256[ds_bx + si:byte] + al;
+	Mem260[ds_bx + si:byte] = Mem258[ds_bx + si:byte] + al;
+	Mem262[ds_bx + si:byte] = Mem260[ds_bx + si:byte] + al;
+	Mem264[ds_bx + si:byte] = Mem262[ds_bx + si:byte] + al;
+	Mem266[ds_bx + si:byte] = Mem264[ds_bx + si:byte] + al;
+	Mem268[ds_bx + si:byte] = Mem266[ds_bx + si:byte] + al;
+	Mem270[ds_bx + si:byte] = Mem268[ds_bx + si:byte] + al;
+	Mem272[ds_bx + si:byte] = Mem270[ds_bx + si:byte] + al;
+	Mem274[ds_bx + si:byte] = Mem272[ds_bx + si:byte] + al;
+	Mem276[ds_bx + si:byte] = Mem274[ds_bx + si:byte] + al;
+	Mem278[ds_bx + si:byte] = Mem276[ds_bx + si:byte] + al;
+	Mem280[ds_bx + si:byte] = Mem278[ds_bx + si:byte] + al;
+	Mem282[ds_bx + si:byte] = Mem280[ds_bx + si:byte] + al;
+	Mem284[ds_bx + si:byte] = Mem282[ds_bx + si:byte] + al;
+	Mem286[ds_bx + si:byte] = Mem284[ds_bx + si:byte] + al;
+	Mem288[ds_bx + si:byte] = Mem286[ds_bx + si:byte] + al;
+	Mem290[ds_bx + si:byte] = Mem288[ds_bx + si:byte] + al;
+	Mem292[ds_bx + si:byte] = Mem290[ds_bx + si:byte] + al;
+	Mem294[ds_bx + si:byte] = Mem292[ds_bx + si:byte] + al;
+	Mem296[ds_bx + si:byte] = Mem294[ds_bx + si:byte] + al;
+	Mem298[ds_bx + si:byte] = Mem296[ds_bx + si:byte] + al;
+	Mem300[ds_bx + si:byte] = Mem298[ds_bx + si:byte] + al;
+	Mem302[ds_bx + si:byte] = Mem300[ds_bx + si:byte] + al;
+	Mem304[ds_bx + si:byte] = Mem302[ds_bx + si:byte] + al;
+	Mem306[ds_bx + si:byte] = Mem304[ds_bx + si:byte] + al;
+	Mem308[ds_bx + si:byte] = Mem306[ds_bx + si:byte] + al;
+	Mem310[ds_bx + si:byte] = Mem308[ds_bx + si:byte] + al;
+	Mem312[ds_bx + si:byte] = Mem310[ds_bx + si:byte] + al;
+	Mem314[ds_bx + si:byte] = Mem312[ds_bx + si:byte] + al;
+	Mem316[ds_bx + si:byte] = Mem314[ds_bx + si:byte] + al;
+	Mem318[ds_bx + si:byte] = Mem316[ds_bx + si:byte] + al;
+	Mem320[ds_bx + si:byte] = Mem318[ds_bx + si:byte] + al;
+	Mem322[ds_bx + si:byte] = Mem320[ds_bx + si:byte] + al;
+	Mem324[ds_bx + si:byte] = Mem322[ds_bx + si:byte] + al;
+	Mem326[ds_bx + si:byte] = Mem324[ds_bx + si:byte] + al;
+	Mem328[ds_bx + si:byte] = Mem326[ds_bx + si:byte] + al;
+	Mem330[ds_bx + si:byte] = Mem328[ds_bx + si:byte] + al;
+	Mem332[ds_bx + si:byte] = Mem330[ds_bx + si:byte] + al;
+	Mem334[ds_bx + si:byte] = Mem332[ds_bx + si:byte] + al;
+	Mem336[ds_bx + si:byte] = Mem334[ds_bx + si:byte] + al;
+	Mem338[ds_bx + si:byte] = Mem336[ds_bx + si:byte] + al;
+	Mem340[ds_bx + si:byte] = Mem338[ds_bx + si:byte] + al;
+	Mem342[ds_bx + si:byte] = Mem340[ds_bx + si:byte] + al;
+	Mem344[ds_bx + si:byte] = Mem342[ds_bx + si:byte] + al;
+	Mem346[ds_bx + si:byte] = Mem344[ds_bx + si:byte] + al;
+	Mem348[ds_bx + si:byte] = Mem346[ds_bx + si:byte] + al;
+	Mem350[ds_bx + si:byte] = Mem348[ds_bx + si:byte] + al;
+	Mem352[ds_bx + si:byte] = Mem350[ds_bx + si:byte] + al;
+	Mem354[ds_bx + si:byte] = Mem352[ds_bx + si:byte] + al;
+	Mem356[ds_bx + si:byte] = Mem354[ds_bx + si:byte] + al;
+	Mem358[ds_bx + si:byte] = Mem356[ds_bx + si:byte] + al;
+	Mem360[ds_bx + si:byte] = Mem358[ds_bx + si:byte] + al;
+	Mem362[ds_bx + si:byte] = Mem360[ds_bx + si:byte] + al;
+	Mem364[ds_bx + si:byte] = Mem362[ds_bx + si:byte] + al;
+	Mem366[ds_bx + si:byte] = Mem364[ds_bx + si:byte] + al;
+	Mem368[ds_bx + si:byte] = Mem366[ds_bx + si:byte] + al;
+	Mem370[ds_bx + si:byte] = Mem368[ds_bx + si:byte] + al;
+	Mem372[ds_bx + si:byte] = Mem370[ds_bx + si:byte] + al;
+	Mem374[ds_bx + si:byte] = Mem372[ds_bx + si:byte] + al;
+	Mem376[ds_bx + si:byte] = Mem374[ds_bx + si:byte] + al;
+	Mem378[ds_bx + si:byte] = Mem376[ds_bx + si:byte] + al;
+	Mem380[ds_bx + si:byte] = Mem378[ds_bx + si:byte] + al;
+	Mem382[ds_bx + si:byte] = Mem380[ds_bx + si:byte] + al;
+	Mem384[ds_bx + si:byte] = Mem382[ds_bx + si:byte] + al;
+	Mem386[ds_bx + si:byte] = Mem384[ds_bx + si:byte] + al;
+	Mem388[ds_bx + si:byte] = Mem386[ds_bx + si:byte] + al;
+	Mem390[ds_bx + si:byte] = Mem388[ds_bx + si:byte] + al;
+	Mem392[ds_bx + si:byte] = Mem390[ds_bx + si:byte] + al;
+	Mem394[ds_bx + si:byte] = Mem392[ds_bx + si:byte] + al;
+	Mem396[ds_bx + si:byte] = Mem394[ds_bx + si:byte] + al;
+	Mem398[ds_bx + si:byte] = Mem396[ds_bx + si:byte] + al;
+	Mem400[ds_bx + si:byte] = Mem398[ds_bx + si:byte] + al;
+	Mem402[ds_bx + si:byte] = Mem400[ds_bx + si:byte] + al;
+	Mem404[ds_bx + si:byte] = Mem402[ds_bx + si:byte] + al;
+	Mem406[ds_bx + si:byte] = Mem404[ds_bx + si:byte] + al;
+	Mem408[ds_bx + si:byte] = Mem406[ds_bx + si:byte] + al;
+	Mem410[ds_bx + si:byte] = Mem408[ds_bx + si:byte] + al;
+	Mem412[ds_bx + si:byte] = Mem410[ds_bx + si:byte] + al;
+	Mem414[ds_bx + si:byte] = Mem412[ds_bx + si:byte] + al;
+	Mem416[ds_bx + si:byte] = Mem414[ds_bx + si:byte] + al;
+	Mem418[ds_bx + si:byte] = Mem416[ds_bx + si:byte] + al;
+	Mem420[ds_bx + si:byte] = Mem418[ds_bx + si:byte] + al;
+	Mem422[ds_bx + si:byte] = Mem420[ds_bx + si:byte] + al;
+	Mem424[ds_bx + si:byte] = Mem422[ds_bx + si:byte] + al;
+	Mem426[ds_bx + si:byte] = Mem424[ds_bx + si:byte] + al;
+	Mem428[ds_bx + si:byte] = Mem426[ds_bx + si:byte] + al;
+	Mem430[ds_bx + si:byte] = Mem428[ds_bx + si:byte] + al;
+	Mem432[ds_bx + si:byte] = Mem430[ds_bx + si:byte] + al;
+	Mem434[ds_bx + si:byte] = Mem432[ds_bx + si:byte] + al;
+	Mem436[ds_bx + si:byte] = Mem434[ds_bx + si:byte] + al;
+	Mem438[ds_bx + si:byte] = Mem436[ds_bx + si:byte] + al;
+	Mem440[ds_bx + si:byte] = Mem438[ds_bx + si:byte] + al;
+	Mem442[ds_bx + si:byte] = Mem440[ds_bx + si:byte] + al;
+	Mem444[ds_bx + si:byte] = Mem442[ds_bx + si:byte] + al;
+	Mem446[ds_bx + si:byte] = Mem444[ds_bx + si:byte] + al;
+	Mem448[ds_bx + si:byte] = Mem446[ds_bx + si:byte] + al;
+	Mem450[ds_bx + si:byte] = Mem448[ds_bx + si:byte] + al;
+	Mem452[ds_bx + si:byte] = Mem450[ds_bx + si:byte] + al;
+	Mem454[ds_bx + si:byte] = Mem452[ds_bx + si:byte] + al;
+	Mem456[ds_bx + si:byte] = Mem454[ds_bx + si:byte] + al;
+	Mem458[ds_bx + si:byte] = Mem456[ds_bx + si:byte] + al;
+	Mem460[ds_bx + si:byte] = Mem458[ds_bx + si:byte] + al;
+	Mem462[ds_bx + si:byte] = Mem460[ds_bx + si:byte] + al;
+	Mem464[ds_bx + si:byte] = Mem462[ds_bx + si:byte] + al;
+	Mem466[ds_bx + si:byte] = Mem464[ds_bx + si:byte] + al;
+	Mem468[ds_bx + si:byte] = Mem466[ds_bx + si:byte] + al;
+	Mem470[ds_bx + si:byte] = Mem468[ds_bx + si:byte] + al;
+	Mem472[ds_bx + si:byte] = Mem470[ds_bx + si:byte] + al;
+	Mem474[ds_bx + si:byte] = Mem472[ds_bx + si:byte] + al;
+	Mem476[ds_bx + si:byte] = Mem474[ds_bx + si:byte] + al;
+	Mem478[ds_bx + si:byte] = Mem476[ds_bx + si:byte] + al;
+	Mem480[ds_bx + si:byte] = Mem478[ds_bx + si:byte] + al;
+	Mem482[ds_bx + si:byte] = Mem480[ds_bx + si:byte] + al;
+	Mem484[ds_bx + si:byte] = Mem482[ds_bx + si:byte] + al;
+	Mem486[ds_bx + si:byte] = Mem484[ds_bx + si:byte] + al;
+	Mem488[ds_bx + si:byte] = Mem486[ds_bx + si:byte] + al;
+	Mem490[ds_bx + si:byte] = Mem488[ds_bx + si:byte] + al;
+	Mem492[ds_bx + si:byte] = Mem490[ds_bx + si:byte] + al;
+	Mem494[ds_bx + si:byte] = Mem492[ds_bx + si:byte] + al;
+	Mem496[ds_bx + si:byte] = Mem494[ds_bx + si:byte] + al;
+	Mem498[ds_bx + si:byte] = Mem496[ds_bx + si:byte] + al;
+	Mem500[ds_bx + si:byte] = Mem498[ds_bx + si:byte] + al;
+	Mem502[ds_bx + si:byte] = Mem500[ds_bx + si:byte] + al;
+	Mem504[ds_bx + si:byte] = Mem502[ds_bx + si:byte] + al;
+	Mem506[ds_bx + si:byte] = Mem504[ds_bx + si:byte] + al;
+	Mem508[ds_bx + si:byte] = Mem506[ds_bx + si:byte] + al;
+	Mem510[ds_bx + si:byte] = Mem508[ds_bx + si:byte] + al;
+	Mem512[ds_bx + si:byte] = Mem510[ds_bx + si:byte] + al;
+	Mem514[ds_bx + si:byte] = Mem512[ds_bx + si:byte] + al;
+	Mem516[ds_bx + si:byte] = Mem514[ds_bx + si:byte] + al;
+	Mem518[ds_bx + si:byte] = Mem516[ds_bx + si:byte] + al;
+	Mem520[ds_bx + si:byte] = Mem518[ds_bx + si:byte] + al;
+	Mem522[ds_bx + si:byte] = Mem520[ds_bx + si:byte] + al;
+	Mem524[ds_bx + si:byte] = Mem522[ds_bx + si:byte] + al;
+	Mem526[ds_bx + si:byte] = Mem524[ds_bx + si:byte] + al;
+	Mem528[ds_bx + si:byte] = Mem526[ds_bx + si:byte] + al;
+	Mem530[ds_bx + si:byte] = Mem528[ds_bx + si:byte] + al;
+	Mem532[ds_bx + si:byte] = Mem530[ds_bx + si:byte] + al;
+	Mem534[ds_bx + si:byte] = Mem532[ds_bx + si:byte] + al;
+	Mem536[ds_bx + si:byte] = Mem534[ds_bx + si:byte] + al;
+	Mem538[ds_bx + si:byte] = Mem536[ds_bx + si:byte] + al;
+	Mem540[ds_bx + si:byte] = Mem538[ds_bx + si:byte] + al;
+	Mem542[ds_bx + si:byte] = Mem540[ds_bx + si:byte] + al;
+	Mem544[ds_bx + si:byte] = Mem542[ds_bx + si:byte] + al;
+	Mem546[ds_bx + si:byte] = Mem544[ds_bx + si:byte] + al;
+	Mem548[ds_bx + si:byte] = Mem546[ds_bx + si:byte] + al;
+	Mem550[ds_bx + si:byte] = Mem548[ds_bx + si:byte] + al;
+	Mem552[ds_bx + si:byte] = Mem550[ds_bx + si:byte] + al;
+	Mem554[ds_bx + si:byte] = Mem552[ds_bx + si:byte] + al;
+	Mem556[ds_bx + si:byte] = Mem554[ds_bx + si:byte] + al;
+	Mem558[ds_bx + si:byte] = Mem556[ds_bx + si:byte] + al;
+	Mem560[ds_bx + si:byte] = Mem558[ds_bx + si:byte] + al;
+	Mem562[ds_bx + si:byte] = Mem560[ds_bx + si:byte] + al;
+	Mem564[ds_bx + si:byte] = Mem562[ds_bx + si:byte] + al;
+	Mem566[ds_bx + si:byte] = Mem564[ds_bx + si:byte] + al;
+	Mem568[ds_bx + si:byte] = Mem566[ds_bx + si:byte] + al;
+	Mem570[ds_bx + si:byte] = Mem568[ds_bx + si:byte] + al;
+	Mem572[ds_bx + si:byte] = Mem570[ds_bx + si:byte] + al;
+	Mem574[ds_bx + si:byte] = Mem572[ds_bx + si:byte] + al;
+	Mem576[ds_bx + si:byte] = Mem574[ds_bx + si:byte] + al;
+	Mem578[ds_bx + si:byte] = Mem576[ds_bx + si:byte] + al;
+	Mem580[ds_bx + si:byte] = Mem578[ds_bx + si:byte] + al;
+	Mem582[ds_bx + si:byte] = Mem580[ds_bx + si:byte] + al;
+	Mem584[ds_bx + si:byte] = Mem582[ds_bx + si:byte] + al;
+	Mem586[ds_bx + si:byte] = Mem584[ds_bx + si:byte] + al;
+	Mem588[ds_bx + si:byte] = Mem586[ds_bx + si:byte] + al;
+	Mem590[ds_bx + si:byte] = Mem588[ds_bx + si:byte] + al;
+	Mem592[ds_bx + si:byte] = Mem590[ds_bx + si:byte] + al;
+	Mem594[ds_bx + si:byte] = Mem592[ds_bx + si:byte] + al;
+	Mem596[ds_bx + si:byte] = Mem594[ds_bx + si:byte] + al;
+	Mem598[ds_bx + si:byte] = Mem596[ds_bx + si:byte] + al;
+	Mem600[ds_bx + si:byte] = Mem598[ds_bx + si:byte] + al;
+	Mem602[ds_bx + si:byte] = Mem600[ds_bx + si:byte] + al;
+	Mem604[ds_bx + si:byte] = Mem602[ds_bx + si:byte] + al;
+	Mem606[ds_bx + si:byte] = Mem604[ds_bx + si:byte] + al;
+	Mem608[ds_bx + si:byte] = Mem606[ds_bx + si:byte] + al;
+	Mem610[ds_bx + si:byte] = Mem608[ds_bx + si:byte] + al;
+	Mem612[ds_bx + si:byte] = Mem610[ds_bx + si:byte] + al;
+	Mem614[ds_bx + si:byte] = Mem612[ds_bx + si:byte] + al;
+	Mem616[ds_bx + si:byte] = Mem614[ds_bx + si:byte] + al;
+	Mem618[ds_bx + si:byte] = Mem616[ds_bx + si:byte] + al;
+	Mem620[ds_bx + si:byte] = Mem618[ds_bx + si:byte] + al;
+	Mem622[ds_bx + si:byte] = Mem620[ds_bx + si:byte] + al;
+	Mem624[ds_bx + si:byte] = Mem622[ds_bx + si:byte] + al;
+	Mem626[ds_bx + si:byte] = Mem624[ds_bx + si:byte] + al;
+	Mem628[ds_bx + si:byte] = Mem626[ds_bx + si:byte] + al;
+	Mem630[ds_bx + si:byte] = Mem628[ds_bx + si:byte] + al;
+	Mem632[ds_bx + si:byte] = Mem630[ds_bx + si:byte] + al;
+	Mem634[ds_bx + si:byte] = Mem632[ds_bx + si:byte] + al;
+	Mem636[ds_bx + si:byte] = Mem634[ds_bx + si:byte] + al;
+	Mem638[ds_bx + si:byte] = Mem636[ds_bx + si:byte] + al;
+	Mem640[ds_bx + si:byte] = Mem638[ds_bx + si:byte] + al;
+	Mem642[ds_bx + si:byte] = Mem640[ds_bx + si:byte] + al;
+	Mem644[ds_bx + si:byte] = Mem642[ds_bx + si:byte] + al;
+	Mem646[ds_bx + si:byte] = Mem644[ds_bx + si:byte] + al;
+	Mem648[ds_bx + si:byte] = Mem646[ds_bx + si:byte] + al;
+	Mem650[ds_bx + si:byte] = Mem648[ds_bx + si:byte] + al;
+	Mem652[ds_bx + si:byte] = Mem650[ds_bx + si:byte] + al;
+	Mem654[ds_bx + si:byte] = Mem652[ds_bx + si:byte] + al;
+	Mem656[ds_bx + si:byte] = Mem654[ds_bx + si:byte] + al;
+	Mem658[ds_bx + si:byte] = Mem656[ds_bx + si:byte] + al;
+	Mem660[ds_bx + si:byte] = Mem658[ds_bx + si:byte] + al;
+	Mem662[ds_bx + si:byte] = Mem660[ds_bx + si:byte] + al;
+	Mem664[ds_bx + si:byte] = Mem662[ds_bx + si:byte] + al;
+	Mem666[ds_bx + si:byte] = Mem664[ds_bx + si:byte] + al;
+	Mem668[ds_bx + si:byte] = Mem666[ds_bx + si:byte] + al;
+	Mem670[ds_bx + si:byte] = Mem668[ds_bx + si:byte] + al;
+	Mem672[ds_bx + si:byte] = Mem670[ds_bx + si:byte] + al;
+	Mem674[ds_bx + si:byte] = Mem672[ds_bx + si:byte] + al;
+	Mem676[ds_bx + si:byte] = Mem674[ds_bx + si:byte] + al;
+	Mem678[ds_bx + si:byte] = Mem676[ds_bx + si:byte] + al;
+	Mem680[ds_bx + si:byte] = Mem678[ds_bx + si:byte] + al;
+	Mem682[ds_bx + si:byte] = Mem680[ds_bx + si:byte] + al;
+	Mem684[ds_bx + si:byte] = Mem682[ds_bx + si:byte] + al;
+	Mem686[ds_bx + si:byte] = Mem684[ds_bx + si:byte] + al;
+	Mem688[ds_bx + si:byte] = Mem686[ds_bx + si:byte] + al;
+	Mem690[ds_bx + si:byte] = Mem688[ds_bx + si:byte] + al;
+	Mem692[ds_bx + si:byte] = Mem690[ds_bx + si:byte] + al;
+	Mem694[ds_bx + si:byte] = Mem692[ds_bx + si:byte] + al;
+	Mem696[ds_bx + si:byte] = Mem694[ds_bx + si:byte] + al;
+	Mem698[ds_bx + si:byte] = Mem696[ds_bx + si:byte] + al;
+	Mem700[ds_bx + si:byte] = Mem698[ds_bx + si:byte] + al;
+	Mem702[ds_bx + si:byte] = Mem700[ds_bx + si:byte] + al;
+	Mem704[ds_bx + si:byte] = Mem702[ds_bx + si:byte] + al;
+	Mem706[ds_bx + si:byte] = Mem704[ds_bx + si:byte] + al;
+	Mem708[ds_bx + si:byte] = Mem706[ds_bx + si:byte] + al;
+	Mem710[ds_bx + si:byte] = Mem708[ds_bx + si:byte] + al;
+	Mem712[ds_bx + si:byte] = Mem710[ds_bx + si:byte] + al;
+	Mem714[ds_bx + si:byte] = Mem712[ds_bx + si:byte] + al;
+	Mem716[ds_bx + si:byte] = Mem714[ds_bx + si:byte] + al;
+	Mem718[ds_bx + si:byte] = Mem716[ds_bx + si:byte] + al;
+	Mem720[ds_bx + si:byte] = Mem718[ds_bx + si:byte] + al;
+	Mem722[ds_bx + si:byte] = Mem720[ds_bx + si:byte] + al;
+	Mem724[ds_bx + si:byte] = Mem722[ds_bx + si:byte] + al;
+	Mem726[ds_bx + si:byte] = Mem724[ds_bx + si:byte] + al;
+	Mem728[ds_bx + si:byte] = Mem726[ds_bx + si:byte] + al;
+	Mem730[ds_bx + si:byte] = Mem728[ds_bx + si:byte] + al;
+	Mem732[ds_bx + si:byte] = Mem730[ds_bx + si:byte] + al;
+	Mem734[ds_bx + si:byte] = Mem732[ds_bx + si:byte] + al;
+	Mem736[ds_bx + si:byte] = Mem734[ds_bx + si:byte] + al;
+	Mem738[ds_bx + si:byte] = Mem736[ds_bx + si:byte] + al;
+	Mem740[ds_bx + si:byte] = Mem738[ds_bx + si:byte] + al;
+	Mem742[ds_bx + si:byte] = Mem740[ds_bx + si:byte] + al;
+	Mem744[ds_bx + si:byte] = Mem742[ds_bx + si:byte] + al;
+	Mem746[ds_bx + si:byte] = Mem744[ds_bx + si:byte] + al;
+	Mem748[ds_bx + si:byte] = Mem746[ds_bx + si:byte] + al;
+	Mem750[ds_bx + si:byte] = Mem748[ds_bx + si:byte] + al;
+	Mem752[ds_bx + si:byte] = Mem750[ds_bx + si:byte] + al;
+	Mem754[ds_bx + si:byte] = Mem752[ds_bx + si:byte] + al;
+	Mem756[ds_bx + si:byte] = Mem754[ds_bx + si:byte] + al;
+	Mem758[ds_bx + si:byte] = Mem756[ds_bx + si:byte] + al;
+	Mem760[ds_bx + si:byte] = Mem758[ds_bx + si:byte] + al;
+	Mem762[ds_bx + si:byte] = Mem760[ds_bx + si:byte] + al;
+	Mem764[ds_bx + si:byte] = Mem762[ds_bx + si:byte] + al;
+	Mem766[ds_bx + si:byte] = Mem764[ds_bx + si:byte] + al;
+	Mem768[ds_bx + si:byte] = Mem766[ds_bx + si:byte] + al;
+	Mem770[ds_bx + si:byte] = Mem768[ds_bx + si:byte] + al;
+	Mem772[ds_bx + si:byte] = Mem770[ds_bx + si:byte] + al;
+	Mem774[ds_bx + si:byte] = Mem772[ds_bx + si:byte] + al;
+	Mem776[ds_bx + si:byte] = Mem774[ds_bx + si:byte] + al;
+	Mem778[ds_bx + si:byte] = Mem776[ds_bx + si:byte] + al;
+	Mem780[ds_bx + si:byte] = Mem778[ds_bx + si:byte] + al;
+	Mem782[ds_bx + si:byte] = Mem780[ds_bx + si:byte] + al;
+	Mem784[ds_bx + si:byte] = Mem782[ds_bx + si:byte] + al;
+	Mem786[ds_bx + si:byte] = Mem784[ds_bx + si:byte] + al;
+	Mem788[ds_bx + si:byte] = Mem786[ds_bx + si:byte] + al;
+	Mem790[ds_bx + si:byte] = Mem788[ds_bx + si:byte] + al;
+	Mem792[ds_bx + si:byte] = Mem790[ds_bx + si:byte] + al;
+	Mem794[ds_bx + si:byte] = Mem792[ds_bx + si:byte] + al;
+	Mem796[ds_bx + si:byte] = Mem794[ds_bx + si:byte] + al;
+	Mem798[ds_bx + si:byte] = Mem796[ds_bx + si:byte] + al;
+	Mem800[ds_bx + si:byte] = Mem798[ds_bx + si:byte] + al;
+	Mem802[ds_bx + si:byte] = Mem800[ds_bx + si:byte] + al;
+	Mem804[ds_bx + si:byte] = Mem802[ds_bx + si:byte] + al;
+	Mem806[ds_bx + si:byte] = Mem804[ds_bx + si:byte] + al;
+	Mem808[ds_bx + si:byte] = Mem806[ds_bx + si:byte] + al;
+	Mem810[ds_bx + si:byte] = Mem808[ds_bx + si:byte] + al;
+	Mem812[ds_bx + si:byte] = Mem810[ds_bx + si:byte] + al;
+	Mem814[ds_bx + si:byte] = Mem812[ds_bx + si:byte] + al;
+	Mem816[ds_bx + si:byte] = Mem814[ds_bx + si:byte] + al;
+	Mem818[ds_bx + si:byte] = Mem816[ds_bx + si:byte] + al;
+	Mem820[ds_bx + si:byte] = Mem818[ds_bx + si:byte] + al;
+	Mem822[ds_bx + si:byte] = Mem820[ds_bx + si:byte] + al;
+	Mem824[ds_bx + si:byte] = Mem822[ds_bx + si:byte] + al;
+	Mem826[ds_bx + si:byte] = Mem824[ds_bx + si:byte] + al;
+	Mem828[ds_bx + si:byte] = Mem826[ds_bx + si:byte] + al;
+	Mem830[ds_bx + si:byte] = Mem828[ds_bx + si:byte] + al;
+	Mem832[ds_bx + si:byte] = Mem830[ds_bx + si:byte] + al;
+	Mem834[ds_bx + si:byte] = Mem832[ds_bx + si:byte] + al;
+	Mem836[ds_bx + si:byte] = Mem834[ds_bx + si:byte] + al;
+	Mem838[ds_bx + si:byte] = Mem836[ds_bx + si:byte] + al;
+	Mem840[ds_bx + si:byte] = Mem838[ds_bx + si:byte] + al;
+	Mem842[ds_bx + si:byte] = Mem840[ds_bx + si:byte] + al;
+	Mem844[ds_bx + si:byte] = Mem842[ds_bx + si:byte] + al;
+	Mem846[ds_bx + si:byte] = Mem844[ds_bx + si:byte] + al;
+	Mem848[ds_bx + si:byte] = Mem846[ds_bx + si:byte] + al;
+	Mem850[ds_bx + si:byte] = Mem848[ds_bx + si:byte] + al;
+	Mem852[ds_bx + si:byte] = Mem850[ds_bx + si:byte] + al;
+	Mem854[ds_bx + si:byte] = Mem852[ds_bx + si:byte] + al;
+	Mem856[ds_bx + si:byte] = Mem854[ds_bx + si:byte] + al;
+	Mem858[ds_bx + si:byte] = Mem856[ds_bx + si:byte] + al;
+	Mem860[ds_bx + si:byte] = Mem858[ds_bx + si:byte] + al;
+	Mem862[ds_bx + si:byte] = Mem860[ds_bx + si:byte] + al;
+	Mem864[ds_bx + si:byte] = Mem862[ds_bx + si:byte] + al;
+	Mem866[ds_bx + si:byte] = Mem864[ds_bx + si:byte] + al;
+	Mem868[ds_bx + si:byte] = Mem866[ds_bx + si:byte] + al;
+	Mem870[ds_bx + si:byte] = Mem868[ds_bx + si:byte] + al;
+	Mem872[ds_bx + si:byte] = Mem870[ds_bx + si:byte] + al;
+	Mem874[ds_bx + si:byte] = Mem872[ds_bx + si:byte] + al;
+	Mem876[ds_bx + si:byte] = Mem874[ds_bx + si:byte] + al;
+	Mem878[ds_bx + si:byte] = Mem876[ds_bx + si:byte] + al;
+	Mem880[ds_bx + si:byte] = Mem878[ds_bx + si:byte] + al;
+	Mem882[ds_bx + si:byte] = Mem880[ds_bx + si:byte] + al;
+	Mem884[ds_bx + si:byte] = Mem882[ds_bx + si:byte] + al;
+	Mem886[ds_bx + si:byte] = Mem884[ds_bx + si:byte] + al;
+	Mem888[ds_bx + si:byte] = Mem886[ds_bx + si:byte] + al;
+	Mem890[ds_bx + si:byte] = Mem888[ds_bx + si:byte] + al;
+	Mem892[ds_bx + si:byte] = Mem890[ds_bx + si:byte] + al;
+	Mem894[ds_bx + si:byte] = Mem892[ds_bx + si:byte] + al;
+	Mem896[ds_bx + si:byte] = Mem894[ds_bx + si:byte] + al;
+	Mem898[ds_bx + si:byte] = Mem896[ds_bx + si:byte] + al;
+	Mem900[ds_bx + si:byte] = Mem898[ds_bx + si:byte] + al;
+	Mem902[ds_bx + si:byte] = Mem900[ds_bx + si:byte] + al;
+	Mem904[ds_bx + si:byte] = Mem902[ds_bx + si:byte] + al;
+	Mem906[ds_bx + si:byte] = Mem904[ds_bx + si:byte] + al;
+	Mem908[ds_bx + si:byte] = Mem906[ds_bx + si:byte] + al;
+	Mem910[ds_bx + si:byte] = Mem908[ds_bx + si:byte] + al;
+	Mem912[ds_bx + si:byte] = Mem910[ds_bx + si:byte] + al;
+	Mem914[ds_bx + si:byte] = Mem912[ds_bx + si:byte] + al;
+	Mem916[ds_bx + si:byte] = Mem914[ds_bx + si:byte] + al;
+	Mem918[ds_bx + si:byte] = Mem916[ds_bx + si:byte] + al;
+	Mem920[ds_bx + si:byte] = Mem918[ds_bx + si:byte] + al;
+	Mem922[ds_bx + si:byte] = Mem920[ds_bx + si:byte] + al;
+	Mem924[ds_bx + si:byte] = Mem922[ds_bx + si:byte] + al;
+	Mem926[ds_bx + si:byte] = Mem924[ds_bx + si:byte] + al;
+	Mem928[ds_bx + si:byte] = Mem926[ds_bx + si:byte] + al;
+	Mem930[ds_bx + si:byte] = Mem928[ds_bx + si:byte] + al;
+	Mem932[ds_bx + si:byte] = Mem930[ds_bx + si:byte] + al;
+	Mem934[ds_bx + si:byte] = Mem932[ds_bx + si:byte] + al;
+	Mem936[ds_bx + si:byte] = Mem934[ds_bx + si:byte] + al;
+	Mem938[ds_bx + si:byte] = Mem936[ds_bx + si:byte] + al;
+	Mem940[ds_bx + si:byte] = Mem938[ds_bx + si:byte] + al;
+	Mem942[ds_bx + si:byte] = Mem940[ds_bx + si:byte] + al;
+	Mem944[ds_bx + si:byte] = Mem942[ds_bx + si:byte] + al;
+	Mem946[ds_bx + si:byte] = Mem944[ds_bx + si:byte] + al;
+	Mem948[ds_bx + si:byte] = Mem946[ds_bx + si:byte] + al;
+	Mem950[ds_bx + si:byte] = Mem948[ds_bx + si:byte] + al;
+	Mem952[ds_bx + si:byte] = Mem950[ds_bx + si:byte] + al;
+	Mem954[ds_bx + si:byte] = Mem952[ds_bx + si:byte] + al;
+	Mem956[ds_bx + si:byte] = Mem954[ds_bx + si:byte] + al;
+	Mem958[ds_bx + si:byte] = Mem956[ds_bx + si:byte] + al;
+	Mem960[ds_bx + si:byte] = Mem958[ds_bx + si:byte] + al;
+	Mem962[ds_bx + si:byte] = Mem960[ds_bx + si:byte] + al;
+	Mem964[ds_bx + si:byte] = Mem962[ds_bx + si:byte] + al;
+	Mem966[ds_bx + si:byte] = Mem964[ds_bx + si:byte] + al;
+	Mem968[ds_bx + si:byte] = Mem966[ds_bx + si:byte] + al;
+	Mem970[ds_bx + si:byte] = Mem968[ds_bx + si:byte] + al;
+	Mem972[ds_bx + si:byte] = Mem970[ds_bx + si:byte] + al;
+	Mem974[ds_bx + si:byte] = Mem972[ds_bx + si:byte] + al;
+	Mem976[ds_bx + si:byte] = Mem974[ds_bx + si:byte] + al;
+	Mem978[ds_bx + si:byte] = Mem976[ds_bx + si:byte] + al;
+	Mem980[ds_bx + si:byte] = Mem978[ds_bx + si:byte] + al;
+	Mem982[ds_bx + si:byte] = Mem980[ds_bx + si:byte] + al;
+	Mem984[ds_bx + si:byte] = Mem982[ds_bx + si:byte] + al;
+	Mem986[ds_bx + si:byte] = Mem984[ds_bx + si:byte] + al;
+	Mem988[ds_bx + si:byte] = Mem986[ds_bx + si:byte] + al;
+	Mem990[ds_bx + si:byte] = Mem988[ds_bx + si:byte] + al;
+	Mem992[ds_bx + si:byte] = Mem990[ds_bx + si:byte] + al;
+	Mem994[ds_bx + si:byte] = Mem992[ds_bx + si:byte] + al;
+	Mem996[ds_bx + si:byte] = Mem994[ds_bx + si:byte] + al;
+	Mem998[ds_bx + si:byte] = Mem996[ds_bx + si:byte] + al;
+	Mem1000[ds_bx + si:byte] = Mem998[ds_bx + si:byte] + al;
+	Mem1002[ds_bx + si:byte] = Mem1000[ds_bx + si:byte] + al;
+	Mem1004[ds_bx + si:byte] = Mem1002[ds_bx + si:byte] + al;
+	Mem1006[ds_bx + si:byte] = Mem1004[ds_bx + si:byte] + al;
+	Mem1008[ds_bx + si:byte] = Mem1006[ds_bx + si:byte] + al;
+	Mem1010[ds_bx + si:byte] = Mem1008[ds_bx + si:byte] + al;
+	Mem1012[ds_bx + si:byte] = Mem1010[ds_bx + si:byte] + al;
+	Mem1014[ds_bx + si:byte] = Mem1012[ds_bx + si:byte] + al;
+	Mem1016[ds_bx + si:byte] = Mem1014[ds_bx + si:byte] + al;
+	Mem1018[ds_bx + si:byte] = Mem1016[ds_bx + si:byte] + al;
+	Mem1020[ds_bx + si:byte] = Mem1018[ds_bx + si:byte] + al;
+	Mem1022[ds_bx + si:byte] = Mem1020[ds_bx + si:byte] + al;
+	Mem1024[ds_bx + si:byte] = Mem1022[ds_bx + si:byte] + al;
+	Mem1026[ds_bx + si:byte] = Mem1024[ds_bx + si:byte] + al;
+	Mem1028[ds_bx + si:byte] = Mem1026[ds_bx + si:byte] + al;
+	Mem1030[ds_bx + si:byte] = Mem1028[ds_bx + si:byte] + al;
+	Mem1032[ds_bx + si:byte] = Mem1030[ds_bx + si:byte] + al;
+	Mem1034[ds_bx + si:byte] = Mem1032[ds_bx + si:byte] + al;
+	Mem1036[ds_bx + si:byte] = Mem1034[ds_bx + si:byte] + al;
+	Mem1038[ds_bx + si:byte] = Mem1036[ds_bx + si:byte] + al;
+	Mem1040[ds_bx + si:byte] = Mem1038[ds_bx + si:byte] + al;
+	Mem1042[ds_bx + si:byte] = Mem1040[ds_bx + si:byte] + al;
+	Mem1044[ds_bx + si:byte] = Mem1042[ds_bx + si:byte] + al;
+	Mem1046[ds_bx + si:byte] = Mem1044[ds_bx + si:byte] + al;
+	Mem1048[ds_bx + si:byte] = Mem1046[ds_bx + si:byte] + al;
+	Mem1050[ds_bx + si:byte] = Mem1048[ds_bx + si:byte] + al;
+	Mem1052[ds_bx + si:byte] = Mem1050[ds_bx + si:byte] + al;
+	Mem1054[ds_bx + si:byte] = Mem1052[ds_bx + si:byte] + al;
+	Mem1056[ds_bx + si:byte] = Mem1054[ds_bx + si:byte] + al;
+	Mem1058[ds_bx + si:byte] = Mem1056[ds_bx + si:byte] + al;
+	Mem1060[ds_bx + si:byte] = Mem1058[ds_bx + si:byte] + al;
+	Mem1062[ds_bx + si:byte] = Mem1060[ds_bx + si:byte] + al;
+	Mem1064[ds_bx + si:byte] = Mem1062[ds_bx + si:byte] + al;
+	Mem1066[ds_bx + si:byte] = Mem1064[ds_bx + si:byte] + al;
+	Mem1068[ds_bx + si:byte] = Mem1066[ds_bx + si:byte] + al;
+	Mem1070[ds_bx + si:byte] = Mem1068[ds_bx + si:byte] + al;
+	Mem1072[ds_bx + si:byte] = Mem1070[ds_bx + si:byte] + al;
+	Mem1074[ds_bx + si:byte] = Mem1072[ds_bx + si:byte] + al;
+	Mem1076[ds_bx + si:byte] = Mem1074[ds_bx + si:byte] + al;
+	Mem1078[ds_bx + si:byte] = Mem1076[ds_bx + si:byte] + al;
+	Mem1080[ds_bx + si:byte] = Mem1078[ds_bx + si:byte] + al;
+	Mem1082[ds_bx + si:byte] = Mem1080[ds_bx + si:byte] + al;
+	Mem1084[ds_bx + si:byte] = Mem1082[ds_bx + si:byte] + al;
+	Mem1086[ds_bx + si:byte] = Mem1084[ds_bx + si:byte] + al;
+	Mem1088[ds_bx + si:byte] = Mem1086[ds_bx + si:byte] + al;
+	Mem1090[ds_bx + si:byte] = Mem1088[ds_bx + si:byte] + al;
+	Mem1092[ds_bx + si:byte] = Mem1090[ds_bx + si:byte] + al;
+	Mem1094[ds_bx + si:byte] = Mem1092[ds_bx + si:byte] + al;
+	Mem1096[ds_bx + si:byte] = Mem1094[ds_bx + si:byte] + al;
+	Mem1098[ds_bx + si:byte] = Mem1096[ds_bx + si:byte] + al;
+	Mem1100[ds_bx + si:byte] = Mem1098[ds_bx + si:byte] + al;
+	Mem1102[ds_bx + si:byte] = Mem1100[ds_bx + si:byte] + al;
+	Mem1104[ds_bx + si:byte] = Mem1102[ds_bx + si:byte] + al;
+	Mem1106[ds_bx + si:byte] = Mem1104[ds_bx + si:byte] + al;
+	Mem1108[ds_bx + si:byte] = Mem1106[ds_bx + si:byte] + al;
+	Mem1110[ds_bx + si:byte] = Mem1108[ds_bx + si:byte] + al;
+	Mem1112[ds_bx + si:byte] = Mem1110[ds_bx + si:byte] + al;
+	Mem1114[ds_bx + si:byte] = Mem1112[ds_bx + si:byte] + al;
+	Mem1116[ds_bx + si:byte] = Mem1114[ds_bx + si:byte] + al;
+	Mem1118[ds_bx + si:byte] = Mem1116[ds_bx + si:byte] + al;
+	Mem1120[ds_bx + si:byte] = Mem1118[ds_bx + si:byte] + al;
+	Mem1122[ds_bx + si:byte] = Mem1120[ds_bx + si:byte] + al;
+	Mem1124[ds_bx + si:byte] = Mem1122[ds_bx + si:byte] + al;
+	Mem1126[ds_bx + si:byte] = Mem1124[ds_bx + si:byte] + al;
+	Mem1128[ds_bx + si:byte] = Mem1126[ds_bx + si:byte] + al;
+	Mem1130[ds_bx + si:byte] = Mem1128[ds_bx + si:byte] + al;
+	Mem1132[ds_bx + si:byte] = Mem1130[ds_bx + si:byte] + al;
+	Mem1134[ds_bx + si:byte] = Mem1132[ds_bx + si:byte] + al;
+	Mem1136[ds_bx + si:byte] = Mem1134[ds_bx + si:byte] + al;
+	Mem1138[ds_bx + si:byte] = Mem1136[ds_bx + si:byte] + al;
+	Mem1140[ds_bx + si:byte] = Mem1138[ds_bx + si:byte] + al;
+	Mem1142[ds_bx + si:byte] = Mem1140[ds_bx + si:byte] + al;
+	Mem1144[ds_bx + si:byte] = Mem1142[ds_bx + si:byte] + al;
+	Mem1146[ds_bx + si:byte] = Mem1144[ds_bx + si:byte] + al;
+	Mem1148[ds_bx + si:byte] = Mem1146[ds_bx + si:byte] + al;
+	Mem1150[ds_bx + si:byte] = Mem1148[ds_bx + si:byte] + al;
+	Mem1152[ds_bx + si:byte] = Mem1150[ds_bx + si:byte] + al;
+	Mem1154[ds_bx + si:byte] = Mem1152[ds_bx + si:byte] + al;
+	Mem1156[ds_bx + si:byte] = Mem1154[ds_bx + si:byte] + al;
+	Mem1158[ds_bx + si:byte] = Mem1156[ds_bx + si:byte] + al;
+	Mem1160[ds_bx + si:byte] = Mem1158[ds_bx + si:byte] + al;
+	Mem1162[ds_bx + si:byte] = Mem1160[ds_bx + si:byte] + al;
+	Mem1164[ds_bx + si:byte] = Mem1162[ds_bx + si:byte] + al;
+	Mem1166[ds_bx + si:byte] = Mem1164[ds_bx + si:byte] + al;
+	Mem1168[ds_bx + si:byte] = Mem1166[ds_bx + si:byte] + al;
+	Mem1170[ds_bx + si:byte] = Mem1168[ds_bx + si:byte] + al;
+	Mem1172[ds_bx + si:byte] = Mem1170[ds_bx + si:byte] + al;
+	Mem1174[ds_bx + si:byte] = Mem1172[ds_bx + si:byte] + al;
+	Mem1176[ds_bx + si:byte] = Mem1174[ds_bx + si:byte] + al;
+	Mem1178[ds_bx + si:byte] = Mem1176[ds_bx + si:byte] + al;
+	Mem1180[ds_bx + si:byte] = Mem1178[ds_bx + si:byte] + al;
+	Mem1182[ds_bx + si:byte] = Mem1180[ds_bx + si:byte] + al;
+	Mem1184[ds_bx + si:byte] = Mem1182[ds_bx + si:byte] + al;
+	Mem1186[ds_bx + si:byte] = Mem1184[ds_bx + si:byte] + al;
+	Mem1188[ds_bx + si:byte] = Mem1186[ds_bx + si:byte] + al;
+	Mem1190[ds_bx + si:byte] = Mem1188[ds_bx + si:byte] + al;
+	Mem1192[ds_bx + si:byte] = Mem1190[ds_bx + si:byte] + al;
+	Mem1194[ds_bx + si:byte] = Mem1192[ds_bx + si:byte] + al;
+	Mem1196[ds_bx + si:byte] = Mem1194[ds_bx + si:byte] + al;
+	Mem1198[ds_bx + si:byte] = Mem1196[ds_bx + si:byte] + al;
+	Mem1200[ds_bx + si:byte] = Mem1198[ds_bx + si:byte] + al;
+	Mem1202[ds_bx + si:byte] = Mem1200[ds_bx + si:byte] + al;
+	Mem1204[ds_bx + si:byte] = Mem1202[ds_bx + si:byte] + al;
+	Mem1206[ds_bx + si:byte] = Mem1204[ds_bx + si:byte] + al;
+	Mem1208[ds_bx + si:byte] = Mem1206[ds_bx + si:byte] + al;
+	Mem1210[ds_bx + si:byte] = Mem1208[ds_bx + si:byte] + al;
+	Mem1212[ds_bx + si:byte] = Mem1210[ds_bx + si:byte] + al;
+	Mem1214[ds_bx + si:byte] = Mem1212[ds_bx + si:byte] + al;
+	Mem1216[ds_bx + si:byte] = Mem1214[ds_bx + si:byte] + al;
+	Mem1218[ds_bx + si:byte] = Mem1216[ds_bx + si:byte] + al;
+	Mem1220[ds_bx + si:byte] = Mem1218[ds_bx + si:byte] + al;
+	Mem1222[ds_bx + si:byte] = Mem1220[ds_bx + si:byte] + al;
+	Mem1224[ds_bx + si:byte] = Mem1222[ds_bx + si:byte] + al;
+	Mem1226[ds_bx + si:byte] = Mem1224[ds_bx + si:byte] + al;
+	Mem1228[ds_bx + si:byte] = Mem1226[ds_bx + si:byte] + al;
+	Mem1230[ds_bx + si:byte] = Mem1228[ds_bx + si:byte] + al;
+	Mem1232[ds_bx + si:byte] = Mem1230[ds_bx + si:byte] + al;
+	Mem1234[ds_bx + si:byte] = Mem1232[ds_bx + si:byte] + al;
+	Mem1236[ds_bx + si:byte] = Mem1234[ds_bx + si:byte] + al;
+	Mem1238[ds_bx + si:byte] = Mem1236[ds_bx + si:byte] + al;
+	Mem1240[ds_bx + si:byte] = Mem1238[ds_bx + si:byte] + al;
+	Mem1242[ds_bx + si:byte] = Mem1240[ds_bx + si:byte] + al;
+	Mem1244[ds_bx + si:byte] = Mem1242[ds_bx + si:byte] + al;
+	Mem1246[ds_bx + si:byte] = Mem1244[ds_bx + si:byte] + al;
+	Mem1248[ds_bx + si:byte] = Mem1246[ds_bx + si:byte] + al;
+	Mem1250[ds_bx + si:byte] = Mem1248[ds_bx + si:byte] + al;
+	Mem1252[ds_bx + si:byte] = Mem1250[ds_bx + si:byte] + al;
+	Mem1254[ds_bx + si:byte] = Mem1252[ds_bx + si:byte] + al;
+	Mem1256[ds_bx + si:byte] = Mem1254[ds_bx + si:byte] + al;
+	Mem1258[ds_bx + si:byte] = Mem1256[ds_bx + si:byte] + al;
+	Mem1260[ds_bx + si:byte] = Mem1258[ds_bx + si:byte] + al;
+	Mem1262[ds_bx + si:byte] = Mem1260[ds_bx + si:byte] + al;
+	Mem1264[ds_bx + si:byte] = Mem1262[ds_bx + si:byte] + al;
+	Mem1266[ds_bx + si:byte] = Mem1264[ds_bx + si:byte] + al;
+	Mem1268[ds_bx + si:byte] = Mem1266[ds_bx + si:byte] + al;
+	Mem1270[ds_bx + si:byte] = Mem1268[ds_bx + si:byte] + al;
+	Mem1272[ds_bx + si:byte] = Mem1270[ds_bx + si:byte] + al;
+	Mem1274[ds_bx + si:byte] = Mem1272[ds_bx + si:byte] + al;
+	Mem1276[ds_bx + si:byte] = Mem1274[ds_bx + si:byte] + al;
+	Mem1278[ds_bx + si:byte] = Mem1276[ds_bx + si:byte] + al;
+	Mem1280[ds_bx + si:byte] = Mem1278[ds_bx + si:byte] + al;
+	Mem1282[ds_bx + si:byte] = Mem1280[ds_bx + si:byte] + al;
+	Mem1284[ds_bx + si:byte] = Mem1282[ds_bx + si:byte] + al;
+	Mem1286[ds_bx + si:byte] = Mem1284[ds_bx + si:byte] + al;
+	Mem1288[ds_bx + si:byte] = Mem1286[ds_bx + si:byte] + al;
+	Mem1290[ds_bx + si:byte] = Mem1288[ds_bx + si:byte] + al;
+	Mem1292[ds_bx + si:byte] = Mem1290[ds_bx + si:byte] + al;
+	Mem1294[ds_bx + si:byte] = Mem1292[ds_bx + si:byte] + al;
+	Mem1296[ds_bx + si:byte] = Mem1294[ds_bx + si:byte] + al;
+	Mem1298[ds_bx + si:byte] = Mem1296[ds_bx + si:byte] + al;
+	Mem1300[ds_bx + si:byte] = Mem1298[ds_bx + si:byte] + al;
+	Mem1302[ds_bx + si:byte] = Mem1300[ds_bx + si:byte] + al;
+	Mem1304[ds_bx + si:byte] = Mem1302[ds_bx + si:byte] + al;
+	Mem1306[ds_bx + si:byte] = Mem1304[ds_bx + si:byte] + al;
+	Mem1308[ds_bx + si:byte] = Mem1306[ds_bx + si:byte] + al;
+	Mem1310[ds_bx + si:byte] = Mem1308[ds_bx + si:byte] + al;
+	Mem1312[ds_bx + si:byte] = Mem1310[ds_bx + si:byte] + al;
+	Mem1314[ds_bx + si:byte] = Mem1312[ds_bx + si:byte] + al;
+	Mem1316[ds_bx + si:byte] = Mem1314[ds_bx + si:byte] + al;
+	Mem1318[ds_bx + si:byte] = Mem1316[ds_bx + si:byte] + al;
+	Mem1320[ds_bx + si:byte] = Mem1318[ds_bx + si:byte] + al;
+	Mem1322[ds_bx + si:byte] = Mem1320[ds_bx + si:byte] + al;
+	Mem1324[ds_bx + si:byte] = Mem1322[ds_bx + si:byte] + al;
+	Mem1326[ds_bx + si:byte] = Mem1324[ds_bx + si:byte] + al;
+	Mem1328[ds_bx + si:byte] = Mem1326[ds_bx + si:byte] + al;
+	Mem1330[ds_bx + si:byte] = Mem1328[ds_bx + si:byte] + al;
+	Mem1332[ds_bx + si:byte] = Mem1330[ds_bx + si:byte] + al;
+	Mem1334[ds_bx + si:byte] = Mem1332[ds_bx + si:byte] + al;
+	Mem1336[ds_bx + si:byte] = Mem1334[ds_bx + si:byte] + al;
+	Mem1338[ds_bx + si:byte] = Mem1336[ds_bx + si:byte] + al;
+	Mem1340[ds_bx + si:byte] = Mem1338[ds_bx + si:byte] + al;
+	Mem1342[ds_bx + si:byte] = Mem1340[ds_bx + si:byte] + al;
+	Mem1344[ds_bx + si:byte] = Mem1342[ds_bx + si:byte] + al;
+	Mem1346[ds_bx + si:byte] = Mem1344[ds_bx + si:byte] + al;
+	Mem1348[ds_bx + si:byte] = Mem1346[ds_bx + si:byte] + al;
+	Mem1350[ds_bx + si:byte] = Mem1348[ds_bx + si:byte] + al;
+	Mem1352[ds_bx + si:byte] = Mem1350[ds_bx + si:byte] + al;
+	Mem1354[ds_bx + si:byte] = Mem1352[ds_bx + si:byte] + al;
+	Mem1356[ds_bx + si:byte] = Mem1354[ds_bx + si:byte] + al;
+	Mem1358[ds_bx + si:byte] = Mem1356[ds_bx + si:byte] + al;
+	Mem1360[ds_bx + si:byte] = Mem1358[ds_bx + si:byte] + al;
+	Mem1362[ds_bx + si:byte] = Mem1360[ds_bx + si:byte] + al;
+	Mem1364[ds_bx + si:byte] = Mem1362[ds_bx + si:byte] + al;
+	Mem1366[ds_bx + si:byte] = Mem1364[ds_bx + si:byte] + al;
+	Mem1368[ds_bx + si:byte] = Mem1366[ds_bx + si:byte] + al;
+	Mem1370[ds_bx + si:byte] = Mem1368[ds_bx + si:byte] + al;
+	Mem1372[ds_bx + si:byte] = Mem1370[ds_bx + si:byte] + al;
+	Mem1374[ds_bx + si:byte] = Mem1372[ds_bx + si:byte] + al;
+	Mem1376[ds_bx + si:byte] = Mem1374[ds_bx + si:byte] + al;
+	Mem1378[ds_bx + si:byte] = Mem1376[ds_bx + si:byte] + al;
+	Mem1380[ds_bx + si:byte] = Mem1378[ds_bx + si:byte] + al;
+	Mem1382[ds_bx + si:byte] = Mem1380[ds_bx + si:byte] + al;
+	Mem1384[ds_bx + si:byte] = Mem1382[ds_bx + si:byte] + al;
+	Mem1386[ds_bx + si:byte] = Mem1384[ds_bx + si:byte] + al;
+	Mem1388[ds_bx + si:byte] = Mem1386[ds_bx + si:byte] + al;
+	Mem1390[ds_bx + si:byte] = Mem1388[ds_bx + si:byte] + al;
+	Mem1392[ds_bx + si:byte] = Mem1390[ds_bx + si:byte] + al;
+	Mem1394[ds_bx + si:byte] = Mem1392[ds_bx + si:byte] + al;
+	Mem1396[ds_bx + si:byte] = Mem1394[ds_bx + si:byte] + al;
+	Mem1398[ds_bx + si:byte] = Mem1396[ds_bx + si:byte] + al;
+	Mem1400[ds_bx + si:byte] = Mem1398[ds_bx + si:byte] + al;
+	Mem1402[ds_bx + si:byte] = Mem1400[ds_bx + si:byte] + al;
+	Mem1404[ds_bx + si:byte] = Mem1402[ds_bx + si:byte] + al;
+	Mem1406[ds_bx + si:byte] = Mem1404[ds_bx + si:byte] + al;
+	Mem1408[ds_bx + si:byte] = Mem1406[ds_bx + si:byte] + al;
+	Mem1410[ds_bx + si:byte] = Mem1408[ds_bx + si:byte] + al;
+	Mem1412[ds_bx + si:byte] = Mem1410[ds_bx + si:byte] + al;
+	Mem1414[ds_bx + si:byte] = Mem1412[ds_bx + si:byte] + al;
+	Mem1416[ds_bx + si:byte] = Mem1414[ds_bx + si:byte] + al;
+	Mem1418[ds_bx + si:byte] = Mem1416[ds_bx + si:byte] + al;
+	Mem1420[ds_bx + si:byte] = Mem1418[ds_bx + si:byte] + al;
+	Mem1422[ds_bx + si:byte] = Mem1420[ds_bx + si:byte] + al;
+	Mem1424[ds_bx + si:byte] = Mem1422[ds_bx + si:byte] + al;
+	Mem1426[ds_bx + si:byte] = Mem1424[ds_bx + si:byte] + al;
+	Mem1428[ds_bx + si:byte] = Mem1426[ds_bx + si:byte] + al;
+	Mem1430[ds_bx + si:byte] = Mem1428[ds_bx + si:byte] + al;
+	Mem1432[ds_bx + si:byte] = Mem1430[ds_bx + si:byte] + al;
+	Mem1434[ds_bx + si:byte] = Mem1432[ds_bx + si:byte] + al;
+	Mem1436[ds_bx + si:byte] = Mem1434[ds_bx + si:byte] + al;
+	Mem1438[ds_bx + si:byte] = Mem1436[ds_bx + si:byte] + al;
+	Mem1440[ds_bx + si:byte] = Mem1438[ds_bx + si:byte] + al;
+	Mem1442[ds_bx + si:byte] = Mem1440[ds_bx + si:byte] + al;
+	Mem1444[ds_bx + si:byte] = Mem1442[ds_bx + si:byte] + al;
+	Mem1446[ds_bx + si:byte] = Mem1444[ds_bx + si:byte] + al;
+	Mem1448[ds_bx + si:byte] = Mem1446[ds_bx + si:byte] + al;
+	Mem1450[ds_bx + si:byte] = Mem1448[ds_bx + si:byte] + al;
+	Mem1452[ds_bx + si:byte] = Mem1450[ds_bx + si:byte] + al;
+	Mem1454[ds_bx + si:byte] = Mem1452[ds_bx + si:byte] + al;
+	Mem1456[ds_bx + si:byte] = Mem1454[ds_bx + si:byte] + al;
+	Mem1458[ds_bx + si:byte] = Mem1456[ds_bx + si:byte] + al;
+	Mem1460[ds_bx + si:byte] = Mem1458[ds_bx + si:byte] + al;
+	Mem1462[ds_bx + si:byte] = Mem1460[ds_bx + si:byte] + al;
+	Mem1464[ds_bx + si:byte] = Mem1462[ds_bx + si:byte] + al;
+	Mem1466[ds_bx + si:byte] = Mem1464[ds_bx + si:byte] + al;
+	Mem1468[ds_bx + si:byte] = Mem1466[ds_bx + si:byte] + al;
+	Mem1470[ds_bx + si:byte] = Mem1468[ds_bx + si:byte] + al;
+	Mem1472[ds_bx + si:byte] = Mem1470[ds_bx + si:byte] + al;
+	Mem1474[ds_bx + si:byte] = Mem1472[ds_bx + si:byte] + al;
+	Mem1476[ds_bx + si:byte] = Mem1474[ds_bx + si:byte] + al;
+	Mem1478[ds_bx + si:byte] = Mem1476[ds_bx + si:byte] + al;
+	Mem1480[ds_bx + si:byte] = Mem1478[ds_bx + si:byte] + al;
+	Mem1482[ds_bx + si:byte] = Mem1480[ds_bx + si:byte] + al;
+	Mem1484[ds_bx + si:byte] = Mem1482[ds_bx + si:byte] + al;
+	Mem1486[ds_bx + si:byte] = Mem1484[ds_bx + si:byte] + al;
+	Mem1488[ds_bx + si:byte] = Mem1486[ds_bx + si:byte] + al;
+	Mem1490[ds_bx + si:byte] = Mem1488[ds_bx + si:byte] + al;
+	Mem1492[ds_bx + si:byte] = Mem1490[ds_bx + si:byte] + al;
+	Mem1494[ds_bx + si:byte] = Mem1492[ds_bx + si:byte] + al;
+	Mem1496[ds_bx + si:byte] = Mem1494[ds_bx + si:byte] + al;
+	Mem1498[ds_bx + si:byte] = Mem1496[ds_bx + si:byte] + al;
+	Mem1500[ds_bx + si:byte] = Mem1498[ds_bx + si:byte] + al;
+	Mem1502[ds_bx + si:byte] = Mem1500[ds_bx + si:byte] + al;
+	Mem1504[ds_bx + si:byte] = Mem1502[ds_bx + si:byte] + al;
+	Mem1506[ds_bx + si:byte] = Mem1504[ds_bx + si:byte] + al;
+	Mem1508[ds_bx + si:byte] = Mem1506[ds_bx + si:byte] + al;
+	Mem1510[ds_bx + si:byte] = Mem1508[ds_bx + si:byte] + al;
+	Mem1512[ds_bx + si:byte] = Mem1510[ds_bx + si:byte] + al;
+	Mem1514[ds_bx + si:byte] = Mem1512[ds_bx + si:byte] + al;
+	Mem1516[ds_bx + si:byte] = Mem1514[ds_bx + si:byte] + al;
+	Mem1518[ds_bx + si:byte] = Mem1516[ds_bx + si:byte] + al;
+	Mem1520[ds_bx + si:byte] = Mem1518[ds_bx + si:byte] + al;
+	Mem1522[ds_bx + si:byte] = Mem1520[ds_bx + si:byte] + al;
+	Mem1524[ds_bx + si:byte] = Mem1522[ds_bx + si:byte] + al;
+	Mem1526[ds_bx + si:byte] = Mem1524[ds_bx + si:byte] + al;
+	Mem1528[ds_bx + si:byte] = Mem1526[ds_bx + si:byte] + al;
+	Mem1530[ds_bx + si:byte] = Mem1528[ds_bx + si:byte] + al;
+	Mem1532[ds_bx + si:byte] = Mem1530[ds_bx + si:byte] + al;
+	Mem1534[ds_bx + si:byte] = Mem1532[ds_bx + si:byte] + al;
+	Mem1536[ds_bx + si:byte] = Mem1534[ds_bx + si:byte] + al;
+	Mem1538[ds_bx + si:byte] = Mem1536[ds_bx + si:byte] + al;
+	Mem1540[ds_bx + si:byte] = Mem1538[ds_bx + si:byte] + al;
+	Mem1542[ds_bx + si:byte] = Mem1540[ds_bx + si:byte] + al;
+	Mem1544[ds_bx + si:byte] = Mem1542[ds_bx + si:byte] + al;
+	Mem1546[ds_bx + si:byte] = Mem1544[ds_bx + si:byte] + al;
+	Mem1548[ds_bx + si:byte] = Mem1546[ds_bx + si:byte] + al;
+	Mem1550[ds_bx + si:byte] = Mem1548[ds_bx + si:byte] + al;
+	Mem1552[ds_bx + si:byte] = Mem1550[ds_bx + si:byte] + al;
+	Mem1554[ds_bx + si:byte] = Mem1552[ds_bx + si:byte] + al;
+	Mem1556[ds_bx + si:byte] = Mem1554[ds_bx + si:byte] + al;
+	Mem1558[ds_bx + si:byte] = Mem1556[ds_bx + si:byte] + al;
+	Mem1560[ds_bx + si:byte] = Mem1558[ds_bx + si:byte] + al;
+	Mem1562[ds_bx + si:byte] = Mem1560[ds_bx + si:byte] + al;
+	Mem1564[ds_bx + si:byte] = Mem1562[ds_bx + si:byte] + al;
+	Mem1566[ds_bx + si:byte] = Mem1564[ds_bx + si:byte] + al;
+	Mem1568[ds_bx + si:byte] = Mem1566[ds_bx + si:byte] + al;
+	Mem1570[ds_bx + si:byte] = Mem1568[ds_bx + si:byte] + al;
+	Mem1572[ds_bx + si:byte] = Mem1570[ds_bx + si:byte] + al;
+	Mem1574[ds_bx + si:byte] = Mem1572[ds_bx + si:byte] + al;
+	Mem1576[ds_bx + si:byte] = Mem1574[ds_bx + si:byte] + al;
+	Mem1578[ds_bx + si:byte] = Mem1576[ds_bx + si:byte] + al;
+	Mem1580[ds_bx + si:byte] = Mem1578[ds_bx + si:byte] + al;
+	Mem1582[ds_bx + si:byte] = Mem1580[ds_bx + si:byte] + al;
+	Mem1584[ds_bx + si:byte] = Mem1582[ds_bx + si:byte] + al;
+	Mem1586[ds_bx + si:byte] = Mem1584[ds_bx + si:byte] + al;
+	Mem1588[ds_bx + si:byte] = Mem1586[ds_bx + si:byte] + al;
+	Mem1590[ds_bx + si:byte] = Mem1588[ds_bx + si:byte] + al;
+	Mem1592[ds_bx + si:byte] = Mem1590[ds_bx + si:byte] + al;
+	Mem1594[ds_bx + si:byte] = Mem1592[ds_bx + si:byte] + al;
+	Mem1596[ds_bx + si:byte] = Mem1594[ds_bx + si:byte] + al;
+	Mem1598[ds_bx + si:byte] = Mem1596[ds_bx + si:byte] + al;
+	Mem1600[ds_bx + si:byte] = Mem1598[ds_bx + si:byte] + al;
+	Mem1602[ds_bx + si:byte] = Mem1600[ds_bx + si:byte] + al;
+	Mem1604[ds_bx + si:byte] = Mem1602[ds_bx + si:byte] + al;
+	Mem1606[ds_bx + si:byte] = Mem1604[ds_bx + si:byte] + al;
+	Mem1608[ds_bx + si:byte] = Mem1606[ds_bx + si:byte] + al;
+	Mem1610[ds_bx + si:byte] = Mem1608[ds_bx + si:byte] + al;
+	Mem1612[ds_bx + si:byte] = Mem1610[ds_bx + si:byte] + al;
+	Mem1614[ds_bx + si:byte] = Mem1612[ds_bx + si:byte] + al;
+	Mem1616[ds_bx + si:byte] = Mem1614[ds_bx + si:byte] + al;
+	Mem1618[ds_bx + si:byte] = Mem1616[ds_bx + si:byte] + al;
+	Mem1620[ds_bx + si:byte] = Mem1618[ds_bx + si:byte] + al;
+	Mem1622[ds_bx + si:byte] = Mem1620[ds_bx + si:byte] + al;
+	Mem1624[ds_bx + si:byte] = Mem1622[ds_bx + si:byte] + al;
+	Mem1626[ds_bx + si:byte] = Mem1624[ds_bx + si:byte] + al;
+	Mem1628[ds_bx + si:byte] = Mem1626[ds_bx + si:byte] + al;
+	Mem1630[ds_bx + si:byte] = Mem1628[ds_bx + si:byte] + al;
+	Mem1632[ds_bx + si:byte] = Mem1630[ds_bx + si:byte] + al;
+	Mem1634[ds_bx + si:byte] = Mem1632[ds_bx + si:byte] + al;
+	Mem1636[ds_bx + si:byte] = Mem1634[ds_bx + si:byte] + al;
+	Mem1638[ds_bx + si:byte] = Mem1636[ds_bx + si:byte] + al;
+	Mem1640[ds_bx + si:byte] = Mem1638[ds_bx + si:byte] + al;
+	Mem1642[ds_bx + si:byte] = Mem1640[ds_bx + si:byte] + al;
+	Mem1644[ds_bx + si:byte] = Mem1642[ds_bx + si:byte] + al;
+	Mem1646[ds_bx + si:byte] = Mem1644[ds_bx + si:byte] + al;
+	Mem1648[ds_bx + si:byte] = Mem1646[ds_bx + si:byte] + al;
+	Mem1650[ds_bx + si:byte] = Mem1648[ds_bx + si:byte] + al;
+	Mem1652[ds_bx + si:byte] = Mem1650[ds_bx + si:byte] + al;
+	Mem1654[ds_bx + si:byte] = Mem1652[ds_bx + si:byte] + al;
+	Mem1656[ds_bx + si:byte] = Mem1654[ds_bx + si:byte] + al;
+	Mem1658[ds_bx + si:byte] = Mem1656[ds_bx + si:byte] + al;
+	Mem1660[ds_bx + si:byte] = Mem1658[ds_bx + si:byte] + al;
+	Mem1662[ds_bx + si:byte] = Mem1660[ds_bx + si:byte] + al;
+	Mem1664[ds_bx + si:byte] = Mem1662[ds_bx + si:byte] + al;
+	Mem1666[ds_bx + si:byte] = Mem1664[ds_bx + si:byte] + al;
+	Mem1668[ds_bx + si:byte] = Mem1666[ds_bx + si:byte] + al;
+	Mem1670[ds_bx + si:byte] = Mem1668[ds_bx + si:byte] + al;
+	Mem1672[ds_bx + si:byte] = Mem1670[ds_bx + si:byte] + al;
+	Mem1674[ds_bx + si:byte] = Mem1672[ds_bx + si:byte] + al;
+	Mem1676[ds_bx + si:byte] = Mem1674[ds_bx + si:byte] + al;
+	Mem1678[ds_bx + si:byte] = Mem1676[ds_bx + si:byte] + al;
+	Mem1680[ds_bx + si:byte] = Mem1678[ds_bx + si:byte] + al;
+	Mem1682[ds_bx + si:byte] = Mem1680[ds_bx + si:byte] + al;
+	Mem1684[ds_bx + si:byte] = Mem1682[ds_bx + si:byte] + al;
+	Mem1686[ds_bx + si:byte] = Mem1684[ds_bx + si:byte] + al;
+	Mem1688[ds_bx + si:byte] = Mem1686[ds_bx + si:byte] + al;
+	Mem1690[ds_bx + si:byte] = Mem1688[ds_bx + si:byte] + al;
+	Mem1692[ds_bx + si:byte] = Mem1690[ds_bx + si:byte] + al;
+	Mem1694[ds_bx + si:byte] = Mem1692[ds_bx + si:byte] + al;
+	Mem1696[ds_bx + si:byte] = Mem1694[ds_bx + si:byte] + al;
+	Mem1698[ds_bx + si:byte] = Mem1696[ds_bx + si:byte] + al;
+	Mem1700[ds_bx + si:byte] = Mem1698[ds_bx + si:byte] + al;
+	Mem1702[ds_bx + si:byte] = Mem1700[ds_bx + si:byte] + al;
+	Mem1704[ds_bx + si:byte] = Mem1702[ds_bx + si:byte] + al;
+	Mem1706[ds_bx + si:byte] = Mem1704[ds_bx + si:byte] + al;
+	Mem1708[ds_bx + si:byte] = Mem1706[ds_bx + si:byte] + al;
+	Mem1710[ds_bx + si:byte] = Mem1708[ds_bx + si:byte] + al;
+	Mem1712[ds_bx + si:byte] = Mem1710[ds_bx + si:byte] + al;
+	Mem1714[ds_bx + si:byte] = Mem1712[ds_bx + si:byte] + al;
+	Mem1716[ds_bx + si:byte] = Mem1714[ds_bx + si:byte] + al;
+	Mem1718[ds_bx + si:byte] = Mem1716[ds_bx + si:byte] + al;
+	Mem1720[ds_bx + si:byte] = Mem1718[ds_bx + si:byte] + al;
+	Mem1722[ds_bx + si:byte] = Mem1720[ds_bx + si:byte] + al;
+	Mem1724[ds_bx + si:byte] = Mem1722[ds_bx + si:byte] + al;
+	Mem1726[ds_bx + si:byte] = Mem1724[ds_bx + si:byte] + al;
+	Mem1728[ds_bx + si:byte] = Mem1726[ds_bx + si:byte] + al;
+	Mem1730[ds_bx + si:byte] = Mem1728[ds_bx + si:byte] + al;
+	Mem1732[ds_bx + si:byte] = Mem1730[ds_bx + si:byte] + al;
+	Mem1734[ds_bx + si:byte] = Mem1732[ds_bx + si:byte] + al;
+	Mem1736[ds_bx + si:byte] = Mem1734[ds_bx + si:byte] + al;
+	Mem1738[ds_bx + si:byte] = Mem1736[ds_bx + si:byte] + al;
+	Mem1740[ds_bx + si:byte] = Mem1738[ds_bx + si:byte] + al;
+	Mem1742[ds_bx + si:byte] = Mem1740[ds_bx + si:byte] + al;
+	Mem1744[ds_bx + si:byte] = Mem1742[ds_bx + si:byte] + al;
+	Mem1746[ds_bx + si:byte] = Mem1744[ds_bx + si:byte] + al;
+	Mem1748[ds_bx + si:byte] = Mem1746[ds_bx + si:byte] + al;
+	Mem1750[ds_bx + si:byte] = Mem1748[ds_bx + si:byte] + al;
+	Mem1752[ds_bx + si:byte] = Mem1750[ds_bx + si:byte] + al;
+	Mem1754[ds_bx + si:byte] = Mem1752[ds_bx + si:byte] + al;
+	Mem1756[ds_bx + si:byte] = Mem1754[ds_bx + si:byte] + al;
+	Mem1758[ds_bx + si:byte] = Mem1756[ds_bx + si:byte] + al;
+	Mem1760[ds_bx + si:byte] = Mem1758[ds_bx + si:byte] + al;
+	Mem1762[ds_bx + si:byte] = Mem1760[ds_bx + si:byte] + al;
+	Mem1764[ds_bx + si:byte] = Mem1762[ds_bx + si:byte] + al;
+	Mem1766[ds_bx + si:byte] = Mem1764[ds_bx + si:byte] + al;
+	Mem1768[ds_bx + si:byte] = Mem1766[ds_bx + si:byte] + al;
+	Mem1770[ds_bx + si:byte] = Mem1768[ds_bx + si:byte] + al;
+	Mem1772[ds_bx + si:byte] = Mem1770[ds_bx + si:byte] + al;
+	Mem1774[ds_bx + si:byte] = Mem1772[ds_bx + si:byte] + al;
+	Mem1776[ds_bx + si:byte] = Mem1774[ds_bx + si:byte] + al;
+	Mem1778[ds_bx + si:byte] = Mem1776[ds_bx + si:byte] + al;
+	Mem1780[ds_bx + si:byte] = Mem1778[ds_bx + si:byte] + al;
+	Mem1782[ds_bx + si:byte] = Mem1780[ds_bx + si:byte] + al;
+	Mem1784[ds_bx + si:byte] = Mem1782[ds_bx + si:byte] + al;
+	Mem1786[ds_bx + si:byte] = Mem1784[ds_bx + si:byte] + al;
+	Mem1788[ds_bx + si:byte] = Mem1786[ds_bx + si:byte] + al;
+	Mem1790[ds_bx + si:byte] = Mem1788[ds_bx + si:byte] + al;
+	Mem1792[ds_bx + si:byte] = Mem1790[ds_bx + si:byte] + al;
+	Mem1794[ds_bx + si:byte] = Mem1792[ds_bx + si:byte] + al;
+	Mem1796[ds_bx + si:byte] = Mem1794[ds_bx + si:byte] + al;
+	Mem1798[ds_bx + si:byte] = Mem1796[ds_bx + si:byte] + al;
+	Mem1800[ds_bx + si:byte] = Mem1798[ds_bx + si:byte] + al;
+	Mem1802[ds_bx + si:byte] = Mem1800[ds_bx + si:byte] + al;
+	Mem1804[ds_bx + si:byte] = Mem1802[ds_bx + si:byte] + al;
+	Mem1806[ds_bx + si:byte] = Mem1804[ds_bx + si:byte] + al;
+	Mem1808[ds_bx + si:byte] = Mem1806[ds_bx + si:byte] + al;
+	Mem1810[ds_bx + si:byte] = Mem1808[ds_bx + si:byte] + al;
+	Mem1812[ds_bx + si:byte] = Mem1810[ds_bx + si:byte] + al;
+	Mem1814[ds_bx + si:byte] = Mem1812[ds_bx + si:byte] + al;
+	Mem1816[ds_bx + si:byte] = Mem1814[ds_bx + si:byte] + al;
+	Mem1818[ds_bx + si:byte] = Mem1816[ds_bx + si:byte] + al;
+	Mem1820[ds_bx + si:byte] = Mem1818[ds_bx + si:byte] + al;
+	Mem1822[ds_bx + si:byte] = Mem1820[ds_bx + si:byte] + al;
+	Mem1824[ds_bx + si:byte] = Mem1822[ds_bx + si:byte] + al;
+	Mem1826[ds_bx + si:byte] = Mem1824[ds_bx + si:byte] + al;
+	Mem1828[ds_bx + si:byte] = Mem1826[ds_bx + si:byte] + al;
+	Mem1830[ds_bx + si:byte] = Mem1828[ds_bx + si:byte] + al;
+	Mem1832[ds_bx + si:byte] = Mem1830[ds_bx + si:byte] + al;
+	Mem1834[ds_bx + si:byte] = Mem1832[ds_bx + si:byte] + al;
+	Mem1836[ds_bx + si:byte] = Mem1834[ds_bx + si:byte] + al;
+	Mem1838[ds_bx + si:byte] = Mem1836[ds_bx + si:byte] + al;
+	Mem1840[ds_bx + si:byte] = Mem1838[ds_bx + si:byte] + al;
+	Mem1842[ds_bx + si:byte] = Mem1840[ds_bx + si:byte] + al;
+	Mem1844[ds_bx + si:byte] = Mem1842[ds_bx + si:byte] + al;
+	Mem1846[ds_bx + si:byte] = Mem1844[ds_bx + si:byte] + al;
+	Mem1848[ds_bx + si:byte] = Mem1846[ds_bx + si:byte] + al;
+	Mem1850[ds_bx + si:byte] = Mem1848[ds_bx + si:byte] + al;
+	Mem1852[ds_bx + si:byte] = Mem1850[ds_bx + si:byte] + al;
+	Mem1854[ds_bx + si:byte] = Mem1852[ds_bx + si:byte] + al;
+	Mem1856[ds_bx + si:byte] = Mem1854[ds_bx + si:byte] + al;
+	Mem1858[ds_bx + si:byte] = Mem1856[ds_bx + si:byte] + al;
+	Mem1860[ds_bx + si:byte] = Mem1858[ds_bx + si:byte] + al;
+	Mem1862[ds_bx + si:byte] = Mem1860[ds_bx + si:byte] + al;
+	Mem1864[ds_bx + si:byte] = Mem1862[ds_bx + si:byte] + al;
+	Mem1866[ds_bx + si:byte] = Mem1864[ds_bx + si:byte] + al;
+	Mem1868[ds_bx + si:byte] = Mem1866[ds_bx + si:byte] + al;
+	Mem1870[ds_bx + si:byte] = Mem1868[ds_bx + si:byte] + al;
+	Mem1872[ds_bx + si:byte] = Mem1870[ds_bx + si:byte] + al;
+	Mem1874[ds_bx + si:byte] = Mem1872[ds_bx + si:byte] + al;
+	Mem1876[ds_bx + si:byte] = Mem1874[ds_bx + si:byte] + al;
+	Mem1878[ds_bx + si:byte] = Mem1876[ds_bx + si:byte] + al;
+	Mem1880[ds_bx + si:byte] = Mem1878[ds_bx + si:byte] + al;
+	Mem1882[ds_bx + si:byte] = Mem1880[ds_bx + si:byte] + al;
+	Mem1884[ds_bx + si:byte] = Mem1882[ds_bx + si:byte] + al;
+	Mem1886[ds_bx + si:byte] = Mem1884[ds_bx + si:byte] + al;
+	Mem1888[ds_bx + si:byte] = Mem1886[ds_bx + si:byte] + al;
+	Mem1890[ds_bx + si:byte] = Mem1888[ds_bx + si:byte] + al;
+	Mem1892[ds_bx + si:byte] = Mem1890[ds_bx + si:byte] + al;
+	Mem1894[ds_bx + si:byte] = Mem1892[ds_bx + si:byte] + al;
+	Mem1896[ds_bx + si:byte] = Mem1894[ds_bx + si:byte] + al;
+	Mem1898[ds_bx + si:byte] = Mem1896[ds_bx + si:byte] + al;
+	Mem1900[ds_bx + si:byte] = Mem1898[ds_bx + si:byte] + al;
+	Mem1902[ds_bx + si:byte] = Mem1900[ds_bx + si:byte] + al;
+	Mem1904[ds_bx + si:byte] = Mem1902[ds_bx + si:byte] + al;
+	Mem1906[ds_bx + si:byte] = Mem1904[ds_bx + si:byte] + al;
+	Mem1908[ds_bx + si:byte] = Mem1906[ds_bx + si:byte] + al;
+	Mem1910[ds_bx + si:byte] = Mem1908[ds_bx + si:byte] + al;
+	Mem1912[ds_bx + si:byte] = Mem1910[ds_bx + si:byte] + al;
+	Mem1914[ds_bx + si:byte] = Mem1912[ds_bx + si:byte] + al;
+	Mem1916[ds_bx + si:byte] = Mem1914[ds_bx + si:byte] + al;
+	Mem1918[ds_bx + si:byte] = Mem1916[ds_bx + si:byte] + al;
+	Mem1920[ds_bx + si:byte] = Mem1918[ds_bx + si:byte] + al;
+	Mem1922[ds_bx + si:byte] = Mem1920[ds_bx + si:byte] + al;
+	Mem1924[ds_bx + si:byte] = Mem1922[ds_bx + si:byte] + al;
+	Mem1926[ds_bx + si:byte] = Mem1924[ds_bx + si:byte] + al;
+	Mem1928[ds_bx + si:byte] = Mem1926[ds_bx + si:byte] + al;
+	Mem1930[ds_bx + si:byte] = Mem1928[ds_bx + si:byte] + al;
+	Mem1932[ds_bx + si:byte] = Mem1930[ds_bx + si:byte] + al;
+	Mem1934[ds_bx + si:byte] = Mem1932[ds_bx + si:byte] + al;
+	Mem1936[ds_bx + si:byte] = Mem1934[ds_bx + si:byte] + al;
+	Mem1938[ds_bx + si:byte] = Mem1936[ds_bx + si:byte] + al;
+	Mem1940[ds_bx + si:byte] = Mem1938[ds_bx + si:byte] + al;
+	Mem1942[ds_bx + si:byte] = Mem1940[ds_bx + si:byte] + al;
+	Mem1944[ds_bx + si:byte] = Mem1942[ds_bx + si:byte] + al;
+	Mem1946[ds_bx + si:byte] = Mem1944[ds_bx + si:byte] + al;
+	Mem1948[ds_bx + si:byte] = Mem1946[ds_bx + si:byte] + al;
+	Mem1950[ds_bx + si:byte] = Mem1948[ds_bx + si:byte] + al;
+	Mem1952[ds_bx + si:byte] = Mem1950[ds_bx + si:byte] + al;
+	Mem1954[ds_bx + si:byte] = Mem1952[ds_bx + si:byte] + al;
+	Mem1956[ds_bx + si:byte] = Mem1954[ds_bx + si:byte] + al;
+	Mem1958[ds_bx + si:byte] = Mem1956[ds_bx + si:byte] + al;
+	Mem1960[ds_bx + si:byte] = Mem1958[ds_bx + si:byte] + al;
+	Mem1962[ds_bx + si:byte] = Mem1960[ds_bx + si:byte] + al;
+	Mem1964[ds_bx + si:byte] = Mem1962[ds_bx + si:byte] + al;
+	Mem1966[ds_bx + si:byte] = Mem1964[ds_bx + si:byte] + al;
+	Mem1968[ds_bx + si:byte] = Mem1966[ds_bx + si:byte] + al;
+	Mem1970[ds_bx + si:byte] = Mem1968[ds_bx + si:byte] + al;
+	Mem1972[ds_bx + si:byte] = Mem1970[ds_bx + si:byte] + al;
+	Mem1974[ds_bx + si:byte] = Mem1972[ds_bx + si:byte] + al;
+	Mem1976[ds_bx + si:byte] = Mem1974[ds_bx + si:byte] + al;
+	Mem1978[ds_bx + si:byte] = Mem1976[ds_bx + si:byte] + al;
+	Mem1980[ds_bx + si:byte] = Mem1978[ds_bx + si:byte] + al;
+	Mem1982[ds_bx + si:byte] = Mem1980[ds_bx + si:byte] + al;
+	Mem1984[ds_bx + si:byte] = Mem1982[ds_bx + si:byte] + al;
+	Mem1986[ds_bx + si:byte] = Mem1984[ds_bx + si:byte] + al;
+	Mem1988[ds_bx + si:byte] = Mem1986[ds_bx + si:byte] + al;
+	Mem1990[ds_bx + si:byte] = Mem1988[ds_bx + si:byte] + al;
+	Mem1992[ds_bx + si:byte] = Mem1990[ds_bx + si:byte] + al;
+	Mem1994[ds_bx + si:byte] = Mem1992[ds_bx + si:byte] + al;
+	Mem1996[ds_bx + si:byte] = Mem1994[ds_bx + si:byte] + al;
+	Mem1998[ds_bx + si:byte] = Mem1996[ds_bx + si:byte] + al;
+	Mem2000[ds_bx + si:byte] = Mem1998[ds_bx + si:byte] + al;
+	Mem2002[ds_bx + si:byte] = Mem2000[ds_bx + si:byte] + al;
+	Mem2004[ds_bx + si:byte] = Mem2002[ds_bx + si:byte] + al;
+	Mem2006[ds_bx + si:byte] = Mem2004[ds_bx + si:byte] + al;
+	Mem2008[ds_bx + si:byte] = Mem2006[ds_bx + si:byte] + al;
+	Mem2010[ds_bx + si:byte] = Mem2008[ds_bx + si:byte] + al;
+	Mem2012[ds_bx + si:byte] = Mem2010[ds_bx + si:byte] + al;
+	Mem2014[ds_bx + si:byte] = Mem2012[ds_bx + si:byte] + al;
+	Mem2016[ds_bx + si:byte] = Mem2014[ds_bx + si:byte] + al;
+	Mem2018[ds_bx + si:byte] = Mem2016[ds_bx + si:byte] + al;
+	Mem2020[ds_bx + si:byte] = Mem2018[ds_bx + si:byte] + al;
+	Mem2022[ds_bx + si:byte] = Mem2020[ds_bx + si:byte] + al;
+	Mem2024[ds_bx + si:byte] = Mem2022[ds_bx + si:byte] + al;
+	Mem2026[ds_bx + si:byte] = Mem2024[ds_bx + si:byte] + al;
+	Mem2028[ds_bx + si:byte] = Mem2026[ds_bx + si:byte] + al;
+	Mem2030[ds_bx + si:byte] = Mem2028[ds_bx + si:byte] + al;
+	Mem2032[ds_bx + si:byte] = Mem2030[ds_bx + si:byte] + al;
+	Mem2034[ds_bx + si:byte] = Mem2032[ds_bx + si:byte] + al;
+	Mem2036[ds_bx + si:byte] = Mem2034[ds_bx + si:byte] + al;
+	Mem2038[ds_bx + si:byte] = Mem2036[ds_bx + si:byte] + al;
+	Mem2040[ds_bx + si:byte] = Mem2038[ds_bx + si:byte] + al;
+	Mem2042[ds_bx + si:byte] = Mem2040[ds_bx + si:byte] + al;
+	Mem2044[ds_bx + si:byte] = Mem2042[ds_bx + si:byte] + al;
+	Mem2046[ds_bx + si:byte] = Mem2044[ds_bx + si:byte] + al;
+	Mem2048[ds_bx + si:byte] = Mem2046[ds_bx + si:byte] + al;
+	Mem2050[ds_bx + si:byte] = Mem2048[ds_bx + si:byte] + al;
+	Mem2052[ds_bx + si:byte] = Mem2050[ds_bx + si:byte] + al;
+	Mem2054[ds_bx + si:byte] = Mem2052[ds_bx + si:byte] + al;
+	Mem2056[ds_bx + si:byte] = Mem2054[ds_bx + si:byte] + al;
+	Mem2058[ds_bx + si:byte] = Mem2056[ds_bx + si:byte] + al;
+	Mem2060[ds_bx + si:byte] = Mem2058[ds_bx + si:byte] + al;
+	Mem2062[ds_bx + si:byte] = Mem2060[ds_bx + si:byte] + al;
+	Mem2064[ds_bx + si:byte] = Mem2062[ds_bx + si:byte] + al;
+	Mem2066[ds_bx + si:byte] = Mem2064[ds_bx + si:byte] + al;
+	Mem2068[ds_bx + si:byte] = Mem2066[ds_bx + si:byte] + al;
+	Mem2070[ds_bx + si:byte] = Mem2068[ds_bx + si:byte] + al;
+	Mem2072[ds_bx + si:byte] = Mem2070[ds_bx + si:byte] + al;
+	Mem2074[ds_bx + si:byte] = Mem2072[ds_bx + si:byte] + al;
+	Mem2076[ds_bx + si:byte] = Mem2074[ds_bx + si:byte] + al;
+	Mem2078[ds_bx + si:byte] = Mem2076[ds_bx + si:byte] + al;
+	Mem2080[ds_bx + si:byte] = Mem2078[ds_bx + si:byte] + al;
+	Mem2082[ds_bx + si:byte] = Mem2080[ds_bx + si:byte] + al;
+	Mem2084[ds_bx + si:byte] = Mem2082[ds_bx + si:byte] + al;
+	Mem2086[ds_bx + si:byte] = Mem2084[ds_bx + si:byte] + al;
+	Mem2088[ds_bx + si:byte] = Mem2086[ds_bx + si:byte] + al;
+	Mem2090[ds_bx + si:byte] = Mem2088[ds_bx + si:byte] + al;
+	Mem2092[ds_bx + si:byte] = Mem2090[ds_bx + si:byte] + al;
+	Mem2094[ds_bx + si:byte] = Mem2092[ds_bx + si:byte] + al;
+	Mem2096[ds_bx + si:byte] = Mem2094[ds_bx + si:byte] + al;
+	Mem2098[ds_bx + si:byte] = Mem2096[ds_bx + si:byte] + al;
+	Mem2100[ds_bx + si:byte] = Mem2098[ds_bx + si:byte] + al;
+	Mem2102[ds_bx + si:byte] = Mem2100[ds_bx + si:byte] + al;
+	Mem2104[ds_bx + si:byte] = Mem2102[ds_bx + si:byte] + al;
+	Mem2106[ds_bx + si:byte] = Mem2104[ds_bx + si:byte] + al;
+	Mem2108[ds_bx + si:byte] = Mem2106[ds_bx + si:byte] + al;
+	Mem2110[ds_bx + si:byte] = Mem2108[ds_bx + si:byte] + al;
+	Mem2112[ds_bx + si:byte] = Mem2110[ds_bx + si:byte] + al;
+	Mem2114[ds_bx + si:byte] = Mem2112[ds_bx + si:byte] + al;
+	Mem2116[ds_bx + si:byte] = Mem2114[ds_bx + si:byte] + al;
+	Mem2118[ds_bx + si:byte] = Mem2116[ds_bx + si:byte] + al;
+	Mem2120[ds_bx + si:byte] = Mem2118[ds_bx + si:byte] + al;
+	Mem2122[ds_bx + si:byte] = Mem2120[ds_bx + si:byte] + al;
+	Mem2124[ds_bx + si:byte] = Mem2122[ds_bx + si:byte] + al;
+	Mem2126[ds_bx + si:byte] = Mem2124[ds_bx + si:byte] + al;
+	Mem2128[ds_bx + si:byte] = Mem2126[ds_bx + si:byte] + al;
+	Mem2130[ds_bx + si:byte] = Mem2128[ds_bx + si:byte] + al;
+	Mem2132[ds_bx + si:byte] = Mem2130[ds_bx + si:byte] + al;
+	Mem2134[ds_bx + si:byte] = Mem2132[ds_bx + si:byte] + al;
+	Mem2136[ds_bx + si:byte] = Mem2134[ds_bx + si:byte] + al;
+	Mem2138[ds_bx + si:byte] = Mem2136[ds_bx + si:byte] + al;
+	Mem2140[ds_bx + si:byte] = Mem2138[ds_bx + si:byte] + al;
+	Mem2142[ds_bx + si:byte] = Mem2140[ds_bx + si:byte] + al;
+	Mem2144[ds_bx + si:byte] = Mem2142[ds_bx + si:byte] + al;
+	Mem2146[ds_bx + si:byte] = Mem2144[ds_bx + si:byte] + al;
+	Mem2148[ds_bx + si:byte] = Mem2146[ds_bx + si:byte] + al;
+	Mem2150[ds_bx + si:byte] = Mem2148[ds_bx + si:byte] + al;
+	Mem2152[ds_bx + si:byte] = Mem2150[ds_bx + si:byte] + al;
+	Mem2154[ds_bx + si:byte] = Mem2152[ds_bx + si:byte] + al;
+	Mem2156[ds_bx + si:byte] = Mem2154[ds_bx + si:byte] + al;
+	Mem2158[ds_bx + si:byte] = Mem2156[ds_bx + si:byte] + al;
+	Mem2160[ds_bx + si:byte] = Mem2158[ds_bx + si:byte] + al;
+	Mem2162[ds_bx + si:byte] = Mem2160[ds_bx + si:byte] + al;
+	Mem2164[ds_bx + si:byte] = Mem2162[ds_bx + si:byte] + al;
+	Mem2166[ds_bx + si:byte] = Mem2164[ds_bx + si:byte] + al;
+	Mem2168[ds_bx + si:byte] = Mem2166[ds_bx + si:byte] + al;
+	Mem2170[ds_bx + si:byte] = Mem2168[ds_bx + si:byte] + al;
+	Mem2172[ds_bx + si:byte] = Mem2170[ds_bx + si:byte] + al;
+	Mem2174[ds_bx + si:byte] = Mem2172[ds_bx + si:byte] + al;
+	Mem2176[ds_bx + si:byte] = Mem2174[ds_bx + si:byte] + al;
+	Mem2178[ds_bx + si:byte] = Mem2176[ds_bx + si:byte] + al;
+	Mem2180[ds_bx + si:byte] = Mem2178[ds_bx + si:byte] + al;
+	Mem2182[ds_bx + si:byte] = Mem2180[ds_bx + si:byte] + al;
+	Mem2184[ds_bx + si:byte] = Mem2182[ds_bx + si:byte] + al;
+	Mem2186[ds_bx + si:byte] = Mem2184[ds_bx + si:byte] + al;
+	Mem2188[ds_bx + si:byte] = Mem2186[ds_bx + si:byte] + al;
+	Mem2190[ds_bx + si:byte] = Mem2188[ds_bx + si:byte] + al;
+	Mem2192[ds_bx + si:byte] = Mem2190[ds_bx + si:byte] + al;
+	Mem2194[ds_bx + si:byte] = Mem2192[ds_bx + si:byte] + al;
+	Mem2196[ds_bx + si:byte] = Mem2194[ds_bx + si:byte] + al;
+	Mem2198[ds_bx + si:byte] = Mem2196[ds_bx + si:byte] + al;
+	Mem2200[ds_bx + si:byte] = Mem2198[ds_bx + si:byte] + al;
+	Mem2202[ds_bx + si:byte] = Mem2200[ds_bx + si:byte] + al;
+	Mem2204[ds_bx + si:byte] = Mem2202[ds_bx + si:byte] + al;
+	Mem2206[ds_bx + si:byte] = Mem2204[ds_bx + si:byte] + al;
+	Mem2208[ds_bx + si:byte] = Mem2206[ds_bx + si:byte] + al;
+	Mem2210[ds_bx + si:byte] = Mem2208[ds_bx + si:byte] + al;
+	Mem2212[ds_bx + si:byte] = Mem2210[ds_bx + si:byte] + al;
+	Mem2214[ds_bx + si:byte] = Mem2212[ds_bx + si:byte] + al;
+	Mem2216[ds_bx + si:byte] = Mem2214[ds_bx + si:byte] + al;
+	Mem2218[ds_bx + si:byte] = Mem2216[ds_bx + si:byte] + al;
+	Mem2220[ds_bx + si:byte] = Mem2218[ds_bx + si:byte] + al;
+	Mem2222[ds_bx + si:byte] = Mem2220[ds_bx + si:byte] + al;
+	Mem2224[ds_bx + si:byte] = Mem2222[ds_bx + si:byte] + al;
+	Mem2226[ds_bx + si:byte] = Mem2224[ds_bx + si:byte] + al;
+	Mem2228[ds_bx + si:byte] = Mem2226[ds_bx + si:byte] + al;
+	Mem2230[ds_bx + si:byte] = Mem2228[ds_bx + si:byte] + al;
+	Mem2232[ds_bx + si:byte] = Mem2230[ds_bx + si:byte] + al;
+	Mem2234[ds_bx + si:byte] = Mem2232[ds_bx + si:byte] + al;
+	Mem2236[ds_bx + si:byte] = Mem2234[ds_bx + si:byte] + al;
+	Mem2238[ds_bx + si:byte] = Mem2236[ds_bx + si:byte] + al;
+	Mem2240[ds_bx + si:byte] = Mem2238[ds_bx + si:byte] + al;
+	Mem2242[ds_bx + si:byte] = Mem2240[ds_bx + si:byte] + al;
+	Mem2244[ds_bx + si:byte] = Mem2242[ds_bx + si:byte] + al;
+	Mem2246[ds_bx + si:byte] = Mem2244[ds_bx + si:byte] + al;
+	Mem2248[ds_bx + si:byte] = Mem2246[ds_bx + si:byte] + al;
+	Mem2250[ds_bx + si:byte] = Mem2248[ds_bx + si:byte] + al;
+	Mem2252[ds_bx + si:byte] = Mem2250[ds_bx + si:byte] + al;
+	Mem2254[ds_bx + si:byte] = Mem2252[ds_bx + si:byte] + al;
+	Mem2256[ds_bx + si:byte] = Mem2254[ds_bx + si:byte] + al;
+	Mem2258[ds_bx + si:byte] = Mem2256[ds_bx + si:byte] + al;
+	Mem2260[ds_bx + si:byte] = Mem2258[ds_bx + si:byte] + al;
+	Mem2262[ds_bx + si:byte] = Mem2260[ds_bx + si:byte] + al;
+	Mem2264[ds_bx + si:byte] = Mem2262[ds_bx + si:byte] + al;
+	Mem2266[ds_bx + si:byte] = Mem2264[ds_bx + si:byte] + al;
+	Mem2268[ds_bx + si:byte] = Mem2266[ds_bx + si:byte] + al;
+	Mem2270[ds_bx + si:byte] = Mem2268[ds_bx + si:byte] + al;
+	Mem2272[ds_bx + si:byte] = Mem2270[ds_bx + si:byte] + al;
+	Mem2274[ds_bx + si:byte] = Mem2272[ds_bx + si:byte] + al;
+	Mem2276[ds_bx + si:byte] = Mem2274[ds_bx + si:byte] + al;
+	Mem2278[ds_bx + si:byte] = Mem2276[ds_bx + si:byte] + al;
+	Mem2280[ds_bx + si:byte] = Mem2278[ds_bx + si:byte] + al;
+	Mem2282[ds_bx + si:byte] = Mem2280[ds_bx + si:byte] + al;
+	Mem2284[ds_bx + si:byte] = Mem2282[ds_bx + si:byte] + al;
+	Mem2286[ds_bx + si:byte] = Mem2284[ds_bx + si:byte] + al;
+	Mem2288[ds_bx + si:byte] = Mem2286[ds_bx + si:byte] + al;
+	Mem2290[ds_bx + si:byte] = Mem2288[ds_bx + si:byte] + al;
+	Mem2292[ds_bx + si:byte] = Mem2290[ds_bx + si:byte] + al;
+	Mem2294[ds_bx + si:byte] = Mem2292[ds_bx + si:byte] + al;
+	Mem2296[ds_bx + si:byte] = Mem2294[ds_bx + si:byte] + al;
+	Mem2298[ds_bx + si:byte] = Mem2296[ds_bx + si:byte] + al;
+	Mem2300[ds_bx + si:byte] = Mem2298[ds_bx + si:byte] + al;
+	Mem2302[ds_bx + si:byte] = Mem2300[ds_bx + si:byte] + al;
+	Mem2304[ds_bx + si:byte] = Mem2302[ds_bx + si:byte] + al;
+	Mem2306[ds_bx + si:byte] = Mem2304[ds_bx + si:byte] + al;
+	Mem2308[ds_bx + si:byte] = Mem2306[ds_bx + si:byte] + al;
+	Mem2310[ds_bx + si:byte] = Mem2308[ds_bx + si:byte] + al;
+	Mem2312[ds_bx + si:byte] = Mem2310[ds_bx + si:byte] + al;
+	Mem2314[ds_bx + si:byte] = Mem2312[ds_bx + si:byte] + al;
+	Mem2316[ds_bx + si:byte] = Mem2314[ds_bx + si:byte] + al;
+	Mem2318[ds_bx + si:byte] = Mem2316[ds_bx + si:byte] + al;
 }
 

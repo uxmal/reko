@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 2018-2019 Stefano Moioli <smxdev4@gmail.com>.
+ * Copyright (C) 2018-2020 Stefano Moioli <smxdev4@gmail.com>.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,6 +47,11 @@ namespace Reko.Environments.Xbox360
         public override string DefaultCallingConvention { get { return ""; } }
 
         public override PrimitiveType PointerType { get { return PrimitiveType.Ptr32; } }
+
+        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        {
+            throw new NotImplementedException();
+        }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {

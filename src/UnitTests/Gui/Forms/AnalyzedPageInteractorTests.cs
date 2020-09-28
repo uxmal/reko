@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Gui.Forms
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             this.decSvc = new DecompilerService();
-            decSvc.Decompiler = new DecompilerDriver(ldr.Object, sc);
+            decSvc.Decompiler = new Decompiler(ldr.Object, sc);
             decSvc.Decompiler.Load("test.exe");
             this.program = this.decSvc.Decompiler.Project.Programs.First();
             sc.AddService<IDecompilerService>(decSvc);
@@ -139,7 +139,7 @@ namespace Reko.UnitTests.Gui.Forms
             form.Object.Show();
             Procedure p = new Procedure(program.Architecture, "foo_proc", Address.Ptr32(0x12346), program.Architecture.CreateFrame());
             p.Signature = FunctionType.Func(
-                new Identifier("eax", PrimitiveType.Word32, Registers.eax),
+                Identifier.Create(Registers.eax),
                 new Identifier("arg04", PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32)));
             var p2 = new Procedure(program.Architecture, "bar", Address.Ptr32(0x12345), program.Architecture.CreateFrame());
             program.Procedures.Add(p.EntryAddress, p);

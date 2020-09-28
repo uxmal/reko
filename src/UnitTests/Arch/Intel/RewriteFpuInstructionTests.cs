@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,17 +48,16 @@ namespace Reko.UnitTests.Arch.Intel
             asm = new X86Assembler(services, new DefaultPlatform(services, arch), loadAddress, new List<ImageSymbol>());
         }
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
+        public override IProcessorArchitecture Architecture => arch;
+        public override Address LoadAddress => loadAddress;
+
 
         protected override IRewriterHost CreateHost()
         {
             return new FakeRewriterHost(null);
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(IStorageBinder binder, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea image, IStorageBinder binder, IRewriterHost host)
         {
             return new X86Rewriter(
                 arch,
@@ -67,10 +66,6 @@ namespace Reko.UnitTests.Arch.Intel
                 asmResult.SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(0), binder);
         }
 
-        public override Address LoadAddress
-        {
-            get { return loadAddress; } 
-        }
 
         private void BuildTest(Action<X86Assembler> m)
         {
