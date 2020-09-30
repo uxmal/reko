@@ -237,6 +237,10 @@
         
         <!-- PIC definition files -->
 <File Source="$(var.SolutionDir)..\src\tools\genPICdb\picdb.zip" />
+      
+        <!-- Content -->
+<File Source="$(var.SolutionDir)..\web\images\reko.png" />
+        
       </Component>
     </ComponentGroup>
 

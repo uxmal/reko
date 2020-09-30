@@ -211,6 +211,7 @@ def render_nuspec_line(attrs, vars):
         target = attrs['nuget_target']
         target = target.replace('f:', 'lib\\netstandard2.0')
         target = target.replace('c:', 'contentFiles/any/any/reko')
+        target = target.replace('i:', 'images\\')
         line = '<file src="%s" target="%s" />\n' % (source, target)
         return line
     else:
