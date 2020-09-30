@@ -2,7 +2,7 @@
 # in sync. It expects to be run in the $(REKO)/src/NuGetPackage 
 # directory.
 #
-# The code is not a marvel of beauty: it manipulates XML using regular expression,
+# The code is not a marvel of beauty: it manipulates XML using regular expressions,
 # which already puts it in a state of sin. However it does the job correctly, so 
 # there is no need to gold-plate it.
 
