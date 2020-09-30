@@ -533,6 +533,12 @@ namespace Reko.Arch.X86
                 case 0x40: Branch(ConditionCode.NE, instrCur.Operands[0]); return true;
                 }
                 break;
+            case Mnemonic.jnz:
+                switch (mask)
+                {
+                case 0x40: Branch(ConditionCode.EQ, instrCur.Operands[0]); return true;
+                }
+                break;
             }
             this.host.Warn(instrCur.Address, "Unexpected {0} fstsw;xor mask for {1} mnemonic.", mask, instrCur.Mnemonic);
             return false;
