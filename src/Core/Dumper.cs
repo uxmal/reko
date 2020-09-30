@@ -48,7 +48,6 @@ namespace Reko.Core
 
         public void Dump(Formatter formatter)
         {
-            var map = program.SegmentMap;
             var mappedItems = program.GetItemsBySegment();
             Dump(mappedItems, formatter);
         }
@@ -249,7 +248,7 @@ namespace Reko.Core
             var dasm = arch.CreateDisassembler(arch.CreateImageReader(segment.MemoryArea, addrStart));
             try
             {
-                var writer = new InstrWriter(program.Platform, formatter);
+                var writer = new InstrWriter(formatter);
                 var options = new MachineInstructionRendererOptions(
                     flags: MachineInstructionRendererFlags.ResolvePcRelativeAddress,
                     syntax: "");
@@ -342,7 +341,7 @@ namespace Reko.Core
             private readonly List<string> annotations;
             private Address addrInstr;
 
-            public InstrWriter(IPlatform platform, Formatter formatter)
+            public InstrWriter(Formatter formatter)
             {
                 this.formatter = formatter;
                 this.annotations = new List<string>();
