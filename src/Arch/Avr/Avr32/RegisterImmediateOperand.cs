@@ -50,15 +50,15 @@ namespace Reko.Arch.Avr.Avr32
             this.Value = value;
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (Value == 0 && (Mnemonic == Mnemonic.lsl || Mnemonic == Mnemonic.lsr))
             {
-                writer.WriteString(Register.Name);
+                renderer.WriteString(Register.Name);
             }
             else
             {
-                writer.WriteFormat("{0}{1}{2}", Register.Name, mpMnemonicToString[Mnemonic], Value);
+                renderer.WriteFormat("{0}{1}{2}", Register.Name, mpMnemonicToString[Mnemonic], Value);
             }
         }
     }

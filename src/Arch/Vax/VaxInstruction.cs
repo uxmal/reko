@@ -35,19 +35,19 @@ namespace Reko.Arch.Vax
 
         public override string MnemonicAsString => Mnemonic.ToString();
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteMnemonic(this.Mnemonic.ToString());
-            RenderOperands(writer, options);
+            renderer.WriteMnemonic(this.Mnemonic.ToString());
+            RenderOperands(renderer, options);
         }
 
-        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             switch (op)
             {
             case ImmediateOperand _:
-                writer.WriteChar('#');
-                op.Write(writer, options);
+                renderer.WriteChar('#');
+                op.Render(renderer, options);
                 return;
             case MemoryOperand mop when mop.Base == Registers.pc:
                 var addr = this.Address + this.Length;
@@ -55,19 +55,19 @@ namespace Reko.Arch.Vax
                 {
                     addr += mop.Offset.ToInt32();
                 }
-                if ((options.Flags & MachineInstructionWriterFlags.ResolvePcRelativeAddress) != 0)
+                if ((options.Flags & MachineInstructionRendererFlags.ResolvePcRelativeAddress) != 0)
                 {
-                    writer.WriteAddress(addr.ToString(), addr);
-                    writer.AddAnnotation(op.ToString());
+                    renderer.WriteAddress(addr.ToString(), addr);
+                    renderer.AddAnnotation(op.ToString());
                 }
                 else
                 {
-                    op.Write(writer, options);
-                    writer.AddAnnotation(addr.ToString());
+                    op.Render(renderer, options);
+                    renderer.AddAnnotation(addr.ToString());
                 }
                 return;
             default:
-                op.Write(writer, options);
+                op.Render(renderer, options);
                 return;
             }
         }

@@ -37,43 +37,44 @@ namespace Reko.Arch.Blackfin
         {
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (base.Width.BitSize == 8)
             {
-                writer.WriteChar('B');
-            } else if (base.Width.BitSize == 16)
+                renderer.WriteChar('B');
+            } 
+            else if (base.Width.BitSize == 16)
             {
-                writer.WriteChar('W');
+                renderer.WriteChar('W');
             }
-            writer.WriteChar('[');
+            renderer.WriteChar('[');
             if (PreDecrement)
             {
-                writer.WriteString("--");
+                renderer.WriteString("--");
             }
-            writer.WriteString(Base.Name);
+            renderer.WriteString(Base.Name);
             if (Index != null)
             {
-                writer.WriteString(" + ");
-                writer.WriteString(Index.Name);
+                renderer.WriteString(" + ");
+                renderer.WriteString(Index.Name);
             }
             else if (Offset > 0)
             {
-                writer.WriteString($" + 0x{Offset:X4}");
+                renderer.WriteString($" + 0x{Offset:X4}");
             }
             else if (Offset < 0)
             {
-                writer.WriteString($" - 0x{-Offset:X4}");
+                renderer.WriteString($" - 0x{-Offset:X4}");
             }
             if (PostIncrement)
             {
-                writer.WriteString("++");
+                renderer.WriteString("++");
             }
             else if (PostDecrement)
             {
-                writer.WriteString("--");
+                renderer.WriteString("--");
             }
-            writer.WriteChar(']');
+            renderer.WriteChar(']');
         }
     }
 }

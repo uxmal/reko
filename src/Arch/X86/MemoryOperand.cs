@@ -76,9 +76,9 @@ namespace Reko.Arch.X86
             get { return Offset != null && Offset.IsValid && Base == RegisterStorage.None && Index == RegisterStorage.None; }
 		}
 
-		public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+		protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-			if ((options.Flags & MachineInstructionWriterFlags.ExplicitOperandSize) != 0)
+			if ((options.Flags & MachineInstructionRendererFlags.ExplicitOperandSize) != 0)
 			{
 				string s;
                 if (Width == PrimitiveType.Byte)
@@ -101,47 +101,47 @@ namespace Reko.Arch.X86
                     s = "ymmword ptr ";
                 else
                     s = "";
-				writer.WriteString(s);
+				renderer.WriteString(s);
 			}
 
             if (SegOverride != RegisterStorage.None)
 			{
-				writer.WriteString(SegOverride.ToString());
-				writer.WriteString(":");
+				renderer.WriteString(SegOverride.ToString());
+				renderer.WriteString(":");
 			}
-			writer.WriteString("[");
+			renderer.WriteString("[");
 			if (Base != RegisterStorage.None)
 			{
-				writer.WriteString(Base.ToString());
+				renderer.WriteString(Base.ToString());
 			}
 			else
 			{
                 var s = FormatUnsignedValue(Offset!);
-				writer.WriteAddress(s, Address.FromConstant(Offset!));
+				renderer.WriteAddress(s, Address.FromConstant(Offset!));
 			}
 
 			if (Index != RegisterStorage.None)
 			{
-				writer.WriteString("+");
-				writer.WriteString(Index.ToString());
+				renderer.WriteString("+");
+				renderer.WriteString(Index.ToString());
 				if (Scale > 1)
 				{
-					writer.WriteString("*");
-					writer.WriteUInt32(Scale);
+					renderer.WriteString("*");
+					renderer.WriteUInt32(Scale);
 				}
 			}
 			if (Base != RegisterStorage.None && Offset != null && Offset.IsValid)
 			{
 				if (Offset.DataType == PrimitiveType.Byte || Offset.DataType == PrimitiveType.SByte)
 				{
-					writer.WriteString(FormatSignedValue(Offset));
+					renderer.WriteString(FormatSignedValue(Offset));
 				}
 				else
 				{
                     var off = Offset.ToInt32();
                     if (off == Int32.MinValue)
                     {
-                        writer.WriteString("-80000000");
+                        renderer.WriteString("-80000000");
                     }
                     else
                     {
@@ -150,18 +150,18 @@ namespace Reko.Arch.X86
                         {
                             // Special case for negative 32-bit offsets whose 
                             // absolute value < 0x10000 (GitHub issue #252)
-                            writer.WriteString("-");
-                            writer.WriteFormat("{0:X8}", absOff);
+                            renderer.WriteString("-");
+                            renderer.WriteFormat("{0:X8}", absOff);
                         }
                         else
                         {
-                            writer.WriteString("+");
-                            writer.WriteString(FormatUnsignedValue(Offset));
+                            renderer.WriteString("+");
+                            renderer.WriteString(FormatUnsignedValue(Offset));
                         }
                     }
 				}
 			}
-			writer.WriteString("]");
+			renderer.WriteString("]");
 		}
 
 		/// <summary>

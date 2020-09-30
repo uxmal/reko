@@ -49,17 +49,17 @@ namespace Reko.Arch.X86
 
         public string ToString(string syntax)
         {
-            var options = new MachineInstructionWriterOptions(syntax: syntax);
+            var options = new MachineInstructionRendererOptions(syntax: syntax);
             return base.ToString(options);
         }
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             var syntax = ChooseSyntax(options);
-            syntax.Render(this, writer, options);
+            syntax.Render(this, renderer, options);
 		}
 
-        private X86AssemblyRenderer ChooseSyntax(MachineInstructionWriterOptions options)
+        private X86AssemblyRenderer ChooseSyntax(MachineInstructionRendererOptions options)
         {
             if (string.IsNullOrEmpty(options.Syntax))
                 return X86AssemblyRenderer.Intel;

@@ -31,21 +31,21 @@ namespace Reko.Arch.WE32100
         public override int MnemonicAsInteger => (int) Mnemonic;
         public override string MnemonicAsString => Mnemonic.ToString();
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteMnemonic(Mnemonic.ToString());
-            base.RenderOperands(writer, options);
+            renderer.WriteMnemonic(Mnemonic.ToString());
+            base.RenderOperands(renderer, options);
         }
 
-        protected override void RenderOperand(MachineOperand operand, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             switch (operand)
             {
             case RegisterOperand rop:
-                writer.WriteFormat("%{0}", rop.Register.Name);
+                renderer.WriteFormat("%{0}", rop.Register.Name);
                 break;
             default:
-                base.RenderOperand(operand, writer, options);
+                base.RenderOperand(operand, renderer, options);
                 break;
             }
         }

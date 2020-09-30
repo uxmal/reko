@@ -52,7 +52,7 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             var sep = "{";
             int mask = 1;
@@ -63,18 +63,18 @@ namespace Reko.Arch.Arm.AArch32
                 {
                     if (index >= 0)
                     {
-                        writer.WriteString(sep);
+                        renderer.WriteString(sep);
                         sep = ",";
-                        writer.WriteString(registers[i].Name);
-                        writer.WriteFormat("[{0}]", index);
+                        renderer.WriteString(registers[i].Name);
+                        renderer.WriteFormat("[{0}]", index);
                     }
                     else if (iStart < 0)
                     {
                         // Start a range
-                        writer.WriteString(sep);
+                        renderer.WriteString(sep);
                         sep = ",";
                         iStart = i;
-                        writer.WriteString(registers[i].Name);
+                        renderer.WriteString(registers[i].Name);
                     }
                 }
                 else
@@ -83,14 +83,14 @@ namespace Reko.Arch.Arm.AArch32
                     {
                         if (0 <= iStart && iStart < i - 1)
                         {
-                            writer.WriteChar('-');
-                            writer.WriteString(registers[i - 1].Name);
+                            renderer.WriteChar('-');
+                            renderer.WriteString(registers[i - 1].Name);
                         }
                         iStart = -1;
                     }
                 }
             }
-            writer.WriteChar('}');
+            renderer.WriteChar('}');
         }
     }
 }

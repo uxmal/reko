@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -37,34 +37,34 @@ namespace Reko.Arch.Vax
         internal bool AutoIncrement;
         internal RegisterStorage Index;
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (Deferred)
             {
-                writer.WriteString("@");
+                renderer.WriteString("@");
             }
             if (Offset != null)
             {
                 if (Base != null)
-                    writer.WriteString(FormatSignedValue(Offset));
+                    renderer.WriteString(FormatSignedValue(Offset));
                 else
-                    writer.WriteString(FormatUnsignedValue(Offset));
+                    renderer.WriteString(FormatUnsignedValue(Offset));
             }
             if (AutoDecrement)
             {
-                writer.WriteString("-");
+                renderer.WriteString("-");
             }
             if (Base != null)
             {
-                writer.WriteFormat("({0})", Base.Name);
+                renderer.WriteFormat("({0})", Base.Name);
             }
             if (AutoIncrement)
             {
-                writer.WriteString("+");
+                renderer.WriteString("+");
             }
             if (Index != null)
             {
-                writer.WriteFormat("[{0}]", Index.Name);
+                renderer.WriteFormat("[{0}]", Index.Name);
             }
         }
     }

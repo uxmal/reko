@@ -46,7 +46,7 @@ namespace Reko.Arch.Arm.AArch32
         {
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
         }
     }
@@ -63,9 +63,9 @@ namespace Reko.Arch.Arm.AArch32
 
         public bool BigEndian { get; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString(BigEndian ? "be" : "le");
+            renderer.WriteString(BigEndian ? "be" : "le");
         }
     }
 }

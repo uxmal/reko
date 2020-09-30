@@ -21,20 +21,20 @@ namespace Reko.Arch.Avr.Avr32
             this.Count = cRegs;
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString(Registers[RegisterIndex].Name);
+            renderer.WriteString(Registers[RegisterIndex].Name);
             if (Count <= 1)
                 return;
             if (Count <= 2)
             {
-                writer.WriteString(",");
+                renderer.WriteString(",");
             }
             else
             {
-                writer.WriteString("-");
+                renderer.WriteString("-");
             }
-            writer.WriteString(Registers[RegisterIndex + Count - 1].Name);
+            renderer.WriteString(Registers[RegisterIndex + Count - 1].Name);
         }
 
         public IEnumerable<RegisterStorage> Enumerate()

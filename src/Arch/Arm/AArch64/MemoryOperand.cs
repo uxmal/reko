@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -44,48 +44,48 @@ namespace Reko.Arch.Arm.AArch64
         {
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteChar('[');
-            writer.WriteString(Base.Name);
+            renderer.WriteChar('[');
+            renderer.WriteString(Base.Name);
             if (Offset != null && !Offset.IsIntegerZero)
             {
                 if (PostIndex)
                 {
-                    writer.WriteChar(']');
+                    renderer.WriteChar(']');
                 }
-                writer.WriteChar(',');
+                renderer.WriteChar(',');
                 var off = Offset.ToInt32();
                 if (off < 0)
                 {
-                    writer.WriteFormat("#-&{0:X}", -off);
+                    renderer.WriteFormat("#-&{0:X}", -off);
                 }
                 else
                 {
-                    writer.WriteFormat("#&{0:X}", off);
+                    renderer.WriteFormat("#&{0:X}", off);
                 }
             }
             else if (Index != null)
             {
-                writer.WriteChar(',');
-                writer.WriteString(Index.Name);
+                renderer.WriteChar(',');
+                renderer.WriteString(Index.Name);
                 if (IndexExtend != Mnemonic.Invalid && (IndexExtend != Mnemonic.lsl || IndexShift != 0))
                 {
-                    writer.WriteChar(',');
-                    writer.WriteMnemonic(IndexExtend.ToString());
+                    renderer.WriteChar(',');
+                    renderer.WriteMnemonic(IndexExtend.ToString());
                     if (IndexShift != 0)
                     {
-                        writer.WriteString($" #{IndexShift}");
+                        renderer.WriteString($" #{IndexShift}");
                     }
                 }
             }
             if (!PostIndex)
             {
-                writer.WriteChar(']');
+                renderer.WriteChar(']');
             }
             if (PreIndex)
             {
-                writer.WriteChar('!');
+                renderer.WriteChar('!');
             }
         }
     }

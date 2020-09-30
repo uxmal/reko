@@ -52,7 +52,7 @@ namespace Reko.Arch.PaRisc
             return new MemoryOperand(dt, 0, baseReg, idxReg, spaceReg);
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             var sb = new StringBuilder();
             if (Index != null)
@@ -66,7 +66,7 @@ namespace Reko.Arch.PaRisc
             if (Space != null && Space != Registers.SpaceRegs[0])
                 sb.AppendFormat("{0},", Space.Name);
             sb.AppendFormat("{0})", Base.Name);
-            writer.WriteString(sb.ToString());
+            renderer.WriteString(sb.ToString());
         }
     }
 }

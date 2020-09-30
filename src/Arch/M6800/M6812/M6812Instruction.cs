@@ -32,21 +32,21 @@ namespace Reko.Arch.M6800.M6812
 
         public override string MnemonicAsString => Mnemonic.ToString();
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteMnemonic(Mnemonic.ToString());
-            RenderOperands(writer, options);
+            renderer.WriteMnemonic(Mnemonic.ToString());
+            RenderOperands(renderer, options);
         }
 
-        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             switch (op)
             {
             case ImmediateOperand immOp:
-                writer.WriteString(MachineOperand.FormatUnsignedValue(immOp.Value, "#${1}"));
+                renderer.WriteString(MachineOperand.FormatUnsignedValue(immOp.Value, "#${1}"));
                 return;
             }
-            op.Write(writer, options);
+            op.Render(renderer, options);
         }
     }
 }

@@ -83,10 +83,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     seg.MemoryArea != null &&
                     seg.MemoryArea.IsValidAddress(addr))
                 {
-                    var options = new MachineInstructionWriterOptions(
+                    var options = new MachineInstructionRendererOptions(
                         flags: ShowPcRelative
-                            ? MachineInstructionWriterFlags.None
-                            : MachineInstructionWriterFlags.ResolvePcRelativeAddress);
+                            ? MachineInstructionRendererFlags.None
+                            : MachineInstructionRendererFlags.ResolvePcRelativeAddress);
                     var arch = GetArchitectureForAddress(addr);
                     var dasm = program.CreateDisassembler(arch, Align(position)).GetEnumerator();
                     while (count != 0 && dasm.MoveNext())
@@ -122,14 +122,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             Program program,
             IProcessorArchitecture arch,
             MachineInstruction instr,
-            MachineInstructionWriterOptions options)
+            MachineInstructionRendererOptions options)
         {
             var line = new List<TextSpan>();
             var addr = instr.Address;
             line.Add(new AddressSpan(addr.ToString() + " ", addr, "link"));
             line.Add(new InstructionTextSpan(instr, BuildBytes(program, arch, instr), "dasm-bytes"));
             var dfmt = new DisassemblyFormatter(program, arch, instr, line);
-            dfmt.Address = instr.Address;
             instr.Render(dfmt, options);
             dfmt.NewLine();
             return new LineSpan(position, line.ToArray());

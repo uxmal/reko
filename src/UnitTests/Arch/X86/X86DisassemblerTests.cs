@@ -3204,7 +3204,7 @@ movzx	ax,byte ptr [bp+4h]
         [Test]
         public void X86Dis_OperandRendering()
         {
-            var options = new MachineInstructionWriterOptions(
+            var options = new MachineInstructionRendererOptions(
                 operandSeparator: ", ");
             var instr = Disassemble16(0x33, 0xc0);
             Assert.AreEqual("xor\tax, ax", instr.ToString(options));

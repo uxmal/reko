@@ -37,24 +37,24 @@ namespace Reko.Arch.Arc
         public int Offset { get;  set; }
         public RegisterStorage Index { get; set; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteChar('[');
+            renderer.WriteChar('[');
             var sep = "";
             if (Base != null)
             {
-                writer.WriteString(Base.Name);
+                renderer.WriteString(Base.Name);
                 sep = ",";
             }
             if (Offset != 0)
             {
-                writer.WriteFormat("{0}{1}", sep, Offset);
+                renderer.WriteFormat("{0}{1}", sep, Offset);
             }
             else if (Index != null)
             {
-                writer.WriteFormat("{0}{1}", sep, Offset);
+                renderer.WriteFormat("{0}{1}", sep, Offset);
             }
-            writer.WriteChar(']');
+            renderer.WriteChar(']');
         }
     }
 

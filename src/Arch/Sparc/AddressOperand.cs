@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -38,9 +38,9 @@ namespace Reko.Arch.Sparc
             this.Address = address;
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteAddress(Address.ToString(), Address);
+            renderer.WriteAddress(Address.ToString(), Address);
         }
     }
 }

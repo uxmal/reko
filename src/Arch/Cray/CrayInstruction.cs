@@ -31,37 +31,38 @@ namespace Reko.Arch.Cray
         public override int MnemonicAsInteger => (int)Mnemonic;
         public override string MnemonicAsString => Mnemonic.ToString();
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             switch (Mnemonic)
             {
             case Mnemonic._and:
-                Render3("&", writer, options);
+                Render3("&", renderer, options);
                 return;
             case Mnemonic._fmul:
-                Render3("*F", writer, options);
+                Render3("*F", renderer, options);
                 return;
             case Mnemonic._mov:
-                RenderOperand(Operands[0], writer, options);
-                writer.Tab();
-                RenderOperand(Operands[1], writer, options);
+                RenderOperand(Operands[0], renderer, options);
+                renderer.Tab();
+                RenderOperand(Operands[1], renderer, options);
                 if (Operands.Length == 2)
                     return;
-                writer.WriteString(",");
-                RenderOperand(Operands[2], writer, options);
+                renderer.WriteString(",");
+                RenderOperand(Operands[2], renderer, options);
                 return;
             }
-            writer.WriteMnemonic(this.Mnemonic.ToString());
-            RenderOperands(writer, options);
+            renderer.WriteMnemonic(this.Mnemonic.ToString());
+            RenderOperands(renderer, options);
         }
 
-        private void Render3(string infix, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        private void Render3(string infix, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            RenderOperand(Operands[0], writer, options);
-            writer.Tab();
-            RenderOperand(Operands[1], writer, options);
-            writer.WriteString(infix);
-            RenderOperand(Operands[2], writer, options);
+            RenderOperand(Operands[0], renderer, options);
+            renderer.Tab();
+            RenderOperand(Operands[1], renderer, options);
+            renderer.WriteString(infix);
+            RenderOperand(Operands[2], 
+                renderer, options);
         }
     }
 }

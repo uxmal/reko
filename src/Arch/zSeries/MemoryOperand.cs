@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -40,31 +40,31 @@ namespace Reko.Arch.zSeries
         {
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (Offset != 0)
             {
-                writer.WriteFormat("{0}", Offset);
+                renderer.WriteFormat("{0}", Offset);
             }
-            writer.WriteFormat("(");
+            renderer.WriteFormat("(");
             if (Length != 0)
             {
-                writer.WriteFormat("{0},", Length);
+                renderer.WriteFormat("{0},", Length);
             }
             if (Index != null && Index.Number != 0)
             {
-                writer.WriteString(Index.Name);
+                renderer.WriteString(Index.Name);
                 if (Base != null && Base.Number != 0)
                 {
-                    writer.WriteString(",");
-                    writer.WriteString(Base.Name);
+                    renderer.WriteString(",");
+                    renderer.WriteString(Base.Name);
                 }
             }
             else
             {
-                writer.WriteString(Base.Name);
+                renderer.WriteString(Base.Name);
             }
-            writer.WriteFormat(")");
+            renderer.WriteFormat(")");
         }
     }
 }

@@ -50,7 +50,7 @@ namespace Reko.Arch.Z80
             this.Offset = Constant.SByte(offset);
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (Base != null)
             {
@@ -71,18 +71,18 @@ namespace Reko.Arch.Z80
                     {
                         fmt = "({0})";
                     }
-                    writer.WriteString(string.Format(fmt, Base, offset));
+                    renderer.WriteString(string.Format(fmt, Base, offset));
                 }
                 else
                 {
-                    writer.WriteString(string.Format("({0})", Base));
+                    renderer.WriteString(string.Format("({0})", Base));
                 }
             }
             else
             {
-                writer.WriteString("(");
-                writer.WriteAddress(string.Format("{0:X4}", Offset!.ToUInt16()), Address.Ptr16(Offset.ToUInt16()));
-                writer.WriteString(")");
+                renderer.WriteString("(");
+                renderer.WriteAddress(string.Format("{0:X4}", Offset!.ToUInt16()), Address.Ptr16(Offset.ToUInt16()));
+                renderer.WriteString(")");
             }
         }
     }

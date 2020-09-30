@@ -33,17 +33,17 @@ namespace Reko.Arch.Z80
         public override int MnemonicAsInteger => (int)Mnemonic;
         public override string MnemonicAsString => Mnemonic.ToString();
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (Mnemonic == Mnemonic.ex_af)
             {
-                writer.WriteMnemonic("ex");
-                writer.Tab();
-                writer.WriteString("af,af'");
+                renderer.WriteMnemonic("ex");
+                renderer.Tab();
+                renderer.WriteString("af,af'");
                 return;
             }
-            writer.WriteMnemonic(Mnemonic.ToString());
-            RenderOperands(writer, options);
+            renderer.WriteMnemonic(Mnemonic.ToString());
+            RenderOperands(renderer, options);
         }
     }
 }

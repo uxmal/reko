@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -56,20 +56,20 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteChar('{');
+            renderer.WriteChar('{');
             var sep = "";
             foreach (var reg in GetRegisters())
             {
-                writer.WriteString(sep);
+                renderer.WriteString(sep);
                 sep = ",";
-                VectorRegisterOperand.WriteName(Width.BitSize, reg, ElementType, Index, writer);
+                VectorRegisterOperand.WriteName(Width.BitSize, reg, ElementType, Index, renderer);
             }
-            writer.WriteChar('}');
+            renderer.WriteChar('}');
             if (Index >= 0)
             {
-                writer.WriteFormat("[{0}]", Index);
+                renderer.WriteFormat("[{0}]", Index);
             }
         }
     }
