@@ -1,13 +1,15 @@
 #region License
 /* 
- * Copyright (c) 2017-2020 Christian Hostelet.
+ *
+ * Copyrighted (c) 2017-2020 Christian Hostelet.
  *
  * The contents of this file are subject to the terms of the Common Development
  * and Distribution License (the License), or the GPL v2, or (at your option)
  * any later version. 
  * You may not use this file except in compliance with the License.
  *
- * You can obtain a copy of the License at http://www.gnu.org/licenses/gpl-2.0.html.
+ * You can obtain a copy of the License at http://www.netbeans.org/cddl.html
+ * or http://www.gnu.org/licenses/gpl-2.0.html.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,7 +20,9 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * If applicable, add the following below the header, with the fields
+ * When distributing Covered Code, include this CDDL Header Notice in each file
+ * and include the License file at http://www.netbeans.org/cddl.txt.
+ * If applicable, add the following below the CDDL Header, with the fields
  * enclosed by brackets [] replaced by your own identifying information:
  * "Portions Copyrighted (c) [year] [name of copyright owner]"
  *
@@ -45,7 +49,7 @@ namespace Reko.Libraries.Microchip
     public sealed class PICCrownking
     {
         private static PICCrownking currentDB = null;
-        private static PICPartInfo partsinfo = null;
+        private static PICPartInfo partslist = null;
 
         /// <summary>
         /// Constructor that prevents a default instance of this class from being created.
@@ -76,9 +80,9 @@ namespace Reko.Libraries.Microchip
                 setError(DBErrorCode.NoDBFile,
                          DBStatus.NoDB,
                          nameof(checkDBExist) + ": " + (CurrentDBPath == null
-                                                            ? "Unable to get PIC database file pathname"
-                                                            : $"PIC database file '{CurrentDBPath}' not found"));
-                throw raiseError(DBErrorCode.NoDBFile, "No Microchip XML PIC definitions available on this system.");
+                                                            ? "Unable to get PIC DB file pathname"
+                                                            : $"PIC DB file '{CurrentDBPath}' not found"));
+                throw raiseError(DBErrorCode.NoDBFile, "No Microchip XML PIC definitions available on this system");
             }
         }
 
@@ -107,16 +111,17 @@ namespace Reko.Libraries.Microchip
                 setError(DBErrorCode.NoDBFile,
                          DBStatus.NoDB,
                          nameof(openDB) + ": " + (CurrentDBPath == null
-                                                    ? "Unable to get PIC database file pathname"
-                                                    : $"PIC database file '{CurrentDBPath}' not found"));
+                                                    ? "Unable to get PIC DB file pathname"
+                                                    : $"PIC DB file '{CurrentDBPath}' not found"));
             }
         }
 
-        private PICPartInfo partsInfo
+        private PICPartInfo PartsInfo
         {
             get
             {
-                if (partsinfo == null)
+                checkDBExist();
+                if (partslist == null)
                 {
                     if (CurrentDBPath == null || !File.Exists(CurrentDBPath))
                         return null;
@@ -130,23 +135,18 @@ namespace Reko.Libraries.Microchip
                             {
                                 using (var eo = entry.Open())
                                 {
-                                    partsinfo = XDocument.Load(eo).Root.ToObject<PICPartInfo>();
+                                    partslist = XDocument.Load(eo).Root.ToObject<PICPartInfo>();
                                 }
                             }
                         }
                     }
-                    catch (PICCrownkingException)
-                    {
-                        partsinfo = null;
-                        throw;
-                    }
                     catch (Exception ex)
                     {
-                        setError(DBErrorCode.WrongDB, DBStatus.DBOK, $"Got exception retrieving {nameof(partsInfo)} file: {ex.Message}.");
-                        partsinfo = null;
+                        setError(DBErrorCode.WrongDB, DBStatus.DBOK, $"Got exception retrieving {nameof(partslist)} file: {ex.Message}.");
+                        partslist = null;
                     }
                 }
-                return partsinfo;
+                return partslist;
             }
         }
 
@@ -227,7 +227,7 @@ namespace Reko.Libraries.Microchip
             sPICName = sPICName.ToUpperInvariant();
             if (!sPICName.EndsWith(".PIC", true, CultureInfo.InvariantCulture))
                 sPICName += ".PIC";
-            if (sPICName.StartsWith("PIC12", true, CultureInfo.InvariantCulture))  // FUTURE?  Provisions to accept PIC12 MCUs with PIC16 architecture  
+            if (sPICName.StartsWith("PIC12", true, CultureInfo.InvariantCulture))
                 contentpath = ContentPIC16Path;
             if (sPICName.StartsWith("PIC16", true, CultureInfo.InvariantCulture))
                 contentpath = ContentPIC16Path;
@@ -285,9 +285,9 @@ namespace Reko.Libraries.Microchip
         /// </returns>
         public IEnumerable<string> EnumPICList(Func<string, bool> filter)
         {
-            if (partsInfo is null)
+            if (PartsInfo is null)
                 yield break;
-            foreach (var part in partsInfo.PICNamesList(filter))
+            foreach (var part in PartsInfo.PICNamesList(filter))
                 yield return part;
 
         }
@@ -309,14 +309,14 @@ namespace Reko.Libraries.Microchip
         /// </summary>
         /// <param name="picName">Name of the PIC.</param>
         public (string Name, uint ID)? GetPICInfo(string picName)
-            => partsInfo?.Parts.Where(p => p.Name == picName).Select(p => (p.Name, p.ProcID)).FirstOrDefault();
+            => PartsInfo?.Parts.Where(p => p.Name == picName).Select(p => (p.Name, p.ProcID)).FirstOrDefault();
 
         /// <summary>
         /// Gets PIC information given its processor ID.
         /// </summary>
         /// <param name="picID">Identifier for the PIC.</param>
         public (string Name, uint ID)? GetPICInfo(int picID)
-            => partsInfo?.Parts.Where(p => p.ProcID == picID).Select(p => (p.Name, p.ProcID)).FirstOrDefault();
+            => PartsInfo?.Parts.Where(p => p.ProcID == picID).Select(p => (p.Name, p.ProcID)).FirstOrDefault();
 
         #endregion
 

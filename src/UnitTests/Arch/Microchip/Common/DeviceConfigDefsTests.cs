@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
             Assert.AreEqual(Address.Ptr32(0x8007), dcr.Address);
 
             var s = PICMemoryDescriptor.RenderDeviceConfigRegister(dcr, 0xFFFF);
-            Assert.AreEqual("FOSC=ECH, WDTE=ON, PWRTE=OFF, MCLRE=ON, CP=OFF, BOREN=ON, CLKOUTEN=OFF, IESO=ON, FCMEN=ON", s);
+            Assert.AreEqual("FOSC=ECH, WDTE=ON, PWRTE=OFF, MCLRE=ON, CP=OFF, BOREN=NSLEEP, CLKOUTEN=OFF, IESO=ON, FCMEN=ON", s);
 
             var dcf = PICMemoryDescriptor.GetDCRField("WDTE");
             Assert.AreEqual("WDTE", dcf.Name);
@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
             Assert.AreEqual(Address.Ptr32(0x800A), dcr.Address);
 
             var s = PICMemoryDescriptor.RenderDeviceConfigRegister(dcr, 0xFFFF);
-            Assert.AreEqual("BBSIZE=BB512, BBEN=OFF, SAFEN=OFF, WRTAPP=OFF, WRTB=OFF, WRTC=OFF, WRTSAF=OFF, LVP=ON", s);
+            Assert.AreEqual("BBSIZE=BB512, BBEN=OFF, SAFEN=OFF, WRTAPP=ON, WRTB=ON, WRTC=OFF, WRTSAF=OFF, LVP=ON", s);
 
             var dcf = PICMemoryDescriptor.GetDCRField("WDTE");
             Assert.IsNotNull(dcf);
@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
             Assert.AreEqual(Address.Ptr32(0x300001), dcr.Address);
 
             var s = PICMemoryDescriptor.RenderDeviceConfigRegister(dcr, 0xFF);
-            Assert.AreEqual("OSC=RC, FSCM=ON, IESO=ON", s);
+            Assert.AreEqual("OSC=RC, FSCM=OFF, IESO=OFF", s);
 
             var dcf = PICMemoryDescriptor.GetDCRField("WDT");
             Assert.IsNotNull(dcf);

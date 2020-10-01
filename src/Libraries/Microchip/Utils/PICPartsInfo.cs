@@ -1,13 +1,15 @@
 #region License
 /* 
- * Copyright (c) 2017-2020 Christian Hostelet.
+ *
+ * Copyrighted (c) 2017-2020 Christian Hostelet.
  *
  * The contents of this file are subject to the terms of the Common Development
  * and Distribution License (the License), or the GPL v2, or (at your option)
  * any later version. 
  * You may not use this file except in compliance with the License.
  *
- * You can obtain a copy of the License at http://www.gnu.org/licenses/gpl-2.0.html.
+ * You can obtain a copy of the License at http://www.netbeans.org/cddl.html
+ * or http://www.gnu.org/licenses/gpl-2.0.html.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,12 +20,13 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * If applicable, add the following below the header, with the fields
+ * When distributing Covered Code, include this CDDL Header Notice in each file
+ * and include the License file at http://www.netbeans.org/cddl.txt.
+ * If applicable, add the following below the CDDL Header, with the fields
  * enclosed by brackets [] replaced by your own identifying information:
  * "Portions Copyrighted (c) [year] [name of copyright owner]"
  *
  */
-
 #endregion
 
 namespace Reko.Libraries.Microchip
@@ -73,7 +76,7 @@ namespace Reko.Libraries.Microchip
         [XmlAttribute(AttributeName = "procid", Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Needed for serialization")]
-        public string ProcIDFormatted
+        public string procidFormatted
         {
             get => $"0x{ProcID:X4}";
             set => ProcID = value.ToUInt32Ex();
@@ -83,7 +86,7 @@ namespace Reko.Libraries.Microchip
         [XmlAttribute(AttributeName = "name", Namespace = "")]
         public string Name { get; set; }
 
-        /// <summary> Gets the cloned PIC name if this PIC is a clone. </summary>
+        /// <summary> Gets the cloned PIC name if this pIC is a clone. </summary>
         [XmlAttribute(AttributeName = "clonedfrom", Namespace = "")]
         public string ClonedFrom { get; set; }
 
