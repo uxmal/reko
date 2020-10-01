@@ -36,8 +36,7 @@ namespace Reko.Arch.Blackfin
 
         public override string MnemonicAsString => Mnemonic.ToString();
 
-
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             (string prefix, string infix, string suffix) aaOpcode;
             if (!mapMnemonics.TryGetValue(Mnemonic, out aaOpcode))
@@ -46,43 +45,43 @@ namespace Reko.Arch.Blackfin
             }
             if (aaOpcode.infix != null)
             {
-                writer.WriteString(aaOpcode.prefix);
-                Operands[0].Write(writer, options);
+                renderer.WriteString(aaOpcode.prefix);
+                Operands[0].Render(renderer, options);
                 if (Operands.Length > 2)
                 {
-                    writer.WriteString(" = ");
-                    Operands[1].Write(writer, options);
-                    writer.WriteString(aaOpcode.infix);
-                    Operands[2].Write(writer, options);
+                    renderer.WriteString(" = ");
+                    Operands[1].Render(renderer, options);
+                    renderer.WriteString(aaOpcode.infix);
+                    Operands[2].Render(renderer, options);
                 }
                 else if (Operands.Length > 1)
                 {
-                    writer.WriteString(aaOpcode.infix);
-                    Operands[1].Write(writer, options);
+                    renderer.WriteString(aaOpcode.infix);
+                    Operands[1].Render(renderer, options);
                 }
                 else
                 {
-                    writer.WriteString(aaOpcode.infix);
+                    renderer.WriteString(aaOpcode.infix);
                 }
             }
             else
             {
-                writer.WriteMnemonic(aaOpcode.prefix);
+                renderer.WriteMnemonic(aaOpcode.prefix);
                 var sep = " ";
                 if (Operands == null)
                     return;
                 foreach (var op in Operands)
                 {
-                    writer.WriteString(sep);
+                    renderer.WriteString(sep);
                     sep = ",";
-                    op.Write(writer, options);
+                    op.Render(renderer, options);
                 }
             }
             if (aaOpcode.suffix != null)
             {
-                writer.WriteString(aaOpcode.suffix);
+                renderer.WriteString(aaOpcode.suffix);
             }
-            writer.WriteString(";");
+            renderer.WriteString(";");
         }
 
         private static readonly Dictionary<Mnemonic, (string,string,string)> mapMnemonics = 

@@ -77,7 +77,19 @@ namespace Reko.Core.Machine
             return ulInstr <= ulAddr && ulAddr < ulInstr + (uint)Length;
         }
 
-        public virtual void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        /// <summary>
+        /// Renders this instruction to the provided <see cref="MachineInstructionRenderer"/>.
+        /// </summary>
+        /// <param name="renderer"></param>
+        /// <param name="options"></param>
+        public void Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            renderer.BeginInstruction(Address);
+            DoRender(renderer, options);
+            renderer.EndInstruction();
+        }
+
+        protected virtual void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
         }
 
@@ -94,46 +106,39 @@ namespace Reko.Core.Machine
         
         public sealed override string ToString()
         {
-            var renderer = new StringRenderer(Address);
-            this.Render(renderer, MachineInstructionWriterOptions.Default);
+            var renderer = new StringRenderer();
+            this.DoRender(renderer, MachineInstructionRendererOptions.Default);
             return renderer.ToString();
         }
 
-        public string ToString(IPlatform platform)
+        public string ToString(MachineInstructionRendererOptions options)
         {
-            var renderer = new StringRenderer(platform, Address);
-            this.Render(renderer, MachineInstructionWriterOptions.Default);
-            return renderer.ToString();
-        }
-
-        public string ToString(MachineInstructionWriterOptions options)
-        {
-            var renderer = new StringRenderer(Address);
-            this.Render(renderer, options);
+            var renderer = new StringRenderer();
+            this.DoRender(renderer, options);
             return renderer.ToString();
         }
 
         /// <summary>
         /// Utility function to render the operands, separated by commas.
         /// </summary>
-        /// <param name="writer"></param>
+        /// <param name="renderer"></param>
         /// <param name="options"></param>
-        protected void RenderOperands(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected void RenderOperands(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (Operands!.Length == 0)
                 return;
-            writer.Tab();
-            RenderOperand(Operands[0], writer, options);
+            renderer.Tab();
+            RenderOperand(Operands[0], renderer, options);
             for (int i = 1; i < Operands.Length; ++i)
             {
-                writer.WriteString(options.OperandSeparator ?? ",");
-                RenderOperand(Operands[i], writer, options);
+                renderer.WriteString(options.OperandSeparator ?? ",");
+                RenderOperand(Operands[i], renderer, options);
             }
         }
 
-        protected virtual void RenderOperand(MachineOperand operand, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected virtual void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            operand.Write(writer, options);
+            operand.Render(renderer, options);
         }
     }
 }

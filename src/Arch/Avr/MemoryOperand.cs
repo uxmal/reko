@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -37,19 +37,19 @@ namespace Reko.Arch.Avr
         {
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (PreDecrement)
             {
-                writer.WriteChar('-');
+                renderer.WriteChar('-');
             }
-            writer.WriteString(Base.Name);
+            renderer.WriteString(Base.Name);
             if (PostIncrement)
             {
-                writer.WriteChar('+');
+                renderer.WriteChar('+');
             } else if (Displacement !=0)
             {
-                writer.WriteFormat("+{0:X2}", Displacement);
+                renderer.WriteFormat("+{0:X2}", Displacement);
             }
         }
     }

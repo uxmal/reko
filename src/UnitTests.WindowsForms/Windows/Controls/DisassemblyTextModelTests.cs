@@ -186,9 +186,9 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
             public override string MnemonicAsString => throw new NotImplementedException();
 
-            public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+            protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
             {
-                writer.WriteMnemonic("opcode.l");
+                renderer.WriteMnemonic("opcode.l");
             }
         }
 

@@ -32,18 +32,33 @@ namespace Reko.Core.Machine
     /// Used to render machine instructions into text. The abstraction
     /// offers opportunities to perform syntax highlighting etc.
     /// </summary>
-    public interface MachineInstructionWriter : INativeInstructionWriter
+    public interface MachineInstructionRenderer : INativeInstructionRenderer
     {
         /// <summary>
-        /// The current platform we're in. May be null, so make sure
-        /// you test for that before dereferencing.
+        /// Begin the rendering of an instruction at address <paramref name="addr" />.
         /// </summary>
-        IPlatform? Platform { get;  }
+        /// <param name="addr">The address where the instruction begins.</param>
+        void BeginInstruction(Address addr);
+
+        /// <summary>
+        /// Finish rendering of an instruction.
+        /// </summary>
+        void EndInstruction();
+
+
+        /// <summary>
+        /// Indicate to the renderer that an operand is about to be rendered.
+        /// </summary>
+        void BeginOperand();
+        /// <summary>
+        /// Indicate to the renderer that an operand is finished.
+        /// </summary>
+        void EndOperand();
 
         /// <summary>
         /// The address of the current instruction being written.
         /// </summary>
-        Address Address { get; set; }
+        Address Address { get; }
 
         void WriteAddress(string formattedAddress, Address addr);
         void WriteFormat(string fmt, params object[] parms);
@@ -51,7 +66,7 @@ namespace Reko.Core.Machine
 
     [Flags]
     [NativeInterop]
-    public enum MachineInstructionWriterFlags
+    public enum MachineInstructionRendererFlags
     {
         None = 0,
         ExplicitOperandSize = 1,
@@ -62,16 +77,18 @@ namespace Reko.Core.Machine
     /// <summary>
     /// Describes options to control the rendering of assembly language instructions.
     /// </summary>
-    public class MachineInstructionWriterOptions
+    public class MachineInstructionRendererOptions
     {
-        public MachineInstructionWriterOptions(
+        public MachineInstructionRendererOptions(
             string? syntax = "",
-            MachineInstructionWriterFlags flags = MachineInstructionWriterFlags.None,
-            string? operandSeparator = ",")
+            MachineInstructionRendererFlags flags = MachineInstructionRendererFlags.None,
+            string? operandSeparator = ",",
+            IPlatform? platform = null)
         {
             this.Syntax = syntax;
             this.Flags = flags;
             this.OperandSeparator = operandSeparator;
+            this.Platform = platform;
         }
 
         /// <summary>
@@ -84,16 +101,24 @@ namespace Reko.Core.Machine
         /// </remarks>
         public string? Syntax { get; }
 
-        public MachineInstructionWriterFlags Flags { get; }
+        public MachineInstructionRendererFlags Flags { get; }
 
         /// <summary>
         /// Use this string to specify how assembly language operands shoud be separated.
         /// </summary>
         public string? OperandSeparator { get; }
 
-        public static MachineInstructionWriterOptions Default { get; } = new MachineInstructionWriterOptions(
+        /// <summary>
+        /// The current operating environment.
+        /// </summary>
+        public IPlatform? Platform { get; }
+
+        /// <summary>
+        /// A default instance of the <see cref="MachineInstructionRendererOptions"/>.
+        /// </summary>
+        public static MachineInstructionRendererOptions Default { get; } = new MachineInstructionRendererOptions(
             syntax: "",
-            flags: MachineInstructionWriterFlags.None,
+            flags: MachineInstructionRendererFlags.None,
             operandSeparator: ",");
     }
 
@@ -101,31 +126,40 @@ namespace Reko.Core.Machine
     /// <summary>
     /// "Dumb" renderer that renders machine instructions as simple text.
     /// </summary>
-    public class StringRenderer : MachineInstructionWriter
+    public class StringRenderer : MachineInstructionRenderer
     {
         private readonly StringBuilder sb;
+        private Address? addrInstr;
 
-        public StringRenderer(Address addr) 
+        public StringRenderer() 
         {
-            this.Address = addr;
             sb = new StringBuilder();
         }
 
-        public StringRenderer(IPlatform platform, Address addr)
-        {
-            this.Platform = platform;
-            this.Address = addr;
-            sb = new StringBuilder();
-        }
-
-        public IPlatform? Platform { get; private set; }
-        public Address Address { get; set; }
+        public Address Address => addrInstr!;
 
         /// <summary>
         /// This renderer ignores annotations
         /// </summary>
         /// <param name="annotation"></param>
         public void AddAnnotation(string annotation)
+        {
+        }
+
+        public void BeginInstruction(Address addr)
+        {
+            this.addrInstr = addr;
+        }
+
+        public void EndInstruction()
+        {
+        }
+
+        public void BeginOperand()
+        {
+        }
+
+        public void EndOperand()
         {
         }
 

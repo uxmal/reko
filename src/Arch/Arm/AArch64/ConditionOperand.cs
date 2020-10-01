@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -37,9 +37,9 @@ namespace Reko.Arch.Arm.AArch64
 
         public ArmCondition Condition { get; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteMnemonic(Condition.ToString());
+            renderer.WriteMnemonic(Condition.ToString());
         }
     }
 }

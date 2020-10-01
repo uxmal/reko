@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Core.Configuration
         public void Rcfg_LoadOperatingEnvironment()
         {
             var sc = new ServiceContainer();
-            var cfgSvc = new RekoConfigurationService(sc, new RekoConfiguration_v1
+            var cfgSvc = new RekoConfigurationService(sc, "reko.config", new RekoConfiguration_v1
             {
                 Environments = new []
                 {
@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Core.Configuration
         [Test]
         public void Rcfg_LoadLoader()
         {
-            var cfgSvc = new RekoConfigurationService(new ServiceContainer(), new RekoConfiguration_v1
+            var cfgSvc = new RekoConfigurationService(new ServiceContainer(), "reko.config", new RekoConfiguration_v1
             {
                 Loaders = new[]
                 {

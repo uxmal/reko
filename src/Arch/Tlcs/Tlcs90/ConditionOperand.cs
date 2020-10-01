@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -36,9 +36,9 @@ namespace Reko.Arch.Tlcs
             this.Code = cc;
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString(Code.ToString());
+            renderer.WriteString(Code.ToString());
         }
     }
 

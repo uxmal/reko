@@ -73,7 +73,7 @@ namespace Reko.Core
         public List<Block> Pred { get; private set; }
         public List<Block> Succ { get; private set; }
         public StatementList Statements { get; private set; }
-        
+
 		public static void Coalesce(Block block, Block next)
 		{
 			foreach (Statement stm in next.Statements)

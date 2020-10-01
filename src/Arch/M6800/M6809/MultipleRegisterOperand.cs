@@ -51,14 +51,14 @@ namespace Reko.Arch.M6800.M6809
             }
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             string sep = "";
             foreach (var reg in GetRegisters())
             {
-                writer.WriteString(sep);
+                renderer.WriteString(sep);
                 sep = ",";
-                writer.WriteString(reg.Name);
+                renderer.WriteString(reg.Name);
             }
         }
     }

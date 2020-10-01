@@ -36,11 +36,11 @@ namespace Reko.Arch.Avr.Avr32
         public RegisterStorage HiRegister { get; }
         public RegisterStorage LoRegister { get; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString(HiRegister.Name);
-            writer.WriteString(":");
-            writer.WriteString(LoRegister.Name);
+            renderer.WriteString(HiRegister.Name);
+            renderer.WriteString(":");
+            renderer.WriteString(LoRegister.Name);
         }
     }
 }

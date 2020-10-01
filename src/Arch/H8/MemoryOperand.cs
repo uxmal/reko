@@ -79,39 +79,39 @@ namespace Reko.Arch.H8
             };
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteChar('@');
+            renderer.WriteChar('@');
             if (this.Deferred)
-                writer.WriteChar('@');
+                renderer.WriteChar('@');
             if (Base != null)
             {
                 if (this.PreDecrement)
                 {
-                    writer.WriteChar('-');
-                    writer.WriteString(Base.Name);
+                    renderer.WriteChar('-');
+                    renderer.WriteString(Base.Name);
                 }
                 else if (this.PostIncrement)
                 {
-                    writer.WriteString(Base.Name);
-                    writer.WriteChar('+');
+                    renderer.WriteString(Base.Name);
+                    renderer.WriteChar('+');
                 }
                 else if (Offset != 0)
                 {
-                    writer.WriteChar('(');
-                    writer.WriteFormat("{0}:{1},", Offset, AddressWidth!.BitSize);
-                    writer.WriteString(Base.Name);
-                    writer.WriteChar(')');
+                    renderer.WriteChar('(');
+                    renderer.WriteFormat("{0}:{1},", Offset, AddressWidth!.BitSize);
+                    renderer.WriteString(Base.Name);
+                    renderer.WriteChar(')');
                 }
                 else
                 {
-                    writer.WriteString(Base.Name);
+                    renderer.WriteString(Base.Name);
                 }
             }
             else
             {
                 //$REFACTOR: does it make sense to move absolute addresses to their own class?
-                writer.WriteAddress($"0x{(uint) Offset:X}:{AddressWidth!.BitSize}", Address.Ptr32((uint)Offset));
+                renderer.WriteAddress($"0x{(uint) Offset:X}:{AddressWidth!.BitSize}", Address.Ptr32((uint)Offset));
             }
         }
 

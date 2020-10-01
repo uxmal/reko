@@ -8,6 +8,8 @@
     <AssemblyName>NativeProxy</AssemblyName>
     <Configurations>Debug;Release;UnixRelease</Configurations>
     <Platforms>x86;x64</Platforms>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
 
   <Target Name="CleanCMake" AfterTargets="Clean">

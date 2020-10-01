@@ -408,6 +408,7 @@ namespace Reko.Arch.X86
                 ctx.RegisterExtension.FlagTargetModrmRegister = (rxb & 4) == 0;
                 ctx.RegisterExtension.FlagTargetSIBIndex = (rxb & 2) == 0;
                 ctx.RegisterExtension.FlagTargetModrmRegOrMem = (rxb & 1) == 0;
+
                 ctx.F2Prefix = pp == 3;
                 ctx.F3Prefix = pp == 2;
                 ctx.SizeOverridePrefix = pp == 1;

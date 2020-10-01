@@ -35,9 +35,9 @@ namespace Reko.Arch.Avr.Avr32
 
         public string Value { get; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString(this.Value);
+            renderer.WriteString(this.Value);
         }
     }
 }

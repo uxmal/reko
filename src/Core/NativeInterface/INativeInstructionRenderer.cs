@@ -32,7 +32,7 @@ namespace Reko.Core.NativeInterface
     [ComVisible(true)]
     [ComImport]
     [NativeInterop]
-    public interface INativeInstructionWriter
+    public interface INativeInstructionRenderer
     {
         /// <summary>
         /// Annotations are displayed as comments at the end of the line.

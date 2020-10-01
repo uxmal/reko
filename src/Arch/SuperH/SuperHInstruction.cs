@@ -72,21 +72,21 @@ namespace Reko.Arch.SuperH
             { Mnemonic.tas_b, "tas.b" },
         };
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (!mnemonics.TryGetValue(Mnemonic, out var sMnemonic))
                 sMnemonic = Mnemonic.ToString();
-            writer.WriteMnemonic(sMnemonic);
-            RenderOperands(writer, options);
+            renderer.WriteMnemonic(sMnemonic);
+            RenderOperands(renderer, options);
         }
 
-        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             switch (op)
             {
             case ImmediateOperand immOp:
-                writer.WriteChar('#');
-                immOp.Write(writer, options);
+                renderer.WriteChar('#');
+                immOp.Render(renderer, options);
                 return;
             case MemoryOperand memOp:
                 if (memOp.mode == AddressingMode.PcRelativeDisplacement)
@@ -98,23 +98,23 @@ namespace Reko.Arch.SuperH
                     }
                     uAddr += (uint)(memOp.disp + 4);
                     var addr = Core.Address.Ptr32(uAddr);
-                    if ((options.Flags & MachineInstructionWriterFlags.ResolvePcRelativeAddress) != 0)
+                    if ((options.Flags & MachineInstructionRendererFlags.ResolvePcRelativeAddress) != 0)
                     {
-                        writer.WriteChar('(');
-                        writer.WriteAddress(addr.ToString(), addr);
-                        writer.WriteChar(')');
-                        writer.AddAnnotation(op.ToString());
+                        renderer.WriteChar('(');
+                        renderer.WriteAddress(addr.ToString(), addr);
+                        renderer.WriteChar(')');
+                        renderer.AddAnnotation(op.ToString());
                     }
                     else
                     {
-                        op.Write(writer, options);
-                        writer.AddAnnotation(addr.ToString());
+                        op.Render(renderer, options);
+                        renderer.AddAnnotation(addr.ToString());
                     }
                     return;
                 }
                 goto default;
             default:
-                op.Write(writer, options);
+                op.Render(renderer, options);
                 break;
             }
         }

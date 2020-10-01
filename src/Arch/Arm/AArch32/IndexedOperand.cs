@@ -44,9 +44,9 @@ namespace Reko.Arch.Arm.AArch32
 
         public int Index { get; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteFormat("{0}[{1}]", Register.Name, Index);
+            renderer.WriteFormat("{0}[{1}]", Register.Name, Index);
         }
     }
 }

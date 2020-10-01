@@ -39,22 +39,22 @@ namespace Reko.Arch.Sparc
 
         public Prediction Prediction { get; set; }
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            RenderMnemonic(writer);
+            RenderMnemonic(renderer);
             if (Mnemonic == Mnemonic.@return)
             {
-                writer.Tab();
-                RenderOperand(Operands[0], writer, options);
-                RenderOperand(Operands[1], writer, options);
+                renderer.Tab();
+                RenderOperand(Operands[0], renderer, options);
+                RenderOperand(Operands[1], renderer, options);
             }
             else
             {
-                RenderOperands(writer, options);
+                RenderOperands(renderer, options);
             }
         }
 
-        private void RenderMnemonic(MachineInstructionWriter writer)
+        private void RenderMnemonic(MachineInstructionRenderer renderer)
         {
             var sb = new StringBuilder();
             sb.Append(Mnemonic.ToString());
@@ -64,18 +64,18 @@ namespace Reko.Arch.Sparc
                 sb.Append(",pn");
             if (Prediction == Prediction.Taken)
                 sb.Append(",pt");
-            writer.WriteMnemonic(sb.ToString());
+            renderer.WriteMnemonic(sb.ToString());
         }
 
-        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             switch (op)
             {
             case RegisterOperand reg:
-                writer.WriteFormat("%{0}", reg.Register.Name);
+                renderer.WriteFormat("%{0}", reg.Register.Name);
                 return;
             default:
-                op.Write(writer, options);
+                op.Render(renderer, options);
                 return;
             }
         }

@@ -37,17 +37,17 @@ namespace Reko.Arch.M6800.M6809
         {
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             string fmt;
             int offset;
             string regName = "";
             if (Indirect)
-                writer.WriteChar('[');
+                renderer.WriteChar('[');
             switch (AccessMode)
             {
             case Mode.Direct:
-                writer.WriteFormat(">${0:X2}", Offset);
+                renderer.WriteFormat(">${0:X2}", Offset);
                 break;
             case Mode.ConstantOffset:
                 offset = Offset; 
@@ -74,28 +74,28 @@ namespace Reko.Arch.M6800.M6809
                         fmt = "${0:X4},{1}";
                     regName = Base.Name;
                 }
-                writer.WriteFormat(fmt, offset, regName);
+                renderer.WriteFormat(fmt, offset, regName);
                 break;
             case Mode.AccumulatorOffset:
-                writer.WriteFormat("{0},{1}", Index.Name, Base.Name);
+                renderer.WriteFormat("{0},{1}", Index.Name, Base.Name);
                 break;
             case Mode.PostInc1:
-                writer.WriteFormat(",{0}+", Base.Name);
+                renderer.WriteFormat(",{0}+", Base.Name);
                 break;
             case Mode.PostInc2:
-                writer.WriteFormat(",{0}++", Base.Name);
+                renderer.WriteFormat(",{0}++", Base.Name);
                 break;
             case Mode.PreDec1:
-                writer.WriteFormat(",-{0}", Base.Name);
+                renderer.WriteFormat(",-{0}", Base.Name);
                 break;
             case Mode.PreDec2:
-                writer.WriteFormat(",--{0}", Base.Name);
+                renderer.WriteFormat(",--{0}", Base.Name);
                 break;
             default:
                throw new NotImplementedException($"Unimplemented address mode {AccessMode}.");
             }
             if (Indirect)
-                writer.WriteChar(']');
+                renderer.WriteChar(']');
         }
 
         public enum Mode

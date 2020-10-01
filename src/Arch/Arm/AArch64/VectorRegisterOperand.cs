@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -41,52 +41,52 @@ namespace Reko.Arch.Arm.AArch64
         public VectorData ElementType { get; set; }
         public int Index { get; set; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            WriteName(Width.BitSize, VectorRegister, ElementType, Index, writer);
+            WriteName(Width.BitSize, VectorRegister, ElementType, Index, renderer);
             if (Index >= 0)
             {
-                writer.WriteFormat("[{0}]", Index);
+                renderer.WriteFormat("[{0}]", Index);
             }
         }
 
-        public static void WriteName(int bitSize, RegisterStorage VectorRegister, VectorData ElementType, int Index, MachineInstructionWriter writer)
+        public static void WriteName(int bitSize, RegisterStorage VectorRegister, VectorData ElementType, int Index, MachineInstructionRenderer renderer)
         {
-            writer.WriteString(VectorRegister.Name);
-            writer.WriteChar('.');
+            renderer.WriteString(VectorRegister.Name);
+            renderer.WriteChar('.');
             switch (ElementType)
             {
             case VectorData.I8:
                 if (Index >= 0)
-                    writer.WriteString("b");
+                    renderer.WriteString("b");
                 else if (bitSize == 64)
-                    writer.WriteString("8b");
+                    renderer.WriteString("8b");
                 else
-                    writer.WriteString("16b");
+                    renderer.WriteString("16b");
                 break;
             case VectorData.I16:
                 if (Index >= 0)
-                    writer.WriteString("h");
+                    renderer.WriteString("h");
                 else if (bitSize == 64)
-                    writer.WriteString("4h");
+                    renderer.WriteString("4h");
                 else
-                    writer.WriteString("8h");
+                    renderer.WriteString("8h");
                 break;
             case VectorData.I32:
                 if (Index >= 0)
-                    writer.WriteString("s");
+                    renderer.WriteString("s");
                 else if (bitSize == 64)
-                    writer.WriteString("2s");
+                    renderer.WriteString("2s");
                 else
-                    writer.WriteString("4s");
+                    renderer.WriteString("4s");
                 break;
             case VectorData.I64:
                 if (Index >= 0)
-                    writer.WriteString("d");
+                    renderer.WriteString("d");
                 else if (bitSize == 64)
-                    writer.WriteString("1d");
+                    renderer.WriteString("1d");
                 else
-                    writer.WriteString("2d");
+                    renderer.WriteString("2d");
                 break;
             default:
                 throw new NotImplementedException($"{ElementType}");

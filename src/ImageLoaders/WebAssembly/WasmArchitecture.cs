@@ -35,6 +35,7 @@ namespace Reko.ImageLoaders.WebAssembly
     {
         public WasmArchitecture(IServiceProvider services, string archName) : base(services, archName)
         {
+            this.Endianness = EndianServices.Little;
             this.PointerType = PrimitiveType.Ptr32;
             this.FramePointerType = PrimitiveType.Ptr32;
             this.StackRegister = new RegisterStorage("sp", 0, 0, PointerType);

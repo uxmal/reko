@@ -28,7 +28,7 @@ namespace Reko.Core
 {
     /// <summary>
     /// Reads bytes and differently sized words sequentially from an 
-    /// associated LoadedImage. Concrete derived classes 
+    /// associated <see cref="MemoryArea"/>. Concrete derived classes 
     /// <see cref="BeImageReader"/> and <see cref="LeImageReader"/> 
     /// implement big- and little-endian interpretation of byte sequences.
     /// </summary>

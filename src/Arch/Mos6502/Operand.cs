@@ -40,7 +40,7 @@ namespace Reko.Arch.Mos6502
         {
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             int o = Offset != null ? Offset.ToUInt16() : 0;
             string fmt;
@@ -60,7 +60,7 @@ namespace Reko.Arch.Mos6502
             case AddressMode.IndirectIndexed: fmt = "(${0:X2}),{1}"; break;
             default: throw new NotSupportedException();
             }
-            writer.WriteString(string.Format(fmt, o, Register));
+            renderer.WriteString(string.Format(fmt, o, Register));
         }
     }
 

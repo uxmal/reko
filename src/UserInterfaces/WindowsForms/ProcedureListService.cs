@@ -156,8 +156,8 @@ namespace Reko.Gui
                     }
                     status.Status = st;
                     return true;
-                }
 #endif
+                }
             }
             return false;
         }

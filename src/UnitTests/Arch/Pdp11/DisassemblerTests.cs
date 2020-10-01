@@ -35,26 +35,26 @@ namespace Reko.UnitTests.Arch.Pdp11
     [TestFixture]
     public class DisassemblerTests
     {
-        private MachineInstructionWriterOptions options;
+        private MachineInstructionRendererOptions options;
 
         [SetUp]
         public void Setup()
         {
-            this.options = MachineInstructionWriterOptions.Default;
+            this.options = MachineInstructionRendererOptions.Default;
         }
 
         private void RunTest(string expected, params ushort[] words)
         {
             var instr = RunTest(words);
-            var r = new StringRenderer(instr.Address);
+            var r = new StringRenderer();
             instr.Render(r, options);
             Assert.AreEqual(expected, r.ToString());
         }
 
         private void Given_ResolvePcRelativeAddress()
         {
-            this.options = new MachineInstructionWriterOptions(
-                flags: MachineInstructionWriterFlags.ResolvePcRelativeAddress);
+            this.options = new MachineInstructionRendererOptions(
+                flags: MachineInstructionRendererFlags.ResolvePcRelativeAddress);
         }
 
         private MachineInstruction RunTest(params ushort[] words)

@@ -38,11 +38,11 @@ namespace Reko.Arch.PaRisc
 
         public Constant Value { get; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             var v = Value.ToInt32();
             var fmt = v < 0 ? "L%-{0:X8}" : "L%{0:X8}";
-            writer.WriteFormat(fmt, Math.Abs(v));
+            renderer.WriteFormat(fmt, Math.Abs(v));
         }
     }
 }

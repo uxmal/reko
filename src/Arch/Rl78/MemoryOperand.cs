@@ -40,7 +40,7 @@ namespace Reko.Arch.Rl78
         public int Offset { get; set; }
         public RegisterStorage Index { get; internal set; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             throw new NotImplementedException();
         }

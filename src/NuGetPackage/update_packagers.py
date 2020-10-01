@@ -2,7 +2,7 @@
 # in sync. It expects to be run in the $(REKO)/src/NuGetPackage 
 # directory.
 #
-# The code is not a marvel of beauty: it manipulates XML using regular expression,
+# The code is not a marvel of beauty: it manipulates XML using regular expressions,
 # which already puts it in a state of sin. However it does the job correctly, so 
 # there is no need to gold-plate it.
 
@@ -211,6 +211,7 @@ def render_nuspec_line(attrs, vars):
         target = attrs['nuget_target']
         target = target.replace('f:', 'lib\\netstandard2.0')
         target = target.replace('c:', 'contentFiles/any/any/reko')
+        target = target.replace('i:', 'images\\')
         line = '<file src="%s" target="%s" />\n' % (source, target)
         return line
     else:

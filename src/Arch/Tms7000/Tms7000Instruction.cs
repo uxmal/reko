@@ -31,24 +31,24 @@ namespace Reko.Arch.Tms7000
         
         public override string MnemonicAsString => Mnemonic.ToString();
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteMnemonic(this.Mnemonic.ToString());
-            RenderOperands(writer, options);
+            renderer.WriteMnemonic(this.Mnemonic.ToString());
+            RenderOperands(renderer, options);
         }
 
-        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             switch (op)
             {
             case ImmediateOperand imm:
-                writer.WriteString(ImmediateOperand.FormatUnsignedValue(imm.Value, ">{1}"));
+                renderer.WriteString(ImmediateOperand.FormatUnsignedValue(imm.Value, ">{1}"));
                 break;
             case AddressOperand addr:
-                writer.WriteAddress("@" + addr.Address, addr.Address);
+                renderer.WriteAddress("@" + addr.Address, addr.Address);
                 break;
             default:
-                op.Write(writer, options);
+                op.Render(renderer, options);
                 break;
             }
         }

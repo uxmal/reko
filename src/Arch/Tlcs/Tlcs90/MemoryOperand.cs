@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -102,20 +102,20 @@ namespace Reko.Arch.Tlcs.Tlcs90
             };
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteChar('(');
+            renderer.WriteChar('(');
             if (Base != null)
             {
                 if (Increment < 0)
                 {
-                    writer.WriteFormat("{0}:-", -Increment);
+                    renderer.WriteFormat("{0}:-", -Increment);
                 }
-                writer.WriteString(Base.Name);
+                renderer.WriteString(Base.Name);
                 if (Index != null)
                 {
-                    writer.WriteChar('+');
-                    writer.WriteString(Index.Name);
+                    renderer.WriteChar('+');
+                    renderer.WriteString(Index.Name);
                 }
                 else if (Offset != null)
                 {
@@ -123,28 +123,28 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     int absOff;
                     if (off < 0)
                     {
-                        writer.WriteChar('-');
+                        renderer.WriteChar('-');
                         absOff = -off;
                     }
                     else
                     {
-                        writer.WriteChar('+');
+                        renderer.WriteChar('+');
                         absOff = off;
                     }
-                    writer.WriteString("0x");
-                    writer.WriteFormat(OffsetFormat(off), absOff);
+                    renderer.WriteString("0x");
+                    renderer.WriteFormat(OffsetFormat(off), absOff);
                 }
                 if (Increment > 0)
                 {
-                    writer.WriteFormat("+:{0}", Increment);
+                    renderer.WriteFormat("+:{0}", Increment);
                 }
             }
             else
             {
                 var addr = Address.Ptr16(Offset.ToUInt16());
-                writer.WriteAddress(addr.ToString(), addr);
+                renderer.WriteAddress(addr.ToString(), addr);
             }
-            writer.WriteChar(')');
+            renderer.WriteChar(')');
         }
 
         private string OffsetFormat(int off)

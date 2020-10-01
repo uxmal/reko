@@ -90,38 +90,38 @@ namespace Reko.Arch.RiscV
 
         public override string MnemonicAsString => Mnemonic.ToString();
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            RenderMnemonic(writer);
-            RenderOperands(writer, options);
+            RenderMnemonic(renderer);
+            RenderOperands(renderer, options);
         }
 
-        private void RenderMnemonic(MachineInstructionWriter writer)
+        private void RenderMnemonic(MachineInstructionRenderer renderer)
         {
             if (!mnemonicNames.TryGetValue(Mnemonic, out string name))
             {
                 name = Mnemonic.ToString();
                 name = name.Replace('_', '.');
             }
-            writer.WriteMnemonic(name);
+            renderer.WriteMnemonic(name);
         }
 
-        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             switch (op)
             {
             case RegisterOperand rop:
-                writer.WriteString(rop.Register.Name);
+                renderer.WriteString(rop.Register.Name);
                 return;
             case ImmediateOperand immop:
-                immop.Write(writer, options);
+                immop.Render(renderer, options);
                 return;
             case AddressOperand addrop:
                 //$TODO: 32-bit?
-                writer.WriteAddress(string.Format("{0:X16}", addrop.Address.ToLinear()), addrop.Address);
+                renderer.WriteAddress(string.Format("{0:X16}", addrop.Address.ToLinear()), addrop.Address);
                 return;
             case MemoryOperand memop:
-                memop.Write(writer, options);
+                memop.Render(renderer, options);
                 return;
             }
             throw new NotImplementedException($"Risc-V operand type {op.GetType().Name} not implemented yet.");

@@ -321,7 +321,8 @@ namespace Reko.Arch.X86
                 s_invalid,
 
                 // F0
-                s_nyi,
+                VexInstr(s_invalid, new PrefixedDecoder(
+                    decF2: Instr(Mnemonic.rorx, Gy,Ey,Ib))),
                 s_invalid,
                 s_invalid,
                 s_invalid,

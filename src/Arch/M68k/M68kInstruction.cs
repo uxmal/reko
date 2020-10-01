@@ -37,34 +37,34 @@ namespace Reko.Arch.M68k
 
         public override string MnemonicAsString => Mnemonic.ToString();
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (Mnemonic == Mnemonic.illegal && Operands.Length > 0 && writer.Platform != null)
+            if (Mnemonic == Mnemonic.illegal && Operands.Length > 0 && options.Platform != null)
             {
                 var imm = (M68kImmediateOperand) Operands[0];
                 // MacOS uses invalid opcodes to invoke Macintosh Toolbox services. 
                 // We may have to generalize the Platform API to allow specifying 
                 // the opcode of the invoking instruction, to disambiguate from 
                 // "legitimate" TRAP calls.
-                var svc = writer.Platform.FindService((int)imm.Constant.ToUInt32(), null, null);
+                var svc = options.Platform.FindService((int)imm.Constant.ToUInt32(), null, null);
                 if (svc != null)
                 {
-                    writer.WriteString(svc.Name!);
+                    renderer.WriteString(svc.Name!);
                     return;
                 }
             }
             if (DataWidth != null)
             {
-                writer.WriteMnemonic(string.Format("{0}{1}", Mnemonic, DataSizeSuffix(DataWidth)));
+                renderer.WriteMnemonic(string.Format("{0}{1}", Mnemonic, DataSizeSuffix(DataWidth)));
             }
             else
             {
-                writer.WriteMnemonic(Mnemonic.ToString());
+                renderer.WriteMnemonic(Mnemonic.ToString());
             }
-            RenderOperands(writer, options);
+            RenderOperands(renderer, options);
         }
 
-        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (op is MemoryOperand memOp && memOp.Base == Registers.pc)
             {
@@ -72,19 +72,19 @@ namespace Reko.Arch.M68k
                 if (memOp.Offset != null)
                     uAddr = (uint)(uAddr +  memOp.Offset.ToInt32());
                 var addr = Address.Ptr32(uAddr);
-                if ((options.Flags & MachineInstructionWriterFlags.ResolvePcRelativeAddress) != 0)
+                if ((options.Flags & MachineInstructionRendererFlags.ResolvePcRelativeAddress) != 0)
                 {
-                    writer.WriteAddress(addr.ToString(), addr);
-                    writer.AddAnnotation(op.ToString());
+                    renderer.WriteAddress(addr.ToString(), addr);
+                    renderer.AddAnnotation(op.ToString());
                 }
                 else
                 {
-                    op.Write(writer, options);
-                    writer.AddAnnotation(addr.ToString());
+                    op.Render(renderer, options);
+                    renderer.AddAnnotation(addr.ToString());
                 }
                 return;
             }
-            op.Write(writer, options);
+            op.Render(renderer, options);
         }
 
         private string DataSizeSuffix(PrimitiveType dataWidth)
