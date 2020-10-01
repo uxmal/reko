@@ -63,6 +63,7 @@ namespace Reko.Core.Configuration
 
     public class RekoConfigurationService : IConfigurationService
     {
+        private readonly string configFileRoot;
         private readonly IServiceProvider services;
         private readonly List<LoaderDefinition> loaders;
         private readonly List<SignatureFileDefinition> sigFiles;
@@ -72,8 +73,9 @@ namespace Reko.Core.Configuration
         private readonly List<RawFileDefinition> rawFiles;
         private readonly UiPreferencesConfiguration uiPreferences;
 
-        public RekoConfigurationService(IServiceProvider services, RekoConfiguration_v1 config)
+        public RekoConfigurationService(IServiceProvider services, string rekoConfigPath, RekoConfiguration_v1 config)
         {
+            this.configFileRoot = Path.GetDirectoryName(rekoConfigPath);
             this.services = services;
             this.loaders = LoadCollection(config.Loaders, LoadLoaderConfiguration);
             this.sigFiles = LoadCollection(config.SignatureFiles, LoadSignatureFile);
@@ -275,7 +277,7 @@ namespace Reko.Core.Configuration
             using var stm = File.Open(configFileName, FileMode.Open, FileAccess.Read, FileShare.Read);
             var ser = new XmlSerializer(typeof(RekoConfiguration_v1));
             var sConfig = (RekoConfiguration_v1) ser.Deserialize(stm);
-            return new RekoConfigurationService(services, sConfig);
+            return new RekoConfigurationService(services, configFileName, sConfig);
         }
 
         private long ConvertNumber(string? sNumber)
@@ -382,7 +384,9 @@ namespace Reko.Core.Configuration
 
         public string GetInstallationRelativePath(string[] pathComponents)
         {
-            return MakeInstallationRelativePath(pathComponents);
+            var installationRelvativePath = new List<string> { configFileRoot };
+            installationRelvativePath.AddRange(pathComponents);
+            return MakeInstallationRelativePath(installationRelvativePath.ToArray());
         }
 
         public static string MakeInstallationRelativePath(string[] pathComponents)
