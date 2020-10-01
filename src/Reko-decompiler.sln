@@ -454,6 +454,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsItp", "WindowsItp\Wi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xbe", "ImageLoaders\Xbe\Xbe.csproj", "{4078724E-B5D2-494B-B56A-B8693DB2D5FF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{9626EFDC-FB54-4DF3-A2C3-6A54A840406E}"
+	ProjectSection(SolutionItems) = preProject
+		NuGetPackage\NuGetPackage.template = NuGetPackage\NuGetPackage.template
+		NuGetPackage\README.md = NuGetPackage\README.md
+		NuGetPackage\reko-64x64.png = NuGetPackage\reko-64x64.png
+		NuGetPackage\reko-files.xml = NuGetPackage\reko-files.xml
+		NuGetPackage\update_packagers.py = NuGetPackage\update_packagers.py
+		NuGetPackage\WixInstallerProduct.template = NuGetPackage\WixInstallerProduct.template
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -2433,6 +2443,7 @@ Global
 		{5B8C1889-5DE4-43C0-9BD6-34DDCF0E2136} = {E34BB92E-9C1E-41E8-8333-8BB69831BB63}
 		{197A1FBD-B56C-4CB4-93DE-B908D63E52BA} = {3F38B136-C309-4B62-8496-931723F16706}
 		{4078724E-B5D2-494B-B56A-B8693DB2D5FF} = {E34BB92E-9C1E-41E8-8333-8BB69831BB63}
+		{9626EFDC-FB54-4DF3-A2C3-6A54A840406E} = {2426E4D6-D2C7-4F06-B54C-5CFEA0804F02}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8B012B36-B0A2-4412-A22A-023C9B7C2EDD}
