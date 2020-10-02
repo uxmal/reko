@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Arm.AArch32;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Serialization;
@@ -140,7 +141,7 @@ namespace Reko.Environments.Windows
 
         public override CallingConvention GetCallingConvention(string ccName)
         {
-            throw new NotImplementedException();
+            return new Arm32CallingConvention();
         }
 
         public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
