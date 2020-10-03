@@ -1,24 +1,127 @@
 ;;; Segment .text (10001000)
-10001000 8B 54 24 08 83 EC 08 8D 04 24 50 8D 4C 24 08 51 .T$......$P.L$.Q
-10001010 68 44 21 00 10 52 FF 15 88 20 00 10 83 C4 10 85 hD!..R... ......
-10001020 C0 75 04 83 C4 08 C3 8B 04 24 8B 4C 24 04 03 C8 .u.......$.L$...
-10001030 51 68 4C 21 00 10 FF 15 90 20 00 10 83 C4 08 83 QhL!..... ......
-10001040 C4 08 C3 CC CC CC CC CC CC CC CC CC CC CC CC CC ................
-10001050 8B 54 24 08 83 EC 08 8D 44 24 04 50 8D 4C 24 04 .T$.....D$.P.L$.
-10001060 51 68 50 21 00 10 52 FF 15 88 20 00 10 83 C4 10 QhP!..R... .....
-10001070 85 C0 75 04 83 C4 08 C3 8B 04 24 2B 44 24 04 50 ..u.......$+D$.P
-10001080 68 4C 21 00 10 FF 15 90 20 00 10 83 C4 08 83 C4 hL!..... .......
-10001090 08 C3 CC CC CC CC CC CC CC CC CC CC CC CC CC CC ................
-100010A0 8B 54 24 08 83 EC 08 8D 44 24 04 50 8D 4C 24 04 .T$.....D$.P.L$.
-100010B0 51 68 58 21 00 10 52 FF 15 88 20 00 10 83 C4 10 QhX!..R... .....
-100010C0 85 C0 75 04 83 C4 08 C3 8B 04 24 99 F7 7C 24 04 ..u.......$..|$.
-100010D0 50 68 4C 21 00 10 FF 15 90 20 00 10 83 C4 08 83 PhL!..... ......
-100010E0 C4 08 C3 CC CC CC CC CC CC CC CC CC CC CC CC CC ................
-100010F0 8B 54 24 08 83 EC 08 8D 44 24 04 50 8D 4C 24 04 .T$.....D$.P.L$.
-10001100 51 68 60 21 00 10 52 FF 15 88 20 00 10 83 C4 10 Qh`!..R... .....
-10001110 85 C0 75 04 83 C4 08 C3 D9 04 24 83 EC 08 D8 74 ..u.......$....t
-10001120 24 0C DD 1C 24 68 68 21 00 10 FF 15 90 20 00 10 $...$hh!..... ..
-10001130 83 C4 0C 83 C4 08 C3 CC CC CC CC CC CC CC CC CC ................
+
+;; fn10001000: 10001000
+fn10001000 proc
+	mov	edx,[esp+8h]
+	sub	esp,8h
+	lea	eax,[esp]
+	push	eax
+	lea	ecx,[esp+8h]
+	push	ecx
+	push	10002144h
+	push	edx
+	call	dword ptr [10002088h]
+	add	esp,10h
+	test	eax,eax
+	jnz	10001027h
+
+l10001023:
+	add	esp,8h
+	ret
+
+l10001027:
+	mov	eax,[esp]
+	mov	ecx,[esp+4h]
+	add	ecx,eax
+	push	ecx
+	push	1000214Ch
+	call	dword ptr [10002090h]
+	add	esp,8h
+	add	esp,8h
+	ret
+10001043          CC CC CC CC CC CC CC CC CC CC CC CC CC    .............
+
+;; fn10001050: 10001050
+fn10001050 proc
+	mov	edx,[esp+8h]
+	sub	esp,8h
+	lea	eax,[esp+4h]
+	push	eax
+	lea	ecx,[esp+4h]
+	push	ecx
+	push	10002150h
+	push	edx
+	call	dword ptr [10002088h]
+	add	esp,10h
+	test	eax,eax
+	jnz	10001078h
+
+l10001074:
+	add	esp,8h
+	ret
+
+l10001078:
+	mov	eax,[esp]
+	sub	eax,[esp+4h]
+	push	eax
+	push	1000214Ch
+	call	dword ptr [10002090h]
+	add	esp,8h
+	add	esp,8h
+	ret
+10001092       CC CC CC CC CC CC CC CC CC CC CC CC CC CC   ..............
+
+;; fn100010A0: 100010A0
+fn100010A0 proc
+	mov	edx,[esp+8h]
+	sub	esp,8h
+	lea	eax,[esp+4h]
+	push	eax
+	lea	ecx,[esp+4h]
+	push	ecx
+	push	10002158h
+	push	edx
+	call	dword ptr [10002088h]
+	add	esp,10h
+	test	eax,eax
+	jnz	100010C8h
+
+l100010C4:
+	add	esp,8h
+	ret
+
+l100010C8:
+	mov	eax,[esp]
+	cdq
+	idiv	dword ptr [esp+4h]
+	push	eax
+	push	1000214Ch
+	call	dword ptr [10002090h]
+	add	esp,8h
+	add	esp,8h
+	ret
+100010E3          CC CC CC CC CC CC CC CC CC CC CC CC CC    .............
+
+;; fn100010F0: 100010F0
+fn100010F0 proc
+	mov	edx,[esp+8h]
+	sub	esp,8h
+	lea	eax,[esp+4h]
+	push	eax
+	lea	ecx,[esp+4h]
+	push	ecx
+	push	10002160h
+	push	edx
+	call	dword ptr [10002088h]
+	add	esp,10h
+	test	eax,eax
+	jnz	10001118h
+
+l10001114:
+	add	esp,8h
+	ret
+
+l10001118:
+	fld	dword ptr [esp]
+	sub	esp,8h
+	fdiv	dword ptr [esp+0Ch]
+	fstp	double ptr [esp]
+	push	10002168h
+	call	dword ptr [10002090h]
+	add	esp,0Ch
+	add	esp,8h
+	ret
+10001137                      CC CC CC CC CC CC CC CC CC        .........
 
 ;; py_unused: 10001140
 py_unused proc

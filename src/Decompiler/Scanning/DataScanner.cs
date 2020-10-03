@@ -31,7 +31,6 @@ namespace Reko.Scanning
         private readonly DecompilerEventListener listener;
         private readonly Queue<WorkItem> queue;
         private readonly ScanResults sr;
-        private readonly Dictionary<Address, ImageSymbol> procedures;
 
         public DataScanner(Program program, ScanResults sr, DecompilerEventListener listener)
             :base(program, listener)
@@ -39,8 +38,10 @@ namespace Reko.Scanning
             this.sr = sr;
             this.listener = listener;
             this.queue = new Queue<WorkItem>();
-            this.procedures = new Dictionary<Address, ImageSymbol>();
+            this.Procedures = new Dictionary<Address, ImageSymbol>();
         }
+
+        public Dictionary<Address, ImageSymbol> Procedures { get; private set; }
 
         public void ProcessQueue()
         {
@@ -74,13 +75,13 @@ namespace Reko.Scanning
 
         public void EnqueueUserProcedure(IProcessorArchitecture arch, Address addr, FunctionType sig, string? name)
         {
-            if (procedures.ContainsKey(addr))
+            if (Procedures.ContainsKey(addr))
                 return;
             if (IsNoDecompiledProcedure(addr))
                 return;
             //$BUG: this needs to be fixed. If in an ARM binary, we scan a code 
             // address that has an odd address, we need to make it Thumb.
-            procedures.Add(addr, ImageSymbol.Procedure(arch, addr, name, sig));
+            Procedures.Add(addr, ImageSymbol.Procedure(arch, addr, name, sig));
             sr.KnownProcedures.Add(addr);
             var proc = Program.EnsureProcedure(arch, addr, name);
             proc.Signature = sig;
