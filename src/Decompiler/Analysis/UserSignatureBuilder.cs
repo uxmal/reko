@@ -77,6 +77,7 @@ namespace Reko.Analysis
                         return;
                     }
                 }
+                proc.Name = userProc.Name ?? proc.Name;
             }
         }
 
