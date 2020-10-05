@@ -120,7 +120,6 @@ namespace Reko.ImageLoaders.Xex
 						if (optionalHeader.length + optionalHeader.offset > rdr.Bytes.Length)
 						{
 							decompilerEventListener.Warn(
-								new NullCodeLocation(""),
 								$"Optional header {i} (0x{optionalHeader.key:X}) crosses file boundary. Will not be read"
 							);
 							add = false;
@@ -132,7 +131,6 @@ namespace Reko.ImageLoaders.Xex
 						if (optionalHeader.length + optionalHeader.offset > rdr.Bytes.Length)
 						{
 							decompilerEventListener.Warn(
-								new NullCodeLocation(""),
 								$"Optional header {i} (0x{optionalHeader.key:X}) crosses file boundary. Will not be read"
 							);
 							add = false;
@@ -314,7 +312,6 @@ namespace Reko.ImageLoaders.Xex
 					.CreateDecryptor()
 					.TransformFinalBlock(xexData.loader_info.aes_key, 0, 16);
 				decompilerEventListener.Info(
-					new NullCodeLocation(""),
 					"XEX Session key: " + BitConverter.ToString(xexData.session_key).Replace("-", "")
 				);
 			}
@@ -445,7 +442,7 @@ namespace Reko.ImageLoaders.Xex
 			}
 			else if (consumed < rdr.Bytes.Length)
 			{
-				decompilerEventListener.Warn(new NullCodeLocation(""),
+				decompilerEventListener.Warn(
 					$"XEX: {rdr.Bytes.Length - consumed} bytes of data was not consumed in block decompression (out of {rdr.Bytes.Length})"
 				);
 			}
@@ -457,7 +454,7 @@ namespace Reko.ImageLoaders.Xex
 			}
 			else if (numOutputed < memorySize)
 			{
-				decompilerEventListener.Warn(new NullCodeLocation(""),
+				decompilerEventListener.Warn(
 					$"XEX: {memorySize - numOutputed} bytes of data was not outputed in block decompression (out of {memorySize})"
 				);
 			}
@@ -554,7 +551,7 @@ namespace Reko.ImageLoaders.Xex
 
 				if (section.SizeOfRawData == 0)
 				{
-					decompilerEventListener.Info(new NullCodeLocation(""),
+					decompilerEventListener.Info(
 						$"Skipping empty section {sectionName}"
 					);
 					continue;
@@ -583,8 +580,8 @@ namespace Reko.ImageLoaders.Xex
 
 			if (extendedMemorySize > xexData.memorySize)
 			{
-				decompilerEventListener.Info(new NullCodeLocation(""),
-				$"PE: Image sections extend beyond virtual memory range loaded from file ({extendedMemorySize} > {xexData.memorySize}). Extending by {extendedMemorySize - xexData.memorySize} bytes."
+				decompilerEventListener.Info(
+				    $"PE: Image sections extend beyond virtual memory range loaded from file ({extendedMemorySize} > {xexData.memorySize}). Extending by {extendedMemorySize - xexData.memorySize} bytes."
 				);
 
 				UInt32 oldMemorySize = xexData.memorySize;
@@ -605,7 +602,7 @@ namespace Reko.ImageLoaders.Xex
 
 					if (section.PhysicalSize + section.PhysicalOffset > fileDataSize)
 					{
-						decompilerEventListener.Warn(new NullCodeLocation(""),
+						decompilerEventListener.Warn(
 							$"PE: Section '{section.Name}' lies outside any phyisical data we have {section.PhysicalOffset} (size {section.PhysicalSize})"
 						);
 						continue;
@@ -648,7 +645,8 @@ namespace Reko.ImageLoaders.Xex
 				byte libIndex = (byte)((value & 0x00FF0000) >> 16);
 
 				if (type > XexImportType.Function) {
-					decompilerEventListener.Error(new NullCodeLocation(""), $"XEX: Unsupported import type {type}, value: 0x{value:X}");
+					decompilerEventListener.Error(
+                        $"XEX: Unsupported import type {type}, value: 0x{value:X}");
 					continue;
 				}
 

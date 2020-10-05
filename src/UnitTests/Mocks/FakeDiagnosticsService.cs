@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Services;
+using Reko.Gui;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

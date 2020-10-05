@@ -197,7 +197,7 @@ namespace Reko.Typing
             DataType dt;
             if (recursionGuard > 100)
             {
-                eventListener.Warn(new NullCodeLocation(""), "Recursion too deep in PtrPrimitiveReplacer");
+                eventListener.Warn("Recursion too deep in PtrPrimitiveReplacer");
                 dt = str;
             }
             else

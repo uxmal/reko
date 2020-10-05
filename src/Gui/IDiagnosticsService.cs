@@ -23,7 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Core.Services
+namespace Reko.Gui
 {
     /// <summary>
     /// Service used to display warnings in the diagnostics window

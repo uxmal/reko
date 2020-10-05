@@ -87,7 +87,7 @@ namespace Reko.Core.Configuration
                 }
                 catch (Exception ex)
                 {
-                    listener.Error(new NullCodeLocation(""), ex, "Unable to open memory map file '{0}.", MemoryMapFile!);
+                    listener.Error(ex, "Unable to open memory map file '{0}.", MemoryMapFile!);
                 }
             }
             platform.PlatformProcedures = LoadPlatformProcedures(platform);

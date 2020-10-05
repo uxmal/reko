@@ -204,7 +204,7 @@ namespace Reko.ImageLoaders.IntelHex
                 }
                 catch (IntelHexException ex)
                 {
-                    listener.Error(new NullCodeLocation(""), ex.Message);
+                    listener.Error(ex.Message);
                     return null;
                 }
             }

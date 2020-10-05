@@ -102,7 +102,6 @@ namespace Reko.Evaluation
                 }
             }
             listener.Warn(
-                new NullCodeLocation(""),
                 "Constant propagation failed. Resulting type is {0}, which isn't supported yet.", 
                 dt!);
             return idDst!;

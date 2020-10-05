@@ -129,7 +129,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             uiSvc.Setup(u => u.ShowSaveFileDialog("foo.dcproject")).Returns("foo.dcproject");
 
             When_CreateMainFormInteractor();
-            diagnosticSvc.Object.Error(new NullCodeLocation(""), "test");
+            diagnosticSvc.Object.Error("test");
             interactor.OpenBinary(null);
 
             uiSvc.Verify();

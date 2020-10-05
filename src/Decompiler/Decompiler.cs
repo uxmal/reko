@@ -219,7 +219,7 @@ namespace Reko
             }
             catch (Exception ex)
             {
-                eventListener.Error(new NullCodeLocation(""), ex, "Unable to load OllyLang script interpreter.");
+                eventListener.Error(ex, "Unable to load OllyLang script interpreter.");
                 return;
             }
 
@@ -230,7 +230,7 @@ namespace Reko
             }
             catch (Exception ex)
             {
-                eventListener.Error(new NullCodeLocation(""), ex, "An error occurred while running the script.");
+                eventListener.Error(ex, "An error occurred while running the script.");
             }
         }
 
@@ -418,7 +418,7 @@ namespace Reko
                 }
                 catch (Exception ex)
                 {
-                    eventListener.Error(new NullCodeLocation(""), ex, "Error when reconstructing types.");
+                    eventListener.Error(ex, "Error when reconstructing types.");
                 } 
                 finally
                 {

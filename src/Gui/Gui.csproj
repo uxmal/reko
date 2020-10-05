@@ -149,6 +149,7 @@
     <Compile Include="ICallGraphViewService.cs" />
     <Compile Include="ICallHierarchyService.cs" />
     <Compile Include="ICommandFactory.cs" />
+    <Compile Include="IDiagnosticsService.cs" />
     <Compile Include="IFindStringsDialog.cs" />
     <Compile Include="IProcedureListService.cs" />
     <Compile Include="IResourceEditorService.cs" />
