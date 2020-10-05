@@ -32,11 +32,11 @@ namespace Reko.Arch.X86
 {
     public partial class X86Rewriter
     {
-        public void RewriteAndnps()
+        public void RewriteAndnp_(string fnName)
         {
             var dst = this.SrcOp(0);
             var src = this.SrcOp(1);
-            m.Assign(dst, host.PseudoProcedure("__andnps", dst.DataType, dst, src));
+            m.Assign(dst, host.PseudoProcedure(fnName, dst.DataType, dst, src));
         }
 
         public void RewriteAndps()
@@ -79,10 +79,14 @@ namespace Reko.Arch.X86
             Expression cmp;
             switch (opc)
             {
-            case 0: cmp = m.FEq(op1, op2);break;
+            case 0: cmp = m.FEq(op1, op2); break;
             case 1: cmp = m.FLt(op1, op2); break;
             case 2: cmp = m.FLe(op1, op2); break;
             case 3: cmp = host.PseudoProcedure("isunordered", PrimitiveType.Bool, op1, op2); break;
+            case 4: cmp = m.FNe(op1, op2); break;
+            case 5: cmp = m.FGe(op1, op2); break;
+            case 6: cmp = m.FGt(op1, op2); break;
+            case 7: cmp = m.Not(host.PseudoProcedure("isunordered", PrimitiveType.Bool, op1, op2)); break;
             default: EmitUnitTest(); iclass = InstrClass.Invalid; m.Invalid(); return;
             }
             m.Assign(dst, m.Conditional(
@@ -172,8 +176,7 @@ namespace Reko.Arch.X86
 
             m.Assign(
                 SrcOp(0),
-                host.PseudoProcedure(fnName, dtDst, 
-                    host.PseudoProcedure("trunc", tmp1.DataType, tmp1)));
+                host.PseudoProcedure(fnName, dtDst, tmp1));
         }
 
         private void RewriteCvttps2pi()
@@ -494,12 +497,12 @@ namespace Reko.Arch.X86
         }
 
 
-        private void RewriteSqrtsd()
+        private void RewriteSqrtsd(string fnName, PrimitiveType dt)
         {
             var src = SrcOp(1);
             var dst = (Identifier) SrcOp(0);
-            var tmp = binder.CreateTemporary(PrimitiveType.Real64);
-            m.Assign(tmp, host.PseudoProcedure("__sqrt", PrimitiveType.Real64, src));
+            var tmp = binder.CreateTemporary(dt);
+            m.Assign(tmp, host.PseudoProcedure(fnName, dt, src));
             m.Assign(dst, m.Dpb(dst, tmp, 0));
         }
 
@@ -510,7 +513,7 @@ namespace Reko.Arch.X86
             m.Assign(dst, src);
         }
 
-        private void RewritePackedBinop(string fnName, PrimitiveType elementType, DataType? dstType = null)
+        private void RewritePackedBinop(bool isVex, string fnName, PrimitiveType elementType, DataType? dstType = null)
         {
             var dst = SrcOp(0);
             ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
@@ -532,7 +535,7 @@ namespace Reko.Arch.X86
             var tmp2 = binder.CreateTemporary(arrayType);
             m.Assign(tmp1, src1);
             m.Assign(tmp2, src2);
-            m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1, tmp2));
+            VexAssign(isVex, dst, host.PseudoProcedure(fnName, arrayType, tmp1, tmp2));
         }
 
         private void RewritePackedShift(string fnName, PrimitiveType elementType, DataType? dstType = null)
@@ -613,6 +616,17 @@ namespace Reko.Arch.X86
             return arrayType;
         }
 
+        private void RewritePsrldq(bool isVex)
+        {
+            bool has3Ops = instrCur.Operands.Length == 3;
+            var src1 = SrcOp(has3Ops ? 1 : 0);
+            var src2 = SrcOp(has3Ops ? 2 : 1);
+            var dst = SrcOp(0);
+            var tmp = binder.CreateTemporary(PrimitiveType.Word128);
+            m.Assign(tmp, m.Slice(tmp.DataType, src1, 0));  // Low 128 bits
+            VexAssign(isVex, dst, tmp);
+        }
+
         public void RewritePxor()
         {
             var rdst = instrCur.Operands[0] as RegisterOperand;
@@ -630,7 +644,7 @@ namespace Reko.Arch.X86
         private void RewriteUnpckhps()
         {
             var bitsize = instrCur.Operands[0].Width.BitSize;
-            RewritePackedBinop($"__unpckhps{bitsize}", PrimitiveType.Real32);
+            RewritePackedBinop(false, $"__unpckhps{bitsize}", PrimitiveType.Real32);
         }
 
         private void RewriteAesenc(bool isVex)
