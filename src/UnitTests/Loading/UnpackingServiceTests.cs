@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Loading
         private ServiceContainer sc;
         private Mock<IConfigurationService> cfgSvc;
         private Mock<IFileSystemService> fsSvc;
-        private Mock<IDiagnosticsService> diagSvc;
+        private Mock<DecompilerEventListener> listener;
 
         [SetUp]
         public void Setup()
@@ -69,9 +69,9 @@ namespace Reko.UnitTests.Loading
             sc = new ServiceContainer();
             cfgSvc = new Mock<IConfigurationService>();
             fsSvc = new Mock<IFileSystemService>();
-            diagSvc = new Mock<IDiagnosticsService>();
+            listener = new Mock<DecompilerEventListener>();
             sc.AddService<IFileSystemService>(fsSvc.Object);
-            sc.AddService<IDiagnosticsService>(diagSvc.Object);
+            sc.AddService<DecompilerEventListener>(listener.Object);
         }
 
         void Given_File(string name, byte[] content)

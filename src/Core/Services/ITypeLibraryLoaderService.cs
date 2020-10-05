@@ -44,7 +44,7 @@ namespace Reko.Core.Services
 
     public class TypeLibraryLoaderServiceImpl : ITypeLibraryLoaderService
     {
-        private IServiceProvider services;
+        private readonly IServiceProvider services;
 
         public TypeLibraryLoaderServiceImpl(IServiceProvider services)
         {
@@ -55,7 +55,7 @@ namespace Reko.Core.Services
         {
             var cfgSvc = services.RequireService<IConfigurationService>();
             var fsSvc = services.RequireService<IFileSystemService>();
-            var diagSvc = services.RequireService<IDiagnosticsService>();
+            var listener = services.RequireService<DecompilerEventListener>();
             try
             {
                 if (tlElement.Name == null)
@@ -73,7 +73,7 @@ namespace Reko.Core.Services
             }
             catch (Exception ex)
             {
-                diagSvc.Error(ex, string.Format("Unable to load metadata file {0}.", tlElement.Name));
+                listener.Error(ex, string.Format("Unable to load metadata file {0}.", tlElement.Name));
                 return libDst;
             }
         }
@@ -89,7 +89,7 @@ namespace Reko.Core.Services
             else
             {
                 var cfgSvc = services.RequireService<IConfigurationService>();
-                var diagSvc = services.RequireService<IDiagnosticsService>();
+                var listener = services.RequireService<DecompilerEventListener>();
                 var ldrElement = cfgSvc.GetImageLoader(tlElement.Loader!);
                 if (ldrElement != null && !string.IsNullOrEmpty(ldrElement.TypeName)) 
                 {
@@ -97,7 +97,7 @@ namespace Reko.Core.Services
                 }
                 if (loaderType == null)
                 {
-                    diagSvc.Warn(
+                    listener.Warn(
                         "Metadata loader type '{0}' is unknown.", 
                         tlElement.Loader!);
                     return null;

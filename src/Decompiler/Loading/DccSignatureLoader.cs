@@ -346,13 +346,13 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         // This procedure is called to initialise the library check code 
         public bool SetupLibCheck(IServiceProvider services)
         {
-            var diag = services.RequireService<IDiagnosticsService>();
+            var listener = services.RequireService<DecompilerEventListener>();
             var cfgSvc = services.RequireService<IConfigurationService>();
             string fpath = cfgSvc.GetInstallationRelativePath("msdos", sSigName!);
             var fsSvc = services.RequireService<IFileSystemService>();
             if (!fsSvc.FileExists(fpath))
             {
-                diag.Warn(string.Format("Can't open signature file {0}.", fpath));
+                listener.Warn("Can't open signature file {0}.", fpath);
                 return false;
             }
             var bytes = fsSvc.ReadAllBytes(fpath);
@@ -361,7 +361,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
 
         public bool SetupLibCheck(IServiceProvider services, string fpath, byte[] bytes)
         {
-            var diag = services.RequireService<IDiagnosticsService>();
+            var listener = services.RequireService<DecompilerEventListener>();
             var rdr = new LeImageReader(bytes);
             ushort w, len;
             int i;
@@ -369,10 +369,9 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             //readProtoFile();
 
             /* Read the parameters */
-            uint fileSig;
-            if (!rdr.TryReadLeUInt32(out fileSig) || fileSig != 0x73636364) // "dccs"
+            if (!rdr.TryReadLeUInt32(out uint fileSig) || fileSig != 0x73636364) // "dccs"
             {
-                diag.Warn(string.Format("{0} is not a DCC signature file.", fpath));
+                listener.Warn(string.Format("{0} is not a DCC signature file.", fpath));
                 return false;
             }
 
@@ -382,7 +381,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             SymLen = rdr.ReadLeUInt16();
             if ((PatLen != PATLEN) || (SymLen != SYMLEN))
             {
-                diag.Warn(string.Format("Can't use signature file with sym and pattern lengths of {0} and {1}.", SymLen, PatLen));
+                listener.Warn(string.Format("Can't use signature file with sym and pattern lengths of {0} and {1}.", SymLen, PatLen));
                 return false;
             }
 
@@ -403,7 +402,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             if (!rdr.TryReadLeUInt16(out ww) || ww != 0x3154)    // "T1"
             {
                 Debug.Print("Expected 'T1'");
-                diag.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
+                listener.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
                 return false;
             }
             len = (ushort) (PatLen * 256u * 2);        // 2 = sizeof ushort
@@ -411,7 +410,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             if (w != len)
             {
                 Debug.Print("Problem with size of T1: file {0}, calc {1}", w, len);
-                diag.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
+                listener.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
                 return false;
             }
             readFileSection(T1base, len, rdr);
@@ -425,7 +424,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             if (w != len)
             {
                 Debug.Print("Problem with size of T2: file %d, calc %d\n", w, len);
-                diag.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
+                listener.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
                 return false;
             }
             readFileSection(T2base, len, rdr);
@@ -434,7 +433,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             if (!rdr.TryReadLeUInt16(out ww) || ww != 0x6767)    // "gg"
             {
                 Debug.Print("Expected 'gg'");
-                diag.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
+                listener.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
                 return false;
             }
             len = (ushort) (numVert * 2); //  sizeof(uint16_t));
@@ -442,7 +441,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             if (w != len)
             {
                 Debug.Print("Problem with size of g[]: file {0}, calc {1}", w, len);
-                diag.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
+                listener.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
                 return false;
             }
             readFileSection(g, len, rdr);
@@ -453,14 +452,14 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             if (!rdr.TryReadLeUInt16(out ww) || ww != 0x7468)    // "ht"
             {
                 Debug.Print("Expected 'ht'");
-                diag.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
+                listener.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
                 return false;
             }
             w = rdr.ReadLeUInt16();
             if (w != numKeys * (SymLen + PatLen + 2)) // sizeof(uint16_t)))
             {
                 Debug.Print("Problem with size of hash table: file {0}, calc {1}", w, len);
-                diag.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
+                listener.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
                 return false;
             }
 
@@ -485,7 +484,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         /// </summary>
         public bool LibCheck(IServiceProvider services, Procedure proc, Address addr)
         {
-            var diagSvc = services.RequireService<IDiagnosticsService>();
+            var listener = services.RequireService<DecompilerEventListener>();
             long fileOffset;
             int h;
             // i, j, arg;
@@ -888,13 +887,13 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         */
         void readProtoFile(IServiceProvider services)
         {
-            var diagSvc = services.RequireService<IDiagnosticsService>();
+            var listener = services.RequireService<DecompilerEventListener>();
             var cfgSvc = services.RequireService<IConfigurationService>();
             var szProFName = cfgSvc.GetInstallationRelativePath("msdos", DCCLIBS); /* Full name of dclibs.lst */
             var fsSvc = services.RequireService<IFileSystemService>();
             if (fsSvc.FileExists(szProFName))
             {
-                diagSvc.Warn(string.Format("Cannot open library prototype data file {0}.", szProFName));
+                listener.Warn(string.Format("Cannot open library prototype data file {0}.", szProFName));
                 return;
             }
             var bytes = fsSvc.ReadAllBytes(szProFName);
@@ -904,7 +903,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             uint fileSig = fProto.ReadLeUInt32();
             if (fileSig != 0x70636364)      // "dccp"
             {
-                diagSvc.Warn(string.Format("{0} is not a dcc prototype file.", szProFName));
+                listener.Warn(string.Format("{0} is not a dcc prototype file.", szProFName));
                 return;
             }
 
@@ -912,7 +911,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             if (sectionID != 0x4E46)        // "FN"
             {
                 Debug.Print("FN (Function) subsection expected in {0}", szProFName);
-                diagSvc.Warn(string.Format("{0} is not a dcc prototype file.", szProFName));
+                listener.Warn(string.Format("{0} is not a dcc prototype file.", szProFName));
                 return;
             }
             numFunc = fProto.ReadLeUInt16();    /* Num of entries to allocate */

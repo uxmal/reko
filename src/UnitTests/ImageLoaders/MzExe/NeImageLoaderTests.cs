@@ -44,7 +44,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
         public void Setup()
         {
             this.services = new ServiceContainer();
-            this.services.AddService<IDiagnosticsService>(new FakeDiagnosticsService());
+            this.services.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             this.bytes = new byte[4096];
             this.writer = new LeImageWriter(bytes);
         }

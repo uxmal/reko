@@ -111,7 +111,6 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CmdLineDiagnosticsService.cs" />
     <Compile Include="CmdLineListener.cs" />
     <Compile Include="CmdLineDriver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

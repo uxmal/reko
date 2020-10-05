@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
     {
         private MacOSClassic platform;
         private TypeLibrary tlib;
-        private Mock<IDiagnosticsService> diagSvc;
+        private Mock<DecompilerEventListener> listener;
         private ServiceContainer sc;
 
         [SetUp]
@@ -44,8 +44,8 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
             this.sc = new ServiceContainer();
             this.platform = new MacOSClassic(sc, new M68kArchitecture(sc, "m68k"));
             this.tlib = new TypeLibrary();
-            this.diagSvc = new Moq.Mock<IDiagnosticsService>();
-            this.sc.AddService(diagSvc.Object);
+            this.listener = new Moq.Mock<DecompilerEventListener>();
+            this.sc.AddService(listener.Object);
         }
 
         [Test]

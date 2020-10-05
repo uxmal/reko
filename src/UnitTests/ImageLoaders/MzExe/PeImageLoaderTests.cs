@@ -401,7 +401,6 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                         "GetFocus"
                     }
                 });
-            sc.AddService<IDiagnosticsService>(new Mock<IDiagnosticsService>().Object);
 
             Given_PeLoader();
 
@@ -412,6 +411,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             Assert.AreEqual("user32.dll!GetDesktopWindow", program.ImportReferences[Address.Ptr32(0x0010183C)].ToString());
             Assert.AreEqual("user32.dll!GetFocus", program.ImportReferences[Address.Ptr32(0x00101840)].ToString());
         }
+
         [Test]
         public void Pil32_DelayLoads_RvaBased()
         {
@@ -427,7 +427,6 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                         "GetFocus"
                     }
                 });
-            sc.AddService<IDiagnosticsService>(new Mock<IDiagnosticsService>().Object);
 
             Given_PeLoader();
 

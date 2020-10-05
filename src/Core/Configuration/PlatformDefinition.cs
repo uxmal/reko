@@ -19,10 +19,12 @@
 #endregion
 
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -74,7 +76,19 @@ namespace Reko.Core.Configuration
             platform.Name = this.Name!;
             if (!string.IsNullOrEmpty(MemoryMapFile))
             {
-                platform.MemoryMap = MemoryMap_v1.LoadMemoryMapFromFile(services, MemoryMapFile!, platform)!;
+                var cfgSvc = services.RequireService<IConfigurationService>();
+                var fsSvc = services.RequireService<IFileSystemService>();
+                var listener = services.RequireService<DecompilerEventListener>();
+                try
+                {
+                    var filePath = cfgSvc.GetInstallationRelativePath(MemoryMapFile!);
+                    using var stm = fsSvc.CreateFileStream(filePath, FileMode.Open, FileAccess.Read);
+                    platform.MemoryMap = MemoryMap_v1.Deserialize(stm);
+                }
+                catch (Exception ex)
+                {
+                    listener.Error(new NullCodeLocation(""), ex, "Unable to open memory map file '{0}.", MemoryMapFile!);
+                }
             }
             platform.PlatformProcedures = LoadPlatformProcedures(platform);
             platform.Description = this.Description!;

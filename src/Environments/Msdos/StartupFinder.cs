@@ -66,7 +66,7 @@ namespace Reko.Environments.Msdos
         /// <returns></returns>
         public ImageSymbol FindMainAddress()
         {
-            var diagSvc = services.RequireService<IDiagnosticsService>();
+            var listener = services.RequireService<DecompilerEventListener>();
             Address addrEntry;
             /* This function checks the startup code for various compilers' way of
             loading DS. If found, it sets DS. This may not be needed in the future if
@@ -98,7 +98,7 @@ namespace Reko.Environments.Msdos
                 if (locatePattern(image.Bytes, init, init + 26, pattBorl4Init, out i))
                 {
                     setState("ds", image.ReadLeUInt16(i + 1));
-                    Debug.Print("Borland Pascal v4 detected\n");
+                    listener.Info("Borland Pascal v4 detected\n");
                     chVendor = 't';                     /* Turbo */
                     chModel = 'p';						/* Pascal */
                     chVersion = '4';                    /* Version 4 */
@@ -109,7 +109,7 @@ namespace Reko.Environments.Msdos
                 else if (locatePattern(image.Bytes, init, init + 26, pattBorl5Init, out i))
                 {
                     setState("ds", image.ReadLeUInt16(i + 1));
-                    Debug.Print("Borland Pascal v5.0 detected");
+                    listener.Info("Borland Pascal v5.0 detected");
                     chVendor = 't';                     /* Turbo */
                     chModel = 'p';                      /* Pascal */
                     chVersion = '5';                    /* Version 5 */
@@ -119,7 +119,7 @@ namespace Reko.Environments.Msdos
                 else if (locatePattern(image.Bytes, init, init + 26, pattBorl7Init, out i))
                 {
                     setState("ds", image.ReadLeUInt16(i + 1));
-                    Debug.Print("Borland Pascal v7 detected");
+                    listener.Info("Borland Pascal v7 detected");
                     chVendor = 't';                     /* Turbo */
                     chModel = 'p';                      /* Pascal */
                     chVersion = '7';                    /* Version 7 */
@@ -166,7 +166,7 @@ namespace Reko.Environments.Msdos
                     chVendor = 't';                         /* Turbo.. */
                     chModel = 'p';                          /* ...Pascal... (only 1 model) */
                     chVersion = '3';                        /* 3.0 */
-                    Debug.Print("Turbo Pascal 3.0 detected");
+                    listener.Info("Turbo Pascal 3.0 detected");
                     Debug.Print("Main at {0}", addrEntry);
                     goto gotVendor;                         /* Already have vendor */
                 }
@@ -193,7 +193,7 @@ namespace Reko.Environments.Msdos
                 setState("ds", image.ReadLeUInt16((uint)(startOff + pattMsC5Start.Length)));
                 chVendor = 'm';                     /* Microsoft compiler */
                 chVersion = '5';                    /* Version 5 */
-                Debug.Print("MSC 5 detected");
+                listener.Info("MSC 5 detected");
             }
 
             /* The C8 startup pattern is different from C5's */
@@ -202,7 +202,7 @@ namespace Reko.Environments.Msdos
                 setState("ds", image.ReadLeUInt16((uint)(startOff + pattMsC8Start.Length)));
                 chVendor = 'm';                     /* Microsoft compiler */
                 chVersion = '8';                    /* Version 8 */
-                Debug.Print("MSC 8 detected");
+                listener.Info("MSC 8 detected");
             }
 
             /* The C8 .com startup pattern is different again! */
@@ -212,7 +212,7 @@ namespace Reko.Environments.Msdos
                 pattMsC8ComStart,
                 pattMsC8ComStart.Length))
             {
-                Debug.Print("MSC 8 .com detected");
+                listener.Info("MSC 8 .com detected");
                 chVendor = 'm';                     /* Microsoft compiler */
                 chVersion = '8';                    /* Version 8 */
             }
@@ -222,7 +222,7 @@ namespace Reko.Environments.Msdos
             {
                 /* Borland startup. DS is at the second uint8_t (offset 1) */
                 setState("ds", image.ReadLeUInt16(i + 1));
-                Debug.Print("Borland v2 detected\n");
+                listener.Info("Borland v2 detected");
                 chVendor = 'b';                     /* Borland compiler */
                 chVersion = '2';                    /* Version 2 */
             }
@@ -232,7 +232,7 @@ namespace Reko.Environments.Msdos
             {
                 /* Borland startup. DS is at the second uint8_t (offset 1) */
                 setState("ds", image.ReadLeUInt16(i + 1));
-                diagSvc.Inform("Borland C v3 runtime detected");
+                listener.Info("Borland C v3 runtime detected");
                 chVendor = 'b';                     /* Borland compiler */
                 chVersion = '3';                    /* Version 3 */
             }
@@ -241,7 +241,7 @@ namespace Reko.Environments.Msdos
                                    out i))
             {
                 /* Logitech modula startup. DS is 0, despite appearances */
-                Debug.Print("Logitech modula detected");
+                listener.Info("Logitech modula detected");
                 chVendor = 'l';                     /* Logitech compiler */
                 chVersion = '1';                    /* Version 1 */
             }
@@ -249,17 +249,17 @@ namespace Reko.Environments.Msdos
             /* Other startup idioms would go here */
             else
             {
-                Debug.Print("Warning - compiler not recognised");
+                listener.Warn("Compiler not recognised");
                 return null;
             }
 
             gotVendor:
             ;
-            //sSigName = string.Format("dcc{0}{1}{2}.sig",
-            //        chVendor, /* Add vendor */
-            //        chVersion, /* Add version */
-            //        chModel); /* Add model */
-            //Debug.Print("Signature file: {0}", sSigName);
+            var sSigName = string.Format("dcc{0}{1}{2}.sig",
+                    chVendor, /* Add vendor */
+                    chVersion, /* Add version */
+                    chModel); /* Add model */
+            Debug.Print("Signature file: {0}", sSigName);
             return ImageSymbol.Procedure(arch, addrEntry, "main", state: this.state);
         }
 

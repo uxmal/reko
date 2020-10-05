@@ -40,7 +40,6 @@ namespace Reko.CmdLine
         private readonly ILoader ldr;
         private readonly IDecompiler decompiler;
         private readonly IConfigurationService config;
-        private readonly IDiagnosticsService diagnosticSvc;
         private readonly CmdLineListener listener;
         private Timer timer;
 
@@ -52,14 +51,12 @@ namespace Reko.CmdLine
                 Quiet = Console.IsOutputRedirected
             };
             var config = RekoConfigurationService.Load(services);
-            var diagnosticSvc = new CmdLineDiagnosticsService(Console.Out);
             var fsSvc = new FileSystemServiceImpl();
             var dcSvc = new DecompilerService();
             services.AddService<IDecompilerService>(dcSvc);
             services.AddService<DecompilerEventListener>(listener);
             services.AddService<IConfigurationService>(config);
             services.AddService<ITypeLibraryLoaderService>(new TypeLibraryLoaderServiceImpl(services));
-            services.AddService<IDiagnosticsService>(diagnosticSvc);
             services.AddService<IFileSystemService>(fsSvc);
             services.AddService<IDecompiledFileService>(new DecompiledFileService(fsSvc));
             services.AddService<ITestGenerationService>(new TestGenerationService(services));
@@ -81,7 +78,6 @@ namespace Reko.CmdLine
             this.decompiler = decompiler;
             this.listener = listener;
             this.config = services.RequireService<IConfigurationService>();
-            this.diagnosticSvc = services.RequireService<IDiagnosticsService>();
         }
 
         public void Execute(string[] args)
@@ -215,7 +211,7 @@ namespace Reko.CmdLine
             }
             catch (Exception ex)
             {
-                diagnosticSvc.Error(ex, "An error occurred during decompilation.");
+                listener.Error(ex, "An error occurred during decompilation.");
             }
         }
 
@@ -266,7 +262,7 @@ namespace Reko.CmdLine
             }
             catch (Exception ex)
             {
-                diagnosticSvc.Error(ex, "An error occurred during decompilation.");
+                listener.Error(ex, "An error occurred during decompilation.");
             }
         }
 

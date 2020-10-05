@@ -320,8 +320,7 @@ namespace Reko
                 }
                 catch (Exception ex)
                 {
-                    var diagSvc = services.RequireService<IDiagnosticsService>();
-                    diagSvc.Error(ex, $"Unable to create directory '{0}'.");
+                    eventListener.Error(ex, $"Unable to create directory '{resourceDir}'.");
                     return;
                 }
                 foreach (ProgramResourceGroup pr in prg.Resources)
@@ -375,8 +374,7 @@ namespace Reko
             }
             catch (Exception ex)
             {
-                var diagSvc = services.RequireService<IDiagnosticsService>();
-                diagSvc.Error(ex, $"Unable to create directory '{dirPath}'.");
+                eventListener.Error(ex, $"Unable to create directory '{dirPath}'.");
                 return false;
             }
             string path = "";
@@ -396,8 +394,7 @@ namespace Reko
             }
             catch (Exception ex)
             {
-                var diagSvc = services.RequireService<IDiagnosticsService>();
-                diagSvc.Error(ex, $"Unable to write file '{path}'");
+                eventListener.Error(ex, $"Unable to write file '{path}'");
                 return false;
             }
             return true;

@@ -331,8 +331,8 @@ namespace Reko.Core
         {
             if (this.MemoryMap == null || this.MemoryMap.Segments == null)
                 return null;
-            var diagSvc = Services.RequireService<IDiagnosticsService>();
-            var segs = MemoryMap.Segments.Select(s => MemoryMap_v1.LoadSegment(s, this, diagSvc))
+            var listener = Services.RequireService<DecompilerEventListener>();
+            var segs = MemoryMap.Segments.Select(s => MemoryMap_v1.LoadSegment(s, this, listener))
                 .Where(s => s != null)
                 .ToSortedList(s => s!.Address, s => s!);
             return new SegmentMap(
