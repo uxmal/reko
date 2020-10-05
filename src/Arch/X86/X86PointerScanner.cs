@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -210,8 +210,7 @@ namespace Reko.Arch.X86
 
         public override bool TryPeekOpcode(EndianImageReader rdr, out uint opcode)
         {
-            byte bOpcode;
-            bool ret = rdr.TryPeekByte(0, out bOpcode);
+            bool ret = rdr.TryPeekByte(0, out byte bOpcode);
             opcode = bOpcode;
             return ret;
         }
