@@ -23,6 +23,7 @@ using System.Linq;
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 
 namespace Reko.Arch.XCore
 {
@@ -68,17 +69,9 @@ namespace Reko.Arch.XCore
 
         public override XCoreInstruction NotYetImplemented(uint wInstr, string message)
         {
-            var r2 = rdr.Clone();
-            int n = (int) (rdr.Address - this.addr);
-            r2.Offset -= n;
-            var bytes = r2.ReadBytes(n);
-            var instrHexBytes = string.Join("", bytes.Select(b => $"{b:X2}"));
-            var instrHexBytesRev = string.Join("", bytes.Reverse().Select(b => $"{b:X2}"));
-            EmitUnitTest("XCore", instrHexBytesRev, message, "XCoreDis", this.addr, w =>
-            {
-                w.WriteLine("AssertCode(\"@@@\", \"{0}\");", instrHexBytes);
-            });
-            return base.NotYetImplemented(wInstr, message);
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("XCoreDis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         #region Mutators

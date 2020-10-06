@@ -30,13 +30,15 @@ namespace Reko.Arch.XCore
         public Mnemonic Mnemonic { get; set; }
         public override int MnemonicAsInteger => (int) Mnemonic;
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        public override string MnemonicAsString => Mnemonic.ToString();
+
+        protected override void DoRender(MachineInstructionRenderer writer, MachineInstructionRendererOptions options)
         {
             RenderMnemonic(writer);
             RenderOperands(writer, options);
         }
 
-        private void RenderMnemonic(MachineInstructionWriter writer)
+        private void RenderMnemonic(MachineInstructionRenderer writer)
         {
             writer.WriteMnemonic(Mnemonic.ToString());
         }
