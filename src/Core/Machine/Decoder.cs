@@ -56,6 +56,7 @@ namespace Reko.Core.Machine
 
     public abstract class WideDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
         where TInstr : MachineInstruction
+        where TMnemonic : struct
     {
         public sealed override TInstr Decode(uint wInstr, TDasm dasm)
         {

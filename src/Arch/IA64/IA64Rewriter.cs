@@ -80,7 +80,7 @@ namespace Reko.Arch.IA64
             var addrNew = instr.Address.Align(0x10);
             instr.Address = addrNew;
             instr.Length = 0x10;
-            testGenSvc?.ReportMissingRewriter("Ia64Rw", this.instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("Ia64Rw", this.instr, this.instr.Mnemonic.ToString(), rdr, "");
         }
     }
 }
