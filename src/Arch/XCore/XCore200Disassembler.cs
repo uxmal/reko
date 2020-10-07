@@ -418,7 +418,6 @@ namespace Reko.Arch.XCore
                 Select((6, 5), u => u == 0x1F,
                     Instr(Mnemonic.setv, r1),
                     Instr(Mnemonic.or, r3)),
-                Nyi("08"),
                 Nyi("09"),
                 Nyi("0A"),
                 Nyi("0B"),

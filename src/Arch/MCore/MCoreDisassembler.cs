@@ -77,7 +77,7 @@ namespace Reko.Arch.MCore
             };
         }
 
-        public override MCoreInstruction NotYetImplemented(uint wInstr, string message)
+        public override MCoreInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("MCoreDis", this.addr, this.rdr, message);

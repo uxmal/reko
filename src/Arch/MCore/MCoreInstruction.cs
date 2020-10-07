@@ -31,14 +31,13 @@ namespace Reko.Arch.MCore
         public override int MnemonicAsInteger => (int) Mnemonic;
         public override string MnemonicAsString => Mnemonic.ToString();
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer writer, MachineInstructionRendererOptions options)
         {
             RenderMnemonic(writer);
             base.RenderOperands(writer, options);
-            base.Render(writer, options);
         }
 
-        private void RenderMnemonic(MachineInstructionWriter writer)
+        private void RenderMnemonic(MachineInstructionRenderer writer)
         {
             var s = this.Mnemonic
                 .ToString()

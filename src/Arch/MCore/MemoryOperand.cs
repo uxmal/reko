@@ -38,13 +38,13 @@ namespace Reko.Arch.MCore
         public RegisterStorage Base { get; }
         public int Offset { get; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteChar('(');
-            writer.WriteString(Base.Name);
-            writer.WriteChar(',');
-            writer.WriteFormat("${0:X}", Offset);
-            writer.WriteChar(')');
+            renderer.WriteChar('(');
+            renderer.WriteString(Base.Name);
+            renderer.WriteChar(',');
+            renderer.WriteFormat("${0:X}", Offset);
+            renderer.WriteChar(')');
         }
     }
 }
