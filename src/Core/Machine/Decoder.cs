@@ -50,7 +50,6 @@ namespace Reko.Core.Machine
         {
             DumpMaskedInstruction(64, wInstr, shMask, mnemonic!.ToString());
         }
-
     }
 
 

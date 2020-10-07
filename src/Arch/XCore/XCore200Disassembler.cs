@@ -67,7 +67,7 @@ namespace Reko.Arch.XCore
             };
         }
 
-        public override XCoreInstruction NotYetImplemented(uint wInstr, string message)
+        public override XCoreInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("XCoreDis", this.addr, this.rdr, message);
