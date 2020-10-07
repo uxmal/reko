@@ -30,7 +30,7 @@ namespace Reko.Arch.V850
 {
     public class V850Architecture : ProcessorArchitecture
     {
-        public V850Architecture(string archId) : base(archId)
+        public V850Architecture(IServiceProvider services, string archId) : base(services, archId)
         {
             Endianness = EndianServices.Little;
         }

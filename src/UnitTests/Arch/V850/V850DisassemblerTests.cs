@@ -33,8 +33,14 @@ namespace Reko.UnitTests.Arch.V850
     [TestFixture]
     public class V850DisassemblerTests : DisassemblerTestBase<V850Instruction>
     {
-        private readonly V850Architecture arch = new V850Architecture("v850");
-        private readonly Address addr = Address.Ptr32(0x00100000);
+        private readonly V850Architecture arch;
+        private readonly Address addr;
+
+        public V850DisassemblerTests()
+        {
+            this.arch = new V850Architecture(base.CreateServiceContainer(), "v850");
+            this.addr = Address.Ptr32(0x00100000);
+        }
 
         public override IProcessorArchitecture Architecture => arch;
 

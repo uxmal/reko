@@ -35,11 +35,11 @@ namespace Reko.Arch.V850
         public RegisterStorage Base { get; }
         public int Offset { get; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteFormat("{0}[", Offset);
-            writer.WriteString(Base.Name);
-            writer.WriteChar(']');
+            renderer.WriteFormat("{0}[", Offset);
+            renderer.WriteString(Base.Name);
+            renderer.WriteChar(']');
         }
 
     }

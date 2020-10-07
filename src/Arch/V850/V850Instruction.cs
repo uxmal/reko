@@ -31,17 +31,19 @@ namespace Reko.Arch.V850
 
         public override int MnemonicAsInteger => (int)Mnemonic;
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        public override string MnemonicAsString => Mnemonic.ToString();
+        
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            RenderMnemonic(writer);
-            RenderOperands(writer, options);
+            RenderMnemonic(renderer);
+            RenderOperands(renderer, options);
         }
 
-        private void RenderMnemonic(MachineInstructionWriter writer)
+        private void RenderMnemonic(MachineInstructionRenderer renderer)
         {
             var sMnemonic = Mnemonic.ToString()
                 .Replace('_', '.');
-            writer.WriteString(sMnemonic);
+            renderer.WriteString(sMnemonic);
         }
     }
 }

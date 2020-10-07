@@ -23,6 +23,7 @@ using System.Linq;
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 
 namespace Reko.Arch.V850
@@ -74,16 +75,10 @@ namespace Reko.Arch.V850
             };
         }
 
-        public override V850Instruction NotYetImplemented(uint wInstr, string message)
+        public override V850Instruction NotYetImplemented(string message)
         {
-            var len = (int)(rdr.Address - addr);
-            var rdr2 = rdr.Clone();
-            rdr.Offset -= len;
-            var hexBytes = string.Join("", rdr.ReadBytes(len).Select(b => b.ToString("X2")));
-            base.EmitUnitTest("V850", hexBytes, message, "V850Dis", this.addr, w =>
-            {
-                w.WriteLine("AssertCode(\"@@@\", \"{0}\");", hexBytes);
-            });
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("V850Dis", this.addr, this.rdr, message);
             return CreateInvalidInstruction();
         }
 
