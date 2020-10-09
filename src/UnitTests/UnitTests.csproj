@@ -888,7 +888,7 @@
       <Project>{AB5DDEB2-87C0-42C7-8CD3-72CB2B1282FB}</Project>
       <Name>i8051</Name>
     </ProjectReference>
-    <ProjectReference Include="..\arch\IA64\IA64.csproj">
+    <ProjectReference Include="..\Arch\IA64\IA64.csproj">
       <Project>{54a54f6f-841a-4934-bfd1-65e8ad3e1d45}</Project>
       <Name>IA64</Name>
     </ProjectReference>
@@ -980,7 +980,7 @@
       <Project>{B15C2937-0FB8-4F3B-8B84-BEE861DC841B}</Project>
       <Name>Tlcs</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Arch\v850\V850.csproj">
+    <ProjectReference Include="..\Arch\V850\V850.csproj">
       <Project>{3C9E8F29-7D4C-4754-BE9C-28D572E834C1}</Project>
       <Name>V850</Name>
     </ProjectReference>
