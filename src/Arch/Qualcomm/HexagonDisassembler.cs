@@ -52,6 +52,7 @@ namespace Reko.Arch.Qualcomm
         private bool conditionPredicateNew;
         private DirectionHint directionHint;
         private uint? extendedConstant;
+
         public HexagonDisassembler(HexagonArchitecture arch, EndianImageReader rdr)
         {
             this.arch = arch;

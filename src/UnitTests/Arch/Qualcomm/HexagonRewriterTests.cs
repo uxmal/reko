@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
             Given_HexString("0440027022340328");
             AssertCode(     // { r2 = sxth(r2); r3 = 00000000; r4 = aslh(r2) }
                 "0|L--|00100000(8): 3 instructions",
-                "1|L--|r2 = (int32) SLICE(r2, int16, 0)",
+                "1|L--|r2 = CONVERT(SLICE(r2, int16, 0), int16, int32)",
                 "2|L--|r3 = 0<32>",
                 "3|L--|r4 = r2 << 0x10<8>");
         }
@@ -157,7 +157,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
             Given_HexString("81C2408D");
             AssertCode(     // { r1 = extractu(r0,00000002,00000012) }
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = (uint32) SLICE(r0, ui18, 2)");
+                "1|L--|r1 = CONVERT(SLICE(r0, ui18, 2), ui18, uint32)");
         }
 
         [Test]
@@ -289,7 +289,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
             AssertCode(     // { r6 = add(r6,FFFFFBC6); r1:r0 = convert_d2df(r11:r10) }
                 "0|L--|00100000(8): 2 instructions",
                 "1|L--|r6 = r6 + 0xFFFFFBC6<32>",
-                "2|L--|r1_r0 = (real64) (int64) r11_r10");
+                "2|L--|r1_r0 = CONVERT(r11_r10, int64, real64)");
         }
 
         [Test]
@@ -298,7 +298,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
             Given_HexString("3CC00088");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r28 = (real32) (real64) r1_r0");
+                "1|L--|r28 = CONVERT(r1_r0, real64, real32)");
         }
 
         [Test]
@@ -307,7 +307,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
             Given_HexString("E3C1E38D");
             AssertCode(     // { r3 = extract(r3,00000001,00000019) }
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = (int32) SLICE(r3, ui25, 1)");
+                "1|L--|r3 = CONVERT(SLICE(r3, ui25, 1), ui25, int32)");
         }
 
         [Test]
@@ -327,7 +327,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
             AssertCode(     // { jumpr	r31; r1:r0 = convert_sf2df(r28) }
                 "0|T--|00100000(8): 2 instructions",
                 "1|T--|return (0,0)",
-                "2|L--|r1_r0 = (real64) (real32) r28");
+                "2|L--|r1_r0 = CONVERT(r28, real32, real64)");
         }
 
         [Test]
@@ -504,7 +504,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
             Given_HexString("034123F1 01C0E270");
             AssertCode(     // { r1 = sxth(r2); r3 = or(r3,r1) }
                 "0|L--|00100000(8): 2 instructions",
-                "1|L--|r1 = (int32) SLICE(r2, int16, 0)",
+                "1|L--|r1 = CONVERT(SLICE(r2, int16, 0), int16, int32)",
                 "2|L--|r3 = r3 | r1");
         }
 

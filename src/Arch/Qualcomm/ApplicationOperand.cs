@@ -39,7 +39,6 @@ namespace Reko.Arch.Qualcomm
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            renderer.WriteMnemonic(Mnemonic.ToString().Replace("__", "."));
             switch (Mnemonic)
             {
             case Mnemonic.EQ:
@@ -68,14 +67,11 @@ namespace Reko.Arch.Qualcomm
                 var sep = "(";
                 foreach (var op in Operands)
                 {
-                renderer.WriteString(sep);
-                op.Render(renderer, options);
-                renderer.WriteString(sep);
-                op.Render(renderer, options);
+                    renderer.WriteString(sep);
+                    op.Render(renderer, options);
                     sep = ",";
                 }
-            renderer.WriteString(")");
-            renderer.WriteString(")");
+                renderer.WriteString(")");
                 break;
             }
         }
