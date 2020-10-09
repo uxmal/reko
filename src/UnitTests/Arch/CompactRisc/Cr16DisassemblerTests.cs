@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
         public override IProcessorArchitecture Architecture => arch;
         public override Address LoadAddress => addrLoad;
 
-        [Test]
+        // [Test]
         public void Cr16Dasm_Gen()
         {
             var mem = new MemoryArea(Address.Ptr16(0x8000), new byte[1024]);
