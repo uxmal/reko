@@ -288,7 +288,7 @@ l00000124:
 	// succ:  l000004E8 l000004F8
 l000004E8:
 	r0 = syscfg
-	r1 = (uint32) SLICE(r0, ui18, 2)
+	r1 = CONVERT(SLICE(r0, ui18, 2), ui18, uint32)
 	p0 = r1 == 0<32>
 	branch p0 l00000570
 	// succ:  l000004F8 l00000570
@@ -313,7 +313,7 @@ l00000538:
 	isync()
 	l2kill()
 	r2 = rev
-	r2 = (uint32) SLICE(r2, ui12, 4)
+	r2 = CONVERT(SLICE(r2, ui12, 4), ui12, uint32)
 	r2 = Mem0[0x00001B44<p32> + r2:int8]
 	r3 = SEQ(0<16>, SLICE(r3, word16, 0))
 	r3 = SEQ(SLICE(r3, word16, 16), 0x3F00<16>)
@@ -867,10 +867,10 @@ l00000B24:
 	r3 = r3 + (r7 << 1<32>)
 	r3 = Mem0[r3:int16]
 	r7 = r7 << 8<32>
-	r5 = (uint32) SLICE(r3, ui4, 12)
+	r5 = CONVERT(SLICE(r3, ui4, 12), ui4, uint32)
 	r1 = 0<32>
 	r0 = 0x10<32>
-	r4 = (uint32) SLICE(r3, ui4, 4)
+	r4 = CONVERT(SLICE(r3, ui4, 4), ui4, uint32)
 	r0 = SEQ(0xC003<16>, SLICE(r0, word16, 0))
 	r1 = SEQ(3<16>, SLICE(r1, word16, 0))
 	r4 = r4 << 0x18<32>
@@ -959,10 +959,10 @@ l00000C18:
 	r3 = r3 + (r7 << 1<32>)
 	r3 = Mem0[r3:int16]
 	r7 = r7 << 8<32>
-	r5 = (uint32) SLICE(r3, ui4, 12)
+	r5 = CONVERT(SLICE(r3, ui4, 12), ui4, uint32)
 	r1 = 0<32>
 	r0 = 0x10<32>
-	r4 = (uint32) SLICE(r3, ui4, 4)
+	r4 = CONVERT(SLICE(r3, ui4, 4), ui4, uint32)
 	r0 = SEQ(0xC003<16>, SLICE(r0, word16, 0))
 	r1 = SEQ(3<16>, SLICE(r1, word16, 0))
 	r4 = r4 << 0x18<32>
