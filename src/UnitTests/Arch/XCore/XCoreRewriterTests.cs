@@ -69,15 +69,6 @@ namespace Reko.UnitTests.Arch.XCore
         }
 
         [Test]
-        public void XCore200Rw_addi()
-        {
-            Given_HexString("0497"); // addi	r0,r1,00000004
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = r1 + 0x00000004");
-        }
-
-        [Test]
         public void XCore200Rw_and()
         {
             Given_HexString("113C"); // and	r5,r8,r5
@@ -96,21 +87,12 @@ namespace Reko.UnitTests.Arch.XCore
         }
 
         [Test]
-        public void XCore200Rw_bau()
-        {
-            Given_HexString("1127"); // bau	r1
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|goto r1");
-        }
-
-        [Test]
         public void XCore200Rw_bla()
         {
             Given_HexString("EF27"); // bla
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|call lr (0)");
         }
 
         [Test]

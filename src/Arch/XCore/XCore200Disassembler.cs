@@ -18,6 +18,8 @@
  */
 #endregion
 
+#pragma warning disable IDE1006
+
 using System.Collections.Generic;
 using System.Linq;
 using Reko.Core;
@@ -128,6 +130,38 @@ namespace Reko.Arch.XCore
             return true;
         }
 
+        // Two register with immediate translated to bitpos
+        private static readonly uint[] bitpos32 =
+        {
+            32, 1, 2, 3,  4, 5, 6, 7,  8, 16, 24, 32
+        };
+        private static readonly uint[] bitpos64 =
+        {
+            32, 1, 2, 3,  4, 5, 6, 7,  8, 16, 24, 32
+        };
+        private static bool r2us_bitp(uint uInstr, XCore200Disassembler dasm)
+        {
+            // Get low bits first.
+            var imm3 = uInstr & 0x03;
+            var iReg2 = (uInstr >> 2) & 0x03;
+            var iReg1 = (uInstr >> 4) & 0x03;
+            // Extract base3 field.
+
+            var base3 = (uInstr >> 6) & 0x1F;
+            imm3 += (base3 % 3) << 2;
+            base3 = base3 / 3;
+            iReg2 += (base3 % 3) << 2;
+            base3 = base3 / 3;
+            iReg1 += (base3 % 3) << 2;
+            if (iReg1 >= 12)
+                return false;
+            imm3 = bitpos32[imm3];
+            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg1]));
+            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg2]));
+            dasm.ops.Add(ImmediateOperand.Word32(imm3));
+            return true;
+        }
+
         // Two register with immediate long.
         private static bool l2rus(uint uInstr, XCore200Disassembler dasm)
         {
@@ -137,7 +171,35 @@ namespace Reko.Arch.XCore
         //Register with 6-bit immediate
         private static bool ru6(uint uInstr, XCore200Disassembler dasm)
         {
-            return false;
+            var iReg = (uInstr >> 6) & 0xF;
+            var imm = (uInstr & 0x3F);
+            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg]));
+            dasm.ops.Add(ImmediateOperand.Word32(imm));
+            return true;
+        }
+
+        //Register with 6-bit immediate added to PC
+        private static bool ru6_p_pc(uint uInstr, XCore200Disassembler dasm)
+        {
+            var iReg = (uInstr >> 6) & 0xF;
+            var imm = (uInstr & 0x3F) << 1;
+            var addr = dasm.addr + imm;
+            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg]));
+            dasm.ops.Add(AddressOperand.Create(addr));
+            return true;
+        }
+
+        //Register with 6-bit immediate subtracted from PC
+        private static bool ru6_m_pc(uint uInstr, XCore200Disassembler dasm)
+        {
+            var iReg = (uInstr >> 6) & 0xF;
+            var imm = uInstr & 0x3F;
+            if ((imm & 1) != 0)
+                return false;       // Illegal address.
+            var addr = dasm.addr - imm;
+            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg]));
+            dasm.ops.Add(AddressOperand.Create(addr));
+            return true;
         }
 
         //Register with 16-bit immediate
@@ -149,7 +211,27 @@ namespace Reko.Arch.XCore
         // 6-bit immediate
         private static bool u6(uint uInstr, XCore200Disassembler dasm)
         {
+            var u = uInstr & 0x3F;
+            dasm.ops.Add(ImmediateOperand.Word32(u));
             return false;
+        }
+
+        // 6-bit pc-relative positive displacement
+        private static bool u6_p_pc(uint uInstr, XCore200Disassembler dasm)
+        {
+            var displacement = (uInstr & Bits.Mask(0, 6)) << 1;
+            var addr = dasm.addr + displacement;
+            dasm.ops.Add(AddressOperand.Create(addr));
+            return true;
+        }
+
+        // 6-bit pc-relative negative displacement
+        private static bool u6_m_pc(uint uInstr, XCore200Disassembler dasm)
+        {
+            var displacement = (int)(uInstr & Bits.Mask(0, 6)) << 1;
+            var addr = dasm.addr - displacement;
+            dasm.ops.Add(AddressOperand.Create(addr));
+            return true;
         }
 
         // 16-bit immediate
@@ -162,6 +244,24 @@ namespace Reko.Arch.XCore
         private static bool u10(uint uInstr, XCore200Disassembler dasm)
         {
             return false;
+        }
+
+        // 10-bit pc-relative positive displacement
+        private static bool u10_p_pc(uint uInstr, XCore200Disassembler dasm)
+        {
+            var displacement = (uInstr & Bits.Mask(0, 10)) << 1;
+            var addr = dasm.addr + displacement;
+            dasm.ops.Add(AddressOperand.Create(addr));
+            return true;
+        }
+
+        // 10-bit pc-relative negative displacement
+        private static bool u10_m_pc(uint uInstr, XCore200Disassembler dasm)
+        {
+            var displacement = (int)(uInstr & Bits.Mask(0, 10)) << 1;
+            var addr = dasm.addr - displacement;
+            dasm.ops.Add(AddressOperand.Create(addr));
+            return true;
         }
 
         // PC-relative
@@ -208,7 +308,26 @@ namespace Reko.Arch.XCore
         // two register reversed.
         private static bool r2r(uint uInstr, XCore200Disassembler dasm)
         {
-            return false;
+            var base3 = (uInstr >> 6) & 0x1F;
+            if (base3 < 27)
+                return false;
+            if (Bits.IsBitSet(uInstr, 5))
+            {
+                if (base3 == 31)
+                    return false;
+                base3 += 5;
+            }
+            base3 -= 27;
+            var iReg2 = uInstr & 0x03;
+            var iReg1 = (uInstr >> 2) & 0x03;
+
+            iReg2 += (base3 % 3) << 2;
+            base3 = base3 / 3;
+            iReg1 += (base3 % 3) << 2;
+
+            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg2]));
+            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg1]));
+            return true;
         }
 
         // two register long.
@@ -226,7 +345,54 @@ namespace Reko.Arch.XCore
         // Register with immediate.
         private static bool rus(uint uInstr, XCore200Disassembler dasm)
         {
-            return false;
+            var base3 = (uInstr >> 6) & 0x1F;
+            if (base3 < 27)
+                return false;
+            if (Bits.IsBitSet(uInstr, 5))
+            {
+                if (base3 == 31)
+                    return false;
+                base3 += 5;
+            }
+            base3 -= 27;
+            var imm = uInstr & 0x03;
+            var iReg = (uInstr >> 2) & 0x03;
+
+            imm += (base3 % 3) << 2;
+            base3 = base3 / 3;
+            iReg += (base3 % 3) << 2;
+            if (iReg >= 12)
+                return false;
+            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg]));
+            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[imm]));
+            return true;
+        }
+
+        // Register with immediate.
+        private static bool rus_bitp(uint uInstr, XCore200Disassembler dasm)
+        {
+            var base3 = (uInstr >> 6) & 0x1F;
+            if (base3 < 27)
+                return false;
+            if (Bits.IsBitSet(uInstr, 5))
+            {
+                if (base3 == 31)
+                    return false;
+                base3 += 5;
+            }
+            base3 -= 27;
+            var imm = uInstr & 0x03;
+            var iReg = (uInstr >> 2) & 0x03;
+
+            imm += (base3 % 3) << 2;
+            base3 = base3 / 3;
+            iReg += (base3 % 3) << 2;
+            if (iReg >= 12 || imm >= bitpos32.Length)
+                return false;
+            imm = bitpos32[imm];
+            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg]));
+            dasm.ops.Add(ImmediateOperand.Word32(imm));
+            return true;
         }
 
         // Register.
@@ -235,6 +401,17 @@ namespace Reko.Arch.XCore
             var iReg = uInstr & 0xF;
             dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg]));
             return true;
+        }
+
+        // Specific register
+        private static Mutator<XCore200Disassembler> Reg(RegisterStorage reg)
+        {
+            var op = new RegisterOperand(reg);
+            return (u, d) =>
+            {
+                d.ops.Add(op);
+                return true;
+            };
         }
 
         // No operands.
@@ -352,6 +529,11 @@ namespace Reko.Arch.XCore
         {
             var invalid = Instr(Mnemonic.Invalid, InstrClass.Invalid);
 
+
+            bool is_0x1F(uint u) => u == 0x1F;
+            bool is_lt27(uint u) => u < 27;
+
+
             var longDecoder = Mask(11, 5, "  long",
                 Nyi("00"),
                 Nyi("01"),
@@ -393,20 +575,99 @@ namespace Reko.Arch.XCore
                 Nyi("1E"),
                 Sparse(11, 5, "  long 1F", Nyi(""),
                     (2, Instr(Mnemonic.ashr, l3r))));
-            
+
+            var decode_0F_0 = Nyi("0F_0");
+            var decode_0F_1 = Nyi("0F_1");
+
             rootDecoder = Mask(11, 5, "XCore",
-                Nyi("00"),
-                Mask(4, 1, "  01",
-                    Instr(Mnemonic.clz, r2),
-                    Nyi("01")),
-                Instr(Mnemonic.add, r3),
-                Nyi("03"),
+                Select((6, 5), is_lt27,
+                    Instr(Mnemonic.stwi, r2us),
+                    Mask(4, 2, "  00",
+                        Instr(Mnemonic.byterev, r2),
+                        Select((6, 5), is_0x1F,
+                            Nyi("00 01  11111"),
+                            Instr(Mnemonic.getst, r2)),
+                        Select((6, 5), is_0x1F,
+                            Sparse(0, 4, Instr(Mnemonic.edu, r1),
+                                (0xC, Instr(Mnemonic.waiteu)),
+                                (0xD, Instr(Mnemonic.clre)),
+                                (0xE, Instr(Mnemonic.ssync)),
+                                (0xF, Instr(Mnemonic.freet))),
+                            Instr(Mnemonic.getst, r2)),
+                        Select((6, 5), is_0x1F,
+                            Sparse(0, 4, Instr(Mnemonic.eeu, r1),
+                                (0xD, Instr(Mnemonic.dcall)), 
+                                (0xF, Instr(Mnemonic.setkep))), 
+                            Instr(Mnemonic.getst, r2)))),
+                Select((6, 5), is_lt27, "  01",
+                    Instr(Mnemonic.ldwi, r2us),
+                    Mask(4, 2, "  01",
+                        Instr(Mnemonic.clz, r2),
+                        Select((6, 5), is_0x1F, "  01 01",
+                            Nyi("01 01 0x1F"),
+                            Instr(Mnemonic.outt, r2r)),
+                        Select((6, 5), is_0x1F, "  01 10",
+                            Sparse(0, 4, "  01 10 0x1F",
+                                Instr(Mnemonic.waitet, r1),
+                                (0xC, Instr(Mnemonic.ldspc)),
+                                (0xD, Instr(Mnemonic.stspc)),
+                                (0xE, Instr(Mnemonic.stssr)),
+                                (0xF, Instr(Mnemonic.ldssr))),
+                            Instr(Mnemonic.clz, r2)),
+                        Select((6, 5), is_0x1F, "  01 11",
+                            Sparse(0, 4, "  01 11 0x1F", 
+                                Instr(Mnemonic.waitef, r1),
+                                (0xC, Instr(Mnemonic.stsed)),
+                                (0xD, Instr(Mnemonic.stet)),
+                                (0xE, Instr(Mnemonic.geted)),
+                                (0xF, Instr(Mnemonic.getet))),
+                            Instr(Mnemonic.outt, r2r)))),
+                Select((6, 5), is_lt27, "  02",
+                    Instr(Mnemonic.add, r3),
+                    Mask(4, 1, "  02 >=27",
+                        Select((6, 5), is_0x1F, "  02 0",
+                            Sparse(0, 4, "  02 0 0x1F",
+                                Instr(Mnemonic.freer, r1),
+                                (0xC, Instr(Mnemonic.getps)),
+                                (0xD, invalid),
+                                (0xE, Instr(Mnemonic.getid)),
+                                (0xF, Instr(Mnemonic.getkep))),
+                            Instr(Mnemonic.bitrev, r2)),
+                        Select((6, 5), is_0x1F, "  02 1",
+                            Sparse(0, 4, "  02 1 0x1F",
+                                Instr(Mnemonic.mjoin, r1),
+                                (0xC, Instr(Mnemonic.getksp)),
+                                (0xD, Instr(Mnemonic.ldsed)),
+                                (0xE, Instr(Mnemonic.ldset)),
+                                (0xF, Instr(Mnemonic.nop))),
+                            Instr(Mnemonic.setd, r2r)))),
+                Select((6, 5), is_lt27, "  03",
+                    Instr(Mnemonic.sub, r3),
+                    Mask(4, 1, "  03 >= 27",
+                        Select((6, 5), is_0x1F, "  03 0",
+                            Sparse(0, 4, "  03 0 0x1F",
+                                Instr(Mnemonic.tstart, r1),
+                                (0xC, Nyi("03 0 0x1F 0xC")),
+                                (0xD, Nyi("03 0 0x1F 0xD")),
+                                (0xE, Nyi("03 0 0x1F 0xE")),
+                                (0xF, Nyi("03 0 0x1F 0xF"))),
+                            Nyi("  03 0 !0x1F")),
+                        Select((6, 5), is_0x1F, "  03 0",
+                            Sparse(0, 4, "  03 1 0x1F",
+                                Instr(Mnemonic.msync, r1),
+                                (0xC, Nyi("03 1 0x1F 0xC")),
+                                (0xD, Nyi("03 1 0x1F 0xD")),
+                                (0xE, Nyi("03 1 0x1F 0xE")),
+                                (0xF, Nyi("03 1 0x1F 0xF"))),
+                            Nyi("  03 0 !0x1F")))),
 
                 Mask(4, 1, "  04",
                     Select((5, 6), u => u == 0x3F, "  04 - 0 0x3F",
-                        Instr(Mnemonic.bla, r1),
+                        Instr(Mnemonic.bla, InstrClass.Transfer|InstrClass.Call, r1),
                         Nyi("04 - 0")),
-                    Instr(Mnemonic.bau, InstrClass.Transfer, r1)),
+                    Select((5, 6), u => u == 0x3F, "  04 - 1 0x3F",
+                        Instr(Mnemonic.bau, InstrClass.Transfer, r1),
+                        Instr(Mnemonic.eet, r2))),
                 Mask(4, 1, "  05",
                     Select((6, 5), u => u == 0x1F,
                         Instr(Mnemonic.bru, r1),
@@ -415,37 +676,106 @@ namespace Reko.Arch.XCore
                 Instr(Mnemonic.eq, r3),
                 Instr(Mnemonic.and, r3),
 
-                Select((6, 5), u => u == 0x1F,
+                Select((6, 5), is_0x1F,
                     Instr(Mnemonic.setv, r1),
                     Instr(Mnemonic.or, r3)),
-                Nyi("09"),
-                Nyi("0A"),
-                Nyi("0B"),
+                Select((10, 1), u => u == 0, "  0A",
+                    Instr(Mnemonic.outct, r2),
+                    Instr(Mnemonic.outcti, rus)),
+                Select((10, 1), u => u == 0, "  0A",
+                    Instr(Mnemonic.stwdp, ru6),
+                    Instr(Mnemonic.stwsp, ru6)),
+                Select((10, 1), u => u == 0, "  0B",
+                    Instr(Mnemonic.ldwdp, ru6),
+                    Instr(Mnemonic.ldwsp, ru6)),
 
-                Nyi("0C"),
-                Nyi("0D"),
-                Nyi("0E"),
-                Nyi("0F"),
+                Select((10, 1), u => u == 0, "  0C",
+                    Instr(Mnemonic.ldawdp, ru6),
+                    Instr(Mnemonic.ldawsp, ru6)),
+                Select((10, 1), u => u == 0, "  0D",
+                    Instr(Mnemonic.ldc, ru6),
+                    Instr(Mnemonic.ldwcp, ru6)),
+                Select((10, 1), u => u == 0, "  0E",
+                    Sparse(6, 4, "  0E_0",
+                        Instr(Mnemonic.brft, InstrClass.ConditionalTransfer, ru6_p_pc),
+                        (0xC, Instr(Mnemonic.brfu, InstrClass.Transfer, u6_p_pc)),
+                        (0xD, Instr(Mnemonic.blat, InstrClass.Transfer|InstrClass.Call, u6)),
+                        (0xE, Instr(Mnemonic.extdp, u6)),
+                        (0xF, Instr(Mnemonic.kcalli, InstrClass.Transfer|InstrClass.Call, u6))),
+                    Sparse(6, 4, "  0E_1",
+                        Instr(Mnemonic.brbt, InstrClass.ConditionalTransfer, ru6_m_pc),
+                        (0xC, Instr(Mnemonic.brbu, InstrClass.Transfer, u6_m_pc)),
+                        (0xD, Instr(Mnemonic.entsp, u6)),
+                        (0xE, Instr(Mnemonic.extsp, u6)),
+                        (0xF, Instr(Mnemonic.retsp, u6)))),
+                Select((10, 1), u => u == 0, "  0F",
+                    Sparse(6, 4, "  0F_0", 
+                        Instr(Mnemonic.brff, InstrClass.ConditionalTransfer, ru6_p_pc),
+                        (0xC, Instr(Mnemonic.clrsr, u6)),
+                        (0xD, Instr(Mnemonic.setsr, u6)),
+                        (0xE, Instr(Mnemonic.kentsp, u6)),
+                        (0xF, Nyi("0F_0 F"))),
+                    Sparse(6, 4, "  0F_0",
+                        Instr(Mnemonic.brbf, InstrClass.ConditionalTransfer, ru6_m_pc),
+                        (0xC, Instr(Mnemonic.getsr, u6)),
+                        (0xD, Instr(Mnemonic.ldawcp, u6)),
+                        (0xE, Instr(Mnemonic.dualentsp, u6)),
+                        (0xF, Nyi("0F_0 F")))),
+
                 // 10
                 Instr(Mnemonic.ld16s, r3),
                 Instr(Mnemonic.ld8u, r3),
-                Instr(Mnemonic.addi, r2us),
-                Nyi("13"),
-                
-                Nyi("14"),
-                Nyi("15"),
-                Instr(Mnemonic.eqi, r2us),
-                Nyi("17"),
-                
-                Nyi("18"),
-                Nyi("19"),
-                Nyi("1A"),
+                Select((6, 5), is_lt27, "  12",
+                    Instr(Mnemonic.addi, r2us),
+                    Mask(4, 1, "  12 >=27",
+                        Instr(Mnemonic.neg, r2),
+                        Instr(Mnemonic.endin, r2))),
+                Select((6, 5), is_lt27, "  13",
+                    Instr(Mnemonic.subi, r2us),
+                    Nyi("  13 >=27")),
+
+                Select((6, 5), is_lt27,
+                    Instr(Mnemonic.shli, r2us_bitp),
+                    Mask(4, 1, "  14 >= 27",
+                        Instr(Mnemonic.mkmsk, r2),
+                        Instr(Mnemonic.mkmski, rus_bitp))),
+                Select((6, 5), is_lt27,
+                    Instr(Mnemonic.shri, r2us_bitp),
+                    Mask(4, 1, "  15 >= 27",
+                        Instr(Mnemonic.@out, r2),
+                        Instr(Mnemonic.outshr, r2r))),
+                Select((6, 5), is_lt27,
+                    Instr(Mnemonic.eqi, r2us),
+                    Mask(4, 1, "  16 >= 27",
+                        Instr(Mnemonic.@in, r2),
+                        Instr(Mnemonic.inshr, r2))),
+                Mask(4, 1, "  17",
+                    Instr(Mnemonic.peek, r2),
+                    Instr(Mnemonic.testct, r2)),
+
+                Select((6, 5), is_lt27,
+                    Instr(Mnemonic.lss, r3),
+                    Mask(4, 1, "  18 >= 27",
+                        Instr(Mnemonic.setpsc, r2r),
+                        Instr(Mnemonic.testwct, r2))),
+                Select((6, 5), is_lt27,
+                    Instr(Mnemonic.lsu, r3),
+                    Mask(4, 1, "  19 >= 27",
+                        Instr(Mnemonic.chkct, r2),
+                        Instr(Mnemonic.chkcti, rus))),
+                Mask(10, 1, "  1A",
+                    Instr(Mnemonic.blrf, InstrClass.Transfer|InstrClass.Call, u10_p_pc),
+                    Instr(Mnemonic.blrb, InstrClass.Transfer|InstrClass.Call, u10_m_pc)),
                 Mask(10, 1, "  1B",
                     Instr(Mnemonic.ldapb, PcRel11_2),
                     Instr(Mnemonic.ldapf, PcRel11_2)),
 
-                Nyi("1C"),
-                Nyi("1D"),
+                Mask(10, 1, "  1C",
+                    Instr(Mnemonic.blacp, InstrClass.Transfer|InstrClass.Call, u10),
+                    Instr(Mnemonic.ldwcp, u10)),
+                Mask(10, 1, "  1D",
+                    Instr(Mnemonic.setci, ru6),
+                    Nyi("  1D 1")),
                 Nyi("1E"),
                 new W32Decoder(longDecoder));
         }
