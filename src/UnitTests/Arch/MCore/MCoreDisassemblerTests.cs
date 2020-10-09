@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Arch.H8
             Assert.AreEqual(sExp, instr.ToString());
         }
 
-        [Test]
+        //[Test] // This spams the output.
         public void MCoreDis_Gen()
         {
             var rnd = new Random(0x1234);
