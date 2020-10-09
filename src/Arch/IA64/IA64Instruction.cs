@@ -51,7 +51,7 @@ namespace Reko.Arch.IA64
 
         private void RenderQualifyingPredicate(MachineInstructionRenderer renderer)
         {
-            if (QualifyingPredicate == Registers.PredicateRegisters[0])
+            if (QualifyingPredicate is null || QualifyingPredicate == Registers.PredicateRegisters[0])
                 return;
             renderer.WriteFormat("({0}) ", QualifyingPredicate.Name);
         }
