@@ -105,7 +105,7 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\arch\IA64\IA64.csproj">
+    <ProjectReference Include="..\Arch\IA64\IA64.csproj">
       <Name>IA64</Name>
       <Project>{54a54f6f-841a-4934-bfd1-65e8ad3e1d45}</Project>
       <Private>True</Private>
