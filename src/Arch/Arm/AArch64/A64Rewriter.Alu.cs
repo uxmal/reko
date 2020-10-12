@@ -116,6 +116,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.asr: right = m.Sar(right, amt); break;
                 case Mnemonic.lsl: right = m.Shl(right, amt); break;
                 case Mnemonic.lsr: right = m.Shr(right, amt); break;
+                case Mnemonic.ror: right = host.PseudoProcedure(PseudoProcedure.Ror, right.DataType, right, amt); break;
                 case Mnemonic.sxtb: right = SignExtend(toBitSize, PrimitiveType.SByte, right); break;
                 case Mnemonic.sxth: right = SignExtend(toBitSize, PrimitiveType.Int16, right); break;
                 case Mnemonic.sxtw: right = SignExtend(toBitSize, PrimitiveType.Int32, right); break;
@@ -237,6 +238,28 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, m.Conditional(dst.DataType, TestCond(cond), srcTrue, m.Neg(srcFalse)));
         }
 
+        private void RewriteDmb()
+        {
+            m.SideEffect(host.PseudoProcedure($"__dmb_{instr.Operands[0]}", VoidType.Instance));
+        }
+
+        private void RewriteLoadAcquire(string nameFormat, DataType dtDst)
+        {
+            var mem = (MemoryOperand) instr.Operands[1];
+            var ptr = new Pointer(dtDst, (int)mem.Base.BitSize);
+            var ea = m.AddrOf(ptr, m.Mem(dtDst, binder.EnsureRegister(mem.Base)));
+            var value = host.PseudoProcedure(string.Format(nameFormat, dtDst.Name), dtDst, ea);
+            var dst = RewriteOp(0);
+            if (dst.DataType.BitSize > dtDst.BitSize)
+            {
+                m.Assign(dst, m.Convert(value, value.DataType, dst.DataType));
+            }
+            else
+            {
+                m.Assign(dst, value);
+            }
+        }
+
         private void RewriteLoadStorePair(bool load, DataType dtDst = null, DataType dtCast = null)
         {
             var reg1 = RewriteOp(instr.Operands[0], !load);
@@ -332,6 +355,24 @@ namespace Reko.Arch.Arm.AArch64
             if (postIndex != null)
             {
                 m.Assign(baseReg, postIndex);
+            }
+        }
+
+        private void RewriteLdx(PrimitiveType dt)
+        {
+            var src = RewriteOp(1);
+            var dst = RewriteOp(0);
+            dst.DataType = dt;
+            var tmp = binder.CreateTemporary(PrimitiveType.Create(Domain.Pointer, dst.DataType.BitSize));
+            m.Assign(tmp, m.AddrOf(tmp.DataType, src));
+            var value = host.PseudoProcedure($"__load_exclusive_{dt.Name}", dt, tmp);
+            if (value.DataType.BitSize < dst.DataType.BitSize)
+            {
+                m.Assign(dst, m.Convert(value, value.DataType, dst.DataType));
+            }
+            else
+            {
+                m.Assign(dst, value);
             }
         }
 
@@ -531,6 +572,29 @@ namespace Reko.Arch.Arm.AArch64
             m.SideEffect(host.PseudoProcedure("__prfm", VoidType.Instance, imm, ea));
         }
 
+        private void RewriteRbit()
+        {
+            var src = RewriteOp(1);
+            var dst = RewriteOp(0);
+            m.Assign(dst, host.PseudoProcedure($"__rbit_{dst.DataType.BitSize}", dst.DataType, src));
+        }
+
+        private void RewriteRev()
+        {
+            var src = RewriteOp(1);
+            var dst = RewriteOp(0);
+            var bitSize = dst.DataType.BitSize;
+            m.Assign(dst, host.PseudoProcedure($"__rev_{bitSize}", dst.DataType, src));
+        }
+
+
+        private void RewriteRev32()
+        {
+            var src = RewriteOp(1);
+            var dst = RewriteOp(0);
+            m.Assign(dst, host.PseudoProcedure($"__rev32", dst.DataType, src));
+        }
+
         private void RewriteRev16()
         {
             RewriteMaybeSimdUnary(
@@ -560,12 +624,12 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, host.PseudoProcedure(fnName, dst.DataType, src1, src2, src3));
         }
 
-        private void RewriteStlr()
+        private void RewriteStlr(PrimitiveType dataType)
         {
-            var src1 = RewriteOp(instr.Operands[0], false);
-            var ea = binder.CreateTemporary(new Pointer(src1.DataType, arch.PointerType.BitSize));
-            m.Assign(ea, binder.EnsureRegister(((MemoryOperand) instr.Operands[1]).Base));
-            m.SideEffect(host.PseudoProcedure($"__stlr_{src1.DataType.BitSize}", VoidType.Instance, ea, src1));
+            var src1 = RewriteOp(0, false);
+            var ea = binder.CreateTemporary(new Pointer(dataType, arch.PointerType.BitSize));
+            m.Assign(ea, m.AddrOf(ea.DataType, m.Mem(dataType, binder.EnsureRegister(((MemoryOperand) instr.Operands[1]).Base))));
+            m.SideEffect(host.PseudoProcedure($"__store_release_{dataType.BitSize}", VoidType.Instance, ea, src1));
         }
 
         private void RewriteStr(PrimitiveType dt)
@@ -599,10 +663,21 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
+        private void RewriteStx(PrimitiveType dt)
+        {
+            var src = RewriteOp(1);
+            var dst = RewriteOp(2);
+            dst.DataType = dt;
+            var tmp = binder.CreateTemporary(PrimitiveType.Create(Domain.Pointer, dst.DataType.BitSize));
+            var success = RewriteOp(0);
+            m.Assign(tmp, m.AddrOf(tmp.DataType, dst));
+            m.Assign(success, host.PseudoProcedure($"__store_exclusive_{dt.Name}", success.DataType, tmp, src));
+        }
+
         private void RewriteTest()
         {
-            var op1 = RewriteOp(instr.Operands[0], true);
-            var op2 = RewriteOp(instr.Operands[1], true);
+            var op1 = RewriteOp(0, true);
+            var op2 = RewriteOp(1, true);
             NZ00(m.Cond(m.And(op1, op2)));
         }
 
