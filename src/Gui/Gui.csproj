@@ -139,6 +139,7 @@
     <Compile Include="Forms\IJumpTableDialog.cs" />
     <Compile Include="Forms\IKeyBindingsDialog.cs" />
     <Compile Include="Forms\IProcedureDialog.cs" />
+    <Compile Include="Forms\IRegisterValuesDialog.cs" />
     <Compile Include="Forms\IResourceEditor.cs" />
     <Compile Include="Forms\ISegmentEditorDialog.cs" />
     <Compile Include="Forms\ISelectItemDialog.cs" />

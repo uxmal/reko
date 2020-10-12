@@ -28,6 +28,7 @@ using Reko.Gui.Forms;
 using Reko.Gui.Visualizers;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Drawing;
 using System.IO;
@@ -201,6 +202,9 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 var selAddress = Control.DisassemblyView.SelectedObject as Address;
                 var instr = Control.DisassemblyView.SelectedObject as MachineInstruction;
+                if (cmdId.ID == CmdIds.EditRegisterValues)
+                    cmdId.ToString();   //$DEBUG
+                
                 if (cmdId.Guid == CmdSets.GuidReko)
                 {
                     switch (cmdId.ID)
@@ -215,6 +219,7 @@ namespace Reko.UserInterfaces.WindowsForms
                         status.Status = selAddress != null ? MenuStatus.Visible | MenuStatus.Enabled : 0;
                         return true;
                     case CmdIds.EditAnnotation:
+                    case CmdIds.EditRegisterValues:
                         status.Status = instr != null ? MenuStatus.Visible | MenuStatus.Enabled : 0;
                         return true;
                     case CmdIds.ActionCallTerminates:
@@ -272,6 +277,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     {
                     case CmdIds.EditCopy: return CopyDisassemblerSelectionToClipboard();
                     case CmdIds.EditAnnotation: return EditDasmAnnotation();
+                    case CmdIds.EditRegisterValues: return EditRegisterValues();
                     case CmdIds.TextEncodingChoose: return ChooseTextEncoding();
                     case CmdIds.ActionCallTerminates: return EditCallSite();
                     case CmdIds.ViewPcRelative: return ToggleShowPcRelative();
@@ -493,6 +499,28 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public bool EditDasmAnnotation()
         {
+            return true;
+        }
+
+        public bool EditRegisterValues()
+        {
+            if (Control.DisassemblyView.SelectedObject is MachineInstruction instr)
+            {
+                if (!program.User.RegisterValues.TryGetValue(instr.Address, out var regValues))
+                {
+                    regValues = new List<UserRegisterValue>();
+                }
+                var dlgFactory = services.RequireService<IDialogFactory>();
+                var uiSvc = services.RequireService<IDecompilerShellUiService>();
+                using (var dlg = dlgFactory.CreateRegisterValuesDialog(this.program.Architecture, regValues))
+                {
+                    if (Gui.DialogResult.OK == uiSvc.ShowModalDialog(dlg))
+                    {
+                        regValues = dlg.RegisterValues;
+                        program.User.RegisterValues[instr.Address] = regValues;
+                    }
+                }
+            }
             return true;
         }
 

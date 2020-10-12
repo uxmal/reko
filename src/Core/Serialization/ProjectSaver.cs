@@ -121,11 +121,14 @@ namespace Reko.Core.Serialization
                     var regValue = rv.Value;
                     if (reg is null || regValue is null)
                         continue;
+                    var value = regValue.IsValid
+                        ? string.Format($"{{0:X{reg.DataType.Size * 2}}}", regValue.ToUInt64())
+                        : "*";
                     sRegValues.Add(new RegisterValue_v2
                     {
                         Address = sAddr,
                         Register = reg.Name,
-                        Value = string.Format($"{{0:X{reg.DataType.Size * 2}}}", regValue.ToUInt64()),
+                        Value = value,
                     });
                 }
             }

@@ -53,5 +53,6 @@ namespace Reko.Gui
         ISymbolSourceDialog CreateSymbolSourceDialog();
         ISelectItemDialog CreateSelectItemDialog(string caption, object[] items, bool multiSelect);
         ISegmentEditorDialog CreateSegmentEditorDialog();
+        IRegisterValuesDialog CreateRegisterValuesDialog(IProcessorArchitecture architecture, List<UserRegisterValue> regValues);
     }
 }

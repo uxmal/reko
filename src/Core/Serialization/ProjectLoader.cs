@@ -561,7 +561,9 @@ namespace Reko.Core.Serialization
                         allLists.Add(addr, list);
                     }
                     var reg = platform.Architecture.GetRegister(sRegValue.Register);
-                    var c = Constant.Create(reg.DataType, Convert.ToUInt64(sRegValue.Value, 16));
+                    var c = sRegValue.Value != "*"
+                        ? Constant.Create(reg.DataType, Convert.ToUInt64(sRegValue.Value, 16))
+                        : Constant.Invalid;
                     if (reg != null)
                     {
                         list.Add(new UserRegisterValue

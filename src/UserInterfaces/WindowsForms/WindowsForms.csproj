@@ -228,6 +228,13 @@
       <DependentUpon>FindStringsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FindStringsDialogInteractor.cs" />
+    <Compile Include="Forms\RegisterValuesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RegisterValuesDialog.Designer.cs">
+      <DependentUpon>RegisterValuesDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RegisterValuesInteractor.cs" />
     <Compile Include="Forms\SegmentEditorDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -431,6 +438,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FindStringsDialog.resx">
       <DependentUpon>FindStringsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RegisterValuesDialog.resx">
+      <DependentUpon>RegisterValuesDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SegmentEditorDialog.resx">
       <DependentUpon>SegmentEditorDialog.cs</DependentUpon>
