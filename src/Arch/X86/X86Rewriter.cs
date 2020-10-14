@@ -527,6 +527,10 @@ namespace Reko.Arch.X86
                 case Mnemonic.rdtsc: RewriteRdtsc(); break;
                 case Mnemonic.ret: RewriteRet(); break;
                 case Mnemonic.retf: RewriteRet(); break;
+                case Mnemonic.roundsd: RewriteRoundsx(false, PrimitiveType.Real64); break;
+                case Mnemonic.roundss: RewriteRoundsx(false, PrimitiveType.Real32); break;
+                case Mnemonic.vroundsd: RewriteRoundsx(true, PrimitiveType.Real64); break;
+                case Mnemonic.vroundss: RewriteRoundsx(true, PrimitiveType.Real32); break;
                 case Mnemonic.rsm: RewriteRsm(); break;
                 case Mnemonic.rsqrtps: RewritePackedUnaryop("__rsqrtps", PrimitiveType.Real32); break;
                 case Mnemonic.sahf: m.Assign(orw.FlagGroup(X86Instruction.DefCc(instrCur.Mnemonic)), orw.AluRegister(Registers.ah)); break;

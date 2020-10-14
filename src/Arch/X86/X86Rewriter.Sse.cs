@@ -440,6 +440,26 @@ namespace Reko.Arch.X86
                     SrcOp(2)));
         }
 
+        private static readonly string[] roundingIntrinsics32 =
+        {
+            "roundf", "floorf", "ceilf", "truncf"
+        };
+        private static readonly string[] roundingIntrinsics64 =
+        {
+            "round", "floor", "ceil", "trunc"
+        };
+
+        private void RewriteRoundsx(bool isVex, PrimitiveType dt)
+        {
+            var mode = ((Constant) SrcOp(isVex ? 3 : 2)).ToInt32() & 0b11;
+            string intrinsic = dt.BitSize == 32
+                ? roundingIntrinsics32[mode]
+                : roundingIntrinsics64[mode];
+            var src = SrcOp(1);
+            var dst = SrcOp(0);
+            VexAssign(isVex, dst, host.PseudoProcedure(intrinsic, dt, m.Slice(dt, src, 0)));
+        }
+
         private void RewriteScalarBinop(Func<Expression, Expression, Expression> fn, PrimitiveType size, bool zeroExtend)
         {
             var dst = SrcOp(0);

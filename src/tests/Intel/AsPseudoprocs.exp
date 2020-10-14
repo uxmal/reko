@@ -13,5 +13,5 @@
 0B00:0010 0F A3 C1        	bt	cx,ax
 0B00:0013 0F BA E1 02     	bt	cx,2h
 0B00:0017 0F BD 0C        	bsr	cx,[si]
-0B00:001A 66 0F BD C8     	bsr	ecx,eax
+0B00:001A 66 0F BD C8     	bsr	cx,ax
 0B00:001E C2 04 00        	ret	4h

@@ -208,12 +208,15 @@ namespace Reko.Arch.X86
             }
         }
 
-        public class Group6Decoder : Decoder
+        /// <summary>
+        /// Different decoding depending on whether the ModRM byte is a mem or a reg access.
+        /// </summary>
+        public class MemRegDecoder : Decoder
         {
             private readonly Decoder memDecoder;
             private readonly Decoder regDecoder;
 
-            public Group6Decoder(
+            public MemRegDecoder(
                 Decoder memDecoder,
                 Decoder regDecoder)
             {
@@ -603,9 +606,15 @@ namespace Reko.Arch.X86
                 else if (disasm.decodingContext.SizeOverridePrefix)
                 {
                     if (disasm.isRegisterExtensionEnabled && disasm.decodingContext.RegisterExtension.FlagWideValue)
+                    {
+                        disasm.decodingContext.dataWidth = PrimitiveType.Word64;
                         return decoder66Wide.Decode(disasm, op);
+                    }
                     else
+                    {
+                        disasm.decodingContext.dataWidth = disasm.defaultDataWidth;
                         return decoder66.Decode(disasm, op);
+                    }
                 }
                 else
                 {
