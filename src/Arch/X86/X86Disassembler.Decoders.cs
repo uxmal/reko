@@ -392,21 +392,23 @@ namespace Reko.Arch.X86
         {
             public override bool Decode(X86Disassembler disasm, byte op)
             {
-                if (!disasm.rdr.TryReadByte(out op))
-                    return false;
-                var rxb = op >> 5;
-                var mmmmm = op & 0x1F;
-
-                if (!disasm.rdr.TryReadByte(out op))
-                    return false;
-                var w = op >> 7;
-                var vvvv = (~op >> 3) & 0xF;
-                var pp = op & 0x3;
-
                 var ctx = disasm.decodingContext;
+                if (ctx.RegisterExtension.ByteValue != 0 || ctx.SizeOverridePrefix || ctx.F2Prefix || ctx.F3Prefix)
+                    return false;
+                if (!disasm.rdr.TryReadByte(out byte evex1))
+                    return false;
+                var rxb = evex1 >> 5;
+                var mmmmm = evex1 & 0x1F;
+
+                if (!disasm.rdr.TryReadByte(out byte evex2))
+                    return false;
+                var w = evex2 >> 7;
+                var vvvv = (~evex2 >> 3) & 0xF;
+                var pp = evex2 & 0x3;
+
                 ctx.IsVex = true;
                 ctx.VexRegister = (byte) vvvv;
-                ctx.VexLong = (op & 4) != 0;
+                ctx.VexLong = (evex2 & 4) != 0;
                 ctx.RegisterExtension.FlagWideValue = w != 0;
                 ctx.RegisterExtension.FlagTargetModrmRegister = (rxb & 4) == 0;
                 ctx.RegisterExtension.FlagTargetSIBIndex = (rxb & 2) == 0;
@@ -420,7 +422,7 @@ namespace Reko.Arch.X86
                 switch (mmmmm)
                 {
                 case 1: decoders = s_decoders0F; break;
-                case 2: decoders = s_decoders0F38; break;
+                case 2: decoders = s_decoders0F38;  break;
                 case 3: decoders = s_decoders0F3A; break;
                 default: return false;
                 }
