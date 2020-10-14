@@ -4324,7 +4324,7 @@ namespace Reko.UnitTests.Arch.X86
                 "0|L--|0000000140000000(6): 1 instructions",
                 "1|L--|xmm0 = SEQ(SLICE(xmm0, word96, 32), truncf(SLICE(xmm3, real32, 0)))");
         }
-
+ 
         /*
         [Test]
         public void X86Rw_fstsw_and_cmp_jz()
