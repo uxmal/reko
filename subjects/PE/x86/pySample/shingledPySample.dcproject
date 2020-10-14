@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v4">
+<project xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemata.jklnet.org/Reko/v5">
   <arch>x86-protected-32</arch>
   <platform>win32</platform>
   <input>
     <filename>pySample.dll</filename>
-    <disassembly>pySample.asm</disassembly>
-    <intermediate-code>pySample.dis</intermediate-code>
-    <output>pySample.c</output>
-    <types-file>pySample.h</types-file>
-    <global-vars>pySample.globals.c</global-vars>
+    <asmDir>shingledPySample.reko</asmDir>
+    <srcDir>shingledPySample.reko</srcDir>
+    <includeDir>shingledPySample.reko</includeDir>
+    <resources>shingledPySample.reko\resources</resources>
     <user>
       <processor />
       <procedure name="py_unused">
@@ -23,8 +22,10 @@
         </arr>
         <Name>methods</Name>
       </global>
+      <heuristic name="shingle" />
       <onLoad Enabled="false" />
       <registerValues />
+      <extractResources>false</extractResources>
       <outputFilePolicy>Segment</outputFilePolicy>
     </user>
   </input>
