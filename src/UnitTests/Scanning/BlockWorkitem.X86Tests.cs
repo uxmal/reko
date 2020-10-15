@@ -25,6 +25,7 @@ using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -411,8 +412,8 @@ namespace Reko.UnitTests.Scanning
                 scanner.Setup(x => x.FindContainingBlock(It.Is<Address>(addr => addr.Offset == 0x003A))).Returns(block123A);
             });
 
-            var mem = this.program.SegmentMap.Segments.Values.First().MemoryArea;
-            mem.WriteBytes(
+            var bmem = (ByteMemoryArea) this.program.SegmentMap.Segments.Values.First().MemoryArea;
+            bmem.WriteBytes(
                 new byte[] {
                     0x34, 0x00,
                     0x36, 0x00,

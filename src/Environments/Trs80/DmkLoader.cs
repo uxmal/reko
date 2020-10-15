@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -21,6 +21,7 @@
 using Reko.Arch.Z80;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Environments.Trs80.Dmk;
 using System;
@@ -61,7 +62,7 @@ namespace Reko.Environments.Trs80
             var bytes = tracks.SelectMany(t => t.Sectors)
                 .SelectMany(s => s.GetData())
                 .ToArray();
-            var mem = new MemoryArea(addrLoad, bytes);
+            var mem = new ByteMemoryArea(addrLoad, bytes);
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture("z80");
             var platform = cfgSvc.GetEnvironment("trs80").Load(Services, arch);
@@ -74,16 +75,16 @@ namespace Reko.Environments.Trs80
             };
         }
 
-        private SegmentMap CreateMemoryMap(IPlatform platform, MemoryArea mem)
+        private SegmentMap CreateMemoryMap(IPlatform platform, ByteMemoryArea bmem)
         {
             var segmentMap = platform.CreateAbsoluteMemoryMap();
             foreach (var seg in segmentMap.Segments.Values)
             {
-                seg.MemoryArea = new MemoryArea(seg.Address, new byte[seg.Size]);
+                seg.MemoryArea = new ByteMemoryArea(seg.Address, new byte[seg.Size]);
             }
             segmentMap.AddSegment(new ImageSegment(
                 "code", 
-                mem, 
+                bmem, 
                 AccessMode.ReadWriteExecute));
             return segmentMap;
         }

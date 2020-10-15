@@ -35,6 +35,7 @@ using Reko.Core.Types;
 using Reko.Core.Expressions;
 using System.Globalization;
 using Reko.Core.Output;
+using Reko.Core.Memory;
 
 namespace Reko.Core.Serialization
 {
@@ -100,7 +101,7 @@ namespace Reko.Core.Serialization
         /// <returns></returns>
         private static bool IsXmlFile(byte[] image)
         {
-            if (MemoryArea.CompareArrays(image, 0, new byte[] { 0x3C, 0x3F, 0x78, 0x6D, 0x6C }, 5)) // <?xml
+            if (ByteMemoryArea.CompareArrays(image, 0, new byte[] { 0x3C, 0x3F, 0x78, 0x6D, 0x6C }, 5)) // <?xml
                 return true;
             return false;
         }

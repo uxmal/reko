@@ -30,6 +30,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.M68k.Assembler
 {
@@ -595,12 +596,12 @@ namespace Reko.Arch.M68k.Assembler
             throw new NotImplementedException();
         }
 
-        public MemoryArea GetImage()
+        public ByteMemoryArea GetImage()
         {
-            return new MemoryArea(addrBase, emitter.GetBytes());
+            return new ByteMemoryArea(addrBase, emitter.GetBytes());
         }
 
-        public MemoryArea Image
+        public ByteMemoryArea Image
         {
             get { return GetImage(); }
         }

@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.Cray;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
@@ -51,13 +52,13 @@ namespace Reko.UnitTests.Arch.Cray.Ymp
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
             var state = new CrayProcessorState(arch);
-            return arch.CreateRewriter(new BeImageReader(mem, 0), state, binder, host);
+            return arch.CreateRewriter(arch.CreateImageReader(mem, 0), state, binder, host);
         }
 
         protected void Given_OctalString(string octalBytes)
         {
             var bytes = YmpDisassemblerTests.OctalStringToBytes(octalBytes);
-            Given_MemoryArea(new MemoryArea(LoadAddress, bytes));
+            Given_MemoryArea(new ByteMemoryArea(LoadAddress, bytes));
         }
 
         [Test]

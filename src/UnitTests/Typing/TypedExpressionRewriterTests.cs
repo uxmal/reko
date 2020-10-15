@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.Typing;
 using Reko.UnitTests.Fragments;
@@ -145,7 +146,7 @@ namespace Reko.UnitTests.Typing
         private ProgramBuilder CreateProgramBuilder(uint linearAddress, int size)
         {
             return new ProgramBuilder(
-                new MemoryArea(Address.Ptr32(linearAddress), new byte[size]));
+                new ByteMemoryArea(Address.Ptr32(linearAddress), new byte[size]));
         }
 
         private void DumpProgram(Program program, TextWriter tw)
@@ -1052,7 +1053,7 @@ test_exit:
 
             var seg = new ImageSegment(
                 "1234",
-                new MemoryArea(Address.SegPtr(0x1234, 0), new byte[0x100]),
+                new ByteMemoryArea(Address.SegPtr(0x1234, 0), new byte[0x100]),
                 AccessMode.ReadWriteExecute);
             seg.Identifier = Identifier.CreateTemporary("seg1234", PrimitiveType.SegmentSelector);
             imageSegments.Add(seg.Address, seg);

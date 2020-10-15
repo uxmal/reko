@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,12 +31,12 @@ namespace Reko.Environments.Trs80.Basic
 {
     public class L2BasicReader : IEnumerable<L2BasicInstruction>
     {
-        private MemoryArea image;
-        private ushort lineOffset;
+        private readonly ByteMemoryArea bmem;
+        private readonly ushort lineOffset;
 
-        public L2BasicReader(MemoryArea image, ushort lineOffset)
+        public L2BasicReader(ByteMemoryArea bmem, ushort lineOffset)
         {
-            this.image = image;
+            this.bmem = bmem;
             this.lineOffset = lineOffset;
         }
 
@@ -59,18 +60,15 @@ namespace Reko.Environments.Trs80.Basic
 
         public L2BasicInstruction ReadLine(Address addr)
         {
-            var rdr = image.CreateLeReader(addr);
-            ushort next;
-            ushort line;
-            byte b;
-            if (!rdr.TryReadLeUInt16(out next))
+            var rdr = bmem.CreateLeReader(addr);
+            if (!rdr.TryReadLeUInt16(out ushort next))
                 return null;
-            if (!rdr.TryReadLeUInt16(out line))
+            if (!rdr.TryReadLeUInt16(out ushort line))
                 return null;
             if (next < 0x0801)
                 return null;
             var mem = new MemoryStream();
-            while (rdr.TryReadByte(out b) && b != 0)
+            while (rdr.TryReadByte(out byte b) && b != 0)
             {
                 mem.WriteByte(b);
             }

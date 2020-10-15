@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using Reko.Core.Serialization;
 using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.X86
 {
@@ -54,7 +55,7 @@ namespace Reko.UnitTests.Arch.X86
 		[SetUp]
 		public void Setup()
 		{
-            var mem = new MemoryArea(Address.Ptr32(0x10000), new byte[4]);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x10000), new byte[4]);
             program = new Program
             {
                 SegmentMap = new SegmentMap(
@@ -138,9 +139,9 @@ namespace Reko.UnitTests.Arch.X86
 
 	public class FakeRewriterHost : IRewriterHost
 	{
-        private Program program;
-		private Dictionary<Address,FunctionType> callSignatures;
-		private Dictionary<Address,Procedure> procedures;
+        private readonly Program program;
+		private readonly Dictionary<Address,FunctionType> callSignatures;
+		private readonly Dictionary<Address,Procedure> procedures;
 
 		public FakeRewriterHost(Program program)
 		{
@@ -200,8 +201,7 @@ namespace Reko.UnitTests.Arch.X86
 
         public FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
 		{
-            FunctionType sig;
-            if (callSignatures.TryGetValue(addrCallInstruction, out sig))
+            if (callSignatures.TryGetValue(addrCallInstruction, out FunctionType sig))
                 return sig;
             else
                 return null;
@@ -229,8 +229,7 @@ namespace Reko.UnitTests.Arch.X86
 
 		public Procedure GetProcedureAtAddress(Address addr, int cbStackDepth)
 		{
-            Procedure proc;
-            return procedures.TryGetValue(addr, out proc) ? proc : null;
+            return procedures.TryGetValue(addr, out Procedure proc) ? proc : null;
 		}
 
 		public Procedure [] GetProceduresFromVector(Address vectorAddress)
@@ -238,7 +237,7 @@ namespace Reko.UnitTests.Arch.X86
 			return new Procedure[0];
 		}
 
-		public MemoryArea Image
+		public ByteMemoryArea Image
 		{
 			get { throw new NotImplementedException(); }
 		}

@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.MicroBlaze;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
@@ -51,7 +52,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
             var state = new MicroBlazeState(arch);
-            return arch.CreateRewriter(new BeImageReader(mem, 0), state, binder, host);
+            return arch.CreateRewriter(mem.CreateBeReader(0), state, binder, host);
         }
 
         [Test]

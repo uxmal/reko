@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Arch.Pdp11;
 using System.Collections.Generic;
 using Reko.Core.Types;
+using Reko.Core.Memory;
 
 namespace Reko.Environments.RT11
 {
@@ -33,10 +34,7 @@ namespace Reko.Environments.RT11
             this.PreferredBaseAddress = Address.Ptr16(0);
         }
 
-        public override Address PreferredBaseAddress
-        {
-            get; set;
-        }
+        public override Address PreferredBaseAddress { get; set; }
 
         public override Program Load(Address addrLoad)
         {
@@ -45,7 +43,7 @@ namespace Reko.Environments.RT11
             return new Program(
                 new SegmentMap(addrLoad,
                 new ImageSegment(".text",
-                        new MemoryArea(addrLoad, RawImage),
+                        new ByteMemoryArea(addrLoad, RawImage),
                         AccessMode.ReadWriteExecute)),
                 arch,
                 new RT11Platform(Services, arch));
@@ -54,7 +52,7 @@ namespace Reko.Environments.RT11
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             var header = CreateSavHeader(program.Architecture);
-            var uaddrEntry = MemoryArea.ReadLeUInt16(RawImage, 0x20);
+            var uaddrEntry = ByteMemoryArea.ReadLeUInt16(RawImage, 0x20);
             var entry = ImageSymbol.Procedure(program.Architecture, Address.Ptr16(uaddrEntry));
             return new RelocationResults(
                 new List<ImageSymbol> { entry },

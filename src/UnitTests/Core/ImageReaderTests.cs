@@ -25,6 +25,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Core
 {
@@ -46,7 +47,7 @@ namespace Reko.UnitTests.Core
         {
             var img =
                 new LeImageReader(
-                    new MemoryArea(
+                    new ByteMemoryArea(
                         Address.Ptr32(0x10000),
                         new byte[] {
                             0x12, 0x34, 0x03, 0x00, 0x00, 0x00, 0x46, 0x00,
@@ -61,7 +62,7 @@ namespace Reko.UnitTests.Core
         public void ImrBounded_ReadByte()
         {
             // The memarea is 2 bytes...
-            var mem = new MemoryArea(Address.Ptr32(0x1213), new byte[] { 0x12, 0x34 });
+            var mem = new ByteMemoryArea(Address.Ptr32(0x1213), new byte[] { 0x12, 0x34 });
             // ...but we wish to limit it to 1 byte
             var rdr = new LeImageReader(mem, mem.BaseAddress, mem.BaseAddress + 1);
             Assert.IsTrue(rdr.IsValid);

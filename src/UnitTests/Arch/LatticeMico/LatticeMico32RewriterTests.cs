@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Arch.LatticeMico;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;

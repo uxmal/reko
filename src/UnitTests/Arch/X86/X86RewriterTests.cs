@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Arch.X86.Assembler;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using System;
@@ -63,7 +64,7 @@ namespace Reko.UnitTests.Arch.X86
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
             return arch.CreateRewriter(
-                new LeImageReader(mem, 0),
+                mem.CreateLeReader(0),
                 arch.CreateProcessorState(),
                 binder,
                 this.host);
@@ -111,35 +112,35 @@ namespace Reko.UnitTests.Arch.X86
         private void Run16bitTest(params byte[] bytes)
         {
             arch = arch16;
-            Given_MemoryArea(new MemoryArea(baseAddr16, bytes));
+            Given_MemoryArea(new ByteMemoryArea(baseAddr16, bytes));
             host = new RewriterHost(null);
         }
 
         private void Run32bitTest(params byte[] bytes)
         {
             arch = arch32;
-            Given_MemoryArea(new MemoryArea(baseAddr32, bytes));
+            Given_MemoryArea(new ByteMemoryArea(baseAddr32, bytes));
             host = new RewriterHost(null);
         }
 
         private void Run32bitTest(string hexBytes)
         {
             arch = arch32;
-            Given_MemoryArea(new MemoryArea(baseAddr32, BytePattern.FromHexBytes(hexBytes).ToArray()));
+            Given_MemoryArea(new ByteMemoryArea(baseAddr32, BytePattern.FromHexBytes(hexBytes).ToArray()));
             host = new RewriterHost(null);
         }
 
         private void Run64bitTest(params byte[] bytes)
         {
             arch = arch64;
-            Given_MemoryArea(new MemoryArea(baseAddr64, bytes));
+            Given_MemoryArea(new ByteMemoryArea(baseAddr64, bytes));
             host = new RewriterHost(null);
         }
 
         private void Run64bitTest(string hexBytes)
         {
             arch = arch64;
-            Given_MemoryArea(new MemoryArea(baseAddr64, BytePattern.FromHexBytes(hexBytes).ToArray()));
+            Given_MemoryArea(new ByteMemoryArea(baseAddr64, BytePattern.FromHexBytes(hexBytes).ToArray()));
             host = new RewriterHost(null);
         }
 

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -59,7 +60,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
             this.addrStart = Address.Max(segment.Address, mem.BaseAddress);
             this.position = addrStart;
-            this.addrEnd = Address.Min(segment.Address + segment.Size, mem.EndAddress);
+            //$BUG: the BaseAddress + length is unsafe! it will overflow!
+            this.addrEnd = Address.Min(segment.Address + segment.Size, mem.BaseAddress + mem.Length);
         }
 
         public object StartPosition { get { return addrStart; } }

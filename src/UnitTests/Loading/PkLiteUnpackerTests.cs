@@ -30,6 +30,7 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Loading
 {
@@ -39,7 +40,7 @@ namespace Reko.UnitTests.Loading
         [Test]
         public void ValidateImage()
         {
-            MemoryArea rawImage = new MemoryArea(Address.SegPtr(0x0C00, 0), CreateMsdosHeader());
+            ByteMemoryArea rawImage = new ByteMemoryArea(Address.SegPtr(0x0C00, 0), CreateMsdosHeader());
             ExeImageLoader exe = new ExeImageLoader(null, "foo.exe", rawImage.Bytes);
             Assert.IsTrue(PkLiteUnpacker.IsCorrectUnpacker(exe, rawImage.Bytes));
         }

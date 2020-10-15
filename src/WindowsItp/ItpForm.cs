@@ -22,6 +22,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Environments.Windows;
 using Reko.Gui;
@@ -233,7 +234,7 @@ namespace Reko.WindowsItp
         private void byteMapViewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             byte[] buf = GenerateImageData();
-            var mem = new MemoryArea(Address.Ptr32(0x0040000), buf);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x0040000), buf);
             var dlg = new ByteMapDialog();
             var ctrl = new ByteMapView();
             dlg.Controls.Add(ctrl);

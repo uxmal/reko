@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work from:
@@ -21,6 +21,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Libraries.Microchip;
 using System;
 using System.Collections.Generic;
@@ -73,7 +74,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                         throw new InvalidOperationException("Attempt to load a binary image which is not compatible with the selected PIC's program memory space.");
                     var rd = segt.MemoryArea.CreateLeReader(curAddr);
                     var b = rd.ReadBytes((int)fitSize);
-                    var splitMem = new MemoryArea(curAddr, b);
+                    var splitMem = new ByteMemoryArea(curAddr, b);
                     string segmentName = (renameSection ? GetRegionSequentialName(regn) : GetSegmentSequentialName(segt));
                     var newsegt = new ImageSegment(segmentName, splitMem, GetAccessMode(regn));
                     newMap.AddSegment(newsegt);
@@ -165,13 +166,14 @@ namespace Reko.Arch.MicrochipPIC.Common
                 var dcr = PICMemoryDescriptor.GetDCR(dcf.RegAddress);
                 if (program.SegmentMap.TryFindSegment(dcr.Address, out ImageSegment xinstsegt))
                 {
+                    var mem = (ByteMemoryArea) xinstsegt.MemoryArea;
                     uint xinstval;
                     if (dcr.BitWidth <= 8)
-                        xinstval = xinstsegt.MemoryArea.ReadByte(dcf.RegAddress);
+                        xinstval = mem.ReadByte(dcf.RegAddress);
                     else if (dcr.BitWidth <= 16)
-                        xinstval = xinstsegt.MemoryArea.ReadLeUInt16(dcf.RegAddress);
+                        xinstval = mem.ReadLeUInt16(dcf.RegAddress);
                     else
-                        xinstval = xinstsegt.MemoryArea.ReadLeUInt32(dcf.RegAddress);
+                        xinstval = mem.ReadLeUInt32(dcf.RegAddress);
                     pexec = (dcr.CheckIf("XINST", "ON", xinstval) ? PICExecMode.Extended : PICExecMode.Traditional);
                 }
             }

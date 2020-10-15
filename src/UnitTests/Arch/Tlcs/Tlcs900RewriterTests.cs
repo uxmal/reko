@@ -23,6 +23,7 @@ using Reko.Arch.Tlcs;
 using Reko.Arch.Tlcs.Tlcs900;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
@@ -43,8 +44,8 @@ namespace Reko.UnitTests.Arch.Tlcs
 
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            var state = (Tlcs900ProcessorState)arch.CreateProcessorState();
-            return new Tlcs900Rewriter(arch, new LeImageReader(mem, 0), state, binder, host);
+            var state = arch.CreateProcessorState();
+            return arch.CreateRewriter(arch.CreateImageReader(mem, 0), state, binder, host);
         }
 
 

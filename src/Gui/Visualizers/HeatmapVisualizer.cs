@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,10 +41,10 @@ namespace Reko.Gui.Visualizers
         public bool TrackSelection => true;
         public bool ShowScrollbar => true;
 
-        public int[] RenderBuffer(Program program, MemoryArea mem, Address addrStart, int length, int? mouse)
+        public int[] RenderBuffer(Program program, ByteMemoryArea bmem, Address addrStart, int length, int? mouse)
         {
-            var iStart = addrStart - mem.BaseAddress;
-            var iEnd = Math.Min(iStart + length, mem.Bytes.Length);
+            var iStart = addrStart - bmem.BaseAddress;
+            var iEnd = Math.Min(iStart + length, bmem.Bytes.Length);
             var colors = new int[iEnd - iStart];
             for (int i = 0; i < colors.Length; ++i)
             {
@@ -56,7 +57,7 @@ namespace Reko.Gui.Visualizers
                     // Render pixel in a heat map color
                     // Code taken from
                     // http://stackoverflow.com/questions/20792445/calculate-rgb-value-for-a-range-of-values-to-create-heat-map
-                    var ratio = 2 * mem.Bytes[i + iStart] / 255;
+                    var ratio = 2 * bmem.Bytes[i + iStart] / 255;
                     var b = Convert.ToInt32(Math.Max(0, 255 * (1 - ratio)));
                     var r = Convert.ToInt32(Math.Max(0, 255 * (ratio - 1)));
                     var g = 255 - b - r;

@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
@@ -42,7 +43,7 @@ namespace Reko.UnitTests.Core
         {
             this.sw = new StringWriter();
             var fmt = new TextFormatter(sw);
-            var mem = new MemoryArea(Address.Ptr32(0x00123400), bytes);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00123400), bytes);
             var rdr = mem.CreateLeReader(0);
             this.tdd = new TypedDataDumper(rdr, (uint) mem.Length, fmt);
         }

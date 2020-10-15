@@ -26,6 +26,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -98,7 +99,7 @@ namespace Reko.UnitTests.Scanning
 
         private SegmentMap CreateSegmentMap(uint uiAddr, uint size)
         {
-            var mem = new MemoryArea(Address.Ptr32(uiAddr), new byte[size]);
+            var mem = new ByteMemoryArea(Address.Ptr32(uiAddr), new byte[size]);
             var seg = new ImageSegment(".data", mem, AccessMode.ReadWrite);
             return new SegmentMap(Address.Ptr32(uiAddr), seg);
         }

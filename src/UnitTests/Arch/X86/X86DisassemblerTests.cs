@@ -24,6 +24,7 @@ using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
@@ -50,7 +51,7 @@ namespace Reko.UnitTests.Arch.X86
 
         private X86Instruction Disassemble16(params byte[] bytes)
         {
-            MemoryArea img = new MemoryArea(Address.SegPtr(0xC00, 0), bytes);
+            ByteMemoryArea img = new ByteMemoryArea(Address.SegPtr(0xC00, 0), bytes);
             EndianImageReader rdr = img.CreateLeReader(img.BaseAddress);
             var dasm =  ProcessorMode.Real.CreateDisassembler(sc, rdr, options);
             if (options != null)
@@ -62,7 +63,7 @@ namespace Reko.UnitTests.Arch.X86
 
         private X86Instruction Disassemble32(params byte[] bytes)
         {
-            var img = new MemoryArea(Address.Ptr32(0x10000), bytes);
+            var img = new ByteMemoryArea(Address.Ptr32(0x10000), bytes);
             var rdr = img.CreateLeReader(img.BaseAddress);
             var dasm = new X86Disassembler(sc, ProcessorMode.Protected32, rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
             return dasm.First();
@@ -70,7 +71,7 @@ namespace Reko.UnitTests.Arch.X86
 
         private X86Instruction Disassemble64(params byte[] bytes)
         {
-            var img = new MemoryArea(Address.Ptr64(0x10000), bytes);
+            var img = new ByteMemoryArea(Address.Ptr64(0x10000), bytes);
             var rdr = img.CreateLeReader(img.BaseAddress);
             var dasm = new X86Disassembler(
                 sc,
@@ -84,7 +85,7 @@ namespace Reko.UnitTests.Arch.X86
 
         private void CreateDisassembler16(params byte[] bytes)
         {
-            var mem = new MemoryArea(Address.SegPtr(0x0C00, 0), bytes);
+            var mem = new ByteMemoryArea(Address.SegPtr(0x0C00, 0), bytes);
             CreateDisassembler16(mem);
         }
 
@@ -103,12 +104,12 @@ namespace Reko.UnitTests.Arch.X86
             }
         }
 
-        private void CreateDisassembler32(MemoryArea image)
+        private void CreateDisassembler32(MemoryArea mem)
         {
             dasm = new X86Disassembler(
                 sc,
                 ProcessorMode.Protected32,
-                image.CreateLeReader(image.BaseAddress),
+                mem.CreateLeReader(mem.BaseAddress),
                 PrimitiveType.Word32,
                 PrimitiveType.Word32,
                 false);
@@ -233,8 +234,8 @@ foo:
                 "rcr	word ptr [bp+4],4\r\n" +
                 "rcl	ax,1\r\n");
 
-            MemoryArea img = lr.SegmentMap.Segments.Values.First().MemoryArea;
-            CreateDisassembler16(img.CreateLeReader(img.BaseAddress));
+            var bmem = (ByteMemoryArea) lr.SegmentMap.Segments.Values.First().MemoryArea;
+            CreateDisassembler16(bmem.CreateLeReader(bmem.BaseAddress));
             StringBuilder sb = new StringBuilder();
             foreach (var instr in dasm.Take(4))
             {
@@ -311,8 +312,8 @@ movzx	ax,byte ptr [bp+4h]
              *  pshufhw xmm0, dqword ptr ds:[eax], 0
              */
 
-            MemoryArea img = lr.SegmentMap.Segments.Values.First().MemoryArea;
-            CreateDisassembler32(img);
+            var bmem = (ByteMemoryArea) lr.SegmentMap.Segments.Values.First().MemoryArea;
+            CreateDisassembler32(bmem);
             var instructions = dasm.GetEnumerator();
 
             X86Instruction one = DisEnumerator_TakeNext(instructions);
@@ -407,7 +408,7 @@ movzx	ax,byte ptr [bp+4h]
         public void X86dis_RelocatedOperand()
         {
             byte[] image = new byte[] { 0xB8, 0x78, 0x56, 0x34, 0x12 };	// mov eax,0x12345678<32>
-            MemoryArea img = new MemoryArea(Address.Ptr32(0x00100000), image);
+            ByteMemoryArea img = new ByteMemoryArea(Address.Ptr32(0x00100000), image);
             img.Relocations.AddPointerReference(0x00100001ul, 0x12345678);
             EndianImageReader rdr = img.CreateLeReader(img.BaseAddress);
             X86Disassembler dasm = new X86Disassembler(
@@ -426,7 +427,7 @@ movzx	ax,byte ptr [bp+4h]
         public void X86Dis_RelocatedSegment()
         {
             byte[] image = new byte[] { 0x2E, 0xC7, 0x06, 0x01, 0x00, 0x00, 0x08 }; // mov cs:[0001],0800
-            MemoryArea img = new MemoryArea(Address.SegPtr(0x900, 0), image);
+            ByteMemoryArea img = new ByteMemoryArea(Address.SegPtr(0x900, 0), image);
             var relAddr = Address.SegPtr(0x900, 5);
             img.Relocations.AddSegmentReference(relAddr.ToLinear(), 0x0800);
             EndianImageReader rdr = img.CreateLeReader(img.BaseAddress);
@@ -836,8 +837,8 @@ movzx	ax,byte ptr [bp+4h]
                 "stosw\r\n" +
                 "stosd\r\n");
 
-            MemoryArea img = lr.SegmentMap.Segments.Values.First().MemoryArea;
-            CreateDisassembler32(img);
+            MemoryArea mem = lr.SegmentMap.Segments.Values.First().MemoryArea;
+            CreateDisassembler32(mem);
             var instructions = dasm.GetEnumerator();
 
             List<X86Instruction> instr = new List<X86Instruction>();

@@ -25,6 +25,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 
@@ -617,7 +618,7 @@ namespace Reko.ImageLoaders.MzExe
                 access |= AccessMode.Execute;
 
             //$REVIEW: the address calculation doesn't take into account zero-filled pages. 
-            var mem = new MemoryArea(addrLoad + seg.DataOffset, new byte[seg.DataLength]);
+            var mem = new ByteMemoryArea(addrLoad + seg.DataOffset, new byte[seg.DataLength]);
             Buffer.BlockCopy(
                 RawImage, (int)seg.DataOffset,
                 mem.Bytes, 0,

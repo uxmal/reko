@@ -18,16 +18,12 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Memory;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using System.ComponentModel.Design;
+using System.Windows.Forms;
 
 namespace Reko.WindowsItp
 {
@@ -42,7 +38,7 @@ namespace Reko.WindowsItp
         {
             if (chkShowData.Checked)
             {
-                var mem = new MemoryArea(Address.Ptr32(0x00100000), new byte[2560]);
+                var mem = new ByteMemoryArea(Address.Ptr32(0x00100000), new byte[2560]);
                 var segMap = new SegmentMap(mem.BaseAddress,
                     new ImageSegment("", mem, AccessMode.ReadWriteExecute));
                 var imgMap = segMap.CreateImageMap();

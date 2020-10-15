@@ -32,6 +32,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Types;
 using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -59,7 +60,7 @@ namespace Reko.UnitTests.Scanning
                     Address.Ptr32(0x00120000),
                     new ImageSegment(
                         ".text",
-                        new MemoryArea(Address.Ptr32(0x00120000), new byte[0x10000]),
+                        new ByteMemoryArea(Address.Ptr32(0x00120000), new byte[0x10000]),
                         AccessMode.ReadExecute))
             };
             binder = new StorageBinder();

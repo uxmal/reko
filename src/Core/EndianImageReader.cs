@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -34,10 +35,10 @@ namespace Reko.Core
     /// </summary>
 	public abstract class EndianImageReader : ImageReader
 	{
-		protected EndianImageReader(MemoryArea img, Address addr) : base(img, addr) { }
-		protected EndianImageReader(MemoryArea img, long offsetBegin, long offsetEnd) : base(img, offsetBegin, offsetEnd) { }
-		protected EndianImageReader(MemoryArea img, Address addrBegin, Address addrEnd) : base(img, addrBegin, addrEnd) { }
-		protected EndianImageReader(MemoryArea img, long off) : base(img, off) { }
+		protected EndianImageReader(ByteMemoryArea img, Address addr) : base(img, addr) { }
+		protected EndianImageReader(ByteMemoryArea img, long offsetBegin, long offsetEnd) : base(img, offsetBegin, offsetEnd) { }
+		protected EndianImageReader(ByteMemoryArea img, Address addrBegin, Address addrEnd) : base(img, addrBegin, addrEnd) { }
+		protected EndianImageReader(ByteMemoryArea img, long off) : base(img, off) { }
 		protected EndianImageReader(byte[] img, long off) : base(img, off) { }
 		protected EndianImageReader(byte[] img) : this(img, 0) { }
 
@@ -48,7 +49,7 @@ namespace Reko.Core
         /// <param name="offset"></param>
         /// <returns></returns>
 		public abstract EndianImageReader CreateNew(byte[] bytes, long offset);
-		public abstract EndianImageReader CreateNew(MemoryArea image, Address addr);
+		public abstract EndianImageReader CreateNew(ByteMemoryArea image, Address addr);
 
 		public virtual EndianImageReader Clone()
 		{
@@ -159,10 +160,10 @@ namespace Reko.Core
 	public class LeImageReader : EndianImageReader
 	{
 		public LeImageReader(byte[] bytes, long offset = 0) : base(bytes, offset) { }
-		public LeImageReader(MemoryArea image, long offset) : base(image, offset) { }
-		public LeImageReader(MemoryArea image, Address addr) : base(image, addr) { }
-		public LeImageReader(MemoryArea image, long offsetBegin, long offsetEnd) : base(image, offsetBegin, offsetEnd) { }
-		public LeImageReader(MemoryArea image, Address addrBegin, Address addrEnd) : base(image, addrBegin, addrEnd) { }
+		public LeImageReader(ByteMemoryArea image, long offset) : base(image, offset) { }
+		public LeImageReader(ByteMemoryArea image, Address addr) : base(image, addr) { }
+		public LeImageReader(ByteMemoryArea image, long offsetBegin, long offsetEnd) : base(image, offsetBegin, offsetEnd) { }
+		public LeImageReader(ByteMemoryArea image, Address addrBegin, Address addrEnd) : base(image, addrBegin, addrEnd) { }
         public LeImageReader(byte[] bytes) : this(bytes, 0) { }
 
 		public override EndianImageReader CreateNew(byte[] bytes, long offset)
@@ -170,7 +171,7 @@ namespace Reko.Core
 			return new LeImageReader(bytes, offset);
 		}
 
-		public override EndianImageReader CreateNew(MemoryArea image, Address addr)
+		public override EndianImageReader CreateNew(ByteMemoryArea image, Address addr)
 		{
 			return new LeImageReader(image, (uint)(addr - image.BaseAddress));
 		}
@@ -212,10 +213,10 @@ namespace Reko.Core
 	public class BeImageReader : EndianImageReader
 	{
 		public BeImageReader(byte[] bytes, long offset) : base(bytes, offset) { }
-		public BeImageReader(MemoryArea image, long offset) : base(image, offset) { }
-		public BeImageReader(MemoryArea image, Address addr) : base(image, addr) { }
-		public BeImageReader(MemoryArea image, long offsetBegin, long offsetEnd) : base(image, offsetBegin, offsetEnd) { }
-		public BeImageReader(MemoryArea image, Address addrBegin, Address addrEnd) : base(image, addrBegin, addrEnd) { }
+		public BeImageReader(ByteMemoryArea image, long offset) : base(image, offset) { }
+		public BeImageReader(ByteMemoryArea image, Address addr) : base(image, addr) { }
+		public BeImageReader(ByteMemoryArea image, long offsetBegin, long offsetEnd) : base(image, offsetBegin, offsetEnd) { }
+		public BeImageReader(ByteMemoryArea image, Address addrBegin, Address addrEnd) : base(image, addrBegin, addrEnd) { }
 		public BeImageReader(byte[] bytes) : this(bytes, 0) { }
 
 		public override EndianImageReader CreateNew(byte[] bytes, long offset)
@@ -223,7 +224,7 @@ namespace Reko.Core
 			return new BeImageReader(bytes, offset);
 		}
 
-		public override EndianImageReader CreateNew(MemoryArea image, Address addr)
+		public override EndianImageReader CreateNew(ByteMemoryArea image, Address addr)
 		{
 			return new BeImageReader(image, (uint)(addr - image.BaseAddress));
 		}

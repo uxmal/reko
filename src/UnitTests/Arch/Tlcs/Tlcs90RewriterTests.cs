@@ -23,6 +23,7 @@ using Reko.Arch.Tlcs;
 using Reko.Arch.Tlcs.Tlcs90;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
@@ -35,16 +36,16 @@ namespace Reko.UnitTests.Arch.Tlcs
     [TestFixture]
     public class Tlcs90RewriterTests : RewriterTestBase
     {
-        private Tlcs90Architecture arch = new Tlcs90Architecture(new ServiceContainer(), "tlcs90");
-        private Address baseAddr = Address.Ptr16(0x0100);
+        private readonly Tlcs90Architecture arch = new Tlcs90Architecture(new ServiceContainer(), "tlcs90");
+        private readonly Address baseAddr = Address.Ptr16(0x0100);
 
         public override IProcessorArchitecture Architecture => arch;
         public override Address LoadAddress => baseAddr;
 
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            Tlcs90State state = (Tlcs90State)arch.CreateProcessorState();
-            return new Tlcs90Rewriter(arch, new LeImageReader(mem, 0), state, binder, host);
+            var state = arch.CreateProcessorState();
+            return arch.CreateRewriter(arch.CreateImageReader(mem, 0), state, binder, host);
         }
 
         [SetUp]

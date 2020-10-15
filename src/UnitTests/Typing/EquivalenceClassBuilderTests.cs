@@ -26,6 +26,7 @@ using Reko.Typing;
 using NUnit.Framework;
 using System;
 using Reko.UnitTests.Mocks;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Typing
 {
@@ -121,7 +122,7 @@ namespace Reko.UnitTests.Typing
             var tmp = new TemporaryStorage("seg1234", 0, PrimitiveType.SegmentSelector);
             var segment = new ImageSegment(
                     "seg1234",
-                    new MemoryArea(Address.SegPtr(0x1234, 0), new byte[100]),
+                    new ByteMemoryArea(Address.SegPtr(0x1234, 0), new byte[100]),
                     AccessMode.ReadWriteExecute)
             {
                 Identifier = new Identifier(tmp.Name, PrimitiveType.SegmentSelector, tmp)

@@ -111,7 +111,7 @@ namespace Reko.Environments.BbcMicro
         public override Program Load(Address? addrLoad)
         {
             LoadDirectory();
-            return null;
+            throw new NotImplementedException();
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Output;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -452,6 +453,7 @@ namespace Reko.UserInterfaces.WindowsForms
             var dlgFactory = services.RequireService<IDialogFactory>();
             var uiSvc = services.RequireService<IDecompilerShellUiService>();
             var srSvc = services.RequireService<ISearchResultService>();
+
             using (ISearchDialog dlg = dlgFactory.CreateSearchDialog())
             {
                 dlg.InitialPattern = SelectionToHex(addrRange);
@@ -461,7 +463,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     var hits =
                         //$BUG: wrong result
                         program.SegmentMap.Segments.Values
-                        .SelectMany(s => re.GetMatches(s.MemoryArea.Bytes, 0))
+                        .SelectMany(s => GetMatches(s, re))
                         .Select(offset => new AddressSearchHit(
                             program,
                             program.ImageMap.BaseAddress + offset,
@@ -470,6 +472,12 @@ namespace Reko.UserInterfaces.WindowsForms
                 }
             }
             return true;
+        }
+
+        private IEnumerable<int> GetMatches(ImageSegment s, Core.Dfa.Automaton re)
+        {
+            var mem = (ByteMemoryArea) s.MemoryArea;
+            return re.GetMatches(mem.Bytes, 0);
         }
 
         public bool ChooseTextEncoding()

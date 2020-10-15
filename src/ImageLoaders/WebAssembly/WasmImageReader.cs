@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace Reko.ImageLoaders.WebAssembly
         {
         }
 
-        public WasmImageReader(MemoryArea mem) : base(mem, 0)
+        public WasmImageReader(ByteMemoryArea mem) : base(mem, 0)
         {
         }
 

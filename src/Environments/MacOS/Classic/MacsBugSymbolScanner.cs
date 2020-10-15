@@ -26,6 +26,7 @@ using System.Threading.Tasks;
 using Reko.Core;
 using Reko.Core.Lib;
 using System.Text.RegularExpressions;
+using Reko.Core.Memory;
 
 namespace Reko.Environments.MacOS.Classic
 {
@@ -86,7 +87,7 @@ namespace Reko.Environments.MacOS.Classic
         private BeImageReader rdr;
         private Regex reValidVariableLengthProcedureName;
 
-        public MacsBugSymbolScanner(IProcessorArchitecture arch, MemoryArea mem)
+        public MacsBugSymbolScanner(IProcessorArchitecture arch, ByteMemoryArea mem)
         {
             this.arch = arch;
             this.rdr = mem.CreateBeReader(0);

@@ -160,7 +160,9 @@ namespace Reko.Core.Emulation
                 throw new AccessViolationException();
             var mem = segment.MemoryArea;
             var off = ea - mem.BaseAddress.ToLinear();
-            return mem.ReadLeUInt16((uint) off);
+            if (!mem.TryReadLeUInt16((uint) off, out ushort retvalue))
+                throw new AccessViolationException();
+            return retvalue;
         }
 
         public uint ReadLeUInt32(ulong ea)
@@ -169,7 +171,9 @@ namespace Reko.Core.Emulation
                 throw new AccessViolationException();
             var mem = segment.MemoryArea;
             var off = ea - mem.BaseAddress.ToLinear();
-            return mem.ReadLeUInt32((uint) off);
+            if (!mem.TryReadLeUInt32((uint) off, out var retvalue))
+                throw new AccessViolationException();
+            return retvalue;
         }
 
         public void WriteByte(ulong ea, byte value)

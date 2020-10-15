@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.ImageLoaders.MachO.Arch;
 using System;
@@ -79,7 +80,7 @@ namespace Reko.ImageLoaders.MachO
 
         public Parser CreateParser()
         {
-            if (!MemoryArea.TryReadBeUInt32(RawImage, 0, out uint magic))
+            if (!ByteMemoryArea.TryReadBeUInt32(RawImage, 0, out uint magic))
                 throw new BadImageFormatException("Invalid Mach-O header.");
             switch (magic)
             {
@@ -117,7 +118,7 @@ namespace Reko.ImageLoaders.MachO
             for (uint i = 0; i < sec.Size; i += msec.Reserved2)
             {
                 var addrStub = sec.Address + i;
-                var addr = parser.specific.ReadStub(addrStub, sec.MemoryArea);
+                var addr = parser.specific.ReadStub(addrStub, (ByteMemoryArea)sec.MemoryArea);
                 if (program.ImportReferences.TryGetValue(addr, out var refe))
                 {
                     var stubSym = ImageSymbol.ExternalProcedure(program.Architecture, addrStub, refe.EntryName);

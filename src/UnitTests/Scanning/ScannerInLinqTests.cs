@@ -24,6 +24,7 @@ using Reko.Arch.X86;
 using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Scanning;
@@ -67,7 +68,7 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_x86_Image(params byte[] bytes)
         {
-            var image = new MemoryArea(
+            var image = new ByteMemoryArea(
                 Address.Ptr32(0x10000),
                 bytes);
             this.rd = image.Relocations;
@@ -77,7 +78,7 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_Image(IProcessorArchitecture arch, params byte[] bytes)
         {
-            var image = new MemoryArea(
+            var image = new ByteMemoryArea(
                 Address.Ptr32(0x10000),
                 bytes);
             this.rd = image.Relocations;
@@ -95,15 +96,15 @@ namespace Reko.UnitTests.Scanning
             this.program.Platform = new DefaultPlatform(null, arch);
         }
 
-        private void CreateProgram(MemoryArea mem, IProcessorArchitecture arch)
+        private void CreateProgram(ByteMemoryArea bmem, IProcessorArchitecture arch)
         {
-            var segmentMap = new SegmentMap(mem.BaseAddress);
+            var segmentMap = new SegmentMap(bmem.BaseAddress);
             var seg = segmentMap.AddSegment(new ImageSegment(
                 ".text",
-                mem,
+                bmem,
                 AccessMode.ReadExecute)
             {
-                Size = (uint)mem.Bytes.Length
+                Size = (uint)bmem.Bytes.Length
             });
             seg.Access = AccessMode.ReadExecute;
             var platform = new DefaultPlatform(null, arch);

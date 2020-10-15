@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.M68k
 {
@@ -44,8 +45,8 @@ namespace Reko.UnitTests.Arch.M68k
         private IEnumerator<M68kInstruction> CreateDasm(byte[] bytes, uint address)
         {
             Address addr = Address.Ptr32(address);
-            MemoryArea img = new MemoryArea(addr, bytes);
-            return M68kDisassembler.Create68020(arch.Services, img.CreateBeReader(addr)).GetEnumerator();
+            ByteMemoryArea mem = new ByteMemoryArea(addr, bytes);
+            return M68kDisassembler.Create68020(arch.Services, mem.CreateBeReader(addr)).GetEnumerator();
         }
 
         public override IProcessorArchitecture Architecture

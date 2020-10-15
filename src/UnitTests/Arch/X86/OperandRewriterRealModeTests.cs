@@ -26,6 +26,7 @@ using NUnit.Framework;
 using System;
 using Reko.Core.Machine;
 using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.X86
 {
@@ -46,7 +47,7 @@ namespace Reko.UnitTests.Arch.X86
         {
             var sc = new ServiceContainer();
             arch = new X86ArchitectureReal(sc, "x86-real-16");
-            var mem = new MemoryArea(Address.Ptr32(0x10000), new byte[4]);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x10000), new byte[4]);
 			var program = new Program(
                 new SegmentMap(
                     mem.BaseAddress,

@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Gui.Forms;
 using System;
 using System.Collections.Generic;
@@ -58,25 +59,28 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public Button OkButton => btnOK;
 
-        public void LoadUserSegment(byte[] bytes, UserSegment segment)
+        public void LoadUserSegment(MemoryArea mem, UserSegment segment)
         {
-            this.Bytes = bytes;
-            if (segment != null)
+            if (mem is ByteMemoryArea bmem)
             {
-                this.SegmentName.Text = segment.Name;
-                this.Offset.Text = segment.Offset.ToString("X");
-                this.Length.Text = segment.Length.ToString("X");
-                this.Address.Text = segment.Address.ToString();
-                interactor.SelectArchitecture(segment.Architecture.Name);
-                this.ReadMode.Checked = (segment.AccessMode & AccessMode.Read) != 0;
-                this.WriteMode.Checked = (segment.AccessMode & AccessMode.Read) != 0;
-                this.ExecuteMode.Checked = (segment.AccessMode & AccessMode.Read) != 0;
-            }
-            else
-            {
-                this.Offset.Text = "0";
-                this.Length.Text = "0";
-                this.Address.Text = "0";
+                this.Bytes = bmem.Bytes;
+                if (segment != null)
+                {
+                    this.SegmentName.Text = segment.Name;
+                    this.Offset.Text = segment.Offset.ToString("X");
+                    this.Length.Text = segment.Length.ToString("X");
+                    this.Address.Text = segment.Address.ToString();
+                    interactor.SelectArchitecture(segment.Architecture.Name);
+                    this.ReadMode.Checked = (segment.AccessMode & AccessMode.Read) != 0;
+                    this.WriteMode.Checked = (segment.AccessMode & AccessMode.Read) != 0;
+                    this.ExecuteMode.Checked = (segment.AccessMode & AccessMode.Read) != 0;
+                }
+                else
+                {
+                    this.Offset.Text = "0";
+                    this.Length.Text = "0";
+                    this.Address.Text = "0";
+                }
             }
         }
 

@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.CompactRisc;
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.IO.IsolatedStorage;
@@ -48,7 +49,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
         // [Test]
         public void Cr16Dasm_Gen()
         {
-            var mem = new MemoryArea(Address.Ptr16(0x8000), new byte[1024]);
+            var mem = new ByteMemoryArea(Address.Ptr16(0x8000), new byte[1024]);
             var rnd = new Random(0x4711);
             rnd.NextBytes(mem.Bytes);
             var rdr = mem.CreateBeReader(0);

@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Lib;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.ImageLoaders.Elf.Relocators;
 using System;
@@ -167,9 +168,9 @@ namespace Reko.ImageLoaders.Elf
             return Segments.FirstOrDefault(s => s.IsValidAddress(uAddr));
         }
 
-        public static SortedList<Address, MemoryArea> AllocateMemoryAreas(IEnumerable<Tuple<Address, uint>> segments)
+        public static SortedList<Address, ByteMemoryArea> AllocateMemoryAreas(IEnumerable<Tuple<Address, uint>> segments)
         {
-            var mems = new SortedList<Address, MemoryArea>();
+            var mems = new SortedList<Address, ByteMemoryArea>();
             Address addr = null;
             Address addrEnd = null;
             foreach (var pair in segments)
@@ -182,7 +183,7 @@ namespace Reko.ImageLoaders.Elf
                 else if (addrEnd < pair.Item1)
                 {
                     var size = (uint)(addrEnd - addr);
-                    mems.Add(addr, new MemoryArea(addr, new byte[size]));
+                    mems.Add(addr, new ByteMemoryArea(addr, new byte[size]));
                     addr = pair.Item1;
                     addrEnd = pair.Item1 + pair.Item2;
                 }
@@ -194,7 +195,7 @@ namespace Reko.ImageLoaders.Elf
             if (addr != null)
             {
                 var size = (uint)(addrEnd - addr);
-                mems.Add(addr, new MemoryArea(addr, new byte[size]));
+                mems.Add(addr, new ByteMemoryArea(addr, new byte[size]));
             }
             return mems;
         }

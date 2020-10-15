@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,7 @@ namespace Reko.ImageLoaders.WebAssembly
         {
             this.arch = arch;
             this.addr = rdr.Address;
-            this.rdr = new WasmImageReader(new MemoryArea(rdr.Address, rdr.Bytes))
+            this.rdr = new WasmImageReader(new ByteMemoryArea(rdr.Address, rdr.Bytes))
             {
                 Offset = rdr.Offset
             };

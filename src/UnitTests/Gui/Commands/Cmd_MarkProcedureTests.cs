@@ -21,6 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Commands;
@@ -39,7 +40,7 @@ namespace Reko.UnitTests.Gui.Commands
         public void Setup()
         {
             this.sc = new ServiceContainer();
-            var mem = new MemoryArea(Address.SegPtr(0x0C00, 0), new byte[100]);
+            var mem = new ByteMemoryArea(Address.SegPtr(0x0C00, 0), new byte[100]);
             this.program = new Program
             {
                 SegmentMap = new SegmentMap(

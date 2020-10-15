@@ -18,17 +18,16 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Types;
-using NUnit.Framework;
-using System;
-using System.Text;
 
-namespace Reko.UnitTests.Core
+namespace Reko.UnitTests.Core.Memory
 {
-	[TestFixture]
-	public class MemoryAreaTests
+    [TestFixture]
+	public class ByteMemoryAreaTests
 	{
 		[Test]
 		public void PriReadLiterals()
@@ -41,7 +40,7 @@ namespace Reko.UnitTests.Core
 				0x27, 0x10, 0x10, 0x10, 0x10, 0x10, 0x80, 0x3F,
 				0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x49, 0x40,
 			};
-			var img = new MemoryArea(Address.SegPtr(0xC00, 0), bytes);
+			var img = new ByteMemoryArea(Address.SegPtr(0xC00, 0), bytes);
 			Assert.AreEqual(-0x7F01FFFF, img.ReadLeInt32(0));
 			Assert.AreEqual(0.5, img.ReadLeDouble(0x04).ToDouble(), 0.00001);
             Assert.AreEqual(1.0, img.ReadLeDouble(0x0C).ToDouble(), 0.00001);
@@ -54,7 +53,7 @@ namespace Reko.UnitTests.Core
 		public void UShortFixup()
 		{
 			var bytes = new byte[] { 0x01, 0x02, 0x03 };
-			var img = new MemoryArea(Address.SegPtr(0x0C00, 0), bytes);
+			var img = new ByteMemoryArea(Address.SegPtr(0x0C00, 0), bytes);
 			ushort newSeg = img.FixupLeUInt16(1, 0x4444);
 			Assert.AreEqual(0x4746, newSeg);
 		}
@@ -62,7 +61,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void TryReadLeUShort()
 		{
-			MemoryArea img = new MemoryArea(Address.Ptr32(0x10000), new byte[] {
+			ByteMemoryArea img = new ByteMemoryArea(Address.Ptr32(0x10000), new byte[] {
 				0x78, 0x56, 0x34, 0x12 });
 			Assert.IsTrue(img.TryReadLe(2, PrimitiveType.Word16, out Constant c));
 			Assert.AreSame(PrimitiveType.Word16, c.DataType);
@@ -72,7 +71,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void TryReadLeUInt32()
 		{
-			MemoryArea img = new MemoryArea(Address.Ptr32(0x10000), new byte[] {
+			ByteMemoryArea img = new ByteMemoryArea(Address.Ptr32(0x10000), new byte[] {
 				0x78, 0x56, 0x34, 0x12 });
 			Assert.IsTrue(img.TryReadLe(0, PrimitiveType.Word32, out Constant c));
 			Assert.AreSame(PrimitiveType.Word32, c.DataType);
@@ -82,7 +81,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void TryReadLeNegativeInt()
 		{
-			MemoryArea img = new MemoryArea(Address.Ptr32(0x10000), new byte[] {
+			ByteMemoryArea img = new ByteMemoryArea(Address.Ptr32(0x10000), new byte[] {
 				0xFE, 0xFF, 0xFF, 0xFF });
 			Assert.IsTrue(img.TryReadLe(0, PrimitiveType.Int32, out Constant c));
 			Assert.AreSame(PrimitiveType.Int32, c.DataType);

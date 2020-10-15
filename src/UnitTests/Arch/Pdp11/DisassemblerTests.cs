@@ -29,6 +29,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.Pdp11
 {
@@ -65,7 +66,7 @@ namespace Reko.UnitTests.Arch.Pdp11
             {
                 writer.WriteLeUInt16(word);
             }
-            var image = new MemoryArea(Address.Ptr16(0x200), bytes);
+            var image = new ByteMemoryArea(Address.Ptr16(0x200), bytes);
             var rdr = new LeImageReader(image, 0);
             var arch = new Pdp11Architecture(new ServiceContainer(), "pdp11");
             var dasm = new Pdp11Disassembler(rdr, arch);

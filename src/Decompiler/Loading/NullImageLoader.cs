@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -78,10 +79,9 @@ namespace Reko.Loading
         public SegmentMap CreatePlatformSegmentMap(IPlatform platform, Address loadAddr, byte[] rawBytes)
         {
             var segmentMap = platform.CreateAbsoluteMemoryMap() ?? new SegmentMap(loadAddr);
-            var mem = new MemoryArea(loadAddr, rawBytes);
+            var mem = new ByteMemoryArea(loadAddr, rawBytes);
             segmentMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
             return segmentMap;
         }
-
     }
 }

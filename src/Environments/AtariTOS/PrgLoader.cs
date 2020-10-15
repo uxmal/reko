@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,7 +52,7 @@ namespace Reko.Environments.AtariTOS
             if (!TryLoadHeader(rdr, out var hdr))
                 throw new BadImageFormatException();
 
-            var mem = new MemoryArea(addrLoad, new byte[ hdr.TextSize + hdr.DataSize + hdr.BssSize ]);
+            var mem = new ByteMemoryArea(addrLoad, new byte[ hdr.TextSize + hdr.DataSize + hdr.BssSize ]);
             int cRead = rdr.ReadBytes(mem.Bytes, 0, hdr.TextSize + hdr.DataSize);
             if (cRead != hdr.TextSize + hdr.DataSize)
                 throw new BadImageFormatException();
@@ -94,7 +95,7 @@ namespace Reko.Environments.AtariTOS
                 new SortedList<Address, ImageSymbol>());
         }
 
-        bool PerformRelocations(MemoryArea mem, ImageReader rdr)
+        bool PerformRelocations(ByteMemoryArea mem, ImageReader rdr)
         {
             if (!rdr.TryReadBeUInt32(out uint fixup))
                 return false;

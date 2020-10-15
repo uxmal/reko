@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -84,7 +85,7 @@ namespace Reko.Core.Serialization
                 return null;
             }
 
-            var mem = new MemoryArea(addr, new byte[size]);
+            var mem = new ByteMemoryArea(addr, new byte[size]);
             return new ImageSegment(segment.Name, mem, ConvertAccess(segment.Attributes));
         }
 

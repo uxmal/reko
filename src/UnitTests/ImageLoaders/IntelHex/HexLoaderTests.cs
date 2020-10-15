@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.ImageLoaders.IntelHex;
 using Reko.UnitTests.Mocks;
@@ -124,7 +125,8 @@ namespace Reko.UnitTests.ImageLoaders.IntelHex
             var arch = new FakeArchitecture(sc);
             var program = hex.Load(Address.Ptr32(0x00), arch, new DefaultPlatform(sc, arch));
             Assert.AreEqual(1, program.SegmentMap.Segments.Count);
-            Assert.AreEqual(0x21, program.SegmentMap.Segments.Values[0].MemoryArea.Bytes[0]);
+            var bmem = (ByteMemoryArea) program.SegmentMap.Segments.Values[0].MemoryArea;
+            Assert.AreEqual(0x21, bmem.Bytes[0]);
         }
 
         [Test]
@@ -144,13 +146,13 @@ namespace Reko.UnitTests.ImageLoaders.IntelHex
             var program = hex.Load(Address.Ptr32(0x00), arch, new DefaultPlatform(sc, arch));
             Assert.AreEqual(1, program.SegmentMap.Segments.Count, "Wrong number of segments");
 
-            var memarea0 = program.SegmentMap.Segments.Values[0].MemoryArea;
-            Assert.AreEqual(Address.Ptr32(0x100), memarea0.BaseAddress);
-            Assert.AreEqual(64, memarea0.Length);
-            Assert.AreEqual(0x21, memarea0.Bytes[0]);
-            Assert.AreEqual(0x21, memarea0.Bytes[0x10]);
-            Assert.AreEqual(0x19, memarea0.Bytes[0x20]);
-            Assert.AreEqual(0x34, memarea0.Bytes[0x3E]);
+            var bmem0 = (ByteMemoryArea) program.SegmentMap.Segments.Values[0].MemoryArea;
+            Assert.AreEqual(Address.Ptr32(0x100), bmem0.BaseAddress);
+            Assert.AreEqual(64, bmem0.Length);
+            Assert.AreEqual(0x21, bmem0.Bytes[0]);
+            Assert.AreEqual(0x21, bmem0.Bytes[0x10]);
+            Assert.AreEqual(0x19, bmem0.Bytes[0x20]);
+            Assert.AreEqual(0x34, bmem0.Bytes[0x3E]);
         }
 
         [Test]
@@ -193,31 +195,31 @@ namespace Reko.UnitTests.ImageLoaders.IntelHex
             var program = hex.Load(Address.Ptr32(0x00), arch, new DefaultPlatform(sc, arch));
             Assert.AreEqual(5, program.SegmentMap.Segments.Count, "Wrong number of segments");
 
-            var memarea0 = program.SegmentMap.Segments.Values[0].MemoryArea;
-            Assert.AreEqual(Address.Ptr32(0), memarea0.BaseAddress);
-            Assert.AreEqual(14, memarea0.Length);
-            Assert.AreEqual(0x00, memarea0.Bytes[0]);
-            Assert.AreEqual(0x97, memarea0.Bytes[2]);
+            var bmem0 = (ByteMemoryArea) program.SegmentMap.Segments.Values[0].MemoryArea;
+            Assert.AreEqual(Address.Ptr32(0), bmem0.BaseAddress);
+            Assert.AreEqual(14, bmem0.Length);
+            Assert.AreEqual(0x00, bmem0.Bytes[0]);
+            Assert.AreEqual(0x97, bmem0.Bytes[2]);
 
-            var memarea1 = program.SegmentMap.Segments.Values[1].MemoryArea;
-            Assert.AreEqual(Address.Ptr32(0x18), memarea1.BaseAddress);
-            Assert.AreEqual(104, memarea1.Length);
-            Assert.AreEqual(0x3B, memarea1.Bytes[0]);
+            var bmem1 = (ByteMemoryArea) program.SegmentMap.Segments.Values[1].MemoryArea;
+            Assert.AreEqual(Address.Ptr32(0x18), bmem1.BaseAddress);
+            Assert.AreEqual(104, bmem1.Length);
+            Assert.AreEqual(0x3B, bmem1.Bytes[0]);
 
-            var memarea2 = program.SegmentMap.Segments.Values[2].MemoryArea;
-            Assert.AreEqual(Address.Ptr32(0x300000), memarea2.BaseAddress);
-            Assert.AreEqual(4, memarea2.Length);
-            Assert.AreEqual(0x24, memarea2.Bytes[0]);
+            var bmem2 = (ByteMemoryArea) program.SegmentMap.Segments.Values[2].MemoryArea;
+            Assert.AreEqual(Address.Ptr32(0x300000), bmem2.BaseAddress);
+            Assert.AreEqual(4, bmem2.Length);
+            Assert.AreEqual(0x24, bmem2.Bytes[0]);
 
-            var memarea3 = program.SegmentMap.Segments.Values[3].MemoryArea;
-            Assert.AreEqual(Address.Ptr32(0x300005), memarea3.BaseAddress);
-            Assert.AreEqual(2, memarea3.Length);
-            Assert.AreEqual(0x80, memarea3.Bytes[0]);
+            var bmem3 = (ByteMemoryArea) program.SegmentMap.Segments.Values[3].MemoryArea;
+            Assert.AreEqual(Address.Ptr32(0x300005), bmem3.BaseAddress);
+            Assert.AreEqual(2, bmem3.Length);
+            Assert.AreEqual(0x80, bmem3.Bytes[0]);
 
-            var memarea4 = program.SegmentMap.Segments.Values[4].MemoryArea;
-            Assert.AreEqual(Address.Ptr32(0x300008), memarea4.BaseAddress);
-            Assert.AreEqual(6, memarea4.Length);
-            Assert.AreEqual(0x0F, memarea4.Bytes[0]);
+            var bmem4 = (ByteMemoryArea) program.SegmentMap.Segments.Values[4].MemoryArea;
+            Assert.AreEqual(Address.Ptr32(0x300008), bmem4.BaseAddress);
+            Assert.AreEqual(6, bmem4.Length);
+            Assert.AreEqual(0x0F, bmem4.Bytes[0]);
         }
 
     }

@@ -27,6 +27,7 @@ using Reko.Core;
 using NUnit.Framework;
 using Reko.Core.Rtl;
 using Reko.ImageLoaders.WebAssembly;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.ImageLoaders.WebAssembly
 {

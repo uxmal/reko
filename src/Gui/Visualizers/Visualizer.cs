@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,7 +69,7 @@ namespace Reko.Gui.Visualizers
         /// <returns>An array of bytes in ARGB format. Missing bytes are rendered with the 
         /// ARGB value 0; this is in contrast with the ARGB value for 'black' which is
         /// 0xFF000000.</returns>
-        int[] RenderBuffer(Program program, MemoryArea mem, Address addrStart, int length, int? mouse);
+        int[] RenderBuffer(Program program, ByteMemoryArea mem, Address addrStart, int length, int? mouse);
 
         VisualAnnotation[] RenderAnnotations(Program program, Address addrStart, int length, int? mouse);
     }

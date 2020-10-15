@@ -22,6 +22,7 @@ using Reko.Arch.Mos6502;
 using Reko.Core;
 using Reko.Core.Archives;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -60,7 +61,7 @@ namespace Reko.Environments.C64
                 }
             }
             var arch = new Mos6502Architecture(Services, "mos6502");
-            var mem = new MemoryArea(Address.Ptr16(0), RawImage);
+            var mem = new ByteMemoryArea(Address.Ptr16(0), RawImage);
             var segmentMap = new SegmentMap(mem.BaseAddress);
             segmentMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
             return new Program
@@ -84,7 +85,7 @@ namespace Reko.Environments.C64
 
         private Program LoadPrg(T64FileEntry selectedFile)
         {
-            var image = new MemoryArea(
+            var image = new ByteMemoryArea(
                 Address.Ptr16(selectedFile.LoadAddress),
                 selectedFile.GetBytes());
             var rdr = new C64BasicReader(image, 0x0801);

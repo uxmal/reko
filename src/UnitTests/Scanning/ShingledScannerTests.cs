@@ -26,6 +26,7 @@ using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -100,7 +101,7 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_Mips_Image(params uint[] words)
         {
-            var image = new MemoryArea(
+            var image = new ByteMemoryArea(
                 Address.Ptr32(0x10000),
                 words.Select(w => new[]
                 {
@@ -117,7 +118,7 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_x86_Image(params byte[] bytes)
         {
-            var image = new MemoryArea(
+            var image = new ByteMemoryArea(
                 Address.Ptr32(0x10000),
                 bytes);
             this.rd = image.Relocations;
@@ -138,22 +139,22 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_x86_64_Image(params byte[] bytes)
         {
-            var image = new MemoryArea(
+            var bmem = new ByteMemoryArea(
                 Address.Ptr64(0x0100000000000000),
                 bytes);
             var arch = new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64");
-            CreateProgram(image, arch);
+            CreateProgram(bmem, arch);
         }
 
-        private void CreateProgram(MemoryArea mem, IProcessorArchitecture arch)
+        private void CreateProgram(ByteMemoryArea bmem, IProcessorArchitecture arch)
         {
-            var segmentMap = new SegmentMap(mem.BaseAddress);
+            var segmentMap = new SegmentMap(bmem.BaseAddress);
             var seg = segmentMap.AddSegment(new ImageSegment(
                 ".text",
-                mem,
+                bmem,
                 AccessMode.ReadExecute)
             {
-                Size = (uint)mem.Bytes.Length
+                Size = (uint)bmem.Bytes.Length
             });
             seg.Access = AccessMode.ReadExecute;
             var platform = new DefaultPlatform(arch.Services, arch);

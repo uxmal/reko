@@ -192,7 +192,7 @@ namespace Reko.Gui
                 return;
             using (var dlg = Services.RequireService<IDialogFactory>().CreateSegmentEditorDialog())
             {
-                dlg.LoadUserSegment(segment.MemoryArea.Bytes, new UserSegment
+                dlg.LoadUserSegment(segment.MemoryArea, new UserSegment
                 {
                     Name = segment.Name,
                     Address = segment.Address,

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -609,7 +610,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 Address.Ptr32(baseSeg),
                 dataSegs.Segments.Select(s => new ImageSegment(
                     $"data{s.MemoryIndex}",
-                    new MemoryArea(Address.Ptr32(s.Offset), s.Bytes),
+                    new ByteMemoryArea(Address.Ptr32(s.Offset), s.Bytes),
                     AccessMode.ReadWrite))
                     .ToArray());
         }

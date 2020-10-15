@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -21,6 +21,7 @@
 using Reko.Arch.Vax;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -57,7 +58,7 @@ namespace Reko.ImageLoaders.VmsExe
                     addr,
                     new ImageSegment(
                         "", 
-                        new MemoryArea(addr, RawImage),
+                        new ByteMemoryArea(addr, RawImage),
                         AccessMode.ReadWriteExecute)),
                 arch,
                 new DefaultPlatform(Services, arch, "VAX VMS"));   //$TODO: VaxVms platform

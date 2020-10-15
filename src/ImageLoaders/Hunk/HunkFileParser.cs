@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -586,14 +587,14 @@ namespace Reko.ImageLoaders.Hunk
             
             // check overlay manager
             var overlay_mgr_data = overlayManagerHunk.Data;
-            uint magic = MemoryArea.ReadBeUInt32(overlay_mgr_data, 4);
+            uint magic = ByteMemoryArea.ReadBeUInt32(overlay_mgr_data, 4);
             if (magic != 0xABCD)
                 throw new BadImageFormatException("No valid overlay manager found.");
 
             // check for standard overlay manager
-            var magic2 = MemoryArea.ReadBeUInt32(overlay_mgr_data, 24);
-            var magic3 = MemoryArea.ReadBeUInt32(overlay_mgr_data, 20);
-            var magic4 = MemoryArea.ReadBeUInt32(overlay_mgr_data, 32);
+            var magic2 = ByteMemoryArea.ReadBeUInt32(overlay_mgr_data, 24);
+            var magic3 = ByteMemoryArea.ReadBeUInt32(overlay_mgr_data, 20);
+            var magic4 = ByteMemoryArea.ReadBeUInt32(overlay_mgr_data, 32);
             var std_overlay = magic2 == 23456 && magic3 == 122648165 && magic4 == 1919705465;
             hunk.ov_std = std_overlay;
         }

@@ -32,6 +32,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Types;
 using Reko.Core.Serialization;
 using Reko.ImageLoaders.MzExe.Pe;
+using Reko.Core.Memory;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -91,7 +92,7 @@ namespace Reko.ImageLoaders.MzExe
         private ushort fileFlags;
 		private int sections;
         private uint rvaSectionTable;
-		private MemoryArea imgLoaded;
+		private ByteMemoryArea imgLoaded;
 		private Address preferredBaseOfImage;
         private List<Section> sectionList;
         private Dictionary<uint, PseudoProcedure> importThunks;
@@ -357,11 +358,11 @@ namespace Reko.ImageLoaders.MzExe
             return sectionMap;
 		}
 
-        public MemoryArea LoadSectionBytes(Address addrLoad, List<Section> sections)
+        public ByteMemoryArea LoadSectionBytes(Address addrLoad, List<Section> sections)
         {
             var vaMax = sections.Max(s => s.VirtualAddress);
             var sectionMax = sections.Where(s => s.VirtualAddress == vaMax).First();
-            var imgLoaded = new MemoryArea(addrLoad, new byte[sectionMax.VirtualAddress + Math.Max(sectionMax.VirtualSize, sectionMax.SizeRawData)]);
+            var imgLoaded = new ByteMemoryArea(addrLoad, new byte[sectionMax.VirtualAddress + Math.Max(sectionMax.VirtualSize, sectionMax.SizeRawData)]);
             foreach (Section s in sectionList)
             {
                 Array.Copy(RawImage, s.OffsetRawData, imgLoaded.Bytes, s.VirtualAddress, s.SizeRawData);

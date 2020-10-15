@@ -23,6 +23,7 @@ using Reko.Arch.X86;
 using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Environments.Msdos;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,8 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 
         private byte[] GetBytes(X86Assembler m)
         {
-            return m.GetImage().SegmentMap.Segments.Values.First().MemoryArea.Bytes;
+            var bmem = (ByteMemoryArea) m.GetImage().SegmentMap.Segments.Values.First().MemoryArea;
+            return bmem.Bytes;
         }
 
         [Test]

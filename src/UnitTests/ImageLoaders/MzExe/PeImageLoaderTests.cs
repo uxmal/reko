@@ -33,6 +33,7 @@ using Reko.Core.Types;
 using Reko.Environments.Windows;
 using System.Diagnostics;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.ImageLoaders.MzExe
 {
@@ -120,8 +121,8 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             writer.WriteLeInt32(0);         // characteristics
 
             // Increment the section count in the optional header.
-            short sections = MemoryArea.ReadLeInt16(fileImage, RvaPeHdr + 6);
-            MemoryArea.WriteLeInt16(fileImage, RvaPeHdr + 6, (short)(sections + 1));
+            short sections = ByteMemoryArea.ReadLeInt16(fileImage, RvaPeHdr + 6);
+            ByteMemoryArea.WriteLeInt16(fileImage, RvaPeHdr + 6, (short)(sections + 1));
         }
 
         private void Given_DelayLoadDirectories(params DelayLoadDirectoryEntry [] delayLoadDirectory)

@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.M6800;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System.Collections.Generic;
 
@@ -46,7 +47,7 @@ namespace Reko.UnitTests.Arch.M6800
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
             return arch.CreateRewriter(
-                new BeImageReader(mem, mem.BaseAddress),
+                mem.CreateBeReader(0),
                 arch.CreateProcessorState(),
                 binder,
                 host);

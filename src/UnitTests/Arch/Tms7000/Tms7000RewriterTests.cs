@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.Tms7000;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
@@ -47,7 +48,7 @@ namespace Reko.UnitTests.Arch.Tms7000
 
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            return new Tms7000Rewriter(arch, new BeImageReader(mem, 0), new Tms7000State(arch), binder, host);
+            return arch.CreateRewriter(arch.CreateImageReader(mem, 0), new Tms7000State(arch), binder, host);
         }
 
         [Test]

@@ -28,6 +28,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel.Design;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.Z80
 {
@@ -46,7 +47,7 @@ namespace Reko.UnitTests.Arch.Z80
 
         private MachineInstruction RunTest(params byte [] bytes)
         {
-            var image = new MemoryArea(Address.Ptr16(0x0100), bytes);
+            var image = new ByteMemoryArea(Address.Ptr16(0x0100), bytes);
             var rdr = new LeImageReader(image, 0);
             var dasm = arch.CreateDisassembler(rdr);
             return dasm.First();

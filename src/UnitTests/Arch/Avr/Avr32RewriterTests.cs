@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.Avr;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;

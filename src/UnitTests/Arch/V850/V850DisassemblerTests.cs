@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.V850;
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -62,7 +63,7 @@ namespace Reko.UnitTests.Arch.V850
             var buf = new byte[10000];
             var rnd = new Random(0x4711);
             rnd.NextBytes(buf);
-            var mem = new MemoryArea(addr, buf);
+            var mem = new ByteMemoryArea(addr, buf);
             var rdr = mem.CreateLeReader(mem.BaseAddress);
             var dasm = arch.CreateDisassembler(rdr);
             foreach (var instr in dasm)
@@ -435,6 +436,5 @@ namespace Reko.UnitTests.Arch.V850
         {
             AssertCode("zxb\tr14", "AE00");
         }
-
     }
 }

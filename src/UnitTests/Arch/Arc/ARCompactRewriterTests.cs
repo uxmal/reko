@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using Reko.Arch.Arc;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 
 namespace Reko.UnitTests.Arch.Arc

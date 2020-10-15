@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.zSeries;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
@@ -50,7 +51,7 @@ namespace Reko.UnitTests.Arch.zSeries
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
             return Architecture.CreateRewriter(
-                new BeImageReader(mem, mem.BaseAddress),
+                mem.CreateBeReader(mem.BaseAddress),
                 Architecture.CreateProcessorState(),
                 binder,
                 host);

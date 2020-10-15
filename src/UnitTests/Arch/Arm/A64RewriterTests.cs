@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.Arm;
 using Reko.Arch.Arm.AArch64;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            return arch.CreateRewriter(new LeImageReader(mem, 0), new Arm64State(arch), binder, host);
+            return arch.CreateRewriter(mem.CreateLeReader(0), new Arm64State(arch), binder, host);
         }
 
         private void Given_Instruction(params string[] bitStrings)
@@ -52,7 +53,7 @@ namespace Reko.UnitTests.Arch.Arm
             var bytes = bitStrings.Select(bits => base.BitStringToUInt32(bits))
                 .SelectMany(u => new byte[] { (byte)u, (byte)(u >> 8), (byte)(u >> 16), (byte)(u >> 24) })
                 .ToArray();
-            base.Given_MemoryArea(new MemoryArea(Address.Ptr32(0x00100000), bytes));
+            base.Given_MemoryArea(new ByteMemoryArea(Address.Ptr32(0x00100000), bytes));
         }
 
         private void Given_Instruction(params uint[] words)
@@ -60,7 +61,7 @@ namespace Reko.UnitTests.Arch.Arm
             var bytes = words
                 .SelectMany(u => new byte[] { (byte)u, (byte)(u >> 8), (byte)(u >> 16), (byte)(u >> 24) })
                 .ToArray();
-            Given_MemoryArea(new MemoryArea(Address.Ptr32(0x00100000), bytes));
+            Given_MemoryArea(new ByteMemoryArea(Address.Ptr32(0x00100000), bytes));
         }
 
         [Test]

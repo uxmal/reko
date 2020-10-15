@@ -31,6 +31,7 @@ using System.Linq;
 using System.Xml.Serialization;
 using System.Xml;
 using System.Text;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.X86
 {
@@ -39,7 +40,7 @@ namespace Reko.UnitTests.Arch.X86
     {
         private LeImageReader CreateImageReader(Address address, params byte[] bytes)
         {
-            return new LeImageReader(new MemoryArea(address, bytes), 0);
+            return new LeImageReader(new ByteMemoryArea(address, bytes), 0);
         }
 
         private uint[] GetItems(IEnumerator<uint> e)

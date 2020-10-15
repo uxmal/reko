@@ -28,6 +28,7 @@ using System.Text;
 
 namespace Reko.ImageLoaders.MachO
 {
+    using Reko.Core.Memory;
     using Reko.ImageLoaders.MachO.Arch;
     using static Reko.ImageLoaders.MachO.Parser.Command;
     using static Reko.ImageLoaders.MachO.SectionFlags;
@@ -396,7 +397,7 @@ namespace Reko.ImageLoaders.MachO
             if ((protection & VM_PROT_EXECUTE) != 0)
                 am |= AccessMode.Execute;
 
-            var mem = new MemoryArea(addr, bytes.ReadBytes((uint) size));
+            var mem = new ByteMemoryArea(addr, bytes.ReadBytes((uint) size));
             var machoSection = new MachOSection(name, addr, (SectionFlags) flags, reserved1, reserved2);
             var imageSection = new ImageSegment(name, mem, am);
             ldr.imageSections.Add(machoSection, imageSection);
@@ -676,7 +677,7 @@ namespace Reko.ImageLoaders.MachO
                 var data = rdr.ReadBytes(count * 4);
                 if (!mpCputypeToUnixthreadPc.TryGetValue(cputype, out uint uOffAddrStart))
                     throw new BadImageFormatException($"LC_PARSEUNIXTHREAD for CPU type {cputype} has not been implemented.");
-                var ep = MemoryArea.ReadBeUInt32(data, uOffAddrStart);
+                var ep = ByteMemoryArea.ReadBeUInt32(data, uOffAddrStart);
                 base.ldr.entryPoints.Add(ImageSymbol.Procedure(specific.Architecture, Address.Ptr32(ep)));
             }
         }

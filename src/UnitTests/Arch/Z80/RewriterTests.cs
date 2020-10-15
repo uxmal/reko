@@ -24,6 +24,7 @@ using Reko.Core.Rtl;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.Z80
 {
@@ -38,8 +39,8 @@ namespace Reko.UnitTests.Arch.Z80
 
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            var state = (Z80ProcessorState)arch.CreateProcessorState();
-            return new Z80Rewriter(arch, new LeImageReader(mem, 0), state, new Frame(arch.WordWidth), host);
+            var state = arch.CreateProcessorState();
+            return arch.CreateRewriter(arch.CreateImageReader(mem, 0), state, new Frame(arch.WordWidth), host);
         }
 
         [SetUp]

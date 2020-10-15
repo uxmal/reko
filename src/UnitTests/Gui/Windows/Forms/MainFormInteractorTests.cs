@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
@@ -227,7 +228,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private void Given_Loader()
         {
             var bytes = new byte[1000];
-            var mem = new MemoryArea(Address.SegPtr(0x0C00, 0x0000), bytes);
+            var mem = new ByteMemoryArea(Address.SegPtr(0x0C00, 0x0000), bytes);
             loader = new Mock<ILoader>();
             loader.Setup(l => l.LoadImageBytes(It.IsAny<string>(), It.IsAny<int>()))
                 .Returns(bytes);
@@ -429,7 +430,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             this.decompiler = new Mock<IDecompiler>();
             // Having a compiler presupposes having a project.
             var platform = mockFactory.CreateMockPlatform();
-            var mem = new MemoryArea(Address.Ptr32(0x00010000), new byte[100]);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00010000), new byte[100]);
             var project = new Project
             {
                 Programs = { new Program

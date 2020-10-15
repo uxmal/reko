@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Output;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
@@ -55,7 +56,7 @@ namespace Reko.UnitTests.Core
                     Address.Ptr32(0x00010000),
                     new ImageSegment(
                         ".text",
-                        new MemoryArea(
+                        new ByteMemoryArea(
                             Address.Ptr32(0x00010000),
                             Enumerable.Range(0, size)
                                 .Select(i => (byte) i)
@@ -66,9 +67,9 @@ namespace Reko.UnitTests.Core
             arch.Setup(a => a.CreateFrame()).Returns(
                 () => new Frame(PrimitiveType.Ptr32));
             arch.Setup(a => a.CreateImageReader(
-                It.IsNotNull<MemoryArea>(),
+                It.IsNotNull<ByteMemoryArea>(),
                 It.IsNotNull<Address>()))
-                .Returns((MemoryArea m, Address a) => new LeImageReader(m, a));
+                .Returns((ByteMemoryArea m, Address a) => new LeImageReader(m, a));
         }
 
         private void Given_Disassembly(params Mnemonic[] operations)
@@ -94,7 +95,7 @@ namespace Reko.UnitTests.Core
                     Address.Ptr32(0x00010000),
                     new ImageSegment(
                         ".text",
-                        new MemoryArea(
+                        new ByteMemoryArea(
                             Address.Ptr32(0x00010000),
                             Enumerable.Range(0, size)
                                 .Select(i => (byte)0)
@@ -285,10 +286,10 @@ l00010004		db	0x04
         {
             Given_32bit_Program_Zeros(110);
             arch.Setup(a => a.CreateImageReader(
-                It.IsAny<MemoryArea>(),
+                It.IsAny<ByteMemoryArea>(),
                 It.IsAny<Address>()))
                 .Returns(
-                    (MemoryArea m, Address a) => new LeImageReader(m, a));
+                    (ByteMemoryArea m, Address a) => new LeImageReader(m, a));
 
             var addr = program.ImageMap.BaseAddress + 8;
             var item = new ImageMapItem(addr, 90);

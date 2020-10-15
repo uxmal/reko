@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.XCore;
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +49,7 @@ namespace Reko.UnitTests.Arch.XCore
         [Test]
         public void XCore200Dis_GenerateRandom()
         {
-            var mem = new MemoryArea(Address.Ptr32(0x00100000), new byte[65536]);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00100000), new byte[65536]);
             var rnd = new Random(4711);
             rnd.NextBytes(mem.Bytes);
             var dasm = arch.CreateDisassembler(arch.CreateImageReader(mem, 0));

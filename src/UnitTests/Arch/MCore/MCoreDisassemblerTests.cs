@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.MCore;
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,7 +58,7 @@ namespace Reko.UnitTests.Arch.H8
             var rnd = new Random(0x1234);
             var bytes = new byte[0x10000];
             rnd.NextBytes(bytes);
-            var mem = new MemoryArea(Address.Ptr32(0x0010_0000), bytes);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x0010_0000), bytes);
             var dasm = arch.CreateDisassembler(mem.CreateBeReader(0));
             foreach (var instr in dasm)
             {

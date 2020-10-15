@@ -31,6 +31,7 @@ using System.Windows.Forms;
 using Reko.Core.Output;
 using Reko.Core.Services;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
@@ -98,7 +99,8 @@ namespace Reko.UserInterfaces.WindowsForms
                             var instr = dasm.Current;
                             if (lines <= 0)
                                 break;
-                            dumper.DumpAssemblerLine(segment.MemoryArea, program.Architecture, instr, formatter, options);
+                            var bmem = (ByteMemoryArea) segment.MemoryArea;
+                            dumper.DumpAssemblerLine(bmem, program.Architecture, instr, formatter, options);
                             --lines;
                         }
                     }

@@ -20,6 +20,7 @@
 
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Environments.Msdos;
 using System;
@@ -150,7 +151,7 @@ namespace Reko.ImageLoaders.MzExe
             if (RawImage.Length < e_lfanewOffset + 4)
                 return null;
             
-            uint e_lfanew = MemoryArea.ReadLeUInt32(base.RawImage, e_lfanewOffset);
+            uint e_lfanew = ByteMemoryArea.ReadLeUInt32(base.RawImage, e_lfanewOffset);
             if (e_lfanew == 0 || e_lfanew + 4 >= RawImage.Length)
                 return null;
             return e_lfanew;

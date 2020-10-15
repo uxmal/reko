@@ -33,6 +33,7 @@ using Reko.Core;
 using System.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.Environments.Msdos
 {
@@ -83,7 +84,7 @@ namespace Reko.Environments.Msdos
             char[] temp = new char[4];
 
             program.SegmentMap.TryFindSegment(start, out ImageSegment segment);
-            var image = segment.MemoryArea;
+            var image = (ByteMemoryArea) segment.MemoryArea;
             var startOff = (uint)(start - image.BaseAddress);   // Offset into the Image of the initial CS:IP
 
             // Check the Turbo Pascal signatures first, since they involve only the
@@ -158,7 +159,7 @@ namespace Reko.Environments.Msdos
                     addrEntry = image.BaseAddress + i + OFFMAINSMALL + 2 + srel;    /* Save absolute image offset */
                     chModel = 's';                          /* Small model */
                 }
-                else if (MemoryArea.CompareArrays(image.Bytes, (int)startOff, pattTPasStart, pattTPasStart.Length))
+                else if (ByteMemoryArea.CompareArrays(image.Bytes, (int)startOff, pattTPasStart, pattTPasStart.Length))
                 {
                     var srel = image.ReadLeInt16(startOff + 1);     /* Get the jump offset */
                     addrEntry = start + srel + 3;          /* Save absolute image offset */
@@ -186,7 +187,7 @@ namespace Reko.Environments.Msdos
             //program.addressingMode = chModel;
 
             /* Now decide the compiler vendor and version number */
-            if (MemoryArea.CompareArrays(image.Bytes, (int)startOff, pattMsC5Start, pattMsC5Start.Length))
+            if (ByteMemoryArea.CompareArrays(image.Bytes, (int)startOff, pattMsC5Start, pattMsC5Start.Length))
             {
                 /* Yes, this is Microsoft startup code. The DS is sitting right here
                     in the next 2 bytes */
@@ -197,7 +198,7 @@ namespace Reko.Environments.Msdos
             }
 
             /* The C8 startup pattern is different from C5's */
-            else if (MemoryArea.CompareArrays(image.Bytes, (int)startOff, pattMsC8Start, pattMsC8Start.Length))
+            else if (ByteMemoryArea.CompareArrays(image.Bytes, (int)startOff, pattMsC8Start, pattMsC8Start.Length))
             {
                 setState("ds", image.ReadLeUInt16((uint)(startOff + pattMsC8Start.Length)));
                 chVendor = 'm';                     /* Microsoft compiler */
@@ -206,7 +207,7 @@ namespace Reko.Environments.Msdos
             }
 
             /* The C8 .com startup pattern is different again! */
-            else if (MemoryArea.CompareArrays(
+            else if (ByteMemoryArea.CompareArrays(
                 image.Bytes,
                 (int)startOff,
                 pattMsC8ComStart,
@@ -263,10 +264,10 @@ namespace Reko.Environments.Msdos
             return ImageSymbol.Procedure(arch, addrEntry, "main", state: this.state);
         }
 
-        private Address ReadSegPtr(MemoryArea mem, uint offset)
+        private Address ReadSegPtr(ByteMemoryArea bmem, uint offset)
         {
-            var off = mem.ReadLeUInt16(offset);
-            var seg = mem.ReadLeUInt16(offset + 2);
+            var off = bmem.ReadLeUInt16(offset);
+            var seg = bmem.ReadLeUInt16(offset + 2);
             return Address.SegPtr(seg, off);
         }
 

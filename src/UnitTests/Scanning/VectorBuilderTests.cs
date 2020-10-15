@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Lib;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
@@ -37,7 +38,7 @@ namespace Reko.UnitTests.Scanning
     public class VectorBuilderTests
     {
         private Program program;
-        private MemoryArea mem;
+        private ByteMemoryArea mem;
         private ServiceContainer sc;
         private Mock<IProcessorArchitecture> arch;
 
@@ -59,7 +60,7 @@ namespace Reko.UnitTests.Scanning
                 It.IsAny<ProcessorState>()))
                 .Returns((int s, EndianImageReader r, ProcessorState st) =>
                      Address.Ptr32(r.ReadLeUInt32()));
-            mem = new MemoryArea(Address.Ptr32(0x00010000), bytes);
+            mem = new ByteMemoryArea(Address.Ptr32(0x00010000), bytes);
             this.program = new Program(
                 new SegmentMap(mem.BaseAddress,
                     new ImageSegment(".text", mem, AccessMode.ReadExecute)),

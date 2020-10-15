@@ -22,6 +22,7 @@ using Reko.Core.Assemblers;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -85,10 +86,10 @@ namespace Reko.Core
         /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred endianness of the processor.
         /// </summary>
-        /// <param name="img">Program image to read</param>
+        /// <param name="memoryArea">Memory area to read</param>
         /// <param name="addr">Address at which to start</param>
         /// <returns>An <seealso cref="EndianImageReader"/> of the appropriate endianness</returns>
-        EndianImageReader CreateImageReader(MemoryArea img, Address addr);
+        EndianImageReader CreateImageReader(MemoryArea memoryArea, Address addr);
 
         /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred 
@@ -431,11 +432,11 @@ namespace Reko.Core
         public virtual IAssembler CreateAssembler(string? asmDialect) => throw new NotSupportedException("This architecture doesn't support assembly language.");
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);
         public Frame CreateFrame() { return new Frame(FramePointerType); }
-        public EndianImageReader CreateImageReader(MemoryArea img, Address addr) => this.Endianness.CreateImageReader(img, addr);
-        public EndianImageReader CreateImageReader(MemoryArea img, long offsetBegin, long offsetEnd) => Endianness.CreateImageReader(img, offsetBegin, offsetEnd);
-        public EndianImageReader CreateImageReader(MemoryArea img, long off) => Endianness.CreateImageReader(img, off);
+        public EndianImageReader CreateImageReader(MemoryArea mem, Address addr) => this.Endianness.CreateImageReader(mem, addr);
+        public EndianImageReader CreateImageReader(MemoryArea mem, long offsetBegin, long offsetEnd) => Endianness.CreateImageReader(mem, offsetBegin, offsetEnd);
+        public EndianImageReader CreateImageReader(MemoryArea mem, long off) => Endianness.CreateImageReader(mem, off);
         public ImageWriter CreateImageWriter() => Endianness.CreateImageWriter();
-        public ImageWriter CreateImageWriter(MemoryArea img, Address addr) => Endianness.CreateImageWriter(img, addr);
+        public ImageWriter CreateImageWriter(MemoryArea mem, Address addr) => Endianness.CreateImageWriter(mem, addr);
         public bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value) => Endianness.TryRead(mem, addr, dt, out value);
 
         public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);

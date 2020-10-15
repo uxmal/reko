@@ -22,6 +22,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -60,7 +61,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
                 // Make a 1 MiB heap. We want as simple an implementation as possible,
                 // since OllyDebug scripts are not expected to be running very long.
-                this.heap = SegmentMap.AddSegment(new MemoryArea(addrHeap, new byte[1024 * 1024]), ".Emulated_heap", AccessMode.ReadWrite);
+                this.heap = SegmentMap.AddSegment(new ByteMemoryArea(addrHeap, new byte[1024 * 1024]), ".Emulated_heap", AccessMode.ReadWrite);
                 this.heapAlloc = 0;
             }
             var newHeapAlloc = heapAlloc + size;
@@ -155,7 +156,14 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             if (!SegmentMap.TryFindSegment(addr, out ImageSegment seg))
                 return false;
-            return seg.MemoryArea.TryReadBytes(addr, (int)memlen, membuf);
+            if (seg.MemoryArea is ByteMemoryArea bmem)
+            {
+                return bmem.TryReadBytes(addr, (int) memlen, membuf);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public virtual object TE_GetProcessHandle()

@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace Reko.Gui.Forms
     {
         IServiceProvider Services { get; }
 
-        void LoadUserSegment(byte[] bytes, UserSegment segment);
+        void LoadUserSegment(MemoryArea mem, UserSegment segment);
         UserSegment CreateUserSegment();
     }
 }

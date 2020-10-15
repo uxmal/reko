@@ -30,6 +30,7 @@ using Reko.Core.Types;
 using Reko.Core.Machine;
 using Reko.Core.Configuration;
 using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.Mips
 {

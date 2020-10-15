@@ -29,6 +29,7 @@ using System.Linq;
 using System.Text;
 using Reko.Arch.Arm.AArch32;
 using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.Arm
 {
@@ -39,7 +40,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected static MachineInstruction Disassemble(byte[] bytes)
         {
-            var image = new MemoryArea(Address.Ptr32(0x00100000), bytes);
+            var image = new ByteMemoryArea(Address.Ptr32(0x00100000), bytes);
             var dasm = new Arm32Architecture(new ServiceContainer(), "arm32").CreateDisassembler(image.CreateLeReader(0));
             return dasm.First();
         }
@@ -51,7 +52,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected MachineInstruction Disassemble32(uint instr)
         {
-            var image = new MemoryArea(Address.Ptr32(0x00100000), new byte[4]);
+            var image = new ByteMemoryArea(Address.Ptr32(0x00100000), new byte[4]);
             LeImageWriter w = new LeImageWriter(image.Bytes);
             w.WriteLeUInt32(0, instr);
             var arch = CreateArchitecture();
@@ -64,7 +65,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected MachineInstruction DisassembleBits(string bitPattern)
         {
-            var image = new MemoryArea(Address.Ptr32(0x00100000), new byte[4]);
+            var image = new ByteMemoryArea(Address.Ptr32(0x00100000), new byte[4]);
             LeImageWriter w = new LeImageWriter(image.Bytes);
             uint instr = ParseBitPattern(bitPattern);
             w.WriteLeUInt32(0, instr);

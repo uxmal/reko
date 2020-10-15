@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Environments.MacOS.Classic;
 using System.ComponentModel.Design;
@@ -38,7 +39,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
             var macOS = new MacOSClassic(sc, new M68kArchitecture(sc, "m68k"));
             var a5 = new Identifier(Registers.a5.Name, Registers.a5.DataType, Registers.a5);
 
-            var a5world = new MemoryArea(Address.Ptr32(0x00100000), new byte[0x0300]);
+            var a5world = new ByteMemoryArea(Address.Ptr32(0x00100000), new byte[0x0300]);
             macOS.A5World = new ImageSegment("A5World", a5world, AccessMode.ReadWrite);
             macOS.A5Offset = 0x0100u;
             const int jumpTableOffset = 0x0032;

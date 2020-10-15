@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Windows;
@@ -101,7 +102,7 @@ namespace Reko.ImageLoaders.MzExe
         private readonly Dictionary<uint, Tuple<Address, ImportReference>> importStubs;
         private readonly DecompilerEventListener listener;
         private readonly uint lfaNew;
-        private MemoryArea mem;
+        private ByteMemoryArea mem;
         private SegmentMap segmentMap;
         private List<string> moduleNames;
         private NeSegment[] segments;
@@ -434,7 +435,7 @@ namespace Reko.ImageLoaders.MzExe
             this.segmentMap = new SegmentMap(segFirst.Address);
             foreach (var segment in segments)
             {
-                this.mem = new MemoryArea(
+                this.mem = new ByteMemoryArea(
                     segment.Address, 
                     new byte[Math.Max(segment.Alloc, segment.DataLength)]);
                 LoadSegment(segment, mem);
@@ -486,7 +487,7 @@ namespace Reko.ImageLoaders.MzExe
             return segs.ToArray();
         }
 
-        private bool LoadSegment(NeSegment neSeg, MemoryArea mem)
+        private bool LoadSegment(NeSegment neSeg, ByteMemoryArea mem)
         {
             Array.Copy(
                 RawImage,

@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Environments.SegaGenesis;
@@ -79,8 +80,9 @@ namespace Reko.UnitTests.Environments.SegaGenesis
             var program = sgrom.Load(Address.Ptr32(0));
 
             var romSegment = program.SegmentMap.Segments.Values.First();
+            var bmem = (ByteMemoryArea) romSegment.MemoryArea;
             Assert.IsNotNull(romSegment.MemoryArea, "ROM image should have been loaded into first segment");
-            Assert.AreSame(rawBytes, romSegment.MemoryArea.Bytes, "ROM image should have been loaded into first segment");
+            Assert.AreSame(rawBytes, bmem.Bytes, "ROM image should have been loaded into first segment");
             Assert.AreEqual(rawBytes.Length, romSegment.ContentSize);
             var ramSegment = program.SegmentMap.Segments.Values.First(s => s.Name == ".data");
             Assert.IsNotNull(ramSegment.MemoryArea, "RAM segment should have a MemoryArea");

@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -45,9 +46,9 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_Image(params byte[] bytes)
         {
-            var mem = new MemoryArea(Address.Ptr32(0x00400000), bytes);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00400000), bytes);
             arch.Setup(a => a.CreateImageReader(
-                It.IsAny<MemoryArea>(),
+                It.IsAny<ByteMemoryArea>(),
                 It.IsAny<long>(),
                 It.IsAny<long>()))
                 .Returns(new LeImageReader(mem, 0));

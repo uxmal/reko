@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.IA64;
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +48,7 @@ namespace Reko.UnitTests.Arch.IA64
         private void AssertCode(string hexBytes, params string[] sExpectedInstrs)
         {
             byte[] bytes = HexStringToBytes(hexBytes);
-            MemoryArea mem = new MemoryArea(LoadAddress, bytes);
+            ByteMemoryArea mem = new ByteMemoryArea(LoadAddress, bytes);
             var dasm = arch.CreateDisassembler(arch.CreateImageReader(mem, 0U));
             var sInstrs = dasm.Select(i => i.ToString()).ToArray();
             var c = Math.Min(sExpectedInstrs.Length, sInstrs.Length);

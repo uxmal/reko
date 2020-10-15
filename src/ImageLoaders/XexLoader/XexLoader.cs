@@ -19,6 +19,7 @@
 #endregion
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -572,7 +573,7 @@ namespace Reko.ImageLoaders.Xex
 				PESection managedSection = new PESection(section);
 				peSections.Add(managedSection);
 
-				ImageSegment seg = new ImageSegment(sectionName, new MemoryArea(
+				ImageSegment seg = new ImageSegment(sectionName, new ByteMemoryArea(
 					new Address32(managedSection.PhysicalOffset + xexData.exe_address), sectionData
 				), acc);
 				segments.Add(seg);

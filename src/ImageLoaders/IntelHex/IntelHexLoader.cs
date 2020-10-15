@@ -21,6 +21,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
 using System.Collections;
@@ -215,8 +216,9 @@ namespace Reko.ImageLoaders.IntelHex
             int i = 0;
             foreach (var mchk in memChunks)
             {
-                var mem = new MemoryArea(mchk.BaseAddress, mchk.Datum.ToArray());
-                var seg = new ImageSegment($"CODE_{i++:d2}", mem, AccessMode.ReadExecute);
+                var mem = new ByteMemoryArea(mchk.BaseAddress, mchk.Datum.ToArray());
+                var seg = new ImageSegment($"CODE_{i:d2}", mem, AccessMode.ReadExecute);
+                ++i;
                 segs.AddSegment(seg);
             }
 

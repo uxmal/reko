@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using Moq;
 using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Mocks
 {
@@ -106,7 +107,7 @@ namespace Reko.UnitTests.Mocks
             this.mockLoader = new Mock<ILoader>();
 
             var program = CreateProgram();
-            var mem = new MemoryArea(Address.Ptr32(0x10000000), new byte[1000]);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x10000000), new byte[1000]);
             program.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment(".text", mem, AccessMode.ReadExecute));

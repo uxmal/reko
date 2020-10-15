@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.PowerPC
 {
@@ -53,9 +54,9 @@ namespace Reko.UnitTests.Arch.PowerPC
                 (rb << 11) |
                 (xo << 1) |
                 rc;
-            MemoryArea img = new MemoryArea(Address.Ptr32(0x00100000), new byte[4]);
-            img.WriteBeUInt32(0, w);
-            return Disassemble(img);
+            ByteMemoryArea mem = new ByteMemoryArea(Address.Ptr32(0x00100000), new byte[4]);
+            mem.WriteBeUInt32(0, w);
+            return Disassemble(mem);
         }
 
         private void RunTest(string expected, string bits)

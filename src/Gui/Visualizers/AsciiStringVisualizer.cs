@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -24,6 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Reko.Core;
+using Reko.Core.Memory;
 
 namespace Reko.Gui.Visualizers
 {
@@ -44,10 +45,10 @@ namespace Reko.Gui.Visualizers
         public bool TrackSelection => true;
         public bool ShowScrollbar => true;
 
-        public int[] RenderBuffer(Program program, MemoryArea mem, Address addrStart, int length, int? mouse)
+        public int[] RenderBuffer(Program program, ByteMemoryArea bmem, Address addrStart, int length, int? mouse)
         {
-            var iStart = addrStart - mem.BaseAddress;
-            var iEnd = Math.Min(iStart + length, mem.Bytes.Length);
+            var iStart = addrStart - bmem.BaseAddress;
+            var iEnd = Math.Min(iStart + length, bmem.Bytes.Length);
             var colors = new int[iEnd - iStart];
             var offsets = new Dictionary<int, int>
             {
@@ -55,7 +56,7 @@ namespace Reko.Gui.Visualizers
             var cur_len = 0;
 
             int last_offs = -1;
-            var buf = mem.Bytes;
+            var buf = bmem.Bytes;
             for (int i = 0; i < colors.Length; ++i)
             {
                 var c = buf[i + iStart];
@@ -95,7 +96,7 @@ namespace Reko.Gui.Visualizers
                 var v = de.Value;
                 for (var i = 0; i < v; ++i)
                 {
-                    var c = mem.Bytes[k + i];
+                    var c = bmem.Bytes[k + i];
                     var r = c + (255 - 126);
                     var g = 0;
                     if (c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '0' && c <= '9')

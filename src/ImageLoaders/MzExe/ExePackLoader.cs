@@ -27,6 +27,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -50,7 +51,7 @@ namespace Reko.ImageLoaders.MzExe
         private ushort ss;				// 000A
         private ushort cpUncompressed;	// 000C
 
-        private MemoryArea imgU;
+        private ByteMemoryArea imgU;
 
         public ExePackLoader(MsdosImageLoader loader)
             : base(loader.Services, loader.Filename, loader.RawImage)
@@ -73,11 +74,11 @@ namespace Reko.ImageLoaders.MzExe
             this.cpUncompressed = rdr.ReadLeUInt16();
 
             int offset = ExePackHeaderOffset(loader.ExeLoader);
-            if (MemoryArea.CompareArrays(loader.RawImage, offset, signature, signature.Length))
+            if (ByteMemoryArea.CompareArrays(loader.RawImage, offset, signature, signature.Length))
             {
                 relocationsOffset = 0x012D;
             }
-            else if (MemoryArea.CompareArrays(loader.RawImage, offset, signature2, signature2.Length))
+            else if (ByteMemoryArea.CompareArrays(loader.RawImage, offset, signature2, signature2.Length))
             {
                 relocationsOffset = 0x0125;
             }
@@ -88,8 +89,8 @@ namespace Reko.ImageLoaders.MzExe
         static public bool IsCorrectUnpacker(ExeImageLoader exe, byte[] rawImg)
         {
             int offset = ExePackHeaderOffset(exe);
-            return MemoryArea.CompareArrays(rawImg, offset, signature, signature.Length) ||
-                   MemoryArea.CompareArrays(rawImg, offset, signature2, signature2.Length);
+            return ByteMemoryArea.CompareArrays(rawImg, offset, signature, signature.Length) ||
+                   ByteMemoryArea.CompareArrays(rawImg, offset, signature2, signature2.Length);
         }
 
         private static int ExePackHeaderOffset(ExeImageLoader exe)
@@ -102,7 +103,7 @@ namespace Reko.ImageLoaders.MzExe
             byte[] abC = RawImage;
             byte[] abU = new byte[cpUncompressed * 0x10U + ExeImageLoader.CbPsp];
             Array.Copy(abC, exeHdrSize, abU, ExeImageLoader.CbPsp, abC.Length - exeHdrSize);
-            imgU = new MemoryArea(addr, abU);
+            imgU = new ByteMemoryArea(addr, abU);
 
             uint SI = hdrOffset - 1;
             while (abC[SI] == 0xFF)
@@ -115,7 +116,7 @@ namespace Reko.ImageLoaders.MzExe
             do
             {
                 op = abC[SI];
-                int cx = MemoryArea.ReadLeUInt16(abC, SI - 2);
+                int cx = ByteMemoryArea.ReadLeUInt16(abC, SI - 2);
                 SI -= 3;
                 if ((op & 0xFE) == 0xB0)
                 {

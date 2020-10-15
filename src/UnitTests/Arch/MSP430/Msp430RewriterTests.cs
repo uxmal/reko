@@ -28,6 +28,7 @@ using Reko.Arch.Msp430;
 using NUnit.Framework;
 using Reko.Core.Rtl;
 using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.Msp430
 {

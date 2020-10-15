@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.Arm;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 
@@ -58,9 +59,9 @@ namespace Reko.UnitTests.Arch.Arm
             {
                 w.WriteLeUInt16(instr);
             }
-            var image = new MemoryArea(Address.Ptr32(0x00100000), w.ToArray());
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00100000), w.ToArray());
             var arch = CreateArchitecture();
-            this.dasm = CreateDisassembler(arch, image.CreateLeReader(0));
+            this.dasm = CreateDisassembler(arch, mem.CreateLeReader(0));
         }
 
         private void AssertCode(string sExp, params ushort[] instrs)

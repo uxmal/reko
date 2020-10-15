@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Arch.XCore;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
@@ -57,7 +58,7 @@ namespace Reko.UnitTests.Arch.XCore
         [Test]
         public void XCore200Rw_foo()
         {
-            var mem = new MemoryArea(Address.Ptr32(0x00100000), new byte[65536]);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00100000), new byte[65536]);
             var rnd = new Random(4711);
             rnd.NextBytes(mem.Bytes);
             var rdr = arch.CreateImageReader(mem, 0);

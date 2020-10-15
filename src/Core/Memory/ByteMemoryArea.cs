@@ -20,34 +20,30 @@
 
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace Reko.Core
+namespace Reko.Core.Memory
 {
 	/// <summary>
-	/// Contains the bytes that are present in memory after a program is loaded.
+	/// Representation of a byte-granular area of memory. Byte-addressable CPU architectures
+    /// should use this class to represent in-memory data.
 	/// </summary>
     /// <remarks>
     /// Loading sparse images should load multiple memory areas. Use <see cref="SegmentMap"/>
     /// and <see cref="ImageSegment"/>s to accomplish this.
     /// </remarks>
-	public class MemoryArea
+	public class ByteMemoryArea : MemoryArea
 	{
-		public MemoryArea(Address addrBase, byte [] bytes)
+		public ByteMemoryArea(Address addrBase, byte [] bytes)
+            : base(addrBase, bytes.Length, 8)
 		{
-			this.BaseAddress = addrBase;
 			this.Bytes = bytes;
-			this.Relocations = new RelocationDictionary();
 		}
 
-        /// <summary>
-        /// Staring address of the memory area.
-        /// </summary>
-        public Address BaseAddress { get; }
-        
         [Obsolete("EndAddress is not safe to use when a memory area reaches the maximum allowable address. Use the Length property instead.")]
         public Address EndAddress { get { return BaseAddress + Length; } }  // Address of the first byte beyond image.
         
@@ -55,12 +51,6 @@ namespace Reko.Core
         /// The contents of the memory area.
         /// </summary>
         public byte[] Bytes { get; }
-
-        /// <summary>
-        /// The size of the memory area.
-        /// </summary>
-        public long Length { get { return Bytes.Length; } }
-        public RelocationDictionary Relocations { get; private set; }
 
         public static bool CompareArrays(byte[] src, int iSrc, byte[] dst, int cb)
         {
@@ -78,36 +68,66 @@ namespace Reko.Core
 
         public override string ToString()
         {
-            return string.Format("Image {0}{1} - length {2}{3}", "{", BaseAddress, this.Length, "}");
+            return string.Format("Image {0}{1} - length {2} bytes{3}", "{", BaseAddress, this.Length, "}");
         }
 
-        public BeImageReader CreateBeReader(Address addr)
+        public override BeImageReader CreateBeReader(Address addr)
         {
             return new BeImageReader(this, addr);
         }
 
-        public BeImageReader CreateBeReader(long offset)
+        public override BeImageReader CreateBeReader(long offset)
         {
             return new BeImageReader(this, offset);
         }
 
-        public LeImageReader CreateLeReader(Address addr)
+        public override BeImageReader CreateBeReader(long offsetBegin, long offsetEnd)
+        {
+            return new BeImageReader(this, offsetBegin, offsetEnd);
+        }
+
+        public override BeImageWriter CreateBeWriter(Address addr)
+        {
+            return new BeImageWriter(this, addr);
+        }
+
+        public override BeImageWriter CreateBeWriter(long offset)
+        {
+            return new BeImageWriter(this, offset);
+        }
+
+        public override LeImageReader CreateLeReader(Address addr)
         {
             return new LeImageReader(this, addr);
         }
 
-        public LeImageReader CreateLeReader(long offset)
+        public override LeImageReader CreateLeReader(long offset)
         {
             return new LeImageReader(this, offset);
         }
 
-		/// <summary>
-		/// Adds the delta to the ushort at the given offset.
-		/// </summary>
-		/// <param name="imageOffset"></param>
-		/// <param name="delta"></param>
-		/// <returns>The new value of the ushort</returns>
-		public ushort FixupLeUInt16(uint imageOffset, ushort delta)
+        public override LeImageReader CreateLeReader(long offsetBegin, long offsetEnd)
+        {
+            return new LeImageReader(this, offsetBegin, offsetEnd);
+        }
+
+        public override LeImageWriter CreateLeWriter(Address addr)
+        {
+            return new LeImageWriter(this, addr);
+        }
+
+        public override LeImageWriter CreateLeWriter(long offset)
+        {
+            return new LeImageWriter(this, offset);
+        }
+
+        /// <summary>
+        /// Adds the delta to the ushort at the given offset.
+        /// </summary>
+        /// <param name="imageOffset"></param>
+        /// <param name="delta"></param>
+        /// <returns>The new value of the ushort</returns>
+        public ushort FixupLeUInt16(uint imageOffset, ushort delta)
 		{
 			ushort seg = ReadLeUInt16(Bytes, imageOffset);
 			seg = (ushort) (seg + delta);
@@ -135,28 +155,47 @@ namespace Reko.Core
 			return acc;
 		}
 
-		public bool IsValidAddress(Address addr)
-		{
-            return IsValidLinearAddress(addr.ToLinear());
-        }
-
-        public bool IsValidLinearAddress(ulong linearAddr)
-        {
-            if (linearAddr < BaseAddress.ToLinear())
-                return false;
-            ulong offset = (linearAddr - BaseAddress.ToLinear());
-			return offset < (ulong) Bytes.Length;
-        }
-
         public Constant? ReadRelocation(long imageOffset)
         {
             return Relocations[BaseAddress.ToLinear() + (ulong) imageOffset];
         }
 
-        public bool TryReadBeUInt32(long offset, out uint uAddr)
+        public override bool TryReadBeUInt16(long offset, out ushort value)
         {
-            return TryReadBeUInt32(Bytes, offset, out uAddr);
+            return TryReadBeUInt16(Bytes, offset, out value);
         }
+
+        public override bool TryReadBeUInt32(long offset, out uint value)
+        {
+            return TryReadBeUInt32(Bytes, offset, out value);
+        }
+
+        public override bool TryReadBeUInt64(long offset, out ulong value)
+        {
+            return TryReadBeUInt64(Bytes, offset, out value);
+        }
+
+
+        public override bool TryReadLeInt32(long offset, out int value)
+        {
+            return TryReadLeInt32(Bytes, (uint)offset, out value);
+        }
+
+        public override bool TryReadLeUInt16(long offset, out ushort value)
+        {
+            return TryReadLeUInt16(Bytes, offset, out value);
+        }
+
+        public override bool TryReadLeUInt32(long offset, out uint value)
+        {
+            return TryReadLeUInt32(Bytes, offset, out value);
+        }
+
+        public override bool TryReadLeUInt64(long offset, out ulong value)
+        {
+            return TryReadLeUInt64(Bytes, offset, out value);
+        }
+
 
         /// <summary>
         /// Reads a little-endian word from image offset.
@@ -168,7 +207,7 @@ namespace Reko.Core
         /// <param name="imageOffset">Offset from image start, in bytes.</param>
         /// <param name="type">Size of the word being requested.</param>
         /// <returns>Typed constant from the image.</returns>
-        public bool TryReadLe(long imageOffset, PrimitiveType type, out Constant c)
+        public override bool TryReadLe(long imageOffset, PrimitiveType type, out Constant c)
         {
             var rc = ReadRelocation(imageOffset);
             if (rc != null && rc.DataType.Size == type.Size)
@@ -176,21 +215,10 @@ namespace Reko.Core
                 c = rc;
                 return true;
             }
-            if (type.Size + imageOffset > Bytes.Length)
-            {
-                c = default!;
-                return false;
-            }
-            c = ReadLe(Bytes, imageOffset, type);
-            return true;
+            return TryReadLe(this.Bytes, imageOffset, type, out c);
         }
 
-        public bool TryReadLe(Address addr, PrimitiveType type, out Constant c)
-        {
-            return TryReadLe(addr - BaseAddress, type, out c);
-        }
-
-        public bool TryReadBe(long imageOffset, PrimitiveType type, out Constant c)
+        public override bool TryReadBe(long imageOffset, PrimitiveType type, out Constant c)
         {
             var rc = ReadRelocation(imageOffset);
             if (rc != null && rc.DataType.Size == type.Size)
@@ -204,18 +232,6 @@ namespace Reko.Core
                 return false;
             }
             return TryReadBe(Bytes, imageOffset, type, out c);
-        }
-
-        public bool TryReadBe(Address addr, PrimitiveType type, out Constant c)
-        {
-            return TryReadBe(addr - BaseAddress, type, out c);
-        }
-
-        public static Constant ReadLe(byte[] abImage, long imageOffset, PrimitiveType type)
-        {
-            if (!TryReadLe(abImage, imageOffset, type, out var c))
-                throw new InvalidOperationException("Attempted to read outside of memory area.");
-            return c;
         }
 
         public static bool TryReadLe(byte[] abImage, long imageOffset, PrimitiveType type, out Constant c)
@@ -636,9 +652,6 @@ namespace Reko.Core
             return (uint)ReadBeInt32(abImage, off);
         }
 
-        public bool TryReadLeUInt32(Address address, out uint dw) { return TryReadLeUInt32(Bytes, ToOffset(address), out dw); }
-        public bool TryReadLeUInt64(Address address, out ulong dw) { return TryReadLeUInt64(Bytes, ToOffset(address), out dw); }
-
         public static uint ReadLeUInt32(byte[] img, long off)
         {
             return (uint)ReadLeInt32(img, off);
@@ -690,10 +703,6 @@ namespace Reko.Core
             }
         }
 
-        public Constant ReadBeDouble(long off) { return ReadBeDouble(Bytes, off); }
-        public Constant ReadBeFloat(long off) { return ReadBeFloat(Bytes, off); }
-        public long ReadBeInt64(uint off) { return ReadBeInt64(this.Bytes, off); }
-        public ulong ReadBeUint64(uint off) { return ReadBeUInt64(this.Bytes, off); }
         public int ReadBeInt32(uint off) { return ReadBeInt32(this.Bytes, off); }
         public uint ReadBeUInt32(uint off) { return ReadBeUInt32(this.Bytes, off); }
         public short ReadBeInt16(uint off) { return ReadBeInt16(this.Bytes, off); }
@@ -708,7 +717,7 @@ namespace Reko.Core
         public short ReadLeInt16(uint off) { return ReadLeInt16(this.Bytes, off); }
         public ushort ReadLeUInt16(uint off) { return ReadLeUInt16(this.Bytes, off); }
 
-        public bool TryReadByte(long off, out byte b) { return TryReadByte(this.Bytes, off, out b); }
+        public override bool TryReadByte(long off, out byte b) { return TryReadByte(this.Bytes, off, out b); }
 
         public Constant ReadLeDouble(Address addr) { return ReadLeDouble(Bytes, ToOffset(addr)); }
         public Constant ReadLeFloat(Address addr) { return ReadLeFloat(Bytes, ToOffset(addr)); }
@@ -727,18 +736,24 @@ namespace Reko.Core
             return (long) addr.ToLinear() - (long) this.BaseAddress.ToLinear();
         }
 
-        public void WriteByte(long offset, byte b)
+        public override void WriteByte(long offset, byte b)
         {
             Bytes[offset] = b;
         }
 
-        public void WriteLeUInt16(long offset, ushort w)
+        public override void WriteBeUInt16(long offset, ushort w)
+        {
+            Bytes[offset + 0] = (byte) w;
+            Bytes[offset + 1] = (byte) (w >> 16);
+        }
+
+        public override void WriteLeUInt16(long offset, ushort w)
 		{
 			Bytes[offset] = (byte) (w & 0xFF);
 			Bytes[offset+1] = (byte) (w >> 8);
 		}
 
-        public void WriteBeUInt32(long offset, uint dw)
+        public override void WriteBeUInt32(long offset, uint dw)
         {
             Bytes[offset + 0] = (byte) (dw >> 24);
             Bytes[offset + 1] = (byte) (dw >> 16);
@@ -746,7 +761,7 @@ namespace Reko.Core
             Bytes[offset + 3] = (byte) (dw & 0xFF);
         }
 
-        public void WriteLeUInt32(long offset, uint dw)
+        public override void WriteLeUInt32(long offset, uint dw)
         {
             Bytes[offset] = (byte) (dw & 0xFF);
             Bytes[offset + 1] = (byte) (dw >> 8);
@@ -770,7 +785,6 @@ namespace Reko.Core
 
         public void WriteByte(Address addr, byte b) { WriteByte(ToOffset(addr), b); }
         public void WriteLeUInt16(Address addr, ushort w) { WriteLeUInt16(ToOffset(addr), w); }
-        public void WriteLeUInt32(Address addr, uint dw) { WriteLeUInt32(ToOffset(addr), dw); }
 
         public void WriteBytes(byte[] srcBytes, long offset, int count)
         {
