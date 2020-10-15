@@ -1347,6 +1347,10 @@ namespace Reko.Core.Expressions
         {
             return new Slice(dataType, value, bitOffset);
         }
+        public Slice Slice(Expression value, DataType dataType, int bitOffset)
+        {
+            return new Slice(dataType, value, bitOffset);
+        }
 
         public Slice Slice(Expression value, DataType dataType, int bitOffset)
         {

@@ -336,7 +336,7 @@ namespace Reko.Arch.M68k
                     {
                         var tmpLo = binder.CreateTemporary(dataWidth);
                         var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(r.DataType.BitSize - dataWidth.BitSize));
-                        m.Assign(tmpLo, opGen(m.Convert(r, r.DataType, dataWidth)));
+                        m.Assign(tmpLo, opGen(m.Slice(dataWidth, r, 0)));
                         m.Assign(tmpHi, m.Slice(tmpHi.DataType, r, dataWidth.BitSize));
                         m.Assign(r, m.Seq(tmpHi, tmpLo));
                         return tmpLo;

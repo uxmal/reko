@@ -547,9 +547,23 @@ namespace Reko.Scanning
         public bool Step()
         {
             var instr = this.instrs[this.iInstr];
-            BackwardSlicer.trace.Inform("Bwslc: Stepping to instruction {0}", instr);
-            var sr = instr.Accept(this);
+            SlicerResult? sr;
+            try
+            {
+                BackwardSlicer.trace.Inform("Bwslc: Stepping to instruction {0}", instr);
+                sr = instr.Accept(this);
             --this.iInstr;
+            } catch (AddressCorrelatedException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                block.Dump();
+                throw new AddressCorrelatedException(block.Address, ex,
+                    "An error occurred when tracing the RTL instruction {0} in the block starting at address {1}",
+                    instr, block.Address);
+            }
             if (sr == null)
             {
                 // Instruction had no effect on live registers.
@@ -701,6 +715,8 @@ namespace Reko.Scanning
                 this.Live.Remove(killedReg.Key);
             }
             this.assignLhs = killedRegs[0].Key;
+            if (ass.Src.ToString().Contains("-SLICE"))  //$DEBUG
+                ass.ToString();
             var se = ass.Src.Accept(this, killedRegs[0].Value);
             if (se == null)
                 return se;

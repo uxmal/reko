@@ -860,6 +860,77 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual("1[0,3]", bwslc.JumpTableIndexInterval.ToString());
         }
 
+        [Test(Description = "Root cause of crash in GitHub issue #953")]
+        public void Bwslc_Issue_953()
+        {
+            /*
+
+    0000D912 1618 move.b (a0)+,d3
+    0000D914 1818 move.b (a0)+,d4
+    0000D916 3C03 move.w d3,d6
+    0000D918 E646 asr.w #$03,d6
+    0000D91A 0243 0007 andi.w #$0007,d3
+    0000D91E D643 add.w d3,d3
+    0000D920 D643 add.w d3,d3
+    0000D922 4443 neg.w d3
+    0000D924 4EFB 3022 jmp.l ($24,pc,d3.w)
+
+            */
+            var lD912 = Given_Block(0xD912);
+            var int16 = PrimitiveType.Int16;
+            var int32 = PrimitiveType.Int32;
+            var word16 = PrimitiveType.Word16;
+            var word32 = PrimitiveType.Word32;
+            var d3 = binder.EnsureRegister(new RegisterStorage("d3", 3, 0, PrimitiveType.Word32));
+            var v44 = binder.CreateTemporary("v44", PrimitiveType.Word16);
+            var v45 = binder.CreateTemporary("v45", PrimitiveType.Word16);
+            var v49 = binder.CreateTemporary("v49", PrimitiveType.Word16);
+            var v50 = binder.CreateTemporary("v50", PrimitiveType.Word16);
+            var v51 = binder.CreateTemporary("v51", PrimitiveType.Word16);
+            var v52 = binder.CreateTemporary("v52", PrimitiveType.Word16);
+            var v53 = binder.CreateTemporary("v51", PrimitiveType.Word16);
+            var v54 = binder.CreateTemporary("v52", PrimitiveType.Word16);
+            var ZN = Cc("ZN");
+            var C = Cc("C");
+            var V = Cc("V");
+            var CVZN = Cc("CVZN");
+            Given_Instrs(lD912, m =>
+            {
+                m.Assign(v44, m.And(m.Slice(d3, word16, 0), m.Word16(7)));
+                m.Assign(v45, m.Slice(d3, word16, 16));
+                m.Assign(d3, m.Seq(v45, v44));
+                m.Assign(ZN, m.Cond(v44));
+                m.Assign(C, Constant.False());
+
+                m.Assign(V, Constant.False());
+                m.Assign(v49, m.IAdd(m.Slice(d3, word16, 0), m.Slice(d3, word16, 0)));
+                m.Assign(v50, m.Slice(d3, word16, 16));
+                m.Assign(d3, m.Seq(v50, v49));
+                m.Assign(CVZN, m.Cond(v49));
+                
+                m.Assign(v51, m.IAdd(m.Slice(d3, word16, 0), m.Slice(d3, word16, 0)));
+                m.Assign(v52, m.Slice(d3, word16, 16));
+                m.Assign(d3, m.Seq(v52, v51));
+                m.Assign(CVZN, m.Cond(v51));
+                m.Assign(v53, m.Neg(m.Slice(d3, word16, 0)));
+                
+                m.Assign(v54, m.Slice(d3, word16, 16));
+                m.Assign(d3, m.Seq(v54, v53));
+                m.Assign(CVZN, m.Cond(v53));
+                m.Goto(m.IAdd(m.Word32(0x0000D948), m.Convert(m.Slice(int16, d3, 0), int16, int32)));
+            });
+
+            var bwslc = new BackwardSlicer(host, lD912, processorState);
+            Assert.IsTrue(bwslc.Start(lD912, 18, Target(lD912)));
+            while (bwslc.Step())
+                ;
+            Assert.AreEqual("SLICE(R7 * 2<8>, uint16, 0) + 0x8E<16>", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("A", bwslc.JumpTableIndex.ToString());
+            Assert.AreEqual("A", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
+            Assert.AreEqual("1[0,3]", bwslc.JumpTableIndexInterval.ToString());
+        }
+
+
         [Test(Description = "MIPS switches are guarded by have explicit comparisons")]
         [Ignore("Get this working soon")]
         public void Bwslc_MipsBranch()
@@ -957,6 +1028,5 @@ namespace Reko.UnitTests.Scanning
         // mov edx,[ebp-66]
         // movzx eax,byte ptr [edx + 0x10000]
         // jmp [eax + 0x12000]
-
     }
 }

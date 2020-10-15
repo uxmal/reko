@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Rtl;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Reko.Scanning
 {
@@ -57,6 +58,16 @@ namespace Reko.Scanning
         public override string ToString()
         {
             return string.Format("block({0})", Address);
+        }
+
+        [Conditional("DEBUG")]
+        public void Dump()
+        {
+            Debug.WriteLine("RtlBlock {0} // {1}");
+            foreach (var rtl in Instructions)
+            {
+                Debug.WriteLine("    {0}", rtl);
+            }
         }
     }
 }

@@ -231,7 +231,7 @@ VS Overflow Set 1001 V
                 case Mnemonic.fmovecr: RewriteFmovecr(); break;
                 case Mnemonic.fmovem: RewriteMovem(i => Registers.GetRegister(i+Registers.fp0.Number)); break;
                 case Mnemonic.fmul: RewriteFBinOp((s, d) => m.FMul(d,s)); break;
-                case Mnemonic.fneg: RewriteFUnaryOp(m.Neg); break;
+                case Mnemonic.fneg: RewriteFUnaryOp(m.FNeg); break;
                 case Mnemonic.frem: RewriteFUnaryIntrinsic("frem"); break;
                 case Mnemonic.fsabs: RewriteFUnaryIntrinsic("fabsf"); break;
                 case Mnemonic.fsin: RewriteFUnaryIntrinsic("fsin"); break;
