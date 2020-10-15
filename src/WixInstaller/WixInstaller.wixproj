@@ -169,6 +169,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\MilStd1750\MilStd1750.csproj">
+      <Name>MilStd1750</Name>
+      <Project>{a518ec80-144c-4761-9508-4c2140518ccb}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\Mips\Mips.csproj">
       <Name>Mips</Name>
       <Project>{4dec7ada-e512-43c5-8312-ca076818c2a9}</Project>

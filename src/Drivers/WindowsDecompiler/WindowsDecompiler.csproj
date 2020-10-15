@@ -256,6 +256,10 @@
       <Project>{9e952b82-a52f-4221-bc4a-dd9d8b9f7854}</Project>
       <Name>MicroBlaze</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\MilStd1750\MilStd1750.csproj">
+      <Project>{a518ec80-144c-4761-9508-4c2140518ccb}</Project>
+      <Name>MilStd1750</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\Mips\Mips.csproj">
       <Project>{4dec7ada-e512-43c5-8312-ca076818c2a9}</Project>
       <Name>Mips</Name>
@@ -324,6 +328,10 @@
       <Project>{e453ff63-48cf-4c94-aced-d8f836ebe884}</Project>
       <Name>Tms7000</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\V850\V850.csproj">
+      <Project>{3c9e8f29-7d4c-4754-be9c-28d572e834c1}</Project>
+      <Name>V850</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\Vax\Vax.csproj">
       <Project>{82777964-b370-431a-ac97-733c594c02b5}</Project>
       <Name>Vax</Name>
@@ -339,6 +347,10 @@
     <ProjectReference Include="..\..\Arch\X86\X86.csproj">
       <Project>{0942acb2-eba0-4e2b-b363-205df72a77b2}</Project>
       <Name>X86</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Arch\XCore\XCore.csproj">
+      <Project>{ea6ca709-00cf-4be2-a34f-11c43522c789}</Project>
+      <Name>XCore</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\Xtensa\Xtensa.csproj">
       <Project>{bc7d4ad1-795f-4aec-823c-813e65c5557a}</Project>

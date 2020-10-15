@@ -31,6 +31,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\MicroBlaze\bin\$(Configuration)\netstandard2.0\Reko.Arch.MicroBlaze.*" />
     <Architectures Include="$(SolutionDir)Arch\Microchip\bin\$(Configuration)\Reko.Arch.MicrochipPIC.*" />
     <Architectures Include="$(SolutionDir)Arch\Microchip.Design\bin\$(Configuration)\Reko.Arch.MicrochipPIC.Design.*" />
+    <Architectures Include="$(SolutionDir)Arch\MilStd1750\bin\$(Configuration)\netstandard2.0\Reko.Arch.MilStd1750.*" />
     <Architectures Include="$(SolutionDir)Arch\Mips\bin\$(Configuration)\netstandard2.0\Reko.Arch.Mips.*" />
     <Architectures Include="$(SolutionDir)Arch\Mos6502\bin\$(Configuration)\netstandard2.0\Reko.Arch.Mos6502.*" />
     <Architectures Include="$(SolutionDir)Arch\MSP430\bin\$(Configuration)\netstandard2.0\Reko.Arch.Msp430.*" />

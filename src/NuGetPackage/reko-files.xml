@@ -30,6 +30,7 @@
         <var id="var.Microchip.Utils.TargetPath" >../Libraries/Microchip/Utils/$TargetDir$/Reko.Libraries.Microchip.Utils.dll</var>
         <var id="var.MicrochipPIC.Design.TargetPath" >../Arch/MicrochipPIC.Design/$TargetFwk472Dir$/Reko.Arch.MicrochipPIC.Design.dll</var>
         <var id="var.MicrochipPIC.TargetPath" >../Arch/Microchip/$TargetDir$/Reko.Arch.MicrochipPIC.dll</var>
+        <var id="var.MilStd1750.TargetPath" >../Arch/MilStd1750/$TargetDir$/Reko.Arch.MilStd1750.dll</var>
         <var id="var.Mips.TargetPath" >../Arch/Mips/$TargetDir$/Reko.Arch.Mips.dll</var>
         <var id="var.Mos6502.TargetPath" >../Arch/Mos6502/$TargetDir$/Reko.Arch.Mos6502.dll</var>
         <var id="var.MSP430.TargetPath" >../Arch/MSP430/$TargetDir$/Reko.Arch.MSP430.dll</var>

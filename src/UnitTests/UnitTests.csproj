@@ -184,6 +184,7 @@
     <Compile Include="Arch\M68k\Assembler\M68kAssemblerTests.cs" />
     <Compile Include="Arch\M68k\Assembler\M68kTextAssemblerTests.cs" />
     <Compile Include="Arch\MCore\MCoreDisassemblerTests.cs" />
+    <Compile Include="Arch\MilStd1750\MilStd1750DisassemblerTests.cs" />
     <Compile Include="Arch\Pdp11\Assembler\Pdp11TextAssemblerTests.cs" />
     <Compile Include="Arch\PowerPC\PowerPcDisassemblerTests.Xenon.cs" />
     <Compile Include="Arch\PowerPC\PowerPcEmulatorTests.cs" />
@@ -923,6 +924,10 @@
     <ProjectReference Include="..\Arch\Microchip\MicrochipPIC.csproj">
       <Project>{a959c1a2-a622-4600-81ad-29e08545b2f7}</Project>
       <Name>MicrochipPIC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\MilStd1750\MilStd1750.csproj">
+      <Project>{A518EC80-144C-4761-9508-4C2140518CCB}</Project>
+      <Name>MilStd1750</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Mips\Mips.csproj">
       <Project>{4DEC7ADA-E512-43C5-8312-CA076818C2A9}</Project>
