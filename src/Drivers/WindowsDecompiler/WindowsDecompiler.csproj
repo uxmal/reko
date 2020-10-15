@@ -508,6 +508,10 @@
       <Project>{72641087-68d2-41e7-9b29-bc9d4213940a}</Project>
       <Name>IntelHex</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\Ldm\Ldm.csproj">
+      <Project>{4f18209f-523f-405c-b350-d676f1c8d4d3}</Project>
+      <Name>Ldm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\Llvm\LLVM.csproj">
       <Project>{9292f9e7-2ce7-470d-b5f0-72d775720bc0}</Project>
       <Name>LLVM</Name>

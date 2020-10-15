@@ -60,7 +60,7 @@ namespace Reko.Arch.MilStd1750
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new MilStd1750State(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -125,7 +125,7 @@ namespace Reko.Arch.MilStd1750
 
         public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse16(txtAddr, out addr);
         }
     }
 }

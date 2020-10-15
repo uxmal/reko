@@ -185,6 +185,7 @@
     <Compile Include="Arch\M68k\Assembler\M68kTextAssemblerTests.cs" />
     <Compile Include="Arch\MCore\MCoreDisassemblerTests.cs" />
     <Compile Include="Arch\MilStd1750\MilStd1750DisassemblerTests.cs" />
+    <Compile Include="Arch\MilStd1750\MilStd1750State.cs" />
     <Compile Include="Arch\Pdp11\Assembler\Pdp11TextAssemblerTests.cs" />
     <Compile Include="Arch\PowerPC\PowerPcDisassemblerTests.Xenon.cs" />
     <Compile Include="Arch\PowerPC\PowerPcEmulatorTests.cs" />

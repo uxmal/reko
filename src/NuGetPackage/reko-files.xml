@@ -99,6 +99,7 @@
         <var id="var.HpSom.TargetPath" >../ImageLoaders/HpSom/$TargetDir$/Reko.ImageLoaders.HpSom.dll</var>
         <var id="var.Hunk.TargetPath" >../ImageLoaders/Hunk/$TargetDir$/Reko.ImageLoaders.Hunk.dll</var>
         <var id="var.IntelHex.TargetPath" >../ImageLoaders/IntelHex/$TargetDir$/Reko.ImageLoaders.IntelHex.dll</var>
+        <var id="var.Ldm.TargetPath" >../ImageLoaders/Ldm/$TargetDir$/Reko.ImageLoaders.Ldm.dll</var>
         <var id="var.MachO.TargetPath" >../ImageLoaders/MachO/$TargetDir$/Reko.ImageLoaders.MachO.dll</var>
         <var id="var.MzExe.TargetPath" >../ImageLoaders/MzExe/$TargetDir$/Reko.ImageLoaders.MzExe.dll</var>
         <var id="var.Nro.TargetPath" >../ImageLoaders/Nro/$TargetDir$/Reko.ImageLoaders.Nro.dll</var>

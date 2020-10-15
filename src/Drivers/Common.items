@@ -185,6 +185,7 @@ by the PreBuild.targets file.
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\HpSom\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.HpSom.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Hunk\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.Hunk.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\IntelHex\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.IntelHex.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Ldm\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.Ldm.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Llvm\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.LLVM.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\MachO\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.MachO.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\MzExe\bin\$(Configuration)\netstandard2.0\Reko.ImageLoaders.MzExe.*" />
