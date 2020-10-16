@@ -57,21 +57,21 @@ namespace Reko.UnitTests.Arch
 
         protected TInstruction DisassembleBits(string bitPattern)
         {
-            var img = new ByteMemoryArea(LoadAddress, new byte[256]);
+            var mem = new ByteMemoryArea(LoadAddress, new byte[256]);
             uint instr = BitStringToUInt32(bitPattern);
-            Architecture.CreateImageWriter(img, img.BaseAddress).WriteUInt32(0, instr);
-            return Disassemble(img);
+            Architecture.CreateImageWriter(mem, mem.BaseAddress).WriteUInt32(0, instr);
+            return Disassemble(mem);
         }
 
-        protected TInstruction DisassembleHexBytes(string hexBytes)
+        protected virtual TInstruction DisassembleHexBytes(string hexBytes)
         {
             byte[] instr = HexStringToBytes(hexBytes);
             return DisassembleBytes(instr);
         }
 
-        public TInstruction Disassemble(ByteMemoryArea bmem)
+        public TInstruction Disassemble(MemoryArea mem)
         {
-            var dasm = this.CreateDisassembler(Architecture.CreateImageReader(bmem, 0U));
+            var dasm = this.CreateDisassembler(Architecture.CreateImageReader(mem, 0U));
             return (TInstruction) dasm.First();
         }
 

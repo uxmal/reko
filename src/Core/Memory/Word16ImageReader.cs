@@ -238,17 +238,38 @@ namespace Reko.Core.Memory
 
         public bool TryReadBeUInt16(out ushort value)
         {
-            throw new NotImplementedException();
+            if (!IsValidOffset(0))
+            {
+                value = 0;
+                return false;
+            }
+            value = mem.Words[Offset];
+            ++Offset;
+            return true;
         }
 
         public bool TryReadBeUInt32(out uint value)
         {
-            throw new NotImplementedException();
+            if (!IsValidOffset(1))
+            {
+                value = 0;
+                return false;
+            }
+            value = mem.ReadBeUInt32(Offset);
+            Offset += 2;
+            return true;
         }
 
         public bool TryReadBeUInt64(out ulong value)
         {
-            throw new NotImplementedException();
+            if (!IsValidOffset(3))
+            {
+                value = 0;
+                return false;
+            }
+            value = mem.ReadBeUInt32(Offset);
+            Offset += 4;
+            return true;
         }
 
         public bool TryReadByte(out byte value)

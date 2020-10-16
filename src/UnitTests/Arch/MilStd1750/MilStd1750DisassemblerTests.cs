@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.MilStd1750;
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +45,35 @@ namespace Reko.UnitTests.Arch.MilStd1750
         public override IProcessorArchitecture Architecture => arch;
 
         public override Address LoadAddress => addrLoad;
+
+        protected override Instruction DisassembleHexBytes(string hexBytes)
+        {
+            var mem = HexStringToMemoryArea(hexBytes);
+            return Disassemble(mem);
+        }
+
+        private MemoryArea HexStringToMemoryArea(string sBytes)
+        {
+            int shift = 12;
+            int bb = 0;
+            var words = new List<ushort>();
+            for (int i = 0; i < sBytes.Length; ++i)
+            {
+                char c = sBytes[i];
+                if (BytePattern.TryParseHexDigit(c, out byte b))
+                {
+                    bb |= (b << shift);
+                    shift -= 4;
+                    if (shift < 0)
+                    {
+                        words.Add((ushort) bb);
+                        shift = 12;
+                        bb = 0;
+                    }
+                }
+            }
+            return new Word16MemoryArea(this.LoadAddress, words.ToArray());
+        }
 
         private void AssertCode(string sExp, string hexBytes)
         {
