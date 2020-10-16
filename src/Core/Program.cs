@@ -32,6 +32,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Reko.Core.Lib;
 using Reko.Core.Output;
+using Reko.Core.Memory;
 
 namespace Reko.Core
 {

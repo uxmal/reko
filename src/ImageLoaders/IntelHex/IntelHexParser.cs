@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2020 Christian Hostelet.
  *
@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Reko.Core;
+using Reko.Core.Memory;
 
 namespace Reko.ImageLoaders.IntelHex
 {
@@ -77,7 +78,7 @@ namespace Reko.ImageLoaders.IntelHex
             if ((hexData.Sum(b => b) % 256) != 0)
                 throw new IntelHexException($"Checksum for Intel Hex line [{hexRecord}] is incorrect.", lineNum);
 
-            var rdr = new ImageReader(hexData.ToArray());
+            var rdr = new ByteImageReader(hexData.ToArray());
             var datasize = rdr.ReadByte();
 
             var newRecord = new IntelHexRecord
@@ -88,11 +89,7 @@ namespace Reko.ImageLoaders.IntelHex
                 Data = rdr.ReadBytes(datasize).ToList(),
                 CheckSum = rdr.ReadByte()
             };
-
             return newRecord;
         }
-
-
     }
-
 }

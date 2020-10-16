@@ -84,10 +84,10 @@ namespace Reko.ImageLoaders.MachO
                 throw new BadImageFormatException("Invalid Mach-O header.");
             switch (magic)
             {
-            case MH_MAGIC: return new Loader32(this, new BeImageReader(RawImage, 0));
-            case MH_MAGIC_64: return new Loader64(this, new BeImageReader(RawImage, 0));
-            case MH_MAGIC_32_LE: return new Loader32(this, new LeImageReader(RawImage, 0));
-            case MH_MAGIC_64_LE: return new Loader64(this, new LeImageReader(RawImage, 0));
+            case MH_MAGIC: return new Loader32(this, new BeImageReader(new ByteMemoryArea(Address.Ptr32(0), RawImage), 0));
+            case MH_MAGIC_64: return new Loader64(this, new BeImageReader(new ByteMemoryArea(Address.Ptr32(0), RawImage), 0));
+            case MH_MAGIC_32_LE: return new Loader32(this, new LeImageReader(new ByteMemoryArea(Address.Ptr32(0), RawImage), 0));
+            case MH_MAGIC_64_LE: return new Loader64(this, new LeImageReader(new ByteMemoryArea(Address.Ptr32(0), RawImage), 0));
             }
             throw new BadImageFormatException("Invalid Mach-O header.");
         }

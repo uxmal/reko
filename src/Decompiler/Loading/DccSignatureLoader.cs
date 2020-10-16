@@ -363,7 +363,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         public bool SetupLibCheck(IServiceProvider services, string fpath, byte[] bytes)
         {
             var listener = services.RequireService<DecompilerEventListener>();
-            var rdr = new LeImageReader(bytes);
+            var rdr = new ByteImageReader(bytes);
             ushort w, len;
             int i;
 
@@ -597,7 +597,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         }
 
         // Read a section of the file, considering endian issues
-        void readFileSection(ushort[] p, int len, EndianImageReader rdr)
+        void readFileSection(ushort[] p, int len, ImageReader rdr)
         {
             int pp = 0;
             for (int i = 0; i < len; i += 2)
@@ -607,7 +607,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         }
 
         // Read a section of the file, considering endian issues
-        void readFileSection(short[] p, int len, EndianImageReader rdr)
+        void readFileSection(short[] p, int len, ImageReader rdr)
         {
             int pp = 0;
             for (int i = 0; i < len; i += 2)
@@ -899,7 +899,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
                 return;
             }
             var bytes = fsSvc.ReadAllBytes(szProFName);
-            var fProto = new LeImageReader(bytes);
+            var fProto = new ByteImageReader(bytes);
             int i;
 
             uint fileSig = fProto.ReadLeUInt32();

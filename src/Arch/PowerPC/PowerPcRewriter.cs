@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.PowerPC
 {

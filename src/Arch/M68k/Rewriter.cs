@@ -29,6 +29,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.M68k
 {

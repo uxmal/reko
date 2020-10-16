@@ -29,6 +29,7 @@ using Reko.Core.Types;
 using System.Diagnostics;
 using Reko.Core.Lib;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.SuperH
 {

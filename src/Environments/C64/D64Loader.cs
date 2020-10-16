@@ -203,7 +203,7 @@ namespace Reko.Environments.C64
         public List<ArchiveDirectoryEntry> LoadDiskDirectory()
         {
             var entries = new List<ArchiveDirectoryEntry>();
-            var rdr = new LeImageReader(RawImage, (uint)SectorOffset(18, 0));
+            var rdr = new ByteImageReader(RawImage, (uint)SectorOffset(18, 0));
             byte track = rdr.ReadByte();
             if (track == 0)
                 return entries;
@@ -214,7 +214,7 @@ namespace Reko.Environments.C64
             return entries;
         }
 
-        public bool ReadDirectorySector(LeImageReader rdr, List<ArchiveDirectoryEntry> entries)
+        public bool ReadDirectorySector(ImageReader rdr, List<ArchiveDirectoryEntry> entries)
         {
             byte nextDirTrack = 0;
             byte nextDirSector = 0;
@@ -279,7 +279,7 @@ namespace Reko.Environments.C64
             {
                 byte[] data;
                 var stm = new MemoryStream();
-                var rdr = new LeImageReader(image, (uint) offset);
+                var rdr = new ByteImageReader(image, (uint) offset);
                 byte trackNext = rdr.ReadByte();
                 while (trackNext != 0)
                 {

@@ -24,6 +24,7 @@ using Reko.Core.Machine;
 
 namespace Reko.Arch.WE32100
 {
+    using Reko.Core.Memory;
     using Reko.Core.Services;
     using Reko.Core.Types;
     using System;

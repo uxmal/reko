@@ -20,18 +20,17 @@
 
 using NUnit.Framework;
 using Reko.Core;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Xml;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
+using System.IO;
+using System.Xml;
 
 #if DEBUG || TRAVIS_RELEASE
 namespace Reko.Tools.C2Xml.UnitTests

@@ -24,6 +24,7 @@ using System.Linq;
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 
 namespace Reko.Arch.MicroBlaze

@@ -62,13 +62,13 @@ namespace Reko.ImageLoaders.MachO
 
         protected MachOLoader ldr;
         private IConfigurationService cfgSvc;
-        protected EndianImageReader rdr;
+        protected EndianByteImageReader rdr;
         public ArchSpecific specific;
         protected Dictionary<uint, uint> mpCputypeToUnixthreadPc;
         protected Dictionary<string, ulong> segments;
         private string platformName;
 
-        protected Parser(MachOLoader ldr, EndianImageReader rdr)
+        protected Parser(MachOLoader ldr, EndianByteImageReader rdr)
         {
             this.ldr = ldr;
             this.cfgSvc = ldr.Services.RequireService<IConfigurationService>();
@@ -634,7 +634,7 @@ namespace Reko.ImageLoaders.MachO
 
     public class Loader32 : Parser
     {
-        public Loader32(MachOLoader ldr, EndianImageReader rdr) : base(ldr, rdr)
+        public Loader32(MachOLoader ldr, EndianByteImageReader rdr) : base(ldr, rdr)
         {
         }
 
@@ -731,7 +731,7 @@ namespace Reko.ImageLoaders.MachO
 
     public class Loader64 : Parser
     {
-        public Loader64(MachOLoader ldr, EndianImageReader rdr)
+        public Loader64(MachOLoader ldr, EndianByteImageReader rdr)
             : base(ldr, rdr)
         {
         }

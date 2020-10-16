@@ -42,7 +42,7 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
         public void Hfp_ReadString_ZeroLength()
         {
             var bytes = hm.MakeImageReader(0);
-            var parser = new HunkFileParser( bytes);
+            var parser = new HunkFileParser(bytes);
             Assert.AreEqual("", parser.ReadString());
         }
 

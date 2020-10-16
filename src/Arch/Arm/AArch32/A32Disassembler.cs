@@ -18,6 +18,8 @@
  */
 #endregion
 
+#pragma warning disable IDE1006
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,6 +30,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using static Reko.Arch.Arm.AArch32.ArmVectorData;

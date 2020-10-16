@@ -29,6 +29,7 @@ using Reko.Core.Machine;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.Msp430
 {

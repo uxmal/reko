@@ -33,6 +33,7 @@ using IEnumerator = System.Collections.IEnumerator;
 using System.Diagnostics;
 using System.Linq;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.X86
 {

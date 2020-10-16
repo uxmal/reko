@@ -22,14 +22,15 @@ using System;
 using Reko.Core.Output;
 using Reko.Core.Types;
 using System.Diagnostics;
+using Reko.Core.Memory;
 
 namespace Reko.Core
 {
     public class TypedDataDumper : IDataTypeVisitor
     {
-        private EndianImageReader rdr;
-        private uint cbSize;
-        private Formatter fmt;
+        private readonly EndianImageReader rdr;
+        private readonly uint cbSize;
+        private readonly Formatter fmt;
 
         public TypedDataDumper(EndianImageReader rdr, uint cbSize, Formatter stm) 
         {
@@ -148,7 +149,6 @@ namespace Reko.Core
             {
                 if (newLine)
                 {
-                    newLine = false;
                     fmt.WriteLine();
                     fmt.Write("\t");
                     fmt.WriteKeyword("db");

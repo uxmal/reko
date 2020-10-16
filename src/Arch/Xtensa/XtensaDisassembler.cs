@@ -28,6 +28,7 @@ using Reko.Core.Expressions;
 using System.Linq;
 using Reko.Core.Lib;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 #pragma warning disable IDE1006 // Naming Styles
 

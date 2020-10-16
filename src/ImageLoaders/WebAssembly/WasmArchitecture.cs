@@ -28,6 +28,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
+using Reko.Core.Memory;
 
 namespace Reko.ImageLoaders.WebAssembly
 {

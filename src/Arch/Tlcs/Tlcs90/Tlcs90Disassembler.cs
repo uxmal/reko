@@ -18,9 +18,12 @@
  */
 #endregion
 
+#pragma warning disable IDE1006
+
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -33,7 +36,6 @@ using System.Threading.Tasks;
 namespace Reko.Arch.Tlcs.Tlcs90
 {
     using Decoder = Decoder<Tlcs90Disassembler, Mnemonic, Tlcs90Instruction>;
-#pragma warning disable IDE1006
 
     public partial class Tlcs90Disassembler : DisassemblerBase<Tlcs90Instruction, Mnemonic>
     {

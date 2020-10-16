@@ -30,6 +30,7 @@ using System.Linq;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.Vax
 {

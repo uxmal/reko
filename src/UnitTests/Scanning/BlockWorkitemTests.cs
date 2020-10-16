@@ -154,7 +154,7 @@ namespace Reko.UnitTests.Scanning
             arch.Setup(a => a.CreateImageReader(
                 It.IsAny<ByteMemoryArea>(),
                 It.IsAny<Address>()))
-                .Returns(new LeImageReader(new byte[0]));
+                .Returns(new LeImageReader(new ByteMemoryArea(Address.Ptr32(0),new byte[0]), 0));
             arch.Setup(a => a.InlineCall(
                 It.IsAny<Address>(),
                 It.IsAny<Address>(),

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.ImageLoaders.Hunk;
 using System;
 using System.Collections.Generic;
@@ -40,9 +41,9 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
             { typeof(string), (o, w) => { WriteString((string) o, w); } },
         };
 
-        public BeImageReader MakeImageReader(params object[] data)
+        public ByteImageReader MakeImageReader(params object[] data)
         {
-            return new BeImageReader(MakeBytes(data), 0);
+            return new ByteImageReader(MakeBytes(data), 0);
         }
 
         public byte[] MakeBytes(params object[] data)

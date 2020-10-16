@@ -27,6 +27,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.X86
 {

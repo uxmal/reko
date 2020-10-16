@@ -30,6 +30,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using Reko.Arch.Tlcs.Tlcs90;
 using Reko.Core.Lib;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.Tlcs
 {

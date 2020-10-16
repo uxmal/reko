@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work from:
@@ -30,6 +30,7 @@ using System.Collections.Generic;
 namespace Reko.Arch.MicrochipPIC.PIC18
 {
     using Common;
+    using Reko.Core.Memory;
 
     /// <summary>
     /// A Microchip PIC18 *partial* disassembler.

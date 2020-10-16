@@ -32,6 +32,7 @@ using System.Text;
 using Reko.Core.Code;
 using Reko.Core.Operators;
 using Reko.Core.Assemblers;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.X86
 {

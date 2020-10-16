@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -90,8 +91,7 @@ namespace Reko.Arch.X86
 
         public override bool TryPeekOpcode(EndianImageReader rdr, out uint opcode)
         {
-            byte bOpcode;
-            bool ret = rdr.TryPeekByte(0, out bOpcode);
+            bool ret = rdr.TryPeekByte(0, out byte bOpcode);
             opcode = bOpcode;
             return ret;
         }
@@ -173,8 +173,7 @@ namespace Reko.Arch.X86
 
         public override bool TryPeekOpcode(EndianImageReader rdr, out uint opcode)
         {
-            byte bOpcode;
-            bool ret = rdr.TryPeekByte(0, out bOpcode);
+            bool ret = rdr.TryPeekByte(0, out byte bOpcode);
             opcode = bOpcode;
             return ret;
         }

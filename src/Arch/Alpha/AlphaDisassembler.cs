@@ -18,13 +18,13 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using Reko.Core;
 using Reko.Core.Machine;
-using System.Diagnostics;
-using Reko.Core.Types;
+using Reko.Core.Memory;
 using Reko.Core.Services;
+using Reko.Core.Types;
+using System;
+using System.Collections.Generic;
 
 namespace Reko.Arch.Alpha
 {

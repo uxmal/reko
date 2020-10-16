@@ -36,13 +36,13 @@ namespace Reko.ImageLoaders.Hunk
         public HunkFile hunk_file;
         public List<Hunk> hunks;
 
-        private BeImageReader f;
+        private readonly ByteImageReader f;
         private bool? v37_compat;
         private Encoding textEncoding;
 
-        private static TraceSwitch trace = new TraceSwitch("HunkLoader", "Traces the progress of the Amiga Hunk loader");
+        private static readonly TraceSwitch trace = new TraceSwitch("HunkLoader", "Traces the progress of the Amiga Hunk loader");
 
-        public HunkFileParser(BeImageReader f, bool? v37_compat = null)
+        public HunkFileParser(ByteImageReader f, bool? v37_compat = null)
         {
             this.f = f;
             this.v37_compat = v37_compat;
@@ -112,7 +112,7 @@ namespace Reko.ImageLoaders.Hunk
                 }
                 // check for valid first hunk type
                 if (isFirstHunk && !this.IsValidFirstHunkType(hunkType))
-                    throw new BadImageFormatException(String.Format("No hunk file. The first hunk type was {1}.", hunkType));
+                    throw new BadImageFormatException($"No hunk file. The first hunk type was {hunkType}.");
                 isFirstHunk = false;
                 sawEndHunk = false;
                 was_potential_v37_hunk = false;
@@ -247,7 +247,7 @@ namespace Reko.ImageLoaders.Hunk
             return f.ReadBeInt32();
         }
 
-        public virtual short read_word(EndianImageReader f)
+        public virtual short read_word(ByteImageReader f)
         {
             if (!f.IsValid)
                 return -1;

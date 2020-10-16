@@ -23,6 +23,7 @@ using Reko.Core.Types;
 using Reko.Core.Serialization;
 using System;
 using System.Diagnostics;
+using Reko.Core.Memory;
 
 namespace Reko.Scanning
 {

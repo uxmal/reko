@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Core
         [Test]
         public void ImrReadOffTheEnd()
         {
-            var rdr = new ImageReader(new byte[] { 1, 2, 3, 4 });
+            var rdr = new ByteImageReader(new byte[] { 1, 2, 3, 4 });
             var buf = new byte[10];
             var read = rdr.Read(buf, 0, buf.Length);
             Assert.AreEqual(4, read);
@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Core
         [Test]
         public void ImrReadIntoMiddleOfBuffer()
         {
-            var rdr = new ImageReader(new byte[] { 1, 2, 3, 4 });
+            var rdr = new ByteImageReader(new byte[] { 1, 2, 3, 4 });
             var buf = new byte[10];
             var read = rdr.Read(buf, 2, buf.Length);
             Assert.AreEqual(2, read);

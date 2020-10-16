@@ -1,4 +1,5 @@
 using Reko.Core;
+using Reko.Core.Memory;
 using System.Collections.Generic;
 
 namespace Reko.Arch.Arm

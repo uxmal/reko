@@ -19,16 +19,17 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System.Collections.Generic;
 
 namespace Reko.Arch.Z80
 {
     public class Z80PointerScanner : PointerScanner<ushort>
     {
-        private SegmentMap map;
-        private EndianImageReader rdr;
-        private HashSet<ushort> knownLinAddresses;
-        private PointerScannerFlags flags;
+        private readonly SegmentMap map;
+        private readonly EndianImageReader rdr;
+        private readonly HashSet<ushort> knownLinAddresses;
+        private readonly PointerScannerFlags flags;
 
         public Z80PointerScanner(SegmentMap map, EndianImageReader rdr, HashSet<ushort> knownLinAddresses, PointerScannerFlags flags)
             : base(rdr, knownLinAddresses, flags)

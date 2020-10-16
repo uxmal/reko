@@ -21,6 +21,7 @@
 using Reko.Core.CLanguage;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
@@ -67,7 +68,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="segmentMap">Loaded program image.</param>
         /// <param name="importReferences">Imported procedures.</param>
-        /// <returns>The created platform emulators.
+        /// <returns>The created platform emulator.
         /// </returns>
         IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences);
 

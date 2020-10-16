@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace Reko.ImageLoaders.MzExe.Pe
 {
     public class Arm64Relocator : Relocator
     {
-        private DecompilerEventListener eventListener;
+        private readonly DecompilerEventListener eventListener;
 
         public Arm64Relocator(IServiceProvider services, Program program) : base(program)
         {

@@ -41,7 +41,8 @@ namespace Reko.ImageLoaders.WebAssembly
         {
             this.arch = arch;
             this.addr = rdr.Address;
-            this.rdr = new WasmImageReader(new ByteMemoryArea(rdr.Address, rdr.Bytes))
+            var bytes = ((ByteImageReader) rdr).Bytes;
+            this.rdr = new WasmImageReader(new ByteMemoryArea(rdr.Address, bytes))
             {
                 Offset = rdr.Offset
             };

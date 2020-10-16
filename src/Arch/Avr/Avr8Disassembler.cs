@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.Core.Expressions;
 using System.Diagnostics;

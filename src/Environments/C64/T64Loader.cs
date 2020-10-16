@@ -106,7 +106,7 @@ namespace Reko.Environments.C64
 
         private List<ArchiveDirectoryEntry> LoadTapeDirectory()
         {
-            var rdr = new LeImageReader(RawImage);
+            var rdr = new ByteImageReader(RawImage);
             var sig = Encoding.ASCII.GetString(rdr.ReadBytes(0x20));
             if (!sig.StartsWith("C64"))
                 throw new BadImageFormatException("Expected T64 file to begin with C64 signature.");
@@ -137,7 +137,7 @@ namespace Reko.Environments.C64
             return entries;
         }
 
-        private T64FileEntry ReadDirectoryEntry(LeImageReader rdr)
+        private T64FileEntry ReadDirectoryEntry(ImageReader rdr)
         {
             if (!rdr.TryReadByte(out var c64Type) ||
                 !rdr.TryReadByte(out var fileType) ||

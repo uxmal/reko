@@ -30,6 +30,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 {
     using PIC16;
     using PIC18;
+    using Reko.Core.Memory;
 
     public abstract class PICProcessorModel : IPICProcessorModel
     {
