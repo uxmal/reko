@@ -42,24 +42,42 @@ namespace Reko.Core.Memory
         /// </summary>
         public ushort[] Words { get; }
 
-        public override BeImageReader CreateBeReader(Address addr) => throw new NotImplementedException();
-        public override BeImageReader CreateBeReader(long offset) => throw new NotImplementedException();
-        public override BeImageReader CreateBeReader(long beginOffset, long endOffset) => throw new NotImplementedException();
+        public override EndianImageReader CreateBeReader(Address addr) => new Word16BeImageReader(this, addr);
+        public override EndianImageReader CreateBeReader(long offset) => new Word16BeImageReader(this, offset);
+        public override EndianImageReader CreateBeReader(long beginOffset, long endOffset) => new Word16BeImageReader(this, beginOffset, endOffset);
         public override BeImageWriter CreateBeWriter(Address addr) => throw new NotImplementedException();
         public override BeImageWriter CreateBeWriter(long offset) => throw new NotImplementedException();
 
-        public override LeImageReader CreateLeReader(Address addr) => throw new NotImplementedException();
-        public override LeImageReader CreateLeReader(long offset) => throw new NotImplementedException();
-        public override LeImageReader CreateLeReader(long beginOffset, long endOffset) => throw new NotImplementedException();
+        public override EndianImageReader CreateLeReader(Address addr) => throw new NotImplementedException();
+
+        public override EndianImageReader CreateLeReader(long offset) => throw new NotImplementedException();
+        public override EndianImageReader CreateLeReader(long beginOffset, long endOffset) => throw new NotImplementedException();
         public override LeImageWriter CreateLeWriter(Address addr) => throw new NotImplementedException();
         public override LeImageWriter CreateLeWriter(long offset) => throw new NotImplementedException();
 
+
+        public uint ReadBeUInt32(long offset)
+        {
+            var hi = (uint)Words[offset];
+            var lo = (uint)Words[offset + 1];
+            return (hi << 16) | lo;
+        }
+
+        public ulong ReadBeUInt64(long offset)
+        {
+            var w0 = (ulong) Words[offset];
+            var w1 = (ulong) Words[offset + 1];
+            var w2 = (ulong) Words[offset + 2];
+            var w3 = (ulong) Words[offset + 3];
+            return (w0 << 48) | (w1 << 32) | (w2 << 16) | w3;
+        }
 
 
         public override string ToString()
         {
             return string.Format("Image {0}{1} - length {2} 16-bit words {3}", "{", BaseAddress, this.Length, "}");
         }
+
 
         public override bool TryReadByte(long off, out byte b)
         {

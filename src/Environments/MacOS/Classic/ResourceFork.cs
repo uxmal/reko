@@ -375,7 +375,7 @@ namespace Reko.Environments.MacOS.Classic
         private static BeImageReader GetA5InitImageReader(ImageSegment a5dataSegment)
         {
             var a5data = a5dataSegment.MemoryArea;
-            var a5dr = a5data.CreateBeReader(0);
+            var a5dr = new BeImageReader((ByteMemoryArea) a5data, 0);
             if (!a5dr.TryReadBeUInt32(out uint a5d0))
                 return null;
             if (!a5dr.TryReadBeUInt16(out ushort a5d1))

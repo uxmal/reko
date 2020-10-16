@@ -56,8 +56,8 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
                 A5World = a5world,
                 A5Offset = 2048,
             };
-            var mem = platform.A5World.MemoryArea;
-            var rdr = mem.CreateBeReader(0);
+            var mem = (ByteMemoryArea) platform.A5World.MemoryArea;
+            var rdr = new BeImageReader(mem, 0);
             this.relocator = new A5Relocator(platform, rdr, 1024);
         }
 

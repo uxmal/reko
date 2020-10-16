@@ -64,16 +64,16 @@ namespace Reko.Core.Memory
         public RelocationDictionary Relocations { get; private set; }
 
 
-        public abstract BeImageReader CreateBeReader(Address addr);
-        public abstract BeImageReader CreateBeReader(long offset);
-        public abstract BeImageReader CreateBeReader(long offsetBegin, long offsetEnd);
+        public abstract EndianImageReader CreateBeReader(Address addr);
+        public abstract EndianImageReader CreateBeReader(long offset);
+        public abstract EndianImageReader CreateBeReader(long offsetBegin, long offsetEnd);
         public abstract BeImageWriter CreateBeWriter(Address addr);
         public abstract BeImageWriter CreateBeWriter(long offset);
 
 
-        public abstract LeImageReader CreateLeReader(Address addr);
-        public abstract LeImageReader CreateLeReader(long offset);
-        public abstract LeImageReader CreateLeReader(long offsetBegin, long offsetEnd);
+        public abstract EndianImageReader CreateLeReader(Address addr);
+        public abstract EndianImageReader CreateLeReader(long offset);
+        public abstract EndianImageReader CreateLeReader(long offsetBegin, long offsetEnd);
         public abstract LeImageWriter CreateLeWriter(Address addr);
         public abstract LeImageWriter CreateLeWriter(long offset);
 

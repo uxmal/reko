@@ -59,6 +59,8 @@ namespace Reko.Core.Memory
 
         short ReadBeInt16();
         int ReadBeInt32();
+        ushort ReadBeUInt16();
+
         uint ReadBeUInt32();
         ulong ReadBeUInt64();
 

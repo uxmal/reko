@@ -84,7 +84,7 @@ namespace Reko.Environments.MacOS.Classic
         public const ushort RTD = 0x4E74;
 
         private IProcessorArchitecture arch;
-        private BeImageReader rdr;
+        private EndianImageReader rdr;
         private Regex reValidVariableLengthProcedureName;
 
         public MacsBugSymbolScanner(IProcessorArchitecture arch, ByteMemoryArea mem)
@@ -240,13 +240,12 @@ namespace Reko.Environments.MacOS.Classic
         private bool SkipConstantData()
         {
             var offset = rdr.Offset;
-            ushort us;
-            if (!rdr.TryReadBeUInt16(out us))
+            if (!rdr.TryReadBeUInt16(out ushort us))
                 return false;
             if ((us & 1) == 1)
                 ++us;
             rdr.Offset += us;
-            if (rdr.Offset > rdr.Bytes.Length)
+            if (rdr.IsValid)
             {
                 rdr.Offset = offset;
                 return false;

@@ -71,17 +71,17 @@ namespace Reko.Core.Memory
             return string.Format("Image {0}{1} - length {2} bytes{3}", "{", BaseAddress, this.Length, "}");
         }
 
-        public override BeImageReader CreateBeReader(Address addr)
+        public override EndianImageReader CreateBeReader(Address addr)
         {
             return new BeImageReader(this, addr);
         }
 
-        public override BeImageReader CreateBeReader(long offset)
+        public override EndianImageReader CreateBeReader(long offset)
         {
             return new BeImageReader(this, offset);
         }
 
-        public override BeImageReader CreateBeReader(long offsetBegin, long offsetEnd)
+        public override EndianImageReader CreateBeReader(long offsetBegin, long offsetEnd)
         {
             return new BeImageReader(this, offsetBegin, offsetEnd);
         }
@@ -96,17 +96,17 @@ namespace Reko.Core.Memory
             return new BeImageWriter(this, offset);
         }
 
-        public override LeImageReader CreateLeReader(Address addr)
+        public override EndianImageReader CreateLeReader(Address addr)
         {
             return new LeImageReader(this, addr);
         }
 
-        public override LeImageReader CreateLeReader(long offset)
+        public override EndianImageReader CreateLeReader(long offset)
         {
             return new LeImageReader(this, offset);
         }
 
-        public override LeImageReader CreateLeReader(long offsetBegin, long offsetEnd)
+        public override EndianImageReader CreateLeReader(long offsetBegin, long offsetEnd)
         {
             return new LeImageReader(this, offsetBegin, offsetEnd);
         }
