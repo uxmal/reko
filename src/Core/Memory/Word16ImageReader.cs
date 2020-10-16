@@ -144,7 +144,15 @@ namespace Reko.Core.Memory
 
         public byte[] ReadBytes(int addressUnits)
         {
-            throw new NotImplementedException();
+            var bytes = new List<byte>(addressUnits * 2);
+            var iEnd = Math.Min(Offset + addressUnits, endOffset);
+            for (int i = (int)Offset; i < iEnd; ++i)
+            {
+                var w = mem.Words[i];
+                bytes.Add((byte)(w >> 8));
+                bytes.Add((byte) w);
+            }
+            return bytes.ToArray();
         }
 
         public byte[] ReadBytes(uint addressUnits)

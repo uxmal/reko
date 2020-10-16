@@ -40,5 +40,15 @@ namespace Reko.Arch.MilStd1750
             var sMnemonic = Mnemonic.ToString();
             renderer.WriteMnemonic(sMnemonic);
         }
+
+        protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            if (operand is ImmediateOperand imm)
+            {
+                renderer.WriteFormat("#&{0:X}", imm.Value.ToUInt32());
+                return;
+            }
+            base.RenderOperand(operand, renderer, options);
+        }
     }
 }
