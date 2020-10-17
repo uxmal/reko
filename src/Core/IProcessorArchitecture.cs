@@ -319,6 +319,12 @@ namespace Reko.Core
         /// </summary>
         int ReturnAddressOnStack { get; }
         int InstructionBitSize { get; }                     // Instruction "granularity" or alignment.
+        /// <summary>
+        /// Size of the smallest addressable memory unit, in bits
+        /// </summary>
+        /// <remarks>Most modern CPU:s have byte addressability, so this will typically be 8.
+        /// </remarks>
+        int MemoryGranularity { get; }
         RegisterStorage StackRegister { get; set;  }        // Stack pointer used by this machine.
         RegisterStorage FpuStackRegister { get; }           // FPU stack pointer used by this machine, or null if none exists.
         uint CarryFlagMask { get; }                         // Used when building large adds/subs when carry flag is used.
@@ -389,6 +395,7 @@ namespace Reko.Core
         {
             this.Services = services;
             this.Name = archId;
+            this.MemoryGranularity = 8; // Most architectures are byte-addressable.
         }
 #nullable enable
 
@@ -397,6 +404,7 @@ namespace Reko.Core
         public string? Description { get; set; }
         public EndianServices Endianness { get; protected set; }
         public PrimitiveType FramePointerType { get; protected set; }
+        public int MemoryGranularity { get; protected set; }
         public PrimitiveType PointerType { get; protected set; }
         public PrimitiveType WordWidth { get; protected set; }
         /// <summary>
