@@ -216,7 +216,7 @@ namespace Reko.ImageLoaders.IntelHex
             int i = 0;
             foreach (var mchk in memChunks)
             {
-                var mem = new ByteMemoryArea(mchk.BaseAddress, mchk.Datum.ToArray());
+                var mem = arch.CreateMemoryArea(mchk.BaseAddress, mchk.Datum.ToArray());
                 var seg = new ImageSegment($"CODE_{i:d2}", mem, AccessMode.ReadExecute);
                 ++i;
                 segs.AddSegment(seg);

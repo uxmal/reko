@@ -540,6 +540,10 @@
       <Project>{6feaf3bb-48d3-4301-9ce5-a1a274db97f5}</Project>
       <Name>Srec</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\TekHex\TekHex.csproj">
+      <Project>{32a845b0-30bb-4255-ab92-c75b9b6f3dca}</Project>
+      <Name>TekHex</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\TypeLib\TypeLib.csproj">
       <Project>{a4def935-217c-4107-998c-c7845893cfa0}</Project>
       <Name>TypeLib</Name>
