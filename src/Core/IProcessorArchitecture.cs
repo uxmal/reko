@@ -172,6 +172,11 @@ namespace Reko.Core
             Expression callee);
 
         /// <summary>
+        /// Create a <see cref="MemoryArea"/> appropriate for this processor.
+        /// </summary>
+        MemoryArea CreateMemoryArea(Address baseAddress, byte[] bytes);
+
+        /// <summary>
         /// Creates a processor emulator for this architecture.
         /// </summary>
         /// <param name="segmentMap">The memory image containing the program 
@@ -466,6 +471,12 @@ namespace Reko.Core
             Expression callee)
         {
             return new FrameApplicationBuilder(this, binder, site, callee, false);
+        }
+
+        public virtual MemoryArea CreateMemoryArea(Address addr, byte[] bytes)
+        {
+            // Most CPU's -- but not all -- are byte-addressed.
+            return new ByteMemoryArea(addr, bytes);
         }
 
         /// <summary>
