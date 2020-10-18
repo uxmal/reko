@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Arch.MilStd1750
         [Test]
         public void MS1750Dis_bge()
         {
-            AssertCode("bge\t0170", "7B71");
+            AssertCode("bge\t0171", "7B71");
         }
 
         [Test]

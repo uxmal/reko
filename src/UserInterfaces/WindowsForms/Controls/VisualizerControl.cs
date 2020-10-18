@@ -280,7 +280,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         protected virtual void OnProgramChanged()
         {
-            this.bmem = (ByteMemoryArea) Program?.SegmentMap.Segments.Values[0].MemoryArea;
+            //$TODO: what do do with non-byte-addressable memory areas?
+            this.bmem = Program?.SegmentMap.Segments.Values[0].MemoryArea as ByteMemoryArea;
             UpdateScrollbar();
             this.Invalidate();
         }
@@ -303,8 +304,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             {
                 return;
             }
-
-            this.bmem = (ByteMemoryArea) seg.MemoryArea;
+            //$TODO: what about non-byte-granularity.
+            this.bmem = seg.MemoryArea as ByteMemoryArea;
             UpdateScrollbar();
             Invalidate();
         }

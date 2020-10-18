@@ -414,7 +414,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private void ChangeMemoryArea(ImageSegment seg)
         {
-            mem = (ByteMemoryArea)seg.MemoryArea;   //$TODO only byte granularity.
+            mem = seg.MemoryArea as ByteMemoryArea;   //$TODO only byte granularity.
             if (mem != null)
             {
                 this.addrMin = Address.Max(mem.BaseAddress, seg.Address);

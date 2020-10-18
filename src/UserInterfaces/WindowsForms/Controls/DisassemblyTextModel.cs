@@ -138,9 +138,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private Address Align(Address addr)
         {
-            uint byteAlign = (uint)program.Architecture.InstructionBitSize / 8u;
+            var arch = program.Architecture;
+            uint addrAlign = (uint)(arch.InstructionBitSize / arch.MemoryGranularity);
             ulong linear = addr.ToLinear();
-            var rem = linear % byteAlign;
+            var rem = linear % addrAlign;
             return addr - (int)rem;
         }
 
@@ -151,13 +152,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             var bitSize = arch.InstructionBitSize;
             var byteSize = (bitSize + 7) / 8;
             var instrByteFormat = $"{{0:X{byteSize * 2}}} ";      // 2 characters for each byte
-            var instrByteSize = PrimitiveType.CreateWord(bitSize);
+            var instrSize = PrimitiveType.CreateWord(bitSize);
 
             var sb = new StringBuilder();
             var rdr = program.CreateImageReader(arch, instr.Address);
             for (int i = 0; i < instr.Length; i += byteSize)
             {
-                if (rdr.TryRead(instrByteSize, out var v))
+                if (rdr.TryRead(instrSize, out var v))
                 {
                     sb.AppendFormat(instrByteFormat, v.ToUInt64());
                 }
