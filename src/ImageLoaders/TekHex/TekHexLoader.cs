@@ -24,6 +24,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Reko.Core;
+using Reko.Core.Lib;
 using Reko.Core.Services;
 
 namespace Reko.ImageLoaders.TekHex
@@ -33,16 +34,27 @@ namespace Reko.ImageLoaders.TekHex
     /// </summary>
     public class TekHexLoader : ImageLoader
     {
-        private readonly List<Section> sections = new List<Section>();
-        private readonly List<Symbol> symbols = new List<Symbol>();
-        private readonly List<(Address, List<byte>)> mems = new List<(Address, List<byte>)>();
+        private readonly TraceSwitch trace = new TraceSwitch(nameof(TekHexLoader), "Trace loading of Tektronix HEX files.")
+        {
+            Level = TraceLevel.Verbose
+        };
+
+        private readonly List<Section> sections;
+        private readonly List<Symbol> symbols;
+        private readonly SortedList<Address, List<byte>> mems;
+        private readonly List<ImageSymbol> entryPoints; 
         private readonly DecompilerEventListener eventListener;
         private int nLines;
-        private uint? uAddrLast;
+        private uint uAddrLast;
+        private List<byte>? abCur;
 
         public TekHexLoader(IServiceProvider services, string filename, byte[] rawImage)
             : base(services, filename, rawImage)
         {
+            this.sections = new List<Section>();
+            this.symbols = new List<Symbol>();
+            this.mems = new SortedList<Address, List<byte>>();
+            this.entryPoints = new List<ImageSymbol>(); 
             this.eventListener = services.RequireService<DecompilerEventListener>();
         }
 
@@ -117,7 +129,7 @@ namespace Reko.ImageLoaders.TekHex
                         uint baseaddr = (uint) ReadHexNumber(line, ref linep, baseaddr_len);
                         int sectlen_len = (int) ReadHexNumber(line, ref linep, 1);
                         uint sectlen = (uint) ReadHexNumber(line, ref linep, sectlen_len);
-
+                        Debug.Print("section: {0} {1:X4} {2}", sectname, baseaddr, sectlen);
                         sections.Add(new Section
                         {
                             name = sectname,
@@ -142,18 +154,18 @@ namespace Reko.ImageLoaders.TekHex
 
             case 6:     // Data
                 var uAddr = (uint) ReadHexNumber(line, ref linep, addr_len);
-                Debug.Print("  Data: {0:X6}h {1} {2}", uAddr, line_len, line);
-                if (!uAddrLast.HasValue || uAddrLast.Value != uAddr)
+                Debug.Print("  Data: {0:X6}h {1} {2}", uAddr, line_len, line.Substring(linep));
+                if (abCur is null || uAddrLast != uAddr)
                 {
                     // For word oriented archs, we have to scale the addresses.
                     var addrTarget = Address.Create(arch.PointerType, uAddr * 8u / (uint) arch.MemoryGranularity);
                     var ab = new List<byte>();
-                    this.mems.Add((addrTarget, ab));
+                    this.mems.Add(addrTarget, ab);
+                    this.abCur = ab;
                 }
-                var (_, mem) = mems.Last();
                 while (linep < line_len)
                 {
-                    mem.Add((byte) ReadHexNumber(line, ref linep, 2));
+                    abCur.Add((byte) ReadHexNumber(line, ref linep, 2));
                     ++uAddr;
                 }
                 uAddrLast = uAddr;
@@ -161,7 +173,8 @@ namespace Reko.ImageLoaders.TekHex
 
             case 8:     // Terminator
                 uAddr = (uint) ReadHexNumber(line, ref linep, addr_len);
-                //simreg.ic = (ushort) ((address >> 1) & 0xffff);
+                var addr = Address.Create(arch.PointerType, uAddr);
+                this.entryPoints.Add(ImageSymbol.Procedure(arch, addr));
                 break;
 
             default:
@@ -175,10 +188,11 @@ namespace Reko.ImageLoaders.TekHex
         public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
         { 
             nLines = 0;
-            this.uAddrLast = null;
+            abCur = null;
             mems.Clear();
             sections.Clear();
             symbols.Clear();
+            entryPoints.Clear();
             using var lines = new StreamReader(new MemoryStream(RawImage));
             for (; ; )
             {
@@ -203,13 +217,13 @@ namespace Reko.ImageLoaders.TekHex
             foreach (var section in sections)
             {
                 var addrBase = Address.Create(arch.PointerType, section.uAddrBase);
-                var bytes = mems.Find(m => m.Item1 == addrBase);
-                var mem = arch.CreateMemoryArea(addrBase, bytes.Item2.ToArray());
+                if (!mems.TryGetLowerBound(addrBase, out var bytes))
+                    throw new BadImageFormatException($"Unable to find a memory area for segment {section.name} at {section.uAddrBase:X4}.");
+                var mem = arch.CreateMemoryArea(addrBase, bytes.ToArray());
                 var seg = new ImageSegment(section.name!, mem, AccessMode.ReadWriteExecute);
                 segs.Add(seg);
             }
             var baseAddr = segs.Min(s => s.Address);
-
             return new SegmentMap(baseAddr, segs.ToArray());
         }
 
@@ -250,7 +264,7 @@ namespace Reko.ImageLoaders.TekHex
                 if (i == 0)
                     w.WriteLine("Section             BaseAddr Length");
                 w.WriteLine("{0,-20}  {1:X4}h     {2}", sections[i].name,
-                  sections[i].uAddrBase, sections[i].length);
+                     sections[i].uAddrBase, sections[i].length);
             }
             for (i = 0; i < symbols.Count; i++)
             {
