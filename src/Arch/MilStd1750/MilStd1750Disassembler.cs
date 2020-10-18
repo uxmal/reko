@@ -21,6 +21,7 @@
 #pragma warning disable IDE1006
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -41,6 +42,7 @@ namespace Reko.Arch.MilStd1750
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
         private Address addr;
+        private Mnemonic mnemonic;
 
         public MilStd1750Disassembler(MilStd1750Architecture arch, EndianImageReader rdr)
         {
@@ -56,6 +58,7 @@ namespace Reko.Arch.MilStd1750
             if (!rdr.TryReadUInt16(out ushort wInstr))
                 return null;
             this.ops.Clear();
+            this.mnemonic = Mnemonic.invalid;
             var instr = rootDecoder.Decode(wInstr, this);
             instr.Address = this.addr;
             instr.Length = (int) (rdr.Address - this.addr);
@@ -67,7 +70,7 @@ namespace Reko.Arch.MilStd1750
             return new Instruction
             {
                 InstructionClass = iclass,
-                Mnemonic = mnemonic,
+                Mnemonic = this.mnemonic != Mnemonic.invalid ? this.mnemonic : mnemonic,
                 Operands = ops.ToArray()
             };
         }
@@ -154,14 +157,92 @@ namespace Reko.Arch.MilStd1750
         private static readonly Mutator<MilStd1750Disassembler> Ix_w32 = Ix(PrimitiveType.Word32);
 
         /// <summary>
+        /// Immediate long
+        /// </summary>
+        private static Mutator<MilStd1750Disassembler> Imx(PrimitiveType dt)
+        {
+            return (u, d) =>
+            {
+                if (!d.rdr.TryReadBeUInt16(out ushort imm))
+                    return false;
+                var op = new ImmediateOperand(Constant.Create(dt, imm));
+                d.ops.Add(op);
+                var ixReg = bf0_4.Read(u);
+                if (ixReg != 0)
+                {
+                    var xReg = Registers.GpRegs[ixReg];
+                    d.ops.Add(new RegisterOperand(xReg));
+                }
+                return true;
+            };
+        }
+        private static readonly Mutator<MilStd1750Disassembler> Imx_w16 = Imx(PrimitiveType.Word16);
+
+
+        /// <summary>
+        /// Address or indexed address
+        /// </summary>
+        private static bool Ax(uint uInstr, MilStd1750Disassembler dasm)
+        {
+            if (!dasm.rdr.TryReadBeUInt16(out ushort imm))
+                return false;
+            var ixReg = bf0_4.Read(uInstr);
+            if (ixReg != 0)
+            {
+                var op = new ImmediateOperand(Constant.Create(PrimitiveType.Word16, imm));
+                dasm.ops.Add(op);
+                var xReg = Registers.GpRegs[ixReg];
+                dasm.ops.Add(new RegisterOperand(xReg));
+            }
+            else
+            {
+                var op = AddressOperand.Ptr16(imm);
+                dasm.ops.Add(op);
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Immediate short positive
+        /// </summary>
+        private static bool ISP(uint uInstr, MilStd1750Disassembler dasm)
+        {
+            var imm = bf0_4.Read(uInstr) + 1u;
+            dasm.ops.Add(ImmediateOperand.Word16((ushort)imm));
+            return true;
+        }
+
+        /// <summary>
         /// IC-relative
         /// </summary>
         private static bool ICR(uint uInstr, MilStd1750Disassembler dasm)
         {
             var disp = bf0_8.ReadSigned(uInstr);
-            var addrDst = dasm.addr + (disp - 1);
+            var addrDst = dasm.addr + disp;
             dasm.ops.Add(AddressOperand.Create(addrDst));
             return true;
+        }
+
+        /// <summary>
+        /// XIO command decoder
+        /// </summary>
+        private static bool Xio(uint uInstr, MilStd1750Disassembler dasm)
+        {
+            if (!dasm.rdr.TryReadBeUInt16(out ushort cmd))
+                return false;
+            switch (cmd >> 12)
+            {
+            case 0:
+                var ra = Registers.GpRegs[bf4_4.Read(uInstr)];
+                dasm.mnemonic = Mnemonic.po;
+                dasm.ops.Add(new RegisterOperand(ra));
+                dasm.ops.Add(ImmediateOperand.Word16((ushort) (cmd & 0x03FF)));
+                return true;
+            default:
+                var testGenSvc = dasm.arch.Services.GetService<ITestGenerationService>();
+                testGenSvc?.ReportMissingDecoder("MS1750Dis", dasm.addr, dasm.rdr, $"xio {cmd:X4}");
+                return false;
+            }
         }
 
         private static Mutator<MilStd1750Disassembler> _(string msg)
@@ -304,7 +385,7 @@ namespace Reko.Arch.MilStd1750
                 invalid,
                 invalid,
 
-                Instr(Mnemonic.xio, _("xio")), // ab
+                Instr(Mnemonic.xio, InstrClass.Linear|InstrClass.System, Xio), // ab
                 Instr(Mnemonic.vio, _("vio")), // ab
                 Instr(Mnemonic.imml, _("imml")), // ab
                 invalid,
@@ -362,29 +443,29 @@ namespace Reko.Arch.MilStd1750
                 Instr(Mnemonic.js, _("js")),
                 Instr(Mnemonic.soj, _("soj")),
 
-                Instr(Mnemonic.br, _("br")),
-                Instr(Mnemonic.bez, _("bez")),
+                Instr(Mnemonic.br, ICR),
+                Instr(Mnemonic.bez, ICR),
                 Instr(Mnemonic.blt, ICR),
-                Instr(Mnemonic.bex, _("bex")),
+                Instr(Mnemonic.bex, ICR),
 
-                Instr(Mnemonic.ble, _("fc")),
-                Instr(Mnemonic.bgt, _("fcr")),
-                Instr(Mnemonic.bnz, _("efc")),
-                Instr(Mnemonic.bge, _("efcr")),
+                Instr(Mnemonic.ble, ICR),
+                Instr(Mnemonic.bgt, ICR),
+                Instr(Mnemonic.bnz, ICR),
+                Instr(Mnemonic.bge, ICR),
 
                 Instr(Mnemonic.lsti, _("lsti")), // b
                 Instr(Mnemonic.lst, _("lst")), // b
-                Instr(Mnemonic.sjs, _("sjs")),
-                Instr(Mnemonic.urs, _("urs")),
+                Instr(Mnemonic.sjs, Ra,Ax),
+                Instr(Mnemonic.urs, Ra),
 
                 // 80
-                Instr(Mnemonic.l, _("l")),
-                Instr(Mnemonic.lr, _("lr")),
-                Instr(Mnemonic.lisp, _("lisp")),
+                Instr(Mnemonic.l, Ra,Dx_w16),
+                Instr(Mnemonic.lr, Ra,Rb),
+                Instr(Mnemonic.lisp, Ra,ISP),
                 Instr(Mnemonic.lisn, _("lisn")),
 
                 Instr(Mnemonic.li, _("li")),
-                Instr(Mnemonic.lim, _("lim")),
+                Instr(Mnemonic.lim, Ra,Imx_w16),
                 Instr(Mnemonic.dl, _("dl")),
                 Instr(Mnemonic.dlr, _("dlr")),
 
@@ -420,9 +501,9 @@ namespace Reko.Arch.MilStd1750
                 Instr(Mnemonic.pshm, _("pshm")),
 
                 // A0
-                Instr(Mnemonic.a, _("a")),
-                Instr(Mnemonic.ar, _("ar")),
-                Instr(Mnemonic.aisp, _("aisp")),
+                Instr(Mnemonic.a, Ra,Dx_w16),
+                Instr(Mnemonic.ar, Ra,Rb),
+                Instr(Mnemonic.aisp, Ra,ISP),
                 Instr(Mnemonic.incm, _("incm")),
 
                 Instr(Mnemonic.abs, _("abs")),
@@ -430,7 +511,7 @@ namespace Reko.Arch.MilStd1750
                 Instr(Mnemonic.da, _("da")),
                 Instr(Mnemonic.dar, _("dar")),
 
-                Instr(Mnemonic.fa, _("fa")),
+                Instr(Mnemonic.fa, Ra,Dx_w16),
                 Instr(Mnemonic.far, _("far")),
                 Instr(Mnemonic.efa, _("efa")),
                 Instr(Mnemonic.efar, _("efar")),
@@ -472,7 +553,7 @@ namespace Reko.Arch.MilStd1750
                 Instr(Mnemonic.dm, _("dm")),
                 Instr(Mnemonic.dmr, _("dmr")),
 
-                Instr(Mnemonic.fm, _("fm")),
+                Instr(Mnemonic.fm, Ra,Dx_w16),
                 Instr(Mnemonic.fmr, _("fmr")),
                 Instr(Mnemonic.efm, _("efm")),
                 Instr(Mnemonic.efmr, _("efmr")),

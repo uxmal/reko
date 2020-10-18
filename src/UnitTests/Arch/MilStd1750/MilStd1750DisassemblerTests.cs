@@ -97,9 +97,33 @@ namespace Reko.UnitTests.Arch.MilStd1750
         }
 
         [Test]
+        public void MS1750Dis_aisp()
+        {
+            AssertCode("aisp\tgp1,#&1", "A210");
+        }
+
+        [Test]
+        public void MS1750Dis_bez()
+        {
+            AssertCode("bez\t0104", "7505");
+        }
+
+        [Test]
+        public void MS1750Dis_bge()
+        {
+            AssertCode("bge\t0170", "7B71");
+        }
+
+        [Test]
         public void MS1750Dis_blt()
         {
-            AssertCode("@@@", "761E");
+            AssertCode("blt\t011D", "761E");
+        }
+
+        [Test]
+        public void MS1750Dis_br()
+        {
+            AssertCode("br\t00F9", "74FA");
         }
 
         [Test]
@@ -121,6 +145,12 @@ namespace Reko.UnitTests.Arch.MilStd1750
         }
 
         [Test]
+        public void MS1750Dis_fa()
+        {
+            AssertCode("fa\tgp5,&AAAA,gp5", "A855AAAA");
+        }
+
+        [Test]
         public void MS1750Dis_fcr()
         {
             AssertCode("fcr\tgp13,gp5", "F9D5");
@@ -133,15 +163,39 @@ namespace Reko.UnitTests.Arch.MilStd1750
         }
 
         [Test]
+        public void MS1750Dis_fm()
+        {
+            AssertCode("fm\tgp7,&1234,gp6", "C8761234");
+        }
+
+        [Test]
         public void MS1750Dis_fneg()
         {
             AssertCode("fneg\tgp0,gp8", "BC08");
         }
 
         [Test]
+        public void MS1750Dis_l()
+        {
+            AssertCode("l\tgp0,&1234,gp1", "80011234");
+        }
+
+        [Test]
+        public void MS1750Dis_lim()
+        {
+            AssertCode("lim\tgp0,#&FFF0", "8500FFF0");
+        }
+
+        [Test]
         public void MS1750Dis_llb()
         {
             AssertCode("llb\tgp8,&89AB", "8C8089AB");
+        }
+
+        [Test]
+        public void MS1750Dis_lr()
+        {
+            AssertCode("lr\tgp1,gp0", "8110");
         }
 
         [Test]
@@ -163,9 +217,27 @@ namespace Reko.UnitTests.Arch.MilStd1750
         }
 
         [Test]
+        public void MS1750Dis_po()
+        {
+            AssertCode("po\tgp6,#&321", "48640321");
+        }
+
+        [Test]
+        public void MS1750Dis_sb()
+        {
+            AssertCode("sb\t#&3,&1234,gp9", "50391234");
+        }
+
+        [Test]
         public void MS1750Dis_sbi()
         {
             AssertCode("sbi\t#&D,&1234", "52D01234");
+        }
+
+        [Test]
+        public void MS1750Dis_sjs()
+        {
+            AssertCode("sjs\tgp15,1234", "7EF01234");
         }
 
         [Test]
@@ -177,7 +249,13 @@ namespace Reko.UnitTests.Arch.MilStd1750
         [Test]
         public void MS1750Dis_stub()
         {
-            AssertCode("stubt\tgp14,&1234,gp7", "9BE71234");
+            AssertCode("stub\tgp14,&1234,gp7", "9BE71234");
+        }
+
+        [Test]
+        public void MS1750Dis_urs()
+        {
+            AssertCode("urs\tgp15", "7FF0");
         }
 
         [Test]
@@ -190,93 +268,6 @@ namespace Reko.UnitTests.Arch.MilStd1750
         public void MS1750Dis_xor()
         {
             AssertCode("xor\tgp2,&FEDC,gp9", "E429FEDC");
-        }
-
-        // Reko: a decoder for the instruction DBE1 at address 0100 has not been implemented. (efdr)
-
-
-        // Reko: a decoder for the instruction F9D5 at address 0102 has not been implemented. (fcr)
-
-
-        // Reko: a decoder for the instruction F602 at address 0103 has not been implemented. (dc)
-
-
-        // Reko: a decoder for the instruction E429 at address 0104 has not been implemented. (xor)
-
-
-        // Reko: a decoder for the instruction 9144 at address 0105 has not been implemented. (stc )
-
-
-        // Reko: a decoder for the instruction 9BE7 at address 0108 has not been implemented. (stub)
-
-
-        // Reko: a decoder for the instruction BC08 at address 0109 has not been implemented. (fneg)
-
-
-        // Reko: a decoder for the instruction 8C85 at address 010A has not been implemented. (llb)
-  
-
-        // Reko: a decoder for the instruction C1F8 at address 010B has not been implemented. (msr)
-
-
-        // Reko: a decoder for the instruction 8C9E at address 010C has not been implemented. (llb)
-
-
-        // Reko: a decoder for the instruction 981B at address 010D has not been implemented. (dsti )
-
-
-        // Reko: a decoder for the instruction 52D0 at address 010E has not been implemented. (sbi)
-
-
-        // Reko: a decoder for the instruction C12A at address 0110 has not been implemented. (msr)
-
-
-        // Reko: a decoder for the instruction 761E at address 0111 has not been implemented. (dc)
-
-
-        // Reko: a decoder for the instruction F6F9 at address 0112 has not been implemented. (dc)
-
-        // Reko: a decoder for the instruction E083 at address 0113 has not been implemented. (or)
-
-
-        // Reko: a decoder for the instruction E980 at address 0114 has not been implemented. (flt)
-
-
-        // Reko: a decoder for the instruction 4864 at address 0115 has not been implemented. (xio)
-        [Test]
-        public void MS1750Dis_4864()
-        {
-            AssertCode("@@@", "4864");
-        }
-
-        // Reko: a decoder for the instruction 5039 at address 0117 has not been implemented. (sb)
-        [Test]
-        public void MS1750Dis_5039()
-        {
-            AssertCode("@@@", "5039");
-        }
-
-        // Reko: a decoder for the instruction C876 at address 011A has not been implemented. (fm)
-        [Test]
-        public void MS1750Dis_C876()
-        {
-            AssertCode("@@@", "C876");
-        }
-
-        // Reko: a decoder for the instruction A855 at address 011D has not been implemented. (fa)
-        [Test]
-        public void MS1750Dis_A855()
-        {
-            AssertCode("@@@", "A855");
-        }
-
-        // Reko: a decoder for the instruction ECBB at address 011F has not been implemented. (xbr)
-
-        // Reko: a decoder for the instruction 7B71 at address 0121 has not been implemented. (efcr)
-        [Test]
-        public void MS1750Dis_7B71()
-        {
-            AssertCode("@@@", "7B71");
         }
     }
 }

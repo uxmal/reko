@@ -227,7 +227,18 @@ namespace Reko.Core.Memory
 
         public bool TryReadBe(PrimitiveType dataType, out Constant value)
         {
-            throw new NotImplementedException();
+            switch (dataType.BitSize)
+            {
+            case 16:
+                if (!TryReadBeUInt16(out ushort u16))
+                    break;
+                value = Constant.Word16(u16);
+                return true;
+            default:
+                throw new NotImplementedException();
+            }
+            value = null!;
+            return false;
         }
 
         public bool TryReadBeInt16(out short value)

@@ -36,6 +36,9 @@ namespace Reko.Arch.MilStd1750
         {
             this.Endianness = EndianServices.Big;
             this.FramePointerType = PrimitiveType.Ptr16;
+            this.InstructionBitSize = 16;
+            this.MemoryGranularity = 16;        // Memory is organized as 16-bit words, not 8-bit bytes
+            this.PointerType = PrimitiveType.Ptr16;
             this.WordWidth = PrimitiveType.Word16;
         }
 
@@ -47,6 +50,17 @@ namespace Reko.Arch.MilStd1750
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
         {
             throw new NotImplementedException();
+        }
+
+        public override MemoryArea CreateMemoryArea(Address addr, byte[] bytes)
+        {
+            // NOTE: assumes the bytes are provided in big-endian form.
+            var words = new ushort[bytes.Length / 2];
+            for (int i = 0; i < words.Length; ++i)
+            {
+                words[i] = (ushort)((bytes[i * 2] << 8) | bytes[i * 2 + 1]); 
+            }
+            return new Word16MemoryArea(addr, words);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)

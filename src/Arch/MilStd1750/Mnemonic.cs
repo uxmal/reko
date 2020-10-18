@@ -178,5 +178,6 @@ namespace Reko.Arch.MilStd1750
         bgt,
         bnz,
         bge,
+        po,
     }
 }
