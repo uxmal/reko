@@ -99,8 +99,7 @@ namespace Reko.UserInterfaces.WindowsForms
                             var instr = dasm.Current;
                             if (lines <= 0)
                                 break;
-                            var bmem = (ByteMemoryArea) segment.MemoryArea;
-                            dumper.DumpAssemblerLine(bmem, program.Architecture, instr, formatter, options);
+                            dumper.DumpAssemblerLine(segment.MemoryArea, program.Architecture, instr, formatter, options);
                             --lines;
                         }
                     }

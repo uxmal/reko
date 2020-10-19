@@ -52,8 +52,14 @@ namespace Reko.Environments.AtariTOS
             if (!TryLoadHeader(rdr, out var hdr))
                 throw new BadImageFormatException();
 
-            var mem = new ByteMemoryArea(addrLoad, new byte[ hdr.TextSize + hdr.DataSize + hdr.BssSize ]);
-            int cRead = rdr.ReadBytes(mem.Bytes, 0, hdr.TextSize + hdr.DataSize);
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            var arch = cfgSvc.GetArchitecture("m68k");
+            var env = cfgSvc.GetEnvironment("atariTOS");
+            var platform = env.Load(Services, arch);
+
+            var bytes = new byte[hdr.TextSize + hdr.DataSize + hdr.BssSize];
+            var mem = arch.CreateMemoryArea(addrLoad, bytes);
+            int cRead = rdr.ReadBytes(bytes, 0, hdr.TextSize + hdr.DataSize);
             if (cRead != hdr.TextSize + hdr.DataSize)
                 throw new BadImageFormatException();
 
@@ -66,10 +72,6 @@ namespace Reko.Environments.AtariTOS
             PerformRelocations(mem, rdr);
 
 
-            var cfgSvc = Services.RequireService<IConfigurationService>();
-            var arch = cfgSvc.GetArchitecture("m68k");
-            var env = cfgSvc.GetEnvironment("atariTOS");
-            var platform = env.Load(Services, arch);
             var map = new SegmentMap(
                 addrLoad,
                 text, data, bss);
@@ -95,7 +97,7 @@ namespace Reko.Environments.AtariTOS
                 new SortedList<Address, ImageSymbol>());
         }
 
-        bool PerformRelocations(ByteMemoryArea mem, ImageReader rdr)
+        bool PerformRelocations(MemoryArea mem, ImageReader rdr)
         {
             if (!rdr.TryReadBeUInt32(out uint fixup))
                 return false;
@@ -105,7 +107,8 @@ namespace Reko.Environments.AtariTOS
             for (;;)
             {
                 var dst = mem.BaseAddress + offset;
-                uint l = mem.ReadBeUInt32(offset);
+                if (!mem.TryReadBeUInt32(offset, out uint l))
+                    return false;
                 l += mem.BaseAddress.ToUInt32();
                 mem.WriteBeUInt32(offset, l);
                 mem.Relocations.AddPointerReference(mem.BaseAddress.ToLinear() + offset, l);

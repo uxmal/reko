@@ -194,5 +194,7 @@ namespace Reko.Arch.MilStd1750
         xorm,
         cim,
         nim,
+        co,
+        clc,
     }
 }

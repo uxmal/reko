@@ -83,8 +83,7 @@ namespace Reko.Environments.AmigaOS
 
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var env = cfgSvc.GetEnvironment(this.PlatformIdentifier);
-            object option;
-            if (env.Options.TryGetValue("versionDependentLibraries", out option))
+            if (env.Options.TryGetValue("versionDependentLibraries", out object option))
             {
                 mapKickstartToListOfLibraries = (Dictionary<string, object>)option;
             }
@@ -105,7 +104,7 @@ namespace Reko.Environments.AmigaOS
                 Address.Ptr32(0),
                 new ImageSegment(
                     "interrupts",
-                    new ByteMemoryArea(Address.Ptr32(0), new byte[0x100]),
+                    Architecture.CreateMemoryArea(Address.Ptr32(0), new byte[0x100]),
                     AccessMode.Read));
             //$TODO: once we're guaranteed the correct Kickstart version
             // has been loaded, we can execute the below.

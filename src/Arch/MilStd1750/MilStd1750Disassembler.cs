@@ -109,8 +109,8 @@ namespace Reko.Arch.MilStd1750
 
         private static bool N(uint uInstr, MilStd1750Disassembler dasm)
         {
-            var n = (byte)bf4_4.Read(uInstr);
-            dasm.ops.Add(ImmediateOperand.Byte(n));
+            var n = (ushort)bf4_4.Read(uInstr);
+            dasm.ops.Add(ImmediateOperand.Word16(n));
             return true;
         }
 
@@ -190,7 +190,7 @@ namespace Reko.Arch.MilStd1750
             {
                 var disp = bf0_8.Read(u);
                 d.ops.Add(regOp);
-                d.ops.Add(ImmediateOperand.Byte((byte) disp));
+                d.ops.Add(ImmediateOperand.Word16((ushort) disp));
                 return true;
             };
         }
@@ -267,19 +267,30 @@ namespace Reko.Arch.MilStd1750
         {
             if (!dasm.rdr.TryReadBeUInt16(out ushort cmd))
                 return false;
+            var ra = Registers.GpRegs[bf4_4.Read(uInstr)];
             switch (cmd >> 12)
             {
             case 0:
-                var ra = Registers.GpRegs[bf4_4.Read(uInstr)];
                 dasm.mnemonic = Mnemonic.po;
                 dasm.ops.Add(new RegisterOperand(ra));
                 dasm.ops.Add(ImmediateOperand.Word16((ushort) (cmd & 0x03FF)));
                 return true;
-            default:
-                var testGenSvc = dasm.arch.Services.GetService<ITestGenerationService>();
-                testGenSvc?.ReportMissingDecoder("MS1750Dis", dasm.addr, dasm.rdr, $"xio {cmd:X4}");
-                return false;
+            case 0x4:
+                switch (cmd)
+                {
+                case 0x4000:
+                    dasm.mnemonic = Mnemonic.co;
+                    dasm.ops.Add(new RegisterOperand(ra));
+                    return true;
+                case 0x4001:
+                    dasm.mnemonic = Mnemonic.clc;
+                    return true;
+                }
+                break;
             }
+            var testGenSvc = dasm.arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("MS1750Dis", dasm.addr, dasm.rdr, $"xio {cmd:X4}");
+            return false;
         }
 
         private static Mutator<MilStd1750Disassembler> _(string msg)
@@ -483,25 +494,25 @@ namespace Reko.Arch.MilStd1750
                 Instr(Mnemonic.dscr, Ra,Rb),
 
                 // 70
-                Instr(Mnemonic.jc, ICR),
+                Instr(Mnemonic.jc, InstrClass.ConditionalTransfer, N,ICR),
                 Instr(Mnemonic.jci, _("jci")),
-                Instr(Mnemonic.js, Ra,Ax),
-                Instr(Mnemonic.soj, Ra,Ax),
+                Instr(Mnemonic.js, InstrClass.Transfer|InstrClass.Call, Ra,Ax),
+                Instr(Mnemonic.soj, InstrClass.ConditionalTransfer, Ra,Ax),
 
-                Instr(Mnemonic.br, ICR),
-                Instr(Mnemonic.bez, ICR),
-                Instr(Mnemonic.blt, ICR),
-                Instr(Mnemonic.bex, ICR),
+                Instr(Mnemonic.br, InstrClass.Transfer, ICR),
+                Instr(Mnemonic.bez, InstrClass.ConditionalTransfer, ICR),
+                Instr(Mnemonic.blt, InstrClass.ConditionalTransfer, ICR),
+                Instr(Mnemonic.bex, InstrClass.ConditionalTransfer, ICR),
 
-                Instr(Mnemonic.ble, ICR),
-                Instr(Mnemonic.bgt, ICR),
-                Instr(Mnemonic.bnz, ICR),
-                Instr(Mnemonic.bge, ICR),
+                Instr(Mnemonic.ble, InstrClass.ConditionalTransfer, ICR),
+                Instr(Mnemonic.bgt, InstrClass.ConditionalTransfer, ICR),
+                Instr(Mnemonic.bnz, InstrClass.ConditionalTransfer, ICR),
+                Instr(Mnemonic.bge, InstrClass.ConditionalTransfer, ICR),
 
                 Instr(Mnemonic.lsti, _("lsti")), // b
                 Instr(Mnemonic.lst, _("lst")), // b
-                Instr(Mnemonic.sjs, Ra,Ax),
-                Instr(Mnemonic.urs, Ra),
+                Instr(Mnemonic.sjs, InstrClass.Transfer|InstrClass.Call, Ra,Ax),
+                Instr(Mnemonic.urs, InstrClass.Transfer, Ra),
 
                 // 80
                 Instr(Mnemonic.l, Ra,Dx_w16),
@@ -511,7 +522,7 @@ namespace Reko.Arch.MilStd1750
 
                 Instr(Mnemonic.li, _("li")),
                 Instr(Mnemonic.lim, Ra,Imx_w16),
-                Instr(Mnemonic.dl, _("dl")),
+                Instr(Mnemonic.dl, Ra,Dx_w32),
                 Instr(Mnemonic.dlr, Ra,Rb),
 
                 Instr(Mnemonic.dli, _("dli")),

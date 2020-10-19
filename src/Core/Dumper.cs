@@ -257,7 +257,7 @@ namespace Reko.Core
                 {
                     if (instr.Address! >= addrLast)
                         break;
-                    if (!DumpAssemblerLine((ByteMemoryArea) segment.MemoryArea, arch, instr, writer, options))
+                    if (!DumpAssemblerLine(segment.MemoryArea, arch, instr, writer, options))
                         break;
                 }
             }
@@ -269,7 +269,7 @@ namespace Reko.Core
         }
 
         public bool DumpAssemblerLine(
-            ByteMemoryArea mem, 
+            MemoryArea mem, 
             IProcessorArchitecture arch, 
             MachineInstruction instr, 
             InstrWriter writer,
@@ -281,7 +281,7 @@ namespace Reko.Core
                 writer.WriteFormat("{0} ", addrBegin);
             if (ShowCodeBytes)
             {
-                WriteByteRange(mem, arch, instrAddress, instrAddress + instr.Length, writer);
+                WriteOpcodes(mem, arch, instrAddress, instrAddress + instr.Length, writer);
                 if (instr.Length * 3 < 16)
                 {
                     writer.WriteString(new string(' ', 16 - (instr.Length * 3)));
@@ -321,7 +321,7 @@ namespace Reko.Core
             w.Write("\t");
         }
 
-        public void WriteByteRange(ByteMemoryArea image, IProcessorArchitecture arch, Address begin, Address addrEnd, InstrWriter writer)
+        public void WriteOpcodes(MemoryArea image, IProcessorArchitecture arch, Address begin, Address addrEnd, InstrWriter writer)
 		{
 			EndianImageReader rdr = arch.CreateImageReader(image, begin);
             var byteSize = (7 + arch.InstructionBitSize) / 8;
