@@ -158,7 +158,7 @@ namespace Reko.ImageLoaders.TekHex
                 if (abCur is null || uAddrLast != uAddr)
                 {
                     // For word oriented archs, we have to scale the addresses.
-                    var addrTarget = Address.Create(arch.PointerType, uAddr * 8u / (uint) arch.MemoryGranularity);
+                    var addrTarget = MakeAddress(arch, uAddr);
                     var ab = new List<byte>();
                     this.mems.Add(addrTarget, ab);
                     this.abCur = ab;
@@ -173,13 +173,18 @@ namespace Reko.ImageLoaders.TekHex
 
             case 8:     // Terminator
                 uAddr = (uint) ReadHexNumber(line, ref linep, addr_len);
-                var addr = Address.Create(arch.PointerType, uAddr);
+                var addr = MakeAddress(arch, uAddr);
                 this.entryPoints.Add(ImageSymbol.Procedure(arch, addr));
                 break;
 
             default:
                 throw new BadImageFormatException($"Illegal type in line {nLines}.");
             }
+        }
+
+        private static Address MakeAddress(IProcessorArchitecture arch, uint uAddr)
+        {
+            return Address.Create(arch.PointerType, uAddr * 8u / (uint) arch.MemoryGranularity);
         }
 
         public override Program Load(Address? addrLoad)
@@ -205,10 +210,14 @@ namespace Reko.ImageLoaders.TekHex
                 ParseLine(lline, arch);
             }
             var segmentMap = MakeSegmentMap(arch);
-            return new Program(
-                segmentMap,
-                arch,
-                platform);
+            var program = new Program
+            {
+                SegmentMap = segmentMap,
+                Architecture = arch,
+                Platform = platform,
+                EntryPoints = entryPoints.ToSortedList(e => e.Address!)
+            };
+            return program;
         }
 
         private SegmentMap MakeSegmentMap(IProcessorArchitecture arch)
@@ -217,11 +226,23 @@ namespace Reko.ImageLoaders.TekHex
             foreach (var section in sections)
             {
                 var addrBase = Address.Create(arch.PointerType, section.uAddrBase);
-                if (!mems.TryGetLowerBound(addrBase, out var bytes))
-                    throw new BadImageFormatException($"Unable to find a memory area for segment {section.name} at {section.uAddrBase:X4}.");
-                var mem = arch.CreateMemoryArea(addrBase, bytes.ToArray());
-                var seg = new ImageSegment(section.name!, mem, AccessMode.ReadWriteExecute);
-                segs.Add(seg);
+                if (!mems.TryGetLowerBoundIndex(addrBase, out var iSection))
+                    throw new BadImageFormatException($"Unable to find a memory area for section {section.name} at {section.uAddrBase:X4}.");
+                var addrMem = mems.Keys[iSection];
+                var bytes = mems.Values[iSection];
+                var mem = arch.CreateMemoryArea(addrMem, bytes.ToArray());
+                if (addrMem < addrBase)
+                {
+                    var stubSeg = new ImageSegment($"seg{addrMem.ToLinear():X4}", addrMem, mem, AccessMode.ReadWriteExecute);
+                    segs.Add(stubSeg);
+                    var seg = new ImageSegment(section.name!, addrBase, mem, AccessMode.ReadWriteExecute);
+                    segs.Add(seg);
+                }
+                else
+                {
+                    var seg = new ImageSegment(section.name!, mem, AccessMode.ReadWriteExecute);
+                    segs.Add(seg);
+                }
             }
             var baseAddr = segs.Min(s => s.Address);
             return new SegmentMap(baseAddr, segs.ToArray());
@@ -244,7 +265,7 @@ namespace Reko.ImageLoaders.TekHex
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             return new RelocationResults(
-                new List<ImageSymbol>(),
+                entryPoints,
                 MakeSymbols(program.Architecture));
         }
 

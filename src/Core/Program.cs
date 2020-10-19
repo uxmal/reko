@@ -287,7 +287,7 @@ namespace Reko.Core
         /// <summary>
         /// The entry points to the program.
         /// </summary>
-        public SortedList<Address, ImageSymbol> EntryPoints { get; private set; }
+        public SortedList<Address, ImageSymbol> EntryPoints { get; set; }
 
         /// <summary>
         /// Absolute path of the file from which this Program was loaded.
