@@ -120,12 +120,19 @@ namespace Reko
         {
             if (wr == null || program.Architecture == null)
                 return;
-            Dumper dump = new Dumper(program)
+            try
             {
-                ShowAddresses = program.User.ShowAddressesInDisassembly,
-                ShowCodeBytes = program.User.ShowBytesInDisassembly
-            };
-            dump.Dump(segmentItems, wr);
+                Dumper dump = new Dumper(program)
+                {
+                    ShowAddresses = program.User.ShowAddressesInDisassembly,
+                    ShowCodeBytes = program.User.ShowBytesInDisassembly
+                };
+                dump.Dump(segmentItems, wr);
+            } 
+            catch (Exception ex)
+            {
+                eventListener.Error(ex, "An error occurred while write assembly language output.");
+            }
         }
 
         private void EmitProgram(Program program, IEnumerable<Procedure> procs, DataFlowAnalysis? dfa, string filename, TextWriter output)

@@ -208,10 +208,19 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             if (addrEnd.ToLinear() == 0)
                 byteOffset = Math.Abs(byteOffset);
-            int bitSize = program.Architecture != null
-                ? program.Architecture.InstructionBitSize
-                : 8;
-            return (int)(8 * byteOffset / bitSize);
+            int bitSize;
+            int unitSize;
+            if (program.Architecture != null)
+            {
+                bitSize = program.Architecture.InstructionBitSize;
+                unitSize = program.Architecture.MemoryGranularity;
+            }
+            else
+            {
+                bitSize = 8;
+                unitSize = 8;
+            }
+            return (int)(unitSize * byteOffset / bitSize);
         }
 
         /// <summary>

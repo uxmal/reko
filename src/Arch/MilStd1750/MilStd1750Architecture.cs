@@ -32,6 +32,8 @@ namespace Reko.Arch.MilStd1750
 {
     public class MilStd1750Architecture : ProcessorArchitecture
     {
+        public static PrimitiveType Real48 { get; } 
+
         public MilStd1750Architecture(IServiceProvider services, string archId) : base(services, archId)
         {
             this.Endianness = EndianServices.Big;
@@ -141,6 +143,11 @@ namespace Reko.Arch.MilStd1750
         public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             return Address.TryParse16(txtAddr, out addr);
+        }
+
+        static MilStd1750Architecture()
+        {
+            Real48 = PrimitiveType.Create(Domain.Real, 48);
         }
     }
 }

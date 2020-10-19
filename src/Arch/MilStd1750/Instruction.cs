@@ -45,10 +45,23 @@ namespace Reko.Arch.MilStd1750
         {
             if (operand is ImmediateOperand imm)
             {
-                renderer.WriteFormat("#&{0:X}", imm.Value.ToUInt32());
+                renderer.WriteChar('#');
+                WriteHex(imm.Value.ToUInt16(), renderer);
                 return;
             }
             base.RenderOperand(operand, renderer, options);
+        }
+
+        public static void WriteHex(ushort n, MachineInstructionRenderer renderer)
+        {
+            if (n > 9)
+            {
+                renderer.WriteFormat("0x{0:X}", n);
+            }
+            else
+            {
+                renderer.WriteFormat("{0:X}", n);
+            }
         }
     }
 }

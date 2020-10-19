@@ -134,6 +134,8 @@ namespace Reko.Arch.MilStd1750
         }
         private static readonly Mutator<MilStd1750Disassembler> Dx_w16 = Dx(PrimitiveType.Word16);
         private static readonly Mutator<MilStd1750Disassembler> Dx_w32 = Dx(PrimitiveType.Word32);
+        private static readonly Mutator<MilStd1750Disassembler> Dx_r32 = Dx(PrimitiveType.Real32);
+        private static readonly Mutator<MilStd1750Disassembler> Dx_r48 = Dx(MilStd1750Architecture.Real48);
 
         /// <summary>
         /// Memory indirect
@@ -178,6 +180,24 @@ namespace Reko.Arch.MilStd1750
         }
         private static readonly Mutator<MilStd1750Disassembler> Imx_w16 = Imx(PrimitiveType.Word16);
 
+        /// <summary>
+        /// Base relative.
+        /// </summary>
+        private static Mutator<MilStd1750Disassembler> br(RegisterStorage reg)
+        {
+            var regOp = new RegisterOperand(reg);
+            return (u, d) =>
+            {
+                var disp = bf0_8.Read(u);
+                d.ops.Add(regOp);
+                d.ops.Add(ImmediateOperand.Byte((byte) disp));
+                return true;
+            };
+        }
+        private static readonly Mutator<MilStd1750Disassembler> br12 = br(Registers.GpRegs[12]);
+        private static readonly Mutator<MilStd1750Disassembler> br13 = br(Registers.GpRegs[13]);
+        private static readonly Mutator<MilStd1750Disassembler> br14 = br(Registers.GpRegs[14]);
+        private static readonly Mutator<MilStd1750Disassembler> br15 = br(Registers.GpRegs[15]);
 
         /// <summary>
         /// Address or indexed address
@@ -205,10 +225,27 @@ namespace Reko.Arch.MilStd1750
         /// <summary>
         /// Immediate short positive
         /// </summary>
-        private static bool ISP(uint uInstr, MilStd1750Disassembler dasm)
+        private static bool ISP_0(uint uInstr, MilStd1750Disassembler dasm)
         {
             var imm = bf0_4.Read(uInstr) + 1u;
             dasm.ops.Add(ImmediateOperand.Word16((ushort)imm));
+            return true;
+        }
+        private static bool ISP_4(uint uInstr, MilStd1750Disassembler dasm)
+        {
+            var imm = bf4_4.Read(uInstr) + 1u;
+            dasm.ops.Add(ImmediateOperand.Word16((ushort) imm));
+            return true;
+        }
+
+        /// <summary>
+        /// 16-bit immedate.
+        /// </summary>
+        private static bool IM(uint uInstr, MilStd1750Disassembler dasm)
+        {
+            if (!dasm.rdr.TryReadUInt16(out ushort imm))
+                return false;
+            dasm.ops.Add(ImmediateOperand.Word16(imm));
             return true;
         }
 
@@ -255,17 +292,6 @@ namespace Reko.Arch.MilStd1750
             };
         }
 
-        private static bool br12(uint uInstr, MilStd1750Disassembler dasm)
-            => false;
-        private static bool br13(uint uInstr, MilStd1750Disassembler dasm)
-            => false;
-        private static bool br14(uint uInstr, MilStd1750Disassembler dasm)
-            => false;
-        private static bool br15(uint uInstr, MilStd1750Disassembler dasm)
-            => false;
-
-
-
         private static InstrDecoder<MilStd1750Disassembler, Mnemonic,Instruction> Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<MilStd1750Disassembler> [] mutators)
         {
             return new InstrDecoder<MilStd1750Disassembler, Mnemonic, Instruction>(iclass, mnemonic, mutators);
@@ -300,10 +326,10 @@ namespace Reko.Arch.MilStd1750
                 Instr(Mnemonic.dlb, br14),
                 Instr(Mnemonic.dlb, br15),
 
-                Instr(Mnemonic.stb, br12),
-                Instr(Mnemonic.stb, br13),
-                Instr(Mnemonic.stb, br14),
-                Instr(Mnemonic.stb, br15),
+                Instr(Mnemonic.stlb, br12),
+                Instr(Mnemonic.stlb, br13),
+                Instr(Mnemonic.stlb, br14),
+                Instr(Mnemonic.stlb, br15),
 
                 Instr(Mnemonic.dstb, br12),
                 Instr(Mnemonic.dstb, br13),
@@ -387,7 +413,26 @@ namespace Reko.Arch.MilStd1750
 
                 Instr(Mnemonic.xio, InstrClass.Linear|InstrClass.System, Xio), // ab
                 Instr(Mnemonic.vio, _("vio")), // ab
-                Instr(Mnemonic.imml, _("imml")), // ab
+                Mask(0, 4, "  imm",  // ab
+                    invalid,
+                    Instr(Mnemonic.aim, Ra,IM),
+                    Instr(Mnemonic.sim, Ra,IM),
+                    Instr(Mnemonic.mim, Ra,IM),
+
+                    Instr(Mnemonic.msim, Ra,IM),
+                    Instr(Mnemonic.dim,  Ra,IM),
+                    Instr(Mnemonic.dvim, Ra,IM),
+                    Instr(Mnemonic.andm, Ra,IM),
+
+                    Instr(Mnemonic.orim, Ra,IM),
+                    Instr(Mnemonic.xorm, Ra,IM),
+                    Instr(Mnemonic.cim,  Ra,IM),
+                    Instr(Mnemonic.nim,  Ra,IM),
+
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid),
                 invalid,
 
                 invalid,
@@ -404,7 +449,7 @@ namespace Reko.Arch.MilStd1750
                 Instr(Mnemonic.rbr, N,Rb),
                 Instr(Mnemonic.rbi, N,Ix_w16),
                 Instr(Mnemonic.tb, _("tb")),
-                Instr(Mnemonic.tbr, _("tbr")),
+                Instr(Mnemonic.tbr, N,Rb),
 
                 Instr(Mnemonic.tbi, _("tbi")),
                 Instr(Mnemonic.tsb, _("tsb")),
@@ -417,31 +462,31 @@ namespace Reko.Arch.MilStd1750
                 invalid,
 
                 // 60
-                Instr(Mnemonic.sll, _("sll")),
-                Instr(Mnemonic.srl, _("srl")),
-                Instr(Mnemonic.sra, _("sra")),
-                Instr(Mnemonic.slc, _("slc")),
+                Instr(Mnemonic.sll, Rb,ISP_4),
+                Instr(Mnemonic.srl, Rb,ISP_4),
+                Instr(Mnemonic.sra, Rb,ISP_4),
+                Instr(Mnemonic.slc, Rb,ISP_4),
 
                 invalid,
-                Instr(Mnemonic.dsll, _("dsll")),
-                Instr(Mnemonic.dsrl, _("dsrl")),
-                Instr(Mnemonic.dsra, _("dsra")),
+                Instr(Mnemonic.dsll, Rb,ISP_4),
+                Instr(Mnemonic.dsrl, Rb,ISP_4),
+                Instr(Mnemonic.dsra, Rb,ISP_4),
 
-                Instr(Mnemonic.dslc, _("dslc")),
+                Instr(Mnemonic.dslc, Rb,ISP_4),
                 invalid,
-                Instr(Mnemonic.slr, _("slr")),
-                Instr(Mnemonic.sar, _("sar")),
+                Instr(Mnemonic.slr, Ra,Rb),
+                Instr(Mnemonic.sar, Ra,Rb),
 
-                Instr(Mnemonic.scr, _("scr")),
-                Instr(Mnemonic.dslr, _("dslr")),
-                Instr(Mnemonic.dsar, _("dsar")),
-                Instr(Mnemonic.dscr, _("dscr")),
+                Instr(Mnemonic.scr, Ra,Rb),
+                Instr(Mnemonic.dslr, Ra,Rb),
+                Instr(Mnemonic.dsar, Ra,Rb),
+                Instr(Mnemonic.dscr, Ra,Rb),
 
                 // 70
-                Instr(Mnemonic.jc, _("jc")),
+                Instr(Mnemonic.jc, ICR),
                 Instr(Mnemonic.jci, _("jci")),
-                Instr(Mnemonic.js, _("js")),
-                Instr(Mnemonic.soj, _("soj")),
+                Instr(Mnemonic.js, Ra,Ax),
+                Instr(Mnemonic.soj, Ra,Ax),
 
                 Instr(Mnemonic.br, ICR),
                 Instr(Mnemonic.bez, ICR),
@@ -461,81 +506,81 @@ namespace Reko.Arch.MilStd1750
                 // 80
                 Instr(Mnemonic.l, Ra,Dx_w16),
                 Instr(Mnemonic.lr, Ra,Rb),
-                Instr(Mnemonic.lisp, Ra,ISP),
-                Instr(Mnemonic.lisn, _("lisn")),
+                Instr(Mnemonic.lisp, Ra,ISP_0),
+                Instr(Mnemonic.lisn, Ra,ISP_0),
 
                 Instr(Mnemonic.li, _("li")),
                 Instr(Mnemonic.lim, Ra,Imx_w16),
                 Instr(Mnemonic.dl, _("dl")),
-                Instr(Mnemonic.dlr, _("dlr")),
+                Instr(Mnemonic.dlr, Ra,Rb),
 
                 Instr(Mnemonic.dli, _("dli")),
-                Instr(Mnemonic.lm, _("lm")),
-                Instr(Mnemonic.efl, _("efl")),
-                Instr(Mnemonic.lub, _("lub")),
+                Instr(Mnemonic.lm, N,Dx_w16),
+                Instr(Mnemonic.efl, Ra,Dx_r48),
+                Instr(Mnemonic.lub, Ra,Dx_w16),
 
                 Instr(Mnemonic.llb, Ra,Dx_w16),
                 Instr(Mnemonic.lubi, _("lubi")),
                 Instr(Mnemonic.llbi, _("llbi")),
-                Instr(Mnemonic.popm, _("popm")),
+                Instr(Mnemonic.popm, Ra,Rb),
 
                 // 90
-                Instr(Mnemonic.st , _("st ")),
+                Instr(Mnemonic.st, Ra,Dx_w16),
                 Instr(Mnemonic.stc, N,Dx_w16),
-                Instr(Mnemonic.stci , _("stci ")),
-                Instr(Mnemonic.mov , _("mov ")),
+                Instr(Mnemonic.stci, _("stci ")),
+                Instr(Mnemonic.mov, Ra,Rb),
 
-                Instr(Mnemonic.sti , _("sti ")),
+                Instr(Mnemonic.sti, _("sti ")),
                 invalid,
-                Instr(Mnemonic.dst , _("dst ")),
-                Instr(Mnemonic.srm , _("srm ")),
+                Instr(Mnemonic.dst, Ra,Dx_w32),
+                Instr(Mnemonic.srm, _("srm ")),
 
                 Instr(Mnemonic.dsti , Ra,Ix_w32),
                 Instr(Mnemonic.stm , _("stm ")),
-                Instr(Mnemonic.efst , _("efst ")),
+                Instr(Mnemonic.efst , Ra,Dx_r48),
                 Instr(Mnemonic.stub, Ra,Dx_w16),
 
-                Instr(Mnemonic.sltb, _("sltb")),
+                Instr(Mnemonic.stlb, Ra,Dx_w16),
                 Instr(Mnemonic.subi, _("subi")),
                 Instr(Mnemonic.slbi, _("slbi")),
-                Instr(Mnemonic.pshm, _("pshm")),
+                Instr(Mnemonic.pshm, Ra,Rb),
 
                 // A0
                 Instr(Mnemonic.a, Ra,Dx_w16),
                 Instr(Mnemonic.ar, Ra,Rb),
-                Instr(Mnemonic.aisp, Ra,ISP),
-                Instr(Mnemonic.incm, _("incm")),
+                Instr(Mnemonic.aisp, Ra,ISP_0),
+                Instr(Mnemonic.incm, ISP_4,Dx_w16),
 
-                Instr(Mnemonic.abs, _("abs")),
-                Instr(Mnemonic.dabs, _("dabs")),
-                Instr(Mnemonic.da, _("da")),
-                Instr(Mnemonic.dar, _("dar")),
+                Instr(Mnemonic.abs, Ra,Rb),
+                Instr(Mnemonic.dabs, Ra,Rb),
+                Instr(Mnemonic.da, Ra,Dx_w32),
+                Instr(Mnemonic.dar, Ra,Rb),
 
                 Instr(Mnemonic.fa, Ra,Dx_w16),
-                Instr(Mnemonic.far, _("far")),
-                Instr(Mnemonic.efa, _("efa")),
-                Instr(Mnemonic.efar, _("efar")),
+                Instr(Mnemonic.far, Ra,Rb),
+                Instr(Mnemonic.efa, Ra,Dx_r48),
+                Instr(Mnemonic.efar, Ra,Rb),
 
-                Instr(Mnemonic.fabs, _("fabs")),
+                Instr(Mnemonic.fabs, Ra,Rb),
                 invalid,
                 invalid,
                 invalid,
 
                 // B0
-                Instr(Mnemonic.s, _("s")),
-                Instr(Mnemonic.sr, _("sr")),
-                Instr(Mnemonic.sisp, _("sisp")),
-                Instr(Mnemonic.decm, _("decm")),
+                Instr(Mnemonic.s, Ra,Dx_w16),
+                Instr(Mnemonic.sr, Ra,Rb),
+                Instr(Mnemonic.sisp, Ra,ISP_0),
+                Instr(Mnemonic.decm, ISP_4,Dx_w16),
 
-                Instr(Mnemonic.neg, _("neg")),
-                Instr(Mnemonic.dneg, _("dneg")),
-                Instr(Mnemonic.ds, _("ds")),
-                Instr(Mnemonic.dsr, _("dsr")),
+                Instr(Mnemonic.neg, Ra,Rb),
+                Instr(Mnemonic.dneg, Ra,Rb),
+                Instr(Mnemonic.ds, Ra,Dx_w32),
+                Instr(Mnemonic.dsr, Ra,Rb),
 
-                Instr(Mnemonic.fs, _("fs")),
-                Instr(Mnemonic.fsr, _("fsr")),
-                Instr(Mnemonic.efs, _("efs")),
-                Instr(Mnemonic.efsr, _("efsr")),
+                Instr(Mnemonic.fs, Ra,Dx_r32),
+                Instr(Mnemonic.fsr, Ra,Rb),
+                Instr(Mnemonic.efs, Ra,Dx_r48),
+                Instr(Mnemonic.efsr, Ra,Rb),
 
                 Instr(Mnemonic.fneg, Ra,Rb),
                 invalid,
@@ -545,18 +590,18 @@ namespace Reko.Arch.MilStd1750
                 // C0
                 Instr(Mnemonic.ms, Ra,Dx_w16),
                 Instr(Mnemonic.msr, Ra,Rb),
-                Instr(Mnemonic.misp, _("misp")),
-                Instr(Mnemonic.misn, _("misn")),
+                Instr(Mnemonic.misp, Rb,ISP_4),
+                Instr(Mnemonic.misn, Rb,ISP_4),
 
-                Instr(Mnemonic.m, _("m")),
-                Instr(Mnemonic.mr, _("mr")),
-                Instr(Mnemonic.dm, _("dm")),
-                Instr(Mnemonic.dmr, _("dmr")),
+                Instr(Mnemonic.m, Ra,Dx_w16),
+                Instr(Mnemonic.mr, Ra,Rb),
+                Instr(Mnemonic.dm, Dx_w32),
+                Instr(Mnemonic.dmr, Ra,Rb),
 
                 Instr(Mnemonic.fm, Ra,Dx_w16),
-                Instr(Mnemonic.fmr, _("fmr")),
-                Instr(Mnemonic.efm, _("efm")),
-                Instr(Mnemonic.efmr, _("efmr")),
+                Instr(Mnemonic.fmr, Ra,Rb),
+                Instr(Mnemonic.efm, Ra,Dx_r48),
+                Instr(Mnemonic.efmr, Ra,Rb),
                     
                 invalid,
                 invalid,
@@ -566,17 +611,17 @@ namespace Reko.Arch.MilStd1750
                 // D0
                 Instr(Mnemonic.dv, _("dv")),
                 Instr(Mnemonic.dvr, _("dvr")),
-                Instr(Mnemonic.disp, _("disp")),
-                Instr(Mnemonic.disn, _("disn")),
+                Instr(Mnemonic.disp, Ra,ISP_0),
+                Instr(Mnemonic.disn, Ra,ISP_0),
 
-                Instr(Mnemonic.d, _("d")),
-                Instr(Mnemonic.dr, _("dr")),
-                Instr(Mnemonic.dd, _("dd")),
-                Instr(Mnemonic.ddr, _("ddr")),
+                Instr(Mnemonic.d, Ra,Dx_w16),
+                Instr(Mnemonic.dr, Ra,Rb),
+                Instr(Mnemonic.dd, Ra,Dx_w32),
+                Instr(Mnemonic.ddr, Ra,Rb),
 
-                Instr(Mnemonic.fd, _("fd")),
-                Instr(Mnemonic.fdr, _("fdr")),
-                Instr(Mnemonic.efd, _("efd")),
+                Instr(Mnemonic.fd, Ra,Dx_r32),
+                Instr(Mnemonic.fdr, Ra,Rb),
+                Instr(Mnemonic.efd, Ra,Dx_r48),
                 Instr(Mnemonic.efdr, Ra,Rb),
                     
                 invalid,
@@ -592,43 +637,45 @@ namespace Reko.Arch.MilStd1750
 
                 Instr(Mnemonic.xor, Ra,Dx_w16),
                 Instr(Mnemonic.xorr, Ra,Rb),
-                Instr(Mnemonic.n, _("n")),
-                Instr(Mnemonic.nr, _("nr")),
+                Instr(Mnemonic.n, Ra,Dx_w16),
+                Instr(Mnemonic.nr, Ra,Rb),
 
-                Instr(Mnemonic.flx, _("flx")),
+                Instr(Mnemonic.fix, Ra,Rb),
                 Instr(Mnemonic.flt, Ra,Rb),
-                Instr(Mnemonic.eftx, _("eftx")),
-                Instr(Mnemonic.eflt, _("eflt")),
+                Instr(Mnemonic.efix, Ra,Rb),
+                Instr(Mnemonic.eflt, Ra,Rb),
 
                 Select((0, 4), Is0, "  EC",
                     Instr(Mnemonic.xbr, Ra),
                     nyi),
-                Instr(Mnemonic.xwr, _("xwr")),
+                Instr(Mnemonic.xwr, Ra,Rb),
                 invalid,
                 invalid,
 
                 // F0
-                Instr(Mnemonic.c, _("c")),
-                Instr(Mnemonic.cr, _("cr")),
-                Instr(Mnemonic.cisp, _("cisp")),
-                Instr(Mnemonic.cism, _("cism")),
+                Instr(Mnemonic.c, Ra,Dx_w16),
+                Instr(Mnemonic.cr, Ra,Rb),
+                Instr(Mnemonic.cisp, Ra,ISP_0),
+                Instr(Mnemonic.cisn, Ra,ISP_0),
 
-                Instr(Mnemonic.cbl, _("cbl")),
+                Instr(Mnemonic.cbl, Ra,Dx_w16),
                 invalid,
                 Instr(Mnemonic.dc, Ra,Dx_w32),
-                Instr(Mnemonic.dcr, _("dcr")),
+                Instr(Mnemonic.dcr, Ra,Rb),
 
-                Instr(Mnemonic.fc, _("fc")),
+                Instr(Mnemonic.fc, Ra,Dx_r32),
                 Instr(Mnemonic.fcr, Ra,Rb),
-                Instr(Mnemonic.efc, _("efc")),
-                Instr(Mnemonic.efcr, _("efcr")),
+                Instr(Mnemonic.efc, Ra,Dx_r48),
+                Instr(Mnemonic.efcr, Ra,Rb),
 
                 invalid,
                 invalid,
                 invalid,
                 Select((0, 8), Is0, "  0xFF",
                     Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding),
-                    Nyi("FF"))
+                    Select((0, 8), u => u == 0xFF,
+                        Instr(Mnemonic.bpt),
+                        Nyi("FF")))
             });
         }
     }
