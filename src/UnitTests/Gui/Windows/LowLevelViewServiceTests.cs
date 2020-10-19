@@ -90,6 +90,7 @@ namespace Reko.UnitTests.Gui.Windows
             arch.Setup(a => a.Name).Returns("FakeArch");
             arch.Setup(a => a.CreateDisassembler(It.IsNotNull<EndianImageReader>())).Returns(dasm.Object);
             arch.Setup(a => a.InstructionBitSize).Returns(8);
+            arch.Setup(a => a.MemoryGranularity).Returns(8);
             arch.Setup(a => a.CreateImageReader(
                 It.IsNotNull<ByteMemoryArea>(),
                 It.IsNotNull<Address>())).Returns(mem.CreateLeReader(addrBase));

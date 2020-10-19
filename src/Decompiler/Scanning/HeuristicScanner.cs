@@ -340,7 +340,7 @@ namespace Reko.Scanning
                 proc.IsValidAddress,
                 true,
                 host);
-            int instrByteGranularity = program.Architecture.InstructionBitSize / 8;
+            int instrByteGranularity = program.Architecture.InstructionBitSize / program.Architecture.MemoryGranularity;
             for (Address addr = addrStart; addr < addrEnd; addr = addr + instrByteGranularity)
             {
                 dasm.Disassemble(addr);

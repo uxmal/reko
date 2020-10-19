@@ -368,8 +368,8 @@ namespace Reko.Scanning
         /// </summary>
         private IEnumerable<(Address,Address)> GetValidSequences((Address, Address) gap)
         {
-            int instrByteGranularity = program.Architecture.InstructionBitSize / 8;
-            for (Address addr = gap.Item1; addr < gap.Item2; addr = addr + instrByteGranularity)
+            int instrGranularity = program.Architecture.InstructionBitSize / program.Architecture.MemoryGranularity;
+            for (Address addr = gap.Item1; addr < gap.Item2; addr += instrGranularity)
             {
                 var addrStart = addr;
                 var dasm = CreateRewriter(addr);
@@ -422,7 +422,7 @@ namespace Reko.Scanning
                 arch.CreateProcessorState(),
                 arch.CreateFrame(),
                 host);
-            return new RobustRewriter(rw, program.Architecture.InstructionBitSize / 8);
+            return new RobustRewriter(rw, program.Architecture.InstructionBitSize / program.Architecture.MemoryGranularity);
         }
 
         private bool NonLocalTransferInstruction(RtlInstructionCluster cluster)
