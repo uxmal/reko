@@ -177,6 +177,14 @@ namespace Reko.Core
         MemoryArea CreateMemoryArea(Address baseAddress, byte[] bytes);
 
         /// <summary>
+        /// Reinterprets a string of raw bits as a floating point number appropriate
+        /// for the current architecture.
+        /// </summary>
+        /// <param name="rawBits">Raw bits to be interpreted.</param>
+        /// <returns></returns>
+        Constant ReinterpretAsFloat(Constant rawBits);
+
+        /// <summary>
         /// Creates a processor emulator for this architecture.
         /// </summary>
         /// <param name="segmentMap">The memory image containing the program 
@@ -567,6 +575,21 @@ namespace Reko.Core
         public virtual Address MakeSegmentedAddress(Constant seg, Constant offset) { throw new NotSupportedException("This architecture doesn't support segmented addresses."); }
         public virtual void PostprocessProgram(Program program) { }
         public abstract Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state);
+
+        public virtual Constant ReinterpretAsFloat(Constant rawBits)
+        {
+            // Most platforms -- but certainly not all -- use IEEE 754 float representation.
+            if (rawBits.DataType.Size == 4)
+            {
+                return Constant.FloatFromBitpattern(rawBits.ToInt32());
+            }
+            else if (rawBits.DataType.Size == 8)
+            {
+                return Constant.FloatFromBitpattern(rawBits.ToInt64());
+            }
+            throw new NotImplementedException($"Unsupported IEEE floating point size {rawBits.DataType.BitSize}.");
+        }
+
         public virtual Dictionary<string, object>? SaveUserOptions() { return null; }
 
         public abstract bool TryParseAddress(string? txtAddr, out Address addr);

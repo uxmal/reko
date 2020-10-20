@@ -1,52 +1,19 @@
-// fn0100
-// Return size: 2
-define fn0100
+void fn0100()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: CPZN gp0 gp1 gp14 gp2 gp3 gp4 gp5 gp6
+// Preserved: gp15
 fn0100_entry:
-	gp15 = fp
-	// succ:  l0100
 l0100:
-	gp0 = 0x8000<16>
-	PZN = cond(gp0)
-	gp1 = 0xC<16>
-	PZN = cond(gp1)
-	gp2 = 0x50B<16>
-	PZN = cond(gp2)
-	v7 = gp0
-	v8 = gp2
-	__mov(v7, v8)
-	gp0 = 0x800C<16>
-	PZN = cond(gp0)
-	gp1 = 0xF<16>
-	PZN = cond(gp1)
-	gp2 = 0x517<16>
-	PZN = cond(gp2)
-	v9 = gp0
-	v10 = gp2
-	__mov(v9, v10)
-	gp0 = 0x801B<16>
-	PZN = cond(gp0)
-	gp1 = 0x53<16>
-	PZN = cond(gp1)
-	gp2 = 0x526<16>
-	PZN = cond(gp2)
-	v11 = gp0
-	v12 = gp2
-	__mov(v11, v12)
-	gp14 = gp15
-	PZN = cond(gp14)
-	gp3 = gp0
-	PZN = cond(gp3)
-	gp0 = gp0 ^ gp0
-	PZN = cond(gp0)
-	gp1 = gp0
-	PZN = cond(gp1)
-	gp4 = 1<16>
-	PZN = cond(gp4)
-	// succ:  l011A_thunk_fn011B
+	__mov(0x8000<p16>, 0x050B<p16>)
+	__mov(0x800C<p16>, 0x0517<p16>)
+	__mov(0x801B<p16>, 0x0526<p16>)
 l011A_thunk_fn011B:
-	call fn011B (retsize: 0;)
+	word16 gp14_36
+	fn011B(0<16>, 0<16>, 0x801B<16>, 1<16>, fp, out gp14_36)
 	return
-	// succ:  fn0100_exit
 fn0100_exit:
 
 

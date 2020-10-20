@@ -238,8 +238,14 @@ namespace Reko.Arch.MilStd1750
             return true;
         }
 
+        private static bool Imm8(uint uInstr, MilStd1750Disassembler dasm)
+        {
+            dasm.ops.Add(ImmediateOperand.Word16((ushort)bf0_8.Read(uInstr)));
+            return true;
+        }
+
         /// <summary>
-        /// 16-bit immedate.
+        /// 16-bit immedate following the instruction word.
         /// </summary>
         private static bool IM(uint uInstr, MilStd1750Disassembler dasm)
         {
@@ -449,7 +455,7 @@ namespace Reko.Arch.MilStd1750
                 invalid,
                 invalid,
                 invalid,
-                Instr(Mnemonic.bif, _("bif")), // c
+                Instr(Mnemonic.bif, Imm8), // c
 
                 // 50
                 Instr(Mnemonic.sb, N,Dx_w16),

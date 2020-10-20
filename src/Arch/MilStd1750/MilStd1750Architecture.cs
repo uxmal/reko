@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -32,7 +33,11 @@ namespace Reko.Arch.MilStd1750
 {
     public class MilStd1750Architecture : ProcessorArchitecture
     {
-        private Dictionary<uint, FlagGroupStorage> flagGroups;
+        private const double FLOATING_TWO_TO_THE_TWENTYTHREE = 8388608.0;
+        private const double FLOATING_TWO_TO_THE_THIRTYNINE = 549755813888.0;
+
+
+        private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public static PrimitiveType Real48 { get; } 
 
@@ -157,6 +162,45 @@ namespace Reko.Arch.MilStd1750
         public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
+        }
+
+        public override Constant ReinterpretAsFloat(Constant rawBits)
+        {
+            if (rawBits.DataType.BitSize == 32)
+            {
+                var n = ConstantReal.Create(rawBits.DataType, Real32ToIEEE(rawBits.ToUInt32()));
+                return n;
+            }
+            else if (rawBits.DataType.BitSize == 48)
+            {
+                var n = ConstantReal.Create(rawBits.DataType, Real48ToIEEE(rawBits.ToUInt64()));
+                return n;
+            }
+            throw new NotSupportedException($"Floating point bit size {rawBits.DataType.BitSize} is not supported.");
+        }
+
+        public static double Real32ToIEEE(uint rawBits32)
+        {
+            var int_exp = (sbyte) rawBits32;
+            var int_mant = (int) rawBits32 >> 8;
+            var flt_mant = (double) int_mant / FLOATING_TWO_TO_THE_TWENTYTHREE;
+            var flt_exp = Constant.IntPow(2, int_exp);
+            return flt_mant * flt_exp;
+        }
+
+        private static readonly Bitfield bfHiReal48 = new Bitfield(24, 24);
+
+        public static double Real48ToIEEE(ulong rawBits48)
+        {
+            var int_exp = (sbyte) (rawBits48 >> 16);
+            var int_mant_hi = (int) bfHiReal48.ReadSigned(rawBits48);
+            var int_mant_lo = (short) rawBits48;
+
+            var flt_mant = 
+                (double) int_mant_hi / FLOATING_TWO_TO_THE_TWENTYTHREE +
+                (double) int_mant_lo / FLOATING_TWO_TO_THE_THIRTYNINE;
+            var flt_exp = Constant.IntPow(2, int_exp);
+            return flt_mant * flt_exp;
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)

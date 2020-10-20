@@ -64,6 +64,14 @@ namespace Reko.Core.Lib
             return (int)s;
         }
 
+        public long ReadSigned(ulong u)
+        {
+            var v = (u >> Position) & Mask;
+            var m = 1ul << (Length - 1);
+            var s = (v ^ m) - m;
+            return (long) s;
+        }
+
         public static uint ReadFields(Bitfield[] bitfields, uint u)
         {
             uint n = 0;

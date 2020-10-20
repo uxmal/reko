@@ -1,1763 +1,829 @@
-// fn0115
-// Return size: 0
-define fn0115
+word16 fn0115(ptr16 & gp14Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn011B
+// MayUse: 
+// LiveOut: gp0 gp14
+// Trashed: PZN gp0 gp1 gp14 gp3 gp4
+// Preserved: gp15
 fn0115_entry:
-	gp15 = fp
-	// succ:  l0115
 l0115:
-	gp14 = gp15
-	PZN = cond(gp14)
-	gp3 = gp0
-	PZN = cond(gp3)
-	gp0 = gp0 ^ gp0
-	PZN = cond(gp0)
-	gp1 = gp0
-	PZN = cond(gp1)
-	gp4 = 1<16>
-	PZN = cond(gp4)
-	// succ:  l011A_thunk_fn011B
 l011A_thunk_fn011B:
-	call fn011B (retsize: 0;)
-	return
-	// succ:  fn0115_exit
+	word16 gp14_11
+	word16 gp0_12 = fn011B(0<16>, gp1, gp3, gp4, gp14, out gp14_11)
+	gp14Out = gp14_11
+	return gp0_12
 fn0115_exit:
 
 
-// fn011B
-// Return size: 0
-define fn011B
+word16 fn011B(word16 gp0, word16 gp1, word16 gp3, word16 gp4, word16 gp14, ptr16 & gp14Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0100
+//      fn0115
+// MayUse:  gp0:[0..15] gp1:[0..15] gp14:[0..15] gp3:[0..15] gp4:[0..15]
+// LiveOut: gp0 gp14
+// Trashed: CPZN gp0 gp1 gp15 gp2 gp3 gp4 gp5 gp6
+// Preserved: gp13 gp14
 fn011B_entry:
-	gp15 = fp
-	// succ:  l011B
 l011B:
-	gp2 = gp3
-	PZN = cond(gp2)
-	gp1 = -gp1
-	PZN = cond(gp1)
-	gp2 = __shift_arithmetic(gp2, gp1)
-	PZN = cond(gp2)
-	gp2 = gp2 & 1<16>
-	PZN = cond(gp2)
-	branch Test(EQ,Z) l0140
-	// succ:  l0121 l0140
-l0121:
-	gp2 = Mem0[gp13 + 0x28<16>:word16]
-	PZN = cond(gp2)
-	gp2 = 3<16>
-	PZN = cond(gp2)
-	gp2 = gp2 - gp1
-	CPZN = cond(gp2)
-	gp5 = gp4
-	PZN = cond(gp5)
-	gp5 = __shift_logical(gp5, gp2)
-	PZN = cond(gp5)
-	gp2 = gp5
-	PZN = cond(gp2)
-	gp0 = gp0 | gp2
-	PZN = cond(gp0)
-	gp1 = gp1 + 1<16>
-	CPZN = cond(gp1)
-	PZN = cond(gp1 - 3<16>)
-	branch Test(LE,ZN) l011B
-	// succ:  l012B l011B
-l012B:
-	gp15 = gp14
-	PZN = cond(gp15)
-	return
-	// succ:  fn011B_exit
-l0132:
-	gp0 = gp3
-	PZN = cond(gp0)
-	Mem0[gp14 + 1<16>:word16] = gp3
-	call fn0115 (retsize: 2;)
-	gp1 = gp0
-	PZN = cond(gp1)
-	gp1 = gp1 << 1<16>
-	PZN = cond(gp1)
-	gp1 = gp1 + gp0
-	CPZN = cond(gp1)
-	gp3 = Mem0[gp14 + 1<16>:word16]
-	PZN = cond(gp3)
-	gp2 = gp3
-	PZN = cond(gp2)
-	gp2 = gp2 << 1<16>
-	PZN = cond(gp2)
-	gp2 = gp2 + gp3
-	CPZN = cond(gp2)
-	gp4_gp5_gp6 = Mem0[gp2 + 0x8000<16>:real48]
-	PZN = cond(gp4_gp5_gp6)
-	goto l0141
-	// succ:  l0141
+	word16 gp1_6 = -gp1
+	branch (__shift_arithmetic(gp3, gp1_6) & 1<16>) == 0<16> l0140
 l0140:
-	gp0 = Mem0[0x9A41<p16>:word16]
-	PZN = cond(gp0)
-	// succ:  l0141
 l0141:
-	gp3 = Mem0[0x8A40<p16>:word16]
-	PZN = cond(gp3)
-	gp0 = Mem0[0x9A41<p16>:word16]
-	PZN = cond(gp0)
-	gp6 = Mem0[0xA230<p16>:word16]
-	PZN = cond(gp6)
-	PZN = cond(gp3 - 0xF<16>)
-	branch Test(LE,ZN) l0132
-	// succ:  l014A l0132
+	word16 gp3_15 = Mem14[0x8A40<p16>:word16]
+	word16 gp0_16 = Mem14[0x9A41<p16>:word16]
+	branch gp3_15 <= 0xF<16> l0132
+l0132:
+	Mem23[gp14 + 1<16>:word16] = gp3_15
+	fn0115(out gp14)
 l014A:
-	gp15 = gp14
-	PZN = cond(gp15)
-	gp15 = gp15 + 1<16>
-	CPZN = cond(gp15)
-	return
-	// succ:  fn011B_exit
+	gp14Out = <invalid>
+	return gp0_16
+l0121:
+	gp0 = gp0 | __shift_logical(gp4, 3<16> - gp1_6)
+	gp1 = gp1_6 + 1<16>
+	branch gp1_6 <= 2<16> l011B
+l012B:
+	gp14Out = <invalid>
+	return gp0
 fn011B_exit:
 
 
-// fn014E
-// Return size: 2
-define fn014E
+void fn014E()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp15 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved:
 fn014E_entry:
-	gp15 = fp
-	// succ:  l014E
 l014E:
-	gp15 = gp15 - 2<16>
-	CPZN = cond(gp15)
-	gp14 = gp15
-	PZN = cond(gp14)
-	gp9 = gp9 ^ gp9
-	PZN = cond(gp9)
-	// succ:  l0152
+	word16 gp14_46 = fp - 2<16>
+	word16 gp9_6 = 0<16>
 l0152:
-	gp8 = gp9
-	PZN = cond(gp8)
-	gp8 = gp8 << 1<16>
-	PZN = cond(gp8)
-	gp8 = gp8 + gp9
-	CPZN = cond(gp8)
-	gp5_gp6_gp7 = Mem0[gp8 + 0x8030<16>:real48]
-	PZN = cond(gp5_gp6_gp7)
-	gp2_gp3_gp4 = Mem0[gp8 + 0x8060<16>:real48]
-	PZN = cond(gp2_gp3_gp4)
-	gp5_gp6_gp7 = gp5_gp6_gp7 * gp5_gp6_gp7
-	PZN = cond(gp5_gp6_gp7)
-	gp2_gp3_gp4 = gp2_gp3_gp4 * gp2_gp3_gp4
-	PZN = cond(gp2_gp3_gp4)
-	gp5_gp6_gp7 = gp5_gp6_gp7 + gp2_gp3_gp4
-	PZN = cond(gp5_gp6_gp7)
-	gp2 = gp7
-	PZN = cond(gp2)
-	gp0_gp1 = gp5_gp6
-	PZN = cond(gp0_gp1)
-	Mem0[gp14 + 1<16>:word32] = gp8_gp9
-	call fn0245 (retsize: 2;)
-	gp8 = Mem0[gp14 + 1<16>:word16]
-	PZN = cond(gp8)
-	Mem0[gp8 + 0x8090<16>:real48] = gp0_gp1_gp2
-	gp9 = Mem0[gp14 + 2<16>:word16]
-	PZN = cond(gp9)
-	gp9 = gp9 + 1<16>
-	CPZN = cond(gp9)
-	PZN = cond(gp9 - 0xF<16>)
-	branch Test(LE,ZN) l0152
-	// succ:  l016B l0152
+	word16 gp8_11 = gp9_6 * 3<16>
+	real48 gp5_gp6_gp7_14 = Mem13[gp8_11 + 0x8030<16>:real48]
+	real48 gp2_gp3_gp4_15 = Mem13[gp8_11 + 0x8060<16>:real48]
+	Mem47[gp14_46 + 1<16>:word32] = SEQ(gp8_11, gp9_6)
+	real48 gp5_gp6_gp7_36 = gp5_gp6_gp7_14 * gp5_gp6_gp7_14 + gp2_gp3_gp4_15 * gp2_gp3_gp4_15
+	word16 gp7_37 = SLICE(gp5_gp6_gp7_36, word16, 0)
+	gp14_46 = fn0245(gp5_gp6_gp7_36, gp7_37, gp7_37)
+	real48 gp0_gp1_gp2_83 = <invalid>
+	Mem69[Mem47[gp14_46 + 1<16>:word16] + 0x8090<16>:real48] = gp0_gp1_gp2_83
+	word16 gp9_70 = Mem69[gp14_46 + 2<16>:word16]
+	gp9_6 = gp9_70 + 1<16>
+	branch gp9_70 <= 0xE<16> l0152
 l016B:
-	gp15 = gp14
-	PZN = cond(gp15)
-	gp15 = gp15 + 2<16>
-	CPZN = cond(gp15)
 	return
-	// succ:  fn014E_exit
 fn014E_exit:
 
 
-// fn0226
-// Return size: 2
-define fn0226
+void fn0226(word16 gp1, word16 gp3)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0245
+// MayUse:  gp1:[0..15] gp3:[0..15]
+// LiveOut:
+// Trashed: CPZN gp1 gp4 gp5
+// Preserved: gp15
 fn0226_entry:
-	gp15 = fp
-	// succ:  l0226
 l0226:
-	gp5 = Mem0[gp3:word16]
-	PZN = cond(gp5)
-	gp4 = gp1
-	PZN = cond(gp4)
-	gp1 = gp1 & 0xFF00<16>
-	PZN = cond(gp1)
-	gp4 = gp4 & 0xFF<16>
-	PZN = cond(gp4)
-	v8 = gp4 & 1<u16> << 8<16>
-	Z = v8 == 0<16>
-	branch Test(EQ,Z) l0231
-	// succ:  l022F l0231
+	word16 gp5_5 = Mem0[gp3:word16]
+	word16 gp4_13 = gp1 & 0xFF<16>
+	branch Test(EQ,(gp1 & 0xFF<16> & 0x100<u16>) == 0<16>) l0231
 l022F:
-	gp4 = gp4 | 0xFF00<16>
-	PZN = cond(gp4)
-	// succ:  l0231
+	gp4_13 = gp1 & 0xFF<16> | 0xFF00<16>
 l0231:
-	v10 = gp4 & 1<u16> << 0xF<16>
-	Z = v10 == 0<16>
-	branch Test(EQ,Z) l0236
-	// succ:  l0233 l0236
+	branch Test(EQ,(gp4_13 & 0x8000<u16>) == 0<16>) l0236
 l0233:
-	gp4 = gp4 + 1<16>
-	CPZN = cond(gp4)
-	gp1 = gp1 | 0xFF<16>
-	PZN = cond(gp1)
-	// succ:  l0236
+	gp4_13 = gp4_13 + 1<16>
 l0236:
-	gp4 = gp4 >>u 1<16>
-	PZN = cond(gp4)
-	gp4 = gp4 & 0xFF<16>
-	PZN = cond(gp4)
-	gp4 = gp4 + 1<16>
-	CPZN = cond(gp4)
-	gp4 = gp4 & 0xFF<16>
-	PZN = cond(gp4)
-	Mem0[gp5 + 1<16>:word16] = gp4
-	Mem0[gp5 + 2<16>:word16] = 0<16>
-	gp4 = 0x4000<16>
-	PZN = cond(gp4)
-	Mem0[gp5:word16] = gp4
+	Mem31[gp5_5 + 1<16>:word16] = (gp4_13 >>u 1<16> & 0xFF<16>) + 1<16> & 0xFF<16>
+	Mem32[gp5_5 + 2<16>:word16] = 0<16>
+	Mem35[gp5_5:word16] = 0x4000<16>
 	return
-	// succ:  fn0226_exit
 fn0226_exit:
 
 
-// fn0245
-// Return size: 2
-define fn0245
+word16 fn0245(word32 gp0_gp1, word16 gp2, word16 gp7)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn014E
+// MayUse:  gp2:[0..15] gp7:[0..15] Sequence gp0:gp1:[0..31]
+// LiveOut: gp14
+// Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved: gp15
 fn0245_entry:
-	gp15 = fp
-	// succ:  l0245
+	word16 gp1 = SLICE(gp0_gp1, word16, 0)
 l0245:
-	gp15 = gp15 - 3<16>
-	CPZN = cond(gp15)
-	gp14 = gp15
-	PZN = cond(gp14)
-	gp6 = gp2
-	PZN = cond(gp6)
-	gp4_gp5 = gp0_gp1
-	PZN = cond(gp4_gp5)
-	branch Test(LT,ZN) l027A
-	// succ:  l024B l027A
-l024B:
-	gp2 = Mem0[gp14 + 0x6D<16>:word16]
-	PZN = cond(gp2)
-	gp3 = 1<16>
-	PZN = cond(gp3)
-	call fn0226 (retsize: 2;)
-	gp10 = gp2
-	PZN = cond(gp10)
-	gp8_gp9 = gp0_gp1
-	PZN = cond(gp8_gp9)
-	gp4 = gp10
-	PZN = cond(gp4)
-	gp2_gp3 = gp8_gp9
-	PZN = cond(gp2_gp3)
-	gp2_gp3_gp4 = gp2_gp3_gp4 + Mem0[0x800C<p16>:real48]
-	PZN = cond(gp2_gp3_gp4)
-	gp5_gp6_gp7 = Mem0[0x800F<p16>:real48]
-	PZN = cond(gp5_gp6_gp7)
-	gp5_gp6_gp7 = gp5_gp6_gp7 / gp2_gp3_gp4
-	PZN = cond(gp5_gp6_gp7)
-	gp2_gp3_gp4 = Mem0[0x8012<p16>:real48]
-	PZN = cond(gp2_gp3_gp4)
-	// succ:  l025B
-l025B:
-	gp2_gp3_gp4 = gp2_gp3_gp4 - gp5_gp6_gp7
-	PZN = cond(gp2_gp3_gp4)
-	gp7 = gp10
-	PZN = cond(gp7)
-	gp5_gp6 = gp8_gp9
-	PZN = cond(gp5_gp6)
-	gp5_gp6_gp7 = gp5_gp6_gp7 / gp2_gp3_gp4
-	PZN = cond(gp5_gp6_gp7)
-	gp2_gp3_gp4 = gp2_gp3_gp4 + gp5_gp6_gp7
-	PZN = cond(gp2_gp3_gp4)
-	gp2_gp3_gp4 = gp2_gp3_gp4 * Mem0[0x8015<p16>:real48]
-	PZN = cond(gp2_gp3_gp4)
-	gp8_gp9_gp10 = gp8_gp9_gp10 / gp2_gp3_gp4
-	PZN = cond(gp8_gp9_gp10)
-	gp2_gp3_gp4 = gp2_gp3_gp4 + gp8_gp9_gp10
-	PZN = cond(gp2_gp3_gp4)
-	gp2_gp3_gp4 = gp2_gp3_gp4 * Mem0[0x8015<p16>:real48]
-	PZN = cond(gp2_gp3_gp4)
-	gp0_gp1 = gp2_gp3
-	PZN = cond(gp0_gp1)
-	gp2 = gp4
-	PZN = cond(gp2)
-	gp0_gp1 = gp0_gp1
-	PZN = cond(gp0_gp1)
-	gp0_gp1_gp2 = gp0_gp1_gp2 * Mem0[gp14 + 1<16>:real48]
-	PZN = cond(gp0_gp1_gp2)
-	goto l025B
-	// succ:  l025B
+	branch gp0_gp1 < 0<32> l027A
 l027A:
-	gp5_gp6_gp7 = gp5_gp6_gp7 * Mem0[gp14 + 1<16>:real48]
-	PZN = cond(gp5_gp6_gp7)
-	gp13 = gp7
-	PZN = cond(gp13)
-	gp11_gp12 = gp5_gp6
-	PZN = cond(gp11_gp12)
-	gp11_gp12_gp13 = gp11_gp12_gp13 * Mem0[0x801B<p16>:real48]
-	PZN = cond(gp11_gp12_gp13)
-	gp10 = gp7
-	PZN = cond(gp10)
-	gp8_gp9 = gp5_gp6
-	PZN = cond(gp8_gp9)
-	gp8_gp9_gp10 = gp8_gp9_gp10 + Mem0[0x801E<p16>:real48]
-	PZN = cond(gp8_gp9_gp10)
-	gp5_gp6_gp7 = gp5_gp6_gp7 + Mem0[0x8021<p16>:real48]
-	PZN = cond(gp5_gp6_gp7)
-	gp2_gp3_gp4 = Mem0[0x8024<p16>:real48]
-	PZN = cond(gp2_gp3_gp4)
-	gp2_gp3_gp4 = gp2_gp3_gp4 / gp5_gp6_gp7
-	PZN = cond(gp2_gp3_gp4)
-	gp8_gp9_gp10 = gp8_gp9_gp10 + gp2_gp3_gp4
-	PZN = cond(gp8_gp9_gp10)
-	gp11_gp12_gp13 = gp11_gp12_gp13 / gp8_gp9_gp10
-	PZN = cond(gp11_gp12_gp13)
-	gp11_gp12_gp13 = gp11_gp12_gp13 + Mem0[0x8027<p16>:real48]
-	PZN = cond(gp11_gp12_gp13)
-	gp0_gp1_gp2 = Mem0[gp14 + 1<16>:real48]
-	PZN = cond(gp0_gp1_gp2)
-	gp0_gp1_gp2 = gp0_gp1_gp2 * gp11_gp12_gp13
-	PZN = cond(gp0_gp1_gp2)
-	gp15 = gp14
-	PZN = cond(gp15)
-	gp15 = gp15 + 3<16>
-	CPZN = cond(gp15)
-	return
-	// succ:  fn0245_exit
+	return fp - 3<16>
 fn0245_exit:
+l024B:
+	fn0226(gp1, 1<16>)
+l025B:
 
 
-// fn0273
-// Return size: 0
-define fn0273
+void fn0273()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved: gp15
 fn0273_entry:
-	gp15 = fp
-	// succ:  l0273
 l0273:
-	gp15 = gp15 - 3<16>
-	CPZN = cond(gp15)
-	gp14 = gp15
-	PZN = cond(gp14)
-	Mem0[gp14 + 1<16>:real48] = gp0_gp1_gp2
-	gp7 = gp2
-	PZN = cond(gp7)
-	gp5_gp6 = gp0_gp1
-	PZN = cond(gp5_gp6)
-	// succ:  l027A_in_fn0273
 l027A_in_fn0273:
-	gp5_gp6_gp7 = gp5_gp6_gp7 * Mem0[gp14 + 1<16>:real48]
-	PZN = cond(gp5_gp6_gp7)
-	gp13 = gp7
-	PZN = cond(gp13)
-	gp11_gp12 = gp5_gp6
-	PZN = cond(gp11_gp12)
-	gp11_gp12_gp13 = gp11_gp12_gp13 * Mem0[0x801B<p16>:real48]
-	PZN = cond(gp11_gp12_gp13)
-	gp10 = gp7
-	PZN = cond(gp10)
-	gp8_gp9 = gp5_gp6
-	PZN = cond(gp8_gp9)
-	gp8_gp9_gp10 = gp8_gp9_gp10 + Mem0[0x801E<p16>:real48]
-	PZN = cond(gp8_gp9_gp10)
-	gp5_gp6_gp7 = gp5_gp6_gp7 + Mem0[0x8021<p16>:real48]
-	PZN = cond(gp5_gp6_gp7)
-	gp2_gp3_gp4 = Mem0[0x8024<p16>:real48]
-	PZN = cond(gp2_gp3_gp4)
-	gp2_gp3_gp4 = gp2_gp3_gp4 / gp5_gp6_gp7
-	PZN = cond(gp2_gp3_gp4)
-	gp8_gp9_gp10 = gp8_gp9_gp10 + gp2_gp3_gp4
-	PZN = cond(gp8_gp9_gp10)
-	gp11_gp12_gp13 = gp11_gp12_gp13 / gp8_gp9_gp10
-	PZN = cond(gp11_gp12_gp13)
-	gp11_gp12_gp13 = gp11_gp12_gp13 + Mem0[0x8027<p16>:real48]
-	PZN = cond(gp11_gp12_gp13)
-	gp0_gp1_gp2 = Mem0[gp14 + 1<16>:real48]
-	PZN = cond(gp0_gp1_gp2)
-	gp0_gp1_gp2 = gp0_gp1_gp2 * gp11_gp12_gp13
-	PZN = cond(gp0_gp1_gp2)
-	gp15 = gp14
-	PZN = cond(gp15)
-	gp15 = gp15 + 3<16>
-	CPZN = cond(gp15)
 	return
-	// succ:  fn0273_exit
 fn0273_exit:
 
 
-// fn02E1
-// Return size: 2
-define fn02E1
+void fn02E1()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: PZN gp0 gp1 gp10 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved: gp15
 fn02E1_entry:
-	gp15 = fp
-	// succ:  l02E1
 l02E1:
-	gp14 = gp15
-	PZN = cond(gp14)
-	gp10 = gp2
-	PZN = cond(gp10)
-	gp8_gp9 = gp0_gp1
-	PZN = cond(gp8_gp9)
-	gp7 = gp10
-	PZN = cond(gp7)
-	gp5_gp6 = gp8_gp9
-	PZN = cond(gp5_gp6)
-	gp5_gp6_gp7 = gp5_gp6_gp7 * gp8_gp9_gp10
-	PZN = cond(gp5_gp6_gp7)
-	gp4 = gp7
-	PZN = cond(gp4)
-	gp2_gp3 = gp5_gp6
-	PZN = cond(gp2_gp3)
-	gp2_gp3_gp4 = gp2_gp3_gp4 * Mem0[0x8036<p16>:real48]
-	PZN = cond(gp2_gp3_gp4)
-	gp2_gp3_gp4 = gp2_gp3_gp4 + Mem0[0x8039<p16>:real48]
-	PZN = cond(gp2_gp3_gp4)
-	gp2_gp3_gp4 = gp2_gp3_gp4 * gp5_gp6_gp7
-	PZN = cond(gp2_gp3_gp4)
-	gp2_gp3_gp4 = gp2_gp3_gp4 + Mem0[0x803C<p16>:real48]
-	PZN = cond(gp2_gp3_gp4)
-	gp2_gp3_gp4 = gp2_gp3_gp4 * gp5_gp6_gp7
-	PZN = cond(gp2_gp3_gp4)
-	gp2_gp3_gp4 = gp2_gp3_gp4 + Mem0[0x803F<p16>:real48]
-	PZN = cond(gp2_gp3_gp4)
-	gp8_gp9_gp10 = gp8_gp9_gp10 * gp2_gp3_gp4
-	PZN = cond(gp8_gp9_gp10)
-	gp2 = gp10
-	PZN = cond(gp2)
-	gp0_gp1 = gp8_gp9
-	PZN = cond(gp0_gp1)
-	gp15 = gp14
-	PZN = cond(gp15)
 	return
-	// succ:  fn02E1_exit
 fn02E1_exit:
 
 
-// fn02FA
-// Return size: 2
-define fn02FA
+void fn02FA()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: PZN gp0 gp1 gp14 gp2 gp3 gp4 gp5 gp6 gp7
+// Preserved: gp15
 fn02FA_entry:
-	gp15 = fp
-	// succ:  l02FA
 l02FA:
-	gp14 = gp15
-	PZN = cond(gp14)
-	gp7 = gp2
-	PZN = cond(gp7)
-	gp5_gp6 = gp0_gp1
-	PZN = cond(gp5_gp6)
-	gp5_gp6_gp7 = gp5_gp6_gp7 * gp0_gp1_gp2
-	PZN = cond(gp5_gp6_gp7)
-	gp4 = gp7
-	PZN = cond(gp4)
-	gp2_gp3 = gp5_gp6
-	PZN = cond(gp2_gp3)
-	gp2_gp3_gp4 = gp2_gp3_gp4 * Mem0[0x8042<p16>:real48]
-	PZN = cond(gp2_gp3_gp4)
-	gp2_gp3_gp4 = gp2_gp3_gp4 + Mem0[0x8045<p16>:real48]
-	PZN = cond(gp2_gp3_gp4)
-	gp2_gp3_gp4 = gp2_gp3_gp4 * gp5_gp6_gp7
-	PZN = cond(gp2_gp3_gp4)
-	gp2_gp3_gp4 = gp2_gp3_gp4 + Mem0[0x8048<p16>:real48]
-	PZN = cond(gp2_gp3_gp4)
-	gp2_gp3_gp4 = gp2_gp3_gp4 * gp5_gp6_gp7
-	PZN = cond(gp2_gp3_gp4)
-	gp0_gp1 = gp2_gp3
-	PZN = cond(gp0_gp1)
-	gp2 = gp4
-	PZN = cond(gp2)
-	gp0_gp1 = gp0_gp1
-	PZN = cond(gp0_gp1)
-	gp0_gp1_gp2 = gp0_gp1_gp2 + Mem0[0x804B<p16>:real48]
-	PZN = cond(gp0_gp1_gp2)
-	gp15 = gp14
-	PZN = cond(gp15)
 	return
-	// succ:  fn02FA_exit
 fn02FA_exit:
 
 
-// fn0311
-// Return size: 2
-define fn0311
+word16 fn0311(word16 gp1, word16 wArg1A)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn037C
+//      fn03A0
+// MayUse:  gp1:[0..15] Stack +001A:[0..15]
+// LiveOut: gp14
+// Trashed: PZN gp0 gp1 gp14 gp5 gp6 gp7
+// Preserved: gp15 gp2
 fn0311_entry:
-	gp15 = fp
-	// succ:  l0311
 l0311:
-	gp14 = gp15
-	PZN = cond(gp14)
-	gp7 = gp4
-	PZN = cond(gp7)
-	gp5_gp6 = gp2_gp3
-	PZN = cond(gp5_gp6)
-	gp0 = gp1
-	PZN = cond(gp0)
-	gp2 = gp0
-	PZN = cond(gp2)
-	branch Test(GE,PZ) l0377
-	// succ:  l0318 l0377
-l0318:
-	gp2 = Mem0[gp15 + 0x1A<16>:word16]
-	PZN = cond(gp2)
-	gp2 = gp2 + 7<16>
-	CPZN = cond(gp2)
-	gp2 = gp2 & 0xFFF8<16>
-	PZN = cond(gp2)
-	// succ:  l031C
-l031C:
-	gp1 = gp0
-	PZN = cond(gp1)
-	gp1 = gp1 - gp2
-	CPZN = cond(gp1)
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp4
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp3
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp2
-	gp2 = gp1
-	PZN = cond(gp2)
-	gp1 = gp1 ^ gp1
-	PZN = cond(gp1)
-	gp3 = gp3 ^ gp3
-	PZN = cond(gp3)
-	gp4 = 7<16>
-	PZN = cond(gp4)
-	PZN = cond(gp1_gp2 - gp3_gp4)
-	gp1 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp2 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp3 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	// succ:  l0326
-l0326:
-	branch Test(GT,P) l0366
-	// succ:  l0327 l0366
-l0327:
-	gp2 = Mem0[gp15 + 0x75<16>:word16]
-	PZN = cond(gp2)
-	gp2 = Mem0[gp1 + 0x32C<16>:word16]
-	PZN = cond(gp2)
-	goto l031C
-	// succ:  l031C
-l0336:
-	goto l0326
-	// succ:  l0326
-l0346:
-	goto l0336
-	// succ:  l0336
-l0356:
-	goto l0346
-	// succ:  l0346
-l0366:
-	goto l0356
-	// succ:  l0356
+	branch gp1 >= 0<16> l0377
 l0377:
-	gp2 = gp5
-	PZN = cond(gp2)
-	gp0_gp1 = gp3_gp4
-	PZN = cond(gp0_gp1)
-	gp15 = gp14
-	PZN = cond(gp15)
-	return
-	// succ:  fn0311_exit
+	return fp
 fn0311_exit:
+l0318:
+	word16 gp2_25 = wArg1A + 7<16> & 0xFFF8<16>
+l031C:
+	word32 gp1_gp2_45 = CONVERT(gp1 - gp2_25, word16, uint32)
+l0326:
+	branch gp1_gp2_45 > 7<32> l0366
+l0366:
+l0356:
+l0346:
+l0336:
+l0327:
+	gp2_25 = Mem40[gp2_25 + 0x32C<16>:word16]
 
 
-// fn037C
-// Return size: 2
-define fn037C
+void fn037C(word32 gp0_gp1, word32 gp12_gp13, word16 gp2, word16 gp3, word16 gp11, word16 wArg18)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  gp11:[0..15] gp2:[0..15] gp3:[0..15] Sequence gp0:gp1:[0..31] Sequence gp12:gp13:[0..31] Stack +0018:[0..15]
+// LiveOut:
+// Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp15 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved:
 fn037C_entry:
-	gp15 = fp
-	// succ:  l037C
+	word16 gp1 = SLICE(gp0_gp1, word16, 0)
+	word16 gp0 = SLICE(gp0_gp1, word16, 16)
+	word16 gp12 = SLICE(gp12_gp13, word16, 16)
+	word32 gp1_gp2_18 = SEQ(gp1, gp2)
 l037C:
-	gp14 = gp15
-	PZN = cond(gp14)
-	gp10 = gp2
-	PZN = cond(gp10)
-	gp8_gp9 = gp0_gp1
-	PZN = cond(gp8_gp9)
-	gp7 = gp10
-	PZN = cond(gp7)
-	gp5_gp6 = gp8_gp9
-	PZN = cond(gp5_gp6)
-	branch Test(GE,PZ) l03E2
-	goto l0383
-	// succ:  l0383 l0381_thunk_fn03E2
+	branch gp0_gp1 >= 0<32> l03E2
 l0381_thunk_fn03E2:
-	call fn03E2 (retsize: 0;)
+	fn03E2(gp1_gp2_18, gp0, gp3, gp1, gp2, gp11)
 	return
-	// succ:  fn037C_exit
 l0383:
-	gp2 = Mem0[gp15 + 0x89<16>:word16]
-	PZN = cond(gp2)
-	gp2_gp3_gp4 = Mem0[0x8054<p16>:real48]
-	PZN = cond(gp2_gp3_gp4)
-	gp7 = gp4
-	PZN = cond(gp7)
-	gp5_gp6 = gp2_gp3
-	PZN = cond(gp5_gp6)
-	gp5_gp6_gp7 = gp5_gp6_gp7 - gp8_gp9_gp10
-	PZN = cond(gp5_gp6_gp7)
-	gp5_gp6_gp7 = gp5_gp6_gp7 * Mem0[0x8057<p16>:real48]
-	PZN = cond(gp5_gp6_gp7)
-	gp0_gp1 = CONVERT(gp5_gp6_gp7, real48, int32)
-	PZN = cond(gp0_gp1)
-	gp2_gp3_gp4 = CONVERT(gp0_gp1, int32, real48)
-	PZN = cond(gp2_gp3_gp4)
-	gp5_gp6_gp7 = gp5_gp6_gp7 - gp2_gp3_gp4
-	PZN = cond(gp5_gp6_gp7)
-	gp4 = gp7
-	PZN = cond(gp4)
-	gp2_gp3 = gp5_gp6
-	PZN = cond(gp2_gp3)
-	branch Test(GE,PZ) l03F0
-	// succ:  l0391 l03F0
-l0391:
-	gp2 = Mem0[gp15 + 0x96<16>:word16]
-	PZN = cond(gp2)
-	gp2_gp3_gp4 = gp2_gp3_gp4 + Mem0[0x805A<p16>:real48]
-	PZN = cond(gp2_gp3_gp4)
-	gp0_gp1 = gp0_gp1 + Mem0[0x805D<p16>:word32]
-	CPZN = cond(gp0_gp1)
-	gp8_gp9 = gp8_gp9
-	PZN = cond(gp8_gp9)
-	branch Test(GE,PZ) l03F7
-	goto l0398
-	// succ:  l0398 l0397_thunk_fn03F7
-l0397_thunk_fn03F7:
-	call fn03F7 (retsize: 0;)
-	return
-	// succ:  fn037C_exit
-l0398:
-	gp2 = Mem0[gp15 + 0x9B<16>:word16]
-	PZN = cond(gp2)
-	gp0_gp1 = gp0_gp1 + Mem0[0x805F<p16>:word32]
-	CPZN = cond(gp0_gp1)
-	call fn0311 (retsize: 2;)
-	gp15 = gp14
-	PZN = cond(gp15)
-	return
-	// succ:  fn037C_exit
+	real48 gp2_gp3_gp4_42 = Mem0[0x8054<p16>:real48]
+	real48 gp5_gp6_gp7_57 = (SEQ(SLICE(gp2_gp3_gp4_42, word32, 0), SLICE(gp2_gp3_gp4_42, word16, 0)) - SEQ(gp0_gp1, gp2)) * Mem0[0x8057<p16>:real48]
+	word32 gp0_gp1_62 = CONVERT(gp5_gp6_gp7_57, real48, int32)
+	branch gp5_gp6_gp7_57 - CONVERT(gp0_gp1_62, word32, real48) >= 0.0 l03F0
 l03F0:
-	gp0_gp1 = gp0_gp1 + Mem0[gp12 + 0x20<16>:real32]
-	CPZN = cond(gp0_gp1)
-	// succ:  l03F0_thunk_fn03F1
+	word32 gp0_gp1_82 = gp0_gp1_62 + Mem0[gp12 + 0x20<16>:real32]
 l03F0_thunk_fn03F1:
-	call fn03F1 (retsize: 0;)
+	fn03F1(gp0_gp1_82, gp12_gp13, gp2, gp11)
 	return
-	// succ:  fn037C_exit
+l0391:
+	word32 gp0_gp1_110 = gp0_gp1_62 + Mem0[0x805D<p16>:word32]
+	branch gp0_gp1 >= 0<32> l03F7
+l0397_thunk_fn03F7:
+	fn03F7(gp0_gp1_110, gp12_gp13, gp1, gp11)
+	return
+l0398:
+	fn0311(SLICE(gp0_gp1_110 + Mem0[0x805F<p16>:word32], word16, 0), wArg18)
+	return
 fn037C_exit:
 
 
-// fn03A0
-// Return size: 0
-define fn03A0
+void fn03A0(word32 gp0_gp1, word32 gp12_gp13, word16 gp2, word16 gp8, word16 gp9, word16 gp10, word16 gp11, word16 wArg18)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  gp10:[0..15] gp11:[0..15] gp2:[0..15] gp8:[0..15] gp9:[0..15] Sequence gp0:gp1:[0..31] Sequence gp12:gp13:[0..31] Stack +0018:[0..15]
+// LiveOut:
+// Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp15 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved:
 fn03A0_entry:
-	gp15 = fp
-	// succ:  l03A0
+	word32 gp1_gp2_14 = SEQ(SLICE(gp0_gp1, word16, 0), gp2)
 l03A0:
-	gp14 = gp15
-	PZN = cond(gp14)
-	gp7 = gp2
-	PZN = cond(gp7)
-	gp5_gp6 = gp0_gp1
-	PZN = cond(gp5_gp6)
-	branch Test(GE,PZ) l03A4_thunk_fn0404
-	goto l03A5
-	// succ:  l03A5 l03A4_thunk_fn0404
+	branch gp0_gp1 >= 0<32> l03A4_thunk_fn0404
 l03A4_thunk_fn0404:
-	call fn0404 (retsize: 0;)
+	fn0404(gp1_gp2_14, gp12_gp13, gp9, gp10, gp11)
 	return
-	// succ:  fn03A0_exit
 l03A5:
-	gp2 = Mem0[gp15 + 0xAB<16>:word16]
-	PZN = cond(gp2)
-	gp2_gp3_gp4 = Mem0[0x8061<p16>:real48]
-	PZN = cond(gp2_gp3_gp4)
-	gp2_gp3_gp4 = gp2_gp3_gp4 - gp5_gp6_gp7
-	PZN = cond(gp2_gp3_gp4)
-	gp7 = gp4
-	PZN = cond(gp7)
-	gp5_gp6 = gp2_gp3
-	PZN = cond(gp5_gp6)
-	gp5_gp6_gp7 = gp5_gp6_gp7 * Mem0[0x8064<p16>:real48]
-	PZN = cond(gp5_gp6_gp7)
-	gp0_gp1 = CONVERT(gp5_gp6_gp7, real48, int32)
-	PZN = cond(gp0_gp1)
-	gp2_gp3_gp4 = CONVERT(gp0_gp1, int32, real48)
-	PZN = cond(gp2_gp3_gp4)
-	gp5_gp6_gp7 = gp5_gp6_gp7 - gp2_gp3_gp4
-	PZN = cond(gp5_gp6_gp7)
-	gp4 = gp7
-	PZN = cond(gp4)
-	gp2_gp3 = gp5_gp6
-	PZN = cond(gp2_gp3)
-	branch Test(GE,PZ) l03B2_thunk_fn0412
-	goto l03B3
-	// succ:  l03B3 l03B2_thunk_fn0412
+	real48 gp2_gp3_gp4_48 = Mem0[0x8061<p16>:real48] - SEQ(gp0_gp1, gp2)
+	real48 gp5_gp6_gp7_57 = SEQ(SLICE(gp2_gp3_gp4_48, word32, 0), SLICE(gp2_gp3_gp4_48, word16, 0)) * Mem0[0x8064<p16>:real48]
+	word32 gp0_gp1_62 = CONVERT(gp5_gp6_gp7_57, real48, int32)
+	real48 gp5_gp6_gp7_71 = gp5_gp6_gp7_57 - CONVERT(gp0_gp1_62, word32, real48)
+	word16 gp7_72 = SLICE(gp5_gp6_gp7_71, word16, 0)
+	word16 gp5_74 = SLICE(gp5_gp6_gp7_71, word16, 32)
+	branch gp5_gp6_gp7_71 >= 0.0 l03B2_thunk_fn0412
 l03B2_thunk_fn0412:
-	call fn0412 (retsize: 0;)
+	fn0412(gp12_gp13, SEQ(gp7_72, gp8), gp5_74, gp9, gp10, gp11)
 	return
-	// succ:  fn03A0_exit
 l03B3:
-	gp2 = Mem0[gp15 + 0xB8<16>:word16]
-	PZN = cond(gp2)
-	gp2_gp3_gp4 = gp2_gp3_gp4 + Mem0[0x8067<p16>:real48]
-	PZN = cond(gp2_gp3_gp4)
-	gp0_gp1 = gp0_gp1 + Mem0[0x806A<p16>:word32]
-	CPZN = cond(gp0_gp1)
-	gp0_gp1 = gp0_gp1 + Mem0[0x806C<p16>:word32]
-	CPZN = cond(gp0_gp1)
-	call fn0311 (retsize: 2;)
-	gp15 = gp14
-	PZN = cond(gp15)
+	fn0311(SLICE(gp0_gp1_62 + Mem0[0x806A<p16>:word32] + Mem0[0x806C<p16>:word32], word16, 0), wArg18)
 	return
-	// succ:  fn03A0_exit
 fn03A0_exit:
 
 
-// fn03BF
-// Return size: 0
-define fn03BF
+void fn03BF(word16 gp0, word16 gp1, word16 gp3, word16 wArgC7)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  gp0:[0..15] gp1:[0..15] gp3:[0..15] Stack +00C7:[0..15]
+// LiveOut:
+// Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved: gp15
 fn03BF_entry:
-	gp15 = fp
-	// succ:  l03BF
 l03BF:
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp13
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp12
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp11
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp10
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp9
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp8
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp7
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp6
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp5
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp4
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp3
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp2
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp1
-	gp11 = gp0
-	PZN = cond(gp11)
-	gp13 = 0x2020<16>
-	PZN = cond(gp13)
-	Mem0[gp11:word16] = gp13
-	Mem0[gp11 + 1<16>:word16] = gp13
-	Mem0[gp11 + 2<16>:word16] = gp13
-	gp13 = gp13 ^ gp13
-	PZN = cond(gp13)
-	Mem0[gp11 + 3<16>:word16] = gp13
-	// succ:  l03CC
+	Mem45[gp0:word16] = 0x2020<16>
+	Mem46[gp0 + 1<16>:word16] = 0x2020<16>
+	Mem47[gp0 + 2<16>:word16] = 0x2020<16>
+	Mem50[gp0 + 3<16>:word16] = 0<16>
+	word16 gp13_48 = 0<16>
 l03CC:
-	gp10 = 0x20<16>
-	PZN = cond(gp10)
-	gp1 = gp1 | gp1
-	PZN = cond(gp1)
-	branch Test(GE,PZ) l03D3
-	// succ:  l03D0 l03D3
+	word16 gp10_51 = 0x20<16>
+	word16 gp1_53 = gp1
+	branch gp1 >= 0<16> l03D3
 l03D0:
-	gp10 = 0x2D<16>
-	PZN = cond(gp10)
-	gp1 = -gp1
-	PZN = cond(gp1)
-	// succ:  l03D3
+	gp10_51 = 0x2D<16>
+	gp1_53 = -gp1
 l03D3:
-	gp9 = gp9 ^ gp9
-	PZN = cond(gp9)
-	gp9 = gp9 + 1<16>
-	CPZN = cond(gp9)
-	v20 = 0xA<16>
-	gp1 = gp1 / v20
-	gp2 = gp1 % v20
-	PZN = cond(gp1)
-	gp13 = gp13 | 0x30<16>
-	PZN = cond(gp13)
-	v21 = gp9 & 1<u16> << 0xF<16>
-	Z = v21 == 0<16>
-	branch Test(EQ,Z) l03DE
-	// succ:  l03DA l03DE
-l03DA:
-	v23 = SLICE(gp13, byte, 0)
-	v24 = Mem0[gp11 + 2<16>:word16]
-	Mem0[gp11 + 2<16>:word16] = SEQ(SLICE(v24, byte, 8), v23)
-	goto l03CC
-	// succ:  l03CC
+	gp1 = gp1_53 / 0xA<16>
+	gp13_48 = gp13_48 | 0x30<16>
+	branch true l03DE
 l03DE:
-	v25 = SLICE(gp13, byte, 0)
-	v26 = Mem0[gp11 + 2<16>:word16]
-	Mem0[gp11 + 2<16>:word16] = SEQ(v25, SLICE(v26, byte, 0))
-	gp11 = gp11 - 1<16>
-	CPZN = cond(gp11)
-	gp1 = gp1 | gp1
-	PZN = cond(gp1)
-	// succ:  l03E1_thunk_fn03E2
+	Mem78[gp0 + 2<16>:word16] = SEQ(SLICE(gp13_48, byte, 0), Mem76[gp0 + 2<16>:byte])
 l03E1_thunk_fn03E2:
-	call fn03E2 (retsize: 0;)
+	fn03E2(SEQ(gp1, gp1 % 0xA<16>), gp0, gp3, 1<16>, gp10_51, gp0 - 1<16>)
 	return
-	// succ:  fn03BF_exit
 fn03BF_exit:
+l03DA:
+	Mem112[gp0 + 2<16>:word16] = SEQ(Mem76[gp0 + 3<16>:byte], SLICE(gp13_48, byte, 0))
 
 
-// fn03E2
-// Return size: 0
-define fn03E2
+void fn03E2(word32 gp1_gp2, word16 gp0, word16 gp3, word16 gp9, word16 gp10, word16 gp11)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn037C
+//      fn03BF
+// MayUse:  gp0:[0..15] gp10:[0..7] gp11:[0..15] gp3:[0..15] gp9:[0..15] Sequence gp1:gp2:[0..31]
+// LiveOut:
+// Trashed: PZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp15 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved: C
 fn03E2_entry:
-	gp15 = fp
-	// succ:  l03E2
 l03E2:
-	branch Test(NE,PZN) l0432
-	goto l03E3
-	// succ:  l03E3 l03E2_thunk_fn0432
+	branch PZN l0432
 l03E2_thunk_fn0432:
-	call fn0432 (retsize: 0;)
+	fn0432(gp1_gp2, gp0, gp3)
 	return
-	// succ:  fn03E2_exit
 l03E3:
-	gp2 = Mem0[gp15 + 0xD4<16>:word16]
-	PZN = cond(gp2)
-	v6 = gp9 & 1<u16> << 0xF<16>
-	Z = v6 == 0<16>
-	branch Test(EQ,Z) l03E9
-	// succ:  l03E6 l03E9
-l03E6:
-	v9 = SLICE(gp10, byte, 0)
-	v11 = Mem0[gp11 + 2<16>:word16]
-	Mem0[gp11 + 2<16>:word16] = SEQ(v9, SLICE(v11, byte, 0))
-	goto l03EB
-	// succ:  l03EB
+	branch (gp9 & 0x8000<u16>) == 0<16> l03E9
 l03E9:
-	v21 = SLICE(gp10, byte, 0)
-	v22 = Mem0[gp11 + 2<16>:word16]
-	Mem0[gp11 + 2<16>:word16] = SEQ(SLICE(v22, byte, 8), v21)
-	// succ:  l03EB
+	Mem38[gp11 + 2<16>:word16] = SEQ(Mem0[gp11 + 3<16>:byte], SLICE(gp10, byte, 0))
+l03E6:
+	Mem41[gp11 + 2<16>:word16] = SEQ(SLICE(gp10, byte, 0), Mem0[gp11 + 2<16>:byte])
 l03EB:
-	gp0 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp1 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp2 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp3 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp4 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp5 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp6 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp7 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp8 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp9 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp10 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp11 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp12 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
 	return
-	// succ:  fn03E2_exit
 fn03E2_exit:
 
 
-// fn03ED
-// Return size: 0
-define fn03ED
+void fn03ED(word32 gp1_gp2, word32 gp12_gp13, word16 gp0)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  gp0:[0..15] Sequence gp1:gp2:[0..31] Sequence gp12:gp13:[0..31]
+// LiveOut:
+// Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp15 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved:
 fn03ED_entry:
-	gp15 = fp
-	// succ:  l03ED
 l03ED:
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp12
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp11
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp10
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp9
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp8
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp7
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp6
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp5
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp4
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp3
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp2
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp1
-	gp11 = gp0
-	PZN = cond(gp11)
-	gp10 = 0x2020<16>
-	PZN = cond(gp10)
-	// succ:  l03EF_thunk_fn03F1
 l03EF_thunk_fn03F1:
-	call fn03F1 (retsize: 0;)
+	fn03F1(gp1_gp2, gp12_gp13, 0x2020<16>, gp0)
 	return
-	// succ:  fn03ED_exit
 fn03ED_exit:
 
 
-// fn03F1
-// Return size: 0
-define fn03F1
+void fn03F1(word32 gp1_gp2, word32 gp12_gp13, word16 gp10, word16 gp11)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn037C
+//      fn03ED
+// MayUse:  gp10:[0..15] gp11:[0..15] Sequence gp1:gp2:[0..31] Sequence gp12:gp13:[0..31]
+// LiveOut:
+// Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved: gp15
 fn03F1_entry:
-	gp15 = fp
-	// succ:  l03F1
 l03F1:
-	gp9 = 6<16>
-	PZN = cond(gp9)
-	goto l03F1_thunk_fn03F2
-	// succ:  l03F1_thunk_fn03F2
-l03F1:
-	gp9 = 6<16>
-	PZN = cond(gp9)
-	goto l03F1_thunk_fn03F2
-	// succ:  l03F1_thunk_fn03F2
 l03F1_thunk_fn03F2:
-	call fn03F2 (retsize: 0;)
+	fn03F2(gp1_gp2, gp12_gp13, 6<16>, gp10, gp11)
 	return
-	// succ:  fn03F1_exit
-l03F1_thunk_fn03F2:
-	call fn03F2 (retsize: 0;)
-	return
-	// succ:  fn03F1_exit
 fn03F1_exit:
 
 
-// fn03F2
-// Return size: 0
-define fn03F2
+void fn03F2(word32 gp1_gp2, word32 gp12_gp13, word16 gp9, word16 gp10, word16 gp11)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn037C
+//      fn03F1
+// MayUse:  gp10:[0..15] gp11:[0..15] gp9:[0..15] Sequence gp1:gp2:[0..31] Sequence gp12:gp13:[0..31]
+// LiveOut:
+// Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved: gp15
 fn03F2_entry:
-	gp15 = fp
-	// succ:  l03F2
 l03F2:
-	Mem0[gp11:word16] = gp10
+	Mem5[gp11:word16] = gp10
 	gp11 = gp11 + 1<16>
-	CPZN = cond(gp11)
-	PZN = cond(gp9)
 	gp9 = gp9 - 1<16>
 	branch gp9 != 0<16> l03F2
-	// succ:  l03F5_thunk_fn03F7 l03F2
 l03F5_thunk_fn03F7:
-	call fn03F7 (retsize: 0;)
+	fn03F7(gp1_gp2, gp12_gp13, gp9, gp11)
 	return
-	// succ:  fn03F2_exit
 fn03F2_exit:
 
 
-// fn03F7
-// Return size: 0
-define fn03F7
+void fn03F7(word32 gp1_gp2, word32 gp12_gp13, word16 gp9, word16 gp11)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn037C
+// MayUse:  gp11:[0..15] gp9:[0..15] Sequence gp1:gp2:[0..31] Sequence gp12:gp13:[0..31]
+// LiveOut:
+// Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved: gp15
 fn03F7_entry:
-	gp15 = fp
-	// succ:  l03F7
+	word16 gp1 = SLICE(gp1_gp2, word16, 16)
+	word16 gp2 = SLICE(gp1_gp2, word16, 0)
 l03F7:
-	gp11 = gp11 - 1<16>
-	CPZN = cond(gp11)
-	v6 = SLICE(gp9, byte, 0)
-	v7 = Mem0[gp11:word16]
-	Mem0[gp11:word16] = SEQ(SLICE(v7, byte, 8), v6)
-	gp10 = 0x20<16>
-	PZN = cond(gp10)
-	gp1 = gp1 | gp1
-	PZN = cond(gp1)
-	branch Test(GE,PZ) l0407
-	goto l03FE
-	// succ:  l03FE l03FD_thunk_fn0407
+	Mem10[gp11 - 1<16>:word16] = SEQ(Mem0[gp11 + 2<16>:byte], SLICE(gp9, byte, 0))
+	branch gp1 >= 0<16> l0407
 l03FD_thunk_fn0407:
-	call fn0407 (retsize: 0;)
+	fn0407(gp1_gp2, gp12_gp13, gp9, 0x20<16>, gp11 - 1<16>)
 	return
-	// succ:  fn03F7_exit
 l03FE:
-	gp10 = 0x2D<16>
-	PZN = cond(gp10)
-	PZN = cond(gp1 - 0x8000<16>)
-	branch Test(NE,Z) l0406
-	goto l0403
-	// succ:  l0403 l0402_thunk_fn0406
+	branch gp1 != 0x8000<16> l0406
 l0402_thunk_fn0406:
-	call fn0406 (retsize: 0;)
+	fn0406(gp1_gp2, gp12_gp13, gp9, 0x2D<16>, gp11 - 1<16>)
 	return
-	// succ:  fn03F7_exit
 l0403:
-	gp2 = gp2
-	PZN = cond(gp2)
-	branch Test(NE,Z) l0406
-	// succ:  l0404_thunk_fn0405 l0404_thunk_fn0406
-l0404_thunk_fn0405:
-	call fn0405 (retsize: 0;)
-	return
-	// succ:  fn03F7_exit
+	branch gp2 != 0<16> l0406
 l0404_thunk_fn0406:
-	call fn0406 (retsize: 0;)
+	fn0406(gp1_gp2, gp12_gp13, gp9, 0x2D<16>, gp11 - 1<16>)
 	return
-	// succ:  fn03F7_exit
+l0404_thunk_fn0405:
+	fn0405(gp12_gp13, gp1, gp2, gp9, 0x2D<16>, gp11 - 1<16>)
+	return
 fn03F7_exit:
 
 
-// fn0404
-// Return size: 0
-define fn0404
+void fn0404(word32 gp1_gp2, word32 gp12_gp13, word16 gp9, word16 gp10, word16 gp11)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn03A0
+// MayUse:  gp10:[0..15] gp11:[0..15] gp9:[0..15] Sequence gp1:gp2:[0..31] Sequence gp12:gp13:[0..31]
+// LiveOut:
+// Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved: gp15
 fn0404_entry:
-	gp15 = fp
-	// succ:  l0404
+	word16 gp1 = SLICE(gp1_gp2, word16, 16)
+	word16 gp2 = SLICE(gp1_gp2, word16, 0)
 l0404:
-	branch Test(NE,Z) l0404_thunk_fn0406
-	// succ:  l0404_thunk_fn0405 l0404_thunk_fn0406
-l0404_thunk_fn0405:
-	call fn0405 (retsize: 0;)
-	return
-	// succ:  fn0404_exit
+	branch Z l0404_thunk_fn0406
 l0404_thunk_fn0406:
-	call fn0406 (retsize: 0;)
+	fn0406(gp1_gp2, gp12_gp13, gp9, gp10, gp11)
 	return
-	// succ:  fn0404_exit
+l0404_thunk_fn0405:
+	fn0405(gp12_gp13, gp1, gp2, gp9, gp10, gp11)
+	return
 fn0404_exit:
 
 
-// fn0405
-// Return size: 0
-define fn0405
+void fn0405(word32 gp12_gp13, word16 gp1, word16 gp2, word16 gp9, word16 gp10, word16 gp11)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn037C
+//      fn0404
+// MayUse:  gp1:[0..15] gp10:[0..15] gp11:[0..15] gp2:[0..15] gp9:[0..15] Sequence gp12:gp13:[0..31]
+// LiveOut:
+// Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved: gp15
 fn0405_entry:
-	gp15 = fp
-	// succ:  l0405
 l0405:
-	gp2 = gp2 + 1<16>
-	CPZN = cond(gp2)
-	// succ:  l0405_thunk_fn0406
 l0405_thunk_fn0406:
-	call fn0406 (retsize: 0;)
+	fn0406(SEQ(gp1, gp2 + 1<16>), gp12_gp13, gp9, gp10, gp11)
 	return
-	// succ:  fn0405_exit
 fn0405_exit:
 
 
-// fn0406
-// Return size: 0
-define fn0406
+void fn0406(word32 gp1_gp2, word32 gp12_gp13, word16 gp9, word16 gp10, word16 gp11)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn037C
+//      fn0404
+// MayUse:  gp10:[0..15] gp11:[0..15] gp9:[0..15] Sequence gp1:gp2:[0..31] Sequence gp12:gp13:[0..31]
+// LiveOut:
+// Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved: gp15
 fn0406_entry:
-	gp15 = fp
-	// succ:  l0406
 l0406:
-	gp1_gp2 = -gp1_gp2
-	PZN = cond(gp1_gp2)
-	// succ:  l0406_thunk_fn0407
+	word32 gp1_gp2_6 = -gp1_gp2
 l0406_thunk_fn0407:
-	call fn0407 (retsize: 0;)
+	fn0407(gp1_gp2_6, gp12_gp13, gp9, gp10, gp11)
 	return
-	// succ:  fn0406_exit
 fn0406_exit:
 
 
-// fn0407
-// Return size: 0
-define fn0407
+void fn0407(word32 gp1_gp2, word32 gp12_gp13, word16 gp9, word16 gp10, word16 gp11)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn037C
+// MayUse:  gp10:[0..15] gp11:[0..15] gp9:[0..15] Sequence gp1:gp2:[0..31] Sequence gp12:gp13:[0..31]
+// LiveOut:
+// Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved: gp15
 fn0407_entry:
-	gp15 = fp
-	// succ:  l0407
 l0407:
-	gp7 = gp7 ^ gp7
-	PZN = cond(gp7)
-	gp8 = 0xA<16>
-	PZN = cond(gp8)
-	gp9 = gp9 + 1<16>
-	CPZN = cond(gp9)
-	gp4_gp5 = gp1_gp2
-	PZN = cond(gp4_gp5)
-	gp2_gp3 = gp1_gp2
-	PZN = cond(gp2_gp3)
-	gp2_gp3 = gp2_gp3 / gp7_gp8
-	PZN = cond(gp2_gp3)
-	gp2_gp3 = gp2_gp3 * gp7_gp8
-	PZN = cond(gp2_gp3)
-	gp4_gp5 = gp4_gp5 - gp2_gp3
-	CPZN = cond(gp4_gp5)
-	gp5 = gp5 + 0x30<16>
-	CPZN = cond(gp5)
-	v13 = gp9 & 1<u16> << 0xF<16>
-	Z = v13 == 0<16>
-	branch Test(EQ,Z) l0417
-	// succ:  l0412_thunk_fn0413 l0412_thunk_fn0417
-l0412_thunk_fn0413:
-	call fn0413 (retsize: 0;)
-	return
-	// succ:  fn0407_exit
+	word16 gp5_26 = SLICE(gp1_gp2 - (gp1_gp2 / 0xA<32>) * 0xA<32>, word16, 0)
+	branch Test(EQ,(gp9 + 1<16> & 0x8000<u16>) == 0<16>) l0417
 l0412_thunk_fn0417:
-	call fn0417 (retsize: 0;)
+	fn0417(gp12_gp13, 0xA<32>, gp5_26 + 0x30<16>, gp9 + 1<16>, gp10, gp11)
 	return
-	// succ:  fn0407_exit
+l0412_thunk_fn0413:
+	fn0413(gp12_gp13, 0xA<32>, gp5_26 + 0x30<16>, gp9 + 1<16>, gp10, gp11)
+	return
 fn0407_exit:
 
 
-// fn0412
-// Return size: 0
-define fn0412
+void fn0412(word32 gp12_gp13, word32 gp7_gp8, word16 gp5, word16 gp9, word16 gp10, word16 gp11)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn03A0
+// MayUse:  gp10:[0..15] gp11:[0..15] gp5:[0..15] gp9:[0..15] Sequence gp12:gp13:[0..31] Sequence gp7:gp8:[0..31]
+// LiveOut:
+// Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved: gp15
 fn0412_entry:
-	gp15 = fp
-	// succ:  l0412
 l0412:
-	branch Test(EQ,Z) l0412_thunk_fn0417
-	// succ:  l0412_thunk_fn0413 l0412_thunk_fn0417
-l0412_thunk_fn0413:
-	call fn0413 (retsize: 0;)
-	return
-	// succ:  fn0412_exit
+	branch Z l0412_thunk_fn0417
 l0412_thunk_fn0417:
-	call fn0417 (retsize: 0;)
+	fn0417(gp12_gp13, gp7_gp8, gp5, gp9, gp10, gp11)
 	return
-	// succ:  fn0412_exit
+l0412_thunk_fn0413:
+	fn0413(gp12_gp13, gp7_gp8, gp5, gp9, gp10, gp11)
+	return
 fn0412_exit:
 
 
-// fn0413
-// Return size: 0
-define fn0413
+void fn0413(word32 gp12_gp13, word32 gp7_gp8, word16 gp5, word16 gp9, word16 gp10, word16 gp11)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn037C
+//      fn0412
+// MayUse:  gp10:[0..15] gp11:[0..15] gp5:[0..15] gp9:[0..15] Sequence gp12:gp13:[0..31] Sequence gp7:gp8:[0..31]
+// LiveOut:
+// Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved: gp15
 fn0413_entry:
-	gp15 = fp
-	// succ:  l0413
 l0413:
-	v4 = SLICE(gp5, byte, 0)
-	v6 = Mem0[gp11:word16]
-	Mem0[gp11:word16] = SEQ(v4, SLICE(v6, byte, 0))
-	gp11 = gp11 - 1<16>
-	CPZN = cond(gp11)
-	// succ:  l0416_thunk_fn0417
+	Mem8[gp11:word16] = SEQ(SLICE(gp5, byte, 0), Mem0[gp11:byte])
 l0416_thunk_fn0417:
-	call fn0417 (retsize: 0;)
+	fn0417(gp12_gp13, gp7_gp8, gp5, gp9, gp10, gp11 - 1<16>)
 	return
-	// succ:  fn0413_exit
 fn0413_exit:
 
 
-// fn0417
-// Return size: 0
-define fn0417
+void fn0417(word32 gp12_gp13, word32 gp7_gp8, word16 gp5, word16 gp9, word16 gp10, word16 gp11)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn037C
+//      fn0412
+// MayUse:  gp10:[0..7] gp11:[0..15] gp5:[0..7] gp9:[0..15] Sequence gp12:gp13:[0..31] Sequence gp7:gp8:[0..31]
+// LiveOut:
+// Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp15 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved:
 fn0417_entry:
-	gp15 = fp
-	// succ:  l0417
 l0417:
-	v4 = SLICE(gp5, byte, 0)
-	v6 = Mem0[gp11:word16]
-	Mem0[gp11:word16] = SEQ(SLICE(v6, byte, 8), v4)
-	// succ:  l0419
+	Mem8[gp11:word16] = SEQ(Mem0[gp11 + 1<16>:byte], SLICE(gp5, byte, 0))
 l0419:
-	gp12_gp13 = gp12_gp13 / gp7_gp8
-	PZN = cond(gp12_gp13)
-	branch Test(NE,PZN) l041A_thunk_fn046A
-	goto l041B
-	// succ:  l041B l041A_thunk_fn046A
+	branch gp12_gp13 / gp7_gp8 != 0<32> l041A_thunk_fn046A
 l041A_thunk_fn046A:
-	call fn046A (retsize: 0;)
+	fn046A()
 	return
-	// succ:  fn0417_exit
 l041B:
-	gp0_gp2 = Mem0[gp12 + 9<16>:word32]
-	PZN = cond(gp0_gp2)
-	gp9 = gp9 + 1<16>
-	CPZN = cond(gp9)
-	v14 = gp9 & 1<u16> << 0xF<16>
-	Z = v14 == 0<16>
-	branch Test(NE,Z) l0422
-	// succ:  l041F l0422
-l041F:
-	v17 = SLICE(gp10, byte, 0)
-	v18 = Mem0[gp11:word16]
-	Mem0[gp11:word16] = SEQ(SLICE(v18, byte, 8), v17)
-	goto l0424
-	// succ:  l0424
+	branch Test(NE,(gp9 + 1<16> & 0x8000<u16>) == 0<16>) l0422
 l0422:
-	v27 = SLICE(gp10, byte, 0)
-	v28 = Mem0[gp11:word16]
-	Mem0[gp11:word16] = SEQ(v27, SLICE(v28, byte, 0))
-	// succ:  l0424
+	Mem37[gp11:word16] = SEQ(SLICE(gp10, byte, 0), Mem8[gp11:byte])
+l041F:
+	Mem40[gp11:word16] = SEQ(Mem8[gp11 + 1<16>:byte], SLICE(gp10, byte, 0))
 l0424:
-	gp0 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp1 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp2 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp3 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp4 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp5 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp6 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp7 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp8 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp9 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp10 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp11 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
 	return
-	// succ:  fn0417_exit
 fn0417_exit:
 
 
-// fn0426
-// Return size: 2
-define fn0426
+word16 fn0426(word32 gp1_gp2, word16 gp0)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn04F6
+// MayUse:  gp0:[0..15] Sequence gp1:gp2:[0..31]
+// LiveOut: gp0
+// Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved: gp15
 fn0426_entry:
-	gp15 = fp
-	// succ:  l0426
+	word16 gp2 = SLICE(gp1_gp2, word16, 0)
+	word16 gp1 = SLICE(gp1_gp2, word16, 16)
 l0426:
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp14
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp13
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp12
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp11
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp10
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp9
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp8
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp7
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp6
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp5
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp4
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp3
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp2
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp1
-	gp11 = gp0
-	PZN = cond(gp11)
-	gp12_gp13 = gp1_gp2
-	PZN = cond(gp12_gp13)
-	gp0 = gp0 ^ gp0
-	PZN = cond(gp0)
-	Mem0[gp11 + 7<16>:word16] = gp0
-	gp14 = gp14 ^ gp14
-	PZN = cond(gp14)
-	gp1 = 6<16>
-	PZN = cond(gp1)
-	call fn043E (retsize: 2;)
-	gp0 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp1 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp2 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp3 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp4 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp5 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp6 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp7 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp8 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp9 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp10 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp11 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp12 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp13 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	return
-	// succ:  fn0426_exit
+	Mem50[gp0 + 7<16>:word16] = 0<16>
+	fn043E(0<16>, 6<16>, gp0, gp1, gp2, 0<16>)
+	return gp1
 fn0426_exit:
 
 
-// fn0432
-// Return size: 0
-define fn0432
+void fn0432(word32 gp1_gp2, word16 gp0, word16 gp3)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn037C
+// MayUse:  gp0:[0..15] gp3:[0..15] Sequence gp1:gp2:[0..31]
+// LiveOut:
+// Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved: gp15
 fn0432_entry:
-	gp15 = fp
-	// succ:  l0432
+	word16 gp2 = SLICE(gp1_gp2, word16, 0)
+	word16 gp1 = SLICE(gp1_gp2, word16, 16)
 l0432:
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp14
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp13
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp12
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp11
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp10
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp9
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp8
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp7
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp6
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp5
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp4
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp3
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp2
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp1
-	gp11 = gp0
-	PZN = cond(gp11)
-	gp14 = gp3
-	PZN = cond(gp14)
-	gp12_gp13 = gp1_gp2
-	PZN = cond(gp12_gp13)
-	gp0 = gp0 ^ gp0
-	PZN = cond(gp0)
-	Mem0[gp11 + 0xA<16>:word16] = gp0
-	gp1 = 0xB<16>
-	PZN = cond(gp1)
-	call fn043E (retsize: 2;)
-	gp0 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp1 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp2 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp3 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp4 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp5 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp6 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp7 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp8 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp9 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp10 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp11 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp12 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp13 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
+	Mem51[gp0 + 0xA<16>:word16] = 0<16>
+	fn043E(0<16>, 0xB<16>, gp0, gp1, gp2, gp3)
 	return
-	// succ:  fn0432_exit
 fn0432_exit:
 
 
-// fn043E
-// Return size: 2
-define fn043E
+void fn043E(word16 gp0, word16 gp1, word16 gp11, word16 gp12, word16 gp13, word16 gp14)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn037C
+//      fn0426
+// MayUse:  gp0:[0..15] gp1:[0..15] gp11:[0..15] gp12:[0..15] gp13:[0..15] gp14:[0..15]
+// LiveOut:
+// Trashed: CPZN gp0 gp1 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7
+// Preserved: gp10 gp15
 fn043E_entry:
-	gp15 = fp
-	// succ:  l043E
 l043E:
-	v4 = gp12 & 1<u16> << 0<16>
-	Z = v4 == 0<16>
-	branch Test(EQ,Z) l0450
-	// succ:  l0440 l0450
+	real48 gp12_gp13_gp14_300
+	word16 gp0_16
+	branch Test(EQ,(gp12 & 1<u16>) == 0<16>) l0450
+l0450:
+	gp0 = gp0 | gp12 | gp13 | gp14
+	branch gp0 == 0<16> l0456
+l0454:
+	branch Test(EQ,(gp12 & 2<u16>) == 0<16>) l0447
+l0456:
+	gp0_16 = 0x2B20<16>
+	gp12_gp13_gp14_300 = SEQ(gp12, gp13, gp14) (alias)
 l0440:
-	v6 = gp12 & 1<u16> << 1<16>
-	Z = v6 == 0<16>
-	branch Test(NE,Z) l0447
-	// succ:  l0442 l0447
-l0442:
-	gp0 = 0x2D20<16>
-	PZN = cond(gp0)
-	gp12_gp13_gp14 = gp12_gp13_gp14 * Mem0[0x057F<p16>:real48]
-	PZN = cond(gp12_gp13_gp14)
-	goto l0458
-	// succ:  l0458
+	branch Test(NE,(gp12 & 2<u16>) == 0<16>) l0447
 l0447:
-	gp10 = 0x582<16>
-	PZN = cond(gp10)
 	gp12 = 7<16>
-	PZN = cond(gp12)
-	PZN = cond(gp1 - 6<16>)
-	branch Test(EQ,Z) l044D
-	// succ:  l044C l044D
+	branch gp1 == 6<16> l044D
 l044C:
 	gp12 = 0xA<16>
-	PZN = cond(gp12)
-	// succ:  l044D
 l044D:
-	v24 = gp11
-	v25 = gp10
-	__mov(v24, v25)
-	goto l043E
-	// succ:  l043E
-l0450:
-	gp0 = gp0 | gp12
-	PZN = cond(gp0)
-	gp0 = gp0 | gp13
-	PZN = cond(gp0)
-	gp0 = gp0 | gp14
-	PZN = cond(gp0)
-	branch Test(EQ,Z) l0456
-	// succ:  l0454 l0456
-l0454:
-	v12 = gp12 & 1<u16> << 1<16>
-	Z = v12 == 0<16>
-	branch Test(EQ,Z) l0447
-	// succ:  l0456 l0447
-l0456:
-	gp0 = 0x2B20<16>
-	PZN = cond(gp0)
-	// succ:  l0458
+	__mov(gp11, 0x0582<p16>)
+l0442:
+	gp0_16 = 0x2D20<16>
+	gp12_gp13_gp14_300 = SEQ(gp12, gp13, gp14) * Mem0[0x057F<p16>:real48]
 l0458:
-	Mem0[gp11:word16] = gp0
-	gp2 = gp2 ^ gp2
-	PZN = cond(gp2)
-	v15 = gp13 & 1<u16> << 8<16>
-	Z = v15 == 0<16>
-	branch Test(NE,Z) l0467
-	goto l045D
-	// succ:  l045D l045C_thunk_fn046A
+	Mem49[gp11:word16] = gp0_16
+	word16 gp2_179 = 0<16>
+	real48 gp12_gp13_gp14_178 = gp12_gp13_gp14_300
+	branch Test(NE,(SLICE(gp12_gp13_gp14_300, word16, 16) & 0x100<u16>) == 0<16>) l0467
 l045C_thunk_fn046A:
-	call fn046A (retsize: 0;)
+	fn046A()
 	return
-	// succ:  fn043E_exit
 l045D:
-	PZN = cond(gp12_gp13_gp14 - Mem0[0x0579<p16>:real48])
-	branch Test(LT,N) l0464
-	// succ:  l0460 l0464
-l0460:
-	gp12_gp13_gp14 = gp12_gp13_gp14 / Mem0[0x0579<p16>:real48]
-	PZN = cond(gp12_gp13_gp14)
-	gp2 = gp2 + 1<16>
-	CPZN = cond(gp2)
-	goto l045D
-	// succ:  l045D
+	branch gp12_gp13_gp14_178 < Mem49[0x0579<p16>:real48] l0464
 l0464:
-	gp0 = 0x452B<16>
-	PZN = cond(gp0)
-	// succ:  l0471
 l0471:
-	PZN = cond(gp1 - 6<16>)
-	branch Test(EQ,Z) l0476
-	// succ:  l0473 l0476
-l0473:
-	Mem0[gp11 + 8<16>:word16] = gp0
-	goto l0478
-	// succ:  l0478
+	branch gp1 == 6<16> l0476
 l0476:
-	Mem0[gp11 + 5<16>:word16] = gp0
-	// succ:  l0478
+	Mem78[gp11 + 5<16>:word16] = 0x452B<16>
+l0473:
+	Mem79[gp11 + 8<16>:word16] = 0x452B<16>
 l0478:
-	v22 = 0xA<16>
-	gp2 = gp2 / v22
-	gp3 = gp2 % v22
-	PZN = cond(gp2)
-	gp2 = __xbr(gp2)
-	PZN = cond(gp2)
-	gp2 = gp2 | gp3
-	PZN = cond(gp2)
-	gp2 = gp2 | 0x3030<16>
-	PZN = cond(gp2)
-	PZN = cond(gp1 - 6<16>)
-	branch Test(EQ,Z) l0482
-	// succ:  l047F l0482
-l047F:
-	Mem0[gp11 + 9<16>:word16] = gp2
-	goto l0484
-	// succ:  l0484
+	word16 gp2_83 = gp2_179 / 0xA<16>
+	word16 gp2_86 = __xbr(gp2_83) | gp2_83 % 0xA<16>
+	branch gp1 == 6<16> l0482
 l0482:
-	Mem0[gp11 + 6<16>:word16] = gp2
-	// succ:  l0484
+	Mem92[gp11 + 6<16>:word16] = gp2_86 | 0x3030<16>
+l047F:
+	Mem93[gp11 + 9<16>:word16] = gp2_86 | 0x3030<16>
 l0484:
-	gp7 = gp7 ^ gp7
-	PZN = cond(gp7)
-	gp2 = gp2 ^ gp2
-	PZN = cond(gp2)
-	gp4_gp5 = gp12_gp13
-	PZN = cond(gp4_gp5)
-	gp6 = gp14
-	PZN = cond(gp6)
-	gp2_gp3 = CONVERT(gp4_gp5_gp6, real48, int32)
-	PZN = cond(gp2_gp3)
-	gp4_gp5_gp6 = CONVERT(gp2_gp3, int32, real48)
-	PZN = cond(gp4_gp5_gp6)
-	gp12_gp13_gp14 = gp12_gp13_gp14 - gp4_gp5_gp6
-	PZN = cond(gp12_gp13_gp14)
-	gp3 = gp3 + 0x30<16>
-	CPZN = cond(gp3)
-	v32 = SLICE(gp3, byte, 0)
-	v33 = Mem0[gp11:word16]
-	Mem0[gp11:word16] = SEQ(SLICE(v33, byte, 8), v32)
-	gp3 = 0x2E<16>
-	PZN = cond(gp3)
-	v34 = SLICE(gp3, byte, 0)
-	v35 = Mem0[gp11 + 1<16>:word16]
-	Mem0[gp11 + 1<16>:word16] = SEQ(v34, SLICE(v35, byte, 0))
-	// succ:  l0493
+	word32 gp2_gp3_108 = CONVERT(gp12_gp13_gp14_178, real48, int32)
+	Mem124[gp11:word16] = SEQ(Mem122[gp11 + 1<16>:byte], SLICE(SLICE(gp2_gp3_108, word16, 0) + 0x30<16>, byte, 0))
+	Mem129[gp11 + 1<16>:word16] = SEQ(0x2E<8>, Mem124[gp11 + 1<16>:byte])
+	word16 gp7_155 = 0<16>
+	real48 gp12_gp13_gp14_117 = gp12_gp13_gp14_178 - CONVERT(gp2_gp3_108, word32, real48)
 l0493:
-	gp12_gp13_gp14 = gp12_gp13_gp14 * Mem0[0x0579<p16>:real48]
-	PZN = cond(gp12_gp13_gp14)
-	gp4_gp5 = gp12_gp13
-	PZN = cond(gp4_gp5)
-	gp6 = gp14
-	PZN = cond(gp6)
-	gp2_gp3 = CONVERT(gp4_gp5_gp6, real48, int32)
-	PZN = cond(gp2_gp3)
-	gp4_gp5_gp6 = CONVERT(gp2_gp3, int32, real48)
-	PZN = cond(gp4_gp5_gp6)
-	gp12_gp13_gp14 = gp12_gp13_gp14 - gp4_gp5_gp6
-	PZN = cond(gp12_gp13_gp14)
-	gp3 = gp3 + 0x30<16>
-	CPZN = cond(gp3)
-	gp7 = gp7 + 1<16>
-	CPZN = cond(gp7)
-	v36 = gp7 & 1<u16> << 0xF<16>
-	Z = v36 == 0<16>
-	branch Test(NE,Z) l04A2
-	// succ:  l049F l04A2
-l049F:
-	v37 = SLICE(gp3, byte, 0)
-	v38 = Mem0[gp11 + 1<16>:word16]
-	Mem0[gp11 + 1<16>:word16] = SEQ(v37, SLICE(v38, byte, 0))
-	goto l04A5
-	// succ:  l04A5
+	real48 gp12_gp13_gp14_135 = gp12_gp13_gp14_117 * Mem134[0x0579<p16>:real48]
+	word32 gp2_gp3_144 = CONVERT(SEQ(SLICE(gp12_gp13_gp14_135, word32, 0), SLICE(gp12_gp13_gp14_135, word16, 0)), real48, int32)
+	word16 gp3_146 = SLICE(gp2_gp3_144, word16, 0)
+	gp12_gp13_gp14_117 = gp12_gp13_gp14_135 - CONVERT(gp2_gp3_144, word32, real48)
+	gp7_155 = gp7_155 + 1<16>
+	branch (gp7_155 & 0x8000<u16>) == 0<16> l04A2
 l04A2:
-	v39 = SLICE(gp3, byte, 0)
-	v40 = Mem0[gp11 + 1<16>:word16]
-	Mem0[gp11 + 1<16>:word16] = SEQ(SLICE(v40, byte, 8), v39)
+	Mem163[gp11 + 1<16>:word16] = SEQ(Mem134[gp11 + 2<16>:byte], SLICE(gp3_146 + 0x30<16>, byte, 0))
 	gp11 = gp11 + 1<16>
-	CPZN = cond(gp11)
-	// succ:  l04A5
+l049F:
+	Mem168[gp11 + 1<16>:word16] = SEQ(SLICE(gp3_146 + 0x30<16>, byte, 0), Mem134[gp11 + 1<16>:byte])
 l04A5:
-	PZN = cond(gp1)
 	gp1 = gp1 - 1<16>
 	branch gp1 != 0<16> l0493
-	// succ:  l04A7 l0493
 l04A7:
-	gp3 = 0x2020<16>
-	PZN = cond(gp3)
-	Mem0[gp11 + 1<16>:word16] = gp3
+	Mem176[gp11 + 1<16>:word16] = 0x2020<16>
 	return
-	// succ:  fn043E_exit
 fn043E_exit:
+l0460:
+	gp12_gp13_gp14_178 = gp12_gp13_gp14_178 / Mem49[0x0579<p16>:real48]
+	gp2_179 = gp2_179 + 1<16>
 
 
-// fn0467
-// Return size: 0
-define fn0467
+void fn0467(real48 gp12_gp13_gp14)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn046A
+// MayUse:  Sequence gp12:gp13:gp14:[0..47]
+// LiveOut:
+// Trashed: PZN gp12 gp13 gp14 gp2
+// Preserved: gp15
 fn0467_entry:
-	gp15 = fp
-	// succ:  l0467
 l0467:
-	PZN = cond(gp12_gp13_gp14 - Mem0[0x057C<p16>:real48])
-	branch Test(GE,PZ) l04C9
-	// succ:  l0469_thunk_fn046A l04C9
-l0469_thunk_fn046A:
-	call fn046A (retsize: 0;)
-	return
-	// succ:  fn0467_exit
+	branch gp12_gp13_gp14 >= Mem0[0x057C<p16>:real48] l04C9
 l04C9:
-	gp2 = Mem0[gp12 + 0x37<16>:word16]
-	PZN = cond(gp2)
-	// succ:  l04CA
 l04CA:
-	call fn04AC (retsize: 2;)
+	fn04AC()
+l0469_thunk_fn046A:
+	fn046A()
 	return
-	// succ:  fn0467_exit
 fn0467_exit:
 
 
-// fn046A
-// Return size: 0
-define fn046A
+void fn046A()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn037C
+//      fn043E
+//      fn0467
+// MayUse: 
+// LiveOut:
+// Trashed: CPZN gp0 gp12 gp13 gp14 gp2
+// Preserved: gp15
 fn046A_entry:
-	gp15 = fp
-	gp15 = fp
-	// succ:  l046A l046A
 l046A:
-	gp0_gp2 = Mem0[gp12 + 0x6F<16>:word32]
-	PZN = cond(gp0_gp2)
-	gp12_gp13_gp14 = gp12_gp13_gp14 * Mem0[0x0579<p16>:real48]
-	PZN = cond(gp12_gp13_gp14)
-	gp2 = gp2 + 1<16>
-	CPZN = cond(gp2)
-	// succ:  l046E_thunk_fn0467
 l046E_thunk_fn0467:
-	call fn0467 (retsize: 0;)
+	fn0467(SEQ(gp12, gp13, gp14))
 	return
-	// succ:  fn046A_exit
 fn046A_exit:
 
 
-// fn04AC
-// Return size: 0
-define fn04AC
-fn04AC_entry:
-	gp15 = fp
-	// succ:  l04AC
-l04AC:
+void fn04AC()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn043E
+//      fn04AF
+//      fn04C0
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: gp15
+// Terminates process
 fn04AC_exit:
+fn04AC_entry:
+l04AC:
 
 
-// fn04AF
-// Return size: 2
-define fn04AF
+void fn04AF(word16 gp0)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn04F6
+// MayUse:  gp0:[0..7]
+// LiveOut:
+// Trashed: PZN gp0 gp10 gp11 gp9
+// Preserved: gp15
 fn04AF_entry:
-	gp15 = fp
-	// succ:  l04AF
 l04AF:
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp12
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp11
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp10
-	gp11 = gp0
-	PZN = cond(gp11)
-	gp0 = gp0 ^ gp0
-	PZN = cond(gp0)
-	// succ:  l04B2
 l04B2:
-	gp0 = SEQ(SLICE(Mem0[gp11:word16], byte, 0), SLICE(gp0, byte, 0))
-	PZN = cond(gp0)
-	branch Test(EQ,Z) l04BE
-	// succ:  l04B5 l04BE
-l04B5:
-	call fn04AC (retsize: 2;)
-	gp0 = SEQ(SLICE(gp0, byte, 8), SLICE(Mem0[gp11:word16], byte, 0))
-	PZN = cond(gp0)
-	branch Test(EQ,Z) l04BE
-	// succ:  l04BA l04BE
-l04BA:
-	call fn04AC (retsize: 2;)
-	gp11 = gp11 + 1<16>
-	CPZN = cond(gp11)
-	goto l04B2
-	// succ:  l04B2
+	branch SEQ(Mem11[gp0:byte], 0<8>) == 0<16> l04BE
 l04BE:
-	gp9 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp10 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp11 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
 	return
-	// succ:  fn04AF_exit
 fn04AF_exit:
+l04B5:
+	fn04AC()
 
 
-// fn04C0
-// Return size: 0
-define fn04C0
-fn04C0_entry:
-	gp15 = fp
-	// succ:  l04C0
-l04C0:
-	gp0 = gp0 & 0xF<16>
-	PZN = cond(gp0)
-	PZN = cond(gp0 - 9<16>)
-	branch Test(GE,P) l04C8
-	// succ:  l04C5 l04C8
-l04C5:
-	gp0 = gp0 + 0x30<16>
-	CPZN = cond(gp0)
-	goto l04CA_in_fn04C0
-	// succ:  l04CA_in_fn04C0
-l04C8:
-	gp0 = gp0 + 0x37<16>
-	CPZN = cond(gp0)
-	goto l04CA_in_fn04C0
-	// succ:  l04CA_in_fn04C0
-l04CA_in_fn04C0:
-	call fn04AC (retsize: 2;)
-	return
-	// succ:  fn04C0_exit
-l04CA_in_fn04C0:
-	call fn04AC (retsize: 2;)
-	return
-	// succ:  fn04C0_exit
+void fn04C0(word16 gp0)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn04CE
+// MayUse:  gp0:[0..15]
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 fn04C0_exit:
+fn04C0_entry:
+l04C0:
+	branch (gp0 & 0xF<16>) >= 9<16> l04C8
+l04C8:
+l04CA_in_fn04C0:
+	fn04AC()
+l04C5:
+l04CA_in_fn04C0:
+	fn04AC()
 
 
-// fn04CE
-// Return size: 2
-define fn04CE
-fn04CE_entry:
-	gp15 = fp
-	// succ:  l04CE
-l04CE:
-	gp1 = gp0
-	PZN = cond(gp1)
-	gp0 = gp0 >>u 4<16>
-	PZN = cond(gp0)
-	call fn04C0 (retsize: 2;)
-	gp0 = gp1
-	PZN = cond(gp0)
-	call fn04C0 (retsize: 2;)
-	return
-	// succ:  fn04CE_exit
+void fn04CE(word16 gp0)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  gp0:[0..15]
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 fn04CE_exit:
+fn04CE_entry:
+l04CE:
+	fn04C0(gp0 >>u 4<16>)
 
 
-// fn04F6
-// Return size: 2
-define fn04F6
+void fn04F6(word32 gp0_gp1)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  Sequence gp0:gp1:[0..31]
+// LiveOut:
+// Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
+// Preserved: gp15
 fn04F6_entry:
-	gp15 = fp
-	// succ:  l04F6
 l04F6:
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp2
-	gp15 = gp15 - 1<16>
-	Mem0[gp15:word16] = gp1
-	gp1_gp2 = gp0_gp1
-	PZN = cond(gp1_gp2)
-	gp0 = 0x806E<16>
-	PZN = cond(gp0)
-	call fn0426 (retsize: 2;)
-	call fn04AF (retsize: 2;)
-	gp0 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
-	gp1 = Mem0[gp15:word16]
-	gp15 = gp15 + 1<i16>
+	fn04AF(fn0426(gp0_gp1, 0x806E<16>))
 	return
-	// succ:  fn04F6_exit
 fn04F6_exit:
 
 

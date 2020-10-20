@@ -99,6 +99,7 @@ namespace Reko.Arch.MilStd1750
                 case Mnemonic.ble: RewriteBranch(ConditionCode.LE, ZN); break;
                 case Mnemonic.blt: RewriteBranch(ConditionCode.LT, N); break;
                 case Mnemonic.bnz: RewriteBranch(ConditionCode.NE, Z); break;
+                case Mnemonic.bif: RewriteBif(); break;
                 case Mnemonic.br: RewriteBr(); break;
                 case Mnemonic.c:
                 case Mnemonic.cim:
@@ -293,6 +294,11 @@ namespace Reko.Arch.MilStd1750
             var dst = Op(0);
             m.Assign(dst, fn(dst, src));
             AssignFlags(CPZN, m.Cond(dst));
+        }
+
+        private void RewriteBif()
+        {
+            m.SideEffect(host.PseudoProcedure("__bif", VoidType.Instance, Op(0)));
         }
 
         private void RewriteBr()
