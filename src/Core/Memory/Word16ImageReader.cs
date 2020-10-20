@@ -234,8 +234,13 @@ namespace Reko.Core.Memory
                     break;
                 value = Constant.Word16(u16);
                 return true;
+            case 32:
+                if (!TryReadBeUInt32(out uint u32))
+                    break;
+                value = Constant.Word32(u32);
+                return true;
             default:
-                throw new NotImplementedException();
+                throw new NotImplementedException($"Reading data type {dataType} not implemented yet.");
             }
             value = null!;
             return false;
