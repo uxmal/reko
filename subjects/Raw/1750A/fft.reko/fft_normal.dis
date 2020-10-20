@@ -700,21 +700,22 @@ l0460:
 	gp2_179 = gp2_179 + 1<16>
 
 
-void fn0467(real48 gp12_gp13_gp14)
+void fn0467(real48 gp12_gp13_gp14, word16 gp0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn046A
-// MayUse:  Sequence gp12:gp13:gp14:[0..47]
+// MayUse:  gp0:[0..15] Sequence gp12:gp13:gp14:[0..47]
 // LiveOut:
-// Trashed: PZN gp12 gp13 gp14 gp2
+// Trashed: PZN gp0 gp12 gp13 gp14 gp2
 // Preserved: gp15
 fn0467_entry:
 l0467:
 	branch gp12_gp13_gp14 >= Mem0[0x057C<p16>:real48] l04C9
 l04C9:
 l04CA:
-	fn04AC()
+	fn04AC(gp0)
+	return
 l0469_thunk_fn046A:
 	fn046A()
 	return
@@ -735,26 +736,27 @@ void fn046A()
 fn046A_entry:
 l046A:
 l046E_thunk_fn0467:
-	fn0467(SEQ(gp12, gp13, gp14))
+	fn0467(SEQ(gp12, gp13, gp14), gp0)
 	return
 fn046A_exit:
 
 
-void fn04AC()
+void fn04AC(word16 gp0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn043E
 //      fn04AF
 //      fn04C0
-// MayUse: 
+// MayUse:  gp0:[0..15]
 // LiveOut:
 // Trashed:
 // Preserved: gp15
-// Terminates process
-fn04AC_exit:
 fn04AC_entry:
 l04AC:
+	__console_output(gp0)
+	return
+fn04AC_exit:
 
 
 void fn04AF(word16 gp0)
@@ -762,19 +764,27 @@ void fn04AF(word16 gp0)
 
 // Called from:
 //      fn04F6
-// MayUse:  gp0:[0..7]
+// MayUse:  gp0:[0..15]
 // LiveOut:
 // Trashed: PZN gp0 gp10 gp11 gp9
-// Preserved: gp15
+// Preserved: C gp15
 fn04AF_entry:
 l04AF:
+	word16 gp11_13 = gp0
+	word16 gp0_14 = 0<16>
 l04B2:
-	branch SEQ(Mem11[gp0:byte], 0<8>) == 0<16> l04BE
+	word16 gp0_19 = SEQ(Mem11[gp11_13:byte], SLICE(gp0_14, byte, 0))
+	branch gp0_19 == 0<16> l04BE
+l04B5:
+	fn04AC(gp0_19)
+	gp0_14 = SEQ(Mem11[gp11_13:byte], Mem11[gp11_13:byte])
+	branch gp0_14 == 0<16> l04BE
 l04BE:
 	return
 fn04AF_exit:
-l04B5:
-	fn04AC()
+l04BA:
+	fn04AC(gp0_14)
+	gp11_13 = gp11_13 + 1<16>
 
 
 void fn04C0(word16 gp0)
@@ -784,19 +794,22 @@ void fn04C0(word16 gp0)
 //      fn04CE
 // MayUse:  gp0:[0..15]
 // LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn04C0_exit:
+// Trashed: CPZN gp0
+// Preserved: gp15
 fn04C0_entry:
 l04C0:
 	branch (gp0 & 0xF<16>) >= 9<16> l04C8
 l04C8:
+	word16 gp0_7 = (gp0 & 0xF<16>) + 0x37<16>
 l04CA_in_fn04C0:
-	fn04AC()
+	fn04AC(gp0_7)
+	return
 l04C5:
+	word16 gp0_9 = (gp0 & 0xF<16>) + 0x30<16>
 l04CA_in_fn04C0:
-	fn04AC()
+	fn04AC(gp0_9)
+	return
+fn04C0_exit:
 
 
 void fn04CE(word16 gp0)
@@ -804,13 +817,14 @@ void fn04CE(word16 gp0)
 
 // MayUse:  gp0:[0..15]
 // LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn04CE_exit:
+// Trashed: CPZN gp0 gp1
+// Preserved: gp15
 fn04CE_entry:
 l04CE:
 	fn04C0(gp0 >>u 4<16>)
+	fn04C0(gp0)
+	return
+fn04CE_exit:
 
 
 void fn04F6(word32 gp0_gp1)

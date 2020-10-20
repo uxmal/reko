@@ -31,7 +31,7 @@ using System.Collections.Generic;
 
 namespace Reko.Arch.MilStd1750
 {
-    public class MilStd1750Rewriter : IEnumerable<RtlInstructionCluster>
+    public partial class MilStd1750Rewriter : IEnumerable<RtlInstructionCluster>
     {
         private static readonly FlagGroupStorage C = Registers.C;
         private static readonly FlagGroupStorage CPZN = new FlagGroupStorage(Registers.sw, (uint) (FlagM.CF |FlagM.PF | FlagM.ZF | FlagM.NF), "CPZN", PrimitiveType.Byte);
@@ -93,6 +93,8 @@ namespace Reko.Arch.MilStd1750
                 case Mnemonic.andm:
                     RewriteLogical(m.And);
                     break;
+                case Mnemonic.andx: RewriteAndx(); break;
+                case Mnemonic.bex: RewriteBex(); break;
                 case Mnemonic.bez: RewriteBranch(ConditionCode.EQ, Z); break;
                 case Mnemonic.bge: RewriteBranch(ConditionCode.GE, PZ); break;
                 case Mnemonic.bgt: RewriteBranch(ConditionCode.GE, P); break;
@@ -100,6 +102,7 @@ namespace Reko.Arch.MilStd1750
                 case Mnemonic.blt: RewriteBranch(ConditionCode.LT, N); break;
                 case Mnemonic.bnz: RewriteBranch(ConditionCode.NE, Z); break;
                 case Mnemonic.bif: RewriteBif(); break;
+                case Mnemonic.bpt: RewriteBpt(); break;
                 case Mnemonic.br: RewriteBr(); break;
                 case Mnemonic.c:
                 case Mnemonic.cim:
@@ -115,6 +118,7 @@ namespace Reko.Arch.MilStd1750
                 case Mnemonic.da:
                     RewriteDa();
                     break;
+                case Mnemonic.dabs: RewriteDabs(); break;
                 case Mnemonic.db:
                     RewriteDb();
                     break;
@@ -129,8 +133,10 @@ namespace Reko.Arch.MilStd1750
                     break;
                 case Mnemonic.dlb: RewriteDlb(); break;
                 case Mnemonic.dlr: RewriteDlr(); break;
+                case Mnemonic.dm: RewriteDm(); break;
                 case Mnemonic.dmr: RewriteDmr(); break;
                 case Mnemonic.dneg: RewriteDneg(); break;
+                case Mnemonic.dsar: RewriteDsar(); break;
                 case Mnemonic.dsra: RewriteDsra(); break;
                 case Mnemonic.dsr: RewriteDsr(); break;
                 case Mnemonic.dst: RewriteDst(); break;
@@ -150,19 +156,26 @@ namespace Reko.Arch.MilStd1750
                 case Mnemonic.efsr: RewriteEfr(m.FSub); break;
                 case Mnemonic.efst: RewriteEfst(); break;
                 case Mnemonic.fab: RewriteFab(); break;
+                case Mnemonic.fabs: RewriteFabs(); break;
                 case Mnemonic.fdb: RewriteFdb(); break;
                 case Mnemonic.fmb: RewriteFmb(); break;
+                case Mnemonic.fmr: RewriteFmr(); break;
+                case Mnemonic.fneg: RewriteFneg(); break;
                 case Mnemonic.incm: RewriteIncm(); break;
                 case Mnemonic.jc: RewriteJc(); break;
+                case Mnemonic.js: RewriteJs(); break;
                 case Mnemonic.lb: RewriteLb(); break;
+                case Mnemonic.lbx: RewriteLbx(); break;
                 case Mnemonic.l:
                 case Mnemonic.lim:
                 case Mnemonic.lisp:
                 case Mnemonic.lr:
                     RewriteLoad(); break;
                 case Mnemonic.llb: RewriteLlb(); break;
+                case Mnemonic.lm: RewriteLm(); break;
                 case Mnemonic.lub: RewriteLub(); break;
                 case Mnemonic.mov: RewriteMov(); break;
+                case Mnemonic.misn: RewriteMisn(); break;
                 case Mnemonic.neg: RewriteNeg(); break;
                 case Mnemonic.nop: m.Nop(); break;
                 case Mnemonic.orb: RewriteOrb(); break;
@@ -172,11 +185,14 @@ namespace Reko.Arch.MilStd1750
                     break;
                 case Mnemonic.popm: RewritePopm(); break;
                 case Mnemonic.pshm: RewritePshm(); break;
-                case Mnemonic.sar: RewriteSar(); break;
+                case Mnemonic.s:
                 case Mnemonic.sisp:
                 case Mnemonic.sr:
                     RewriteArithmetic(m.ISub);
                     break;
+                case Mnemonic.sar: RewriteSar(); break;
+                case Mnemonic.sb: RewriteSb(); break;
+                case Mnemonic.sbr: RewriteSbr(); break;
                 case Mnemonic.sjs: RewriteSjs(); break;
                 case Mnemonic.sll: RewriteSll(); break;
                 case Mnemonic.slr: RewriteSlr(); break;
@@ -196,6 +212,8 @@ namespace Reko.Arch.MilStd1750
                 case Mnemonic.xorr:
                     RewriteLogical(m.Xor);
                     break;
+                case Mnemonic.xwr: RewriteXwr(); break;
+                case Mnemonic.xio_co: RewriteXioCo(); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
@@ -288,6 +306,15 @@ namespace Reko.Arch.MilStd1750
             AssignFlags(CPZN, m.Cond(dst));
         }
 
+        private void RewriteAndx()
+        {
+            var baseReg = Reg(0);
+            var idxReg = Reg(1);
+            var dst = binder.EnsureRegister(Registers.GpRegs[2]);
+            m.Assign(dst, m.And(dst, m.Mem16(m.IAdd(baseReg, idxReg))));
+            AssignFlags(PZN, m.Cond(dst));
+        }
+
         private void RewriteArithmetic(Func<Expression, Expression, Expression> fn)
         {
             var src = Op(1);
@@ -296,9 +323,19 @@ namespace Reko.Arch.MilStd1750
             AssignFlags(CPZN, m.Cond(dst));
         }
 
+        private void RewriteBex()
+        {
+            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall,VoidType.Instance, Op(0)));
+        }
+
         private void RewriteBif()
         {
             m.SideEffect(host.PseudoProcedure("__bif", VoidType.Instance, Op(0)));
+        }
+
+        private void RewriteBpt()
+        {
+            m.SideEffect(host.PseudoProcedure("__bpt", VoidType.Instance));
         }
 
         private void RewriteBr()
@@ -353,6 +390,14 @@ namespace Reko.Arch.MilStd1750
             var dst = DReg(0);
             m.Assign(dst, m.IAdd(dst, src));
             AssignFlags(CPZN, m.Cond(dst));
+        }
+
+        private void RewriteDabs()
+        {
+            var src = DReg(1);
+            var dst = DReg(0);
+            m.Assign(dst, host.PseudoProcedure("abs", PrimitiveType.Int32, src));
+            AssignFlags(PZN, m.Cond(dst));
         }
 
         private void RewriteDb()
@@ -415,6 +460,14 @@ namespace Reko.Arch.MilStd1750
             AssignFlags(PZN, m.Cond(dst));
         }
 
+        private void RewriteDm()
+        {
+            var src = Op(1);
+            var dst = DReg(0);
+            m.Assign(dst, m.IMul(dst, src));
+            AssignFlags(PZN, m.Cond(dst));
+        }
+
         private void RewriteDmr()
         {
             var src = DReg(1);
@@ -431,6 +484,13 @@ namespace Reko.Arch.MilStd1750
             AssignFlags(PZN, m.Cond(dst));
         }
 
+        private void RewriteDsar()
+        {
+            var src = Reg(1);
+            var dst = DReg(0);
+            m.Assign(dst, host.PseudoProcedure("__shift_arithmetic", dst.DataType, dst, src));
+            AssignFlags(PZN, m.Cond(dst));
+        }
         private void RewriteDsra()
         {
             var dst = DReg(0);
@@ -516,6 +576,14 @@ namespace Reko.Arch.MilStd1750
             AssignFlags(CPZN, m.Cond(dst));
         }
 
+        private void RewriteFabs()
+        {
+            var src = DReg(1);
+            var dst = DReg(0);
+            m.Assign(dst, host.PseudoProcedure("fabsf", PrimitiveType.Real32, src));
+            AssignFlags(PZN, m.Cond(dst));
+        }
+
         private void RewriteFdb()
         {
             var src = AltMem(PrimitiveType.Real32);
@@ -529,6 +597,22 @@ namespace Reko.Arch.MilStd1750
             var src = AltMem(PrimitiveType.Real32);
             var dst = binder.EnsureSequence(src.DataType, Registers.GpRegs[0], Registers.GpRegs[1]);
             m.Assign(dst, m.FMul(dst, src));
+            AssignFlags(PZN, m.Cond(dst));
+        }
+
+        private void RewriteFmr()
+        {
+            var src = DReg(0);
+            var dst = DReg(1);
+            m.Assign(dst, m.FMul(dst, src));
+            AssignFlags(PZN, m.Cond(dst));
+        }
+
+        private void RewriteFneg()
+        {
+            var src = DReg(1);
+            var dst = DReg(0);
+            m.Assign(dst, m.FNeg(src));
             AssignFlags(PZN, m.Cond(dst));
         }
 
@@ -579,12 +663,42 @@ namespace Reko.Arch.MilStd1750
             }
         }
 
+        private void RewriteJs()
+        {
+            var tmp = binder.CreateTemporary(PrimitiveType.Ptr16);
+            switch (Op(1))
+            {
+            case Constant cTarget:
+                m.Assign(tmp, m.IAdd(Reg(2), cTarget));
+                break;
+            case MemoryAccess mem:
+                m.Assign(tmp, mem.EffectiveAddress);
+                break;
+            default:
+                EmitUnitTest(instr, $"js + {Op(1).GetType().Name}");
+                iclass = InstrClass.Invalid;
+                m.Invalid();
+                return;
+            }
+            m.Assign(Reg(0), instr.Address + instr.Length);
+            m.Call(tmp, 0);
+        }
+
         private void RewriteLb()
         {
             var baseReg = Reg(0);
             var disp = Imm(1);
             var dst = binder.EnsureRegister(Registers.GpRegs[2]);
             m.Assign(dst, m.Mem16(m.IAdd(baseReg, disp)));
+            AssignFlags(PZN, m.Cond(dst));
+        }
+
+        private void RewriteLbx()
+        {
+            var baseReg = Reg(0);
+            var idxReg = Reg(1);
+            var dst = binder.EnsureRegister(Registers.GpRegs[2]);
+            m.Assign(dst, m.Mem16(m.IAdd(baseReg, idxReg)));
             AssignFlags(PZN, m.Cond(dst));
         }
 
@@ -612,6 +726,19 @@ namespace Reko.Arch.MilStd1750
             AssignFlags(PZN, m.Cond(dst));
         }
 
+        private void RewriteLm()
+        {
+            var ea = ((MemoryAccess) Op(1)).EffectiveAddress;
+            var tmp = binder.CreateTemporary(PrimitiveType.Ptr16);
+            m.Assign(tmp, ea);
+            var iLast = Imm(0).ToInt32();
+            for (int i = 0; i <= iLast; ++i)
+            {
+                var reg = binder.EnsureRegister(Registers.GpRegs[i]);
+                m.Assign(reg, m.Mem16(m.AddSubSignedInt(tmp, i)));
+            }
+        }
+
         private void RewriteLub()
         {
             var src = Op(1);
@@ -631,6 +758,14 @@ namespace Reko.Arch.MilStd1750
             m.SideEffect(host.PseudoProcedure("__mov", VoidType.Instance, tmpA, tmpB));
         }
 
+        private void RewriteMisn()
+        {
+            var imm = Constant.Int16((short)-Imm(1).ToInt16());
+            var ra = Reg(0);
+            m.Assign(ra, m.IMul(ra, imm));
+            AssignFlags(PZN, m.Cond(ra));
+        }
+
         private void RewriteNeg()
         {
             var src = Reg(1);
@@ -646,7 +781,6 @@ namespace Reko.Arch.MilStd1750
             m.Assign(dst, m.Or(dst, src));
             AssignFlags(PZN, m.Cond(dst));
         }
-
 
         private void RewritePopm()
         {
@@ -722,6 +856,22 @@ namespace Reko.Arch.MilStd1750
             AssignFlags(PZN, m.Cond(dst));
         }
 
+        private void RewriteSb()
+        {
+            var src = Op(1);
+            var bitNo = Imm(0);
+            var tmp = binder.CreateTemporary(src.DataType);
+            m.Assign(tmp, src);
+            m.Assign(src, m.Or(tmp, 1 << bitNo.ToInt32()));
+        }
+
+        private void RewriteSbr()
+        {
+            var src = Reg(1);
+            var bitNo = Imm(0);
+            m.Assign(src, m.Or(src, 1 << bitNo.ToInt32()));
+        }
+
         private void RewriteSjs()
         {
             var dst = Addr(1);
@@ -748,10 +898,10 @@ namespace Reko.Arch.MilStd1750
         {
             var reg = Reg(0);
             var target = Op(1);
-            AssignFlags(PZN, m.Cond(reg));
             if (target is Address addr)
             {
                 m.Assign(reg, m.ISub(reg, 1));
+                AssignFlags(PZN, m.Cond(reg));
                 m.Branch(m.Ne0(reg), addr);
             }
             else
@@ -760,6 +910,7 @@ namespace Reko.Arch.MilStd1750
                 var idx = Reg(2);
                 m.Assign(tmp, m.IAdd(idx, target));
                 m.Assign(reg, m.ISub(reg, 1));
+                AssignFlags(PZN, m.Cond(reg));
                 m.Goto(tmp);
             }
         }
@@ -824,6 +975,17 @@ namespace Reko.Arch.MilStd1750
             var dst = Reg(0);
             m.Assign(dst, host.PseudoProcedure("__xbr", PrimitiveType.Word32, dst));
             AssignFlags(PZN, m.Cond(dst));
+        }
+
+        private void RewriteXwr()
+        {
+            var ra = Reg(0);
+            var rb = Reg(1);
+            var tmp = binder.CreateTemporary(ra.DataType);
+            m.Assign(tmp, rb);
+            m.Assign(rb, ra);
+            m.Assign(ra, tmp);
+            AssignFlags(PZN, m.Cond(ra));
         }
     }
 }

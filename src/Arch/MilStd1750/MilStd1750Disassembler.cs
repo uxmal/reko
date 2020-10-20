@@ -200,6 +200,26 @@ namespace Reko.Arch.MilStd1750
         private static readonly Mutator<MilStd1750Disassembler> br15 = br(Registers.GpRegs[15]);
 
         /// <summary>
+        /// Base indexed.
+        /// </summary>
+        private static Mutator<MilStd1750Disassembler> bx(RegisterStorage reg)
+        {
+            var regOp = new RegisterOperand(reg);
+            return (u, d) =>
+            {
+                d.ops.Add(regOp);
+                var idxReg = Registers.GpRegs[bf0_4.Read(u)];
+                d.ops.Add(new RegisterOperand(idxReg));
+                return true;
+            };
+        }
+        private static readonly Mutator<MilStd1750Disassembler> bx12 = bx(Registers.GpRegs[12]);
+        private static readonly Mutator<MilStd1750Disassembler> bx13 = bx(Registers.GpRegs[13]);
+        private static readonly Mutator<MilStd1750Disassembler> bx14 = bx(Registers.GpRegs[14]);
+        private static readonly Mutator<MilStd1750Disassembler> bx15 = bx(Registers.GpRegs[15]);
+
+
+        /// <summary>
         /// Address or indexed address
         /// </summary>
         private static bool Ax(uint uInstr, MilStd1750Disassembler dasm)
@@ -235,6 +255,12 @@ namespace Reko.Arch.MilStd1750
         {
             var imm = bf4_4.Read(uInstr) + 1u;
             dasm.ops.Add(ImmediateOperand.Word16((ushort) imm));
+            return true;
+        }
+
+        private static bool Imm4(uint uInstr, MilStd1750Disassembler dasm)
+        {
+            dasm.ops.Add(ImmediateOperand.Word16((ushort) bf0_4.Read(uInstr)));
             return true;
         }
 
@@ -277,7 +303,7 @@ namespace Reko.Arch.MilStd1750
             switch (cmd >> 12)
             {
             case 0:
-                dasm.mnemonic = Mnemonic.po;
+                dasm.mnemonic = Mnemonic.xio_po;
                 dasm.ops.Add(new RegisterOperand(ra));
                 dasm.ops.Add(ImmediateOperand.Word16((ushort) (cmd & 0x03FF)));
                 return true;
@@ -285,11 +311,11 @@ namespace Reko.Arch.MilStd1750
                 switch (cmd)
                 {
                 case 0x4000:
-                    dasm.mnemonic = Mnemonic.co;
+                    dasm.mnemonic = Mnemonic.xio_co;
                     dasm.ops.Add(new RegisterOperand(ra));
                     return true;
                 case 0x4001:
-                    dasm.mnemonic = Mnemonic.clc;
+                    dasm.mnemonic = Mnemonic.xio_clc;
                     return true;
                 }
                 break;
@@ -418,10 +444,86 @@ namespace Reko.Arch.MilStd1750
                 Instr(Mnemonic.fcb, br15),
 
                 // 40
-                Instr(Mnemonic.brx, br12),  // a
-                Instr(Mnemonic.brx, br13),  // a
-                Instr(Mnemonic.brx, br14),  // a
-                Instr(Mnemonic.brx, br15),  // a
+                Mask(4, 4, "  brx br12", // a
+                    Instr(Mnemonic.lbx, bx12),  // a
+                    Instr(Mnemonic.dlbx, bx12),  // a
+                    Instr(Mnemonic.stbx, bx12),  // a
+                    Instr(Mnemonic.dstx, bx12),  // a
+
+                    Instr(Mnemonic.abx, bx12),  // a
+                    Instr(Mnemonic.sbbx, bx12),  // a
+                    Instr(Mnemonic.mbx, bx12),  // a
+                    Instr(Mnemonic.dbx, bx12),  // a
+
+                    Instr(Mnemonic.fabx, bx12),  // a
+                    Instr(Mnemonic.fsbx, bx12),  // a
+                    Instr(Mnemonic.fmbx, bx12),  // a
+                    Instr(Mnemonic.fdbx, bx12),  // a
+
+                    Instr(Mnemonic.cbx, bx12),  // a
+                    Instr(Mnemonic.fcbx, bx12),  // a
+                    Instr(Mnemonic.andx, bx12),  // a
+                    Instr(Mnemonic.orbx, bx12)),  // a
+                Mask(4, 4, "  brx br13", // a
+                    Instr(Mnemonic.lbx, bx13),  // a
+                    Instr(Mnemonic.dlbx, bx13),  // a
+                    Instr(Mnemonic.stbx, bx13),  // a
+                    Instr(Mnemonic.dstx, bx13),  // a
+
+                    Instr(Mnemonic.abx, bx13),  // a
+                    Instr(Mnemonic.sbbx, bx13),  // a
+                    Instr(Mnemonic.mbx, bx13),  // a
+                    Instr(Mnemonic.dbx, bx13),  // a
+
+                    Instr(Mnemonic.fabx, bx13),  // a
+                    Instr(Mnemonic.fsbx, bx13),  // a
+                    Instr(Mnemonic.fmbx, bx13),  // a
+                    Instr(Mnemonic.fdbx, bx13),  // a
+
+                    Instr(Mnemonic.cbx, bx13),  // a
+                    Instr(Mnemonic.fcbx, bx13),  // a
+                    Instr(Mnemonic.andx, bx13),  // a
+                    Instr(Mnemonic.orbx, bx13)),  // a
+                Mask(4, 4, "  brx br14", // a
+                    Instr(Mnemonic.lbx, bx14),  // a
+                    Instr(Mnemonic.dlbx, bx14),  // a
+                    Instr(Mnemonic.stbx, bx14),  // a
+                    Instr(Mnemonic.dstx, bx14),  // a
+
+                    Instr(Mnemonic.abx, bx14),  // a
+                    Instr(Mnemonic.sbbx, bx14),  // a
+                    Instr(Mnemonic.mbx, bx14),  // a
+                    Instr(Mnemonic.dbx, bx14),  // a
+
+                    Instr(Mnemonic.fabx, bx14),  // a
+                    Instr(Mnemonic.fsbx, bx14),  // a
+                    Instr(Mnemonic.fmbx, bx14),  // a
+                    Instr(Mnemonic.fdbx, bx14),  // a
+
+                    Instr(Mnemonic.cbx, bx14),  // a
+                    Instr(Mnemonic.fcbx, bx14),  // a
+                    Instr(Mnemonic.andx, bx14),  // a
+                    Instr(Mnemonic.orbx, bx14)),  // a
+                Mask(4, 4, "  brx br15", // a
+                    Instr(Mnemonic.lbx, bx15),  // a
+                    Instr(Mnemonic.dlbx, bx15),  // a
+                    Instr(Mnemonic.stbx, bx15),  // a
+                    Instr(Mnemonic.dstx, bx15),  // a
+
+                    Instr(Mnemonic.abx, bx15),  // a
+                    Instr(Mnemonic.sbbx, bx15),  // a
+                    Instr(Mnemonic.mbx, bx15),  // a
+                    Instr(Mnemonic.dbx, bx15),  // a
+
+                    Instr(Mnemonic.fabx, bx15),  // a
+                    Instr(Mnemonic.fsbx, bx15),  // a
+                    Instr(Mnemonic.fmbx, bx15),  // a
+                    Instr(Mnemonic.fdbx, bx15),  // a
+
+                    Instr(Mnemonic.cbx, bx15),  // a
+                    Instr(Mnemonic.fcbx, bx15),  // a
+                    Instr(Mnemonic.andx, bx15),  // a
+                    Instr(Mnemonic.orbx, bx15)),  // a
 
                 invalid,
                 invalid,
@@ -508,7 +610,7 @@ namespace Reko.Arch.MilStd1750
                 Instr(Mnemonic.br, InstrClass.Transfer, ICR),
                 Instr(Mnemonic.bez, InstrClass.ConditionalTransfer, ICR),
                 Instr(Mnemonic.blt, InstrClass.ConditionalTransfer, ICR),
-                Instr(Mnemonic.bex, InstrClass.ConditionalTransfer, ICR),
+                Instr(Mnemonic.bex, InstrClass.ConditionalTransfer, Imm4),
 
                 Instr(Mnemonic.ble, InstrClass.ConditionalTransfer, ICR),
                 Instr(Mnemonic.bgt, InstrClass.ConditionalTransfer, ICR),
@@ -612,7 +714,7 @@ namespace Reko.Arch.MilStd1750
 
                 Instr(Mnemonic.m, Ra,Dx_w16),
                 Instr(Mnemonic.mr, Ra,Rb),
-                Instr(Mnemonic.dm, Dx_w32),
+                Instr(Mnemonic.dm, Ra,Dx_w32),
                 Instr(Mnemonic.dmr, Ra,Rb),
 
                 Instr(Mnemonic.fm, Ra,Dx_w16),
@@ -691,8 +793,8 @@ namespace Reko.Arch.MilStd1750
                 Select((0, 8), Is0, "  0xFF",
                     Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding),
                     Select((0, 8), u => u == 0xFF,
-                        Instr(Mnemonic.bpt),
-                        Nyi("FF")))
+                        Instr(Mnemonic.bpt, InstrClass.Terminates),
+                        invalid))
             });
         }
     }

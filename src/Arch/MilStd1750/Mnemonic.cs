@@ -178,7 +178,7 @@ namespace Reko.Arch.MilStd1750
         bgt,
         bnz,
         bge,
-        po,
+        xio_po,
         bpt,
 
         aim,
@@ -194,7 +194,39 @@ namespace Reko.Arch.MilStd1750
         xorm,
         cim,
         nim,
-        co,
-        clc,
+        xio_co,
+        xio_clc,
+
+        lbx,
+        dlbx,
+        stbx,
+        dstx,
+
+        abx,
+        sbbx,
+        mbx,
+        dbx,
+
+        fabx,
+        fsbx,
+        fmbx,
+        fdbx,
+
+        cbx,
+        fcbx,
+        andx,
+        orbx,
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

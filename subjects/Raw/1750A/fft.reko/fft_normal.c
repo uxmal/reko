@@ -454,13 +454,13 @@ l0458:
 	}
 }
 
-// 0467: void fn0467(Sequence real48 gp12_gp13_gp14)
+// 0467: void fn0467(Sequence real48 gp12_gp13_gp14, Register cui16 gp0)
 // Called from:
 //      fn046A
-void fn0467(real48 gp12_gp13_gp14)
+void fn0467(real48 gp12_gp13_gp14, cui16 gp0)
 {
 	if (gp12_gp13_gp14 >= g_r057C)
-		fn04AC();
+		fn04AC(gp0);
 	else
 		fn046A();
 }
@@ -474,13 +474,14 @@ void fn046A()
 {
 }
 
-// 04AC: void fn04AC()
+// 04AC: void fn04AC(Register cui16 gp0)
 // Called from:
 //      fn043E
 //      fn04AF
 //      fn04C0
-void fn04AC()
+void fn04AC(cui16 gp0)
 {
+	__console_output(gp0);
 }
 
 // 04AF: void fn04AF(Register (ptr16 byte) gp0)
@@ -488,9 +489,20 @@ void fn04AC()
 //      fn04F6
 void fn04AF(byte * gp0)
 {
-	if (SEQ(*gp0, 0x00) == 0x00)
-		return;
-	fn04AC();
+	byte * gp11_13 = gp0;
+	cui16 gp0_14 = 0x00;
+	while (true)
+	{
+		cui16 gp0_19 = SEQ(*gp11_13, (byte) gp0_14);
+		if (gp0_19 == 0x00)
+			break;
+		fn04AC(gp0_19);
+		gp0_14 = SEQ(*gp11_13, *gp11_13);
+		if (gp0_14 == 0x00)
+			return;
+		fn04AC(gp0_14);
+		++gp11_13;
+	}
 }
 
 // 04C0: void fn04C0(Register uint16 gp0)
@@ -499,15 +511,22 @@ void fn04AF(byte * gp0)
 void fn04C0(uint16 gp0)
 {
 	if ((gp0 & 0x0F) >= 0x09)
-		fn04AC();
+	{
+		cui16 gp0_7 = (gp0 & 0x0F) + 55;
+		fn04AC(gp0_7);
+	}
 	else
-		fn04AC();
+	{
+		cui16 gp0_9 = (gp0 & 0x0F) + 0x30;
+		fn04AC(gp0_9);
+	}
 }
 
-// 04CE: void fn04CE(Register cu16 gp0)
-void fn04CE(cu16 gp0)
+// 04CE: void fn04CE(Register uint16 gp0)
+void fn04CE(uint16 gp0)
 {
 	fn04C0(gp0 >> 0x04);
+	fn04C0(gp0);
 }
 
 // 04F6: void fn04F6(Sequence word32 gp0_gp1)

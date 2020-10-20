@@ -38,6 +38,8 @@ namespace Reko.Arch.MilStd1750
         private void RenderMnemonic(MachineInstructionRenderer renderer)
         {
             var sMnemonic = Mnemonic.ToString();
+            if (sMnemonic.StartsWith("xio_"))
+                sMnemonic = sMnemonic.Substring(4);
             renderer.WriteMnemonic(sMnemonic);
         }
 

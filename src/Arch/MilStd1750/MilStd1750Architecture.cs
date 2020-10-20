@@ -205,7 +205,7 @@ namespace Reko.Arch.MilStd1750
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return Registers.ByName.TryGetValue(name, out reg);
         }
 
         public override bool TryParseAddress(string? txtAddr, out Address addr)

@@ -115,6 +115,12 @@ namespace Reko.UnitTests.Arch.MilStd1750
         }
 
         [Test]
+        public void MS1750Dis_andx()
+        {
+            AssertCode("andx\tgp12,gp11", "40EB");
+        }
+
+        [Test]
         public void MS1750Dis_bez()
         {
             AssertCode("bez\t0105", "7505");
@@ -344,6 +350,12 @@ namespace Reko.UnitTests.Arch.MilStd1750
         }
 
         [Test]
+        public void MS1750Dis_lbx()
+        {
+            AssertCode("lbx\tgp12,gp0", "4000");
+        }
+
+        [Test]
         public void MS1750Dis_lim()
         {
             AssertCode("lim\tgp0,#0xFFF0", "8500FFF0");
@@ -532,7 +544,7 @@ namespace Reko.UnitTests.Arch.MilStd1750
         [Test]
         public void MS1750Dis_4F76()
         {
-            AssertCode("@@@", "4F76");
+            AssertCode("bif\t#0x76", "4F76");
         }
     }
 }

@@ -80,6 +80,16 @@ namespace Reko.UnitTests.Arch.MilStd1750
         }
 
         [Test]
+        public void MS1750Rw_andx()
+        {
+            Given_HexString("40EB");
+            AssertCode(     // andx	gp12,gp11
+                "0|L--|0100(1): 2 instructions",
+                "1|L--|gp2 = gp2 & Mem0[gp12 + gp11:word16]",
+                "2|L--|PZN = cond(gp2)");
+        }
+
+        [Test]
         public void MS1750Rw_ar()
         {
             Given_HexString("A110");
@@ -87,6 +97,15 @@ namespace Reko.UnitTests.Arch.MilStd1750
                 "0|L--|0100(1): 2 instructions",
                 "1|L--|gp1 = gp1 + gp0",
                 "2|L--|CPZN = cond(gp1)");
+        }
+
+        [Test]
+        public void MS1750Rw_bex()
+        {
+            Given_HexString("770B");
+            AssertCode(     // bex	053C
+                "0|T--|0100(1): 1 instructions",
+                "1|L--|__syscall(0xB<16>)");
         }
 
         [Test]
@@ -108,6 +127,15 @@ namespace Reko.UnitTests.Arch.MilStd1750
         }
 
         [Test]
+        public void MS1750Rw_bpt()
+        {
+            Given_HexString("FFFF");
+            AssertCode(     // bpt
+                "0|H--|0100(1): 1 instructions",
+                "1|L--|__bpt()");
+        }
+
+        [Test]
         public void MS1750Rw_br()
         {
             Given_HexString("7403");
@@ -123,6 +151,21 @@ namespace Reko.UnitTests.Arch.MilStd1750
             AssertCode(     // c	gp7,2,gp14
                 "0|L--|0100(2): 1 instructions",
                 "1|L--|PZN = cond(gp7 - Mem0[gp14 + 2<16>:word16])");
+        }
+
+        [Test]
+        public void MS1750Rw_cbl()
+        {
+            Given_HexString("F4F58000");
+            AssertCode(     // cbl	gp15,0x8000,gp5
+                "0|L--|0100(2): 7 instructions",
+                "1|L--|v2 = gp5 + 0x8000<16>",
+                "2|L--|v3 = Mem0[v2:word16]",
+                "3|L--|v4 = Mem0[v2 + 1<i16>:word16]",
+                "4|L--|C = v3 > v4",
+                "5|L--|N = gp15 < v3",
+                "6|L--|Z = v3 <= gp15 && gp15 <= v4",
+                "7|L--|P = v4 < gp15");
         }
 
         [Test]
@@ -144,6 +187,15 @@ namespace Reko.UnitTests.Arch.MilStd1750
         }
 
         [Test]
+        public void MS1750Rw_co()
+        {
+            Given_HexString("48004000");
+            AssertCode(     // co	gp0
+                "0|S--|0100(2): 1 instructions",
+                "1|L--|__console_output(gp0)");
+        }
+
+        [Test]
         public void MS1750Rw_da()
         {
             Given_HexString("A600805D");
@@ -151,6 +203,16 @@ namespace Reko.UnitTests.Arch.MilStd1750
                 "0|L--|0100(2): 2 instructions",
                 "1|L--|gp0_gp1 = gp0_gp1 + Mem0[0x805D<p16>:word32]",
                 "2|L--|CPZN = cond(gp0_gp1)");
+        }
+
+        [Test]
+        public void MS1750Rw_dabs()
+        {
+            Given_HexString("A543");
+            AssertCode(     // dabs	gp4,gp3
+                "0|L--|0100(1): 2 instructions",
+                "1|L--|gp4_gp5 = abs(gp3_gp4)",
+                "2|L--|PZN = cond(gp4_gp5)");
         }
 
         [Test]
@@ -207,6 +269,16 @@ namespace Reko.UnitTests.Arch.MilStd1750
         }
 
         [Test]
+        public void MS1750Rw_dm()
+        {
+            Given_HexString("C6BD6487");
+            AssertCode(     // dm	gp8,0x6487,gp13
+                "0|L--|0100(2): 2 instructions",
+                "1|L--|gp11_gp12 = gp11_gp12 * Mem0[gp13 + 0x6487<16>:word32]",
+                "2|L--|PZN = cond(gp11_gp12)");
+        }
+
+        [Test]
         public void MS1750Rw_dmr()
         {
             Given_HexString("C727");
@@ -226,6 +298,25 @@ namespace Reko.UnitTests.Arch.MilStd1750
                 "2|L--|PZN = cond(gp1_gp2)");
         }
 
+        [Test]
+        public void MS1750Rw_dsar()
+        {
+            Given_HexString("6E6F");
+            AssertCode(     // dsar	gp6,gp15
+                "0|L--|0100(1): 2 instructions",
+                "1|L--|gp6_gp7 = __shift_arithmetic(gp6_gp7, gp15)",
+                "2|L--|PZN = cond(gp6_gp7)");
+        }
+
+        [Test]
+        public void MS1750Rw_dsr()
+        {
+            Given_HexString("B742");
+            AssertCode(     // dsr	gp4,gp2
+                "0|L--|0100(1): 2 instructions",
+                "1|L--|gp4_gp5 = gp4_gp5 - gp2_gp3",
+                "2|L--|CPZN = cond(gp4_gp5)");
+        }
 
         [Test]
         public void MS1750Rw_dsra()
@@ -374,6 +465,57 @@ namespace Reko.UnitTests.Arch.MilStd1750
                 "2|L--|CPZN = cond(gp0_gp1)");
         }
 
+
+        [Test]
+        public void MS1750Rw_fabs()
+        {
+            Given_HexString("AC60");
+            AssertCode(     // fabs	gp6,gp0
+                "0|L--|0100(1): 2 instructions",
+                "1|L--|gp6_gp7 = fabsf(gp0_gp1)",
+                "2|L--|PZN = cond(gp6_gp7)");
+        }
+
+        [Test]
+        public void MS1750Rw_fdb()
+        {
+            Given_HexString("2D20");
+            AssertCode(     // fdb	gp13,#0x20
+                "0|L--|0100(1): 2 instructions",
+                "1|L--|gp0_gp1 = gp0_gp1 / Mem0[gp13 + 0x20<16>:real32]",
+                "2|L--|PZN = cond(gp0_gp1)");
+        }
+
+        [Test]
+        public void MS1750Rw_fmb()
+        {
+            Given_HexString("2B20");
+            AssertCode(     // fmb	gp15,#0x20
+                "0|L--|0100(1): 2 instructions",
+                "1|L--|gp0_gp1 = gp0_gp1 * Mem0[gp15 + 0x20<16>:real32]",
+                "2|L--|PZN = cond(gp0_gp1)");
+        }
+
+        [Test]
+        public void MS1750Rw_fmr()
+        {
+            Given_HexString("C900");
+            AssertCode(     // fmr	gp0,gp0
+                "0|L--|0100(1): 2 instructions",
+                "1|L--|gp0_gp1 = gp0_gp1 * gp0_gp1",
+                "2|L--|PZN = cond(gp0_gp1)");
+        }
+
+        [Test]
+        public void MS1750Rw_fneg()
+        {
+            Given_HexString("BC77");
+            AssertCode(     // fneg	gp7,gp7
+                "0|L--|0100(1): 2 instructions",
+                "1|L--|gp7_gp8 = -gp7_gp8",
+                "2|L--|PZN = cond(gp7_gp8)");
+        }
+
         [Test]
         public void MS1750Rw_incm()
         {
@@ -395,12 +537,33 @@ namespace Reko.UnitTests.Arch.MilStd1750
         }
 
         [Test]
+        public void MS1750Rw_js()
+        {
+            Given_HexString("726D616C");
+            AssertCode(     // js	gp6,#0x616C,gp13
+                "0|T--|0100(2): 3 instructions",
+                "1|L--|v2 = gp13 + 0x616C<16>",
+                "2|L--|gp6 = 0102",
+                "3|T--|call v2 (0)");
+        }
+
+        [Test]
         public void MS1750Rw_lb()
         {
             Given_HexString("0001");
             AssertCode(     // lb	gp12,#1
                 "0|L--|0100(1): 2 instructions",
                 "1|L--|gp2 = Mem0[gp12 + 1<16>:word16]",
+                "2|L--|PZN = cond(gp2)");
+        }
+
+        [Test]
+        public void MS1750Rw_lbx()
+        {
+            Given_HexString("4000");
+            AssertCode(     // lbx	gp12,gp0
+                "0|L--|0100(1): 2 instructions",
+                "1|L--|gp2 = Mem0[gp12 + gp0:word16]",
                 "2|L--|PZN = cond(gp2)");
         }
 
@@ -412,6 +575,19 @@ namespace Reko.UnitTests.Arch.MilStd1750
                 "0|L--|0100(2): 2 instructions",
                 "1|L--|gp0 = 0x8000<16>",
                 "2|L--|PZN = cond(gp0)");
+        }
+
+        [Test]
+        public void MS1750Rw_lm()
+        {
+            Given_HexString("89331102");
+            AssertCode(     // lm	#0xB,0x1102,gp3
+                "0|L--|0100(2): 5 instructions",
+                "1|L--|v3 = gp3 + 0x1102<16>",
+                "2|L--|gp0 = Mem0[v3:word16]",
+                "3|L--|gp1 = Mem0[v3 + 1<i16>:word16]",
+                "4|L--|gp2 = Mem0[v3 + 2<i16>:word16]",
+                "5|L--|gp3 = Mem0[v3 + 3<i16>:word16]");
         }
 
         [Test]
@@ -442,6 +618,16 @@ namespace Reko.UnitTests.Arch.MilStd1750
                 "0|L--|0100(2): 2 instructions",
                 "1|L--|gp0 = SEQ(SLICE(gp0, byte, 8), SLICE(Mem0[gp11:word16], byte, 0))",
                 "2|L--|PZN = cond(gp0)");
+        }
+
+        [Test]
+        public void MS1750Rw_misn()
+        {
+            Given_HexString("C301");
+            AssertCode(     // misn	gp1,#1
+                "0|L--|0100(1): 2 instructions",
+                "1|L--|gp1 = gp1 * -1<i16>",
+                "2|L--|PZN = cond(gp1)");
         }
 
         [Test]
@@ -518,7 +704,8 @@ namespace Reko.UnitTests.Arch.MilStd1750
         {
             Given_HexString("8FEE");
             AssertCode(     // popm	gp14,gp14
-                "0|L--|0100(1): 0 instructions");
+                "0|L--|0100(1): 1 instructions",
+                "1|L--|nop");
         }
 
         [Test]
@@ -526,7 +713,8 @@ namespace Reko.UnitTests.Arch.MilStd1750
         {
             Given_HexString("9FEE");
             AssertCode(     // pshm	gp14,gp14
-                "0|L--|0100(1): 0 instructions");
+                "0|L--|0100(1): 1 instructions",
+                "1|L--|nop");
         }
 
         [Test]
@@ -537,6 +725,35 @@ namespace Reko.UnitTests.Arch.MilStd1750
                 "0|L--|0100(1): 2 instructions",
                 "1|L--|gp2 = __shift_arithmetic(gp2, gp1)",
                 "2|L--|PZN = cond(gp2)");
+        }
+
+        [Test]
+        public void MS1750Rw_s()
+        {
+            Given_HexString("B08C2E01");
+            AssertCode(     // s	gp8,0x2E01,gp12
+                "0|L--|0100(2): 2 instructions",
+                "1|L--|gp8 = gp8 - Mem0[gp12 + 0x2E01<16>:word16]",
+                "2|L--|CPZN = cond(gp8)");
+        }
+
+        [Test]
+        public void MS1750Rw_sb()
+        {
+            Given_HexString("50000004");
+            AssertCode(     // sb	#0,4
+                "0|L--|0100(2): 2 instructions",
+                "1|L--|v2 = Mem0[0x0004<p16>:word16]",
+                "2|L--|Mem0[0x0004<p16>:word16] = v2 | 1<16>");
+        }
+
+        [Test]
+        public void MS1750Rw_sbr()
+        {
+            Given_HexString("5197");
+            AssertCode(     // sbr	#9,gp7
+                "0|L--|0100(1): 1 instructions",
+                "1|L--|gp7 = gp7 | 0x200<16>");
         }
 
         [Test]
@@ -698,110 +915,23 @@ namespace Reko.UnitTests.Arch.MilStd1750
                 "2|L--|PZN = cond(gp2)");
         }
 
-
+        [Test]
+        public void MS1750Rw_xwr()
+        {
+            Given_HexString("EDFB");
+            AssertCode(     // xwr	gp15,gp11
+                "0|L--|0100(1): 4 instructions",
+                "1|L--|v4 = gp11",
+                "2|L--|gp11 = gp15",
+                "3|L--|gp15 = v4",
+                "4|L--|PZN = cond(gp15)");
+        }
 
         /////////////////////////////////////////////////////
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-        [Test]
-        public void MS1750Rw_dsr()
-        {
-            Given_HexString("B742");
-            AssertCode(     // dsr	gp4,gp2
-                "0|L--|0100(1): 2 instructions",
-                "1|L--|gp4_gp5 = gp4_gp5 - gp2_gp3",
-                "2|L--|CPZN = cond(gp4_gp5)");
-        }
-
-        [Test]
-        public void MS1750Rw_fdb()
-        {
-            Given_HexString("2D20");
-            AssertCode(     // fdb	gp13,#0x20
-                "0|L--|0100(1): 2 instructions",
-                "1|L--|gp0_gp1 = gp0_gp1 / Mem0[gp13 + 0x20<16>:real32]",
-                "2|L--|PZN = cond(gp0_gp1)");
-        }
-
-        [Test]
-        public void MS1750Rw_fmb()
-        {
-            Given_HexString("2B20");
-            AssertCode(     // fmb	gp15,#0x20
-                "0|L--|0100(1): 2 instructions",
-                "1|L--|gp0_gp1 = gp0_gp1 * Mem0[gp15 + 0x20<16>:real32]",
-                "2|L--|PZN = cond(gp0_gp1)");
-        }
-
-        [Test]
-        public void MS1750Rw_cbl()
-        {
-            Given_HexString("F4F58000");
-            AssertCode(     // cbl	gp15,0x8000,gp5
-                "0|L--|0100(2): 7 instructions",
-                "1|L--|v2 = gp5 + 0x8000<16>",
-                "2|L--|v3 = Mem0[v2:word16]",
-                "3|L--|v4 = Mem0[v2 + 1<i16>:word16]",
-                "4|L--|C = v3 > v4",
-                "5|L--|N = gp15 < v3",
-                "6|L--|Z = v3 <= gp15 && gp15 <= v4",
-                "7|L--|P = v4 < gp15");
-        }
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        // This file contains unit tests automatically generated by Reko decompiler.
+        // Please copy the contents of this file and report it on GitHub, using the 
+        // following URL: https://github.com/uxmal/reko/issues
 
 
 

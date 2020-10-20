@@ -11,7 +11,10 @@
       <address>0000</address>
       <loader>TekHex</loader>
       <processor name="mil-std-1750" />
+      <heuristic name="shingle" />
+      <onLoad Enabled="false" />
       <registerValues />
+      <extractResources>false</extractResources>
       <outputFilePolicy>Segment</outputFilePolicy>
     </user>
   </input>
