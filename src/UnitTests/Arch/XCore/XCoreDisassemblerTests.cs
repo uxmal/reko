@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Arch.XCore
 
         public override Address LoadAddress => addr;
 
-        [Test]
+        // Avoid spamming the CI builds [Test]
         public void XCore200Dis_GenerateRandom()
         {
             var mem = new ByteMemoryArea(Address.Ptr32(0x00100000), new byte[65536]);
