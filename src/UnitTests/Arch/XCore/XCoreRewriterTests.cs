@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Arch.XCore
             return arch.CreateRewriter(rdr, state, binder, host);
         }
 
-        [Test]
+        // This spams the CI builds [Test]
         public void XCore200Rw_foo()
         {
             var mem = new ByteMemoryArea(Address.Ptr32(0x00100000), new byte[65536]);

@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Arch.MilStd1750
             Assert.AreEqual(sExp, instr.ToString());
         }
 
-        [Test]
+        // This spams the CI builds [Test]
         public void MS1750Dis_Generate()
         {
             var rnd = new Random(0x3421);
