@@ -75,8 +75,8 @@ namespace Reko.Typing
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine(
-                            string.Format("Exception in TypedExpressionRewriter.RewriteProgram: {0} ({1})\r\n{2}", proc, ex.Message, ex.StackTrace));
+                        Debug.Print("Exception in TypedExpressionRewriter.RewriteProgram: {0} ({1})\r\n{2}",
+                            proc, ex.Message, ex.StackTrace);
                         // reset flags after error
                         dereferenced = false;
                         basePtr = null;

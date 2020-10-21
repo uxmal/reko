@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Core.Output
             var addr = Address.Ptr32(uAddr);
             var seg = new ImageSegment(
                 name,
-                new MemoryArea(addr, new byte[uSize]),
+                new ByteMemoryArea(addr, new byte[uSize]),
                 AccessMode.ReadWrite);
             program.SegmentMap.AddSegment(seg);
         }
@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Core.Output
             var addr = Address.Ptr32(uAddr);
             bool foundSeg = program.SegmentMap.TryFindSegment(addr, out var seg);
             Assert.IsTrue(foundSeg);
-            var w = new LeImageWriter(seg.MemoryArea, (uint) (addr - seg.MemoryArea.BaseAddress));
+            var w = seg.MemoryArea.CreateLeWriter(addr);
             w.WriteBytes(BytePattern.FromHexBytes(hexBytes).ToArray());
         }
 

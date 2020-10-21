@@ -153,7 +153,6 @@ namespace Reko.UserInterfaces.WindowsForms
                 var curAddr = dataItemNode.StartAddress;
 
                 bool nodeCreated = false;
-                ImageMapItem item;
                 Procedure proc = dataItemNode.Proc;
                 if (ShowItem(dataItemNode))
                 {
@@ -165,7 +164,7 @@ namespace Reko.UserInterfaces.WindowsForms
                         nestedTextModel.Nodes.Add(model);
                         nodeCreated = true;
                     }
-                    else if (program.ImageMap.TryFindItem(curAddr, out item) &&
+                    else if (program.ImageMap.TryFindItem(curAddr, out ImageMapItem item) &&
                               item.DataType != null &&
                             !(item.DataType is UnknownType))
                     {

@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Output;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
@@ -55,7 +56,7 @@ namespace Reko.UnitTests.Core.Output
         {
             var seg = new ImageSegment(
                 name,
-                new MemoryArea(Address.Ptr32(uAddr), new byte[size]),
+                new ByteMemoryArea(Address.Ptr32(uAddr), new byte[size]),
                 AccessMode.ReadWrite);
             program.SegmentMap.AddSegment(seg);
         }

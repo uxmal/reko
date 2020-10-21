@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Typing;
@@ -352,7 +353,7 @@ namespace Reko.UnitTests.Typing
         {
             var addrUserData = Address.SegPtr(0xC30, 0x0042);
             var addrSeg = Address.SegPtr(0xC30, 0);
-            var seg = new ImageSegment("seg0C30", addrSeg, new MemoryArea(addrSeg, new byte[0x100]), AccessMode.ReadWriteExecute);
+            var seg = new ImageSegment("seg0C30", addrSeg, new ByteMemoryArea(addrSeg, new byte[0x100]), AccessMode.ReadWriteExecute);
             seg.Identifier = new Identifier("seg0C30", PrimitiveType.SegmentSelector, MemoryStorage.Instance);
             var program = new ProgramBuilder().BuildProgram();
             program.SegmentMap.AddSegment(seg);
