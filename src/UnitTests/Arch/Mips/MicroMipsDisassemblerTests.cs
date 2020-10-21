@@ -18,10 +18,13 @@
  */
 #endregion
 
+#pragma warning disable IDE1006
+
 using NUnit.Framework;
 using Reko.Arch.Mips;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -68,7 +71,7 @@ namespace Reko.UnitTests.Arch.Mips
             var ab = new byte[1000];
             var rnd = new Random(0x4711);
             rnd.NextBytes(ab);
-            var mem = new MemoryArea(Address.Ptr32(0x00100000), ab);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00100000), ab);
             var rdr = new BeImageReader(mem, 0);
             var dasm = new MicroMipsDisassembler(arch, rdr);
             foreach (var instr in dasm)

@@ -21,6 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Gui;
 using Reko.Gui.Commands;
 using System;
@@ -34,7 +35,7 @@ namespace Reko.UnitTests.Gui.Commands
     [TestFixture]
     public class Cmd_WhatPointsHereTests
     {
-        private MemoryArea mem;
+        private ByteMemoryArea mem;
         private SegmentMap segmentMap;
         private ServiceContainer sc;
         private Program program;
@@ -46,7 +47,7 @@ namespace Reko.UnitTests.Gui.Commands
         public void Setup()
         {
             sc = new ServiceContainer();
-            mem = new MemoryArea(Address.Ptr32(0x00400000), new byte[2000]);
+            mem = new ByteMemoryArea(Address.Ptr32(0x00400000), new byte[2000]);
             segmentMap = new SegmentMap(mem.BaseAddress);
             arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("FakeArch");

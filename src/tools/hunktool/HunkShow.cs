@@ -1,5 +1,6 @@
 using Reko.Arch.M68k;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.ImageLoaders.Hunk;
 using System;
 using System.Collections.Generic;

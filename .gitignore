@@ -40,5 +40,10 @@ TestResults
 /src/UnitTests/UnitTests.csproj.VisualState.xml
 /src/UnitTests/TestResult.xml
 /src/WixInstaller/*.user
+# Until we figure out how to run these in AppVeyor.
+# /src/NuGetPackage/NuGetPackage.nuspec
+# /src/WixInstaller/Product.wxs
+
+# Regression test script
 /subjects/subject_weights.txt
 /subjects/regressionTests.pyc

@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -232,9 +233,9 @@ namespace Reko.Arch.i8051
                     var addrSwitchSubroutine = Address.Ptr16(uAddrSwitchSubroutine);
                     if (!program.SegmentMap.TryFindSegment(addrSwitchSubroutine, out var segment))
                         continue;
-                    var mem = segment.MemoryArea;
-                    var offset = (int) (addrSwitchSubroutine - mem.BaseAddress);
-                    if (!MemoryArea.CompareArrays(mem.Bytes, offset, sparseSwitchSubroutine, sparseSwitchSubroutine.Length))
+                    var bmem = (ByteMemoryArea) segment.MemoryArea;
+                    var offset = (int) (addrSwitchSubroutine - bmem.BaseAddress);
+                    if (!ByteMemoryArea.CompareArrays(bmem.Bytes, offset, sparseSwitchSubroutine, sparseSwitchSubroutine.Length))
                         continue;
 
                     // We found the sparse switch subroutine. Now we parse the sparse switch

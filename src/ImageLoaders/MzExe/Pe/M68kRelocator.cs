@@ -1,15 +1,16 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Reko.Core;
+using Reko.Core.Memory;
 
 namespace Reko.ImageLoaders.MzExe.Pe
 {
 	public class M68kRelocator : Relocator
 	{
-		private IServiceProvider services;
+		private readonly IServiceProvider services;
 
 		public M68kRelocator(Program program) : base(program) {
 		}

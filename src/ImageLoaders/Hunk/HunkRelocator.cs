@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -124,9 +125,9 @@ namespace Reko.ImageLoaders.Hunk
 
         public void relocate32(int hunk_no, byte[] data, uint offset, uint hunk_addr)
         {
-            var delta = MemoryArea.ReadBeUInt32(data, offset);
+            var delta = ByteMemoryArea.ReadBeUInt32(data, offset);
             var addr = hunk_addr + delta;
-            MemoryArea.WriteBeUInt32(data, offset, addr);
+            ByteMemoryArea.WriteBeUInt32(data, offset, addr);
             Debug.WriteIf(Trace.TraceVerbose, string.Format("#{0,2} + {1:X8}: {2:X6} (delta) + {3:X6} (hunk_addr) -> {4:X6}", hunk_no, offset, delta, hunk_addr, addr));
         }
     }

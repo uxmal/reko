@@ -72,6 +72,17 @@ namespace Reko.CmdLine
                 d.Message);
         }
 
+        public void Info(string message)
+        {
+            EnsureNewLine();
+            Console.Out.WriteLine("{0}", message);
+        }
+
+        public void Info(string message, params object [] args)
+        {
+            Info(string.Format(message, args));
+        }
+
         public void Info(ICodeLocation location, string message)
         {
             EnsureNewLine();
@@ -81,6 +92,17 @@ namespace Reko.CmdLine
         public void Info(ICodeLocation location, string message, params object[] args)
         {
             Info(location, string.Format(message, args));
+        }
+
+        public void Warn(string message)
+        {
+            EnsureNewLine();
+            Console.Out.WriteLine("Warning: {0}", message);
+        }
+
+        public void Warn(string message, params object[] args)
+        {
+            Warn(string.Format(message, args));
         }
 
         public void Warn(ICodeLocation location, string message)
@@ -94,6 +116,17 @@ namespace Reko.CmdLine
             Warn(location, string.Format(message, args));
         }
 
+        public void Error(string message)
+        {
+            EnsureNewLine();
+            Console.Out.WriteLine("Error: {0}", message);
+        }
+
+        public void Error(string message, params object[] args)
+        {
+            Error(string.Format(message, args));
+        }
+
         public void Error(ICodeLocation location, string message)
         {
             EnsureNewLine();
@@ -103,6 +136,23 @@ namespace Reko.CmdLine
         public void Error(ICodeLocation location, string message, params object[] args)
         {
             Error(location, string.Format(message, args));
+        }
+
+        public void Error(Exception ex, string message)
+        {
+            EnsureNewLine();
+            Console.Out.WriteLine("Error: {0}", message);
+            Console.Out.WriteLine("    {0}", ex.Message);
+            while (ex != null)
+            {
+                Console.Out.WriteLine("    {0}", ex.StackTrace);
+                ex = ex.InnerException;
+            }
+        }
+
+        public void Error(Exception ex, string message, params object[] args)
+        {
+            Error(ex, string.Format(message, args));
         }
 
         public void Error(ICodeLocation location, Exception ex, string message)

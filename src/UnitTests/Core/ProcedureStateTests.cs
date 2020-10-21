@@ -33,6 +33,7 @@ using System.Text;
 using Reko.Core.Serialization;
 using System.Linq;
 using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Core
 {
@@ -60,8 +61,8 @@ namespace Reko.UnitTests.Core
         {
             this.map = new SegmentMap(
                 Address.Ptr32(0x00100000),
-                new ImageSegment(".text", new MemoryArea(Address.Ptr32(0x00100000), new byte[0x100]), AccessMode.ReadExecute),
-                new ImageSegment(".data", new MemoryArea(Address.Ptr32(0x00101000), new byte[0x100]), AccessMode.ReadWriteExecute));
+                new ImageSegment(".text", new ByteMemoryArea(Address.Ptr32(0x00100000), new byte[0x100]), AccessMode.ReadExecute),
+                new ImageSegment(".data", new ByteMemoryArea(Address.Ptr32(0x00101000), new byte[0x100]), AccessMode.ReadWriteExecute));
         }
 
         [Test]

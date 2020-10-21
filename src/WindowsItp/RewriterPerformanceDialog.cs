@@ -3,6 +3,7 @@ using Reko.Arch.Arm.AArch32;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -137,7 +138,7 @@ namespace Reko.WindowsItp
             button1.Enabled = true;
         }
 
-        private TimeSpan MeasureTime(Action<MemoryArea> task, MemoryArea mem)
+        private TimeSpan MeasureTime(Action<ByteMemoryArea> task, ByteMemoryArea mem)
         {
             var watch = new Stopwatch();
             watch.Start();
@@ -146,7 +147,7 @@ namespace Reko.WindowsItp
             return watch.Elapsed;
         }
 
-        private void RewriteT32Instructions(MemoryArea mem)
+        private void RewriteT32Instructions(ByteMemoryArea mem)
         {
             var rw = CreateT32Rewriter(mem);
             int instrs = 0;
@@ -161,7 +162,7 @@ namespace Reko.WindowsItp
             }
         }
 
-        private void RewriteA32Instructions(MemoryArea mem)
+        private void RewriteA32Instructions(ByteMemoryArea mem)
         {
             var rw = CreateA32Rewriter(mem);
             var length = mem.Length;
@@ -175,7 +176,7 @@ namespace Reko.WindowsItp
             }
         }
 
-        private void DasmInstructions(MemoryArea mem)
+        private void DasmInstructions(ByteMemoryArea mem)
         {
             var dasm = CreateA32Disassembler(mem);
             var ei = dasm.GetEnumerator();
@@ -201,18 +202,18 @@ namespace Reko.WindowsItp
             }
         }
 
-        private MemoryArea CreateBytes()
+        private ByteMemoryArea CreateBytes()
         {
             if (!long.TryParse(textBox1.Text, out var cb))
                 return null;
             var buf = new byte[cb];  
             var rnd = new Random(0x4242);
             rnd.NextBytes(buf);
-            var mem = new MemoryArea(Address.Ptr32(0x00100000), buf);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00100000), buf);
             return mem;
         }
 
-        private IEnumerable<RtlInstructionCluster> CreateT32Rewriter(MemoryArea mem)
+        private IEnumerable<RtlInstructionCluster> CreateT32Rewriter(ByteMemoryArea mem)
         {
             var arch = new ThumbArchitecture(sc, "arm-thumb");
             var rdr = new LeImageReader(mem, mem.BaseAddress);
@@ -220,7 +221,7 @@ namespace Reko.WindowsItp
             return rw;
         }
 
-        private IEnumerable<RtlInstructionCluster> CreateA32Rewriter(MemoryArea mem)
+        private IEnumerable<RtlInstructionCluster> CreateA32Rewriter(ByteMemoryArea mem)
         {
             var arch = new Arm32Architecture(sc, "arm");
             var rdr = new LeImageReader(mem, mem.BaseAddress);
@@ -228,7 +229,7 @@ namespace Reko.WindowsItp
             return rw;
         }
 
-        private IEnumerable<AArch32Instruction> CreateA32Disassembler(MemoryArea mem)
+        private IEnumerable<AArch32Instruction> CreateA32Disassembler(ByteMemoryArea mem)
         {
             var arch = new Arm32Architecture(sc, "arm");
             var rdr = new LeImageReader(mem, mem.BaseAddress);

@@ -18,13 +18,13 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using Reko.Core;
 using Reko.Core.Machine;
-using System.Diagnostics;
-using Reko.Core.Types;
+using Reko.Core.Memory;
 using Reko.Core.Services;
+using Reko.Core.Types;
+using System;
+using System.Collections.Generic;
 
 namespace Reko.Arch.Alpha
 {
@@ -74,7 +74,7 @@ namespace Reko.Arch.Alpha
             };
         }
 
-        public override AlphaInstruction NotYetImplemented(uint wInstr, string message)
+        public override AlphaInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("AlphaDis", this.addr, this.rdr, message);
@@ -279,7 +279,7 @@ namespace Reko.Arch.Alpha
             {
                 var functionCode = ((int)uInstr >> 5) & 0x7FF;
                 if (!decoders.TryGetValue(functionCode, out var decoder))
-                    return dasm.NotYetImplemented(uInstr, "");
+                    return dasm.NotYetImplemented("");
                 else
                     return decoder.Decode(uInstr, dasm);
             }

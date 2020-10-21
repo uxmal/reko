@@ -452,10 +452,11 @@ namespace Reko.Arch.X86
 
                 new PrefixedDecoder(
                     dec: Instr(Mnemonic.bsf, Gv,Ev),
+                    dec66: Instr(Mnemonic.bsf, Gw,Ew),
                     decF3: Instr(Mnemonic.tzcnt, Gv,Ev)),
                 new PrefixedDecoder(
                     dec: Instr(Mnemonic.bsr, Gv,Ev),
-                    dec66: Instr(Mnemonic.bsr, Gv,Ev),
+                    dec66: Instr(Mnemonic.bsr, Gw,Ew),
                     decF3: Instr(Mnemonic.lzcnt, Gv,Ev)),
 				Instr(Mnemonic.movsx, Gv,Eb),
 				Instr(Mnemonic.movsx, Gv,Ew),

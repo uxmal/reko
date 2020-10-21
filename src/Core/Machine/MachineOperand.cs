@@ -42,17 +42,24 @@ namespace Reko.Core.Machine
 
         public sealed override string ToString()
         {
-            return ToString(MachineInstructionWriterOptions.Default);
+            return ToString(MachineInstructionRendererOptions.Default);
         }
 
-		public string ToString(MachineInstructionWriterOptions options)
+		public string ToString(MachineInstructionRendererOptions options)
 		{
-            var sr = new StringRenderer(Address.Ptr64(~0ul));
-            Write(sr, options);
+            var sr = new StringRenderer();
+            Render(sr, options);
 			return sr.ToString();
 		}
 
-        public abstract void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options);
+        public void Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            renderer.BeginOperand();
+            DoRender(renderer, options);
+            renderer.EndOperand();
+        }
+
+        protected abstract void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options);
 
         /// <summary>
         /// Converts a signed integer constant to string representatioon.
@@ -132,20 +139,20 @@ namespace Reko.Core.Machine
 
         public Constant Value { get; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             var s = FormatValue(Value);
             if (Value.DataType is PrimitiveType pt)
             {
                 if (pt.Domain == Domain.Pointer)
-                    writer.WriteAddress(s, Address.FromConstant(Value));
+                    renderer.WriteAddress(s, Address.FromConstant(Value));
                 else
-                    writer.WriteString(s);
+                    renderer.WriteString(s);
             }
             else if (Value.DataType is Pointer)
-                writer.WriteAddress(s, Address.FromConstant(Value));
+                renderer.WriteAddress(s, Address.FromConstant(Value));
             else 
-                writer.WriteString(s);
+                renderer.WriteString(s);
         }
 
         public static ImmediateOperand Byte(byte value)
@@ -238,9 +245,9 @@ namespace Reko.Core.Machine
             return new AddressOperand(Address.Ptr64(a), PrimitiveType.Ptr64);
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteAddress(Address.ToString(), Address);
+            renderer.WriteAddress(Address.ToString(), Address);
         }
     }
 
@@ -261,9 +268,9 @@ namespace Reko.Core.Machine
 			get { return fpuReg; }
 		}
 
-		public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+		protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-			writer.WriteString("st(" + fpuReg + ")");
+			renderer.WriteString("st(" + fpuReg + ")");
 		}
 	}
 }

@@ -35,8 +35,8 @@ namespace Reko.UnitTests.Loading
         public void Setup()
         {
             this.sc = new ServiceContainer();
-            var diagSvc = new Mock<IDiagnosticsService>();
-            sc.AddService<IDiagnosticsService>(diagSvc.Object);
+            var listener = new Mock<DecompilerEventListener>();
+            sc.AddService<DecompilerEventListener>(listener.Object);
         }
 
         /*

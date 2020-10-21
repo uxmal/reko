@@ -41,7 +41,7 @@ namespace Reko.Core
         event EventHandler BeforeStart;
 
         /// <summary>
-        /// This events get fired if the emulator ran into an exception while executing.
+        /// This event get fired if the emulator ran into an exception while executing.
         /// </summary>
         event EventHandler<EmulatorExceptionEventArgs> ExceptionRaised;
 

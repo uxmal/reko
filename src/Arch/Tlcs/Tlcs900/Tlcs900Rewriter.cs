@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -310,7 +311,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("Tlcs900_rw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("Tlcs900_rw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
-    }
+        }
 }

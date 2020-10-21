@@ -38,13 +38,11 @@ namespace Reko.Environments.MacOS.Classic
     public class MpwPascalInterfaceLoader : MetadataLoader
     {
         private readonly byte[] bytes;
-        private readonly IDiagnosticsService diagSvc;
 
         public MpwPascalInterfaceLoader(IServiceProvider services, string filename, byte[] bytes)
             : base(services, filename, bytes)
         {
             this.bytes = bytes;
-            this.diagSvc = this.Services.RequireService<IDiagnosticsService>();
         }
 
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)

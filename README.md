@@ -5,7 +5,7 @@
  [![Join the chat at https://gitter.im/uxmal/reko](https://badges.gitter.im/uxmal/reko.svg)](https://gitter.im/uxmal/reko?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
  [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/uxmal/reko?branch=master&svg=true)](https://ci.appveyor.com/project/uxmal/reko)
  
-<img align="right" src="https://raw.githubusercontent.com/uxmal/reko/analysis-development/web/images/reko.png" /> 
+<img align="right" src="web/images/reko.png" /> 
 
 **Reko** (Swedish: "decent, obliging") is a C# project containing
 a decompiler for machine code binaries.  This project is freely

@@ -24,6 +24,7 @@ using NUnit.Framework;
 using Reko.Arch.MicrochipPIC.Common;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Libraries.Microchip;
 using System.ComponentModel.Design;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
                 (byte) w,
                 (byte) (w >> 8),
             }).ToArray();
-            var image = new MemoryArea(baseAddr, bytes);
+            var image = new ByteMemoryArea(baseAddr, bytes);
             var rdr = new LeImageReader(image, 0);
             var dasm = picModel.CreateDisassembler(arch, rdr);
             return dasm.First();

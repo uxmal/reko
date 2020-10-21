@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Lib;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -60,7 +61,7 @@ namespace Reko.Core
         /// <param name="segmentName">The name of the segment.</param>
         /// <param name="mode">The access mode of the segment.</param>
         /// <returns>The resulting image segment.</returns>
-        public ImageSegment AddSegment(MemoryArea mem, string segmentName, AccessMode mode)
+        public ImageSegment AddSegment(ByteMemoryArea mem, string segmentName, AccessMode mode)
         {
             var segment = new ImageSegment(
                     segmentName,
@@ -80,7 +81,7 @@ namespace Reko.Core
         /// <param name="addr">The address at which the segment starts.</param>
         /// <param name="mode">The access mode of the segment.</param>
         /// <returns>The resulting image segment.</returns>
-        public ImageSegment AddOverlappingSegment(string segmentName, MemoryArea mem, Address addr, AccessMode mode)
+        public ImageSegment AddOverlappingSegment(string segmentName, ByteMemoryArea mem, Address addr, AccessMode mode)
         {
             var segment = new ImageSegment(
                     segmentName,

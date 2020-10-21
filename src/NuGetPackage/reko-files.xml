@@ -17,24 +17,29 @@
         <var id="var.Arm.TargetPath" >../Arch/Arm/$TargetDir$/Reko.Arch.Arm.dll</var>
         <var id="var.Avr.TargetPath" >../Arch/Avr/$TargetDir$/Reko.Arch.Avr.dll</var>
         <var id="var.Blackfin.TargetPath" >../Arch/Blackfin/$TargetDir$/Reko.Arch.Blackfin.dll</var>
+        <var id="var.CompactRisc.TargetPath" >../Arch/CompactRisc/$TargetDir$/Reko.Arch.CompactRisc.dll</var>
         <var id="var.Cray.TargetPath" >../Arch/Cray/$TargetDir$/Reko.Arch.Cray.dll</var>
         <var id="var.H8.TargetPath" >../Arch/H8/$TargetDir$/Reko.Arch.H8.dll</var>
+        <var id="var.IA64.TargetPath" >../Arch/IA64/$TargetDir$/Reko.Arch.IA64.dll</var>
         <var id="var.LatticeMico.TargetPath" >../Arch/LatticeMico/$TargetDir$/Reko.Arch.LatticeMico.dll</var>
         <var id="var.M6800.TargetPath" >../Arch/M6800/$TargetDir$/Reko.Arch.M6800.dll</var>
         <var id="var.M68k.Design.TargetPath" >../Arch/M68k.Design/$TargetFwk472Dir$/Reko.Arch.M68k.Design.dll</var>
         <var id="var.M68k.TargetPath" >../Arch/M68k/$TargetDir$/Reko.Arch.M68k.dll</var>
-        <var id="var.MSP430.TargetPath" >../Arch/MSP430/$TargetDir$/Reko.Arch.MSP430.dll</var>
-        <var id="var.MicroBlaze.TargetPath"          >../Arch/MicroBlaze/$TargetDir$/Reko.Arch.MicroBlaze.dll</var>
-        <var id="var.Microchip.Utils.TargetPath"     >../Libraries/Microchip/Utils/$TargetDir$/Reko.Libraries.Microchip.Utils.dll</var>
+        <var id="var.MCore.TargetPath" >../Arch/MCore/$TargetDir$/Reko.Arch.MCore.dll</var>
+        <var id="var.MicroBlaze.TargetPath" >../Arch/MicroBlaze/$TargetDir$/Reko.Arch.MicroBlaze.dll</var>
+        <var id="var.Microchip.Utils.TargetPath" >../Libraries/Microchip/Utils/$TargetDir$/Reko.Libraries.Microchip.Utils.dll</var>
         <var id="var.MicrochipPIC.Design.TargetPath" >../Arch/MicrochipPIC.Design/$TargetFwk472Dir$/Reko.Arch.MicrochipPIC.Design.dll</var>
         <var id="var.MicrochipPIC.TargetPath" >../Arch/Microchip/$TargetDir$/Reko.Arch.MicrochipPIC.dll</var>
+        <var id="var.MilStd1750.TargetPath" >../Arch/MilStd1750/$TargetDir$/Reko.Arch.MilStd1750.dll</var>
         <var id="var.Mips.TargetPath" >../Arch/Mips/$TargetDir$/Reko.Arch.Mips.dll</var>
         <var id="var.Mos6502.TargetPath" >../Arch/Mos6502/$TargetDir$/Reko.Arch.Mos6502.dll</var>
+        <var id="var.MSP430.TargetPath" >../Arch/MSP430/$TargetDir$/Reko.Arch.MSP430.dll</var>
         <var id="var.OpenRISC.TargetPath" >../Arch/OpenRISC/$TargetDir$/Reko.Arch.OpenRISC.dll</var>
         <var id="var.PaRisc.TargetPath" >../Arch/PaRisc/$TargetDir$/Reko.Arch.PaRisc.dll</var>
         <var id="var.Pdp11.TargetPath" >../Arch/Pdp11/$TargetDir$/Reko.Arch.Pdp11.dll</var>
         <var id="var.PowerPC.Design.TargetPath" >../Arch/PowerPC.Design/$TargetFwk472Dir$/Reko.Arch.PowerPC.Design.dll</var>
         <var id="var.PowerPC.TargetPath" >../Arch/PowerPC/$TargetDir$/Reko.Arch.PowerPC.dll</var>
+        <var id="var.Qualcomm.TargetPath" >../Arch/Qualcomm/$TargetDir$/Reko.Arch.Qualcomm.dll</var>
         <var id="var.RiscV.TargetPath" >../Arch/RiscV/$TargetDir$/Reko.Arch.RiscV.dll</var>
         <var id="var.Rl78.TargetPath" >../Arch/Rl78/$TargetDir$/Reko.Arch.Rl78.dll</var>
         <var id="var.Sparc.TargetPath" >../Arch/Sparc/$TargetDir$/Reko.Arch.Sparc.dll</var>
@@ -44,6 +49,7 @@
         <var id="var.WE32100.TargetPath" >../Arch/WE32100/$TargetDir$/Reko.Arch.WE32100.dll</var>
         <var id="var.X86.Design.TargetPath" >../Arch/X86.Design/$TargetFwk472Dir$/Reko.Arch.X86.Design.dll</var>
         <var id="var.X86.TargetPath" >../Arch/X86/$TargetDir$/Reko.Arch.X86.dll</var>
+        <var id="var.XCore.TargetPath" >../Arch/XCore/$TargetDir$/Reko.Arch.XCore.dll</var>
         <var id="var.Xtensa.TargetPath" >../Arch/Xtensa/$TargetDir$/Reko.Arch.Xtensa.dll</var>
         <var id="var.Z80.TargetPath" >../Arch/Z80/$TargetDir$/Reko.Arch.Z80.dll</var>
         <var id="var.i8051.TargetPath" >../Arch/i8051/$TargetDir$/Reko.Arch.i8051.dll</var>
@@ -93,6 +99,7 @@
         <var id="var.HpSom.TargetPath" >../ImageLoaders/HpSom/$TargetDir$/Reko.ImageLoaders.HpSom.dll</var>
         <var id="var.Hunk.TargetPath" >../ImageLoaders/Hunk/$TargetDir$/Reko.ImageLoaders.Hunk.dll</var>
         <var id="var.IntelHex.TargetPath" >../ImageLoaders/IntelHex/$TargetDir$/Reko.ImageLoaders.IntelHex.dll</var>
+        <var id="var.Ldm.TargetPath" >../ImageLoaders/Ldm/$TargetDir$/Reko.ImageLoaders.Ldm.dll</var>
         <var id="var.MachO.TargetPath" >../ImageLoaders/MachO/$TargetDir$/Reko.ImageLoaders.MachO.dll</var>
         <var id="var.MzExe.TargetPath" >../ImageLoaders/MzExe/$TargetDir$/Reko.ImageLoaders.MzExe.dll</var>
         <var id="var.Nro.TargetPath" >../ImageLoaders/Nro/$TargetDir$/Reko.ImageLoaders.Nro.dll</var>
@@ -135,6 +142,7 @@
         <File Source="$(var.Nro.TargetPath)" nuget_target="f:" />
         <File Source="$(var.OdbgScript.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Srec.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.TekHex.TargetPath)" nuget_target="f:" />
         <File Source="$(var.VmsExe.TargetPath)" nuget_target="f:" />
         <File Source="$(var.WebAssembly.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Xbe.TargetPath)" nuget_target="f:" />
@@ -274,6 +282,10 @@
         
         <!-- PIC definition files -->
         <File Source="$(var.SolutionDir)..\src\tools\genPICdb\picdb.zip" nuget_target="c:" />
+      
+        <!-- Content -->
+        <File Source="$(var.SolutionDir)..\web\images\reko.png" nuget_target="i:" />
+        
     </Component>
 
 
@@ -326,43 +338,43 @@
     </Component>
 
     <Component Id="Comp_Os2_32" Directory="Os2_32Folder" Guid="17698BD8-9701-44F7-8D05-F42F450334C6">
-      <File Source="$(var.OS2.ProjectDir)32\bdcalls.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\dive.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\DOSCALLS.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\ftpapi.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\glut.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\helpmgr.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\kbdcalls.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\libaux.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\libtk.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\libuni.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\mciapi.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\mdm.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\mmio.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\moncalls.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\moucalls.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\msg.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\nampipes.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\nls.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\opengl.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\pmctls.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\pmdrag.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\pmgpi.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\pmshapi.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\pmspl.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\pmviop.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\pmwin.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\pmwp.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\quecalls.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\rexx.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\rexxapi.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\rtmidi.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\sesmgr.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\sw.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\tcpip32.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\uconv.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\upm32.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
-      <File Source="$(var.OS2.ProjectDir)32\viocalls.def" nuget_target="c:\os2-32" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\bdcalls.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\dive.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\DOSCALLS.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\ftpapi.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\glut.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\helpmgr.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\kbdcalls.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\libaux.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\libtk.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\libuni.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\mciapi.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\mdm.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\mmio.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\moncalls.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\moucalls.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\msg.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\nampipes.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\nls.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\opengl.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\pmctls.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\pmdrag.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\pmgpi.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\pmshapi.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\pmspl.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\pmviop.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\pmwin.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\pmwp.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\quecalls.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\rexx.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\rexxapi.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\rtmidi.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\sesmgr.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\sw.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\tcpip32.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\uconv.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\upm32.def" nuget_target="c:/os-32" />
+      <File Source="$(var.OS2.ProjectDir)32\viocalls.def" nuget_target="c:/os-32" />
     </Component>
 
 </reko-files>

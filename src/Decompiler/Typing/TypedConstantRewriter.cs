@@ -75,7 +75,7 @@ namespace Reko.Typing
             DataType dtInferred = c.DataType;
             if (dtInferred == null)
             {
-                eventListener.Warn(new NullCodeLocation(""),
+                eventListener.Warn(
                     $"The equivalence class {c.TypeVariable!.Name} has a null data type");
                 dtInferred = c.TypeVariable.DataType;
             }
@@ -100,7 +100,6 @@ namespace Reko.Typing
                 if (!mpSelectorToSegId.TryGetValue(addr.Selector.Value, out Identifier segId))
                 {
                     eventListener.Warn(
-                        new NullCodeLocation(""),
                         "Selector {0:X4} has no known segment.",
                         addr.Selector.Value);
                     return addr;

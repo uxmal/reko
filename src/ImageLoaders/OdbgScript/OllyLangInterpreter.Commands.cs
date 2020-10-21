@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -1165,7 +1166,7 @@ rulong hwnd;
                 if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment segment))
                     throw new AccessViolationException();
                 byte[] membuf = new byte[memlen];
-                if (segment.MemoryArea.TryReadBytes(ea, memlen, membuf))
+                if (segment.MemoryArea is ByteMemoryArea bmem && bmem.TryReadBytes(ea, memlen, membuf))
                 {
                     int bytecount = finddata.Length / 2;
 
@@ -3335,7 +3336,9 @@ string param;
                     var ea = Address.Ptr32((uint) CSP);
                     if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment segment))
                         throw new AccessViolationException();
-                    dw = segment.MemoryArea.ReadLeUInt32(ea);
+                    if (!segment.MemoryArea.TryReadLeUInt32(ea, out var value))
+                        throw new AccessViolationException();
+                    dw = value;
                     return SetRulong(args[0], dw);
                 }
                 return true;

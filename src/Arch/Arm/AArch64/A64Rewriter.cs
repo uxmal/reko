@@ -26,6 +26,7 @@ using System.Linq;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -243,7 +244,7 @@ namespace Reko.Arch.Arm.AArch64
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("AArch64Rw", this.instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("AArch64Rw", this.instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         //$TODO: prefer this RewriteOp

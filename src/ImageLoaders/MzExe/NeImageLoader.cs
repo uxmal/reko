@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Windows;
@@ -99,9 +100,9 @@ namespace Reko.ImageLoaders.MzExe
 
         private readonly SortedList<Address, ImageSymbol> imageSymbols;
         private readonly Dictionary<uint, Tuple<Address, ImportReference>> importStubs;
-        private readonly IDiagnosticsService diags;
+        private readonly DecompilerEventListener listener;
         private readonly uint lfaNew;
-        private MemoryArea mem;
+        private ByteMemoryArea mem;
         private SegmentMap segmentMap;
         private List<string> moduleNames;
         private NeSegment[] segments;
@@ -123,7 +124,7 @@ namespace Reko.ImageLoaders.MzExe
         public NeImageLoader(IServiceProvider services, string filename, byte[] rawBytes, uint e_lfanew)
             : base(services, filename, rawBytes)
         {
-            this.diags = Services.RequireService<IDiagnosticsService>();
+            this.listener = Services.RequireService<DecompilerEventListener>();
             this.lfaNew = e_lfanew;
             this.importStubs = new Dictionary<uint, Tuple<Address, ImportReference>>();
             this.imageSymbols = new SortedList<Address, ImageSymbol>();
@@ -434,7 +435,7 @@ namespace Reko.ImageLoaders.MzExe
             this.segmentMap = new SegmentMap(segFirst.Address);
             foreach (var segment in segments)
             {
-                this.mem = new MemoryArea(
+                this.mem = new ByteMemoryArea(
                     segment.Address, 
                     new byte[Math.Max(segment.Alloc, segment.DataLength)]);
                 LoadSegment(segment, mem);
@@ -486,7 +487,7 @@ namespace Reko.ImageLoaders.MzExe
             return segs.ToArray();
         }
 
-        private bool LoadSegment(NeSegment neSeg, MemoryArea mem)
+        private bool LoadSegment(NeSegment neSeg, ByteMemoryArea mem)
         {
             Array.Copy(
                 RawImage,
@@ -707,7 +708,7 @@ namespace Reko.ImageLoaders.MzExe
                 // we ignore it for now.
                 if (rep.address_type > NE_RADDR.OFFSET32)
                 {
-                    diags.Error(
+                    listener.Error(
                         string.Format(
                             "Module {0}: unknown relocation address type {1:X2}. Please report",
                             module, rep.address_type));
@@ -739,7 +740,7 @@ namespace Reko.ImageLoaders.MzExe
                         // Borland creates additive records with offset zero. Strange, but OK.
                         w = mem.ReadLeUInt16(sp);
                         if (w != 0)
-                            diags.Error(string.Format("Additive selector to {0:X4}. Please report.", w));
+                            listener.Error(string.Format("Additive selector to {0:X4}. Please report.", w));
                         else
                             mem.WriteLeUInt16(sp, address.Selector.Value);
                         break;
@@ -783,8 +784,7 @@ namespace Reko.ImageLoaders.MzExe
             return true;
 
             unknown:
-            var svc = Services.RequireService<IDiagnosticsService>();
-            svc.Warn("{0}: unknown ADDR TYPE {1},  " +
+            listener.Warn("{0}: unknown ADDR TYPE {1},  " +
                 "TYPE {2},  OFFSET {3:X4},  TARGET {4:X4} {5:X4}",
                 seg.Address.Selector, rep.address_type, rep.relocation_type,
                 rep.offset, rep.target1, rep.target2);

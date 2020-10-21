@@ -30,6 +30,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Text;
 using System.Linq;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.X86.Assembler
 {
@@ -103,7 +104,7 @@ namespace Reko.Arch.X86.Assembler
             symbolSegments = new Dictionary<Symbol, AssembledSegment>();
             this.SegmentOverride = RegisterStorage.None;
             segments = program.SegmentMap.Segments.Values
-                .Select(seg => new AssembledSegment(new Emitter(seg.MemoryArea.Bytes), new Symbol(seg.Name)))
+                .Select(seg => new AssembledSegment(new Emitter(seg.MemoryArea), new Symbol(seg.Name)))
                 .ToList();
             if (!program.SegmentMap.TryFindSegment(addrStart, out var segmentToMutate))
                 throw new InvalidOperationException($"Address {addrStart} is not a valid location in the program.");
@@ -132,7 +133,7 @@ namespace Reko.Arch.X86.Assembler
         {
             var stm = new MemoryStream();
             LoadSegments(stm);
-            var mem = new MemoryArea(addrBase, stm.ToArray());
+            var mem = new ByteMemoryArea(addrBase, stm.ToArray());
             RelocateSegmentReferences(mem);
             return new Program(
                 new SegmentMap(
@@ -162,13 +163,13 @@ namespace Reko.Arch.X86.Assembler
             }
         }
 
-        private void RelocateSegmentReferences(MemoryArea image)
+        private void RelocateSegmentReferences(ByteMemoryArea bmem)
         {
             foreach (var seg in segments)
             {
                 foreach (var reloc in seg.Relocations)
                 {
-                    image.WriteLeUInt16((uint)((reloc.Segment.Selector - addrBase.Selector!.Value) * 16u + reloc.Offset), seg.Selector);
+                    bmem.WriteLeUInt16((uint)((reloc.Segment.Selector - addrBase.Selector!.Value) * 16u + reloc.Offset), seg.Selector);
                 }
             }
         }

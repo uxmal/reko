@@ -31,25 +31,25 @@ namespace Reko.Arch.Avr.Avr32
         public override string MnemonicAsString => Mnemonic.ToString();
         public Avr32Condition Condition { get; set; }
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            RenderMnemonic(writer, options);
-            base.RenderOperands(writer, options);
+            RenderMnemonic(renderer, options);
+            base.RenderOperands(renderer, options);
         }
 
-        private void RenderMnemonic(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        private void RenderMnemonic(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             var sb = new StringBuilder(Mnemonic.ToString().Replace('_', '.'));
             if (Condition != Avr32Condition.al)
             {
                 sb.Append(Condition.ToString());
             }
-            writer.WriteMnemonic(sb.ToString());
+            renderer.WriteMnemonic(sb.ToString());
         }
 
-        protected override void RenderOperand(MachineOperand operand, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            base.RenderOperand(operand, writer, options);
+            base.RenderOperand(operand, renderer, options);
         }
     }
 }

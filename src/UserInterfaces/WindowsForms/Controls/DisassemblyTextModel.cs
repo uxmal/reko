@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -59,7 +60,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
             this.addrStart = Address.Max(segment.Address, mem.BaseAddress);
             this.position = addrStart;
-            this.addrEnd = Address.Min(segment.Address + segment.Size, mem.EndAddress);
+            //$BUG: the BaseAddress + length is unsafe! it will overflow!
+            this.addrEnd = Address.Min(segment.Address + segment.Size, mem.BaseAddress + mem.Length);
         }
 
         public object StartPosition { get { return addrStart; } }
@@ -83,10 +85,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     seg.MemoryArea != null &&
                     seg.MemoryArea.IsValidAddress(addr))
                 {
-                    var options = new MachineInstructionWriterOptions(
+                    var options = new MachineInstructionRendererOptions(
                         flags: ShowPcRelative
-                            ? MachineInstructionWriterFlags.None
-                            : MachineInstructionWriterFlags.ResolvePcRelativeAddress);
+                            ? MachineInstructionRendererFlags.None
+                            : MachineInstructionRendererFlags.ResolvePcRelativeAddress);
                     var arch = GetArchitectureForAddress(addr);
                     var dasm = program.CreateDisassembler(arch, Align(position)).GetEnumerator();
                     while (count != 0 && dasm.MoveNext())
@@ -122,14 +124,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             Program program,
             IProcessorArchitecture arch,
             MachineInstruction instr,
-            MachineInstructionWriterOptions options)
+            MachineInstructionRendererOptions options)
         {
             var line = new List<TextSpan>();
             var addr = instr.Address;
             line.Add(new AddressSpan(addr.ToString() + " ", addr, "link"));
             line.Add(new InstructionTextSpan(instr, BuildBytes(program, arch, instr), "dasm-bytes"));
             var dfmt = new DisassemblyFormatter(program, arch, instr, line);
-            dfmt.Address = instr.Address;
             instr.Render(dfmt, options);
             dfmt.NewLine();
             return new LineSpan(position, line.ToArray());
@@ -137,9 +138,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private Address Align(Address addr)
         {
-            uint byteAlign = (uint)program.Architecture.InstructionBitSize / 8u;
+            var arch = program.Architecture;
+            uint addrAlign = (uint)(arch.InstructionBitSize / arch.MemoryGranularity);
             ulong linear = addr.ToLinear();
-            var rem = linear % byteAlign;
+            var rem = linear % addrAlign;
             return addr - (int)rem;
         }
 
@@ -150,13 +152,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             var bitSize = arch.InstructionBitSize;
             var byteSize = (bitSize + 7) / 8;
             var instrByteFormat = $"{{0:X{byteSize * 2}}} ";      // 2 characters for each byte
-            var instrByteSize = PrimitiveType.CreateWord(bitSize);
+            var instrSize = PrimitiveType.CreateWord(bitSize);
 
             var sb = new StringBuilder();
             var rdr = program.CreateImageReader(arch, instr.Address);
             for (int i = 0; i < instr.Length; i += byteSize)
             {
-                if (rdr.TryRead(instrByteSize, out var v))
+                if (rdr.TryRead(instrSize, out var v))
                 {
                     sb.AppendFormat(instrByteFormat, v.ToUInt64());
                 }
@@ -206,10 +208,19 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             if (addrEnd.ToLinear() == 0)
                 byteOffset = Math.Abs(byteOffset);
-            int bitSize = program.Architecture != null
-                ? program.Architecture.InstructionBitSize
-                : 8;
-            return (int)(8 * byteOffset / bitSize);
+            int bitSize;
+            int unitSize;
+            if (program.Architecture != null)
+            {
+                bitSize = program.Architecture.InstructionBitSize;
+                unitSize = program.Architecture.MemoryGranularity;
+            }
+            else
+            {
+                bitSize = 8;
+                unitSize = 8;
+            }
+            return (int)(unitSize * byteOffset / bitSize);
         }
 
         /// <summary>

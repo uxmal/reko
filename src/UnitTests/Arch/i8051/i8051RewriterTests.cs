@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.i8051;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ namespace Reko.UnitTests.Arch.i8051
 
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            return new i8051Rewriter(arch, new BeImageReader(mem, 0), new i8051State(arch), binder, host);
+            return new i8051Rewriter(arch, mem.CreateBeReader(0), new i8051State(arch), binder, host);
         }
 
         [Test]

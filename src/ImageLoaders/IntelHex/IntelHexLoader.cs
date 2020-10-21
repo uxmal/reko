@@ -21,6 +21,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
 using System.Collections;
@@ -202,7 +203,7 @@ namespace Reko.ImageLoaders.IntelHex
                 }
                 catch (IntelHexException ex)
                 {
-                    listener.Error(new NullCodeLocation(""), ex.Message);
+                    listener.Error(ex.Message);
                     return null;
                 }
             }
@@ -213,8 +214,9 @@ namespace Reko.ImageLoaders.IntelHex
             int i = 0;
             foreach (var mchk in memChunks)
             {
-                var mem = new MemoryArea(mchk.BaseAddress, mchk.Datum.ToArray());
-                var seg = new ImageSegment($"CODE_{i++:d2}", mem, AccessMode.ReadExecute);
+                var mem = arch.CreateMemoryArea(mchk.BaseAddress, mchk.Datum.ToArray());
+                var seg = new ImageSegment($"CODE_{i:d2}", mem, AccessMode.ReadExecute);
+                ++i;
                 segs.AddSegment(seg);
             }
 

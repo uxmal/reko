@@ -29,6 +29,7 @@ namespace Reko.Core.Machine
 {
     public class ConditionalDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
         where TInstr : MachineInstruction
+        where TMnemonic : struct
     {
         private readonly Bitfield[] bitfields;
         private readonly Predicate<uint> predicate;
@@ -52,7 +53,7 @@ namespace Reko.Core.Machine
 
         public override TInstr Decode(uint wInstr, TDasm dasm)
         {
-            DumpMaskedInstruction(wInstr, this.bitfields, tag);
+            DumpMaskedInstruction(32, wInstr, this.bitfields, tag);
             uint n = Bitfield.ReadFields(bitfields, wInstr);
             var decoder = predicate(n) ? trueDecoder : falseDecoder;
             return decoder.Decode(wInstr, dasm);

@@ -22,6 +22,7 @@ using Reko.Core.Assemblers;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -85,10 +86,10 @@ namespace Reko.Core
         /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred endianness of the processor.
         /// </summary>
-        /// <param name="img">Program image to read</param>
+        /// <param name="memoryArea">Memory area to read</param>
         /// <param name="addr">Address at which to start</param>
         /// <returns>An <seealso cref="EndianImageReader"/> of the appropriate endianness</returns>
-        EndianImageReader CreateImageReader(MemoryArea img, Address addr);
+        EndianImageReader CreateImageReader(MemoryArea memoryArea, Address addr);
 
         /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred 
@@ -169,6 +170,19 @@ namespace Reko.Core
             IStorageBinder binder,
             CallSite site,
             Expression callee);
+
+        /// <summary>
+        /// Create a <see cref="MemoryArea"/> appropriate for this processor.
+        /// </summary>
+        MemoryArea CreateMemoryArea(Address baseAddress, byte[] bytes);
+
+        /// <summary>
+        /// Reinterprets a string of raw bits as a floating point number appropriate
+        /// for the current architecture.
+        /// </summary>
+        /// <param name="rawBits">Raw bits to be interpreted.</param>
+        /// <returns></returns>
+        Constant ReinterpretAsFloat(Constant rawBits);
 
         /// <summary>
         /// Creates a processor emulator for this architecture.
@@ -313,6 +327,12 @@ namespace Reko.Core
         /// </summary>
         int ReturnAddressOnStack { get; }
         int InstructionBitSize { get; }                     // Instruction "granularity" or alignment.
+        /// <summary>
+        /// Size of the smallest addressable memory unit, in bits
+        /// </summary>
+        /// <remarks>Most modern CPU:s have byte addressability, so this will typically be 8.
+        /// </remarks>
+        int MemoryGranularity { get; }
         RegisterStorage StackRegister { get; set;  }        // Stack pointer used by this machine.
         RegisterStorage FpuStackRegister { get; }           // FPU stack pointer used by this machine, or null if none exists.
         uint CarryFlagMask { get; }                         // Used when building large adds/subs when carry flag is used.
@@ -383,6 +403,7 @@ namespace Reko.Core
         {
             this.Services = services;
             this.Name = archId;
+            this.MemoryGranularity = 8; // Most architectures are byte-addressable.
         }
 #nullable enable
 
@@ -391,6 +412,7 @@ namespace Reko.Core
         public string? Description { get; set; }
         public EndianServices Endianness { get; protected set; }
         public PrimitiveType FramePointerType { get; protected set; }
+        public int MemoryGranularity { get; protected set; }
         public PrimitiveType PointerType { get; protected set; }
         public PrimitiveType WordWidth { get; protected set; }
         /// <summary>
@@ -431,11 +453,11 @@ namespace Reko.Core
         public virtual IAssembler CreateAssembler(string? asmDialect) => throw new NotSupportedException("This architecture doesn't support assembly language.");
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);
         public Frame CreateFrame() { return new Frame(FramePointerType); }
-        public EndianImageReader CreateImageReader(MemoryArea img, Address addr) => this.Endianness.CreateImageReader(img, addr);
-        public EndianImageReader CreateImageReader(MemoryArea img, long offsetBegin, long offsetEnd) => Endianness.CreateImageReader(img, offsetBegin, offsetEnd);
-        public EndianImageReader CreateImageReader(MemoryArea img, long off) => Endianness.CreateImageReader(img, off);
+        public EndianImageReader CreateImageReader(MemoryArea mem, Address addr) => this.Endianness.CreateImageReader(mem, addr);
+        public EndianImageReader CreateImageReader(MemoryArea mem, long offsetBegin, long offsetEnd) => Endianness.CreateImageReader(mem, offsetBegin, offsetEnd);
+        public EndianImageReader CreateImageReader(MemoryArea mem, long off) => Endianness.CreateImageReader(mem, off);
         public ImageWriter CreateImageWriter() => Endianness.CreateImageWriter();
-        public ImageWriter CreateImageWriter(MemoryArea img, Address addr) => Endianness.CreateImageWriter(img, addr);
+        public ImageWriter CreateImageWriter(MemoryArea mem, Address addr) => Endianness.CreateImageWriter(mem, addr);
         public bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value) => Endianness.TryRead(mem, addr, dt, out value);
 
         public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
@@ -465,6 +487,12 @@ namespace Reko.Core
             Expression callee)
         {
             return new FrameApplicationBuilder(this, binder, site, callee, false);
+        }
+
+        public virtual MemoryArea CreateMemoryArea(Address addr, byte[] bytes)
+        {
+            // Most CPU's -- but not all -- are byte-addressed.
+            return new ByteMemoryArea(addr, bytes);
         }
 
         /// <summary>
@@ -547,6 +575,21 @@ namespace Reko.Core
         public virtual Address MakeSegmentedAddress(Constant seg, Constant offset) { throw new NotSupportedException("This architecture doesn't support segmented addresses."); }
         public virtual void PostprocessProgram(Program program) { }
         public abstract Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state);
+
+        public virtual Constant ReinterpretAsFloat(Constant rawBits)
+        {
+            // Most platforms -- but certainly not all -- use IEEE 754 float representation.
+            if (rawBits.DataType.Size == 4)
+            {
+                return Constant.FloatFromBitpattern(rawBits.ToInt32());
+            }
+            else if (rawBits.DataType.Size == 8)
+            {
+                return Constant.FloatFromBitpattern(rawBits.ToInt64());
+            }
+            throw new NotImplementedException($"Unsupported IEEE floating point size {rawBits.DataType.BitSize}.");
+        }
+
         public virtual Dictionary<string, object>? SaveUserOptions() { return null; }
 
         public abstract bool TryParseAddress(string? txtAddr, out Address addr);

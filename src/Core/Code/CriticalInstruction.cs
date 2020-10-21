@@ -32,8 +32,6 @@ namespace Reko.Core.Code
 	{
         private static readonly CriticalInstruction instance = new CriticalInstruction();
 
-		private bool isCritical;
-
 		public static bool IsCritical(Instruction instr)
 		{
             return instr.Accept(instance);

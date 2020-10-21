@@ -67,7 +67,6 @@ namespace Reko.UnitTests.Arch.X86
             services.AddService(typeof(DecompilerEventListener), eventListener);
             services.AddService(typeof(CancellationTokenSource), new CancellationTokenSource());
             services.AddService(typeof(IFileSystemService),new FileSystemServiceImpl());
-            services.AddService(typeof(IDiagnosticsService),new FakeDiagnosticsService());
             arch = new X86ArchitectureFlat32(services, "x86-protected-32");
             win32 = new Win32Platform(services, arch);
         }

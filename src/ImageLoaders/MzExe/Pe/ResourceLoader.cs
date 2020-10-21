@@ -25,6 +25,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core;
 using System.IO;
+using Reko.Core.Memory;
 
 namespace Reko.ImageLoaders.MzExe.Pe
 {
@@ -50,10 +51,10 @@ namespace Reko.ImageLoaders.MzExe.Pe
         const uint RT_NEWMENU = (RT_MENU | RT_NEWRESOURCE);
         const uint RT_NEWDIALOG = (RT_DIALOG | RT_NEWRESOURCE);
 
-        private MemoryArea imgLoaded;
-        private uint rvaResources;
+        private readonly ByteMemoryArea imgLoaded;
+        private readonly uint rvaResources;
 
-        public ResourceLoader(MemoryArea imgLoaded, uint rvaResources)
+        public ResourceLoader(ByteMemoryArea imgLoaded, uint rvaResources)
         {
             this.imgLoaded = imgLoaded;
             this.rvaResources = rvaResources;

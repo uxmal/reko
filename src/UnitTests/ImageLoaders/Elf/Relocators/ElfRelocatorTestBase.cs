@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.ImageLoaders.Elf;
 using Reko.ImageLoaders.Elf.Relocators;
 using System;
@@ -79,7 +80,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
         protected ImageWriter Given_section(string name, uint uAddress, int len)
         {
             var addr = Address.Ptr32(uAddress);
-            var mem = new MemoryArea(addr, new byte[len]);
+            var mem = new ByteMemoryArea(addr, new byte[len]);
             var writer = new LeImageWriter(mem, 0);
             var section = new ElfSection
             {

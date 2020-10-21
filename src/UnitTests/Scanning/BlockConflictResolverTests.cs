@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Scanning;
 using System;
@@ -71,9 +72,10 @@ namespace Reko.UnitTests.Scanning
         {
             var hsc = new HeuristicScanner(null, program, host.Object, eventListener.Object);
             var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
+            //$BUG: danger of overflow
             this.proc = hsc.DisassembleProcedure(
                 mem.BaseAddress,
-                mem.EndAddress);
+                mem.BaseAddress + mem.Length);
         }
 
         private RtlBlock Given_Block(uint uAddr)
@@ -223,7 +225,7 @@ l00010009:  // pred: l00010008
             Given_Image32(0x0010000, TrickyProc);
             program.SegmentMap.AddSegment(new ImageSegment(
                 "code",
-                new MemoryArea(Address.Ptr32(0x11750000), new byte[100]),
+                new ByteMemoryArea(Address.Ptr32(0x11750000), new byte[100]),
                 AccessMode.ReadExecute));
             Given_x86_32();
             Given_RewriterHost();

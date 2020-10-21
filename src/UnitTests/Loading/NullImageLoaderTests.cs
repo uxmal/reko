@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Loading
 {
@@ -38,7 +39,7 @@ namespace Reko.UnitTests.Loading
         {
             var mmap = new SegmentMap(
                 Address.Ptr16(0x0000),
-                new ImageSegment("low_memory_area", new MemoryArea(Address.Ptr16(0x0000), new byte[0x100]), AccessMode.ReadWriteExecute));
+                new ImageSegment("low_memory_area", new ByteMemoryArea(Address.Ptr16(0x0000), new byte[0x100]), AccessMode.ReadWriteExecute));
             var arch = new Mock<IProcessorArchitecture>();
             var platform = new Mock<IPlatform>();
             platform.Setup(p => p.CreateAbsoluteMemoryMap()).Returns(mmap);
@@ -46,9 +47,9 @@ namespace Reko.UnitTests.Loading
             var ldr = new NullImageLoader(null, "foo.exe", new byte[0x1000]);
             var segMap = ldr.CreatePlatformSegmentMap(platform.Object, Address.Ptr16(0x0100), new byte[] { 0x50 });
             Assert.AreEqual(2, segMap.Segments.Count);
-            var memProg = segMap.Segments.Values.ElementAt(1).MemoryArea;
-            Assert.AreEqual(1, memProg.Length);
-            Assert.AreEqual((byte)0x50, memProg.Bytes[0]);
+            var bmemProg = (ByteMemoryArea) segMap.Segments.Values.ElementAt(1).MemoryArea;
+            Assert.AreEqual(1, bmemProg.Length);
+            Assert.AreEqual((byte)0x50, bmemProg.Bytes[0]);
         }
     }
 }

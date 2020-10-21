@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -31,7 +31,7 @@ namespace Reko.UserInterfaces.WindowsForms
 {
     public class ListboxWrapper : ControlWrapper, IListBox
     {
-        private ListBox lbx;
+        private readonly ListBox lbx;
 
         public ListboxWrapper(ListBox lbx) : base(lbx)
         {

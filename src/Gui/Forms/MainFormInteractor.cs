@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
@@ -561,20 +562,33 @@ namespace Reko.Gui.Forms
                         .SelectMany(program => 
                             program.SegmentMap.Segments.Values.SelectMany(seg =>
                             {
-                                var linBaseAddr = seg.MemoryArea.BaseAddress.ToLinear();
-                                return re.GetMatches(
-                                        seg.MemoryArea.Bytes,
-                                        0,
-                                        (int)seg.MemoryArea.Length)
-                                    .Where(o => filter(o, program))
-                                    .Select(offset => new AddressSearchHit(
-                                        program,
-                                        program.SegmentMap.MapLinearAddressToAddress(
-                                            linBaseAddr + (ulong)offset),
-                                        0));
+                                return ReMatches(program, seg, filter, re);
                             }));
                     srSvc.ShowAddressSearchResults(hits, new CodeSearchDetails());
                 }
+            }
+        }
+
+        private static IEnumerable<AddressSearchHit> ReMatches(Program program, ImageSegment seg, Func<int, Program, bool> filter, Core.Dfa.Automaton re)
+        {
+            if (seg.MemoryArea is ByteMemoryArea mem)
+            {
+                //$REVIEW: only support byte granularity searches.
+                var linBaseAddr = seg.MemoryArea.BaseAddress.ToLinear();
+                return re.GetMatches(
+                        mem.Bytes,
+                        0,
+                        (int) seg.MemoryArea.Length)
+                    .Where(o => filter(o, program))
+                    .Select(offset => new AddressSearchHit(
+                        program,
+                        program.SegmentMap.MapLinearAddressToAddress(
+                            linBaseAddr + (ulong) offset),
+                        0));
+            }
+            else
+            {
+                return new AddressSearchHit[0];
             }
         }
 

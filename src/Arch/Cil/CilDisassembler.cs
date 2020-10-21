@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -907,7 +908,7 @@ namespace Reko.Arch.Cil
             };
         }
 
-        public override CilInstruction NotYetImplemented(uint wInstr, string message)
+        public override CilInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("Dis6502", this.instr.Address, this.rdr, message);

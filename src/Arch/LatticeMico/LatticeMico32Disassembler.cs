@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 
@@ -80,7 +81,7 @@ namespace Reko.Arch.LatticeMico
             };
         }
 
-        public override LatticeMico32Instruction NotYetImplemented(uint wInstr, string message)
+        public override LatticeMico32Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("Lm32Dis", this.addr, this.rdr, message);
@@ -136,7 +137,7 @@ namespace Reko.Arch.LatticeMico
         {
             return (u, d) =>
             {
-                d.NotYetImplemented(u, msg);
+                d.NotYetImplemented(msg);
                 return false;
             };
         }

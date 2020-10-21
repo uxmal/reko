@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -131,7 +132,7 @@ namespace Reko.Arch.zSeries
             };
         }
 
-        public override zSeriesInstruction NotYetImplemented(uint wInstr, string message)
+        public override zSeriesInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("zSerDasm", this.addr, this.rdr, message);
@@ -423,7 +424,7 @@ namespace Reko.Arch.zSeries
 
             public override zSeriesInstruction Decode(ulong uInstr, zSeriesDisassembler dasm)
             {
-                return dasm.NotYetImplemented(0, msg);
+                return dasm.NotYetImplemented(msg);
             }
         }
 

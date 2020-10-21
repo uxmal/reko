@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.RiscV;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
@@ -42,8 +43,8 @@ namespace Reko.UnitTests.Arch.RiscV
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
             var segMap = new SegmentMap(baseAddr, new ImageSegment("code", mem, AccessMode.ReadExecute));
-            var state = (RiscVState) arch.CreateProcessorState();
-            return new RiscVRewriter(arch, new LeImageReader(mem, 0), state, new Frame(arch.WordWidth), host);
+            var state = arch.CreateProcessorState();
+            return arch.CreateRewriter(arch.CreateImageReader(mem, 0), state, new Frame(arch.WordWidth), host);
         }
 
         private void Given_RiscVInstructions(params uint[] words)
@@ -66,7 +67,7 @@ namespace Reko.UnitTests.Arch.RiscV
                     (byte) (w >> 24)
                 }).ToArray();
             }
-            Given_MemoryArea(new MemoryArea(LoadAddress, bytes));
+            Given_MemoryArea(new ByteMemoryArea(LoadAddress, bytes));
         }
 
         [SetUp]

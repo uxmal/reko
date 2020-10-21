@@ -39,70 +39,70 @@ namespace Reko.Arch.Rl78
 
         public RegisterStorage Prefix { get; internal set; }
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteMnemonic(Mnemonic.ToString());
-            RenderOperands(writer, options);
+            renderer.WriteMnemonic(Mnemonic.ToString());
+            RenderOperands(renderer, options);
         }
 
-        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             switch (op)
             {
             case RegisterOperand reg:
-                writer.WriteString(reg.Register.Name);
+                renderer.WriteString(reg.Register.Name);
                 return;
             case ImmediateOperand imm:
-                var sbImm = new StringBuilder("#");
+                renderer.WriteChar('#');
                 var sImm = imm.Value.ToUInt32().ToString("X");
-                writer.WriteString(sImm);
+                renderer.WriteString(sImm);
                 return;
             case MemoryOperand mem:
                 if (Prefix != null)
                 {
-                    writer.WriteFormat("{0}:", Prefix.Name);
+                    renderer.WriteFormat("{0}:", Prefix.Name);
                 }
-                writer.WriteChar('[');
+                renderer.WriteChar('[');
                 if (mem.Base != null)
                 {
-                    writer.WriteString(mem.Base.Name);
+                    renderer.WriteString(mem.Base.Name);
                     if (mem.Index != null)
                     {
-                        writer.WriteFormat("+{0}", mem.Index.Name);
+                        renderer.WriteFormat("+{0}", mem.Index.Name);
                     }
                     else if (mem.Offset != 0)
                     {
                         if (mem.Offset >= 0xA0)
-                            writer.WriteFormat("+0{0:X2}h", mem.Offset);
+                            renderer.WriteFormat("+0{0:X2}h", mem.Offset);
                         else
-                            writer.WriteFormat("+{0:X2}h", mem.Offset);
+                            renderer.WriteFormat("+{0:X2}h", mem.Offset);
                     }
                 }
                 else
                 {
                     if (mem.Offset >= 0xA000)
-                        writer.WriteFormat("0{0:X4}h", mem.Offset);
+                        renderer.WriteFormat("0{0:X4}h", mem.Offset);
                     else
-                        writer.WriteFormat("{0:X4}h", mem.Offset);
+                        renderer.WriteFormat("{0:X4}h", mem.Offset);
                     if (mem.Index != null)
                     {
-                        writer.WriteFormat("+{0}", mem.Index.Name);
+                        renderer.WriteFormat("+{0}", mem.Index.Name);
                     }
                 }
-                writer.WriteChar(']');
+                renderer.WriteChar(']');
                 return;
             case BitOperand bit:
-                this.RenderOperand(bit.Operand, writer, options);
-                writer.WriteFormat(".{0}", bit.BitPosition);
+                this.RenderOperand(bit.Operand, renderer, options);
+                renderer.WriteFormat(".{0}", bit.BitPosition);
                 return;
             case AddressOperand aop:
-                writer.WriteAddress(aop.Address.ToString(), aop.Address);
+                renderer.WriteAddress(aop.Address.ToString(), aop.Address);
                 return;
             case RegisterBankOperand rbop:
-                writer.WriteFormat("rb{0}", rbop.Bank);
+                renderer.WriteFormat("rb{0}", rbop.Bank);
                 return;
             case FlagGroupOperand grf:
-                writer.WriteString(grf.FlagGroup.Name);
+                renderer.WriteString(grf.FlagGroup.Name);
                 return;
             }
             throw new NotImplementedException($"Rl78Instruction - RenderOperand {op.GetType().Name}.");

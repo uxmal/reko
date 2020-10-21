@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -34,7 +35,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
     public class X86TextAssemblerTests
     {
         private Program program;
-        private MemoryArea mem;
+        private ByteMemoryArea bmem;
 
         [SetUp]
         public void Setup()
@@ -44,10 +45,10 @@ namespace Reko.UnitTests.Arch.X86.Assembler
         private void Given_Program()
         {
             var addrBase = Address.Ptr32(0x00100000);
-            this.mem = new MemoryArea(addrBase, new byte[256]);
+            this.bmem = new ByteMemoryArea(addrBase, new byte[256]);
             var segmentMap = new SegmentMap(
                 addrBase,
-                new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
+                new ImageSegment("code", bmem, AccessMode.ReadWriteExecute));
             var arch = (IProcessorArchitecture) new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
             this.program = new Program(segmentMap, arch, null);
         }
@@ -61,7 +62,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 
             asm.AssembleFragmentAt(program, Address.Ptr32(0x00100002), "ret");
 
-            Assert.AreEqual(0xC3, mem.Bytes[2]);
+            Assert.AreEqual(0xC3, bmem.Bytes[2]);
         }
 
         [Test]
@@ -73,12 +74,12 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 
             asm.AssembleFragmentAt(program, Address.Ptr32(0x00100002), "lupe: jmp lupe");
 
-            Assert.AreEqual(0xE9, mem.Bytes[2]);
-            Assert.AreEqual(0xFB, mem.Bytes[3]);
-            Assert.AreEqual(0xFF, mem.Bytes[4]);
-            Assert.AreEqual(0xFF, mem.Bytes[5]);
-            Assert.AreEqual(0xFF, mem.Bytes[6]);
-            Assert.AreEqual(0x00, mem.Bytes[7]);
+            Assert.AreEqual(0xE9, bmem.Bytes[2]);
+            Assert.AreEqual(0xFB, bmem.Bytes[3]);
+            Assert.AreEqual(0xFF, bmem.Bytes[4]);
+            Assert.AreEqual(0xFF, bmem.Bytes[5]);
+            Assert.AreEqual(0xFF, bmem.Bytes[6]);
+            Assert.AreEqual(0x00, bmem.Bytes[7]);
         }
     }
 }

@@ -40,9 +40,9 @@ namespace Reko.Arch.PowerPC
         public RegisterStorage BaseRegister { get; }
         public int Offset { get; } 
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString($"{Offset}({BaseRegister})");
+            renderer.WriteString($"{Offset}({BaseRegister})");
         }
     }
 }

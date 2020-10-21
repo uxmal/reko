@@ -44,13 +44,13 @@ namespace Reko.Arch.M68k
             return visitor.Visit(this);
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteChar('{');
-            writer.WriteString(BitOffset.ToString());
-            writer.WriteChar(':');
-            writer.WriteString(BitWidth.ToString());
-            writer.WriteChar('}');
+            renderer.WriteChar('{');
+            renderer.WriteString(BitOffset.ToString());
+            renderer.WriteChar(':');
+            renderer.WriteString(BitWidth.ToString());
+            renderer.WriteChar('}');
         }
     }
 }

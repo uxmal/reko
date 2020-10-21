@@ -39,8 +39,9 @@ namespace Reko.Core.Machine
     /// </remarks>
     public abstract class DisassemblerBase<TInstr, TMnemonic> : DisassemblerBase, IEnumerable<TInstr>
         where TInstr : MachineInstruction
+        where TMnemonic : struct
     {
-        public IEnumerator<TInstr> GetEnumerator()
+        public virtual IEnumerator<TInstr> GetEnumerator()
         {
             for (;;)
             {
@@ -68,7 +69,7 @@ namespace Reko.Core.Machine
         /// if the end of the reader has been reached</returns>
         public abstract TInstr? DisassembleInstruction();
 
-        public abstract TInstr NotYetImplemented(uint wInstr, string message);
+        public abstract TInstr NotYetImplemented(string message);
 
         public virtual TInstr MakeInstruction(InstrClass iclass, TMnemonic mnemonic)
         {
@@ -206,6 +207,31 @@ namespace Reko.Core.Machine
             return new MaskDecoder<TDasm, TMnemonic, TInstr>(bitPosition, bits, tag, decoders);
         }
 
+        /// <summary>
+        /// Creates a sparsely populated <see cref="WideMaskDecoder{TDasm, TMnemonic, TInstr}"/> where 
+        /// most of the wide decoders are <paramref name="defaultDecoder"/>.
+        /// </summary>
+        protected static WideMaskDecoder<TDasm, TMnemonic, TInstr> WideSparse<TDasm>(
+            int bitPosition, int bits, string tag,
+            WideDecoder<TDasm, TMnemonic, TInstr> defaultDecoder,
+            params (uint, WideDecoder<TDasm, TMnemonic, TInstr>)[] sparseDecoders)
+            where TDasm : DisassemblerBase<TInstr, TMnemonic>
+        {
+            var decoders = new WideDecoder<TDasm, TMnemonic, TInstr>[1 << bits];
+            foreach (var (code, decoder) in sparseDecoders)
+            {
+                Debug.Assert(0 <= code && code < decoders.Length);
+                Debug.Assert(decoders[code] == null, $"Decoder {code:X} has already a value!");
+                decoders[code] = decoder;
+            }
+            for (int i = 0; i < decoders.Length; ++i)
+            {
+                if (decoders[i] == null)
+                    decoders[i] = defaultDecoder;
+            }
+            return new WideMaskDecoder<TDasm, TMnemonic, TInstr>(bitPosition, bits, tag, decoders);
+        }
+
         public static MaskDecoder<TDasm, TMnemonic, TInstr> Sparse<TDasm>(
             int bitPosition, int bits,
             Decoder<TDasm, TMnemonic, TInstr> defaultDecoder,
@@ -246,5 +272,5 @@ namespace Reko.Core.Machine
         protected virtual void Dispose(bool disposing)
         {
         }
-    }
+            }
 }

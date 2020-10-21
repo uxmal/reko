@@ -31,6 +31,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.SuperH
 {
@@ -196,7 +197,7 @@ namespace Reko.Arch.SuperH
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("SHRw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("SHRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private Expression SrcOp(MachineOperand op, Func<int, int> immediateFn=null)

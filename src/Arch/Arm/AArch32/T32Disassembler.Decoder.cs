@@ -53,7 +53,7 @@ namespace Reko.Arch.Arm.AArch32
                 if (!dasm.rdr.TryReadLeUInt16(out var wNext))
                     return null;
                 wInstr = (wInstr << 16) | wNext;
-                DumpMaskedInstruction(wInstr, 0xF << (9 + 16), "");
+                DumpMaskedInstruction(32, wInstr, 0xF << (9 + 16), "");
                 return decoders[SBitfield(wInstr, 9 + 16, 4)].Decode(wInstr, dasm);
             }
         }

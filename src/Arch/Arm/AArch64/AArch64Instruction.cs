@@ -35,72 +35,78 @@ namespace Reko.Arch.Arm.AArch64
 
         public override string MnemonicAsString => Mnemonic.ToString();
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            int iOp = WriteMnemonic(writer);
+            int iOp = WriteMnemonic(renderer);
             if (Operands == null || Operands.Length == 0)
                 return;
-            writer.Tab();
-            RenderOperand(Operands[iOp++], writer, options);
+            renderer.Tab();
+            RenderOperand(Operands[iOp++], renderer, options);
             for (; iOp < Operands.Length; ++iOp)
             {
                 var op = Operands[iOp];
-                writer.WriteChar(',');
-                RenderOperand(op, writer, options);
+                renderer.WriteChar(',');
+                RenderOperand(op, renderer, options);
             }
             if (this.shiftCode == Mnemonic.Invalid)
                 return;
             if (shiftCode == Mnemonic.lsl && (shiftAmount is ImmediateOperand imm && imm.Value.IsIntegerZero))
                 return;
-            writer.WriteChar(',');
-            writer.WriteMnemonic(shiftCode.ToString());
-            writer.WriteChar(' ');
-            RenderOperand(shiftAmount, writer, options);
+            renderer.WriteChar(',');
+            renderer.WriteMnemonic(shiftCode.ToString());
+            renderer.WriteChar(' ');
+            RenderOperand(shiftAmount, renderer, options);
         }
 
-        private int WriteMnemonic(MachineInstructionWriter writer)
+        private int WriteMnemonic(MachineInstructionRenderer renderer)
         {
             if (Mnemonic == Mnemonic.b && Operands[0] is ConditionOperand cop)
             {
-                writer.WriteMnemonic($"b.{cop.Condition.ToString().ToLower()}");
+                renderer.WriteMnemonic($"b.{cop.Condition.ToString().ToLower()}");
                 return 1;
             }
-            writer.WriteMnemonic(Mnemonic.ToString());
+            renderer.WriteMnemonic(Mnemonic.ToString());
             return 0;
         }
 
-        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             switch (op)
             {
             case RegisterOperand reg:
-                WriteRegister(reg.Register, writer);
+                renderer.BeginOperand();
+                WriteRegister(reg.Register, renderer);
+                renderer.EndOperand();
                 break;
             case ImmediateOperand imm:
+                renderer.BeginOperand();
                 if (imm.Width.Domain == Domain.Real)
                 {
-                    writer.WriteFormat($"#{imm.Value}");
+                    renderer.WriteFormat($"#{imm.Value}");
                 }
                 else
                 {
                     int v = imm.Value.ToInt32();
                     if (0 <= v && v <= 9)
-                        writer.WriteFormat($"#{imm.Value.ToInt32()}");
+                        renderer.WriteFormat($"#{imm.Value.ToInt32()}");
                     else
-                        writer.WriteFormat($"#&{imm.Value.ToUInt32():X}");
+                        renderer.WriteFormat($"#&{imm.Value.ToUInt32():X}");
                 }
+                renderer.EndOperand();
                 break;
             case AddressOperand addrOp:
+                renderer.BeginOperand();
                 ulong linAddr = addrOp.Address.ToLinear();
-                writer.WriteAddress($"#&{linAddr:X}", addrOp.Address);
+                renderer.WriteAddress($"#&{linAddr:X}", addrOp.Address);
+                renderer.EndOperand();
                 break;
             default:
-                op.Write(writer, options);
+                op.Render(renderer, options);
                 break;
             }
         }
 
-        private void WriteRegister(RegisterStorage reg, MachineInstructionWriter writer)
+        private void WriteRegister(RegisterStorage reg, MachineInstructionRenderer renderer)
         {
             int elemSize;
             string elemName;
@@ -117,12 +123,12 @@ namespace Reko.Arch.Arm.AArch64
                 elemName = "h";
                 break;
             default:
-                writer.WriteString(reg.Name);
+                renderer.WriteString(reg.Name);
                 return;
             }
-            writer.WriteFormat("v{0}.", reg.Name.Substring(1));
+            renderer.WriteFormat("v{0}.", reg.Name.Substring(1));
             int nElems = (int)reg.BitSize / elemSize;
-            writer.WriteFormat("{0}{1}", nElems, elemName);
+            renderer.WriteFormat("{0}{1}", nElems, elemName);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,14 +56,14 @@ namespace Reko.Gui.Visualizers
             return procs;
         }
 
-        public int[] RenderBuffer(Program program, MemoryArea mem, Address addrStart, int length, int? mouse)
+        public int[] RenderBuffer(Program program, ByteMemoryArea bmem, Address addrStart, int length, int? mouse)
         {
-            var iStart = addrStart - mem.BaseAddress;
-            var iEnd = Math.Min(iStart + length, mem.Bytes.Length);
+            var iStart = addrStart - bmem.BaseAddress;
+            var iEnd = Math.Min(iStart + length, bmem.Bytes.Length);
             var colors = new int[iEnd - iStart];
             for (int i = 0; i < colors.Length; ++i)
             {
-                int c = mem.Bytes[iStart + i];
+                int c = bmem.Bytes[iStart + i];
                 int r = c;
                 int g = c;
                 int b = c;

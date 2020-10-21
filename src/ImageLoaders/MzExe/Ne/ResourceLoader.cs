@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Reko.Core;
+using Reko.Core.Memory;
 
 namespace Reko.ImageLoaders.MzExe.Ne
 {

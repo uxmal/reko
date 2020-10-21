@@ -79,5 +79,13 @@ namespace Reko.Core
 
         bool IsUsedInPhi(Identifier id);
         Expression MakeSegmentedAddress(Constant c1, Constant c2);
+
+        /// <summary>
+        /// Reinterprets a string of raw bits as a floating point number appropriate
+        /// for the current architecture.
+        /// </summary>
+        /// <param name="rawBits">Raw bits to be interpreted.</param>
+        /// <returns></returns>
+        Constant ReinterpretAsFloat(Constant rawBits);
     }
 }

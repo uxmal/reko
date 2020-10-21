@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -334,7 +335,7 @@ namespace Reko.Arch.M6800.M6812
             return true;
         }
 
-        public override M6812Instruction NotYetImplemented(uint wInstr, string message)
+        public override M6812Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("M6812Dis", this.addr, this.rdr, message);

@@ -61,6 +61,16 @@ namespace Reko.UnitTests.Analysis
             });
         }
 
+        private void Given_UserName(uint address, string name)
+        {
+            program.User.Procedures.Add(
+                Address.Ptr32(address),
+                new Procedure_v1
+            {
+                Name = name
+            });
+        }
+
         private void Given_UserProcDecompileFlag(uint address, bool decompile)
         {
             program.User.Procedures[Address.Ptr32(address)].Decompile = decompile;
@@ -244,6 +254,16 @@ namespace Reko.UnitTests.Analysis
             usb.BuildSignature(Address.Ptr32(0x1000), proc);
             Assert.AreEqual("(fn void (word32))", proc.Signature.ToString());
             Assert.AreSame(PrimitiveType.Word32, proc.Signature.Parameters[0].DataType);
+        }
+
+        [Test]
+        public void Usb_NameWithoutSignature()
+        {
+            Given_Procedure(0x1000);
+            Given_UserName(0x1000, "usrName");
+            var usb = new UserSignatureBuilder(program);
+            usb.BuildSignature(Address.Ptr32(0x1000), proc);
+            Assert.AreEqual("usrName", proc.Name);
         }
     }
 }

@@ -28,6 +28,7 @@ using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using Reko.Core.Operators;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.RiscV
 {

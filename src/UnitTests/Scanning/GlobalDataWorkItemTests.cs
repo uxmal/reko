@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Scanning;
@@ -45,9 +46,9 @@ namespace Reko.UnitTests.Scanning
             this.platform = new Mock<IPlatform>();
             arch.Setup(a => a.Name).Returns("FakeArch");
             arch.Setup(a => a.CreateImageReader(
-                It.IsAny<MemoryArea>(),
+                It.IsAny<ByteMemoryArea>(),
                 It.IsAny<Address>()))
-                .Returns((MemoryArea i, Address a) => new LeImageReader(i, a));
+                .Returns((ByteMemoryArea i, Address a) => new LeImageReader(i, a));
             platform.Setup(p => p.Architecture).Returns(arch.Object);
             scanner.Setup(s => s.Error(
                 It.IsAny<Address>(),
@@ -58,7 +59,7 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_Program(Address address, byte[] bytes)
         {
-            var mem = new MemoryArea(address, bytes);
+            var mem = new ByteMemoryArea(address, bytes);
             var segmentMap = new SegmentMap(address, new ImageSegment(".text", mem, AccessMode.ReadExecute));
             var imageMap = segmentMap.CreateImageMap();
             this.program = new Program

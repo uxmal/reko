@@ -2,18 +2,22 @@
 <package >
   <metadata>
     <id>Reko.Decompiler.Runtime</id>
-    <version>0.9.2.0</version>
+    <version>0.9.3-prerelease</version>
     <title>Reko Decompiler Runtime</title>
     <authors>Reko Decompiler contributors</authors>
     <owners>John Källén</owners>
-    <licenseUrl>https://github.com/uxmal/reko/blob/master/COPYING</licenseUrl>
+    <license type="expression">GPL-2.0-only</license>
     <projectUrl>https://github.com/uxmal/reko</projectUrl>
+    <icon>images\reko.png</icon>
     <iconUrl>https://github.com/uxmal/reko/blob/master/web/images/reko.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Runtime components for the Reko decompiler toolchain</description>
-    <releaseNotes></releaseNotes>
+    <releaseNotes>First release of a NuGet package.</releaseNotes>
     <copyright>Copyright (C) 1999-2020 John Källén</copyright>
     <tags>decompiler disassembler</tags>
+    <dependencies>
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
 
     <!-- Copy Reko metadata into output directory -->
     <contentFiles>

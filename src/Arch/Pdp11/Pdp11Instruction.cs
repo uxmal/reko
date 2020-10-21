@@ -34,24 +34,24 @@ namespace Reko.Arch.Pdp11
         public override int MnemonicAsInteger => (int)Mnemonic;
         public override string MnemonicAsString => Mnemonic.ToString();
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteMnemonic(Mnemonic.ToString());
-            RenderOperands(writer, options);
+            renderer.WriteMnemonic(Mnemonic.ToString());
+            RenderOperands(renderer, options);
         }
 
         protected override void RenderOperand(
             MachineOperand op,
-            MachineInstructionWriter writer,
-            MachineInstructionWriterOptions options)
+            MachineInstructionRenderer renderer,
+            MachineInstructionRendererOptions options)
         {
             if (op is ImmediateOperand)
             {
-                writer.WriteString("#" + op.ToString());
+                renderer.WriteString("#" + op.ToString());
             }
             else
             {
-                op.Write(writer, options);
+                op.Render(renderer, options);
             }
         }
     }

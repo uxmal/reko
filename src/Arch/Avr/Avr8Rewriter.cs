@@ -31,6 +31,7 @@ using Reko.Core.Types;
 using System.Diagnostics;
 using Reko.Core.Lib;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.Avr
 {
@@ -158,7 +159,7 @@ namespace Reko.Arch.Avr
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.RequireService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("Avr8_rw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("Avr8_rw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private void EmitFlags(Expression e, FlagM mod = 0, FlagM clr = 0, FlagM set = 0)

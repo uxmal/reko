@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 			MemoryOperand mop = (MemoryOperand) po.Operand;
 			Assert.IsNull(mop.Width, "Width should be undefined, but is " + mop.Width);
 			Assert.AreSame(PrimitiveType.Word16, mop.Offset.DataType);
-			Assert.AreEqual("[021E]", mop.ToString(MachineInstructionWriterOptions.Default));
+			Assert.AreEqual("[021E]", mop.ToString(MachineInstructionRendererOptions.Default));
 		}
 
 		[Test]
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 			MemoryOperand mop = (MemoryOperand) po.Operand;
 			Assert.IsNull(mop.Width, "Width should be undefined, but is " + mop.Width);
 			Assert.IsNull(mop.Offset, "Offset should be null, but is " + mop.Offset);
-			Assert.AreEqual("[eax+eax*4]", mop.ToString(MachineInstructionWriterOptions.Default));
+			Assert.AreEqual("[eax+eax*4]", mop.ToString(MachineInstructionRendererOptions.Default));
 		}
 
 		[Test]
@@ -102,7 +102,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 			MemoryOperand mop = (MemoryOperand) po.Operand;
 			Assert.IsNull(mop.Width, "Width should be undefined, but is " + mop.Width);
 			Assert.IsNotNull(po.Symbol, "Should have defined symbol foo");
-			Assert.AreEqual("[0000]", mop.ToString(MachineInstructionWriterOptions.Default));
+			Assert.AreEqual("[0000]", mop.ToString(MachineInstructionRendererOptions.Default));
 		}
 
 		private OperandParser Create16BitParser(string data)

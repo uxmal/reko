@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.IO;
 
@@ -42,8 +43,9 @@ namespace Reko.Environments.MacOS.Classic
 
         public void Relocate()
         {
-            var a5belowWriter = new BeImageWriter(platform.A5World.MemoryArea, 0);
-            var a5belowReader = new BeImageReader(platform.A5World.MemoryArea, 0);
+            var memA5 = (ByteMemoryArea) platform.A5World.MemoryArea;
+            var a5belowWriter = new BeImageWriter(memA5, 0);
+            var a5belowReader = new BeImageReader(memA5, 0);
             uint a5globalOffset = platform.A5Offset - a5dbelow;
 
             var a5WorldAddress = (UInt32) ((platform.A5World.Address.Offset + platform.A5Offset) & 0xFFFFFFFF);

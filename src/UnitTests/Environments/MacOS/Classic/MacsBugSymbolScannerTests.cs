@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.M68k;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Environments.MacOS.Classic;
 using System.ComponentModel.Design;
 using System.Text;
@@ -104,7 +105,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
             Given_Variable_Length_Symbol("my_printf");
             Given_ProgramData(0);
 
-            var mem = new MemoryArea(Address.Ptr32(0x00100000), w.ToArray());
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00100000), w.ToArray());
             var scan = new MacsBugSymbolScanner(arch, mem);
             var symbols = scan.ScanForSymbols();
 

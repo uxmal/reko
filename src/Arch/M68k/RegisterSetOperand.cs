@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -56,12 +56,12 @@ namespace Reko.Arch.M68k
             return new RegisterSetOperand((ushort) v, width);
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             uint bitSet = BitSet;
             WriteRegisterSet(
                 bitSet,
-                writer);
+                renderer);
         }
 
         /// <summary>
@@ -73,8 +73,8 @@ namespace Reko.Arch.M68k
         /// <param name="bitPos"></param>
         /// <param name="incr"></param>
         /// <param name="regType"></param>
-        /// <param name="writer"></param>
-        public void WriteRegisterSet(uint data, MachineInstructionWriter writer)
+        /// <param name="renderer"></param>
+        public void WriteRegisterSet(uint data, MachineInstructionRenderer renderer)
         {
             string sep = "";
             int maxReg = this.Width.Domain == Domain.Real ? 8 : 16;
@@ -91,10 +91,10 @@ namespace Reko.Arch.M68k
                         ++i;
                         ++run_length;
                     }
-                    writer.WriteString(sep);
-                    writer.WriteString(GetRegister(first).ToString());
+                    renderer.WriteString(sep);
+                    renderer.WriteString(GetRegister(first).ToString());
                     if (run_length > 0)
-                        writer.WriteFormat("-{0}", GetRegister(first + run_length));
+                        renderer.WriteFormat("-{0}", GetRegister(first + run_length));
                     sep = "/";
                 }
             }

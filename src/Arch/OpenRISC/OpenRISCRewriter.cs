@@ -26,6 +26,7 @@ using System.Text;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -157,7 +158,7 @@ namespace Reko.Arch.OpenRISC
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("OpenRiscRw", instrCur, rdr, "");
+            testGenSvc?.ReportMissingRewriter("OpenRiscRw", instrCur, instrCur.Mnemonic.ToString(), rdr, "");
         }
 
         private Address Addr(MachineOperand op)

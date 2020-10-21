@@ -50,27 +50,28 @@ namespace Reko.Environments.C64
         public override string MnemonicAsString => throw new NotImplementedException();
 
         public ushort LineNumber { get; set; }
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteFormat("{0} ", LineNumber);
+            renderer.WriteFormat("{0} ", LineNumber);
             bool inString = false;
             for (int i = 0; i < Line.Length; ++i)
             {
                 int b = Line[i];
                 if (inString)
                 {
-                    writer.WriteString(Encoding.UTF8.GetString(Line, i, 1));
+                    renderer.WriteString(Encoding.UTF8.GetString(Line, i, 1));
                     inString = (b != 0x22);
                 }
                 else
                 {
                     if (TokenMin <= b && b < TokenMax)
                     {
-                        writer.WriteString(TokenStrs[b - TokenMin]);
+                        renderer.WriteString(TokenStrs[b - TokenMin]);
                     }
                     else
                     {
-                        writer.WriteString(Encoding.UTF8.GetString(Line, i, 1));
+                        renderer.WriteString(Encoding.UTF8.GetString(Line, i, 1));
                     }
                     inString = (b == 0x22);
                 }

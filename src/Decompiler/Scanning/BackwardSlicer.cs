@@ -330,6 +330,7 @@ namespace Reko.Scanning
 
         class EvalCtx : EvaluationContext
         {
+
             public Expression GetDefiningExpression(Identifier id)
             {
                 return id;
@@ -375,6 +376,11 @@ namespace Reko.Scanning
                 return Address.SegPtr(
                     c1.ToUInt16(),
                     c2.ToUInt16());
+            }
+
+            public Constant ReinterpretAsFloat(Constant rawBits)
+            {
+                return Constant.Invalid;
             }
 
             public void RemoveExpressionUse(Expression expr)

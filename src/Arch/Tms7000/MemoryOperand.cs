@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -56,21 +56,21 @@ namespace Reko.Arch.Tms7000
             };
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (Address == null)
             {
-                writer.WriteChar('*');
-                writer.WriteString(Register.Name);
+                renderer.WriteChar('*');
+                renderer.WriteString(Register.Name);
             }
             else
             {
-                writer.WriteAddress("@" + Address, Address);
+                renderer.WriteAddress("@" + Address, Address);
                 if (Register != null)
                 {
-                    writer.WriteChar('(');
-                    writer.WriteString(Register.Name);
-                    writer.WriteChar(')');
+                    renderer.WriteChar('(');
+                    renderer.WriteString(Register.Name);
+                    renderer.WriteChar(')');
                 }
             }
         }

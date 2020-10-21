@@ -29,6 +29,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Types;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.RiscV
 {
@@ -261,7 +262,7 @@ namespace Reko.Arch.RiscV
             return ImmediateOperand.Int32(offset);
         }
 
-        public override RiscVInstruction NotYetImplemented(uint wInstr, string message)
+        public override RiscVInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("RiscV_dasm", this.addrInstr, this.rdr, message);
@@ -287,7 +288,7 @@ namespace Reko.Arch.RiscV
 
             public override RiscVInstruction Decode(uint hInstr, RiscVDisassembler dasm)
             {
-                return dasm.NotYetImplemented(hInstr, message);
+                return dasm.NotYetImplemented(message);
             }
         }
 

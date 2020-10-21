@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.Gui;
 using Reko.UserInterfaces.WindowsForms;
@@ -45,7 +46,7 @@ namespace Reko.UnitTests.Gui.Windows
         private ServiceContainer sp;
         private Address addrBase;
         private LowLevelView control;
-        private MemoryArea mem;
+        private ByteMemoryArea mem;
         private SegmentMap segmentMap;
         private ImageMap imageMap;
         private Program program;
@@ -139,11 +140,12 @@ namespace Reko.UnitTests.Gui.Windows
             var e = new Mock<IEnumerator<MachineInstruction>>();
             arch.Setup(a => a.Name).Returns("FakeArch");
             arch.Setup(a => a.InstructionBitSize).Returns(8);
+            arch.Setup(a => a.MemoryGranularity).Returns(8);
             arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
             arch.Setup(a => a.CreateImageReader(
-                It.IsAny<MemoryArea>(),
+                It.IsAny<ByteMemoryArea>(),
                 It.IsAny<Address>()))
-                .Returns((MemoryArea i, Address a) => new LeImageReader(i, a));
+                .Returns((ByteMemoryArea i, Address a) => new LeImageReader(i, a));
             arch.Setup(a => a.CreateDisassembler(
                 It.IsNotNull<EndianImageReader>())).Returns(dasm.Object);
             Address dummy;
@@ -160,7 +162,7 @@ namespace Reko.UnitTests.Gui.Windows
         private void Given_Program(byte[] bytes)
         {
             var addr = Address.Ptr32(0x1000);
-            var mem = new MemoryArea(addr, bytes);
+            var mem = new ByteMemoryArea(addr, bytes);
             this.segmentMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment(
@@ -211,7 +213,7 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void Given_Image(params byte[] bytes)
         {
-            mem = new MemoryArea(addrBase, bytes);
+            mem = new ByteMemoryArea(addrBase, bytes);
             segmentMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment(

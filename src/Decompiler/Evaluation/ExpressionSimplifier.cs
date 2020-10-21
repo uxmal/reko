@@ -317,7 +317,7 @@ namespace Reko.Evaluation
             // Floating point expressions with "integer" constants 
             if (IsFloatComparison(binExp.Operator) && IsNonFloatConstant(cRight))
             {
-                cRight = ReinterpretAsIeeeFloat(cRight!);
+                cRight = ctx.ReinterpretAsFloat(cRight!);
                 right = cRight;
                 binExp = new BinaryExpression(
                     binExp.Operator,
@@ -470,21 +470,6 @@ namespace Reko.Evaluation
             // No change, just return as is.
 
             return binExp;
-        }
-
-        private Constant ReinterpretAsIeeeFloat(Constant c)
-        {
-            if (c.DataType.Size == 4)
-            {
-                return Constant.FloatFromBitpattern(c.ToInt32());
-            }
-            else if (c.DataType.Size == 8)
-            {
-                return Constant.FloatFromBitpattern(c.ToInt64());
-            }
-            throw new NotImplementedException(string.Format(
-                "Unsupported IEEE floating point size {0}.",
-                c.DataType.Size));
         }
 
         private bool IsNonFloatConstant(Constant? cRight)

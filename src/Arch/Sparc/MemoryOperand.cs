@@ -40,15 +40,15 @@ namespace Reko.Arch.Sparc
             this.Offset = offset;
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteFormat("[%{0}", Base.Name);
+            renderer.WriteFormat("[%{0}", Base.Name);
             if (!Offset.IsNegative)
             {
-                writer.WriteString("+");
+                renderer.WriteString("+");
             }
-            writer.WriteString(Offset.ToInt16().ToString());
-            writer.WriteString("]");
+            renderer.WriteString(Offset.ToInt16().ToString());
+            renderer.WriteString("]");
         }
     }
 
@@ -63,9 +63,9 @@ namespace Reko.Arch.Sparc
             this.Index = r2;
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteFormat("[%{0}+%{1}]", Base, Index);
+            renderer.WriteFormat("[%{0}+%{1}]", Base, Index);
         }
     }
 }

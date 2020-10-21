@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -39,7 +40,7 @@ namespace Reko.ImageLoaders.MzExe
 
 		private int lzHdrOffset;
 		private bool isLz91;
-		private MemoryArea imgLoaded;
+		private ByteMemoryArea imgLoaded;
         private SegmentMap segmentMap;
 		private ushort lzIp;
 		private ushort lzCs;
@@ -64,13 +65,13 @@ namespace Reko.ImageLoaders.MzExe
 
             byte[] abC = RawImage;
             int entry = lzHdrOffset + exe.e_ip;
-            if (MemoryArea.CompareArrays(abC, entry, s_sig90, s_sig90.Length))
+            if (ByteMemoryArea.CompareArrays(abC, entry, s_sig90, s_sig90.Length))
             {
                 // Untested binary version
                 isLz91 = false;
                 throw new NotImplementedException("Untested");
             }
-            else if (MemoryArea.CompareArrays(abC, entry, s_sig91, s_sig91.Length))
+            else if (ByteMemoryArea.CompareArrays(abC, entry, s_sig91, s_sig91.Length))
             {
                 isLz91 = true;
             }
@@ -89,8 +90,8 @@ namespace Reko.ImageLoaders.MzExe
 
 			int lzHdrOffset = ((int) exe.e_cparHeader + (int) exe.e_cs) << 4;
 			int entry = lzHdrOffset + exe.e_ip;
-			return (MemoryArea.CompareArrays(rawImg, entry, s_sig91, s_sig91.Length) ||
-					MemoryArea.CompareArrays(rawImg, entry, s_sig90, s_sig90.Length));
+			return (ByteMemoryArea.CompareArrays(rawImg, entry, s_sig91, s_sig91.Length) ||
+					ByteMemoryArea.CompareArrays(rawImg, entry, s_sig90, s_sig90.Length));
 		}
 
 		// Fix up the relocations.
@@ -118,7 +119,7 @@ namespace Reko.ImageLoaders.MzExe
 		}
 
 		// for LZEXE ver 0.90 
-		private  SegmentMap Relocate90(byte [] pgmImg, ushort segReloc, MemoryArea pgmImgNew)
+		private  SegmentMap Relocate90(byte [] pgmImg, ushort segReloc, ByteMemoryArea pgmImgNew)
         {
             var relocations = pgmImgNew.Relocations;
 
@@ -152,7 +153,7 @@ namespace Reko.ImageLoaders.MzExe
 
 		// Unpacks the relocation entries in a LzExe 0.91 binary
 
-		private SegmentMap Relocate91(byte [] abUncompressed, ushort segReloc, MemoryArea pgmImgNew)
+		private SegmentMap Relocate91(byte [] abUncompressed, ushort segReloc, ByteMemoryArea pgmImgNew)
 		{
             const int CompressedRelocationTableAddress = 0x0158;
             var relocations = pgmImgNew.Relocations;
@@ -204,7 +205,7 @@ namespace Reko.ImageLoaders.MzExe
             set { throw new NotImplementedException(); }
         }
 
-		public MemoryArea Unpack(byte [] abC, Address addrLoad)
+		public ByteMemoryArea Unpack(byte [] abC, Address addrLoad)
 		{
 			// Extract the LZ stuff.
 
@@ -277,7 +278,7 @@ namespace Reko.ImageLoaders.MzExe
 
 			// Create a new image based on the uncompressed data.
 
-			this.imgLoaded = new MemoryArea(addrLoad, abU);
+			this.imgLoaded = new ByteMemoryArea(addrLoad, abU);
             this.segmentMap = new SegmentMap(
                 addrLoad,
                 new ImageSegment("", this.imgLoaded, AccessMode.ReadWriteExecute));

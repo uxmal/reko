@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 
@@ -81,7 +82,7 @@ namespace Reko.Arch.i8051
             };
         }
 
-        public override i8051Instruction NotYetImplemented(uint wInstr, string message)
+        public override i8051Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("i8051_dis", this.addr, this.rdr, message);

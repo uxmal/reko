@@ -30,6 +30,7 @@ namespace Reko.Core.Machine
 {
     public class MaskDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
         where TDasm : DisassemblerBase<TInstr, TMnemonic>
+        where TMnemonic : struct
         where TInstr : MachineInstruction
     {
         private readonly Bitfield bitfield;
@@ -74,7 +75,72 @@ namespace Reko.Core.Machine
         public void TraceDecoder(uint wInstr)
         {
             var shMask = this.bitfield.Mask << this.bitfield.Position;
-            DumpMaskedInstruction(wInstr, shMask, tag);
+            DumpMaskedInstruction(32, wInstr, shMask, tag);
+        }
+
+        public override string ToString()
+        {
+            return $"{{Mask {bitfield}}}";
+        }
+    }
+
+    public class WideMaskDecoder<TDasm, TMnemonic, TInstr> : WideDecoder<TDasm, TMnemonic, TInstr>
+        where TDasm : DisassemblerBase<TInstr, TMnemonic>
+        where TMnemonic : struct
+        where TInstr : MachineInstruction
+    {
+        private readonly Bitfield bitfield;
+        private readonly WideDecoder<TDasm, TMnemonic, TInstr>[] decoders;
+        private readonly string tag;
+
+        public WideMaskDecoder(int bitPos, int bitSize, string tag, params WideDecoder<TDasm, TMnemonic, TInstr>[] decoders)
+        {
+            this.bitfield = new Bitfield(bitPos, bitSize);
+            Debug.Assert(decoders.Length == (1 << bitSize), $"Inconsistent number of decoders {decoders.Length} (bitPos {bitPos} bitSize{bitSize:X})");
+            this.decoders = decoders;
+            this.tag = tag;
+        }
+
+        /*
+        public WideMaskDecoder(int bitPos, int bitSize, string tag, params (int, WideDecoder<TDasm, TMnemonic, TInstr>)[] decoders)
+        {
+            this.bitfield = new Bitfield(bitPos, bitSize);
+            Decoder<TDasm, TMnemonic, TInstr> nyiDecoder = new WideNyiDecoder<TDasm, TMnemonic, TInstr>(tag);
+            this.decoders = Enumerable.Range(0, 1 << bitSize)
+               .Select(n => nyiDecoder)
+               .ToArray();
+            foreach (var (value, decoder) in decoders)
+            {
+                this.decoders[value] = decoder;
+            }
+            foreach (var (value, decoder) in decoders)
+            {
+                Debug.Assert(this.decoders[value] == null, $"Duplicate value {value}");
+                this.decoders[value] = decoder;
+            }
+            this.tag = tag;
+        }
+        */
+
+        public override TInstr Decode(ulong wInstr, TDasm dasm)
+        {
+            TraceDecoder(wInstr);
+            uint op = bitfield.Read(wInstr);
+            return decoders[op].Decode(wInstr, dasm);
+        }
+
+        [Conditional("DEBUG")]
+        public void TraceDecoder(uint wInstr)
+        {
+            var shMask = this.bitfield.Mask << this.bitfield.Position;
+            DumpMaskedInstruction(32, wInstr, shMask, tag);
+        }
+
+        [Conditional("DEBUG")]
+        public void TraceDecoder(ulong wInstr)
+        {
+            var shMask = (ulong)this.bitfield.Mask << this.bitfield.Position;
+            DumpMaskedInstruction(64, wInstr, shMask, tag);
         }
 
         public override string ToString()

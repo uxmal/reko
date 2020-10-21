@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Lib;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -245,7 +246,7 @@ namespace Reko.Scanning
         /// <param name="addrBegin"></param>
         /// <param name="addrEnd"></param>
         /// <returns></returns>
-        public IEnumerable<Address> FindPossibleProcedureEntries(MemoryArea mem, Address addrBegin, Address addrEnd)
+        public IEnumerable<Address> FindPossibleProcedureEntries(ByteMemoryArea mem, Address addrBegin, Address addrEnd)
         {
             var h = program.Platform.Heuristics;
             if (h.ProcedurePrologs == null || h.ProcedurePrologs.Length == 0)
@@ -273,7 +274,7 @@ namespace Reko.Scanning
         /// that are known to be procedures.</param>
         /// <returns>A sequence of linear addresses where those call 
         /// instructions are.</returns>
-        public IEnumerable<Address> FindCallOpcodes(MemoryArea mem, IEnumerable<Address> knownProcedureAddresses)
+        public IEnumerable<Address> FindCallOpcodes(ByteMemoryArea mem, IEnumerable<Address> knownProcedureAddresses)
         {
             return program.Architecture.CreatePointerScanner(
                 program.SegmentMap,
@@ -288,7 +289,7 @@ namespace Reko.Scanning
         /// </summary>
         /// <returns></returns>
         public IEnumerable<Tuple<Address, Address>> FindPossibleFunctions(
-            IEnumerable<Tuple<MemoryArea, Address, Address>> ranges)
+            IEnumerable<Tuple<ByteMemoryArea, Address, Address>> ranges)
         {
             foreach (var range in ranges)
             {
@@ -339,7 +340,7 @@ namespace Reko.Scanning
                 proc.IsValidAddress,
                 true,
                 host);
-            int instrByteGranularity = program.Architecture.InstructionBitSize / 8;
+            int instrByteGranularity = program.Architecture.InstructionBitSize / program.Architecture.MemoryGranularity;
             for (Address addr = addrStart; addr < addrEnd; addr = addr + instrByteGranularity)
             {
                 dasm.Disassemble(addr);

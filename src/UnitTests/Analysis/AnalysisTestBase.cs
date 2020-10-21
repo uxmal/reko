@@ -233,11 +233,9 @@ namespace Reko.UnitTests.Analysis
 
         private static void Rewrite(Program program, IAssembler asm, string configFile)
         {
-            var fakeDiagnosticsService = new FakeDiagnosticsService();
             var fakeConfigService = new FakeDecompilerConfiguration();
             var eventListener = new FakeDecompilerEventListener();
             var sc = new ServiceContainer();
-            sc.AddService<IDiagnosticsService>(fakeDiagnosticsService);
             sc.AddService<IConfigurationService>(fakeConfigService);
             sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
@@ -264,14 +262,11 @@ namespace Reko.UnitTests.Analysis
 
         private static void Rewrite(Program program, IAssembler asm, Action<Program> postLoad)
         {
-            var fakeDiagnosticsService = new FakeDiagnosticsService();
             var fakeConfigService = new FakeDecompilerConfiguration();
             var eventListener = new FakeDecompilerEventListener();
             var sc = new ServiceContainer();
-            sc.AddService<IDiagnosticsService>(fakeDiagnosticsService);
             sc.AddService<IConfigurationService>(fakeConfigService);
             sc.AddService<DecompilerEventListener>(eventListener);
-            //sc.AddService<IDecompiledFileService>(new FakeDecompilerHost());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             var loader = new Loader(sc);
             var project = new Project

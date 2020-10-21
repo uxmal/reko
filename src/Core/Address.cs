@@ -192,12 +192,12 @@ namespace Reko.Core
 
         public abstract Address Align(int alignment);
 
-        public static Address operator - (Address a, int delta)
+        public static Address operator - (Address a, long delta)
 		{
 			return a.Add(-delta);
 		}
 
-		public static long operator - (Address a, Address b)
+        public static long operator - (Address a, Address b)
 		{
 			return (long) a.ToLinear() - (long) b.ToLinear();
 		}

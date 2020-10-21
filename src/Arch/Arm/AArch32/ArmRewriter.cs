@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -1056,7 +1057,7 @@ namespace Reko.Arch.Arm.AArch32
         private void EmitUnitTest(AArch32Instruction instr)
         {
             var testgenSvc = arch.Services.GetService<ITestGenerationService>();
-            testgenSvc?.ReportMissingRewriter("ArmRw", instr, rdr, "");
+            testgenSvc?.ReportMissingRewriter("ArmRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
     }
 

@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 
 namespace Reko.Arch.X86
@@ -53,11 +54,12 @@ namespace Reko.Arch.X86
         private X86Instruction? Patchx87Instruction(byte op)
         {
             long off = rdr.Offset - 2;
+            var bytes = ((ByteImageReader) rdr).Bytes;
             // On a real 8086, the NOP was a FWAIT, but
             // we violate this so that the resulting 
             // disassembled code is actually legible.
-            rdr.Bytes[off] = 0x90;      // NOP
-            rdr.Bytes[off + 1] = op;
+            bytes[off] = 0x90;      // NOP
+            bytes[off + 1] = op;
             rdr.Offset = off;
             return DisassembleInstruction();
         }
@@ -71,13 +73,14 @@ namespace Reko.Arch.X86
 
         private X86Instruction? Patchx87InstructionSegPrefix()
         {
-            var modifiedEscOp = rdr.Bytes[rdr.Offset];
+            var bytes = ((ByteImageReader) rdr).Bytes;
+            var modifiedEscOp = bytes[rdr.Offset];
             long off = rdr.Offset - 2;
-            rdr.Bytes[off] = 0x90;      // NOP
+            bytes[off] = 0x90;      // NOP
             // Segment override is encoded as the top two bits 
             // of modifiedEscOp.
-            rdr.Bytes[off + 1] = patchx87prefixes[modifiedEscOp >> 6];
-            rdr.Bytes[off + 2] = (byte)(modifiedEscOp | 0xC0);
+            bytes[off + 1] = patchx87prefixes[modifiedEscOp >> 6];
+            bytes[off + 2] = (byte)(modifiedEscOp | 0xC0);
             rdr.Offset = off;
             return DisassembleInstruction();
         }
@@ -89,7 +92,7 @@ namespace Reko.Arch.X86
         /// </summary>
         private X86Instruction? Emitx87BorlandShortcut()
         {
-            byte b1 = rdr.Bytes[rdr.Offset];
+            byte b1 = ((ByteImageReader)rdr).Bytes[rdr.Offset];
             rdr.Offset += 2;    // Skip the two trailing bytes.
             switch (b1)
             {
@@ -126,7 +129,7 @@ namespace Reko.Arch.X86
             //  F0h tangent(ST0)
             //  F2h arctangent(ST0)
             default:
-                this.NotYetImplemented(b1, "Emulated x87");
+                this.NotYetImplemented("Emulated x87");
                 return null;
             case 0xF4:
                 //  F4h ST0 = ln(ST0)

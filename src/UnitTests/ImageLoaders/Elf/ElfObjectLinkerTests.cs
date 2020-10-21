@@ -29,6 +29,7 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.ImageLoaders.Elf
 {
@@ -99,10 +100,11 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var segmentMap = linker.CreateSegments(Address.Ptr32(0x00800000), segs);
             Assert.AreEqual(3, segmentMap.Segments.Count);
             Assert.AreEqual("00800000", segmentMap.Segments.ElementAt(0).Value.MemoryArea.BaseAddress.ToString());
-            Assert.AreEqual("00800001", segmentMap.Segments.ElementAt(0).Value.MemoryArea.EndAddress.ToString());
+            Assert.AreEqual("00000001", segmentMap.Segments.ElementAt(0).Value.MemoryArea.Length.ToString("X8"));
             Assert.AreEqual("00801000", segmentMap.Segments.ElementAt(1).Value.MemoryArea.BaseAddress.ToString());
-            Assert.AreEqual("00801004", segmentMap.Segments.ElementAt(1).Value.MemoryArea.EndAddress.ToString());
-            Assert.AreEqual(0x1, segmentMap.Segments.ElementAt(1).Value.MemoryArea.Bytes[0]);
+            Assert.AreEqual("00000004", segmentMap.Segments.ElementAt(1).Value.MemoryArea.Length.ToString("X8"));
+            var bmem1 = (ByteMemoryArea) segmentMap.Segments.ElementAt(1).Value.MemoryArea;
+            Assert.AreEqual(0x1, bmem1.Bytes[0]);
         }
 
         [Test(Description = "SHN_COMMON symbols should be added to the rw segment")]

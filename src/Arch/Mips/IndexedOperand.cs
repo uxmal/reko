@@ -42,12 +42,12 @@ namespace Reko.Arch.Mips
             this.Index = indexRegister;
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString(Index.Name);
-            writer.WriteString("(");
-            writer.WriteString(Base.Name);
-            writer.WriteString(")");
+            renderer.WriteString(Index.Name);
+            renderer.WriteString("(");
+            renderer.WriteString(Base.Name);
+            renderer.WriteString(")");
         }
     }
 }

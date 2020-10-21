@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -107,7 +108,7 @@ namespace Reko.ImageLoaders.Srec
                     {
                         var segment = new ImageSegment(
                             $"seg{de.Key}",
-                            new MemoryArea(addrSegmentCur, dataCur!.ToArray()),
+                            new ByteMemoryArea(addrSegmentCur, dataCur!.ToArray()),
                             AccessMode.ReadWriteExecute);
                         segments.Add(segment);
                     }
@@ -118,7 +119,7 @@ namespace Reko.ImageLoaders.Srec
 
             var lastSegment = new ImageSegment(
                 $"seg{addrSegmentCur}",
-                new MemoryArea(addrSegmentCur, dataCur!.ToArray()),
+                new ByteMemoryArea(addrSegmentCur, dataCur!.ToArray()),
                 AccessMode.ReadWriteExecute);
             segments.Add(lastSegment);
             var map = new SegmentMap(

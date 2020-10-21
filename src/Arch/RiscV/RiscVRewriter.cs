@@ -29,6 +29,7 @@ using Reko.Core.Types;
 using System.Diagnostics;
 using System.Linq;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.RiscV
 {
@@ -243,7 +244,7 @@ namespace Reko.Arch.RiscV
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("RiscV_rw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("RiscV_rw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
     }
 }

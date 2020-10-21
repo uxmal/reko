@@ -30,6 +30,8 @@ using System.Text;
 using System.Windows.Forms;
 using Reko.Core.Output;
 using Reko.Core.Services;
+using Reko.Core.Machine;
+using Reko.Core.Memory;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
@@ -87,11 +89,10 @@ namespace Reko.UserInterfaces.WindowsForms
                     var dumper = new Dumper(program);
                     dumper.ShowAddresses = true;
                     dumper.ShowCodeBytes = true;
-                    ImageSegment segment;
-                    var options = Core.Machine.MachineInstructionWriterOptions.Default;
-                    if (program.SegmentMap.TryFindSegment(StartAddress, out segment))
+                    var options = new MachineInstructionRendererOptions(platform: program.Platform);
+                    if (program.SegmentMap.TryFindSegment(StartAddress, out ImageSegment segment))
                     {
-                        var formatter = new Dumper.InstrWriter(program.Platform, StartAddress, new TextFormatter(writer));
+                        var formatter = new Dumper.InstrWriter(new TextFormatter(writer));
                         var dasm = program.CreateDisassembler(program.Architecture, StartAddress).GetEnumerator();
                         while (dasm.MoveNext())
                         {

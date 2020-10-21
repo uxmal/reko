@@ -376,120 +376,6 @@ l100014AA:
 DllMain_exit:
 
 
-word32 fn100015CF(word32 ebx, word32 esi, word32 edi)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// Called from:
-//      fn1000166E
-// MayUse:  ebx:[0..31] edi:[0..31] esi:[0..31] fs:[0..15]
-// LiveOut: eax
-// Trashed: SCZO eax ebp ebx ecx edi esi Top
-// Preserved: esp
-fn100015CF_entry:
-l100015CF:
-	word32 eax_111
-	word32 esp_80
-	word32 ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x14<32>)
-	word32 eax_22 = _decode_pointer(Mem7[0x100033B4<p32>:word32])
-	Mem25[ebp_13 - 0x1C<32>:word32] = eax_22
-	branch eax_22 != 0xFFFFFFFF<32> l100015FE
-l100015FE:
-	word32 esp_30
-	call lock (retsize: 4;)
-		uses: Stack +0004:8<32>
-		defs: esp:esp_30
-	word32 ecx_35 = Mem29[esp_30:word32]
-	Mem38[ebp_13 - 4<32>:word32] = 0<32>
-	Mem43[esp_30:word32] = Mem38[0x100033B4<p32>:word32]
-	Mem45[ebp_13 - 0x1C<32>:word32] = _decode_pointer(Mem43[esp_30:(ptr32 void)])
-	Mem48[esp_30 - 4<i32>:word32] = Mem45[0x100033B0<p32>:word32]
-	Mem50[ebp_13 - 0x20<32>:word32] = _decode_pointer(Mem48[esp_30 - 4<i32>:(ptr32 void)])
-	Mem53[esp_30 - 8<i32>:word32] = ebp_13 - 0x20<32>
-	Mem56[esp_30 - 12<i32>:word32] = ebp_13 - 0x1C<32>
-	Mem59[esp_30 - 16<i32>:word32] = Mem56[ebp_13 + 8<32>:word32]
-	word32 eax_60 = __dllonexit(Mem59[esp_30 - 16<i32>:_onexit_t], Mem59[esp_30 - 12<i32>:(ptr32 (ptr32 PVFV))], Mem59[esp_30 - 8<i32>:(ptr32 (ptr32 PVFV))])
-	Mem61[ebp_13 - 0x24<32>:word32] = eax_60
-	Mem64[esp_30 - 20<i32>:word32] = Mem61[ebp_13 - 0x1C<32>:word32]
-	word32 esp_66
-	word32 eax_67
-	call encode_pointer (retsize: 4;)
-		uses: eax:eax_60,ecx:ecx_35,Stack +FFFFFFF8:8<32>
-		defs: eax:eax_67,esp:esp_66
-	Mem71[0x100033B4<p32>:word32] = eax_67
-	Mem74[esp_66 - 4<i32>:word32] = Mem71[ebp_13 - 0x20<32>:word32]
-	word32 esp_75
-	word32 eax_76
-	call encode_pointer (retsize: 4;)
-		uses: Stack +FFFFFFF8:8<32>
-		defs: eax:eax_76,esp:esp_75
-	Mem82[0x100033B0<p32>:word32] = eax_76
-	Mem83[ebp_13 - 4<32>:word32] = 0xFFFFFFFE<32>
-	fn10001665()
-	esp_80 = esp_75 + 0x1C<32>
-	eax_111 = Mem83[ebp_13 - 0x24<32>:word32]
-l100015F2:
-	eax_111 = _onexit(Mem25[ebp_13 + 8<32>:word32])
-	esp_80 = fp - 8<i32>
-l1000165F:
-	fn1000182D(ebp_13, Mem95[esp_80 + -4<i32>:word32])
-	return eax_111
-fn100015CF_exit:
-
-
-void fn10001665()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// Called from:
-//      fn100015CF
-// MayUse: 
-// LiveOut:
-// Trashed: ecx Top
-// Preserved: esp
-fn10001665_entry:
-l10001665:
-	call unlock (retsize: 4;)
-		uses: Stack +0004:8<32>
-	return
-fn10001665_exit:
-
-
-void fn1000166E(word32 ebx, word32 esi, word32 edi)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  ebx:[0..31] edi:[0..31] esi:[0..31] fs:[0..15]
-// LiveOut:
-// Trashed: SCZO eax ebp ebx ecx edi esi Top
-// Preserved: esp
-fn1000166E_entry:
-l1000166E:
-	fn100015CF(ebx, esi, edi)
-	return
-fn1000166E_exit:
-
-
-void fn10001680()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed: SCZO eax Top
-// Preserved: edi esi esp
-fn10001680_entry:
-l10001680:
-	word32 esi_13 = 0x100021D8<p32>
-	branch true l100016A1
-l10001692:
-	branch Mem9[esi_13:word32] == 0<32> l1000169A
-l10001698:
-	call fn00000000 (retsize: 4;)
-l1000169A:
-	esi_13 = esi_13 + 4<32>
-	branch esi_13 <u 0x100021D8<p32> l10001692
-l100016A1:
-	return
-fn10001680_exit:
-
-
 word32 fn100016D0(word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
@@ -608,7 +494,6 @@ word32 fn100017E8(word32 ebx, word32 esi, word32 edi, word32 dwArg00, word32 dwA
 
 // Called from:
 //      fn10001388
-//      fn100015CF
 //      fn10001742
 // MayUse:  ebx:[0..31] edi:[0..31] esi:[0..31] fs:[0..15] Stack +0000:[0..31] Stack +0008:[0..31]
 // LiveOut: ebp
@@ -632,7 +517,6 @@ word32 fn1000182D(word32 ebp, word32 dwArg00)
 
 // Called from:
 //      fn10001388
-//      fn100015CF
 //      fn10001742
 // MayUse:  ebp:[0..31] fs:[0..15] Stack +0000:[0..31]
 // LiveOut: edi

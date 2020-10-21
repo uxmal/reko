@@ -38,27 +38,27 @@ namespace Reko.Arch.Msp430
 
         public override string MnemonicAsString => Mnemonic.ToString();
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            RenderMnemonic(writer);
-            RenderOperands(writer, options);
+            RenderMnemonic(renderer);
+            RenderOperands(renderer, options);
         }
 
-        private void RenderMnemonic(MachineInstructionWriter writer)
+        private void RenderMnemonic(MachineInstructionRenderer renderer)
         {
             if (repeatReg != null)
             {
-                writer.WriteMnemonic("rpt");
-                writer.WriteString(" ");
-                writer.WriteString(repeatReg.Name);
-                writer.WriteString(" ");
+                renderer.WriteMnemonic("rpt");
+                renderer.WriteString(" ");
+                renderer.WriteString(repeatReg.Name);
+                renderer.WriteString(" ");
             }
             else if (repeatImm > 1)
             {
-                writer.WriteMnemonic("rpt");
-                writer.WriteString(" #");
-                writer.WriteString(repeatImm.ToString());
-                writer.WriteString(" ");
+                renderer.WriteMnemonic("rpt");
+                renderer.WriteString(" #");
+                renderer.WriteString(repeatImm.ToString());
+                renderer.WriteString(" ");
             }
             var sb = new StringBuilder(Mnemonic.ToString());
             if (dataWidth != null)
@@ -69,20 +69,20 @@ namespace Reko.Arch.Msp430
                         ? "w"
                         : "a");
             }
-            writer.WriteMnemonic(sb.ToString());
+            renderer.WriteMnemonic(sb.ToString());
         }
 
-        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (op is AddressOperand && (base.InstructionClass & InstrClass.Transfer) == 0)
             {
-                writer.WriteString("#");
+                renderer.WriteString("#");
             }
             if (op is ImmediateOperand && Mnemonic != Mnemonics.call)
             {
-                writer.WriteString("#");
+                renderer.WriteString("#");
             }
-            op.Write(writer, options);
+            op.Render(renderer, options);
         }
     }
 }

@@ -25,6 +25,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 
@@ -53,7 +54,7 @@ namespace Reko.ImageLoaders.MzExe
 
         private readonly SortedList<Address, ImageSymbol> imageSymbols;
         private readonly Dictionary<uint, Tuple<Address, ImportReference>> importStubs;
-        private readonly IDiagnosticsService diags;
+        private readonly DecompilerEventListener listener;
         private readonly uint lfaNew;
         private IProcessorArchitecture arch;
         private LXHeader hdr;
@@ -61,7 +62,7 @@ namespace Reko.ImageLoaders.MzExe
 
         public LeImageLoader(IServiceProvider services, string filename, byte[] imgRaw, uint e_lfanew) : base(services, filename, imgRaw)
         {
-            diags = Services.RequireService<IDiagnosticsService>();
+            listener = Services.RequireService<DecompilerEventListener>();
             lfaNew = e_lfanew;
             importStubs = new Dictionary<uint, Tuple<Address, ImportReference>>();
             imageSymbols = new SortedList<Address, ImageSymbol>();
@@ -617,7 +618,7 @@ namespace Reko.ImageLoaders.MzExe
                 access |= AccessMode.Execute;
 
             //$REVIEW: the address calculation doesn't take into account zero-filled pages. 
-            var mem = new MemoryArea(addrLoad + seg.DataOffset, new byte[seg.DataLength]);
+            var mem = new ByteMemoryArea(addrLoad + seg.DataOffset, new byte[seg.DataLength]);
             Buffer.BlockCopy(
                 RawImage, (int)seg.DataOffset,
                 mem.Bytes, 0,
@@ -645,7 +646,7 @@ namespace Reko.ImageLoaders.MzExe
                 }
                 break;
             default:
-                diags.Error($"Unsupported operating environment {this.hdr.os_type}.");
+                listener.Error($"Unsupported operating environment {this.hdr.os_type}.");
                 return new DefaultPlatform(this.Services, this.arch);
             }
             var platform = Services.RequireService<IConfigurationService>()

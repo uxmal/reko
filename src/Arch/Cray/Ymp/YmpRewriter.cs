@@ -26,6 +26,7 @@ using System.Text;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -88,7 +89,7 @@ namespace Reko.Arch.Cray.Ymp
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("YmpRw", this.instrCur, rdr, "");
+            testGenSvc?.ReportMissingRewriter("YmpRw", this.instrCur, instrCur.Mnemonic.ToString(), rdr, "");
         }
 
         private Expression Rewrite(MachineOperand mop)

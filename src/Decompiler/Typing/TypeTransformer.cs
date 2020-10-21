@@ -228,7 +228,7 @@ namespace Reko.Typing
 				++iteration;
                 if (iteration > 50)
                 {
-                    eventListener.Warn(new NullCodeLocation(""),
+                    eventListener.Warn(
                         string.Format("Type transformer has looped {0} times, quitting prematurely.", iteration));
                     return;
                 }

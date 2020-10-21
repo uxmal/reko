@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.Typing;
 using System;
@@ -31,7 +32,7 @@ namespace Reko.UnitTests.Typing
     [TestFixture]
     public class ConstantPointerTraversalTests
     {
-        private MemoryArea mem;
+        private ByteMemoryArea bmem;
         private StructureType globalStruct;
         private EquivalenceClass eqLink;
         private Mock<IProcessorArchitecture> arch;
@@ -41,8 +42,8 @@ namespace Reko.UnitTests.Typing
         public void Setup()
         {
             arch = new Mock<IProcessorArchitecture>();
-            arch.Setup(a => a.CreateImageReader(It.IsAny<MemoryArea>(), It.IsAny<long>()))
-                .Returns((MemoryArea i, long o) => i.CreateLeReader(o));
+            arch.Setup(a => a.CreateImageReader(It.IsAny<ByteMemoryArea>(), It.IsAny<long>()))
+                .Returns((ByteMemoryArea i, long o) => i.CreateLeReader(o));
             globalStruct = new StructureType
             {
             };
@@ -62,11 +63,11 @@ namespace Reko.UnitTests.Typing
 
         private ImageWriter Memory(uint address)
         {
-            mem = new MemoryArea(Address.Ptr32(address), new byte[1024]);
+            bmem = new ByteMemoryArea(Address.Ptr32(address), new byte[1024]);
             imageMap = new SegmentMap(
-                mem.BaseAddress,
-                new ImageSegment(".data", mem, AccessMode.ReadWrite));
-            var writer = new LeImageWriter(mem.Bytes);
+                bmem.BaseAddress,
+                new ImageSegment(".data", bmem, AccessMode.ReadWrite));
+            var writer = new LeImageWriter(bmem.Bytes);
             return writer;
         }
 

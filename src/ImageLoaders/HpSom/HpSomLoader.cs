@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -204,7 +205,7 @@ namespace Reko.ImageLoaders.HpSom
             Array.Copy(RawImage, (int) execAux.exec_tfile, textBytes, 0, textBytes.Length);
             var textSeg = new ImageSegment(
                 ".text",
-                new MemoryArea(textAddr, textBytes),
+                new ByteMemoryArea(textAddr, textBytes),
                 AccessMode.ReadExecute);
             segments.Add(textSeg);
 
@@ -213,7 +214,7 @@ namespace Reko.ImageLoaders.HpSom
             Array.Copy(RawImage, (int) execAux.exec_dfile, dataBytes, 0, dataBytes.Length);
             var dataSeg = new ImageSegment(
                 ".data",
-                new MemoryArea(dataAddr, dataBytes),
+                new ByteMemoryArea(dataAddr, dataBytes),
                 AccessMode.ReadWrite);
             segments.Add(dataSeg);
 

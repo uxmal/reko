@@ -30,7 +30,7 @@ namespace Reko.UserInterfaces.WindowsForms
     /// <summary>
     /// Used to render TextSpans for use in the disassembly viewer.
     /// </summary>
-    public class DisassemblyFormatter : MachineInstructionWriter 
+    public class DisassemblyFormatter : MachineInstructionRenderer 
     {
         private readonly Program program;
         private readonly IProcessorArchitecture arch;
@@ -39,6 +39,7 @@ namespace Reko.UserInterfaces.WindowsForms
         private List<TextSpan> line;
         private List<string> annotations;
         private string mnemonicStyle;
+        private Address addrInstr;
 
         public DisassemblyFormatter(Program program, IProcessorArchitecture arch, MachineInstruction instr, List<TextSpan> line)
         {
@@ -46,13 +47,29 @@ namespace Reko.UserInterfaces.WindowsForms
             this.arch = arch;
             this.instr = instr;
             this.line = line;
-            this.Platform = program.Platform;
             this.annotations = new List<string>();
             this.mnemonicStyle = Gui.UiStyles.DisassemblerOpcode;
         }
 
-        public IPlatform Platform { get; private set; }
-        public Address Address { get; set; }
+        public Address Address => addrInstr;
+
+        public void BeginInstruction(Address addr)
+        {
+            this.addrInstr = addr;
+        }
+
+        public void EndInstruction()
+        {
+        }
+
+        public void BeginOperand()
+        {
+
+        }
+        public void EndOperand()
+        {
+
+        }
 
         public void WriteMnemonic(string sMnemonic)
         {

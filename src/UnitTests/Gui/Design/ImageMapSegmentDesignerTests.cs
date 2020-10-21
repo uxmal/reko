@@ -21,6 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Gui;
 using Reko.Gui.Controls;
 using Reko.Gui.Design;
@@ -40,8 +41,8 @@ namespace Reko.UnitTests.Gui.Design
         [SetUp]
         public void Setup()
         {
-            seg1 = new ImageSegment("seg1", new MemoryArea(Address.Ptr32(0x01000), new byte[0x1000]), AccessMode.Execute);
-            seg2 = new ImageSegment("seg2", new MemoryArea(Address.Ptr32(0x02000), new byte[0x1000]), AccessMode.Execute);
+            seg1 = new ImageSegment("seg1", new ByteMemoryArea(Address.Ptr32(0x01000), new byte[0x1000]), AccessMode.Execute);
+            seg2 = new ImageSegment("seg2", new ByteMemoryArea(Address.Ptr32(0x02000), new byte[0x1000]), AccessMode.Execute);
             map = new SegmentMap(seg1.Address,
                 seg1, seg2);
         }

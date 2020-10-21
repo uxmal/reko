@@ -24,6 +24,7 @@ using System.Linq;
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 
 namespace Reko.Arch.MicroBlaze
@@ -97,7 +98,7 @@ namespace Reko.Arch.MicroBlaze
             };
         }
 
-        public override MicroBlazeInstruction NotYetImplemented(uint wInstr, string message)
+        public override MicroBlazeInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("MicroBlazeDis", this.addr, this.rdr, message);

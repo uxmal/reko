@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System.Collections.Generic;
@@ -90,7 +91,7 @@ namespace Reko.Arch.H8
             };
         }
 
-        public override H8Instruction NotYetImplemented(uint wInstr, string message)
+        public override H8Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("H8Dis", this.addr, rdr, message);
@@ -200,6 +201,15 @@ namespace Reko.Arch.H8
         private static readonly Bitfield r4_4 = new Bitfield(4, 4);
         private static readonly Bitfield r8_4 = new Bitfield(8, 4);
 
+        /// <summary>
+        /// 8-bit register encoded in 4 bits at bit position 0
+        /// </summary>
+        private static bool rb0(uint uInstr, H8Disassembler dasm)
+        {
+            var iReg = r0_4.Read(uInstr);
+            dasm.ops.Add(new RegisterOperand(Registers.Gp8Registers[iReg]));
+            return true;
+        }
 
         /// <summary>
         /// 8-bit register encoded in 4 bits at bit position 8
@@ -404,6 +414,7 @@ namespace Reko.Arch.H8
             var or_b_imm = Instr(Mnemonic.or, b, I8, rb8);
             var subx_b_imm = Instr(Mnemonic.subx, b, I8, rb8);
             var xor_b_imm = Instr(Mnemonic.xor, b, I8, rb8);
+            var add_l = Instr(Mnemonic.add, rh3, rl3);
 
             rootDecoder = Mask(8, 8, "H8", new Decoder<H8Disassembler, Mnemonic, H8Instruction>[256] {
                 Select((0, 8), u => u == 0, " 00",
@@ -412,13 +423,16 @@ namespace Reko.Arch.H8
                 Sparse(4, 4, "  01", invalid,
                     (0x0, Nyi("mov")),
                     (0x4, Nyi("ldc/stc")),
+                    (0x6, Nyi("mac")),
                     (0x8, Nyi("sleep")),
+                    (0xA, Nyi("clrmac")),
                     (0xC, Select((0, 4), u => u == 0, "  01 C0",
                         Nyi("01 C0"),
                         invalid)),
                     (0xD, Select((0, 4), u => u == 0, "  01 D0",
                         Nyi("01 D0"),
                         invalid)),
+                    (0xE, Nyi("tas")),
                     (0xF, Nyi("Table 2-6"))),
                 Select((4, 4), u => u == 0,
                     Instr(Mnemonic.stc, b, ccr, rl),
@@ -434,7 +448,16 @@ namespace Reko.Arch.H8
 
                 Instr(Mnemonic.add, b, rh,rl),
                 Instr(Mnemonic.add, w, rh,rl),
-                Nyi("2-5"),
+                Sparse(4, 4, "  0A", invalid,
+                    (0, Instr(Mnemonic.inc, b, rb0)),
+                    (0x8, add_l),
+                    (0x9, add_l),
+                    (0xA, add_l),
+                    (0xB, add_l),
+                    (0xC, add_l),
+                    (0xD, add_l),
+                    (0xE, add_l),
+                    (0xF, add_l)),
                 Sparse(4, 4, "  0B", invalid,
                     (0, Instr(Mnemonic.adds, Imm32(1), rgpl)),
                     (8, Instr(Mnemonic.adds, Imm32(2), rgpl)),
@@ -489,10 +512,10 @@ namespace Reko.Arch.H8
                     invalid,
                     Instr(Mnemonic.extu, l, rl),
 
-                    Nyi("neg"),
-                    Nyi("neg"),
+                    Instr(Mnemonic.neg, b, rbl),
+                    Instr(Mnemonic.neg, w, rl),
                     invalid,
-                    Nyi("neg"),
+                    Instr(Mnemonic.neg, l, rl3),
 
                     invalid,
                     Instr(Mnemonic.exts, w, rl),
@@ -599,11 +622,13 @@ namespace Reko.Arch.H8
                 Instr(Mnemonic.mulxu, w, rh, rl),
                 Nyi("divxu"),
 
-                Select((0, 8), u => u == 0x70, "  5E",
+                Select((0, 8), u => u == 0x70, "  54",
                     Instr(Mnemonic.rts, InstrClass.Transfer),
-                    Nyi("rts")),
+                    invalid),
                 Nyi("bsr"),
-                Nyi("rte"),
+                Select((0, 8), u => u == 0x70, "  56",
+                    Instr(Mnemonic.rte, InstrClass.Transfer),
+                    invalid),
                 Nyi("trapa"),
 
                 Nyi("2-5"),
@@ -646,7 +671,9 @@ namespace Reko.Arch.H8
                     (0x8, Instr(Mnemonic.mov, w, rl, aa16)),
                     (0xA, Instr(Mnemonic.mov, w, rl, aa24))),
 
-                Nyi("mov"),
+                Mask(7, 1, "  6C",
+                    Instr(Mnemonic.mov, b, PostEh, rl),
+                    Instr(Mnemonic.mov, b, rl, PreEh)),
                 Mask(7, 1, "  6D",
                     Instr(Mnemonic.mov, w, PostEh, rl),
                     Instr(Mnemonic.mov, w, rl, PreEh)),
@@ -658,15 +685,21 @@ namespace Reko.Arch.H8
                     Instr(Mnemonic.mov, w, rl, Md16)),
 
                 // 70
-               Instr(Mnemonic.bset, Bit, rbl),
-               Instr(Mnemonic.bnot, Bit, rbl),
-               Instr(Mnemonic.bclr, Bit, rbl),
-               Instr(Mnemonic.btst, Bit, rbl),
+                Instr(Mnemonic.bset, Bit, rbl),
+                Instr(Mnemonic.bnot, Bit, rbl),
+                Instr(Mnemonic.bclr, Bit, rbl),
+                Instr(Mnemonic.btst, Bit, rbl),
 
-               Nyi("bor/bior"),
-               Nyi("bxor/bixor"),
-               Nyi("band/biand"),
-                Mask(7, 1, "  67",
+                Mask(7, 1, "  74",
+                    Instr(Mnemonic.bor, Bit, rbl),
+                    Instr(Mnemonic.bior, Bit, rbl)),
+                Mask(7, 1, "  75",
+                    Instr(Mnemonic.bxor, Bit, rbl),
+                    Instr(Mnemonic.bixor, Bit, rbl)),
+                Mask(7, 1, "  76",
+                    Instr(Mnemonic.band, Bit, rbl),
+                    Instr(Mnemonic.biand, Bit, rbl)),
+                Mask(7, 1, "  77",
                     Instr(Mnemonic.bld, Bit, rbl),
                     Instr(Mnemonic.bild, Bit, rbl)),
 

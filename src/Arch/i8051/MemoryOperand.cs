@@ -51,32 +51,32 @@ namespace Reko.Arch.i8051
         public Storage Register { get; set; }
         public RegisterStorage Index { get; set; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (Index != null)
             {
-                writer.WriteString("@");
-                writer.WriteString(Register.Name);
-                writer.WriteString("+");
-                writer.WriteString(Index.Name);
+                renderer.WriteString("@");
+                renderer.WriteString(Register.Name);
+                renderer.WriteString("+");
+                renderer.WriteString(Index.Name);
             }
             else
             {
                 if (DirectAddress != null)
                 {
-                    writer.WriteString("[");
+                    renderer.WriteString("[");
                     if (DirectAddress is Constant c)
                     {
-                        writer.WriteString(c.ToUInt16().ToString("X4"));
+                        renderer.WriteString(c.ToUInt16().ToString("X4"));
                     }
                     else
                     {
-                        writer.WriteString(DirectAddress.ToString());
+                        renderer.WriteString(DirectAddress.ToString());
                     }
-                    writer.WriteString("]");
+                    renderer.WriteString("]");
                 }
                 else
-                    writer.WriteString($"@{Register.Name}");
+                    renderer.WriteString($"@{Register.Name}");
             }
         }
     }

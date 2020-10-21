@@ -25,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.PowerPC
 {
@@ -33,7 +34,7 @@ namespace Reko.UnitTests.Arch.PowerPC
     {
         private BeImageReader CreateImageReader(Address address, params byte[] bytes)
         {
-            return new BeImageReader(new MemoryArea(address, bytes), 0);
+            return new BeImageReader(new ByteMemoryArea(address, bytes), 0);
         }
 
         private uint[] GetItems(IEnumerator<uint> e)

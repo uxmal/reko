@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using System;
 using System.ComponentModel;
 
@@ -55,7 +56,7 @@ namespace Reko.Core
             this.Name = name ?? throw new ArgumentNullException(nameof(name), "Segments must have names.");
             this.Size = size;
             this.Address = addr ?? throw new ArgumentNullException(nameof(addr));
-            this.MemoryArea = new MemoryArea(addr, new byte[size]);
+            this.MemoryArea = new ByteMemoryArea(addr, new byte[size]);
 			this.Access = access;
 		}
 

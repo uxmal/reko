@@ -45,21 +45,21 @@ namespace Reko.Arch.PaRisc
 
         public override string MnemonicAsString => Mnemonic.ToString();
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            WriteMnemonic(writer);
+            WriteMnemonic(renderer);
             if (Operands.Length == 0)
                 return;
-            writer.Tab();
-            Operands[0].Write(writer, options);
+            renderer.Tab();
+            Operands[0].Render(renderer, options);
             for (int i = 1; i < Operands.Length; ++i)
             {
-                writer.WriteChar(',');
-                Operands[i].Write(writer, options);
+                renderer.WriteChar(',');
+                Operands[i].Render(renderer, options);
             }
         }
 
-        private void WriteMnemonic(MachineInstructionWriter writer)
+        private void WriteMnemonic(MachineInstructionRenderer renderer)
         {
             var sb = new StringBuilder();
             sb.Append(Mnemonic.ToString().Replace('_',','));
@@ -81,7 +81,7 @@ namespace Reko.Arch.PaRisc
                 sb.AppendFormat(",{0}", CacheHint);
             if (Annul)
                 sb.Append(",n");
-            writer.WriteMnemonic(sb.ToString());
+            renderer.WriteMnemonic(sb.ToString());
         }
     }
 

@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             this.arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("FakeArch");
             arch.Setup(a => a.InstructionBitSize).Returns(8);
+            arch.Setup(a => a.MemoryGranularity).Returns(8);
             
             program = new Program
             {
@@ -50,10 +52,10 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             };
         }
 
-        private MemoryArea Given_MemoryArea(int size)
+        private ByteMemoryArea Given_MemoryArea(int size)
         {
             var bytes = Enumerable.Range(0, size).Select(b => (byte)b).ToArray();
-            var mem = new MemoryArea(Address.Ptr32(0x1000000), bytes);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x1000000), bytes);
             return mem;
         }
 
@@ -167,9 +169,9 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         private void Given_Disassembler()
         {
             arch.Setup(a => a.CreateImageReader(
-                It.IsAny<MemoryArea>(), 
+                It.IsAny<ByteMemoryArea>(), 
                 It.IsAny<Address>()))
-                .Returns((MemoryArea i, Address a) => new LeImageReader(i, a));
+                .Returns((ByteMemoryArea i, Address a) => new LeImageReader(i, a));
             arch.Setup(a => a.CreateDisassembler(
                 It.IsNotNull<EndianImageReader>()))
                 .Returns(instrs);
@@ -186,9 +188,9 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
             public override string MnemonicAsString => throw new NotImplementedException();
 
-            public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+            protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
             {
-                writer.WriteMnemonic("opcode.l");
+                renderer.WriteMnemonic("opcode.l");
             }
         }
 

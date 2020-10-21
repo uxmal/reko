@@ -18,14 +18,12 @@
  */
 #endregion
 
-using Reko.Arch.PowerPC;
-using Reko.Core;
 using NUnit.Framework;
-using System;
+using Reko.Arch.Mips;
+using Reko.Core;
+using Reko.Core.Memory;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Reko.Arch.Mips;
 
 namespace Reko.UnitTests.Arch.Mips
 {
@@ -34,7 +32,7 @@ namespace Reko.UnitTests.Arch.Mips
     {
         private BeImageReader CreateImageReader(Address address, params byte[] bytes)
         {
-            return new BeImageReader(new MemoryArea(address, bytes), 0);
+            return new BeImageReader(new ByteMemoryArea(address, bytes), 0);
         }
 
         private uint[] GetItems(IEnumerator<uint> e)

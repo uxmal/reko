@@ -29,6 +29,7 @@ using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
 using System.Diagnostics;
@@ -343,13 +344,13 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         // This procedure is called to initialise the library check code 
         public bool SetupLibCheck(IServiceProvider services)
         {
-            var diag = services.RequireService<IDiagnosticsService>();
+            var listener = services.RequireService<DecompilerEventListener>();
             var cfgSvc = services.RequireService<IConfigurationService>();
             string fpath = cfgSvc.GetInstallationRelativePath("msdos", sSigName!);
             var fsSvc = services.RequireService<IFileSystemService>();
             if (!fsSvc.FileExists(fpath))
             {
-                diag.Warn(string.Format("Can't open signature file {0}.", fpath));
+                listener.Warn("Can't open signature file {0}.", fpath);
                 return false;
             }
             var bytes = fsSvc.ReadAllBytes(fpath);
@@ -358,18 +359,17 @@ static char [] buf = new char[100];          /* A general purpose buffer */
 
         public bool SetupLibCheck(IServiceProvider services, string fpath, byte[] bytes)
         {
-            var diag = services.RequireService<IDiagnosticsService>();
-            var rdr = new LeImageReader(bytes);
+            var listener = services.RequireService<DecompilerEventListener>();
+            var rdr = new ByteImageReader(bytes);
             ushort w, len;
             int i;
 
             //readProtoFile();
 
             /* Read the parameters */
-            uint fileSig;
-            if (!rdr.TryReadLeUInt32(out fileSig) || fileSig != 0x73636364) // "dccs"
+            if (!rdr.TryReadLeUInt32(out uint fileSig) || fileSig != 0x73636364) // "dccs"
             {
-                diag.Warn(string.Format("{0} is not a DCC signature file.", fpath));
+                listener.Warn(string.Format("{0} is not a DCC signature file.", fpath));
                 return false;
             }
 
@@ -379,7 +379,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             SymLen = rdr.ReadLeUInt16();
             if ((PatLen != PATLEN) || (SymLen != SYMLEN))
             {
-                diag.Warn(string.Format("Can't use signature file with sym and pattern lengths of {0} and {1}.", SymLen, PatLen));
+                listener.Warn(string.Format("Can't use signature file with sym and pattern lengths of {0} and {1}.", SymLen, PatLen));
                 return false;
             }
 
@@ -400,7 +400,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             if (!rdr.TryReadLeUInt16(out ww) || ww != 0x3154)    // "T1"
             {
                 Debug.Print("Expected 'T1'");
-                diag.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
+                listener.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
                 return false;
             }
             len = (ushort) (PatLen * 256u * 2);        // 2 = sizeof ushort
@@ -408,7 +408,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             if (w != len)
             {
                 Debug.Print("Problem with size of T1: file {0}, calc {1}", w, len);
-                diag.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
+                listener.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
                 return false;
             }
             readFileSection(T1base, len, rdr);
@@ -422,7 +422,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             if (w != len)
             {
                 Debug.Print("Problem with size of T2: file %d, calc %d\n", w, len);
-                diag.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
+                listener.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
                 return false;
             }
             readFileSection(T2base, len, rdr);
@@ -431,7 +431,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             if (!rdr.TryReadLeUInt16(out ww) || ww != 0x6767)    // "gg"
             {
                 Debug.Print("Expected 'gg'");
-                diag.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
+                listener.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
                 return false;
             }
             len = (ushort) (numVert * 2); //  sizeof(uint16_t));
@@ -439,7 +439,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             if (w != len)
             {
                 Debug.Print("Problem with size of g[]: file {0}, calc {1}", w, len);
-                diag.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
+                listener.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
                 return false;
             }
             readFileSection(g, len, rdr);
@@ -450,14 +450,14 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             if (!rdr.TryReadLeUInt16(out ww) || ww != 0x7468)    // "ht"
             {
                 Debug.Print("Expected 'ht'");
-                diag.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
+                listener.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
                 return false;
             }
             w = rdr.ReadLeUInt16();
             if (w != numKeys * (SymLen + PatLen + 2)) // sizeof(uint16_t)))
             {
                 Debug.Print("Problem with size of hash table: file {0}, calc {1}", w, len);
-                diag.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
+                listener.Warn(string.Format("{0} is not a valid DCCS file.", fpath));
                 return false;
             }
 
@@ -482,7 +482,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         /// </summary>
         public bool LibCheck(IServiceProvider services, Procedure proc, Address addr)
         {
-            var diagSvc = services.RequireService<IDiagnosticsService>();
+            var listener = services.RequireService<DecompilerEventListener>();
             long fileOffset;
             int h;
             // i, j, arg;
@@ -490,8 +490,9 @@ static char [] buf = new char[100];          /* A general purpose buffer */
 
             if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment segment))
                 return false;
-            
-            fileOffset = addr - segment.MemoryArea.BaseAddress;              /* Offset into the image */
+
+            var mem = (ByteMemoryArea) segment.MemoryArea;
+            fileOffset = addr - mem.BaseAddress;              /* Offset into the image */
             //if (fileOffset == program.offMain)
             //{
             //    /* Easy - this function is called main! */
@@ -500,13 +501,13 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             //}
 
             byte[] pat = new byte[PATLEN];
-            if (!segment.MemoryArea.TryReadBytes(fileOffset, PATLEN, pat))
+            if (!mem.TryReadBytes(fileOffset, PATLEN, pat))
                 return false;
 
             fixWildCards(pat);                                   /* Fix wild cards in the copy */
             h = g_pattern_hasher.hash(pat);                      /* Hash the found proc */
                                                                  /* We always have to compare keys, because the hash function will always return a valid index */
-            if (MemoryArea.CompareArrays(ht![h].htPat!, 0, pat, PATLEN))
+            if (ByteMemoryArea.CompareArrays(ht![h].htPat!, 0, pat, PATLEN))
             {
 #if NOT_YET
                 /* We have a match. Save the name, if not already set */
@@ -574,7 +575,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
                 }
 #endif
             }
-            if (locatePattern(segment.MemoryArea.Bytes, (uint) fileOffset,
+            if (locatePattern(mem.Bytes, (uint) fileOffset,
                               (uint) (fileOffset + pattMsChkstk.Length),
                               pattMsChkstk, out Idx))
             {
@@ -593,7 +594,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         }
 
         // Read a section of the file, considering endian issues
-        void readFileSection(ushort[] p, int len, EndianImageReader rdr)
+        void readFileSection(ushort[] p, int len, ImageReader rdr)
         {
             int pp = 0;
             for (int i = 0; i < len; i += 2)
@@ -603,7 +604,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         }
 
         // Read a section of the file, considering endian issues
-        void readFileSection(short[] p, int len, EndianImageReader rdr)
+        void readFileSection(short[] p, int len, ImageReader rdr)
         {
             int pp = 0;
             for (int i = 0; i < len; i += 2)
@@ -691,7 +692,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
                         first 3 bytes, and false positives may be founf with the others later */
             ImageSegment segment;
             program.SegmentMap.TryFindSegment(start, out segment);
-            var image = segment.MemoryArea;
+            var image = (ByteMemoryArea) segment.MemoryArea;
             var startOff = (uint)(start - image.BaseAddress);   /* Offset into the Image of the initial CS:IP */
             if (locatePattern(image.Bytes,
                 startOff, startOff + 5, pattBorl4on, out i))
@@ -764,7 +765,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
                     addrEntry = image.BaseAddress + i + OFFMAINSMALL + 2 + srel;    /* Save absolute image offset */
                     chModel = 's';                          /* Small model */
                 }
-                else if (MemoryArea.CompareArrays(image.Bytes, (int) startOff, pattTPasStart, pattTPasStart.Length))
+                else if (ByteMemoryArea.CompareArrays(image.Bytes, (int) startOff, pattTPasStart, pattTPasStart.Length))
                 {
                     var srel = image.ReadLeInt16(startOff + 1);     /* Get the jump offset */
                     addrEntry = start + srel + 3;          /* Save absolute image offset */
@@ -792,7 +793,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             //program.addressingMode = chModel;
 
             /* Now decide the compiler vendor and version number */
-            if (MemoryArea.CompareArrays(image.Bytes, (int)startOff, pattMsC5Start, pattMsC5Start.Length))
+            if (ByteMemoryArea.CompareArrays(image.Bytes, (int)startOff, pattMsC5Start, pattMsC5Start.Length))
             {
                 /* Yes, this is Microsoft startup code. The DS is sitting right here
                     in the next 2 bytes */
@@ -803,7 +804,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             }
 
             /* The C8 startup pattern is different from C5's */
-            else if (MemoryArea.CompareArrays(image.Bytes, (int)startOff, pattMsC8Start, pattMsC8Start.Length))
+            else if (ByteMemoryArea.CompareArrays(image.Bytes, (int)startOff, pattMsC8Start, pattMsC8Start.Length))
             {
                 setState(state, "ds", image.ReadLeUInt16((uint)(startOff + pattMsC8Start.Length)));
                 chVendor = 'm';                     /* Microsoft compiler */
@@ -812,7 +813,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             }
 
             /* The C8 .com startup pattern is different again! */
-            else if (MemoryArea.CompareArrays(
+            else if (ByteMemoryArea.CompareArrays(
                 image.Bytes,
                 (int)startOff,
                 pattMsC8ComStart,
@@ -867,10 +868,10 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             Debug.Print("Signature file: {0}", sSigName);
         }
 
-        private Address ReadSegPtr(MemoryArea mem, uint offset)
+        private Address ReadSegPtr(ByteMemoryArea bmem, uint offset)
         {
-            var off = mem.ReadLeUInt16(offset);
-            var seg = mem.ReadLeUInt16(offset+2);
+            var off = bmem.ReadLeUInt16(offset);
+            var seg = bmem.ReadLeUInt16(offset+2);
             return Address.SegPtr(seg, off);
         }
 
@@ -885,23 +886,23 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         */
         void readProtoFile(IServiceProvider services)
         {
-            var diagSvc = services.RequireService<IDiagnosticsService>();
+            var listener = services.RequireService<DecompilerEventListener>();
             var cfgSvc = services.RequireService<IConfigurationService>();
             var szProFName = cfgSvc.GetInstallationRelativePath("msdos", DCCLIBS); /* Full name of dclibs.lst */
             var fsSvc = services.RequireService<IFileSystemService>();
             if (fsSvc.FileExists(szProFName))
             {
-                diagSvc.Warn(string.Format("Cannot open library prototype data file {0}.", szProFName));
+                listener.Warn(string.Format("Cannot open library prototype data file {0}.", szProFName));
                 return;
             }
             var bytes = fsSvc.ReadAllBytes(szProFName);
-            var fProto = new LeImageReader(bytes);
+            var fProto = new ByteImageReader(bytes);
             int i;
 
             uint fileSig = fProto.ReadLeUInt32();
             if (fileSig != 0x70636364)      // "dccp"
             {
-                diagSvc.Warn(string.Format("{0} is not a dcc prototype file.", szProFName));
+                listener.Warn(string.Format("{0} is not a dcc prototype file.", szProFName));
                 return;
             }
 
@@ -909,7 +910,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             if (sectionID != 0x4E46)        // "FN"
             {
                 Debug.Print("FN (Function) subsection expected in {0}", szProFName);
-                diagSvc.Warn(string.Format("{0} is not a dcc prototype file.", szProFName));
+                listener.Warn(string.Format("{0} is not a dcc prototype file.", szProFName));
                 return;
             }
             numFunc = fProto.ReadLeUInt16();    /* Num of entries to allocate */

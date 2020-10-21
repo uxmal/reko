@@ -33,13 +33,13 @@ namespace Reko.Arch.H8
 
         public PrimitiveType? Size { get; set; }
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            RenderMnemonic(writer);
-            RenderOperands(writer, options);
+            RenderMnemonic(renderer);
+            RenderOperands(renderer, options);
         }
 
-        private void RenderMnemonic(MachineInstructionWriter writer)
+        private void RenderMnemonic(MachineInstructionRenderer renderer)
         {
             var sb = new StringBuilder(MnemonicAsString);
             string suffix = "";
@@ -54,19 +54,19 @@ namespace Reko.Arch.H8
                 }
             }
             sb.Append(suffix);
-            writer.WriteMnemonic(sb.ToString());
+            renderer.WriteMnemonic(sb.ToString());
         }
 
-        protected override void RenderOperand(MachineOperand operand, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (operand is ImmediateOperand imm)
             {
-                writer.WriteString("#0x");
-                imm.Write(writer, options);
+                renderer.WriteString("#0x");
+                imm.Render(renderer, options);
             }
             else
             {
-                base.RenderOperand(operand, writer, options);
+                base.RenderOperand(operand, renderer, options);
             }
         }
     }

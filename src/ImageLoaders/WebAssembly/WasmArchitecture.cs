@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
+using Reko.Core.Memory;
 
 namespace Reko.ImageLoaders.WebAssembly
 {
@@ -35,6 +36,7 @@ namespace Reko.ImageLoaders.WebAssembly
     {
         public WasmArchitecture(IServiceProvider services, string archName) : base(services, archName)
         {
+            this.Endianness = EndianServices.Little;
             this.PointerType = PrimitiveType.Ptr32;
             this.FramePointerType = PrimitiveType.Ptr32;
             this.StackRegister = new RegisterStorage("sp", 0, 0, PointerType);
@@ -43,7 +45,7 @@ namespace Reko.ImageLoaders.WebAssembly
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new WasmDisassembler(imageReader);
+            return new WasmDisassembler(this, imageReader);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)

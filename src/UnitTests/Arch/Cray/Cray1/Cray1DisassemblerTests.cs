@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.Cray;
 using Reko.Arch.Cray.Cray1;
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -56,7 +57,7 @@ namespace Reko.UnitTests.Arch.Cray.Cray1
 
         protected CrayInstruction DisassembleOctBytes(string octalBytes)
         {
-            var img = new MemoryArea(LoadAddress, new byte[256]);
+            var mem = new ByteMemoryArea(LoadAddress, new byte[256]);
             byte[] bytes = ParseOctPattern(octalBytes);
             return DisassembleBytes(bytes);
         }

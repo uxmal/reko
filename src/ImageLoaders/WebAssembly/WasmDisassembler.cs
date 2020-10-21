@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,11 +33,16 @@ namespace Reko.ImageLoaders.WebAssembly
 {
     public class WasmDisassembler : DisassemblerBase<WasmInstruction, Mnemonic>
     {
+        private readonly WasmArchitecture arch;
         private readonly WasmImageReader rdr;
+        private Address addr;
 
-        public WasmDisassembler(EndianImageReader rdr)
+        public WasmDisassembler(WasmArchitecture arch, EndianImageReader rdr)
         {
-            this.rdr = new WasmImageReader(new MemoryArea(rdr.Address, rdr.Bytes))
+            this.arch = arch;
+            this.addr = rdr.Address;
+            var bytes = ((ByteImageReader) rdr).Bytes;
+            this.rdr = new WasmImageReader(new ByteMemoryArea(rdr.Address, bytes))
             {
                 Offset = rdr.Offset
             };
@@ -43,7 +50,7 @@ namespace Reko.ImageLoaders.WebAssembly
 
         public override WasmInstruction? DisassembleInstruction()
         {
-            var addr = rdr.Address;
+            this.addr = rdr.Address;
             if (!rdr.TryReadByte(out byte b))
             {
                 return null;
@@ -102,9 +109,11 @@ namespace Reko.ImageLoaders.WebAssembly
             return instr;
         }
 
-        public override WasmInstruction NotYetImplemented(uint wInstr, string message)
+        public override WasmInstruction NotYetImplemented(string message)
         {
-            throw new NotImplementedException();
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("WasmDis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         private static readonly Dictionary<Mnemonic, string> decoders = new Dictionary<Mnemonic, string>
@@ -288,6 +297,5 @@ namespace Reko.ImageLoaders.WebAssembly
             { Mnemonic.f32_reinterpret_i32, "" },
             { Mnemonic.f64_reinterpret_i64, "" },
         };
-
     }
 }

@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Threading;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.PowerPC
 {

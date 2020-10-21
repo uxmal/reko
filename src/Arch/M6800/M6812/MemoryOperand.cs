@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -38,42 +38,42 @@ namespace Reko.Arch.M6800.M6812
         public bool PostIncrement { get; internal set; }
         public bool Indirect { get; internal set; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (Base != null)
             {
                 if (Indirect)
-                    writer.WriteChar('[');
+                    renderer.WriteChar('[');
                 if (PreIncrement)
                 {
-                    writer.WriteFormat("${0:X2},{1}{2}",
+                    renderer.WriteFormat("${0:X2},{1}{2}",
                         Math.Abs(Offset.Value),
                         Offset.Value > 0 ? "+" : "-",
                         Base.Name);
                 }
                 else if (PostIncrement)
                 {
-                    writer.WriteFormat("${0:X2},{1}{2}",
+                    renderer.WriteFormat("${0:X2},{1}{2}",
                         Math.Abs(Offset.Value),
                         Base.Name,
                         Offset.Value > 0 ? "+" : "-");
                 }
                 else if (Offset != null)
                 {
-                    writer.WriteFormat("${0:X4},{1}", Offset.Value, Base.Name);
+                    renderer.WriteFormat("${0:X4},{1}", Offset.Value, Base.Name);
                 } 
                 else
                 {
-                    writer.WriteFormat("{0},{1}", Index.Name, Base.Name);
+                    renderer.WriteFormat("{0},{1}", Index.Name, Base.Name);
                 }
                 if (Indirect)
-                    writer.WriteChar(']');
+                    renderer.WriteChar(']');
                 return;
             }
             else if (Offset != null)
             {
                 // Absolute address
-                writer.WriteFormat("${0:X4}", (ushort)Offset.Value);
+                renderer.WriteFormat("${0:X4}", (ushort)Offset.Value);
                 return;
             }
             throw new System.NotImplementedException();

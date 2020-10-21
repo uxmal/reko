@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.Vax;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace Reko.UnitTests.Arch.Vax
 
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            return new VaxRewriter(arch, new LeImageReader(mem, 0), state, new Frame(arch.WordWidth), host);
+            return arch.CreateRewriter(arch.CreateImageReader(mem, 0), state, new Frame(arch.WordWidth), host);
         }
 
         [SetUp]

@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 
@@ -50,7 +51,7 @@ namespace Reko.UnitTests.Core
         private void Given_Image(params byte[] bytes)
         {
             addrBase = Address.Ptr32(0x00010000);
-            var mem = new MemoryArea(addrBase, bytes);
+            var mem = new ByteMemoryArea(addrBase, bytes);
             program.SegmentMap = new SegmentMap(addrBase);
             program.SegmentMap.AddSegment(mem, ".text", AccessMode.ReadWriteExecute);
             program.ImageMap = program.SegmentMap.CreateImageMap();

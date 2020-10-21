@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Core
 {
@@ -90,7 +91,7 @@ namespace Reko.UnitTests.Core
         [Test]
         public void Sr_ReadLeInt32_String()
         {
-            var rdr = new ImageReader(new byte[] { 
+            var rdr = new ByteImageReader(new byte[] { 
                 0x34, 0x12, 
                 0xAB, 0xCD,
                 0x48, 0x69, 0x00,

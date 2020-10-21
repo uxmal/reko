@@ -50,20 +50,20 @@ namespace Reko.Arch.Mips
             }
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             var sep = "";
             if (Bits.IsBitSet(Bitmask, 0x1F)) // ra
             {
-                writer.WriteString(registers[0x1F].Name);
+                renderer.WriteString(registers[0x1F].Name);
                 sep = ",";
             }
             var bm = Bitmask & ~(1u << 0x1F);
             foreach (var reg in GetRegisters(bm))
             {
-                writer.WriteString(sep);
+                renderer.WriteString(sep);
                 sep = ",";
-                writer.WriteString(reg.Name);
+                renderer.WriteString(reg.Name);
             }
         }
     }

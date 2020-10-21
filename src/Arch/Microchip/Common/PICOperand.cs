@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work from:
@@ -56,14 +56,14 @@ namespace Reko.Arch.MicrochipPIC.Common
         public virtual T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitImmediate(this);
         public virtual T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitImmediate(this, context);
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (!ImmediateValue.IsValid)
             {
-                writer.WriteString("???");
+                renderer.WriteString("???");
                 return;
             }
-            writer.WriteString(FormatValue(ImmediateValue, false, "{0}0x{1}"));
+            renderer.WriteString(FormatValue(ImmediateValue, false, "{0}0x{1}"));
         }
 
     }
@@ -94,7 +94,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public virtual T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitFast(this);
         public virtual T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitFast(this, context);
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             throw new NotImplementedException("Must be implemented by related instruction.");
         }
@@ -121,11 +121,10 @@ namespace Reko.Arch.MicrochipPIC.Common
         public virtual T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitRegister(this);
         public virtual T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitRegister(this, context);
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString($"{Register.Name}");
+            renderer.WriteString($"{Register.Name}");
         }
-
     }
 
 
@@ -166,9 +165,9 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </summary>
         public Constant RelativeWordOffset { get; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString($"{CodeTarget.ToLinear():X8}");
+            renderer.WriteString($"{CodeTarget.ToLinear():X8}");
         }
 
         public void Accept(IOperandVisitor visitor) => visitor.VisitProgMemory(this);
@@ -206,9 +205,9 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </summary>
         public PICDataAddress DataTarget { get; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString($"0x{DataTarget.Offset:X4}");
+            renderer.WriteString($"0x{DataTarget.Offset:X4}");
         }
 
         public void Accept(IOperandVisitor visitor) => visitor.VisitDataMemory(this);
@@ -290,9 +289,9 @@ namespace Reko.Arch.MicrochipPIC.Common
         public virtual T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitBankedMemory(this);
         public virtual T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitBankedMemory(this, context);
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString($"0x{Offset:X2}{(IsAccess ? ",ACCESS" : "")}");
+            renderer.WriteString($"0x{Offset:X2}{(IsAccess ? ",ACCESS" : "")}");
         }
 
     }
@@ -317,9 +316,9 @@ namespace Reko.Arch.MicrochipPIC.Common
         public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitMemBitNo(this);
         public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitMemBitNo(this, context);
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString($"{BitNo}");
+            renderer.WriteString($"{BitNo}");
         }
 
     }
@@ -344,9 +343,9 @@ namespace Reko.Arch.MicrochipPIC.Common
         public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitMemWRegDest(this);
         public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitMemWRegDest(this, context);
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString(WRegIsDest ? ",W" : ",F");
+            renderer.WriteString(WRegIsDest ? ",W" : ",F");
         }
 
     }
@@ -374,14 +373,14 @@ namespace Reko.Arch.MicrochipPIC.Common
         public virtual T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitFSRNumber(this);
         public virtual T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitFSRNumber(this, context);
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (FSRNum == 255)
             {
-                writer.WriteString("FSR");
+                renderer.WriteString("FSR");
                 return;
             }
-            writer.WriteString($"FSR{FSRNum}");
+            renderer.WriteString($"FSR{FSRNum}");
         }
 
     }
@@ -434,47 +433,47 @@ namespace Reko.Arch.MicrochipPIC.Common
         public virtual T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitFSRIndexation(this);
         public virtual T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitFSRIndexation(this, context);
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             switch (Mode)
             {
                 case FSRIndexedMode.None:
                     if (FSRNum == 255)
                     {
-                        writer.WriteString($"[{Offset:X2}]");
+                        renderer.WriteString($"[{Offset:X2}]");
                         return;
                     }
-                    writer.WriteString($"FSR{FSRNum},{Offset:X2}");
+                    renderer.WriteString($"FSR{FSRNum},{Offset:X2}");
                     return;
 
                 case FSRIndexedMode.FSR2INDEXED:
                     var offs = Offset.ToByte();
                     if (offs <= 31)
-                        writer.WriteString($"[0x{offs:X2}]");
+                        renderer.WriteString($"[0x{offs:X2}]");
                     else
-                        writer.WriteString($"[{Offset:X2}]");
+                        renderer.WriteString($"[{Offset:X2}]");
                     return;
                 case FSRIndexedMode.INDEXED:
-                    writer.WriteString($"{Offset}[{FSRNum}]");
+                    renderer.WriteString($"{Offset}[{FSRNum}]");
                     return;
 
                 case FSRIndexedMode.POSTDEC:
-                    writer.WriteString($"FSR{FSRNum}--");
+                    renderer.WriteString($"FSR{FSRNum}--");
                     return;
                 case FSRIndexedMode.POSTINC:
-                    writer.WriteString($"FSR{FSRNum}++");
+                    renderer.WriteString($"FSR{FSRNum}++");
                     return;
                 case FSRIndexedMode.PREDEC:
-                    writer.WriteString($"--FSR{FSRNum}");
+                    renderer.WriteString($"--FSR{FSRNum}");
                     return;
                 case FSRIndexedMode.PREINC:
-                    writer.WriteString($"++FSR{FSRNum}");
+                    renderer.WriteString($"++FSR{FSRNum}");
                     return;
                 case FSRIndexedMode.INDF:
-                    writer.WriteString($"[{FSRNum}]");
+                    renderer.WriteString($"[{FSRNum}]");
                     return;
                 case FSRIndexedMode.PLUSW:
-                    writer.WriteString($"[FSR{FSRNum}+WREG]");
+                    renderer.WriteString($"[FSR{FSRNum}+WREG]");
                     return;
             }
 
@@ -508,10 +507,10 @@ namespace Reko.Arch.MicrochipPIC.Common
         public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitTblRW(this);
         public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitTblRW(this, context);
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             byte mode = TBLIncrMode.ToByte();
-            writer.WriteString(ops[mode & 3]);
+            renderer.WriteString(ops[mode & 3]);
         }
 
     }
@@ -539,18 +538,18 @@ namespace Reko.Arch.MicrochipPIC.Common
         public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitTris(this);
         public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitTris(this, context);
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             switch (TrisNum.ToByte())
             {
                 case 5:
-                    writer.WriteString("A");
+                    renderer.WriteString("A");
                     return;
                 case 6:
-                    writer.WriteString("B");
+                    renderer.WriteString("B");
                     return;
                 case 7:
-                    writer.WriteString("C");
+                    renderer.WriteString("C");
                     return;
             }
             throw new InvalidOperationException($"Invalid TRIS operand: {TrisNum}");
@@ -606,10 +605,10 @@ namespace Reko.Arch.MicrochipPIC.Common
         public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitEEPROM(this);
         public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitEEPROM(this, context);
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             string s = string.Join(",", Values.Select(b => $"0x{b:X2}"));
-            writer.WriteString(s);
+            renderer.WriteString(s);
         }
 
     }
@@ -628,10 +627,10 @@ namespace Reko.Arch.MicrochipPIC.Common
         public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitASCII(this);
         public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitASCII(this, context);
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             string s = string.Join(",", Values.Select(b => $"0x{b:X2}"));
-            writer.WriteString(s);
+            renderer.WriteString(s);
         }
 
     }
@@ -650,10 +649,10 @@ namespace Reko.Arch.MicrochipPIC.Common
         public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitDB(this);
         public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitDB(this, context);
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             string s = string.Join(",", Values.Select(b => $"0x{b:X2}"));
-            writer.WriteString(s);
+            renderer.WriteString(s);
         }
 
     }
@@ -672,10 +671,10 @@ namespace Reko.Arch.MicrochipPIC.Common
         public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitDW(this);
         public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitDW(this, context);
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             string s = string.Join(",", Values.Select(w => $"0x{w:X4}"));
-            writer.WriteString(s);
+            renderer.WriteString(s);
         }
 
     }
@@ -697,9 +696,9 @@ namespace Reko.Arch.MicrochipPIC.Common
         public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitIDLocs(this);
         public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitIDLocs(this, context);
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString($"{addr}, 0x{Values[0]:X3}");
+            renderer.WriteString($"{addr}, 0x{Values[0]:X3}");
         }
 
     }
@@ -729,10 +728,10 @@ namespace Reko.Arch.MicrochipPIC.Common
         public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitConfig(this);
         public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitConfig(this, context);
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             var s = PICMemoryDescriptor.RenderDeviceConfigRegister(addr, Values[0]);
-            writer.WriteString(s);
+            renderer.WriteString(s);
         }
 
     }

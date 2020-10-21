@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Environments.Wii;
 using System;
 using System.Collections.Generic;
@@ -121,7 +122,7 @@ namespace Reko.ImageLoaders.Dol
                     continue;
                 var bytes = new byte[hdr.sizeText[i]];
                 Array.Copy(RawImage, hdr.offsetText[i], bytes, 0, bytes.Length);
-                var mem = new MemoryArea(hdr.addressText[i], bytes); 
+                var mem = new ByteMemoryArea(hdr.addressText[i], bytes); 
                 segments.Add(new ImageSegment(
                     string.Format("Text{0}", snum),
                     mem,
@@ -136,7 +137,7 @@ namespace Reko.ImageLoaders.Dol
                     continue;
                 var bytes = new byte[hdr.sizeData[i]];
                 Array.Copy(RawImage, hdr.offsetData[i], bytes, 0, bytes.Length);
-                var mem = new MemoryArea(hdr.addressText[i], bytes);
+                var mem = new ByteMemoryArea(hdr.addressText[i], bytes);
 
                 segments.Add(new ImageSegment(
                     string.Format("Data{0}", snum),
@@ -148,7 +149,7 @@ namespace Reko.ImageLoaders.Dol
             {
                 segments.Add(new ImageSegment(
                     ".bss",
-                    new MemoryArea(hdr.addressBSS, new byte[hdr.sizeBSS]),
+                    new ByteMemoryArea(hdr.addressBSS, new byte[hdr.sizeBSS]),
                     AccessMode.ReadWrite));
             }
 

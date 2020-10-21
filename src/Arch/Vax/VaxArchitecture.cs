@@ -30,6 +30,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System.Globalization;
 using Reko.Core.Lib;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.Vax
 {

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -21,6 +21,7 @@
 using Reko.Arch.Tlcs;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,12 +51,13 @@ namespace Reko.Environments.NeoGeo
         {
             var romSegment = new ImageSegment(
                 ".text",
-                new MemoryArea(
+                new ByteMemoryArea(
                     Address.Ptr32(RomLoadAddress),
                     RawImage),
                 AccessMode.ReadExecute);
-            this.entryPoint = Address.Ptr32(
-                romSegment.MemoryArea.ReadLeUInt32(0x1C));
+
+            romSegment.MemoryArea.TryReadLeUInt32(0x1C, out uint uAddrEntry);
+            this.entryPoint = Address.Ptr32(uAddrEntry);
             var segmap = new SegmentMap(PreferredBaseAddress, romSegment);
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture("tlcs-900");

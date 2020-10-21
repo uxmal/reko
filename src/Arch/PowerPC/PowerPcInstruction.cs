@@ -50,13 +50,13 @@ namespace Reko.Arch.PowerPC
 
         public override string MnemonicAsString => Mnemonic.ToString();
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             var op = string.Format("{0}{1}", 
                 Mnemonic,
                 setsCR0 ? "." : "");
-            writer.WriteMnemonic(op);
-            RenderOperands(writer, options);
+            renderer.WriteMnemonic(op);
+            RenderOperands(renderer, options);
         }
     }
 
@@ -70,9 +70,9 @@ namespace Reko.Arch.PowerPC
             Address = a;
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteAddress("$" + Address.ToString(), Address);
+            renderer.WriteAddress("$" + Address.ToString(), Address);
         }
     }
 
@@ -85,10 +85,10 @@ namespace Reko.Arch.PowerPC
             this.condition = condition;
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (condition > 3)
-                writer.WriteFormat("cr{0}+", condition >> 2);
+                renderer.WriteFormat("cr{0}+", condition >> 2);
             var s = "";
             switch (condition & 3)
             {
@@ -97,7 +97,7 @@ namespace Reko.Arch.PowerPC
             case 2: s = "eq"; break;
             case 3: s = "so"; break;
             }
-            writer.WriteString(s);
+            renderer.WriteString(s);
         }
     }
 }

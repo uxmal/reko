@@ -91,6 +91,7 @@
   <cmd id="EditCopy" cmdSet="Reko" container="EditCopy">_Copy</cmd>
   <cmd id="EditCopyAll" cmdSet="Reko" container="EditCopyAll">_Copy All</cmd>
   <cmd id="EditRename" cmdSet="Reko" container="GrpEdit">_Rename</cmd>
+  <cmd id="EditRegisterValues" cmdSet="Reko" container="GrpEdit">Re_gister Values</cmd>
   <cmd id="EditAnnotation" cmdSet="Reko" container="GrpEdit">Co_mment</cmd>
 
   <cmd id="EditSelectAll" cmdSet="Reko" container="GrpEdit">Select _all</cmd>
@@ -199,6 +200,7 @@
   <placement item="ViewPcRelative" container="GrpDisassemblerShow" />
   <placement item="EditCopy" container="GrpDisassemblerEdit" />
   <placement item="EditRename" container="GrpDisassemblerEdit" />
+  <placement item="EditRegisterValues" container="GrpDisassemblerEdit"/>
   <placement item="EditAnnotation" container="GrpDisassemblerEdit"/>
              
   <placement item="ActionEditSignature" container="GrpProcedure"/>

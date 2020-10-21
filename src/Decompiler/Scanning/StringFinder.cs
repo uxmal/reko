@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 
 namespace Reko.Scanning
@@ -44,10 +45,12 @@ namespace Reko.Scanning
         {
             foreach (var segment in program.SegmentMap.Segments.Values)
             {
+                if (!(segment.MemoryArea is ByteMemoryArea mem))
+                    continue; //$TODO: what to do with odd archs?
                 Address segEnd = Address.Min(
                     segment.Address + segment.Size,
-                    segment.MemoryArea.BaseAddress + segment.MemoryArea.Bytes.Length);
-                var rdr = criteria.CreateReader(segment.MemoryArea, segment.Address, segEnd);
+                    segment.MemoryArea.BaseAddress + mem.Bytes.Length);
+                var rdr = criteria.CreateReader(mem, segment.Address, segEnd);
                 Address? addrStartRun = null;
                 int cValid = 0;
                 var charType = (PrimitiveType)criteria.StringType.ElementType;
@@ -86,7 +89,7 @@ namespace Reko.Scanning
     {
         public StringType StringType;
         public int MinimumLength;
-        public Func<MemoryArea, Address, Address, EndianImageReader> CreateReader;
+        public Func<ByteMemoryArea, Address, Address, EndianImageReader> CreateReader;
         public Encoding Encoding;
     }
 }

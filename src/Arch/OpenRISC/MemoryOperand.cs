@@ -35,9 +35,9 @@ namespace Reko.Arch.OpenRISC
             this.Offset = offset;
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteFormat("{0}({1})", Offset, Base.Name);
+            renderer.WriteFormat("{0}({1})", Offset, Base.Name);
         }
     }
 }

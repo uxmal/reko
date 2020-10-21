@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.PowerPC
 {
@@ -509,7 +510,7 @@ namespace Reko.Arch.PowerPC
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("PPCRw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("PPCRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private Expression EffectiveAddress(MachineOperand operand, RtlEmitter emitter)

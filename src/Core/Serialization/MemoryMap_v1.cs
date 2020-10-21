@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -48,49 +49,28 @@ namespace Reko.Core.Serialization
         public MemorySegment_v1[]? Segments;
 
         /// <summary>
-        /// Loads an image map from a file containing the XML description of the
+        /// Loads an image map from a <see cref="Stream"/> containing the XML description of the
         /// segments inside.
-        /// <param name="svc"></param>
-        /// <param name="mmapFileName"></param>
-        /// <param name="platform"></param>
-        /// <returns></returns>
-        public static MemoryMap_v1? LoadMemoryMapFromFile(IServiceProvider svc, string mmapFileName, IPlatform platform)
+        public static MemoryMap_v1 Deserialize(Stream stm)
         {
-            //$REFACTOR: move all this service stuff to the only caller.
-            // change signature to use a simple Stream.
-            var cfgSvc = svc.RequireService<IConfigurationService>();
-            var fsSvc = svc.RequireService<IFileSystemService>();
-            var diagSvc = svc.RequireService<IDiagnosticsService>();
-            try
-            {
-                var filePath = cfgSvc.GetInstallationRelativePath(mmapFileName);
-                var ser = SerializedLibrary.CreateSerializer(
-                    typeof(MemoryMap_v1),
-                    SerializedLibrary.Namespace_v4);
-                using (var stm = fsSvc.CreateFileStream(filePath, FileMode.Open, FileAccess.Read))
-                {
-                    var mmap = (MemoryMap_v1)ser.Deserialize(stm);
-                    return mmap;
-                }
-            }
-            catch (Exception ex)
-            {
-                diagSvc.Error(ex, string.Format("Unable to open memory map file '{0}.", mmapFileName));
-                return null;
-            }
+            var ser = SerializedLibrary.CreateSerializer(
+                typeof(MemoryMap_v1),
+                SerializedLibrary.Namespace_v4);
+            var mmap = (MemoryMap_v1) ser.Deserialize(stm);
+            return mmap;
         }
 
-        public static ImageSegment? LoadSegment(MemorySegment_v1 segment, IPlatform platform, IDiagnosticsService diagSvc)
+        public static ImageSegment? LoadSegment(MemorySegment_v1 segment, IPlatform platform, DecompilerEventListener listener)
         {
             if (segment.Name is null)
             {
-                diagSvc.Warn("Memory map segments must have names.");
+                listener.Warn("Memory map segments must have names.");
                 return null;
             }
 
             if (!platform.TryParseAddress(segment.Address, out var addr))
             {
-                diagSvc.Warn(
+                listener.Warn(
                     "Unable to parse address '{0}' in memory map segment {1}.",
                     segment.Address!,
                     segment.Name!);
@@ -98,14 +78,14 @@ namespace Reko.Core.Serialization
             }
             if (!uint.TryParse(segment.Size, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var size))
             {
-                diagSvc.Warn(
+                listener.Warn(
                     "Unable to parse hexadecimal size '{0}' in memory map segment {1}.",
                     segment.Size!,
                     segment.Name!);
                 return null;
             }
 
-            var mem = new MemoryArea(addr, new byte[size]);
+            var mem = new ByteMemoryArea(addr, new byte[size]);
             return new ImageSegment(segment.Name, mem, ConvertAccess(segment.Attributes));
         }
 

@@ -527,7 +527,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Dis_38018C14()
+        public void AArch64Dis_strb_preidx()
         {
             Given_Instruction(0x38018C14);
             Expect_Code("strb\tw20,[x0,#&18]!");
@@ -1814,24 +1814,18 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("ld1\t{v1.4s},[x2],#16", "4178DF4C");
         }
 
-        // Reko: a decoder for the instruction 0004186E at address 0000000000000AB4 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=0011)
         [Test]
         public void AArch64Dis_mov_simd()
         {
             AssertCode("mov\tv0.d[1],v0.d[0]", "0004186E");
         }
 
-        // Reko: a decoder for the instruction 0300AE9E at address 0000000000000AE0 has not been implemented. (ConversionBetweenFpAndInt sf:S=0b10 type=10)
         [Test]
-        public void AArch64Dis_0300AE9E()
+        public void AArch64Dis_fmov()
         {
             AssertCode("fmov\tx3,v0.d[1]", "0300AE9E");
         }
 
-
-        // Reko: a decoder for the instruction 60041C6E at address 0000000000000B20 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=0011)
-
-        // Reko: a decoder for the instruction 00FC216E at address 0000000000000B30 has not been implemented. (AdvancedSimd3Same U=1 opcode=11111)
         [Test]
         public void AArch64Dis_fdiv()
         {

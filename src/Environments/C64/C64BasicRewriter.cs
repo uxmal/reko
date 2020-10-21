@@ -39,7 +39,6 @@ namespace Reko.Environments.C64
     /// </summary>
     public class C64BasicRewriter : IEnumerable<RtlInstructionCluster> 
     {
-        private readonly C64Basic arch;
         private readonly IDictionary<Address, C64BasicInstruction> instrs;
         private readonly Address address;
         private readonly IRewriterHost host;
@@ -57,7 +56,6 @@ namespace Reko.Environments.C64
             IDictionary<Address, C64BasicInstruction> instrs,
             IRewriterHost host)
         {
-            this.arch = arch;
             this.address = address;
             this.Lines = lines;
             this.instrs = instrs; 

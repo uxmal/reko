@@ -32,6 +32,7 @@ using System.Text;
 using CommonMockFactory = Reko.UnitTests.Mocks.CommonMockFactory;
 using Reko.Core.Code;
 using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Core
 {
@@ -301,8 +302,8 @@ VarargsParserClass: FakeParser";
         [Test]
         public void DynLink_LP32_weirdness()
         {
-            var memText = new MemoryArea(Address.Ptr64(0x00123400), new byte[100]);
-            var memGot = new MemoryArea(Address.Ptr64(0x00200000), new byte[100]);
+            var memText = new ByteMemoryArea(Address.Ptr64(0x00123400), new byte[100]);
+            var memGot = new ByteMemoryArea(Address.Ptr64(0x00200000), new byte[100]);
             var wr = new LeImageWriter(memGot.Bytes);
             wr.WriteLeUInt32(0x00300000);
             wr.WriteLeUInt32(0x00300004);

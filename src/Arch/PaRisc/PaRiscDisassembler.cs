@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -117,7 +118,7 @@ namespace Reko.Arch.PaRisc
             return invalid.Decode(0, this);
         }
 
-        public override PaRiscInstruction NotYetImplemented(uint wInstr, string message)
+        public override PaRiscInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("PaRiscDis", this.addr, this.rdr, message);
@@ -159,7 +160,7 @@ namespace Reko.Arch.PaRisc
             return (u, d) =>
             {
                 var v = field.Read(u);
-                Decoder.DumpMaskedInstruction(u, field.Mask << field.Position, "Unsigned immediate");
+                Decoder.DumpMaskedInstruction(32, u, field.Mask << field.Position, "Unsigned immediate");
                 d.ops.Add(new ImmediateOperand(Constant.Create(dt, v)));
                 return true;
             };
@@ -429,7 +430,7 @@ namespace Reko.Arch.PaRisc
             var field = BeField(bitPos, bitLen);
             return (u, d) =>
             {
-                Decoder.DumpMaskedInstruction(u, field.Mask << field.Position, "conditional field");
+                Decoder.DumpMaskedInstruction(32, u, field.Mask << field.Position, "conditional field");
                 var iCond = field.Read(u);
                 var cond = conds[iCond];
                 if (cond == null)
@@ -1103,7 +1104,7 @@ namespace Reko.Arch.PaRisc
         {
             return (uint uInstr, PaRiscDisassembler dasm) =>
             {
-                Decoder.DumpMaskedInstruction(uInstr, field.Mask << field.Position, "FP format completer");
+                Decoder.DumpMaskedInstruction(32, uInstr, field.Mask << field.Position, "FP format completer");
                 var uFormat = field.Read(uInstr);
                 dasm.fpFormat = fpFormats[uFormat];
                 return dasm.fpFormat != FpFormat.None;
@@ -1117,7 +1118,7 @@ namespace Reko.Arch.PaRisc
         {
             return (uint uInstr, PaRiscDisassembler dasm) =>
             {
-                Decoder.DumpMaskedInstruction(uInstr, field.Mask << field.Position, "FP dst format completer");
+                Decoder.DumpMaskedInstruction(32, uInstr, field.Mask << field.Position, "FP dst format completer");
                 var uFormat = field.Read(uInstr);
                 dasm.fpFormatDst = fpFormats[uFormat];
                 return dasm.fpFormatDst != FpFormat.None;
@@ -1319,7 +1320,7 @@ namespace Reko.Arch.PaRisc
 
             public override PaRiscInstruction Decode(uint uInstr, PaRiscDisassembler dasm)
             {
-                DumpMaskedInstruction(uInstr, bitfield.Mask << bitfield.Position, "");
+                DumpMaskedInstruction(32, uInstr, bitfield.Mask << bitfield.Position, "");
                 uint code = bitfield.Read(uInstr);
                 return decoders[code].Decode(uInstr, dasm);
             }
@@ -1342,7 +1343,7 @@ namespace Reko.Arch.PaRisc
 
             public override PaRiscInstruction Decode(uint uInstr, PaRiscDisassembler dasm)
             {
-                DumpMaskedInstruction(uInstr, field.Mask << field.Position, "");
+                DumpMaskedInstruction(32, uInstr, field.Mask << field.Position, "");
                 var u = field.Read(uInstr);
                 var cond = predicate(u);
                 var decoder = cond ? trueDecoder : falseDecoder;
@@ -1363,7 +1364,7 @@ namespace Reko.Arch.PaRisc
 
             public override PaRiscInstruction Decode(uint uInstr, PaRiscDisassembler dasm)
             {
-                return dasm.NotYetImplemented(uInstr, message);
+                return dasm.NotYetImplemented(message);
             }
 
             [Conditional("DEBUG")]

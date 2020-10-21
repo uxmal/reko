@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.Mips;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -58,13 +59,12 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual(sExp, instr.ToString());
         }
 
-        [Test]
         public void Mips16eDis_generate()
         {
             var rnd = new Random(4711);
             var buf = new byte[1_000_000];
             rnd.NextBytes(buf);
-            var mem = new MemoryArea(LoadAddress, buf);
+            var mem = new ByteMemoryArea(LoadAddress, buf);
             var rdr = new BeImageReader(mem, 0);
             var dasm = new Mips16eDisassembler(arch, rdr);
             dasm.Take(400).ToArray();

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -47,13 +48,13 @@ namespace Reko.Core
             this.Position = (int)offset;
         }
 
-        public ImageWriter(MemoryArea mem, Address addr)
+        public ImageWriter(ByteMemoryArea mem, Address addr)
         {
             this.Bytes = mem.Bytes;
             this.Position = (int)(addr - mem.BaseAddress);
         }
 
-        public ImageWriter(MemoryArea mem, long offset)
+        public ImageWriter(ByteMemoryArea mem, long offset)
         {
             this.Bytes = mem.Bytes;
             this.Position = (int)offset;
@@ -155,7 +156,7 @@ namespace Reko.Core
 
         public ImageWriter WriteBeUInt32(uint offset, uint ui)
         {
-            MemoryArea.WriteBeUInt32(Bytes, offset, ui);
+            ByteMemoryArea.WriteBeUInt32(Bytes, offset, ui);
             return this;
         }
 
@@ -249,12 +250,12 @@ namespace Reko.Core
         {
         }
 
-        public BeImageWriter(MemoryArea mem, Address addr) 
+        public BeImageWriter(ByteMemoryArea mem, Address addr) 
             : base(mem, addr)
         {
         }
 
-        public BeImageWriter(MemoryArea mem, long offset)
+        public BeImageWriter(ByteMemoryArea mem, long offset)
             : base(mem, offset)
         {
         }
@@ -287,12 +288,12 @@ namespace Reko.Core
         {
         }
 
-        public LeImageWriter(MemoryArea mem, Address addr) 
+        public LeImageWriter(ByteMemoryArea mem, Address addr) 
             : base(mem, addr)
         {
         }
 
-        public LeImageWriter(MemoryArea mem, long offset)
+        public LeImageWriter(ByteMemoryArea mem, long offset)
             : base(mem, offset)
         {
         }

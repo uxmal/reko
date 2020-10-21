@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.Arm;
 using Reko.Arch.Arm.AArch32;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -41,7 +42,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            return arch.CreateRewriter(new LeImageReader(mem, 0), new AArch32ProcessorState(arch), binder, host);
+            return arch.CreateRewriter(mem.CreateLeReader(0), new AArch32ProcessorState(arch), binder, host);
         }
 
 

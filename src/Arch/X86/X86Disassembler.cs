@@ -27,6 +27,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.X86
 {
@@ -50,6 +51,9 @@ namespace Reko.Arch.X86
 
             internal byte ByteValue { get; set; }
 
+            /// <summary>
+            /// Rex.W = 48h
+            /// </summary>
             internal bool FlagWideValue
             {
                 get
@@ -127,8 +131,7 @@ namespace Reko.Arch.X86
         private class X86InstructionDecodeInfo
         {
             // These fields are for analysis.
-            bool isModRegMemActive;
-            byte modRegMemByte;
+            byte? modRegMemByte;
 
             bool isSegmentOverrideActive;
             RegisterStorage segmentOverride;
@@ -155,8 +158,7 @@ namespace Reko.Arch.X86
 
             internal void Reset()
             {
-                this.isModRegMemActive = false;
-                this.modRegMemByte = 0;
+                this.modRegMemByte = null;
 
                 this.isSegmentOverrideActive = false;
                 this.segmentOverride = RegisterStorage.None;
@@ -186,7 +188,6 @@ namespace Reko.Arch.X86
                             this.F3Prefix ? 3 : 0
                 };
             }
-
 
             internal bool IsSegmentOverrideActive()
             {
@@ -234,7 +235,7 @@ namespace Reko.Arch.X86
 
             internal bool IsModRegMemByteActive()
             {
-                return this.isModRegMemActive;
+                return this.modRegMemByte.HasValue;
             }
 
             public bool IsVex { get; set; }
@@ -243,15 +244,14 @@ namespace Reko.Arch.X86
             {
                 get
                 {
-                    if (!this.isModRegMemActive)
+                    if (!this.modRegMemByte.HasValue)
                     {
                         throw new InvalidOperationException("The modrm byte was accessed without checking for validity. Check the code.");
                     }
-                    return this.modRegMemByte;
+                    return this.modRegMemByte.Value;
                 }
                 set
                 {
-                    this.isModRegMemActive = true;
                     this.modRegMemByte = value;
                 }
             }
@@ -343,7 +343,7 @@ namespace Reko.Arch.X86
             return new X86Instruction(Mnemonic.illegal, InstrClass.Invalid, decodingContext.dataWidth, decodingContext.addressWidth);
         }
 
-        public override X86Instruction NotYetImplemented(uint wInstr, string message)
+        public override X86Instruction NotYetImplemented(string message)
         {
             var testGenSvc = services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("X86Dis", this.addr, this.rdr, message);
@@ -688,6 +688,7 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Gb = G(OperandType.b);
         private static readonly Mutator<X86Disassembler> Gd = G(OperandType.d);
         private static readonly Mutator<X86Disassembler> Gv = G(OperandType.v);
+        private static readonly Mutator<X86Disassembler> Gw = G(OperandType.w);
         private static readonly Mutator<X86Disassembler> Gy = G(OperandType.y);
 
         // If VEX encoding, use vvvv register.
@@ -1080,11 +1081,16 @@ namespace Reko.Arch.X86
             RegisterStorage reg;
             var bitsize = dasm.decodingContext.dataWidth.BitSize;
             if (bitsize == 16)
+            {
                 reg = Registers.dx;
-            else if (bitsize == 32)
-                reg = Registers.edx;
+            }
             else
-                reg = Registers.rdx;
+            {
+                if (dasm.decodingContext.RegisterExtension.FlagWideValue)
+                    reg = Registers.rdx;
+                else
+                    reg = Registers.edx;
+            }
             dasm.decodingContext.ops.Add(new RegisterOperand(reg));
             return true;
         }
@@ -1160,7 +1166,16 @@ namespace Reko.Arch.X86
 
         public static VexInstructionDecoder VexInstr(Mnemonic legacy, Mnemonic vex, params Mutator<X86Disassembler> [] mutators)
         {
-            var legDec = Instr(legacy, mutators);
+            var legDec = legacy != Mnemonic.illegal
+                    ? Instr(legacy, mutators)
+                    : s_invalid;
+            var vexDec = Instr(vex, mutators);
+            return new VexInstructionDecoder(legDec, vexDec);
+        }
+
+        public static VexInstructionDecoder VexInstr(Mnemonic vex, params Mutator<X86Disassembler>[] mutators)
+        {
+            var legDec = s_invalid;
             var vexDec = Instr(vex, mutators);
             return new VexInstructionDecoder(legDec, vexDec);
         }
@@ -1192,6 +1207,11 @@ namespace Reko.Arch.X86
                 bit64 ?? s_invalid);
         }
 
+        public static MemRegDecoder MemReg(Decoder mem, Decoder reg)
+        {
+            return new MemRegDecoder(mem, reg);
+        }
+
         public static NyiDecoder nyi(string message)
         {
             return new NyiDecoder(message);
@@ -1216,7 +1236,7 @@ namespace Reko.Arch.X86
             return true;
 		}
 
-        // Operand types as defined by the Intel manual
+        // Operand types as defined by the Intel manual section A.2.2
         private enum OperandType
         {
             None,
@@ -1250,6 +1270,10 @@ namespace Reko.Arch.X86
 		/// <summary>
 		/// Returns the operand width of the operand type.
 		/// </summary>
+        /// <remarks>
+        /// This extends the specification of Intel's section A.2.2 "Codes for operand type"
+        /// to include BCD80.
+        /// </remarks>
 		private PrimitiveType OperandWidth(OperandType fmt)
 		{
 			switch (fmt)

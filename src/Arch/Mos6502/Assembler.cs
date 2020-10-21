@@ -26,6 +26,7 @@ using System.Text;
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 
 namespace Reko.Arch.Mos6502
@@ -55,7 +56,7 @@ namespace Reko.Arch.Mos6502
 
         public Program GetImage()
         {
-            var mem = new MemoryArea(addrBase, m.GetBytes());
+            var mem = new ByteMemoryArea(addrBase, m.GetBytes());
             var seg = new ImageSegment("code", mem, AccessMode.ReadWriteExecute);
             var map = new SegmentMap(addrBase, seg);
             var program = new Program

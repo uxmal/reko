@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -200,7 +201,7 @@ namespace Reko.Arch.M6800.M6809
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("M6809Rw", this.instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("M6809Rw", this.instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private Expression Clr(Expression e)

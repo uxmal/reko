@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using System;
@@ -282,7 +283,7 @@ namespace Reko.Loading
                 {
                     if (rawFile.EntryPoint.Follow)
                     {
-                        var rdr = arch.CreateImageReader(new MemoryArea(baseAddr, image), entryAddr);
+                        var rdr = arch.CreateImageReader(new ByteMemoryArea(baseAddr, image), entryAddr);
                         var addr = arch.ReadCodeAddress(0, rdr, arch.CreateProcessorState());
                         return addr;
                     }

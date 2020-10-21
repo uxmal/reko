@@ -19,6 +19,7 @@
 #endregion
  
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.ImageLoaders;
 using System;
 using System.Collections.Generic;
@@ -65,7 +66,7 @@ namespace Reko.UnitTests
                     break;
                 ProcessLine(line);
             }
-            var mem = new MemoryArea(addrStart, memStm.ToArray());
+            var mem = new ByteMemoryArea(addrStart, memStm.ToArray());
             results = new Program(
                 new SegmentMap(
                     mem.BaseAddress,

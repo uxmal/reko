@@ -31,18 +31,18 @@ namespace Reko.Arch.zSeries
         public override int MnemonicAsInteger => (int) Mnemonic;
         public override string MnemonicAsString => Mnemonic.ToString();
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteMnemonic(this.Mnemonic.ToString());
+            renderer.WriteMnemonic(this.Mnemonic.ToString());
             if (Operands.Length == 0)
                 return;
-            writer.Tab();
+            renderer.Tab();
             var sep = "";
             foreach (var op in Operands)
             {
-                writer.WriteString(sep);
+                renderer.WriteString(sep);
                 sep = ",";
-                op.Write(writer, options);
+                op.Render(renderer, options);
         }
     }
     }

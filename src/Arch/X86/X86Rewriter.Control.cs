@@ -157,7 +157,7 @@ namespace Reko.Arch.X86
 
         private void RewriteInt()
         {
-            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, SrcOp(instrCur.Operands[0])));
+            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, SrcOp(0)));
             iclass |= InstrClass.Call | InstrClass.Transfer;
         }
 
@@ -213,7 +213,7 @@ namespace Reko.Arch.X86
                 m.Goto(addr);
 				return;
 			}
-            var target = SrcOp(instrCur.Operands[0]);
+            var target = SrcOp(0);
             if (target.DataType.Size == 2 && arch.WordWidth.Size > 2)
             {
                 iclass = InstrClass.Invalid;
@@ -251,7 +251,7 @@ namespace Reko.Arch.X86
         {
             m.SideEffect(host.PseudoProcedure("__load_task_register",
                 VoidType.Instance,
-                SrcOp(instrCur.Operands[0])));
+                SrcOp(0)));
         }
 
         public void RewriteRet()
@@ -289,7 +289,7 @@ namespace Reko.Arch.X86
         private void RewriteStr()
         {
             m.Assign(
-                SrcOp(instrCur.Operands[0]),
+                SrcOp(0),
                 host.PseudoProcedure("__store_task_register",
                     PrimitiveType.Word16));
         }

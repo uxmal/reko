@@ -29,6 +29,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.M68k
 {
@@ -294,7 +295,7 @@ VS Overflow Set 1001 V
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("M68krw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("M68krw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private RegisterStorage? GetRegister(MachineOperand op)

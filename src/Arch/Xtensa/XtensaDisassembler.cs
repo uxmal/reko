@@ -28,6 +28,7 @@ using Reko.Core.Expressions;
 using System.Linq;
 using Reko.Core.Lib;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 #pragma warning disable IDE1006 // Naming Styles
 
@@ -138,12 +139,12 @@ namespace Reko.Arch.Xtensa
             };
         }
 
-        public override XtensaInstruction NotYetImplemented(uint wInstr, string message)
-                {
+        public override XtensaInstruction NotYetImplemented(string message)
+        {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("Xtdasm", this.state.addr, this.rdr, message);
             return CreateInvalidInstruction();
-                }
+        }
 
         // GP register
         private static bool Rr(uint wInstr, XtensaDisassembler dasm)
@@ -151,10 +152,10 @@ namespace Reko.Arch.Xtensa
             var reg = dasm.arch.GetAluRegister(dasm.state.r);
             dasm.ops.Add(new RegisterOperand(reg));
             return true;
-            }
+        }
 
         private static bool Rs(uint wInstr, XtensaDisassembler dasm)
-            {
+        {
             var reg = dasm.arch.GetAluRegister(dasm.state.s);
             dasm.ops.Add(new RegisterOperand(reg));
             return true;
@@ -176,11 +177,11 @@ namespace Reko.Arch.Xtensa
         }
 
         private static bool Fs(uint wInstr, XtensaDisassembler dasm)
-            {
+        {
             var freg = dasm.arch.GetFpuRegister(dasm.state.s);
             dasm.ops.Add(new RegisterOperand(freg));
             return true;
-            }
+        }
 
         private static bool Ft(uint wInstr, XtensaDisassembler dasm)
         {
@@ -202,13 +203,13 @@ namespace Reko.Arch.Xtensa
 
         // Mr operand can be m0 or m1.
         private static bool Mr_01(uint _, XtensaDisassembler dasm)
-            {
+        {
             var mac16reg = dasm.arch.GetMac16Register((dasm.state.r >> 2) & 1);
             if (mac16reg == null)
                 return false;
             dasm.ops.Add(new RegisterOperand(mac16reg));
             return true;
-            }
+        }
 
         private static bool Mt(uint wInstr, XtensaDisassembler dasm)
         {
@@ -291,7 +292,7 @@ namespace Reko.Arch.Xtensa
                 return true;
             };
         }
-    
+        
         private static bool Bt(uint wInstr, XtensaDisassembler dasm)
         {
             var reg = dasm.arch.GetBoolRegister(dasm.state.t);
@@ -317,12 +318,12 @@ namespace Reko.Arch.Xtensa
 
         // Immediate from t field, offset by 7.
         private static bool It_7(uint wInstr, XtensaDisassembler dasm)
-            {
+        {
             var n = (byte) (dasm.state.t + 7);
             var op = ImmediateOperand.Byte(n);
             dasm.ops.Add(op);
             return true;
-            }
+        }
 
         // Immediate from t field, offset by -8.
         private static bool It_m8(uint wInstr, XtensaDisassembler dasm)
@@ -693,9 +694,9 @@ namespace Reko.Arch.Xtensa
                 {
                     if (!m(wInstr, dasm))
                         return dasm.CreateInvalidInstruction();
-            }
+                }
                 return dasm.MakeInstruction(iclass, mnemonic);
-        }
+            }
         }
 
 
@@ -717,8 +718,8 @@ namespace Reko.Arch.Xtensa
                 // this is a 2-byte instruction, so back up one byte.
                 dasm.rdr.Offset -= 1;
                 return dasm.MakeInstruction(InstrClass.Linear, Mnemonic.movi_n);
-                    }
             }
+        }
 
         public class bz_Decoder : Decoder
         {
@@ -774,20 +775,20 @@ namespace Reko.Arch.Xtensa
         }
 
         private static InstrDecoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<XtensaDisassembler>[] mutators)
-            {
+        {
             return new InstrDecoder(iclass, mnemonic, false, mutators);
-            }
+        }
 
         private static InstrDecoder Instr2byte(Mnemonic mnemonic, InstrClass iclass, params Mutator<XtensaDisassembler>[] mutators)
-            {
+        {
             return new InstrDecoder(iclass, mnemonic, true, mutators);
-                    }
+        }
 
 
         private static Decoder Nyi(string message)
         {
             return new NyiDecoder<XtensaDisassembler, Mnemonic, XtensaInstruction>(message);
-                    }
+        }
 
         static XtensaDisassembler()
         {

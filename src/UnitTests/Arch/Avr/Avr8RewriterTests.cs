@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.Avr;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
@@ -46,7 +47,7 @@ namespace Reko.UnitTests.Arch.Avr
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
             var state = (Avr8State)arch.CreateProcessorState();
-            return new Avr8Rewriter(arch, new LeImageReader(mem, 0), state, new Frame(arch.FramePointerType), host);
+            return new Avr8Rewriter(arch, mem.CreateLeReader(0), state, new Frame(arch.FramePointerType), host);
         }
 
         public override Address LoadAddress => baseAddr;

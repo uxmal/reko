@@ -40,13 +40,13 @@ namespace Reko.Arch.Blackfin
         public RegisterStorage MaxRegister { get; }
         public RegisterStorage MinRegister { get; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString("(");
-            writer.WriteString(MaxRegister.Name);
-            writer.WriteString(":");
-            writer.WriteString(MinRegister.Name);
-            writer.WriteString(")");
+            renderer.WriteString("(");
+            renderer.WriteString(MaxRegister.Name);
+            renderer.WriteString(":");
+            renderer.WriteString(MinRegister.Name);
+            renderer.WriteString(")");
         }
     }
 }

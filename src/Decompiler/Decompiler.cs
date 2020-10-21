@@ -120,12 +120,19 @@ namespace Reko
         {
             if (wr == null || program.Architecture == null)
                 return;
-            Dumper dump = new Dumper(program)
+            try
             {
-                ShowAddresses = program.User.ShowAddressesInDisassembly,
-                ShowCodeBytes = program.User.ShowBytesInDisassembly
-            };
-            dump.Dump(segmentItems, wr);
+                Dumper dump = new Dumper(program)
+                {
+                    ShowAddresses = program.User.ShowAddressesInDisassembly,
+                    ShowCodeBytes = program.User.ShowBytesInDisassembly
+                };
+                dump.Dump(segmentItems, wr);
+            } 
+            catch (Exception ex)
+            {
+                eventListener.Error(ex, "An error occurred while write assembly language output.");
+            }
         }
 
         private void EmitProgram(Program program, IEnumerable<Procedure> procs, DataFlowAnalysis? dfa, string filename, TextWriter output)
@@ -220,7 +227,7 @@ namespace Reko
             }
             catch (Exception ex)
             {
-                eventListener.Error(new NullCodeLocation(""), ex, "Unable to load OllyLang script interpreter.");
+                eventListener.Error(ex, "Unable to load OllyLang script interpreter.");
                 return;
             }
 
@@ -231,7 +238,7 @@ namespace Reko
             }
             catch (Exception ex)
             {
-                eventListener.Error(new NullCodeLocation(""), ex, "An error occurred while running the script.");
+                eventListener.Error(ex, "An error occurred while running the script.");
             }
         }
 
@@ -321,8 +328,7 @@ namespace Reko
                 }
                 catch (Exception ex)
                 {
-                    var diagSvc = services.RequireService<IDiagnosticsService>();
-                    diagSvc.Error(ex, $"Unable to create directory '{0}'.");
+                    eventListener.Error(ex, $"Unable to create directory '{resourceDir}'.");
                     return;
                 }
                 foreach (ProgramResourceGroup pr in prg.Resources)
@@ -376,8 +382,7 @@ namespace Reko
             }
             catch (Exception ex)
             {
-                var diagSvc = services.RequireService<IDiagnosticsService>();
-                diagSvc.Error(ex, $"Unable to create directory '{dirPath}'.");
+                eventListener.Error(ex, $"Unable to create directory '{dirPath}'.");
                 return false;
             }
             string path = "";
@@ -397,8 +402,7 @@ namespace Reko
             }
             catch (Exception ex)
             {
-                var diagSvc = services.RequireService<IDiagnosticsService>();
-                diagSvc.Error(ex, $"Unable to write file '{path}'");
+                eventListener.Error(ex, $"Unable to write file '{path}'");
                 return false;
             }
             return true;
@@ -422,7 +426,7 @@ namespace Reko
                 }
                 catch (Exception ex)
                 {
-                    eventListener.Error(new NullCodeLocation(""), ex, "Error when reconstructing types.");
+                    eventListener.Error(ex, "Error when reconstructing types.");
                 } 
                 finally
                 {

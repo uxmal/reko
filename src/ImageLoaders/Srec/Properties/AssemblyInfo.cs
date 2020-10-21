@@ -26,8 +26,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Reko OMF object file loader")]
-[assembly: AssemblyDescription("Loads an relocatable Object Module Formal file.")]
+[assembly: AssemblyTitle("Reko SREC object file loader")]
+[assembly: AssemblyDescription("Loads a Motorola S-Record file.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(AssemblyMetadata.Company)]
 [assembly: AssemblyProduct(AssemblyMetadata.Product)]
@@ -41,7 +41,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("0e00ed86-372c-4497-85bb-428bdd1c5ccf")]
+[assembly: Guid("E3F228AE-03FA-443E-95A4-567EF72377EF")]
 
 [assembly: AssemblyVersion(AssemblyMetadata.AssemblyVersion)]
 [assembly: AssemblyFileVersion(AssemblyMetadata.AssemblyFileVersion)]

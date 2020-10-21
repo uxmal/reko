@@ -21,6 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
@@ -44,7 +45,7 @@ namespace Reko.UnitTests.Scanning
         public void DataScanner_Readstring()
         {
             var addrBase = Address.Ptr32(0x00123000);
-            var mem = new MemoryArea(addrBase, new byte[0x1000]);
+            var mem = new ByteMemoryArea(addrBase, new byte[0x1000]);
             var segmap = new SegmentMap(addrBase,
                 new ImageSegment("code", mem, AccessMode.ReadWrite));
             Given_Architecture();
@@ -64,9 +65,9 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual(6, item.Size);
         }
 
-        private void Given_String(MemoryArea mem, Address addr, string str)
+        private void Given_String(ByteMemoryArea bmem, Address addr, string str)
         {
-            var w = new LeImageWriter(mem, addr);
+            var w = new LeImageWriter(bmem, addr);
             var bytes = Encoding.ASCII.GetBytes(str);
             w.WriteBytes(bytes);
         }
@@ -76,9 +77,9 @@ namespace Reko.UnitTests.Scanning
             this.arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("Fake");
             arch.Setup(a => a.CreateImageReader(
-                It.IsNotNull<MemoryArea>(),
+                It.IsNotNull<ByteMemoryArea>(),
                 It.IsNotNull<Address>())).
-                Returns((MemoryArea m, Address a) => new LeImageReader(m, a)); 
+                Returns((ByteMemoryArea m, Address a) => new LeImageReader(m, a)); 
         }
     }
 }

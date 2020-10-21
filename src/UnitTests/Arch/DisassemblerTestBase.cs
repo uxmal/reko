@@ -28,6 +28,7 @@ using System.Text;
 using System.ComponentModel.Design;
 using Reko.Core.Services;
 using NUnit.Framework.Interfaces;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch
 {
@@ -43,35 +44,34 @@ namespace Reko.UnitTests.Arch
 
         public TInstruction DisassembleBytes(params byte[] a)
         {
-            MemoryArea img = new MemoryArea(LoadAddress, a);
+            ByteMemoryArea img = new ByteMemoryArea(LoadAddress, a);
             return Disassemble(img);
         }
 
         public TInstruction DisassembleWord(uint instr)
         {
-            var img = new MemoryArea(LoadAddress, new byte[256]);
+            var img = new ByteMemoryArea(LoadAddress, new byte[256]);
             Architecture.CreateImageWriter(img, img.BaseAddress).WriteUInt32(0, instr);
             return Disassemble(img);
         }
 
         protected TInstruction DisassembleBits(string bitPattern)
         {
-            var img = new MemoryArea(LoadAddress, new byte[256]);
+            var mem = new ByteMemoryArea(LoadAddress, new byte[256]);
             uint instr = BitStringToUInt32(bitPattern);
-            Architecture.CreateImageWriter(img, img.BaseAddress).WriteUInt32(0, instr);
-            return Disassemble(img);
+            Architecture.CreateImageWriter(mem, mem.BaseAddress).WriteUInt32(0, instr);
+            return Disassemble(mem);
         }
 
-        protected TInstruction DisassembleHexBytes(string hexBytes)
+        protected virtual TInstruction DisassembleHexBytes(string hexBytes)
         {
-            var img = new MemoryArea(LoadAddress, new byte[256]);
             byte[] instr = HexStringToBytes(hexBytes);
             return DisassembleBytes(instr);
         }
 
-        public TInstruction Disassemble(MemoryArea img)
+        public TInstruction Disassemble(MemoryArea mem)
         {
-            var dasm = this.CreateDisassembler(Architecture.CreateImageReader(img, 0U));
+            var dasm = this.CreateDisassembler(Architecture.CreateImageReader(mem, 0U));
             return (TInstruction) dasm.First();
         }
 

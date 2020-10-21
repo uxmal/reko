@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Lib;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace Reko.UnitTests.Core.Lib
         private void AssertEqual(float fExpected, string bytes)
         {
             var mem = BytePattern.FromHexBytes(bytes).ToArray();
-            var uFloat = MemoryArea.ReadLeUInt32(mem, 0);
+            var uFloat = ByteMemoryArea.ReadLeUInt32(mem, 0);
             var mbf = new MBFFloat32(uFloat);
             var fActual = mbf.ToSingle(null);
             Assert.AreEqual(fExpected, fActual, 1e-30);

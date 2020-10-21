@@ -30,6 +30,7 @@ using System;
 namespace Reko.Arch.MicrochipPIC.PIC18
 {
     using Common;
+    using Reko.Core.Memory;
 
     /// <summary>
     /// A Enhanced PIC18 family disassembler.

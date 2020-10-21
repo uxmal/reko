@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.ImageLoaders.OdbgScript;
@@ -38,7 +39,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
         private Mock<IProcessorArchitecture> arch;
         private Mock<IFileSystemService> fsSvc;
         private OllyLangInterpreter engine;
-        private MemoryArea mem;
+        private ByteMemoryArea mem;
         private SegmentMap imageMap;
 
         [SetUp]
@@ -107,7 +108,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
 
         private void Given_Image(Address addr, params byte[] bytes)
         {
-            mem = new MemoryArea(addr, bytes);
+            mem = new ByteMemoryArea(addr, bytes);
             imageMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment(".text", mem, AccessMode.ReadExecute));
@@ -147,7 +148,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
                 .Returns((Address a, int l, byte[] b) =>
             {
                 var offset = a - mem.BaseAddress;
-                MemoryArea.WriteBytes(b, offset, l, mem.Bytes);
+                ByteMemoryArea.WriteBytes(b, offset, l, mem.Bytes);
                 return true;
             });
 
