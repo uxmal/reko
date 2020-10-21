@@ -26,9 +26,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="genPICdb.licenseheader" />
-    <Content Include="picdb.zip">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <None Include="picdb.zip" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
