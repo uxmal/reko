@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Operators;
 using Reko.Core.Types;
@@ -91,7 +92,7 @@ namespace Reko.Arch.Avr.Avr32
             };
         }
 
-        public override Avr32Instruction NotYetImplemented(uint wInstr, string message)
+        public override Avr32Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("Avr32Dis", this.addr, rdr, message);

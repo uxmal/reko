@@ -21,6 +21,7 @@
 using Reko.Arch.Mos6502;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -50,14 +51,14 @@ namespace Reko.Environments.C64
         public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
         {
             var stm = new MemoryStream();
-            ushort preferredAddress = MemoryArea.ReadLeUInt16(RawImage, 0);
+            ushort preferredAddress = ByteMemoryArea.ReadLeUInt16(RawImage, 0);
             ushort alignedAddress = (ushort) (preferredAddress & ~0xF);
             int pad = preferredAddress - alignedAddress;
             while (pad-- > 0)
                 stm.WriteByte(0);
             stm.Write(RawImage, 2, RawImage.Length - 2);
             var loadedBytes = stm.ToArray();
-            var image = new MemoryArea(
+            var image = new ByteMemoryArea(
                 Address.Ptr16(alignedAddress),
                 loadedBytes);
             var rdr = new C64BasicReader(image, 0x0801);
@@ -86,17 +87,17 @@ namespace Reko.Environments.C64
             }
         }
 
-        private SegmentMap CreateSegmentMap(IPlatform platform, MemoryArea image, IDictionary<ushort, C64BasicInstruction> lines)
+        private SegmentMap CreateSegmentMap(IPlatform platform, ByteMemoryArea bmem, IDictionary<ushort, C64BasicInstruction> lines)
         {
             var segMap = platform.CreateAbsoluteMemoryMap();
-            Address addrStart = image.BaseAddress;
+            Address addrStart = bmem.BaseAddress;
             if (lines.Count > 0)
             {
-                segMap.AddSegment(new ImageSegment("basic", image.BaseAddress, image, AccessMode.ReadExecute));
+                segMap.AddSegment(new ImageSegment("basic", bmem.BaseAddress, bmem, AccessMode.ReadExecute));
                 var lastLine = lines.Values.OrderByDescending(l => l.Address).First();
                 addrStart = lastLine.Address + lastLine.Line.Length;
             }
-            segMap.AddSegment(new ImageSegment("code", addrStart, image, AccessMode.ReadWriteExecute));
+            segMap.AddSegment(new ImageSegment("code", addrStart, bmem, AccessMode.ReadWriteExecute));
             return segMap;
         }
 

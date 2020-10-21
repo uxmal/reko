@@ -38,10 +38,20 @@ namespace Reko.Core.Services
         ICodeLocation CreateBlockNavigator(Program program, Block block);
         ICodeLocation CreateStatementNavigator(Program program, Statement stm);
         ICodeLocation CreateJumpTableNavigator(Program program, IProcessorArchitecture arch, Address addrIndirectJump, Address? addrVector, int stride);
+
+        void Info(string message);
+        void Info(string message, params object [] args);
         void Info(ICodeLocation location, string message);
         void Info(ICodeLocation location, string message, params object[] args);
+        void Warn(string message);
+        void Warn(string message, params object[] args);
         void Warn(ICodeLocation location, string message);
         void Warn(ICodeLocation location, string message, params object[] args);
+        void Error(string message);
+        void Error(string message, params object[] args);
+        void Error(Exception ex, string message);
+        void Error(Exception ex, string message, params object[] args);
+
         void Error(ICodeLocation location, string message);
         void Error(ICodeLocation location, string message, params object[] args);
         void Error(ICodeLocation location, Exception ex, string message);
@@ -59,6 +69,16 @@ namespace Reko.Core.Services
 
         #region DecompilerEventListener Members
 
+        public void Info(string message)
+        {
+            Debug.Print("Info: {0}", message);
+        }
+
+        public void Info(string message, params object [] args)
+        {
+            Debug.Print("Info: {0}", string.Format(message, args));
+        }
+
         public void Info(ICodeLocation location, string message)
         {
             Debug.Print("Info: {0}: {1}", location, message);
@@ -70,6 +90,16 @@ namespace Reko.Core.Services
                 string.Format(message, args));
         }
 
+        public void Warn(string message)
+        {
+            Debug.Print("Warning: {0}", message);
+        }
+
+        public void Warn(string message, params object[] args)
+        {
+            Debug.Print("Warning: {0}", string.Format(message, args));
+        }
+
         public void Warn(ICodeLocation location, string message)
         {
             Debug.Print("Warning: {0}: {1}", location, message);
@@ -79,6 +109,28 @@ namespace Reko.Core.Services
         {
             Debug.Print("Warning: {0}: {1}", location,
                 string.Format(message, args));
+        }
+
+        public void Error(string message)
+        {
+            Debug.Print("Error: {0}", message);
+        }
+
+        public void Error(string message, params object[] args)
+        {
+            Debug.Print("Error: {0}", string.Format(message, args));
+        }
+
+        public void Error(Exception ex, string message)
+        {
+            Debug.Print("Error: {0} {1}", message, ex.Message);
+        }
+
+        public void Error(Exception ex, string message, params object[] args)
+        {
+            Debug.Print("Error: {0} {1}",
+                string.Format(message, args),
+                ex.Message);
         }
 
         public void Error(ICodeLocation location, string message)

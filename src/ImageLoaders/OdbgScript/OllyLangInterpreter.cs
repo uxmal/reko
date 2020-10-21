@@ -21,6 +21,7 @@
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -1192,8 +1193,8 @@ namespace Reko.ImageLoaders.OdbgScript
                         if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment segment))
                             throw new AccessViolationException();
                         byte[] buffer = new byte[STRING_READSIZE];
-
-                        if (segment.MemoryArea.TryReadBytes(ea, buffer.Length, buffer))
+                        if (segment.MemoryArea is ByteMemoryArea bmem && 
+                            bmem.TryReadBytes(ea, buffer.Length, buffer))
                         {
                             buffer[buffer.Length - 1] = 0;
                             value = Encoding.UTF8.GetString(buffer);
@@ -1386,8 +1387,8 @@ namespace Reko.ImageLoaders.OdbgScript
                 {
                     if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment segment))
                         throw new AccessViolationException();
-                    value = segment.MemoryArea.ReadLeDouble(ea).ToDouble();
-                    return true;
+                    var offset = ea - segment.MemoryArea.BaseAddress;
+                    return segment.MemoryArea.TryReadLeDouble(offset, out value);
                 }
             }
             else

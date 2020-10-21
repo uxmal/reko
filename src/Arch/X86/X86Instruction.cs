@@ -157,7 +157,7 @@ namespace Reko.Arch.X86
 			{
 			case Mnemonic.adc:
 			case Mnemonic.adcx:
-            case Mnemonic.sbb:
+			case Mnemonic.sbb:
 				return FlagM.CF;
 			case Mnemonic.daa:
 			case Mnemonic.das:

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,8 +52,14 @@ namespace Reko.Environments.AtariTOS
             if (!TryLoadHeader(rdr, out var hdr))
                 throw new BadImageFormatException();
 
-            var mem = new MemoryArea(addrLoad, new byte[ hdr.TextSize + hdr.DataSize + hdr.BssSize ]);
-            int cRead = rdr.ReadBytes(mem.Bytes, 0, hdr.TextSize + hdr.DataSize);
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            var arch = cfgSvc.GetArchitecture("m68k");
+            var env = cfgSvc.GetEnvironment("atariTOS");
+            var platform = env.Load(Services, arch);
+
+            var bytes = new byte[hdr.TextSize + hdr.DataSize + hdr.BssSize];
+            var mem = arch.CreateMemoryArea(addrLoad, bytes);
+            int cRead = rdr.ReadBytes(bytes, 0, hdr.TextSize + hdr.DataSize);
             if (cRead != hdr.TextSize + hdr.DataSize)
                 throw new BadImageFormatException();
 
@@ -65,10 +72,6 @@ namespace Reko.Environments.AtariTOS
             PerformRelocations(mem, rdr);
 
 
-            var cfgSvc = Services.RequireService<IConfigurationService>();
-            var arch = cfgSvc.GetArchitecture("m68k");
-            var env = cfgSvc.GetEnvironment("atariTOS");
-            var platform = env.Load(Services, arch);
             var map = new SegmentMap(
                 addrLoad,
                 text, data, bss);
@@ -104,7 +107,8 @@ namespace Reko.Environments.AtariTOS
             for (;;)
             {
                 var dst = mem.BaseAddress + offset;
-                uint l = mem.ReadBeUInt32(offset);
+                if (!mem.TryReadBeUInt32(offset, out uint l))
+                    return false;
                 l += mem.BaseAddress.ToUInt32();
                 mem.WriteBeUInt32(offset, l);
                 mem.Relocations.AddPointerReference(mem.BaseAddress.ToLinear() + offset, l);

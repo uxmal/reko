@@ -24,6 +24,7 @@ using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
@@ -50,7 +51,7 @@ namespace Reko.UnitTests.Arch.X86
 
         private X86Instruction Disassemble16(params byte[] bytes)
         {
-            MemoryArea img = new MemoryArea(Address.SegPtr(0xC00, 0), bytes);
+            ByteMemoryArea img = new ByteMemoryArea(Address.SegPtr(0xC00, 0), bytes);
             EndianImageReader rdr = img.CreateLeReader(img.BaseAddress);
             var dasm =  ProcessorMode.Real.CreateDisassembler(sc, rdr, options);
             if (options != null)
@@ -62,7 +63,7 @@ namespace Reko.UnitTests.Arch.X86
 
         private X86Instruction Disassemble32(params byte[] bytes)
         {
-            var img = new MemoryArea(Address.Ptr32(0x10000), bytes);
+            var img = new ByteMemoryArea(Address.Ptr32(0x10000), bytes);
             var rdr = img.CreateLeReader(img.BaseAddress);
             var dasm = new X86Disassembler(sc, ProcessorMode.Protected32, rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
             return dasm.First();
@@ -70,7 +71,7 @@ namespace Reko.UnitTests.Arch.X86
 
         private X86Instruction Disassemble64(params byte[] bytes)
         {
-            var img = new MemoryArea(Address.Ptr64(0x10000), bytes);
+            var img = new ByteMemoryArea(Address.Ptr64(0x10000), bytes);
             var rdr = img.CreateLeReader(img.BaseAddress);
             var dasm = new X86Disassembler(
                 sc,
@@ -84,7 +85,7 @@ namespace Reko.UnitTests.Arch.X86
 
         private void CreateDisassembler16(params byte[] bytes)
         {
-            var mem = new MemoryArea(Address.SegPtr(0x0C00, 0), bytes);
+            var mem = new ByteMemoryArea(Address.SegPtr(0x0C00, 0), bytes);
             CreateDisassembler16(mem);
         }
 
@@ -103,12 +104,12 @@ namespace Reko.UnitTests.Arch.X86
             }
         }
 
-        private void CreateDisassembler32(MemoryArea image)
+        private void CreateDisassembler32(MemoryArea mem)
         {
             dasm = new X86Disassembler(
                 sc,
                 ProcessorMode.Protected32,
-                image.CreateLeReader(image.BaseAddress),
+                mem.CreateLeReader(mem.BaseAddress),
                 PrimitiveType.Word32,
                 PrimitiveType.Word32,
                 false);
@@ -233,8 +234,8 @@ foo:
                 "rcr	word ptr [bp+4],4\r\n" +
                 "rcl	ax,1\r\n");
 
-            MemoryArea img = lr.SegmentMap.Segments.Values.First().MemoryArea;
-            CreateDisassembler16(img.CreateLeReader(img.BaseAddress));
+            var bmem = (ByteMemoryArea) lr.SegmentMap.Segments.Values.First().MemoryArea;
+            CreateDisassembler16(bmem.CreateLeReader(bmem.BaseAddress));
             StringBuilder sb = new StringBuilder();
             foreach (var instr in dasm.Take(4))
             {
@@ -311,8 +312,8 @@ movzx	ax,byte ptr [bp+4h]
              *  pshufhw xmm0, dqword ptr ds:[eax], 0
              */
 
-            MemoryArea img = lr.SegmentMap.Segments.Values.First().MemoryArea;
-            CreateDisassembler32(img);
+            var bmem = (ByteMemoryArea) lr.SegmentMap.Segments.Values.First().MemoryArea;
+            CreateDisassembler32(bmem);
             var instructions = dasm.GetEnumerator();
 
             X86Instruction one = DisEnumerator_TakeNext(instructions);
@@ -407,7 +408,7 @@ movzx	ax,byte ptr [bp+4h]
         public void X86dis_RelocatedOperand()
         {
             byte[] image = new byte[] { 0xB8, 0x78, 0x56, 0x34, 0x12 };	// mov eax,0x12345678<32>
-            MemoryArea img = new MemoryArea(Address.Ptr32(0x00100000), image);
+            ByteMemoryArea img = new ByteMemoryArea(Address.Ptr32(0x00100000), image);
             img.Relocations.AddPointerReference(0x00100001ul, 0x12345678);
             EndianImageReader rdr = img.CreateLeReader(img.BaseAddress);
             X86Disassembler dasm = new X86Disassembler(
@@ -426,7 +427,7 @@ movzx	ax,byte ptr [bp+4h]
         public void X86Dis_RelocatedSegment()
         {
             byte[] image = new byte[] { 0x2E, 0xC7, 0x06, 0x01, 0x00, 0x00, 0x08 }; // mov cs:[0001],0800
-            MemoryArea img = new MemoryArea(Address.SegPtr(0x900, 0), image);
+            ByteMemoryArea img = new ByteMemoryArea(Address.SegPtr(0x900, 0), image);
             var relAddr = Address.SegPtr(0x900, 5);
             img.Relocations.AddSegmentReference(relAddr.ToLinear(), 0x0800);
             EndianImageReader rdr = img.CreateLeReader(img.BaseAddress);
@@ -836,8 +837,8 @@ movzx	ax,byte ptr [bp+4h]
                 "stosw\r\n" +
                 "stosd\r\n");
 
-            MemoryArea img = lr.SegmentMap.Segments.Values.First().MemoryArea;
-            CreateDisassembler32(img);
+            MemoryArea mem = lr.SegmentMap.Segments.Values.First().MemoryArea;
+            CreateDisassembler32(mem);
             var instructions = dasm.GetEnumerator();
 
             List<X86Instruction> instr = new List<X86Instruction>();
@@ -1256,12 +1257,12 @@ movzx	ax,byte ptr [bp+4h]
             AssertCode64("pdep\trax,r10,r10", "C4C2ABF5C2");
         }
 
-
         [Test]
         public void X86dis_permq()
         {
-            AssertCode32("illegal", 0x0F, 0x3A, 0x00, 0x42, 0x42);
-            AssertCode32("vpermq\tymm0,[edx+42h],6h", 0x66, 0x0F, 0x3A, 0x00, 0x42, 0x42, 0x6);
+            AssertCode64("vpermq\tymm0,[rdx+42h],6h", "C4 E3 01 00 42 42 06");
+            AssertCode32("illegal",    "0F 3A 00 42 42 06");
+            AssertCode32("illegal", "66 0F 3A 00 42 42 06");
         }
 
         // v
@@ -1442,7 +1443,7 @@ movzx	ax,byte ptr [bp+4h]
         [Test]
         public void X86dis_bsf_w16()
         {
-            AssertCode64("bsf\tr11w,r15w", "66450FBCDFBD");
+            AssertCode64("bsf\tr11w,r15w", "66450FBCDF");
         }
 
         [Test]
@@ -1913,12 +1914,11 @@ movzx	ax,byte ptr [bp+4h]
             Assert.AreEqual("fcomi\tst(0),st(1)", instr.ToString());
         }
 
-
-
         [Test]
-        public void X86Dis_vblendvpdv()
+        public void X86Dis_vblendvpd()
         {
-            AssertCode32("vblendvpdv\txmm0,xmm2,xmm4", 0x0F, 0x3A, 0x4B, 0xC2, 0x42);
+            AssertCode64("vblendvpd\txmm0,xmm7,xmm2,xmm4", "C4E341 4BC242");
+            AssertCode64("illegal", "0F3A4BC242");
         }
 
         [Test]
@@ -1926,7 +1926,6 @@ movzx	ax,byte ptr [bp+4h]
         {
             AssertCode32("phsubsw\tmm0,mm2", 0x0F, 0x38, 0x07, 0xC2);
         }
-
 
         [Test]
         public void X86Dis_vcvttpd2dq()
@@ -2350,11 +2349,9 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
-        [Ignore("addressing mode is off")]
         public void X86Dis_vpmovsxbw()
         {
-            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x20, 0x49, 0x83);
-            Assert.AreEqual("vpmovsxbw\tymm9,qword ptr [r9-7d]", instr.ToString());
+            AssertCode64("vpmovsxbw\tymm9,qword ptr [r9-7Dh]", "C4 02 75 20 49 83");
         }
 
         [Test]
@@ -2424,17 +2421,15 @@ movzx	ax,byte ptr [bp+4h]
         [Test]
         public void X86Dis_vpmovzxbd()
         {
-            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x31, 0x41, 0x83);
-            Assert.AreEqual("vpmovzxbd\tymm8,qword ptr [r9-7Dh]", instr.ToString());
+            AssertCode64("vpmovzxbd\tymm8,dword ptr [r9-7Dh]", "C4 02 75 31 41 83");
         }
 
         [Test]
-        [Ignore("addressing mode is off")]
         public void X86Dis_vpmovzxbq()
         {
-            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x32, 0x4b, 0x7b);
-            Assert.AreEqual("vpmovzxbq\tymm9,DWORD PTR [r11+7Bh]", instr.ToString());
+            AssertCode64("vpmovzxbq\tymm9,word ptr [r11+7Bh]", "C4 02 75 32 4B 7B");
         }
+
         [Test]
         [Ignore("Intel opcode map _appears_ to imply that 0x66 prefix is required, but none seen.")]
         public void X86Dis_vpmovzxbq_2()
@@ -2449,6 +2444,7 @@ movzx	ax,byte ptr [bp+4h]
             var instr = Disassemble64(0xc4, 0x02, 0x75, 0x3a, 0xf6);
             Assert.AreEqual("vpminuw\tymm14,ymm1,ymm14", instr.ToString());
         }
+
         [Test]
         public void X86Dis_vpmaxuw()
         {
@@ -3189,7 +3185,6 @@ movzx	ax,byte ptr [bp+4h]
             AssertCode32("endbr64", "F3 0F 1E FA");
         }
 
-        [Test(Description = "Tests customizing operator separator.")]
         public void X86Dis_adcx()
         {
             AssertCode64("adcx\teax,ebx", "660F38F6C3");
@@ -3201,13 +3196,24 @@ movzx	ax,byte ptr [bp+4h]
             AssertCode64("adox\teax,esp", "F30F38F6C4");
         }
 
-        [Test]
+        [Test(Description = "Tests customizing operator separator.")]
         public void X86Dis_OperandRendering()
         {
             var options = new MachineInstructionRendererOptions(
                 operandSeparator: ", ");
             var instr = Disassemble16(0x33, 0xc0);
             Assert.AreEqual("xor\tax, ax", instr.ToString(options));
+        }
+
+        [Test]
+        public void X86Dis_pextrX()
+        {
+            AssertCode64("pextrb\tebx,xmm0,4h",             "66 0f 3a 14 C3 04");
+            AssertCode64("pextrb\tbyte ptr [rbx],xmm0,4h",  "66 0F 3A 14 03 04");
+            AssertCode64("pextrd\tebx,xmm0,4h",             "66 0F 3A 16 C3 04");
+            AssertCode64("pextrd\tdword ptr [rbx],xmm0,4h", "66 0F 3A 16 03 04");
+            AssertCode64("pextrq\trbx,xmm0,4h",             "66 48 0f 3a 16 c3 04");
+            AssertCode64("pextrq\tqword ptr [rbx],xmm0,4h", "66 48 0f 3a 16 03 04");
         }
     }
 }

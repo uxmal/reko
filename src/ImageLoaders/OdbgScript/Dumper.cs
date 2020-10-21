@@ -1,4 +1,5 @@
-﻿using Reko.Core;
+using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Reko.ImageLoaders.OdbgScript
 {
     class Dumper
     {
-        public static bool DumpProcess(MemoryArea image, string filename, ulong ep)
+        public static bool DumpProcess(ByteMemoryArea bmem, string filename, ulong ep)
         {
             return true;
         }

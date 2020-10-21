@@ -1,4 +1,5 @@
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace Reko.WindowsItp
         private void DisassemblyControlForm_Load(object sender, EventArgs e)
         {
             var random = new Random(0x4711);
-            var mem =   new MemoryArea(Address.Ptr32(0x00100000),
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00100000),
                 Enumerable.Range(0, 10000)
                 .Select(i => (byte)random.Next(256)).ToArray());
             var seg = new ImageSegment(".text", mem, AccessMode.ReadExecute);

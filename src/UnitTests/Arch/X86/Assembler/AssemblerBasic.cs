@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core.Services;
 using Reko.Core.Output;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.X86.Assembler
 {
@@ -95,11 +96,11 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 				dumper.ShowCodeBytes = true;
                 foreach (var segment in program.SegmentMap.Segments.Values)
                 {
-                    var mem = segment.MemoryArea;
+                    var bmem = (ByteMemoryArea) segment.MemoryArea;
                     var formatter = new TextFormatter(fut.TextWriter);
-                    dumper.DumpData(program.SegmentMap, program.Architecture, mem.BaseAddress, mem.Length, formatter);
+                    dumper.DumpData(program.SegmentMap, program.Architecture, bmem.BaseAddress, bmem.Length, formatter);
                     fut.TextWriter.WriteLine();
-                    dumper.DumpAssembler(program.SegmentMap, program.Architecture, mem.BaseAddress, mem.EndAddress, formatter);
+                    dumper.DumpAssembler(program.SegmentMap, program.Architecture, bmem.BaseAddress, bmem.EndAddress, formatter);
                     if (program.ImportReferences.Count > 0)
                     {
                         foreach (var de in program.ImportReferences.OrderBy(d => d.Key))
@@ -116,14 +117,14 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 	[TestFixture]
 	public class AssemblerBasic : AssemblerBase
 	{
-        private MemoryArea mem;
+        private ByteMemoryArea bmem;
         private Program program;
 
         private void AssembleFragment(string asmSrc)
         {
             var arch = new X86ArchitectureReal(sc, "x86-real-16");
             program = asm.AssembleFragment(Address.SegPtr(0x0C00, 0), asmSrc);
-            mem = program.SegmentMap.Segments.Values.First().MemoryArea;
+            bmem = (ByteMemoryArea) program.SegmentMap.Segments.Values.First().MemoryArea;
         }
 
 		[Test]
@@ -161,7 +162,7 @@ l:		add		ax,cx
 		ret
 hello	endp
 ");
-			Assert.IsTrue(Compare(mem.Bytes, new byte [] 
+			Assert.IsTrue(Compare(bmem.Bytes, new byte [] 
 				{ 0x33, 0xC0, 0xB9, 0x0a, 0x00, 0x03, 0xC1, 0xE2, 0xFC, 0xC3 }));
 
 		}
@@ -179,7 +180,7 @@ hello	proc
 		ret
 hello   endp
 ");
-			Assert.IsTrue(Compare(mem.Bytes, new byte[]
+			Assert.IsTrue(Compare(bmem.Bytes, new byte[]
 				{
 						0xB1, 0x03,
 					0x66, 0x0F, 0xB6, 0xC1,
@@ -201,7 +202,7 @@ foo		proc
 		ret
 foo		endp
 ");
-			Assert.IsTrue(Compare(mem.Bytes, new byte []
+			Assert.IsTrue(Compare(bmem.Bytes, new byte []
 					{ 0xD3, 0xC0, 0xD0, 0x47, 0x02, 0xC1, 0x5E, 0x4, 0x4, 0xC3}));
 		}
 		
@@ -217,7 +218,7 @@ foo		proc
 		ret
 foo		endp
 ");
-			Assert.IsTrue(Compare(mem.Bytes, new byte []
+			Assert.IsTrue(Compare(bmem.Bytes, new byte []
 				{ 0x66, 0xD3, 0xE0, 0xD0, 0x6C, 0x03, 0xC1, 0x7C, 0x06, 0x04, 0xC3 }));
 		}
 
@@ -234,7 +235,7 @@ foo		proc
 		ret
 foo		endp
 ");
-			Assert.IsTrue(Compare(mem.Bytes, new byte []
+			Assert.IsTrue(Compare(bmem.Bytes, new byte []
 				{ 0xBE, 0x34, 0x12, 0xBF, 0x41, 0x32, 0xB9, 0x32, 0x00, 0xF3, 0xA4, 0xC3 }));
 		}
 
@@ -260,21 +261,21 @@ foo		endp
         public void MovMemoryToSegmentRegister()
         {
             AssembleFragment("mov es,[0x4080]\r\n");
-            Assert.IsTrue(Compare(mem.Bytes, new byte[] { 0x8E, 0x06, 0x80, 0x40 }));
+            Assert.IsTrue(Compare(bmem.Bytes, new byte[] { 0x8E, 0x06, 0x80, 0x40 }));
         }
 
         [Test]
         public void XchgMem()
         {
             AssembleFragment("xchg word ptr [0x1234],bx\r\n");
-            Assert.IsTrue(Compare(mem.Bytes, new byte[] { 0x87, 0x1E, 0x34, 0x12 }));
+            Assert.IsTrue(Compare(bmem.Bytes, new byte[] { 0x87, 0x1E, 0x34, 0x12 }));
         }
 
         [Test]
         public void Fcompp()
         {
             AssembleFragment("fcompp\r\n");
-            Assert.AreEqual(new byte[] { 0xDE, 0xD9 }, mem.Bytes);
+            Assert.AreEqual(new byte[] { 0xDE, 0xD9 }, bmem.Bytes);
         }
 
         [Test]
@@ -283,7 +284,7 @@ foo		endp
             AssembleFragment(
                 "jpo label\r\n" +
                 "label: xor ax,ax\r\n");
-            Assert.AreEqual(new byte[] { 0x7B, 0x00, 0x33, 0xC0 },  mem.Bytes); 
+            Assert.AreEqual(new byte[] { 0x7B, 0x00, 0x33, 0xC0 },  bmem.Bytes); 
         }
 
 		[Test]
@@ -384,13 +385,13 @@ foo		endp
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
 				Dumper dump = new Dumper(program);
-                var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
+                var bmem = (ByteMemoryArea) program.SegmentMap.Segments.Values.First().MemoryArea;
                 var formatter = new TextFormatter(fut.TextWriter);
-				dump.DumpData(program.SegmentMap, program.Architecture, mem.BaseAddress, mem.Bytes.Length, formatter);
+				dump.DumpData(program.SegmentMap, program.Architecture, bmem.BaseAddress, bmem.Bytes.Length, formatter);
 				fut.TextWriter.WriteLine();
 				dump.ShowAddresses = true;
 				dump.ShowCodeBytes = true;
-				dump.DumpAssembler(program.SegmentMap, program.Architecture, mem.BaseAddress, mem.EndAddress, formatter);
+				dump.DumpAssembler(program.SegmentMap, program.Architecture, bmem.BaseAddress, bmem.EndAddress, formatter);
 
 				fut.AssertFilesEqual();
 			}	

@@ -159,6 +159,11 @@ namespace Reko.Analysis
                 return arch.MakeSegmentedAddress(seg, off);
             }
 
+            public Constant ReinterpretAsFloat(Constant rawBits)
+            {
+                return arch.ReinterpretAsFloat(rawBits);
+            }
+
             public void RemoveExpressionUse(Expression expr)
             {
                 throw new NotImplementedException();

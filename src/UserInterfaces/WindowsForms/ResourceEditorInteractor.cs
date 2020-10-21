@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -26,6 +26,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Drawing;
 using Reko.UserInterfaces.WindowsForms.Controls;
+using Reko.Core.Memory;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
@@ -84,7 +85,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         Control DumpBytes()
         {
-            var mem = new Reko.Core.MemoryArea(Address.Ptr32(0), resource.Bytes);
+            var mem = new ByteMemoryArea(Address.Ptr32(0), resource.Bytes);
 
             var memCtrl = new MemoryControl();
             memCtrl.Services = services;

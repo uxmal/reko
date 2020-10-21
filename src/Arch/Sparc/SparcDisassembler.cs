@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -88,7 +89,7 @@ namespace Reko.Arch.Sparc
             };
         }
 
-        public override SparcInstruction NotYetImplemented(uint wInstr, string message)
+        public override SparcInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("SparcDasm", this.addr, this.imageReader, message);
@@ -210,13 +211,13 @@ namespace Reko.Arch.Sparc
         internal static bool J2_16(uint wInstr, SparcDisassembler dasm)
         {
             int offset = Bitfield.ReadSignedFields(bf20_2_0_16, wInstr) << 2;
-            dasm.ops.Add(new AddressOperand(dasm.imageReader.Address + (offset - 4)));
+            dasm.ops.Add(AddressOperand.Create(dasm.imageReader.Address + (offset - 4)));
             return true;
         }
 
         internal static bool JJ(uint wInstr, SparcDisassembler dasm)
         {
-            dasm.ops.Add(new AddressOperand((dasm.imageReader.Address - 4) + ((int) wInstr << 2)));
+            dasm.ops.Add(AddressOperand.Create((dasm.imageReader.Address - 4) + ((int) wInstr << 2)));
             return true;
         }
 
@@ -266,7 +267,7 @@ namespace Reko.Arch.Sparc
 
         internal static bool nyi(uint wInstr, SparcDisassembler dasm)
         {
-            dasm.NotYetImplemented(wInstr, "NYI");
+            dasm.NotYetImplemented("NYI");
             return false;
         }
 
@@ -282,7 +283,7 @@ namespace Reko.Arch.Sparc
         private static AddressOperand GetAddressOperand(Address addr, uint wInstr, int bitLength)
         {
             int offset = SignExtend(wInstr, bitLength) << 2;
-            return new AddressOperand(addr + (offset - 4));
+            return AddressOperand.Create(addr + (offset - 4));
         }
 
         private static MachineOperand GetAlternateSpaceOperand(Registers registers, uint wInstr, PrimitiveType type)

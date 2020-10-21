@@ -21,6 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.ImageLoaders.MzExe.CodeView;
 using System;
 using System.Collections.Generic;

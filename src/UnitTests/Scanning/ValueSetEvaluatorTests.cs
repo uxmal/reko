@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
@@ -58,11 +59,11 @@ namespace Reko.UnitTests.Scanning
                     Address.Ptr32(0x2000),
                     new ImageSegment(
                         "blob",
-                        new MemoryArea(addr, new byte[0x400]),
+                        new ByteMemoryArea(addr, new byte[0x400]),
                         AccessMode.ReadWriteExecute),
                     new ImageSegment(
                         "segmentedBlob",
-                        new MemoryArea(Address.SegPtr(0xC00, 0), new Byte[0x400]),
+                        new ByteMemoryArea(Address.SegPtr(0xC00, 0), new Byte[0x400]),
                         AccessMode.ReadWriteExecute))
             };
 

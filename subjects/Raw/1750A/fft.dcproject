@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>mil-std-1750</arch>
+  <input>
+    <filename>fft.hex</filename>
+    <asmDir>fft.reko</asmDir>
+    <srcDir>fft.reko</srcDir>
+    <includeDir>fft.reko</includeDir>
+    <resources>fft.reko\resources</resources>
+    <user>
+      <address>0000</address>
+      <loader>TekHex</loader>
+      <processor name="mil-std-1750" />
+      <heuristic name="shingle" />
+      <onLoad Enabled="false" />
+      <registerValues />
+      <extractResources>false</extractResources>
+      <outputFilePolicy>Segment</outputFilePolicy>
+    </user>
+  </input>
+</project>

@@ -108,13 +108,13 @@ namespace Reko.Arch.X86
             // 0F 00
             Grp6 = new Decoder[8]
             {
-                new Group6Decoder(
+                MemReg(
                     Instr(Mnemonic.sldt, InstrClass.System, Ew),
                     Instr(Mnemonic.sldt, InstrClass.System, Rv)),
-                new Group6Decoder(
+                MemReg(
                     Instr(Mnemonic.str, InstrClass.System, Ew),
                     Instr(Mnemonic.str, InstrClass.System, Rw)),
-                new Group6Decoder(
+                MemReg(
                     Instr(Mnemonic.lldt, InstrClass.System, Ms),
                     Instr(Mnemonic.lldt, InstrClass.System, Rw)),
                 Instr(Mnemonic.ltr, InstrClass.System, Ew),
@@ -159,11 +159,11 @@ namespace Reko.Arch.X86
                     Instr(Mnemonic.xend),
                     Instr(Mnemonic.xtest),
                     s_invalid),
-                new Group6Decoder(
+                MemReg(
                     Instr(Mnemonic.lidt, InstrClass.System, Ms),
                     s_invalid),
 
-                new Group6Decoder(
+                MemReg(
                     Instr(Mnemonic.smsw, Ew),
                     Instr(Mnemonic.smsw, Rv)),
                 new Group7Decoder(
@@ -209,7 +209,7 @@ namespace Reko.Arch.X86
             Grp9 = new Decoder[8]
             {
                 s_invalid,
-                new Group6Decoder(
+                MemReg(
                     new PrefixedDecoder(
                         Amd64Instr(
                             Instr(Mnemonic.cmpxchg8b, Mq),
@@ -220,13 +220,13 @@ namespace Reko.Arch.X86
 
                 s_invalid,
                 s_invalid,
-                new Group6Decoder(
+                MemReg(
                     new PrefixedDecoder(
                         Instr(Mnemonic.vmptrld, Mq),
                         dec66:Instr(Mnemonic.vmclear, Mq),
                         decF3:Instr(Mnemonic.vmxon, Mq)),
                     Instr(Mnemonic.rdrand, Rv)),
-                new Group6Decoder(
+                MemReg(
                     new PrefixedDecoder(
                         dec:Instr(Mnemonic.vmptrst, Mq),
                         decF3:Instr(Mnemonic.vmptrst, Mq)),

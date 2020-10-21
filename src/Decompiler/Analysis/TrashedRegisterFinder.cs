@@ -756,6 +756,11 @@ namespace Reko.Analysis
                 return ssa.Procedure.Architecture.MakeSegmentedAddress(c1, c2);
             }
 
+            public Constant ReinterpretAsFloat(Constant rawBits)
+            {
+                return ssa.Procedure.Architecture.ReinterpretAsFloat(rawBits);
+            }
+            
             public void RemoveExpressionUse(Expression expr)
             {
             }

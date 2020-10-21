@@ -28,6 +28,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel.Design;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.Mos6502
 {
@@ -46,7 +47,7 @@ namespace Reko.UnitTests.Arch.Mos6502
 
         private MachineInstruction RunTest(params byte[] bytes)
         {
-            var image = new MemoryArea(Address.Ptr32(0x200), bytes);
+            var image = new ByteMemoryArea(Address.Ptr32(0x200), bytes);
             var rdr = new LeImageReader(image, 0);
             var dasm = new Disassembler(arch, rdr);
             return dasm.First();

@@ -29,6 +29,7 @@ using System.Text;
 using TWord = System.UInt32;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
+using Reko.Core.Memory;
 
 namespace Reko.Environments.Windows
 {
@@ -217,7 +218,7 @@ namespace Reko.Environments.Windows
             var addr = Address.Ptr32(ea);
             if (!map.TryFindSegment(addr, out ImageSegment segment))
                 throw new AccessViolationException();
-            return segment.MemoryArea.ReadLeUInt32(addr);
+            return ((ByteMemoryArea)segment.MemoryArea).ReadLeUInt32(addr);
         }
 
         private void WriteLeUInt32(uint ea, uint value)
@@ -260,7 +261,7 @@ namespace Reko.Environments.Windows
 
         public ImageSegment InitializeStack(IProcessorEmulator emu, ProcessorState state)
         {
-            var stack = new MemoryArea(Address.Ptr32(0x7FE00000), new byte[1024 * 1024]);
+            var stack = new ByteMemoryArea(Address.Ptr32(0x7FE00000), new byte[1024 * 1024]);
             var stackSeg = this.map.AddSegment(stack, "stack", AccessMode.ReadWrite);
             emu.WriteRegister(Registers.esp, (uint) stack.EndAddress.ToLinear() - 4u);
             return stackSeg;

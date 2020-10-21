@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 
@@ -86,7 +87,7 @@ namespace Reko.Arch.OpenRISC
             return instr;
         }
 
-        public override OpenRISCInstruction NotYetImplemented(uint wInstr, string message)
+        public override OpenRISCInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("OpenRiscDis", this.addr, this.rdr, message);

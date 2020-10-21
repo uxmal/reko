@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -24,12 +24,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Reko.Core;
+using Reko.Core.Memory;
 
 namespace Reko.ImageLoaders.MzExe.Pe
 {
     public class PowerPcRelocator : Relocator
     {
-        private IServiceProvider services;
+        private readonly IServiceProvider services;
 
         public PowerPcRelocator(IServiceProvider services, Program program) : base(program)
         {

@@ -218,6 +218,11 @@ namespace Reko.Core
             return Architecture.MakeSegmentedAddress(seg, off);
         }
 
+        public Constant ReinterpretAsFloat(Constant rawBits)
+        {
+            return Architecture.ReinterpretAsFloat(rawBits);
+        }
+
         public void RemoveIdentifierUse(Identifier id)
         {
         }

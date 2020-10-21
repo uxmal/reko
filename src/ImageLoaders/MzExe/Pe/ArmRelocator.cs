@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 
 namespace Reko.ImageLoaders.MzExe.Pe

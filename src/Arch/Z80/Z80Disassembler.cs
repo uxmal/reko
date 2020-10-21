@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -93,7 +94,7 @@ namespace Reko.Arch.Z80
             };
         }
 
-        public override Z80Instruction NotYetImplemented(uint wInstr, string message)
+        public override Z80Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("Z80dis", this.addr, this.rdr, message);

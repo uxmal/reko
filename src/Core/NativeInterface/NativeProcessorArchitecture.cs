@@ -9,6 +9,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using Reko.Core.NativeInterface.Interfaces;
 using System.Runtime.InteropServices;
+using Reko.Core.Memory;
 
 namespace Reko.Core.NativeInterface
 {

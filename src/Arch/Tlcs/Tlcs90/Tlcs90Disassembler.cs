@@ -18,9 +18,12 @@
  */
 #endregion
 
+#pragma warning disable IDE1006
+
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -33,7 +36,6 @@ using System.Threading.Tasks;
 namespace Reko.Arch.Tlcs.Tlcs90
 {
     using Decoder = Decoder<Tlcs90Disassembler, Mnemonic, Tlcs90Instruction>;
-#pragma warning disable IDE1006
 
     public partial class Tlcs90Disassembler : DisassemblerBase<Tlcs90Instruction, Mnemonic>
     {
@@ -92,7 +94,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             };
         }
 
-        public override Tlcs90Instruction NotYetImplemented(uint wInstr, string message)
+        public override Tlcs90Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("Tlcs_90", this.addr, this.rdr, message);

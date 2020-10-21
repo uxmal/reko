@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Archives;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -111,7 +112,7 @@ namespace Reko.Environments.BbcMicro
         public override Program Load(Address? addrLoad)
         {
             LoadDirectory();
-            return null;
+            throw new NotImplementedException();
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)

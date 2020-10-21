@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.Mos6502;
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -49,7 +50,7 @@ namespace Reko.UnitTests.Arch.Mos6502
             p(asm);
             var program = asm.GetImage();
             program.SegmentMap.AddSegment(
-                new MemoryArea(Address.Ptr16(0), new byte[256]),
+                new ByteMemoryArea(Address.Ptr16(0), new byte[256]),
                 "ZeroPage",
                 AccessMode.ReadWriteExecute);
 

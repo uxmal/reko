@@ -26,6 +26,7 @@ using System.Text;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -355,10 +356,10 @@ namespace Reko.Arch.Arc
             return GetEnumerator();
         }
 
-        private void EmitUnitTest(MachineInstruction instr, string message = "")
+        private void EmitUnitTest(ArcInstruction instr, string message = "")
         {
             var testgenSvc = arch.Services.GetService<ITestGenerationService>();
-            testgenSvc?.ReportMissingRewriter("ARCompactRw", instr, rdr, message);
+            testgenSvc?.ReportMissingRewriter("ARCompactRw", instr, instr.Mnemonic.ToString(), rdr, message);
         }
 
         private Expression Adc(Expression a, Expression b)

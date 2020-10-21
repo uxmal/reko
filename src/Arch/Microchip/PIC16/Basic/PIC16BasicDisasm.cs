@@ -27,6 +27,7 @@ using System;
 namespace Reko.Arch.MicrochipPIC.PIC16
 {
     using Common;
+    using Reko.Core.Memory;
 
     /// <summary>
     /// A Basic-Range PIC16 disassembler.

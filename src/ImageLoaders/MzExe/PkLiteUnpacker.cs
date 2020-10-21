@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
 using System;
@@ -35,15 +36,15 @@ namespace Reko.ImageLoaders.MzExe
 	/// </summary>
 	public class PkLiteUnpacker : ImageLoader
 	{
-        private IProcessorArchitecture arch;
-        private IPlatform platform;
+        private readonly IProcessorArchitecture arch;
+        private readonly IPlatform platform;
 
-		private byte [] abU;
-		private MemoryArea imgU;
+		private readonly byte [] abU;
+		private ByteMemoryArea imgU;
         private SegmentMap segmentMap;
 		private ushort pklCs;
 		private ushort pklIp;
-		private BitStream bitStm;
+		private readonly BitStream bitStm;
 
 		private const uint signatureOffset = 0x1C;
 		private const uint PspSize = 0x0100;
@@ -60,7 +61,7 @@ namespace Reko.ImageLoaders.MzExe
 
 			if (RawImage[pkLiteHdrOffset] != 0xB8)
 				throw new ApplicationException(string.Format("Expected MOV AX,XXXX at offset 0x{0:X4}.", pkLiteHdrOffset));
-			uint cparUncompressed = MemoryArea.ReadLeUInt16(RawImage, pkLiteHdrOffset + 1);
+			uint cparUncompressed = ByteMemoryArea.ReadLeUInt16(RawImage, pkLiteHdrOffset + 1);
 			abU = new byte[cparUncompressed * 0x10U];
 
 			if (RawImage[pkLiteHdrOffset + 0x04C] != 0x83)
@@ -74,7 +75,7 @@ namespace Reko.ImageLoaders.MzExe
 			if (exe.e_ovno != 0)
 				return false;
 
-			return MemoryArea.CompareArrays(rawImg, (int) signatureOffset, signature, signature.Length);
+			return ByteMemoryArea.CompareArrays(rawImg, (int) signatureOffset, signature, signature.Length);
 		}
 
         public override Program Load(Address addrLoad)
@@ -207,7 +208,7 @@ l01C8:
 2DE9:01CB 83C310        ADD	BX,+10				// BX => unpackedBase + 0x100
 */
 			l01C8:
-			imgU = new MemoryArea(addrLoad, abU);
+			imgU = new ByteMemoryArea(addrLoad, abU);
             segmentMap = new SegmentMap(imgU.BaseAddress,
                 new ImageSegment("image", imgU, AccessMode.ReadWriteExecute));
 			return new Program(segmentMap, arch, platform);

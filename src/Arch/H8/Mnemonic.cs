@@ -81,5 +81,14 @@ namespace Reko.Arch.H8
         xorc,
         andc,
         orc,
+        inc,
+        neg,
+        rte,
+        bor,
+        bior,
+        bxor,
+        bixor,
+        band,
+        biand,
     }
 }

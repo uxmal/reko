@@ -24,6 +24,7 @@ using System.Text;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;

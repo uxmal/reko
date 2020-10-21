@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using Reko.UserInterfaces.WindowsForms.Controls;
@@ -51,9 +52,9 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             this.platform.Setup(p => p.Architecture).Returns(arch.Object);
             this.arch.Setup(a => a.Name).Returns("FakeArch");
             this.arch.Setup(a => a.CreateImageReader(
-                It.IsAny<MemoryArea>(),
+                It.IsAny<ByteMemoryArea>(),
                 It.IsAny<Address>()))
-                .Returns((MemoryArea m, Address a) => new LeImageReader(m, a));
+                .Returns((ByteMemoryArea m, Address a) => new LeImageReader(m, a));
             this.arch.Setup(a => a.CreateDisassembler(
                 It.IsAny<EndianImageReader>()))
                 .Returns((EndianImageReader rdr) => new MachineInstruction[]
@@ -153,8 +154,8 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         {
             var addrBase = Address.Ptr32(0x40000);
 
-            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[8]);
-            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[8]);
+            var memText = new ByteMemoryArea(Address.Ptr32(0x41000), new byte[8]);
+            var memData = new ByteMemoryArea(Address.Ptr32(0x42000), new byte[8]);
             this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
@@ -172,8 +173,8 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         {
             var addrBase = Address.Ptr32(0x40000);
 
-            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[8]);
-            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[8]);
+            var memText = new ByteMemoryArea(Address.Ptr32(0x41000), new byte[8]);
+            var memData = new ByteMemoryArea(Address.Ptr32(0x42000), new byte[8]);
             this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
@@ -191,8 +192,8 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         {
             var addrBase = Address.Ptr32(0x40000);
 
-            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[8]);
-            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[8]);
+            var memText = new ByteMemoryArea(Address.Ptr32(0x41000), new byte[8]);
+            var memData = new ByteMemoryArea(Address.Ptr32(0x42000), new byte[8]);
             this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
@@ -211,8 +212,8 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         {
             var addrBase = Address.Ptr32(0x40000);
 
-            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[100]);
-            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[8]);
+            var memText = new ByteMemoryArea(Address.Ptr32(0x41000), new byte[100]);
+            var memData = new ByteMemoryArea(Address.Ptr32(0x42000), new byte[8]);
             this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute) { Size = 4 },
@@ -246,8 +247,8 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         {
             var addrBase = Address.Ptr32(0x40000);
 
-            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[100]);
-            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[8]);
+            var memText = new ByteMemoryArea(Address.Ptr32(0x41000), new byte[100]);
+            var memData = new ByteMemoryArea(Address.Ptr32(0x42000), new byte[8]);
             this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute) { Size = 4 },
@@ -274,8 +275,8 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         {
             var addrBase = Address.Ptr32(0x40000);
 
-            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[8]);
-            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[8]);
+            var memText = new ByteMemoryArea(Address.Ptr32(0x41000), new byte[8]);
+            var memData = new ByteMemoryArea(Address.Ptr32(0x42000), new byte[8]);
             this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
@@ -326,8 +327,8 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             // 042000: data <16 bytes>
             // 042010: data <16 bytes>
 
-            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[4]);
-            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[32]);
+            var memText = new ByteMemoryArea(Address.Ptr32(0x41000), new byte[4]);
+            var memData = new ByteMemoryArea(Address.Ptr32(0x42000), new byte[32]);
             this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
@@ -362,8 +363,8 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         {
             var addrBase = Address.Ptr32(0x40000);
 
-            var memText = new MemoryArea(Address.Ptr32(0x40FD5), new byte[64]);
-            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[32]);
+            var memText = new ByteMemoryArea(Address.Ptr32(0x40FD5), new byte[64]);
+            var memData = new ByteMemoryArea(Address.Ptr32(0x42000), new byte[32]);
             this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
@@ -395,8 +396,8 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         {
             var addrBase = Address.Ptr32(0x40000);
 
-            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[4]);
-            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[32]);
+            var memText = new ByteMemoryArea(Address.Ptr32(0x41000), new byte[4]);
+            var memData = new ByteMemoryArea(Address.Ptr32(0x42000), new byte[32]);
             this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
@@ -420,8 +421,8 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         {
             var addrBase = Address.Ptr32(0x40000);
 
-            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[4]);
-            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[32]);
+            var memText = new ByteMemoryArea(Address.Ptr32(0x41000), new byte[4]);
+            var memData = new ByteMemoryArea(Address.Ptr32(0x42000), new byte[32]);
             this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
@@ -450,8 +451,8 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         {
             var addrBase = Address.Ptr32(0x40000);
 
-            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[100]);
-            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[8]);
+            var memText = new ByteMemoryArea(Address.Ptr32(0x41000), new byte[100]);
+            var memData = new ByteMemoryArea(Address.Ptr32(0x42000), new byte[8]);
             this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute) { Size = 4 },
@@ -479,7 +480,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         public void Mcdm_GetLineSpans_Comments()
         {
             var addrBase = Address.Ptr32(0x40000);
-            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[100]);
+            var memText = new ByteMemoryArea(Address.Ptr32(0x41000), new byte[100]);
             this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute)
@@ -514,7 +515,7 @@ Second line");
         public void Mcdm_GetLineSpans_TwoComments()
         {
             var addrBase = Address.Ptr32(0x40000);
-            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[100]);
+            var memText = new ByteMemoryArea(Address.Ptr32(0x41000), new byte[100]);
             this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute)

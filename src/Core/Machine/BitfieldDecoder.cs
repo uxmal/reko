@@ -30,6 +30,7 @@ namespace Reko.Core.Machine
 {
     public class BitfieldDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
         where TInstr : MachineInstruction
+        where TMnemonic : struct
     {
         private readonly Bitfield[] bitfields;
         private readonly Decoder<TDasm, TMnemonic, TInstr>[] decoders;
@@ -55,7 +56,7 @@ namespace Reko.Core.Machine
         public void TraceDecoder(uint wInstr, string tag = "")
         {
             var shMask = bitfields.Aggregate(0u, (mask, bf) => mask | bf.Mask << bf.Position);
-            DumpMaskedInstruction(wInstr, shMask, tag);
+            DumpMaskedInstruction(32, wInstr, shMask, tag);
         }
     }
 }

@@ -24,6 +24,7 @@ using Reko.Arch.X86;
 using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
@@ -53,7 +54,7 @@ namespace Reko.UnitTests.Scanning
         private IDictionary<Address, FunctionType> callSigs;
         private ServiceContainer sc;
         private Project project;
-        private MemoryArea mem;
+        private ByteMemoryArea bmem;
         private DecompilerEventListener eventListener;
 
         public class TestScanner : Scanner
@@ -176,7 +177,7 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_Program(Address address, byte[] bytes)
         {
-            var mem = new MemoryArea(address, bytes);
+            var mem = new ByteMemoryArea(address, bytes);
             var segmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("proggie", mem, AccessMode.ReadExecute));
@@ -215,11 +216,11 @@ namespace Reko.UnitTests.Scanning
 
         private TestScanner CreateScanner(uint startAddress, int imageSize)
         {
-            mem = new MemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
+            bmem = new ByteMemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
             program = new Program
             {
-                SegmentMap = new SegmentMap(mem.BaseAddress,
-                    new ImageSegment("progseg", mem, AccessMode.ReadExecute)),
+                SegmentMap = new SegmentMap(bmem.BaseAddress,
+                    new ImageSegment("progseg", bmem, AccessMode.ReadExecute)),
                 Architecture = arch,
                 Platform = new FakePlatform(null, arch)
             };
@@ -243,10 +244,10 @@ namespace Reko.UnitTests.Scanning
             this.program = program;
             program.Architecture = arch;
             program.Platform = new FakePlatform(null, arch);
-            this.mem = new MemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
+            this.bmem = new ByteMemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
             program.SegmentMap = new SegmentMap(
-                mem.BaseAddress,
-                new ImageSegment("progseg", this.mem, AccessMode.ReadExecute));
+                bmem.BaseAddress,
+                new ImageSegment("progseg", this.bmem, AccessMode.ReadExecute));
             return new TestScanner(program, dynamicLinker.Object, sc);
         }
 
@@ -840,7 +841,7 @@ fn00001200_exit:
             var scanner = CreateScanner(0x1000, 0x2000);
             var addrEmulated = Address.Ptr32(0x5000);
             var addrThunk = Address.Ptr32(0x1800);
-            mem.WriteLeUInt32(addrThunk, addrEmulated.ToUInt32());
+            bmem.WriteLeUInt32(addrThunk, addrEmulated.ToUInt32());
             program.InterceptedCalls.Add(
                 addrEmulated,
                 new ExternalProcedure("Foo", new FunctionType()));

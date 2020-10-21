@@ -25,6 +25,7 @@ using System.Diagnostics;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -147,7 +148,7 @@ namespace Reko.Arch.MicroBlaze
                 "MicroBlaze instruction '{0}' is not supported yet.",
                 instrCur.Mnemonic);
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("MicroBlazeRw", instrCur, rdr, "");
+            testGenSvc?.ReportMissingRewriter("MicroBlazeRw", instrCur, instrCur.Mnemonic.ToString(), rdr, "");
         }
 
         IEnumerator IEnumerable.GetEnumerator()

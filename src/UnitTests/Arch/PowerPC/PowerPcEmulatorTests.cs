@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.PowerPC;
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -50,7 +51,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             {
                 writer.WriteBeUInt32(uInstr);
             }
-            var mem = new MemoryArea(Address.Ptr64(0x0010_0000), writer.ToArray());
+            var mem = new ByteMemoryArea(Address.Ptr64(0x0010_0000), writer.ToArray());
             var seg = new ImageSegment("code", mem, AccessMode.ReadWriteExecute);
             var segmap = new SegmentMap(mem.BaseAddress, seg);
             var program = new Program(segmap, arch, new DefaultPlatform(sc, arch));

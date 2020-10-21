@@ -32,6 +32,7 @@ using System.Xml.Serialization;
 using System.Xml;
 using System.Text;
 using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.X86
 {
@@ -153,7 +154,7 @@ namespace Reko.UnitTests.Arch.X86
 
         private EndianImageReader CreateImageReader(Address address, params byte[] bytes)
         {
-            return new LeImageReader(new MemoryArea(address, bytes), 0);
+            return new LeImageReader(new ByteMemoryArea(address, bytes), 0);
         }
 
         [Test]
@@ -254,7 +255,7 @@ namespace Reko.UnitTests.Arch.X86
         public void X86Arch_Inline_x86get_pc_thunk_bx()
         {
             arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
-            var mem = new MemoryArea(Address.Ptr32(0x1000), new byte[]
+            var mem = new ByteMemoryArea(Address.Ptr32(0x1000), new byte[]
             {
                0x8B, 0x1C, 0x24,        // mov ebx,[esp]
                0xC3                     // ret

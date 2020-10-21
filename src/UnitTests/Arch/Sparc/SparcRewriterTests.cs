@@ -24,6 +24,7 @@ using Reko.Arch.Sparc;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -57,7 +58,7 @@ namespace Reko.UnitTests.Arch.Sparc
             if (e != null)
                 return e;
             else
-                return new SparcRewriter(arch, new LeImageReader(mem, 0), state, new Frame(arch.WordWidth), host);
+                return arch.CreateRewriter(arch.CreateImageReader(mem, 0), state, new Frame(arch.WordWidth), host);
         }
 
         [SetUp]

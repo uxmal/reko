@@ -30,6 +30,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using BindingFlags = System.Reflection.BindingFlags;
 using Reko.Core.Lib;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.SuperH
 {

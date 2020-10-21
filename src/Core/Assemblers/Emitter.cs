@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics;
@@ -55,15 +56,16 @@ namespace Reko.Core.Assemblers
     
 	public class Emitter : IEmitter
 	{
-        private MemoryStream stmOut;
+        private readonly MemoryStream stmOut;
 
         public Emitter()
         {
             this.stmOut = new MemoryStream();
         }
 
-        public Emitter(byte [] existingBytes)
+        public Emitter(MemoryArea mem)
         {
+            var existingBytes = ((ByteMemoryArea) mem).Bytes;
             this.stmOut = new MemoryStream(existingBytes);
         }
 

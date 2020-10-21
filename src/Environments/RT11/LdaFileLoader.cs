@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Arch.Pdp11;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Reko.Core.Memory;
 
 namespace Reko.Environments.RT11
 {
@@ -89,16 +90,16 @@ namespace Reko.Environments.RT11
                 addrMax = Math.Max(addrMax, (ushort)(block.Item1 + block.Item2.Length));
             }
 
-            var image = new MemoryArea(Address.Ptr16(addrMin), new byte[addrMax - addrMin]);
+            var bmem = new ByteMemoryArea(Address.Ptr16(addrMin), new byte[addrMax - addrMin]);
             foreach (var block in blocks)
             {
-                Array.Copy(block.Item2, 0, image.Bytes, block.Item1 - addrMin, block.Item2.Length);
+                Array.Copy(block.Item2, 0, bmem.Bytes, block.Item1 - addrMin, block.Item2.Length);
             }
             return Tuple.Create(
                 addrStart,
                 new SegmentMap(
-                    image.BaseAddress,
-                    new ImageSegment("image", image, AccessMode.ReadWriteExecute)));
+                    bmem.BaseAddress,
+                    new ImageSegment("image", bmem, AccessMode.ReadWriteExecute)));
         }
 
         /// <summary>

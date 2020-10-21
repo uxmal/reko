@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.SuperH;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
@@ -42,8 +43,8 @@ namespace Reko.UnitTests.Arch.Tlcs
 
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            var state = (SuperHState) arch.CreateProcessorState();
-            return new SuperHRewriter(arch, new LeImageReader(mem, 0), state, binder, host);
+            var state = arch.CreateProcessorState();
+            return arch.CreateRewriter(arch.CreateImageReader(mem, 0), state, binder, host);
         }
 
         [SetUp]

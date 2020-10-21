@@ -216,6 +216,16 @@ namespace Reko.UserInterfaces.WindowsForms
             };
             return dlg;
         }
+
+        public IRegisterValuesDialog CreateRegisterValuesDialog(IProcessorArchitecture arch, List<UserRegisterValue> regValues)
+        {
+            var dlg = new RegisterValuesDialog
+            {
+                Architecture = arch,
+                RegisterValues = regValues,
+            };
+            return dlg;
+        }
     }
 }
 

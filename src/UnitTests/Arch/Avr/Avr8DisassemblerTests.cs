@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.Avr;
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -53,7 +54,7 @@ namespace Reko.UnitTests.Arch.Avr
             uInstrs.Select(u => new byte[] { (byte)u, (byte)(u >> 8) })
                 .SelectMany(b => b)
                 .ToArray();
-            var i = Disassemble(new MemoryArea(LoadAddress, bytes));
+            var i = Disassemble(new ByteMemoryArea(LoadAddress, bytes));
             Assert.AreEqual(sExp, i.ToString());
         }
 

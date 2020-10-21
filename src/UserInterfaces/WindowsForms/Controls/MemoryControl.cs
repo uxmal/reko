@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.Gui;
 using System;
@@ -52,7 +53,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private uint wordSize;
         private uint cbRow;
         private IProcessorArchitecture arch;
-        private MemoryArea mem;
+        private ByteMemoryArea mem;
         private SegmentMap segmentMap;
         private ImageMap imageMap;
         private Encoding encoding;
@@ -413,7 +414,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private void ChangeMemoryArea(ImageSegment seg)
         {
-            mem = seg.MemoryArea;
+            mem = seg.MemoryArea as ByteMemoryArea;   //$TODO only byte granularity.
             if (mem != null)
             {
                 this.addrMin = Address.Max(mem.BaseAddress, seg.Address);

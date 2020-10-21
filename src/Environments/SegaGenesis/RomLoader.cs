@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -21,6 +21,7 @@
 using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace Reko.Environments.SegaGenesis
         {
             if (RawImage.Length <= 0x200)
                 throw new BadImageFormatException("The file is too small for a Sega Genesis ROM image.");
-            var mem = new MemoryArea(addrLoad, RawImage);
+            var mem = new ByteMemoryArea(addrLoad, RawImage);
             var cfgService = Services.RequireService<IConfigurationService>();
             var arch = cfgService.GetArchitecture("m68k");
             var env = cfgService.GetEnvironment("sega-genesis");
@@ -54,21 +55,21 @@ namespace Reko.Environments.SegaGenesis
             return new Program(segmentMap, arch, platform);
         }
 
-        private SegmentMap CreateSegmentMap(MemoryArea mem, IPlatform platform)
+        private SegmentMap CreateSegmentMap(ByteMemoryArea bmem, IPlatform platform)
         {
             var segmentMap = platform.CreateAbsoluteMemoryMap();
             var romSegment = segmentMap.Segments.Values.First(s => s.Name == ".text");
-            romSegment.ContentSize = (uint)mem.Length;
-            romSegment.MemoryArea = mem;
+            romSegment.ContentSize = (uint)bmem.Length;
+            romSegment.MemoryArea = bmem;
             var ramSegment = segmentMap.Segments.Values.First(s => s.Name == ".data");
-            ramSegment.MemoryArea = new MemoryArea(ramSegment.Address, new byte[ramSegment.Size]);
+            ramSegment.MemoryArea = new ByteMemoryArea(ramSegment.Address, new byte[ramSegment.Size]);
             return segmentMap;
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             // Get the Reset address from offset $0004 of the interrupt vector.
-            var addrReset = Address.Ptr32(MemoryArea.ReadBeUInt32(RawImage, 4));
+            var addrReset = Address.Ptr32(ByteMemoryArea.ReadBeUInt32(RawImage, 4));
             var syms = new SortedList<Address, ImageSymbol>();
             var eps = new List<ImageSymbol>();
             if (program.SegmentMap.IsValidAddress(addrReset))

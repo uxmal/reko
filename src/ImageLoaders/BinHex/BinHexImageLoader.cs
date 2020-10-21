@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Archives;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Environments.MacOS.Classic;
 using System;
@@ -33,7 +34,7 @@ namespace Reko.ImageLoaders.BinHex
     public class BinHexImageLoader : ImageLoader
     {
         private ResourceFork rsrcFork;
-        private MemoryArea mem;
+        private ByteMemoryArea bmem;
         private SegmentMap segmentMap;
 
         public BinHexImageLoader(IServiceProvider services, string filename, byte [] imgRaw) : base(services, filename, imgRaw)
@@ -63,7 +64,7 @@ namespace Reko.ImageLoaders.BinHex
                     {
                         var image = selectedFile.GetBytes();
                         this.rsrcFork = new ResourceFork(platform, image);
-                        this.mem = new MemoryArea(addrLoad, image);
+                        this.bmem = new ByteMemoryArea(addrLoad, image);
                         this.segmentMap = new SegmentMap(addrLoad); 
                         return new Program(this.segmentMap, arch, platform);
                     }
@@ -71,15 +72,15 @@ namespace Reko.ImageLoaders.BinHex
             }
             if (hdr.FileType == "MPST" || hdr.FileType == "APPL")
             {
-                this.mem = new MemoryArea(addrLoad, rsrcFork);
+                this.bmem = new ByteMemoryArea(addrLoad, rsrcFork);
                 this.rsrcFork = new ResourceFork(platform, rsrcFork);
                 this.segmentMap = new SegmentMap(addrLoad);
                 return new Program(this.segmentMap, arch, platform);
             }
-            this.mem = new MemoryArea(addrLoad, dataFork);
+            this.bmem = new ByteMemoryArea(addrLoad, dataFork);
             return new Program(
-                new SegmentMap(mem.BaseAddress,
-                    new ImageSegment("", mem, AccessMode.ReadWriteExecute)),
+                new SegmentMap(bmem.BaseAddress,
+                    new ImageSegment("", bmem, AccessMode.ReadWriteExecute)),
                 arch,
                 platform);
         }
@@ -111,7 +112,7 @@ namespace Reko.ImageLoaders.BinHex
             if (rsrcFork != null)
             {
                 rsrcFork.Dump();
-                rsrcFork.AddResourcesToImageMap(addrLoad, mem, segmentMap, entryPoints, symbols);
+                rsrcFork.AddResourcesToImageMap(addrLoad, bmem, segmentMap, entryPoints, symbols);
             }
             return new RelocationResults(entryPoints, symbols);
         }

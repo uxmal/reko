@@ -35,6 +35,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 
 namespace Reko.Environments.Windows
@@ -157,38 +158,37 @@ namespace Reko.Environments.Windows
                 {
                     // Forward jump (appears in Borland binaries)
                     p.Dispose();
-
                     // Search for this pattern.
+                    var bmem = (ByteMemoryArea) seg.MemoryArea;
                     if (!LocatePattern(
-                        seg.MemoryArea.Bytes,
+                        bmem.Bytes,
                         (uint) (addrOp0.Address - seg.MemoryArea.BaseAddress),
                         (uint) (offsetMax),
                         borlandPattern,
                         out idx))
                         return null;
                     var iMainInfo = idx + 0x0E;
-                    var addrMainInfo = Address.Ptr32(
-                        seg.MemoryArea.ReadLeUInt32(iMainInfo));
+                    var addrMainInfo = Address.Ptr32(bmem.ReadLeUInt32(iMainInfo));
                     if (!program.SegmentMap.TryFindSegment(addrMainInfo, out ImageSegment segMainInfo))
                         return null;
                     var addrMain = Address.Ptr32(
-                        segMainInfo.MemoryArea.ReadLeUInt32(addrMainInfo + 0x18));
+                        ((ByteMemoryArea)segMainInfo.MemoryArea).ReadLeUInt32(addrMainInfo + 0x18));
                     if (program.SegmentMap.IsExecutableAddress(addrMain))
                     {
                         return ImageSymbol.Procedure(program.Architecture, addrMain, "main", signature: mainSignature);
                     }
                 }
             }
-
+            var bmem2 = (ByteMemoryArea) seg.MemoryArea;
             if (LocatePattern(
-                   seg.MemoryArea.Bytes,
+                   bmem2.Bytes,
                    (uint)(addrStart - seg.MemoryArea.BaseAddress),
                    (uint)(offsetMax),
                    msvcDebugCrt,
                    out idx))
             {
                 idx += 0x17;        // skip to call <offset>
-                int offset = seg.MemoryArea.ReadLeInt32(seg.MemoryArea.BaseAddress + idx);
+                seg.MemoryArea.TryReadLeInt32(idx, out int offset);
                 var addrMain = seg.MemoryArea.BaseAddress + idx + 5 + offset;
                 if (program.SegmentMap.IsExecutableAddress(addrMain))
                 {

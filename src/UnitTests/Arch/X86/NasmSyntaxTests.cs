@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -37,7 +38,7 @@ namespace Reko.UnitTests.Arch.X86
 
         private X86Instruction Disassemble32(params byte[] bytes)
         {
-            var mem = new MemoryArea(Address.Ptr32(0x0010_0000), bytes);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x0010_0000), bytes);
             var rdr = mem.CreateLeReader(0);
             var dasm = arch.CreateDisassembler(rdr);
             return (X86Instruction) dasm.First();

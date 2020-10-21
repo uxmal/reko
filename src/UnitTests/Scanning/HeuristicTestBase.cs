@@ -24,6 +24,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Scanning;
@@ -49,14 +50,14 @@ namespace Reko.UnitTests.Scanning
         protected ImageSegment segment;
         protected Mock<IRewriterHost> host;
         protected Mock<DecompilerEventListener> eventListener;
-        private MemoryArea mem;
+        private ByteMemoryArea bmem;
 
         public virtual void Setup()
         {
             eventListener = new Mock<DecompilerEventListener>();
         }
 
-        protected MemoryArea CreateMemoryArea(Address addr, params uint[] opcodes)
+        protected ByteMemoryArea CreateMemoryArea(Address addr, params uint[] opcodes)
         {
             byte[] bytes = new byte[0x20];
             var writer = new LeImageWriter(bytes);
@@ -65,7 +66,7 @@ namespace Reko.UnitTests.Scanning
             {
                 writer.WriteLeUInt32(offset, opcodes[i]);
             }
-            return new MemoryArea(addr, bytes);
+            return new ByteMemoryArea(addr, bytes);
         }
 
         protected void Given_RewriterHost()
@@ -88,12 +89,12 @@ namespace Reko.UnitTests.Scanning
         protected void Given_Image32(uint addr, string sBytes)
         {
             var bytes = HexStringToBytes(sBytes);
-            mem = new MemoryArea(Address.Ptr32(addr), bytes);
+            bmem = new ByteMemoryArea(Address.Ptr32(addr), bytes);
             program = new Program
             {
                 SegmentMap = new SegmentMap(
-                    mem.BaseAddress,
-                    new ImageSegment("prôg", mem, AccessMode.ReadExecute))
+                    bmem.BaseAddress,
+                    new ImageSegment("prôg", bmem, AccessMode.ReadExecute))
             };
             program.ImageMap = program.SegmentMap.CreateImageMap();
             segment = program.SegmentMap.Segments.Values.First();
@@ -160,12 +161,12 @@ namespace Reko.UnitTests.Scanning
         internal void Given_ImageSeg(ushort seg, ushort offset, string sBytes)
         {
             var bytes = HexStringToBytes(sBytes);
-            mem = new MemoryArea(Address.SegPtr(seg, offset), bytes);
-            segment = new ImageSegment("prôg", mem, AccessMode.ReadExecute);
+            bmem = new ByteMemoryArea(Address.SegPtr(seg, offset), bytes);
+            segment = new ImageSegment("prôg", bmem, AccessMode.ReadExecute);
             program = new Program
             {
                 SegmentMap = new SegmentMap(
-                    mem.BaseAddress,
+                    bmem.BaseAddress,
                     segment)
             };
         }
@@ -183,7 +184,7 @@ namespace Reko.UnitTests.Scanning
                 sb.AppendLine();
                 var lastAddr = hblock.GetEndAddress();
                 var dasm = program.Architecture.CreateDisassembler(
-                    program.Architecture.CreateImageReader(mem, hblock.Address));
+                    program.Architecture.CreateImageReader(bmem, hblock.Address));
                 foreach (var instr in dasm.TakeWhile(i => i.Address < lastAddr))
                 {
                     sb.AppendFormat("    {0}", instr);

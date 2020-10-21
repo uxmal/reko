@@ -28,6 +28,7 @@ using Reko.Core.Rtl;
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.Microchip.Common
 {
@@ -36,13 +37,13 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         protected IPICProcessorModel picModel;
         protected PICArchitecture arch;
         protected Address baseAddr = PICProgAddress.Ptr(0x200);
-        protected MemoryArea mem;
+        protected ByteMemoryArea bmem;
 
         public override IProcessorArchitecture Architecture => arch;
 
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder frame, IRewriterHost host)
         {
-            var disasm = picModel.CreateDisassembler(arch, new LeImageReader(mem, 0));
+            var disasm = picModel.CreateDisassembler(arch, arch.CreateImageReader(mem, 0));
             var rwtr = picModel.CreateRewriter(arch, disasm, (PICProcessorState)arch.CreateProcessorState(), frame, host);
             return rwtr;
         }
@@ -56,7 +57,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
                 (byte) w,
                 (byte) (w >> 8),
             }).ToArray();
-            this.mem = new MemoryArea(LoadAddress, bytes);
+            this.bmem = new ByteMemoryArea(LoadAddress, bytes);
         }
 
         protected string _fmtBinary(uint[] words)
@@ -82,7 +83,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
             int i = 0;
             var frame = Architecture.CreateFrame();
             var host = CreateRewriterHost();
-            var rewriter = GetRtlStream(mem, frame, host).GetEnumerator();
+            var rewriter = GetRtlStream(bmem, frame, host).GetEnumerator();
             while (i < expected.Length && rewriter.MoveNext())
             {
                 Assert.AreEqual(expected[i], $"{i}|{RtlInstruction.FormatClass(rewriter.Current.Class)}|{rewriter.Current}", mesg);

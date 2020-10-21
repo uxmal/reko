@@ -21,6 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.UnitTests.Mocks;
@@ -81,7 +82,7 @@ namespace Reko.UnitTests.Gui
             var platform = new Mock<IPlatform>();
             var fileName = OsPath.Relative("foo", "bar", "baz.exe");
             var bytes = new byte[100];
-            var mem = new MemoryArea(Address.Ptr32(0x1000), bytes);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x1000), bytes);
             var imageMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute));

@@ -21,6 +21,7 @@
 using Reko.Core.CLanguage;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
@@ -67,7 +68,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="segmentMap">Loaded program image.</param>
         /// <param name="importReferences">Imported procedures.</param>
-        /// <returns>The created platform emulators.
+        /// <returns>The created platform emulator.
         /// </returns>
         IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences);
 
@@ -331,8 +332,8 @@ namespace Reko.Core
         {
             if (this.MemoryMap == null || this.MemoryMap.Segments == null)
                 return null;
-            var diagSvc = Services.RequireService<IDiagnosticsService>();
-            var segs = MemoryMap.Segments.Select(s => MemoryMap_v1.LoadSegment(s, this, diagSvc))
+            var listener = Services.RequireService<DecompilerEventListener>();
+            var segs = MemoryMap.Segments.Select(s => MemoryMap_v1.LoadSegment(s, this, listener))
                 .Where(s => s != null)
                 .ToSortedList(s => s!.Address, s => s!);
             return new SegmentMap(

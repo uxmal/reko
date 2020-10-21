@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -78,7 +79,7 @@ namespace Reko.Arch.M68k.Assembler
 
         public Program GetImage()
         {
-            var mem = new MemoryArea(BaseAddress, Emitter.GetBytes());
+            var mem = new ByteMemoryArea(BaseAddress, Emitter.GetBytes());
             return new Program(
                 new SegmentMap(
                     mem.BaseAddress,

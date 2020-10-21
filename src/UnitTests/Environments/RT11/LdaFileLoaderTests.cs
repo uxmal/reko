@@ -21,6 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Environments.RT11;
 using System;
 using System.ComponentModel.Design;
@@ -71,9 +72,10 @@ namespace Reko.UnitTests.Environments.RT11
 
             var program = ldaLdr.Load(Address.Ptr16(0));
             var seg = program.SegmentMap.Segments.Values.First();
-            Assert.AreEqual(0x1000ul, seg.MemoryArea.BaseAddress.ToLinear());
-            Assert.AreEqual(0x12, seg.MemoryArea.Bytes[0]);
-            Assert.AreEqual(0x34, seg.MemoryArea.Bytes[1]);
+            var bmem = (ByteMemoryArea) seg.MemoryArea;
+            Assert.AreEqual(0x1000ul, bmem.BaseAddress.ToLinear());
+            Assert.AreEqual(0x12, bmem.Bytes[0]);
+            Assert.AreEqual(0x34, bmem.Bytes[1]);
         }
     }
 }

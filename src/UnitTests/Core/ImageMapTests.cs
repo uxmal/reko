@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -90,7 +91,7 @@ namespace Reko.UnitTests.Core
             var segmentMap = new SegmentMap(Address.Ptr32(0x01000),
                 new ImageSegment(
                     ".text", 
-                    new MemoryArea(Address.Ptr32(0x01010), new byte[0x10]),
+                    new ByteMemoryArea(Address.Ptr32(0x01010), new byte[0x10]),
                     AccessMode.ReadExecute));
             var map = segmentMap.CreateImageMap();
             Assert.AreEqual(1, map.Items.Count);
@@ -102,7 +103,7 @@ namespace Reko.UnitTests.Core
         [Test]
         public void Im_CreateItem_MiddleOfEmptyRange()
         {
-            var mem = new MemoryArea(addrBase, new byte[0x100]);
+            var mem = new ByteMemoryArea(addrBase, new byte[0x100]);
             var segmentMap = new SegmentMap(addrBase,
                 new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             var map = segmentMap.CreateImageMap();
@@ -191,12 +192,12 @@ namespace Reko.UnitTests.Core
         [Test]
         public void Im_RemoveItem_DoNotMergeDisjointItems()
         {
-            var mem = new MemoryArea(addrBase, new byte[0x0100]);
+            var mem = new ByteMemoryArea(addrBase, new byte[0x0100]);
             var segmentMap = new SegmentMap(addrBase,
                 new ImageSegment("", mem, AccessMode.ReadWriteExecute));
             var codeMem = mem;
-            var dataMem = new MemoryArea(addrBase + 0x1000, new byte[0x0004]);
-            var textMem = new MemoryArea(addrBase + 0x2000, new byte[0x0100]);
+            var dataMem = new ByteMemoryArea(addrBase + 0x1000, new byte[0x0004]);
+            var textMem = new ByteMemoryArea(addrBase + 0x2000, new byte[0x0100]);
             segmentMap.AddSegment(codeMem, "code", AccessMode.ReadWrite);
             segmentMap.AddSegment(dataMem, "data", AccessMode.ReadWrite);
             segmentMap.AddSegment(textMem, "text", AccessMode.ReadWrite);

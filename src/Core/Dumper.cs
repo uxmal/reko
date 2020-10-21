@@ -20,6 +20,7 @@
 
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
@@ -280,7 +281,7 @@ namespace Reko.Core
                 writer.WriteFormat("{0} ", addrBegin);
             if (ShowCodeBytes)
             {
-                WriteByteRange(mem, arch, instrAddress, instrAddress + instr.Length, writer);
+                WriteOpcodes(mem, arch, instrAddress, instrAddress + instr.Length, writer);
                 if (instr.Length * 3 < 16)
                 {
                     writer.WriteString(new string(' ', 16 - (instr.Length * 3)));
@@ -320,7 +321,7 @@ namespace Reko.Core
             w.Write("\t");
         }
 
-        public void WriteByteRange(MemoryArea image, IProcessorArchitecture arch, Address begin, Address addrEnd, InstrWriter writer)
+        public void WriteOpcodes(MemoryArea image, IProcessorArchitecture arch, Address begin, Address addrEnd, InstrWriter writer)
 		{
 			EndianImageReader rdr = arch.CreateImageReader(image, begin);
             var byteSize = (7 + arch.InstructionBitSize) / 8;

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.NativeInterface;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -86,7 +87,7 @@ namespace Reko.Arch.Arm.AArch32
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
-            var bytes = rdr.Bytes;
+            var bytes = ((ByteImageReader)rdr).Bytes;
             var offset = (int)rdr.Offset;
             var addr = rdr.Address.ToLinear();
             return new Enumerator(regs, this);
@@ -112,7 +113,7 @@ namespace Reko.Arch.Arm.AArch32
 
             public Enumerator(Dictionary<int, RegisterStorage> regs, ThumbRewriterRetired outer)
             {
-                this.bytes = outer.rdr.Bytes;
+                this.bytes = ((ByteImageReader)outer.rdr).Bytes;
                 ulong addr = outer.rdr.Address.ToLinear();
                 this.hBytes = GCHandle.Alloc(bytes, GCHandleType.Pinned);
 

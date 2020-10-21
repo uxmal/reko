@@ -32,6 +32,7 @@ using System.Text;
 using Moq;
 using Reko.Arch.Mos6502;
 using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Environments.C64
 {
@@ -124,7 +125,7 @@ namespace Reko.UnitTests.Environments.C64
             host = new Mock<RewriterHost>(arch) { CallBase = true };
             host.Setup(h => h.GetArchitecture("m6502"))
                 .Returns(arch6502);
-            base.Given_MemoryArea(new MemoryArea(Address.Ptr16(0x800), new byte[10]));
+            base.Given_MemoryArea(new ByteMemoryArea(Address.Ptr16(0x800), new byte[10]));
         }
 
         [Test]

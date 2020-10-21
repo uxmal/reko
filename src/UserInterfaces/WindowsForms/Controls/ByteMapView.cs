@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -27,6 +27,7 @@ using System.Windows.Forms;
 using Reko.Core;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using Reko.Core.Memory;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
@@ -59,11 +60,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             y_old = 0;
 
             this.rdr = SegmentMap.Segments.Values
-                .Select(seg => seg.MemoryArea)
-                .Where(mem => mem != null)
-                .OrderBy(mem => mem.BaseAddress)
+                .Select(seg => seg.MemoryArea as ByteMemoryArea)    //$TODO: ony byte granular memory areas
+                .Where(bmem => bmem != null)
+                .OrderBy(bmem => bmem.BaseAddress)
                 .Distinct()
-                .SelectMany(mem => mem.Bytes).GetEnumerator();
+                .SelectMany(bmeme => bmeme.Bytes).GetEnumerator();
             this.data = new byte[Width * Height * 4];
 
             SpaceFill(1, 1, Width, Height);

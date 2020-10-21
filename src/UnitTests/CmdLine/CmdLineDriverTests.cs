@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Drivers.CmdLine
             this.ldr = new Mock<ILoader>();
             this.decompiler = new Mock<IDecompiler>();
             this.configSvc = new Mock<IConfigurationService>();
-            sc.AddService<IDiagnosticsService>(new FakeDiagnosticsService());
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             sc.AddService<IConfigurationService>(configSvc.Object);
         }
 
@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Drivers.CmdLine
                 It.IsAny<LoadDetails>()))
                 .Returns(new Program());
 
-            var cmdline = new CmdLineDriver(sc, ldr.Object, decompiler.Object, null);
+            var cmdline = new CmdLineDriver(sc, ldr.Object, decompiler.Object, new CmdLineListener());
             cmdline.Execute(new string[]
             {
                 "--arch",  "mmix",
@@ -102,7 +102,7 @@ namespace Reko.UnitTests.Drivers.CmdLine
                 out addr))
                 .Returns(true);
 
-            var cmdline = new CmdLineDriver(sc, ldr.Object, decompiler.Object, null);
+            var cmdline = new CmdLineDriver(sc, ldr.Object, decompiler.Object, new CmdLineListener());
             cmdline.Execute(new[]
             {
                 "--arch", "test",

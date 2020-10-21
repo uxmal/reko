@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Reko.Arch.M68k;
 using Reko.Arch.M68k.Assembler;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
@@ -60,7 +61,7 @@ namespace Reko.UnitTests.Scanning
         private void BuildTest32(Address addrBase, params byte[] bytes)
         {
             arch = new M68kArchitecture(sc, "m68k");
-            var mem = new MemoryArea(addrBase, bytes);
+            var mem = new ByteMemoryArea(addrBase, bytes);
             program = new Program(
                 new SegmentMap(
                     mem.BaseAddress,

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>x86-protected-32</arch>
+  <platform>win32</platform>
+  <input>
+    <filename>pySample.dll</filename>
+    <asmDir>shingledPySample.reko</asmDir>
+    <srcDir>shingledPySample.reko</srcDir>
+    <includeDir>shingledPySample.reko</includeDir>
+    <resources>shingledPySample.reko\resources</resources>
+    <user>
+      <processor />
+      <procedure name="py_unused">
+        <address>10001140</address>
+        <CSignature>PyObject *py_unused(PyObject *self, PyObject *args)</CSignature>
+        <OutputFile>unused.c</OutputFile>
+      </procedure>
+      <global>
+        <Address>10003010</Address>
+        <arr length="5">
+          <type>PyMethodDef</type>
+        </arr>
+        <Name>methods</Name>
+      </global>
+      <heuristic name="shingle" />
+      <onLoad Enabled="false" />
+      <registerValues />
+      <extractResources>false</extractResources>
+      <outputFilePolicy>Segment</outputFilePolicy>
+    </user>
+  </input>
+  <metadata>
+    <filename>python.xml</filename>
+  </metadata>
+</project>

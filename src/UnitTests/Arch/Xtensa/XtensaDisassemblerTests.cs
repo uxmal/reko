@@ -29,6 +29,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.Xtensa
 {
@@ -67,7 +68,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             var rnd = new Random(4711);
             var buf = new byte[1_000_000];
             rnd.NextBytes(buf);
-            var mem = new MemoryArea(LoadAddress, buf);
+            var mem = new ByteMemoryArea(LoadAddress, buf);
             var rdr = new LeImageReader(mem, 0);
             var dasm = new XtensaDisassembler(arch, rdr);
             dasm.Take(400).ToArray();

@@ -29,6 +29,7 @@ namespace Reko.Core.Machine
 
     public class InstrDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
         where TDasm : DisassemblerBase<TInstr, TMnemonic>
+        where TMnemonic : struct
         where TInstr : MachineInstruction
     {
         private readonly InstrClass iclass;
@@ -56,6 +57,7 @@ namespace Reko.Core.Machine
 
     public class WideInstrDecoder<TDasm, TMnemonic, TInstr> : WideDecoder<TDasm, TMnemonic, TInstr>
         where TDasm : DisassemblerBase<TInstr, TMnemonic>
+        where TMnemonic : struct
         where TInstr : MachineInstruction
     {
         private readonly InstrClass iclass;

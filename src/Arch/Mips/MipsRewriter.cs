@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
@@ -332,7 +333,7 @@ namespace Reko.Arch.Mips
         protected void EmitUnitTest(MipsInstruction instr)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("MipsRw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("MipsRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private Expression RewriteOperand(MachineOperand op)

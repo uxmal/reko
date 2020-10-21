@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -35,13 +36,13 @@ namespace Reko.ImageLoaders.Hunk
         public HunkFile hunk_file;
         public List<Hunk> hunks;
 
-        private BeImageReader f;
+        private readonly ByteImageReader f;
         private bool? v37_compat;
         private Encoding textEncoding;
 
-        private static TraceSwitch trace = new TraceSwitch("HunkLoader", "Traces the progress of the Amiga Hunk loader");
+        private static readonly TraceSwitch trace = new TraceSwitch("HunkLoader", "Traces the progress of the Amiga Hunk loader");
 
-        public HunkFileParser(BeImageReader f, bool? v37_compat = null)
+        public HunkFileParser(ByteImageReader f, bool? v37_compat = null)
         {
             this.f = f;
             this.v37_compat = v37_compat;
@@ -111,7 +112,7 @@ namespace Reko.ImageLoaders.Hunk
                 }
                 // check for valid first hunk type
                 if (isFirstHunk && !this.IsValidFirstHunkType(hunkType))
-                    throw new BadImageFormatException(String.Format("No hunk file. The first hunk type was {1}.", hunkType));
+                    throw new BadImageFormatException($"No hunk file. The first hunk type was {hunkType}.");
                 isFirstHunk = false;
                 sawEndHunk = false;
                 was_potential_v37_hunk = false;
@@ -246,7 +247,7 @@ namespace Reko.ImageLoaders.Hunk
             return f.ReadBeInt32();
         }
 
-        public virtual short read_word(EndianImageReader f)
+        public virtual short read_word(ByteImageReader f)
         {
             if (!f.IsValid)
                 return -1;
@@ -586,14 +587,14 @@ namespace Reko.ImageLoaders.Hunk
             
             // check overlay manager
             var overlay_mgr_data = overlayManagerHunk.Data;
-            uint magic = MemoryArea.ReadBeUInt32(overlay_mgr_data, 4);
+            uint magic = ByteMemoryArea.ReadBeUInt32(overlay_mgr_data, 4);
             if (magic != 0xABCD)
                 throw new BadImageFormatException("No valid overlay manager found.");
 
             // check for standard overlay manager
-            var magic2 = MemoryArea.ReadBeUInt32(overlay_mgr_data, 24);
-            var magic3 = MemoryArea.ReadBeUInt32(overlay_mgr_data, 20);
-            var magic4 = MemoryArea.ReadBeUInt32(overlay_mgr_data, 32);
+            var magic2 = ByteMemoryArea.ReadBeUInt32(overlay_mgr_data, 24);
+            var magic3 = ByteMemoryArea.ReadBeUInt32(overlay_mgr_data, 20);
+            var magic4 = ByteMemoryArea.ReadBeUInt32(overlay_mgr_data, 32);
             var std_overlay = magic2 == 23456 && magic3 == 122648165 && magic4 == 1919705465;
             hunk.ov_std = std_overlay;
         }

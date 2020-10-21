@@ -952,6 +952,10 @@ namespace Reko.Scanning
                 dataScanner.EnqueueUserGlobalData(sym.Address!, sym.DataType!, sym.Name!);
             }
             dataScanner.ProcessQueue();
+            foreach (var sym in dataScanner.Procedures.Values)
+            {
+                this.EnqueueImageSymbol(sym, false);
+            }
             return sr;
         }
 

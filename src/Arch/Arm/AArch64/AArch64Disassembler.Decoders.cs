@@ -52,7 +52,7 @@ namespace Reko.Arch.Arm.AArch64
 
             public override AArch64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
             {
-                DumpMaskedInstruction(wInstr, mask << shift, tag);
+                DumpMaskedInstruction(32, wInstr, mask << shift, tag);
                 var op = (wInstr >> shift) & mask;
                 if (!decoders.TryGetValue(op, out Decoder decoder))
                     decoder = @default;

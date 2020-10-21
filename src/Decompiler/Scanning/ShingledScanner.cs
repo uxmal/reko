@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using System;
@@ -168,7 +169,7 @@ namespace Reko.Scanning
 
             var y = new byte[cbAlloc];
             // Advance by the instruction granularity.
-            var step = program.Architecture.InstructionBitSize / 8;
+            var step = program.Architecture.InstructionBitSize / program.Architecture.MemoryGranularity;
             
             // Align the start address to instruction granularity. If we align off 
             // into invalid memory, return immediately.

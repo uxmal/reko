@@ -25,6 +25,7 @@ using System.Linq;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -130,7 +131,7 @@ namespace Reko.Arch.zSeries
         [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            arch.Services.GetService<ITestGenerationService>()?.ReportMissingRewriter("zSeriesRw", dasm.Current, rdr, "");
+            arch.Services.GetService<ITestGenerationService>()?.ReportMissingRewriter("zSeriesRw", dasm.Current, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private Address Addr(MachineOperand op)

@@ -19,8 +19,6 @@
 // ds:ds
 // ax:ax
 // Z:Z
-// eax:eax
-// ecx:ecx
 // Top:Top
 // return address size: 2
 define fn0C00_0000
@@ -47,8 +45,8 @@ l0C00_0000:
 	C = __bt(cx, 2<8>)
 	Z = Mem0[ds:si:word16] == 0<16>
 	cx = __bsr(Mem0[ds:si:word16])
-	Z = eax == 0<32>
-	ecx = __bsr(eax)
+	Z = ax == 0<16>
+	cx = __bsr(ax)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

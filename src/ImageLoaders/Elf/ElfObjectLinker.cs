@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -34,17 +35,15 @@ namespace Reko.ImageLoaders.Elf
     public abstract class ElfObjectLinker
     {
         protected IProcessorArchitecture arch;
-        private ElfLoader loader;
+        private readonly ElfLoader loader;
         protected byte[] rawImage;
         protected ElfSection rekoExtfn;
 
         public ElfObjectLinker(ElfLoader loader, IProcessorArchitecture arch, byte[] rawImage)
         {
-            if (rawImage == null)
-                throw new ArgumentNullException("rawImage");
             this.loader = loader;
             this.arch = arch;
-            this.rawImage = rawImage;
+            this.rawImage = rawImage ?? throw new ArgumentNullException("rawImage");
         }
 
         public abstract Program LinkObject(IPlatform platform, Address addrLoad, byte[] rawImage);
@@ -64,7 +63,7 @@ namespace Reko.ImageLoaders.Elf
 
     public class ElfObjectLinker32 : ElfObjectLinker
     {
-        private ElfLoader32 loader;
+        private readonly ElfLoader32 loader;
 
         public ElfObjectLinker32(ElfLoader32 loader, IProcessorArchitecture arch, byte[] rawImage)
             : base(loader, arch, rawImage)
@@ -99,8 +98,7 @@ namespace Reko.ImageLoaders.Elf
             foreach (var section in loader.Sections
                 .Where(s => (s.Flags & ElfLoader.SHF_ALLOC) != 0))
             {
-                Elf32_PHdr segment;
-                if (!mpToSegment.TryGetValue(section.Flags, out segment))
+                if (!mpToSegment.TryGetValue(section.Flags, out Elf32_PHdr segment))
                 {
                     segment = new Elf32_PHdr();
                     segment.p_flags = SegmentAccess(section.Flags);
@@ -222,8 +220,7 @@ namespace Reko.ImageLoaders.Elf
             var psegMem = Segments.ToDictionary(k => k, v => arch.CreateImageWriter());
             foreach (var section in loader.Sections)
             {
-                Elf32_PHdr segment;
-                if (!mpSections.TryGetValue(section, out segment))
+                if (!mpSections.TryGetValue(section, out Elf32_PHdr segment))
                     continue;
                 section.Address = Address.Ptr32(psegAlloc[segment]);
                 if (section.Type != SectionHeaderType.SHT_NOBITS)
@@ -239,7 +236,7 @@ namespace Reko.ImageLoaders.Elf
 
             var mpMemoryAreas = psegMem.ToDictionary(
                 k => k.Key,
-                v => new MemoryArea(
+                v => new ByteMemoryArea(
                     Address.Ptr32(v.Key.p_paddr),
                     v.Value.ToArray()));
             var imageMap = new SegmentMap(

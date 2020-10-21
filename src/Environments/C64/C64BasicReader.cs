@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,12 +35,12 @@ namespace Reko.Environments.C64
     /// </summary>
     public class C64BasicReader : IEnumerable<C64BasicInstruction>
     {
-        private readonly MemoryArea image;
+        private readonly ByteMemoryArea bmem;
         private readonly ushort lineOffset;
 
-        public C64BasicReader(MemoryArea image, ushort lineOffset)
+        public C64BasicReader(ByteMemoryArea image, ushort lineOffset)
         {
-            this.image = image;
+            this.bmem = image;
             this.lineOffset = lineOffset;
         }
 
@@ -63,7 +64,7 @@ namespace Reko.Environments.C64
         
         public C64BasicInstruction ReadLine(Address addr)
         {
-            var rdr = image.CreateLeReader(addr);
+            var rdr = this.bmem.CreateLeReader(addr);
             if (!rdr.TryReadLeUInt16(out ushort next))
                 return null;
             if (!rdr.TryReadLeUInt16(out ushort line))

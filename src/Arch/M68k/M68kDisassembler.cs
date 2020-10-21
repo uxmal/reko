@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -201,7 +202,7 @@ namespace Reko.Arch.M68k
             };
         }
 
-        public override M68kInstruction NotYetImplemented(uint wInstr, string message)
+        public override M68kInstruction NotYetImplemented(string message)
         {
             var testGenSvc = this.services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("M68kdis", this.addr, this.rdr, message);

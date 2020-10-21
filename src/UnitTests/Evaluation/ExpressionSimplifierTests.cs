@@ -47,6 +47,7 @@ namespace Reko.UnitTests.Evaluation
         {
             m = new ProcedureBuilder();
             this.rolc_8 = new PseudoProcedure(PseudoProcedure.RolC, PrimitiveType.Byte, 3);
+            arch = new Mock<IProcessorArchitecture>();
         }
 
         private void Given_LittleEndianArchitecture()
@@ -140,6 +141,9 @@ namespace Reko.UnitTests.Evaluation
         public void Exs_FloatIeeeConstant_Cmp()
         {
             Given_ExpressionSimplifier();
+            arch.Setup(a => a.ReinterpretAsFloat(It.IsAny<Constant>()))
+                .Returns(new Func<Constant,Constant>(c =>
+                    Constant.FloatFromBitpattern(c.ToInt32())));
             var expr = m.FLt(foo, Constant.Word32(0xC0B00000));
             var result = expr.Accept(simplifier);
             Assert.AreEqual("foo_1 < -5.5F", result.ToString());

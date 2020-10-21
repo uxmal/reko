@@ -30,6 +30,7 @@ using Reko.Core.Types;
 using Reko.Arch.Alpha;
 using Reko.Core.Configuration;
 using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.Mips
 {
@@ -60,7 +61,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             return new AlphaRewriter(
                 arch, 
-                new LeImageReader(mem, 0),
+                mem.CreateLeReader(0),
                 binder,
                 host);
         }

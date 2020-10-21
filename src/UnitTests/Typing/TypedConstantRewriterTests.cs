@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.Typing;
 using Reko.UnitTests.Mocks;
@@ -37,19 +38,19 @@ namespace Reko.UnitTests.Typing
 		private TypedConstantRewriter tcr;
 		private Identifier globals;
         private Program program;
-        private MemoryArea mem;
+        private ByteMemoryArea bmem;
 
         [SetUp]
 		public void Setup()
 		{
-            mem = new MemoryArea(Address.Ptr32(0x00100000), new byte[1024]);
+            bmem = new ByteMemoryArea(Address.Ptr32(0x00100000), new byte[1024]);
             var arch = new FakeArchitecture(new ServiceContainer());
             this.program = new Program
             {
                 Architecture = arch,
                 SegmentMap = new SegmentMap(
-                    mem.BaseAddress,  
-                    new ImageSegment(".text", mem, AccessMode.ReadWriteExecute)),
+                    bmem.BaseAddress,  
+                    new ImageSegment(".text", bmem, AccessMode.ReadWriteExecute)),
                 Platform = new DefaultPlatform(null, arch),
             };
             store = program.TypeStore;
@@ -82,7 +83,7 @@ namespace Reko.UnitTests.Typing
 
         private void Given_Segment(ushort selector, string name)
         {
-            var seg = new ImageSegment(name, new MemoryArea(Address.SegPtr(selector, 0), new byte[100]), AccessMode.ReadWriteExecute);
+            var seg = new ImageSegment(name, new ByteMemoryArea(Address.SegPtr(selector, 0), new byte[100]), AccessMode.ReadWriteExecute);
             seg.Identifier = new Identifier(name, PrimitiveType.SegmentSelector, RegisterStorage.None);
             program.SegmentMap.AddSegment(seg);
 
@@ -200,7 +201,7 @@ namespace Reko.UnitTests.Typing
 
         private void Given_String(string str, uint addr)
         {
-            var w = new LeImageWriter(mem.Bytes, addr - (uint)mem.BaseAddress.ToLinear());
+            var w = new LeImageWriter(bmem.Bytes, addr - (uint)bmem.BaseAddress.ToLinear());
             w.WriteString(str, Encoding.ASCII);
         }
 

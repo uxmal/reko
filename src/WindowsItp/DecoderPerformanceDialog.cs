@@ -1,4 +1,5 @@
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.WindowsItp.Decoders;
 using System;
@@ -147,7 +148,7 @@ namespace Reko.WindowsItp
 
         private long PerformanceTest_A32Dasm(IProcessorArchitecture arch, byte[] buf)
         {
-            var mem = new MemoryArea(Address.Ptr32(0x00100000), buf);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00100000), buf);
             var rdr = arch.CreateImageReader(mem, mem.BaseAddress);
             var dasm = arch.CreateDisassembler(rdr);
             Stopwatch sw = new Stopwatch();
@@ -163,7 +164,7 @@ namespace Reko.WindowsItp
 
         private long PerformanceTest_A32Rewriter(IProcessorArchitecture arch,   byte[] buf)
         {
-            var mem = new MemoryArea(Address.Ptr32(0x00100000), buf);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00100000), buf);
             var rdr = arch.CreateImageReader(mem, mem.BaseAddress);
             var dasm = arch.CreateRewriter(rdr, arch.CreateProcessorState(), new StorageBinder(),
                 new RewriterPerformanceDialog.RewriterHost(new Dictionary<Address, ImportReference>()));

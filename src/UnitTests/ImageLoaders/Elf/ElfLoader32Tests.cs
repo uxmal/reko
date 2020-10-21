@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.ImageLoaders.Elf;
 using System;
@@ -117,10 +118,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             {
                 writer.WriteBeUInt32(ptr);
             }
-            var mem = new MemoryArea(Address.Ptr32(0x10000000), writer.ToArray());
+            var mem = new ByteMemoryArea(Address.Ptr32(0x10000000), writer.ToArray());
             program.SegmentMap.AddSegment(mem,  ".got", AccessMode.ReadWriteExecute);
             arch.Setup(a => a.CreateImageReader(
-                It.IsNotNull<MemoryArea>(),
+                It.IsNotNull<ByteMemoryArea>(),
                 mem.BaseAddress))
                 .Returns(new BeImageReader(mem, 0));
         }

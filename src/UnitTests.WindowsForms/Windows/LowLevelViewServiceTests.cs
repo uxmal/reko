@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.UserInterfaces.WindowsForms;
@@ -78,7 +79,7 @@ namespace Reko.UnitTests.Gui.Windows
         private void Given_Program()
         {
             var addrBase = Address.Ptr32(0x10000);
-            var mem = new MemoryArea(addrBase, new byte[100]);
+            var mem = new ByteMemoryArea(addrBase, new byte[100]);
             var map = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
@@ -89,8 +90,9 @@ namespace Reko.UnitTests.Gui.Windows
             arch.Setup(a => a.Name).Returns("FakeArch");
             arch.Setup(a => a.CreateDisassembler(It.IsNotNull<EndianImageReader>())).Returns(dasm.Object);
             arch.Setup(a => a.InstructionBitSize).Returns(8);
+            arch.Setup(a => a.MemoryGranularity).Returns(8);
             arch.Setup(a => a.CreateImageReader(
-                It.IsNotNull<MemoryArea>(),
+                It.IsNotNull<ByteMemoryArea>(),
                 It.IsNotNull<Address>())).Returns(mem.CreateLeReader(addrBase));
             dasm.Setup(d => d.GetEnumerator()).Returns(e.Object);
             this.program = new Program(map, arch.Object, null);
@@ -128,7 +130,7 @@ namespace Reko.UnitTests.Gui.Windows
 
             var service = new Mock<LowLevelViewServiceImpl>(sc);
             service.Setup(x => x.CreateMemoryViewInteractor()).Returns(interactor.Object);
-            var image = new MemoryArea(Address.Ptr32(0x1000), new byte[300]);
+            var image = new ByteMemoryArea(Address.Ptr32(0x1000), new byte[300]);
 
             interactor.Object.SetSite(sc);
             interactor.Object.CreateControl();

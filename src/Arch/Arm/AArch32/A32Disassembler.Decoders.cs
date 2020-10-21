@@ -50,7 +50,7 @@ namespace Reko.Arch.Arm.AArch32
 
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
-                return dasm.NotYetImplemented(wInstr, message);
+                return dasm.NotYetImplemented(message);
             }
 
             public override string ToString()
@@ -141,7 +141,7 @@ namespace Reko.Arch.Arm.AArch32
             public void TraceMask(uint wInstr, string tag)
             {
                 var shMask = 0xFu << shift;
-                DumpMaskedInstruction(wInstr, shMask, tag);
+                DumpMaskedInstruction(32, wInstr, shMask, tag);
             }
         }
 
@@ -191,7 +191,7 @@ namespace Reko.Arch.Arm.AArch32
             private void TraceMask(uint wInstr)
             {
                 var uMask = mask << pos;
-                DumpMaskedInstruction(wInstr, uMask, tag);
+                DumpMaskedInstruction(32, wInstr, uMask, tag);
             }
         }
     }

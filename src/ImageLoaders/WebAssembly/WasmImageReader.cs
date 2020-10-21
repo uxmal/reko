@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2020 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace Reko.ImageLoaders.WebAssembly
         {
         }
 
-        public WasmImageReader(MemoryArea mem) : base(mem, 0)
+        public WasmImageReader(ByteMemoryArea mem) : base(mem, 0)
         {
         }
 

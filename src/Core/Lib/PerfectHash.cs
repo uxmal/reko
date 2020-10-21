@@ -1,3 +1,4 @@
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -235,7 +236,7 @@ namespace Reko.Core.Lib
                             byte[] key2;
 
                             key2 = m_collector.getKey(Math.Abs(parentE) - 1);
-                            if (MemoryArea.CompareArrays(key1, 0, key2, EntryLen))
+                            if (ByteMemoryArea.CompareArrays(key1, 0, key2, EntryLen))
                             {
                                 Debug.Print("Duplicate keys with edges {0} and {1} (",
                                        e, parentE);

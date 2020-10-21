@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -168,7 +169,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             };
         }
 
-        protected override Address GetMainFunctionAddress(IProcessorArchitecture arch, MemoryArea mem, int offset, StartPattern sPattern)
+        protected override Address GetMainFunctionAddress(IProcessorArchitecture arch, ByteMemoryArea mem, int offset, StartPattern sPattern)
         {
             var uAddr = mem.ReadLeUInt32((uint)(offset + sPattern.MainAddressOffset));
             return Address.Ptr64(uAddr);

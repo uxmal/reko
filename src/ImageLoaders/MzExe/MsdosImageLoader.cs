@@ -22,6 +22,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -41,7 +42,7 @@ namespace Reko.ImageLoaders.MzExe
 
         private readonly IProcessorArchitecture arch;
         private readonly IPlatform platform;
-		private MemoryArea imgLoaded;
+		private ByteMemoryArea imgLoaded;
         private SegmentMap segmentMap;
         private Address addrStackTop;
         private ushort segPsp;
@@ -79,7 +80,7 @@ namespace Reko.ImageLoaders.MzExe
             byte[] bytes = new byte[cbImageSize];
             int cbCopy = Math.Min(cbImageSize, RawImage.Length - iImageStart);
             Array.Copy(RawImage, iImageStart, bytes, 0, cbCopy);
-            imgLoaded = new MemoryArea(addrLoad, bytes);
+            imgLoaded = new ByteMemoryArea(addrLoad, bytes);
             var addrPsp = Address.SegPtr(segPsp, 0);
             var psp = MakeProgramSegmentPrefix(addrPsp, segMemTop);
             this.segmentMap = new SegmentMap(
@@ -99,7 +100,7 @@ namespace Reko.ImageLoaders.MzExe
         /// </returns>
         private ImageSegment MakeProgramSegmentPrefix(Address addrPsp, ushort segMemTop)
         {
-            var mem = new MemoryArea(addrPsp, new byte[0x100]);
+            var mem = new ByteMemoryArea(addrPsp, new byte[0x100]);
             var w = new LeImageWriter(mem, 0);
             w.WriteByte(0xCD);
             w.WriteByte(0x20);

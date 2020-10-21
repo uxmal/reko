@@ -22,6 +22,7 @@ using Reko.Arch.Mos6502;
 using Reko.Core;
 using Reko.Core.Archives;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -66,7 +67,7 @@ namespace Reko.Environments.C64
    19     19     376       $17800      39*    17     734       $2DE00
    20     19     395       $18B00      40*    17     751       $2EF00
 */
-        private static int [] sectorCount = new int[] {
+        private static readonly int[] sectorCount = new int[] {
             -1,
             21, 21, 21, 21, 21,  21, 21, 21, 21, 21, 
             21, 21, 21, 21, 21,  21, 21, 19, 19, 19,
@@ -74,7 +75,7 @@ namespace Reko.Environments.C64
             17, 17, 17, 17, 17,  17, 17, 17, 17, 17, 
         };
 
-        private static int [] sectorsIn = new int[] {
+        private static readonly int [] sectorsIn = new int[] {
             -1,
             0  ,21 ,42 ,63 ,84 , 105,126,147,168,189,
             210,231,252,273,294, 315,336,357,376,395,
@@ -82,7 +83,7 @@ namespace Reko.Environments.C64
             598,615,632,649,666, 683,700,717,734,751,
         };
 
-        private static int [] trackOffset = new int[] {
+        private static readonly int[] trackOffset = new int[] {
             -1,
             0x00000,0x01500,0x02A00,0x03F00,0x05400,  0x06900,0x07E00,0x09300,0x0A800,0x0BD00,
             0x0D200,0x0E700,0x0FC00,0x11100,0x12600,  0x13B00,0x15000,0x16500,0x17800,0x18B00,
@@ -108,8 +109,7 @@ namespace Reko.Environments.C64
             var abSvc = Services.GetService<IArchiveBrowserService>();
             if (abSvc != null)
             {
-                var selectedFile = abSvc.UserSelectFileFromArchive(entries) as D64FileEntry;
-                if (selectedFile != null)
+                if (abSvc.UserSelectFileFromArchive(entries) is D64FileEntry selectedFile)
                 {
                     return new C64ImageHeader(selectedFile);
                 }
@@ -143,7 +143,7 @@ namespace Reko.Environments.C64
                 }
             }
             var arch = new Mos6502Architecture(Services, "mos6502");
-            var mem = new MemoryArea(Address.Ptr16(0), RawImage);
+            var mem = new ByteMemoryArea(Address.Ptr16(0), RawImage);
             var segmentMap = new SegmentMap(mem.BaseAddress);
             segmentMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
             return new Program
@@ -181,7 +181,7 @@ namespace Reko.Environments.C64
 
         public static Program LoadSeq(IServiceProvider services, Address addrPreferred, byte[] imageBytes)
         {
-            var mem = new MemoryArea(addrPreferred, imageBytes);
+            var mem = new ByteMemoryArea(addrPreferred, imageBytes);
             var arch = new Mos6502Architecture(services, "mos6502");
             return new Program(
                 new SegmentMap(
@@ -203,7 +203,7 @@ namespace Reko.Environments.C64
         public List<ArchiveDirectoryEntry> LoadDiskDirectory()
         {
             var entries = new List<ArchiveDirectoryEntry>();
-            var rdr = new LeImageReader(RawImage, (uint)SectorOffset(18, 0));
+            var rdr = new ByteImageReader(RawImage, (uint)SectorOffset(18, 0));
             byte track = rdr.ReadByte();
             if (track == 0)
                 return entries;
@@ -214,7 +214,7 @@ namespace Reko.Environments.C64
             return entries;
         }
 
-        public bool ReadDirectorySector(LeImageReader rdr, List<ArchiveDirectoryEntry> entries)
+        public bool ReadDirectorySector(ImageReader rdr, List<ArchiveDirectoryEntry> entries)
         {
             byte nextDirTrack = 0;
             byte nextDirSector = 0;
@@ -279,7 +279,7 @@ namespace Reko.Environments.C64
             {
                 byte[] data;
                 var stm = new MemoryStream();
-                var rdr = new LeImageReader(image, (uint) offset);
+                var rdr = new ByteImageReader(image, (uint) offset);
                 byte trackNext = rdr.ReadByte();
                 while (trackNext != 0)
                 {

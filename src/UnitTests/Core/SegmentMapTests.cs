@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -53,7 +54,7 @@ namespace Reko.UnitTests.Core
         [Test]
         public void Sm_Creation()
         {
-            var mem = new MemoryArea(addrBase, img);
+            var mem = new ByteMemoryArea(addrBase, img);
             SegmentMap sm = new SegmentMap(addrBase,
                 new ImageSegment("", mem, AccessMode.ReadWriteExecute));
 
@@ -73,7 +74,7 @@ namespace Reko.UnitTests.Core
         public void Sm_AddSegment()
         {
             var map = new SegmentMap(addrBase);
-            var mem = new MemoryArea(addrBase, new byte[0x4000]);
+            var mem = new ByteMemoryArea(addrBase, new byte[0x4000]);
             var seg = new ImageSegment("8100", Address.SegPtr(0x8100, 0), mem, AccessMode.ReadWriteExecute);
             map.AddSegment(seg);
             Assert.AreEqual(0x3000, seg.Size);
@@ -83,7 +84,7 @@ namespace Reko.UnitTests.Core
         public void Sm_Overlaps()
         {
             SegmentMap im = new SegmentMap(Address.SegPtr(0x8000, 0));
-            var mem = new MemoryArea(im.BaseAddress, new byte[40]);
+            var mem = new ByteMemoryArea(im.BaseAddress, new byte[40]);
             var seg = new ImageSegment("8000", Address.SegPtr(0x8000, 10), mem, AccessMode.ReadWrite);
             im.AddSegment(seg);
         }
@@ -91,7 +92,7 @@ namespace Reko.UnitTests.Core
         [Test]
         public void Sm_AddNamedSegment()
         {
-            var mem = new MemoryArea(Address.SegPtr(0x0B00, 0), new byte[0x2000]);
+            var mem = new ByteMemoryArea(Address.SegPtr(0x0B00, 0), new byte[0x2000]);
             SegmentMap segmentMap = new SegmentMap(mem.BaseAddress,
                 new ImageSegment("base", mem, AccessMode.ReadWriteExecute));
             segmentMap.AddOverlappingSegment("0C00", mem, Address.SegPtr(0xC00, 0), AccessMode.ReadWrite);
@@ -102,7 +103,7 @@ namespace Reko.UnitTests.Core
         [Test]
         public void Sm_MapLinearAddress()
         {
-            var mem = new MemoryArea(Address.Ptr32(0x20), new byte[0x2000]);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x20), new byte[0x2000]);
             var segmentMap = new SegmentMap(mem.BaseAddress,
                 new ImageSegment("base", mem, AccessMode.ReadWriteExecute));
 
@@ -114,7 +115,7 @@ namespace Reko.UnitTests.Core
         [Test]
         public void Sm_MapZeroLinearAddress()
         {
-            var mem = new MemoryArea(Address.Ptr32(0x20), new byte[0x2000]);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x20), new byte[0x2000]);
             var segmentMap = new SegmentMap(mem.BaseAddress,
                 new ImageSegment("base", mem, AccessMode.ReadWriteExecute));
 

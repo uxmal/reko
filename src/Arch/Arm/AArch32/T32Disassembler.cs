@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -298,7 +299,7 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        public override AArch32Instruction NotYetImplemented(uint wInstr, string message)
+        public override AArch32Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("ThumbDis", this.addr, this.rdr, message);
@@ -1889,7 +1890,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             return (u, d) =>
             {
-                d.NotYetImplemented(u, $"Unimplemented '{message}' when decoding {u:X4}");
+                d.NotYetImplemented($"Unimplemented '{message}' when decoding {u:X4}");
                 return false;
             };
         }

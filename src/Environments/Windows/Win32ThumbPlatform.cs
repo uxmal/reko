@@ -18,8 +18,10 @@
  */
 #endregion
 
+using Reko.Arch.Arm.AArch32;
 using Reko.Core;
 using Reko.Core.CLanguage;
+using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using System;
@@ -140,7 +142,7 @@ namespace Reko.Environments.Windows
 
         public override CallingConvention GetCallingConvention(string ccName)
         {
-            throw new NotImplementedException();
+            return new Arm32CallingConvention();
         }
 
         public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
@@ -173,6 +175,37 @@ namespace Reko.Environments.Windows
             case CBasicType.Int64: return 8;
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }
+        }
+
+        public override ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+        {
+            //00011644 E59FC000 ldr ip,[0001164C]                                                           ;[pc]
+            //00011648 E59CF000 ldr pc,[ip]
+            //0001164C AC 50 01 00.P..
+            //var instr = rdr.FirstOrDefault();
+            //if (instr == null)
+            //    return null;
+            //if (!(instr is RtlGoto jump))
+            //    return null;
+            //if (jump.Target is ProcedureConstant pc)
+            //    return pc.Procedure;
+            //if (!(jump.Target is MemoryAccess access))
+            //    return null;
+            //var addrTarget = access.EffectiveAddress as Address;
+            //if (addrTarget == null)
+            //{
+            //    if (!(access.EffectiveAddress is Constant wAddr))
+            //    {
+            //        return null;
+            //    }
+            //    addrTarget = MakeAddressFromConstant(wAddr, true);
+            //}
+            //ProcedureBase proc = host.GetImportedProcedure(this.Architecture, addrTarget, addrInstr);
+            //if (proc != null)
+            //    return proc;
+            //return host.GetInterceptedCall(this.Architecture, addrTarget);
+            var cl = instrs.Take(3).ToArray();
+            return null;
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

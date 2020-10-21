@@ -21,6 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.Gui;
 using Reko.UnitTests.Mocks;
@@ -116,7 +117,7 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void Given_ImageSegment(uint addr, params byte[] bytes)
         {
-            var mem = new MemoryArea(Address.Ptr32(addr), bytes);
+            var mem = new ByteMemoryArea(Address.Ptr32(addr), bytes);
             var seg = new ImageSegment(".text", mem, AccessMode.ReadWrite);
             program.SegmentMap.AddSegment(seg);
             program.ImageMap = program.SegmentMap.CreateImageMap();

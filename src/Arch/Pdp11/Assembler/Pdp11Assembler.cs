@@ -21,6 +21,7 @@
 using Reko.Arch.Pdp11;
 using Reko.Core;
 using Reko.Core.Assemblers;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -49,11 +50,11 @@ namespace Reko.Assemblers.Pdp11
 
         public Program GetImage()
         {
-            var mem = new MemoryArea(BaseAddress, emitter.GetBytes());
+            var bmem = new ByteMemoryArea(BaseAddress, emitter.GetBytes());
             return new Program(
                 new SegmentMap(
-                    mem.BaseAddress,
-                    new ImageSegment(".text", mem, AccessMode.ReadWriteExecute)),
+                    bmem.BaseAddress,
+                    new ImageSegment(".text", bmem, AccessMode.ReadWriteExecute)),
                 arch,
                 new DefaultPlatform(null, arch));
         }

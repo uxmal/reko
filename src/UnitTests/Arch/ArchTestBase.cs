@@ -31,6 +31,7 @@ using System.Text;
 using System.Diagnostics;
 using Reko.Core.Serialization;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch
 {

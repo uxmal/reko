@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Pascal;
 using Reko.Core.Types;
 using System;
@@ -198,7 +199,7 @@ namespace Reko.ImageLoaders.Xbe
 
                 ImageSegment segment = new ImageSegment(
                     sectionName,
-                    new MemoryArea(section.Address, rdr.ReadAt<byte[]>(sectionOffset, (rdr) =>
+                    new ByteMemoryArea(section.Address, rdr.ReadAt<byte[]>(sectionOffset, (rdr) =>
                     {
                         return rdr.CreateBinaryReader().ReadBytes((int) sectionHeader.RawSize);
                     })), accessFlgs);
@@ -221,7 +222,7 @@ namespace Reko.ImageLoaders.Xbe
             {
                 byte[] tlsData = new byte[tls.DataEndAddress - tls.DataStartAddress];
 
-                ImageSegment tlsSegment = new ImageSegment(".tls", new MemoryArea(
+                ImageSegment tlsSegment = new ImageSegment(".tls", new ByteMemoryArea(
                     Address.Ptr32(tls.DataStartAddress), tlsData
                 ), AccessMode.ReadWrite);
 

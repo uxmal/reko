@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -93,7 +94,7 @@ namespace Reko.Arch.Mips
             };
         }
 
-        public override MipsInstruction NotYetImplemented(uint wInstr, string message)
+        public override MipsInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("NanoMipsDis", this.addr, this.rdr, message);

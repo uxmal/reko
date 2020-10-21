@@ -24,6 +24,7 @@ using Reko.Arch.Arm.AArch32;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -47,7 +48,7 @@ namespace Reko.UnitTests.Arch.Arm
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
             AArch32ProcessorState state = new AArch32ProcessorState(arch);
-            return arch.CreateRewriter(new LeImageReader(mem, 0), state, binder, host);
+            return arch.CreateRewriter(mem.CreateLeReader(0), state, binder, host);
         }
 
         private class FakeRewriterHost : IRewriterHost
@@ -5459,7 +5460,7 @@ namespace Reko.UnitTests.Arch.Arm
 					(byte) (s >> 8)
 				})
                 .ToArray();
-            var image = new MemoryArea(Address.Ptr32(0x00401000), code);
+            var image = new ByteMemoryArea(Address.Ptr32(0x00401000), code);
             var rw = arch.CreateRewriter(image.CreateLeReader(0), new AArch32ProcessorState(arch), arch.CreateFrame(), new FakeRewriterHost());
             {
                 foreach (var rtc in rw)

@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
@@ -56,7 +57,7 @@ namespace Reko.UnitTests.Gui.Forms
             program = new Program();
             program.Architecture = new X86ArchitectureReal(sc, "x86-real-16");
             program.Platform = platform.Object;
-            var mem = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[10000]);
+            var mem = new ByteMemoryArea(Address.SegPtr(0xC00, 0), new byte[10000]);
             program.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute));
@@ -149,7 +150,7 @@ namespace Reko.UnitTests.Gui.Forms
             var decSvc = AddService<IDecompilerService>();
             var decompiler = new Mock<IDecompiler>();
             var program = new Program();
-            var mem = new MemoryArea(Address.Ptr32(0x3000), new byte[10]);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x3000), new byte[10]);
             program.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment(".text", mem, AccessMode.ReadWriteExecute));

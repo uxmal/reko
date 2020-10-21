@@ -28,6 +28,7 @@ using System.Threading.Tasks;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -138,7 +139,7 @@ namespace Reko.Arch.PaRisc
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("PaRiscRw", instr, rdr, "");
+            testGenSvc?.ReportMissingRewriter("PaRiscRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private void MaybeAnnulNextInstruction(InstrClass iclass, Expression e)

@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using System.Linq;
 
 namespace Reko.UnitTests.Arch.X86.Assembler
@@ -28,12 +29,12 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 	public class AssemblerData : AssemblerBase
 	{
         private Program lr;
-        private MemoryArea mem;
+        private ByteMemoryArea bmem;
 
         private void AssembleFragment(string asmSrc)
         {
             lr = asm.AssembleFragment(Address.SegPtr(0x0C00, 0), asmSrc);
-            mem = lr.SegmentMap.Segments.Values.First().MemoryArea;
+            bmem = (ByteMemoryArea) lr.SegmentMap.Segments.Values.First().MemoryArea;
         }
 
 		[Test]
@@ -54,7 +55,7 @@ data	db	'Hello',0
 					0xbe,0x08,0x00,0x32,0xc0,0xf3,0xae,0xc3,
 					0x48,0x65,0x6c,0x6c,0x6f,0x0
                 },
-                mem.Bytes);
+                bmem.Bytes);
 		}
 
 		[Test]
@@ -95,7 +96,7 @@ foo		endp
 				0xc3,
 				0xb8,0x03,0x00,
 				0xc3, },
-                mem.Bytes);
+                bmem.Bytes);
 		}
 
 		[Test]
@@ -117,7 +118,7 @@ foo		endp
 				0x83, 0x47, 0x02, 0x03,
 				0x80, 0x47, 0x04, 0x03
 			},
-            mem.Bytes);
+            bmem.Bytes);
 		}
 
 		[Test]
@@ -135,7 +136,7 @@ foo		endp
 				0xC6, 0x47, 0x4, 0x3,
 				0xC6, 0x47, 0x8, 0x3, 
 			},
-            mem.Bytes);
+            bmem.Bytes);
 		}
 
         [Test]

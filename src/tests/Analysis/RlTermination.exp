@@ -8,20 +8,20 @@ define fn0C00_0000
 fn0C00_0000_entry:
 	def ds
 l0C00_0000:
-	call fn0C00_0015 (retsize: 2;)
+	call maybeterminate (retsize: 2;)
 		uses: ax:0x20<16>,bx:0x3212<16>,ds:ds
 		defs: ax:ax_8
 	Mem14[ds:0x230<16>:word16] = ax_8
 	Mem15[ds:0x234<16>:word16] = 0x7B<16>
 	return
 fn0C00_0000_exit:
-// fn0C00_0015 /////////////////////
+// maybeterminate /////////////////////
 	LiveOut:   ax:[0..15]
 	BitsUsed:  ax:[0..15] bx:[0..15] ds:[0..15]
 	Trashed:   SCZO ax bx Top
 	Preserved: sp
-// fn0C00_0015
-define fn0C00_0015
+// maybeterminate
+define maybeterminate
 fn0C00_0015_entry:
 	def ax
 	def ds

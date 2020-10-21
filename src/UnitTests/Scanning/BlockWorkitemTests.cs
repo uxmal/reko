@@ -36,6 +36,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -76,7 +77,7 @@ namespace Reko.UnitTests.Scanning
                 Address.Ptr32(0x00100000),
                 new ImageSegment(
                     ".text",
-                    new MemoryArea(Address.Ptr32(0x00100000), new byte[0x20000]),
+                    new ByteMemoryArea(Address.Ptr32(0x00100000), new byte[0x20000]),
                     AccessMode.ReadExecute));
             program.Platform = new DefaultPlatform(sc, arch.Object);
             arch.Setup(a => a.StackRegister).Returns((RegisterStorage)sp.Storage);
@@ -119,7 +120,7 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_Segment(string segName, uint addr, int size, AccessMode mode)
         {
-            program.SegmentMap.AddSegment(new ImageSegment(segName, new MemoryArea(Address.Ptr32(addr), new byte[size]), mode));
+            program.SegmentMap.AddSegment(new ImageSegment(segName, new ByteMemoryArea(Address.Ptr32(addr), new byte[size]), mode));
         }
 
         private bool StashArg(ref ProcessorState state, ProcessorState value)
@@ -151,9 +152,9 @@ namespace Reko.UnitTests.Scanning
         private void Given_NoInlinedCall()
         {
             arch.Setup(a => a.CreateImageReader(
-                It.IsAny<MemoryArea>(),
+                It.IsAny<ByteMemoryArea>(),
                 It.IsAny<Address>()))
-                .Returns(new LeImageReader(new byte[0]));
+                .Returns(new LeImageReader(new ByteMemoryArea(Address.Ptr32(0),new byte[0]), 0));
             arch.Setup(a => a.InlineCall(
                 It.IsAny<Address>(),
                 It.IsAny<Address>(),
@@ -895,7 +896,7 @@ testProc_exit:
                 .Returns((Constant c, bool b) => Address.Ptr32(c.ToUInt32()));
             Constant co;
             arch.Setup(s => s.TryRead(
-                It.IsAny<MemoryArea>(),
+                It.IsAny<ByteMemoryArea>(),
                 It.IsAny<Address>(),
                 It.IsAny<PrimitiveType>(),
                 out co)).Returns(false);
@@ -977,7 +978,7 @@ testProc_exit:
                 It.IsAny<bool>())).Returns(Address.Ptr32(0x00100004));
             var addr = Constant.Word32(0x00123400);
             arch.Setup(a => a.TryRead(
-                It.IsNotNull<MemoryArea>(),
+                It.IsNotNull<ByteMemoryArea>(),
                 Address.Ptr32(0x00100004),
                 PrimitiveType.Word32,
                 out addr)).Returns(true);

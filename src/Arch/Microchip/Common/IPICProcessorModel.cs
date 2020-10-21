@@ -22,6 +22,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Libraries.Microchip;
 using System.Collections.Generic;
 

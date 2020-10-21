@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Environments.Windows;
@@ -60,7 +61,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             services.AddService<IDialogFactory>(dlgFactory.Object);
 
             interactor = new DeclarationFormInteractor(services);
-            var mem = new MemoryArea(Address.Ptr32(0x10), new byte[40]);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x10), new byte[40]);
             var seg = new ImageSegment(".text", mem, AccessMode.ReadWrite);
             var segmentMap = new SegmentMap(Address.Ptr32(0x05), seg);
             var arch = new X86ArchitectureFlat32(services, "x86-protected-32");

@@ -29,6 +29,7 @@ using Reko.Core.Types;
 using System.Diagnostics;
 using Reko.Core.Lib;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.SuperH
 {
@@ -97,7 +98,7 @@ namespace Reko.Arch.SuperH
             }
         }
 
-        public override SuperHInstruction NotYetImplemented(uint wInstr, string message)
+        public override SuperHInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("SuperH", this.addr, this.rdr, message);

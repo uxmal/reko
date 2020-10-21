@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.Xtensa;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
@@ -41,8 +42,8 @@ namespace Reko.UnitTests.Arch.Xtensa
 
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            var state = (XtensaProcessorState)arch.CreateProcessorState();
-            return new XtensaRewriter(arch, new LeImageReader(mem, 0), state, new Frame(arch.WordWidth), host);
+            var state = arch.CreateProcessorState();
+            return arch.CreateRewriter(arch.CreateImageReader(mem, 0), state, new Frame(arch.WordWidth), host);
         }
 
         [SetUp]

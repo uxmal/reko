@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Output;
 using Reko.Core.Services;
 using System;
@@ -80,14 +81,16 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             if (!program.SegmentMap.TryFindSegment(addrEntry, out var seg))
                 return null;
+            if (!(seg.MemoryArea is ByteMemoryArea mem))
+                return null;    //$REVIEW: is ELF even compatible with non-byte granularity?
             foreach (var sPattern in GetStartPatterns())
             {
                 var dfa = Core.Dfa.Automaton.CreateFromPattern(sPattern.SearchPattern);
                 var start = addrEntry - seg.MemoryArea.BaseAddress;
-                var hits = dfa.GetMatches(seg.MemoryArea.Bytes, (int)start, (int)start + 300).ToList();
+                var hits = dfa.GetMatches(mem.Bytes, (int)start, (int)start + 300).ToList();
                 if (hits.Count > 0)
                 {
-                    return GetMainFunctionAddress(program.Architecture, seg.MemoryArea, hits[0], sPattern);
+                    return GetMainFunctionAddress(program.Architecture, mem, hits[0], sPattern);
                 }
             }
             return null;
@@ -109,7 +112,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             return sym;
         }
 
-        protected virtual Address GetMainFunctionAddress(IProcessorArchitecture arch, MemoryArea mem, int offset, StartPattern sPattern)
+        protected virtual Address GetMainFunctionAddress(IProcessorArchitecture arch, ByteMemoryArea mem, int offset, StartPattern sPattern)
         {
             return null;
         }
