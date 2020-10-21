@@ -319,6 +319,16 @@ namespace Reko.Arch.MilStd1750
                     return true;
                 }
                 break;
+            case 0xA:
+                switch (cmd)
+                {
+                case 0xAD51:
+                    // 'MQ': Seems to be legit, but can't find documentation for it.
+                    dasm.mnemonic = Mnemonic.xio_unknown;
+                    dasm.ops.Add(ImmediateOperand.UInt16(cmd));
+                    return true;
+                }
+                break;
             }
             var testGenSvc = dasm.arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("MS1750Dis", dasm.addr, dasm.rdr, $"xio {cmd:X4}");

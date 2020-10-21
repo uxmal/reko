@@ -214,6 +214,7 @@ namespace Reko.Arch.MilStd1750
                     break;
                 case Mnemonic.xwr: RewriteXwr(); break;
                 case Mnemonic.xio_co: RewriteXioCo(); break;
+                case Mnemonic.xio_unknown: RewriteXioUnknown();break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }

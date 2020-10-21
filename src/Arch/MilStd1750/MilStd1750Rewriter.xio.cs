@@ -31,5 +31,10 @@ namespace Reko.Arch.MilStd1750
         {
             m.SideEffect(host.PseudoProcedure("__console_output", VoidType.Instance, Op(0)));
         }
+
+        private void RewriteXioUnknown()
+        {
+            m.SideEffect(host.PseudoProcedure("__xio_unknown", VoidType.Instance, Op(0)));
+        }
     }
 }

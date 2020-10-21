@@ -1,23 +1,58 @@
+#region License
+/* 
+ * Copyright (C) 1999-2020 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
 namespace Reko.Arch.MilStd1750
 {
     public enum Mnemonic
     {
         invalid,
         nyi,
-        nop,
 
         a,
         ab,
         abs,
+        abx,
+        aim,
         aisp,
         and,
         andb,
+        andm,
         andr,
+        andx,
         ar,
+        bex,
+        bez,
+        bge,
+        bgt,
+        bif,
+        ble,
+        blt,
+        bnz,
+        bpt,
+        br,
         brx,
         c,
         cb,
         cbl,
+        cbx,
+        cim,
         cisn,
         cisp,
         cr,
@@ -26,15 +61,18 @@ namespace Reko.Arch.MilStd1750
         dabs,
         dar,
         db,
+        dbx,
         dc,
         dcr,
         dd,
         ddr,
         decm,
+        dim,
         disn,
         disp,
         dl,
         dlb,
+        dlbx,
         dli,
         dlr,
         dm,
@@ -53,7 +91,9 @@ namespace Reko.Arch.MilStd1750
         dst,
         dstb,
         dsti,
+        dstx,
         dv,
+        dvim,
         dvr,
         efa,
         efar,
@@ -61,6 +101,7 @@ namespace Reko.Arch.MilStd1750
         efcr,
         efd,
         efdr,
+        efix,
         efl,
         eflt,
         efm,
@@ -68,31 +109,38 @@ namespace Reko.Arch.MilStd1750
         efs,
         efsr,
         efst,
-        efix,
         fa,
         fab,
         fabs,
+        fabx,
         far,
         fc,
         fcb,
+        fcbx,
         fcr,
         fd,
         fdb,
+        fdbx,
         fdr,
-        flt,
         fix,
+        flt,
         fm,
         fmb,
+        fmbx,
         fmr,
         fneg,
         fs,
         fsb,
+        fsbx,
         fsr,
         imml,
         incm,
         jc,
+        jci,
+        js,
         l,
         lb,
+        lbx,
         li,
         lim,
         lisn,
@@ -107,17 +155,24 @@ namespace Reko.Arch.MilStd1750
         lubi,
         m,
         mb,
+        mbx,
+        mim,
         misn,
         misp,
         mov,
         mr,
         ms,
+        msim,
         msr,
         n,
         neg,
+        nim,
+        nop,
         nr,
         or,
         orb,
+        orbx,
+        orim,
         orr,
         popm,
         pshm,
@@ -129,9 +184,11 @@ namespace Reko.Arch.MilStd1750
         sar,
         sb,
         sbb,
+        sbbx,
         sbi,
         sbr,
         scr,
+        sim,
         sisp,
         sjs,
         slbi,
@@ -139,15 +196,17 @@ namespace Reko.Arch.MilStd1750
         sll,
         slr,
         sltb,
+        soj,
         sr,
         sra,
         srl,
         srm,
         st,
-        stlb,
+        stbx,
         stc,
         stci,
         sti,
+        stlb,
         stm,
         stub,
         subi,
@@ -160,73 +219,15 @@ namespace Reko.Arch.MilStd1750
         urs,
         vio,
         xbr,
-        xio,
         xor,
+        xorm,
         xorr,
         xwr,
-        bif,
-        jci,
-        js,
-        soj,
 
-        br,
-        bez,
-        blt,
-        bex,
-
-        ble,
-        bgt,
-        bnz,
-        bge,
-        xio_po,
-        bpt,
-
-        aim,
-        sim,
-        mim,
-
-        msim,
-        dim,
-        dvim,
-        andm,
-
-        orim,
-        xorm,
-        cim,
-        nim,
-        xio_co,
+        xio,
         xio_clc,
-
-        lbx,
-        dlbx,
-        stbx,
-        dstx,
-
-        abx,
-        sbbx,
-        mbx,
-        dbx,
-
-        fabx,
-        fsbx,
-        fmbx,
-        fdbx,
-
-        cbx,
-        fcbx,
-        andx,
-        orbx,
-
-
-
-
-
-
-
-
-
-
-
-
+        xio_co,
+        xio_po,
+        xio_unknown,
     }
 }
