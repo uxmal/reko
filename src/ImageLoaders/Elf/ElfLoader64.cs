@@ -272,6 +272,7 @@ namespace Reko.ImageLoaders.Elf
             var segMap = AllocateMemoryAreas(
                 Segments
                     .Where(p => IsLoadable(p.p_pmemsz, p.p_type))
+                    .OrderBy(p => p.p_vaddr)
                     .Select(p => Tuple.Create(
                         platform.MakeAddressFromLinear(p.p_vaddr, false),
                         (uint) p.p_pmemsz)));
