@@ -422,7 +422,7 @@ namespace Reko.Core.Expressions
 
         #region IEqualityComparer Members
 
-        public bool Equals(Expression x, Expression y)
+        public bool Equals(Expression? x, Expression? y)
         {
             if (x == null && y == null)
                 return true;

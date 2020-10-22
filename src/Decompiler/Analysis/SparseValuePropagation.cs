@@ -119,6 +119,8 @@ namespace Reko.Analysis
                 this.values = new Dictionary<Identifier, Expression>();
             }
 
+            public EndianServices Endianness => arch.Endianness;
+
             public Expression GetDefiningExpression(Identifier id)
             {
                 return values[id];

@@ -77,7 +77,7 @@ namespace Reko.Core.Expressions
         /// <param name="left">Augend</param>
         /// <param name="right">Addend</param>
         /// <returns>A binary expression for the sum.</returns>
-        public BinaryExpression IAddS(Expression left, int right)
+        public BinaryExpression IAddS(Expression left, long right)
         {
             return IAdd(left, Constant.Int(left.DataType, right));
         }
@@ -92,7 +92,7 @@ namespace Reko.Core.Expressions
         /// Return addition if <paramref name="c"/> is positive
         /// Return subtraction if <paramref name="c"/> is negative
         /// </returns>
-        public Expression AddSubSignedInt(Expression e, int c)
+        public Expression AddSubSignedInt(Expression e, long c)
         {
             if (c == 0)
             {
@@ -966,6 +966,19 @@ namespace Reko.Core.Expressions
         /// <param name="basePtr">Base pointer or segment selector.</param>
         /// <param name="offset">Offset from base pointer.</param>
         /// <returns>A segmented memory access expression.</returns>
+        public virtual SegmentedAccess SegMem(MemoryIdentifier mid, DataType dt, Expression basePtr, Expression offset)
+        {
+            return new SegmentedAccess(mid, basePtr, offset, dt);
+        }
+
+        /// <summary>
+        /// Generate a segmented access to memory, using <paramref name="basePtr"/>
+        /// as the base pointer and the <paramref name="offset"/> as the offset.
+        /// </summary>
+        /// <param name="dt">Data type of the memory access.</param>
+        /// <param name="basePtr">Base pointer or segment selector.</param>
+        /// <param name="offset">Offset from base pointer.</param>
+        /// <returns>A segmented memory access expression.</returns>
         public virtual SegmentedAccess SegMem(DataType dt, Expression basePtr, Expression offset)
         {
             return new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, offset, dt);
@@ -1243,7 +1256,7 @@ namespace Reko.Core.Expressions
         /// <param name="left">Minuend.</param>
         /// <param name="right">Subtrahend</param>
         /// <returns>An integer subtraction expression.</returns>
-        public BinaryExpression ISubS(Expression left, int right)
+        public BinaryExpression ISubS(Expression left, long right)
         {
             return ISub(left, Constant.Int(left.DataType, right));
         }
