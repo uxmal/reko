@@ -348,10 +348,7 @@ word32 fn00001468()
 
 struct Eq_n * g_ptr1494 = null;
 struct Eq_n * g_ptr1498 = null;
-struct Eq_n * g_ptr149C = null;
+word32 g_dw149C = 0x00;
 struct Eq_n * g_ptr14A0 = null;
 struct Eq_n * g_ptr14A4 = null;
-Eq_n g_t14A8 = 
-	{
-		0
-	};
+ui32 g_dw14A8 = 0x00;

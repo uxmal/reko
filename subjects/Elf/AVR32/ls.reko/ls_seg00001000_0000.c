@@ -15696,11 +15696,11 @@ l0000E654:
 ui32 g_dwD390 = ~0x7DC5;
 Eq_n g_tD636 = 
 	{
-		&g_tC0781999
+		0xC0
 	};
 Eq_n g_tD63A = 
 	{
-		&g_t9999E201
+		0x99
 	};
 word32 g_dwD856 = 0xD7038000;
 word32 g_dwD858 = 0x80000000;
@@ -15708,11 +15708,11 @@ word32 g_dwDAC4 = 0x80000000;
 word32 g_dwDCA8 = 805159112;
 Eq_n g_tE1B6 = 
 	{
-		&g_tC6687FFF
+		0xC6
 	};
 Eq_n g_tE556 = 
 	{
-		&g_tC0987FFF
+		0xC0
 	};
 // 0000E684: void fn0000E684(Register Eq_n r10, Register Eq_n r11, Register (ptr32 int32) r12, Register (ptr32 Eq_n) pc)
 // Called from:

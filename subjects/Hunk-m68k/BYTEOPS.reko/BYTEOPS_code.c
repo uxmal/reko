@@ -1881,21 +1881,12 @@ struct Eq_n * fn00002AFA(struct Eq_n * d0, struct Eq_n * d1, struct Eq_n * d2, s
 
 struct Eq_n * g_ptr2B88 = null;
 struct Eq_n * g_ptr2B8C = &g_t4000;
-struct Eq_n * g_ptr2B90 = null;
+word32 g_dw2B90 = 0x00;
 struct Eq_n * g_ptr2B94 = &g_t10202;
 struct Eq_n * g_ptr2B98 = &g_t3030303;
-Eq_n g_t2B9C = 
-	{
-		0x04040404
-	};
-Eq_n g_t2BA0 = 
-	{
-		0x04040404
-	};
-Eq_n g_t2BA4 = 
-	{
-		0x05050505
-	};
+ui32 g_dw2B9C = 0x04040404;
+ui32 g_dw2BA0 = 0x04040404;
+ui32 g_dw2BA4 = 0x05050505;
 word32 g_dw2BB0 = 0x05050505;
 ptr32 g_ptr2BB4 = 0x06060606;
 int32 g_dw2BB8 = 0x06060606;

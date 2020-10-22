@@ -4,55 +4,9 @@
 
 #include "fft.h"
 
-struct Eq_n g_tFFFF8000;
-struct Eq_n g_tFFFF800C;
-struct Eq_n g_tFFFF801B;
-real48 g_rFFFF8054;
-union Eq_n g_uFFFF805D;
-real48 g_rFFFF8061;
-word32 g_dwFFFF806A;
-struct Eq_n g_tFFFF806E;
 Eq_n g_a0001[15];
 Eq_n g_a0002[15];
 Eq_n g_t0007;
 Eq_n g_t000A;
-real48 g_r0579 = ;
-real48 g_r057C = ;
-real48 g_r057F = ;
-Eq_n g_t8000 = 
-	{
-		
-		{
-			;
-Eq_n g_t800C = 
-			{
-				
-				{
-					;
-Eq_n g_t801B = 
-					{
-						
-						{
-							;
-real48 g_r8054 = ;
-real48 g_r8057 = ;
-Eq_n g_t805D = 
-							{
-								0x00
-							};
-Eq_n g_t805F = 
-							{
-								0x00
-							};
-real48 g_r8061 = ;
-real48 g_r8064 = ;
-word32 g_dw806A = 0x00;
-word32 g_dw806C = 0x00;
-Eq_n g_t806E = 
-							{
-								
-								{
-									;
 ci16 g_w8A40;
 cui16 g_w9A41;
-

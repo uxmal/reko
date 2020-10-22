@@ -3304,21 +3304,12 @@ Eq_n fn00003C74(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10)
 
 struct Eq_n * g_ptr3D90 = null;
 struct Eq_n * g_ptr3D94 = &g_t4000;
-struct Eq_n * g_ptr3D98 = null;
+word32 g_dw3D98 = 0x00;
 struct Eq_n * g_ptr3D9C = &g_t10202;
 struct Eq_n * g_ptr3DA0 = &g_t3030303;
-Eq_n g_t3DA4 = 
-	{
-		0x04040404
-	};
-Eq_n g_t3DA8 = 
-	{
-		0x04040404
-	};
-Eq_n g_t3DAC = 
-	{
-		0x05050505
-	};
+ui32 g_dw3DA4 = 0x04040404;
+ui32 g_dw3DA8 = 0x04040404;
+ui32 g_dw3DAC = 0x05050505;
 word32 g_dw3DB8 = 0x05050505;
 ptr32 g_ptr3DBC = 0x06060606;
 int32 g_dw3DC0 = 0x06060606;

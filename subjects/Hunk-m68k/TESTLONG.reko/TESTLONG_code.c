@@ -268,10 +268,7 @@ word32 fn0000127C(struct Eq_n & a1Out, struct Eq_n & a5Out)
 struct Eq_n g_t12BC = 
 	{
 		1685025582,
-		
-		{
-			1818845810
-		},
+		1818845810,
 		&g_t61727900,
 		
 		{
@@ -3305,21 +3302,12 @@ word32 fn00003D2C(ptr32 & a5Out)
 
 struct Eq_n * g_ptr3D70 = null;
 struct Eq_n * g_ptr3D74 = &g_t4000;
-struct Eq_n * g_ptr3D78 = null;
+word32 g_dw3D78 = 0x00;
 struct Eq_n * g_ptr3D7C = &g_t10202;
 struct Eq_n * g_ptr3D80 = &g_t3030303;
-Eq_n g_t3D84 = 
-	{
-		0x04040404
-	};
-Eq_n g_t3D88 = 
-	{
-		0x04040404
-	};
-Eq_n g_t3D8C = 
-	{
-		0x05050505
-	};
+ui32 g_dw3D84 = 0x04040404;
+ui32 g_dw3D88 = 0x04040404;
+ui32 g_dw3D8C = 0x05050505;
 word32 g_dw3D98 = 0x05050505;
 ptr32 g_ptr3D9C = 0x06060606;
 int32 g_dw3DA0 = 0x06060606;

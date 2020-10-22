@@ -334,10 +334,7 @@ int32 fn000013AC(byte * dwArg04)
 
 struct Eq_n * g_ptr13C8 = null;
 struct Eq_n * g_ptr13CC = null;
-struct Eq_n * g_ptr13D0 = null;
+word32 g_dw13D0 = 0x00;
 struct Eq_n * g_ptr13D4 = null;
 struct Eq_n * g_ptr13D8 = null;
-Eq_n g_t13DC = 
-	{
-		0
-	};
+ui32 g_dw13DC = 0x00;
