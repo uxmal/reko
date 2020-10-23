@@ -28,8 +28,6 @@ namespace Reko.Core.Memory
 {
     public class Word16BeImageReader : Word16ImageReader, EndianImageReader
     {
-        private readonly long endOffset;
-
         public Word16BeImageReader(Word16MemoryArea mem, long offset)
             : base(mem, offset, mem.Words.Length)
         {

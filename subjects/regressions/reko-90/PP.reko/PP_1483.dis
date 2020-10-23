@@ -11,7 +11,7 @@ l1483_0ADB:
 fn1483_0ADB_exit:
 
 
-void fn1483_0ADC(word32 ds_di, word32 ss_bp, word16 ax, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector es, selector fs, byte FPUF, word16 wArg00, word16 wArg04, word16 wArg0A, selector psegArg01A2, byte bArg02BF, byte bArg0F9E)
+void fn1483_0ADC(segptr32 ds_di, segptr32 ss_bp, word16 ax, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector es, selector fs, byte FPUF, word16 wArg00, word16 wArg04, word16 wArg0A, selector psegArg01A2, byte bArg02BF, byte bArg0F9E)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ax:[0..15] bh:[0..7] bl:[0..7] cs:[0..15] cx:[0..15] dx:[0..15] es:[0..15] FPUF:[0..7] fs:[0..15] Sequence ds:di:[0..31] Sequence ss:bp:[0..31] si:[0..15] Stack +0000:[0..15] Stack +0004:[0..15] Stack +000A:[0..15] Stack +01A2:[0..15] Stack +02BF:[0..7] Stack +0F9E:[0..7]
@@ -22,13 +22,13 @@ fn1483_0ADC_entry:
 l1483_0ADC:
 	fn1483_0D3F(ds_di, ss_bp, ax, cx, dx, bl, bh, si, es, fs, FPUF, wArg00, wArg04, wArg0A, psegArg01A2, bArg02BF, bArg0F9E)
 	int8 Top_30 = <invalid>
-	word32 es_di_77 = <invalid>
+	segptr32 es_di_77 = <invalid>
 	ST40[Top_30:real64] = CONVERT(Mem0[es_di_77 + 0xE086<16>:real32], real32, real64) - ST[Top_30:real64]
 	return
 fn1483_0ADC_exit:
 
 
-word16 fn1483_0C11(word32 ds_si, word32 es_di, byte al, word16 cx, word16 bx, word16 bp)
+word16 fn1483_0C11(segptr32 ds_si, segptr32 es_di, byte al, word16 cx, word16 bx, word16 bp)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -66,7 +66,7 @@ l1483_0C6C:
 	word16 v23_86 = Mem35[ds_56:ax_67 + 0x20E<16> + di_66:word16] + di_66
 	Mem87[ds_56:ax_67 + 0x20E<16> + di_66:word16] = v23_86
 	word32 ecx_58 = <invalid>
-	word32 ss_bp_190 = <invalid>
+	segptr32 ss_bp_190 = <invalid>
 	word16 ax_82 = bx_54 - 0x903<16> - (SLICE(dh_ax_142, byte, 16) <u 0<8>)
 	word16 cx_89 = SLICE(ecx_58, word16, 0)
 	selector ss_61 = SLICE(ss_bp_190, selector, 16)
@@ -116,7 +116,7 @@ l1483_0C57:
 fn1483_0C55_exit:
 
 
-word16 fn1483_0C91(word32 ds_bx, word32 ss_bp, word16 ax, word16 cx, word16 si, word16 di, selector psegArg00, ptr16 & diOut, ptr16 & esOut)
+word16 fn1483_0C91(segptr32 ds_bx, segptr32 ss_bp, word16 ax, word16 cx, word16 si, word16 di, selector psegArg00, ptr16 & diOut, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -160,7 +160,7 @@ l1483_0C9D_thunk_fn1483_0CA0:
 fn1483_0C91_exit:
 
 
-word16 fn1483_0CA0(word32 es_di, word32 ss_bp, byte al, byte ah, word16 bx, word16 si, selector ds, ptr16 & diOut)
+word16 fn1483_0CA0(segptr32 es_di, segptr32 ss_bp, byte al, byte ah, word16 bx, word16 si, selector ds, ptr16 & diOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -210,7 +210,7 @@ l1483_0CA9_in_fn1483_0CA0:
 fn1483_0CA0_exit:
 
 
-word16 fn1483_0CED(word32 es_di, word32 ss_bp, word16 ax, word16 dx, word16 bx, word16 si, selector ds, selector fs, word16 wArg00, selector psegArg02, word16 wArg06, word16 wArg0A, word16 wArg10, ptr16 & esOut)
+word16 fn1483_0CED(segptr32 es_di, segptr32 ss_bp, word16 ax, word16 dx, word16 bx, word16 si, selector ds, selector fs, word16 wArg00, selector psegArg02, word16 wArg06, word16 wArg0A, word16 wArg10, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -247,7 +247,7 @@ l1483_0CF9_thunk_fn1483_0CFC:
 fn1483_0CED_exit:
 
 
-word16 fn1483_0CFA(word32 ds_di, word32 ss_bp, byte al, byte ah, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector fs, selector psegArg00, word16 wArg04, word16 wArg0E, ptr16 & esOut)
+word16 fn1483_0CFA(segptr32 ds_di, segptr32 ss_bp, byte al, byte ah, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector fs, selector psegArg00, word16 wArg04, word16 wArg0E, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -269,7 +269,7 @@ l1483_0CFA_thunk_fn1483_0CFC:
 fn1483_0CFA_exit:
 
 
-word16 fn1483_0CFC(word32 ds_di, word32 ss_bp, byte al, byte ah, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector fs, selector psegArg00, word16 wArg04, word16 wArg0E, ptr16 & esOut)
+word16 fn1483_0CFC(segptr32 ds_di, segptr32 ss_bp, byte al, byte ah, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector fs, selector psegArg00, word16 wArg04, word16 wArg0E, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -301,7 +301,7 @@ l1483_0D04_thunk_fn1483_0D06:
 fn1483_0CFC_exit:
 
 
-word16 fn1483_0D06(word32 ds_bx, word16 dx, selector fs, word16 wArg00, word16 wArg04, word16 wArg0E)
+word16 fn1483_0D06(segptr32 ds_bx, word16 dx, selector fs, word16 wArg00, word16 wArg04, word16 wArg0E)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -326,7 +326,7 @@ l1483_0D2B:
 fn1483_0D06_exit:
 
 
-void fn1483_0D3F(word32 ds_di, word32 ss_bp, word16 ax, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector es, selector fs, byte FPUF, word16 wArg02, word16 wArg06, word16 wArg0C, selector psegArg01A4, byte bArg02C1, byte bArg0FA0)
+void fn1483_0D3F(segptr32 ds_di, segptr32 ss_bp, word16 ax, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector es, selector fs, byte FPUF, word16 wArg02, word16 wArg06, word16 wArg0C, selector psegArg01A4, byte bArg02C1, byte bArg0FA0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -346,7 +346,7 @@ fn1483_0D3F_entry:
 	selector ds = SLICE(ds_di, selector, 16)
 	byte dh_45 = SLICE(dx, byte, 8)
 	byte dl_53 = SLICE(dx, byte, 0)
-	word32 es_di_51 = SEQ(es, di)
+	segptr32 es_di_51 = SEQ(es, di)
 l1483_0D3F:
 	branch P l1483_0D40_thunk_fn1483_0CFA
 l1483_0D40_thunk_fn1483_0CFA:
@@ -381,12 +381,12 @@ l1483_0D68_1:
 	__syscall(4<8>)
 l1483_0D69:
 	word16 cx_679
-	word32 ds_bx_682
+	segptr32 ds_bx_682
 	word16 cx_685
 	bool v73_504
 	selector ds_407
 	word16 di_399
-	word32 ds_bx_688
+	segptr32 ds_bx_688
 	Mem90[ds:si + 0x5C87<16>:byte] = ch_38
 	word16 sp_109
 	word16 ax_110
@@ -434,7 +434,7 @@ l1483_0D99:
 	bool v70_501 = v37_176 <=u 0<8>
 l1483_0D9B:
 	cx_679 = cx_111 - 1<16> (alias)
-	word32 ds_bx_695 = SEQ(ds, bx_169)
+	segptr32 ds_bx_695 = SEQ(ds, bx_169)
 	branch v37_176 < 0<8> l1483_0DF7
 l1483_0DF7:
 	word16 bx_199 = SLICE(ds_bx_695, word16, 0)
@@ -655,7 +655,7 @@ l1483_1BB7_thunk_fn1483_1BB9:
 fn1483_1B91_exit:
 
 
-word16 fn1483_1BB8(word32 ds_si, byte al, byte ah, word16 cx, word16 dx, word16 bx, word16 bp, word16 di, selector es, ptr16 & cxOut, ptr16 & dhOut, ptr16 & bxOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut)
+word16 fn1483_1BB8(segptr32 ds_si, byte al, byte ah, word16 cx, word16 dx, word16 bx, word16 bp, word16 di, selector es, ptr16 & cxOut, ptr16 & dhOut, ptr16 & bxOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -848,7 +848,7 @@ l1483_1C50:
 fn1483_1C50_exit:
 
 
-void fn1483_467E(word32 ds_bx, byte al, word16 si)
+void fn1483_467E(segptr32 ds_bx, byte al, word16 si)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

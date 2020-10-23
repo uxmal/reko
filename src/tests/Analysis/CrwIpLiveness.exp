@@ -44,7 +44,7 @@ l0C00_0000:
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-Register word16 fn0C00_0026(Sequence word32 ds_si)
+Register word16 fn0C00_0026(Sequence segptr32 ds_si)
 // MayUse:  Sequence ds:si:[0..31]
 // LiveOut: ax
 // Trashed: SCZO ax Top
@@ -69,7 +69,7 @@ Register word16 fn0C00_0026(Sequence word32 ds_si)
 // O:O
 // wLoc02:Local -0002
 // return address size: 2
-word16 fn0C00_0026(word32 ds_si)
+word16 fn0C00_0026(segptr32 ds_si)
 fn0C00_0026_entry:
 	def ds_si
 	ds = SLICE(ds_si, selector, 16)
@@ -82,7 +82,7 @@ l0C00_0026:
 	return ax_15
 	// succ:  fn0C00_0026_exit
 fn0C00_0026_exit:
-Register word16 fn0C00_0033(Sequence word32 ds_si)
+Register word16 fn0C00_0033(Sequence segptr32 ds_si)
 // MayUse:  Sequence ds:si:[0..31]
 // LiveOut: ax
 // Trashed: SCZO ax Top
@@ -103,7 +103,7 @@ Register word16 fn0C00_0033(Sequence word32 ds_si)
 // O:O
 // ds_si:Sequence ds:si
 // return address size: 2
-word16 fn0C00_0033(word32 ds_si)
+word16 fn0C00_0033(segptr32 ds_si)
 fn0C00_0033_entry:
 	def ds_si
 	def Mem0

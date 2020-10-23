@@ -27,6 +27,9 @@ using System.Text;
 
 namespace Reko.Core.Memory
 {
+    /// <summary>
+    /// An <see cref="ImageReader"/> that reads 16-bit granular data from a <see cref="Word16MemoryArea"/>.
+    /// </summary>
     public class Word16ImageReader : ImageReader
     {
         protected readonly Word16MemoryArea mem;

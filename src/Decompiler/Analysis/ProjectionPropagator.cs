@@ -139,7 +139,7 @@ namespace Reko.Analysis
                 {
                     var sidEa = ssa.Identifiers[idEa];
                     var sids = new[] { sidSeg, sidEa };
-                    e = FuseIdentifiers(sids);
+                    e = FuseIdentifiers(MakeSegPtr(idEa.DataType), sids);
                     if (e != null)
                         return new MemoryAccess(accessNew.MemoryId, e, accessNew.DataType);
                 }
@@ -148,7 +148,7 @@ namespace Reko.Analysis
                     if (binEa.Left is Identifier idLeft)
                     {
                         var sidLeft = ssa.Identifiers[idLeft];
-                        e = FuseIdentifiers(sidSeg, sidLeft);
+                        e = FuseIdentifiers(MakeSegPtr(idLeft.DataType), sidSeg, sidLeft);
                         if (e != null)
                             return new MemoryAccess(
                                 accessNew.MemoryId,
@@ -162,7 +162,7 @@ namespace Reko.Analysis
                     if (binEa.Right is Identifier idRight)
                     {
                         var sidRight = ssa.Identifiers[idRight];
-                        e = FuseIdentifiers(sidSeg, sidRight);
+                        e = FuseIdentifiers(MakeSegPtr(idRight.DataType), sidSeg, sidRight);
                         if (e != null)
                             return new MemoryAccess(
                                 accessNew.MemoryId,
@@ -177,6 +177,14 @@ namespace Reko.Analysis
                 return accessNew;
             }
 
+            private DataType? MakeSegPtr(DataType dtEa)
+            {
+                if (dtEa is MemberPointer mptr)
+                    return new Pointer(mptr.Pointee, 32);
+                else
+                    return PrimitiveType.SegPtr32;
+            }
+
             public override Expression VisitMkSequence(MkSequence seq)
             {
                 Debug.Assert(seq.Expressions.Length > 0);
@@ -185,7 +193,7 @@ namespace Reko.Analysis
                     return seq;
                 var sids = ids.Select(i => ssa.Identifiers[i!]).ToArray();
 
-                var expFused = FuseIdentifiers(sids);
+                var expFused = FuseIdentifiers(null, sids);
                 return expFused ?? seq;
             }
 
@@ -193,9 +201,10 @@ namespace Reko.Analysis
             /// <summary>
             /// Attempt to fuse together the definitions of all the identifiers in <paramref name="sids"/>.
             /// </summary>
-            /// <param name="sids"></param>
+            /// <param name="dtWide">The data type of the result.</param>
+            /// <param name="sids">Identifiers to fuse.</param>
             /// <returns>A new expression if the fusion succeeded, otherwise null.</returns>
-            private Expression? FuseIdentifiers(params SsaIdentifier[] sids)
+            private Expression? FuseIdentifiers(DataType? dtWide, params SsaIdentifier[] sids)
             {
                 // Are all the definitions of the ids in the same basic block? If they're
                 // not, we give up.
@@ -205,9 +214,13 @@ namespace Reko.Analysis
                     a.Identifier.Storage.GetType() == b.Identifier.Storage.GetType()))
                     return null;
 
-                var dtWide = PrimitiveType.CreateWord(sids.Sum(s => s.Identifier.DataType.BitSize));
+                if (dtWide is null)
+                {
+                    // Caller has no opinion about the resulting data type, so fall back
+                    // on word.
+                    dtWide = PrimitiveType.CreateWord(sids.Sum(s => s.Identifier.DataType.BitSize));
+                }
                 Identifier? idWide = GenerateWideIdentifier(dtWide, sids);
-
                 var ass = sids.Select(s => s.DefStatement!.Instruction as Assignment).ToArray();
                 if (ass.All(a => a != null))
                 {
@@ -249,8 +262,8 @@ namespace Reko.Analysis
                         return RewriteSeqDefinedByCall(sids, call, idWide);
                     }
                 }
-                DebugEx.Warn(trace, "Prpr: Couldn't fuse statements in {0}", ssa.Procedure.Name);
-                DebugEx.Warn(trace, "{0}", string.Join(Environment.NewLine, sids.Select(s => $"    {s.DefStatement}")));
+                trace.Warn("Prpr: Couldn't fuse statements in {0}", ssa.Procedure.Name);
+                trace.Warn("{0}", string.Join(Environment.NewLine, sids.Select(s => $"    {s.DefStatement}")));
                 return null;
             }
 

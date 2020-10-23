@@ -45,7 +45,7 @@ ds_si:Sequence ds:si
     uses: return Mem0[ds_si:word16]
 // fn0C00_0015
 // Return size: 0
-word16 fn0C00_0015(word32 ds_si)
+word16 fn0C00_0015(segptr32 ds_si)
 fn0C00_0015_entry:
 	def ds_si
 	def Mem0

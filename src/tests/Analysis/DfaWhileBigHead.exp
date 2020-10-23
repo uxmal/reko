@@ -1,4 +1,4 @@
-// void fn0C00_0000(Sequence word32 ds_si)
+// void fn0C00_0000(Sequence segptr32 ds_si)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  Sequence ds:si:[0..31]
 // LiveOut:
@@ -6,7 +6,7 @@
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
-void fn0C00_0000(word32 ds_si)
+void fn0C00_0000(segptr32 ds_si)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:

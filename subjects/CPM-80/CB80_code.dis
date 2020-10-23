@@ -1217,7 +1217,7 @@ l0E63:
 	Mem5[0x16A6<16>:byte] = c
 	word16 bc_16 = CONVERT(fn0C93(), byte, uint16)
 	word16 hl_18 = bc_16 + 0x152C<16> + bc_16
-	Mem28[0x1521<16>:word16] = SEQ(Mem5[hl_18 + 1<16>:byte], Mem5[hl_18:byte])
+	Mem28[0x1521<16>:word16] = Mem5[hl_18:word16]
 l0E79:
 	word16 hl_88 = <invalid>
 	byte l_89
@@ -1231,7 +1231,7 @@ l0E91:
 	branch __rcr(a_51, 1<8>, fn0EAB(out a_51)) >=u 0<8> l0E9B
 l0E9B:
 	word16 hl_62 = Mem44[0x1521<16>:word16]
-	Mem71[0x1521<16>:word16] = SEQ(Mem44[hl_62 + 1<16>:byte], Mem44[hl_62:byte])
+	Mem71[0x1521<16>:word16] = Mem44[hl_62:word16]
 l0E98:
 	return
 fn0E63_exit:
@@ -1648,7 +1648,7 @@ bool fn1348(word16 de, word16 hl, ptr16 & deOut, ptr16 & hlOut)
 // Preserved: sp
 fn1348_entry:
 l1348:
-	ui16 a_a_21 = SEQ(Mem0[de + 1<16>:byte], Mem0[de:byte]) - SEQ(Mem0[hl + 1<16>:byte], Mem0[hl:byte])
+	ui16 a_a_21 = Mem0[de:ui16] - Mem0[hl:ui16]
 	deOut = de + 1<16>
 	hlOut = a_a_21
 	return SLICE(cond(SLICE(a_a_21, byte, 8)), bool, 0)

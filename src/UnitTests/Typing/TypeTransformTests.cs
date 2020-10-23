@@ -30,6 +30,7 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using Reko.Core.Serialization;
+using System.IO;
 
 namespace Reko.UnitTests.Typing
 {
@@ -46,26 +47,54 @@ namespace Reko.UnitTests.Typing
             store = new TypeStore();
         }
 
-        protected override void RunTest(Program program, string outputFileName)
+        private void RunTestCore(Program program)
         {
             var listener = new FakeDecompilerEventListener();
-            ExpressionNormalizer aen = new ExpressionNormalizer(program.Architecture.PointerType);
+            var aen = new ExpressionNormalizer(program.Architecture.PointerType);
             aen.Transform(program);
-            EquivalenceClassBuilder eq = new EquivalenceClassBuilder(factory, store, listener);
+            var eq = new EquivalenceClassBuilder(factory, store, listener);
             eq.Build(program);
-            TypeCollector coll = new TypeCollector(factory, store, program, listener);
+            var coll = new TypeCollector(factory, store, program, listener);
             coll.CollectTypes();
             store.BuildEquivalenceClassDataTypes(factory);
 
-            TypeVariableReplacer tvr = new TypeVariableReplacer(store);
+            var tvr = new TypeVariableReplacer(store);
             tvr.ReplaceTypeVariables();
 
+            var trans = new TypeTransformer(factory, store, program);
+            trans.Transform();
+        }
+
+        protected void RunStringTest(string sExpected, Program program)
+        {
+            RunTestCore(program);
+            var sw = new StringWriter();
+            WriteTestResults(program, sw);
+            var sActual = sw.ToString();
+            if (sExpected != sActual)
+            {
+                Console.WriteLine(sActual);
+                Assert.AreEqual(sExpected, sActual);
+            }
+        }
+
+        protected override void RunTest(Program program, string outputFileName)
+        {
             Exception theEx = null;
+            try
+            {
+                RunTestCore(program);
+            }
+            catch (Exception ex)
+            {
+                theEx = ex;
+            }
             try
             {
                 TypeTransformer trans = new TypeTransformer(factory, store, program);
                 trans.Transform();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 theEx = ex;
             }
@@ -76,14 +105,19 @@ namespace Reko.UnitTests.Typing
                     fut.TextWriter.WriteLine(theEx.Message);
                     fut.TextWriter.WriteLine(theEx.StackTrace);
                 }
-                foreach (Procedure proc in program.Procedures.Values)
-                {
-                    proc.Write(false, fut.TextWriter);
-                    fut.TextWriter.WriteLine();
-                }
-                store.Write(fut.TextWriter);
+                WriteTestResults(program, fut.TextWriter);
                 fut.AssertFilesEqual();
             }
+        }
+
+        private void WriteTestResults(Program program, TextWriter writer)
+        {
+            foreach (Procedure proc in program.Procedures.Values)
+            {
+                proc.Write(false, writer);
+                writer.WriteLine();
+            }
+            store.Write(writer);
         }
 
         [Test]

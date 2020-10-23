@@ -235,7 +235,6 @@ namespace Reko.Core.Expressions
                 if (ptRight != null && ptRight.Domain != Domain.Pointer)
                     return PrimitiveType.Create(Domain.Pointer, dtLeft.BitSize);
             }
-
             if (ptLeft != null && ptLeft.IsIntegral && ptRight != null && ptRight.IsIntegral)
             {
                 // According to the C language definition, the sum
