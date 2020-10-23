@@ -516,31 +516,6 @@ fn046A: warning: Structure analysis stopped making progress, quitting. Please re
 === Raw\1750A\hello.dcproject
 *** Raw\1750A\hello.dcproject
 Warning: Checksum error in line 1.
-=== Raw\8080\VT100.dcproject
-*** Raw\8080\VT100.dcproject
-18A0: warning: Procedure fn1848 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-1E8D: warning: Procedure fn1E6E previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-1E9C: warning: Procedure fn1E6E previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-039F: warning: Procedure fn0394 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-1AA1: warning: Procedure fn1A20 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
-0038: warning: Procedure fn0038 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-Error: An error occurred during decompilation.
-    Object reference not set to an instance of an object.
-       at Reko.Analysis.ProjectionPropagator.ProjectionFilter.<>c.<FuseIdentifiers>b__16_3(SsaIdentifier a, SsaIdentifier b) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ProjectionPropagator.cs:line 204
-   at Reko.Analysis.ProjectionPropagator.ProjectionFilter.AllSame[T](T[] items, Func`3 cmp) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ProjectionPropagator.cs:line 104
-   at Reko.Analysis.ProjectionPropagator.ProjectionFilter.FuseIdentifiers(SsaIdentifier[] sids) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ProjectionPropagator.cs:line 203
-   at Reko.Analysis.ProjectionPropagator.ProjectionFilter.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ProjectionPropagator.cs:line 188
-   at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 55
-   at Reko.Core.Code.InstructionTransformer.TransformAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 50
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 44
-   at Reko.Analysis.ProjectionPropagator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ProjectionPropagator.cs:line 73
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 220
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 96
-   at Reko.Core.Lib.SccFinder`1.FindAll() in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 118
-   at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 169
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 130
-   at Reko.Decompiler.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 110
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 206
 === Raw\H8\Tar\tar.dcproject
 === Raw\MicroBlaze\MicroBlaze.dcproject
 *** Raw\MicroBlaze\MicroBlaze.dcproject
@@ -1071,4 +1046,4 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 === wasm\nbody.wasm
 === wasm\sample.wasm
 Stripping SSA identifier numbers
-Decompiled 73 binaries in 63.85 seconds ---
+Decompiled 72 binaries in 71.41 seconds ---

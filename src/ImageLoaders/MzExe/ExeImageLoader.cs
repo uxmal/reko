@@ -106,7 +106,7 @@ namespace Reko.ImageLoaders.MzExe
 
         public bool IsPharlapExtenderPresent(uint possibleHeaderOffset)
         {
-            if (!MemoryArea.TryReadLeUInt16(RawImage, possibleHeaderOffset, out ushort sig))
+            if (!ByteMemoryArea.TryReadLeUInt16(RawImage, possibleHeaderOffset, out ushort sig))
                 return false;
             return sig == 0x3350;       // 'P3'.
         }

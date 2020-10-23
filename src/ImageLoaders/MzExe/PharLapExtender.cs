@@ -19,12 +19,11 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Pascal;
+using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
-using Reko.Core.Configuration;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -63,7 +62,7 @@ namespace Reko.ImageLoaders.MzExe
                 .Load(Services, arch);
             var rdr = new LeImageReader(RawImage, FileHeaderOffset);
             var fileHeader = rdr.ReadStruct<FileHeader>();
-            var image = new MemoryArea(Address.Ptr32(fileHeader.base_load_offset), new byte[fileHeader.memory_requirements]);
+            var image = new ByteMemoryArea(Address.Ptr32(fileHeader.base_load_offset), new byte[fileHeader.memory_requirements]);
             if ((fileHeader.flags & FlagImagePacked) != 0)
             {
                 UnpackImage(fileHeader, image);
@@ -83,7 +82,7 @@ namespace Reko.ImageLoaders.MzExe
         /// <summary>
         /// Unpacks the packed raw image into <paramref name="image" />.
         /// </summary>
-        private void UnpackImage(FileHeader fileHeader, MemoryArea image)
+        private void UnpackImage(FileHeader fileHeader, ByteMemoryArea image)
         {
             var w = new LeImageWriter(image.Bytes);
             //
