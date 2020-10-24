@@ -98,7 +98,7 @@ namespace Reko.Arch.M68k
                 
                 case Mnemonic.and: RewriteLogical((s, d) => m.And(d, s)); break;
                 case Mnemonic.andi: RewriteLogical((s, d) => m.And(d, s)); break;
-                case Mnemonic.asl: RewriteArithmetic((s, d) => m.Shl(d, s)); break;
+                case Mnemonic.asl: RewriteShift((s, d) => m.Shl(d, s)); break;
                 case Mnemonic.asr: RewriteShift((s, d) => m.Sar(d, s)); break;
 /*
  * 

@@ -1758,5 +1758,17 @@ namespace Reko.UnitTests.Arch.M68k
                 "2|L--|Mem0[a7:word16] = 0xB<16>",
                 "3|L--|CVZN = cond(0xB<16>)");
         }
+
+        [Test]
+        public void M68krw_asl_single_op()
+        {
+            Given_UInt16s(0xE1E0);
+            AssertCode(         // asl.w -(a0)
+                "0|L--|00010000(2): 4 instructions",
+                "1|L--|a0 = a0 - 2<i32>",
+                "2|L--|v3 = Mem0[a0:word16] << 1<i32>",
+                "3|L--|Mem0[a0:word16] = v3",
+                "4|L--|CVZNX = cond(v3)");
+        }
     }
 }
