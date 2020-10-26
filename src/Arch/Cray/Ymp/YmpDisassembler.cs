@@ -38,14 +38,14 @@ namespace Reko.Arch.Cray.Ymp
         private static readonly Decoder rootDecoder;
         
         private readonly CrayYmpArchitecture arch;
-        private readonly EndianImageReader rdr;
+        private readonly Word16BeImageReader rdr;
         private readonly List<MachineOperand>  ops;
         private Address addr;
 
         public YmpDisassembler(CrayYmpArchitecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
-            this.rdr = rdr;
+            this.rdr = (Word16BeImageReader) rdr;
             this.ops = new List<MachineOperand>();
         }
 
@@ -85,7 +85,7 @@ namespace Reko.Arch.Cray.Ymp
         public override CrayInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingDecoder("YmpDis", this.addr, this.rdr, message);
+            testGenSvc?.ReportMissingDecoder("YmpDis", this.addr, rdr, message);
             return CreateInvalidInstruction();
         }
 
@@ -120,6 +120,8 @@ namespace Reko.Arch.Cray.Ymp
 
         #endregion
 
+        private static bool Is0(uint u) => u == 0;
+
         #region Decoders
 
         private static Decoder Instr(Mnemonic mnemonic, params Mutator<YmpDisassembler>[] mutators)
@@ -145,7 +147,10 @@ namespace Reko.Arch.Cray.Ymp
             
             rootDecoder = Sparse(9, 7, "YMP",
                 Nyi("YMP"),
-                (0x05, Select((6, 3), u => u == 0, "  005x",
+                (0x00, Select((0, 6), Is0,
+                    Instr(Mnemonic.err),
+                    invalid)),
+                (0x05, Select((6, 3), Is0, "  005x",
                     Instr(Mnemonic.j, InstrClass.Transfer, Bjk),
                     invalid)),
                 (0x13, Instr(Mnemonic._mov, Ai, Sj)),       // 0o023

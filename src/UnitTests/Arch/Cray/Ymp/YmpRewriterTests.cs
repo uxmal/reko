@@ -57,8 +57,9 @@ namespace Reko.UnitTests.Arch.Cray.Ymp
 
         protected void Given_OctalString(string octalBytes)
         {
-            var bytes = YmpDisassemblerTests.OctalStringToBytes(octalBytes);
-            Given_MemoryArea(new ByteMemoryArea(LoadAddress, bytes));
+            var words = YmpDisassemblerTests.ToUInt16s(YmpDisassemblerTests.OctalStringToBytes(octalBytes))
+                .ToArray();
+            Given_MemoryArea(new Word16MemoryArea(LoadAddress, words));
         }
 
         [Test]
@@ -66,7 +67,7 @@ namespace Reko.UnitTests.Arch.Cray.Ymp
         {
             Given_OctalString("043123");
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
+                "0|L--|00100000(1): 1 instructions",
                 "1|L--|S1 = S2 & S3");
         }
 
@@ -75,7 +76,7 @@ namespace Reko.UnitTests.Arch.Cray.Ymp
         {
             Given_OctalString("023710");  // A7 S1
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
+                "0|L--|00100000(1): 1 instructions",
                 "1|L--|A7 = S1");
         }
 
@@ -84,7 +85,7 @@ namespace Reko.UnitTests.Arch.Cray.Ymp
         {
             Given_OctalString("076123");  // S1 V2,A3
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
+                "0|L--|00100000(1): 1 instructions",
                 "1|L--|S1 = V2[A3]");
         }
 
@@ -93,7 +94,7 @@ namespace Reko.UnitTests.Arch.Cray.Ymp
         {
             Given_OctalString("064123");  // S1\tS2*FS3
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
+                "0|L--|00100000(1): 1 instructions",
                 "1|L--|S1 = S2 * S3");
         }
 
@@ -102,7 +103,7 @@ namespace Reko.UnitTests.Arch.Cray.Ymp
         {
             Given_OctalString("005077");  // J B63
             AssertCode(
-                "0|T--|00100000(2): 1 instructions",
+                "0|T--|00100000(1): 1 instructions",
                 "1|T--|goto B63");
         }
     }

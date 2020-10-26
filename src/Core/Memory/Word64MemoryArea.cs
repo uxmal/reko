@@ -25,23 +25,21 @@ namespace Reko.Core.Memory
 {
     public class Word64MemoryArea : MemoryArea
     {
-        private readonly Address addr;
-        private readonly ulong[] words;
-
         public Word64MemoryArea(Address addr, ulong[] words) : base(addr, words.Length, 64)
         {
-            this.addr = addr;
-            this.words = words;
+            this.Words = words;
         }
+
+        public ulong[] Words { get; }
 
         public override EndianImageReader CreateBeReader(Address addr)
         {
-            throw new System.NotImplementedException();
+            return new Word64BeReader(this);
         }
 
         public override EndianImageReader CreateBeReader(long offset)
         {
-            throw new System.NotImplementedException();
+            return new Word64BeReader(this, offset);
         }
 
         public override EndianImageReader CreateBeReader(long offsetBegin, long offsetEnd)

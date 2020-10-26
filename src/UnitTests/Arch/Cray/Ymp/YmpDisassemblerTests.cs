@@ -57,9 +57,28 @@ namespace Reko.UnitTests.Arch.Cray.Ymp
 
         protected CrayInstruction DisassembleOctBytes(string octalBytes)
         {
-            var img = new ByteMemoryArea(LoadAddress, new byte[256]);
-            byte[] bytes = OctalStringToBytes(octalBytes);
-            return DisassembleBytes(bytes);
+            ushort[] words = ToUInt16s(OctalStringToBytes(octalBytes)).ToArray();
+            var mem = new Word16MemoryArea(LoadAddress, words);
+            return Disassemble(mem);
+        }
+
+        public static IEnumerable<ushort> ToUInt16s(IEnumerable<byte> bytes)
+        {
+            var e = bytes.GetEnumerator();
+            while (e.MoveNext())
+            {
+                var hi = e.Current;
+                if (!e.MoveNext())
+                    break;
+                var lo = e.Current;
+                yield return (ushort) ((hi << 8) | lo);
+            }
+        }
+
+        [Test]
+        public void YmpDis_err()
+        {
+            AssertCode("err", "000000");
         }
 
         [Test]
@@ -91,5 +110,6 @@ namespace Reko.UnitTests.Arch.Cray.Ymp
         {
             AssertCode("j\tB63", "005077");
         }
+
     }
 }
