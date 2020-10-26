@@ -5,21 +5,17 @@
 #include "TESTLONG.h"
 
 struct Eq_n * g_ptr0000;
-Eq_n g_t0001;
 struct Eq_n * g_ptr0004;
 word32 g_a0008[];
 ui32 g_a0010[];
-Eq_n g_t0078;
 word32 g_dw3EB0;
 Eq_n g_t3EB8;
 word32 g_dw3EBC;
 struct Eq_n * g_ptr3EC8;
-Eq_n g_t3ECC;
+struct Eq_n * g_ptr3ECC;
 struct Eq_n * g_ptr3ED0;
 struct Eq_n * g_ptr3ED8;
 Eq_n g_t4000;
 Eq_n g_t10202;
 Eq_n g_t3030303;
 Eq_n g_t6060606;
-Eq_n g_t48E72030;
-Eq_n g_t61727900;

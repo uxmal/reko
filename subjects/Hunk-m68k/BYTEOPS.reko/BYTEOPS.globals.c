@@ -5,11 +5,10 @@
 #include "BYTEOPS.h"
 
 struct Eq_n * g_ptr0000;
-Eq_n g_t0001;
+word32 g_dw0001;
 struct Eq_n * g_ptr0004;
 word32 g_a0008[];
 ui32 g_a0010[];
-Eq_n g_t0078;
 word32 g_dw2CC8;
 Eq_n g_t2CD0;
 word32 g_dw2CD4;

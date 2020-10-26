@@ -5,16 +5,15 @@
 #include "FIBO.h"
 
 struct Eq_n * g_ptr0000;
-Eq_n g_t0001;
+word32 g_dw0001;
 struct Eq_n * g_ptr0004;
 word32 g_a0008[];
 ui32 g_a0010[];
-Eq_n g_t0078;
 word32 g_dw3FD4;
 Eq_n g_t3FDC;
 word32 g_dw3FE0;
 struct Eq_n * g_ptr3FEC;
-Eq_n g_t3FF0;
+struct Eq_n * g_ptr3FF0;
 struct Eq_n * g_ptr3FF4;
 struct Eq_n * g_ptr3FFC;
 Eq_n g_t4000;

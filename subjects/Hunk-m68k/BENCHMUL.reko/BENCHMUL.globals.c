@@ -5,7 +5,7 @@
 #include "BENCHMUL.h"
 
 struct Eq_n * g_ptr0000;
-Eq_n g_t0001;
+word32 g_dw0001;
 struct Eq_n * g_ptr0004;
 word32 g_a0008[];
 ui32 g_a0010[];
@@ -13,7 +13,7 @@ word32 g_dw4238;
 Eq_n g_t4240;
 word32 g_dw4244;
 struct Eq_n * g_ptr4250;
-Eq_n g_t4254;
+struct Eq_n * g_ptr4254;
 struct Eq_n * g_ptr4258;
 struct Eq_n * g_ptr4260;
 Eq_n g_t10202;

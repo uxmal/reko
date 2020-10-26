@@ -5,7 +5,7 @@
 #include "MAX.h"
 
 struct Eq_n * g_ptr0000;
-Eq_n g_t0001;
+word32 g_dw0001;
 struct Eq_n * g_ptr0004;
 word32 g_a0008[];
 ui32 g_a0010[];
@@ -14,7 +14,7 @@ Eq_n g_t3ED8;
 word32 g_dw3EDC;
 struct Eq_n * g_ptr3EE8;
 struct Eq_n * g_ptr3EEC;
-Eq_n g_t3EF4;
+struct Eq_n * g_ptr3EF4;
 struct Eq_n * g_ptr3EF8;
 Eq_n g_t4000;
 Eq_n g_t10202;

@@ -5337,8 +5337,6 @@ l00003CB6:
 l00003CC8:
 	move.l	$0030(a7),$0038(a7)
 	move.l	$002C(a7),$0034(a7)
-
-l00003CD4:
 	move.l	d0,-(a7)
 	move.b	$004C(a7),d0
 	subq.b	#$01,d0

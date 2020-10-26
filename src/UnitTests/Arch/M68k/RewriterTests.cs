@@ -145,6 +145,15 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
+        public void M68krw_move_to_ccr()
+        {
+            Given_UInt16s(0x44c3);
+            AssertCode(     // move\td3,ccr
+                "0|L--|00010000(2): 1 instructions",
+                "1|L--|ccr = SLICE(d3, byte, 0)");
+        }
+
+        [Test]
         public void M68krw_movew_indirect()
         {
             Given_UInt16s(0x3410);    // move.w (A0),D2
@@ -349,6 +358,25 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
+        public void M68krw_cinva()
+        {
+            Given_HexString("F4D8");
+            AssertCode(     // cinva	bc
+                "0|S--|00010000(2): 1 instructions",
+                "1|L--|__invalidate_cache_all_bc()");
+        }
+
+
+        [Test]
+        public void M68krw_cinvp()
+        {
+            Given_HexString("F4D0");
+            AssertCode(     // cinvp	bc,(a0)
+                "0|S--|00010000(2): 1 instructions",
+                "1|L--|__invalidate_cache_page_bc(a0)");
+        }
+
+        [Test]
         public void M68krw_clrw_ea_off()
         {
             Given_UInt16s(0x4268, 0xFFF8);    // clr.w\t$0008(a0)
@@ -543,6 +571,17 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
+        public void M68krw_rtr()
+        {
+            Given_HexString("4E77");
+            AssertCode(     // rtr
+                "0|T--|00010000(2): 3 instructions",
+                "1|L--|ccr = Mem0[a7:word16]",
+                "2|L--|a7 = a7 + 2<i32>",
+                "3|T--|return (4,0)");
+        }
+
+        [Test]
         public void M68krw_rts()
         {
             Given_UInt16s(0x4E75);    // rts
@@ -648,6 +687,21 @@ namespace Reko.UnitTests.Arch.M68k
                 "5|L--|d7 = SEQ(v5, v4)",
                 "6|T--|if (v4 != 0xFFFF<16>) branch 0000FFFC");
         }
+
+        [Test]
+        public void M68krw_dbvc()
+        {
+            Given_HexString("58CC508E");
+            AssertCode(     // dbvc	d4,$00044FCF
+                "0|T--|00010000(4): 6 instructions",
+                "1|T--|if (Test(NO,V)) branch 00010004",
+                "2|L--|v4 = SLICE(d4, word16, 0)",
+                "3|L--|v4 = v4 - 1<i16>",
+                "4|L--|v5 = SLICE(d4, word16, 16)",
+                "5|L--|d4 = SEQ(v5, v4)",
+                "6|T--|if (v4 != 0xFFFF<16>) branch 00015090");
+        }
+
 
         [Test]
         public void M68krw_unlk()
@@ -1182,6 +1236,60 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
+        public void M68krw_fabs()
+        {
+            Given_HexString("F2380D18");
+            AssertCode(     // fabs.x	fp3,fp2
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fp2 = fabs(CONVERT(fp3, real96, real80))");
+        }
+
+        [Test]
+        public void M68krw_fgetexp()
+        {
+            Given_HexString("F20A071E");
+            AssertCode(     // fgetexp.x	fp1,fp6
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fp6 = fgetexp(CONVERT(fp1, real96, real80))");
+        }
+
+        [Test]
+        public void M68krw_flogn()
+        {
+            Given_HexString("F2061614");
+            AssertCode(     // flogn.x	fp5,fp4
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fp4 = log(CONVERT(fp5, real96, real80))");
+        }
+
+        [Test]
+        public void M68krw_flog10()
+        {
+            Given_HexString("F2250C15");
+            AssertCode(     // flog10.x	fp3,fp0
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fp0 = log10(CONVERT(fp3, real96, real80))");
+        }
+
+        [Test]
+        public void M68krw_flog2()
+        {
+            Given_HexString("F2120D16");
+            AssertCode(     // flog2.x	fp3,fp2
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fp2 = log2(CONVERT(fp3, real96, real80))");
+        }
+
+        [Test]
+        public void M68krw_fint()
+        {
+            Given_HexString("F2270001");
+            AssertCode(     // fint.x	fp0,fp0
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fp0 = trunc(CONVERT(fp0, real96, real80))");
+        }
+
+        [Test]
         public void M68krw_fmove_d_to_register()
         {
             Given_UInt16s(0xF22E, 0x5400, 0xFFF8); // fmove.d $-0008(a6),fp0
@@ -1224,13 +1332,93 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void M68krw_fmovecr()
+        public void M68krw_facos()
         {
-            Given_UInt16s(0xF200, 0x5CB2);    // fmove cr#$32,fp1
+            Given_HexString("F2250E1C");
+            AssertCode(     // facos.x	fp3,fp4
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fp4 = acos(CONVERT(fp3, real96, real80))");
+        }
+
+        [Test]
+        public void M68krw_fatan()
+        {
+            Given_HexString("F21D000A");
+            AssertCode(     // fatan.x	fp0,fp0
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fp0 = atan(CONVERT(fp0, real96, real80))");
+        }
+
+        [Test]
+        public void M68krw_fatanh()
+        {
+            Given_HexString("F21B010D");
+            AssertCode(     // fatanh.x	fp0,fp2
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fp2 = atanh(CONVERT(fp0, real96, real80))");
+        }
+
+        [Test]
+        public void M68krw_fbge()
+        {
+            Given_HexString("FE93E388");
+            AssertCode(     // fbge	$00035044
+                "0|T--|00010000(4): 1 instructions",
+                "1|T--|if (Test(GE,FPUFLAGS)) branch 0000E38A");
+        }
+
+        [Test]
+        public void M68krw_fble()
+        {
+            Given_HexString("F295BEDE");
+            AssertCode(     // fble	$005170DC
+                "0|T--|00010000(4): 1 instructions",
+                "1|T--|if (Test(LE,FPUFLAGS)) branch 0000BEE0");
+        }
+
+        [Test]
+        public void M68krw_fbnge()
+        {
+            Given_UInt16s(0xF29C, 0x00E0);  // fbnge 0x000000e8<32>
             AssertCode(
-               "0|L--|00010000(4): 2 instructions",
-               "1|L--|fp1 = 100.0",
-               "2|L--|fpsr = cond(fp1)");
+               "0|T--|00010000(4): 1 instructions",
+               "1|T--|if (Test(LT,FPUFLAGS)) branch 000100E2");
+        }
+
+        [Test]
+        public void M68krw_fboge()
+        {
+            Given_HexString("FA83C5E9");
+            AssertCode(     // fboge	$0024F48D
+                "0|T--|00010000(4): 1 instructions",
+                "1|T--|if (Test(GE,FPUFLAGS)) branch 0000C5EB");
+        }
+
+        [Test]
+        public void M68krw_fbt()
+        {
+            Given_HexString("F28F2F0C");
+            AssertCode(     // fbt	$0017FBE0
+                "0|T--|00010000(4): 1 instructions",
+                "1|T--|goto 00012F0E");
+        }
+
+        [Test]
+        public void M68krw_fbueq()
+        {
+            Given_HexString("FC896100");
+            AssertCode(     // fbueq	$00025C24
+                "0|T--|00010000(4): 1 instructions",
+                "1|T--|if (Test(EQ,FPUFLAGS)) branch 00016102");
+        }
+
+        [Test]
+        public void M68krw_fbule()
+        {
+            Given_HexString("FE8DAC40");
+            AssertCode(     // fbule	$00513A88
+                "0|T--|00010000(4): 1 instructions",
+                "1|T--|if (Test(LE,FPUFLAGS)) branch 0000AC42");
         }
 
         [Test]
@@ -1243,12 +1431,21 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void M68krw_fbnge()
+        public void M68krw_fcos()
         {
-            Given_UInt16s(0xF29C, 0x00E0);  // fbnge 0x000000e8<32>
-            AssertCode(
-               "0|T--|00010000(4): 1 instructions",
-               "1|T--|if (Test(LT,FPUFLAGS)) branch 000100E2");
+            Given_HexString("F225001D");
+            AssertCode(     // fcos.x	fp0,fp0
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fp0 = cos(CONVERT(fp0, real96, real80))");
+        }
+
+        [Test]
+        public void M68krw_fgetman()
+        {
+            Given_HexString("F203171F");
+            AssertCode(     // fgetman.x	fp5,fp6
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fp6 = fgetman(CONVERT(fp5, real96, real80))");
         }
 
         [Test]
@@ -1270,6 +1467,34 @@ namespace Reko.UnitTests.Arch.M68k
                 "1|L--|v3 = a6 + -24<i32>",
                 "2|L--|fp2 = Mem0[v3:real96]",
                 "3|L--|v3 = v3 + 12<i32>");
+        }
+
+        [Test]
+        public void M68krw_fmovecr()
+        {
+            Given_UInt16s(0xF200, 0x5CB2);    // fmove cr#$32,fp1
+            AssertCode(
+               "0|L--|00010000(4): 2 instructions",
+               "1|L--|fp1 = 100.0",
+               "2|L--|fpsr = cond(fp1)");
+        }
+
+        [Test]
+        public void M68krw_fsin()
+        {
+            Given_HexString("F21D0D8E");
+            AssertCode(     // fsin.x	fp3,fp3
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fp3 = fsin(CONVERT(fp3, real96, real80))");
+        }
+
+        [Test]
+        public void M68krw_ftanh1()
+        {
+            Given_HexString("F2140009");
+            AssertCode(     // ftanh1.x	fp0,fp0
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fp0 = tanh(CONVERT(fp0, real96, real80))");
         }
 
         [Test]
@@ -1353,14 +1578,15 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void M68krw_move_to_ccr()
+        public void M68krw_trapt()
         {
-            Given_UInt16s(0x44c3);
-            AssertCode(     // move\td3,ccr
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|ccr = SLICE(d3, byte, 0)");
+            Given_HexString("50FC");
+            AssertCode(     // trapt
+                "0|T--|00010000(2): 1 instructions",
+                "1|L--|__syscall(7<u16>)");
         }
 
+ 
         [Test]
         public void M68krw_move_fr_ccr()
         {
@@ -1643,15 +1869,6 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void M68krw_ptest()
-        {
-            Given_UInt16s(0xF000, 0x8000);    // ptest
-            AssertCode(
-                "0|S--|00010000(4): 1 instructions",
-                "1|L--|__ptest(d0, 0<8>)");
-        }
-
-        [Test]
         public void M68krw_trapf()
         {
             Given_UInt16s(0x51FC);    // trapf
@@ -1682,7 +1899,7 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68krw_dblt()
         {
-            Given_UInt16s(0x5DCA, 0x4EF9);    // dblt d2,$0016B6AB
+            Given_UInt16s(0x5DCA, 0x4EF8);    // dblt d2,$0016B6AB
             AssertCode(
                 "0|T--|00010000(4): 6 instructions",
                 "1|T--|if (Test(LT,VN)) branch 00010004",
@@ -1690,7 +1907,7 @@ namespace Reko.UnitTests.Arch.M68k
                 "3|L--|v4 = v4 - 1<i16>",
                 "4|L--|v5 = SLICE(d2, word16, 16)",
                 "5|L--|d2 = SEQ(v5, v4)",
-                "6|T--|if (v4 != 0xFFFF<16>) branch 00014EFB");
+                "6|T--|if (v4 != 0xFFFF<16>) branch 00014EFA");
         }
 
         [Test]

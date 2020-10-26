@@ -5,16 +5,15 @@
 #include "BENCHFN.h"
 
 struct Eq_n * g_ptr0000;
-Eq_n g_t0001;
+word32 g_dw0001;
 struct Eq_n * g_ptr0004;
 word32 g_a0008[];
 ui32 g_a0010[];
-Eq_n g_t0078;
 word32 g_dw3FB0;
 Eq_n g_t3FB8;
 word32 g_dw3FBC;
 struct Eq_n * g_ptr3FC8;
-Eq_n g_t3FCC;
+struct Eq_n * g_ptr3FCC;
 struct Eq_n * g_ptr3FD0;
 struct Eq_n * g_ptr3FD8;
 Eq_n g_t4000;
