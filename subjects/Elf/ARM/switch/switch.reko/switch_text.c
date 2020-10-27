@@ -109,25 +109,24 @@ word32 bazulate(Eq_n r0, Eq_n r1)
 word32 switcheroo(Eq_n r0)
 {
 	struct Eq_n * fp_n;
+	if (r0 > 0x06)
+		goto l00008540;
 	switch (r0)
 	{
 	case 0x00:
 	case 0x01:
-		goto l00008540;
 	case 0x02:
-	case 0x03:
-	case 0x04:
 		fp_n = frobulate(r0, r0);
 		break;
+	case 0x03:
 	case 0x05:
-	case 0x07:
 l00008540:
 		fp_n = bazulate(0x00, 0x00);
 		break;
-	case 0x06:
+	case 0x04:
 		fp_n = frobulate(r0 - 0x03, r0);
 		break;
-	case 0x08:
+	case 0x06:
 		bazulate(r0, r0);
 		goto l00008540;
 	}

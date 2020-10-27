@@ -177,20 +177,20 @@ switcheroo_entry:
 l000084D4:
 	word32 fp_35
 	branch r0 >u 6<32> l000084F4
+l000084F4:
+l000084F0_1:
 	switch (r0) { l00008514 l00008514 l00008514 l00008540 l00008520 l00008540 l00008534 }
 l00008534:
 	bazulate(r0, r0)
 l00008520:
 	fp_35 = frobulate(r0 - 3<32>, r0)
-l00008514:
-	fp_35 = frobulate(r0, r0)
-l000084F4:
 l00008540:
 	fp_35 = bazulate(0<32>, 0<32>)
+l00008514:
+	fp_35 = frobulate(r0, r0)
 l0000854C:
 	return Mem15[fp_35 - -4<i32>:word32]
 switcheroo_exit:
-l000084F0_1:
 
 
 void main(word32 r0)

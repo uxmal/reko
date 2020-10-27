@@ -981,7 +981,9 @@ namespace Reko.Scanning
             else
             {
                 var jumpDests = ScanJumpVectorTargets(vector);
-                var blockSource = scanner.FindContainingBlock(ric!.Address)!;
+                var blockSource = blockCur!.IsSynthesized
+                    ? blockCur
+                    : scanner.FindContainingBlock(ric!.Address)!;
                 blockCur = blockSource;
                 foreach (var dest in jumpDests)
                 {

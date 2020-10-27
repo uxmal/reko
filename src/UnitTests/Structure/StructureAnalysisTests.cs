@@ -26,6 +26,7 @@ using System.Diagnostics;
 using System.IO;
 using Reko.Core.Types;
 using Reko.Core.Expressions;
+using System;
 
 namespace Reko.UnitTests.Structure
 {
@@ -63,6 +64,7 @@ namespace Reko.UnitTests.Structure
             if (sExp != s)
             {
                 Debug.WriteLine(s);
+                Console.WriteLine(s);
                 Assert.AreEqual(sExp, s);
             }
         }
@@ -1375,5 +1377,55 @@ m.Label("l0800_0585");
             RunTest(sExp, m.Procedure);
         }
 
+        [Test]
+        public void StrAnls_SwitchInLoop()
+        {
+            var r1 = m.Reg32("r1", 1);
+            var r2 = m.Reg32("r2", 2);
+
+            m.Assign(r1, m.Mem32(m.Word32(0x00123400)));
+
+            m.Label("m1Loop");
+            m.Assign(r1, m.Mem32(m.Word32(0x00123404)));
+            m.BranchIf(m.Eq0(r1), "m4SwitchDone");
+
+            m.Label("m2CheckRange");
+            m.BranchIf(m.Ge(r1, 4), "m1Loop");
+
+            m.Label("m3Switch");
+            m.Switch(r1, "m4case0", "m1Loop", "m1Loop", "m1Loop");
+
+            m.Label("m4case0");
+            m.Assign(r2, Constant.String("case 0", StringType.NullTerminated(PrimitiveType.Char)));
+            m.Goto("m1Loop");
+
+            m.Label("m4SwitchDone");
+            m.Return();
+
+            var sExp =
+@"    r1 = Mem0[0x00123400:word32];
+    while (true)
+    {
+        r1 = Mem0[0x00123404:word32];
+        if (r1 == 0x00)
+            break;
+        if (r1 < 0x04)
+        {
+            switch (r1)
+            {
+            case 0x00:
+                r2 = ""case 0"";
+                break;
+            case 0x01:
+            case 0x02:
+            case 0x03:
+                break;
+            }
+        }
+    }
+    return;
+";
+            RunTest(sExp, m.Procedure);
+        }
     }
 }
