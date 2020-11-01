@@ -1636,7 +1636,7 @@ namespace Reko.UnitTests.Arch.M68k
         [Category(Categories.UnitTests)]
         public void M68krw_moves()
         {
-            Given_UInt16s(0x0EA0, 0x0048);    // moves.w -(a0),d0
+            Given_UInt16s(0x0EA0, 0x0000);    // moves.w -(a0),d0
             AssertCode(
                 "0|S--|00010000(4): 4 instructions",
                 "1|L--|a0 = a0 - 2<i32>",

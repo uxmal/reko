@@ -930,6 +930,8 @@ namespace Reko.Arch.M68k
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return false;
 
+            if ((extension & 0xF000) != 0)
+                return false;
             MachineOperand offset;
             if (BIT_B(extension))
                 offset = get_data_reg((uint)(extension >> 6) & 7);
@@ -2059,6 +2061,8 @@ namespace Reko.Arch.M68k
         {
             dasm.LIMIT_CPU_TYPES(uInstr, M68010_PLUS);
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
+                return false;
+            if ((extension & 0b11_1111_1111) != 0)
                 return false;
             var reg = get_addr_or_data_reg(BIT_F(extension), (uint)(extension >> 12) & 7);
             var op = dasm.get_ea_mode_str_32(uInstr);
