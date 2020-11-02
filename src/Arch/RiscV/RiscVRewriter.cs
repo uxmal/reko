@@ -104,6 +104,7 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.c_beqz: RewriteCompressedBranch(m.Eq); break;
                 case Mnemonic.c_bnez: RewriteCompressedBranch(m.Ne); break;
                 case Mnemonic.c_fld: RewriteFload(PrimitiveType.Real64); break;
+                case Mnemonic.c_flw: RewriteFload(PrimitiveType.Real32); break;
                 case Mnemonic.c_fldsp: RewriteLxsp(PrimitiveType.Real64); break;
                 case Mnemonic.c_fsd: RewriteStore(PrimitiveType.Real64); break;
                 case Mnemonic.c_fsdsp: RewriteSxsp(PrimitiveType.Real64); break;
@@ -116,7 +117,7 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.c_lui: RewriteLui(); break;
                 case Mnemonic.c_lw: RewriteLoad(PrimitiveType.Word32, arch.NaturalSignedInteger); break;
                 case Mnemonic.c_lwsp: RewriteLxsp(PrimitiveType.Word32); break;
-                case Mnemonic.c_mv: RewriteCompressedMv(); break;
+                case Mnemonic.c_mv: RewriteMove(); break;
                 case Mnemonic.c_or: RewriteCompressedBinOp(m.Or); break;
                 case Mnemonic.c_slli: RewriteCompressedBinOp(SllI); break;
                 case Mnemonic.c_srai: RewriteCompressedBinOp(SraI); break;
@@ -130,13 +131,30 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.c_xor: RewriteCompressedBinOp(m.Xor); break;
                 case Mnemonic.divuw: RewriteBinOp(m.UDiv, PrimitiveType.Word32); break;
                 case Mnemonic.divw: RewriteBinOp(m.SDiv, PrimitiveType.Word32); break;
+                case Mnemonic.ecall: RewriteEcall(); break;
+                case Mnemonic.fcvt_d_l: RewriteFcvt(PrimitiveType.Int64, PrimitiveType.Real64); break;
                 case Mnemonic.fcvt_d_s: RewriteFcvt(PrimitiveType.Real32, PrimitiveType.Real64); break;
+                case Mnemonic.fcvt_l_d: RewriteFcvt(PrimitiveType.Real64, PrimitiveType.Int64); break;
+                case Mnemonic.fcvt_l_s: RewriteFcvt(PrimitiveType.Real32, PrimitiveType.Int64); break;
+                case Mnemonic.fcvt_s_w: RewriteFcvt(PrimitiveType.Int32, PrimitiveType.Real32); break;
+                case Mnemonic.fcvt_s_wu: RewriteFcvt(PrimitiveType.UInt32, PrimitiveType.Real32); break;
+                case Mnemonic.fcvt_w_d: RewriteFcvt(PrimitiveType.Real64, PrimitiveType.Int32); break;
+                case Mnemonic.fcvt_w_s: RewriteFcvt(PrimitiveType.Real32, PrimitiveType.Int32); break;
+                case Mnemonic.fdiv_s: RewriteFBinOp(PrimitiveType.Real32, m.FDiv); break;
                 case Mnemonic.feq_s: RewriteFcmp(PrimitiveType.Real32, m.FEq); break;
-                case Mnemonic.fmadd_s: RewriteFmadd(PrimitiveType.Real32, m.FAdd); break;
-                case Mnemonic.fmv_d_x: RewriteFcvt(PrimitiveType.Int64, PrimitiveType.Real64); break;
-                case Mnemonic.fmv_w_x: RewriteFcvt(PrimitiveType.Real64, PrimitiveType.Real32); break;
+                case Mnemonic.fle_s: RewriteFcmp(PrimitiveType.Real32, m.FLe); break;
                 case Mnemonic.fld: RewriteFload(PrimitiveType.Real64); break;
+                case Mnemonic.flq: RewriteFload(PrimitiveType.Real128); break;
                 case Mnemonic.flw: RewriteFload(PrimitiveType.Real32); break;
+                case Mnemonic.flt_s: RewriteFcmp(PrimitiveType.Real32, m.FLt); break;
+                case Mnemonic.fmadd_s: RewriteFmadd(PrimitiveType.Real32, m.FAdd); break;
+                case Mnemonic.fmul_s: RewriteFBinOp(PrimitiveType.Real32, m.FMul); break;
+                case Mnemonic.fmv_d_x: RewriteFMove(PrimitiveType.Int64, PrimitiveType.Real64); break;
+                case Mnemonic.fmv_d: RewriteMove(); break;
+                case Mnemonic.fmv_s: RewriteMove(); break;
+                case Mnemonic.fmv_w_x: RewriteFMove(PrimitiveType.Real32, PrimitiveType.Real32); break;
+                case Mnemonic.fmv_x_w: RewriteFMove(PrimitiveType.Real32, PrimitiveType.Real32); break;
+                case Mnemonic.fneg_s: RewriteFneg(); break;
                 case Mnemonic.fsd: RewriteStore(PrimitiveType.Real64); break;
                 case Mnemonic.fsw: RewriteStore(PrimitiveType.Real32); break;
                 case Mnemonic.jal: RewriteJal(); break;
@@ -164,8 +182,10 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.slliw: RewriteShiftw(m.Shl); break;
                 case Mnemonic.sllw: RewriteShiftw(m.Shl); break;
                 case Mnemonic.slt: RewriteSlt(false); break;
+                case Mnemonic.slti: RewriteSlti(false); break;
                 case Mnemonic.sltiu: RewriteSlti(true); break;
                 case Mnemonic.sltu: RewriteSlt(true); break;
+                case Mnemonic.sra: RewriteShift(m.Sar); break;
                 case Mnemonic.srai: RewriteShift(m.Sar); break;
                 case Mnemonic.sraiw: RewriteShiftw(m.Sar); break;
                 case Mnemonic.srl: RewriteBinOp(m.Shr); break;
@@ -184,6 +204,8 @@ namespace Reko.Arch.RiscV
         {
             return GetEnumerator();
         }
+
+        private Expression RewriteOp(int iop) => RewriteOp(instr.Operands[iop]);
 
         private Expression RewriteOp(MachineOperand op)
         {

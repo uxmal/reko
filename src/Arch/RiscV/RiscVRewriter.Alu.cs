@@ -184,7 +184,7 @@ namespace Reko.Arch.RiscV
             m.Assign(dst, Constant.Word(dst.DataType.BitSize, ui.ToUInt32() << 12));
         }
 
-        private void RewriteCompressedMv()
+        private void RewriteMove()
         {
             var src = RewriteOp(instr.Operands[1]);
             var dst = RewriteOp(instr.Operands[0]);
@@ -242,7 +242,7 @@ namespace Reko.Arch.RiscV
             {
                 src = m.Lt(left, right);
             }
-            m.Assign(dst, m.Convert(src, src.DataType, arch.WordWidth));
+            m.Assign(dst, m.Convert(src, src.DataType, dst.DataType));
         }
 
         private void RewriteSlti(bool unsigned)
@@ -259,7 +259,7 @@ namespace Reko.Arch.RiscV
             {
                 src = m.Lt(left, right);
             }
-            m.Assign(dst, m.Convert(src, src.DataType, arch.WordWidth));
+            m.Assign(dst, m.Convert(src, src.DataType, dst.DataType));
         }
 
         private void RewriteStore(DataType dt)

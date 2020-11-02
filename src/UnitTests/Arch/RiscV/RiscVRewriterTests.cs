@@ -34,8 +34,8 @@ namespace Reko.UnitTests.Arch.RiscV
     [TestFixture]
     public class RiscVRewriterTests : RewriterTestBase
     {
-        private readonly RiscVArchitecture arch = new RiscVArchitecture(CreateServiceContainer(), "riscV");
-        private readonly Address baseAddr = Address.Ptr64(0x0010000);
+        private RiscVArchitecture arch = new RiscVArchitecture(CreateServiceContainer(), "riscV");
+        private Address baseAddr = Address.Ptr64(0x0010000);
 
         public override IProcessorArchitecture Architecture => arch;
         public override Address LoadAddress => baseAddr;
@@ -45,6 +45,17 @@ namespace Reko.UnitTests.Arch.RiscV
             var segMap = new SegmentMap(baseAddr, new ImageSegment("code", mem, AccessMode.ReadExecute));
             var state = arch.CreateProcessorState();
             return arch.CreateRewriter(arch.CreateImageReader(mem, 0), state, new Frame(arch.WordWidth), host);
+        }
+
+        private void Given_32bit()
+        {
+            arch = new RiscVArchitecture(CreateServiceContainer(), "riscV");
+            arch.LoadUserOptions(new Dictionary<string, object>
+            {
+                { "WordSize" , "32" },
+                { "FloatAbi", 32 },
+            });
+            baseAddr = Address.Ptr32(0x0010000);
         }
 
         private void Given_RiscVInstructions(params uint[] words)
@@ -73,6 +84,12 @@ namespace Reko.UnitTests.Arch.RiscV
         [SetUp]
         public void Setup()
         {
+            arch.LoadUserOptions(new Dictionary<string, object>
+            {
+                { "WordSize" , "64" },
+                { "FloatAbi", 64 },
+            });
+            baseAddr = Address.Ptr64(0x0010000);
         }
 
         [Test]
@@ -228,7 +245,63 @@ namespace Reko.UnitTests.Arch.RiscV
                 "1|L--|s0 = CONVERT(SLICE(s0 + 0xFFFFFFFFFFFFFFFF<64>, word32, 0), word32, int64)");
         }
 
+        [Test]
+        public void RiscV_rw_fcvt_s_w()
+        {
+            Given_32bit();
+            Given_HexString("537404D0");
+            AssertCode(     // fcvt.s.w	s0,fs0
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fs0 = CONVERT(s0, int32, real32)");
+        }
 
+        [Test]
+        public void RiscV_rw_fcvt_s_wu()
+        {
+            Given_HexString("53F719D0");
+            AssertCode(     // fcvt.s.wu	fs4,a3
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa4 = SEQ(0xFFFFFFFF<32>, CONVERT(SLICE(s3, uint32, 0), uint32, real32))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_w_s()
+        {
+            Given_32bit();
+            Given_HexString("D31704C0");
+            AssertCode(     // fcvt.w.s	a5,fs0
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|a5 = CONVERT(fs0, real32, int32)");
+        }
+
+        [Test]
+        public void RiscV_rw_fdiv_s()
+        {
+            Given_32bit();
+            Given_HexString("5374F418");
+            AssertCode(     // fdiv.s	fs0,fs0,fa5
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fs0 = fs0 / fa5");
+        }
+
+        [Test]
+        public void RiscV_rw_c_flw_32()
+        {
+            Given_32bit();
+            Given_HexString("C462");
+            AssertCode(     // c.flw	fa3,4(s1)
+                "0|L--|00010000(2): 1 instructions",
+                "1|L--|fa3 = SEQ(0xFFFFFFFF<32>, Mem0[s1 + 4<i32>:real32])");
+        }
+
+        [Test]
+        public void RiscV_rw_c_ld_64()
+        {
+            Given_HexString("C462");
+            AssertCode(     // c.ld	a3,4(s1)
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a3 = Mem0[s1 + 128<i64>:word64]");
+        }
 
         [Test]
         public void RiscV_rw_x1()
@@ -312,12 +385,58 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_flq()
+        {
+            Given_HexString("0740E391");
+            AssertCode(     // flq	ft0,2334(t1)
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|ft0 = Mem0[t1 + 2334<i64>:real128]");
+        }
+
+        [Test]
+        public void RiscV_rw_fle_s()
+        {
+            Given_HexString("D307F7A0");
+            AssertCode(     // fle.s	a5,fa4,fa5
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a5 = CONVERT(SLICE(fa4, real32, 0) <= SLICE(fa5, real32, 0), bool, word64)");
+        }
+
+        [Test]
+        public void RiscV_rw_flt_s()
+        {
+            Given_32bit();
+            Given_HexString("D397E7A0");
+            AssertCode(     // flt.s	a5,fa5,fa4
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|a5 = CONVERT(fa5 < fa4, bool, word32)");
+        }
+
+        [Test]
         public void RiscV_rw_flw()
         {
             Given_RiscVInstructions(0x03492707u);    // flw\tfa4,s2,+00000034
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
                 "1|L--|fa4 = SEQ(0xFFFFFFFF<32>, Mem0[s2 + 52<i64>:real32])");
+        }
+
+        [Test]
+        public void RiscV_rw_fmv_d_x()
+        {
+            Given_RiscVInstructions(0xE2070753u);    // fmv.d.x\tfa4,a4
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa4 = a4");
+        }
+
+        [Test]
+        public void RiscV_rw_fmv_s()
+        {
+            Given_HexString("53058420");
+            AssertCode(     // fmv.s	fa0,fs0
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa0 = fs0");
         }
 
         [Test]
@@ -330,12 +449,13 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
-        public void RiscV_rw_fmv_d_x()
+        public void RiscV_rw_fmv_x_w()
         {
-            Given_RiscVInstructions(0xE2070753u);    // fmv.d.x\tfa4,a4
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|fa4 = CONVERT(a4, int64, real64)");
+            Given_32bit();
+            Given_HexString("538507E0");
+            AssertCode(     // fmv.x.w	a0,fa5
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|a0 = fa5");
         }
 
         [Test]
@@ -366,8 +486,15 @@ namespace Reko.UnitTests.Arch.RiscV
                 "1|L--|a5 = CONVERT(SLICE(fa4, real32, 0) == SLICE(fa5, real32, 0), bool, word64)");
         }
 
-
-
+        [Test]
+        public void RiscV_rw_fneg_s()
+        {
+            Given_32bit();
+            Given_HexString("D397F720");
+            AssertCode(     // fsgnjn.s	fa5,fa5,fa5
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fa5 = -fa5");
+        }
 
         [Test]
         public void RiscV_rw_c_sw()
@@ -495,6 +622,16 @@ namespace Reko.UnitTests.Arch.RiscV
                 "0|L--|0000000000010000(4): 1 instructions",
                 "1|L--|s0 = CONVERT(SLICE(s0 / a1, word32, 0), word32, int64)");
         }
+
+        [Test]
+        public void RiscV_rw_ecall()
+        {
+            Given_HexString("73000000");
+            AssertCode(     // ecall
+                "0|T--|0000000000010000(4): 1 instructions",
+                "1|L--|__syscall()");
+        }
+
 
         [Test]
         public void RiscV_rw_c_addi16sp()
@@ -758,7 +895,7 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
-        public void RiscV_jal_ra()
+        public void RiscV_rw_jal_ra()
         {
             Given_RiscVInstructions(0x02C000EF);    // jal ra,0000B6A4
             AssertCode(
@@ -782,6 +919,15 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
                 "1|L--|Mem0[a5 + 8732<i64>:real32] = SLICE(fs6, real32, 0)");
+        }
+
+        [Test]
+        public void RiscV_rw_slti()
+        {
+            Given_HexString("93A72700");
+            AssertCode(     // slti	a5,a5,+00000002
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a5 = CONVERT(a5 < 2<i32>, bool, word64)");
         }
 
         [Test]
@@ -821,6 +967,15 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_sra()
+        {
+            Given_HexString("3355B540");
+            AssertCode(     // sra	a0,a0,a1
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a0 = a0 >> a1");
+        }
+
+        [Test]
         public void RiscV_rw_remw()
         {
             Given_RiscVInstructions(0x02D7E6BB);    // remw\ta3,a5,a3
@@ -830,7 +985,6 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
-        [Ignore("Not ready for fma stuff")]
         public void RiscV_rw_fmsub_s()
         {
             Given_RiscVInstructions(0x6318B5C7);    // fmsub.s\tfa1,fa7,fa7,fa2
@@ -840,7 +994,16 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
-        [Ignore("Not ready for fma stuff")]
+        public void RiscV_rw_fmul_s()
+        {
+            Given_32bit();
+            Given_HexString("53749510");
+            AssertCode(     // fmul.s	fs0,fa0,fs1
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|fs0 = fa0 * fs1");
+        }
+
+        [Test]
         public void RiscV_rw_fnmsub_s()
         {
             Given_RiscVInstructions(0x4789004B);    // fnmsub.s\tft0,fs2,fs8,fs0
@@ -850,7 +1013,6 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
-        [Ignore("Not ready for fma stuff")]
         public void RiscV_rw_fnmadd_s()
         {
             Given_RiscVInstructions(0x04B3FDCF);    // fnmadd.s\tfs11,ft7,fa1,ft0
@@ -885,5 +1047,33 @@ namespace Reko.UnitTests.Arch.RiscV
                 "0|L--|0000000000010000(2): 1 instructions",
                 "1|L--|Mem0[sp + 456<i64>:real64] = fs9");
         }
+
+        // This file contains unit tests automatically generated by Reko decompiler.
+        // Please copy the contents of this file and report it on GitHub, using the 
+        // following URL: https://github.com/uxmal/reko/issues
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

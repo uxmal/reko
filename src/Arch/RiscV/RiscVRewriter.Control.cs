@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,6 +77,11 @@ namespace Reko.Arch.RiscV
                 m.Return(0, 0);
             else 
                 m.Goto(RewriteOp(instr.Operands[0]));
+        }
+
+        private void RewriteEcall()
+        {
+            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance));
         }
 
         private void RewriteJal()
