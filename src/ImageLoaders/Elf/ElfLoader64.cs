@@ -103,6 +103,10 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_IA_64:
                 archName = "ia64";
                 break;
+            case ElfMachine.EM_RISCV: 
+                archName = "risc-v";
+                options["WordSize"] = "64"; 
+                break;
             default:
                 return base.CreateArchitecture(endianness);
             }

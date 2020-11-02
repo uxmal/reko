@@ -48,41 +48,22 @@ namespace Reko.Arch.RiscV
           "fs8", "fs9", "fs10", "fs11", "ft8", "ft9", "ft10", "ft11"
         };
 
-        private readonly RegisterStorage[] regs;
-        internal readonly RegisterStorage[] FpRegs;
-        internal readonly RegisterStorage LinkRegister;
-        internal readonly PrimitiveType NaturalSignedInteger;
-        private readonly Dictionary<string, RegisterStorage> regsByName;
+        private RegisterStorage[] regs;
+        private Dictionary<string, RegisterStorage> regsByName;
 
         public RiscVArchitecture(IServiceProvider services, string archId) : base(services, archId)
         {
             this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 16;
-            //$TODO: what about 32-bit version of arch?
-            this.PointerType = PrimitiveType.Ptr64;
-            this.WordWidth = PrimitiveType.Word64;
-            this.FramePointerType = PrimitiveType.Ptr64;
-            this.NaturalSignedInteger = PrimitiveType.Int64;
-
-            this.FpRegs = fpuregnames
-                .Select((n, i) => new RegisterStorage(
-                    n,
-                    i + 32,
-                    0,
-                    PrimitiveType.Word64))
-                .ToArray();
-            this.regs = regnames
-                .Select((n, i) => new RegisterStorage(
-                    n,
-                    i,
-                    0,
-                    PrimitiveType.Word64)) //$TODO: setting!
-                .Concat(FpRegs)
-                .ToArray();
-            this.regsByName = regs.ToDictionary(r => r.Name);
-            this.LinkRegister = regs[1];        // ra
-            this.StackRegister = regs[2];       // sp
+            Options = new Dictionary<string, object>();
+            SetOptionDependentProperties();
         }
+
+        public Dictionary<string,object> Options { get; }
+        public RegisterStorage[] FpRegs { get; private set; }
+        public RegisterStorage LinkRegister { get; private set; }
+        public PrimitiveType NaturalSignedInteger { get; private set; }
+
 
         /// <summary>
         /// The size of the return address (in bytes) if pushed on stack.
@@ -171,6 +152,26 @@ namespace Reko.Arch.RiscV
             return "";
         }
 
+        private bool Is64Bit()
+        {
+            return
+                !Options.TryGetValue("WordSize", out var oWordSize) ||
+                int.TryParse(oWordSize.ToString(), out var wordSize) &&
+                wordSize == 64;
+        }
+
+
+        public override void LoadUserOptions(Dictionary<string, object>? options)
+        {
+            if (options == null)
+                return;
+            foreach (var option in options)
+            {
+                this.Options[option.Key] = option.Value;
+            }
+            SetOptionDependentProperties();
+        }
+
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
             if (this.WordWidth.BitSize == 32)
@@ -190,6 +191,73 @@ namespace Reko.Arch.RiscV
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
+        }
+
+        public override Dictionary<string, object> SaveUserOptions()
+        {
+            return Options;
+        }
+
+        private void SetOptionDependentProperties()
+        {
+            if (Is64Bit())
+            {
+                this.PointerType = PrimitiveType.Ptr64;
+                this.WordWidth = PrimitiveType.Word64;
+                this.FramePointerType = PrimitiveType.Ptr64;
+                this.NaturalSignedInteger = PrimitiveType.Int64;
+            }
+            else
+            {
+                this.PointerType = PrimitiveType.Ptr32;
+                this.WordWidth = PrimitiveType.Word32;
+                this.FramePointerType = PrimitiveType.Ptr32;
+                this.NaturalSignedInteger = PrimitiveType.Int32;
+            }
+
+            if (Options.TryGetValue("FloatAbi", out object oFloatAbi) &&
+                oFloatAbi is int floatAbi)
+            {
+                this.FpRegs = CreateFpRegs(floatAbi);
+            }
+            else
+            {
+                this.FpRegs = new RegisterStorage[0];
+            }
+
+            this.regs = regnames
+                .Select((n, i) => new RegisterStorage(
+                    n,
+                    i,
+                    0,
+                    WordWidth))
+                .Concat(FpRegs)
+                .ToArray();
+            this.regsByName = regs.ToDictionary(r => r.Name);
+            this.LinkRegister = regs[1];        // ra
+            this.StackRegister = regs[2];       // sp
+        }
+
+        private RegisterStorage[] CreateFpRegs(int floatAbi)
+        {
+            PrimitiveType fpType;
+            switch (floatAbi)
+            {
+            case 32: fpType = PrimitiveType.Real32; break;
+            case 64: fpType = PrimitiveType.Real64; break;
+            case 128: fpType = PrimitiveType.Real128; break;
+            case 0: return new RegisterStorage[0];
+            default: 
+                return new RegisterStorage[0];
+            }
+
+            return fpuregnames
+                .Select((n, i) => new RegisterStorage(
+                    n,
+                    i + 32,
+                    0,
+                    fpType))
+                .ToArray();
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)

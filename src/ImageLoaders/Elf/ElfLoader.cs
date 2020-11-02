@@ -228,7 +228,6 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_AARCH64: arch = "arm-64"; break;
             case ElfMachine.EM_XTENSA: arch = "xtensa"; break;
             case ElfMachine.EM_AVR: arch = "avr8"; break;
-            case ElfMachine.EM_RISCV: arch = "risc-v"; break;
             case ElfMachine.EM_MSP430: arch = "msp430"; break;
             case ElfMachine.EM_SH:
                 arch = endianness == ELFDATA2LSB ? "superH-le" : "superH-be";

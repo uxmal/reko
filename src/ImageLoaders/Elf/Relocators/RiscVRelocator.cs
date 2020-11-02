@@ -27,19 +27,16 @@ using Reko.Core;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
-    class RiscVRelocator
+    public class RiscVRelocator32 : ElfRelocator32
     {
-    }
-
-    public class RiscVRelocator64 : ElfRelocator64
-    {
-        public RiscVRelocator64(ElfLoader64 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
+        // https://github.com/riscv/riscv-elf-psabi-doc/blob/master/riscv-elf.md
+        public RiscVRelocator32(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
         }
 
         public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
-            var rt = (RiscV64Rt)(rela.Info & 0xFF);
+            var rt = (RiscVRt) (rela.Info & 0xFF);
             ulong S = symbol.Value;
             ulong A = 0;
             ulong B = 0;
@@ -53,18 +50,18 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
             switch (rt)
             {
-            case RiscV64Rt.R_RISCV_COPY:
+            case RiscVRt.R_RISCV_COPY:
                 return symbol;
-            case RiscV64Rt.R_RISCV_RELATIVE: // B + A
+            case RiscVRt.R_RISCV_RELATIVE: // B + A
                 A = (ulong) rela.Addend;
                 B = program.SegmentMap.BaseAddress.ToLinear();
                 S = 0;
                 break;
-            case RiscV64Rt.R_RISCV_64: // S + A
+            case RiscVRt.R_RISCV_64: // S + A
                 A = (ulong) rela.Addend;
                 B = 0;
                 break;
-            case RiscV64Rt.R_RISCV_JUMP_SLOT: // S
+            case RiscVRt.R_RISCV_JUMP_SLOT: // S
                 S = symbol.Value;
                 if (S == 0)
                 {
@@ -73,7 +70,65 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 }
                 break;
             default:
-                Debug.Print("ELF RiscV: unhandled relocation {0}: {1}", rt, rela);
+                Debug.Print("ELF RiscV: unhandled 32-bit relocation {0}: {1}", rt, rela);
+                break;
+            }
+
+            var w = relR.ReadLeUInt64();
+            w += ((uint) (B + S + A));
+            relW.WriteLeUInt64(w);
+            return symbol;
+        }
+
+        public override string RelocationTypeToString(uint type)
+        {
+            return ((RiscVRt) type).ToString();
+        }
+    }
+
+    public class RiscVRelocator64 : ElfRelocator64
+    {
+        public RiscVRelocator64(ElfLoader64 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
+        {
+        }
+
+        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        {
+            var rt = (RiscVRt)(rela.Info & 0xFF);
+            ulong S = symbol.Value;
+            ulong A = 0;
+            ulong B = 0;
+
+            var addr = referringSection != null
+                ? referringSection.Address + rela.Offset
+                : loader.CreateAddress(rela.Offset);
+            var arch = program.Architecture;
+            var relR = program.CreateImageReader(arch, addr);
+            var relW = program.CreateImageWriter(arch, addr);
+
+            switch (rt)
+            {
+            case RiscVRt.R_RISCV_COPY:
+                return symbol;
+            case RiscVRt.R_RISCV_RELATIVE: // B + A
+                A = (ulong) rela.Addend;
+                B = program.SegmentMap.BaseAddress.ToLinear();
+                S = 0;
+                break;
+            case RiscVRt.R_RISCV_64: // S + A
+                A = (ulong) rela.Addend;
+                B = 0;
+                break;
+            case RiscVRt.R_RISCV_JUMP_SLOT: // S
+                S = symbol.Value;
+                if (S == 0)
+                {
+                    var gotEntry = relR.PeekLeUInt64(0);
+                    return CreatePltStubSymbolFromRelocation(symbol, gotEntry, 0x0);
+                }
+                break;
+            default:
+                Debug.Print("ELF RiscV: unhandled 64-bit relocation {0}: {1}", rt, rela);
                 break;
             }
 
@@ -87,11 +142,11 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public override string RelocationTypeToString(uint type)
         {
-            return ((RiscV64Rt)type).ToString();
+            return ((RiscVRt)type).ToString();
         }
     }
 
-    public enum RiscV64Rt
+    public enum RiscVRt
     {
         R_RISCV_NONE = 0,
         R_RISCV_32 = 1,
@@ -105,5 +160,17 @@ namespace Reko.ImageLoaders.Elf.Relocators
         R_RISCV_TLS_DTPREL64 = 9,
         R_RISCV_TLS_TPREL32 = 1,
         R_RISCV_TLS_TPREL64 = 1,
+    }
+
+    [Flags]
+    public enum RiscVFlags
+    {
+        EF_RISCV_RVC = 0x1,
+        EF_RISCV_FLOAT_ABI_MASK = 0x6,
+        EF_RISCV_FLOAT_ABI_SOFT = 0x6,
+        EF_RISCV_FLOAT_ABI_SINGLE = 0x2,
+        EF_RISCV_FLOAT_ABI_DOUBLE = 0x4,
+        EF_RISCV_FLOAT_ABI_QUAD = 0x6,
+
     }
 }
