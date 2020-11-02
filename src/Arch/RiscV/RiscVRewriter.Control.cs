@@ -62,12 +62,17 @@ namespace Reko.Arch.RiscV
 
         private void RewriteCompressedJ()
         {
-            m.Goto(RewriteOp(instr.Operands[0]));
+            m.Goto(RewriteOp(0));
+        }
+
+        private void RewriteCompressedJal()
+        {
+            m.Call(RewriteOp(0), 0);
         }
 
         private void RewriteCompressedJalr()
         {
-            m.Call(RewriteOp(instr.Operands[0]), 0);
+            m.Call(RewriteOp(0), 0);
         }
 
         private void RewriteCompressedJr()
@@ -77,6 +82,27 @@ namespace Reko.Arch.RiscV
                 m.Return(0, 0);
             else 
                 m.Goto(RewriteOp(instr.Operands[0]));
+        }
+
+        private void RewriteCsr(string intrinsicName)
+        {
+            var csr = RewriteOp(1);
+            var arg = RewriteOp(2);
+            var dst = RewriteOp(0);
+            var intrinsic = host.PseudoProcedure(intrinsicName, dst.DataType, csr, arg);
+            if (dst is Constant)
+            {
+                m.SideEffect(intrinsic);
+            }
+            else
+            {
+                m.Assign(dst, intrinsic);
+            }
+        }
+
+        private void RewriteEbreak()
+        {
+            m.SideEffect(host.PseudoProcedure("__ebreak", VoidType.Instance));
         }
 
         private void RewriteEcall()
@@ -134,6 +160,17 @@ namespace Reko.Arch.RiscV
                     instr.Address + instr.Length);
                 m.Goto(dst, 0);
             }
+        }
+
+        private void RewriteRet(string intrinsicName)
+        {
+            m.SideEffect(host.PseudoProcedure(intrinsicName, VoidType.Instance));
+            m.Return(0, 0);
+        }
+
+        private void RewriteWfi()
+        {
+            m.SideEffect(host.PseudoProcedure("__wait_for_interrupt", VoidType.Instance));
         }
     }
 }

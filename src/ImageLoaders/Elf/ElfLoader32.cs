@@ -126,15 +126,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_RISCV:
                 arch = "risc-v";
                 options["WordSize"] = "32";
-                var riscVFlags = (RiscVFlags) Header.e_flags;
-                options["Compact"] = (riscVFlags & RiscVFlags.EF_RISCV_RVC) != 0;
-                options["FloatAbi"] = (riscVFlags & RiscVFlags.EF_RISCV_FLOAT_ABI_MASK) switch
-                {
-                    RiscVFlags.EF_RISCV_FLOAT_ABI_QUAD => 128,
-                    RiscVFlags.EF_RISCV_FLOAT_ABI_DOUBLE => 64,
-                    RiscVFlags.EF_RISCV_FLOAT_ABI_SINGLE => 32,
-                    _ => 0    // soft floats only.
-                };
+                RiscVElf.SetOptions((RiscVFlags) Header.e_flags, options);
                 break;
             default:
                return base.CreateArchitecture(endianness);

@@ -105,7 +105,8 @@ namespace Reko.ImageLoaders.Elf
                 break;
             case ElfMachine.EM_RISCV: 
                 archName = "risc-v";
-                options["WordSize"] = "64"; 
+                options["WordSize"] = "64";
+                RiscVElf.SetOptions((RiscVFlags) Header64.e_flags, options);
                 break;
             default:
                 return base.CreateArchitecture(endianness);

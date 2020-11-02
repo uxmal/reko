@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 namespace Reko.Core.Machine
 {
     /// <summary>
-    /// Abstract base class for instruction decoders
+    /// Abstract base class for instruction decoders.
     /// </summary>
     /// <typeparam name="TDasm">Disassembler</typeparam>
     /// <typeparam name="TInstr">Instruction type</typeparam>

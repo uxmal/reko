@@ -173,4 +173,19 @@ namespace Reko.ImageLoaders.Elf.Relocators
         EF_RISCV_FLOAT_ABI_QUAD = 0x6,
 
     }
+
+    public static class RiscVElf
+    {
+        public static void SetOptions(RiscVFlags riscVFlags, Dictionary<string, object> options)
+        {
+            options["Compact"] = (riscVFlags & RiscVFlags.EF_RISCV_RVC) != 0;
+            options["FloatAbi"] = (riscVFlags & RiscVFlags.EF_RISCV_FLOAT_ABI_MASK) switch
+            {
+                RiscVFlags.EF_RISCV_FLOAT_ABI_QUAD => 128,
+                RiscVFlags.EF_RISCV_FLOAT_ABI_DOUBLE => 64,
+                RiscVFlags.EF_RISCV_FLOAT_ABI_SINGLE => 32,
+                _ => 0    // soft floats only.
+            };
+        }
+    }
 }

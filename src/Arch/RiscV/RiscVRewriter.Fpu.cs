@@ -118,13 +118,18 @@ namespace Reko.Arch.RiscV
             MaybeDpb(dst, MaybeNanBox(m.Mem(dt, ea), dst.DataType));
         }
 
-        private void RewriteFmadd(PrimitiveType dt, Func<Expression,Expression,Expression> addsub)
+        private void RewriteFmadd(PrimitiveType dt, Func<Expression,Expression,Expression> addsub, bool negate)
         {
-            var dst = RewriteOp(instr.Operands[0]);
-            var factor1 = RewriteOp(instr.Operands[1]);
-            var factor2 = RewriteOp(instr.Operands[2]);
-            var summand = RewriteOp(instr.Operands[3]);
-            m.Assign(dst, MaybeNanBox(addsub(m.FMul(factor1, factor2), summand), dst.DataType));
+            var factor1 = MaybeSlice(RewriteOp(1), dt);
+            var factor2 = MaybeSlice(RewriteOp(2), dt);
+            var summand = MaybeSlice(RewriteOp(3), dt);
+            var dst = RewriteOp(0);
+            var product = m.FMul(factor1, factor2);
+            if (negate)
+            {
+                product = m.FNeg(product);
+            }
+            m.Assign(dst, MaybeNanBox(addsub(product, summand), dst.DataType));
         }
 
         private void RewriteFBinOp(PrimitiveType dt, Func<Expression, Expression, Expression> fn)

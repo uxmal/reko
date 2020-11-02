@@ -1694,10 +1694,10 @@ fn0000000000017B40_entry:
 l0000000000017B40:
 	word64 a1_34
 	word64 a2_35
-	word64 a3_506
-	word64 a4_507
-	word64 a6_508
-	branch fn0000000000017924(gp, out a1_34, out a2_35, out a3_506, out a4_507, out a6_508) == 0<64> l0000000000017BB0
+	word64 a3_507
+	word64 a4_508
+	word64 a6_509
+	branch fn0000000000017924(gp, out a1_34, out a2_35, out a3_507, out a4_508, out a6_509) == 0<64> l0000000000017BB0
 l0000000000017BB0:
 	word64 a3_42
 	word64 a4_43
@@ -1887,19 +1887,19 @@ l0000000000017C84:
 l0000000000017CC8:
 	a2_331 = 0x12B80<64>
 	a1_330 = 1<64>
-	a0_360 = CONVERT(__asprintf_chk(s4_324, 1<64>, 0x12B80<64>, 0<32>), int32, uint64)
+	a0_361 = CONVERT(__asprintf_chk(s4_324, 1<64>, 0x12B80<64>, 0<32>), int32, uint64)
 l0000000000017C94:
-	word64 s6_395
-	word64 gp_403
-	word64 fa4_404
-	word64 fa5_405
-	word64 t1_406
-	word64 fa3_407
-	call Mem366[gp_335 + -1976<i32>:word64] (retsize: 0;)
-		uses: a0:s0_320,a1:a1_380,a2:a2_382,a3:a3_332,a4:a4_333,fa3:fa3_407,fa4:fa4_404,fa5:fa5_405,gp:gp_335,ra:Mem366[sp_319 + 72<i32>:word64],s0:Mem366[sp_319 + 64<i32>:word64],s1:Mem366[sp_319 + 56<i32>:word64],s2:Mem366[sp_319 + 48<i32>:word64],s3:Mem366[sp_319 + 40<i32>:word64],s4:Mem366[sp_319 + 32<i32>:word64],s5:Mem366[sp_319 + 24<i32>:word64],s6:Mem366[sp_319 + 16<i32>:word64],s7:Mem366[sp_319 + 8<i32>:word64],t1:t1_406
-		defs: fa3:fa3_407,fa4:fa4_404,fa5:fa5_405,gp:gp_403,s6:s6_395,t1:t1_406
-	s6Out = s6_395
-	return gp_403
+	word64 s6_396
+	word64 gp_404
+	word64 fa4_405
+	word64 fa5_406
+	word64 t1_407
+	word64 fa3_408
+	call Mem367[gp_335 + -1976<i32>:word64] (retsize: 0;)
+		uses: a0:s0_320,a1:a1_381,a2:a2_383,a3:a3_332,a4:a4_333,fa3:fa3_408,fa4:fa4_405,fa5:fa5_406,gp:gp_335,ra:Mem367[sp_319 + 72<i32>:word64],s0:Mem367[sp_319 + 64<i32>:word64],s1:Mem367[sp_319 + 56<i32>:word64],s2:Mem367[sp_319 + 48<i32>:word64],s3:Mem367[sp_319 + 40<i32>:word64],s4:Mem367[sp_319 + 32<i32>:word64],s5:Mem367[sp_319 + 24<i32>:word64],s6:Mem367[sp_319 + 16<i32>:word64],s7:Mem367[sp_319 + 8<i32>:word64],t1:t1_407
+		defs: fa3:fa3_408,fa4:fa4_405,fa5:fa5_406,gp:gp_404,s6:s6_396,t1:t1_407
+	s6Out = s6_396
+	return gp_404
 l0000000000017B84:
 	s6Out = s6
 	return gp
@@ -1921,8 +1921,8 @@ l0000000000017D10:
 	word64 a2_35
 	word64 a3_36
 	word64 a4_37
-	word64 a6_512
-	word64 a0_33 = fn0000000000017924(gp, out a1_34, out a2_35, out a3_36, out a4_37, out a6_512)
+	word64 a6_513
+	word64 a0_33 = fn0000000000017924(gp, out a1_34, out a2_35, out a3_36, out a4_37, out a6_513)
 	branch a0_33 == 0<64> l0000000000017D80
 l0000000000017D80:
 	word64 s0_42
@@ -2118,23 +2118,23 @@ l0000000000017E78:
 l0000000000017EBC:
 	a2_335 = 0x12B80<64>
 	a1_334 = 1<64>
-	a0_364 = CONVERT(__asprintf_chk(s5_328, 1<64>, 0x12B80<64>, 0<32>), int32, uint64)
+	a0_365 = CONVERT(__asprintf_chk(s5_328, 1<64>, 0x12B80<64>, 0<32>), int32, uint64)
 l0000000000017E88:
-	word64 s0_392
-	word64 s3_394
-	word64 s6_399
-	word64 gp_407
-	word64 fa4_409
-	word64 fa5_410
-	word64 t1_411
-	word64 fa3_412
-	call Mem370[gp_339 + -1976<i32>:word64] (retsize: 0;)
-		uses: a0:s1_330,a1:a1_384,a2:a2_386,a3:a3_336,a4:a4_337,fa3:fa3_412,fa4:fa4_409,fa5:fa5_410,gp:gp_339,ra:Mem370[sp_323 + 72<i32>:word64],s0:Mem370[sp_323 + 64<i32>:word64],s1:Mem370[sp_323 + 56<i32>:word64],s2:Mem370[sp_323 + 48<i32>:word64],s3:Mem370[sp_323 + 40<i32>:word64],s4:Mem370[sp_323 + 32<i32>:word64],s5:Mem370[sp_323 + 24<i32>:word64],s6:Mem370[sp_323 + 16<i32>:word64],s7:Mem370[sp_323 + 8<i32>:word64],t1:t1_411
-		defs: fa3:fa3_412,fa4:fa4_409,fa5:fa5_410,gp:gp_407,s0:s0_392,s3:s3_394,s6:s6_399,t1:t1_411
-	s0Out = s0_392
-	s3Out = s3_394
-	s6Out = s6_399
-	return gp_407
+	word64 s0_393
+	word64 s3_395
+	word64 s6_400
+	word64 gp_408
+	word64 fa4_410
+	word64 fa5_411
+	word64 t1_412
+	word64 fa3_413
+	call Mem371[gp_339 + -1976<i32>:word64] (retsize: 0;)
+		uses: a0:s1_330,a1:a1_385,a2:a2_387,a3:a3_336,a4:a4_337,fa3:fa3_413,fa4:fa4_410,fa5:fa5_411,gp:gp_339,ra:Mem371[sp_323 + 72<i32>:word64],s0:Mem371[sp_323 + 64<i32>:word64],s1:Mem371[sp_323 + 56<i32>:word64],s2:Mem371[sp_323 + 48<i32>:word64],s3:Mem371[sp_323 + 40<i32>:word64],s4:Mem371[sp_323 + 32<i32>:word64],s5:Mem371[sp_323 + 24<i32>:word64],s6:Mem371[sp_323 + 16<i32>:word64],s7:Mem371[sp_323 + 8<i32>:word64],t1:t1_412
+		defs: fa3:fa3_413,fa4:fa4_410,fa5:fa5_411,gp:gp_408,s0:s0_393,s3:s3_395,s6:s6_400,t1:t1_412
+	s0Out = s0_393
+	s3Out = s3_395
+	s6Out = s6_400
+	return gp_408
 l0000000000017D54:
 	s0Out = s0
 	s3Out = s3
