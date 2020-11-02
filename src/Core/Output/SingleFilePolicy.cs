@@ -59,7 +59,7 @@ namespace Reko.Core.Output
             var wl = new WorkList<(StructureField, Address)>(
                 MakeGlobalWorkItems()
                 .Concat(MakeSegmentWorkitems()));
-            var objectTracer = new GlobalObjectTracer(program, wl);
+            var objectTracer = new GlobalObjectTracer(program, wl, listener);
             while (wl.GetWorkItem(out var item))
             {
                 var (field, addr) = item;

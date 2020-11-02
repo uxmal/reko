@@ -26,6 +26,7 @@ using System.Globalization;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Xml.Schema;
 
 namespace Reko.Core.Expressions
 {
@@ -1200,6 +1201,11 @@ namespace Reko.Core.Expressions
         }
 
         public override bool IsMaxUnsigned => value == ~0UL;
+
+        public override Constant Negate()
+        {
+            return new ConstantUInt64(this.DataType, ~value + 1);
+        }
 
         public override byte ToByte()
         {

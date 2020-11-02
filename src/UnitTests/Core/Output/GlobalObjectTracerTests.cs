@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Core.Output
             Given_Program(0x0010_0000);
             Given_DataSegment(".data", 0x0010_1000, 0x4000);
             var wl = new WorkList<(StructureField, Address)>();
-            var gotr = new GlobalObjectTracer(program, wl);
+            var gotr = new GlobalObjectTracer(program, wl, new FakeDecompilerEventListener());
             Given_Data(0x0010_1000, "34 12 10 00");
 
             gotr.TraceObject(new Pointer(PrimitiveType.Int32, 32), Address.Ptr32(0x0010_1000));

@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Memory;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -33,15 +34,17 @@ namespace Reko.Core.Output
         private readonly HashSet<Address> visited;
         private readonly DataTypeComparer cmp;
         private readonly StructureFieldCollection globalFields;
+        private readonly DecompilerEventListener eventListener;
         private int recursionGuard;
 #nullable disable
         private EndianImageReader rdr; 
 #nullable enable
 
-        public GlobalObjectTracer(Program program, WorkList<(StructureField, Address)> wl)
+        public GlobalObjectTracer(Program program, WorkList<(StructureField, Address)> wl, DecompilerEventListener eventListener)
         {
             this.program = program;
             this.wl = wl;
+            this.eventListener = eventListener;
             this.globalFields = GlobalFields(program);
             this.visited = new HashSet<Address>();
             this.cmp = new DataTypeComparer();
@@ -62,10 +65,20 @@ namespace Reko.Core.Output
 
         public void TraceObject(DataType dataType, Address addr)
         {
-            if (!program.SegmentMap.TryFindSegment(addr, out var segment))
-                return;
-            this.rdr = program.Architecture.CreateImageReader(segment.MemoryArea, addr);
-            dataType.Accept(this);
+            try
+            {
+                if (!program.SegmentMap.TryFindSegment(addr, out var segment))
+                    return;
+                this.rdr = program.Architecture.CreateImageReader(segment.MemoryArea, addr);
+                dataType.Accept(this);
+            } catch (AddressCorrelatedException aex)
+            {
+                eventListener.Error(eventListener.CreateAddressNavigator(program, aex.Address), aex, "An error occurred while tracing the object at {0}.", addr);
+            }
+            catch (Exception ex)
+            {
+                eventListener.Error(eventListener.CreateAddressNavigator(program, addr), ex, "An error occurred while tracing the object at {0}.", addr);
+            }
         }
 
         public int VisitArray(ArrayType at)
@@ -115,38 +128,46 @@ namespace Reko.Core.Output
 
         public int VisitPointer(Pointer ptr)
         {
-            if (!rdr!.TryRead(PrimitiveType.Create(Domain.Pointer, ptr.BitSize), out var c))
-                return 0;
-            var addr = Address.FromConstant(c);
-            if (visited.Contains(addr))
-                return 0;
-            // Don't chase null pointers (//$REVIEW: but some architectures have valid data at addr 0)
-            if (c.IsZero)
-                return 0;
-            // Don't chase decompiled procedures.
-            if (program.Procedures.ContainsKey(addr))
-                return 0;
-            visited.Add(addr);
-
-            int offset = (int) addr.ToLinear(); //$BUG: could be 64-bit!
-            var field = globalFields.AtOffset(offset);
-            if (field is null)
+            var addr = rdr.Address;
+            try
             {
-                // Nothing there! Ensure a new global at that location. Later,
-                // when the data objects are rendered, we don't have to chase 
-                // the pointer.
-                var dt = ptr.Pointee;
-                //$REVIEW: that this is a pointer to a C-style null 
-                // terminated string is a wild-assed guess of course.
-                // It could be a Pascal string, or a raw area of bytes.
-                // Depend on user for this, or possibly platform.
-                if (dt is PrimitiveType pt && pt.Domain == Domain.Character)
+                if (!rdr!.TryRead(PrimitiveType.Create(Domain.Pointer, ptr.BitSize), out var c))
+                    return 0;
+                addr = Address.FromConstant(c);
+                if (visited.Contains(addr))
+                    return 0;
+                // Don't chase null pointers (//$REVIEW: but some architectures have valid data at addr 0)
+                if (c.IsZero)
+                    return 0;
+                // Don't chase decompiled procedures.
+                if (program.Procedures.ContainsKey(addr))
+                    return 0;
+                visited.Add(addr);
+
+                int offset = (int) addr.ToLinear(); //$BUG: could be 64-bit!
+                var field = globalFields.AtOffset(offset);
+                if (field is null)
                 {
-                    dt = StringType.NullTerminated(pt);
+                    // Nothing there! Ensure a new global at that location. Later,
+                    // when the data objects are rendered, we don't have to chase 
+                    // the pointer.
+                    var dt = ptr.Pointee;
+                    //$REVIEW: that this is a pointer to a C-style null 
+                    // terminated string is a wild-assed guess of course.
+                    // It could be a Pascal string, or a raw area of bytes.
+                    // Depend on user for this, or possibly platform.
+                    if (dt is PrimitiveType pt && pt.Domain == Domain.Character)
+                    {
+                        dt = StringType.NullTerminated(pt);
+                    }
+                    field = globalFields.Add(offset, dt);
                 }
-                field = globalFields.Add(offset, dt);
+                wl.Add((field, addr));
             }
-            wl.Add((field, addr));
+            catch (Exception ex)
+            {
+                throw new AddressCorrelatedException(addr, ex, "An error occurred following a pointer at address {0}.", addr);
+            }
             return 0;
         }
 
