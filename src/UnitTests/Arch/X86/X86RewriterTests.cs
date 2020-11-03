@@ -752,11 +752,12 @@ namespace Reko.UnitTests.Arch.X86
         {
             Run64bitTest("C4E278F2CB"); //andn\tecx,eax,ebx
             AssertCode(
-                "0|L--|0000000140000000(5): 4 instructions",
+                "0|L--|0000000140000000(5): 5 instructions",
                 "1|L--|ecx = ebx & ~eax",
                 "2|L--|rcx = CONVERT(ecx, word32, uint64)",
-                "3|L--|SZO = cond(ecx)",
-                "4|L--|C = false");
+                "3|L--|SZ = cond(ecx)",
+                "4|L--|C = false",
+                "5|L--|O = false");
         }
 
         [Test(Description = "Captures the side effect of setting CF = 0")]
@@ -1596,7 +1597,7 @@ namespace Reko.UnitTests.Arch.X86
                "0|L--|0000000140000000(2): 5 instructions",
                "1|L--|eax = eax ^ eax",
                "2|L--|rax = CONVERT(eax, word32, uint64)",
-               "3|L--|SZO = cond(eax)",
+               "3|L--|SZ = cond(eax)",
                "4|L--|C = false",
                "5|L--|O = false");
         }

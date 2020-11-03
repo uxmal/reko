@@ -113,11 +113,11 @@ l0C00_00F8:
 	// succ:  l0C00_0128 l0C00_0144
 l0C00_0128:
 	fn0C00_027D()
-	word32 eax_135 = CONVERT(Mem132[ds_122:0x5418<16>:word16], word16, int32)
-	ui64 v28_v27_273 = Mem140[ds_122:0x6FF0<16>:ui64] - eax_135 *s64 0xF000<32>
-	Mem140[ds_122:0x6FF0<16>:word32] = SLICE(v28_v27_273, word32, 0)
-	Mem145[ds_122:0x6FF4<16>:word32] = SLICE(v28_v27_273, word32, 32)
-	ax_130 = SLICE(eax_135 *s64 0xF000<32>, word16, 0) (alias)
+	word32 eax_137 = CONVERT(Mem134[ds_124:0x5418<16>:word16], word16, int32)
+	ui64 v30_v29_275 = Mem142[ds_124:0x6FF0<16>:ui64] - eax_137 *s 0xF000<32>
+	Mem142[ds_124:0x6FF0<16>:word32] = SLICE(v30_v29_275, word32, 0)
+	Mem147[ds_124:0x6FF4<16>:word32] = SLICE(v30_v29_275, word32, 32)
+	ax_132 = SLICE(eax_137 *s 0xF000<32>, word16, 0) (alias)
 	// succ:  l0C00_0144
 l0C00_0144:
 	fn0C00_0265()
@@ -319,11 +319,11 @@ void fn0C00_0000(selector ds)
 		if (Mem134[ds_124:0x54A6<16>:word16] != 0<16>)
 		{
 			fn0C00_027D();
-			word32 eax_135 = CONVERT(Mem132[ds_122:0x5418<16>:word16], word16, int32);
-			ui64 v28_v27_273 = Mem140[ds_122:0x6FF0<16>:ui64] - eax_135 *s64 0xF000<32>;
-			Mem140[ds_122:0x6FF0<16>:word32] = SLICE(v28_v27_273, word32, 0);
-			Mem145[ds_122:0x6FF4<16>:word32] = SLICE(v28_v27_273, word32, 32);
-			ax_130 = SLICE(eax_135 *s64 0xF000<32>, word16, 0);
+			word32 eax_137 = CONVERT(Mem134[ds_124:0x5418<16>:word16], word16, int32);
+			ui64 v30_v29_275 = Mem142[ds_124:0x6FF0<16>:ui64] - eax_137 *s 0xF000<32>;
+			Mem142[ds_124:0x6FF0<16>:word32] = SLICE(v30_v29_275, word32, 0);
+			Mem147[ds_124:0x6FF4<16>:word32] = SLICE(v30_v29_275, word32, 32);
+			ax_132 = SLICE(eax_137 *s 0xF000<32>, word16, 0);
 		}
 		fn0C00_0265();
 		do

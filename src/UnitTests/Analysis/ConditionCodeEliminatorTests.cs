@@ -113,12 +113,12 @@ namespace Reko.UnitTests.Analysis
                 var larw = new LongAddRewriter(ssa, listener);
                 larw.Transform();
 
-                var cce = new ConditionCodeEliminator(program, ssa, listener);
-                cce.Transform();
-                ssa.Validate(s => { ssa.Dump(true); Assert.Fail(s); });
-
                 var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, dynamicLinker, listener);
                 vp.Transform();
+
+                var cce = new ConditionCodeEliminator(program, ssa, listener);
+                cce.Transform();
+
                 ssa.Validate(s => { ssa.Dump(true); Assert.Fail(s); });
 
                 sst.RenameFrameAccesses = true;
