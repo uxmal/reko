@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (FFFFFFFF code tFFFFFFFF) (0 code t0000) (10A60 (ptr32 code) ptr10A60) (10AA4 int32 dw10AA4) (10AAC word32 dw10AAC) (10AB0 int32 dw10AB0) (10ABC (ptr32 (ptr32 code)) ptr10ABC) (10AD4 (ptr32 code) ptr10AD4) (10AE4 (ptr32 code) ptr10AE4) (10AF0 byte b10AF0) (10AF4 Eq_63 t10AF4) (20A24 (ptr32 code) ptr20A24) (20A4C ptr32 ptr20A4C) (20A60 word32 dw20A60))
+Eq_1: (struct "Globals" (FFFFFFFF code tFFFFFFFF) (0 code t0000) (A58 word32 _IO_stdin_used) (10A60 (ptr32 code) ptr10A60) (10A98 (ptr32 code) main_GOT) (10A9C (ptr32 code) __libc_csu_init_GOT) (10AA0 (ptr32 code) __libc_csu_fini_GOT) (10AA4 int32 dw10AA4) (10AAC word32 dw10AAC) (10AB0 int32 dw10AB0) (10AB8 (ptr32 code) _init_GOT) (10ABC (ptr32 (ptr32 code)) ptr10ABC) (10AD0 (ptr32 code) calloc_GOT) (10AD4 (ptr32 code) ptr10AD4) (10AD8 (ptr32 code) memset_GOT) (10ADC (ptr32 code) __libc_start_main_GOT) (10AE0 (ptr32 code) __gmon_start___GOT) (10AE4 (ptr32 code) ptr10AE4) (10AE8 (ptr32 code) __cxa_finalize_GOT) (10AF0 byte b10AF0) (10AF4 Eq_63 dtor_idx.6258) (20A24 (ptr32 code) ptr20A24) (20A4C ptr32 ptr20A4C) (20A60 word32 dw20A60))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_35: (union "Eq_35" (int32 u0) (uint32 u1))
 	T_35 (in r5_12 : Eq_35)
@@ -22,6 +22,7 @@ Eq_63: (union "Eq_63" (int32 u0) (uint32 u1))
 	T_94 (in r2_40 + 1<i32> : word32)
 	T_96 (in Mem50[0x10AF4<32>:word32] : word32)
 	T_107 (in Mem50[0x10AF4<32>:word32] : word32)
+	T_221
 Eq_86: (fn void ())
 	T_86 (in deregister_tm_clones : ptr32)
 	T_87 (in signature of deregister_tm_clones : void)
@@ -940,19 +941,37 @@ T_219: (in r25_15 + 1780<i32> : word32)
   Class: Eq_219
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
+T_220:
+  Class: Eq_220
+  DataType: word32
+  OrigDataType: word32
+T_221:
+  Class: Eq_63
+  DataType: Eq_63
+  OrigDataType: word32
 */
 typedef struct Globals {
 	<anonymous> tFFFFFFFF;	// FFFFFFFF
 	<anonymous> t0000;	// 0
+	word32 _IO_stdin_used;	// A58
 	<anonymous> * ptr10A60;	// 10A60
+	<anonymous> * main_GOT;	// 10A98
+	<anonymous> * __libc_csu_init_GOT;	// 10A9C
+	<anonymous> * __libc_csu_fini_GOT;	// 10AA0
 	int32 dw10AA4;	// 10AA4
 	word32 dw10AAC;	// 10AAC
 	int32 dw10AB0;	// 10AB0
+	<anonymous> * _init_GOT;	// 10AB8
 	<anonymous> ** ptr10ABC;	// 10ABC
+	<anonymous> * calloc_GOT;	// 10AD0
 	<anonymous> * ptr10AD4;	// 10AD4
+	<anonymous> * memset_GOT;	// 10AD8
+	<anonymous> * __libc_start_main_GOT;	// 10ADC
+	<anonymous> * __gmon_start___GOT;	// 10AE0
 	<anonymous> * ptr10AE4;	// 10AE4
+	<anonymous> * __cxa_finalize_GOT;	// 10AE8
 	byte b10AF0;	// 10AF0
-	Eq_63 t10AF4;	// 10AF4
+	Eq_63 dtor_idx.6258;	// 10AF4
 	<anonymous> * ptr20A24;	// 20A24
 	ptr32 ptr20A4C;	// 20A4C
 	word32 dw20A60;	// 20A60

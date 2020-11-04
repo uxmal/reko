@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (8000270C (ptr32 code) ptr8000270C) (80002714 (arr (ptr32 code)) a80002714) (8000271C word32 dw8000271C) (80002724 byte b80002724) (80002726 uint32 dw80002726) (FFFFFFFF code tFFFFFFFF))
+Eq_1: (struct "Globals" (8000270C (ptr32 code) ptr8000270C) (80002714 (arr (ptr32 code)) a80002714) (8000271C word32 dw8000271C) (80002724 byte b80002724) (80002726 uint32 dtor_idx.3228) (FFFFFFFF code tFFFFFFFF))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_48: (fn word32 ())
 	T_48 (in deregister_tm_clones : ptr32)
@@ -207,7 +207,7 @@ T_40: (in Mem13[0x80002726<p32>:word32] : word32)
 T_41: (in a2_18 : (arr (ptr32 code)))
   Class: Eq_41
   DataType: (ptr32 (arr (ptr32 code)))
-  OrigDataType: (ptr32 (struct (0 (arr T_249) a0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_250) a0000)))
 T_42: (in 80002714 : ptr32)
   Class: Eq_41
   DataType: (ptr32 (arr (ptr32 code)))
@@ -1037,7 +1037,11 @@ T_248: (in a0_11 != (<anonymous> *) -1<i32> : bool)
   DataType: bool
   OrigDataType: bool
 T_249:
-  Class: Eq_249
+  Class: Eq_38
+  DataType: uint32
+  OrigDataType: word32
+T_250:
+  Class: Eq_250
   DataType: (ptr32 code)
   OrigDataType: (struct 0004 (0 T_65 t0000))
 */
@@ -1046,7 +1050,7 @@ typedef struct Globals {
 	<anonymous> * a80002714[];	// 80002714
 	word32 dw8000271C;	// 8000271C
 	byte b80002724;	// 80002724
-	uint32 dw80002726;	// 80002726
+	uint32 dtor_idx.3228;	// 80002726
 	<anonymous> tFFFFFFFF;	// FFFFFFFF
 } Eq_1;
 

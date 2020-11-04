@@ -165,12 +165,14 @@ namespace Reko.Typing
             strNew.IsSegment = str.IsSegment;
 			UnionType ut = new UnionType(null, null);
 			int offset = 0;
+            string? name = null;
 			foreach (StructureField f in str.Fields)
 			{
 				//$REVIEW: what if multiple fields have differing names?
 				if (ut.Alternatives.Count == 0)
 				{
 					offset = f.Offset;
+                    name = f.IsNameSet ? f.Name : null;
 					ut.Alternatives.Add(f.DataType);
 				}
 				else
@@ -188,8 +190,9 @@ namespace Reko.Typing
                     }
 					else
 					{
-						strNew.Fields.Add(offset, ut.Simplify());
+						strNew.Fields.Add(offset, ut.Simplify(), name);
 						offset = f.Offset;
+                        name = f.IsNameSet ? f.Name : null;
 						ut = new UnionType(null, null);
 						ut.Alternatives.Add(f.DataType);
 					}
@@ -197,7 +200,7 @@ namespace Reko.Typing
 			}
 			if (ut.Alternatives.Count > 0)
 			{
-				strNew.Fields.Add(offset, ut.Simplify());
+				strNew.Fields.Add(offset, ut.Simplify(), name);
 			}
 
             var sfm = new StructureFieldMerger(strNew);
@@ -306,9 +309,12 @@ namespace Reko.Typing
             {
                 fn.ReturnValue.DataType = fn.ReturnValue.DataType.Accept(this);
             }
-            for (int i = 0; i < fn.Parameters!.Length; ++i)
+            if (fn.Parameters != null)
             {
-                fn.Parameters[i].DataType = fn.Parameters[i].DataType.Accept(this);
+                for (int i = 0; i < fn.Parameters.Length; ++i)
+                {
+                    fn.Parameters[i].DataType = fn.Parameters[i].DataType.Accept(this);
+                }
             }
             return fn;
         }

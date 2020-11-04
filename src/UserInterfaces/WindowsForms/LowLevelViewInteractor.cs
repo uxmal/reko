@@ -203,8 +203,6 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 var selAddress = Control.DisassemblyView.SelectedObject as Address;
                 var instr = Control.DisassemblyView.SelectedObject as MachineInstruction;
-                if (cmdId.ID == CmdIds.EditRegisterValues)
-                    cmdId.ToString();   //$DEBUG
                 
                 if (cmdId.Guid == CmdSets.GuidReko)
                 {

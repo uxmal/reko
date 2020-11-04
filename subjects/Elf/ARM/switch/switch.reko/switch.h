@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (1 code t0001) (8364 (ptr32 Eq_21) ptr8364) (8368 (ptr32 Eq_24) ptr8368) (8394 int32 dw8394) (8398 int32 dw8398) (83F4 (ptr32 byte) ptr83F4) (83F8 (ptr32 (ptr32 (ptr32 code))) ptr83F8) (8424 (ptr32 word32) ptr8424) (8428 word32 dw8428) (86A8 int32 dw86A8) (86AC int32 dw86AC) (8700 int32 dw8700) (8704 int32 dw8704) (8708 int32 dw8708) (8740 (ptr32 Eq_329) ptr8740) (10764 (ptr32 (ptr32 code)) ptr10764) (10838 Eq_329 t10838) (10840 (ptr32 code) ptr10840) (10844 word32 dw10844) (10870 byte b10870))
+Eq_1: (struct "Globals" (1 code t0001) (8364 (ptr32 Eq_21) ptr8364) (8368 (ptr32 Eq_24) ptr8368) (8394 int32 dw8394) (8398 int32 dw8398) (83F4 (ptr32 byte) ptr83F4) (83F8 (ptr32 (ptr32 (ptr32 code))) ptr83F8) (8424 (ptr32 word32) ptr8424) (8428 word32 dw8428) (86A8 int32 dw86A8) (86AC int32 dw86AC) (8700 int32 dw8700) (8704 int32 dw8704) (8708 int32 dw8708) (8740 (ptr32 Eq_329) ptr8740) (8758 word32 _IO_stdin_used) (10764 (ptr32 (ptr32 code)) ptr10764) (10838 Eq_329 t10838) (10840 (ptr32 code) ptr10840) (10844 word32 dw10844) (10870 byte b10870))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_5: (fn ptr32 ())
 	T_5 (in call_gmon_start : ptr32)
@@ -1278,7 +1278,7 @@ T_280: (in _init(out r10_20) : word32)
 T_281: (in r1_30 : (arr (ptr32 code)))
   Class: Eq_281
   DataType: (ptr32 (arr (ptr32 code)))
-  OrigDataType: (ptr32 (struct (0 (arr T_344) a0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_345) a0000)))
 T_282: (in 000086A8 : ptr32)
   Class: Eq_282
   DataType: (ptr32 int32)
@@ -1366,7 +1366,7 @@ T_302: (in 0x86C8<u32> + g_dw8700 : word32)
 T_303: (in r1_16 : (arr (ptr32 code)))
   Class: Eq_303
   DataType: (ptr32 (arr (ptr32 code)))
-  OrigDataType: (ptr32 (struct (0 (arr T_345) a0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_346) a0000)))
 T_304: (in 00008704 : ptr32)
   Class: Eq_304
   DataType: (ptr32 int32)
@@ -1529,10 +1529,14 @@ T_343: (in __do_global_dtors_aux() : void)
   OrigDataType: void
 T_344:
   Class: Eq_344
-  DataType: (ptr32 code)
-  OrigDataType: (struct 0004 (0 T_297 t0000))
+  DataType: word32
+  OrigDataType: word32
 T_345:
   Class: Eq_345
+  DataType: (ptr32 code)
+  OrigDataType: (struct 0004 (0 T_297 t0000))
+T_346:
+  Class: Eq_346
   DataType: (ptr32 code)
   OrigDataType: (struct 0004 (0 T_324 t0000))
 */
@@ -1552,6 +1556,7 @@ typedef struct Globals {
 	int32 dw8704;	// 8704
 	int32 dw8708;	// 8708
 	struct Eq_329 * ptr8740;	// 8740
+	word32 _IO_stdin_used;	// 8758
 	<anonymous> ** ptr10764;	// 10764
 	Eq_329 t10838;	// 10838
 	<anonymous> * ptr10840;	// 10840

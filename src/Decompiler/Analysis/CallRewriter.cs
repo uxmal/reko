@@ -371,8 +371,6 @@ namespace Reko.Analysis
                 var fn = new ProcedureConstant(platform.PointerType, procCallee);
                 if (sigCallee == null || !sigCallee.ParametersValid)
                     return false;
-                if (stm.LinearAddress == 0x000000000001e32)
-                    stm.ToString(); //$DEBUG
                 ApplicationBuilder ab = CreateApplicationBuilder(ssaCaller, stm, call, fn);
                 var instr = ab.CreateInstruction(sigCallee, procCallee.Characteristics);
                 var instrOld = stm.Instruction;

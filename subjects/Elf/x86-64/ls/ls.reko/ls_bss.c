@@ -4,18 +4,18 @@
 
 #include "ls.h"
 
-char * g_ptr61A600 = &g_strC34C00; // 000000000061A600
-FILE * g_ptr61A610 = &g_tC34C10; // 000000000061A610
+char * __progname = &g_strC34C00; // 000000000061A600
+FILE * stdout = &g_tC34C10; // 000000000061A610
 word32 g_dw61A620 = 0x00C34C20; // 000000000061A620
-Eq_n g_t61A640 = // 000000000061A640
+Eq_n optarg = // 000000000061A640
 	{
 		0x40
 	};
-Eq_n g_t61A648 = // 000000000061A648
+Eq_n __progname_full = // 000000000061A648
 	{
 		0x48
 	};
-FILE * g_ptr61A650 = &g_tC34C50; // 000000000061A650
+FILE * stderr = &g_tC34C50; // 000000000061A650
 Eq_n g_t61A660 = // 000000000061A660
 	{
 		0x00

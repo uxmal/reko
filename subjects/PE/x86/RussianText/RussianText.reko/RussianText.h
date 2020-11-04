@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (40208B uint32 dw40208B) (4020A4 char b4020A4) (4020F8 word32 dw4020F8))
+Eq_1: (struct "Globals" (40208B uint32 dw40208B) (4020A4 char b4020A4) (4020F8 word32 dw4020F8) (40503C word32 dw40503C) (405040 word32 dw405040) (405044 word32 dw405044) (405048 word32 dw405048) (40504C word32 dw40504C) (405054 (ptr32 code) __imp__GetModuleHandleA) (405058 (ptr32 code) __imp__GetProcAddress) (40505C (ptr32 code) __imp__GetProcessHeap) (405060 (ptr32 code) __imp__HeapAlloc) (405064 (ptr32 code) __imp__HeapFree) (40506C word32 dw40506C) (405070 word32 dw405070) (405074 word32 dw405074) (405078 word32 dw405078) (40507C word32 dw40507C) (405080 word32 dw405080) (405084 word32 dw405084) (405088 word32 dw405088) (40508C word32 dw40508C) (405090 word32 dw405090) (405094 word32 dw405094) (405098 word32 dw405098) (40509C word32 dw40509C) (4050A0 word32 dw4050A0) (4050A4 word32 dw4050A4) (4050A8 word32 dw4050A8) (4050AC word32 dw4050AC) (4050B0 word32 dw4050B0) (4050B4 word32 dw4050B4) (4050B8 word32 dw4050B8) (4050BC word32 dw4050BC) (4050C0 word32 dw4050C0) (4050C4 word32 dw4050C4) (4050CC (ptr32 code) __imp__@_InitTermAndUnexPtrs$qv) (4050D0 (ptr32 code) __imp_____CRTL_MEM_UseBorMM) (4050D4 (ptr32 code) __imp_____CRTL_TLS_Alloc) (4050D8 (ptr32 code) __imp_____CRTL_TLS_ExitThread) (4050DC (ptr32 code) __imp_____CRTL_TLS_Free) (4050E0 (ptr32 code) __imp_____CRTL_TLS_GetValue) (4050E4 (ptr32 code) __imp_____CRTL_TLS_InitThread) (4050E8 (ptr32 code) __imp_____CRTL_TLS_SetValue) (4050EC (ptr32 code) __imp____argc) (4050F0 (ptr32 code) __imp____argv) (4050F4 (ptr32 code) __imp____argv_default_expand) (4050F8 (ptr32 code) __imp____exitargv) (4050FC (ptr32 code) __imp____handle_exitargv) (405100 (ptr32 code) __imp____handle_setargv) (405104 (ptr32 code) __imp____handle_wexitargv) (405108 (ptr32 code) __imp____handle_wsetargv) (40510C (ptr32 code) __imp____matherr) (405110 (ptr32 code) __imp____matherrl) (405114 (ptr32 code) __imp____setargv) (405118 (ptr32 code) __imp____startup) (40511C (ptr32 code) __imp____wargv_default_expand) (405120 (ptr32 code) __imp___memcpy) (405124 (ptr32 code) __imp___printf))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (struct "Eq_2" (0 word32 dw0000) (4 ptr32 ptr0004))
 	T_2 (in dwArg04 : (ptr32 Eq_2))
@@ -138,7 +138,7 @@ T_24: (in 0x2C<16> : word16)
 T_25: (in Mem0[fs:0x2C<16>:word32] : word32)
   Class: Eq_25
   DataType: (ptr32 (arr word32))
-  OrigDataType: (ptr32 (struct (0 (arr T_79) a0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_107) a0000)))
 T_26: (in 0040208B : ptr32)
   Class: Eq_26
   DataType: (ptr32 uint32)
@@ -354,12 +354,180 @@ T_78: (in Mem19[dwArg04 + 4<32>:word32] : word32)
 T_79:
   Class: Eq_79
   DataType: word32
+  OrigDataType: word32
+T_80:
+  Class: Eq_80
+  DataType: word32
+  OrigDataType: word32
+T_81:
+  Class: Eq_81
+  DataType: word32
+  OrigDataType: word32
+T_82:
+  Class: Eq_82
+  DataType: word32
+  OrigDataType: word32
+T_83:
+  Class: Eq_83
+  DataType: word32
+  OrigDataType: word32
+T_84:
+  Class: Eq_84
+  DataType: word32
+  OrigDataType: word32
+T_85:
+  Class: Eq_85
+  DataType: word32
+  OrigDataType: word32
+T_86:
+  Class: Eq_86
+  DataType: word32
+  OrigDataType: word32
+T_87:
+  Class: Eq_87
+  DataType: word32
+  OrigDataType: word32
+T_88:
+  Class: Eq_88
+  DataType: word32
+  OrigDataType: word32
+T_89:
+  Class: Eq_89
+  DataType: word32
+  OrigDataType: word32
+T_90:
+  Class: Eq_90
+  DataType: word32
+  OrigDataType: word32
+T_91:
+  Class: Eq_91
+  DataType: word32
+  OrigDataType: word32
+T_92:
+  Class: Eq_92
+  DataType: word32
+  OrigDataType: word32
+T_93:
+  Class: Eq_93
+  DataType: word32
+  OrigDataType: word32
+T_94:
+  Class: Eq_94
+  DataType: word32
+  OrigDataType: word32
+T_95:
+  Class: Eq_95
+  DataType: word32
+  OrigDataType: word32
+T_96:
+  Class: Eq_96
+  DataType: word32
+  OrigDataType: word32
+T_97:
+  Class: Eq_97
+  DataType: word32
+  OrigDataType: word32
+T_98:
+  Class: Eq_98
+  DataType: word32
+  OrigDataType: word32
+T_99:
+  Class: Eq_99
+  DataType: word32
+  OrigDataType: word32
+T_100:
+  Class: Eq_100
+  DataType: word32
+  OrigDataType: word32
+T_101:
+  Class: Eq_101
+  DataType: word32
+  OrigDataType: word32
+T_102:
+  Class: Eq_102
+  DataType: word32
+  OrigDataType: word32
+T_103:
+  Class: Eq_103
+  DataType: word32
+  OrigDataType: word32
+T_104:
+  Class: Eq_104
+  DataType: word32
+  OrigDataType: word32
+T_105:
+  Class: Eq_105
+  DataType: word32
+  OrigDataType: word32
+T_106:
+  Class: Eq_106
+  DataType: word32
+  OrigDataType: word32
+T_107:
+  Class: Eq_107
+  DataType: word32
   OrigDataType: (struct 0004 (0 T_30 t0000))
 */
 typedef struct Globals {
 	uint32 dw40208B;	// 40208B
 	char b4020A4;	// 4020A4
 	word32 dw4020F8;	// 4020F8
+	word32 dw40503C;	// 40503C
+	word32 dw405040;	// 405040
+	word32 dw405044;	// 405044
+	word32 dw405048;	// 405048
+	word32 dw40504C;	// 40504C
+	<anonymous> * __imp__GetModuleHandleA;	// 405054
+	<anonymous> * __imp__GetProcAddress;	// 405058
+	<anonymous> * __imp__GetProcessHeap;	// 40505C
+	<anonymous> * __imp__HeapAlloc;	// 405060
+	<anonymous> * __imp__HeapFree;	// 405064
+	word32 dw40506C;	// 40506C
+	word32 dw405070;	// 405070
+	word32 dw405074;	// 405074
+	word32 dw405078;	// 405078
+	word32 dw40507C;	// 40507C
+	word32 dw405080;	// 405080
+	word32 dw405084;	// 405084
+	word32 dw405088;	// 405088
+	word32 dw40508C;	// 40508C
+	word32 dw405090;	// 405090
+	word32 dw405094;	// 405094
+	word32 dw405098;	// 405098
+	word32 dw40509C;	// 40509C
+	word32 dw4050A0;	// 4050A0
+	word32 dw4050A4;	// 4050A4
+	word32 dw4050A8;	// 4050A8
+	word32 dw4050AC;	// 4050AC
+	word32 dw4050B0;	// 4050B0
+	word32 dw4050B4;	// 4050B4
+	word32 dw4050B8;	// 4050B8
+	word32 dw4050BC;	// 4050BC
+	word32 dw4050C0;	// 4050C0
+	word32 dw4050C4;	// 4050C4
+	<anonymous> * __imp__@_InitTermAndUnexPtrs$qv;	// 4050CC
+	<anonymous> * __imp_____CRTL_MEM_UseBorMM;	// 4050D0
+	<anonymous> * __imp_____CRTL_TLS_Alloc;	// 4050D4
+	<anonymous> * __imp_____CRTL_TLS_ExitThread;	// 4050D8
+	<anonymous> * __imp_____CRTL_TLS_Free;	// 4050DC
+	<anonymous> * __imp_____CRTL_TLS_GetValue;	// 4050E0
+	<anonymous> * __imp_____CRTL_TLS_InitThread;	// 4050E4
+	<anonymous> * __imp_____CRTL_TLS_SetValue;	// 4050E8
+	<anonymous> * __imp____argc;	// 4050EC
+	<anonymous> * __imp____argv;	// 4050F0
+	<anonymous> * __imp____argv_default_expand;	// 4050F4
+	<anonymous> * __imp____exitargv;	// 4050F8
+	<anonymous> * __imp____handle_exitargv;	// 4050FC
+	<anonymous> * __imp____handle_setargv;	// 405100
+	<anonymous> * __imp____handle_wexitargv;	// 405104
+	<anonymous> * __imp____handle_wsetargv;	// 405108
+	<anonymous> * __imp____matherr;	// 40510C
+	<anonymous> * __imp____matherrl;	// 405110
+	<anonymous> * __imp____setargv;	// 405114
+	<anonymous> * __imp____startup;	// 405118
+	<anonymous> * __imp____wargv_default_expand;	// 40511C
+	<anonymous> * __imp___memcpy;	// 405120
+	<anonymous> * __imp___printf;	// 405124
 } Eq_1;
 
 typedef struct Eq_2 {

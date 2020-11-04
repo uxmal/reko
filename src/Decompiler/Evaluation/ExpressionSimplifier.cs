@@ -809,8 +809,6 @@ namespace Reko.Evaluation
 
         private Expression? FuseAdjacentMemoryAccesses(DataType dt, Expression[] elems)
         {
-            if (elems[0].ToString().Contains("80497D4"))
-                elems.ToString(); //$DEBUG
             var (access, seg, ea, offset) = AsMemoryAccess(elems[0]);
             if (access == null)
                 return null;

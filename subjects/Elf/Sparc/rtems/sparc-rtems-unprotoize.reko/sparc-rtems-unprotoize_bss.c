@@ -77,13 +77,14 @@ Eq_n g_t2B310 = // 0002B310
 		'\0'
 	};
 word64 g_qw2B400 = 0x00; // 0002B400
-struct Eq_n * g_ptr2B408 = null; // 0002B408
-ptr32 g_ptr2B40C = 0x00; // 0002B40C
+struct Eq_n * exclude_list = null; // 0002B408
+ptr32 _environ = 0x00; // 0002B40C
 byte g_a2B411[] = // 0002B411
 	{
 	};
+word32 _obstack = 0x00; // 0002B61C
 Eq_n g_t2B640 = // 0002B640
 	{
 	};
-char * g_ptr2B760 = null; // 0002B760
-struct Eq_n * g_ptr2B764 = null; // 0002B764
+char * errno = null; // 0002B760
+struct Eq_n * directory_list = null; // 0002B764

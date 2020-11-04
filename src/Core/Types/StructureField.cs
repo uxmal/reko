@@ -30,12 +30,7 @@ namespace Reko.Core.Types
     /// </summary>
 	public class StructureField : Field
 	{
-        public StructureField(int offset, DataType type) : base(type)
-		{
-            this.Offset = offset;
-		}
-
-		public StructureField(int offset, DataType type, string? name) : base(type)
+		public StructureField(int offset, DataType type, string? name = null) : base(type)
 		{
             this.Offset = offset;
             this.name = name;
@@ -100,7 +95,7 @@ namespace Reko.Core.Types
 			return Add(new StructureField(offset, dt));
 		}
 
-		public StructureField Add(int offset, DataType dt, string name)
+		public StructureField Add(int offset, DataType dt, string? name)
 		{
 			return Add(new StructureField(offset, dt, name));
 		}

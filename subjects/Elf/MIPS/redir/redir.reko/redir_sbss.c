@@ -4,8 +4,5 @@
 
 #include "redir.h"
 
-FILE * g_ptr10000AA8 = null; // 10000AA8
-Eq_n g_t10000AAC = // 10000AAC
-	{
-		null
-	};
+word32 logfile = 0x00; // 10000AA8
+word32 log_file = 0x00; // 10000AAC

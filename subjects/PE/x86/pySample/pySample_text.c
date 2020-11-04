@@ -174,7 +174,7 @@ Eq_n fn10001388(Eq_n ecx, Eq_n edx, Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi,
 	Eq_n ebx_n = ebp_n->t0008;
 	ebp_n->tFFFFFFE4 = 0x01;
 	ebp_n->dwFFFFFFFC = 0x00;
-	g_t10003008 = edx;
+	g_t10003008 = (DWORD) edx;
 	ebp_n->dwFFFFFFFC = 0x01;
 	struct Eq_n * esp_n = fp - 8;
 	Eq_n edi_n = ecx;
@@ -276,7 +276,7 @@ l1000147A:
 //      fn10001388
 void fn10001493()
 {
-	g_t10003008 = ~0x00;
+	g_t10003008 = (DWORD) ~0x00;
 }
 
 // 1000149E: Register Eq_n DllMain(Stack Eq_n hModule, Stack Eq_n dwReason, Stack Eq_n lpReserved)

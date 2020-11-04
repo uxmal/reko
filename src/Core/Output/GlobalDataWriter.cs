@@ -123,8 +123,8 @@ namespace Reko.Core.Output
             }
             else
             {
-                formatter.Terminate(";");
-            }
+            formatter.Terminate(";");
+        }
         }
 
         public void WriteGlobalVariable(Address address, DataType dataType, string name)
@@ -171,19 +171,19 @@ namespace Reko.Core.Output
         private bool IsOneLineDeclaration(DataType dataType)
         {
             var dt = dataType.ResolveAs<DataType>();
-            switch (dt)
+            return dt switch
             {
-            case PrimitiveType pt: return !IsLargeBlob(pt);
-            case Pointer _: return true;
-            case MemberPointer _: return true;
-            case StringType _: return true;
-            case VoidType _: return true;
-            case EquivalenceClass eq: return eq.DataType is null || IsOneLineDeclaration(eq.DataType);
-            case TypeReference tr: return tr.Referent is null || IsOneLineDeclaration(tr.Referent);
-            case CodeType _: return true;
-            case FunctionType _: return true;
-            default: return false;
-            }
+                PrimitiveType pt => !IsLargeBlob(pt),
+                Pointer _ => true,
+                MemberPointer _ => true,
+                StringType _ => true,
+                VoidType _ => true,
+                EquivalenceClass eq => eq.DataType is null || IsOneLineDeclaration(eq.DataType),
+                TypeReference tr => tr.Referent is null || IsOneLineDeclaration(tr.Referent),
+                CodeType _ => true,
+                FunctionType _ => true,
+                _ => false,
+            };
         }
 
         public CodeFormatter VisitArray(ArrayType at)

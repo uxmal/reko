@@ -63,7 +63,7 @@ word32 fn100011E9(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, DWORD & ecxOut, ptr3
 		--g_dw10003070;
 	}
 	ecx = (Eq_n) *adjust_fdiv;
-	g_t100033A4 = ecx;
+	g_t100033A4 = (Eq_n) ecx;
 	ptr32 * esp_n = fp - 16;
 	if (dwArg08 == 0x01)
 	{
@@ -150,8 +150,8 @@ l10001384:
 			free(*esp_n);
 			ecx = (Eq_n) *esp_n;
 			Eq_n eax_n = _encoded_null();
-			g_t100033B0 = eax_n;
-			g_t100033B4 = eax_n;
+			g_t100033B0 = (Eq_n) eax_n;
+			g_t100033B4 = (Eq_n) eax_n;
 			esp_n = esp_n + 1;
 		}
 		struct Eq_n * esp_n = esp_n - 4;
@@ -174,7 +174,7 @@ Eq_n fn10001388(Eq_n ecx, Eq_n edx, Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi,
 	Eq_n ebx_n = ebp_n->t0008;
 	ebp_n->tFFFFFFE4 = 0x01;
 	ebp_n->dwFFFFFFFC = 0x00;
-	g_t10003008 = edx;
+	g_t10003008 = (Eq_n) edx;
 	ebp_n->dwFFFFFFFC = 0x01;
 	struct Eq_n * esp_n = fp - 8;
 	Eq_n edi_n = ecx;
@@ -276,7 +276,7 @@ l1000147A:
 //      fn10001388
 void fn10001493()
 {
-	g_t10003008 = ~0x00;
+	g_t10003008 = (Eq_n) ~0x00;
 }
 
 // 1000149E: Register Eq_n DllMain(Stack Eq_n hModule, Stack Eq_n dwReason, Stack Eq_n lpReserved)
@@ -308,9 +308,9 @@ Eq_n fn100015CF(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 		lock();
 		Eq_n ecx_n = esp_n->t0000;
 		ebp_n->dwFFFFFFFC = 0x00;
-		esp_n->t0000 = g_t100033B4;
+		esp_n->t0000 = (Eq_n) g_t100033B4;
 		ebp_n->tFFFFFFE4 = _decode_pointer(esp_n->t0000);
-		esp_n->tFFFFFFFC = g_t100033B0;
+		esp_n->tFFFFFFFC = (Eq_n) g_t100033B0;
 		ebp_n->tFFFFFFE0 = _decode_pointer(esp_n->tFFFFFFFC);
 		esp_n->ptrFFFFFFF8 = ebp_n - 0x20;
 		esp_n->ptrFFFFFFF4 = ebp_n - 0x1C;
@@ -321,12 +321,12 @@ Eq_n fn100015CF(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 		struct Eq_n * esp_n;
 		Eq_n eax_n;
 		encode_pointer();
-		g_t100033B4 = eax_n;
+		g_t100033B4 = (Eq_n) eax_n;
 		esp_n->tFFFFFFFC = ebp_n->tFFFFFFE0;
 		word32 esp_n;
 		Eq_n eax_n;
 		encode_pointer();
-		g_t100033B0 = eax_n;
+		g_t100033B0 = (Eq_n) eax_n;
 		ebp_n->dwFFFFFFFC = ~0x01;
 		fn10001665();
 		esp_n = esp_n + 0x1C;

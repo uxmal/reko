@@ -40,7 +40,7 @@ void __do_global_dtors_aux()
 	ptr32 a6_n = fp - 0x04;
 	if (g_b80002724 == 0x00)
 	{
-		uint32 d0_n = g_dw80002726;
+		uint32 d0_n = dtor_idx.3228;
 		<anonymous> * a2_n[] = g_a80002714;
 		up32 d2_n = 0x00;
 		if (d0_n < 0x00)
@@ -48,11 +48,11 @@ void __do_global_dtors_aux()
 			do
 			{
 				uint32 d0_n = d0_n + 0x01;
-				g_dw80002726 = d0_n;
+				dtor_idx.3228 = d0_n;
 				word32 a0_n;
 				word32 d1_n;
 				a2_n[d0_n]();
-				d0_n = g_dw80002726;
+				d0_n = dtor_idx.3228;
 			} while (d2_n - d0_n > 0x00);
 		}
 		word32 a6_n = deregister_tm_clones();

@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (4005C5 Eq_16 t4005C5) (400620 Eq_19 t400620) (4006B0 Eq_20 t4006B0) (4006C8 (str char) str4006C8) (4006F0 (str char) str4006F0) (400718 (str char) str400718) (600DF8 (arr (ptr64 code)) a600DF8) (600E08 word64 qw600E08) (601020 (arr byte) a601020) (601038 byte b601038))
+Eq_1: (struct "Globals" (4003F6 code t4003F6) (400406 code t400406) (4005C5 Eq_16 t4005C5) (400620 Eq_19 t400620) (4006B0 Eq_20 t4006B0) (4006C8 (str char) str4006C8) (4006F0 (str char) str4006F0) (400718 (str char) str400718) (600DF8 (arr (ptr64 code)) a600DF8) (600E08 word64 qw600E08) (600FE0 (ptr64 code) __gmon_start___GOT) (601000 (ptr64 code) puts_GOT) (601008 (ptr64 code) __libc_start_main_GOT) (601020 (arr byte) a601020) (601038 byte b601038))
 	globals_t (in globals : (ptr64 (struct "Globals")))
 Eq_2: (fn void ())
 	T_2 (in call_gmon_start : ptr64)
@@ -969,6 +969,8 @@ T_226:
   OrigDataType: (struct 0008 (0 T_216 t0000))
 */
 typedef struct Globals {
+	<anonymous> t4003F6;	// 4003F6
+	<anonymous> t400406;	// 400406
 	Eq_16 t4005C5;	// 4005C5
 	Eq_19 t400620;	// 400620
 	Eq_20 t4006B0;	// 4006B0
@@ -977,6 +979,9 @@ typedef struct Globals {
 	char str400718[];	// 400718
 	<anonymous> * a600DF8[];	// 600DF8
 	word64 qw600E08;	// 600E08
+	<anonymous> * __gmon_start___GOT;	// 600FE0
+	<anonymous> * puts_GOT;	// 601000
+	<anonymous> * __libc_start_main_GOT;	// 601008
 	byte a601020[];	// 601020
 	byte b601038;	// 601038
 } Eq_1;

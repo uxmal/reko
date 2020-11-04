@@ -505,6 +505,18 @@ namespace Reko.Core.Types
 
 		public DataType UnifyFunctions(FunctionType a, FunctionType b)
 		{
+            if (!a.ParametersValid && !b.ParametersValid)
+            {
+                return a;
+            }
+            if (!a.ParametersValid)
+            {
+                return b;
+            }
+            if (!b.ParametersValid)
+            {
+                return a;
+            }
 			if (a.Parameters!.Length != b.Parameters!.Length)
 			{
 				return MakeUnion(a, b);

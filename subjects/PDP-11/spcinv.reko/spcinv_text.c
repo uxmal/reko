@@ -4,10 +4,28 @@
 
 #include "spcinv.h"
 
-<anonymous> g_t0000 = <code>; // 0000
-Eq_n g_t0001 = // 0001
+Eq_n t0000 = // 0000
 	{
 		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x0200,
+		0x0200,
+		0x00,
+		0x00,
+		0x12A2,
 		0x00,
 		0x00,
 	};
@@ -17,35 +35,13 @@ Eq_n g_t0002 = // 0002
 		0x00,
 		0x00,
 	};
-Eq_n g_t0003 = // 0003
-	{
-		&g_t000D,
-		
-		{
-			0x00
-		},
-	};
-Eq_n g_t000A = // 000A
-	{
-		0x0E30,
-		0x00,
-		0x05,
-	};
-Eq_n g_t000D = // 000D
-	{
-		
-		{
-			L'\0'
-		},
-	};
-cui16 g_w0024 = 0x00; // 0024
 // 0200: void fn0200(Register Eq_n r5, Register (ptr16 Eq_n) pc)
 void fn0200(Eq_n r5, struct Eq_n * pc)
 {
 	do
 	{
 		PRINT(&g_b0F9A);
-		struct Eq_n * r2_n = &g_t0002;
+		struct Eq_n * r2_n = &t0000.w0002;
 		struct Eq_n * r3_n = null;
 		do
 		{
@@ -68,16 +64,16 @@ void fn0200(Eq_n r5, struct Eq_n * pc)
 			} while (TTYIN(out r0_n));
 			break;
 		}
-		r2_n = &g_t0001;
-		r3_n = (struct Eq_n *) &g_t0001;
+		r2_n = (struct Eq_n *) ((char *) &t0000.w0000 + 1);
+		r3_n = (struct Eq_n *) ((char *) &t0000.w0000 + 1);
 		if (r0_n == 0x49)
 			break;
 		r2_n = null;
-		r3_n = (struct Eq_n *) &g_t0002;
+		r3_n = (struct Eq_n *) &t0000.w0002;
 	} while (r0_n != 0x45);
 	g_ptr0F06 = r2_n;
 	g_ptr0F08 = r3_n;
-	g_w0024 |= 0x1040;
+	t0000.w0024 |= 0x1040;
 	g_w1166 = 0x1100;
 	g_w1168 = 4464;
 	FnSubfn(&g_w1166);
@@ -374,7 +370,7 @@ l0524:
 									if (v38_n == 0x00)
 										goto l0524;
 									++r2_n;
-								} while (r2_n >= &g_t000A);
+								} while (r2_n >= &t0000.w000A);
 								union Eq_n * sp_n = sp_n - 2;
 								*sp_n = (union Eq_n *) r5_n;
 								word16 r0_n;
@@ -1133,7 +1129,7 @@ word16 g_w0BC8 = 0x20; // 0BC8
 //      fn0200
 void fn0BD6()
 {
-	g_ptr0F1A = &g_t0003;
+	g_ptr0F1A = (struct Eq_n *) ((char *) &t0000.w0002 + 1);
 	g_w0B5C = 0x00;
 	g_w0F0E = 0xF800;
 	g_w0F10 = 0xE000;

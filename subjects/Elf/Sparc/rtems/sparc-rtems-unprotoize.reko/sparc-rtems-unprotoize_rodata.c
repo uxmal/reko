@@ -4,10 +4,15 @@
 
 #include "sparc-rtems-unprotoize.h"
 
+word32 _lib_version = 0x01; // 00016EF8
+word32 aux_info_suffix = 0x00016F00; // 00016F04
+word32 save_suffix = 93960; // 00016F10
 Eq_n g_t16F14 = // 00016F14
 	{
 		'\0'
 	};
+word32 hash_mask = 0x01FF; // 00016F40
+word32 other_var_style = 94344; // 00017090
 char g_str17218[] = ""; // 00017218
 char g_str17268[] = "%s: "; // 00017268
 char g_str17270[] = ": %s\n"; // 00017270

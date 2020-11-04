@@ -5,7 +5,7 @@
 #include "test.h"
 
 byte g_b10AF0 = 0x00; // 00010AF0
-Eq_n g_t10AF4 = // 00010AF4
+Eq_n dtor_idx.6258 = // 00010AF4
 	{
 		0
 	};

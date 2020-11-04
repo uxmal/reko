@@ -90,7 +90,7 @@ void _mm_free(real64 (* rdi)[])
 void vec_add(word64 rdi)
 {
 	__align(fp);
-	uint64 rax_n = (uint64) ((uint128) rdi /u g_qw0B00);
+	uint64 rax_n = (uint64) ((uint128) rdi /u double_size.21529);
 	if (rax_n <= 0x00)
 		;
 }

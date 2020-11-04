@@ -57,10 +57,9 @@ namespace Reko.Typing
 
         public void CollectTypes()
         {
-            desc.MeetDataType(program.Globals, factory.CreatePointer(
-                factory.CreateStructureType(),
-                program.Platform.PointerType.BitSize));
-            CollectUserGlobalVariableTypes(store.SegmentTypes);
+            CollectGlobalType();
+            CollectUserGlobalVariableTypes();
+            CollectImageSymbols();
             int cProc = program.Procedures.Count;
             int i = 0;
             foreach (Procedure proc in program.Procedures.Values)
@@ -89,35 +88,79 @@ namespace Reko.Typing
         }
 
         /// <summary>
+        /// Collect the type of the structure containing the global variables.
+        /// </summary>
+        public void CollectGlobalType()
+        {
+            desc.MeetDataType(program.Globals, factory.CreatePointer(
+                            factory.CreateStructureType(),
+                            program.Platform.PointerType.BitSize));
+        }
+
+        /// <summary>
         /// Given a list of user-specified globals, make sure fields are present in
         /// the program
         /// </summary>
         /// <param name="segmentTypes"></param>
-        public void CollectUserGlobalVariableTypes(Dictionary<ImageSegment, StructureType> segmentTypes)
+        public void CollectUserGlobalVariableTypes()
         {
             var deser = program.CreateTypeLibraryDeserializer();
             foreach (var ud in program.User.Globals)
             {
-                var addr = ud.Key;
                 if (ud.Value.DataType != null)
                 {
                     var dt = ud.Value.DataType.Accept(deser);
-                    if (ud.Key.Selector.HasValue)
+                    AddGlobalField(dt, ud.Key, ud.Value.Name);
+                }
+            }
+        }
+
+
+        /// <subject>
+        /// Make sure fields are present for all the image symbols.
+        /// </subject>
+        public void CollectImageSymbols()
+        {
+            foreach (var sym in program.ImageSymbols.Values)
+            {
+                if (sym != null && sym.DataType != null && sym.Address != null &&
+                    sym.Type == SymbolType.Data && !(sym.DataType is UnknownType))
+                {
+                    DataType dtField;
+                    if (sym.DataType.IsWord)
                     {
-                        if (program.SegmentMap.TryFindSegment(ud.Key, out var seg) &&
-                            segmentTypes.TryGetValue(seg, out var structureType))
-                        {
-                            var f = new StructureField((int)ud.Key.Offset, dt, ud.Value.Name);
-                            structureType.Fields.Add(f);
-                        }
+                        var tvField = store.CreateTypeVariable(factory);
+                        tvField.OriginalDataType = sym.DataType;
+                        tvField.DataType = sym.DataType;
+                        dtField = tvField;
                     }
                     else
                     {
-                        var offset = (int) (addr - program.SegmentMap.BaseAddress);
-                        var f = new StructureField(offset, dt, ud.Value.Name);
-                        program.GlobalFields.Fields.Add(f);
+                        dtField = sym.DataType;
                     }
+
+                    AddGlobalField(dtField, sym.Address, sym.Name);
                 }
+            }
+        }
+
+        private void AddGlobalField(DataType dtField, Address address, string? name)
+        {
+            if (address.Selector.HasValue)
+            {
+                if (program.SegmentMap.TryFindSegment(address, out var seg) &&
+                    program.TypeStore.SegmentTypes.TryGetValue(seg, out var structureType))
+                {
+                    var f = new StructureField((int) address.Offset, dtField, name);
+                    structureType.Fields.Add(f);
+                }
+            }
+            else
+            {
+                var offset = (int) address.ToLinear();
+                var f = new StructureField(offset, dtField, name);
+                var ptrGlobals = (Pointer) program.Globals.TypeVariable!.OriginalDataType;
+                ((StructureType)ptrGlobals.Pointee).Fields.Add(f);
             }
         }
 

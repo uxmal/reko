@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (400000 word16 w400000) (40003C (ptr32 Eq_565) ptr40003C) (401731 code t401731) (4020D4 (ptr32 code) ptr4020D4) (4020D8 Eq_187 t4020D8) (4020E0 Eq_183 t4020E0) (4020E4 Eq_187 t4020E4) (4020F0 Eq_183 t4020F0) (403000 ui32 dw403000) (403004 ui32 dw403004) (403010 ui32 dw403010) (403014 word32 dw403014) (403334 word32 dw403334) (403338 word32 dw403338) (403354 byte b403354) (403368 ui32 dw403368) (40336C word32 dw40336C) (403370 ui32 dw403370))
+Eq_1: (struct "Globals" (400000 word16 w400000) (40003C (ptr32 Eq_565) ptr40003C) (401731 code t401731) (402000 (ptr32 code) __imp__GetModuleHandleW) (402004 (ptr32 code) __imp__IsDebuggerPresent) (402008 (ptr32 code) __imp__InitializeSListHead) (40200C (ptr32 code) __imp__GetSystemTimeAsFileTime) (402010 (ptr32 code) __imp__SetUnhandledExceptionFilter) (402014 (ptr32 code) __imp__GetCurrentProcess) (402018 (ptr32 code) __imp__TerminateProcess) (40201C (ptr32 code) __imp__UnhandledExceptionFilter) (402020 (ptr32 code) __imp__GetCurrentThreadId) (402024 (ptr32 code) __imp__GetCurrentProcessId) (402028 (ptr32 code) __imp__QueryPerformanceCounter) (40202C (ptr32 code) __imp__IsProcessorFeaturePresent) (402034 (ptr32 code) __imp__memset) (402038 (ptr32 code) __imp___except_handler4_common) (402040 (ptr32 code) __imp___set_new_mode) (402048 (ptr32 code) __imp___configthreadlocale) (402050 (ptr32 code) __imp____setusermatherr) (402058 (ptr32 code) __imp____p___argv) (40205C (ptr32 code) __imp___cexit) (402060 (ptr32 code) __imp___c_exit) (402064 (ptr32 code) __imp___register_thread_local_exe_atexit_callback) (402068 (ptr32 code) __imp____p___argc) (40206C (ptr32 code) __imp___initterm_e) (402070 (ptr32 code) __imp___set_app_type) (402074 (ptr32 code) __imp___exit) (402078 (ptr32 code) __imp___initialize_onexit_table) (40207C (ptr32 code) __imp___register_onexit_function) (402080 (ptr32 code) __imp___crt_atexit) (402084 (ptr32 code) __imp___controlfp_s) (402088 (ptr32 code) __imp__terminate) (40208C (ptr32 code) __imp___configure_narrow_argv) (402090 (ptr32 code) __imp__exit) (402094 (ptr32 code) __imp___initterm) (402098 (ptr32 code) __imp___get_initial_narrow_environment) (40209C (ptr32 code) __imp___initialize_narrow_environment) (4020A0 (ptr32 code) __imp___seh_filter_exe) (4020A8 (ptr32 code) __imp___set_fmode) (4020AC (ptr32 code) __imp____p__commode) (4020B0 (ptr32 code) __imp____stdio_common_vfprintf) (4020B4 (ptr32 code) __imp____acrt_iob_func) (4020BC (ptr32 code) __imp__driver.dll_1) (4020C0 (ptr32 code) __imp__driver.dll_2) (4020C4 (ptr32 code) __imp__driver.dll_4) (4020C8 (ptr32 code) __imp__driver.dll_3) (4020CC (ptr32 code) __imp__driver.dll_11) (4020D4 (ptr32 code) ptr4020D4) (4020D8 Eq_187 t4020D8) (4020E0 Eq_183 t4020E0) (4020E4 Eq_187 t4020E4) (4020F0 Eq_183 t4020F0) (4025F8 word32 dw4025F8) (4025FC word32 dw4025FC) (402600 word32 dw402600) (402604 word32 dw402604) (402608 word32 dw402608) (40260C word32 dw40260C) (402610 word32 dw402610) (402614 word32 dw402614) (402618 word32 dw402618) (40261C word32 dw40261C) (402620 word32 dw402620) (402624 word32 dw402624) (40262C word32 dw40262C) (402630 word32 dw402630) (402638 word32 dw402638) (402640 word32 dw402640) (402648 word32 dw402648) (402650 word32 dw402650) (402654 word32 dw402654) (402658 word32 dw402658) (40265C word32 dw40265C) (402660 word32 dw402660) (402664 word32 dw402664) (402668 word32 dw402668) (40266C word32 dw40266C) (402670 word32 dw402670) (402674 word32 dw402674) (402678 word32 dw402678) (40267C word32 dw40267C) (402680 word32 dw402680) (402684 word32 dw402684) (402688 word32 dw402688) (40268C word32 dw40268C) (402690 word32 dw402690) (402694 word32 dw402694) (402698 word32 dw402698) (4026A0 word32 dw4026A0) (4026A4 word32 dw4026A4) (4026A8 word32 dw4026A8) (4026AC word32 dw4026AC) (4026B4 word32 dw4026B4) (4026B8 word32 dw4026B8) (4026BC word32 dw4026BC) (4026C0 word32 dw4026C0) (4026C4 word32 dw4026C4) (403000 ui32 dw403000) (403004 ui32 dw403004) (403010 ui32 dw403010) (403014 word32 dw403014) (403334 word32 dw403334) (403338 word32 dw403338) (403354 byte b403354) (403368 ui32 dw403368) (40336C word32 dw40336C) (403370 ui32 dw403370))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_5: (struct "Eq_5" (FFFFFFEC word32 dwFFFFFFEC) (FFFFFFF0 word32 dwFFFFFFF0) (FFFFFFF4 word32 dwFFFFFFF4) (FFFFFFF8 word32 dwFFFFFFF8) (FFFFFFFC word32 dwFFFFFFFC) (0 ptr32 ptr0000))
 	T_5 (in esp_14 : (ptr32 Eq_5))
@@ -55,7 +55,7 @@ Eq_99: (fn (ptr32 Eq_98) (word32, Eq_102, Eq_102, Eq_104, ui32))
 	T_99 (in fn00401980 : ptr32)
 	T_100 (in signature of fn00401980 : void)
 	T_545 (in fn00401980 : ptr32)
-Eq_102: (union "Eq_102" (byte u0) ((ptr32 Eq_1005) u1))
+Eq_102: (union "Eq_102" (byte u0) ((ptr32 Eq_1050) u1))
 	T_102 (in esi : Eq_102)
 	T_103 (in edi : Eq_102)
 	T_106 (in esi : word32)
@@ -347,8 +347,8 @@ Eq_878: (fn void (word32, word32, (ptr32 word32), (ptr32 word32), (ptr32 word32)
 Eq_963: (fn word64 (word32))
 	T_963 (in __xgetbv : ptr32)
 	T_964 (in signature of __xgetbv : void)
-Eq_1005: (struct "Eq_1005" (0 Eq_102 t0000))
-	T_1005
+Eq_1050: (struct "Eq_1050" (0 Eq_102 t0000))
+	T_1050
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -4368,18 +4368,288 @@ T_1004: (in 1<8> : byte)
   OrigDataType: byte
 T_1005:
   Class: Eq_1005
-  DataType: Eq_1005
+  DataType: word32
+  OrigDataType: word32
+T_1006:
+  Class: Eq_1006
+  DataType: word32
+  OrigDataType: word32
+T_1007:
+  Class: Eq_1007
+  DataType: word32
+  OrigDataType: word32
+T_1008:
+  Class: Eq_1008
+  DataType: word32
+  OrigDataType: word32
+T_1009:
+  Class: Eq_1009
+  DataType: word32
+  OrigDataType: word32
+T_1010:
+  Class: Eq_1010
+  DataType: word32
+  OrigDataType: word32
+T_1011:
+  Class: Eq_1011
+  DataType: word32
+  OrigDataType: word32
+T_1012:
+  Class: Eq_1012
+  DataType: word32
+  OrigDataType: word32
+T_1013:
+  Class: Eq_1013
+  DataType: word32
+  OrigDataType: word32
+T_1014:
+  Class: Eq_1014
+  DataType: word32
+  OrigDataType: word32
+T_1015:
+  Class: Eq_1015
+  DataType: word32
+  OrigDataType: word32
+T_1016:
+  Class: Eq_1016
+  DataType: word32
+  OrigDataType: word32
+T_1017:
+  Class: Eq_1017
+  DataType: word32
+  OrigDataType: word32
+T_1018:
+  Class: Eq_1018
+  DataType: word32
+  OrigDataType: word32
+T_1019:
+  Class: Eq_1019
+  DataType: word32
+  OrigDataType: word32
+T_1020:
+  Class: Eq_1020
+  DataType: word32
+  OrigDataType: word32
+T_1021:
+  Class: Eq_1021
+  DataType: word32
+  OrigDataType: word32
+T_1022:
+  Class: Eq_1022
+  DataType: word32
+  OrigDataType: word32
+T_1023:
+  Class: Eq_1023
+  DataType: word32
+  OrigDataType: word32
+T_1024:
+  Class: Eq_1024
+  DataType: word32
+  OrigDataType: word32
+T_1025:
+  Class: Eq_1025
+  DataType: word32
+  OrigDataType: word32
+T_1026:
+  Class: Eq_1026
+  DataType: word32
+  OrigDataType: word32
+T_1027:
+  Class: Eq_1027
+  DataType: word32
+  OrigDataType: word32
+T_1028:
+  Class: Eq_1028
+  DataType: word32
+  OrigDataType: word32
+T_1029:
+  Class: Eq_1029
+  DataType: word32
+  OrigDataType: word32
+T_1030:
+  Class: Eq_1030
+  DataType: word32
+  OrigDataType: word32
+T_1031:
+  Class: Eq_1031
+  DataType: word32
+  OrigDataType: word32
+T_1032:
+  Class: Eq_1032
+  DataType: word32
+  OrigDataType: word32
+T_1033:
+  Class: Eq_1033
+  DataType: word32
+  OrigDataType: word32
+T_1034:
+  Class: Eq_1034
+  DataType: word32
+  OrigDataType: word32
+T_1035:
+  Class: Eq_1035
+  DataType: word32
+  OrigDataType: word32
+T_1036:
+  Class: Eq_1036
+  DataType: word32
+  OrigDataType: word32
+T_1037:
+  Class: Eq_1037
+  DataType: word32
+  OrigDataType: word32
+T_1038:
+  Class: Eq_1038
+  DataType: word32
+  OrigDataType: word32
+T_1039:
+  Class: Eq_1039
+  DataType: word32
+  OrigDataType: word32
+T_1040:
+  Class: Eq_1040
+  DataType: word32
+  OrigDataType: word32
+T_1041:
+  Class: Eq_1041
+  DataType: word32
+  OrigDataType: word32
+T_1042:
+  Class: Eq_1042
+  DataType: word32
+  OrigDataType: word32
+T_1043:
+  Class: Eq_1043
+  DataType: word32
+  OrigDataType: word32
+T_1044:
+  Class: Eq_1044
+  DataType: word32
+  OrigDataType: word32
+T_1045:
+  Class: Eq_1045
+  DataType: word32
+  OrigDataType: word32
+T_1046:
+  Class: Eq_1046
+  DataType: word32
+  OrigDataType: word32
+T_1047:
+  Class: Eq_1047
+  DataType: word32
+  OrigDataType: word32
+T_1048:
+  Class: Eq_1048
+  DataType: word32
+  OrigDataType: word32
+T_1049:
+  Class: Eq_1049
+  DataType: word32
+  OrigDataType: word32
+T_1050:
+  Class: Eq_1050
+  DataType: Eq_1050
   OrigDataType: 
 */
 typedef struct Globals {
 	word16 w400000;	// 400000
 	struct Eq_565 * ptr40003C;	// 40003C
 	<anonymous> t401731;	// 401731
+	<anonymous> * __imp__GetModuleHandleW;	// 402000
+	<anonymous> * __imp__IsDebuggerPresent;	// 402004
+	<anonymous> * __imp__InitializeSListHead;	// 402008
+	<anonymous> * __imp__GetSystemTimeAsFileTime;	// 40200C
+	<anonymous> * __imp__SetUnhandledExceptionFilter;	// 402010
+	<anonymous> * __imp__GetCurrentProcess;	// 402014
+	<anonymous> * __imp__TerminateProcess;	// 402018
+	<anonymous> * __imp__UnhandledExceptionFilter;	// 40201C
+	<anonymous> * __imp__GetCurrentThreadId;	// 402020
+	<anonymous> * __imp__GetCurrentProcessId;	// 402024
+	<anonymous> * __imp__QueryPerformanceCounter;	// 402028
+	<anonymous> * __imp__IsProcessorFeaturePresent;	// 40202C
+	<anonymous> * __imp__memset;	// 402034
+	<anonymous> * __imp___except_handler4_common;	// 402038
+	<anonymous> * __imp___set_new_mode;	// 402040
+	<anonymous> * __imp___configthreadlocale;	// 402048
+	<anonymous> * __imp____setusermatherr;	// 402050
+	<anonymous> * __imp____p___argv;	// 402058
+	<anonymous> * __imp___cexit;	// 40205C
+	<anonymous> * __imp___c_exit;	// 402060
+	<anonymous> * __imp___register_thread_local_exe_atexit_callback;	// 402064
+	<anonymous> * __imp____p___argc;	// 402068
+	<anonymous> * __imp___initterm_e;	// 40206C
+	<anonymous> * __imp___set_app_type;	// 402070
+	<anonymous> * __imp___exit;	// 402074
+	<anonymous> * __imp___initialize_onexit_table;	// 402078
+	<anonymous> * __imp___register_onexit_function;	// 40207C
+	<anonymous> * __imp___crt_atexit;	// 402080
+	<anonymous> * __imp___controlfp_s;	// 402084
+	<anonymous> * __imp__terminate;	// 402088
+	<anonymous> * __imp___configure_narrow_argv;	// 40208C
+	<anonymous> * __imp__exit;	// 402090
+	<anonymous> * __imp___initterm;	// 402094
+	<anonymous> * __imp___get_initial_narrow_environment;	// 402098
+	<anonymous> * __imp___initialize_narrow_environment;	// 40209C
+	<anonymous> * __imp___seh_filter_exe;	// 4020A0
+	<anonymous> * __imp___set_fmode;	// 4020A8
+	<anonymous> * __imp____p__commode;	// 4020AC
+	<anonymous> * __imp____stdio_common_vfprintf;	// 4020B0
+	<anonymous> * __imp____acrt_iob_func;	// 4020B4
+	<anonymous> * __imp__driver.dll_1;	// 4020BC
+	<anonymous> * __imp__driver.dll_2;	// 4020C0
+	<anonymous> * __imp__driver.dll_4;	// 4020C4
+	<anonymous> * __imp__driver.dll_3;	// 4020C8
+	<anonymous> * __imp__driver.dll_11;	// 4020CC
 	<anonymous> * ptr4020D4;	// 4020D4
 	Eq_187 t4020D8;	// 4020D8
 	Eq_183 t4020E0;	// 4020E0
 	Eq_187 t4020E4;	// 4020E4
 	Eq_183 t4020F0;	// 4020F0
+	word32 dw4025F8;	// 4025F8
+	word32 dw4025FC;	// 4025FC
+	word32 dw402600;	// 402600
+	word32 dw402604;	// 402604
+	word32 dw402608;	// 402608
+	word32 dw40260C;	// 40260C
+	word32 dw402610;	// 402610
+	word32 dw402614;	// 402614
+	word32 dw402618;	// 402618
+	word32 dw40261C;	// 40261C
+	word32 dw402620;	// 402620
+	word32 dw402624;	// 402624
+	word32 dw40262C;	// 40262C
+	word32 dw402630;	// 402630
+	word32 dw402638;	// 402638
+	word32 dw402640;	// 402640
+	word32 dw402648;	// 402648
+	word32 dw402650;	// 402650
+	word32 dw402654;	// 402654
+	word32 dw402658;	// 402658
+	word32 dw40265C;	// 40265C
+	word32 dw402660;	// 402660
+	word32 dw402664;	// 402664
+	word32 dw402668;	// 402668
+	word32 dw40266C;	// 40266C
+	word32 dw402670;	// 402670
+	word32 dw402674;	// 402674
+	word32 dw402678;	// 402678
+	word32 dw40267C;	// 40267C
+	word32 dw402680;	// 402680
+	word32 dw402684;	// 402684
+	word32 dw402688;	// 402688
+	word32 dw40268C;	// 40268C
+	word32 dw402690;	// 402690
+	word32 dw402694;	// 402694
+	word32 dw402698;	// 402698
+	word32 dw4026A0;	// 4026A0
+	word32 dw4026A4;	// 4026A4
+	word32 dw4026A8;	// 4026A8
+	word32 dw4026AC;	// 4026AC
+	word32 dw4026B4;	// 4026B4
+	word32 dw4026B8;	// 4026B8
+	word32 dw4026BC;	// 4026BC
+	word32 dw4026C0;	// 4026C0
+	word32 dw4026C4;	// 4026C4
 	ui32 dw403000;	// 403000
 	ui32 dw403004;	// 403004
 	ui32 dw403010;	// 403010
@@ -4448,7 +4718,7 @@ typedef Eq_98 * (Eq_99)(word32, Eq_102, Eq_102, Eq_104, ui32);
 
 typedef union Eq_102 {
 	byte u0;
-	struct Eq_1005 * u1;
+	struct Eq_1050 * u1;
 } Eq_102;
 
 typedef union Eq_104 {
@@ -4669,7 +4939,7 @@ typedef void (Eq_878)(word32, word32, word32 *, word32 *, word32 *, word32 *);
 
 typedef word64 (Eq_963)(word32);
 
-typedef struct Eq_1005 {
+typedef struct Eq_1050 {
 	Eq_102 t0000;	// 0
-} Eq_1005;
+} Eq_1050;
 

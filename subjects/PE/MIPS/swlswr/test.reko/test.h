@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (12000 word32 dw12000) (12004 word32 dw12004) (12008 word32 dw12008) (1200C word32 dw1200C) (12010 word32 dw12010) (12014 word32 dw12014) (12018 word32 dw12018) (1201C word32 dw1201C) (13030 ui32 dw13030) (13034 ui32 dw13034) (13038 byte b13038) (1303C Eq_145 t1303C) (13040 Eq_145 t13040))
+Eq_1: (struct "Globals" (12000 word32 dw12000) (12004 word32 dw12004) (12008 word32 dw12008) (1200C word32 dw1200C) (12010 word32 dw12010) (12014 word32 dw12014) (12018 word32 dw12018) (1201C word32 dw1201C) (1205C word32 dw1205C) (12060 word32 dw12060) (12064 word32 dw12064) (12068 word32 dw12068) (1206C word32 dw1206C) (12070 word32 dw12070) (12074 word32 dw12074) (12078 word32 dw12078) (1207C word32 dw1207C) (12080 word32 dw12080) (12084 word32 dw12084) (13000 (ptr32 code) __imp__COREDLL.dll_1044) (13004 (ptr32 code) __imp__COREDLL.dll_1346) (13008 (ptr32 code) __imp__COREDLL.dll_1047) (1300C (ptr32 code) __imp__COREDLL.dll_1645) (13010 (ptr32 code) __imp__COREDLL.dll_87) (13014 (ptr32 code) __imp__COREDLL.dll_2696) (13018 (ptr32 code) __imp__COREDLL.dll_1018) (1301C (ptr32 code) __imp__COREDLL.dll_1054) (13020 (ptr32 code) __imp__COREDLL.dll_1041) (13024 (ptr32 code) __imp__COREDLL.dll_1049) (13028 (ptr32 code) __imp__COREDLL.dll_544) (13030 ui32 dw13030) (13034 ui32 dw13034) (13038 byte b13038) (1303C Eq_145 t1303C) (13040 Eq_145 t13040))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_3: (fn (ptr32 void) ((ptr32 void), int32, Eq_7))
 	T_3 (in memset : ptr32)
@@ -1884,6 +1884,50 @@ T_428: (in fn0001152C() == 0<32> : bool)
   Class: Eq_428
   DataType: bool
   OrigDataType: bool
+T_429:
+  Class: Eq_429
+  DataType: word32
+  OrigDataType: word32
+T_430:
+  Class: Eq_430
+  DataType: word32
+  OrigDataType: word32
+T_431:
+  Class: Eq_431
+  DataType: word32
+  OrigDataType: word32
+T_432:
+  Class: Eq_432
+  DataType: word32
+  OrigDataType: word32
+T_433:
+  Class: Eq_433
+  DataType: word32
+  OrigDataType: word32
+T_434:
+  Class: Eq_434
+  DataType: word32
+  OrigDataType: word32
+T_435:
+  Class: Eq_435
+  DataType: word32
+  OrigDataType: word32
+T_436:
+  Class: Eq_436
+  DataType: word32
+  OrigDataType: word32
+T_437:
+  Class: Eq_437
+  DataType: word32
+  OrigDataType: word32
+T_438:
+  Class: Eq_438
+  DataType: word32
+  OrigDataType: word32
+T_439:
+  Class: Eq_439
+  DataType: word32
+  OrigDataType: word32
 */
 typedef struct Globals {
 	word32 dw12000;	// 12000
@@ -1894,6 +1938,28 @@ typedef struct Globals {
 	word32 dw12014;	// 12014
 	word32 dw12018;	// 12018
 	word32 dw1201C;	// 1201C
+	word32 dw1205C;	// 1205C
+	word32 dw12060;	// 12060
+	word32 dw12064;	// 12064
+	word32 dw12068;	// 12068
+	word32 dw1206C;	// 1206C
+	word32 dw12070;	// 12070
+	word32 dw12074;	// 12074
+	word32 dw12078;	// 12078
+	word32 dw1207C;	// 1207C
+	word32 dw12080;	// 12080
+	word32 dw12084;	// 12084
+	<anonymous> * __imp__COREDLL.dll_1044;	// 13000
+	<anonymous> * __imp__COREDLL.dll_1346;	// 13004
+	<anonymous> * __imp__COREDLL.dll_1047;	// 13008
+	<anonymous> * __imp__COREDLL.dll_1645;	// 1300C
+	<anonymous> * __imp__COREDLL.dll_87;	// 13010
+	<anonymous> * __imp__COREDLL.dll_2696;	// 13014
+	<anonymous> * __imp__COREDLL.dll_1018;	// 13018
+	<anonymous> * __imp__COREDLL.dll_1054;	// 1301C
+	<anonymous> * __imp__COREDLL.dll_1041;	// 13020
+	<anonymous> * __imp__COREDLL.dll_1049;	// 13024
+	<anonymous> * __imp__COREDLL.dll_544;	// 13028
 	ui32 dw13030;	// 13030
 	ui32 dw13034;	// 13034
 	byte b13038;	// 13038

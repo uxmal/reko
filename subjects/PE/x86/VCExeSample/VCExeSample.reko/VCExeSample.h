@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (4020C8 (str char) str4020C8) (4020D0 (str char) str4020D0) (4020DC (str char) str4020DC) (4020E0 (str char) str4020E0) (4020E4 (str char) str4020E4) (4020E8 (str char) str4020E8) (4020EC real32 r4020EC) (4020F0 real32 r4020F0) (4020F4 real32 r4020F4) (4020F8 real64 r4020F8) (402100 real64 r402100) (403018 cdecl_class_ptr gbl_c) (40301C nested_structs_type gbl_nested_structs) (40302C uint32 dw40302C) (403030 uint32 dw403030) (403034 (ptr32 thiscall_class) gbl_thiscall))
+Eq_1: (struct "Globals" (402000 (ptr32 code) __imp__UnhandledExceptionFilter) (402004 (ptr32 code) __imp__GetCurrentProcess) (402008 (ptr32 code) __imp__TerminateProcess) (40200C (ptr32 code) __imp__GetSystemTimeAsFileTime) (402010 (ptr32 code) __imp__GetCurrentProcessId) (402014 (ptr32 code) __imp__GetCurrentThreadId) (402018 (ptr32 code) __imp__GetTickCount) (40201C (ptr32 code) __imp__QueryPerformanceCounter) (402020 (ptr32 code) __imp__SetUnhandledExceptionFilter) (402024 (ptr32 code) __imp__InterlockedCompareExchange) (402028 (ptr32 code) __imp__Sleep) (40202C (ptr32 code) __imp__InterlockedExchange) (402030 (ptr32 code) __imp__IsDebuggerPresent) (402038 (ptr32 code) __imp____p__fmode) (40203C (ptr32 code) __imp___encode_pointer) (402040 (ptr32 code) __imp____set_app_type) (402044 (ptr32 code) __imp__?terminate@@YAXXZ) (402048 (ptr32 code) __imp___unlock) (40204C (ptr32 code) __imp____p__commode) (402050 (ptr32 code) __imp___lock) (402054 (ptr32 code) __imp___onexit) (402058 (ptr32 code) __imp___decode_pointer) (40205C (ptr32 code) __imp___except_handler4_common) (402060 (ptr32 code) __imp___invoke_watson) (402064 (ptr32 code) __imp___controlfp_s) (402068 (ptr32 code) __imp___crt_debugger_hook) (40206C (ptr32 code) __imp___adjust_fdiv) (402070 (ptr32 code) __imp____setusermatherr) (402074 (ptr32 code) __imp___configthreadlocale) (402078 (ptr32 code) __imp___initterm_e) (40207C (ptr32 code) __imp___initterm) (402080 (ptr32 code) __imp____initenv) (402084 (ptr32 code) __imp__exit) (402088 (ptr32 code) __imp___XcptFilter) (40208C (ptr32 code) __imp___exit) (402090 (ptr32 code) __imp___cexit) (402094 (ptr32 code) __imp____getmainargs) (402098 (ptr32 code) __imp___amsg_exit) (40209C (ptr32 code) __imp____dllonexit) (4020A0 (ptr32 code) __imp__printf) (4020C8 (str char) str4020C8) (4020D0 (str char) str4020D0) (4020DC (str char) str4020DC) (4020E0 (str char) str4020E0) (4020E4 (str char) str4020E4) (4020E8 (str char) str4020E8) (4020EC real32 r4020EC) (4020F0 real32 r4020F0) (4020F4 real32 r4020F4) (4020F8 real64 r4020F8) (402100 real64 r402100) (402210 word32 dw402210) (402214 word32 dw402214) (402218 word32 dw402218) (40221C word32 dw40221C) (402220 word32 dw402220) (402224 word32 dw402224) (402228 word32 dw402228) (40222C word32 dw40222C) (402230 word32 dw402230) (402234 word32 dw402234) (402238 word32 dw402238) (40223C word32 dw40223C) (402240 word32 dw402240) (402248 word32 dw402248) (40224C word32 dw40224C) (402250 word32 dw402250) (402254 word32 dw402254) (402258 word32 dw402258) (40225C word32 dw40225C) (402260 word32 dw402260) (402264 word32 dw402264) (402268 word32 dw402268) (40226C word32 dw40226C) (402270 word32 dw402270) (402274 word32 dw402274) (402278 word32 dw402278) (40227C word32 dw40227C) (402280 word32 dw402280) (402284 word32 dw402284) (402288 word32 dw402288) (40228C word32 dw40228C) (402290 word32 dw402290) (402294 word32 dw402294) (402298 word32 dw402298) (40229C word32 dw40229C) (4022A0 word32 dw4022A0) (4022A4 word32 dw4022A4) (4022A8 word32 dw4022A8) (4022AC word32 dw4022AC) (4022B0 word32 dw4022B0) (403018 cdecl_class_ptr gbl_c) (40301C nested_structs_type gbl_nested_structs) (40302C uint32 dw40302C) (403030 uint32 dw403030) (403034 (ptr32 thiscall_class) gbl_thiscall))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_5: (fn void ((ptr32 char), int32, (ptr32 char), real32))
 	T_5 (in test1 : ptr32)
@@ -183,12 +183,12 @@ Eq_265: nested_structs_type
 	T_265 (in 0040301C : ptr32)
 Eq_268: nested_struct
 	T_268 (in 00403020 : ptr32)
-Eq_279: (struct "nested_struct" (0 int32 b) (4 int32 c))
-	T_279
-Eq_280: (struct "nested_structs_type" 0010 (0 int32 a) (4 nested_struct str) (C int32 d))
-	T_280
-Eq_281: (struct "nested_struct" (0 int32 b) (4 int32 c))
-	T_281
+Eq_319: (struct "nested_struct" (0 int32 b) (4 int32 c))
+	T_319
+Eq_320: (struct "nested_structs_type" 0010 (0 int32 a) (4 nested_struct str) (C int32 d))
+	T_320
+Eq_321: (struct "nested_struct" (0 int32 b) (4 int32 c))
+	T_321
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -1304,18 +1304,218 @@ T_278: (in d : real64)
   OrigDataType: real64
 T_279:
   Class: Eq_279
-  DataType: Eq_279
-  OrigDataType: 
+  DataType: word32
+  OrigDataType: word32
 T_280:
   Class: Eq_280
-  DataType: Eq_280
-  OrigDataType: 
+  DataType: word32
+  OrigDataType: word32
 T_281:
   Class: Eq_281
-  DataType: Eq_281
+  DataType: word32
+  OrigDataType: word32
+T_282:
+  Class: Eq_282
+  DataType: word32
+  OrigDataType: word32
+T_283:
+  Class: Eq_283
+  DataType: word32
+  OrigDataType: word32
+T_284:
+  Class: Eq_284
+  DataType: word32
+  OrigDataType: word32
+T_285:
+  Class: Eq_285
+  DataType: word32
+  OrigDataType: word32
+T_286:
+  Class: Eq_286
+  DataType: word32
+  OrigDataType: word32
+T_287:
+  Class: Eq_287
+  DataType: word32
+  OrigDataType: word32
+T_288:
+  Class: Eq_288
+  DataType: word32
+  OrigDataType: word32
+T_289:
+  Class: Eq_289
+  DataType: word32
+  OrigDataType: word32
+T_290:
+  Class: Eq_290
+  DataType: word32
+  OrigDataType: word32
+T_291:
+  Class: Eq_291
+  DataType: word32
+  OrigDataType: word32
+T_292:
+  Class: Eq_292
+  DataType: word32
+  OrigDataType: word32
+T_293:
+  Class: Eq_293
+  DataType: word32
+  OrigDataType: word32
+T_294:
+  Class: Eq_294
+  DataType: word32
+  OrigDataType: word32
+T_295:
+  Class: Eq_295
+  DataType: word32
+  OrigDataType: word32
+T_296:
+  Class: Eq_296
+  DataType: word32
+  OrigDataType: word32
+T_297:
+  Class: Eq_297
+  DataType: word32
+  OrigDataType: word32
+T_298:
+  Class: Eq_298
+  DataType: word32
+  OrigDataType: word32
+T_299:
+  Class: Eq_299
+  DataType: word32
+  OrigDataType: word32
+T_300:
+  Class: Eq_300
+  DataType: word32
+  OrigDataType: word32
+T_301:
+  Class: Eq_301
+  DataType: word32
+  OrigDataType: word32
+T_302:
+  Class: Eq_302
+  DataType: word32
+  OrigDataType: word32
+T_303:
+  Class: Eq_303
+  DataType: word32
+  OrigDataType: word32
+T_304:
+  Class: Eq_304
+  DataType: word32
+  OrigDataType: word32
+T_305:
+  Class: Eq_305
+  DataType: word32
+  OrigDataType: word32
+T_306:
+  Class: Eq_306
+  DataType: word32
+  OrigDataType: word32
+T_307:
+  Class: Eq_307
+  DataType: word32
+  OrigDataType: word32
+T_308:
+  Class: Eq_308
+  DataType: word32
+  OrigDataType: word32
+T_309:
+  Class: Eq_309
+  DataType: word32
+  OrigDataType: word32
+T_310:
+  Class: Eq_310
+  DataType: word32
+  OrigDataType: word32
+T_311:
+  Class: Eq_311
+  DataType: word32
+  OrigDataType: word32
+T_312:
+  Class: Eq_312
+  DataType: word32
+  OrigDataType: word32
+T_313:
+  Class: Eq_313
+  DataType: word32
+  OrigDataType: word32
+T_314:
+  Class: Eq_314
+  DataType: word32
+  OrigDataType: word32
+T_315:
+  Class: Eq_315
+  DataType: word32
+  OrigDataType: word32
+T_316:
+  Class: Eq_316
+  DataType: word32
+  OrigDataType: word32
+T_317:
+  Class: Eq_317
+  DataType: word32
+  OrigDataType: word32
+T_318:
+  Class: Eq_318
+  DataType: word32
+  OrigDataType: word32
+T_319:
+  Class: Eq_319
+  DataType: Eq_319
+  OrigDataType: 
+T_320:
+  Class: Eq_320
+  DataType: Eq_320
+  OrigDataType: 
+T_321:
+  Class: Eq_321
+  DataType: Eq_321
   OrigDataType: 
 */
 typedef struct Globals {
+	<anonymous> * __imp__UnhandledExceptionFilter;	// 402000
+	<anonymous> * __imp__GetCurrentProcess;	// 402004
+	<anonymous> * __imp__TerminateProcess;	// 402008
+	<anonymous> * __imp__GetSystemTimeAsFileTime;	// 40200C
+	<anonymous> * __imp__GetCurrentProcessId;	// 402010
+	<anonymous> * __imp__GetCurrentThreadId;	// 402014
+	<anonymous> * __imp__GetTickCount;	// 402018
+	<anonymous> * __imp__QueryPerformanceCounter;	// 40201C
+	<anonymous> * __imp__SetUnhandledExceptionFilter;	// 402020
+	<anonymous> * __imp__InterlockedCompareExchange;	// 402024
+	<anonymous> * __imp__Sleep;	// 402028
+	<anonymous> * __imp__InterlockedExchange;	// 40202C
+	<anonymous> * __imp__IsDebuggerPresent;	// 402030
+	<anonymous> * __imp____p__fmode;	// 402038
+	<anonymous> * __imp___encode_pointer;	// 40203C
+	<anonymous> * __imp____set_app_type;	// 402040
+	<anonymous> * __imp__?terminate@@YAXXZ;	// 402044
+	<anonymous> * __imp___unlock;	// 402048
+	<anonymous> * __imp____p__commode;	// 40204C
+	<anonymous> * __imp___lock;	// 402050
+	<anonymous> * __imp___onexit;	// 402054
+	<anonymous> * __imp___decode_pointer;	// 402058
+	<anonymous> * __imp___except_handler4_common;	// 40205C
+	<anonymous> * __imp___invoke_watson;	// 402060
+	<anonymous> * __imp___controlfp_s;	// 402064
+	<anonymous> * __imp___crt_debugger_hook;	// 402068
+	<anonymous> * __imp___adjust_fdiv;	// 40206C
+	<anonymous> * __imp____setusermatherr;	// 402070
+	<anonymous> * __imp___configthreadlocale;	// 402074
+	<anonymous> * __imp___initterm_e;	// 402078
+	<anonymous> * __imp___initterm;	// 40207C
+	<anonymous> * __imp____initenv;	// 402080
+	<anonymous> * __imp__exit;	// 402084
+	<anonymous> * __imp___XcptFilter;	// 402088
+	<anonymous> * __imp___exit;	// 40208C
+	<anonymous> * __imp___cexit;	// 402090
+	<anonymous> * __imp____getmainargs;	// 402094
+	<anonymous> * __imp___amsg_exit;	// 402098
+	<anonymous> * __imp____dllonexit;	// 40209C
+	<anonymous> * __imp__printf;	// 4020A0
 	char str4020C8[];	// 4020C8
 	char str4020D0[];	// 4020D0
 	char str4020DC[];	// 4020DC
@@ -1327,6 +1527,46 @@ typedef struct Globals {
 	real32 r4020F4;	// 4020F4
 	real64 r4020F8;	// 4020F8
 	real64 r402100;	// 402100
+	word32 dw402210;	// 402210
+	word32 dw402214;	// 402214
+	word32 dw402218;	// 402218
+	word32 dw40221C;	// 40221C
+	word32 dw402220;	// 402220
+	word32 dw402224;	// 402224
+	word32 dw402228;	// 402228
+	word32 dw40222C;	// 40222C
+	word32 dw402230;	// 402230
+	word32 dw402234;	// 402234
+	word32 dw402238;	// 402238
+	word32 dw40223C;	// 40223C
+	word32 dw402240;	// 402240
+	word32 dw402248;	// 402248
+	word32 dw40224C;	// 40224C
+	word32 dw402250;	// 402250
+	word32 dw402254;	// 402254
+	word32 dw402258;	// 402258
+	word32 dw40225C;	// 40225C
+	word32 dw402260;	// 402260
+	word32 dw402264;	// 402264
+	word32 dw402268;	// 402268
+	word32 dw40226C;	// 40226C
+	word32 dw402270;	// 402270
+	word32 dw402274;	// 402274
+	word32 dw402278;	// 402278
+	word32 dw40227C;	// 40227C
+	word32 dw402280;	// 402280
+	word32 dw402284;	// 402284
+	word32 dw402288;	// 402288
+	word32 dw40228C;	// 40228C
+	word32 dw402290;	// 402290
+	word32 dw402294;	// 402294
+	word32 dw402298;	// 402298
+	word32 dw40229C;	// 40229C
+	word32 dw4022A0;	// 4022A0
+	word32 dw4022A4;	// 4022A4
+	word32 dw4022A8;	// 4022A8
+	word32 dw4022AC;	// 4022AC
+	word32 dw4022B0;	// 4022B0
 	cdecl_class_ptr gbl_c;	// 403018
 	nested_structs_type gbl_nested_structs;	// 40301C
 	uint32 dw40302C;	// 40302C
@@ -1495,16 +1735,16 @@ typedef nested_struct Eq_268;
 typedef struct nested_struct {
 	int32 b;	// 0
 	int32 c;	// 4
-} Eq_279;
+} Eq_319;
 
 typedef struct nested_structs_type {	// size: 16 10
 	int32 a;	// 0
 	nested_struct str;	// 4
 	int32 d;	// C
-} Eq_280;
+} Eq_320;
 
 typedef struct nested_struct {
 	int32 b;	// 0
 	int32 c;	// 4
-} Eq_281;
+} Eq_321;
 
