@@ -209,13 +209,13 @@ namespace Reko.Arch.RiscV
 
         private RegisterOperand GetRegister(uint wInstr, int bitPos)
         {
-            var reg = arch.GetRegister((int)(wInstr >> bitPos) & 0x1F);
+            var reg = arch.GetRegister((int)(wInstr >> bitPos) & 0x1F)!;
             return new RegisterOperand(reg);
         }
 
         private RegisterOperand GetFpuRegister(uint wInstr, int bitPos)
         {
-            var reg = arch.GetRegister(32 + ((int)(wInstr >> bitPos) & 0x1F));
+            var reg = arch.GetRegister(32 + ((int)(wInstr >> bitPos) & 0x1F))!;
             return new RegisterOperand(reg);
         }
 
@@ -431,7 +431,7 @@ namespace Reko.Arch.RiscV
             return (u, d) =>
             {
                 var iReg = (int) regMask.Read(u);
-                var reg = new RegisterOperand(d.arch.GetRegister(iReg));
+                var reg = new RegisterOperand(d.arch.GetRegister(iReg)!);
                 d.state.ops.Add(reg);
                 return true;
             };
@@ -448,7 +448,7 @@ namespace Reko.Arch.RiscV
                 var iReg = (int) regMask.Read(u);
                 if (iReg == 0)
                     return false;
-                var reg = new RegisterOperand(d.arch.GetRegister(iReg));
+                var reg = new RegisterOperand(d.arch.GetRegister(iReg)!);
                 d.state.ops.Add(reg);
                 return true;
             };
@@ -484,7 +484,7 @@ namespace Reko.Arch.RiscV
             return (u, d) =>
             {
                 var iReg = compressedRegs[regMask.Read(u)];
-                var reg = new RegisterOperand(d.arch.GetRegister(iReg));
+                var reg = new RegisterOperand(d.arch.GetRegister(iReg)!);
                 d.state.ops.Add(reg);
                 return true;
             };
@@ -654,7 +654,7 @@ namespace Reko.Arch.RiscV
 
                 d.state.ops.Add(new MemoryOperand(
                     dt,
-                    d.arch.GetRegister(iBase),
+                    d.arch.GetRegister(iBase)!,
                     uOffset));
                 return true;
             };
@@ -675,7 +675,7 @@ namespace Reko.Arch.RiscV
 
                 d.state.ops.Add(new MemoryOperand(
                     dt,
-                    d.arch.GetRegister(iBase),
+                    d.arch.GetRegister(iBase)!,
                     uOffset));
                 return true;
             };
@@ -695,7 +695,7 @@ namespace Reko.Arch.RiscV
 
                 d.state.ops.Add(new MemoryOperand(
                     dt,
-                    d.arch.GetRegister(iBase),
+                    d.arch.GetRegister(iBase)!,
                     uOffset));
                 return true;
             };
@@ -1094,32 +1094,32 @@ namespace Reko.Arch.RiscV
                     Instr(Mnemonic.c_addi4spn, Rc(2), Imm((7,4), (11,2), (5, 1),(6, 1), (0,2))),
                     Instr(Mnemonic.invalid, InstrClass.Invalid|InstrClass.Zero)),
                 WordSize(
-                    rv32: Instr(Mnemonic.c_fld, Fc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3))),
-                    rv64: Instr(Mnemonic.c_fld, Fc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3))),
+                    rv32: Instr(Mnemonic.c_fld, Fc(2), Memc(PrimitiveType.Real64, 7, (5,2), (10, 3))),
+                    rv64: Instr(Mnemonic.c_fld, Fc(2), Memc(PrimitiveType.Real64, 7, (5,2), (10, 3))),
                     rv128: Nyi("lq")),
-                Instr(Mnemonic.c_lw, Rc(7), Memc(PrimitiveType.Word32, 2, (5,1), (10,3), (6,1))),
+                Instr(Mnemonic.c_lw, Rc(2), Memc(PrimitiveType.Word32, 7, (5,1), (10,3), (6,1))),
                 WordSize(
-                    rv32: Instr(Mnemonic.c_flw, Fc(7), Memc(PrimitiveType.Real32, 2, (5,1), (10,3), (6,1))),
-                    rv64: Instr(Mnemonic.c_ld, Rc(7), Memc(PrimitiveType.Word64, 2, (5,2), (10, 3))),
-                    rv128: Instr(Mnemonic.c_ld, Rc(7), Memc(PrimitiveType.Word64, 2, (5,2), (10, 3)))),
+                    rv32: Instr(Mnemonic.c_flw, Fc(2), Memc(PrimitiveType.Real32, 7, (5,1), (10,3), (6,1))),
+                    rv64: Instr(Mnemonic.c_ld, Rc(2), Memc(PrimitiveType.Word64, 7, (5,2), (10, 3))),
+                    rv128: Instr(Mnemonic.c_ld, Rc(2), Memc(PrimitiveType.Word64, 7, (5,2), (10, 3)))),
 
                 invalid, // Nyi("reserved"),
                 WordSize(
-                    rv32: Instr(Mnemonic.c_fsd, Fc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3))),
-                    rv64: Instr(Mnemonic.c_fsd, Fc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3))),
+                    rv32: Instr(Mnemonic.c_fsd, Fc(2), Memc(PrimitiveType.Real64, 7, (5,2), (10, 3))),
+                    rv64: Instr(Mnemonic.c_fsd, Fc(2), Memc(PrimitiveType.Real64, 7, (5,2), (10, 3))),
                     rv128: Nyi("sq")),
-                Instr(Mnemonic.c_sw, Rc(7), Memc(PrimitiveType.Word32, 2, (5,1), (10,3), (6,1))),
+                Instr(Mnemonic.c_sw, Rc(2), Memc(PrimitiveType.Word32, 7, (5,1), (10,3), (6,1))),
                 WordSize(
-                    rv32: Instr(Mnemonic.c_fsw, Rc(7), Memc(PrimitiveType.Word32, 2, (5,1), (10,3), (6,1))),
-                    rv64: Instr(Mnemonic.c_sd, Rc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3))),
-                    rv128: Instr(Mnemonic.c_sd, Rc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3)))),
+                    rv32: Instr(Mnemonic.c_fsw, Rc(2), Memc(PrimitiveType.Word32, 7, (5,1), (10,3), (6,1))),
+                    rv64: Instr(Mnemonic.c_sd, Rc(2), Memc(PrimitiveType.Real64, 7, (5,2), (10, 3))),
+                    rv128: Instr(Mnemonic.c_sd, Rc(2), Memc(PrimitiveType.Real64, 7, (5,2), (10, 3)))),
             };
 
             var bf_12_1_2_5 = Bf((12, 1), (2, 5));
 
             var compressed1 = new Decoder[8]
             {
-                Select((7,5), Eq0, "c.addi",
+                Select((7,5), Eq0, "  c.addi",
                     Select(u => u == 0x0001, 
                         Instr(Mnemonic.c_nop, InstrClass.Linear|InstrClass.Padding),
                         invalid),
@@ -1165,8 +1165,8 @@ namespace Reko.Arch.RiscV
                     rv32: Instr(Mnemonic.c_fldsp, F(2), ImmSh(3, (12,1),(7,3),(10,3))),
                     rv64: Instr(Mnemonic.c_fldsp, F(2), ImmSh(3, (12,1),(7,3),(10,3))),
                     rv128: Instr(Mnemonic.c_lqsp, R_nz(7), ImmSh(4, (2, 4),(12, 1),(6,1)))),
-                Instr(Mnemonic.c_lwsp, R(2), ImmSh(2, (12,1),(7,3),(10,3))),
-                Instr(Mnemonic.c_ldsp, R(2), ImmSh(3, (12,1),(7,3),(10,3))),
+                Instr(Mnemonic.c_lwsp, R_nz(7), ImmSh(2, (12,1),(2,2),(4,3))),
+                Instr(Mnemonic.c_ldsp, R_nz(7), ImmSh(3, (12,1),(2,3),(5,2))),
 
                 new MaskDecoder(12, 1,  "",
                     Select((2, 5), u => u == 0, "",
@@ -1181,7 +1181,7 @@ namespace Reko.Arch.RiscV
                     rv32: Instr(Mnemonic.c_fsdsp, F(2), ImmSh(3, (7,3), (10,3))),
                     rv64: Instr(Mnemonic.c_fsdsp, F(2), ImmSh(3, (7,3), (10,3))),
                     rv128:Nyi("sqsp")),
-                Instr(Mnemonic.c_swsp, R(2), ImmSh(2, (7,3),(10,3))),
+                Instr(Mnemonic.c_swsp, R(2), ImmSh(2, (7,2),(9,4))),
                 Instr(Mnemonic.c_sdsp, R(2), ImmSh(3, (7,3),(10,3))),
             };
 
