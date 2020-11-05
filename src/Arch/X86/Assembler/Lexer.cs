@@ -305,24 +305,41 @@ namespace Reko.Arch.X86.Assembler
 							return Token.INTEGER;
 
 						if (ch == 'x' || ch == 'X')
-						{
-							rdr.Read();
-							ch = rdr.Peek();
-							while ("0123456789abcdefABCDEF".IndexOf((char) ch) >= 0)
-							{
-								sb.Append((char) ch);
-								rdr.Read();
-								ch = rdr.Peek();
-							}
-							integer = Convert.ToInt32(sb.ToString(), 16);
-							return Token.INTEGER;
-						}
-						else if (Char.IsDigit((char)ch))
+                        {
+                            rdr.Read();
+                            ch = rdr.Peek();
+                            while (IsHexDigit(ch))
+                            {
+                                sb.Append((char) ch);
+                                rdr.Read();
+                                ch = rdr.Peek();
+                            }
+                            integer = Convert.ToInt32(sb.ToString(), 16);
+                            return Token.INTEGER;
+                        }
+                        else if (Char.IsDigit((char)ch))
 						{
 							sb.Append((char)ch);
 							rdr.Read();
 						}
-						else
+                        else if (IsHexDigit(ch))
+                        {
+                            sb.Append((char) ch);
+                            rdr.Read();
+                            ch = rdr.Peek();
+                            while (IsHexDigit(ch))
+                            {
+                                sb.Append((char) ch);
+                                rdr.Read();
+                                ch = rdr.Peek();
+                            }
+                            if (ch != 'h' && ch != 'H')
+                                return Token.ERR;
+                            rdr.Read();
+                            integer = Convert.ToInt32(sb.ToString(), 16);
+                            return Token.INTEGER;
+                        }
+                        else
 						{
 							integer = Convert.ToInt32(sb.ToString(), 16);
 							return Token.INTEGER;
@@ -336,7 +353,33 @@ namespace Reko.Arch.X86.Assembler
 						rdr.Read();
 						ch = rdr.Peek();
 					}
-					integer = Convert.ToInt32(sb.ToString(), 10);
+                    if (IsHexDigit(ch))
+                    {
+                        // Expect an 'h' after this hex number.
+                        sb.Append((char) ch);
+                        rdr.Read();
+                        ch = rdr.Peek();
+                        while (IsHexDigit((char) ch))
+                        {
+                            sb.Append((char) ch);
+                            rdr.Read();
+                            ch = rdr.Peek();
+                        }
+                        if (ch != 'h' && ch != 'H')
+                        {
+                            return Token.ERR;
+                        }
+                        rdr.Read();
+                        integer = Convert.ToInt32(sb.ToString(), 16);
+                        return Token.INTEGER;
+                    }
+                    else if (ch == 'h' || ch == 'H')
+                    {
+                        rdr.Read();
+                        integer = Convert.ToInt32(sb.ToString(), 16);
+                        return Token.INTEGER;
+                    }
+                    integer = Convert.ToInt32(sb.ToString(), 10);
 					return Token.INTEGER;
 				}
 				if (Char.IsLetter((char)ch) || IdentifierCharacters.IndexOf((char)ch) >= 0)
@@ -359,7 +402,12 @@ namespace Reko.Arch.X86.Assembler
 			}
 		}
 
-		public Token GetToken()
+        private static bool IsHexDigit(int ch)
+        {
+            return "0123456789abcdefABCDEF".IndexOf((char) ch) >= 0;
+        }
+
+        public Token GetToken()
 		{
 			if (tok != Token.EOFile)
 			{
