@@ -130,7 +130,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
             OperandParser opp = Create16BitParser("[ebp+0Ch]");
             ParsedOperand po = opp.ParseOperand();
             var mop = (MemoryOperand) po.Operand;
-            Assert.AreEqual("021E", mop.ToString(MachineInstructionRendererOptions.Default));
+            Assert.AreEqual("[ebp+0C]", mop.ToString(MachineInstructionRendererOptions.Default));
         }
 
         [Test]
