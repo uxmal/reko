@@ -168,6 +168,8 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_BLACKFIN: return new BlackfinRelocator(this, imageSymbols);
             case ElfMachine.EM_PARISC: return new PaRiscRelocator(this, imageSymbols);
             case ElfMachine.EM_RISCV: return new RiscVRelocator32(this, imageSymbols);
+            // Support for 32-bit pointers.
+            case ElfMachine.EM_X86_64: return new x86Relocator(this, imageSymbols);
             }
             return base.CreateRelocator(machine, imageSymbols);
         }
@@ -368,7 +370,7 @@ namespace Reko.ImageLoaders.Elf
                         continue;
 
                     if (segMap.TryGetLowerBound(section.Address, out var mem) &&
-                        section.Address < mem.EndAddress)
+                        section.Address - mem.BaseAddress < mem.Length)
                     {
                         AccessMode mode = AccessModeOf(section.Flags);
                         var seg = segmentMap.AddSegment(new ImageSegment(
@@ -515,16 +517,20 @@ namespace Reko.ImageLoaders.Elf
         public override ElfSymbol LoadSymbol(ulong offsetSymtab, ulong symbolIndex, ulong entrySize, ulong offsetStringTable)
         {
             var rdr = CreateReader(offsetSymtab + entrySize * symbolIndex);
-            var sym = Elf32_Sym.Load(rdr);
-            return new ElfSymbol
+            if (Elf32_Sym.TryLoad(rdr, out var sym))
             {
-                Name = RemoveModuleSuffix(ReadAsciiString(offsetStringTable + sym.st_name)),
-                Type = (ElfSymbolType) (sym.st_info & 0xF),
-                Bind = sym.st_info >> 4,
-                SectionIndex = sym.st_shndx,
-                Value = sym.st_value,
-                Size = sym.st_size,
-            };
+                return new ElfSymbol
+                {
+                    Name = RemoveModuleSuffix(ReadAsciiString(offsetStringTable + sym.st_name)),
+                    Type = (ElfSymbolType) (sym.st_info & 0xF),
+                    Bind = sym.st_info >> 4,
+                    SectionIndex = sym.st_shndx,
+                    Value = sym.st_value,
+                    Size = sym.st_size,
+                };
+            }
+            else
+                return null;
         }
 
         public override Dictionary<int, ElfSymbol> LoadSymbolsSection(ElfSection symSection)
@@ -535,7 +541,11 @@ namespace Reko.ImageLoaders.Elf
             var symbols = new Dictionary<int, ElfSymbol>();
             for (ulong i = 0; i < symSection.Size / symSection.EntrySize; ++i)
             {
-                var sym = Elf32_Sym.Load(rdr);
+                if (!Elf32_Sym.TryLoad(rdr, out var sym))
+                {
+                    ElfImageLoader.trace.Warn("Unable to load symbol entry {0} from {1}", i, symSection.Name);
+                    continue;
+                }
                 var symName = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name));
                 ElfImageLoader.trace.Verbose("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
                     i,

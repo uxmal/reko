@@ -33,7 +33,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 {
     public abstract class ElfRelocator
     {
-        private SortedList<Address, ImageSymbol> imageSymbols;
+        private readonly SortedList<Address, ImageSymbol> imageSymbols;
 
         public ElfRelocator(SortedList<Address, ImageSymbol> syms)
         {
@@ -48,6 +48,16 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 .Where(p => p.p_type == ProgramHeaderType.PT_DYNAMIC);
         }
 
+
+        /// <summary>
+        /// Give the relocator a chance to adjust an address.
+        /// </summary>
+        /// <remarks>
+        /// This is helpful when adjust ARM Thumb symbols, which will have
+        /// their least significant bit set to 1.
+        /// </remarks>
+        public virtual Address AdjustAddress(Address address) => address;
+
         /// <summary>
         /// Give the relocator a chance to adjust the image symbol.
         /// </summary>
@@ -55,10 +65,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         /// This is helpful when adjust ARM Thumb symbols, which will have
         /// their least significant bit set to 1.
         /// </remarks>
-        public virtual ImageSymbol AdjustImageSymbol(ImageSymbol sym)
-        {
-            return sym;
-        }
+        public virtual ImageSymbol AdjustImageSymbol(ImageSymbol sym) => sym;
 
         public abstract void Relocate(Program program);
 
@@ -86,8 +93,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
             foreach (var sPattern in GetStartPatterns())
             {
                 var dfa = Core.Dfa.Automaton.CreateFromPattern(sPattern.SearchPattern);
-                var start = addrEntry - seg.MemoryArea.BaseAddress;
-                var hits = dfa.GetMatches(mem.Bytes, (int)start, (int)start + 300).ToList();
+                var start = (int)(addrEntry - seg.MemoryArea.BaseAddress);
+                var end = Math.Min((int) start + 300, mem.Bytes.Length);
+                var hits = dfa.GetMatches(mem.Bytes, start, end).ToList();
                 if (hits.Count > 0)
                 {
                     return GetMainFunctionAddress(program.Architecture, mem, hits[0], sPattern);
@@ -279,6 +287,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 {
                     var relocation = ReadRelocation(rdrRela);
                     var elfSym = relocator.Loader.EnsureSymbol(offSymtab, relocation.SymbolIndex, symEntrySize, offStrtab);
+                    if (elfSym == null)
+                        continue;
                     ElfImageLoader.trace.Verbose("  {0}: symbol {1} type: {2} addend: {3:X}", relocation, elfSym, relocator.RelocationTypeToString((byte)relocation.Info), relocation.Addend);
                     relocator.RelocateEntry(program, elfSym, null, relocation);
                     symbols.Add(elfSym);
@@ -297,7 +307,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
             public override ElfRelocation ReadRelocation(EndianImageReader rdr)
             {
-                return relocator.Loader.LoadRelaEntry(rdr);
+                var entry = relocator.AdjustRelocation(relocator.Loader.LoadRelaEntry(rdr));
+                return entry;
             }
         }
 
@@ -309,8 +320,20 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
             public override ElfRelocation ReadRelocation(EndianImageReader rdr)
             {
-                return relocator.Loader.LoadRelEntry(rdr);
+                return relocator.AdjustRelocation(relocator.Loader.LoadRelEntry(rdr));
             }
+        }
+
+        /// <summary>
+        /// Some ELF spec variants, like MIPS64 (bless their hearts) deviate from the
+        /// "default" interpretation of ELF relocations. This hook allows the relocator
+        /// to manipulate the entry.
+        /// </summary>
+        /// <param name="elfRelocation">Relocation to manipulate</param>
+        /// <returns></returns>
+        protected virtual ElfRelocation AdjustRelocation(ElfRelocation elfRelocation)
+        {
+            return elfRelocation;
         }
 
         /// <summary>
@@ -456,7 +479,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         protected override void DumpDynamicSegment(ElfSegment dynSeg)
         {
-            var renderer = new DynamicSectionRenderer64(Loader, null);
+            var renderer = new DynamicSectionRenderer64(Loader, null, ElfMachine.EM_NONE);
             var sw = new StringWriter();
             renderer.Render(dynSeg.p_offset, new TextFormatter(sw));
             Debug.WriteLine(sw.ToString());

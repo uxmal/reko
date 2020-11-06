@@ -38,6 +38,13 @@ namespace Reko.ImageLoaders.Elf.Relocators
             this.currentTlsSlotOffset = 0x0000000;
         }
 
+        public override Address AdjustAddress(Address address)
+        {
+            if ((address.ToLinear() & 1) == 0)
+                return address;
+            return address - 1;
+        }
+
         public override ImageSymbol AdjustImageSymbol(ImageSymbol sym)
         {
             if (sym.Type != SymbolType.Code &&

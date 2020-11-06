@@ -367,21 +367,103 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
     public class MipsRelocator64 : ElfRelocator64
     {
-        private ElfLoader64 elfLoader;
-
         public MipsRelocator64(ElfLoader64 elfLoader, SortedList<Address, ImageSymbol> imageSymbols) : base(elfLoader, imageSymbols)
         {
-            this.elfLoader = elfLoader;
+        }
+
+        protected override ElfRelocation AdjustRelocation(ElfRelocation elfRelocation)
+        {
+            var elfNew = new ElfRelocation
+            {
+                Offset = elfRelocation.Offset,
+                Info = elfRelocation.Info,
+                Addend = elfRelocation.Addend,
+                SymbolIndex = (int)(elfRelocation.Info >> 32),
+            };
+            return elfNew;
         }
 
         public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
-            throw new NotImplementedException();
+            switch ((Mips64Rt)rela.Info)
+            {
+            case Mips64Rt.R_MIPS_NONE:
+                return symbol;
+            default:
+                ElfImageLoader.trace.Warn("Unimplemented MIPS64 relocation type: {0}", RelocationTypeToString((uint) rela.Info));
+                break;
+            }
+            return symbol;
         }
 
         public override string RelocationTypeToString(uint type)
         {
-            throw new NotImplementedException();
+            return ((Mips64Rt) type).ToString();
         }
+    }
+
+    public enum Mips64Rt
+    {
+        R_MIPS_NONE = 0, // none n/a none
+        R_MIPS_16 = 1, // V-half16 any S + sign_extend(A)
+                       //R_MIPS_32
+        R_MIPS_ADD = 2, // T-word32 any S + A
+                        //R_MIPS_REL
+        R_MIPS_REL32 = 3, // T-word32 any S + A - EA
+        R_MIPS_26 = 4, // T-targ26 local a ( ( (A << 2) | (P&0xf0000000) ) + S ) >> 2
+                       // external a ( sign_extend(A<<2) + S ) >> 2
+        R_MIPS_HI16 = 5, // T-hi16 any %high (AHL + S) d
+        R_MIPS_LO16 = 6,  // T-lo16 any AHL + S
+        //R_MIPS_GPREL
+        R_MIPS_GPREL16 = 7, // 7 V-rel16
+                    //external sign_extend(A) + S - GP
+                    //local sign_extend(A) + S + GP0 - GP
+        R_MIPS_LITERAL = 8, // V-lit16 local sign_extend(A) + L
+                            //R_MIPS_GOT
+        R_MIPS_GOT16 = 9, // V-rel16
+                          //external G
+                          //local f
+        /*
+        R_MIPS_PC16 10 V-pc16 external sign_extend(A) + S - P
+        R_MIPS_CALL16 e, m
+        R_MIPS_CALLm 11 V-rel16 external G
+        R_MIPS_GPREL32 12 T-word32 local A + S + GP0 - GP
+        R_MIPS_SHIFT5 16 V-sh5 any S
+        R_MIPS_SHIFT6 17 V-sh6 any S
+        R_MIPS_64 g 18 T-word64 any S + A
+        R_MIPS_GOT_DISP 19 V-rel16 any G
+        R_MIPS_GOT_PAGE 20 V-rel16 any
+        h
+        R_MIPS_GOT_OFST 21 V-rel16 any
+        h
+        R_MIPS_GOT_HI16 22 T-hi16 any %high(G)d
+        R_MIPS_GOT_LO16 23 T-lo16 any G
+        R_MIPS_SUB 24 T-word64 any S - A
+        R_MIPS_INSERT_A 25 T-word32 any Insert addend as instruction immediately prior to addressed location. R_MIPS_INSERT_B i
+        26 T-word32 any
+        R_MIPS_DELETE 27 T-word32 any Remove the addressed 32-bit object (normally an instruction). j
+        R_MIPS_HIGHER 28 T-hi16 any %higher(A+S)k
+        R_MIPS_HIGHEST 29 T-hi16 any %highest(A+S)l
+        R_MIPS_CALL_HI16m 30 T-hi16 any %high(G)d
+        R_MIPS_CALL_LO16m 31 T-lo16 any G
+        R_MIPS_SCN_DISP 32 T-word32 any
+        n
+         S+A-scn_addr
+        (Section displacement)
+        R_MIPS_REL16 33 V-hw16 any S + A
+        Table 32 Relocation Types
+        Name Value
+        Field Symbol Calculation
+        ELF-64 Object File Format Page 47
+        11/3/98 SiliconGraphics
+        Computer Systems
+        R_MIPS_ADD_IMMEDIATE 34 V-half16 any
+        oS + sign_extend(A)
+        R_MIPS_PJUMP 35 T-word32 any Deprecated (protected jump)
+        R_MIPS_RELGOT 36 T-word32 any
+        qS + A - EA
+        R_MIPS_JALR 37 T-word32 any
+        pProtected jump conversion
+        */
     }
 }
