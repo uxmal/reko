@@ -363,7 +363,13 @@ namespace Reko.ImageLoaders.Elf
 
         public override ElfRelocation LoadRelEntry(EndianImageReader rdr)
         {
-            throw new NotImplementedException();
+            var rel = Elf64_Rel.Read(rdr);
+            return new ElfRelocation
+            {
+                Offset = rel.r_offset,
+                Info = rel.r_info,
+                SymbolIndex = rel.SymbolIndex
+            };
         }
 
         public override ElfRelocation LoadRelaEntry(EndianImageReader rdr)
