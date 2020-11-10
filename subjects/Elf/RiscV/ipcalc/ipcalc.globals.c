@@ -8,6 +8,7 @@ byte g_b0000;
 int32 g_dw0020;
 int32 g_dw0080;
 Eq_n g_t0100;
+<anonymous> g_t3F100;
 Eq_n g_t69662074;
 Eq_n g_t69662074;
 void g_vFFFFFFFF;

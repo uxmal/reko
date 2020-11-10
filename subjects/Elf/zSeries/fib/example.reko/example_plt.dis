@@ -1,24 +1,36 @@
 void __cxa_finalize()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      __do_global_dtors_aux
 // MayUse: 
 // LiveOut:
-// Trashed:
+// Trashed: r1
 // Preserved: r15
-// Terminates process
-__cxa_finalize_exit:
 __cxa_finalize_entry:
+l000005C0:
+	word64 r1_6 = Mem0[SEQ(SLICE(r1, word32, 32), 0x00002018<p32>):word64]
+	call r1_6 (retsize: 0;)
+		uses: r1:r1_6
+	return
+__cxa_finalize_exit:
 
 
 void __libc_start_main()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      _start
 // MayUse: 
 // LiveOut:
-// Trashed:
+// Trashed: r1
 // Preserved: r15
-// Terminates process
-__libc_start_main_exit:
 __libc_start_main_entry:
+l000005E0:
+	word64 r1_6 = Mem0[SEQ(SLICE(r1, word32, 32), 0x00002020<p32>):word64]
+	call r1_6 (retsize: 0;)
+		uses: r1:r1_6
+	return
+__libc_start_main_exit:
 
 

@@ -4,14 +4,14 @@
 
 #include "example.h"
 
-// 00000600: void _start(Register Eq_n r14)
-void _start(Eq_n r14)
+// 00000600: void _start(Register word64 r14)
+void _start(word64 r14)
 {
 	Eq_n r15_n = fp - 0x00A0 & ~0x0F;
 	*((word64) r15_n - 0x00B0) = 0x00;
 	*((word64) r15_n - 16) = r14;
 	*((word64) r15_n - 8) = r15_n - 0x00B0;
-	r2_n = (uint64) __libc_start_main(*SEQ(SLICE(r2, word32, 32), 0x2040), qwLocA0, fp - 0x0098, SEQ(SLICE(r5, word32, 32), 0x0820), SEQ(SLICE(r6, word32, 32), 0x0888), *((word64) r15_n - 16), *((word64) r15_n - 8));
+	__libc_start_main();
 }
 
 // 00000648: Register word64 deregister_tm_clones(Register Eq_n r14)
@@ -70,24 +70,20 @@ void register_tm_clones(ci8 * r2, Eq_n r14)
 		r14();
 }
 
-// 000006C8: void __do_global_dtors_aux(Register word64 r1, Register word64 r12)
-void __do_global_dtors_aux(word64 r1, word64 r12)
+// 000006C8: void __do_global_dtors_aux(Register word64 r1, Register word64 r11, Register word64 r12, Register word64 r13, Register Eq_n r14)
+void __do_global_dtors_aux(word64 r1, word64 r11, word64 r12, word64 r13, Eq_n r14)
 {
 	byte * r13_n = SEQ(SLICE(r13, word32, 32), 0x08D0);
-	Eq_n r15_n = fp - 320;
 	byte * r11_n = SEQ(SLICE(r11, word32, 32), 0x2068);
 	if (*r11_n == 0x00)
 	{
 		if (*r13_n != *SEQ(SLICE(r1, word32, 32), 0x2028))
-		{
-			word64 r1_n = SEQ(SLICE(r1, word32, 32), 8288);
 			__cxa_finalize();
-		}
 		r1 = deregister_tm_clones(0x070E);
 		*r11_n = 0x01;
 	}
-	Eq_n v12_n = (word64) r15_n + 0x00F8;
-	(*((word64) r15_n + 272))();
+	word64 r4_n;
+	r14();
 }
 
 // 00000720: void frame_dummy()

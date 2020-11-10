@@ -126,6 +126,11 @@ namespace Reko.UnitTests.Arch
                 throw new NotImplementedException();
             }
 
+            public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, out Constant value)
+            {
+                throw new NotImplementedException();
+            }
+
             public void Error(Address address, string message, params object[] args)
             {
                 throw new Exception(string.Format("{0}: {1}", address, 

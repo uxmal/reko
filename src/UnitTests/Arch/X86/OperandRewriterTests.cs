@@ -248,6 +248,11 @@ namespace Reko.UnitTests.Arch.X86
 			return null;
 		}
 
+        public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, out Constant value)
+        {
+            throw new NotImplementedException();
+        }
+
         public void AddDiagnostic(Address addr, Diagnostic d)
         {
             Console.Write(d.GetType().Name);

@@ -468,9 +468,9 @@ l00000000000153DC:
 	} while (a0_n > 118);
 	<anonymous> * a5_n = (int64) (a0_n << 0x20 >> 0x1E)->dw102A0;
 	word64 a6_n;
-	word64 a7_n;
 	word64 t1_n;
 	word64 t3_n;
+	word64 a7_n;
 	a5_n();
 }
 
@@ -543,7 +543,7 @@ void fn0000000000015FCC(struct Eq_n * gp, word64 a0)
 		a0_n = (uint64) fwrite(&g_v10D98, 0x01, 0x4C, gp->ptrFFFFF880);
 		a0_n = (uint64) fwrite(&g_v10DE8, 0x01, 77, gp->ptrFFFFF880);
 		a0_n = (uint64) fwrite(&g_v10E38, 0x01, 77, gp->ptrFFFFF880);
-		a0_n = (uint64) fputc(0x0A, gp->ptrFFFFF880);
+		fputc();
 		a0_n = (uint64) fwrite(&g_v10E88, 0x01, 0x17, gp->ptrFFFFF880);
 		a0_n = (uint64) fwrite(&g_v10EA0, 0x01, 0x47, gp->ptrFFFFF880);
 		a0_n = (uint64) fwrite(&g_v10EE8, 0x01, 0x39, gp->ptrFFFFF880);
@@ -559,7 +559,7 @@ void fn0000000000015FCC(struct Eq_n * gp, word64 a0)
 		a0_n = (uint64) fwrite(&g_v11190, 0x01, 0x40, gp->ptrFFFFF880);
 		a0_n = (uint64) fwrite(&g_v111D8, 0x01, 0x48, gp->ptrFFFFF880);
 		a0_n = (uint64) fwrite(&g_v11228, 0x01, 0x2E, gp->ptrFFFFF880);
-		a0_n = (uint64) fputc(0x0A, gp->ptrFFFFF880);
+		fputc();
 		a0_n = (uint64) fwrite(&g_v11258, 0x01, 0x0F, gp->ptrFFFFF880);
 		a0_n = (uint64) fwrite(&g_v11268, 0x01, 0x57, gp->ptrFFFFF880);
 		a0_n = (uint64) fwrite(&g_v112C0, 0x01, 0x3C, gp->ptrFFFFF880);

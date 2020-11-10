@@ -155,8 +155,12 @@ void putchar()
 }
 
 // 0000000000015100: void fputc()
+// Called from:
+//      fn0000000000015FCC
 void fputc()
 {
+	<anonymous> * t3_n = g_ptr1A100;
+	t3_n();
 }
 
 // 0000000000015110: void __stack_chk_fail()
