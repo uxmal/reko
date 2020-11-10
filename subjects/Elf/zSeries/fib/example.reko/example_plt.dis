@@ -8,10 +8,10 @@ void __cxa_finalize()
 // Trashed: r1
 // Preserved: r15
 __cxa_finalize_entry:
-l000005C0:
-	word64 r1_6 = Mem0[SEQ(SLICE(r1, word32, 32), 0x00002018<p32>):word64]
-	call r1_6 (retsize: 0;)
-		uses: r1:r1_6
+l00000000000005C0:
+	word64 r1_5 = Mem0[0x0000000000002018<p64>:word64]
+	call r1_5 (retsize: 0;)
+		uses: r1:r1_5
 	return
 __cxa_finalize_exit:
 
@@ -26,10 +26,10 @@ void __libc_start_main()
 // Trashed: r1
 // Preserved: r15
 __libc_start_main_entry:
-l000005E0:
-	word64 r1_6 = Mem0[SEQ(SLICE(r1, word32, 32), 0x00002020<p32>):word64]
-	call r1_6 (retsize: 0;)
-		uses: r1:r1_6
+l00000000000005E0:
+	word64 r1_5 = Mem0[0x0000000000002020<p64>:word64]
+	call r1_5 (retsize: 0;)
+		uses: r1:r1_5
 	return
 __libc_start_main_exit:
 

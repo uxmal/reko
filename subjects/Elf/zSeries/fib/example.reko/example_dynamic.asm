@@ -1,4 +1,4 @@
-;;; Segment .dynamic (00001E20)
+;;; Segment .dynamic (0000000000001E20)
 ; DT_NEEDED       libc.so.6
 ; DT_INIT         0000000000000560
 ; DT_DEBUG        0000000000000890

@@ -79,6 +79,9 @@ namespace Reko.ImageLoaders.Elf
             string archName;
             switch (machine)
             {
+            case ElfMachine.EM_IA_64:
+                archName = "ia64";
+                break;
             case ElfMachine.EM_MIPS:
                 //$TODO: detect release 6 of the MIPS architecture. 
                 // would be great to get our sweaty little hands on
@@ -100,13 +103,14 @@ namespace Reko.ImageLoaders.Elf
                 archName = "paRisc";
                 options["WordSize"] = "64";
                 break;
-            case ElfMachine.EM_IA_64:
-                archName = "ia64";
-                break;
             case ElfMachine.EM_RISCV: 
                 archName = "risc-v";
                 options["WordSize"] = "64";
                 RiscVElf.SetOptions((RiscVFlags) Header64.e_flags, options);
+                break;
+            case ElfMachine.EM_S390: //$REVIEW: any pertinent differences?
+                archName = "zSeries";
+                options["WordSize"] = "64";
                 break;
             default:
                 return base.CreateArchitecture(endianness);

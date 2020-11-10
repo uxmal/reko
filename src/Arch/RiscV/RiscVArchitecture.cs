@@ -166,7 +166,6 @@ namespace Reko.Arch.RiscV
                 wordSize == 64;
         }
 
-
         public override void LoadUserOptions(Dictionary<string, object>? options)
         {
             if (options == null)

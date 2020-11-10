@@ -4,21 +4,23 @@
 
 #include "example.h"
 
-// 000005C0: void __cxa_finalize()
+// 00000000000005C0: void __cxa_finalize()
 // Called from:
 //      __do_global_dtors_aux
 void __cxa_finalize()
 {
-	Eq_n r1_n = *SEQ(SLICE(r1, word32, 32), 0x2018);
-	r1_n();
+	<anonymous> * r1_5 = g_ptr2018;
+	r1_5();
 }
 
-// 000005E0: void __libc_start_main()
+<anonymous> g_t05CE = <code>;
+// 00000000000005E0: void __libc_start_main()
 // Called from:
 //      _start
 void __libc_start_main()
 {
-	Eq_n r1_n = *SEQ(SLICE(r1, word32, 32), 0x2020);
-	r1_n();
+	<anonymous> * r1_5 = g_ptr2020;
+	r1_5();
 }
 
+<anonymous> g_t05EE = <code>;

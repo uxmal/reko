@@ -1,4 +1,4 @@
-;;; Segment .dynsym (000002B8)
+;;; Segment .dynsym (00000000000002B8)
 ;    0                                          00000000 00000000 00 SHN_UNDEF
 ;    1                                          00000560 00000000 03 .init
 ;    2 __cxa_finalize                           00000000 00000000 22 SHN_UNDEF

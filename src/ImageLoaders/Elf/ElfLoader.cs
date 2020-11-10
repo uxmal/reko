@@ -242,10 +242,6 @@ namespace Reko.ImageLoaders.Elf
                 // Alpha-Linux uses r30.
                 stackRegName = "r30";
                 break;
-            case ElfMachine.EM_S370:
-            case ElfMachine.EM_S390: //$REVIEW: any pertinent differences?
-                arch = "zSeries";
-                break;
             case ElfMachine.EM_NANOMIPS:
                 if (endianness == ELFDATA2LSB)
                 {
@@ -475,7 +471,6 @@ namespace Reko.ImageLoaders.Elf
             return imgLoader.CreateWriter(fileOffset);
         }
 
-
         /// <summary>
         /// The GOT table contains an array of pointers. Some of these
         /// pointers may be pointing to the symbols in the symbol table(s).
@@ -644,7 +639,6 @@ namespace Reko.ImageLoaders.Elf
                 Debug.Print(sw.ToString());
             }
         }
-
 
         protected string DumpShFlags(ulong shf)
         {
