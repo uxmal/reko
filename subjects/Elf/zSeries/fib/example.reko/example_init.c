@@ -9,25 +9,25 @@
 //      __libc_csu_init
 byte _init(word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11, word64 r13, ptr64 & r6Out, ptr64 & r8Out, ptr64 & r9Out, ptr64 & r10Out, ptr64 & r12Out, ptr64 & r13Out)
 {
-	struct Eq_16 * r15_33 = fp - 320;
-	<anonymous> * r1_37 = g_ptr2038;
-	if (r1_37 != null)
-		r1_37();
-	ptr64 v16_57 = (char *) r15_33 + 0x00D0;
-	ptr64 r6_78;
-	ptr64 r8_80;
-	ptr64 r9_81;
-	ptr64 r10_82;
-	ptr64 r12_84;
-	ptr64 r13_85;
-	byte CC_89;
-	r15_33->ptr0110();
-	r6Out = r6_78;
-	r8Out = r8_80;
-	r9Out = r9_81;
-	r10Out = r10_82;
-	r12Out = r12_84;
-	r13Out = r13_85;
-	return CC_89;
+	struct Eq_n * r15_n = fp - 320;
+	<anonymous> * r1_n = g_ptr2038;
+	if (r1_n != null)
+		r1_n();
+	ptr64 v16_n = (char *) r15_n + 0x00D0;
+	ptr64 r6_n;
+	ptr64 r8_n;
+	ptr64 r9_n;
+	ptr64 r10_n;
+	ptr64 r12_n;
+	ptr64 r13_n;
+	byte CC_n;
+	r15_n->ptr0110();
+	r6Out = r6_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	return CC_n;
 }
 

@@ -4,7 +4,7 @@
 
 #include "example.h"
 
-Eq_69 g_t08C8 = 
+Eq_n g_t08C8 = 
 	{
 		0x0E
 	};

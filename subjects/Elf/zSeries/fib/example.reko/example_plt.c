@@ -9,8 +9,8 @@
 //      __do_global_dtors_aux
 void __cxa_finalize()
 {
-	<anonymous> * r1_5 = g_ptr2018;
-	r1_5();
+	<anonymous> * r1_n = g_ptr2018;
+	r1_n();
 }
 
 <anonymous> g_t05CE = <code>;
@@ -19,8 +19,8 @@ void __cxa_finalize()
 //      _start
 void __libc_start_main()
 {
-	<anonymous> * r1_5 = g_ptr2020;
-	r1_5();
+	<anonymous> * r1_n = g_ptr2020;
+	r1_n();
 }
 
 <anonymous> g_t05EE = <code>;
