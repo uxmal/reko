@@ -1,5 +1,5 @@
 ;;; Segment .dynsym (000102B0)
-; 0000                                          00000000 00000000 00 
+; 0000                                          00000000 00000000 00 SHN_UNDEF
 ; 0001                                          000100D4 00000000 03 .interp
 ; 0002                                          000100E8 00000000 03 .hash
 ; 0003                                          000102B0 00000000 03 .dynsym
@@ -28,24 +28,24 @@
 ; 001A _start                                   00010958 000000F4 12 .text
 ; 001B _environ                                 00020E3C 00000004 11 .data
 ; 001C _end                                     00020E64 00000000 11 .bss
-; 001D _ex_register                             00000000 00000000 20 
+; 001D _ex_register                             00000000 00000000 20 SHN_UNDEF
 ; 001E _GLOBAL_OFFSET_TABLE_                    00020D0C 00000000 11 .got
-; 001F atexit                                   00020D40 00000000 12 
-; 0020 exit                                     00020D4C 00000000 12 
+; 001F atexit                                   00020D40 00000000 12 SHN_UNDEF
+; 0020 exit                                     00020D4C 00000000 12 SHN_UNDEF
 ; 0021 _init                                    00010C80 00000038 12 .init
 ; 0022 ___Argv                                  00020E60 00000004 11 .data
 ; 0023 _DYNAMIC                                 00020D74 00000000 11 .dynamic
 ; 0024 func1                                    00010A5C 00000008 12 .text
 ; 0025 func2                                    00010A74 00000008 12 .text
-; 0026 printf                                   00020D64 00000000 12 
+; 0026 printf                                   00020D64 00000000 12 SHN_UNDEF
 ; 0027 func3                                    00010A8C 00000008 12 .text
 ; 0028 func4                                    00010AA4 00000008 12 .text
 ; 0029 func5                                    00010ABC 00000008 12 .text
 ; 002A func6                                    00010AD4 00000008 12 .text
 ; 002B func7                                    00010AEC 00000008 12 .text
 ; 002C func8                                    00010B04 00000008 12 .text
-; 002D _exit                                    00020D58 00000000 12 
-; 002E _ex_deregister                           00000000 00000000 20 
+; 002D _exit                                    00020D58 00000000 12 SHN_UNDEF
+; 002E _ex_deregister                           00000000 00000000 20 SHN_UNDEF
 ; 002F environ                                  00020E3C 00000004 21 .data
 ; 0030 __cg89_used                              00020E5C 00000004 11 .data
 ; 0031 __cg92_used                              00020E5C 00000004 11 .data

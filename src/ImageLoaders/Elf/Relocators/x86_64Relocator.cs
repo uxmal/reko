@@ -77,11 +77,11 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
         }
 
-        public override ElfSymbol RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
+        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
         {
             var rt = (x86_64Rt)(rela.Info & 0xFF);
             if (loader.Sections.Count <= sym.SectionIndex)
-                return sym;
+                return (null, null);
             if (rt == x86_64Rt.R_X86_64_GLOB_DAT ||
                 rt == x86_64Rt.R_X86_64_JUMP_SLOT)
             {
@@ -89,16 +89,18 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
                 var st = ElfLoader.GetSymbolType(sym);
                 if (!st.HasValue)
-                    return sym;
+                    return (null, null);
                 importReferences.Add(addrPfn, new NamedImportReference(addrPfn, null, sym.Name, st.Value));
                 var gotSym = loader.CreateGotSymbol(addrPfn, sym.Name);
                 imageSymbols.Add(addrPfn, gotSym);
-                return sym;
+                return (addrPfn, null);
             }
-            if (sym.SectionIndex == 0)
-                return sym;
-            var symSection = loader.Sections[(int)sym.SectionIndex];
-            ulong S = (ulong)sym.Value + symSection.Address.ToLinear();
+            ulong S = 0;
+            if (sym.SectionIndex != 0)
+            {
+                var symSection = loader.Sections[(int) sym.SectionIndex];
+                S = (ulong) sym.Value + symSection.Address.ToLinear();
+            }
             long A = 0;
             int sh = 0;
             uint mask = ~0u;
@@ -138,7 +140,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 w += ((ulong)(S + (ulong)A + P) >> sh) & mask;
                 relW.WriteUInt64(w);
             }
-            return sym;
+            return (addr, null);
         }
 
         public override string RelocationTypeToString(uint type)

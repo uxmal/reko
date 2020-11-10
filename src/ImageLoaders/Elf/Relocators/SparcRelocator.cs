@@ -42,10 +42,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
             base.Relocate(program);
         }
 
-        public override ElfSymbol RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
+        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
         {
             if (loader.Sections.Count <= sym.SectionIndex)
-                return sym;
+                return (null, null);
             var rt = (SparcRt)(rela.Info & 0xFF);
             if (sym.SectionIndex == 0)
             {
@@ -59,7 +59,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     {
                         importReferences[addrPfn] = new NamedImportReference(addrPfn, null, sym.Name, st.Value);
                     }
-                    return sym;
+                    return (addrPfn, null);
                 }
             }
 
@@ -92,7 +92,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             switch (rt)
             {
             case 0:
-                return sym;
+                return (addr, null);
             case SparcRt.R_SPARC_HI22:
                 A = (int)rela.Addend;
                 sh = 10;
@@ -119,7 +119,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 break;
             case SparcRt.R_SPARC_COPY:
                 Debug.Print("Relocation type {0} not handled yet.", rt);
-                return sym;
+                return (addr, null);
             default:
                 throw new NotImplementedException(string.Format(
                     "SPARC ELF relocation type {0} not implemented yet.",
@@ -133,7 +133,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             w += ((uint)(B + S + A + P) >> sh) & mask;
             relW.WriteBeUInt32(w);
 
-            return sym;
+            return (addr, null);
         }
 
         private string LoadString(uint symtabOffset, uint sym)

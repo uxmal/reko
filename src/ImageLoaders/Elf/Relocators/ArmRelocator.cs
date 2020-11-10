@@ -70,7 +70,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             return symNew;
         }
 
-        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
             /*
             S (when used on its own) is the address of the symbol
@@ -113,7 +113,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             switch (rt)
             {
             case Arm32Rt.R_ARM_NONE:
-                return symbol;
+                return (addr, null);
             case Arm32Rt.R_ARM_COPY:
                 A = S = 0;
                 break;
@@ -162,7 +162,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                         var eventListener = loader.Services.RequireService<DecompilerEventListener>();
                         var loc = eventListener.CreateAddressNavigator(program, addr);
                         eventListener.Warn(loc, "Section {0}: unsupported interworking call (ARM -> Thumb)", referringSection?.Name ?? "<null>");
-                        return symbol;
+                        return (addr, null);
                     }
 
                     var relInstr = program.CreateImageReader(program.Architecture, addr);
@@ -194,7 +194,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                         var eventListener = loader.Services.RequireService<DecompilerEventListener>();
                         var loc = eventListener.CreateAddressNavigator(program, addr);
                         eventListener.Warn(loc, "section {0} relocation at {1} out of range", referringSection?.Name ?? "<null>", addr);
-                        return symbol;
+                        return (addr, null);
                     }
 
                     offset >>= 2;
@@ -206,7 +206,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     var relWriter = program.CreateImageWriter(program.Architecture, addr);
                     relWriter.WriteUInt32(uInstr);
 
-                    return symbol;
+                    return (addr, null);
                 }
             case Arm32Rt.R_ARM_MOVW_ABS_NC:
             case Arm32Rt.R_ARM_MOVT_ABS:
@@ -229,7 +229,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
                     var relWriter= program.CreateImageWriter(program.Architecture, addr);
                     relWriter.WriteUInt32(tmp);
-                    return symbol;
+                    return (addr, null);
                 }
             default:
                 throw new NotImplementedException($"AArch32 relocation type {rt} is not implemented yet.");
@@ -243,7 +243,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             w += ((uint) (S + A) >> sh) & mask;
             relW.WriteLeUInt32(w);
 
-            return symbol;
+            return (addr, null);
         }
 
         private uint AllocateTlsSlot()

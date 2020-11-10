@@ -213,16 +213,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
         }
 
-        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rel)
+        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rel)
         {
-            if (symbol == null)
-                return symbol;
-            if (loader.Sections.Count <= symbol.SectionIndex)
-                return symbol;
-            if (symbol.SectionIndex == 0)
-                return symbol;
-            var symSection = loader.Sections[(int)symbol.SectionIndex];
-
+            if (symbol == null || loader.Sections.Count <= symbol.SectionIndex)
+                return (null, null);
             Address addr;
             uint P;
             if (referringSection?.Address != null)
@@ -245,7 +239,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
             switch ((MIPSrt)(rel.Info & 0xFF))
             {
-            case MIPSrt.R_MIPS_NONE: return symbol;
+            case MIPSrt.R_MIPS_NONE: return (addr, null);
             case MIPSrt.R_MIPS_REL32:
                 break;
                 default:
@@ -288,7 +282,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             w += ((uint)(S + A + P) >> sh) & mask;
             relW.WriteUInt32(w);
 
-            return symbol;
+            return (addr, null);
         }
 
         public override string RelocationTypeToString(uint type)
@@ -383,17 +377,17 @@ namespace Reko.ImageLoaders.Elf.Relocators
             return elfNew;
         }
 
-        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
             switch ((Mips64Rt)rela.Info)
             {
             case Mips64Rt.R_MIPS_NONE:
-                return symbol;
+                return (null, null);
             default:
                 ElfImageLoader.trace.Warn("Unimplemented MIPS64 relocation type: {0}", RelocationTypeToString((uint) rela.Info));
                 break;
             }
-            return symbol;
+            return (null, null);
         }
 
         public override string RelocationTypeToString(uint type)

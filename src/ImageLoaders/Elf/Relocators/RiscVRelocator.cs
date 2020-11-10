@@ -34,7 +34,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
             var rt = (RiscVRt) (rela.Info & 0xFF);
             ulong S = symbol.Value;
@@ -51,7 +51,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             switch (rt)
             {
             case RiscVRt.R_RISCV_COPY:
-                return symbol;
+                return (addr, null);
             case RiscVRt.R_RISCV_RELATIVE: // B + A
                 A = (ulong) rela.Addend;
                 B = program.SegmentMap.BaseAddress.ToLinear();
@@ -66,7 +66,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 if (S == 0)
                 {
                     var gotEntry = relR.PeekLeUInt64(0);
-                    return CreatePltStubSymbolFromRelocation(symbol, gotEntry, 0x0);
+                    var newSym = CreatePltStubSymbolFromRelocation(symbol, gotEntry, 0x0);
+                    return (addr, newSym);
                 }
                 break;
             default:
@@ -77,7 +78,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             var w = relR.ReadLeUInt64();
             w += ((uint) (B + S + A));
             relW.WriteLeUInt64(w);
-            return symbol;
+            return (addr, null);
         }
 
         public override string RelocationTypeToString(uint type)
@@ -92,7 +93,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
             var rt = (RiscVRt)(rela.Info & 0xFF);
             ulong S = symbol.Value;
@@ -109,7 +110,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             switch (rt)
             {
             case RiscVRt.R_RISCV_COPY:
-                return symbol;
+                return (addr, null);
             case RiscVRt.R_RISCV_RELATIVE: // B + A
                 A = (ulong) rela.Addend;
                 B = program.SegmentMap.BaseAddress.ToLinear();
@@ -124,7 +125,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 if (S == 0)
                 {
                     var gotEntry = relR.PeekLeUInt64(0);
-                    return CreatePltStubSymbolFromRelocation(symbol, gotEntry, 0x0);
+                    var newSym = CreatePltStubSymbolFromRelocation(symbol, gotEntry, 0x0);
+                    return (addr, newSym);
                 }
                 break;
             default:
@@ -135,9 +137,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             var w = relR.ReadLeUInt64();
             w += ((uint) (B + S + A));
             relW.WriteLeUInt64(w);
-
-
-            return symbol;
+            return (addr, null);
         }
 
         public override string RelocationTypeToString(uint type)

@@ -376,7 +376,6 @@ namespace Reko.ImageLoaders.Elf
             return addrEnd;
         }
 
-
         public IPlatform LoadPlatform(byte osAbi, IProcessorArchitecture arch)
         {
             string envName;
@@ -602,10 +601,14 @@ namespace Reko.ImageLoaders.Elf
         public string GetSectionName(ushort st_shndx)
         {
             Debug.Assert(Sections != null);
+            if (st_shndx == ElfSection.SHN_UNDEF)
+            {
+                return "SHN_UNDEF";
+            }
             if (st_shndx < 0xFF00)
             {
                 if (st_shndx < Sections.Count)
-                return Sections[st_shndx].Name;
+                    return Sections[st_shndx].Name;
                 else
                     return $"?section{st_shndx}?";
             }
@@ -723,8 +726,8 @@ namespace Reko.ImageLoaders.Elf
                 if (section.Type == SectionHeaderType.SHT_DYNSYM)
                 {
                     this.DynamicSymbols = symtab;
+                }
             }
-        }
         }
 
         public string ReadAsciiString(ulong fileOffset)
@@ -778,8 +781,6 @@ namespace Reko.ImageLoaders.Elf
             sb.Append((flags & 2) != 0 ? 'w' : '-');
             sb.Append((flags & 1) != 0 ? 'x' : '-');
             return sb.ToString();
+        }
     }
-    }
-
-
 }

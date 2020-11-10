@@ -90,13 +90,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
         }
 
-        public override ElfSymbol RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
+        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
         {
             if (loader.Sections.Count <= sym.SectionIndex)
-                return sym;
-            if (sym.SectionIndex == 0)
-                return sym;
-            var symSection = loader.Sections[(int)sym.SectionIndex];
+                return (null, null);
             uint S = (uint)sym.Value;
             uint A = (uint)rela.Addend;
             uint P = (uint)rela.Offset;
@@ -132,7 +129,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 break;
             case PpcRt.R_PPC_ADDR16_LO:
                 if (prevPpcHi16 == null)
-                    return sym;
+                    return (null, null);
                 uint valueHi = prevRelR.ReadUInt16();
                 uint valueLo = relR.ReadUInt16();
 
@@ -155,7 +152,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 missedRelocations[rt] = count + 1;
                 break;
             }
-            return sym;
+            return (addr, null);
         }
 
         public override string RelocationTypeToString(uint type)
@@ -171,15 +168,12 @@ namespace Reko.ImageLoaders.Elf.Relocators
             this.loader = loader;
         }
 
-        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
             if (loader.Sections.Count <= symbol.SectionIndex)
-                return symbol;
-            if (symbol.SectionIndex == 0)
             {
-                return symbol;
+                return (null, null);
             }
-            var symSection = loader.Sections[(int) symbol.SectionIndex];
             ulong S = (uint) symbol.Value;
             ulong A = (uint) rela.Addend;
             ulong P = (uint) rela.Offset;
@@ -193,12 +187,12 @@ namespace Reko.ImageLoaders.Elf.Relocators
             switch (rt)
             {
             case Ppc64Rt.R_PPC64_JMP_SLOT:
-                return symbol;
+                return (addr, null);
             default:
                 var listener = this.loader.Services.RequireService<DecompilerEventListener>();
                 var loc = listener.CreateAddressNavigator(program, addr);
                 listener.Warn(loc, $"Unimplemented PowerPC64 relocation type {rt}.");
-                return symbol;
+                return (addr, null);
             }
         }
 
