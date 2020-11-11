@@ -53,6 +53,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
         public override void Relocate(Program program)
         {
             base.Relocate(program);
+            return;
+            /*
             var rela_plt = loader.GetSectionInfoByName(".rela.plt");
             if (rela_plt == null)
                 return;
@@ -88,6 +90,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     // changing to use RelocateEntry this will go away.
                     new NamedImportReference(addr, null, symStr, SymbolType.ExternalProcedure));
             }
+            */
         }
 
         public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
@@ -174,9 +177,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
             {
                 return (null, null);
             }
-            ulong S = (uint) symbol.Value;
-            ulong A = (uint) rela.Addend;
-            ulong P = (uint) rela.Offset;
+            ulong S = (ulong) symbol.Value;
+            ulong A = (ulong) rela.Addend;
+            ulong P = (ulong) rela.Offset;
+            ulong B = program.SegmentMap.BaseAddress.ToLinear();
             var addr = Address.Ptr64(P);
             ulong PP = P;
             var arch = program.Architecture;
@@ -186,6 +190,14 @@ namespace Reko.ImageLoaders.Elf.Relocators
             var rt = (Ppc64Rt) (rela.Info & 0xFF);
             switch (rt)
             {
+            case Ppc64Rt.R_PPC64_RELATIVE: // B + A
+                S = 0;
+                P = 0;
+                break;
+            case Ppc64Rt.R_PPC64_ADDR64:    // S + A
+                B = 0;
+                P = 0;
+                break;
             case Ppc64Rt.R_PPC64_JMP_SLOT:
                 return (addr, null);
             default:
@@ -194,6 +206,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 listener.Warn(loc, $"Unimplemented PowerPC64 relocation type {rt}.");
                 return (addr, null);
             }
+            var w = relR.ReadUInt64();
+            w += (B + A + S + P);
+            relW.WriteUInt64(w);
+            return (addr, null);
         }
 
         public override string RelocationTypeToString(uint type)

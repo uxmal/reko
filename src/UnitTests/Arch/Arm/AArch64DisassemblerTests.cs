@@ -364,6 +364,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_ldxr()
+        {
+            AssertCode("@@@", "A1235D88");
+        }
+
+        [Test]
         public void AArch64Dis_cbnz_negative_offset()
         {
             Given_Instruction(0x35FFFE73);

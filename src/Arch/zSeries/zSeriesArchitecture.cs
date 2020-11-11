@@ -107,7 +107,10 @@ namespace Reko.Arch.zSeries
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            return Registers.GpRegisters[domain - StorageDomain.Register];
+            if (!Registers.RegistersByDomain.TryGetValue(domain, out var reg))
+                return null;
+            else
+                return reg;
         }
 
         public override RegisterStorage GetRegister(string name)

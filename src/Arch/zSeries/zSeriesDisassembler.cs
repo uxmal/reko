@@ -372,6 +372,20 @@ namespace Reko.Arch.zSeries
             return true;
         }
 
+        private static bool SIL(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var b1 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
+            var d1 = (short) uInstr >> 16;
+            var i2 = ImmediateOperand.Word16((ushort) uInstr);
+            dasm.ops.Add(new MemoryOperand(dasm.arch.WordWidth)
+            {
+                Base = b1,
+                Offset = d1,
+            });
+            dasm.ops.Add(i2);
+            return true;
+        }
+
         private static bool RSYb(ulong uInstr, zSeriesDisassembler dasm)
         {
             var r1 = Registers.GpRegisters[(uInstr >> 36) & 0xF];
@@ -584,6 +598,12 @@ namespace Reko.Arch.zSeries
             return new ExtendDecoder32(InstrClass.Linear, mnemonic, mutators);
         }
 
+        public static ExtendDecoder32 Instr32(Mnemonic mnemonic, InstrClass iclass, params WideMutator<zSeriesDisassembler>[] mutators)
+        {
+            return new ExtendDecoder32(iclass, mnemonic, mutators);
+        }
+
+
         public static ExtendDecoder48 Instr48(Mnemonic mnemonic, params WideMutator<zSeriesDisassembler>[] mutators)
         {
             return new ExtendDecoder48(InstrClass.Linear, mnemonic, mutators);
@@ -630,13 +650,52 @@ namespace Reko.Arch.zSeries
                 (0x04, Instr(Mnemonic.sck, S))
                 );
 
+            var b3_decoders = ExtendMask32(16, 8,
+                (0xC1, Instr(Mnemonic.ldgr, RRE)),
+                (0xCD, Instr(Mnemonic.lgdr, RRE)));
+
+            var b9_decoders = ExtendMask32(16, 8,
+                (0x02, Instr(Mnemonic.ltgr, RRE)),
+                (0x04, Instr(Mnemonic.lgr, RRE)),
+                (0x08, Instr(Mnemonic.agr, RRE)),
+                (0x09, Instr(Mnemonic.sgr, RRE)),
+                (0x12, Instr(Mnemonic.ltgfr, RRE)),
+                (0x14, Instr(Mnemonic.lgfr, RRE)),
+                (0x20, Instr(Mnemonic.cgr, RRE)),
+                (0x21, Instr(Mnemonic.clgr, RRE)),
+                (0x80, Instr(Mnemonic.ngr, RRE)),
+                (0xE2, Mask(12, 4,
+                    Instr(Mnemonic.locgr, RR),
+                    Instr(Mnemonic.locgro, RR),
+                    Instr(Mnemonic.locgrh, RR),
+                    Instr(Mnemonic.locgrnle, RR),
+                    Instr(Mnemonic.locgrl, RR),
+                    Instr(Mnemonic.locgrnhe, RR),
+                    Instr(Mnemonic.locgrlh, RR),
+                    Instr(Mnemonic.locgrne, RR),
+                    Instr(Mnemonic.locgre, RR),
+                    Instr(Mnemonic.locgrnlh, RR),
+                    Instr(Mnemonic.locgrhe, RR),
+                    Instr(Mnemonic.locgrnl, RR),
+                    Instr(Mnemonic.locgrle, RR),
+                    Instr(Mnemonic.locgrnh, RR),
+                    Instr(Mnemonic.locgrno, RR),
+                    Instr(Mnemonic.locgr, RR))));
+
             var e3_decoders = ExtendMask48(0, 8,
+                (0x02, Instr(Mnemonic.ltg, RXYa)),
                 (0x04, Instr(Mnemonic.lg, RXYa)),
+                (0x12, Instr(Mnemonic.lt, RXYa)),
                 (0x14, Instr(Mnemonic.lgf, RXYa)),
                 (0x21, Instr(Mnemonic.clg, RXYa)),
-                (0x24, Instr(Mnemonic.stg, RXYa)));
+                (0x24, Instr(Mnemonic.stg, RXYa)),
+                (0x32, Instr(Mnemonic.ltgf, RXYa)),
+                (0x71, Instr(Mnemonic.lay, RXYa)),
+                (0x85, Instr(Mnemonic.lgat, RXYa)),
+                (0x9F, Instr(Mnemonic.lat, RXYa)));
 
-            var e5_decoders = ExtendMask48(0, 8);
+            var e5_decoders = ExtendMask48(32, 8,
+                (0x4C, Instr(Mnemonic.mvhi, SIL)));
 
             var eb_decoders = ExtendMask48(0, 8,
                 (~0u, Nyi("*")),
@@ -646,7 +705,8 @@ namespace Reko.Arch.zSeries
                 (0x0C, Instr(Mnemonic.srlg, RSYa)),
                 (0x0D, Instr(Mnemonic.sllg, RSYa)),
                 (0x20, Instr(Mnemonic.clmh, RSYb)),
-                (0x24, Instr(Mnemonic.stmg, RSYa)));
+                (0x24, Instr(Mnemonic.stmg, RSYa)),
+                (0xDF, Instr(Mnemonic.sllk, RSYa)));
 
             decoders = new Decoder[256]
             {
@@ -882,6 +942,7 @@ namespace Reko.Arch.zSeries
                 invalid,
                 invalid,
                 invalid,
+
                 // A0
                 invalid,
                 invalid,
@@ -889,7 +950,7 @@ namespace Reko.Arch.zSeries
                 invalid,
 
                 invalid,
-                ExtendMask32(16, 4, 
+                ExtendMask32(16, 4,
                     (0x00, Instr(Mnemonic.iihh, RIa)),
                     (0x01, Instr(Mnemonic.iihl, RIa)),
                     (0x02, Instr(Mnemonic.iilh, RIa)),
@@ -932,13 +993,14 @@ namespace Reko.Arch.zSeries
 
                 Nyi("*"),
                 Nyi("*"),
+                Instr32(Mnemonic.sigp, InstrClass.System, RSa),
                 Nyi("*"),
-                Nyi("*"),
+
                 // B0
                 invalid,
                 Instr32(Mnemonic.lra, RXa),
                 b2_decoders,
-                Nyi("*"),
+                b3_decoders,
 
                 Nyi("*"),
                 Nyi("*"),
@@ -946,14 +1008,7 @@ namespace Reko.Arch.zSeries
                 Nyi("*"),
 
                 Nyi("*"),
-                ExtendMask32(16, 8,
-                    (0x02, Instr(Mnemonic.ltgr, RRE)),
-                    (0x04, Instr(Mnemonic.lgr, RRE)),
-                    (0x08, Instr(Mnemonic.agr, RRE)),
-                    (0x09, Instr(Mnemonic.sgr, RRE)),
-                    (0x12, Instr(Mnemonic.ltgfr, RRE)),
-                    (0x14, Instr(Mnemonic.lgfr, RRE)),
-                    (0x80, Instr(Mnemonic.ngr, RRE))),
+                b9_decoders,
                 Nyi("*"),
                 Nyi("*"),
 
@@ -986,7 +1041,18 @@ namespace Reko.Arch.zSeries
                 Nyi("*"),
                 Nyi("*"),
 
-                Nyi("*"),
+                ExtendMask48(32, 4,
+                    (0x2, Instr(Mnemonic.llhrl, RILb)),
+                    (0x4, Instr(Mnemonic.lghrl, RILb)),
+                    (0x5, Instr(Mnemonic.lhrl, RILb)),
+                    (0x6, Instr(Mnemonic.llghrl, RILb)),
+                    (0x7, Instr(Mnemonic.sthrl, RILb)),
+                    (0x8, Instr(Mnemonic.lgrl, RILb)),
+                    (0xB, Instr(Mnemonic.stgrl, RILb)),
+                    (0xC, Instr(Mnemonic.lgfrl, RILb)),
+                    (0xD, Instr(Mnemonic.lrl, RILb)),
+                    (0xE, Instr(Mnemonic.llgfrl, RILb)),
+                    (0xF, Instr(Mnemonic.strl, RILb))),
                 Instr48(Mnemonic.bprp, MII),
                 Nyi("*"),
                 Nyi("*"),
@@ -1000,6 +1066,7 @@ namespace Reko.Arch.zSeries
                 Nyi("*"),
                 Nyi("*"),
                 Nyi("*"),
+
                 // D0
                 Instr48(Mnemonic.trtr, SSa),
                 Instr48(Mnemonic.mvc, SSa),
@@ -1020,6 +1087,7 @@ namespace Reko.Arch.zSeries
                 Nyi("*"),
                 Nyi("*"),
                 Instr48(Mnemonic.edmk, SSa),
+
                 // E0
                 invalid,
                 Instr48(Mnemonic.pku, SSf),
