@@ -65,15 +65,15 @@ namespace Reko.UnitTests.Mocks
 
             mockPlatform.Setup(p => p.Name).Returns("TestPlatform");
             mockPlatform.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
-            mockPlatform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Char)).Returns(1);
-            mockPlatform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Short)).Returns(2);
-            mockPlatform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Returns(4);
-            mockPlatform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Long)).Returns(4);
-            mockPlatform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.LongLong)).Returns(8);
-            mockPlatform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Float)).Returns(4);
-            mockPlatform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Double)).Returns(8);
-            mockPlatform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.LongDouble)).Returns(8);
-            mockPlatform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Int64)).Returns(8);
+            mockPlatform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Char)).Returns(8);
+            mockPlatform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Short)).Returns(16);
+            mockPlatform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Int)).Returns(32);
+            mockPlatform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Long)).Returns(32);
+            mockPlatform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.LongLong)).Returns(64);
+            mockPlatform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Float)).Returns(32);
+            mockPlatform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Double)).Returns(64);
+            mockPlatform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.LongDouble)).Returns(64);
+            mockPlatform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Int64)).Returns(64);
             mockPlatform.Setup(p => p.CreateMetadata()).Returns(() => this.platformMetadata.Clone());
             var arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
             mockPlatform.Setup(p => p.Architecture).Returns(arch);

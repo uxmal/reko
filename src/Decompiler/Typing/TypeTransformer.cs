@@ -317,14 +317,13 @@ namespace Reko.Typing
         {
             mptr.BasePointer = mptr.BasePointer.Accept(this);
             mptr.Pointee = mptr.Pointee.Accept(this);
-            var array = mptr.Pointee as ArrayType;
-            if (array != null)
+            if (mptr.Pointee is ArrayType array)
             {
                 Changed = true;
                 return factory.CreateMemberPointer(
                     mptr.BasePointer,
                     array.ElementType,
-                    mptr.Size);
+                    mptr.BitSize);
             }
             return mptr;
         }

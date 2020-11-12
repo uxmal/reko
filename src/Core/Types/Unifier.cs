@@ -369,7 +369,7 @@ namespace Reko.Core.Types
 			{
 				DataType baseType = UnifyInternal(mpA.BasePointer, mpB.BasePointer)!;
 				DataType pointee = UnifyInternal(mpA.Pointee, mpB.Pointee)!;
-				return new MemberPointer(baseType, pointee, mpB.Size);
+				return new MemberPointer(baseType, pointee, mpB.BitSize);
 			}
 			if (mpA != null)
 			{

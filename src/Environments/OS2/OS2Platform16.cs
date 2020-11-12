@@ -75,23 +75,23 @@ namespace Reko.Environments.OS2
             return null;
         }
 
-        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        public override int GetBitSizeFromCBasicType(CBasicType cb)
         {
             switch (cb)
             {
-                case CBasicType.Bool: return 1;
-                case CBasicType.Char: return 1;
-                case CBasicType.Short: return 2;
-                case CBasicType.Int: return 2;
-                case CBasicType.Long: return 4;
-                case CBasicType.Float: return 4;
-                case CBasicType.Double: return 8;
+                case CBasicType.Bool: return 8;
+                case CBasicType.Char: return 8;
+                case CBasicType.Short: return 16;
+                case CBasicType.Int: return 16;
+                case CBasicType.Long: return 32;
+                case CBasicType.Float: return 32;
+                case CBasicType.Double: return 64;
                 // Seen in Watcom
-                case CBasicType.Int64: return 8;
+                case CBasicType.Int64: return 64;
                 // Seen in OpenWatcom as an alias to __int64
-                case CBasicType.LongLong: return 8;
+                case CBasicType.LongLong: return 64;
                 // Used for EBCDIC, Shift-JIS and Unicode
-                case CBasicType.WChar_t: return 2;
+                case CBasicType.WChar_t: return 16;
             }
             throw new NotImplementedException();
         }

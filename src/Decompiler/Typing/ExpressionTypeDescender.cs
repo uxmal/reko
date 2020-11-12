@@ -232,7 +232,7 @@ namespace Reko.Typing
             s.Fields.Add(field);
 
             var pointer = eBase != null && eBase != globals
-                ? (DataType)factory.CreateMemberPointer(eBase.TypeVariable!, s, structPtrBitSize / DataType.BitsPerByte)
+                ? (DataType)factory.CreateMemberPointer(eBase.TypeVariable!, s, structPtrBitSize)
                 : (DataType)factory.CreatePointer(s, structPtrBitSize);
             return MeetDataType(eStructPtr, pointer);
         }
@@ -376,7 +376,7 @@ namespace Reko.Typing
                     return PrimitiveType.Create(Domain.SignedInt, dtOther.BitSize);
                 if (ptOther != null && (ptOther.Domain & Domain.Integer) != 0)
                 {
-                    return factory.CreateMemberPointer(mpSum.BasePointer, factory.CreateUnknown(), mpSum.Size);
+                    return factory.CreateMemberPointer(mpSum.BasePointer, factory.CreateUnknown(), mpSum.BitSize);
                 }
             }
             if (ptSum != null && ptSum.IsIntegral)
@@ -726,7 +726,7 @@ namespace Reko.Typing
                 throw new ArgumentOutOfRangeException("size must be positive");
             var s = factory.CreateStructureType(null, size);
             var ptr = eBase != null && eBase != globals
-                ? (DataType) factory.CreateMemberPointer(eBase.TypeVariable!, s, platform.FramePointerType.Size)
+                ? (DataType) factory.CreateMemberPointer(eBase.TypeVariable!, s, platform.FramePointerType.BitSize)
                 : (DataType) factory.CreatePointer(s, platform.PointerType.BitSize);
             return MeetDataType(tStruct, ptr);
         }
@@ -745,9 +745,9 @@ namespace Reko.Typing
             return new Pointer(dt, platform.PointerType.BitSize);
         }
 
-        private MemberPointer MemberPointerTo(DataType baseType, DataType fieldType, int size)
+        private MemberPointer MemberPointerTo(DataType baseType, DataType fieldType, int bitSize)
         {
-            return new MemberPointer(baseType, fieldType, size);
+            return new MemberPointer(baseType, fieldType, bitSize);
         }
 
         private DataType DataTypeOf(Expression e)
@@ -774,7 +774,7 @@ namespace Reko.Typing
                     MeetDataType(seg, new Pointer(new StructureType { IsSegment = true }, DataTypeOf(seg).BitSize));
                     if (DataTypeOf(seq) is Pointer ptr)
                     {
-                        MeetDataType(off, MemberPointerTo(seg.TypeVariable!, ptr.Pointee, DataTypeOf(off).Size));
+                        MeetDataType(off, MemberPointerTo(seg.TypeVariable!, ptr.Pointee, DataTypeOf(off).BitSize));
                     }
                     seg.Accept(this, seg.TypeVariable!);
                     off.Accept(this, off.TypeVariable!);

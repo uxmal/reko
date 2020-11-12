@@ -132,7 +132,7 @@ namespace Reko.Typing
 			return MergeIntoDataType(function, pfn);
 		}
 
-		public DataType MemAccessArrayTrait(Expression? expBase, Expression expStruct, int structPtrSize, int offset, int elementSize, int length, Expression expField)
+		public DataType MemAccessArrayTrait(Expression? expBase, Expression expStruct, int structPtrBitSize, int offset, int elementSize, int length, Expression expField)
 		{
 			var element = factory.CreateStructureType(null, elementSize);
 			if (expField != null)
@@ -141,12 +141,12 @@ namespace Reko.Typing
             tvElement.OriginalDataType = element;
 
 			DataType dtArray = factory.CreateArrayType(tvElement, length);
-		    return MemoryAccessCommon(expBase, expStruct, offset, dtArray, structPtrSize);
+		    return MemoryAccessCommon(expBase, expStruct, offset, dtArray, structPtrBitSize);
 		}
 		
-		public DataType MemAccessTrait(Expression? tBase, Expression tStruct, int structPtrSize, Expression tField, int offset)
+		public DataType MemAccessTrait(Expression? tBase, Expression tStruct, int structPtrBitSize, Expression tField, int offset)
 		{
-			return MemoryAccessCommon(tBase, tStruct, offset, tField.TypeVariable!, structPtrSize);
+			return MemoryAccessCommon(tBase, tStruct, offset, tField.TypeVariable!, structPtrBitSize);
 		}
 
 		public DataType MemFieldTrait(Expression? tBase, Expression tStruct, Expression tField, int offset)
@@ -157,15 +157,15 @@ namespace Reko.Typing
             return MergeIntoDataType(tStruct, s);
         }
 
-        public DataType MemoryAccessCommon(Expression? tBase, Expression tStruct, int offset, DataType tField, int structPtrSize)
+        public DataType MemoryAccessCommon(Expression? tBase, Expression tStruct, int offset, DataType tField, int structPtrBitSize)
         {
             var s = factory.CreateStructureType(null, 0);
             var field = new StructureField(offset, tField);
             s.Fields.Add(field);
 
             var pointer = tBase != null
-                ? (DataType)factory.CreateMemberPointer(tBase.TypeVariable!, s, structPtrSize)
-                : (DataType)factory.CreatePointer(s, structPtrSize * DataType.BitsPerByte);
+                ? (DataType)factory.CreateMemberPointer(tBase.TypeVariable!, s, structPtrBitSize)
+                : (DataType)factory.CreatePointer(s, structPtrBitSize);
             return MergeIntoDataType(tStruct, pointer);
         }
 

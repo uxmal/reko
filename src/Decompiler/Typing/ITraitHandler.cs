@@ -62,10 +62,10 @@ namespace Reko.Typing
 		/// </summary>
 		/// <param name="eBase">Base pointer for member pointer accesses, or null for simple pointer accesses.</param>
 		/// <param name="eStruct">Type variable of the structure whose field is being accessed.</param>
-		/// <param name="structPtrSize">Size of the pointer associated with the structure field reference.</param>
+		/// <param name="structPtrBitSize">Bit size of the pointer associated with the structure field reference.</param>
 		/// <param name="eField">Type variable for the field.</param>
 		/// <param name="offset">Field offset within the structure (in bytes).</param>
-        DataType MemAccessTrait(Expression? eBase, Expression eStruct, int structPtrSize, Expression eField, int offset);
+        DataType MemAccessTrait(Expression? eBase, Expression eStruct, int structPtrBitSize, Expression eField, int offset);
         DataType MemFieldTrait(Expression? eBase, Expression eStruct, Expression eField, int offset);
 
 		/// <summary>

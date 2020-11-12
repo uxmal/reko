@@ -250,7 +250,7 @@ test_exit:
             platform.Setup(p => p.DefaultCallingConvention).Returns("__cdecl");
             platform.Setup(p => p.GetCallingConvention(null))
                 .Returns(new X86CallingConvention(4, 4, 4, true, false));
-            platform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Returns(4);
+            platform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Int)).Returns(32);
 
             var dynamicLinker = new Mock<IDynamicLinker>().Object;
             program.Platform = platform.Object;

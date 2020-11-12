@@ -399,7 +399,9 @@ namespace Reko.Core.CLanguage
         {
             if (domain != Domain.None && basicType == CBasicType.None)
                 basicType = CBasicType.Int;
-            byteSize = platform.GetByteSizeFromCBasicType(basicType);
+            var bitSize = platform.GetBitSizeFromCBasicType(basicType);
+            var memoryUnitBitSize = platform.Architecture.MemoryGranularity;
+            this.byteSize = (bitSize + (memoryUnitBitSize - 1)) / memoryUnitBitSize;
             var d = domain;
             if (d == Domain.None)
                 d = Domain.SignedInt;

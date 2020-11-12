@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Core.CLanguage
         public void Setup()
         {
             var platform = new Mock<IPlatform>();
-            platform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Returns(4);
+            platform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Int)).Returns(32);
             this.constants = new Dictionary<string,int>();
             eval = new CConstantEvaluator(platform.Object, constants);
         }
