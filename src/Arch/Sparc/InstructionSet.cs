@@ -426,7 +426,16 @@ namespace Reko.Arch.Sparc
                     Instr(Mnemonic.popc, R0,r25),
                     invalid),
                 Instr64(
-                    Instr(Mnemonic.movr, nyi),
+                    SparcDisassembler.Mask(10, 3, "  movr",
+                        invalid,
+                        Instr(Mnemonic.movrz, r14, Rs10, r25),
+                        Instr(Mnemonic.movrlez, r14, Rs10, r25),
+                        Instr(Mnemonic.movrlz, r14, Rs10, r25),
+
+                        invalid,
+                        Instr(Mnemonic.movrnz, r14, Rs10, r25),
+                        Instr(Mnemonic.movrgz, r14, Rs10, r25),
+                        Instr(Mnemonic.movrgez, r14, Rs10, r25)),
                     invalid),
 
                 // 30

@@ -58,6 +58,12 @@ namespace Reko.Core
         ExternalProcedure? GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstr);
         ExternalProcedure? GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk);
 
+        /// <summary>
+        /// Read a value of size <paramref name="dt"/> from address <paramref name="addr"/>, 
+        /// using the endianness of the <paramref name="arch"/> processor architecture.
+        /// </summary>
+        public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, out Constant value);
+
         void Error(Address address, string format, params object[] args);
         void Warn(Address address, string format, params object[] args);
     }

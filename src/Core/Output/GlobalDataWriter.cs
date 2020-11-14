@@ -37,18 +37,20 @@ namespace Reko.Core.Output
         private readonly Program program;
         private readonly IServiceProvider services;
         private readonly DataTypeComparer cmp;
-        private EndianImageReader? rdr;
-        private CodeFormatter codeFormatter;
-        private StructureType globals;
-        private int recursionGuard;     //$REVIEW: remove this once deep recursion bugs have been flushed out.
-        private Formatter formatter;
-        private TypeReferenceFormatter tw;
+        private readonly CodeFormatter codeFormatter;
+        private readonly Formatter formatter;
+        private readonly TypeReferenceFormatter tw;
         private Queue<StructureField> queue;
+        private StructureType globals;
+        private EndianImageReader? rdr;
+        private bool chasePointers;
+        private int recursionGuard;     //$REVIEW: remove this once deep recursion bugs have been flushed out.
 
-        public GlobalDataWriter(Program program, Formatter formatter, IServiceProvider services)
+        public GlobalDataWriter(Program program, Formatter formatter, bool chasePointers, IServiceProvider services)
         {
             this.program = program;
             this.formatter = formatter;
+            this.chasePointers = chasePointers;
             this.services = services;
             this.cmp = new DataTypeComparer();
             this.codeFormatter = new AbsynCodeFormatter(formatter);
@@ -276,10 +278,10 @@ namespace Reko.Core.Output
             else
             {
                 var field = globals.Fields.AtOffset(offset);
-                if (field == null)
+                if (field is null)
                 {
                     // We've discovered a global variable! Create it!
-                    //$REVIEW: what about colissions and the usual merge crap?
+                    //$REVIEW: what about collisions and the usual merge crap?
                     var dt = ptr.Pointee;
                     //$REVIEW: that this is a pointer to a C-style null 
                     // terminated string is a wild-assed guess of course.
@@ -290,9 +292,12 @@ namespace Reko.Core.Output
                         dt = StringType.NullTerminated(pt);
                     }
                     field = globals.Fields.Add(offset, dt);
-                    queue.Enqueue(field);
+                    if (chasePointers)
+                    {
+                        queue.Enqueue(field);
+                    }
                 }
-                codeFormatter.InnerFormatter.Write("&g_{0}", field.Name);
+                codeFormatter.InnerFormatter.Write("&{0}", program.NamingPolicy.GlobalName(field));
             }
             return codeFormatter;
         }

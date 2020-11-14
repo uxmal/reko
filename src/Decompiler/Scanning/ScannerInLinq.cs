@@ -231,12 +231,12 @@ namespace Reko.Scanning
             // Determine an architecture for the item.
             var prevArch = GetBlockArchitecture(prev);
             var nextArch = GetBlockArchitecture(next);
-            IProcessorArchitecture? arch = null;
-            if (prevArch == null)
+            IProcessorArchitecture? arch;
+            if (prevArch is null)
             {
                 arch = nextArch ?? program.Architecture;
             }
-            else if (nextArch == null)
+            else if (nextArch is null)
             {
                 arch = prevArch ?? program.Architecture;
             }

@@ -84,16 +84,18 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.addv: RewriteAddv(); break;
                 case Mnemonic.adr: RewriteUnary(n => n); break;
                 case Mnemonic.asrv: RewriteBinary(m.Sar); break;
-                case Mnemonic.bic: RewriteBinary((a, b) => m.And(a, m.Comp(b))); break;
                 case Mnemonic.adrp: RewriteAdrp(); break;
                 case Mnemonic.and: RewriteBinary(m.And); break;
                 case Mnemonic.ands: RewriteBinary(m.And, this.NZ00); break;
                 case Mnemonic.asr: RewriteBinary(m.Sar); break;
                 case Mnemonic.b: RewriteB(); break;
                 case Mnemonic.bfm: RewriteBfm(); break;
+                case Mnemonic.bic: RewriteBinary((a, b) => m.And(a, m.Comp(b))); break;
+                case Mnemonic.bics: RewriteBinary((a, b) => m.And(a, m.Comp(b)), NZ00); break;
                 case Mnemonic.bl: RewriteBl(); break;
                 case Mnemonic.blr: RewriteBlr(); break;
                 case Mnemonic.br: RewriteBr(); break;
+                case Mnemonic.brk: RewriteBrk(); break;
                 case Mnemonic.cbnz: RewriteCb(m.Ne0); break;
                 case Mnemonic.cbz: RewriteCb(m.Eq0); break;
                 case Mnemonic.ccmn: RewriteCcmn(); break;
@@ -105,10 +107,12 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.csinc: RewriteCsinc(); break;
                 case Mnemonic.csinv: RewriteCsinv(); break;
                 case Mnemonic.csneg: RewriteCsneg(); break;
+                case Mnemonic.dmb: RewriteDmb(); break;
                 case Mnemonic.dsb: RewriteDsb(); break;
                 case Mnemonic.dup: RewriteDup(); break;
                 case Mnemonic.eor: RewriteBinary(m.Xor); break;
                 case Mnemonic.eon: RewriteBinary((a, b) => m.Xor(a, m.Comp(b))); break;
+                case Mnemonic.eret: RewriteEret(); break;
                 case Mnemonic.extr: RewriteExtr(); break;
                 case Mnemonic.fabs: RewriteFabs(); break;
                 case Mnemonic.fadd: RewriteFadd(); break;
@@ -130,12 +134,15 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.fnmul: RewriteFnmul(); break;
                 case Mnemonic.fsqrt: RewriteFsqrt(); break;
                 case Mnemonic.fsub: RewriteMaybeSimdBinary(m.FSub, "__fsub_{0}", Domain.Real); break;
+                case Mnemonic.hlt: RewriteHlt(); break;
                 case Mnemonic.isb: RewriteIsb(); break;
                 case Mnemonic.ld1r: RewriteLdNr("__ld1r"); break;
                 case Mnemonic.ld2: RewriteLdN("__ld2"); break;
                 case Mnemonic.ld3: RewriteLdN("__ld3"); break;
                 case Mnemonic.ld4: RewriteLdN("__ld4"); break;
                 case Mnemonic.ldp: RewriteLoadStorePair(true); break;
+                case Mnemonic.ldarh: RewriteLoadAcquire("__load_acquire_{0}", PrimitiveType.Word16); break;
+                case Mnemonic.ldaxrh: RewriteLoadAcquire("__load_acquire_exclusive_{0}", PrimitiveType.Word16); break;
                 case Mnemonic.ldpsw: RewriteLoadStorePair(true, PrimitiveType.Int32, PrimitiveType.Int64); break;
                 case Mnemonic.ldr: RewriteLdr(null); break;
                 case Mnemonic.ldrb: RewriteLdr(PrimitiveType.Byte); break;
@@ -143,6 +150,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.ldrsb: RewriteLdr(PrimitiveType.SByte); break;
                 case Mnemonic.ldrsh: RewriteLdr(PrimitiveType.Int16); break;
                 case Mnemonic.ldrsw: RewriteLdr(PrimitiveType.Int32, PrimitiveType.Int64); break;
+                case Mnemonic.ldxr: RewriteLdx(instr.Operands[0].Width); break;
                 case Mnemonic.lslv: RewriteBinary(m.Shl); break;
                 case Mnemonic.lsrv: RewriteBinary(m.Shr); break;
                 case Mnemonic.ldur: RewriteLdr(null); break;
@@ -170,8 +178,11 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.orr: RewriteBinary(m.Or);break;
                 case Mnemonic.orn: RewriteBinary((a, b) => m.Or(a, m.Comp(b))); break;
                 case Mnemonic.prfm: RewritePrfm(); break;
+                case Mnemonic.rbit: RewriteRbit(); break;
                 case Mnemonic.ret: RewriteRet(); break;
+                case Mnemonic.rev: RewriteRev(); break;
                 case Mnemonic.rev16: RewriteRev16(); break;
+                case Mnemonic.rev32: RewriteRev32(); break;
                 case Mnemonic.ror: RewriteRor(); break;
                 case Mnemonic.rorv: RewriteRor(); break;
                 case Mnemonic.sbc: RewriteAdcSbc(m.ISub); break;
@@ -185,13 +196,15 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.smax: RewriteSmax(); break;
                 case Mnemonic.smaxv: RewriteSmaxv(); break;
                 case Mnemonic.smc: RewriteSmc(); break;
+                case Mnemonic.smsubl: RewriteSmsubl(); break;
                 case Mnemonic.smull: RewriteMull(PrimitiveType.Int32, PrimitiveType.Int64, m.SMul); break;
                 case Mnemonic.smulh: RewriteMulh(PrimitiveType.Int64, PrimitiveType.Int128, m.SMul); break;
                 case Mnemonic.st1: RewriteStN("__st1"); break;
                 case Mnemonic.st2: RewriteStN("__st2"); break;
                 case Mnemonic.st3: RewriteStN("__st3"); break;
                 case Mnemonic.st4: RewriteStN("__st4"); break;
-                case Mnemonic.stlr: RewriteStlr(); break;
+                case Mnemonic.stlr: RewriteStlr(instr.Operands[0].Width); break;
+                case Mnemonic.stlrh: RewriteStlr(PrimitiveType.Word16); break;
                 case Mnemonic.stp: RewriteLoadStorePair(false); break;
                 case Mnemonic.str: RewriteStr(null); break;
                 case Mnemonic.strb: RewriteStr(PrimitiveType.Byte); break;
@@ -199,6 +212,8 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.stur: RewriteStr(null); break;
                 case Mnemonic.sturb: RewriteStr(PrimitiveType.Byte); break;
                 case Mnemonic.sturh: RewriteStr(PrimitiveType.Word16); break;
+                case Mnemonic.stxr: RewriteStx(instr.Operands[1].Width); break;
+                case Mnemonic.stxrb: RewriteStx(PrimitiveType.Byte); break;
                 case Mnemonic.sub: RewriteBinary(m.ISub); break;
                 case Mnemonic.subs: RewriteBinary(m.ISub, NZCV); break;
                 case Mnemonic.svc: RewriteSvc(); break;
@@ -209,6 +224,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.tbnz: RewriteTb(m.Ne0); break;
                 case Mnemonic.tbz: RewriteTb(m.Eq0); break;
                 case Mnemonic.test: RewriteTest(); break;
+                case Mnemonic.uabd: RewriteUabd(); break;
                 case Mnemonic.uaddw: RewriteUaddw(); break;
                 case Mnemonic.ubfm: RewriteUSbfm("__ubfm"); break;
                 case Mnemonic.ucvtf: RewriteIcvt(Domain.UnsignedInt); break;
@@ -286,6 +302,9 @@ namespace Reko.Arch.Arm.AArch64
                 {
                     return vreg;
                 }
+            case MemoryOperand mem:
+                var ea = binder.EnsureRegister(mem.Base);
+                return m.Mem(mem.Width, ea);
             }
             throw new NotImplementedException($"Rewriting {op.GetType().Name} not implemented yet.");
         }

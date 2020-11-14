@@ -37,13 +37,13 @@ namespace Reko.Environments.SysV
     public class SysVPlatform : Platform
     {
         private RegisterStorage[] trashedRegs;
-        private CallingConvention ccX86;
-        private CallingConvention ccRiscV;
+        private readonly ArchSpecificFactory archSpecificFactory;
 
         public SysVPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "elf-neutral")
         {
             LoadTrashedRegisters();
+            archSpecificFactory = new ArchSpecificFactory(services, arch);
         }
 
         public override string DefaultCallingConvention
@@ -58,77 +58,11 @@ namespace Reko.Environments.SysV
 
         public override CallingConvention GetCallingConvention(string ccName)
         {
-            switch (Architecture.Name)
-            {
-            case "mips-be-32":
-            case "mips-le-32":
-            case "mips-be-64":
-            case "mips-le-64":
-                return new MipsCallingConvention(Architecture); //$ ccName?
-            case "ppc-be-32":
-            case "ppc-le-32":
-                return new PowerPcCallingConvention(Architecture);
-            case "ppc-be-64":
-            case "ppc-le-64":
-                return new PowerPc64CallingConvention(Architecture);
-            case "sparc32":
-            case "sparc64":
-                return new SparcCallingConvention(Architecture);
-            case "x86-protected-32":
-                if (this.ccX86 == null)
-                {
-                    var svc = Services.RequireService<IPluginLoaderService>();
-                    var t = svc.GetType("Reko.Arch.X86.X86CallingConvention,Reko.Arch.X86");
-                    this.ccX86 = (CallingConvention)Activator.CreateInstance(
-                        t,
-                        4,      // retAddressOnStack,
-                        4,      // stackAlignment,
-                        4,      // pointerSize,
-                        true,   // callerCleanup,
-                        false); // reverseArguments)
+            var Architecture = this.Architecture;
+            return archSpecificFactory.CreateCallingConverion(Architecture);
                 }
-                return this.ccX86;
-            case "x86-protected-64":
-                return new X86_64CallingConvention(Architecture);
-            case "xtensa":
-                return new XtensaCallingConvention(Architecture);
-            case "arm":
-                return new Arm32CallingConvention(Architecture);
-            case "arm-64":
-                return new Arm64CallingConvention(Architecture);
-            case "m68k":
-                return new M68kCallingConvention(Architecture);
-            case "avr8":
-                return new Avr8CallingConvention(Architecture);
-            case "avr32":
-                return new Avr32CallingConvention(Architecture);
-            case "msp430":
-                return new Msp430CallingConvention(Architecture);
-            case "risc-v":
-                if (this.ccRiscV == null)
-                {
-                    var svc = Services.RequireService<IPluginLoaderService>();
-                    var t = svc.GetType("Reko.Arch.RiscV.RiscVCallingConvention,Reko.Arch.RiscV");
-                    this.ccRiscV = (CallingConvention)Activator.CreateInstance(t, Architecture);
-                }
-                return this.ccRiscV;
-            case "superH-le":
-            case "superH-be":
-                return new SuperHCallingConvention(Architecture);
-            case "alpha":
-                return new AlphaCallingConvention(Architecture);
-            case "zSeries":
-                return new zSeriesCallingConvention(Architecture);
-            case "blackfin":
-                return new BlackfinCallingConvention(Architecture);
-            case "hexagon":
-                return new HexagonCallingConvention(Architecture);
-            case "ia64":
-                return new Ia64CallingConvention(Architecture);
-            default:
-                throw new NotImplementedException(string.Format("ELF calling convention for {0} not implemented yet.", Architecture.Description));
-            }
-        }
+
+
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
@@ -161,36 +95,22 @@ namespace Reko.Environments.SysV
 
         public override ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rw, IRewriterHost host)
         {
-            var instr = rw.FirstOrDefault();
-            if (instr == null)
-                return null;
-
-            // Match x86 pattern.
-            // jmp [destination]
-            Address addrTarget = null;
-            if (instr is RtlGoto jump)
+            var finder = archSpecificFactory.CreateTrampolineDestinationFinder(this.Architecture);
+            var target = finder(Architecture, addrInstr, rw, host);
+            if (target is ProcedureConstant pc)
             {
-                if (jump.Target is ProcedureConstant pc)
                     return pc.Procedure;
-                if (!(jump.Target is MemoryAccess access))
-                    return null;
-                addrTarget = access.EffectiveAddress as Address;
-                if (addrTarget == null)
-                {
-                    if (!(access.EffectiveAddress is Constant wAddr))
-                    {
-                        return null;
-                    }
-                    addrTarget = MakeAddressFromConstant(wAddr, true);
-                }
             }
-            if (addrTarget == null)
-                return null;
+            else if (target is Address addrTarget)
+                {
             var arch = this.Architecture;
             ProcedureBase proc = host.GetImportedProcedure(arch, addrTarget, addrInstr);
             if (proc != null)
                 return proc;
             return host.GetInterceptedCall(arch, addrTarget);
+        }
+            else
+                return null;
         }
 
         public override void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter m)

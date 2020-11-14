@@ -6,10 +6,3 @@
 
 Eq_n g_t0000;
 word16 g_w0AF0;
-word16 g_a1758[] = 
-	{
-	};
-word16 g_a2C58[] = 
-	{
-	};
-

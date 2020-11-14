@@ -72,9 +72,19 @@ namespace Reko.Arch.M68k
 
         public void RewriteRotationX(string procName)
         {
-            var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
-            var opDst = orw.RewriteDst(instr.Operands[1], instr.Address, opSrc, (s, d) =>
-                host.PseudoProcedure(procName, instr.DataWidth!, d, s, orw.FlagGroup(FlagM.XF)));
+            Expression? opDst;
+            if (instr.Operands.Length == 2)
+            {
+                var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
+                opDst = orw.RewriteDst(instr.Operands[1], instr.Address, opSrc, (s, d) =>
+                    host.PseudoProcedure(procName, instr.DataWidth!, d, s, orw.FlagGroup(FlagM.XF)));
+            }
+            else
+            {
+                opDst = orw.RewriteDst(instr.Operands[0], instr.Address,
+                    Constant.Byte(1), (s, d) =>
+                        host.PseudoProcedure(procName, PrimitiveType.Word32, d, s, orw.FlagGroup(FlagM.XF)));
+            }
             if (opDst == null)
             {
                 EmitInvalid();
@@ -139,6 +149,11 @@ namespace Reko.Arch.M68k
             m.Assign(
                 orw.FlagGroup(FlagM.ZF),
                 host.PseudoProcedure(name, PrimitiveType.Bool, opDst, opSrc, m.Out(PrimitiveType.Ptr32, opDst)));
+        }
+
+        public void RewriteBfchg()
+        {
+
         }
 
         public void RewriteExg()
@@ -342,12 +357,19 @@ namespace Reko.Arch.M68k
         {
             var reg = orw.RewriteSrc(instr.Operands[1], instr.Address);
             var lowBound = orw.RewriteSrc(instr.Operands[0], instr.Address);
-            var ea = ((MemoryAccess)lowBound).EffectiveAddress;
-            var hiBound = m.Mem(lowBound.DataType, m.IAdd(ea, lowBound.DataType.Size));
-            var C = orw.FlagGroup(FlagM.CF);
-            var Z = orw.FlagGroup(FlagM.ZF);
-            m.Assign(C, m.Cor(m.Lt(reg, lowBound), m.Gt(reg, hiBound)));
-            m.Assign(Z, m.Cor(m.Eq(reg, lowBound), m.Eq(reg, hiBound)));
+            if (lowBound is MemoryAccess mem)
+            {
+                var ea = mem.EffectiveAddress;
+                var hiBound = m.Mem(lowBound.DataType, m.IAdd(ea, lowBound.DataType.Size));
+                var C = orw.FlagGroup(FlagM.CF);
+                var Z = orw.FlagGroup(FlagM.ZF);
+                m.Assign(C, m.Cor(m.Lt(reg, lowBound), m.Gt(reg, hiBound)));
+                m.Assign(Z, m.Cor(m.Eq(reg, lowBound), m.Eq(reg, hiBound)));
+            }
+            else
+            {
+                EmitInvalid();
+            }
         }
 
         private void RewriteDiv(Func<Expression,Expression,Expression> op, DataType dt)
@@ -656,7 +678,10 @@ namespace Reko.Arch.M68k
                 {
                     var src = orw.RewriteSrc(instr.Operands[0], instr.Address) as MemoryAccess;
                     if (src == null)
-                        throw new AddressCorrelatedException(instr.Address, "Unsupported addressing mode for {0}.", instr);
+                    {
+                        EmitInvalid();
+                        return;
+                    }
                     srcReg = binder.CreateTemporary(src.EffectiveAddress.DataType);
                     m.Assign(srcReg, src.EffectiveAddress);
                 }
@@ -669,30 +694,26 @@ namespace Reko.Arch.M68k
             }
             if (instr.Operands[0] is RegisterSetOperand dstRegs2)
             {
-                var preDec = instr.Operands[1] as PredecrementMemoryOperand;
-                if (preDec != null)
+                switch (instr.Operands[1])
                 {
+                case PredecrementMemoryOperand preDec:
                     var dstReg = binder.EnsureRegister(preDec.Register);
                     foreach (var reg in RegisterMaskDecreasing(dstRegs2.Width.Domain, dstRegs2.BitSet, regGenerator))
                     {
                         m.Assign(dstReg, m.ISubS(dstReg, dataWidth.Size));
                         m.Assign(m.Mem(dataWidth, dstReg), reg);
                     }
-                }
-                else
-                {
-                    var src = orw.RewriteSrc(instr.Operands[1], instr.Address) as MemoryAccess;
-                    if (src is null)
-                        throw new AddressCorrelatedException(instr.Address, "Unsupported addressing mode for {0}.", instr);
+                    return;
+                case PostIncrementMemoryOperand postDec:
                     var srcReg = binder.CreateTemporary(dataWidth);
-                    m.Assign(srcReg, src.EffectiveAddress);
+                    m.Assign(srcReg, binder.EnsureRegister(postDec.Register));
                     foreach (var reg in RegisterMaskIncreasing(dstRegs2.Width.Domain, dstRegs2.BitSet, regGenerator))
                     {
                         m.Assign(reg, m.Mem(dataWidth, srcReg));
-                        m.Assign(srcReg, m.IAdd(srcReg, dataWidth.Size));
+                        m.Assign(srcReg, m.IAddS(srcReg, dataWidth.Size));
                     }
+                    return;
                 }
-                return;
             }
             // Unsupported addressing mode.
             EmitInvalid();

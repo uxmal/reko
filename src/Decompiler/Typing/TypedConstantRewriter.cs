@@ -124,7 +124,7 @@ namespace Reko.Typing
                     addr.Offset);
 
                 var f = EnsureFieldAtOffset(baseType, dt.Pointee, c.ToInt32());
-                Expression ex = new FieldAccess(dt, new Dereference(ptrSeg, segId), f);
+                Expression ex = new FieldAccess(f.DataType, new Dereference(ptrSeg, segId), f);
                 if (dereferenced || dt.Pointee is ArrayType)
                 {
                     return ex;

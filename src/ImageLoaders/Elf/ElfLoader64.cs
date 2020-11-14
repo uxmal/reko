@@ -79,6 +79,9 @@ namespace Reko.ImageLoaders.Elf
             string archName;
             switch (machine)
             {
+            case ElfMachine.EM_IA_64:
+                archName = "ia64";
+                break;
             case ElfMachine.EM_MIPS:
                 //$TODO: detect release 6 of the MIPS architecture. 
                 // would be great to get our sweaty little hands on
@@ -100,8 +103,14 @@ namespace Reko.ImageLoaders.Elf
                 archName = "paRisc";
                 options["WordSize"] = "64";
                 break;
-            case ElfMachine.EM_IA_64:
-                archName = "ia64";
+            case ElfMachine.EM_RISCV: 
+                archName = "risc-v";
+                options["WordSize"] = "64";
+                RiscVElf.SetOptions((RiscVFlags) Header64.e_flags, options);
+                break;
+            case ElfMachine.EM_S390: //$REVIEW: any pertinent differences?
+                archName = "zSeries";
+                options["WordSize"] = "64";
                 break;
             default:
                 return base.CreateArchitecture(endianness);
@@ -122,7 +131,7 @@ namespace Reko.ImageLoaders.Elf
             switch (shdr.Type)
             {
             case SectionHeaderType.SHT_DYNAMIC:
-                return new DynamicSectionRenderer64(this, shdr);
+                return new DynamicSectionRenderer64(this, shdr, machine);
             case SectionHeaderType.SHT_RELA:
                 return new RelaSegmentRenderer64(this, shdr);
             case SectionHeaderType.SHT_SYMTAB:
@@ -272,6 +281,7 @@ namespace Reko.ImageLoaders.Elf
             var segMap = AllocateMemoryAreas(
                 Segments
                     .Where(p => IsLoadable(p.p_pmemsz, p.p_type))
+                    .OrderBy(p => p.p_vaddr)
                     .Select(p => Tuple.Create(
                         platform.MakeAddressFromLinear(p.p_vaddr, false),
                         (uint) p.p_pmemsz)));
@@ -357,7 +367,13 @@ namespace Reko.ImageLoaders.Elf
 
         public override ElfRelocation LoadRelEntry(EndianImageReader rdr)
         {
-            throw new NotImplementedException();
+            var rel = Elf64_Rel.Read(rdr);
+            return new ElfRelocation
+            {
+                Offset = rel.r_offset,
+                Info = rel.r_info,
+                SymbolIndex = rel.SymbolIndex
+            };
         }
 
         public override ElfRelocation LoadRelaEntry(EndianImageReader rdr)
@@ -433,7 +449,8 @@ namespace Reko.ImageLoaders.Elf
         public override ElfSymbol LoadSymbol(ulong offsetSymtab, ulong symbolIndex, ulong entrySize, ulong offsetStringTable)
         {
             var rdr = CreateReader(offsetSymtab + entrySize * symbolIndex);
-            var sym = Elf64_Sym.Load(rdr);
+            if (!Elf64_Sym.TryLoad(rdr, out var sym))
+                return null;
             return new ElfSymbol
             {
                 Name = RemoveModuleSuffix(ReadAsciiString(offsetStringTable + sym.st_name)),
@@ -453,25 +470,27 @@ namespace Reko.ImageLoaders.Elf
             var symbols = new Dictionary<int, ElfSymbol>();
             for (ulong i = 0; i < symSection.Size / symSection.EntrySize; ++i)
             {
-                var sym = Elf64_Sym.Load(rdr);
-                //Debug.Print("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
-                //    i,
-                //    RemoveGlibcSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
-                //    (ElfSymbolType)(sym.st_info & 0xF),
-                //    sym.st_shndx,
-                //    GetSectionName(sym.st_shndx),
-                //    sym.st_value,
-                //    sym.st_size);
-                symbols.Add(
-                    (int) i,
-                    new ElfSymbol
-                    {
-                        Name = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
-                        Type = (ElfSymbolType) (sym.st_info & 0xF),
-                        SectionIndex = sym.st_shndx,
-                        Value = sym.st_value,
-                        Size = sym.st_size,
-                    });
+                if (Elf64_Sym.TryLoad(rdr, out var sym))
+                {
+                    //Debug.Print("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
+                    //    i,
+                    //    RemoveGlibcSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
+                    //    (ElfSymbolType)(sym.st_info & 0xF),
+                    //    sym.st_shndx,
+                    //    GetSectionName(sym.st_shndx),
+                    //    sym.st_value,
+                    //    sym.st_size);
+                    symbols.Add(
+                        (int) i,
+                        new ElfSymbol
+                        {
+                            Name = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
+                            Type = (ElfSymbolType) (sym.st_info & 0xF),
+                            SectionIndex = sym.st_shndx,
+                            Value = sym.st_value,
+                            Size = sym.st_size,
+                        });
+                }
             }
             return symbols;
         }

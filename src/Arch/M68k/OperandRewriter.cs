@@ -318,7 +318,7 @@ namespace Reko.Arch.M68k
                     ea = m.IAddS(bReg, mem.Offset.ToInt32());
                 }
             }
-            return m.Mem(dataWidth, ea);
+            return m.Mem(dataWidth ?? mem.Width, ea);
         }
 
         public Expression RewriteUnary(

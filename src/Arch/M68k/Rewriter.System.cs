@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -37,12 +38,43 @@ namespace Reko.Arch.M68k
             var src = this.orw.RewriteSrc(instr.Operands[0], instr.Address);
             m.SideEffect(host.PseudoProcedure("__bkpt", VoidType.Instance, src));
         }
+        
+        private void RewriteCinva()
+        {
+            m.SideEffect(host.PseudoProcedure($"__invalidate_cache_all_{instr.Operands[0]}", VoidType.Instance));
+        }
+
+        private void RewriteCinvp()
+        {
+            var src = (MemoryAccess) this.orw.RewriteSrc(instr.Operands[1], instr.Address);
+            m.SideEffect(host.PseudoProcedure($"__invalidate_cache_page_{instr.Operands[0]}", VoidType.Instance, src.EffectiveAddress));
+        }
+
+        private void RewriteCinvl()
+        {
+            var src = (MemoryAccess) this.orw.RewriteSrc(instr.Operands[1], instr.Address);
+            m.SideEffect(host.PseudoProcedure($"__invalidate_cache_line_{instr.Operands[0]}", VoidType.Instance, src.EffectiveAddress));
+        }
+
+        private void RewriteMovec()
+        {
+            var src = this.orw.RewriteSrc(instr.Operands[0], instr.Address);
+            var dst = orw.RewriteDst(instr.Operands[1], instr.Address, instr.DataWidth!, src, (s, d) =>
+                host.PseudoProcedure("__movec", VoidType.Instance, s));
+        }
 
         private void RewriteMoves()
         {
             var src = this.orw.RewriteSrc(instr.Operands[0], instr.Address);
             var dst = orw.RewriteDst(instr.Operands[1], instr.Address, instr.DataWidth!, src, (s, d) =>
                 host.PseudoProcedure("__moves", VoidType.Instance, s));
+        }
+
+        private void RewritePload()
+        {
+            var src1 = this.orw.RewriteSrc(instr.Operands[0], instr.Address);
+            var src2 = this.orw.RewriteSrc(instr.Operands[0], instr.Address);
+            m.SideEffect(host.PseudoProcedure("__pload", VoidType.Instance, src1, src2));
         }
 
         private void RewritePflushr()
@@ -54,8 +86,13 @@ namespace Reko.Arch.M68k
         private void RewritePtest()
         {
             var src1 = this.orw.RewriteSrc(instr.Operands[0], instr.Address);
-            var src2 = this.orw.RewriteSrc(instr.Operands[1], instr.Address);
+            var src2 = ((MemoryAccess) this.orw.RewriteSrc(instr.Operands[1], instr.Address)).EffectiveAddress;
             m.SideEffect(host.PseudoProcedure("__ptest", VoidType.Instance, src2, src1));
+        }
+
+        private void RewriteReset()
+        {
+            m.SideEffect(host.PseudoProcedure("__reset", VoidType.Instance));
         }
 
         private void RewriteRte()

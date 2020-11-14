@@ -228,7 +228,6 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_AARCH64: arch = "arm-64"; break;
             case ElfMachine.EM_XTENSA: arch = "xtensa"; break;
             case ElfMachine.EM_AVR: arch = "avr8"; break;
-            case ElfMachine.EM_RISCV: arch = "risc-v"; break;
             case ElfMachine.EM_MSP430: arch = "msp430"; break;
             case ElfMachine.EM_SH:
                 arch = endianness == ELFDATA2LSB ? "superH-le" : "superH-be";
@@ -242,10 +241,6 @@ namespace Reko.ImageLoaders.Elf
                 // Alpha has no architecture-defined stack pointer. 
                 // Alpha-Linux uses r30.
                 stackRegName = "r30";
-                break;
-            case ElfMachine.EM_S370:
-            case ElfMachine.EM_S390: //$REVIEW: any pertinent differences?
-                arch = "zSeries";
                 break;
             case ElfMachine.EM_NANOMIPS:
                 if (endianness == ELFDATA2LSB)
@@ -377,7 +372,6 @@ namespace Reko.ImageLoaders.Elf
             return addrEnd;
         }
 
-
         public IPlatform LoadPlatform(byte osAbi, IProcessorArchitecture arch)
         {
             string envName;
@@ -462,8 +456,8 @@ namespace Reko.ImageLoaders.Elf
                 var imgSym = CreateImageSymbol(sym, isExecutable);
                 if (imgSym == null || imgSym.Address.ToLinear() == 0)
                     continue;
-                    imgSymbols[imgSym.Address] = imgSym;
-                }
+                imgSymbols[imgSym.Address] = imgSym;
+            }
             return imgSymbols;
         }
 
@@ -476,7 +470,6 @@ namespace Reko.ImageLoaders.Elf
         {
             return imgLoader.CreateWriter(fileOffset);
         }
-
 
         /// <summary>
         /// The GOT table contains an array of pointers. Some of these
@@ -603,10 +596,14 @@ namespace Reko.ImageLoaders.Elf
         public string GetSectionName(ushort st_shndx)
         {
             Debug.Assert(Sections != null);
+            if (st_shndx == ElfSection.SHN_UNDEF)
+            {
+                return "SHN_UNDEF";
+            }
             if (st_shndx < 0xFF00)
             {
                 if (st_shndx < Sections.Count)
-                return Sections[st_shndx].Name;
+                    return Sections[st_shndx].Name;
                 else
                     return $"?section{st_shndx}?";
             }
@@ -642,7 +639,6 @@ namespace Reko.ImageLoaders.Elf
                 Debug.Print(sw.ToString());
             }
         }
-
 
         protected string DumpShFlags(ulong shf)
         {
@@ -691,10 +687,17 @@ namespace Reko.ImageLoaders.Elf
             if (!symList.TryGetValue(i, out var sym))
             {
                 sym = LoadSymbol(offSymtab, (ulong)i, symentrysize, offStrtab);
-                symList.Add(i, sym);
+                if (sym is null)
+                {
+                    ElfImageLoader.trace.Warn("Unable to load ELF image symbol {0} (0x{0:X}).", i);
+                }
+                else
+                {
+                    symList.Add(i, sym);
+                }
             }
             return sym;
-            }
+        }
 
         protected bool IsLoadable(ulong p_pmemsz, ProgramHeaderType p_type)
         {
@@ -717,8 +720,8 @@ namespace Reko.ImageLoaders.Elf
                 if (section.Type == SectionHeaderType.SHT_DYNSYM)
                 {
                     this.DynamicSymbols = symtab;
+                }
             }
-        }
         }
 
         public string ReadAsciiString(ulong fileOffset)
@@ -734,19 +737,18 @@ namespace Reko.ImageLoaders.Elf
             return Encoding.ASCII.GetString(bytes, (int) fileOffset, u - (int) fileOffset);
         }
 
-
         public RelocationResults Relocate(Program program, Address addrLoad)
         {
             var symbols = CreateSymbolDictionaries(IsExecutableFile);
             var relocator = CreateRelocator(this.machine, symbols);
             relocator.Relocate(program);
             relocator.LocateGotPointers(program, symbols);
+            symbols = symbols.Values.Select(relocator.AdjustImageSymbol).ToSortedList(s => s.Address);
             var entryPoints = new List<ImageSymbol>();
-            var addrEntry = GetEntryPointAddress(addrLoad);
+            var addrEntry = relocator.AdjustAddress(GetEntryPointAddress(addrLoad));
             var symEntry = EnsureEntryPoint(entryPoints, symbols, addrEntry);
             var addrMain = relocator.FindMainFunction(program, addrEntry);
             var symMain = EnsureEntryPoint(entryPoints, symbols, addrMain);
-            symbols = symbols.Values.Select(relocator.AdjustImageSymbol).ToSortedList(s => s.Address);
             entryPoints = entryPoints.Select(relocator.AdjustImageSymbol).ToList();
             return new RelocationResults(entryPoints, symbols);
         }
@@ -773,8 +775,6 @@ namespace Reko.ImageLoaders.Elf
             sb.Append((flags & 2) != 0 ? 'w' : '-');
             sb.Append((flags & 1) != 0 ? 'x' : '-');
             return sb.ToString();
+        }
     }
-    }
-
-
 }

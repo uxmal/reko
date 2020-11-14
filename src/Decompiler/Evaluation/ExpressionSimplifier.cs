@@ -44,6 +44,7 @@ namespace Reko.Evaluation
         private readonly SegmentMap segmentMap;
         private EvaluationContext ctx;
         private readonly ExpressionValueComparer cmp;
+        private readonly ExpressionEmitter m;
 
         private readonly AddTwoIdsRule add2ids;
         private readonly Add_e_c_cRule addEcc;
@@ -80,6 +81,7 @@ namespace Reko.Evaluation
             this.segmentMap = segmentMap ?? throw new ArgumentNullException(nameof(SegmentMap));
             this.ctx = ctx;
             this.cmp = new ExpressionValueComparer();
+            this.m = new ExpressionEmitter();
 
             this.add2ids = new AddTwoIdsRule(ctx);
             this.addEcc = new Add_e_c_cRule(ctx);
@@ -799,7 +801,104 @@ namespace Reko.Evaluation
                     PrimitiveType.Create(Domain.UnsignedInt, tail.DataType.BitSize),
                     PrimitiveType.Create(Domain.UnsignedInt, seq.DataType.BitSize));
             }
+            var mem = FuseAdjacentMemoryAccesses(seq.DataType, newSeq);
+            if (mem != null)
+                return mem;
             return FuseAdjacentSlices(seq.DataType, newSeq);
+        }
+
+        private Expression? FuseAdjacentMemoryAccesses(DataType dt, Expression[] elems)
+        {
+            if (elems[0].ToString().Contains("80497D4"))
+                elems.ToString(); //$DEBUG
+            var (access, seg, ea, offset) = AsMemoryAccess(elems[0]);
+            if (access == null)
+                return null;
+            var fused = new List<Expression>();
+            var offsetFused = offset;
+            for (int i = 1; i < elems.Length; ++i)
+            {
+                var (accNew, segNew, eaNew, offNew) = AsMemoryAccess(elems[i]);
+                if (accNew == null)
+                    return null;
+                if (cmp.Equals(seg, segNew) &&
+                    cmp.Equals(ea, eaNew) &&
+                    ctx.Endianness.OffsetsAdjacent(offNew, offset, accNew.DataType.Size))
+                {
+                    offsetFused = Math.Min(offsetFused, offNew);
+                }
+                else
+                    return null;
+            }
+            Expression fusedEa;
+            if (ea is null)
+            {
+                fusedEa = Constant.Create(access.EffectiveAddress.DataType, (ulong)offsetFused);
+            }
+            else
+            {
+                fusedEa = m.AddSubSignedInt(ea, offsetFused);
+            }
+
+            var result = (seg is null)
+                ? m.Mem(access.MemoryId, dt, fusedEa)
+                : m.SegMem(access.MemoryId, dt, seg, fusedEa);
+
+            foreach (var e in elems)
+                ctx.RemoveExpressionUse(e);
+            ctx.UseExpression(result);
+            return result;
+        }
+
+        private (MemoryAccess? access, Expression? seg, Expression? ea, long offset) AsMemoryAccess(Expression expression)
+        {
+            MemoryAccess access;
+            Expression? seg;
+            Expression ea;
+            if (expression is SegmentedAccess segmem)
+            {
+                access = segmem;
+                seg = segmem.BasePointer;
+                ea = segmem.EffectiveAddress;
+            }
+            else if (expression is MemoryAccess mem)
+            {
+                access = mem;
+                seg = null;
+                ea = mem.EffectiveAddress;
+            }
+            else
+                return (null, null, null, 0);
+
+            long offset = 0;
+            Expression? eaStripped = ea;
+            if (ea is Constant global)
+            {
+                offset = global.ToInt64();
+                eaStripped = null;
+            }
+            else if (ea is Address addr && !addr.Selector.HasValue)
+            {
+                offset = (long) addr.ToLinear();
+                eaStripped = null;
+            }
+            else if (ea is BinaryExpression bin)
+            {
+                if (bin.Right is Constant c)
+                {
+                    if (bin.Operator == Operator.IAdd)
+                    {
+                        offset = c.ToInt64();
+                        eaStripped = bin.Left;
+                    }
+                    else if (bin.Operator == Operator.ISub)
+                    {
+                        offset = -c.ToInt64();
+                        eaStripped = bin.Left;
+                    }
+                }
+            }
+            return (access, seg, eaStripped, offset);
         }
 
         private Expression FuseAdjacentSlices(DataType dataType, Expression[] elems)

@@ -4,4 +4,4 @@
 
 #include "example.h"
 
-
+<anonymous> g_t0E80;

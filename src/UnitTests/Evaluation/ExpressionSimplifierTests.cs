@@ -52,13 +52,11 @@ namespace Reko.UnitTests.Evaluation
 
         private void Given_LittleEndianArchitecture()
         {
-            arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Endianness).Returns(EndianServices.Little);
         }
 
         private void Given_BigEndianArchitecture()
         {
-            arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Endianness).Returns(EndianServices.Big);
         }
 
@@ -543,6 +541,43 @@ namespace Reko.UnitTests.Evaluation
             mul.DataType = PrimitiveType.UInt64;
             var expr = m.Slice(PrimitiveType.Word32, mul, 32);
             Assert.AreEqual("@@@", expr.Accept(simplifier).ToString());
+        }
+
+        // Adjacent memory accesses can be coalesced.
+        [Test]
+        public void Exs_Seq_Adjacent_LE_Memory_Accesses()
+        {
+            Given_LittleEndianArchitecture();
+            Given_ExpressionSimplifier();
+            var expr = m.Seq(
+                m.Mem(PrimitiveType.Word32, m.Word32(0x00123404)),
+                m.Mem(PrimitiveType.Word32, m.Word32(0x00123400)));
+            expr.DataType = PrimitiveType.Real64;
+            Assert.AreEqual("Mem0[0x123400<32>:real64]", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_Seq_Adjacent_BE_Memory_Accesses()
+        {
+            Given_BigEndianArchitecture();
+            Given_ExpressionSimplifier();
+            var expr = m.Seq(
+                m.Mem(PrimitiveType.Word32, m.Word32(0x00123400)),
+                m.Mem(PrimitiveType.Word32, m.Word32(0x00123404)));
+            expr.DataType = PrimitiveType.Real64;
+            Assert.AreEqual("Mem0[0x123400<32>:real64]", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_Seq_Adjacent_BE_Memory_Accesses_BaseDisplacement()
+        {
+            Given_BigEndianArchitecture();
+            Given_ExpressionSimplifier();
+            var expr = m.Seq(
+                m.Mem(PrimitiveType.Word32, foo),
+                m.Mem(PrimitiveType.Word32, m.IAddS(foo, 4)));
+            expr.DataType = PrimitiveType.Real64;
+            Assert.AreEqual("Mem0[foo_1:real64]", expr.Accept(simplifier).ToString());
         }
     }
 }

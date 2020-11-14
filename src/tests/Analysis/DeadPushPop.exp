@@ -108,7 +108,7 @@ ds_si:Sequence ds:si
           ds = SLICE(ds_si, selector, 16)
 // fn0C00_0000
 // Return size: 0
-void fn0C00_0000(word32 ds_si, word16 di)
+void fn0C00_0000(segptr32 ds_si, word16 di)
 fn0C00_0000_entry:
 	def ds_si
 	def di

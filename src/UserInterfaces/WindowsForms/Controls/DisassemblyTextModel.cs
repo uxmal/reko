@@ -139,7 +139,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private Address Align(Address addr)
         {
             var arch = program.Architecture;
-            uint addrAlign = (uint)(arch.InstructionBitSize / arch.MemoryGranularity);
+            uint addrAlign = (uint)Math.Max(arch.InstructionBitSize / arch.MemoryGranularity, 1);
             ulong linear = addr.ToLinear();
             var rem = linear % addrAlign;
             return addr - (int)rem;

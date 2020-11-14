@@ -1,4 +1,4 @@
-void fn0C00_0000(Sequence word32 ds_di)
+void fn0C00_0000(Sequence segptr32 ds_di)
 // MayUse:  Sequence ds:di:[0..31]
 // LiveOut:
 // Trashed: SCZO ax bx si Top
@@ -23,7 +23,7 @@ void fn0C00_0000(Sequence word32 ds_di)
 // O:O
 // wLoc02:Local -0002
 // return address size: 2
-void fn0C00_0000(word32 ds_di)
+void fn0C00_0000(segptr32 ds_di)
 fn0C00_0000_entry:
 	def ds_di
 	// succ:  l0C00_0000
@@ -33,7 +33,7 @@ l0C00_0000:
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-void fn0C00_0010(Sequence word32 ds_di, Register word16 si)
+void fn0C00_0010(Sequence segptr32 ds_di, Register word16 si)
 // MayUse:  Sequence ds:di:[0..31] si:[0..15]
 // LiveOut:
 // Trashed: ax Top
@@ -51,7 +51,7 @@ void fn0C00_0010(Sequence word32 ds_di, Register word16 si)
 // ds_di:Sequence ds:di
 // ds_si:Sequence ds:si
 // return address size: 2
-void fn0C00_0010(word32 ds_di, word16 si)
+void fn0C00_0010(segptr32 ds_di, word16 si)
 fn0C00_0010_entry:
 	def ds_di
 	ds = SLICE(ds_di, selector, 16)
@@ -64,7 +64,7 @@ l0C00_0010:
 	return
 	// succ:  fn0C00_0010_exit
 fn0C00_0010_exit:
-void fn0C00_0017(Sequence word32 ds_di, Stack word16 wArg02)
+void fn0C00_0017(Sequence segptr32 ds_di, Stack word16 wArg02)
 // MayUse:  Sequence ds:di:[0..31] Stack +0002:[0..15]
 // LiveOut:
 // Trashed: SCZO ax bx Top
@@ -91,7 +91,7 @@ void fn0C00_0017(Sequence word32 ds_di, Stack word16 wArg02)
 // Z:Z
 // O:O
 // return address size: 2
-void fn0C00_0017(word32 ds_di, word16 wArg02)
+void fn0C00_0017(segptr32 ds_di, word16 wArg02)
 fn0C00_0017_entry:
 	def ds_di
 	ds = SLICE(ds_di, selector, 16)
@@ -103,7 +103,7 @@ l0C00_0017:
 	return
 	// succ:  fn0C00_0017_exit
 fn0C00_0017_exit:
-void fn0C00_0029(Sequence word32 ds_di, Register word16 ax)
+void fn0C00_0029(Sequence segptr32 ds_di, Register word16 ax)
 // MayUse:  ax:[0..15] Sequence ds:di:[0..31]
 // LiveOut:
 // Trashed: Top
@@ -119,7 +119,7 @@ void fn0C00_0029(Sequence word32 ds_di, Register word16 ax)
 // Top:Top
 // ds_di:Sequence ds:di
 // return address size: 2
-void fn0C00_0029(word32 ds_di, word16 ax)
+void fn0C00_0029(segptr32 ds_di, word16 ax)
 fn0C00_0029_entry:
 	def ds_di
 	def ax
@@ -129,7 +129,7 @@ l0C00_0029:
 	return
 	// succ:  fn0C00_0029_exit
 fn0C00_0029_exit:
-void fn0C00_002C(Sequence word32 ds_di, Stack word16 wArg02)
+void fn0C00_002C(Sequence segptr32 ds_di, Stack word16 wArg02)
 // MayUse:  Sequence ds:di:[0..31] Stack +0002:[0..15]
 // LiveOut:
 // Trashed: ax Top
@@ -149,7 +149,7 @@ void fn0C00_002C(Sequence word32 ds_di, Stack word16 wArg02)
 // wArg02:Stack +0002
 // ds_di:Sequence ds:di
 // return address size: 2
-void fn0C00_002C(word32 ds_di, word16 wArg02)
+void fn0C00_002C(segptr32 ds_di, word16 wArg02)
 fn0C00_002C_entry:
 	def ds_di
 	def wArg02

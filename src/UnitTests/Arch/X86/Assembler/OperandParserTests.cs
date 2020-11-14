@@ -114,5 +114,32 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 		{
             return new OperandParser(new Lexer(new StringReader(data)), symtab, Address.SegPtr(0x0C00, 0x0000), PrimitiveType.Word32, PrimitiveType.Word32);
 		}
-	}
+
+        [Test]
+        public void ParseImmediate_IntelSyntax()
+        {
+            OperandParser opp = Create16BitParser("21Eh");
+            ParsedOperand po = opp.ParseOperand();
+            ImmediateOperand mop = (ImmediateOperand) po.Operand;
+            Assert.AreEqual("021E", mop.ToString(MachineInstructionRendererOptions.Default));
+        }
+
+        [Test]
+        public void ParseMemoryAccess_IntelSyntax()
+        {
+            OperandParser opp = Create16BitParser("[ebp+0Ch]");
+            ParsedOperand po = opp.ParseOperand();
+            var mop = (MemoryOperand) po.Operand;
+            Assert.AreEqual("[ebp+0C]", mop.ToString(MachineInstructionRendererOptions.Default));
+        }
+
+        [Test]
+        public void ParseMemoryAccess_IntelSyntax_NegativeOffset()
+        {
+            OperandParser opp = Create16BitParser("[ebp-70h]");
+            ParsedOperand po = opp.ParseOperand();
+            var mop = (MemoryOperand) po.Operand;
+            Assert.AreEqual("[ebp-70]", mop.ToString(MachineInstructionRendererOptions.Default));
+        }
+    }
 }

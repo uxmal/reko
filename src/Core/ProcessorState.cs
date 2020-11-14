@@ -53,6 +53,8 @@ namespace Reko.Core
         }
 #nullable enable
 
+        public EndianServices Endianness => Architecture.Endianness;
+
         /// <summary>
         /// Method to call if an error occurs within the processor state object (such as stack over/underflows).
         /// </summary>

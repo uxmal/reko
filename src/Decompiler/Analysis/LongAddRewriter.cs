@@ -385,7 +385,8 @@ namespace Reko.Analysis
             {
                 return ssa.Procedure.Frame.EnsureSequence(totalSize, idHi.Storage, idLo.Storage);
             }
-            if (expLo is MemoryAccess memDstLo && expHi is MemoryAccess memDstHi && MemoryOperandsAdjacent(memDstLo, memDstHi))
+            if (expLo is MemoryAccess memDstLo && expHi is MemoryAccess memDstHi && 
+                MemoryOperandsAdjacent(ssa.Procedure.Architecture, memDstLo, memDstHi))
             {
                 return CreateMemoryAccess(memDstLo, totalSize);
             }
@@ -428,16 +429,16 @@ namespace Reko.Analysis
             public readonly int StatementIndex;
         }
 
-        public bool MemoryOperandsAdjacent(MemoryAccess m1, MemoryAccess m2)
+        public static bool MemoryOperandsAdjacent(IProcessorArchitecture arch, MemoryAccess m1, MemoryAccess m2)
         {
             var off1 = GetOffset(m1);
             var off2 = GetOffset(m2);
             if (off1 == null || off2 == null)
                 return false;
-            return ssa.Procedure.Architecture.Endianness.OffsetsAdjacent(off1.ToInt32(), off2.ToInt32(), m1.DataType.Size);
+            return arch.Endianness.OffsetsAdjacent(off1.ToInt32(), off2.ToInt32(), m1.DataType.Size);
         }
 
-        private Constant? GetOffset(MemoryAccess access)
+        private static Constant? GetOffset(MemoryAccess access)
         {
             if (memOffset.Match(access))
             {

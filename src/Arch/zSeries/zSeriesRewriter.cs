@@ -18,6 +18,7 @@
  */
 #endregion
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -69,6 +70,7 @@ namespace Reko.Arch.zSeries
                 switch (instr.Mnemonic)
                 {
                 default:
+                    host.Warn(instr.Address, "zSeries instruction {0} not implemented yet.", instr);
                     EmitUnitTest();
                     goto case Mnemonic.invalid;
                 case Mnemonic.invalid:
@@ -85,26 +87,36 @@ namespace Reko.Arch.zSeries
                 case Mnemonic.br: RewriteBr(); break;
                 case Mnemonic.brasl: RewriteBrasl(); break;
                 case Mnemonic.brctg: RewriteBrctg(); break;
+                case Mnemonic.cghi: RewriteCghi(); break;
+                case Mnemonic.cgr: RewriteCgr(); break;
                 case Mnemonic.chi: RewriteChi(); break;
                 case Mnemonic.clc: RewriteClc(); break;
                 case Mnemonic.clg: RewriteClg(); break;
+                case Mnemonic.clgr: RewriteClgr(); break;
                 case Mnemonic.cli: RewriteCli(); break;
                 case Mnemonic.j: RewriteJ(); break;
                 case Mnemonic.je: RewriteJcc(ConditionCode.EQ); break;
                 case Mnemonic.jg: RewriteJcc(ConditionCode.GT); break;
                 case Mnemonic.jh: RewriteJcc(ConditionCode.UGT); break;
+                case Mnemonic.jl: RewriteJcc(ConditionCode.LT); break;
+                case Mnemonic.jhe: RewriteJcc(ConditionCode.UGE); break;
                 case Mnemonic.jne: RewriteJcc(ConditionCode.NE); break;
                 case Mnemonic.la: RewriteLa(); break;
                 case Mnemonic.larl: RewriteLarl(); break;
                 case Mnemonic.l: RewriteL(PrimitiveType.Word32); break;
+                case Mnemonic.lay: RewriteLay(); break;
+                case Mnemonic.ldgr: RewriteLdgr(); break;
                 case Mnemonic.lg: RewriteL(PrimitiveType.Word64); break;
+                case Mnemonic.lgdr: RewriteLgdr(); break;
                 case Mnemonic.lgf: RewriteLgf(); break;
                 case Mnemonic.lgfr: RewriteLgfr(); break;
                 case Mnemonic.lghi: RewriteLghi(); break;
                 case Mnemonic.lgr: RewriteLgr(); break;
+                case Mnemonic.lgrl: RewriteLgrl(); break;
                 case Mnemonic.lhi: RewriteLhi(); break;
                 case Mnemonic.lmg: RewriteLmg(); break;
                 case Mnemonic.lr: RewriteLr(); break;
+                case Mnemonic.ltg: RewriteLtg(); break;
                 case Mnemonic.ltgr: RewriteLtgr(); break;
                 case Mnemonic.mvi: RewriteMvi(); break;
                 case Mnemonic.mvz: RewriteMvz(); break;
@@ -112,10 +124,13 @@ namespace Reko.Arch.zSeries
                 case Mnemonic.ngr: RewriteNgr(); break;
                 case Mnemonic.nopr: m.Nop(); break;
                 case Mnemonic.sgr: RewriteSgr(); break;
+                case Mnemonic.sll: RewriteSll(); break;
+                case Mnemonic.sllg: RewriteSllg(); break;
                 case Mnemonic.srag: RewriteSrag(); break;
                 case Mnemonic.srlg: RewriteSrlg(); break;
                 case Mnemonic.st: RewriteSt(PrimitiveType.Word32); break;
                 case Mnemonic.stg: RewriteSt(PrimitiveType.Word64); break;
+                case Mnemonic.stgrl: RewriteSt(PrimitiveType.Word64); break;
                 case Mnemonic.stmg: RewriteStmg(); break;
                 case Mnemonic.xc: RewriteXc(); break;
                 }
@@ -144,33 +159,57 @@ namespace Reko.Arch.zSeries
             return ((ImmediateOperand)op).Value;
         }
 
-        private Expression EffectiveAddress(MachineOperand op)
+        private Expression EffectiveAddress(int iop)
         {
-            if (op is AddressOperand aOp)
+            switch (instr.Operands[iop])
+            {
+            case AddressOperand aOp:
                 return aOp.Address;
-            var mem = (MemoryOperand)op;
-            if (mem.Base == null || mem.Base.Number == 0)
-            {
-                // Must be abs address.
-                return Address.Ptr32((uint)mem.Offset);
+            case MemoryOperand mem:
+                if (mem.Base == null || mem.Base.Number == 0)
+                {
+                    // Must be abs address.
+                    return Address.Create(arch.PointerType, (uint) mem.Offset);
+                }
+                Expression ea = binder.EnsureRegister(mem.Base);
+                if (mem.Index != null && mem.Index.Number > 0)
+                {
+                    var idx = binder.EnsureRegister(mem.Index);
+                    ea = m.IAdd(ea, idx);
+                }
+                if (mem.Offset != 0)
+                {
+                    var off = Constant.Int(mem.Base.DataType, mem.Offset);
+                    ea = m.IAdd(ea, off);
+                }
+                return ea;
+            default:
+                throw new InvalidOperationException($"Operand type {instr.Operands[iop].GetType().Name} cannot be an effective address.");
             }
-            Expression ea = binder.EnsureRegister(mem.Base);
-            if (mem.Index != null && mem.Index.Number > 0)
-            {
-                var idx = binder.EnsureRegister(mem.Index);
-                ea = m.IAdd(ea, idx);
-            }
-            if (mem.Offset != 0)
-            {
-                var off = Constant.Int(mem.Base.DataType, mem.Offset);
-                ea = m.IAdd(ea, off);
-            }
-            return ea;
         }
 
-        private Identifier Reg(MachineOperand op)
+
+        private Identifier FReg(int iOp)
         {
-            return binder.EnsureRegister(((RegisterOperand)op).Register);
+            var freg = Registers.FpRegisters[((RegisterOperand) instr.Operands[iOp]).Register.Number];
+            return binder.EnsureRegister(freg);
+        }
+
+        private Address PcRel(int iOp)
+        {
+            var addr = ((AddressOperand) instr.Operands[iOp]).Address;
+            return addr;
+        }
+
+        private Identifier Reg(int iOp)
+        {
+            return binder.EnsureRegister(((RegisterOperand)instr.Operands[iOp]).Register);
+        }
+
+        private void SetCc(Expression e)
+        {
+            var cc = binder.EnsureFlagGroup(Registers.CC);
+            m.Assign(cc, e);
         }
     }
 }

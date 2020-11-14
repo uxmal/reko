@@ -44,17 +44,23 @@ namespace Reko.Core.Types
 
     public class TypeStore : ITypeStore
     {
-        private SortedList<int, EquivalenceClass> usedClasses;
-        private Dictionary<TypeVariable, Expression> tvSources;
+        private readonly SortedList<int, EquivalenceClass> usedClasses;
+        private readonly Dictionary<TypeVariable, Expression> tvSources;
 
         public TypeStore()
         {
             TypeVariables = new List<TypeVariable>();
             usedClasses = new SortedList<int, EquivalenceClass>();
             tvSources = new Dictionary<TypeVariable, Expression>();
+            SegmentTypes = new Dictionary<ImageSegment, StructureType>();
         }
 
+        /// <summary>
+        /// All the <see cref="TypeVariable"/>s of the program.
+        /// </summary>
         public List<TypeVariable> TypeVariables { get; private set; }
+
+        public Dictionary<ImageSegment, StructureType> SegmentTypes { get; private set; }
 
         public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Expression e)
         {

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -108,7 +108,7 @@ namespace Reko.Libraries.Libc
 
         protected virtual DataType MakeDataType(PrintfSize size, char cDomain)
         {
-            Domain domain = Domain.None;
+            Domain domain;
             int bitSize = this.wordBitSize;
             switch (cDomain)
             {

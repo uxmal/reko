@@ -21,12 +21,15 @@
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Typing;
 using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Reko.UnitTests.Typing
@@ -35,11 +38,13 @@ namespace Reko.UnitTests.Typing
     public class TypeCollectorTests : TypingTestBase
     {
         private bool buildEquivalenceClasses;
+        private FakeDecompilerEventListener eventListener;
 
         [SetUp]
         public void Setup()
         {
             this.buildEquivalenceClasses = false;
+            this.eventListener = new FakeDecompilerEventListener();
         }
 
         protected override void RunTest(Program program, string outputFile)
@@ -50,11 +55,9 @@ namespace Reko.UnitTests.Typing
                 fut = new FileUnitTester(outputFile);
                 var factory = program.TypeFactory;
                 var store = program.TypeStore;
-                var listener = new FakeDecompilerEventListener();
                 var aen = new ExpressionNormalizer(program.Platform.PointerType);
-                var eqb = new EquivalenceClassBuilder(factory, store, listener);
-
-                var tyco = new TypeCollector(factory, store, program, listener);
+                var eqb = new EquivalenceClassBuilder(factory, store, eventListener);
+                var tyco = new TypeCollector(factory, store, program, eventListener);
 
                 aen.Transform(program);
                 eqb.Build(program);
@@ -74,7 +77,8 @@ namespace Reko.UnitTests.Typing
             }
             finally
             {
-                DumpProgAndStore(program, fut);
+                DumpProgAndStore(program, fut.TextWriter);
+                fut.AssertFilesEqual();
                 fut.Dispose();
             }
         }
@@ -87,26 +91,50 @@ namespace Reko.UnitTests.Typing
             RunTest(program, outputFile);
         }
 
+        protected void RunStringTest(Program program, string expectedOutput)
+        {
+            var sw = new StringWriter();
+
+            var factory = program.TypeFactory;
+            var store = program.TypeStore;
+            var aen = new ExpressionNormalizer(program.Platform.PointerType);
+            var eqb = new EquivalenceClassBuilder(factory, store, eventListener);
+            var tyco = new TypeCollector(factory, store, program, eventListener);
+
+            aen.Transform(program);
+            eqb.Build(program);
+            tyco.CollectTypes();
+
+            aen.Transform(program);
+            eqb.Build(program);
+            var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program, eventListener);
+            coll.CollectTypes();
+            program.TypeStore.Dump();
+
+            program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory);
+            DumpProgAndStore(program, sw);
+            Assert.AreEqual(expectedOutput, sw.ToString());
+        }
+
+
         private TypeCollector Given_TypeCollector(Program program)
         {
             var tyco = new TypeCollector(
                 program.TypeFactory,
                 program.TypeStore,
                 program,
-                new FakeDecompilerEventListener());
+                eventListener);
             return tyco;
         }
 
-        private void DumpProgAndStore(Program program, FileUnitTester fut)
+        private void DumpProgAndStore(Program program, TextWriter writer)
         {
             foreach (Procedure proc in program.Procedures.Values)
             {
-                proc.Write(false, fut.TextWriter);
-                fut.TextWriter.WriteLine();
+                proc.Write(false, writer);
+                writer.WriteLine();
             }
-
-            program.TypeStore.Write(fut.TextWriter);
-            fut.AssertFilesEqual();
+            program.TypeStore.Write(writer);
         }
 
         [Test]
@@ -315,9 +343,41 @@ namespace Reko.UnitTests.Typing
             };
             var tyco = Given_TypeCollector(program);
 
-            tyco.CollectUserGlobalVariableTypes();
+            tyco.CollectUserGlobalVariableTypes(new Dictionary<ImageSegment, StructureType>());
 
             Assert.AreEqual("400: xAcceleration: real64", program.GlobalFields.Fields.First().ToString());
+        }
+
+        [Test]
+        public void TycoUserSegmentedData()
+        {
+            var addrUserData = Address.SegPtr(0xC30, 0x0042);
+            var addrSeg = Address.SegPtr(0xC30, 0);
+            var seg = new ImageSegment("seg0C30", addrSeg, new ByteMemoryArea(addrSeg, new byte[0x100]), AccessMode.ReadWriteExecute);
+            seg.Identifier = new Identifier("seg0C30", PrimitiveType.SegmentSelector, MemoryStorage.Instance);
+            var program = new ProgramBuilder().BuildProgram();
+            program.SegmentMap.AddSegment(seg);
+            program.User = new UserData
+            {
+                Globals =
+                {
+                    {
+                        addrUserData, new GlobalDataItem_v2
+                        {
+                            Name = "myGlobal",
+                            DataType = PrimitiveType_v1.Real32(),
+                        }
+                    }
+                }
+            };
+            var eqb = new EquivalenceClassBuilder(program.TypeFactory, program.TypeStore, eventListener);
+            eqb.EnsureSegmentTypeVariables(program.SegmentMap.Segments.Values);
+            var tyco = Given_TypeCollector(program);
+
+            var segTypes = program.TypeStore.SegmentTypes;
+            tyco.CollectUserGlobalVariableTypes(segTypes);
+
+            Assert.AreEqual("42: myGlobal: real32", segTypes[seg].Fields.First().ToString());
         }
 
         [Test]

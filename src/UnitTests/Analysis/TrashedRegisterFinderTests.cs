@@ -787,10 +787,12 @@ Constants: cl:0x00
             var state = new Dictionary<Identifier, Tuple<Expression, BitRange>>();
             var stateOther = new Dictionary<Identifier, Tuple<Expression, BitRange>>();
             var procFlow = new ProcedureFlow(null);
+            var proc = Procedure.Create(arch, Address.Ptr32(0x00123400), arch.CreateFrame());
+            var ssa = new SsaState(proc);
             var ctx = new TrashedRegisterFinder.Context(
-                null, null, state, procFlow);
+                ssa, null, state, procFlow);
             var ctxOther = new TrashedRegisterFinder.Context(
-                null, null, state, procFlow);
+                ssa, null, state, procFlow);
             var ebp = new Identifier("ebp", PrimitiveType.Word32, new RegisterStorage("ebp", 5, 0, PrimitiveType.Word32));
             var esi = new Identifier("esi", PrimitiveType.Word32, new RegisterStorage("esi", 6, 0, PrimitiveType.Word32));
             var edi = new Identifier("edi", PrimitiveType.Word32, new RegisterStorage("edi", 7, 0, PrimitiveType.Word32));

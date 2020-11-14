@@ -406,83 +406,88 @@ namespace Reko.Arch.X86
         public bool MatchesFstswSequence()
         {
             var nextInstr = dasm.Peek(1);
-            if (nextInstr.Mnemonic == Mnemonic.sahf)
+            switch (nextInstr.Mnemonic)
             {
-                this.len += nextInstr.Length;
-                dasm.Skip(1);
-                m.Assign(
-                    orw.FlagGroup(FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF),
-                    orw.AluRegister(Registers.FPUF));
-                return true;
-            }
-            if (nextInstr.Mnemonic == Mnemonic.and)
-            {
+            case Mnemonic.sahf:
+                {
+                    this.len += nextInstr.Length;
+                    dasm.Skip(1);
+                    m.Assign(
+                        orw.FlagGroup(FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF),
+                        orw.AluRegister(Registers.FPUF));
+                    return true;
+                }
+            case Mnemonic.and:
+                {
                 var acc = nextInstr.Operands[0] as RegisterOperand;
                 var imm = nextInstr.Operands[1] as ImmediateOperand;
-                if (imm == null || acc == null)
-                    return false;
-                int mask = imm.Value.ToInt32();
-                if (acc.Register == Registers.ax || acc.Register == Registers.eax)
-                    mask >>= 8;
-                else if (acc.Register != Registers.ah)
-                    return false;
-                dasm.Skip(1);       // over the 'and'
-                if (!dasm.MoveNext())
-                    return false;
-                nextInstr = dasm.Current;
-                var nextOp = nextInstr.Mnemonic;
-                if (nextOp != Mnemonic.cmp && nextOp != Mnemonic.xor)
-                    return false;
-                acc = nextInstr.Operands[0] as RegisterOperand;
-                imm = nextInstr.Operands[1] as ImmediateOperand;
-                if (imm == null || acc == null)
-                    return false;
-                mask = imm.Value.ToInt32() & mask;
-                if (acc.Register == Registers.ax || acc.Register == Registers.eax)
-                    mask >>= 8;
-                else if (acc.Register != Registers.ah)
-                    return false;
-                dasm.Skip(1);       // over the 'cmp'
-                if (!IgnoreIntermediateInstructions())
-                {
-                    host.Warn(instrCur.Address, "Expected branch instruction after fstsw;and {0},{1}.", acc.Register, imm.Value);
-                    return false;
+                    if (imm == null || acc == null)
+                        return false;
+                    int mask = imm.Value.ToInt32();
+                    if (acc.Register == Registers.ax || acc.Register == Registers.eax)
+                        mask >>= 8;
+                    else if (acc.Register != Registers.ah)
+                        return false;
+                    dasm.Skip(1);       // over the 'and'
+                    if (!dasm.MoveNext())
+                        return false;
+                    nextInstr = dasm.Current;
+                    var nextOp = nextInstr.Mnemonic;
+                    if (nextOp != Mnemonic.cmp && nextOp != Mnemonic.xor)
+                        return false;
+                    acc = nextInstr.Operands[0] as RegisterOperand;
+                    imm = nextInstr.Operands[1] as ImmediateOperand;
+                    if (imm == null || acc == null)
+                        return false;
+                    mask = imm.Value.ToInt32() & mask;
+                    if (acc.Register == Registers.ax || acc.Register == Registers.eax)
+                        mask >>= 8;
+                    else if (acc.Register != Registers.ah)
+                        return false;
+                    dasm.Skip(1);       // over the 'cmp'
+                    if (!IgnoreIntermediateInstructions())
+                    {
+                        host.Warn(instrCur.Address, "Expected branch instruction after fstsw;and {0},{1}.", acc.Register, imm.Value);
+                        return false;
+                    }
+                    if (nextOp == Mnemonic.cmp)
+                    {
+                        return EvaluateFstswCmpInstructions(mask);
+                    }
+                    else
+                    {
+                        return EvaluateFstswXorInstructions(mask);
+                    }
                 }
-                if (nextOp == Mnemonic.cmp)
+            case Mnemonic.test:
                 {
-                    return EvaluateFstswCmpInstructions(acc, imm, mask);
-                }
-                else
-                {
-                    return EvaluateFstswXorInstructions(acc, imm, mask);
-                }
-            }
-            if (nextInstr.Mnemonic == Mnemonic.test)
-            {
                 var acc = nextInstr.Operands[0] as RegisterOperand;
                 var imm = nextInstr.Operands[1] as ImmediateOperand;
-                if (imm == null || acc == null)
-                    return false;
-                int mask = imm.Value.ToInt32();
-                if (acc.Register == Registers.ax || acc.Register == Registers.eax)
-                    mask >>= 8;
-                else if (acc.Register != Registers.ah)
-                    return false;
-                this.len += nextInstr.Length;
-                m.Assign(
-                    orw.FlagGroup(FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF),
-                    orw.AluRegister(Registers.FPUF));
+                    if (imm == null || acc == null)
+                        return false;
+                    int mask = imm.Value.ToInt32();
+                    if (acc.Register == Registers.ax || acc.Register == Registers.eax)
+                        mask >>= 8;
+                    else if (acc.Register != Registers.ah)
+                        return false;
+                    this.len += nextInstr.Length;
+                    m.Assign(
+                        orw.FlagGroup(FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF),
+                        orw.AluRegister(Registers.FPUF));
 
-                // Advance past the 'test' instruction.
-                dasm.Skip(1);
-                if (!IgnoreIntermediateInstructions())
-                {
-                    host.Warn(instrCur.Address, "Expected branch instruction after fstsw;test {0},{1}.", acc.Register, imm.Value);
-                    return false;
+                    // Advance past the 'test' instruction.
+                    dasm.Skip(1);
+                    if (!IgnoreIntermediateInstructions())
+                    {
+                        host.Warn(instrCur.Address, "Expected branch instruction after fstsw;test {0},{1}.", acc.Register, imm.Value);
+                        return false;
+                    }
+                    return EvaluateFstswTestInstructions(mask);
                 }
-                return EvaluateFstswTestInstructions(acc, imm, mask);
+            default:
+                return false;
             }
-            return false;
+
         }
 
         private bool IgnoreIntermediateInstructions()
@@ -508,7 +513,7 @@ namespace Reko.Arch.X86
             return false;
         }
 
-        private bool EvaluateFstswCmpInstructions(RegisterOperand acc, ImmediateOperand imm, int mask)
+        private bool EvaluateFstswCmpInstructions(int mask)
         {
             switch (instrCur.Mnemonic)
             {
@@ -523,7 +528,7 @@ namespace Reko.Arch.X86
             return false;
         }
 
-        private bool EvaluateFstswXorInstructions(RegisterOperand acc, ImmediateOperand imm, int mask)
+        private bool EvaluateFstswXorInstructions(int mask)
         {
             switch (instrCur.Mnemonic)
             {
@@ -537,14 +542,14 @@ namespace Reko.Arch.X86
                 switch (mask)
                 {
                 case 0x40: Branch(ConditionCode.EQ, instrCur.Operands[0]); return true;
-                }
+            }
                 break;
             }
             this.host.Warn(instrCur.Address, "Unexpected {0} fstsw;xor mask for {1} mnemonic.", mask, instrCur.Mnemonic);
             return false;
         }
 
-        private bool EvaluateFstswTestInstructions(RegisterOperand acc, ImmediateOperand imm, int mask)
+        private bool EvaluateFstswTestInstructions(int mask)
         {
             /* fcom/fcomp/fcompp Results:
                 Condition      C3  C2  C0

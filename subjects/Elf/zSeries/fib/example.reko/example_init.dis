@@ -1,4 +1,4 @@
-byte _init(word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11, word64 r13, ptr32 & r6Out, ptr32 & r8Out, ptr32 & r9Out, ptr32 & r10Out, ptr32 & r12Out, ptr32 & r13Out)
+byte _init(word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11, word64 r13, ptr64 & r6Out, ptr64 & r8Out, ptr64 & r9Out, ptr64 & r10Out, ptr64 & r12Out, ptr64 & r13Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -8,16 +8,15 @@ byte _init(word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11, w
 // Trashed: CC r1 r10 r11 r12 r13 r14 r4 r6 r7 r8 r9
 // Preserved: r15
 _init_entry:
-l00000560:
+l0000000000000560:
 	word64 r15_33 = fp - 320<i64>
-	word64 r12_35 = SEQ(SLICE(r12, word32, 32), 0x00002000<p32>)
-	word64 r1_37 = Mem34[SEQ(SLICE(fp - 160<i32>, word32, 32), 0x00002038<p32>):word64]
-	branch r1_37 == 0<64> l00000590
-l0000058E:
+	word64 r1_37 = Mem34[0x0000000000002038<p64>:word64]
+	branch r1_37 == 0<64> l0000000000000590
+l000000000000058E:
 	call r1_37 (retsize: 0;)
-		uses: r10:r10,r11:r11,r12:r12_35,r13:r13,r14:0x00000590<p32>,r6:r6,r7:r7,r8:r8,r9:r9
+		uses: r10:r10,r11:r11,r12:0x0000000000002000<p64>,r13:r13,r14:0x0000000000000590<p64>,r6:r6,r7:r7,r8:r8,r9:r9
 		defs: r15:r15_41
-l00000590:
+l0000000000000590:
 	word64 v16_57 = r15_33 + 208<i64>
 	word64 r6_78
 	word64 r8_80

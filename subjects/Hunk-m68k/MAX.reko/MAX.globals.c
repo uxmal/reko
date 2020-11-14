@@ -5,49 +5,18 @@
 #include "MAX.h"
 
 struct Eq_n * g_ptr0000;
-Eq_n g_t0001;
+word32 g_dw0001;
 struct Eq_n * g_ptr0004;
 word32 g_a0008[];
 ui32 g_a0010[];
-struct Eq_n g_t13F0 = 
-	{
-		0x25,
-		100,
-	};
-Eq_n g_t2BED = 
-	{
-		
-		{
-		},
-	};
-struct Eq_n * g_ptr3D90 = null;
-struct Eq_n * g_ptr3D94 = &g_t4000;
-word32 g_dw3D98 = 0x00;
-struct Eq_n * g_ptr3D9C = &g_t10202;
-struct Eq_n * g_ptr3DA0 = &g_t3030303;
-ui32 g_dw3DA4 = 0x04040404;
-ui32 g_dw3DA8 = 0x04040404;
-ui32 g_dw3DAC = 0x05050505;
-word32 g_dw3DB8 = 0x05050505;
-ptr32 g_ptr3DBC = 0x06060606;
-int32 g_dw3DC0 = 0x06060606;
-struct Eq_n * g_ptr3DC4 = &g_t6060606;
-struct Eq_n * g_ptr3DC8 = &g_t6060606;
-Eq_n g_t3DCC = 
-	{
-		
-		{
-		},
-	};
 word32 g_dw3ED0;
 Eq_n g_t3ED8;
 word32 g_dw3EDC;
 struct Eq_n * g_ptr3EE8;
 struct Eq_n * g_ptr3EEC;
-Eq_n g_t3EF4;
+struct Eq_n * g_ptr3EF4;
 struct Eq_n * g_ptr3EF8;
 Eq_n g_t4000;
 Eq_n g_t10202;
 Eq_n g_t3030303;
 Eq_n g_t6060606;
-

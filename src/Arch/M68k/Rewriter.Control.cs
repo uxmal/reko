@@ -92,17 +92,24 @@ namespace Reko.Arch.M68k
         {
             var reg = orw.RewriteSrc(instr.Operands[1], instr.Address);
             var lowBound = orw.RewriteSrc(instr.Operands[0], instr.Address);
-            var ea = ((MemoryAccess)lowBound).EffectiveAddress;
-            var hiBound = m.Mem(lowBound.DataType, m.IAdd(ea, lowBound.DataType.Size));
-            m.Branch(
-                m.Cand(
-                    m.Ge(reg, lowBound),
-                    m.Le(reg, hiBound)),
-                instr.Address + instr.Length,
-                InstrClass.ConditionalTransfer);
+            if (lowBound is MemoryAccess memLo)
+            {
+                var ea = memLo.EffectiveAddress;
+                var hiBound = m.Mem(lowBound.DataType, m.IAdd(ea, lowBound.DataType.Size));
+                m.Branch(
+                    m.Cand(
+                        m.Ge(reg, lowBound),
+                        m.Le(reg, hiBound)),
+                    instr.Address + instr.Length,
+                    InstrClass.ConditionalTransfer);
                 new RtlSideEffect(
                     host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, m.Byte(6)),
                     InstrClass.Linear);
+            }
+            else
+            {
+                EmitInvalid();
+            }
         }
 
         private void RewriteJmp()
@@ -177,6 +184,14 @@ namespace Reko.Arch.M68k
             // RTM was very rarely used, only existed on 68020.
             // Until someone really needs it, we just give up.
             EmitInvalid();
+        }
+
+        private void RewriteRtr()
+        {
+            var sp = binder.EnsureRegister(arch.StackRegister);
+            m.Assign(binder.EnsureRegister(Registers.ccr), m.Mem16(sp));
+            m.Assign(sp, m.IAddS(sp, 2));
+            m.Return(4, 0);
         }
 
         private void RewriteRts()

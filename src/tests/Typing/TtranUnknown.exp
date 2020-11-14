@@ -1,6 +1,6 @@
 // fn0C00_0000
 // Return size: 0
-void fn0C00_0000(word32 ds_bx)
+void fn0C00_0000(segptr32 ds_bx)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
@@ -13,13 +13,13 @@ fn0C00_0000_exit:
 Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (struct (0 word32 dw0000) (4 word32 dw0004))
-	T_2 (in ds_bx : word32)
+	T_2 (in ds_bx : segptr32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in ds_bx : word32)
+T_2: (in ds_bx : segptr32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: (ptr32 (struct (0 T_8 t0000) (4 T_5 t0004)))
@@ -27,10 +27,10 @@ T_3: (in 4<16> : word16)
   Class: Eq_3
   DataType: word16
   OrigDataType: word16
-T_4: (in ds_bx + 4<16> : word32)
+T_4: (in ds_bx + 4<16> : segptr32)
   Class: Eq_4
-  DataType: word32
-  OrigDataType: word32
+  DataType: segptr32
+  OrigDataType: segptr32
 T_5: (in Mem0[ds_bx + 4<16>:word32] : word32)
   Class: Eq_5
   DataType: word32

@@ -42,4 +42,3 @@ byte g_b400035F0;
 union _SLIST_HEADER g_u40003600;
 ui32 g_dw40003610;
 ui32 g_dw40003614;
-

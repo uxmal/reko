@@ -251,6 +251,18 @@ namespace Reko.Arch.Sparc
         internal static readonly Mutator<SparcDisassembler> R0 = R(false);
         internal static readonly Mutator<SparcDisassembler> Rs = R(true);
 
+        // Register or simm10
+        private static Mutator<SparcDisassembler> RorSimm10()
+        {
+            return (u, d) =>
+            {
+                // if 's', return a signed immediate operand where relevant.
+                d.ops.Add(d.GetRegImmOperand(d.arch.Registers, u, true, 10));
+                return true;
+            };
+        }
+        internal static readonly Mutator<SparcDisassembler> Rs10 = RorSimm10();
+
         // Register or uimm5/6
         internal static bool S(uint wInstr, SparcDisassembler dasm)
         {

@@ -106,7 +106,7 @@ namespace Reko.WebSite
             throw new NotImplementedException();
         }
 
-        public void WriteIntermediateCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer)
+        public void WriteIntermediateCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer)
         {
             throw new NotImplementedException();
         }
@@ -116,7 +116,7 @@ namespace Reko.WebSite
             throw new NotImplementedException();
         }
 
-        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer)
         {
             throw new NotImplementedException();
         }

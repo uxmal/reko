@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -32,6 +32,8 @@ namespace Reko.Arch.zSeries
     {
         public static RegisterStorage[] GpRegisters;
         public static RegisterStorage[] FpRegisters;
+
+        public static Dictionary<StorageDomain, RegisterStorage> RegistersByDomain;
         public static Dictionary<string, RegisterStorage> RegistersByName;
         public static FlagGroupStorage CC;
 
@@ -44,6 +46,8 @@ namespace Reko.Arch.zSeries
                 .Select(n => new RegisterStorage($"f{n}", n + 16, 0, PrimitiveType.Word64))
                 .ToArray();
 
+            RegistersByDomain = GpRegisters.Concat(FpRegisters)
+                .ToDictionary(r => r.Domain);
             RegistersByName = GpRegisters.Concat(FpRegisters)
                 .ToDictionary(r => r.Name);
 

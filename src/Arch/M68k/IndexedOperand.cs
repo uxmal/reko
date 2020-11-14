@@ -90,11 +90,10 @@ namespace Reko.Arch.M68k
             //postindex = (extension & 7) > 4;
 
             renderer.WriteString("(");
-            if (preindex || postindex)
-                renderer.WriteString("[");
-            var sep = "";
+            var sep = (preindex || postindex) ? "[" : "";
             if (BaseDisplacement != null)
             {
+                renderer.WriteString(sep);
                 renderer.WriteString(FormatValue(BaseDisplacement));
                 sep = ",";
             }
@@ -106,8 +105,15 @@ namespace Reko.Arch.M68k
             }
             if (postindex)
             {
-                renderer.WriteString("]");
-                sep = ",";
+                if (BaseDisplacement != null || Base != null)
+                {
+                    renderer.WriteString("]");
+                    sep = ",";
+                }
+                else
+                {
+                    sep = "";
+                }
             }
             if (Index != null)
             {

@@ -36,10 +36,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
             this.elfLoader = elfLoader;
         }
 
-        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
             //$TODO: implement me!
-            return symbol;
+            return (null, null);
         }
 
         public override string RelocationTypeToString(uint type)

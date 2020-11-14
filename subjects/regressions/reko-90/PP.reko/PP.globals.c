@@ -6,9 +6,3 @@
 
 Eq_n g_a0000[];
 Eq_n g_a0001[];
-Eq_n g_t8000 = 
-	{
-		-70
-	};
-struct Eq_n * g_ptr14830 = null;
-

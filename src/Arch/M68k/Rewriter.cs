@@ -98,7 +98,7 @@ namespace Reko.Arch.M68k
                 
                 case Mnemonic.and: RewriteLogical((s, d) => m.And(d, s)); break;
                 case Mnemonic.andi: RewriteLogical((s, d) => m.And(d, s)); break;
-                case Mnemonic.asl: RewriteArithmetic((s, d) => m.Shl(d, s)); break;
+                case Mnemonic.asl: RewriteShift((s, d) => m.Shl(d, s)); break;
                 case Mnemonic.asr: RewriteShift((s, d) => m.Sar(d, s)); break;
 /*
  * 
@@ -126,6 +126,7 @@ VS Overflow Set 1001 V
                 case Mnemonic.bvc: RewriteBcc(ConditionCode.NO, FlagM.VF); break;
                 case Mnemonic.bvs: RewriteBcc(ConditionCode.OV, FlagM.VF); break;
                 case Mnemonic.bchg: RewriteBchg(); break;
+                case Mnemonic.bfchg: RewriteBfchg(); break;
                 case Mnemonic.bkpt: RewriteBkpt(); break;
                 case Mnemonic.bra: RewriteBra(); break;
                 case Mnemonic.bset: RewriteBclrBset("__bset"); break;
@@ -133,6 +134,9 @@ VS Overflow Set 1001 V
                 case Mnemonic.btst: RewriteBtst(); break;
                 case Mnemonic.callm: RewriteCallm(); break;
                 case Mnemonic.cas: RewriteCas(); break;
+                case Mnemonic.cinva: RewriteCinva(); break;
+                case Mnemonic.cinvl: RewriteCinvl(); break;
+                case Mnemonic.cinvp: RewriteCinvp(); break;
                 case Mnemonic.clr: RewriteClr(); break;
                 case Mnemonic.chk: RewriteChk(); break;
                 case Mnemonic.chk2: RewriteChk2(); break;
@@ -155,6 +159,8 @@ VS Overflow Set 1001 V
                 case Mnemonic.dbne: RewriteDbcc(ConditionCode.NE, FlagM.ZF); break;
                 case Mnemonic.dbpl: RewriteDbcc(ConditionCode.GT, FlagM.NF); break;
                 case Mnemonic.dbt: RewriteDbcc(ConditionCode.ALWAYS, 0); break;
+                case Mnemonic.dbvc: RewriteDbcc(ConditionCode.NO, FlagM.VF); break;
+                case Mnemonic.dbvs: RewriteDbcc(ConditionCode.OV, FlagM.VF); break;
                 case Mnemonic.dbra: RewriteDbcc(ConditionCode.None, 0); break;
                 case Mnemonic.divs: RewriteDiv(m.SDiv, PrimitiveType.Int16); break;
                 case Mnemonic.divsl: RewriteDiv(m.SDiv, PrimitiveType.Int32); break;
@@ -165,19 +171,28 @@ VS Overflow Set 1001 V
                 case Mnemonic.exg: RewriteExg(); break;
                 case Mnemonic.ext: RewriteExt(); break;
                 case Mnemonic.extb: RewriteExtb(); break;
+                case Mnemonic.fabs: RewriteFabs(); break;
                 case Mnemonic.fadd: RewriteFBinOp((s, d) => m.FAdd(d, s)); break;
-                    //$REVIEW: the following don't respect NaN, but NaN typically doesn't exist in HLLs.
+                case Mnemonic.facos: RewriteFUnaryIntrinsic("acos"); break;
+                //$REVIEW: the following don't respect NaN, but NaN typically doesn't exist in HLLs.
+                case Mnemonic.fatan: RewriteFUnaryIntrinsic("atan"); break;
+                case Mnemonic.fatanh: RewriteFUnaryIntrinsic("atanh"); break;
                 case Mnemonic.fbf: m.Nop(); break;
                 case Mnemonic.fblt: RewriteFbcc(ConditionCode.LT); break;
                 case Mnemonic.fbgl: RewriteFbcc(ConditionCode.NE); break;
+                case Mnemonic.fbeq: RewriteFbcc(ConditionCode.EQ); break;
                 case Mnemonic.fbgt: RewriteFbcc(ConditionCode.GT); break;
+                case Mnemonic.fbge: RewriteFbcc(ConditionCode.GE); break;
                 case Mnemonic.fbgle: RewriteFbcc(ConditionCode.NE); break;    //$BUG: should be !is_nan
+                case Mnemonic.fble: RewriteFbcc(ConditionCode.LE); break;
                 case Mnemonic.fbne: RewriteFbcc(ConditionCode.NE); break;
                 case Mnemonic.fbnge: RewriteFbcc(ConditionCode.LT); break;
                 case Mnemonic.fbngl: RewriteFbcc(ConditionCode.EQ); break;
+                case Mnemonic.fbngt: RewriteFbcc(ConditionCode.LE); break;
                 case Mnemonic.fbngle: RewriteFbcc(ConditionCode.EQ); break;   //$BUG: should be is_nan
                 case Mnemonic.fbnlt: RewriteFbcc(ConditionCode.GE); break;
                 case Mnemonic.fbnle: RewriteFbcc(ConditionCode.GT); break;
+                case Mnemonic.fboge: RewriteFbcc(ConditionCode.GE); break;
                 case Mnemonic.fbogl: RewriteFbcc(ConditionCode.NE); break;
                 case Mnemonic.fbole: RewriteFbcc(ConditionCode.LE); break;
                 case Mnemonic.fbolt: RewriteFbcc(ConditionCode.LT); break;
@@ -187,22 +202,43 @@ VS Overflow Set 1001 V
                 case Mnemonic.fbsf: RewriteFbcc(ConditionCode.NEVER); break;
                 case Mnemonic.fbsne: RewriteFbcc(ConditionCode.NE); break;
                 case Mnemonic.fbst: RewriteFbcc(ConditionCode.ALWAYS); break;
+                case Mnemonic.fbt: RewriteBra(); break;
+                case Mnemonic.fbueq: RewriteFbcc(ConditionCode.EQ); break;
                 case Mnemonic.fbuge: RewriteFbcc(ConditionCode.GE); break;
                 case Mnemonic.fbugt: RewriteFbcc(ConditionCode.GT); break;
+                case Mnemonic.fbule: RewriteFbcc(ConditionCode.LE); break;
                 case Mnemonic.fbult: RewriteFbcc(ConditionCode.LT); break;
                 case Mnemonic.fbun: RewriteFbcc(ConditionCode.IS_NAN); break;
                 case Mnemonic.fasin: RewriteFasin(); break;
                 case Mnemonic.fintrz: RewriteFintrz(); break;
                 case Mnemonic.fcmp: RewriteFcmp(); break;
+                case Mnemonic.fcos: RewriteFUnaryIntrinsic("cos"); break;
+                case Mnemonic.fcosh: RewriteFUnaryIntrinsic("cosh"); break;
                 case Mnemonic.fdiv: RewriteFBinOp((s, d) => m.FDiv(d, s)); break;
+                case Mnemonic.fdsqrt: RewriteFUnaryIntrinsic("sqrt"); break;
+                case Mnemonic.fetox: RewriteFUnaryIntrinsic("exp"); break;
+                case Mnemonic.fetoxm1: RewriteFUnaryIntrinsic("exp", e => m.FSub(e, Constant.Real64(1.0))); break;
+                case Mnemonic.fgetexp: RewriteFUnaryIntrinsic("fgetexp"); break;
+                case Mnemonic.fgetman: RewriteFUnaryIntrinsic("fgetman"); break;
+                case Mnemonic.fint: RewriteFUnaryIntrinsic("trunc"); break;
+                case Mnemonic.flog10: RewriteFUnaryIntrinsic("log10"); break;
+                case Mnemonic.flog2: RewriteFUnaryIntrinsic("log2"); break;
+                case Mnemonic.flogn: RewriteFUnaryIntrinsic("log"); break;
+                case Mnemonic.flognp1: RewriteFUnaryIntrinsic(e => m.FAdd(e, Constant.Real64(1.0)), "log"); break;
+                case Mnemonic.fmod: RewriteFBinIntrinsic("fmod"); break;
                 case Mnemonic.fmove: RewriteFmove(); break;
                 case Mnemonic.fmovecr: RewriteFmovecr(); break;
                 case Mnemonic.fmovem: RewriteMovem(i => Registers.GetRegister(i+Registers.fp0.Number)); break;
                 case Mnemonic.fmul: RewriteFBinOp((s, d) => m.FMul(d,s)); break;
                 case Mnemonic.fneg: RewriteFUnaryOp(m.Neg); break;
+                case Mnemonic.frem: RewriteFUnaryIntrinsic("frem"); break;
+                case Mnemonic.fsabs: RewriteFUnaryIntrinsic("fabsf"); break;
+                case Mnemonic.fsin: RewriteFUnaryIntrinsic("fsin"); break;
+                case Mnemonic.fsincos: RewriteFSinCos(); break;
                 case Mnemonic.fsqrt: RewriteFsqrt(); break;
                 case Mnemonic.fsub: RewriteFBinOp((s, d) => m.FSub(d, s)); break;
                 case Mnemonic.ftan: RewriteFtan(); break;
+                case Mnemonic.ftanh1: RewriteFUnaryIntrinsic("tanh"); break;
                 case Mnemonic.jmp: RewriteJmp(); break;
                 case Mnemonic.jsr: RewriteJsr(); break;
                 case Mnemonic.lea: RewriteLea(); break;
@@ -212,6 +248,7 @@ VS Overflow Set 1001 V
                 case Mnemonic.move: RewriteMove(true); break;
                 case Mnemonic.move16: RewriteMove16(); break;
                 case Mnemonic.movea: RewriteMove(false); break;
+                case Mnemonic.movec: RewriteMovec(); break;
                 case Mnemonic.movep: RewriteMovep(); break;
                 case Mnemonic.moveq: RewriteMoveq(); break;
                 case Mnemonic.moves: RewriteMoves(); break;
@@ -228,7 +265,9 @@ VS Overflow Set 1001 V
                 case Mnemonic.pack: RewritePack(); break;
                 case Mnemonic.pea: RewritePea(); break;
                 case Mnemonic.pflushr: RewritePflushr(); break;
+                case Mnemonic.pload: RewritePload(); break;
                 case Mnemonic.ptest: RewritePtest(); break;
+                case Mnemonic.reset: RewriteReset(); break;
                 case Mnemonic.rol: RewriteRotation(PseudoProcedure.Rol); break;
                 case Mnemonic.ror: RewriteRotation(PseudoProcedure.Ror);  break;
                 case Mnemonic.roxl: RewriteRotationX(PseudoProcedure.RolC);  break;
@@ -236,6 +275,7 @@ VS Overflow Set 1001 V
                 case Mnemonic.rtd: RewriteRtd(); break;
                 case Mnemonic.rte: RewriteRte(); break;
                 case Mnemonic.rtm: RewriteRtm(); break;
+                case Mnemonic.rtr: RewriteRtr(); break;
                 case Mnemonic.rts: RewriteRts(); break;
                 case Mnemonic.sbcd: RewriteSbcd(); break;
                 case Mnemonic.scc: RewriteScc(ConditionCode.UGE, FlagM.CF); break;
@@ -275,6 +315,8 @@ VS Overflow Set 1001 V
                 case Mnemonic.trapmi: RewriteTrapCc(ConditionCode.LT, FlagM.NF); break;
                 case Mnemonic.trapne: RewriteTrapCc(ConditionCode.NE, FlagM.ZF); break;
                 case Mnemonic.trappl: RewriteTrapCc(ConditionCode.GT, FlagM.NF); break;
+                case Mnemonic.trapt: RewriteTrapCc(ConditionCode.ALWAYS , 0); break;
+                case Mnemonic.trapv: RewriteTrapCc(ConditionCode.OV, FlagM.VF); break;
                 case Mnemonic.trapvc: RewriteTrapCc(ConditionCode.NO, FlagM.VF); break;
                 case Mnemonic.trapvs: RewriteTrapCc(ConditionCode.OV, FlagM.VF); break;
 

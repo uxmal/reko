@@ -40,12 +40,14 @@ namespace Reko.Arch.zSeries
         {
             this.Endianness = EndianServices.Big;
             this.InstructionBitSize = 16;
-            this.WordWidth = PrimitiveType.Word32;
-            this.PointerType = PrimitiveType.Ptr32;
-            this.FramePointerType = PrimitiveType.Ptr32;
-            //$REVIEW: is this architectural?
-            this.StackRegister = Registers.GpRegisters[15];
+            Options = new Dictionary<string, object>();
+            SetOptionDependentProperties();
         }
+
+        // zSeries uses a link register
+        public override int ReturnAddressOnStack => 0;
+
+        public Dictionary<string, object> Options { get; private set;  }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
@@ -77,10 +79,6 @@ namespace Reko.Arch.zSeries
             return new zSeriesRewriter(this, rdr, state, binder, host);
         }
 
-        // zSeries uses a link register
-        public override int ReturnAddressOnStack => 0;
-
-
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             //$BUG: not close to correct but it's a start.
@@ -109,7 +107,10 @@ namespace Reko.Arch.zSeries
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            return Registers.GpRegisters[domain - StorageDomain.Register];
+            if (!Registers.RegistersByDomain.TryGetValue(domain, out var reg))
+                return null;
+            else
+                return reg;
         }
 
         public override RegisterStorage GetRegister(string name)
@@ -141,6 +142,11 @@ namespace Reko.Arch.zSeries
             return "CC";
         }
 
+        public override void LoadUserOptions(Dictionary<string, object> options)
+        {
+            Options = options;
+        }
+
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
             var uAddr = c.ToUInt32();
@@ -152,6 +158,38 @@ namespace Reko.Arch.zSeries
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
+        }
+
+        private bool Is64Bit()
+        {
+            return
+                !Options.TryGetValue("WordSize", out var oWordSize) ||
+                int.TryParse(oWordSize.ToString(), out var wordSize) &&
+                wordSize == 64;
+        }
+
+        public override Dictionary<string, object> SaveUserOptions()
+        {
+            return Options;
+        }
+
+        private void SetOptionDependentProperties()
+        {
+            if (Is64Bit())
+            {
+                this.WordWidth = PrimitiveType.Word64;
+                this.PointerType = PrimitiveType.Ptr64;
+                this.FramePointerType = PrimitiveType.Ptr64;
+            }
+            else
+            {
+                this.WordWidth = PrimitiveType.Word32;
+                this.PointerType = PrimitiveType.Ptr32;
+                this.FramePointerType = PrimitiveType.Ptr32;
+
+            }
+            //$REVIEW: is this architectural?
+            this.StackRegister = Registers.GpRegisters[15];
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)

@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Mocks
             writer("test.asm", new Dictionary<ImageSegment, List<ImageMapItem>>(), new TextFormatter(disassembly));
         }
 
-        public void WriteIntermediateCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer)
+        public void WriteIntermediateCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer)
         {
             writer("test.dis", new Procedure[0], intermediate);
         }
@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Mocks
             writer("test.h", typesWriter);
         }
 
-        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer)
         {
             writer("test.c", new Procedure[0], decompiled);
         }

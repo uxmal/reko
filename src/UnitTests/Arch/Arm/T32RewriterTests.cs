@@ -93,6 +93,11 @@ namespace Reko.UnitTests.Arch.Arm
                 throw new NotImplementedException();
             }
 
+            public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, out Constant value)
+            {
+                throw new NotImplementedException();
+            }
+
             public void Error(Address address, string format, params object[] args)
             {
                 throw new NotImplementedException();

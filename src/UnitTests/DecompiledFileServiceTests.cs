@@ -24,8 +24,10 @@ using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -44,17 +46,21 @@ namespace Reko.UnitTests
         [SetUp]
         public void Setup()
         {
-            this.program = new Program();
-            program.SegmentMap = new SegmentMap(Address.Ptr32(0x00100000));
+            var arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.Name).Returns("FakeArch");
+            arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
+            this.program = new Program(
+                new SegmentMap(Address.Ptr32(0x00100000)),
+                arch.Object,
+                new DefaultPlatform(new ServiceContainer(), arch.Object));
             program.Filename = Path.Combine("bar", "foo.exe");
             program.Name = "foo.exe";
             program.SourceDirectory = "bar";
 
             this.fsSvc = new Mock<IFileSystemService>();
 
-            this.dfSvc = new DecompiledFileService(fsSvc.Object);
+            this.dfSvc = new DecompiledFileService(fsSvc.Object, new FakeDecompilerEventListener());
 
-            var arch = new Mock<IProcessorArchitecture>();
             this.proc1 = Procedure.Create(arch.Object, Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
 
         }

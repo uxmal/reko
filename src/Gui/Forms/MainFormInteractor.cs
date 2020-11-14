@@ -131,8 +131,6 @@ namespace Reko.Gui.Forms
 
         private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc)
         {
-            sc.AddService<IDecompiledFileService>(svcFactory.CreateDecompiledFileService());
-
             config = svcFactory.CreateDecompilerConfiguration();
             sc.AddService(typeof(IConfigurationService), config);
 
@@ -159,7 +157,9 @@ namespace Reko.Gui.Forms
             var del = svcFactory.CreateDecompilerEventListener();
             workerDlgSvc = (IWorkerDialogService)del;
             sc.AddService(typeof(IWorkerDialogService), workerDlgSvc);
-            sc.AddService(typeof(DecompilerEventListener), del);
+            sc.AddService<DecompilerEventListener>(del);
+
+            sc.AddService<IDecompiledFileService>(svcFactory.CreateDecompiledFileService());
 
             loader = svcFactory.CreateLoader();
             sc.AddService<ILoader>(loader);

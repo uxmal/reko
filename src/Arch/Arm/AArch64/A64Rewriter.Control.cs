@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 
 namespace Reko.Arch.Arm.AArch64
@@ -55,10 +56,26 @@ namespace Reko.Arch.Arm.AArch64
             m.Goto(RewriteOp(instr.Operands[0]));
         }
 
+        private void RewriteBrk()
+        {
+            m.SideEffect(host.PseudoProcedure("__brk", VoidType.Instance, RewriteOp(0)));
+        }
+
         private void RewriteCb(Func<Expression, Expression> fn)
         {
             var reg = binder.EnsureRegister(((RegisterOperand)instr.Operands[0]).Register);
             m.Branch(fn(reg), ((AddressOperand)instr.Operands[1]).Address, iclass);
+        }
+
+        private void RewriteEret()
+        {
+            m.SideEffect(host.PseudoProcedure("__eret", VoidType.Instance));
+            m.Return(0, 0);
+        }
+
+        private void RewriteHlt()
+        {
+            m.SideEffect(host.PseudoProcedure("__hlt", VoidType.Instance, RewriteOp(0)));
         }
 
         private void RewriteRet()

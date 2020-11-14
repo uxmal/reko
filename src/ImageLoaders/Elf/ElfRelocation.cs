@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -46,5 +46,4 @@ namespace Reko.ImageLoaders.Elf
             return sb.ToString();
         }
     }
-
 }

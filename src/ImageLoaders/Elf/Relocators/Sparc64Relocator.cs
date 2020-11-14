@@ -40,10 +40,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
             base.Relocate(program);
         }
 
-        public override ElfSymbol RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
+        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
         {
             if (loader.Sections.Count <= sym.SectionIndex)
-                return sym;
+                return (null, null);
             var rt = (SparcRt) (rela.Info & 0xFF);
 
             var addr = referringSection != null
@@ -61,7 +61,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     {
                         importReferences[addrPfn] = new NamedImportReference(addrPfn, null, sym.Name, st.Value);
                     }
-                    return sym;
+                    return (addrPfn, null);
                 }
             }
 
@@ -93,7 +93,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             switch (rt)
             {
             case 0:
-                return sym;
+                return (null, null);
             case SparcRt.R_SPARC_HI22:
                 A = (int) rela.Addend;
                 sh = 10;
@@ -131,16 +131,16 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 return Relocate64(program, sym, addr, S, A, sh, mask, P, B);
             case SparcRt.R_SPARC_COPY:
                 ElfImageLoader.trace.Warn("Relocation type {0} not handled yet.", rt);
-                return sym;
+                return (addr, null);
             default:
                 ElfImageLoader.trace.Error(
                     "SPARC ELF relocation type {0} not implemented yet.",
                     rt);
-                return sym;
+                return (addr, null);
             }
         }
 
-        private ElfSymbol Relocate32(Program program, ElfSymbol sym, Address addr, ulong S, int A, int sh, uint mask, ulong P, ulong B)
+        private (Address, ElfSymbol) Relocate32(Program program, ElfSymbol sym, Address addr, ulong S, int A, int sh, uint mask, ulong P, ulong B)
         {
             var arch = program.Architecture;
             var relR = program.CreateImageReader(arch, addr);
@@ -151,10 +151,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
             w += ((uint) (B + S + (uint) A + P) >> sh) & mask;
             relW.WriteBeUInt32(w);
             ElfImageLoader.trace.Verbose($"Relocated value at {addr} from {wOld:X8} to {w:X8}.");
-            return sym;
+            return (addr, null);
         }
 
-        private ElfSymbol Relocate64(Program program, ElfSymbol sym, Address addr, ulong S, int A, int sh, uint mask, ulong P, ulong B)
+        private (Address, ElfSymbol) Relocate64(Program program, ElfSymbol sym, Address addr, ulong S, int A, int sh, uint mask, ulong P, ulong B)
         {
             var arch = program.Architecture;
             var relR = program.CreateImageReader(arch, addr);
@@ -165,7 +165,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             w += ((ulong) (B + S + (ulong) (long) A + P) >> sh) & mask;
             relW.WriteBeUInt64(w);
             ElfImageLoader.trace.Verbose($"Relocated value at {addr} from {wOld:X8} to {w:X8}.");
-            return sym;
+            return (addr, null);
         }
 
         public override string RelocationTypeToString(uint type)

@@ -5,22 +5,3 @@
 #include "main.h"
 
 Eq_n g_t0100;
-word16 g_w400000 = 23117;
-struct Eq_n * g_ptr40003C = &g_t0100;
-<anonymous> g_t401731 = <code>;
-<anonymous> * g_ptr4020D4 = &g_t401731;
-Eq_n g_t4020D8 = null;
-Eq_n g_t4020E0 = null;
-Eq_n g_t4020E4 = null;
-Eq_n g_t4020F0 = null;
-ui32 g_dw403000 = 1153374641;
-ui32 g_dw403004 = 0xBB40E64E;
-ui32 g_dw403010 = 0x01;
-word32 g_dw403014 = 0x01;
-word32 g_dw403334 = 0x00;
-word32 g_dw403338 = 0x00;
-byte g_b403354 = 0x00;
-ui32 g_dw403368 = 0x00;
-word32 g_dw40336C = 0x00;
-ui32 g_dw403370 = 0x00;
-

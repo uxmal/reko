@@ -196,6 +196,16 @@ namespace Reko.Scanning
             }
         }
 
+        public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, out Constant value)
+        {
+            if (!this.Program.SegmentMap.TryFindSegment(addr, out var segment))
+            {
+                value = null!;
+                return false;
+            }
+            return arch.TryRead(segment.MemoryArea, addr, dt, out value);
+        }
+
         /// <summary>
         /// Creates a work item which will process code starting at the address
         /// <paramref name="addrStart"/>. The resulting block will belong to 

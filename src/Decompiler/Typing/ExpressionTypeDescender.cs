@@ -537,7 +537,7 @@ namespace Reko.Typing
             {
                 // Mem[p + c]
                 p = fieldAccessPattern.CapturedExpression("p")!;
-                var c = (Constant) fieldAccessPattern.CapturedExpression("c")!;
+                var c = ToConstant(fieldAccessPattern.CapturedExpression("c")!)!;
                 offset = OffsetOf(c);
                 if (p is Conversion cvt && cvt.SourceDataType.BitSize < cvt.DataType.BitSize)
                 {
@@ -606,6 +606,15 @@ namespace Reko.Typing
             StructField(basePointer, p, offset, tvAccess, eaBitSize);
             p.Accept(this, p.TypeVariable!);
             return false;
+        }
+
+        private Constant? ToConstant(Expression expression)
+        {
+            if (expression is Constant c)
+                return c;
+            if (expression is Address addr)
+                return addr.ToConstant();
+            return null;
         }
 
         private void VisitPossibleArrayAccess(Expression? basePointer, TypeVariable tvAccess, Expression left, Expression right, Expression globals, int eaBitSize)

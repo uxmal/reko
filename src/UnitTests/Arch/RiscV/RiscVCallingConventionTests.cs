@@ -48,6 +48,10 @@ namespace Reko.UnitTests.Arch.RiscV
         public void Setup()
         {
             this.arch = new RiscVArchitecture(new ServiceContainer(), "riscV");
+            arch.LoadUserOptions(new Dictionary<string, object>
+            {
+                { "FloatAbi", 64 }
+            });
             this.cc = new RiscVCallingConvention(arch);
             this.ccr = new CallingConventionEmitter();
         }

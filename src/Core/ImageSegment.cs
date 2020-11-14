@@ -20,8 +20,10 @@
 
 using Reko.Core.Expressions;
 using Reko.Core.Memory;
+using Reko.Core.Types;
 using System;
 using System.ComponentModel;
+using System.Text;
 
 namespace Reko.Core
 {
@@ -49,6 +51,7 @@ namespace Reko.Core
             this.Address = addr ?? throw new ArgumentException(nameof(addr));
             this.MemoryArea = mem ?? throw new ArgumentNullException(nameof(mem));
 			this.Access = access;
+            this.Fields = CreateFields(0);
 		}
 
 		public ImageSegment(string name, Address addr, uint size, AccessMode access)
@@ -58,6 +61,7 @@ namespace Reko.Core
             this.Address = addr ?? throw new ArgumentNullException(nameof(addr));
             this.MemoryArea = new ByteMemoryArea(addr, new byte[size]);
 			this.Access = access;
+            this.Fields = CreateFields((int)size);
 		}
 
         /// <summary>
@@ -75,6 +79,7 @@ namespace Reko.Core
             this.Size = (uint)mem.Length;
             this.Address = mem.BaseAddress;
             this.Access = access;
+            this.Fields = CreateFields((int)mem.Length);
         }
 
         /// <summary>
@@ -103,6 +108,14 @@ namespace Reko.Core
         /// </summary>
 		public AccessMode Access { get; set; }
 
+        /// <summary>
+        /// The layout of this segment.
+        /// </summary>
+        public StructureType Fields { get; }
+
+        /// <summary>
+        /// Optional designer
+        /// </summary>
         public ImageSegmentRenderer? Designer { get; set; }
 
 		public string Name { get; set; }
@@ -140,6 +153,38 @@ namespace Reko.Core
         /// </remarks>
         //$TODO: this should be non-nullable: a segment should 
         public Identifier? Identifier { get; set; }
+
+        private StructureType CreateFields(int size)
+        {
+            string name = GenerateTypeName();
+            var segType = new StructureType(name, size)
+            {
+                IsSegment = true
+            };
+            segType.IsSegment = true;
+            return segType;
+        }
+
+        private string GenerateTypeName()
+        {
+            var sb = new StringBuilder("seg");
+            if (this.Address.Selector.HasValue)
+            {
+                sb.AppendFormat("{0:X4}", Address.Selector.Value);
+            }
+            else
+            {
+                foreach (var ch in this.Name)
+                {
+                    if (char.IsDigit(ch) || char.IsLetter(ch) || ch == '_')
+                        sb.Append(ch);
+                    else
+                        sb.Append('_');
+                }
+            }
+            sb.Append("_t");
+            return sb.ToString();
+        }
 
         /// <summary>
         /// Creates an image reader that scans all available memory in the segment.

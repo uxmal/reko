@@ -38,16 +38,24 @@ namespace Reko.ImageLoaders.Elf
         public byte st_other;
         public ushort st_shndx;
 
-        public static Elf32_Sym Load(EndianImageReader rdr)
+        public static bool TryLoad(EndianImageReader rdr, out Elf32_Sym sym)
         {
-            var sym = new Elf32_Sym();
-            sym.st_name = rdr.ReadUInt32();
-            sym.st_value = rdr.ReadUInt32();
-            sym.st_size = rdr.ReadUInt32();
-            sym.st_info = rdr.ReadByte();
-            sym.st_other = rdr.ReadByte();
-            sym.st_shndx = rdr.ReadUInt16();
-            return sym;
+            sym = new Elf32_Sym();
+            if (
+                rdr.TryReadUInt32(out sym.st_name) &&
+                rdr.TryReadUInt32(out sym.st_value) &&
+                rdr.TryReadUInt32(out sym.st_size) &&
+                rdr.TryReadByte(out sym.st_info) &&
+                rdr.TryReadByte(out sym.st_other) &&
+                rdr.TryReadUInt16(out sym.st_shndx))
+            {
+                return true;
+            }
+            else
+            {
+                sym = null;
+                return false;
+            }
         }
     }
 
@@ -62,16 +70,24 @@ namespace Reko.ImageLoaders.Elf
         public ulong st_value;
         public ulong st_size;
 
-        public static Elf64_Sym Load(EndianImageReader rdr)
+        public static bool TryLoad(EndianImageReader rdr, out Elf64_Sym sym)
         {
-            var sym = new Elf64_Sym();
-            sym.st_name = rdr.ReadUInt32();
-            sym.st_info = rdr.ReadByte();
-            sym.st_other = rdr.ReadByte();
-            sym.st_shndx = rdr.ReadUInt16();
-            sym.st_value = rdr.ReadUInt64();
-            sym.st_size = rdr.ReadUInt64();
-            return sym;
+            sym = new Elf64_Sym();
+            if (
+                rdr.TryReadUInt32(out sym.st_name) &&
+                rdr.TryReadByte(out sym.st_info) &&
+                rdr.TryReadByte(out sym.st_other) &&
+                rdr.TryReadUInt16(out sym.st_shndx) &&
+                rdr.TryReadUInt64(out sym.st_value) &&
+                rdr.TryReadUInt64(out sym.st_size))
+            {
+                return true;
+            }
+            else
+            {
+                sym = null;
+                return false;
+            }
         }
     }
 

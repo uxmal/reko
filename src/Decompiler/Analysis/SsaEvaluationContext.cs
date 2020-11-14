@@ -45,6 +45,9 @@ namespace Reko.Analysis
             this.dynamicLinker = dynamicLinker;
         }
 
+        public EndianServices Endianness => arch.Endianness;
+
+
         public Statement? Statement { get; set; }
 
         public Expression? GetValue(Identifier id)

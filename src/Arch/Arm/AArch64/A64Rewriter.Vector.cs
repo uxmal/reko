@@ -172,6 +172,17 @@ namespace Reko.Arch.Arm.AArch64
             m.SideEffect(host.PseudoProcedure(fnName, VoidType.Instance, args.ToArray()));
         }
 
+        private void RewriteSmsubl()
+        {
+            var m1 = RewriteOp(1);
+            var m2 = RewriteOp(2);
+            var s = RewriteOp(3);
+            var product = m.IMul(m1, m2);
+            product.DataType = s.DataType;
+            var dst = RewriteOp(0);
+            m.Assign(dst, m.ISub(s, product));
+        }
+
         private void RewriteStN(string fnName)
         {
             var (ea, _) = RewriteEffectiveAddress((MemoryOperand)instr.Operands[1]);
@@ -245,6 +256,26 @@ namespace Reko.Arch.Arm.AArch64
         private void RewriteSmaxv()
         {
             RewriteSimdReduce("__smax_{0}", Domain.SignedInt);
+        }
+
+        private void RewriteUabd()
+        {
+            if (instr.Operands[1] is VectorRegisterOperand vop)
+            {
+                var domain = Domain.UnsignedInt;
+                var arrayLeft = MakeArrayType(instr.Operands[1], domain);
+                var arrayRight = MakeArrayType(instr.Operands[2], domain);
+                var arrayDst = MakeArrayType(instr.Operands[0], domain);
+                var tmpLeft = binder.CreateTemporary(arrayLeft);
+                var tmpRight = binder.CreateTemporary(arrayRight);
+                var left = RewriteOp(instr.Operands[1], true);
+                var right = RewriteOp(instr.Operands[2], true);
+                var dst = RewriteOp(instr.Operands[0]);
+                var name = GenerateSimdIntrinsicName("__uabd_{0}", (PrimitiveType) arrayLeft.ElementType);
+                m.Assign(tmpLeft, left);
+                m.Assign(tmpRight, right);
+                m.Assign(dst, host.PseudoProcedure(name, arrayDst, tmpLeft, tmpRight));
+            }
         }
 
         private void RewriteUaddw()

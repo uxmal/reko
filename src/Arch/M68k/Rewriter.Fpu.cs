@@ -36,6 +36,39 @@ namespace Reko.Arch.M68k
             return host.PseudoProcedure("__is_nan", PrimitiveType.Bool, arg);
         }
 
+        private void RewriteFabs()
+        {
+            //$TODO: #include <math.h>
+            var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
+            var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
+                host.PseudoProcedure("fabs", s.DataType, s));
+        }
+
+        private void RewriteFacos()
+        {
+            //$TODO: #include <math.h>
+            var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
+            var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
+                host.PseudoProcedure("acos", s.DataType, s));
+        }
+
+
+        private void RewriteFatan()
+        {
+            //$TODO: #include <math.h>
+            var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
+            var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
+                host.PseudoProcedure("atan", s.DataType, s));
+        }
+
+        private void RewriteFatanh()
+        {
+            //$TODO: #include <math.h>
+            var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
+            var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
+                host.PseudoProcedure("atanh", s.DataType, s));
+        }
+
         private void RewriteFbcc(ConditionCode cc)
         {
             var addr = ((M68kAddressOperand)instr.Operands[0]).Address;
@@ -65,6 +98,19 @@ namespace Reko.Arch.M68k
                 InstrClass.ConditionalTransfer);
         }
 
+        private void RewriteFBinIntrinsic(string fnName)
+        {
+            var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
+            var opDst = orw.RewriteDst(instr.Operands[1], instr.Address, opSrc, (s, d) =>
+                host.PseudoProcedure(fnName, s.DataType, s, d));
+            if (opDst == null)
+            {
+                EmitInvalid();
+                return;
+            }
+            m.Assign(FpuFlagGroup(), m.Cond(opDst));
+        }
+
         private void RewriteFBinOp(Func<Expression, Expression, Expression> binOpGen)
         {
             var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
@@ -75,6 +121,44 @@ namespace Reko.Arch.M68k
                 return;
             }
             m.Assign(FpuFlagGroup(), m.Cond(opDst));
+        }
+
+        private void RewriteFSinCos()
+        {
+            var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
+            var dstCos = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
+                host.PseudoProcedure("cos", s.DataType, s));
+            var dstSin = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
+                host.PseudoProcedure("sin", s.DataType, s));
+            if (dstSin != null)
+            {
+                m.Assign(FpuFlagGroup(), m.Cond(dstSin));
+            }
+            EmitInvalid();
+        }
+
+        private void RewriteFUnaryIntrinsic(string fnName)
+        {
+            //$TODO: #include <math.h>
+            var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
+            var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
+                host.PseudoProcedure(fnName, s.DataType, s));
+        }
+
+        private void RewriteFUnaryIntrinsic(Func<Expression, Expression> preProcess, string fnName)
+        {
+            //$TODO: #include <math.h>
+            var src = preProcess(orw.RewriteSrc(instr.Operands[0], instr.Address));
+            var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
+               host.PseudoProcedure(fnName, s.DataType, s));
+        }
+
+        private void RewriteFUnaryIntrinsic(string fnName, Func<Expression, Expression> postProcess)
+        {
+            //$TODO: #include <math.h>
+            var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
+            var dst = postProcess(orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
+               host.PseudoProcedure(fnName, s.DataType, s))!);
         }
 
         private void RewriteFUnaryOp(Func<Expression, Expression> unaryOpGen)

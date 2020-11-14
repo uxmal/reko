@@ -1,346 +1,346 @@
 ;;; Segment .dynsym (4000000000005560)
-;    0                                          00000000 00000000 00 
-;    1 rl_filename_quoting_desired              00000000 00000000 11 
-;    2 __ctype_toupper_loc                      00000000 00000000 12 
-;    3 wctype                                   00000000 00000000 12 
-;    4 rl_outstream                             00000000 00000000 11 
-;    5 endgrent                                 00000000 00000000 12 
-;    6 wcrtomb                                  00000000 00000000 12 
-;    7 rl_completion_append_character           00000000 00000000 11 
-;    8 strstr                                   00000000 00000000 12 
-;    9 __snprintf_chk                           00000000 00000000 12 
-;   10 fdopen                                   00000000 00000000 12 
-;   11 setitimer                                00000000 00000000 12 
-;   12 pathconf                                 00000000 00000000 12 
-;   13 rl_insert_text                           00000000 00000000 12 
-;   14 stifle_history                           00000000 00000000 12 
-;   15 rl_tilde_expand                          00000000 00000000 12 
-;   16 dup                                      00000000 00000000 12 
-;   17 mbsrtowcs                                00000000 00000000 12 
-;   18 emacs_standard_keymap                    00000000 00000000 11 
-;   19 iswlower                                 00000000 00000000 12 
-;   20 rl_vi_end_word                           00000000 00000000 12 
-;   21 __strtol_internal                        00000000 00000000 12 
-;   22 strcmp                                   00000000 00000000 12 
-;   23 __vfprintf_chk                           00000000 00000000 12 
-;   24 iswctype                                 00000000 00000000 12 
-;   25 wctomb                                   00000000 00000000 12 
-;   26 rl_get_termcap                           00000000 00000000 12 
-;   27 rl_forced_update_display                 00000000 00000000 12 
-;   28 read                                     00000000 00000000 12 
-;   29 __environ                                00000000 00000000 11 
-;   30 rl_special_prefixes                      00000000 00000000 11 
-;   31 rl_last_func                             00000000 00000000 11 
-;   32 wcscoll                                  00000000 00000000 12 
-;   33 getpwuid                                 00000000 00000000 12 
-;   34 fopen                                    00000000 00000000 12 
-;   35 fflush                                   00000000 00000000 12 
-;   36 rl_bind_keyseq                           00000000 00000000 12 
-;   37 sigprocmask                              00000000 00000000 12 
-;   38 tputs                                    00000000 00000000 12 
-;   39 where_history                            00000000 00000000 12 
-;   40 stderr                                   00000000 00000000 11 
-;   41 rl_attempted_completion_function         00000000 00000000 11 
-;   42 rl_forward_word                          00000000 00000000 12 
-;   43 gai_strerror                             00000000 00000000 12 
-;   44 towlower                                 00000000 00000000 12 
-;   45 rl_sort_completion_matches               00000000 00000000 11 
-;   46 history_truncate_file                    00000000 00000000 12 
-;   47 rl_completer_quote_characters            00000000 00000000 11 
-;   48 wcsrtombs                                00000000 00000000 12 
-;   49 memmove                                  00000000 00000000 12 
-;   50 free                                     00000000 00000000 12 
-;   51 rl_complete_internal                     00000000 00000000 12 
-;   52 rl_variable_bind                         00000000 00000000 12 
-;   53 strchrnul                                00000000 00000000 12 
-;   54 rl_completion_matches                    00000000 00000000 12 
-;   55 mbsinit                                  00000000 00000000 12 
-;   56 memcpy                                   00000000 00000000 12 
-;   57 confstr                                  00000000 00000000 12 
-;   58 add_history                              00000000 00000000 12 
-;   59 rl_read_init_file                        00000000 00000000 12 
-;   60 faccessat                                00000000 00000000 12 
-;   61 rl_funmap_names                          00000000 00000000 12 
-;   62 ferror                                   00000000 00000000 12 
-;   63 rl_parse_and_bind                        00000000 00000000 12 
-;   64 fgets                                    00000000 00000000 12 
-;   65 time                                     00000000 00000000 12 
-;   66 history_is_stifled                       00000000 00000000 12 
-;   67 history_max_entries                      00000000 00000000 11 
-;   68 rl_directory_completion_hook             00000000 00000000 11 
-;   69 rl_set_keymap                            00000000 00000000 12 
-;   70 lseek                                    00000000 00000000 12 
-;   71 rl_complete                              00000000 00000000 12 
-;   72 clear_history                            00000000 00000000 12 
-;   73 strtold                                  00000000 00000000 12 
-;   74 rl_yank_last_arg                         00000000 00000000 12 
-;   75 write_history                            00000000 00000000 12 
-;   76 tcsetpgrp                                00000000 00000000 12 
-;   77 stpcpy                                   00000000 00000000 12 
-;   78 select                                   00000000 00000000 12 
-;   79 sleep                                    00000000 00000000 12 
-;   80 wcsncmp                                  00000000 00000000 12 
-;   81 history_inhibit_expansion_function       00000000 00000000 11 
-;   82 rl_filename_rewrite_hook                 00000000 00000000 11 
-;   83 dcgettext                                00000000 00000000 12 
-;   84 eaccess                                  00000000 00000000 12 
-;   85 rl_generic_bind                          00000000 00000000 12 
-;   86 rl_completion_quote_character            00000000 00000000 11 
-;   87 rl_unbind_key_in_map                     00000000 00000000 12 
-;   88 rl_add_undo                              00000000 00000000 12 
-;   89 read_history                             00000000 00000000 12 
-;   90 rl_vi_start_inserting                    00000000 00000000 12 
-;   91 rl_function_of_keyseq                    00000000 00000000 12 
-;   92 dlclose                                  00000000 00000000 12 
-;   93 rl_filename_completion_function          00000000 00000000 12 
-;   94 alarm                                    00000000 00000000 12 
-;   95 getuid                                   00000000 00000000 12 
-;   96 rl_completion_suppress_quote             00000000 00000000 11 
-;   97 killpg                                   00000000 00000000 12 
-;   98 sysconf                                  00000000 00000000 12 
-;   99 __strtoul_internal                       00000000 00000000 12 
-;  100 getrlimit                                00000000 00000000 12 
-;  101 realloc                                  00000000 00000000 12 
-;  102 geteuid                                  00000000 00000000 12 
-;  103 getservent                               00000000 00000000 12 
-;  104 read_history_range                       00000000 00000000 12 
-;  105 __fdelt_chk                              00000000 00000000 12 
-;  106 dlerror                                  00000000 00000000 12 
-;  107 rl_num_chars_to_read                     00000000 00000000 11 
-;  108 rl_line_buffer                           00000000 00000000 11 
-;  109 rl_reset_terminal                        00000000 00000000 12 
-;  110 rl_variable_dumper                       00000000 00000000 12 
-;  111 dup2                                     00000000 00000000 12 
-;  112 textdomain                               00000000 00000000 12 
-;  113 strcasestr                               00000000 00000000 12 
-;  114 _IO_putc                                 00000000 00000000 12 
-;  115 chdir                                    00000000 00000000 12 
-;  116 strsignal                                00000000 00000000 12 
-;  117 rl_newline                               00000000 00000000 12 
-;  118 tzset                                    00000000 00000000 12 
-;  119 getegid                                  00000000 00000000 12 
-;  120 mblen                                    00000000 00000000 12 
-;  121 free_history_entry                       00000000 00000000 12 
-;  122 rl_insert                                00000000 00000000 12 
-;  123 __xstat                                  00000000 00000000 12 
-;  124 fwrite                                   00000000 00000000 12 
-;  125 ioctl                                    00000000 00000000 12 
-;  126 readline                                 00000000 00000000 12 
-;  127 getpgrp                                  00000000 00000000 12 
-;  128 regfree                                  00000000 00000000 12 
-;  129 mbrtowc                                  00000000 00000000 12 
-;  130 __ctype_get_mb_cur_max                   00000000 00000000 12 
-;  131 strcat                                   00000000 00000000 12 
-;  132 readlink                                 00000000 00000000 12 
-;  133 rl_kill_text                             00000000 00000000 12 
-;  134 history_get                              00000000 00000000 12 
-;  135 rl_macro_dumper                          00000000 00000000 12 
-;  136 rl_startup_hook                          00000000 00000000 11 
-;  137 strcpy                                   00000000 00000000 12 
-;  138 getpid                                   00000000 00000000 12 
-;  139 rl_end                                   00000000 00000000 11 
-;  140 previous_history                         00000000 00000000 12 
-;  141 tcsetattr                                00000000 00000000 12 
-;  142 unlink                                   00000000 00000000 12 
-;  143 waitpid                                  00000000 00000000 12 
-;  144 wcscmp                                   00000000 00000000 12 
-;  145 rl_list_funmap_names                     00000000 00000000 12 
-;  146 rl_completion_mode                       00000000 00000000 12 
-;  147 gethostname                              00000000 00000000 12 
-;  148 mbsnrtowcs                               00000000 00000000 12 
-;  149 rl_completion_mark_symlink_dirs          00000000 00000000 11 
-;  150 rl_menu_completion_entry_function        00000000 00000000 11 
-;  151 gettimeofday                             00000000 00000000 12 
-;  152 setrlimit                                00000000 00000000 12 
-;  153 __asprintf_chk                           00000000 00000000 12 
-;  154 malloc                                   00000000 00000000 12 
-;  155 rl_add_defun                             00000000 00000000 12 
-;  156 puts                                     00000000 00000000 12 
-;  157 setgid                                   00000000 00000000 12 
-;  158 rl_terminal_name                         00000000 00000000 11 
-;  159 __fxstat                                 00000000 00000000 12 
-;  160 rl_read_key                              00000000 00000000 12 
-;  161 sigaddset                                00000000 00000000 12 
-;  162 tilde_expansion_preexpansion_hook        00000000 00000000 11 
-;  163 getdtablesize                            00000000 00000000 12 
-;  164 rl_completer_word_break_characters       00000000 00000000 11 
-;  165 strcoll                                  00000000 00000000 12 
-;  166 rl_completion_type                       00000000 00000000 11 
-;  167 __memmove_chk                            00000000 00000000 12 
-;  168 __memcpy_chk                             00000000 00000000 12 
-;  169 strerror                                 00000000 00000000 12 
-;  170 rl_tab_insert                            00000000 00000000 12 
-;  171 __gmon_start__                           00000000 00000000 20 
-;  172 open                                     00000000 00000000 12 
-;  173 rl_menu_complete                         00000000 00000000 12 
-;  174 rl_char_is_quoted_p                      00000000 00000000 11 
-;  175 kill                                     00000000 00000000 12 
-;  176 getcwd                                   00000000 00000000 12 
-;  177 rl_named_function                        00000000 00000000 12 
-;  178 tilde_additional_prefixes                00000000 00000000 11 
-;  179 exit                                     00000000 00000000 12 
-;  180 rl_readline_state                        00000000 00000000 11 
-;  181 strftime                                 00000000 00000000 12 
-;  182 emacs_meta_keymap                        00000000 00000000 11 
-;  183 history_list                             00000000 00000000 12 
-;  184 wctob                                    00000000 00000000 12 
-;  185 ttyname                                  00000000 00000000 12 
-;  186 localtime                                00000000 00000000 12 
-;  187 history_search_delimiter_chars           00000000 00000000 11 
-;  188 tcgetpgrp                                00000000 00000000 12 
-;  189 history_length                           00000000 00000000 11 
-;  190 strtoul                                  00000000 00000000 12 
-;  191 rl_filename_quoting_function             00000000 00000000 11 
-;  192 strchr                                   00000000 00000000 12 
-;  193 rl_get_previous_history                  00000000 00000000 12 
-;  194 strlen                                   00000000 00000000 12 
-;  195 __libc_start_main                        00000000 00000000 12 
-;  196 sigdelset                                00000000 00000000 12 
-;  197 setvbuf                                  00000000 00000000 12 
-;  198 write                                    00000000 00000000 12 
-;  199 execve                                   00000000 00000000 12 
-;  200 iswupper                                 00000000 00000000 12 
-;  201 rl_instream                              00000000 00000000 11 
-;  202 using_history                            00000000 00000000 12 
-;  203 strcasecmp                               00000000 00000000 12 
-;  204 stdin                                    00000000 00000000 11 
-;  205 fcntl                                    00000000 00000000 12 
-;  206 rl_bind_key_in_map                       00000000 00000000 12 
-;  207 dlsym                                    00000000 00000000 12 
-;  208 __errno_location                         00000000 00000000 12 
-;  209 iswalnum                                 00000000 00000000 12 
-;  210 setservent                               00000000 00000000 12 
-;  211 strncasecmp                              00000000 00000000 12 
-;  212 memset                                   00000000 00000000 12 
-;  213 rl_vi_editing_mode                       00000000 00000000 12 
-;  214 getgid                                   00000000 00000000 12 
-;  215 rl_mark                                  00000000 00000000 11 
-;  216 putchar                                  00000000 00000000 12 
-;  217 strncpy                                  00000000 00000000 12 
-;  218 rl_ignore_some_completions_function      00000000 00000000 11 
-;  219 rl_vi_bWord                              00000000 00000000 12 
-;  220 setgrent                                 00000000 00000000 12 
-;  221 rl_done                                  00000000 00000000 11 
-;  222 rl_delete_text                           00000000 00000000 12 
-;  223 regexec                                  00000000 00000000 12 
-;  224 rl_crlf                                  00000000 00000000 12 
-;  225 rl_completion_invoking_key               00000000 00000000 11 
-;  226 getgrent                                 00000000 00000000 12 
-;  227 rl_redisplay                             00000000 00000000 12 
-;  228 rl_username_completion_function          00000000 00000000 12 
-;  229 rl_on_new_line                           00000000 00000000 12 
-;  230 __vsnprintf_chk                          00000000 00000000 12 
-;  231 rl_unbind_function_in_map                00000000 00000000 12 
-;  232 __strncpy_chk                            00000000 00000000 12 
-;  233 history_quotes_inhibit_expansion         00000000 00000000 11 
-;  234 rl_completion_entry_function             00000000 00000000 11 
-;  235 rl_function_dumper                       00000000 00000000 12 
-;  236 rl_set_screen_size                       00000000 00000000 12 
-;  237 rl_readline_name                         00000000 00000000 11 
-;  238 rl_editing_mode                          00000000 00000000 11 
-;  239 rl_attempted_completion_over             00000000 00000000 11 
-;  240 __strcpy_chk                             00000000 00000000 12 
-;  241 stdout                                   00000000 00000000 11 
-;  242 rl_initialize                            00000000 00000000 12 
-;  243 strnlen                                  00000000 00000000 12 
-;  244 pipe                                     00000000 00000000 12 
-;  245 rl_ding                                  00000000 00000000 12 
-;  246 __printf_chk                             00000000 00000000 12 
-;  247 history_set_pos                          00000000 00000000 12 
-;  248 fileno                                   00000000 00000000 12 
-;  249 _environ                                 00000000 00000000 21 
-;  250 __longjmp_chk                            00000000 00000000 12 
-;  251 wcswidth                                 00000000 00000000 12 
-;  252 rl_point                                 00000000 00000000 11 
-;  253 sigemptyset                              00000000 00000000 12 
-;  254 rl_make_bare_keymap                      00000000 00000000 12 
-;  255 rl_prep_term_function                    00000000 00000000 11 
-;  256 readdir                                  00000000 00000000 12 
-;  257 setlocale                                00000000 00000000 12 
-;  258 history_comment_char                     00000000 00000000 11 
-;  259 rl_variable_value                        00000000 00000000 12 
-;  260 rl_completion_found_quote                00000000 00000000 11 
-;  261 wcschr                                   00000000 00000000 12 
-;  262 fork                                     00000000 00000000 12 
-;  263 rl_invoking_keyseqs                      00000000 00000000 12 
-;  264 rl_filename_quote_characters             00000000 00000000 11 
-;  265 endpwent                                 00000000 00000000 12 
-;  266 wcslen                                   00000000 00000000 12 
-;  267 __sigsetjmp                              00000000 00000000 12 
-;  268 fputc                                    00000000 00000000 12 
-;  269 rl_get_keymap_by_name                    00000000 00000000 12 
-;  270 setuid                                   00000000 00000000 12 
-;  271 _Jv_RegisterClasses                      00000000 00000000 20 
-;  272 setpgid                                  00000000 00000000 12 
-;  273 history_subst_char                       00000000 00000000 11 
-;  274 clearerr                                 00000000 00000000 12 
-;  275 getppid                                  00000000 00000000 12 
-;  276 fclose                                   00000000 00000000 12 
-;  277 getgroups                                00000000 00000000 12 
-;  278 rl_directory_rewrite_hook                00000000 00000000 11 
-;  279 rl_executing_keymap                      00000000 00000000 11 
-;  280 regcomp                                  00000000 00000000 12 
-;  281 strrchr                                  00000000 00000000 12 
-;  282 history_get_time                         00000000 00000000 12 
-;  283 mbstowcs                                 00000000 00000000 12 
-;  284 getpeername                              00000000 00000000 12 
-;  285 rl_filename_dequoting_function           00000000 00000000 11 
-;  286 rl_filename_completion_desired           00000000 00000000 11 
-;  287 sbrk                                     00000000 00000000 12 
-;  288 getrusage                                00000000 00000000 12 
-;  289 getaddrinfo                              00000000 00000000 12 
-;  290 rl_dispatching                           00000000 00000000 11 
-;  291 freeaddrinfo                             00000000 00000000 12 
-;  292 tilde_expand                             00000000 00000000 12 
-;  293 dlopen                                   00000000 00000000 12 
-;  294 socket                                   00000000 00000000 12 
-;  295 qsort                                    00000000 00000000 12 
-;  296 rl_explicit_arg                          00000000 00000000 11 
-;  297 strncmp                                  00000000 00000000 12 
-;  298 __fprintf_chk                            00000000 00000000 12 
-;  299 remove_history                           00000000 00000000 12 
-;  300 bindtextdomain                           00000000 00000000 12 
-;  301 __lxstat                                 00000000 00000000 12 
-;  302 history_tokenize                         00000000 00000000 12 
-;  303 history_expand                           00000000 00000000 12 
-;  304 vi_movement_keymap                       00000000 00000000 11 
-;  305 rl_deprep_term_function                  00000000 00000000 11 
-;  306 emacs_ctlx_keymap                        00000000 00000000 11 
-;  307 rl_get_keymap                            00000000 00000000 12 
-;  308 rl_bind_key_if_unbound_in_map            00000000 00000000 12 
-;  309 unstifle_history                         00000000 00000000 12 
-;  310 tilde_additional_suffixes                00000000 00000000 11 
-;  311 environ                                  00000000 00000000 11 
-;  312 rl_push_macro_input                      00000000 00000000 12 
-;  313 rl_bind_keyseq_in_map                    00000000 00000000 12 
-;  314 abort                                    00000000 00000000 12 
-;  315 isatty                                   00000000 00000000 12 
-;  316 umask                                    00000000 00000000 12 
-;  317 __fpurge                                 00000000 00000000 12 
-;  318 history_expansion_char                   00000000 00000000 11 
-;  319 history_write_timestamps                 00000000 00000000 11 
-;  320 towupper                                 00000000 00000000 12 
-;  321 wcsdup                                   00000000 00000000 12 
-;  322 fputs                                    00000000 00000000 12 
-;  323 connect                                  00000000 00000000 12 
-;  324 strtol                                   00000000 00000000 12 
-;  325 rl_basic_word_break_characters           00000000 00000000 11 
-;  326 dcngettext                               00000000 00000000 12 
-;  327 sigaction                                00000000 00000000 12 
-;  328 closedir                                 00000000 00000000 12 
-;  329 replace_history_entry                    00000000 00000000 12 
-;  330 close                                    00000000 00000000 12 
-;  331 endservent                               00000000 00000000 12 
-;  332 append_history                           00000000 00000000 12 
-;  333 rl_completion_suppress_append            00000000 00000000 11 
-;  334 __ctype_tolower_loc                      00000000 00000000 12 
-;  335 history_base                             00000000 00000000 11 
-;  336 __ctype_b_loc                            00000000 00000000 12 
-;  337 opendir                                  00000000 00000000 12 
-;  338 tcgetattr                                00000000 00000000 12 
-;  339 mbtowc                                   00000000 00000000 12 
-;  340 __sprintf_chk                            00000000 00000000 12 
-;  341 vi_insertion_keymap                      00000000 00000000 11 
+;    0                                          00000000 00000000 00 SHN_UNDEF
+;    1 rl_filename_quoting_desired              00000000 00000000 11 SHN_UNDEF
+;    2 __ctype_toupper_loc                      00000000 00000000 12 SHN_UNDEF
+;    3 wctype                                   00000000 00000000 12 SHN_UNDEF
+;    4 rl_outstream                             00000000 00000000 11 SHN_UNDEF
+;    5 endgrent                                 00000000 00000000 12 SHN_UNDEF
+;    6 wcrtomb                                  00000000 00000000 12 SHN_UNDEF
+;    7 rl_completion_append_character           00000000 00000000 11 SHN_UNDEF
+;    8 strstr                                   00000000 00000000 12 SHN_UNDEF
+;    9 __snprintf_chk                           00000000 00000000 12 SHN_UNDEF
+;   10 fdopen                                   00000000 00000000 12 SHN_UNDEF
+;   11 setitimer                                00000000 00000000 12 SHN_UNDEF
+;   12 pathconf                                 00000000 00000000 12 SHN_UNDEF
+;   13 rl_insert_text                           00000000 00000000 12 SHN_UNDEF
+;   14 stifle_history                           00000000 00000000 12 SHN_UNDEF
+;   15 rl_tilde_expand                          00000000 00000000 12 SHN_UNDEF
+;   16 dup                                      00000000 00000000 12 SHN_UNDEF
+;   17 mbsrtowcs                                00000000 00000000 12 SHN_UNDEF
+;   18 emacs_standard_keymap                    00000000 00000000 11 SHN_UNDEF
+;   19 iswlower                                 00000000 00000000 12 SHN_UNDEF
+;   20 rl_vi_end_word                           00000000 00000000 12 SHN_UNDEF
+;   21 __strtol_internal                        00000000 00000000 12 SHN_UNDEF
+;   22 strcmp                                   00000000 00000000 12 SHN_UNDEF
+;   23 __vfprintf_chk                           00000000 00000000 12 SHN_UNDEF
+;   24 iswctype                                 00000000 00000000 12 SHN_UNDEF
+;   25 wctomb                                   00000000 00000000 12 SHN_UNDEF
+;   26 rl_get_termcap                           00000000 00000000 12 SHN_UNDEF
+;   27 rl_forced_update_display                 00000000 00000000 12 SHN_UNDEF
+;   28 read                                     00000000 00000000 12 SHN_UNDEF
+;   29 __environ                                00000000 00000000 11 SHN_UNDEF
+;   30 rl_special_prefixes                      00000000 00000000 11 SHN_UNDEF
+;   31 rl_last_func                             00000000 00000000 11 SHN_UNDEF
+;   32 wcscoll                                  00000000 00000000 12 SHN_UNDEF
+;   33 getpwuid                                 00000000 00000000 12 SHN_UNDEF
+;   34 fopen                                    00000000 00000000 12 SHN_UNDEF
+;   35 fflush                                   00000000 00000000 12 SHN_UNDEF
+;   36 rl_bind_keyseq                           00000000 00000000 12 SHN_UNDEF
+;   37 sigprocmask                              00000000 00000000 12 SHN_UNDEF
+;   38 tputs                                    00000000 00000000 12 SHN_UNDEF
+;   39 where_history                            00000000 00000000 12 SHN_UNDEF
+;   40 stderr                                   00000000 00000000 11 SHN_UNDEF
+;   41 rl_attempted_completion_function         00000000 00000000 11 SHN_UNDEF
+;   42 rl_forward_word                          00000000 00000000 12 SHN_UNDEF
+;   43 gai_strerror                             00000000 00000000 12 SHN_UNDEF
+;   44 towlower                                 00000000 00000000 12 SHN_UNDEF
+;   45 rl_sort_completion_matches               00000000 00000000 11 SHN_UNDEF
+;   46 history_truncate_file                    00000000 00000000 12 SHN_UNDEF
+;   47 rl_completer_quote_characters            00000000 00000000 11 SHN_UNDEF
+;   48 wcsrtombs                                00000000 00000000 12 SHN_UNDEF
+;   49 memmove                                  00000000 00000000 12 SHN_UNDEF
+;   50 free                                     00000000 00000000 12 SHN_UNDEF
+;   51 rl_complete_internal                     00000000 00000000 12 SHN_UNDEF
+;   52 rl_variable_bind                         00000000 00000000 12 SHN_UNDEF
+;   53 strchrnul                                00000000 00000000 12 SHN_UNDEF
+;   54 rl_completion_matches                    00000000 00000000 12 SHN_UNDEF
+;   55 mbsinit                                  00000000 00000000 12 SHN_UNDEF
+;   56 memcpy                                   00000000 00000000 12 SHN_UNDEF
+;   57 confstr                                  00000000 00000000 12 SHN_UNDEF
+;   58 add_history                              00000000 00000000 12 SHN_UNDEF
+;   59 rl_read_init_file                        00000000 00000000 12 SHN_UNDEF
+;   60 faccessat                                00000000 00000000 12 SHN_UNDEF
+;   61 rl_funmap_names                          00000000 00000000 12 SHN_UNDEF
+;   62 ferror                                   00000000 00000000 12 SHN_UNDEF
+;   63 rl_parse_and_bind                        00000000 00000000 12 SHN_UNDEF
+;   64 fgets                                    00000000 00000000 12 SHN_UNDEF
+;   65 time                                     00000000 00000000 12 SHN_UNDEF
+;   66 history_is_stifled                       00000000 00000000 12 SHN_UNDEF
+;   67 history_max_entries                      00000000 00000000 11 SHN_UNDEF
+;   68 rl_directory_completion_hook             00000000 00000000 11 SHN_UNDEF
+;   69 rl_set_keymap                            00000000 00000000 12 SHN_UNDEF
+;   70 lseek                                    00000000 00000000 12 SHN_UNDEF
+;   71 rl_complete                              00000000 00000000 12 SHN_UNDEF
+;   72 clear_history                            00000000 00000000 12 SHN_UNDEF
+;   73 strtold                                  00000000 00000000 12 SHN_UNDEF
+;   74 rl_yank_last_arg                         00000000 00000000 12 SHN_UNDEF
+;   75 write_history                            00000000 00000000 12 SHN_UNDEF
+;   76 tcsetpgrp                                00000000 00000000 12 SHN_UNDEF
+;   77 stpcpy                                   00000000 00000000 12 SHN_UNDEF
+;   78 select                                   00000000 00000000 12 SHN_UNDEF
+;   79 sleep                                    00000000 00000000 12 SHN_UNDEF
+;   80 wcsncmp                                  00000000 00000000 12 SHN_UNDEF
+;   81 history_inhibit_expansion_function       00000000 00000000 11 SHN_UNDEF
+;   82 rl_filename_rewrite_hook                 00000000 00000000 11 SHN_UNDEF
+;   83 dcgettext                                00000000 00000000 12 SHN_UNDEF
+;   84 eaccess                                  00000000 00000000 12 SHN_UNDEF
+;   85 rl_generic_bind                          00000000 00000000 12 SHN_UNDEF
+;   86 rl_completion_quote_character            00000000 00000000 11 SHN_UNDEF
+;   87 rl_unbind_key_in_map                     00000000 00000000 12 SHN_UNDEF
+;   88 rl_add_undo                              00000000 00000000 12 SHN_UNDEF
+;   89 read_history                             00000000 00000000 12 SHN_UNDEF
+;   90 rl_vi_start_inserting                    00000000 00000000 12 SHN_UNDEF
+;   91 rl_function_of_keyseq                    00000000 00000000 12 SHN_UNDEF
+;   92 dlclose                                  00000000 00000000 12 SHN_UNDEF
+;   93 rl_filename_completion_function          00000000 00000000 12 SHN_UNDEF
+;   94 alarm                                    00000000 00000000 12 SHN_UNDEF
+;   95 getuid                                   00000000 00000000 12 SHN_UNDEF
+;   96 rl_completion_suppress_quote             00000000 00000000 11 SHN_UNDEF
+;   97 killpg                                   00000000 00000000 12 SHN_UNDEF
+;   98 sysconf                                  00000000 00000000 12 SHN_UNDEF
+;   99 __strtoul_internal                       00000000 00000000 12 SHN_UNDEF
+;  100 getrlimit                                00000000 00000000 12 SHN_UNDEF
+;  101 realloc                                  00000000 00000000 12 SHN_UNDEF
+;  102 geteuid                                  00000000 00000000 12 SHN_UNDEF
+;  103 getservent                               00000000 00000000 12 SHN_UNDEF
+;  104 read_history_range                       00000000 00000000 12 SHN_UNDEF
+;  105 __fdelt_chk                              00000000 00000000 12 SHN_UNDEF
+;  106 dlerror                                  00000000 00000000 12 SHN_UNDEF
+;  107 rl_num_chars_to_read                     00000000 00000000 11 SHN_UNDEF
+;  108 rl_line_buffer                           00000000 00000000 11 SHN_UNDEF
+;  109 rl_reset_terminal                        00000000 00000000 12 SHN_UNDEF
+;  110 rl_variable_dumper                       00000000 00000000 12 SHN_UNDEF
+;  111 dup2                                     00000000 00000000 12 SHN_UNDEF
+;  112 textdomain                               00000000 00000000 12 SHN_UNDEF
+;  113 strcasestr                               00000000 00000000 12 SHN_UNDEF
+;  114 _IO_putc                                 00000000 00000000 12 SHN_UNDEF
+;  115 chdir                                    00000000 00000000 12 SHN_UNDEF
+;  116 strsignal                                00000000 00000000 12 SHN_UNDEF
+;  117 rl_newline                               00000000 00000000 12 SHN_UNDEF
+;  118 tzset                                    00000000 00000000 12 SHN_UNDEF
+;  119 getegid                                  00000000 00000000 12 SHN_UNDEF
+;  120 mblen                                    00000000 00000000 12 SHN_UNDEF
+;  121 free_history_entry                       00000000 00000000 12 SHN_UNDEF
+;  122 rl_insert                                00000000 00000000 12 SHN_UNDEF
+;  123 __xstat                                  00000000 00000000 12 SHN_UNDEF
+;  124 fwrite                                   00000000 00000000 12 SHN_UNDEF
+;  125 ioctl                                    00000000 00000000 12 SHN_UNDEF
+;  126 readline                                 00000000 00000000 12 SHN_UNDEF
+;  127 getpgrp                                  00000000 00000000 12 SHN_UNDEF
+;  128 regfree                                  00000000 00000000 12 SHN_UNDEF
+;  129 mbrtowc                                  00000000 00000000 12 SHN_UNDEF
+;  130 __ctype_get_mb_cur_max                   00000000 00000000 12 SHN_UNDEF
+;  131 strcat                                   00000000 00000000 12 SHN_UNDEF
+;  132 readlink                                 00000000 00000000 12 SHN_UNDEF
+;  133 rl_kill_text                             00000000 00000000 12 SHN_UNDEF
+;  134 history_get                              00000000 00000000 12 SHN_UNDEF
+;  135 rl_macro_dumper                          00000000 00000000 12 SHN_UNDEF
+;  136 rl_startup_hook                          00000000 00000000 11 SHN_UNDEF
+;  137 strcpy                                   00000000 00000000 12 SHN_UNDEF
+;  138 getpid                                   00000000 00000000 12 SHN_UNDEF
+;  139 rl_end                                   00000000 00000000 11 SHN_UNDEF
+;  140 previous_history                         00000000 00000000 12 SHN_UNDEF
+;  141 tcsetattr                                00000000 00000000 12 SHN_UNDEF
+;  142 unlink                                   00000000 00000000 12 SHN_UNDEF
+;  143 waitpid                                  00000000 00000000 12 SHN_UNDEF
+;  144 wcscmp                                   00000000 00000000 12 SHN_UNDEF
+;  145 rl_list_funmap_names                     00000000 00000000 12 SHN_UNDEF
+;  146 rl_completion_mode                       00000000 00000000 12 SHN_UNDEF
+;  147 gethostname                              00000000 00000000 12 SHN_UNDEF
+;  148 mbsnrtowcs                               00000000 00000000 12 SHN_UNDEF
+;  149 rl_completion_mark_symlink_dirs          00000000 00000000 11 SHN_UNDEF
+;  150 rl_menu_completion_entry_function        00000000 00000000 11 SHN_UNDEF
+;  151 gettimeofday                             00000000 00000000 12 SHN_UNDEF
+;  152 setrlimit                                00000000 00000000 12 SHN_UNDEF
+;  153 __asprintf_chk                           00000000 00000000 12 SHN_UNDEF
+;  154 malloc                                   00000000 00000000 12 SHN_UNDEF
+;  155 rl_add_defun                             00000000 00000000 12 SHN_UNDEF
+;  156 puts                                     00000000 00000000 12 SHN_UNDEF
+;  157 setgid                                   00000000 00000000 12 SHN_UNDEF
+;  158 rl_terminal_name                         00000000 00000000 11 SHN_UNDEF
+;  159 __fxstat                                 00000000 00000000 12 SHN_UNDEF
+;  160 rl_read_key                              00000000 00000000 12 SHN_UNDEF
+;  161 sigaddset                                00000000 00000000 12 SHN_UNDEF
+;  162 tilde_expansion_preexpansion_hook        00000000 00000000 11 SHN_UNDEF
+;  163 getdtablesize                            00000000 00000000 12 SHN_UNDEF
+;  164 rl_completer_word_break_characters       00000000 00000000 11 SHN_UNDEF
+;  165 strcoll                                  00000000 00000000 12 SHN_UNDEF
+;  166 rl_completion_type                       00000000 00000000 11 SHN_UNDEF
+;  167 __memmove_chk                            00000000 00000000 12 SHN_UNDEF
+;  168 __memcpy_chk                             00000000 00000000 12 SHN_UNDEF
+;  169 strerror                                 00000000 00000000 12 SHN_UNDEF
+;  170 rl_tab_insert                            00000000 00000000 12 SHN_UNDEF
+;  171 __gmon_start__                           00000000 00000000 20 SHN_UNDEF
+;  172 open                                     00000000 00000000 12 SHN_UNDEF
+;  173 rl_menu_complete                         00000000 00000000 12 SHN_UNDEF
+;  174 rl_char_is_quoted_p                      00000000 00000000 11 SHN_UNDEF
+;  175 kill                                     00000000 00000000 12 SHN_UNDEF
+;  176 getcwd                                   00000000 00000000 12 SHN_UNDEF
+;  177 rl_named_function                        00000000 00000000 12 SHN_UNDEF
+;  178 tilde_additional_prefixes                00000000 00000000 11 SHN_UNDEF
+;  179 exit                                     00000000 00000000 12 SHN_UNDEF
+;  180 rl_readline_state                        00000000 00000000 11 SHN_UNDEF
+;  181 strftime                                 00000000 00000000 12 SHN_UNDEF
+;  182 emacs_meta_keymap                        00000000 00000000 11 SHN_UNDEF
+;  183 history_list                             00000000 00000000 12 SHN_UNDEF
+;  184 wctob                                    00000000 00000000 12 SHN_UNDEF
+;  185 ttyname                                  00000000 00000000 12 SHN_UNDEF
+;  186 localtime                                00000000 00000000 12 SHN_UNDEF
+;  187 history_search_delimiter_chars           00000000 00000000 11 SHN_UNDEF
+;  188 tcgetpgrp                                00000000 00000000 12 SHN_UNDEF
+;  189 history_length                           00000000 00000000 11 SHN_UNDEF
+;  190 strtoul                                  00000000 00000000 12 SHN_UNDEF
+;  191 rl_filename_quoting_function             00000000 00000000 11 SHN_UNDEF
+;  192 strchr                                   00000000 00000000 12 SHN_UNDEF
+;  193 rl_get_previous_history                  00000000 00000000 12 SHN_UNDEF
+;  194 strlen                                   00000000 00000000 12 SHN_UNDEF
+;  195 __libc_start_main                        00000000 00000000 12 SHN_UNDEF
+;  196 sigdelset                                00000000 00000000 12 SHN_UNDEF
+;  197 setvbuf                                  00000000 00000000 12 SHN_UNDEF
+;  198 write                                    00000000 00000000 12 SHN_UNDEF
+;  199 execve                                   00000000 00000000 12 SHN_UNDEF
+;  200 iswupper                                 00000000 00000000 12 SHN_UNDEF
+;  201 rl_instream                              00000000 00000000 11 SHN_UNDEF
+;  202 using_history                            00000000 00000000 12 SHN_UNDEF
+;  203 strcasecmp                               00000000 00000000 12 SHN_UNDEF
+;  204 stdin                                    00000000 00000000 11 SHN_UNDEF
+;  205 fcntl                                    00000000 00000000 12 SHN_UNDEF
+;  206 rl_bind_key_in_map                       00000000 00000000 12 SHN_UNDEF
+;  207 dlsym                                    00000000 00000000 12 SHN_UNDEF
+;  208 __errno_location                         00000000 00000000 12 SHN_UNDEF
+;  209 iswalnum                                 00000000 00000000 12 SHN_UNDEF
+;  210 setservent                               00000000 00000000 12 SHN_UNDEF
+;  211 strncasecmp                              00000000 00000000 12 SHN_UNDEF
+;  212 memset                                   00000000 00000000 12 SHN_UNDEF
+;  213 rl_vi_editing_mode                       00000000 00000000 12 SHN_UNDEF
+;  214 getgid                                   00000000 00000000 12 SHN_UNDEF
+;  215 rl_mark                                  00000000 00000000 11 SHN_UNDEF
+;  216 putchar                                  00000000 00000000 12 SHN_UNDEF
+;  217 strncpy                                  00000000 00000000 12 SHN_UNDEF
+;  218 rl_ignore_some_completions_function      00000000 00000000 11 SHN_UNDEF
+;  219 rl_vi_bWord                              00000000 00000000 12 SHN_UNDEF
+;  220 setgrent                                 00000000 00000000 12 SHN_UNDEF
+;  221 rl_done                                  00000000 00000000 11 SHN_UNDEF
+;  222 rl_delete_text                           00000000 00000000 12 SHN_UNDEF
+;  223 regexec                                  00000000 00000000 12 SHN_UNDEF
+;  224 rl_crlf                                  00000000 00000000 12 SHN_UNDEF
+;  225 rl_completion_invoking_key               00000000 00000000 11 SHN_UNDEF
+;  226 getgrent                                 00000000 00000000 12 SHN_UNDEF
+;  227 rl_redisplay                             00000000 00000000 12 SHN_UNDEF
+;  228 rl_username_completion_function          00000000 00000000 12 SHN_UNDEF
+;  229 rl_on_new_line                           00000000 00000000 12 SHN_UNDEF
+;  230 __vsnprintf_chk                          00000000 00000000 12 SHN_UNDEF
+;  231 rl_unbind_function_in_map                00000000 00000000 12 SHN_UNDEF
+;  232 __strncpy_chk                            00000000 00000000 12 SHN_UNDEF
+;  233 history_quotes_inhibit_expansion         00000000 00000000 11 SHN_UNDEF
+;  234 rl_completion_entry_function             00000000 00000000 11 SHN_UNDEF
+;  235 rl_function_dumper                       00000000 00000000 12 SHN_UNDEF
+;  236 rl_set_screen_size                       00000000 00000000 12 SHN_UNDEF
+;  237 rl_readline_name                         00000000 00000000 11 SHN_UNDEF
+;  238 rl_editing_mode                          00000000 00000000 11 SHN_UNDEF
+;  239 rl_attempted_completion_over             00000000 00000000 11 SHN_UNDEF
+;  240 __strcpy_chk                             00000000 00000000 12 SHN_UNDEF
+;  241 stdout                                   00000000 00000000 11 SHN_UNDEF
+;  242 rl_initialize                            00000000 00000000 12 SHN_UNDEF
+;  243 strnlen                                  00000000 00000000 12 SHN_UNDEF
+;  244 pipe                                     00000000 00000000 12 SHN_UNDEF
+;  245 rl_ding                                  00000000 00000000 12 SHN_UNDEF
+;  246 __printf_chk                             00000000 00000000 12 SHN_UNDEF
+;  247 history_set_pos                          00000000 00000000 12 SHN_UNDEF
+;  248 fileno                                   00000000 00000000 12 SHN_UNDEF
+;  249 _environ                                 00000000 00000000 21 SHN_UNDEF
+;  250 __longjmp_chk                            00000000 00000000 12 SHN_UNDEF
+;  251 wcswidth                                 00000000 00000000 12 SHN_UNDEF
+;  252 rl_point                                 00000000 00000000 11 SHN_UNDEF
+;  253 sigemptyset                              00000000 00000000 12 SHN_UNDEF
+;  254 rl_make_bare_keymap                      00000000 00000000 12 SHN_UNDEF
+;  255 rl_prep_term_function                    00000000 00000000 11 SHN_UNDEF
+;  256 readdir                                  00000000 00000000 12 SHN_UNDEF
+;  257 setlocale                                00000000 00000000 12 SHN_UNDEF
+;  258 history_comment_char                     00000000 00000000 11 SHN_UNDEF
+;  259 rl_variable_value                        00000000 00000000 12 SHN_UNDEF
+;  260 rl_completion_found_quote                00000000 00000000 11 SHN_UNDEF
+;  261 wcschr                                   00000000 00000000 12 SHN_UNDEF
+;  262 fork                                     00000000 00000000 12 SHN_UNDEF
+;  263 rl_invoking_keyseqs                      00000000 00000000 12 SHN_UNDEF
+;  264 rl_filename_quote_characters             00000000 00000000 11 SHN_UNDEF
+;  265 endpwent                                 00000000 00000000 12 SHN_UNDEF
+;  266 wcslen                                   00000000 00000000 12 SHN_UNDEF
+;  267 __sigsetjmp                              00000000 00000000 12 SHN_UNDEF
+;  268 fputc                                    00000000 00000000 12 SHN_UNDEF
+;  269 rl_get_keymap_by_name                    00000000 00000000 12 SHN_UNDEF
+;  270 setuid                                   00000000 00000000 12 SHN_UNDEF
+;  271 _Jv_RegisterClasses                      00000000 00000000 20 SHN_UNDEF
+;  272 setpgid                                  00000000 00000000 12 SHN_UNDEF
+;  273 history_subst_char                       00000000 00000000 11 SHN_UNDEF
+;  274 clearerr                                 00000000 00000000 12 SHN_UNDEF
+;  275 getppid                                  00000000 00000000 12 SHN_UNDEF
+;  276 fclose                                   00000000 00000000 12 SHN_UNDEF
+;  277 getgroups                                00000000 00000000 12 SHN_UNDEF
+;  278 rl_directory_rewrite_hook                00000000 00000000 11 SHN_UNDEF
+;  279 rl_executing_keymap                      00000000 00000000 11 SHN_UNDEF
+;  280 regcomp                                  00000000 00000000 12 SHN_UNDEF
+;  281 strrchr                                  00000000 00000000 12 SHN_UNDEF
+;  282 history_get_time                         00000000 00000000 12 SHN_UNDEF
+;  283 mbstowcs                                 00000000 00000000 12 SHN_UNDEF
+;  284 getpeername                              00000000 00000000 12 SHN_UNDEF
+;  285 rl_filename_dequoting_function           00000000 00000000 11 SHN_UNDEF
+;  286 rl_filename_completion_desired           00000000 00000000 11 SHN_UNDEF
+;  287 sbrk                                     00000000 00000000 12 SHN_UNDEF
+;  288 getrusage                                00000000 00000000 12 SHN_UNDEF
+;  289 getaddrinfo                              00000000 00000000 12 SHN_UNDEF
+;  290 rl_dispatching                           00000000 00000000 11 SHN_UNDEF
+;  291 freeaddrinfo                             00000000 00000000 12 SHN_UNDEF
+;  292 tilde_expand                             00000000 00000000 12 SHN_UNDEF
+;  293 dlopen                                   00000000 00000000 12 SHN_UNDEF
+;  294 socket                                   00000000 00000000 12 SHN_UNDEF
+;  295 qsort                                    00000000 00000000 12 SHN_UNDEF
+;  296 rl_explicit_arg                          00000000 00000000 11 SHN_UNDEF
+;  297 strncmp                                  00000000 00000000 12 SHN_UNDEF
+;  298 __fprintf_chk                            00000000 00000000 12 SHN_UNDEF
+;  299 remove_history                           00000000 00000000 12 SHN_UNDEF
+;  300 bindtextdomain                           00000000 00000000 12 SHN_UNDEF
+;  301 __lxstat                                 00000000 00000000 12 SHN_UNDEF
+;  302 history_tokenize                         00000000 00000000 12 SHN_UNDEF
+;  303 history_expand                           00000000 00000000 12 SHN_UNDEF
+;  304 vi_movement_keymap                       00000000 00000000 11 SHN_UNDEF
+;  305 rl_deprep_term_function                  00000000 00000000 11 SHN_UNDEF
+;  306 emacs_ctlx_keymap                        00000000 00000000 11 SHN_UNDEF
+;  307 rl_get_keymap                            00000000 00000000 12 SHN_UNDEF
+;  308 rl_bind_key_if_unbound_in_map            00000000 00000000 12 SHN_UNDEF
+;  309 unstifle_history                         00000000 00000000 12 SHN_UNDEF
+;  310 tilde_additional_suffixes                00000000 00000000 11 SHN_UNDEF
+;  311 environ                                  00000000 00000000 11 SHN_UNDEF
+;  312 rl_push_macro_input                      00000000 00000000 12 SHN_UNDEF
+;  313 rl_bind_keyseq_in_map                    00000000 00000000 12 SHN_UNDEF
+;  314 abort                                    00000000 00000000 12 SHN_UNDEF
+;  315 isatty                                   00000000 00000000 12 SHN_UNDEF
+;  316 umask                                    00000000 00000000 12 SHN_UNDEF
+;  317 __fpurge                                 00000000 00000000 12 SHN_UNDEF
+;  318 history_expansion_char                   00000000 00000000 11 SHN_UNDEF
+;  319 history_write_timestamps                 00000000 00000000 11 SHN_UNDEF
+;  320 towupper                                 00000000 00000000 12 SHN_UNDEF
+;  321 wcsdup                                   00000000 00000000 12 SHN_UNDEF
+;  322 fputs                                    00000000 00000000 12 SHN_UNDEF
+;  323 connect                                  00000000 00000000 12 SHN_UNDEF
+;  324 strtol                                   00000000 00000000 12 SHN_UNDEF
+;  325 rl_basic_word_break_characters           00000000 00000000 11 SHN_UNDEF
+;  326 dcngettext                               00000000 00000000 12 SHN_UNDEF
+;  327 sigaction                                00000000 00000000 12 SHN_UNDEF
+;  328 closedir                                 00000000 00000000 12 SHN_UNDEF
+;  329 replace_history_entry                    00000000 00000000 12 SHN_UNDEF
+;  330 close                                    00000000 00000000 12 SHN_UNDEF
+;  331 endservent                               00000000 00000000 12 SHN_UNDEF
+;  332 append_history                           00000000 00000000 12 SHN_UNDEF
+;  333 rl_completion_suppress_append            00000000 00000000 11 SHN_UNDEF
+;  334 __ctype_tolower_loc                      00000000 00000000 12 SHN_UNDEF
+;  335 history_base                             00000000 00000000 11 SHN_UNDEF
+;  336 __ctype_b_loc                            00000000 00000000 12 SHN_UNDEF
+;  337 opendir                                  00000000 00000000 12 SHN_UNDEF
+;  338 tcgetattr                                00000000 00000000 12 SHN_UNDEF
+;  339 mbtowc                                   00000000 00000000 12 SHN_UNDEF
+;  340 __sprintf_chk                            00000000 00000000 12 SHN_UNDEF
+;  341 vi_insertion_keymap                      00000000 00000000 11 SHN_UNDEF
 ;  342 array_expand_index                       40000000000BFEC0 000001A0 12 .text
 ;  343 xstrmatch                                40000000001272C0 00000230 12 .text
 ;  344 all_shell_variables                      4000000000065600 00000030 12 .text

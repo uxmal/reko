@@ -135,33 +135,36 @@ namespace Reko
             }
         }
 
-        private void EmitProgram(Program program, IEnumerable<Procedure> procs, DataFlowAnalysis? dfa, string filename, TextWriter output)
+        private void EmitProgram(Program program, IEnumerable<object> objects, DataFlowAnalysis? dfa, string filename, TextWriter output)
         {
             if (output == null)
                 return;
-            foreach (Procedure proc in procs)
+            foreach (object o in objects)
             {
-                if (program.NeedsSsaTransform && dfa != null)
+                if (o is Procedure proc)
                 {
-                    ProcedureFlow flow = dfa.ProgramDataFlow[proc];
-                    TextFormatter f = new TextFormatter(output);
-                    if (flow.Signature != null)
-                        flow.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
-                    else
-                        proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
-                    output.WriteLine();
-                    WriteProcedureCallers(program, proc, output);
-                    flow.Emit(proc.Architecture, output);
-                    foreach (Block block in new DfsIterator<Block>(proc.ControlGraph).PostOrder().Reverse())
+                    if (program.NeedsSsaTransform && dfa != null)
                     {
-                        if (block == null)
-                            continue;
-                        block.Write(output);
+                        ProcedureFlow flow = dfa.ProgramDataFlow[proc];
+                        TextFormatter f = new TextFormatter(output);
+                        if (flow.Signature != null)
+                            flow.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
+                        else
+                            proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
+                        output.WriteLine();
+                        WriteProcedureCallers(program, proc, output);
+                    flow.Emit(proc.Architecture, output);
+                        foreach (Block block in new DfsIterator<Block>(proc.ControlGraph).PostOrder().Reverse())
+                        {
+                            if (block == null)
+                                continue;
+                            block.Write(output);
+                        }
                     }
-                }
-                else
-                {
-                    proc.Write(false, output);
+                    else
+                    {
+                        proc.Write(false, output);
+                    }
                 }
                 output.WriteLine();
                 output.WriteLine();
@@ -435,25 +438,37 @@ namespace Reko
             }
         }
 
-        public void WriteDecompiledProcedures(Program program, string filename, IEnumerable<Procedure> procs, TextWriter w)
+        public void WriteDecompiledObjects(Program program, string filename, IEnumerable<IAddressable> objects, TextWriter w)
         {
-            var headerfile = Path.ChangeExtension(filename, ".h");
             WriteHeaderComment(filename, program, w);
+            //$REFACTOR: common code -- hardwired ".h"
+            var headerfile = Path.ChangeExtension(Path.GetFileName(program.Filename), ".h");
             w.WriteLine("#include \"{0}\"", headerfile);
             w.WriteLine();
             var fmt = new AbsynCodeFormatter(new TextFormatter(w));
-            foreach (var proc in procs)
+            var gdw = new GlobalDataWriter(program, fmt.InnerFormatter, false, this.services);
+            IAddressable? prev = null;
+            foreach (var o in objects)
             {
-                try
+                if (o is Procedure proc)
                 {
-                    WriteProcedureHeader(program, proc, w);
-                    fmt.Write(proc);
-                    w.WriteLine();
+                    try
+                    {
+                        if (prev is GlobalVariable)
+                            w.WriteLine();
+                        WriteProcedureHeader(program, proc, w);
+                        fmt.Write(proc);
+                        w.WriteLine();
+                    }
+                    catch (Exception ex)
+                    {
+                        w.WriteLine();
+                        w.WriteLine("// Exception {0} when writing procedure.", ex.Message);
+                    }
                 }
-                catch (Exception ex)
+                else if (o is GlobalVariable global)
                 {
-                    w.WriteLine();
-                    w.WriteLine("// Exception {0} when writing procedure.", ex.Message);
+                    gdw.WriteGlobalVariable(global.Address, global.DataType, global.Name);
                 }
             }
         }
@@ -498,7 +513,7 @@ namespace Reko
             WriteHeaderComment(filename, program, w);
             w.WriteLine("#include \"{0}\"", headerfile);
             w.WriteLine();
-            var gdw = new GlobalDataWriter(program, new TextFormatter(w), services);
+            var gdw = new GlobalDataWriter(program, new TextFormatter(w), true, services);
             gdw.Write();
             w.WriteLine();
         }
@@ -657,8 +672,7 @@ namespace Reko
             foreach (var program in Project.Programs)
             {
                 host.WriteTypes(program, (n, w) => WriteDecompiledTypes(program, n, w));
-                host.WriteDecompiledCode(program, (n, p, w) => WriteDecompiledProcedures(program, n, p, w));
-                host.WriteGlobals(program, (n, w) => WriteGlobals(program, n, w));
+                host.WriteDecompiledCode(program, (n, p, w) => WriteDecompiledObjects(program, n, p, w));
             }
 		}
 

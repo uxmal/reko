@@ -66,7 +66,9 @@ namespace Reko.Arch.PaRisc
             else
             {
                 //$TODO: r2 is the default link register. If this is not used, come up with a workaround
-                throw new NotImplementedException();
+                iclass = InstrClass.Transfer | InstrClass.Delay | InstrClass.Call;
+                m.CallD(dest, 0);
+                host.Warn(instr.Address, "Unusual link register usage in {0}", instr);
             }
         }
 
