@@ -39,6 +39,7 @@ namespace Reko.Arch.Cray
 
             case Mnemonic._and: Render3("&", renderer, options); return;
             case Mnemonic._andnot: Render3("#", "&", renderer, options); return;
+            case Mnemonic._dlsl: Render4(",", "<", renderer, options); return;
             case Mnemonic._iadd:
                 Render3("+", renderer, options);
                 return;
@@ -52,6 +53,7 @@ namespace Reko.Arch.Cray
             case Mnemonic._lmask: Render2("<", renderer, options); return;
             case Mnemonic._load: RenderLoad(renderer, options); return;
             case Mnemonic._mov:
+            case Mnemonic._movz:
                 RenderOperand(Operands[0], renderer, options);
                 renderer.WriteString(" ");
                 RenderOperand(Operands[1], renderer, options);
@@ -66,8 +68,10 @@ namespace Reko.Arch.Cray
             case Mnemonic._neg:
                 Render2("-", renderer, options);
                 return;
+            case Mnemonic._or: Render3("!", renderer, options); return;
             case Mnemonic._rmask: Render2(">", renderer, options); return;
             case Mnemonic._store: RenderStore(renderer, options); return;
+            case Mnemonic._xor: Render3("\\", renderer, options); return;
             }
             renderer.WriteMnemonic(this.Mnemonic.ToString());
             var sep = ' ';
@@ -124,6 +128,17 @@ namespace Reko.Arch.Cray
             RenderOperand(Operands[1], renderer, options);
             renderer.WriteString(infix);
             RenderOperand(Operands[2], renderer, options);
+        }
+
+        private void Render4(string infix1, string infix2, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            RenderOperand(Operands[0], renderer, options);
+            renderer.WriteString(" ");
+            RenderOperand(Operands[1], renderer, options);
+            renderer.WriteString(infix1);
+            RenderOperand(Operands[2], renderer, options);
+            renderer.WriteString(infix2);
+            RenderOperand(Operands[3], renderer, options);
         }
 
         private void RenderLoad(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)

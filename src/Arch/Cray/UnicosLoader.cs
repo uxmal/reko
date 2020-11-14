@@ -166,6 +166,5 @@ struct exec {
             }
             return words;
         }
-
     }
 }
