@@ -30,9 +30,9 @@ after_build:
         ;
         <# zip WindowsDecompiler and CmdLine, append version and short hash #>;
         "[after_build] compressing WindowsDecompiler...";
-        7z a $env:artifacts_dir/WindowsDecompiler-$version-$shortHash.zip ./src/Drivers/WindowsDecompiler/bin/$env:PLATFORM/$env:CONFIGURATION/net472/.;
+        7z a $env:artifacts_dir/WindowsDecompiler-$version-$shortHash.zip ./src/Drivers/WindowsDecompiler/bin/$env:PLATFORM/$env:CONFIGURATION/netcoreapp3.1/.;
         "[after_build] compressing CmdLine...";
-        7z a $env:artifacts_dir/CmdLine-$version-$shortHash.zip ./src/Drivers/CmdLine/bin/$env:PLATFORM/$env:CONFIGURATION/net472/.;
+        7z a $env:artifacts_dir/CmdLine-$version-$shortHash.zip ./src/Drivers/CmdLine/bin/$env:PLATFORM/$env:CONFIGURATION/netcoreapp3.1/.;
         mv ./src/WixInstaller/bin/$env:PLATFORM/$env:CONFIGURATION/*.msi ./$env:artifacts_dir/;
         ;
         <# Append the short hash to the .msi setup #>;
@@ -43,7 +43,7 @@ after_build:
         mv $filePath $newPath;
 
 test_script:
-  - cmd: nunit3-console.exe ./src/UnitTests/bin/%PLATFORM%/%CONFIGURATION%/net472/Reko.UnitTests.dll --where="cat != FailedTests && cat != UserInterface" --framework:net-4.5
+  - cmd: nunit3-console.exe ./src/UnitTests/bin/%PLATFORM%/%CONFIGURATION%/netcoreapp3.1/Reko.UnitTests.dll --where="cat != FailedTests && cat != UserInterface" --framework:netcoreapp3.1
   - cmd: python ./subjects/regressionTests.py --check-output --configuration=%CONFIGURATION% --platform=%PLATFORM%
 
 artifacts:
