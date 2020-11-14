@@ -43,7 +43,7 @@ namespace Reko.Core.Machine
     {
         public virtual IEnumerator<TInstr> GetEnumerator()
         {
-            for (;;)
+            for (; ; )
             {
                 TInstr? instr = DisassembleInstruction();
                 if (instr == null)
@@ -80,7 +80,7 @@ namespace Reko.Core.Machine
 
         // Utility functions 
 
-        public static Decoder<TDasm, TMnemonic, TInstr> Instr<TDasm>(TMnemonic mnemonic, params Mutator<TDasm> [] mutators)
+        public static Decoder<TDasm, TMnemonic, TInstr> Instr<TDasm>(TMnemonic mnemonic, params Mutator<TDasm>[] mutators)
             where TDasm : DisassemblerBase<TInstr, TMnemonic>
         {
             return new InstrDecoder<TDasm, TMnemonic, TInstr>(InstrClass.Linear, mnemonic, mutators);
@@ -111,7 +111,7 @@ namespace Reko.Core.Machine
 
         public static BitfieldDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm>(
             Bitfield[] bitfields,
-            string tag, 
+            string tag,
             params Decoder<TDasm, TMnemonic, TInstr>[] decoders)
         {
             return new BitfieldDecoder<TDasm, TMnemonic, TInstr>(bitfields, tag, decoders);
@@ -137,10 +137,10 @@ namespace Reko.Core.Machine
         }
 
         public static ConditionalDecoder<TDasm, TMnemonic, TInstr> Select<TDasm>(
-            (int, int) fieldSpecifier, 
-            Predicate<uint> predicate, 
-            string tag, 
-            Decoder<TDasm, TMnemonic, TInstr> decoderTrue, 
+            (int, int) fieldSpecifier,
+            Predicate<uint> predicate,
+            string tag,
+            Decoder<TDasm, TMnemonic, TInstr> decoderTrue,
             Decoder<TDasm, TMnemonic, TInstr> decoderFalse)
         {
             var fields = new[]
@@ -151,7 +151,7 @@ namespace Reko.Core.Machine
         }
 
         public static ConditionalDecoder<TDasm, TMnemonic, TInstr> Select<TDasm>(
-            (int, int) fieldSpecifier, 
+            (int, int) fieldSpecifier,
             Predicate<uint> predicate,
             Decoder<TDasm, TMnemonic, TInstr> decoderTrue,
             Decoder<TDasm, TMnemonic, TInstr> decoderFalse)
@@ -188,7 +188,7 @@ namespace Reko.Core.Machine
         /// </summary>
         public static MaskDecoder<TDasm, TMnemonic, TInstr> Sparse<TDasm>(
             int bitPosition, int bits, string tag,
-            Decoder<TDasm, TMnemonic, TInstr> defaultDecoder,  
+            Decoder<TDasm, TMnemonic, TInstr> defaultDecoder,
             params (uint, Decoder<TDasm, TMnemonic, TInstr>)[] sparseDecoders)
             where TDasm : DisassemblerBase<TInstr, TMnemonic>
         {
@@ -240,16 +240,6 @@ namespace Reko.Core.Machine
         {
             return Sparse(bitPosition, bits, "", defaultDecoder, sparseDecoders);
         }
-
-        /// <summary>
-        /// Compact way of creating an array of <see cref="Bitfield"/>.
-        /// </summary>
-        /// <param name="fields"></param>
-        /// <returns></returns>
-        public static Bitfield[] Bf(params (int pos, int len)[] fields)
-        {
-            return fields.Select(f => new Bitfield(f.pos, f.len)).ToArray();
-        }
     }
 
     /// <summary>
@@ -269,8 +259,18 @@ namespace Reko.Core.Machine
             Dispose(false);
         }
 
+        /// <summary>
+        /// Compact way of creating an array of <see cref="Bitfield"/>.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
+        public static Bitfield[] Bf(params (int pos, int len)[] fields)
+        {
+            return fields.Select(f => new Bitfield(f.pos, f.len)).ToArray();
+        }
+
         protected virtual void Dispose(bool disposing)
         {
         }
-            }
+    }
 }

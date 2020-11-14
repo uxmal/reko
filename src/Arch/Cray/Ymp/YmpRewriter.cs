@@ -45,14 +45,14 @@ namespace Reko.Arch.Cray.Ymp
         private InstrClass iclass;
         private RtlEmitter m;
 
-        public YmpRewriter(CrayYmpArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
+        public YmpRewriter(CrayYmpArchitecture arch, Decoder<YmpDisassembler, Mnemonic, CrayInstruction> decoder, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
             this.rdr = rdr;
             this.state = state;
             this.binder = binder;
             this.host = host;
-            this.dasm = new YmpDisassembler(arch, rdr).GetEnumerator();
+            this.dasm = new YmpDisassembler(arch, decoder, rdr).GetEnumerator();
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
