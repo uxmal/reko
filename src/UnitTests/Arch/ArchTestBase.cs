@@ -181,21 +181,20 @@ namespace Reko.UnitTests.Arch
         {
             var w = new BeImageWriter();
             int h = 0;
+            int nDigits = 0;
             for (int i = 0; i < octalBytes.Length; ++i)
             {
                 var digit = octalBytes[i] - '0';
                 if (0 <= digit && digit <= 9)
                 {
+                    ++nDigits;
                     h = h * 8 + digit;
-                    if ((i + 1) % 6 == 0)
+                    if (nDigits == 6)
                     {
                         w.WriteBeUInt16((ushort) h);
                         h = 0;
+                        nDigits = 0;
                     }
-                }
-                else
-                {
-                    break;
                 }
             }
             var aOut = new byte[w.Position];

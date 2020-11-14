@@ -41,15 +41,15 @@ namespace Reko.UnitTests.Arch
         {
         }
 
-        public void ReportMissingDecoder(string testPrefix, Address addrStart, EndianImageReader rdr, string message)
+        public void ReportMissingDecoder(string testPrefix, Address addrStart, EndianImageReader rdr, string message, Func<byte[], string> hexizer)
         {
-            var test = TestGenerationService.GenerateDecoderUnitTest(testPrefix, addrStart, rdr, message);
+            var test = TestGenerationService.GenerateDecoderUnitTest(testPrefix, addrStart, rdr, message, hexizer);
             Console.WriteLine(test);
         }
 
-        public void ReportMissingRewriter(string testPrefix, MachineInstruction instr, string mnemonic, EndianImageReader rdr, string message)
+        public void ReportMissingRewriter(string testPrefix, MachineInstruction instr, string mnemonic, EndianImageReader rdr, string message, Func<byte[], string> hexizer)
         {
-            var test = TestGenerationService.GenerateRewriterUnitTest(testPrefix, instr, mnemonic, rdr, message);
+            var test = TestGenerationService.GenerateRewriterUnitTest(testPrefix, instr, mnemonic, rdr, message, hexizer);
             Console.WriteLine(test);
         }
 

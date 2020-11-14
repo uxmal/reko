@@ -46,8 +46,9 @@ namespace Reko.Core.Machine
         public Address Address { get { return addr!; } set { addr = value; } }
 
         /// <summary>
-        /// The length of the entire instruction. Some architectures, e.g. M68k, x86, and most
-        /// 8-bit microprocessors, have variable length instructions.
+        /// The length of the entire instruction measured in storage units.
+        /// Some architectures, e.g. M68k, x86, and most 8-bit microprocessors, have
+        /// variable length instructions.
         /// </summary>
         public int Length;
 

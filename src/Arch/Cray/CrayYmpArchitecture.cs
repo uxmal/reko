@@ -45,6 +45,7 @@ namespace Reko.Arch.Cray
     {
         public CrayYmpArchitecture(IServiceProvider services, string archId) : base(services, archId)
         {
+            this.DefaultBase = 8;
             this.Endianness = EndianServices.Big;
             this.FramePointerType = PrimitiveType.Ptr32;
             this.InstructionBitSize = 16;
@@ -143,6 +144,25 @@ namespace Reko.Arch.Cray
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
+        }
+
+        public override string RenderInstructionOpcode(MachineInstruction instr, EndianImageReader rdr)
+        {
+            var bitSize = this.InstructionBitSize;
+            var instrSize = PrimitiveType.CreateWord(bitSize);
+            var sb = new StringBuilder();
+            var numBase = this.DefaultBase;
+            int digits = 6;
+            for (int i = 0; i < instr.Length; ++i)
+            {
+                if (rdr.TryRead(instrSize, out var v))
+                {
+                    sb.Append(Convert.ToString((long) v.ToUInt64(), numBase)
+                        .PadLeft(digits, '0'));
+                    sb.Append(' ');
+                }
+            }
+            return sb.ToString();
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)

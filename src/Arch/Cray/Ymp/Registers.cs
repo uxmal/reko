@@ -30,6 +30,12 @@ namespace Reko.Arch.Cray.Ymp
         public static readonly RegisterStorage[] ARegs;
         public static readonly RegisterStorage[] BRegs;
         public static readonly RegisterStorage[] VRegs;
+        public static readonly RegisterStorage[] STRegs;
+
+        public static readonly RegisterStorage sb;
+        public static readonly RegisterStorage st;
+        public static readonly RegisterStorage rt;  // Real time clock
+        public static readonly RegisterStorage sm;  // Semaphore register
 
         static Registers()
         {
@@ -42,6 +48,16 @@ namespace Reko.Arch.Cray.Ymp
             // but the Reko object model doesn't support it. This is cleaned
             // up in the rewriter.
             VRegs = factory.RangeOfReg(8, n => $"V{n}", PrimitiveType.Word64);
+
+            // Pseudo-registers
+            sb = factory.Reg64("SB");
+            st = factory.Reg64("ST");
+
+            // System registers
+            var sysfactory = new StorageFactory(StorageDomain.SystemRegister);
+            STRegs = factory.RangeOfReg64(8, "ST{0}");
+            rt = sysfactory.Reg64("RT");
+            sm = sysfactory.Reg64("SM");
         }
     }
 }

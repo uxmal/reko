@@ -56,7 +56,6 @@ namespace Reko.Arch.Cray
 
         public override void OnProcedureEntered()
         {
-            throw new System.NotImplementedException();
         }
 
         public override void OnProcedureLeft(FunctionType procedureSignature)

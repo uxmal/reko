@@ -28,6 +28,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text;
 
 namespace Reko.Core
 {
@@ -127,6 +128,7 @@ namespace Reko.Core
         /// <param name="addr">Address to start writing at.</param>
         /// <returns>An <see cref="ImageWriter"/> of the appropriate endianness.</returns>
         ImageWriter CreateImageWriter(MemoryArea memoryArea, Address addr);
+        string RenderInstructionOpcode(MachineInstruction instr, EndianImageReader rdr);
 
         /// <summary>
         /// Creates an <see cref="IAssembler"/> instance which can be used to translate
@@ -322,6 +324,7 @@ namespace Reko.Core
         PrimitiveType FramePointerType { get; }             // Size of a pointer into the stack frame (near pointer in x86 real mode)
         PrimitiveType PointerType { get; }                  // Pointer size that reaches anywhere in the address space (far pointer in x86 real mode )
         PrimitiveType WordWidth { get; }                    // Processor's native word size
+        int DefaultBase { get; }                            // Base used to render numbers.
         /// <summary>
         /// The size of the return address (in bytes) if pushed on stack.
         /// </summary>
@@ -404,12 +407,14 @@ namespace Reko.Core
             this.Services = services;
             this.Name = archId;
             this.MemoryGranularity = 8; // Most architectures are byte-addressable.
+            this.DefaultBase = 16;      // Most architectures display hexadecimal.
         }
 #nullable enable
 
         public IServiceProvider Services { get; }
         public string Name { get; }
         public string? Description { get; set; }
+        public int DefaultBase { get; set; }
         public EndianServices Endianness { get; protected set; }
         public PrimitiveType FramePointerType { get; protected set; }
         public int MemoryGranularity { get; protected set; }
@@ -561,6 +566,32 @@ namespace Reko.Core
         public virtual RegisterStorage? GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs) { return (regs.Contains(reg)) ? reg : null; }
         public virtual void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg) { ids.Remove(reg); }
 
+        public virtual string RenderInstructionOpcode(MachineInstruction instr, EndianImageReader rdr)
+        {
+            // Assumes byte granularity.
+            var bitSize = this.InstructionBitSize;
+            var instrSize = PrimitiveType.CreateWord(bitSize);
+            var sb = new StringBuilder();
+            var numBase = this.DefaultBase;
+            int digits = numBase switch
+            {
+                16 => (bitSize + 3) / 4,
+                8 => (bitSize + 2) / 3,
+                _ => throw new NotSupportedException($"Unsupported numeric base {this.DefaultBase}.")
+            };
+            var units = (instr.Length * this.MemoryGranularity) / this.InstructionBitSize;
+            for (int i = 0; i < units; ++i)
+            {
+                if (rdr.TryRead(instrSize, out var v))
+                {
+                    sb.Append(Convert.ToString((long) v.ToUInt64(), numBase)
+                        .PadLeft(digits, '0'));
+                    sb.Append(' ');
+                }
+            }
+            return sb.ToString().ToUpperInvariant();
+        }
+            
         public abstract bool TryGetRegister(string name, out RegisterStorage reg);
         public abstract FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf);
         public abstract FlagGroupStorage GetFlagGroup(string name);

@@ -34,6 +34,7 @@ namespace Reko.Arch.Cray
     {
         public Cray1Architecture(IServiceProvider services, string archId) : base(services, archId)
         {
+            this.DefaultBase = 8;
             this.Endianness = EndianServices.Big;
             this.FramePointerType = PrimitiveType.Ptr32;
             this.InstructionBitSize = 16;
