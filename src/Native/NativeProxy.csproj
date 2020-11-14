@@ -20,6 +20,7 @@
   <Target Name="InvokeCMake" AfterTargets="CoreBuild">
     <Msbuild Projects="$(ProjectDir)..\tools\hdrgen\hdrgen.csproj" RemoveProperties="TargetFramework" />
     <!-- Start building the native shared libraries using CMake -->
+    <Exec Command="dir $(ProjectDir)..\tools\hdrgen\bin\$(Configuration)\netcoreapp3.1"></Exec>
     <Exec Condition=" '$(OS)' != 'Unix' AND $(Platform) != 'AnyCPU'" Command="$(ProjectDir)..\tools\hdrgen\bin\$(Configuration)\netcoreapp3.1\hdrgen.exe &quot;$(SolutionDir)Core\bin\$(Configuration)\Reko.Core.dll&quot; &quot;$(ProjectDir)include\reko.h&quot;" WorkingDirectory="$(ProjectDir)" />
     <Exec Condition=" '$(OS)' == 'Unix' AND $(Platform) != 'AnyCPU'" Command="$(ProjectDir)../tools/hdrgen/bin/$(Configuration)/netcoreapp3.1/hdrgen.exe $(SolutionDir)Core/bin/$(Configuration)/Reko.Core.dll $(ProjectDir)include/reko.h" WorkingDirectory="$(ProjectDir)" />
     <!-- FIXME: not all C# configurations are valid CMake configurations -->
