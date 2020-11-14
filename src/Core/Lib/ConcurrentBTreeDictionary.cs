@@ -132,7 +132,7 @@ namespace Reko.Core.Lib
             {
                 int idx = Array.BinarySearch(keys, 0, count, key, tree.Comparer);
                 if (idx < 0)
-                    return (default(TValue), false);
+                    return (default(TValue)!, false);
                 return (values[idx], true);
             }
 

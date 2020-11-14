@@ -203,11 +203,11 @@ namespace Reko.Scanning
             while (e.MoveNext())
             {
                 var next = e.Current;
-                yield return (prev, item, next);
+                yield return (prev!, item, next);
                 prev = item;
                 item = next;
             }
-            yield return (prev, item, default(T));
+            yield return (prev!, item, default(T)!);
         }
 
         /// <summary>

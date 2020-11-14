@@ -148,7 +148,7 @@ namespace Reko.Core
             if (d.TryGetValue(key, out var value))
                 return value;
             else
-                return def;
+                return def!;
         }
 
         public static IEnumerable<TResult> ZipMany<TSource, TResult>(
