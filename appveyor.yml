@@ -11,7 +11,7 @@ platform: x64
 configuration: Release
 
 before_build:
-- nuget restore src/Reko-decompiler.sln
+- dotnet restore src/Reko-decompiler.sln
 
 # If you want more build spew, change the verbosity below
 build:
@@ -43,7 +43,7 @@ after_build:
         mv $filePath $newPath;
 
 test_script:
-  - cmd: nunit3-console.exe ./src/UnitTests/bin/%PLATFORM%/%CONFIGURATION%/netcoreapp3.1/Reko.UnitTests.dll --where="cat != FailedTests && cat != UserInterface" 
+  - cmd: dotnet test ./src/UnitTests/bin/%PLATFORM%/%CONFIGURATION%/netcoreapp3.1/Reko.UnitTests.dll --filter "(TestCategory!=FailedTests)&(TestCategory!=UserInterface)"
   - cmd: python ./subjects/regressionTests.py --check-output --configuration=%CONFIGURATION% --platform=%PLATFORM%
 
 artifacts:
