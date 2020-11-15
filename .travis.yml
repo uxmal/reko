@@ -1,10 +1,7 @@
 language: csharp
-mono: 
-  - latest
+dotnet: 3.1.201
 solution: src/Reko-decompiler.sln
 sudo: required
-mono: latest
-# dotnet: 2.1.202 
 
 # This script builds the Mono version of Reko in the Un*x environment 
 # of Travis-CI. When building the SLN file, we therefore use the "Release"
@@ -31,14 +28,12 @@ before_install:
   - before_install
 
 install:
-  - nuget restore src/Reko-decompiler.sln
-  - nuget install NUnit.Console -Version 3.9.0 -OutputDirectory testrunner
+  - dotnet restore src/Reko-decompiler.sln
 
 # If you want more build spew, change the /verbosity:minimal below
 script:
   - source .travis_env
-  - msbuild /version
-  - msbuild /restore /p:Configuration=Release /p:Platform=x64 /verbosity:minimal src/Reko-decompiler.sln
+  - dotnet build -p:Configuration=Release -p:Platform=x64 -v:m -m src/Reko-decompiler.sln
   - ls -R ./src/UnitTests/bin
-  - mono ./testrunner/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe ./src/UnitTests/bin/x64/Release/net472/Reko.UnitTests.dll --where="cat != FailedTests && cat != UserInterface"
+  - dotnet test ./src/UnitTests/bin/Release/netcoreapp3.1/Reko.UnitTests.dll --filter "(TestCategory!=FailedTests)&(TestC7tegory!=DotNetBug)&(TestCategory!=UserInterface)"
   - python ./subjects/regressionTests.py --check-output --platform=x64 --configuration=Release
