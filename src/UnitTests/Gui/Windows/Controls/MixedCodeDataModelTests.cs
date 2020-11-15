@@ -51,6 +51,10 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             this.platform = new Mock<IPlatform>();
             this.platform.Setup(p => p.Architecture).Returns(arch.Object);
             this.arch.Setup(a => a.Name).Returns("FakeArch");
+            this.arch.Setup(a => a.MemoryGranularity).Returns(8);
+            this.arch.Setup(a => a.RenderInstructionOpcode(
+                It.IsAny<MachineInstruction>(), It.IsAny<EndianImageReader>()))
+                .Returns("00 00 ");
             this.arch.Setup(a => a.CreateImageReader(
                 It.IsAny<ByteMemoryArea>(),
                 It.IsAny<Address>()))

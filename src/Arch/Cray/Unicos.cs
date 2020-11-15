@@ -41,7 +41,7 @@ namespace Reko.Arch.Cray
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
-            throw new NotImplementedException();
+            return new HashSet<RegisterStorage>();
         }
 
         public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)

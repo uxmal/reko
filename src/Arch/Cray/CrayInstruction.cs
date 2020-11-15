@@ -39,19 +39,17 @@ namespace Reko.Arch.Cray
 
             case Mnemonic._and: Render3("&", renderer, options); return;
             case Mnemonic._andnot: Render3("#", "&", renderer, options); return;
+            case Mnemonic._clz: Render2("Z", renderer, options); return;
             case Mnemonic._dlsl: Render4(",", "<", renderer, options); return;
-            case Mnemonic._iadd:
-                Render3("+", renderer, options);
-                return;
-            case Mnemonic._imul:
-                Render3("*", renderer, options);
-                return;
-            case Mnemonic._isub:
-                Render3("-", renderer, options);
-                return;
+            case Mnemonic._iadd: Render3("+", renderer, options); return;
+            case Mnemonic._imul: Render3("*", renderer, options); return;
+            case Mnemonic._isub: Render3("-", renderer, options); return;
             case Mnemonic._fmul: Render3("*F", renderer, options); return;
             case Mnemonic._lmask: Render2("<", renderer, options); return;
+            case Mnemonic._lsl: Render2("<", renderer, options); return;
+            case Mnemonic._lsr: Render2(">", renderer, options); return;
             case Mnemonic._load: RenderLoad(renderer, options); return;
+            case Mnemonic._load_inc: RenderLoadInc(renderer, options); return;
             case Mnemonic._mov:
             case Mnemonic._movz:
                 RenderOperand(Operands[0], renderer, options);
@@ -64,13 +62,14 @@ namespace Reko.Arch.Cray
                 return;
             case Mnemonic._movlo: Render3(":", renderer, options); return;
             case Mnemonic._movhi: Render3(":", renderer, options); return;
-
-            case Mnemonic._neg:
-                Render2("-", renderer, options);
-                return;
-            case Mnemonic._or: Render3("!", renderer, options); return;
+            case Mnemonic._neg: Render2("-", renderer, options); return;
+            case Mnemonic._vor: Render3("!", renderer, options); return;
+            case Mnemonic._vmov: Render2("", renderer, options); return;
+            case Mnemonic._popcnt: Render2("P", renderer, options); return;
             case Mnemonic._rmask: Render2(">", renderer, options); return;
             case Mnemonic._store: RenderStore(renderer, options); return;
+            case Mnemonic._store_inc: RenderStoreInc(renderer, options); return;
+            case Mnemonic._viadd: Render3("+", renderer, options); return;
             case Mnemonic._xor: Render3("\\", renderer, options); return;
             }
             renderer.WriteMnemonic(this.Mnemonic.ToString());
@@ -153,6 +152,15 @@ namespace Reko.Arch.Cray
             }
         }
 
+        private void RenderLoadInc(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            RenderOperand(Operands[0], renderer, options);
+            renderer.WriteString(" ,");
+            RenderOperand(Operands[1], renderer, options);
+            renderer.WriteString(",");
+            RenderOperand(Operands[2], renderer, options);
+        }
+
         private void RenderStore(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             RenderOperand(Operands[0], renderer, options);
@@ -168,6 +176,16 @@ namespace Reko.Arch.Cray
                 renderer.WriteString(" ");
                 RenderOperand(Operands[2], renderer, options);
             }
+        }
+
+        private void RenderStoreInc(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            renderer.WriteChar(',');
+            RenderOperand(Operands[0], renderer, options);
+            renderer.WriteChar(',');
+            RenderOperand(Operands[1], renderer, options);
+            renderer.WriteChar(' ');
+            RenderOperand(Operands[2], renderer, options);
         }
     }
 }

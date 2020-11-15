@@ -45,7 +45,9 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
         {
             this.typelib = new TypeLibrary();
             this.platform = new Mock<IPlatform>();
+            var arch = new Mocks.FakeArchitecture(null);
             platform.Setup(p => p.PointerType).Returns(Reko.Core.Types.PrimitiveType.Ptr32);
+            platform.Setup(p => p.Architecture).Returns(arch);
         }
 
         /// <summary>

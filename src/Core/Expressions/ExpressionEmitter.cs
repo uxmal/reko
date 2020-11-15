@@ -1448,7 +1448,7 @@ namespace Reko.Core.Expressions
 
         /// <summary>
         /// Generates an bit-vector of length <paramref name="bitSize"> bits
-        /// from the bit patter <pararef name="n"/>.
+        /// from the bit pattern <pararef name="n"/>.
         /// </summary>
         /// <param name="b">32 bits</param>
         /// <returns>Bit vector constant</returns>

@@ -83,10 +83,17 @@ namespace Reko.Arch.Cray.Ymp
 
         public Decoder<YmpDisassembler, Mnemonic, CrayInstruction> CreateDecoder()
         {
-
             var opc_001 = Select((0, 9), Is0, "  001",
                 Instr(Mnemonic.pass, InstrClass.Linear | InstrClass.Padding),
                 Nyi("001"));
+
+            var opc_002 = Select((3, 6), Is0, "  002",
+                Instr(Mnemonic._mov, Reg(Registers.vl), Ak),
+                Nyi("002"));
+
+            var opc_004 = Select((0, 9), Is0, "  004",
+                Instr(Mnemonic.ex, InstrClass.Terminates),
+                invalid);
 
             var opc_005 = Select((6, 3), Is0, "  005x",
                     Instr(Mnemonic.j, InstrClass.Transfer, Bjk),
@@ -147,6 +154,12 @@ namespace Reko.Arch.Cray.Ymp
                     invalid),
                 Instr(Mnemonic.jsm, InstrClass.ConditionalTransfer, Jijkm));
 
+            var opc_026 = Sparse(0, 3, "  026", Nyi("026"),
+                (0, Instr(Mnemonic._popcnt, Ai, Sj)));
+
+            var opc_027 = Sparse(0, 3, "  027", Nyi("026"),
+                (0, Instr(Mnemonic._clz, Ai, Sj)));
+
             var opc_030 = Select((3, 3), Is0, "  030",
                 Select((0, 3), Is0, "  031 x0",
                     Instr(Mnemonic._mov, Ai, Imm1),
@@ -172,7 +185,7 @@ namespace Reko.Arch.Cray.Ymp
                 Instr(Mnemonic._mov, Si, Imm_1),
                 Select((0, 6), u => u == 0x3F,
                     Instr(Mnemonic._mov, Si, Imm1),
-                    Instr(Mnemonic._lmask, Si, Ijk)));
+                    Instr(Mnemonic._lmask, Si, Ijk_from_40)));
 
             var opc_043 = Select((0, 6), Is0, "  043",
                 Instr(Mnemonic._mov, Si, Imm0),
@@ -219,12 +232,26 @@ namespace Reko.Arch.Cray.Ymp
             var opc_073 = Sparse(0, 3, " 072", Nyi("073"),
                 (2, Instr(Mnemonic._mov, Reg(Registers.sm), Si)));
 
+            var opc_176 = Sparse(3, 3, "  177", invalid,
+                (0, Select((0, 3), Is0, "  177 0",
+                    Instr(Mnemonic._load_inc, Vi, A0, Imm32(1)),
+                    Instr(Mnemonic._load_inc, Vi, A0, Ak))),
+                (1, Instr(Mnemonic._load_inc, Vi, A0, Vk)));
+
+            var opc_177 = Sparse(6, 3, "  177", invalid,
+                (0, Select((0, 3), Is0, "  177 0",
+                    Instr(Mnemonic._store_inc, A0, Imm32(1), Vj),
+                    Instr(Mnemonic._store_inc, A0, Ak, Vj))),
+                (1, Instr(Mnemonic._store_inc, A0, Vk, Vj)));
+
             var rootDecoder = Sparse(9, 7, "YMP",
                 Nyi("YMP"),
                 (0x00, Select((0, 6), Is0,
                     Instr(Mnemonic.err),
                     invalid)),
                 (0x01, opc_001),
+                (0x02, opc_002),
+                (0x04, opc_004),
                 (0x05, opc_005),
                 (0x06, opc_006),
                 (0x07, opc_007),
@@ -242,21 +269,24 @@ namespace Reko.Arch.Cray.Ymp
                 (0x10, Select((0, 6), Is0, "  020",          // 0o020
                     Instr(Mnemonic._mov, Ai, Inm),
                     invalid)),
-                (0x13, Instr(Mnemonic._mov, Ai, Sj)),       // 0o023
-                (0x14, Instr(Mnemonic._mov, Ai, Bjk)),      // 0o024
-                (0x15, Instr(Mnemonic._mov, Bjk, Ai)),      // 0o025
-                (0x18, opc_030),                            // 0o030
-                (0x19, opc_031),                            // 0o031
-                (0x1A, Instr(Mnemonic._imul, Ai, Aj, Ak)),    // 0o032
-                (0x20, opc_040),                            // 0o040
-                (0x22, opc_042),                            // 0o042
-                (0x23, opc_043),                            // 0o043
-                (0x24, Instr(Mnemonic._and, Si, Sj, Sk_SB)),   // 0o044
+                (0x12, Instr(Mnemonic._mov, Ai, Ijk_32)),       // 0o022
+                (0x13, Instr(Mnemonic._mov, Ai, Sj)),           // 0o023
+                (0x14, Instr(Mnemonic._mov, Ai, Bjk)),          // 0o024
+                (0x15, Instr(Mnemonic._mov, Bjk, Ai)),          // 0o025
+                (0x16, opc_026),                                // 0o026
+                (0x17, opc_027),                                // 0o027
+                (0x18, opc_030),                                // 0o030
+                (0x19, opc_031),                                // 0o031
+                (0x1A, Instr(Mnemonic._imul, Ai, Aj, Ak)),      // 0o032
+                (0x20, opc_040),                                // 0o040
+                (0x22, opc_042),                                // 0o042
+                (0x23, opc_043),                                // 0o043
+                (0x24, Instr(Mnemonic._and, Si, Sj, Sk_SB)),    // 0o044
                 (0x25, Instr(Mnemonic._andnot, Si, Sk_SB, Sj)),  // 0o045
                 (0x26, Instr(Mnemonic._xor, Si, Sj, Sk_SB)),      // 0o046
                 (0x27, Instr(Mnemonic._eqv, Si, Sk_SB, Sj)),    // 0o047
                 (0x28, Instr(Mnemonic._and_or, Si, Sj, Sk_SB)), // 0o050
-                (0x29, Instr(Mnemonic._or, Si, Sj, Sk_SB)), // 0o051
+                (0x29, Instr(Mnemonic._vor, Si, Sj, Sk_SB)), // 0o051
                 (0x2A, Instr(Mnemonic._lsl, S0, Si, Ijk)),          // 0o052
                 (0x2B, Instr(Mnemonic._lsr, S0, Si, IjkFrom64)),    // 0o053
                 (0x2C, Instr(Mnemonic._lsl, Si, Si, Ijk)),          // 0o054
@@ -300,13 +330,27 @@ namespace Reko.Arch.Cray.Ymp
                 (0x56, Instr(Mnemonic._load, Si, Inm, Ah)),      // 0o126
                 (0x57, Instr(Mnemonic._load, Si, Inm, Ah)),      // 0o127
                 (0x58, Instr(Mnemonic._store, Inm, Si)),        // 0o130
-                (0x59, Instr(Mnemonic._store, Inm, Ah, Si)),     // 0o131
-                (0x5A, Instr(Mnemonic._store, Inm, Ah, Si)),     // 0o132
-                (0x5B, Instr(Mnemonic._store, Inm, Ah, Si)),     // 0o133
-                (0x5C, Instr(Mnemonic._store, Inm, Ah, Si)),     // 0o134
-                (0x5D, Instr(Mnemonic._store, Inm, Ah, Si)),     // 0o135
-                (0x5E, Instr(Mnemonic._store, Inm, Ah, Si)),     // 0o136
-                (0x5F, Instr(Mnemonic._store, Inm, Ah, Si))      // 0o137
+                (0x59, Instr(Mnemonic._store, Inm, Ah, Si)),    // 0o131
+                (0x5A, Instr(Mnemonic._store, Inm, Ah, Si)),    // 0o132
+                (0x5B, Instr(Mnemonic._store, Inm, Ah, Si)),    // 0o133
+                (0x5C, Instr(Mnemonic._store, Inm, Ah, Si)),    // 0o134
+                (0x5D, Instr(Mnemonic._store, Inm, Ah, Si)),    // 0o135
+                (0x5E, Instr(Mnemonic._store, Inm, Ah, Si)),    // 0o136
+                (0x5F, Instr(Mnemonic._store, Inm, Ah, Si)),    // 0o137
+
+                (0x60, Nyi("140")),                             // 0o140
+                (0x61, Nyi("141")),                             // 0o141
+                (0x62, Select((3, 3), Is0, "  142",
+                    Instr(Mnemonic._vmov, Vi, Vk),              // 0o142
+                    Instr(Mnemonic._vor, Vi, Sj, Vk))), 
+                (0x63, Nyi("143")),                             // 0o143
+
+                (0x6C, Select((3, 3), Is0, "  154",             // 0o154
+                    Instr(Mnemonic._vmov, Vi, Vk),
+                    Instr(Mnemonic._viadd, Vi, Sj, Vk))),
+                (0x7E, opc_176),                                // 0o176
+                (0x7F, opc_177)                                 // 0o177
+
                 );
             return rootDecoder;
         }

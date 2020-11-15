@@ -161,6 +161,7 @@ namespace Reko.Arch.Cray.Ymp
             };
         }
 
+        internal static readonly Mutator<YmpDisassembler> A0 = Reg(Registers.ARegs[0]);
         internal static readonly Mutator<YmpDisassembler> S0 = Reg(Registers.SRegs[0]);
         internal static readonly Mutator<YmpDisassembler> SB = Reg(Registers.sb);
 
@@ -176,6 +177,20 @@ namespace Reko.Arch.Cray.Ymp
         }
 
         internal static readonly Mutator<YmpDisassembler> Ijk = Imm(PrimitiveType.Byte, 0, 6);
+        internal static readonly Mutator<YmpDisassembler> Ijk_32 = Imm(PrimitiveType.Word32, 0, 6);
+
+        internal static Mutator<YmpDisassembler> ImmFrom(uint from, PrimitiveType dt, int bitpos, int bitlen)
+        {
+            var bitfield = new Bitfield(bitpos, bitlen);
+            return (u, d) =>
+            {
+                var imm = from - bitfield.Read(u);
+                d.ops.Add(new ImmediateOperand(Constant.Create(dt, imm)));
+                return true;
+            };
+        }
+
+        internal static readonly Mutator<YmpDisassembler> Ijk_from_40 = ImmFrom(0x40, PrimitiveType.Byte, 0, 6);
 
         private static Mutator<YmpDisassembler> Imm(PrimitiveType dt, int bitpos, int bitlen, uint nFrom)
         {
@@ -191,8 +206,12 @@ namespace Reko.Arch.Cray.Ymp
 
         internal static bool Inm(uint uInstr, YmpDisassembler dasm)
         {
-            if (!dasm.rdr.TryReadBeUInt32(out uint nm))
+            if (!dasm.rdr.TryReadBeUInt16(out ushort m))
                 return false;
+            if (!dasm.rdr.TryReadBeUInt16(out ushort n))
+                return false;
+            uint nm = n;
+            nm = nm << 16 | m;
             dasm.ops.Add(ImmediateOperand.Word32(nm));
             return true;
         }
@@ -244,6 +263,15 @@ namespace Reko.Arch.Cray.Ymp
             return true;
         }
 
+        internal static Mutator<YmpDisassembler> Imm32(uint n)
+        {
+            var imm = ImmediateOperand.Word32(n);
+            return (u, d) =>
+            {
+                d.ops.Add(imm);
+                return true;
+            };
+        }
         internal static Mutator<YmpDisassembler> Imm64(ulong n)
         {
             var imm = ImmediateOperand.Word64(n);

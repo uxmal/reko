@@ -48,6 +48,7 @@ namespace Reko.UnitTests.Core
         private void Given_ArchitectureStub()
         {
             arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.MemoryGranularity).Returns(8);
             arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
             arch.Setup(a => a.WordWidth).Returns(PrimitiveType.Ptr32);
             platform = new Mock<IPlatform>();
@@ -276,6 +277,7 @@ namespace Reko.UnitTests.Core
         {
             Given_ArchitectureStub();
             arch.Setup(a => a.GetRegister("r3")).Returns(new RegisterStorage("r3", 3, 0, PrimitiveType.Word32));
+            arch.Setup(a => a.MemoryGranularity).Returns(8);
             var r3 = new RegisterStorage("r3", 3, 0, PrimitiveType.Word32);
             Given_ProcedureSignature(FunctionType.Func(
                 new Identifier("", PrimitiveType.Int32, r3),

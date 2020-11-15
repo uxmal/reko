@@ -55,7 +55,7 @@ namespace Reko.Arch.Cray
             this.MemoryGranularity = 64;
             this.Options = new Dictionary<string, object>();
             this.PointerType = PrimitiveType.Ptr32;
-            this.StackRegister = null; //$TODO: Ax?
+            this.StackRegister = Registers.sp;          // Fake register, YMP has no architecture defined SP.
             this.WordWidth = PrimitiveType.Word64;
             this.instructionSet = CreateInstructionSet();
             this.rootDecoder = instructionSet.CreateDecoder();
@@ -165,7 +165,7 @@ namespace Reko.Arch.Cray
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            throw new NotImplementedException();
+            return Address.Ptr32(c.ToUInt32());
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
