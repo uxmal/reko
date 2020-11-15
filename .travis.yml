@@ -27,9 +27,6 @@ before_install:
   - source .travis_env
   - before_install
 
-install:
-  - dotnet restore src/Reko-decompiler.sln
-
 # If you want more build spew, change the /verbosity:minimal below
 script:
   - source .travis_env
