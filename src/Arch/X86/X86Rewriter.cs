@@ -489,7 +489,8 @@ namespace Reko.Arch.X86
                 case Mnemonic.pop: RewritePop(); break;
                 case Mnemonic.popa: RewritePopa(); break;
                 case Mnemonic.popf: RewritePopf(); break;
-                case Mnemonic.por: RewritePackedLogical("__por"); break;
+                case Mnemonic.por:
+                case Mnemonic.vpor: RewritePor(); break;
                 case Mnemonic.prefetchnta: RewritePrefetch("__prefetchnta"); break;
                 case Mnemonic.prefetcht0: RewritePrefetch("__prefetcht0"); break;
                 case Mnemonic.prefetcht1: RewritePrefetch("__prefetcht1"); break;
@@ -625,7 +626,19 @@ namespace Reko.Arch.X86
             }
         }
 
-		private void RewriteFninit()
+        private void RewritePor()
+        {
+            if (instrCur.Operands.Length > 2)
+            {
+                // DEST←SRC1 OR SRC2
+                m.Assign(SrcOp(0), m.Or(SrcOp(1), SrcOp(2)));
+            } else { 
+                // DEST←DEST OR SRC
+                m.Assign(SrcOp(0), m.Or(SrcOp(0), SrcOp(1)));
+            }
+        }
+
+        private void RewriteFninit()
 		{
 			var ppp = host.PseudoProcedure("__fninit", VoidType.Instance);
 			m.SideEffect(ppp);
