@@ -454,6 +454,7 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
+        [Ignore(Categories.DotNetBug)]
         public void SudLoadProgramOptions()
         {
             var sProject = new Project_v4
@@ -514,6 +515,7 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
+        [Ignore(Categories.DotNetBug)]
         public void SudSaveProgramOptions()
         {
             var program = new Program();

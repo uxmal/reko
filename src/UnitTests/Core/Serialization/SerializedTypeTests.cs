@@ -55,6 +55,7 @@ namespace Reko.UnitTests.Core.Serialization
 		}
 
 		[Test]
+        [Ignore(Categories.DotNetBug)]
 		public void StReadStruct()
 		{
 			StructType_v1 str = new StructType_v1
@@ -85,6 +86,7 @@ namespace Reko.UnitTests.Core.Serialization
 		}
 
 		[Test]
+        [Ignore(Categories.DotNetBug)]
 		public void StWritePrimitive()
 		{
 			SerializedType st = new PointerType_v1(new PrimitiveType_v1(Domain.SignedInt, 4));

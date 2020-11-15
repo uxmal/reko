@@ -90,6 +90,7 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
+        [Ignore(Categories.DotNetBug)]
         public void X86ps_SerializeAxBxCl()
         {
             Given_ProcedureSerializer("stdapi");
@@ -98,6 +99,7 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
+        [Ignore(Categories.DotNetBug)]
         public void X86ps_SerializeSequence()
         {
             Identifier seq = new Identifier("es_bx", PrimitiveType.Word32,
