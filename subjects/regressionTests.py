@@ -1,4 +1,4 @@
-﻿#!/usr/bin/python
+﻿#!/usr/bin/env python
 # Run all regression tests on the subjects in the 
 # $(REKO)/subjects directory tree.
 # Subject binaries in the directory are identified by either:
@@ -20,6 +20,7 @@ import subprocess
 import sys
 import time
 import fileinput
+import platform
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 os.chdir(script_dir)
@@ -50,7 +51,14 @@ reko_cmdline_dir = os.path.abspath(script_dir + "/../src/Drivers/CmdLine")
 
 start_dir = os.getcwd()
 
-reko_cmdline = os.path.join(reko_cmdline_dir, "bin", options.platform, options.configuration, options.framework, "decompile.exe")
+is_windows = platform.system().lower() == "windows"
+
+exe_name = "decompile"
+if is_windows:
+    exe_name += ".exe"
+
+
+reko_cmdline = os.path.join(reko_cmdline_dir, "bin", options.platform, options.configuration, options.framework, exe_name)
 
 output_extensions = [".asm", ".c", ".dis", ".h"]
 source_extensions = [".c"]
@@ -221,9 +229,6 @@ def processor(dir, rel_pname, exe_and_args):
     os.chdir(dir)
     # print("Processor %s %s %s" % (dir, rel_pname, exe_and_args))
     banner = os.path.join(os.path.relpath(dir, start_dir), rel_pname)
-    if sys.platform.startswith("linux") or sys.platform == "darwin":
-        exe_and_args.insert(0, "mono")
-        exe_and_args.insert(1, "--debug") # enables line numbers in stack traces
     output_lines = "=== " + banner + "\n"
     start = time.time()
     sys.stderr.write("%s: Starting %s\n" % (datetime.now().strftime("%H:%M:%S.%f"), banner))

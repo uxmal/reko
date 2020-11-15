@@ -19,7 +19,8 @@
   <Target Name="CopyToToolsDir" AfterTargets="CopyFilesToOutputDirectory">
     <Message Importance="high" Text="Copying $(TargetFilename) to tools directory" />
     <Copy SourceFiles="$(TargetDir)$(TargetFileName)" DestinationFolder="$(ProjectDir).." />
-    <Copy SourceFiles="$(TargetDir)xslt.exe" DestinationFolder="$(ProjectDir).." />
+    <Copy Condition="$(OS)!='Unix'" SourceFiles="$(TargetDir)xslt.exe" DestinationFolder="$(ProjectDir).." />
+    <Copy Condition="$(OS)=='Unix'" SourceFiles="$(TargetDir)xslt.dll" DestinationFolder="$(ProjectDir).." />
     <Copy Condition="Exists('$(TargetDir)xslt.deps.json')" SourceFiles="$(TargetDir)xslt.deps.json" DestinationFolder="$(ProjectDir).." />
     <Copy Condition="Exists('$(TargetDir)xslt.runtimeconfig.dev.json')" SourceFiles="$(TargetDir)xslt.runtimeconfig.dev.json" DestinationFolder="$(ProjectDir).." />
     <Copy Condition="Exists('$(TargetDir)xslt.runtimeconfig.json')" SourceFiles="$(TargetDir)xslt.runtimeconfig.json" DestinationFolder="$(ProjectDir).." />

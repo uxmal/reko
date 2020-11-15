@@ -114,7 +114,7 @@ Options:
                 }
             }
             string dialect = null;
-            if (options.TryGetValue("-d", out var optDialect))
+            if (options.TryGetValue("-d", out var optDialect) && optDialect != null)
             {
                 dialect = (string) optDialect.Value;
             }
