@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="IBM437"?>
+<?xml version="1.0" encoding="utf-8"?>
 <library xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemata.jklnet.org/Decompiler">
   <Types>
     <typedef name="ULONG">

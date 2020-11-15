@@ -116,7 +116,7 @@ Options:
             {
                 dialect = (string) optDialect.Value;
             }
-            var xWriter = new XmlTextWriter(new StreamWriter(output, new UTF8Encoding(false)))
+            var xWriter = new XmlTextWriter(output, new UTF8Encoding(false))
             {
                 Formatting = Formatting.Indented
             };
