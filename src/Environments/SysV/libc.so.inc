@@ -301,3 +301,4 @@ int utime(const char *filename,  struct utimbuf *times);
 pid_t vfork();
 pid_t wait(int * wstatus);
 ssize_t write(int fd, const void* buf, size_t count);
+int __isoc99_sscanf (const char *s, const char *format, ...);
