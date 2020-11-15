@@ -3121,7 +3121,16 @@ namespace Reko.UnitTests.Arch.X86
             Run32bitTest(0x0F, 0xEB, 0x42, 0x42);    // por\tmm0,[edx+42]
             AssertCode(
                 "0|L--|10000000(4): 1 instructions",
-                "1|L--|mm0 = __por(mm0, Mem0[edx + 0x42<32>:word64])");
+                "1|L--|mm0 = mm0 | Mem0[edx + 0x42<32>:word64]");
+        }
+
+        [Test]
+        public void X86Rw_vpor()
+        {
+            Run64bitTest(0xC5, 0x01, 0xEB, 0x8B, 0xE8, 0x09, 0xE8, 0x00);
+            AssertCode(     // vpor	xmm9,xmm15,[rbx+0E809E8h]
+                "0|L--|0000000140000000(8): 1 instructions",
+                "1|L--|xmm9 = xmm15 | Mem0[rbx + 0xE809E8<64>:word128]");
         }
 
         [Test]

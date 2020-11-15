@@ -87,4 +87,9 @@
       <allocator>true</allocator>
     </characteristics>
   </entry>
+  <entry name="__isoc99_sscanf">
+    <characteristics>
+      <varargs>Reko.Libraries.Libc.ScanfFormatParser,Reko.Libraries.Libc</varargs>
+    </characteristics>
+  </entry>
 </characteristics>
