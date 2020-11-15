@@ -23562,15 +23562,15 @@ T_5401: (in f12_f13 : real64)
   Class: Eq_5401
   DataType: real64
   OrigDataType: real64
-T_5402: (in 5.46040909100927e-315 : real64)
+T_5402: (in 5.46040909e-315 : real64)
   Class: Eq_5401
   DataType: real64
   OrigDataType: real64
-T_5403: (in f12_f13 >= 5.46040909100927e-315 : bool)
+T_5403: (in f12_f13 >= 5.46040909e-315 : bool)
   Class: Eq_5403
   DataType: bool
   OrigDataType: bool
-T_5404: (in !(f12_f13 >= 5.46040909100927e-315) : bool)
+T_5404: (in !(f12_f13 >= 5.46040909e-315) : bool)
   Class: Eq_5404
   DataType: bool
   OrigDataType: bool
