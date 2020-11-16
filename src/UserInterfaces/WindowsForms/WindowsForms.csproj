@@ -31,14 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Msagl">
-      <HintPath>..\..\..\external\Msagl\Microsoft.Msagl.dll</HintPath>
+    <Reference Include="AutomaticGraphLayout, Version=0.0.0.0, Culture=neutral, PublicKeyToken=6baa2c1345e83b6e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutomaticGraphLayout.1.1.11\lib\netstandard2.0\AutomaticGraphLayout.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Msagl.Drawing">
-      <HintPath>..\..\..\external\Msagl\Microsoft.Msagl.Drawing.dll</HintPath>
+    <Reference Include="AutomaticGraphLayout.Drawing, Version=0.0.0.0, Culture=neutral, PublicKeyToken=6baa2c1345e83b6e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutomaticGraphLayout.Drawing.1.1.11\lib\netstandard2.0\AutomaticGraphLayout.Drawing.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Msagl.GraphViewerGdi">
-      <HintPath>..\..\..\external\Msagl\Microsoft.Msagl.GraphViewerGdi.dll</HintPath>
+    <Reference Include="Microsoft.Msagl.GraphViewerGdi, Version=0.0.0.0, Culture=neutral, PublicKeyToken=6baa2c1345e83b6e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutomaticGraphLayout.GraphViewerGDI.1.1.11\lib\net472\Microsoft.Msagl.GraphViewerGdi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -515,6 +515,9 @@
       <Project>{1CA14C64-92E8-452E-A380-637F3DBB4D28}</Project>
       <Name>Gui</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">

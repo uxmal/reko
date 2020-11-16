@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -29,16 +29,18 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System;
+using C2 = Microsoft.Msagl.Drawing.Color;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
     public class CfgGraphGenerator
     {
-        private Graph graph;
-        private HashSet<Block> visited;
-        private Graphics g;
-        private Font defaultFont;
-        private IUiPreferencesService uiPreferences;
+        private readonly Graph graph;
+        private readonly HashSet<Block> visited;
+        private readonly Graphics g;
+        private readonly Font defaultFont;
+        private readonly IUiPreferencesService uiPreferences;
+        private readonly C2 fillColor = new C2(0xFF, 0xE0, 0xE0);
 
         public CfgGraphGenerator(Graph graph, IUiPreferencesService uiPreferences, Graphics g, Font defaultFont)
         {
@@ -110,6 +112,7 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 node.Label.FontName = "Lucida Console";
                 node.Label.FontSize = 10f;
+                node.Attr.FillColor = fillColor;
                 node.LabelText =
                     b.Name + nl +
                     string.Join(nl, b.Statements.Select(s => s.Instruction));
