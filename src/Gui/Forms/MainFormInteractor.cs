@@ -676,14 +676,15 @@ namespace Reko.Gui.Forms
 
         public void ViewCallGraph()
         {
-            var brSvc = sc.RequireService<IProjectBrowserService>();
-            var program = brSvc.CurrentProgram;
-            if (program != null)
-            {
-                var cgvSvc = sc.RequireService<ICallGraphViewService>();
-                var title = string.Format("{0} {1}", program.Name, Resources.CallGraphTitle);
-                cgvSvc.ShowCallgraph(program, title);
-            }
+            var project = decompilerSvc.Decompiler.Project;
+            //$TODO: what about mutiple programs in project?
+            if (project is null || project.Programs.Count != 1)
+                return;
+
+            var program = project.Programs[0];
+            var cgvSvc = sc.RequireService<ICallGraphViewService>();
+            var title = string.Format("{0} {1}", program.Name, Resources.CallGraphTitle);
+            cgvSvc.ShowCallgraph(program, title);
         }
 
         public void ToolsOptions()

@@ -47,7 +47,7 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 cfgGen.Traverse(program.CallGraph, rootProc);
             }
-            graph.Attr.LayerDirection = LayerDirection.TB;
+            graph.Attr.LayerDirection = LayerDirection.LR;
             return graph;
         }
 
