@@ -5,7 +5,7 @@
     <AssemblyName>Reko.Core</AssemblyName>
     <RootNamespace>Reko.Core</RootNamespace>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <LangVersion>8.0</LangVersion>
     <nullable>enable</nullable>
