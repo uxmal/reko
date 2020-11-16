@@ -509,9 +509,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void ViewCode()
         {
-#if USE_MSGAGL
             gViewer.Graph = null;
-#endif
             gViewer.Visible = false;
             combinedCodeView.Visible = true;
             combinedCodeView.BringToFront();
