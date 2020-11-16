@@ -27,7 +27,6 @@ using System.Text;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
-#if USE_MSAGL
     using Microsoft.Msagl.Drawing;
 
     public class CallGraphGenerator
@@ -88,5 +87,4 @@ namespace Reko.UserInterfaces.WindowsForms
             return node;
         }
     }
-#endif
 }

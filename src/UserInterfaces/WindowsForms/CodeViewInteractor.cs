@@ -18,8 +18,8 @@
  */
 #endregion
 
-//using Microsoft.Msagl.Drawing;
-//using Microsoft.Msagl.GraphViewerGdi;
+using Microsoft.Msagl.Drawing;
+using Microsoft.Msagl.GraphViewerGdi;
 using Reko.Core;
 using Reko.Gui;
 using Reko.Gui.Forms;
@@ -45,8 +45,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private SortedList<Address, MixedCodeDataModel.DataItemNode> nodeByAddress;
         private NestedTextModel nestedTextModel;
-        //private GViewer gViewer;
-        private Label gViewer;
+        private GViewer gViewer;
         private DeclarationFormInteractor declarationFormInteractor;
 
         //private ImageSegment segment;
@@ -139,31 +138,27 @@ namespace Reko.UserInterfaces.WindowsForms
 
             uiSvc.SetContextMenu(this.codeView, MenuIds.CtxCodeView);
 
-            this.gViewer = new Label();
+            this.gViewer = new GViewer();
             this.gViewer.Dock = DockStyle.Fill;
-            this.gViewer.AutoSize = false;
-            this.gViewer.Text = "Graph support will be enabled in a future version.";
-            //this.gViewer = new GViewer();
-            //this.gViewer.Dock = DockStyle.Fill;
-            //this.gViewer.Visible = false;
-            //this.gViewer.PanButtonPressed = true;
-            //this.gViewer.ToolBarIsVisible = true;
-            //this.gViewer.KeyDown += GViewer_KeyDown;
-            //uiSvc.SetContextMenu(this.gViewer, MenuIds.CtxCodeView);
-            //this.gViewer.LayoutAlgorithmSettingsButtonVisible = false;
-            //this.gViewer.LayoutEditingEnabled = false;
-            //this.gViewer.EdgeInsertButtonVisible = false;
-            //this.gViewer.SaveButtonVisible = false;
-            //this.gViewer.SaveGraphButtonVisible = false;
-            //this.gViewer.SaveAsMsaglEnabled = false;
-            //this.gViewer.UndoRedoButtonsVisible = false;
-            //this.gViewer.KeyDown += GViewer_KeyDown;
-            //uiSvc.SetContextMenu(this.gViewer, MenuIds.CtxCodeView);
-            //this.gViewer.MouseUp += GViewer_MouseUp;
-            //this.gViewer.DrawingPanel.MouseUp += GViewer_MouseUp;
-            //var iViewer = (IViewer)gViewer;
-            //iViewer.MouseUp += IViewer_MouseUp;
-            //iViewer.MouseDown += IViewer_MouseDown;
+            this.gViewer.Visible = false;
+            this.gViewer.PanButtonPressed = true;
+            this.gViewer.ToolBarIsVisible = true;
+            this.gViewer.KeyDown += GViewer_KeyDown;
+            uiSvc.SetContextMenu(this.gViewer, MenuIds.CtxCodeView);
+            this.gViewer.LayoutAlgorithmSettingsButtonVisible = false;
+            this.gViewer.LayoutEditingEnabled = false;
+            this.gViewer.EdgeInsertButtonVisible = false;
+            this.gViewer.SaveButtonVisible = false;
+            this.gViewer.SaveGraphButtonVisible = false;
+            this.gViewer.SaveAsMsaglEnabled = false;
+            this.gViewer.UndoRedoButtonsVisible = false;
+            this.gViewer.KeyDown += GViewer_KeyDown;
+            uiSvc.SetContextMenu(this.gViewer, MenuIds.CtxCodeView);
+            this.gViewer.MouseUp += GViewer_MouseUp;
+            this.gViewer.DrawingPanel.MouseUp += GViewer_MouseUp;
+            var iViewer = (IViewer) gViewer;
+            iViewer.MouseUp += IViewer_MouseUp;
+            iViewer.MouseDown += IViewer_MouseDown;
 
             //this.navInteractor = new NavigationInteractor<Address>();
             //this.navInteractor.Attach(this.combinedCodeView);
@@ -396,32 +391,32 @@ namespace Reko.UserInterfaces.WindowsForms
             }
         }
 
-        //private void IViewer_MouseDown(object sender, MsaglMouseEventArgs e)
-        //{
-        //    Debug.Print("Mousedown");
-        //}
+        private void IViewer_MouseDown(object sender, MsaglMouseEventArgs e)
+        {
+            Debug.Print("Mousedown");
+        }
 
-        //private void IViewer_MouseUp(object sender, MsaglMouseEventArgs e)
-        //{
-        //    Debug.Print("IViewer.Up");
-        //    if (gViewer.PanButtonPressed)
-        //        return;
-        //    var userObj = gViewer.SelectedObject as Node;
-        //    if (userObj == null)
-        //        return;
-        //}
+        private void IViewer_MouseUp(object sender, MsaglMouseEventArgs e)
+        {
+            Debug.Print("IViewer.Up");
+            if (gViewer.PanButtonPressed)
+                return;
+            var userObj = gViewer.SelectedObject as Node;
+            if (userObj == null)
+                return;
+        }
 
-        //private void GViewer_MouseUp(object sender, MouseEventArgs e)
-        //{
-        //    Debug.Print("Mouseup");
-        //    if (gViewer.PanButtonPressed)
-        //        return;
-        //    var userObj = gViewer.SelectedObject as Node;
-        //    if (userObj == null)
-        //        return;
-        //    var blockData = userObj.UserData as CfgBlockNode;
-        //    Debug.Print("Node: {0}", blockData.Block.Name);
-        //}
+        private void GViewer_MouseUp(object sender, MouseEventArgs e)
+        {
+            Debug.Print("Mouseup");
+            if (gViewer.PanButtonPressed)
+                return;
+            var userObj = gViewer.SelectedObject as Node;
+            if (userObj == null)
+                return;
+            var blockData = userObj.UserData as CfgBlockNode;
+            Debug.Print("Node: {0}", blockData.Block.Name);
+        }
 
     }
 }

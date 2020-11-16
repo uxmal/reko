@@ -26,6 +26,7 @@ using System.Text;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.Core.Code;
+using Reko.Core.Operators;
 
 namespace Reko.Analysis
 {
@@ -42,9 +43,11 @@ namespace Reko.Analysis
         private readonly Dictionary<Storage, CallBinding> uses;
         private Dictionary<Storage, CallBinding>? map; //$TODO: to make this non-nullable, change
                                                        // to StorageVisitor<Expression, Dictionary<Storage, CallBinding>
+        private readonly MemIdentifierFinder midFinder;
         private bool bindUses;
+        private bool guessStackArgs;
 
-        public CallApplicationBuilder(SsaState ssaCaller, Statement stmCall, CallInstruction call, Expression callee) : base(call.CallSite, callee)
+        public CallApplicationBuilder(SsaState ssaCaller, Statement stmCall, CallInstruction call, Expression callee, bool guessStackArgs) : base(call.CallSite, callee)
         {
             this.ssaCaller = ssaCaller;
             this.stmCall = stmCall;
@@ -52,6 +55,8 @@ namespace Reko.Analysis
             this.defs = call.Definitions.ToDictionary(d => d.Storage);
             this.uses = call.Uses.ToDictionary(u => u.Storage);
             this.stackDepthOnEntry = site.StackDepthOnEntry;
+            this.midFinder = new MemIdentifierFinder();
+            this.guessStackArgs = guessStackArgs;
         }
 
         public override Expression? Bind(Identifier id)
@@ -174,7 +179,41 @@ namespace Reko.Analysis
                 if (((StackStorage) de.Value.Storage).StackOffset == localOff)
                     return de.Value.Expression;
             }
+            // Attempt to inject a Mem[sp_xx + offset] expression if possible.
+            if (guessStackArgs &&
+                sigCallee != null &&
+                this.map!.TryGetValue(arch.StackRegister, out var stackBinding) &&
+                this.TryFindMemBeforeCall(out var memId))
+            {
+                var sp_ssa = stackBinding.Expression;
+                if (sp_ssa != null)
+                {
+                    var dt = PrimitiveType.Create(Domain.SignedInt, sp_ssa.DataType.BitSize);
+                    var ea = sp_ssa;
+                    int nOffset = stack.StackOffset - sigCallee.ReturnAddressOnStack;
+                    if (nOffset != 0)
+                    {
+                        var offset = Constant.Create(dt, nOffset);
+                        ea = new BinaryExpression(Operator.IAdd, sp_ssa.DataType, sp_ssa, offset);
+                    }
+                    return new MemoryAccess(memId, ea, stack.DataType);
+                }
+            }
             return FallbackArgument($"stackArg{localOff}", stack.DataType);
+        }
+
+        private bool TryFindMemBeforeCall(out MemoryIdentifier memId)
+        {
+            var block = stmCall.Block;
+            var i = block.Statements.IndexOf(stmCall) - 1;
+            for (;  i >= 0; --i)
+            {
+                memId = midFinder.Find(block.Statements[i].Instruction)!;
+                if (memId != null)
+                    return true;
+            }
+            memId = null!;
+            return false;
         }
 
         public Expression VisitStackLocalStorage(StackLocalStorage local)
@@ -242,6 +281,38 @@ Please report this issue at https://github.com/uxmal/reko";
             var sid = ssaCaller.EnsureDefInstruction(id, entryBlock);
             sid.Uses.Add(stmCall);
             return sid.Identifier;
+        }
+
+        private class MemIdentifierFinder : InstructionVisitorBase
+        {
+            private MemoryIdentifier? mid;
+
+            public MemoryIdentifier? Find(Instruction instr)
+            {
+                this.mid = null;
+                instr.Accept(this);
+                return mid;
+    }
+
+            public override void VisitStore(Store store)
+            {
+                store.Dst.Accept(this);
+                if (mid != null)
+                    return;
+                store.Src.Accept(this);
+            }
+
+            public override void VisitMemoryAccess(MemoryAccess access)
+            {
+                this.mid = access.MemoryId;
+                base.VisitMemoryAccess(access);
+            }
+
+            public override void VisitSegmentedAccess(SegmentedAccess access)
+            {
+                this.mid = access.MemoryId;
+                base.VisitSegmentedAccess(access);
+            }
         }
     }
 }

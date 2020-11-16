@@ -229,7 +229,7 @@ namespace Reko.Analysis
                 ci,
                 this.arch.FpuStackRegister,
                 -sig.FpuStackDelta);
-            var ab = new CallApplicationBuilder(this.ssa, stm, ci, ci.Callee);
+            var ab = new CallApplicationBuilder(this.ssa, stm, ci, ci.Callee, true);
             stm.Instruction = ab.CreateInstruction(sig, chr);
             ssam.AdjustSsa(stm, ci);
         }

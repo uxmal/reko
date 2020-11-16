@@ -11,6 +11,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Reference Include="AutomaticGraphLayout">
+      <HintPath>..\..\..\external\Msagl\AutomaticGraphLayout.dll</HintPath>
+    </Reference>
+    <Reference Include="AutomaticGraphLayout.Drawing">
+      <HintPath>..\..\..\external\Msagl\AutomaticGraphLayout.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Msagl.GraphViewerGdi">
+      <HintPath>..\..\..\external\Msagl\Microsoft.Msagl.GraphViewerGdi.dll</HintPath>
+    </Reference>
     <Reference Include="System.Resources.Extensions" />
   </ItemGroup>
 
