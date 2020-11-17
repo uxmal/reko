@@ -45,6 +45,7 @@
 <file src="../ImageLoaders/Nro/bin/$Configuration$/netstandard2.0/Reko.ImageLoaders.Nro.dll" target="lib\netstandard2.0" />
 <file src="../ImageLoaders/OdbgScript/bin/$Configuration$/netstandard2.0/Reko.ImageLoaders.OdbgScript.dll" target="lib\netstandard2.0" />
 <file src="../ImageLoaders/Srec/bin/$Configuration$/netstandard2.0/Reko.ImageLoaders.Srec.dll" target="lib\netstandard2.0" />
+<file src="../ImageLoaders/TekHex/bin/$Configuration$/netstandard2.0/Reko.ImageLoaders.TekHex.dll" target="lib\netstandard2.0" />
 <file src="../ImageLoaders/VmsExe/bin/$Configuration$/netstandard2.0/Reko.ImageLoaders.VmsExe.dll" target="lib\netstandard2.0" />
 <file src="../ImageLoaders/WebAssembly/bin/$Configuration$/netstandard2.0/Reko.ImageLoaders.WebAssembly.dll" target="lib\netstandard2.0" />
 <file src="../ImageLoaders/Xbe/bin/$Configuration$/netstandard2.0/Reko.ImageLoaders.Xbe.dll" target="lib\netstandard2.0" />

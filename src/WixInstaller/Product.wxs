@@ -98,6 +98,7 @@
 <File Source="$(var.Nro.TargetPath)" />
 <File Source="$(var.OdbgScript.TargetPath)" />
 <File Source="$(var.Srec.TargetPath)" />
+<File Source="$(var.TekHex.TargetPath)" />
 <File Source="$(var.VmsExe.TargetPath)" />
 <File Source="$(var.WebAssembly.TargetPath)" />
 <File Source="$(var.Xbe.TargetPath)" />
@@ -222,9 +223,9 @@
 
         <!-- External files -->
 <File Source="$(var.SolutionDir)..\external\Capstone\$(var.Platform)\capstone.dll" />
-<File Source="$(var.SolutionDir)..\external\Msagl\Microsoft.Msagl.dll" />
-<File Source="$(var.SolutionDir)..\external\Msagl\Microsoft.Msagl.Drawing.dll" />
-<File Source="$(var.SolutionDir)..\external\Msagl\Microsoft.Msagl.GraphViewerGdi.dll" />
+<File Source="$(var.WindowsForms.ProjectDir)bin\$(var.Configuration)\AutomaticGraphLayout.dll" />
+<File Source="$(var.WindowsForms.ProjectDir)bin\$(var.Configuration)\AutomaticGraphLayout.Drawing.dll" />
+<File Source="$(var.WindowsForms.ProjectDir)bin\$(var.Configuration)\Microsoft.Msagl.GraphViewerGdi.dll" />
         
 <File Source="$(var.SolutionDir)..\external\reactos\coredll.def" />
 <File Source="$(var.SolutionDir)..\external\wine\commdlg.dll16.spec" />

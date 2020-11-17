@@ -106,6 +106,7 @@
         <var id="var.OdbgScript.ProjectDir" >../ImageLoaders/OdbgScript/</var>
         <var id="var.OdbgScript.TargetPath" >../ImageLoaders/OdbgScript/$TargetDir$/Reko.ImageLoaders.OdbgScript.dll</var>
         <var id="var.Srec.TargetPath" >../ImageLoaders/Srec/$TargetDir$/Reko.ImageLoaders.Srec.dll</var>
+        <var id="var.TekHex.TargetPath" >../ImageLoaders/TekHex/$TargetDir$/Reko.ImageLoaders.TekHex.dll</var>
         <var id="var.VmsExe.TargetPath" >../ImageLoaders/VmsExe/$TargetDir$/Reko.ImageLoaders.VmsExe.dll</var>
         <var id="var.WebAssembly.TargetPath" >../ImageLoaders/WebAssembly/$TargetDir$/Reko.ImageLoaders.WebAssembly.dll</var>
         <var id="var.Xex.TargetPath" >../ImageLoaders/XexLoader/$TargetDir$/Reko.ImageLoaders.Xex.dll</var>
@@ -267,9 +268,9 @@
 
         <!-- External files -->
         <File Source="$(var.SolutionDir)..\external\Capstone\$(var.Platform)\capstone.dll" />
-        <File Source="$(var.SolutionDir)..\external\Msagl\Microsoft.Msagl.dll" />
-        <File Source="$(var.SolutionDir)..\external\Msagl\Microsoft.Msagl.Drawing.dll" />
-        <File Source="$(var.SolutionDir)..\external\Msagl\Microsoft.Msagl.GraphViewerGdi.dll" />
+        <File Source="$(var.WindowsForms.ProjectDir)bin\$(var.Configuration)\AutomaticGraphLayout.dll" />
+        <File Source="$(var.WindowsForms.ProjectDir)bin\$(var.Configuration)\AutomaticGraphLayout.Drawing.dll" />
+        <File Source="$(var.WindowsForms.ProjectDir)bin\$(var.Configuration)\Microsoft.Msagl.GraphViewerGdi.dll" />
         
         <File Source="$(var.SolutionDir)..\external\reactos\coredll.def" nuget_target="c:" />
         <File Source="$(var.SolutionDir)..\external\wine\commdlg.dll16.spec" nuget_target="c:" />
