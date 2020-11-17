@@ -11,8 +11,10 @@
                 // Ask msbuild to generate full paths for file names.
                 "/property:GenerateFullPaths=true",
                 "/t:build",
+                "/p:Platform=x64",
                 "/p:Configuration=Debug",
                 "/verbosity:minimal",
+                "/m",
                 "Reko-decompiler.sln"
             ],
             "group": {
@@ -33,9 +35,11 @@
             "args": [
                 // Ask msbuild to generate full paths for file names.
                 "/t:clean",
-                "/p:Configuration=UnixRelease",
+                "/p:Platform=x64",
+                "/p:Configuration=Debug",
                 "/p:GenerateFullPaths=true",
                 "/verbosity:minimal",
+                "/m",
                 "Reko-decompiler.sln"
             ],
             "group": "build",
@@ -43,6 +47,15 @@
                 "reveal": "silent"
             },
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label":"unit tests",
+            "type":"process",
+            "command":"dotnet",
+            "args": [
+                "test",
+                "UnitTests/bin/x64/Debug/Reko.UnitTests.dll",
+            ]
         }
     ]
 }
