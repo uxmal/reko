@@ -153,7 +153,7 @@ namespace Reko
                             proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
                         output.WriteLine();
                         WriteProcedureCallers(program, proc, output);
-                    flow.Emit(proc.Architecture, output);
+                        flow.Emit(proc.Architecture, output);
                         foreach (Block block in new DfsIterator<Block>(proc.ControlGraph).PostOrder().Reverse())
                         {
                             if (block == null)
