@@ -40,17 +40,19 @@ namespace Reko.Core.Output
         private readonly CodeFormatter codeFormatter;
         private readonly Formatter formatter;
         private readonly TypeReferenceFormatter tw;
+        private readonly bool chasePointers;
+        private readonly bool showAddressInComment;
         private Queue<StructureField> queue;
         private StructureType globals;
         private EndianImageReader? rdr;
-        private bool chasePointers;
         private int recursionGuard;     //$REVIEW: remove this once deep recursion bugs have been flushed out.
 
-        public GlobalDataWriter(Program program, Formatter formatter, bool chasePointers, IServiceProvider services)
+        public GlobalDataWriter(Program program, Formatter formatter, bool chasePointers, bool showAddressInComment, IServiceProvider services)
         {
             this.program = program;
             this.formatter = formatter;
             this.chasePointers = chasePointers;
+            this.showAddressInComment = showAddressInComment;
             this.services = services;
             this.cmp = new DataTypeComparer();
             this.codeFormatter = new AbsynCodeFormatter(formatter);
@@ -89,12 +91,17 @@ namespace Reko.Core.Output
         {
             var name = program.NamingPolicy.GlobalName(field);
             var addr = Address.Ptr32((uint)field.Offset);  //$BUG: this is completely wrong; field.Offsets should be as wide as the platform permits.
+            var oneLineDeclaration = IsOneLineDeclaration(field.DataType);
             try
             {
                 tw.WriteDeclaration(field.DataType, name);
                 if (program.SegmentMap.IsValidAddress(addr))
                 {
                     formatter.Write(" = ");
+                    if (!oneLineDeclaration && showAddressInComment)
+                    {
+                        formatter.Write("// {0}", addr);
+                    }
                     this.rdr = program.CreateImageReader(program.Architecture, addr);
                     field.DataType.Accept(this);
                 }
@@ -106,20 +113,35 @@ namespace Reko.Core.Output
                     dc.CreateAddressNavigator(program, addr),
                     ex,
                     "Failed to write global variable {0}.", name);
+                formatter.Terminate(";");
+                return;
             }
-            formatter.Terminate(";");
+            if (oneLineDeclaration && showAddressInComment)
+            {
+                formatter.Write("; // {0}", addr);
+                formatter.Terminate();
+            }
+            else
+            {
+                formatter.Terminate(";");
+            }
         }
 
         public void WriteGlobalVariable(Address address, DataType dataType, string name)
         {
             this.globals = new StructureType();
             this.queue = new Queue<StructureField>(globals.Fields);
+            var oneLineDeclaration = IsOneLineDeclaration(dataType);
             try
             {
                 tw.WriteDeclaration(dataType, name);
                 if (program.SegmentMap.IsValidAddress(address))
                 {
                     formatter.Write(" = ");
+                    if (!oneLineDeclaration && showAddressInComment)
+                    {
+                        formatter.Write("// {0}", address);
+                    }
                     this.rdr = program.CreateImageReader(program.Architecture, address);
                     dataType.Accept(this);
                 }
@@ -132,8 +154,36 @@ namespace Reko.Core.Output
                     ex,
                     "Failed to write global variable {0}.",
                     name);
+                formatter.Terminate(";");
+                return;
             }
-            formatter.Terminate(";");
+            if (oneLineDeclaration && showAddressInComment)
+            {
+                formatter.Write("; // {0}", address);
+                formatter.Terminate();
+            }
+            else
+            {
+                formatter.Terminate(";");
+            }
+        }
+
+        private bool IsOneLineDeclaration(DataType dataType)
+        {
+            var dt = dataType.ResolveAs<DataType>();
+            switch (dt)
+            {
+            case PrimitiveType pt: return !IsLargeBlob(pt);
+            case Pointer _: return true;
+            case MemberPointer _: return true;
+            case StringType _: return true;
+            case VoidType _: return true;
+            case EquivalenceClass eq: return eq.DataType is null || IsOneLineDeclaration(eq.DataType);
+            case TypeReference tr: return tr.Referent is null || IsOneLineDeclaration(tr.Referent);
+            case CodeType _: return true;
+            case FunctionType _: return true;
+            default: return false;
+            }
         }
 
         public CodeFormatter VisitArray(ArrayType at)
@@ -206,13 +256,14 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitFunctionType(FunctionType ft)
         {
-            codeFormatter.InnerFormatter.WriteLine("Unexpected function type {0}", ft);
+            codeFormatter.InnerFormatter.Write("??");
+            codeFormatter.InnerFormatter.Write("/* Unexpected function type {0} */ ", ft);
             return codeFormatter;
         }
 
         public CodeFormatter VisitPrimitive(PrimitiveType pt)
         {
-            if (pt.Size > 8)
+            if (IsLargeBlob(pt))
             {
                 var bytes = rdr!.ReadBytes(pt.Size);
                 FormatRawBytes(bytes);
@@ -225,10 +276,15 @@ namespace Reko.Core.Output
                 }
                 else
                 {
-                    codeFormatter.InnerFormatter.WriteLine("?? /* Can't read address {0} */", rdr.Address);
+                    codeFormatter.InnerFormatter.Write("?? /* Can't read address {0} */ ", rdr.Address);
                 }
             }
             return codeFormatter;
+        }
+
+        private static bool IsLargeBlob(PrimitiveType pt)
+        {
+            return pt.Size > 8;
         }
 
         private void FormatRawBytes(byte[] bytes)
@@ -382,7 +438,7 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitUnknownType(UnknownType ut)
         {
-            throw new NotImplementedException();
+            return codeFormatter;
         }
 
         public CodeFormatter VisitVoidType(VoidType voidType)

@@ -4,4 +4,4 @@
 
 #include "switch.h"
 
-word32 g_dw10844 = 0x00;
+word32 g_dw10844 = 0x00; // 00010844

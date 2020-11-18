@@ -4,4 +4,4 @@
 
 #include "ipcalc.h"
 
-<anonymous> * g_ptr19E18 = fn0000000000015F94;
+<anonymous> * g_ptr19E18 = fn0000000000015F94; // 0000000000019E18

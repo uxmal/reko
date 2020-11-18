@@ -1431,8 +1431,8 @@ void fn00000000004048C0()
 	null();
 }
 
-<anonymous> g_t404980 = <code>;
-<anonymous> g_t404990 = <code>;
+<anonymous> g_t404980 = <code>; // 0000000000404980
+<anonymous> g_t404990 = <code>; // 0000000000404990
 // 00000000004049E0: Register byte fn00000000004049E0(Register Eq_n rcx, Register byte dl, Register (ptr64 (ptr64 char)) rsi, Register Eq_n rdi, Register out Eq_n ebxOut, Register out Eq_n rbpOut, Register out Eq_n r12Out)
 // Called from:
 //      fn00000000004028C0
@@ -4245,7 +4245,7 @@ l0000000000409D60:
 	return 0x00;
 }
 
-<anonymous> g_t409E40 = <code>;
+<anonymous> g_t409E40 = <code>; // 0000000000409E40
 // 0000000000409E50: Register Eq_n fn0000000000409E50(Register word32 rax_32_n, Register Eq_n rcx, Register Eq_n rdx, Register (arr Eq_n) rsi, Register Eq_n rdi)
 // Called from:
 //      fn00000000004028C0
@@ -4415,8 +4415,7 @@ int64 fn000000000040A120(word32 rax_32_n, Eq_n rcx, Eq_n (* rdx)[], Eq_n rsi, Eq
 	return rax_n;
 }
 
-Eq_n g_t40A200 = Unexpected function type (fn void ((ptr64 void)))
-;
+Eq_n g_t40A200 = ??/* Unexpected function type (fn void ((ptr64 void))) */ ; // 000000000040A200
 // 000000000040A2B0: Register Eq_n fn000000000040A2B0(Register Eq_n rdi)
 // Called from:
 //      fn0000000000407EA0
@@ -4786,8 +4785,8 @@ l000000000040AC2D:
 	return rdi_n;
 }
 
-<anonymous> g_t40AC60 = <code>;
-<anonymous> g_t40AC70 = <code>;
+<anonymous> g_t40AC60 = <code>; // 000000000040AC60
+<anonymous> g_t40AC70 = <code>; // 000000000040AC70
 // 000000000040AC80: Register ui64 fn000000000040AC80(Register Eq_n rsi, Register Eq_n rdi)
 // Called from:
 //      fn000000000040ACB0
@@ -7850,7 +7849,7 @@ void fn0000000000410630(uint64 rcx, uint64 rsi, FILE * rdi, uint64 r9)
 		g_ptr416B48();
 }
 
-<anonymous> g_t410800 = <code>;
+<anonymous> g_t410800 = <code>; // 0000000000410800
 // 0000000000410AC0: void fn0000000000410AC0(Register uint64 rcx, Register uint64 rsi, Register (ptr64 Eq_n) rdi, Register (ptr64 Eq_n) r8)
 // Called from:
 //      fn0000000000410B30
@@ -8610,10 +8609,8 @@ uint64 fn0000000000411DF0(Eq_n rdx, Eq_n rsi, FILE * rdi)
 	return rax_n;
 }
 
-Eq_n g_t411E60 = Unexpected function type (fn void ())
-;
-Eq_n g_t411ED0 = Unexpected function type (fn void ())
-;
+Eq_n g_t411E60 = ??/* Unexpected function type (fn void ()) */ ; // 0000000000411E60
+Eq_n g_t411ED0 = ??/* Unexpected function type (fn void ()) */ ; // 0000000000411ED0
 // 0000000000411EE0: void fn0000000000411EE0(Register (ptr64 Eq_n) rdi)
 // Called from:
 //      fn00000000004028C0

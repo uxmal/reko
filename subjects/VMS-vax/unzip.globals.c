@@ -5,8 +5,5 @@
 #include "unzip.h"
 
 Eq_n g_t0001;
-word16 g_w0002;
+word16 g_w0002; // 00000002
 Eq_n g_t0004;
-ui32 g_a0974[];
-word32 g_dw0A38;
-ui32 g_dw3C301267;

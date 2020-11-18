@@ -4,89 +4,90 @@
 
 #include "lunar.h"
 
-word16 g_w0004 = 0x0200;
-word16 g_w0006 = 0xE0;
-word16 g_w0030 = 0x00;
-Eq_n g_t0044 = 
+word16 g_w0000 = 0x5F; // 0000
+word16 g_w0004 = 0x0200; // 0004
+word16 g_w0006 = 0xE0; // 0006
+word16 g_w0030 = 0x00; // 0030
+Eq_n g_t0044 = // 0044
 	{
 		0
 	};
-ci16 g_w0046 = 0x00;
-wchar_t g_w0048 = L'\0';
-Eq_n g_t004A = 
+ci16 g_w0046 = 0x00; // 0046
+wchar_t g_w0048 = L'\0'; // 0048
+Eq_n g_t004A = // 004A
 	{
 		0
 	};
-Eq_n g_t004C = 
+Eq_n g_t004C = // 004C
 	{
 		0
 	};
-Eq_n g_t004E = 
+Eq_n g_t004E = // 004E
 	{
 		0
 	};
-Eq_n g_t0050 = 
+Eq_n g_t0050 = // 0050
 	{
 		0
 	};
-Eq_n g_t0052 = 
+Eq_n g_t0052 = // 0052
 	{
 		0
 	};
-ci16 g_w0054 = 0x00;
-wchar_t g_w0056 = L'\0';
-Eq_n g_t0058 = 
+ci16 g_w0054 = 0x00; // 0054
+wchar_t g_w0056 = L'\0'; // 0056
+Eq_n g_t0058 = // 0058
 	{
 		0
 	};
-wchar_t g_w005A = L'\0';
-word16 g_w005C = 0x00;
-word16 g_w005E = 0x00;
-wchar_t g_w0060 = L'\0';
-wchar_t g_w0062 = L'\0';
-Eq_n g_t0064 = 
+wchar_t g_w005A = L'\0'; // 005A
+word16 g_w005C = 0x00; // 005C
+word16 g_w005E = 0x00; // 005E
+wchar_t g_w0060 = L'\0'; // 0060
+wchar_t g_w0062 = L'\0'; // 0062
+Eq_n g_t0064 = // 0064
 	{
 		0
 	};
-Eq_n g_t0066 = 
+Eq_n g_t0066 = // 0066
 	{
 		0
 	};
-wchar_t g_w0068 = L'\0';
-word16 g_w006A = 0x00;
-Eq_n g_t006C = 
+wchar_t g_w0068 = L'\0'; // 0068
+word16 g_w006A = 0x00; // 006A
+Eq_n g_t006C = // 006C
 	{
 		0
 	};
-Eq_n g_t006E = 
+Eq_n g_t006E = // 006E
 	{
 		0
 	};
-cu16 g_w0070 = 0x00;
-int16 g_w0072 = 0;
-cui16 g_w0074 = 0x00;
-int16 g_w0078 = 0;
-word16 g_w007A = 0x00;
-ci16 g_w007E = 0x00;
-word16 g_w0080 = 0x00;
-word16 * g_ptr0082 = null;
-word16 g_w0084 = 0x00;
-word16 * g_ptr0086 = null;
-cui16 g_w008A = 0x00;
-cui16 g_w008C = 0x00;
-cui16 g_w008E = 0x00;
-cui16 g_w0090 = 0x00;
-struct Eq_n * g_ptr0092 = null;
-word16 g_w009E = 0x9E;
-ci16 g_w00A0 = 0x00;
-ci16 g_w00A2 = 0x00;
-ci16 g_w00A4 = 0x00;
-cui16 g_w00A6 = 0x00;
-cui16 g_w00A8 = 0x00;
-wchar_t g_w00AA = L'\0';
-int16 g_w00AC = 0;
-ci16 g_w00AE = 0x00;
-struct Eq_n * g_ptr00B0 = &g_t00B0;
+cu16 g_w0070 = 0x00; // 0070
+int16 g_w0072 = 0; // 0072
+cui16 g_w0074 = 0x00; // 0074
+int16 g_w0078 = 0; // 0078
+word16 g_w007A = 0x00; // 007A
+ci16 g_w007E = 0x00; // 007E
+word16 g_w0080 = 0x00; // 0080
+word16 * g_ptr0082 = null; // 0082
+word16 g_w0084 = 0x00; // 0084
+word16 * g_ptr0086 = null; // 0086
+cui16 g_w008A = 0x00; // 008A
+cui16 g_w008C = 0x00; // 008C
+cui16 g_w008E = 0x00; // 008E
+cui16 g_w0090 = 0x00; // 0090
+struct Eq_n * g_ptr0092 = null; // 0092
+word16 g_w009E = 0x9E; // 009E
+ci16 g_w00A0 = 0x00; // 00A0
+ci16 g_w00A2 = 0x00; // 00A2
+ci16 g_w00A4 = 0x00; // 00A4
+cui16 g_w00A6 = 0x00; // 00A6
+cui16 g_w00A8 = 0x00; // 00A8
+wchar_t g_w00AA = L'\0'; // 00AA
+int16 g_w00AC = 0; // 00AC
+ci16 g_w00AE = 0x00; // 00AE
+struct Eq_n * g_ptr00B0 = &g_t00B0; // 00B0
 // 0128: void fn0128()
 // Called from:
 //      fn0B06
@@ -103,10 +104,10 @@ void fn0128()
 	}
 }
 
-word16 * g_a013E[] = 
+word16 * g_a013E[] = // 013E
 	{
 	};
-Eq_n g_t021C = 
+Eq_n g_t021C = // 021C
 	{
 		
 		{
@@ -399,7 +400,7 @@ void fn0790()
 {
 }
 
-word16 g_w07BA = 0x00;
+word16 g_w07BA = 0x00; // 07BA
 // 0856: void fn0856(Register Eq_n r4, Stack word16 wArg00)
 // Called from:
 //      fn053A
@@ -1030,7 +1031,7 @@ void fn0F04(int16 r0)
 	}
 }
 
-word16 g_w0F70 = 0x0A9F;
+word16 g_w0F70 = 0x0A9F; // 0F70
 // 100C: Register int16 fn100C(Register int16 r4)
 // Called from:
 //      fn053A
@@ -1791,53 +1792,53 @@ void fn1674(wchar_t r0, struct Eq_n * r1)
 	}
 }
 
-struct Eq_n * g_a168C[] = 
+struct Eq_n * g_a168C[] = // 168C
 	{
 	};
-struct Eq_n * g_a1696[] = 
+struct Eq_n * g_a1696[] = // 1696
 	{
 	};
-word16 g_a182A[] = 
+word16 g_a182A[] = // 182A
 	{
 	};
-word16 g_w182C = 0x00;
-word16 g_w182E = 0x00;
-Eq_n g_t1F96 = 
+word16 g_w182C = 0x00; // 182C
+word16 g_w182E = 0x00; // 182E
+Eq_n g_t1F96 = // 1F96
 	{
 		0x00,
 		0x00,
 		0,
 	};
-word16 g_w25AA = 0x00;
-Eq_n g_t25B8 = 
+word16 g_w25AA = 0x00; // 25AA
+Eq_n g_t25B8 = // 25B8
 	{
 		0x20,
 		0x20,
 	};
-word16 g_w25C0 = 0xF700;
-word16 g_w2610 = 0x00;
-word16 g_w2612 = 0x00;
-word16 g_w267A = 0x00;
-word16 g_w267C = 0x00;
-cui16 g_w27A8 = 0x00;
-Eq_n g_a27B0[] = 
+word16 g_w25C0 = 0xF700; // 25C0
+word16 g_w2610 = 0x00; // 2610
+word16 g_w2612 = 0x00; // 2612
+word16 g_w267A = 0x00; // 267A
+word16 g_w267C = 0x00; // 267C
+cui16 g_w27A8 = 0x00; // 27A8
+Eq_n g_a27B0[] = // 27B0
 	{
 	};
-byte g_b2814 = 0x30;
-ci16 g_w28F0 = 0x030C;
-word16 g_a28F2[] = 
+byte g_b2814 = 0x30; // 2814
+ci16 g_w28F0 = 0x030C; // 28F0
+word16 g_a28F2[] = // 28F2
 	{
 	};
-Eq_n g_a28F8[] = 
+Eq_n g_a28F8[] = // 28F8
 	{
 	};
-word16 g_w34B4 = 0x00;
-word16 g_w34B6 = 0x00;
-word16 g_w34BA = 0x00;
-word16 g_w34C2 = 0x00;
-word16 g_w34CA = 0x00;
-word16 g_w34D2 = 0x00;
-word16 g_w34DA = 0x00;
+word16 g_w34B4 = 0x00; // 34B4
+word16 g_w34B6 = 0x00; // 34B6
+word16 g_w34BA = 0x00; // 34BA
+word16 g_w34C2 = 0x00; // 34C2
+word16 g_w34CA = 0x00; // 34CA
+word16 g_w34D2 = 0x00; // 34D2
+word16 g_w34DA = 0x00; // 34DA
 // 34E0: void fn34E0()
 void fn34E0()
 {
@@ -1878,8 +1879,8 @@ void fn355A()
 	while (*(ci8 *) 64396 > 0x00);
 }
 
-cui16 g_w35CA = 17221;
-word16 g_w35CC = 0x5541;
-word16 g_w35CE = 17747;
-word16 g_w35D0 = 0x4F20;
-word16 g_w35D2 = 8262;
+cui16 g_w35CA = 17221; // 35CA
+word16 g_w35CC = 0x5541; // 35CC
+word16 g_w35CE = 17747; // 35CE
+word16 g_w35D0 = 0x4F20; // 35D0
+word16 g_w35D2 = 8262; // 35D2

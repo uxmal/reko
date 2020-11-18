@@ -4,28 +4,28 @@
 
 #include "pySample.h"
 
-Eq_n g_t10002098 = null;
-Eq_n g_t1000209C = null;
-Eq_n g_t100020A0 = null;
-Eq_n g_t100020A8 = null;
-word32 g_dw100020CC = 0x00;
-char g_str100020E0[] = "fdiv(a, b) = a / b";
-char g_str100020F4[] = "fdiv";
-char g_str100020FC[] = "div(a, b) = a / b";
-char g_str10002110[] = "div";
-char g_str10002114[] = "dif(a, b) = a - b";
-char g_str10002128[] = "dif";
-char g_str1000212C[] = "sum(a, b) = a + b";
-char g_str10002140[] = "sum";
-char g_str10002144[] = "ii:sum";
-char g_str1000214C[] = "i";
-char g_str10002150[] = "ii:dif";
-char g_str10002158[] = "ii:div";
-char g_str10002160[] = "ff:fdiv";
-char g_str10002168[] = "f";
-char g_str1000216C[] = ":unused";
-char g_str10002174[] = "pySample";
-word32 g_a100021D8[1] = 
+Eq_n g_t10002098 = null; // 10002098
+Eq_n g_t1000209C = null; // 1000209C
+Eq_n g_t100020A0 = null; // 100020A0
+Eq_n g_t100020A8 = null; // 100020A8
+word32 g_dw100020CC = 0x00; // 100020CC
+char g_str100020E0[] = "fdiv(a, b) = a / b"; // 100020E0
+char g_str100020F4[] = "fdiv"; // 100020F4
+char g_str100020FC[] = "div(a, b) = a / b"; // 100020FC
+char g_str10002110[] = "div"; // 10002110
+char g_str10002114[] = "dif(a, b) = a - b"; // 10002114
+char g_str10002128[] = "dif"; // 10002128
+char g_str1000212C[] = "sum(a, b) = a + b"; // 1000212C
+char g_str10002140[] = "sum"; // 10002140
+char g_str10002144[] = "ii:sum"; // 10002144
+char g_str1000214C[] = "i"; // 1000214C
+char g_str10002150[] = "ii:dif"; // 10002150
+char g_str10002158[] = "ii:div"; // 10002158
+char g_str10002160[] = "ff:fdiv"; // 10002160
+char g_str10002168[] = "f"; // 10002168
+char g_str1000216C[] = ":unused"; // 1000216C
+char g_str10002174[] = "pySample"; // 10002174
+word32 g_a100021D8[1] = // 100021D8
 	{
 		0x00,
 	};

@@ -4,11 +4,11 @@
 
 #include "test.h"
 
-word32 g_dw12000 = 0x00;
-word32 g_dw12004 = 0x00;
-word32 g_dw12008 = 0x00;
-word32 g_dw1200C = 0x00;
-word32 g_dw12010 = 0x00;
-word32 g_dw12014 = 0x00;
-word32 g_dw12018 = 0x00;
-word32 g_dw1201C = 0x00;
+word32 g_dw12000 = 0x00; // 00012000
+word32 g_dw12004 = 0x00; // 00012004
+word32 g_dw12008 = 0x00; // 00012008
+word32 g_dw1200C = 0x00; // 0001200C
+word32 g_dw12010 = 0x00; // 00012010
+word32 g_dw12014 = 0x00; // 00012014
+word32 g_dw12018 = 0x00; // 00012018
+word32 g_dw1201C = 0x00; // 0001201C

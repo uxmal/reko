@@ -509,8 +509,7 @@ void fn004018D3()
 	SetUnhandledExceptionFilter(&g_t4018DF);
 }
 
-LONG g_t4018DF(struct _EXCEPTION_POINTERS * ExceptionInfo) = Unexpected function type (fn LONG ((ptr32 (struct "_EXCEPTION_POINTERS"))))
-;
+LONG g_t4018DF(struct _EXCEPTION_POINTERS * ExceptionInfo) = ??/* Unexpected function type (fn LONG ((ptr32 (struct "_EXCEPTION_POINTERS")))) */ ; // 004018DF
 // 00401920: void fn00401920()
 void fn00401920()
 {

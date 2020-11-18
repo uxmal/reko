@@ -4,14 +4,14 @@
 
 #include "redir.h"
 
-struct Eq_n * g_ptr10000878 = &g_t10000000;
-union Eq_n * g_ptr100008A0 = &g_t10000AAC;
-int32 * g_ptr100008C0 = &g_dw10000014;
-int32 * g_ptr100008F4 = &g_dw10000018;
-time_t * g_ptr1000090C = &g_t10000020;
-FILE ** g_ptr10000914 = &g_ptr01C4;
-char * (* g_ptr100009C8)[] = &g_a100007E0;
-FILE ** g_ptr10000A20 = &g_ptr10000AA8;
-int32 * g_ptr10000A28 = &g_dw1000001C;
-struct Eq_n * g_ptr10000A40 = &g_t10000024;
-uint16 (** g_ptr10000A6C)[] = null;
+struct Eq_n * g_ptr10000878 = &g_t10000000; // 10000878
+union Eq_n * g_ptr100008A0 = &g_t10000AAC; // 100008A0
+int32 * g_ptr100008C0 = &g_dw10000014; // 100008C0
+int32 * g_ptr100008F4 = &g_dw10000018; // 100008F4
+time_t * g_ptr1000090C = &g_t10000020; // 1000090C
+FILE ** g_ptr10000914 = &g_ptr01C4; // 10000914
+char * (* g_ptr100009C8)[] = &g_a100007E0; // 100009C8
+FILE ** g_ptr10000A20 = &g_ptr10000AA8; // 10000A20
+int32 * g_ptr10000A28 = &g_dw1000001C; // 10000A28
+struct Eq_n * g_ptr10000A40 = &g_t10000024; // 10000A40
+uint16 (** g_ptr10000A6C)[] = null; // 10000A6C

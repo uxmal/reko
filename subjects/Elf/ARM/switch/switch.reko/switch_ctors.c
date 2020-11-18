@@ -4,7 +4,7 @@
 
 #include "switch.h"
 
-Eq_n g_t10838 = 
+Eq_n g_t10838 = // 00010838
 	{
 		&g_tFFFFFFFF,
 	};

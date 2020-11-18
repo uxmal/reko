@@ -8,11 +8,5 @@ Eq_n g_t0001;
 Eq_n g_t0002;
 Eq_n g_t0004;
 Eq_n g_t0020;
-byte g_b15555555;
-byte g_b19999999;
-byte g_b300AC138;
-byte g_bD832D703;
-Eq_n g_tFFFF0698;
-byte g_bFFFF9B5E;
-byte g_bFFFFFFFE;
-byte g_bFFFFFFFF;
+byte g_bFFFFFFFE; // FFFFFFFE
+byte g_bFFFFFFFF; // FFFFFFFF

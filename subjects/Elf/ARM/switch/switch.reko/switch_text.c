@@ -11,8 +11,8 @@ void _start(int32 dwArg00, void (* ptrArg08)(), void (* ptrArg0C)(), void * ptrA
 	abort();
 }
 
-int32 (* g_ptr8364)(int32 r0, char ** r1, char ** r2) = main;
-void (* g_ptr8368)() = __libc_csu_init;
+int32 (* g_ptr8364)(int32 r0, char ** r1, char ** r2) = main; // 00008364
+void (* g_ptr8368)() = __libc_csu_init; // 00008368
 // 0000836C: Register word32 call_gmon_start()
 // Called from:
 //      _init
@@ -28,8 +28,8 @@ word32 call_gmon_start()
 	return r10_n;
 }
 
-int32 g_dw8394 = 0x000084C8;
-int32 g_dw8398 = 20;
+int32 g_dw8394 = 0x000084C8; // 00008394
+int32 g_dw8398 = 20; // 00008398
 // 0000839C: void __do_global_dtors_aux()
 // Called from:
 //      _fini
@@ -52,8 +52,8 @@ void __do_global_dtors_aux()
 	}
 }
 
-byte * g_ptr83F4 = &g_b10870;
-<anonymous> *** g_ptr83F8 = &g_ptr10764;
+byte * g_ptr83F4 = &g_b10870; // 000083F4
+<anonymous> *** g_ptr83F8 = &g_ptr10764; // 000083F8
 // 000083FC: void call___do_global_dtors_aux()
 void call___do_global_dtors_aux()
 {
@@ -72,8 +72,8 @@ void frame_dummy()
 	fn00000000();
 }
 
-word32 * g_ptr8424 = &g_dw10844;
-word32 g_dw8428 = 0x00;
+word32 * g_ptr8424 = &g_dw10844; // 00008424
+word32 g_dw8428 = 0x00; // 00008428
 // 0000842C: void call_frame_dummy()
 void call_frame_dummy()
 {
@@ -257,8 +257,8 @@ void __libc_csu_init()
 	r1_n[r4_n]();
 }
 
-int32 g_dw86A8 = 24;
-int32 g_dw86AC = 28;
+int32 g_dw86A8 = 24; // 000086A8
+int32 g_dw86AC = 28; // 000086AC
 // 000086B0: void __libc_csu_fini()
 void __libc_csu_fini()
 {
@@ -272,9 +272,9 @@ void __libc_csu_fini()
 		r1_n[r4_n]();
 }
 
-int32 g_dw8700 = 0x00008180;
-int32 g_dw8704 = 32;
-int32 g_dw8708 = 36;
+int32 g_dw8700 = 0x00008180; // 00008700
+int32 g_dw8704 = 32; // 00008704
+int32 g_dw8708 = 36; // 00008708
 // 0000870C: Register word32 __do_global_ctors_aux()
 // Called from:
 //      _init
@@ -291,7 +291,7 @@ word32 __do_global_ctors_aux()
 	return r4_n;
 }
 
-struct Eq_n * g_ptr8740 = &g_t10838;
+struct Eq_n * g_ptr8740 = &g_t10838; // 00008740
 // 00008744: void call___do_global_ctors_aux()
 void call___do_global_ctors_aux()
 {

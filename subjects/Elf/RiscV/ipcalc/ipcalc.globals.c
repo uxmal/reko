@@ -4,11 +4,8 @@
 
 #include "ipcalc.h"
 
-byte g_b0000;
-int32 g_dw0020;
-int32 g_dw0080;
+byte g_b0000; // 0000000000000000
+int32 g_dw0020; // 0000000000000020
+int32 g_dw0080; // 0000000000000080
 Eq_n g_t0100;
-<anonymous> g_t3F100;
-Eq_n g_t69662074;
-Eq_n g_t69662074;
-void g_vFFFFFFFF;
+void g_vFFFFFFFF; // FFFFFFFFFFFFFFFF

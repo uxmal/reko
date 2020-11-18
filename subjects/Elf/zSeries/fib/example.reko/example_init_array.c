@@ -4,4 +4,4 @@
 
 #include "example.h"
 
-<anonymous> * g_ptr1E08 = &g_t0E80;
+<anonymous> * g_ptr1E08 = &g_t0E80; // 0000000000001E08

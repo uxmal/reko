@@ -4,14 +4,14 @@
 
 #include "test.h"
 
-ui32 g_dw13030 = 0xB064;
-ui32 g_dw13034 = ~0xB064;
-byte g_b13038 = 0x00;
-Eq_n g_t1303C = 
+ui32 g_dw13030 = 0xB064; // 00013030
+ui32 g_dw13034 = ~0xB064; // 00013034
+byte g_b13038 = 0x00; // 00013038
+Eq_n g_t1303C = // 0001303C
 	{
 		null
 	};
-Eq_n g_t13040 = 
+Eq_n g_t13040 = // 00013040
 	{
 		null
 	};

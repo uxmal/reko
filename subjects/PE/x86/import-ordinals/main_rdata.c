@@ -4,8 +4,8 @@
 
 #include "main.h"
 
-<anonymous> * g_ptr4020D4 = &g_t401731;
-Eq_n g_t4020D8 = null;
-Eq_n g_t4020E0 = null;
-Eq_n g_t4020E4 = null;
-Eq_n g_t4020F0 = null;
+<anonymous> * g_ptr4020D4 = &g_t401731; // 004020D4
+Eq_n g_t4020D8 = null; // 004020D8
+Eq_n g_t4020E0 = null; // 004020E0
+Eq_n g_t4020E4 = null; // 004020E4
+Eq_n g_t4020F0 = null; // 004020F0

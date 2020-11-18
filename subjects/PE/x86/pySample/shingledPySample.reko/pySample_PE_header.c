@@ -4,7 +4,7 @@
 
 #include "pySample.h"
 
-Eq_n g_t10000000 = 
+Eq_n g_t10000000 = // 10000000
 	{
 		23117,
 		0xF0,

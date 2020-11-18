@@ -318,22 +318,22 @@ Eq_n fn00001390(Eq_n d0)
 	return fn000013FC(fn00002B40(fn00002B40(fn00002B40(d0, &g_t13E4), &g_t13E8), &g_t13EC), &g_b13F4);
 }
 
-struct Eq_n g_t13E4 = 
+struct Eq_n g_t13E4 = // 000013E4
 	{
 		0x25,
 		100,
 	};
-struct Eq_n g_t13E8 = 
+struct Eq_n g_t13E8 = // 000013E8
 	{
 		0x25,
 		100,
 	};
-struct Eq_n g_t13EC = 
+struct Eq_n g_t13EC = // 000013EC
 	{
 		0x25,
 		100,
 	};
-byte g_b13F4 = 0x25;
+byte g_b13F4 = 0x25; // 000013F4
 // 000013FC: Register Eq_n fn000013FC(Register Eq_n d0, Stack (ptr32 byte) dwArg04)
 // Called from:
 //      fn00001390
@@ -889,7 +889,7 @@ l00001B84:
 	return d0_n;
 }
 
-byte g_b1D6C = 0x25;
+byte g_b1D6C = 0x25; // 00001D6C
 // 00001D98: Register uint32 fn00001D98(Stack Eq_n dwArg04, Stack (ptr32 Eq_n) dwArg08, Register out (ptr32 ui32) a0Out, Register out ptr32 a5Out)
 // Called from:
 //      fn00001418
@@ -1666,7 +1666,7 @@ Eq_n fn00002700(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10)
 	return d1_n;
 }
 
-Eq_n g_t2815 = 
+Eq_n g_t2815 = // 00002815
 	{
 		
 		{
@@ -2775,20 +2775,20 @@ word32 fn00003D2C()
 	return a5;
 }
 
-struct Eq_n * g_ptr3D70 = null;
-struct Eq_n * g_ptr3D74 = &g_t4000;
-word32 g_dw3D78 = 0x00;
-struct Eq_n * g_ptr3D7C = &g_t10202;
-struct Eq_n * g_ptr3D80 = &g_t3030303;
-ui32 g_dw3D84 = 0x04040404;
-ui32 g_dw3D88 = 0x04040404;
-ui32 g_dw3D8C = 0x05050505;
-word32 g_dw3D98 = 0x05050505;
-ptr32 g_ptr3D9C = 0x06060606;
-int32 g_dw3DA0 = 0x06060606;
-struct Eq_n * g_ptr3DA4 = &g_t6060606;
-struct Eq_n * g_ptr3DA8 = &g_t6060606;
-Eq_n g_t3DAC = 
+struct Eq_n * g_ptr3D70 = null; // 00003D70
+struct Eq_n * g_ptr3D74 = &g_t4000; // 00003D74
+word32 g_dw3D78 = 0x00; // 00003D78
+struct Eq_n * g_ptr3D7C = &g_t10202; // 00003D7C
+struct Eq_n * g_ptr3D80 = &g_t3030303; // 00003D80
+ui32 g_dw3D84 = 0x04040404; // 00003D84
+ui32 g_dw3D88 = 0x04040404; // 00003D88
+ui32 g_dw3D8C = 0x05050505; // 00003D8C
+word32 g_dw3D98 = 0x05050505; // 00003D98
+ptr32 g_ptr3D9C = 0x06060606; // 00003D9C
+int32 g_dw3DA0 = 0x06060606; // 00003DA0
+struct Eq_n * g_ptr3DA4 = &g_t6060606; // 00003DA4
+struct Eq_n * g_ptr3DA8 = &g_t6060606; // 00003DA8
+Eq_n g_t3DAC = // 00003DAC
 	{
 		
 		{

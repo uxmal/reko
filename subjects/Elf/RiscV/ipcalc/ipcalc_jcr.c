@@ -4,4 +4,4 @@
 
 #include "ipcalc.h"
 
-word64 g_qw19E28 = 0x00;
+word64 g_qw19E28 = 0x00; // 0000000000019E28

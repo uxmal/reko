@@ -4,4 +4,4 @@
 
 #include "ais3_crackme.h"
 
-word64 g_qw600E08 = 0x00;
+word64 g_qw600E08 = 0x00; // 0000000000600E08

@@ -4,9 +4,9 @@
 
 #include "example.h"
 
-Eq_n g_t08C8 = 
+Eq_n g_t08C8 = // 00000000000008C8
 	{
 		0x0E
 	};
-byte g_b08D0 = 0x00;
-ci8 g_b08D8 = 0x00;
+byte g_b08D0 = 0x00; // 00000000000008D0
+ci8 g_b08D8 = 0x00; // 00000000000008D8

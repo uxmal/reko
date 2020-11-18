@@ -4,4 +4,4 @@
 
 #include "redir.h"
 
-<anonymous> * g_ptr10000860 = null;
+<anonymous> * g_ptr10000860 = null; // 10000860

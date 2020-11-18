@@ -4,4 +4,4 @@
 
 #include "a.h"
 
-word32 g_dw8000271C = 0x00;
+word32 g_dw8000271C = 0x00; // 8000271C

@@ -4,6 +4,6 @@
 
 #include "ais3_crackme.h"
 
-byte g_a601020[] = 
+byte g_a601020[] = // 0000000000601020
 	{
 	};

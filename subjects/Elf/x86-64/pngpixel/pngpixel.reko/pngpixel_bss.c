@@ -4,5 +4,5 @@
 
 #include "pngpixel.h"
 
-FILE * g_ptr602100 = &g_tC04200;
-byte g_b602108 = 0x00;
+FILE * g_ptr602100 = &g_tC04200; // 0000000000602100
+byte g_b602108 = 0x00; // 0000000000602108

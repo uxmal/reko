@@ -4,10 +4,10 @@
 
 #include "pySample.h"
 
-ui32 g_dw10003000 = 0xBB40E64E;
-ui32 g_dw10003004 = 1153374641;
-Eq_n g_t10003008 = ~0x00;
-PyMethodDef methods[5] = 
+ui32 g_dw10003000 = 0xBB40E64E; // 10003000
+ui32 g_dw10003004 = 1153374641; // 10003004
+Eq_n g_t10003008 = ~0x00; // 10003008
+PyMethodDef methods[5] = // 10003010
 	{
 		
 		{
@@ -45,10 +45,10 @@ PyMethodDef methods[5] =
 			null,
 		},
 	};
-int32 g_dw10003070 = 0;
-Eq_n g_t100033A4 = 0x00;
-word32 g_dw100033A8 = 0x00;
-Eq_n g_t100033AC = 0;
-Eq_n g_t100033B0 = 0x00;
-Eq_n g_t100033B4 = 0x00;
-<anonymous> * g_ptr100033B8 = null;
+int32 g_dw10003070 = 0; // 10003070
+Eq_n g_t100033A4 = 0x00; // 100033A4
+word32 g_dw100033A8 = 0x00; // 100033A8
+Eq_n g_t100033AC = 0; // 100033AC
+Eq_n g_t100033B0 = 0x00; // 100033B0
+Eq_n g_t100033B4 = 0x00; // 100033B4
+<anonymous> * g_ptr100033B8 = null; // 100033B8

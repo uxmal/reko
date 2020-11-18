@@ -26,8 +26,7 @@ void fn0000000000400560(word32 esi, word32 edi)
 	calloc((int64) edi, (int64) esi);
 }
 
-Eq_n g_t400660 = Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char))))
-;
+Eq_n g_t400660 = ??/* Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char)))) */ ; // 0000000000400660
 // 00000000004006F0: void fn00000000004006F0()
 void fn00000000004006F0()
 {
@@ -43,7 +42,5 @@ void fn0000000000400700()
 {
 }
 
-Eq_n g_t400710 = Unexpected function type (fn void ())
-;
-Eq_n g_t400780 = Unexpected function type (fn void ())
-;
+Eq_n g_t400710 = ??/* Unexpected function type (fn void ()) */ ; // 0000000000400710
+Eq_n g_t400780 = ??/* Unexpected function type (fn void ()) */ ; // 0000000000400780

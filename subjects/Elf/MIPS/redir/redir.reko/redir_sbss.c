@@ -4,8 +4,8 @@
 
 #include "redir.h"
 
-FILE * g_ptr10000AA8 = null;
-Eq_n g_t10000AAC = 
+FILE * g_ptr10000AA8 = null; // 10000AA8
+Eq_n g_t10000AAC = // 10000AAC
 	{
 		null
 	};

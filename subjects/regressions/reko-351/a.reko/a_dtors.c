@@ -4,6 +4,6 @@
 
 #include "a.h"
 
-<anonymous> * g_a80002714[] = 
+<anonymous> * g_a80002714[] = // 80002714
 	{
 	};

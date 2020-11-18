@@ -4,5 +4,5 @@
 
 #include "Executable.h"
 
-word16 g_w400000 = 23117;
-struct Eq_n * g_ptr40003C = &g_t0100;
+word16 g_w400000 = 23117; // 00400000
+struct Eq_n * g_ptr40003C = &g_t0100; // 0040003C

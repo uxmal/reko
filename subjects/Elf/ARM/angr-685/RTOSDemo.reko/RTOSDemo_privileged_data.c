@@ -4,7 +4,7 @@
 
 #include "RTOSDemo.h"
 
-Eq_n g_t200000C4 = 
+Eq_n g_t200000C4 = // 200000C4
 	{
 		0x00,
 		null,
@@ -14,4 +14,4 @@ Eq_n g_t200000C4 =
 		0x00,
 		0x00,
 	};
-struct Eq_n * g_ptr200000C8 = null;
+struct Eq_n * g_ptr200000C8 = null; // 200000C8

@@ -11,7 +11,7 @@ void NmiSR()
 		;
 }
 
-Eq_n g_t8001 = 
+Eq_n g_t8001 = // 00008001
 	{
 		&g_tFEBF00E7,
 		0x08BF00E7,
@@ -61,8 +61,8 @@ void ResetISR(ptr32 cpsr)
 	Main(cpsr);
 }
 
-word32 * g_ptr802C = &g_dw20000160;
-word32 * g_ptr8030 = &g_dw20000880;
+word32 * g_ptr802C = &g_dw20000160; // 0000802C
+word32 * g_ptr8030 = &g_dw20000880; // 00008030
 // 00008034: void raise()
 void raise()
 {
@@ -84,7 +84,7 @@ void vPrintTask(Eq_n lr, ptr32 cpsr)
 	}
 }
 
-union Eq_n * g_ptr8064 = &g_t20000880;
+union Eq_n * g_ptr8064 = &g_t20000880; // 00008064
 // 00008068: void vCheckTask(Register Eq_n lr, Register ptr32 cpsr)
 void vCheckTask(Eq_n lr, ptr32 cpsr)
 {
@@ -97,7 +97,7 @@ void vCheckTask(Eq_n lr, ptr32 cpsr)
 	}
 }
 
-union Eq_n * g_ptr809C = &g_t20000880;
+union Eq_n * g_ptr809C = &g_t20000880; // 0000809C
 // 000080A0: void Main(Register ptr32 cpsr)
 // Called from:
 //      ResetISR
@@ -114,12 +114,12 @@ void Main(ptr32 cpsr)
 		;
 }
 
-word32 * g_ptr80F0 = &g_dw20000880;
-word32 g_dw80F4 = 0xA258;
-ui32 g_dw80F8 = 0x8069;
-word32 g_dw80FC = 0xA260;
-ui32 g_dw8100 = 0x8039;
-byte * g_ptr8104 = &g_bA268;
+word32 * g_ptr80F0 = &g_dw20000880; // 000080F0
+word32 g_dw80F4 = 0xA258; // 000080F4
+ui32 g_dw80F8 = 0x8069; // 000080F8
+word32 g_dw80FC = 0xA260; // 000080FC
+ui32 g_dw8100 = 0x8039; // 00008100
+byte * g_ptr8104 = &g_bA268; // 00008104
 // 00008108: void vUART_ISR(Register Eq_n lr, Register ptr32 cpsr)
 void vUART_ISR(Eq_n lr, ptr32 cpsr)
 {
@@ -146,10 +146,10 @@ void vUART_ISR(Eq_n lr, ptr32 cpsr)
 		*g_ptr8180 = 0x10000000;
 }
 
-struct Eq_n * g_ptr8174 = &g_t4000C000;
-ui32 * g_ptr8178 = &g_dw4000C018;
-byte * g_ptr817C = &g_b2000022C;
-word32 * g_ptr8180 = &g_dwE000ED04;
+struct Eq_n * g_ptr8174 = &g_t4000C000; // 00008174
+ui32 * g_ptr8178 = &g_dw4000C018; // 00008178
+byte * g_ptr817C = &g_b2000022C; // 0000817C
+word32 * g_ptr8180 = &g_dwE000ED04; // 00008180
 // 00008184: Register word32 vSetErrorLED(Register ptr32 cpsr)
 // Called from:
 //      prvSetAndCheckRegisters
@@ -213,10 +213,10 @@ void PDCInit()
 	GPIOPinWrite((word32 (*)[]) 0x40004000, 0x08, 0x08);
 }
 
-uint32 g_dw828C = 0x10000010;
-uint32 g_dw8290 = 0x20000001;
-struct Eq_n * g_ptr8294 = &g_t40008000;
-uint32 g_dw8298 = 1000000;
+uint32 g_dw828C = 0x10000010; // 0000828C
+uint32 g_dw8290 = 0x20000001; // 00008290
+struct Eq_n * g_ptr8294 = &g_t40008000; // 00008294
+uint32 g_dw8298 = 1000000; // 00008298
 // 0000829C: Register (ptr32 Eq_n) PDCWrite(Register (ptr32 Eq_n) r0, Register ui32 r1)
 // Called from:
 //      vParTestInitialise
@@ -232,7 +232,7 @@ struct Eq_n * PDCWrite(struct Eq_n * r0, ui32 r1)
 	return r4_n;
 }
 
-struct Eq_n * g_ptr82CC = &g_t40008000;
+struct Eq_n * g_ptr82CC = &g_t40008000; // 000082CC
 // 000082D0: void vListInitialise(Register (ptr32 Eq_n) r0)
 // Called from:
 //      xQueueGenericReset
@@ -577,7 +577,7 @@ void xTaskNotifyStateClear(struct Eq_n * r0, ptr32 cpsr)
 	vPortExitCritical(cpsr);
 }
 
-struct Eq_n * g_ptr8560 = &g_t200000C4;
+struct Eq_n * g_ptr8560 = &g_t200000C4; // 00008560
 // 00008564: Register word32 xPortRaisePrivilege(Register ptr32 cpsr)
 // Called from:
 //      vPortEnterCritical
@@ -662,7 +662,7 @@ bool vPortEnterCritical(ptr32 cpsr)
 	return C_n;
 }
 
-word32 * g_ptr85AC = &g_dw200000BC;
+word32 * g_ptr85AC = &g_dw200000BC; // 000085AC
 // 000085B0: FlagGroup bool vPortExitCritical(Register ptr32 cpsr)
 // Called from:
 //      prvUnlockQueue
@@ -698,7 +698,7 @@ bool vPortExitCritical(ptr32 cpsr)
 	return Z_n;
 }
 
-word32 * g_ptr85D8 = &g_dw200000BC;
+word32 * g_ptr85D8 = &g_dw200000BC; // 000085D8
 // 000085DC: void vParTestInitialise()
 void vParTestInitialise()
 {
@@ -707,7 +707,7 @@ void vParTestInitialise()
 	PDCWrite(&g_dw0005, r1_n);
 }
 
-byte * g_ptr85F0 = &g_b200007F4;
+byte * g_ptr85F0 = &g_b200007F4; // 000085F0
 // 000085F4: Register up32 vParTestSetLED(Register up32 r0, Register word32 r1, Register ptr32 cpsr)
 // Called from:
 //      vSetErrorLED
@@ -729,7 +729,7 @@ up32 vParTestSetLED(up32 r0, word32 r1, ptr32 cpsr)
 	return r0_n;
 }
 
-byte * g_ptr862C = &g_b200007F4;
+byte * g_ptr862C = &g_b200007F4; // 0000862C
 // 00008630: void vParTestToggleLED(Register up32 r0, Register ptr32 cpsr)
 // Called from:
 //      prvFlashCoRoutine
@@ -750,7 +750,7 @@ void vParTestToggleLED(up32 r0, ptr32 cpsr)
 	MPU_xTaskResumeAll(cpsr);
 }
 
-byte * g_ptr866C = &g_b200007F4;
+byte * g_ptr866C = &g_b200007F4; // 0000866C
 // 00008670: void prvFlashCoRoutine(Register (ptr32 Eq_n) r0, Register Eq_n r7, Register Eq_n lr, Register ptr32 cpsr)
 void prvFlashCoRoutine(struct Eq_n * r0, Eq_n r7, Eq_n lr, ptr32 cpsr)
 {
@@ -799,7 +799,7 @@ l00008690:
 	r0->w0034 = 0x01C3;
 }
 
-Eq_n g_t8671 = 
+Eq_n g_t8671 = // 00008671
 	{
 		&g_t828E83B5,
 		3790975920,
@@ -825,8 +825,8 @@ Eq_n g_t8671 =
 		~0x51,
 		222,
 	};
-union Eq_n * g_ptr86E0 = &g_t200007F8;
-word32 * g_ptr86E4 = &g_dw200000C0;
+union Eq_n * g_ptr86E0 = &g_t200007F8; // 000086E0
+word32 * g_ptr86E4 = &g_dw200000C0; // 000086E4
 // 000086E8: void prvFixedDelayCoRoutine(Register (ptr32 Eq_n) r0, Register ui32 r1, Register Eq_n r7, Register Eq_n lr, Register ptr32 cpsr)
 void prvFixedDelayCoRoutine(struct Eq_n * r0, ui32 r1, Eq_n r7, Eq_n lr, ptr32 cpsr)
 {
@@ -880,7 +880,7 @@ l00008702:
 	goto l0000875E;
 }
 
-Eq_n g_t86E9 = 
+Eq_n g_t86E9 = // 000086E9
 	{
 		&g_t828E83B5,
 		~0x3E0A4C4F,
@@ -906,9 +906,9 @@ Eq_n g_t86E9 =
 		0xB0,
 		0x10,
 	};
-Eq_n (* g_ptr8778)[] = &g_aA284;
-union Eq_n * g_ptr877C = &g_t200007F8;
-word32 * g_ptr8780 = &g_dw200000C0;
+Eq_n (* g_ptr8778)[] = &g_aA284; // 00008778
+union Eq_n * g_ptr877C = &g_t200007F8; // 0000877C
+word32 * g_ptr8780 = &g_dw200000C0; // 00008780
 // 00008784: void vStartFlashCoRoutines(Register (ptr32 Eq_n) r0, Register ptr32 cpsr)
 void vStartFlashCoRoutines(struct Eq_n * r0, ptr32 cpsr)
 {
@@ -932,9 +932,9 @@ void vStartFlashCoRoutines(struct Eq_n * r0, ptr32 cpsr)
 	xCoRoutineCreate(r0_n, 0x01, null, cpsr);
 }
 
-word32 * g_ptr87C4 = &g_dw200007F8;
-struct Eq_n * g_ptr87C8 = &g_t86E9;
-struct Eq_n * g_ptr87CC = &g_t8671;
+word32 * g_ptr87C4 = &g_dw200007F8; // 000087C4
+struct Eq_n * g_ptr87C8 = &g_t86E9; // 000087C8
+struct Eq_n * g_ptr87CC = &g_t8671; // 000087CC
 // 000087D0: void xAreFlashCoRoutinesStillRunning()
 void xAreFlashCoRoutinesStillRunning()
 {
@@ -1349,7 +1349,7 @@ void xCoRoutineCreate(struct Eq_n * r0, uint32 r1, struct Eq_n * r2, ptr32 cpsr)
 	vListInsertEnd((char *) &r7_n->ptr0000 + 4 + r0_n * 0x14, &r0_n->dw0004);
 }
 
-struct Eq_n * g_ptr8EEC = &g_t200007FC;
+struct Eq_n * g_ptr8EEC = &g_t200007FC; // 00008EEC
 // 00008EF0: FlagGroup bool vCoRoutineAddToDelayedList(Register Eq_n r0, Register (ptr32 Eq_n) r1)
 // Called from:
 //      xQueueCRSend
@@ -1370,7 +1370,7 @@ bool vCoRoutineAddToDelayedList(Eq_n r0, struct Eq_n * r1)
 	return vListInsert(r1, &r1_n->dw0004 + 5);
 }
 
-struct Eq_n * g_ptr8F28 = &g_t200007FC;
+struct Eq_n * g_ptr8F28 = &g_t200007FC; // 00008F28
 // 00008F2C: Register word32 vCoRoutineSchedule(Register (ptr32 Eq_n) r0, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 lr, Register ptr32 cpsr, Register out ptr32 cpsrOut)
 // Called from:
 //      vApplicationIdleHook
@@ -1497,9 +1497,9 @@ l00009046:
 	return lr_n;
 }
 
-struct Eq_n * g_ptr9088 = &g_t200007FC;
-word32 g_dw908C = 0x20000808;
-word32 g_dw9090 = 0x20000800;
+struct Eq_n * g_ptr9088 = &g_t200007FC; // 00009088
+word32 g_dw908C = 0x20000808; // 0000908C
+word32 g_dw9090 = 0x20000800; // 00009090
 // 00009094: FlagGroup bool xCoRoutineRemoveFromEventList(Register (ptr32 Eq_n) r0, Register out ptr32 r0Out)
 // Called from:
 //      xQueueCRSend
@@ -1519,7 +1519,7 @@ bool xCoRoutineRemoveFromEventList(struct Eq_n * r0, ptr32 & r0Out)
 	return Z_n;
 }
 
-struct Eq_n ** g_ptr90C0 = &g_ptr200007FC;
+struct Eq_n ** g_ptr90C0 = &g_ptr200007FC; // 000090C0
 // 000090C4: void GPIOGetIntNumber(Register up32 r0)
 void GPIOGetIntNumber(up32 r0)
 {
@@ -1543,8 +1543,8 @@ void GPIOGetIntNumber(up32 r0)
 	}
 }
 
-up32 g_dw9104 = 0x40006000;
-up32 g_dw9108 = 0x40007000;
+up32 g_dw9104 = 0x40006000; // 00009104
+up32 g_dw9108 = 0x40007000; // 00009108
 // 0000910C: void GPIODirModeSet(Register (ptr32 Eq_n) r0, Register ui32 r1, Register ui32 r2)
 // Called from:
 //      PDCInit
@@ -1735,8 +1735,8 @@ void GPIOPortIntRegister(up32 r0, word32 r1)
 	}
 }
 
-up32 g_dw93A8 = 0x40006000;
-up32 g_dw93AC = 0x40007000;
+up32 g_dw93A8 = 0x40006000; // 000093A8
+up32 g_dw93AC = 0x40007000; // 000093AC
 // 000093B0: void GPIOPortIntUnregister(Register up32 r0)
 void GPIOPortIntUnregister(up32 r0)
 {
@@ -1784,8 +1784,8 @@ void GPIOPortIntUnregister(up32 r0)
 	}
 }
 
-up32 g_dw9444 = 0x40006000;
-up32 g_dw9448 = 0x40007000;
+up32 g_dw9444 = 0x40006000; // 00009444
+up32 g_dw9448 = 0x40007000; // 00009448
 // 0000944C: void GPIOPinRead()
 void GPIOPinRead()
 {
@@ -1898,8 +1898,8 @@ void IntRegister(ui32 r0, word32 r1)
 	r4_n[r0] = r1;
 }
 
-word32 (** g_ptr9530)[] = &g_ptrE000ED08;
-word32 (* g_ptr9534)[] = &g_a20000000;
+word32 (** g_ptr9530)[] = &g_ptrE000ED08; // 00009530
+word32 (* g_ptr9534)[] = &g_a20000000; // 00009534
 // 00009538: void IntUnregister(Register ui32 r0)
 // Called from:
 //      GPIOPortIntUnregister
@@ -1912,16 +1912,16 @@ void IntUnregister(ui32 r0)
 	g_ptr9544[r0] = g_dw9548;
 }
 
-word32 (* g_ptr9544)[] = &g_a20000000;
-word32 g_dw9548 = 0x94F9;
+word32 (* g_ptr9544)[] = &g_a20000000; // 00009544
+word32 g_dw9548 = 0x94F9; // 00009548
 // 0000954C: void IntPriorityGroupingSet(Register ui32 r0)
 void IntPriorityGroupingSet(ui32 r0)
 {
 	*g_ptr9564 = g_ptr9560[r0] | 0x05F80000 | 0x00020000;
 }
 
-ui32 (* g_ptr9560)[] = &g_aA2A4;
-ui32 * g_ptr9564 = &g_dwE000ED0C;
+ui32 (* g_ptr9560)[] = &g_aA2A4; // 00009560
+ui32 * g_ptr9564 = &g_dwE000ED0C; // 00009564
 // 00009568: void IntPriorityGroupingGet()
 void IntPriorityGroupingGet()
 {
@@ -1939,8 +1939,8 @@ void IntPriorityGroupingGet()
 	}
 }
 
-ui32 * g_ptr9588 = &g_dwE000ED0C;
-word32 * g_ptr958C = &g_dwA2A8;
+ui32 * g_ptr9588 = &g_dwE000ED0C; // 00009588
+word32 * g_ptr958C = &g_dwA2A8; // 0000958C
 // 00009590: void IntPrioritySet(Register ui32 r0, Register ui32 r1)
 void IntPrioritySet(ui32 r0, ui32 r1)
 {
@@ -1949,7 +1949,7 @@ void IntPrioritySet(ui32 r0, ui32 r1)
 	*r4_n = r1 << r0_n | *r4_n & ~(0xFF << r0_n);
 }
 
-ptr32 g_ptr95B8 = 0xA2A4;
+ptr32 g_ptr95B8 = 0xA2A4; // 000095B8
 // 000095BC: void IntPriorityGet()
 void IntPriorityGet()
 {
@@ -1988,9 +1988,9 @@ void IntEnable(up32 r0)
 		*g_ptr962C = 0x01 << r0 - 0x10;
 }
 
-ui32 * g_ptr962C = &g_dwE000E100;
-ui32 * g_ptr9630 = &g_dwE000E010;
-ui32 * g_ptr9634 = &g_dwE000ED24;
+ui32 * g_ptr962C = &g_dwE000E100; // 0000962C
+ui32 * g_ptr9630 = &g_dwE000E010; // 00009630
+ui32 * g_ptr9634 = &g_dwE000ED24; // 00009634
 // 00009638: void IntDisable(Register up32 r0)
 // Called from:
 //      GPIOPortIntUnregister
@@ -2024,9 +2024,9 @@ void IntDisable(up32 r0)
 		*g_ptr9688 = 0x01 << r0 - 0x10;
 }
 
-ui32 * g_ptr9688 = &g_dwE000E180;
-ui32 * g_ptr968C = &g_dwE000E010;
-ui32 * g_ptr9690 = &g_dwE000ED24;
+ui32 * g_ptr9688 = &g_dwE000E180; // 00009688
+ui32 * g_ptr968C = &g_dwE000E010; // 0000968C
+ui32 * g_ptr9690 = &g_dwE000ED24; // 00009690
 // 00009694: void OSRAMDelay(Register word32 r0)
 // Called from:
 //      OSRAMWriteArray
@@ -2054,7 +2054,7 @@ void OSRAMWriteFirst(ui32 r0)
 	I2CMasterControl(r4_n, 0x03);
 }
 
-struct Eq_n * g_ptr96C0 = &g_t40020000;
+struct Eq_n * g_ptr96C0 = &g_t40020000; // 000096C0
 // 000096C4: void OSRAMWriteArray(Register (ptr32 Eq_n) r0, Register int32 r1)
 // Called from:
 //      OSRAMStringDraw
@@ -2081,8 +2081,8 @@ void OSRAMWriteArray(struct Eq_n * r0, int32 r1)
 	} while (r6_n != r5_n);
 }
 
-word32 * g_ptr96FC = &g_dw2000087C;
-struct Eq_n * g_ptr9700 = &g_t40020000;
+word32 * g_ptr96FC = &g_dw2000087C; // 000096FC
+struct Eq_n * g_ptr9700 = &g_t40020000; // 00009700
 // 00009704: void OSRAMWriteByte(Register ui32 r0)
 // Called from:
 //      OSRAMStringDraw
@@ -2100,8 +2100,8 @@ void OSRAMWriteByte(ui32 r0)
 	I2CMasterControl(r0_n, 0x01);
 }
 
-struct Eq_n * g_ptr9730 = &g_t40020000;
-word32 * g_ptr9734 = &g_dw2000087C;
+struct Eq_n * g_ptr9730 = &g_t40020000; // 00009730
+word32 * g_ptr9734 = &g_dw2000087C; // 00009734
 // 00009738: void OSRAMWriteFinal(Register ui32 r0)
 // Called from:
 //      OSRAMStringDraw
@@ -2127,8 +2127,8 @@ void OSRAMWriteFinal(ui32 r0)
 	OSRAMDelay(r0_n);
 }
 
-struct Eq_n * g_ptr9778 = &g_t40020000;
-word32 * g_ptr977C = &g_dw2000087C;
+struct Eq_n * g_ptr9778 = &g_t40020000; // 00009778
+word32 * g_ptr977C = &g_dw2000087C; // 0000977C
 // 00009780: void OSRAMClear()
 // Called from:
 //      vPrintTask
@@ -2149,8 +2149,8 @@ void OSRAMClear()
 	OSRAMWriteFinal(r4_n);
 }
 
-struct Eq_n * g_ptr97C4 = &g_tA2F4;
-struct Eq_n * g_ptr97C8 = &g_tA2FC;
+struct Eq_n * g_ptr97C4 = &g_tA2F4; // 000097C4
+struct Eq_n * g_ptr97C8 = &g_tA2FC; // 000097C8
 // 000097CC: void OSRAMStringDraw(Register (ptr32 byte) r0, Register uint32 r1, Register ui32 r2)
 // Called from:
 //      ResetISR
@@ -2198,8 +2198,8 @@ l00009846:
 	OSRAMWriteFinal(r0_n);
 }
 
-word32 g_dw9878 = 0xA304;
-int32 g_dw987C = 41716;
+word32 g_dw9878 = 0xA304; // 00009878
+int32 g_dw987C = 41716; // 0000987C
 // 00009880: void OSRAMImageDraw(Register (ptr32 Eq_n) r0, Register word32 r1, Register word32 r2, Register word32 r3, Stack word32 dwArg00)
 void OSRAMImageDraw(struct Eq_n * r0, word32 r1, word32 r2, word32 r3, word32 dwArg00)
 {
@@ -2258,11 +2258,11 @@ void OSRAMInit(word32 r0)
 	OSRAMClear();
 }
 
-uint32 g_dw9960 = 0x20000002;
-struct Eq_n * g_ptr9964 = &g_t40005000;
-struct Eq_n * g_ptr9968 = &g_t40020000;
-word32 * g_ptr996C = &g_dw2000087C;
-word32 g_dw9970 = 41716;
+uint32 g_dw9960 = 0x20000002; // 00009960
+struct Eq_n * g_ptr9964 = &g_t40005000; // 00009964
+struct Eq_n * g_ptr9968 = &g_t40020000; // 00009968
+word32 * g_ptr996C = &g_dw2000087C; // 0000996C
+word32 g_dw9970 = 41716; // 00009970
 // 00009974: void OSRAMDisplayOn()
 void OSRAMDisplayOn()
 {
@@ -2286,7 +2286,7 @@ void OSRAMDisplayOn()
 	}
 }
 
-word32 g_dw99BC = 41716;
+word32 g_dw99BC = 41716; // 000099BC
 // 000099C0: void OSRAMDisplayOff()
 void OSRAMDisplayOff()
 {
@@ -2432,14 +2432,14 @@ void SysCtlPinPresent(word32 r0)
 	(bool) C + (*g_ptr9B1C + r0) == 0x00;
 }
 
-word32 * g_ptr9B1C = &g_dw400FE018;
+word32 * g_ptr9B1C = &g_dw400FE018; // 00009B1C
 // 00009B20: void SysCtlPeripheralPresent(Register uint32 r0)
 void SysCtlPeripheralPresent(uint32 r0)
 {
 	(r0 & ~0xF0000000) + *g_ptr9B38[r0 >> 28] + (r0 >> 28 < 0x00) == 0x00;
 }
 
-word32 * (* g_ptr9B38)[] = &g_aA554;
+word32 * (* g_ptr9B38)[] = &g_aA554; // 00009B38
 // 00009B3C: void SysCtlPeripheralReset(Register uint32 r0)
 void SysCtlPeripheralReset(uint32 r0)
 {
@@ -2455,7 +2455,7 @@ void SysCtlPeripheralReset(uint32 r0)
 	*r2_n &= ~r0;
 }
 
-ptr32 g_ptr9B78 = 42324;
+ptr32 g_ptr9B78 = 42324; // 00009B78
 // 00009B7C: void SysCtlPeripheralEnable(Register uint32 r0)
 // Called from:
 //      PDCInit
@@ -2466,7 +2466,7 @@ void SysCtlPeripheralEnable(uint32 r0)
 	*r3_n = r0 & ~0xF0000000 | *r3_n;
 }
 
-ptr32 g_ptr9B94 = 42324;
+ptr32 g_ptr9B94 = 42324; // 00009B94
 // 00009B98: void SysCtlPeripheralDisable(Register uint32 r0)
 void SysCtlPeripheralDisable(uint32 r0)
 {
@@ -2474,7 +2474,7 @@ void SysCtlPeripheralDisable(uint32 r0)
 	*r2_n &= ~(r0 & ~0xF0000000);
 }
 
-ptr32 g_ptr9BB0 = 42324;
+ptr32 g_ptr9BB0 = 42324; // 00009BB0
 // 00009BB4: void SysCtlPeripheralSleepEnable(Register uint32 r0)
 void SysCtlPeripheralSleepEnable(uint32 r0)
 {
@@ -2482,7 +2482,7 @@ void SysCtlPeripheralSleepEnable(uint32 r0)
 	*r3_n = r0 & ~0xF0000000 | *r3_n;
 }
 
-ptr32 g_ptr9BCC = 42324;
+ptr32 g_ptr9BCC = 42324; // 00009BCC
 // 00009BD0: void SysCtlPeripheralSleepDisable(Register uint32 r0)
 void SysCtlPeripheralSleepDisable(uint32 r0)
 {
@@ -2490,7 +2490,7 @@ void SysCtlPeripheralSleepDisable(uint32 r0)
 	*r2_n &= ~(r0 & ~0xF0000000);
 }
 
-ptr32 g_ptr9BE8 = 42324;
+ptr32 g_ptr9BE8 = 42324; // 00009BE8
 // 00009BEC: void SysCtlPeripheralDeepSleepEnable(Register uint32 r0)
 void SysCtlPeripheralDeepSleepEnable(uint32 r0)
 {
@@ -2498,7 +2498,7 @@ void SysCtlPeripheralDeepSleepEnable(uint32 r0)
 	*r3_n = r0 & ~0xF0000000 | *r3_n;
 }
 
-ptr32 g_ptr9C04 = 42324;
+ptr32 g_ptr9C04 = 42324; // 00009C04
 // 00009C08: void SysCtlPeripheralDeepSleepDisable(Register uint32 r0)
 void SysCtlPeripheralDeepSleepDisable(uint32 r0)
 {
@@ -2506,7 +2506,7 @@ void SysCtlPeripheralDeepSleepDisable(uint32 r0)
 	*r2_n &= ~(r0 & ~0xF0000000);
 }
 
-ptr32 g_ptr9C20 = 42324;
+ptr32 g_ptr9C20 = 42324; // 00009C20
 // 00009C24: void SysCtlPeripheralClockGating(Register word32 r0)
 void SysCtlPeripheralClockGating(word32 r0)
 {
@@ -2518,7 +2518,7 @@ void SysCtlPeripheralClockGating(word32 r0)
 		*r2_n = r3_n & ~0x08000000;
 }
 
-ui32 * g_ptr9C3C = &g_dw400FE060;
+ui32 * g_ptr9C3C = &g_dw400FE060; // 00009C3C
 // 00009C40: void SysCtlIntRegister(Register word32 r0)
 void SysCtlIntRegister(word32 r0)
 {
@@ -2540,7 +2540,7 @@ void SysCtlIntEnable(ui32 r0)
 	*r2_n = r0 | *r2_n;
 }
 
-ui32 * g_ptr9C74 = &g_dw400FE054;
+ui32 * g_ptr9C74 = &g_dw400FE054; // 00009C74
 // 00009C78: void SysCtlIntDisable(Register word32 r0)
 void SysCtlIntDisable(word32 r0)
 {
@@ -2548,14 +2548,14 @@ void SysCtlIntDisable(word32 r0)
 	*r2_n &= ~r0;
 }
 
-ui32 * g_ptr9C84 = &g_dw400FE054;
+ui32 * g_ptr9C84 = &g_dw400FE054; // 00009C84
 // 00009C88: void SysCtlIntClear(Register word32 r0)
 void SysCtlIntClear(word32 r0)
 {
 	*g_ptr9C90 = r0;
 }
 
-word32 * g_ptr9C90 = &g_dw400FE058;
+word32 * g_ptr9C90 = &g_dw400FE058; // 00009C90
 // 00009C94: void SysCtlIntStatus(Register word32 r0)
 void SysCtlIntStatus(word32 r0)
 {
@@ -2569,7 +2569,7 @@ void SysCtlLDOSet(word32 r0)
 	*g_ptr9CB4 = r0;
 }
 
-word32 * g_ptr9CB4 = &g_dw400FE034;
+word32 * g_ptr9CB4 = &g_dw400FE034; // 00009CB4
 // 00009CB8: void SysCtlLDOGet()
 void SysCtlLDOGet()
 {
@@ -2581,7 +2581,7 @@ void SysCtlLDOConfigSet(word32 r0)
 	*g_ptr9CCC = r0;
 }
 
-word32 * g_ptr9CCC = &g_dw400FE160;
+word32 * g_ptr9CCC = &g_dw400FE160; // 00009CCC
 // 00009CD0: void SysCtlReset()
 void SysCtlReset()
 {
@@ -2590,8 +2590,8 @@ void SysCtlReset()
 		;
 }
 
-word32 * g_ptr9CD8 = &g_dwE000ED0C;
-word32 g_dw9CDC = 0x05FA0004;
+word32 * g_ptr9CD8 = &g_dwE000ED0C; // 00009CD8
+word32 g_dw9CDC = 0x05FA0004; // 00009CDC
 // 00009CE0: void SysCtlSleep()
 void SysCtlSleep()
 {
@@ -2607,7 +2607,7 @@ void SysCtlDeepSleep()
 	*r4_n &= ~0x04;
 }
 
-ui32 * g_ptr9D00 = &g_dwE000ED10;
+ui32 * g_ptr9D00 = &g_dwE000ED10; // 00009D00
 // 00009D04: void SysCtlResetCauseGet()
 void SysCtlResetCauseGet()
 {
@@ -2620,14 +2620,14 @@ void SysCtlResetCauseClear(word32 r0)
 	*r2_n &= ~r0;
 }
 
-ui32 * g_ptr9D1C = &g_dw400FE05C;
+ui32 * g_ptr9D1C = &g_dw400FE05C; // 00009D1C
 // 00009D20: void SysCtlBrownOutConfigSet(Register ui32 r0, Register ui32 r1)
 void SysCtlBrownOutConfigSet(ui32 r0, ui32 r1)
 {
 	*g_ptr9D2C = r0 | r1 << 0x02;
 }
 
-ui32 * g_ptr9D2C = &g_dw400FE030;
+ui32 * g_ptr9D2C = &g_dw400FE030; // 00009D2C
 // 00009D30: void SysCtlClockSet(Register ui32 r0)
 void SysCtlClockSet(ui32 r0)
 {
@@ -2673,10 +2673,10 @@ void SysCtlClockSet(ui32 r0)
 	}
 }
 
-ui32 * g_ptr9DE0 = &g_dw400FE060;
-ui32 g_dw9DE4 = ~0x004033F0;
-word32 * g_ptr9DE8 = &g_dw400FE058;
-ui32 * g_ptr9DEC = &g_dw400FE050;
+ui32 * g_ptr9DE0 = &g_dw400FE060; // 00009DE0
+ui32 g_dw9DE4 = ~0x004033F0; // 00009DE4
+word32 * g_ptr9DE8 = &g_dw400FE058; // 00009DE8
+ui32 * g_ptr9DEC = &g_dw400FE050; // 00009DEC
 // 00009DF0: Register uint32 SysCtlClockGet()
 // Called from:
 //      SSIConfig
@@ -2717,11 +2717,11 @@ uint32 SysCtlClockGet()
 	return r0_n /u ((uint32) SLICE(r3_n, ui4, 23) + 0x01);
 }
 
-ui32 * g_ptr9E54 = &g_dw400FE060;
-ptr32 g_ptr9E58 = 42324;
-ui32 * g_ptr9E5C = &g_dw400FE064;
-uint32 g_dw9E60 = 3750000;
-uint32 g_dw9E64 = 15000000;
+ui32 * g_ptr9E54 = &g_dw400FE060; // 00009E54
+ptr32 g_ptr9E58 = 42324; // 00009E58
+ui32 * g_ptr9E5C = &g_dw400FE064; // 00009E5C
+uint32 g_dw9E60 = 3750000; // 00009E60
+uint32 g_dw9E64 = 15000000; // 00009E64
 // 00009E68: void SysCtlPWMClockSet(Register ui32 r0)
 void SysCtlPWMClockSet(ui32 r0)
 {
@@ -2729,7 +2729,7 @@ void SysCtlPWMClockSet(ui32 r0)
 	*r2_n = r0 | *r2_n & ~0x001E0000;
 }
 
-ui32 * g_ptr9E78 = &g_dw400FE060;
+ui32 * g_ptr9E78 = &g_dw400FE060; // 00009E78
 // 00009E7C: void SysCtlPWMClockGet()
 void SysCtlPWMClockGet()
 {
@@ -2746,9 +2746,9 @@ void SysCtlADCSpeedSet(ui32 r0)
 	*r2_n = r0 | *r2_n & ~0x0F00;
 }
 
-ui32 * g_ptr9EB8 = &g_dw400FE100;
-ui32 * g_ptr9EBC = &g_dw400FE110;
-ui32 * g_ptr9EC0 = &g_dw400FE120;
+ui32 * g_ptr9EB8 = &g_dw400FE100; // 00009EB8
+ui32 * g_ptr9EBC = &g_dw400FE110; // 00009EBC
+ui32 * g_ptr9EC0 = &g_dw400FE120; // 00009EC0
 // 00009EC4: void SysCtlADCSpeedGet()
 void SysCtlADCSpeedGet()
 {
@@ -2765,7 +2765,7 @@ void SysCtlIOSCVerificationSet(word32 r0)
 		*r2_n = r3_n & ~0x08;
 }
 
-ui32 * g_ptr9EEC = &g_dw400FE060;
+ui32 * g_ptr9EEC = &g_dw400FE060; // 00009EEC
 // 00009EF0: void SysCtlMOSCVerificationSet(Register word32 r0)
 void SysCtlMOSCVerificationSet(word32 r0)
 {
@@ -2777,7 +2777,7 @@ void SysCtlMOSCVerificationSet(word32 r0)
 		*r2_n = r3_n & ~0x04;
 }
 
-ui32 * g_ptr9F08 = &g_dw400FE060;
+ui32 * g_ptr9F08 = &g_dw400FE060; // 00009F08
 // 00009F0C: void SysCtlPLLVerificationSet(Register word32 r0)
 void SysCtlPLLVerificationSet(word32 r0)
 {
@@ -2789,7 +2789,7 @@ void SysCtlPLLVerificationSet(word32 r0)
 		*r2_n = r3_n & ~0x0400;
 }
 
-ui32 * g_ptr9F24 = &g_dw400FE060;
+ui32 * g_ptr9F24 = &g_dw400FE060; // 00009F24
 // 00009F28: void SysCtlClkVerificationClear()
 void SysCtlClkVerificationClear()
 {
@@ -2798,7 +2798,7 @@ void SysCtlClkVerificationClear()
 	*r3_n = 0x00;
 }
 
-word32 * g_ptr9F34 = &g_dw400FE150;
+word32 * g_ptr9F34 = &g_dw400FE150; // 00009F34
 // 00009F38: void UARTParityModeSet(Register (ptr32 Eq_n) r0, Register ui32 r1)
 void UARTParityModeSet(struct Eq_n * r0, ui32 r1)
 {
@@ -2910,7 +2910,7 @@ void UARTIntRegister(word32 r0, word32 r1)
 	IntEnable(22);
 }
 
-word32 g_dwA094 = 0x4000C000;
+word32 g_dwA094 = 0x4000C000; // 0000A094
 // 0000A098: void UARTIntUnregister(Register word32 r0)
 void UARTIntUnregister(word32 r0)
 {
@@ -2918,7 +2918,7 @@ void UARTIntUnregister(word32 r0)
 	IntUnregister(22);
 }
 
-word32 g_dwA0B4 = 0x4000C000;
+word32 g_dwA0B4 = 0x4000C000; // 0000A0B4
 // 0000A0B8: void UARTIntEnable(Register (ptr32 Eq_n) r0, Register ui32 r1)
 void UARTIntEnable(struct Eq_n * r0, ui32 r1)
 {
@@ -2988,8 +2988,8 @@ void I2CMasterInit(struct Eq_n * r0, word32 r1)
 	r0->dw000C = (r0_n - 0x01 + r3_n) /u r3_n - 0x01;
 }
 
-uint32 g_dwA120 = 2000000;
-uint32 g_dwA124 = 8000000;
+uint32 g_dwA120 = 2000000; // 0000A120
+uint32 g_dwA124 = 8000000; // 0000A124
 // 0000A128: void I2CSlaveInit(Register (ptr32 Eq_n) r0, Register word32 r1)
 void I2CSlaveInit(struct Eq_n * r0, word32 r1)
 {
@@ -3178,24 +3178,24 @@ void I2CSlaveDataGet()
 {
 }
 
-byte g_bA268 = 0x53;
-Eq_n g_aA284[] = 
+byte g_bA268 = 0x53; // 0000A268
+Eq_n g_aA284[] = // 0000A284
 	{
 	};
-ui32 g_aA2A4[] = 
+ui32 g_aA2A4[] = // 0000A2A4
 	{
 	};
-word32 g_dwA2A8 = 0x0600;
-Eq_n g_tA2F4 = 
+word32 g_dwA2A8 = 0x0600; // 0000A2A8
+Eq_n g_tA2F4 = // 0000A2F4
 	{
 		0xE0,
 		0xB0,
 	};
-Eq_n g_tA2FC = 
+Eq_n g_tA2FC = // 0000A2FC
 	{
 		0x00,
 		177,
 	};
-word32 * g_aA554[] = 
+word32 * g_aA554[] = // 0000A554
 	{
 	};

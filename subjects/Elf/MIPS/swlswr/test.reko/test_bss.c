@@ -4,8 +4,8 @@
 
 #include "test.h"
 
-byte g_b10AF0 = 0x00;
-Eq_n g_t10AF4 = 
+byte g_b10AF0 = 0x00; // 00010AF0
+Eq_n g_t10AF4 = // 00010AF4
 	{
 		0
 	};

@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Core.Output
                 Indentation = 0,
                 UseTabs = false,
             };
-            var gdw = new GlobalDataWriter(program, formatter, true, sc);
+            var gdw = new GlobalDataWriter(program, formatter, true, true, sc);
             gdw.Write();
             Assert.AreEqual(sExp, sw.ToString());
         }
@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Core.Output
                 new StructureField(0x1000, PrimitiveType.Int32));
 
             RunTest(
-@"int32 g_dw1000 = -1;
+@"int32 g_dw1000 = -1; // 00001000
 ");
         }
 
@@ -124,7 +124,7 @@ namespace Reko.UnitTests.Core.Output
                 Given_Field(0x1000, PrimitiveType.Real32));
 
             RunTest(
-@"real32 g_r1000 = 1.0F;
+@"real32 g_r1000 = 1.0F; // 00001000
 ");
         }
 
@@ -139,8 +139,8 @@ namespace Reko.UnitTests.Core.Output
                 Given_Field(0x1004, PrimitiveType.Char));
 
             RunTest(
-@"real32 g_r1000 = -4.0F;
-char g_b1004 = 'H';
+@"real32 g_r1000 = -4.0F; // 00001000
+char g_b1004 = 'H'; // 00001004
 ");
         }
 
@@ -154,7 +154,7 @@ char g_b1004 = 'H';
             Given_Globals(
                 Given_Field(0x1000, new ArrayType(PrimitiveType.UInt32, 3)));
             RunTest(
-@"uint32 g_a1000[3] = 
+@"uint32 g_a1000[3] = // 00001000
 {
     0x01,
     0x0A,
@@ -175,8 +175,8 @@ char g_b1004 = 'H';
                 Given_Field(0x1008, PrimitiveType.Int32));
 
             RunTest(
-@"int32 * g_ptr1000 = &g_dw1008;
-int32 g_dw1008 = 0x04D2;
+@"int32 * g_ptr1000 = &g_dw1008; // 00001000
+int32 g_dw1008 = 0x04D2; // 00001008
 ");
         }
 
@@ -199,7 +199,7 @@ int32 g_dw1008 = 0x04D2;
             Given_Globals(
                 Given_Field(0x1000, eqStr));
             RunTest(
-@"Eq_2 g_t1000 = 
+@"Eq_2 g_t1000 = // 00001000
 {
     4,
     -0x0068,
@@ -231,17 +231,17 @@ int32 g_dw1008 = 0x04D2;
                 Given_Field(0x1008, eqLink),
                 Given_Field(0x1010, new Pointer(eqLink, 32)));
             RunTest(
-@"Eq_2 g_t1000 = 
+@"Eq_2 g_t1000 = // 00001000
 {
     1,
     &g_t1008,
 };
-Eq_2 g_t1008 = 
+Eq_2 g_t1008 = // 00001008
 {
     2,
     null,
 };
-struct Eq_2 * g_ptr1010 = &g_t1000;
+struct Eq_2 * g_ptr1010 = &g_t1000; // 00001010
 ");
         }
 
@@ -254,7 +254,7 @@ struct Eq_2 * g_ptr1010 = &g_t1000;
             Given_Globals(
                 Given_Field(0x1000, StringType.NullTerminated(PrimitiveType.Char)));
             RunTest(
-@"char g_str1000[] = ""Hello, world!"";
+@"char g_str1000[] = ""Hello, world!""; // 00001000
 ");
         }
 
@@ -277,7 +277,7 @@ struct Eq_2 * g_ptr1010 = &g_t1000;
                     { Length = 8 },
                     3)));
             RunTest(
-@"char g_a1000[3][8] = 
+@"char g_a1000[3][8] = // 00001000
 {
     ""Low"",
     ""High"",
@@ -303,8 +303,8 @@ struct Eq_2 * g_ptr1010 = &g_t1000;
                     }
                 }, 32)));
             RunTest(
-@"struct test * g_ptr1000 = &g_t1004;
-struct test g_t1004 = 
+@"struct test * g_ptr1000 = &g_t1004; // 00001000
+struct test g_t1004 = // 00001004
 {
     1,
     2,
@@ -332,7 +332,7 @@ struct test g_t1004 =
                 })));
             Given_ProcedureAtAddress(0x2000, "funcTest");
             RunTest(
-@"refTest g_t1000 = 
+@"refTest g_t1000 = // 00001000
 {
     1,
     2,
@@ -352,7 +352,7 @@ struct test g_t1004 =
             Given_Globals(
                 Given_Field(0x1000, u));
             RunTest(
-@"union u g_u1000 = 
+@"union u g_u1000 = // 00001000
 {
     2
 };
@@ -367,7 +367,7 @@ struct test g_t1004 =
                 .WriteBytes(Enumerable.Range(0x30, 0x0A).Select(b => (byte) b).ToArray());
             Given_Globals(
                 Given_Field(0x1000, blobType));
-            RunTest(@"word80 g_n1000 = 
+            RunTest(@"word80 g_n1000 = // 00001000
 {
     0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 
 };
@@ -382,7 +382,7 @@ struct test g_t1004 =
                 .WriteByte(0x9D);
             Given_Globals(
                 Given_Field(0x1000, PrimitiveType.Char));
-            RunTest(@"char g_b1000 = '\x9D';
+            RunTest(@"char g_b1000 = '\x9D'; // 00001000
 ");
 
         }

@@ -10,5 +10,5 @@ void fn00401000()
 	ExitProcess(MessageBoxA(null, &g_t403000, &g_t403007, 0x00));
 }
 
-CHAR g_t403000 = 'h';
-CHAR g_t403007 = '[';
+CHAR g_t403000 = 'h'; // 00403000
+CHAR g_t403007 = '['; // 00403007

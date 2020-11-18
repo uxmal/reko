@@ -4,86 +4,86 @@
 
 #include "sparc-rtems-unprotoize.h"
 
-Eq_n g_t28120 = 
+Eq_n g_t28120 = // 00028120
 	{
 		null
 	};
-Eq_n g_t28130 = 
+Eq_n g_t28130 = // 00028130
 	{
 		'\0'
 	};
-Eq_n g_t28140 = 
+Eq_n g_t28140 = // 00028140
 	{
 		null
 	};
-char * g_ptr28150 = null;
-Eq_n g_t28160 = 
+char * g_ptr28150 = null; // 00028150
+Eq_n g_t28160 = // 00028160
 	{
 		'\0'
 	};
-Eq_n g_t28180 = 
+Eq_n g_t28180 = // 00028180
 	{
 		'\0'
 	};
-Eq_n g_t28190 = 
+Eq_n g_t28190 = // 00028190
 	{
 		'\0'
 	};
-word32 g_dw281A0 = 0x00;
-Eq_n g_t281C0 = 
+word32 g_dw281A0 = 0x00; // 000281A0
+Eq_n g_t281C0 = // 000281C0
 	{
 		null
 	};
-up32 g_dw281D0 = 0x00;
-ui32 g_dw281E0 = 0x00;
-Eq_n g_t281F0 = 
+up32 g_dw281D0 = 0x00; // 000281D0
+ui32 g_dw281E0 = 0x00; // 000281E0
+Eq_n g_t281F0 = // 000281F0
 	{
 		'\0'
 	};
-up32 g_dw28200 = 0x00;
-up32 g_dw28210 = 0x00;
-int8 * g_ptr28220 = null;
-int32 g_dw28230 = 0;
-Eq_n g_t28240 = 
+up32 g_dw28200 = 0x00; // 00028200
+up32 g_dw28210 = 0x00; // 00028210
+int8 * g_ptr28220 = null; // 00028220
+int32 g_dw28230 = 0; // 00028230
+Eq_n g_t28240 = // 00028240
 	{
 		0x00,
 		0x00,
 		null,
 	};
-Eq_n g_t2B270 = 
+Eq_n g_t2B270 = // 0002B270
 	{
 		'\0'
 	};
-ui32 g_dw2B280 = 0x00;
-up32 g_dw2B290 = 0x00;
-Eq_n g_t2B2A0 = 
+ui32 g_dw2B280 = 0x00; // 0002B280
+up32 g_dw2B290 = 0x00; // 0002B290
+Eq_n g_t2B2A0 = // 0002B2A0
 	{
 		'\0'
 	};
-char * g_ptr2B2B0 = null;
-Eq_n g_t2B2C0 = 
+char * g_ptr2B2B0 = null; // 0002B2B0
+Eq_n g_t2B2C0 = // 0002B2C0
 	{
 		'\0'
 	};
-word32 g_dw2B2D0 = 0x00;
-Eq_n g_t2B2E0 = 
+word32 g_dw2B2D0 = 0x00; // 0002B2D0
+Eq_n g_t2B2E0 = // 0002B2E0
 	{
 		'\0'
 	};
-ptr32 * g_ptr2B2F0 = null;
-ptr32 * g_ptr2B300 = null;
-Eq_n g_t2B310 = 
+ptr32 * g_ptr2B2F0 = null; // 0002B2F0
+ptr32 * g_ptr2B300 = null; // 0002B300
+Eq_n g_t2B310 = // 0002B310
 	{
 		'\0'
 	};
-word64 g_qw2B400 = 0x00;
-struct Eq_n * g_ptr2B408 = null;
-ptr32 g_ptr2B40C = 0x00;
-byte g_a2B411[] = 
+word64 g_qw2B400 = 0x00; // 0002B400
+struct Eq_n * g_ptr2B408 = null; // 0002B408
+ptr32 g_ptr2B40C = 0x00; // 0002B40C
+byte g_a2B411[] = // 0002B411
 	{
 	};
-Eq_n g_t2B640 = 
+Eq_n g_t2B640 = // 0002B640
 	{
 	};
-char * g_ptr2B760 = null;
-struct Eq_n * g_ptr2B764 = null;
+char * g_ptr2B760 = null; // 0002B760
+struct Eq_n * g_ptr2B764 = null; // 0002B764

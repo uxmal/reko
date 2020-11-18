@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (100 Eq_565 t0100) (400000 word16 w400000) (40003C (ptr32 Eq_565) ptr40003C) (401731 code t401731) (4020D4 (ptr32 code) ptr4020D4) (4020D8 Eq_187 t4020D8) (4020E0 Eq_183 t4020E0) (4020E4 Eq_187 t4020E4) (4020F0 Eq_183 t4020F0) (403000 ui32 dw403000) (403004 ui32 dw403004) (403010 ui32 dw403010) (403014 word32 dw403014) (403334 word32 dw403334) (403338 word32 dw403338) (403354 byte b403354) (403368 ui32 dw403368) (40336C word32 dw40336C) (403370 ui32 dw403370))
+Eq_1: (struct "Globals" (400000 word16 w400000) (40003C (ptr32 Eq_565) ptr40003C) (401731 code t401731) (4020D4 (ptr32 code) ptr4020D4) (4020D8 Eq_187 t4020D8) (4020E0 Eq_183 t4020E0) (4020E4 Eq_187 t4020E4) (4020F0 Eq_183 t4020F0) (403000 ui32 dw403000) (403004 ui32 dw403004) (403010 ui32 dw403010) (403014 word32 dw403014) (403334 word32 dw403334) (403338 word32 dw403338) (403354 byte b403354) (403368 ui32 dw403368) (40336C word32 dw40336C) (403370 ui32 dw403370))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_5: (struct "Eq_5" (FFFFFFEC word32 dwFFFFFFEC) (FFFFFFF0 word32 dwFFFFFFF0) (FFFFFFF4 word32 dwFFFFFFF4) (FFFFFFF8 word32 dwFFFFFFF8) (FFFFFFFC word32 dwFFFFFFFC) (0 ptr32 ptr0000))
 	T_5 (in esp_14 : (ptr32 Eq_5))
@@ -4372,7 +4372,6 @@ T_1005:
   OrigDataType: 
 */
 typedef struct Globals {
-	Eq_565 t0100;	// 100
 	word16 w400000;	// 400000
 	struct Eq_565 * ptr40003C;	// 40003C
 	<anonymous> t401731;	// 401731

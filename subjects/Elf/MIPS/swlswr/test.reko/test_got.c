@@ -4,9 +4,9 @@
 
 #include "test.h"
 
-int32 g_dw10AA4 = 68228;
-word32 g_dw10AAC = 68332;
-int32 g_dw10AB0 = 68204;
-<anonymous> ** g_ptr10ABC = &g_ptr10A60;
-<anonymous> * g_ptr10AD4 = null;
-<anonymous> * g_ptr10AE4 = null;
+int32 g_dw10AA4 = 68228; // 00010AA4
+word32 g_dw10AAC = 68332; // 00010AAC
+int32 g_dw10AB0 = 68204; // 00010AB0
+<anonymous> ** g_ptr10ABC = &g_ptr10A60; // 00010ABC
+<anonymous> * g_ptr10AD4 = null; // 00010AD4
+<anonymous> * g_ptr10AE4 = null; // 00010AE4

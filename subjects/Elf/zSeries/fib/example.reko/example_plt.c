@@ -13,7 +13,7 @@ void __cxa_finalize()
 	r1_n();
 }
 
-<anonymous> g_t05CE = <code>;
+<anonymous> g_t05CE = <code>; // 00000000000005CE
 // 00000000000005E0: void __libc_start_main()
 // Called from:
 //      _start
@@ -23,4 +23,4 @@ void __libc_start_main()
 	r1_n();
 }
 
-<anonymous> g_t05EE = <code>;
+<anonymous> g_t05EE = <code>; // 00000000000005EE

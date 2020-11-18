@@ -4,8 +4,8 @@
 
 #include "VCExeSample.h"
 
-cdecl_class_ptr gbl_c = null;
-nested_structs_type gbl_nested_structs = 
+cdecl_class_ptr gbl_c = null; // 00403018
+nested_structs_type gbl_nested_structs = // 0040301C
 	{
 		0,
 		
@@ -15,6 +15,6 @@ nested_structs_type gbl_nested_structs =
 		},
 		0,
 	};
-uint32 g_dw40302C = 0x00;
-uint32 g_dw403030 = 0x00;
-thiscall_class * gbl_thiscall = null;
+uint32 g_dw40302C = 0x00; // 0040302C
+uint32 g_dw403030 = 0x00; // 00403030
+thiscall_class * gbl_thiscall = null; // 00403034

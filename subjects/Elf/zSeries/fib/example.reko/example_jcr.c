@@ -4,4 +4,4 @@
 
 #include "example.h"
 
-ci8 g_b1E18 = 0x00;
+ci8 g_b1E18 = 0x00; // 0000000000001E18

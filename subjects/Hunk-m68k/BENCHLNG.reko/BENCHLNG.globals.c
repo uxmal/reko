@@ -4,19 +4,15 @@
 
 #include "BENCHLNG.h"
 
-struct Eq_n * g_ptr0000;
-word32 g_dw0001;
-struct Eq_n * g_ptr0004;
+struct Eq_n * g_ptr0000; // 00000000
+word32 g_dw0001; // 00000001
+struct Eq_n * g_ptr0004; // 00000004
 word32 g_a0008[];
 ui32 g_a0010[];
-word32 g_dw3F60;
+word32 g_dw3F60; // 00003F60
 Eq_n g_t3F68;
-word32 g_dw3F6C;
-struct Eq_n * g_ptr3F78;
-struct Eq_n * g_ptr3F7C;
-struct Eq_n * g_ptr3F80;
-struct Eq_n * g_ptr3F88;
-Eq_n g_t4000;
-Eq_n g_t10202;
-Eq_n g_t3030303;
-Eq_n g_t6060606;
+word32 g_dw3F6C; // 00003F6C
+struct Eq_n * g_ptr3F78; // 00003F78
+struct Eq_n * g_ptr3F7C; // 00003F7C
+struct Eq_n * g_ptr3F80; // 00003F80
+struct Eq_n * g_ptr3F88; // 00003F88

@@ -4,13 +4,13 @@
 
 #include "unzip.h"
 
-byte g_b1001 = 0x00;
-byte g_b1601 = 77;
-byte g_b1801 = 0x00;
-byte g_b1A01 = 0x00;
-byte g_b1C01 = 0x69;
-byte g_b1E01 = 114;
-byte g_b2001 = 116;
+byte g_b1001 = 0x00; // 00001001
+byte g_b1601 = 77; // 00001601
+byte g_b1801 = 0x00; // 00001801
+byte g_b1A01 = 0x00; // 00001A01
+byte g_b1C01 = 0x69; // 00001C01
+byte g_b1E01 = 114; // 00001E01
+byte g_b2001 = 116; // 00002001
 // 0000802E: void fn0000802E(Register word32 r4)
 void fn0000802E(word32 r4)
 {

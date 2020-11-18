@@ -4,4 +4,4 @@
 
 #include "switch.h"
 
-<anonymous> * g_ptr10840 = null;
+<anonymous> * g_ptr10840 = null; // 00010840

@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (0 (ptr32 Eq_115) ptr0000) (1 word32 dw0001) (4 (ptr32 Eq_4) ptr0004) (8 (arr word32) a0008) (10 (arr ui32) a0010) (16B0 byte b16B0) (16CC (struct "Eq_567" 0001 (0 uint8 b0000) (1 cu8 b0001)) t16CC) (16D0 byte b16D0) (16EC (struct "Eq_567" 0001) t16EC) (16F0 (struct "Eq_567" 0001) t16F0) (16F4 byte b16F4) (206C byte b206C) (2B15 Eq_3832 t2B15) (4000 Eq_4 t4000) (40F8 (ptr32 Eq_14) ptr40F8) (40FC (ptr32 Eq_4) ptr40FC) (4100 word32 dw4100) (4104 (ptr32 Eq_98) ptr4104) (4108 (ptr32 Eq_98) ptr4108) (410C ui32 dw410C) (4110 ui32 dw4110) (4114 ui32 dw4114) (4120 word32 dw4120) (4124 ptr32 ptr4124) (4128 int32 dw4128) (412C (ptr32 Eq_2479) ptr412C) (4130 (ptr32 Eq_4) ptr4130) (4134 Eq_2950 t4134) (4238 word32 dw4238) (4240 Eq_509 t4240) (4244 word32 dw4244) (4250 (ptr32 Eq_520) ptr4250) (4254 (ptr32 Eq_3754) ptr4254) (4258 (ptr32 Eq_1162) ptr4258) (4260 (ptr32 Eq_1162) ptr4260) (10202 Eq_98 t10202) (3030303 Eq_98 t3030303) (6060606 Eq_2479 t6060606))
+Eq_1: (struct "Globals" (0 (ptr32 Eq_115) ptr0000) (1 word32 dw0001) (4 (ptr32 Eq_4) ptr0004) (8 (arr word32) a0008) (10 (arr ui32) a0010) (16B0 byte b16B0) (16CC (struct "Eq_567" 0001 (0 uint8 b0000) (1 cu8 b0001)) t16CC) (16D0 byte b16D0) (16EC (struct "Eq_567" 0001) t16EC) (16F0 (struct "Eq_567" 0001) t16F0) (16F4 byte b16F4) (206C byte b206C) (2B15 Eq_3832 t2B15) (4000 Eq_4 t4000) (40F8 (ptr32 Eq_14) ptr40F8) (40FC (ptr32 Eq_4) ptr40FC) (4100 word32 dw4100) (4104 (ptr32 Eq_98) ptr4104) (4108 (ptr32 Eq_98) ptr4108) (410C ui32 dw410C) (4110 ui32 dw4110) (4114 ui32 dw4114) (4120 word32 dw4120) (4124 ptr32 ptr4124) (4128 int32 dw4128) (412C (ptr32 Eq_2479) ptr412C) (4130 (ptr32 Eq_4) ptr4130) (4134 Eq_2950 t4134) (4238 word32 dw4238) (4240 Eq_509 t4240) (4244 word32 dw4244) (4250 (ptr32 Eq_520) ptr4250) (4254 (ptr32 Eq_3754) ptr4254) (4258 (ptr32 Eq_1162) ptr4258) (4260 (ptr32 Eq_1162) ptr4260))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_4: (struct "Eq_4" (0 word32 dw0000) (8 byte b0008) (C int32 dw000C) (10 word32 dw0010) (14 Eq_11 t0014) (18 up32 dw0018) (1C word32 dw001C))
 	T_4 (in a6_9 : (ptr32 Eq_4))
@@ -27367,9 +27367,6 @@ struct Globals {
 	struct Eq_3754 * ptr4254;	// 4254
 	struct Eq_1162 * ptr4258;	// 4258
 	struct Eq_1162 * ptr4260;	// 4260
-	Eq_98 t10202;	// 10202
-	Eq_98 t3030303;	// 3030303
-	Eq_2479 t6060606;	// 6060606
 } Eq_1;
 
 typedef struct Eq_4 {

@@ -4,4 +4,4 @@
 
 #include "test.h"
 
-<anonymous> * g_ptr10A60 = &g_tFFFFFFFF;
+<anonymous> * g_ptr10A60 = &g_tFFFFFFFF; // 00010A60

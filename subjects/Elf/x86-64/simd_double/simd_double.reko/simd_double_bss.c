@@ -4,4 +4,4 @@
 
 #include "simd_double.h"
 
-byte g_b201048 = 0x00;
+byte g_b201048 = 0x00; // 0000000000201048

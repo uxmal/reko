@@ -4,4 +4,4 @@
 
 #include "pngpixel.h"
 
-word64 g_qw601E10 = 0x00;
+word64 g_qw601E10 = 0x00; // 0000000000601E10

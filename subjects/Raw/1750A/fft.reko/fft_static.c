@@ -4,36 +4,36 @@
 
 #include "fft.h"
 
-struct Eq_n g_tFFFF8000 = 
+struct Eq_n g_tFFFF8000 = // 8000
 	{
 		
 		{
 			;
-struct Eq_n g_tFFFF800C = 
+struct Eq_n g_tFFFF800C = // 800C
 			{
 				
 				{
 					;
-struct Eq_n g_tFFFF801B = 
+struct Eq_n g_tFFFF801B = // 801B
 					{
 						
 						{
 							;
 real48 g_rFFFF8054 = ;
 real48 g_r8057 = ;
-union Eq_n g_uFFFF805D = 
+union Eq_n g_uFFFF805D = // 805D
 							{
 								0x00
 							};
-Eq_n g_t805F = 
+Eq_n g_t805F = // 805F
 							{
 								0x00
 							};
 real48 g_rFFFF8061 = ;
 real48 g_r8064 = ;
-word32 g_dwFFFF806A = 0x00;
-word32 g_dw806C = 0x00;
-struct Eq_n g_tFFFF806E = 
+word32 g_dwFFFF806A = 0x00; // 806A
+word32 g_dw806C = 0x00; // 806C
+struct Eq_n g_tFFFF806E = // 806E
 							{
 								
 								{

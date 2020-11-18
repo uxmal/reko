@@ -4,4 +4,4 @@
 
 #include "ais3_crackme.h"
 
-byte g_b601038 = 0x00;
+byte g_b601038 = 0x00; // 0000000000601038

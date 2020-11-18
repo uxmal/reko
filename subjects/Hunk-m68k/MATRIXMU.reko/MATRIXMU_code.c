@@ -346,9 +346,9 @@ word32 fn00001468()
 	return fn00001390(fp + -0x00F0, fp + -0x00A0, fp + -80);
 }
 
-struct Eq_n * g_ptr1494 = null;
-struct Eq_n * g_ptr1498 = null;
-word32 g_dw149C = 0x00;
-struct Eq_n * g_ptr14A0 = null;
-struct Eq_n * g_ptr14A4 = null;
-ui32 g_dw14A8 = 0x00;
+struct Eq_n * g_ptr1494 = null; // 00001494
+struct Eq_n * g_ptr1498 = null; // 00001498
+word32 g_dw149C = 0x00; // 0000149C
+struct Eq_n * g_ptr14A0 = null; // 000014A0
+struct Eq_n * g_ptr14A4 = null; // 000014A4
+ui32 g_dw14A8 = 0x00; // 000014A8

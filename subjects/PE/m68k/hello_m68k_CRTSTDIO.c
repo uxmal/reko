@@ -110,7 +110,7 @@ void fn000016D0(word32 d6, struct Eq_n * a5, byte * dwArg08)
 	}
 }
 
-word16 g_a1758[] = 
+word16 g_a1758[] = // 00001758
 	{
 	};
 // 00001C40: Register (ptr32 Eq_n) fn00001C40(Register (ptr32 Eq_n) a5, Stack Eq_n bArg04, Stack (ptr32 Eq_n) dwArg08, Register out (ptr32 Eq_n) d4Out, Register out (ptr32 Eq_n) d5Out, Register out (ptr32 Eq_n) a5Out, Register out ptr32 a6Out)

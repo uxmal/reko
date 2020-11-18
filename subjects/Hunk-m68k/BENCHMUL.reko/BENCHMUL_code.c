@@ -381,24 +381,24 @@ Eq_n fn00001390()
 	return fn000016FC(d0_n, &g_b16F4);
 }
 
-byte g_b16B0 = 101;
-struct Eq_n g_t16CC = 
+byte g_b16B0 = 101; // 000016B0
+struct Eq_n g_t16CC = // 000016CC
 	{
 		0x25,
 		0x6C,
 	};
-byte g_b16D0 = 101;
-struct Eq_n g_t16EC = 
+byte g_b16D0 = 101; // 000016D0
+struct Eq_n g_t16EC = // 000016EC
 	{
 		0x25,
 		100,
 	};
-struct Eq_n g_t16F0 = 
+struct Eq_n g_t16F0 = // 000016F0
 	{
 		0x25,
 		100,
 	};
-byte g_b16F4 = 0x61;
+byte g_b16F4 = 0x61; // 000016F4
 // 000016FC: Register Eq_n fn000016FC(Register Eq_n d0, Stack (ptr32 byte) dwArg04)
 // Called from:
 //      fn00001390
@@ -954,7 +954,7 @@ l00001E84:
 	return d0_n;
 }
 
-byte g_b206C = 0x25;
+byte g_b206C = 0x25; // 0000206C
 // 00002098: Register Eq_n fn00002098(Stack Eq_n dwArg04, Stack (ptr32 Eq_n) dwArg08, Register out (ptr32 ui32) a0Out, Register out ptr32 a5Out)
 // Called from:
 //      fn00001718
@@ -1732,7 +1732,7 @@ Eq_n fn00002A00(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10)
 	return d1_n;
 }
 
-Eq_n g_t2B15 = 
+Eq_n g_t2B15 = // 00002B15
 	{
 		
 		{
@@ -2824,7 +2824,7 @@ l00004026:
 	return d0_n;
 }
 
-Eq_n g_t4000 = 
+Eq_n g_t4000 = // 00004000
 	{
 		1611153898,
 		0x81,
@@ -2898,20 +2898,20 @@ int32 fn00004068(byte * dwArg04)
 	return d0_n;
 }
 
-struct Eq_n * g_ptr40F8 = null;
-struct Eq_n * g_ptr40FC = &g_t4000;
-word32 g_dw4100 = 0x00;
-struct Eq_n * g_ptr4104 = &g_t10202;
-struct Eq_n * g_ptr4108 = &g_t3030303;
-ui32 g_dw410C = 0x04040404;
-ui32 g_dw4110 = 0x04040404;
-ui32 g_dw4114 = 0x05050505;
-word32 g_dw4120 = 0x05050505;
-ptr32 g_ptr4124 = 0x06060606;
-int32 g_dw4128 = 0x06060606;
-struct Eq_n * g_ptr412C = &g_t6060606;
-struct Eq_n * g_ptr4130 = &g_t6060606;
-Eq_n g_t4134 = 
+struct Eq_n * g_ptr40F8 = null; // 000040F8
+struct Eq_n * g_ptr40FC = &g_t4000; // 000040FC
+word32 g_dw4100 = 0x00; // 00004100
+struct Eq_n * g_ptr4104 = &g_t10202; // 00004104
+struct Eq_n * g_ptr4108 = &g_t3030303; // 00004108
+ui32 g_dw410C = 0x04040404; // 0000410C
+ui32 g_dw4110 = 0x04040404; // 00004110
+ui32 g_dw4114 = 0x05050505; // 00004114
+word32 g_dw4120 = 0x05050505; // 00004120
+ptr32 g_ptr4124 = 0x06060606; // 00004124
+int32 g_dw4128 = 0x06060606; // 00004128
+struct Eq_n * g_ptr412C = &g_t6060606; // 0000412C
+struct Eq_n * g_ptr4130 = &g_t6060606; // 00004130
+Eq_n g_t4134 = // 00004134
 	{
 		
 		{

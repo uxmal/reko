@@ -4,4 +4,4 @@
 
 #include "simd_double.h"
 
-uint64 g_qw0B00 = 0x04;
+uint64 g_qw0B00 = 0x04; // 0000000000000B00

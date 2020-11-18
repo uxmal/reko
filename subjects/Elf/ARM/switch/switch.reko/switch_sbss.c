@@ -4,4 +4,4 @@
 
 #include "switch.h"
 
-byte g_b10870 = 0x00;
+byte g_b10870 = 0x00; // 00010870

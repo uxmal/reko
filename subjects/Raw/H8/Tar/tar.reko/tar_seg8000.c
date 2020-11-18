@@ -2304,15 +2304,15 @@ ui16 fn9E18(ui16 r0, ui16 r1, word16 r2, word16 r3, int16 r4, word16 r5, word16 
 	return r5_n;
 }
 
-int16 g_wFFFF9E34 = -1;
-union Eq_n g_uFFFF9E36 = 
+int16 g_wFFFF9E34 = -1; // 9E34
+union Eq_n g_uFFFF9E36 = // 9E36
 	{
 		-1
 	};
-int16 g_wFFFF9E38 = 787;
-int16 g_wFFFF9E3A = 780;
-int16 g_wFFFF9E3C = 720;
-int16 g_wFFFF9E3E = 0x033B;
-uint16 g_wFFFF9E40 = 0x04;
-word16 g_wFFFF9E7E = 100;
-ci16 g_wFFFF9E80 = 0x00;
+int16 g_wFFFF9E38 = 787; // 9E38
+int16 g_wFFFF9E3A = 780; // 9E3A
+int16 g_wFFFF9E3C = 720; // 9E3C
+int16 g_wFFFF9E3E = 0x033B; // 9E3E
+uint16 g_wFFFF9E40 = 0x04; // 9E40
+word16 g_wFFFF9E7E = 100; // 9E7E
+ci16 g_wFFFF9E80 = 0x00; // 9E80

@@ -653,7 +653,7 @@ l00002DE8:
 	return -1;
 }
 
-word16 g_a2C58[] = 
+word16 g_a2C58[] = // 00002C58
 	{
 	};
 // 00002E18: void fn00002E18(Stack (ptr32 Eq_n) dwArg04, Stack up32 dwArg08, Stack (ptr32 Eq_n) dwArg0C, Stack (ptr32 (ptr32 (ptr32 Eq_n))) dwArg10)

@@ -4,4 +4,4 @@
 
 #include "example.h"
 
-byte g_b2068 = 0x00;
+byte g_b2068 = 0x00; // 0000000000002068

@@ -4,7 +4,7 @@
 
 #include "test.h"
 
-<anonymous> * g_ptr20A24;
-ptr32 g_ptr20A4C;
-word32 g_dw20A60;
-<anonymous> g_tFFFFFFFF;
+<anonymous> * g_ptr20A24; // 00020A24
+ptr32 g_ptr20A4C; // 00020A4C
+word32 g_dw20A60; // 00020A60
+<anonymous> g_tFFFFFFFF; // FFFFFFFF

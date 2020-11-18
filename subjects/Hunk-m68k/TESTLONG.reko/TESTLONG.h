@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (0 (ptr32 Eq_115) ptr0000) (4 (ptr32 Eq_4) ptr0004) (8 (arr word32) a0008) (10 (arr ui32) a0010) (13E4 (struct "Eq_572" 0001 (0 uint8 b0000) (1 cu8 b0001)) t13E4) (13E8 (struct "Eq_572" 0001) t13E8) (13EC (struct "Eq_572" 0001) t13EC) (13F4 byte b13F4) (1D6C byte b1D6C) (2815 Eq_3258 t2815) (3D70 (ptr32 Eq_14) ptr3D70) (3D74 (ptr32 Eq_4) ptr3D74) (3D78 word32 dw3D78) (3D7C (ptr32 Eq_98) ptr3D7C) (3D80 (ptr32 Eq_98) ptr3D80) (3D84 ui32 dw3D84) (3D88 ui32 dw3D88) (3D8C ui32 dw3D8C) (3D98 word32 dw3D98) (3D9C ptr32 ptr3D9C) (3DA0 int32 dw3DA0) (3DA4 (ptr32 Eq_1905) ptr3DA4) (3DA8 (ptr32 Eq_4) ptr3DA8) (3DAC Eq_2376 t3DAC) (3EB0 word32 dw3EB0) (3EB8 Eq_509 t3EB8) (3EBC word32 dw3EBC) (3EC8 (ptr32 Eq_520) ptr3EC8) (3ECC (ptr32 Eq_3180) ptr3ECC) (3ED0 (ptr32 Eq_586) ptr3ED0) (3ED8 (ptr32 Eq_586) ptr3ED8) (4000 Eq_4 t4000) (10202 Eq_98 t10202) (3030303 Eq_98 t3030303) (6060606 Eq_1905 t6060606))
+Eq_1: (struct "Globals" (0 (ptr32 Eq_115) ptr0000) (4 (ptr32 Eq_4) ptr0004) (8 (arr word32) a0008) (10 (arr ui32) a0010) (13E4 (struct "Eq_572" 0001 (0 uint8 b0000) (1 cu8 b0001)) t13E4) (13E8 (struct "Eq_572" 0001) t13E8) (13EC (struct "Eq_572" 0001) t13EC) (13F4 byte b13F4) (1D6C byte b1D6C) (2815 Eq_3258 t2815) (3D70 (ptr32 Eq_14) ptr3D70) (3D74 (ptr32 Eq_4) ptr3D74) (3D78 word32 dw3D78) (3D7C (ptr32 Eq_98) ptr3D7C) (3D80 (ptr32 Eq_98) ptr3D80) (3D84 ui32 dw3D84) (3D88 ui32 dw3D88) (3D8C ui32 dw3D8C) (3D98 word32 dw3D98) (3D9C ptr32 ptr3D9C) (3DA0 int32 dw3DA0) (3DA4 (ptr32 Eq_1905) ptr3DA4) (3DA8 (ptr32 Eq_4) ptr3DA8) (3DAC Eq_2376 t3DAC) (3EB0 word32 dw3EB0) (3EB8 Eq_509 t3EB8) (3EBC word32 dw3EBC) (3EC8 (ptr32 Eq_520) ptr3EC8) (3ECC (ptr32 Eq_3180) ptr3ECC) (3ED0 (ptr32 Eq_586) ptr3ED0) (3ED8 (ptr32 Eq_586) ptr3ED8))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_4: (struct "Eq_4" (0 word32 dw0000) (8 byte b0008) (C int32 dw000C) (10 word32 dw0010) (14 Eq_11 t0014) (18 up32 dw0018) (1C word32 dw001C))
 	T_4 (in a6_9 : (ptr32 Eq_4))
@@ -24528,10 +24528,6 @@ struct Globals {
 	struct Eq_3180 * ptr3ECC;	// 3ECC
 	struct Eq_586 * ptr3ED0;	// 3ED0
 	struct Eq_586 * ptr3ED8;	// 3ED8
-	Eq_4 t4000;	// 4000
-	Eq_98 t10202;	// 10202
-	Eq_98 t3030303;	// 3030303
-	Eq_1905 t6060606;	// 6060606
 } Eq_1;
 
 typedef struct Eq_4 {

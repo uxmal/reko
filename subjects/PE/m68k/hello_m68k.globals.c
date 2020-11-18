@@ -5,4 +5,4 @@
 #include "hello_m68k.h"
 
 Eq_n g_t0000;
-word16 g_w0AF0;
+word16 g_w0AF0; // 00000AF0
