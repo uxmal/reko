@@ -1,0 +1,1233 @@
+// fn0100
+// Return size: 0
+define fn0100
+fn0100_entry:
+	gp15 = fp
+	goto l0100
+	// succ:  l0100
+l00000110:
+	goto l00000110
+	// succ:  l00000110
+l0100:
+	gp0 = 0x8000<16>
+	PZN = cond(gp0)
+	gp1 = 0xE9<16>
+	PZN = cond(gp1)
+	gp2 = 0x4C2<16>
+	PZN = cond(gp2)
+	v7 = gp0
+	v8 = gp2
+	__mov(v7, v8)
+	gp0 = 0x80E9<16>
+	PZN = cond(gp0)
+	gp1 = 0x53<16>
+	PZN = cond(gp1)
+	gp2 = 0x5B7<16>
+	PZN = cond(gp2)
+	v9 = gp0
+	v10 = gp2
+	__mov(v9, v10)
+	call fn0111 (retsize: 2;)
+	goto l00000110
+	// succ:  l00000110
+fn0100_exit:
+
+
+// fn0111
+// Return size: 2
+define fn0111
+fn0111_entry:
+	gp15 = fp
+	// succ:  l0111
+l0111:
+	gp14 = gp15
+	PZN = cond(gp14)
+	gp0 = 0x8000<16>
+	PZN = cond(gp0)
+	call fn04B9 (retsize: 2;)
+	gp0_gp1_gp2 = Mem0[0x80CE<p16>:real48]
+	PZN = cond(gp0_gp1_gp2)
+	call fn01E6 (retsize: 2;)
+	call fn04AE (retsize: 2;)
+	gp0 = 0xA<16>
+	PZN = cond(gp0)
+	call fn045A (retsize: 2;)
+	gp0 = 0x800D<16>
+	PZN = cond(gp0)
+	call fn04B9 (retsize: 2;)
+	gp0_gp1_gp2 = Mem0[0x80D1<p16>:real48]
+	PZN = cond(gp0_gp1_gp2)
+	call fn01E6 (retsize: 2;)
+	call fn04AE (retsize: 2;)
+	gp0 = 0xA<16>
+	PZN = cond(gp0)
+	call fn045A (retsize: 2;)
+	gp0 = 0x801A<16>
+	PZN = cond(gp0)
+	call fn04B9 (retsize: 2;)
+	gp0_gp1_gp2 = Mem0[0x80D4<p16>:real48]
+	PZN = cond(gp0_gp1_gp2)
+	call fn01E6 (retsize: 2;)
+	call fn04AE (retsize: 2;)
+	gp0 = 0xA<16>
+	PZN = cond(gp0)
+	call fn045A (retsize: 2;)
+	gp0 = 0x8027<16>
+	PZN = cond(gp0)
+	call fn04B9 (retsize: 2;)
+	gp0_gp1_gp2 = Mem0[0x80D7<p16>:real48]
+	PZN = cond(gp0_gp1_gp2)
+	call fn01E6 (retsize: 2;)
+	call fn04AE (retsize: 2;)
+	gp0 = 0xA<16>
+	PZN = cond(gp0)
+	call fn045A (retsize: 2;)
+	gp0 = 0x8036<16>
+	PZN = cond(gp0)
+	call fn04B9 (retsize: 2;)
+	gp0_gp1_gp2 = Mem0[0x80DA<p16>:real48]
+	PZN = cond(gp0_gp1_gp2)
+	call fn032A (retsize: 2;)
+	call fn04AE (retsize: 2;)
+	gp0 = 0xA<16>
+	PZN = cond(gp0)
+	call fn045A (retsize: 2;)
+	gp0 = 0x8042<16>
+	PZN = cond(gp0)
+	call fn04B9 (retsize: 2;)
+	gp0_gp1_gp2 = Mem0[0x80DD<p16>:real48]
+	PZN = cond(gp0_gp1_gp2)
+	call fn032A (retsize: 2;)
+	call fn04AE (retsize: 2;)
+	gp0 = 0xA<16>
+	PZN = cond(gp0)
+	call fn045A (retsize: 2;)
+	gp0 = 0x804F<16>
+	PZN = cond(gp0)
+	call fn04B9 (retsize: 2;)
+	gp0_gp1_gp2 = Mem0[0x80E0<p16>:real48]
+	PZN = cond(gp0_gp1_gp2)
+	call fn032A (retsize: 2;)
+	call fn04AE (retsize: 2;)
+	gp0 = 0xA<16>
+	PZN = cond(gp0)
+	call fn045A (retsize: 2;)
+	gp0 = 0x805C<16>
+	PZN = cond(gp0)
+	call fn04B9 (retsize: 2;)
+	gp0_gp1_gp2 = Mem0[0x80E3<p16>:real48]
+	PZN = cond(gp0_gp1_gp2)
+	call fn032A (retsize: 2;)
+	call fn04AE (retsize: 2;)
+	gp0 = 0xA<16>
+	PZN = cond(gp0)
+	call fn045A (retsize: 2;)
+	gp0 = 0x806B<16>
+	PZN = cond(gp0)
+	call fn04B9 (retsize: 2;)
+	gp0_gp1_gp2 = Mem0[0x80E6<p16>:real48]
+	PZN = cond(gp0_gp1_gp2)
+	call fn032A (retsize: 2;)
+	call fn04AE (retsize: 2;)
+	gp0 = 0xA<16>
+	PZN = cond(gp0)
+	call fn045A (retsize: 2;)
+	gp0 = 0x8076<16>
+	PZN = cond(gp0)
+	call fn04B9 (retsize: 2;)
+	gp0_gp1_gp2 = Mem0[0x80CE<p16>:real48]
+	PZN = cond(gp0_gp1_gp2)
+	call fn032A (retsize: 2;)
+	call fn04AE (retsize: 2;)
+	gp0 = 0xA<16>
+	PZN = cond(gp0)
+	call fn045A (retsize: 2;)
+	gp0 = 0x8082<16>
+	PZN = cond(gp0)
+	call fn04B9 (retsize: 2;)
+	gp0_gp1_gp2 = Mem0[0x80DA<p16>:real48]
+	PZN = cond(gp0_gp1_gp2)
+	call fn034E (retsize: 2;)
+	gp15 = gp15 + 2<16>
+	call fn04AE (retsize: 2;)
+	gp0 = 0xA<16>
+	PZN = cond(gp0)
+	call fn045A (retsize: 2;)
+	gp0 = 0x808E<16>
+	PZN = cond(gp0)
+	call fn04B9 (retsize: 2;)
+	gp0_gp1_gp2 = Mem0[0x80DD<p16>:real48]
+	PZN = cond(gp0_gp1_gp2)
+	call fn034E (retsize: 2;)
+	gp15 = gp15 + 2<16>
+	call fn04AE (retsize: 2;)
+	gp0 = 0xA<16>
+	PZN = cond(gp0)
+	call fn045A (retsize: 2;)
+	gp0 = 0x809B<16>
+	PZN = cond(gp0)
+	call fn04B9 (retsize: 2;)
+	gp0_gp1_gp2 = Mem0[0x80E0<p16>:real48]
+	PZN = cond(gp0_gp1_gp2)
+	call fn034E (retsize: 2;)
+	gp15 = gp15 + 2<16>
+	call fn04AE (retsize: 2;)
+	gp0 = 0xA<16>
+	PZN = cond(gp0)
+	call fn045A (retsize: 2;)
+	gp0 = 0x80A8<16>
+	PZN = cond(gp0)
+	call fn04B9 (retsize: 2;)
+	gp0_gp1_gp2 = Mem0[0x80E3<p16>:real48]
+	PZN = cond(gp0_gp1_gp2)
+	call fn034E (retsize: 2;)
+	gp15 = gp15 + 2<16>
+	call fn04AE (retsize: 2;)
+	gp0 = 0xA<16>
+	PZN = cond(gp0)
+	call fn045A (retsize: 2;)
+	gp0 = 0x80B7<16>
+	PZN = cond(gp0)
+	call fn04B9 (retsize: 2;)
+	gp0_gp1_gp2 = Mem0[0x80E6<p16>:real48]
+	PZN = cond(gp0_gp1_gp2)
+	call fn034E (retsize: 2;)
+	gp15 = gp15 + 2<16>
+	call fn04AE (retsize: 2;)
+	gp0 = 0xA<16>
+	PZN = cond(gp0)
+	call fn045A (retsize: 2;)
+	gp0 = 0x80C2<16>
+	PZN = cond(gp0)
+	call fn04B9 (retsize: 2;)
+	gp0_gp1_gp2 = Mem0[0x80CE<p16>:real48]
+	PZN = cond(gp0_gp1_gp2)
+	call fn034E (retsize: 2;)
+	gp15 = gp15 + 2<16>
+	call fn04AE (retsize: 2;)
+	gp0 = 0xA<16>
+	PZN = cond(gp0)
+	call fn045A (retsize: 2;)
+	gp15 = gp14
+	PZN = cond(gp15)
+	return
+	// succ:  fn0111_exit
+fn0111_exit:
+
+
+// fn01E6
+// Return size: 2
+define fn01E6
+fn01E6_entry:
+	gp15 = fp
+	goto l01E6
+	// succ:  l01E6
+l000001EB:
+	return
+	// succ:  fn01E6_exit
+l000001EC:
+	branch Test(GE,P) l000001EE
+	// succ:  l000001ED l000001EE
+l000001ED:
+	__bpt()
+	// succ:  l000001EE
+l000001EE:
+	gp6 = gp4
+	PZN = cond(gp6)
+	gp6 = __xbr(gp6)
+	PZN = cond(gp6)
+	gp6 = gp6 >> 8<16>
+	PZN = cond(gp6)
+	gp13 = 0xFF00<16>
+	PZN = cond(gp13)
+	gp14 = 0xFF<16>
+	PZN = cond(gp14)
+l01E6:
+	gp3_gp4 = gp0_gp1
+	PZN = cond(gp3_gp4)
+	gp5 = gp2
+	PZN = cond(gp5)
+	PZN = cond(gp0_gp1_gp2 - Mem0[0x05AB<p16>:real48])
+	branch Test(NE,Z) l000001EC
+	goto l000001EB
+	// succ:  l000001EB l000001EC
+fn01E6_exit:
+
+
+// fn02BF
+// Return size: 2
+define fn02BF
+fn02BF_entry:
+	gp15 = fp
+	goto l02BF
+	// succ:  l02BF
+l000002C6:
+	gp2 = Mem0[gp14 + 0xC8<16>:word16]
+	PZN = cond(gp2)
+	gp2 = gp2 + 7<16>
+	CPZN = cond(gp2)
+	gp2 = gp2 & 0xFFF8<16>
+	PZN = cond(gp2)
+	// succ:  l000002CA
+l000002CA:
+	gp1 = gp0
+	PZN = cond(gp1)
+	gp1 = gp1 - gp2
+	CPZN = cond(gp1)
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp4
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp3
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp2
+	gp2 = gp1
+	PZN = cond(gp2)
+	gp1 = gp1 ^ gp1
+	PZN = cond(gp1)
+	gp3 = gp3 ^ gp3
+	PZN = cond(gp3)
+	gp4 = 7<16>
+	PZN = cond(gp4)
+	PZN = cond(gp1_gp2 - gp3_gp4)
+	gp1 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp2 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp3 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	// succ:  l000002D4
+l000002D4:
+	branch Test(GT,P) l00000314
+	// succ:  l000002D5 l00000314
+l000002D5:
+	gp2 = Mem0[gp15 + 0x23<16>:word16]
+	PZN = cond(gp2)
+	gp2 = Mem0[gp1 + 0x2DA<16>:word16]
+	PZN = cond(gp2)
+	goto l000002CA
+	// succ:  l000002CA
+l000002E4:
+	goto l000002D4
+	// succ:  l000002D4
+l000002F4:
+	goto l000002E4
+	// succ:  l000002E4
+l00000304:
+	goto l000002F4
+	// succ:  l000002F4
+l00000314:
+	goto l00000304
+	// succ:  l00000304
+l00000325:
+	gp2 = gp5
+	PZN = cond(gp2)
+	gp0_gp1 = gp3_gp4
+	PZN = cond(gp0_gp1)
+	gp15 = gp14
+	PZN = cond(gp15)
+	return
+	// succ:  fn02BF_exit
+l02BF:
+	gp14 = gp15
+	PZN = cond(gp14)
+	gp7 = gp4
+	PZN = cond(gp7)
+	gp5_gp6 = gp2_gp3
+	PZN = cond(gp5_gp6)
+	gp0 = gp1
+	PZN = cond(gp0)
+	gp2 = gp0
+	PZN = cond(gp2)
+	branch Test(GE,PZ) l00000325
+	goto l000002C6
+	// succ:  l000002C6 l00000325
+fn02BF_exit:
+
+
+// fn032A
+// Return size: 2
+define fn032A
+fn032A_entry:
+	gp15 = fp
+	goto l032A
+	// succ:  l032A
+l00000331:
+	gp2 = Mem0[gp15 + 0x37<16>:word16]
+	PZN = cond(gp2)
+	gp2_gp3_gp4 = Mem0[0x8122<p16>:real48]
+	PZN = cond(gp2_gp3_gp4)
+	gp7 = gp4
+	PZN = cond(gp7)
+	gp5_gp6 = gp2_gp3
+	PZN = cond(gp5_gp6)
+	gp5_gp6_gp7 = gp5_gp6_gp7 - gp8_gp9_gp10
+	PZN = cond(gp5_gp6_gp7)
+	gp5_gp6_gp7 = gp5_gp6_gp7 * Mem0[0x8125<p16>:real48]
+	PZN = cond(gp5_gp6_gp7)
+	gp0_gp1 = CONVERT(gp5_gp6_gp7, real48, int32)
+	PZN = cond(gp0_gp1)
+	gp2_gp3_gp4 = CONVERT(gp0_gp1, int32, real48)
+	PZN = cond(gp2_gp3_gp4)
+	gp5_gp6_gp7 = gp5_gp6_gp7 - gp2_gp3_gp4
+	PZN = cond(gp5_gp6_gp7)
+	gp4 = gp7
+	PZN = cond(gp4)
+	gp2_gp3 = gp5_gp6
+	PZN = cond(gp2_gp3)
+	branch Test(GE,PZ) l0000039E
+	// succ:  l0000033F l0000039E
+l0000033F:
+	gp2 = Mem0[gp15 + 0x44<16>:word16]
+	PZN = cond(gp2)
+	gp2_gp3_gp4 = gp2_gp3_gp4 + Mem0[0x8128<p16>:real48]
+	PZN = cond(gp2_gp3_gp4)
+	gp0_gp1 = gp0_gp1 + Mem0[0x812B<p16>:word32]
+	CPZN = cond(gp0_gp1)
+	gp8_gp9 = gp8_gp9
+	PZN = cond(gp8_gp9)
+	branch Test(GE,PZ) l000003A5
+	// succ:  l00000346 l000003A5
+l00000346:
+	gp2 = Mem0[gp15 + 0x49<16>:word16]
+	PZN = cond(gp2)
+	gp0_gp1 = gp0_gp1 + Mem0[0x812D<p16>:word32]
+	CPZN = cond(gp0_gp1)
+	call fn02BF (retsize: 2;)
+	gp15 = gp14
+	PZN = cond(gp15)
+	return
+	// succ:  fn032A_exit
+l00000390:
+	branch Test(NE,PZN) l00000390_thunk_fn03E0
+	goto l00000391
+	// succ:  l00000391 l00000390_thunk_fn03E0
+l00000390_thunk_fn03E0:
+	call fn03E0 (retsize: 0;)
+	return
+	// succ:  fn032A_exit
+l00000391:
+	gp2 = Mem0[gp15 + 0x82<16>:word16]
+	PZN = cond(gp2)
+	v19 = gp9 & 1<u16> << 0xF<16>
+	Z = v19 == 0<16>
+	branch Test(EQ,Z) l00000397
+	// succ:  l00000394 l00000397
+l00000394:
+	v21 = SLICE(gp10, byte, 0)
+	v22 = Mem0[gp11 + 2<16>:word16]
+	Mem0[gp11 + 2<16>:word16] = SEQ(v21, SLICE(v22, byte, 0))
+	goto l00000399
+	// succ:  l00000399
+l00000397:
+	v31 = SLICE(gp10, byte, 0)
+	v32 = Mem0[gp11 + 2<16>:word16]
+	Mem0[gp11 + 2<16>:word16] = SEQ(SLICE(v32, byte, 8), v31)
+	// succ:  l00000399
+l00000399:
+	gp0 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp1 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp2 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp3 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp4 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp5 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp6 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp7 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp8 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp9 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp10 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp11 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp12 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	return
+	// succ:  fn032A_exit
+l0000039E:
+	gp0_gp1 = gp0_gp1 + Mem0[gp12 + 0x20<16>:real32]
+	CPZN = cond(gp0_gp1)
+	gp9 = 6<16>
+	PZN = cond(gp9)
+	goto l03A0
+	// succ:  l03A0
+l000003A5:
+	gp11 = gp11 - 1<16>
+	CPZN = cond(gp11)
+	v33 = SLICE(gp9, byte, 0)
+	v34 = Mem0[gp11:word16]
+	Mem0[gp11:word16] = SEQ(SLICE(v34, byte, 8), v33)
+	gp10 = 0x20<16>
+	PZN = cond(gp10)
+	gp1 = gp1 | gp1
+	PZN = cond(gp1)
+	branch Test(GE,PZ) l000003B5
+	goto l000003AC
+	// succ:  l000003AC l000003AB_thunk_fn000003B4
+l000003AB_thunk_fn000003B4:
+	call fn000003B4 (retsize: 0;)
+	return
+	// succ:  fn032A_exit
+l000003AC:
+	gp10 = 0x2D<16>
+	PZN = cond(gp10)
+	PZN = cond(gp1 - 0x8000<16>)
+	branch Test(NE,Z) l000003B4
+	goto l000003B1
+	// succ:  l000003B1 l000003B0_thunk_fn000003B4
+l000003B0_thunk_fn000003B4:
+	call fn000003B4 (retsize: 0;)
+	return
+	// succ:  fn032A_exit
+l000003B1:
+	gp2 = gp2
+	PZN = cond(gp2)
+	// succ:  l000003B1_thunk_fn000003B2
+l000003B1_thunk_fn000003B2:
+	call fn000003B2 (retsize: 0;)
+	return
+	// succ:  fn032A_exit
+l032A:
+	gp14 = gp15
+	PZN = cond(gp14)
+	gp10 = gp2
+	PZN = cond(gp10)
+	gp8_gp9 = gp0_gp1
+	PZN = cond(gp8_gp9)
+	gp7 = gp10
+	PZN = cond(gp7)
+	gp5_gp6 = gp8_gp9
+	PZN = cond(gp5_gp6)
+	branch Test(GE,PZ) l00000390
+	goto l00000331
+	// succ:  l00000331 l00000390
+l03A0:
+	Mem0[gp11:word16] = gp10
+	gp11 = gp11 + 1<16>
+	CPZN = cond(gp11)
+	gp9 = gp9 - 1<16>
+	PZN = cond(gp9)
+	branch gp9 != 0<16> l03A0
+	goto l000003A5
+	// succ:  l000003A5 l03A0
+fn032A_exit:
+
+
+// fn034E
+// Return size: 0
+define fn034E
+fn034E_entry:
+	gp15 = fp
+	goto l034E
+	// succ:  l034E
+l00000352_thunk_fn000003B2:
+	call fn000003B2 (retsize: 0;)
+	return
+	// succ:  fn034E_exit
+l00000353:
+	gp2 = Mem0[gp15 + 0x59<16>:word16]
+	PZN = cond(gp2)
+	gp2_gp3_gp4 = Mem0[0x812F<p16>:real48]
+	PZN = cond(gp2_gp3_gp4)
+	gp2_gp3_gp4 = gp2_gp3_gp4 - gp5_gp6_gp7
+	PZN = cond(gp2_gp3_gp4)
+	gp7 = gp4
+	PZN = cond(gp7)
+	gp5_gp6 = gp2_gp3
+	PZN = cond(gp5_gp6)
+	gp5_gp6_gp7 = gp5_gp6_gp7 * Mem0[0x8132<p16>:real48]
+	PZN = cond(gp5_gp6_gp7)
+	gp0_gp1 = CONVERT(gp5_gp6_gp7, real48, int32)
+	PZN = cond(gp0_gp1)
+	gp2_gp3_gp4 = CONVERT(gp0_gp1, int32, real48)
+	PZN = cond(gp2_gp3_gp4)
+	gp5_gp6_gp7 = gp5_gp6_gp7 - gp2_gp3_gp4
+	PZN = cond(gp5_gp6_gp7)
+	gp4 = gp7
+	PZN = cond(gp4)
+	gp2_gp3 = gp5_gp6
+	PZN = cond(gp2_gp3)
+	branch Test(GE,PZ) l00000360_thunk_fn000003C0
+	goto l00000361
+	// succ:  l00000361 l00000360_thunk_fn000003C0
+l00000360_thunk_fn000003C0:
+	call fn000003C0 (retsize: 0;)
+	return
+	// succ:  fn034E_exit
+l00000361:
+	gp2 = Mem0[gp15 + 0x66<16>:word16]
+	PZN = cond(gp2)
+	gp2_gp3_gp4 = gp2_gp3_gp4 + Mem0[0x8135<p16>:real48]
+	PZN = cond(gp2_gp3_gp4)
+	gp0_gp1 = gp0_gp1 + Mem0[0x8138<p16>:word32]
+	CPZN = cond(gp0_gp1)
+	gp0_gp1 = gp0_gp1 + Mem0[0x813A<p16>:word32]
+	CPZN = cond(gp0_gp1)
+	call fn02BF (retsize: 2;)
+	gp15 = gp14
+	PZN = cond(gp15)
+	return
+	// succ:  fn034E_exit
+l034E:
+	gp14 = gp15
+	PZN = cond(gp14)
+	gp7 = gp2
+	PZN = cond(gp7)
+	gp5_gp6 = gp0_gp1
+	PZN = cond(gp5_gp6)
+	branch Test(GE,PZ) l00000352_thunk_fn000003B2
+	goto l00000353
+	// succ:  l00000353 l00000352_thunk_fn000003B2
+fn034E_exit:
+
+
+// fn000003B2
+// Return size: 0
+define fn000003B2
+fn000003B2_entry:
+	gp15 = fp
+	// succ:  l000003B2
+l000003B2:
+	branch Test(NE,Z) l000003B2_thunk_fn000003B4
+	goto l000003B2_thunk_fn000003B3
+	// succ:  l000003B2_thunk_fn000003B3 l000003B2_thunk_fn000003B4
+l000003B2:
+	branch Test(NE,Z) l000003B4
+	goto l000003B2_thunk_fn000003B3
+	// succ:  l000003B2_thunk_fn000003B3 l000003B2_thunk_fn000003B4
+l000003B2_thunk_fn000003B3:
+	call fn000003B3 (retsize: 0;)
+	return
+	// succ:  fn000003B2_exit
+l000003B2_thunk_fn000003B3:
+	call fn000003B3 (retsize: 0;)
+	return
+	// succ:  fn000003B2_exit
+l000003B2_thunk_fn000003B4:
+	call fn000003B4 (retsize: 0;)
+	return
+	// succ:  fn000003B2_exit
+l000003B2_thunk_fn000003B4:
+	call fn000003B4 (retsize: 0;)
+	return
+	// succ:  fn000003B2_exit
+fn000003B2_exit:
+
+
+// fn000003B3
+// Return size: 0
+define fn000003B3
+fn000003B3_entry:
+	gp15 = fp
+	// succ:  l000003B3
+l000003B3:
+	gp2 = gp2 + 1<16>
+	CPZN = cond(gp2)
+	// succ:  l000003B3_thunk_fn000003B4
+l000003B3_thunk_fn000003B4:
+	call fn000003B4 (retsize: 0;)
+	return
+	// succ:  fn000003B3_exit
+fn000003B3_exit:
+
+
+// fn000003B4
+// Return size: 0
+define fn000003B4
+fn000003B4_entry:
+	gp15 = fp
+	// succ:  l000003B4
+l000003B4:
+	gp1_gp2 = -gp1_gp2
+	PZN = cond(gp1_gp2)
+	// succ:  l000003B5
+l000003B5:
+	gp7 = gp7 ^ gp7
+	PZN = cond(gp7)
+	gp8 = 0xA<16>
+	PZN = cond(gp8)
+	gp9 = gp9 + 1<16>
+	CPZN = cond(gp9)
+	gp4_gp5 = gp1_gp2
+	PZN = cond(gp4_gp5)
+	gp2_gp3 = gp1_gp2
+	PZN = cond(gp2_gp3)
+	gp2_gp3 = gp2_gp3 / gp7_gp8
+	PZN = cond(gp2_gp3)
+	gp2_gp3 = gp2_gp3 * gp7_gp8
+	PZN = cond(gp2_gp3)
+	gp4_gp5 = gp4_gp5 - gp2_gp3
+	CPZN = cond(gp4_gp5)
+	gp5 = gp5 + 0x30<16>
+	CPZN = cond(gp5)
+	v13 = gp9 & 1<u16> << 0xF<16>
+	Z = v13 == 0<16>
+	// succ:  l000003BF_thunk_fn000003C0
+l000003BF_thunk_fn000003C0:
+	call fn000003C0 (retsize: 0;)
+	return
+	// succ:  fn000003B4_exit
+fn000003B4_exit:
+
+
+// fn000003C0
+// Return size: 0
+define fn000003C0
+fn000003C0_entry:
+	gp15 = fp
+	// succ:  l000003C0
+l000003C0:
+	branch Test(EQ,Z) l000003C0_thunk_fn000003C5
+	goto l000003C0_thunk_fn000003C1
+	// succ:  l000003C0_thunk_fn000003C1 l000003C0_thunk_fn000003C5
+l000003C0:
+	branch Test(EQ,Z) l000003C5
+	goto l000003C0_thunk_fn000003C1
+	// succ:  l000003C0_thunk_fn000003C1 l000003C0_thunk_fn000003C5
+l000003C0_thunk_fn000003C1:
+	call fn000003C1 (retsize: 0;)
+	return
+	// succ:  fn000003C0_exit
+l000003C0_thunk_fn000003C1:
+	call fn000003C1 (retsize: 0;)
+	return
+	// succ:  fn000003C0_exit
+l000003C0_thunk_fn000003C5:
+	call fn000003C5 (retsize: 0;)
+	return
+	// succ:  fn000003C0_exit
+l000003C0_thunk_fn000003C5:
+	call fn000003C5 (retsize: 0;)
+	return
+	// succ:  fn000003C0_exit
+fn000003C0_exit:
+
+
+// fn000003C1
+// Return size: 0
+define fn000003C1
+fn000003C1_entry:
+	gp15 = fp
+	// succ:  l000003C1
+l000003C1:
+	v4 = SLICE(gp5, byte, 0)
+	v6 = Mem0[gp11:word16]
+	Mem0[gp11:word16] = SEQ(v4, SLICE(v6, byte, 0))
+	gp11 = gp11 - 1<16>
+	CPZN = cond(gp11)
+	// succ:  l000003C4_thunk_fn000003C5
+l000003C4_thunk_fn000003C5:
+	call fn000003C5 (retsize: 0;)
+	return
+	// succ:  fn000003C1_exit
+fn000003C1_exit:
+
+
+// fn000003C5
+// Return size: 0
+define fn000003C5
+fn000003C5_entry:
+	gp15 = fp
+	// succ:  l000003C5
+l000003C5:
+	v4 = SLICE(gp5, byte, 0)
+	v6 = Mem0[gp11:word16]
+	Mem0[gp11:word16] = SEQ(SLICE(v6, byte, 8), v4)
+	// succ:  l000003C7
+l000003C7:
+	gp12_gp13 = gp12_gp13 / gp7_gp8
+	PZN = cond(gp12_gp13)
+	branch Test(NE,PZN) l000003C8_thunk_fn00000418
+	goto l000003C9
+	// succ:  l000003C9 l000003C8_thunk_fn00000418
+l000003C8_thunk_fn00000418:
+	call fn00000418 (retsize: 0;)
+	return
+	// succ:  fn000003C5_exit
+l000003C9:
+	gp2 = Mem0[gp15 + 0xB7<16>:word16]
+	PZN = cond(gp2)
+	gp9 = gp9 + 1<16>
+	CPZN = cond(gp9)
+	v13 = gp9 & 1<u16> << 0xF<16>
+	Z = v13 == 0<16>
+	branch Test(NE,Z) l000003D0
+	// succ:  l000003CD l000003D0
+l000003CD:
+	v16 = SLICE(gp10, byte, 0)
+	v17 = Mem0[gp11:word16]
+	Mem0[gp11:word16] = SEQ(SLICE(v17, byte, 8), v16)
+	goto l000003D2
+	// succ:  l000003D2
+l000003D0:
+	v25 = SLICE(gp10, byte, 0)
+	v26 = Mem0[gp11:word16]
+	Mem0[gp11:word16] = SEQ(v25, SLICE(v26, byte, 0))
+	// succ:  l000003D2
+l000003D2:
+	gp0 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp1 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp2 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp3 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp4 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp5 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp6 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp7 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp8 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp9 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp10 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp11 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	return
+	// succ:  fn000003C5_exit
+fn000003C5_exit:
+
+
+// fn03E0
+// Return size: 2
+define fn03E0
+fn03E0_entry:
+	gp15 = fp
+	// succ:  l03E0
+l03E0:
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp14
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp13
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp12
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp11
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp10
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp9
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp8
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp7
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp6
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp5
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp4
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp3
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp2
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp1
+	gp11 = gp0
+	PZN = cond(gp11)
+	gp14 = gp3
+	PZN = cond(gp14)
+	gp12_gp13 = gp1_gp2
+	PZN = cond(gp12_gp13)
+	gp0 = gp0 ^ gp0
+	PZN = cond(gp0)
+	Mem0[gp11 + 0xA<16>:word16] = gp0
+	gp1 = 0xB<16>
+	PZN = cond(gp1)
+	call fn03EC (retsize: 2;)
+	gp0 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp1 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp2 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp3 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp4 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp5 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp6 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp7 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp8 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp9 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp10 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp11 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp12 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp13 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	return
+	// succ:  fn03E0_exit
+fn03E0_exit:
+
+
+// fn03EC
+// Return size: 2
+define fn03EC
+fn03EC_entry:
+	gp15 = fp
+	goto l03EC
+	// succ:  l03EC
+l000003EE:
+	v6 = gp12 & 1<u16> << 1<16>
+	Z = v6 == 0<16>
+	branch Test(NE,Z) l000003F5
+	// succ:  l000003F0 l000003F5
+l000003F0:
+	gp0 = 0x2D20<16>
+	PZN = cond(gp0)
+	gp12_gp13_gp14 = gp12_gp13_gp14 * Mem0[0x0610<p16>:real48]
+	PZN = cond(gp12_gp13_gp14)
+	goto l00000406
+	// succ:  l00000406
+l000003F5:
+	gp10 = 0x613<16>
+	PZN = cond(gp10)
+	gp12 = 7<16>
+	PZN = cond(gp12)
+	PZN = cond(gp1 - 6<16>)
+	branch Test(EQ,Z) l000003FB
+	// succ:  l000003FA l000003FB
+l000003FA:
+	gp12 = 0xA<16>
+	PZN = cond(gp12)
+	// succ:  l000003FB
+l000003FB:
+	v24 = gp11
+	v25 = gp10
+	__mov(v24, v25)
+	goto l03EC
+	// succ:  l03EC
+l000003FE:
+	gp0 = gp0 | gp12
+	PZN = cond(gp0)
+	gp0 = gp0 | gp13
+	PZN = cond(gp0)
+	gp0 = gp0 | gp14
+	PZN = cond(gp0)
+	branch Test(EQ,Z) l00000404
+	// succ:  l00000402 l00000404
+l00000402:
+	v12 = gp12 & 1<u16> << 1<16>
+	Z = v12 == 0<16>
+	branch Test(EQ,Z) l000003F5
+	// succ:  l00000404 l000003F5
+l00000404:
+	gp0 = 0x2B20<16>
+	PZN = cond(gp0)
+	// succ:  l00000406
+l00000406:
+	Mem0[gp11:word16] = gp0
+	gp2 = gp2 ^ gp2
+	PZN = cond(gp2)
+	v15 = gp13 & 1<u16> << 8<16>
+	Z = v15 == 0<16>
+	branch Test(NE,Z) l00000415
+	goto l0000040B
+	// succ:  l0000040B l0000040A_thunk_fn00000418
+l0000040A_thunk_fn00000418:
+	call fn00000418 (retsize: 0;)
+	return
+	// succ:  fn03EC_exit
+l0000040B:
+	PZN = cond(gp12_gp13_gp14 - Mem0[0x060A<p16>:real48])
+	branch Test(LT,N) l00000412
+	// succ:  l0000040E l00000412
+l0000040E:
+	gp12_gp13_gp14 = gp12_gp13_gp14 / Mem0[0x060A<p16>:real48]
+	PZN = cond(gp12_gp13_gp14)
+	gp2 = gp2 + 1<16>
+	CPZN = cond(gp2)
+	goto l0000040B
+	// succ:  l0000040B
+l00000412:
+	gp0 = 0x452B<16>
+	PZN = cond(gp0)
+	// succ:  l0000041F
+l0000041F:
+	PZN = cond(gp1 - 6<16>)
+	branch Test(EQ,Z) l00000424
+	// succ:  l00000421 l00000424
+l00000421:
+	Mem0[gp11 + 8<16>:word16] = gp0
+	goto l00000426
+	// succ:  l00000426
+l00000424:
+	Mem0[gp11 + 5<16>:word16] = gp0
+	// succ:  l00000426
+l00000426:
+	v22 = 0xA<16>
+	gp2 = gp2 / v22
+	gp3 = gp2 % v22
+	PZN = cond(gp2)
+	gp2 = __xbr(gp2)
+	PZN = cond(gp2)
+	gp2 = gp2 | gp3
+	PZN = cond(gp2)
+	gp2 = gp2 | 0x3030<16>
+	PZN = cond(gp2)
+	PZN = cond(gp1 - 6<16>)
+	branch Test(EQ,Z) l00000430
+	// succ:  l0000042D l00000430
+l0000042D:
+	Mem0[gp11 + 9<16>:word16] = gp2
+	goto l00000432
+	// succ:  l00000432
+l00000430:
+	Mem0[gp11 + 6<16>:word16] = gp2
+	// succ:  l00000432
+l00000432:
+	gp7 = gp7 ^ gp7
+	PZN = cond(gp7)
+	gp2 = gp2 ^ gp2
+	PZN = cond(gp2)
+	gp4_gp5 = gp12_gp13
+	PZN = cond(gp4_gp5)
+	gp6 = gp14
+	PZN = cond(gp6)
+	gp2_gp3 = CONVERT(gp4_gp5_gp6, real48, int32)
+	PZN = cond(gp2_gp3)
+	gp4_gp5_gp6 = CONVERT(gp2_gp3, int32, real48)
+	PZN = cond(gp4_gp5_gp6)
+	gp12_gp13_gp14 = gp12_gp13_gp14 - gp4_gp5_gp6
+	PZN = cond(gp12_gp13_gp14)
+	gp3 = gp3 + 0x30<16>
+	CPZN = cond(gp3)
+	v32 = SLICE(gp3, byte, 0)
+	v33 = Mem0[gp11:word16]
+	Mem0[gp11:word16] = SEQ(SLICE(v33, byte, 8), v32)
+	gp3 = 0x2E<16>
+	PZN = cond(gp3)
+	v34 = SLICE(gp3, byte, 0)
+	v35 = Mem0[gp11 + 1<16>:word16]
+	Mem0[gp11 + 1<16>:word16] = SEQ(v34, SLICE(v35, byte, 0))
+	goto l0441
+	// succ:  l0441
+l0000044D:
+	v37 = SLICE(gp3, byte, 0)
+	v38 = Mem0[gp11 + 1<16>:word16]
+	Mem0[gp11 + 1<16>:word16] = SEQ(v37, SLICE(v38, byte, 0))
+	goto l00000453
+	// succ:  l00000453
+l00000450:
+	v39 = SLICE(gp3, byte, 0)
+	v40 = Mem0[gp11 + 1<16>:word16]
+	Mem0[gp11 + 1<16>:word16] = SEQ(SLICE(v40, byte, 8), v39)
+	gp11 = gp11 + 1<16>
+	CPZN = cond(gp11)
+	// succ:  l00000453
+l00000453:
+	gp1 = gp1 - 1<16>
+	PZN = cond(gp1)
+	branch gp1 != 0<16> l0441
+	// succ:  l00000455 l0441
+l00000455:
+	gp3 = 0x2020<16>
+	PZN = cond(gp3)
+	Mem0[gp11 + 1<16>:word16] = gp3
+	return
+	// succ:  fn03EC_exit
+l03EC:
+	v4 = gp12 & 1<u16> << 0<16>
+	Z = v4 == 0<16>
+	branch Test(EQ,Z) l000003FE
+	goto l000003EE
+	// succ:  l000003EE l000003FE
+l0441:
+	gp12_gp13_gp14 = gp12_gp13_gp14 * Mem0[0x060A<p16>:real48]
+	PZN = cond(gp12_gp13_gp14)
+	gp4_gp5 = gp12_gp13
+	PZN = cond(gp4_gp5)
+	gp6 = gp14
+	PZN = cond(gp6)
+	gp2_gp3 = CONVERT(gp4_gp5_gp6, real48, int32)
+	PZN = cond(gp2_gp3)
+	gp4_gp5_gp6 = CONVERT(gp2_gp3, int32, real48)
+	PZN = cond(gp4_gp5_gp6)
+	gp12_gp13_gp14 = gp12_gp13_gp14 - gp4_gp5_gp6
+	PZN = cond(gp12_gp13_gp14)
+	gp3 = gp3 + 0x30<16>
+	CPZN = cond(gp3)
+	gp7 = gp7 + 1<16>
+	CPZN = cond(gp7)
+	v36 = gp7 & 1<u16> << 0xF<16>
+	Z = v36 == 0<16>
+	branch Test(NE,Z) l00000450
+	goto l0000044D
+	// succ:  l0000044D l00000450
+fn03EC_exit:
+
+
+// fn00000418
+// Return size: 0
+define fn00000418
+fn00000418_entry:
+	gp15 = fp
+	goto l00000418
+	// succ:  l00000418
+l00000415:
+	PZN = cond(gp12_gp13_gp14 - Mem0[0x060D<p16>:real48])
+	branch Test(GE,PZ) l00000477
+	// succ:  l00000418 l00000477
+l00000418:
+	gp0_gp2 = Mem0[gp12 + 0x1D<16>:word32]
+	PZN = cond(gp0_gp2)
+	gp12_gp13_gp14 = gp12_gp13_gp14 * Mem0[0x060A<p16>:real48]
+	PZN = cond(gp12_gp13_gp14)
+	gp2 = gp2 + 1<16>
+	CPZN = cond(gp2)
+	goto l00000415
+	// succ:  l00000415
+l00000477:
+	gp2 = Mem0[gp12 + 0x37<16>:word16]
+	PZN = cond(gp2)
+	call fn045A (retsize: 2;)
+	return
+	// succ:  fn00000418_exit
+fn00000418_exit:
+
+
+// fn045A
+// Return size: 2
+define fn045A
+fn045A_entry:
+	gp15 = fp
+	// succ:  l045A
+l045A:
+	__console_output(gp0)
+	return
+	// succ:  fn045A_exit
+fn045A_exit:
+
+
+// fn045D
+// Return size: 2
+define fn045D
+fn045D_entry:
+	gp15 = fp
+	goto l045D
+	// succ:  l045D
+l00000460:
+	gp0 = SEQ(SLICE(Mem0[gp11:word16], byte, 0), SLICE(gp0, byte, 0))
+	PZN = cond(gp0)
+	branch Test(EQ,Z) l0000046C
+	// succ:  l00000463 l0000046C
+l00000463:
+	call fn045A (retsize: 2;)
+	gp0 = SEQ(SLICE(gp0, byte, 8), SLICE(Mem0[gp11:word16], byte, 0))
+	PZN = cond(gp0)
+	branch Test(EQ,Z) l0000046C
+	// succ:  l00000468 l0000046C
+l00000468:
+	call fn045A (retsize: 2;)
+	gp11 = gp11 + 1<16>
+	CPZN = cond(gp11)
+	goto l00000460
+	// succ:  l00000460
+l0000046C:
+	gp9 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp10 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp11 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	return
+	// succ:  fn045D_exit
+l045D:
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp12
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp11
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp10
+	gp11 = gp0
+	PZN = cond(gp11)
+	gp0 = gp0 ^ gp0
+	PZN = cond(gp0)
+	goto l00000460
+	// succ:  l00000460
+fn045D_exit:
+
+
+// fn04AE
+// Return size: 2
+define fn04AE
+fn04AE_entry:
+	gp15 = fp
+	// succ:  l04AE
+l04AE:
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp3
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp2
+	gp15 = gp15 - 1<16>
+	Mem0[gp15:word16] = gp1
+	gp3 = gp2
+	PZN = cond(gp3)
+	gp1_gp2 = gp0_gp1
+	PZN = cond(gp1_gp2)
+	gp0 = 0x813C<16>
+	PZN = cond(gp0)
+	call fn03E0 (retsize: 2;)
+	call fn045D (retsize: 2;)
+	gp0 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp1 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	gp2 = Mem0[gp15:word16]
+	gp15 = gp15 + 1<i16>
+	return
+	// succ:  fn04AE_exit
+fn04AE_exit:
+
+
+// fn04B9
+// Return size: 2
+define fn04B9
+fn04B9_entry:
+	gp15 = fp
+	goto l04B9
+	// succ:  l04B9
+l000004BA:
+	gp0 = Mem0[gp1:word16]
+	PZN = cond(gp0)
+	branch Test(EQ,Z) l000004C1
+	// succ:  l000004BD l000004C1
+l000004BD:
+	call fn045A (retsize: 2;)
+	gp1 = gp1 + 1<16>
+	CPZN = cond(gp1)
+	goto l000004BA
+	// succ:  l000004BA
+l000004C1:
+	return
+	// succ:  fn04B9_exit
+l04B9:
+	gp1 = gp0
+	PZN = cond(gp1)
+	goto l000004BA
+	// succ:  l000004BA
+fn04B9_exit:
+
+

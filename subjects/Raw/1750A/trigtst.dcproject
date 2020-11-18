@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>mil-std-1750</arch>
+  <input>
+    <filename>trigtst.ldm</filename>
+    <asmDir>trigtst.reko</asmDir>
+    <srcDir>trigtst.reko</srcDir>
+    <includeDir>trigtst.reko</includeDir>
+    <resources>trigtst.reko\resources</resources>
+    <user>
+      <address>0000</address>
+      <loader>TldLdm</loader>
+      <processor name="mil-std-1750" />
+      <registerValues />
+      <outputFilePolicy>Segment</outputFilePolicy>
+      <procedure>
+        <address>00000100</address>
+      </procedure>
+    </user>
+  </input>
+</project>
