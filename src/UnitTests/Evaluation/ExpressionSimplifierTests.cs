@@ -626,6 +626,14 @@ namespace Reko.UnitTests.Evaluation
         }
 
         [Test]
+        [Ignore("Sliced 32-bit additions should result in narrower expressions")]
+        public void Exs_Slice_Of_Self_Addition()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.IAdd(m.Slice(foo, PrimitiveType.Word16, 0), m.Slice(foo, PrimitiveType.Word16, 0));
+            Assert.AreEqual("SLICE(foo_1 * 2<32>, word16, 0)", expr.Accept(simplifier).ToString());
+        }
+        [Test]
         public void Exs_Shifts_Used_ToAlign()
         {
             Given_ExpressionSimplifier();

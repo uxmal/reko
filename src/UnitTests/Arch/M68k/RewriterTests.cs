@@ -201,7 +201,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x4643); // not.w d3
             AssertCode(
                 "0|L--|00010000(2): 6 instructions",
-                "1|L--|v3 = ~CONVERT(d3, word32, word16)",
+                "1|L--|v3 = ~SLICE(d3, word16, 0)",
                 "2|L--|v4 = SLICE(d3, word16, 16)",
                 "3|L--|d3 = SEQ(v4, v3)",
                 "4|L--|ZN = cond(v3)",

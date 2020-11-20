@@ -54,12 +54,12 @@ namespace Reko.Scanning
         public abstract ValueSet Add(Constant right);
         public abstract ValueSet And(Constant cRight);
         public abstract ValueSet IMul(Constant cRight);
+        public abstract ValueSet Neg();
         public abstract ValueSet Sub(Constant cRight);
         public abstract ValueSet Shl(Constant cRight);
         public abstract ValueSet SignExtend(DataType dataType);
         public abstract ValueSet Truncate(DataType dt);
         public abstract ValueSet ZeroExtend(DataType dataType);
-
     }
 
     /// <summary>
@@ -155,6 +155,21 @@ namespace Reko.Scanning
                     SI.Stride * (int)v,
                     SI.Low * v,
                     SI.High * v));
+        }
+
+        public override ValueSet Neg()
+        {
+            if (SI.IsEmpty)
+            {
+                return new IntervalValueSet(
+                    this.DataType,
+                    StridedInterval.Empty);
+            }
+            var newHi = -SI.Low;
+            var newLo = -SI.High;
+            return new IntervalValueSet(
+                this.DataType,
+                StridedInterval.Create(SI.Stride, newLo, newHi));
         }
 
         public override ValueSet Shl(Constant cRight)
@@ -280,6 +295,11 @@ namespace Reko.Scanning
             return Map(DataType, v => MulValue(v, cRight));
         }
 
+        public override ValueSet Neg()
+        {
+            return Map(DataType, NegValue);
+        }
+
         private Expression AddValue(Expression eLeft, Constant cRight)
         {
             if (eLeft is Constant cLeft)
@@ -291,6 +311,13 @@ namespace Reko.Scanning
         {
             if (eLeft is Constant cLeft)
                 return Operator.IMul.ApplyConstants(cLeft, cRight);
+            throw new NotImplementedException();
+        }
+
+        private Expression NegValue(Expression e)
+        {
+            if (e is Constant c)
+                return c.Negate();
             throw new NotImplementedException();
         }
 

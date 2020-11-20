@@ -715,8 +715,8 @@ namespace Reko.Scanning
                 this.Live.Remove(killedReg.Key);
             }
             this.assignLhs = killedRegs[0].Key;
-            if (ass.Src.ToString().Contains("-SLICE"))  //$DEBUG
-                ass.ToString();
+            if (assignLhs.ToString() == "v53")
+                assignLhs.ToString();    //$DEBUG
             var se = ass.Src.Accept(this, killedRegs[0].Value);
             if (se == null)
                 return se;
@@ -1063,7 +1063,12 @@ namespace Reko.Scanning
             var range = new BitRange(
                 (short)slice.Offset,
                 (short) (slice.DataType.BitSize + slice.Offset));
-            return slice.Expression.Accept(this, new BackwardSlicerContext(ctx.Type, range));
+            var se = slice.Expression.Accept(this, new BackwardSlicerContext(ctx.Type, range));
+            if (se?.SrcExpr != null && se.SrcExpr.DataType.BitSize > slice.DataType.BitSize)
+            {
+                se.SrcExpr = new Slice(slice.DataType, se.SrcExpr, slice.Offset);
+            }
+            return se;
         }
 
         public SlicerResult? VisitTestCondition(TestCondition tc, BackwardSlicerContext ctx)
@@ -1076,7 +1081,14 @@ namespace Reko.Scanning
         public SlicerResult? VisitUnaryExpression(UnaryExpression unary, BackwardSlicerContext ctx)
         {
             var sr = unary.Expression.Accept(this, ctx);
-            return sr;
+            if (sr is null)
+                return null;
+            return new SlicerResult
+            {
+                SrcExpr = new UnaryExpression(unary.Operator, unary.DataType, sr.SrcExpr!),
+                LiveExprs = sr.LiveExprs,
+                Stop = sr.Stop,
+            };
         }
 
         public override string ToString()

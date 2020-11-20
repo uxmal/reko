@@ -338,5 +338,16 @@ namespace Reko.UnitTests.Scanning
             var (vs, _) = vse.Evaluate(exp);
             Assert.AreEqual("2[0,6]", vs.ToString());
         }
+
+        [Test]
+        public void Vse_Negation()
+        {
+            var r0 = m.Reg32("r0", 0);
+            Given_ValueSet(r0, IVS(1, 0, 7));
+            Given_Evaluator();
+            var exp = m.Neg(r0);
+            var (vs, _) = vse.Evaluate(exp);
+            Assert.AreEqual("1[-7,0]", vs.ToString());
+        }
     }
 }

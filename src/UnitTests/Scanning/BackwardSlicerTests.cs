@@ -599,9 +599,9 @@ namespace Reko.UnitTests.Scanning
                 ;
             Assert.AreEqual(2, bwslc.Live.Count);
             Console.WriteLine(bwslc.JumpTableFormat.ToString());
-            Assert.AreEqual("CONVERT(Mem0[CONVERT(SLICE(SEQ(d1, d0) * 2<32>, word16, 0), word16, word32) + 0x10EC32<32>:word16], word16, int32) + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
-            Assert.AreEqual("d0", bwslc.JumpTableIndex.ToString());
-            Assert.AreEqual("SLICE(d0, byte, 0)", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
+            Assert.AreEqual("CONVERT(Mem0[CONVERT(SLICE(SEQ(SLICE(d1, word24, 8), SLICE(d0, byte, 0)) * 2<32>, word16, 0), word16, word32) + 0x10EC32<32>:word16], word16, int32) + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("v2", bwslc.JumpTableIndex.ToString());
+            Assert.AreEqual("v2", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
             Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());
         }
 
@@ -864,6 +864,7 @@ namespace Reko.UnitTests.Scanning
         public void Bwslc_Issue_953()
         {
             /*
+            The original m68k code looked like this:
 
     0000D912 1618 move.b (a0)+,d3
     0000D914 1818 move.b (a0)+,d4
@@ -888,8 +889,8 @@ namespace Reko.UnitTests.Scanning
             var v50 = binder.CreateTemporary("v50", PrimitiveType.Word16);
             var v51 = binder.CreateTemporary("v51", PrimitiveType.Word16);
             var v52 = binder.CreateTemporary("v52", PrimitiveType.Word16);
-            var v53 = binder.CreateTemporary("v51", PrimitiveType.Word16);
-            var v54 = binder.CreateTemporary("v52", PrimitiveType.Word16);
+            var v53 = binder.CreateTemporary("v53", PrimitiveType.Word16);
+            var v54 = binder.CreateTemporary("v54", PrimitiveType.Word16);
             var ZN = Cc("ZN");
             var C = Cc("C");
             var V = Cc("V");
@@ -912,6 +913,7 @@ namespace Reko.UnitTests.Scanning
                 m.Assign(v52, m.Slice(d3, word16, 16));
                 m.Assign(d3, m.Seq(v52, v51));
                 m.Assign(CVZN, m.Cond(v51));
+
                 m.Assign(v53, m.Neg(m.Slice(d3, word16, 0)));
                 
                 m.Assign(v54, m.Slice(d3, word16, 16));
@@ -925,9 +927,9 @@ namespace Reko.UnitTests.Scanning
             while (bwslc.Step())
                 ;
             Assert.AreEqual("SLICE(R7 * 2<8>, uint16, 0) + 0x8E<16>", bwslc.JumpTableFormat.ToString());
-            Assert.AreEqual("A", bwslc.JumpTableIndex.ToString());
-            Assert.AreEqual("A", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
-            Assert.AreEqual("1[0,3]", bwslc.JumpTableIndexInterval.ToString());
+            Assert.AreEqual("SLICE(d3, word16, 0)", bwslc.JumpTableIndex.ToString());
+            Assert.AreEqual("SLICE(d3, word16, 0)", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
+            Assert.AreEqual("1[0,7]", bwslc.JumpTableIndexInterval.ToString());
         }
 
 

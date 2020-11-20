@@ -43,7 +43,7 @@ namespace Reko.Analysis
             protected readonly SsaTransform outer;
             protected readonly SsaIdentifierCollection ssaIds;
             protected readonly IDictionary<Block, SsaBlockState> blockstates;
-            private Stack<Block> bloxx = new Stack<Block>();
+            private readonly Stack<Block> bloxx = new Stack<Block>();
             public IdentifierTransformer(Identifier id, Statement stm, SsaTransform outer)
             {
                 this.id = id;
@@ -111,9 +111,20 @@ namespace Reko.Analysis
             /// </returns>
             public abstract SsaIdentifier? ReadBlockLocalVariable(SsaBlockState bs);
 
+            static bool traceAHolic;
+
             public SsaIdentifier? ReadVariableRecursive(SsaBlockState bs)
             {
                 SsaIdentifier val;
+                if (bs.Block.Address.ToLinear() == 0xC354 && id.Name == "X")
+                {
+                    bs.ToString(); //$DEBUG
+                    traceAHolic = true;
+                }
+                if (traceAHolic)
+                {
+                    Debug.Print("   SSA: tracing {0} in {1}({2})", this.id, bs.Block.Name, bs.Block.Procedure.Name);
+                }
                 if (bs.Block.Pred.Any(p => !blockstates[p].Visited))
                 {
                     // Incomplete CFG

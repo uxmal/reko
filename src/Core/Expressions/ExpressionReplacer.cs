@@ -211,7 +211,10 @@ namespace Reko.Core.Expressions
 
         public Expression VisitUnaryExpression(UnaryExpression unary)
         {
-            throw new NotImplementedException();
+            if (cmp.Equals(unary, original))
+                return replacement;
+            var exp = unary.Expression.Accept(this);
+            return new UnaryExpression(unary.Operator, unary.DataType, exp);
         }
     }
 }

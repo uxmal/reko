@@ -455,6 +455,11 @@ namespace Reko.Scanning
 
         public ValueSet VisitUnaryExpression(UnaryExpression unary, BitRange bitRange)
         {
+            var vsUnary = unary.Expression.Accept(this, bitRange);
+            if (unary.Operator == Operator.Neg)
+            {
+                return vsUnary.Neg();
+            }
             throw new NotImplementedException();
         }
     }
