@@ -137,7 +137,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         private void When_CreateLoader32(bool big_endian)
         {
             this.eil = new ElfImageLoader(sc, "foo", this.bytes);
-            this.el32 = new ElfLoader32(eil, eih, this.bytes, big_endian ? ElfLoader.ELFDATA2MSB : ElfLoader.ELFDATA2LSB);
+            this.el32 = new ElfLoader32(sc, eih, 0, big_endian ? EndianServices.Big: EndianServices.Little, this.bytes);
             this.el32.LoadArchitectureFromHeader();
             el32.Segments.AddRange(programHeaders);
             el32.Sections.AddRange(sections);

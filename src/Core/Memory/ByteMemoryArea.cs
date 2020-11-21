@@ -769,6 +769,14 @@ namespace Reko.Core.Memory
             Bytes[offset + 3] = (byte) (dw >> 24);
         }
 
+        public static void WriteLeUInt32(byte[] abImage, uint offset, uint dw)
+        {
+            abImage[offset] = (byte) (dw & 0xFF);
+            abImage[offset + 1] = (byte) (dw >> 8);
+            abImage[offset + 2] = (byte) (dw >> 16);
+            abImage[offset + 3] = (byte) (dw >> 24);
+        }
+
         public static void WriteBeUInt32(byte[] abImage, uint offset, uint dw)
         {
             abImage[offset] = (byte) (dw >> 24);

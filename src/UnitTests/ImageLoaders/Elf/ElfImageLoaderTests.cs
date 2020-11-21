@@ -372,7 +372,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var eil = new ElfImageLoader(sc, "foo", rawImg);
             eil.LoadElfIdentification();
             var el = (ElfLoader32)eil.CreateLoader();
-            el.LoadSectionHeaders();
+            el.Sections.AddRange(el.LoadSectionHeaders());
         }
 
         [Test]
@@ -381,7 +381,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var eil = new ElfImageLoader(sc, "foo", rawImg);
             eil.LoadElfIdentification();
             var el = (ElfLoader32)eil.CreateLoader();
-            el.LoadSectionHeaders();
+            el.Sections.AddRange(el.LoadSectionHeaders());
 
             Assert.AreEqual("", el.Sections[0].Name);
             Assert.AreEqual(".interp", el.Sections[1].Name);
@@ -420,7 +420,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             eil.LoadElfIdentification();
             var el = (ElfLoader32)eil.CreateLoader();
             el.LoadSegments();
-            el.LoadSectionHeaders();
+            el.Sections.AddRange(el.LoadSectionHeaders());
             //el.Dump(Console.Out);
         }
 
@@ -444,9 +444,9 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             opEl.VerifyAll();
         }
 
-        private void Given_Image()
+        private void Given_Image(bool big_endian)
         {
-            BuildObjectFile32();
+            BuildObjectFile32(big_endian);
         }
     }
 }

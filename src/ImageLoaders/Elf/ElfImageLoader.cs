@@ -83,7 +83,7 @@ namespace Reko.ImageLoaders.Elf
             var platform = innerLoader.LoadPlatform(osAbi, innerLoader.Architecture);
             
             int cHeaders = innerLoader.LoadSegments();
-            innerLoader.LoadSectionHeaders();
+            innerLoader.Sections.AddRange(innerLoader.LoadSectionHeaders());
             innerLoader.LoadSymbolsFromSections();
             //innerLoader.Dump();           // This spews a lot into the unit test output.
             if (cHeaders > 0)
@@ -155,10 +155,13 @@ namespace Reko.ImageLoaders.Elf
         public ElfLoader CreateLoader()
         {
             var rdr = CreateReader(HEADER_OFFSET);
+            var endianness = this.endianness == ElfLoader.ELFDATA2LSB
+                ? EndianServices.Little
+                : EndianServices.Big;
             if (fileClass == ELFCLASS64)
             {
                 var header64 = Elf64_EHdr.Load(rdr);
-                return new ElfLoader64(this, header64, RawImage, osAbi, endianness);
+                return new ElfLoader64(this.Services, header64, osAbi, endianness, RawImage);
             }
             else
             {
@@ -174,7 +177,7 @@ namespace Reko.ImageLoaders.Elf
                 trace.Verbose("  e_shentsize: {0}", header32.e_shentsize);
                 trace.Verbose("  e_shnum: {0}", header32.e_shnum);
                 trace.Verbose("  e_shstrndx: {0}", header32.e_shstrndx);
-                return new ElfLoader32(this, header32, RawImage, endianness);
+                return new ElfLoader32(this.Services, header32, osAbi, endianness, RawImage);
             }
         }
     }

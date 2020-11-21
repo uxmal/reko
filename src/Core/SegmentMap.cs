@@ -36,6 +36,22 @@ namespace Reko.Core
     {
         public event EventHandler? MapChanged;
 
+        public SegmentMap(params ImageSegment[] segments) : this(MinBaseAddr(segments), segments)
+        {
+        }
+
+        private static Address MinBaseAddr(ImageSegment[] segments)
+        {
+            if (segments.Length == 0)
+                throw new ArgumentException("At least one ImageSegment must be provided.");
+            var addr = segments[0].Address;
+            for (int i = 1; i < segments.Length; ++i)
+            {
+                addr = Address.Min(addr, segments[i].Address);
+            }
+            return addr;
+        }
+
         public SegmentMap(Address addrBase, params ImageSegment[] segments)
         {
             this.BaseAddress = addrBase ?? throw new ArgumentNullException("addrBase");

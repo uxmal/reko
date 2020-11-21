@@ -45,17 +45,17 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_BeArchitecture();
         }
 
-
-
         private void Given_Linker(bool big_endian)
         {
-            BuildObjectFile32();
-
+            BuildObjectFile32(big_endian);
             var eil = new ElfImageLoader(sc, "foo.o", rawBytes);
             eil.LoadElfIdentification();
-            var eh = Elf32_EHdr.Load(new BeImageReader(rawBytes, ElfImageLoader.HEADER_OFFSET));
-            var el = new ElfLoader32(eil, eh, rawBytes, big_endian ? ElfLoader.ELFDATA2MSB : ElfLoader.ELFDATA2LSB);
-            el.LoadSectionHeaders();
+            var rdr = big_endian
+                ? new BeImageReader(rawBytes, ElfImageLoader.HEADER_OFFSET)
+                : (EndianImageReader) new LeImageReader(rawBytes, ElfImageLoader.HEADER_OFFSET);
+            var eh = Elf32_EHdr.Load(rdr);
+            var el = new ElfLoader32(sc, eh, 0, big_endian ? EndianServices.Big: EndianServices.Little, rawBytes);
+            el.Sections.AddRange(el.LoadSectionHeaders());
             el.LoadSymbolsFromSections();
             this.linker = new ElfObjectLinker32(el, arch.Object, rawBytes);
         }
