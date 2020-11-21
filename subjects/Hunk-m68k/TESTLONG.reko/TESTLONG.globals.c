@@ -4,18 +4,14 @@
 
 #include "TESTLONG.h"
 
-struct Eq_n * g_ptr0000;
-struct Eq_n * g_ptr0004;
+struct Eq_n * g_ptr0000; // 00000000
+struct Eq_n * g_ptr0004; // 00000004
 word32 g_a0008[];
 ui32 g_a0010[];
-word32 g_dw3EB0;
+word32 g_dw3EB0; // 00003EB0
 Eq_n g_t3EB8;
-word32 g_dw3EBC;
-struct Eq_n * g_ptr3EC8;
-struct Eq_n * g_ptr3ECC;
-struct Eq_n * g_ptr3ED0;
-struct Eq_n * g_ptr3ED8;
-Eq_n g_t4000;
-Eq_n g_t10202;
-Eq_n g_t3030303;
-Eq_n g_t6060606;
+word32 g_dw3EBC; // 00003EBC
+struct Eq_n * g_ptr3EC8; // 00003EC8
+struct Eq_n * g_ptr3ECC; // 00003ECC
+struct Eq_n * g_ptr3ED0; // 00003ED0
+struct Eq_n * g_ptr3ED8; // 00003ED8

@@ -13,6 +13,8 @@
 				"/consoleloggerparameters:NoSummary",
 				"/p:Platform=x64",
 				"/p:Configuration=Debug"
+                "/verbosity:minimal",
+                "/m",
 			],
 			"group": "build",
 			"presentation": {
@@ -30,6 +32,15 @@
 			"problemMatcher": [
 				"$msCompile"
 			]
+        },
+        {
+            "label":"unit tests",
+            "type":"process",
+            "command":"dotnet",
+            "args": [
+                "test",
+                "UnitTests/bin/x64/Debug/Reko.UnitTests.dll",
+            ]
 		}
 	]
 }

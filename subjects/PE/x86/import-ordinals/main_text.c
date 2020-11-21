@@ -331,7 +331,7 @@ void fn0040165E()
 	}
 }
 
-<anonymous> g_t401731 = <code>;
+<anonymous> g_t401731 = <code>; // 00401731
 // 00401761: Register ptr32 fn00401761()
 // Called from:
 //      Win32CrtStartup

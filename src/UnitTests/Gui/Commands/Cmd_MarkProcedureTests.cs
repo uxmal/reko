@@ -41,12 +41,14 @@ namespace Reko.UnitTests.Gui.Commands
         {
             this.sc = new ServiceContainer();
             var mem = new ByteMemoryArea(Address.SegPtr(0x0C00, 0), new byte[100]);
+            var arch = new FakeArchitecture(sc);
             this.program = new Program
             {
                 SegmentMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute)),
-                Architecture = new FakeArchitecture(sc),
+                Architecture = arch,
+                Platform = new DefaultPlatform(sc, arch)
             };
             program.BuildImageMap();
         }

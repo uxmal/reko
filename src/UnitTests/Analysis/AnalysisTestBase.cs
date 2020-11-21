@@ -198,6 +198,10 @@ namespace Reko.UnitTests.Analysis
                 {
                     this.platform = new Reko.Environments.Windows.Win32Platform(sc, arch);
                 }
+                else if (this.platformMock.Object == platform)
+                {
+                    platformMock.Setup(p => p.Architecture).Returns(arch);
+                }
                 program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
                 program.Platform = this.platform;
             }

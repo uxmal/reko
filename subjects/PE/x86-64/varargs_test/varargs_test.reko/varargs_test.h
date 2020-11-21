@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (40000000 word16 w40000000) (4000003C word32 dw4000003C) (40001ABC (fn int32 ((ptr64 (struct "_exception")))) t40001ABC) (40001B24 (fn LONG ((ptr64 (struct "_EXCEPTION_POINTERS")))) t40001B24) (40002190 (ptr64 code) ptr40002190) (400021A0 PVFV t400021A0) (400021B0 PVFV t400021B0) (400021B8 PVFV t400021B8) (400021D0 PVFV t400021D0) (40002200 (struct "_EXCEPTION_POINTERS" (0 PEXCEPTION_RECORD ExceptionRecord) (4 PCONTEXT ContextRecord)) t40002200) (40002680 word64 qw40002680) (40002690 word64 qw40002690) (40003000 ui64 qw40003000) (40003008 word64 qw40003008) (40003014 word32 dw40003014) (40003018 word32 dw40003018) (4000301C ui32 dw4000301C) (40003020 word64 qw40003020) (40003030 word32 dw40003030) (40003040 word32 dw40003040) (40003044 word32 dw40003044) (40003050 word64 qw40003050) (40003058 word32 dw40003058) (40003060 word64 qw40003060) (400030E0 CONTEXT t400030E0) (40003160 ui64 qw40003160) (40003178 ptr64 ptr40003178) (400031D8 word64 qw400031D8) (400035B0 word32 dw400035B0) (400035B8 uint64 qw400035B8) (400035C0 Eq_625 t400035C0) (400035D0 real64 r400035D0) (400035D8 uint128 ow400035D8) (400035E8 real64 r400035E8) (400035F0 byte b400035F0) (40003600 (union "_SLIST_HEADER" ((struct "struct_59" (0 SINGLE_LIST_ENTRY Next) (4 WORD Depth) (6 WORD Sequence)) u1) (ULONGLONG Alignment)) u40003600) (40003610 ui32 dw40003610) (40003614 ui32 dw40003614))
+Eq_1: (struct "Globals" (40000000 word16 w40000000) (4000003C word32 dw4000003C) (40001ABC (fn int32 ((ptr64 (struct "_exception")))) t40001ABC) (40001B24 (fn LONG ((ptr64 (struct "_EXCEPTION_POINTERS")))) t40001B24) (40002000 (ptr64 code) __imp__RtlLookupFunctionEntry) (40002008 (ptr64 code) __imp__RtlVirtualUnwind) (40002010 (ptr64 code) __imp__UnhandledExceptionFilter) (40002018 (ptr64 code) __imp__GetModuleHandleW) (40002020 (ptr64 code) __imp__IsDebuggerPresent) (40002028 (ptr64 code) __imp__InitializeSListHead) (40002030 (ptr64 code) __imp__GetSystemTimeAsFileTime) (40002038 (ptr64 code) __imp__GetCurrentThreadId) (40002040 (ptr64 code) __imp__GetCurrentProcessId) (40002048 (ptr64 code) __imp__QueryPerformanceCounter) (40002050 (ptr64 code) __imp__IsProcessorFeaturePresent) (40002058 (ptr64 code) __imp__TerminateProcess) (40002060 (ptr64 code) __imp__GetCurrentProcess) (40002068 (ptr64 code) __imp__SetUnhandledExceptionFilter) (40002070 (ptr64 code) __imp__RtlCaptureContext) (40002080 (ptr64 code) __imp__memset) (40002088 (ptr64 code) __imp____C_specific_handler) (40002098 (ptr64 code) __imp___set_new_mode) (400020A8 (ptr64 code) __imp___configthreadlocale) (400020B8 (ptr64 code) __imp____setusermatherr) (400020C8 (ptr64 code) __imp___cexit) (400020D0 (ptr64 code) __imp___register_onexit_function) (400020D8 (ptr64 code) __imp___crt_atexit) (400020E0 (ptr64 code) __imp__terminate) (400020E8 (ptr64 code) __imp___set_app_type) (400020F0 (ptr64 code) __imp___seh_filter_exe) (400020F8 (ptr64 code) __imp___register_thread_local_exe_atexit_callback) (40002100 (ptr64 code) __imp____p___argv) (40002108 (ptr64 code) __imp____p___argc) (40002110 (ptr64 code) __imp___c_exit) (40002118 (ptr64 code) __imp___exit) (40002120 (ptr64 code) __imp__exit) (40002128 (ptr64 code) __imp___initterm_e) (40002130 (ptr64 code) __imp___initterm) (40002138 (ptr64 code) __imp___get_initial_narrow_environment) (40002140 (ptr64 code) __imp___initialize_narrow_environment) (40002148 (ptr64 code) __imp___configure_narrow_argv) (40002150 (ptr64 code) __imp___initialize_onexit_table) (40002160 (ptr64 code) __imp____p__commode) (40002168 (ptr64 code) __imp____stdio_common_vfscanf) (40002170 (ptr64 code) __imp____stdio_common_vfprintf) (40002178 (ptr64 code) __imp____acrt_iob_func) (40002180 (ptr64 code) __imp___set_fmode) (40002190 (ptr64 code) ptr40002190) (400021A0 PVFV t400021A0) (400021B0 PVFV t400021B0) (400021B8 PVFV t400021B8) (400021D0 PVFV t400021D0) (40002200 (struct "_EXCEPTION_POINTERS" (0 PEXCEPTION_RECORD ExceptionRecord) (4 PCONTEXT ContextRecord)) t40002200) (40002680 word64 qw40002680) (40002690 word64 qw40002690) (40002830 word64 qw40002830) (40002838 word64 qw40002838) (40002840 word64 qw40002840) (40002848 word64 qw40002848) (40002850 word64 qw40002850) (40002858 word64 qw40002858) (40002860 word64 qw40002860) (40002868 word64 qw40002868) (40002870 word64 qw40002870) (40002878 word64 qw40002878) (40002880 word64 qw40002880) (40002888 word64 qw40002888) (40002890 word64 qw40002890) (40002898 word64 qw40002898) (400028A0 word64 qw400028A0) (400028B0 word64 qw400028B0) (400028B8 word64 qw400028B8) (400028C8 word64 qw400028C8) (400028D8 word64 qw400028D8) (400028E8 word64 qw400028E8) (400028F8 word64 qw400028F8) (40002900 word64 qw40002900) (40002908 word64 qw40002908) (40002910 word64 qw40002910) (40002918 word64 qw40002918) (40002920 word64 qw40002920) (40002928 word64 qw40002928) (40002930 word64 qw40002930) (40002938 word64 qw40002938) (40002940 word64 qw40002940) (40002948 word64 qw40002948) (40002950 word64 qw40002950) (40002958 word64 qw40002958) (40002960 word64 qw40002960) (40002968 word64 qw40002968) (40002970 word64 qw40002970) (40002978 word64 qw40002978) (40002980 word64 qw40002980) (40002990 word64 qw40002990) (40002998 word64 qw40002998) (400029A0 word64 qw400029A0) (400029A8 word64 qw400029A8) (400029B0 word64 qw400029B0) (40003000 ui64 qw40003000) (40003008 word64 qw40003008) (40003014 word32 dw40003014) (40003018 word32 dw40003018) (4000301C ui32 dw4000301C) (40003020 word64 qw40003020) (40003030 word32 dw40003030) (40003040 word32 dw40003040) (40003044 word32 dw40003044) (40003050 word64 qw40003050) (40003058 word32 dw40003058) (40003060 word64 qw40003060) (400030E0 CONTEXT t400030E0) (40003160 ui64 qw40003160) (40003178 ptr64 ptr40003178) (400031D8 word64 qw400031D8) (400035B0 word32 dw400035B0) (400035B8 uint64 qw400035B8) (400035C0 Eq_625 t400035C0) (400035D0 real64 r400035D0) (400035D8 uint128 ow400035D8) (400035E8 real64 r400035E8) (400035F0 byte b400035F0) (40003600 (union "_SLIST_HEADER" ((struct "struct_59" (0 SINGLE_LIST_ENTRY Next) (4 WORD Depth) (6 WORD Sequence)) u1) (ULONGLONG Alignment)) u40003600) (40003610 ui32 dw40003610) (40003614 ui32 dw40003614))
 	globals_t (in globals : (ptr64 (struct "Globals")))
 Eq_10: (fn void (ptr64, uint64, ptr64, ptr64))
 	T_10 (in fn0000000140001140 : ptr64)
@@ -6117,6 +6117,178 @@ T_1417: (in signature of seh_filter_exe : void)
   Class: Eq_1417
   DataType: Eq_1417
   OrigDataType: 
+T_1418:
+  Class: Eq_1418
+  DataType: word64
+  OrigDataType: word64
+T_1419:
+  Class: Eq_1419
+  DataType: word64
+  OrigDataType: word64
+T_1420:
+  Class: Eq_1420
+  DataType: word64
+  OrigDataType: word64
+T_1421:
+  Class: Eq_1421
+  DataType: word64
+  OrigDataType: word64
+T_1422:
+  Class: Eq_1422
+  DataType: word64
+  OrigDataType: word64
+T_1423:
+  Class: Eq_1423
+  DataType: word64
+  OrigDataType: word64
+T_1424:
+  Class: Eq_1424
+  DataType: word64
+  OrigDataType: word64
+T_1425:
+  Class: Eq_1425
+  DataType: word64
+  OrigDataType: word64
+T_1426:
+  Class: Eq_1426
+  DataType: word64
+  OrigDataType: word64
+T_1427:
+  Class: Eq_1427
+  DataType: word64
+  OrigDataType: word64
+T_1428:
+  Class: Eq_1428
+  DataType: word64
+  OrigDataType: word64
+T_1429:
+  Class: Eq_1429
+  DataType: word64
+  OrigDataType: word64
+T_1430:
+  Class: Eq_1430
+  DataType: word64
+  OrigDataType: word64
+T_1431:
+  Class: Eq_1431
+  DataType: word64
+  OrigDataType: word64
+T_1432:
+  Class: Eq_1432
+  DataType: word64
+  OrigDataType: word64
+T_1433:
+  Class: Eq_1433
+  DataType: word64
+  OrigDataType: word64
+T_1434:
+  Class: Eq_1434
+  DataType: word64
+  OrigDataType: word64
+T_1435:
+  Class: Eq_1435
+  DataType: word64
+  OrigDataType: word64
+T_1436:
+  Class: Eq_1436
+  DataType: word64
+  OrigDataType: word64
+T_1437:
+  Class: Eq_1437
+  DataType: word64
+  OrigDataType: word64
+T_1438:
+  Class: Eq_1438
+  DataType: word64
+  OrigDataType: word64
+T_1439:
+  Class: Eq_1439
+  DataType: word64
+  OrigDataType: word64
+T_1440:
+  Class: Eq_1440
+  DataType: word64
+  OrigDataType: word64
+T_1441:
+  Class: Eq_1441
+  DataType: word64
+  OrigDataType: word64
+T_1442:
+  Class: Eq_1442
+  DataType: word64
+  OrigDataType: word64
+T_1443:
+  Class: Eq_1443
+  DataType: word64
+  OrigDataType: word64
+T_1444:
+  Class: Eq_1444
+  DataType: word64
+  OrigDataType: word64
+T_1445:
+  Class: Eq_1445
+  DataType: word64
+  OrigDataType: word64
+T_1446:
+  Class: Eq_1446
+  DataType: word64
+  OrigDataType: word64
+T_1447:
+  Class: Eq_1447
+  DataType: word64
+  OrigDataType: word64
+T_1448:
+  Class: Eq_1448
+  DataType: word64
+  OrigDataType: word64
+T_1449:
+  Class: Eq_1449
+  DataType: word64
+  OrigDataType: word64
+T_1450:
+  Class: Eq_1450
+  DataType: word64
+  OrigDataType: word64
+T_1451:
+  Class: Eq_1451
+  DataType: word64
+  OrigDataType: word64
+T_1452:
+  Class: Eq_1452
+  DataType: word64
+  OrigDataType: word64
+T_1453:
+  Class: Eq_1453
+  DataType: word64
+  OrigDataType: word64
+T_1454:
+  Class: Eq_1454
+  DataType: word64
+  OrigDataType: word64
+T_1455:
+  Class: Eq_1455
+  DataType: word64
+  OrigDataType: word64
+T_1456:
+  Class: Eq_1456
+  DataType: word64
+  OrigDataType: word64
+T_1457:
+  Class: Eq_1457
+  DataType: word64
+  OrigDataType: word64
+T_1458:
+  Class: Eq_1458
+  DataType: word64
+  OrigDataType: word64
+T_1459:
+  Class: Eq_1459
+  DataType: word64
+  OrigDataType: word64
+T_1460:
+  Class: Eq_1460
+  DataType: word64
+  OrigDataType: word64
 */
 typedef Eq_1struct _exception;
 Eq_1struct _EXCEPTION_POINTERS;
@@ -6129,6 +6301,49 @@ union _SLIST_HEADER {
 	word32 dw4000003C;	// 4000003C
 	int32 t40001ABC(struct _exception * rcx);	// 40001ABC
 	LONG t40001B24(struct _EXCEPTION_POINTERS * ExceptionInfo);	// 40001B24
+	<anonymous> * __imp__RtlLookupFunctionEntry;	// 40002000
+	<anonymous> * __imp__RtlVirtualUnwind;	// 40002008
+	<anonymous> * __imp__UnhandledExceptionFilter;	// 40002010
+	<anonymous> * __imp__GetModuleHandleW;	// 40002018
+	<anonymous> * __imp__IsDebuggerPresent;	// 40002020
+	<anonymous> * __imp__InitializeSListHead;	// 40002028
+	<anonymous> * __imp__GetSystemTimeAsFileTime;	// 40002030
+	<anonymous> * __imp__GetCurrentThreadId;	// 40002038
+	<anonymous> * __imp__GetCurrentProcessId;	// 40002040
+	<anonymous> * __imp__QueryPerformanceCounter;	// 40002048
+	<anonymous> * __imp__IsProcessorFeaturePresent;	// 40002050
+	<anonymous> * __imp__TerminateProcess;	// 40002058
+	<anonymous> * __imp__GetCurrentProcess;	// 40002060
+	<anonymous> * __imp__SetUnhandledExceptionFilter;	// 40002068
+	<anonymous> * __imp__RtlCaptureContext;	// 40002070
+	<anonymous> * __imp__memset;	// 40002080
+	<anonymous> * __imp____C_specific_handler;	// 40002088
+	<anonymous> * __imp___set_new_mode;	// 40002098
+	<anonymous> * __imp___configthreadlocale;	// 400020A8
+	<anonymous> * __imp____setusermatherr;	// 400020B8
+	<anonymous> * __imp___cexit;	// 400020C8
+	<anonymous> * __imp___register_onexit_function;	// 400020D0
+	<anonymous> * __imp___crt_atexit;	// 400020D8
+	<anonymous> * __imp__terminate;	// 400020E0
+	<anonymous> * __imp___set_app_type;	// 400020E8
+	<anonymous> * __imp___seh_filter_exe;	// 400020F0
+	<anonymous> * __imp___register_thread_local_exe_atexit_callback;	// 400020F8
+	<anonymous> * __imp____p___argv;	// 40002100
+	<anonymous> * __imp____p___argc;	// 40002108
+	<anonymous> * __imp___c_exit;	// 40002110
+	<anonymous> * __imp___exit;	// 40002118
+	<anonymous> * __imp__exit;	// 40002120
+	<anonymous> * __imp___initterm_e;	// 40002128
+	<anonymous> * __imp___initterm;	// 40002130
+	<anonymous> * __imp___get_initial_narrow_environment;	// 40002138
+	<anonymous> * __imp___initialize_narrow_environment;	// 40002140
+	<anonymous> * __imp___configure_narrow_argv;	// 40002148
+	<anonymous> * __imp___initialize_onexit_table;	// 40002150
+	<anonymous> * __imp____p__commode;	// 40002160
+	<anonymous> * __imp____stdio_common_vfscanf;	// 40002168
+	<anonymous> * __imp____stdio_common_vfprintf;	// 40002170
+	<anonymous> * __imp____acrt_iob_func;	// 40002178
+	<anonymous> * __imp___set_fmode;	// 40002180
 	<anonymous> * ptr40002190;	// 40002190
 	PVFV t400021A0;	// 400021A0
 	PVFV t400021B0;	// 400021B0
@@ -6137,6 +6352,49 @@ union _SLIST_HEADER {
 	struct _EXCEPTION_POINTERS t40002200;	// 40002200
 	word64 qw40002680;	// 40002680
 	word64 qw40002690;	// 40002690
+	word64 qw40002830;	// 40002830
+	word64 qw40002838;	// 40002838
+	word64 qw40002840;	// 40002840
+	word64 qw40002848;	// 40002848
+	word64 qw40002850;	// 40002850
+	word64 qw40002858;	// 40002858
+	word64 qw40002860;	// 40002860
+	word64 qw40002868;	// 40002868
+	word64 qw40002870;	// 40002870
+	word64 qw40002878;	// 40002878
+	word64 qw40002880;	// 40002880
+	word64 qw40002888;	// 40002888
+	word64 qw40002890;	// 40002890
+	word64 qw40002898;	// 40002898
+	word64 qw400028A0;	// 400028A0
+	word64 qw400028B0;	// 400028B0
+	word64 qw400028B8;	// 400028B8
+	word64 qw400028C8;	// 400028C8
+	word64 qw400028D8;	// 400028D8
+	word64 qw400028E8;	// 400028E8
+	word64 qw400028F8;	// 400028F8
+	word64 qw40002900;	// 40002900
+	word64 qw40002908;	// 40002908
+	word64 qw40002910;	// 40002910
+	word64 qw40002918;	// 40002918
+	word64 qw40002920;	// 40002920
+	word64 qw40002928;	// 40002928
+	word64 qw40002930;	// 40002930
+	word64 qw40002938;	// 40002938
+	word64 qw40002940;	// 40002940
+	word64 qw40002948;	// 40002948
+	word64 qw40002950;	// 40002950
+	word64 qw40002958;	// 40002958
+	word64 qw40002960;	// 40002960
+	word64 qw40002968;	// 40002968
+	word64 qw40002970;	// 40002970
+	word64 qw40002978;	// 40002978
+	word64 qw40002980;	// 40002980
+	word64 qw40002990;	// 40002990
+	word64 qw40002998;	// 40002998
+	word64 qw400029A0;	// 400029A0
+	word64 qw400029A8;	// 400029A8
+	word64 qw400029B0;	// 400029B0
 	ui64 qw40003000;	// 40003000
 	word64 qw40003008;	// 40003008
 	word32 dw40003014;	// 40003014

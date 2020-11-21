@@ -4,18 +4,14 @@
 
 #include "BYTEOPS.h"
 
-struct Eq_n * g_ptr0000;
-word32 g_dw0001;
-struct Eq_n * g_ptr0004;
+struct Eq_n * g_ptr0000; // 00000000
+word32 g_dw0001; // 00000001
+struct Eq_n * g_ptr0004; // 00000004
 word32 g_a0008[];
 ui32 g_a0010[];
-word32 g_dw2CC8;
+word32 g_dw2CC8; // 00002CC8
 Eq_n g_t2CD0;
-word32 g_dw2CD4;
-struct Eq_n * g_ptr2CE0;
-struct Eq_n * g_ptr2CE8;
-struct Eq_n * g_ptr2CF0;
-Eq_n g_t4000;
-Eq_n g_t10202;
-Eq_n g_t3030303;
-Eq_n g_t6060606;
+word32 g_dw2CD4; // 00002CD4
+struct Eq_n * g_ptr2CE0; // 00002CE0
+struct Eq_n * g_ptr2CE8; // 00002CE8
+struct Eq_n * g_ptr2CF0; // 00002CF0

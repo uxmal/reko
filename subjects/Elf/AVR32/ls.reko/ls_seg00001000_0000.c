@@ -22,7 +22,7 @@ void _start(word32 r4, word32 r5, word32 r12, word32 dwArg00)
 	}
 }
 
-ui32 g_dw26BC = 4294891194;
+ui32 g_dw26BC = 4294891194; // 000026BC
 // 000026C0: void fn000026C0(Register word32 r4, Register word32 r5, Register word32 r7, Register int32 lr)
 // Called from:
 //      _start
@@ -45,7 +45,7 @@ void fn000026C0(word32 r4, word32 r5, word32 r7, int32 lr)
 	*r6_n->ptr0184 = 0x01;
 }
 
-ui32 g_dw26F6 = 0xD6D4D421;
+ui32 g_dw26F6 = 0xD6D4D421; // 000026F6
 // 000026F8: void fn000026F8(Register word32 r4, Register word32 r5, Register word32 r7, Register word32 lr)
 void fn000026F8(word32 r4, word32 r5, word32 r7, word32 lr)
 {
@@ -58,7 +58,7 @@ void fn000026F8(word32 r4, word32 r5, word32 r7, word32 lr)
 	}
 }
 
-ui32 g_dw2716 = 0xD70CA98A;
+ui32 g_dw2716 = 0xD70CA98A; // 00002716
 // 00002718: void fn00002718()
 // Called from:
 //      fn00003334
@@ -120,7 +120,7 @@ word32 fn000027D8(word32 r12, union Eq_n & r9Out)
 	}
 }
 
-ui32 g_dw27FA = 3622622257;
+ui32 g_dw27FA = 3622622257; // 000027FA
 // 000027FC: void fn000027FC(Register word32 r0, Register word32 r1, Register (ptr32 code) r10, Register (ptr32 Eq_n) r11, Register (ptr32 Eq_n) r12)
 void fn000027FC(word32 r0, word32 r1, <anonymous> * r10, struct Eq_n * r11, struct Eq_n * r12)
 {
@@ -134,7 +134,7 @@ void fn000027FC(word32 r0, word32 r1, <anonymous> * r10, struct Eq_n * r11, stru
 		r10();
 }
 
-ui32 g_dw281E = 3627220990;
+ui32 g_dw281E = 3627220990; // 0000281E
 // 00002824: void fn00002824(Register word32 r0, Register word32 r1, Register (ptr32 code) r10, Register (ptr32 Eq_n) r11, Register (ptr32 Eq_n) r12)
 void fn00002824(word32 r0, word32 r1, <anonymous> * r10, struct Eq_n * r11, struct Eq_n * r12)
 {
@@ -148,7 +148,7 @@ void fn00002824(word32 r0, word32 r1, <anonymous> * r10, struct Eq_n * r11, stru
 		r10();
 }
 
-ui32 g_dw2846 = 3627220990;
+ui32 g_dw2846 = 3627220990; // 00002846
 // 0000284C: void fn0000284C(Register word32 r0, Register word32 r1, Register (ptr32 code) r10, Register (ptr32 Eq_n) r11, Register (ptr32 Eq_n) r12)
 void fn0000284C(word32 r0, word32 r1, <anonymous> * r10, struct Eq_n * r11, struct Eq_n * r12)
 {
@@ -162,7 +162,7 @@ void fn0000284C(word32 r0, word32 r1, <anonymous> * r10, struct Eq_n * r11, stru
 		r10();
 }
 
-ui32 g_dw286E = 3627220990;
+ui32 g_dw286E = 3627220990; // 0000286E
 // 00002874: void fn00002874(Register word32 r6, Register word32 r7, Register (ptr32 code) r10, Register (ptr32 Eq_n) r11, Register (ptr32 Eq_n) r12)
 void fn00002874(word32 r6, word32 r7, <anonymous> * r10, struct Eq_n * r11, struct Eq_n * r12)
 {
@@ -203,7 +203,7 @@ word32 fn00002A4C()
 	return r10_n;
 }
 
-ui32 g_dw2A6A = ~0x28FC0001;
+ui32 g_dw2A6A = ~0x28FC0001; // 00002A6A
 // 00002A70: Register Eq_n fn00002A70(Register Eq_n r10, Register Eq_n r11, Register ptr32 r12, Register out ptr32 r12Out)
 // Called from:
 //      fn00002DB4
@@ -281,7 +281,7 @@ Eq_n fn00002A70(Eq_n r10, Eq_n r11, ptr32 r12, ptr32 & r12Out)
 	return r11;
 }
 
-ui32 g_dw2B2E = 3666138145;
+ui32 g_dw2B2E = 3666138145; // 00002B2E
 // 00002B30: Register word32 fn00002B30(Register (ptr32 Eq_n) r5, Register word32 r12, Register word32 lr, Register out ptr32 r9Out, Register out ptr32 r10Out, Register out ptr32 r11Out, Register out ptr32 r12Out, Register out ptr32 lrOut)
 // Called from:
 //      fn00006CAC
@@ -514,7 +514,7 @@ l00002CB4:
 	return r8_n;
 }
 
-ui32 g_dw2B56 = 3678727420;
+ui32 g_dw2B56 = 3678727420; // 00002B56
 // 00002CBC: Register word32 fn00002CBC(Register out (ptr32 Eq_n) r6Out, Register out (ptr32 Eq_n) r7Out)
 // Called from:
 //      fn0000511C
@@ -574,7 +574,7 @@ word32 fn00002CDA(struct Eq_n * r6, uint32 r7, ptr32 & r6Out, ptr32 & r7Out, ptr
 	return dwLoc08;
 }
 
-ui32 g_dw2D02 = ~0x27DD0001;
+ui32 g_dw2D02 = ~0x27DD0001; // 00002D02
 // 00002D08: void fn00002D08(Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r12, Register word32 lr)
 void fn00002D08(word32 r4, word32 r5, word32 r6, word32 r7, word32 r12, word32 lr)
 {
@@ -594,7 +594,7 @@ void fn00002D08(word32 r4, word32 r5, word32 r6, word32 r7, word32 r12, word32 l
 	r6_n->ptr000C();
 }
 
-ui32 g_dw2D26 = 0xDD1CD421;
+ui32 g_dw2D26 = 0xDD1CD421; // 00002D26
 // 00002D28: void fn00002D28(Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 lr)
 void fn00002D28(word32 r4, word32 r5, word32 r6, word32 r7, word32 lr)
 {
@@ -602,7 +602,7 @@ void fn00002D28(word32 r4, word32 r5, word32 r6, word32 r7, word32 lr)
 	r6_n->ptr000C();
 }
 
-ui32 g_dw2D36 = 3711751201;
+ui32 g_dw2D36 = 3711751201; // 00002D36
 // 00002D38: Register Eq_n fn00002D38(Register Eq_n r4, Register Eq_n r11, Register Eq_n r12, Register Eq_n lr)
 // Called from:
 //      fn00004968
@@ -654,7 +654,7 @@ Eq_n fn00002D38(Eq_n r4, Eq_n r11, Eq_n r12, Eq_n lr)
 	return lr;
 }
 
-ui32 g_dw2DB2 = 3712799777;
+ui32 g_dw2DB2 = 3712799777; // 00002DB2
 // 00002DB4: Register Eq_n fn00002DB4(Register Eq_n r4, Register Eq_n r5, Register Eq_n r10, Register Eq_n r11, Register ptr32 r12, Register Eq_n lr, Register out ptr32 r12Out, Register out Eq_n lrOut)
 // Called from:
 //      fn00004864
@@ -684,7 +684,7 @@ Eq_n fn00002DB4(Eq_n r4, Eq_n r5, Eq_n r10, Eq_n r11, ptr32 r12, Eq_n lr, ptr32 
 	return r10;
 }
 
-ui32 g_dw2DEA = ~0x28FC0001;
+ui32 g_dw2DEA = ~0x28FC0001; // 00002DEA
 // 00002DF0: void fn00002DF0(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r7, Register (ptr32 Eq_n) r11)
 void fn00002DF0(word32 r0, word32 r1, word32 r2, word32 r7, struct Eq_n * r11)
 {
@@ -741,7 +741,7 @@ void fn00002DF0(word32 r0, word32 r1, word32 r2, word32 r7, struct Eq_n * r11)
 	}
 }
 
-ui32 g_dw2E76 = 0xDE04D431;
+ui32 g_dw2E76 = 0xDE04D431; // 00002E76
 // 00002E78: void fn00002E78(Register word32 r0, Register Eq_n r9, Register word32 r10, Register (ptr32 (ptr32 byte)) r11, Register (ptr32 (ptr32 byte)) r12, Register Eq_n lr)
 void fn00002E78(word32 r0, Eq_n r9, word32 r10, byte ** r11, byte ** r12, Eq_n lr)
 {
@@ -959,7 +959,7 @@ l00003088:
 	}
 }
 
-ui32 g_dw2FD6 = 3733730056;
+ui32 g_dw2FD6 = 3733730056; // 00002FD6
 // 00003094: void fn00003094(Register Eq_n r4, Register Eq_n r7, Register Eq_n r12, Register Eq_n lr)
 void fn00003094(Eq_n r4, Eq_n r7, Eq_n r12, Eq_n lr)
 {
@@ -976,7 +976,7 @@ void fn00003094(Eq_n r4, Eq_n r7, Eq_n r12, Eq_n lr)
 	r12_n->dw0004 = r9_n;
 }
 
-ui32 g_dw30AE = ~0x27DD0001;
+ui32 g_dw30AE = ~0x27DD0001; // 000030AE
 // 000030B4: Register Eq_n fn000030B4(Register Eq_n r4, Register Eq_n r5, Register Eq_n r7, Register uint32 r11, Register Eq_n r12, Register Eq_n lr, Register out ptr32 lrOut)
 // Called from:
 //      fn0000393C
@@ -1000,7 +1000,7 @@ Eq_n fn000030B4(Eq_n r4, Eq_n r5, Eq_n r7, uint32 r11, Eq_n r12, Eq_n lr, ptr32 
 	return r12_n;
 }
 
-ui32 g_dw30D2 = ~0x28FC0001;
+ui32 g_dw30D2 = ~0x28FC0001; // 000030D2
 // 000030D8: Register (ptr32 (arr Eq_n)) fn000030D8(Register Eq_n r4, Register Eq_n r5, Register Eq_n r7, Register ui32 r12, Register Eq_n lr, Register out Eq_n r9Out, Register out (ptr32 Eq_n) r10Out, Register out ptr32 r11Out, Register out Eq_n r12Out, Register out Eq_n lrOut)
 // Called from:
 //      fn00003334
@@ -1036,7 +1036,7 @@ Eq_n (* fn000030D8)[](Eq_n r4, Eq_n r5, Eq_n r7, ui32 r12, Eq_n lr, union Eq_n &
 	return r8_n;
 }
 
-ui32 g_dw311E = 3773617201;
+ui32 g_dw311E = 3773617201; // 0000311E
 // 00003120: Register Eq_n fn00003120(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r5, Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register Eq_n lr, Register out Eq_n lrOut)
 // Called from:
 //      fn00003A44
@@ -1081,7 +1081,7 @@ Eq_n fn00003120(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r5, Eq_n r10, Eq_n r11, Eq_n r12
 	return r11_n;
 }
 
-ui32 g_dw3166 = 3778335793;
+ui32 g_dw3166 = 3778335793; // 00003166
 // 00003168: Register word32 fn00003168(Register Eq_n r0, Register Eq_n r1, Register Eq_n r4, Register Eq_n r7, Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register Eq_n lr, Register out ptr32 r9Out, Register out (ptr32 Eq_n) r10Out, Register out (ptr32 Eq_n) r11Out, Register out ptr32 lrOut)
 // Called from:
 //      fn00003334
@@ -1122,7 +1122,7 @@ word32 fn00003168(Eq_n r0, Eq_n r1, Eq_n r4, Eq_n r7, Eq_n r10, Eq_n r11, Eq_n r
 	return r8_n;
 }
 
-ui32 g_dw3196 = 3783054369;
+ui32 g_dw3196 = 3783054369; // 00003196
 // 00003198: Register Eq_n fn00003198(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register Eq_n lr, Register out ptr32 r1Out, Register out (ptr32 Eq_n) r2Out, Register out (ptr32 Eq_n) r3Out, Register out ptr32 r12Out, Register out ptr32 lrOut)
 // Called from:
 //      fn00003904
@@ -1190,7 +1190,7 @@ Eq_n fn00003198(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r10, Eq_n r11,
 	return r0_n;
 }
 
-ui32 g_dw320E = 3786200097;
+ui32 g_dw320E = 3786200097; // 0000320E
 // 00003210: Register word32 fn00003210(Register Eq_n r4, Register Eq_n r5, Register Eq_n r7, Register uint32 r10, Register Eq_n r11, Register Eq_n lr, Register out ptr32 lrOut)
 // Called from:
 //      fn00003334
@@ -1212,7 +1212,7 @@ word32 fn00003210(Eq_n r4, Eq_n r5, Eq_n r7, uint32 r10, Eq_n r11, Eq_n lr, ptr3
 	return r12_n;
 }
 
-ui32 g_dw3232 = 3794064433;
+ui32 g_dw3232 = 3794064433; // 00003232
 // 00003234: void fn00003234(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r10, Register word32 r11, Register word32 r12, Register word32 lr)
 void fn00003234(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r10, word32 r11, word32 r12, word32 lr)
 {
@@ -1266,7 +1266,7 @@ void fn00003234(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5
 		r4_n();
 }
 
-ui32 g_dw3276 = ~0x28FC0001;
+ui32 g_dw3276 = ~0x28FC0001; // 00003276
 // 000032D0: Register Eq_n fn000032D0(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register Eq_n r5, Register Eq_n r7, Register Eq_n r11, Register Eq_n r12, Register Eq_n lr, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r10Out, Register out ptr32 r11Out, Register out Eq_n r12Out, Register out ptr32 lrOut)
 // Called from:
 //      fn0000330C
@@ -1309,7 +1309,7 @@ Eq_n fn000032D0(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r7, E
 	return r0;
 }
 
-ui32 g_dw3304 = 3626161923;
+ui32 g_dw3304 = 3626161923; // 00003304
 // 0000330C: Register Eq_n fn0000330C(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register Eq_n r5, Register Eq_n r12, Register Eq_n lr, Register out ptr32 r1Out, Register out (ptr32 Eq_n) r2Out, Register out (ptr32 Eq_n) r3Out, Register out Eq_n r10Out, Register out ptr32 r11Out, Register out ptr32 r12Out, Register out ptr32 lrOut)
 // Called from:
 //      fn00003334
@@ -1338,7 +1338,7 @@ Eq_n fn0000330C(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r12, 
 	return r0_n;
 }
 
-ui32 g_dw332E = ~0x27DD0001;
+ui32 g_dw332E = ~0x27DD0001; // 0000332E
 // 00003334: Register word32 fn00003334(Register Eq_n r4, Register word32 r8, Register Eq_n r9, Register word32 r10, Register Eq_n r11, Register Eq_n lr, Stack Eq_n dwArg00, Register out ptr32 r3Out, Register out ptr32 r4Out, Register out ptr32 r5Out, Register out (ptr32 Eq_n) r6Out, Register out (ptr32 Eq_n) r7Out, Register out Eq_n lrOut)
 // Called from:
 //      fn0000511C
@@ -1932,7 +1932,7 @@ l000036C8:
 	goto l000034DA;
 }
 
-ui32 g_dw3468 = 4250452872;
+ui32 g_dw3468 = 4250452872; // 00003468
 // 00003904: Register Eq_n fn00003904(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register word32 r10, Register Eq_n r11, Register Eq_n r12, Register Eq_n lr, Register out ptr32 r1Out, Register out (ptr32 Eq_n) r2Out, Register out (ptr32 Eq_n) r3Out, Register out ptr32 r12Out, Register out ptr32 lrOut)
 // Called from:
 //      fn00004968
@@ -1960,7 +1960,7 @@ Eq_n fn00003904(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, word32 r10, Eq_n r1
 	return r0_n;
 }
 
-ui32 g_dw3936 = ~0x27DD0001;
+ui32 g_dw3936 = ~0x27DD0001; // 00003936
 // 0000393C: Register word32 fn0000393C(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r4, Register Eq_n r5, Register Eq_n lr, Register out Eq_n lrOut)
 // Called from:
 //      fn0000511C
@@ -2014,14 +2014,14 @@ word32 fn0000393C(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r4, Eq_n r5, Eq_n lr, union Eq
 	return r10_n;
 }
 
-ui32 g_dw39E6 = ~0x28FC0001;
+ui32 g_dw39E6 = ~0x28FC0001; // 000039E6
 // 00003A0C: void fn00003A0C(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r7, Register (ptr32 word32) r11, Register (ptr32 word32) r12, Register word32 lr)
 void fn00003A0C(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r7, word32 * r11, word32 * r12, word32 lr)
 {
 	fn00006814(r0, r1, r2, r3, r4, r5, 0x3A10 - g_dw3A1A, r7, *r11, *r12, lr);
 }
 
-ui32 g_dw3A1A = ~0x27DD0001;
+ui32 g_dw3A1A = ~0x27DD0001; // 00003A1A
 // 00003A44: Register Eq_n fn00003A44(Register Eq_n r0, Register Eq_n r2, Register Eq_n r5, Register Eq_n r11, Register Eq_n r12, Register Eq_n lr, Register out Eq_n lrOut)
 // Called from:
 //      fn0000511C
@@ -2105,7 +2105,7 @@ l00003AE8:
 	return r10_n;
 }
 
-ui32 g_dw3B26 = ~0x28FC0001;
+ui32 g_dw3B26 = ~0x28FC0001; // 00003B26
 // 00003B2C: Register Eq_n fn00003B2C(Register Eq_n r4, Register Eq_n r5, Register Eq_n r12, Register Eq_n lr, Register out Eq_n r5Out, Register out Eq_n r7Out, Register out ptr32 r9Out, Register out Eq_n r10Out, Register out ptr32 r11Out, Register out ptr32 lrOut)
 // Called from:
 //      fn00003B60
@@ -2136,7 +2136,7 @@ Eq_n fn00003B2C(Eq_n r4, Eq_n r5, Eq_n r12, Eq_n lr, union Eq_n & r5Out, union E
 	return <invalid>;
 }
 
-ui32 g_dw3B5A = ~0x28FC0001;
+ui32 g_dw3B5A = ~0x28FC0001; // 00003B5A
 // 00003B60: Register Eq_n fn00003B60(Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out ptr32 lrOut)
 // Called from:
 //      fn00003B2C
@@ -2172,7 +2172,7 @@ Eq_n fn00003B60(union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, ptr3
 	return <invalid>;
 }
 
-ui32 g_dw3B8A = 3950302241;
+ui32 g_dw3B8A = 3950302241; // 00003B8A
 // 00003B8C: Register word32 fn00003B8C(Register Eq_n r4, Register Eq_n lr, Register out Eq_n r10Out, Register out ptr32 r11Out, Register out ptr32 lrOut)
 // Called from:
 //      fn000045F0
@@ -2199,7 +2199,7 @@ word32 fn00003B8C(Eq_n r4, Eq_n lr, union Eq_n & r10Out, ptr32 & r11Out, ptr32 &
 	return r9_n;
 }
 
-ui32 g_dw3B9E = ~0x27DD0001;
+ui32 g_dw3B9E = ~0x27DD0001; // 00003B9E
 // 00003BA4: Register Eq_n fn00003BA4(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register Eq_n r11, Register Eq_n r12, Register Eq_n lr, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out (ptr32 Eq_n) r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out Eq_n lrOut)
 // Called from:
 //      fn0000511C
@@ -2248,7 +2248,7 @@ Eq_n fn00003BA4(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r11, Eq_n r12,
 	return r0;
 }
 
-ui32 g_dw3BC6 = ~0x27DD0001;
+ui32 g_dw3BC6 = ~0x27DD0001; // 00003BC6
 // 0000418C: Register word32 fn0000418C(Register Eq_n r1, Register Eq_n r5, Register Eq_n r9, Register Eq_n r10, Register Eq_n r11, Register Eq_n lr, Register out ptr32 r1Out, Register out ptr32 r2Out, Register out ptr32 r3Out, Register out ptr32 r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out Eq_n lrOut)
 // Called from:
 //      fn00004374
@@ -2442,7 +2442,7 @@ l00004288:
 	return r0_n;
 }
 
-ui32 g_dw42E8 = 0x700AC0C8;
+ui32 g_dw42E8 = 0x700AC0C8; // 000042E8
 // 00004374: Register word32 fn00004374(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register Eq_n r5, Register Eq_n r12, Register Eq_n lr, Register out ptr32 r12Out, Register out ptr32 lrOut)
 // Called from:
 //      fn00004458
@@ -2534,7 +2534,7 @@ word32 fn00004374(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r12
 	return r11_n;
 }
 
-ui32 g_dw4456 = 4086092849;
+ui32 g_dw4456 = 4086092849; // 00004456
 // 00004458: Register Eq_n fn00004458(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register Eq_n r5, Register Eq_n r12, Register Eq_n lr, Register out Eq_n r12Out, Register out Eq_n lrOut)
 // Called from:
 //      fn00004968
@@ -2676,7 +2676,7 @@ l000044CE:
 	goto l000044CE;
 }
 
-ui32 g_dw4578 = 0x1099C058;
+ui32 g_dw4578 = 0x1099C058; // 00004578
 // 000045F0: Register Eq_n fn000045F0(Register Eq_n r2, Register Eq_n r3, Register Eq_n r8, Register word32 r9, Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Register out ptr32 r12Out, Register out Eq_n lrOut)
 // Called from:
 //      fn00004864
@@ -2962,7 +2962,7 @@ l00004750:
 	goto l00004728;
 }
 
-ui32 g_dw4706 = ~0x3F070001;
+ui32 g_dw4706 = ~0x3F070001; // 00004706
 // 00004864: Register Eq_n fn00004864(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r11, Register Eq_n r12, Register Eq_n lr, Register out Eq_n lrOut)
 // Called from:
 //      fn00004968
@@ -3061,7 +3061,7 @@ Eq_n fn00004864(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r11, Eq_n r12, Eq_n lr,
 	return r10_n;
 }
 
-ui32 g_dw4966 = 4168930353;
+ui32 g_dw4966 = 4168930353; // 00004966
 // 00004968: Register Eq_n fn00004968(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register Eq_n r5, Register Eq_n lr, Register out (ptr32 Eq_n) r11Out)
 // Called from:
 //      fn0000511C
@@ -3774,8 +3774,8 @@ l00004B9E:
 	return r10_n;
 }
 
-ui32 g_dw4A8A = 0x0346FFFE;
-word32 g_dw4F42 = ~0x3F2700F0;
+ui32 g_dw4A8A = 0x0346FFFE; // 00004A8A
+word32 g_dw4F42 = ~0x3F2700F0; // 00004F42
 // 0000511C: void fn0000511C(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r10, Register word32 r11, Register word32 r12, Register word32 lr)
 void fn0000511C(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r10, word32 r11, word32 r12, word32 lr)
 {
@@ -4244,7 +4244,7 @@ l00005296:
 	}
 }
 
-ui32 g_dw51E6 = 20246264;
+ui32 g_dw51E6 = 20246264; // 000051E6
 // 000066CC: Register word32 fn000066CC()
 // Called from:
 //      fn00003334
@@ -4352,13 +4352,13 @@ bool fn000066D0(Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r7, up32 r11, 
 	return Z_n;
 }
 
-Eq_n g_t6758 = 
+Eq_n g_t6758 = // 00006758
 	{
 		~0x00
 	};
-ui32 g_dw675A = 384073727;
-uint32 g_dw675C = 0x7FFFFFFF;
-uint32 g_dw6764 = 0x7FFFFFFE;
+ui32 g_dw675A = 384073727; // 0000675A
+uint32 g_dw675C = 0x7FFFFFFF; // 0000675C
+uint32 g_dw6764 = 0x7FFFFFFE; // 00006764
 // 00006768: Register Eq_n fn00006768(Register Eq_n r12)
 // Called from:
 //      fn00006814
@@ -4598,7 +4598,7 @@ l000068C2:
 	goto l000068BE;
 }
 
-ui32 g_dw692C = ~0xE7D5;
+ui32 g_dw692C = ~0xE7D5; // 0000692C
 // 00006998: Register Eq_n fn00006998(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register Eq_n r5, Register (ptr32 Eq_n) r6, Register Eq_n r7, Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register Eq_n lr, Register out ptr32 r11Out, Register out (ptr32 byte) r12Out, Register out Eq_n lrOut)
 // Called from:
 //      fn0000418C
@@ -4711,7 +4711,7 @@ l00006A9C:
 	return r10_n;
 }
 
-ui32 g_dw6AA0 = 0x2FDDD832;
+ui32 g_dw6AA0 = 0x2FDDD832; // 00006AA0
 // 00006AA8: Register Eq_n fn00006AA8(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register Eq_n r5, Register (ptr32 Eq_n) r6, Register Eq_n r7, Register Eq_n r11, Register Eq_n r12, Register Eq_n lr, Register out ptr32 r11Out, Register out ptr32 r12Out, Register out (ptr32 Eq_n) lrOut)
 // Called from:
 //      fn00003198
@@ -4742,7 +4742,7 @@ Eq_n fn00006AA8(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, struct Eq_
 	return r10_n;
 }
 
-ui32 g_dw6AC2 = 448582689;
+ui32 g_dw6AC2 = 448582689; // 00006AC2
 // 00006AC4: void fn00006AC4(Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r12, Register word32 lr)
 void fn00006AC4(word32 r4, word32 r5, word32 r6, word32 r7, word32 r12, word32 lr)
 {
@@ -4779,7 +4779,7 @@ void fn00006AC4(word32 r4, word32 r5, word32 r6, word32 r7, word32 r12, word32 l
 	*r6_n->ptr0148 = r5_n;
 }
 
-ui32 g_dw6B1A = ~0x27DD0000;
+ui32 g_dw6B1A = ~0x27DD0000; // 00006B1A
 // 00006B5C: void fn00006B5C(Register Eq_n r0, Register Eq_n r1, Register ui32 r2, Register (ptr32 word32) r8, Register word32 r9, Register word32 r10, Register word32 r11, Register word32 r12, Register (ptr32 Eq_n) pc)
 // Called from:
 //      fn00006C64
@@ -4901,7 +4901,7 @@ l00006C08:
 	fn0000B818(r0, r1, r2, r10_n, r11_n, pc);
 }
 
-ui32 g_dw6C60 = ~0xE48D;
+ui32 g_dw6C60 = ~0xE48D; // 00006C60
 // 00006C64: void fn00006C64(Register Eq_n r0, Register Eq_n r1, Register ui32 r2, Register word32 r9, Register word32 r10, Register word32 r11, Register word32 r12, Register (ptr32 Eq_n) pc)
 void fn00006C64(Eq_n r0, Eq_n r1, ui32 r2, word32 r9, word32 r10, word32 r11, word32 r12, struct Eq_n * pc)
 {
@@ -4966,7 +4966,7 @@ Eq_n fn00006CAC(Eq_n r4, Eq_n r5, struct Eq_n * r6, Eq_n r7, Eq_n lr, struct Eq_
 	return r4_n;
 }
 
-ui32 g_dw6CCA = 0x0013FFFF;
+ui32 g_dw6CCA = 0x0013FFFF; // 00006CCA
 // 00006D14: Register word32 fn00006D14(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r10, Register word32 r11, Register word32 r12, Register word32 lr, Register out ptr32 r9Out, Register out ptr32 r10Out, Register out (ptr32 Eq_n) r11Out, Register out ptr32 r12Out, Register out ptr32 lrOut)
 // Called from:
 //      fn00006E5C
@@ -5049,7 +5049,7 @@ l00006D42:
 	}
 }
 
-ui32 g_dw6D96 = ~0x27CD0000;
+ui32 g_dw6D96 = ~0x27CD0000; // 00006D96
 // 00006D9C: Register word32 fn00006D9C(Register word32 r0, Register Eq_n r1, Register Eq_n r4, Register Eq_n r7, Register word32 r10, Register word32 r11, Register Eq_n r12, Register word32 lr)
 // Called from:
 //      fn00006E5C
@@ -5068,7 +5068,7 @@ word32 fn00006D9C(word32 r0, Eq_n r1, Eq_n r4, Eq_n r7, word32 r10, word32 r11, 
 	return lr_n;
 }
 
-ui32 g_dw6DD6 = ~0x27CD0000;
+ui32 g_dw6DD6 = ~0x27CD0000; // 00006DD6
 // 00006DDC: FlagGroup Eq_n fn00006DDC(Register word32 r0, Register (ptr32 code) r1, Register (ptr32 (ptr32 Eq_n)) r2, Register (ptr32 Eq_n) r3, Register ptr32 r4, Register (ptr32 Eq_n) r5, Register (ptr32 Eq_n) r6, Register (ptr32 Eq_n) r7, Register (ptr32 Eq_n) r9, Register ptr32 r10, Register (ptr32 (ptr32 Eq_n)) r11, Register (ptr32 Eq_n) r12, Register Eq_n lr, Register out Eq_n r12Out, Register out ptr32 lrOut)
 // Called from:
 //      fn00006E5C
@@ -5149,7 +5149,7 @@ l00006E50:
 	return <invalid>;
 }
 
-ui32 g_dw6E58 = ~0xE20D;
+ui32 g_dw6E58 = ~0xE20D; // 00006E58
 // 00006E5C: void fn00006E5C(Register word32 r0, Register (ptr32 Eq_n) r8, Register ptr32 r9, Register (ptr32 (ptr32 Eq_n)) r10, Register (ptr32 Eq_n) r11, Register (ptr32 Eq_n) r12, Register Eq_n lr, Stack (ptr32 code) dwArg00)
 void fn00006E5C(word32 r0, struct Eq_n * r8, ptr32 r9, struct Eq_n ** r10, struct Eq_n * r11, union Eq_n * r12, Eq_n lr, <anonymous> * dwArg00)
 {
@@ -5171,7 +5171,7 @@ void fn00006E5C(word32 r0, struct Eq_n * r8, ptr32 r9, struct Eq_n ** r10, struc
 	}
 }
 
-ui32 g_dw6E8E = ~0x27CD0000;
+ui32 g_dw6E8E = ~0x27CD0000; // 00006E8E
 // 00006E94: Register word32 fn00006E94(Register Eq_n r12, Register out ptr32 r11Out, Register out Eq_n r12Out)
 // Called from:
 //      fn00002B30
@@ -5223,7 +5223,7 @@ Eq_n fn00006ED4(Eq_n r4, Eq_n r5, struct Eq_n * r6, Eq_n r7, Eq_n r12, Eq_n lr, 
 	return r12_n;
 }
 
-ui32 g_dw6EFA = ~0x27DD0000;
+ui32 g_dw6EFA = ~0x27DD0000; // 00006EFA
 // 00006FF8: void fn00006FF8(Register Eq_n r10, Register (ptr32 Eq_n) r11, Register ui32 r12)
 // Called from:
 //      fn00007130
@@ -5418,7 +5418,7 @@ bool fn00007140(Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r11, Eq_n r12, Eq_n lr, ptr32 & 
 	return SLICE(cond(fp - 36), bool, 1);
 }
 
-ui32 g_dw71CC = 805165106;
+ui32 g_dw71CC = 805165106; // 000071CC
 // 000071D4: Register Eq_n fn000071D4(Register Eq_n r3, Register Eq_n r4, Register Eq_n r5, Register Eq_n r7, Register Eq_n r11, Register Eq_n r12, Register Eq_n lr, Register out Eq_n lrOut)
 // Called from:
 //      fn00003A44
@@ -5442,7 +5442,7 @@ Eq_n fn000071D4(Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r7, Eq_n r11, Eq_n r12, Eq_n lr,
 	return r12_n;
 }
 
-ui32 g_dw71E2 = ~0x27DD0000;
+ui32 g_dw71E2 = ~0x27DD0000; // 000071E2
 // 000071E8: Register Eq_n fn000071E8(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r12, Register Eq_n lr, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r6Out, Register out Eq_n r9Out, Register out Eq_n r12Out, Register out Eq_n lrOut)
 // Called from:
 //      fn000071E8
@@ -5514,7 +5514,7 @@ l000071F6:
 	return <invalid>;
 }
 
-ui32 g_dw7292 = 570217521;
+ui32 g_dw7292 = 570217521; // 00007292
 // 00007294: Register Eq_n fn00007294(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register (ptr32 Eq_n) r12, Register Eq_n lr, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r6Out, Register out (ptr32 byte) r9Out, Register out (ptr32 Eq_n) r10Out, Register out (ptr32 Eq_n) r12Out, Register out Eq_n lrOut)
 // Called from:
 //      fn00007294
@@ -5592,7 +5592,7 @@ l00007344:
 	return <invalid>;
 }
 
-ui32 g_dw7352 = ~0x27CD0000;
+ui32 g_dw7352 = ~0x27CD0000; // 00007352
 // 00007358: Register Eq_n fn00007358(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register Eq_n r5, Register (ptr32 Eq_n) r6, Register word32 r7, Register Eq_n r8, Register word32 r9, Register Eq_n r10, Register Eq_n r11, Register word32 r12, Register Eq_n lr, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out (ptr32 Eq_n) r3Out, Register out (ptr32 word32) r4Out, Register out Eq_n r5Out, Register out (ptr32 Eq_n) r6Out, Register out ptr32 r7Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out (ptr32 Eq_n) lrOut)
 // Called from:
 //      fn00007754
@@ -5937,12 +5937,12 @@ l0000774C:
 	return r0_n;
 }
 
-ui32 g_dw74CA = ~0x28FC0000;
-Eq_n g_t74CC = 
+ui32 g_dw74CA = ~0x28FC0000; // 000074CA
+Eq_n g_t74CC = // 000074CC
 	{
 		-56464
 	};
-Eq_n g_t762E = 
+Eq_n g_t762E = // 0000762E
 	{
 		&g_tFFFF0698
 	};
@@ -6568,7 +6568,7 @@ l000079CC:
 	goto l000079CC;
 }
 
-ui32 g_dw78B2 = 661411845;
+ui32 g_dw78B2 = 661411845; // 000078B2
 // 00007D56: Register Eq_n fn00007D56(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register Eq_n r5, Register (ptr32 Eq_n) r6, Register Eq_n r7, Register Eq_n r8, Register word32 r9, Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register Eq_n lr, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out ptr32 r3Out, Register out (ptr32 byte) r4Out, Register out (ptr32 Eq_n) r5Out, Register out (ptr32 Eq_n) r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out (ptr32 byte) r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out Eq_n lrOut)
 // Called from:
 //      fn00008144
@@ -6930,7 +6930,7 @@ l0000813A:
 	return r0_n;
 }
 
-ui32 g_dw7EC8 = ~0x00073F77;
+ui32 g_dw7EC8 = ~0x00073F77; // 00007EC8
 // 00008144: FlagGroup Eq_n fn00008144(Register Eq_n r2, Register Eq_n r8, Register Eq_n r9, Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register out Eq_n r0Out, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out Eq_n lrOut)
 // Called from:
 //      fn00007D56
@@ -7608,7 +7608,7 @@ l000083F0:
 	goto l000083F0;
 }
 
-ui32 g_dw82AA = 828114825;
+ui32 g_dw82AA = 828114825; // 000082AA
 // 000087C0: FlagGroup bool fn000087C0(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register Eq_n r5, Register ptr32 r6, Register Eq_n r7, Register word32 r10, Register Eq_n r11, Register word32 r12, Register Eq_n lr, Register out ptr32 r0Out, Register out ptr32 r1Out, Register out ptr32 r2Out, Register out ptr32 r3Out, Register out ptr32 r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r10Out, Register out ptr32 r11Out, Register out ptr32 lrOut)
 // Called from:
 //      fn00003BA4
@@ -7794,8 +7794,8 @@ l0000892E:
 	goto l0000892E;
 }
 
-ui32 g_dw8902 = ~0x3E970000;
-uint32 g_dw8908 = 0x3FFFFFFF;
+ui32 g_dw8902 = ~0x3E970000; // 00008902
+uint32 g_dw8908 = 0x3FFFFFFF; // 00008908
 // 0000895C: Register (ptr32 Eq_n) fn0000895C(Register Eq_n r0, Register (ptr32 Eq_n) r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register (ptr32 Eq_n) r5, Register (ptr32 Eq_n) r6, Register Eq_n r7, Register (ptr32 word32) r12, Register word32 lr)
 // Called from:
 //      fn00004968
@@ -7818,7 +7818,7 @@ struct Eq_n * fn0000895C(Eq_n r0, struct Eq_n * r1, Eq_n r2, Eq_n r3, Eq_n r4, s
 	return r1;
 }
 
-ui32 g_dw8988 = 4294916466;
+ui32 g_dw8988 = 4294916466; // 00008988
 // 0000898C: void fn0000898C(Register Eq_n r0, Register (ptr32 Eq_n) r1, Register Eq_n r2, Register Eq_n r3, Register word32 r4, Register word32 r5, Register word32 r6, Register (ptr32 Eq_n) r7, Register word32 lr)
 // Called from:
 //      fn0000895C
@@ -7852,7 +7852,7 @@ void fn0000898C(Eq_n r0, struct Eq_n * r1, Eq_n r2, Eq_n r3, word32 r4, word32 r
 	r10_n->dwFFFFFFE8 = r8_n;
 }
 
-ui32 g_dw89E8 = ~0xC65D;
+ui32 g_dw89E8 = ~0xC65D; // 000089E8
 // 00008A6C: FlagGroup bool fn00008A6C(Register Eq_n r4, Register (ptr32 Eq_n) r5, Register (ptr32 Eq_n) r6, Register Eq_n r7, Register Eq_n lr, Register out ptr32 r12Out, Register out ptr32 lrOut)
 // Called from:
 //      fn00004968
@@ -7874,7 +7874,7 @@ bool fn00008A6C(Eq_n r4, struct Eq_n * r5, struct Eq_n * r6, Eq_n r7, Eq_n lr, p
 	return Z_n;
 }
 
-ui32 g_dw8A86 = ~0x27DD0000;
+ui32 g_dw8A86 = ~0x27DD0000; // 00008A86
 // 00008A8C: Register word32 fn00008A8C(Register word32 r4, Register word32 r5, Register (ptr32 Eq_n) r6, Register (ptr32 Eq_n) r7, Register word32 lr, Register out ptr32 lrOut)
 // Called from:
 //      fn00002B30
@@ -7914,7 +7914,7 @@ word32 fn00008A8C(word32 r4, word32 r5, struct Eq_n * r6, union Eq_n * r7, word3
 	}
 }
 
-ui32 g_dw8AB6 = ~0x28FC0000;
+ui32 g_dw8AB6 = ~0x28FC0000; // 00008AB6
 // 00008ABC: void fn00008ABC()
 void fn00008ABC()
 {
@@ -8033,20 +8033,20 @@ ptr32 fn00008BE0(Eq_n r12, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 & 
 	return r0;
 }
 
-Eq_n g_t8C4C = 
+Eq_n g_t8C4C = // 00008C4C
 	{
 		-1
 	};
-ui32 g_dw8C4E = 0x3BF43DCC;
-Eq_n g_t8C52 = 
+ui32 g_dw8C4E = 0x3BF43DCC; // 00008C4E
+Eq_n g_t8C52 = // 00008C52
 	{
 		-52
 	};
-Eq_n g_t8C5A = 
+Eq_n g_t8C5A = // 00008C5A
 	{
 		-52
 	};
-Eq_n g_t8C5E = 
+Eq_n g_t8C5E = // 00008C5E
 	{
 		0
 	};
@@ -8181,7 +8181,7 @@ bool fn00008DF4(Eq_n r4, Eq_n r5, Eq_n r7, Eq_n r12, Eq_n lr, struct Eq_n & r12O
 	}
 }
 
-ui32 g_dw8E0E = ~0x27DD0000;
+ui32 g_dw8E0E = ~0x27DD0000; // 00008E0E
 // 00008E14: void fn00008E14(Register (ptr32 Eq_n) r12, Register word32 lr)
 void fn00008E14(struct Eq_n * r12, word32 lr)
 {
@@ -8223,7 +8223,7 @@ void fn00008E14(struct Eq_n * r12, word32 lr)
 	r6_n->ptr000C();
 }
 
-ui32 g_dw8E82 = ~0x27DD0000;
+ui32 g_dw8E82 = ~0x27DD0000; // 00008E82
 // 00008E88: FlagGroup bool fn00008E88(Register (ptr32 Eq_n) r3, Register (ptr32 Eq_n) r7, Register word32 r8, Register word32 r9, Register word32 r10, Register (ptr32 Eq_n) r11, Register word32 r12, Register Eq_n lr, Register out ptr32 r12Out, Register out Eq_n lrOut)
 // Called from:
 //      fn00008F68
@@ -8343,15 +8343,15 @@ l00008F56:
 	goto l00008F58;
 }
 
-Eq_n g_t8F5E = 
+Eq_n g_t8F5E = // 00008F5E
 	{
 		62
 	};
-Eq_n g_t8F60 = 
+Eq_n g_t8F60 = // 00008F60
 	{
 		~0x00
 	};
-Eq_n g_t8F64 = 
+Eq_n g_t8F64 = // 00008F64
 	{
 		~0x00
 	};
@@ -8540,7 +8540,7 @@ word32 fn00008FF2(struct Eq_n * r3, struct Eq_n * r6)
 	return dwLoc24;
 }
 
-ui32 g_dw901A = 1065145393;
+ui32 g_dw901A = 1065145393; // 0000901A
 // 0000901C: void fn0000901C(Register word32 r0, Register word32 r1, Register Eq_n r2, Register word32 r3, Register Eq_n r4, Register Eq_n r5, Register Eq_n r11, Register Eq_n r12, Register word32 lr)
 void fn0000901C(word32 r0, word32 r1, Eq_n r2, word32 r3, Eq_n r4, Eq_n r5, Eq_n r11, Eq_n r12, word32 lr)
 {
@@ -8617,7 +8617,7 @@ void fn0000901C(word32 r0, word32 r1, Eq_n r2, word32 r3, Eq_n r4, Eq_n r5, Eq_n
 	}
 }
 
-ui32 g_dw90BC = ~0xBFCD;
+ui32 g_dw90BC = ~0xBFCD; // 000090BC
 // 000090C0: FlagGroup bool fn000090C0(Register word32 r0, Register word32 r1, Register word32 r3, Register Eq_n r4, Register Eq_n r5, Register Eq_n r11, Register Eq_n r12, Register word32 lr, Register out ptr32 r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out Eq_n lrOut)
 // Called from:
 //      fn0000511C
@@ -8729,8 +8729,8 @@ l00009196:
 	return SLICE(cond(fp - 36), bool, 1);
 }
 
-ui32 g_dw9198 = 805165106;
-Eq_n g_t91A0 = 
+ui32 g_dw9198 = 805165106; // 00009198
+Eq_n g_t91A0 = // 000091A0
 	{
 		79
 	};
@@ -8795,7 +8795,7 @@ Eq_n fn000092B4(ptr32 r4, struct Eq_n * r5, struct Eq_n * r6, struct Eq_n * r7, 
 	return <invalid>;
 }
 
-ui32 g_dw92D2 = ~0x27DD0000;
+ui32 g_dw92D2 = ~0x27DD0000; // 000092D2
 // 000092D8: void fn000092D8(Register word32 r0, Register (ptr32 code) r1, Register word32 r4, Register word32 r5, Register (ptr32 Eq_n) r10, Register (ptr32 (ptr32 Eq_n)) r11, Register (ptr32 Eq_n) r12, Register Eq_n lr)
 void fn000092D8(word32 r0, <anonymous> * r1, word32 r4, word32 r5, union Eq_n * r10, struct Eq_n ** r11, struct Eq_n * r12, Eq_n lr)
 {
@@ -8890,7 +8890,7 @@ l0000939A:
 	goto l0000939E;
 }
 
-ui32 g_dw93B0 = 805165106;
+ui32 g_dw93B0 = 805165106; // 000093B0
 // 000093B8: Register Eq_n fn000093B8(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register Eq_n r5, Register Eq_n r9, Register ptr32 r12, Stack word64 qwArg00, Stack Eq_n qwArg08, Stack Eq_n dwArg10, Stack Eq_n dwArg14, Stack Eq_n qwArg18, Stack Eq_n dwArg24, Stack Eq_n dwArg28, Stack (ptr32 Eq_n) dwArg38, Stack word32 dwArg3C, Stack ui32 dwArg40, Register out Eq_n r1Out, Register out Eq_n r2Out, Register out (ptr32 Eq_n) r3Out, Register out (ptr32 Eq_n) r4Out, Register out ptr32 r5Out, Register out (ptr32 Eq_n) r6Out, Register out Eq_n r7Out, Register out ptr32 r10Out, Register out ptr32 r11Out, Register out ptr32 r12Out, Register out (ptr32 Eq_n) lrOut)
 // Called from:
 //      fn00003334
@@ -9323,7 +9323,7 @@ l000097C0:
 	}
 }
 
-ui32 g_dw9510 = 3233339139;
+ui32 g_dw9510 = 3233339139; // 00009510
 // 000095B2: Register Eq_n fn000095B2(Register Eq_n r4, Register Eq_n r5, Stack Eq_n dwArg28, Register out ptr32 r3Out, Register out ptr32 r4Out, Register out ptr32 r5Out, Register out ptr32 r10Out, Register out ptr32 r11Out, Register out ptr32 r12Out, Register out ptr32 lrOut)
 // Called from:
 //      fn000093B8
@@ -9705,7 +9705,7 @@ word32 fn0000988A(struct Eq_n * r1, struct Eq_n * r6, struct Eq_n * r12, Eq_n dw
 	return dwLoc04;
 }
 
-ui32 g_a99B4[] = 
+ui32 g_a99B4[] = // 000099B4
 	{
 	};
 // 00009A5C: Register Eq_n fn00009A5C(Register Eq_n r5, Register Eq_n r7, Register Eq_n r12, Register Eq_n lr)
@@ -9771,7 +9771,7 @@ l00009AAE:
 	return r12_n;
 }
 
-ui32 g_dw9AC2 = ~0x28FC0000;
+ui32 g_dw9AC2 = ~0x28FC0000; // 00009AC2
 // 00009B5C: Register Eq_n fn00009B5C(Register Eq_n r5, Register Eq_n r7, Register Eq_n r12, Register Eq_n lr)
 // Called from:
 //      fn0000330C
@@ -9835,7 +9835,7 @@ l00009BAE:
 	return r12_n;
 }
 
-ui32 g_dw9BC2 = ~0x28FC0000;
+ui32 g_dw9BC2 = ~0x28FC0000; // 00009BC2
 // 00009BC8: Register (ptr32 Eq_n) fn00009BC8(Register int32 r10, Register Eq_n r11, Register (ptr32 Eq_n) r12, Register out ptr32 lrOut)
 // Called from:
 //      fn00004968
@@ -10026,7 +10026,7 @@ l00009D62:
 	return <invalid>;
 }
 
-ui32 g_dw9D64 = 0xD832D703;
+ui32 g_dw9D64 = 0xD832D703; // 00009D64
 // 00009D6C: Register (ptr32 code) fn00009D6C(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register (ptr32 code) r10, Register uint32 r11, Register (ptr32 Eq_n) r12, Register ptr32 lr, Register out ptr32 lrOut)
 // Called from:
 //      fn0000393C
@@ -10078,7 +10078,7 @@ void fn00009DC0(word32 r11, word32 * r12)
 	*r12 = r11;
 }
 
-ui32 g_dw9DD6 = 0x4DD4D421;
+ui32 g_dw9DD6 = 0x4DD4D421; // 00009DD6
 // 00009DD8: void fn00009DD8(Register word32 r10, Register word32 r11, Register ptr32 r12)
 // Called from:
 //      fn0000A708
@@ -10094,7 +10094,7 @@ void fn00009DD8(word32 r10, word32 r11, ptr32 r12)
 	r8_n->dw0008 = ((bool) (r9_n >> r11_n) ^ r10_n) << r11_n ^ r9_n;
 }
 
-ui32 g_dw9E12 = 1307366433;
+ui32 g_dw9E12 = 1307366433; // 00009E12
 // 00009E30: Register word32 fn00009E30(Register word32 r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register word32 r5, Register (ptr32 Eq_n) r6, Register Eq_n r7, Register word32 r11, Register ptr32 r12, Register word32 lr)
 // Called from:
 //      fn0000A788
@@ -10117,7 +10117,7 @@ word32 fn00009E30(word32 r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, word32 r5, stru
 	return lr_n;
 }
 
-ui32 g_dw9E70 = 0xD832D703;
+ui32 g_dw9E70 = 0xD832D703; // 00009E70
 // 00009EDC: Register Eq_n fn00009EDC(Register Eq_n r4, Register Eq_n r5, Register Eq_n r7, Register Eq_n r12, Register Eq_n lr, Register out ptr32 lrOut)
 // Called from:
 //      fn0000A614
@@ -10133,7 +10133,7 @@ Eq_n fn00009EDC(Eq_n r4, Eq_n r5, Eq_n r7, Eq_n r12, Eq_n lr, ptr32 & lrOut)
 	return r12_n;
 }
 
-ui32 g_dw9EE6 = ~0x27DD0000;
+ui32 g_dw9EE6 = ~0x27DD0000; // 00009EE6
 // 00009EEC: Register Eq_n fn00009EEC(Register Eq_n r0, Register (ptr32 Eq_n) r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register Eq_n r5, Register (ptr32 Eq_n) r6, Register Eq_n r7, Register Eq_n r8, Register Eq_n r9, Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register Eq_n lr, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out Eq_n lrOut)
 // Called from:
 //      fn00009EEC
@@ -10796,8 +10796,8 @@ l0000A362:
 	}
 }
 
-ui32 g_dwA010 = ~0xB0FD;
-ui32 g_dwA3C6 = 3332913152;
+ui32 g_dwA010 = ~0xB0FD; // 0000A010
+ui32 g_dwA3C6 = 3332913152; // 0000A3C6
 // 0000A614: Register word32 fn0000A614(Register word32 r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register ptr32 r5, Register (ptr32 Eq_n) r6, Register Eq_n r7, Register (ptr32 Eq_n) r9, Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register Eq_n lr, Register out (ptr32 word32) r9Out, Register out ptr32 r10Out, Register out ptr32 r11Out, Register out Eq_n r12Out, Register out Eq_n lrOut)
 // Called from:
 //      fn0000A708
@@ -10905,8 +10905,8 @@ word32 fn0000A614(word32 r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, ptr32 r5, struc
 	return dwLoc28;
 }
 
-ui32 g_dwA700 = ~0xA9D5;
-Eq_n g_tA704 = 
+ui32 g_dwA700 = ~0xA9D5; // 0000A700
+Eq_n g_tA704 = // 0000A704
 	{
 		~0x00
 	};
@@ -10936,7 +10936,7 @@ word32 fn0000A708(word32 r10, Eq_n r11, Eq_n r12, Eq_n lr, ptr32 & r9Out, ptr32 
 	return r8_n;
 }
 
-ui32 g_dwA74C = 0xD832D703;
+ui32 g_dwA74C = 0xD832D703; // 0000A74C
 // 0000A764: Register word32 fn0000A764(Register word32 r11, Register Eq_n r12, Register Eq_n lr, Register out ptr32 r9Out, Register out ptr32 r10Out, Register out ptr32 r11Out, Register out ptr32 r12Out, Register out ptr32 lrOut)
 // Called from:
 //      fn0000A778
@@ -10989,7 +10989,7 @@ void fn0000A788(word32 r0, Eq_n r4, word32 r5, Eq_n r7, Eq_n r9, Eq_n r10, word3
 	fn0000A614(r0, r12, r10, r9, r4, fp - 0x4C, r6_n, r7, fp - 0x4C, r9, r10, r12, fn00009E30(r0, r12, r10, r9, r4, r5, r6_n, r7, r11, fp - 0x4C, lr), out r9_n, out r10_n, out r11_n, out r12_n, out lr_n);
 }
 
-ui32 g_dwA7A8 = 795727922;
+ui32 g_dwA7A8 = 795727922; // 0000A7A8
 // 0000A7C8: Register Eq_n fn0000A7C8(Register word32 r0, Register Eq_n r1, Register Eq_n r4, Register word32 r5, Register Eq_n r7, Register Eq_n r10, Register word32 r11, Register Eq_n r12, Register word32 lr, Register out ptr32 lrOut)
 // Called from:
 //      fn00006D9C
@@ -11007,7 +11007,7 @@ Eq_n fn0000A7C8(word32 r0, Eq_n r1, Eq_n r4, word32 r5, Eq_n r7, Eq_n r10, word3
 	return r12_n;
 }
 
-ui32 g_dwA7E8 = 0xD832D703;
+ui32 g_dwA7E8 = 0xD832D703; // 0000A7E8
 // 0000A804: void fn0000A804(Register word32 r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register ptr32 r5, Register Eq_n r7, Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register Eq_n lr)
 void fn0000A804(word32 r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, ptr32 r5, Eq_n r7, Eq_n r10, Eq_n r11, Eq_n r12, Eq_n lr)
 {
@@ -11020,7 +11020,7 @@ void fn0000A804(word32 r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, ptr32 r5, Eq_n r7
 	fn0000A614(r0, r1, r2, r3, r4, r5, r6_n, r7, r6_n->ptrFFFFFFDC, r10, r11, r12, lr, out r9_n, out r10_n, out r11_n, out r12_n, out lr_n);
 }
 
-ui32 g_dwA80E = ~0x27DD0000;
+ui32 g_dwA80E = ~0x27DD0000; // 0000A80E
 // 0000A828: void fn0000A828(Register word32 r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register ptr32 r5, Register Eq_n r7, Register Eq_n r11, Register Eq_n r12, Register Eq_n lr)
 // Called from:
 //      fn0000A83C
@@ -11035,7 +11035,7 @@ void fn0000A828(word32 r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, ptr32 r5, Eq_n r7
 	fn0000A614(r0, r1, r2, r3, r4, r5, r6_n, r7, r6_n->ptrFFFFFFDC, ~0x00, r11, r12, lr, out r9_n, out r10_n, out r11_n, out r12_n, out lr_n);
 }
 
-ui32 g_dwA83A = 1480381473;
+ui32 g_dwA83A = 1480381473; // 0000A83A
 // 0000A83C: void fn0000A83C(Register word32 r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register ptr32 r5, Register Eq_n r7, Register Eq_n r12, Register Eq_n lr)
 void fn0000A83C(word32 r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, ptr32 r5, Eq_n r7, Eq_n r12, Eq_n lr)
 {
@@ -11078,7 +11078,7 @@ void fn0000A850(word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r9
 		*r7_n = r12_n;
 }
 
-ui32 g_dwA8C0 = 0x2FCDD832;
+ui32 g_dwA8C0 = 0x2FCDD832; // 0000A8C0
 // 0000A8DC: Register Eq_n fn0000A8DC(Register Eq_n r1, Register Eq_n r3, Register Eq_n r5, Register Eq_n r8, Register word32 r9, Register Eq_n r10, Register up32 r11, Register Eq_n r12, Register Eq_n lr, Register out ptr32 r11Out, Register out ptr32 r12Out, Register out ptr32 lrOut)
 // Called from:
 //      fn0000418C
@@ -11112,7 +11112,7 @@ Eq_n fn0000A8DC(Eq_n r1, Eq_n r3, Eq_n r5, Eq_n r8, word32 r9, Eq_n r10, up32 r1
 	return r10_n;
 }
 
-ui32 g_dwA91A = ~0x27CD0000;
+ui32 g_dwA91A = ~0x27CD0000; // 0000A91A
 // 0000A920: void fn0000A920(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r12, Register word32 lr)
 void fn0000A920(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r12, word32 lr)
 {
@@ -11136,7 +11136,7 @@ void fn0000A920(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5
 	*r12_n = (union Eq_n *) r2_n;
 }
 
-ui32 g_dwA946 = 0x59340000;
+ui32 g_dwA946 = 0x59340000; // 0000A946
 // 0000A968: void fn0000A968(Register int32 r10, Register ptr32 r11, Register (ptr32 byte) r12)
 // Called from:
 //      fn0000A9DE
@@ -11156,7 +11156,7 @@ void fn0000A968(int32 r10, ptr32 r11, byte * r12)
 	}
 }
 
-ui32 g_dwA996 = 1501352993;
+ui32 g_dwA996 = 1501352993; // 0000A996
 // 0000A998: void fn0000A998(Register int32 r10, Register Eq_n r11, Register (ptr32 byte) r12)
 // Called from:
 //      fn0000A9DE
@@ -11176,7 +11176,7 @@ void fn0000A998(int32 r10, Eq_n r11, byte * r12)
 	}
 }
 
-ui32 g_dwA9CA = 1504508105;
+ui32 g_dwA9CA = 1504508105; // 0000A9CA
 // 0000A9CC: FlagGroup Eq_n fn0000A9CC(Register int32 r11, Register word32 r12)
 // Called from:
 //      fn0000A9DE
@@ -11207,9 +11207,9 @@ word32 fn0000A9DE(struct Eq_n * r8, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out,
 	return r0_n;
 }
 
-int32 g_dwAB10 = -0x0000A60A;
-word32 g_dwAB16 = ~0x33338000;
-word32 g_dwAB18 = 0x7FFFFFFF;
+int32 g_dwAB10 = -0x0000A60A; // 0000AB10
+word32 g_dwAB16 = ~0x33338000; // 0000AB16
+word32 g_dwAB18 = 0x7FFFFFFF; // 0000AB18
 // 0000ACAE: void fn0000ACAE(Register (ptr32 Eq_n) r6, Register (ptr32 byte) r7)
 void fn0000ACAE(struct Eq_n * r6, byte * r7)
 {
@@ -11590,7 +11590,7 @@ Eq_n fn0000B88C(Eq_n r0, Eq_n r1, Eq_n r2, byte * r3, byte * r4, byte * r5, Eq_n
 	}
 }
 
-ui32 g_dwB8E6 = ~0x28FC0000;
+ui32 g_dwB8E6 = ~0x28FC0000; // 0000B8E6
 // 0000B904: Register word32 fn0000B904(Register Eq_n r4, Register Eq_n r5, Register (ptr32 Eq_n) r6, Register Eq_n r7, Register ui32 r11, Register Eq_n lr, Register out ptr32 r12Out, Register out Eq_n lrOut)
 // Called from:
 //      fn00003210
@@ -11622,7 +11622,7 @@ word32 fn0000B904(Eq_n r4, Eq_n r5, struct Eq_n * r6, Eq_n r7, ui32 r11, Eq_n lr
 	return r9_n;
 }
 
-ui32 g_dwB91A = ~0x27DD0000;
+ui32 g_dwB91A = ~0x27DD0000; // 0000B91A
 // 0000B95C: Register word32 fn0000B95C(Register Eq_n r4, Register Eq_n r5, Register (ptr32 Eq_n) r6, Register Eq_n r7, Register Eq_n r12, Register Eq_n lr, Register out ptr32 r9Out, Register out ptr32 r11Out, Register out ptr32 r12Out, Register out Eq_n lrOut)
 // Called from:
 //      fn00003094
@@ -11663,7 +11663,7 @@ word32 fn0000B95C(Eq_n r4, Eq_n r5, struct Eq_n * r6, Eq_n r7, Eq_n r12, Eq_n lr
 	return r8_n;
 }
 
-ui32 g_dwB972 = ~0x27DD0000;
+ui32 g_dwB972 = ~0x27DD0000; // 0000B972
 // 0000B978: Register Eq_n fn0000B978(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r4, Register Eq_n r7, Register Eq_n r11, Register word32 r12, Register Eq_n lr, Register out ptr32 r12Out, Register out ptr32 lrOut)
 // Called from:
 //      fn0000A920
@@ -11685,7 +11685,7 @@ Eq_n fn0000B978(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r4, Eq_n r7, Eq_n r11, word32 r1
 	return r11_n;
 }
 
-ui32 g_dwB992 = 1770837025;
+ui32 g_dwB992 = 1770837025; // 0000B992
 // 0000B994: Register Eq_n fn0000B994(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register Eq_n r4, Register Eq_n r5, Register (ptr32 Eq_n) r6, Register Eq_n r7, Register Eq_n r12, Register Eq_n lr, Register out (ptr32 byte) r1Out, Register out (ptr32 Eq_n) r2Out, Register out ptr32 r8Out, Register out ptr32 r9Out, Register out ptr32 r10Out, Register out ptr32 r11Out, Register out ptr32 r12Out, Register out ptr32 lrOut)
 // Called from:
 //      fn00003120
@@ -11719,7 +11719,7 @@ Eq_n fn0000B994(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r4, Eq_n r5, struct Eq_n * r6, E
 	return r0_n;
 }
 
-ui32 g_dwB9AA = ~0x28FC0000;
+ui32 g_dwB9AA = ~0x28FC0000; // 0000B9AA
 // 0000B9C8: void fn0000B9C8(Register word32 r4, Register word32 r8, Register (arr Eq_n) r9, Register word32 r10, Register int32 r11, Register up32 r12)
 void fn0000B9C8(word32 r4, word32 r8, Eq_n r9[], word32 r10, int32 r11, up32 r12)
 {
@@ -11782,7 +11782,7 @@ l0000B9FC:
 		((word32) pc_n->bFFFFFFDE)();
 }
 
-ui32 g_dwBA3C = 0x0013D703;
+ui32 g_dwBA3C = 0x0013D703; // 0000BA3C
 // 0000BA44: Register (ptr32 uint32) fn0000BA44(Register uint32 r11, Register (ptr32 uint32) r12)
 // Called from:
 //      fn0000B9C8
@@ -12062,7 +12062,7 @@ l0000BC5E:
 	goto l0000BB9E;
 }
 
-ui32 g_dwBB94 = ~0x955D;
+ui32 g_dwBB94 = ~0x955D; // 0000BB94
 // 0000BC98: Register uint32 fn0000BC98(Register uint32 r12)
 // Called from:
 //      fn00006768
@@ -12381,7 +12381,7 @@ l0000BF50:
 	goto l0000BF4A;
 }
 
-ui32 g_dwBE98 = 4294929826;
+ui32 g_dwBE98 = 4294929826; // 0000BE98
 // 0000BFB8: Register Eq_n fn0000BFB8(Register Eq_n r0, Register word32 r8, Register word32 r9, Register word32 r10, Register word32 r11, Register (ptr32 Eq_n) r12, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Stack Eq_n dwArg14, Register out ptr32 r2Out, Register out ptr32 r3Out, Register out ptr32 r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out Eq_n r12Out)
 // Called from:
 //      fn0000C058
@@ -12473,7 +12473,7 @@ l0000C03C:
 	}
 }
 
-ui32 g_dwC056 = 1875694641;
+ui32 g_dwC056 = 1875694641; // 0000C056
 // 0000C058: FlagGroup Eq_n fn0000C058(Register Eq_n r0, Register (ptr32 Eq_n) r11, Register Eq_n r12, Register out Eq_n r0Out, Register out ptr32 r1Out, Register out ptr32 r2Out, Register out ptr32 r3Out, Register out ptr32 r10Out, Register out (ptr32 Eq_n) r11Out, Register out Eq_n r12Out, Register out ptr32 lrOut)
 // Called from:
 //      fn0000B88C
@@ -12596,7 +12596,7 @@ l0000C2D8:
 	}
 }
 
-ui32 g_dwC0CE = 1886187084;
+ui32 g_dwC0CE = 1886187084; // 0000C0CE
 // 0000C0E4: FlagGroup Eq_n fn0000C0E4(Register Eq_n r0, Register (ptr32 Eq_n) r5, Register (ptr32 Eq_n) r6, Register Eq_n r12, Register out ptr32 r0Out, Register out ptr32 r1Out, Register out ptr32 r2Out, Register out ptr32 r3Out, Register out ptr32 r10Out, Register out ptr32 r11Out, Register out ptr32 r12Out, Register out Eq_n lrOut)
 // Called from:
 //      fn0000C058
@@ -13036,7 +13036,7 @@ void fn0000C2D4()
 		;
 }
 
-Eq_n g_tC2E0 = 
+Eq_n g_tC2E0 = // 0000C2E0
 	{
 		
 		{
@@ -13092,7 +13092,7 @@ void fn0000CA50(word32 r4, word32 r5, word32 r6, word32 r7, word32 lr)
 	}
 }
 
-ui32 g_dwCA66 = 2053428273;
+ui32 g_dwCA66 = 2053428273; // 0000CA66
 // 0000CA68: Register (ptr32 ui64) fn0000CA68(Register Eq_n r11, Register (ptr32 ui64) r12, Register out Eq_n lrOut)
 // Called from:
 //      fn0000CAB8
@@ -13389,7 +13389,7 @@ l0000CCDC:
 	goto l0000CCDE;
 }
 
-ui32 g_dwCBEC = 808829032;
+ui32 g_dwCBEC = 808829032; // 0000CBEC
 // 0000CCF0: FlagGroup bool fn0000CCF0(Register Eq_n r4, Register Eq_n r5, Register (ptr32 Eq_n) r7, Register uint32 r11, Register Eq_n r12, Register Eq_n lr, Register out ptr32 r8Out, Register out ptr32 r9Out, Register out Eq_n r11Out, Register out ptr32 r12Out, Register out ptr32 lrOut)
 // Called from:
 //      fn00008E88
@@ -13434,7 +13434,7 @@ l0000CD20:
 	goto l0000CD20;
 }
 
-ui32 g_dwCD26 = 0x7D04D431;
+ui32 g_dwCD26 = 0x7D04D431; // 0000CD26
 // 0000CD28: void fn0000CD28(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r12, Register word32 lr)
 void fn0000CD28(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r12, word32 lr)
 {
@@ -13483,7 +13483,7 @@ void fn0000CD28(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5
 	}
 }
 
-ui32 g_dwCD76 = 2101138481;
+ui32 g_dwCD76 = 2101138481; // 0000CD76
 // 0000CD78: Register Eq_n fn0000CD78(Register Eq_n r8, Register int32 r9, Register int32 r10, Register word32 r11, Register Eq_n r12, Stack int32 dwArg00, Stack int32 dwArg04, Stack word32 dwArg08, Stack word32 dwArg0C, Stack word32 dwArg10, Register out Eq_n lrOut)
 // Called from:
 //      fn0000CE10
@@ -13532,19 +13532,19 @@ l0000CE6E:
 	return lr_n;
 }
 
-Eq_n g_tCE78 = 
+Eq_n g_tCE78 = // 0000CE78
 	{
 		-0x7FFFFFFF
 	};
-Eq_n g_tCE7C = 
+Eq_n g_tCE7C = // 0000CE7C
 	{
 		-0x80000000
 	};
-Eq_n g_tCE80 = 
+Eq_n g_tCE80 = // 0000CE80
 	{
 		0x7FFFFFFD
 	};
-Eq_n g_tCE84 = 
+Eq_n g_tCE84 = // 0000CE84
 	{
 		0x7FFFFFFF
 	};
@@ -13778,8 +13778,8 @@ l0000D19C:
 	return r12_n;
 }
 
-ui32 g_dwD028 = 3324565251;
-int32 g_dwD1B6 = -0x3BFF2BDF;
+ui32 g_dwD028 = 3324565251; // 0000D028
+int32 g_dwD1B6 = -0x3BFF2BDF; // 0000D1B6
 // 0000D1B8: Register Eq_n fn0000D1B8(Register Eq_n r0, Register ptr32 r1, Register Eq_n r12)
 // Called from:
 //      fn0000A9DE
@@ -13789,7 +13789,7 @@ Eq_n fn0000D1B8(Eq_n r0, ptr32 r1, Eq_n r12)
 	return fn0000CEEE(r0, r1, r6_n->ptr0264, r6_n->ptr01BC, r12);
 }
 
-ui32 g_dwD1CE = 0x81CC0000;
+ui32 g_dwD1CE = 0x81CC0000; // 0000D1CE
 // 0000D204: Register word32 fn0000D204(Register ptr32 r4, Register (ptr32 byte) r5, Register (ptr32 Eq_n) r6, Register (ptr32 Eq_n) r7, Register word32 lr)
 // Called from:
 //      fn0000D220
@@ -13804,7 +13804,7 @@ word32 fn0000D204(ptr32 r4, byte * r5, struct Eq_n * r6, struct Eq_n * r7, word3
 	return r12_n;
 }
 
-ui32 g_dwD21A = ~0x27DD0000;
+ui32 g_dwD21A = ~0x27DD0000; // 0000D21A
 // 0000D220: FlagGroup bool fn0000D220(Register Eq_n r0, Register Eq_n r1, Register ui32 r2, Register Eq_n r9, Register Eq_n r10, Register ptr32 lr, Register (ptr32 Eq_n) pc, Register out ptr32 r0Out, Register out ptr32 r1Out, Register out ptr32 r2Out, Register out ptr32 r3Out, Register out ptr32 r6Out, Register out Eq_n r12Out, Register out ptr32 lrOut, Register out (ptr32 Eq_n) pcOut)
 // Called from:
 //      fn0000B818
@@ -15693,24 +15693,24 @@ l0000E654:
 	goto l0000E674;
 }
 
-ui32 g_dwD390 = ~0x7DC5;
-Eq_n g_tD636 = 
+ui32 g_dwD390 = ~0x7DC5; // 0000D390
+Eq_n g_tD636 = // 0000D636
 	{
 		0xC0
 	};
-Eq_n g_tD63A = 
+Eq_n g_tD63A = // 0000D63A
 	{
 		0x99
 	};
-word32 g_dwD856 = 0xD7038000;
-word32 g_dwD858 = 0x80000000;
-word32 g_dwDAC4 = 0x80000000;
-word32 g_dwDCA8 = 805159112;
-Eq_n g_tE1B6 = 
+word32 g_dwD856 = 0xD7038000; // 0000D856
+word32 g_dwD858 = 0x80000000; // 0000D858
+word32 g_dwDAC4 = 0x80000000; // 0000DAC4
+word32 g_dwDCA8 = 805159112; // 0000DCA8
+Eq_n g_tE1B6 = // 0000E1B6
 	{
 		0xC6
 	};
-Eq_n g_tE556 = 
+Eq_n g_tE556 = // 0000E556
 	{
 		0xC0
 	};
@@ -16110,7 +16110,7 @@ l0000EB1C:
 	return <invalid>;
 }
 
-ui32 g_dwEB26 = ~0x27D50000;
+ui32 g_dwEB26 = ~0x27D50000; // 0000EB26
 // 0000EB48: FlagGroup Eq_n fn0000EB48(Register Eq_n r0, Register Eq_n r1, Register ui32 r2, Register ptr32 r3, Register Eq_n r4, Register Eq_n r5, Register (ptr32 Eq_n) r6, Register ptr32 r7, Register ptr32 r10, Register (ptr32 word32) r11, Register Eq_n r12, Register ptr32 lr, Register out ptr32 lrOut)
 // Called from:
 //      fn0000D220
@@ -16741,32 +16741,32 @@ l0000F24A:
 	goto l0000F266;
 }
 
-ui32 g_dwEC88 = 2780351787;
-Eq_n g_tEC8C = 
+ui32 g_dwEC88 = 2780351787; // 0000EC88
+Eq_n g_tEC8C = // 0000EC8C
 	{
 		&g_bFFFF9B5E
 	};
-Eq_n g_tEE4C = 
+Eq_n g_tEE4C = // 0000EE4C
 	{
 		&g_b300AC138
 	};
-Eq_n g_tEE50 = 
+Eq_n g_tEE50 = // 0000EE50
 	{
 		&g_b19999999
 	};
-Eq_n g_tEFAC = 
+Eq_n g_tEFAC = // 0000EFAC
 	{
 		&g_b19999999
 	};
-Eq_n g_tEFB0 = 
+Eq_n g_tEFB0 = // 0000EFB0
 	{
 		&g_b15555555
 	};
-Eq_n g_tF26C = 
+Eq_n g_tF26C = // 0000F26C
 	{
 		&g_bD832D703
 	};
-uint32 g_dwF270 = 0x15555555;
+uint32 g_dwF270 = 0x15555555; // 0000F270
 // 0000F278: FlagGroup bool fn0000F278(Sequence word64 r11_r10, Register (ptr32 Eq_n) r7, Register (ptr32 Eq_n) pc, Register out (ptr32 Eq_n) pcOut)
 // Called from:
 //      fn0000D220
@@ -16798,7 +16798,7 @@ l0000F2C6:
 	goto l0000F2C6;
 }
 
-ui32 g_dwF2C8 = 3626161923;
+ui32 g_dwF2C8 = 3626161923; // 0000F2C8
 // 0000F2D0: Register Eq_n __avr32_f64_mul(Register Eq_n r8, Register Eq_n r9, Register Eq_n r10, Register Eq_n r11, Register out Eq_n r11Out)
 // Called from:
 //      fn000093B8
@@ -19671,4 +19671,4 @@ void fn00010E10(word32 r4, word32 r5, word32 lr)
 	}
 }
 
-ui32 g_dw10E2E = 3190090701;
+ui32 g_dw10E2E = 3190090701; // 00010E2E

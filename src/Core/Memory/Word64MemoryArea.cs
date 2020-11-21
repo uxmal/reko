@@ -94,7 +94,16 @@ namespace Reko.Core.Memory
 
         public override bool TryReadBeUInt32(long off, out uint retvalue)
         {
-            throw new System.NotImplementedException();
+            if (0 <= off && off < Words.Length)
+            {
+                retvalue = (uint) (Words[off] >> 32);
+                return true;
+            }
+            else
+            {
+                retvalue = 0;
+                return false;
+            }
         }
 
         public override bool TryReadBeUInt64(long off, out ulong retvalue)

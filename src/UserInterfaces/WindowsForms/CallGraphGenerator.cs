@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using C2 = Microsoft.Msagl.Drawing.Color;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
@@ -33,6 +34,7 @@ namespace Reko.UserInterfaces.WindowsForms
     {
         private Graph graph;
         private HashSet<Procedure> visited;
+        private readonly C2 fillColor = new C2(0xFF, 0xE0, 0xE0);
 
         public CallGraphGenerator(Graph graph)
         {
@@ -81,6 +83,7 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             var node = graph.AddNode(proc.Name);
             node.Label.FontName = "Lucida Console";
+            node.Attr.FillColor = fillColor;
             node.Label.FontSize = 10f;
             node.Attr.LabelMargin = 5;
             node.LabelText = proc.Name;

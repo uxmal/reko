@@ -65,7 +65,7 @@ namespace Reko.Environments.Wii
 			return null;
 		}
 
-		public override int GetByteSizeFromCBasicType(CBasicType cb) {
+		public override int GetBitSizeFromCBasicType(CBasicType cb) {
 			throw new NotImplementedException();
 		}
 

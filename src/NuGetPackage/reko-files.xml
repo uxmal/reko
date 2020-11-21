@@ -6,7 +6,7 @@
         <var id="var.Core.TargetPath">../Core/$TargetDir$/Reko.Core.dll</var>
         <var id="var.Decompiler.ProjectDir">../Decompiler/</var>
         <var id="var.Decompiler.TargetPath">../Decompiler/$TargetDir$/Reko.dll</var>
-        <var id="var.Gui.TargetPath">../Gui/$TargetFwkDir$/Reko.Gui.dll</var>
+        <var id="var.Gui.TargetPath">../Gui/$TargetDir$/Reko.Gui.dll</var>
         <var id="var.CmdLine.TargetPath">../Drivers/CmdLine/$TargetDir_x64$/decompile.exe</var>
         <var id="var.WindowsDecompiler.ProjectDir">../Drivers/WindowsDecompiler/</var>
         <var id="var.WindowsDecompiler.TargetPath">../Drivers/WindowsDecompiler/$TargetDir_x64$/WindowsDecompiler.exe</var>
@@ -106,6 +106,7 @@
         <var id="var.OdbgScript.ProjectDir" >../ImageLoaders/OdbgScript/</var>
         <var id="var.OdbgScript.TargetPath" >../ImageLoaders/OdbgScript/$TargetDir$/Reko.ImageLoaders.OdbgScript.dll</var>
         <var id="var.Srec.TargetPath" >../ImageLoaders/Srec/$TargetDir$/Reko.ImageLoaders.Srec.dll</var>
+        <var id="var.TekHex.TargetPath" >../ImageLoaders/TekHex/$TargetDir$/Reko.ImageLoaders.TekHex.dll</var>
         <var id="var.VmsExe.TargetPath" >../ImageLoaders/VmsExe/$TargetDir$/Reko.ImageLoaders.VmsExe.dll</var>
         <var id="var.WebAssembly.TargetPath" >../ImageLoaders/WebAssembly/$TargetDir$/Reko.ImageLoaders.WebAssembly.dll</var>
         <var id="var.Xex.TargetPath" >../ImageLoaders/XexLoader/$TargetDir$/Reko.ImageLoaders.Xex.dll</var>
@@ -267,9 +268,9 @@
 
         <!-- External files -->
         <File Source="$(var.SolutionDir)..\external\Capstone\$(var.Platform)\capstone.dll" />
-        <File Source="$(var.SolutionDir)..\external\Msagl\Microsoft.Msagl.dll" />
-        <File Source="$(var.SolutionDir)..\external\Msagl\Microsoft.Msagl.Drawing.dll" />
-        <File Source="$(var.SolutionDir)..\external\Msagl\Microsoft.Msagl.GraphViewerGdi.dll" />
+        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\AutomaticGraphLayout.dll" />
+        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\AutomaticGraphLayout.Drawing.dll" />
+        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Msagl.GraphViewerGdi.dll" />
         
         <File Source="$(var.SolutionDir)..\external\reactos\coredll.def" nuget_target="c:" />
         <File Source="$(var.SolutionDir)..\external\wine\commdlg.dll16.spec" nuget_target="c:" />

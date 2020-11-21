@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (5CE code t05CE) (5EE code t05EE) (70E code t070E) (8C8 Eq_69 t08C8) (8D0 byte b08D0) (8D8 ci8 b08D8) (E80 code t0E80) (1E08 (ptr64 code) ptr1E08) (1E18 ci8 b1E18) (2018 (ptr64 code) ptr2018) (2020 (ptr64 code) ptr2020) (2028 byte b2028) (2030 (ptr64 code) ptr2030) (2038 (ptr64 code) ptr2038) (2048 (ptr64 code) ptr2048) (2050 (ptr64 code) ptr2050) (2068 byte b2068))
+Eq_1: (struct "Globals" (5CE code t05CE) (5EE code t05EE) (70E code t070E) (8C8 Eq_69 t08C8) (8D0 byte b08D0) (8D8 ci8 b08D8) (1E08 (ptr64 code) ptr1E08) (1E18 ci8 b1E18) (2018 (ptr64 code) ptr2018) (2020 (ptr64 code) ptr2020) (2028 byte b2028) (2030 (ptr64 code) ptr2030) (2038 (ptr64 code) ptr2038) (2048 (ptr64 code) ptr2048) (2050 (ptr64 code) ptr2050) (2068 byte b2068))
 	globals_t (in globals : (ptr64 (struct "Globals")))
 Eq_16: (struct "Eq_16" (110 (ptr64 code) ptr0110))
 	T_16 (in r15_33 : (ptr64 Eq_16))
@@ -1231,7 +1231,6 @@ typedef struct Globals {
 	Eq_69 t08C8;	// 8C8
 	byte b08D0;	// 8D0
 	ci8 b08D8;	// 8D8
-	<anonymous> t0E80;	// E80
 	<anonymous> * ptr1E08;	// 1E08
 	ci8 b1E18;	// 1E18
 	<anonymous> * ptr2018;	// 2018

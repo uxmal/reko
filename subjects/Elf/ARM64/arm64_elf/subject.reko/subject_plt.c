@@ -4,7 +4,7 @@
 
 #include "subject.h"
 
-<anonymous> g_t0DA0 = <code>;
+<anonymous> g_t0DA0 = <code>; // 0000000000000DA0
 // 0000000000000DC0: void fn0000000000000DC0()
 void fn0000000000000DC0()
 {

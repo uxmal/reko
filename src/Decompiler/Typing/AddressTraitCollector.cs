@@ -40,7 +40,7 @@ namespace Reko.Typing
         private Expression? basePointer;
         private Expression? eField;
 		private bool arrayContext;
-		private int basePointerSize;
+		private int basePointerBitSize;
 		private int arrayElementSize;
 		private int arrayLength;
 
@@ -53,10 +53,10 @@ namespace Reko.Typing
 			this.arrayContext = false;
 		}
 
-		public void Collect(Expression? tvBasePointer, int basePointerSize, Expression eField, Expression effectiveAddress)
+		public void Collect(Expression? tvBasePointer, int basePointerBitSize, Expression eField, Expression effectiveAddress)
 		{
 			this.basePointer = tvBasePointer;
-			this.basePointerSize = basePointerSize;
+			this.basePointerBitSize = basePointerBitSize;
 			this.eField = eField;
 			effectiveAddress.Accept(this);
 		}
@@ -73,12 +73,12 @@ namespace Reko.Typing
 			arrayContext = c;
 		}
 
-		public void EmitAccessTrait(Expression? baseExpr, Expression memPtr, int ptrSize, int offset)
+		public void EmitAccessTrait(Expression? baseExpr, Expression memPtr, int ptrBitSize, int offset)
 		{
 			if (arrayContext)
-				handler.MemAccessArrayTrait(baseExpr, memPtr, ptrSize, offset, arrayElementSize, arrayLength, eField!);
+				handler.MemAccessArrayTrait(baseExpr, memPtr, ptrBitSize, offset, arrayElementSize, arrayLength, eField!);
 			else
-				handler.MemAccessTrait(baseExpr, memPtr, ptrSize, eField!, offset);
+				handler.MemAccessTrait(baseExpr, memPtr, ptrBitSize, eField!, offset);
 		}
 
 		public LinearInductionVariable? GetInductionVariable(Expression e)
@@ -99,12 +99,12 @@ namespace Reko.Typing
 
 		public void VisitApplication(Application appl)
 		{
-			handler.MemAccessTrait(basePointer, appl, appl.DataType.Size, eField!, 0);
+			handler.MemAccessTrait(basePointer, appl, appl.DataType.BitSize, eField!, 0);
 		}
 
 		public void VisitArrayAccess(ArrayAccess access)
 		{
-			handler.MemAccessTrait(basePointer, access, access.DataType.Size, eField!, 0);
+			handler.MemAccessTrait(basePointer, access, access.DataType.BitSize, eField!, 0);
 		}
 
         public void VisitBinaryExpression(BinaryExpression bin) { VisitBinaryExpression(bin.Operator, bin.DataType, bin.Left, bin.Right); }
@@ -134,18 +134,18 @@ namespace Reko.Typing
                         if (bl.Operator is IMulOperator)
                         {
                             arrayContext = true;
-                            EmitAccessTrait(basePointer, left, dataType.Size, offset.ToInt32());
+                            EmitAccessTrait(basePointer, left, dataType.BitSize, offset.ToInt32());
                             return;
                         }
                     }
-                    EmitAccessTrait(basePointer, left, dataType.Size, offset.ToInt32());
+                    EmitAccessTrait(basePointer, left, dataType.BitSize, offset.ToInt32());
                     return;
                 }
 
                 // Handle odd mem[x + y] case; perhaps a later stage can detect that x (or y)
                 // is a pointer and therefore y isn't.
 
-                EmitAccessTrait(basePointer, left, dataType.Size, 0);
+                EmitAccessTrait(basePointer, left, dataType.BitSize, 0);
 				return;
 			}
             throw new TypeInferenceException("Couldn't generate address traits for binary operator {0}.", op);
@@ -176,11 +176,11 @@ namespace Reko.Typing
         private void HandleConstantOffset(Expression c, int v)
         {
             if (basePointer != null)
-                handler.MemAccessTrait(null, basePointer, basePointerSize, eField!, v);
+                handler.MemAccessTrait(null, basePointer, basePointerBitSize, eField!, v);
             else
-                handler.MemAccessTrait(null, program.Globals, program.Platform.PointerType.Size, eField!, v);
+                handler.MemAccessTrait(null, program.Globals, program.Platform.PointerType.BitSize, eField!, v);
             // C is a pointer to tvField: [[c]] = ptr(tvField)
-            handler.MemAccessTrait(basePointer, c, c.DataType.Size, eField!, 0);
+            handler.MemAccessTrait(basePointer, c, c.DataType.BitSize, eField!, 0);
         }
 
         public void VisitConversion(Conversion conversion)
@@ -213,7 +213,7 @@ namespace Reko.Typing
 			{
 				VisitInductionVariable(id, iv, null);
 			}
-			EmitAccessTrait(basePointer, id, id.DataType.Size, 0);
+			EmitAccessTrait(basePointer, id, id.DataType.BitSize, 0);
 		}
 
         /// <summary>
@@ -237,11 +237,11 @@ namespace Reko.Typing
                     init = iv.Final.ToInt32() - delta;
                     if (iv.IsSigned)
                     {
-                        handler.MemAccessArrayTrait(null, tvBase, cOffset!.DataType.Size, init + offset, stride, iv.IterationCount, eField!);
+                        handler.MemAccessArrayTrait(null, tvBase, cOffset!.DataType.BitSize, init + offset, stride, iv.IterationCount, eField!);
                     }
                     else
                     {
-                        handler.MemAccessArrayTrait(null, tvBase, id.DataType.Size, init + offset, stride, iv.IterationCount, eField!);
+                        handler.MemAccessArrayTrait(null, tvBase, id.DataType.BitSize, init + offset, stride, iv.IterationCount, eField!);
                     }
                 }
             }
@@ -252,11 +252,11 @@ namespace Reko.Typing
                     init = iv.Initial.ToInt32();
                     if (iv.IsSigned)
                     {
-                        handler.MemAccessArrayTrait(null, tvBase, cOffset!.DataType.Size, init + offset, stride, iv.IterationCount, eField!);
+                        handler.MemAccessArrayTrait(null, tvBase, cOffset!.DataType.BitSize, init + offset, stride, iv.IterationCount, eField!);
                     }
                     else
                     {
-                        handler.MemAccessArrayTrait(null, tvBase, id.DataType.Size, init + offset, stride, iv.IterationCount, eField!);
+                        handler.MemAccessArrayTrait(null, tvBase, id.DataType.BitSize, init + offset, stride, iv.IterationCount, eField!);
                     }
                 }
             }
@@ -265,19 +265,19 @@ namespace Reko.Typing
                 if (cOffset != null)
                 {
                     handler.MemSizeTrait(basePointer, cOffset, Math.Abs(delta));
-                    EmitAccessTrait(basePointer, cOffset, cOffset.DataType.Size, 0);
+                    EmitAccessTrait(basePointer, cOffset, cOffset.DataType.BitSize, 0);
                 }
             }
             else
             {
                 handler.MemSizeTrait(basePointer, id, Math.Abs(delta));
-                EmitAccessTrait(basePointer, id, id.DataType.Size, offset);
+                EmitAccessTrait(basePointer, id, id.DataType.BitSize, offset);
             }
 		}
 
 		public void VisitMemberPointerSelector(MemberPointerSelector mps)
 		{
-			handler.MemAccessTrait(basePointer, mps, mps.DataType.Size, eField!, 0);
+			handler.MemAccessTrait(basePointer, mps, mps.DataType.BitSize, eField!, 0);
 		}
 
 		public void VisitMkSequence(MkSequence seq)
@@ -294,12 +294,12 @@ namespace Reko.Typing
 
 		public void VisitMemoryAccess(MemoryAccess access)
 		{
-			handler.MemAccessTrait(basePointer, access, access.DataType.Size, eField!, 0);
+			handler.MemAccessTrait(basePointer, access, access.DataType.BitSize, eField!, 0);
 		}
 
 		public void VisitSegmentedAccess(SegmentedAccess access)
 		{
-			handler.MemAccessTrait(basePointer, access, access.DataType.Size, eField!, 0);
+			handler.MemAccessTrait(basePointer, access, access.DataType.BitSize, eField!, 0);
 		}
 
         public void VisitOutArgument(OutArgument outArg)

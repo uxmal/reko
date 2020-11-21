@@ -4,7 +4,4 @@
 
 #include "ls.h"
 
-char g_strC34C00[];
-Eq_n g_tC34C10;
-Eq_n g_tC34C50;
-word32 g_dwFFBED370;
+word32 g_dwFFBED370; // FFFFFFFFFFBED370

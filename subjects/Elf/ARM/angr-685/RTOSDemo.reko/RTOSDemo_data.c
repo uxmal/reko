@@ -4,8 +4,9 @@
 
 #include "RTOSDemo.h"
 
-word32 g_a20000000[] = 
+word32 g_a20000000[] = // 20000000
 	{
 	};
-word32 g_dw200000BC = 0xAAAAAAAA;
-word32 g_dw200000C0 = 0x01;
+word32 uxErrorStatus = 0x01; // 200000B8
+word32 uxCriticalNesting = 0xAAAAAAAA; // 200000BC
+word32 xCoRoutineFlashStatus = 0x01; // 200000C0

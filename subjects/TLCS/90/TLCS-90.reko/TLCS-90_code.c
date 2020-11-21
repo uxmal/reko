@@ -10,7 +10,7 @@ void fn0000(byte a)
 	null = (byte *) a;
 }
 
-byte g_b0001 = 0x00;
+byte g_b0001 = 0x00; // 00000001
 // 02F4: Register word16 fn02F4(Register byte a, Register byte c, Register byte b, Register Eq_n de, Register byte h, Register (ptr16 Eq_n) ix, Stack Eq_n wArg24, Register out Eq_n deOut, Register out Eq_n hlOut, Register out Eq_n ixOut)
 // Called from:
 //      fn164F

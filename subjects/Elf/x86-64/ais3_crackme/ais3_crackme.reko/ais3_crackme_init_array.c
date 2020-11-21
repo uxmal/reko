@@ -4,6 +4,6 @@
 
 #include "ais3_crackme.h"
 
-<anonymous> * g_a600DF8[] = 
+<anonymous> * g_a600DF8[] = // 0000000000600DF8
 	{
 	};

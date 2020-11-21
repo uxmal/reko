@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (898 (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char)))) t0898) (A70 (fn void ()) t0A70) (AE0 (fn void ()) t0AE0) (B00 uint64 qw0B00) (200DE8 (arr (ptr64 code)) a200DE8) (201048 byte b201048))
+Eq_1: (struct "Globals" (5D6 code t05D6) (5E6 code t05E6) (5F6 code t05F6) (606 code t0606) (898 (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char)))) t0898) (A70 (fn void ()) t0A70) (AE0 (fn void ()) t0AE0) (B00 uint64 double_size.21529) (200DE8 (arr (ptr64 code)) a200DE8) (200FD8 (ptr64 code) _ITM_deregisterTMCloneTable_GOT) (200FE0 (ptr64 code) __libc_start_main_GOT) (200FE8 (ptr64 code) __gmon_start___GOT) (200FF0 (ptr64 code) _ITM_registerTMCloneTable_GOT) (200FF8 (ptr64 code) __cxa_finalize_GOT) (201018 (ptr64 code) free_GOT) (201020 (ptr64 code) printf_GOT) (201028 (ptr64 code) malloc_GOT) (201030 (ptr64 code) posix_memalign_GOT) (201048 byte b201048))
 	globals_t (in globals : (ptr64 (struct "Globals")))
 Eq_7: (fn void ())
 	T_7 (in rdx : (ptr64 Eq_7))
@@ -577,7 +577,7 @@ T_114: (in Mem23[0x0000000000000B00<p64>:word64] : word64)
   Class: Eq_114
   DataType: uint64
   OrigDataType: uint64
-T_115: (in (uint128) rdi /u g_qw0B00 : word64)
+T_115: (in (uint128) rdi /u double_size.21529 : word64)
   Class: Eq_115
   DataType: uint64
   OrigDataType: uint64
@@ -644,7 +644,7 @@ T_130: (in _mm_malloc(0x20<u64>, 0x2000<64>) : word64)
 T_131: (in rax_42 : (arr real64))
   Class: Eq_102
   DataType: (ptr64 (arr real64))
-  OrigDataType: (ptr64 (struct (0 (arr T_269) a0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_270) a0000)))
 T_132: (in _mm_malloc : ptr64)
   Class: Eq_121
   DataType: (ptr64 Eq_121)
@@ -1164,7 +1164,7 @@ T_260: (in 0<u64> : uint64)
 T_261: (in 0000000000200DE8 : ptr64)
   Class: Eq_261
   DataType: (ptr64 (arr (ptr64 code)))
-  OrigDataType: (ptr64 (struct (0 (arr T_270) a0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_271) a0000)))
 T_262: (in 8<64> : word64)
   Class: Eq_262
   DataType: ui64
@@ -1194,20 +1194,37 @@ T_268: (in rbp_31 >> 3<64> != rbx_44 : bool)
   DataType: bool
   OrigDataType: bool
 T_269:
-  Class: Eq_269
-  DataType: real64
-  OrigDataType: (struct 0008 (0 T_214 t0000))
+  Class: Eq_114
+  DataType: uint64
+  OrigDataType: word64
 T_270:
   Class: Eq_270
+  DataType: real64
+  OrigDataType: (struct 0008 (0 T_214 t0000))
+T_271:
+  Class: Eq_271
   DataType: (ptr64 code)
   OrigDataType: (struct 0008 (0 T_264 t0000))
 */
 typedef Eq_1Eq_1Eq_1struct Globals {
+	<anonymous> t05D6;	// 5D6
+	<anonymous> t05E6;	// 5E6
+	<anonymous> t05F6;	// 5F6
+	<anonymous> t0606;	// 606
 	int32 t0898(int32 rdi, char ** rsi, char ** rdx);	// 898
 	void t0A70();	// A70
 	void t0AE0();	// AE0
-	uint64 qw0B00;	// B00
+	uint64 double_size.21529;	// B00
 	<anonymous> * a200DE8[];	// 200DE8
+	<anonymous> * _ITM_deregisterTMCloneTable_GOT;	// 200FD8
+	<anonymous> * __libc_start_main_GOT;	// 200FE0
+	<anonymous> * __gmon_start___GOT;	// 200FE8
+	<anonymous> * _ITM_registerTMCloneTable_GOT;	// 200FF0
+	<anonymous> * __cxa_finalize_GOT;	// 200FF8
+	<anonymous> * free_GOT;	// 201018
+	<anonymous> * printf_GOT;	// 201020
+	<anonymous> * malloc_GOT;	// 201028
+	<anonymous> * posix_memalign_GOT;	// 201030
 	byte b201048;	// 201048
 } Eq_1;
 

@@ -43,20 +43,29 @@ namespace Reko.Arch.Cray
     /// </remarks>
     public class CrayYmpArchitecture : ProcessorArchitecture
     {
+        private InstructionSet instructionSet;
+        private Decoder<YmpDisassembler, Mnemonic, CrayInstruction> rootDecoder;
+
         public CrayYmpArchitecture(IServiceProvider services, string archId) : base(services, archId)
         {
+            this.DefaultBase = 8;
             this.Endianness = EndianServices.Big;
             this.FramePointerType = PrimitiveType.Ptr32;
             this.InstructionBitSize = 16;
             this.MemoryGranularity = 64;
+            this.Options = new Dictionary<string, object>();
             this.PointerType = PrimitiveType.Ptr32;
-            this.StackRegister = null; //$TODO: Ax?
+            this.StackRegister = Registers.sp;          // Fake register, YMP has no architecture defined SP.
             this.WordWidth = PrimitiveType.Word64;
+            this.instructionSet = CreateInstructionSet();
+            this.rootDecoder = instructionSet.CreateDecoder();
         }
+
+        public Dictionary<string,object> Options { get; private set; }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new Ymp.YmpDisassembler(this, imageReader);
+            return new Ymp.YmpDisassembler(this, rootDecoder, imageReader);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
@@ -67,6 +76,18 @@ namespace Reko.Arch.Cray
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();
+        }
+
+        private InstructionSet CreateInstructionSet()
+        {
+            if (Options.TryGetValue("Model", out var oModel))
+            {
+                switch (((string) oModel).ToLower())
+                {
+                case "c90": return new C90InstructionSet();
+                }
+            }
+            return new YmpInstructionSet();
         }
 
         public override MemoryArea CreateMemoryArea(Address addr, byte[] bytes)
@@ -92,7 +113,7 @@ namespace Reko.Arch.Cray
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new YmpRewriter(this, rdr, state, binder, host);
+            return new YmpRewriter(this, rootDecoder, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
@@ -135,14 +156,40 @@ namespace Reko.Arch.Cray
             throw new NotImplementedException();
         }
 
+        public override void LoadUserOptions(Dictionary<string, object> options)
+        {
+            this.Options = options;
+            this.instructionSet = CreateInstructionSet();
+            this.rootDecoder = instructionSet.CreateDecoder();
+        }
+
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            throw new NotImplementedException();
+            return Address.Ptr32(c.ToUInt32());
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
+        }
+
+        public override string RenderInstructionOpcode(MachineInstruction instr, EndianImageReader rdr)
+        {
+            var bitSize = this.InstructionBitSize;
+            var instrSize = PrimitiveType.CreateWord(bitSize);
+            var sb = new StringBuilder();
+            var numBase = this.DefaultBase;
+            int digits = 6;
+            for (int i = 0; i < instr.Length; ++i)
+            {
+                if (rdr.TryRead(instrSize, out var v))
+                {
+                    sb.Append(Convert.ToString((long) v.ToUInt64(), numBase)
+                        .PadLeft(digits, '0'));
+                    sb.Append(' ');
+                }
+            }
+            return sb.ToString();
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)

@@ -176,7 +176,7 @@ namespace Reko.Typing
             if (dt is MemberPointer mp)
             {
                 changed = true;
-                return factory.CreateMemberPointer(mp.BasePointer, eq, mp.Size);
+                return factory.CreateMemberPointer(mp.BasePointer, eq, mp.BitSize);
             }
             if (dt is ArrayType array)
             {

@@ -70,7 +70,7 @@ namespace Reko.ImageLoaders.Ldm
         public LdmLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw)
         {
             this.load_ldmline = new Action<string>[] { load_tldline, load_xtcline };
-            mem = new mem_t[1];
+            mem = new mem_t[128];
         }
 
         public override Address PreferredBaseAddress

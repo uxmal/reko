@@ -4,32 +4,31 @@
 
 #include "a.h"
 
-Eq_n g_a021C[] = 
+Eq_n xRxedChars[] = // 021C
 	{
 	};
-Eq_n g_t021E = 
+Eq_n xCharsForTx = // 021E
 	{
 		0x00
 	};
-word16 g_w0220 = 0x00;
-cup16 g_w0222 = 0x00;
-Eq_n g_a0226[] = 
+word16 sTHREEmpty = 0x00; // 0220
+cup16 g_w0222 = 0x00; // 0222
+Eq_n g_a0226[] = // 0226
 	{
 	};
-Eq_n g_t0282 = 
+Eq_n pxDelayedTaskList = // 0282
 	{
 		0x00
 	};
-Eq_n g_t0284 = 
+Eq_n pxOverflowDelayedTaskList = // 0284
 	{
 		0x00
 	};
-word16 g_w0286 = 0x00;
-struct Eq_n * g_ptr0288 = null;
-word16 g_w0296 = 0x00;
-struct Eq_n * g_ptr0298 = null;
-Eq_n g_t09B2 = 
+word16 g_w0286 = 0x00; // 0286
+struct Eq_n * g_ptr0288 = null; // 0288
+word16 g_w0296 = 0x00; // 0296
+struct Eq_n * g_ptr0298 = null; // 0298
+Eq_n __write_char = // 09B2
 	{
-		?? /* Can't read address 09B2 */
-
+		?? /* Can't read address 09B2 */ 
 	};

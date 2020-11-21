@@ -5,14 +5,14 @@
 #include "hello_ppc.h"
 
 Eq_n g_t0001;
-word32 g_dw0003;
+word32 g_dw0003; // 00000003
 Eq_n g_t0016;
-ui32 g_dw0120;
-word32 g_dw092C;
-byte g_b0BFF;
+ui32 g_dw0120; // 00000120
+word32 g_dw092C; // 0000092C
+byte g_b0BFF; // 00000BFF
 Eq_n g_t1000;
 Eq_n g_t1008;
-word32 g_dw1FF8;
+word32 g_dw1FF8; // 00001FF8
 Eq_n g_tFFFFFF98;
 Eq_n g_tFFFFFFA0;
 Eq_n g_tFFFFFFBF;

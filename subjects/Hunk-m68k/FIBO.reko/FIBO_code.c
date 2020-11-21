@@ -341,15 +341,15 @@ word32 fn00001390()
 	return fn0000131C(dwLoc1C_n, out a5_n);
 }
 
-byte g_b1410 = 0x49;
-struct Eq_n g_t1420 = 
+byte g_b1410 = 0x49; // 00001410
+struct Eq_n g_t1420 = // 00001420
 	{
 		0x25,
 		100,
 	};
-byte g_b1424 = 0x66;
-byte g_b1438 = 0x49;
-struct Eq_n g_t1458 = 
+byte g_b1424 = 0x66; // 00001424
+byte g_b1438 = 0x49; // 00001438
+struct Eq_n g_t1458 = // 00001458
 	{
 		0x25,
 		100,
@@ -899,7 +899,7 @@ l00001C20:
 	}
 }
 
-byte g_b1E08 = 0x25;
+byte g_b1E08 = 0x25; // 00001E08
 // 00001E34: Register Eq_n fn00001E34(Stack Eq_n dwArg04, Stack (ptr32 Eq_n) dwArg08, Register out (ptr32 ui32) a0Out, Register out ptr32 a5Out)
 // Called from:
 //      fn000014B4
@@ -1677,7 +1677,7 @@ Eq_n fn0000279C(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10)
 	return d1_n;
 }
 
-Eq_n g_t28B1 = 
+Eq_n g_t28B1 = // 000028B1
 	{
 		
 		{
@@ -2826,20 +2826,20 @@ int32 fn00003E04(byte * dwArg04)
 	return d0_n;
 }
 
-struct Eq_n * g_ptr3E94 = null;
-struct Eq_n * g_ptr3E98 = &g_t4000;
-word32 g_dw3E9C = 0x00;
-struct Eq_n * g_ptr3EA0 = &g_t10202;
-struct Eq_n * g_ptr3EA4 = &g_t3030303;
-ui32 g_dw3EA8 = 0x04040404;
-ui32 g_dw3EAC = 0x04040404;
-ui32 g_dw3EB0 = 0x05050505;
-word32 g_dw3EBC = 0x05050505;
-ptr32 g_ptr3EC0 = 0x06060606;
-int32 g_dw3EC4 = 0x06060606;
-struct Eq_n * g_ptr3EC8 = &g_t6060606;
-struct Eq_n * g_ptr3ECC = &g_t6060606;
-Eq_n g_t3ED0 = 
+struct Eq_n * g_ptr3E94 = null; // 00003E94
+struct Eq_n * g_ptr3E98 = &g_t4000; // 00003E98
+word32 g_dw3E9C = 0x00; // 00003E9C
+struct Eq_n * g_ptr3EA0 = &g_t10202; // 00003EA0
+struct Eq_n * g_ptr3EA4 = &g_t3030303; // 00003EA4
+ui32 g_dw3EA8 = 0x04040404; // 00003EA8
+ui32 g_dw3EAC = 0x04040404; // 00003EAC
+ui32 g_dw3EB0 = 0x05050505; // 00003EB0
+word32 g_dw3EBC = 0x05050505; // 00003EBC
+ptr32 g_ptr3EC0 = 0x06060606; // 00003EC0
+int32 g_dw3EC4 = 0x06060606; // 00003EC4
+struct Eq_n * g_ptr3EC8 = &g_t6060606; // 00003EC8
+struct Eq_n * g_ptr3ECC = &g_t6060606; // 00003ECC
+Eq_n g_t3ED0 = // 00003ED0
 	{
 		
 		{

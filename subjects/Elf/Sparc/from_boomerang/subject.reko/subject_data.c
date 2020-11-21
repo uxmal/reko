@@ -4,7 +4,7 @@
 
 #include "subject.h"
 
-ptr32 g_ptr20E3C = 0x00;
-ui32 g_dw20E58 = 0x00;
-word32 g_dw20E5C = 0x00;
-ptr32 g_ptr20E60 = 0x00;
+ptr32 environ = 0x00; // 00020E3C
+ui32 g_dw20E58 = 0x00; // 00020E58
+word32 __fnonstd_used = 0x00; // 00020E5C
+ptr32 ___Argv = 0x00; // 00020E60

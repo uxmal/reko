@@ -4,47 +4,44 @@
 
 #include "spcinv.h"
 
-Eq_n g_t0001 = 
+Eq_n t0000 = // 0000
+	{
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x0200,
+		0x0200,
+		0x00,
+		0x00,
+		0x12A2,
+		0x00,
+		0x00,
+	};
+Eq_n g_t0002 = // 0002
 	{
 		0x00,
 		0x00,
 		0x00,
 	};
-Eq_n g_t0002 = 
-	{
-		0x00,
-		0x00,
-		0x00,
-	};
-Eq_n g_t0003 = 
-	{
-		&g_t000D,
-		
-		{
-			0x00
-		},
-	};
-Eq_n g_t000A = 
-	{
-		0x0E30,
-		0x00,
-		0x05,
-	};
-Eq_n g_t000D = 
-	{
-		
-		{
-			L'\0'
-		},
-	};
-cui16 g_w0024 = 0x00;
 // 0200: void fn0200(Register Eq_n r5, Register (ptr16 Eq_n) pc)
 void fn0200(Eq_n r5, struct Eq_n * pc)
 {
 	do
 	{
 		PRINT(&g_b0F9A);
-		struct Eq_n * r2_n = &g_t0002;
+		struct Eq_n * r2_n = &t0000.w0002;
 		struct Eq_n * r3_n = null;
 		do
 		{
@@ -67,16 +64,16 @@ void fn0200(Eq_n r5, struct Eq_n * pc)
 			} while (TTYIN(out r0_n));
 			break;
 		}
-		r2_n = &g_t0001;
-		r3_n = (struct Eq_n *) &g_t0001;
+		r2_n = (struct Eq_n *) ((char *) &t0000.w0000 + 1);
+		r3_n = (struct Eq_n *) ((char *) &t0000.w0000 + 1);
 		if (r0_n == 0x49)
 			break;
 		r2_n = null;
-		r3_n = (struct Eq_n *) &g_t0002;
+		r3_n = (struct Eq_n *) &t0000.w0002;
 	} while (r0_n != 0x45);
 	g_ptr0F06 = r2_n;
 	g_ptr0F08 = r3_n;
-	g_w0024 |= 0x1040;
+	t0000.w0024 |= 0x1040;
 	g_w1166 = 0x1100;
 	g_w1168 = 4464;
 	FnSubfn(&g_w1166);
@@ -220,16 +217,16 @@ l0392:
 	(*((char *) g_a02CC + (r1_n - 711) * 0x02))();
 }
 
-byte g_b02C6 = 44;
-Eq_n g_t02CB = 
+byte g_b02C6 = 44; // 02C6
+Eq_n g_t02CB = // 02CB
 	{
 		0x00
 	};
-<anonymous> * g_a02CC[] = 
+<anonymous> * g_a02CC[] = // 02CC
 	{
 	};
-byte * g_ptr0420 = &g_b1121;
-<anonymous> g_t0456 = <code>;
+byte * g_ptr0420 = &g_b1121; // 0420
+<anonymous> g_t0456 = <code>; // 0456
 // 0470: Register (ptr16 byte) fn0470(Register Eq_n r0, Register (ptr16 byte) r4, Register Eq_n r5)
 // Called from:
 //      fn0200
@@ -245,7 +242,7 @@ byte * fn0470(Eq_n r0, byte * r4, Eq_n r5)
 	return r4_n;
 }
 
-byte * g_ptr0482 = &g_b1122;
+byte * g_ptr0482 = &g_b1122; // 0482
 // 0486: Register Eq_n fn0486(Register Eq_n r0, Register (ptr16 byte) r4, Register Eq_n r5, Register out ptr16 r4Out, Register out ptr16 r5Out)
 // Called from:
 //      fn0200
@@ -373,7 +370,7 @@ l0524:
 									if (v38_n == 0x00)
 										goto l0524;
 									++r2_n;
-								} while (r2_n >= &g_t000A);
+								} while (r2_n >= &t0000.w000A);
 								union Eq_n * sp_n = sp_n - 2;
 								*sp_n = (union Eq_n *) r5_n;
 								word16 r0_n;
@@ -403,7 +400,7 @@ l0588:
 	}
 }
 
-byte * g_ptr05B8 = &g_b1116;
+byte * g_ptr05B8 = &g_b1116; // 05B8
 // 05D4: FlagGroup bool fn05D4(Register Eq_n r0, Register Eq_n r3, Register (ptr16 byte) r4, Register Eq_n r5, Register (ptr16 Eq_n) pc, Register out Eq_n r0Out, Register out Eq_n r3Out, Register out (ptr16 byte) r4Out, Register out Eq_n r5Out)
 // Called from:
 //      fn04A0
@@ -450,7 +447,7 @@ bool fn05D4(Eq_n r0, Eq_n r3, byte * r4, Eq_n r5, struct Eq_n * pc, union Eq_n &
 	}
 }
 
-byte * g_ptr0624 = &g_b1121;
+byte * g_ptr0624 = &g_b1121; // 0624
 // 064A: FlagGroup bool fn064A(Register Eq_n r0, Register Eq_n r1, Register Eq_n r3, Register (ptr16 byte) r4, Register Eq_n r5, Register out Eq_n r0Out, Register out (ptr16 byte) r4Out, Register out Eq_n r5Out)
 // Called from:
 //      fn04A0
@@ -489,7 +486,7 @@ bool fn064A(Eq_n r0, Eq_n r1, Eq_n r3, byte * r4, Eq_n r5, union Eq_n & r0Out, b
 	return Z_n;
 }
 
-byte * g_ptr066A = &g_b1116;
+byte * g_ptr066A = &g_b1116; // 066A
 // 067C: FlagGroup bool fn067C(Register Eq_n r0, Register Eq_n r3, Register (ptr16 byte) r4, Register Eq_n r5, Register out Eq_n r0Out, Register out (ptr16 byte) r4Out, Register out Eq_n r5Out)
 // Called from:
 //      fn04A0
@@ -616,8 +613,8 @@ l07A0:
 	return r4;
 }
 
-byte * g_ptr077E = &g_b1121;
-byte * g_ptr078E = &g_b111B;
+byte * g_ptr077E = &g_b1121; // 077E
+byte * g_ptr078E = &g_b111B; // 078E
 // 07A6: Register Eq_n fn07A6(Register (ptr16 byte) r4, Register (ptr16 Eq_n) pc, Register out (ptr16 byte) r4Out, Register out Eq_n r5Out)
 // Called from:
 //      fn0200
@@ -783,7 +780,7 @@ l093A:
 	return r0;
 }
 
-byte * g_ptr083C = &g_b112B;
+byte * g_ptr083C = &g_b112B; // 083C
 // 093C: void fn093C(Register Eq_n r0, Register (ptr16 Eq_n) r1)
 // Called from:
 //      fn07A6
@@ -921,8 +918,8 @@ Eq_n fn0A60(Eq_n r0, byte * r4, Eq_n r5, ptr16 & r4Out, ptr16 & r5Out)
 	return r0_n;
 }
 
-byte * g_ptr0A64 = &g_b1121;
-word16 g_w0A6A = 0x00;
+byte * g_ptr0A64 = &g_b1121; // 0A64
+word16 g_w0A6A = 0x00; // 0A6A
 // 0A74: Register Eq_n fn0A74(Register Eq_n r0, Register (ptr16 byte) r4, Register Eq_n r5, Register out ptr16 r4Out, Register out ptr16 r5Out)
 // Called from:
 //      fn0486
@@ -940,7 +937,7 @@ Eq_n fn0A74(Eq_n r0, byte * r4, Eq_n r5, ptr16 & r4Out, ptr16 & r5Out)
 	return r0_n;
 }
 
-byte * g_ptr0A78 = &g_b1155;
+byte * g_ptr0A78 = &g_b1155; // 0A78
 // 0A7C: Register Eq_n fn0A7C(Register Eq_n r0, Register (ptr16 byte) r4, Register Eq_n r5, Register out ptr16 r4Out, Register out ptr16 r5Out)
 // Called from:
 //      fn04A0
@@ -958,7 +955,7 @@ Eq_n fn0A7C(Eq_n r0, byte * r4, Eq_n r5, ptr16 & r4Out, ptr16 & r5Out)
 	return r0_n;
 }
 
-byte * g_ptr0A84 = &g_b1121;
+byte * g_ptr0A84 = &g_b1121; // 0A84
 // 0A94: Register ui16 fn0A94()
 // Called from:
 //      fn05D4
@@ -971,8 +968,8 @@ ui16 fn0A94()
 	return r0_n + 0x3619;
 }
 
-word16 g_w0AB2 = 0x87;
-ui16 g_w0AB4 = 0x00;
+word16 g_w0AB2 = 0x87; // 0AB2
+ui16 g_w0AB4 = 0x00; // 0AB4
 // 0AB6: Register Eq_n fn0AB6(Register Eq_n r0, Register (ptr16 byte) r4, Register Eq_n r5, Register out ptr16 r4Out, Register out (ptr16 Eq_n) r5Out)
 // Called from:
 //      fn0200
@@ -997,7 +994,7 @@ Eq_n fn0AB6(Eq_n r0, byte * r4, Eq_n r5, ptr16 & r4Out, struct Eq_n & r5Out)
 	return r0_n;
 }
 
-byte * g_ptr0ABA = &g_b111E;
+byte * g_ptr0ABA = &g_b111E; // 0ABA
 // 0AE8: FlagGroup bool fn0AE8(Register Eq_n r0, Register (ptr16 byte) r4, Register (ptr16 (ptr16 byte)) r5, Stack Eq_n wArg00, Register out ptr16 r0Out, Register out ptr16 r4Out, Register out Eq_n r5Out)
 // Called from:
 //      fn0200
@@ -1062,13 +1059,13 @@ byte * fn0B1A(byte * r4, Eq_n r5, struct Eq_n & r5Out)
 	return r4_n;
 }
 
-byte * g_ptr0B34 = &g_b1121;
-Eq_n g_t0B5A = 
+byte * g_ptr0B34 = &g_b1121; // 0B34
+Eq_n g_t0B5A = // 0B5A
 	{
 		0x87
 	};
-word16 g_w0B5C = 0x00;
-Eq_n g_t0B5E = 
+word16 g_w0B5C = 0x00; // 0B5C
+Eq_n g_t0B5E = // 0B5E
 	{
 		0x00
 	};
@@ -1125,14 +1122,14 @@ l0BB4:
 	}
 }
 
-byte g_b0BC6 = 0x87;
-word16 g_w0BC8 = 0x20;
+byte g_b0BC6 = 0x87; // 0BC6
+word16 g_w0BC8 = 0x20; // 0BC8
 // 0BD6: void fn0BD6()
 // Called from:
 //      fn0200
 void fn0BD6()
 {
-	g_ptr0F1A = &g_t0003;
+	g_ptr0F1A = (struct Eq_n *) ((char *) &t0000.w0002 + 1);
 	g_w0B5C = 0x00;
 	g_w0F0E = 0xF800;
 	g_w0F10 = 0xE000;
@@ -1212,7 +1209,7 @@ word16 fn0C20(Eq_n r5, struct Eq_n * pc, ptr16 & r5Out)
 	return r4_n;
 }
 
-byte * g_ptr0CC2 = &g_b1111;
+byte * g_ptr0CC2 = &g_b1111; // 0CC2
 // 0D98: void fn0D98(Register (ptr16 Eq_n) r0, Register (ptr16 byte) r4)
 void fn0D98(struct Eq_n * r0, byte * r4)
 {
@@ -1225,9 +1222,9 @@ void fn0D98(struct Eq_n * r0, byte * r4)
 	}
 }
 
-word16 g_w0DA8 = 0x87;
-word16 g_w0DAA = 0x00;
-Eq_n g_a0DAC[6] = 
+word16 g_w0DA8 = 0x87; // 0DA8
+word16 g_w0DAA = 0x00; // 0DAA
+Eq_n g_a0DAC[6] = // 0DAC
 	{
 		
 		{
@@ -1272,7 +1269,7 @@ Eq_n g_a0DAC[6] =
 			},
 		},
 	};
-Eq_n g_a0DB8[6] = 
+Eq_n g_a0DB8[6] = // 0DB8
 	{
 		
 		{
@@ -1317,10 +1314,10 @@ Eq_n g_a0DB8[6] =
 			},
 		},
 	};
-word16 g_a0DC4[] = 
+word16 g_a0DC4[] = // 0DC4
 	{
 	};
-word16 g_a0DD4[6] = 
+word16 g_a0DD4[6] = // 0DD4
 	{
 		0x1E,
 		0x19,
@@ -1329,112 +1326,112 @@ word16 g_a0DD4[6] =
 		0x0A,
 		0x05,
 	};
-word16 g_a0DE0[] = 
+word16 g_a0DE0[] = // 0DE0
 	{
 	};
-word16 g_a0DF0[] = 
+word16 g_a0DF0[] = // 0DF0
 	{
 	};
-word16 g_a0E00[] = 
+word16 g_a0E00[] = // 0E00
 	{
 	};
-word16 g_a0E10[] = 
+word16 g_a0E10[] = // 0E10
 	{
 	};
-word16 g_a0E20[] = 
+word16 g_a0E20[] = // 0E20
 	{
 	};
-word16 g_a0E30[] = 
+word16 g_a0E30[] = // 0E30
 	{
 	};
-Eq_n g_t0E56 = 
+Eq_n g_t0E56 = // 0E56
 	{
 		0x00,
 	};
-byte g_a0EE0[] = 
+byte g_a0EE0[] = // 0EE0
 	{
 	};
-Eq_n g_a0EE6[] = 
+Eq_n g_a0EE6[] = // 0EE6
 	{
 	};
-Eq_n g_a0EE9[] = 
+Eq_n g_a0EE9[] = // 0EE9
 	{
 	};
-ci8 g_a0EEC[] = 
+ci8 g_a0EEC[] = // 0EEC
 	{
 	};
-Eq_n g_a0EF0[] = 
+Eq_n g_a0EF0[] = // 0EF0
 	{
 	};
-byte g_a0EF3[] = 
+byte g_a0EF3[] = // 0EF3
 	{
 	};
-cui16 g_w0EF4 = 0x00;
-word16 g_w0EF6 = 0x00;
-word16 g_w0EF8 = 0x00;
-<anonymous> * g_ptr0EFA = null;
-word16 g_w0EFC = 0x00;
-word16 g_w0EFE = 0x00;
-Eq_n g_t0F00 = 
-	{
-		0x00
-	};
-Eq_n g_t0F02 = 
+cui16 g_w0EF4 = 0x00; // 0EF4
+word16 g_w0EF6 = 0x00; // 0EF6
+word16 g_w0EF8 = 0x00; // 0EF8
+<anonymous> * g_ptr0EFA = null; // 0EFA
+word16 g_w0EFC = 0x00; // 0EFC
+word16 g_w0EFE = 0x00; // 0EFE
+Eq_n g_t0F00 = // 0F00
 	{
 		0x00
 	};
-Eq_n g_t0F04 = 
+Eq_n g_t0F02 = // 0F02
 	{
 		0x00
 	};
-struct Eq_n * g_ptr0F06 = &g_t0002;
-struct Eq_n * g_ptr0F08 = null;
-Eq_n g_t0F0A = 
+Eq_n g_t0F04 = // 0F04
+	{
+		0x00
+	};
+struct Eq_n * g_ptr0F06 = &g_t0002; // 0F06
+struct Eq_n * g_ptr0F08 = null; // 0F08
+Eq_n g_t0F0A = // 0F0A
 	{
 		~0x00
 	};
-Eq_n g_t0F0C = 
+Eq_n g_t0F0C = // 0F0C
 	{
 		1
 	};
-cui16 g_w0F0E = 0x00;
-ci16 g_w0F10 = 0x00;
-ci16 g_w0F12 = 0x00;
-wchar_t g_w0F14 = L'\0';
-word16 g_w0F16 = 0x00;
-ci16 g_w0F18 = 0x00;
-struct Eq_n * g_ptr0F1A = null;
-word16 g_w0F1C = 0x00;
-ci16 g_w0F1E = 0x00;
-ci16 g_w0F20 = 0x00;
-word16 g_w0F22 = 0x00;
-byte g_b0F24 = 0x00;
-ci16 g_w0F26 = 0x0407;
-Eq_n g_t0F28 = 
+cui16 g_w0F0E = 0x00; // 0F0E
+ci16 g_w0F10 = 0x00; // 0F10
+ci16 g_w0F12 = 0x00; // 0F12
+wchar_t g_w0F14 = L'\0'; // 0F14
+word16 g_w0F16 = 0x00; // 0F16
+ci16 g_w0F18 = 0x00; // 0F18
+struct Eq_n * g_ptr0F1A = null; // 0F1A
+word16 g_w0F1C = 0x00; // 0F1C
+ci16 g_w0F1E = 0x00; // 0F1E
+ci16 g_w0F20 = 0x00; // 0F20
+word16 g_w0F22 = 0x00; // 0F22
+byte g_b0F24 = 0x00; // 0F24
+ci16 g_w0F26 = 0x0407; // 0F26
+Eq_n g_t0F28 = // 0F28
 	{
 		0x04
 	};
-Eq_n g_a0F2A[] = 
+Eq_n g_a0F2A[] = // 0F2A
 	{
 	};
-char g_b0F9A = '\r';
-char g_b0FDA = '\r';
-byte g_b1111 = 0x1B;
-byte g_b1116 = 0x1B;
-byte g_b111B = 0x0A;
-byte g_b111E = 0x1B;
-byte g_b1121 = 0x00;
-byte g_b1122 = 0x08;
-byte g_b112B = 0x08;
-byte g_b112D = 0x2F;
-byte g_b1131 = 0x5C;
-byte g_b1155 = 0x20;
-word16 g_w1166 = 0x00;
-word16 g_w1168 = 0x00;
-word16 g_w116A = 0x00;
-word16 g_w116C = 0x00;
-word16 g_w116E = 0x00;
-ui16 g_w1170 = 0x00;
-word16 g_w1172 = 0x00;
-ui16 g_w1174 = 0x00;
-byte g_b1178 = 0x00;
+char g_b0F9A = '\r'; // 0F9A
+char g_b0FDA = '\r'; // 0FDA
+byte g_b1111 = 0x1B; // 1111
+byte g_b1116 = 0x1B; // 1116
+byte g_b111B = 0x0A; // 111B
+byte g_b111E = 0x1B; // 111E
+byte g_b1121 = 0x00; // 1121
+byte g_b1122 = 0x08; // 1122
+byte g_b112B = 0x08; // 112B
+byte g_b112D = 0x2F; // 112D
+byte g_b1131 = 0x5C; // 1131
+byte g_b1155 = 0x20; // 1155
+word16 g_w1166 = 0x00; // 1166
+word16 g_w1168 = 0x00; // 1168
+word16 g_w116A = 0x00; // 116A
+word16 g_w116C = 0x00; // 116C
+word16 g_w116E = 0x00; // 116E
+ui16 g_w1170 = 0x00; // 1170
+word16 g_w1172 = 0x00; // 1172
+ui16 g_w1174 = 0x00; // 1174
+byte g_b1178 = 0x00; // 1178

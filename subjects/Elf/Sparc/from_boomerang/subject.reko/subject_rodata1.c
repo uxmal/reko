@@ -4,5 +4,5 @@
 
 #include "subject.h"
 
-char g_str10CF8[] = "Pass\n";
-char g_str10D00[] = "Failed!\n";
+char g_str10CF8[] = "Pass\n"; // 00010CF8
+char g_str10D00[] = "Failed!\n"; // 00010D00

@@ -4,19 +4,15 @@
 
 #include "BENCHFN.h"
 
-struct Eq_n * g_ptr0000;
-word32 g_dw0001;
-struct Eq_n * g_ptr0004;
+struct Eq_n * g_ptr0000; // 00000000
+word32 g_dw0001; // 00000001
+struct Eq_n * g_ptr0004; // 00000004
 word32 g_a0008[];
 ui32 g_a0010[];
-word32 g_dw3FB0;
+word32 g_dw3FB0; // 00003FB0
 Eq_n g_t3FB8;
-word32 g_dw3FBC;
-struct Eq_n * g_ptr3FC8;
-struct Eq_n * g_ptr3FCC;
-struct Eq_n * g_ptr3FD0;
-struct Eq_n * g_ptr3FD8;
-Eq_n g_t4000;
-Eq_n g_t10202;
-Eq_n g_t3030303;
-Eq_n g_t6060606;
+word32 g_dw3FBC; // 00003FBC
+struct Eq_n * g_ptr3FC8; // 00003FC8
+struct Eq_n * g_ptr3FCC; // 00003FCC
+struct Eq_n * g_ptr3FD0; // 00003FD0
+struct Eq_n * g_ptr3FD8; // 00003FD8

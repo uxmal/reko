@@ -40,6 +40,7 @@ namespace Reko.Core
         private readonly TypeLibrary library;
         private string? defaultConvention;
         private string? moduleName;
+        private readonly int bitsPerStorageUnit;
 
         public TypeLibraryDeserializer(IPlatform platform, bool caseInsensitive, TypeLibrary dstLib)
         {
@@ -49,6 +50,7 @@ namespace Reko.Core
             types = dstLib.Types;
             this.unions = new Dictionary<string, UnionType>(cmp);
             this.structures = new Dictionary<string, StructureType>(cmp);
+            this.bitsPerStorageUnit = platform.Architecture.MemoryGranularity;
         }
 
         public TypeLibrary Load(SerializedLibrary sLib)
@@ -234,7 +236,7 @@ namespace Reko.Core
         public DataType VisitPrimitive(PrimitiveType_v1 primitive)
         {
             var bitSize = primitive.Domain != Domain.Boolean
-                ? DataType.BitsPerByte * primitive.ByteSize
+                ? bitsPerStorageUnit * primitive.ByteSize
                 : 1;
 
             var pt = PrimitiveType.Create(primitive.Domain, bitSize);
@@ -285,7 +287,7 @@ namespace Reko.Core
                 dt = new UnknownType();
             else
                 dt = memptr.MemberType.Accept(this);
-            return new MemberPointer(baseType, dt, platform.PointerType.Size);
+            return new MemberPointer(baseType, dt, platform.PointerType.BitSize);
         }
 
         public DataType VisitReference(ReferenceType_v1 reference)

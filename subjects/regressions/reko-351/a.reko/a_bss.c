@@ -4,5 +4,5 @@
 
 #include "a.h"
 
-byte g_b80002724 = 0x00;
-uint32 g_dw80002726 = 0x00;
+byte g_b80002724 = 0x00; // 80002724
+uint32 dtor_idx.3228 = 0x00; // 80002726

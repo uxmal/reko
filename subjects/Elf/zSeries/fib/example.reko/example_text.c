@@ -69,7 +69,7 @@ void __do_global_dtors_aux(word64 r11, word64 r12, word64 r13, <anonymous> * r14
 	r14();
 }
 
-<anonymous> g_t070E = <code>;
+<anonymous> g_t070E = <code>; // 000000000000070E
 // 0000000000000720: void frame_dummy()
 void frame_dummy()
 {

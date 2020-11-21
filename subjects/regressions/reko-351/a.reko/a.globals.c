@@ -4,4 +4,4 @@
 
 #include "a.h"
 
-<anonymous> g_tFFFFFFFF;
+<anonymous> g_tFFFFFFFF; // FFFFFFFF

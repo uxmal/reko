@@ -7,14 +7,14 @@
 // 00010958: void _start(Register (ptr32 Eq_n) g1, Register word32 o2, Register word32 o3, Register word32 o4, Register word32 o5, Register (ptr32 Eq_n) o7, Register ui32 fsr, Stack ui32 dwArg40)
 void _start(void (* g1)(), word32 o2, word32 o3, word32 o4, word32 o5, struct Eq_n * o7, ui32 fsr, ui32 dwArg40)
 {
-	g_ptr20E60 = fp + 0x44;
-	g_ptr20E3C = fp + 0x44 + ((dwArg40 << 0x02) + 0x04);
+	___Argv = fp + 0x44;
+	environ = fp + 0x44 + ((dwArg40 << 0x02) + 0x04);
 	if (false)
 	{
 		g_dw20E58 = fsr;
 		g_dw20E58 &= 0x303FFFFF;
 		if (false)
-			g_dw20E5C = 0x01;
+			__fnonstd_used = 0x01;
 	}
 	if (g1 == null)
 	{

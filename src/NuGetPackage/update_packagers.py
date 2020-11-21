@@ -75,10 +75,10 @@ def generate_missing_vars(mpVars, mpSpec):
 def validate_vars(vars):
     filesMissing = False
     for (k, v) in vars.items():
-        v = v.replace('$TargetDir$', 'bin/Debug/netstandard2.0')
-        v = v.replace('$TargetFwkDir$', 'bin/Debug')
-        v = v.replace('$TargetFwk472Dir$', 'bin/Debug/net472')
-        v = v.replace('$TargetDir_x64$', 'bin/x64/Debug')
+        v = v.replace('$TargetDir$', 'bin/Debug/netstandard2.1')
+        v = v.replace('$TargetFwkDir$', 'bin/Debug/netcoreapp3.1')
+        v = v.replace('$TargetFwk472Dir$', 'bin/Debug/netcoreapp3.1')
+        v = v.replace('$TargetDir_x64$', 'bin/x64/Debug/netcoreapp3.1')
         v = v.replace('$Configuration$', 'Debug')
         if v[-1] == '/':
             if not os.path.isdir(v):
@@ -96,10 +96,10 @@ def validate_vars(vars):
 def expand_vars(vars):
     result = {}
     for k,v in vars.items():
-        v = v.replace('$TargetDir$', 'bin/$Configuration$/netstandard2.0')
-        v = v.replace('$TargetFwkDir$', 'bin/$Configuration$')
-        v = v.replace('$TargetFwk472Dir$', 'bin/$Configuration$/net472')
-        v = v.replace('$TargetDir_x64$', 'bin/x64/$Configuration$')
+        v = v.replace('$TargetDir$', 'bin/$Configuration$/netstandard2.1')
+        v = v.replace('$TargetFwkDir$', 'bin/$Configuration$/netcoreapp3.1')
+        v = v.replace('$TargetFwk472Dir$', 'bin/$Configuration$/netcoreapp3.1')
+        v = v.replace('$TargetDir_x64$', 'bin/x64/$Configuration$/netcoreapp3.1')
         result[k] = v
     return result
 

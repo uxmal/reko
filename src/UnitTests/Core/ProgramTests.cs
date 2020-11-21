@@ -45,6 +45,7 @@ namespace Reko.UnitTests.Core
         {
             arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("FakeArch");
+            arch.Setup(a => a.MemoryGranularity).Returns(8);
             program.Architecture = arch.Object;
         }
 

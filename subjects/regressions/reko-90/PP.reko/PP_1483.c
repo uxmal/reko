@@ -4,7 +4,7 @@
 
 #include "PP.h"
 
-struct seg1483_t * g_ptr14830 = null;
+struct seg1483_t * g_ptr14830 = null; // 00014830
 // 1483:0ADB: void fn1483-0ADB()
 void fn1483-0ADB()
 {

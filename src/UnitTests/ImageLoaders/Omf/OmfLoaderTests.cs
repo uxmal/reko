@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.ImageLoaders.Omf;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,11 +35,15 @@ namespace Reko.UnitTests.ImageLoaders.Omf
     public class OmfLoaderTests
     {
         private LeImageWriter writer;
+        private Mocks.FakePlatform platform;
 
         [SetUp]
         public void Setup()
         {
             this.writer = new LeImageWriter();
+            var sc = new ServiceContainer();
+            var arch = new Mocks.FakeArchitecture(sc);
+            this.platform = new Mocks.FakePlatform(sc, arch);
         }
 
         private void Given_Omf(RecordType rt, ushort length, params Action [] mutators)
@@ -112,8 +117,8 @@ namespace Reko.UnitTests.ImageLoaders.Omf
             Given_Omf(MODEND, 0x02, B(0), B(42), Align(0x10));
             Given_Omf(LibraryEnd, 0x0, Align(0x10));
 
-            var omf = new OmfLoader(null, "foo.lib", writer.ToArray());
-            var typelib = omf.Load(null, new TypeLibrary());
+            var omf = new OmfLoader(platform.Services, "foo.lib", writer.ToArray());
+            var typelib = omf.Load(platform, new TypeLibrary());
             var module = typelib.Modules["ANSICALL"];
             var svc = module.ServicesByOrdinal[1];
             Assert.AreEqual("ANSIINJECT", svc.Name);

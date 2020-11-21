@@ -314,7 +314,7 @@ word32 fn00001390()
 	return fn000013AC(&g_b13A4);
 }
 
-byte g_b13A4 = 116;
+byte g_b13A4 = 116; // 000013A4
 // 000013AC: Register int32 fn000013AC(Stack (ptr32 byte) dwArg04)
 // Called from:
 //      fn00001390
@@ -332,9 +332,9 @@ int32 fn000013AC(byte * dwArg04)
 	return d0_n;
 }
 
-struct Eq_n * g_ptr13C8 = null;
-struct Eq_n * g_ptr13CC = null;
-word32 g_dw13D0 = 0x00;
-struct Eq_n * g_ptr13D4 = null;
-struct Eq_n * g_ptr13D8 = null;
-ui32 g_dw13DC = 0x00;
+struct Eq_n * g_ptr13C8 = null; // 000013C8
+struct Eq_n * g_ptr13CC = null; // 000013CC
+word32 g_dw13D0 = 0x00; // 000013D0
+struct Eq_n * g_ptr13D4 = null; // 000013D4
+struct Eq_n * g_ptr13D8 = null; // 000013D8
+ui32 g_dw13DC = 0x00; // 000013DC

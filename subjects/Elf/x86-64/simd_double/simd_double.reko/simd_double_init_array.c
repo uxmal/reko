@@ -4,6 +4,6 @@
 
 #include "simd_double.h"
 
-<anonymous> * g_a200DE8[] = 
+<anonymous> * g_a200DE8[] = // 0000000000200DE8
 	{
 	};

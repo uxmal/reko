@@ -20,12 +20,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Services;
+using Reko.Core.Types;
 
 namespace Reko.Arch.Cray.Ymp
 {
@@ -35,22 +38,26 @@ namespace Reko.Arch.Cray.Ymp
 
     public class YmpDisassembler : DisassemblerBase<CrayInstruction, Mnemonic>
     {
-        private static readonly Decoder rootDecoder;
+        private readonly Decoder rootDecoder;
         
         private readonly CrayYmpArchitecture arch;
         private readonly Word16BeImageReader rdr;
         private readonly List<MachineOperand>  ops;
         private Address addr;
 
-        public YmpDisassembler(CrayYmpArchitecture arch, EndianImageReader rdr)
+        public YmpDisassembler(CrayYmpArchitecture arch, Decoder<YmpDisassembler, Mnemonic, CrayInstruction> decoder, EndianImageReader rdr)
         {
             this.arch = arch;
-            this.rdr = (Word16BeImageReader) rdr;
+            // Crays are weird; we can only disassemble areas that have 16-bit granularity.
+            this.rdr = rdr as Word16BeImageReader;
             this.ops = new List<MachineOperand>();
+            this.rootDecoder = decoder;
         }
 
         public override CrayInstruction DisassembleInstruction()
         {
+            if (rdr is null)
+                return null;
             this.addr = rdr.Address;
             if (!rdr.TryReadBeUInt16(out ushort hInstr))
                 return null;
@@ -85,13 +92,24 @@ namespace Reko.Arch.Cray.Ymp
         public override CrayInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingDecoder("YmpDis", this.addr, rdr, message);
+            testGenSvc?.ReportMissingDecoder("YmpDis", this.addr, rdr, message, Octize);
             return CreateInvalidInstruction();
+        }
+
+        public static string Octize(byte[] bytes)
+        {
+            var sb = new StringBuilder();
+            for (int i = 0; i < bytes.Length; i += 2)
+            {
+                var word = ByteMemoryArea.ReadBeUInt16(bytes, i);
+                sb.Append(Convert.ToString(word, 8).PadLeft(6, '0'));
+            }
+            return sb.ToString();
         }
 
         #region Mutators
 
-        private static Mutator<YmpDisassembler> Reg(int bitOffset, int bitSize, RegisterStorage[] regs)
+        internal static Mutator<YmpDisassembler> Reg(int bitOffset, int bitSize, RegisterStorage[] regs)
         {
             var field = new Bitfield(bitOffset, bitSize);
             return (u, d) =>
@@ -102,62 +120,172 @@ namespace Reko.Arch.Cray.Ymp
                 return true;
             };
         }
-        private static readonly Mutator<YmpDisassembler> Si = Reg(6, 3, Registers.SRegs);
-        private static readonly Mutator<YmpDisassembler> Sj = Reg(3, 3, Registers.SRegs);
-        private static readonly Mutator<YmpDisassembler> Sk = Reg(0, 3, Registers.SRegs);
+        internal static readonly Mutator<YmpDisassembler> Si = Reg(6, 3, Registers.SRegs);
+        internal static readonly Mutator<YmpDisassembler> Sj = Reg(3, 3, Registers.SRegs);
+        internal static readonly Mutator<YmpDisassembler> Sk = Reg(0, 3, Registers.SRegs);
 
-        private static readonly Mutator<YmpDisassembler> Ai = Reg(6, 3, Registers.ARegs);
-        private static readonly Mutator<YmpDisassembler> Aj = Reg(3, 3, Registers.ARegs);
-        private static readonly Mutator<YmpDisassembler> Ak = Reg(0, 3, Registers.ARegs);
+        private static Mutator<YmpDisassembler> Reg0(int bitOffset, int bitSize, RegisterStorage r0, RegisterStorage[] regs)
+        {
+            var field = new Bitfield(bitOffset, bitSize);
+            return (u, d) =>
+            {
+                var iReg = field.Read(u);
+                var reg = iReg != 0 ? regs[iReg] : r0;
+                d.ops.Add(new RegisterOperand(reg));
+                return true;
+            };
+        }
+        internal static readonly Mutator<YmpDisassembler> Sk_SB = Reg0(0, 3, Registers.sb, Registers.SRegs);
 
-        private static readonly Mutator<YmpDisassembler> Bjk = Reg(0, 6, Registers.BRegs);
+        internal static readonly Mutator<YmpDisassembler> Ah = Reg(9, 3, Registers.ARegs);
+        internal static readonly Mutator<YmpDisassembler> Ai = Reg(6, 3, Registers.ARegs);
+        internal static readonly Mutator<YmpDisassembler> Aj = Reg(3, 3, Registers.ARegs);
+        internal static readonly Mutator<YmpDisassembler> Ak = Reg(0, 3, Registers.ARegs);
 
+        internal static readonly Mutator<YmpDisassembler> Bjk = Reg(0, 6, Registers.BRegs);
+        internal static readonly Mutator<YmpDisassembler> Tjk = Reg(0, 6, Registers.TRegs);
 
-        private static readonly Mutator<YmpDisassembler> Vi = Reg(6, 3, Registers.VRegs);
-        private static readonly Mutator<YmpDisassembler> Vj = Reg(3, 3, Registers.VRegs);
-        private static readonly Mutator<YmpDisassembler> Vk = Reg(0, 3, Registers.VRegs);
+        internal static readonly Mutator<YmpDisassembler> STj = Reg(3, 3, Registers.STRegs);
 
+        internal static readonly Mutator<YmpDisassembler> Vi = Reg(6, 3, Registers.VRegs);
+        internal static readonly Mutator<YmpDisassembler> Vj = Reg(3, 3, Registers.VRegs);
+        internal static readonly Mutator<YmpDisassembler> Vk = Reg(0, 3, Registers.VRegs);
+
+        internal static Mutator<YmpDisassembler> Reg(RegisterStorage reg)
+        {
+            var r = new RegisterOperand(reg);
+            return (u, d) =>
+            {
+                d.ops.Add(r);
+                return true;
+            };
+        }
+
+        internal static readonly Mutator<YmpDisassembler> A0 = Reg(Registers.ARegs[0]);
+        internal static readonly Mutator<YmpDisassembler> S0 = Reg(Registers.SRegs[0]);
+        internal static readonly Mutator<YmpDisassembler> SB = Reg(Registers.sb);
+
+        private static Mutator<YmpDisassembler> Imm(PrimitiveType dt, int bitpos, int bitlen)
+        {
+            var bitfield = new Bitfield(bitpos, bitlen);
+            return (u, d) =>
+            {
+                var imm = bitfield.Read(u);
+                d.ops.Add(new ImmediateOperand(Constant.Create(dt, imm)));
+                return true;
+            };
+        }
+
+        internal static readonly Mutator<YmpDisassembler> Ijk = Imm(PrimitiveType.Byte, 0, 6);
+        internal static readonly Mutator<YmpDisassembler> Ijk_32 = Imm(PrimitiveType.Word32, 0, 6);
+
+        internal static Mutator<YmpDisassembler> ImmFrom(uint from, PrimitiveType dt, int bitpos, int bitlen)
+        {
+            var bitfield = new Bitfield(bitpos, bitlen);
+            return (u, d) =>
+            {
+                var imm = from - bitfield.Read(u);
+                d.ops.Add(new ImmediateOperand(Constant.Create(dt, imm)));
+                return true;
+            };
+        }
+
+        internal static readonly Mutator<YmpDisassembler> Ijk_from_40 = ImmFrom(0x40, PrimitiveType.Byte, 0, 6);
+
+        private static Mutator<YmpDisassembler> Imm(PrimitiveType dt, int bitpos, int bitlen, uint nFrom)
+        {
+            var bitfield = new Bitfield(bitpos, bitlen);
+            return (u, d) =>
+            {
+                var imm = bitfield.Read(u);
+                d.ops.Add(new ImmediateOperand(Constant.Create(dt, nFrom - imm)));
+                return true;
+            };
+        }
+        internal static readonly Mutator<YmpDisassembler> IjkFrom64 = Imm(PrimitiveType.Byte, 0, 6, 64);
+
+        internal static bool Inm(uint uInstr, YmpDisassembler dasm)
+        {
+            if (!dasm.rdr.TryReadBeUInt16(out ushort m))
+                return false;
+            if (!dasm.rdr.TryReadBeUInt16(out ushort n))
+                return false;
+            uint nm = n;
+            nm = nm << 16 | m;
+            dasm.ops.Add(ImmediateOperand.Word32(nm));
+            return true;
+        }
+
+        internal static bool InmZext(uint uInstr, YmpDisassembler dasm)
+        {
+            if (!dasm.rdr.TryReadBeUInt32(out uint nm))
+                return false;
+            dasm.ops.Add(ImmediateOperand.Word64(nm));
+            return true;
+        }
+
+        internal static bool Jijkm(uint uInstr, YmpDisassembler dasm)
+        {
+            if (!dasm.rdr.TryReadBeUInt16(out ushort n))
+                return false;
+            var uAddr = ((uInstr & 0x1FF) << 16) | n;
+            dasm.ops.Add(AddressOperand.Ptr32(uAddr));
+            return true;
+        }
+
+        internal static bool Jnm(uint uInstr, YmpDisassembler dasm)
+        {
+            if (!dasm.rdr.TryReadBeUInt16(out ushort m))
+                return false;
+            if (!dasm.rdr.TryReadBeUInt16(out ushort n))
+                return false;
+            uint nm = n;
+            nm = nm << 16 | m;
+            dasm.ops.Add(AddressOperand.Ptr32(nm));
+            return true;
+        }
+
+        internal static bool Imm0(uint word, YmpDisassembler dasm)
+        {
+            dasm.ops.Add(ImmediateOperand.Word64(0));
+            return true;
+        }
+
+        internal static bool Imm1(uint word, YmpDisassembler dasm)
+        {
+            dasm.ops.Add(ImmediateOperand.Word64(1));
+            return true;
+        }
+
+        internal static bool Imm_1(uint word, YmpDisassembler dasm)
+        {
+            dasm.ops.Add(ImmediateOperand.Word64(-1L));
+            return true;
+        }
+
+        internal static Mutator<YmpDisassembler> Imm32(uint n)
+        {
+            var imm = ImmediateOperand.Word32(n);
+            return (u, d) =>
+            {
+                d.ops.Add(imm);
+                return true;
+            };
+        }
+        internal static Mutator<YmpDisassembler> Imm64(ulong n)
+        {
+            var imm = ImmediateOperand.Word64(n);
+            return (u, d) =>
+            {
+                d.ops.Add(imm);
+                return true;
+            };
+        }
+
+        internal static readonly Mutator<YmpDisassembler> Imm_2_63 = Imm64(1ul << 63);
 
         #endregion
 
-        private static bool Is0(uint u) => u == 0;
-
-        #region Decoders
-
-        private static Decoder Instr(Mnemonic mnemonic, params Mutator<YmpDisassembler>[] mutators)
-        {
-            return new InstrDecoder<YmpDisassembler, Mnemonic, CrayInstruction>(InstrClass.Linear, mnemonic, mutators);
-        }
-
-        private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<YmpDisassembler>[] mutators)
-        {
-            return new InstrDecoder<YmpDisassembler, Mnemonic, CrayInstruction>(iclass, mnemonic, mutators);
-        }
-
-        protected static NyiDecoder<YmpDisassembler, Mnemonic, CrayInstruction> Nyi(string message)
-        {
-            return new NyiDecoder<YmpDisassembler, Mnemonic, CrayInstruction>(message);
-        }
-
-        #endregion
-
-        static YmpDisassembler()
-        {
-            var invalid = Instr(Mnemonic.Invalid, InstrClass.Invalid);
-            
-            rootDecoder = Sparse(9, 7, "YMP",
-                Nyi("YMP"),
-                (0x00, Select((0, 6), Is0,
-                    Instr(Mnemonic.err),
-                    invalid)),
-                (0x05, Select((6, 3), Is0, "  005x",
-                    Instr(Mnemonic.j, InstrClass.Transfer, Bjk),
-                    invalid)),
-                (0x13, Instr(Mnemonic._mov, Ai, Sj)),       // 0o023
-                (0x23, Instr(Mnemonic._and, Si, Sj, Sk)),   // 0o043
-                (0x34, Instr(Mnemonic._fmul, Si, Sj, Sk)),  // 0o064
-                (0x3E, Instr(Mnemonic._mov, Si, Vj, Ak))    // 0o076
-                );
-        }
+        internal static bool Is0(uint u) => u == 0;
     }
 }

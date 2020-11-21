@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (0 (ptr32 Eq_115) ptr0000) (1 word32 dw0001) (4 (ptr32 Eq_4) ptr0004) (8 (arr word32) a0008) (10 (arr ui32) a0010) (142C byte b142C) (1DAC byte b1DAC) (2B88 (ptr32 Eq_14) ptr2B88) (2B8C (ptr32 Eq_4) ptr2B8C) (2B90 word32 dw2B90) (2B94 (ptr32 Eq_98) ptr2B94) (2B98 (ptr32 Eq_98) ptr2B98) (2B9C ui32 dw2B9C) (2BA0 ui32 dw2BA0) (2BA4 ui32 dw2BA4) (2BB0 word32 dw2BB0) (2BB4 ptr32 ptr2BB4) (2BB8 int32 dw2BB8) (2BBC (ptr32 Eq_1964) ptr2BBC) (2BC0 (ptr32 Eq_4) ptr2BC0) (2BC4 Eq_2435 t2BC4) (2CC8 word32 dw2CC8) (2CD0 Eq_514 t2CD0) (2CD4 word32 dw2CD4) (2CE0 (ptr32 Eq_525) ptr2CE0) (2CE8 (ptr32 Eq_647) ptr2CE8) (2CF0 (ptr32 Eq_647) ptr2CF0) (4000 Eq_4 t4000) (10202 Eq_98 t10202) (3030303 Eq_98 t3030303) (6060606 Eq_1964 t6060606))
+Eq_1: (struct "Globals" (0 (ptr32 Eq_115) ptr0000) (1 word32 dw0001) (4 (ptr32 Eq_4) ptr0004) (8 (arr word32) a0008) (10 (arr ui32) a0010) (142C byte b142C) (1DAC byte b1DAC) (2B88 (ptr32 Eq_14) ptr2B88) (2B8C (ptr32 Eq_4) ptr2B8C) (2B90 word32 dw2B90) (2B94 (ptr32 Eq_98) ptr2B94) (2B98 (ptr32 Eq_98) ptr2B98) (2B9C ui32 dw2B9C) (2BA0 ui32 dw2BA0) (2BA4 ui32 dw2BA4) (2BB0 word32 dw2BB0) (2BB4 ptr32 ptr2BB4) (2BB8 int32 dw2BB8) (2BBC (ptr32 Eq_1964) ptr2BBC) (2BC0 (ptr32 Eq_4) ptr2BC0) (2BC4 Eq_2435 t2BC4) (2CC8 word32 dw2CC8) (2CD0 Eq_514 t2CD0) (2CD4 word32 dw2CD4) (2CE0 (ptr32 Eq_525) ptr2CE0) (2CE8 (ptr32 Eq_647) ptr2CE8) (2CF0 (ptr32 Eq_647) ptr2CF0))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_4: (struct "Eq_4" (0 word32 dw0000) (8 byte b0008) (C int32 dw000C) (10 word32 dw0010) (14 Eq_11 t0014) (18 up32 dw0018) (1C word32 dw001C))
 	T_4 (in a6_9 : (ptr32 Eq_4))
@@ -13850,10 +13850,6 @@ typedef struct Globals {
 	struct Eq_525 * ptr2CE0;	// 2CE0
 	struct Eq_647 * ptr2CE8;	// 2CE8
 	struct Eq_647 * ptr2CF0;	// 2CF0
-	Eq_4 t4000;	// 4000
-	Eq_98 t10202;	// 10202
-	Eq_98 t3030303;	// 3030303
-	Eq_1964 t6060606;	// 6060606
 } Eq_1;
 
 typedef struct Eq_4 {

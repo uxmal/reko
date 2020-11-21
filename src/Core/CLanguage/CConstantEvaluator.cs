@@ -129,7 +129,9 @@ namespace Reko.Core.CLanguage
 
         public object VisitSizeof(SizeofExpression sizeOf)
         {
-            return platform.GetByteSizeFromCBasicType(CBasicType.Int);
+            var bits = platform.GetBitSizeFromCBasicType(CBasicType.Int);
+            var granularity = platform.Architecture.MemoryGranularity;
+            return (bits + (granularity - 1)) / granularity;
         }
     }
 }

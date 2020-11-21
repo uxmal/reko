@@ -4,6 +4,6 @@
 
 #include "pngpixel.h"
 
-<anonymous> * g_a601E00[] = 
+<anonymous> * g_a601E00[] = // 0000000000601E00
 	{
 	};

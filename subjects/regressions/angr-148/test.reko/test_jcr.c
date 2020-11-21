@@ -4,4 +4,4 @@
 
 #include "test.h"
 
-word64 g_qw600E20 = 0x00;
+word64 g_qw600E20 = 0x00; // 0000000000600E20

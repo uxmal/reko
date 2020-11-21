@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals")
+Eq_1: (struct "Globals" (0 code t0000) (13 (ptr32 code) __imp___f))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
@@ -81,5 +81,7 @@ T_18: (in Mem9[eax + 0<32>:byte] : byte)
   OrigDataType: byte
 */
 typedef struct Globals {
+	<anonymous> t0000;	// 0
+	<anonymous> * __imp___f;	// 13
 } Eq_1;
 

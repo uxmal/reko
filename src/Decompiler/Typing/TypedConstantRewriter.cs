@@ -231,7 +231,7 @@ namespace Reko.Typing
 			{
                 if (f.DataType is ArrayType array)
                 {
-                    ex.DataType = new MemberPointer(p, array.ElementType, platform.PointerType.Size);
+                    ex.DataType = new MemberPointer(p, array.ElementType, platform.PointerType.BitSize);
                 }
                 else
                 {

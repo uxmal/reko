@@ -136,8 +136,8 @@ namespace Reko.Core.Output
                 addr = Address.FromConstant(c);
                 if (visited.Contains(addr))
                     return 0;
-                // Don't chase null pointers (//$REVIEW: but some architectures have valid data at addr 0)
-                if (c.IsZero)
+                // Don't chase unmapped pointers
+                if (!program.SegmentMap.IsValidAddress(addr))
                     return 0;
                 // Don't chase decompiled procedures.
                 if (program.Procedures.ContainsKey(addr))

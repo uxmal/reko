@@ -84,9 +84,9 @@ namespace Reko.Core.Types
             return new StructureType(name, size) { Fields = { field } };
 		}
 
-		public MemberPointer CreateMemberPointer(DataType basePointer, DataType pointee, int byteSize)
+		public MemberPointer CreateMemberPointer(DataType basePointer, DataType pointee, int bitSize)
 		{
-			return new MemberPointer(basePointer, pointee, byteSize);
+			return new MemberPointer(basePointer, pointee, bitSize);
 		}
 
 		public Pointer CreatePointer(DataType pointee, int bitSize)

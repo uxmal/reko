@@ -109,7 +109,10 @@ namespace Reko.Core.Memory
 
         public bool TryReadUInt32(out uint value)
         {
-            throw new System.NotImplementedException();
+            if (!mem.TryReadBeUInt32(Offset, out value))
+                return false;
+            Offset += 1;
+            return true;
         }
 
         public bool TryReadUInt64(out ulong value)

@@ -52,10 +52,12 @@ namespace Reko.UnitTests.Gui.Forms
 
             form = new Mock<IMainForm>();
 
+            var arch = new X86ArchitectureReal(sc, "x86-real-16");
             var platform = new Mock<IPlatform>();
             platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
+            platform.Setup(p => p.Architecture).Returns(arch);
             program = new Program();
-            program.Architecture = new X86ArchitectureReal(sc, "x86-real-16");
+            program.Architecture = arch;
             program.Platform = platform.Object;
             var mem = new ByteMemoryArea(Address.SegPtr(0xC00, 0), new byte[10000]);
             program.SegmentMap = new SegmentMap(

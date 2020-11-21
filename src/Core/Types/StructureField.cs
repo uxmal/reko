@@ -30,12 +30,7 @@ namespace Reko.Core.Types
     /// </summary>
 	public class StructureField : Field
 	{
-        public StructureField(int offset, DataType type) : base(type)
-		{
-            this.Offset = offset;
-		}
-
-		public StructureField(int offset, DataType type, string? name) : base(type)
+		public StructureField(int offset, DataType type, string? name = null) : base(type)
 		{
             this.Offset = offset;
             this.name = name;
@@ -100,7 +95,7 @@ namespace Reko.Core.Types
 			return Add(new StructureField(offset, dt));
 		}
 
-		public StructureField Add(int offset, DataType dt, string name)
+		public StructureField Add(int offset, DataType dt, string? name)
 		{
 			return Add(new StructureField(offset, dt, name));
 		}
@@ -112,20 +107,20 @@ namespace Reko.Core.Types
             int c = innerList.Count;
             if (c >= BinarySearchLimit)
             {
-			for (i = 0; i < innerList.Count; ++i)
-			{
-				var ff = innerList[i];
-				if (f.Offset == ff.Offset)
-				{
-					if (f.DataType == ff.DataType)
-						return ff;
-				}
-				if (f.Offset <= ff.Offset)
-					break;
-			}
-			innerList.Insert(i, f);
-            return f;
-		}
+                for (i = 0; i < innerList.Count; ++i)
+                {
+                    var ff = innerList[i];
+                    if (f.Offset == ff.Offset)
+                    {
+                        if (f.DataType == ff.DataType)
+                            return ff;
+                    }
+                    if (f.Offset <= ff.Offset)
+                        break;
+                }
+                innerList.Insert(i, f);
+                return f;
+            }
             else
             {
                 i = 0;
@@ -161,12 +156,6 @@ namespace Reko.Core.Types
                     }
                 }
                 innerList.Insert(i, f); //$PERF: slow...
-                //if (i > 0)
-                //    if (innerList[i - 1].Offset > innerList[i].Offset)
-                //        Dump(i);
-                //if (i < c - 1)
-                //    if (innerList[i].Offset > innerList[i + 1].Offset)
-                //        Dump(i);
                 return f;
             }
 		}

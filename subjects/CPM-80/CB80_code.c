@@ -4,9 +4,9 @@
 
 #include "CB80.h"
 
-ui16 g_w0103 = 0x5A00;
-word16 g_w0108 = 5888;
-byte g_b02A3 = 100;
+ui16 g_w0103 = 0x5A00; // 0103
+word16 g_w0108 = 5888; // 0108
+byte g_b02A3 = 100; // 02A3
 // 0387: void fn0387()
 // Called from:
 //      fn0483
@@ -1252,11 +1252,11 @@ void fn1356()
 {
 }
 
-struct Eq_n * g_ptr1388 = null;
-cu8 g_b138A = 0x00;
-byte g_b138B = 0x00;
-cu8 g_b138C = 0x00;
-byte g_b138D = 0x00;
+struct Eq_n * g_ptr1388 = null; // 1388
+cu8 g_b138A = 0x00; // 138A
+byte g_b138B = 0x00; // 138B
+cu8 g_b138C = 0x00; // 138C
+byte g_b138D = 0x00; // 138D
 // 140B: void fn140B(Register byte a)
 void fn140B(byte a)
 {
@@ -1264,59 +1264,59 @@ void fn140B(byte a)
 	fn156F();
 }
 
-ptr16 g_ptr14BC = 0x00;
-int16 g_w14BE = 0;
-byte g_b14EF = 0x01;
-byte g_b14F0 = 0x00;
-cu8 g_b14F3 = 0x02;
-cu8 g_b14F4 = 0x00;
-byte g_b14F5 = 0x00;
-cu8 g_b14F6 = 0x01;
-cu8 g_b14F7 = 66;
-byte g_b14F8 = 0x50;
-cu8 g_b14F9 = 0x00;
-byte g_b14FA = 0x00;
-byte g_b14FB = 0x00;
-byte g_b14FC = 0x00;
-cu8 g_b14FD = 0x00;
-Eq_n g_t14FE = 
+ptr16 g_ptr14BC = 0x00; // 14BC
+int16 g_w14BE = 0; // 14BE
+byte g_b14EF = 0x01; // 14EF
+byte g_b14F0 = 0x00; // 14F0
+cu8 g_b14F3 = 0x02; // 14F3
+cu8 g_b14F4 = 0x00; // 14F4
+byte g_b14F5 = 0x00; // 14F5
+cu8 g_b14F6 = 0x01; // 14F6
+cu8 g_b14F7 = 66; // 14F7
+byte g_b14F8 = 0x50; // 14F8
+cu8 g_b14F9 = 0x00; // 14F9
+byte g_b14FA = 0x00; // 14FA
+byte g_b14FB = 0x00; // 14FB
+byte g_b14FC = 0x00; // 14FC
+cu8 g_b14FD = 0x00; // 14FD
+Eq_n g_t14FE = // 14FE
 	{
 		0x01
 	};
-cu8 g_b14FF = 0x00;
-Eq_n g_t151D = 
+cu8 g_b14FF = 0x00; // 14FF
+Eq_n g_t151D = // 151D
 	{
 		
 		{
 			0x00
 		},
 	};
-Eq_n g_t151E = 
+Eq_n g_t151E = // 151E
 	{
 		
 		{
 			0x00
 		},
 	};
-Eq_n g_t151F = 
+Eq_n g_t151F = // 151F
 	{
 		
 		{
 			0x00
 		},
 	};
-Eq_n g_t1520 = 
+Eq_n g_t1520 = // 1520
 	{
 		
 		{
 			0x00
 		},
 	};
-Eq_n g_t1521 = 
+Eq_n g_t1521 = // 1521
 	{
 		0x00
 	};
-byte g_b1529 = 0x00;
+byte g_b1529 = 0x00; // 1529
 // 156F: void fn156F()
 // Called from:
 //      fn140B
@@ -1333,159 +1333,159 @@ void fn15B0()
 	__hlt();
 }
 
-word16 g_w1640 = 0x00;
-byte g_b1645 = 0x30;
-<anonymous> * g_ptr1648 = null;
-struct Eq_n * g_ptr164E = &g_t1A1A;
-byte g_b1653 = 0x1A;
-Eq_n g_t1654 = 
+word16 g_w1640 = 0x00; // 1640
+byte g_b1645 = 0x30; // 1645
+<anonymous> * g_ptr1648 = null; // 1648
+struct Eq_n * g_ptr164E = &g_t1A1A; // 164E
+byte g_b1653 = 0x1A; // 1653
+Eq_n g_t1654 = // 1654
 	{
 		0x1A
 	};
-byte g_b1655 = 0x1A;
-byte g_b1656 = 0x1A;
-Eq_n g_t1657 = 
+byte g_b1655 = 0x1A; // 1655
+byte g_b1656 = 0x1A; // 1656
+Eq_n g_t1657 = // 1657
 	{
 		0x1A
 	};
-Eq_n g_t1658 = 
+Eq_n g_t1658 = // 1658
 	{
 		0x1A
 	};
-Eq_n g_t1659 = 
+Eq_n g_t1659 = // 1659
 	{
 		0x1A
 	};
-Eq_n g_t165A = 
+Eq_n g_t165A = // 165A
 	{
 		0x1A
 	};
-byte g_b165B = 0x1A;
-Eq_n g_t165C = 
+byte g_b165B = 0x1A; // 165B
+Eq_n g_t165C = // 165C
 	{
 		0x1A
 	};
-byte g_b165D = 0x1A;
-cu8 g_b165E = 0x1A;
-byte g_b165F = 0x1A;
-Eq_n g_t1660 = 
+byte g_b165D = 0x1A; // 165D
+cu8 g_b165E = 0x1A; // 165E
+byte g_b165F = 0x1A; // 165F
+Eq_n g_t1660 = // 1660
 	{
 		0x1A
 	};
-byte g_b1661 = 0x1A;
-Eq_n g_t1662 = 
+byte g_b1661 = 0x1A; // 1661
+Eq_n g_t1662 = // 1662
 	{
 		0x1A
 	};
-byte g_b1663 = 0x1A;
-Eq_n g_t1664 = 
+byte g_b1663 = 0x1A; // 1663
+Eq_n g_t1664 = // 1664
 	{
 		0x1A
 	};
-byte g_b1665 = 0x1A;
-cu8 g_b1667 = 0x1A;
-byte * g_ptr1668 = &g_b1A1A;
-byte g_b166A = 0x1A;
-Eq_n g_t166B = 
+byte g_b1665 = 0x1A; // 1665
+cu8 g_b1667 = 0x1A; // 1667
+byte * g_ptr1668 = &g_b1A1A; // 1668
+byte g_b166A = 0x1A; // 166A
+Eq_n g_t166B = // 166B
 	{
 		0x1A
 	};
-byte g_b166C = 0x1A;
-Eq_n g_t166D = 
+byte g_b166C = 0x1A; // 166C
+Eq_n g_t166D = // 166D
 	{
 		0x1A
 	};
-byte g_b166E = 0x1A;
-Eq_n g_t166F = 
+byte g_b166E = 0x1A; // 166E
+Eq_n g_t166F = // 166F
 	{
 		0x1A
 	};
-byte g_b1670 = 0x1A;
-Eq_n g_t1671 = 
+byte g_b1670 = 0x1A; // 1670
+Eq_n g_t1671 = // 1671
 	{
 		
 		{
 			0x1A
 		},
 	};
-Eq_n g_t1672 = 
+Eq_n g_t1672 = // 1672
 	{
 		0x1A
 	};
-byte g_b1673 = 0x1A;
-Eq_n g_t1674 = 
+byte g_b1673 = 0x1A; // 1673
+Eq_n g_t1674 = // 1674
 	{
 		0x1A
 	};
-byte g_b1675 = 0x1A;
-Eq_n g_t1676 = 
+byte g_b1675 = 0x1A; // 1675
+Eq_n g_t1676 = // 1676
 	{
 		0x1A
 	};
-byte g_b1677 = 0x1A;
-Eq_n g_t1678 = 
+byte g_b1677 = 0x1A; // 1677
+Eq_n g_t1678 = // 1678
 	{
 		0x1A
 	};
-byte g_b1679 = 0x1A;
-cu8 g_b167A = 0x1A;
-cu8 g_b167B = 0x1A;
-byte g_b167C = 0x1A;
-Eq_n g_t167D = 
+byte g_b1679 = 0x1A; // 1679
+cu8 g_b167A = 0x1A; // 167A
+cu8 g_b167B = 0x1A; // 167B
+byte g_b167C = 0x1A; // 167C
+Eq_n g_t167D = // 167D
 	{
 		0x1A
 	};
-byte g_b167E = 0x1A;
-cu8 g_b1681 = ~0x13;
-cu8 g_b1682 = 0x08;
-Eq_n g_t1683 = 
+byte g_b167E = 0x1A; // 167E
+cu8 g_b1681 = ~0x13; // 1681
+cu8 g_b1682 = 0x08; // 1682
+Eq_n g_t1683 = // 1683
 	{
 		~0x25
 	};
-byte g_b1684 = 0x94;
-Eq_n g_t1685 = 
+byte g_b1684 = 0x94; // 1684
+Eq_n g_t1685 = // 1685
 	{
 		0x14
 	};
-byte g_b1686 = ~0x32;
-Eq_n g_t1687 = 
+byte g_b1686 = ~0x32; // 1686
+Eq_n g_t1687 = // 1687
 	{
 		11
 	};
-byte g_b1688 = 0x14;
-Eq_n g_t1689 = 
+byte g_b1688 = 0x14; // 1688
+Eq_n g_t1689 = // 1689
 	{
 		0x2A
 	};
-byte g_b168A = 0x52;
-Eq_n g_t168B = 
+byte g_b168A = 0x52; // 168A
+Eq_n g_t168B = // 168B
 	{
 		0x17
 	};
-byte g_b168C = ~0x14;
-cu8 g_b168D = 0x3E;
-byte g_b168E = 0x82;
-cu8 g_b168F = ~0x48;
-cu8 g_b1690 = 55;
-cu8 g_b1691 = 0xC3;
-Eq_n g_t1692 = 
+byte g_b168C = ~0x14; // 168C
+cu8 g_b168D = 0x3E; // 168D
+byte g_b168E = 0x82; // 168E
+cu8 g_b168F = ~0x48; // 168F
+cu8 g_b1690 = 55; // 1690
+cu8 g_b1691 = 0xC3; // 1691
+Eq_n g_t1692 = // 1692
 	{
 		0x2A
 	};
-byte g_b1693 = 0x09;
-Eq_n g_t1694 = 
+byte g_b1693 = 0x09; // 1693
+Eq_n g_t1694 = // 1694
 	{
 		0x3A
 	};
-byte g_b1695 = 0x25;
-Eq_n g_t1696 = 
+byte g_b1695 = 0x25; // 1695
+Eq_n g_t1696 = // 1696
 	{
 		0x17
 	};
-cu8 g_b1697 = ~0x48;
-byte g_b16A6 = 0x23;
-cu8 g_b16A7 = 0x7E;
-cu8 g_b16A8 = 0x23;
-cu8 g_b16A9 = 0x56;
-bui8 g_b16AA = 0x2A;
-cu8 g_b16AB = 229;
+cu8 g_b1697 = ~0x48; // 1697
+byte g_b16A6 = 0x23; // 16A6
+cu8 g_b16A7 = 0x7E; // 16A7
+cu8 g_b16A8 = 0x23; // 16A8
+cu8 g_b16A9 = 0x56; // 16A9
+bui8 g_b16AA = 0x2A; // 16AA
+cu8 g_b16AB = 229; // 16AB

@@ -4,19 +4,15 @@
 
 #include "MAX.h"
 
-struct Eq_n * g_ptr0000;
-word32 g_dw0001;
-struct Eq_n * g_ptr0004;
+struct Eq_n * g_ptr0000; // 00000000
+word32 g_dw0001; // 00000001
+struct Eq_n * g_ptr0004; // 00000004
 word32 g_a0008[];
 ui32 g_a0010[];
-word32 g_dw3ED0;
+word32 g_dw3ED0; // 00003ED0
 Eq_n g_t3ED8;
-word32 g_dw3EDC;
-struct Eq_n * g_ptr3EE8;
-struct Eq_n * g_ptr3EEC;
-struct Eq_n * g_ptr3EF4;
-struct Eq_n * g_ptr3EF8;
-Eq_n g_t4000;
-Eq_n g_t10202;
-Eq_n g_t3030303;
-Eq_n g_t6060606;
+word32 g_dw3EDC; // 00003EDC
+struct Eq_n * g_ptr3EE8; // 00003EE8
+struct Eq_n * g_ptr3EEC; // 00003EEC
+struct Eq_n * g_ptr3EF4; // 00003EF4
+struct Eq_n * g_ptr3EF8; // 00003EF8

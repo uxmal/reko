@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (10CB8 Eq_2 t10CB8) (10CF8 (str char) str10CF8) (10D00 (str char) str10D00) (20E3C ptr32 ptr20E3C) (20E58 ui32 dw20E58) (20E5C word32 dw20E5C) (20E60 ptr32 ptr20E60))
+Eq_1: (struct "Globals" (10CB8 Eq_2 t10CB8) (10CF4 word32 _lib_version) (10CF8 (str char) str10CF8) (10D00 (str char) str10D00) (20E3C ptr32 environ) (20E58 ui32 dw20E58) (20E5C word32 __fnonstd_used) (20E60 ptr32 ___Argv))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (fn void ())
 	T_2 (in g1 : (ptr32 Eq_2))
@@ -740,15 +740,32 @@ T_174: (in l0_7 == null : bool)
   Class: Eq_174
   DataType: bool
   OrigDataType: bool
+T_175:
+  Class: Eq_175
+  DataType: word32
+  OrigDataType: word32
+T_176:
+  Class: Eq_20
+  DataType: ptr32
+  OrigDataType: word32
+T_177:
+  Class: Eq_35
+  DataType: word32
+  OrigDataType: word32
+T_178:
+  Class: Eq_12
+  DataType: ptr32
+  OrigDataType: word32
 */
 typedef struct Globals {
 	Eq_2 t10CB8;	// 10CB8
+	word32 _lib_version;	// 10CF4
 	char str10CF8[];	// 10CF8
 	char str10D00[];	// 10D00
-	ptr32 ptr20E3C;	// 20E3C
+	ptr32 environ;	// 20E3C
 	ui32 dw20E58;	// 20E58
-	word32 dw20E5C;	// 20E5C
-	ptr32 ptr20E60;	// 20E60
+	word32 __fnonstd_used;	// 20E5C
+	ptr32 ___Argv;	// 20E60
 } Eq_1;
 
 typedef void (Eq_2)();

@@ -4,16 +4,16 @@
 
 #include "STRLEN.h"
 
-struct Eq_n * g_ptr0000;
-struct Eq_n * g_ptr0004;
+struct Eq_n * g_ptr0000; // 00000000
+struct Eq_n * g_ptr0004; // 00000004
 word32 g_a0008[];
 ui32 g_a0010[];
-ui32 g_dw13E0;
-ui32 g_dw13E4;
-word32 g_dw13F0;
-ptr32 g_ptr13F4;
-int32 g_dw13F8;
-word32 g_dw1400;
+ui32 g_dw13E0; // 000013E0
+ui32 g_dw13E4; // 000013E4
+word32 g_dw13F0; // 000013F0
+ptr32 g_ptr13F4; // 000013F4
+int32 g_dw13F8; // 000013F8
+word32 g_dw1400; // 00001400
 Eq_n g_t1404;
-word32 g_dw1408;
-struct Eq_n * g_ptr140C;
+word32 g_dw1408; // 00001408
+struct Eq_n * g_ptr140C; // 0000140C

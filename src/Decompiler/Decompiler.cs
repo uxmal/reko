@@ -153,7 +153,7 @@ namespace Reko
                             proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
                         output.WriteLine();
                         WriteProcedureCallers(program, proc, output);
-                    flow.Emit(proc.Architecture, output);
+                        flow.Emit(proc.Architecture, output);
                         foreach (Block block in new DfsIterator<Block>(proc.ControlGraph).PostOrder().Reverse())
                         {
                             if (block == null)
@@ -446,7 +446,7 @@ namespace Reko
             w.WriteLine("#include \"{0}\"", headerfile);
             w.WriteLine();
             var fmt = new AbsynCodeFormatter(new TextFormatter(w));
-            var gdw = new GlobalDataWriter(program, fmt.InnerFormatter, false, this.services);
+            var gdw = new GlobalDataWriter(program, fmt.InnerFormatter, false, true, this.services);
             IAddressable? prev = null;
             foreach (var o in objects)
             {
@@ -513,7 +513,7 @@ namespace Reko
             WriteHeaderComment(filename, program, w);
             w.WriteLine("#include \"{0}\"", headerfile);
             w.WriteLine();
-            var gdw = new GlobalDataWriter(program, new TextFormatter(w), true, services);
+            var gdw = new GlobalDataWriter(program, new TextFormatter(w), true, true, services);
             gdw.Write();
             w.WriteLine();
         }

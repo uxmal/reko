@@ -56,9 +56,8 @@ namespace Reko.Libraries.Libc
             var platform = program.Platform;
 
             this.wordBitSize = platform.Architecture.WordWidth.BitSize;
-            //$TODO: this should be GetBitSizeFrom...
-            this.longSize = platform.GetByteSizeFromCBasicType(CBasicType.Long) * DataType.BitsPerByte;
-            this.doubleSize = platform.GetByteSizeFromCBasicType(CBasicType.Double) * DataType.BitsPerByte;
+            this.longSize = platform.GetBitSizeFromCBasicType(CBasicType.Long);
+            this.doubleSize = platform.GetBitSizeFromCBasicType(CBasicType.Double);
             this.pointerSize = platform.PointerType.BitSize;
             this.services = services;
         }

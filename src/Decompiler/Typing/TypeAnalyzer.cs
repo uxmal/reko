@@ -104,17 +104,17 @@ namespace Reko.Typing
 
 			Time("Transforming data types", trans.Transform);
 			Time("Renaming data types", () => ctn.RenameAllTypes(store));
-			Time("Rewriting program with type information", () => ter.RewriteProgram(program));
+            Time("Rewriting program with type information", () => ter.RewriteProgram(program));
 		}
 
         private void Time(string message, Action action)
         {
             var timer = new Stopwatch();
-            DebugEx.Inform(trace, "== {0}: {1} ======", nameof(TypeAnalyzer), message);
+            trace.Inform("== {0}: {1} ======", nameof(TypeAnalyzer), message);
             timer.Start();
             action();
             timer.Stop();
-            DebugEx.Inform(trace, "   {0} msec", timer.Elapsed);
+            trace.Inform("   {0} msec", timer.Elapsed);
         }
 
         /// <summary>

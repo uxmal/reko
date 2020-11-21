@@ -98,13 +98,13 @@ namespace Reko.Core
         string? DetermineCallingConvention(FunctionType signature);
 
         /// <summary>
-        /// Given a C basic type, returns the number of bytes that type is
+        /// Given a C basic type, returns the number of bits that type is
         /// represented with on this platform.
         /// </summary>
         /// <param name="cb">A C Basic type, like int, float etc.</param>
         /// <returns>Number of bytes used by this platform.
         /// </returns>
-        int GetByteSizeFromCBasicType(CBasicType cb);
+        int GetBitSizeFromCBasicType(CBasicType cb);
 
         CallingConvention? GetCallingConvention(string? ccName);
 
@@ -409,7 +409,7 @@ namespace Reko.Core
             return string.Format("{0}!{1}", program.Name, proc.Name);
         }
 
-        public abstract int GetByteSizeFromCBasicType(CBasicType cb);
+        public abstract int GetBitSizeFromCBasicType(CBasicType cb);
 
         public virtual string? GetPrimitiveTypeName(PrimitiveType pt, string language)
         {
@@ -622,21 +622,21 @@ namespace Reko.Core
             return null;
         }
 
-        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        public override int GetBitSizeFromCBasicType(CBasicType cb)
         {
             switch (cb)
             {
-            case CBasicType.Bool: return 1;
-            case CBasicType.Char: return 1;
-            case CBasicType.WChar_t: return 2;
-            case CBasicType.Short: return 2;
-            case CBasicType.Int: return 4;      // Assume 32-bit int.
-            case CBasicType.Long: return 4;
-            case CBasicType.LongLong: return 8;
-            case CBasicType.Float: return 4;
-            case CBasicType.Double: return 8;
-            case CBasicType.LongDouble: return 8;
-            case CBasicType.Int64: return 8;
+            case CBasicType.Bool: return 8;
+            case CBasicType.Char: return 8;
+            case CBasicType.WChar_t: return 16;
+            case CBasicType.Short: return 16;
+            case CBasicType.Int: return 32;      // Assume 32-bit int.
+            case CBasicType.Long: return 32;
+            case CBasicType.LongLong: return 64;
+            case CBasicType.Float: return 32;
+            case CBasicType.Double: return 64;
+            case CBasicType.LongDouble: return 64;
+            case CBasicType.Int64: return 64;
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }
         }

@@ -352,23 +352,23 @@ Eq_n fn00001390(Eq_n d0)
 	return fn000015A4(d0_n, &g_b14A4);
 }
 
-struct Eq_n g_t147C = 
+struct Eq_n g_t147C = // 0000147C
 	{
 		0x25,
 		0x6C,
 	};
-byte g_b1480 = 101;
-struct Eq_n g_t149C = 
+byte g_b1480 = 101; // 00001480
+struct Eq_n g_t149C = // 0000149C
 	{
 		0x25,
 		0x6C,
 	};
-struct Eq_n g_t14A0 = 
+struct Eq_n g_t14A0 = // 000014A0
 	{
 		0x25,
 		0x6C,
 	};
-byte g_b14A4 = 0x61;
+byte g_b14A4 = 0x61; // 000014A4
 // 000014AC: void fn000014AC(Register Eq_n d2, Stack Eq_n dwArg04, Stack Eq_n dwArg08)
 // Called from:
 //      fn00001390
@@ -1061,7 +1061,7 @@ l00001D2C:
 	return d0_n;
 }
 
-byte g_b1F14 = 0x25;
+byte g_b1F14 = 0x25; // 00001F14
 // 00001F40: Register uint32 fn00001F40(Stack Eq_n dwArg04, Stack (ptr32 Eq_n) dwArg08, Register out (ptr32 ui32) a0Out, Register out ptr32 a5Out)
 // Called from:
 //      fn000015C0
@@ -1733,7 +1733,7 @@ Eq_n fn000027B0(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10)
 	return d1_n;
 }
 
-Eq_n g_t28C5 = 
+Eq_n g_t28C5 = // 000028C5
 	{
 		
 		{
@@ -2842,20 +2842,20 @@ word32 fn00003DDC()
 	return a5;
 }
 
-struct Eq_n * g_ptr3E20 = null;
-struct Eq_n * g_ptr3E24 = &g_t4000;
-word32 g_dw3E28 = 0x00;
-struct Eq_n * g_ptr3E2C = &g_t10202;
-struct Eq_n * g_ptr3E30 = &g_t3030303;
-ui32 g_dw3E34 = 0x04040404;
-ui32 g_dw3E38 = 0x04040404;
-ui32 g_dw3E3C = 0x05050505;
-word32 g_dw3E48 = 0x05050505;
-ptr32 g_ptr3E4C = 0x06060606;
-int32 g_dw3E50 = 0x06060606;
-struct Eq_n * g_ptr3E54 = &g_t6060606;
-struct Eq_n * g_ptr3E58 = &g_t6060606;
-Eq_n g_t3E5C = 
+struct Eq_n * g_ptr3E20 = null; // 00003E20
+struct Eq_n * g_ptr3E24 = &g_t4000; // 00003E24
+word32 g_dw3E28 = 0x00; // 00003E28
+struct Eq_n * g_ptr3E2C = &g_t10202; // 00003E2C
+struct Eq_n * g_ptr3E30 = &g_t3030303; // 00003E30
+ui32 g_dw3E34 = 0x04040404; // 00003E34
+ui32 g_dw3E38 = 0x04040404; // 00003E38
+ui32 g_dw3E3C = 0x05050505; // 00003E3C
+word32 g_dw3E48 = 0x05050505; // 00003E48
+ptr32 g_ptr3E4C = 0x06060606; // 00003E4C
+int32 g_dw3E50 = 0x06060606; // 00003E50
+struct Eq_n * g_ptr3E54 = &g_t6060606; // 00003E54
+struct Eq_n * g_ptr3E58 = &g_t6060606; // 00003E58
+Eq_n g_t3E5C = // 00003E5C
 	{
 		
 		{

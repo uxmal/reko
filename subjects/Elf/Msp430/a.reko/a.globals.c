@@ -4,9 +4,9 @@
 
 #include "a.h"
 
-byte g_b0001;
-byte g_b0005;
-byte g_b001B;
+byte g_b0001; // 0001
+byte g_b0005; // 0005
+byte g_b001B; // 001B
 Eq_n g_t0031;
 Eq_n g_t0032;
 Eq_n g_t0056;
@@ -14,17 +14,17 @@ Eq_n g_t0057;
 Eq_n g_t0078;
 Eq_n g_t0079;
 Eq_n g_t007B;
-byte g_b007C;
+byte g_b007C; // 007C
 Eq_n g_t007D;
 Eq_n g_t007F;
-word16 g_w0120;
+word16 g_w0120; // 0120
 Eq_n g_t0130;
 Eq_n g_t0134;
 Eq_n g_t0138;
 Eq_n g_t013A;
 Eq_n g_t013C;
-cui16 g_w0160;
-word16 g_w0162;
-word16 g_w0172;
-byte g_b09B4;
+cui16 g_w0160; // 0160
+word16 g_w0162; // 0162
+word16 g_w0172; // 0172
+byte g_b09B4; // 09B4
 byte g_a5B78[];

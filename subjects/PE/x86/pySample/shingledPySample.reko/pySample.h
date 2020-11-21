@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (10000000 Eq_881 t10000000) (10002098 Eq_299 t10002098) (1000209C Eq_300 t1000209C) (100020A0 Eq_244 t100020A0) (100020A8 Eq_245 t100020A8) (100020CC word32 dw100020CC) (100020E0 (str char) str100020E0) (100020F4 (str char) str100020F4) (100020FC (str char) str100020FC) (10002110 (str char) str10002110) (10002114 (str char) str10002114) (10002128 (str char) str10002128) (1000212C (str char) str1000212C) (10002140 (str char) str10002140) (10002144 (str char) str10002144) (1000214C (str char) str1000214C) (10002150 (str char) str10002150) (10002158 (str char) str10002158) (10002160 (str char) str10002160) (10002168 (str char) str10002168) (1000216C (str char) str1000216C) (10002174 (str char) str10002174) (100021D8 (arr word32 1) a100021D8) (10003000 ui32 dw10003000) (10003004 ui32 dw10003004) (10003008 Eq_139 t10003008) (10003010 (arr PyMethodDef 5) methods) (10003070 int32 dw10003070) (100033A4 Eq_139 t100033A4) (100033A8 word32 dw100033A8) (100033AC Eq_188 t100033AC) (100033B0 Eq_139 t100033B0) (100033B4 Eq_139 t100033B4) (100033B8 (ptr32 code) ptr100033B8))
+Eq_1: (struct "Globals" (10000000 Eq_881 t10000000) (10002000 (ptr32 code) __imp__GetSystemTimeAsFileTime) (10002004 (ptr32 code) __imp__GetCurrentProcessId) (10002008 (ptr32 code) __imp__GetCurrentThreadId) (1000200C (ptr32 code) __imp__GetTickCount) (10002010 (ptr32 code) __imp__DisableThreadLibraryCalls) (10002014 (ptr32 code) __imp__IsDebuggerPresent) (10002018 (ptr32 code) __imp__SetUnhandledExceptionFilter) (1000201C (ptr32 code) __imp__UnhandledExceptionFilter) (10002020 (ptr32 code) __imp__GetCurrentProcess) (10002024 (ptr32 code) __imp__TerminateProcess) (10002028 (ptr32 code) __imp__InterlockedCompareExchange) (1000202C (ptr32 code) __imp__Sleep) (10002030 (ptr32 code) __imp__InterlockedExchange) (10002034 (ptr32 code) __imp__QueryPerformanceCounter) (1000203C (ptr32 code) __imp___crt_debugger_hook) (10002040 (ptr32 code) __imp____CppXcptFilter) (10002044 (ptr32 code) __imp___unlock) (10002048 (ptr32 code) __imp____dllonexit) (1000204C (ptr32 code) __imp___lock) (10002050 (ptr32 code) __imp___onexit) (10002054 (ptr32 code) __imp___except_handler4_common) (10002058 (ptr32 code) __imp___adjust_fdiv) (1000205C (ptr32 code) __imp___amsg_exit) (10002060 (ptr32 code) __imp___initterm_e) (10002064 (ptr32 code) __imp___initterm) (10002068 (ptr32 code) __imp___decode_pointer) (1000206C (ptr32 code) __imp__free) (10002070 (ptr32 code) __imp___encoded_null) (10002074 (ptr32 code) __imp___malloc_crt) (10002078 (ptr32 code) __imp___encode_pointer) (1000207C (ptr32 code) __imp____clean_type_info_names_internal) (10002084 (ptr32 code) __imp__Py_InitModule4) (10002088 (ptr32 code) __imp__PyArg_ParseTuple) (1000208C (ptr32 code) __imp___Py_NoneStruct) (10002090 (ptr32 code) __imp__Py_BuildValue) (10002098 Eq_299 t10002098) (1000209C Eq_300 t1000209C) (100020A0 Eq_244 t100020A0) (100020A8 Eq_245 t100020A8) (100020CC word32 dw100020CC) (100020E0 (str char) str100020E0) (100020F4 (str char) str100020F4) (100020FC (str char) str100020FC) (10002110 (str char) str10002110) (10002114 (str char) str10002114) (10002128 (str char) str10002128) (1000212C (str char) str1000212C) (10002140 (str char) str10002140) (10002144 (str char) str10002144) (1000214C (str char) str1000214C) (10002150 (str char) str10002150) (10002158 (str char) str10002158) (10002160 (str char) str10002160) (10002168 (str char) str10002168) (1000216C (str char) str1000216C) (10002174 (str char) str10002174) (100021D8 (arr word32 1) a100021D8) (1000229C word32 dw1000229C) (100022A0 word32 dw100022A0) (100022A4 word32 dw100022A4) (100022A8 word32 dw100022A8) (100022AC word32 dw100022AC) (100022B0 word32 dw100022B0) (100022B4 word32 dw100022B4) (100022B8 word32 dw100022B8) (100022BC word32 dw100022BC) (100022C0 word32 dw100022C0) (100022C4 word32 dw100022C4) (100022C8 word32 dw100022C8) (100022CC word32 dw100022CC) (100022D0 word32 dw100022D0) (100022D8 word32 dw100022D8) (100022DC word32 dw100022DC) (100022E0 word32 dw100022E0) (100022E4 word32 dw100022E4) (100022E8 word32 dw100022E8) (100022EC word32 dw100022EC) (100022F0 word32 dw100022F0) (100022F4 word32 dw100022F4) (100022F8 word32 dw100022F8) (100022FC word32 dw100022FC) (10002300 word32 dw10002300) (10002304 word32 dw10002304) (10002308 word32 dw10002308) (1000230C word32 dw1000230C) (10002310 word32 dw10002310) (10002314 word32 dw10002314) (10002318 word32 dw10002318) (10002320 word32 dw10002320) (10002324 word32 dw10002324) (10002328 word32 dw10002328) (1000232C word32 dw1000232C) (10003000 ui32 dw10003000) (10003004 ui32 dw10003004) (10003008 Eq_1151 t10003008) (10003010 (arr PyMethodDef 5) methods) (10003070 int32 dw10003070) (100033A4 Eq_1152 t100033A4) (100033A8 word32 dw100033A8) (100033AC Eq_188 t100033AC) (100033B0 Eq_1153 t100033B0) (100033B4 Eq_1154 t100033B4) (100033B8 (ptr32 code) ptr100033B8))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: PyObject
 	T_2 (in eax : (ptr32 Eq_2))
@@ -525,6 +525,14 @@ Eq_1082: (fn Eq_700 ((ptr32 Eq_1084)))
 Eq_1084: LARGE_INTEGER
 	T_1084 (in lpPerformanceCount : (ptr32 LARGE_INTEGER))
 	T_1086 (in fp - 0x14<32> : word32)
+Eq_1151: DWORD
+	T_1151
+Eq_1152: DWORD
+	T_1152
+Eq_1153: DWORD
+	T_1153
+Eq_1154: DWORD
+	T_1154
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -4985,10 +4993,201 @@ T_1114: (in esi_54 | esi_54 << 0x10<32> : word32)
 T_1115:
   Class: Eq_1115
   DataType: word32
+  OrigDataType: word32
+T_1116:
+  Class: Eq_1116
+  DataType: word32
+  OrigDataType: word32
+T_1117:
+  Class: Eq_1117
+  DataType: word32
+  OrigDataType: word32
+T_1118:
+  Class: Eq_1118
+  DataType: word32
+  OrigDataType: word32
+T_1119:
+  Class: Eq_1119
+  DataType: word32
+  OrigDataType: word32
+T_1120:
+  Class: Eq_1120
+  DataType: word32
+  OrigDataType: word32
+T_1121:
+  Class: Eq_1121
+  DataType: word32
+  OrigDataType: word32
+T_1122:
+  Class: Eq_1122
+  DataType: word32
+  OrigDataType: word32
+T_1123:
+  Class: Eq_1123
+  DataType: word32
+  OrigDataType: word32
+T_1124:
+  Class: Eq_1124
+  DataType: word32
+  OrigDataType: word32
+T_1125:
+  Class: Eq_1125
+  DataType: word32
+  OrigDataType: word32
+T_1126:
+  Class: Eq_1126
+  DataType: word32
+  OrigDataType: word32
+T_1127:
+  Class: Eq_1127
+  DataType: word32
+  OrigDataType: word32
+T_1128:
+  Class: Eq_1128
+  DataType: word32
+  OrigDataType: word32
+T_1129:
+  Class: Eq_1129
+  DataType: word32
+  OrigDataType: word32
+T_1130:
+  Class: Eq_1130
+  DataType: word32
+  OrigDataType: word32
+T_1131:
+  Class: Eq_1131
+  DataType: word32
+  OrigDataType: word32
+T_1132:
+  Class: Eq_1132
+  DataType: word32
+  OrigDataType: word32
+T_1133:
+  Class: Eq_1133
+  DataType: word32
+  OrigDataType: word32
+T_1134:
+  Class: Eq_1134
+  DataType: word32
+  OrigDataType: word32
+T_1135:
+  Class: Eq_1135
+  DataType: word32
+  OrigDataType: word32
+T_1136:
+  Class: Eq_1136
+  DataType: word32
+  OrigDataType: word32
+T_1137:
+  Class: Eq_1137
+  DataType: word32
+  OrigDataType: word32
+T_1138:
+  Class: Eq_1138
+  DataType: word32
+  OrigDataType: word32
+T_1139:
+  Class: Eq_1139
+  DataType: word32
+  OrigDataType: word32
+T_1140:
+  Class: Eq_1140
+  DataType: word32
+  OrigDataType: word32
+T_1141:
+  Class: Eq_1141
+  DataType: word32
+  OrigDataType: word32
+T_1142:
+  Class: Eq_1142
+  DataType: word32
+  OrigDataType: word32
+T_1143:
+  Class: Eq_1143
+  DataType: word32
+  OrigDataType: word32
+T_1144:
+  Class: Eq_1144
+  DataType: word32
+  OrigDataType: word32
+T_1145:
+  Class: Eq_1145
+  DataType: word32
+  OrigDataType: word32
+T_1146:
+  Class: Eq_1146
+  DataType: word32
+  OrigDataType: word32
+T_1147:
+  Class: Eq_1147
+  DataType: word32
+  OrigDataType: word32
+T_1148:
+  Class: Eq_1148
+  DataType: word32
+  OrigDataType: word32
+T_1149:
+  Class: Eq_1149
+  DataType: word32
+  OrigDataType: word32
+T_1150:
+  Class: Eq_1150
+  DataType: word32
   OrigDataType: (struct 0004 (0 T_871 t0000))
+T_1151:
+  Class: Eq_1151
+  DataType: Eq_1151
+  OrigDataType: 
+T_1152:
+  Class: Eq_1152
+  DataType: Eq_1152
+  OrigDataType: 
+T_1153:
+  Class: Eq_1153
+  DataType: Eq_1153
+  OrigDataType: 
+T_1154:
+  Class: Eq_1154
+  DataType: Eq_1154
+  OrigDataType: 
 */
 typedef struct Globals {
 	Eq_881 t10000000;	// 10000000
+	<anonymous> * __imp__GetSystemTimeAsFileTime;	// 10002000
+	<anonymous> * __imp__GetCurrentProcessId;	// 10002004
+	<anonymous> * __imp__GetCurrentThreadId;	// 10002008
+	<anonymous> * __imp__GetTickCount;	// 1000200C
+	<anonymous> * __imp__DisableThreadLibraryCalls;	// 10002010
+	<anonymous> * __imp__IsDebuggerPresent;	// 10002014
+	<anonymous> * __imp__SetUnhandledExceptionFilter;	// 10002018
+	<anonymous> * __imp__UnhandledExceptionFilter;	// 1000201C
+	<anonymous> * __imp__GetCurrentProcess;	// 10002020
+	<anonymous> * __imp__TerminateProcess;	// 10002024
+	<anonymous> * __imp__InterlockedCompareExchange;	// 10002028
+	<anonymous> * __imp__Sleep;	// 1000202C
+	<anonymous> * __imp__InterlockedExchange;	// 10002030
+	<anonymous> * __imp__QueryPerformanceCounter;	// 10002034
+	<anonymous> * __imp___crt_debugger_hook;	// 1000203C
+	<anonymous> * __imp____CppXcptFilter;	// 10002040
+	<anonymous> * __imp___unlock;	// 10002044
+	<anonymous> * __imp____dllonexit;	// 10002048
+	<anonymous> * __imp___lock;	// 1000204C
+	<anonymous> * __imp___onexit;	// 10002050
+	<anonymous> * __imp___except_handler4_common;	// 10002054
+	<anonymous> * __imp___adjust_fdiv;	// 10002058
+	<anonymous> * __imp___amsg_exit;	// 1000205C
+	<anonymous> * __imp___initterm_e;	// 10002060
+	<anonymous> * __imp___initterm;	// 10002064
+	<anonymous> * __imp___decode_pointer;	// 10002068
+	<anonymous> * __imp__free;	// 1000206C
+	<anonymous> * __imp___encoded_null;	// 10002070
+	<anonymous> * __imp___malloc_crt;	// 10002074
+	<anonymous> * __imp___encode_pointer;	// 10002078
+	<anonymous> * __imp____clean_type_info_names_internal;	// 1000207C
+	<anonymous> * __imp__Py_InitModule4;	// 10002084
+	<anonymous> * __imp__PyArg_ParseTuple;	// 10002088
+	<anonymous> * __imp___Py_NoneStruct;	// 1000208C
+	<anonymous> * __imp__Py_BuildValue;	// 10002090
 	Eq_299 t10002098;	// 10002098
 	Eq_300 t1000209C;	// 1000209C
 	Eq_244 t100020A0;	// 100020A0
@@ -5011,16 +5210,51 @@ typedef struct Globals {
 	char str1000216C[];	// 1000216C
 	char str10002174[];	// 10002174
 	word32 a100021D8[1];	// 100021D8
+	word32 dw1000229C;	// 1000229C
+	word32 dw100022A0;	// 100022A0
+	word32 dw100022A4;	// 100022A4
+	word32 dw100022A8;	// 100022A8
+	word32 dw100022AC;	// 100022AC
+	word32 dw100022B0;	// 100022B0
+	word32 dw100022B4;	// 100022B4
+	word32 dw100022B8;	// 100022B8
+	word32 dw100022BC;	// 100022BC
+	word32 dw100022C0;	// 100022C0
+	word32 dw100022C4;	// 100022C4
+	word32 dw100022C8;	// 100022C8
+	word32 dw100022CC;	// 100022CC
+	word32 dw100022D0;	// 100022D0
+	word32 dw100022D8;	// 100022D8
+	word32 dw100022DC;	// 100022DC
+	word32 dw100022E0;	// 100022E0
+	word32 dw100022E4;	// 100022E4
+	word32 dw100022E8;	// 100022E8
+	word32 dw100022EC;	// 100022EC
+	word32 dw100022F0;	// 100022F0
+	word32 dw100022F4;	// 100022F4
+	word32 dw100022F8;	// 100022F8
+	word32 dw100022FC;	// 100022FC
+	word32 dw10002300;	// 10002300
+	word32 dw10002304;	// 10002304
+	word32 dw10002308;	// 10002308
+	word32 dw1000230C;	// 1000230C
+	word32 dw10002310;	// 10002310
+	word32 dw10002314;	// 10002314
+	word32 dw10002318;	// 10002318
+	word32 dw10002320;	// 10002320
+	word32 dw10002324;	// 10002324
+	word32 dw10002328;	// 10002328
+	word32 dw1000232C;	// 1000232C
 	ui32 dw10003000;	// 10003000
 	ui32 dw10003004;	// 10003004
-	Eq_139 t10003008;	// 10003008
+	Eq_1151 t10003008;	// 10003008
 	PyMethodDef methods[5];	// 10003010
 	int32 dw10003070;	// 10003070
-	Eq_139 t100033A4;	// 100033A4
+	Eq_1152 t100033A4;	// 100033A4
 	word32 dw100033A8;	// 100033A8
 	Eq_188 t100033AC;	// 100033AC
-	Eq_139 t100033B0;	// 100033B0
-	Eq_139 t100033B4;	// 100033B4
+	Eq_1153 t100033B0;	// 100033B0
+	Eq_1154 t100033B4;	// 100033B4
 	<anonymous> * ptr100033B8;	// 100033B8
 } Eq_1;
 
@@ -5284,4 +5518,12 @@ typedef DWORD (Eq_1078)();
 typedef BOOL (Eq_1082)(LARGE_INTEGER *);
 
 typedef LARGE_INTEGER Eq_1084;
+
+typedef DWORD Eq_1151;
+
+typedef DWORD Eq_1152;
+
+typedef DWORD Eq_1153;
+
+typedef DWORD Eq_1154;
 

@@ -29,8 +29,10 @@ using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 
 namespace Reko.UnitTests.Typing
 {
@@ -46,6 +48,18 @@ namespace Reko.UnitTests.Typing
             this.buildEquivalenceClasses = false;
             this.eventListener = new FakeDecompilerEventListener();
         }
+
+        private static Program Given_FlatProgram()
+        {
+            var arch = new FakeArchitecture(new ServiceContainer());
+            var platform = new FakePlatform(arch.Services, arch);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00123300), new byte[0x1000]);
+            var segment = new ImageSegment(".data", mem, AccessMode.ReadWrite);
+            var segments = new SegmentMap(segment.Address, segment);
+            var program = new Program(segments, arch, platform);
+            return program;
+        }
+
 
         protected override void RunTest(Program program, string outputFile)
         {
@@ -115,7 +129,6 @@ namespace Reko.UnitTests.Typing
             DumpProgAndStore(program, sw);
             Assert.AreEqual(expectedOutput, sw.ToString());
         }
-
 
         private TypeCollector Given_TypeCollector(Program program)
         {
@@ -341,11 +354,12 @@ namespace Reko.UnitTests.Typing
                     }
                 }
             };
+            new EquivalenceClassBuilder(program.TypeFactory, program.TypeStore, eventListener).Build(program);
             var tyco = Given_TypeCollector(program);
+            tyco.CollectGlobalType();
+            tyco.CollectUserGlobalVariableTypes();
 
-            tyco.CollectUserGlobalVariableTypes(new Dictionary<ImageSegment, StructureType>());
-
-            Assert.AreEqual("400: xAcceleration: real64", program.GlobalFields.Fields.First().ToString());
+            Then_GlobalFieldsAre(program, "1400: xAcceleration: real64");
         }
 
         [Test]
@@ -374,10 +388,9 @@ namespace Reko.UnitTests.Typing
             eqb.EnsureSegmentTypeVariables(program.SegmentMap.Segments.Values);
             var tyco = Given_TypeCollector(program);
 
-            var segTypes = program.TypeStore.SegmentTypes;
-            tyco.CollectUserGlobalVariableTypes(segTypes);
+            tyco.CollectUserGlobalVariableTypes();
 
-            Assert.AreEqual("42: myGlobal: real32", segTypes[seg].Fields.First().ToString());
+            Assert.AreEqual("42: myGlobal: real32", program.TypeStore.SegmentTypes[seg].Fields.First().ToString());
         }
 
         [Test]
@@ -406,6 +419,31 @@ namespace Reko.UnitTests.Typing
         public void TycoReg00012()
         {
             RunTest16("Fragments/regressions/r00012.asm", "Typing/TycoReg00012.txt");
+        }
+
+        [Test]
+        public void TycoImageSymbol()
+        {
+            var program = Given_FlatProgram();
+            var sym = ImageSymbol.DataObject(program.Architecture, Address.Ptr32(0x00123400), "a_data", PrimitiveType.Word32);
+            program.ImageSymbols.Add(sym.Address, sym);
+            new EquivalenceClassBuilder(program.TypeFactory, program.TypeStore, eventListener).Build(program);
+            var tyco = new TypeCollector(program.TypeFactory, program.TypeStore, program, new FakeDecompilerEventListener());
+            tyco.CollectGlobalType();
+            tyco.CollectImageSymbols();
+
+            Then_GlobalFieldsAre(program, "123400: a_data: T_2");
+        }
+
+        private void Then_GlobalFieldsAre(Program program, params string [] sExpected)
+        {
+            var fields = ((StructureType) ((Pointer) program.Globals.TypeVariable.OriginalDataType).Pointee).Fields.ToArray();
+            var c = Math.Min(fields.Length, sExpected.Length);
+            for (int i = 0; i < fields.Length; ++i)
+            {
+                Assert.AreEqual(sExpected[i], fields[i].ToString(), $"Field {i} mismatch");
+            }
+            Assert.AreEqual(fields.Length, sExpected.Length, "Field count mismatch");
         }
     }
 }

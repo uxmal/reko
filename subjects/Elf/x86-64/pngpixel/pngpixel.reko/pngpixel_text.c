@@ -80,7 +80,7 @@ word32 component(Eq_n ecx, word32 edx, word32 esi, word64 rdi, int32 r8d)
 	case 0x0E:
 	case 0x0F:
 l0000000000400EC1:
-		fprintf(g_ptr602100, "pngpixel: invalid bit depth %u\n", (uint64) ecx);
+		fprintf(stderr, "pngpixel: invalid bit depth %u\n", (uint64) ecx);
 		exit(0x01);
 	case 0x01:
 		rax_n = (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (uint64) (word32) (byte) (uint64) (word32) v16_n->b0000 >> (byte) ((uint64) ((word32) ((uint64) (0x07 - (eax_n & 0x07)))))) & 0x01);
@@ -173,7 +173,7 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 	word64 rax_n = fs->qw0028;
 	if (edi != 0x04)
 	{
-		fwrite(&g_v401A70, 0x01, 0x27, g_ptr602100);
+		fwrite(&g_v401A70, 0x01, 0x27, stderr);
 		goto l000000000040175D;
 	}
 	char * rax_n = rsi->ptr0008;
@@ -183,7 +183,7 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 	FILE * rax_n = fopen(rsi->ptr0018, "rb");
 	if (rax_n == null)
 	{
-		fprintf(g_ptr602100, "pngpixel: %s: could not open file\n", rsi->ptr0018);
+		fprintf(stderr, "pngpixel: %s: could not open file\n", rsi->ptr0018);
 		goto l000000000040175D;
 	}
 	word64 rsi_n;
@@ -193,7 +193,7 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 	png_create_read_struct();
 	if (rax_n == 0x00)
 	{
-		fwrite(&g_v401A18, 0x01, 0x2E, g_ptr602100);
+		fwrite(&g_v401A18, 0x01, 0x2E, stderr);
 		goto l000000000040175D;
 	}
 	word64 rax_n;
@@ -321,7 +321,7 @@ l000000000040175D:
 		word64 r8_n;
 		png_error();
 	}
-	fwrite(&g_v4019E8, 0x01, 44, g_ptr602100);
+	fwrite(&g_v4019E8, 0x01, 44, stderr);
 	goto l00000000004016DE;
 }
 

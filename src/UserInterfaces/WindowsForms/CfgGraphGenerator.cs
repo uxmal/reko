@@ -36,11 +36,12 @@ namespace Reko.UserInterfaces.WindowsForms
 {
     public class CfgGraphGenerator
     {
-        private Graph graph;
-        private HashSet<Block> visited;
-        private Graphics g;
-        private Font defaultFont;
-        private IUiPreferencesService uiPreferences;
+        private readonly Graph graph;
+        private readonly HashSet<Block> visited;
+        private readonly Graphics g;
+        private readonly Font defaultFont;
+        private readonly IUiPreferencesService uiPreferences;
+        private readonly C2 fillColor = new C2(0xFF, 0xE0, 0xE0);
 
         public CfgGraphGenerator(Graph graph, IUiPreferencesService uiPreferences, Graphics g, Font defaultFont)
         {
@@ -113,6 +114,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 node.Attr.FillColor = new C2(0xFF, 0xE0, 0xE0);
                 node.Label.FontName = "Lucida Console";
                 node.Label.FontSize = 10f;
+                node.Attr.FillColor = fillColor;
                 node.LabelText =
                     b.Name + nl +
                     string.Join(nl, b.Statements.Select(s => s.Instruction));

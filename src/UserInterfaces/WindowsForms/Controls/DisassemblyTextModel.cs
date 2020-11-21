@@ -129,7 +129,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             var line = new List<TextSpan>();
             var addr = instr.Address;
             line.Add(new AddressSpan(addr.ToString() + " ", addr, "link"));
-            line.Add(new InstructionTextSpan(instr, BuildBytes(program, arch, instr), "dasm-bytes"));
+            var rdr = program.CreateImageReader(arch, instr.Address);
+            var bytes = arch.RenderInstructionOpcode(instr, rdr);
+            line.Add(new InstructionTextSpan(instr, bytes, "dasm-bytes"));
             var dfmt = new DisassemblyFormatter(program, arch, instr, line);
             instr.Render(dfmt, options);
             dfmt.NewLine();
@@ -143,27 +145,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             ulong linear = addr.ToLinear();
             var rem = linear % addrAlign;
             return addr - (int)rem;
-        }
-
-        private static string BuildBytes(Program program, IProcessorArchitecture arch, MachineInstruction instr)
-        {
-            //$REVIEW: these computations will be done a lot, but we need some place to store 
-            // them.
-            var bitSize = arch.InstructionBitSize;
-            var byteSize = (bitSize + 7) / 8;
-            var instrByteFormat = $"{{0:X{byteSize * 2}}} ";      // 2 characters for each byte
-            var instrSize = PrimitiveType.CreateWord(bitSize);
-
-            var sb = new StringBuilder();
-            var rdr = program.CreateImageReader(arch, instr.Address);
-            for (int i = 0; i < instr.Length; i += byteSize)
-            {
-                if (rdr.TryRead(instrSize, out var v))
-                {
-                    sb.AppendFormat(instrByteFormat, v.ToUInt64());
-                }
-            }
-            return sb.ToString();
         }
 
         public int MoveToLine(object basePosition, int offset)

@@ -52,16 +52,16 @@ void __do_global_dtors_aux()
 			word32 r3_n;
 			__cxa_finalize();
 		}
-		Eq_n r2_n = g_t10AF4;
+		Eq_n r2_n = dtor_idx.6258;
 		Eq_n r16_n = (g_dw10AB0 - 68200 >> 0x02) + -1;
 		while ((word32) (r2_n < r16_n) != 0x00)
 		{
 			Eq_n r2_n = (word32) r2_n + 1;
-			g_t10AF4 = r2_n;
+			dtor_idx.6258 = r2_n;
 			<anonymous> ** r2_n = (r2_n << 0x02) + 68200;
 			word32 r4_n;
 			(*r2_n)();
-			r2_n = g_t10AF4;
+			r2_n = dtor_idx.6258;
 		}
 		deregister_tm_clones();
 		g_b10AF0 = 0x01;

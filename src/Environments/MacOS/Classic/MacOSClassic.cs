@@ -100,21 +100,21 @@ namespace Reko.Environments.MacOS.Classic
         public ImageSegment A5World { get; set; }
         public uint A5Offset { get; set; }
 
-        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        public override int GetBitSizeFromCBasicType(CBasicType cb)
         {
             switch (cb)
             {
-            case CBasicType.Bool: return 1;
-            case CBasicType.Char: return 1;
-            case CBasicType.WChar_t: return 2;  //$REVIEW: Does MacOS support wchar_t?
-            case CBasicType.Short: return 2;
-            case CBasicType.Int: return 4;
-            case CBasicType.Long: return 4;
-            case CBasicType.LongLong: return 8;
-            case CBasicType.Float: return 4;
-            case CBasicType.Double: return 8;
-            case CBasicType.LongDouble: return 8;
-            case CBasicType.Int64: return 8;
+            case CBasicType.Bool: return 8;
+            case CBasicType.Char: return 8;
+            case CBasicType.WChar_t: return 16;  //$REVIEW: Does MacOS support wchar_t?
+            case CBasicType.Short: return 16;
+            case CBasicType.Int: return 32;
+            case CBasicType.Long: return 32;
+            case CBasicType.LongLong: return 64;
+            case CBasicType.Float: return 32;
+            case CBasicType.Double: return 64;
+            case CBasicType.LongDouble: return 64;
+            case CBasicType.Int64: return 64;
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }
         }

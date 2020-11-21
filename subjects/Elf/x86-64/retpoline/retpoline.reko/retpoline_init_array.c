@@ -4,6 +4,6 @@
 
 #include "retpoline.h"
 
-<anonymous> * g_a600E10[] = 
+<anonymous> * g_a600E10[] = // 0000000000600E10
 	{
 	};

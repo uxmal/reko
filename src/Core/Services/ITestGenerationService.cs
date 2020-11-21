@@ -53,7 +53,9 @@ namespace Reko.Core.Services
         /// <param name="addrStart">Address at which the undecoded byte sequence started.</param>
         /// <param name="rdr">Image reader positioned at the end of the byte sequence.</param>
         /// <param name="message">Optional message that will be emitted as a comment.</param>
-        void ReportMissingDecoder(string testPrefix, Address addrStart, EndianImageReader rdr, string message);
+        /// <param name="hexize">Optional function to convert raw bytes into text. By default, a hexadecimal string is 
+        /// generated.</param>
+        void ReportMissingDecoder(string testPrefix, Address addrStart, EndianImageReader rdr, string message, Func<byte[], string>? hexize = null);
 
         /// <summary>
         /// This method is called when an incomplete rewriter fails to rewrite a valid machine 
@@ -64,7 +66,9 @@ namespace Reko.Core.Services
         /// <param name="mnemonic">The mnemonic of the <see cref="MachineInstruction"/> that didn't get rewritten.</param>
         /// <param name="rdr">Image reader positioned after the end of the machine instruction.</param>
         /// <param name="message">Optional message that will be emitted as a comment.</param>
-        void ReportMissingRewriter(string testPrefix, MachineInstruction instr, string mnemonic, EndianImageReader rdr, string message);
+        /// <param name="hexize">Optional function to convert raw bytes into text. By default, a hexadecimal string is 
+        /// generated.</param>
+        void ReportMissingRewriter(string testPrefix, MachineInstruction instr, string mnemonic, EndianImageReader rdr, string message, Func<byte[], string>? hexize = null);
 
         /// <summary>
         /// Remove files starting with the given <paramref name="filePrefix"/> from the output directory.
@@ -96,7 +100,7 @@ namespace Reko.Core.Services
 
         public string? OutputDirectory { get; set; }
 
-        public void ReportMissingDecoder(string testPrefix, Address addrStart, EndianImageReader rdr, string message)
+        public void ReportMissingDecoder(string testPrefix, Address addrStart, EndianImageReader rdr, string message, Func<byte[], string>? hexizer)
         {
             var fsSvc = services.RequireService<IFileSystemService>();
             var outDir = GetOutputDirectory(fsSvc);
@@ -108,11 +112,14 @@ namespace Reko.Core.Services
             if (this.emittedDecoderTests[filename].Contains(instrBytes))
                 return;
             this.emittedDecoderTests[filename].Add(instrBytes);
-            var test = GenerateDecoderUnitTest(testPrefix, addrStart, instrBytes, message);
+            hexizer = hexizer ?? Hexizer;
+            var test = GenerateDecoderUnitTest(testPrefix, addrStart, hexizer(instrBytes), message);
             fsSvc.AppendAllText(filename, test);
         }
 
-        public void ReportMissingRewriter(string testPrefix, MachineInstruction instr, string mnemonic, EndianImageReader rdr, string message)
+        private static string Hexizer(byte[] bytes) => string.Join("", bytes.Select(b => b.ToString("X2")));
+
+        public void ReportMissingRewriter(string testPrefix, MachineInstruction instr, string mnemonic, EndianImageReader rdr, string message, Func<byte[], string>? hexizer = null)
         {
             var fsSvc = services.RequireService<IFileSystemService>();
             var outDir = GetOutputDirectory(fsSvc);
@@ -123,7 +130,8 @@ namespace Reko.Core.Services
             if (this.emittedRewriterTests[filename].Contains(mnemonic))
                 return;
             emittedRewriterTests[filename].Add(mnemonic);
-            var test = GenerateRewriterUnitTest(testPrefix, instr, mnemonic, rdr, message);
+            hexizer = hexizer ?? Hexizer;
+            var test = GenerateRewriterUnitTest(testPrefix, instr, mnemonic, rdr, message, hexizer);
             fsSvc.AppendAllText(filename, test);
         }
 
@@ -131,16 +139,15 @@ namespace Reko.Core.Services
         /// Emits the text of a unit test that can be pasted into the unit tests 
         /// for a disassembler.
         /// </summary>
-        public static string GenerateDecoderUnitTest(string testPrefix, Address addrInstr, EndianImageReader rdr, string message)
+        public static string GenerateDecoderUnitTest(string testPrefix, Address addrInstr, EndianImageReader rdr, string message, Func<byte[], string> hexizer)
         {
             byte[] bytes = ReadInstructionBytes(addrInstr, rdr);
-            return GenerateDecoderUnitTest(testPrefix, addrInstr, bytes, message);
+            return GenerateDecoderUnitTest(testPrefix, addrInstr, hexizer(bytes), message);
         }
 
-        public static string GenerateDecoderUnitTest(string testPrefix, Address addrInstr, byte[] bytes, string message)
+        public static string GenerateDecoderUnitTest(string testPrefix, Address addrInstr, string instrHexBytes, string message)
         {
             var writer = new StringWriter();
-            var instrHexBytes = string.Join("", bytes.Select(b => b.ToString("X2")));
             writer.Write("// Reko: a decoder for the instruction {0} at address {1} has not been implemented.", instrHexBytes, addrInstr);
             if (!string.IsNullOrEmpty(message))
             {
@@ -165,10 +172,11 @@ namespace Reko.Core.Services
             return bytes;
         }
 
-        public static string GenerateRewriterUnitTest(string testPrefix, MachineInstruction instr, string mnemonic, EndianImageReader rdr, string message)
+        public static string GenerateRewriterUnitTest(string testPrefix, MachineInstruction instr, string mnemonic, EndianImageReader rdr, string message, Func<byte[], string> hexizer)
         {
+            hexizer ??= Hexizer;
             byte[] bytes = ReadInstructionBytes(instr.Address!, rdr);
-
+            var hexbytes = hexizer(bytes);
             var sb = new StringWriter();
 
             if (!string.IsNullOrEmpty(message))
@@ -178,7 +186,7 @@ namespace Reko.Core.Services
             sb.WriteLine("        [Test]");
             sb.WriteLine("        public void {0}_{1}()", testPrefix, mnemonic);
             sb.WriteLine("        {");
-            sb.WriteLine("            Given_HexString(\"{0}\");", string.Join("", bytes.Select(b => b.ToString("X2"))));
+            sb.WriteLine("            Given_HexString(\"{0}\");", hexbytes);
             sb.WriteLine("            AssertCode(     // {0}", instr);
             sb.WriteLine("                \"0|L--|{0}({1}): 1 instructions\",", instr.Address, instr.Length);
             sb.WriteLine("                \"1|L--|@@@\");");

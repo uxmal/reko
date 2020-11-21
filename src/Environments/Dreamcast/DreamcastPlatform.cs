@@ -71,7 +71,7 @@ namespace Reko.Environments.Dreamcast
             throw new NotImplementedException();
         }
 
-        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        public override int GetBitSizeFromCBasicType(CBasicType cb)
         {
             throw new NotImplementedException();
         }

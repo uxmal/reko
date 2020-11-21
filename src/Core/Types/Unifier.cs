@@ -369,7 +369,7 @@ namespace Reko.Core.Types
 			{
 				DataType baseType = UnifyInternal(mpA.BasePointer, mpB.BasePointer)!;
 				DataType pointee = UnifyInternal(mpA.Pointee, mpB.Pointee)!;
-				return new MemberPointer(baseType, pointee, mpB.Size);
+				return new MemberPointer(baseType, pointee, mpB.BitSize);
 			}
 			if (mpA != null)
 			{
@@ -505,6 +505,18 @@ namespace Reko.Core.Types
 
 		public DataType UnifyFunctions(FunctionType a, FunctionType b)
 		{
+            if (!a.ParametersValid && !b.ParametersValid)
+            {
+                return a;
+            }
+            if (!a.ParametersValid)
+            {
+                return b;
+            }
+            if (!b.ParametersValid)
+            {
+                return a;
+            }
 			if (a.Parameters!.Length != b.Parameters!.Length)
 			{
 				return MakeUnion(a, b);

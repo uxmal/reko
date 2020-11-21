@@ -136,7 +136,7 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public int GetByteSizeFromCBasicType(CBasicType cb)
+        public int GetBitSizeFromCBasicType(CBasicType cb)
         {
             throw new NotImplementedException();
         }

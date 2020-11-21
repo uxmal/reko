@@ -4,5 +4,4 @@
 
 #include "switch.h"
 
-<anonymous> g_t0001;
-<anonymous> g_tFFFFFFFF;
+<anonymous> g_t0001; // 00000001

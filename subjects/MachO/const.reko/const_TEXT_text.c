@@ -4,6 +4,7 @@
 
 #include "const.h"
 
+<anonymous> g_t0000 = <code>; // 00000000
 // 00000004: void _f(Register (ptr32 byte) eax)
 void _f(byte * eax)
 {
