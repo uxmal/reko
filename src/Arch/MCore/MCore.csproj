@@ -7,6 +7,7 @@
     <LangVersion>8.0</LangVersion>
     <RootNamespace>Reko.Arch.MCore</RootNamespace>
     <AssemblyName>Reko.Arch.MCore</AssemblyName>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

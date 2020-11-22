@@ -7,6 +7,7 @@
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <RootNamespace>Reko.Arch.Alpha</RootNamespace>
     <AssemblyName>Reko.Arch.Alpha</AssemblyName>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj" />

@@ -8,6 +8,7 @@
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <RootNamespace>Reko.HunkTool</RootNamespace>
     <AssemblyName>hunktool</AssemblyName>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <PropertyGroup>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

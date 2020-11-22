@@ -7,6 +7,7 @@
     <AssemblyName>Reko.Environments.Cpm</AssemblyName>
     <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Z80\Z80.csproj" />

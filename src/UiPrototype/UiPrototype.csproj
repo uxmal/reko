@@ -9,6 +9,7 @@
     <AssemblyName>Decompiler.UiPrototype</AssemblyName>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <PropertyGroup>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

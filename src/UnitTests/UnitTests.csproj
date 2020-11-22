@@ -11,7 +11,7 @@
     <SolutionDir>$(ProjectDir)..\</SolutionDir>
     <Platforms>x86;x64</Platforms>
     <IsTestProject>true</IsTestProject>
-    <Configurations>Debug;Release;UnixRelease</Configurations>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arch\Alpha\Alpha.csproj">

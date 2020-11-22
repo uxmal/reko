@@ -8,6 +8,7 @@
     <AssemblyName>Reko.Environments.Windows</AssemblyName>
     <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Arm\Arm.csproj" />

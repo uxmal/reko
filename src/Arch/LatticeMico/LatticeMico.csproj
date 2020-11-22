@@ -5,6 +5,7 @@
     <AssemblyName>Reko.Arch.LatticeMico</AssemblyName>
     <RootNamespace>Reko.Arch.LatticeMico</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

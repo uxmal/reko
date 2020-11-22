@@ -6,6 +6,7 @@
     <RootNamespace>Reko.Environments.BbcMicro</RootNamespace>
     <LangVersion>8.0</LangVersion>
     <nullable>enable</nullable>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

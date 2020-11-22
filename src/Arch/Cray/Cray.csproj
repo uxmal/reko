@@ -5,6 +5,7 @@
     <AssemblyName>Reko.Arch.Cray</AssemblyName>
     <RootNamespace>Reko.Arch.Cray</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

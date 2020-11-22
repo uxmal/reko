@@ -5,6 +5,7 @@
     <AssemblyName>Reko.Arch.Arc</AssemblyName>
     <RootNamespace>Reko.Arch.Arc</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

@@ -9,6 +9,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Reko.Tools.Xslt</RootNamespace>
     <AssemblyName>xslt</AssemblyName>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <XsltExtraFiles Include="$(TargetDir)xslt.deps.json" />

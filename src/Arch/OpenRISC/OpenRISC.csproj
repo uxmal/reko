@@ -5,6 +5,7 @@
     <RootNamespace>Reko.Arch.OpenRISC</RootNamespace>
     <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

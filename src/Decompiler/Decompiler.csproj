@@ -10,6 +10,7 @@
     <LangVersion>8.0</LangVersion>
     <nullable>enable</nullable>
     <WarningsAsErrors>CS8600;CS8601;CS8602;CS8603;CS8604;CS8610;CS8613;CS8618;CS8619;CS8623;CS8625</WarningsAsErrors>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Scanning\BapScanner.cs" />

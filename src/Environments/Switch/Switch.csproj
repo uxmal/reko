@@ -5,6 +5,7 @@
     <RootNamespace>Reko.Environments.Switch</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

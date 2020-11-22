@@ -7,6 +7,7 @@
     <AssemblyName>Reko.Environments.MacOS</AssemblyName>
     <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\M68k\M68k.csproj" />

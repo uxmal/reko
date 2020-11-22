@@ -10,7 +10,7 @@
     <OutputType>Exe</OutputType>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <Configurations>Debug;Release;UnixRelease</Configurations>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <PropertyGroup>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

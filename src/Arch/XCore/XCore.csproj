@@ -5,6 +5,7 @@
     <AssemblyName>Reko.Arch.XCore</AssemblyName>
     <RootNamespace>Reko.Arch.XCore</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

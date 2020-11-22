@@ -8,6 +8,7 @@
     <AssemblyName>Reko.Symbols.LGSymLoader</AssemblyName>
     <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj" />

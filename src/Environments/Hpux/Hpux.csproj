@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>Reko.Environments.Hpux</AssemblyName>
     <RootNamespace>Reko.Environments.Hpux</RootNamespace>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
