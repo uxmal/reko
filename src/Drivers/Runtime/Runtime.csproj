@@ -6,6 +6,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>Reko.Runtime</RootNamespace>
     <AssemblyName>Reko.Runtime</AssemblyName>
+    <Platforms>x86;x64</Platforms>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
