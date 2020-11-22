@@ -6,7 +6,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>NativeProxy</RootNamespace>
     <AssemblyName>NativeProxy</AssemblyName>
-    <Configurations>Debug;Release</Configurations>
+    <Configurations>Debug;Release;UnixRelease;UnixDebug</Configurations>
     <Platforms>x86;x64</Platforms>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
