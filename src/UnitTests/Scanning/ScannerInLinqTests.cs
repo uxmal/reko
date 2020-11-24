@@ -396,15 +396,16 @@ namespace Reko.UnitTests.Scanning
                 m.Ret();
             });
             CreateScanner();
-            host.Setup(h => h.PseudoProcedure(
+            host.Setup(h => h.Intrinsic(
                 "__hlt",
+                false,
                 It.IsNotNull<ProcedureCharacteristics>(),
                 It.IsNotNull<DataType>(),
                 It.IsAny<Expression>())).
                 Returns(new Application(
                     new ProcedureConstant(
                         new UnknownType(),
-                        new PseudoProcedure("__hlt", VoidType.Instance, 0)),
+                        new IntrinsicProcedure("__hlt", false, VoidType.Instance, 0)),
                     VoidType.Instance));
 
             siq.ScanInstructions(sr);

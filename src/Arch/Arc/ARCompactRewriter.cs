@@ -406,7 +406,7 @@ namespace Reko.Arch.Arc
 
         private Expression Bclr(Expression a, Expression b)
         {
-            return host.PseudoProcedure("__bclr", a.DataType, a, b);
+            return host.Intrinsic("__bclr", true, a.DataType, a, b);
         }
 
         private Expression AndNot(Expression a, Expression b)
@@ -416,37 +416,37 @@ namespace Reko.Arch.Arc
 
         private Expression Bset(Expression a, Expression b)
         {
-            return host.PseudoProcedure("__bset", a.DataType, a, b);
+            return host.Intrinsic("__bset", true, a.DataType, a, b);
         }
 
         private Expression Bmsk(Expression a, Expression b)
         {
-            return host.PseudoProcedure("__bitmask", a.DataType, a, b);
+            return host.Intrinsic("__bitmask", true, a.DataType, a, b);
         }
 
         private Expression Btst(Expression a, Expression b)
         {
-            return host.PseudoProcedure("__btst", a.DataType, a, b);
+            return host.Intrinsic("__btst", true, a.DataType, a, b);
         }
 
         private Expression Bxor(Expression a, Expression b)
         {
-            return host.PseudoProcedure("__bxor", a.DataType, a, b);
+            return host.Intrinsic("__bxor", true, a.DataType, a, b);
         }
 
         private Expression Max(Expression a, Expression b)
         {
-            return host.PseudoProcedure("max", PrimitiveType.Int32, a, b);
+            return host.Intrinsic("max", true, PrimitiveType.Int32, a, b);
         }
 
         private Expression Min(Expression a, Expression b)
         {
-            return host.PseudoProcedure("min", PrimitiveType.Int32, a, b);
+            return host.Intrinsic("min", true, PrimitiveType.Int32, a, b);
         }
 
         private Expression Ror(Expression a, Expression b)
         {
-            return host.PseudoProcedure(PseudoProcedure.Ror, a.DataType, a, b);
+            return host.Intrinsic(IntrinsicProcedure.Ror, true, a.DataType, a, b);
         }
 
         private Expression Rsub(Expression a, Expression b)
@@ -513,7 +513,7 @@ namespace Reko.Arch.Arc
         private Expression TestSaturation(bool isSaturated)
         {
             var flags = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.AuxMacmode, (uint) S));
-            var test = host.PseudoProcedure("__saturated", PrimitiveType.Bool, flags);
+            var test = host.Intrinsic("__saturated", true, PrimitiveType.Bool, flags);
             if (isSaturated)
             {
                 return test;
@@ -587,7 +587,7 @@ namespace Reko.Arch.Arc
             m.Assign(tmp1, Operand(1));
             m.Assign(tmp2, Operand(2));
             var dst = Operand(0);
-            m.Assign(dst, host.PseudoProcedure(fnName, dt, tmp1, tmp2));
+            m.Assign(dst, host.Intrinsic(fnName, true, dt, tmp1, tmp2));
             var flagReg = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.Status32, (uint) ZNV));
             var satReg = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.AuxMacmode, (uint) S));
 
@@ -639,7 +639,7 @@ namespace Reko.Arch.Arc
         {
             var op1 = Operand(0);
             var op2 = Operand(1);
-            Expression cond = host.PseudoProcedure("__bit", PrimitiveType.Bool, op1, op2);
+            Expression cond = host.Intrinsic("__bit", true, PrimitiveType.Bool, op1, op2);
             if (!branchIfTrue)
             {
                 cond = cond.Invert();
@@ -662,7 +662,7 @@ namespace Reko.Arch.Arc
 
         private void RewriteBrk()
         {
-            m.SideEffect(host.PseudoProcedure("__brk", VoidType.Instance), instr.InstructionClass);
+            m.SideEffect(host.Intrinsic("__brk", true, VoidType.Instance), instr.InstructionClass);
         }
 
         private void RewriteCondInstr(Func<Expression, Expression, Expression> fn, FlagM grf)
@@ -679,7 +679,7 @@ namespace Reko.Arch.Arc
             var src1 = Operand(1);
             var src2 = Operand(2);
             var dst = Operand(0);
-            m.Assign(dst, host.PseudoProcedure("__divaw", dst.DataType, src1, src2));
+            m.Assign(dst, host.Intrinsic("__divaw", true, dst.DataType, src1, src2));
         }
 
         private void RewriteExt(PrimitiveType dtSlice, PrimitiveType dtExt)
@@ -692,7 +692,7 @@ namespace Reko.Arch.Arc
         private void RewriteFlag()
         {
             var src = Operand(0);
-            m.SideEffect(host.PseudoProcedure("__flag", VoidType.Instance, src));
+            m.SideEffect(host.Intrinsic("__flag", true, VoidType.Instance, src));
         }
 
         private void RewriteJ(ArcCondition cond)
@@ -779,7 +779,7 @@ namespace Reko.Arch.Arc
         {
             var dst = Operand(0);
             var src = (uint) ((MemoryOperand) instr.Operands[1]).Offset;
-            m.Assign(dst, host.PseudoProcedure("__load_aux_reg", PrimitiveType.Word32, m.Word32(src)));
+            m.Assign(dst, host.Intrinsic("__load_aux_reg", true, PrimitiveType.Word32, m.Word32(src)));
         }
 
         private void RewriteMov()
@@ -842,7 +842,7 @@ namespace Reko.Arch.Arc
         {
             var src = Operand(0);
             var dst = (uint) ((MemoryOperand) instr.Operands[1]).Offset;
-            m.SideEffect(host.PseudoProcedure("__store_aux_reg", VoidType.Instance, m.Word32(dst), src));
+            m.SideEffect(host.Intrinsic("__store_aux_reg", false, VoidType.Instance, m.Word32(dst), src));
         }
 
         private void RewriteStore(PrimitiveType dt)
@@ -882,7 +882,7 @@ namespace Reko.Arch.Arc
 
         private void RewriteTrap()
         {
-            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance), instr.InstructionClass);
+            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, false, VoidType.Instance), instr.InstructionClass);
         }
     }
 }

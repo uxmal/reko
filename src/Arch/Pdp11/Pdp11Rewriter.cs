@@ -130,10 +130,10 @@ namespace Reko.Arch.Pdp11
                 case Mnemonic.negb: RewriteNeg(); break;
                 case Mnemonic.nop: m.Nop(); break;
                 case Mnemonic.reset: RewriteReset(); break;
-                case Mnemonic.rol: RewriteRotate(PseudoProcedure.Rol); break;
-                case Mnemonic.rolb: RewriteRotate(PseudoProcedure.Rol); break;
-                case Mnemonic.ror: RewriteRotate(PseudoProcedure.Ror); break;
-                case Mnemonic.rorb: RewriteRotate(PseudoProcedure.Ror); break;
+                case Mnemonic.rol: RewriteRotate(IntrinsicProcedure.Rol); break;
+                case Mnemonic.rolb: RewriteRotate(IntrinsicProcedure.Rol); break;
+                case Mnemonic.ror: RewriteRotate(IntrinsicProcedure.Ror); break;
+                case Mnemonic.rorb: RewriteRotate(IntrinsicProcedure.Ror); break;
                 case Mnemonic.rti: RewriteRti(); break;
                 case Mnemonic.rts: RewriteRts(); break;
                 case Mnemonic.rtt: RewriteRtt(); break;

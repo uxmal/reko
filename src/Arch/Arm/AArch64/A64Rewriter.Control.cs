@@ -58,7 +58,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteBrk()
         {
-            m.SideEffect(host.PseudoProcedure("__brk", VoidType.Instance, RewriteOp(0)));
+            m.SideEffect(host.Intrinsic("__brk", false, VoidType.Instance, RewriteOp(0)));
         }
 
         private void RewriteCb(Func<Expression, Expression> fn)
@@ -69,13 +69,13 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteEret()
         {
-            m.SideEffect(host.PseudoProcedure("__eret", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__eret", false, VoidType.Instance));
             m.Return(0, 0);
         }
 
         private void RewriteHlt()
         {
-            m.SideEffect(host.PseudoProcedure("__hlt", VoidType.Instance, RewriteOp(0)));
+            m.SideEffect(host.Intrinsic("__hlt", false, VoidType.Instance, RewriteOp(0)));
         }
 
         private void RewriteRet()

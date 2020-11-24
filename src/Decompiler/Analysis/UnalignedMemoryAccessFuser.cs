@@ -76,12 +76,12 @@ namespace Reko.Analysis
 
         private static readonly string[] unalignedLoadsLe = new[]
         {
-            PseudoProcedure.LwR
+            IntrinsicProcedure.LwR
         };
 
         private static readonly string[] unalignedLoadsBe = new[]
         {
-            PseudoProcedure.LwL
+            IntrinsicProcedure.LwL
         };
 
 
@@ -218,8 +218,8 @@ namespace Reko.Analysis
 
         private readonly string[] unalignedIntrinsics =
         {
-            PseudoProcedure.SwL,
-            PseudoProcedure.SwR,
+            IntrinsicProcedure.SwL,
+            IntrinsicProcedure.SwR,
         };
 
         public class UnalignedAccess
@@ -261,7 +261,7 @@ namespace Reko.Analysis
                     stm = stm,
                     reg = reg,
                     offset = offset,
-                    isLeft = appName == PseudoProcedure.SwL,
+                    isLeft = appName == IntrinsicProcedure.SwL,
                     value = app.Arguments[1],
                     mem = mem
                 };
@@ -330,7 +330,7 @@ namespace Reko.Analysis
         {
             if (e is Application app &&
                 app.Procedure is ProcedureConstant pc &&
-                pc.Procedure is PseudoProcedure intrinsic &&
+                pc.Procedure is IntrinsicProcedure intrinsic &&
                 names.Contains(intrinsic.Name))
             {
                 return Tuple.Create(intrinsic.Name, app);

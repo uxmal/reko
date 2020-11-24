@@ -116,8 +116,8 @@ namespace Reko.Arch.H8
                 case Mnemonic.nop: RewriteNop(); break;
                 case Mnemonic.not: RewriteUnaryLogical(instr, m.Comp); break;
                 case Mnemonic.or: RewriteLogical(instr, m.Or); break;
-                case Mnemonic.rotxl: RewriteRotationX(instr, PseudoProcedure.RolC); break;
-                case Mnemonic.rotxr: RewriteRotationX(instr, PseudoProcedure.RorC); break;
+                case Mnemonic.rotxl: RewriteRotationX(instr, IntrinsicProcedure.RolC); break;
+                case Mnemonic.rotxr: RewriteRotationX(instr, IntrinsicProcedure.RorC); break;
                 case Mnemonic.rts: RewriteRts(); break;
                 case Mnemonic.shal: RewriteShift(instr, m.Shl); break;
                 case Mnemonic.shar: RewriteShift(instr, m.Sar); break;
@@ -315,7 +315,7 @@ namespace Reko.Arch.H8
         {
             var pos = OpSrc(instr.Operands[0]);
             var dst = OpSrc(instr.Operands[1]);
-            m.Assign(dst, host.PseudoProcedure("__bst", dst.DataType, dst, value, pos));
+            m.Assign(dst, host.Intrinsic("__bst", true, dst.DataType, dst, value, pos));
         }
 
         private void RewriteBtst(H8Instruction instr, FlagGroupStorage flag)
@@ -323,7 +323,7 @@ namespace Reko.Arch.H8
             var right = OpSrc(instr.Operands[0]);
             var left = OpSrc(instr.Operands[1]);
             var dst = binder.EnsureFlagGroup(flag);
-            m.Assign(dst, host.PseudoProcedure("__btst", dst.DataType, left, right));
+            m.Assign(dst, host.Intrinsic("__btst", true, dst.DataType, left, right));
         }
 
         private void RewriteLogical(H8Instruction instr, Func<Expression,Expression, Expression> fn)
@@ -363,7 +363,7 @@ namespace Reko.Arch.H8
         {
             var src = OpSrc(instr.Operands[0]);
             var c = binder.EnsureFlagGroup(C);
-            m.Assign(src, host.PseudoProcedure(intrinsicName, src.DataType,
+            m.Assign(src, host.Intrinsic(intrinsicName, true, src.DataType,
                 src, Constant.Int32(1), c));
             EmitCond(NZC, src);
             m.Assign(binder.EnsureFlagGroup(V), Constant.False());

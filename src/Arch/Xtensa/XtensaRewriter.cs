@@ -79,7 +79,7 @@ namespace Reko.Arch.Xtensa
                 case Mnemonic.invalid:
                 case Mnemonic.reserved:
                     iclass = InstrClass.Invalid; m.Invalid(); break;
-                case Mnemonic.abs: RewritePseudoFn("abs"); break;
+                case Mnemonic.abs: RewriteIntrinsicFn("abs", true); break;
                 case Mnemonic.add:
                 case Mnemonic.add_n: RewriteBinOp(m.IAdd); break;
                 case Mnemonic.add_s: RewriteBinOp(m.FAdd); break;
@@ -134,8 +134,8 @@ namespace Reko.Arch.Xtensa
                 case Mnemonic.callx12: RewriteCallW(12); break;
                 case Mnemonic.ceil_s: RewriteCvtFloatToIntegral("__ceil", PrimitiveType.Int32); break;
                 case Mnemonic.clamps: RewriteClamps(); break;
-                case Mnemonic.cust0: RewritePseudoProc("__cust0"); break;
-                case Mnemonic.cust1: RewritePseudoProc("__cust1"); break;
+                case Mnemonic.cust0: RewriteIntrinsicProc("__cust0"); break;
+                case Mnemonic.cust1: RewriteIntrinsicProc("__cust1"); break;
                 case Mnemonic.dhi: RewriteCacheFn("__dhi"); break;
                 case Mnemonic.dhu: RewriteCacheFn("__dhu"); break;
                 case Mnemonic.dhwb: RewriteCacheFn("__dhwb"); break;
@@ -146,17 +146,17 @@ namespace Reko.Arch.Xtensa
                 case Mnemonic.dpfro: RewriteCacheFn("__dpfro"); break;
                 case Mnemonic.dpfw: RewriteCacheFn("__dpfw"); break;
                 case Mnemonic.dpfwo: RewriteCacheFn("__dpfwo"); break;
-                case Mnemonic.dsync: RewritePseudoProc("__dsync"); break;
-                case Mnemonic.esync: RewritePseudoProc("__esync"); break;
-                case Mnemonic.excw: RewritePseudoProc("__excw"); break;
+                case Mnemonic.dsync: RewriteIntrinsicProc("__dsync"); break;
+                case Mnemonic.esync: RewriteIntrinsicProc("__esync"); break;
+                case Mnemonic.excw: RewriteIntrinsicProc("__excw"); break;
                 case Mnemonic.extui: RewriteExtui(); break;
                 case Mnemonic.entry: RewriteEntry(); break;
                 case Mnemonic.float_s: RewriteFloat_s(PrimitiveType.Int32); break;
-                case Mnemonic.floor_s: RewritePseudoFn("__floor"); break;
+                case Mnemonic.floor_s: RewriteIntrinsicFn("__floor", false); break;
                 case Mnemonic.iii: RewriteCacheFn("__iii"); break;
-                case Mnemonic.iitlb: RewritePseudoProc("__iitlb"); break;
+                case Mnemonic.iitlb: RewriteIntrinsicProc("__iitlb"); break;
                 case Mnemonic.ipf: RewriteCacheFn("__ipf"); break;
-                case Mnemonic.isync: RewritePseudoProc("__isync"); break;
+                case Mnemonic.isync: RewriteIntrinsicProc("__isync"); break;
                 case Mnemonic.j:
                 case Mnemonic.jx: RewriteJ(); break;
                 case Mnemonic.ill: RewriteIll(); break;
@@ -170,7 +170,7 @@ namespace Reko.Arch.Xtensa
                 case Mnemonic.l8ui: RewriteLui(PrimitiveType.Byte); break;
                 case Mnemonic.lddec: RewriteLddecinc(m.ISub); break;
                 case Mnemonic.ldinc: RewriteLddecinc(m.IAdd); break;
-                case Mnemonic.ldpte: RewritePseudoProc("__ldpte"); break;
+                case Mnemonic.ldpte: RewriteIntrinsicProc("__ldpte"); break;
                 case Mnemonic.loop: RewriteLoop(); break;
                 case Mnemonic.lsiu: RewriteLsiu(); break;
                 case Mnemonic.madd_s: RewriteMaddSub(m.FAdd); break;
@@ -263,30 +263,30 @@ namespace Reko.Arch.Xtensa
                 case Mnemonic.mulsh: RewriteMulh("__mulsh", PrimitiveType.Int32); break;
                 case Mnemonic.muluh: RewriteMulh("__muluh", PrimitiveType.UInt32); break;
                 case Mnemonic.neg: RewriteUnaryOp(m.Neg); break;
-                case Mnemonic.nsa: RewritePseudoFn("__nsa"); break;
-                case Mnemonic.nsau: RewritePseudoFn("__nsau"); break;
+                case Mnemonic.nsa: RewriteIntrinsicFn("__nsa", false); break;
+                case Mnemonic.nsau: RewriteIntrinsicFn("__nsau", false); break;
                 case Mnemonic.oeq_s: RewriteBinOp(m.FEq); break;    //$REVIEW: what to do about 'ordered' and 'unordered'
                 case Mnemonic.ole_s: RewriteBinOp(m.FLe); break;    //$REVIEW: what to do about 'ordered' and 'unordered'
                 case Mnemonic.olt_s: RewriteBinOp(m.FLt); break;    //$REVIEW: what to do about 'ordered' and 'unordered'
                 case Mnemonic.or: RewriteOr(); break;
                 case Mnemonic.orb: RewriteOr(); break;
                 case Mnemonic.orbc: RewriteBinOp((a, b) => m.Or(a, m.Not(b))); break;
-                case Mnemonic.pitlb: RewritePseudoFn("__pitlb"); break;
+                case Mnemonic.pitlb: RewriteIntrinsicFn("__pitlb", false); break;
                 case Mnemonic.quos: RewriteBinOp(m.SDiv); break;
                 case Mnemonic.quou: RewriteBinOp(m.UDiv); break;
-                case Mnemonic.rdtlb0: RewritePseudoFn("__rdtlb0"); break;
-                case Mnemonic.rdtlb1: RewritePseudoFn("__rdtlb1"); break;
+                case Mnemonic.rdtlb0: RewriteIntrinsicFn("__rdtlb0", false); break;
+                case Mnemonic.rdtlb1: RewriteIntrinsicFn("__rdtlb1", false); break;
                 case Mnemonic.rems: RewriteBinOp(m.Mod); break;
                 case Mnemonic.remu: RewriteBinOp(m.Mod); break;
                 case Mnemonic.ret:
                 case Mnemonic.ret_n: RewriteRet(); break;
                 case Mnemonic.rfe: RewriteRet(); break;      //$REVIEW: emit some hint this is a return from exception?
                 case Mnemonic.rfi: RewriteRet(); break;      //$REVIEW: emit some hint this is a return from interrupt?
-                case Mnemonic.ritlb0: RewritePseudoFn("__ritlb0"); break;
-                case Mnemonic.ritlb1: RewritePseudoFn("__ritlb1"); break;
-                case Mnemonic.rotw: RewritePseudoProc("__rotw"); break;
+                case Mnemonic.ritlb0: RewriteIntrinsicFn("__ritlb0", false); break;
+                case Mnemonic.ritlb1: RewriteIntrinsicFn("__ritlb1", false); break;
+                case Mnemonic.rotw: RewriteIntrinsicProc("__rotw"); break;
                 case Mnemonic.round_s: RewriteCvtFloatToIntegral("__round", PrimitiveType.Int32); break;
-                case Mnemonic.rsil: RewritePseudoFn("__rsil"); break;
+                case Mnemonic.rsil: RewriteIntrinsicFn("__rsil", false); break;
                 case Mnemonic.rer: RewriteRer(); break;
                 case Mnemonic.rfr: RewriteCopy(); break;
                 case Mnemonic.rsr: RewriteCopy(); break;
@@ -328,11 +328,11 @@ namespace Reko.Arch.Xtensa
                 case Mnemonic.umul_aa_hl: RewriteMul("__umul_hl", UInt40); break;
                 case Mnemonic.umul_aa_lh: RewriteMul("__umul_lh", UInt40); break;
                 case Mnemonic.umul_aa_ll: RewriteMul("__umul_ll", UInt40); break;
-                case Mnemonic.un_s: RewritePseudoFn("isunordered"); break;
+                case Mnemonic.un_s: RewriteIntrinsicFn("isunordered", true); break;
                 case Mnemonic.utrunc_s: RewriteCvtFloatToIntegral("__utrunc", PrimitiveType.UInt32); break;
-                case Mnemonic.waiti: RewritePseudoProc("__waiti"); break;
-                case Mnemonic.wdtlb: RewritePseudoProc("__wdtlb"); break;
-                case Mnemonic.witlb: RewritePseudoProc("__witlb"); break;
+                case Mnemonic.waiti: RewriteIntrinsicProc("__waiti"); break;
+                case Mnemonic.wdtlb: RewriteIntrinsicProc("__wdtlb"); break;
+                case Mnemonic.witlb: RewriteIntrinsicProc("__witlb"); break;
                 case Mnemonic.wer: RewriteWer(); break;
                 case Mnemonic.wsr: RewriteWsr(); break;
                 case Mnemonic.wur: RewriteInverseCopy(); break;

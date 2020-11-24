@@ -116,10 +116,10 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 case Mnemonic.res: RewriteSetRes(false); break;
                 case Mnemonic.ret: RewriteRet(); break;
                 case Mnemonic.reti: RewriteReti(); break;
-                case Mnemonic.rl: RewriteRotation(PseudoProcedure.RolC, true); break;
-                case Mnemonic.rlc: RewriteRotation(PseudoProcedure.Rol, false); break;
-                case Mnemonic.rr: RewriteRotation(PseudoProcedure.RorC, true); break;
-                case Mnemonic.rrc: RewriteRotation(PseudoProcedure.Ror, false); break;
+                case Mnemonic.rl: RewriteRotation(IntrinsicProcedure.RolC, true); break;
+                case Mnemonic.rlc: RewriteRotation(IntrinsicProcedure.Rol, false); break;
+                case Mnemonic.rr: RewriteRotation(IntrinsicProcedure.RorC, true); break;
+                case Mnemonic.rrc: RewriteRotation(IntrinsicProcedure.Ror, false); break;
                 case Mnemonic.sbc: RewriteAdcSbc(m.ISub, "**-**V1*"); break;
                 case Mnemonic.scf: RewriteScf(); break;
                 case Mnemonic.set: RewriteSetRes(true); break;

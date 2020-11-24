@@ -29,21 +29,21 @@ namespace Reko.WindowsItp
 
         public class RewriterHost : IRewriterHost
         {
-            private Dictionary<string, PseudoProcedure> ppp;
+            private Dictionary<string, IntrinsicProcedure> intrinsics;
             private Dictionary<Address, ImportReference> importThunks;
 
             public RewriterHost(Dictionary<Address, ImportReference> importThunks)
             {
                 this.importThunks = importThunks;
-                this.ppp = new Dictionary<string, PseudoProcedure>();
+                this.intrinsics = new Dictionary<string, IntrinsicProcedure>();
             }
 
-            public Expression CallIntrinsic(string name, FunctionType fnType, params Expression[] args)
+            public Expression CallIntrinsic(string name, bool isIdempotent, FunctionType fnType, params Expression[] args)
             {
-                if (!ppp.TryGetValue(name, out var intrinsic))
+                if (!intrinsics.TryGetValue(name, out var intrinsic))
                 {
-                    intrinsic = new PseudoProcedure(name, fnType);
-                    ppp.Add(name, intrinsic);
+                    intrinsic = new IntrinsicProcedure(name, isIdempotent, fnType);
+                    intrinsics.Add(name, intrinsic);
                 }
                 return new Application(
                     new ProcedureConstant(PrimitiveType.Ptr32, intrinsic),
@@ -51,30 +51,30 @@ namespace Reko.WindowsItp
                     args);
             }
 
-            public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
+            public IntrinsicProcedure EnsureIntrinsic(string name, bool isIdempotent, DataType returnType, int arity)
             {
-                if (ppp.TryGetValue(name, out var p))
-                    return p;
-                p = new PseudoProcedure(name, returnType, arity);
-                ppp.Add(name, p);
-                return p;
+                if (intrinsics.TryGetValue(name, out var intrinsic))
+                    return intrinsic;
+                intrinsic = new IntrinsicProcedure(name, isIdempotent, returnType, arity);
+                intrinsics.Add(name, intrinsic);
+                return intrinsic;
             }
 
-            public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
+            public Expression Intrinsic(string name, bool isIdempotent, DataType returnType, params Expression[] args)
             {
-                var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
+                var intrinsic = EnsureIntrinsic(name, isIdempotent, returnType, args.Length);
                 return new Application(
-                    new ProcedureConstant(PrimitiveType.Ptr32, ppp),
+                    new ProcedureConstant(PrimitiveType.Ptr32, intrinsic),
                     returnType,
                     args);
             }
 
-            public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
+            public Expression Intrinsic(string name, bool isIdempotent, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
             {
-                var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
-                ppp.Characteristics = c;
+                var intrinsic = EnsureIntrinsic(name, isIdempotent, returnType, args.Length);
+                intrinsic.Characteristics = c;
                 return new Application(
-                    new ProcedureConstant(PrimitiveType.Ptr32, ppp),
+                    new ProcedureConstant(PrimitiveType.Ptr32, intrinsic),
                     returnType,
                     args);
             }

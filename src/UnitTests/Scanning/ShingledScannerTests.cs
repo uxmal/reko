@@ -176,11 +176,12 @@ namespace Reko.UnitTests.Scanning
         {
             this.host = new Mock<IRewriterHost>();
             var dev = new Mock<DecompilerEventListener>();
-            //host.Setup(h => h.EnsurePseudoProcedure(null, null, 0))
+            //host.Setup(h => h.EnsureIntrinsicProcedure(null, null, 0))
             //    .IgnoreArguments()
-            //    .Return(new PseudoProcedure("<>", PrimitiveType.Word32, 2));
-            host.Setup(h => h.PseudoProcedure(
+            //    .Return(new IntrinsicProcedure("<>", PrimitiveType.Word32, 2));
+            host.Setup(h => h.Intrinsic(
                 It.IsAny<string>(),
+                It.IsAny<bool>(),
                 It.IsAny<DataType>(),
                 It.IsAny<Expression[]>())).Returns((Expression)null);
             host.Setup(h => h.GetImport(

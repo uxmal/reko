@@ -45,7 +45,7 @@ namespace Reko.Arch.Arm.AArch64
             var name = GenerateSimdIntrinsicName(simdFormat, (PrimitiveType)arrayLeft.ElementType);
             m.Assign(tmpLeft, left);
             m.Assign(tmpRight, right);
-            m.Assign(dst, host.PseudoProcedure(name, arrayDst, tmpLeft, tmpRight));
+            m.Assign(dst, host.Intrinsic(name, false, arrayDst, tmpLeft, tmpRight));
             setFlags?.Invoke(dst);
         }
 
@@ -59,7 +59,7 @@ namespace Reko.Arch.Arm.AArch64
             var dst = RewriteOp(instr.Operands[0]);
             var name = GenerateSimdIntrinsicName(simdFormat, (PrimitiveType)arrayLeft.ElementType);
             m.Assign(tmpLeft, left);
-            m.Assign(dst, host.PseudoProcedure(name, arrayDst, tmpLeft, right));
+            m.Assign(dst, host.Intrinsic(name, false, arrayDst, tmpLeft, right));
             setFlags?.Invoke(dst);
         }
 
@@ -71,7 +71,7 @@ namespace Reko.Arch.Arm.AArch64
             var dst = RewriteOp(instr.Operands[0]);
             var name = GenerateSimdIntrinsicName(simdFormat, (PrimitiveType)array.ElementType);
             m.Assign(tmpSrc, src);
-            m.Assign(dst, host.PseudoProcedure(name, array, tmpSrc));
+            m.Assign(dst, host.Intrinsic(name, false, array, tmpSrc));
         }
 
         private void RewriteSimdExpand(string simdFormat, Domain domain = Domain.None)
@@ -82,7 +82,7 @@ namespace Reko.Arch.Arm.AArch64
             var dst = RewriteOp(instr.Operands[0]);
             var name = GenerateSimdIntrinsicName(simdFormat, (PrimitiveType)arrayDst.ElementType);
             m.Assign(tmpSrc, src);
-            m.Assign(dst, host.PseudoProcedure(name, arrayDst.ElementType, tmpSrc));
+            m.Assign(dst, host.Intrinsic(name, false, arrayDst.ElementType, tmpSrc));
         }
 
         private void RewriteSimdReduce(string simdFormat, Domain domain)
@@ -93,7 +93,7 @@ namespace Reko.Arch.Arm.AArch64
             var dst = RewriteOp(instr.Operands[0]);
             var name = GenerateSimdIntrinsicName(simdFormat, (PrimitiveType)arraySrc.ElementType);
             m.Assign(tmpSrc, src);
-            m.Assign(dst, host.PseudoProcedure(name, arraySrc.ElementType, tmpSrc));
+            m.Assign(dst, host.Intrinsic(name, false, arraySrc.ElementType, tmpSrc));
         }
 
         private string GenerateSimdIntrinsicName(string simdFormat, PrimitiveType elementType)
@@ -136,7 +136,7 @@ namespace Reko.Arch.Arm.AArch64
             if (rHi == rLo) // ROR
             {
                 var op = binder.EnsureRegister(rHi);
-                m.Assign(opDst, host.PseudoProcedure(PseudoProcedure.Ror, opDst.DataType, op, lsb));
+                m.Assign(opDst, host.Intrinsic(IntrinsicProcedure.Ror, true, opDst.DataType, op, lsb));
             }
             else
             {
@@ -154,7 +154,7 @@ namespace Reko.Arch.Arm.AArch64
                 var args = new List<Expression> { ea };
                 args.AddRange(vec.GetRegisters()
                     .Select(r => (Expression)m.Out(r.DataType, binder.EnsureRegister(r))));
-                m.SideEffect(host.PseudoProcedure(fnName, VoidType.Instance, args.ToArray()));
+                m.SideEffect(host.Intrinsic(fnName, false, VoidType.Instance, args.ToArray()));
             }
             else
             {
@@ -169,7 +169,7 @@ namespace Reko.Arch.Arm.AArch64
             var args = new List<Expression> { ea };
             args.AddRange(vec.GetRegisters()
                 .Select(r => (Expression)m.Out(r.DataType, binder.EnsureRegister(r))));
-            m.SideEffect(host.PseudoProcedure(fnName, VoidType.Instance, args.ToArray()));
+            m.SideEffect(host.Intrinsic(fnName, false, VoidType.Instance, args.ToArray()));
         }
 
         private void RewriteSmsubl()
@@ -192,7 +192,7 @@ namespace Reko.Arch.Arm.AArch64
                 var args = new List<Expression> { ea };
                 args.AddRange(vec.GetRegisters()
                     .Select(r => (Expression)binder.EnsureRegister(r)));
-                m.SideEffect(host.PseudoProcedure(fnName, VoidType.Instance, args.ToArray()));
+                m.SideEffect(host.Intrinsic(fnName, false, VoidType.Instance, args.ToArray()));
             }
             else
             {
@@ -225,7 +225,7 @@ namespace Reko.Arch.Arm.AArch64
             {
                 // fixed point conversion.
                 var fprec = RewriteOp(instr.Operands[2]);
-                m.Assign(dst, host.PseudoProcedure("__scvtf_fixed", realType, src, fprec));
+                m.Assign(dst, host.Intrinsic("__scvtf_fixed", false, realType, src, fprec));
             }
             else if (Registers.IsIntegerRegister(srcReg))
             {
@@ -274,7 +274,7 @@ namespace Reko.Arch.Arm.AArch64
                 var name = GenerateSimdIntrinsicName("__uabd_{0}", (PrimitiveType) arrayLeft.ElementType);
                 m.Assign(tmpLeft, left);
                 m.Assign(tmpRight, right);
-                m.Assign(dst, host.PseudoProcedure(name, arrayDst, tmpLeft, tmpRight));
+                m.Assign(dst, host.Intrinsic(name, false, arrayDst, tmpLeft, tmpRight));
             }
         }
 
@@ -294,7 +294,7 @@ namespace Reko.Arch.Arm.AArch64
                 var name = GenerateSimdIntrinsicName("__uaddw_{0}", (PrimitiveType)arrayLeft.ElementType);
                 m.Assign(tmpLeft, left);
                 m.Assign(tmpRight, right);
-                m.Assign(dst, host.PseudoProcedure(name, arrayDst, tmpLeft, tmpRight));
+                m.Assign(dst, host.Intrinsic(name, false, arrayDst, tmpLeft, tmpRight));
             }
             else
             {
@@ -319,7 +319,7 @@ namespace Reko.Arch.Arm.AArch64
                 var name = GenerateSimdIntrinsicName("__umlal_{0}", (PrimitiveType)arrayLeft.ElementType);
                 m.Assign(tmpLeft, left);
                 m.Assign(tmpRight, right);
-                m.Assign(dst, host.PseudoProcedure(name, arrayDst, tmpLeft, tmpRight, dst));
+                m.Assign(dst, host.Intrinsic(name, false, arrayDst, tmpLeft, tmpRight, dst));
             }
             else
             {

@@ -64,7 +64,7 @@ namespace Reko.Arch.Mips
             var reg = RewriteOperand0(instr.Operands[0]);
             var bit = RewriteOperand(instr.Operands[1]);
             var addr = (Address) RewriteOperand0(instr.Operands[2]);
-            var test = condOp(host.PseudoProcedure("__bit", PrimitiveType.Bool, reg, bit));
+            var test = condOp(host.Intrinsic("__bit", true, PrimitiveType.Bool, reg, bit));
             m.Branch(test, addr, instr.InstructionClass);
         }
 
@@ -237,7 +237,7 @@ namespace Reko.Arch.Mips
             {
                 Terminates = true
             };
-            m.SideEffect(host.PseudoProcedure("__reserved_instruction", chr,
+            m.SideEffect(host.Intrinsic("__reserved_instruction", false, chr,
                 VoidType.Instance, RewriteOperand(instr.Operands[0])));
         }
     }

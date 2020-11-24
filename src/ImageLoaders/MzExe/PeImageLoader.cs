@@ -95,7 +95,7 @@ namespace Reko.ImageLoaders.MzExe
 		private ByteMemoryArea imgLoaded;
 		private Address preferredBaseOfImage;
         private List<Section> sectionList;
-        private Dictionary<uint, PseudoProcedure> importThunks;
+        private Dictionary<uint, IntrinsicProcedure> importThunks;
 		private uint rvaStartAddress;		// unrelocated start address of the image.
 		private uint rvaExportTable;
 		private uint sizeExportTable;
@@ -120,7 +120,7 @@ namespace Reko.ImageLoaders.MzExe
 			{
 				throw new BadImageFormatException("Not a valid PE header.");
 			}
-            importThunks = new Dictionary<uint, PseudoProcedure>();
+            importThunks = new Dictionary<uint, IntrinsicProcedure>();
             importReferences = new Dictionary<Address, ImportReference>();
             ImageSymbols = new SortedList<Address, ImageSymbol>();
 			short expectedMagic = ReadCoffHeader(rdr);

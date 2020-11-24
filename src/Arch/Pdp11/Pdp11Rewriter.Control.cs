@@ -37,7 +37,7 @@ namespace Reko.Arch.Pdp11
         {
             this.iclass = InstrClass.Call | InstrClass.Transfer;
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.psw, (uint)(FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF)));
-            m.Assign(grf, host.PseudoProcedure("__bpt", PrimitiveType.Byte)); 
+            m.Assign(grf, host.Intrinsic("__bpt", false, PrimitiveType.Byte)); 
         }
 
         private void RewriteBr()
@@ -60,7 +60,7 @@ namespace Reko.Arch.Pdp11
             this.iclass = InstrClass.Transfer;
             var imm = ((ImmediateOperand)instr.Operands[0]).Value.ToByte();
             var svc = m.Word16((ushort)(0x8800 | imm));
-            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, svc));
+            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, false, VoidType.Instance, svc));
         }
 
         private void RewriteHalt()
@@ -70,14 +70,14 @@ namespace Reko.Arch.Pdp11
             {
                 Terminates = true,
             };
-            m.SideEffect(host.PseudoProcedure("__halt", c, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__halt", false, c, VoidType.Instance));
         }
 
         private void RewriteIot()
         {
             this.iclass = InstrClass.Call | InstrClass.Transfer;
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.psw, (uint)(FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF)));
-            m.Assign(grf, host.PseudoProcedure("__bpt", PrimitiveType.Byte));
+            m.Assign(grf, host.Intrinsic("__bpt", false, PrimitiveType.Byte));
         }
 
         private void RewriteJmp()
@@ -141,7 +141,7 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteReset()
         {
-            m.SideEffect(host.PseudoProcedure("__reset", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__reset", false, VoidType.Instance), InstrClass.Terminates);
         }
 
         private void RewriteRti()
@@ -197,12 +197,12 @@ namespace Reko.Arch.Pdp11
             this.iclass = InstrClass.Transfer;
             var imm = ((ImmediateOperand)instr.Operands[0]).Value.ToByte();
             var svc = m.Word16((ushort)(0x8900 | imm));
-            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, svc));
+            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, false, VoidType.Instance, svc));
         }
 
         private void RewriteWait()
         {
-            m.SideEffect(host.PseudoProcedure("__wait", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__wait", false, VoidType.Instance));
         }
     }
 }

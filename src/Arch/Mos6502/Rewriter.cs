@@ -120,8 +120,8 @@ namespace Reko.Arch.Mos6502
                 case Mnemonic.php: Push(AllFlags()); break;
                 case Mnemonic.pla: Pull(Registers.a); break;
                 case Mnemonic.plp: Plp(); break;
-                case Mnemonic.rol: Rotate(PseudoProcedure.Rol); break;
-                case Mnemonic.ror: Rotate(PseudoProcedure.Ror); break;
+                case Mnemonic.rol: Rotate(IntrinsicProcedure.Rol); break;
+                case Mnemonic.ror: Rotate(IntrinsicProcedure.Ror); break;
                 case Mnemonic.rti: Rti(); break;
                 case Mnemonic.rts: Rts(); break;
                 case Mnemonic.sbc: Sbc(); break;
@@ -213,7 +213,7 @@ namespace Reko.Arch.Mos6502
 
         private void Brk()
         {
-            m.SideEffect(host.PseudoProcedure("__brk", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__brk", false, VoidType.Instance));
         }
 
         private void Cmp(RegisterStorage r)
@@ -348,7 +348,7 @@ namespace Reko.Arch.Mos6502
         {
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
             var arg = RewriteOperand(instrCur.Operands[0]);
-            m.Assign(arg, host.PseudoProcedure(rot, arg.DataType, arg, Constant.Byte(1)));
+            m.Assign(arg, host.Intrinsic(rot, true, arg.DataType, arg, Constant.Byte(1)));
             m.Assign(c, m.Cond(arg));
         }
 

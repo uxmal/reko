@@ -516,9 +516,9 @@ namespace Reko.Core.Expressions
         /// <param name="ep">The instrinsic function to apply.</param>
         /// <param name="args">The arguments of the function.</param>
         /// <returns>A function application</returns>
-        public Application Fn(PseudoProcedure ppp, params Expression[] args)
+        public Application Fn(IntrinsicProcedure intrinsic, params Expression[] args)
         {
-            return new Application(new ProcedureConstant(PrimitiveType.Ptr32, ppp), ppp.ReturnType, args);
+            return new Application(new ProcedureConstant(PrimitiveType.Ptr32, intrinsic), intrinsic.ReturnType, args);
         }
 
         /// <summary>

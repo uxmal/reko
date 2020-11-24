@@ -335,13 +335,13 @@ namespace Reko.Arch.M6800.M6812
 
         private Expression Rol(Expression a, Expression b)
         {
-            var intrinsic = host.PseudoProcedure(PseudoProcedure.RolC, a.DataType, a, b);
+            var intrinsic = host.Intrinsic(IntrinsicProcedure.RolC, true, a.DataType, a, b);
             return intrinsic;
         }
 
         private Expression Ror(Expression a, Expression b)
         {
-            var intrinsic = host.PseudoProcedure(PseudoProcedure.RorC, a.DataType, a, b);
+            var intrinsic = host.Intrinsic(IntrinsicProcedure.RorC, true, a.DataType, a, b);
             return intrinsic;
         }
 
@@ -460,7 +460,7 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteBgnd()
         {
-            var intrinsic = host.PseudoProcedure("__bgnd", VoidType.Instance);
+            var intrinsic = host.Intrinsic("__bgnd", false, VoidType.Instance);
             m.SideEffect(intrinsic);
         }
 
@@ -571,7 +571,7 @@ namespace Reko.Arch.M6800.M6812
         private void RewriteDaa()
         {
             var a = binder.EnsureRegister(Registers.a);
-            var intrinsic = host.PseudoProcedure("__daa", PrimitiveType.Byte, a, m.Out(a.DataType, a));
+            var intrinsic = host.Intrinsic("__daa", true, PrimitiveType.Byte, a, m.Out(a.DataType, a));
             NZVC(a);
         }
 
@@ -613,7 +613,7 @@ namespace Reko.Arch.M6800.M6812
         {
             var d = binder.EnsureRegister(Registers.d);
             var mem = RewriteOp(instr.Operands[0]);
-            m.Assign(d, host.PseudoProcedure(fnname, PrimitiveType.UInt16, d, mem));
+            m.Assign(d, host.Intrinsic(fnname, true, PrimitiveType.UInt16, d, mem));
             NZVC(d);
         }
 
@@ -622,7 +622,7 @@ namespace Reko.Arch.M6800.M6812
             var d = binder.EnsureRegister(Registers.d);
             var mem = RewriteOp(instr.Operands[0]);
             var tmp = binder.CreateTemporary(mem.DataType);
-            m.Assign(tmp, host.PseudoProcedure(fnname, PrimitiveType.UInt16, d, mem));
+            m.Assign(tmp, host.Intrinsic(fnname, true, PrimitiveType.UInt16, d, mem));
             m.Assign(mem, tmp);
             NZVC(tmp);
         }
@@ -641,7 +641,7 @@ namespace Reko.Arch.M6800.M6812
             var b = binder.EnsureRegister(Registers.b);
             var d = binder.EnsureRegister(Registers.d);
             var mem = RewriteMemoryOperand((MemoryOperand)instr.Operands[0]);
-            m.Assign(d, host.PseudoProcedure("__etbl", PrimitiveType.Word16,
+            m.Assign(d, host.Intrinsic("__etbl", false, PrimitiveType.Word16,
                 mem.EffectiveAddress, b));
             NZ_C(d);
         }
@@ -741,7 +741,7 @@ namespace Reko.Arch.M6800.M6812
         {
             var a = binder.EnsureRegister(Registers.a);
             var mem = RewriteOp(instr.Operands[0]);
-            m.Assign(a, host.PseudoProcedure(fnname, PrimitiveType.Byte, a, mem));
+            m.Assign(a, host.Intrinsic(fnname, false, PrimitiveType.Byte, a, mem));
             NZVC(a);
         }
 
@@ -750,7 +750,7 @@ namespace Reko.Arch.M6800.M6812
             var a = binder.EnsureRegister(Registers.a);
             var x = binder.EnsureRegister(Registers.x);
             var y = binder.EnsureRegister(Registers.y);
-            var intrinsic = host.PseudoProcedure("__membership", VoidType.Instance,
+            var intrinsic = host.Intrinsic("__membership", false, VoidType.Instance,
                 a, x, y,
                 m.Out(x.DataType, x),
                 m.Out(y.DataType, y));
@@ -762,7 +762,7 @@ namespace Reko.Arch.M6800.M6812
             var a = binder.EnsureRegister(Registers.a);
             var mem = RewriteOp(instr.Operands[0]);
             var tmp = binder.CreateTemporary(mem.DataType);
-            m.Assign(tmp, host.PseudoProcedure(fnname, PrimitiveType.Byte, a, mem));
+            m.Assign(tmp, host.Intrinsic(fnname, true, PrimitiveType.Byte, a, mem));
             m.Assign(mem, tmp);
             NZVC(tmp);
         }
@@ -856,7 +856,7 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteStop()
         {
-            var intrinsic = host.PseudoProcedure("__stop", VoidType.Instance);
+            var intrinsic = host.Intrinsic("__stop", false, VoidType.Instance);
             m.SideEffect(intrinsic);
         }
 
@@ -870,7 +870,7 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteSwi()
         {
-            var intrinsic = host.PseudoProcedure("__swi", VoidType.Instance);
+            var intrinsic = host.Intrinsic("__swi", false, VoidType.Instance);
             m.SideEffect(intrinsic);
         }
         private void RewriteTab()
@@ -905,7 +905,7 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteTrap()
         {
-            var intrinsic = host.PseudoProcedure("__swi", VoidType.Instance);
+            var intrinsic = host.Intrinsic("__swi", false, VoidType.Instance);
             m.SideEffect(intrinsic);
         }
 
@@ -923,7 +923,7 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteWai()
         {
-            var intrinsic = host.PseudoProcedure("__wai", VoidType.Instance);
+            var intrinsic = host.Intrinsic("__wai", true, VoidType.Instance);
             m.SideEffect(intrinsic);
         }
 
@@ -932,7 +932,8 @@ namespace Reko.Arch.M6800.M6812
             var b = binder.EnsureRegister(Registers.b);
             var x = binder.EnsureRegister(Registers.x);
             var y = binder.EnsureRegister(Registers.y);
-            var intrinsic = host.PseudoProcedure("__wav",
+            var intrinsic = host.Intrinsic("__wav",
+                false,
                 VoidType.Instance,
                 b, x, y,
                 m.Out(b.DataType, b), m.Out(x.DataType, x), m.Out(y.DataType, y));

@@ -152,10 +152,10 @@ namespace Reko.Arch.SuperH
                 case Mnemonic.nop: m.Nop(); break;
                 case Mnemonic.ocbi: RewriteOcbi(); break;
                 case Mnemonic.or: RewriteBinOp(m.Or, u => (byte)u); break;
-                case Mnemonic.rotcl: RewriteRotc(PseudoProcedure.RolC); break;
-                case Mnemonic.rotcr: RewriteRotc(PseudoProcedure.RorC); break;
-                case Mnemonic.rotl: RewriteRot(PseudoProcedure.Rol); break;
-                case Mnemonic.rotr: RewriteRot(PseudoProcedure.Ror); break;
+                case Mnemonic.rotcl: RewriteRotc(IntrinsicProcedure.RolC); break;
+                case Mnemonic.rotcr: RewriteRotc(IntrinsicProcedure.RorC); break;
+                case Mnemonic.rotl: RewriteRot(IntrinsicProcedure.Rol); break;
+                case Mnemonic.rotr: RewriteRot(IntrinsicProcedure.Ror); break;
                 case Mnemonic.rts: RewriteRts(); break;
                 case Mnemonic.sett: RewriteClrtSet(Registers.T, Constant.True()); break;
                 case Mnemonic.shad: RewriteShd(m.Shl, m.Sar); break;
@@ -390,7 +390,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteBrk()
         {
-            m.SideEffect(host.PseudoProcedure("__brk", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__brk", false, VoidType.Instance));
         }
 
         private void RewriteBsr()
@@ -451,7 +451,7 @@ namespace Reko.Arch.SuperH
             var t = binder.EnsureFlagGroup(Registers.T);
             var left = SrcOp(instr.Operands[1]);
             var right = SrcOp(instr.Operands[0]);
-            m.Assign(t, host.PseudoProcedure("__cmp_str", PrimitiveType.Bool, left, right));
+            m.Assign(t, host.Intrinsic("__cmp_str", false, PrimitiveType.Bool, left, right));
         }
 
 
@@ -460,13 +460,13 @@ namespace Reko.Arch.SuperH
             var src = SrcOp(instr.Operands[0]);
             var dst = SrcOp(instr.Operands[1]);
             var t = binder.EnsureFlagGroup(Registers.T);
-            m.Assign(t, host.PseudoProcedure("__div0s", PrimitiveType.Bool, dst, src));
+            m.Assign(t, host.Intrinsic("__div0s", false, PrimitiveType.Bool, dst, src));
         }
 
         private void RewriteDiv0u()
         {
             var t = binder.EnsureFlagGroup(Registers.T);
-            m.Assign(t, host.PseudoProcedure("__div0u", PrimitiveType.Bool));
+            m.Assign(t, host.Intrinsic("__div0u", false, PrimitiveType.Bool));
         }
 
 
@@ -475,7 +475,7 @@ namespace Reko.Arch.SuperH
             var src = SrcOp(instr.Operands[0]);
             var dst = SrcOp(instr.Operands[1]);
             var t = binder.EnsureFlagGroup(Registers.T);
-            m.Assign(dst, host.PseudoProcedure("__div1", PrimitiveType.Bool, dst, src));
+            m.Assign(dst, host.Intrinsic("__div1", false, PrimitiveType.Bool, dst, src));
         }
 
         private void RewriteDmul(Func<Expression, Expression, Expression> fn)
@@ -507,7 +507,7 @@ namespace Reko.Arch.SuperH
         private void RewriteFabs()
         {
             var src = SrcOp(instr.Operands[0], null);
-            var dst = DstOp(instr.Operands[0], src, (a, b) => host.PseudoProcedure("fabs", src.DataType, b));
+            var dst = DstOp(instr.Operands[0], src, (a, b) => host.Intrinsic("fabs", true, src.DataType, b));
         }
 
         private void RewriteFldi(float f)
@@ -540,11 +540,11 @@ namespace Reko.Arch.SuperH
                 Expression e;
                 if (s.DataType.BitSize == 64)
                 {
-                    e = host.PseudoProcedure("trunc", PrimitiveType.Real64, s);
+                    e = host.Intrinsic("trunc", false, PrimitiveType.Real64, s);
                 }
                 else
                 {
-                    e = host.PseudoProcedure("truncf", PrimitiveType.Real32, s);
+                    e = host.Intrinsic("truncf", false, PrimitiveType.Real32, s);
                 }
                 return m.Convert(e, e.DataType, PrimitiveType.Int32);
             });
@@ -610,21 +610,21 @@ namespace Reko.Arch.SuperH
         private void RewriteOcbi()
         {
             var mem = (MemoryAccess)SrcOp(instr.Operands[0]);
-            var intrinsic = host.PseudoProcedure("__ocbi", VoidType.Instance, mem.EffectiveAddress);
+            var intrinsic = host.Intrinsic("__ocbi", false, VoidType.Instance, mem.EffectiveAddress);
             m.SideEffect(intrinsic);
         }
 
         private void RewriteRot(string intrinsic)
         {
             var op1 = SrcOp(instr.Operands[0]);
-            m.Assign(op1, host.PseudoProcedure(intrinsic, op1.DataType, op1, m.Int32(1)));
+            m.Assign(op1, host.Intrinsic(intrinsic, true, op1.DataType, op1, m.Int32(1)));
         }
 
         private void RewriteRotc(string intrinsic)
         {
             var t = binder.EnsureFlagGroup(Registers.T);
             var op1 = SrcOp(instr.Operands[0]);
-            m.Assign(op1, host.PseudoProcedure(intrinsic, op1.DataType, op1, m.Int32(1), t));
+            m.Assign(op1, host.Intrinsic(intrinsic, true, op1.DataType, op1, m.Int32(1), t));
         }
 
         private void RewriteRts()
@@ -650,7 +650,7 @@ namespace Reko.Arch.SuperH
         {
             var src = SrcOp(instr.Operands[0]);
             var dst = SrcOp(instr.Operands[1]);
-            m.Assign(dst, host.PseudoProcedure("__swap_w", dst.DataType, src));
+            m.Assign(dst, host.Intrinsic("__swap_w", true, dst.DataType, src));
         }
 
         private void RewriteTst()
@@ -671,7 +671,7 @@ namespace Reko.Arch.SuperH
         {
             var src = SrcOp(instr.Operands[0]);
             var dst = SrcOp(instr.Operands[1]);
-            m.Assign(dst, host.PseudoProcedure("__xtrct", dst.DataType, dst, src));
+            m.Assign(dst, host.Intrinsic("__xtrct", true, dst.DataType, dst, src));
         }
     }
 }

@@ -597,12 +597,12 @@ namespace Reko.Scanning
                 //$REVIEW: this is a hack. Were we in SSA form,
                 // we could quickly determine if `id` is assigned
                 // to constant.
-                var ppp = SearchBackForProcedureConstant(id);
-                if (ppp != null)
+                var intrinsic = SearchBackForProcedureConstant(id);
+                if (intrinsic != null)
                 {
-                    var e = CreateProcedureConstant(ppp);
-                    sig = ppp.Signature;
-                    chr = ppp.Characteristics;
+                    var e = CreateProcedureConstant(intrinsic);
+                    sig = intrinsic.Signature;
+                    chr = intrinsic.Characteristics;
                     EmitCall(e, sig, chr, site);
                     return OnAfterCall(sig, chr);
                 }
@@ -1265,9 +1265,9 @@ namespace Reko.Scanning
                 return null;
             if (!(fn.Procedure is ProcedureConstant pc))
                 return null;
-            if (!(pc.Procedure is PseudoProcedure ppp))
+            if (!(pc.Procedure is IntrinsicProcedure intrinsic))
                 return null;
-            if (ppp.Name != PseudoProcedure.Syscall || fn.Arguments.Length == 0)
+            if (intrinsic.Name != IntrinsicProcedure.Syscall || fn.Arguments.Length == 0)
                 return null;
 
             if (!(fn.Arguments[0] is Constant vector))

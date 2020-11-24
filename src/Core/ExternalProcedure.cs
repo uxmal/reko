@@ -36,7 +36,7 @@ namespace Reko.Core
         public ExternalProcedure(
             string name,
             FunctionType signature,
-            ProcedureCharacteristics? chars = null) : base(name)
+            ProcedureCharacteristics? chars = null) : base(name, false)
         {
             this.Signature = signature ?? throw new ArgumentNullException(
                 nameof(signature),

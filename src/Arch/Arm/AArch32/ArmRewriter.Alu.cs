@@ -148,7 +148,7 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteRev()
         {
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var intrinsic = host.PseudoProcedure("__rev", PrimitiveType.Word32, this.Operand(Src1()));
+            var intrinsic = host.Intrinsic("__rev", true, PrimitiveType.Word32, this.Operand(Src1()));
             m.Assign(opDst, intrinsic);
         }
 
@@ -156,7 +156,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var intrinsic = m.Convert(
-                host.PseudoProcedure("__rev_16", PrimitiveType.Word16, m.Slice(PrimitiveType.Word16, this.Operand(Src1()), 0)),
+                host.Intrinsic("__rev_16", true, PrimitiveType.Word16, m.Slice(PrimitiveType.Word16, this.Operand(Src1()), 0)),
                 PrimitiveType.Word16,
                 PrimitiveType.Int32);
             m.Assign(opDst, intrinsic);
@@ -192,8 +192,8 @@ namespace Reko.Arch.Arm.AArch32
         {
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var opSrc = this.Operand(Src1());
-            var ppp = host.PseudoProcedure("__clz", PrimitiveType.Int32, opSrc);
-            m.Assign(opDst, ppp);
+            var intrinsic = host.Intrinsic("__clz", true, PrimitiveType.Int32, opSrc);
+            m.Assign(opDst, intrinsic);
         }
 
         private void RewriteCmp(Func<Expression, Expression, Expression> op)
@@ -214,7 +214,7 @@ namespace Reko.Arch.Arm.AArch32
                 src2 = EmitNarrowingSlice(src2, dt);
             }
             var dst = this.Operand(Dst());
-            var intrinsic = host.PseudoProcedure(fnName, PrimitiveType.UInt32, src1, src2);
+            var intrinsic = host.Intrinsic(fnName, true, PrimitiveType.UInt32, src1, src2);
             m.Assign(dst, intrinsic);
         }
 
@@ -374,7 +374,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteStrex()
         {
-            var intrinsic = host.PseudoProcedure("__strex", VoidType.Instance);
+            var intrinsic = host.Intrinsic("__strex", false, VoidType.Instance);
             m.SideEffect(intrinsic);
         }
 
@@ -401,8 +401,8 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteHint()
         {
-            var ppp = host.PseudoProcedure("__ldrex", VoidType.Instance, Operand(Dst()));
-            m.SideEffect(m.Fn(ppp));
+            var ldrex = host.Intrinsic("__ldrex", false, VoidType.Instance, Operand(Dst()));
+            m.SideEffect(m.Fn(ldrex));
         }
 
         private void RewriteLdm(int initialOffset, Func<Expression, Expression, Expression> op)
@@ -446,7 +446,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteLdrex()
         {
-            var intrinsic = host.PseudoProcedure("__ldrex", VoidType.Instance);
+            var intrinsic = host.Intrinsic("__ldrex", true, VoidType.Instance);
             m.SideEffect(intrinsic);
         }
 
@@ -473,13 +473,13 @@ namespace Reko.Arch.Arm.AArch32
 
         private Expression Ror(Expression left, Expression right)
         {
-            var intrinsic = host.PseudoProcedure(PseudoProcedure.Ror, left.DataType, left, right);
+            var intrinsic = host.Intrinsic(IntrinsicProcedure.Ror, true, left.DataType, left, right);
             return intrinsic;
         }
 
         private Expression Rrx(Expression left, Expression right)
         {
-            var intrinsic = host.PseudoProcedure(PseudoProcedure.RorC, left.DataType, left, right, C());
+            var intrinsic = host.Intrinsic(IntrinsicProcedure.RorC, true, left.DataType, left, right, C());
             return intrinsic;
         }
 
@@ -578,14 +578,15 @@ namespace Reko.Arch.Arm.AArch32
             var src1 = Operand(Src1());
             var src2 = Operand(Src2());
             var dst = Operand(Dst());
-            m.Assign(dst, host.PseudoProcedure(name, dst.DataType, src1, src2));
+            m.Assign(dst, host.Intrinsic(name,true,dst.DataType, src1, src2));
         }
 
         private void RewritePld(string name)
         {
             var dst = ((MemoryAccess) this.Operand(Dst())).EffectiveAddress;
-               m.SideEffect(host.PseudoProcedure(
+               m.SideEffect(host.Intrinsic(
                    name,
+                   false,
                    VoidType.Instance,
                    dst));
         }
@@ -619,7 +620,7 @@ namespace Reko.Arch.Arm.AArch32
             var src1 = Operand(Src1());
             var src2 = Operand(Src2());
             var sum = op(src1, src2);
-            var sat = host.PseudoProcedure("__signed_sat_32", PrimitiveType.Int32, sum);
+            var sat = host.Intrinsic("__signed_sat_32", true, PrimitiveType.Int32, sum);
             m.Assign(dst, sat);
             m.Assign(
                 Q(),
@@ -632,7 +633,7 @@ namespace Reko.Arch.Arm.AArch32
             var src2 = Operand(Src2());
             var dst = Operand(Dst());
             var dtArray = new ArrayType(PrimitiveType.Int16, 2);
-            var qasx = host.PseudoProcedure(name, dtArray, src1, src2);
+            var qasx = host.Intrinsic(name, true, dtArray, src1, src2);
             m.Assign(dst, qasx);
         }
 
@@ -640,11 +641,11 @@ namespace Reko.Arch.Arm.AArch32
         {
             var dst = Operand(Dst(), PrimitiveType.Word32, true);
             var src2 = m.SMul(Operand(Src2()), m.Int32(2));
-            var sat = host.PseudoProcedure("__signed_sat_32", PrimitiveType.Int32, src2);
+            var sat = host.Intrinsic("__signed_sat_32", true, PrimitiveType.Int32, src2);
             src2 = sat;
             var src1 = Operand(Src1());
             var sum = op(src1, src2);
-            sat = host.PseudoProcedure("__signed_sat_32", PrimitiveType.Int32, sum);
+            sat = host.Intrinsic("__signed_sat_32", true, PrimitiveType.Int32, sum);
             m.Assign(dst, sat);
             m.Assign(
                 Q(),
@@ -797,7 +798,7 @@ namespace Reko.Arch.Arm.AArch32
             var dst = this.Operand(Dst());
             var src1 = this.Operand(Src1());
             var src2 = this.Operand(Src2());
-            var intrinsic = host.PseudoProcedure("__ssat", PrimitiveType.Int32, src1, src2);
+            var intrinsic = host.Intrinsic("__ssat", true, PrimitiveType.Int32, src1, src2);
             m.Assign(dst, intrinsic);
             m.Assign(Q(), m.Cond(dst));
         }
@@ -942,7 +943,7 @@ namespace Reko.Arch.Arm.AArch32
             var vSrc2 = binder.CreateTemporary(ab_4);
             m.Assign(vSrc1, opSrc1);
             m.Assign(vSrc2, opSrc2);
-            var intrinsic = host.PseudoProcedure("__usada8", PrimitiveType.Word32, vSrc1, vSrc2);
+            var intrinsic = host.Intrinsic("__usada8", true, PrimitiveType.Word32, vSrc1, vSrc2);
             m.Assign(opDst, intrinsic);
         }
 
@@ -951,7 +952,7 @@ namespace Reko.Arch.Arm.AArch32
             var dst = this.Operand(Dst());
             var src1 = this.Operand(Src1());
             var src2 = this.Operand(Src2());
-            var intrinsic = host.PseudoProcedure("__usat", PrimitiveType.UInt32, src1, src2);
+            var intrinsic = host.Intrinsic("__usat", true, PrimitiveType.UInt32, src1, src2);
             m.Assign(dst, intrinsic);
             m.Assign(Q(), m.Cond(dst));
         }
@@ -964,7 +965,7 @@ namespace Reko.Arch.Arm.AArch32
             var arrSrc = new ArrayType(elemType, 2);
             var arrDst = new ArrayType(elemType, 2);
 
-            var intrinsic = host.PseudoProcedure(intrinsicName, arrDst, src1, src2);
+            var intrinsic = host.Intrinsic(intrinsicName, true, arrDst, src1, src2);
             m.Assign(dst, intrinsic);
             m.Assign(Q(), m.Cond(dst));
         }
@@ -1017,7 +1018,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteYield()
         {
-            var intrinsic = host.PseudoProcedure("__yield", VoidType.Instance);
+            var intrinsic = host.Intrinsic("__yield",  false,VoidType.Instance);
             m.SideEffect(intrinsic);
         }
     }

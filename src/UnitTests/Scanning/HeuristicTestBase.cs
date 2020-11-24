@@ -72,15 +72,16 @@ namespace Reko.UnitTests.Scanning
         protected void Given_RewriterHost()
         {
             host = new Mock<IRewriterHost>();
-            host.Setup(h => h.PseudoProcedure(
+            host.Setup(h => h.Intrinsic(
                 It.IsAny<string>(),
+                It.IsAny<bool>(),
                 It.IsAny<DataType>(),
                 It.IsAny<Expression[]>()))
-               .Returns((string n, DataType dt, Expression[] a) =>
+               .Returns((string n, bool i, DataType dt, Expression[] a) =>
                 {
                     var fn = new FunctionType();
-                    var ppp = new PseudoProcedure(n, fn);
-                    return new Application(new ProcedureConstant(fn, ppp),
+                    var intrinsic = new IntrinsicProcedure(n, i, fn);
+                    return new Application(new ProcedureConstant(fn, intrinsic),
                         dt,
                         a);
             });

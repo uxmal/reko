@@ -3308,6 +3308,17 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
+        public void X86Rw_fprem()
+        {
+            Run32bitTest(0xD9, 0xF8);	// fprem
+            AssertCode(
+                "0|L--|10000000(2): 3 instructions",
+                "1|L--|ST[Top + 1<i8>:real64] = ST[Top:real64] % ST[Top + 1<i8>:real64]",
+                "2|L--|C2 = __fprem_incomplete(ST[Top + 1<i8>:real64])",
+                "3|L--|Top = Top + 1<i8>");
+        }
+
+        [Test]
         public void X86Rw_fprem1()
         {
             Run32bitTest(0xD9, 0xF5);	// fprem1	st(5),st(0)

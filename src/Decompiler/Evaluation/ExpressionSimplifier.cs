@@ -164,17 +164,17 @@ namespace Reko.Evaluation
             // Rotations-with-carries that rotate in a false carry 
             // flag can be simplified to shifts.
             if (appl.Procedure is ProcedureConstant pc && 
-                pc.Procedure is PseudoProcedure intrinsic)
+                pc.Procedure is IntrinsicProcedure intrinsic)
             {
                 switch (intrinsic.Name)
                 {
-                case PseudoProcedure.RolC:
+                case IntrinsicProcedure.RolC:
                     if (IsSingleBitRotationWithClearCarryIn(args))
                     {
                         return new BinaryExpression(Operator.Shl, appl.DataType, args[0], args[1]);
                     }
                     break;
-                case PseudoProcedure.RorC:
+                case IntrinsicProcedure.RorC:
                     if (IsSingleBitRotationWithClearCarryIn(args))
                     {
                         return new BinaryExpression(Operator.Shr, appl.DataType, args[0], args[1]);

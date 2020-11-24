@@ -228,11 +228,11 @@ namespace Reko.Arch.Avr
             }
             else if (read)
             {
-                m.Assign(reg, host.PseudoProcedure("__in", PrimitiveType.Byte, Constant.Byte(port)));
+                m.Assign(reg, host.Intrinsic("__in", false, PrimitiveType.Byte, Constant.Byte(port)));
             }
             else
             {
-                m.SideEffect(host.PseudoProcedure("__out", VoidType.Instance, Constant.Byte(port), reg));
+                m.SideEffect(host.Intrinsic("__out", false, VoidType.Instance, Constant.Byte(port), reg));
             }
         }
 
@@ -372,7 +372,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteCli()
         {
-            m.SideEffect(host.PseudoProcedure("__cli", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__cli", false, VoidType.Instance));
         }
 
         private void RewriteCp()
@@ -418,7 +418,7 @@ namespace Reko.Arch.Avr
         private void RewriteDes()
         {
             var h = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.sreg, (uint)FlagM.HF));
-            m.SideEffect(host.PseudoProcedure("__des", VoidType.Instance, RewriteOp(0), h));
+            m.SideEffect(host.Intrinsic("__des", false, VoidType.Instance, RewriteOp(0), h));
         }
 
         private void RewriteIcall()
@@ -540,14 +540,14 @@ namespace Reko.Arch.Avr
         {
             var c = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.sreg, (uint)FlagM.CF));
             var reg = RewriteOp(0);
-            m.Assign(reg, host.PseudoProcedure(PseudoProcedure.RorC, PrimitiveType.Byte, reg, m.Int32(1), c));
+            m.Assign(reg, host.Intrinsic(IntrinsicProcedure.RorC, true, PrimitiveType.Byte, reg, m.Int32(1), c));
             EmitFlags(reg, CmpFlags);
         }
 
         private void RewriteSbis()
         {
-            var io = host.PseudoProcedure("__in", PrimitiveType.Byte, RewriteOp(0));
-            var bis = host.PseudoProcedure("__bit_set", PrimitiveType.Bool, io, RewriteOp(1));
+            var io = host.Intrinsic("__in", false, PrimitiveType.Byte, RewriteOp(0));
+            var bis = host.Intrinsic("__bit_set", true, PrimitiveType.Bool, io, RewriteOp(1));
             if (!dasm.MoveNext())
             {
                 m.Invalid();
@@ -561,7 +561,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteSei()
         {
-            m.SideEffect(host.PseudoProcedure("__sei", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__sei", false, VoidType.Instance));
         }
 
         private void RewriteSetBit(FlagM grf, bool value)
@@ -583,7 +583,7 @@ namespace Reko.Arch.Avr
         private void RewriteSwap()
         {
             var reg = RewriteOp(0);
-            m.Assign(reg, host.PseudoProcedure("__swap", PrimitiveType.Byte, reg));
+            m.Assign(reg, host.Intrinsic("__swap", true, PrimitiveType.Byte, reg));
         }
 
     }

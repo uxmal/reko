@@ -814,38 +814,38 @@ namespace Reko.Scanning
             }
         }
 
-        public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
+        public IntrinsicProcedure EnsureIntrinsic(string name, bool isIdempotent, DataType returnType, int arity)
         {
             var args = Enumerable.Range(0, arity).Select(i => Constant.Create(Program.Architecture.WordWidth, 0)).ToArray();
-            var ppp = Program.EnsurePseudoProcedure(name, returnType, args);
-            return ppp;
+            var intrinsic = Program.EnsureIntrinsicProcedure(name, isIdempotent, returnType, args);
+            return intrinsic;
         }
 
-        public Expression CallIntrinsic(string name, FunctionType fnType, params Expression[] args)
+        public Expression CallIntrinsic(string name, bool isIdempotent, FunctionType fnType, params Expression[] args)
         {
-            var intrinsic = Program.EnsurePseudoProcedure(name, fnType);
+            var intrinsic = Program.EnsureIntrinsicProcedure(name, isIdempotent, fnType);
             return new Application(
                 new ProcedureConstant(Program.Architecture.PointerType, intrinsic),
                 fnType.ReturnValue.DataType,
                 args);
         }
 
-        public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
+        public Expression Intrinsic(string name, bool isIdempotent, DataType returnType, params Expression[] args)
         {
-            var ppp = Program.EnsurePseudoProcedure(name, returnType, args);
+            var intrinsic = Program.EnsureIntrinsicProcedure(name, isIdempotent, returnType, args);
             return new Application(
-                new ProcedureConstant(Program.Architecture.PointerType, ppp),
+                new ProcedureConstant(Program.Architecture.PointerType, intrinsic),
                 returnType,
                 args);
         }
 
 
-        public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
+        public Expression Intrinsic(string name, bool isIdempotent, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
         {
-            var ppp = Program.EnsurePseudoProcedure(name, returnType, args);
-            ppp.Characteristics = c;
+            var intrinsic = Program.EnsureIntrinsicProcedure(name, isIdempotent, returnType, args);
+            intrinsic.Characteristics = c;
             return new Application(
-                new ProcedureConstant(Program.Architecture.PointerType, ppp),
+                new ProcedureConstant(Program.Architecture.PointerType, intrinsic),
                 returnType,
                 args);
         }

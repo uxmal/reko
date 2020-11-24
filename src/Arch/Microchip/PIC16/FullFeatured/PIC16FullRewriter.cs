@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work from:
@@ -146,7 +146,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         private void Rewrite_ASRF()
         {
             GetSrcAndDst(out var srcmem, out var dstmem);
-            m.Assign(dstmem, m.Fn(host.PseudoProcedure("__asrf", PrimitiveType.Byte, srcmem)));
+            m.Assign(dstmem, m.Fn(host.Intrinsic("__asrf", true, PrimitiveType.Byte, srcmem)));
             SetStatusFlags(dstmem);
         }
 
@@ -178,14 +178,14 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         private void Rewrite_LSLF()
         {
             GetSrcAndDst(out var srcmem, out var dstmem);
-            m.Assign(dstmem, m.Fn(host.PseudoProcedure("__lslf", PrimitiveType.Byte, srcmem)));
+            m.Assign(dstmem, m.Fn(host.Intrinsic("__lslf", true, PrimitiveType.Byte, srcmem)));
             SetStatusFlags(dstmem);
         }
 
         private void Rewrite_LSRF()
         {
             GetSrcAndDst(out var srcmem, out var dstmem);
-            m.Assign(dstmem, m.Fn(host.PseudoProcedure("__lsrf", PrimitiveType.Byte, srcmem)));
+            m.Assign(dstmem, m.Fn(host.Intrinsic("__lsrf", true, PrimitiveType.Byte, srcmem)));
             SetStatusFlags(dstmem);
         }
 

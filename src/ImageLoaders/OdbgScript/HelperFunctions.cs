@@ -276,7 +276,7 @@ namespace Reko.ImageLoaders.OdbgScript
         public static bool TryGetHexLiteral(Expression s, out string pattern)
         {
             if (s is Application a && a.Procedure is ProcedureConstant pc && 
-                pc.Procedure is PseudoProcedure intrinsic && 
+                pc.Procedure is IntrinsicProcedure intrinsic && 
                 intrinsic.Name == "HexString")
             {
                 pattern = $"#{a.Arguments[0]}#";

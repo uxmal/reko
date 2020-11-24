@@ -306,13 +306,13 @@ namespace Reko.Analysis
                 return TransformAddOrSub(a, binUse);
             if (a.Src is Application app && app.Procedure is ProcedureConstant pc)
             {
-                if (pc.Procedure is PseudoProcedure pseudo)
+                if (pc.Procedure is IntrinsicProcedure pseudo)
                 {
-                    if (pseudo.Name == PseudoProcedure.RorC)
+                    if (pseudo.Name == IntrinsicProcedure.RorC)
                     {
                         return TransformRorC(app, a);
                     }
-                    else if (pseudo.Name == PseudoProcedure.RolC)
+                    else if (pseudo.Name == IntrinsicProcedure.RolC)
                     {
                         return TransformRolC(app, a);
                     }
@@ -595,7 +595,7 @@ namespace Reko.Analysis
             Expression e = new Application(
                 new ProcedureConstant(
                     program.Platform.PointerType,
-                    new PseudoProcedure("OVERFLOW", sig)),
+                    new IntrinsicProcedure("OVERFLOW", true, sig)),
                 PrimitiveType.Bool,
                 bin);
 			if (isNegated)
@@ -613,7 +613,7 @@ namespace Reko.Analysis
             Expression e = new Application(
                 new ProcedureConstant(
                     program.Platform.PointerType,
-                    new PseudoProcedure("PARITY_EVEN", sig)),
+                    new IntrinsicProcedure("PARITY_EVEN", true, sig)),
                 PrimitiveType.Bool,
                 bin);
             if (isNegated)
@@ -636,7 +636,7 @@ namespace Reko.Analysis
             Expression e = m.Fn(
                 new ProcedureConstant(
                     program.Platform.PointerType,
-                    new PseudoProcedure("isunordered", sig)),
+                    new IntrinsicProcedure("isunordered", true, sig)),
                 bin.Left,
                 bin.Right);
             if (isNegated)

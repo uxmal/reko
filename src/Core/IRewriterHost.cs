@@ -27,7 +27,7 @@ namespace Reko.Core
 {
     public interface IRewriterHost
     {
-        PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity);
+        IntrinsicProcedure EnsureIntrinsic(string name, bool isIdempotent, DataType returnType, int arity);
         /// <summary>
         /// Generates a call to an intrinsic procedure named <paramref name="name"/>.
         /// </summary>
@@ -35,9 +35,9 @@ namespace Reko.Core
         /// <param name="returnType"></param>
         /// <param name="args"></param>
         /// <returns>An Application expression.</returns>
-        Expression PseudoProcedure(string name, DataType returnType, params Expression [] args);
-        Expression CallIntrinsic(string name, FunctionType fnType, params Expression [] args);
-        Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression [] args);
+        Expression Intrinsic(string name, bool isIdempotent, DataType returnType, params Expression [] args);
+        Expression CallIntrinsic(string name, bool isIdempotent, FunctionType fnType, params Expression [] args);
+        Expression Intrinsic(string name, bool isIdempotent, ProcedureCharacteristics c, DataType returnType, params Expression [] args);
 
 
         /// <summary>

@@ -343,11 +343,21 @@ namespace Reko.Arch.X86
 		public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
 		{
 			StringBuilder s = new StringBuilder();
-            foreach (var fr in Registers.EflagsBits)
+            if (flagregister == Registers.eflags)
             {
-                if ((fr.FlagGroupBits & grf) != 0) s.Append(fr.Name);
-			}
-			return s.ToString();
+                foreach (var fr in Registers.EflagsBits)
+                {
+                    if ((fr.FlagGroupBits & grf) != 0) s.Append(fr.Name);
+                }
+            }
+            if (flagregister == Registers.FPUF)
+            {
+                foreach (var fr in Registers.EflagsBits)
+                {
+                    if ((fr.FlagGroupBits & grf) != 0) s.Append(fr.Name);
+                }
+            }
+            return s.ToString();
 		}
 
 		public ProcessorMode ProcessorMode

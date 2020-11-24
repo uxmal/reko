@@ -180,7 +180,7 @@ namespace Reko.UnitTests.Environments.C64
             AssertCode(
                 "0|L--|0801(1): 2 instructions",
                 "1|L--|__PrintLine(3<i16>)",
-                "2|L--|__PrintEmptyLine()");
+                "2|L--|__PrintLine()");
         }
 
         [Test]
@@ -347,10 +347,10 @@ namespace Reko.UnitTests.Environments.C64
             m.Add(10, Token.PRINT,":",Token.PRINT,"\"FOO: \";CM$(MA):",Token.PRINT);
             AssertCode(
                 "0|L--|0801(1): 4 instructions",
-                "1|L--|__PrintEmptyLine()",
+                "1|L--|__PrintLine()",
                 "2|L--|__Print(\"FOO: \")",
                 "3|L--|__PrintLine(CM_s[MA_r])",
-                "4|L--|__PrintEmptyLine()");
+                "4|L--|__PrintLine()");
         }
 
         [Test]

@@ -82,18 +82,18 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
-		public void Prog_EnsurePseudoProc()
+		public void Prog_EnsureIntrinsic()
 		{
-			var ppp = program.EnsurePseudoProcedure("foo", VoidType.Instance, new Identifier("", PrimitiveType.Int32, null));
-			Assert.IsNotNull(ppp);
-			Assert.AreEqual("foo", ppp.Name);
-			Assert.AreEqual(1, program.PseudoProcedures.Count);
+			var intrinsic = program.EnsureIntrinsicProcedure("foo", false, VoidType.Instance, new Identifier("", PrimitiveType.Int32, null));
+			Assert.IsNotNull(intrinsic);
+			Assert.AreEqual("foo", intrinsic.Name);
+			Assert.AreEqual(1, program.Intrinsics.Count);
 
-            var ppp2 = program.EnsurePseudoProcedure("foo", VoidType.Instance, new Identifier("", PrimitiveType.Int32, null));
+            var ppp2 = program.EnsureIntrinsicProcedure("foo", false, VoidType.Instance, new Identifier("", PrimitiveType.Int32, null));
 			Assert.IsNotNull(ppp2);
-			Assert.AreSame(ppp, ppp2);
-			Assert.AreEqual("foo", ppp.Name);
-			Assert.AreEqual(1, program.PseudoProcedures.Count);
+			Assert.AreSame(intrinsic, ppp2);
+			Assert.AreEqual("foo", intrinsic.Name);
+			Assert.AreEqual(1, program.Intrinsics.Count);
 		}
 
         [Test]

@@ -42,8 +42,9 @@ namespace Reko.UnitTests.Fragments
             var Z = Frame.EnsureFlagGroup(Architecture.GetFlagGroup("Z"));
             var SZC = Frame.EnsureFlagGroup(Architecture.GetFlagGroup("SZC"));
             var SZP = Frame.EnsureFlagGroup(Architecture.GetFlagGroup("SZP"));
-            var rorc = new PseudoProcedure(
-                PseudoProcedure.RorC,
+            var rorc = new IntrinsicProcedure(
+                IntrinsicProcedure.RorC,
+                true,
                 PrimitiveType.Byte,
                 3);
             Assign(sp, Frame.FramePointer);

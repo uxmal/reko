@@ -133,7 +133,7 @@ namespace Reko.Arch.Qualcomm
                 case Mnemonic.isync:
                 case Mnemonic.l2kill:
                 case Mnemonic.syncht:
-                    m.SideEffect(RewriteIntrinsic(instr.Mnemonic.ToString(), VoidType.Instance)); break;
+                    m.SideEffect(RewriteIntrinsic(instr.Mnemonic.ToString(), false, VoidType.Instance)); break;
                 }
                 m.Instructions.Last().Class = instr.InstructionClass;
             }
@@ -218,7 +218,7 @@ namespace Reko.Arch.Qualcomm
                 break;
             case ApplicationOperand app:
                 var appOps = app.Operands.Select(OperandSrc).Concat(new[] { src }).ToArray();
-                m.SideEffect(host.PseudoProcedure(app.Mnemonic.ToString(), VoidType.Instance, appOps));
+                m.SideEffect(host.Intrinsic(app.Mnemonic.ToString(), false, VoidType.Instance, appOps));
                 return;
             }
             throw new NotImplementedException($"Hexagon rewriter for {op.GetType().Name} not implemented yet.");
@@ -249,7 +249,7 @@ namespace Reko.Arch.Qualcomm
             case Mnemonic.cmph__gtu: return RewriteCmp(PrimitiveType.Word16, m.Ugt, ops[0], ops[1]);
             case Mnemonic.dfcmp__eq: return m.FEq(ops[0], ops[1]);
             case Mnemonic.dfcmp__ge: return m.FGe(ops[0], ops[1]);
-            case Mnemonic.dfcmp__uo: return host.PseudoProcedure("isunordered", PrimitiveType.Bool, ops[0], ops[1]);
+            case Mnemonic.dfcmp__uo: return host.Intrinsic("isunordered", true, PrimitiveType.Bool, ops[0], ops[1]);
             case Mnemonic.combine: return RewriteCombine(ops[0], ops[1]);
             case Mnemonic.convert_d2df: return m.Convert(ops[0], PrimitiveType.Int64, PrimitiveType.Real64);
             case Mnemonic.convert_df2sf: return m.Convert(ops[0], PrimitiveType.Real64, PrimitiveType.Real32);
@@ -309,27 +309,27 @@ namespace Reko.Arch.Qualcomm
             case Mnemonic.togglebit:
             case Mnemonic.tstbit:
                 intrinsicFunc:
-                return RewriteIntrinsic(app.Mnemonic.ToString(), dt, ops);
+                return RewriteIntrinsic(app.Mnemonic.ToString(), false, dt, ops);
 
             case Mnemonic.dccleana:
             case Mnemonic.dccleaninva:
             case Mnemonic.dcfetch:
             case Mnemonic.dcinva:
             case Mnemonic.dczeroa:
-                return RewriteIntrinsic(app.Mnemonic.ToString(), VoidType.Instance, ops);
+                return RewriteIntrinsic(app.Mnemonic.ToString(), false, VoidType.Instance, ops);
 
-            case Mnemonic.vavgh: return RewriteVectorIntrinsic(app.Mnemonic, PrimitiveType.Word16, ops);
-            case Mnemonic.vcmpb__eq: return RewriteVectorIntrinsic(app.Mnemonic, PrimitiveType.Byte, ops);
-            case Mnemonic.vmux: return RewriteVectorIntrinsic(app.Mnemonic, PrimitiveType.Byte, ops);
-            case Mnemonic.vsplatb: return RewriteVectorIntrinsic(app.Mnemonic, PrimitiveType.Byte, ops);
-            case Mnemonic.vsubh: return RewriteVectorIntrinsic(app.Mnemonic, PrimitiveType.Int16, ops);
+            case Mnemonic.vavgh: return RewriteVectorIntrinsic(app.Mnemonic, true, PrimitiveType.Word16, ops);
+            case Mnemonic.vcmpb__eq: return RewriteVectorIntrinsic(app.Mnemonic, true, PrimitiveType.Byte, ops);
+            case Mnemonic.vmux: return RewriteVectorIntrinsic(app.Mnemonic, true, PrimitiveType.Byte, ops);
+            case Mnemonic.vsplatb: return RewriteVectorIntrinsic(app.Mnemonic, true, PrimitiveType.Byte, ops);
+            case Mnemonic.vsubh: return RewriteVectorIntrinsic(app.Mnemonic, true, PrimitiveType.Int16, ops);
             }
             throw new ArgumentException($"Hexagon rewriter for {app.Mnemonic} not implemented yet.", app.Mnemonic.ToString());
         }
 
-        private Expression RewriteIntrinsic(string name, DataType dt, params Expression[] ops)
+        private Expression RewriteIntrinsic(string name, bool isIdempotent, DataType dt, params Expression[] ops)
         {
-            return host.PseudoProcedure(name, dt, ops);
+            return host.Intrinsic(name, isIdempotent, dt, ops);
         }
 
         private Expression RewriteMemoryOperand(MemoryOperand mem)
@@ -524,7 +524,7 @@ namespace Reko.Arch.Qualcomm
 
         private void RewriteLoop(int n, Expression [] args)
         {
-            m.SideEffect(host.PseudoProcedure($"__nyi_loop{n}", VoidType.Instance, args));
+            m.SideEffect(host.Intrinsic($"__nyi_loop{n}", false, VoidType.Instance, args));
         }
 
         private Expression RewriteMpy(Expression a, Expression b)
@@ -557,7 +557,7 @@ namespace Reko.Arch.Qualcomm
         }
         private void RewriteRte()
         {
-            m.SideEffect(host.PseudoProcedure("rte", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("rte", false, VoidType.Instance));
             m.Return(0, 0);
         }
 
@@ -571,11 +571,11 @@ namespace Reko.Arch.Qualcomm
             }
         }
  
-        private Expression RewriteVectorIntrinsic(Mnemonic mnemonic, PrimitiveType dtElem, Expression[] ops)
+        private Expression RewriteVectorIntrinsic(Mnemonic mnemonic, bool isIdempotent, PrimitiveType dtElem, Expression[] ops)
         {
             var cElem = ops[0].DataType.Size / dtElem.Size;
             var dtVector = new ArrayType(dtElem, cElem);
-            return host.PseudoProcedure(mnemonic.ToString(), dtVector, ops);
+            return host.Intrinsic(mnemonic.ToString(), isIdempotent, dtVector, ops);
         }
 
     }

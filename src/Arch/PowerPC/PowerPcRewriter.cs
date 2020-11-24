@@ -163,8 +163,8 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.divw: RewriteDivw(); break;
                 case Mnemonic.divwu: RewriteDivwu(); break;
                 case Mnemonic.eieio: RewriteEieio(); break;
-                case Mnemonic.evmhesmfaaw: RewriteVectorPairOp("__evmhesmfaaw", PrimitiveType.Word32); break;
-                case Mnemonic.evmhessfaaw: RewriteVectorPairOp("__evmhessfaaw", PrimitiveType.Word32); break;
+                case Mnemonic.evmhesmfaaw: RewriteVectorPairOp("__evmhesmfaaw", false, PrimitiveType.Word32); break;
+                case Mnemonic.evmhessfaaw: RewriteVectorPairOp("__evmhessfaaw", false, PrimitiveType.Word32); break;
                 case Mnemonic.eqv: RewriteXor(true); break;
                 case Mnemonic.extsb: RewriteExts(PrimitiveType.SByte); break;
                 case Mnemonic.extsh: RewriteExts(PrimitiveType.Int16); break;
@@ -364,9 +364,9 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.tw: RewriteTrap(PrimitiveType.Word32); break;
                 case Mnemonic.twi: RewriteTrap(PrimitiveType.Word32); break;
                 case Mnemonic.vaddfp: RewriteVaddfp(); break;
-                case Mnemonic.vaddubm: RewriteVectorBinOp("__vaddubm", PrimitiveType.UInt8); break;
-                case Mnemonic.vaddubs: RewriteVectorBinOp("__vaddubs", PrimitiveType.UInt8); break;
-                case Mnemonic.vadduwm: RewriteVectorBinOp("__vadduwm", PrimitiveType.UInt32); break;
+                case Mnemonic.vaddubm: RewriteVectorBinOp("__vaddubm", false, PrimitiveType.UInt8); break;
+                case Mnemonic.vaddubs: RewriteVectorBinOp("__vaddubs", false, PrimitiveType.UInt8); break;
+                case Mnemonic.vadduwm: RewriteVectorBinOp("__vadduwm", false, PrimitiveType.UInt32); break;
                 case Mnemonic.vadduqm: RewriteAdd(); break;
                 case Mnemonic.vand:
                 case Mnemonic.vand128: RewriteAnd(false); break;
@@ -385,22 +385,22 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.vcmpequw: RewriteVcmpu("__vcmpequw", PrimitiveType.UInt32); break;
                 case Mnemonic.vcsxwfp128: RewriteVcsxwfp("__vcsxwfp"); break;
                 case Mnemonic.vctsxs: RewriteVct("__vctsxs", PrimitiveType.Int32); break;
-                case Mnemonic.vexptefp128: RewriteVectorUnary("__vexptefp"); break;
-                case Mnemonic.vlogefp128: RewriteVectorUnary("__vlogefp"); break;
+                case Mnemonic.vexptefp128: RewriteVectorUnary("__vexptefp", false); break;
+                case Mnemonic.vlogefp128: RewriteVectorUnary("__vlogefp", false); break;
                 case Mnemonic.vmaddfp: RewriteVmaddfp(); break;
-                case Mnemonic.vmaddcfp128: RewriteVectorBinOp("__vmaddcfp", PrimitiveType.Real32); break;
-                case Mnemonic.vmaxfp128: RewriteVectorBinOp("__vmaxfp", PrimitiveType.Real32); break;
-                case Mnemonic.vminfp128: RewriteVectorBinOp("__vminfp", PrimitiveType.Real32); break;
-                case Mnemonic.vmaxub: RewriteVectorBinOp("__vmaxub", PrimitiveType.UInt8); break;
-                case Mnemonic.vmaxuh: RewriteVectorBinOp("__vmaxuh", PrimitiveType.UInt16); break;
-                case Mnemonic.vmladduhm: RewriteVectorBinOp("__vmladduhm", PrimitiveType.UInt16); break;
+                case Mnemonic.vmaddcfp128: RewriteVectorBinOp("__vmaddcfp", false, PrimitiveType.Real32); break;
+                case Mnemonic.vmaxfp128: RewriteVectorBinOp("__vmaxfp", false, PrimitiveType.Real32); break;
+                case Mnemonic.vminfp128: RewriteVectorBinOp("__vminfp", false, PrimitiveType.Real32); break;
+                case Mnemonic.vmaxub: RewriteVectorBinOp("__vmaxub", false, PrimitiveType.UInt8); break;
+                case Mnemonic.vmaxuh: RewriteVectorBinOp("__vmaxuh", false, PrimitiveType.UInt16); break;
+                case Mnemonic.vmladduhm: RewriteVectorBinOp("__vmladduhm", false, PrimitiveType.UInt16); break;
                 case Mnemonic.vmrghw:
                 case Mnemonic.vmrghw128: RewriteVmrghw(); break;
                 case Mnemonic.vmrglw:
                 case Mnemonic.vmrglw128: RewriteVmrglw(); break;
-                case Mnemonic.vmsub3fp128: RewriteVectorBinOp("__vmsub3fp", PrimitiveType.Real32); break;
-                case Mnemonic.vmsub4fp128: RewriteVectorBinOp("__vmsub4fp", PrimitiveType.Real32); break;  //$REVIEW: is it correct?
-                case Mnemonic.vmulfp128: RewriteVectorBinOp("__vmulfp", PrimitiveType.Real32); break;         //$REVIEW: is it correct?
+                case Mnemonic.vmsub3fp128: RewriteVectorBinOp("__vmsub3fp", false, PrimitiveType.Real32); break;
+                case Mnemonic.vmsub4fp128: RewriteVectorBinOp("__vmsub4fp", false, PrimitiveType.Real32); break;  //$REVIEW: is it correct?
+                case Mnemonic.vmulfp128: RewriteVectorBinOp("__vmulfp", false, PrimitiveType.Real32); break;         //$REVIEW: is it correct?
                 case Mnemonic.vnmsubfp: RewriteVnmsubfp(); break;
                 case Mnemonic.vnor: RewriteOr(true); break;
                 case Mnemonic.vor:
@@ -411,9 +411,9 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.vpkd3d128: RewriterVpkD3d(); break;
                 case Mnemonic.vrefp:
                 case Mnemonic.vrefp128: RewriteVrefp(); break;
-                case Mnemonic.vrfin128: RewriteVectorUnary("__vrfin"); break;
-                case Mnemonic.vrfip128: RewriteVectorUnary("__vrfip"); break;
-                case Mnemonic.vrfiz128: RewriteVectorUnary("__vrfiz"); break;
+                case Mnemonic.vrfin128: RewriteVectorUnary("__vrfin", false); break;
+                case Mnemonic.vrfip128: RewriteVectorUnary("__vrfip", false); break;
+                case Mnemonic.vrfiz128: RewriteVectorUnary("__vrfiz", false); break;
                 case Mnemonic.vrlimi128: RewriteVrlimi(); break;
                 case Mnemonic.vrsqrtefp: 
                 case Mnemonic.vrsqrtefp128: RewriteVrsqrtefp(); break;

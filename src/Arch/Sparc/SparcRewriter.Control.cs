@@ -120,8 +120,9 @@ namespace Reko.Arch.Sparc
                 instrCur.Address + instrCur.Length,
                 InstrClass.ConditionalTransfer);
             m.SideEffect(
-                    host.PseudoProcedure(
-                        PseudoProcedure.Syscall, 
+                    host.Intrinsic(
+                        IntrinsicProcedure.Syscall, 
+                        false,
                         VoidType.Instance, 
                     SimplifySum(src1, src2)));
         }

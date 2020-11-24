@@ -454,7 +454,7 @@ done:
                 m.Assign(r1, m.Shr(r1, 1));
                 m.Assign(C, m.Cond(r1));
                 m.Assign(r2, m.Fn(
-                    new PseudoProcedure(PseudoProcedure.RorC, r2.DataType, 2),
+                    new IntrinsicProcedure(IntrinsicProcedure.RorC, true, r2.DataType, 2),
                     r2, Constant.Byte(1), C));
                 m.Assign(C, m.Cond(r2));
                 m.MStore(m.Word32(0x3000), r2);
@@ -478,7 +478,7 @@ done:
                 m.Assign(r1, m.Shl(r1, 1));
                 m.Assign(C, m.Cond(r1));
                 m.Assign(r2, m.Fn(
-                    new PseudoProcedure(PseudoProcedure.RolC, r2.DataType, 2),
+                    new IntrinsicProcedure(IntrinsicProcedure.RolC, true, r2.DataType, 2),
                     r2, Constant.Byte(1), C));
                 m.Assign(C, m.Cond(r2));
                 m.MStore(m.Word32(0x3000), r1);

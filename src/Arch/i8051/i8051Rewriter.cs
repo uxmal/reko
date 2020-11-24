@@ -109,8 +109,8 @@ namespace Reko.Arch.i8051
                 case Mnemonic.push: RewritePush(); break;
                 case Mnemonic.ret: RewriteRet(); break;
                 case Mnemonic.reti: RewriteRet(); break;
-                case Mnemonic.rl: RewriteRotate(PseudoProcedure.Rol); break;
-                case Mnemonic.rr: RewriteRotate(PseudoProcedure.Ror); break;
+                case Mnemonic.rl: RewriteRotate(IntrinsicProcedure.Rol); break;
+                case Mnemonic.rr: RewriteRotate(IntrinsicProcedure.Ror); break;
                 case Mnemonic.setb: RewriteSetb(); break;
                 case Mnemonic.sjmp: RewriteJump(); break;
                 case Mnemonic.subb: RewriteAddcSubb(m.ISub); break;
@@ -319,7 +319,7 @@ namespace Reko.Arch.i8051
         private void RewriteRotate(string rot)
         {
             var dst = OpSrc(instr.Operands[0], arch.DataMemory);
-            m.Assign(dst, host.PseudoProcedure(rot, dst.DataType, dst, m.Byte(1)));
+            m.Assign(dst, host.Intrinsic(rot, true, dst.DataType, dst, m.Byte(1)));
         }
 
         private void RewriteRet()

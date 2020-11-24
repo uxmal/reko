@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Scanning
 
         private class RewriterHost : IRewriterHost, IDynamicLinker
         {
-            Dictionary<string, PseudoProcedure> pprocs = new Dictionary<string, PseudoProcedure>();
+            Dictionary<string, IntrinsicProcedure> pprocs = new Dictionary<string, IntrinsicProcedure>();
             Dictionary<ulong, FunctionType> sigs = new Dictionary<ulong, FunctionType>();
             Dictionary<Address, ImportReference> importThunks;
             Dictionary<string, FunctionType> signatures;
@@ -102,21 +102,21 @@ namespace Reko.UnitTests.Scanning
                 this.globals = globals;
             }
 
-            public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
+            public IntrinsicProcedure EnsureIntrinsic(string name, bool isIdempotent, DataType returnType, int arity)
             {
-                if (!pprocs.TryGetValue(name, out PseudoProcedure p))
+                if (!pprocs.TryGetValue(name, out IntrinsicProcedure p))
                 {
-                    p = new PseudoProcedure(name, returnType, arity);
+                    p = new IntrinsicProcedure(name, isIdempotent, returnType, arity);
                     pprocs.Add(name, p);
                 }
                 return p;
             }
 
-            public Expression CallIntrinsic(string name, FunctionType fnType, params Expression[] args)
+            public Expression CallIntrinsic(string name, bool isIdempotent, FunctionType fnType, params Expression[] args)
             {
                 if (!pprocs.TryGetValue(name, out var intrinsic))
                 {
-                    intrinsic = new PseudoProcedure(name, fnType);
+                    intrinsic = new IntrinsicProcedure(name, isIdempotent, fnType);
                     pprocs.Add(name, intrinsic);
                 }
                 return new Application(
@@ -124,17 +124,17 @@ namespace Reko.UnitTests.Scanning
                     intrinsic.ReturnType, args);
             }
 
-            public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
+            public Expression Intrinsic(string name, bool isIdempotent, DataType returnType, params Expression[] args)
             {
-                var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
-                return new Application(new ProcedureConstant(PrimitiveType.Ptr32, ppp), returnType, args);
+                var intrinsic = EnsureIntrinsic(name, isIdempotent, returnType, args.Length);
+                return new Application(new ProcedureConstant(PrimitiveType.Ptr32, intrinsic), returnType, args);
             }
 
-            public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
+            public Expression Intrinsic(string name, bool isIdempotent, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
             {
-                var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
-                ppp.Characteristics = c;
-                return new Application(new ProcedureConstant(PrimitiveType.Ptr32, ppp), returnType, args);
+                var intrinsic = EnsureIntrinsic(name, isIdempotent, returnType, args.Length);
+                intrinsic.Characteristics = c;
+                return new Application(new ProcedureConstant(PrimitiveType.Ptr32, intrinsic), returnType, args);
             }
 
             public void BwiX86_SetCallSignatureAdAddress(Address addrCallInstruction, FunctionType signature)
@@ -346,7 +346,7 @@ namespace Reko.UnitTests.Scanning
         }
 
         [Test]
-        public void BwiX86_PseudoProcsShouldNukeRecipientRegister()
+        public void BwiX86_IntrinsicsShouldNukeRecipientRegister()
         {
             BuildTest16(m =>
             {

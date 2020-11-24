@@ -585,9 +585,9 @@ namespace Reko.Typing
 			} 
 			else
 			{
-                if (pc.Procedure is PseudoProcedure ppp)
+                if (pc.Procedure is IntrinsicProcedure intrinsic)
                 {
-                    argTypes = new DataType[ppp.Arity];
+                    argTypes = new DataType[intrinsic.Arity];
                     for (int i = 0; i < argTypes.Length; ++i)
                     {
                         argTypes[i] = factory.CreateUnknown();

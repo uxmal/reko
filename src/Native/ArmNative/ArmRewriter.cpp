@@ -920,7 +920,7 @@ void ArmRewriter::RewriteSwp(BaseType type)
 	{
 		fnName = "std::atomic_exchange<int32_t>";
 	}
-	auto intrinsic = host->EnsurePseudoProcedure(fnName, type, 2);
+	auto intrinsic = host->EnsureIntrinsicProcedure(fnName, false, type, 2);
 	auto dst = Operand(Dst(), BaseType::Word32, true);
 	m.AddArg(Operand(Src1()));
 	m.AddArg(Operand(Src2()));

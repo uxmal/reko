@@ -466,8 +466,8 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vand: RewriteVecBinOp(m.And); break;
                 case Mnemonic.vbic: RewriteVbic(); break;
                 case Mnemonic.vcmp: RewriteVcmp(); break;
-                case Mnemonic.vbif: RewriteIntrinsic("__vbif", Domain.UnsignedInt); break;
-                case Mnemonic.vbit: RewriteIntrinsic("__vbit", Domain.UnsignedInt); break;
+                case Mnemonic.vbif: RewriteIntrinsic("__vbif", true, Domain.UnsignedInt); break;
+                case Mnemonic.vbit: RewriteIntrinsic("__vbit", true, Domain.UnsignedInt); break;
                 case Mnemonic.vceq: RewriteVectorBinOp("__vceq_{0}"); break;
                 case Mnemonic.vcge: RewriteVectorBinOp("__vcge_{0}"); break;
                 case Mnemonic.vcgt: RewriteVectorBinOp("__vcgt_{0}"); break;
@@ -789,11 +789,11 @@ namespace Reko.Arch.Arm.AArch32
                                 ea = m.IAdd(ea, m.Sar(ireg, Constant.Int32(mop.Shift)));
                                 break;
                             case Mnemonic.ror:
-                                var ix = host.PseudoProcedure(PseudoProcedure.Ror, ireg.DataType, ireg, Constant.Int32(mop.Shift));
+                                var ix = host.Intrinsic(IntrinsicProcedure.Ror, true, ireg.DataType, ireg, Constant.Int32(mop.Shift));
                                 ea = m.IAdd(ea, ix);
                                 break;
                             case Mnemonic.rrx:
-                                var rrx = host.PseudoProcedure(PseudoProcedure.RorC, ireg.DataType, ireg, Constant.Int32(mop.Shift), C());
+                                var rrx = host.Intrinsic(IntrinsicProcedure.RorC, true, ireg.DataType, ireg, Constant.Int32(mop.Shift), C());
                                 ea = m.IAdd(ea, rrx);
                                 break;
                             }
@@ -911,9 +911,9 @@ namespace Reko.Arch.Arm.AArch32
             case Mnemonic.asr: return m.Sar(exp, sh);
             case Mnemonic.lsl: return m.Shl(exp, sh);
             case Mnemonic.lsr: return m.Sar(exp, sh);
-            case Mnemonic.ror: return host.PseudoProcedure(PseudoProcedure.Ror, exp.DataType, exp, sh);
+            case Mnemonic.ror: return host.Intrinsic(IntrinsicProcedure.Ror, true, exp.DataType, exp, sh);
             case Mnemonic.rrx:
-                return host.PseudoProcedure(PseudoProcedure.RorC, exp.DataType, exp, sh, C());
+                return host.Intrinsic(IntrinsicProcedure.RorC, true, exp.DataType, exp, sh, C());
             default: return exp;
             }
         }
@@ -1032,7 +1032,7 @@ namespace Reko.Arch.Arm.AArch32
                 fnName = "std::atomic_exchange<int32_t>";
             }
             var dst = Operand(Dst(), PrimitiveType.Word32, true);
-            var intrinsic = host.PseudoProcedure(fnName, type,
+            var intrinsic = host.Intrinsic(fnName, false, type,
                 Operand(Src1()),
                 Operand(Src2()));
             m.Assign(dst, intrinsic);
@@ -1045,12 +1045,12 @@ namespace Reko.Arch.Arm.AArch32
             return tmp;
         }
 
-        private void RewriteIntrinsic(string name, Domain returnDomain)
+        private void RewriteIntrinsic(string name, bool isIntrisic, Domain returnDomain)
         {
             var args = instr.Operands.Skip(1).Select(o => Operand(o)).ToArray();
             var dst = Operand(Dst());
             var dtRet = PrimitiveType.Create(returnDomain, Dst().Width.BitSize);
-            var intrinsic = host.PseudoProcedure(name, dtRet, args);
+            var intrinsic = host.Intrinsic(name, isIntrisic, dtRet, args);
             m.Assign(dst, intrinsic);
         }
 

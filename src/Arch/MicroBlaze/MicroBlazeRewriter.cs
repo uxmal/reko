@@ -242,7 +242,7 @@ namespace Reko.Arch.MicroBlaze
         private Expression RorC(Expression a, Expression shift)
         {
             var cy = binder.EnsureFlagGroup(Registers.C);
-            var rorc = host.PseudoProcedure(PseudoProcedure.RorC, a.DataType, a, shift, cy);
+            var rorc = host.Intrinsic(IntrinsicProcedure.RorC, true, a.DataType, a, shift, cy);
             return rorc;
         }
 

@@ -33,7 +33,8 @@ namespace Reko.Arch.Vax
     {
         private Expression Adawi(Expression a, Expression b)
         {
-            return host.PseudoProcedure("atomic_fetch_add",
+            return host.Intrinsic("atomic_fetch_add",
+                false,
                 a.DataType,
                 a, b);
         }
@@ -93,8 +94,9 @@ namespace Reko.Arch.Vax
 
         private Expression Rotl(Expression a, Expression b)
         {
-            return host.PseudoProcedure(
-                PseudoProcedure.Rol,
+            return host.Intrinsic(
+                IntrinsicProcedure.Rol,
+                true,
                 a.DataType,
                 a, b);
         }
@@ -108,8 +110,9 @@ namespace Reko.Arch.Vax
             var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF);
             m.Assign(
                 grf,
-                host.PseudoProcedure(
+                host.Intrinsic(
                     op,
+                    false,
                     PrimitiveType.Byte,
                     op0, op1, op2, op3));
             var c = FlagGroup(FlagM.CF);
@@ -127,8 +130,9 @@ namespace Reko.Arch.Vax
             var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF);
             m.Assign(
                 grf,
-                host.PseudoProcedure(
+                host.Intrinsic(
                     op, 
+                    false,
                     PrimitiveType.Byte,
                     op0, op1, op2, op3, op4, op5));
             var c = FlagGroup(FlagM.CF);
@@ -211,7 +215,7 @@ namespace Reko.Arch.Vax
             else
             {
                 shift = RewriteSrcOp(0, width);
-                fn = (a, b) => host.PseudoProcedure("__ashift", width, a, b);
+                fn = (a, b) => host.Intrinsic("__ashift", false, width, a, b);
             }
             var op2 = RewriteSrcOp(1, width);
             var dst = RewriteDstOp(2, width, e => fn(op2, shift));
@@ -229,8 +233,9 @@ namespace Reko.Arch.Vax
             var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF);
             m.Assign(
                 grf,
-                host.PseudoProcedure(
+                host.Intrinsic(
                     "vax_ashp",
+                    false,
                     PrimitiveType.Byte,
                     op0, op1, op2, op3, op4, op5));
             var c = FlagGroup(FlagM.CF);
@@ -271,8 +276,9 @@ namespace Reko.Arch.Vax
             var op1 = RewriteSrcOp(1, PrimitiveType.Ptr32);
             var op2 = RewriteSrcOp(2, PrimitiveType.Ptr32);
             NZ00(
-                host.PseudoProcedure(
+                host.Intrinsic(
                     "vax_cmpp3",
+                    false,
                     PrimitiveType.Byte,
                     op0, op1, op2));
         }
@@ -284,8 +290,9 @@ namespace Reko.Arch.Vax
             var op2 = RewriteSrcOp(2, PrimitiveType.Word16);
             var op3 = RewriteSrcOp(3, PrimitiveType.Ptr32);
             NZ00(
-                host.PseudoProcedure(
+                host.Intrinsic(
                     "vax_cmpp4",
+                    false,
                     PrimitiveType.Byte,
                     op0, op1, op2, op3));
         }
@@ -310,7 +317,8 @@ namespace Reko.Arch.Vax
             var srcaddr = RewriteSrcOp(1, PrimitiveType.Ptr32);
             var dstlen = RewriteSrcOp(2, PrimitiveType.Word16);
             var dstaddr = RewriteSrcOp(3, PrimitiveType.Word16);
-            NZV0(host.PseudoProcedure(cvtfn,
+            NZV0(host.Intrinsic(cvtfn,
+                false,
                 PrimitiveType.Byte,
                 srclen,
                 srcaddr,
@@ -322,7 +330,7 @@ namespace Reko.Arch.Vax
         {
             var src = RewriteSrcOp(0, from);
             var dst = RewriteDstOp(1, to, e => m.Convert(
-                host.PseudoProcedure("round", from, src),
+                host.Intrinsic("round", false, from, src),
                 from,
                 to));
             NZV0(dst);
@@ -339,8 +347,9 @@ namespace Reko.Arch.Vax
             var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF);
             m.Assign(
                 grf,
-                host.PseudoProcedure(
+                host.Intrinsic(
                     "vax_divp",
+                    false,
                     PrimitiveType.Byte,
                     op0, op1, op2, op3, op4, op5));
             var c = FlagGroup(FlagM.CF);
@@ -383,8 +392,9 @@ namespace Reko.Arch.Vax
             var grf = FlagGroup(FlagM.NVC);
             m.Assign(
                 z,
-                host.PseudoProcedure(
+                host.Intrinsic(
                     fnname,
+                    false, 
                     z.DataType,
                     bas, size, start,
                     m.Out(PrimitiveType.Ptr32, findPos)));
@@ -408,8 +418,9 @@ namespace Reko.Arch.Vax
             var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF);
             m.Assign(
                 grf,
-                host.PseudoProcedure(
+                host.Intrinsic(
                     "vax_mulp",
+                    false,
                     PrimitiveType.Byte,
                     op0, op1, op2, op3, op4, op5));
             var c = FlagGroup(FlagM.CF);
@@ -430,8 +441,9 @@ namespace Reko.Arch.Vax
             var grf = FlagGroup(FlagM.ZF | FlagM.NF);
             m.Assign(
                 ret,
-                host.PseudoProcedure(
+                host.Intrinsic(
                     "vax_poly",
+                    false,
                     width,
                     op0, op1, op2));
             m.Assign(grf, m.Cond(ret));

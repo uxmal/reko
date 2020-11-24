@@ -73,7 +73,7 @@ namespace Reko.Arch.PaRisc
                 var zero = Constant.Zero(SizeFromCondition(instr.Condition.Type));
                 var c = RewriteCondition(dst, zero);
                 m.BranchInMiddleOfInstruction(c.Invert(), instr.Address + 4, InstrClass.ConditionalTransfer);
-                m.SideEffect(host.PseudoProcedure("__trap", VoidType.Instance));
+                m.SideEffect(host.Intrinsic("__trap", false, VoidType.Instance));
             }
             else
             {

@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Evaluation
         private ExpressionSimplifier simplifier;
         private Identifier foo;
         private ProcedureBuilder m;
-        private PseudoProcedure rolc_8;
+        private IntrinsicProcedure rolc_8;
         private Mock<IProcessorArchitecture> arch;
         private SsaIdentifierCollection ssaIds;
 
@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Evaluation
         public void Setup()
         {
             m = new ProcedureBuilder();
-            this.rolc_8 = new PseudoProcedure(PseudoProcedure.RolC, PrimitiveType.Byte, 3);
+            this.rolc_8 = new IntrinsicProcedure(IntrinsicProcedure.RolC, true, PrimitiveType.Byte, 3);
             arch = new Mock<IProcessorArchitecture>();
         }
 

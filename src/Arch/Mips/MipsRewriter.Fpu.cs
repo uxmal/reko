@@ -190,10 +190,10 @@ namespace Reko.Arch.Mips
         {
             var tmp = binder.CreateTemporary(dtSrc);
             m.Assign(tmp, RewriteOperand(instr.Operands[1]));
-            var ppp = host.PseudoProcedure(fn, dtSrc, tmp);
+            var intrinsic = host.Intrinsic(fn, true, dtSrc, tmp);
             m.Assign(
                 RewriteOperand(instr.Operands[0]),
-                m.Convert(ppp, ppp.DataType, dtDst));
+                m.Convert(intrinsic, intrinsic.DataType, dtDst));
         }
     }
 }

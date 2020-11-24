@@ -47,7 +47,7 @@ namespace Reko.Arch.Vax
 
         private void RewriteHalt()
         {
-            m.SideEffect(host.PseudoProcedure("__halt", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__halt", false, VoidType.Instance));
         }
 
         private void RewriteInsque()
@@ -55,18 +55,18 @@ namespace Reko.Arch.Vax
             var entry = RewriteSrcOp(0, PrimitiveType.Word32);
             var queue = RewriteSrcOp(1, PrimitiveType.Word32);
             var grf = FlagGroup(FlagM.NZC);
-            m.Assign(grf, host.PseudoProcedure("__insque", grf.DataType, queue, entry));
+            m.Assign(grf, host.Intrinsic("__insque", false, grf.DataType, queue, entry));
             m.Assign(FlagGroup(FlagM.VF), Constant.False());
         }
 
         private void RewriteBpt()
         {
-            m.SideEffect(host.PseudoProcedure("vax_bpt", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("vax_bpt", false, VoidType.Instance));
         }
 
         private void RewriteChm(string name)
         {
-            m.SideEffect(host.PseudoProcedure(name, VoidType.Instance,
+            m.SideEffect(host.Intrinsic(name, false, VoidType.Instance,
                 RewriteSrcOp(0, PrimitiveType.Word16)));
         }
 
@@ -93,8 +93,9 @@ namespace Reko.Arch.Vax
             var len = RewriteSrcOp(0, PrimitiveType.Word16);
             var src = RewriteSrcOp(1, PrimitiveType.Ptr32);
             var dst = RewriteSrcOp(2, PrimitiveType.Ptr32);
-            m.SideEffect(host.PseudoProcedure(
+            m.SideEffect(host.Intrinsic(
                 "__movp", 
+                false,
                 VoidType.Instance,
                 dst, src, len));
         }
@@ -105,8 +106,9 @@ namespace Reko.Arch.Vax
             var len = RewriteSrcOp(1, PrimitiveType.Ptr32);
             var @base = RewriteSrcOp(2, PrimitiveType.Ptr32);
             var z = FlagGroup(FlagM.ZF);
-            m.Assign(z, host.PseudoProcedure(
+            m.Assign(z, host.Intrinsic(
                 "__prober",
+                false,
                 PrimitiveType.Bool,
                 @base, len, mode));
         }
@@ -123,7 +125,7 @@ namespace Reko.Arch.Vax
             var r3 = binder.EnsureRegister(Registers.r3);
             var z = FlagGroup(FlagM.ZF);
             m.Assign(r3, tbl);
-            m.Assign(z, host.PseudoProcedure("__scanc", z.DataType, len, addr, tbl, mask,
+            m.Assign(z, host.Intrinsic("__scanc", false, z.DataType, len, addr, tbl, mask,
                 m.Out(PrimitiveType.Word32, r0),
                 m.Out(PrimitiveType.Word32, r1)));
             m.Assign(r2, 0);

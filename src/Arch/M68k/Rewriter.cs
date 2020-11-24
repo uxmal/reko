@@ -268,10 +268,10 @@ VS Overflow Set 1001 V
                 case Mnemonic.pload: RewritePload(); break;
                 case Mnemonic.ptest: RewritePtest(); break;
                 case Mnemonic.reset: RewriteReset(); break;
-                case Mnemonic.rol: RewriteRotation(PseudoProcedure.Rol); break;
-                case Mnemonic.ror: RewriteRotation(PseudoProcedure.Ror);  break;
-                case Mnemonic.roxl: RewriteRotationX(PseudoProcedure.RolC);  break;
-                case Mnemonic.roxr: RewriteRotationX(PseudoProcedure.RorC);  break;
+                case Mnemonic.rol: RewriteRotation(IntrinsicProcedure.Rol); break;
+                case Mnemonic.ror: RewriteRotation(IntrinsicProcedure.Ror);  break;
+                case Mnemonic.roxl: RewriteRotationX(IntrinsicProcedure.RolC);  break;
+                case Mnemonic.roxr: RewriteRotationX(IntrinsicProcedure.RorC);  break;
                 case Mnemonic.rtd: RewriteRtd(); break;
                 case Mnemonic.rte: RewriteRte(); break;
                 case Mnemonic.rtm: RewriteRtm(); break;

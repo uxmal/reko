@@ -11,10 +11,10 @@ l1483_0ADB:
 fn1483_0ADB_exit:
 
 
-void fn1483_0ADC(segptr32 ds_di, segptr32 ss_bp, word16 ax, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector es, selector fs, byte FPUF, word16 wArg00, word16 wArg04, word16 wArg0A, selector psegArg01A2, byte bArg02BF, byte bArg0F9E)
+void fn1483_0ADC(segptr32 ds_di, segptr32 ss_bp, word16 ax, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector es, selector fs, word16 FPUF, word16 wArg00, word16 wArg04, word16 wArg0A, selector psegArg01A2, byte bArg02BF, byte bArg0F9E)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ax:[0..15] bh:[0..7] bl:[0..7] cs:[0..15] cx:[0..15] dx:[0..15] es:[0..15] FPUF:[0..7] fs:[0..15] Sequence ds:di:[0..31] Sequence ss:bp:[0..31] si:[0..15] Stack +0000:[0..15] Stack +0004:[0..15] Stack +000A:[0..15] Stack +01A2:[0..15] Stack +02BF:[0..7] Stack +0F9E:[0..7]
+// MayUse:  ax:[0..15] bh:[0..7] bl:[0..7] cs:[0..15] cx:[0..15] dx:[0..15] es:[0..15] FPUF:[0..15] fs:[0..15] Sequence ds:di:[0..31] Sequence ss:bp:[0..31] si:[0..15] Stack +0000:[0..15] Stack +0004:[0..15] Stack +000A:[0..15] Stack +01A2:[0..15] Stack +02BF:[0..7] Stack +0F9E:[0..7]
 // LiveOut:
 // Trashed: SCZDOP ax bp bx cx di ds dx es si Top
 // Preserved: sp
@@ -326,12 +326,12 @@ l1483_0D2B:
 fn1483_0D06_exit:
 
 
-void fn1483_0D3F(segptr32 ds_di, segptr32 ss_bp, word16 ax, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector es, selector fs, byte FPUF, word16 wArg02, word16 wArg06, word16 wArg0C, selector psegArg01A4, byte bArg02C1, byte bArg0FA0)
+void fn1483_0D3F(segptr32 ds_di, segptr32 ss_bp, word16 ax, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector es, selector fs, word16 FPUF, word16 wArg02, word16 wArg06, word16 wArg0C, selector psegArg01A4, byte bArg02C1, byte bArg0FA0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn1483_0ADC
-// MayUse:  ax:[0..15] bh:[0..7] bl:[0..7] cs:[0..15] cx:[0..15] dx:[0..15] es:[0..15] FPUF:[0..7] fs:[0..15] Sequence ds:di:[0..31] Sequence ss:bp:[0..31] si:[0..15] Stack +0002:[0..15] Stack +0006:[0..15] Stack +000C:[0..15] Stack +01A4:[0..15] Stack +02C1:[0..7] Stack +0FA0:[0..7]
+// MayUse:  ax:[0..15] bh:[0..7] bl:[0..7] cs:[0..15] cx:[0..15] dx:[0..15] es:[0..15] FPUF:[0..15] fs:[0..15] Sequence ds:di:[0..31] Sequence ss:bp:[0..31] si:[0..15] Stack +0002:[0..15] Stack +0006:[0..15] Stack +000C:[0..15] Stack +01A4:[0..15] Stack +02C1:[0..7] Stack +0FA0:[0..7]
 // LiveOut: Top
 // Trashed: SCZDOP ax bp bx cx di ds dx es si sp Top
 // Preserved:

@@ -123,7 +123,7 @@ namespace Reko.Arch.Msp430
 
         private Expression Dadd(Expression a, Expression b)
         {
-            return host.PseudoProcedure("__dadd", a.DataType, a, b);
+            return host.Intrinsic("__dadd", false, a.DataType, a, b);
         }
 
         private Expression RewriteOp(MachineOperand op)
@@ -188,7 +188,7 @@ namespace Reko.Arch.Msp430
                 var ev = fn(dst, src);
                 if (dst.Storage == Registers.sp && ev is Constant)
                 {
-                    m.SideEffect(host.PseudoProcedure("__set_stackpointer", VoidType.Instance, src));
+                    m.SideEffect(host.Intrinsic("__set_stackpointer", false, VoidType.Instance, src));
                 }
                 else
                 {
@@ -415,8 +415,9 @@ namespace Reko.Arch.Msp430
             var dst = RewriteDst(
                 instr.Operands[0],
                 src, 
-                (a, b) => host.PseudoProcedure(
-                    PseudoProcedure.RorC, 
+                (a, b) => host.Intrinsic(
+                    IntrinsicProcedure.RorC, 
+                    true,
                     a.DataType, 
                     a, 
                     m.Byte(1),
@@ -448,8 +449,9 @@ namespace Reko.Arch.Msp430
             var src = RewriteOp(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[0],
                 src,
-                (a, b) => host.PseudoProcedure(
+                (a, b) => host.Intrinsic(
                     "__swpb",
+                    true,
                     PrimitiveType.Word16,
                     b));
         }

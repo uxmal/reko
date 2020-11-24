@@ -74,7 +74,7 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteBreak()
         {
-            m.SideEffect(host.PseudoProcedure("__break", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__break", true, VoidType.Instance));
         }
 
         private void RewriteBe()
@@ -175,7 +175,7 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteRfi(string intrinsic)
         {
-            m.SideEffect(host.PseudoProcedure(intrinsic, VoidType.Instance));
+            m.SideEffect(host.Intrinsic(intrinsic, false, VoidType.Instance));
             m.Return(0, 0);
         }
     }

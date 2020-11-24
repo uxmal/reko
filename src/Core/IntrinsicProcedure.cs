@@ -30,7 +30,7 @@ namespace Reko.Core
 	/// Represents predefined functions or processor instructions that don't have a 
 	/// C/C++ equivalent (like rotate operations).
 	/// </summary>
-	public class PseudoProcedure : ProcedureBase
+	public class IntrinsicProcedure : ProcedureBase
 	{
 		private readonly int arity;
         private readonly DataType returnType;
@@ -53,20 +53,26 @@ namespace Reko.Core
         public const string SwR = "__swr";
 
         /// <summary>
-        /// Use this constructor for pseudoprocedures that model operators that may have parameters of varying sizes.
+        /// Use this constructor for intrinsics that model operators that may have parameters of varying sizes.
         /// </summary>
         /// <remarks>
-        /// E.g. the rotate pseudoprocedures.</remarks>
+        /// E.g. the rotate intrinsic instructions.</remarks>
         /// <param name="name"></param>
         /// <param name="returnType"></param>
         /// <param name="arity"></param>
-		public PseudoProcedure(string name, DataType returnType, int arity) : base(name)
+		public IntrinsicProcedure(string name, bool isIdempotent, DataType returnType, int arity) : base(name, isIdempotent)
 		{
             this.returnType = returnType;
 			this.arity = arity;
 		}
 
-		public PseudoProcedure(string name, FunctionType sig) : base(name)
+        /// <summary>
+        /// Creates an <see cref="IntrinsicProcedure"/> with a specific signature.
+        /// </summary>
+        /// <param name="name">The name of the intrinsic procedure.</param>
+        /// <param name="isIdempotent">True of the procedure is idempotent (<see cref="ProcedureBase.IsIdempotent"/></param>
+        /// <param name="sig">The signature of the procedure.</param>
+		public IntrinsicProcedure(string name, bool isIdempotent, FunctionType sig) : base(name, isIdempotent)
 		{
 			this.sig = sig;
             this.returnType = sig.ReturnValue?.DataType!;
@@ -89,7 +95,7 @@ namespace Reko.Core
 		public override FunctionType Signature
 		{
 			get { return sig!; }
-			set { throw new InvalidOperationException("Changing the signature of a PseudoProcedure is not allowed."); }
+			set { throw new InvalidOperationException("Changing the signature of an IntrinsicProcedure is not allowed."); }
 		}
 
 		public override string ToString()

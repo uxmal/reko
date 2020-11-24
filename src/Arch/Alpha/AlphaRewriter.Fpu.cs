@@ -50,7 +50,7 @@ namespace Reko.Arch.Alpha
             }
             else
             {
-                RewriteInstrinsic(intrinsic);
+                RewriteInstrinsic(intrinsic, false);
             }
         }
 

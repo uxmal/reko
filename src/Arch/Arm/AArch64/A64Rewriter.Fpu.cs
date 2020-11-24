@@ -82,7 +82,7 @@ namespace Reko.Arch.Arm.AArch64
             var tmp = binder.CreateTemporary(dtSrc);
             m.Assign(tmp, src);
             var fn = dtSrc.BitSize == 32 ? "fabsf" : "fabs";
-            m.Assign(dst, host.PseudoProcedure(fn, dtDst, tmp));
+            m.Assign(dst, host.Intrinsic(fn, false, dtDst, tmp));
 
         }
 
@@ -126,7 +126,7 @@ namespace Reko.Arch.Arm.AArch64
             var dtSrc = MakeReal(src.DataType);
             var dtDst = MakeInteger(domain, instr.Operands[0].Width);
             var fn = dtSrc.BitSize == 32 ? f32name : f64name;
-            src = host.PseudoProcedure(fn, dtDst, src);
+            src = host.Intrinsic(fn, false, dtDst, src);
             return m.Convert(src, dtSrc, dtDst);
         }
 
@@ -169,7 +169,7 @@ namespace Reko.Arch.Arm.AArch64
                         dt = PrimitiveType.Real32;
                         fname = name32;
                     }
-                    return host.PseudoProcedure(fname, dt, a, b);
+                    return host.Intrinsic(fname, true, dt, a, b);
                 },
                 "__max_{0}", Domain.Real);
         }
@@ -192,7 +192,7 @@ namespace Reko.Arch.Arm.AArch64
                 dt = PrimitiveType.Real32;
                 fname = name32;
             }
-            m.Assign(dst, host.PseudoProcedure(fname, dt, src1, src2, src3));
+            m.Assign(dst, host.Intrinsic(fname, false, dt, src1, src2, src3));
 
         }
         private void RewriteFmov()
@@ -217,7 +217,7 @@ namespace Reko.Arch.Arm.AArch64
             var dst = RewriteOp(instr.Operands[0]);
             m.Assign(src, RewriteOp(instr.Operands[1]));
             var fn = src.DataType.BitSize == 32 ? "sqrtf" : "sqrt";
-            m.Assign(dst, host.PseudoProcedure(fn, src.DataType, src));
+            m.Assign(dst, host.Intrinsic(fn, false, src.DataType, src));
         }
 
         private void RewriteIcvt(Domain domain)

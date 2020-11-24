@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2020 Christian Hostelet.
  * inspired by work from:
@@ -405,13 +405,13 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         private void Rewrite_RLF()
         {
             GetSrcAndDst(out var srcMem, out var dstMem);
-            m.Assign(dstMem, m.Fn(host.PseudoProcedure("__rlf", PrimitiveType.Byte, srcMem)));
+            m.Assign(dstMem, m.Fn(host.Intrinsic("__rlf", true, PrimitiveType.Byte, srcMem)));
         }
 
         private void Rewrite_RRF()
         {
             GetSrcAndDst(out var srcMem, out var dstMem);
-            m.Assign(dstMem, m.Fn(host.PseudoProcedure("__rrf", PrimitiveType.Byte, srcMem)));
+            m.Assign(dstMem, m.Fn(host.Intrinsic("__rrf", true, PrimitiveType.Byte, srcMem)));
         }
 
         private void Rewrite_SLEEP()
@@ -436,7 +436,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         private void Rewrite_SWAPF()
         {
             GetSrcAndDst(out var srcMem, out var dstMem);
-            m.Assign(dstMem, m.Fn(host.PseudoProcedure("__swapf", PrimitiveType.Byte, srcMem)));
+            m.Assign(dstMem, m.Fn(host.Intrinsic("__swapf", true, PrimitiveType.Byte, srcMem)));
         }
 
         private void Rewrite_XORLW()

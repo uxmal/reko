@@ -318,7 +318,7 @@ namespace Reko.Arch.OpenRISC
 
         private void RewriteCsync()
         {
-            m.SideEffect(host.PseudoProcedure("__csync", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__csync", false, VoidType.Instance));
         }
 
         private void RewriteJ()
@@ -367,7 +367,7 @@ namespace Reko.Arch.OpenRISC
             var fnType = new FunctionType(
                 new Identifier("", PrimitiveType.Word32, null),
                 new Identifier("ea", new Pointer(PrimitiveType.Word32, 32), null));
-            var e = host.CallIntrinsic("__atomic_load_w32", fnType, ea);
+            var e = host.CallIntrinsic("__atomic_load_w32", false, fnType, ea);
             if (mem.DataType.BitSize < dtDst.BitSize)
             {
                 e = m.Convert(e, e.DataType, dtDst);
@@ -379,7 +379,7 @@ namespace Reko.Arch.OpenRISC
         {
             var dst = Reg(instrCur.Operands[0]);
             var spr = Spr(instrCur.Operands[2]);
-            m.Assign(dst, host.PseudoProcedure("__mfspr", PrimitiveType.Word32, spr));
+            m.Assign(dst, host.Intrinsic("__mfspr", false, PrimitiveType.Word32, spr));
         }
 
         private void RewriteMaci()
@@ -418,19 +418,19 @@ namespace Reko.Arch.OpenRISC
 
         private void RewriteMsync()
         {
-            m.SideEffect(host.PseudoProcedure("__msync", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__msync", false, VoidType.Instance));
         }
 
         private void RewriteMtspr()
         {
             var src = Reg(instrCur.Operands[1]);
             var spr = Spr(instrCur.Operands[2]);
-            m.SideEffect(host.PseudoProcedure("__mtspr", VoidType.Instance, spr, src));
+            m.SideEffect(host.Intrinsic("__mtspr", false, VoidType.Instance, spr, src));
         }
 
         private void RewritePsync()
         {
-            m.SideEffect(host.PseudoProcedure("__psync", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__psync", false, VoidType.Instance));
         }
 
         private void RewriteRfe()
@@ -468,7 +468,7 @@ namespace Reko.Arch.OpenRISC
         private void RewriteSys()
         {
             var vector = Imm(instrCur.Operands[0]);
-            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, vector));
+            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, false, VoidType.Instance, vector));
         }
     }
 }

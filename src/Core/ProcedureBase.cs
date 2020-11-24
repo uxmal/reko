@@ -33,9 +33,10 @@ namespace Reko.Core
 	[DefaultProperty("Name")]
 	public abstract class ProcedureBase
 	{
-		public ProcedureBase(string name)
+		public ProcedureBase(string name, bool isIdempotent)
 		{
 			this.name = name;
+            this.IsIdempotent = isIdempotent;
 			this.Characteristics = DefaultProcedureCharacteristics.Instance;
 		}
 
@@ -49,6 +50,14 @@ namespace Reko.Core
 		public abstract FunctionType Signature { get; set; }
 
 		public ProcedureCharacteristics Characteristics { get; set; }
+
+        /// <summary>
+        /// If a <see cref="ProcedureBase"/> is idempotent, calls to it can be removed
+        /// if the result of the call is never used. Idempotent procedures may not
+        /// have side effects, including but not limited to changing memory, modifying
+        /// device states, or raising exceptions.
+        /// </summary>
+        public bool IsIdempotent { get; }
 
         /// <summary>
         /// If this is a member function of a class or struct, this property

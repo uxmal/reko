@@ -298,7 +298,7 @@ namespace Reko.Arch.zSeries
             var tmp = binder.CreateTemporary(dt);
             var eaDst = EffectiveAddress(0);
 
-            m.Assign(tmp, host.PseudoProcedure("__move_zones", dt, m.Mem(dt, eaDst), m.Mem(dt, eaSrc)));
+            m.Assign(tmp, host.Intrinsic("__move_zones", false, dt, m.Mem(dt, eaDst), m.Mem(dt, eaSrc)));
             m.Assign(m.Mem(dt, eaDst), tmp);
         }
 

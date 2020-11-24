@@ -33,7 +33,7 @@ namespace Reko.Arch.M68k
     {
         private Expression IsNan(Expression arg)
         {
-            return host.PseudoProcedure("__is_nan", PrimitiveType.Bool, arg);
+            return host.Intrinsic("__is_nan", false, PrimitiveType.Bool, arg);
         }
 
         private void RewriteFabs()
@@ -41,7 +41,7 @@ namespace Reko.Arch.M68k
             //$TODO: #include <math.h>
             var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
-                host.PseudoProcedure("fabs", s.DataType, s));
+                host.Intrinsic("fabs", false, s.DataType, s));
         }
 
         private void RewriteFacos()
@@ -49,7 +49,7 @@ namespace Reko.Arch.M68k
             //$TODO: #include <math.h>
             var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
-                host.PseudoProcedure("acos", s.DataType, s));
+                host.Intrinsic("acos", false, s.DataType, s));
         }
 
 
@@ -58,7 +58,7 @@ namespace Reko.Arch.M68k
             //$TODO: #include <math.h>
             var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
-                host.PseudoProcedure("atan", s.DataType, s));
+                host.Intrinsic("atan", false, s.DataType, s));
         }
 
         private void RewriteFatanh()
@@ -66,7 +66,7 @@ namespace Reko.Arch.M68k
             //$TODO: #include <math.h>
             var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
-                host.PseudoProcedure("atanh", s.DataType, s));
+                host.Intrinsic("atanh", false, s.DataType, s));
         }
 
         private void RewriteFbcc(ConditionCode cc)
@@ -102,7 +102,7 @@ namespace Reko.Arch.M68k
         {
             var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var opDst = orw.RewriteDst(instr.Operands[1], instr.Address, opSrc, (s, d) =>
-                host.PseudoProcedure(fnName, s.DataType, s, d));
+                host.Intrinsic(fnName, false, s.DataType, s, d));
             if (opDst == null)
             {
                 EmitInvalid();
@@ -127,9 +127,9 @@ namespace Reko.Arch.M68k
         {
             var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var dstCos = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
-                host.PseudoProcedure("cos", s.DataType, s));
+                host.Intrinsic("cos", false, s.DataType, s));
             var dstSin = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
-                host.PseudoProcedure("sin", s.DataType, s));
+                host.Intrinsic("sin", false, s.DataType, s));
             if (dstSin != null)
             {
                 m.Assign(FpuFlagGroup(), m.Cond(dstSin));
@@ -142,7 +142,7 @@ namespace Reko.Arch.M68k
             //$TODO: #include <math.h>
             var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
-                host.PseudoProcedure(fnName, s.DataType, s));
+                host.Intrinsic(fnName, false, s.DataType, s));
         }
 
         private void RewriteFUnaryIntrinsic(Func<Expression, Expression> preProcess, string fnName)
@@ -150,7 +150,7 @@ namespace Reko.Arch.M68k
             //$TODO: #include <math.h>
             var src = preProcess(orw.RewriteSrc(instr.Operands[0], instr.Address));
             var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
-               host.PseudoProcedure(fnName, s.DataType, s));
+               host.Intrinsic(fnName, false, s.DataType, s));
         }
 
         private void RewriteFUnaryIntrinsic(string fnName, Func<Expression, Expression> postProcess)
@@ -158,7 +158,7 @@ namespace Reko.Arch.M68k
             //$TODO: #include <math.h>
             var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var dst = postProcess(orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
-               host.PseudoProcedure(fnName, s.DataType, s))!);
+               host.Intrinsic(fnName, false, s.DataType, s))!);
         }
 
         private void RewriteFUnaryOp(Func<Expression, Expression> unaryOpGen)
@@ -207,7 +207,7 @@ namespace Reko.Arch.M68k
             }
             else
             {
-                src = host.PseudoProcedure("__fmovecr", PrimitiveType.Real64, opSrc.Constant);
+                src = host.Intrinsic("__fmovecr", false, PrimitiveType.Real64, opSrc.Constant);
             }
             var dst = orw.RewriteSrc(instr.Operands[1], instr.Address);
             m.Assign(dst, src);
@@ -219,7 +219,7 @@ namespace Reko.Arch.M68k
             //$TODO: #include <math.h>
             var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
-                host.PseudoProcedure("asin", s.DataType, s));
+                host.Intrinsic("asin", false, s.DataType, s));
         }
 
         private void RewriteFintrz()
@@ -230,7 +230,7 @@ namespace Reko.Arch.M68k
             //$TODO: #include <math.h>
             var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
-                host.PseudoProcedure("trunc", s.DataType, s));
+                host.Intrinsic("trunc", false, s.DataType, s));
         }
 
         private void RewriteFsqrt()
@@ -238,7 +238,7 @@ namespace Reko.Arch.M68k
             //$TODO: #include <math.h>
             var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
-                host.PseudoProcedure("sqrt", s.DataType, s));
+                host.Intrinsic("sqrt", false, s.DataType, s));
         }
 
         private void RewriteFtan()
@@ -246,7 +246,7 @@ namespace Reko.Arch.M68k
             //$TODO: #include <math.h>
             var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
-                host.PseudoProcedure("tan", s.DataType, s));
+                host.Intrinsic("tan", false, s.DataType, s));
         }
 
         private Expression MaybeCastFpuArgs(Expression src, Expression dst)

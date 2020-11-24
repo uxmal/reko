@@ -55,31 +55,31 @@ namespace Reko.Arch.Alpha
             RewriteBin(fn);
             var dst = Rewrite(instr.Operands[2]);
             m.BranchInMiddleOfInstruction(
-                m.Not(host.PseudoProcedure("OV", PrimitiveType.Bool, dst)),
+                m.Not(host.Intrinsic("OV", true, PrimitiveType.Bool, dst)),
                 instr.Address + instr.Length, 
                 InstrClass.ConditionalTransfer);
             var ch = new ProcedureCharacteristics { Terminates = true };
             m.SideEffect(
-                host.PseudoProcedure("__trap_overflow", ch, VoidType.Instance),
+                host.Intrinsic("__trap_overflow", false, ch, VoidType.Instance),
                 InstrClass.Transfer|InstrClass.Call);
         }
 
-        private void RewriteInstrinsic(string instrinic)
+        private void RewriteInstrinsic(string instrinic, bool isIdempotent)
         {
             var op1 = Rewrite(instr.Operands[0]);
             var op2 = Rewrite(instr.Operands[1]);
             var dst = Rewrite(instr.Operands[2]);
             if (dst.IsZero)
             {
-                m.SideEffect(host.PseudoProcedure(instrinic, dst.DataType, op1, op2));
+                m.SideEffect(host.Intrinsic(instrinic, isIdempotent, dst.DataType, op1, op2));
             }
             else
             {
-                m.Assign(dst, host.PseudoProcedure(instrinic, dst.DataType, op1, op2));
+                m.Assign(dst, host.Intrinsic(instrinic, isIdempotent, dst.DataType, op1, op2));
             }
         }
 
-        private void RewriteLoadInstrinsic(string intrinsic, DataType dt)
+        private void RewriteLoadInstrinsic(string intrinsic,  bool isIdempotent, DataType dt)
         {
             var op1 = Rewrite(instr.Operands[0]);
             var op2 = Rewrite(instr.Operands[1]);
@@ -87,11 +87,11 @@ namespace Reko.Arch.Alpha
             if (op1.IsZero)
             {
                 // Discarding the result == side effect
-                m.SideEffect(host.PseudoProcedure(intrinsic, dt, op2));
+                m.SideEffect(host.Intrinsic(intrinsic, isIdempotent, dt, op2));
             }
             else
             {
-                m.Assign(op1, host.PseudoProcedure(intrinsic, dt, op2));
+                m.Assign(op1, host.Intrinsic(intrinsic, isIdempotent, dt, op2));
             }
         }
 
@@ -100,7 +100,7 @@ namespace Reko.Arch.Alpha
             var op1 = Rewrite(instr.Operands[0]);
             var op2 = Rewrite(instr.Operands[1]);
             op2.DataType = dt;
-            m.SideEffect(host.PseudoProcedure(intrinsic, dt, op2, op1));
+            m.SideEffect(host.Intrinsic(intrinsic, false, dt, op2, op1));
         }
 
         private void RewriteLd(PrimitiveType dtSrc, PrimitiveType dtDst)
@@ -159,7 +159,7 @@ namespace Reko.Arch.Alpha
         private void RewriteTrapb()
         {
             m.SideEffect(
-                host.PseudoProcedure("__trap_barrier", VoidType.Instance),
+                host.Intrinsic("__trap_barrier", false, VoidType.Instance),
                 InstrClass.Transfer|InstrClass.Call);
         }
 

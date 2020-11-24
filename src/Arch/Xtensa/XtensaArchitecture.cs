@@ -46,7 +46,7 @@ namespace Reko.Arch.Xtensa
             this.StackRegister = Registers.a1;
         }
 
-        private static RegisterStorage[] aregs = new[]
+        private static readonly RegisterStorage[] aregs = new[]
         {
             Registers.a0 ,
             Registers.a1 ,
@@ -66,7 +66,7 @@ namespace Reko.Arch.Xtensa
             Registers.a15,
         };
 
-        private static RegisterStorage[] bregs = new[]
+        private static readonly RegisterStorage[] bregs = new[]
         {
             Registers.b0 ,
             Registers.b1 ,
@@ -86,7 +86,7 @@ namespace Reko.Arch.Xtensa
             Registers.b15,
         };
 
-        private static RegisterStorage[] fregs = new[]
+        private static readonly RegisterStorage[] fregs = new[]
         {
             Registers.f0 ,
             Registers.f1 ,
@@ -106,7 +106,7 @@ namespace Reko.Arch.Xtensa
             Registers.f15,
         };
 
-        private static RegisterStorage[] mac16regs = new RegisterStorage[4]
+        private static readonly RegisterStorage[] mac16regs = new RegisterStorage[4]
         {
             Registers.mr0,
             Registers.mr1,
@@ -114,10 +114,10 @@ namespace Reko.Arch.Xtensa
             Registers.mr3,
         };
 
-        private static RegisterStorage[] allRegs =
+        private static readonly RegisterStorage[] allRegs =
             aregs.Concat(bregs).Concat(fregs).ToArray();
 
-        private static Dictionary<int, RegisterStorage> sregs = new Dictionary<int, RegisterStorage>
+        private static readonly Dictionary<int, RegisterStorage> sregs = new Dictionary<int, RegisterStorage>
         {
             { 0x00, Registers.LBEG },
             { 0x01, Registers.LEND },

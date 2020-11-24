@@ -231,7 +231,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.fcomip: RewriteFcomi(true); break;
                 case Mnemonic.fcomp: RewriteFcom(1); break;
                 case Mnemonic.fcompp: RewriteFcom(2); break;
-                case Mnemonic.fcos: RewriteFUnary("cos"); break;
+                case Mnemonic.fcos: RewriteFUnary("cos", false); break;
                 case Mnemonic.fdecstp: RewriteFdecstp(); break;
                 case Mnemonic.fdiv: EmitCommonFpuInstruction(m.FDiv, false, false); break;
                 case Mnemonic.fdivp: EmitCommonFpuInstruction(m.FDiv, false, true); break;
@@ -272,13 +272,13 @@ namespace Reko.Arch.X86
                 case Mnemonic.fprem: RewriteFprem(); break;
                 case Mnemonic.fprem1: RewriteFprem1(); break;
                 case Mnemonic.fptan: RewriteFptan(); break;
-                case Mnemonic.frndint: RewriteFUnary("__rndint"); break;
+                case Mnemonic.frndint: RewriteFUnary("__rndint", false); break;
                 case Mnemonic.frstor: RewriteFrstor(); break;
                 case Mnemonic.fsave: RewriteFsave(); break;
                 case Mnemonic.fscale: RewriteFscale(); break;
-                case Mnemonic.fsin: RewriteFUnary("sin"); break;
+                case Mnemonic.fsin: RewriteFUnary("sin", false); break;
                 case Mnemonic.fsincos: RewriteFsincos(); break;
-                case Mnemonic.fsqrt: RewriteFUnary("sqrt"); break;
+                case Mnemonic.fsqrt: RewriteFUnary("sqrt", false); break;
                 case Mnemonic.fst: RewriteFst(false); break;
                 case Mnemonic.fstenv: RewriteFstenv(); break;
                 case Mnemonic.fstcw: RewriterFstcw(); break;
@@ -518,11 +518,11 @@ namespace Reko.Arch.X86
                 case Mnemonic.pusha: RewritePusha(); break;
                 case Mnemonic.pushf: RewritePushf(); break;
                 case Mnemonic.pxor: case Mnemonic.vpxor: RewritePxor(); break;
-                case Mnemonic.rcl: RewriteRotation(PseudoProcedure.RolC, true, true); break;
+                case Mnemonic.rcl: RewriteRotation(IntrinsicProcedure.RolC, true, true); break;
                 case Mnemonic.rcpps: RewritePackedUnaryop("__rcpps", PrimitiveType.Real32); break;
-                case Mnemonic.rcr: RewriteRotation(PseudoProcedure.RorC, true, false); break;
-                case Mnemonic.rol: RewriteRotation(PseudoProcedure.Rol, false, true); break;
-                case Mnemonic.ror: RewriteRotation(PseudoProcedure.Ror, false, false); break;
+                case Mnemonic.rcr: RewriteRotation(IntrinsicProcedure.RorC, true, false); break;
+                case Mnemonic.rol: RewriteRotation(IntrinsicProcedure.Rol, false, true); break;
+                case Mnemonic.ror: RewriteRotation(IntrinsicProcedure.Ror, false, false); break;
                 case Mnemonic.rorx: RewriteRorx(); break;
                 case Mnemonic.rdmsr: RewriteRdmsr(); break;
                 case Mnemonic.rdpmc: RewriteRdpmc(); break;
@@ -618,8 +618,8 @@ namespace Reko.Arch.X86
                 case Mnemonic.vxorpd: RewritePackedBinop(true, "__xorpd", PrimitiveType.Word64); break;
                 case Mnemonic.xorps: RewritePackedBinop(false, "__xorps", PrimitiveType.Word32); break;
 
-                case Mnemonic.BOR_exp: RewriteFUnary("exp"); break;
-                case Mnemonic.BOR_ln: RewriteFUnary("log"); break;
+                case Mnemonic.BOR_exp: RewriteFUnary("exp", false); break;
+                case Mnemonic.BOR_ln: RewriteFUnary("log", false); break;
                 }
                 var len = (int)(dasm.Current.Address - addr) + dasm.Current.Length;
                 yield return m.MakeCluster(addr, len, iclass);
@@ -640,20 +640,20 @@ namespace Reko.Arch.X86
 
         private void RewriteFninit()
 		{
-			var ppp = host.PseudoProcedure("__fninit", VoidType.Instance);
-			m.SideEffect(ppp);
+			var intrinsic = host.Intrinsic("__fninit", false, VoidType.Instance);
+			m.SideEffect(intrinsic);
 		}
 
-		public Expression PseudoProc(PseudoProcedure ppp, DataType retType, params Expression[] args)
+		public Expression Intrinsic(IntrinsicProcedure intrinsic, DataType retType, params Expression[] args)
         {
-            if (args.Length != ppp.Arity)
+            if (args.Length != intrinsic.Arity)
                 throw new ArgumentOutOfRangeException(
-                    string.Format("Pseudoprocedure {0} expected {1} arguments, but was passed {2}.",
-                    ppp.Name,
-                    ppp.Arity,
+                    string.Format("Intrinsic {0} expected {1} arguments, but was passed {2}.",
+                    intrinsic.Name,
+                    intrinsic.Arity,
                     args.Length));
 
-            return m.Fn(new ProcedureConstant(arch.PointerType, ppp), retType, args);
+            return m.Fn(new ProcedureConstant(arch.PointerType, intrinsic), retType, args);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
