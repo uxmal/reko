@@ -1,0 +1,311 @@
+// __fixunsdfsi
+// Return size: 0
+define __fixunsdfsi
+__fixunsdfsi_entry:
+	sp = fp
+	r25 = 0x410110<32>
+	// succ:  l00410110
+l00410110:
+	r6 = __ext(r5, 4<32>, 0xB<32>)
+	r7 = 0x3FE<32>
+	r8 = r4
+	r9 = __ext(r5, 0<32>, 0x14<32>)
+	r4 = 0<32>
+	r5 = r5 >>u 0x1F<32>
+	branch r7 >= r6 l0041016E
+	// succ:  l00410128 l0041016E
+l00410128:
+	branch r5 != 0<32> l00410166
+	// succ:  l0041012A l00410166
+l0041012A:
+	r7 = 0x41E<32>
+	branch r7 < r6 l00410154
+	// succ:  l00410132 l00410154
+l00410132:
+	r5 = 0x433<32>
+	r7 = 0x1000000<32>
+	r5 = r5 - r6
+	r7 = r9 | r7
+	branch r5 >= 0x20<32> l0041015A
+	// succ:  l00410144 l0041015A
+l00410144:
+	r4 = r6 + 0xFFFFFBED<32>
+	r5 = r8 >>u r5
+	r4 = r7 << r4
+	r4 = r4 | r5
+	return
+	// succ:  __fixunsdfsi_exit
+l00410154:
+	r4 = r5 + 0xFFFFFFFF<32>
+	return
+	// succ:  __fixunsdfsi_exit
+l0041015A:
+	r4 = 0x413<32>
+	r4 = r4 - r6
+	r4 = r7 >>u r4
+	return
+	// succ:  __fixunsdfsi_exit
+l00410166:
+	r7 = 0x41D<32>
+	branch r7 < r6 l00410154
+	// succ:  l0041016E l00410154
+l0041016E:
+	return
+	// succ:  __fixunsdfsi_exit
+__fixunsdfsi_exit:
+
+
+// __floatsidf
+// Return size: 0
+define __floatsidf
+__floatsidf_entry:
+	sp = fp
+	r25 = 0x410170<32>
+	// succ:  l00410170
+l00410170:
+	branch r4 == 0<32> l004101C4
+	// succ:  l00410172 l004101C4
+l00410172:
+	r7 = r4 >> 0x1F<32>
+	r8 = r4 >>u 0x1F<32>
+	r4 = r4 ^ r7
+	r6 = 0x41E<32>
+	r4 = r4 - r7
+	r5 = 0x433<32>
+	r9 = __clz(r4)
+	r6 = r6 - r9
+	r5 = r5 - r6
+	branch r5 >= 0x20<32> l004101B6
+	// succ:  l00410194 l004101B6
+l00410194:
+	r7 = 0xB<32>
+	r7 = r7 - r9
+	r7 = r4 >>u r7
+	r4 = r4 << r5
+	// succ:  l004101A2
+l004101A2:
+	r5 = 0<32>
+	r5 = __ins(r5, r7, 0<32>, 1<32>)
+	r5 = __ins(r5, r6, 4<32>, 1<32>)
+	r5 = __ins(r5, r8, 0xF<32>, 1<32>)
+	r6_r7 = r4_r5
+	r4_r5 = r6_r7
+	return
+	// succ:  __floatsidf_exit
+l004101B6:
+	r7 = 0x413<32>
+	r7 = r7 - r6
+	r7 = r4 << r7
+	r4 = 0<32>
+	goto l004101A2
+	// succ:  l004101A2
+l004101C4:
+	r7 = 0<32>
+	r4 = 0<32>
+	r6 = 0<32>
+	r8 = 0<32>
+	goto l004101A2
+	// succ:  l004101A2
+__floatsidf_exit:
+
+
+// __floatunsidf
+// Return size: 0
+define __floatunsidf
+__floatunsidf_entry:
+	sp = fp
+	r25 = 0x4101D0<32>
+	// succ:  l004101D0
+l004101D0:
+	branch r4 == 0<32> l00410218
+	// succ:  l004101D2 l00410218
+l004101D2:
+	r8 = __clz(r4)
+	r6 = 0x41E<32>
+	r6 = r6 - r8
+	r5 = 0x433<32>
+	r5 = r5 - r6
+	branch r5 >= 0x20<32> l0041020A
+	// succ:  l004101E8 l0041020A
+l004101E8:
+	r7 = 0xB<32>
+	r7 = r7 - r8
+	r7 = r4 >>u r7
+	r4 = r4 << r5
+	// succ:  l004101F6
+l004101F6:
+	r5 = 0<32>
+	r5 = __ins(r5, r7, 0<32>, 1<32>)
+	r5 = __ins(r5, r6, 4<32>, 1<32>)
+	r6 = r4
+	r7 = __ext(r5, 0<32>, 0x1F<32>)
+	r4_r5 = r6_r7
+	return
+	// succ:  __floatunsidf_exit
+l0041020A:
+	r7 = 0x413<32>
+	r7 = r7 - r6
+	r7 = r4 << r7
+	r4 = 0<32>
+	goto l004101F6
+	// succ:  l004101F6
+l00410218:
+	r7 = 0<32>
+	r4 = 0<32>
+	r6 = 0<32>
+	goto l004101F6
+	// succ:  l004101F6
+__floatunsidf_exit:
+
+
+// __truncdfsf2
+// Return size: 0
+define __truncdfsf2
+__truncdfsf2_entry:
+	sp = fp
+	r25 = 0x410220<32>
+	// succ:  l00410220
+l00410220:
+	r9 = __ext(r5, 0<32>, 0x14<32>)
+	r10 = __ext(r5, 4<32>, 0xB<32>)
+	r7 = r4 >>u 0x1D<32>
+	r9 = r9 << 3<32>
+	r9 = r7 | r9
+	r7 = r10 + 1<32>
+	r7 = r7 + 0x7FF<32>
+	r5 = r5 >>u 0x1F<32>
+	r6 = r4 << 3<32>
+	branch r7 < 2<32> l004102D4
+	// succ:  l00410246 l004102D4
+l00410246:
+	r8 = r10 + 0xFFFFFC80<32>
+	r7 = 0xFE<32>
+	branch r7 < r8 l004102F6
+	// succ:  l00410252 l004102F6
+l00410252:
+	branch 0<32> < r8 l004102B6
+	// succ:  l00410256 l004102B6
+l00410256:
+	r7 = 0xFFFFFFE9<32>
+	branch r8 < r7 l00410332
+	// succ:  l0041025E l00410332
+l0041025E:
+	r4 = 0x1E<32>
+	r7 = 0x8000000<32>
+	r4 = r4 - r8
+	r9 = r9 | r7
+	branch r4 >= 0x20<32> l0041028E
+	// succ:  l00410270 l0041028E
+l00410270:
+	r10 = r10 + 0xFFFFFC82<32>
+	r4 = r6 >>u r4
+	r7 = r6 << r10
+	r9 = r9 << r10
+	r7 = CONVERT(0<32> <u r7, bool, word32)
+	r7 = r7 | r9
+	r7 = r7 | r4
+	// succ:  l0041028A
+l0041028A:
+	r8 = 0<32>
+	goto l004102C8
+	// succ:  l004102C8
+l0041028E:
+	r7 = 0xFFFFFFFE<32>
+	r11 = 0<32>
+	r8 = r7 - r8
+	r8 = r9 >>u r8
+	branch r4 == 0x20<32> l004102A8
+	// succ:  l004102A0 l004102A8
+l004102A0:
+	r10 = r10 + 0xFFFFFCA2<32>
+	r11 = r9 << r10
+	// succ:  l004102A8
+l004102A8:
+	r7 = r11 | r6
+	r7 = CONVERT(0<32> <u r7, bool, word32)
+	r7 = r8 | r7
+	goto l0041028A
+	// succ:  l0041028A
+l004102B6:
+	r4 = r4 << 6<32>
+	r6 = r6 >>u 0x1D<32>
+	r7 = CONVERT(0<32> <u r4, bool, word32)
+	r6 = r6 | r7
+	r7 = r9 << 3<32>
+	r7 = r7 | r6
+	// succ:  l004102C8
+l004102C8:
+	r6 = r7 + 7<32>
+	branch r6 == 0<32> l004102FC
+	// succ:  l004102CC l004102FC
+l004102CC:
+	r6 = r7 + 0xF<32>
+	branch r6 != 4<32> l00410336
+	// succ:  l004102D2 l00410336
+l004102D2:
+	goto l004102FC
+	// succ:  l004102FC
+l004102D4:
+	r7 = r9 | r6
+	branch 0<32> != r10 l004102E2
+	// succ:  l004102DC l004102E2
+l004102DC:
+	r7 = CONVERT(0<32> <u r7, bool, word32)
+	goto l0041028A
+	// succ:  l0041028A
+l004102E2:
+	r8 = 0xFF<32>
+	branch r7 == 0<32> l004102FC
+	// succ:  l004102E8 l004102FC
+l004102E8:
+	r9 = r9 << 3<32>
+	r7 = 0x20000000<32>
+	r7 = r9 | r7
+	goto l004102C8
+	// succ:  l004102C8
+l004102F6:
+	r7 = 0<32>
+	r8 = 0xFF<32>
+	// succ:  l004102FC
+l004102FC:
+	branch __bit(r7, 0x1A<32>) l00410310
+	// succ:  l00410300 l00410310
+l00410300:
+	r8 = r8 + 1<32>
+	r6 = 0xFF<32>
+	r7 = __ins(r7, 0<32>, 0xA<32>, 1<32>)
+	branch r8 != r6 l00410310
+	// succ:  l0041030E l00410310
+l0041030E:
+	r7 = 0<32>
+	// succ:  l00410310
+l00410310:
+	r6 = 0xFF<32>
+	r7 = r7 >>u 3<32>
+	branch r8 != r6 l00410322
+	// succ:  l0041031A l00410322
+l0041031A:
+	branch r7 == 0<32> l00410322
+	// succ:  l0041031C l00410322
+l0041031C:
+	r6 = 0x4000000<32>
+	r7 = r7 | r6
+	// succ:  l00410322
+l00410322:
+	r4 = 0<32>
+	r4 = __ins(r4, r7, 0<32>, 1<32>)
+	r4 = __ins(r4, r8, 7<32>, 1<32>)
+	r4 = __ins(r4, r5, 0xF<32>, 1<32>)
+	return
+	// succ:  __truncdfsf2_exit
+l00410332:
+	r7 = 1<32>
+	r8 = 0<32>
+	// succ:  l00410336
+l00410336:
+	r7 = r7 + 4<32>
+	goto l004102FC
+	// succ:  l004102FC
+__truncdfsf2_exit:
+
+
