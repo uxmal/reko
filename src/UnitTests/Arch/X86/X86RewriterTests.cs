@@ -3312,10 +3312,9 @@ namespace Reko.UnitTests.Arch.X86
         {
             Run32bitTest(0xD9, 0xF8);	// fprem
             AssertCode(
-                "0|L--|10000000(2): 3 instructions",
-                "1|L--|ST[Top + 1<i8>:real64] = ST[Top:real64] % ST[Top + 1<i8>:real64]",
-                "2|L--|C2 = __fprem_incomplete(ST[Top + 1<i8>:real64])",
-                "3|L--|Top = Top + 1<i8>");
+                "0|L--|10000000(2): 2 instructions",
+                "1|L--|ST[Top:real64] = __fprem_x87(ST[Top:real64], ST[Top + 1<i8>:real64])",
+                "2|L--|C2 = __fprem_incomplete(ST[Top:real64])");
         }
 
         [Test]
@@ -3323,8 +3322,9 @@ namespace Reko.UnitTests.Arch.X86
         {
             Run32bitTest(0xD9, 0xF5);	// fprem1	st(5),st(0)
             AssertCode(
-                "0|L--|10000000(2): 1 instructions",
-                "1|L--|ST[Top + 5<i8>:real64] = __fprem1(ST[Top + 5<i8>:real64], ST[Top:real64])");
+                "0|L--|10000000(2): 2 instructions",
+                "1|L--|ST[Top:real64] = ST[Top:real64] % ST[Top + 1<i8>:real64]",
+                "2|L--|C2 = __fprem_incomplete(ST[Top:real64])");
         }
 
         [Test]

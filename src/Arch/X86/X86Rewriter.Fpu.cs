@@ -305,19 +305,18 @@ namespace Reko.Arch.X86
 
         private void RewriteFprem()
         {
-            Expression op1 = FpuRegister(1);
-            Expression op2 = FpuRegister(0);
-            m.Assign(FpuRegister(1),
-                m.Mod(op2, op1));
-            m.Assign(binder.EnsureFlagGroup(Registers.C2), host.Intrinsic("__fprem_incomplete", true, PrimitiveType.Bool, FpuRegister(1)));
-            ShrinkFpuStack(1);
+            Expression src = FpuRegister(1);
+            Expression dst = FpuRegister(0);
+            m.Assign(dst, host.Intrinsic("__fprem_x87", true, dst.DataType, dst, src));
+            m.Assign(binder.EnsureFlagGroup(Registers.C2), host.Intrinsic("__fprem_incomplete", true, PrimitiveType.Bool, FpuRegister(0)));
         }
 
         private void RewriteFprem1()
         {
-            Expression op1 = SrcOp(0);
-            Expression op2 = SrcOp(1);
-            m.Assign(op1, host.Intrinsic("__fprem1", true, op1.DataType, op1, op2));
+            Expression src = FpuRegister(1);
+            Expression dst = FpuRegister(0);
+            m.Assign(dst, m.Mod(dst, src));
+            m.Assign(binder.EnsureFlagGroup(Registers.C2), host.Intrinsic("__fprem_incomplete", true, PrimitiveType.Bool, FpuRegister(0)));
         }
 
         private void RewriteFptan()
