@@ -519,10 +519,10 @@ void fn0814(byte b)
 		fn07B3(bc_n);
 }
 
-// 082F: Register byte fn082F(Register byte f, Register byte b, Register Eq_n c, Register cu8 e, Stack word16 wArg02, Stack word16 wArg04)
+// 082F: Register byte fn082F(Register byte f, Register byte b, Register Eq_n c, Register byte e, Stack word16 wArg02, Stack word16 wArg04)
 // Called from:
 //      fn0BE4
-byte fn082F(byte f, byte b, Eq_n c, cu8 e, word16 wArg02, word16 wArg04)
+byte fn082F(byte f, byte b, Eq_n c, byte e, word16 wArg02, word16 wArg04)
 {
 	g_b168D = e;
 	g_b168C = b;
@@ -539,17 +539,17 @@ byte fn082F(byte f, byte b, Eq_n c, cu8 e, word16 wArg02, word16 wArg04)
 		g_b1690 = 0x01;
 	else
 	{
-		cu8 a_n = __rol(__rol(g_b168D, 0x01), 0x01);
+		cu8 a_n = __rol(g_b168D, 0x02);
 		if (__rcr(a_n, 0x01, cond(a_n)) < 0x00)
 			g_b1691 = 0x01;
 		else
 		{
-			cu8 a_n = __rol(__rol(__rol(g_b168D, 0x01), 0x01), 0x01);
+			cu8 a_n = __rol(g_b168D, 0x03);
 			if (__rcr(a_n, 0x01, cond(a_n)) < 0x00)
 				g_b168F = 0x01;
 		}
 	}
-	cu8 a_n = __rol(__rol(__rol(__rol(g_b168D, 0x01), 0x01), 0x01), 0x01);
+	cu8 a_n = __rol(g_b168D, 0x04);
 	if (__rcr(a_n, 0x01, cond(a_n)) < 0x00)
 		g_b168E = 0x01;
 	g_b168D += 0x0F;
@@ -1463,7 +1463,7 @@ Eq_n g_t168B = // 168B
 		0x17
 	};
 byte g_b168C = ~0x14; // 168C
-cu8 g_b168D = 0x3E; // 168D
+byte g_b168D = 0x3E; // 168D
 byte g_b168E = 0x82; // 168E
 cu8 g_b168F = ~0x48; // 168F
 cu8 g_b1690 = 55; // 1690

@@ -710,10 +710,10 @@ l082F:
 	byte a_40 = __rol(Mem38[0x168D<16>:byte], 1<8>)
 	branch __rcr(a_40, 1<8>, cond(a_40)) >=u 0<8> l085E
 l085E:
-	byte a_46 = __rol(__rol(Mem38[0x168D<16>:byte], 1<8>), 1<8>)
+	byte a_46 = __rol(Mem38[0x168D<16>:byte], 2<8>)
 	branch __rcr(a_46, 1<8>, cond(a_46)) >=u 0<8> l086F
 l086F:
-	byte a_53 = __rol(__rol(__rol(Mem38[0x168D<16>:byte], 1<8>), 1<8>), 1<8>)
+	byte a_53 = __rol(Mem38[0x168D<16>:byte], 3<8>)
 	branch __rcr(a_53, 1<8>, cond(a_53)) >=u 0<8> l087E
 l0879:
 	Mem58[0x168F<16>:byte] = 1<8>
@@ -722,7 +722,7 @@ l0867:
 l0856:
 	Mem62[0x1690<16>:byte] = 1<8>
 l087E:
-	byte a_68 = __rol(__rol(__rol(__rol(Mem63[0x168D<16>:byte], 1<8>), 1<8>), 1<8>), 1<8>)
+	byte a_68 = __rol(Mem63[0x168D<16>:byte], 4<8>)
 	branch __rcr(a_68, 1<8>, cond(a_68)) >=u 0<8> l088E
 l0889:
 	Mem73[0x168E<16>:byte] = 1<8>

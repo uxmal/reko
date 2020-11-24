@@ -171,21 +171,64 @@ namespace Reko.Evaluation
                 case IntrinsicProcedure.RolC:
                     if (IsSingleBitRotationWithClearCarryIn(args))
                     {
+                        Changed = true;
                         return new BinaryExpression(Operator.Shl, appl.DataType, args[0], args[1]);
                     }
                     break;
                 case IntrinsicProcedure.RorC:
                     if (IsSingleBitRotationWithClearCarryIn(args))
                     {
+                        Changed = true;
                         return new BinaryExpression(Operator.Shr, appl.DataType, args[0], args[1]);
+                    }
+                    break;
+                case IntrinsicProcedure.Rol:
+                    var rol = CombineRotations(intrinsic.Name, appl, args);
+                    if (rol != null)
+                    {
+                        Changed = true;
+                        return rol;
+                    }
+                    break;
+                case IntrinsicProcedure.Ror:
+                    var ror = CombineRotations(intrinsic.Name, appl, args);
+                    if (ror != null)
+                    {
+                        Changed = true;
+                        return ror;
                     }
                     break;
                 }
             }
-            appl = new Application(appl.Procedure.Accept(this),
+            appl = new Application(
+                appl.Procedure.Accept(this),
                 appl.DataType,
                 args);
             return ctx.GetValue(appl);
+        }
+
+        private Expression? CombineRotations(string rotationName, Application appl, Expression[] args)
+        {
+            if (args[1] is Constant cOuter &&
+                args[0] is Application appInner &&
+                appInner.Procedure is ProcedureConstant pcInner &&
+                pcInner.Procedure is IntrinsicProcedure intrinsicInner)
+            {
+                if (intrinsicInner.Name == rotationName)
+                {
+                    if (appInner.Arguments[1] is Constant cInner)
+                    {
+                        var cTot = Operator.IAdd.ApplyConstants(cOuter, cInner);
+                        Changed = true;
+                        return new Application(
+                            appl.Procedure,
+                            appl.DataType,
+                            appInner.Arguments[0],
+                            cTot);
+                    }
+                }
+            }
+            return null!;
         }
 
         private static bool IsSingleBitRotationWithClearCarryIn(Expression[] args)

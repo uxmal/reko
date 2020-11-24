@@ -594,5 +594,37 @@ namespace Reko.UnitTests.Evaluation
                 0);
             Assert.AreEqual("SLICE(Mem0[foo_1:byte], char, 0)", expr.Accept(simplifier).ToString());
         }
+
+        [Test]
+        public void Exs_Rol_rol()
+        {
+            Given_ExpressionSimplifier();
+            var r0 = new RegisterStorage("r0", 0, 0, PrimitiveType.Word32);
+            var r1 = new RegisterStorage("r1", 0, 0, PrimitiveType.Word32);
+            var sigRol = FunctionType.Func(
+                new Identifier("", r0.DataType, r0),
+                new Identifier("value", r0.DataType, r0),
+                new Identifier("sh", r0.DataType, r1));
+            var rol = new IntrinsicProcedure(IntrinsicProcedure.Rol, true, sigRol);
+            var exp = m.Fn(rol, m.Fn(rol, foo, m.Word32(1)), m.Word32(1));
+            Assert.AreEqual("__rol(foo_1, 2<32>)", exp.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_Ror_ror()
+        {
+            Given_ExpressionSimplifier();
+            var r0 = new RegisterStorage("r0", 0, 0, PrimitiveType.Word32);
+            var r1 = new RegisterStorage("r1", 0, 0, PrimitiveType.Word32);
+            var sigRol = FunctionType.Func(
+                new Identifier("", r0.DataType, r0),
+                new Identifier("value", r0.DataType, r0),
+                new Identifier("sh", r0.DataType, r1));
+            var ror = new IntrinsicProcedure(IntrinsicProcedure.Ror, true, sigRol);
+            var exp = m.Fn(ror, m.Fn(ror, foo, m.Word32(2)), m.Word32(1));
+            Assert.AreEqual("__ror(foo_1, 3<32>)", exp.Accept(simplifier).ToString());
+        }
+
+
     }
 }
