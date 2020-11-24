@@ -118,6 +118,10 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="K4os.Compression.LZ4" Version="1.2.6" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Alpha\Alpha.csproj">
       <Project>{c4c56725-bfd0-405a-802c-2c66fcd0ef06}</Project>

@@ -34,7 +34,7 @@ namespace Reko.Environments.Switch
         {
         }
 
-        public override string DefaultCallingConvention { get { return ""; } }
+        public override string DefaultCallingConvention => "";
 
         public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
         {
@@ -53,16 +53,16 @@ namespace Reko.Environments.Switch
             return new HashSet<RegisterStorage>();
         }
 
-        public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
+        public override ImageSymbol? FindMainProcedure(Program program, Address addrStart)
         {
             // Right now we are not aware of any way to locate main
             // on Switch binaries.
             return null;
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override int GetBitSizeFromCBasicType(CBasicType cb)
@@ -70,23 +70,23 @@ namespace Reko.Environments.Switch
             throw new NotImplementedException();
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention? GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();
         }
 
-        public override ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rdr, IRewriterHost host)
+        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rdr, IRewriterHost host)
         {
             //$TODO: for now we don't attempt to locate trampolines.
             return null;
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string sAddress, out Address addr)
+        public override bool TryParseAddress(string? sAddress, out Address addr)
         {
             return Address.TryParse64(sAddress, out addr);
         }

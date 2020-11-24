@@ -590,6 +590,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+  <Reference Include="K4os.Compression.LZ4">
+    <HintPath>..\..\packages\K4os.Compression.LZ4.1.2.6\lib\netstandard2.0\K4os.Compression.LZ4.dll</HintPath>
+  </Reference>
+  </ItemGroup>
+  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
