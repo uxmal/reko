@@ -52,7 +52,7 @@ namespace Reko.Scanning
     /// </remarks>
     public class BackwardSlicer
     {
-        internal static readonly TraceSwitch trace = new TraceSwitch(nameof(BackwardSlicer), "Traces the backward slicer") { Level = TraceLevel.Verbose };
+        internal static readonly TraceSwitch trace = new TraceSwitch(nameof(BackwardSlicer), "Traces the backward slicer") { Level = TraceLevel.Warning };
 
         internal IBackWalkHost<RtlBlock, RtlInstruction> host;
         private readonly RtlBlock rtlBlock;
