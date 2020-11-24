@@ -47,3 +47,5 @@ TestResults
 # Regression test script
 /subjects/subject_weights.txt
 /subjects/regressionTests.pyc
+/subjects/**/*.tests
+
