@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Core
 		}
 
 		[Test]
-		public void ApplicationTest()
+		public void Crit_Application_Idempotent()
 		{
 			Assert.IsTrue(CriticalInstruction.IsCritical(new Application(new Identifier("foo", PrimitiveType.Word32, null), PrimitiveType.Bool)));
 		}
@@ -70,10 +70,12 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
-		public void BinOpTestTrue()
+		public void Crit_BinOpTestTrue()
 		{
 			Assert.IsTrue(CriticalInstruction.IsCritical(new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, 
-				new Application(null, PrimitiveType.Word32),
+				new Application(
+                    new ProcedureConstant(PrimitiveType.Ptr32, new IntrinsicProcedure("effect", false, PrimitiveType.Int32, 0)),
+                    PrimitiveType.Word32),
 				Constant.Word32(1))));
 		}
 

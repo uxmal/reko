@@ -117,7 +117,20 @@ namespace Reko.Core.Code
 
         public bool VisitAddress(Address addr) => false;
 
-        public bool VisitApplication(Application appl) => true;
+        public bool VisitApplication(Application appl)
+        {
+            var argsCritical = appl.Arguments.Any(a => a.Accept(this));
+            if (argsCritical)
+                return true;
+            if (appl.Procedure is ProcedureConstant pc)
+            {
+                return !pc.Procedure.IsIdempotent;
+            }
+            else
+            {
+                return true;
+            }
+        }
 
         public bool VisitArrayAccess(ArrayAccess arr) =>
             arr.Array.Accept(this) || arr.Index.Accept(this);

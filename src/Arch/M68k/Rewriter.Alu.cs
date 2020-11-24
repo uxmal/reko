@@ -148,7 +148,7 @@ namespace Reko.Arch.M68k
             var opDst = orw.RewriteSrc(instr.Operands[1], instr.Address);
             m.Assign(
                 orw.FlagGroup(FlagM.ZF),
-                host.Intrinsic(name, true, PrimitiveType.Bool, opDst, opSrc, m.Out(PrimitiveType.Ptr32, opDst)));
+                host.Intrinsic(name, false, PrimitiveType.Bool, opDst, opSrc, m.Out(PrimitiveType.Ptr32, opDst)));
         }
 
         public void RewriteBfchg()
@@ -282,7 +282,7 @@ namespace Reko.Arch.M68k
         {
             var r = (RegisterOperand) instr.Operands[0];
             var reg = binder.EnsureRegister(r.Register);
-            m.Assign(reg, host.Intrinsic("__swap", true, PrimitiveType.Word32, reg));
+            m.Assign(reg, host.Intrinsic("__swap", false, PrimitiveType.Word32, reg));
             m.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF), m.Cond(reg));
             m.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
             m.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
