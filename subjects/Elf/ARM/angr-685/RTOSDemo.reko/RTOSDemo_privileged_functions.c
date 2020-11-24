@@ -66,7 +66,7 @@ word32 g_dw000D = 0x80; // 0000000D
 void prvUnlockQueue(Eq_n r0, ptr32 cpsr)
 {
 	vPortEnterCritical(cpsr);
-	int32 r4_n = (int32) (int8) (word32) *((word32) r0 + 69);
+	int32 r4_n = (int32) *((word32) r0 + 69);
 	if (r4_n > 0x00 && *((word32) r0 + 36) != 0x00)
 	{
 		do
@@ -91,7 +91,7 @@ void prvUnlockQueue(Eq_n r0, ptr32 cpsr)
 	((word32) r0 + 69)->u0 = ~0x00;
 	vPortExitCritical(cpsr);
 	vPortEnterCritical(cpsr);
-	int32 r4_n = (int32) (int8) (word32) *((word32) r0 + 0x0044);
+	int32 r4_n = (int32) *((word32) r0 + 0x0044);
 	if (r4_n > 0x00 && *((word32) r0 + 16) != 0x00)
 	{
 		do
@@ -506,7 +506,7 @@ void xQueueGenericSendFromISR(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n lr, ptr32
 	__dsb_sy();
 	if (*((word32) r0 + 56) < *((word32) r0 + 60) || r3 == 0x02)
 	{
-		int32 r4_n = (int32) (int8) (word32) *((word32) r0 + 69);
+		int32 r4_n = (int32) *((word32) r0 + 69);
 		word32 r0_n;
 		word32 * r7_n;
 		word32 lr_n;
@@ -539,7 +539,7 @@ void xQueueGiveFromISR(struct Eq_n * r0, word32 * r1, ptr32 cpsr)
 		__msr(cpsr, r4_n);
 		return;
 	}
-	int32 r3_n = (int32) (int8) (word32) r0->b0045;
+	int32 r3_n = (int32) r0->b0045;
 	r0->dw0038 = r2_n + 0x01;
 	if (r2_n != 0x01)
 		r0->b0045 = (byte) (int32) (int8) (r3_n + 0x01);
@@ -566,7 +566,7 @@ void xQueueReceiveFromISR(Eq_n r0, Eq_n r1, word32 * r2, Eq_n lr, ptr32 cpsr)
 		word32 r5_n;
 		struct Eq_n * r7_n;
 		word32 lr_n;
-		struct Eq_n * r4_n = prvCopyDataFromQueue(r0, r1, r4_n, (int32) (int8) (word32) *((word32) r0 + 0x0044), r6_n, r0, lr, out r5_n, out r6_n, out r7_n, out lr_n);
+		struct Eq_n * r4_n = prvCopyDataFromQueue(r0, r1, r4_n, (int32) *((word32) r0 + 0x0044), r6_n, r0, lr, out r5_n, out r6_n, out r7_n, out lr_n);
 		r7_n->dw0038 = r4_n - &g_dw0001;
 		if (r4_n != &g_dw0001)
 			r7_n->b0044 = (byte) (int32) (int8) (r5_n + 0x01);
@@ -722,7 +722,7 @@ void prvInitialiseNewTask(ui32 r0, word32 r1, ui32 r2, word32 r3, int32 dwArg00,
 	uint32 r2_n = dwArg00 & ~0x80000000;
 	do
 	{
-		*r0_n = (byte) (word32) *r3_n;
+		*r0_n = *r3_n;
 		++r3_n;
 		++r0_n;
 	} while ((word32) *r3_n != 0x00 && r3_n != r1 + 0x02);

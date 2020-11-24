@@ -1196,21 +1196,21 @@ int8 * get_a_line(byte * r4, int8 * r5, int32 * r6)
 	int8 * dwArg04_n = r5;
 	while (*r6 > 0x00 && ((word32) (*dwArg04_n) != 0x0A && (word32) (*dwArg04_n) != 0x0D))
 	{
-		*dwArg00_n = (byte) (word32) *dwArg04_n;
+		*dwArg00_n = *dwArg04_n;
 		*r6 += -1;
 		++dwArg04_n;
 		++dwArg00_n;
 	}
 	if (*r6 > 0x00 && ((word32) (*dwArg04_n) == 0x0A || (word32) (*dwArg04_n) == 0x0D))
 	{
-		*dwArg00_n = (byte) (word32) *dwArg04_n;
+		*dwArg00_n = *dwArg04_n;
 		*r6 += -1;
 		++dwArg04_n;
 		++dwArg00_n;
 	}
 	if (*r6 > 0x00 && ((word32) (*dwArg04_n) == 0x0A || (word32) (*dwArg04_n) == 0x0D))
 	{
-		*dwArg00_n = (byte) (word32) *dwArg04_n;
+		*dwArg00_n = *dwArg04_n;
 		*r6 += -1;
 		++dwArg04_n;
 		++dwArg00_n;
@@ -1631,7 +1631,7 @@ int32 request_parse_line(Eq_n r4, ptr32 r5, word32 ra)
 //      client_parse_request
 void request_save_line(Eq_n r4, void * r5, Eq_n r6, word32 ra)
 {
-	byte bArg0B_n = (byte) r6;
+	int8 bArg0B_n = (byte) r6;
 	if (r4 == 0x00)
 	{
 		word32 r5_n;
@@ -1663,7 +1663,7 @@ void request_save_line(Eq_n r4, void * r5, Eq_n r6, word32 ra)
 		}
 		else
 		{
-			(word32) r4 + 4 + ((word32) (*((word32) r4 + 0x0558)) + 0x0510) = (int8 *) (byte) (word32) bArg0B_n;
+			(word32) r4 + 4 + ((word32) (*((word32) r4 + 0x0558)) + 0x0510) = (int8 *) bArg0B_n;
 			memcpy(*((word32) ((word32) r4 + 4) + (*((word32) r4 + 0x0558) * 0x04 + 1040)), r5, r6);
 		}
 	}
@@ -2076,7 +2076,7 @@ Eq_n properties_parse_command_line(Eq_n r4, Eq_n r5[], word32 r16, word32 ra, un
 		if ((word32) *r5[dwLoc28_n] == 45)
 		{
 			struct Eq_n * dwLoc18_n;
-			byte bLoc1C_n = (byte) (word32) *((word32) r5[dwLoc28_n] + 1);
+			byte bLoc1C_n = *((word32) r5[dwLoc28_n] + 1);
 			if ((word32) bLoc1C_n != 0x00 && (word32) (*((word32) r5[dwLoc28_n] + 2)) != 0x00)
 				dwLoc18_n = (word32) r5[dwLoc28_n] + 2;
 			else if ((word32) (dwLoc28_n < r4) != 0x00)

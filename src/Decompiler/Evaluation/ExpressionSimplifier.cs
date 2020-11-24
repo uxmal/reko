@@ -45,6 +45,7 @@ namespace Reko.Evaluation
         private EvaluationContext ctx;
         private readonly ExpressionValueComparer cmp;
         private readonly ExpressionEmitter m;
+        private readonly Unifier unifier;
 
         private readonly AddTwoIdsRule add2ids;
         private readonly Add_e_c_cRule addEcc;
@@ -72,6 +73,7 @@ namespace Reko.Evaluation
         private readonly MkSeqFromSlices_Rule mkSeqFromSlicesRule;
         private readonly ComparisonConstOnLeft constOnLeft;
         private readonly SliceSequence sliceSeq;
+        private readonly SliceConvert sliceConvert;
         private readonly LogicalNotFollowedByNegRule logicalNotFollowedByNeg;
         private readonly LogicalNotFromArithmeticSequenceRule logicalNotFromBorrow;
         private readonly UnaryNegEqZeroRule unaryNegEqZero;
@@ -82,11 +84,11 @@ namespace Reko.Evaluation
             this.ctx = ctx;
             this.cmp = new ExpressionValueComparer();
             this.m = new ExpressionEmitter();
-
+            this.unifier = new Unifier();
             this.add2ids = new AddTwoIdsRule(ctx);
             this.addEcc = new Add_e_c_cRule(ctx);
             this.addMici = new Add_mul_id_c_id_Rule(ctx);
-            this.idConst = new IdConstant(ctx, new Unifier(), listener);
+            this.idConst = new IdConstant(ctx, unifier, listener);
             this.idCopyPropagation = new IdCopyPropagationRule(ctx);
             this.idBinIdc = new IdBinIdc_Rule(ctx);
             this.sliceConst = new SliceConstant_Rule();
@@ -109,6 +111,7 @@ namespace Reko.Evaluation
             this.mkSeqFromSlicesRule = new MkSeqFromSlices_Rule(ctx);
             this.constOnLeft = new ComparisonConstOnLeft();
             this.sliceSeq = new SliceSequence(ctx);
+            this.sliceConvert = new SliceConvert();
             this.logicalNotFollowedByNeg = new LogicalNotFollowedByNegRule();
             this.logicalNotFromBorrow = new LogicalNotFromArithmeticSequenceRule();
             this.unaryNegEqZero = new UnaryNegEqZeroRule();
@@ -1087,7 +1090,11 @@ namespace Reko.Evaluation
                 Changed = true;
                 return sliceSeq.Transform();
             }
-
+            if (sliceConvert.Match(slice))
+            {
+                Changed = true;
+                return sliceConvert.Transform();
+            }
             if (e is Identifier id &&
                 ctx.GetDefiningExpression(id) is MkSequence seq)
             {

@@ -11,7 +11,7 @@ void prvUnlockQueue(word32 r0, word32 cpsr)
 prvUnlockQueue_entry:
 l00000058:
 	vPortEnterCritical(cpsr)
-	word32 r4_133 = CONVERT(SLICE(CONVERT(Mem11[r0 + 69<i32>:byte], byte, word32), int8, 0), int8, int32)
+	word32 r4_133 = CONVERT(Mem11[r0 + 69<i32>:byte], byte, int32)
 	branch r4_133 <= 0<32> l00000098
 l0000006A:
 	branch Mem11[r0 + 36<i32>:word32] == 0<32> l00000098
@@ -33,7 +33,7 @@ l00000098:
 	Mem58[r0 + 69<i32>:byte] = 0xFF<8>
 	vPortExitCritical(cpsr)
 	vPortEnterCritical(cpsr)
-	word32 r4_101 = CONVERT(SLICE(CONVERT(Mem58[r0 + 68<i32>:byte], byte, word32), int8, 0), int8, int32)
+	word32 r4_101 = CONVERT(Mem58[r0 + 68<i32>:byte], byte, int32)
 	branch r4_101 <= 0<32> l000000DE
 l000000B0:
 	branch Mem58[r0 + 16<i32>:word32] == 0<32> l000000DE
@@ -488,7 +488,7 @@ l00000458:
 l00000476:
 	branch r3 == 2<32> l00000482
 l00000482:
-	word32 r4_32 = CONVERT(SLICE(CONVERT(Mem15[r0 + 69<i32>:byte], byte, word32), int8, 0), int8, int32)
+	word32 r4_32 = CONVERT(Mem15[r0 + 69<i32>:byte], byte, int32)
 	word32 r0_162
 	word32 r7_44
 	word32 lr_163
@@ -532,7 +532,7 @@ l00000500:
 	__msr(cpsr, r4_13)
 	return
 l000004E2:
-	word32 r3_28 = CONVERT(SLICE(CONVERT(Mem11[r0 + 69<i32>:byte], byte, word32), int8, 0), int8, int32)
+	word32 r3_28 = CONVERT(Mem11[r0 + 69<i32>:byte], byte, int32)
 	Mem29[r0 + 56<i32>:word32] = r2_16 + 1<32>
 	branch r2_16 == 1<32> l00000508
 l00000508:
@@ -571,7 +571,7 @@ l0000054A:
 	word32 r5_33
 	word32 r7_35
 	word32 lr_150
-	word32 r4_32 = prvCopyDataFromQueue(r0, r1, r4_20, CONVERT(SLICE(CONVERT(Mem15[r0 + 68<i32>:byte], byte, word32), int8, 0), int8, int32), r6_17, r0, lr, out r5_33, out r6_17, out r7_35, out lr_150)
+	word32 r4_32 = prvCopyDataFromQueue(r0, r1, r4_20, CONVERT(Mem15[r0 + 68<i32>:byte], byte, int32), r6_17, r0, lr, out r5_33, out r6_17, out r7_35, out lr_150)
 	Mem39[r7_35 + 56<i32>:word32] = r4_32 - 1<32>
 	branch r4_32 == 1<32> l00000572
 l00000572:
@@ -821,7 +821,7 @@ l00000700:
 	word32 r0_41 = dwArg08 + 0x54<32>
 	word32 r2_42 = dwArg00 & ~0x80000000<32>
 l0000072E:
-	Mem47[r0_41:byte] = SLICE(CONVERT(Mem44[r3_36 + 0<i32>:byte], byte, word32), byte, 0)
+	Mem47[r0_41:byte] = Mem44[r3_36 + 0<i32>:byte]
 	r3_36 = r3_36 + 1<i32>
 	r0_41 = r0_41 + 1<i32>
 	branch CONVERT(Mem47[r3_36:byte], byte, word32) == 0<32> l0000073E

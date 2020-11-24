@@ -1296,8 +1296,8 @@ l0000000000017260:
 	Mem278[a2 + 176<i64>:word64] = __strdup(fp + -392<i32>)
 	a5_252 = 0x12660<64>
 l000000000001716C:
-	Mem285[a2 + 96<i32>:byte] = SLICE(CONVERT(Mem282[a5_252:byte], byte, word64), byte, 0)
-	Mem287[a2 + 97<i64>:byte] = SLICE(CONVERT(Mem285[a5_252 + 1<i32>:byte], byte, word64), byte, 0)
+	Mem285[a2 + 96<i32>:byte] = Mem282[a5_252:byte]
+	Mem287[a2 + 97<i64>:byte] = Mem285[a5_252 + 1<i32>:byte]
 	branch a3 << 0x31<u32> < 0<64> l0000000000017288
 l0000000000017288:
 	gp = fn0000000000017B40(ra, gp, CONVERT(dwLoc01B8, int32, int64), a2 + 64<i32>, a2 + 72<i32>, a2 + 80<i32>, a2 + 88<i32>, s5_116, a2, out s6_11)

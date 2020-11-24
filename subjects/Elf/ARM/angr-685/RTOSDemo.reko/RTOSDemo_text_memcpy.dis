@@ -55,7 +55,7 @@ l0000A62C:
 l0000A630:
 	word32 r3_101 = 0<32>
 l0000A632:
-	Mem100[r5_146 + r3_101:byte] = SLICE(CONVERT(Mem97[r1 + r3_101:byte], byte, word32), byte, 0)
+	Mem100[r5_146 + r3_101:byte] = Mem97[r1 + r3_101:byte]
 	r3_101 = r3_101 + 1<32>
 	branch r3_101 != r2 l0000A632
 l0000A63C:

@@ -51,7 +51,6 @@ namespace Reko.UnitTests.Analysis
         private ProcedureFlow flow;
         ProgramBuilder pb;
         private List<SsaState> ssaStates;
-        private IServiceContainer sc;
         private FakeDecompilerEventListener eventListener;
 
         [SetUp]

@@ -147,7 +147,7 @@ l000007F0:
 	memset(fp + -20<i32>, 0<32>, 5<i32>)
 	word32 r2_38 = calloc(1<i32>, 5<i32>)
 	Mem45[r2_38:word32] = dwLoc14
-	Mem48[r2_38 + 4<32>:byte] = SLICE(CONVERT(bLoc10, byte, word32), byte, 0)
+	Mem48[r2_38 + 4<32>:byte] = bLoc10
 	Mem51[r2_38:byte] = 0xC<8>
 	Mem53[r2_38 + 1<32>:word32] = 0<32>
 	r2_43 = r2_38

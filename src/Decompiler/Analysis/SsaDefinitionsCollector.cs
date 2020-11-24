@@ -28,7 +28,7 @@ namespace Reko.Analysis
 {
     public class SsaDefinitionsCollector : InstructionVisitorBase
     {
-        private List<Identifier> definitions;
+        private readonly List<Identifier> definitions;
 
         public SsaDefinitionsCollector()
         {

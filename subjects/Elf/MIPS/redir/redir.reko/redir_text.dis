@@ -2256,7 +2256,7 @@ l00402C74:
 	branch CONVERT(Mem19[dwArg04_108:int8], int8, word32) != 13<i32> l00402C74_ds_t
 l00402C74_ds_t:
 l00402C94:
-	Mem32[dwArg00_107:byte] = SLICE(CONVERT(Mem19[dwArg04_108:byte], byte, word32), byte, 0)
+	Mem32[dwArg00_107:byte] = Mem19[dwArg04_108:byte]
 	Mem42[r6:word32] = Mem36[r6:word32] + -1<i32>
 	dwArg04_108 = dwArg04_108 + 1<i32>
 	dwArg00_107 = dwArg00_107 + 1<i32>
@@ -2274,7 +2274,7 @@ l00402D18:
 	branch CONVERT(Mem19[dwArg04_108:int8], int8, word32) == 13<i32> l00402D18_ds_t
 l00402D18_ds_t:
 l00402D38:
-	Mem59[dwArg00_107:byte] = SLICE(CONVERT(Mem19[dwArg04_108:byte], byte, word32), byte, 0)
+	Mem59[dwArg00_107:byte] = Mem19[dwArg04_108:byte]
 	Mem69[r6:word32] = Mem63[r6:word32] + -1<i32>
 	dwArg04_108 = dwArg04_108 + 1<i32>
 	dwArg00_107 = dwArg00_107 + 1<i32>
@@ -2292,7 +2292,7 @@ l00402DB4:
 	branch CONVERT(Mem71[dwArg04_108:int8], int8, word32) == 13<i32> l00402DB4_ds_t
 l00402DB4_ds_t:
 l00402DD4:
-	Mem86[dwArg00_107:byte] = SLICE(CONVERT(Mem71[dwArg04_108:byte], byte, word32), byte, 0)
+	Mem86[dwArg00_107:byte] = Mem71[dwArg04_108:byte]
 	Mem96[r6:word32] = Mem90[r6:word32] + -1<i32>
 	dwArg04_108 = dwArg04_108 + 1<i32>
 	dwArg00_107 = dwArg00_107 + 1<i32>
@@ -3057,7 +3057,7 @@ l00404544:
 	branch Mem48[r4 + 4<i32> + ((Mem48[r4 + 0x558<32>:word32] << 2<8>) + 1040<i32>):word32] != 0<32> l00404544_ds_t
 l00404544_ds_t:
 l0040463C:
-	Mem64[r4 + 4<i32> + (Mem48[r4 + 0x558<32>:word32] + 1296<i32>):byte] = SLICE(CONVERT(bArg0B_150, byte, word32), byte, 0)
+	Mem64[r4 + 4<i32> + (Mem48[r4 + 0x558<32>:word32] + 1296<i32>):byte] = bArg0B_150
 	memcpy(Mem64[r4 + 4<i32> + ((Mem64[r4 + 0x558<32>:word32] << 2<8>) + 1040<i32>):word32], r5, r6)
 l00404544_ds_f:
 l004045DC:
@@ -3708,7 +3708,7 @@ l00405D20_ds_t:
 l00405D20_ds_f:
 l00405D50:
 	word32 dwLoc18_371
-	byte bLoc1C_368 = SLICE(CONVERT(Mem22[Mem22[(dwLoc28_364 << 2<8>) + r5:word32] + 1<i32>:byte], byte, word32), byte, 0)
+	byte bLoc1C_368 = Mem22[Mem22[(dwLoc28_364 << 2<8>) + r5:word32] + 1<i32>:byte]
 	branch CONVERT(bLoc1C_368, byte, word32) == 0<32> l00405D50_ds_t
 l00405D50_ds_t:
 l00405D50_ds_f:

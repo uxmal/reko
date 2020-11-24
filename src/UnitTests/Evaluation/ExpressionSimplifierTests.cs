@@ -579,5 +579,20 @@ namespace Reko.UnitTests.Evaluation
             expr.DataType = PrimitiveType.Real64;
             Assert.AreEqual("Mem0[foo_1:real64]", expr.Accept(simplifier).ToString());
         }
+
+        [Test]
+        public void Exs_Slice_Convert()
+        {
+            Given_ExpressionSimplifier();
+
+            var expr = m.Slice(
+                PrimitiveType.Char,
+                m.Convert(
+                    m.Mem8(foo),
+                    PrimitiveType.Byte,
+                    PrimitiveType.Word32),
+                0);
+            Assert.AreEqual("SLICE(Mem0[foo_1:byte], char, 0)", expr.Accept(simplifier).ToString());
+        }
     }
 }

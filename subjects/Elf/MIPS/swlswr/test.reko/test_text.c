@@ -80,7 +80,7 @@ void main()
 	memset(fp + -20, 0x00, 5);
 	struct Eq_n * r2_n = calloc(1, 5);
 	r2_n->t0000 = dwLoc14;
-	r2_n->b0004 = (byte) (word32) bLoc10;
+	r2_n->b0004 = bLoc10;
 	r2_n->t0000.u0 = 0x0C;
 	r2_n->dw0001 = 0x00;
 	r2_n = r2_n;

@@ -206,7 +206,7 @@ Eq_n fn004004B4(Eq_n r2, Eq_n r3, byte * r4, word32 r13, word32 r14, word32 r15,
 	v3->t0040 = r29;
 	v3->t0044 = r30;
 	v3->t0048 = r31;
-	Eq_n r31_n = (int32) (int8) (word32) *r4;
+	Eq_n r31_n = (int32) *r4;
 	byte * r23_n = r4 + 1;
 	int32 dwLoc0284_n = 0x00;
 	if (r31_n != 0x00)
@@ -218,10 +218,10 @@ Eq_n fn004004B4(Eq_n r2, Eq_n r3, byte * r4, word32 r13, word32 r14, word32 r15,
 		{
 			ui32 r10_n;
 			if (r31_n > 0x1F && r31_n < 121)
-				r10_n = CONVERT(SLICE(CONVERT(Mem88[r14_n + ~0x1B + r31_n:byte], byte, word32), int8, 0), int8, int32) & 0x0F;
+				r10_n = CONVERT(Mem88[r14_n + ~0x1B + r31_n:byte], byte, int32) & 0x0F;
 			else
 				r10_n = 0x00;
-			int32 r4_n = (int32) (int8) ((int32) (int8) (word32) *((byte) (r14_n->aFFFFFFE4 + 32 + dwLoc0284_n) + r10_n * 0x08) >> 0x04);
+			int32 r4_n = (int32) (int8) ((int32) *((byte) (r14_n->aFFFFFFE4 + 32 + dwLoc0284_n) + r10_n * 0x08) >> 0x04);
 			dwLoc0284_n = r4_n;
 			if (r4_n < 0x08)
 			{
@@ -230,12 +230,12 @@ Eq_n fn004004B4(Eq_n r2, Eq_n r3, byte * r4, word32 r13, word32 r14, word32 r15,
 				{
 					r2 = fn00400E04(r2, r31_n, r3, fp + ~0x0287, r25, r26_n, r27, r28, r29, r30, out r25, out r26_n, out r27, out r28, out r29, out r30);
 					++r23_n;
-					r31_n = (int32) (int8) (word32) *r23_n;
+					r31_n = (int32) *r23_n;
 				}
 				r2 = fn00400E04(r2, r31_n, r3, fp + ~0x0287, r25, r26_n, r27, r28, r29, r30, out r25, out r26_n, out r27, out r28, out r29, out r30);
 			}
 			++r23_n;
-			r31_n = (int32) (int8) (word32) *r23_n;
+			r31_n = (int32) *r23_n;
 			if (r31_n == 0x00)
 				break;
 		}
@@ -344,7 +344,7 @@ void fn00400F00(Eq_n r2, byte * r3, int32 r4, Eq_n r5, Eq_n r6, ptr32 r25, ptr32
 	{
 		do
 		{
-			r2 = fn00400E04(r2, (int32) (int8) (word32) *r30_n, r28_n, r29_n, r25, r26, r27, r28_n, r29_n, r30_n + 1, out r25, out r26, out r27, out r28_n, out r29_n, out r30_n);
+			r2 = fn00400E04(r2, (int32) *r30_n, r28_n, r29_n, r25, r26, r27, r28_n, r29_n, r30_n + 1, out r25, out r26, out r27, out r28_n, out r29_n, out r30_n);
 			r31_n = r31_n + ~0x00;
 			r31_n = r31_n;
 		} while (r31_n > 0x00);
@@ -714,7 +714,7 @@ Eq_n fn00401380(Eq_n r2, Eq_n r3, word32 r27, word32 r28, struct Eq_n * r29, Eq_
 struct Eq_n * fn00401474(Eq_n r2, struct Eq_n * r3)
 {
 	if (**((word32) r2 + 116) > r3)
-		return CONVERT(SLICE(CONVERT(Mem0[Mem0[r2 + 0x0078:word32] + r3:byte], byte, word32), int8, 0), int8, int32) & 0x40;
+		return CONVERT(Mem0[Mem0[r2 + 0x0078:word32] + r3:byte], byte, int32) & 0x40;
 	return null;
 }
 
@@ -847,7 +847,7 @@ Eq_n fn00401598(Eq_n r2, Eq_n r3, Eq_n r4, ptr32 r25, ptr32 r26, Eq_n r27, Eq_n 
 				r2 = fn00402248(r2, r30_n, *((word32) r4 + 8), r29_n, r29_n, r30_n, r4, out r3_n, out r29_n, out r30_n, out r31_n);
 				r28_n = r3_n;
 			}
-			else if ((CONVERT(SLICE(CONVERT(Mem208[Mem208[r2 + 0x0078:word32] + r30_n:byte], byte, word32), int8, 0), int8, int32) & 0x20) != 0x00)
+			else if ((CONVERT(Mem208[Mem208[r2 + 0x0078:word32] + r30_n:byte], byte, int32) & 0x20) != 0x00)
 				r2 = fn004026B8(r2, r30_n, 0x02, r26, r27_n, r28_n, r29_n, r30_n, r31, out r26, out r27_n, out r28_n, out r29_n, out r31_n);
 			**((word32) r31_n + 8) = (byte) (int32) (int8) r27_n;
 		}
@@ -1305,7 +1305,7 @@ Eq_n fn004020BC(Eq_n r2, struct Eq_n * r3, ptr32 r29, ptr32 r30, struct Eq_n * r
 	v5->ptr0008 = r31;
 	if (r3 < r4_n)
 	{
-		word32 r11_n = CONVERT(SLICE(CONVERT(Mem25[Mem25[r2 + 0x0078:word32] + r3:byte], byte, word32), int8, 0), int8, int32);
+		word32 r11_n = CONVERT(Mem25[Mem25[r2 + 0x0078:word32] + r3:byte], byte, int32);
 		if ((r11_n & 0x01) != 0x00)
 		{
 			if ((r11_n & 0x40) != 0x00)
@@ -1393,7 +1393,7 @@ Eq_n fn00402248(Eq_n r2, struct Eq_n * r3, Eq_n r4, struct Eq_n * r5, struct Eq_
 	v11->t0008 = r31;
 	if (r3 < r6_n)
 	{
-		word32 r11_n = CONVERT(SLICE(CONVERT(Mem24[Mem24[r2 + 0x0078:word32] + r3:byte], byte, word32), int8, 0), int8, int32);
+		word32 r11_n = CONVERT(Mem24[Mem24[r2 + 0x0078:word32] + r3:byte], byte, int32);
 		if ((r11_n & 0x01) != 0x00 && (r11_n & 0x10) == 0x00)
 		{
 			word32 (* r3_n)[][];
@@ -1571,7 +1571,7 @@ Eq_n fn004026B8(Eq_n r2, struct Eq_n * r3, word32 r5, ptr32 r26, Eq_n r27, struc
 	v3->t0014 = r31;
 	if (**((word32) r2 + 116) > r3)
 	{
-		word32 r11_n = CONVERT(SLICE(CONVERT(Mem35[Mem35[r2 + 0x0078:word32] + r3:byte], byte, word32), int8, 0), int8, int32);
+		word32 r11_n = CONVERT(Mem35[Mem35[r2 + 0x0078:word32] + r3:byte], byte, int32);
 		if ((r11_n & 0x01) != 0x00 && (r11_n & 0x40) == 0x00)
 		{
 			word32 (* r3_n)[][];
@@ -1786,7 +1786,7 @@ void fn00402A24(Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, ui32 r11, word32 r13, word32
 			if (fp == ~0x021F)
 				r11 = *(ui32 *) 288 & 0xFF;
 			else
-				r11 = (int32) (int8) (word32) *(byte *) 0x0BFF & 0xFF;
+				r11 = (int32) *(byte *) 0x0BFF & 0xFF;
 		}
 		if ((r11 & 0x20) != 0x00)
 		{
@@ -2112,7 +2112,7 @@ void fn0040326C(Eq_n r2, struct Eq_n * r29, struct Eq_n * r30, Eq_n r31)
 //      fn00403744
 void fn004032AC(Eq_n r3)
 {
-	if (r3 != 0x00 && (int32) ((int8) ((word32) (*r3))) != 0x00)
+	if (r3 != 0x00 && (int32) (*r3) != 0x00)
 	{
 		byte * r11_n = (word32) r3 + 1;
 		word32 r10_n = (word32) *r3;
@@ -2340,7 +2340,7 @@ Eq_n fn00403618(Eq_n r2, Eq_n r3, struct Eq_n * r29, struct Eq_n * r30, Eq_n r31
 	{
 		word32 r4_n = Mem10[r8_n + 0x04 + r11_n:word32];
 		struct Eq_n * r5_n = null;
-		if ((word32) (byte) (word32) *r4_n != 0x00)
+		if ((word32) *r4_n != 0x00)
 		{
 			do
 				r5_n = (struct Eq_n *) ((char *) &r5_n->ptr0000 + 1);
@@ -2388,7 +2388,7 @@ struct Eq_n * fn004036B0(Eq_n r2, struct Eq_n * r3, struct Eq_n ** r4)
 //      fn00403170
 Eq_n fn00403744(Eq_n r2, Eq_n r3, struct Eq_n * r29, ptr32 r30, Eq_n r31, ptr32 & r3Out, struct Eq_n & r29Out, ptr32 & r30Out, union Eq_n & r31Out)
 {
-	int32 r4_n = (int32) (int8) (word32) *r3;
+	int32 r4_n = (int32) *r3;
 	v8->ptr0000 = r29;
 	v8->ptr0004 = r30;
 	v8->t0008 = r31;
@@ -2480,7 +2480,7 @@ Eq_n fn00403898(Eq_n r2, struct Eq_n * r3, ptr32 r28, word32 r29, word32 r30, Eq
 	{
 		Eq_n (* r28_n)[] = *((word32) r2 + 0x0078);
 		word32 r28_n = r3 + r28_n;
-		word32 r11_n = CONVERT(SLICE(CONVERT(Mem29[r28_n + r3:byte], byte, word32), int8, 0), int8, int32);
+		word32 r11_n = CONVERT(Mem29[r28_n + r3:byte], byte, int32);
 		if ((r11_n & 0x01) != 0x00)
 		{
 			if ((r11_n & 0x40) == 0x00)
@@ -2694,7 +2694,7 @@ void fn00403D7C(byte * r3)
 				byte * r9_n = r3 + 1;
 				do
 				{
-					*r10_n = (byte) (word32) *r9_n;
+					*r10_n = *r9_n;
 					r11_n += ~0x00;
 					++r9_n;
 					++r10_n;
