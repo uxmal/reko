@@ -1682,6 +1682,15 @@ means
         }
 
         [Test]
+        public void ArmRw_vmin_f32()
+        {
+            Given_HexString("011F20F2");
+            AssertCode(     // vmin.f32\td1,d0,d1
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|d1 = __vmin_f32(d0, d1)");
+        }
+
+        [Test]
         public void ArmRw_uqsub16()
         {
             Given_UInt32s(0xE6694478);
