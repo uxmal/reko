@@ -1275,6 +1275,11 @@ namespace Reko.Core.Expressions
             return new Slice(dataType, value, bitOffset);
         }
 
+        public Slice Slice(Expression value, DataType dataType, int bitOffset)
+        {
+            return new Slice(dataType, value, bitOffset);
+        }
+
         /// <summary>
         /// Generates a bit-slice of type <paramref name="primitiveType"/> of 
         /// an expression <paramref name="value"/>, starting at bit position
