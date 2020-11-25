@@ -281,12 +281,16 @@ namespace Reko.Arch.Pdp11
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF, 0, 0);
         }
 
-        private void RewriteRotate(string op)
+        private void RewriteRotate(string op, uint cyMask)
         {
             var src = RewriteSrc(instr.Operands[0]);
+            var C = binder.EnsureFlagGroup(this.arch.GetFlagGroup(Registers.psw, (uint) FlagM.CF));
+            var tmp = binder.CreateTemporary(src.DataType);
+            m.Assign(tmp, src);
             var dst = RewriteDst(instr.Operands[0], src, (a, b) =>
-                host.Intrinsic(op, true, instr.DataWidth, a, b));
-            SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
+                host.Intrinsic(op, true, instr.DataWidth, a, m.Int16(1), C));
+            m.Assign(C, m.Ne0(m.And(tmp, cyMask)));
+            SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF, 0, 0);
         }
 
         private void RewriteShift()
