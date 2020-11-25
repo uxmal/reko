@@ -780,5 +780,49 @@ ProcedureBuilder_exit:
                 m.Return();
             });
         }
+
+        [Test]
+        public void CceShlRcl_Through_Alias()
+        {
+            var sExp =
+            #region Expected
+@"// ProcedureBuilder
+// Return size: 0
+define ProcedureBuilder
+ProcedureBuilder_entry:
+	def r1
+	def r0
+	// succ:  l1
+l1:
+	v9_13 = SEQ(r0, r1) << 1<8>
+	r1_2 = SLICE(v9_13, word16, 0)
+	r0_7 = SLICE(v9_13, word16, 16)
+	Mem9[0x1234<16>:word16] = r0_7
+	Mem10[0x1236<16>:word16] = r1_2
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+
+";
+            #endregion
+            RunStringTest(sExp, m => {
+                var RolC = new ProcedureConstant(PrimitiveType.Ptr32, new IntrinsicProcedure(
+                    IntrinsicProcedure.RolC, true, PrimitiveType.Word16, 3));
+                var r1 = m.Reg16("r1", 1);
+                var r0 = m.Reg16("r0", 0);
+                var psw = new RegisterStorage("psw", 2, 0, PrimitiveType.Word16);
+                var C = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 1, "C", PrimitiveType.Bool));
+                var NZVC = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0xF, "NZVC", PrimitiveType.Word16));
+                var tmp = m.Frame.CreateTemporary("tmp", PrimitiveType.Word16);
+                m.Assign(r1, m.Shl(r1 , m.Int16(1)));
+                m.Assign(NZVC, m.Cond(r1));
+                m.Assign(tmp, r0);
+                m.Assign(r0, m.Fn(RolC, r0, m.Int16(1), C));
+                m.Assign(C, m.Ne0(m.And(tmp, m.Word16(0x8000))));
+                m.MStore(m.Word16(0x1234), r0);
+                m.MStore(m.Word16(0x1236), r1);
+                m.Return();
+            });
+        }
     }
 }

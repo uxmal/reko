@@ -228,7 +228,7 @@ namespace Reko.Evaluation
                     }
                 }
             }
-            return null!;
+            return null;
         }
 
         private static bool IsSingleBitRotationWithClearCarryIn(Expression[] args)
