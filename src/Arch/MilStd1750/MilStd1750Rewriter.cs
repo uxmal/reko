@@ -91,6 +91,7 @@ namespace Reko.Arch.MilStd1750
                     break;
                 case Mnemonic.ab: RewriteAb(); break;
                 case Mnemonic.andm:
+                case Mnemonic.andr:
                     RewriteLogical(m.And);
                     break;
                 case Mnemonic.andx: RewriteAndx(); break;
@@ -209,6 +210,7 @@ namespace Reko.Arch.MilStd1750
                 case Mnemonic.tbr: RewriteTbr(); break;
                 case Mnemonic.urs: RewriteUrs(); break;
                 case Mnemonic.xbr: RewriteXbr(); break;
+                case Mnemonic.xorm:
                 case Mnemonic.xorr:
                     RewriteLogical(m.Xor);
                     break;

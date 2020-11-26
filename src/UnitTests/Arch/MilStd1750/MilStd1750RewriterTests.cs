@@ -80,6 +80,16 @@ namespace Reko.UnitTests.Arch.MilStd1750
         }
 
         [Test]
+        public void MS1750Rw_andr()
+        {
+            Given_HexString("E34D");
+            AssertCode(     // andr     gp4,gp13
+                "0|L--|0100(1): 2 instructions",
+                "1|L--|gp4 = gp4 & gp13",
+                "2|L--|PZN = cond(gp4)");
+        }
+
+        [Test]
         public void MS1750Rw_andx()
         {
             Given_HexString("40EB");
@@ -894,7 +904,6 @@ namespace Reko.UnitTests.Arch.MilStd1750
                 "0|T--|0100(1): 1 instructions",
                 "1|T--|return (2,0)");
         }
-
 
         [Test]
         public void MS1750Rw_xio_unknown()

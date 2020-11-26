@@ -579,6 +579,12 @@ namespace Reko.Arch.Avr.Avr32
                 ld_ub,
                 ld_ub);
 
+            var k8immediateAndSingleRegister = Mask(12, 1, "  K8 immediate and single register",
+                Select((0, 4), IsSp, "  sub imm8",
+                    Instr(Mnemonic.sub, Rw0, Is4_8sh2),
+                    Instr(Mnemonic.sub, Rw0, Is4_8)),
+                Instr(Mnemonic.mov, Rw0, Is4_8));
+
             var dispLdStK3imm = Mask(7, 2, "  Displacement load / store with k3 immediate",
                 Instr(Mnemonic.ld_sh, Rw0, Mdisp_sh4_3),
                 Instr(Mnemonic.ld_uh, Rw0, Mdisp_uh4_3),
@@ -740,18 +746,22 @@ namespace Reko.Arch.Avr.Avr32
                 (0x19, Sparse(0, 8, "  0x19", Nyi(""),
                     (0x00, Instr(Mnemonic.cp_h, R16, R25)))));
 
+            var cacheOperation = Nyi("Cache operation");
+
             var wide00001 = Mask(25, 4, "  00001",
                 Instr(Mnemonic.andl,Rw16,Iu_h0_16),
                 Instr(Mnemonic.andl,Rw16,Iu_h0_16,COH),
                 Instr(Mnemonic.andh,Rw16,Iu_h0_16),
                 Instr(Mnemonic.andh,Rw16,Iu_h0_16,COH),
+
                 Instr(Mnemonic.orl,Rw16,Iu_h0_16),
                 Instr(Mnemonic.orh,Rw16,Iu_h0_16),
                 Instr(Mnemonic.eorl, Rw16, Iu_h0_16),
                 Instr(Mnemonic.eorh, Rw16, Iu_h0_16),
+
                 Instr(Mnemonic.mcall, InstrClass.Transfer|InstrClass.Call, Mdisp_w0_16),
                 Nyi("0b1001"),
-                Nyi("0b1010"),
+                cacheOperation,
                 Nyi("0b1011"),
                 Nyi("0b1100"),
                 Nyi("0b1101"),
@@ -855,11 +865,7 @@ namespace Reko.Arch.Avr.Avr32
             
             rootDecoder = Mask(13, 3, "AVR32",
                 twoRegs,
-                Mask(12, 1, "  001",
-                    Select((0,4), IsSp, "  sub imm8",
-                        Instr(Mnemonic.sub, Rw0, Is4_8sh2),
-                        Instr(Mnemonic.sub, Rw0, Is4_8)),
-                    Instr(Mnemonic.mov, Rw0, Is4_8)),
+                k8immediateAndSingleRegister,
                 spPcRelativeLdSt,
                 Instr(Mnemonic.ld_w, Rw0, Mdisp_w4_5),
                 dispLdStK3imm,
