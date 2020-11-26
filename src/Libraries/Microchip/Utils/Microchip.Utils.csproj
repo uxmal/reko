@@ -16,6 +16,6 @@
   </ItemGroup>
   <Target Name="BeforeBuild" BeforeTargets="CoreBuild">
     <Message Importance="high" Text="Copying PIC Database to $(TargetDir)" />
-    <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" />
+    <Copy SkipUnchangedFiles="true" SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" />
   </Target>
 </Project>

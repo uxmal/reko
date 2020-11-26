@@ -17,7 +17,7 @@
   <!-- Copy dependencies to the `tools` directory.-->
   <Target Name="CopyToTools" AfterTargets="CopyFilesToOutputDirectory">
     <Message Text="Project dir = $(ProjectDir)" />
-    <Copy SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName)" DestinationFolder="$(ProjectDir).." />
+    <Copy SkipUnchangedFiles="true" SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName)" DestinationFolder="$(ProjectDir).." />
   </Target>
   <ItemGroup>
     <Compile Remove="fixwild.cs" />
