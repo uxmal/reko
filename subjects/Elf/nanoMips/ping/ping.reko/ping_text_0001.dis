@@ -88,8 +88,10 @@ l004101A2:
 	r5 = __ins(r5, r7, 0<32>, 1<32>)
 	r5 = __ins(r5, r6, 4<32>, 1<32>)
 	r5 = __ins(r5, r8, 0xF<32>, 1<32>)
-	r6_r7 = r4_r5
-	r4_r5 = r6_r7
+	r6 = r4
+	r7 = r5
+	r4 = r6
+	r5 = r7
 	return
 	// succ:  __floatsidf_exit
 l004101B6:
@@ -97,6 +99,7 @@ l004101B6:
 	r7 = r7 - r6
 	r7 = r4 << r7
 	r4 = 0<32>
+	goto 0x004101A2<p32>
 	goto l004101A2
 	// succ:  l004101A2
 l004101C4:
@@ -104,6 +107,7 @@ l004101C4:
 	r4 = 0<32>
 	r6 = 0<32>
 	r8 = 0<32>
+	goto 0x004101A2<p32>
 	goto l004101A2
 	// succ:  l004101A2
 __floatsidf_exit:
@@ -139,7 +143,8 @@ l004101F6:
 	r5 = __ins(r5, r6, 4<32>, 1<32>)
 	r6 = r4
 	r7 = __ext(r5, 0<32>, 0x1F<32>)
-	r4_r5 = r6_r7
+	r4 = r6
+	r5 = r7
 	return
 	// succ:  __floatunsidf_exit
 l0041020A:
@@ -147,12 +152,14 @@ l0041020A:
 	r7 = r7 - r6
 	r7 = r4 << r7
 	r4 = 0<32>
+	goto 0x004101F6<p32>
 	goto l004101F6
 	// succ:  l004101F6
 l00410218:
 	r7 = 0<32>
 	r4 = 0<32>
 	r6 = 0<32>
+	goto 0x004101F6<p32>
 	goto l004101F6
 	// succ:  l004101F6
 __floatunsidf_exit:
@@ -172,7 +179,7 @@ l00410220:
 	r9 = r9 << 3<32>
 	r9 = r7 | r9
 	r7 = r10 + 1<32>
-	r7 = r7 + 0x7FF<32>
+	r7 = r7 & 0x7FF<32>
 	r5 = r5 >>u 0x1F<32>
 	r6 = r4 << 3<32>
 	branch r7 < 2<32> l004102D4
@@ -207,6 +214,7 @@ l00410270:
 	// succ:  l0041028A
 l0041028A:
 	r8 = 0<32>
+	goto 0x004102C8<p32>
 	goto l004102C8
 	// succ:  l004102C8
 l0041028E:
@@ -224,6 +232,7 @@ l004102A8:
 	r7 = r11 | r6
 	r7 = CONVERT(0<32> <u r7, bool, word32)
 	r7 = r8 | r7
+	goto 0x0041028A<p32>
 	goto l0041028A
 	// succ:  l0041028A
 l004102B6:
@@ -235,14 +244,15 @@ l004102B6:
 	r7 = r7 | r6
 	// succ:  l004102C8
 l004102C8:
-	r6 = r7 + 7<32>
+	r6 = r7 & 7<32>
 	branch r6 == 0<32> l004102FC
 	// succ:  l004102CC l004102FC
 l004102CC:
-	r6 = r7 + 0xF<32>
+	r6 = r7 & 0xF<32>
 	branch r6 != 4<32> l00410336
 	// succ:  l004102D2 l00410336
 l004102D2:
+	goto 0x004102FC<p32>
 	goto l004102FC
 	// succ:  l004102FC
 l004102D4:
@@ -251,6 +261,7 @@ l004102D4:
 	// succ:  l004102DC l004102E2
 l004102DC:
 	r7 = CONVERT(0<32> <u r7, bool, word32)
+	goto 0x0041028A<p32>
 	goto l0041028A
 	// succ:  l0041028A
 l004102E2:
@@ -261,6 +272,7 @@ l004102E8:
 	r9 = r9 << 3<32>
 	r7 = 0x20000000<32>
 	r7 = r9 | r7
+	goto 0x004102C8<p32>
 	goto l004102C8
 	// succ:  l004102C8
 l004102F6:
@@ -304,6 +316,7 @@ l00410332:
 	// succ:  l00410336
 l00410336:
 	r7 = r7 + 4<32>
+	goto 0x004102FC<p32>
 	goto l004102FC
 	// succ:  l004102FC
 __truncdfsf2_exit:

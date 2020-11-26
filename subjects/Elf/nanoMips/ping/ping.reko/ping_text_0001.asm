@@ -55,8 +55,11 @@ l0041016E:
 
 ;; __floatsidf: 00410170
 ;;   Called from:
-;;     0040C3C4 (in fn0040C664)
-;;     0040C5AA (in fn0040C5A8)
+;;     0040B5A2 (in decfloat)
+;;     0040B828 (in decfloat)
+;;     0040BBC6 (in decfloat)
+;;     0040C3C4 (in __floatscan)
+;;     0040C432 (in __floatscan)
 __floatsidf proc
 	beqzc	r4,004101C4
 

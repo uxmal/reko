@@ -479,6 +479,5 @@ namespace Reko.UnitTests.Arch.Avr
         {
             AssertCode("rsub\tr9,r9,00000001", "F2091101");
         }
-
     }
 }
