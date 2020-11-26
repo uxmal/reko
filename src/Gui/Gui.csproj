@@ -26,15 +26,12 @@
     <ProjectReference Include="..\Decompiler\Decompiler.csproj" />
   </ItemGroup>
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
-    <Msbuild Projects="$(ProjectDir)..\tools\xslt\xslt.csproj" RemoveProperties="TargetFramework" />
     <Message Importance="high" Text="Generating C# files for Gui.csproj" />
-    <Message Importance="high" Text="xslt.exe exists" Condition="Exists('$(ProjectDir)../tools/xslt.exe')" />
     <!--
         It seems we can't rely on xslt.exe / xslt.dll (netcoreapp3.1 or netcoreapp20)
         have been built, despite all efforts to express this in the SLN file.
         Thanks, build system.
     -->
-    <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../tools/xslt.dll') " Command="dotnet $(ProjectDir)../tools/xslt.dll $(ProjectDir)cmdids.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)CmdIds.cs" />
-    <Exec Condition=" '$(OS)' != 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe') " Command="$(ProjectDir)..\tools\xslt.exe $(ProjectDir)cmdids.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)CmdIds.cs" />
+    <Exec Command="dotnet run -c $(Configuration) -p $(ProjectDir)..\tools\xslt\xslt.csproj -- $(ProjectDir)cmdids.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)CmdIds.cs" />
   </Target>
 </Project>

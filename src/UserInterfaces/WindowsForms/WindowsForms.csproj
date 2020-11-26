@@ -16,9 +16,7 @@
   </ItemGroup>
 
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
-    <Msbuild Projects="$(ProjectDir)..\..\tools\xslt\xslt.csproj" RemoveProperties="TargetFramework" />
-    <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="dotnet &quot;$(ProjectDir)../../tools/xslt.dll&quot; &quot;$(ProjectDir)Forms/decompiler-menus.xslt&quot; &quot;$(ProjectDir)../../Gui/decompiler-menus.xml&quot; &quot;$(ProjectDir)Forms/DecompilerMenus.cs&quot;" />
-    <Exec Condition=" '$(OS)' != 'Unix' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="&quot;$(ProjectDir)..\..\tools\xslt.exe&quot; &quot;$(ProjectDir)Forms\decompiler-menus.xslt&quot; &quot;$(ProjectDir)..\..\Gui\decompiler-menus.xml&quot; &quot;$(ProjectDir)Forms\DecompilerMenus.cs&quot;" />
+    <Exec Command="dotnet run -p $(ProjectDir)..\..\tools\xslt\xslt.csproj -- &quot;$(ProjectDir)Forms\decompiler-menus.xslt&quot; &quot;$(ProjectDir)..\..\Gui\decompiler-menus.xml&quot; &quot;$(ProjectDir)Forms\DecompilerMenus.cs&quot;" />
   </Target>
 
   <ItemGroup>
