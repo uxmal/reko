@@ -493,7 +493,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_BitStrings("000000 00011 01001 01010 00000 001010");    // movz
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|T--|if (r9 != 0<32>) branch 00100004", 
+                "1|T--|if (r9 != 0<32>) branch 00100004",
                 "2|L--|r10 = r3");
         }
 
@@ -588,7 +588,7 @@ namespace Reko.UnitTests.Arch.Mips
 
         [Test]
         public void MipsRw_cvt_s_d()
-        {     
+        {
             AssertCode(0x46200820, // cvt.s.d $f0,$f1
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|f0 = CONVERT(f1_f2, real64, real32)");
@@ -938,7 +938,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_sw_4x4()
         {
             Given_NanoDecoder();
-            Given_HexString("F4C0"); 
+            Given_HexString("F4C0");
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|Mem0[r8:word32] = r6");
@@ -1071,8 +1071,9 @@ namespace Reko.UnitTests.Arch.Mips
             Given_NanoDecoder();
             Given_HexString("FFFE");   // movep	r22,r23,r7,r8
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|r22_r23 = r7_r8");
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|r22 = r7",
+                "2|L--|r23 = r8");
         }
 
         [Test]

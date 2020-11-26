@@ -116,6 +116,7 @@ namespace Reko.Arch.Mips
             };
         }
         private static readonly Mutator<NanoMipsDisassembler> R0 = R(0);
+        private static readonly Mutator<NanoMipsDisassembler> R3 = R(3);
         private static readonly Mutator<NanoMipsDisassembler> R5 = R(5);
         private static readonly Mutator<NanoMipsDisassembler> R11 = R(11);
         private static readonly Mutator<NanoMipsDisassembler> R16 = R(16);
@@ -190,6 +191,16 @@ namespace Reko.Arch.Mips
         private static readonly Mutator<NanoMipsDisassembler> rf0 = rf(Bf((4, 1), (0, 3)), gpr4_encoding);
         private static readonly Mutator<NanoMipsDisassembler> rf5 = rf(Bf((9, 1), (5, 3)), gpr4_encoding);
 
+
+        private static WideMutator<NanoMipsDisassembler> WReg(int iReg)
+        {
+            return (u, d) =>
+            {
+                d.ops.Add(new RegisterOperand(d.arch.GeneralRegs[iReg]));
+                return true;
+            };
+        }
+
         // U: signed immediate
         private static Mutator<NanoMipsDisassembler> I(int pos, int len)
         {
@@ -209,6 +220,16 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var uVal = field.Read(u);
+                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, uVal)));
+                return true;
+            };
+        }
+
+        private static Mutator<NanoMipsDisassembler> Uf(Bitfield[] fields)
+        {
+            return (u, d) =>
+            {
+                var uVal = Bitfield.ReadFields(fields, u);
                 d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, uVal)));
                 return true;
             };
@@ -427,7 +448,7 @@ namespace Reko.Arch.Mips
         }
 
         // Ms: memory access - signed offset
-        private static Mutator<NanoMipsDisassembler> Ms(PrimitiveType dt, int posBase, Bitfield[] offsetFields)
+        private static Mutator<NanoMipsDisassembler> Ms(PrimitiveType dt, int posBase, params Bitfield[] offsetFields)
         {
             var baseField = new Bitfield(posBase, 5);
             return (u, d) =>
@@ -460,8 +481,11 @@ namespace Reko.Arch.Mips
                 return true;
             };
         }
+
+        private static readonly Mutator<NanoMipsDisassembler> Mxb = Mx(PrimitiveType.SByte, 21, 16);
         private static readonly Mutator<NanoMipsDisassembler> Mxbu = Mx(PrimitiveType.Byte, 21, 16);
         private static readonly Mutator<NanoMipsDisassembler> Mxh = Mx(PrimitiveType.Word16, 21, 16);
+        private static readonly Mutator<NanoMipsDisassembler> Mxhs = Mx(PrimitiveType.Int16, 21, 16);
         private static readonly Mutator<NanoMipsDisassembler> Mxw = Mx(PrimitiveType.Word32, 21, 16);
 
         // mx: compact memory access - indexed
@@ -562,13 +586,15 @@ namespace Reko.Arch.Mips
         #endregion
 
         #region Predicates
-    private static bool Eq0(uint u)
+
+        private static bool Eq0(uint u)
         {
             return u == 0;
         }
 
         private static readonly Bitfield rs3Field = new Bitfield(4, 3);
         private static readonly Bitfield rt3Field = new Bitfield(7, 3);
+
         private static bool Rs3LtRt3(uint u)
         {
             var rs3 = rs3Field.Read(u);
@@ -658,7 +684,11 @@ namespace Reko.Arch.Mips
         {
             var invalid = Instr(Mnemonic.illegal, InstrClass.Invalid);
 
-            var p16_ri = Nyi("P16.RI");
+            var p16_ri = Mask(3, 2, "  P16.RI",
+                invalid,
+                Nyi("P16.SYSCALL"),
+                Nyi("BREAK[16]"),
+                Nyi("SDBBP[16]"));
 
             var p16_mv = Select((5, 5), Eq0, "P16.MV",
                 p16_ri,
@@ -705,7 +735,7 @@ namespace Reko.Arch.Mips
                     Instr(Mnemonic.addiu, r7, Rn(29), Us(0, 6, 2))),
                 Instr(Mnemonic.lw, Mut4x4()),
                 invalid,
-                Mask(Bf((3, 1), (1, 1)), "  P16.LH",
+                Mask(Bf((3, 1), (0, 1)), "  P16.LH",
                     Instr(Mnemonic.lh, r7, msh),
                     Instr(Mnemonic.sh, r7_st, mshu),
                     Instr(Mnemonic.lhu, r7, mshu),
@@ -752,7 +782,9 @@ namespace Reko.Arch.Mips
                     rf(Bf((3, 1), (8, 1)), gpr2_reg2_encoding)));
 
             var pool32a0_0 = Mask(Bf((6, 4), (3, 2)), "  POOL32A0_0",
-                Nyi("P.TRAP"),
+                Mask(10, 1, "  P.TRAP",
+                    Instr(Mnemonic.teq, R16,R21,U(11, 5)),
+                    Instr(Mnemonic.tne, R16,R21,U(11, 5))),
                 Instr(Mnemonic.seb, R21,R16),
                 Instr(Mnemonic.sllv, R11,R16,R21), 
                 Instr(Mnemonic.mul, R11,R16,R21),
@@ -760,7 +792,7 @@ namespace Reko.Arch.Mips
                 invalid,
                 Instr(Mnemonic.seh, R21,R16),
                 Instr(Mnemonic.srlv, R11,R16,R21), 
-                Nyi("MUH"),
+                Instr(Mnemonic.muh, R11,R16,R21), 
 
                 invalid,
                 invalid,
@@ -770,25 +802,25 @@ namespace Reko.Arch.Mips
                 invalid,
                 invalid,
                 Nyi("ROTRV"),
-                Nyi("MUHU"),
+                Instr(Mnemonic.muhu, R11, R16, R21),
 
                 // 10
                 invalid,
                 invalid,
-                Nyi("ADD"),
+                Instr(Mnemonic.add, R11,R16,R21),
                 Instr(Mnemonic.div, R11,R16,R21),
 
                 invalid,
                 invalid,
                 Instr(Mnemonic.addu, R11,R16,R21),
-                Nyi("MOD"),
+                Instr(Mnemonic.mod, R11,R16,R21),
 
                 invalid,
                 invalid,
-                Nyi("SUB"),
-                Nyi("DIVU"),
+                Instr(Mnemonic.sub, R11,R16,R21),
+                Instr(Mnemonic.divu, R11,R16,R21),
 
-                Nyi("RDHWR"),
+                Instr(Mnemonic.rdhwr, R21,R16,U(11,5)),
                 invalid,
                 Instr(Mnemonic.subu, R11,R16,R21),
                 Instr(Mnemonic.modu, R11,R16,R21),
@@ -838,6 +870,91 @@ namespace Reko.Arch.Mips
                 invalid,
                 Nyi("SOV"),
                 Nyi("invalid"));
+
+            var pool32a0_1 = Mask(Bf((6, 4), (3, 2)), "  POOL32A0_1",
+                invalid,
+                invalid,
+                Nyi("mfc0"),
+                Nyi("mfhc0"),
+
+                invalid,
+                invalid,
+                Nyi("mtc0"),
+                Nyi("mthc0"),
+
+                invalid,
+                invalid,
+                Nyi("(VZ)"),
+                Nyi("(VZ)"),
+
+                invalid,
+                invalid,
+                Nyi("(VZ)"),
+                Nyi("(VZ)"),
+
+                // 10
+                invalid,
+                invalid,
+                Nyi("(MIPS64)"),
+                invalid,
+
+                invalid,
+                invalid,
+                Nyi("(MIPS64)"),
+                invalid,
+
+                invalid,
+                invalid,
+                Nyi("(VZ)"),
+                invalid,
+
+                invalid,
+                invalid,
+                Nyi("(VZ)"),
+                invalid,
+
+                // 20
+                invalid,
+                Nyi("(MT)"),
+                Nyi("(MT)"),
+                Nyi("mftr"),
+
+                invalid,
+                Nyi("(MT)"),
+                Nyi("(MT)"),
+                Nyi("mttr"),
+
+                invalid,
+                invalid,
+                Nyi("(MT)"),
+                invalid,
+
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                // 30
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                invalid,
+                invalid,
+                Nyi("crc32"),
+                invalid);
+
             var pool32axf_4 = Sparse(9, 7, "Pool32Axf_4",
                 invalid, // dsp
                 (0b0100_101, Instr(Mnemonic.clo, R21,R16)),
@@ -857,17 +974,17 @@ namespace Reko.Arch.Mips
 
             var p48i = Sparse(16, 5, "  P48I",
                 invalid, // (MIPS64)
-                (0, new Read48Decoder(WInstr(Mnemonic.li, R37w, Uf_w(Bf((0,16),(16,16)))))),
-                (1, Nyi("ADDIU[48]")),
-                (2, Nyi("ADDIU[GP48]")),
-                (3, new Read48Decoder(WInstr(Mnemonic.addiupc, R37w, Sf_w(Bf((0,16),(16,16)))))),
-                (0b010_11, new Read48Decoder(WInstr(Mnemonic.lwpc, R37w, pcrel_w(Bf((0,16),(16,16)))))),
-                (0b011_11, Nyi("SWPC[48]")));
+                (0, new Read48Decoder(WInstr(Mnemonic.li, R37w, Uf_w(Bf((0, 16), (16, 16)))))),
+                (1, new Read48Decoder(WInstr(Mnemonic.addiu, R37w, R37w, Uf_w(Bf((0, 16), (16, 16)))))),
+                (2, new Read48Decoder(WInstr(Mnemonic.addiu, R37w, WReg(28), Uf_w(Bf((0, 16), (16, 16)))))),
+                (3, new Read48Decoder(WInstr(Mnemonic.addiupc, R37w, Sf_w(Bf((0, 16), (16, 16)))))),
+                (0b010_11, new Read48Decoder(WInstr(Mnemonic.lwpc, R37w, pcrel_w(Bf((0, 16), (16, 16)))))),
+                (0b011_11, new Read48Decoder(WInstr(Mnemonic.swpc, R37w, pcrel_w(Bf((0, 16), (16, 16)))))));
 
             var p_lsx = Mask(6, 1, "  P.LSX",
                 Mask(7, 4,
-                    Nyi("LBX"),
-                    Nyi("SBX"),
+                    Instr(Mnemonic.lbx, R11, Mxb),
+                    Instr(Mnemonic.sbx, R11, Mxbu),
                     Instr(Mnemonic.lbux, R11, Mxbu),
                     invalid,
 
@@ -892,9 +1009,9 @@ namespace Reko.Arch.Mips
                     invalid,
                     invalid,
 
-                    Nyi("LHXS"),
-                    Nyi("SHXS"),
-                    Nyi("LHUXS"),
+                    Instr(Mnemonic.lhxs, R11,Mxhs),
+                    Instr(Mnemonic.shxs, R11,Mxh),
+                    Instr(Mnemonic.lhuxs, R11,Mxh),
                     invalid,    // (MIPS64)
 
                     Instr(Mnemonic.lwxs,R11,Mxw),
@@ -906,6 +1023,34 @@ namespace Reko.Arch.Mips
                     invalid,    // (MIPS64)
                     invalid,    // (CP1)
                     invalid));  // (CP1)
+
+            var p_ls_s1 = Mask(11, 4, "  P.LS.S1",
+                invalid,
+                invalid,
+                Nyi("MCU"),
+                invalid,
+
+                Nyi("ualh"),
+                Nyi("uash"),
+                invalid,
+                Nyi("cache"),
+
+                Nyi("CP2"),
+                Nyi("CP2"),
+                Mask(0, 2, "  P.LL",
+                    Instr(Mnemonic.ll, R21, Ms(PrimitiveType.Word32, 16, Bf((15,1),(0,8)))),
+                    Instr(Mnemonic.llwp, R21, R3, Ms(PrimitiveType.Word64, 16)),
+                    invalid,
+                    invalid),
+                Mask(0, 2, "  P.SC",
+                    Instr(Mnemonic.sc, R21, Ms(PrimitiveType.Word32, 16, Bf((15, 1), (0, 8)))),
+                    Instr(Mnemonic.scwp, R21, R3, Ms(PrimitiveType.Word64, 16)),
+                    invalid,
+                    invalid),
+                Nyi("CP2"),
+                Nyi("CP2"),
+                Nyi("(MIPS64)"),
+                Nyi("(MIPS64)"));
 
             var p_ls_s9 = Mask(8, 3, "  P.LS.S9",
                 Mask(11, 4, "  P.LS.S0",
@@ -928,16 +1073,16 @@ namespace Reko.Arch.Mips
                     invalid,    // (MIPS64)
                     invalid,    // (CP1)
                     invalid),  // (CP1)
-                Nyi("P.LS.S1"),
+                p_ls_s1,
                 Mask(11, 4, "  P.LS.E0",
                     Nyi("LBE"),
                     Nyi("SBE"),
-                    Nyi("LBUE"),
+                    Instr(Mnemonic.lbue, R21,Ms(PrimitiveType.Byte, 16, Bf((15,1), (0, 8)))),
                     Nyi("P.PREFE"),
 
                     Instr(Mnemonic.lhe, R21,Ms(PrimitiveType.Int16, 16, Bf((15,1), (0, 8)))),
-                    Nyi("SHE"),
-                    Nyi("LHUE"),
+                    Instr(Mnemonic.she, R21, Ms(PrimitiveType.Word16, 16, Bf((15, 1), (0, 8)))),
+                    Instr(Mnemonic.lhue, R21,Ms(PrimitiveType.Word16, 16, Bf((15,1), (0, 8)))),
                     Nyi("CACHEE"),
 
                     Instr(Mnemonic.lwe, R21, Ms(PrimitiveType.Word32, 16, Bf((15, 1), (0, 8)))),
@@ -968,11 +1113,13 @@ namespace Reko.Arch.Mips
                 (3, invalid), // (CP2)
                 (4, invalid)); // (DSP)
 
-            var p32Pool = Mask(Bf((29, 3), (26, 2)), "P32 Pool",
-                Select((0, 21), Eq0, "  P.ADDIU",
+            var p32Pool = Mask(Bf((29, 3), (26, 2)), "  P32 Pool",
+                Select((21, 5), Eq0, "  P.ADDIU",
                     Mask(19, 2, "  P.RI",
                         Instr(Mnemonic.sigrie, InstrClass.Padding|InstrClass.Terminates, U(0, 19)),
-                        Nyi("P.SYSCALL"),
+                        Mask(18, 1, "  P.SYSCALL",
+                            Instr(Mnemonic.syscall, U(0,18)),
+                            Nyi("(VZ)")),
                         Nyi("BREAK[32]"),
                         Nyi("SDBBP[32]")),
                     Instr(Mnemonic.addiu, R21, R16, U(0, 16))),
@@ -986,7 +1133,7 @@ namespace Reko.Arch.Mips
                 Mask(0, 3, "  P32A",
                     Mask(5, 1, "  _POOL32A0",
                         pool32a0_0,
-                        Nyi("_POOL32A0_1")),
+                        pool32a0_1),
                     invalid, // (UDI)
                     invalid, // (CP2)
                     invalid, // (UDI)
@@ -1019,7 +1166,7 @@ namespace Reko.Arch.Mips
                     Instr(Mnemonic.lb, R21, Mgpb),
                     Instr(Mnemonic.sb, R21, Mgpbu),
                     Instr(Mnemonic.lbu, R21, Mgpbu),
-                    Nyi("ADDIU[GP.B]"),
+                    Instr(Mnemonic.addiu, R21, Mgpbu),
 
                     Mask(0, 1, "  P.GP.LH",
                         Instr(Mnemonic.lh, R21, Mgph),
@@ -1031,9 +1178,11 @@ namespace Reko.Arch.Mips
                     invalid),   // (MIPS64)
                 Sparse(12, 4, "  P.J",
                     invalid,
-                    (0, Nyi("JALRC[32]")),
-                    (1, Nyi("JALRC.HB")),
-                    (8, Nyi("P.BALRSC"))),
+                    (0, Instr(Mnemonic.jalrc, R21,R16)),
+                    (1, Instr(Mnemonic.jalrc_hb, R21,R16)),
+                    (8, Select((21,5), u => u == 0, "  P.BALRSC",
+                        Nyi("brsc"),
+                        Nyi("balrsc")))),
                 invalid,
 
                 p48i,
@@ -1050,18 +1199,18 @@ namespace Reko.Arch.Mips
                             Instr(Mnemonic.save,Us(3, 9, 3),R21,U(16,4)),
                             invalid,
                             Instr(Mnemonic.restore,Us(3, 9, 3),R21,U(16,4)),
-                            Instr(Mnemonic.restore_jrc,Us(3, 9, 3),R21,U(16,4))),
+                            Instr(Mnemonic.restore_jrc, InstrClass.Transfer, Us(3, 9, 3),R21,U(16,4))),
                         invalid),   // (CR1)
 
                     Instr(Mnemonic.slti, R21, R16, U(0, 12)),
                     Instr(Mnemonic.sltiu, R21, R16, U(0, 12)),
-                    Nyi(" SEQI"),
+                    Instr(Mnemonic.seqi, R21, R16, U(0, 12)),
                     invalid,
 
                     Instr(Mnemonic.addiu, R21, R16, Un(0, 12)),
                     invalid, // (MIPS64)
-                    invalid, // (MIPS64) 
-                    invalid,  //(MIPS64)
+                    invalid, // (MIPS64)
+                    invalid, // (MIPS64)
 
                     Mask(5, 4, "  P.SHIFT",
                         Select((21,5), Eq0, "  P.SLL",
@@ -1069,7 +1218,7 @@ namespace Reko.Arch.Mips
                                 (0, Instr(Mnemonic.nop)),
                                 (3, Nyi("  EHB")),
                                 (5, Nyi("  PAUSE")),
-                                (6, Nyi("  SYNC"))),
+                                (6, Instr(Mnemonic.sync, U(16,5)))),
                             Instr(Mnemonic.sll, R21,R16, U(0,5))),
                         invalid,
                         Instr(Mnemonic.srl, R21,R16, U(0,5)),
@@ -1077,7 +1226,7 @@ namespace Reko.Arch.Mips
 
                         Instr(Mnemonic.sra, R21,R16, U(0,5)),
                         invalid,
-                        Nyi("ROTR"),
+                        Instr(Mnemonic.rotr, R21,R16, U(0,5)),
                         invalid,
 
                         invalid, // (MIPS64)
@@ -1090,8 +1239,12 @@ namespace Reko.Arch.Mips
                         invalid, // (MIPS64)
                         invalid  // (MIPS64)
                     ),
-                    Nyi("P.ROTX "),
-                    Mask(Bf((11,1),(5,1)), "  P.INS ",
+                    Mask(Bf((11,1),(5,1)), "  P.ROTX",
+                        Instr(Mnemonic.rotx, R21,R16, Uf(Bf((7,4),(5,1))), U(0, 5), U(6, 1)),
+                        invalid,
+                        invalid,
+                        invalid),
+                    Mask(Bf((11,1),(5,1)), "  P.INS",
                         Instr(Mnemonic.ins, R21,R16,U(0,4),UinsSize()), 
                         invalid, // (MIPS64)
                         invalid, // (MIPS64)

@@ -83,6 +83,8 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode("addiu\tr2,r0,000007FF", "004007FF");
         }
 
+
+
         [Test]
         public void NanoMipsDis_addiu_gp_w()
         {
@@ -151,6 +153,12 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("andi\tr5,r7,000000FF", "F2FC");
             AssertCode("andi\tr5,r7,0000FFFF", "F2FD");
+        }
+
+        [Test]
+        public void NanoMipsDis_andi()
+        {
+            AssertCode("andi\tr17,r18,00000004", "F0A40059");
         }
 
         [Test]
@@ -279,7 +287,6 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode("jalrc\tra,r16", "DA10");
         }
 
-
         [Test]
         public void NanoMipsDis_jrc()
         {
@@ -329,6 +336,12 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void NanoMipsDis_lhu()
+        {
+            AssertCode("lhu\tr4,0006(r4)", "7E4E");
+        }
+
+        [Test]
         public void NanoMipsDis_lhu_gp()
         {
             AssertCode("lhu\tr24,4F24(r28)", "47104F25");
@@ -350,6 +363,12 @@ namespace Reko.UnitTests.Arch.Mips
         public void NanoMipsDis_li_48()
         {
             AssertCode("li\tr7,000FFFFF", "60E0FFFF000F");
+        }
+
+        [Test]
+        public void NanoMipsDis_addiupc()
+        {
+            AssertCode("addiupc\tr5,FFF28028", "04A50051");
         }
 
         [Test]
@@ -562,13 +581,6 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode("seh\tr7,r7", "20E70048");
         }
 
-
-        [Test]
-        public void NanoMipsDis_sh_gp16()
-        {
-            AssertCode("sh\tr7,0002(r18)", "7FA2");
-        }
-
         [Test]
         public void NanoMipsDis_sh_gp()
         {
@@ -579,6 +591,12 @@ namespace Reko.UnitTests.Arch.Mips
         public void NanoMipsDis_sh_u12()
         {
             AssertCode("sh\tr7,0304(r16)", "84F05304");
+        }
+
+        [Test]
+        public void NanoMipsDis_sb()
+        {
+            AssertCode("sb\tsp,002A(r28)", "47A4002A");
         }
 
         [Test]
@@ -717,6 +735,12 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void NanoMipsDis_syscall_32()
+        {
+            AssertCode("syscall\t00000000", "00080000");
+        }
+
+        [Test]
         public void NanoMipsDis_ualwm()
         {
             AssertCode("ualwm\tr7,0001(r4),00000001", "A4E41501");
@@ -740,6 +764,5 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode("xori\tr0,r8,00000142", "80081142");
         }
 
- 
     }
 }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -322,5 +322,22 @@ namespace Reko.Arch.Mips
         zeb,
         zeh,
         cmp,
+        sbx,
+        lbx,
+        she,
+        rotr,
+        muh,
+        muhu,
+        mod,
+        lhxs,
+        lhuxs,
+        lhue,
+        lbue,
+        jalrc_hb,
+        seqi,
+        swpc,
+        rotx,
+        llwp,
+        scwp,
     }
 }

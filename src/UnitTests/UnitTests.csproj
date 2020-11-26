@@ -188,6 +188,7 @@
     <Compile Include="Arch\MilStd1750\MilStd1750ArchitectureTests.cs" />
     <Compile Include="Arch\MilStd1750\MilStd1750DisassemblerTests.cs" />
     <Compile Include="Arch\MilStd1750\MilStd1750RewriterTests.cs" />
+    <Compile Include="Arch\Mips\NanoMipsRewriterTests.cs" />
     <Compile Include="Arch\Pdp11\Assembler\Pdp11TextAssemblerTests.cs" />
     <Compile Include="Arch\PowerPC\PowerPcDisassemblerTests.Xenon.cs" />
     <Compile Include="Arch\PowerPC\PowerPcEmulatorTests.cs" />
